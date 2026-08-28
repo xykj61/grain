@@ -56,9 +56,9 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = unwelcome_path, .data = buf[0..n6] });
     print("lower: wrote alias welcome and unwelcome .rye under glow/.cache/ -- GREEN\n", .{});
 
-    const gen_src = try cwd.readFileAlloc(io, "glow/gen/alias-records.glow", a, .limited(4096));
+    const gen_src = try cwd.readFileAlloc(io, "glow/gen/a/alias-records.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_src, "=*  records  stock") != null);
-    print("lower: glow/gen/alias-records.glow carries named source stock -- GREEN\n", .{});
+    print("lower: glow/gen/a/alias-records.glow carries named source stock -- GREEN\n", .{});
 
     print("lower: version {s}\n", .{witness_version});
     print("GREEN: `=*` lowers alias faces with named sources to ordinary Rye — = category bodies complete.\n", .{});

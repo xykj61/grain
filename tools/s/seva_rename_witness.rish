@@ -27,7 +27,7 @@ assert (tame contains "digest-pinned HAWM1") else "TAME_GUIDANCE missing standin
 # New paths present; old paths gone.
 assert ((read-file "tools/s/seva_view_witness.rish") contains "seva_view") else "seva_view witness missing"
 assert ((read-file "glow/gen/s/shape-seva-event.glow") contains "seva-event-shape") else "shape-seva-event missing"
-assert ((read-file "glow/gen/cast-named-seva-event.glow") contains "seva-event-shape") else "cast-named-seva-event missing"
+assert ((read-file "glow/gen/c/cast-named-seva-event.glow") contains "seva-event-shape") else "cast-named-seva-event missing"
 assert ((read-file "tools/g/glow_seva_b0_fold_witness.rish") contains "glow_seva_b0") else "glow_seva_b0_fold witness missing"
 assert ((read-file "linengrow/glow_seva_b0_demo_fixture.rye") contains "sala:open rishi session") else "HAWM1 memo1 must remain (STOP)"
 assert ((read-file "linengrow/glow_seva_b0_demo_fixture.rye") contains "99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe") else "HAWM1 root pin must remain"
@@ -71,7 +71,7 @@ assert demo.ok else "glow_seva_b0_demo_fixture_witness failed"
 let shape = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/s/shape-seva-event.glow"]
 assert shape.ok else "shape-seva-event.glow failed"
 assert shape.out contains "GREEN" else "shape-seva-event not GREEN"
-let cast = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/cast-named-seva-event.glow"]
+let cast = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/c/cast-named-seva-event.glow"]
 assert cast.ok else "cast-named-seva-event.glow failed"
 assert cast.out contains "GREEN" else "cast-named-seva-event not GREEN"
 

@@ -274,7 +274,7 @@ measurement is worth keeping beside the claim: **80 living files** carry the syl
 -- 7 in `glow/`, **59 authored fixtures in `glow/gen/`**, 12 tools witnesses, 2 lexicon tools -- plus
 667 reference lines. The claim was true of the `lower_*.rye` family it was measured on and false of
 the tree it was written about, which is the difference between a measurement and a generalisation.
-**The 59 `glow/gen/gate-barket-*.glow` fixtures and the 2 lexicon tools await their own word.**
+**The 59 `glow/gen/g/gate-barket-*.glow` fixtures and the 2 lexicon tools await their own word.**
 
 **And the baseline found six red witnesses before the rename touched anything** (REDS %283): a head
 count pinned in a prose sentence while the table grew 27 -> 28, taking four with it, and a brief that

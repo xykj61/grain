@@ -134,53 +134,53 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = unwelcome_path, .data = buf[0..n8] });
     print("lower: wrote null welcome and unwelcome .rye under glow/.cache/ -- GREEN\n", .{});
 
-    const gen_src = try cwd.readFileAlloc(io, "glow/gen/null-records.glow", a, .limited(4096));
+    const gen_src = try cwd.readFileAlloc(io, "glow/gen/n/null-records.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_src, "?~  records.cur  1  0") != null);
-    print("lower: glow/gen/null-records.glow carries decimal then/else arms -- GREEN\n", .{});
+    print("lower: glow/gen/n/null-records.glow carries decimal then/else arms -- GREEN\n", .{});
 
-    const gen_lent = try cwd.readFileAlloc(io, "glow/gen/null-lent.glow", a, .limited(4096));
+    const gen_lent = try cwd.readFileAlloc(io, "glow/gen/n/null-lent.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_lent, "(lent groups)") != null);
-    print("lower: glow/gen/null-lent.glow carries lent then arm -- GREEN\n", .{});
+    print("lower: glow/gen/n/null-lent.glow carries lent then arm -- GREEN\n", .{});
 
-    const gen_mix = try cwd.readFileAlloc(io, "glow/gen/null-mix.glow", a, .limited(4096));
+    const gen_mix = try cwd.readFileAlloc(io, "glow/gen/n/null-mix.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_mix, "(mix root x)") != null);
-    print("lower: glow/gen/null-mix.glow carries mix then arm -- GREEN\n", .{});
+    print("lower: glow/gen/n/null-mix.glow carries mix then arm -- GREEN\n", .{});
 
-    const gen_jam = try cwd.readFileAlloc(io, "glow/gen/null-jam.glow", a, .limited(4096));
+    const gen_jam = try cwd.readFileAlloc(io, "glow/gen/n/null-jam.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_jam, "(jam from amount)") != null);
-    print("lower: glow/gen/null-jam.glow carries jam then arm -- GREEN\n", .{});
+    print("lower: glow/gen/n/null-jam.glow carries jam then arm -- GREEN\n", .{});
 
-    const gen_cue = try cwd.readFileAlloc(io, "glow/gen/null-cue.glow", a, .limited(4096));
+    const gen_cue = try cwd.readFileAlloc(io, "glow/gen/n/null-cue.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_cue, "(cue cell)") != null);
-    print("lower: glow/gen/null-cue.glow carries cue then arm -- GREEN\n", .{});
+    print("lower: glow/gen/n/null-cue.glow carries cue then arm -- GREEN\n", .{});
 
-    const gen_cj = try cwd.readFileAlloc(io, "glow/gen/null-cue-jam.glow", a, .limited(4096));
+    const gen_cj = try cwd.readFileAlloc(io, "glow/gen/n/null-cue-jam.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_cj, "(cue (jam from amount))") != null);
-    print("lower: glow/gen/null-cue-jam.glow carries cue-of-jam then arm -- GREEN\n", .{});
+    print("lower: glow/gen/n/null-cue-jam.glow carries cue-of-jam then arm -- GREEN\n", .{});
 
-    const gen_cjn = try cwd.readFileAlloc(io, "glow/gen/null-cue-jam-nest.glow", a, .limited(4096));
+    const gen_cjn = try cwd.readFileAlloc(io, "glow/gen/n/null-cue-jam-nest.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_cjn, "(cue (jam (mix from amount) amount))") != null);
-    print("lower: glow/gen/null-cue-jam-nest.glow carries cue nest jam then arm -- GREEN\n", .{});
+    print("lower: glow/gen/n/null-cue-jam-nest.glow carries cue nest jam then arm -- GREEN\n", .{});
 
-    const gen_cjr = try cwd.readFileAlloc(io, "glow/gen/null-cue-jam-right-nest.glow", a, .limited(4096));
+    const gen_cjr = try cwd.readFileAlloc(io, "glow/gen/n/null-cue-jam-right-nest.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_cjr, "(cue (jam cell (mix from amount)))") != null);
-    print("lower: glow/gen/null-cue-jam-right-nest.glow carries cue nest jam right then arm -- GREEN\n", .{});
+    print("lower: glow/gen/n/null-cue-jam-right-nest.glow carries cue nest jam right then arm -- GREEN\n", .{});
 
-    const gen_cjb = try cwd.readFileAlloc(io, "glow/gen/null-cue-jam-both-nest.glow", a, .limited(4096));
+    const gen_cjb = try cwd.readFileAlloc(io, "glow/gen/n/null-cue-jam-both-nest.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_cjb, "(cue (jam (mix from amount) (mix cell gate)))") != null);
-    print("lower: glow/gen/null-cue-jam-both-nest.glow carries cue nest jam both then arm -- GREEN\n", .{});
+    print("lower: glow/gen/n/null-cue-jam-both-nest.glow carries cue nest jam both then arm -- GREEN\n", .{});
 
-    const gen_nest = try cwd.readFileAlloc(io, "glow/gen/null-jam-nest.glow", a, .limited(4096));
+    const gen_nest = try cwd.readFileAlloc(io, "glow/gen/n/null-jam-nest.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_nest, "(jam (mix from amount) amount)") != null);
-    print("lower: glow/gen/null-jam-nest.glow carries nest jam then arm -- GREEN\n", .{});
+    print("lower: glow/gen/n/null-jam-nest.glow carries nest jam then arm -- GREEN\n", .{});
 
-    const gen_rn = try cwd.readFileAlloc(io, "glow/gen/null-jam-right-nest.glow", a, .limited(4096));
+    const gen_rn = try cwd.readFileAlloc(io, "glow/gen/n/null-jam-right-nest.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_rn, "(jam cell (mix from amount))") != null);
-    print("lower: glow/gen/null-jam-right-nest.glow carries nest jam right then arm -- GREEN\n", .{});
+    print("lower: glow/gen/n/null-jam-right-nest.glow carries nest jam right then arm -- GREEN\n", .{});
 
-    const gen_both = try cwd.readFileAlloc(io, "glow/gen/null-jam-both-nest.glow", a, .limited(4096));
+    const gen_both = try cwd.readFileAlloc(io, "glow/gen/n/null-jam-both-nest.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_both, "(jam (mix from amount) (mix cell gate))") != null);
-    print("lower: glow/gen/null-jam-both-nest.glow carries nest jam both then arm -- GREEN\n", .{});
+    print("lower: glow/gen/n/null-jam-both-nest.glow carries nest jam both then arm -- GREEN\n", .{});
 
     print("lower: version {s}\n", .{witness_version});
     print("GREEN: `?~` lowers with decimal, cast, lent, mix, jam, nest jam left/right/both, cue, cue-of-jam, and cue nest jam left/right/both then/else arms to ordinary Rye.\n", .{});

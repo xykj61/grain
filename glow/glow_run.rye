@@ -1,7 +1,7 @@
 //! glow/glow_run.rye -- lower a `.glow` generator to `.rye` (language hop).
 //!
 //!   rye build glow/glow_run.rye -femit-bin=glow/bin/glow_run
-//!   glow/bin/glow_run glow/gen/bound-tick.glow
+//!   glow/bin/glow_run glow/gen/b/bound-tick.glow
 //!   # prints the emitted .rye path; Rishi builds and runs it
 //!
 //! Skips `::` comments and blanks. One rune line uses the head dispatch;

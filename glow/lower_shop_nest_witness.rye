@@ -96,11 +96,11 @@ fn run_selftest(init: std.process.Init) !u8 {
 
     // Fixture desks.
     try cwd.createDirPath(io, "glow/.cache");
-    const gen_src = try cwd.readFileAlloc(io, "glow/gen/gate-barket-sample.glow", a, .limited(4096));
+    const gen_src = try cwd.readFileAlloc(io, "glow/gen/g/gate-barket-sample.glow", a, .limited(4096));
     const spec = try rb.parse_source(gen_src);
     assert(std.mem.eql(u8, rb.face_slice(&spec), "sample"));
     assert(spec.body == .identity);
-    print("lower: glow/gen/gate-barket-sample.glow carries sample face -- GREEN\n", .{});
+    print("lower: glow/gen/g/gate-barket-sample.glow carries sample face -- GREEN\n", .{});
 
     const n3 = try lower.lower_source_welcome(gen_src, &buf);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_sample_welcome.rye", .data = buf[0..n3] });
@@ -115,21 +115,21 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, rye_argv, "const sample: u32 = 5") == null);
     print("lower: argv-sample emit reads minimal.args / parseInt(u32) -- GREEN\n", .{});
 
-    const gen_argv_src = try cwd.readFileAlloc(io, "glow/gen/gate-barket-sample-u32.glow", a, .limited(4096));
+    const gen_argv_src = try cwd.readFileAlloc(io, "glow/gen/g/gate-barket-sample-u32.glow", a, .limited(4096));
     const spec_argv = try rb.parse_source(gen_argv_src);
     assert(std.mem.eql(u8, rb.face_slice(&spec_argv), "sample"));
     assert(spec_argv.body == .identity);
-    print("lower: glow/gen/gate-barket-sample-u32.glow carries sample face -- GREEN\n", .{});
+    print("lower: glow/gen/g/gate-barket-sample-u32.glow carries sample face -- GREEN\n", .{});
 
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_sample_argv.rye", .data = rye_argv });
     print("lower: wrote barket argv .rye under glow/.cache/ -- GREEN\n", .{});
 
     // STOA115 fixtures + argv call-body emit.
-    const gen_double = try cwd.readFileAlloc(io, "glow/gen/gate-barket-double.glow", a, .limited(4096));
+    const gen_double = try cwd.readFileAlloc(io, "glow/gen/g/gate-barket-double.glow", a, .limited(4096));
     const spec_d = try rb.parse_source(gen_double);
     assert(spec_d.body == .call_one);
     assert(std.mem.eql(u8, rb.gate_slice(&spec_d), "double"));
-    print("lower: glow/gen/gate-barket-double.glow carries call-body double -- GREEN\n", .{});
+    print("lower: glow/gen/g/gate-barket-double.glow carries call-body double -- GREEN\n", .{});
 
     const n_call_w = try lower.lower_source_welcome(call_src, &buf);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_double_welcome.rye", .data = buf[0..n_call_w] });
@@ -142,17 +142,17 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_double_argv.rye", .data = rye_call_argv });
     print("lower: wrote barket call-body argv .rye under glow/.cache/ -- GREEN\n", .{});
 
-    const gen_double_u32 = try cwd.readFileAlloc(io, "glow/gen/gate-barket-double-u32.glow", a, .limited(4096));
+    const gen_double_u32 = try cwd.readFileAlloc(io, "glow/gen/g/gate-barket-double-u32.glow", a, .limited(4096));
     const spec_du = try rb.parse_source(gen_double_u32);
     assert(spec_du.body == .call_one);
-    print("lower: glow/gen/gate-barket-double-u32.glow carries call-body double -- GREEN\n", .{});
+    print("lower: glow/gen/g/gate-barket-double-u32.glow carries call-body double -- GREEN\n", .{});
 
     // STOA116 fixtures + argv emit for inc/dec.
-    const gen_inc = try cwd.readFileAlloc(io, "glow/gen/gate-barket-inc.glow", a, .limited(4096));
+    const gen_inc = try cwd.readFileAlloc(io, "glow/gen/g/gate-barket-inc.glow", a, .limited(4096));
     const spec_inc = try rb.parse_source(gen_inc);
     assert(spec_inc.body == .call_one);
     assert(std.mem.eql(u8, rb.gate_slice(&spec_inc), "inc"));
-    print("lower: glow/gen/gate-barket-inc.glow carries call-body inc -- GREEN\n", .{});
+    print("lower: glow/gen/g/gate-barket-inc.glow carries call-body inc -- GREEN\n", .{});
 
     const n_inc_w = try lower.lower_source_welcome(inc_src, &buf);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_inc_welcome.rye", .data = buf[0..n_inc_w] });
@@ -162,16 +162,16 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_inc_argv.rye", .data = buf[0..n_inc_argv] });
     print("lower: wrote barket call-body inc argv .rye under glow/.cache/ -- GREEN\n", .{});
 
-    const gen_inc_u32 = try cwd.readFileAlloc(io, "glow/gen/gate-barket-inc-u32.glow", a, .limited(4096));
+    const gen_inc_u32 = try cwd.readFileAlloc(io, "glow/gen/g/gate-barket-inc-u32.glow", a, .limited(4096));
     const spec_iu = try rb.parse_source(gen_inc_u32);
     assert(spec_iu.body == .call_one);
-    print("lower: glow/gen/gate-barket-inc-u32.glow carries call-body inc -- GREEN\n", .{});
+    print("lower: glow/gen/g/gate-barket-inc-u32.glow carries call-body inc -- GREEN\n", .{});
 
-    const gen_dec = try cwd.readFileAlloc(io, "glow/gen/gate-barket-dec.glow", a, .limited(4096));
+    const gen_dec = try cwd.readFileAlloc(io, "glow/gen/g/gate-barket-dec.glow", a, .limited(4096));
     const spec_dec = try rb.parse_source(gen_dec);
     assert(spec_dec.body == .call_one);
     assert(std.mem.eql(u8, rb.gate_slice(&spec_dec), "dec"));
-    print("lower: glow/gen/gate-barket-dec.glow carries call-body dec -- GREEN\n", .{});
+    print("lower: glow/gen/g/gate-barket-dec.glow carries call-body dec -- GREEN\n", .{});
 
     const n_dec_w = try lower.lower_source_welcome(dec_src, &buf);
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_dec_welcome.rye", .data = buf[0..n_dec_w] });
@@ -181,10 +181,10 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_dec_argv.rye", .data = buf[0..n_dec_argv] });
     print("lower: wrote barket call-body dec argv .rye under glow/.cache/ -- GREEN\n", .{});
 
-    const gen_dec_u32 = try cwd.readFileAlloc(io, "glow/gen/gate-barket-dec-u32.glow", a, .limited(4096));
+    const gen_dec_u32 = try cwd.readFileAlloc(io, "glow/gen/g/gate-barket-dec-u32.glow", a, .limited(4096));
     const spec_dcu = try rb.parse_source(gen_dec_u32);
     assert(spec_dcu.body == .call_one);
-    print("lower: glow/gen/gate-barket-dec-u32.glow carries call-body dec -- GREEN\n", .{});
+    print("lower: glow/gen/g/gate-barket-dec-u32.glow carries call-body dec -- GREEN\n", .{});
 
     // STOA118: named shape amount-shape lowers as u32 identity.
     const amount_src = "|^  sample=amount-shape\nsample\n";
@@ -195,11 +195,11 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_amount_welcome.rye", .data = buf[0..n_amt] });
     print("lower: amount-shape barket lowers to u32 identity -- GREEN\n", .{});
 
-    const gen_amt = try cwd.readFileAlloc(io, "glow/gen/gate-barket-amount.glow", a, .limited(4096));
+    const gen_amt = try cwd.readFileAlloc(io, "glow/gen/g/gate-barket-amount.glow", a, .limited(4096));
     const spec_amt = try rb.parse_source(gen_amt);
     assert(std.mem.eql(u8, rb.shape_name_slice(&spec_amt), "amount-shape"));
     assert(spec_amt.body == .identity);
-    print("lower: glow/gen/gate-barket-amount.glow carries amount-shape -- GREEN\n", .{});
+    print("lower: glow/gen/g/gate-barket-amount.glow carries amount-shape -- GREEN\n", .{});
 
     // STOA132: amount-shape argv identity beside fixture.
     const amount_argv_src = "|^  sample=amount-shape\nsample\n";
@@ -211,11 +211,11 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_amount_argv.rye", .data = buf[0..n_amt_argv] });
     print("lower: amount-shape argv emit reads minimal.args / parseInt(u32) -- GREEN\n", .{});
 
-    const gen_amt_u32 = try cwd.readFileAlloc(io, "glow/gen/gate-barket-amount-u32.glow", a, .limited(4096));
+    const gen_amt_u32 = try cwd.readFileAlloc(io, "glow/gen/g/gate-barket-amount-u32.glow", a, .limited(4096));
     const spec_amt_u32 = try rb.parse_source(gen_amt_u32);
     assert(std.mem.eql(u8, rb.shape_name_slice(&spec_amt_u32), "amount-shape"));
     assert(spec_amt_u32.body == .identity);
-    print("lower: glow/gen/gate-barket-amount-u32.glow carries amount-shape argv -- GREEN\n", .{});
+    print("lower: glow/gen/g/gate-barket-amount-u32.glow carries amount-shape argv -- GREEN\n", .{});
 
     // STOA133: count-shape argv identity beside fixture.
     const count_argv_src = "|^  sample=count-shape\nsample\n";
@@ -227,11 +227,11 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_count_argv.rye", .data = buf[0..n_cnt_argv] });
     print("lower: count-shape argv emit reads minimal.args / parseInt(u32) -- GREEN\n", .{});
 
-    const gen_cnt_u32 = try cwd.readFileAlloc(io, "glow/gen/gate-barket-count-u32.glow", a, .limited(4096));
+    const gen_cnt_u32 = try cwd.readFileAlloc(io, "glow/gen/g/gate-barket-count-u32.glow", a, .limited(4096));
     const spec_cnt_u32 = try rb.parse_source(gen_cnt_u32);
     assert(std.mem.eql(u8, rb.shape_name_slice(&spec_cnt_u32), "count-shape"));
     assert(spec_cnt_u32.body == .identity);
-    print("lower: glow/gen/gate-barket-count-u32.glow carries count-shape argv -- GREEN\n", .{});
+    print("lower: glow/gen/g/gate-barket-count-u32.glow carries count-shape argv -- GREEN\n", .{});
 
     // STOA300: kind-shape argv identity -- unit tag reader (not parseInt).
     const kind_argv_src = "|^  sample=kind-shape\nsample\n";
@@ -244,11 +244,11 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_kind_argv.rye", .data = buf[0..n_kind_argv] });
     print("lower: kind-shape argv emit reads minimal.args / unit tags -- GREEN\n", .{});
 
-    const gen_kind_tag = try cwd.readFileAlloc(io, "glow/gen/gate-barket-kind-tag.glow", a, .limited(4096));
+    const gen_kind_tag = try cwd.readFileAlloc(io, "glow/gen/g/gate-barket-kind-tag.glow", a, .limited(4096));
     const spec_kind_tag = try rb.parse_source(gen_kind_tag);
     assert(std.mem.eql(u8, rb.shape_name_slice(&spec_kind_tag), "kind-shape"));
     assert(spec_kind_tag.body == .identity);
-    print("lower: glow/gen/gate-barket-kind-tag.glow carries kind-shape argv -- GREEN\n", .{});
+    print("lower: glow/gen/g/gate-barket-kind-tag.glow carries kind-shape argv -- GREEN\n", .{});
 
     // STOA303: xact-shape argv identity -- payload tag + amount.
     const xact_argv_src = "|^  sample=xact-shape\nsample\n";
@@ -261,11 +261,11 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_xact_argv.rye", .data = buf[0..n_xact_argv] });
     print("lower: xact-shape argv emit reads minimal.args / tag+amount -- GREEN\n", .{});
 
-    const gen_xact_tag = try cwd.readFileAlloc(io, "glow/gen/gate-barket-xact-tag.glow", a, .limited(4096));
+    const gen_xact_tag = try cwd.readFileAlloc(io, "glow/gen/g/gate-barket-xact-tag.glow", a, .limited(4096));
     const spec_xact_tag = try rb.parse_source(gen_xact_tag);
     assert(std.mem.eql(u8, rb.shape_name_slice(&spec_xact_tag), "xact-shape"));
     assert(spec_xact_tag.body == .identity);
-    print("lower: glow/gen/gate-barket-xact-tag.glow carries xact-shape argv -- GREEN\n", .{});
+    print("lower: glow/gen/g/gate-barket-xact-tag.glow carries xact-shape argv -- GREEN\n", .{});
 
     // STOA305: xfer-shape argv identity -- payload tag + from/amount.
     const xfer_argv_src = "|^  sample=xfer-shape\nsample\n";
@@ -280,11 +280,11 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_xfer_argv.rye", .data = buf[0..n_xfer_argv] });
     print("lower: xfer-shape argv emit reads minimal.args / tag+from+amount -- GREEN\n", .{});
 
-    const gen_xfer_tag = try cwd.readFileAlloc(io, "glow/gen/gate-barket-xfer-tag.glow", a, .limited(4096));
+    const gen_xfer_tag = try cwd.readFileAlloc(io, "glow/gen/g/gate-barket-xfer-tag.glow", a, .limited(4096));
     const spec_xfer_tag = try rb.parse_source(gen_xfer_tag);
     assert(std.mem.eql(u8, rb.shape_name_slice(&spec_xfer_tag), "xfer-shape"));
     assert(spec_xfer_tag.body == .identity);
-    print("lower: glow/gen/gate-barket-xfer-tag.glow carries xfer-shape argv -- GREEN\n", .{});
+    print("lower: glow/gen/g/gate-barket-xfer-tag.glow carries xfer-shape argv -- GREEN\n", .{});
 
     // STOA307: pair-shape argv identity -- two field decimals.
     const pair_argv_src = "|^  sample=pair-shape\nsample\n";
@@ -299,11 +299,11 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_pair_argv.rye", .data = buf[0..n_pair_argv] });
     print("lower: pair-shape argv emit reads minimal.args / from+amount -- GREEN\n", .{});
 
-    const gen_pair_fields = try cwd.readFileAlloc(io, "glow/gen/gate-barket-pair-fields.glow", a, .limited(4096));
+    const gen_pair_fields = try cwd.readFileAlloc(io, "glow/gen/g/gate-barket-pair-fields.glow", a, .limited(4096));
     const spec_pair_fields = try rb.parse_source(gen_pair_fields);
     assert(std.mem.eql(u8, rb.shape_name_slice(&spec_pair_fields), "pair-shape"));
     assert(spec_pair_fields.body == .identity);
-    print("lower: glow/gen/gate-barket-pair-fields.glow carries pair-shape argv -- GREEN\n", .{});
+    print("lower: glow/gen/g/gate-barket-pair-fields.glow carries pair-shape argv -- GREEN\n", .{});
 
     // STOA309: triple-shape argv identity -- three field decimals.
     const triple_argv_src = "|^  sample=triple-shape\nsample\n";
@@ -318,11 +318,11 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_triple_argv.rye", .data = buf[0..n_triple_argv] });
     print("lower: triple-shape argv emit reads minimal.args / from+amount+fee -- GREEN\n", .{});
 
-    const gen_triple_fields = try cwd.readFileAlloc(io, "glow/gen/gate-barket-triple-fields.glow", a, .limited(4096));
+    const gen_triple_fields = try cwd.readFileAlloc(io, "glow/gen/g/gate-barket-triple-fields.glow", a, .limited(4096));
     const spec_triple_fields = try rb.parse_source(gen_triple_fields);
     assert(std.mem.eql(u8, rb.shape_name_slice(&spec_triple_fields), "triple-shape"));
     assert(spec_triple_fields.body == .identity);
-    print("lower: glow/gen/gate-barket-triple-fields.glow carries triple-shape argv -- GREEN\n", .{});
+    print("lower: glow/gen/g/gate-barket-triple-fields.glow carries triple-shape argv -- GREEN\n", .{});
 
     // STOA311: quad-shape argv identity -- four field decimals.
     const quad_argv_src = "|^  sample=quad-shape\nsample\n";
@@ -336,11 +336,11 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_quad_argv.rye", .data = buf[0..n_quad_argv] });
     print("lower: quad-shape argv emit reads minimal.args / from+amount+fee+nonce -- GREEN\n", .{});
 
-    const gen_quad_fields = try cwd.readFileAlloc(io, "glow/gen/gate-barket-quad-fields.glow", a, .limited(4096));
+    const gen_quad_fields = try cwd.readFileAlloc(io, "glow/gen/g/gate-barket-quad-fields.glow", a, .limited(4096));
     const spec_quad_fields = try rb.parse_source(gen_quad_fields);
     assert(std.mem.eql(u8, rb.shape_name_slice(&spec_quad_fields), "quad-shape"));
     assert(spec_quad_fields.body == .identity);
-    print("lower: glow/gen/gate-barket-quad-fields.glow carries quad-shape argv -- GREEN\n", .{});
+    print("lower: glow/gen/g/gate-barket-quad-fields.glow carries quad-shape argv -- GREEN\n", .{});
 
     // STOA313: penta-shape argv identity -- five field decimals.
     const penta_argv_src = "|^  sample=penta-shape\nsample\n";
@@ -354,11 +354,11 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_penta_argv.rye", .data = buf[0..n_penta_argv] });
     print("lower: penta-shape argv emit reads minimal.args / five fields -- GREEN\n", .{});
 
-    const gen_penta_fields = try cwd.readFileAlloc(io, "glow/gen/gate-barket-penta-fields.glow", a, .limited(4096));
+    const gen_penta_fields = try cwd.readFileAlloc(io, "glow/gen/g/gate-barket-penta-fields.glow", a, .limited(4096));
     const spec_penta_fields = try rb.parse_source(gen_penta_fields);
     assert(std.mem.eql(u8, rb.shape_name_slice(&spec_penta_fields), "penta-shape"));
     assert(spec_penta_fields.body == .identity);
-    print("lower: glow/gen/gate-barket-penta-fields.glow carries penta-shape argv -- GREEN\n", .{});
+    print("lower: glow/gen/g/gate-barket-penta-fields.glow carries penta-shape argv -- GREEN\n", .{});
 
     // STOA315: hexa-shape argv identity -- six field decimals.
     const hexa_argv_src = "|^  sample=hexa-shape\nsample\n";
@@ -372,11 +372,11 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_hexa_argv.rye", .data = buf[0..n_hexa_argv] });
     print("lower: hexa-shape argv emit reads minimal.args / six fields -- GREEN\n", .{});
 
-    const gen_hexa_fields = try cwd.readFileAlloc(io, "glow/gen/gate-barket-hexa-fields.glow", a, .limited(4096));
+    const gen_hexa_fields = try cwd.readFileAlloc(io, "glow/gen/g/gate-barket-hexa-fields.glow", a, .limited(4096));
     const spec_hexa_fields = try rb.parse_source(gen_hexa_fields);
     assert(std.mem.eql(u8, rb.shape_name_slice(&spec_hexa_fields), "hexa-shape"));
     assert(spec_hexa_fields.body == .identity);
-    print("lower: glow/gen/gate-barket-hexa-fields.glow carries hexa-shape argv -- GREEN\n", .{});
+    print("lower: glow/gen/g/gate-barket-hexa-fields.glow carries hexa-shape argv -- GREEN\n", .{});
 
     // STOA317: hepta-shape argv identity -- seven field decimals.
     const hepta_argv_src = "|^  sample=hepta-shape\nsample\n";
@@ -390,11 +390,11 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_hepta_argv.rye", .data = buf[0..n_hepta_argv] });
     print("lower: hepta-shape argv emit reads minimal.args / seven fields -- GREEN\n", .{});
 
-    const gen_hepta_fields = try cwd.readFileAlloc(io, "glow/gen/gate-barket-hepta-fields.glow", a, .limited(4096));
+    const gen_hepta_fields = try cwd.readFileAlloc(io, "glow/gen/g/gate-barket-hepta-fields.glow", a, .limited(4096));
     const spec_hepta_fields = try rb.parse_source(gen_hepta_fields);
     assert(std.mem.eql(u8, rb.shape_name_slice(&spec_hepta_fields), "hepta-shape"));
     assert(spec_hepta_fields.body == .identity);
-    print("lower: glow/gen/gate-barket-hepta-fields.glow carries hepta-shape argv -- GREEN\n", .{});
+    print("lower: glow/gen/g/gate-barket-hepta-fields.glow carries hepta-shape argv -- GREEN\n", .{});
 
     // STOA319: octa-shape argv identity -- eight field decimals.
     const octa_argv_src = "|^  sample=octa-shape\nsample\n";
@@ -408,11 +408,11 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_octa_argv.rye", .data = buf[0..n_octa_argv] });
     print("lower: octa-shape argv emit reads minimal.args / eight fields -- GREEN\n", .{});
 
-    const gen_octa_fields = try cwd.readFileAlloc(io, "glow/gen/gate-barket-octa-fields.glow", a, .limited(4096));
+    const gen_octa_fields = try cwd.readFileAlloc(io, "glow/gen/g/gate-barket-octa-fields.glow", a, .limited(4096));
     const spec_octa_fields = try rb.parse_source(gen_octa_fields);
     assert(std.mem.eql(u8, rb.shape_name_slice(&spec_octa_fields), "octa-shape"));
     assert(spec_octa_fields.body == .identity);
-    print("lower: glow/gen/gate-barket-octa-fields.glow carries octa-shape argv -- GREEN\n", .{});
+    print("lower: glow/gen/g/gate-barket-octa-fields.glow carries octa-shape argv -- GREEN\n", .{});
 
     // STOA321: nona-shape argv identity -- nine field decimals.
     const nona_argv_src = "|^  sample=nona-shape\nsample\n";
@@ -426,11 +426,11 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_nona_argv.rye", .data = buf[0..n_nona_argv] });
     print("lower: nona-shape argv emit reads minimal.args / nine fields -- GREEN\n", .{});
 
-    const gen_nona_fields = try cwd.readFileAlloc(io, "glow/gen/gate-barket-nona-fields.glow", a, .limited(4096));
+    const gen_nona_fields = try cwd.readFileAlloc(io, "glow/gen/g/gate-barket-nona-fields.glow", a, .limited(4096));
     const spec_nona_fields = try rb.parse_source(gen_nona_fields);
     assert(std.mem.eql(u8, rb.shape_name_slice(&spec_nona_fields), "nona-shape"));
     assert(spec_nona_fields.body == .identity);
-    print("lower: glow/gen/gate-barket-nona-fields.glow carries nona-shape argv -- GREEN\n", .{});
+    print("lower: glow/gen/g/gate-barket-nona-fields.glow carries nona-shape argv -- GREEN\n", .{});
 
     // STOA123: kind-shape identity lowers as KindShape.
     const kind_src = "|^  sample=kind-shape\nsample\n";
@@ -441,11 +441,11 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_kind_welcome.rye", .data = buf[0..n_kind] });
     print("lower: kind-shape barket lowers to KindShape identity -- GREEN\n", .{});
 
-    const gen_kind = try cwd.readFileAlloc(io, "glow/gen/gate-barket-kind.glow", a, .limited(4096));
+    const gen_kind = try cwd.readFileAlloc(io, "glow/gen/g/gate-barket-kind.glow", a, .limited(4096));
     const spec_kind = try rb.parse_source(gen_kind);
     assert(std.mem.eql(u8, rb.shape_name_slice(&spec_kind), "kind-shape"));
     assert(spec_kind.body == .identity);
-    print("lower: glow/gen/gate-barket-kind.glow carries kind-shape -- GREEN\n", .{});
+    print("lower: glow/gen/g/gate-barket-kind.glow carries kind-shape -- GREEN\n", .{});
 
     // STOA124: xact-shape identity lowers as XactShape.
     const xact_src = "|^  sample=xact-shape\nsample\n";
@@ -457,11 +457,11 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_xact_welcome.rye", .data = buf[0..n_xact] });
     print("lower: xact-shape barket lowers to XactShape identity -- GREEN\n", .{});
 
-    const gen_xact = try cwd.readFileAlloc(io, "glow/gen/gate-barket-xact.glow", a, .limited(4096));
+    const gen_xact = try cwd.readFileAlloc(io, "glow/gen/g/gate-barket-xact.glow", a, .limited(4096));
     const spec_xact = try rb.parse_source(gen_xact);
     assert(std.mem.eql(u8, rb.shape_name_slice(&spec_xact), "xact-shape"));
     assert(spec_xact.body == .identity);
-    print("lower: glow/gen/gate-barket-xact.glow carries xact-shape -- GREEN\n", .{});
+    print("lower: glow/gen/g/gate-barket-xact.glow carries xact-shape -- GREEN\n", .{});
 
     // STOA125: xfer-shape identity lowers as XferShape.
     const xfer_src = "|^  sample=xfer-shape\nsample\n";
@@ -474,11 +474,11 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_xfer_welcome.rye", .data = buf[0..n_xfer] });
     print("lower: xfer-shape barket lowers to XferShape identity -- GREEN\n", .{});
 
-    const gen_xfer = try cwd.readFileAlloc(io, "glow/gen/gate-barket-xfer.glow", a, .limited(4096));
+    const gen_xfer = try cwd.readFileAlloc(io, "glow/gen/g/gate-barket-xfer.glow", a, .limited(4096));
     const spec_xfer = try rb.parse_source(gen_xfer);
     assert(std.mem.eql(u8, rb.shape_name_slice(&spec_xfer), "xfer-shape"));
     assert(spec_xfer.body == .identity);
-    print("lower: glow/gen/gate-barket-xfer.glow carries xfer-shape -- GREEN\n", .{});
+    print("lower: glow/gen/g/gate-barket-xfer.glow carries xfer-shape -- GREEN\n", .{});
 
     // STOA126: pair-shape identity lowers as PairShape.
     const pair_src = "|^  sample=pair-shape\nsample\n";
@@ -490,11 +490,11 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_pair_welcome.rye", .data = buf[0..n_pair] });
     print("lower: pair-shape barket lowers to PairShape identity -- GREEN\n", .{});
 
-    const gen_pair = try cwd.readFileAlloc(io, "glow/gen/gate-barket-pair.glow", a, .limited(4096));
+    const gen_pair = try cwd.readFileAlloc(io, "glow/gen/g/gate-barket-pair.glow", a, .limited(4096));
     const spec_pair = try rb.parse_source(gen_pair);
     assert(std.mem.eql(u8, rb.shape_name_slice(&spec_pair), "pair-shape"));
     assert(spec_pair.body == .identity);
-    print("lower: glow/gen/gate-barket-pair.glow carries pair-shape -- GREEN\n", .{});
+    print("lower: glow/gen/g/gate-barket-pair.glow carries pair-shape -- GREEN\n", .{});
 
     // STOA134: triple-shape identity lowers as TripleShape.
     const triple_src = "|^  sample=triple-shape\nsample\n";
@@ -505,11 +505,11 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_triple_welcome.rye", .data = buf[0..n_triple] });
     print("lower: triple-shape barket lowers to TripleShape identity -- GREEN\n", .{});
 
-    const gen_triple = try cwd.readFileAlloc(io, "glow/gen/gate-barket-triple.glow", a, .limited(4096));
+    const gen_triple = try cwd.readFileAlloc(io, "glow/gen/g/gate-barket-triple.glow", a, .limited(4096));
     const spec_triple = try rb.parse_source(gen_triple);
     assert(std.mem.eql(u8, rb.shape_name_slice(&spec_triple), "triple-shape"));
     assert(spec_triple.body == .identity);
-    print("lower: glow/gen/gate-barket-triple.glow carries triple-shape -- GREEN\n", .{});
+    print("lower: glow/gen/g/gate-barket-triple.glow carries triple-shape -- GREEN\n", .{});
 
     // STOA135: quad-shape identity lowers as QuadShape.
     const quad_src = "|^  sample=quad-shape\nsample\n";
@@ -520,11 +520,11 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_quad_welcome.rye", .data = buf[0..n_quad] });
     print("lower: quad-shape barket lowers to QuadShape identity -- GREEN\n", .{});
 
-    const gen_quad = try cwd.readFileAlloc(io, "glow/gen/gate-barket-quad.glow", a, .limited(4096));
+    const gen_quad = try cwd.readFileAlloc(io, "glow/gen/g/gate-barket-quad.glow", a, .limited(4096));
     const spec_quad = try rb.parse_source(gen_quad);
     assert(std.mem.eql(u8, rb.shape_name_slice(&spec_quad), "quad-shape"));
     assert(spec_quad.body == .identity);
-    print("lower: glow/gen/gate-barket-quad.glow carries quad-shape -- GREEN\n", .{});
+    print("lower: glow/gen/g/gate-barket-quad.glow carries quad-shape -- GREEN\n", .{});
 
     // STOA138: penta-shape identity lowers as PentaShape.
     const penta_src = "|^  sample=penta-shape\nsample\n";
@@ -535,11 +535,11 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_penta_welcome.rye", .data = buf[0..n_penta] });
     print("lower: penta-shape barket lowers to PentaShape identity -- GREEN\n", .{});
 
-    const gen_penta = try cwd.readFileAlloc(io, "glow/gen/gate-barket-penta.glow", a, .limited(4096));
+    const gen_penta = try cwd.readFileAlloc(io, "glow/gen/g/gate-barket-penta.glow", a, .limited(4096));
     const spec_penta = try rb.parse_source(gen_penta);
     assert(std.mem.eql(u8, rb.shape_name_slice(&spec_penta), "penta-shape"));
     assert(spec_penta.body == .identity);
-    print("lower: glow/gen/gate-barket-penta.glow carries penta-shape -- GREEN\n", .{});
+    print("lower: glow/gen/g/gate-barket-penta.glow carries penta-shape -- GREEN\n", .{});
 
     // STOA140: hexa-shape identity lowers as HexaShape.
     const hexa_src = "|^  sample=hexa-shape\nsample\n";
@@ -550,11 +550,11 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_hexa_welcome.rye", .data = buf[0..n_hexa] });
     print("lower: hexa-shape barket lowers to HexaShape identity -- GREEN\n", .{});
 
-    const gen_hexa = try cwd.readFileAlloc(io, "glow/gen/gate-barket-hexa.glow", a, .limited(4096));
+    const gen_hexa = try cwd.readFileAlloc(io, "glow/gen/g/gate-barket-hexa.glow", a, .limited(4096));
     const spec_hexa = try rb.parse_source(gen_hexa);
     assert(std.mem.eql(u8, rb.shape_name_slice(&spec_hexa), "hexa-shape"));
     assert(spec_hexa.body == .identity);
-    print("lower: glow/gen/gate-barket-hexa.glow carries hexa-shape -- GREEN\n", .{});
+    print("lower: glow/gen/g/gate-barket-hexa.glow carries hexa-shape -- GREEN\n", .{});
 
     // STOA142: hepta-shape identity lowers as HeptaShape.
     const hepta_src = "|^  sample=hepta-shape\nsample\n";
@@ -565,11 +565,11 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_hepta_welcome.rye", .data = buf[0..n_hepta] });
     print("lower: hepta-shape barket lowers to HeptaShape identity -- GREEN\n", .{});
 
-    const gen_hepta = try cwd.readFileAlloc(io, "glow/gen/gate-barket-hepta.glow", a, .limited(4096));
+    const gen_hepta = try cwd.readFileAlloc(io, "glow/gen/g/gate-barket-hepta.glow", a, .limited(4096));
     const spec_hepta = try rb.parse_source(gen_hepta);
     assert(std.mem.eql(u8, rb.shape_name_slice(&spec_hepta), "hepta-shape"));
     assert(spec_hepta.body == .identity);
-    print("lower: glow/gen/gate-barket-hepta.glow carries hepta-shape -- GREEN\n", .{});
+    print("lower: glow/gen/g/gate-barket-hepta.glow carries hepta-shape -- GREEN\n", .{});
 
     // STOA144: octa-shape identity lowers as OctaShape.
     const octa_src = "|^  sample=octa-shape\nsample\n";
@@ -580,11 +580,11 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_octa_welcome.rye", .data = buf[0..n_octa] });
     print("lower: octa-shape barket lowers to OctaShape identity -- GREEN\n", .{});
 
-    const gen_octa = try cwd.readFileAlloc(io, "glow/gen/gate-barket-octa.glow", a, .limited(4096));
+    const gen_octa = try cwd.readFileAlloc(io, "glow/gen/g/gate-barket-octa.glow", a, .limited(4096));
     const spec_octa = try rb.parse_source(gen_octa);
     assert(std.mem.eql(u8, rb.shape_name_slice(&spec_octa), "octa-shape"));
     assert(spec_octa.body == .identity);
-    print("lower: glow/gen/gate-barket-octa.glow carries octa-shape -- GREEN\n", .{});
+    print("lower: glow/gen/g/gate-barket-octa.glow carries octa-shape -- GREEN\n", .{});
 
     // STOA146: nona-shape identity lowers as NonaShape.
     const nona_src = "|^  sample=nona-shape\nsample\n";
@@ -595,19 +595,19 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_nona_welcome.rye", .data = buf[0..n_nona] });
     print("lower: nona-shape barket lowers to NonaShape identity -- GREEN\n", .{});
 
-    const gen_nona = try cwd.readFileAlloc(io, "glow/gen/gate-barket-nona.glow", a, .limited(4096));
+    const gen_nona = try cwd.readFileAlloc(io, "glow/gen/g/gate-barket-nona.glow", a, .limited(4096));
     const spec_nona = try rb.parse_source(gen_nona);
     assert(std.mem.eql(u8, rb.shape_name_slice(&spec_nona), "nona-shape"));
     assert(spec_nona.body == .identity);
-    print("lower: glow/gen/gate-barket-nona.glow carries nona-shape -- GREEN\n", .{});
+    print("lower: glow/gen/g/gate-barket-nona.glow carries nona-shape -- GREEN\n", .{});
 
-    const gen_deca = try cwd.readFileAlloc(io, "glow/gen/gate-barket-kind-refuse.glow", a, .limited(4096));
+    const gen_deca = try cwd.readFileAlloc(io, "glow/gen/g/gate-barket-kind-refuse.glow", a, .limited(4096));
     if (rb.parse_source(gen_deca)) |_| {
         return error.DecaRefuseDeskAccepted;
     } else |err| {
         if (err != rb.ParseError.SampleDoesNotNest) return err;
     }
-    print("lower: glow/gen/gate-barket-kind-refuse.glow (deca-shape) refuses SampleDoesNotNest -- GREEN\n", .{});
+    print("lower: glow/gen/g/gate-barket-kind-refuse.glow (deca-shape) refuses SampleDoesNotNest -- GREEN\n", .{});
 
     // STOA143: hepta-shape flip call-body lowers as HeptaShape swap - baked 3/5/1/2/7/4/6.
     const hepta_flip_src = "|^  sample=hepta-shape\n%-  flip  sample\n";
@@ -619,12 +619,12 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_hepta_flip_welcome.rye", .data = buf[0..n_htf] });
     print("lower: hepta-shape call-body flip lowers to HeptaShape swap expect 3/5/1/2/7/4/6 -- GREEN\n", .{});
 
-    const gen_htf = try cwd.readFileAlloc(io, "glow/gen/gate-barket-hepta-flip.glow", a, .limited(4096));
+    const gen_htf = try cwd.readFileAlloc(io, "glow/gen/g/gate-barket-hepta-flip.glow", a, .limited(4096));
     const spec_htf = try rb.parse_source(gen_htf);
     assert(std.mem.eql(u8, rb.shape_name_slice(&spec_htf), "hepta-shape"));
     assert(spec_htf.body == .call_one);
     assert(std.mem.eql(u8, rb.gate_slice(&spec_htf), "flip"));
-    print("lower: glow/gen/gate-barket-hepta-flip.glow carries hepta-shape flip call-body -- GREEN\n", .{});
+    print("lower: glow/gen/g/gate-barket-hepta-flip.glow carries hepta-shape flip call-body -- GREEN\n", .{});
 
     if (lower.lower_source_welcome("|^  sample=hepta-shape\n%-  double  sample\n", &buf)) |_| {
         return error.HeptaDoubleCallBodyLoweredTooSoon;
@@ -643,12 +643,12 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_octa_flip_welcome.rye", .data = buf[0..n_otf] });
     print("lower: octa-shape call-body flip lowers to OctaShape swap expect 3/5/1/2/7/4/6/8 -- GREEN\n", .{});
 
-    const gen_otf = try cwd.readFileAlloc(io, "glow/gen/gate-barket-octa-flip.glow", a, .limited(4096));
+    const gen_otf = try cwd.readFileAlloc(io, "glow/gen/g/gate-barket-octa-flip.glow", a, .limited(4096));
     const spec_otf = try rb.parse_source(gen_otf);
     assert(std.mem.eql(u8, rb.shape_name_slice(&spec_otf), "octa-shape"));
     assert(spec_otf.body == .call_one);
     assert(std.mem.eql(u8, rb.gate_slice(&spec_otf), "flip"));
-    print("lower: glow/gen/gate-barket-octa-flip.glow carries octa-shape flip call-body -- GREEN\n", .{});
+    print("lower: glow/gen/g/gate-barket-octa-flip.glow carries octa-shape flip call-body -- GREEN\n", .{});
 
     if (lower.lower_source_welcome("|^  sample=octa-shape\n%-  double  sample\n", &buf)) |_| {
         return error.OctaDoubleCallBodyLoweredTooSoon;
@@ -667,12 +667,12 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_nona_flip_welcome.rye", .data = buf[0..n_nnf] });
     print("lower: nona-shape call-body flip lowers to NonaShape swap expect 3/5/1/2/7/4/6/8/9 -- GREEN\n", .{});
 
-    const gen_nnf = try cwd.readFileAlloc(io, "glow/gen/gate-barket-nona-flip.glow", a, .limited(4096));
+    const gen_nnf = try cwd.readFileAlloc(io, "glow/gen/g/gate-barket-nona-flip.glow", a, .limited(4096));
     const spec_nnf = try rb.parse_source(gen_nnf);
     assert(std.mem.eql(u8, rb.shape_name_slice(&spec_nnf), "nona-shape"));
     assert(spec_nnf.body == .call_one);
     assert(std.mem.eql(u8, rb.gate_slice(&spec_nnf), "flip"));
-    print("lower: glow/gen/gate-barket-nona-flip.glow carries nona-shape flip call-body -- GREEN\n", .{});
+    print("lower: glow/gen/g/gate-barket-nona-flip.glow carries nona-shape flip call-body -- GREEN\n", .{});
 
     if (lower.lower_source_welcome("|^  sample=nona-shape\n%-  double  sample\n", &buf)) |_| {
         return error.NonaDoubleCallBodyLoweredTooSoon;
@@ -691,12 +691,12 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_hexa_flip_welcome.rye", .data = buf[0..n_hxf] });
     print("lower: hexa-shape call-body flip lowers to HexaShape swap expect 3/5/1/2/7/4 -- GREEN\n", .{});
 
-    const gen_hxf = try cwd.readFileAlloc(io, "glow/gen/gate-barket-hexa-flip.glow", a, .limited(4096));
+    const gen_hxf = try cwd.readFileAlloc(io, "glow/gen/g/gate-barket-hexa-flip.glow", a, .limited(4096));
     const spec_hxf = try rb.parse_source(gen_hxf);
     assert(std.mem.eql(u8, rb.shape_name_slice(&spec_hxf), "hexa-shape"));
     assert(spec_hxf.body == .call_one);
     assert(std.mem.eql(u8, rb.gate_slice(&spec_hxf), "flip"));
-    print("lower: glow/gen/gate-barket-hexa-flip.glow carries hexa-shape flip call-body -- GREEN\n", .{});
+    print("lower: glow/gen/g/gate-barket-hexa-flip.glow carries hexa-shape flip call-body -- GREEN\n", .{});
 
     if (lower.lower_source_welcome("|^  sample=hexa-shape\n%-  double  sample\n", &buf)) |_| {
         return error.HexaDoubleCallBodyLoweredTooSoon;
@@ -715,12 +715,12 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_triple_flip_welcome.rye", .data = buf[0..n_tf] });
     print("lower: triple-shape call-body flip lowers to TripleShape swap expect 3/5/1 -- GREEN\n", .{});
 
-    const gen_tf = try cwd.readFileAlloc(io, "glow/gen/gate-barket-triple-flip.glow", a, .limited(4096));
+    const gen_tf = try cwd.readFileAlloc(io, "glow/gen/g/gate-barket-triple-flip.glow", a, .limited(4096));
     const spec_tf = try rb.parse_source(gen_tf);
     assert(std.mem.eql(u8, rb.shape_name_slice(&spec_tf), "triple-shape"));
     assert(spec_tf.body == .call_one);
     assert(std.mem.eql(u8, rb.gate_slice(&spec_tf), "flip"));
-    print("lower: glow/gen/gate-barket-triple-flip.glow carries triple-shape flip call-body -- GREEN\n", .{});
+    print("lower: glow/gen/g/gate-barket-triple-flip.glow carries triple-shape flip call-body -- GREEN\n", .{});
 
     if (lower.lower_source_welcome("|^  sample=triple-shape\n%-  double  sample\n", &buf)) |_| {
         return error.TripleDoubleCallBodyLoweredTooSoon;
@@ -739,12 +739,12 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_quad_flip_welcome.rye", .data = buf[0..n_qf] });
     print("lower: quad-shape call-body flip lowers to QuadShape swap expect 3/5/1/2 -- GREEN\n", .{});
 
-    const gen_qf = try cwd.readFileAlloc(io, "glow/gen/gate-barket-quad-flip.glow", a, .limited(4096));
+    const gen_qf = try cwd.readFileAlloc(io, "glow/gen/g/gate-barket-quad-flip.glow", a, .limited(4096));
     const spec_qf = try rb.parse_source(gen_qf);
     assert(std.mem.eql(u8, rb.shape_name_slice(&spec_qf), "quad-shape"));
     assert(spec_qf.body == .call_one);
     assert(std.mem.eql(u8, rb.gate_slice(&spec_qf), "flip"));
-    print("lower: glow/gen/gate-barket-quad-flip.glow carries quad-shape flip call-body -- GREEN\n", .{});
+    print("lower: glow/gen/g/gate-barket-quad-flip.glow carries quad-shape flip call-body -- GREEN\n", .{});
 
     if (lower.lower_source_welcome("|^  sample=quad-shape\n%-  double  sample\n", &buf)) |_| {
         return error.QuadDoubleCallBodyLoweredTooSoon;
@@ -763,12 +763,12 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_penta_flip_welcome.rye", .data = buf[0..n_pnf] });
     print("lower: penta-shape call-body flip lowers to PentaShape swap expect 3/5/1/2/7 -- GREEN\n", .{});
 
-    const gen_pnf = try cwd.readFileAlloc(io, "glow/gen/gate-barket-penta-flip.glow", a, .limited(4096));
+    const gen_pnf = try cwd.readFileAlloc(io, "glow/gen/g/gate-barket-penta-flip.glow", a, .limited(4096));
     const spec_pnf = try rb.parse_source(gen_pnf);
     assert(std.mem.eql(u8, rb.shape_name_slice(&spec_pnf), "penta-shape"));
     assert(spec_pnf.body == .call_one);
     assert(std.mem.eql(u8, rb.gate_slice(&spec_pnf), "flip"));
-    print("lower: glow/gen/gate-barket-penta-flip.glow carries penta-shape flip call-body -- GREEN\n", .{});
+    print("lower: glow/gen/g/gate-barket-penta-flip.glow carries penta-shape flip call-body -- GREEN\n", .{});
 
     if (lower.lower_source_welcome("|^  sample=penta-shape\n%-  double  sample\n", &buf)) |_| {
         return error.PentaDoubleCallBodyLoweredTooSoon;
@@ -786,12 +786,12 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_kind_flip_welcome.rye", .data = buf[0..n_kf] });
     print("lower: kind-shape call-body flip lowers to KindShape switch expect .send -- GREEN\n", .{});
 
-    const gen_kf = try cwd.readFileAlloc(io, "glow/gen/gate-barket-kind-flip.glow", a, .limited(4096));
+    const gen_kf = try cwd.readFileAlloc(io, "glow/gen/g/gate-barket-kind-flip.glow", a, .limited(4096));
     const spec_kf = try rb.parse_source(gen_kf);
     assert(std.mem.eql(u8, rb.shape_name_slice(&spec_kf), "kind-shape"));
     assert(spec_kf.body == .call_one);
     assert(std.mem.eql(u8, rb.gate_slice(&spec_kf), "flip"));
-    print("lower: glow/gen/gate-barket-kind-flip.glow carries kind-shape flip call-body -- GREEN\n", .{});
+    print("lower: glow/gen/g/gate-barket-kind-flip.glow carries kind-shape flip call-body -- GREEN\n", .{});
 
     if (lower.lower_source_welcome("|^  sample=kind-shape\n%-  double  sample\n", &buf)) |_| {
         return error.KindDoubleCallBodyLoweredTooSoon;
@@ -816,12 +816,12 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_xact_flip_welcome.rye", .data = buf[0..n_xf] });
     print("lower: xact-shape call-body flip lowers to XactShape switch expect .send -- GREEN\n", .{});
 
-    const gen_xf = try cwd.readFileAlloc(io, "glow/gen/gate-barket-xact-flip.glow", a, .limited(4096));
+    const gen_xf = try cwd.readFileAlloc(io, "glow/gen/g/gate-barket-xact-flip.glow", a, .limited(4096));
     const spec_xf = try rb.parse_source(gen_xf);
     assert(std.mem.eql(u8, rb.shape_name_slice(&spec_xf), "xact-shape"));
     assert(spec_xf.body == .call_one);
     assert(std.mem.eql(u8, rb.gate_slice(&spec_xf), "flip"));
-    print("lower: glow/gen/gate-barket-xact-flip.glow carries xact-shape flip call-body -- GREEN\n", .{});
+    print("lower: glow/gen/g/gate-barket-xact-flip.glow carries xact-shape flip call-body -- GREEN\n", .{});
 
     if (lower.lower_source_welcome("|^  sample=xact-shape\n%-  double  sample\n", &buf)) |_| {
         return error.XactDoubleCallBodyLoweredTooSoon;
@@ -839,12 +839,12 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_xfer_flip_welcome.rye", .data = buf[0..n_xff] });
     print("lower: xfer-shape call-body flip lowers to XferShape switch expect .send -- GREEN\n", .{});
 
-    const gen_xff = try cwd.readFileAlloc(io, "glow/gen/gate-barket-xfer-flip.glow", a, .limited(4096));
+    const gen_xff = try cwd.readFileAlloc(io, "glow/gen/g/gate-barket-xfer-flip.glow", a, .limited(4096));
     const spec_xff = try rb.parse_source(gen_xff);
     assert(std.mem.eql(u8, rb.shape_name_slice(&spec_xff), "xfer-shape"));
     assert(spec_xff.body == .call_one);
     assert(std.mem.eql(u8, rb.gate_slice(&spec_xff), "flip"));
-    print("lower: glow/gen/gate-barket-xfer-flip.glow carries xfer-shape flip call-body -- GREEN\n", .{});
+    print("lower: glow/gen/g/gate-barket-xfer-flip.glow carries xfer-shape flip call-body -- GREEN\n", .{});
 
     if (lower.lower_source_welcome("|^  sample=xfer-shape\n%-  double  sample\n", &buf)) |_| {
         return error.XferDoubleCallBodyLoweredTooSoon;
@@ -869,12 +869,12 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_pair_flip_welcome.rye", .data = buf[0..n_pf] });
     print("lower: pair-shape call-body flip lowers to PairShape swap expect 3/5 -- GREEN\n", .{});
 
-    const gen_pf = try cwd.readFileAlloc(io, "glow/gen/gate-barket-pair-flip.glow", a, .limited(4096));
+    const gen_pf = try cwd.readFileAlloc(io, "glow/gen/g/gate-barket-pair-flip.glow", a, .limited(4096));
     const spec_pf = try rb.parse_source(gen_pf);
     assert(std.mem.eql(u8, rb.shape_name_slice(&spec_pf), "pair-shape"));
     assert(spec_pf.body == .call_one);
     assert(std.mem.eql(u8, rb.gate_slice(&spec_pf), "flip"));
-    print("lower: glow/gen/gate-barket-pair-flip.glow carries pair-shape flip call-body -- GREEN\n", .{});
+    print("lower: glow/gen/g/gate-barket-pair-flip.glow carries pair-shape flip call-body -- GREEN\n", .{});
 
     // STOA122: second closed named shape count-shape.
     const count_src = "|^  sample=count-shape\nsample\n";
@@ -884,11 +884,11 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/gate_barket_count_welcome.rye", .data = buf[0..n_cnt] });
     print("lower: count-shape barket lowers to u32 identity -- GREEN\n", .{});
 
-    const gen_cnt = try cwd.readFileAlloc(io, "glow/gen/gate-barket-count.glow", a, .limited(4096));
+    const gen_cnt = try cwd.readFileAlloc(io, "glow/gen/g/gate-barket-count.glow", a, .limited(4096));
     const spec_cnt = try rb.parse_source(gen_cnt);
     assert(std.mem.eql(u8, rb.shape_name_slice(&spec_cnt), "count-shape"));
     assert(spec_cnt.body == .identity);
-    print("lower: glow/gen/gate-barket-count.glow carries count-shape -- GREEN\n", .{});
+    print("lower: glow/gen/g/gate-barket-count.glow carries count-shape -- GREEN\n", .{});
 
     print("lower: version {s}\n", .{witness_version});
     print("GREEN: Glow `|^` barket — identity · argv · call-body · amount-shape · amount argv · count-shape · count argv · kind-shape · kind argv · kind flip · xact-shape · xact argv · xact flip · xfer-shape · xfer argv · xfer flip · pair-shape · pair argv · pair flip · triple-shape · triple argv · triple flip · quad-shape · quad argv · quad flip · penta-shape · penta argv · penta flip · hexa-shape · hexa argv · hexa flip · hepta-shape · hepta argv · hepta flip · octa-shape · octa argv · octa flip · nona-shape · nona argv · nona flip · nesting-through-nests; STOA113–147 · STOA255 identity emit · STOA261 N-field flip · STOA295 tagged payload flip · STOA297 tagged unit flip · STOA300 kind argv · STOA303 xact argv · STOA305 xfer argv · STOA307–321 pair…nona argv · STOA324 `$:` argv sameness collapse · STOA257 shape-only living.\n", .{});

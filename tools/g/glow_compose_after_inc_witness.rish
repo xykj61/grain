@@ -17,12 +17,12 @@ assert a4.ok else "339b: compose-sumto argv 4 failed"
 assert a4.out contains "GREEN" else "339b: compose-sumto argv not GREEN"
 
 say "339b: welcome fixture — both sides of the desk..."
-let fx = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-compose-sumto.glow"]
+let fx = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/g/gate-compose-sumto.glow"]
 assert fx.ok else "339b: compose-sumto fixture failed"
 assert fx.out contains "GREEN" else "339b: compose-sumto fixture not GREEN"
 
 say "339b: stranger still refuses..."
-let st = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/gate-stranger-refuse-339.glow"]
+let st = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/g/gate-stranger-refuse-339.glow"]
 assert (st.ok == false) else "339b: stranger must refuse"
 
 say "339b: STOA339 unary ground stays warm..."

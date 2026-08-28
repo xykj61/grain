@@ -36,9 +36,9 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = unwelcome_path, .data = buf[0..n4] });
     print("lower: wrote cell welcome and unwelcome .rye under glow/.cache/ -- GREEN\n", .{});
 
-    const gen_src = try cwd.readFileAlloc(io, "glow/gen/cell-pair.glow", a, .limited(4096));
+    const gen_src = try cwd.readFileAlloc(io, "glow/gen/c/cell-pair.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_src, ":-  from  amount") != null);
-    print("lower: glow/gen/cell-pair.glow carries pair faces -- GREEN\n", .{});
+    print("lower: glow/gen/c/cell-pair.glow carries pair faces -- GREEN\n", .{});
 
     print("lower: version {s}\n", .{witness_version});
     print("GREEN: `:-` lowers pair cells to ordinary Rye (STOA2).\n", .{});

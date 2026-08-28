@@ -73,19 +73,19 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("nest: bartis @u64 refused SampleDoesNotNest -- GREEN\n", .{});
 
     // Accept fixture desk parses.
-    const accept_src = try cwd.readFileAlloc(io, "glow/gen/gate-sample.glow", a, .limited(4096));
+    const accept_src = try cwd.readFileAlloc(io, "glow/gen/g/gate-sample.glow", a, .limited(4096));
     const accept_spec = try rb.parse_source(accept_src);
     assert(std.mem.eql(u8, rb.face_slice(&accept_spec), "sample"));
-    print("nest: glow/gen/gate-sample.glow accepts under nest surface -- GREEN\n", .{});
+    print("nest: glow/gen/g/gate-sample.glow accepts under nest surface -- GREEN\n", .{});
 
     // Refuse fixture desk refuses nest.
-    const refuse_src = try cwd.readFileAlloc(io, "glow/gen/gate-sample-u64-refuse.glow", a, .limited(4096));
+    const refuse_src = try cwd.readFileAlloc(io, "glow/gen/g/gate-sample-u64-refuse.glow", a, .limited(4096));
     if (rb.parse_source(refuse_src)) |_| {
         return error.RefuseDeskAccepted;
     } else |err| {
         if (err != rb.ParseError.SampleDoesNotNest) return err;
     }
-    print("nest: glow/gen/gate-sample-u64-refuse.glow refused SampleDoesNotNest -- GREEN\n", .{});
+    print("nest: glow/gen/g/gate-sample-u64-refuse.glow refused SampleDoesNotNest -- GREEN\n", .{});
 
     // STOA108: unit $% tag nest against mold-kind.
     const kind_src = try cwd.readFileAlloc(io, "glow/gen/hoon-study/mold-kind.glow", a, .limited(4096));
@@ -366,74 +366,74 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.eql(u8, rbrk.shape_name_slice(&nona_shape_barket), "nona-shape"));
     print("nest: barket sample=nona-shape accepts named shape -- GREEN\n", .{});
 
-    const amt_desk = try cwd.readFileAlloc(io, "glow/gen/gate-amount.glow", a, .limited(4096));
+    const amt_desk = try cwd.readFileAlloc(io, "glow/gen/g/gate-amount.glow", a, .limited(4096));
     const amt_spec = try rb.parse_source(amt_desk);
     assert(std.mem.eql(u8, rb.face_slice(&amt_spec), "sample"));
     assert(std.mem.eql(u8, rb.shape_name_slice(&amt_spec), "amount-shape"));
-    print("nest: glow/gen/gate-amount.glow accepts named shape -- GREEN\n", .{});
+    print("nest: glow/gen/g/gate-amount.glow accepts named shape -- GREEN\n", .{});
 
-    const kind_desk = try cwd.readFileAlloc(io, "glow/gen/gate-kind.glow", a, .limited(4096));
+    const kind_desk = try cwd.readFileAlloc(io, "glow/gen/g/gate-kind.glow", a, .limited(4096));
     const kind_spec = try rb.parse_source(kind_desk);
     assert(std.mem.eql(u8, rb.shape_name_slice(&kind_spec), "kind-shape"));
-    print("nest: glow/gen/gate-kind.glow accepts named shape -- GREEN\n", .{});
+    print("nest: glow/gen/g/gate-kind.glow accepts named shape -- GREEN\n", .{});
 
-    const xact_desk = try cwd.readFileAlloc(io, "glow/gen/gate-xact.glow", a, .limited(4096));
+    const xact_desk = try cwd.readFileAlloc(io, "glow/gen/g/gate-xact.glow", a, .limited(4096));
     const xact_spec = try rb.parse_source(xact_desk);
     assert(std.mem.eql(u8, rb.shape_name_slice(&xact_spec), "xact-shape"));
-    print("nest: glow/gen/gate-xact.glow accepts named shape -- GREEN\n", .{});
+    print("nest: glow/gen/g/gate-xact.glow accepts named shape -- GREEN\n", .{});
 
-    const xfer_desk = try cwd.readFileAlloc(io, "glow/gen/gate-xfer.glow", a, .limited(4096));
+    const xfer_desk = try cwd.readFileAlloc(io, "glow/gen/g/gate-xfer.glow", a, .limited(4096));
     const xfer_spec = try rb.parse_source(xfer_desk);
     assert(std.mem.eql(u8, rb.shape_name_slice(&xfer_spec), "xfer-shape"));
-    print("nest: glow/gen/gate-xfer.glow accepts named shape -- GREEN\n", .{});
+    print("nest: glow/gen/g/gate-xfer.glow accepts named shape -- GREEN\n", .{});
 
-    const pair_desk = try cwd.readFileAlloc(io, "glow/gen/gate-pair.glow", a, .limited(4096));
+    const pair_desk = try cwd.readFileAlloc(io, "glow/gen/g/gate-pair.glow", a, .limited(4096));
     const pair_spec = try rb.parse_source(pair_desk);
     assert(std.mem.eql(u8, rb.shape_name_slice(&pair_spec), "pair-shape"));
-    print("nest: glow/gen/gate-pair.glow accepts named shape -- GREEN\n", .{});
+    print("nest: glow/gen/g/gate-pair.glow accepts named shape -- GREEN\n", .{});
 
-    const triple_desk = try cwd.readFileAlloc(io, "glow/gen/gate-triple.glow", a, .limited(4096));
+    const triple_desk = try cwd.readFileAlloc(io, "glow/gen/g/gate-triple.glow", a, .limited(4096));
     const triple_spec = try rb.parse_source(triple_desk);
     assert(std.mem.eql(u8, rb.shape_name_slice(&triple_spec), "triple-shape"));
-    print("nest: glow/gen/gate-triple.glow accepts named shape -- GREEN\n", .{});
+    print("nest: glow/gen/g/gate-triple.glow accepts named shape -- GREEN\n", .{});
 
-    const quad_desk = try cwd.readFileAlloc(io, "glow/gen/gate-quad.glow", a, .limited(4096));
+    const quad_desk = try cwd.readFileAlloc(io, "glow/gen/g/gate-quad.glow", a, .limited(4096));
     const quad_spec = try rb.parse_source(quad_desk);
     assert(std.mem.eql(u8, rb.shape_name_slice(&quad_spec), "quad-shape"));
-    print("nest: glow/gen/gate-quad.glow accepts named shape -- GREEN\n", .{});
+    print("nest: glow/gen/g/gate-quad.glow accepts named shape -- GREEN\n", .{});
 
-    const penta_desk = try cwd.readFileAlloc(io, "glow/gen/gate-penta.glow", a, .limited(4096));
+    const penta_desk = try cwd.readFileAlloc(io, "glow/gen/g/gate-penta.glow", a, .limited(4096));
     const penta_spec = try rb.parse_source(penta_desk);
     assert(std.mem.eql(u8, rb.shape_name_slice(&penta_spec), "penta-shape"));
-    print("nest: glow/gen/gate-penta.glow accepts named shape -- GREEN\n", .{});
+    print("nest: glow/gen/g/gate-penta.glow accepts named shape -- GREEN\n", .{});
 
-    const hexa_desk = try cwd.readFileAlloc(io, "glow/gen/gate-hexa.glow", a, .limited(4096));
+    const hexa_desk = try cwd.readFileAlloc(io, "glow/gen/g/gate-hexa.glow", a, .limited(4096));
     const hexa_spec = try rb.parse_source(hexa_desk);
     assert(std.mem.eql(u8, rb.shape_name_slice(&hexa_spec), "hexa-shape"));
-    print("nest: glow/gen/gate-hexa.glow accepts named shape -- GREEN\n", .{});
+    print("nest: glow/gen/g/gate-hexa.glow accepts named shape -- GREEN\n", .{});
 
-    const hepta_desk = try cwd.readFileAlloc(io, "glow/gen/gate-hepta.glow", a, .limited(4096));
+    const hepta_desk = try cwd.readFileAlloc(io, "glow/gen/g/gate-hepta.glow", a, .limited(4096));
     const hepta_spec = try rb.parse_source(hepta_desk);
     assert(std.mem.eql(u8, rb.shape_name_slice(&hepta_spec), "hepta-shape"));
-    print("nest: glow/gen/gate-hepta.glow accepts named shape -- GREEN\n", .{});
+    print("nest: glow/gen/g/gate-hepta.glow accepts named shape -- GREEN\n", .{});
 
-    const octa_desk = try cwd.readFileAlloc(io, "glow/gen/gate-octa.glow", a, .limited(4096));
+    const octa_desk = try cwd.readFileAlloc(io, "glow/gen/g/gate-octa.glow", a, .limited(4096));
     const octa_spec = try rb.parse_source(octa_desk);
     assert(std.mem.eql(u8, rb.shape_name_slice(&octa_spec), "octa-shape"));
-    print("nest: glow/gen/gate-octa.glow accepts named shape -- GREEN\n", .{});
+    print("nest: glow/gen/g/gate-octa.glow accepts named shape -- GREEN\n", .{});
 
-    const nona_desk = try cwd.readFileAlloc(io, "glow/gen/gate-nona.glow", a, .limited(4096));
+    const nona_desk = try cwd.readFileAlloc(io, "glow/gen/g/gate-nona.glow", a, .limited(4096));
     const nona_spec = try rb.parse_source(nona_desk);
     assert(std.mem.eql(u8, rb.shape_name_slice(&nona_spec), "nona-shape"));
-    print("nest: glow/gen/gate-nona.glow accepts named shape -- GREEN\n", .{});
+    print("nest: glow/gen/g/gate-nona.glow accepts named shape -- GREEN\n", .{});
 
-    const deca_refuse = try cwd.readFileAlloc(io, "glow/gen/gate-kind-refuse.glow", a, .limited(4096));
+    const deca_refuse = try cwd.readFileAlloc(io, "glow/gen/g/gate-kind-refuse.glow", a, .limited(4096));
     if (rb.parse_source(deca_refuse)) |_| {
         return error.DecaRefuseDeskAccepted;
     } else |err| {
         if (err != rb.ParseError.SampleDoesNotNest) return err;
     }
-    print("nest: glow/gen/gate-kind-refuse.glow (deca-shape) refused SampleDoesNotNest -- GREEN\n", .{});
+    print("nest: glow/gen/g/gate-kind-refuse.glow (deca-shape) refused SampleDoesNotNest -- GREEN\n", .{});
 
     // STOA122: second closed named shape count-shape.
     const count_src = try cwd.readFileAlloc(io, "glow/gen/hoon-study/mold-count.glow", a, .limited(4096));
@@ -446,10 +446,10 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, buf[0..n_cnt], "count-shape") != null);
     print("nest: bartis sample=count-shape lowers as u32 identity -- GREEN\n", .{});
 
-    const cnt_desk = try cwd.readFileAlloc(io, "glow/gen/gate-count.glow", a, .limited(4096));
+    const cnt_desk = try cwd.readFileAlloc(io, "glow/gen/g/gate-count.glow", a, .limited(4096));
     const cnt_spec = try rb.parse_source(cnt_desk);
     assert(std.mem.eql(u8, rb.shape_name_slice(&cnt_spec), "count-shape"));
-    print("nest: glow/gen/gate-count.glow accepts named shape -- GREEN\n", .{});
+    print("nest: glow/gen/g/gate-count.glow accepts named shape -- GREEN\n", .{});
 
     // STOA123: unit $% kind-shape shape.
     const kind_mold_src = try cwd.readFileAlloc(io, "glow/gen/hoon-study/mold-kind.glow", a, .limited(4096));
