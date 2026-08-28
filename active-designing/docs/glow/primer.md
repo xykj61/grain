@@ -74,7 +74,7 @@ Two boundary laws are guarding you here, and they are worth loving. First, the b
 
 ## Structures -- Shapes
 
-When one value is not enough, you state a **shape**. Here is [`glow/gen/shape-amount.glow`](../../../glow/gen/shape-amount.glow), whole:
+When one value is not enough, you state a **shape**. Here is [`glow/gen/s/shape-amount.glow`](../../../glow/gen/s/shape-amount.glow), whole:
 
 ```
 +$  amount-shape
