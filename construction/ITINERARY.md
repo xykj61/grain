@@ -55,17 +55,16 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `c5cfc682e4` -- this round, before its nib amend.
+**Git nib:** `1e71148c83` -- this round's parent.
 
-**Now.** **The gate answers, and the meter that reads it is rostered.** The role swap of
-`20260827.155213` stands -- **Dream is Codex on the pier**, holding the systems core: Caravan,
-Tally, the microkernel road, the constellation table.
+**Now.** **The ledger reads itself, and found a row closed twice.** The role swap of
+`20260827.155213` stands -- **Dream is Codex on the pier**, holding the systems core.
 
-**`%311` closes the half `%310` parked.** `tools/g/glow_gate_answer_witness.rish` reads the
-surface Sound's emitter repair left: gates at **zero** a `contains` needle the `EXIT:` framing
-supplies and a captured run nobody asserted, ratchets **152** answer-blind runs and **7** files never
-seen to refuse, both ways. The hit: `glow_lower_assert_witness.rish:40` read `contains "EXIT:"`,
-which the harness always prints. The 152 and 7 are Sound's.
+**`%313`.** `%307` read open here while `%308` -- folded onto a shelf the same day --
+carried the only record of its closure, and `660b36a22`'s body claimed an edit the tree
+never received. `tools/r/reds_status_consistency_witness.rish` gates `contradicted_rows` and
+`phantom_closures` at **zero** across the pin and 127 shelves, reads `open_rows=6`, and proves
+**32** cases in a pen. Its first marker read saw four of seven; `reds_fold.sh` read truer.
 
 **The derived spine is SEATED** (`20260827.181605`). A row's key is its **one-clock stamp**;
 the `%N` is a view the **anointed remote `xy`** allocates, and a published number never moves.
@@ -74,7 +73,7 @@ Book with `reds_spine_derive_scan.sh --next`. Law `.claude/rules/derived-spine.m
 
 **Still open:** the **width ratchet** -- `glow/rune_shape.rye` publishes `usize` in 5 fields and 5
 accessors; moving it REMOVES casts at 16 and 17 sites; 59 gate fixtures await his word.
-`declared_ceiling` on `chatgpt-mind.sh`'s bound-copy and **MIND's crux**, SkateCore -- both Mind's.
+`declared_ceiling` on `chatgpt-mind.sh`'s bound-copy and **MIND's crux**, SkateCore -- both Mind's; the cold roster reads it red at 8 recitations against 6, unchanged by this lap.
 `%281`/`%291` -- one tree per star, or a lock -- stay his; the spine closed the ledger half.
 
 **The next doors.** Dream: Caravan and Tally green, then the constellation table. Kyri: the Glow
@@ -211,7 +210,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260828.114450` | %311 -- the needle the harness supplies; the answer-meter rostered, one wall repaired | [log](../session-logs/date/20260828/20260828-114450_the-needle-the-harness-supplied.kyri) |
+| `20260828.125441` | %313 -- the ledger reads its own statuses; two rows folded, one guard rostered | [log](../session-logs/date/20260828/20260828-125441_the-row-closed-twice.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line here until the next replaces it.
 

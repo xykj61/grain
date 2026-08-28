@@ -1,0 +1,96 @@
+# tools/r/reds_status_consistency_witness.rish -- the ledger agrees with itself about what is open.
+#
+#   rishi/bin/rishi run tools/r/reds_status_consistency_witness.rish
+#
+# WHAT THIS GUARDS. construction/REDS.md is the first page a lap reads under reds-first, and the
+# one thing it has to get right is which rows are still open. On 20260828 `%308` closed and wrote
+# "`%307`'s open clause closes with it"; `%307`'s own row kept "**OPEN** -- no guard reads an
+# instruction file against the gate list", and `%308` folded to construction/archive/ the same day.
+# A reds-first lap read the pin, chose `%307` as its work, and found the guard already built,
+# rostered, and GREEN.
+#
+# WHY IT IS A METER RATHER THAN A CORRECTION. The ledger folds, so the row that CLOSES an earlier
+# row routinely folds away while the row it closed stays on the pin. The closure lands in a closed
+# stack a lap never walks; the stale marker stays on the open shelf a lap reads first. Every future
+# fold reproduces the split.
+#
+# THE MARKER IS READ BY SHAPE, NOT BY STRING. The ledger writes eight spellings of its two status
+# words -- **OPEN**, **OPEN, gated**, **OPEN as five booked folds**, **CLOSED**, **CLOSED.**, and a
+# whole sentence in bold among them. A first draft of this reading matched the two exact forms and
+# saw four of the six open rows, which is a status meter lying quietly; the looser bare-word test
+# already standing in tools/fixtures/reds_fold.sh was the more correct of the two. The reading is
+# now bold text BEGINNING with either word, last one on the line, and where the two readings still
+# differ the scan reports fold_blocked_rows rather than choosing a winner.
+#
+# THE AGREEMENT IS PROVEN, NEVER PROMISED. The scan reads prose rows with the same expression
+# tools/fixtures/reds_row_present.sh reads, over the file set tools/fixtures/reds_spine_files.sh
+# spells. A rule written twice is a rule two files may come to disagree about, so this witness reads
+# the scan's highest row against tools/fixtures/reds_ledger_monotone_scan.sh's own expect_next, and
+# asks reds_row_present.sh for that row and for the one past it.
+#
+# Pen: tools/fixtures/reds_status_consistency_control.sh -- thirty-two cases on planted markdown,
+# every refusal planted and then removed, every welcome asserted as hard as every refusal. An
+# over-eager reading that refused ordinary open rows would make reds-first impossible, which is a
+# worse failure than the one this was written for.
+#
+# Purely local -- no key, no network, no funds, no device. It reads markdown and a pen.
+
+say "reds-status-consistency: Language EN -- a row the ledger says is closed does not still read OPEN."
+say "reds-status-consistency: Style Gauge, Meter -- two gates at zero, four readings reported, and the pen beside them."
+say "reds-status-consistency: Lens TAME -- safety first: the page a lap trusts to choose its work is the page that must not lie."
+
+# 1 -- the pen, which proves the reading bites and frees on planted ledgers.
+let control = run ["sh" "tools/fixtures/reds_status_consistency_control.sh"]
+say control.out
+assert control.ok else "reds-status-consistency: the control must complete"
+assert control.out contains "case=contradiction_bitten ok" else "reds-status-consistency: a row marked OPEN that another row closes must refuse"
+assert control.out contains "case=contradiction_named ok" else "reds-status-consistency: a refusal must name both rows"
+assert control.out contains "case=repair_free ok" else "reds-status-consistency: the repaired pair must pass"
+assert control.out contains "case=open_alone_free ok" else "reds-status-consistency: an open row nobody closes must stay free"
+assert control.out contains "case=kin_mention_free ok" else "reds-status-consistency: a kin mention with no closing word must stay free"
+assert control.out contains "case=window_scoped ok" else "reds-status-consistency: a closing word beyond the window must not bind"
+assert control.out contains "case=self_reference_free ok" else "reds-status-consistency: a row closing itself must stay free"
+assert control.out contains "case=phantom_bitten ok" else "reds-status-consistency: a closure naming no such row must refuse"
+assert control.out contains "case=duplicate_keeps_status ok" else "reds-status-consistency: a markerless pointer line must not erase a status"
+assert control.out contains "case=table_row_not_prose ok" else "reds-status-consistency: an elder table row is not a prose row"
+assert control.out contains "case=unmarked_free ok" else "reds-status-consistency: a ledger with no markers must read clean"
+assert control.out contains "case=spelling_open_gated ok" else "reds-status-consistency: **OPEN, gated** must read open"
+assert control.out contains "case=spelling_closed_period ok" else "reds-status-consistency: **CLOSED.** must read closed"
+assert control.out contains "case=spelling_closed_sentence ok" else "reds-status-consistency: a whole bold sentence must read closed"
+assert control.out contains "case=last_marker_wins ok" else "reds-status-consistency: the last marker on a line is the status"
+assert control.out contains "case=fold_blocked_ungated ok" else "reds-status-consistency: fold_blocked is reported, never gated"
+assert control.out contains "case=fold_blocked_counted ok" else "reds-status-consistency: a closed row carrying the bare word OPEN must be counted"
+assert control.out contains "case=fold_blocked_whole_word ok" else "reds-status-consistency: prose about an opening is not that word"
+assert control.out contains "case=empty_spine_misuse ok" else "reds-status-consistency: an empty spine must exit distinctly"
+assert control.out contains "cases_red=0" else "reds-status-consistency: every planted case must agree"
+assert control.out contains "control=ok" else "reds-status-consistency: the control must agree with itself"
+
+# 2 -- the living ledger. Both gates at zero, and the verdict said in full.
+let scan = run ["sh" "tools/fixtures/reds_status_consistency_scan.sh"]
+say scan.out
+assert scan.ok else "reds-status-consistency: the ledger contradicts itself -- read the scan's own detail lines"
+assert scan.out contains "contradicted_rows=0" else "reds-status-consistency: no row may read OPEN while another row closes it"
+assert scan.out contains "phantom_closures=0" else "reds-status-consistency: a closure may not name a row the spine lacks"
+assert scan.out contains "verdict=every_status_agrees" else "reds-status-consistency: the scan must reach the clean verdict"
+
+# 3 -- agreement at the live edge. The highest prose row this reading finds is the last row the
+# spine counts. A disagreement here means the two extraction rules have drifted, and the edge is
+# where a new row lands, so it is where drift shows first.
+let edge = run ["sh" "-c" "want=$(sh tools/fixtures/reds_ledger_monotone_scan.sh construction/archive/REDS-*rows-*.md construction/REDS.md | sed -n 's/^expect_next=//p'); got=$(sh tools/fixtures/reds_status_consistency_scan.sh | sed -n 's/^highest_row=//p'); echo spine_last=$((want-1)) status_highest=$got; test $((want-1)) -eq $got"]
+say edge.out
+assert edge.ok else "reds-status-consistency: the status reading and the spine must agree on the last row"
+
+# 4 -- the same edge asked of the spine's own reader, both ways. The highest row is present, and the
+# row past it is absent, and absent exits 1 rather than 0.
+let present = run ["sh" "-c" "n=$(sh tools/fixtures/reds_status_consistency_scan.sh | sed -n 's/^highest_row=//p'); sh tools/fixtures/reds_row_present.sh $n --say"]
+say present.out
+assert present.ok else "reds-status-consistency: the highest row this reading finds must be present in the spine"
+assert present.out contains "verdict=present" else "reds-status-consistency: want the highest row found by the spine reader"
+
+let past = run ["sh" "-c" "n=$(sh tools/fixtures/reds_status_consistency_scan.sh | sed -n 's/^highest_row=//p'); sh tools/fixtures/reds_row_present.sh $((n+1)); s=$?; echo past_end_exit=$s; test $s -eq 1"]
+say past.out
+assert past.ok else "reds-status-consistency: the row past the highest must refuse"
+assert past.out contains "past_end_exit=1" else "reds-status-consistency: want exit 1 for the row past the end"
+
+say ""
+say "GREEN: reds-status-consistency -- control 32/32 - both gates zero - the reading agrees with the spine at its live edge."

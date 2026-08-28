@@ -25,7 +25,7 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 | [`classical-vedic-astrology/`](../../classical-vedic-astrology/README.md) | 1 | 0 |
 | [`comlink/`](../../comlink/README.md) | 73 | 9 |
 | [`constel/`](../../constel/README.md) | 31 | 38 |
-| [`construction/`](../../construction/README.md) | 1 | 30 |
+| [`construction/`](../../construction/README.md) | 1 | 31 |
 | [`crypto/`](../../crypto/README.md) | 82 | 117 |
 | [`dimeroll/`](../../dimeroll/README.md) | 2 | 3 |
 | [`edu/`](../../edu/README.md) | 2 | 6 |
@@ -48,7 +48,7 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 | [`mycelium/`](../../mycelium/README.md) | 97 | 84 |
 | [`pleac/`](../../pleac/README.md) | 3 | 6 |
 | [`pond/`](../../pond/README.md) | 151 | 156 |
-| [`rishi/`](../../rishi/README.md) | 2 | 1712 |
+| [`rishi/`](../../rishi/README.md) | 2 | 1713 |
 | [`rye/`](../../rye/README.md) | 117 | 1240 |
 | [`scribble/`](../../scribble/README.md) | 2 | 2 |
 | [`scribe/`](../../scribe/README.md) | 2 | 4 |
