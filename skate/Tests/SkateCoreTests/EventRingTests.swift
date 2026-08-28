@@ -60,6 +60,28 @@ final class EventRingTests: XCTestCase {
     }
   }
 
+  func testEventRingCounterExhaustionRefusesWithoutMutation() throws {
+    var ring = EventRing<Int>(counterOrigin: UInt64.max - 1)
+    try ring.append(7)
+
+    let headBefore = ring.head
+    let tailBefore = ring.tail
+    let firstBefore = ring.first()
+    XCTAssertNil(ring.storedEvent(at: UInt64.max))
+
+    XCTAssertThrowsError(try ring.append(8)) { error in
+      XCTAssertEqual(error as? EventRingError, .counterExhausted)
+    }
+    XCTAssertEqual(ring.head, headBefore)
+    XCTAssertEqual(ring.tail, tailBefore)
+    XCTAssertEqual(ring.count, 1)
+    XCTAssertEqual(ring.first(), firstBefore)
+    XCTAssertNil(ring.storedEvent(at: UInt64.max))
+    XCTAssertFalse(ring.isEmpty)
+    XCTAssertEqual(ring.removeFirst(), 7)
+    XCTAssertTrue(ring.isEmpty)
+  }
+
   func testSurfAndSkateEventRingAliasesShareOneIdentity() throws {
     var surf = SurfEventRing<UInt8>()
     try surf.append(7)

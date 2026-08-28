@@ -5,13 +5,14 @@
 # own one-through-eight declared line ceiling. Surf and Skate are compile-time aliases over the
 # same frame, media receipt, and event ring. The controls prove the living fold; media bounds; the
 # refusing frame edges; full-ring refusal without eviction; FIFO order across physical wrap; and
-# unsigned-counter refusal before arithmetic. AppKit and C stay outside this headless core.
+# unsigned-counter refusal before arithmetic or ring mutation. AppKit and C stay outside this
+# headless core.
 
 say "skate-native-core: Language EN -- Brushstroke lends one bounded Frame; Surf and Skate are peer names for its one native grid."
 say "skate-native-core: Style Gauge Door -- the sizes, owner, refusal, and platform edge are named."
 say "skate-native-core: Lens TAME -- fixed storage, bounded walks, and atomic refusal before mutation."
 
-let shape = run ["sh" "-c" "grep -q 'InlineArray<128, UInt8>' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'InlineArray<8, BrushstrokeLine>' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'InlineArray<320, UInt8>' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'InlineArray<8, SkateColor>' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'InlineArray<128, Event?>' skate/Sources/SkateCore/EventRing.swift && grep -q 'let nextTail = try Self.advanced(tail)' skate/Sources/SkateCore/EventRing.swift && grep -q 'throw EventRingError.full' skate/Sources/SkateCore/EventRing.swift && grep -q 'public let maxLines: Int' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'lineCount < maxLines' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'public typealias SurfFrameGrid = FrameGrid' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'public typealias SkateFrameGrid = FrameGrid' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'public typealias SurfEventRing' skate/Sources/SkateCore/EventRing.swift && grep -q 'public typealias SkateEventRing' skate/Sources/SkateCore/EventRing.swift && grep -q '@available(macOS 26.0, \*)' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'StrictMemorySafety' skate/Package.swift && grep -q '\-warnings-as-errors' skate/Package.swift && echo SHAPE_OK"]
+let shape = run ["sh" "-c" "grep -q 'InlineArray<128, UInt8>' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'InlineArray<8, BrushstrokeLine>' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'InlineArray<320, UInt8>' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'InlineArray<8, SkateColor>' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'InlineArray<128, Event?>' skate/Sources/SkateCore/EventRing.swift && grep -q 'init(counterOrigin: UInt64)' skate/Sources/SkateCore/EventRing.swift && grep -q 'let nextTail = try Self.advanced(tail)' skate/Sources/SkateCore/EventRing.swift && grep -q 'throw EventRingError.full' skate/Sources/SkateCore/EventRing.swift && grep -q 'public let maxLines: Int' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'lineCount < maxLines' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'public typealias SurfFrameGrid = FrameGrid' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'public typealias SkateFrameGrid = FrameGrid' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'public typealias SurfEventRing' skate/Sources/SkateCore/EventRing.swift && grep -q 'public typealias SkateEventRing' skate/Sources/SkateCore/EventRing.swift && grep -q '@available(macOS 26.0, \*)' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'StrictMemorySafety' skate/Package.swift && grep -q '\-warnings-as-errors' skate/Package.swift && echo SHAPE_OK"]
 assert shape.ok else "skate-native-core: fixed shape or strict build setting missing"
 assert shape.out contains "SHAPE_OK" else "skate-native-core: fixed shape did not hold"
 
@@ -50,6 +51,7 @@ assert test.out contains "testLotusMeterAndDigestClaimsKeepTheirExactBounds" els
 assert test.out contains "testEventRingFillsThenRefusesWithoutEviction" else "skate-native-core: full event-ring refusal not exercised"
 assert test.out contains "testEventRingPhysicalWrapKeepsLinearFIFOOrder" else "skate-native-core: physical event-ring wrap not exercised"
 assert test.out contains "testEventCounterRefusesBeforeUnsignedWrap" else "skate-native-core: event counter ceiling not exercised"
+assert test.out contains "testEventRingCounterExhaustionRefusesWithoutMutation" else "skate-native-core: event counter refusal did not prove whole-state preservation"
 assert test.out contains "testSurfAndSkateEventRingAliasesShareOneIdentity" else "skate-native-core: event alias-sameness not exercised"
 # The verdict reads ZERO FAILURES rather than an exact test count -- a pinned "21" made every
 # honestly added test red this witness, which is the candidate-proof-boundary custody stop of
@@ -57,5 +59,5 @@ assert test.out contains "testSurfAndSkateEventRingAliasesShareOneIdentity" else
 assert test.out contains ", with 0 failures" else "skate-native-core: zero-failure verdict missing"
 assert test.out contains "Executed " else "skate-native-core: the suite must report how many tests it executed"
 
-say "RED and GREEN paths proven -- one deterministic fold lives; twenty-one identity, media, event, exact-bound, refusal, and mutation claims hold."
+say "RED and GREEN paths proven -- one deterministic fold lives; the named identity, media, event, exact-bound, refusal, and mutation claims hold."
 say "GREEN: skate-native-core -- Surf and Skate share one Brushstroke Frame and event-ring identity, storage shape, and refusal contract."
