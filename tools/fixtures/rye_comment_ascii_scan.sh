@@ -45,13 +45,17 @@ mode="${1:-count}"
 # vertical, 350 section, 341 multiplication, 289 less-or-equal, 291 superscripts, 195 Greek -- each
 # carrying a meaning a reader should choose the ASCII form for, rather than a script guessing it.
 #
-# THE BYTE RANGE IS SPELLED IN OCTAL, not in hex. `\x00-\x7F` is a GNU awk extension; the BWK awk
-# macOS ships parses it as literal characters, so the negated class matches EVERY character and the
-# meter counts a whole comment line as non-ASCII. Measured on this bench `20260826.211500`: the
-# living reading came back 16,131,707 against a ceiling of 4,338, and the four-file control read
-# `chars=97` where four was the answer. `\001-\177` is the POSIX spelling of the same range and
-# reads identically in both dialects -- the same move `tools/fixtures/living_card_ascii_scan.sh`
-# already made when it dropped `grep -P` for a C-locale byte range (REDS %278).
+# THE UNIT IS A CHARACTER, COUNTED BY ITS UTF-8 LEAD BYTE IN THE C LOCALE. Every non-ASCII
+# character carries exactly one lead byte in `\300-\377`, so counting lead bytes counts
+# characters -- one em dash is one, under every awk. The two dialect traps this survives, both
+# paid for on this bench: `\x00-\x7F` is a GNU extension the BWK awk reads as literal characters
+# (`20260826.211500`: 16,131,707 against a ceiling of 4,338), and a negated class like
+# `[^\001-\177]` counts BYTES under BWK awk while GNU awk in a UTF-8 locale counts CHARACTERS --
+# an em dash read 3 here and 1 on the Linux benches, so one tree carried two readings
+# (`20260828.160500`: 11,405 against 4,333 on this bench, the ceiling itself char-measured).
+# `LC_ALL=C` pins both awks to bytes, the lead-byte class turns bytes back into characters, and
+# octal spelling reads identically in both dialects -- the same C-locale move
+# `tools/fixtures/living_card_ascii_scan.sh` made when it dropped `grep -P` (REDS %278).
 CEILING=4333
 
 list=$(git ls-files "*.rye" 2>/dev/null | grep -vE "^(vendor|gratitude|seed)/")
@@ -60,12 +64,12 @@ total=0
 files=0
 report=""
 for f in $list; do
-  n=$(awk '
+  n=$(LC_ALL=C awk '
     { line = $0
       sub(/^[ \t]+/, "", line)
       if (substr(line, 1, 2) != "//") next
       s = $0
-      for (i = 1; i <= length(s); i++) if (substr(s, i, 1) ~ /[^\001-\177]/) n++
+      for (i = 1; i <= length(s); i++) if (substr(s, i, 1) ~ /[\300-\377]/) n++
     }
     END { print n + 0 }
   ' "$f" 2>/dev/null)

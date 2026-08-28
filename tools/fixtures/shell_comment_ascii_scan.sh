@@ -46,8 +46,12 @@ mode="${1:-count}"
 # form for, rather than a script guessing it. The six that WERE converted are the six the rule's own
 # substitution table names and spells: em dash, en dash, middle dot, two arrows, ellipsis.
 #
-# THE UNIT IS A CHARACTER, not a byte. This awk reads UTF-8 text, so one em dash counts once rather
-# than three times, and the sibling Rye meter reads the same way -- the two numbers are comparable.
+# THE UNIT IS A CHARACTER, COUNTED BY ITS UTF-8 LEAD BYTE IN THE C LOCALE. "This awk reads UTF-8
+# text" was true only of GNU awk -- the BWK awk this bench ships iterates bytes, so one em dash
+# read 3 here and 1 on the Linux benches, and one tree carried two readings (`20260828.160500`).
+# Every non-ASCII character carries exactly one lead byte in `\300-\377`, so `LC_ALL=C` pins both
+# awks to bytes and the lead-byte class turns bytes back into characters -- one em dash is one,
+# under every awk, and the sibling Rye meter reads the same way.
 #
 # THE BYTE RANGE IS SPELLED IN OCTAL, not in hex. `\x00-\x7F` is a GNU awk extension; the BWK awk
 # macOS ships parses it as literal characters, so the negated class matches EVERY character and the
@@ -65,7 +69,7 @@ total=0
 files=0
 report=""
 for f in $list; do
-  n=$(awk '
+  n=$(LC_ALL=C awk '
     {
       if (inhere) {
         # `<<-WORD` strips leading tabs, so its delimiter may be indented; plain `<<WORD` requires
@@ -79,7 +83,7 @@ for f in $list; do
       sub(/^[ \t]+/, "", line)
       if (substr(line, 1, 1) == "#") {
         s = $0
-        for (i = 1; i <= length(s); i++) if (substr(s, i, 1) ~ /[^\001-\177]/) n++
+        for (i = 1; i <= length(s); i++) if (substr(s, i, 1) ~ /[\300-\377]/) n++
         next
       }
       # A here-string `<<<"x"` contains `<<"x"` starting one character in, so the opener is
