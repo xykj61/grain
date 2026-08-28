@@ -40,11 +40,11 @@ hardware-research round, bookmarked on Keaton's word. The cable kinds this code 
 | Rungs written into the ledger | **ALES0 through ALES214** | [`LADDER.md`](LADDER.md) | `20260827` |
 
 **The last twenty-four rungs live in their modules rather than in the ledger.** ALES215 through
-ALES238 ran and are green; `LADDER.md` stopped being written at ALES214. They are named here rather
-than transcribed, because a ledger that invents rows it did not read is worse than one that says
-where the rows are. Whoever next works this ladder folds them in from the modules and their
+ALES238 ran and are green; `LADDER.md` carries its last entry at ALES214. They are named here rather
+than transcribed, because a ledger pointing at rows it has read serves better than one transcribing
+rows it has only guessed at. Whoever next works this ladder folds them in from the modules and their
 witnesses -- the same repair `docs/STOA.md` took on `20260827.173952`, and the same lesson: a
-compressor goes stale quietly, because nothing about it looks wrong.
+compressor drifts quietly, because it keeps looking exactly as it did the day it was true.
 
 Two of the 240 are seam symlinks into `../tally/` -- `parse_int.rye` and `tally_copy.rye` -- and
 they carry rows too, since a reader who finds a file in this directory expects the page to explain

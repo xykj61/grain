@@ -1,34 +1,103 @@
-# tools/co/constel_naming_witness.rish -- the Constel test-network naming law, proven safe.
+# tools/co/constel_naming_witness.rish -- the Constel naming law, read both ways and both directions.
 #
-#   rishi/bin/rishi run tools/co/constel_naming_witness.rish
+# WHY THIS RUNG. A Constel name is a fake dev-network constellation stood up inside the jailed pier.
+# Its one load-bearing promise is that it can never parse as a real @p, so a dev command a newcomer
+# copies can never address a stranger's ship. The tree proves that promise TWICE, from two rounds a
+# day apart, and the two proofs admit different sets of names:
 #
-# Constel names are fake, self-invented constellations for sandbox / testnet / localhost
-# Comlink p2p networks run inside the jailed pier (the double-seat expansion, Chapter D/F).
-# Their one load-bearing promise: each carries a digit, and so can NEVER parse as a real @p
-# (letters + hyphens only) -- a fake dev name can never reach the live network in someone's
-# real custody. This witness proves the seated first draws keep that promise, and that the
-# scan bites a planted @p-shaped name (no digit).
+#   digit present  -- seated 20260813. A real @p body is lowercase letters and hyphens only, drawn
+#                     from a fixed 256-syllable table holding no digits. Mirrored in Rye by
+#                     pond/apps/constel_net.rye's name_safe, which refuses UnsafeName without one.
+#   vowel-free     -- seated 20260814, and the law constel/name.rye check_ship enforces. Every one
+#                     of the 512 real syllables carries exactly one vowel and `y` is absent from the
+#                     table, so a vowel-free name can never be assembled from them.
 #
-# Law: active-designing/date/20260813/20260813-022222_constel-test-network-naming-law.md
+# Both are sound proofs of non-@p, so the SAFETY promise has never been in question. What the tree
+# lacked was any reading of the two together: all five names tools/fixtures/constel_names.txt seats
+# carry vowels, so constel/handshake.rye -- which calls check_ship and check_constellation at its
+# border -- would refuse every name the ten pond/apps/constel_net*.rye modules use. The two rooms
+# never meet today, and FORA31, the socket rung, is where they first would.
+#
+# WHAT IS PROVEN, on metal.
+#   The welcome, as hard as the refusal: seven names constel/name.rye's own selftest asserts lawful
+#   are admitted by the scan, case for case, so the shell reading and the Rye reading agree rather
+#   than merely coexist.
+#   The refusal: a galaxy, a star, two planet halves, and a whole planet -- the exact real @p shapes
+#   the module refuses -- are refused, each by VowelPresent, with verdict=unsafe and a failing exit.
+#   Every named fault the module can return from a names file: NameTooLong, BadCharacter, and
+#   BadSegment, each planted and each answered with the module's own spelling.
+#   The elder planted negative still bites at the same name it always named.
+#
+# WHAT IS REPORTED RATHER THAN GATED. split_seated_refuses -- names the digit proof admits and the
+# seated law turns away. It reads 5 today: the five seated draws. Redrawing them vowel-free means
+# rewriting string literals in ten pond/apps/constel_net*.rye modules and two Bron fixtures that
+# already seat them, which is Pond's own lap rather than this guard's. The ceiling is pinned below
+# as an exact match, so it only falls by a deliberate edit that a reader can see.
+#
+# WHAT IS NOT PROVEN. That a Constel name is a good name, that pond/apps and constel/ should share
+# one predicate rather than two, or which of the two rooms should move. This rung makes the split a
+# number on every run; which way it closes is a seat.
+#
+# Law: active-designing/20260814-fill-constel-naming-law.md (seated)
+#      active-designing/date/20260813/20260813-022222_constel-test-network-naming-law.md (elder)
 # Output convention: context/specs/20260729-215600_scan-seam-convention.md.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/co/constel_naming_witness.rish
 
-say "constel: Language EN — fake dev constellations that can never reach the real network."
-say "constel: Style Radiant — name freely in the jail; the digit keeps the name home."
-say "constel: Lens TAME — the safety promise is structural and asserted; a planted @p must bite."
+say "constel: Language EN -- fake dev constellations that can never reach the real network."
+say "constel: Style Gauge, Meter -- two proofs of one promise, and the number where they part."
+say "constel: Lens TAME -- safety first: the union gate never weakens, and the split is only reported."
 
-# The seated first draws -- every one carries a digit, so every one is provably non-@p.
-let seated = run ["sh" "tools/fixtures/constel_naming_scan.sh" "tools/fixtures/constel_names.txt"]
-say seated.out
-assert seated.out contains "verdict=ok" else "constel: a seated constel name lacks a digit — it could parse as a real @p"
-assert seated.ok else "constel: the seated verdict and status disagree"
-assert seated.out contains "names=5" else "constel: the seated first-draw count changed unexpectedly"
-assert (seated.out contains "digit=no") == false else "constel: a seated name was flagged as possibly-real"
+# The welcome. Every name here is one constel/name.rye's selftest asserts lawful, so a green line
+# means the shell mirror and the module agree case for case rather than by eye.
+let law = run ["sh" "tools/fixtures/constel_naming_scan.sh" "tools/fixtures/constel_names_law.txt"]
+say law.out
+assert law.ok else "constel: the law's own admitted names must pass free"
+assert law.out contains "verdict=ok" else "constel: a name the module admits was refused by its shell mirror"
+assert law.out contains "names=7" else "constel: the law fixture's own count changed unexpectedly"
+assert law.out contains "seated_admitted=7" else "constel: every name in the law fixture must be admitted by the seated law"
+assert law.out contains "never_a_ship=7" else "constel: every lawful name is provably never a real @p"
+assert law.out contains "split_seated_refuses=0" else "constel: the seated law must never turn away its own examples"
+assert (law.out contains "fault=") == false else "constel: a lawful name must carry no fault"
 
-# The scan bites -- an @p-shaped name (letters only, no digit) among the draws is unsafe.
+# The refusal, planted from the module's own selftest -- the exact shapes a newcomer might copy.
+let real_ap = run ["sh" "tools/fixtures/constel_naming_scan.sh" "tools/fixtures/constel_names_real_ap.txt"]
+say real_ap.out
+assert (real_ap.ok == false) else "constel: a real @p must refuse, and the status must say so"
+assert real_ap.out contains "verdict=unsafe first=zod" else "constel: the scan must name the first real @p it met"
+assert real_ap.out contains "fault=VowelPresent" else "constel: a real @p is refused by its vowel, by name"
+assert real_ap.out contains "names=5" else "constel: the real @p fixture's own count changed unexpectedly"
+assert real_ap.out contains "never_a_ship=0" else "constel: neither proof may admit a real @p"
+assert real_ap.out contains "seated_admitted=0" else "constel: the seated law must admit no real @p"
+assert real_ap.out contains "digit_bearing=0" else "constel: a real @p carries no digit, which is the elder proof's whole point"
+
+# Each named fault the module can return from a names file, planted one per line.
+let faults = run ["sh" "tools/fixtures/constel_naming_scan.sh" "tools/fixtures/constel_names_faults.txt"]
+say faults.out
+assert (faults.ok == false) else "constel: a planted fault must refuse, and the status must say so"
+assert faults.out contains "fault=NameTooLong" else "constel: a name past max_ship_len must refuse by name"
+assert faults.out contains "fault=BadCharacter" else "constel: a byte outside the alphabet must refuse by name"
+assert faults.out contains "fault=BadSegment" else "constel: a stray hyphen must refuse by name"
+assert faults.out contains "names=5" else "constel: the fault fixture's own count changed unexpectedly"
+assert faults.out contains "seated_admitted=0" else "constel: no planted fault may be admitted"
+
+# The elder planted negative, kept whole: it bites at the same name it has always named.
 let planted = run ["sh" "tools/fixtures/constel_naming_scan.sh" "tools/fixtures/constel_names_unsafe.txt"]
 say planted.out
 assert planted.out contains "verdict=unsafe" else "constel: the scan failed to flag an @p-shaped name"
 assert planted.out contains "first=sarlev" else "constel: the scan did not name the offending @p-shaped draw"
 assert (planted.ok == false) else "constel: the unsafe verdict and status disagree"
 
-say "GREEN: constel — every seated constel name carries a digit and so can never parse as a real @p; the scan bites a planted @p-shaped name, so no fake dev constellation can ever reach the live network"
+# The seated first draws. Safe by the elder proof -- every one carries a digit -- and refused by the
+# seated law, every one, for its vowel. That second number is the split, and it is the whole finding.
+let seated = run ["sh" "tools/fixtures/constel_naming_scan.sh" "tools/fixtures/constel_names.txt"]
+say seated.out
+assert seated.ok else "constel: a seated constel name is safe under neither proof -- it could parse as a real @p"
+assert seated.out contains "verdict=ok" else "constel: every seated name must be provably never a real @p"
+assert seated.out contains "names=5" else "constel: the seated first-draw count changed unexpectedly"
+assert seated.out contains "digit_bearing=5" else "constel: every seated draw carries the elder proof's digit"
+assert seated.out contains "never_a_ship=5" else "constel: every seated draw is provably never a real @p"
+assert seated.out contains "split_seated_refuses=5" else "constel: the split ceiling is 5 and only falls -- lower it here when pond/apps redraws vowel-free, and read why before you do"
+
+say "GREEN: constel -- both proofs of the one promise read on every run: seven lawful names admitted case for case against constel/name.rye's own selftest, a galaxy and a planet refused VowelPresent, NameTooLong and BadCharacter and BadSegment each answered in the module's own spelling, the elder planted @p still biting at sarlev, and every seated draw provably never a real @p -- with split_seated_refuses=5 naming, on every run, the five names the seated law would turn away and pond/apps still seats"

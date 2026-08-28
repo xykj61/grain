@@ -98,14 +98,14 @@ MECH_WORDS='function fn parameter argument import call struct field signature sy
 # ONE named exemption, and it is the same one `.claude/rules/git-signing.md` already carries:
 # the depersonalized public seed ships a SINGLE root commit whose body describes a repository
 # rather than a change, so there is no mechanism for it to name. It is recognised by the
-# `Grain OS -- ` subject that only `publish-seed.sh` writes; every commit in this tree wears a
+# `grain-ww -- ` subject that only `publish-seed.sh` writes (was `Grain OS -- ` until 20260828, Keaton's word); every commit in this tree wears a
 # lowercase `component: ` prefix instead and can never borrow it. Proven both ways by
 # `tools/fixtures/mechanism_wall_scan.sh`. This is a named exemption, never a bypass -- there
 # is no flag, no env var, and no comment that turns the wall off.
 subject=$(printf '%s\n' "$body" | sed -n '1p')
 prose=$(printf '%s\n' "$body" | sed -e '1d')
 case $subject in
-  "Grain OS -- "*) prose= ;;
+  "grain-ww -- "*) prose= ;;
 esac
 mech_report=$(printf '%s\n' "$prose" | awk -v words="$MECH_WORDS" '
   { w += NF; text = text " " tolower($0) }

@@ -3,7 +3,7 @@
 **Language:** EN - **Style:** Gauge (see `context/GAUGE_STYLE.md`)
 **Status:** Living - **Companion:** the full threat model, [`context/THREATS.md`](context/THREATS.md)
 
-Grain is a custody-first, civic project in its primordial phase. This page names how to report a weakness, what the project promises about the trust it holds, and where the full threat model lives.
+Grain is a custody-first, civic project in its crashed-meteor phase. This page names how to report a weakness, what the project promises about the trust it holds, and where the full threat model lives.
 
 ## Reporting a vulnerability
 
