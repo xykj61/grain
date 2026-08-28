@@ -1,0 +1,61 @@
+format session-log-v1
+stamp 20260828.170003
+editor Claude Code Terminal
+provider Anthropic
+product Claude Code
+role HUSH -- Dream's planet, the hands-on systems half: Pond and the adaptation grant
+modality text
+model claude-opus-5
+model_status active runtime unverified -- .claude/settings.json configures claude-opus-5 at max, which is configuration rather than telemetry
+voice Kyri
+host Framework laptop, NixOS, Linux 6.18 -- Eastern (EDT) one-clock
+coordination user coordinated separate sessions -- a peer held this checkout for the whole lap
+collaborator_provider OpenAI
+collaborator_product Codex CLI (codex exec --sandbox danger-full-access)
+collaborator_role DREAM -- the systems core: Caravan, Tally, the constellation table
+collaborator_model unverified
+collaborator_evidence process table only -- PID 129207 running the DREAM seat prompt in /home/keeper/grain, 1h44m elapsed at my open, and its own standing_equipment_run.sh --hot started 16:25:54
+collaborator_scope Caravan and Tally; no file this lap touches is in that lane
+collaborator_status running concurrently; not contacted
+title the config read before the room -- %327, and five of seven roster reds closed on the way
+prompt Open as HUSH under the INNER LOOP Standing block -- roster cold then hot, reds first as standfast, QA on touch, council rota row N mod 5, prose witnesses on prose sends, stamp-and-name, ASCII-first, READ SCOPE -- pick up the running thread, and work Pond completing the ai-jail enclosure under the accrete-only gate boundary.
+think ListAgents named no reachable agent, and the process table named one anyway. `ps` showed a second standing_equipment_run.sh --hot I had not started, and its parent is a `codex exec` running the DREAM seat prompt in this same checkout. That is REDS %291's exact condition, and ListAgents cannot see it because a Codex session is not a Claude session -- so the charter law wants the process table beside it, not instead of it. The peer is named above, and every path this lap touched is outside Caravan and Tally.
+think The cold roster came back guards_run=79 green=72 red=7, tree_moved=no. Reds first is a standfast, so the Pond lap I had prepared waited behind them. Two of the seven shared one root: tools/fixtures/readme_reach_scan.sh found 26 broken living links, and reds_fold_witness.rish reds because its third duty runs that same scan. Twenty-two are glow/README.md pointing at gen/*.glow after the %301 letter fold, four are active-designing pages pointing at yonder/*.md after today's day fold. foundations_link found a twenty-seventh, foundations/20260727-113304_the-merit-ledger.md -> active-designing/yonder/20260727-105555_nibs-over-the-weave.md.
+think Every one resolved by the two fold rules as pure functions of the basename -- first letter for a letter-folded room, first eight characters for a day-folded one -- so the repointer only rewrote a link whose computed target already existed on disk. That check is what keeps a repoint from inventing a path: 26 links rewritten, 26 targets verified present first.
+think The mechanism of %327, plainly: tools/ag/agent-jail.sh runs `source "$CONF"` on tools/e/enclosure.conf at line 160, and its own state defaults sit thirty-four lines later at 196-205 as CLAUDE_STATE="${CLAUDE_STATE:-$LOOPS/claude}". A conf that assigns CLAUDE_STATE makes that `:-` default dead code. The shipped tools/e/enclosure.conf.example assigned $REPO/.claude-state and $REPO/.cursor-agent-state -- exactly the two paths adopt_state_dir moves into loops/ at 192-194. So the adoption empties the elder, `mkdir -p "$CLAUDE_STATE"` at 309 recreates it, and --rw-map "${CLAUDE_STATE}:${HOST_HOME}/.claude" at 322 binds an empty directory over the agent's HOME.
+think The proof is on disk rather than in the reasoning. .claude-state, .cursor-agent-state and .dream-state all carry mtime 2026-08-28 11:40:13, milliseconds apart, which is that one mkdir line running. .claude-state holds 0 files; loops/claude holds 5,229 including .credentials.json. The launcher's own comment two screens above promises that login is done once per pier.
+think Both halves of the seam took a fix. The example now comments all three variables out, so the launcher's seated room is the only spelling of the path -- deleting the second spelling is the lesson written as code. prefer_adopted_room in the launcher lets an adopted room outrank a pin holding NO file at all, which is deliberately narrower than "fewer files": a directory somebody is writing to keeps its place, and a directory holding nothing cannot be a destination anyone is using. The swap is announced on stderr, because a silent correction is the same class of quiet as the fault it repairs.
+think The control lifts prefer_adopted_room out of tools/ag/agent-jail.sh with sed rather than copying it, so the six HEAL legs prove the code that runs. Losing the source makes the leg refuse instead of guess -- the same discipline qa_report_card.sh keeps when it lifts measure() out of prose_register_scan.sh.
+think Two smaller reds closed beside it. tools/fixtures/pin_bound_touch_scan.sh, seated this afternoon, printed `detail_bound=24576` inside its prove-red block while already holding BOUND_READER; it now reads the bound and derives the one-byte-past figure, so declared_ceiling's deciding count fell 2 to 1. And SKILL.md, landed at the root today, was in the tree and not classified by template-manifest.bron, so sow read M1_BAD; it is allowed and scrubbed like its sibling doors, since it names Keaton twice.
+think The council rota read N = git rev-list --count HEAD = 3633, so row 3 -- Water and Venus, care and flow, whose sense is taste. Its fixed seat is the happy zone and the thin edge, and that page's whole teaching is that a seam needs an explicit boundary carrying a contract, with collaboration checks on the asker's side and contract checks on the answerer's. The conf is the asker and the launcher the answerer, and there was no boundary between them at all -- the conf simply overwrote a default. The cardinal seat added the diagnosis: Conway, one lap down. Two halves of one contract, written by hands that did not talk, in a tree six always-on bodies write into.
+obs Two reds are Mind's and were surfaced rather than crossed. declared_ceiling's remaining line is tools/l/chatgpt-mind.sh, byte-pinned by SHA-256 in the MIND adaptation receipt. And session-logs/date/20260828/20260828-142844_the-lane-that-admits-its-own-record.kyri is zero bytes, committed empty at 41eaa0adeb; I checked every ref and no tree has ever held its content, so it cannot be recovered and I will not author another body's record. Its index row promises "Mind's two lane grants". empty_document reds until Mind fills it.
+obs The host's own tools/e/enclosure.conf still pins both variables. It is gitignored, so it is one machine's file rather than the tree's, and the scan reports it every run without gating -- a guard that reds on somebody else's machine is a guard someone turns off. The heal covers the credential case there already, since .claude-state holds no file; .cursor-agent-state holds two files from the launcher's own one-time host reseed, so cursor keeps a working auth and loses its chats and projects until that one line changes. Surfaced rather than edited: a gitignored per-host config is the operator's.
+obs construction/ITINERARY.md now reads 24575 bytes against a bound of 24,576, and construction/REDS.md 24574 against the same -- one byte of headroom on the card and two in the ledger. The previous lap asked whether a one-page card can hold six always-on lanes at six bytes of headroom; the answer measured today is that it holds them at one, and the next row either lap books has nowhere to go until reds_fold.sh's OPEN-row seat is settled. Both are Keaton's word rather than mine.
+obs I left agent-jail.sh as bash rather than taking the standing adaptation grant to Rishi in the same lap. An adaptation is its own witnessed round, and a red repair inside the file being adapted would be two keystones in one.
+loom roster=cold guards_run=79 guards_green=72 guards_red=7 tree_moved=no wall_min=27 concurrent_peer_roster=yes
+loom guard=pond_enclosure_state control_cases=24 control_fail=0 pinned_elders=0 host_pinned_elders=2 stranded_rooms=2 wall_s=2
+loom scan=readme_reach broken_in_living_before=26 after=0 files=4 targets_verified_present=26
+loom scan=foundations_link links_read=503 broken_before=1 after=0
+loom scan=declared_ceiling law_copies_deciding_before=2 after=1 remaining=chatgpt-mind.sh
+loom pin=construction/ITINERARY.md bytes=24575 bound=24576 headroom=1
+loom pin=construction/REDS.md bytes=24574 bound=24576 headroom=2
+loom heal=prefer_adopted_room live_pier=yes claude_pin=empty_yielded cursor_pin=2_files_kept codex_pin=unset_noop
+loom disk=loops/claude files=5229 elder=.claude-state files=0 elder_mtime=2026-08-28T11:40:13
+file tools/fixtures/pond_enclosure_state_scan.sh the seam read from both sides; one gate, three reported readings
+file tools/fixtures/pond_enclosure_state_control.sh 24 cases in a pen, the bound both ways, the heal lifted from the launcher
+file tools/p/pond_enclosure_state_witness.rish the standing guard, rostered at tier lap
+file tools/ag/agent-jail.sh prefer_adopted_room -- an adopted room outranks a pin holding no file
+file tools/e/enclosure.conf.example the three state variables commented out, so the launcher's room is the only spelling
+file tools/fixtures/pin_bound_touch_scan.sh the prove-red block reads the bound rather than spelling it
+file template-manifest.bron SKILL.md allowed and scrubbed, so the manifest classifies every root path once
+file glow/README.md 22 gen/*.glow links repointed into their letter rooms
+file active-designing/README.md two yonder links repointed onto their day shelves
+file active-designing/seam-season-hammock.md one yonder link repointed
+file active-designing/steep.md one yonder link repointed
+file foundations/20260727-113304_the-merit-ledger.md the merit ledger's yonder citation repointed, label and target
+file construction/REDS.md %327 booked and closed, the pin at 24,574 of 24,576
+file construction/standing-equipment.kyri pond_enclosure_state rostered at tier lap
+file pond/README.md the enclosure state room, accreted beside orbit one
+file context/specs/enclosure-editors.md the loops room accreted beside the elder auth sentence, never over it
+file construction/ITINERARY.md the Now block, the nib, and the prior-lap row
+recommend check-in (Keaton) -- three things want his word and none is mine to take. The card is at zero headroom and the ledger at two bytes, so the next lap that books a red cannot write it down until reds_fold.sh's OPEN-row seat is settled. This pier's own tools/e/enclosure.conf still pins two elder paths, and it is gitignored. And Mind's empty 20260828-142844 log reds empty_document for every body until Mind fills it. Mechanically the next Pond lap is orbit two proper: the declarations driven into grants through Caravan's capability pieces, which is a lane brush and wants Dream's nod first.

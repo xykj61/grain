@@ -503,3 +503,18 @@ guard pond_enclosure_policy
 path tools/p/pond_enclosure_policy_witness.rish
 tier lap
 seated 20260828.002135
+
+# pond_enclosure_state -- the launcher's state house and the per-host config it reads, compared.
+# tools/ag/agent-jail.sh seats `loops/claude`, `loops/cursor`, and `loops/codex` and adopts an
+# elder directory into each once; tools/e/enclosure.conf is sourced BEFORE those defaults, so a
+# path named there outranks the move and the jail binds a directory the adoption just emptied. The
+# gate is one reading -- the tracked example naming an elder -- and the host's own gitignored conf
+# and the directories on disk are reported without gating, since one machine's file is not the
+# tree's to fail on. `lap` rather than `cadence`: the enclosure arc is under active work and the
+# whole run costs under two seconds, measured 20260828. Booked as REDS %327 on the lap that found
+# a credential directory already rebound empty on this pier.
+
+guard pond_enclosure_state
+path tools/p/pond_enclosure_state_witness.rish
+tier lap
+seated 20260828.170003

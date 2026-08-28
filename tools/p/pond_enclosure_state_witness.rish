@@ -1,0 +1,47 @@
+# tools/p/pond_enclosure_state_witness.rish -- the enclosure's state room, read from both sides.
+#
+#   rishi/bin/rishi run tools/p/pond_enclosure_state_witness.rish
+#
+# WHAT THIS HOLDS. tools/ag/agent-jail.sh seats the loop-state room and binds it over the agent's
+# HOME; tools/e/enclosure.conf.example is the per-host file every pier copies, and the launcher
+# sources it BEFORE its own defaults. Two files, one contract. This gates at zero the count of
+# state variables the tracked example pins to a path adopt_state_dir has since moved, and reports
+# -- never gates -- the same reading over this host's own gitignored conf and over the directories
+# actually on disk.
+#
+# WHY THE ONE GATE IS THIS ONE. A pinned elder is the whole fault: adopt_state_dir moves the elder
+# into the room, the pinned variable still names the elder, `mkdir -p` recreates it empty, and the
+# jail binds an empty directory over a HOME whose login the launcher's own comment promises is
+# done once per pier. The host readings stay advisory because tools/e/enclosure.conf is gitignored
+# and one machine's file is not the tree's to fail on (REDS %327).
+#
+# WHAT THIS DOES NOT REACH. Whether the enclosure the launcher builds is the enclosure the policy
+# in pond/enclosure_policy.kyri declares. That comparison is its own round; this proves the state
+# room alone, which is the half where a credential was already being lost.
+#
+# ACCRETE-ONLY. The launcher is repaired rather than rewritten toward Pond, and every markdown
+# that instructs or references ai-jail stays unmolted. The ENCLOSURE selector stays ai-jail.
+
+say "enclosure-state: Language EN -- a config that outranks a seated move is a promise nobody compared."
+say "enclosure-state: Style Gauge, Meter -- the reading names the variable, so a count becomes a line to open."
+say "enclosure-state: Lens TAME -- safety first: the adopt roster is bounded, the refusal is proven from both sides, and a pin holding live state is never overridden."
+
+let control = run ["sh" "tools/fixtures/pond_enclosure_state_control.sh"]
+say control.out
+assert control.ok else "enclosure-state: the control must complete"
+assert control.out contains "control=green" else "enclosure-state: every planted case must answer as its comment says"
+assert control.out contains "BITTEN one variable pinned to its elder" else "enclosure-state: the real fault must be bitten"
+assert control.out contains "FREE a deliberate third path is not an elder" else "enclosure-state: a deliberate host path must stay free"
+assert control.out contains "FREE sixteen adopt pairs sit exactly at the bound" else "enclosure-state: the bound must be proven from the passing side"
+assert control.out contains "BITTEN seventeen adopt pairs pass the bound" else "enclosure-state: the bound must be proven from the refusing side"
+assert control.out contains "HEAL an empty pin yields to an occupied room" else "enclosure-state: the launcher's own heal must be exercised"
+assert control.out contains "HEAL an occupied pin keeps its place" else "enclosure-state: live state must never be overridden"
+assert control.out contains "control_fail=0" else "enclosure-state: no planted case may fail"
+
+let scan = run ["sh" "tools/fixtures/pond_enclosure_state_scan.sh"]
+say scan.out
+assert scan.ok else "enclosure-state: the tracked example must name no elder path"
+assert scan.out contains "pinned_elders=0" else "enclosure-state: pinned_elders is gated at zero"
+assert scan.out contains "verdict=green" else "enclosure-state: the scan must report green"
+
+say "GREEN: pond enclosure-state -- the shipped example names the seated room, and an emptied pin yields to it."

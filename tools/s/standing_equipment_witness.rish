@@ -132,7 +132,28 @@ assert control.out contains "red_keeps_both_streams=yes" else "standing-equipmen
 assert control.out contains "red_names_its_evidence=yes" else "standing-equipment: the printed red line must name the file its words landed in"
 assert control.out contains "green_leaves_no_evidence=yes" else "standing-equipment: a green leaves no room, so a stale file can never read as this run's verdict"
 
+
+# The dead-letter box (REDS %321, and its second firing). The load-bearing assertion is
+# full_box_still_passes: this reading reports and never gates, since fleet_round_open.sh parks a
+# dirty tree there by design -- and a reading proven only where the box is empty cannot be told
+# from a line that never looked.
+assert control.out contains "empty_box_reads_zero=yes" else "standing-equipment: an empty box must read zero"
+assert control.out contains "empty_box_stays_quiet=yes" else "standing-equipment: an empty box prints no detail line"
+assert control.out contains "empty_box_passes=yes" else "standing-equipment: an empty box must not disturb the pass"
+assert control.out contains "one_letter_counted=yes" else "standing-equipment: one stashed lap must be counted"
+assert control.out contains "one_letter_named=yes" else "standing-equipment: a stash must be named by its own message, so the count becomes a line to open"
+assert control.out contains "one_letter_sized=yes" else "standing-equipment: a stash must carry its file count, since a bare number is what REDS %321 already had"
+assert control.out contains "full_box_still_passes=yes" else "standing-equipment: mail in the box is REPORTED and never refused"
+assert control.out contains "full_box_still_runs_guards=yes" else "standing-equipment: a stash must not stop a single guard from running"
+assert control.out contains "bound_at_sixteen_counted=yes" else "standing-equipment: sixteen entries sit exactly at max_stash_entries"
+assert control.out contains "bound_at_sixteen_names_last=yes" else "standing-equipment: the sixteenth entry is still enumerated"
+assert control.out contains "bound_at_sixteen_no_overflow=yes" else "standing-equipment: at the bound there is nothing left over to announce"
+assert control.out contains "past_bound_counted=yes" else "standing-equipment: the count is whole even past the enumeration bound"
+assert control.out contains "past_bound_says_so=yes" else "standing-equipment: an entry past the bound is announced rather than quietly dropped"
+assert control.out contains "past_bound_stops_enumerating=yes" else "standing-equipment: enumeration stops at max_stash_entries"
+assert control.out contains "past_bound_still_passes=yes" else "standing-equipment: a full box past the bound still reports rather than refusing"
+assert control.out contains "nogit_box_reads_zero=yes" else "standing-equipment: a pen outside git answers zero rather than refusing"
 assert control.out contains "control_verdict=ok" else "standing-equipment: the control must agree with itself"
-say "RED and GREEN paths proven -- ten refusals bitten across forty-six behaviors, and the runner driven over a planted roster in and out of a real repository"
+say "RED and GREEN paths proven -- ten refusals bitten across sixty-two behaviors, and the runner driven over a planted roster in and out of a real repository"
 
 say "GREEN: standing-equipment -- the roster is a list a program reads, each row names its cadence, and running it writes down when."

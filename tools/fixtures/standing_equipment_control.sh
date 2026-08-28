@@ -374,4 +374,89 @@ else
   echo "green_leaves_no_evidence=yes"
 fi
 
+
+# --- the dead-letter box, proven on its own real repository ------------------------------
+# The runner reads `git stash list` on the same line-one pass as the index (REDS %321, and the
+# second firing three hours later). This reading NEVER gates -- `fleet_round_open.sh` parks a dirty
+# tree there by design -- so the load-bearing case is the one that proves it stays a REPORT: a pass
+# with mail in the box still answers `run_verdict=ok`. A reading proven only where it is quiet
+# cannot be told from a line that never looked.
+stashpen="$pen/stashpen"
+mkdir -p "$stashpen/rishi/bin"
+( cd "$stashpen" && git init -q . && git config user.email a@b.c && git config user.name t \
+  && git config commit.gpgsign false && echo seed > kept.txt && git add kept.txt \
+  && git commit -qm "seed" ) >/dev/null 2>&1
+cat > "$stashpen/quiet.kyri" <<'EOF'
+format standing-equipment-v1
+guard alpha
+path guard.sh
+tier lap
+seated 20260825.000000
+EOF
+: > "$stashpen/guard.sh"
+cat > "$stashpen/rishi/bin/rishi" <<'EOF'
+#!/bin/sh
+exit 0
+EOF
+chmod +x "$stashpen/rishi/bin/rishi"
+( cd "$stashpen" && git add -A && git commit -qm "roster" ) >/dev/null 2>&1
+
+run_stashpen() {
+  ( cd "$stashpen" && STANDING_ROSTER=quiet.kyri STANDING_CARD=run-card.kyri \
+      sh "$runner" "$@" 2>/dev/null ) || true
+}
+
+# The empty box: zero, no detail line, and the pass runs its guard.
+out=$(run_stashpen)
+case "$out" in *"stashed_entries=0"*) echo "empty_box_reads_zero=yes" ;; *) echo "empty_box_reads_zero=no" ;; esac
+case "$out" in *"detail: stash@{"*) echo "empty_box_stays_quiet=no" ;; *) echo "empty_box_stays_quiet=yes" ;; esac
+case "$out" in *"run_verdict=ok"*) echo "empty_box_passes=yes" ;; *) echo "empty_box_passes=no" ;; esac
+
+# One piece of mail: counted, named by its own message, and sized by its file count -- because a
+# bare number is exactly what %321 already had and nobody opened.
+#
+# BOTH PLANTED FILES ARE UNTRACKED, and that is the needle rather than a convenience. `git stash
+# show --name-only` omits untracked files, while `fleet_round_open.sh` stashes with `-u`, so a lap
+# whose leavings are all NEW files -- a fresh scan, a fresh witness, fresh fixtures, which is
+# exactly what %321 lost -- reads `0 files` and looks like an empty envelope. Drop
+# `--include-untracked` from the runner and this case reads 0 and bites (REDS %328).
+# The run card the pass above wrote is untracked, and `git stash push -u` would sweep it in, so the
+# stash would hold three files where the case is about two. Removed first, so the count this reads
+# is the count the case plants rather than a leftover of the reading before it.
+( cd "$stashpen" && rm -f run-card.kyri \
+  && echo unsent > work_one.txt && echo unsent > work_two.txt \
+  && git stash push -u -q -m "a lap's unsent work" ) >/dev/null 2>&1
+out=$(run_stashpen)
+case "$out" in *"stashed_entries=1"*) echo "one_letter_counted=yes" ;; *) echo "one_letter_counted=no" ;; esac
+case "$out" in *"a lap's unsent work"*) echo "one_letter_named=yes" ;; *) echo "one_letter_named=no" ;; esac
+case "$out" in *"stash@{0} 2 files"*) echo "one_letter_sized=yes" ;; *) echo "one_letter_sized=no" ;; esac
+# THE LOAD-BEARING CASE: mail in the box is reported and never refused.
+case "$out" in *"run_verdict=ok"*) echo "full_box_still_passes=yes" ;; *) echo "full_box_still_passes=no" ;; esac
+case "$out" in *"guards_run=1"*) echo "full_box_still_runs_guards=yes" ;; *) echo "full_box_still_runs_guards=no" ;; esac
+
+# The enumeration bound, from both sides. Sixteen entries are all named; the seventeenth pushes the
+# count past `max_stash_entries` and the overflow says so on its own line rather than vanishing.
+i=2
+while [ "$i" -le 16 ]; do
+  ( cd "$stashpen" && echo "$i" > "filler_$i.txt" && git stash push -u -q -m "filler $i" ) >/dev/null 2>&1
+  i=$((i + 1))
+done
+out=$(run_stashpen)
+case "$out" in *"stashed_entries=16"*) echo "bound_at_sixteen_counted=yes" ;; *) echo "bound_at_sixteen_counted=no" ;; esac
+case "$out" in *"unenumerated"*) echo "bound_at_sixteen_no_overflow=no" ;; *) echo "bound_at_sixteen_no_overflow=yes" ;; esac
+case "$out" in *"stash@{15} "*) echo "bound_at_sixteen_names_last=yes" ;; *) echo "bound_at_sixteen_names_last=no" ;; esac
+
+( cd "$stashpen" && echo 17 > filler_17.txt && git stash push -u -q -m "filler 17" ) >/dev/null 2>&1
+out=$(run_stashpen)
+case "$out" in *"stashed_entries=17"*) echo "past_bound_counted=yes" ;; *) echo "past_bound_counted=no" ;; esac
+case "$out" in *"1 further entries unenumerated"*) echo "past_bound_says_so=yes" ;; *) echo "past_bound_says_so=no" ;; esac
+case "$out" in *"stash@{16} "*) echo "past_bound_stops_enumerating=no" ;; *) echo "past_bound_stops_enumerating=yes" ;; esac
+case "$out" in *"run_verdict=ok"*) echo "past_bound_still_passes=yes" ;; *) echo "past_bound_still_passes=no" ;; esac
+
+# A pen outside git answers zero rather than refusing -- the same shape the staged reading keeps,
+# so a control can drive this runner without standing inside a repository.
+out=$( ( cd "$pen" && STANDING_ROSTER=cadence.kyri STANDING_CARD=run-card.kyri \
+        sh "$runner" 2>/dev/null ) || true )
+case "$out" in *"stashed_entries=0"*) echo "nogit_box_reads_zero=yes" ;; *) echo "nogit_box_reads_zero=no" ;; esac
+
 echo "control_verdict=ok"
