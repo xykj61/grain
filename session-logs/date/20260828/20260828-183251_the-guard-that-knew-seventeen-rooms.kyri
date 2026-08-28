@@ -1,0 +1,61 @@
+format session-log-v1
+stamp 20260828.183251
+editor Claude Code Terminal
+provider Anthropic
+product Claude Code
+role Silence -- Sound's planet, the infrastructure half, on the granted Glow-tree door
+modality text
+model claude-opus-5
+model_status active runtime unverified
+voice Kyri
+host macOS clone (Mac hand, Darwin arm64) -- Eastern (EDT) one-clock
+coordination user coordinated separate sessions
+collaborator_product Claude Code (peer session grain-38, same checkout)
+collaborator_evidence local git history -- two commits landed mid-lap (199e773d8, 09c6ded38); two messages sent from this hand, none answered yet
+collaborator_scope construction/REDS.md and its 321-325 archive shelf; tools/fixtures/radiant_h1_fence_scan.sh; the tools/equinox fold whose tail is still open
+title the guard that knew seventeen rooms -- a rename swept six dated files and the instrument written to stop it read green
+prompt Open as SILENCE under the INNER LOOP Standing block -- roster cold then hot, reds first as standfast, QA on touch, council rota row N mod 5, prose witnesses on prose sends, stamp-and-name, ASCII-first, READ SCOPE -- then pick up the running thread and take the infrastructure lane.
+think Reds-first read honestly first. The three cold-roster reds are declared_ceiling (Mind's, per the card), foundations_link (the peer's tools/equinox fold tail, named to them and untouched), and remember_git_nib (the card's nib gone stale because the peer landed two commits without pinning it -- their surface). None of the three was mine to close, so the lap went to the card's named Kyri door: the Glow tree.
+think Reading the charter to find what was still open on that granted door is what found the red -- no meter fired, and the reason no meter fired became the row. Its own before/after table read `| src/shape/ | **src/shape/** |` in three rows, and its cost sentence bound four rooms to one token with four different counts: `src/shape/ 39, src/shape/ 8, src/shape/ 4, src/shape/ 3`. Five distinct counts cannot belong to one room.
+think I checked rather than assumed. git show 50ffef60d proves the charter was BORN naming src/lib, src/sur, src/app, src/sec, src/til, and commit 9f053c662 ("src: six rooms become three") rewrote all five. Seven lines, six files. tools/fixtures/dated_classify_seam.sh -- this tree's own shared classifier -- answers `dated` for every one of the six.
+think My first framing was too wide and measuring corrected it. I set out to say a dated file must never be modified, then counted: over the last 400 commits, single commits modify 434, 163, 121 and 114 dated files, and those are seated Gauge and Radiant register molts. A blanket refusal would red on ordinary work, which is a gate someone turns off. The narrow and correct statement is that a register pass holds claims exactly, and the tree already names the instrument for it.
+think That instrument is claim_preserve, and PATH is one of its six claim classes. So I ran it retroactively at CLAIM_PRESERVE_BASE=9f053c662^ over the five non-charter files -- and it answered GREEN, "claim tokens identical", on all five. The guard written to hold paths exactly could not see the paths that moved.
+think The cause was one line: claim_preserve_extract.rish:39 spelled a hardcoded roster of 17 room names. git ls-files says this tree has 82 tracked top-level rooms, so 65 are invisible -- src, construction, .claude/rules, caravan, comlink, constel, mantra, tally, kumara, expanding-prompts, docs-geode, pond, skate, aurora and 51 more. Every register pass ever run through that guard held paths exactly in one room in five.
+think That is REDS %301's sentence one instrument over. There a meter discovered rooms by dated basenames and never reported the room nobody thought to name; here a meter recognized paths by a roster of names and never reported the room nobody thought to add. The repair is %301's own: ask git for every room rather than asking the tree for the rooms already named.
+obs The repair puts the derivation in the scan and makes the extractor refuse without it -- exit 1, proven -- rather than carrying a fallback roster. A fallback is the bug wearing a smaller hat; this is the discipline the QA card already keeps when it cites measure(), where removing the source makes the card refuse rather than guess.
+obs Proven both ways on REAL history rather than on a plant, which the tree values more and which was available here. Replayed at 9f053c662^, the repaired guard names all five files and the exact tokens -- src/lib/ and src/sur/ out, src/gate/ and src/shape/ in. After the byte-exact restoration the same run is GREEN at exit 0. And the unrepaired guard read GREEN on those same bytes an hour earlier, so the repair is what made the difference, on one set of bytes.
+obs The cost side was measured rather than asserted, because widening a pattern usually buys noise. PATH tokens over six living documents rose 86 to 132, and I read the 46 additions: .claude/rules/urbit-reframe.md, construction/REDS.md, docs-geode/tutorials/the-first-hour.md, expanding-prompts/20260826-033051_pond-completes-the-enclosure.md, brix/README.md, assets/grain-logo.svg. Real paths, not prose collisions. The widening bought coverage.
+obs The restoration is two different acts and they are kept apart on purpose. The five non-charter files had zero commits after the sweep, so each is restored whole and cmp-identical to 9f053c662^. The charter had a legitimate authorial update after it (5406736b3 seated the Status line and recorded what landed), so only its seven swept lines were replaced by line number -- 7 insertions, 7 deletions, and the author's own paragraphs stand untouched.
+obs The sharpest single fact of the lap: the sweep destroyed the one document that could have resolved its own references. There is no resolver for a room rename -- tools/d/dated_path_resolve.rish answers for dated basenames, not for src/sur -> src/shape -- so the charter's before/after table IS the resolver, and it was the thing erased. A reader meeting `src/sur/` in a baton had nowhere left to look.
+obs Two of the seven lines are quoted RECOMMEND utterances in expanding-prompts/archive/ -- a closed stack, fetched by named path. A recorded recommendation is a thing a lap said at a moment, and it now said words no lap ever said. That is the class of damage worth naming loudest, because nothing about it looks wrong on the page.
+obs The charter's Status line was stale on both its open items and I verified before rewriting rather than after: glow/gen/ holds 12 letter rooms now rather than 340 flat entries, and constel/socket.rye stands at 26,436 bytes from my own last lap. So the line now names the deep debride, custody gate %5, as the one thing still ahead.
+obs My own instrument error, owned: I opened the cold roster piped through `tail -60` and the run printed more than sixty lines, so foundations_link and the third red fell above my cut. The runner writes evidence to construction/standing-equipment-reds/ and reading that recovered all three -- the reading was whole, my capture of it was not. Next lap pipes to a file.
+obs The cold roster completed at 79 guards, 76 green, 3 red, and reported tree_moved=yes. That was not a foreign write into my files: the peer landed two commits mid-run, which is REDS %291's shape arriving benignly. I named the peer at open by ListAgents and again before the first byte moved, listing every file I intended to touch. Neither message has been answered; nothing of theirs was touched.
+obs The full hot pass did not run and I am not claiming it. The cold roster took over thirty minutes and a second full pass beside a peer's active session risks %281's shadow race, so I ran the runner's own single-guard --hot on the six guards this lap reaches -- reds_ledger_headline, reds_row_present, reds_status_consistency, shell_dialect, rishi_bare_path, pin_bound_touch -- each reading staged_uncommitted=9, tree_moved=no, run_verdict=ok. Said plainly: this lap's change is proven; the whole-tree hot green is not claimed.
+obs reds_ledger_headline red on the first hot pass, which is the guard doing its job -- adding row %326 left the headline reciting 325. Repaired by its own named command, reds_ledger_headline_write.sh write, and GREEN on the re-run with eight behaviors proven on planted ledgers.
+obs QA on touch, four artifacts, no frame pushed. The charter A at 95 (field; register 84, reach 100, truth 100 on 10 cited paths); REDS.md, claim_preserve_extract.rish and claim_preserve_scan.sh each A at 96 (meter, graded on comments). The stack stayed empty because every reading stood above B.
+obs The honest limit, written into the row rather than left for someone to discover: claim_preserve is opt-in. It runs only when a pass names its own files in CLAIM_PRESERVE_FILES, so nothing obliges a path-moving commit to run it at all. The guard now sees every room; what still has no wall is being made to look.
+obs The rota computed row 4 -- N is git rev-list --count HEAD at 3639, and 3639 mod 5 is 4. My previous lap read row 3, so this advanced by exactly one and no hand advance was owed. Earth, Mercury, the concrete: what already stands true before anyone argues with it. It read the lap exactly -- git show held the original bytes, the shared classifier answered `dated` without being argued with, and the fact outranked my first plausible story about it.
+loom red=%326 stamp=20260828.182855 next_free_from=xy fetched=yes
+loom blind_spot rooms_tracked=82 rooms_known_before=17 rooms_blind=65
+loom coverage docs=6 path_tokens_before=86 path_tokens_after=132 added_are_real_paths=yes
+loom replay base=9f053c662^ files=5 before_repair=GREEN after_repair=RED after_restore=GREEN restore_exit=0
+loom refusal missing_roster_arg_exit=1 fallback_roster=none
+loom restored files=6 lines=7 cmp_identical_whole_files=5 charter_lines_by_number=7 charter_diff=7+/7-
+loom roster_cold guards_run=79 green=76 red=3 tree_moved=yes capture_truncated_by=tail-60
+loom roster_hot_scoped=6 guards_green=6 staged_uncommitted=9 tree_moved=no run_verdict=ok
+loom qa charter=95 reds=96 extract=96 scan=96 frames_pushed=0
+loom reds_pin bytes=21281 bound=24576 headline_repaired=yes
+loom rota_n=3639 rota_row=4 rota_name=earth prior_row=3 hand_advanced=no
+loom nonascii_added=0 preexisting_nonascii_lines_untouched=4
+file tools/fixtures/claim_preserve_extract.rish the PATH class takes the room roster as a required argument and refuses without it, rather than spelling 17 names
+file tools/fixtures/claim_preserve_scan.sh derives the roster from git ls-files -- longest-first so docs-geode wins over docs, leading dot escaped so .claude is a room
+file construction/REDS.md row %326, and the headline repaired to recite the spine it measures
+file active-designing/20260827-174816_the-glow-tree-and-the-rooms-that-say-what-they-hold.md the seven swept lines restored by number; the Status line now names the deep debride as the one door still ahead
+file expanding-prompts/archive/20260802-012113_equinox-e197-fusion-baton.md restored whole -- two lines, one of them a quoted RECOMMEND
+file expanding-prompts/archive/20260802-012348_equinox-e198-fusion-baton.md restored whole -- two lines, one of them a quoted RECOMMEND
+file expanding-prompts/archive/20260802-012507_equinox-e199-fusion-baton.md restored whole -- one line
+file expanding-prompts/archive/20260802-120624_equinox-e200-fusion-baton.md restored whole -- one line
+file foundations/20260826-024942_the-grain-and-the-crossing.md restored whole -- the aether rota document, one line
+file session-logs/date/20260828/20260828-183251_the-guard-that-knew-seventeen-rooms.kyri this record
+recommend check-in (either) -- %326 is booked and its repair is proven both ways on the bytes that caused it, with 65 rooms brought inside a guard that saw 17. What stops is the seam the repair cannot reach: claim_preserve is opt-in, so nothing obliges a path-moving commit to run it, and binding the two is a seat rather than a lap. Three items sit with the peer and I touched none -- the foundations_link red from their tools/equinox fold, the card's stale Git nib, and the zero-byte 142844 log. One sits with Keaton: whether constel/LADDER.md's declared Field setting should become Meter, measured F at 56 under Field and A+ at 98 under Meter.
