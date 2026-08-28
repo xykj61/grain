@@ -1,28 +1,30 @@
-# tools/g/glow_vane_pair_mirrors_witness.rish -- STOA346: the 2m mirrors.
+# tools/g/glow_vane_pair_mirrors_witness.rish -- STOA346: the 2m mirrors, heard.
 #
 #   rishi/bin/rishi run tools/g/glow_vane_pair_mirrors_witness.rish
 #
-# Tally's relational wall, mirrored true into Caravan and Mantra: two runtime
-# faces at every door, edges exact, the elder tally desk green beside them.
+# Tally's relational wall, mirrored into Caravan and Mantra: two runtime faces at every door.
+# REWRITTEN 20260828 (Sound's language custody, REDS %310): the elder form asserted only `.ok`
+# on desks whose generated main compared the gate to a copy of itself -- exit 0 for every input,
+# nothing spoken, so "every edge exact" was a sentence no run had ever checked. The lowering
+# speaks now, and this witness asserts the SPOKEN DIGIT per side, read as the worker's first
+# output line and compared exactly -- `contains` is a substring test and the worker's own
+# EXIT:0 tail contains a 0, which is precisely how the elder blindness survived (%308's kin).
+# Every accept side asserts 1, every refuse side asserts 0, per each gate's own placard.
 
-say "346: caravan — within, over, and at the cap..."
-let c1 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "src/gate/gate-caravan-caps-pair-bound-u32.glow" "3" "8"]
-assert c1.ok else "346: caravan within failed"
-let c2 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "src/gate/gate-caravan-caps-pair-bound-u32.glow" "9" "8"]
-assert c2.ok else "346: caravan over failed"
-let c3 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "src/gate/gate-caravan-caps-pair-bound-u32.glow" "8" "8"]
-assert c3.ok else "346: caravan at-cap failed"
+fn side desk a b: trim (run ["sh" "-c" "sh tools/g/glow_run_worker.sh src/gate/${desk}.glow ${a} ${b} 2>/dev/null | head -1"]).out
 
-say "346: mantra — above, below, and at the floor (floor stands first)..."
-let m1 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "src/gate/gate-mantra-gen-floor-pair-u32.glow" "3" "5"]
-assert m1.ok else "346: mantra above failed"
-let m2 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "src/gate/gate-mantra-gen-floor-pair-u32.glow" "3" "2"]
-assert m2.ok else "346: mantra below failed"
-let m3 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "src/gate/gate-mantra-gen-floor-pair-u32.glow" "3" "3"]
-assert m3.ok else "346: mantra at-floor failed"
+say "346: caravan caps -- within, over, and at the cap..."
+assert (side "gate-caravan-caps-pair-bound-u32" "3" "8") == "1" else "346: caravan within must speak 1"
+assert (side "gate-caravan-caps-pair-bound-u32" "9" "8") == "0" else "346: caravan over must speak 0 -- the wall refuses"
+assert (side "gate-caravan-caps-pair-bound-u32" "8" "8") == "1" else "346: caravan at-cap must speak 1 -- the bound is inclusive"
 
-say "346: the elder tally mirror stays green..."
-let t1 = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "src/gate/gate-tally-garden-pair-bound-u32.glow" "7" "7"]
-assert t1.ok else "346: tally regression failed"
+say "346: mantra gen-floor -- above, below, and at the floor..."
+assert (side "gate-mantra-gen-floor-pair-u32" "3" "5") == "1" else "346: mantra above must speak 1"
+assert (side "gate-mantra-gen-floor-pair-u32" "3" "2") == "0" else "346: mantra below must speak 0 -- the floor holds"
+assert (side "gate-mantra-gen-floor-pair-u32" "3" "3") == "1" else "346: mantra at-floor must speak 1 -- at the floor stands"
 
-say "GREEN: the 2m mirrors — Tally, Caravan, and Mantra all ask with two runtime faces; every edge exact; the pattern holds across the vanes."
+say "346: the elder tally mirror -- at the bound, and past it..."
+assert (side "gate-tally-garden-pair-bound-u32" "7" "7") == "1" else "346: tally at-bound must speak 1"
+assert (side "gate-tally-garden-pair-bound-u32" "9" "8") == "0" else "346: tally past-bound must speak 0 -- the refusal the elder never asked for"
+
+say "GREEN: the 2m mirrors -- Tally, Caravan, and Mantra ask with two runtime faces, and every edge is exact because every answer was HEARD: eight sides spoken, three refusals among them."
