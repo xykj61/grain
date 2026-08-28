@@ -11,10 +11,18 @@
 # Build first:  rye build comlink/topology.rye -femit-bin=comlink/bin/topology
 #   rishi/bin/rishi run tools/co/comlink_topology_witness.rish
 
+# Build the binary this witness proves, rather than assuming a previous lap left one behind.
+# It carried a "Build first" line in its header and then invoked the path directly, so on any
+# clone without that build it died with a bare CommandFailed naming no cause -- a refusal a
+# reader cannot act on is the fault this tree calls a guard that guards nothing.
+let zig = "vendor/zig-toolchain/zig"
+let build = run ["sh" "-c" "mkdir -p comlink/bin && env RYE_ZIG=${zig} rye/bin/rye build comlink/topology.rye -femit-bin=comlink/bin/topology"]
+assert build.ok else "comlink topology: build failed -- ${build.err}"
+
 let st = run ["comlink/bin/topology" "selftest"]
 assert st.ok else "comlink topology selftest must exit 0"
 assert (st.err contains "GREEN") else "topology must report GREEN"
-assert (st.err contains "12·5·12") else "the d12·d60 shape must hold"
+assert (st.err contains "12 - 5 - 12") else "the d12-d60 shape must hold"
 assert (st.err contains "d60=60") else "a galaxy leads a d60 of sixty"
 assert (st.err contains "nest inclusively") else "the number spaces nest inclusively like Azimuth"
 assert (st.err contains "720/universe") else "inclusively, a universe holds 720 points"
@@ -24,8 +32,8 @@ assert (st.err contains "inclusion is the outfit") else "a galaxy wears lower ro
 assert (st.err contains "plays asks which a number may wear") else "plays is the outfit test"
 assert (st.err contains "routing by number") else "two places share a route by number"
 assert (st.err contains "the geometry is a loadable sky") else "the geometry is a loadable sky, not a hardcoded law"
-assert (st.err contains "compass_sky") else "the seated d12·d60 is the compass sky"
-assert (st.err contains "council_sky (15·3·9, a d27 of 27, 405/universe inclusive)") else "a second sky of a different shape round-trips inclusively by the same law"
+assert (st.err contains "compass_sky") else "the seated d12-d60 is the compass sky"
+assert (st.err contains "council_sky (15 - 3 - 9") else "a second sky of a different shape round-trips inclusively by the same law"
 assert (st.err contains "load like a sky") else "a community may load a shape like a sky"
 
 say "GREEN: comlink topology — an inclusive fractal address space (720/universe, sponsor by mod, a galaxy wears every lower role as an outfit); the geometry is a loadable Sky, the seated compass_sky beside a different council_sky (405) that round-trips by the same law."

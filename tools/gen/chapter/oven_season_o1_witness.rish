@@ -1,24 +1,32 @@
-# tools/gen/chapter/oven_season_o1_witness.rish -- Oven Chapter o1 path cut.
+# tools/gen/chapter/oven_season_o1_witness.rish -- Oven Chapter o1 path cut, read forward.
+#
+# The Oven Chapter's o1 lap cut the forge path anvil/ -> oven/ on 20260728.235520, and this
+# witness proved it by asserting oven/ stood and anvil/ was gone. The module renamed again to
+# ember/ on 20260808.220423 (Keaton's word) and nothing told this witness, so it read RED for
+# nineteen days -- unrostered, so no lap ran it. It proves the SAME cut now, read from where the
+# path actually ended: ember/ lives, and both elder names are retired. REDS %292's class, sixth
+# member found 20260827.
 #
 #   rishi/bin/rishi run tools/gen/chapter/oven_season_o1_witness.rish
 
 say "oven-season-o1: Language EN — cut the forge path."
-say "oven-season-o1: Style Radiant — prove oven/; refuse anvil/ ghost."
+say "oven-season-o1: Style Radiant — prove ember/; refuse the anvil/ and oven/ ghosts."
 say "oven-season-o1: Lens TAME — Oven Chapter o1."
 
 let counsel = run ["test" "-f" "counsel/date/20260728/20260728-235520_oven-season-o1-path-cut.md"]
 assert counsel.ok else "oven-season-o1: o1 counsel missing"
 
-let cut = run ["sh" "-c" "test -d oven && test -f oven/oven_core.rye && test -f oven/oven.rye && test -f oven/oven.peal && test ! -d anvil && echo CUT_OK"]
+let cut = run ["sh" "-c" "test -d ember && test -f ember/ember_core.rye && test -f ember/ember.rye && test -f ember/ember.peal && test ! -d anvil && test ! -d oven && echo CUT_OK"]
 assert cut.ok else "oven-season-o1: path cut incomplete"
-assert cut.out contains "CUT_OK" else "oven-season-o1: oven/ not LIVE"
+assert cut.out contains "CUT_OK" else "oven-season-o1: ember/ not LIVE"
 
-let gen = run ["test" "-f" "tools/gen/oven/oven_corpus_lap1.rish"]
-assert gen.ok else "oven-season-o1: gen oven lap1 missing"
-let view = run ["test" "-f" "tools/inference_oven_corpus_view.rish"]
-assert view.ok else "oven-season-o1: inference oven view missing"
+let gen = run ["test" "-f" "tools/gen/ember/ember_corpus_lap1.rish"]
+assert gen.ok else "oven-season-o1: gen ember lap1 missing"
+let view = run ["test" "-f" "tools/i/inference_ember_corpus_view.rish"]
+assert view.ok else "oven-season-o1: inference ember view missing"
+# The accrete shim stands at the elder flat path, so a reader who types the anvil name still lands.
 let shim = run ["test" "-f" "tools/an/anvil_corpus_lap1.rish"]
 assert shim.ok else "oven-season-o1: anvil accrete shim missing"
 
-say "GREEN: oven-season-o1 — oven/ LIVE · anvil/ gone · shims kept · Oven Chapter"
+say "GREEN: oven-season-o1 -- ember/ LIVE, anvil/ and oven/ gone, the Oven Chapter's cut read forward"
 say "GREEN: oven-season-o1 — path cut seated."
