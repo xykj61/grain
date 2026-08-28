@@ -12,6 +12,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260827.210136` | [the sweep and what it cost me](20260827/20260827-210136_the-sweep-and-what-it-cost-me.kyri) | 34 findings, 16 closed; two were mine from that morning |
 | `20260827.203453` | [the R1 frame orphan verified](20260827/20260827-203453_r1-frame-orphan-verified.kyri) | seva_r1_frame.rye confirmed unreached; commit 533b8ffb7 moved the seam to R2 |
 | `20260827.202442` | [the print cap is not the cause](20260827/20260827-202442_the-print-cap-is-not-the-cause.kyri) | seed_link RED confirmed; its five printed lines are a sample, not the cause |
 | `20260827.202014` | [two guards from one path](20260827/20260827-202014_two-guards-from-one-path.kyri) | ten witnesses stop needing one machine; a stash mistake pays off |
