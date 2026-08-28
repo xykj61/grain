@@ -55,7 +55,7 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `d75f9fac60` -- this round's parent.
+**Git nib:** `f561584b39` -- this round, before its nib amend.
 
 **Now.** **The ledger reads itself, and found a row closed twice.** The role swap of
 `20260827.155213` stands -- **Dream is Codex on the pier**, holding the systems core.
