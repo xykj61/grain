@@ -24,7 +24,7 @@ let verb = run ["sh" "-c" "grep -qE 'pub fn [a-z]' manual/tutorials/greet.rye"]
 assert verb.ok else "interfaces: greet.rye has no snake_case pub fn verb"
 
 # --- CLI surface: the binary answers selftest with a GREEN line ---
-let zig = "/home/keeper/grain/vendor/zig-toolchain/zig"
+let zig = "vendor/zig-toolchain/zig"
 let build = run ["sh" "-c" "mkdir -p tools/.build && env RYE_ZIG=${zig} rye/bin/rye build manual/tutorials/greet.rye -femit-bin=tools/.build/greet"]
 assert build.ok else "interfaces: greet.rye did not build"
 

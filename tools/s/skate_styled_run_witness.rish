@@ -11,7 +11,7 @@
 #
 #   rishi/bin/rishi run tools/s/skate_styled_run_witness.rish
 
-let zig = "/home/keeper/grain/vendor/zig-toolchain/zig"
+let zig = "vendor/zig-toolchain/zig"
 
 let run = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye run brushstroke/skate_styled_run_test.rye 2>&1"]
 assert run.ok else "skate styled run: rye run failed"

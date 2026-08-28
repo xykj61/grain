@@ -8,7 +8,7 @@
 # Build first:  rye build pleac/numbers.rye -femit-bin=tools/.build/pleac_numbers
 #   rishi/bin/rishi run tools/p/pleac_numbers_witness.rish
 
-let zig = "/home/keeper/grain/vendor/zig-toolchain/zig"
+let zig = "vendor/zig-toolchain/zig"
 let build = run ["sh" "-c" "mkdir -p tools/.build && env RYE_ZIG=${zig} rye/bin/rye build pleac/numbers.rye -femit-bin=tools/.build/pleac_numbers"]
 assert build.ok else "pleac numbers build failed"
 
