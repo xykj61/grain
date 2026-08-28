@@ -120,10 +120,10 @@ fn run_selftest() !u8 {
         assert(campaign == 6);
         // A behind target (one entry short) -- refused TargetNotCaughtUp, and may_transfer answers no.
         assert(!may_transfer(1, 5, 2, 2, 2, 1));
-        assert(timeout_now(1, 5, 2, 2, 2, 1, 5) == error.TargetNotCaughtUp);
+        if (timeout_now(1, 5, 2, 2, 2, 1, 5)) |_| unreachable else |err| assert(err == error.TargetNotCaughtUp);
         // A target id past the roster -- refused TargetOutOfRoster, sending nothing.
         assert(!may_transfer(9, 5, 2, 2, 2, 2));
-        assert(timeout_now(9, 5, 2, 2, 2, 2, 5) == error.TargetOutOfRoster);
+        if (timeout_now(9, 5, 2, 2, 2, 2, 5)) |_| unreachable else |err| assert(err == error.TargetOutOfRoster);
     }
 
     // 3. THE CAMPAIGN TERM IS EXACTLY ONE BUMP -- a single deliberate advance, whatever the leader's current term.
@@ -185,7 +185,7 @@ fn run_selftest() !u8 {
     {
         const full = roster.max_piers; // 8
         assert(may_transfer(full - 1, full, 3, 4, 3, 4)); // id 7 in a roster of 8 — a real member
-        assert(timeout_now(full, full, 3, 4, 3, 4, 9) == error.TargetOutOfRoster); // id 8 — past the roster
+        if (timeout_now(full, full, 3, 4, 3, 4, 9)) |_| unreachable else |err| assert(err == error.TargetOutOfRoster); // id 8 — past the roster
         assert((try timeout_now(full - 1, full, 3, 4, 3, 4, 9)) == 10); // the last real member campaigns at 10
     }
 

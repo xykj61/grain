@@ -162,7 +162,7 @@ fn run_selftest() !u8 {
         _ = terms.observe(3, 3);
         _ = terms.observe(4, 3);
         assert(!leadership_confirmed(&terms, 3, th)); // only two still at term 3 — below the majority
-        assert((linearizable_read(&m, &cmds, 1, &terms, 3, th)) == error.NotLeader);
+        if (linearizable_read(&m, &cmds, 1, &terms, 3, th)) |_| unreachable else |err| assert(err == error.NotLeader);
         assert(m.register == 0); // the refused read served nothing and applied nothing
         assert(!m.has_applied(0));
     }
@@ -213,7 +213,7 @@ fn run_selftest() !u8 {
         _ = terms.observe(0, 3);
         _ = terms.observe(1, 3);
         _ = terms.observe(2, 3);
-        assert((linearizable_read(&m, &cmds, 2, &terms, 3, th)) == error.ReadIndexPastLog);
+        if (linearizable_read(&m, &cmds, 2, &terms, 3, th)) |_| unreachable else |err| assert(err == error.ReadIndexPastLog);
         assert(m.register == 0); // the refused read applied nothing
     }
 
