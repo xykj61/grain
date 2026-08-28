@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260828.163808` | [the wall that ate the outage](20260828/20260828-163808_the-wall-that-ate-the-outage.kyri) | Mind's proven candidate carried past a dead network |
 | `20260828.163333` | [the two folds that want a word](20260828/20260828-163333_the-two-folds-that-want-a-word.kyri) | %301 last three rooms surveyed; each breaks one fold assumption |
 | `20260828.162148` | [the nib that outran its parent](20260828/20260828-162148_the-nib-that-outran-its-parent.kyri) | %322: a rebase moves the parent the nib names |
 | `20260828.161413` | [the deferred shelf takes its days](20260828/20260828-161413_the-deferred-shelf-takes-its-days.kyri) | yonder folds by day; 283 refs repointed; second of %301 five |
