@@ -54,27 +54,25 @@ Load these named paths too, so the loop carries the disciplines an unattended ru
 - **A log is born on its day's shelf** (seated `20260827.171500`) -- write each lap's own log to `session-logs/date/YYYYMMDD/` and prepend its row to `session-logs/date/README-index-YYYYMMDD.md`. The living pin holds one row per day, newest first, so it is the way in rather than a growing list; nothing folds afterward because nothing arrives loose (`.claude/rules/session-logs.md`).
 - **Running thread** -- start each lap by opening the newest day shelf named at the top of `session-logs/README.md` and reading its top few rows and the newest log's `recommend` line. That row plus the recommend field are the lap-to-lap baton, so the run picks up the last lap's arc -- which family just closed, what was left undone -- rather than rediscovering it from ITINERARY alone. The record is not only a memory; it is the handoff.
 
-### The seed ships every fifth round
+### The seed publishes on Keaton's word
 
-**On the lap the rota closes its cycle -- lap N where `N mod 5 == 0` -- project and force-push the
-public seed.** One count serves both, so neither wants remembering separately.
+**No lap publishes the public seed.** The cadence that once tied a projection to `N mod 5 == 0`
+was **CUT `20260826`**, and `construction/ITINERARY.md` carries the live reading: *"No lap
+publishes on a count; gate %1 stays his."* Custody gate **%1** holds every seed refresh at
+Keaton's own hand, so a loop reaching for `publish-seed.sh` would be crossing a gate rather than
+keeping a cadence. Surface the door and stop there.
 
-```
-bash ~/grain/publish-seed.sh
-```
+The four gates that publisher arms stand unchanged, named here so a reader knows what the hand is
+holding: the leak scan must read `IDENT_CLEAN` or the push refuses; the commit stays anonymous and
+unsigned, because signing would bind the depersonalized seed back to the maintainer; the
+commit-message wall re-arms itself, since the script re-creates `seed/.git` each publish; and
+`tools/s/seed_link_witness.rish` must be green, so the front door reads whole in the seed as well
+as the field.
 
-The four gates hold at every cadence and none of them is skipped: the leak scan must read
-`IDENT_CLEAN` or the push refuses; the commit stays anonymous and unsigned, because signing would
-bind the depersonalised seed back to the maintainer; the commit-message wall re-arms itself, since
-the script re-creates `seed/.git` each publish; and `tools/s/seed_link_witness.rish` must be green,
-so the front door reads whole in the seed as well as the field.
-
-**Reds come first.** A red books the allocation and a cadence is constructive work, so a stopped
-line stays stopped until the red closes -- then the seed ships on the next lap that qualifies.
-
-Why: a projection published rarely drifts from the thing it projects, and the drift stays hidden in
-the one place anyone looks. Measured `20260823`, the seed carried 867 links naming rooms it leaves
-behind. Foundation:
+Why the cadence was drawn, and why the count went: a projection published rarely drifts from the
+thing it projects, and the drift stays hidden in the one place anyone looks -- measured
+`20260823`, the seed carried 867 links naming rooms it leaves behind. That reading still holds;
+what changed is whose hand acts on it. The elder foundation stands as testimony:
 [`../../foundations/20260823-111029_the-seed-that-ships-every-fifth-round.md`](../../foundations/20260823-111029_the-seed-that-ships-every-fifth-round.md).
 
 ### The council rota -- one element's triad deep-read per lap (5 x 3)

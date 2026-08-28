@@ -117,3 +117,17 @@ it here. The pin keeps the three most recent, which is the live edge a reader wa
 *Row %303 folded to [`REDS-only-two-sets-rows-303.md`](REDS-only-two-sets-rows-303.md) on `20260827.211629`, **CLOSED** -- the waymark registry missing a mark it claimed to hold, and the completeness leg that can now see an absence. The sixth fold of `20260827`. It moved to make room for `%304`, which is its own sentence applied to a second guard the same hour: a roster written as a list grows stale by omission rather than by error.*
 
 *Row %305 folded to [`REDS-the-symlink-the-grep-never-sees-rows-305.md`](REDS-the-symlink-the-grep-never-sees-rows-305.md) on `20260827.221020`, **CLOSED** -- the first Choir round's catch: a rename that swept every direct caller and missed all twenty-two symlink-consumer sites. Folded on the lap it was booked, since the pin held four OPEN rows (%291, %295, %301, %304) and the fold tool keeps what is open -- the born-on-a-shelf shape again, and the seventh fold of `20260827`.*
+
+## Three pointers recovered from the pin on `20260828.011621`
+
+*The recital's own rule is that the pin keeps the three most recent pointer lines and the rest come
+here. Six stood in the pin, and three of those named shelves this recital had never recorded -- so
+the record that calls itself whole was missing three of its folds. They are written here before the
+pin lets them go, which is the order "references are promises" asks for. Their links are re-anchored
+to bare basenames, since this shelf stands inside `construction/archive/` beside them.*
+
+*Row 171 folded to [`REDS-the-sample-nobody-drew-rows-171.md`](REDS-the-sample-nobody-drew-rows-171.md) on `20260823.171000`, **CLOSED** -- the random draw of 86 witnesses across 29 rooms, and the two rungs it left open, both now closed by row %173. Moved as %173 carried the living pin past its 24,576-byte bound.*
+
+*Row %221 folded to [`REDS-a-cold-roster-across-its-own-edits-rows-221.md`](REDS-a-cold-roster-across-its-own-edits-rows-221.md) on `20260825.144025`, **CLOSED** -- a cold reading spread across the tree it was measuring, closed by a twelve-character tree digest taken at the open and again at the close. Moved as %223 carried the living pin past its bound.*
+
+*Rows %223-%225 folded to [`REDS-a-refusal-a-ratchet-and-a-name-rows-223-225.md`](REDS-a-refusal-a-ratchet-and-a-name-rows-223-225.md) on `20260825.183336`, all three **CLOSED** -- a cold roster refusing to open over an unclosed lap, the reach ratchet moving onto the property it stands for, and the seed wall learning the fund's short name. Moved as rows %226 through %228 carried the living pin past its 24,576-byte bound.*

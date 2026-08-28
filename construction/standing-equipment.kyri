@@ -396,3 +396,16 @@ guard glow_compose_after_inc
 path tools/g/glow_compose_after_inc_witness.rish
 tier cadence
 seated 20260827.183635
+
+# The constellation rehearsal's wire pen, seated 20260828.011621. comlink/rehearsal_wire.rye
+# crosses three real processes over localhost UDP and was reached by no runner, roster, or suite
+# until this guard -- it ran when a hand typed its name and at no other time. It is the pen FORA31,
+# the socket rung where constel/ meets comlink/hosted_wire.rye, is to be proven in, so the pen
+# earns a standing guard before the rung lands in it. `cadence` rather than `lap`: three spawned
+# processes binding real ports is the thin edge, and the thin edge is budgeted rather than free.
+# Measured on this bench 20260828: 2-3s with a warm Zig cache, build included.
+
+guard comlink_rehearsal_wire
+path tools/co/comlink_rehearsal_wire_witness.rish
+tier cadence
+seated 20260828.011621
