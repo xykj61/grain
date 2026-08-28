@@ -55,7 +55,7 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `062a19bb76` -- this round's parent.
+**Git nib:** `138cabf1b0` -- this round's own.
 
 **Now.** **The dead-letter box filled twice, and the second time a meter read it.**
 
@@ -212,7 +212,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260828.180405` | %328 -- the box read on line one; %327 out of it | [log](../session-logs/date/20260828/20260828-180405_the-box-that-filled-twice.kyri) |
+| `20260828.193027` | the Glow choir -- 26 witnesses get a clock | [log](../session-logs/date/20260828/20260828-193027_the-witnesses-nobody-ran.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line here until the next replaces it.
 
