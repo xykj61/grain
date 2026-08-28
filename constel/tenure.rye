@@ -56,7 +56,8 @@ pub fn backing(acks: []const bool) u32 {
 /// that made the leader unique at election (FORA9) now measured against who still answers.
 pub fn still_commands(acks: []const bool, threshold: u32) bool {
     // invariant: the threshold is a real strict majority -- at least one pier, never zero.
-    assert(threshold >= 1 and threshold <= acks.len + 1);
+    assert(threshold >= 1);
+    assert(threshold <= acks.len + 1);
     return backing(acks) >= threshold;
 }
 
@@ -65,7 +66,8 @@ pub fn still_commands(acks: []const bool, threshold: u32) bool {
 /// exact inverse of still_commands: the leader steps down precisely when its backing has fallen below the majority.
 pub fn should_step_down(acks: []const bool, threshold: u32) bool {
     // invariant: the threshold is a real strict majority within the roster.
-    assert(threshold >= 1 and threshold <= acks.len + 1);
+    assert(threshold >= 1);
+    assert(threshold <= acks.len + 1);
     return !still_commands(acks, threshold);
 }
 
@@ -112,9 +114,11 @@ fn run_selftest() !u8 {
     {
         const th = quorum.majority_of(5); // 3
         const at = [_]bool{ true, true, false, false }; // backing 3 == threshold
-        assert(still_commands(&at, th) and !should_step_down(&at, th));
+        assert(still_commands(&at, th));
+        assert(!should_step_down(&at, th));
         const below = [_]bool{ false, true, false, false }; // backing 2 == threshold − 1
-        assert(!still_commands(&below, th) and should_step_down(&below, th));
+        assert(!still_commands(&below, th));
+        assert(should_step_down(&below, th));
     }
 
     // 5. A LONE OR FULLY-CONNECTED LEADER BEHAVES -- a single-node sky (threshold 1, no peers) never steps down; a leader every peer

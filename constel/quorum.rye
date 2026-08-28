@@ -85,7 +85,8 @@ pub const Quorum = struct {
     pub fn seal(self: *Quorum) void {
         // invariant: a quorum is sealed exactly once, over a real constellation size.
         assert(!self.sealed);
-        assert(self.size >= 1 and self.size <= roster.max_piers);
+        assert(self.size >= 1);
+        assert(self.size <= roster.max_piers);
         assert(self.caller_slot < self.size);
         var others: u32 = 0;
         var i: u32 = 0;
@@ -171,9 +172,14 @@ fn run_selftest() !u8 {
         var cb: [name.max_ship_len]u8 = undefined;
         const cn = copy_name(&cb, caller);
         const q = try run_quorum(&sb, cn);
-        assert(q.live == 4 and q.threshold == 3 and q.reached);
+        assert(q.live == 4);
+        assert(q.threshold == 3);
+        assert(q.reached);
         try require(&q);
-        assert(q.in_quorum(0) and q.in_quorum(1) and q.in_quorum(2) and q.in_quorum(3));
+        assert(q.in_quorum(0));
+        assert(q.in_quorum(1));
+        assert(q.in_quorum(2));
+        assert(q.in_quorum(3));
     }
 
     // 2. One silent member in a sky of four still holds a majority -- drive the round by hand with slot 2 declining. Live is
@@ -182,9 +188,13 @@ fn run_selftest() !u8 {
         var sb = switchboard.Switchboard{};
         try sb.stand_up(4);
         const q = try quorum_with_silence(&sb, 2);
-        assert(q.live == 3 and q.threshold == 3 and q.reached);
+        assert(q.live == 3);
+        assert(q.threshold == 3);
+        assert(q.reached);
         try require(&q);
-        assert(q.in_quorum(0) and q.in_quorum(1) and q.in_quorum(3));
+        assert(q.in_quorum(0));
+        assert(q.in_quorum(1));
+        assert(q.in_quorum(3));
         assert(!q.in_quorum(2)); // the silent member, known by slot, outside the majority
     }
 
@@ -194,7 +204,9 @@ fn run_selftest() !u8 {
         var sb = switchboard.Switchboard{};
         try sb.stand_up(4);
         const q = try quorum_with_two_silent(&sb, 2, 3);
-        assert(q.live == 2 and q.threshold == 3 and !q.reached);
+        assert(q.live == 2);
+        assert(q.threshold == 3);
+        assert(!q.reached);
         if (require(&q)) |_| return error.MinorityActed else |e| if (e != error.NoQuorum) return error.WrongMinority;
     }
 
@@ -206,7 +218,9 @@ fn run_selftest() !u8 {
         var cb: [name.max_ship_len]u8 = undefined;
         const cn = copy_name(&cb, caller);
         const q = try run_quorum(&sb, cn);
-        assert(q.live == 3 and q.threshold == 2 and q.reached);
+        assert(q.live == 3);
+        assert(q.threshold == 2);
+        assert(q.reached);
     }
 
     // 5. Two of three is a majority -- one silent in a sky of three. Live is two, threshold two, reached.
@@ -214,7 +228,9 @@ fn run_selftest() !u8 {
         var sb = switchboard.Switchboard{};
         try sb.stand_up(3);
         const q = try quorum_with_silence(&sb, 2);
-        assert(q.live == 2 and q.threshold == 2 and q.reached);
+        assert(q.live == 2);
+        assert(q.threshold == 2);
+        assert(q.reached);
         try require(&q);
     }
 
@@ -224,7 +240,9 @@ fn run_selftest() !u8 {
         var sb = switchboard.Switchboard{};
         try sb.stand_up(3);
         const q = try quorum_with_two_silent(&sb, 1, 2);
-        assert(q.live == 1 and q.threshold == 2 and !q.reached);
+        assert(q.live == 1);
+        assert(q.threshold == 2);
+        assert(!q.reached);
         if (require(&q)) |_| return error.LoneActed else |e| if (e != error.NoQuorum) return error.WrongLone;
     }
 
@@ -278,7 +296,9 @@ fn run_selftest() !u8 {
         var cb: [name.max_ship_len]u8 = undefined;
         const cn = copy_name(&cb, caller);
         const q = try run_quorum(&sb, cn);
-        assert(q.live == roster.max_piers and q.threshold == 5 and q.reached);
+        assert(q.live == roster.max_piers);
+        assert(q.threshold == 5);
+        assert(q.reached);
     }
 
     print("GREEN fora-quorum: from a census, decide whether a majority may act — a full sky of four is quorate (live four, " ++
@@ -299,7 +319,8 @@ fn run_selftest() !u8 {
 fn quorum_with_silence(sb: *switchboard.Switchboard, silent: u32) QuorumError!Quorum {
     const n = sb.size();
     // invariant: the silent slot names a real, non-caller member.
-    assert(silent > 0 and silent < n);
+    assert(silent > 0);
+    assert(silent < n);
     const caller = try sb.roster.member(0);
     var cb: [name.max_ship_len]u8 = undefined;
     const cn = copy_name(&cb, caller);
@@ -329,8 +350,10 @@ fn quorum_with_silence(sb: *switchboard.Switchboard, silent: u32) QuorumError!Qu
 fn quorum_with_two_silent(sb: *switchboard.Switchboard, silent_a: u32, silent_b: u32) QuorumError!Quorum {
     const n = sb.size();
     // invariant: two distinct real, non-caller members stay silent.
-    assert(silent_a > 0 and silent_a < n);
-    assert(silent_b > 0 and silent_b < n);
+    assert(silent_a > 0);
+    assert(silent_a < n);
+    assert(silent_b > 0);
+    assert(silent_b < n);
     assert(silent_a != silent_b);
     const caller = try sb.roster.member(0);
     var cb: [name.max_ship_len]u8 = undefined;

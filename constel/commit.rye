@@ -54,7 +54,8 @@ pub const MatchView = struct {
     /// the entry cap -- a leader never learns of more entries than a log can hold.
     pub fn record(self: *MatchView, slot: u32, prefix_len: u32) void {
         // invariant: only a real slot of a bounded constellation is ever recorded, within the entry cap.
-        assert(slot < self.size and self.size <= roster.max_piers);
+        assert(slot < self.size);
+        assert(self.size <= roster.max_piers);
         assert(prefix_len <= max_entries);
         self.match[slot] = prefix_len;
         // invariant: the record took exactly the reported length.
@@ -81,7 +82,8 @@ pub const MatchView = struct {
 /// committed until a current-term entry above it reaches a majority too.
 pub fn safe_commit_len(leader: *const TermedLog, view: *const MatchView, current_term: u32, threshold: u32) u32 {
     // invariant: the threshold is a real strict majority within the constellation the view counts.
-    assert(threshold >= 1 and threshold <= view.size);
+    assert(threshold >= 1);
+    assert(threshold <= view.size);
     assert(leader.len <= max_entries);
     var n = leader.len;
     while (n > 0) : (n -= 1) {
@@ -101,7 +103,8 @@ pub fn safe_commit_len(leader: *const TermedLog, view: *const MatchView, current
 /// to actually commit -- it is the counter-example, not the rule.
 pub fn naive_commit_len(leader: *const TermedLog, view: *const MatchView, threshold: u32) u32 {
     // invariant: the threshold is a real majority; the log is bounded.
-    assert(threshold >= 1 and threshold <= view.size);
+    assert(threshold >= 1);
+    assert(threshold <= view.size);
     assert(leader.len <= max_entries);
     var n = leader.len;
     while (n > 0) : (n -= 1) {

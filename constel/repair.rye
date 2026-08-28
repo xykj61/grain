@@ -77,7 +77,8 @@ pub const TermedLog = struct {
     pub fn term_at(self: *const TermedLog, i: u32) RepairError!u32 {
         if (i >= self.len) return error.NoEntry;
         // invariant: a read stays within the committed prefix of a bounded log.
-        assert(i < self.len and self.len <= max_entries);
+        assert(i < self.len);
+        assert(self.len <= max_entries);
         return self.entry[i].term;
     }
 
@@ -85,7 +86,8 @@ pub const TermedLog = struct {
     pub fn value_at(self: *const TermedLog, i: u32) RepairError!u32 {
         if (i >= self.len) return error.NoEntry;
         // invariant: a read stays within the committed prefix of a bounded log.
-        assert(i < self.len and self.len <= max_entries);
+        assert(i < self.len);
+        assert(self.len <= max_entries);
         return self.entry[i].value;
     }
 
@@ -154,7 +156,8 @@ pub fn consistent_at(self: *const TermedLog, match_len: u32, boundary_term: u32)
 pub fn agree_upto(follower: *const TermedLog, leader: *const TermedLog) u32 {
     const limit = if (follower.len < leader.len) follower.len else leader.len;
     // invariant: the shared span never exceeds either bounded log.
-    assert(limit <= follower.len and limit <= leader.len);
+    assert(limit <= follower.len);
+    assert(limit <= leader.len);
     var i: u32 = 0;
     while (i < limit) : (i += 1) {
         if (follower.entry[i].term != leader.entry[i].term) break;
@@ -178,7 +181,8 @@ pub fn repair(follower: *TermedLog, leader: *const TermedLog) RepairError!u32 {
 
     const common = agree_upto(follower, leader);
     // invariant: the agreement point lies within both logs.
-    assert(common <= follower.len and common <= leader.len);
+    assert(common <= follower.len);
+    assert(common <= leader.len);
 
     // The agreed prefix, captured before any mutation so we can prove it was never rewritten.
     const prefix_last_term = if (common == 0) ground_term else follower.entry[common - 1].term;
@@ -210,7 +214,8 @@ fn run_selftest() !u8 {
         assert((try l.append_entry(1, 20)) == 1);
         assert((try l.append_entry(2, 30)) == 2); // term climbs — fine
         assert(l.len == 3);
-        assert((try l.term_at(0)) == 1 and (try l.value_at(2)) == 30);
+        assert((try l.term_at(0)) == 1);
+        assert((try l.value_at(2)) == 30);
         assert(l.last_term() == 2);
         if (l.append_entry(1, 40)) |_| return error.TermWentBackward else |e| if (e != error.TermRegressed) return error.WrongRegressed;
         if (l.term_at(3)) |_| return error.ReadPastEnd else |e| if (e != error.NoEntry) return error.WrongNoEntry;
@@ -281,8 +286,12 @@ fn run_selftest() !u8 {
         assert(gained == 2); // the leader's two-entry suffix (indices 2,3) came across
         assert(follower.matches(&leader));
         assert(follower.len == 4);
-        assert((try follower.value_at(0)) == 10 and (try follower.value_at(1)) == 20); // prefix untouched
-        assert((try follower.value_at(2)) == 30 and (try follower.term_at(2)) == 2); // divergent tail replaced by the true one
+        // prefix untouched
+        assert((try follower.value_at(0)) == 10);
+        assert((try follower.value_at(1)) == 20);
+        // divergent tail replaced by the true one
+        assert((try follower.value_at(2)) == 30);
+        assert((try follower.term_at(2)) == 2);
     }
 
     // 5. ONLY THE UNCOMMITTED TAIL MOVES -- a follower that is merely BEHIND (a matching prefix, no conflict) is repaired by pure
@@ -296,14 +305,18 @@ fn run_selftest() !u8 {
         var behind = TermedLog{};
         _ = try behind.append_entry(1, 1); // a clean prefix, just short
         const gained_behind = try repair(&behind, &leader);
-        assert(gained_behind == 2 and behind.matches(&leader)); // gained the tail, prefix intact
+        // gained the tail, prefix intact
+        assert(gained_behind == 2);
+        assert(behind.matches(&leader));
 
         var current = TermedLog{};
         _ = try current.append_entry(1, 1);
         _ = try current.append_entry(1, 2);
         _ = try current.append_entry(2, 3);
         const gained_current = try repair(&current, &leader);
-        assert(gained_current == 0 and current.matches(&leader)); // nothing to do — already the one true history
+        // nothing to do — already the one true history
+        assert(gained_current == 0);
+        assert(current.matches(&leader));
 
         // A follower LONGER than the leader with an extra uncommitted tail: repair sheds the surplus down to the leader's length.
         var longer = TermedLog{};
@@ -312,7 +325,10 @@ fn run_selftest() !u8 {
         _ = try longer.append_entry(2, 3);
         _ = try longer.append_entry(2, 44); // an extra entry the leader never committed
         const gained_longer = try repair(&longer, &leader);
-        assert(gained_longer == 0 and longer.matches(&leader) and longer.len == 3); // the surplus tail was shed
+        // the surplus tail was shed
+        assert(gained_longer == 0);
+        assert(longer.matches(&leader));
+        assert(longer.len == 3);
     }
 
     // 6. NO FORK ACROSS REPAIR -- two followers with DIFFERENT divergent suffixes both repair to the same leader, and thus to each
@@ -337,7 +353,8 @@ fn run_selftest() !u8 {
 
         _ = try repair(&one, &leader);
         _ = try repair(&two, &leader);
-        assert(one.matches(&leader) and two.matches(&leader));
+        assert(one.matches(&leader));
+        assert(two.matches(&leader));
         assert(one.matches(&two)); // and to each other — no fork
     }
 
@@ -384,7 +401,8 @@ fn run_selftest() !u8 {
         const gained = try repair(&follower, &leader);
         assert(gained == 1); // exactly the leader's one term-2 entry
         assert(follower.matches(&leader));
-        assert((try follower.value_at(2)) == 33 and (try follower.term_at(2)) == 2);
+        assert((try follower.value_at(2)) == 33);
+        assert((try follower.term_at(2)) == 2);
     }
 
     // 8. A full-length repair stays bounded -- a follower whose whole log diverges at index 1 is rebuilt to the leader's length up
@@ -398,7 +416,9 @@ fn run_selftest() !u8 {
         _ = try follower.append_entry(2, 999); // then diverges
         const gained = try repair(&follower, &leader);
         assert(gained == max_entries - 1);
-        assert(follower.matches(&leader) and follower.len == max_entries); // rebuilt whole, still bounded
+        // rebuilt whole, still bounded
+        assert(follower.matches(&leader));
+        assert(follower.len == max_entries);
     }
 
     print("GREEN fora-repair: the leader heals a follower's divergent suffix — a TermedLog carries the per-entry term FORA12's " ++

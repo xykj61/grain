@@ -193,7 +193,8 @@ pub fn frame_ack(a: *const handshake.Ack, out: *Frame) void {
 /// Frame a Session for the wire -- a_len - a - b_len - b - complete(1).
 pub fn frame_session(s: *const handshake.Session, out: *Frame) void {
     // invariant: a session names two distinct lawful piers.
-    assert(name.never_a_ship(s.party_a()) and name.never_a_ship(s.party_b()));
+    assert(name.never_a_ship(s.party_a()));
+    assert(name.never_a_ship(s.party_b()));
     var at: u32 = header_len;
     at = put_field(&out.buf, at, s.party_a());
     at = put_field(&out.buf, at, s.party_b());
@@ -290,7 +291,8 @@ pub fn deframe_session(bytes: []const u8) WireError!handshake.Session {
     s.b_len = @intCast(f1.field.len);
     s.complete = flag == 1;
     // invariant: a session read back names two distinct lawful piers.
-    assert(name.never_a_ship(s.party_a()) and name.never_a_ship(s.party_b()));
+    assert(name.never_a_ship(s.party_a()));
+    assert(name.never_a_ship(s.party_b()));
     assert(!std.mem.eql(u8, s.party_a(), s.party_b()));
     return s;
 }

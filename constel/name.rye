@@ -140,7 +140,8 @@ pub fn check_constellation(whole: []const u8) NameError!void {
     }
 
     // invariant: at least one ship was proven, and the count stayed within the bound.
-    assert(ships >= 1 and ships <= max_ships);
+    assert(ships >= 1);
+    assert(ships <= max_ships);
 }
 
 /// Deterministically draw the fake ship name for an index -- a two-letter `xn` silo prefix (a welcome clearly-fake digraph)

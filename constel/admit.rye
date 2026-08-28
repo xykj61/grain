@@ -110,8 +110,11 @@ fn run_selftest() !u8 {
     {
         const old = mask_of(&[_]u32{ 0, 1, 2 });
         const joint = try admit(old, 3, 10, 12, 3);
-        assert(joint.old.size == 3 and joint.new.size == 4);
-        assert(joint.new.contains(3) and !joint.old.contains(3)); // slot 3 joins the NEW config only
+        assert(joint.old.size == 3);
+        assert(joint.new.size == 4);
+        // slot 3 joins the NEW config only
+        assert(joint.new.contains(3));
+        assert(!joint.old.contains(3));
         var b = reconfig.JointBallot{ .joint = joint };
         try b.cast(0);
         try b.cast(1);
@@ -119,7 +122,8 @@ fn run_selftest() !u8 {
         try b.cast(3); // the freshly-promoted member votes too — it is a participant in the union
         b.seal();
         try reconfig.require_joint(&b); // committed — a strict majority in both old and new
-        assert(b.yes_old == 3 and b.yes_new == 4);
+        assert(b.yes_old == 3);
+        assert(b.yes_new == 4);
     }
 
     // 4. THE PROMOTED MEMBER NOW COUNTS TOWARD THE NEW MAJORITY. After the switch the voting set is four; its majority is three, and
@@ -145,7 +149,9 @@ fn run_selftest() !u8 {
         b.seal();
         const guard = reconfig.require_joint(&b);
         if (guard) |_| unreachable else |e| assert(e == error.NoJointMajority);
-        assert(b.yes_old == 2 and b.yes_new == 2 and !b.reached);
+        assert(b.yes_old == 2);
+        assert(b.yes_new == 2);
+        assert(!b.reached);
     }
 
     // 6. BOUNDED -- a full roster: seven voters {0..6} and a caught-up learner at the last slot promoted to an eighth voter, the joint
@@ -153,7 +159,8 @@ fn run_selftest() !u8 {
     {
         const seven = mask_of(&[_]u32{ 0, 1, 2, 3, 4, 5, 6 });
         const joint = try admit(seven, roster.max_piers - 1, 20, 20, 0); // exactly current, zero slack
-        assert(joint.old.size == roster.max_piers - 1 and joint.new.size == roster.max_piers);
+        assert(joint.old.size == roster.max_piers - 1);
+        assert(joint.new.size == roster.max_piers);
         assert(joint.new.contains(roster.max_piers - 1));
     }
 

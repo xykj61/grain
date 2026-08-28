@@ -99,7 +99,9 @@ fn run_selftest() !u8 {
         assert(std.mem.eql(u8, try sb.receive(n2), gf.bytes()));
         assert(std.mem.eql(u8, try sb.receive(n3), gf.bytes()));
         // One recipient reading did not consume another's copy -- they all drain independently.
-        assert((try sb.pending(n1)) == 0 and (try sb.pending(n2)) == 0 and (try sb.pending(n3)) == 0);
+        assert((try sb.pending(n1)) == 0);
+        assert((try sb.pending(n2)) == 0);
+        assert((try sb.pending(n3)) == 0);
     }
 
     // 3. A broadcast of two degenerates cleanly to a single delivery -- the fan-out reaches exactly one pier.

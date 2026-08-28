@@ -107,7 +107,8 @@ pub const DurableState = struct {
         self.term = cand_term;
         self.voted_for = candidate;
         // invariant: after granting, the vote is recorded in exactly the term it was granted, for exactly this candidate.
-        assert(self.term == cand_term and self.voted_for == candidate);
+        assert(self.term == cand_term);
+        assert(self.voted_for == candidate);
     }
 
     /// The number of bytes this state's image occupies -- header + its entries + the digest. Always within max_image_bytes.
@@ -217,7 +218,8 @@ fn run_selftest() !u8 {
         _ = try s.log.append_entry(5, 200);
         const img = try s.save(&buf);
         const back = try load(img);
-        assert(back.term == 5 and back.voted_for == 2);
+        assert(back.term == 5);
+        assert(back.voted_for == 2);
         assert(back.log.matches(&s.log)); // the whole ledger returned entry for entry
     }
 
@@ -229,7 +231,9 @@ fn run_selftest() !u8 {
         try alive.record_vote(1, 5); // granted candidate 1 in term 5
         const img = try alive.save(&buf); // stable storage before answering
         var restarted = try load(img); // power cycle — restore only what was persisted
-        assert(restarted.voted_for == 1 and restarted.term == 5); // the vote survived
+        // the vote survived
+        assert(restarted.voted_for == 1);
+        assert(restarted.term == 5);
         const r = restarted.record_vote(3, 5); // a different candidate, SAME term
         if (r) |_| unreachable else |err| assert(err == error.AlreadyVoted); // refused — the sky cannot fork
         // Re-voting the SAME candidate in the same term is idempotent, never a fault.
@@ -245,7 +249,8 @@ fn run_selftest() !u8 {
         const img = try alive.save(&buf);
         var restarted = try load(img);
         try restarted.record_vote(2, 6); // term climbed — the prior vote is cleared
-        assert(restarted.term == 6 and restarted.voted_for == 2);
+        assert(restarted.term == 6);
+        assert(restarted.voted_for == 2);
         // A stale term is still refused after a restart.
         const stale = restarted.record_vote(2, 4);
         if (stale) |_| unreachable else |err| assert(err == error.StaleTerm);
@@ -261,8 +266,10 @@ fn run_selftest() !u8 {
         const img = try s.save(&buf);
         const back = try load(img);
         assert(back.log.len == 4);
-        assert((try back.log.term_at(2)) == 2 and (try back.log.value_at(2)) == 33);
-        assert((try back.log.term_at(3)) == 4 and (try back.log.value_at(3)) == 44);
+        assert((try back.log.term_at(2)) == 2);
+        assert((try back.log.value_at(2)) == 33);
+        assert((try back.log.term_at(3)) == 4);
+        assert((try back.log.value_at(3)) == 44);
         assert(back.log.matches(&s.log));
     }
 
@@ -308,7 +315,8 @@ fn run_selftest() !u8 {
         const img = try s.save(&buf);
         assert(img.len == max_image_bytes);
         const back = try load(img);
-        assert(back.term == 9 and back.log.len == max_entries);
+        assert(back.term == 9);
+        assert(back.log.len == max_entries);
         assert(back.log.matches(&s.log));
     }
 

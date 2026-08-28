@@ -69,7 +69,8 @@ pub fn pre_vote_tally(peers: []const Peer, cand_last_term: u32, cand_len: u32) u
 /// Whether the pre-vote PASSES -- a strict majority would pre-grant.
 pub fn pre_vote_passes(peers: []const Peer, cand_last_term: u32, cand_len: u32, threshold: u32) bool {
     // invariant: the threshold is a real strict majority within the roster.
-    assert(threshold >= 1 and threshold <= peers.len);
+    assert(threshold >= 1);
+    assert(threshold <= peers.len);
     return pre_vote_tally(peers, cand_last_term, cand_len) >= threshold;
 }
 

@@ -118,15 +118,19 @@ fn run_selftest() !u8 {
     {
         const old = mask_of(&[_]u32{ 0, 1, 2, 3 });
         const joint = try depart(old, 3);
-        assert(joint.old.size == 4 and joint.new.size == 3);
-        assert(joint.old.contains(3) and !joint.new.contains(3)); // slot 3 leaves the NEW config only
+        assert(joint.old.size == 4);
+        assert(joint.new.size == 3);
+        // slot 3 leaves the NEW config only
+        assert(joint.old.contains(3));
+        assert(!joint.new.contains(3));
         var b = reconfig.JointBallot{ .joint = joint };
         try b.cast(0);
         try b.cast(1);
         try b.cast(2); // the three remaining piers carry the switch — the leaver need not vote at all
         b.seal();
         try reconfig.require_joint(&b); // committed — a strict majority in both old (3 of 4) and new (3 of 3)
-        assert(b.yes_old == 3 and b.yes_new == 3);
+        assert(b.yes_old == 3);
+        assert(b.yes_new == 3);
     }
 
     // 4. THE LEADER-REMOVES-ITSELF EDGE (Raft §4.2.2). The leader is slot 3, and slot 3 is the one leaving. `leader_relinquishes`
@@ -145,7 +149,10 @@ fn run_selftest() !u8 {
         b.seal();
         const guard = reconfig.require_joint(&b);
         if (guard) |_| unreachable else |e| assert(e == error.NoJointMajority);
-        assert(b.yes_old == 2 and b.yes_new == 1 and !b.reached); // old 2 of 4, new 1 of 3 — neither a majority
+        // old 2 of 4, new 1 of 3 — neither a majority
+        assert(b.yes_old == 2);
+        assert(b.yes_new == 1);
+        assert(!b.reached);
     }
 
     // 5. A SHRUNK SET CANNOT SMUGGLE THE REMOVAL -- the new config alone cannot force it either. Removing slot 3 from {0,1,2,3}, a
@@ -160,7 +167,9 @@ fn run_selftest() !u8 {
         b.seal();
         const guard = reconfig.require_joint(&b);
         if (guard) |_| unreachable else |e| assert(e == error.NoJointMajority);
-        assert(b.yes_old == 2 and b.yes_new == 2 and !b.reached);
+        assert(b.yes_old == 2);
+        assert(b.yes_new == 2);
+        assert(!b.reached);
     }
 
     // 6. BOUNDED -- a full roster: eight voters {0..7} remove the last to seven, the joint config sizing exactly eight -> seven within
@@ -168,7 +177,8 @@ fn run_selftest() !u8 {
     {
         const eight = mask_of(&[_]u32{ 0, 1, 2, 3, 4, 5, 6, 7 });
         const joint = try depart(eight, roster.max_piers - 1);
-        assert(joint.old.size == roster.max_piers and joint.new.size == roster.max_piers - 1);
+        assert(joint.old.size == roster.max_piers);
+        assert(joint.new.size == roster.max_piers - 1);
         assert(!joint.new.contains(roster.max_piers - 1));
     }
 

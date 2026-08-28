@@ -42,7 +42,8 @@ const max_entries = repair.max_entries;
 /// predicate -- compared by the last entry alone, exactly as Raft's RequestVote does.
 pub fn at_least_as_current(cand_last_term: u32, cand_len: u32, voter_last_term: u32, voter_len: u32) bool {
     // invariant: lengths are bounded by the entry cap -- a log never claims more entries than it can hold.
-    assert(cand_len <= max_entries and voter_len <= max_entries);
+    assert(cand_len <= max_entries);
+    assert(voter_len <= max_entries);
     if (cand_last_term != voter_last_term) return cand_last_term > voter_last_term;
     return cand_len >= voter_len; // equal last term — the longer log carries at least as much history
 }
@@ -129,7 +130,9 @@ fn run_selftest() !u8 {
         assert(cand_grants == 2);
         assert(cand_grants < th); // BELOW the majority — the incomplete candidate cannot be elected
         // The intersecting holders each refuse, by name:
-        assert(!grant_vote(&a, 1, 1) and !grant_vote(&b, 1, 1) and !grant_vote(&c, 1, 1));
+        assert(!grant_vote(&a, 1, 1));
+        assert(!grant_vote(&b, 1, 1));
+        assert(!grant_vote(&c, 1, 1));
     }
 
     // 4. A COMPLETE CANDIDATE STILL WINS -- a candidate whose log holds the committed entry (last_term 2, len 2) gathers the whole
@@ -164,7 +167,9 @@ fn run_selftest() !u8 {
         _ = try holder.append_entry(2, 20); // holds the committed term-2 entry: last_term 2, len 2
         // The candidate lacks it: last_term 1, len 1.
         assert(!at_least_as_current(1, 1, holder.last_term(), holder.len)); // 1<2 — the holder's entry dominates
-        assert(holder.last_term() == 2 and holder.len == 2); // the exact entry the candidate is missing
+        // the exact entry the candidate is missing
+        assert(holder.last_term() == 2);
+        assert(holder.len == 2);
     }
 
     // 6. BOUNDED -- the poll runs over a full roster of eight within the pier cap; a unanimous up-to-date poll grants every vote.
