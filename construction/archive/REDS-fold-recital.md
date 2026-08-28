@@ -163,3 +163,5 @@ at a closed fold.*
 
 
 *Row %308 folded to [`REDS-the-template-and-the-standing-copy-rows-308.md`](REDS-the-template-and-the-standing-copy-rows-308.md) on `20260828.103023`, **CLOSED** -- the cadence cut repaired in the template and still printed by the launcher. Folded the morning after it was booked, to make room for `%309`: the two loop crashes, the handler that named every fault the same, and the recovery of seventeen destroyed files from git's own object store.*
+
+*Row %309 folded to [`REDS-the-open-that-cannot-die-rows-309.md`](REDS-the-open-that-cannot-die-rows-309.md) on `20260828.110051`, **CLOSED** on this Mac with the pier's repair a named paste -- the loop crashes, the misdiagnosing handler, and the seventeen files recovered from the object store. Folded the same day to make room for `%310`, the silent pair gates its own crashed reporter found: the lowering that compared a gate to a copy of itself, repaired in Sound's language custody with the tautological emitter deleted outright.*

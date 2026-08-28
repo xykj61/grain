@@ -589,19 +589,32 @@ fn emit_welcome_main(out: []u8, used: *u32, zface: []const u8, expect: u32) Lowe
     try append_print(out, used, "}}\n", .{});
 }
 
-fn emit_argv_main(out: []u8, used: *u32, zface: []const u8, expect_expr: []const u8) LowerError!void {
-    try append_print(out, used, "pub fn main(init: std.process.Init) !u8 {{\n", .{});
-    try append_print(out, used, "    const alloc = init.arena.allocator();\n", .{});
-    try append_print(out, used, "    const argv = try init.minimal.args.toSlice(alloc);\n", .{});
-    try append_print(out, used, "    if (argv.len < 2) return 2;\n", .{});
-    try append_print(out, used, "    const {s} = std.fmt.parseInt(u32, argv[1], 10) catch return 2;\n", .{zface});
-    try append_print(out, used, "    const expect: u32 = {s};\n", .{expect_expr});
-    try append_print(out, used, "    return if (bartis_gate({s}) == expect) 0 else 1;\n", .{zface});
-    try append_print(out, used, "}}\n", .{});
-}
+// emit_argv_main is GONE (20260828, Sound's language custody, REDS %310): it compared the
+// gate to an expect emitted from the SAME expression, so every plant it wrote returned 0 for
+// every input and printed nothing -- a wall that could not refuse, behind witnesses asserting
+// only exit codes. Eight pair desks and every vane-decide plant lowered that way. An argv
+// plant SPEAKS its answer now (the fold family's own shape, "EXIT:0 + spoken answer prove
+// it"), and the truth lives with the witness that reads the spoken digit per input. Deleting
+// the emitter rather than fixing it makes the tautology unwritable.
 
 /// PLEAC 1.2 -- the speaking argv main: the gate's answer reaches stdout.
 /// say is argv-only; the welcome road refuses it honestly at expect_for.
+fn emit_argv2_speaking_main(out: []u8, used: *u32, zface: []const u8, zfb: []const u8) LowerError!void {
+    try append_print(out, used, "pub fn main(init: std.process.Init) !u8 {{\n", .{});
+    try append_print(out, used, "    const alloc = init.arena.allocator();\n", .{});
+    try append_print(out, used, "    const argv = try init.minimal.args.toSlice(alloc);\n", .{});
+    try append_print(out, used, "    if (argv.len < 3) return 2;\n", .{});
+    try append_print(out, used, "    const {s} = std.fmt.parseInt(u32, argv[1], 10) catch return 2;\n", .{zface});
+    try append_print(out, used, "    const {s} = std.fmt.parseInt(u32, argv[2], 10) catch return 2;\n", .{zfb});
+    try append_print(out, used, "    const answer: u32 = bartis_pair({s}, {s});\n", .{ zface, zfb });
+    try append_print(out, used, "    var buf: [12]u8 = undefined;\n", .{});
+    try append_print(out, used, "    const line = std.fmt.bufPrint(&buf, \"{{d}}\\n\", .{{answer}}) catch return 2;\n", .{});
+    try append_print(out, used, "    const io = init.io;\n", .{});
+    try append_print(out, used, "    std.Io.File.stdout().writeStreamingAll(io, line) catch return 2;\n", .{});
+    try append_print(out, used, "    return 0;\n", .{});
+    try append_print(out, used, "}}\n", .{});
+}
+
 fn emit_argv_speaking_main(out: []u8, used: *u32, zface: []const u8) LowerError!void {
     try append_print(out, used, "pub fn main(init: std.process.Init) !u8 {{\n", .{});
     try append_print(out, used, "    const alloc = init.arena.allocator();\n", .{});
@@ -1383,7 +1396,7 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             var comment_buf: [160]u8 = undefined;
             const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` bartis gate — argv sample (STOA101/109).", .{ face, shape }) catch return error.Overflow;
             try emit_gate_fn(out, &used, face, zface, zface, comment);
-            try emit_argv_main(out, &used, zface, zface);
+            try emit_argv_speaking_main(out, &used, zface);
         },
         .call_one => {
             const gate = rb.gate_slice(spec);
@@ -1404,12 +1417,10 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             }
             var body_buf: [160]u8 = undefined;
             const body_return = try call_body_expr(gate, zface, &body_buf);
-            var expect_buf: [160]u8 = undefined;
-            const expect_expr = try call_body_expr(gate, zface, &expect_buf);
             var comment_buf: [192]u8 = undefined;
             const comment = std.fmt.bufPrint(&comment_buf, "Lowered from Glow `|=  {s}={s}` / `%-  {s}  {s}` — argv call body (STOA103–104 · 339).", .{ face, shape, gate, face }) catch return error.Overflow;
             try emit_gate_fn(out, &used, face, zface, body_return, comment);
-            try emit_argv_main(out, &used, zface, expect_expr);
+            try emit_argv_speaking_main(out, &used, zface);
         },
         .cond_gth => {
             // STOA331: the deciding gate speaks its answer; EXIT:0 + the spoken digit prove it.
@@ -1440,15 +1451,7 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             const else_expr = try pair_arm_expr(spec.else_face, spec.cond_else, zface, zfb, &eb);
             try append_print(out, &used, "/// Lowered from Glow pair-faces cond — STOA338b.\n", .{});
             try append_print(out, &used, "fn bartis_pair({s}: u32, {s}: u32) u32 {{\n    return if ({s} {s} {s}) {s} else {s};\n}}\n\n", .{ zface, zfb, zface, op, zfb, then_expr, else_expr });
-            try append_print(out, &used, "pub fn main(init: std.process.Init) !u8 {{\n", .{});
-            try append_print(out, &used, "    const alloc = init.arena.allocator();\n", .{});
-            try append_print(out, &used, "    const argv = try init.minimal.args.toSlice(alloc);\n", .{});
-            try append_print(out, &used, "    if (argv.len < 3) return 2;\n", .{});
-            try append_print(out, &used, "    const {s} = std.fmt.parseInt(u32, argv[1], 10) catch return 2;\n", .{zface});
-            try append_print(out, &used, "    const {s} = std.fmt.parseInt(u32, argv[2], 10) catch return 2;\n", .{zfb});
-            try append_print(out, &used, "    const expect: u32 = if ({s} {s} {s}) {s} else {s};\n", .{ zface, op, zfb, then_expr, else_expr });
-            try append_print(out, &used, "    return if (bartis_pair({s}, {s}) == expect) 0 else 1;\n", .{ zface, zfb });
-            try append_print(out, &used, "}}\n", .{});
+            try emit_argv2_speaking_main(out, &used, zface, zfb);
         },
         .fold_sumto => {
             // STOA332: the folding gate speaks its accumulator; EXIT:0 + spoken answer prove it.
