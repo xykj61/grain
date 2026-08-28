@@ -34,7 +34,12 @@ regular additions or modifications below `brushstroke/`, `surf/`, or `skate/`. I
 renames, symlinks, gitlinks, generated Wayland protocol files, control-plane files, and every
 sibling root, then repeats the same gate after hooks. The `skate/` grant landed `20260828` as
 exactly the signed supervisor update the next sentence requires, after a custody stop named the
-booked SkateCore crux standing outside the wall that books it. Any future booked module needs a
+booked SkateCore crux standing outside the wall that books it. A second grant landed the same day
+after the candidate-proof-boundary stop: a lap may stage its own session log as an addition under
+`session-logs/date/` with the day-index row beside it, and may carry
+`tools/s/skate_native_core_witness.rish` forward when its candidate adds a test that witness must
+name -- the witness's verdict reads zero failures rather than a pinned count for the same reason.
+Any future booked module needs a
 separate user-owned signed update to this machine boundary; the running loop cannot expand its own
 lane.
 

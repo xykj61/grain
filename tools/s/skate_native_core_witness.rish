@@ -51,7 +51,11 @@ assert test.out contains "testEventRingFillsThenRefusesWithoutEviction" else "sk
 assert test.out contains "testEventRingPhysicalWrapKeepsLinearFIFOOrder" else "skate-native-core: physical event-ring wrap not exercised"
 assert test.out contains "testEventCounterRefusesBeforeUnsignedWrap" else "skate-native-core: event counter ceiling not exercised"
 assert test.out contains "testSurfAndSkateEventRingAliasesShareOneIdentity" else "skate-native-core: event alias-sameness not exercised"
-assert test.out contains "Executed 21 tests, with 0 failures" else "skate-native-core: twenty-one-test verdict missing"
+# The verdict reads ZERO FAILURES rather than an exact test count -- a pinned "21" made every
+# honestly added test red this witness, which is the candidate-proof-boundary custody stop of
+# 20260828. The named-test asserts above still hold the floor: each seated behavior must appear.
+assert test.out contains ", with 0 failures" else "skate-native-core: zero-failure verdict missing"
+assert test.out contains "Executed " else "skate-native-core: the suite must report how many tests it executed"
 
 say "RED and GREEN paths proven -- one deterministic fold lives; twenty-one identity, media, event, exact-bound, refusal, and mutation claims hold."
 say "GREEN: skate-native-core -- Surf and Skate share one Brushstroke Frame and event-ring identity, storage shape, and refusal contract."
