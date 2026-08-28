@@ -266,7 +266,7 @@ assert (trim hooks_path_run.out) == "tools/hooks" else "REFUSE chatgpt-mind: pro
 let pre_commit_hook = repo_root + "/tools/hooks/pre-commit"
 let commit_msg_hook = repo_root + "/tools/hooks/commit-msg"
 let mind_lane_scan = repo_root + "/tools/fixtures/chatgpt_mind_lane.awk"
-let mind_lane_sha256 = "045851593b9831711f7a125a217548bcf0608d3d6e9f64c85e0b714641378402"
+let mind_lane_sha256 = "62cc0dd65b0df7215ffd7e4a78274fe0e4a122b4787d8def24ef19ead2b96071"
 let pre_commit_file = run ["test" "-f" pre_commit_hook]
 let pre_commit_exec = run ["test" "-x" pre_commit_hook]
 let pre_commit_link = run ["test" "-L" pre_commit_hook]
