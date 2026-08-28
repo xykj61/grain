@@ -8,7 +8,7 @@
 //!
 //! The corpus is `tools/fixtures/constel_net.bron`, a genuine `format constel-net-v1` record produced
 //! reproducibly by `pond/apps/constel_net_fixture_gen.rye` (the branch galaxy 3 - star 27 - planet 267
-//! under the law-safe name `xnqvel34`), `@embedFile`-bound at compile time through a symlink in
+//! under the law-safe name `xnqvl34`), `@embedFile`-bound at compile time through a symlink in
 //! `pond/apps/corpora/` -- no network, the bytes read are the tree's own. Two independent readings must
 //! agree: the app parses the record through rung three and reports the **roster size**, the **galaxy**
 //! (first point), and the **planet** (deepest point), and the witness cross-checks that triple against
@@ -64,7 +64,7 @@ pub fn read_net(text: []const u8) bron.BronError!Reading {
 
 const galaxy_num: u32 = 3;
 const planet_num: u32 = 267;
-const demo_name = "xnqvel34";
+const demo_name = "xnqvl34";
 
 /// The reading of the real record -- the witness cross-checks this triple against awk's reading of the
 /// same bytes, so the two tools must give one answer.

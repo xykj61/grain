@@ -35,7 +35,7 @@ const demo_p_keeper: [kumara.seed_length]u8 = .{0x66} ** kumara.seed_length;
 const galaxy_num: u32 = 3;
 const star_num: u32 = 27;
 const planet_num: u32 = 267;
-const demo_name = "xnqvel34";
+const demo_name = "xnqvl34";
 
 fn emit_record() !u8 {
     const net = try topology_net.settle_topology(

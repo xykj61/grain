@@ -1,8 +1,9 @@
-# tools/fixtures/constel_names_unsafe.txt — the planted negative for the Constel naming law.
+# tools/fixtures/constel_names_unsafe.txt -- the planted negative for the Constel naming law.
 #
 # A name shaped like a real @p (lowercase letters + hyphen, NO digit) must be flagged unsafe
-# by constel_naming_scan.sh — such a name could parse as a real routable point. This fixture
-# exists only to prove the scan bites; it is never a seated draw.
-xnqvel34
+# by constel_naming_scan.sh -- such a name could parse as a real routable point. This fixture
+# exists only to prove the scan bites; it is never a seated draw. The two names beside the plant
+# are seated draws, carried here so the plant stands in honest company.
+xnqvl34
 sarlev
-xwmur-dol12
+xwmr-dl12
