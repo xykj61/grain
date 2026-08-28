@@ -18,7 +18,12 @@ if dangling_out != "" then say dangling_out
 assert dangling_out == "" else "direction one broken — dangling threads stand"
 
 say "anchors: direction two — every Book anchor carries an inbound thread…"
-let orphans = run ["sh" "-c" "grep -rhoE '<a id=.[a-z0-9-]+.></a>' ${book}/*.md | grep -oE 'g[a-z]*-[a-z0-9-]+' | sort -u | while read a; do grep -rq glow-book:.*#$a glow/ 2>/dev/null || echo $a; done"]
+# Direction two once ran one recursive grep over glow/ per anchor -- 34 greps, 4m31s measured
+# 20260828, for a reading this witness reports rather than gates. It collects the referenced
+# anchors once instead, then asks the set: 8.4s, and the planted-orphan refusal still names it.
+let refs_file = run ["sh" "-c" "t=$( mktemp ); grep -rhoE 'glow-book: [a-z._-]+#[a-z0-9-]+' glow/ 2>/dev/null | sed 's/.*#//' | sort -u > $t; printf %s $t"]
+let refs_path = trim refs_file.out
+let orphans = run ["sh" "-c" "grep -rhoE '<a id=.[a-z0-9-]+.></a>' ${book}/*.md | grep -oE 'g[a-z]*-[a-z0-9-]+' | sort -u | while read a; do grep -qxF $a ${refs_path} || echo $a; done; rm -f ${refs_path}"]
 let orphans_out = trim orphans.out
 if orphans_out != "" then say "ORPHANED anchors (no inbound thread yet):"
 if orphans_out != "" then say orphans_out
