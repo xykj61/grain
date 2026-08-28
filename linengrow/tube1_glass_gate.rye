@@ -37,7 +37,7 @@ pub fn run_demo_admit() bool {
     const manifest = tube.build("seva-broadcaster", "0.1.0", &declared, 1024) catch return false;
 
     var table: caps.CapabilityTable = .{};
-    const agent = table.add_child("seva-broadcaster") catch return false;
+    const agent = table.add_dependent("seva-broadcaster") catch return false;
     agent.grant(caps.Capability.init("state-ask", rw)) catch return false;
     agent.grant(caps.Capability.init("state-receipt", rw)) catch return false;
     agent.grant(caps.Capability.init("state-reputation", rw)) catch return false;

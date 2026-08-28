@@ -37,7 +37,7 @@ fn run_selftest() !u8 {
 
     // Claim 2: resolve + clone + admit (install door).
     var table: caps.CapabilityTable = .{};
-    const agent = try table.add_child("ledger-agent");
+    const agent = try table.add_dependent("ledger-agent");
     try agent.grant(caps.Capability.init(pool.ledger_resource, caps.right_read | caps.right_write));
     try tube2.resolve_and_admit(&store, &reg, tube2.demo_path, &published.manifest, &table, "ledger-agent");
     print("tube2: resolve + clone + TUBE1 admit -- install after verify -- GREEN\n", .{});

@@ -29,7 +29,7 @@ assert elder.ok else "tally-tend-3: copy.rye citation missing"
 say "tally-tend-3: rye still states both preconditions..."
 let len_law = run ["sh" "-c" "grep -q 'target.len == source.len' tally/copy.rye"]
 assert len_law.ok else "tally-tend-3: length precondition missing in rye"
-let dis_law = run ["sh" "-c" "grep -q 'regions are disjoint' tally/copy.rye"]
+let dis_law = run ["sh" "-c" "grep -q 't_hi <= s_lo or s_hi <= t_lo' tally/copy.rye"]
 assert dis_law.ok else "tally-tend-3: disjoint precondition missing in rye"
 let memcpy = run ["sh" "-c" "grep -q '@memcpy' tally/copy.rye"]
 assert memcpy.ok else "tally-tend-3: guarded memcpy missing in rye"
