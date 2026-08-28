@@ -20,7 +20,7 @@ assert selftest.out contains "lit desk binds product pins" else "glow_seva_b0_de
 assert selftest.out contains "99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe" else "glow_seva_b0_demo_fixture_witness missing expected hex"
 
 # Desk shape still GREEN beside the product pin.
-let desk = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/shape-demo-fixture-constants.glow"]
+let desk = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/s/shape-demo-fixture-constants.glow"]
 assert desk.ok else "shape-demo-fixture-constants.glow failed after fixture pin"
 assert desk.out contains "GREEN" else "shape-demo-fixture-constants.glow missing GREEN"
 

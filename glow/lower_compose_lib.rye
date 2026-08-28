@@ -69,7 +69,8 @@
 //!   %-  session-root  root
 //! Combine sits left; continuing root right; cue recovers root.
 //!
-//! The import stem names `glow/gen/<stem>.glow`. glow_run lowers that desk
+//! The import stem names `glow/gen/<first-letter>/<stem>.glow` -- the letter
+//! room is a pure function of the stem, per the fold law. glow_run lowers that desk
 //! as a library (no main) into `glow/.cache/`, then this lower emits a
 //! consumer that imports it and calls the arm.
 

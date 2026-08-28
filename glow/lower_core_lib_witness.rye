@@ -59,10 +59,10 @@ fn run_selftest(init: std.process.Init) !u8 {
     try cwd.writeFile(io, .{ .sub_path = "glow/.cache/lib_core_double_use.rye", .data = consumer_buf[0..n_use] });
     print("lib: wrote library and consumer under glow/.cache/ -- GREEN\n", .{});
 
-    const gen_src = try cwd.readFileAlloc(io, "glow/gen/lib-core-double.glow", a, .limited(4096));
+    const gen_src = try cwd.readFileAlloc(io, "glow/gen/l/lib-core-double.glow", a, .limited(4096));
     assert(std.mem.indexOf(u8, gen_src, "|%") != null);
     assert(std.mem.indexOf(u8, gen_src, "++  double") != null);
-    print("lib: glow/gen/lib-core-double.glow carries library battery -- GREEN\n", .{});
+    print("lib: glow/gen/l/lib-core-double.glow carries library battery -- GREEN\n", .{});
 
     print("lib: version {s}\n", .{witness_version});
     print("GREEN: `|%` library emit has no main (STOA16).\n", .{});
