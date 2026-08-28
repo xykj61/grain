@@ -453,3 +453,24 @@ seated 20260828.114450
 guard reds_status_consistency
 path tools/r/reds_status_consistency_witness.rish
 seated 20260828.125441
+
+# pin_bound_touch -- the seven living pins carry byte bounds so an agent reads one in a single
+# breath beside its lap, and until 20260828 nothing weighed a pin at the moment a round moved it.
+# REDS %293 named the mechanical repair in its own third field and left it unbuilt; the next day
+# construction/REDS.md stood 3,992 bytes over and construction/ITINERARY.md 3 over, and four
+# commits shipped across a red `equinox_e123_living_pin_guard`. Two readings that cannot disagree:
+# e123 weighs every pin at roster time, this weighs only the ones the round's own diff names, off
+# the index, where `git cat-file -s :<path>` is the size the commit will actually carry. One roster
+# file and one bound reading (living_pin_max_bytes.sh) are shared, so there is no second roof.
+# It also weighs EVERY touched pin before refusing -- e123 exits at its first, which is how the
+# ledger's 3,992 bytes went unreported while the card's 3 were named. Armed as RULE THREE in
+# tools/hooks/pre-commit, proven by 36 cases in a pen, five of them running real `git commit`s
+# through the real hook. The witness gates only its own reading -- the refusals, the pen, the hook
+# turning a real commit away -- and PRINTS the live worktree reading without asserting on it, so
+# one fault reds in one place and e123 keeps that gate. `lap` rather than `cadence`: the witness
+# costs 3s on this bench, measured 20260828, and the fault it refuses can be written by any lap
+# that edits a pin.
+
+guard pin_bound_touch
+path tools/p/pin_bound_touch_witness.rish
+seated 20260828.153046

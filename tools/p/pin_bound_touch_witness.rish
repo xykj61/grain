@@ -1,0 +1,59 @@
+# tools/p/pin_bound_touch_witness.rish -- the pin a round moves is weighed before it ships.
+#   rishi/bin/rishi run tools/p/pin_bound_touch_witness.rish
+#
+# WHAT THIS GATES, and what it deliberately leaves to its elder. `equinox_e123_living_pin_guard`
+# already gates every rostered pin's bytes at roster time, and a second assertion on that same
+# reading would be a second roof over one question -- which the pin guards refuse by name. So this
+# witness gates only what is its own: that the commit-time reading refuses an over-bound pin off the
+# INDEX, that it refuses in the pen from both sides, and that tools/hooks/pre-commit actually turns
+# a real `git commit` away when a fat pin is staged. The live tree's own worktree reading is
+# printed here as a report, never asserted -- e123 owns that gate, and one fault should red in one
+# place.
+#
+# REDS %293 named this reading in its own third field and left it unbuilt; %316 built it after two
+# more pins crossed and four commits shipped over a red roster row.
+say "pin-bound-touch: Language EN -- a round that moves a pin weighs it."
+say "pin-bound-touch: Style Gauge Meter -- index bytes - per-path bound - refusal named."
+say "pin-bound-touch: Lens TAME -- bound everything, and check at the edge the round can still fix."
+
+# Reported, not gated: what the tree's own pins read right now. e123 is the gate on this reading.
+let live = run ["sh" "tools/fixtures/pin_bound_touch_scan.sh" "worktree"]
+say live.out
+say "report: the worktree reading above is e123's gate, printed here for the lap's eye only"
+
+# The RED path, proven rather than assumed -- a guard shown only in the passing direction cannot
+# be told from a bypass.
+let red = run ["sh" "tools/fixtures/pin_bound_touch_scan.sh" "prove-red"]
+assert (red.ok == false) else "pin-bound-touch: prove-red must refuse"
+assert red.out contains "RED_touched_pin_over_bound" else "pin-bound-touch: prove-red want the named refusal"
+
+let absent = run ["sh" "tools/fixtures/pin_bound_touch_scan.sh" "staged" "--roster" "tools/fixtures/absent-roster.txt"]
+assert (absent.ok == false) else "pin-bound-touch: a missing roster must refuse rather than read green"
+assert absent.out contains "RED_roster_absent" else "pin-bound-touch: want the roster-absent refusal"
+
+let unknown = run ["sh" "tools/fixtures/pin_bound_touch_scan.sh" "--nonsense"]
+assert (unknown.ok == false) else "pin-bound-touch: an argument the scan does not know must refuse"
+assert unknown.out contains "RED_unknown_argument" else "pin-bound-touch: want the unknown-argument refusal"
+
+let pen = run ["sh" "tools/fixtures/pin_bound_touch_control.sh"]
+say pen.out
+assert pen.ok else "pin-bound-touch: the pen must pass"
+assert pen.out contains "cases_failed=0" else "pin-bound-touch: every planted case must pass"
+assert pen.out contains "case=over_bitten ok" else "pin-bound-touch: a staged pin past its bound must refuse"
+assert pen.out contains "case=over_freed ok" else "pin-bound-touch: and pass once it is trimmed"
+assert pen.out contains "case=both_pins_weighed ok" else "pin-bound-touch: two over-bound pins must both be counted"
+assert pen.out contains "case=index_over_disk ok" else "pin-bound-touch: the index is the reading, not the disk"
+assert pen.out contains "case=untouched_pin_ignored ok" else "pin-bound-touch: a round touching no pin must pass free"
+assert pen.out contains "case=exception_honored ok" else "pin-bound-touch: a page with its own bound reads by it"
+assert pen.out contains "case=boundary_inside ok" else "pin-bound-touch: exactly at the bound is inside it"
+assert pen.out contains "case=boundary_outside ok" else "pin-bound-touch: one byte past the bound must refuse"
+assert pen.out contains "case=advisory_free ok" else "pin-bound-touch: advisory over-bound is tidy debt, not a refusal"
+assert pen.out contains "case=deleted_pin_absent ok" else "pin-bound-touch: a removed pin reads absent"
+assert pen.out contains "case=hook_lawful_commits ok" else "pin-bound-touch: the hook must let a lawful pin commit"
+assert pen.out contains "case=hook_refuses_fat_pin ok" else "pin-bound-touch: the hook itself must refuse a real commit"
+assert pen.out contains "case=hook_says_why ok" else "pin-bound-touch: the refusal must say plainly what is wrong"
+assert pen.out contains "case=hook_frees_trimmed ok" else "pin-bound-touch: the hook must let a trimmed pin through"
+assert pen.out contains "case=hook_rests_off_pins ok" else "pin-bound-touch: a commit touching no pin passes free"
+assert pen.out contains "verdict=ok" else "pin-bound-touch: want pen verdict ok"
+
+say "GREEN: pin-bound-touch -- refusals both ways - the hook proven by doing - 36 cases in the pen"

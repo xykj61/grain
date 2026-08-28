@@ -21,13 +21,24 @@
 # republishes the total, and one of those two acts carries no guard at the moment it happens. So
 # the ledger's headline is generated here too, by tools/fixtures/reds_ledger_headline_write.sh.
 #
-# TWO RULES, EACH WITH ITS OWN TRIGGER, because the two pages go stale for different reasons and a
+# A FOURTH DUTY, AND A DIFFERENT KIND, joined on 20260828: the living pins' byte bounds. The three
+# rules above regenerate a page; this one refuses a commit and regenerates nothing, because a pin
+# over its bound is prose somebody has to choose to spend and no generator can choose for them.
+# REDS %293 named this exact reading in its own third field -- "git diff --cached --name-only piped
+# against the pin roster answers the question mechanically rather than from a reader's sense of what
+# the round was about" -- and left it unbuilt. The next day construction/REDS.md stood 3,992 bytes
+# over and construction/ITINERARY.md 3 bytes over, and four commits shipped across a red roster row
+# (REDS %316). A lantern that fires twice becomes a loom.
+#
+# THREE RULES, EACH WITH ITS OWN TRIGGER, because the pages go stale for different reasons and a
 # single trigger would either miss one or fire on everything:
 #
 #   rule one   the fast front-door numbers -- README.md and docs-geode/libraries/README.md.
 #              Trigger: a tools/*_witness.rish or a *.rye file ARRIVES or LEAVES.
 #   rule two   the ledger's headline -- construction/REDS.md.
 #              Trigger: the ledger or one of its fold shelves is staged at all.
+#   rule three the living pins' byte bounds -- every page on the pin roster.
+#              Trigger: this commit stages a rostered pin at all. Refuses rather than regenerates.
 #
 # WHAT EACH RULE DOES, in order:
 #   1. Rests unless rishi is executable here. A tree without it -- the depersonalized seed, a
@@ -43,8 +54,11 @@
 #      The refreshed page is already in the worktree; the author stages it.
 #
 # WHAT IS NOT COVERED, said plainly: the fascia grade and the rooms-over-bound count can drift from
-# a commit that adds no witness and no module, and this hook is silent about both. The rostered
-# guards still catch them at a cold start. This closes the fast, frequent half.
+# a commit that adds no witness and no module, and this hook is silent about both. Rule three reads
+# a pin only when the round stages it, so a pin that crosses its bound by a hand editing it outside
+# a commit goes unread here. The rostered guards still catch all three at a cold start -- and on
+# this bench a cold roster pass runs for roughly half an hour, which is the whole reason the fast,
+# frequent half is worth closing here.
 #
 # Proven both ways by tools/g/generated_page_freshness_witness.rish over
 # tools/fixtures/generated_page_freshness_control.sh, on a throwaway repository; the ledger rule's
@@ -109,6 +123,20 @@ ledger_moved=$(git diff --cached --name-only -- construction/REDS.md 'constructi
 if [ -n "$ledger_moved" ]; then
   refresh_page tools/fixtures/reds_ledger_headline_write.sh construction/REDS.md \
     sh tools/fixtures/reds_ledger_headline_write.sh write
+fi
+
+# RULE THREE -- the living pins' byte bounds. Trigger: a rostered pin is staged at all. This rule
+# refuses rather than regenerating, and it reads the INDEX rather than the worktree, because
+# `git cat-file -s :<path>` is the size of the blob this commit will actually carry.
+if [ -f tools/fixtures/pin_bound_touch_scan.sh ] && [ -f tools/fixtures/living_pin_guard_roster.txt ]; then
+  if ! pin_report=$(sh tools/fixtures/pin_bound_touch_scan.sh staged 2>&1); then
+    echo "pre-commit: this commit stages a living pin that is over the byte bound its own header" >&2
+    echo "declares. A pin is read in one breath beside a lap, so the overage is spent back out of" >&2
+    echo "the prose rather than carried. Trim the page, or fold it, and commit again." >&2
+    echo "$pin_report" | grep -E '^(detail_path|detail_bytes|detail_bound|detail_over_by)=' >&2
+    echo "  full reading: sh tools/fixtures/pin_bound_touch_scan.sh staged" >&2
+    refused=yes
+  fi
 fi
 
 [ "$refused" = no ] || exit 1
