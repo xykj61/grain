@@ -55,20 +55,21 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `1d7cb60e69` -- the parent, which every clone resolves.
+**Git nib:** `225d4742e2` -- this round, before its nib amend.
 
 **Now.** **The derived spine is seated: row numbers stop colliding.** The role swap of
 `20260827.155213` stands -- **Dream is Codex on the pier**, holding the systems core: Caravan,
 Tally, the microkernel road, the constellation table.
 
-**Dream's seat is seated and running** -- switched and logged in `20260827`. `%296` (the jail's
-`codex` kind) and `%297` (`caravan_subscribe_poll_signal` adopted home, bijection **121/121**) are
-CLOSED and held by the ledger.
+**Dream's seat is seated and running** (`20260827`); `%296` and `%297` are CLOSED. **`%308`
+closes `%307`:** the cut seed cadence still printed from `tools/l/launch-claude-chapter.rish`,
+the file a hand pastes to START a loop. Repaired, and `custody_gate_instruction` gates the
 
-**The derived spine is SEATED** (his word `20260827.181605`). A ledger row's key is its **one-clock
-stamp**; the `%N` is a view the **anointed remote `xy`** allocates, never a local tree, and a
-published number never moves. Book with `reds_spine_derive_scan.sh --next`. Gate: `rebindings` at
-zero, 17 controls, and a replay of the real `%292` collision. Law `.claude/rules/derived-spine.md`,
+loop-prompt surface at zero -- a gated command may stand only inside a clause refusing it.
+**The derived spine is SEATED** (`20260827.181605`). A row's key is its **one-clock stamp**;
+the `%N` is a view the **anointed remote `xy`** allocates, and a published number never moves.
+Book with `reds_spine_derive_scan.sh --next`. Law `.claude/rules/derived-spine.md`, meter
+`tools/r/reds_spine_derive_witness.rish`.
 meter `tools/r/reds_spine_derive_witness.rish`.
 
 **Still open:** the **width ratchet** -- `glow/rune_shape.rye` publishes `usize` in 5 fields and 5
@@ -83,9 +84,9 @@ tree moves, then FORA31 (`approve all doors`, `20260827`).
 ## Landed arcs
 
 Mandate, the Acme DX chapter, the CION ratchet, **AHOY** beside **WADE**, the Singularity
-foundation, **BUHR**'s MCP surface, the 1,024-round itinerary, **TACT** Journeys 1, 2 and 4, the
-recursion cellar, Chapter A's image module, the Constel quorum, the rune naming -- proven on metal,
-the account in `session-logs/`, nib in [`CHECKPOINTS.md`](CHECKPOINTS.md).
+foundation, **BUHR**'s MCP surface, the 1,024-round itinerary, **TACT** Journeys 1, 2 and 4,
+the recursion cellar, the image module, the Constel quorum, the rune naming -- proven on metal,
+the account in `session-logs/`.
 
 ## The Compass Chapter -- OPEN `20260809.021829` (Keaton's word)
 
@@ -210,14 +211,14 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260828.021147` | %307 booked -- the seed's cut cadence and the negation rise both closed; the rehearsal pen guarded | [log](../session-logs/date/20260828/20260828-021147_the-pen-and-the-cadence-that-was-cut.kyri) |
+| `20260828.033212` | %308 -- the launcher still printed the cut seed cadence; the loop-prompt surface gets its guard | [log](../session-logs/date/20260828/20260828-033212_the-template-repaired-and-the-launcher-left.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line here until the next replaces it.
 
-## The cadence -- CUT `20260826`, the seed rides with Dream
+## The cadence -- CUT `20260826`, gate %1 stays his
 
 No lap publishes on a count; gate %1 stays his, and the live reading sits in *Custody gates*.
-Foundation, now testimony:
+Testimony:
 [`../foundations/20260823-111029_the-seed-that-ships-every-fifth-round.md`](../foundations/20260823-111029_the-seed-that-ships-every-fifth-round.md).
 
 ## The laps

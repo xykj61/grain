@@ -131,3 +131,33 @@ to bare basenames, since this shelf stands inside `construction/archive/` beside
 *Row %221 folded to [`REDS-a-cold-roster-across-its-own-edits-rows-221.md`](REDS-a-cold-roster-across-its-own-edits-rows-221.md) on `20260825.144025`, **CLOSED** -- a cold reading spread across the tree it was measuring, closed by a twelve-character tree digest taken at the open and again at the close. Moved as %223 carried the living pin past its bound.*
 
 *Rows %223-%225 folded to [`REDS-a-refusal-a-ratchet-and-a-name-rows-223-225.md`](REDS-a-refusal-a-ratchet-and-a-name-rows-223-225.md) on `20260825.183336`, all three **CLOSED** -- a cold roster refusing to open over an unclosed lap, the reach ratchet moving onto the property it stands for, and the seed wall learning the fund's short name. Moved as rows %226 through %228 carried the living pin past its 24,576-byte bound.*
+
+*Twelve more pointer lines folded off the pin on `20260828.033212`, as row %308 met a pin
+with five bytes of room. The recital rule is that the pin keeps the three most recent; sixteen
+stood. The `autoproject96` standfast note stays flat, because it still stands rather than pointing
+at a closed fold.*
+
+*Row 170 folded to [`archive/REDS-the-prevention-off-the-roster-rows-170.md`](REDS-the-prevention-off-the-roster-rows-170.md) on `20260823.152322` -- REDS %83's own ASCII prevention guard standing off the roster while the card it protects carried four non-ASCII lines, CLOSED, moved here on the lap it was booked. Its lesson is carried forward by row %171, which measures the same coverage gap at a wider scale.*
+
+*Row 172 folded to [`archive/REDS-the-roster-that-made-itself-red-rows-172.md`](REDS-the-roster-that-made-itself-red-rows-172.md) on `20260823.174500`, **CLOSED** -- running the roster manufactured the artifact the next run reported, and the scan asks `git check-ignore` now rather than guessing which rooms are generated. Moved here as row %174 carried the living pin past its bound. **Living rows 173 onward below.***
+
+*Row 173 folded to [`archive/REDS-the-machine-with-no-screen-rows-173.md`](REDS-the-machine-with-no-screen-rows-173.md) on `20260823.174500`, **CLOSED** on the lap it was booked -- a Wayland application on a headless pier reading as a broken tree, and the shared `display_seam_probe.sh` six callers now gate on. Moved here as row %174 carried the living pin past its bound. **Living row 174 below.***
+
+*Row 174 folded to [`archive/REDS-the-roster-ran-on-one-tree-rows-174.md`](REDS-the-roster-ran-on-one-tree-rows-174.md) on `20260823.204456`, **CLOSED** -- the build cache that reached main because the roster ran before `git add -A`, and the rule it gave its final shape: stage first, then measure, then read what you staged. Moved here as row %175 carried the living pin past its bound. **Living rows 175 onward below.***
+
+*Row 175 folded to [`archive/REDS-the-sprig-that-was-optional-rows-175.md`](REDS-the-sprig-that-was-optional-rows-175.md) on `20260823.212601`, **CLOSED** -- the canonical dated test required a sprig the session-logs law makes optional, so 237 logs read as living and sat in the repointer's write set. **Eight read-only scans still carry the narrow pattern**, named there and waiting on their own lap. **Living row 176 below.***
+
+*Row 176 folded to [`archive/REDS-the-mirror-that-matched-perfectly-rows-176.md`](REDS-the-mirror-that-matched-perfectly-rows-176.md) -- CLOSED.*
+
+*Rows 177-178 folded to [`archive/REDS-the-printed-command-and-the-counted-remainder-rows-177-178.md`](REDS-the-printed-command-and-the-counted-remainder-rows-177-178.md).*
+
+*Row 179 folded to [`archive/REDS-the-name-that-was-taken-rows-179.md`](REDS-the-name-that-was-taken-rows-179.md) on `20260824.062207`, **CLOSED** -- a new guard written straight over a tracked guard that already carried the name, caught by ` M ` where `??` belonged in `git status`. Moved here as row %184 carried the living pin past its bound. **Living rows 180 onward below.***
+
+*Row 180 folded to [`archive/REDS-the-rule-written-as-arithmetic-rows-180.md`](REDS-the-rule-written-as-arithmetic-rows-180.md) on `20260824.071500`, **CLOSED** -- the room fold's dated test still required a sprig, written as a byte comparison rather than a regex, so the spelling guard passed truthfully over the file carrying the fault.*
+
+*Row 181 folded to [`archive/REDS-the-citation-that-named-nothing-rows-181.md`](REDS-the-citation-that-named-nothing-rows-181.md) on `20260824.072600`, **CLOSED** -- a round that widened the dated rule cited two files that exist nowhere, caught by the roster run after `git add`.*
+
+*Row 182 folded to [`archive/REDS-the-index-that-grew-alone-rows-182.md`](REDS-the-index-that-grew-alone-rows-182.md) on `20260824.075409`, **CLOSED** -- the room that folded while its index grew alone, to 2,895,849 bytes against a declared 24,576, and the index fold that seated the 39th guard. Moved here as row %187 carried the living pin past its bound. **Living rows 183 onward below.***
+
+*Row 183 folded to [`archive/REDS-a-fold-moves-depth-rows-183.md`](REDS-a-fold-moves-depth-rows-183.md) on `20260824.075409`, **CLOSED** -- the shelf writer that moved a row's text without its depth, and the rule that repaired it: fix the tool and re-run from a clean base rather than patching its output. Moved here as row %187 carried the living pin past its bound.*
+
