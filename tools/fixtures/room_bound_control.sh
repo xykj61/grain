@@ -103,6 +103,14 @@ git add -A >/dev/null 2>&1
 sweep_out="$(sh "$root/tools/fixtures/room_bound_scan.sh" 2 2>&1 || true)"
 sweep_code=0
 sh "$root/tools/fixtures/room_bound_scan.sh" 2 >/dev/null 2>&1 || sweep_code=$?
+# The shelf bound proven from both sides (seated 20260828, Keaton's word): the same 3-file day
+# shelf refuses under a pen bound of 2 and walks free at a pen bound of exactly 3, so the gate
+# exists and sits where the number says -- no override word, only the control's own pen knob.
+shelfgate_out="$(ROOM_SHELF_BOUND=2 sh "$root/tools/fixtures/room_bound_scan.sh" 2 2>&1 || true)"
+shelfgate_code=0
+ROOM_SHELF_BOUND=2 sh "$root/tools/fixtures/room_bound_scan.sh" 2 >/dev/null 2>&1 || shelfgate_code=$?
+shelfat_code=0
+ROOM_SHELF_BOUND=3 sh "$root/tools/fixtures/room_bound_scan.sh" 2 >/dev/null 2>&1 || shelfat_code=$?
 
 # The other side. Remove both plants and both readings must fall silent.
 rm -rf alpha beta
@@ -114,7 +122,7 @@ rm -rf "$pen"
 echo "phase=sweep"
 
 shelf_named=no
-printf '%s\n' "$sweep_out" | grep -q 'terminal_shelf=alpha/date/20260101 flat=3 verdict=over shape=day_fold_terminal cap_headroom=997' && shelf_named=yes
+printf '%s\n' "$sweep_out" | grep -q 'terminal_shelf=alpha/date/20260101 flat=3 verdict=under shape=day_fold_terminal shelf_bound=768 cap_headroom=997' && shelf_named=yes
 echo "day_shelf_named_terminal=$shelf_named"
 
 shelf_off_fold=yes
@@ -140,6 +148,16 @@ gate_still=no
 printf '%s\n' "$sweep_out" | grep -q 'enforced_over=0' && [ "$sweep_code" -eq 0 ] && gate_still=yes
 echo "sweep_moved_no_gate=$gate_still"
 
+shelf_bites=no
+[ "$shelfgate_code" -ne 0 ] &&
+  printf '%s\n' "$shelfgate_out" | grep -q 'terminal_over=1' &&
+  printf '%s\n' "$shelfgate_out" | grep -q 'verdict=over' && shelf_bites=yes
+echo "shelf_gate_bites=$shelf_bites"
+
+shelf_frees=no
+[ "$shelfat_code" -eq 0 ] && shelf_frees=yes
+echo "shelf_gate_frees_at_bound=$shelf_frees"
+
 silent=no
 printf '%s\n' "$bare_out" | grep -q 'terminal_shelves=0' &&
   printf '%s\n' "$bare_out" | grep -q 'undated_over=0' && silent=yes
@@ -147,7 +165,8 @@ echo "both_readings_silent_when_removed=$silent"
 
 if [ "$over_code" -ne 0 ] && [ "$missing_code" -ne 0 ] && [ "$over_named" = yes ] && [ "$all_named" = yes ] &&
    [ "$shelf_named" = yes ] && [ "$shelf_off_fold" = yes ] && [ "$room_named" = yes ] &&
-   [ "$room_off_shelf" = yes ] && [ "$split" = yes ] && [ "$gate_still" = yes ] && [ "$silent" = yes ]; then
+   [ "$room_off_shelf" = yes ] && [ "$split" = yes ] && [ "$gate_still" = yes ] && [ "$silent" = yes ] &&
+   [ "$shelf_bites" = yes ] && [ "$shelf_frees" = yes ]; then
   echo "control_verdict=ok"
 else
   echo "control_verdict=wrong"

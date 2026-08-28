@@ -158,15 +158,23 @@ done
 # nowhere to go (REDS %315). The live number for a shelf is GitHub's 1,000-entry listing cap, past
 # which it stops being openable in a browser, so the headroom to that cap prints beside it.
 #
-# It GATES NOTHING, on purpose and twice over. 256 sits deliberately below the cliff, so gating a
-# shelf at the cliff would be the very placement this file's own header argues against; and
-# seating a shelf-specific bound -- or the hour fold that would answer it, `date/YYYYMMDD/HH/`,
-# which is equally pure since the hour is characters 10 and 11 of the basename -- is a change to a
-# seated law rather than a meter's to make. Reporting is the honest act.
+# THE SHELF BOUND, seated 20260828 on Keaton's word (the change to the seated law the paragraph
+# below records this meter refusing to make alone). A terminal day shelf can never grow -- its day
+# is closed and its files are testimony -- so the living rooms' growth argument vanishes and the
+# only live number is the listing cliff. The bound sits at 768: a power of two, well under the
+# 1,000-entry cliff rather than at it, since a bound placed at the cliff fails on the day it
+# matters -- the same reasoning that put the living rooms at 256, applied to a room whose only
+# hazard is being unreadable in a browser. Under it a terminal shelf reads verdict=under and
+# gates nothing; over it, terminal_over counts and the witness holds that count at zero. The
+# hour fold (date/YYYYMMDD/HH/, equally pure -- the hour is characters 10 and 11 of the basename)
+# stays the named escape for the day a shelf honestly crosses 768.
 LISTING_CAP=1000
+# ROOM_SHELF_BOUND lets the control prove the shelf gate from both sides in a pen.
+SHELF_BOUND="${ROOM_SHELF_BOUND:-768}"
 
 undated_over=0
 terminal_shelves=0
+terminal_over=0
 sweep="$(mktemp)"
 trap 'rm -f "$sweep"' EXIT
 git ls-files 2>/dev/null | awk -F/ 'NF>1 { d=$0; sub("/[^/]*$","",d); print d }' | sort | uniq -c > "$sweep"
@@ -176,7 +184,12 @@ while read -r n dir; do
   case "$dir" in vendor/*|gratitude/*|seed/*|rye/lib/*|.git/*) continue ;; esac
   case "$dir" in
     */date/[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9])
-      echo "terminal_shelf=$dir flat=$n verdict=over shape=day_fold_terminal cap_headroom=$((LISTING_CAP - n))"
+      if [ "$n" -gt "$SHELF_BOUND" ]; then
+        echo "terminal_shelf=$dir flat=$n verdict=over shape=day_fold_terminal shelf_bound=$SHELF_BOUND cap_headroom=$((LISTING_CAP - n))"
+        terminal_over=$((terminal_over + 1))
+      else
+        echo "terminal_shelf=$dir flat=$n verdict=under shape=day_fold_terminal shelf_bound=$SHELF_BOUND cap_headroom=$((LISTING_CAP - n))"
+      fi
       terminal_shelves=$((terminal_shelves + 1))
       ;;
     *)
@@ -190,8 +203,10 @@ echo "enforced_over=$enforced_over"
 echo "advised_over=$advised_over"
 echo "undated_over=$undated_over"
 echo "terminal_shelves=$terminal_shelves"
+echo "terminal_over=$terminal_over"
+echo "shelf_bound=$SHELF_BOUND"
 
-if [ "$enforced_over" -eq 0 ]; then
+if [ "$enforced_over" -eq 0 ] && [ "$terminal_over" -eq 0 ]; then
   echo "verdict=ok"
 else
   echo "verdict=over"
