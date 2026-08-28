@@ -85,7 +85,8 @@ pub const Machine = struct {
     /// The result the machine last returned to `client` -- meaningful only once has_applied(client) is true.
     pub fn result_for(self: *const Machine, client: u32) u32 {
         // invariant: a result is read only for a client that has actually applied a request.
-        assert(client < max_clients and self.seen[client]);
+        assert(client < max_clients);
+        assert(self.seen[client]);
         return self.last_result[client];
     }
 
@@ -114,7 +115,8 @@ pub const Machine = struct {
         self.last_result[cmd.client] = self.register;
         // invariant: the register moved by exactly the command's amount, and the session now holds this request's seq.
         assert(self.register == before + cmd.amount);
-        assert(self.last_seq[cmd.client] == cmd.seq and self.seen[cmd.client]);
+        assert(self.last_seq[cmd.client] == cmd.seq);
+        assert(self.seen[cmd.client]);
         return self.register;
     }
 };
@@ -132,7 +134,8 @@ pub fn apply_through(machine: *Machine, cmds: []const Command, commit_len: u32) 
         _ = try machine.apply_one(cmds[i]);
     }
     // invariant: the fold consumed exactly the committed prefix, no more.
-    assert(i == commit_len and commit_len <= cmds.len);
+    assert(i == commit_len);
+    assert(commit_len <= cmds.len);
 }
 
 // --- selftest: the machine applies a committed prefix in order; two machines fed the same prefix reach a byte-identical state
@@ -152,8 +155,12 @@ fn run_selftest() !u8 {
         };
         try apply_through(&m, &cmds, 3);
         assert(m.register == 60); // 10 + 20 + 30
-        assert(m.result_for(0) == 10 and m.result_for(1) == 30 and m.result_for(2) == 60);
-        assert(m.has_applied(0) and m.has_applied(1) and m.has_applied(2));
+        assert(m.result_for(0) == 10);
+        assert(m.result_for(1) == 30);
+        assert(m.result_for(2) == 60);
+        assert(m.has_applied(0));
+        assert(m.has_applied(1));
+        assert(m.has_applied(2));
     }
 
     // 2. THE REPLICATED-STATE-MACHINE GUARANTEE (determinism) -- two FRESH machines fed the SAME committed prefix reach a
@@ -169,7 +176,9 @@ fn run_selftest() !u8 {
         var b = Machine{};
         try apply_through(&a, &cmds, 3);
         try apply_through(&b, &cmds, 3);
-        assert(a.register == b.register and a.register == 21); // 5 + 7 + 9
+        // 5 + 7 + 9
+        assert(a.register == b.register);
+        assert(a.register == 21);
         assert(std.mem.eql(u32, &a.last_seq, &b.last_seq));
         assert(std.mem.eql(u32, &a.last_result, &b.last_result));
         assert(std.mem.eql(bool, &a.seen, &b.seen));
@@ -198,7 +207,10 @@ fn run_selftest() !u8 {
         const first = try m.apply_one(.{ .client = 5, .seq = 1, .amount = 100 });
         const retry = try m.apply_one(.{ .client = 5, .seq = 1, .amount = 100 }); // the resend
         const stale = try m.apply_one(.{ .client = 5, .seq = 0, .amount = 100 }); // an even older seq — also already answered
-        assert(first == 100 and retry == 100 and stale == 100); // one answer, three askings
+        // one answer, three askings
+        assert(first == 100);
+        assert(retry == 100);
+        assert(stale == 100);
         assert(m.register == 100); // the register moved once
     }
 
@@ -215,7 +227,8 @@ fn run_selftest() !u8 {
         var incremental = Machine{};
         try apply_through(&incremental, &cmds, 2);
         assert(incremental.register == 33); // 11 + 22 only — the tail did not apply
-        assert(!incremental.has_applied(2) and !incremental.has_applied(3));
+        assert(!incremental.has_applied(2));
+        assert(!incremental.has_applied(3));
         try apply_through(&incremental, &cmds, 4); // commit index advances; the earlier two are retries, the tail applies once
         assert(incremental.register == 110); // 11 + 22 + 33 + 44
 

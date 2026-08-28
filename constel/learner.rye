@@ -53,7 +53,8 @@ pub fn voter_count(roles: []const bool) u32 {
         if (roles[i]) count += 1;
     }
     // invariant: a config always keeps at least one voter -- a sky with no voters can decide nothing.
-    assert(count >= 1 and count <= roles.len);
+    assert(count >= 1);
+    assert(count <= roles.len);
     return count;
 }
 
@@ -65,7 +66,8 @@ pub fn voter_majority(roles: []const bool) u32 {
     const voters = voter_count(roles);
     const threshold = quorum.majority_of(voters);
     // invariant: the threshold is a strict majority of the VOTERS, never of the whole membership including learners.
-    assert(threshold <= voters and 2 * threshold > voters);
+    assert(threshold <= voters);
+    assert(2 * threshold > voters);
     return threshold;
 }
 
@@ -82,7 +84,8 @@ pub fn ack_counts(roles: []const bool, slot: u32) bool {
 /// is present but ignored, so an empty replica can never be mistaken for backing a commit it did not truly acknowledge.
 pub fn commit_backing(roles: []const bool, acks: []const bool) u32 {
     // invariant: the role flags and ack flags describe the SAME membership, bounded by the pier cap.
-    assert(roles.len == acks.len and roles.len <= roster.max_piers);
+    assert(roles.len == acks.len);
+    assert(roles.len <= roster.max_piers);
     var count: u32 = 0;
     var i: u32 = 0;
     while (i < roles.len) : (i += 1) {
@@ -96,7 +99,8 @@ pub fn commit_backing(roles: []const bool, acks: []const bool) u32 {
 /// IS THE ENTRY COMMITTED? Its voter backing reaches the voter majority -- learners neither raise the bar nor help clear it.
 pub fn committed(roles: []const bool, acks: []const bool) bool {
     // invariant: roles and acks describe the same bounded membership.
-    assert(roles.len == acks.len and roles.len <= roster.max_piers);
+    assert(roles.len == acks.len);
+    assert(roles.len <= roster.max_piers);
     return commit_backing(roles, acks) >= voter_majority(roles);
 }
 

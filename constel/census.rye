@@ -148,7 +148,9 @@ fn run_selftest() !u8 {
         const c = try take_census(&sb, cn);
         assert(c.count == 3);
         assert(!c.is_present(0)); // the caller does not census itself
-        assert(c.is_present(1) and c.is_present(2) and c.is_present(3));
+        assert(c.is_present(1));
+        assert(c.is_present(2));
+        assert(c.is_present(3));
     }
 
     // 2. A silent member is detected by slot -- run the round by hand with slot 2 declining to reply. The census counts two,
@@ -180,7 +182,8 @@ fn run_selftest() !u8 {
             try c.mark(slot);
         }
         assert(c.count == 2);
-        assert(c.is_present(1) and c.is_present(3));
+        assert(c.is_present(1));
+        assert(c.is_present(3));
         assert(!c.is_present(2)); // the silent member, known by slot
     }
 

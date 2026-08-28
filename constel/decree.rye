@@ -86,7 +86,8 @@ pub const Decree = struct {
     /// proposed value, so a second value has zero support by construction and two values can never both commit.
     pub fn commit(self: *const Decree) DecreeError!u32 {
         // invariant: a decree commits over a real, bounded constellation.
-        assert(self.size >= 1 and self.size <= roster.max_piers);
+        assert(self.size >= 1);
+        assert(self.size <= roster.max_piers);
         const threshold = quorum.majority_of(self.size);
         const backing = self.support();
         if (backing < threshold) return error.NoDecree;

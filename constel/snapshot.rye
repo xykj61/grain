@@ -216,13 +216,16 @@ fn run_selftest() !u8 {
         assert((try clog.append(6)) == 1);
         assert((try clog.append(7)) == 2);
         assert(clog.total() == 3);
-        assert((try clog.get(0)) == 5 and (try clog.get(1)) == 6 and (try clog.get(2)) == 7);
+        assert((try clog.get(0)) == 5);
+        assert((try clog.get(1)) == 6);
+        assert((try clog.get(2)) == 7);
         if (clog.get(3)) |_| return error.ReadPastEnd else |e| if (e != error.NoEntry) return error.WrongNoEntry;
 
         var full = CompactLog{};
         var i: u32 = 0;
         while (i < max_tail) : (i += 1) _ = try full.append(i);
-        assert(full.tail_len == max_tail and full.total() == max_tail);
+        assert(full.tail_len == max_tail);
+        assert(full.total() == max_tail);
         if (full.append(999)) |_| return error.GrewPastCap else |e| if (e != error.TailFull) return error.WrongTailFull;
     }
 
@@ -260,10 +263,15 @@ fn run_selftest() !u8 {
             if (i % 3 == 0) eager.compact(); // a different compaction schedule
         }
         eager.compact();
-        assert(eager.snap.count == seq.len and eager.tail_len == 0); // eager folded everything
-        assert(lazy.snap.count == 0 and lazy.tail_len == seq.len); // lazy folded nothing
+        // eager folded everything
+        assert(eager.snap.count == seq.len);
+        assert(eager.tail_len == 0);
+        // lazy folded nothing
+        assert(lazy.snap.count == 0);
+        assert(lazy.tail_len == seq.len);
         assert(eager.equivalent(&lazy)); // yet equivalent as ledgers — no fork
-        assert(eager.total() == lazy.total() and eager.total() == seq.len);
+        assert(eager.total() == lazy.total());
+        assert(eager.total() == seq.len);
 
         // A log fed a DIFFERENT sequence is honestly NOT equivalent -- the check is real, not a constant true.
         var other = CompactLog{};
@@ -285,7 +293,8 @@ fn run_selftest() !u8 {
         var i: u32 = 0;
         while (i < max_tail) : (i += 1) _ = try clog.append(i);
         clog.compact(); // reclaim the full tail
-        assert(clog.tail_len == 0 and clog.snap.count == max_tail);
+        assert(clog.tail_len == 0);
+        assert(clog.snap.count == max_tail);
         var j: u32 = 0;
         while (j < max_tail) : (j += 1) _ = try clog.append(1000 + j);
         assert(clog.total() == max_tail * 2); // twice the original cap, tail still bounded

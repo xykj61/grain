@@ -124,7 +124,8 @@ pub fn exchange(from: []const u8, sky: []const u8, me: []const u8, my_sky: []con
     // invariant: agreement was reached over bytes alone -- the sealed session names two distinct lawful piers, complete.
     assert(s.complete);
     assert(!std.mem.eql(u8, s.party_a(), s.party_b()));
-    assert(name.never_a_ship(s.party_a()) and name.never_a_ship(s.party_b()));
+    assert(name.never_a_ship(s.party_a()));
+    assert(name.never_a_ship(s.party_b()));
     return s;
 }
 
@@ -155,7 +156,8 @@ fn run_selftest() !u8 {
         // The responder reads the very same session bytes and sees the same two piers, complete.
         const s = try wire.deframe_session(sf.bytes());
         assert(s.complete);
-        assert(std.mem.eql(u8, s.party_a(), "xnb") and std.mem.eql(u8, s.party_b(), "xnc"));
+        assert(std.mem.eql(u8, s.party_a(), "xnb"));
+        assert(std.mem.eql(u8, s.party_b(), "xnc"));
     }
 
     // 3. A responder on a different constellation refuses ConstellationMismatch mid-exchange -- the greeting deframes fine

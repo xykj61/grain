@@ -100,7 +100,8 @@ pub fn catch_up(follower: *CompactLog, leader: *const CompactLog) CatchupError!u
         var i = f_total;
         while (i < l_total) : (i += 1) {
             // invariant: index i is live in the leader's tail -- at or past the boundary, before the end.
-            assert(i >= leader.snap.count and i < leader.total());
+            assert(i >= leader.snap.count);
+            assert(i < leader.total());
             const v = leader.tail[i - leader.snap.count];
             if (follower.tail_len >= max_tail) follower.compact(); // reclaim so the follower stays bounded however far behind
             _ = try follower.append(v);
@@ -144,13 +145,16 @@ fn run_selftest() !u8 {
         var follower = CompactLog{};
         _ = try follower.append(10);
         _ = try follower.append(20); // holds the first two of the same prefix
-        assert(follower.total() == 2 and leader.total() == 4);
+        assert(follower.total() == 2);
+        assert(leader.total() == 4);
 
         const gained = try catch_up(&follower, &leader);
         assert(gained == 2);
         assert(follower.equivalent(&leader));
         assert(follower.total() == 4);
-        assert((try follower.get(2)) == 30 and (try follower.get(3)) == 40); // the served entries read back live
+        // the served entries read back live
+        assert((try follower.get(2)) == 30);
+        assert((try follower.get(3)) == 40);
     }
 
     // 2. SNAPSHOT INSTALL -- a follower far behind a COMPACTED leader (its position below leader.snap.count) installs the snapshot
@@ -164,7 +168,8 @@ fn run_selftest() !u8 {
         _ = try leader.append(7);
         _ = try leader.append(8);
         _ = try leader.append(9);
-        assert(leader.snap.count == max_tail and leader.total() == max_tail + 3);
+        assert(leader.snap.count == max_tail);
+        assert(leader.total() == max_tail + 3);
 
         var follower = CompactLog{};
         _ = try follower.append(100);
@@ -190,7 +195,9 @@ fn run_selftest() !u8 {
         const before = follower.effective_state();
         const gained = try catch_up(&follower, &leader);
         assert(gained == 0);
-        assert(follower.total() == 2 and follower.effective_state() == before); // unchanged
+        // unchanged
+        assert(follower.total() == 2);
+        assert(follower.effective_state() == before);
     }
 
     // 4. DIVERGED -- a follower whose verifiable overlap disagrees with the leader refuses Diverged and stays unchanged. The check
@@ -206,7 +213,9 @@ fn run_selftest() !u8 {
         const total_before = follower.total();
         const state_before = follower.effective_state();
         if (catch_up(&follower, &leader)) |_| return error.ForkAccepted else |e| if (e != error.Diverged) return error.WrongDiverged;
-        assert(follower.total() == total_before and follower.effective_state() == state_before); // untouched
+        // untouched
+        assert(follower.total() == total_before);
+        assert(follower.effective_state() == state_before);
     }
 
     // 5. AHEAD -- a follower longer than the leader refuses Ahead (a follower never syncs backward).
@@ -235,14 +244,17 @@ fn run_selftest() !u8 {
         _ = try b.append(4);
         _ = try catch_up(&a, &leader);
         _ = try catch_up(&b, &leader);
-        assert(a.equivalent(&leader) and b.equivalent(&leader));
+        assert(a.equivalent(&leader));
+        assert(b.equivalent(&leader));
         assert(a.equivalent(&b)); // and to each other — no fork
 
         // The leader appends one more; both followers catch the single new entry and stay equivalent.
         _ = try leader.append(42);
         _ = try catch_up(&a, &leader);
         _ = try catch_up(&b, &leader);
-        assert(a.equivalent(&leader) and b.equivalent(&leader) and a.equivalent(&b));
+        assert(a.equivalent(&leader));
+        assert(b.equivalent(&leader));
+        assert(a.equivalent(&b));
     }
 
     // 7. BOUNDED PAST max_tail -- a follower catching up to a leader whose effective length runs well past the tail cap keeps its

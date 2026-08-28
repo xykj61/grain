@@ -136,7 +136,8 @@ pub fn exchange_over_channels(from: []const u8, sky: []const u8, me: []const u8,
     // invariant: agreement was reached over byte queues alone -- two distinct lawful piers, complete.
     assert(s.complete);
     assert(!std.mem.eql(u8, s.party_a(), s.party_b()));
-    assert(name.never_a_ship(s.party_a()) and name.never_a_ship(s.party_b()));
+    assert(name.never_a_ship(s.party_a()));
+    assert(name.never_a_ship(s.party_b()));
     return s;
 }
 
@@ -150,7 +151,8 @@ fn run_selftest() !u8 {
     {
         const s = try exchange_over_channels("xnb", sky, "xnc", sky);
         assert(s.complete);
-        assert(std.mem.eql(u8, s.party_a(), "xnb") and std.mem.eql(u8, s.party_b(), "xnc"));
+        assert(std.mem.eql(u8, s.party_a(), "xnb"));
+        assert(std.mem.eql(u8, s.party_b(), "xnc"));
     }
 
     // Build one real greeting frame to exercise the stream discipline below.

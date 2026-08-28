@@ -161,7 +161,8 @@ pub fn finish(greeting: *const Greeting, ack: *const Ack) HandshakeError!Session
     // invariant: a complete session names two distinct, lawful piers of the same constellation.
     assert(s.complete);
     assert(!std.mem.eql(u8, s.party_a(), s.party_b()));
-    assert(name.never_a_ship(s.party_a()) and name.never_a_ship(s.party_b()));
+    assert(name.never_a_ship(s.party_a()));
+    assert(name.never_a_ship(s.party_b()));
     return s;
 }
 

@@ -64,7 +64,8 @@ pub fn grant(acks: []const bool, threshold: u32, now: u64) LeaseError!Lease {
 /// its lease valid while the majority has elected a successor -- the stale-read door this inequality holds shut.
 pub fn lease_sound(lease_span: u64, election_timeout: u64) bool {
     // invariant: both durations are real, non-zero windows.
-    assert(lease_span >= 1 and election_timeout >= 1);
+    assert(lease_span >= 1);
+    assert(election_timeout >= 1);
     return lease_span < election_timeout;
 }
 

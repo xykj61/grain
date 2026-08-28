@@ -125,8 +125,10 @@ pub const JointBallot = struct {
     pub fn seal(self: *JointBallot) void {
         // invariant: a ballot is sealed exactly once, over two well-defined configs.
         assert(!self.sealed);
-        assert(self.joint.old.size >= 1 and self.joint.old.size <= roster.max_piers);
-        assert(self.joint.new.size >= 1 and self.joint.new.size <= roster.max_piers);
+        assert(self.joint.old.size >= 1);
+        assert(self.joint.old.size <= roster.max_piers);
+        assert(self.joint.new.size >= 1);
+        assert(self.joint.new.size <= roster.max_piers);
         var yo: u32 = 0;
         var yn: u32 = 0;
         var i: u32 = 0;
@@ -146,7 +148,13 @@ pub const JointBallot = struct {
         // BOTH configs -- the joint rule, made checkable per transition.
         assert(self.yes_old <= self.joint.old.size);
         assert(self.yes_new <= self.joint.new.size);
-        assert(self.reached == ((2 * self.yes_old > self.joint.old.size) and (2 * self.yes_new > self.joint.new.size)));
+        // The joint rule is recomputed from the STORED counts rather than from the locals above, so this
+        // also proves the store round-tripped. Each side is named before the comparison, so the
+        // conjunction stands outside the assert and a failure reads which config disagreed.
+        const old_holds = 2 * self.yes_old > self.joint.old.size;
+        const new_holds = 2 * self.yes_new > self.joint.new.size;
+        const joint_holds = old_holds and new_holds;
+        assert(self.reached == joint_holds);
     }
 
     /// Whether the member at a slot is part of the deciding set -- a participant whose yes-vote was recorded.
@@ -237,9 +245,14 @@ fn run_selftest() !u8 {
         var pb: [name.max_ship_len]u8 = undefined;
         const pn = copy_name(&pb, proposer);
         var b = try run_reconfig(&sb, pn, old3, new3);
-        assert(b.reached and b.yes_old == 3 and b.yes_new == 3);
+        assert(b.reached);
+        assert(b.yes_old == 3);
+        assert(b.yes_new == 3);
         try require_joint(&b);
-        assert(b.in_decision(0) and b.in_decision(1) and b.in_decision(2) and b.in_decision(3));
+        assert(b.in_decision(0));
+        assert(b.in_decision(1));
+        assert(b.in_decision(2));
+        assert(b.in_decision(3));
     }
 
     // 2. An OLD-only majority refuses -- a yes-set of {0,1} carries two of three old (a majority) but only one of three new
@@ -247,7 +260,9 @@ fn run_selftest() !u8 {
     //    side, where a departing member could otherwise carry a decision the new sky never saw.
     {
         var b = ballot_of(old3, new3, &[_]u32{ 0, 1 });
-        assert(b.yes_old == 2 and b.yes_new == 1 and !b.reached);
+        assert(b.yes_old == 2);
+        assert(b.yes_new == 1);
+        assert(!b.reached);
         if (require_joint(&b)) |_| return error.OldOnlyCommitted else |e| if (e != error.NoJointMajority) return error.WrongOldOnly;
     }
 
@@ -255,7 +270,9 @@ fn run_selftest() !u8 {
     //    door held from the new side, where an admitted member could otherwise carry a decision the old sky never saw.
     {
         var b = ballot_of(old3, new3, &[_]u32{ 2, 3 });
-        assert(b.yes_old == 1 and b.yes_new == 2 and !b.reached);
+        assert(b.yes_old == 1);
+        assert(b.yes_new == 2);
+        assert(!b.reached);
         if (require_joint(&b)) |_| return error.NewOnlyCommitted else |e| if (e != error.NoJointMajority) return error.WrongNewOnly;
     }
 
@@ -358,7 +375,9 @@ fn run_selftest() !u8 {
         var pb: [name.max_ship_len]u8 = undefined;
         const pn = copy_name(&pb, proposer);
         var b = try run_reconfig(&sb, pn, old7, new7);
-        assert(b.reached and b.yes_old == 7 and b.yes_new == 7);
+        assert(b.reached);
+        assert(b.yes_old == 7);
+        assert(b.yes_new == 7);
         try require_joint(&b);
     }
 

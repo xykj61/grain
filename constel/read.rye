@@ -58,7 +58,8 @@ pub const ReadError = error{
 /// a majority has moved on, this is false, exactly the deposed leader §8 warns of.
 pub fn leadership_confirmed(terms: *const term.TermTable, current_term: u32, threshold: u32) bool {
     // invariant: the threshold is a real strict majority the term table can count toward.
-    assert(threshold >= 1 and threshold <= terms.size);
+    assert(threshold >= 1);
+    assert(threshold <= terms.size);
     // invariant: current_term leaves room for the next term, so counting "beyond" never overflows.
     assert(current_term < std.math.maxInt(u32));
     const moved_on = terms.at_least(current_term + 1); // piers that have seen a newer leader's term
@@ -182,7 +183,9 @@ fn run_selftest() !u8 {
         _ = terms.observe(2, 3);
         const first = try linearizable_read(&m, &cmds, 1, &terms, 3, th);
         const second = try linearizable_read(&m, &cmds, 3, &terms, 3, th);
-        assert(first == 5 and second == 21); // 5, then 5+7+9
+        // 5, then 5+7+9
+        assert(first == 5);
+        assert(second == 21);
         assert(second >= first); // monotonic — the register only climbs
     }
 
@@ -200,7 +203,9 @@ fn run_selftest() !u8 {
         _ = terms.observe(2, 3);
         const a = try linearizable_read(&m, &cmds, 2, &terms, 3, th);
         const b = try linearizable_read(&m, &cmds, 2, &terms, 3, th); // the SAME read again
-        assert(a == 33 and b == 33); // identical — no double-apply, no write
+        // identical — no double-apply, no write
+        assert(a == 33);
+        assert(b == 33);
         assert(m.register == 33); // the register moved once, not twice, though we read twice
         assert(cmds.len == 2); // the log gained no no-op entry — the read appended nothing
     }

@@ -149,7 +149,8 @@ pub fn handshake_through(sb: *Switchboard, from: []const u8, to: []const u8) Swi
     // invariant: agreement was reached through mailboxes alone -- two distinct lawful piers, complete.
     assert(s.complete);
     assert(!std.mem.eql(u8, s.party_a(), s.party_b()));
-    assert(name.never_a_ship(s.party_a()) and name.never_a_ship(s.party_b()));
+    assert(name.never_a_ship(s.party_a()));
+    assert(name.never_a_ship(s.party_b()));
     return s;
 }
 
@@ -194,7 +195,8 @@ fn run_selftest() !u8 {
 
         const s = try handshake_through(&sb, n0, n1);
         assert(s.complete);
-        assert(std.mem.eql(u8, s.party_a(), n0) and std.mem.eql(u8, s.party_b(), n1));
+        assert(std.mem.eql(u8, s.party_a(), n0));
+        assert(std.mem.eql(u8, s.party_b(), n1));
 
         // The bystander's mailbox never held a byte of the two-party handshake.
         assert((try sb.pending(n2)) == 0);

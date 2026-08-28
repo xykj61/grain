@@ -38,10 +38,13 @@ pub const flexquorum_version = "20260814.075309";
 /// can never wrap, though both sizes are bounded by the roster.
 pub fn safe_split(qe: u32, qr: u32, n: u32) bool {
     // invariant: both quorum sizes are real, non-empty, and drawn from the same constellation.
-    assert(qe >= 1 and qe <= n);
-    assert(qr >= 1 and qr <= n);
+    assert(qe >= 1);
+    assert(qe <= n);
+    assert(qr >= 1);
+    assert(qr <= n);
     // invariant: the constellation is a real one within the roster bound.
-    assert(n >= 1 and n <= roster.max_piers);
+    assert(n >= 1);
+    assert(n <= roster.max_piers);
     return @as(u64, qe) + @as(u64, qr) > @as(u64, n);
 }
 
@@ -50,19 +53,26 @@ pub fn safe_split(qe: u32, qr: u32, n: u32) bool {
 /// its existence.
 pub fn min_overlap(qe: u32, qr: u32, n: u32) u32 {
     // invariant: both sizes are real and within the constellation.
-    assert(qe >= 1 and qe <= n and qr >= 1 and qr <= n);
-    assert(n >= 1 and n <= roster.max_piers);
+    assert(qe >= 1);
+    assert(qe <= n);
+    assert(qr >= 1);
+    assert(qr <= n);
+    assert(n >= 1);
+    assert(n <= roster.max_piers);
     if (!safe_split(qe, qr, n)) return 0;
     const overlap = qe + qr - n; // safe_split guarantees qe + qr > n, so this never underflows
     // invariant: a guaranteed overlap of a safe split is at least one pier and never exceeds the smaller quorum.
-    assert(overlap >= 1 and overlap <= qe and overlap <= qr);
+    assert(overlap >= 1);
+    assert(overlap <= qe);
+    assert(overlap <= qr);
     return overlap;
 }
 
 /// Population count of a subset bitmask, bounded to the constellation size.
 fn popcount(mask: u32, n: u32) u32 {
     // invariant: the mask indexes only real piers within the constellation.
-    assert(n >= 1 and n <= roster.max_piers);
+    assert(n >= 1);
+    assert(n <= roster.max_piers);
     var count: u32 = 0;
     var i: u32 = 0;
     while (i < n) : (i += 1) {
@@ -78,8 +88,12 @@ fn popcount(mask: u32, n: u32) u32 {
 /// R of the n piers. If any disjoint pair exists the minimum is 0; a safe split makes it at least min_overlap.
 fn enumerated_min_overlap(qe: u32, qr: u32, n: u32) u32 {
     // invariant: the enumeration is bounded -- n piers means 2^n subsets, and n is capped by the roster.
-    assert(n >= 1 and n <= roster.max_piers);
-    assert(qe >= 1 and qe <= n and qr >= 1 and qr <= n);
+    assert(n >= 1);
+    assert(n <= roster.max_piers);
+    assert(qe >= 1);
+    assert(qe <= n);
+    assert(qr >= 1);
+    assert(qr <= n);
     const bound: u32 = @as(u32, 1) << @intCast(n); // 2^n, bounded by 2^max_piers
     var smallest: u32 = n + 1; // larger than any real overlap, lowered by the first pair
     var e: u32 = 0;

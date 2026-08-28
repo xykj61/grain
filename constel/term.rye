@@ -98,7 +98,8 @@ pub const TermedDecree = struct {
     /// A fresh termed decree over a proposed value in a given term, for a bounded constellation.
     pub fn init(term: u32, value: u32, size: u32) TermedDecree {
         // invariant: a decree runs over a real, bounded constellation.
-        assert(size >= 1 and size <= roster.max_piers);
+        assert(size >= 1);
+        assert(size <= roster.max_piers);
         return .{ .inner = decree.Decree{ .value = value, .size = size }, .term = term };
     }
 
@@ -136,7 +137,8 @@ pub fn run_termed_decree(sb: *switchboard.Switchboard, terms: *TermTable, leader
     const leader_slot = try sb.member(leader); // a stranger cannot open a decree
     const n = sb.size();
     // invariant: the leader is a real member of a bounded constellation the term table also indexes.
-    assert(leader_slot < n and n <= roster.max_piers);
+    assert(leader_slot < n);
+    assert(n <= roster.max_piers);
     assert(terms.size == n);
 
     var ping = wire.Frame{};
@@ -179,7 +181,9 @@ fn run_selftest() !u8 {
         assert(!t.observe(0, 2)); // a lower observe never lowers the term
         assert(t.current(0) == 3);
         assert(!t.observe(0, 3)); // equal is a no-op
-        assert(t.at_least(3) == 1 and t.at_least(1) == 1 and t.at_least(4) == 0);
+        assert(t.at_least(3) == 1);
+        assert(t.at_least(1) == 1);
+        assert(t.at_least(4) == 0);
     }
 
     // 2. A GROUND COMMIT -- a fresh termed decree in term 1 with every pier at ground commits, and every accepting pier adopts

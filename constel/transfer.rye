@@ -58,7 +58,8 @@ pub const TransferError = error{
 /// of the leader's entries and no phantom of its own.
 pub fn is_caught_up(leader_last_term: u32, leader_len: u32, target_last_term: u32, target_len: u32) bool {
     // invariant: both logs are bounded by the entry cap, so their lengths are real.
-    assert(leader_len <= max_entries and target_len <= max_entries);
+    assert(leader_len <= max_entries);
+    assert(target_len <= max_entries);
     // invariant: the target is never strictly AHEAD of the leader it is catching up to (repair has already truncated any phantom
     // suffix, so the leader is at least as current as the target -- FORA17).
     assert(vote.at_least_as_current(leader_last_term, leader_len, target_last_term, target_len));
@@ -86,7 +87,8 @@ pub fn timeout_now(target_id: u32, roster_len: u32, leader_last_term: u32, leade
     if (!is_caught_up(leader_last_term, leader_len, target_last_term, target_len)) return error.TargetNotCaughtUp;
     const campaign_term = leader_term + 1;
     // invariant: the campaign term is exactly one above the leader's -- a single, deliberate advance, never a jump.
-    assert(campaign_term == leader_term + 1 and campaign_term > leader_term);
+    assert(campaign_term == leader_term + 1);
+    assert(campaign_term > leader_term);
     return campaign_term;
 }
 
@@ -95,7 +97,8 @@ pub fn timeout_now(target_id: u32, roster_len: u32, leader_last_term: u32, leade
 /// already rules everywhere else in the ladder.
 pub fn should_step_down(old_leader_term: u32, seen_term: u32) bool {
     // invariant: the compared terms are real u32 values (comparison only, no arithmetic that could wrap).
-    assert(old_leader_term <= std.math.maxInt(u32) and seen_term <= std.math.maxInt(u32));
+    assert(old_leader_term <= std.math.maxInt(u32));
+    assert(seen_term <= std.math.maxInt(u32));
     return seen_term > old_leader_term;
 }
 

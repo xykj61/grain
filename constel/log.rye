@@ -110,7 +110,9 @@ fn run_selftest() !u8 {
         assert((try log.append(20)) == 1);
         assert((try log.append(30)) == 2);
         assert(log.len == 3);
-        assert((try log.get(0)) == 10 and (try log.get(1)) == 20 and (try log.get(2)) == 30);
+        assert((try log.get(0)) == 10);
+        assert((try log.get(1)) == 20);
+        assert((try log.get(2)) == 30);
         if (log.get(3)) |_| return error.ReadPastEnd else |e| if (e != error.NoEntry) return error.WrongNoEntry;
 
         // Fill to the cap, then refuse LogFull.
@@ -134,7 +136,9 @@ fn run_selftest() !u8 {
         assert((try run_and_append(&log, &sb, ln, 22)) == 1);
         assert((try run_and_append(&log, &sb, ln, 33)) == 2);
         assert(log.len == 3);
-        assert((try log.get(0)) == 11 and (try log.get(1)) == 22 and (try log.get(2)) == 33);
+        assert((try log.get(0)) == 11);
+        assert((try log.get(1)) == 22);
+        assert((try log.get(2)) == 33);
     }
 
     // 3. No fork -- two logs driven through the same committed sequence are identical entry for entry. Each index committed one
@@ -191,7 +195,8 @@ fn run_selftest() !u8 {
         var log = Log{};
         assert((try run_and_append(&log, &sb, ln, 5)) == 0);
         assert((try run_and_append(&log, &sb, ln, 6)) == 1);
-        assert(log.len == 2 and (try log.get(1)) == 6);
+        assert(log.len == 2);
+        assert((try log.get(1)) == 6);
     }
 
     print("GREEN fora-log: a sequence of decrees the whole sky agrees on, in order — append grows the log in order and reads " ++

@@ -9,9 +9,13 @@
 # living inside the text being searched for. Those six read as violations and were not, which is
 # why the ban could not widen past them (REDS %304).
 #
-# WHAT IT DOES. Strips double-quoted string content from each line before looking, the way
-# tame_style_ban_noncomment_files.sh strips comment lines before looking. What remains is code, and
-# an `and` in the code inside an assert's parentheses is a real conjunction.
+# WHAT IT DOES. Strips double-quoted string content and then the trailing `//` comment from each
+# line before looking, the way tame_style_ban_noncomment_files.sh strips comment lines before
+# looking. What remains is code, and an `and` in the code inside an assert's parentheses is a real
+# conjunction. The comment strip came second (20260828): a full `//` line was already skipped, yet
+# a TRAILING one was still read as code, so `assert(cand_grants == 5); // ... (equal) and the two
+# behind (candidate ahead)` in constel/vote.rye read as a violation on the strength of English
+# prose. Quotes are blanked FIRST so a `//` inside a literal cannot truncate real code.
 #
 # USAGE: sh tools/fixtures/tame_style_compound_assert.sh <file>...
 # Prints `file:line: text` per hit; exits 1 when any hit stands, 0 when none do.
@@ -30,6 +34,8 @@ hits=$(awk '
     # remove double-quoted content, so a conjunction inside a literal is not read as code
     code = line
     gsub(/"[^"]*"/, "\"\"", code)
+    # then remove the trailing // comment, so English prose after the statement is not read as code
+    sub(/\/\/.*$/, "", code)
     if (code ~ /assert\(.* and .*\)/) printf "%s:%d: %s\n", FILENAME, FNR, line
   }
 ' "$@" 2>/dev/null || true)
