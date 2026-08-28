@@ -111,3 +111,5 @@ it here. The pin keeps the three most recent, which is the live edge a reader wa
 
 
 *Row %300 folded to [`REDS-light-kept-rows-300.md`](REDS-light-kept-rows-300.md) on `20260827.201258`, **CLOSED** -- the Lumen seating carried by nothing, and Keaton's ruling that named the vane **Ember** instead. The fourth fold of `20260827`, after %293, %294, %298 and %299, on a pin that opened the morning with three bytes of headroom. A fifth was attempted and **refused**: `reds_fold.sh` reads `%301` as OPEN and the pin keeps what is open, which is the tool declining a fold its operator had talked himself into.*
+
+*Row %302 folded to [`REDS-the-ratio-is-the-tell-rows-302.md`](REDS-the-ratio-is-the-tell-rows-302.md) on `20260827.205859`, **CLOSED** -- ten witnesses carrying an absolute path into one host's home where 1,391 siblings wrote a relative one. The fifth fold of `20260827`, making room for `%303`, whose finding is the same lesson in a different key: a guard over one set proves things about the members it has, and only a guard over two sets can prove the set is whole.*
