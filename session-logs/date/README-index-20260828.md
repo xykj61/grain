@@ -11,7 +11,9 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260828.115623` | [the flag that failed closed](20260828/20260828-115623_the-flag-that-failed-closed.kyri) | my interim was Dream's second blocker; the warning had said so |
 | `20260828.114528` | [the second binary, the captain's hat](20260828/20260828-114528_the-second-binary-and-the-captains-hat.kyri) | Dream unblocked two ways; Sound's captaincy written down |
+| `20260828.114450` | [the needle the harness supplied](20260828/20260828-114450_the-needle-the-harness-supplied.kyri) | %311 -- the answer-meter adopted; a wall that could not red |
 | `20260828.113221` | [the cardinal card, the carried fix](20260828/20260828-113221_the-cardinal-card-and-the-carried-fix.kyri) | Mind's fix upstream attributed; the card in house order |
 | `20260828.110207` | [the gate that heard itself](20260828/20260828-110207_the-gate-that-heard-itself.kyri) | Sound's first lap: the tautology deleted, eight walls heard refusing |
 | `20260828.103150` | [the open that cannot die](20260828/20260828-103150_the-open-that-cannot-die.kyri) | two crashes, zero divergence; 17 blobs recovered; fleet healed |
