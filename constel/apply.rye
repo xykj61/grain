@@ -230,16 +230,16 @@ fn run_selftest() !u8 {
     //    log refuses TooManyCommitted. Each refuses by name, changing nothing.
     {
         var m = Machine{};
-        assert(m.apply_one(.{ .client = max_clients, .seq = 1, .amount = 1 }) == error.UnknownClient);
+        if (m.apply_one(.{ .client = max_clients, .seq = 1, .amount = 1 })) |_| unreachable else |err| assert(err == error.UnknownClient);
         assert(m.register == 0); // the refused command moved nothing
 
         _ = try m.apply_one(.{ .client = 0, .seq = 1, .amount = max_register - 1 }); // fill the register near its ceiling
-        assert(m.apply_one(.{ .client = 1, .seq = 1, .amount = 2 }) == error.RegisterOverflow); // 2 past the ceiling: refused
+        if (m.apply_one(.{ .client = 1, .seq = 1, .amount = 2 })) |_| unreachable else |err| assert(err == error.RegisterOverflow); // 2 past the ceiling: refused
         assert(m.register == max_register - 1); // the overflow changed nothing
         assert(!m.has_applied(1)); // and left client 1 with no session
 
         const one = [_]Command{.{ .client = 0, .seq = 1, .amount = 1 }};
-        assert(apply_through(&m, &one, 2) == error.TooManyCommitted); // a commit length past the log refuses
+        if (apply_through(&m, &one, 2)) |_| unreachable else |err| assert(err == error.TooManyCommitted); // a commit length past the log refuses
     }
 
     print("GREEN fora-apply: the committed log drives a state machine, each request applied exactly once — the machine folds a " ++
