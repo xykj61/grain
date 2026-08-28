@@ -1,0 +1,45 @@
+# comlink_rehearsal_wire_witness.rish -- the constellation rehearsal's localhost crossing, proven.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/co/comlink_rehearsal_wire_witness.rish
+#
+# WHAT THIS PROVES. comlink/rehearsal_wire.rye spawns itself three times, one ship per role. Each
+# child binds its own UDP port on 127.0.0.1 (base_port 38498, one per seat), seals a wire_format
+# datagram carrying its own Ed25519 signature over stamp-and-name, sends it to the other two, and
+# reads the round's pen from the three facts it then holds -- alone, with no vote message. The
+# module asserts the fleet green only when all three children exit 0.
+#
+# WHY IT EARNED A WITNESS. Until this file, comlink/rehearsal_wire.rye was reached by no runner,
+# roster, or suite: it ran when a hand typed its name and at no other time. It is the pen FORA31 --
+# the socket rung where constel/ meets comlink/hosted_wire.rye -- is to be proven in, so the pen
+# wants a standing guard before the rung lands in it.
+#
+# THE THIN EDGE, BUDGETED. Three real processes on real ports is an integrated check, and it earns
+# its keep only by proving what no isolated witness can: that every seat reads one pen across a
+# process boundary. It runs on `cadence` rather than `lap` for that cost.
+#
+# BOTH DIRECTIONS. Leg A proves the crossing; leg B proves the refusal, since a refusal proven only
+# in the passing direction cannot be told from a bypass.
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "comlink/bin/rehearsal-wire"
+
+let build = run ["sh" "-c" "mkdir -p comlink/bin && env RYE_ZIG=${zig} rye/bin/rye build comlink/rehearsal_wire.rye -lc -femit-bin=${bin}"]
+assert build.ok else "rehearsal wire: the module failed to build"
+
+# Leg A -- the fleet: three processes bind, cross, and each reads the same pen on its own.
+let fleet = run ["sh" "-c" "${bin} 2>&1"]
+assert fleet.ok else "rehearsal wire: the fleet exited non-zero"
+assert fleet.out contains "rehearsal-wire: GREEN" else "rehearsal wire: the fleet did not speak GREEN"
+
+# Every seat spoke, and every seat read seat zero's pen -- agreement travels as structure.
+assert fleet.out contains "rehearsal-wire xnvethqua: three voices verified, pen=xnvethqua" else "rehearsal wire: seat a did not read the pen"
+assert fleet.out contains "rehearsal-wire kwelmirran: three voices verified, pen=xnvethqua" else "rehearsal wire: seat b did not read the pen"
+assert fleet.out contains "rehearsal-wire xzobrilth: three voices verified, pen=xnvethqua" else "rehearsal wire: seat c did not read the pen"
+
+# Leg B -- the refusal: a role outside the three seats is turned away by name, exit 2.
+let stranger = run ["sh" "-c" "${bin} q 2>&1"]
+assert stranger.code == 2 else "rehearsal wire: a role outside the three seats was admitted"
+assert stranger.out contains "unknown role" else "rehearsal wire: the refusal did not name the role"
+
+say "GREEN: comlink rehearsal wire -- three processes, one pen, every voice verified, and a stranger refused."
