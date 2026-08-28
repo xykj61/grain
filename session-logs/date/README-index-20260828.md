@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260828.154329` | [the card that points at nothing](20260828/20260828-154329_the-card-that-points-at-nothing.kyri) | two card reds, found and left with their hand |
 | `20260828.153737` | [the pin weighed where it can still be trimmed](20260828/20260828-153737_the-pin-weighed-where-it-can-still-be-trimmed.kyri) | the commit-time pin wall |
 | `20260828.133956` | [the comment that moved into the meter](20260828/20260828-133956_the-comment-that-moved-into-the-meter.kyri) | %314: my split moved 3 em-dashes into a full ratchet |
 | `20260828.133116` | [the roster that held out one room](20260828/20260828-133116_the-roster-that-held-out-one-room.kyri) | constel's last 130 split; the second roster deleted, not widened |
