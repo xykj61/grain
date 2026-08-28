@@ -115,6 +115,11 @@ set -u
 # `standing` together and leaves `unreached` where it stood. So the number fell by exactly the one
 # file that changed clocks, which is what this gate was rewritten to mean.
 CEILING=${WITNESS_REACH_CEILING:-1154}
+# The family ceiling, seated 20260828 at what the tree measured that day: 222 of 291 families carry
+# no clock at all. It only falls, and it falls whenever a family's first roster row lands. It is a
+# ratchet rather than a wall at zero for the same reason CEILING is: a wall that refuses ordinary
+# work is a wall somebody turns off.
+FAMILY_CEILING=${WITNESS_REACH_FAMILY_CEILING:-222}
 
 mode="${1:-}"
 roster=construction/standing-equipment.kyri
@@ -290,7 +295,42 @@ unreached=$(wc -l < "$pen/unreached" | tr -d ' ')
 # A family census, grouped by the first word of a basename. It reads the GATED set by default,
 # because a family count and a ceiling that disagree about which set they cover is how a lap comes
 # to believe a family is closer to done than it is.
-families() { sed -E 's|^tools/[^/]+/||; s|^.*/||' "$1" | cut -d_ -f1 | sort | uniq -c | sort -rn | head -20; }
+#
+# THE DENOMINATOR, AND WHY IT ARRIVED LATE (20260828). This census printed twenty absolute counts
+# and nothing else, so `86 hunk` and `12 tally` read as one large family and one small one. They
+# are not: all 86 of hunk's witnesses are unreached and 12 of tally's 18 are, and a count without
+# its total cannot say so. Worse, `head -20` dropped 224 of the 244 families holding an unreached
+# witness without a word -- `comlink` at 4 of 5 and `mantra` at 6 of 7 never printed at all, so the
+# module a reader came to check was the module the census hid. A meter that silently truncates
+# reports a passing tail it never looked at, which is REDS %301's lesson one layer up: a room that
+# never ARRIVES at a meter has not passed it either.
+#
+# So a family line now carries `unreached/total` and the share, the list is printed whole, and the
+# summary line names how many families there are and how many are WHOLLY unreached.
+family_names() { sed -E 's|^tools/[^/]+/||; s|^.*/||' "$1" | cut -d_ -f1; }
+
+# families <set-file> -- one line per family: share, unreached/total, name, ranked by share then size.
+families() {
+  family_names "$pen/all" | sort | uniq -c | awk '{ print $2 "\t" $1 }' | sort > "$pen/fam_tot"
+  family_names "$1"       | sort | uniq -c | awk '{ print $2 "\t" $1 }' | sort > "$pen/fam_sel"
+  join -t"$(printf '\t')" "$pen/fam_tot" "$pen/fam_sel" \
+    | awk -F'\t' '{ printf "%6.1f%%  %4d/%-4d  %s\n", 100*$3/$2, $3, $2, $1 }' \
+    | sort -rn -k1
+}
+
+# wholly_unreached -- families in which EVERY witness is unreached, so the whole system has no clock.
+# This is the reading `unreached` alone cannot give. Rostering one member of an 86-witness family
+# lowers `unreached` by one and this by one; deleting a family's only REACHED member lowers `total`,
+# leaves `unreached` exactly where it stood, and unguards the whole family -- which is the case the
+# single total is blind to, and the case this number exists to catch.
+wholly_unreached_count() {
+  family_names "$pen/all"       | sort | uniq -c | awk '{ print $2 "\t" $1 }' | sort > "$pen/fam_tot"
+  family_names "$pen/unreached" | sort | uniq -c | awk '{ print $2 "\t" $1 }' | sort > "$pen/fam_unr"
+  join -t"$(printf '\t')" "$pen/fam_tot" "$pen/fam_unr" | awk -F'\t' '$2 == $3' | wc -l | tr -d ' '
+}
+
+families_total=$(family_names "$pen/all" | sort -u | wc -l | tr -d ' ')
+wholly_unreached=$(wholly_unreached_count)
 
 case "$mode" in
   --list)      sed 's/^/unheard /'   "$pen/unheard" ;;
@@ -301,7 +341,9 @@ case "$mode" in
   --cadence)   sed 's/^/cadence /'   "$pen/cadence" ;;
   --families)         families "$pen/unreached" ;;
   --families-unheard) families "$pen/unheard" ;;
+  --families-whole)   families "$pen/unreached" | awk '$1 == "100.0%"' ;;
 esac
 
 if [ "$unreached" -le "$CEILING" ]; then under=yes; else under=no; fi
-echo "WITNESS_REACH total=$total standing=$standing cadence=$cadence reached=$reached sung=$sung unclocked=$unclocked unheard=$unheard unreached=$unreached ceiling=$CEILING under_ceiling=$under"
+if [ "$wholly_unreached" -le "$FAMILY_CEILING" ]; then funder=yes; else funder=no; fi
+echo "WITNESS_REACH total=$total standing=$standing cadence=$cadence reached=$reached sung=$sung unclocked=$unclocked unheard=$unheard unreached=$unreached ceiling=$CEILING under_ceiling=$under families=$families_total wholly_unreached=$wholly_unreached family_ceiling=$FAMILY_CEILING under_family_ceiling=$funder"

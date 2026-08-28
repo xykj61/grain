@@ -7,8 +7,11 @@
 # room asks. Three of the free readings reproduce sources that exist here and would otherwise be
 # read wrong; two reproduce shapes this tree has never written and might tomorrow.
 #
-# WHAT IT PROVES -- thirty-one behaviors: nine calls heard, five mentions refused, four readings
-# kept apart, seven band checks, three steps of one promotion, and the ceiling from three positions:
+# WHAT IT PROVES -- forty-two behaviors: nine calls heard, five mentions refused, four readings
+# kept apart, seven band checks, three steps of one promotion, the ceiling from three positions,
+# and eleven for the family census added 20260828 -- its denominator, its refusal to drop a family
+# in silence, the mixed family it must not count, the deletion `unreached` is blind to, the roster
+# row that closes one, and its own ceiling from three positions:
 #
 #   REFUSED (stays unheard)                       HEARD (counts as sung)
 #   1  a path in a # comment                      1  run ["rishi/bin/rishi" "run" "<path>"]
@@ -261,6 +264,123 @@ git commit -qm remove >/dev/null 2>&1
 back=$(WITNESS_REACH_CEILING=$tight sh "$SCAN" 2>/dev/null)
 if [ "$(read_field "$back" under_ceiling)" = yes ]; then note ok "ceiling: removing the plant returns green"
 else note no "ceiling: removing the plant returns green"; fi
+
+
+# --- THE FAMILY CENSUS (20260828) --------------------------------------------------------------
+# The census printed twenty absolute counts with no denominator and dropped the rest in silence, so
+# a family every one of whose witnesses is unreached read exactly like a large family with a tail.
+# `wholly_unreached` is the reading the single total cannot give, and the case below proves why it
+# is worth its own number: deleting a family's only REACHED member leaves `unreached` exactly where
+# it stood -- total and standing both fall by one -- while the whole family loses its clock.
+
+# Twenty-five single-witness families, planted so the census must print more than twenty lines.
+# Without them this pen holds three families, and the `head -20` truncation that motivated the whole
+# reading could be put back with every check still green -- a control that cannot bite the defect it
+# was written for is a control proven in the passing direction only.
+i=1
+while [ "$i" -le 25 ]; do
+  echo 'say "fam"' > "tools/w/fam${i}x_one_witness.rish"
+  i=$((i + 1))
+done
+git add -A tools/w >/dev/null 2>&1
+git commit -qm plant-families >/dev/null 2>&1
+
+fam_field() { WITNESS_REACH_CEILING=9999 WITNESS_REACH_FAMILY_CEILING=9999 sh "$SCAN" 2>/dev/null \
+  | sed -n "s/.*[[:space:]]$1=\([^[:space:]]*\).*/\1/p"; }
+census() { WITNESS_REACH_CEILING=9999 WITNESS_REACH_FAMILY_CEILING=9999 sh "$SCAN" --families 2>/dev/null | grep '%'; }
+
+# 1. Every census line carries share, unreached/total, and a name. A count without its total is the
+#    whole defect, so the shape is asserted rather than eyeballed.
+if [ -n "$(census)" ] && [ -z "$(census | grep -vE '^ *[0-9]+\.[0-9]%  +[0-9]+/[0-9]+ +[A-Za-z0-9]+$')" ]; then
+  note ok "census: every line carries share and unreached/total"
+else note no "census: every line carries share and unreached/total"; fi
+
+# 2. Nothing is dropped in silence. The census must print one line per family holding an unreached
+#    witness -- counted independently, from the unreached set itself.
+# Only the `unreached <path>` rows -- the scan also prints declared_enumerators and its summary
+# line, and reading those as families is how this check first counted one family too many.
+want=$(WITNESS_REACH_CEILING=9999 sh "$SCAN" --unreached 2>/dev/null | awk '$1 == "unreached" {print $2}' \
+  | sed -E 's|^tools/[^/]+/||; s|^.*/||' | cut -d_ -f1 | sort -u | grep -c .)
+if [ "$(census | grep -c .)" = "$want" ]; then note ok "census: prints every family, none dropped"
+else note no "census: prints every family, none dropped"; fi
+
+base_unr=$(fam_field unreached)
+base_whole=$(fam_field wholly_unreached)
+
+# 3. A family with one reached member and one unreached member is NOT wholly unreached. `unreached`
+#    rises by one and the family count must not move.
+echo 'say "duet_a"' > tools/w/duet_a_witness.rish
+echo 'say "duet_b"' > tools/w/duet_b_witness.rish
+cat >> construction/standing-equipment.kyri <<'EOF'
+guard duet_a
+path tools/w/duet_a_witness.rish
+EOF
+git add -A tools/w/duet_a_witness.rish tools/w/duet_b_witness.rish construction/standing-equipment.kyri >/dev/null 2>&1
+git commit -qm plant-duet >/dev/null 2>&1
+
+if [ "$(fam_field wholly_unreached)" = "$base_whole" ]; then
+  note ok "wholly_unreached: a family with one reached member is not counted"
+else note no "wholly_unreached: a family with one reached member is not counted"; fi
+if [ "$(fam_field unreached)" -eq $((base_unr + 1)) ]; then
+  note ok "wholly_unreached: the mixed family still raises unreached by its one silent member"
+else note no "wholly_unreached: the mixed family still raises unreached by its one silent member"; fi
+
+# 4. THE CASE THE TOTAL IS BLIND TO. Delete the family's only reached member and its roster row.
+#    total falls by one and standing falls by one, so `unreached` cannot move -- and the family has
+#    just lost its last clock. Only the family reading can see it.
+mid_unr=$(fam_field unreached)
+mid_whole=$(fam_field wholly_unreached)
+git rm -q -f tools/w/duet_a_witness.rish >/dev/null 2>&1
+grep -v -e '^guard duet_a$' -e '^path tools/w/duet_a_witness.rish$' construction/standing-equipment.kyri > roster.tmp
+cat roster.tmp > construction/standing-equipment.kyri
+rm -f roster.tmp
+git add -A construction/standing-equipment.kyri >/dev/null 2>&1
+git commit -qm drop-the-only-guarded-member >/dev/null 2>&1
+
+if [ "$(fam_field unreached)" = "$mid_unr" ]; then
+  note ok "wholly_unreached: unreached stands still when a family's only reached member is deleted"
+else note no "wholly_unreached: unreached stands still when a family's only reached member is deleted"; fi
+if [ "$(fam_field wholly_unreached)" -eq $((mid_whole + 1)) ]; then
+  note ok "wholly_unreached: rises by one when a family loses its last clock"
+else note no "wholly_unreached: rises by one when a family loses its last clock"; fi
+
+# 5. The other direction, proven by doing it: roster the family's remaining member and both numbers
+#    fall by exactly one. A ratchet that only ever rises is a ratchet nobody can close.
+pre_unr=$(fam_field unreached)
+pre_whole=$(fam_field wholly_unreached)
+cat >> construction/standing-equipment.kyri <<'EOF'
+guard duet_b
+path tools/w/duet_b_witness.rish
+EOF
+git add construction/standing-equipment.kyri >/dev/null 2>&1
+git commit -qm roster-duet-b >/dev/null 2>&1
+
+if [ "$(fam_field wholly_unreached)" -eq $((pre_whole - 1)) ]; then
+  note ok "wholly_unreached: falls by one when a family's first roster row lands"
+else note no "wholly_unreached: falls by one when a family's first roster row lands"; fi
+if [ "$(fam_field unreached)" -eq $((pre_unr - 1)) ]; then
+  note ok "wholly_unreached: the same roster row lowers unreached by one"
+else note no "wholly_unreached: the same roster row lowers unreached by one"; fi
+
+# 6. THE FAMILY CEILING, from three positions. A refusal proven only in the passing direction cannot
+#    be told from a bypass, so it is pushed past, sat exactly on, and walked back.
+w=$(fam_field wholly_unreached)
+at=$(WITNESS_REACH_CEILING=9999 WITNESS_REACH_FAMILY_CEILING=$w sh "$SCAN" 2>/dev/null)
+if [ "$(read_field "$at" under_family_ceiling)" = yes ]; then note ok "family ceiling: exactly at it passes"
+else note no "family ceiling: exactly at it passes"; fi
+
+echo 'say "solo"' > tools/w/solo_witness.rish
+git add tools/w/solo_witness.rish >/dev/null 2>&1
+git commit -qm plant-solo >/dev/null 2>&1
+over=$(WITNESS_REACH_CEILING=9999 WITNESS_REACH_FAMILY_CEILING=$w sh "$SCAN" 2>/dev/null)
+if [ "$(read_field "$over" under_family_ceiling)" = no ]; then note ok "family ceiling: one past it refuses"
+else note no "family ceiling: one past it refuses"; fi
+
+git rm -q -f tools/w/solo_witness.rish >/dev/null 2>&1
+git commit -qm remove-solo >/dev/null 2>&1
+back=$(WITNESS_REACH_CEILING=9999 WITNESS_REACH_FAMILY_CEILING=$w sh "$SCAN" 2>/dev/null)
+if [ "$(read_field "$back" under_family_ceiling)" = yes ]; then note ok "family ceiling: removing the plant returns green"
+else note no "family ceiling: removing the plant returns green"; fi
 
 echo "control_pass=$pass control_fail=$fail"
 if [ "$fail" -eq 0 ]; then echo "control_verdict=ok"; else echo "control_verdict=red"; fi
