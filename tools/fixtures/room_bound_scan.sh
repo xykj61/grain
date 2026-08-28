@@ -131,6 +131,26 @@ for e in $ENFORCE_ALL; do
   fi
 done
 
+# THE UNDATED SWEEP -- every tracked directory over the bound, whether or not anything dated it.
+# Discovery above finds a room by its DATED files, so a room whose members are named for their
+# subject rather than their day reads zero for its whole life and never appears at all. `tools/`
+# reached 7.4x the bound that way and was caught by a hand; `glow/gen/` stood at 340 on
+# `20260827` with every meter green, and was caught the same way. A reading that only sees rooms
+# it already knows about cannot report the room nobody thought to name, so this pass asks git for
+# every directory instead and reports the ones over. It is ADVISORY by design: a room over the
+# bound has a real fold ahead of it, and some folds are not mechanical -- folding `glow/gen/`
+# breaks `/+` import resolution, because `glow/glow_run.rye` builds a library path as the flat
+# format string "glow/gen/{s}.glow" at its lines 166 and 241. Reporting is the honest act; the
+# cure belongs to the round that can pay for it.
+undated_over=0
+git ls-files 2>/dev/null | awk -F/ 'NF>1 { d=$0; sub("/[^/]*$","",d); print d }' | sort | uniq -c |
+while read -r n dir; do
+  [ "$n" -gt "$BOUND" ] || continue
+  case " $ENFORCE_ALL $ENFORCE " in *" $dir "*) continue ;; esac
+  case "$dir" in vendor/*|gratitude/*|seed/*|rye/lib/*|.git/*) continue ;; esac
+  echo "undated_room=$dir flat=$n verdict=over roster=advise"
+done
+
 echo "enforced_over=$enforced_over"
 echo "advised_over=$advised_over"
 
