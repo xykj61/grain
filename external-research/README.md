@@ -34,11 +34,11 @@ When an exploration **lands** (mission complete) or **moves** to active-designin
 
 | Stub | Canonical home |
 |------|----------------|
-| `20260621-051612_rishi-shell-redirect.md` | `active-designing/yonder/20260619-051312_the-faithful-hand.md`, `rishi/README.md` |
+| `20260621-051612_rishi-shell-redirect.md` | `active-designing/yonder/date/20260619/20260619-051312_the-faithful-hand.md`, `rishi/README.md` |
 | `20260621-051612_shell-scripting-tame-redirect.md` | `tools/p/parity.rish`, gate trio |
-| `20260621-051612_recommended-architecture-redirect.md` | `active-designing/yonder/20260618-184912_recommended-architecture.md` |
+| `20260621-051612_recommended-architecture-redirect.md` | `active-designing/yonder/date/20260618/20260618-184912_recommended-architecture.md` |
 
-**Width policy:** interim seam manual [`968`](20260621-050312_usize-boundary-not-design.md); fork north star [`967`](20260621-051312_literal-usize-ban-language-fork.md) + [`../active-designing/yonder/20260621-051312_explicit-width-in-rye.md`](../active-designing/yonder/20260621-051312_explicit-width-in-rye.md).
+**Width policy:** interim seam manual [`968`](20260621-050312_usize-boundary-not-design.md); fork north star [`967`](20260621-051312_literal-usize-ban-language-fork.md) + [`../active-designing/yonder/date/20260621/20260621-051312_explicit-width-in-rye.md`](../active-designing/yonder/date/20260621/20260621-051312_explicit-width-in-rye.md).
 
 **Retired patterns** (leave these in the archive): Bash `parity.sh`, Python doc enrichers, permanent Tier C `usize` as destination, `init.arena` in prose (use `init.garden`).
 
@@ -151,7 +151,7 @@ Dated explorations carry `YYYYMMDD-HHMMSS_short-sprig.md`; living documents (`RE
 | `20260621-051612` | [990 - Shells Through the TAME Lens -- Redirect](20260621-051612_shell-scripting-tame-redirect.md) | Redirect stub -- Deprecated (`051612`) -- survey complete; conclusion implemented. |
 | `20260621-051612` | [992 - The Recommended Path -- Redirect](20260621-051612_recommended-architecture-redirect.md) | Redirect stub -- Deprecated (`051612`) -- replaced by the active-designing brief. |
 | `20260621-051612` | [988 - Rishi -- Redirect](20260621-051612_rishi-shell-redirect.md) | Redirect stub -- Deprecated (`051612`) -- mission landed. |
-| `20260621-051312` | [967 - Literal `usize` Ban -- Forking Rye as Its Own Width Model](20260621-051312_literal-usize-ban-language-fork.md) | Exploration -- decision recorded; design siloed at `active-designing/yonder/20260621-051312_explicit-width-in-rye.md` |
+| `20260621-051312` | [967 - Literal `usize` Ban -- Forking Rye as Its Own Width Model](20260621-051312_literal-usize-ban-language-fork.md) | Exploration -- decision recorded; design siloed at `active-designing/yonder/date/20260621/20260621-051312_explicit-width-in-rye.md` |
 | `20260621-050312` | [968 - `usize` Is a Boundary Type, Not a Design Type](20260621-050312_usize-boundary-not-design.md) | Exploration -- seam policy for **Zig-ground era**; strategic fork recorded in [`20260621-051312_literal-usize-ban-language-fork.md`](20260621-051312_literal-usize-ban-language-fork.md) |
 | `20260620-040112` | [969 - Dual Editors and Priorities -- What Two Agents Teach About Growing a System](20260620-040112_dual-editors-and-priorities.md) | Research |
 | `20260620-020712` | [970 - Formats, Editors, Inference, and Tensors -- What the Horizon Modules Inherit](20260620-020712_formats-editors-inference-and-tensors.md) | Research |

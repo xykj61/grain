@@ -249,7 +249,7 @@ Rye renamed `std.process.Init.arena` to **`init.garden`**: the process season al
 
 ## Caravan on Hosted Ground
 
-Supervision grows by accretion on the host, where Rishi's gates reach every build. Each step is a `caravan/*.rye` seed (`active-designing/yonder/20260622-235012_what-we-mean-by-seed.md`):
+Supervision grows by accretion on the host, where Rishi's gates reach every build. Each step is a `caravan/*.rye` seed (`active-designing/yonder/date/20260622/20260622-235012_what-we-mean-by-seed.md`):
 
 | File | Claim |
 |------|--------|
@@ -275,7 +275,7 @@ rye build brushstroke/wayland_seed.rye brushstroke/xdg-shell-protocol.c \
   -femit-bin=brushstroke/bin/brushstroke-wayland-seed
 ```
 
-Flags after the `.rye` path pass through to `zig build-exe`, so link lines and additional translation units ride the same bridge as freestanding targets. Display seam wrappers live in the seed; the full brief is `active-designing/yonder/20260619-072600_brushstroke.md`.
+Flags after the `.rye` path pass through to `zig build-exe`, so link lines and additional translation units ride the same bridge as freestanding targets. Display seam wrappers live in the seed; the full brief is `active-designing/yonder/date/20260619/20260619-072600_brushstroke.md`.
 
 ---
 

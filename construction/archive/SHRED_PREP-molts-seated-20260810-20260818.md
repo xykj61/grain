@@ -42,7 +42,7 @@ The eventual "shedding" of the elder descriptor would be a **deep git-history de
 
 | Molt target (pending) | Becomes | When | Scope |
 | --- | --- | --- | --- |
-| `active-designing/yonder/20260621-063912_bron-notation.md` (spec) | a living **Kyri** notation mutant | at the breach, after JARL | spec + forward references; existing `.bron` files kept whole as fossils |
+| `active-designing/yonder/date/20260621/20260621-063912_bron-notation.md` (spec) | a living **Kyri** notation mutant | at the breach, after JARL | spec + forward references; existing `.bron` files kept whole as fossils |
 
 Charter: `../expanding-prompts/date/20260810/20260810-000032_the-next-season-breach-charter.md`. Open decision recorded there: does **Kyri** name the voice, the notation, or both. Pending note only — no fossil row until the Kyri spec mutant seats; opens no cut.
 

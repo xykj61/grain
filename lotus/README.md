@@ -6,7 +6,7 @@
 [`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
 path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 **Chapter:** the Six-Chapter double-seat, Chapter C thread - **Waymark:** ALES
-**Kin:** [`the Lotus DAW`](../active-designing/yonder/20260630-014012_lotus-the-daw.md) - [`the eight-season double-seat`](../active-designing/date/20260816/20260816-205859_double-seat-expansion-eight-seasons.md) - the surface it draws on, [`Skate / Surf`](../skate/README.md) under [`alias-sameness`](../.claude/rules/alias-sameness.md) - the ladder law it is marked by, [`stamp-and-name`](../.claude/rules/stamp-and-name.md) - the waymark roster [`waymark-ladders`](../.claude/rules/waymark-ladders.md), where **ALES** is seated
+**Kin:** [`the Lotus DAW`](../active-designing/yonder/date/20260630/20260630-014012_lotus-the-daw.md) - [`the eight-season double-seat`](../active-designing/date/20260816/20260816-205859_double-seat-expansion-eight-seasons.md) - the surface it draws on, [`Skate / Surf`](../skate/README.md) under [`alias-sameness`](../.claude/rules/alias-sameness.md) - the ladder law it is marked by, [`stamp-and-name`](../.claude/rules/stamp-and-name.md) - the waymark roster [`waymark-ladders`](../.claude/rules/waymark-ladders.md), where **ALES** is seated
 
 ---
 

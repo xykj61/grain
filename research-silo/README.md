@@ -25,7 +25,7 @@ Within those gates, the season runs forward on the standing yes.
 
 Starseeding is **cross-constellation, cross-chain cross-pollination**: a point in one constellation wears an **outfit** — a name, a role, a temperament — that a point in another constellation can recognize and adopt. A seed carried from one sky and planted in another, growing true in new soil. The vision is already sketched in the expanding-prompts — the 3×39 baton passports and dividers (`../expanding-prompts/date/20260810/20260810-044453_the-3x39-baton-passports-dividers-and-starseeding.md`) and the handoff-baton checkpoint (`../expanding-prompts/date/20260810/20260810-025942_the-handoff-baton-vision-checkpoint.md`). This silo is where the research that feeds it gathers.
 
-The council **d27** is starseeding's first garden: fifteen galaxies, three stars and nine planets each, a galaxy leading a circle of twenty-seven — one seat for each of the **27 nakshatras** (`../active-designing/yonder/20260810-082206_nakshatra-outfits-for-the-council-d27.md`). When the sky grows its outfits, each seat wears a nakshatra, and a nakshatra worn in one constellation can be recognized in another. That recognition, carried across chains, is starseeding.
+The council **d27** is starseeding's first garden: fifteen galaxies, three stars and nine planets each, a galaxy leading a circle of twenty-seven — one seat for each of the **27 nakshatras** (`../active-designing/yonder/date/20260810/20260810-082206_nakshatra-outfits-for-the-council-d27.md`). When the sky grows its outfits, each seat wears a nakshatra, and a nakshatra worn in one constellation can be recognized in another. That recognition, carried across chains, is starseeding.
 
 ## The dharma layer — nine over twenty-seven
 
