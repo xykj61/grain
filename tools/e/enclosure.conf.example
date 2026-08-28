@@ -17,11 +17,21 @@ ZED_BIN="zed"                              # optional hint; script also checks ~
 # Project-local state (kept inside ai-jail's durable tree)
 CURSOR_STATE="$REPO/.cursor-state"
 ZED_STATE="$REPO/.zed-state"
-# CLI agents (tools/ag/agent-jail.sh) — gitignored; survive --private-home tmpfs HOME
-CLAUDE_STATE="$REPO/.claude-state"
-CURSOR_AGENT_STATE="$REPO/.cursor-agent-state"
-# cursor-agent OAuth (auth.json) — defaults to $CURSOR_AGENT_STATE/xdg-config
-# CURSOR_CONFIG_STATE="$REPO/.cursor-agent-state/xdg-config"
+# CLI agents (tools/ag/agent-jail.sh) -- gitignored; survive --private-home tmpfs HOME.
+#
+# LEFT UNSET ON PURPOSE (REDS %327). agent-jail.sh seats the one-room loop-state house
+# itself -- $REPO/loops/claude, /cursor, /codex, seated 20260827 -- and adopts an elder
+# .claude-state or .cursor-agent-state into it on the next launch. THIS FILE IS SOURCED
+# BEFORE those defaults, so a path named here outranks the move: the elder is emptied by
+# the adoption, recreated by `mkdir -p`, and bound over the agent's HOME with nothing in
+# it, which asks for a login this launcher promises is done once per pier. Measured on the
+# Framework pier 20260828: loops/claude held 5,229 files including .credentials.json while
+# .claude-state held none. Uncomment one only to point somewhere the launcher cannot know.
+# CLAUDE_STATE="$REPO/loops/claude"
+# CURSOR_AGENT_STATE="$REPO/loops/cursor"
+# CODEX_STATE="$REPO/loops/codex"
+# cursor-agent OAuth (auth.json) -- defaults to $CURSOR_AGENT_STATE/xdg-config
+# CURSOR_CONFIG_STATE="$REPO/loops/cursor/xdg-config"
 GH_STATE="$REPO/.gh"
 # Optional: copy host ~/.claude.json to $CLAUDE_STATE/dot-claude.json for quieter Claude starts
 

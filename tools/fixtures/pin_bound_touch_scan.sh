@@ -77,13 +77,18 @@ echo "mode=$MODE"
 echo "roster=$ROSTER"
 
 if [ "$MODE" = prove-red ]; then
-  # The planted refusal: one pin, one byte past a bound this mode states itself, so the RED path is
-  # exercised without waiting for a real pin to cross.
-  echo "pin_over=tools/fixtures/pin_bound_touch_prove_red_pin.md"
+  # The planted refusal: one pin, one byte past the bound, so the RED path is exercised without
+  # waiting for a real pin to cross. The bound is READ from living_pin_max_bytes.sh rather than
+  # spelled here -- a fixture that states the law in its own digits is a second copy of the law,
+  # which declared_ceiling_scan.sh correctly reads as deciding with a copy, and which would go
+  # quietly false the day the number moves.
+  prove_pin=tools/fixtures/pin_bound_touch_prove_red_pin.md
+  prove_bound=$(sh "$BOUND_READER" "$prove_pin")
+  echo "pin_over=$prove_pin"
   echo "detail=RED_touched_pin_over_bound"
-  echo "detail_path=tools/fixtures/pin_bound_touch_prove_red_pin.md"
-  echo "detail_bytes=24577"
-  echo "detail_bound=24576"
+  echo "detail_path=$prove_pin"
+  echo "detail_bytes=$((prove_bound + 1))"
+  echo "detail_bound=$prove_bound"
   echo "over_bound_enforced=1"
   echo "verdict=misread"
   exit 1

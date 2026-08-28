@@ -55,37 +55,35 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `7061207b15` -- this round's own.
+**Git nib:** `062a19bb76` -- this round's parent.
 
-**Now.** **The ledger reads itself, and found a row closed twice.**
+**Now.** **The dead-letter box filled twice, and the second time a meter read it.**
 
-**`%313`.** `reds_status_consistency_witness.rish` gates `contradicted_rows` and
-`phantom_closures` at zero over the pin and 127 shelves; 32 cases proven in a pen.
+**`%328`.** `standing_equipment_run.sh` writes its hit ledger and receipt under `construction/`,
+which a pen has no reason to own, so a bare `>>` died there and took the runner with it before a
+guard ran -- **21 of its control's 46 behaviors** read `no` for two days, unseen: the witness that
+says so is on no roster and has no caller. Both writes announce a skipped room now; the runner
+reads `git stash list` on line one, each entry by message and file count, **reported and never
+gated**, bounded at 16, seeing untracked files a bare `git stash show` drops. Control **62
+behaviors, zero `no`**, where HEAD read 21.
 
-**`%306` and `%315` CLOSED** (Pond): Constel names redrawn vowel-free; the pre-amend nib
-names HEAD's parent. **`%301` closed on metal**: glow/gen folded by letter, the compiler's two
-import-path sites lead, the room joined ENFORCE_ALL, the letter rule resolves stale refs.
+**`%327` out of the same box** -- a finished lap recovered by `git checkout <stash> -- `, mode
+`100755` intact; `pond_enclosure_state` gates `pinned_elders` at zero over 24 pen cases.
 
-**MANY HANDS + the skills door** (granted `20260828`): every launch card may spin up and
-manage multiple CLI agents -- custody gates MANUAL, one writer per checkout -- and root
-`SKILL.md` opens the Spellbook, Chemical Formulas, and New Gauge Civic TAME.
+**MANY HANDS + the skills door** (granted `20260828`): every launch card may spin up and manage
+multiple CLI agents -- custody gates MANUAL, one writer per checkout -- and root `SKILL.md` opens
+the Spellbook, Chemical Formulas, and Civic TAME. Every clone seats the `ww` door
+(`grain-ww/grain`, gate %1) and points `core.sshCommand` at `.git/ssh_config_jail`.
 
-**Mind's lane admits its own record** (user-owned signed update, `20260828`): the wall gains
-a lap's own `session-logs/date/` log and the SkateCore witness, whose verdict reads zero
-failures rather than a pinned twenty-one -- Mind restarts on the next round-open. **Every
-clone seats the `ww` door**: `git remote add ww ssh://git@github.com/grain-ww/grain.git`
--- `seed`'s peer door to one projection, pushing stays gate %1. **The jail transport wears its own
-name**: `.git/ssh_config_urbit` -> `.git/ssh_config_jail` -- each clone moves its local file
-and repoints `core.sshCommand` on touch; the generators write the new name.
+**Still open, and one is structural:** every pin row reads OPEN and their bytes alone pass the
+bound, so `%327` and `%328` were written short to fit and the next red has no room --
+`reds_fold.sh` refusing OPEN rows is no longer a tidy seat. **Width ratchet:** `glow/rune_shape.rye`
+publishes `usize` in 5 fields and 5 accessors; 59 gate fixtures await his word. **Mind's:**
+`declared_ceiling`'s bound-copy, and the `20260828-142844` log. `%281`/`%291` stay his, as does this
+pier's `enclosure.conf`, still pinning two. **Seat:** whether the roster's own witness can
+be rostered when its scan reads the card its red would land on.
 
-**Still open:** the **width ratchet** -- `glow/rune_shape.rye` publishes `usize` in 5 fields
-and 5 accessors; moving it removes casts at 16-17 sites; 59 gate fixtures await his word.
-`declared_ceiling` on `chatgpt-mind.sh`'s bound-copy: Mind's. `%281`/`%291` stay his; the
-spine closed the ledger half. **Two seats:** the Constel predicate's owner
-(`split_digit_absent=6`); `reds_fold.sh` refusing rows carrying OPEN.
-
-**The next doors.** Dream: Caravan and Tally green, then the constellation table. Kyri: the Glow
-tree moves, then FORA31 (`approve all doors`, `20260827`).
+**Next doors.** Dream: Caravan and Tally, then the constellation table. Hush: Pond orbit two.
 
 ---
 ## Landed arcs
@@ -214,7 +212,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260828.173546` | FORA31 -- switchboard on real descriptors, GREEN | [log](../session-logs/date/20260828/20260828-173546_the-switchboard-that-crossed-a-kernel.kyri) |
+| `20260828.180405` | %328 -- the box read on line one; %327 out of it | [log](../session-logs/date/20260828/20260828-180405_the-box-that-filled-twice.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line here until the next replaces it.
 

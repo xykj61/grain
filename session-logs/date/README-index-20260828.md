@@ -14,9 +14,11 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260828.183757` | [the link the peer left behind](20260828/20260828-183757_the-link-the-peer-left-behind.kyri) | foundations_link closes; 2 of 3 cold reds spent |
 | `20260828.183251` | [the guard that knew seventeen rooms](20260828/20260828-183251_the-guard-that-knew-seventeen-rooms.kyri) | %326: a sweep took 6 dated files; guard saw 17 of 82 rooms |
 | `20260828.180927` | [one tree, two shells, three doors](20260828/20260828-180927_one-tree-two-shells-three-doors.kyri) | equinox room lands; %323-%325 close the dialect class |
+| `20260828.180405` | [the box that filled twice](20260828/20260828-180405_the-box-that-filled-twice.kyri) | %328: the fleet box read on line one; %327 out of it |
 | `20260828.173546` | [the switchboard that crossed a kernel](20260828/20260828-173546_the-switchboard-that-crossed-a-kernel.kyri) | FORA31 lands; the routing is the kernel's now |
 | `20260828.165931` | [the eighth color moved nothing](20260828/20260828-165931_the-eighth-color-moved-nothing.kyri) | Mind: 320 cells proven; slot 8 refuses without changing state |
 | `20260828.170657` | [the links that stayed behind](20260828/20260828-170657_the-links-that-stayed-behind.kyri) | two folds moved the rooms, 27 refs did not |
+| `20260828.170003` | [the config read before the room](20260828/20260828-170003_the-config-read-before-the-room.kyri) | %327: an emptied pin outranked the seated loops room |
 | `20260828.163808` | [the wall that ate the outage](20260828/20260828-163808_the-wall-that-ate-the-outage.kyri) | Mind's proven candidate carried past a dead network |
 | `20260828.163333` | [the two folds that want a word](20260828/20260828-163333_the-two-folds-that-want-a-word.kyri) | %301 last three rooms surveyed; each breaks one fold assumption |
 | `20260828.162148` | [the nib that outran its parent](20260828/20260828-162148_the-nib-that-outran-its-parent.kyri) | %322: a rebase moves the parent the nib names |

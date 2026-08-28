@@ -107,6 +107,7 @@ done
 stamp=$(TZ=America/New_York date +%Y%m%d.%H%M%S)
 
 pen=$(mktemp -d)
+receipt_tmp="$pen/receipt.kyri"
 trap 'rm -rf "$pen"' EXIT
 
 # The staged reading, before a single guard runs. A pen outside a repository answers 0 rather than
@@ -116,6 +117,49 @@ if git rev-parse --git-dir >/dev/null 2>&1; then
   staged=$(git diff --cached --name-only 2>/dev/null | grep -c . || true)
 fi
 echo "staged_uncommitted=$staged"
+
+# THE DEAD-LETTER BOX, read on the same line-one pass as the index. `tools/f/fleet_round_open.sh`
+# runs `git stash push` on a dirty tree at every round-open, and its own header names the doctrine:
+# "Stashes are the fleet's dead-letter box; a hand or the lap itself re-derives them." The doctrine
+# is sound, so this reading NEVER gates -- a stash is a legitimate parking place, and a guard that
+# reds on ordinary work is a guard someone turns off. What it refuses to be is silent.
+#
+# WHY IT IS HERE RATHER THAN IN A GUARD OF ITS OWN. REDS %321 found a finished lap -- 557 lines of
+# Rye, a scan, a witness, two fixtures and its own log -- sitting in the box for fourteen hours
+# under a fully green roster, because every meter this tree owns reads the working tree or the
+# index and a stash is neither. It closed on a written habit: a lap opens with `git stash list`.
+# Three hours later the box held a second finished lap by the same route. A habit is the first rung
+# of the ladder this runner's own header names -- rule, then reading, then refusal -- and a reading
+# on line one of the pass every lap already opens with is the second, because the lap that needs it
+# most is precisely the lap that did not remember to look.
+#
+# max_stash_entries bounds the enumeration. Two stood on this pier on 20260828; sixteen leaves room
+# for a body per seat on the six-body constellation to park twice over, and refuses an unbounded
+# walk inside a reading that runs twice a lap. A count past the cap says so on its own line rather
+# than being quietly dropped.
+max_stash_entries=16
+stashed=0
+if git rev-parse --git-dir >/dev/null 2>&1; then
+  stashed=$(git stash list 2>/dev/null | grep -c . || true)
+fi
+echo "stashed_entries=$stashed"
+i=0
+while [ "$i" -lt "$stashed" ] && [ "$i" -lt "$max_stash_entries" ]; do
+  # The subject and the file count together, because a number alone is what %321 already had:
+  # the reading has to be a line an operator can open, not a figure they can pass over.
+  subject=$(git stash list --format='%gs' 2>/dev/null | sed -n "$((i + 1))p")
+  # --include-untracked, and the reason is the fault this reading exists for. `git stash show`
+  # omits untracked files by default, while `fleet_round_open.sh` stashes with `-u`, so a lap whose
+  # leavings are all NEW files -- a fresh scan, a fresh witness, fresh fixtures, which is exactly
+  # what REDS %321 lost -- reads as `0 files` and looks like an empty envelope. Proven in a pen on
+  # git 2.54.0: two untracked files read 0 without the flag and 2 with it.
+  files=$(git stash show --include-untracked --name-only "stash@{$i}" 2>/dev/null | grep -c . || true)
+  echo "detail: stash@{$i} $files files -- $subject"
+  i=$((i + 1))
+done
+if [ "$stashed" -gt "$max_stash_entries" ]; then
+  echo "detail: $((stashed - max_stash_entries)) further entries unenumerated (max_stash_entries=$max_stash_entries)"
+fi
 
 # A full-roster pass opening on a dirty index is a lap that ended at `git add` (REDS %188, %220,
 # %223). It refuses here, ahead of the tree digest and ahead of the first guard, because nothing
@@ -154,7 +198,18 @@ if [ -f "$receipt" ]; then
   if [ "$rec" = "$tree_open" ]; then receipt_state=match; else receipt_state=miss; fi
 fi
 echo "roster_receipt=$receipt_state"
-printf 'open %s digest %s receipt %s\n' "$stamp" "$tree_open" "$receipt_state" >> "$hitledger"
+# The ledger and the receipt both live under `construction/`, which every clone of this tree owns
+# and no throwaway pen does. A bare `>>` cannot create a parent directory, so the append DIED here
+# in a pen -- taking the runner with it before a single guard ran, and taking with it every one of
+# the control's runner-driven cases. Creating the directory instead would be worse: an untracked
+# `construction/` written into a pen moves the very tree digest three of those cases exist to read.
+# So the write is skipped where its room is absent, and the skip SAYS SO, because a silent skip is
+# how this reading would go quietly false on the day `construction/` moved.
+if [ -d "$(dirname "$hitledger")" ]; then
+  printf 'open %s digest %s receipt %s\n' "$stamp" "$tree_open" "$receipt_state" >> "$hitledger"
+else
+  echo "hitrate_ledger=skipped_no_room"
+fi
 if [ "$probe" = yes ]; then
   echo "run_verdict=receipt_probe"
   exit 0
@@ -294,7 +349,14 @@ fi
   echo "digest $tree_close"
   echo "guards $ran"
   echo "stamp $stamp"
-} > "$receipt"
+} > "$receipt_tmp"
+# Same room, same reason as the hit ledger above: a pen has no `construction/` to write into.
+if [ -d "$(dirname "$receipt")" ]; then
+  cat "$receipt_tmp" > "$receipt"
+else
+  echo "roster_receipt_write=skipped_no_room"
+fi
+rm -f "$receipt_tmp"
 
 echo "run_verdict=ok"
 exit 0

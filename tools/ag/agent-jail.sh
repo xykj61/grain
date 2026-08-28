@@ -188,6 +188,36 @@ adopt_state_dir() {
   fi
 }
 
+# prefer_adopted_room <var-name> <room-path> -- let the adopted room outrank an emptied pin.
+#
+# tools/e/enclosure.conf is sourced ABOVE these defaults, so a pier whose conf still names an
+# elder path keeps naming it after adopt_state_dir has moved that directory's contents into
+# `loops/`. The `mkdir -p` further down then recreates the elder empty, the jail binds an empty
+# directory over the agent's HOME, and the login the comment above promises is done once per pier
+# is asked for again -- silently, because an empty state directory and a fresh one look alike.
+# Measured on the Framework pier 20260828: loops/claude held 5,229 files including
+# .credentials.json while .claude-state held none (REDS %327).
+#
+# The room outranks the pin only when the pinned path holds NO file at all. A directory somebody
+# is actually writing to keeps its place, so a deliberate third path is never overridden; a
+# directory holding nothing cannot be a destination anyone is using. The swap is announced on
+# stderr, because a silent correction is the same class of quiet as the fault it repairs.
+prefer_adopted_room() {
+  local var=$1 room=$2 cur room_files cur_files
+  cur=${!var}
+  [ "$cur" = "$room" ] && return 0
+  [ -d "$room" ] || return 0
+  room_files=$(find "$room" -type f 2>/dev/null | wc -l)
+  # invariant: an empty room has nothing to offer and never outranks a pin.
+  [ "$room_files" -gt 0 ] || return 0
+  cur_files=0
+  [ -d "$cur" ] && cur_files=$(find "$cur" -type f 2>/dev/null | wc -l)
+  # invariant: only a pin holding no file at all yields, so live state is never overridden.
+  [ "$cur_files" -eq 0 ] || return 0
+  echo "agent-jail: $var pins $cur, which holds no file; using the adopted room $room ($room_files files)" >&2
+  printf -v "$var" '%s' "$room"
+}
+
 LOOPS="${LOOPS:-$REPO/loops}"
 adopt_state_dir "$REPO/.claude-state"        "$LOOPS/claude"
 adopt_state_dir "$REPO/.cursor-agent-state"  "$LOOPS/cursor"
@@ -195,6 +225,9 @@ adopt_state_dir "$REPO/.dream-state/codex-home" "$LOOPS/codex"
 
 CLAUDE_STATE="${CLAUDE_STATE:-$LOOPS/claude}"
 CURSOR_AGENT_STATE="${CURSOR_AGENT_STATE:-$LOOPS/cursor}"
+# The conf sourced above may still pin an elder these adoptions have already emptied.
+prefer_adopted_room CLAUDE_STATE "$LOOPS/claude"
+prefer_adopted_room CURSOR_AGENT_STATE "$LOOPS/cursor"
 # cursor-agent writes OAuth to ~/.config/cursor/auth.json (not ~/.cursor/).
 CURSOR_CONFIG_STATE="${CURSOR_CONFIG_STATE:-$CURSOR_AGENT_STATE/xdg-config}"
 GH_STATE="${GH_STATE:-$REPO/.gh}"
@@ -203,6 +236,7 @@ GH_STATE="${GH_STATE:-$REPO/.gh}"
 # hence a repo-local durable dir, mapped onto ~/.codex below, so login is done
 # once per pier rather than once per lap.
 CODEX_STATE="${CODEX_STATE:-$LOOPS/codex}"
+prefer_adopted_room CODEX_STATE "$LOOPS/codex"
 AIJAIL_FLAGS="${AIJAIL_FLAGS:---private-home --no-docker --no-gpu}"
 ENCLOSURE="${ENCLOSURE:-ai-jail}"
 
