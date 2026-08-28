@@ -23,6 +23,19 @@
 # `unreached` the number falls when a roster row LANDS, which is the lap the rungs begin to run --
 # and it is strictly stronger, since every unheard witness is also unreached.
 #
+# THE FAMILY READING, ADDED 20260828. `unreached` is one number over the whole tree, and one number
+# cannot say whether 1,140 is a long tail spread thin or whole systems carrying no clock at all. It
+# was the second: 222 of the tree's 291 witness families have every member unreached -- all 86 of
+# `hunk`, all 49 of `buhr`, all 31 of `fora`. The census that should have shown this printed twenty
+# absolute counts with no denominator and dropped the other 224 families in silence, so `comlink` at
+# 4 of 5 and `mantra` at 6 of 7 never appeared at all.
+#
+# So a census line now carries `unreached/total` and its share, the list prints whole, and
+# `wholly_unreached` is gated under its own ceiling that only falls. It catches one thing the total
+# cannot see: delete a family's only REACHED member and `total` and `standing` both fall by one, so
+# `unreached` stands exactly still while the family loses its last clock. The control proves that
+# case by doing it.
+#
 # WHY A CEILING RATHER THAN ZERO. 1,154 witnesses stand unreached (20260825.234902, after the
 # season leaf choir's row carried 47 of them across). A wall at zero would refuse
 # every ordinary lap, and a wall that refuses ordinary work is a wall somebody turns off. The
@@ -82,16 +95,31 @@ assert control.out contains "ok   ceiling: one past it refuses" else "witness-re
 assert control.out contains "ok   ceiling: exactly at it passes" else "witness-reach: exactly at the ceiling must pass"
 assert control.out contains "ok   ceiling: removing the plant returns green" else "witness-reach: removing the plant must return the reading to green"
 
+# The family census (20260828). A count without its denominator, and a list that stops at twenty
+# without saying so, are the two halves of one defect: they report a passing tail nobody looked at.
+assert control.out contains "ok   census: every line carries share and unreached/total" else "witness-reach: a family count without its total cannot say whether a family is wholly unreached"
+assert control.out contains "ok   census: prints every family, none dropped" else "witness-reach: a census that truncates in silence hides the family a reader came to check"
+assert control.out contains "ok   wholly_unreached: a family with one reached member is not counted" else "witness-reach: one member on a clock keeps a family off the wholly-unreached reading"
+assert control.out contains "ok   wholly_unreached: the mixed family still raises unreached by its one silent member" else "witness-reach: the family reading must not swallow what the total already sees"
+assert control.out contains "ok   wholly_unreached: unreached stands still when a family's only reached member is deleted" else "witness-reach: this is the case the single total is blind to, and it must be proven blind"
+assert control.out contains "ok   wholly_unreached: rises by one when a family loses its last clock" else "witness-reach: losing the last clock in a family must be visible somewhere"
+assert control.out contains "ok   wholly_unreached: falls by one when a family's first roster row lands" else "witness-reach: a ratchet that only rises is a ratchet nobody can close"
+assert control.out contains "ok   wholly_unreached: the same roster row lowers unreached by one" else "witness-reach: the two readings must move together when a roster row lands"
+assert control.out contains "ok   family ceiling: exactly at it passes" else "witness-reach: exactly at the family ceiling must pass"
+assert control.out contains "ok   family ceiling: one past it refuses" else "witness-reach: one family past the ceiling must refuse"
+assert control.out contains "ok   family ceiling: removing the plant returns green" else "witness-reach: removing the planted family must return the reading to green"
+
 # Now the living tree.
 let living = run ["sh" "tools/fixtures/witness_reach_scan.sh"]
 assert living.ok else "witness-reach: the living scan must complete -- ${living.err}"
 say living.out
 assert living.out contains "WITNESS_REACH" else "witness-reach: the scan must print its own reading"
 assert living.out contains "under_ceiling=yes" else "witness-reach: unreached witnesses rose above the ceiling -- put the new one on a clock, in a choir WITH its roster row, rather than raising it -- ${living.out}"
+assert living.out contains "under_family_ceiling=yes" else "witness-reach: a whole witness family lost its last clock -- give it a roster row rather than raising the family ceiling -- ${living.out}"
 
 # The standing reading is read from the roster, so it can never be zero while the roster has rows.
 let standing = run ["sh" "-c" "sh tools/fixtures/witness_reach_scan.sh --standing | wc -l | tr -d ' \n'"]
 assert standing.ok else "witness-reach: could not count the standing set -- ${standing.err}"
 assert (trim standing.out) != "0" else "witness-reach: the roster has rows, so the standing set must not be empty"
 
-say "witness-reach: GREEN -- the call/mention line is proven on planted repositories from both sides, and the living tree reads under its ceiling."
+say "witness-reach: GREEN -- the call/mention line is proven on planted repositories from both sides, the family census carries its denominator, and the living tree reads under both ceilings."
