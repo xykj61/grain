@@ -28,7 +28,8 @@ The Rishi launcher carries `print`, `check`, `once`, `loop`, and `stop`, the
 same arming and numeric ceilings, repository-local state, STOP and CUSTODY
 gates, single-instance ownership, clean-tree and `xy` divergence checks,
 gitlink preservation, the outer `ai-jail` plan and live write fence, and the
-inner `codex exec --sandbox danger-full-access` call. It keeps user and project
+inner `codex exec --disable unbounded_connection_retries --sandbox
+danger-full-access` call. It keeps user and project
 rules while model selection and publication remain operator actions. It accepts
 a completed lap only when the inner Codex process leaves one bounded staged
 candidate and a bounded commit message, then the outer Rishi supervisor turns
@@ -48,8 +49,9 @@ while the absolute path stays available to the supervisor for ownership checks
 and operator messages. A bounded enclosed `codex --version` probe proves that
 the jail can execute the program mapping without contacting a model. Before
 `check`, `once`, or `loop` can pass, an argv-only, byte-bounded, enclosed `codex
-login status` must confirm the same relative state; its output remains in
-private preflight files. Login and execution receive only
+login status` must confirm that credentials are present in the same relative
+state; this is deliberately not a live authentication claim, and its output
+remains in private preflight files. Login and execution receive only
 `TMPDIR=/private/tmp`, an already-allowed private temporary root, so Codex does
 not need metadata access to the broader `/var` ancestor during startup. The
 outer jail's companion compatibility rule grants metadata on the literal
@@ -57,7 +59,12 @@ outer jail's companion compatibility rule grants metadata on the literal
 it does not grant child reads, enumeration, or writes. Execution inherits the
 repository root that `ai-jail` already establishes instead of asking Codex to
 canonicalize the same checkout again through an absolute `--cd` argument. A
-failed supervised lap
+separate no-network feature probe, bound to that same project-local
+`CODEX_HOME` and private temporary root, must show that this Codex build
+recognizes `unbounded_connection_retries` and reports it disabled under the
+exact override. The live path records `codex-exec reason=running` immediately before
+it starts the child; a finite Codex connection failure can then return to the
+supervisor's existing failure ceiling. A failed supervised lap
 returns a bounded phase and reason such as Codex output, Codex exit, custody,
 or Git postcondition while the detailed log stays private and retains the child
 exit code.
@@ -117,7 +124,7 @@ key material remains outside the repository.
 One exact receipt forms the public phase boundary. Each internal lap writes one
 mode-0600 line to `.mind-state/logs/lap.phase`. The line belongs to the
 launcher's finite phase-and-reason allowlist. The vocabulary separates lap
-preflight, Codex output, Codex exit, custody, staged-candidate and Git
+preflight, Codex running, Codex output, Codex exit, custody, staged-candidate and Git
 postconditions, signing, verification, and
 `complete reason=signed-commit`. A regular single line inside the byte ceiling
 earns its reading. Every other shape reads
@@ -162,9 +169,11 @@ authority, use of the
 printer by the launcher, and the emitted handoff under both macOS shells and a
 checkout path containing spaces. It also proves command and dry-run parity,
 the jail option, named denials for malformed plans or incomplete arming and
-config, isolated login, status overflow, held lock, STOP, and the bounded
-circuit breaker. It proves that authentication opens ahead of every fake model
-command. Codex, output-wall, and Git-postcondition outcomes retain their typed
+config, isolated credential presence, status overflow, held lock, STOP, and the
+bounded circuit breaker. It proves that credential presence and the exact
+finite-retry feature override gate every fake model command, and that the live
+path exposes its running receipt before signal cleanup. Codex, output-wall,
+and Git-postcondition outcomes retain their typed
 phase at the public boundary. The fixture also proves that one exact mode-0600
 line from the finite vocabulary earns a phase reading. Transcript phrases and
 all other receipt shapes read `supervisor reason=unclassified`. It plants independent

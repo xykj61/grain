@@ -12,7 +12,7 @@ PRINTER_SOURCE="$ROOT/tools/l/print-mind-cardinal-prompt.rish"
 RISHI_BIN="$ROOT/rishi/bin/rishi"
 ELDER="$ROOT/tools/l/launch-claude-chapter.rish"
 EXPECTED_SOURCE_SHA256=ee508804d2e441884cc55706da401eaadbf19d06542da0bb7c7f5652a576a234
-EXPECTED_ELDER_SHA256=53de1e43505cff45c8b5456c33722e87144eff5c94bfe0ce1abf2de7e75f110f
+EXPECTED_ELDER_SHA256=e7e69505b5e98a1230b610ca751adb442ba79bf46a7b38b0b3fcccaf84d625ca
 PEN="$(mktemp -d "${TMPDIR:-/tmp}/chatgpt-mind-control.XXXXXX")"
 cleanup() {
   if [ -n "${CONTROL_GNUPGHOME:-}" ]; then
@@ -118,7 +118,21 @@ cat > "$REAL_CODEX" <<'EOF'
 set -eu
 if [ "${1:-}" = exec ] && [ "${2:-}" = --help ]; then
   printf '%s\n' 'Usage: codex exec --sandbox <SANDBOX_MODE>'
+  printf '%s\n' '      --disable <FEATURE>'
   printf '%s\n' 'possible values: read-only, workspace-write, danger-full-access'
+  exit 0
+fi
+if [ "${1:-}" = --disable ] && [ "${2:-}" = unbounded_connection_retries ] \
+  && [ "${3:-}" = features ] && [ "${4:-}" = list ]; then
+  if [ "${FAKE_REQUIRE_FEATURE_CODEX_HOME:-0}" = 1 ]; then
+    [ "${CODEX_HOME:-}" = "$REPO_CANONICAL/.mind-state/codex-home" ] || exit 74
+    [ "${TMPDIR:-}" = /private/tmp ] || exit 75
+  fi
+  if [ "${FAKE_CODEX_FEATURE_MISSING:-0}" = 1 ]; then
+    printf '%s\n' 'Error: Unknown feature flag: unbounded_connection_retries' >&2
+    exit 1
+  fi
+  printf '%s\n' 'unbounded_connection_retries stable false'
   exit 0
 fi
 if [ "${1:-}" = --version ]; then
@@ -592,8 +606,12 @@ grep '^GRAIN_ROOT=' "$handoff_out" > "$handoff_commands"
 handoff_verdict() {
   candidate=$1
   [ "$(grep -c '^GRAIN_ROOT=' "$candidate")" -eq 8 ] || return 1
-  [ "$(grep -c 'GRAIN_ROOT=$(/opt/homebrew/Cellar/git/2.53.0_1/bin/git rev-parse --show-toplevel)' "$candidate")" -eq 8 ] || return 1
-  [ "$(grep -c 'cd "\$GRAIN_ROOT"' "$candidate")" -eq 8 ] || return 1
+  # nine GRAIN_ROOT lines since 20260828: the elder eight plus the LOGIN line the auth
+  # fight earned -- the desktop app and the CLI rotate one OpenAI session, so the card
+  # pins the project-local-home login as part of its contract.
+  [ "$(grep -c 'GRAIN_ROOT=$(/opt/homebrew/Cellar/git/2.53.0_1/bin/git rev-parse --show-toplevel)' "$candidate")" -eq 9 ] || return 1
+  [ "$(grep -c 'cd "\$GRAIN_ROOT"' "$candidate")" -eq 9 ] || return 1
+  grep -F 'env CODEX_HOME="$GRAIN_ROOT/.mind-state/codex-home" codex login)' "$candidate" >/dev/null || return 1
   [ "$(grep -c '"\$GRAIN_ROOT/tools/l/chatgpt-mind.rish"' "$candidate")" -eq 5 ] || return 1
   [ "$(grep -c '"\$GRAIN_ROOT/rishi/bin/rishi" run ' "$candidate")" -eq 5 ] || return 1
   grep -F 'chatgpt-mind.rish" check)' "$candidate" >/dev/null || return 1
@@ -631,7 +649,7 @@ plant_handoff "$PEN/handoff-shell-fallback" 's/chatgpt-mind\.rish/chatgpt-mind.s
 
 SPACE_REPO="$PEN/repo with spaces"
 SPACE_LOG="$PEN/space-handoff.log"
-mkdir -p "$SPACE_REPO/sub dir" "$SPACE_REPO/tools/l" "$SPACE_REPO/tools" \
+mkdir -p "$SPACE_REPO/sub dir" "$SPACE_REPO/tools/l" "$SPACE_REPO/tools/f" \
   "$SPACE_REPO/rye/bin" "$SPACE_REPO/rishi/bin" "$SPACE_REPO/vendor/zig-toolchain"
 (
   cd "$SPACE_REPO"
@@ -672,12 +690,24 @@ done
 grep -F '<once> <--arm-once>' "$SPACE_LOG" >/dev/null
 grep -F '<loop> <--arm-loop> <--max-laps> <3> <--failure-ceiling> <2> <--backoff-seconds> <15>' "$SPACE_LOG" >/dev/null
 
+export CODEX_HOME=/dev/null FAKE_REQUIRE_FEATURE_CODEX_HOME=1
 rishi_dry="$(run_rishi_launcher once --dry-run)"
+unset CODEX_HOME FAKE_REQUIRE_FEATURE_CODEX_HOME
 printf '%s\n' "$rishi_dry" \
   | grep -F 'planned inner command maps Codex, canonical Homebrew Git' >/dev/null
-grep -F 'codex_exec "exec" "--sandbox" "danger-full-access"' "$RISHI_SOURCE" >/dev/null
+grep -F 'codex_exec "exec" "--disable" "unbounded_connection_retries" "--sandbox" "danger-full-access"' "$RISHI_SOURCE" >/dev/null
 printf '%s\n' "$rishi_dry" | grep -F 'dry-run only; Codex will not be invoked' >/dev/null
 [ ! -s "$FAKE_LOG" ] || { echo "FAIL: Rishi dry-run invoked Codex" >&2; exit 1; }
+
+export FAKE_CODEX_FEATURE_MISSING=1
+if run_rishi_launcher once --dry-run >"$PEN/missing-retry-feature.out" 2>"$PEN/missing-retry-feature.err"; then
+  echo "FAIL: Rishi launcher accepted a missing finite connection-retry feature" >&2
+  exit 1
+fi
+unset FAKE_CODEX_FEATURE_MISSING
+grep -F 'Codex lacks the required finite connection-retry override' "$PEN/missing-retry-feature.err" >/dev/null \
+  || { echo "FAIL: missing Codex retry feature lost its exact refusal" >&2; exit 1; }
+[ ! -s "$FAKE_LOG" ] || { echo "FAIL: missing Codex retry feature reached a model command" >&2; exit 1; }
 
 touch "$HOME_PEN/bad-plan"
 if run_rishi_launcher once --dry-run >/dev/null 2>&1; then
@@ -690,7 +720,7 @@ rm -f "$HOME_PEN/bad-plan"
 export FAKE_REQUIRE_TMPDIR=1 FAKE_REQUIRE_GIT_ENV=1
 run_rishi_launcher check >/dev/null
 [ -s "$FAKE_STATUS_LOG" ] \
-  || { echo "FAIL: Rishi check did not prove isolated login status" >&2; exit 1; }
+  || { echo "FAIL: Rishi check did not prove isolated credential presence" >&2; exit 1; }
 
 # Host configuration variables are untrusted input. Outer Git and GPG must run
 # from their finite clean environment, even when the invoking terminal is
@@ -731,7 +761,7 @@ do
     || { echo "FAIL: Rishi jail omitted exact read-only map $required_map" >&2; exit 1; }
 done
 grep -F -- "/usr/bin/env CODEX_HOME=.mind-state/codex-home TMPDIR=/private/tmp PATH=$MIND_GIT_PATH GRAIN_MIND_GIT=$MIND_GIT_WRAPPER GRAIN_MIND_GIT_RAW=$HOMEBREW_GIT GRAIN_MIND_ROOT=$REPO_CANONICAL ZDOTDIR=$MIND_SHELL_ROOT DYLD_LIBRARY_PATH=/opt/homebrew/Cellar/pcre2/10.47_1/lib:/opt/homebrew/Cellar/gettext/1.0/lib GIT_CONFIG_NOSYSTEM=1 GIT_CONFIG_GLOBAL=/dev/null $REAL_CODEX login status" "$FAKE_JAIL_LOG" >/dev/null \
-  || { echo "FAIL: Rishi jail did not prove isolated login with the exact temporary root and Git seat" >&2; exit 1; }
+  || { echo "FAIL: Rishi jail did not prove isolated credential presence with the exact temporary root and Git seat" >&2; exit 1; }
 if (
   cd "$REPO"
   "$BIN/ai-jail" --map "$REAL_CODEX" --map "$HOMEBREW_GIT" --map "$HOMEBREW_GIT_PCRE" --map "$HOMEBREW_GIT_INTL" --map "$MIND_GIT_WRAPPER" --map "$MIND_SHELL_ROOT/.zshenv" --map "$MIND_SHELL_ROOT/.zprofile" --exec --private-home --no-save-config \
@@ -892,12 +922,12 @@ plan_refusal "$plan_pen/intl-read-write" "$HOMEBREW_GIT_INTL" 'a read-write gett
 : > "$FAKE_STATUS_LOG"
 export FAKE_CODEX_LOGIN_EXIT=7
 if run_rishi_launcher check >"$PEN/login-absent.out" 2>"$PEN/login-absent.err"; then
-  echo "FAIL: Rishi check accepted absent isolated login" >&2
+  echo "FAIL: Rishi check accepted absent isolated credentials" >&2
   exit 1
 fi
 grep -F 'isolated Codex login is absent or unreadable' "$PEN/login-absent.err" >/dev/null
 if run_rishi_launcher once --arm-once >"$PEN/login-once.out" 2>"$PEN/login-once.err"; then
-  echo "FAIL: Rishi once accepted absent isolated login" >&2
+  echo "FAIL: Rishi once accepted absent isolated credentials" >&2
   exit 1
 fi
 unset FAKE_CODEX_LOGIN_EXIT
@@ -1026,7 +1056,8 @@ for phase_corruption in mode multiline; do
     || { echo "FAIL: $phase_corruption phase corruption lost its exact refusal" >&2; exit 1; }
 done
 rm -f "$phase_corrupt_rishi" "$phase_receipt"
-grep -F -- '--sandbox danger-full-access' "$FAKE_LOG" >/dev/null
+grep -F -- 'exec --disable unbounded_connection_retries --sandbox danger-full-access' "$FAKE_LOG" >/dev/null \
+  || { echo "FAIL: Rishi Codex execution did not disable unbounded connection retries" >&2; exit 1; }
 rishi_exec_invocation="$(grep -F -- "CODEX_HOME=.mind-state/codex-home TMPDIR=/private/tmp PATH=$MIND_GIT_PATH GRAIN_MIND_GIT=$MIND_GIT_WRAPPER GRAIN_MIND_GIT_RAW=$HOMEBREW_GIT GRAIN_MIND_ROOT=$REPO_CANONICAL ZDOTDIR=$MIND_SHELL_ROOT DYLD_LIBRARY_PATH=/opt/homebrew/Cellar/pcre2/10.47_1/lib:/opt/homebrew/Cellar/gettext/1.0/lib GIT_CONFIG_NOSYSTEM=1 GIT_CONFIG_GLOBAL=/dev/null $REAL_CODEX exec" "$FAKE_JAIL_LOG" | tail -n 1)"
 [ -n "$rishi_exec_invocation" ] \
   || { echo "FAIL: Rishi Codex execution omitted the exact temporary root or Homebrew Git seat" >&2; exit 1; }
@@ -1265,8 +1296,8 @@ fi
 unset FAKE_POWER_SOURCE FAKE_BATTERY_SLEEP FAKE_AC_SLEEP FAKE_CODEX_EXIT
 grep -F 'power source battery; AC system sleep 3; battery system sleep 7' "$PEN/battery-loop.out" >/dev/null \
   || { echo "FAIL: battery lap did not report both observed sleep profiles truthfully" >&2; exit 1; }
-grep -F 'battery execution is user-approved' "$PEN/battery-loop.out" >/dev/null \
-  || { echo "FAIL: battery lap lost its user-approved execution notice" >&2; exit 1; }
+grep -F 'on battery -- the loop runs; a battery death cuts one lap and the pull resumes it' "$PEN/battery-loop.out" >/dev/null \
+  || { echo "FAIL: battery lap lost its execution-and-recovery notice" >&2; exit 1; }
 [ "$(grep -c -- '--sandbox danger-full-access' "$FAKE_LOG")" -eq 1 ] \
   || { echo "FAIL: battery power still gated the armed loop before Codex" >&2; exit 1; }
 phase_is 'codex-exec reason=nonzero' \
@@ -1410,6 +1441,8 @@ while [ ! -f "$FAKE_CODEX_PID" ] || [ ! -d "$REPO/.mind-state/run.lock" ]; do
   fi
   sleep 0.02
 done
+phase_is 'codex-exec reason=running' \
+  || { echo "FAIL: supervised Codex child lacked its exact running phase" >&2; exit 1; }
 kill -TERM "$rishi_pid"
 if wait "$rishi_pid"; then
   echo "FAIL: signalled Rishi launcher returned success" >&2
@@ -1459,4 +1492,4 @@ printf '%s\n' '# planted shell drift' >> "$PEN/shell-drift.sh"
 [ "$(shasum -a 256 "$PEN/shell-drift.sh" | awk '{print $1}')" != "$EXPECTED_SOURCE_SHA256" ] \
   || { echo "FAIL: planted shell drift escaped source hash" >&2; exit 1; }
 
-echo "GREEN chatgpt-mind-loop: shell witness preserved; pure prompt is byte-identical; public handoff survives spaces; Rishi requires a full clone, canonical Homebrew Git through nested shells, arbitrary exact read-only jail maps, mode-0600 config, private TMPDIR, and the jailed repository root; it gates isolated login, relays bounded streams, records exact finite phase receipts, admits battery laps, scrubs host Git and GPG configuration variables, admits only regular Brushstroke and Surf candidates, signs one bounded candidate outside the jail, keeps a non-stealable transaction marker through post-CAS proof, keeps custody primary below the byte wall, and owns lock, STOP/CUSTODY, circuit, and signal behavior; planted linked-worktree, Apple-Git, configuration-poison, phase-shape, transaction, sibling-lane, forbidden-state, handoff, printer, launcher, relay, and shell drift are caught"
+echo "GREEN chatgpt-mind-loop: shell witness preserved; pure prompt is byte-identical; public handoff survives spaces; Rishi requires a full clone, canonical Homebrew Git through nested shells, arbitrary exact read-only jail maps, mode-0600 config, private TMPDIR, and the jailed repository root; it gates isolated credential presence, disables Codex's unbounded connection retries so failures return to the circuit, relays bounded streams, records exact finite phase receipts including a live Codex child, admits battery laps, scrubs host Git and GPG configuration variables, admits only regular Brushstroke and Surf candidates, signs one bounded candidate outside the jail, keeps a non-stealable transaction marker through post-CAS proof, keeps custody primary below the byte wall, and owns lock, STOP/CUSTODY, circuit, and signal behavior; planted linked-worktree, Apple-Git, configuration-poison, phase-shape, transaction, sibling-lane, forbidden-state, handoff, printer, launcher, relay, and shell drift are caught"

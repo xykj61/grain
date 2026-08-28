@@ -1,39 +1,67 @@
-# launch-mind-cardinal-chapter.rish -- print the runnable MIND handoff.
+# tools/l/launch-mind-cardinal-chapter.rish -- MIND's seat card, printed in the house order.
 #
-# Like the adjacent Dream chapter surface, this file prints the outer recipe.
-# It does not run a command, read or write state, contact a service, or carry
-# authentication, jail, Git mutation, lock, loop, or network authority. The
-# operational surface remains `tools/l/chatgpt-mind.rish`; the byte-canonical
-# prompt remains `tools/l/print-mind-cardinal-prompt.rish`.
-#
-# Run from the repository root:
 #   rishi/bin/rishi run tools/l/launch-mind-cardinal-chapter.rish
+#
+# These lines only print. Copy one whole line at a time from anywhere inside the
+# grain-mind checkout. Every live step stays in tools/l/chatgpt-mind.rish; the shell
+# elder is a byte-pinned witness. Recast 20260828 on Keaton's word to the same card
+# shape the other five launchers print -- banner, host and lane, then every option in
+# running order -- after the elder card's order had grown apart from its siblings.
 
 say "MIND -- the cardinal star of the aether row (night twin Mystery)"
 say "================================================================"
 say ""
-say "Host: macOS, from an ordinary Terminal, with Codex held inside the proven ai-jail."
-say "These lines only print. Copy one whole line at a time from anywhere inside the Grain checkout."
-say "Every live step stays in tools/l/chatgpt-mind.rish; the shell elder is only a witness."
+say "Host: CODEX VIA CHATGPT on macOS, in ITS OWN CLONE ~/grain-mind -- the one"
+say "body with a whole tree to itself, supervised by tools/l/chatgpt-mind.rish"
+say "with Codex held inside the proven outer ai-jail. Its lane since the role"
+say "swap (20260827.155213): BRUSHSTROKE and SURF/SKATE DESIGN, with the"
+say "pure-Swift SkateCore bounded core as the booked crux; DJINN's design lead"
+say "stays custody gate %6."
 say ""
-say "Prerequisites, only when rishi/bin/rishi is absent. The first line downloads the pinned toolchain:"
+say "Its planet MYSTERY carries what Mind designs to new machines (the Android"
+say "app, the Linux AppImage), from the Framework laptop:"
+say "   rishi/bin/rishi run tools/l/launch-mystery-planet-chapter.rish"
+say ""
+say "FIRST TIME ON A NEW MACHINE -- the standalone-clone bootstrap, only when"
+say "rishi/bin/rishi is absent (the first line downloads the pinned toolchain):"
 say 'GRAIN_ROOT=$(/opt/homebrew/Cellar/git/2.53.0_1/bin/git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && sh "$GRAIN_ROOT/tools/f/fetch-toolchain.sh")'
 say 'GRAIN_ROOT=$(/opt/homebrew/Cellar/git/2.53.0_1/bin/git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && sh "$GRAIN_ROOT/rye/bootstrap.sh")'
 say 'GRAIN_ROOT=$(/opt/homebrew/Cellar/git/2.53.0_1/bin/git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && mkdir -p "$GRAIN_ROOT/rishi/bin" && env RYE_ZIG="$GRAIN_ROOT/vendor/zig-toolchain/zig" "$GRAIN_ROOT/rye/bin/rye" build "$GRAIN_ROOT/rishi/src/main.rye" "-femit-bin=$GRAIN_ROOT/rishi/bin/rishi")'
 say ""
-say "Check the repository, products, configuration, and outer jail without calling Codex:"
+say "LOGIN -- one account, one session, one home. The ChatGPT desktop app and"
+say "the codex CLI rotate the SAME OpenAI session, so each login signs the"
+say "other out; when the terminal loop holds this seat, log in with the"
+say "project-local home and let the desktop app rest until the loop is done:"
+say 'GRAIN_ROOT=$(/opt/homebrew/Cellar/git/2.53.0_1/bin/git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && env CODEX_HOME="$GRAIN_ROOT/.mind-state/codex-home" codex login)'
+say ""
+say "CHECK -- repository, products, configuration, credential presence, and the"
+say "outer jail, without a model or network call:"
 say 'GRAIN_ROOT=$(/opt/homebrew/Cellar/git/2.53.0_1/bin/git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && "$GRAIN_ROOT/rishi/bin/rishi" run "$GRAIN_ROOT/tools/l/chatgpt-mind.rish" check)'
 say ""
-say "Run one supervised lap after check is green:"
+say "ONE SUPERVISED LAP -- after check is green (append --dry-run to rehearse"
+say "without invoking Codex):"
 say 'GRAIN_ROOT=$(/opt/homebrew/Cellar/git/2.53.0_1/bin/git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && "$GRAIN_ROOT/rishi/bin/rishi" run "$GRAIN_ROOT/tools/l/chatgpt-mind.rish" once --arm-once)'
 say ""
-say "Begin a small bounded loop only after the supervised lap is green:"
+say "THE BOUNDED LOOP -- after the supervised lap is green. Options: --max-laps"
+say "1..24, --failure-ceiling 1..5, --backoff-seconds 0..300; --dry-run"
+say "rehearses. Codex's unbounded connection retries are disabled, so a dead"
+say "session returns to this circuit instead of spinning:"
 say 'GRAIN_ROOT=$(/opt/homebrew/Cellar/git/2.53.0_1/bin/git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && "$GRAIN_ROOT/rishi/bin/rishi" run "$GRAIN_ROOT/tools/l/chatgpt-mind.rish" loop --arm-loop --max-laps 3 --failure-ceiling 2 --backoff-seconds 15)'
 say ""
-say "Request a stop from another Terminal:"
+say "STOP -- from another Terminal, honored between laps:"
 say 'GRAIN_ROOT=$(/opt/homebrew/Cellar/git/2.53.0_1/bin/git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && "$GRAIN_ROOT/rishi/bin/rishi" run "$GRAIN_ROOT/tools/l/chatgpt-mind.rish" stop)'
 say ""
-say "Print the canonical Arbor plus MIND prompt without calling Codex:"
+say "PRINT THE PROMPT -- the canonical Arbor plus MIND prompt, no Codex call:"
 say 'GRAIN_ROOT=$(/opt/homebrew/Cellar/git/2.53.0_1/bin/git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && "$GRAIN_ROOT/rishi/bin/rishi" run "$GRAIN_ROOT/tools/l/chatgpt-mind.rish" print)'
 say ""
-say "GREEN: MIND handoff printed -- check, once, inspect, then arm only the bounded loop."
+say "Every lap runs in Mind's own clone, so the shared-checkout law asks only"
+say "the twice-pulled send: the round opens with sh tools/f/fleet_round_open.sh,"
+say "and the push to xy is the allocation, never forced. A custody question"
+say "leaves a named CUSTODY sentinel and the loop stays down until a hand reads"
+say "it; a signing transaction leaves TRANSACTION the same way."
+say ""
+say "CUSTODY: the gates in ITINERARY stay MANUAL -- funds and keys, provisioning"
+say "and paying, the maintainer's own identity, the login above, and the seed."
+say ""
+say "GREEN: Mind seat printed -- the cardinal star designs, and a dead session"
+say "returns to the circuit instead of spinning."

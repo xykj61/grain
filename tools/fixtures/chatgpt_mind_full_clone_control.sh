@@ -260,6 +260,8 @@ require_launcher 'let git_logs_abs = git_metadata + "/logs"' 'protected Git refl
 require_launcher 'let git_packed_refs_abs = git_metadata + "/packed-refs"' 'optional packed refs'
 require_launcher 'let packed_refs_maps = ?: git_packed_refs_file.ok (["--map" git_packed_refs_abs]) ([]' 'conditional packed-refs map'
 require_launcher 'let jail_maps = ["--map" codex_exec "--map" git_exec "--map" git_pcre "--map" git_intl "--map" rishi_abs "--map" git_wrapper_abs "--map" git_zshenv_abs "--map" git_zprofile_abs "--map" pre_commit_hook "--map" commit_msg_hook "--map" mind_lane_scan "--map" git_config_abs "--map" git_head_abs "--map" git_refs_abs "--map" git_logs_abs] + packed_refs_maps' 'exact jailed runtime and protected-control closure'
+require_launcher '"CODEX_HOME=${codex_home_abs}" "TMPDIR=/private/tmp" codex_exec "--disable" "unbounded_connection_retries" "features" "list"' 'isolated finite connection-retry feature probe'
+require_launcher 'codex_exec "exec" "--disable" "unbounded_connection_retries" "--sandbox" "danger-full-access"' 'finite connection-retry live invocation'
 require_launcher 'assert (jail_plan contains gpg_exec) == false' 'host GPG exclusion'
 require_launcher 'let pre_commit_run = run-bounded { argv: ([ai_jail] + jail_maps' 'jailed pre-commit hook'
 require_launcher 'git_wrapper_abs "-C" repo_root "hook" "run" "pre-commit"' 'pre-commit hook command'
@@ -271,6 +273,7 @@ require_launcher 'let max_candidate_paths = 64' 'candidate path ceiling'
 require_launcher 'let commit_message_rel = signing_rel + "/commit-message.txt"' 'repository-local signing request'
 require_launcher 'let phase_rel = log_rel + "/lap.phase"' 'structured phase receipt'
 require_launcher 'fn phase-valid value: phase_values contains value' 'phase allowlist validation'
+require_launcher 'let phase_codex_running = write-phase "codex-exec reason=running"' 'live Codex phase receipt'
 require_launcher 'stdout-path: phase_rel, stdout-max: 128' 'phase receipt byte wall'
 require_launcher 'assert candidate_count <= max_candidate_paths' 'candidate path enforcement'
 require_launcher 'let mind_lane_scan = repo_root + "/tools/fixtures/chatgpt_mind_lane.awk"' 'Brushstroke and Surf machine lane'
@@ -319,7 +322,7 @@ if grep -E 'assert .*(power_source|system_sleep|battery_sleep)' "$LAUNCHER" >/de
   exit 1
 fi
 require_launcher 'AC and battery readings are telemetry only; neither grants nor refuses work' 'power telemetry law'
-require_launcher 'battery execution is user-approved; abrupt power loss stops only this clone and recovery remains fail-closed' 'battery execution notice'
+require_launcher 'on battery -- the loop runs; a battery death cuts one lap and the pull resumes it' 'battery execution notice'
 require_launcher 'battery sleep is observed, not changed or used as an execution gate' 'battery sleep notice'
 
 if grep -F 'git_argv + ["-C" repo_root "commit" ' "$LAUNCHER" >/dev/null; then
