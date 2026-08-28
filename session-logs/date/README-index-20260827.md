@@ -12,6 +12,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260827.224746` | [the seed ships, the publisher returns](20260827/20260827-224746_the-seed-ships-and-the-publisher-returns.kyri) | grain-os/grain at c06eb0a; rebuilt from its rules |
 | `20260827.221156` | [the first Choir round](20260827/20260827-221156_the-first-choir-round.kyri) | six voices, 299 witnesses, the catch six loops missed |
 | `20260827.212417` | [the gate that read twelve rooms](20260827/20260827-212417_the-gate-that-read-twelve-rooms.kyri) | TAME roster 684 to 1,108 files; both counts of one ban wrong |
 | `20260827.210136` | [the sweep and what it cost me](20260827/20260827-210136_the-sweep-and-what-it-cost-me.kyri) | 34 findings, 16 closed; two were mine from that morning |
