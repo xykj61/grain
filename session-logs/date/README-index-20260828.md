@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260828.195411` | [the shelf bound and the many hands](20260828/20260828-195411_the-shelf-bound-and-the-many-hands.kyri) | 768 seated for terminal shelves; the fixtures fold delegated |
 | `20260828.194236` | [the roster learns where](20260828/20260828-194236_the-roster-learns-where.kyri) | %295 closes on the host tier; the ceiling wall names its exemption |
 | `20260828.193027` | [the witnesses nobody ran](20260828/20260828-193027_the-witnesses-nobody-ran.kyri) | 26 Glow proofs get a clock; one was already red |
 | `20260828.192852` | [the door Mind stops at](20260828/20260828-192852_the-door-mind-stops-at.kyri) | %295 briefed, host tier the lean; the choir left with its hand |
