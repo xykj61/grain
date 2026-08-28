@@ -27,4 +27,15 @@ assert (verify.out contains "SEAL_OK") else "seal mismatch -- the registry body 
 assert (verify.out contains "DERIVE_OK") else "a corpus row did not re-derive from its input"
 assert (verify.out contains "REGISTRY_GREEN") else "registry verification did not reach GREEN"
 say "${verify.out}"
-say "GREEN: waymark registry sealed and every corpus mark re-derived on metal -- the canonical naming truth stands on its own."
+
+# COMPLETENESS -- every mark the rule table seats must have a row here.
+# The seal proves nothing was EDITED and the re-derive proves every row present is honest, and
+# neither can see a mark that is simply ABSENT: a missing row is well-formed. AHOY stood in the
+# rule table and in 24 living files with no row in this registry, and this witness was GREEN the
+# whole time (REDS %298's class -- the guard reads structure, and the absence is well-formed).
+let whole = run ["sh" "tools/fixtures/waymark_table_registry_completeness.sh"]
+say whole.out
+assert whole.ok else "a waymark seated in the rule table has no row in the registry the rule calls the authority -- derive it and re-seal"
+assert (whole.out contains "verdict=ok") else "the completeness read must balance before it is believed"
+
+say "GREEN: waymark registry sealed, every corpus mark re-derived on metal, and every mark the rule table seats present here -- the canonical naming truth stands on its own."

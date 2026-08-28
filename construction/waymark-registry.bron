@@ -3,7 +3,7 @@ stamp 20260826.013711
 voice Kyri
 corpus_digest 615dbeb79c631115505ba71713aabdae243dcf4c1ae77109f325583a2c0e282cf6fc009d54802a268f04e3c170f705f4bd7203e018f00f5c443ae5e79808d8cc
 corpus_size 5526
-seal 2e0f6d79834837bf461d34d199c53a5fcd4c349625584eb2fec8774ae3970ae8de40b119e0535623cddf735e2826b44c2edf1f532d635454943229ad9e63f1b3
+seal dc5442c7bdba4f0daecb4f1106a0d42a64f3673a3da06e36aa7fa1f742f9230e4bf57efb894078f72c4a1719e150103c3c53cfa58466464890b4febd00e61ce9
 # The immutable, self-verifying registry of every waymark ever drawn (living, retired, abandoned, transient, hand-seated).
 # Each corpus-drawn row is proven on metal: SHA3-512(input)[:8] as hex, mod corpus_size, +1 = index; corpus[index] = mark.
 # The seal is the SHA3-512 of the sealed body below (from the marker line, exclusive). Any edit breaks the seal.
@@ -12,7 +12,11 @@ seal 2e0f6d79834837bf461d34d199c53a5fcd4c349625584eb2fec8774ae3970ae8de40b119e05
 # Re-sealed 20260817.224342 under the waymark-elder debride: the five breach-elder rows removed; the registry records only living and hand-seated marks.
 # Re-sealed 20260825.234631: POLE input debrided to hand-seated under the DJINN pseudonym word; the mark keeps its seat.
 # Re-sealed 20260821.023219: DISC seated for the Chapter G SLH-DSA ladder (Keaton's word -- name the arc and start it).
+# Re-sealed 20260827.203000: AHOY appended -- seated in the rule table since the front-door chapter and absent here,
+# so the registry that calls itself the record of EVERY mark was missing one. Derived on metal from its recorded input
+# (sha3-512 b7aa8eb8 -> index 65 of 5526 -> AHOY), which is why the row could be added rather than invented.
 # ---- sealed body ----
+mark AHOY | input root-readme-lindy-foundation-weave-and-seed-legitimacy | index 65 | status living | note seated
 mark ALES | input season-c-lotus-creative-suite-audio-wire-shape | index 101 | status living | note seated
 mark AYRE | input harvest-season-equinox-2-trade | index 266 | status living | note seated
 mark BUHR | input realidream-surface-and-quin-inference-and-mcp-2 | index 572 | status living | note seated
