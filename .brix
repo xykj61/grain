@@ -43,7 +43,8 @@ file mantra/src/main.rye
 # Gate trio — Rishi only (tools/*.rish)
 file tools/p/parity.rish
 
-# Q-vane inference family (Lattice · Scribble · Lantern · Ember)
+# Ember, the inference vane (Lattice · Scribble · Lantern · Kiln) -- named 20260827, REDS %300;
+# elder name Q-vane stays a readable peer. The craft faculty is Kiln from 20260827.195316.
 file lattice/lattice_core.rye
 file scribble/scribble_core.rye
 file lantern/lantern_core.rye

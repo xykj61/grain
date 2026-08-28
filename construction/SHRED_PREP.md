@@ -172,6 +172,10 @@ The standing voice note was rewritten from Radiant into **Gauge at its Door sett
 
 ---
 
+### Class M -- the Kiln molt (RED)
+
+`foundations/20260823-212606_the-ember-voice.md` -> `20260827-195316_the-kiln-voice.md`,
+`20260827.195316`. Ember rose to the vane (`%300`); the faculty took Kiln. 7 citers repointed.
 ## The molt queue -- candidates, not yet prepped
 
 ### Q -- the molt queue, added `20260823.223157`

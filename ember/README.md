@@ -5,7 +5,7 @@
 **Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
 [`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
 path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
-**Kin:** [`Lattice`](../lattice/README.md) counts - [`Lantern`](../lantern/README.md) carries - [`Scribble`](../scribble/README.md) reads - and **Ember** is the name of the four together, seated `20260827` on Keaton's word ([`../context/QUIN.md`](../context/QUIN.md), REDS `%300`) - the trinity essay [`Lantern, Lattice, Kiln`](../foundations/20260827-025117_lantern-lattice-kiln.md) - the craft voice [`the Ember voice`](../foundations/20260823-212606_the-ember-voice.md) - the reading-room law [`gratitude-licenses`](../.claude/rules/gratitude-licenses.md), which decides what Ember may swallow
+**Kin:** [`Lattice`](../lattice/README.md) counts - [`Lantern`](../lantern/README.md) carries - [`Scribble`](../scribble/README.md) reads - and **Ember** is the name of the four together, seated `20260827` on Keaton's word ([`../context/QUIN.md`](../context/QUIN.md), REDS `%300`) - the trinity essay [`Lantern, Lattice, Kiln`](../foundations/20260827-025117_lantern-lattice-kiln.md) - the craft voice [`the Ember voice`](../foundations/20260827-195316_the-kiln-voice.md) - the reading-room law [`gratitude-licenses`](../.claude/rules/gratitude-licenses.md), which decides what Ember may swallow
 
 ---
 
@@ -19,41 +19,33 @@ That is the whole of what this module does, and it is the reason the name reache
 **A model is a fire banked into weights** -- an enormous burning, folded down into something that
 fits on a disk and waits. What serves it is not light. What serves it is heat, kept.
 
-## The four senses, counted honestly
+## The three senses, and the one that moved out
 
-**Ember** carries four meanings in this tree as of `20260827`, and the fourth is the one a first
-count missed:
+**Ember** carries three meanings, and as of `20260827.195316` **not one of them contains another**:
 
 - **The vane** -- the whole warm layer where a model is forged, counted, read, and carried. Four
-  faculties under one name: **Lattice**, **Scribble**, **Lantern**, **Ember**.
-- **The voice** -- the craft faculty of [Kyri's four](../foundations/20260823-212606_the-ember-voice.md);
-  the one that builds the thing soundly and lets the making show what it means.
-- **This module** -- `ember/`, the corpus forge, the hearth at the centre where the coal actually sits.
+  faculties under it: **Lattice**, **Scribble**, **Lantern**, **Kiln**.
+- **This module** -- `ember/`, the corpus forge, the hearth where the coal actually sits.
 - **A Linengrow surface** -- `#3A332C`, the warm dark a card rests on in dark mode, sitting in a
   palette of material words beside Oat, Stone, Hearth and Flax
   ([the first-cloth pass](../active-designing/20260825-234156_linengrow-first-cloth-and-fonts-gauge-pass.md)).
 
-*The count was written as three on the morning of `20260827` and corrected to four the same day. A
-name's senses are a measurement like any other, and a count taken from memory is how a page comes to
-say something false while every link in it still resolves.*
+*It read four for part of `20260827`, and before that three, and the three were wrong twice over.*
+The first count missed the Linengrow surface entirely. The second count found it and still carried a
+real problem: the craft **faculty** was also called Ember, so the vane gathered a member of its own
+name. **Quin** had carried three senses at once and been ruled acceptable -- *three hats, one name,
+accepted* -- yet Quin's three sat in unrelated rooms, and these two nested. That was this tree's
+first part-whole name, and no precedent reached it.
 
-**One of the four nests inside another, and that is new here.** The vane gathers Lattice, Scribble,
-Lantern -- and Ember. **Quin** carried three senses at once and this tree ruled on it in five words,
-*Three hats, one name, accepted*, yet Quin's three sat in **unrelated** rooms: an OS variant is never
-a member of the vane, and neither is a writing voice. Ember is the first name here where **the whole
-and one of its parts are the same word**, so the precedent supports carrying several senses without
-settling this particular shape.
+**The repair was already sitting there.** **Kiln** took the bake seat on `20260827.025117`, a day
+before the vane was named, and had been standing free since. On Keaton's word the craft faculty took
+it: the voice is [**Kiln**](../foundations/20260827-195316_the-kiln-voice.md) now, and Ember keeps
+the vane alone. The two names stay true to each other -- Ember is the heat that is **kept**, and a
+kiln is the chamber where that heat is **applied** and a thing is either proven or is not.
 
-The nesting reads cleanly in prose, where a noun stands beside the word and says which sense is
-meant -- the vane, the voice, the module, the surface. It reads least well in exactly the sentence
-whose job is to relate the host to its members, and the honest close is that
-[the seated completion](../context/QUIN.md) of yesterday's unbraid answers it: **Kiln** already took
-the bake seat on `20260827.025117`, so the craft faculty has a word of its own waiting whenever
-Keaton says so, and the vane keeps Ember alone.
-
-What the name earns, in every sense, is the same thing an abstract one could not. **Lumen** was
-seated on the card `20260816` and carried by nothing for eleven days. Lumen is light *described*.
-Ember is light *kept*.
+Nothing was swept to get there. The elder page stands at
+[`the Ember voice`](../foundations/20260823-212606_the-ember-voice.md) with every word it wrote, and
+**Q-vane** remains a readable peer of the vane's name wherever it was written.
 
 ## What this module holds
 
