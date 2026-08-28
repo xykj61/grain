@@ -49,8 +49,8 @@ fi
 # an earlier lap and the roster kept naming the flat path, so the meter read two absent files.
 echo "active-designing/proven-seat-guest-hammock.md"
 echo "active-designing/seam-season-hammock.md"
-echo "active-designing/yonder/20260712-063558_receipt-verify-wasm-hammock.md"
-echo "active-designing/yonder/20260712-063213_door3-consumer-edge-pass-hammock.md"
+echo "active-designing/yonder/date/20260712/20260712-063558_receipt-verify-wasm-hammock.md"
+echo "active-designing/yonder/date/20260712/20260712-063213_door3-consumer-edge-pass-hammock.md"
 
 # Module front doors whose sources sit one level down, so the rule cannot reach them.
 for f in rye/README.md rishi/README.md aurora/README.md; do

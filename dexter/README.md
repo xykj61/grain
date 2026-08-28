@@ -38,7 +38,7 @@ banner-pointed here only when its successor runs GREEN, never before:
 - The glass keyboard family: `../linengrow/dexter_glass_core.rye` and its seven siblings
 - The nine witnesses under `../tools/d/` that prove them today
 - The study and the names: `../external-research/20260717-172832_dexter-dill-glow-grapheneos-input.md`,
-  `../active-designing/20260816-222322_terminal-family-names.md`
+  `../active-designing/date/20260816/20260816-222322_terminal-family-names.md`
 
 ## The orbit
 

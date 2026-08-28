@@ -8,7 +8,7 @@
 **Style:** Gauge (see `../../../context/GAUGE_STYLE.md`)
 **Voice:** Reya 2
 **Lens:** TAME Style (`../external-research/TAME_STYLE.md`); the method in `9999_STRENGTHENING.md`
-**Builds on:** `9993_mem_diff_primitives.md`, `../active-designing/yonder/20260619-160312_native-system-interface.md`
+**Builds on:** `9993_mem_diff_primitives.md`, `../active-designing/yonder/date/20260619/20260619-160312_native-system-interface.md`
 **Status:** Applied to `rye/lib/std/Io/Dir.zig` -- parity GREEN, 12 witnesses
 
 ---

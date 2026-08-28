@@ -17,7 +17,7 @@ let homes = run ["sh" "-c" "grep -q 'amphora/ · oven/' expanding-prompts/date/2
 assert homes.ok else "oven-season-o2: Surface homes scan failed"
 assert homes.out contains "HOMES_OK" else "oven-season-o2: Surface recursion homes not oven/"
 
-let hammock = run ["sh" "-c" "grep -q 'oven/README.md' active-designing/yonder/20260710-225320_anvil-corpus-lap2-hammock.md && echo HAMMOCK_OK"]
+let hammock = run ["sh" "-c" "grep -q 'oven/README.md' active-designing/yonder/date/20260710/20260710-225320_anvil-corpus-lap2-hammock.md && echo HAMMOCK_OK"]
 assert hammock.ok else "oven-season-o2: hammock link scan failed"
 assert hammock.out contains "HAMMOCK_OK" else "oven-season-o2: yonder hammock still points at anvil/"
 

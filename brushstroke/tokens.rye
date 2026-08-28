@@ -14,7 +14,7 @@
 //!                          paint color read from the paper/ink tokens.
 //!
 //! The six palette invariants from the weave silo
-//! (active-designing/yonder/20260712-091012_brushstroke-linengrow-weave-silo.md)
+//! (active-designing/yonder/date/20260712/20260712-091012_brushstroke-linengrow-weave-silo.md)
 //! are the ARGB constants' asserted bounds -- warm hue, low blue, gentle
 //! lightness spread, paper hierarchy -- checked at construction, not assumed.
 //!

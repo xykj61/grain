@@ -69,7 +69,7 @@ For each remaining file carrying `**Version:** YYYYMMDD.HHMMSS`, propose `YYYYMM
 
 ### Redirect stubs — rename only, create nothing
 
-`988`, `990`, and `992` are already deprecation redirects; each carries `**Status:** Deprecated (051612)` and already points at its surviving file. Do **not** create new stubs — `992` already redirects to `active-designing/yonder/20260618-184912_recommended-architecture.md`. Rename each into one-clock form using the moment they became stubs, which `999_RESEARCH.md` records as `2026-06-21` at `051612`. They share that second, so give each a distinct `-redirect` sprig:
+`988`, `990`, and `992` are already deprecation redirects; each carries `**Status:** Deprecated (051612)` and already points at its surviving file. Do **not** create new stubs — `992` already redirects to `active-designing/yonder/date/20260618/20260618-184912_recommended-architecture.md`. Rename each into one-clock form using the moment they became stubs, which `999_RESEARCH.md` records as `2026-06-21` at `051612`. They share that second, so give each a distinct `-redirect` sprig:
 
 ```
 988_rishi_shell.md            → 20260621-051612_rishi-shell-redirect.md

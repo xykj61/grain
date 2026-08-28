@@ -2,7 +2,7 @@
 
 **Status:** Study note -- `classical-vedic-astrology/` ships its **method** to the public `grain-os/grain` seed as of `20260823.184309`, with `readings/` and `yonder/` `sub_exclude`d, so this roster is public and nobody's chart is. General roster only; a pilot's own chart and identity stay in their private record (`/personal/`), never here.
 **Stamp:** `20260810` (EDT)  -  Voice: Riyo (Kyri)  -  Radiant
-**Kin:** the module `sundial/sundial.rye`  -  the public d27 water-seats note (`active-designing/yonder/20260810-082206_nakshatra-outfits-for-the-council-d27.md`)
+**Kin:** the module `sundial/sundial.rye`  -  the public d27 water-seats note (`active-designing/yonder/date/20260810/20260810-082206_nakshatra-outfits-for-the-council-d27.md`)
 
 ---
 

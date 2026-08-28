@@ -384,7 +384,7 @@ sub_exclude waymarks/date/20260725/20260725-112615_radiant-wave36.md
 # one of the 19 retired 20260826: the DJINN pseudonym pass (1a75eaf67) removed the weave-dependencies
 # file from tree and history, so there is nothing left for its exclusion row to match
 sub_exclude active-designing/date/20260810/20260810-055147_plan-3x39-kumara-passports-divider-grammar.md
-sub_exclude active-designing/yonder/20260715-194500_the-slc-product-glow-on-capable-hardware.md
+sub_exclude active-designing/yonder/date/20260715/20260715-194500_the-slc-product-glow-on-capable-hardware.md
 sub_exclude active-designing/date/20260810/20260810-055147_plan-name-consolidation-debride.md
 sub_exclude waymarks/date/20260725/20260725-111005_radiant-wave21.md
 sub_exclude active-designing/date/20260630/20260630-001812_the-stack-and-the-surface.md
@@ -394,11 +394,11 @@ sub_exclude waymarks/date/20260725/20260725-111235_radiant-wave23.md
 sub_exclude waymarks/date/20260725/20260725-035453_radiant-wave6.md
 sub_exclude waymarks/date/20260725/20260725-111515_radiant-wave25.md
 sub_exclude waymarks/README.md
-sub_exclude active-designing/yonder/20260712-130300_lane-inward-route-probe.md
+sub_exclude active-designing/yonder/date/20260712/20260712-130300_lane-inward-route-probe.md
 sub_exclude active-designing/date/20260727/20260727-142516_the-constellation-and-the-twelve-funds.md
 sub_exclude waymarks/date/20260725/20260725-112415_radiant-wave34.md
-sub_exclude active-designing/yonder/20260722-153358_stoa279-hawm-emulator-serial-pin.md
-sub_exclude active-designing/yonder/20260714-184500_macos-full-private-home-design.md
+sub_exclude active-designing/yonder/date/20260722/20260722-153358_stoa279-hawm-emulator-serial-pin.md
+sub_exclude active-designing/yonder/date/20260714/20260714-184500_macos-full-private-home-design.md
 sub_exclude waymarks/date/20260725/20260725-112515_radiant-wave35.md
 # external-research dual-gate clearance (20260810 . w50krsfnv) — 13 copyright + 21 personal
 sub_exclude external-research/20260701-213412_deep-archive-and-sovereign-host-blueprint.md
