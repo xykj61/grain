@@ -19,10 +19,15 @@ A Kyri document is `format <name>` on the first line, then `key value` fields â€
 - Reads a field by key (`get`, first occurrence) and counts a **repeatable** key (`count_key`, every occurrence â€” `think`, `file`). Bounded: `max_source_len`, `max_fields`.
 
 ```
-rye build scribe/reader.rye -femit-bin=scribe/bin/reader
+RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build scribe/reader.rye -femit-bin=scribe/bin/reader
 scribe/bin/reader selftest
+scribe/bin/reader read scribe/first-baton.kyri
 rishi/bin/rishi run tools/s/scribe_reader_witness.rish
 ```
+
+The tracked `first-baton.kyri` crosses the real file boundary. The reader keeps one byte of
+headroom, so an oversize document is refused rather than parsed as a complete prefix; the witness
+also refuses an absent path and a session log offered as a baton.
 
 ## Horizons
 

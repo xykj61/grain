@@ -4,7 +4,7 @@
 **Language:** EN
 **Style:** Gauge, Field setting (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
-**Status:** Mixed -- the widened Sound lane is seated on Keaton's word `20260826`; every per-module move below is a proposal sized to one round, none begun
+**Status:** Mixed -- the lane is seated on Keaton's word `20260826`; Scribe landed `20260828`, and the remaining per-module moves are one-round proposals
 **Kin:** [`20260826-151528_the-three-stars-of-the-aether-row.md`](20260826-151528_the-three-stars-of-the-aether-row.md) -- [`20260826-014902_eight-modules-through-the-optimization-spine.md`](20260826-014902_eight-modules-through-the-optimization-spine.md) -- [`20260826-021136_caravan-rearchitected-the-optimization-spine.md`](20260826-021136_caravan-rearchitected-the-optimization-spine.md) -- [`../foundations/20260826-021731_aether-the-row-that-hears.md`](../foundations/20260826-021731_aether-the-row-that-hears.md) -- [`../expanding-prompts/20260826-033051_pond-completes-the-enclosure.md`](../expanding-prompts/20260826-033051_pond-completes-the-enclosure.md)
 
 The why, said once before any module moves: **the constellation exists so one person's whole
@@ -46,7 +46,7 @@ replayable fold, rehearsed on planted data now.
 
 Each row: the seat, the calling that fits it best, one bounded agent-doable move (witness-closed
 where it is code), and the gate that stands. State was measured `20260826` by a six-reader
-survey; the moves are proposals, one round each.
+survey; each remaining move is a one-round proposal.
 
 | Seat | Calling | One bounded move | Gate |
 |---|---|---|---|
@@ -69,7 +69,7 @@ survey; the moves are proposals, one round each.
 | Mikrophone | bound-in-shape | re-prove DREY whole post-sweep, wall_ms per rung recorded as loom | hardware %2; served transport |
 | Pleac | choir-and-bijection | wire join/split as Rishi builtins; round-trip proven, empty separator refused | none |
 | Press | gauge-register | reconcile the crushed index to the four pieces on disk; grade at Door | publishing is Keaton's word |
-| Scribe | wrap-named | the first baton-v1 read: a planted document, dispatch and fields proven inside the bounds | JARL word-gated beyond local |
+| Scribe | wrap-named | **Landed `20260828.154121`:** a planted baton-v1 crosses the bounded disk read; wrong-format, absent, and oversize documents refuse by name | JARL word-gated beyond local |
 | Settlement | replayable-fold | fold one spawn-adopt-transfer sequence twice byte-identical, a reorder shown divergent; register it | chain-adjacent |
 | Spellbook | choir-and-bijection | verify the eighteen spell homes resolve; count the emerging as a ratchet; grade at Door | new spells are Keaton's word |
 | Sundial | gauge-register | emit carries unit, date, and source per reading; a sourceless reading refused by name | none |

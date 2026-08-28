@@ -53,9 +53,7 @@ Signing with the maintainer's identity key stays the custody gate; the library i
 NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.034037` and held at
 ([`the bench measured`](../external-research/20260821-034037_the-bench-measured-and-the-standing-gauge-protocol.md)).
 
-*One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
-
-**Git nib:** `138cabf1b0` -- this round's own.
+**Git nib:** `1422beb7f6` -- this round, before its nib amend.
 
 **Now.** **The dead-letter box filled twice, and the second time a meter read it.**
 
@@ -83,7 +81,8 @@ publishes `usize` in 5 fields and 5 accessors; 59 gate fixtures await his word. 
 pier's `enclosure.conf`, still pinning two. **Seat:** whether the roster's own witness can
 be rostered when its scan reads the card its red would land on.
 
-**Next doors.** Dream: Caravan and Tally, then the constellation table. Hush: Pond orbit two.
+**Next.** Dream: constellation, Lindy-first and crux-first. Hush: Pond orbit two. Construction:
+`equinox_e123_living_pin_guard`, `dated_pattern`.
 
 ---
 ## Landed arcs

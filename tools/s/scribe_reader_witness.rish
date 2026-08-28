@@ -1,13 +1,11 @@
 # scribe_reader_witness.rish -- Scribe's zero-copy Kyri reader.
 #
-# Proves Scribe's foundation: a Kyri document (format on the first line, then key value
-# fields, # comments and blanks ignored) parses into fields **zero-copy** -- each field
-# slices into the source, never copied -- and Scribe **dispatches by format**, telling a
-# session-log-v1 from a baton-v1 with one honest reader (the counsel's one-notation-
-# many-formats made real). A repeatable key keeps every occurrence; get returns the
-# first; a missing key reads null.
+# Proves Scribe from both sides of the disk seam. A tracked baton-v1 document passes
+# through the bounded reader and reports its fields. A session log is refused as the
+# wrong format, an absent path is refused by name, and a source one byte past the bound
+# is refused before parse. The built-in selftest keeps the zero-copy parser proof.
 #
-# Build first:  rye build scribe/reader.rye -femit-bin=scribe/bin/reader
+# Build first:  RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build scribe/reader.rye -femit-bin=scribe/bin/reader
 #   rishi/bin/rishi run tools/s/scribe_reader_witness.rish
 
 let st = run ["scribe/bin/reader" "selftest"]
@@ -17,7 +15,25 @@ assert (st.err contains "parses into key-value fields") else "a Kyri document pa
 assert (st.err contains "zero-copy") else "fields slice into the source, never copied"
 assert (st.err contains "a repeatable key keeps every occurrence") else "a repeated key keeps every one"
 assert (st.err contains "Scribe reads by format") else "Scribe dispatches by a document's format"
-assert (st.err contains "one-notation-many-formats") else "one notation, many formats — the seated counsel"
+assert (st.err contains "one-notation-many-formats") else "one notation, many formats -- the seated counsel"
 assert (st.err contains "dispatch by its format") else "the reader dispatches by format"
 
-say "GREEN: scribe reader — the Kyri voice's home reads its own records: parse a document, dispatch by format, get a field, count a repeated key — bounded and zero-copy."
+let baton = run ["scribe/bin/reader" "read" "scribe/first-baton.kyri"]
+assert baton.ok else "the planted baton must cross the disk seam"
+assert (baton.err contains "SCRIBE_BATON format=baton-v1") else "dispatch must name baton-v1"
+assert (baton.err contains "state=caravan and tally green") else "the planted state must read back"
+assert (baton.err contains "next=carry the scribe seam forward") else "the planted next field must read back"
+
+let wrong = run ["scribe/bin/reader" "read" "session-logs/date/20260828/20260828-154121_the-baton-read-from-both-sides.kyri"]
+assert (wrong.ok == false) else "a session log must not pass as a baton"
+assert (wrong.err contains "SCRIBE_REFUSED NotBaton") else "the wrong format must be named"
+
+let absent = run ["scribe/bin/reader" "read" "scribe/no-such-baton.kyri"]
+assert (absent.ok == false) else "an absent baton must refuse"
+assert (absent.err contains "SCRIBE_REFUSED NoSuchDocument") else "the absent path must be named"
+
+let over = run ["sh" "-c" "p=$(mktemp); head -c 65537 /dev/zero | tr '\\000' x > $p; scribe/bin/reader read $p; rc=$?; rm -f $p; exit $rc"]
+assert (over.ok == false) else "a source one byte past the bound must refuse"
+assert (over.err contains "SCRIBE_REFUSED DocumentTooLarge") else "the oversize refusal must be named"
+
+say "GREEN: scribe reader -- a planted baton crosses the bounded disk seam; wrong-format, absent, and oversize documents refuse by name."

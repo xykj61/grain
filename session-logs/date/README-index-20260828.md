@@ -31,6 +31,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260828.160657` | [one unit under every awk](20260828/20260828-160657_one-unit-under-every-awk.kyri) | %320: an em dash read 1 there and 3 here; lead bytes fix it |
 | `20260828.155641` | [the line that outran the sweeps](20260828/20260828-155641_the-line-that-outran-the-sweeps.kyri) | ten picks, one push; Mind cleared to fly |
 | `20260828.154329` | [the card that points at nothing](20260828/20260828-154329_the-card-that-points-at-nothing.kyri) | two card reds, found and left with their hand |
+| `20260828.154121` | [the baton read from both sides](20260828/20260828-154121_the-baton-read-from-both-sides.kyri) | Scribe reads one planted baton through the bounded disk seam |
 | `20260828.153737` | [the pin weighed where it can still be trimmed](20260828/20260828-153737_the-pin-weighed-where-it-can-still-be-trimmed.kyri) | the commit-time pin wall |
 | `20260828.151653` | [the wrapper the meter believed](20260828/20260828-151653_the-wrapper-the-meter-believed.kyri) | %317: 430 calls read as one; 89 witnesses filed as unheard |
 | `20260828.144049` | [the family that never printed](20260828/20260828-144049_the-family-that-never-printed.kyri) | witness-reach: the census names its whole tail |
