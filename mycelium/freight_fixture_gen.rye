@@ -58,7 +58,8 @@ fn write_deadline(deadline: u64, out: []u8) void {
 /// under a far deadline the two-block order never reaches. Returns two blocks (genesis - pledge).
 pub fn seat_ledger() ![2]cord.Block {
     // invariant: a pledge can only encumber value the owner holds.
-    assert(pledge_amt <= credit and pledge_amt > 0);
+    assert(pledge_amt <= credit);
+    assert(pledge_amt > 0);
     const kf = seeded(funder_byte);
     const ka = seeded(owner_byte);
     const owner_pk = ka.public_key.toBytes();
@@ -95,7 +96,8 @@ pub fn build_manifest() !freight_bron.Manifest {
     tally_copy.copy_disjoint(u8, m.id[0..world_id.len], world_id);
     tally_copy.copy_disjoint(u8, m.berth[0..puddle.pk_len], berth[0..puddle.pk_len]);
     // invariant: the fixture world reads the seated position -- balance credit-pledge, reserved pledge.
-    assert(m.pos.balance == credit - pledge_amt and m.pos.reserved == pledge_amt);
+    assert(m.pos.balance == credit - pledge_amt);
+    assert(m.pos.reserved == pledge_amt);
     return m;
 }
 

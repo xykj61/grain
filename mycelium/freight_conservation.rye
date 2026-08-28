@@ -78,7 +78,8 @@ const FleetSum = struct {
     /// Two fleet sums are equal exactly when all three components and the world count agree.
     fn same(a: *const FleetSum, b: *const FleetSum) bool {
         // invariant: a conserved sum never loses a world silently -- the count is part of the equality.
-        assert(a.worlds <= puddle.max_worlds and b.worlds <= puddle.max_worlds);
+        assert(a.worlds <= puddle.max_worlds);
+        assert(b.worlds <= puddle.max_worlds);
         return a.balance == b.balance and a.reserved == b.reserved and a.received == b.received and a.worlds == b.worlds;
     }
 };
@@ -97,7 +98,8 @@ fn host_key(byte: u8) [puddle.pk_len]u8 {
 /// Build a fleet from host seed bytes (each capacity `cap`) and world ids, in the given order.
 fn build_fleet(host_bytes: []const u8, cap: u32, world_ids: []const []const u8) !puddle.Fleet {
     // invariant: a fleet is built from at least one host and at least one world.
-    assert(host_bytes.len >= 1 and world_ids.len >= 1);
+    assert(host_bytes.len >= 1);
+    assert(world_ids.len >= 1);
     var f = puddle.Fleet.empty();
     for (host_bytes) |b| {
         const pk = host_key(b);
@@ -130,7 +132,8 @@ fn write_deadline(deadline: u64, out: []u8) void {
 /// pledge id seeds a DISTINCT ledger per world. Returns two blocks (genesis - pledge).
 fn seat_ledger(pledge_id: u8, credit: u64, pledge_amt: u64, funder: u8, owner: u8, to: []const u8) ![2]cord.Block {
     // invariant: a pledge can only encumber value the owner actually holds.
-    assert(pledge_amt <= credit and pledge_amt > 0);
+    assert(pledge_amt <= credit);
+    assert(pledge_amt > 0);
     const kf = seeded(funder);
     const ka = seeded(owner);
     const owner_pk = ka.public_key.toBytes();

@@ -51,7 +51,8 @@ fn read_manifest() !freight_bron.Manifest {
     var m: freight_bron.Manifest = undefined;
     try freight_bron.parse(real_manifest, &m);
     // invariant: the parsed manifest names a world within the id bound.
-    assert(m.id_len >= 1 and m.id_len <= 24);
+    assert(m.id_len >= 1);
+    assert(m.id_len <= 24);
     return m;
 }
 

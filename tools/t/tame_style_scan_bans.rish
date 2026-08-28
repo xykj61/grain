@@ -20,12 +20,20 @@ let ban_nc = "tools/fixtures/tame_style_ban_noncomment_files.sh"
 # The roster above widened on 20260827 to the seven rooms it had never read -- glow, mycelium,
 # constel, lattice, ember, lantern, scribble -- and seven of the eight bans were already clean
 # there, so they gained 424 files of real coverage for free. The eighth was not: those rooms carry
-# 104 genuine compound asserts, measured that day. A ban with 104 violations is not a ban, it is a
-# ratchet wearing a ban's clothes, and turning one into the other by fiat would red every lap until
-# somebody paid a 104-edit sweep in one sitting. So this check keeps the elder roster, where it is
-# proven at zero, and the 104 are booked as REDS %304 to be split room by room. Widen this line the
-# lap that count reaches zero, and delete it.
-let find_rye_compound = "find mantra caravan linengrow comlink rishi/src tally aurora pond brushstroke image mikrophone rye/src amphora glow/tokens.rye glow/lower_named_cast.rye -name '*.rye' ! -type l 2>/dev/null"
+# 104 genuine compound asserts, measured that day -- a ban with 104 violations is not a ban, it is
+# a ratchet wearing a ban's clothes. The door written that hour was to split them room by room,
+# smallest first, and widen this line as each room reaches zero. The same lap walked through it:
+# glow's 10 and mycelium's 11 were split, both build and their witnesses are GREEN on metal, and
+# six of the seven rooms joined this roster. Only `constel` is held out, with 83 left (REDS %304).
+# Delete this line and this comment the lap constel reaches zero.
+# The check itself moved off a plain grep the same lap: `grep 'assert(.* and .*)'` cannot tell a
+# conjunction from a quoted string, and six Glow lowering witnesses assert that generated source
+# CONTAINS text like "pair.p == 5 and pair.q == 3" -- one condition, with the word inside the
+# literal being searched for. tools/fixtures/tame_style_compound_assert.sh blanks quoted content
+# before looking, the way the comment helper blanks comment lines, and it found four REAL hits the
+# elder grep had missed for the opposite reason: `[^)]*` stopped at the first `)`, so any call
+# standing left of the `and` hid the conjunction behind it.
+let find_rye_compound = "find mantra caravan linengrow comlink rishi/src tally aurora pond brushstroke image mikrophone rye/src amphora glow mycelium lattice ember lantern scribble -name '*.rye' ! -type l ! -path '*/.cache/*' ! -path '*/bin/*' 2>/dev/null"
 
 let hits_err_eq = run ["sh" "-c" "sh ${ban_nc} ') == error.' $(${find_rye}) | head -8"]
 if hits_err_eq.out != "" then say "BAN [) == error.]:"
@@ -77,7 +85,7 @@ if hits_dbg.out != "" then say "BAN [dbg(]:"
 if hits_dbg.out != "" then say hits_dbg.out
 assert hits_dbg.out == "" else "TAME ban: dbg("
 
-let compound = run ["sh" "-c" "grep -Hn 'assert(.* and .*)' $(${find_rye_compound}) 2>/dev/null | head -8"]
+let compound = run ["sh" "-c" "sh tools/fixtures/tame_style_compound_assert.sh $(${find_rye_compound}) 2>/dev/null | head -8"]
 if compound.out != "" then say "BAN [compound assert — split so the failing half is named]:"
 if compound.out != "" then say compound.out
 assert compound.out == "" else "TAME ban: compound assert"
