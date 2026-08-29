@@ -36,6 +36,8 @@ assert control.out contains "multiline_string_counted=no" else "ascii-comment: a
 assert control.out contains "string_literal_counted=no" else "ascii-comment: a string literal is what a program prints, never prose"
 
 assert control.out contains "vendor_excluded=yes" else "ascii-comment: vendored sources are not ours to convert"
+assert control.out contains "symlink_skipped=yes" else "ascii-comment: a symlink must not be counted a second time -- git ls-files lists a link and its target as two paths, and one set of bytes may count once (REDS %340)"
+assert control.out contains "symlink_target_kept=yes" else "ascii-comment: skipping a link must drop the duplicate rather than the file -- the target still counts on its own row"
 assert control.out contains "total_is_four=yes" else "ascii-comment: four planted prose files carry one character each, and nothing else may be counted"
 
 let living = run ["sh" "tools/fixtures/r/rye_comment_ascii_scan.sh"]
@@ -81,4 +83,4 @@ assert shell_living.ok else "ascii-comment: the living shell scan must complete"
 say shell_living.out
 assert shell_living.out contains "under_ceiling=yes" else "ascii-comment: non-ASCII in Rishi and shell comments rose above the ceiling -- convert on touch rather than raising it"
 
-say "GREEN: ascii-comment -- authored comments in all three of this tree's languages stand under ceilings that only fall, each printed above as its scan's own output rather than recited here, with twenty readings proven on planted repositories and the shell ceiling proven from both sides. Each meter counts comments and refuses to count program content, which is the one distinction that makes a sweep safe rather than a rewrite of what programs print."
+say "GREEN: ascii-comment -- authored comments in all three of this tree's languages stand under ceilings that only fall, each printed above as its scan's own output rather than recited here, with twenty-two readings proven on planted repositories, the shell ceiling proven from both sides, and the symlink skip proven from both sides. Each meter counts comments and refuses to count program content, which is the one distinction that makes a sweep safe rather than a rewrite of what programs print."

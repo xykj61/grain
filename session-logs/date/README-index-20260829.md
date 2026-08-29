@@ -16,7 +16,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260829.015246` | [the recipe that crossed](20260829/20260829-015246_the-recipe-that-crossed.kyri) | pure core builds for iOS: four flags, zero module edits; spawn parks on cold start |
 | `20260829.014114` | [the ios door read](20260829/20260829-014114_the-ios-door-read.kyri) | movement five: three measures, four carries read, QA 84 B; the ladder's first pass walked |
 | `20260829.013811` | [the meter that counts one call](20260829/20260829-013811_the-meter-that-counts-one-call.kyri) | Amphora's eight build all three; REDS %337; the reading is a floor |
-| `20260829.013539` | [the commit no hook saw](20260829/20260829-013539_the-commit-no-hook-saw.kyri) | REDS %338: cherry-pick skips pre-commit; post-commit records the debt |
+| `20260829.013539` | [the commit no hook saw](20260829/20260829-013539_the-commit-no-hook-saw.kyri) | REDS %339: cherry-pick skips pre-commit; post-commit records the debt |
 | `20260829.013348` | [the picture both backends agree on](20260829/20260829-013348_the-picture-both-backends-agree-on.kyri) | reference module seats; macOS answers pins live: lit 16268 matched |
 | `20260829.012534` | [the claims both backends answer](20260829/20260829-012534_the-claims-both-backends-answer.kyri) | movement four's oracle: lit 16268 pinned, house Keccak digest, tamper-visible |
 | `20260829.011429` | [the lifecycle the delegate steers](20260829/20260829-011429_the-lifecycle-the-delegate-steers.kyri) | movement three closes: run owns the loop, the refusal honored, exit 0 |
