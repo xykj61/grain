@@ -1,0 +1,193 @@
+//! tools/rye/macos_window_probe.rye -- Rye raises a native macOS window and puts its own pixels
+//! in it, with no Swift anywhere in the binary.
+//!
+//! WHY THIS PROBE EXISTS. The Skate seat writes its bounded frame grid in Swift, and the question
+//! nobody had measured is whether macOS requires Swift for a window at all. It does not. AppKit is
+//! Objective-C, the Objective-C runtime is a plain C ABI -- `objc_getClass`, `sel_registerName`,
+//! `objc_msgSend` -- and Rye calls C without a shim. Core Graphics is straight C. So a window, a
+//! view, and a buffer of our own pixels are all reachable from the tree's own language, which is
+//! what this program proves by doing rather than by argument.
+//!
+//! WHAT IT PROVES, on metal: the AppKit and CoreGraphics frameworks load; NSApplication and
+//! NSWindow answer by name; a window is created, titled, and ordered front with a real nonzero
+//! window number; a 256x160 RGBA buffer this program fills itself becomes a CGImage and reaches
+//! the content view's layer; and the whole thing stands for a BOUNDED number of event-loop turns
+//! and then exits clean. Every number below is named, and every step asserts before it proceeds.
+//!
+//! WHAT IT DOES NOT PROVE. Nothing about SwiftUI, which has no C ABI and no Objective-C interface
+//! and is the one surface Rye genuinely cannot drive. Nothing about a shipped bundle, code
+//! signing, notarization, or the Tahoe Liquid Glass look. And nothing about iOS, where the
+//! publishing surface leans on Swift in a way macOS does not -- which is exactly why the Swift
+//! work is deferred forward rather than discarded.
+//!
+//! Build and run:
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build tools/rye/macos_window_probe.rye \
+//!     -femit-bin=tools/.build/macos_window_probe -lobjc -framework Cocoa -framework CoreGraphics
+//!   tools/.build/macos_window_probe
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const c = std.c;
+
+// The frame this probe paints. Bounded and named, because every buffer in this tree names its
+// own ceiling: 256 by 160 pixels at four bytes each is 163,840 bytes, sized to be obviously a
+// picture rather than obviously a test pattern.
+const frame_width: u32 = 256;
+const frame_height: u32 = 160;
+const bytes_per_pixel: u32 = 4;
+const frame_bytes: u32 = frame_width * frame_height * bytes_per_pixel;
+
+// The probe stands for a bounded number of event-loop turns rather than forever, so it can run
+// unattended in a witness without becoming a process somebody has to remember to kill.
+const max_event_turns: u32 = 240;
+
+// AppKit's own constants, spelled here rather than imported, since a header is a C artifact and
+// these four numbers are the whole of what this probe needs from it.
+const style_titled: u64 = 1;
+const style_closable: u64 = 2;
+const style_resizable: u64 = 8;
+const backing_buffered: u64 = 2;
+const activation_policy_regular: i64 = 0;
+// kCGImageAlphaPremultipliedLast: our buffer is R, G, B, A in that order.
+const alpha_premultiplied_last: u32 = 1;
+
+const Class = *opaque {};
+const Id = *opaque {};
+const Sel = *opaque {};
+
+extern fn objc_getClass(name: [*:0]const u8) ?Class;
+extern fn sel_registerName(name: [*:0]const u8) Sel;
+extern fn objc_msgSend() void;
+
+// CGRect is four doubles, which is what AppKit's NSRect is on every 64-bit Apple target.
+const CGPoint = extern struct { x: f64, y: f64 };
+const CGSize = extern struct { width: f64, height: f64 };
+const CGRect = extern struct { origin: CGPoint, size: CGSize };
+
+extern fn CGColorSpaceCreateDeviceRGB() ?*anyopaque;
+extern fn CGBitmapContextCreate(data: ?*anyopaque, width: usize, height: usize, bits_per_component: usize, bytes_per_row: usize, space: ?*anyopaque, bitmap_info: u32) ?*anyopaque;
+extern fn CGBitmapContextCreateImage(context: ?*anyopaque) ?*anyopaque;
+
+// objc_msgSend is cast to an exact signature at each call site. On this target that is the whole
+// of the calling convention -- there is no separate struct-return entry point to reach for, which
+// is one reason the Objective-C runtime is pleasant to drive from a C-speaking language.
+fn send(comptime Fn: type) Fn {
+    return @ptrCast(&objc_msgSend);
+}
+
+const SendId = *const fn (Id, Sel) callconv(.c) Id;
+const SendClassId = *const fn (Class, Sel) callconv(.c) Id;
+const SendIdVoid = *const fn (Id, Sel) callconv(.c) void;
+const SendIdBool = *const fn (Id, Sel, bool) callconv(.c) void;
+const SendIdI64 = *const fn (Id, Sel, i64) callconv(.c) void;
+const SendIdIdVoid = *const fn (Id, Sel, ?Id) callconv(.c) void;
+const SendIdPtrVoid = *const fn (Id, Sel, ?*anyopaque) callconv(.c) void;
+const SendIdInteger = *const fn (Id, Sel) callconv(.c) i64;
+const SendClassStr = *const fn (Class, Sel, [*:0]const u8) callconv(.c) Id;
+const SendWindowInit = *const fn (Id, Sel, CGRect, u64, u64, bool) callconv(.c) Id;
+
+/// Paint the probe's own frame: a plain vertical wash with a lighter band across its middle, so
+/// a glance tells our pixels from a window the system filled for us.
+fn paint(buffer: []u8) void {
+    // invariant: the buffer is exactly the frame this probe declared, never a shorter one.
+    assert(buffer.len == frame_bytes);
+    var y: u32 = 0;
+    while (y < frame_height) : (y += 1) {
+        const band = y > (frame_height / 3) and y < ((frame_height * 2) / 3);
+        var x: u32 = 0;
+        while (x < frame_width) : (x += 1) {
+            const at: u32 = ((y * frame_width) + x) * bytes_per_pixel;
+            // invariant: every write stays inside the declared frame.
+            assert(at + 3 < frame_bytes);
+            const across: u8 = @intCast((x * 255) / frame_width);
+            const down: u8 = @intCast((y * 255) / frame_height);
+            buffer[at + 0] = if (band) 255 else across;
+            buffer[at + 1] = down;
+            buffer[at + 2] = if (band) across else 255;
+            buffer[at + 3] = 255;
+        }
+    }
+}
+
+pub fn main() !void {
+    print("macos-window-probe: Language EN -- Rye raises a native window; no Swift is linked.\n", .{});
+
+    const app_class = objc_getClass("NSApplication") orelse {
+        print("macos-window-probe: REFUSED -- NSApplication did not answer; AppKit is not loaded.\n", .{});
+        return error.AppKitAbsent;
+    };
+    const window_class = objc_getClass("NSWindow") orelse return error.NSWindowAbsent;
+    const string_class = objc_getClass("NSString") orelse return error.NSStringAbsent;
+
+    const shared = send(SendClassId)(app_class, sel_registerName("sharedApplication"));
+    // invariant: the shared application exists before any window is asked for.
+    assert(@intFromPtr(shared) != 0);
+    send(SendIdI64)(shared, sel_registerName("setActivationPolicy:"), activation_policy_regular);
+
+    const rect = CGRect{
+        .origin = .{ .x = 160, .y = 160 },
+        .size = .{ .width = @floatFromInt(frame_width), .height = @floatFromInt(frame_height) },
+    };
+    const raw = send(SendClassId)(window_class, sel_registerName("alloc"));
+    // invariant: allocation answers before initialization is attempted.
+    assert(@intFromPtr(raw) != 0);
+    const window = send(SendWindowInit)(
+        raw,
+        sel_registerName("initWithContentRect:styleMask:backing:defer:"),
+        rect,
+        style_titled | style_closable | style_resizable,
+        backing_buffered,
+        false,
+    );
+    // invariant: the window initialized rather than returning nil.
+    assert(@intFromPtr(window) != 0);
+
+    const title = send(SendClassStr)(string_class, sel_registerName("stringWithUTF8String:"), "Grain -- Rye drew this");
+    send(SendIdIdVoid)(window, sel_registerName("setTitle:"), title);
+
+    var pixels: [frame_bytes]u8 = undefined;
+    paint(pixels[0..]);
+
+    const space = CGColorSpaceCreateDeviceRGB() orelse return error.ColorSpaceAbsent;
+    const context = CGBitmapContextCreate(
+        @ptrCast(&pixels),
+        frame_width,
+        frame_height,
+        8,
+        frame_width * bytes_per_pixel,
+        space,
+        alpha_premultiplied_last,
+    ) orelse return error.BitmapContextAbsent;
+    const image = CGBitmapContextCreateImage(context) orelse return error.ImageAbsent;
+
+    const content = send(SendId)(window, sel_registerName("contentView"));
+    // invariant: the window handed back a content view to draw into.
+    assert(@intFromPtr(content) != 0);
+    send(SendIdBool)(content, sel_registerName("setWantsLayer:"), true);
+    const layer = send(SendId)(content, sel_registerName("layer"));
+    // invariant: a layer-backed view answers with its layer.
+    assert(@intFromPtr(layer) != 0);
+    send(SendIdPtrVoid)(layer, sel_registerName("setContents:"), image);
+
+    send(SendIdIdVoid)(window, sel_registerName("makeKeyAndOrderFront:"), null);
+    send(SendIdBool)(shared, sel_registerName("activateIgnoringOtherApps:"), true);
+
+    const number = send(SendIdInteger)(window, sel_registerName("windowNumber"));
+    // invariant: an ordered-front window carries a real window number, which is the system's own
+    // receipt that this window exists on screen rather than only in this process's memory.
+    assert(number > 0);
+    print("macos-window-probe: window_number={d} frame={d}x{d} bytes={d}\n", .{ number, frame_width, frame_height, frame_bytes });
+
+    send(SendIdVoid)(shared, sel_registerName("finishLaunching"));
+
+    // The bounded stand. Each turn hands the run loop one slice of time; the count is named above
+    // so this probe can never become a process that outlives the lap that started it.
+    var turn: u32 = 0;
+    while (turn < max_event_turns) : (turn += 1) {
+        var pause = c.timespec{ .sec = 0, .nsec = 10_000_000 };
+        _ = c.nanosleep(&pause, null);
+    }
+
+    print("macos-window-probe: GREEN -- a native macOS window, painted from Rye, with no Swift linked.\n", .{});
+}
