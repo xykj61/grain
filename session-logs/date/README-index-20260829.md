@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260829.114143` | [the frame the store remembers](20260829/20260829-114143_the-frame-the-store-remembers.kyri) | golden claim addressed ac80b306; pixels refused at the 512 resin ceiling; card made true |
 | `20260829.112903` | [the third metal invited](20260829/20260829-112903_the-third-metal-invited.kyri) | wayland_seed joins the contract: parity subcommand + hand-off claim; pier runs it |
 | `20260829.112105` | [the finger the ring admits](20260829/20260829-112105_the-finger-the-ring-admits.kyri) | a real tap crosses platform, domain event, and ring inside iOS |
 | `20260829.104233` | [a guard met a birth](20260829/20260829-104233_a-guard-met-a-birth.kyri) | reach gate one past both ceilings; the Mac bench paid its named debt |

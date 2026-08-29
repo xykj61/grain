@@ -1,0 +1,131 @@
+//! brushstroke/golden_frame.rye -- the golden CLAIM the store remembers, and the ceiling the
+//! golden pixels met, measured from both sides.
+//!
+//! Rung: LOCA -- the frame the store remembers (20260829.113603)
+//!
+//! Movement four's parked door opens at the store's own size. Tablecloth's artifact ceiling is
+//! one resin -- `max_content_bytes` = 512 bytes, seated beside recall's own bound -- and the
+//! reference surface is 811,008 raw bytes: the pixels outgrow the store 1,584 times over, and
+//! this program PROVES that refusal (`StreamTooLarge`) rather than working around it. What the
+//! store can hold today, whole and content-addressed, is the contract's own record: the GOLDEN
+//! CLAIM -- one line carrying the pinned lit count and Keccak digest -- stored as a Tablecloth
+//! artifact, its SHA3 address discovered then pinned here, deduplicated at the bead layer (a
+//! twin name over identical content deposits nothing), fetched back byte for byte, and guarded
+//! by the store's own wall: one flipped bead refuses with DigestMismatch before a byte is
+//! served. Multi-resin artifacts are the store's named next door; the golden pixels wait there.
+//!
+//! Run from the repository root:
+//!   rye run brushstroke/golden_frame.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const skate = @import("skate_grid.rye");
+const claims_mod = @import("surface_claims.rye");
+const reference = @import("surface_reference.rye");
+const qoi = @import("qoi.rye");
+const tablecloth = @import("tablecloth.rye");
+const beading = @import("mantra/beading.rye");
+const image_artifact = @import("image_artifact.rye");
+
+const claim_name = "golden/surface-claim.txt";
+const twin_name = "golden/surface-claim-twin.txt";
+const max_claim_line_bytes: u32 = 160;
+
+// The golden claim's own content address, discovered by this program's first run and pinned in
+// the same lap -- deterministic, since the claim line and the store's addressing both are.
+const pinned_address_hex = "ac80b3060f07658b4acb385e4721cf332715ac80197a0640dd9b20cb6a24c2da";
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    print("golden-frame: Language EN -- the claim the store remembers; the pixels' ceiling measured.\n", .{});
+
+    // The oracle first: the reference rasterizes to the pinned claims, or nothing here matters.
+    var grid = try skate.Grid.init(garden, reference.grid_cols, reference.grid_rows);
+    reference.compose(&grid);
+    const stride: u32 = reference.surface_width * reference.bytes_per_pixel;
+    const pixels = try garden.alloc(u8, reference.surface_bytes);
+    grid.rasterize(pixels, stride, @intCast(reference.surface_width), @intCast(reference.surface_height), reference.background, reference.foreground, reference.pixel_scale);
+    const claim = claims_mod.claims_for(pixels, stride, reference.surface_width, reference.surface_height, reference.background);
+    // invariant: the claim being immortalized is the pinned claim.
+    assert(reference.matches_pins(claim));
+
+    // The golden claim, serialized: one line a reader and a parser both hold whole.
+    var hex_buffer: [claims_mod.digest_length * 2]u8 = undefined;
+    var i: u32 = 0;
+    while (i < claims_mod.digest_length) : (i += 1) {
+        _ = std.fmt.bufPrint(hex_buffer[i * 2 .. i * 2 + 2], "{x:0>2}", .{claim.digest[i]}) catch unreachable;
+    }
+    var line_buffer: [max_claim_line_bytes]u8 = undefined;
+    const line = try std.fmt.bufPrint(line_buffer[0..], "surface-claim lit={d} digest={s}\n", .{ claim.lit, hex_buffer[0..] });
+    // invariant: the golden claim fits a resin with room to spare.
+    assert(line.len <= tablecloth.max_content_bytes);
+
+    // The refusing side of the PIXELS' door, proven rather than narrated: the full frame meets
+    // the store's one-resin ceiling and is refused by name.
+    {
+        var store_px: beading.BeadStore = .empty();
+        var cat_px: tablecloth.Catalog = .empty();
+        const pm = qoi.Pixmap{
+            .width = reference.surface_width,
+            .height = reference.surface_height,
+            .channels = 4,
+            .colorspace = 0,
+            .pixels = pixels,
+        };
+        if (image_artifact.store_image(garden, &cat_px, &store_px, "golden/surface-reference.qoi", &pm)) |_| {
+            @panic("golden frame: the full frame fit a resin, so this program's ceiling story is stale -- re-measure");
+        } else |e| {
+            // invariant: the refusal is the artifact road's own named ceiling.
+            assert(e == error.StreamTooLarge);
+        }
+        print("golden-frame: pixels refused honestly -- {d} raw bytes against the {d}-byte resin ceiling; multi-resin artifacts are the named door.\n", .{ reference.surface_bytes, tablecloth.max_content_bytes });
+    }
+
+    // The store: the claim beaded under its name, the twin proving bead-level dedup.
+    var store: beading.BeadStore = .empty();
+    var cat: tablecloth.Catalog = .empty();
+    const report = try tablecloth.store_artifact(&cat, &store, claim_name, line);
+    // invariant: a stored artifact holds at least one bead -- never an empty address.
+    assert(report.bead_count >= 1);
+    const twin = try tablecloth.store_artifact(&cat, &store, twin_name, line);
+    // invariant: identical content under a second name deposits no new bead.
+    assert(twin.beads_deposited == 0);
+
+    // The address, deterministic and pinned: the contract can cite it as it cites the digest.
+    var addr: [tablecloth.address_hex_width]u8 = undefined;
+    try tablecloth.address_hex(&cat, claim_name, addr[0..]);
+    if (std.mem.eql(u8, pinned_address_hex, "PIN_ME")) {
+        print("golden-frame: discover address = {s}\n", .{addr[0..]});
+        print("golden-frame: pin it into pinned_address_hex and run again; discovery is never left in place.\n", .{});
+        return 1;
+    }
+    // invariant: the golden claim's address is the pinned address, byte for byte.
+    assert(std.mem.eql(u8, addr[0..], pinned_address_hex));
+
+    // The round trip: fetch by name and prove byte fidelity.
+    var out: [tablecloth.max_content_bytes]u8 = undefined;
+    const got_len = try tablecloth.fetch_artifact(&cat, &store, claim_name, out[0..]);
+    // invariant: the store answers the very bytes it was handed.
+    assert(std.mem.eql(u8, out[0..got_len], line));
+
+    // The biting side of the store itself: one flipped bead byte refuses before a byte serves.
+    {
+        var store_t: beading.BeadStore = .empty();
+        var cat_t: tablecloth.Catalog = .empty();
+        _ = try tablecloth.store_artifact(&cat_t, &store_t, claim_name, line);
+        store_t.beads[0].bytes[0] +%= 1;
+        var out_t: [tablecloth.max_content_bytes]u8 = undefined;
+        if (tablecloth.fetch_artifact(&cat_t, &store_t, claim_name, out_t[0..])) |_| {
+            @panic("golden frame: a tampered bead was served, so the wall does not wall");
+        } else |e| {
+            // invariant: the refusal is the store's own named DigestMismatch, never another door.
+            assert(e == error.DigestMismatch);
+        }
+    }
+
+    print("golden-frame: address={s} beads={d} dedup=whole roundtrip=byte-identical tamper=refused\n", .{ addr[0..], report.bead_count });
+    print("golden-frame: GREEN -- the golden claim is addressed, deduplicated, fetched whole, and guarded; the pixels wait at a measured door.\n", .{});
+    return 0;
+}
