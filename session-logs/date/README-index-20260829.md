@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260829.010630` | [the bundle the finder opens](20260829/20260829-010630_the-bundle-the-finder-opens.kyri) | Movement seated in LEXICON; Grain.app opens the Finder's way, refuses without its plist |
 | `20260829.005700` | [the ring is a capacity](20260829/20260829-005700_the-ring-is-a-capacity.kyri) | quest retired as a plan label; movements seated; REDS %336 booked and repaired |
 | `20260829.004902` | [the input the ring admits](20260829/20260829-004902_the-input-the-ring-admits.kyri) | rung two GREEN: 4 of 4 events cross seam, ring, drain; Full wall bites at 134 |
 | `20260829.003741` | [the ring the refusals crossed](20260829/20260829-003741_the-ring-the-refusals-crossed.kyri) | Sound card refreshed; EventRing ported, five Swift cases GREEN in Rye |

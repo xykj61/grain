@@ -1,0 +1,66 @@
+# tools/m/macos_app_bundle_witness.rish -- the bundle the Finder opens, proven from both sides.
+#
+# LOCA movement three, first rung. An .app bundle is a directory with a plist and a Mach-O; this
+# witness builds the shell probe (a witness builds what it runs -- REDS %334), assembles the
+# bundle in a /tmp pen, and proves BOTH legs of the Finder door:
+#   RED   -- a copy stripped of Info.plist refuses to open: the plist is load-bearing, shown by
+#            taking it away rather than by saying so.
+#   GREEN -- the whole bundle opens through LaunchServices (the Finder's own road), the probe
+#            runs its bounded stand with no terminal at all, and its receipt reads mode=bundle
+#            with a real window number and a seated menu.
+# The bundle is unsigned and local, which macOS launches freely; signing and notarization stay
+# behind the custody gate.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/macos_app_bundle_witness.rish
+
+let pen = "/tmp/grain_app_shell_pen"
+let app = "/tmp/grain_app_shell_pen/Grain.app"
+let macos_dir = "/tmp/grain_app_shell_pen/Grain.app/Contents/MacOS"
+let plist = "/tmp/grain_app_shell_pen/Grain.app/Contents/Info.plist"
+let stripped = "/tmp/grain_app_shell_pen/Stripped.app"
+let receipt = "/tmp/grain_app_shell_receipt.txt"
+
+say "app-bundle: Language EN -- a directory with a plist and a Mach-O, opened the Finder's own way."
+
+# The witness builds the binary it runs.
+let build = run ["env" "RYE_ZIG=vendor/zig-toolchain/zig" "rye/bin/rye" "build" "tools/rye/macos_app_shell_probe.rye" "-femit-bin=tools/.build/macos_app_shell_probe" "-lobjc" "-framework" "Cocoa" "-framework" "CoreGraphics"]
+assert build.ok else "app-bundle: the shell probe must build"
+
+let wipe = run ["rm" "-rf" pen]
+assert wipe.ok else "app-bundle: pen wipe"
+let mk = run ["mkdir" "-p" macos_dir]
+assert mk.ok else "app-bundle: bundle skeleton mkdir"
+
+# The plist rides as a tracked fixture -- four keys LaunchServices needs, nothing
+# identity-bearing -- copied whole, so no quoting crosses the shell at all.
+let p1 = run ["cp" "tools/fixtures/m/grain_app_shell_info.plist" plist]
+assert p1.ok else "app-bundle: plist copy"
+
+let put = run ["cp" "tools/.build/macos_app_shell_probe" macos_dir]
+assert put.ok else "app-bundle: binary into the bundle"
+
+# RED -- strip the plist from a copy and the Finder door refuses. A refusal proven only in the
+# passing direction cannot be told from a bypass.
+let copy = run ["cp" "-R" app stripped]
+assert copy.ok else "app-bundle: stripped copy"
+let strip = run ["rm" "/tmp/grain_app_shell_pen/Stripped.app/Contents/Info.plist"]
+assert strip.ok else "app-bundle: plist strip"
+let refused = run ["open" "-W" stripped]
+assert (refused.ok == false) else "app-bundle: a bundle without its plist must refuse to open"
+say "app-bundle: RED leg bites -- without Info.plist, LaunchServices refuses the door."
+
+# GREEN -- wipe the receipt, open the whole bundle the Finder's way, wait, and read the truth
+# the probe wrote from inside a process that never had a terminal.
+let clear = run ["rm" "-f" receipt]
+assert clear.ok else "app-bundle: receipt wipe"
+let opened = run ["open" "-W" app]
+assert opened.ok else "app-bundle: the whole bundle must open through LaunchServices"
+let read = run ["cat" receipt]
+assert read.ok else "app-bundle: the probe left no receipt; the bundle run never reached its close"
+assert read.out contains "mode=bundle" else "app-bundle: the receipt must say it was born in a bundle"
+assert read.out contains "window=" else "app-bundle: the receipt must carry a window number"
+assert read.out contains "main_menu_items=1" else "app-bundle: the receipt must carry the seated menu"
+say "app-bundle: receipt from the Finder-born run -- ${read.out}"
+
+say "GREEN: app-bundle -- Grain.app opened the Finder's own way, refused without its plist, and the shell answered from inside."
