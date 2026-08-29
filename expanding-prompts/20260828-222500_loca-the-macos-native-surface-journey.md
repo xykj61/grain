@@ -118,3 +118,14 @@ enforces it.
 Quest one, rung one: register one Objective-C class from Rye at runtime, implement `drawRect:`
 as a Rye function, and prove the platform calls it. Bounded, one file, both sides proven --
 the same shape the two probes already hold.
+
+---
+
+**Erratum (`20260829.005357`, Keaton's word -- REDS %336):** this page spends **quest** -- and
+**journey**, in its title -- as subdivision labels, and the calendar those words belong to counts
+them as capacities: orbit 15, quest 75, journey 375, equinox 1,875, chapter 9,375 rounds
+([`../foundations/20260826-014901_the-panchanga.md`](../foundations/20260826-014901_the-panchanga.md)).
+Read every "quest" below the fold as a **movement**: LOCA is a ladder of five movements, each
+marked by stamp and name. The body above stays as written, testimony of the day it was made;
+the living surfaces swept the same round, and the mark law carries the ruling at
+[`../.claude/rules/stamp-and-name.md`](../.claude/rules/stamp-and-name.md).

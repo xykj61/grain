@@ -1,5 +1,5 @@
 //! tools/rye/skate_event_ring_witness.rye -- every refusal the Swift EventRing tests assert,
-//! asserted again in Rye against the same bounds (LOCA quest two, rung one).
+//! asserted again in Rye against the same bounds (LOCA movement two, first rung).
 //!
 //! Mirrors skate/Tests/SkateCoreTests/EventRingTests.swift case for case: fill-then-refuse
 //! without eviction, physical wrap keeping linear FIFO order, the counter refusing before
