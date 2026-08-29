@@ -1,0 +1,47 @@
+//! brushstroke/skate_input_event.rye -- the seated domain event a shell feeds the event ring.
+//!
+//! Rung: LOCA -- the input the ring admits (20260829.004209)
+//!
+//! The ring deliberately owns no vocabulary: its own head says a shell must seat and prove its
+//! fixed domain event type separately before offering untrusted platform input. This module is
+//! that seat for the macOS backend -- one flat value, four kinds, bounded storage, no pointers,
+//! so the ring's structural bound is the whole allocation story. A platform callback translates
+//! an NSEvent into this type at the seam and admits it; nothing platform-shaped crosses the
+//! ring.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+// The four doors this backend admits today. IME, dead keys, scroll, and motion are their own
+// later rungs; a kind is added by widening this enum and the witness together.
+pub const InputKind = enum(u8) { key_down = 1, key_up = 2, mouse_down = 3, mouse_up = 4 };
+
+/// One admitted input: the kind, the platform's own code (keyCode for keys, button number for
+/// mouse), and the location in window points (zero for keys, which carry no location).
+pub const InputEvent = struct {
+    kind: InputKind,
+    code: u16,
+    x_points: i32,
+    y_points: i32,
+};
+
+/// Build one event, asserting the parts before they become a value the ring will hold.
+pub fn make(kind: InputKind, code: u16, x_points: i32, y_points: i32) InputEvent {
+    // invariant: the kind is one of the seated doors.
+    assert(@intFromEnum(kind) >= 1);
+    assert(@intFromEnum(kind) <= 4);
+    return .{ .kind = kind, .code = code, .x_points = x_points, .y_points = y_points };
+}
+
+/// One event equals another when every field agrees -- the comparator seated beside the type,
+/// so probes compare by meaning rather than by memory.
+pub fn same(a: InputEvent, b: InputEvent) bool {
+    // invariant: both values carry seated kinds before they are compared.
+    assert(@intFromEnum(a.kind) >= 1);
+    assert(@intFromEnum(b.kind) >= 1);
+    if (a.kind != b.kind) return false;
+    if (a.code != b.code) return false;
+    if (a.x_points != b.x_points) return false;
+    return a.y_points == b.y_points;
+}

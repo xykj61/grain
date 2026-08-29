@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260829.004902` | [the input the ring admits](20260829/20260829-004902_the-input-the-ring-admits.kyri) | rung two GREEN: 4 of 4 events cross seam, ring, drain; Full wall bites at 134 |
 | `20260829.003741` | [the ring the refusals crossed](20260829/20260829-003741_the-ring-the-refusals-crossed.kyri) | Sound card refreshed; EventRing ported, five Swift cases GREEN in Rye |
 | `20260829.002846` | [the grid that follows the window](20260829/20260829-002846_the-grid-that-follows-the-window.kyri) | rung two GREEN at scale 200: 96x30 -> 140x40 cells; quest one closes |
 | `20260829.002129` | [the seed ships both doors](20260829/20260829-002129_the-seed-ships-both-doors.kyri) | scrub proven IDENT_CLEAN + NO_PERSONAL; forced to grain-os and grain-ww as 8328a62 |
