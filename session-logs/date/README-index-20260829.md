@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260829.011429` | [the lifecycle the delegate steers](20260829/20260829-011429_the-lifecycle-the-delegate-steers.kyri) | movement three closes: run owns the loop, the refusal honored, exit 0 |
 | `20260829.010630` | [the bundle the finder opens](20260829/20260829-010630_the-bundle-the-finder-opens.kyri) | Movement seated in LEXICON; Grain.app opens the Finder's way, refuses without its plist |
 | `20260829.005700` | [the ring is a capacity](20260829/20260829-005700_the-ring-is-a-capacity.kyri) | quest retired as a plan label; movements seated; REDS %336 booked and repaired |
 | `20260829.004902` | [the input the ring admits](20260829/20260829-004902_the-input-the-ring-admits.kyri) | rung two GREEN: 4 of 4 events cross seam, ring, drain; Full wall bites at 134 |

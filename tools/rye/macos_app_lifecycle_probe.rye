@@ -1,0 +1,223 @@
+//! tools/rye/macos_app_lifecycle_probe.rye -- the lifecycle a real app has: NSApp run, a Rye
+//! delegate, and a termination the delegate refuses once before allowing.
+//!
+//! Rung: LOCA -- the lifecycle the delegate steers (20260829.011500)
+//!
+//! WHY THIS PROBE EXISTS. The earlier rungs pumped the event queue by hand; a real application
+//! hands its life to the platform -- NSApp run owns the loop, and the application speaks
+//! through its DELEGATE. This rung registers GrainRyeDelegate at runtime with three Rye
+//! methods -- applicationDidFinishLaunching:, applicationShouldTerminate:, and
+//! applicationWillTerminate: -- seats it with setDelegate:, schedules two terminate: calls on
+//! the platform's own timer, and enters run. The first termination is REFUSED by the delegate
+//! (NSTerminateCancel) and the platform honors the refusal -- the loop keeps running, which the
+//! second, allowed termination then proves by arriving at all. The last breath is
+//! applicationWillTerminate:, where the probe asserts the whole order, writes its receipt, and
+//! prints GREEN before the platform ends the process.
+//!
+//! WHAT IT PROVES, on metal: run + delegate is reachable from Rye like every other surface;
+//! the delegate's ANSWER steers the platform (a canceled termination leaves the process alive;
+//! an allowed one ends it with exit 0); and the lifecycle arrives in the platform's own order
+//! -- launch, the refusal, the allowance, the will-terminate last breath.
+//!
+//! WHAT IT DOES NOT PROVE, and one honest asymmetry. Delegate methods come from a PROTOCOL, so
+//! the superclass holds no compiled record to verify their encodings against -- the declared
+//! shapes are written from the protocol's C types, and the post-registration read-back proves
+//! storage only (the %335 lesson names this exact limit). Nothing here about windows restored,
+//! sudden termination, or App Nap; and signing stays behind the custody gate.
+//!
+//! BOTH SIDES. The termination gate is proven from both sides IN ONE RUN -- the refusal
+//! honored, then the allowance honored -- and the seam keeps its own gate: PROBE_PROVE_RED
+//! declares a signature the framework does not have and dies at exit 134.
+//!
+//! Build and run:
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build tools/rye/macos_app_lifecycle_probe.rye \
+//!     -femit-bin=tools/.build/macos_app_lifecycle_probe -lobjc -framework Cocoa -framework CoreGraphics
+//!   tools/.build/macos_app_lifecycle_probe && cat /tmp/grain_app_lifecycle_receipt.txt
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const c = std.c;
+
+const objc = @import("objc_seam.rye");
+
+const view_w_points: u32 = 384;
+const view_h_points: u32 = 200;
+
+// The two scheduled terminations, on the platform's own timer: the first is refused by the
+// delegate, the second allowed. Seconds, not turns, because run owns the loop now.
+const refuse_at_seconds: f64 = 0.5;
+const allow_at_seconds: f64 = 1.1;
+
+const receipt_path = "/tmp/grain_app_lifecycle_receipt.txt";
+const max_receipt_bytes: u32 = 256;
+
+const style_titled: u64 = 1;
+const style_closable: u64 = 2;
+const backing_buffered: u64 = 2;
+const activation_policy_regular: i64 = 0;
+// NSApplicationTerminateReply: the delegate's two answers this probe speaks.
+const terminate_cancel: u64 = 0;
+const terminate_now: u64 = 1;
+
+const delegate_class_name = "GrainRyeDelegate";
+const note_arg_types = "v@:@";
+const should_terminate_types = "Q@:@";
+
+const SendVoid = *const fn (objc.Id, objc.Sel) callconv(.c) void;
+const SendBool = *const fn (objc.Id, objc.Sel, bool) callconv(.c) void;
+const SendIdArg = *const fn (objc.Id, objc.Sel, ?objc.Id) callconv(.c) void;
+const SendRectInit = *const fn (objc.Id, objc.Sel, objc.CGRect) callconv(.c) ?objc.Id;
+const SendPerformAfter = *const fn (objc.Id, objc.Sel, objc.Sel, ?objc.Id, f64) callconv(.c) void;
+
+// The lifecycle's own record, in named globals the callbacks fill on the platform's thread:
+// a monotone step counter, and the step at which each station arrived.
+var step: u32 = 0;
+var finish_step: u32 = 0;
+var cancel_step: u32 = 0;
+var allow_step: u32 = 0;
+var window_number: i64 = 0;
+var g_io: std.Io = undefined;
+
+/// The launch station: the platform says the app is up, exactly once, before any termination.
+fn did_finish_launching(self: objc.Id, sel: objc.Sel, note: objc.Id) callconv(.c) void {
+    _ = sel;
+    _ = note;
+    // invariant: the platform hands the delegate it was given.
+    assert(@intFromPtr(self) != 0);
+    // invariant: launch arrives once.
+    assert(finish_step == 0);
+    step += 1;
+    finish_step = step;
+    print("macos-app-lifecycle: applicationDidFinishLaunching -- step {d}\n", .{step});
+}
+
+/// The termination gate: the delegate refuses the first ask and allows the second, so both
+/// sides of the platform's own gate are proven in one run.
+fn should_terminate(self: objc.Id, sel: objc.Sel, sender: objc.Id) callconv(.c) u64 {
+    _ = sel;
+    _ = sender;
+    // invariant: the platform hands the delegate it was given.
+    assert(@intFromPtr(self) != 0);
+    // invariant: launch precedes any termination ask.
+    assert(finish_step > 0);
+    step += 1;
+    if (cancel_step == 0) {
+        cancel_step = step;
+        print("macos-app-lifecycle: applicationShouldTerminate -- step {d}, REFUSED (cancel)\n", .{step});
+        return terminate_cancel;
+    }
+    allow_step = step;
+    print("macos-app-lifecycle: applicationShouldTerminate -- step {d}, allowed\n", .{step});
+    return terminate_now;
+}
+
+/// The last breath: assert the whole order, leave the receipt, and say GREEN before the
+/// platform ends the process -- there is no code after run.
+fn will_terminate(self: objc.Id, sel: objc.Sel, note: objc.Id) callconv(.c) void {
+    _ = sel;
+    _ = note;
+    // invariant: the platform hands the delegate it was given.
+    assert(@intFromPtr(self) != 0);
+    step += 1;
+    // invariant: the stations arrived in the platform's own order -- launch, the refusal, the
+    // allowance, and this last breath after all three.
+    assert(finish_step == 1);
+    assert(cancel_step > finish_step);
+    assert(allow_step > cancel_step);
+    assert(step > allow_step);
+    // invariant: the refused termination left the process alive to reach the allowed one.
+    assert(window_number > 0);
+
+    var buffer: [max_receipt_bytes]u8 = undefined;
+    const receipt = std.fmt.bufPrint(buffer[0..], "lifecycle=finish@{d},cancel@{d},allow@{d},last@{d} window={d}\n", .{ finish_step, cancel_step, allow_step, step, window_number }) catch {
+        @panic("app lifecycle: the receipt outgrew its named bound");
+    };
+    std.Io.Dir.cwd().writeFile(g_io, .{ .sub_path = receipt_path, .data = receipt }) catch {
+        @panic("app lifecycle: the receipt could not be written");
+    };
+    print("macos-app-lifecycle: GREEN -- run owned the loop, the delegate steered it, and the refusal was honored; no Swift linked.\n", .{});
+}
+
+pub fn main(init: std.process.Init) !void {
+    g_io = init.io;
+    print("macos-app-lifecycle: Language EN -- NSApp run, a Rye delegate, and a termination refused once.\n", .{});
+
+    const prove_red = c.getenv("PROBE_PROVE_RED") != null;
+
+    const app_class = objc.objc_getClass("NSApplication") orelse return error.AppKitAbsent;
+    const window_class = objc.objc_getClass("NSWindow") orelse return error.NSWindowAbsent;
+    const string_class = objc.objc_getClass("NSString") orelse return error.NSStringAbsent;
+    const object_class = objc.objc_getClass("NSObject") orelse return error.NSObjectAbsent;
+
+    if (prove_red) {
+        print("macos-app-lifecycle: prove-red -- declaring a signature the framework does not have.\n", .{});
+        _ = objc.verify(app_class, "sharedApplication", "v@:", true);
+        @panic("objc seam: prove-red reached the send, which means the gate does not gate");
+    }
+
+    // Every framework selector proven against the loaded runtime before a single message.
+    const sel_shared = objc.verify(app_class, "sharedApplication", "@@:", true);
+    const sel_policy = objc.verify(app_class, "setActivationPolicy:", "B@:q", false);
+    const sel_activate = objc.verify(app_class, "activateIgnoringOtherApps:", "v@:B", false);
+    const sel_set_delegate = objc.verify(app_class, "setDelegate:", "v@:@", false);
+    const sel_run = objc.verify(app_class, "run", "v@:", false);
+    const sel_perform_after = objc.verify(app_class, "performSelector:withObject:afterDelay:", "v@::@d", false);
+    const sel_alloc = objc.verify(window_class, "alloc", "@@:", true);
+    const sel_init = objc.verify(window_class, "initWithContentRect:styleMask:backing:defer:", "@@:{CGRect={CGPoint=dd}{CGSize=dd}}QQB", false);
+    const sel_title = objc.verify(window_class, "setTitle:", "v@:@", false);
+    const sel_front = objc.verify(window_class, "makeKeyAndOrderFront:", "v@:@", false);
+    const sel_number = objc.verify(window_class, "windowNumber", "q@:", false);
+    const sel_utf8 = objc.verify(string_class, "stringWithUTF8String:", "@@:r*", true);
+    const sel_object_init = objc.verify(object_class, "init", "@@:", false);
+    print("macos-app-lifecycle: seam verified -- 13 framework selectors match the loaded encodings.\n", .{});
+
+    // The delegate class: three Rye methods from the NSApplicationDelegate protocol. A protocol
+    // leaves no compiled record on the superclass, so these encodings are declared from the
+    // protocol's C types and the read-back below proves storage only -- the honest asymmetry
+    // the header names.
+    const terminate_sel = objc.sel_registerName("terminate:");
+    const my_class = objc.allocate_class(object_class, delegate_class_name);
+    _ = objc.add_method(my_class, "applicationDidFinishLaunching:", objc.imp(&did_finish_launching), note_arg_types);
+    _ = objc.add_method(my_class, "applicationShouldTerminate:", objc.imp(&should_terminate), should_terminate_types);
+    _ = objc.add_method(my_class, "applicationWillTerminate:", objc.imp(&will_terminate), note_arg_types);
+    objc.objc_registerClassPair(my_class);
+    _ = objc.verify(my_class, "applicationDidFinishLaunching:", note_arg_types, false);
+    _ = objc.verify(my_class, "applicationShouldTerminate:", should_terminate_types, false);
+    _ = objc.verify(my_class, "applicationWillTerminate:", note_arg_types, false);
+    const sel_delegate_alloc = objc.verify(my_class, "alloc", "@@:", true);
+    print("macos-app-lifecycle: class {s} registered -- three protocol methods, read back stored.\n", .{delegate_class_name});
+
+    const shared = objc.send(objc.SendClassId)(app_class, sel_shared) orelse return error.SharedApplicationAbsent;
+    _ = objc.send(objc.SendIdI64)(shared, sel_policy, activation_policy_regular);
+
+    const raw_delegate = objc.send(objc.SendClassId)(my_class, sel_delegate_alloc) orelse return error.DelegateAllocAbsent;
+    const delegate = objc.send(objc.SendId)(raw_delegate, sel_object_init) orelse return error.DelegateInitAbsent;
+    objc.send(SendIdArg)(shared, sel_set_delegate, delegate);
+
+    const frame = objc.CGRect{
+        .origin = .{ .x = 260, .y = 260 },
+        .size = .{ .width = @floatFromInt(view_w_points), .height = @floatFromInt(view_h_points) },
+    };
+    const raw_window = objc.send(objc.SendClassId)(window_class, sel_alloc) orelse return error.WindowAllocAbsent;
+    const window = objc.send(objc.SendWindowInit)(raw_window, sel_init, frame, style_titled | style_closable, backing_buffered, false) orelse return error.WindowInitAbsent;
+    const title = objc.send(objc.SendClassStr)(string_class, sel_utf8, "Grain -- the delegate steers") orelse return error.TitleAbsent;
+    objc.send(SendIdArg)(window, sel_title, title);
+    objc.send(SendIdArg)(window, sel_front, null);
+    objc.send(SendBool)(shared, sel_activate, true);
+    window_number = objc.send(objc.SendIdInteger)(window, sel_number);
+    // invariant: an ordered-front window carries a real window number.
+    assert(window_number > 0);
+
+    // Two terminations on the platform's own timer, scheduled before run so the loop owns
+    // everything that follows: the first the delegate refuses, the second it allows.
+    objc.send(SendPerformAfter)(shared, sel_perform_after, terminate_sel, null, refuse_at_seconds);
+    objc.send(SendPerformAfter)(shared, sel_perform_after, terminate_sel, null, allow_at_seconds);
+
+    // invariant: no station has fired before the loop exists to fire it.
+    assert(step == 0);
+    objc.send(SendVoid)(shared, sel_run);
+    // run returns only if termination was refused and never re-asked; the allowed path exits
+    // the process inside will_terminate, so reaching here is itself a failure.
+    @panic("app lifecycle: run returned, which means the allowed termination never arrived");
+}
