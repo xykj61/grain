@@ -22,6 +22,23 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ---
 
+## `20260828.234152` -- the word-molt deep debride of six MANY HANDS commit messages (walk-back `0a393a469`)
+
+**Walk-back nib:** `0a393a469` -- the LOCA rung landing, HEAD before this debride's own commits. The
+six messages being rewritten stand under it at their pre-rewrite hashes: `46f69d56b` (the worktree
+room), `4acf23731`, `dd4991dbf`, `7996f650c`, `4edaa11d9`, `efdcab409`.
+
+**Swept:** commit messages only -- the spawned-agent sense of *child* molts to *dependent* in those
+six messages, `git filter-branch --commit-filter` over `46f69d56b~1..HEAD`, every rewritten commit
+re-signed, every tree byte-identical. On Keaton's word (`20260828`, a molt breach deep debride of
+*child* for *dependent*, the vocabulary seated in the same round at
+[`../.claude/rules/vocabulary-dependent.md`](../.claude/rules/vocabulary-dependent.md)).
+
+**What waits there, worth recalling:** the departing messages read in their day's own voice --
+"the worktree room is the child's, not the tree's", "the children hit the wall" -- and the elder
+Caravan molt commit `e0034bdca` (outside this window, kept unrewritten) holds *child* in its
+subject as the honest record of the first molt.
+
 ## `20260827.172118` -- debrided force-matched to xy (walk-back `6420adc891`, preserved as a branch)
 
 **Walk-back nib:** `6420adc891` -- **preserved rather than merely named.** The mirror remote `debrided`

@@ -134,8 +134,8 @@
 
 # Claude Code grows this file when you approve shell commands in Zed; machine-local.
 /.claude/settings.local.json
-# A MANY HANDS child works in its own git worktree under here (granted 20260828). The room is
-# the child's checkout, never tree content, and an unignored worktree room is one `git add -A`
+# A MANY HANDS dependent works in its own git worktree under here (granted 20260828). The room is
+# the dependent's checkout, never tree content, and an unignored worktree room is one `git add -A`
 # from committing a whole second copy of the tree.
 /.claude/worktrees/
 

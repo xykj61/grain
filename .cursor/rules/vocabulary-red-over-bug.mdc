@@ -1,0 +1,24 @@
+---
+description: Choose red or error over bug in living prose — attach when naming something wrong in code or ledger
+alwaysApply: false
+---
+
+# Red and Error over Bug
+
+**Canonical:** `context/GAUGE_STYLE.md` -- the *Words to reach for* table already reads "a red, an error, a fault | a bug, a gremlin, a glitch"; chosen as a standing rule `20260828.233241` on Keaton's word.
+
+In living prose, rules, commit messages, and session logs, choose **red** or **error** over **bug**:
+
+| Form | Meaning |
+|------|---------|
+| **red** | something wrong -- it books the allocation and enters the ledger (`reds-first`) |
+| **error** | a code-level fault -- Rye's own named errors are errors |
+| **fault** | the neutral engineering word where neither register fits |
+
+## What this does not retire
+
+- **debug / debugging / debugger** are different words and stay.
+- **Teacher quotes, vendored text, dated testimony, and commit history** keep their words.
+- The REDS ledger already speaks this way -- the rule makes the wider habit match it.
+
+Canonical Claude twin: `.claude/rules/vocabulary-red-over-bug.md`.

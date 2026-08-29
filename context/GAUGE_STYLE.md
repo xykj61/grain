@@ -513,6 +513,8 @@ than a wall -- any of these earns its place where it is genuinely the exact word
 | has room to come down, is on its way | too high, over target, unacceptable |
 | still to be written, arriving later | missing, absent, lacking, incomplete, nonexistent |
 | a red, an error, a fault | a bug, a gremlin, a glitch |
+| a dependent, a supervised process | a child process, worker children |
+| a first resident, eating our own cooking | dogfooding |
 | this teaches, this shows | this proves you wrong, this refutes |
 | takes care, wants attention | hard, tricky, painful, a nightmare, a headache |
 | an open question, a live choice | a problem, an issue, a blocker |

@@ -17,7 +17,7 @@ A benediction in Kyri's voice: present-tense, generous, concrete to the piece it
 
 ## Where it does not
 
-- **Ordinary and technical pieces** end plainly — a bug fix, a small witness, a terse status. Radiant Style's own guidance holds: spend the benediction only where earned; an unearned wish cheapens the earned ones (`active-designing/20260715-163000_radiant-style-self-critique-benediction-vocabulary-ornament.md`).
+- **Ordinary and technical pieces** end plainly — a red's repair, a small witness, a terse status. Radiant Style's own guidance holds: spend the benediction only where earned; an unearned wish cheapens the earned ones (`active-designing/20260715-163000_radiant-style-self-critique-benediction-vocabulary-ornament.md`).
 - **Session logs** keep their Bron/Kyri fields; the `recommend` line is not a wish.
 - **Commit subjects**, code comments, and machine-read fields stay literal.
 

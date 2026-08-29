@@ -371,6 +371,8 @@ return buf[start .. start + @as(usize, @intCast(n))];
 - Name constants in `snake_case` with units and qualifiers last when helpful: `max_depth`, `digest_hex_len`.
 - Early seeds may still carry `camelCase` from before this rule landed; migrate names opportunistically when you touch a file -- rather than renaming silently across the tree in one sweep.
 
+**Seated word choices** (`20260828.233241` on Keaton's word) reach into identifiers and code-adjacent prose alike: **dependent** over *child* for a supervised or spawned thing -- Caravan molted its whole ladder to `max_dependents` and `DependentSlot` on `20260819`, and new code is born speaking it, with `std.process.Child` keeping Zig's name at the inherited seam; **red** or **error** over *bug*, since a named error is an error and a wrong thing in the ledger is a red; and **first resident** over the banned *dogfooding*. Rules: `.claude/rules/vocabulary-dependent.md` - `vocabulary-red-over-bug.md` - `vocabulary-first-resident.md`.
+
 **Types and receivers.** A function that returns a `type` carries a `CamelCase` name ending in `Type` -- `StackType`, `BitSetType` -- so the reader sees a type constructor at a glance. When a method aliases its own type, give the alias the **real type name**, `const Stack = @This();`, rather than the bare `Self`. For the receiver itself, name it after the type in non-generic structs -- `file: SourceFile`, `counter: *IdentifierCounter` -- which reads more clearly than a generic `self`; the plain `self` stays welcome inside generic wrappers where the type name is a parameter.
 
 For everything else, follow the Zig style guide as filtered through **996** (line length, braces, `zig fmt`, and the rest).
