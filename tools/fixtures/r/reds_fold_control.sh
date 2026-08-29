@@ -38,6 +38,10 @@ build_pen() {
     echo ''
     echo '**REDS %4 (`20260101.000003`) -- a closed row naming a bare path `../tools/l/b.rish` in prose.** *Repaired:* the words stand.'
     echo ''
+    echo '**REDS %5 (`20260101.000004`) -- a booked row whose prose still says the seat is OPEN for a word.** *Repaired:* instances fixed. **BOOKED (`20260101.000004`)** -- the remainder is a seat.'
+    echo ''
+    echo '**REDS %6 (`20260101.000005`) -- a row marked open in bold.** *Surfaced:* it waits. **OPEN, gated** -- the word is pending.'
+    echo ''
   } > "$pen/t/construction/REDS.md"
   {
     echo '# REDS -- a planted shelf (rows %1, %2)'
@@ -91,6 +95,19 @@ build_pen
 out=$(run_fold construction/archive/REDS-planted-rows-1-2.md 9) && rc=0 || rc=$?
 [ "$rc" -ne 0 ] && ok "an absent row refuses" || bad "an absent row refuses"
 case "$out" in *row_absent*) ok "the absent-row refusal names itself" ;; *) bad "the absent-row refusal names itself" ;; esac
+
+# --- door B: the marker decides, both directions ---
+build_pen
+out=$(run_fold construction/archive/REDS-planted-rows-1-2.md 5) && rc=0 || rc=$?
+[ "$rc" -eq 0 ] && ok "a BOOKED row folds though its prose carries the bare word OPEN" \
+  || bad "a BOOKED row folds though its prose carries the bare word OPEN ($out)"
+grep -q 'REDS %5 ' "$pen/t/construction/REDS.md" && bad "the folded BOOKED row leaves the pin" \
+  || ok "the folded BOOKED row leaves the pin"
+
+build_pen
+out=$(run_fold construction/archive/REDS-planted-rows-1-2.md 6) && rc=0 || rc=$?
+[ "$rc" -ne 0 ] && ok "a row marked OPEN in bold refuses" || bad "a row marked OPEN in bold refuses"
+case "$out" in *row_open*) ok "the bold-OPEN refusal names itself" ;; *) bad "the bold-OPEN refusal names itself ($out)" ;; esac
 
 build_pen
 mkdir -p "$pen/t/construction/archive"

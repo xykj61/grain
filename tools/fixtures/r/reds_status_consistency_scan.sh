@@ -79,15 +79,21 @@ awk -v window=60 '
 # gated**, **OPEN as five booked folds**, **CLOSED**, **CLOSED.**, and a whole sentence in bold.
 # Reading only the exact forms saw four of eleven open rows on 20260828, which is a status meter
 # lying quietly, and the looser bare-word test in reds_fold.sh was the more correct of the two.
-function last_marker(s,   pos, rest, hit, len, found) {
+function last_marker(s,   pos, rest, hit, len, found, word) {
+  # BOOKED joined OPEN and CLOSED with door B (20260829): the defect stands repaired and the
+  # remainder is a ratchet, a seat, or a booked lap -- neither open nor closed, and lawful for
+  # reds_fold.sh to fold.
   found = "unmarked"
   pos = 1
   while (1) {
     rest = substr(s, pos)
-    if (!match(rest, /\*\*(OPEN|CLOSED)[^*]*\*\*/)) break
+    if (!match(rest, /\*\*(OPEN|CLOSED|BOOKED)[^*]*\*\*/)) break
     hit = pos + RSTART - 1
     len = RLENGTH
-    found = (substr(s, hit + 2, 4) == "OPEN") ? "open" : "closed"
+    word = substr(s, hit + 2, 4)
+    if (word == "OPEN") found = "open"
+    else if (word == "BOOK") found = "booked"
+    else found = "closed"
     pos = hit + len
   }
   return found
@@ -157,18 +163,20 @@ END {
     n = order[i]
     if (rowstatus[n] == "open")   { opens++; print "detail: open_row %" n }
     if (rowstatus[n] == "closed") { closeds++ }
-    # The same test reds_fold.sh applies: the whole uppercase word, so prose about an opening
-    # never trips it. A row this reading does not call open, carrying that word, is a row the next
-    # fold would refuse.
-    if (rowstatus[n] != "open" && (n in bareopen)) {
+    if (rowstatus[n] == "booked") { bookeds++ }
+    # Since door B the fold tool reads the marker first, so a marked row carrying the bare word
+    # OPEN in its prose folds fine; only a MARKERLESS row with that word would still be refused
+    # at row_open, and that is the reading kept here.
+    if (rowstatus[n] == "unmarked" && (n in bareopen)) {
       foldblocked++
-      print "detail: fold_blocked %" n " -- reads " rowstatus[n] " here, and carries the bare word OPEN that reds_fold.sh refuses"
+      print "detail: fold_blocked %" n " -- carries the bare word OPEN with no marker, which reds_fold.sh refuses"
     }
   }
   print "spine_rows=" rows + 0
   print "highest_row=" maxrow + 0
   print "open_rows=" opens
   print "closed_rows=" closeds
+  print "booked_rows=" bookeds + 0
   print "closure_claims=" claims + 0
   print "duplicate_row_lines=" duplicate_lines + 0
   print "fold_blocked_rows=" foldblocked
