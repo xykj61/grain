@@ -40,6 +40,12 @@ assert control.out contains "symlink_skipped=yes" else "ascii-comment: a symlink
 assert control.out contains "symlink_target_kept=yes" else "ascii-comment: skipping a link must drop the duplicate rather than the file -- the target still counts on its own row"
 assert control.out contains "total_is_four=yes" else "ascii-comment: four planted prose files carry one character each, and nothing else may be counted"
 
+# The Rye ceiling, from both sides -- the reading this half lacked while its shell sibling kept it.
+# A refusal proven only in the passing direction cannot be told from a bypass.
+assert control.out contains "clean_pen_under_ceiling=yes" else "ascii-comment: a clean Rye pen must read under the ceiling"
+assert control.out contains "over_ceiling_refuses=yes" else "ascii-comment: one character past the Rye ceiling must refuse, or the ceiling is decoration"
+assert control.out contains "removed_returns_green=yes" else "ascii-comment: removing the plant must return the Rye reading to green, or the refusal is a latch"
+
 let living = run ["sh" "tools/fixtures/r/rye_comment_ascii_scan.sh"]
 assert living.ok else "ascii-comment: the living Rye scan must complete"
 say living.out
@@ -73,6 +79,13 @@ assert shell_control.out contains "trailing_counted=no" else "ascii-comment: a t
 assert shell_control.out contains "vendor_excluded=yes" else "ascii-comment: vendored sources are not ours to convert"
 assert shell_control.out contains "total_is_seven=yes" else "ascii-comment: seven planted prose files carry one character each, and nothing else may be counted"
 
+# The symlink skip, planted in the language where the fault has NOT yet fired. REDS %340 reached
+# this scan's own `[ -L "$f" ] && continue` line and stopped short of its control, so the shell half
+# stood unproven -- and a repair proven only where it has already bitten is a repair waiting to slip
+# somewhere else. With the skip deleted on a copy, this control reads eight files where seven exist.
+assert shell_control.out contains "symlink_skipped=yes" else "ascii-comment: a symlink must not be counted a second time in Rishi and shell either -- one set of bytes counts once"
+assert shell_control.out contains "symlink_target_kept=yes" else "ascii-comment: skipping a link must drop the duplicate rather than the file -- the target still counts on its own row"
+
 # The ceiling, from both sides. A refusal proven only in the passing direction cannot be told from a bypass.
 assert shell_control.out contains "clean_pen_under_ceiling=yes" else "ascii-comment: a clean pen must read under the ceiling"
 assert shell_control.out contains "over_ceiling_refuses=yes" else "ascii-comment: one character past the ceiling must refuse, or the ceiling is decoration"
@@ -83,4 +96,4 @@ assert shell_living.ok else "ascii-comment: the living shell scan must complete"
 say shell_living.out
 assert shell_living.out contains "under_ceiling=yes" else "ascii-comment: non-ASCII in Rishi and shell comments rose above the ceiling -- convert on touch rather than raising it"
 
-say "GREEN: ascii-comment -- authored comments in all three of this tree's languages stand under ceilings that only fall, each printed above as its scan's own output rather than recited here, with twenty-two readings proven on planted repositories, the shell ceiling proven from both sides, and the symlink skip proven from both sides. Each meter counts comments and refuses to count program content, which is the one distinction that makes a sweep safe rather than a rewrite of what programs print."
+say "GREEN: ascii-comment -- authored comments in all three of this tree's languages stand under ceilings that only fall, each printed above as its scan's own output rather than recited here, with twenty-four readings proven on planted repositories, both ceilings proven from both sides, and the symlink skip planted in both languages. Each meter counts comments and refuses to count program content, which is the one distinction that makes a sweep safe rather than a rewrite of what programs print."
