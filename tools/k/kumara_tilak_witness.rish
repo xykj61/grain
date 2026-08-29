@@ -5,8 +5,14 @@
 # tally/kumara.rye (Ed25519 at the seam); this witness drives the built module and
 # checks both the proof and the Bron facts it emits.
 #
-# Build first:  rye build kumara/tilak.rye -femit-bin=kumara/bin/tilak
 #   rishi/bin/rishi run tools/k/kumara_tilak_witness.rish
+
+# Build the binary this witness runs. kumara/bin is gitignored, so a passing
+# checkout must never depend on a binary left by an earlier lap.
+let build_dir = run ["mkdir" "-p" "kumara/bin"]
+assert build_dir.ok else "kumara tilak witness must create its build directory"
+let build = run ["env" "RYE_ZIG=vendor/zig-toolchain/zig" "rye/bin/rye" "build" "kumara/tilak.rye" "-femit-bin=kumara/bin/tilak"]
+assert build.ok else "kumara tilak witness must build the binary it runs -- ${build.err}"
 
 # The module's own selftest -- every tilak verifies, every tamper refuses.
 # Diagnostics print to stderr; the Bron facts of `emit` go to stdout.
@@ -15,6 +21,7 @@ assert st.ok else "kumara tilak selftest must exit 0"
 assert (st.err contains "GREEN") else "selftest must report GREEN"
 assert (st.err contains "five tilaks") else "the selftest must exercise all five tilaks"
 assert (st.err contains "every tamper refuses") else "every tampered tilak must be refused"
+assert (st.err contains "bind_refusals=2") else "both bind signature directions must refuse independently"
 
 # The emitted instance holds all seven records: point, bind, turn, three caps, sponsor.
 let em = run ["kumara/bin/tilak" "emit"]

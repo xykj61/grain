@@ -83,7 +83,7 @@ set -eu
 # It read 46 on 20260828 and 48 before the two Comlink witnesses. It only ever falls: a
 # witness repaired lowers it, and a new witness invoking an unbuilt artifact raises it past
 # the ceiling on the lap it arrives.
-CEILING=21
+CEILING=20
 
 command -v git >/dev/null 2>&1 || { echo "verdict=no_git"; echo "refused: this scan reads the tracked tree, so it wants git" >&2; exit 1; }
 git rev-parse --git-dir >/dev/null 2>&1 || { echo "verdict=no_repo"; echo "refused: not inside a git repository" >&2; exit 1; }

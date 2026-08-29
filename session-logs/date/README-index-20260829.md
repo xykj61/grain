@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260829.023652` | [the bind refuses both directions](20260829/20260829-023652_the-bind-refuses-both-directions.kyri) | Dream: Kumara's fixture-key bind refuses each signature direction |
 | `20260829.015246` | [the recipe that crossed](20260829/20260829-015246_the-recipe-that-crossed.kyri) | pure core builds for iOS: four flags, zero module edits; spawn parks on cold start |
 | `20260829.014114` | [the ios door read](20260829/20260829-014114_the-ios-door-read.kyri) | movement five: three measures, four carries read, QA 84 B; the ladder's first pass walked |
 | `20260829.013811` | [the meter that counts one call](20260829/20260829-013811_the-meter-that-counts-one-call.kyri) | Amphora's eight build all three; REDS %337; the reading is a floor |
