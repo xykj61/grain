@@ -1,9 +1,4 @@
 #!/bin/sh
 # comlink/run_tablecloth_query_wire_lab.sh -- Tablecloth query device wire over virtio-net.
-set -eu
-
-here="$(cd "$(dirname "$0")" && pwd)"
-repo="$(cd "$here/.." && pwd)"
-cd "$repo"
-
-exec rishi/bin/rishi run tools/co/comlink_tablecloth_query_wire_lab.rish
+# One body for all labs lives beside this file: run_wire_lab.sh (since 20260829).
+exec sh "$(cd "$(dirname "$0")" && pwd)/run_wire_lab.sh" tablecloth_query
