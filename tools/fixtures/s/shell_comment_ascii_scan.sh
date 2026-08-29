@@ -63,12 +63,25 @@ mode="${1:-count}"
 # already made when it dropped `grep -P` for a C-locale byte range (REDS %278).
 CEILING=505
 
+# A SYMLINK IS SKIPPED, and this is a census rather than a roster, so the reading is unambiguous:
+# `git ls-files` lists a link AND its target as two paths, and following both counts the same bytes
+# twice. On 20260829 two symlinks landed under `tools/rye/` pointing at `crypto/sha3.rye` and
+# `crypto/keccak256.rye`, which have carried their 32 non-ASCII characters since 20260826 -- so this
+# meter read 4,342 against a 4,333 ceiling and reported a rise that never happened. 4,342 minus the
+# doubled 32 is 4,310, twenty-three UNDER. The idiom and its reason are the tree's own, from
+# `tools/fixtures/c/caravan_wrap_class_scan.sh`: a symlink's laws belong to the room its target
+# lives in. `tools/fixtures/c/caravan_ladder_roster_scan.sh` deliberately reads the other way, and
+# both are right -- that meter asks which modules a room HAS, where a shared body reached by symlink
+# is genuinely one of them; this one asks how many characters EXIST, and a byte counted twice is a
+# byte miscounted. Booked at REDS %340.
 list=$(git ls-files "*.rish" "*.sh" 2>/dev/null | grep -vE "^(vendor|gratitude|seed)/")
 
 total=0
 files=0
 report=""
 for f in $list; do
+  # A link and its target are two paths and one set of bytes; the target is read on its own row.
+  [ -L "$f" ] && continue
   n=$(LC_ALL=C awk '
     {
       if (inhere) {

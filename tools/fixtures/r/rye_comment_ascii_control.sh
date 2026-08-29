@@ -7,7 +7,7 @@
 # the reading is planted in a throwaway git repository and proven from both sides before it is
 # trusted on 1,497 real files.
 #
-# WHAT IS PROVEN -- seven behaviors:
+# WHAT IS PROVEN -- nine behaviors:
 #   1  a `//` comment with non-ASCII is counted
 #   2  a `///` declaration comment is counted -- it is prose too
 #   3  a `//!` module comment is counted
@@ -15,6 +15,10 @@
 #   5  a string literal on a code line is NOT counted, for the same reason
 #   6  an indented comment is counted, so leading whitespace does not hide prose
 #   7  the vendored rooms are left out, since those files are not ours to convert
+#   8  a SYMLINK to a counted module is not counted a second time -- `git ls-files` lists a link
+#      and its target as two paths, and following both counts one set of bytes twice (REDS %340)
+#   9  and the target it points at is still counted on its own row, so the skip drops a duplicate
+#      rather than a file
 #
 # USAGE
 #   sh tools/fixtures/r/rye_comment_ascii_control.sh
@@ -42,6 +46,11 @@ printf 'const s =\n    \\\\printed \xe2\x80\x94 output\n' > room/multiline_strin
 printf 'const s = "printed \xe2\x80\x94 output";\n'      > room/string_literal.rye
 printf '        // indented \xe2\x80\x94 one\n'          > room/indented.rye
 printf '// theirs \xe2\x80\x94 one\n'                    > vendor/theirs/x.rye
+
+# The eighth and ninth readings: a link beside its target, exactly the shape `tools/rye/sha3.rye`
+# took on 20260829. Both paths are tracked, both resolve to the same bytes, and only one may count.
+ln -s line_comment.rye room/link_to_line_comment.rye
+
 git add -A >/dev/null 2>&1; git commit -qm plant >/dev/null 2>&1
 
 out=$(sh "$scan" --list 2>/dev/null)
@@ -55,7 +64,12 @@ for name in multiline_string string_literal; do
 done
 case "$out" in *"vendor/theirs"*) echo "vendor_excluded=no";; *) echo "vendor_excluded=yes";; esac
 
-# four prose files, one character each, and nothing else
+# The symlink is tracked and resolves to a counted comment, so a meter that follows it reads five.
+case "$out" in *"room/link_to_line_comment.rye"*) echo "symlink_skipped=no";; *) echo "symlink_skipped=yes";; esac
+# And the skip drops the duplicate rather than the file: the target still counts on its own row.
+case "$out" in *"room/line_comment.rye"*) echo "symlink_target_kept=yes";; *) echo "symlink_target_kept=no";; esac
+
+# four prose files, one character each, and nothing else -- five would mean the link was followed
 case "$out" in *"chars=4 "*) echo "total_is_four=yes";; *) echo "total_is_four=no";; esac
 
 echo "control_verdict=ok"

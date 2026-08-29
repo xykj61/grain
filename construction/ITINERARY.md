@@ -58,28 +58,30 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `e846b3f2a3` -- this round's own.
+**Git nib:** `43f9db0ac5` -- this round's own.
 
 **Now.** **A wall armed at a verb guards that verb.**
 
-**REDS %339** -- `12d675d65e` shipped both generated pages stale; that round closed through a
-cherry-pick, and git runs `pre-commit` for two paths of five. The new hook asks *did my sibling
-run*. Control **8 -> 14**; booked %337, renumbered twice on rebases that met published rows.
+**REDS %339** -- `12d675d65e` shipped both generated pages stale; that round closed by
+cherry-pick, and git runs `pre-commit` for two paths of five; the hook asks *did my sibling run*. **%340** -- a census followed 56 symlinks; `[ -L ]` skips them, ceiling **4333->3794**.
+Both renumbered twice on rebases meeting published rows.
 
 **MANY HANDS + skills** (granted `20260828`): launches may manage multiple CLI agents; custody
 stays MANUAL, each checkout keeps one writer. Root `SKILL.md` opens the three. Every clone seats
 `ww` (`grain-ww/grain`, gate %1) and `.git/ssh_config_jail`.
 
 **Still open, one structural:** REDS reads 24,571/**24,576**, 9 OPEN, 0 foldable -- metered and
-rostered, `%338` booked, 3 doors costed in `20260829-031804`; his seat. **Width:** `glow/rune_shape.rye` publishes `usize`
-in 5 fields and 5 accessors; 59 gate fixtures await his word. **Mind's:** the reconnect stash,
-`%281`/`%291`, and this pier's two `enclosure.conf` pins. **Sibling finds:** Sound's SHA-3 symlink
-double-counts nine comment characters; Hush's policy scan refuses while its state scan is green.
-**Seats:** whether the roster's own witness can be rostered; whether a `mask` may soften the `map`
-it covers; and a capability tier for `comlink_r1_dual_stack`'s IPv6 leg.
+rostered, `%338` booked, 3 doors costed in `20260829-031804`; his seat.
+**Width:** `glow/rune_shape.rye` publishes `usize` in 5 fields and 5 accessors; 59 gate
+fixtures await his word. **Mind's:** the reconnect stash,
+`%281`/`%291`, and this pier's two `enclosure.conf` pins. **Sibling find:** Hush's policy
+scan refuses, its state scan green; the SHA-3 symlink double-count closes at the root in `%340`
+-- 548 characters over 56 links.
+**Seats:** can the roster's own witness be rostered; may a `mask` soften the `map` above it; a
+capability tier for `comlink_r1_dual_stack`'s IPv6 leg.
 
-**Next doors.** Dream: Caravan and Tally. Hush: orbit two's grants brush Caravan's capability
-pieces and want Dream's nod; the realized mount table read here.
+**Next doors.** Dream: Caravan and Tally. Hush: orbit two's grants brush Caravan's
+capability pieces and want Dream's nod; the realized mounts read here.
 
 ---
 ## Landed arcs
@@ -208,7 +210,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260829.013539` | The commit no hook saw -- REDS %339 booked, repaired, walled | [log](../session-logs/date/20260829/20260829-013539_the-commit-no-hook-saw.kyri) |
+| `20260829.013539` | The commit no hook saw -- REDS %339 and %340 booked, closed | [log](../session-logs/date/20260829/20260829-013539_the-commit-no-hook-saw.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line here until the next replaces it.
 

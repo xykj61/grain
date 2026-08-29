@@ -56,14 +56,33 @@ mode="${1:-count}"
 # `LC_ALL=C` pins both awks to bytes, the lead-byte class turns bytes back into characters, and
 # octal spelling reads identically in both dialects -- the same C-locale move
 # `tools/fixtures/l/living_card_ascii_scan.sh` made when it dropped `grep -P` (REDS %278).
-CEILING=4333
+CEILING=3794
 
+# A SYMLINK IS SKIPPED, and this is a census rather than a roster, so the reading is unambiguous:
+# `git ls-files` lists a link AND its target as two paths, and following both counts the same bytes
+# twice. On 20260829 two symlinks landed under `tools/rye/` pointing at `crypto/sha3.rye` and
+# `crypto/keccak256.rye`, which have carried their 32 non-ASCII characters since 20260826 -- so this
+# meter read 4,342 against a 4,333 ceiling and reported a rise that never happened. 4,342 minus the
+# doubled 32 is 4,310, twenty-three UNDER. The idiom and its reason are the tree's own, from
+# `tools/fixtures/c/caravan_wrap_class_scan.sh`: a symlink's laws belong to the room its target
+# lives in. `tools/fixtures/c/caravan_ladder_roster_scan.sh` deliberately reads the other way, and
+# both are right -- that meter asks which modules a room HAS, where a shared body reached by symlink
+# is genuinely one of them; this one asks how many characters EXIST, and a byte counted twice is a
+# byte miscounted.
+#
+# THE CEILING FELL WITH THE FIX, from 4,333 to 3,794, and the gap is the whole point: the two new
+# links carried 32 characters, yet skipping symlinks removed 548 across 56 of them. This meter has
+# double-counted every linked `.rye` since it was written, so the ceiling it carried was set on a
+# doubled reading and held 539 characters of phantom headroom. A ceiling only falls, and this is
+# the fall the correction owes.
 list=$(git ls-files "*.rye" 2>/dev/null | grep -vE "^(vendor|gratitude|seed)/")
 
 total=0
 files=0
 report=""
 for f in $list; do
+  # A link and its target are two paths and one set of bytes; the target is read on its own row.
+  [ -L "$f" ] && continue
   n=$(LC_ALL=C awk '
     { line = $0
       sub(/^[ \t]+/, "", line)
