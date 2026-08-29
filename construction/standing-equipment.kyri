@@ -692,3 +692,20 @@ guard pond_enclosure_ephemeral
 path tools/p/pond_enclosure_ephemeral_witness.rish
 tier lap
 seated 20260829.054303
+
+# pond_enclosure_door -- the three guards above read the ROOM: the flags the launcher spells, the plan
+# the jail builds, and how long a written byte lasts. None reads the DOOR -- which program walks in,
+# carrying which environment, as which user -- which is the launcher's own last exec line and nothing
+# the record has a key for. This derives reachability from the record (`map`, `persist`, and `rw-map`
+# destinations declare; a closer `mask` wins; `ephemeral` and `fresh` start bare), gates the ENTRY at
+# zero unreachable, and holds undeclared search-path elements at a ceiling of 1. Its `--probe` leg
+# starts one enclosure and asks it the same questions, writing no byte on either side: measured
+# 20260829, two of the launcher's four search-path elements are absent inside -- one the host lacks,
+# one the private home dissolves -- with zero disagreements against the derivation, and the three
+# door duties (`entry`, `env`, `user`) have no key in the record's grammar at all. `lap` because the
+# whole witness including the live probe is 8s on this pier.
+
+guard pond_enclosure_door
+path tools/p/pond_enclosure_door_witness.rish
+tier lap
+seated 20260829.064107
