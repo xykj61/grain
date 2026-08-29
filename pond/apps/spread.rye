@@ -1,0 +1,281 @@
+//! pond/apps/spread.rye -- a spread: one artifact laid across many resins, by pure accretion.
+//!
+//! Rung: LOCA -- the cloth laid wider (20260829.125449)
+//!
+//! Tablecloth's artifact ceiling is one resin (512 bytes), and that ceiling is PAIRED with
+//! recall's own bound -- not this module's to move. A SPREAD widens what an artifact can hold
+//! without touching one seated constant: the content splits into parts of at most one resin,
+//! each part stored as an ordinary artifact under a derived name, and a MANIFEST -- part count,
+//! whole length, and the SHA3 of the whole -- stored under the artifact's own name, itself one
+//! small resin. Fetch reassembles the parts in order and refuses unless the whole's digest
+//! matches the manifest's. Every seated wall keeps its post: a tampered part refuses at the
+//! bead layer before a byte serves, and the manifest's whole-digest refuses a reassembly that
+//! lies. The spread's own ceiling is measured from the seats it borrows -- parts plus manifest
+//! must fit the 32-seat catalog and the 256-bead store -- and past it, the spread REFUSES
+//! rather than growing what it does not own. The golden pixels (811,008 bytes) remain past even
+//! this door by design: they wait on the store's own growth, max_store_beads, the store lane's
+//! named deep round.
+//!
+//! Run from the repository root:
+//!   rye run pond/apps/spread.rye selftest
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const tablecloth = @import("tablecloth.rye");
+const beading = @import("mantra/beading.rye");
+
+const Sha3_256 = std.crypto.hash.sha3.Sha3_256;
+
+pub const spread_version = "20260829.125449";
+
+// The spread's ceiling, derived from the seats it borrows and from what content-defined
+// chunking can COST rather than what it averages: a 512-byte part beads into as many as eight
+// 64-byte beads (cdc_min_bead), so fifteen parts worst-case to 120 beads plus the manifest's
+// few -- half the 256-bead store, mirroring the spool's own legibility invariant and leaving
+// the other half for the neighbors beading's 64-to-256 raise was budgeted for. The catalog
+// could seat 31 parts; the shared store is the tighter honest master, so fifteen it is.
+pub const max_spread_parts: u32 = 15;
+pub const max_spread_bytes: u32 = max_spread_parts * tablecloth.max_content_bytes;
+// A part name spends four bytes of suffix, so a spread's base name keeps four in reserve.
+pub const max_spread_name: u32 = tablecloth.max_name - 4;
+
+pub const SpreadError = error{
+    SpreadTooLarge,
+    SpreadEmpty,
+    NameTooLong,
+    WholeMismatch,
+    PartMissing,
+};
+
+pub const SpreadReport = struct {
+    parts: u32,
+    whole_len: u32,
+    beads_deposited: u32,
+    whole_digest: [32]u8,
+};
+
+/// Derive one part's name: the spread's own name, a slash-part marker, and the part number.
+/// Bounded by the catalog's own name budget, asserted rather than hoped.
+fn part_name(name: []const u8, part: u32, out: []u8) []const u8 {
+    // invariant: the derived name fits the catalog's budget with the marker and two digits.
+    assert(name.len + 8 <= tablecloth.max_name);
+    assert(part < max_spread_parts);
+    const written = std.fmt.bufPrint(out, "{s}#p{d:0>2}", .{ name, part }) catch {
+        @panic("spread: a part name outgrew the buffer its assert promised");
+    };
+    return written;
+}
+
+/// Lay one content across as many resins as it needs. The manifest rides under the spread's
+/// own name; parts ride under derived names; every store call is tablecloth's own.
+pub fn store_spread(
+    cat: *tablecloth.Catalog,
+    store: *beading.BeadStore,
+    name: []const u8,
+    content: []const u8,
+) (SpreadError || beading.BeadError || tablecloth.ClothError)!SpreadReport {
+    if (content.len == 0) return SpreadError.SpreadEmpty;
+    if (content.len > max_spread_bytes) return SpreadError.SpreadTooLarge;
+    if (name.len > max_spread_name) return SpreadError.NameTooLong;
+    // invariant: a lawful spread is one to max_spread_parts parts, no more.
+    const parts: u32 = @intCast((content.len + tablecloth.max_content_bytes - 1) / tablecloth.max_content_bytes);
+    assert(parts >= 1);
+    assert(parts <= max_spread_parts);
+
+    var whole_digest: [32]u8 = undefined;
+    Sha3_256.hash(content, &whole_digest, .{});
+
+    var deposited: u32 = 0;
+    var part: u32 = 0;
+    while (part < parts) : (part += 1) {
+        const start: usize = @as(usize, part) * tablecloth.max_content_bytes;
+        const end: usize = @min(start + tablecloth.max_content_bytes, content.len);
+        var name_buffer: [tablecloth.max_name]u8 = undefined;
+        const pname = part_name(name, part, name_buffer[0..]);
+        const part_report = try tablecloth.store_artifact(cat, store, pname, content[start..end]);
+        deposited += part_report.beads_deposited;
+    }
+
+    // The manifest: parts, whole length, whole digest -- one small resin under the own name.
+    var manifest_buffer: [128]u8 = undefined;
+    var hex: [64]u8 = undefined;
+    var i: u32 = 0;
+    while (i < 32) : (i += 1) {
+        _ = std.fmt.bufPrint(hex[i * 2 .. i * 2 + 2], "{x:0>2}", .{whole_digest[i]}) catch unreachable;
+    }
+    const manifest = std.fmt.bufPrint(manifest_buffer[0..], "spread parts={d} len={d} whole={s}\n", .{ parts, content.len, hex[0..] }) catch {
+        @panic("spread: the manifest outgrew a resin, which its shape forbids");
+    };
+    // invariant: the manifest itself is one lawful resin.
+    assert(manifest.len <= tablecloth.max_content_bytes);
+    const manifest_report = try tablecloth.store_artifact(cat, store, name, manifest);
+    deposited += manifest_report.beads_deposited;
+
+    return SpreadReport{ .parts = parts, .whole_len = @intCast(content.len), .beads_deposited = deposited, .whole_digest = whole_digest };
+}
+
+/// Reassemble a spread by name. Every part crosses the bead layer's own digest wall, and the
+/// whole must match the manifest's digest, or the reassembly refuses as a lie.
+pub fn fetch_spread(
+    cat: *const tablecloth.Catalog,
+    store: *const beading.BeadStore,
+    name: []const u8,
+    out: []u8,
+) (SpreadError || beading.BeadError || tablecloth.ClothError)!u32 {
+    var manifest_buffer: [tablecloth.max_content_bytes]u8 = undefined;
+    const manifest_len = try tablecloth.fetch_artifact(cat, store, name, manifest_buffer[0..]);
+    const manifest = manifest_buffer[0..manifest_len];
+
+    // Parse the three fields the manifest promises; a manifest that parses is still only a
+    // claim until the whole digest agrees below.
+    var parts: u32 = 0;
+    var whole_len: u32 = 0;
+    var expected_digest: [32]u8 = undefined;
+    parse_manifest(manifest, &parts, &whole_len, &expected_digest) catch return SpreadError.WholeMismatch;
+    // invariant: a parsed manifest stays inside the spread's own law.
+    assert(parts >= 1);
+    assert(parts <= max_spread_parts);
+    if (whole_len > out.len) return error.Overflow;
+
+    var at: u32 = 0;
+    var part: u32 = 0;
+    while (part < parts) : (part += 1) {
+        var name_buffer: [tablecloth.max_name]u8 = undefined;
+        const pname = part_name(name, part, name_buffer[0..]);
+        const got = tablecloth.fetch_artifact(cat, store, pname, out[at..]) catch |e| {
+            if (e == error.UnknownArtifact) return SpreadError.PartMissing;
+            return e;
+        };
+        at += got;
+    }
+    if (at != whole_len) return SpreadError.WholeMismatch;
+
+    var check: [32]u8 = undefined;
+    Sha3_256.hash(out[0..whole_len], &check, .{});
+    if (!std.mem.eql(u8, check[0..], expected_digest[0..])) return SpreadError.WholeMismatch;
+    // invariant: a served spread is exactly the manifest's whole.
+    assert(at == whole_len);
+    return whole_len;
+}
+
+fn parse_manifest(text: []const u8, parts: *u32, whole_len: *u32, digest: *[32]u8) !void {
+    // invariant: the manifest under parse is the shape store_spread writes.
+    assert(text.len >= 20);
+    var it = std.mem.tokenizeAny(u8, text, " \n");
+    const head = it.next() orelse return error.Bad;
+    if (!std.mem.eql(u8, head, "spread")) return error.Bad;
+    const p = it.next() orelse return error.Bad;
+    if (!std.mem.startsWith(u8, p, "parts=")) return error.Bad;
+    parts.* = try std.fmt.parseInt(u32, p[6..], 10);
+    const l = it.next() orelse return error.Bad;
+    if (!std.mem.startsWith(u8, l, "len=")) return error.Bad;
+    whole_len.* = try std.fmt.parseInt(u32, l[4..], 10);
+    const w = it.next() orelse return error.Bad;
+    if (!std.mem.startsWith(u8, w, "whole=")) return error.Bad;
+    const hex = w[6..];
+    if (hex.len != 64) return error.Bad;
+    var i: u32 = 0;
+    while (i < 32) : (i += 1) {
+        digest[i] = try std.fmt.parseInt(u8, hex[i * 2 .. i * 2 + 2], 16);
+    }
+}
+
+// --- selftest: a five-resin payload crosses whole; the walls bite from every side ---
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // A payload no single resin could hold: 2,321 bytes of a marked pattern, five parts.
+    const payload_len: u32 = 2321;
+    const payload = try garden.alloc(u8, payload_len);
+    var i: u32 = 0;
+    while (i < payload_len) : (i += 1) {
+        payload[i] = @intCast((i *% 37 +% (i / 512)) & 0xff);
+    }
+
+    var store: beading.BeadStore = .empty();
+    var cat: tablecloth.Catalog = .empty();
+    const report = try store_spread(&cat, &store, "spread/self.bin", payload);
+    // invariant: the arithmetic of parts is the ceiling division the law names.
+    assert(report.parts == 5);
+    assert(report.whole_len == payload_len);
+
+    var out = try garden.alloc(u8, payload_len);
+    const got = try fetch_spread(&cat, &store, "spread/self.bin", out);
+    // invariant: the reassembly is the payload, byte for byte.
+    assert(got == payload_len);
+    assert(std.mem.eql(u8, out[0..got], payload));
+    print("spread: five resins crossed whole -- {d} bytes, parts={d}, beads_deposited={d}, catalog seats used={d}\n", .{ got, report.parts, report.beads_deposited, cat.count });
+
+    // The name budget, from its refusing side: a base past the reserve refuses by name.
+    {
+        var store_n: beading.BeadStore = .empty();
+        var cat_n: tablecloth.Catalog = .empty();
+        const long_name = "spread/a-base-name-far-past-the-four-byte-reserve";
+        // invariant: the plant really is past the budget this leg proves.
+        assert(long_name.len > max_spread_name);
+        if (store_spread(&cat_n, &store_n, long_name, payload)) |_| {
+            @panic("spread: a name past the reserve was stored, so the wall does not wall");
+        } else |e| {
+            // invariant: the refusal is the spread's own named budget.
+            assert(e == SpreadError.NameTooLong);
+        }
+    }
+
+    // The ceiling, from its refusing side: one byte past the law refuses by name.
+    {
+        var store_big: beading.BeadStore = .empty();
+        var cat_big: tablecloth.Catalog = .empty();
+        const too_big = try garden.alloc(u8, max_spread_bytes + 1);
+        @memset(too_big, 7);
+        if (store_spread(&cat_big, &store_big, "spread/too-big", too_big)) |_| {
+            @panic("spread: a spread past the ceiling was stored, so the wall does not wall");
+        } else |e| {
+            // invariant: the refusal is the spread's own named ceiling.
+            assert(e == SpreadError.SpreadTooLarge);
+        }
+    }
+
+    // A tampered PART refuses at the bead layer before a byte serves.
+    {
+        var store_t: beading.BeadStore = .empty();
+        var cat_t: tablecloth.Catalog = .empty();
+        _ = try store_spread(&cat_t, &store_t, "spread/tamper.bin", payload);
+        store_t.beads[3].bytes[0] +%= 1;
+        const out_t = try garden.alloc(u8, payload_len);
+        if (fetch_spread(&cat_t, &store_t, "spread/tamper.bin", out_t)) |_| {
+            @panic("spread: a tampered part was served, so the wall does not wall");
+        } else |e| {
+            // invariant: the refusal is the bead layer's own digest wall.
+            assert(e == error.DigestMismatch);
+        }
+    }
+
+    // A MISSING PART refuses by name: fetch under a name whose manifest exists but whose
+    // parts were never stored -- built by storing a manifest-shaped artifact directly.
+    {
+        var store_m: beading.BeadStore = .empty();
+        var cat_m: tablecloth.Catalog = .empty();
+        _ = try tablecloth.store_artifact(&cat_m, &store_m, "spread/hollow", "spread parts=2 len=1000 whole=0000000000000000000000000000000000000000000000000000000000000000\n");
+        const out_m = try garden.alloc(u8, 1000);
+        if (fetch_spread(&cat_m, &store_m, "spread/hollow", out_m)) |_| {
+            @panic("spread: a hollow manifest was served, so the wall does not wall");
+        } else |e| {
+            // invariant: the refusal names the absent part.
+            assert(e == SpreadError.PartMissing);
+        }
+    }
+
+    print("spread: GREEN -- one artifact across many resins: ceiling, tamper, and hollow all refused; the whole crossed byte for byte.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const args = try init.minimal.args.toSlice(garden);
+    if (args.len >= 2 and std.mem.eql(u8, args[1], "selftest")) {
+        return run_selftest(garden);
+    }
+    print("spread: run with selftest\n", .{});
+    return 2;
+}
