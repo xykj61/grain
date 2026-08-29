@@ -4,7 +4,7 @@
 **Language:** EN
 **Style:** Gauge, Field setting
 **Voice:** Kyri
-**Status:** Living design -- the finding is measured; the re-aim awaits its own supervisor update
+**Status:** Living design, mixed room -- the finding is measured and checkable; the re-aim is proposed and awaits its own supervisor update
 **Probe:** [`../tools/rye/macos_window_probe.rye`](../tools/rye/macos_window_probe.rye)
 **Kin:** REDS %295 (the host tier) - [`../.claude/rules/tame-guidance.md`](../.claude/rules/tame-guidance.md) - the Mind seat's operating prompt
 
