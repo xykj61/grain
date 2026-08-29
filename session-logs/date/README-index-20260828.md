@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260828.215659` | [the window Rye raised](20260828/20260828-215659_the-window-rye-raised.kyri) | macOS needs no Swift: a native window painted from Rye, zero Swift linked |
 | `20260828.214018` | [the children hit the wall](20260828/20260828-214018_the-children-hit-the-wall.kyri) | the split lands verified; Mind carried fold-aware |
 | `20260828.213503` | [the build that lived in a comment](20260828/20260828-213503_the-build-that-lived-in-a-comment.kyri) | %334: two Comlink proofs build what they run; 46 left |
 | `20260828.205420` | [the hidden line seat stayed still](20260828/20260828-205420_the-hidden-line-seat-stayed-still.kyri) | Mind: a hidden line seat proven untouched by refusal |
