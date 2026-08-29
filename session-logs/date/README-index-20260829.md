@@ -11,6 +11,8 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260829.094256` | [the ratchet that had a floor](20260829/20260829-094256_the-ratchet-that-had-a-floor.kyri) | %334 ratchet 14 -> 4; ten "defects" were builds one hop away |
+| `20260829.094048` | [the door walked](20260829/20260829-094048_the-door-walked.kyri) | a Rye view class on iOS, dispatched by the platform, judged by the same pins |
 | `20260829.093058` | [green from inside ios](20260829/20260829-093058_green-from-inside-ios.kyri) | both witnesses spawn GREEN on a booted iPhone; pins identical across two OSes |
 | `20260829.084438` | [a checkout is not the field](20260829/20260829-084438_a-checkout-is-not-the-field.kyri) | lost refs 335 -> 165; repointer stops writing into a peer |
 | `20260829.070953` | [a witness builds what it runs](20260829/20260829-070953_a-witness-builds-what-it-runs.kyri) | %334 ratchet 19 -> 14; the card nib resolved to nothing |

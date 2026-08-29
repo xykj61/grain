@@ -58,16 +58,16 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `598bc1ad77` -- this round's own.
+**Git nib:** `82bcb704e7` -- this round's own.
 
 **Now.** **A checkout of this same repository is not the field.**
 
-**The dated-path census read a peer's worktree as the tree** (`20260829-084438`): 170 of its 335
-lost references were that copy, and the repointer, which WRITES, named one file to rewrite inside
-it. Both prune in-root worktrees now, from `git worktree list`; ceiling 168 -> 165.
+**The census read a peer's worktree as the tree** (`20260829-084438`): 170 of 335 lost references
+were that copy, and the repointer, which WRITES, named a file inside it. Both prune in-root
+worktrees from `git worktree list` now; ceiling 168 -> 165.
 
-**Orbit three:** three writable host paths outlive the close -- `/dev/shm`, `/tmp/.X11-unix`,
-`/run/user/<uid>` -- none under the pier. Closing any is a seat. Reading `20260829-054303`.
+**The ratchet that had a floor** (`20260829-094256`): 10 of `witness_own_build`'s 14 unbuilt pairs
+were builds one hop away; ceiling 14 -> 4, no witness edited.
 
 **MANY HANDS + skills** (granted `20260828`): launches may manage multiple CLI agents; custody
 stays MANUAL, each checkout keeps one writer. Root `SKILL.md`. Every clone seats
@@ -82,8 +82,9 @@ fixtures await his word. **Mind's:** the reconnect stash,
 **Seats:** can the roster's own witness be rostered; may a `mask` soften the `map`; a
 capability tier for `comlink_r1_dual_stack`'s IPv6 leg.
 
-**Next doors.** Dream: Caravan and Tally. Hush: orbit two's grants still want Dream's nod;
-orthogonal to it, orbit three's survivors are costed and wait on a word.
+**Next doors.** Dream: Caravan and Tally, on `grain-dream` -- %281/%291 answered here.
+Hush: the Zed launch path; orbit two wants Dream's nod; orbits three and four hold four costed
+edits (`20260829-054303`).
 
 ---
 ## Landed arcs
@@ -212,7 +213,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260829.084438` | A checkout is not the field | [log](../session-logs/date/20260829/20260829-084438_a-checkout-is-not-the-field.kyri) |
+| `20260829.094256` | The ratchet that had a floor | [log](../session-logs/date/20260829/20260829-094256_the-ratchet-that-had-a-floor.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line here until the next replaces it.
 
