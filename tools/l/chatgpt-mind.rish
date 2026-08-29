@@ -7,8 +7,15 @@
 # changes power settings, or begins without explicit arming.
 
 let max_prompt_bytes = 24576
-let max_log_bytes = 1048576
-let max_supervisor_bytes = 1114112
+# Sized to codex-cli 0.150, which routes every tool call through its code-mode host and
+# echoes diffs verbosely: an ordinary good lap filled the elder 1 MiB wall to the byte on
+# 20260829 (lap-1.stderr read 1,048,576 exactly). Four MiB is headroom rather than a
+# measurement of the true ceiling, and the parking rung in mind-loop below is what makes
+# any wall survivable.
+let max_log_bytes = 4194304
+# The child relays BOTH codex streams into its own stdout, so the supervisor's wall holds
+# two log walls plus 64 KiB of harness lines: 2 x 4,194,304 + 65,536.
+let max_supervisor_bytes = 8454144
 let max_commit_message_bytes = 4096
 let max_candidate_paths = 64
 let max_laps_hard = 24
@@ -563,6 +570,15 @@ assert xy-remote repo_root else "REFUSE chatgpt-mind: personal remote xy is not 
 assert xy-ready repo_root else "REFUSE chatgpt-mind: local xy/main is absent"
 assert gitlink-held repo_root else "REFUSE chatgpt-mind: pinned sketchbook is not a gitlink"
 assert repo-clean repo_root else "REFUSE chatgpt-mind: worktree is not clean"
+# The 24/7 rung (20260829): an ARMED run whose clone is simply behind the fleet takes the
+# fast-forward instead of refusing at the wall below, so the busy-fleet stall heals itself.
+# A pull that fails proceeds softly on the local ref -- a network blip should not open the
+# circuit -- and a rewritten upstream still stops at xy-integrated, since the fetch inside
+# the failed pull moved the local xy/main ref. check and dry-run stay fetch-free, exactly
+# as the header's no-fetch-without-arming sentence promises.
+let armed_run = ?| [(internal_lap) (arm_once) (arm_loop)]
+let behind_pull = ?: (?& [(armed_run) ((ahead-count repo_root) == 0)]) (git-run ["-C" repo_root "pull" "--ff-only" "xy" "main"]) ({ok: true})
+if behind_pull.ok == false then say "chatgpt-mind: fast-forward pull from xy failed; the lap proceeds on the local ref and the walls below still hold"
 assert xy-integrated repo_root else "REFUSE chatgpt-mind: xy/main has unintegrated commits"
 assert (ahead-count repo_root) <= max_local_ahead else "REFUSE chatgpt-mind: local commit ceiling crossed"
 
@@ -672,7 +688,14 @@ fn run-one-lap lap: run-bounded { argv: ["/usr/bin/env" "MIND_INTERNAL_LAP=1" "M
 # consecutive-park streak: 0 means the loop completed, 1 means the failure circuit opened, and
 # 2 means max_consecutive_parked laps in a row parked -- no admissible crux remains.
 fn lap-parked ignored: ?& [(phase-file-safe 0) ((trim (read-file phase_rel)) == "parked reason=design-question")]
-fn mind-loop lap max failures ceiling delay parked: ?: (lap > max) (0) (?: ((run-one-lap lap).ok) (?: (lap-parked 0) (?: ((parked + 1) >= max_consecutive_parked) (2) (mind-loop (lap + 1) max 0 ceiling delay (parked + 1))) (mind-loop (lap + 1) max 0 ceiling delay 0)) (?: ((failures + 1) >= ceiling) (1) (?: ((run ["sleep" (str delay)]).ok) (mind-loop lap max (failures + 1) ceiling (clamp (delay * 2) 0 max_backoff_seconds) parked) (1))))
+# A lap that fails AFTER Codex mutated leaves leavings the next attempt's repo-clean wall
+# refuses, so every retry was doomed and the ceiling opened the circuit on wreckage --
+# measured 20260829, when one byte-wall refusal cascaded into repo-clean refusals to the
+# ceiling. Parking is custody rather than discard: the leavings wait in a named stash for
+# a hand or a later lap, and the retry meets the clean tree it needs. Dream's round-open
+# heals by stashing anonymously; Mind stashes by name -- the same mercy at custody grade.
+fn park-leavings lap: ?: (repo-clean repo_root) ({ok: true}) (git-run ["-C" repo_root "stash" "push" "-u" "-m" ("mind-park lap " + (str lap) + " refusal-leavings")])
+fn mind-loop lap max failures ceiling delay parked: ?: (lap > max) (0) (?: ((run-one-lap lap).ok) (?: (lap-parked 0) (?: ((parked + 1) >= max_consecutive_parked) (2) (mind-loop (lap + 1) max 0 ceiling delay (parked + 1))) (mind-loop (lap + 1) max 0 ceiling delay 0)) (?: ((failures + 1) >= ceiling) (1) (?: ((park-leavings lap).ok) (?: ((run ["sleep" (str delay)]).ok) (mind-loop lap max (failures + 1) ceiling (clamp (delay * 2) 0 max_backoff_seconds) parked) (1)) (1))))
 
 let once_result = ?: (mode == "once") (run-one-lap 1) ({ok: true, overflow: ""})
 assert ?| [(mode != "once") (once_result.overflow == "")] else "REFUSE chatgpt-mind: lap failed at supervisor-output reason=byte-wall; bounded detail remains private"
