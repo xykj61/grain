@@ -35,15 +35,9 @@ fi
 : "${REPO:?set REPO in enclosure.conf}"
 : "${ZED_STATE:?set ZED_STATE in enclosure.conf}"
 : "${AIJAIL_FLAGS:?set AIJAIL_FLAGS in enclosure.conf}"
-ENCLOSURE="${ENCLOSURE:-ai-jail}"
-if [ "$ENCLOSURE" = "pond" ]; then
-  if ! bash "${REPO_ROOT}/tools/p/pond_exit_bron_master_seal.sh" --require; then
-    exit 1
-  fi
-elif [ "$ENCLOSURE" != "ai-jail" ]; then
-  echo "REFUSE: ENCLOSURE must be ai-jail or pond (got: ${ENCLOSURE})" >&2
-  exit 1
-fi
+# The one admission door: reads ENCLOSURE, admits pond only behind the master
+# seal, refuses anything else (gate written here in full until 20260829).
+ENCLOSURE="$(ENCLOSURE="${ENCLOSURE:-}" sh "${REPO_ROOT}/tools/e/enclosure_gate.sh")" || exit 1
 
 resolve_aijail() {
   local c

@@ -41,8 +41,9 @@ echo "pond_seal_gate_control v1"
 # new_pen -- a fresh repository carrying the seal and the three live launchers, indexed.
 new_pen() {
   _p="$pen_root/$1"
-  mkdir -p "$_p/tools/p" "$_p/tools/ag" "$_p/tools/cu" "$_p/tools/l" "$_p/rishi/bin" "$_p/tools/fixtures"
+  mkdir -p "$_p/tools/p" "$_p/tools/ag" "$_p/tools/cu" "$_p/tools/e" "$_p/tools/l" "$_p/rishi/bin" "$_p/tools/fixtures"
   cp "$ROOT/$SEAL_REL" "$_p/$SEAL_REL"
+  cp "$ROOT/tools/e/enclosure_gate.sh" "$_p/tools/e/enclosure_gate.sh"
   cp "$ROOT/tools/ag/agent-jail.sh" "$_p/tools/ag/agent-jail.sh"
   cp "$ROOT/tools/cu/cursor-jail.sh" "$_p/tools/cu/cursor-jail.sh"
   cp "$ROOT/tools/l/launch-zed.sh.example" "$_p/tools/l/launch-zed.sh.example"
@@ -73,9 +74,11 @@ expect() {
 # ---- the live seam, unplanted ------------------------------------------------------------------
 p=$(new_pen live)
 expect live_green 0 "verdict=green" "$p"
-# 3 is the control's OWN construction -- new_pen copies exactly three launchers into the pen -- so
-# this number can never go stale against the tree the way a copied tree-count would.
-expect live_three_gates 0 "sealed_gates=3" "$p"
+# 1 is the control's OWN construction -- new_pen copies the one admission door into the pen
+# beside the three launchers that enter through it (the elder shape carried the gate in each
+# launcher, and this line read sealed_gates=3 until 20260829) -- so this number can never go
+# stale against the tree the way a copied tree-count would.
+expect live_one_door 0 "sealed_gates=1" "$p"
 expect live_no_ungated 0 "ungated_pond=0" "$p"
 expect live_no_unrefused 0 "unrefused_seal=0" "$p"
 expect live_no_unnamed 0 "unnamed_callers=0" "$p"
@@ -157,14 +160,30 @@ expect unnamed_freed 0 "verdict=green" "$p"
 
 # ---- the header losing a name it carries -------------------------------------------------------
 p=$(new_pen headerloss)
-sed 's|tools/ag/agent-jail.sh||' "$p/$SEAL_REL" > "$p/seal.tmp" && cat "$p/seal.tmp" > "$p/$SEAL_REL" && rm -f "$p/seal.tmp"
+sed 's|tools/e/enclosure_gate.sh||' "$p/$SEAL_REL" > "$p/seal.tmp" && cat "$p/seal.tmp" > "$p/$SEAL_REL" && rm -f "$p/seal.tmp"
 reindex "$p"
 expect headerloss_bites 1 "verdict=unnamed_caller" "$p"
 cp "$ROOT/$SEAL_REL" "$p/$SEAL_REL"; reindex "$p"
 expect headerloss_freed 0 "verdict=green" "$p"
 
 # ---- the .example equivalence, proven by removing the bare name --------------------------------
+# The real launchers enter through the door since 20260829, so the elder direct-call gate is
+# planted back into the pen's example -- the bare-name rule needs a live subject to prove.
 p=$(new_pen exampleref)
+cat > "$p/tools/l/launch-zed.sh.example" <<'PLANT'
+#!/usr/bin/env sh
+REPO_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
+ENCLOSURE="${ENCLOSURE:-ai-jail}"
+if [ "$ENCLOSURE" = "pond" ]; then
+  if ! sh "${REPO_ROOT}/tools/p/pond_exit_bron_master_seal.sh" --require; then
+    exit 1
+  fi
+elif [ "$ENCLOSURE" != "ai-jail" ]; then
+  echo "REFUSE: ENCLOSURE must be ai-jail or pond (got: ${ENCLOSURE})" >&2
+  exit 1
+fi
+PLANT
+reindex "$p"
 expect exampleref_green_first 0 "verdict=green" "$p"
 sed 's|tools/l/launch-zed.sh|tools/l/nothing-here|' "$p/$SEAL_REL" > "$p/seal.tmp" && cat "$p/seal.tmp" > "$p/$SEAL_REL" && rm -f "$p/seal.tmp"
 reindex "$p"
