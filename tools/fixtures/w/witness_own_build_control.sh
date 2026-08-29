@@ -117,19 +117,87 @@ d=$(build silent 'say "nothing runs here"')
 out=$(verdict_of "$d")
 echo "$out" | grep -q 'verdict=extraction_empty' && echo "empty_extraction_refused=yes" || echo "empty_extraction_refused=no"
 
+# 12. A DELEGATED build -- the witness RUNS a tracked script that builds the artifact. Credited as
+#     delegated, counted apart from self_built, and freed. This is the Pond ring shape on this pier:
+#     five witnesses share one build fixture rather than carrying five copies of one build line.
+d=$(build delegated 'let b = run ["sh" "tools/build_thing.sh"]
+let r = run ["bin/thing" "selftest"]')
+( cd "$d" && printf 'BIN="bin/thing"\nrye build src/thing.rye -femit-bin="$BIN"\n' > tools/build_thing.sh \
+  && git add -A && git commit -qm 'pen: the build lives in a tracked fixture' ) >/dev/null 2>&1
+out=$(verdict_of "$d")
+echo "$out" | grep -q 'delegated_built=1' && echo "delegated_credited=yes" || echo "delegated_credited=no"
+echo "$out" | grep -q 'unbuilt_pairs=0 ' && echo "delegated_freed=yes" || echo "delegated_freed=no"
+echo "$out" | grep -q 'self_built=0' && echo "delegated_apart_from_self=yes" || echo "delegated_apart_from_self=no"
+echo "$out" | grep -q 'verdict=ok' && echo "delegated_verdict_ok=yes" || echo "delegated_verdict_ok=no"
+
+# 13. A MENTION IS NOT A BUILD, one hop out as well as zero. The helper the witness runs names the
+#     artifact and builds nothing, so the pair stays counted -- the rule case 3 holds inside the
+#     witness, held one file further away.
+d=$(build delegate_no_build 'let b = run ["sh" "tools/check_thing.sh"]
+let r = run ["bin/thing" "selftest"]')
+( cd "$d" && printf 'echo "bin/thing is the artifact this family proves"\n' > tools/check_thing.sh \
+  && git add -A && git commit -qm 'pen: the helper only mentions the artifact' ) >/dev/null 2>&1
+out=$(verdict_of "$d")
+echo "$out" | grep -q 'delegated_built=0' && echo "mention_not_delegated=yes" || echo "mention_not_delegated=no"
+echo "$out" | grep -q 'unbuilt_pairs=1 ' && echo "mention_still_counted=yes" || echo "mention_still_counted=no"
+
+# 14. A BUILDER THAT NAMES SOMETHING ELSE is not this artifact's builder. The helper builds, and
+#     builds a stranger, so the pair stays counted -- the third of the three strict conditions,
+#     proven alone.
+d=$(build delegate_other_target 'let b = run ["sh" "tools/build_other.sh"]
+let r = run ["bin/thing" "selftest"]')
+( cd "$d" && printf 'rye build src/gizmo.rye -femit-bin=bin/gizmo\n' > tools/build_other.sh \
+  && git add -A && git commit -qm 'pen: the helper builds a stranger' ) >/dev/null 2>&1
+out=$(verdict_of "$d")
+echo "$out" | grep -q 'delegated_built=0' && echo "other_target_uncredited=yes" || echo "other_target_uncredited=no"
+echo "$out" | grep -q 'unbuilt_pairs=1 ' && echo "other_target_counted=yes" || echo "other_target_counted=no"
+
+# 15. AN UNTRACKED BUILDER IS NOT A PROMISE A CLONE CAN KEEP. The helper builds the artifact exactly
+#     and git ignores the helper, so a clone carries neither. Counted, and it must be.
+d=$(build delegate_untracked 'let b = run ["sh" "tools/scratch_build.sh"]
+let r = run ["bin/thing" "selftest"]')
+( cd "$d" && printf '/bin/\n/tools/scratch_build.sh\n' > .gitignore \
+  && printf 'rye build src/thing.rye -femit-bin=bin/thing\n' > tools/scratch_build.sh \
+  && git add -A && git commit -qm 'pen: the builder is untracked' ) >/dev/null 2>&1
+out=$(verdict_of "$d")
+echo "$out" | grep -q 'delegated_built=0' && echo "untracked_delegate_uncredited=yes" || echo "untracked_delegate_uncredited=no"
+echo "$out" | grep -q 'unbuilt_pairs=1 ' && echo "untracked_delegate_counted=yes" || echo "untracked_delegate_counted=no"
+
+# 16. ONE HOP, AND ONLY ONE -- asserted rather than described. The build sits two scripts deep, the
+#     witness runs only the outer one, and the pair stays counted. A limit nobody proves is a limit
+#     nobody can rely on.
+d=$(build delegate_two_hops 'let b = run ["sh" "tools/outer.sh"]
+let r = run ["bin/gizmo" "selftest"]')
+( cd "$d" && printf 'sh tools/inner.sh\n' > tools/outer.sh \
+  && printf 'rye build src/gizmo.rye -femit-bin=bin/gizmo\n' > tools/inner.sh \
+  && git add -A && git commit -qm 'pen: the build is two scripts deep' ) >/dev/null 2>&1
+out=$(verdict_of "$d")
+echo "$out" | grep -q 'delegated_built=0' && echo "two_hops_uncredited=yes" || echo "two_hops_uncredited=no"
+echo "$out" | grep -q 'unbuilt_pairs=1 ' && echo "two_hops_counted=yes" || echo "two_hops_counted=no"
+
+# 17. A WITNESS IS NEVER ITS OWN DELEGATE. This one names its own path in a run line and carries a
+#     build for a stranger, so following the self-hop would credit it for an artifact it never
+#     builds. The skip is what keeps one build line from excusing every other invocation in a file.
+d=$(build self_hop 'let a = run ["rishi/bin/rishi" "run" "tools/thing_witness.rish"]
+let b = run ["sh" "-c" "rye build src/other.rye -femit-bin=bin/other"]
+let r = run ["bin/thing" "selftest"]')
+out=$(verdict_of "$d")
+echo "$out" | grep -q 'delegated_built=0' && echo "self_hop_uncredited=yes" || echo "self_hop_uncredited=no"
+echo "$out" | grep -q 'unbuilt_pairs=1 ' && echo "self_hop_counted=yes" || echo "self_hop_counted=no"
+
 # 11. The ratchet, from both sides. The planted counts track the LIVE ceiling: lower the ceiling and
 #     these two move with it, or the control proves a ceiling the tree no longer holds.
 d=$(build ratchet_under 'let r = run ["bin/thing" "selftest"]')
-( cd "$d" && i=2; while [ "$i" -le 14 ]; do printf 'let r = run ["bin/thing%s" "selftest"]\n' "$i" > "tools/spare${i}_witness.rish"; i=$((i + 1)); done
-  git add -A && git commit -qm 'pen: fourteen unbuilt pairs' ) >/dev/null 2>&1
+( cd "$d" && i=2; while [ "$i" -le 4 ]; do printf 'let r = run ["bin/thing%s" "selftest"]\n' "$i" > "tools/spare${i}_witness.rish"; i=$((i + 1)); done
+  git add -A && git commit -qm 'pen: four unbuilt pairs' ) >/dev/null 2>&1
 out=$(verdict_of "$d")
-echo "$out" | grep -q 'unbuilt_pairs=14 ' && echo "ratchet_counted=yes" || echo "ratchet_counted=no"
+echo "$out" | grep -q 'unbuilt_pairs=4 ' && echo "ratchet_counted=yes" || echo "ratchet_counted=no"
 echo "$out" | grep -q 'verdict=ok' && echo "ratchet_under_free=yes" || echo "ratchet_under_free=no"
 
-( cd "$d" && printf 'let r = run ["bin/thing15" "selftest"]\n' > tools/spare15_witness.rish \
+( cd "$d" && printf 'let r = run ["bin/thing5" "selftest"]\n' > tools/spare5_witness.rish \
   && git add -A && git commit -qm 'pen: one over the ceiling' ) >/dev/null 2>&1
 out=$(verdict_of "$d")
-echo "$out" | grep -q 'unbuilt_pairs=15 ' && echo "ratchet_over_counted=yes" || echo "ratchet_over_counted=no"
+echo "$out" | grep -q 'unbuilt_pairs=5 ' && echo "ratchet_over_counted=yes" || echo "ratchet_over_counted=no"
 echo "$out" | grep -q 'verdict=witness_without_build' && echo "ratchet_over_refused=yes" || echo "ratchet_over_refused=no"
 
 echo "control_verdict=ok"

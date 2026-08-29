@@ -23,15 +23,22 @@
 #   witnesses            every tracked *_witness.rish on disk
 #   invoked_ignored      (witness, artifact) pairs where the artifact is a path git ignores
 #   self_built           of those, the pairs whose witness builds the artifact itself
+#   delegated_built      of the rest, the pairs whose witness RUNS a tracked script that builds the
+#                        artifact -- one hop, and only one. Counted apart from self_built rather
+#                        than folded into it: a delegated build is a real build resting on a second
+#                        file staying honest, and one number for both would hide which promise a
+#                        witness actually makes.
 #   unbuilt_pairs        the rest. THIS IS THE RATCHETED NUMBER, under a ceiling that only falls
 #   unbuilt_witnesses    distinct witnesses in the unbuilt set, reported
 #   absent_now           unbuilt artifacts missing from THIS filesystem right now, reported and
 #                        never gated: it is a fact about one machine, and a machine that has been
 #                        building for weeks reads lower than a clone. Gating it would make the
 #                        guard answer differently on two honest trees.
-#   built_elsewhere      unbuilt artifacts some OTHER tracked file builds, reported. A build kept
-#                        by a caller is real, and it is still not the promise a witness makes: every
-#                        one of these headers tells a reader to run the witness directly.
+#   built_elsewhere      unbuilt artifacts some OTHER tracked file builds -- a file this witness
+#                        does NOT run, since one it does run is counted as delegated above.
+#                        Reported. A build kept by a stranger is real, and it is still not the
+#                        promise a witness makes: every one of these headers tells a reader to run
+#                        the witness directly.
 #
 # WHAT PASSES FREE, by named rule.
 #   rishi/bin/rishi and rye/bin/rye -- the interpreter running the witness and the compiler that
@@ -47,6 +54,34 @@
 # `run ["sh" "-c" "... path ..."]` is invisible here, and so is one a suite builds before calling
 # this witness. Both are named rather than guessed: `built_elsewhere` reports the second, and the
 # first is left to the reader. A narrow reading that is exactly right beats a wide one that argues.
+#
+# THE LIMIT THAT RAN THE OTHER WAY. Under-counting is safe -- a defect this scan cannot see is a
+# defect left standing. Over-counting is not, and on 20260829 this reading was doing both. Five Pond
+# ring witnesses build pond/bin/drawn-terminal by running tools/fixtures/p/pond_build_drawn_terminal.sh,
+# and five Glow witnesses build their gate binary by running tools/g/glow_run_worker.sh -- each
+# script tracked, each named in the witness's own `run [ ... ]` line, each carrying a real build.
+# All ten were counted as defects, and they were UNREPAIRABLE ones: the only edit that satisfies a
+# basename grep is a second build line beside a build that already runs. Ten of fourteen entries sat
+# under a ratchet that could never reach zero, and a ratchet whose population nobody can repair has
+# stopped being a ratchet and become a floor.
+#
+# The sharpest reading was inside one file. tools/p/pond_ring_drawn_terminal_witness.rish builds
+# pond/bin/customs INLINE at its line 23 and pond/bin/drawn-terminal BY FIXTURE at its line 27, and
+# the scan credited the first and faulted the second, on one run, for one witness.
+#
+# THE HOP, IN ONE SENTENCE. A build the witness CAUSES is a build the witness makes: the witness
+# runs a tracked script, the script carries a build line, and the script names the artifact. Three
+# strict conditions and no loose one, because a fourth reading -- the artifact named in the
+# witness's own arguments -- credits nearly every pair once you notice that the invocation line
+# names it too. Both real families satisfy the three: the Pond fixture assigns
+# BIN="pond/bin/drawn-terminal", and the Glow worker lists all 56 of its gate stems in one case
+# pattern.
+#
+# ITS OWN LIMIT, named rather than guessed. One hop, so a build two scripts deep is invisible. And
+# a truly generic builder that never spells its targets is invisible too -- a real shape, and one
+# no grep can tell from a helper that merely runs something. Both stay uncounted rather than
+# credited on a resemblance, which is the same discipline as THE HONEST LIMIT above, kept in the
+# other direction.
 #
 # USAGE
 #   sh tools/fixtures/w/witness_own_build_scan.sh
@@ -85,7 +120,13 @@ set -eu
 # It read 46 on 20260828 and 48 before the two Comlink witnesses. It only ever falls: a
 # witness repaired lowers it, and a new witness invoking an unbuilt artifact raises it past
 # the ceiling on the lap it arrives.
-CEILING=14
+CEILING=4
+# AND WHY IT FELL TEN IN ONE LAP WITHOUT A WITNESS BEING TOUCHED. 4 is the reading on 20260829 once
+# this scan learned to follow ONE HOP. Ten of the fourteen it had been counting were honest -- five
+# Pond ring witnesses and five Glow witnesses, each building through a tracked script it runs -- and
+# the four that remain are real: Kumara's contact, Settlement's constellation and names, and the
+# nakshatra seat. Every one of those four artifacts is PRESENT on this pier, which is the whole
+# reason the meter exists: they read green here and die on a clone.
 
 command -v git >/dev/null 2>&1 || { echo "verdict=no_git"; echo "refused: this scan reads the tracked tree, so it wants git" >&2; exit 1; }
 git rev-parse --git-dir >/dev/null 2>&1 || { echo "verdict=no_repo"; echo "refused: not inside a git repository" >&2; exit 1; }
@@ -146,12 +187,41 @@ while IFS="$(printf '\t')" read -r w tok; do
 done < "$pen/pairs"
 invoked=$(sort -u "$pen/invoked" | wc -l | tr -d ' ')
 
-: > "$pen/unbuilt"; : > "$pen/self"
+# max_delegates bounds the helper scripts one witness may hand work to before this reading stops
+# following. The widest witness in the tree hands work to two, so sixteen leaves room for a witness
+# to quadruple its helpers twice while keeping a generated file from walking this loop unbounded.
+max_delegates=16
+
+# delegated_build <witness> <artifact> -- true when the witness RUNS a tracked tools/ script that
+# carries a real build line and names this artifact in its own non-comment text. A witness is never
+# its own delegate, or a witness building one artifact would credit itself for every other. Every
+# branch is an explicit if: this function is called from a condition, where a bare `test && act`
+# carries its own failure out under set -e.
+delegated_build() {
+  _w=$1; _base=$(basename "$2")
+  grep -v '^[[:space:]]*#' "$_w" | grep -E 'run[[:space:]]*\[' > "$pen/runlines" 2>/dev/null || return 1
+  grep -oE 'tools/[A-Za-z0-9_./-]*\.(rish|sh)' "$pen/runlines" \
+    | sort -u | head -n "$max_delegates" > "$pen/hops" 2>/dev/null || return 1
+  while read -r _s; do
+    if [ -z "${_s:-}" ]; then continue; fi
+    if [ "$_s" = "$_w" ]; then continue; fi
+    grep -qxF -- "$_s" "$pen/tracked" || continue
+    [ -f "$_s" ] || continue
+    grep -v '^[[:space:]]*#' "$_s" > "$pen/dbody" 2>/dev/null || continue
+    grep -qE "(rye build|zig build|emit-bin)" "$pen/dbody" || continue
+    if grep -qF -- "$_base" "$pen/dbody"; then return 0; fi
+  done < "$pen/hops"
+  return 1
+}
+
+: > "$pen/unbuilt"; : > "$pen/self"; : > "$pen/delegated"
 while IFS="$(printf '\t')" read -r w tok; do
   [ -n "${tok:-}" ] || continue
   grep -v '^[[:space:]]*#' "$w" | grep -E "(rye build|zig build|emit-bin)" > "$pen/bl" 2>/dev/null || : > "$pen/bl"
   if grep -qF -- "$(basename "$tok")" "$pen/bl"; then
     printf '%s\t%s\n' "$w" "$tok" >> "$pen/self"
+  elif delegated_build "$w" "$tok"; then
+    printf '%s\t%s\n' "$w" "$tok" >> "$pen/delegated"
   else
     printf '%s\t%s\n' "$w" "$tok" >> "$pen/unbuilt"
   fi
@@ -159,6 +229,7 @@ done < "$pen/invoked"
 
 sort -u "$pen/unbuilt" > "$pen/unbuilt.s"; mv "$pen/unbuilt.s" "$pen/unbuilt"
 self_built=$(sort -u "$pen/self" | wc -l | tr -d ' ')
+delegated_built=$(sort -u "$pen/delegated" | wc -l | tr -d ' ')
 unbuilt=$(wc -l < "$pen/unbuilt" | tr -d ' ')
 unbuilt_witnesses=$(cut -f1 "$pen/unbuilt" | sort -u | wc -l | tr -d ' ')
 
@@ -185,6 +256,7 @@ if [ "${1:-}" = "--list" ]; then cat "$pen/unbuilt"; fi
 echo "witnesses=$witnesses"
 echo "invoked_ignored=$invoked"
 echo "self_built=$self_built"
+echo "delegated_built=$delegated_built"
 echo "unbuilt_pairs=$unbuilt ceiling=$CEILING"
 echo "unbuilt_witnesses=$unbuilt_witnesses"
 echo "absent_now=$absent"

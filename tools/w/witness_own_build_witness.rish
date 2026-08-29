@@ -13,18 +13,33 @@
 # discovery in its own comment. One of three was fixed and the other two were left, which is what a
 # repair without a meter looks like a month later. This is the meter.
 #
+# THE READING MOVED 14 TO 4 WITHOUT ONE WITNESS BEING TOUCHED, on `20260829`. Ten of the fourteen
+# pairs were honest all along: five Pond ring witnesses build pond/bin/drawn-terminal by running
+# tools/fixtures/p/pond_build_drawn_terminal.sh, and five Glow witnesses build their gate binary by
+# running tools/g/glow_run_worker.sh -- each script tracked, each named in the witness's own
+# `run [ ... ]` line, each carrying a real build. The scan read only the witness's own text, so a
+# build one file away read as a missing build. They were unrepairable entries too: the only edit
+# that satisfies a basename grep is a second build line beside a build that already runs, so the
+# ratchet had a floor at ten that nobody could lower. The scan follows ONE HOP now and counts these
+# apart as `delegated_built`.
+#
 # WHAT IS PROVEN, on metal.
-#   The unbuilt-pair reading stands under a ceiling that only falls: 14 pairs across 13 witnesses
-#   invoke a gitignored artifact their own file never builds, down from 38 when Amphora's eight
-#   took all three of their own builds, and from 19 when Scribe's reader and dashboard, Vault's
-#   shard and Basin's basin took theirs -- and four of the eight needed a build this scan does not
-#   count, because amphora shells out to vessel-core and vessel-seal as siblings at runtime.
-#   Twenty-one behaviors on throwaway git repositories: the good shape free and credited, the
+#   The unbuilt-pair reading stands under a ceiling that only falls: 4 pairs across 4 witnesses
+#   invoke a gitignored artifact neither they nor a script they run ever builds -- Kumara's
+#   contact, Settlement's constellation and names, and the nakshatra seat. Each sits in a room this
+#   seat does not hold, and each artifact is PRESENT on this pier, which is exactly why the meter
+#   exists: all four read green here and die on a clone. The elder readings, kept so the fall stays
+#   followable: 14 after Scribe, Vault and Basin took their own builds, 19 before them, 38 after
+#   Amphora's eight, 46 and 48 before that.
+#   Thirty-five behaviors on throwaway git repositories: the good shape free and credited, the
 #   defect counted, the comment-only build refused exactly as it stood in Comlink, a tracked binary
 #   free, the interpreter and compiler free by named rule, a vendored path free, the `sh -c` limit
 #   asserted rather than described, absent_now reported from both sides and gating neither, a
-#   comment mention free, an empty extraction refused, and the ratchet counted, free at its
-#   ceiling and refused one over.
+#   comment mention free, an empty extraction refused, the ratchet counted, free at its ceiling and
+#   refused one over -- and the hop proven from every side: a delegated build credited and freed, a
+#   helper that only mentions the artifact still counted, a helper that builds a stranger still
+#   counted, an untracked builder still counted, a build two scripts deep still counted, and a
+#   witness refused the chance to be its own delegate.
 #
 # WHAT IS REPORTED RATHER THAN GATED. `absent_now`, the unbuilt artifacts missing from THIS
 # filesystem -- a fact about one machine, where a bench that has been building for weeks reads
@@ -33,8 +48,10 @@
 # witness directly.
 #
 # WHAT IS NOT PROVEN. That a build succeeds, that an artifact does anything worth doing, or that a
-# binary reached through `run ["sh" "-c" ...]` is carried. Only that a witness invoking a path the
-# repository declines to carry also builds it.
+# binary reached through `run ["sh" "-c" ...]` is carried. A build two scripts deep is uncounted,
+# and so is a generic builder that never spells the target it is handed -- both left uncredited
+# rather than guessed at. Only that a witness invoking a path the repository declines to carry also
+# builds it, itself or through one script it runs.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/w/witness_own_build_witness.rish
@@ -47,8 +64,9 @@ let scan = run ["sh" "tools/fixtures/w/witness_own_build_scan.sh"]
 assert scan.ok else "own-build: a witness invokes an artifact it never builds -- read the scan's own lines"
 say scan.out
 assert scan.out contains "verdict=ok" else "own-build: the scan must balance before it is believed"
-assert scan.out contains "unbuilt_pairs=14 " else "own-build: the ratchet reads 14; lower the ceiling when a repair lands"
+assert scan.out contains "unbuilt_pairs=4 " else "own-build: the ratchet reads 4; lower the ceiling when a repair lands"
 assert scan.out contains "self_built=" else "own-build: the credited pairs must be counted, never assumed"
+assert scan.out contains "delegated_built=" else "own-build: a build one hop away must be counted apart, never folded in"
 say "field GREEN -- the unbuilt reading stands under a ceiling that only falls"
 
 let control = run ["sh" "tools/fixtures/w/witness_own_build_control.sh"]
@@ -75,7 +93,21 @@ assert control.out contains "ratchet_counted=yes" else "own-build: the ratchet m
 assert control.out contains "ratchet_under_free=yes" else "own-build: a ratchet at its ceiling must pass free"
 assert control.out contains "ratchet_over_counted=yes" else "own-build: the ratchet must count past its ceiling"
 assert control.out contains "ratchet_over_refused=yes" else "own-build: a ratchet over its ceiling must refuse"
+assert control.out contains "delegated_credited=yes" else "own-build: a build the witness causes is a build the witness makes"
+assert control.out contains "delegated_freed=yes" else "own-build: a delegated build must free the pair, never merely name it"
+assert control.out contains "delegated_apart_from_self=yes" else "own-build: delegated and self-built must stay two numbers"
+assert control.out contains "delegated_verdict_ok=yes" else "own-build: an honest delegation must not red the tree"
+assert control.out contains "mention_not_delegated=yes" else "own-build: a helper that mentions and builds nothing is a comment with a shebang"
+assert control.out contains "mention_still_counted=yes" else "own-build: a mention one hop out must stay counted"
+assert control.out contains "other_target_uncredited=yes" else "own-build: a builder of strangers is not this artifact's builder"
+assert control.out contains "other_target_counted=yes" else "own-build: a stranger's build must leave the pair counted"
+assert control.out contains "untracked_delegate_uncredited=yes" else "own-build: an untracked builder is not a promise a clone can keep"
+assert control.out contains "untracked_delegate_counted=yes" else "own-build: an untracked builder must leave the pair counted"
+assert control.out contains "two_hops_uncredited=yes" else "own-build: one hop, and only one -- the limit must be asserted"
+assert control.out contains "two_hops_counted=yes" else "own-build: a build two scripts deep must leave the pair counted"
+assert control.out contains "self_hop_uncredited=yes" else "own-build: a witness is never its own delegate"
+assert control.out contains "self_hop_counted=yes" else "own-build: one build line must not excuse every other invocation in a file"
 assert control.out contains "control_verdict=ok" else "own-build: the control must agree with itself"
-say "RED and GREEN paths proven -- six refusals bitten, fifteen honest readings left free"
+say "RED and GREEN paths proven -- sixteen refusals bitten, nineteen honest readings left free"
 
 say "GREEN: own-build -- a witness that runs a path the repository declines to carry also builds it."
