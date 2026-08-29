@@ -66,8 +66,8 @@ say "caravan-address-space: Lens TAME -- bound everything, say why; the module's
 let zig = "vendor/zig-toolchain/zig"
 let bin = "caravan/bin/address_space"
 let source = "vendor/microkit/tool/microkit/src/sdf/memory_region.rs"
-let scan = "tools/fixtures/caravan_address_space_symbol_scan.sh"
-let control = "tools/fixtures/caravan_address_space_join_control.sh"
+let scan = "tools/fixtures/c/caravan_address_space_symbol_scan.sh"
+let control = "tools/fixtures/c/caravan_address_space_join_control.sh"
 let build_dir = "tools/.build/caravan_address_space"
 
 let mk = run ["sh" "-c" "mkdir -p caravan/bin ${build_dir}"]
@@ -113,7 +113,7 @@ assert parity.out contains "verdict=ok" else "caravan-address-space: the source 
 # 4. THE RED PATHS, on metal. A guard that cannot red guards nothing (REDS row 59). Six plants and
 #    one welcome, run on real files in a throwaway pen by the control, which reads a small integer
 #    report back rather than interpolating a quoted awk program into a shell word (REDS %85).
-let plants = run ["sh" "-c" "sh tools/fixtures/caravan_address_space_scan_control.sh ${source} ${build_dir}/table.txt"]
+let plants = run ["sh" "-c" "sh tools/fixtures/c/caravan_address_space_scan_control.sh ${source} ${build_dir}/table.txt"]
 assert plants.ok else "caravan-address-space: the scan control did not run"
 say plants.out
 assert plants.out contains "welcome=ok" else "caravan-address-space: the unedited source must read ok in the same pen, or every refusal below measures a broken pen"

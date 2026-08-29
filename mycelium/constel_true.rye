@@ -6,7 +6,7 @@
 //!
 //! r1 booted a named constellation and reached quorum, r2 proved its fault tolerance, r3 let it travel as a
 //! record -- all over rosters seated in code. r4 carries the reader onto a REAL on-disk `format constel-v1`
-//! record a keeper can open and read -- `tools/fixtures/constel_roster.bron`, produced reproducibly by
+//! record a keeper can open and read -- `tools/fixtures/c/constel_roster.bron`, produced reproducibly by
 //! `mycelium/constel_fixture_gen.rye`, `@embedFile`-bound at compile time through the `mycelium/corpora/`
 //! symlink (no network).
 //!

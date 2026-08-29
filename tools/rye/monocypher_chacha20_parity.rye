@@ -1,5 +1,5 @@
 //! tools/rye/monocypher_chacha20_parity.rye -- our authored crypto/chacha20.rye asked for its OWN ChaCha20 (IETF, RFC 8439) keystream and ciphertext over
-//! the same six inputs the Monocypher C harness (tools/fixtures/monocypher_chacha20_harness.c) prints, so tools/cr/crypto_monocypher_chacha20_parity_witness.rish
+//! the same six inputs the Monocypher C harness (tools/fixtures/m/monocypher_chacha20_harness.c) prints, so tools/cr/crypto_monocypher_chacha20_parity_witness.rish
 //! can diff our bytes against the vendored Monocypher's C byte-for-byte -- the stream cipher the whole ChaCha/Poly line is built on, proven against the
 //! audit's parity target. Chapter G (Cryptography - Rye-native, Monocypher-parity, audit-ready).
 //!

@@ -14,7 +14,7 @@ let zig = "vendor/zig-toolchain/zig"
 
 # A Wayland application on a headless pier is a machine fact, never a tree red (REDS %173).
 # The build fixture exits 3, and only 3, when no graphical link seam stands here.
-let gate = run ["sh" "-c" "sh tools/fixtures/pond_build_drawn_terminal.sh >/dev/null 2>&1; test $? -eq 3"]
+let gate = run ["sh" "-c" "sh tools/fixtures/p/pond_build_drawn_terminal.sh >/dev/null 2>&1; test $? -eq 3"]
 if gate.ok then say "GATED: ring wants a host with a display -- no graphical link seam on this machine."
 if gate.ok then say "GATED: customs and the manifests are host-free; the session lap wants glass."
 if gate.ok then exit 0
@@ -24,11 +24,11 @@ let bc = run ["env" "RYE_ZIG=${zig}" "rye/bin/rye" "build" "pond/customs.rye" "-
 assert bc.ok else "ring: customs failed to build"
 
 say "ring: the app stands (seated build fixture)..."
-let ba = run ["rishi/bin/rishi" "run" "tools/fixtures/pond_build_drawn_terminal.rish"]
+let ba = run ["rishi/bin/rishi" "run" "tools/fixtures/p/pond_build_drawn_terminal.rish"]
 assert ba.ok else "ring: drawn terminal failed to build"
 
 say "ring: manifest crosses customs — place admits..."
-let ins = run ["pond/bin/customs" "inspect" "tools/fixtures/pond_ring_drawn_terminal_good.manifest"]
+let ins = run ["pond/bin/customs" "inspect" "tools/fixtures/p/pond_ring_drawn_terminal_good.manifest"]
 assert ins.ok else "ring: place manifest did not admit"
 assert ins.err contains "verdict=place" else "ring: verdict was not place"
 assert ins.err contains "admitted for placement" else "ring: admission line missing"
@@ -39,7 +39,7 @@ assert app.ok else "ring: admitted app failed its session lap"
 assert app.out contains "GREEN" else "ring: session lap did not speak GREEN"
 
 say "ring: a stranger mark crosses — refuse blocks whole..."
-let ref = run ["sh" "-c" "pond/bin/customs inspect tools/fixtures/pond_ring_drawn_terminal_refuse.manifest 2>&1; test $? -eq 2"]
+let ref = run ["sh" "-c" "pond/bin/customs inspect tools/fixtures/p/pond_ring_drawn_terminal_refuse.manifest 2>&1; test $? -eq 2"]
 assert ref.ok else "ring: refuse did not exit 2"
 assert ref.out contains "REFUSE" else "ring: refuse line missing"
 assert ref.out contains "verdict=refuse" else "ring: verdict was not refuse"

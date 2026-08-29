@@ -25,7 +25,7 @@ entry = (
     "### 71. IronBeetle ep009 hash-chains prepares so the ledger remembers its parent.\n"
     "**Ran:** `rishi/bin/rishi run tools/equinox/witness/equinox_ironbeetle_ep009_choir_witness.rish` · **Stamp:** `"
     + stamp
-    + "` · **Witness:** `tools/gen/chapter/ironbeetle_ep009_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep009_census.sh` · choir `equinox_ironbeetle_ep009_choir_witness.rish`\n"
+    + "` · **Witness:** `tools/gen/chapter/ironbeetle_ep009_census_witness.rish` · scan `tools/fixtures/i/ironbeetle_ep009_census.sh` · choir `equinox_ironbeetle_ep009_choir_witness.rish`\n"
     "Expected IRON=present · EP009 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, "
     "and verdict=absent on a missing iron shelf. Metal answered GREEN. "
     "Clean-room study only.\n\n"

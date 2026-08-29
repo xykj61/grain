@@ -36,7 +36,7 @@ say scope.out
 assert scope.ok else "e112-date-dialect-witness: prin_scope RED"
 assert scope.out contains "GREEN: prin-scope" else "e112-date-dialect-witness: want scope GREEN"
 
-let scan = run ["sh" "tools/fixtures/equinox_e112_date_dialect_witness_scan.sh"]
+let scan = run ["sh" "tools/fixtures/e/equinox_e112_date_dialect_witness_scan.sh"]
 say scan.out
 assert scan.ok else "e112-date-dialect-witness: scan must exit 0"
 assert scan.out contains "control_gate=honored" else "e112-date-dialect-witness: want control_gate"

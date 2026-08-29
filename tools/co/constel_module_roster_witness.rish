@@ -17,7 +17,7 @@
 # by nobody, because a missing entry breaks only understanding, and understanding fails quietly.
 # This directory is correct today; the guard is what keeps the 32nd rung from landing unlisted.
 #
-# ONE SCAN, FOUR DIRECTORIES. tools/fixtures/module_roster_scan.sh takes the directory as an
+# ONE SCAN, FOUR DIRECTORIES. tools/fixtures/m/module_roster_scan.sh takes the directory as an
 # argument, so image/, lotus/, crypto/, and constel/ are held by one rule rather than by four copies
 # of it. A rule written four times is a rule four files may quietly come to disagree about, and this
 # witness adds no scan of its own -- it is a witness file and nothing more, exactly as the itinerary
@@ -40,7 +40,7 @@
 # The rung's own witness proves the rung -- 31 of them stand in tools/f/ -- and this proves the
 # roster.
 #
-# Pen: tools/fixtures/module_roster_control.sh -- sixteen behaviors on real directories in a
+# Pen: tools/fixtures/m/module_roster_control.sh -- sixteen behaviors on real directories in a
 # throwaway pen, nine refusals bitten and seven honest readings left free, so no override exists
 # and none is wanted. Run from the repository root.
 
@@ -48,7 +48,7 @@ say "constel-module-roster: Language EN -- the page a reader learns this directo
 say "constel-module-roster: Style Gauge, Meter -- every count below is the scan's own output, read from the tree rather than recited here."
 say "constel-module-roster: Lens TAME -- a bijection rather than a tally, and the corpus size published beside the verdict so a reading over nothing can never report clean."
 
-let scan = run ["sh" "tools/fixtures/module_roster_scan.sh" "census" "constel"]
+let scan = run ["sh" "tools/fixtures/m/module_roster_scan.sh" "census" "constel"]
 say scan.out
 assert scan.ok else "constel-module-roster: the scan must complete -- a module has landed without a row, or a row outlived its module"
 assert scan.out contains "page=constel/MODULES.md" else "constel-module-roster: the scan must read the constel roster rather than another directory's"
@@ -61,7 +61,7 @@ assert scan.out contains "bijection=yes" else "constel-module-roster: the table 
 # A meter reading no modules finds no fault and would report clean while measuring nothing.
 assert (scan.out contains "modules_on_disk=0" == false) else "constel-module-roster: a zero-module reading would report clean over an empty directory"
 
-let control = run ["sh" "tools/fixtures/module_roster_control.sh"]
+let control = run ["sh" "tools/fixtures/m/module_roster_control.sh"]
 say control.out
 assert control.ok else "constel-module-roster: the control must complete"
 assert control.out contains "control_fail=0" else "constel-module-roster: every planted behavior must read as written"

@@ -16,7 +16,7 @@ assert selftest.out contains "GREEN" else "amphora vessel stamp selftest not GRE
 assert selftest.out contains "Kumara" else "amphora vessel stamp selftest missing Kumara"
 
 say "amphora-stamp: pour signed vessel + scrub verify..."
-let witness = run ["sh" "tools/fixtures/amphora_vessel_stamp_witness.sh"]
+let witness = run ["sh" "tools/fixtures/a/amphora_vessel_stamp_witness.sh"]
 assert witness.ok else "Amphora vessel stamp witness failed"
 assert witness.out contains "GREEN" else "Amphora vessel stamp did not report GREEN"
 assert witness.out contains "STAMP ok" else "Amphora vessel stamp missing STAMP ok"

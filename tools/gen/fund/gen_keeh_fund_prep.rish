@@ -11,7 +11,7 @@ say "gen-keeh: Lens TAME — prep only; fascia edit is rename waves, not live sh
 let verb = ""
 if length args != 0 then let verb = args[0]
 
-let prep = run ["sh" "tools/fixtures/gen_keeh_fund_prep.sh" verb]
+let prep = run ["sh" "tools/fixtures/g/gen_keeh_fund_prep.sh" verb]
 assert prep.ok else "gen-keeh REFUSE or seat door failed — see stderr"
 assert prep.out contains "GREEN: gen-keeh" else "gen-keeh missing GREEN line"
 assert prep.out contains "sign_index=10" else "gen-keeh Aquarius seat index unnamed"
@@ -22,7 +22,7 @@ assert prep.out contains "recommend: used 4-cyl" else "gen-keeh used-mobility le
 assert prep.out contains "keeh_fund=prep" else "gen-keeh prep flag missing"
 say prep.out
 
-let refuse = run ["sh" "tools/fixtures/gen_keeh_fund_prep.sh" "deploy"]
+let refuse = run ["sh" "tools/fixtures/g/gen_keeh_fund_prep.sh" "deploy"]
 assert (refuse.ok == false) else "gen-keeh refuse-walk broken: deploy must exit RED"
 
 say "GREEN: gen-keeh — prep open; Keaton executive · Kia sponsor · used lean; deploy refuse post-fold RED."

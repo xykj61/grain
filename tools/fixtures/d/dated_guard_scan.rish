@@ -1,0 +1,10 @@
+# dated_guard_scan.rish -- staged dated MODIFIED paths on main must declare living.
+#
+# Native migration of dated_guard_scan.py. Body in sibling .sh (git - head - grep
+# through the run seam). Outer wrapper: tools/d/dated_guard.rish
+#
+#   rishi/bin/rishi run tools/fixtures/d/dated_guard_scan.rish
+
+let body = run ["sh" "tools/fixtures/d/dated_guard_scan.sh"]
+say body.out
+assert body.ok else "dated-guard RED: staged dated file on main lacks living header"

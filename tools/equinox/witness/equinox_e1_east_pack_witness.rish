@@ -91,11 +91,11 @@ assert n3.out contains "GREEN" else "voice-v3: sameness negative not GREEN"
 # v4 - slot 4 - values_apart: every scan speaks one composed convention --
 # key=value lines, detail: prefixed detail, a named verdict= key -- and the two
 # channels are asserted to agree, so a typo'd sentinel cannot pass quietly.
-let dcv = run ["sh" "-c" "sh tools/fixtures/dep_crawl_scan.sh brushstroke/east_pack_test.rye 2>&1"]
+let dcv = run ["sh" "-c" "sh tools/fixtures/d/dep_crawl_scan.sh brushstroke/east_pack_test.rye 2>&1"]
 assert dcv.out contains "verdict=ok" else "voice-v4: dep_crawl scan lost its verdict key"
 assert dcv.ok else "voice-v4: dep_crawl verdict and status disagree"
 
-let csv = run ["sh" "-c" "sh tools/fixtures/copy_sameness_scan.sh 2>&1"]
+let csv = run ["sh" "-c" "sh tools/fixtures/c/copy_sameness_scan.sh 2>&1"]
 assert csv.out contains "verdict=ok" else "voice-v4: sameness scan lost its verdict key"
 assert csv.ok else "voice-v4: sameness verdict and status disagree"
 

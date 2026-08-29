@@ -34,7 +34,7 @@ assert over.out contains "EXIT:0" else "a2-fold: over side did not exit 0"
 assert over.out contains "0" else "a2-fold: over side did not speak 0"
 
 say "a2-fold: the missing-bound plant must refuse..."
-let plant = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "tools/fixtures/gate-fold-sumto-missing-bound.glow" "3"]
+let plant = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "tools/fixtures/g/gate-fold-sumto-missing-bound.glow" "3"]
 assert plant.err contains "MalformedBody" else "a2-fold: malformed plant was accepted — the grammar wall fell"
 
 say "a2-fold: a1 garden neighbor still green..."

@@ -11,7 +11,7 @@ say control.out
 assert control.ok else "oldness-census: census control must GREEN"
 assert control.out contains "GREEN: census-control" else "oldness-census: want control GREEN"
 
-let scan = run ["sh" "tools/fixtures/oldness_census_scan.sh"]
+let scan = run ["sh" "tools/fixtures/o/oldness_census_scan.sh"]
 say scan.out
 assert scan.ok else "oldness-census: scan must exit 0"
 assert scan.out contains "control_gate=honored" else "oldness-census: want control_gate"

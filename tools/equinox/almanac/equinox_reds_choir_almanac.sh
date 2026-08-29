@@ -9,7 +9,7 @@ fi
 STAMP=$(TZ=America/New_York date '+%Y%m%d.%H%M%S')
 export STAMP
 # Capture living ledger row count for the entry line
-ROWS=$(sh tools/fixtures/reds_ledger_monotone_scan.sh | rg -o 'rows=[0-9]+' | head -1 | cut -d= -f2)
+ROWS=$(sh tools/fixtures/r/reds_ledger_monotone_scan.sh | rg -o 'rows=[0-9]+' | head -1 | cut -d= -f2)
 ROWS=${ROWS:-unknown}
 export ROWS
 python3 - <<'PY'

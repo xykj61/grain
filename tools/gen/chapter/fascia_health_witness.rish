@@ -8,7 +8,7 @@ say "fascia-health: Language EN — git ls-files presence; planted controls befo
 say "fascia-health: Style Radiant — live surface over total surface, per room."
 say "fascia-health: Lens TAME — living-vs-dated · withhold until both controls read."
 
-let green = run ["sh" "tools/fixtures/fascia_health_scan.sh"]
+let green = run ["sh" "tools/fixtures/f/fascia_health_scan.sh"]
 say green.out
 assert green.ok else "fascia-health: living scan must exit 0"
 assert green.out contains "control_gate=honored" else "fascia-health: want control gate"
@@ -23,7 +23,7 @@ assert green.out contains "fascia_health=" else "fascia-health: want fascia_heal
 assert green.out contains "verdict=ok" else "fascia-health: want verdict=ok"
 assert green.out contains "shred=RED" else "fascia-health: shred stays RED"
 
-let red = run ["sh" "tools/fixtures/fascia_health_scan.sh" "prove-red"]
+let red = run ["sh" "tools/fixtures/f/fascia_health_scan.sh" "prove-red"]
 say red.out
 assert (red.ok == false) else "fascia-health: prove-red must refuse"
 assert red.out contains "RED_on_disk_is_not_in_the_tree" else "fascia-health: prove-red want on-disk law"

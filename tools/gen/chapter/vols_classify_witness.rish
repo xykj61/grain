@@ -28,14 +28,14 @@ say "vols-classify: Lens TAME — guarded is derived from the guard in force; gu
 
 # The guarded set derives from the guard witness itself -- a known swept file appears,
 # so the extraction reads the real guard rather than a hand-copy.
-let guardlist = run ["sh" "tools/fixtures/vols_guardlist_extract.sh" "tools/gen/chapter/cion_module_labeling_witness.rish"]
+let guardlist = run ["sh" "tools/fixtures/v/vols_guardlist_extract.sh" "tools/gen/chapter/cion_module_labeling_witness.rish"]
 assert guardlist.ok else "vols-classify: the guardlist extraction failed to run"
 assert guardlist.out contains "mandate/README.md" else "vols-classify: the derived guardlist is missing a known swept surface"
 assert guardlist.out contains "scribble/scribble.rye" else "vols-classify: the derived guardlist is missing a known swept surface"
 
 # Positive fixture -- a clean file is guarded (never a site); the prose README is a gap;
 # the witness-handle file is a kept handle; guarded_sites is 0.
-let ok = run ["sh" "tools/fixtures/vols_classify_scan.sh" "tools/fixtures/vols_classify_tree" "tools/fixtures/vols_classify_guardlist_ok.txt"]
+let ok = run ["sh" "tools/fixtures/v/vols_classify_scan.sh" "tools/fixtures/vols_classify_tree" "tools/fixtures/v/vols_classify_guardlist_ok.txt"]
 say ok.out
 assert ok.out contains "verdict=ok" else "vols-classify: the positive fixture did not classify cleanly"
 assert ok.ok else "vols-classify: positive fixture verdict and status disagree"
@@ -48,7 +48,7 @@ assert ok.out contains "handle=tools/fixtures/vols_classify_tree/tools/thing_lap
 
 # Negative fixture -- put the prose site's own file in the guardlist. A guarded file that
 # still carries a bare ordinal is drift; the classifier must bite it (guarded_sites=1).
-let neg = run ["sh" "tools/fixtures/vols_classify_scan.sh" "tools/fixtures/vols_classify_tree" "tools/fixtures/vols_classify_guardlist_neg.txt"]
+let neg = run ["sh" "tools/fixtures/v/vols_classify_scan.sh" "tools/fixtures/vols_classify_tree" "tools/fixtures/v/vols_classify_guardlist_neg.txt"]
 say neg.out
 assert neg.out contains "guarded_sites=1" else "vols-classify: the classifier failed to detect a drifted guarded file"
 assert neg.out contains "verdict=drift" else "vols-classify: a drifted guarded file did not raise the verdict"
@@ -57,7 +57,7 @@ assert (neg.ok == false) else "vols-classify: the drift verdict and status disag
 # Report the LIVE classification informationally -- the real map LOWE reads: how many of
 # the survey's sites are kept witness handles, how many are prose gaps to relabel, and
 # the invariant that no guarded file drifted (guarded_sites=0).
-let live_totals = run ["sh" "-c" "sh tools/fixtures/vols_guardlist_extract.sh tools/gen/chapter/cion_module_labeling_witness.rish > /tmp/vols_live_guardlist.txt && sh tools/fixtures/vols_classify_scan.sh . /tmp/vols_live_guardlist.txt | grep -E '^(sites|handles|prose_gaps|guarded_sites)='"]
+let live_totals = run ["sh" "-c" "sh tools/fixtures/v/vols_guardlist_extract.sh tools/gen/chapter/cion_module_labeling_witness.rish > /tmp/vols_live_guardlist.txt && sh tools/fixtures/v/vols_classify_scan.sh . /tmp/vols_live_guardlist.txt | grep -E '^(sites|handles|prose_gaps|guarded_sites)='"]
 say "vols-classify: live classification —"
 say live_totals.out
 assert live_totals.out contains "guarded_sites=0" else "vols-classify: a live guarded file drifted — the CION guard and the survey sites are not disjoint"

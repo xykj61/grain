@@ -10,7 +10,7 @@ say "equinox-ch2-surface: Style Radiant — the living surface holds as one."
 say "equinox-ch2-surface: Lens TAME — e26 · almanac seat 32 · ch2 full."
 
 # Limb 1 -- SAFE list (leaf census; shred refuse measured inside)
-let safe = run ["sh" "tools/fixtures/safe_list_census.sh"]
+let safe = run ["sh" "tools/fixtures/s/safe_list_census.sh"]
 say safe.out
 assert safe.ok else "equinox-ch2-surface: SAFE limb failed"
 assert safe.out contains "verdict=ok" else "equinox-ch2-surface: SAFE not ok"
@@ -47,7 +47,7 @@ assert baton.ok else "equinox-ch2-surface: baton welcome failed"
 assert baton.out contains "halls_expected=13" else "equinox-ch2-surface: want thirteen halls"
 assert baton.out contains "census_breach_count=0" else "equinox-ch2-surface: want breach zero"
 
-let baton_neg = run ["sh" "tools/fixtures/baton_museum_census_scan.sh" "tools/fixtures/baton_museum_ABSENT"]
+let baton_neg = run ["sh" "tools/fixtures/b/baton_museum_census_scan.sh" "tools/fixtures/baton_museum_ABSENT"]
 say baton_neg.out
 assert baton_neg.ok == false else "equinox-ch2-surface: absent museum must fail"
 assert baton_neg.out contains "verdict=missing_museum" else "equinox-ch2-surface: want missing_museum"

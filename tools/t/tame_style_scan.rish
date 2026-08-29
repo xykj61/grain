@@ -4,13 +4,13 @@
 # Run from the repository root:
 #   rishi/bin/rishi run tools/t/tame_style_scan.rish [mode]
 #
-# Fixture entry (thin delegate): tools/fixtures/tame_style_scan.sh
+# Fixture entry (thin delegate): tools/fixtures/t/tame_style_scan.sh
 
-if args contains "advise-legacy" then let legacy = run ["sh" "tools/fixtures/tame_style_scan_advise_legacy.sh"]
+if args contains "advise-legacy" then let legacy = run ["sh" "tools/fixtures/t/tame_style_scan_advise_legacy.sh"]
 if args contains "advise-legacy" then say legacy.out
 if args contains "advise-legacy" then exit 0
 
-if args contains "bans-legacy" then let legacy = run ["sh" "tools/fixtures/tame_style_scan_bans_legacy.sh"]
+if args contains "bans-legacy" then let legacy = run ["sh" "tools/fixtures/t/tame_style_scan_bans_legacy.sh"]
 if args contains "bans-legacy" then say legacy.out
 if args contains "bans-legacy" then assert legacy.ok
 if args contains "bans-legacy" then exit 0

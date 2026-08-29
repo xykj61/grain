@@ -17,7 +17,7 @@ assert welcome.out contains "GUIDE_COLS=yes" else "equinox-tb-style-numbers-choi
 assert welcome.out contains "TAME_STYLE=yes" else "equinox-tb-style-numbers-choir: want TAME_STYLE"
 assert welcome.out contains "ELDER_OBO=yes" else "equinox-tb-style-numbers-choir: want ELDER_OBO"
 
-let refuse = run ["sh" "tools/fixtures/tigerbeetle_style_by_the_numbers_census.sh" "tools/fixtures/tigerbeetle_ABSENT"]
+let refuse = run ["sh" "tools/fixtures/t/tigerbeetle_style_by_the_numbers_census.sh" "tools/fixtures/tigerbeetle_ABSENT"]
 say refuse.out
 assert refuse.ok == false else "equinox-tb-style-numbers-choir: absent clone must fail"
 assert refuse.out contains "verdict=absent" else "equinox-tb-style-numbers-choir: want verdict=absent"

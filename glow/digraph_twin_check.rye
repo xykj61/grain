@@ -8,7 +8,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const tokens = @import("tokens.rye");
 
-const fixture_path = "tools/fixtures/glow_digraph_table.txt";
+const fixture_path = "tools/fixtures/g/glow_digraph_table.txt";
 
 fn run_selftest(init: std.process.Init) !u8 {
     const a = init.arena.allocator();

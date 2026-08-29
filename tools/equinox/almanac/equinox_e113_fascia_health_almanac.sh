@@ -29,8 +29,8 @@ entry = (
     + stamp
     + "` · **Witness:** `tools/equinox/witness/equinox_e113_fascia_health_witness.rish` · "
     "standing `tools/gen/chapter/fascia_health_witness.rish` · "
-    "scan `tools/fixtures/fascia_health_scan.sh` · "
-    "equinox scan `tools/fixtures/equinox_e113_fascia_health_scan.sh`\n"
+    "scan `tools/fixtures/f/fascia_health_scan.sh` · "
+    "equinox scan `tools/fixtures/e/equinox_e113_fascia_health_scan.sh`\n"
     "Expected control_gate · instruments_tracked · controls_honored=2 · "
     "fascia_health=41 · prove-red RED_on_disk_is_not_in_the_tree · "
     "REDS rows=38 · expect_next=39 · seat_128 reserved · surface_count=4 · "

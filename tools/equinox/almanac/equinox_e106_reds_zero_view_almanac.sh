@@ -25,7 +25,7 @@ entry = (
     "### 110. Equinox e106 REDS zero-view: ledger row 33 records that a zero names the instrument's view, never the world; planted empty-view + archive-fall control; M3/M4 home land already consumed on e105; fascia i9 hold kept.\n"
     "**Ran:** `rishi/bin/rishi run tools/equinox/witness/equinox_e106_reds_zero_view_choir_witness.rish` · **Stamp:** `"
     + stamp
-    + "` · **Witness:** `tools/equinox/witness/equinox_e106_reds_zero_view_witness.rish` · scan `tools/fixtures/equinox_e106_reds_zero_view_scan.sh` · choir `equinox_e106_reds_zero_view_choir_witness.rish`\n"
+    + "` · **Witness:** `tools/equinox/witness/equinox_e106_reds_zero_view_witness.rish` · scan `tools/fixtures/e/equinox_e106_reds_zero_view_scan.sh` · choir `equinox_e106_reds_zero_view_choir_witness.rish`\n"
     "Expected control_gate · REDS rows=33 · monotone expect_next=34 · "
     "zero_view planted · prove-red refuses · m3_m4 e105_consumed · "
     "metric_rev=i9 · hold_not_exclude · fascia=92 · fork not_consumed · "

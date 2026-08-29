@@ -11,7 +11,7 @@
 //! read are the tree's own. Two independent readings must agree: the app parses the record through rung
 //! three and reports the founder count, the vote count, and the **admitted-by-quorum count** (distinct
 //! candidates whose distinct-vote tally reaches the quorum -- a candidate short of quorum holds and is not
-//! counted), and the witness cross-checks that triple against `tools/fixtures/skate_group_truth.awk`'s
+//! counted), and the witness cross-checks that triple against `tools/fixtures/s/skate_group_truth.awk`'s
 //! reading of the same file -- two tools, one answer. And the record is genuinely quorum-honest:
 //! `still_quorum_honest` re-verifies every carried vote signature against the demo keyring, and `rebuild`
 //! recovers Bram's admission and Cate's hold exactly, so the fixture is a real signed group, not a hollow

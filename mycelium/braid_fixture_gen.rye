@@ -21,7 +21,7 @@
 //! Siloed, dev-only, demo seeds -- no real key, no funds, no network, no custody.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/braid_fixture_gen.rye \
-//!     2> tools/fixtures/braid_dag.bron
+//!     2> tools/fixtures/b/braid_dag.bron
 //!
 //! Kin: mycelium/pledge_fixture_gen.rye - mycelium/purse_fixture_gen.rye.
 

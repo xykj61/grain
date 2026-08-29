@@ -16,7 +16,7 @@ assert welcome.out contains "GUIDE_FLOW=yes" else "equinox-tb-control-flow-choir
 assert welcome.out contains "GUIDE_NASA=yes" else "equinox-tb-control-flow-choir: want GUIDE_NASA"
 assert welcome.out contains "TAME_FLOW=yes" else "equinox-tb-control-flow-choir: want TAME_FLOW"
 
-let refuse = run ["sh" "tools/fixtures/tigerbeetle_control_flow_census.sh" "tools/fixtures/tigerbeetle_ABSENT"]
+let refuse = run ["sh" "tools/fixtures/t/tigerbeetle_control_flow_census.sh" "tools/fixtures/tigerbeetle_ABSENT"]
 say refuse.out
 assert refuse.ok == false else "equinox-tb-control-flow-choir: absent clone must fail"
 assert refuse.out contains "verdict=absent" else "equinox-tb-control-flow-choir: want verdict=absent"

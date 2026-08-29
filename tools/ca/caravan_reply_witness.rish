@@ -58,7 +58,7 @@ say "caravan-reply: Lens TAME -- the module's asserts are the specification, and
 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "caravan/bin/reply"
-let control = "tools/fixtures/caravan_reply_control.sh"
+let control = "tools/fixtures/c/caravan_reply_control.sh"
 let build_dir = "tools/.build/caravan_reply"
 
 let mk = run ["sh" "-c" "mkdir -p caravan/bin ${build_dir}"]

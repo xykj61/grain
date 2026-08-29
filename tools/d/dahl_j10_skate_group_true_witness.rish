@@ -6,7 +6,7 @@
 # format skate-group-v1 record with real Ed25519 vote signatures -- three founders at quorum 2, two votes
 # admit Bram, one one-sided vote for Cate holds) through a corpora symlink, parses it through rung three,
 # and reports the founder count, vote count, and admitted-by-quorum count. The crux is the cross-check:
-# tools/fixtures/skate_group_truth.awk measures the same bytes independently and this witness asserts the
+# tools/fixtures/s/skate_group_truth.awk measures the same bytes independently and this witness asserts the
 # app's reading equals the awk reading -- two tools, one answer. And still_quorum_honest re-verifies every
 # carried vote against the demo keyring, and rebuild recovers Bram's admission and Cate's hold, so the
 # fixture is a real signed group, not a hollow shape. A tampered header refuses BadFormat. Additive --
@@ -49,7 +49,7 @@ assert selftest.out contains "refused BadFormat" else "dahl-j10r4: tamper refusa
 # The crux cross-check: the app's reading matches an independent awk reading of the same real bytes.
 let measure = run ["sh" "-c" "${bin} measure 2>&1"]
 assert measure.ok else "dahl-j10r4: measure exited non-zero"
-let awk = run ["sh" "-c" "awk -f tools/fixtures/skate_group_truth.awk surf/fixtures/group.bron"]
+let awk = run ["sh" "-c" "awk -f tools/fixtures/s/skate_group_truth.awk surf/fixtures/group.bron"]
 assert awk.ok else "dahl-j10r4: awk reading of the fixture failed"
 assert measure.out == awk.out else "dahl-j10r4: the app reading disagrees with the independent awk count of the same bytes"
 

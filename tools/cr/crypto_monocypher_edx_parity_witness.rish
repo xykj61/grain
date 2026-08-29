@@ -9,7 +9,7 @@
 # proving Rye output equals Monocypher output byte-for-byte." crypto/ed25519_to_x25519.rye itself named Monocypher-source parity as an honest held
 # horizon; this rung closes it, so the one-key identity story is proven against the very library Grain's audit names.
 # Kin: crypto/ed25519_to_x25519.rye (our authored maps, GREEN against Zig's std.crypto) - tools/rye/monocypher_edx_parity.rye (our printing harness) -
-# tools/fixtures/monocypher_edx_harness.c (Monocypher's printing harness) - tools/cr/crypto_monocypher_x25519_parity_witness.rish (the X25519 sibling).
+# tools/fixtures/m/monocypher_edx_harness.c (Monocypher's printing harness) - tools/cr/crypto_monocypher_x25519_parity_witness.rish (the X25519 sibling).
 # Monocypher stays the parity TARGET, vendored and unmodified, never a copied line -- our own Rye, studied clean-room
 # (.claude/rules/gratitude-licenses.md).
 #
@@ -31,7 +31,7 @@ let cout = "crypto/bin/monocypher_edx.out"
 let rout = "crypto/bin/rye_edx.out"
 
 # 1. Build the Monocypher C harness, linking the unmodified vendored source with zig cc.
-let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src tools/fixtures/monocypher_edx_harness.c vendor/monocypher/src/monocypher.c -o ${cbin}"]
+let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src tools/fixtures/m/monocypher_edx_harness.c vendor/monocypher/src/monocypher.c -o ${cbin}"]
 assert cbuild.ok else "crypto-monocypher-edx-parity: Monocypher C harness build failed — ${cbuild.err}"
 
 # 2. Run the Monocypher C harness -- three conversion hex lines.

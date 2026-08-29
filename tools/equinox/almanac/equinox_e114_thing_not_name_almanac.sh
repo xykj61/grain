@@ -30,8 +30,8 @@ entry = (
     + stamp
     + "` · **Witness:** `tools/equinox/witness/equinox_e114_thing_not_name_witness.rish` · "
     "standing `tools/gen/chapter/thing_not_name_witness.rish` · "
-    "scan `tools/fixtures/thing_not_name_scan.sh` · "
-    "equinox scan `tools/fixtures/equinox_e114_thing_not_name_scan.sh`\n"
+    "scan `tools/fixtures/t/thing_not_name_scan.sh` · "
+    "equinox scan `tools/fixtures/e/equinox_e114_thing_not_name_scan.sh`\n"
     "Expected control_gate · instruments_tracked · demo_meter=7 · "
     "name_hits_demo_meter=0 · roofs=2 · prove-red RED_looked_for_name_not_thing · "
     "REDS rows=39 · expect_next=40 · seat_128 reserved · surface_count=4 · "

@@ -33,7 +33,7 @@ always the same algorithm executed manually: keep the earlier stamp, shift the l
 2. **The number is allocated by the anointed remote**, which is **`xy`** on this pier. Read
    `next_free` from that spine, never from the local tree:
    ```
-   sh tools/fixtures/reds_spine_derive_scan.sh --next
+   sh tools/fixtures/r/reds_spine_derive_scan.sh --next
    ```
 3. **A published number never moves.** Once a row reaches the anointed spine it is **shared**, and
    its `%N` is frozen -- 2,519 citations of `%N` stand in the tree, **532 of them in commit bodies
@@ -45,7 +45,7 @@ always the same algorithm executed manually: keep the earlier stamp, shift the l
 
 ## What the guard reads
 
-[`../../tools/fixtures/reds_spine_derive_scan.sh`](../../tools/fixtures/reds_spine_derive_scan.sh)
+[`../../tools/fixtures/r/reds_spine_derive_scan.sh`](../../tools/fixtures/r/reds_spine_derive_scan.sh)
 compares this tree's `(number, stamp)` bindings against the anointed spine's.
 
 | Reading | Held at |
@@ -68,7 +68,7 @@ ordinary work is a gate someone turns off.
 
 ## Proven, and on real history
 
-[`../../tools/fixtures/reds_spine_derive_control.sh`](../../tools/fixtures/reds_spine_derive_control.sh)
+[`../../tools/fixtures/r/reds_spine_derive_control.sh`](../../tools/fixtures/r/reds_spine_derive_control.sh)
 builds real git repositories in a throwaway pen and proves **seventeen** cases -- every refusal
 shown from both sides, planted and then removed, and every welcome asserted as hard as every
 refusal, since a refusal proven only in the passing direction cannot be told from a bypass.

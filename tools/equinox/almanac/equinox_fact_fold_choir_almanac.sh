@@ -25,7 +25,7 @@ entry = (
     "### 36. The fact-fold design hall points at living metal; three bounds match and purity holds.\n"
     "**Ran:** `rishi/bin/rishi run tools/equinox/witness/equinox_fact_fold_choir_witness.rish` · **Stamp:** `"
     + stamp
-    + "` · **Witness:** `tools/gen/chapter/fact_fold_census_witness.rish` · scan `tools/fixtures/fact_fold_census.sh` · metal `mycelium/fold.rye` · choir `equinox_fact_fold_choir_witness.rish`\n"
+    + "` · **Witness:** `tools/gen/chapter/fact_fold_census_witness.rish` · scan `tools/fixtures/f/fact_fold_census.sh` · metal `mycelium/fold.rye` · choir `equinox_fact_fold_choir_witness.rish`\n"
     "Expected pairs_matched=3 · PATTERN_CITES · fold GREEN with supply=872 · purity · refuse whole, and verdict=missing_shape on an absent path. "
     "Metal answered GREEN. Design hall and Sangha page keep one fold honest.\n\n"
 )

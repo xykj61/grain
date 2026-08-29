@@ -7,7 +7,7 @@ if grep -q '^### 25\.' "$ALMANAC"; then
   exit 0
 fi
 STAMP=$(TZ=America/New_York date '+%Y%m%d.%H%M%S')
-CENSUS=$(sh tools/fixtures/tigerbeetle_assert_census.sh)
+CENSUS=$(sh tools/fixtures/t/tigerbeetle_assert_census.sh)
 export STAMP
 export CENSUS
 python3 - <<'PY'
@@ -28,7 +28,7 @@ entry = (
     "### 25. The held TigerBeetle clone asserts densely; maybe and verify gate the rest.\n"
     "**Ran:** `rishi/bin/rishi run tools/gen/chapter/tigerbeetle_assert_census_witness.rish` · **Stamp:** `"
     + stamp
-    + "` · **Witness:** `tools/gen/chapter/tigerbeetle_assert_census_witness.rish` · `tools/fixtures/tigerbeetle_assert_census.sh` · submodule `gratitude/tigerbeetle`\n"
+    + "` · **Witness:** `tools/gen/chapter/tigerbeetle_assert_census_witness.rish` · `tools/fixtures/t/tigerbeetle_assert_census.sh` · submodule `gratitude/tigerbeetle`\n"
     "Expected CLONE=present · verdict=ok · STYLE=yes · MAYBE_DEF=yes · GUIDE_DENSITY=yes "
     "with assert≥2000 · maybe≥100 · constants.verify≥20 · files_assert≥100. "
     "Metal answered GREEN. Census: "

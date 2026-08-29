@@ -7,7 +7,7 @@ if grep -q '^### 27\.' "$ALMANAC"; then
   exit 0
 fi
 STAMP=$(TZ=America/New_York date '+%Y%m%d.%H%M%S')
-CENSUS=$(sh tools/fixtures/tigerbeetle_golden_rule_census.sh)
+CENSUS=$(sh tools/fixtures/t/tigerbeetle_golden_rule_census.sh)
 export STAMP
 export CENSUS
 python3 - <<'PY'
@@ -28,7 +28,7 @@ entry = (
     "### 27. Assert the positive space and the negative; maybe marks what truly varies.\n"
     "**Ran:** `rishi/bin/rishi run tools/gen/chapter/tigerbeetle_golden_rule_census_witness.rish` · **Stamp:** `"
     + stamp
-    + "` · **Witness:** `tools/gen/chapter/tigerbeetle_golden_rule_census_witness.rish` · `tools/fixtures/tigerbeetle_golden_rule_census.sh` · submodule `gratitude/tigerbeetle`\n"
+    + "` · **Witness:** `tools/gen/chapter/tigerbeetle_golden_rule_census_witness.rish` · `tools/fixtures/t/tigerbeetle_golden_rule_census.sh` · submodule `gratitude/tigerbeetle`\n"
     "Expected CLONE=present · GUIDE_GOLDEN=yes · TAME_GOLDEN=yes · MAYBE_COMPLETES=yes · STYLE=yes "
     "with assert≥2000 · maybe≥100 · implication_assert≥20. "
     "Metal answered GREEN. Census: "

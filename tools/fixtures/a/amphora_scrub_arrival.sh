@@ -1,0 +1,79 @@
+#!/usr/bin/env sh
+# amphora_scrub_arrival.sh -- cold scrub on arrival: verify vessel parent, Cellar verify, restore.
+#
+# Usage: amphora_scrub_arrival.sh bundle_dir [source_tree_for_diff]
+set -eu
+# Root by upward walk (seated 20260828): the letter fold moved this script one
+# directory deeper, and fixed ../.. depth arithmetic is what broke. The walk finds
+# the first ancestor holding rishi/bin and tools/fixtures -- git-free so pen copies
+# outside a repository still resolve -- bounded at 8 steps, loud past the bound.
+ROOT=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
+_fd_steps=0
+while [ ! -d "$ROOT/rishi/bin" ] || [ ! -d "$ROOT/tools/fixtures" ]; do
+  _fd_steps=$((_fd_steps + 1))
+  if [ "$_fd_steps" -gt 8 ] || [ "$ROOT" = "/" ] || [ -z "$ROOT" ]; then
+    echo "$0: no tree root within 8 steps (needs rishi/bin and tools/fixtures)" >&2
+    exit 2
+  fi
+  ROOT=$(dirname "$ROOT")
+done
+BUNDLE=${1:?usage: amphora_scrub_arrival.sh bundle_dir [source_tree]}
+SRC=${2:-"$ROOT/tools/fixtures/cellar_ring1_tree"}
+
+VESSEL="$BUNDLE/vessel.bron"
+MANIFEST="$BUNDLE/manifest.bron"
+test -f "$VESSEL" || { echo "FAIL missing vessel"; exit 1; }
+test -f "$MANIFEST" || { echo "FAIL missing manifest"; exit 1; }
+
+parent=$(awk '/^parent / {print $2; exit}' "$VESSEL")
+got=$(sh "$ROOT/tools/fixtures/s/sha3_256.sh" "$MANIFEST")
+test -n "$parent" || { echo "FAIL vessel missing parent"; exit 1; }
+test "$parent" = "$got" || { echo "FAIL parent mismatch want=$got got=$parent"; exit 1; }
+echo "PARENT ok $parent"
+
+# Amphora vessel parse on metal (wreck rule already seated at lap 1).
+vessel_bin="$ROOT/amphora/bin/vessel-core"
+if ! test -x "$vessel_bin"; then
+  mkdir -p "$ROOT/amphora/bin"
+  env RYE_ZIG="${RYE_ZIG:-$ROOT/vendor/zig-toolchain/zig}" \
+    "$ROOT/rye/bin/rye" build "$ROOT/amphora/vessel_core.rye" -femit-bin="$vessel_bin"
+fi
+"$vessel_bin" parse "$VESSEL" >/dev/null
+"$vessel_bin" verify "$VESSEL" >/dev/null
+echo "STAMP ok Kumara stamp_sig verified"
+
+seal_bin="$ROOT/amphora/bin/vessel-seal"
+if ! test -x "$seal_bin"; then
+  mkdir -p "$ROOT/amphora/bin"
+  env RYE_ZIG="${RYE_ZIG:-$ROOT/vendor/zig-toolchain/zig}" \
+    "$ROOT/rye/bin/rye" build "$ROOT/amphora/vessel_seal.rye" -femit-bin="$seal_bin"
+fi
+"$seal_bin" open-check "$VESSEL" >/dev/null
+echo "SEAL ok cellar AEAD cargo opens"
+
+# Pond customs -- policy at receipt before Cellar place/restore.
+customs_bin="$ROOT/pond/bin/customs"
+if ! test -x "$customs_bin"; then
+  mkdir -p "$ROOT/pond/bin"
+  env RYE_ZIG="${RYE_ZIG:-$ROOT/vendor/zig-toolchain/zig}" \
+    "$ROOT/rye/bin/rye" build "$ROOT/pond/customs.rye" -femit-bin="$customs_bin"
+fi
+customs_out=$("$customs_bin" inspect "$MANIFEST" 2>&1) || {
+  echo "$customs_out"
+  echo "FAIL Pond customs refused or held cargo at receipt"
+  exit 1
+}
+echo "$customs_out" | grep -q 'GREEN' || {
+  echo "FAIL Pond customs missing GREEN admit"
+  exit 1
+}
+echo "CUSTOMS ok Pond admitted cargo for placement"
+
+sh "$ROOT/tools/fixtures/c/cellar_ring1_verify.sh" "$BUNDLE"
+
+restore=$(mktemp -d)
+trap 'rm -rf "$restore"' EXIT
+sh "$ROOT/tools/fixtures/c/cellar_ring1_restore.sh" "$BUNDLE" "$restore"
+diff -r "$SRC" "$restore" >/dev/null
+
+echo "SCRUB ok arrival cold-verify + restore bit-faithful"

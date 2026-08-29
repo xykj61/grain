@@ -28,9 +28,9 @@
 # finds no drift and would report clean while measuring nothing.
 #
 # WHAT IT DOES NOT REACH. Which side of a drifted pair is RIGHT. That is a reading, and this is a
-# count. `sh tools/fixtures/rule_twin_scan.sh diff <name>` prints what one pair disagrees about.
+# count. `sh tools/fixtures/r/rule_twin_scan.sh diff <name>` prints what one pair disagrees about.
 #
-# Pen: tools/fixtures/rule_twin_control.sh -- twelve behaviors on real directories in a throwaway
+# Pen: tools/fixtures/r/rule_twin_control.sh -- twelve behaviors on real directories in a throwaway
 # pen, five refusals bitten and seven honest readings left free, the ceiling proven from both
 # sides. Run from the repository root.
 
@@ -38,14 +38,14 @@ say "rule-twin: Language EN -- a rule written twice is read as law twice, so bot
 say "rule-twin: Style Gauge, Meter -- every count below is the scan's own output, read from the tree rather than recited here."
 say "rule-twin: Lens TAME -- the transform is declared rather than assumed, the corpus size is published beside the verdict, and the reconciliation this cannot make is named as a gate rather than attempted."
 
-let scan = run ["sh" "tools/fixtures/rule_twin_scan.sh" "census"]
+let scan = run ["sh" "tools/fixtures/r/rule_twin_scan.sh" "census"]
 say scan.out
 assert scan.ok else "rule-twin: drift stands above a ceiling that only ever falls -- read the scan's own lines"
 assert scan.out contains "verdict=ok" else "rule-twin: the census must agree with itself"
 assert (scan.out contains "rule_pairs=0" == false) else "rule-twin: a zero-pair reading would report clean over an empty roster"
 assert (scan.out contains "verdict=empty_corpus" == false) else "rule-twin: a meter over nothing must say so rather than pass"
 
-let control = run ["sh" "tools/fixtures/rule_twin_control.sh"]
+let control = run ["sh" "tools/fixtures/r/rule_twin_control.sh"]
 say control.out
 assert control.ok else "rule-twin: the control must complete"
 assert control.out contains "control_fail=0" else "rule-twin: every planted behavior must read as written"

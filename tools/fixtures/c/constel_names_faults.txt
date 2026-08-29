@@ -1,0 +1,16 @@
+# tools/fixtures/c/constel_names_faults.txt -- one planted name per named refusal.
+#
+# constel/name.rye refuses by name rather than by a bare bool, so a reader sees exactly why a name
+# was turned away. These three are the exact bound-and-alphabet cases its selftest plants, and this
+# fixture proves the shell scan answers with the same NameError spelling for each, and adds the two
+# constellation bounds the module holds and the selftest states only in code: a leading hyphen is
+# BadSegment, and nine hyphen-joined ships is NameTooLong against max_ships of eight. EmptyName has no
+# line here on purpose: a names file cannot carry an empty name, since blank lines are skipped, so
+# that branch is proven in the module's own selftest and nowhere else.
+#
+# Never a seated draw. Law: active-designing/20260814-fill-constel-naming-law.md
+bcdfghjklmnpq
+xn_kg
+xnkg-
+-xnkg
+xx-xz-xn-xw-xb-xc-xd-xf-xg

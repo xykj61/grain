@@ -25,7 +25,7 @@ entry = (
     "### 31. The baton museum holds thirteen halls; a missing museum path is refused whole.\n"
     "**Ran:** `rishi/bin/rishi run tools/equinox/witness/equinox_baton_census_choir_witness.rish` · **Stamp:** `"
     + stamp
-    + "` · **Witness:** `tools/gen/chapter/baton_museum_census_witness.rish` · scan `tools/fixtures/baton_museum_census_scan.sh` · choir `equinox_baton_census_choir_witness.rish`\n"
+    + "` · **Witness:** `tools/gen/chapter/baton_museum_census_witness.rish` · scan `tools/fixtures/b/baton_museum_census_scan.sh` · choir `equinox_baton_census_choir_witness.rish`\n"
     "Expected halls_expected=13 · halls_absent=0 · census_breach_count=0, and verdict=missing_museum on an absent path. "
     "Metal answered GREEN. Museum-hall census named; breach census stays zero and banked.\n\n"
 )

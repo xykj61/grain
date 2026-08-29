@@ -9,7 +9,7 @@
 a module's comments, a design. One grade, four readings, a plain school scale, and a door at **B**.
 
 ```
-sh tools/fixtures/qa_report_card.sh <path> [--setting door|field|meter] [--service N]
+sh tools/fixtures/q/qa_report_card.sh <path> [--setting door|field|meter] [--service N]
 ```
 
 ## The habit, in one line

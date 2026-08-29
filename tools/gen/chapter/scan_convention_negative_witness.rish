@@ -15,13 +15,13 @@ let f = "context/fixtures/scan_convention_uncited/uncited_scan.sh"
 let have = run ["test" "-f" f]
 assert have.ok else "scan-convention-negative: fixture absent"
 
-let bad = run ["sh" "tools/fixtures/scan_convention_scan.sh" f]
+let bad = run ["sh" "tools/fixtures/s/scan_convention_scan.sh" f]
 assert bad.out contains "verdict=convention_not_single_homed" else "scan-convention-negative: guard accepted a restating scan"
 assert bad.ok == false else "scan-convention-negative: refusal did not set a failing status"
 assert bad.out contains "does not cite the single home" else "scan-convention-negative: uncited scan not named"
 assert bad.out contains "restates instead of citing" else "scan-convention-negative: restatement not named"
 
-let good = run ["sh" "tools/fixtures/scan_convention_scan.sh"]
+let good = run ["sh" "tools/fixtures/s/scan_convention_scan.sh"]
 assert good.ok else "scan-convention-negative: the living roster no longer passes"
 assert good.out contains "verdict=ok" else "scan-convention-negative: living roster verdict changed"
 

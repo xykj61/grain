@@ -2,10 +2,10 @@
 #
 # Rungs one through three named a fake dev-net, settled a whole d12-d60 branch, and let a constel travel
 # as a format constel-net-v1 record -- all over nets seated in code. This closing rung carries the reader
-# onto a REAL on-disk constel record (tools/fixtures/constel_net.bron, produced reproducibly by
+# onto a REAL on-disk constel record (tools/fixtures/c/constel_net.bron, produced reproducibly by
 # pond/apps/constel_net_fixture_gen.rye, @embedFile-bound through a pond/apps/corpora/ symlink) and proves
 # what the reader reports is true to the bytes. The crux is the cross-check: constel_net_true reports the
-# roster size - galaxy - planet, and tools/fixtures/constel_net_truth.awk reads the same file independently;
+# roster size - galaxy - planet, and tools/fixtures/c/constel_net_truth.awk reads the same file independently;
 # the witness asserts the app's triple equals awk's -- two tools, one answer (3 3 267). And the record is a
 # genuine, law-safe harness net: it re-renders to the embedded bytes exactly, its recovered name still
 # carries a digit. Demo seeds only -- no key, no network, no custody (gate %4 untouched).
@@ -37,7 +37,7 @@ assert selftest.out contains "The harness's agent-doable arc closes" else "const
 # The crux -- two tools, one answer. The app's measure triple must equal awk's reading of the same bytes.
 let app = run ["sh" "-c" "${bin} measure 2>&1"]
 assert app.ok else "constel-net-true: app measure exited non-zero"
-let awk = run ["sh" "-c" "awk -f tools/fixtures/constel_net_truth.awk tools/fixtures/constel_net.bron"]
+let awk = run ["sh" "-c" "awk -f tools/fixtures/c/constel_net_truth.awk tools/fixtures/c/constel_net.bron"]
 assert awk.ok else "constel-net-true: awk truth read failed"
 assert awk.out contains "3 3 267" else "constel-net-true: awk triple not 3 3 267"
 assert app.out == awk.out else "constel-net-true: app and awk disagree — the reading drifted from the bytes"

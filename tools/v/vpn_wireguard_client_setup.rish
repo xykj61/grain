@@ -46,7 +46,7 @@ say trim pubkey
 # newlines exactly (unlike run's captured .out, which escapes them to the
 # two-character text "\n" -- confirmed by direct test; a real Rishi gap
 # worth naming, not a mistake in this script).
-let nl = read-file "tools/fixtures/newline.txt"
+let nl = read-file "tools/fixtures/n/newline.txt"
 
 let line1 = "[Interface]"
 let line2 = "PrivateKey = <contents of .wireguard/laptop_private.key -- never paste this into a shared channel>"

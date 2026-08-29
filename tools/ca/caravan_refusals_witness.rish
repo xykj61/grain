@@ -35,8 +35,8 @@ say "caravan-refusals: Lens TAME -- the module's asserts are the specification, 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "caravan/bin/refusals"
 let header = "vendor/sel4/libsel4/include/sel4/errors.h"
-let scan = "tools/fixtures/caravan_refusal_symbol_scan.sh"
-let meaning_scan = "tools/fixtures/caravan_refusal_meaning_scan.sh"
+let scan = "tools/fixtures/c/caravan_refusal_symbol_scan.sh"
+let meaning_scan = "tools/fixtures/c/caravan_refusal_meaning_scan.sh"
 let libsel4 = "vendor/sel4/libsel4"
 let build_dir = "tools/.build/caravan_refusals"
 
@@ -104,7 +104,7 @@ assert red_header.out contains "verdict=drift" else "caravan-refusals: RED path 
 
 # 7. RED PATH TWO -- a mapping that collapses two answers into one must fail its own self-test. Planted in a COPY, so the
 #    living module is never touched, and built with the same compiler that built the green one.
-let collapse = run ["sh" "-c" "sh tools/fixtures/caravan_refusal_collapse_control.sh ${zig} ${build_dir}"]
+let collapse = run ["sh" "-c" "sh tools/fixtures/c/caravan_refusal_collapse_control.sh ${zig} ${build_dir}"]
 assert collapse.ok else "caravan-refusals: the collapse control did not run"
 assert collapse.out contains "planted=1" else "caravan-refusals: the collapsed copy was not planted -- the RED path would have proven nothing"
 assert collapse.out contains "verdict=refused" else "caravan-refusals: RED path two did not fire -- a mapping collapsing two refusals into one passed its own self-test"

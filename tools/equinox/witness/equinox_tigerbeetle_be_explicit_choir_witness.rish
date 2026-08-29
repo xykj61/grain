@@ -16,7 +16,7 @@ assert welcome.out contains "GUIDE_EXPLICIT=yes" else "equinox-tb-be-explicit-ch
 assert welcome.out contains "TAME_EXPLICIT=yes" else "equinox-tb-be-explicit-choir: want TAME_EXPLICIT"
 assert welcome.out contains "COMPACTION=yes" else "equinox-tb-be-explicit-choir: want COMPACTION"
 
-let refuse = run ["sh" "tools/fixtures/tigerbeetle_be_explicit_census.sh" "tools/fixtures/tigerbeetle_ABSENT"]
+let refuse = run ["sh" "tools/fixtures/t/tigerbeetle_be_explicit_census.sh" "tools/fixtures/tigerbeetle_ABSENT"]
 say refuse.out
 assert refuse.ok == false else "equinox-tb-be-explicit-choir: absent clone must fail"
 assert refuse.out contains "verdict=absent" else "equinox-tb-be-explicit-choir: want verdict=absent"

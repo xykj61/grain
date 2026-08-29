@@ -8,7 +8,7 @@ say "dated-roof-divergence: Language EN — shed and standalone share one dated 
 say "dated-roof-divergence: Style Radiant — fascia_health and fascia_health_now keep their jobs."
 say "dated-roof-divergence: Lens TAME — assert dated_testimony equality, never force health equals now."
 
-let green = run ["sh" "tools/fixtures/dated_roof_divergence_scan.sh"]
+let green = run ["sh" "tools/fixtures/d/dated_roof_divergence_scan.sh"]
 say green.out
 assert green.ok else "dated-roof-divergence: living scan must exit 0"
 assert green.out contains "control_gate=honored" else "dated-roof-divergence: want control gate"
@@ -20,7 +20,7 @@ assert green.out contains "dated_testimony=" else "dated-roof-divergence: want d
 assert green.out contains "verdict=ok" else "dated-roof-divergence: want verdict=ok"
 assert green.out contains "shred=RED" else "dated-roof-divergence: shred stays RED"
 
-let red = run ["sh" "tools/fixtures/dated_roof_divergence_scan.sh" "prove-red"]
+let red = run ["sh" "tools/fixtures/d/dated_roof_divergence_scan.sh" "prove-red"]
 say red.out
 assert (red.ok == false) else "dated-roof-divergence: prove-red must refuse"
 assert red.out contains "RED_roofs_diverge" else "dated-roof-divergence: prove-red want diverge"

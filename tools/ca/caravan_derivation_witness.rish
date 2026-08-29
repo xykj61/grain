@@ -41,7 +41,7 @@ say "caravan-derivation: Lens TAME -- the module's asserts are the specification
 let zig = "vendor/zig-toolchain/zig"
 let bin = "caravan/bin/derivation"
 let header = "vendor/sel4/libsel4/include/sel4/errors.h"
-let control = "tools/fixtures/caravan_derivation_control.sh"
+let control = "tools/fixtures/c/caravan_derivation_control.sh"
 let build_dir = "tools/.build/caravan_derivation"
 
 let mk = run ["sh" "-c" "mkdir -p caravan/bin ${build_dir}"]

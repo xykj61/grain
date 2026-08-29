@@ -65,7 +65,7 @@ assert (trim katsum.out) == (trim published.out) else "crypto-slhdsa-oracle: the
 
 # 4. Build our deterministic harness against the same unmodified source.
 let bin = "crypto/bin/pqclean_slhdsa"
-let build = run ["sh" "-c" "${zig} cc -O2 -I ${scheme}/clean -I vendor/pqclean/common tools/fixtures/pqclean_slhdsa_harness.c ${scheme}/clean/*.c vendor/pqclean/common/fips202.c -o ${bin}"]
+let build = run ["sh" "-c" "${zig} cc -O2 -I ${scheme}/clean -I vendor/pqclean/common tools/fixtures/p/pqclean_slhdsa_harness.c ${scheme}/clean/*.c vendor/pqclean/common/fips202.c -o ${bin}"]
 assert build.ok else "crypto-slhdsa-oracle: SLH-DSA harness build failed -- ${build.err}"
 
 # 5. Run it TWICE. PQClean signs hedged, so determinism is a property of the pinned optrand and is proven by doing, never assumed.

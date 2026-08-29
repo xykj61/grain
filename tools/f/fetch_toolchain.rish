@@ -21,7 +21,7 @@ if length args != 0 then let verb = args[0]
 
 say "fetch-toolchain: the pinned Zig 0.16.0, verified before a byte of it is trusted."
 
-let out = run ["sh" "tools/fixtures/fetch_toolchain_scan.sh" verb]
+let out = run ["sh" "tools/fixtures/f/fetch_toolchain_scan.sh" verb]
 say out.out
 assert out.ok else "fetch-toolchain: the fetch refused -- read the lines above; a checksum mismatch means nothing was extracted, which is the tool working rather than failing"
 assert out.out contains "verdict=ok" else "fetch-toolchain: the run must end in a verdict this tree accepts"

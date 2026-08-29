@@ -95,7 +95,7 @@ say mono.out
 assert mono.ok else "equinox-ch7-surface: reds monotone limb failed"
 assert mono.out contains "GREEN: reds-monotone" else "equinox-ch7-surface: monotone not GREEN"
 
-let scan = run ["sh" "tools/fixtures/equinox_ch7_surface_scan.sh"]
+let scan = run ["sh" "tools/fixtures/e/equinox_ch7_surface_scan.sh"]
 say scan.out
 assert scan.ok else "equinox-ch7-surface: surface scan must exit 0"
 assert scan.out contains "control_gate=honored" else "equinox-ch7-surface: want control_gate"
@@ -110,7 +110,7 @@ assert scan.out contains "ch7_surface=ok" else "equinox-ch7-surface: want ch7_su
 assert scan.out contains "verdict=ok" else "equinox-ch7-surface: want verdict=ok"
 
 # Refuse -- absent iron shelf (limb shape from ch4)
-let refuse_iron = run ["sh" "tools/fixtures/ironbeetle_ep045_census.sh" "tools/fixtures/ironbeetle_ABSENT"]
+let refuse_iron = run ["sh" "tools/fixtures/i/ironbeetle_ep045_census.sh" "tools/fixtures/ironbeetle_ABSENT"]
 say refuse_iron.out
 assert refuse_iron.ok == false else "equinox-ch7-surface: absent iron must fail"
 assert refuse_iron.out contains "IRON=ABSENT" else "equinox-ch7-surface: want IRON=ABSENT"

@@ -47,7 +47,7 @@ let bin = "caravan/bin/ipc_buffer"
 let errors = "vendor/sel4/libsel4/include/sel4/errors.h"
 let constants = "vendor/sel4/libsel4/include/sel4/constants.h"
 let interfaces = "vendor/sel4/libsel4/include/interfaces"
-let control = "tools/fixtures/caravan_ipc_buffer_control.sh"
+let control = "tools/fixtures/c/caravan_ipc_buffer_control.sh"
 let build_dir = "tools/.build/caravan_ipc_buffer"
 
 let mk = run ["sh" "-c" "mkdir -p caravan/bin ${build_dir}"]

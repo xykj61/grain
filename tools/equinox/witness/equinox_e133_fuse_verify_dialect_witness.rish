@@ -4,7 +4,7 @@ say "e133-fuse-verify: Language EN — dialect already green; counsel measured a
 say "e133-fuse-verify: Style Radiant — first of eleven named; no second fix."
 say "e133-fuse-verify: Lens TAME — e133 · verify · shred held · 128 reserved."
 
-let green = run ["sh" "tools/fixtures/equinox_e133_fuse_verify_dialect_scan.sh"]
+let green = run ["sh" "tools/fixtures/e/equinox_e133_fuse_verify_dialect_scan.sh"]
 assert green.ok else "e133-fuse-verify: living scan must exit 0"
 assert green.out contains "elder_fix=e132" else "e133-fuse-verify: want elder e132"
 assert green.out contains "dialect=already_green" else "e133-fuse-verify: want already green"
@@ -18,7 +18,7 @@ assert green.out contains "seat_128=reserved_close_choir" else "e133-fuse-verify
 assert green.out contains "queue=empty_for_counsel" else "e133-fuse-verify: want empty queue"
 assert green.out contains "verdict=ok" else "e133-fuse-verify: want verdict ok"
 
-let red = run ["sh" "tools/fixtures/equinox_e133_fuse_verify_dialect_scan.sh" "prove-red"]
+let red = run ["sh" "tools/fixtures/e/equinox_e133_fuse_verify_dialect_scan.sh" "prove-red"]
 assert (red.ok == false) else "e133-fuse-verify: prove-red must refuse"
 assert red.out contains "RED_second_fix_manufactured" else "e133-fuse-verify: prove-red want refuse"
 

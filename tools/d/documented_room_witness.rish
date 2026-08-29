@@ -28,14 +28,14 @@ say "documented-room: Language EN -- a room announced in the filing guide and ab
 say "documented-room: Style Radiant -- every named room is carried, a departed one may be absent by saying so, and the refusal is proven on a planted room."
 say "documented-room: Lens TAME -- the failure was silent by construction: a green commit, resolving links, and a room that existed on the one machine that did not need it."
 
-let scan = run ["sh" "tools/fixtures/documented_room_scan.sh"]
+let scan = run ["sh" "tools/fixtures/d/documented_room_scan.sh"]
 assert scan.ok else "documented-room: a room this tree documents is absent from every clone -- add it to the .gitignore allow-list"
 say scan.out
 assert scan.out contains "rooms_invisible=0" else "documented-room: every documented room must reach a reader"
 assert scan.out contains "verdict=ok" else "documented-room: the scan must balance before it is believed"
 say "field GREEN -- every room the filing guide names is carried by a clone"
 
-let control = run ["sh" "tools/fixtures/documented_room_control.sh"]
+let control = run ["sh" "tools/fixtures/d/documented_room_control.sh"]
 assert control.ok else "documented-room: the control must complete"
 say control.out
 assert control.out contains "invisible_refused=yes" else "documented-room: a documented room absent from git must be refused"

@@ -19,7 +19,7 @@ if length args != 0 then let mode = args[0]
 
 say "dated-path-repoint: living things are repointed, dated testimony is resolved -- mode ${mode}."
 
-let run_scan = run ["sh" "tools/fixtures/dated_path_repoint_scan.sh" mode]
+let run_scan = run ["sh" "tools/fixtures/d/dated_path_repoint_scan.sh" mode]
 assert run_scan.ok else "dated-path-repoint: the repoint pass must complete -- see stderr"
 say run_scan.out
 assert run_scan.out contains "verdict=ok" else "dated-path-repoint: the pass must balance before it is believed"

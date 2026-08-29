@@ -1,6 +1,6 @@
 //! tools/rye/monocypher_blake2b_parity.rye -- our authored crypto/blake2b.rye asked for its OWN BLAKE2b-512 over the four canonical messages, printed
 //! one 128-hex-character digest per line, so tools/cr/crypto_monocypher_parity_witness.rish can diff our bytes against the vendored Monocypher's C
-//! (tools/fixtures/monocypher_blake2b_harness.c) byte-for-byte. Chapter G (Cryptography - Rye-native, Monocypher-parity, audit-ready).
+//! (tools/fixtures/m/monocypher_blake2b_harness.c) byte-for-byte. Chapter G (Cryptography - Rye-native, Monocypher-parity, audit-ready).
 //!
 //! The four messages are EXACTLY the four crypto/blake2b.rye's own selftest proves our Rye against Zig's std.crypto over -- the empty message, the
 //! ASCII string "abc", one full 128-byte block (byte i = i & 0xff), and a 200-byte multi-block input (byte i = (i*7 + 1) & 0xff) -- so the parity

@@ -11,7 +11,7 @@ let build = run ["sh" "-c" "mkdir -p amphora/bin && env RYE_ZIG=${zig} rye/bin/r
 assert build.ok else "amphora vessel_core build failed for lap 2"
 
 say "amphora-lap2: pour → carry → cold scrub witness..."
-let witness = run ["sh" "tools/fixtures/amphora_lap2_witness.sh"]
+let witness = run ["sh" "tools/fixtures/a/amphora_lap2_witness.sh"]
 assert witness.ok else "Amphora lap 2 witness failed"
 assert witness.out contains "GREEN" else "Amphora lap 2 did not report GREEN"
 assert witness.out contains "THREE_COPIES" else "Amphora lap 2 missing 3-2-1 assertion"

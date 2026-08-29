@@ -2,7 +2,7 @@
 
 **Language:** EN - **Voice:** Kyri - **Style:** Gauge, Field setting (see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md))
 **Status:** Checkable -- **87 modules** stand in this directory on `20260824.095920`, and every one of them has a row below.
-**Held to the directory by** [`../tools/cr/crypto_module_roster_witness.rish`](../tools/cr/crypto_module_roster_witness.rish) over [`../tools/fixtures/module_roster_scan.sh`](../tools/fixtures/module_roster_scan.sh), which gates `unrostered`, `phantom`, `duplicate_rows`, and `mismatched_rows` at zero.
+**Held to the directory by** [`../tools/cr/crypto_module_roster_witness.rish`](../tools/cr/crypto_module_roster_witness.rish) over [`../tools/fixtures/m/module_roster_scan.sh`](../tools/fixtures/m/module_roster_scan.sh), which gates `unrostered`, `phantom`, `duplicate_rows`, and `mismatched_rows` at zero.
 
 This page exists because the front door could not hold it honestly. On `20260824` [`README.md`](README.md) stood at **88,205 bytes** and [`../docs/CRYPTO.md`](../docs/CRYPTO.md) at **68,547**, and both said the library holds **eighty files** while **87** stand here. Seven modules had landed with nobody adding a line, and the seven split two ways. Two are real modules nobody listed -- `sha3_digest.rye`, and `slhdsa_thash.rye` at 21,812 bytes, the whole first rung of the SLH-DSA ladder. Five are seam symlinks, and their gap is quieter: the pages discuss their *targets* under `../encoding/` names, so a reader running `ls crypto/` meets `encoding_bech32.rye` and finds no page saying those are one file. Both kinds have rows here (REDS %191, the fourth firing of the shape first booked as %184).
 
@@ -198,7 +198,7 @@ Five of the modules here are symlinks, and they are listed because a reader who 
 
 ## Tools -- 1
 
-A command-line program rather than a primitive, standing here because it imports `sha3.rye` by bare name and Rye binds that to this directory. It is proven by [`../tools/s/sha3_file_witness.rish`](../tools/s/sha3_file_witness.rish) against the published FIPS 202 answers rather than by the primitive suite, and that redirect is declared in [`../tools/fixtures/crypto_tool_modules.txt`](../tools/fixtures/crypto_tool_modules.txt).
+A command-line program rather than a primitive, standing here because it imports `sha3.rye` by bare name and Rye binds that to this directory. It is proven by [`../tools/s/sha3_file_witness.rish`](../tools/s/sha3_file_witness.rish) against the published FIPS 202 answers rather than by the primitive suite, and that redirect is declared in [`../tools/fixtures/c/crypto_tool_modules.txt`](../tools/fixtures/c/crypto_tool_modules.txt).
 
 | Module | What it does |
 |---|---|

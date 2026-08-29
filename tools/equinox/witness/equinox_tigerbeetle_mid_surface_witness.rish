@@ -34,7 +34,7 @@ assert obo.ok else "equinox-tb-mid-surface: off-by-one limb failed"
 assert obo.out contains "GREEN: tb-off-by-one" else "equinox-tb-mid-surface: off-by-one not GREEN"
 
 # Refuse -- absent clone path
-let refuse = run ["sh" "tools/fixtures/tigerbeetle_off_by_one_census.sh" "tools/fixtures/tigerbeetle_ABSENT"]
+let refuse = run ["sh" "tools/fixtures/t/tigerbeetle_off_by_one_census.sh" "tools/fixtures/tigerbeetle_ABSENT"]
 say refuse.out
 assert refuse.ok == false else "equinox-tb-mid-surface: absent clone must fail"
 assert refuse.out contains "CLONE=ABSENT" else "equinox-tb-mid-surface: want CLONE=ABSENT"

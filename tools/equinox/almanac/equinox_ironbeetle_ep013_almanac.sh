@@ -25,7 +25,7 @@ entry = (
     "### 75. IronBeetle ep013 holds Op · commit_min · commit_max apart; repair reads the break in the chain.\n"
     "**Ran:** `rishi/bin/rishi run tools/equinox/witness/equinox_ironbeetle_ep013_choir_witness.rish` · **Stamp:** `"
     + stamp
-    + "` · **Witness:** `tools/gen/chapter/ironbeetle_ep013_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep013_census.sh` · choir `equinox_ironbeetle_ep013_choir_witness.rish`\n"
+    + "` · **Witness:** `tools/gen/chapter/ironbeetle_ep013_census_witness.rish` · scan `tools/fixtures/i/ironbeetle_ep013_census.sh` · choir `equinox_ironbeetle_ep013_choir_witness.rish`\n"
     "Expected IRON=present · EP013 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, "
     "and verdict=absent on a missing iron shelf. Metal answered GREEN. "
     "Clean-room study only.\n\n"

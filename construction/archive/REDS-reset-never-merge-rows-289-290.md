@@ -1,6 +1,6 @@
 # REDS %289-%290 -- the morning after a deep debride, and the loops that had no word for it
 
-*Folded off the living pin on `20260827.164029` by `tools/fixtures/reds_fold.sh`, both **CLOSED**.
+*Folded off the living pin on `20260827.164029` by `tools/fixtures/r/reds_fold.sh`, both **CLOSED**.
 The pin had to make room for three rows closing in one round and one still open, and these two are
 the oldest closed rows it held.*
 

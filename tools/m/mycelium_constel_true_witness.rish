@@ -4,7 +4,7 @@
 # Chapter D (Kresfa & Mycelium) - Mycelium consensus - Constel - rung r4 -- reads true.
 # r1 booted a named constellation and reached quorum, r2 proved its fault tolerance, r3 let it travel as a
 # record -- all over rosters seated in code. r4 carries the reader onto a REAL on-disk `format constel-v1`
-# record a keeper can open and read -- tools/fixtures/constel_roster.bron, produced reproducibly by
+# record a keeper can open and read -- tools/fixtures/c/constel_roster.bron, produced reproducibly by
 # mycelium/constel_fixture_gen.rye, @embedFile-bound through the mycelium/corpora/ symlink (no network).
 #
 # The crux this witness proves is TWO TOOLS, ONE ANSWER -- the app derives the roster shape (<count>
@@ -42,7 +42,7 @@ assert selftest.out contains "The Constel agent-doable arc closes" else "myceliu
 # The crux -- two tools, one answer. The app's measure pair must equal awk's reading of the same bytes.
 let app = run ["sh" "-c" "${bin} measure 2>&1"]
 assert app.ok else "mycelium-constel-true: app measure exited non-zero"
-let awk = run ["sh" "-c" "awk -f tools/fixtures/constel_roster_truth.awk tools/fixtures/constel_roster.bron"]
+let awk = run ["sh" "-c" "awk -f tools/fixtures/c/constel_roster_truth.awk tools/fixtures/c/constel_roster.bron"]
 assert awk.ok else "mycelium-constel-true: awk truth read failed"
 assert awk.out contains "5 97f92882" else "mycelium-constel-true: awk pair not 5 97f92882"
 assert app.out == awk.out else "mycelium-constel-true: app and awk disagree — the reading drifted from the bytes"
@@ -51,7 +51,7 @@ assert app.out == awk.out else "mycelium-constel-true: app and awk disagree — 
 # Constel renders, never a hand-mock. Emit to a scratch path and diff (never overwrite the committed fixture).
 let genbuild = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/constel_fixture_gen.rye -femit-bin=mycelium/bin/constel_fixture_gen"]
 assert genbuild.ok else "mycelium-constel-true: fixture generator build failed"
-let regen = run ["sh" "-c" "mycelium/bin/constel_fixture_gen 2> /tmp/constel_roster_regen.bron; diff tools/fixtures/constel_roster.bron /tmp/constel_roster_regen.bron && echo REPRODUCIBLE"]
+let regen = run ["sh" "-c" "mycelium/bin/constel_fixture_gen 2> /tmp/constel_roster_regen.bron; diff tools/fixtures/c/constel_roster.bron /tmp/constel_roster_regen.bron && echo REPRODUCIBLE"]
 assert regen.ok else "mycelium-constel-true: the regenerated fixture drifted from the committed one"
 assert regen.out contains "REPRODUCIBLE" else "mycelium-constel-true: the regenerated fixture drifted from the committed one"
 

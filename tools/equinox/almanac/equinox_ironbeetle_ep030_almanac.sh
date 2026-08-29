@@ -25,7 +25,7 @@ entry = (
     "### 85. IronBeetle ep030 asks which manifest-log entry owns a reused address; table_extent answers what an address alone cannot.\n"
     "**Ran:** `rishi/bin/rishi run tools/equinox/witness/equinox_ironbeetle_ep030_choir_witness.rish` · **Stamp:** `"
     + stamp
-    + "` · **Witness:** `tools/gen/chapter/ironbeetle_ep030_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep030_census.sh` · choir `equinox_ironbeetle_ep030_choir_witness.rish`\n"
+    + "` · **Witness:** `tools/gen/chapter/ironbeetle_ep030_census_witness.rish` · scan `tools/fixtures/i/ironbeetle_ep030_census.sh` · choir `equinox_ironbeetle_ep030_choir_witness.rish`\n"
     "Expected IRON=present · EP030 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, "
     "and verdict=absent on a missing iron shelf. Metal answered GREEN. "
     "Clean-room study only.\n\n"

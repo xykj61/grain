@@ -28,10 +28,10 @@ let e = ^- @ud 7
 assert e == 7 else "^- @ud should accept a non-negative int"
 
 # A value that cannot hold refuses -- a child whose cast fails exits non-zero.
-let bad_type = run ["rishi/bin/rishi" "run" "tools/fixtures/rune_cast_bad_type.rish"]
+let bad_type = run ["rishi/bin/rishi" "run" "tools/fixtures/r/rune_cast_bad_type.rish"]
 assert bad_type.ok == false else "^- @u32 on a string must refuse (child should exit non-zero)"
 
-let bad_range = run ["rishi/bin/rishi" "run" "tools/fixtures/rune_cast_out_of_range.rish"]
+let bad_range = run ["rishi/bin/rishi" "run" "tools/fixtures/r/rune_cast_out_of_range.rish"]
 assert bad_range.ok == false else "^- @u32 -1 is below the u32 window and must refuse"
 
 say "GREEN: Rishi rune-cast — ^- gates a value against its shape and explicit width, nests, and refuses what cannot hold."

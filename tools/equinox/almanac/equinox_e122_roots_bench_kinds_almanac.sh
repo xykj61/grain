@@ -28,7 +28,7 @@ entry = (
     "claims become evidence; e121 blur that made Bench a raised root is refused; "
     "hard line corrected to name the **Bench** when a measurement is reported; "
     "seat 128 stays reserved; surface census six kept.\n"
-    "**Ran:** `sh tools/fixtures/equinox_e122_roots_bench_kinds_scan.sh` · **Stamp:** `"
+    "**Ran:** `sh tools/fixtures/e/equinox_e122_roots_bench_kinds_scan.sh` · **Stamp:** `"
     + stamp
     + "` · **Witness:** `tools/equinox/witness/equinox_e122_roots_bench_kinds_witness.rish` · "
     "counsel `counsel/date/20260731/20260731-221131_e122-roots-bench-kinds.md` · "

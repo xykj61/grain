@@ -37,7 +37,7 @@ say "exec-bit: Language EN -- a mode is tracked content, and content that moves 
 say "exec-bit: Style Radiant -- the tree states what it can run, and the index is what states it."
 say "exec-bit: Lens TAME -- safety first: a guard that reads only lines cannot see the byte that broke the loop."
 
-let scan = run ["sh" "tools/fixtures/exec_bit_scan.sh"]
+let scan = run ["sh" "tools/fixtures/e/exec_bit_scan.sh"]
 assert scan.ok else "exec-bit: a script the tree invokes directly cannot be run -- read the scan's own lines"
 say scan.out
 assert scan.out contains "directly_invoked_not_exec=0" else "exec-bit: every directly invoked script must carry mode 100755"
@@ -45,7 +45,7 @@ assert scan.out contains "worktree_index_disagreements=0" else "exec-bit: the wo
 assert scan.out contains "verdict=ok" else "exec-bit: the scan must balance before it is believed"
 say "field GREEN -- every script the tree invokes directly runs in a fresh clone"
 
-let control = run ["sh" "tools/fixtures/exec_bit_control.sh"]
+let control = run ["sh" "tools/fixtures/e/exec_bit_control.sh"]
 assert control.ok else "exec-bit: the control must complete"
 say control.out
 assert control.out contains "agreeing_free=yes" else "exec-bit: a tree whose invoked script is executable must pass free"

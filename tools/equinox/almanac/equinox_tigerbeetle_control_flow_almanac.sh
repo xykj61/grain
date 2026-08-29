@@ -25,7 +25,7 @@ entry = (
     "### 41. Control flow stays simple and explicit; recursion stays out so bounds hold.\n"
     "**Ran:** `rishi/bin/rishi run tools/equinox/witness/equinox_tigerbeetle_control_flow_choir_witness.rish` · **Stamp:** `"
     + stamp
-    + "` · **Witness:** `tools/gen/chapter/tigerbeetle_control_flow_census_witness.rish` · scan `tools/fixtures/tigerbeetle_control_flow_census.sh` · choir `equinox_tigerbeetle_control_flow_choir_witness.rish`\n"
+    + "` · **Witness:** `tools/gen/chapter/tigerbeetle_control_flow_census_witness.rish` · scan `tools/fixtures/t/tigerbeetle_control_flow_census.sh` · choir `equinox_tigerbeetle_control_flow_choir_witness.rish`\n"
     "Expected CLONE=present · GUIDE_FLOW · GUIDE_NASA · GUIDE_LIMIT · TAME_FLOW · SUPPLEMENT_FLOW · STYLE, "
     "and verdict=absent on a missing clone path. Metal answered GREEN. Clean-room study only.\n\n"
 )

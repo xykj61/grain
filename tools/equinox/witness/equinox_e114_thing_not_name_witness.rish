@@ -35,7 +35,7 @@ say scope.out
 assert scope.ok else "e114-thing-not-name: prin_scope RED"
 assert scope.out contains "GREEN: prin-scope" else "e114-thing-not-name: want scope GREEN"
 
-let scan = run ["sh" "tools/fixtures/equinox_e114_thing_not_name_scan.sh"]
+let scan = run ["sh" "tools/fixtures/e/equinox_e114_thing_not_name_scan.sh"]
 say scan.out
 assert scan.ok else "e114-thing-not-name: scan must exit 0"
 assert scan.out contains "control_gate=honored" else "e114-thing-not-name: want control_gate"

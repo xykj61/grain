@@ -20,14 +20,14 @@ assert init.err contains "initialized" else "init must announce itself"
 let shape = run ["sh" "-c" "test -d .mantra/blobs && test ! -f .mantra/HEAD && echo SHAPE"]
 assert shape.out contains "SHAPE" else "init must create blobs/; HEAD is born at first weave"
 
-let write = run ["sh" "-c" "cp tools/fixtures/rw1_probe_line.txt .rw1_probe.txt"]
+let write = run ["sh" "-c" "cp tools/fixtures/r/rw1_probe_line.txt .rw1_probe.txt"]
 assert write.ok else "probe line must copy byte-true from its fixture"
 let add = run ["mantra/bin/mantra" "add" ".rw1_probe.txt"]
 assert add.ok else "add after a session line must succeed"
 let head_after = run ["sh" "-c" "test -f .mantra/HEAD && echo HEADYES"]
 assert head_after.out contains "HEADYES" else "add must bring HEAD into being and advance it"
 
-let exact = run ["rishi/bin/rishi" "run" "tools/fixtures/rw1_exact_probe.rish"]
+let exact = run ["rishi/bin/rishi" "run" "tools/fixtures/r/rw1_exact_probe.rish"]
 assert exact.out contains "MATCH" else "a weave blob must return the exact prior-line bytes"
 
 let history = run ["mantra/bin/mantra" "log"]

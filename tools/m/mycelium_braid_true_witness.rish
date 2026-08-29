@@ -6,9 +6,9 @@
 # keeper can open and walk, proving the Braid's signature property is true to the bytes: a chain whose final
 # link overdraws reverses WHOLE, and not one coin moves.
 #
-# The app parses tools/fixtures/braid_dag.bron through cord_bron, rebuilds the Dag under cord.add (re-verifying
+# The app parses tools/fixtures/b/braid_dag.bron through cord_bron, rebuilds the Dag under cord.add (re-verifying
 # every signature), resolves it through braid, and reports the terminal recipient, the committed count, and the
-# rejected count; an independent awk reading of the same bytes (tools/fixtures/braid_dag_truth.awk) seeds
+# rejected count; an independent awk reading of the same bytes (tools/fixtures/b/braid_dag_truth.awk) seeds
 # balances from the genesis credits and simulates the chain atomically in file order -- two tools, one answer.
 # The fixture is reproducible (the generator re-emits byte-identical bytes), and a tampered record is never read
 # as true. Composes cord_bron + cord + braid public API only; demo keeper seeds -- no key, no funds, no network,
@@ -39,13 +39,13 @@ assert selftest.out contains "a tampered header refused BadFormat" else "myceliu
 # The crux -- two tools, one answer. The app's measure triple must equal awk's reading of the same bytes.
 let app = run ["sh" "-c" "${bin} measure 2>&1"]
 assert app.ok else "mycelium-braid-true: app measure exited non-zero"
-let awk = run ["sh" "-c" "awk -f tools/fixtures/braid_dag_truth.awk tools/fixtures/braid_dag.bron"]
+let awk = run ["sh" "-c" "awk -f tools/fixtures/b/braid_dag_truth.awk tools/fixtures/b/braid_dag.bron"]
 assert awk.ok else "mycelium-braid-true: awk truth read failed"
 assert awk.out contains "ed3234b276d4ceda57d59bad14fbaf5a773c0f318c999de3a60d53c5a5b34c05 0 1" else "mycelium-braid-true: awk triple not Dave's terminal · committed 0 · rejected 1"
 assert app.out == awk.out else "mycelium-braid-true: app and awk disagree — the reject verdict drifted from the bytes"
 
 # The fixture is genuinely what the Cord emits, not a hand-mock -- the generator re-emits byte-identical bytes.
-let regen = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye run mycelium/braid_fixture_gen.rye 2>/tmp/braid_regen.bron >/dev/null && diff -q tools/fixtures/braid_dag.bron /tmp/braid_regen.bron && echo REPRODUCIBLE"]
+let regen = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye run mycelium/braid_fixture_gen.rye 2>/tmp/braid_regen.bron >/dev/null && diff -q tools/fixtures/b/braid_dag.bron /tmp/braid_regen.bron && echo REPRODUCIBLE"]
 assert regen.ok else "mycelium-braid-true: fixture is not reproducible — the generator drifted"
 assert regen.out contains "REPRODUCIBLE" else "mycelium-braid-true: fixture regeneration did not match"
 

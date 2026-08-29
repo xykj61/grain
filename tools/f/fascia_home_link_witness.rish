@@ -15,7 +15,7 @@ say "fascia-home-link: Lens TAME -- safety first: this is a ratchet under a ceil
 
 # The ceiling lives in the scan, so no meter here spells it and none can drift from it.
 
-let control = run ["sh" "tools/fixtures/fascia_home_link_control.sh"]
+let control = run ["sh" "tools/fixtures/f/fascia_home_link_control.sh"]
 assert control.ok else "fascia-home-link: the control must complete"
 say control.out
 assert control.out contains "control_verdict=ok" else "fascia-home-link: the control must reach its own verdict"
@@ -29,7 +29,7 @@ assert control.out contains "vendor_excluded=yes" else "fascia-home-link: vendor
 assert control.out contains "seed_excluded=yes" else "fascia-home-link: the public projection is generated and must stay out of the population"
 assert control.out contains "root_excluded=yes" else "fascia-home-link: the root README is home rather than a page needing a way there"
 
-let living = run ["sh" "tools/fixtures/fascia_home_link_scan.sh"]
+let living = run ["sh" "tools/fixtures/f/fascia_home_link_scan.sh"]
 assert living.ok else "fascia-home-link: the living scan must complete"
 say living.out
 

@@ -25,7 +25,7 @@ entry = (
     "### 90. IronBeetle ep035 makes the internal key a logical clock; resubmission of an identical transfer is success, not error.\n"
     "**Ran:** `rishi/bin/rishi run tools/equinox/witness/equinox_ironbeetle_ep035_choir_witness.rish` · **Stamp:** `"
     + stamp
-    + "` · **Witness:** `tools/gen/chapter/ironbeetle_ep035_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep035_census.sh` · choir `equinox_ironbeetle_ep035_choir_witness.rish`\n"
+    + "` · **Witness:** `tools/gen/chapter/ironbeetle_ep035_census_witness.rish` · scan `tools/fixtures/i/ironbeetle_ep035_census.sh` · choir `equinox_ironbeetle_ep035_choir_witness.rish`\n"
     "Expected IRON=present · EP035 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, "
     "and verdict=absent on a missing iron shelf. Metal answered GREEN. "
     "Clean-room study only.\n\n"

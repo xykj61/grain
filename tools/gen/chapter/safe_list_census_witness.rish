@@ -8,7 +8,7 @@ say "safe-list: Language EN — the safe list opens empty and grows by word."
 say "safe-list: Style Radiant — bound sixty-four; shred refuses without a circled yes."
 say "safe-list: Lens TAME — e22 · house-12 care · almanac seat 28."
 
-let census = run ["sh" "tools/fixtures/safe_list_census.sh"]
+let census = run ["sh" "tools/fixtures/s/safe_list_census.sh"]
 say census.out
 assert census.ok else "safe-list: census failed or thin"
 assert census.out contains "SAFE=present" else "safe-list: want SAFE.md present"

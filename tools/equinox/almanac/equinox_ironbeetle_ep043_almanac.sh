@@ -25,7 +25,7 @@ entry = (
     "### 96. IronBeetle ep043 makes the Manifest the moment of truth: written tables stay unacknowledged until apply; snapshots defer erasure.\n"
     "**Ran:** `rishi/bin/rishi run tools/equinox/witness/equinox_ironbeetle_ep043_choir_witness.rish` · **Stamp:** `"
     + stamp
-    + "` · **Witness:** `tools/gen/chapter/ironbeetle_ep043_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep043_census.sh` · choir `equinox_ironbeetle_ep043_choir_witness.rish`\n"
+    + "` · **Witness:** `tools/gen/chapter/ironbeetle_ep043_census_witness.rish` · scan `tools/fixtures/i/ironbeetle_ep043_census.sh` · choir `equinox_ironbeetle_ep043_choir_witness.rish`\n"
     "Expected IRON=present · EP043 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, "
     "and verdict=absent on a missing iron shelf. Metal answered GREEN. "
     "Clean-room study only. Chapter six fills at sixteen.\n\n"

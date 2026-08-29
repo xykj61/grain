@@ -37,7 +37,7 @@
 #   very rung tests, leaving it proving nothing (REDS %121). Both now source one file, and a
 #   hand-rolled exclusion coming back is refused.
 #
-#   The census, under a ratchet on the right number. `tools/fixtures/dated_path_scan.sh` walks
+#   The census, under a ratchet on the right number. `tools/fixtures/d/dated_path_scan.sh` walks
 #   every dated reference in the field, and its numbers are printed verbatim rather than recited
 #   here (REDS %108). The gate is on the LOST references -- a basename that exists nowhere, and
 #   a basename at two paths where no single answer is safe -- rather than on the whole broken
@@ -51,7 +51,7 @@
 # landed, and telling those apart needs a history walk this rung does not take.
 #
 # Chapter: the Standfast restrategizing of `20260821`, arc one -- the mark and the path.
-# Kin: tools/d/dated_path_resolve.rish - tools/fixtures/dated_path_scan.sh -
+# Kin: tools/d/dated_path_resolve.rish - tools/fixtures/d/dated_path_scan.sh -
 # .claude/rules/stamp-and-name.md -
 # external-research/20260821-152409_the-standfast-read-marks-rooms-and-the-vocabulary-pruning.md
 #
@@ -64,7 +64,7 @@ say "dated-path: Lens TAME -- every number below comes from the scan's own outpu
 
 let bin = "rishi/bin/rishi"
 let tool = "tools/d/dated_path_resolve.rish"
-let scan = "tools/fixtures/dated_path_scan.sh"
+let scan = "tools/fixtures/d/dated_path_scan.sh"
 
 # ---------------------------------------------------------------------------------------------
 # PART ONE -- the seven verdicts, each on a real case standing in this tree today.
@@ -223,7 +223,7 @@ assert census.out contains "under_ceiling=yes" else "dated-path: LOST references
 # built whose right answer is known before the walker runs: two dated references cited from one
 # file, one of which names a file that is there and one of which names a file that is not. A
 # walker that cannot tell those two apart on a two-line corpus cannot be believed on a tree.
-let control = run ["sh" "tools/fixtures/dated_path_control.sh"]
+let control = run ["sh" "tools/fixtures/d/dated_path_control.sh"]
 assert control.ok else "dated-path: the throwaway control corpus must build and be walked"
 assert control.out contains "refs_total=2" else "dated-path: the control corpus carries exactly the two references it was built with"
 assert control.out contains "refs_home=1" else "dated-path: the control's real reference must be found at home"
@@ -235,11 +235,11 @@ say "census control GREEN -- a corpus whose answer is known by construction is w
 # divergence let the repointer rewrite the stale fixture three asserts above -- leaving the rung
 # that proves the fold rule works proving nothing (REDS %121). A rule like that is only worth
 # writing down if something notices when it lapses, so this checks both tools source
-# tools/fixtures/dated_path_exclusions.sh and neither has grown a hand-rolled exclusion back.
-let one_list = run ["sh" "tools/fixtures/dated_path_exclusions_control.sh"]
+# tools/fixtures/d/dated_path_exclusions.sh and neither has grown a hand-rolled exclusion back.
+let one_list = run ["sh" "tools/fixtures/d/dated_path_exclusions_control.sh"]
 assert one_list.ok else "dated-path: the single-exclusion-list control must complete"
 say one_list.out
-assert one_list.out contains "real_tools_accepted=yes" else "dated-path: a hand-rolled exclusion has come back into the census or the repointer -- both must read tools/fixtures/dated_path_exclusions.sh and nothing else"
+assert one_list.out contains "real_tools_accepted=yes" else "dated-path: a hand-rolled exclusion has come back into the census or the repointer -- both must read tools/fixtures/d/dated_path_exclusions.sh and nothing else"
 assert one_list.out contains "private_copy_refused=yes" else "dated-path: the detector must refuse a tool carrying its own private copy, or the rule guards nothing"
 assert one_list.out contains "discovers_a_planting=yes" else "dated-path: a name an instrument plants must be discovered rather than remembered"
 assert one_list.out contains "moved_doc_free=yes" else "dated-path: a document that merely MOVED must never read as a planting -- its sprig is on disk"

@@ -26,7 +26,7 @@ entry = (
     "### 49. Comments say why; they are sentences, and Radiant voice keeps them honest.\n"
     "**Ran:** `rishi/bin/rishi run tools/equinox/witness/equinox_tigerbeetle_say_why_choir_witness.rish` · **Stamp:** `"
     + stamp
-    + "` · **Witness:** `tools/gen/chapter/tigerbeetle_say_why_census_witness.rish` · scan `tools/fixtures/tigerbeetle_say_why_census.sh` · choir `equinox_tigerbeetle_say_why_choir_witness.rish`\n"
+    + "` · **Witness:** `tools/gen/chapter/tigerbeetle_say_why_census_witness.rish` · scan `tools/fixtures/t/tigerbeetle_say_why_census.sh` · choir `equinox_tigerbeetle_say_why_choir_witness.rish`\n"
     "Expected CLONE=present · GUIDE_WHY · GUIDE_HOW · GUIDE_SENTENCE · TAME_WHY · TAME_SENTENCE · "
     "TAME_RADIANT · SUPPLEMENT_WHY · STYLE · RADIANT, "
     "and verdict=absent on a missing clone path. Metal answered GREEN. "

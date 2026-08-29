@@ -9,7 +9,7 @@ say "shed-census: Language EN — planted controls before orphan totals."
 say "shed-census: Style Radiant — C1 keeps reachable; C2 exposes unreachable."
 say "shed-census: Lens TAME — e98 · commence M7 weave · almanac seat 102 · ch7 6/16."
 
-let green = run ["sh" "tools/fixtures/shed_census_scan.sh"]
+let green = run ["sh" "tools/fixtures/s/shed_census_scan.sh"]
 say green.out
 assert green.ok else "shed-census: living scan must exit 0"
 assert green.out contains "control_gate=honored" else "shed-census: want control gate"
@@ -21,7 +21,7 @@ assert green.out contains "verdict=ok" else "shed-census: want verdict=ok"
 assert green.out contains "shred=RED" else "shed-census: shred stays RED"
 assert green.out contains "orphaned=" else "shed-census: want orphaned count"
 
-let red = run ["sh" "tools/fixtures/shed_census_scan.sh" "prove-red"]
+let red = run ["sh" "tools/fixtures/s/shed_census_scan.sh" "prove-red"]
 say red.out
 assert (red.ok == false) else "shed-census: prove-red must refuse"
 assert red.out contains "RED_C2-orphan" else "shed-census: prove-red want C2 refusal"

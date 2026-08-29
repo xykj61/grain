@@ -40,7 +40,7 @@ claim, then the joy of the craft.
 Every document, comment block, or design a lap opens gets one reading:
 
 ```sh
-sh tools/fixtures/qa_report_card.sh <path> --setting door|field|meter --service N
+sh tools/fixtures/q/qa_report_card.sh <path> --setting door|field|meter --service N
 ```
 
 B or better stands; below B pushes one bounded molt frame

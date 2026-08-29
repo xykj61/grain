@@ -15,7 +15,7 @@ say "rune-assert-sweep: Style Radiant — gate the asserting cores; advise the r
 say "rune-assert-sweep: Lens TAME — a gated module says its invariants; a ratchet names the gaps."
 
 # --- GATE: core modules that carry asserts today (regression guard) ---
-let gate = run ["sh" "tools/fixtures/rune_assert_sweep_scan.sh" "mandate/store.rye" "mandate/keyed.rye" "tally/seed.rye" "tally/gardens.rye" "tally/kumara.rye" "caravan/seed.rye" "caravan/bounded.rye" "comlink/topology.rye" "kumara/tilak.rye" "settlement/constellation.rye" "sundial/sundial.rye" "glow/expr.rye"]
+let gate = run ["sh" "tools/fixtures/r/rune_assert_sweep_scan.sh" "mandate/store.rye" "mandate/keyed.rye" "tally/seed.rye" "tally/gardens.rye" "tally/kumara.rye" "caravan/seed.rye" "caravan/bounded.rye" "comlink/topology.rye" "kumara/tilak.rye" "settlement/constellation.rye" "sundial/sundial.rye" "glow/expr.rye"]
 say gate.out
 # values_apart: the verdict key and the exit status must agree.
 assert gate.out contains "verdict=ok" else "rune-assert-sweep: a gated core module dropped to zero asserts"

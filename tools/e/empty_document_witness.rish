@@ -44,14 +44,14 @@ say "empty-document: Language EN -- a page with nothing on it answers every ques
 say "empty-document: Style Radiant -- the tree states what a document holds, and holding something is the first claim."
 say "empty-document: Lens TAME -- safety first: a check satisfied by absence is the one failure mode no other guard can see."
 
-let scan = run ["sh" "tools/fixtures/empty_document_scan.sh"]
+let scan = run ["sh" "tools/fixtures/e/empty_document_scan.sh"]
 assert scan.ok else "empty-document: a tracked document holds nothing -- fill it or remove it"
 say scan.out
 assert scan.out contains "empty_documents=0" else "empty-document: every tracked document must say something"
 assert scan.out contains "verdict=ok" else "empty-document: the scan must balance before it is believed"
 say "field GREEN -- every tracked document holds at least one thing worth reading"
 
-let control = run ["sh" "tools/fixtures/empty_document_control.sh"]
+let control = run ["sh" "tools/fixtures/e/empty_document_control.sh"]
 assert control.ok else "empty-document: the control must complete"
 say control.out
 assert control.out contains "agreeing_free=yes" else "empty-document: a tree whose documents all speak must pass free"

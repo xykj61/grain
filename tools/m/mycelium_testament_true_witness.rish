@@ -4,7 +4,7 @@
 # Chapter D (Kresfa & Mycelium) - Mycelium consensus - Testament - rung r4 -- reads true.
 # r1 sealed a named constellation's verdict and verified it offline, r2 carried its fault tolerance, r3 let
 # it travel as a record -- all over certificates sealed in the same process. r4 carries the reader onto a REAL
-# on-disk `format testament-v1` certificate a keeper can open and read -- tools/fixtures/testament_cert.bron,
+# on-disk `format testament-v1` certificate a keeper can open and read -- tools/fixtures/t/testament_cert.bron,
 # produced reproducibly by mycelium/testament_fixture_gen.rye, @embedFile-bound through the mycelium/corpora/
 # symlink (no network).
 #
@@ -44,7 +44,7 @@ assert selftest.out contains "The Testament agent-doable arc closes" else "mycel
 # The crux -- two tools, one answer. The app's measure pair must equal awk's reading of the same bytes.
 let app = run ["sh" "-c" "${bin} measure 2>&1"]
 assert app.ok else "mycelium-testament-true: app measure exited non-zero"
-let awk = run ["sh" "-c" "awk -f tools/fixtures/testament_cert_truth.awk tools/fixtures/testament_cert.bron"]
+let awk = run ["sh" "-c" "awk -f tools/fixtures/t/testament_cert_truth.awk tools/fixtures/t/testament_cert.bron"]
 assert awk.ok else "mycelium-testament-true: awk truth read failed"
 assert awk.out contains "5 c2d99dd2" else "mycelium-testament-true: awk pair not 5 c2d99dd2"
 assert app.out == awk.out else "mycelium-testament-true: app and awk disagree â€” the reading drifted from the bytes"
@@ -53,7 +53,7 @@ assert app.out == awk.out else "mycelium-testament-true: app and awk disagree â€
 # the Testament seals, never a hand-mock. Emit to a scratch path and diff (never overwrite the committed one).
 let genbuild = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/testament_fixture_gen.rye -femit-bin=mycelium/bin/testament_fixture_gen"]
 assert genbuild.ok else "mycelium-testament-true: fixture generator build failed"
-let regen = run ["sh" "-c" "mycelium/bin/testament_fixture_gen 2> /tmp/testament_cert_regen.bron; diff tools/fixtures/testament_cert.bron /tmp/testament_cert_regen.bron && echo REPRODUCIBLE"]
+let regen = run ["sh" "-c" "mycelium/bin/testament_fixture_gen 2> /tmp/testament_cert_regen.bron; diff tools/fixtures/t/testament_cert.bron /tmp/testament_cert_regen.bron && echo REPRODUCIBLE"]
 assert regen.ok else "mycelium-testament-true: the regenerated fixture drifted from the committed one"
 assert regen.out contains "REPRODUCIBLE" else "mycelium-testament-true: the regenerated fixture drifted from the committed one"
 

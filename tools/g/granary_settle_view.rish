@@ -6,7 +6,7 @@
 let bin = "pond/bin/drawn-terminal"
 
 say "build: Granary settle view — drawn-terminal compile"
-let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
+let build = run ["sh" "tools/fixtures/p/pond_build_drawn_terminal.sh"]
 assert build.ok else "drawn_terminal build failed for granary settle view witness"
 assert build.out contains "GREEN:" else "drawn_terminal build did not reach GREEN"
 

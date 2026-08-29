@@ -25,7 +25,7 @@ entry = (
     "### 108. Equinox e104 hold Class A disclosed + Class O rooms: fascia metric i8 holds four honest anchors with reason named (not excluded); Class O room home in SHRED_PREP; fascia 100→92; window_min kept.\n"
     "**Ran:** `rishi/bin/rishi run tools/equinox/witness/equinox_e104_hold_class_o_choir_witness.rish` · **Stamp:** `"
     + stamp
-    + "` · **Witness:** `tools/equinox/witness/equinox_e104_hold_class_o_witness.rish` · scan `tools/fixtures/equinox_e104_hold_class_o_scan.sh` · choir `equinox_e104_hold_class_o_choir_witness.rish`\n"
+    + "` · **Witness:** `tools/equinox/witness/equinox_e104_hold_class_o_witness.rish` · scan `tools/fixtures/e/equinox_e104_hold_class_o_scan.sh` · choir `equinox_e104_hold_class_o_choir_witness.rish`\n"
     "Expected control_gate · metric_rev=i8 · class_a=4 · class_a_held_disclosed=4 · "
     "law=hold_not_exclude · baseline_kind=window_min · fascia=92 · Class O rooms · "
     "no paths seated · fork not_consumed · seats 97–107 · shelf end ep045 · baton breach 0. "

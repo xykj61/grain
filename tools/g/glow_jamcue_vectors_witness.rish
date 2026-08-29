@@ -1,11 +1,11 @@
 # glow_jamcue_vectors_witness.rish -- Glow cell-pack demo vectors GREEN.
 #
-# Asserts the seated demo arithmetic against tools/fixtures/glow_jamcue_vectors.txt
+# Asserts the seated demo arithmetic against tools/fixtures/g/glow_jamcue_vectors.txt
 # and reuses glow_expr_witness for the parse/lower face.
 #
 #   rishi/bin/rishi run tools/g/glow_jamcue_vectors_witness.rish
 
-let fixture = read-file "tools/fixtures/glow_jamcue_vectors.txt"
+let fixture = read-file "tools/fixtures/g/glow_jamcue_vectors.txt"
 assert (fixture contains "flat|(jam from amount)|327683|3|") else "fixture missing flat vector"
 assert (fixture contains "nest-left|(jam (mix from amount) amount)|393219|3|") else "fixture missing nest-left"
 assert (fixture contains "nest-right|(jam cell (mix from amount))|327686|6|") else "fixture missing nest-right"

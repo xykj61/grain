@@ -31,7 +31,7 @@ assert qrencode_check.ok else "qrencode not found -- install it: brew install qr
 # the string. Without this, an embedded \" passes through to the shell
 # as two literal characters (backslash, quote) instead of a real quote,
 # and every field below would come back wrapped in stray quote marks.
-let dq = read-file "tools/fixtures/dquote.txt"
+let dq = read-file "tools/fixtures/d/dquote.txt"
 
 let handle_cmd = join ["source tools/key-card.conf && printf '%s' " dq "$HANDLE" dq] ""
 let handle_run = run ["sh" "-c" handle_cmd]

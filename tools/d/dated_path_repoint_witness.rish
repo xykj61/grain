@@ -1,6 +1,6 @@
 # tools/d/dated_path_repoint_witness.rish -- the repointer's safety rule, proven on metal.
 #
-# WHY THIS RUNG. tools/fixtures/dated_path_repoint_scan.sh EDITS FILES, and its whole safety rests
+# WHY THIS RUNG. tools/fixtures/d/dated_path_repoint_scan.sh EDITS FILES, and its whole safety rests
 # on one rule: a file whose own basename carries a one-clock stamp is dated testimony and is never
 # written to. That rule is what keeps a fold from quietly rewriting thousands of session logs and
 # counsel notes -- the very breach of accrete-never-break the mark law exists to avoid. A rule
@@ -27,7 +27,7 @@ say "repoint: Language EN -- a tool that edits files earns trust only where it r
 say "repoint: Style Radiant -- one claim, four cases, and idempotence. The rule is that a dated basename is testimony; the proof is a tree built to catch the rule breaking."
 say "repoint: Lens TAME -- the control's answers are known before the tool runs, so the check does not depend on the thing it is checking."
 
-let control = run ["sh" "tools/fixtures/dated_path_repoint_control.sh"]
+let control = run ["sh" "tools/fixtures/d/dated_path_repoint_control.sh"]
 assert control.ok else "repoint: the control tree must build and the repointer must run over it"
 say control.out
 assert control.out contains "repointed_living=1" else "repoint: a living file citing a folded path must be repointed"

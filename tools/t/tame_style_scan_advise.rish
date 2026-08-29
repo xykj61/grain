@@ -10,7 +10,7 @@
 
 # tools/*.py count -- advisory echo beside the BLOCKING gate in
 # tame_style_scan_bans.rish (closed `20260724.212805`). Named exempts:
-# tools/fixtures/tools_py_exempt.txt. cast_a_chart.py stays outside tools/.
+# tools/fixtures/t/tools_py_exempt.txt. cast_a_chart.py stays outside tools/.
 # Prefer ! -path over \( -prune \) -- Rishi's run string escapes break find's
 # paren form (ok=false empty out). Host caches stay gitignored; skip them so a
 # Framework HAWM pack never false-counts NDK *.py under tools/.cache.
@@ -68,6 +68,6 @@ let za8 = where za7 as f: (f == "tally/maybe.rye") == false
 for-each za8 as f do say "  ${f} (zero assert — review on touch)"
 say "ratchet: zero assert( files remaining = ${length za8} (honest exempt: virtio guests, aurora freestanding, signal handler, font table, thin line editor, exit constants, the dual-of-assert mark itself)"
 
-let long_fn = run ["rishi/bin/rishi" "run" "tools/fixtures/tame_style_long_fn.rish"]
+let long_fn = run ["rishi/bin/rishi" "run" "tools/fixtures/t/tame_style_long_fn.rish"]
 say long_fn.out
 

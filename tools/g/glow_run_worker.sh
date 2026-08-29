@@ -136,10 +136,10 @@ mkdir -p glow/bin glow/.cache
 #
 # The lock is a DIRECTORY rather than `flock` on a descriptor, because `flock(1)` is util-linux and
 # macOS ships none -- every witness reaching this worker refused there with `flock: command not
-# found` (REDS %279). `lock_acquire` in tools/fixtures/shell_portable.sh keeps both properties this
+# found` (REDS %279). `lock_acquire` in tools/fixtures/s/shell_portable.sh keeps both properties this
 # block was written for: mutual exclusion, since `mkdir` is atomic, and a bounded wait that refuses
 # by name rather than hanging.
-. "$ROOT/tools/fixtures/shell_portable.sh"
+. "$ROOT/tools/fixtures/s/shell_portable.sh"
 
 # The name carries `.d` because the mechanism is a directory. The elder `flock` spelling left a
 # zero-byte FILE at `.build.lock`, and `mkdir` over a plain file fails forever -- so a run on a

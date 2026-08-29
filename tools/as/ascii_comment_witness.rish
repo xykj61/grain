@@ -20,7 +20,7 @@ say "ascii-comment: Lens TAME -- safety first: the meters count COMMENTS and nev
 
 say "ascii-comment: reading one of two -- authored Rye comments."
 
-let control = run ["sh" "tools/fixtures/rye_comment_ascii_control.sh"]
+let control = run ["sh" "tools/fixtures/r/rye_comment_ascii_control.sh"]
 assert control.ok else "ascii-comment: the Rye control must complete"
 say control.out
 assert control.out contains "control_verdict=ok" else "ascii-comment: the Rye control must reach its own verdict"
@@ -38,14 +38,14 @@ assert control.out contains "string_literal_counted=no" else "ascii-comment: a s
 assert control.out contains "vendor_excluded=yes" else "ascii-comment: vendored sources are not ours to convert"
 assert control.out contains "total_is_four=yes" else "ascii-comment: four planted prose files carry one character each, and nothing else may be counted"
 
-let living = run ["sh" "tools/fixtures/rye_comment_ascii_scan.sh"]
+let living = run ["sh" "tools/fixtures/r/rye_comment_ascii_scan.sh"]
 assert living.ok else "ascii-comment: the living Rye scan must complete"
 say living.out
 assert living.out contains "under_ceiling=yes" else "ascii-comment: non-ASCII in Rye comments rose above the ceiling -- convert on touch rather than raising it"
 
 say "ascii-comment: reading two of two -- authored Rishi and shell comments."
 
-let shell_control = run ["sh" "tools/fixtures/shell_comment_ascii_control.sh"]
+let shell_control = run ["sh" "tools/fixtures/s/shell_comment_ascii_control.sh"]
 assert shell_control.ok else "ascii-comment: the shell control must complete"
 say shell_control.out
 assert shell_control.out contains "control_verdict=ok" else "ascii-comment: the shell control must reach its own verdict"
@@ -76,7 +76,7 @@ assert shell_control.out contains "clean_pen_under_ceiling=yes" else "ascii-comm
 assert shell_control.out contains "over_ceiling_refuses=yes" else "ascii-comment: one character past the ceiling must refuse, or the ceiling is decoration"
 assert shell_control.out contains "removed_returns_green=yes" else "ascii-comment: removing the plant must return the reading to green, or the refusal is a latch"
 
-let shell_living = run ["sh" "tools/fixtures/shell_comment_ascii_scan.sh"]
+let shell_living = run ["sh" "tools/fixtures/s/shell_comment_ascii_scan.sh"]
 assert shell_living.ok else "ascii-comment: the living shell scan must complete"
 say shell_living.out
 assert shell_living.out contains "under_ceiling=yes" else "ascii-comment: non-ASCII in Rishi and shell comments rose above the ceiling -- convert on touch rather than raising it"

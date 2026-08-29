@@ -1,5 +1,5 @@
 //! tools/rye/monocypher_elligator_parity.rye -- our authored crypto/elligator.rye asked for its OWN Elligator 2 answers over the same thirty-two
-//! cases the Monocypher C harness (tools/fixtures/monocypher_elligator_harness.c) prints, so
+//! cases the Monocypher C harness (tools/fixtures/m/monocypher_elligator_harness.c) prints, so
 //! tools/cr/crypto_monocypher_elligator_parity_witness.rish can diff our bytes against the vendored Monocypher's C byte-for-byte -- the map that
 //! hides an X25519 public key as a uniformly random string, proven against the audit's parity target. Chapter G (Cryptography - Rye-native,
 //! Monocypher-parity, audit-ready).

@@ -25,7 +25,7 @@ entry = (
     "### 35. The resin limb names at most twelve beads; a thirteenth without a manifest refuses whole.\n"
     "**Ran:** `rishi/bin/rishi run tools/equinox/witness/equinox_relay_resin_choir_witness.rish` · **Stamp:** `"
     + stamp
-    + "` · **Witness:** `tools/gen/chapter/relay_resin_census_witness.rish` · scan `tools/fixtures/relay_resin_census.sh` · choir `equinox_relay_resin_choir_witness.rish`\n"
+    + "` · **Witness:** `tools/gen/chapter/relay_resin_census_witness.rish` · scan `tools/fixtures/r/relay_resin_census.sh` · choir `equinox_relay_resin_choir_witness.rish`\n"
     "Expected max_limb_beads=12 · limb_beads=12 · LEXICON · MANIFEST_BEAD, and verdict=over_bound on a thirteen-bead fixture without compaction. "
     "Metal answered GREEN. Amphora-shaped bound; the roster becomes a bead past twelve.\n\n"
 )

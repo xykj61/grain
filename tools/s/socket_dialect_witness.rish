@@ -27,7 +27,7 @@ say "socket-dialect: Language EN -- a constant that names one kernel is a consta
 say "socket-dialect: Style Gauge at Meter -- every number below is read by the scan on this run, never recited here."
 say "socket-dialect: Lens TAME -- safety first: ask the host for the host's number, and let a failed setsockopt say so."
 
-let control = run ["sh" "tools/fixtures/socket_dialect_control.sh"]
+let control = run ["sh" "tools/fixtures/s/socket_dialect_control.sh"]
 assert control.ok else "socket-dialect: the control must complete on its planted repositories"
 say control.out
 assert control.out contains "control_verdict=ok" else "socket-dialect: the control must reach its own verdict"
@@ -50,7 +50,7 @@ assert control.out contains "excluded_rooms_pass=yes" else "socket-dialect: vend
 assert control.out contains "excluded_not_counted=yes" else "socket-dialect: an excluded room must read zero, not merely pass"
 assert control.out contains "discovers_stranger=yes" else "socket-dialect: the corpus reading must reach a file no roster names, or discovery is a claim"
 
-let scan = run ["sh" "tools/fixtures/socket_dialect_scan.sh"]
+let scan = run ["sh" "tools/fixtures/s/socket_dialect_scan.sh"]
 say scan.out
 assert scan.ok else "socket-dialect: a socket number is spelled in this tree that the host should have been asked for -- read the scan's own lines"
 assert scan.out contains "verdict=ok" else "socket-dialect: the living scan must reach its own verdict"

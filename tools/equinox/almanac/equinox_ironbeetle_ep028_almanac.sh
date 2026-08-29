@@ -25,7 +25,7 @@ entry = (
     "### 84. IronBeetle ep028 stages a freed block until the next checkpoint; reserve then acquire keeps addresses deterministic.\n"
     "**Ran:** `rishi/bin/rishi run tools/equinox/witness/equinox_ironbeetle_ep028_choir_witness.rish` · **Stamp:** `"
     + stamp
-    + "` · **Witness:** `tools/gen/chapter/ironbeetle_ep028_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep028_census.sh` · choir `equinox_ironbeetle_ep028_choir_witness.rish`\n"
+    + "` · **Witness:** `tools/gen/chapter/ironbeetle_ep028_census_witness.rish` · scan `tools/fixtures/i/ironbeetle_ep028_census.sh` · choir `equinox_ironbeetle_ep028_choir_witness.rish`\n"
     "Expected IRON=present · EP028 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, "
     "and verdict=absent on a missing iron shelf. Metal answered GREEN. "
     "Clean-room study only.\n\n"

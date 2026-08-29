@@ -33,13 +33,13 @@ say "vocabulary-collection: Language EN -- the pages a newcomer meets say word l
 say "vocabulary-collection: Style Radiant -- the clearest word at whatever length it wants, per the Comlink tendency; one overloaded Latin noun swapped for one overloaded English noun would have moved the problem rather than solved it."
 say "vocabulary-collection: Lens TAME -- measurement beats memory; 62 reader-facing occurrences against 1,344 code identifiers and 169 paths decided the scope, and a planted control page proves the refusal on metal."
 
-let green = run ["sh" "tools/fixtures/vocabulary_collection_scan.sh"]
+let green = run ["sh" "tools/fixtures/v/vocabulary_collection_scan.sh"]
 assert green.ok else "vocabulary-collection: the living scan must exit 0 -- ${green.out}"
 assert green.out contains "enforce_hits=0" else "vocabulary-collection: a reader-facing page still says the retired word -- name the sense and use its own plain word"
 assert green.out contains "record=kept_by_law" else "vocabulary-collection: want the record reported and kept rather than swept"
 assert green.out contains "verdict=ok" else "vocabulary-collection: want verdict ok"
 
-let red = run ["sh" "tools/fixtures/vocabulary_collection_scan.sh" "prove-red"]
+let red = run ["sh" "tools/fixtures/v/vocabulary_collection_scan.sh" "prove-red"]
 assert (red.ok == false) else "vocabulary-collection: prove-red must refuse, not merely report"
 assert red.out contains "RED_corpus_in_reader_prose_caught=2" else "vocabulary-collection: prove-red want both planted occurrences caught"
 

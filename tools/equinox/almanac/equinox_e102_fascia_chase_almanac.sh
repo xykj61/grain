@@ -25,7 +25,7 @@ entry = (
     "### 106. Equinox e102 fascia chase: re-cut meters; clear memcpy app and signal-1 prose; hold Class A paper lean at 4; fascia 85→92.\n"
     "**Ran:** `rishi/bin/rishi run tools/equinox/witness/equinox_e102_fascia_chase_choir_witness.rish` · **Stamp:** `"
     + stamp
-    + "` · **Witness:** `tools/equinox/witness/equinox_e102_fascia_chase_witness.rish` · scan `tools/fixtures/equinox_e102_fascia_chase_scan.sh` · choir `equinox_e102_fascia_chase_choir_witness.rish`\n"
+    + "` · **Witness:** `tools/equinox/witness/equinox_e102_fascia_chase_witness.rish` · scan `tools/fixtures/e/equinox_e102_fascia_chase_scan.sh` · choir `equinox_e102_fascia_chase_choir_witness.rish`\n"
     "Expected control_gate · chase_saga SEATED · chase_memcpy · chase_fascia_grade=92 · "
     "chase_class_a=4 paper lean · chase_fork not_consumed · seats 97–105 · shelf end ep045 · baton breach 0. "
     "Pins reform when a round re-cuts. Metal answered GREEN. Invent none.\n\n"

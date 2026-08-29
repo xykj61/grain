@@ -25,7 +25,7 @@ entry = (
     "### 40. Functions hold a hard seventy-line bound; tidy ratchets the rule from the clone.\n"
     "**Ran:** `rishi/bin/rishi run tools/equinox/witness/equinox_tigerbeetle_seventy_line_choir_witness.rish` · **Stamp:** `"
     + stamp
-    + "` · **Witness:** `tools/gen/chapter/tigerbeetle_seventy_line_census_witness.rish` · scan `tools/fixtures/tigerbeetle_seventy_line_census.sh` · choir `equinox_tigerbeetle_seventy_line_choir_witness.rish`\n"
+    + "` · **Witness:** `tools/gen/chapter/tigerbeetle_seventy_line_census_witness.rish` · scan `tools/fixtures/t/tigerbeetle_seventy_line_census.sh` · choir `equinox_tigerbeetle_seventy_line_choir_witness.rish`\n"
     "Expected CLONE=present · GUIDE_SEVENTY · TAME_SEVENTY · SUPPLEMENT_SEVENTY · STYLE · TIDY · RATCHET, "
     "and verdict=absent on a missing clone path. Metal answered GREEN. Clean-room study only.\n\n"
 )

@@ -4,7 +4,7 @@
 # Chapter D (Kresfa & Mycelium) - Puddle fleet orchestration × Mycelium consensus - rung r4 -- reads true.
 # r1 proved a moved world reads the byte-identical position on its new berth, r2 conserved the whole fleet's
 # state, r3 let a world's freight travel as text -- all over ledgers seated in code. r4 carries the reader onto
-# a REAL on-disk `format freight-v1` record a keeper can open and read (tools/fixtures/freight_manifest.bron,
+# a REAL on-disk `format freight-v1` record a keeper can open and read (tools/fixtures/f/freight_manifest.bron,
 # produced reproducibly by mycelium/freight_fixture_gen.rye, @embedFile-bound through the mycelium/corpora/
 # symlink).
 #
@@ -42,7 +42,7 @@ assert selftest.out contains "The Freight agent-doable arc closes" else "myceliu
 # The crux -- two tools, one answer. The app's measure triple must equal awk's reading of the same bytes.
 let app = run ["sh" "-c" "${bin} measure 2>&1"]
 assert app.ok else "mycelium-freight-true: app measure exited non-zero"
-let awk = run ["sh" "-c" "awk -f tools/fixtures/freight_manifest_truth.awk tools/fixtures/freight_manifest.bron"]
+let awk = run ["sh" "-c" "awk -f tools/fixtures/f/freight_manifest_truth.awk tools/fixtures/f/freight_manifest.bron"]
 assert awk.ok else "mycelium-freight-true: awk truth read failed"
 assert awk.out contains "60 40 100" else "mycelium-freight-true: awk triple not 60 40 100"
 assert app.out == awk.out else "mycelium-freight-true: app and awk disagree — the reading drifted from the bytes"
@@ -52,7 +52,7 @@ assert app.out == awk.out else "mycelium-freight-true: app and awk disagree — 
 # committed fixture in a read-only witness).
 let genbuild = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/freight_fixture_gen.rye -femit-bin=mycelium/bin/freight_fixture_gen"]
 assert genbuild.ok else "mycelium-freight-true: fixture generator build failed"
-let regen = run ["sh" "-c" "mycelium/bin/freight_fixture_gen 2> /tmp/freight_manifest_regen.bron; diff tools/fixtures/freight_manifest.bron /tmp/freight_manifest_regen.bron && echo REPRODUCIBLE"]
+let regen = run ["sh" "-c" "mycelium/bin/freight_fixture_gen 2> /tmp/freight_manifest_regen.bron; diff tools/fixtures/f/freight_manifest.bron /tmp/freight_manifest_regen.bron && echo REPRODUCIBLE"]
 assert regen.ok else "mycelium-freight-true: the fixture generator did not reproduce the committed bytes"
 assert regen.out contains "REPRODUCIBLE" else "mycelium-freight-true: the regenerated fixture drifted from the committed one"
 

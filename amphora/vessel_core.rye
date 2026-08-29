@@ -396,7 +396,7 @@ fn run_parse_file(io: std.Io, path: []const u8) !u8 {
 fn run_selftest(io: std.Io) !u8 {
     const cwd = std.Io.Dir.cwd();
     var buf: [max_vessel_len]u8 = undefined;
-    const text = try cwd.readFile(io, "tools/fixtures/amphora_vessel_lap1.bron", &buf);
+    const text = try cwd.readFile(io, "tools/fixtures/a/amphora_vessel_lap1.bron", &buf);
     var fields: VesselFields = undefined;
     try parse_vessel(text, &fields);
     assert(std.mem.eql(u8, fields.format, "amphora-v1"));

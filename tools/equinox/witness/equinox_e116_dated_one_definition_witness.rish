@@ -42,7 +42,7 @@ say scope.out
 assert scope.ok else "e116-dated-one-definition: prin_scope RED"
 assert scope.out contains "GREEN: prin-scope" else "e116-dated-one-definition: want scope GREEN"
 
-let scan = run ["sh" "tools/fixtures/equinox_e116_dated_one_definition_scan.sh"]
+let scan = run ["sh" "tools/fixtures/e/equinox_e116_dated_one_definition_scan.sh"]
 say scan.out
 assert scan.ok else "e116-dated-one-definition: scan must exit 0"
 assert scan.out contains "control_gate=honored" else "e116-dated-one-definition: want control_gate"

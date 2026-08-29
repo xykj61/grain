@@ -7,7 +7,7 @@
 //! r1 proved a moved world reads the byte-identical position on its new berth, r2 conserved the whole fleet's
 //! state across a healing, r3 let a world's freight travel as text -- all over ledgers seated in code. r4
 //! carries the reader onto a REAL on-disk `format freight-v1` record a keeper can open and read --
-//! `tools/fixtures/freight_manifest.bron`, produced reproducibly by `mycelium/freight_fixture_gen.rye`,
+//! `tools/fixtures/f/freight_manifest.bron`, produced reproducibly by `mycelium/freight_fixture_gen.rye`,
 //! `@embedFile`-bound at compile time through the `mycelium/corpora/` symlink (no network).
 //!
 //! Two crux checks make the reading true to the bytes:

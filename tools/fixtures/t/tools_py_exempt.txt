@@ -1,0 +1,15 @@
+# tools_py_exempt.txt — named exempts for the blocking tools/*.py gate.
+#
+# One path per line (relative to the scan root, normally the repo root).
+# Lines starting with # are reasons or comments. Empty lines ignored.
+#
+# classical-vedic-astrology/cast_a_chart.py stays OUTSIDE tools/ and needs no
+# entry here — the POSIX external-interpreter seam is exempt by location.
+#
+# Add a legitimate future tools/*.py seam deliberately: path on its own line,
+# with a reason comment on the line above naming why the external interpreter
+# must live under tools/.
+
+# e116 — one dated definition (REDS 40). Shed census and fascia-health both
+# source this seam; the Python-at-seam law wants a named exempt, not deletion.
+tools/fixtures/d/dated_classify.py

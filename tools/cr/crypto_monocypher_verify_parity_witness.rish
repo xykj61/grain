@@ -11,7 +11,7 @@
 # named "a constant-time compare, which the composer that uses this primitive supplies" as an open horizon; crypto/verify.rye is that supplier,
 # and this rung proves it against the ACTUAL library an auditor names.
 # Kin: crypto/verify.rye (our authored primitive, GREEN against Zig's std.crypto.timing_safe.eql across every single-bit difference) -
-# tools/rye/monocypher_verify_parity.rye (our printing harness) - tools/fixtures/monocypher_verify_harness.c (Monocypher's printing harness) -
+# tools/rye/monocypher_verify_parity.rye (our printing harness) - tools/fixtures/m/monocypher_verify_harness.c (Monocypher's printing harness) -
 # crypto/CONSTANT_TIME.md (the Chapter's constant-time note this primitive anchors). Monocypher stays the parity TARGET, vendored and unmodified,
 # never a copied line, studied clean-room (.claude/rules/gratitude-licenses.md).
 #
@@ -34,7 +34,7 @@ let cout = "crypto/bin/monocypher_verify.out"
 let rout = "crypto/bin/rye_verify.out"
 
 # 1. Build the Monocypher C harness, linking the unmodified vendored source with zig cc.
-let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src tools/fixtures/monocypher_verify_harness.c vendor/monocypher/src/monocypher.c -o ${cbin}"]
+let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src tools/fixtures/m/monocypher_verify_harness.c vendor/monocypher/src/monocypher.c -o ${cbin}"]
 assert cbuild.ok else "crypto-monocypher-verify-parity: Monocypher C harness build failed — ${cbuild.err}"
 
 # 2. Run the Monocypher C harness -- fifteen verdict lines.

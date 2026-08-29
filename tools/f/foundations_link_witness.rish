@@ -38,14 +38,14 @@ say "foundations-link: Language EN -- a foundation is written for the reader who
 say "foundations-link: Style Radiant -- every clickable link lands, the refusal is proven on a planted move, and the exemptions are named rather than assumed."
 say "foundations-link: Lens TAME -- the failure was silent by construction: three tools read this room and each correctly saw something that was not its job."
 
-let scan = run ["sh" "tools/fixtures/foundations_link_scan.sh"]
+let scan = run ["sh" "tools/fixtures/f/foundations_link_scan.sh"]
 assert scan.ok else "foundations-link: a link in the why-room points at a path that is no longer there -- repoint the living citation, and resolve a dated one rather than rewriting it"
 say scan.out
 assert scan.out contains "links_broken=0" else "foundations-link: every clickable link in foundations must land"
 assert scan.out contains "verdict=ok" else "foundations-link: the scan must balance before it is believed"
 say "field GREEN -- every link a reader can click in the why-room resolves on disk"
 
-let control = run ["sh" "tools/fixtures/foundations_link_control.sh"]
+let control = run ["sh" "tools/fixtures/f/foundations_link_control.sh"]
 assert control.ok else "foundations-link: the control must complete"
 say control.out
 assert control.out contains "broken_refused=yes" else "foundations-link: a link whose target moved away must be refused and named"

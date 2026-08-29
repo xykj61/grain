@@ -20,12 +20,12 @@ let fixture = "context/fixtures/copy_sameness_drift/tally_copy_drifted.rye"
 let have = run ["test" "-f" fixture]
 assert have.ok else "copy-sameness-negative: drift fixture absent"
 
-let drifted = run ["sh" "tools/fixtures/copy_sameness_scan.sh" "Riyo" fixture]
+let drifted = run ["sh" "tools/fixtures/c/copy_sameness_scan.sh" "Riyo" fixture]
 assert drifted.out contains "verdict=drift" else "copy-sameness-negative: guard missed a drifted copy"
 assert drifted.ok == false else "copy-sameness-negative: refusal did not set a failing status"
 assert drifted.out contains "detail: drifted" else "copy-sameness-negative: no drifted path was named"
 
-let clean = run ["sh" "tools/fixtures/copy_sameness_scan.sh"]
+let clean = run ["sh" "tools/fixtures/c/copy_sameness_scan.sh"]
 assert clean.ok else "copy-sameness-negative: clean call did not succeed"
 assert clean.out contains "verdict=ok" else "copy-sameness-negative: the live tree no longer agrees"
 

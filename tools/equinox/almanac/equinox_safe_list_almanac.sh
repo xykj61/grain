@@ -7,7 +7,7 @@ if grep -q '^### 28\.' "$ALMANAC"; then
   exit 0
 fi
 STAMP=$(TZ=America/New_York date '+%Y%m%d.%H%M%S')
-CENSUS=$(sh tools/fixtures/safe_list_census.sh)
+CENSUS=$(sh tools/fixtures/s/safe_list_census.sh)
 export STAMP
 export CENSUS
 python3 - <<'PY'
@@ -28,7 +28,7 @@ entry = (
     "### 28. The SAFE list opens empty under a sixty-four-row bound; shred stays refused.\n"
     "**Ran:** `rishi/bin/rishi run tools/gen/chapter/safe_list_census_witness.rish` · **Stamp:** `"
     + stamp
-    + "` · **Witness:** `tools/gen/chapter/safe_list_census_witness.rish` · `tools/fixtures/safe_list_census.sh` · `SAFE.md` · `context/specs/oldness-cycle.md`\n"
+    + "` · **Witness:** `tools/gen/chapter/safe_list_census_witness.rish` · `tools/fixtures/s/safe_list_census.sh` · `SAFE.md` · `context/specs/oldness-cycle.md`\n"
     "Expected SAFE=present · SPEC=present · SEATED=yes · BOUND_NAMED=yes · EMPTY_OK · SHRED_RED=yes "
     "with rows≤64. "
     "Metal answered GREEN. Census: "

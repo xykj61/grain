@@ -12,7 +12,7 @@
 //! `dimeroll_core.parse_journal`, loaded into a rung-one `Entity`, and folded to a trial balance;
 //! the app reports the three facts an auditor checks -- the entry count, the amount total, and the
 //! debit-positive cash net. The witness measures the same file independently with
-//! `tools/fixtures/entity_journal_truth.awk` and asserts field for field: two tools, one answer.
+//! `tools/fixtures/e/entity_journal_truth.awk` and asserts field for field: two tools, one answer.
 //! In-app the fold's own conservation and balance hold (the accounting identity on real bytes).
 //!
 //! It composes rung one's `Entity` and `dimeroll_core`'s parse and fold over public API, inventing

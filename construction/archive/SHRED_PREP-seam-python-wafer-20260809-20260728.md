@@ -8,9 +8,9 @@ The `claim_preserve` subsystem folded to native Rishi (match/find/sort/unique). 
 
 | Fossil | Living mutant | Notes |
 | --- | --- | --- |
-| `tools/fixtures/claim_preserve_extract.sh` (perl) | `claim_preserve_extract.rish` | 40/41 files byte-identical; one non-ASCII edge |
-| `tools/fixtures/claim_preserve_modality.sh` (python) | `claim_preserve_modality.rish` | modal-word counts byte-identical |
-| `tools/fixtures/census_control_h1_seam.sh` (awk) | `census_control_h1_seam.rish` | fence-count via `fold` + `?:` record accumulator; `true=1 naive=4` identical |
+| `tools/fixtures/c/claim_preserve_extract.sh` (perl) | `claim_preserve_extract.rish` | 40/41 files byte-identical; one non-ASCII edge |
+| `tools/fixtures/c/claim_preserve_modality.sh` (python) | `claim_preserve_modality.rish` | modal-word counts byte-identical |
+| `tools/fixtures/c/census_control_h1_seam.sh` (awk) | `census_control_h1_seam.rish` | fence-count via `fold` + `?:` record accumulator; `true=1 naive=4` identical |
 
 ## Python → Rishi molt (seated `20260809.030635` · prep only)
 
@@ -18,7 +18,7 @@ All authored Python molts to **Rishi**. Census and order: [`../active-designing/
 
 | `.py` file | Verdict | Standing |
 | --- | --- | --- |
-| `tools/fixtures/dated_classify.py` | **ported** — Rishi mutant `dated_classify.rish` seated `20260809` with `census`·`classify`·`health`·`shed` commands, all byte-identical, witness GREEN | **all living consumers migrated** (`dated_pattern`·`fascia_health`·`shed_census`·`divergence` now call the rish) · py kept only for dated equinox e116/e117/e118 existence checks |
+| `tools/fixtures/d/dated_classify.py` | **ported** — Rishi mutant `dated_classify.rish` seated `20260809` with `census`·`classify`·`health`·`shed` commands, all byte-identical, witness GREEN | **all living consumers migrated** (`dated_pattern`·`fascia_health`·`shed_census`·`divergence` now call the rish) · py kept only for dated equinox e116/e117/e118 existence checks |
 | `expanding-prompts/yonder/remember_pin_habit_count.py` | **shredded** `20260809` (circled) — regex-gated · solved-problem one-shot | gone from tree · kept in git history |
 | `classical-vedic-astrology/cast_a_chart.py` | **seam-gated** | a Rye/Zig Swiss-Ephemeris binding |
 | `tools/comlink_r1_dual_bind_probe.py` | **shred, not port** (REDS 64) | a circled shred word — R1 is cut |

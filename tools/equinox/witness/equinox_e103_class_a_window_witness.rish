@@ -11,7 +11,7 @@ say "e103-class-a-window: Language EN — control first; then refine what honest
 say "e103-class-a-window: Style Radiant — a fall stays visible against window_min."
 say "e103-class-a-window: Lens TAME — e103 · window_min · almanac seat 107 · ch7 11/16."
 
-let fascia_control = run ["sh" "tools/fixtures/equinox_e103_class_a_window_control.sh"]
+let fascia_control = run ["sh" "tools/fixtures/e/equinox_e103_class_a_window_control.sh"]
 say fascia_control.out
 assert fascia_control.ok else "e103-class-a-window: current/history seam control RED"
 assert fascia_control.out contains "current 51 welcomed" else "e103-class-a-window: want later living grade welcomed"
@@ -32,7 +32,7 @@ say scope.out
 assert scope.ok else "e103-class-a-window: prin_scope RED"
 assert scope.out contains "GREEN: prin-scope" else "e103-class-a-window: want scope GREEN"
 
-let scan = run ["sh" "tools/fixtures/equinox_e103_class_a_window_scan.sh"]
+let scan = run ["sh" "tools/fixtures/e/equinox_e103_class_a_window_scan.sh"]
 say scan.out
 assert scan.ok else "e103-class-a-window: refine scan must exit 0"
 assert scan.out contains "control_gate=honored" else "e103-class-a-window: want control_gate"

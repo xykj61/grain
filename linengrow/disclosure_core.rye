@@ -138,7 +138,7 @@ fn write_proof_receipt(
 fn check_fixture_receipt(io: std.Io, expected: []const u8) !void {
     const cwd = Dir.cwd();
     var buf: [1024]u8 = undefined;
-    const read = try cwd.readFile(io, "tools/fixtures/slcl4_tier_proof.bron", &buf);
+    const read = try cwd.readFile(io, "tools/fixtures/s/slcl4_tier_proof.bron", &buf);
     if (!std.mem.eql(u8, read, expected)) return error.FixtureMismatch;
 }
 

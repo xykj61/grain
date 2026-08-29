@@ -11,7 +11,7 @@ say "gen-bozo: Lens TAME — prep only; sponsor held · no deploy."
 let verb = ""
 if length args != 0 then let verb = args[0]
 
-let prep = run ["sh" "tools/fixtures/gen_bozo_fund_prep.sh" verb]
+let prep = run ["sh" "tools/fixtures/g/gen_bozo_fund_prep.sh" verb]
 assert prep.ok else "gen-bozo REFUSE or seat door failed — see stderr"
 assert prep.out contains "GREEN: gen-bozo" else "gen-bozo missing GREEN line"
 assert prep.out contains "sign_index=9" else "gen-bozo Capricorn seat index unnamed"
@@ -22,7 +22,7 @@ assert prep.out contains "executive: DJINN" else "gen-bozo DJINN executive unnam
 assert prep.out contains "bozo_fund=prep" else "gen-bozo prep flag missing"
 say prep.out
 
-let refuse = run ["sh" "tools/fixtures/gen_bozo_fund_prep.sh" "deploy"]
+let refuse = run ["sh" "tools/fixtures/g/gen_bozo_fund_prep.sh" "deploy"]
 assert (refuse.ok == false) else "gen-bozo refuse-walk broken: deploy must exit RED"
 
 say "GREEN: gen-bozo — prep open; Helen dedication; DJINN executive; Capricorn seat 10; deploy refuse post-fold RED."

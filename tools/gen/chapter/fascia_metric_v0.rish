@@ -36,7 +36,7 @@ if length args != 0 then let verb = args[0]
 #
 # The meter now takes its reading directly.
 
-let metric = run ["sh" "tools/fixtures/fascia_metric_v0.sh" verb]
+let metric = run ["sh" "tools/fixtures/f/fascia_metric_v0.sh" verb]
 assert metric.ok else "fascia-metric-v0 REFUSE or measure failed — see stderr"
 assert metric.out contains "GREEN: fascia-metric-v0" else "fascia-metric-v0 missing GREEN line"
 assert metric.out contains "metric_rev=i10" else "fascia-metric-v0 missing i10 metric_rev"
@@ -57,7 +57,7 @@ assert metric.out contains "refuse: shred" else "fascia-metric-v0 missing refuse
 say metric.out
 
 # Refuse-walk post-fold: shred must exit RED
-let refuse = run ["sh" "tools/fixtures/fascia_metric_v0.sh" "shred"]
+let refuse = run ["sh" "tools/fixtures/f/fascia_metric_v0.sh" "shred"]
 assert (refuse.ok == false) else "fascia-metric-v0 refuse-walk broken: shred must exit RED"
 
 say "GREEN: fascia-metric-v0 -- the grade above is measured and reported; window carry, hold disclosed, window_min baseline, shred refuse RED, and nothing unrelated standing between the reading and the reader."

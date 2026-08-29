@@ -6,7 +6,7 @@
 # on-disk Cord record a keeper can open and hash, and proves the roll's verdict on a real quorum is TRUE TO
 # THE BYTES.
 #
-# The crux this witness proves is TWO TOOLS, ONE ANSWER: the app parses tools/fixtures/lapse_dag.bron
+# The crux this witness proves is TWO TOOLS, ONE ANSWER: the app parses tools/fixtures/l/lapse_dag.bron
 # through cord_bron, rebuilds the Dag under cord.add (re-verifying every signature), gathers a three-node
 # quorum over the genesis-funded account, enrolls the roll of exactly that mesh, confirms the roll PASSES
 # the real quorum, and emits the agreed position tuple; the independent statement_dag_truth.awk names the
@@ -43,7 +43,7 @@ assert selftest.out contains "The Mycelium Muster's agent-doable arc closes" els
 # The crux -- two tools, one answer. The app's measure tuple must equal awk's reading of the same bytes.
 let app = run ["sh" "-c" "${bin} measure 2>&1"]
 assert app.ok else "mycelium-muster-true: app measure exited non-zero"
-let awk = run ["sh" "-c" "awk -f tools/fixtures/statement_dag_truth.awk tools/fixtures/lapse_dag.bron"]
+let awk = run ["sh" "-c" "awk -f tools/fixtures/s/statement_dag_truth.awk tools/fixtures/l/lapse_dag.bron"]
 assert awk.ok else "mycelium-muster-true: awk truth read failed"
 assert awk.out contains "bc7cbcb5636375fa1d82434d466724d92377f53b980695dd49d26d0ce12205a5 100 100 200" else "mycelium-muster-true: awk tuple not the funded account · balance 100 · reserved 100 · received 200"
 assert app.out == awk.out else "mycelium-muster-true: app and awk disagree — the agreed position drifted from the bytes"

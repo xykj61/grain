@@ -25,7 +25,7 @@ entry = (
     "### 37. Tend hygiene forbids new code files; three tend waymarks hold fascia delta zero.\n"
     "**Ran:** `rishi/bin/rishi run tools/equinox/witness/equinox_tend_hygiene_choir_witness.rish` · **Stamp:** `"
     + stamp
-    + "` · **Witness:** `tools/gen/chapter/tend_hygiene_census_witness.rish` · scan `tools/fixtures/tend_hygiene_census.sh` · choir `equinox_tend_hygiene_choir_witness.rish`\n"
+    + "` · **Witness:** `tools/gen/chapter/tend_hygiene_census_witness.rish` · scan `tools/fixtures/t/tend_hygiene_census.sh` · choir `equinox_tend_hygiene_choir_witness.rish`\n"
     "Expected SHAPE_ZERO_CODE · HALL_ZERO_CODE · tend_waymarks=3 · delta_two=0 · delta_three=0, and verdict=missing_shape on an absent path. "
     "Metal answered GREEN. The fourth design hall closes the wing's measured set.\n\n"
 )

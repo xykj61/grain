@@ -24,13 +24,13 @@ say "doc-attachment: Language EN -- a doc block says which declaration it docume
 say "doc-attachment: Style Radiant -- the citation leads, and the declaration beneath it answers to the name."
 say "doc-attachment: Lens TAME -- the binding is measured, the blindness refuses, and the correct block is welcomed."
 
-let red = run ["sh" "tools/fixtures/ladder_doc_attachment_scan.sh" "prove-red"]
+let red = run ["sh" "tools/fixtures/l/ladder_doc_attachment_scan.sh" "prove-red"]
 say red.out
 assert red.out contains "RED_misattached_doc_caught" else "doc-attachment: a block documenting one family while binding to another passed -- the misattachment leg proves nothing"
 assert red.out contains "RED_blind_scan_refused_rather_than_ok" else "doc-attachment: a harness with no citation answered ok -- a scan must never bless its own blindness"
 assert red.out contains "PASS_attached_doc_welcomed" else "doc-attachment: a correctly attached block was refused -- a gate that reds on valid input teaches a bench to route around it"
 
-let scan = run ["sh" "tools/fixtures/ladder_doc_attachment_scan.sh"]
+let scan = run ["sh" "tools/fixtures/l/ladder_doc_attachment_scan.sh"]
 say scan.out
 assert scan.out contains "docs_adrift=0" else "doc-attachment: a doc block in the harness documents a family other than the declaration it binds to"
 assert scan.out contains "verdict=ok" else "doc-attachment: the harness carries a doc block bound to the wrong declaration"

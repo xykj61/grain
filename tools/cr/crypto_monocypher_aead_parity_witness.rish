@@ -8,7 +8,7 @@
 # Design read: active-designing/date/20260815/20260815-175524_rye-first-crypto-parity-and-the-decision-wave.md -- Chapter G names "the ChaCha/Poly line" among the
 # four primitives to prove against the vendored Monocypher, and the ChaCha20-Poly1305 AEAD as the composition that unblocks the Lotus signed carry.
 # Kin: crypto/aead.rye (our authored AEAD, GREEN against Zig's std.crypto and the RFC known-answer) - crypto/chacha20.rye - crypto/poly1305.rye
-# (the two halves it composes) - tools/rye/monocypher_aead_parity.rye (our printing harness) - tools/fixtures/monocypher_aead_harness.c (Monocypher's
+# (the two halves it composes) - tools/rye/monocypher_aead_parity.rye (our printing harness) - tools/fixtures/m/monocypher_aead_harness.c (Monocypher's
 # printing harness) - tools/cr/crypto_monocypher_ed25519_parity_witness.rish (the signing sibling). Monocypher stays the parity TARGET, vendored and
 # unmodified, never a copied line -- our own Rye, studied clean-room (.claude/rules/gratitude-licenses.md).
 #
@@ -32,7 +32,7 @@ let cout = "crypto/bin/monocypher_aead.out"
 let rout = "crypto/bin/rye_aead.out"
 
 # 1. Build the Monocypher C harness, linking the unmodified vendored source with zig cc.
-let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src tools/fixtures/monocypher_aead_harness.c vendor/monocypher/src/monocypher.c -o ${cbin}"]
+let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src tools/fixtures/m/monocypher_aead_harness.c vendor/monocypher/src/monocypher.c -o ${cbin}"]
 assert cbuild.ok else "crypto-monocypher-aead-parity: Monocypher C harness build failed — ${cbuild.err}"
 
 # 2. Run the Monocypher C harness -- two AEAD hex lines: ciphertext then tag.

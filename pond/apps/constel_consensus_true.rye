@@ -9,14 +9,14 @@
 //! open and count**, and proves the property the whole consensus rests on: the order
 //! two honest nodes converge to is true to the bytes.
 //!
-//! The corpus is `tools/fixtures/cord_dag.bron` -- the canonical committed Cord record
+//! The corpus is `tools/fixtures/c/cord_dag.bron` -- the canonical committed Cord record
 //! produced reproducibly by `mycelium/cord_fixture_gen.rye` (the honest four-block
 //! scene, supply 700 over one star) -- `@embedFile`-bound through a symlink in
 //! `pond/apps/corpora/`, no network, the tree's own bytes. Two readings must agree:
 //! the app parses the record, rebuilds the Dag under r1's own `add` (re-verifying
 //! every signature, requiring every parent already held), commits it, and reports the
 //! **block count**, the **folded supply**, and the **star count**; the r4 witness
-//! cross-checks that triple against `tools/fixtures/cord_dag_truth.awk`'s reading of
+//! cross-checks that triple against `tools/fixtures/c/cord_dag_truth.awk`'s reading of
 //! the same file -- two tools, one answer.
 //!
 //! The crux distinct from the Cord's own r4 (which read a seated-in-code Dag): here

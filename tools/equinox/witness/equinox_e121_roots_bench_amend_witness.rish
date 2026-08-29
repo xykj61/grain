@@ -4,7 +4,7 @@ say "e121-roots-bench-amend: Language EN — roots touch the tree; a bench is a 
 say "e121-roots-bench-amend: Style Gauge Meter -- only a Bench runs witnesses; name the Bench."
 say "e121-roots-bench-amend: Lens TAME — e121 · Lexicon amend · almanac 125 · ch8 13/16."
 
-let green = run ["sh" "tools/fixtures/equinox_e121_roots_bench_amend_scan.sh"]
+let green = run ["sh" "tools/fixtures/e/equinox_e121_roots_bench_amend_scan.sh"]
 assert green.ok else "e121-roots-bench-amend: living scan must exit 0"
 assert green.out contains "roots=honored" else "e121-roots-bench-amend: want roots honored"
 assert green.out contains "bench_kinship=honored" else "e121-roots-bench-amend: want bench kinship"
@@ -12,7 +12,7 @@ assert green.out contains "framework" else "e121-roots-bench-amend: want framewo
 assert green.out contains "seat_128=reserved_close_choir" else "e121-roots-bench-amend: want 128 reserved"
 assert green.out contains "verdict=ok" else "e121-roots-bench-amend: want verdict ok"
 
-let red = run ["sh" "tools/fixtures/equinox_e121_roots_bench_amend_scan.sh" "prove-red"]
+let red = run ["sh" "tools/fixtures/e/equinox_e121_roots_bench_amend_scan.sh" "prove-red"]
 assert (red.ok == false) else "e121-roots-bench-amend: prove-red must refuse"
 assert red.out contains "RED_claimed_bench_not_raised_root" else "e121-roots-bench-amend: prove-red want kinship refuse"
 

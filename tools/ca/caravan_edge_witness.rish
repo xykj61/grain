@@ -62,7 +62,7 @@ let api = "vendor/sel4/libsel4/include/interfaces/object-api.xml"
 let riscv_api = "vendor/sel4/libsel4/arch_include/riscv/interfaces/object-api-arch.xml"
 let types = "vendor/sel4/libsel4/include/sel4/types.h"
 let config = "vendor/sel4/config.cmake"
-let control = "tools/fixtures/caravan_edge_control.sh"
+let control = "tools/fixtures/c/caravan_edge_control.sh"
 let build_dir = "tools/.build/caravan_edge"
 
 let mk = run ["sh" "-c" "mkdir -p caravan/bin ${build_dir}"]
@@ -130,7 +130,7 @@ assert (trim api_licence.out) == "1" else "caravan-edge: the interface XML is no
 
 # 5. THE ORDER IS OURS BECAUSE SEL4 PUBLISHES NONE, and that is measured rather than asserted. Retype's own error block
 #    stands in strict alphabetical order, which is a reading order and cannot be a checking order.
-let alphabetical = run ["sh" "tools/fixtures/caravan_edge_order_scan.sh"]
+let alphabetical = run ["sh" "tools/fixtures/c/caravan_edge_order_scan.sh"]
 assert alphabetical.ok else "caravan-edge: the order scan did not run -- ${alphabetical.out}"
 assert alphabetical.out contains "errors=7" else "caravan-edge: Retype no longer publishes seven errors -- re-read the block before trusting either order"
 assert alphabetical.out contains "verdict=alphabetical" else "caravan-edge: seL4 no longer lists Retype's errors alphabetically -- if it now publishes a check sequence, read it and weigh ours against it rather than keeping ours by default"

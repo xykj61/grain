@@ -1,0 +1,9 @@
+# markdown_structure_scan.rish -- structural integrity gate for Markdown passes.
+#
+#   MARKDOWN_STRUCTURE_FILES=$'a.md\nb.md' rishi/bin/rishi run tools/markdown_structure_scan.rish
+#
+# Body: fixtures/markdown_structure_scan.sh
+
+let body = run ["sh" "tools/fixtures/m/markdown_structure_scan.sh"]
+say body.out
+assert body.ok else "markdown_structure RED — STOP the wave"

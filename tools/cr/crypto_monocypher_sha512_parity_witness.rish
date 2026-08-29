@@ -11,7 +11,7 @@
 # signing, yet never STANDALONE against Monocypher's own crypto_sha512 -- so the hash the whole signing line, the HMAC/HKDF-SHA512 family, and the BIP32
 # seed all rest on now stands proven in its own right, the hash-cipher counterpart to the standalone ChaCha20 and Poly1305 rungs.
 # Kin: crypto/sha512.rye (our authored hash, GREEN against Zig's std.crypto and the FIPS 180-4 vectors) - tools/rye/monocypher_sha512_parity.rye (our
-# printing harness) - tools/fixtures/monocypher_sha512_harness.c (Monocypher's printing harness) - tools/cr/crypto_monocypher_ed25519_parity_witness.rish
+# printing harness) - tools/fixtures/m/monocypher_sha512_harness.c (Monocypher's printing harness) - tools/cr/crypto_monocypher_ed25519_parity_witness.rish
 # (the Ed25519 sibling that hashes THROUGH SHA-512 -- this rung proves the hash beneath it standalone). Monocypher's SHA-512 lives in its OPTIONAL module
 # (src/optional/monocypher-ed25519.c), linked so like meets like. Monocypher stays the parity TARGET, vendored and unmodified, never a copied line,
 # studied clean-room (.claude/rules/gratitude-licenses.md).
@@ -34,7 +34,7 @@ let cout = "crypto/bin/monocypher_sha512.out"
 let rout = "crypto/bin/rye_sha512.out"
 
 # 1. Build the Monocypher C harness, linking the unmodified vendored core AND the optional SHA-512 module with zig cc.
-let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src -I vendor/monocypher/src/optional tools/fixtures/monocypher_sha512_harness.c vendor/monocypher/src/monocypher.c vendor/monocypher/src/optional/monocypher-ed25519.c -o ${cbin}"]
+let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src -I vendor/monocypher/src/optional tools/fixtures/m/monocypher_sha512_harness.c vendor/monocypher/src/monocypher.c vendor/monocypher/src/optional/monocypher-ed25519.c -o ${cbin}"]
 assert cbuild.ok else "crypto-monocypher-sha512-parity: Monocypher C harness build failed — ${cbuild.err}"
 
 # 2. Run the Monocypher C harness -- five SHA-512 hex lines.

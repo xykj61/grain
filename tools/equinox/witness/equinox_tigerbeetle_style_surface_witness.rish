@@ -34,7 +34,7 @@ assert last.ok else "equinox-tb-style-surface: last-stage limb failed"
 assert last.out contains "GREEN: tb-last-stage" else "equinox-tb-style-surface: last-stage not GREEN"
 
 # Refuse -- absent clone path (any of the leaf scans)
-let refuse = run ["sh" "tools/fixtures/tigerbeetle_style_by_the_numbers_census.sh" "tools/fixtures/tigerbeetle_ABSENT"]
+let refuse = run ["sh" "tools/fixtures/t/tigerbeetle_style_by_the_numbers_census.sh" "tools/fixtures/tigerbeetle_ABSENT"]
 say refuse.out
 assert refuse.ok == false else "equinox-tb-style-surface: absent clone must fail"
 assert refuse.out contains "CLONE=ABSENT" else "equinox-tb-style-surface: want CLONE=ABSENT"

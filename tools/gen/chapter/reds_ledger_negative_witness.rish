@@ -15,13 +15,13 @@ let f = "context/fixtures/reds_ledger_incomplete/REDS.md"
 let have = run ["test" "-f" f]
 assert have.ok else "reds-ledger-negative: fixture absent"
 
-let bad = run ["sh" "tools/fixtures/reds_ledger_scan.sh" f]
+let bad = run ["sh" "tools/fixtures/r/reds_ledger_scan.sh" f]
 assert bad.out contains "verdict=incomplete_rows" else "reds-ledger-negative: guard accepted an incomplete ledger"
 assert bad.ok == false else "reds-ledger-negative: refusal did not set a failing status"
 assert bad.out contains "row missing a field" else "reds-ledger-negative: thin row not named"
 assert bad.out contains "names no instrument" else "reds-ledger-negative: vague caught-column not named"
 
-let good = run ["sh" "tools/fixtures/reds_ledger_scan.sh"]
+let good = run ["sh" "tools/fixtures/r/reds_ledger_scan.sh"]
 assert good.ok else "reds-ledger-negative: the living ledger no longer passes"
 assert good.out contains "verdict=ok" else "reds-ledger-negative: living ledger verdict changed"
 

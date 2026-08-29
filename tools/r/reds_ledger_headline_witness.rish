@@ -1,8 +1,8 @@
 # tools/r/reds_ledger_headline_witness.rish -- the ledger's headline is generated, not typed.
 #
 # WHAT THIS GUARDS. construction/REDS.md opens with three numbers about itself, all of them pure
-# functions of the row spine that tools/fixtures/reds_ledger_monotone_scan.sh counts off disk.
-# tools/fixtures/reds_ledger_headline_write.sh writes them. This proves the writer on planted
+# functions of the row spine that tools/fixtures/r/reds_ledger_monotone_scan.sh counts off disk.
+# tools/fixtures/r/reds_ledger_headline_write.sh writes them. This proves the writer on planted
 # ledgers in a throwaway pen, and then proves the living ledger agrees with its own spine.
 #
 # WHY THE WRITER EXISTS AT ALL, since a reading already stood. REDS %127, %141, and %229 are the
@@ -23,7 +23,7 @@ say "reds-ledger-headline: Language EN -- three numbers the ledger recites about
 say "reds-ledger-headline: Style Gauge, Meter -- a planted pen proves the repair, the refusal, and the two properties the rewrite must leave alone."
 say "reds-ledger-headline: Lens TAME -- bound everything: the writer touches the headline's three numbers and nothing else, and the control proves the rows byte-identical across a repair."
 
-let control = run ["sh" "tools/fixtures/reds_ledger_headline_control.sh"]
+let control = run ["sh" "tools/fixtures/r/reds_ledger_headline_control.sh"]
 say control.out
 assert control.ok else "reds-ledger-headline: the planted control must pass -- ${control.out}"
 assert control.out contains "repaired=yes" else "reds-ledger-headline: a drifted headline must be repaired to the measured spine"
@@ -39,9 +39,9 @@ assert control.out contains "verdict=ok" else "reds-ledger-headline: want the co
 
 # The living ledger. `check` mode reads and refuses; it never writes, so this witness stays
 # read-only over the tree it is run against.
-let living = run ["sh" "tools/fixtures/reds_ledger_headline_write.sh"]
+let living = run ["sh" "tools/fixtures/r/reds_ledger_headline_write.sh"]
 say living.out
-assert living.ok else "reds-ledger-headline: the living ledger's headline disagrees with its own measured spine -- run `sh tools/fixtures/reds_ledger_headline_write.sh write` and commit the page with the row"
+assert living.ok else "reds-ledger-headline: the living ledger's headline disagrees with its own measured spine -- run `sh tools/fixtures/r/reds_ledger_headline_write.sh write` and commit the page with the row"
 assert living.out contains "changed=no" else "reds-ledger-headline: want the living headline already agreeing, rather than merely repairable"
 assert living.out contains "verdict=ok" else "reds-ledger-headline: want the living ledger green by name"
 

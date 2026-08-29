@@ -1,7 +1,7 @@
 # REDS %297 -- the glob was the guard, and eight witnesses stood outside the name
 
 *Written straight onto this shelf on `20260827.022424`, **CLOSED**, the way `%288` was written on
-`20260827.004535`. The living pin had three bytes of room, and `tools/fixtures/reds_fold.sh`
+`20260827.004535`. The living pin had three bytes of room, and `tools/fixtures/r/reds_fold.sh`
 refuses to move an open row, so a row closed on the lap it is booked is born here.*
 
 ***Booked as `%289`, re-seated at `%290`, and re-seated again at `%297`.** The first move answered
@@ -35,7 +35,7 @@ the `error: RevisionImmutable` seen mid-diagnosis came from, a stale process ans
 that had done nothing wrong.
 *The second fault, and the reason the first stood for as long as it did:* the Caravan choir could
 not see this witness. `tools/ca/caravan_suite_witness.rish` and
-`tools/fixtures/caravan_roster_bijection_scan.sh` both find their subjects by globbing
+`tools/fixtures/c/caravan_roster_bijection_scan.sh` both find their subjects by globbing
 `caravan_*_witness.rish`, and **eight runners in `tools/ca/` wore no such name** -- the four
 `caravan_subscribe_poll_*` rings, plus `capabilities`, `restart_on_ok`, `seeds`, and
 `witness_stop_footgun`. They were never unregistered; they were **invisible**, so the bijection
@@ -63,9 +63,9 @@ layer down, from unregistered to unnameable, and the guard stayed green through 
 rides along: **a witness that leaks a process poisons its successor**, so a probe that gives up must
 still reap what it started.
 *Repaired:* the probe moved to
-[`../../tools/fixtures/caravan_subscribe_poll_signal.sh`](../../tools/fixtures/caravan_subscribe_poll_signal.sh),
+[`../../tools/fixtures/c/caravan_subscribe_poll_signal.sh`](../../tools/fixtures/c/caravan_subscribe_poll_signal.sh),
 matching the shape its sibling ring's probe
-[`caravan_subscribe_poll_source_crash.sh`](../../tools/fixtures/caravan_subscribe_poll_source_crash.sh)
+[`caravan_subscribe_poll_source_crash.sh`](../../tools/fixtures/c/caravan_subscribe_poll_source_crash.sh)
 had right all along -- one command per line, the service backgrounded **alone**, so `$!` names it.
 Its timeout path reaps children by `pgrep -P` and then the supervisor, since a `KILL` on a parent
 never reaches what it spawned, and `pgrep -P` asks by PARENT rather than by command text, which a

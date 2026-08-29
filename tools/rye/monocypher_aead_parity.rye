@@ -1,6 +1,6 @@
 //! tools/rye/monocypher_aead_parity.rye -- our authored crypto/aead.rye asked for its OWN ChaCha20-Poly1305 AEAD ciphertext and tag over RFC 8439
 //! §2.8.2's key, nonce, associated data, and plaintext, printed one hex value per line, so tools/cr/crypto_monocypher_aead_parity_witness.rish can
-//! diff our bytes against the vendored Monocypher's C (tools/fixtures/monocypher_aead_harness.c) byte-for-byte -- the authenticated-encryption
+//! diff our bytes against the vendored Monocypher's C (tools/fixtures/m/monocypher_aead_harness.c) byte-for-byte -- the authenticated-encryption
 //! seal Lotus's signed carry, Vault, and Comlink rest on, proven against the audit's parity target. Chapter G (Cryptography - Rye-native,
 //! Monocypher-parity, audit-ready) -- the FOURTH primitive line the decision wave named, closing ChaCha/Poly against the source.
 //!

@@ -23,7 +23,7 @@
 # docs/CRYPTO.md." It was RED on metal, and it stood OFF the standing roster, so no lap ran it. The
 # prevention had been built and never wired to anything that runs. Both are repaired in this round.
 #
-# ONE SCAN, THREE DIRECTORIES. tools/fixtures/module_roster_scan.sh takes the directory as an
+# ONE SCAN, THREE DIRECTORIES. tools/fixtures/m/module_roster_scan.sh takes the directory as an
 # argument, so image/, lotus/, and crypto/ are held by one rule rather than three copies of it.
 #
 # WHAT IS GATED, hard, at zero, in four readings:
@@ -48,7 +48,7 @@
 # This guard proves the roster is whole and stops there. Two duties, two guards, so neither can
 # quietly cover for the other -- which is precisely how the count guard came to be red and unheard.
 #
-# Pen: tools/fixtures/module_roster_control.sh -- sixteen behaviors on real directories in a
+# Pen: tools/fixtures/m/module_roster_control.sh -- sixteen behaviors on real directories in a
 # throwaway pen, nine refusals bitten and seven honest readings left free, so no override exists and
 # none is wanted. Run from the repository root.
 
@@ -56,7 +56,7 @@ say "crypto-module-roster: Language EN -- the page a reader learns this library 
 say "crypto-module-roster: Style Gauge, Meter -- every count below is the scan's own output, read from the tree rather than recited here."
 say "crypto-module-roster: Lens TAME -- a bijection rather than a tally, and the corpus size published beside the verdict so a reading over nothing can never report clean."
 
-let scan = run ["sh" "tools/fixtures/module_roster_scan.sh" "census" "crypto"]
+let scan = run ["sh" "tools/fixtures/m/module_roster_scan.sh" "census" "crypto"]
 say scan.out
 assert scan.ok else "crypto-module-roster: the scan must complete -- a module has landed without a row, or a row outlived its module"
 assert scan.out contains "page=crypto/MODULES.md" else "crypto-module-roster: the scan must read the crypto roster rather than another directory's"
@@ -69,7 +69,7 @@ assert scan.out contains "bijection=yes" else "crypto-module-roster: the table a
 # A meter reading no modules finds no fault and would report clean while measuring nothing.
 assert (scan.out contains "modules_on_disk=0" == false) else "crypto-module-roster: a zero-module reading would report clean over an empty directory"
 
-let control = run ["sh" "tools/fixtures/module_roster_control.sh"]
+let control = run ["sh" "tools/fixtures/m/module_roster_control.sh"]
 say control.out
 assert control.ok else "crypto-module-roster: the control must complete"
 assert control.out contains "control_fail=0" else "crypto-module-roster: every planted behavior must read as written"

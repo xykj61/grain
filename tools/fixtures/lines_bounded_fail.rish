@@ -1,2 +1,0 @@
-let t = read-file "tools/fixtures/twenty_lines.txt"
-let _ = lines-bounded t max 10

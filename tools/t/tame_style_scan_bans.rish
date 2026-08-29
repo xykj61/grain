@@ -14,7 +14,7 @@
 #   tools/t/tame_style_ban_err_eq_comment_selftest.rish
 
 let find_rye = "find mantra caravan linengrow comlink rishi/src tally aurora pond brushstroke image mikrophone rye/src amphora glow mycelium constel lattice ember lantern scribble -name '*.rye' ! -type l ! -path '*/.cache/*' ! -path '*/bin/*' 2>/dev/null"
-let ban_nc = "tools/fixtures/tame_style_ban_noncomment_files.sh"
+let ban_nc = "tools/fixtures/t/tame_style_ban_noncomment_files.sh"
 
 # THE COMPOUND-ASSERT ROSTER READS THE SAME ROOMS AS EVERY OTHER BAN, from 20260828.
 # It was held narrower for exactly one day. The roster above widened on 20260827 to the seven
@@ -27,7 +27,7 @@ let ban_nc = "tools/fixtures/tame_style_ban_noncomment_files.sh"
 # than widened: two rosters that must agree are one roster plus a bug waiting for the day they
 # stop agreeing, and this pass proved that by having to edit both.
 #
-# The check reads code rather than text (REDS %304). tools/fixtures/tame_style_compound_assert.sh
+# The check reads code rather than text (REDS %304). tools/fixtures/t/tame_style_compound_assert.sh
 # blanks quoted content and THEN the trailing // comment before looking, so neither a string
 # literal (six Glow lowering witnesses assert a generated source CONTAINS "pair.p == 5 and
 # pair.q == 3") nor English prose after the statement is read as a conjunction -- while a call
@@ -83,7 +83,7 @@ if hits_dbg.out != "" then say "BAN [dbg(]:"
 if hits_dbg.out != "" then say hits_dbg.out
 assert hits_dbg.out == "" else "TAME ban: dbg("
 
-let compound = run ["sh" "-c" "sh tools/fixtures/tame_style_compound_assert.sh $(${find_rye}) 2>/dev/null | head -8"]
+let compound = run ["sh" "-c" "sh tools/fixtures/t/tame_style_compound_assert.sh $(${find_rye}) 2>/dev/null | head -8"]
 if compound.out != "" then say "BAN [compound assert — split so the failing half is named]:"
 if compound.out != "" then say compound.out
 assert compound.out == "" else "TAME ban: compound assert"
@@ -134,10 +134,10 @@ let barket_compound = run ["sh" "-c" "grep -Hn 'assert(.* and .*)' glow/lower_sh
 assert barket_compound.out == "" else "TAME ban on lower_shop_nest: compound assert"
 
 # tools/*.py -- blocking at zero (Python-at-seam law). Named exempts live in
-# tools/fixtures/tools_py_exempt.txt (reason comment per entry). cast_a_chart.py
+# tools/fixtures/t/tools_py_exempt.txt (reason comment per entry). cast_a_chart.py
 # stays outside tools/ and needs no entry. Negative selftest:
 # tools/t/tame_style_tools_py_ban_selftest.rish
-let tools_py_ban = run ["sh" "tools/fixtures/tools_py_ban_scan.sh"]
+let tools_py_ban = run ["sh" "tools/fixtures/t/tools_py_ban_scan.sh"]
 if tools_py_ban.out != "" then say tools_py_ban.out
 assert tools_py_ban.ok else "TAME ban: tools/*.py present (target zero; name an exempt deliberately)"
 assert tools_py_ban.out contains "TOOLS_PY_OK" else "TAME ban: tools/*.py scan missing TOOLS_PY_OK"

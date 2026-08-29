@@ -17,7 +17,7 @@ assert welcome.out contains "GUIDE_SCRIPTS=yes" else "equinox-tb-tooling-choir: 
 assert welcome.out contains "TAME_TOOL=yes" else "equinox-tb-tooling-choir: want TAME_TOOL"
 assert welcome.out contains "ELDER_DEPS=yes" else "equinox-tb-tooling-choir: want ELDER_DEPS"
 
-let refuse = run ["sh" "tools/fixtures/tigerbeetle_tooling_census.sh" "tools/fixtures/tigerbeetle_ABSENT"]
+let refuse = run ["sh" "tools/fixtures/t/tigerbeetle_tooling_census.sh" "tools/fixtures/tigerbeetle_ABSENT"]
 say refuse.out
 assert refuse.ok == false else "equinox-tb-tooling-choir: absent clone must fail"
 assert refuse.out contains "verdict=absent" else "equinox-tb-tooling-choir: want verdict=absent"

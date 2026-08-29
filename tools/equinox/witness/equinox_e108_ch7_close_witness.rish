@@ -46,7 +46,7 @@ say mono.out
 assert mono.ok else "e108-ch7-close: reds monotone RED"
 assert mono.out contains "GREEN: reds-monotone" else "e108-ch7-close: want monotone GREEN"
 
-let scan = run ["sh" "tools/fixtures/equinox_e108_ch7_close_scan.sh"]
+let scan = run ["sh" "tools/fixtures/e/equinox_e108_ch7_close_scan.sh"]
 say scan.out
 assert scan.ok else "e108-ch7-close: scan must exit 0"
 assert scan.out contains "control_gate=honored" else "e108-ch7-close: want control_gate"

@@ -12,7 +12,7 @@
 
 let lexicon = "context/LEXICON.md"
 let phrase_file = "tools/.cache/lexicon_barket_phrase.txt"
-let awk_prog = "tools/fixtures/lexicon_barket_phrase_append.awk"
+let awk_prog = "tools/fixtures/l/lexicon_barket_phrase_append.awk"
 
 let have_lex = run ["test" "-f" lexicon]
 assert have_lex.ok else "context/LEXICON.md missing"

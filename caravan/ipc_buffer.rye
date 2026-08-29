@@ -18,7 +18,7 @@
 //!                      exists to make impossible.
 //!
 //! HONEST NOTE ON THAT SENTENCE. seL4 publishes a per-method description for
-//! several of the eleven, and `tools/fixtures/caravan_refusal_meaning_scan.sh`
+//! several of the eleven, and `tools/fixtures/c/caravan_refusal_meaning_scan.sh`
 //! binds ours to the kernel's two-sidedly wherever it does. `seL4_TruncatedMessage`
 //! is **not** among them: it appears in the vendored tree as a name in
 //! `errors.h` and nowhere else, measured rather than assumed. So the sentence

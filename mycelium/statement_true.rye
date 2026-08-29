@@ -9,7 +9,7 @@
 //! can open and walk, and proves the property the whole Statement rests on: an account's own line --
 //! WHERE DO I STAND? -- is true to the bytes.
 //!
-//! The corpus reuses the Lapse's own fixture `tools/fixtures/lapse_dag.bron`, a genuine record produced
+//! The corpus reuses the Lapse's own fixture `tools/fixtures/l/lapse_dag.bron`, a genuine record produced
 //! reproducibly by `mycelium/lapse_fixture_gen.rye` (a demo funder credits Alice 200; Alice pledges 100 to
 //! Bob under a deadline the order's clock reaches, so it LAPSES and the hundred comes home; Alice pledges
 //! 100 to Carol under a far deadline and leaves it OPEN), `@embedFile`-bound at compile time through a
@@ -17,7 +17,7 @@
 //! must agree: the app parses the record through `cord_bron`, REBUILDS the Dag under `cord.add` (re-verifying
 //! every signature), resolves it through `lapse`, projects the genesis-funded account's `Statement` through
 //! `statement`, and reports the account key with its balance - reserved - received; the r4 witness
-//! cross-checks that against `tools/fixtures/statement_dag_truth.awk`'s per-account deadline-clock reading of
+//! cross-checks that against `tools/fixtures/s/statement_dag_truth.awk`'s per-account deadline-clock reading of
 //! the same file -- two tools, one answer. The awk ticks the clock in file order, reserving on a pledge,
 //! bringing coins home on a lapse or void, and paying a recipient on a post, exactly as `lapse.rye`'s fold
 //! does -- so the app's full resolve and the awk's file-order accounting name one position.

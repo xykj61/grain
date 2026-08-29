@@ -38,8 +38,8 @@ say "libsel4-reach: Lens TAME -- every number below is read from a compiled arti
 let zig = "vendor/zig-toolchain/zig"
 let lib = "vendor/sel4/libsel4"
 let own = "tools/fixtures/libsel4_reach_include"
-let probe = "tools/fixtures/libsel4_reach_probe.c"
-let report = "tools/fixtures/libsel4_reach_report.c"
+let probe = "tools/fixtures/l/libsel4_reach_probe.c"
+let report = "tools/fixtures/l/libsel4_reach_report.c"
 let build = "tools/.build/libsel4_reach"
 
 # The five include roots seL4's own CMake puts on the line for a 64-bit RISC-V build, plus our own configuration root first.
@@ -93,7 +93,7 @@ assert (trim boundary.out) != "0" else "libsel4-reach: sel4/types.h no longer st
 
 # 7. THE GATE, MEASURED RATHER THAN ASSUMED. seL4's own generators would produce that header; they import two Python modules this
 #    pier does not carry. Reporting the count keeps the gate honest -- if a later pier carries them, this line says so.
-let missing = run ["sh" "tools/fixtures/libsel4_generator_deps_scan.sh"]
+let missing = run ["sh" "tools/fixtures/l/libsel4_generator_deps_scan.sh"]
 assert missing.ok else "libsel4-reach: could not ask python3 which generator modules are present"
 
 say "libsel4-reach: measured on metal -- ${ran.out}; freestanding riscv64 object e_machine 243, zero dynamic NEEDED entries, six included headers each tagged BSD-2-Clause and none GPL; generator modules absent on this pier: ${missing.out} of 2 (jinja2, ply)."

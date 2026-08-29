@@ -14,25 +14,25 @@
 #   rishi/bin/rishi run tools/s/sow_witness.rish
 
 # Duty 1 -- manifest completeness (M1)
-let cover = run ["sh" "tools/fixtures/sow_manifest_cover.sh"]
+let cover = run ["sh" "tools/fixtures/s/sow_manifest_cover.sh"]
 say cover.out
 assert cover.ok else "manifest-cover scan failed to run"
 assert (cover.out contains "M1_OK") else "manifest does not classify every root path exactly once"
 
 # Duty 2 -- project fresh
-let proj = run ["sh" "tools/fixtures/sow_project.sh"]
+let proj = run ["sh" "tools/fixtures/s/sow_project.sh"]
 say proj.out
 assert proj.ok else "sow projection failed to run"
 assert (proj.out contains "SOW_OK") else "sow projection did not complete"
 
 # Duty 3 -- the negative that matters most
-let leak = run ["sh" "tools/fixtures/sow_leak_scan.sh"]
+let leak = run ["sh" "tools/fixtures/s/sow_leak_scan.sh"]
 say leak.out
 assert leak.ok else "identity leak scan failed to run"
 assert (leak.out contains "IDENT_CLEAN") else "a maintainer identity string leaked into the seed"
 
 # Duty 4 -- no personal path, no key material
-let pers = run ["sh" "tools/fixtures/sow_personal_scan.sh"]
+let pers = run ["sh" "tools/fixtures/s/sow_personal_scan.sh"]
 say pers.out
 assert pers.ok else "personal-path scan failed to run"
 assert (pers.out contains "NO_PERSONAL") else "a personal path or key appeared in the seed"

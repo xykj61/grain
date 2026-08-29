@@ -25,7 +25,7 @@ entry = (
     "### 88. IronBeetle ep033 prefetches a whole batch of accounts before executing any transfer; load before decide.\n"
     "**Ran:** `rishi/bin/rishi run tools/equinox/witness/equinox_ironbeetle_ep033_choir_witness.rish` · **Stamp:** `"
     + stamp
-    + "` · **Witness:** `tools/gen/chapter/ironbeetle_ep033_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep033_census.sh` · choir `equinox_ironbeetle_ep033_choir_witness.rish`\n"
+    + "` · **Witness:** `tools/gen/chapter/ironbeetle_ep033_census_witness.rish` · scan `tools/fixtures/i/ironbeetle_ep033_census.sh` · choir `equinox_ironbeetle_ep033_choir_witness.rish`\n"
     "Expected IRON=present · EP033 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, "
     "and verdict=absent on a missing iron shelf. Metal answered GREEN. "
     "Clean-room study only.\n\n"

@@ -27,11 +27,11 @@ entry = (
     "(orphan-share) keep two jobs under lookalike names; stale Cloud-blocked baton "
     "debt retires — each bench re-cuts tool presence (binaries gitignored); seat 128 "
     "stays reserved; surface census four kept; fork EXTEND and breach closed unspent kept.\n"
-    "**Ran:** `sh tools/fixtures/equinox_e118_metal_corrections_scan.sh` · **Stamp:** `"
+    "**Ran:** `sh tools/fixtures/e/equinox_e118_metal_corrections_scan.sh` · **Stamp:** `"
     + stamp
     + "` · **Witness:** `tools/equinox/witness/equinox_e118_metal_corrections_witness.rish` · "
     "counsel `counsel/date/20260731/20260731-172902_e118-metal-corrections.md` · "
-    "scan `tools/fixtures/equinox_e118_metal_corrections_scan.sh`\n"
+    "scan `tools/fixtures/e/equinox_e118_metal_corrections_scan.sh`\n"
     "Expected control_gate · instruments_tracked · roofs_status=CLOSED · "
     "divergence=absent · dated_testimony agrees · stale_cloud_blocked=retired · "
     "tool_presence=per_bench_recut · prove-red RED_claimed_diverge_while_agree · "

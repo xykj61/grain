@@ -25,7 +25,7 @@ entry = (
     "### 34. Build ceilings inherit the living bounds table; ten pairs match and metal stays GREEN.\n"
     "**Ran:** `rishi/bin/rishi run tools/equinox/witness/equinox_bounds_home_choir_witness.rish` · **Stamp:** `"
     + stamp
-    + "` · **Witness:** `tools/gen/chapter/bounds_home_census_witness.rish` · scan `tools/fixtures/bounds_home_census.sh` · metal `mycelium/build_bounds.rye` · choir `equinox_bounds_home_choir_witness.rish`\n"
+    + "` · **Witness:** `tools/gen/chapter/bounds_home_census_witness.rish` · scan `tools/fixtures/b/bounds_home_census.sh` · metal `mycelium/build_bounds.rye` · choir `equinox_bounds_home_choir_witness.rish`\n"
     "Expected pairs_matched=10 · pairs_drift=0 · living_table_named · build_bounds GREEN, and verdict=missing_shape on an absent path. "
     "Metal answered GREEN. Chapter three continues; builds inherit, they do not invent.\n\n"
 )

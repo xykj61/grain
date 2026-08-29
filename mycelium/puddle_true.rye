@@ -6,12 +6,12 @@
 //!
 //! r1 derived the berth, r2 healed the fleet, r3 let it travel -- all over fleets seated in code. r4 carries
 //! the reader onto a REAL on-disk `format puddle-fleet-v1` record a keeper can open and count --
-//! `tools/fixtures/puddle_fleet.bron`, produced reproducibly by `mycelium/puddle_fleet_fixture_gen.rye`,
+//! `tools/fixtures/p/puddle_fleet.bron`, produced reproducibly by `mycelium/puddle_fleet_fixture_gen.rye`,
 //! `@embedFile`-bound at compile time through the `mycelium/corpora/` symlink (no network).
 //!
 //! The crux is TWO TOOLS, ONE ANSWER: the app parses the record through r3's own reader and reports the
 //! roster shape -- hosts - worlds - total capacity -- and the r4 witness cross-checks that triple against
-//! `tools/fixtures/puddle_fleet_truth.awk`'s independent reading of the same bytes, so a fleet's shape can
+//! `tools/fixtures/p/puddle_fleet_truth.awk`'s independent reading of the same bytes, so a fleet's shape can
 //! never drift from a record a keeper adds up by hand. Genuineness beyond the triple: the fleet berths over
 //! the real bytes (every world on a real host within capacity, none orphaned), re-rendering the parsed fleet
 //! reproduces the embedded bytes exactly (a fixed point -- the fixture is what the Puddle emits, not a

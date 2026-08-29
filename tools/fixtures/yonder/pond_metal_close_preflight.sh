@@ -6,7 +6,7 @@ root=$(CDPATH= cd -- "$(dirname "$0")/../.." && pwd)
 cd "$root"
 
 echo "preflight: building drawn-terminal..."
-sh tools/fixtures/pond_build_drawn_terminal.sh
+sh tools/fixtures/p/pond_build_drawn_terminal.sh
 
 echo "preflight: headless session witness..."
 pond/bin/drawn-terminal sessiontest

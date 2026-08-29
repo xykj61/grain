@@ -68,7 +68,7 @@ No minus grades. **B is 80**, which is the Door register ceiling of 20% flipped,
 and this door are one number. **Truth gates:** below 60 the card reads **F** whatever else it scored.
 
 ```
-sh tools/fixtures/qa_report_card.sh <path> [--setting door|field|meter] [--service N]
+sh tools/fixtures/q/qa_report_card.sh <path> [--setting door|field|meter] [--service N]
 ```
 
 A reading below B **pushes a bounded molt frame** onto the round's stack -- the discipline is

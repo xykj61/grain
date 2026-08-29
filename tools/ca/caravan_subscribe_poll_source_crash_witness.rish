@@ -8,7 +8,7 @@ let delivery = "mantra/bin/recall-subscribe-poll-delivery"
 let service = "caravan/bin/subscribe-poll-service"
 let sentinel = "/tmp/veganreyklah2-ns-poll-stop"
 let log = "/tmp/veganreyklah2-poll-src-crash.out"
-let probe_sh = "tools/fixtures/caravan_subscribe_poll_source_crash.sh"
+let probe_sh = "tools/fixtures/c/caravan_subscribe_poll_source_crash.sh"
 
 let build = run ["sh" "-c" "mkdir -p mantra/bin caravan/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/recall_subscribe_poll_delivery.rye -lc -femit-bin=${delivery} && env RYE_ZIG=${zig} rye/bin/rye build caravan/subscribe_poll_service.rye -lc -femit-bin=${service}"]
 assert build.ok else "source crash witness build failed"

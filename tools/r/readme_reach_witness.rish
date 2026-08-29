@@ -25,7 +25,7 @@
 # second meter over one quantity is how two meters come to disagree. Testimony is resolved rather
 # than rewritten: `rishi/bin/rishi run tools/d/dated_path_resolve.rish <reference>`.
 #
-# Pen: tools/fixtures/readme_reach_control.sh -- eight cases, a living break bitten and named, the
+# Pen: tools/fixtures/r/readme_reach_control.sh -- eight cases, a living break bitten and named, the
 # same break in testimony counted rather than gated, the ceiling proven to bite, an unreached
 # document out of scope, and an http target never followed. Run from the repository root.
 
@@ -33,14 +33,14 @@ say "readme-reach: Language EN -- a newcomer follows links, and a door that fail
 say "readme-reach: Style Gauge -- the count is split by tier, because testimony is resolved and living prose is repaired."
 say "readme-reach: Lens TAME -- safety first: a link is a promise, and this rung is where the promise is checked."
 
-let scan = run ["sh" "tools/fixtures/readme_reach_scan.sh"]
+let scan = run ["sh" "tools/fixtures/r/readme_reach_scan.sh"]
 say scan.out
 assert scan.ok else "readme-reach: a living document reachable from the front door holds a broken link -- read the scan's own lines"
 assert scan.out contains "verdict=ok" else "readme-reach: the crawl must reach a clean verdict"
 assert scan.out contains "broken_in_living=0" else "readme-reach: living prose must hold no broken link"
 assert scan.out contains "living_files_affected=0" else "readme-reach: no living file may carry one"
 
-let control = run ["sh" "tools/fixtures/readme_reach_control.sh"]
+let control = run ["sh" "tools/fixtures/r/readme_reach_control.sh"]
 assert control.ok else "readme-reach: the control must complete"
 say control.out
 assert control.out contains "case=clean_free ok" else "readme-reach: a tree whose links resolve must pass"

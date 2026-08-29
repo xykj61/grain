@@ -48,7 +48,7 @@ Note the ruling in the session log; leave witness on disk unwired; remove this f
 
 ## Witness (live gate, parity **143**)
 
-- Scan: `tools/fixtures/designed_not_built_scan.sh`
+- Scan: `tools/fixtures/d/designed_not_built_scan.sh`
 - Witness: `tools/d/designed_not_built_witness.rish`
 
 Run manually today:

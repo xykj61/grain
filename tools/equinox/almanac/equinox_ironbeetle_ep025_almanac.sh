@@ -25,7 +25,7 @@ entry = (
     "### 83. IronBeetle ep025 stores the tree's map as a list of changes; persistence means add, never erase.\n"
     "**Ran:** `rishi/bin/rishi run tools/equinox/witness/equinox_ironbeetle_ep025_choir_witness.rish` · **Stamp:** `"
     + stamp
-    + "` · **Witness:** `tools/gen/chapter/ironbeetle_ep025_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep025_census.sh` · choir `equinox_ironbeetle_ep025_choir_witness.rish`\n"
+    + "` · **Witness:** `tools/gen/chapter/ironbeetle_ep025_census_witness.rish` · scan `tools/fixtures/i/ironbeetle_ep025_census.sh` · choir `equinox_ironbeetle_ep025_choir_witness.rish`\n"
     "Expected IRON=present · EP025 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, "
     "and verdict=absent on a missing iron shelf. Metal answered GREEN. "
     "Clean-room study only.\n\n"

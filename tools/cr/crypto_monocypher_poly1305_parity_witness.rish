@@ -9,7 +9,7 @@
 # horizon ("its vendored source is a held fetch"); this rung closes it. Poly1305 was proven inside the AEAD flagship, yet never STANDALONE against
 # Monocypher's own crypto_poly1305 -- so the MAC every Vault/Comlink/Lotus sealed carry rests on now stands proven in its own right.
 # Kin: crypto/poly1305.rye (our authored authenticator, GREEN against Zig's std.crypto and the RFC vector) - tools/rye/monocypher_poly1305_parity.rye (our
-# printing harness) - tools/fixtures/monocypher_poly1305_harness.c (Monocypher's printing harness) - tools/cr/crypto_monocypher_aead_parity_witness.rish
+# printing harness) - tools/fixtures/m/monocypher_poly1305_harness.c (Monocypher's printing harness) - tools/cr/crypto_monocypher_aead_parity_witness.rish
 # (the AEAD sibling that exercised Poly1305 embedded, not standalone). Monocypher stays the parity TARGET, vendored and unmodified, never a copied line,
 # studied clean-room (.claude/rules/gratitude-licenses.md).
 #
@@ -32,7 +32,7 @@ let cout = "crypto/bin/monocypher_poly1305.out"
 let rout = "crypto/bin/rye_poly1305.out"
 
 # 1. Build the Monocypher C harness, linking the unmodified vendored source with zig cc.
-let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src tools/fixtures/monocypher_poly1305_harness.c vendor/monocypher/src/monocypher.c -o ${cbin}"]
+let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src tools/fixtures/m/monocypher_poly1305_harness.c vendor/monocypher/src/monocypher.c -o ${cbin}"]
 assert cbuild.ok else "crypto-monocypher-poly1305-parity: Monocypher C harness build failed — ${cbuild.err}"
 
 # 2. Run the Monocypher C harness -- eight authenticator hex lines.

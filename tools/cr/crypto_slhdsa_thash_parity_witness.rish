@@ -39,7 +39,7 @@ let rbin = "crypto/bin/slhdsa_thash"
 let rout = "crypto/bin/slhdsa_thash.parity.out"
 
 # 1. Build the PQClean harness against the unmodified vendored source.
-let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I ${scheme}/clean -I vendor/pqclean/common tools/fixtures/pqclean_slhdsa_thash_harness.c ${scheme}/clean/address.c ${scheme}/clean/context_shake.c ${scheme}/clean/hash_shake.c ${scheme}/clean/thash_shake_simple.c ${scheme}/clean/utils.c vendor/pqclean/common/fips202.c -o ${cbin}"]
+let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I ${scheme}/clean -I vendor/pqclean/common tools/fixtures/p/pqclean_slhdsa_thash_harness.c ${scheme}/clean/address.c ${scheme}/clean/context_shake.c ${scheme}/clean/hash_shake.c ${scheme}/clean/thash_shake_simple.c ${scheme}/clean/utils.c vendor/pqclean/common/fips202.c -o ${cbin}"]
 assert cbuild.ok else "crypto-slhdsa-thash-parity: PQClean thash harness build failed -- ${cbuild.err}"
 
 let crun = run ["sh" "-c" "${cbin} > ${cout} 2>&1"]

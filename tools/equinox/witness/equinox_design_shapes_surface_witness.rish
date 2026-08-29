@@ -10,7 +10,7 @@ say "equinox-design-shapes-surface: Style Radiant — the design surface holds a
 say "equinox-design-shapes-surface: Lens TAME — e32 · almanac seat 38 · ch3 6/16."
 
 # Limb 0 -- wing census (leaf scan)
-let wing = run ["sh" "tools/fixtures/design_shapes_census_scan.sh"]
+let wing = run ["sh" "tools/fixtures/d/design_shapes_census_scan.sh"]
 say wing.out
 assert wing.ok else "equinox-design-shapes-surface: wing census failed"
 assert wing.out contains "verdict=ok" else "equinox-design-shapes-surface: wing not ok"
@@ -47,7 +47,7 @@ assert tend.out contains "GREEN: tend-hygiene-census" else "equinox-design-shape
 assert tend.out contains "tend_waymarks=3" else "equinox-design-shapes-surface: want three tend waymarks"
 
 # Refuse -- absent wing path
-let refuse = run ["sh" "tools/fixtures/design_shapes_census_scan.sh" "tools/fixtures/design_shapes_ABSENT"]
+let refuse = run ["sh" "tools/fixtures/d/design_shapes_census_scan.sh" "tools/fixtures/design_shapes_ABSENT"]
 say refuse.out
 assert refuse.ok == false else "equinox-design-shapes-surface: absent wing must fail"
 assert refuse.out contains "verdict=missing_wing" else "equinox-design-shapes-surface: want missing_wing"

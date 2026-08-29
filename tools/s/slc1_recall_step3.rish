@@ -3,7 +3,7 @@
 # Run from the repository root:
 #   rishi/bin/rishi run tools/s/slc1_recall_step3.rish
 
-let result = run ["sh" "-c" "rishi/bin/rishi repl < tools/fixtures/slc1_recall_step3.input"]
+let result = run ["sh" "-c" "rishi/bin/rishi repl < tools/fixtures/s/slc1_recall_step3.input"]
 
 assert result.ok else "rishi repl recall pass exited non-zero"
 let parts = split result.out "RE-RAN"

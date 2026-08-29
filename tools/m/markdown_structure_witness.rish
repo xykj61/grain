@@ -11,17 +11,17 @@
 
 say "markdown_structure: fixture PASS (valid four-column table)…"
 let pass_files = "context/fixtures/markdown_structure_valid_table.md"
-let pass = run ["sh" "-c" "MARKDOWN_STRUCTURE_FILES='context/fixtures/markdown_structure_valid_table.md' sh tools/fixtures/markdown_structure_scan.sh"]
+let pass = run ["sh" "-c" "MARKDOWN_STRUCTURE_FILES='context/fixtures/markdown_structure_valid_table.md' sh tools/fixtures/m/markdown_structure_scan.sh"]
 say pass.out
 assert pass.ok else "markdown_structure valid-table fixture RED — witness broken"
 
 say "markdown_structure: fixture FAIL (broken table)…"
-let fail = run ["sh" "-c" "MARKDOWN_STRUCTURE_FILES='context/fixtures/markdown_structure_broken_table.md' sh tools/fixtures/markdown_structure_scan.sh"]
+let fail = run ["sh" "-c" "MARKDOWN_STRUCTURE_FILES='context/fixtures/markdown_structure_broken_table.md' sh tools/fixtures/m/markdown_structure_scan.sh"]
 assert fail.ok == false else "markdown_structure broken-table fixture passed — witness toothless"
 assert fail.out contains "column mismatch" else "broken fixture must fail on column mismatch"
 
 say "markdown_structure: tables · fences · links · headings…"
-let scan = run ["rishi/bin/rishi" "run" "tools/fixtures/markdown_structure_scan.rish"]
+let scan = run ["rishi/bin/rishi" "run" "tools/fixtures/m/markdown_structure_scan.rish"]
 say scan.out
 assert scan.ok else "markdown_structure RED — STOP the wave"
 say "GREEN: markdown_structure — fixtures · tables · fences · links · headings held."

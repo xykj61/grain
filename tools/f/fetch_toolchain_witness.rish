@@ -1,6 +1,6 @@
 # tools/f/fetch_toolchain_witness.rish -- the toolchain fetch, and the refusal that makes it safe.
 #
-# WHY THIS RUNG. `tools/fixtures/fetch_toolchain_scan.sh` decides, on ONE comparison, whether 55
+# WHY THIS RUNG. `tools/fixtures/f/fetch_toolchain_scan.sh` decides, on ONE comparison, whether 55
 # megabytes of downloaded binary become the compiler that builds everything in this tree. It is
 # the single most consequential `if` on the beginner path: a reader running it has no way to check
 # the answer themselves, and every byte they compile afterward rests on it.
@@ -39,7 +39,7 @@ say "fetch-toolchain: Language EN -- one comparison decides whether 55 megabytes
 say "fetch-toolchain: Style Radiant -- three claims. The refusal catches a single flipped character. The four pins are shaped like checksums. And planning touches nothing."
 say "fetch-toolchain: Lens TAME -- nothing is extracted until the bytes are the bytes we pinned, and the pin lives in this repository rather than beside the download."
 
-let control = run ["sh" "tools/fixtures/fetch_toolchain_control.sh"]
+let control = run ["sh" "tools/fixtures/f/fetch_toolchain_control.sh"]
 assert control.ok else "fetch-toolchain: the verify control must complete"
 say control.out
 assert control.out contains "matching_accepted=yes" else "fetch-toolchain: bytes that match the pin must be accepted"
@@ -52,12 +52,12 @@ say "refusal GREEN -- matching accepted, one flipped character refused, absent r
 # Unanchored on purpose: the first pin shares its line with the opening of the shell variable and
 # the last one carries the closing quote, so anchoring to line start and end silently counted two
 # of four -- a check that passed by measuring less than it claimed.
-let pins = run ["sh" "-c" "grep -cE '[a-z0-9_]+-(linux|macos)[[:space:]]+[0-9a-f]{64}[[:space:]]+[0-9]+' tools/fixtures/fetch_toolchain_scan.sh"]
+let pins = run ["sh" "-c" "grep -cE '[a-z0-9_]+-(linux|macos)[[:space:]]+[0-9a-f]{64}[[:space:]]+[0-9]+' tools/fixtures/f/fetch_toolchain_scan.sh"]
 assert pins.ok else "fetch-toolchain: the pin table must be readable"
 assert (trim pins.out) == "4" else "fetch-toolchain: four platforms must each carry a sixty-four-character pin and a size -- a truncated pin is caught here rather than at a stranger's first download"
 say "pins GREEN -- four platforms, each sixty-four hex characters, pinned in the repository"
 
-let plan = run ["sh" "tools/fixtures/fetch_toolchain_scan.sh" "plan"]
+let plan = run ["sh" "tools/fixtures/f/fetch_toolchain_scan.sh" "plan"]
 assert plan.ok else "fetch-toolchain: planning must succeed on a supported platform"
 assert plan.out contains "version=0.16.0" else "fetch-toolchain: the plan must name the pinned version"
 assert plan.out contains "sha256=" else "fetch-toolchain: the plan must show the checksum it would hold the download to"

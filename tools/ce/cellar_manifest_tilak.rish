@@ -3,7 +3,7 @@
 # Run from the repository root:
 #   rishi/bin/rishi run tools/ce/cellar_manifest_tilak.rish
 
-let result = run ["sh" "tools/fixtures/cellar_manifest_tilak_witness.sh"]
+let result = run ["sh" "tools/fixtures/c/cellar_manifest_tilak_witness.sh"]
 say result.out
 assert result.ok else "cellar manifest tilak witness failed"
 assert result.out contains "GREEN" else "cellar manifest tilak witness not GREEN"

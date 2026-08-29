@@ -64,7 +64,7 @@ say "caravan-ladder-carry: Lens TAME -- safety first: the ceiling is named, the 
 # 111 modules and 58,532 carried while the tree held 113 and 58,550. Nobody heard it, because this
 # witness is reached by tools/ca/caravan_suite_witness.rish and that choir stood off the standing
 # roster until 20260825.092953.
-let living = run ["sh" "tools/fixtures/caravan_ladder_carry_scan.sh"]
+let living = run ["sh" "tools/fixtures/c/caravan_ladder_carry_scan.sh"]
 assert living.ok else "caravan-ladder-carry: the living ladder scan must exit 0 -- ${living.out}"
 assert living.out contains "CARRY_OK carried=58496 ceiling=58496" else "caravan-ladder-carry: want the living carry under its named ceiling"
 assert living.out contains "CARRY_MODULES 114" else "caravan-ladder-carry: want all 114 ladder modules read, the rungs and the harness and the lifted bodies alike"
@@ -84,15 +84,15 @@ say "caravan-ladder-carry: the fold queue -- reclaim_notes left it, the row the 
 
 # The three named meters, read here beside the wide one so no reader mistakes a window for the room. Every number below
 # is true inside its own window, and the point of printing them together is that their sum is not the ladder's carry.
-let copy = run ["sh" "tools/fixtures/caravan_ladder_copy_scan.sh"]
+let copy = run ["sh" "tools/fixtures/c/caravan_ladder_copy_scan.sh"]
 assert copy.ok else "caravan-ladder-carry: the check meter must still stand -- ${copy.out}"
 assert copy.out contains "copied_lines=47" else "caravan-ladder-carry: want the byte-identical check meter standing where the last fold left it"
 
-let print_meter = run ["sh" "tools/fixtures/caravan_ladder_print_scan.sh"]
+let print_meter = run ["sh" "tools/fixtures/c/caravan_ladder_print_scan.sh"]
 assert print_meter.ok else "caravan-ladder-carry: the printing meter must still stand -- ${print_meter.out}"
 assert print_meter.out contains "PRINT_LINES total=4600 distinct=1914 carried=2686" else "caravan-ladder-carry: want the printing meter standing where the last fold left it"
 
-let spine = run ["sh" "tools/fixtures/caravan_ladder_spine_scan.sh"]
+let spine = run ["sh" "tools/fixtures/c/caravan_ladder_spine_scan.sh"]
 assert spine.ok else "caravan-ladder-carry: the spine meter must still stand -- ${spine.out}"
 assert spine.out contains "SPINE_LINES total=19 distinct=19 carried=0" else "caravan-ladder-carry: want the orchestration spine still folded"
 say "caravan-ladder-carry: three windows and the room -- the three named meters stand exactly where the asserts above hold them, and the whole ladder carries what the scan just printed"
@@ -102,21 +102,21 @@ say "caravan-ladder-carry: three windows and the room -- the three named meters 
 # whole copy carrying three lines -- countable by eye in the fixture itself, which is what makes this a proof of the
 # counter rather than a second opinion from it. The added body opens on `climb_`, a prefix no meter on this ladder
 # names, so the corpus also proves the window is genuinely open.
-let corpus = run ["sh" "-c" "CARAVAN_LADDER_DIR=tools/fixtures/caravan_ladder_carry_corpus CARAVAN_CARRY_CEILING=5 sh tools/fixtures/caravan_ladder_carry_scan.sh"]
+let corpus = run ["sh" "-c" "CARAVAN_LADDER_DIR=tools/fixtures/caravan_ladder_carry_corpus CARAVAN_CARRY_CEILING=5 sh tools/fixtures/c/caravan_ladder_carry_scan.sh"]
 assert corpus.ok else "caravan-ladder-carry: the corpus scan must exit 0 -- ${corpus.out}"
 assert corpus.out contains "CARRY_MODULES 2" else "caravan-ladder-carry: want the corpus read as two rungs"
 assert corpus.out contains "CARRY_BODIES 3 distinct=2 copies=1 carried_lines=3" else "caravan-ladder-carry: want three bodies, two distinct, one a whole copy of three lines"
 assert corpus.out contains "CARRY_TOP weigh_the_corpus: 2 rungs x 3 lines = 3 carried" else "caravan-ladder-carry: want the corpus family named the way the living queue is named"
 
 # RED path one -- a corpus holding no rung modules at all.
-let empty = run ["sh" "-c" "d=$(mktemp -d); CARAVAN_LADDER_DIR=$d sh tools/fixtures/caravan_ladder_carry_scan.sh; s=$?; rmdir $d; exit $s"]
+let empty = run ["sh" "-c" "d=$(mktemp -d); CARAVAN_LADDER_DIR=$d sh tools/fixtures/c/caravan_ladder_carry_scan.sh; s=$?; rmdir $d; exit $s"]
 assert (empty.ok == false) else "caravan-ladder-carry: an empty corpus must refuse"
 assert empty.out contains "reason=no_modules" else "caravan-ladder-carry: want the empty corpus refused by name"
 
 # RED path two -- real modules that hold no bodies. This is the REDS %97 shape: a scan reading a real corpus and
 # answering zero, where the zero is the scan's blindness rather than the tree's virtue. It matters most for this scan of
 # the four, since this is the one whose whole argument is that a window can be too narrow to see its subject.
-let hollow = run ["sh" "-c" "d=$(mktemp -d); printf 'const std = @import(\"std\");\\n' > $d/hollow.rye; CARAVAN_LADDER_DIR=$d sh tools/fixtures/caravan_ladder_carry_scan.sh; s=$?; rm -rf $d; exit $s"]
+let hollow = run ["sh" "-c" "d=$(mktemp -d); printf 'const std = @import(\"std\");\\n' > $d/hollow.rye; CARAVAN_LADDER_DIR=$d sh tools/fixtures/c/caravan_ladder_carry_scan.sh; s=$?; rm -rf $d; exit $s"]
 assert (hollow.ok == false) else "caravan-ladder-carry: a corpus with no bodies must refuse"
 assert hollow.out contains "reason=no_bodies" else "caravan-ladder-carry: want the hollow corpus refused by name"
 
@@ -125,14 +125,14 @@ assert hollow.out contains "reason=no_bodies" else "caravan-ladder-carry: want t
 # and 112 carried lines across fifteen families stood outside the meter's own count (REDS %144). This control holds two
 # rungs writing one three-line body, one publishing it and one keeping it, and the meter must count a single copy. Run
 # on a generated pair rather than on the corpus, so the corpus stays countable by eye.
-let visibility = run ["sh" "-c" "d=$(mktemp -d); printf 'pub fn shared_rule(a: u32) u32 {\n    return a + 1;\n}\n' > $d/left.rye; printf 'fn shared_rule(a: u32) u32 {\n    return a + 1;\n}\n' > $d/right.rye; CARAVAN_LADDER_DIR=$d CARAVAN_CARRY_CEILING=3 sh tools/fixtures/caravan_ladder_carry_scan.sh; s=$?; rm -rf $d; exit $s"]
+let visibility = run ["sh" "-c" "d=$(mktemp -d); printf 'pub fn shared_rule(a: u32) u32 {\n    return a + 1;\n}\n' > $d/left.rye; printf 'fn shared_rule(a: u32) u32 {\n    return a + 1;\n}\n' > $d/right.rye; CARAVAN_LADDER_DIR=$d CARAVAN_CARRY_CEILING=3 sh tools/fixtures/c/caravan_ladder_carry_scan.sh; s=$?; rm -rf $d; exit $s"]
 assert visibility.ok else "caravan-ladder-carry: two rungs writing one body under two visibilities must count -- ${visibility.out}"
 assert visibility.out contains "CARRY_BODIES 2 distinct=1 copies=1 carried_lines=3" else "caravan-ladder-carry: want one rule read as one family across two visibilities"
 
 # RED path three -- the ceiling has teeth. The corpus carries three lines; held at two, it refuses, which proves the
 # ceiling is a real gate rather than a printed number. The proof runs on the corpus rather than the living ladder,
 # because a gate must be provable without breaking the thing it guards.
-let ceiling = run ["sh" "-c" "CARAVAN_LADDER_DIR=tools/fixtures/caravan_ladder_carry_corpus CARAVAN_CARRY_CEILING=2 sh tools/fixtures/caravan_ladder_carry_scan.sh"]
+let ceiling = run ["sh" "-c" "CARAVAN_LADDER_DIR=tools/fixtures/caravan_ladder_carry_corpus CARAVAN_CARRY_CEILING=2 sh tools/fixtures/c/caravan_ladder_carry_scan.sh"]
 assert (ceiling.ok == false) else "caravan-ladder-carry: a carry past its ceiling must refuse"
 assert ceiling.out contains "reason=past_ceiling" else "caravan-ladder-carry: want the ceiling breach refused by name"
 

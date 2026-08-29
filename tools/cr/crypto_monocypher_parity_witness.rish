@@ -8,7 +8,7 @@
 # proving Rye output equals Monocypher output byte-for-byte." Grain will face a security audit; parity against the ACTUAL library an auditor names,
 # not merely a recited constant, is the honest way to earn it.
 # Kin: crypto/blake2b.rye (our authored primitive, GREEN against Zig's std.crypto) - tools/rye/monocypher_blake2b_parity.rye (our printing harness) -
-# tools/fixtures/monocypher_blake2b_harness.c (Monocypher's printing harness). Monocypher stays the parity TARGET, vendored and unmodified, never a
+# tools/fixtures/m/monocypher_blake2b_harness.c (Monocypher's printing harness). Monocypher stays the parity TARGET, vendored and unmodified, never a
 # copied line -- our own Rye, studied clean-room (.claude/rules/gratitude-licenses.md).
 #
 # The four messages are EXACTLY the four crypto/blake2b.rye's selftest proves our Rye against Zig over: the empty message, "abc" (RFC 7693 Appendix
@@ -28,7 +28,7 @@ let cout = "crypto/bin/monocypher_blake2b.out"
 let rout = "crypto/bin/rye_blake2b.out"
 
 # 1. Build the Monocypher C harness, linking the unmodified vendored source with zig cc.
-let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src tools/fixtures/monocypher_blake2b_harness.c vendor/monocypher/src/monocypher.c -o ${cbin}"]
+let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src tools/fixtures/m/monocypher_blake2b_harness.c vendor/monocypher/src/monocypher.c -o ${cbin}"]
 assert cbuild.ok else "crypto-monocypher-parity: Monocypher C harness build failed — ${cbuild.err}"
 
 # 2. Run the Monocypher C harness -- four BLAKE2b-512 hex lines.

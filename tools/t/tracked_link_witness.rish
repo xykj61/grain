@@ -38,7 +38,7 @@ say "tracked-link: Language EN -- a reference is a promise, and a promise kept o
 say "tracked-link: Style Radiant -- the tree states where a link lands, and the tracked index is what states it."
 say "tracked-link: Lens TAME -- safety first: a guard reaching through an untracked artifact reports on a tree nobody else has."
 
-let scan = run ["sh" "tools/fixtures/tracked_link_scan.sh"]
+let scan = run ["sh" "tools/fixtures/t/tracked_link_scan.sh"]
 assert scan.ok else "tracked-link: a link resolves on this machine and breaks in a fresh clone -- read the scan's own lines"
 say scan.out
 assert scan.out contains "symlinks_outside_tree=0" else "tracked-link: every tracked symlink must land inside the tracked tree"
@@ -46,7 +46,7 @@ assert scan.out contains "living_links_outside_tree=0" else "tracked-link: a liv
 assert scan.out contains "verdict=ok" else "tracked-link: the scan must balance before it is believed"
 say "field GREEN -- every tracked symlink and every living link lands on a path a fresh clone has"
 
-let control = run ["sh" "tools/fixtures/tracked_link_control.sh"]
+let control = run ["sh" "tools/fixtures/t/tracked_link_control.sh"]
 assert control.ok else "tracked-link: the control must complete"
 say control.out
 assert control.out contains "agreeing_free=yes" else "tracked-link: a tree whose links are all tracked must pass free"

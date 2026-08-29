@@ -28,7 +28,7 @@
 # a selftest -- is a real and different proof; this reads only the lowered BINARY's own runs, so a
 # file may prove its compiler refuses and still stand in never_refused_files.
 #
-# Pen: tools/fixtures/glow_gate_answer_control.sh -- twenty-two cases on real planted .rish files,
+# Pen: tools/fixtures/g/glow_gate_answer_control.sh -- twenty-two cases on real planted .rish files,
 # the real standing hit and the real %310 needle both bitten verbatim, every honest shape freed, and
 # both ceilings proven from both sides by planting one past them, so no override exists.
 # Run from the repository root.
@@ -37,14 +37,14 @@ say "glow-gate-answer: Language EN -- a wall that cannot red is not a wall."
 say "glow-gate-answer: Style Gauge -- the reading is a needle and a framing, so anyone can check it."
 say "glow-gate-answer: Lens TAME -- safety first: an oracle derived from what it checks is that thing, twice."
 
-let scan = run ["sh" "tools/fixtures/glow_gate_answer_scan.sh"]
+let scan = run ["sh" "tools/fixtures/g/glow_gate_answer_scan.sh"]
 say scan.out
 assert scan.ok else "glow-gate-answer: the witness surface reds -- read the scan's own detail lines"
 assert scan.out contains "verdict=every_needle_outlives_the_framing" else "glow-gate-answer: the scan must reach the clean verdict"
 assert scan.out contains "laundered_needles=0" else "glow-gate-answer: no needle may be supplied by the EXIT tail alone"
 assert scan.out contains "unread_runs=0" else "glow-gate-answer: every captured run must be asserted"
 
-let control = run ["sh" "tools/fixtures/glow_gate_answer_control.sh"]
+let control = run ["sh" "tools/fixtures/g/glow_gate_answer_control.sh"]
 say control.out
 assert control.ok else "glow-gate-answer: the control must complete"
 assert control.out contains "case=launder_bitten ok" else "glow-gate-answer: the %310 needle must be refused"

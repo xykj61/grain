@@ -18,7 +18,7 @@
 #
 # The roster STAYS HERE, because naming these forty-five modules is the promise
 # this file makes: they are held at zero authored `usize`. What changed is that
-# `tools/fixtures/width_check_scan.sh` now reads the line below and measures it,
+# `tools/fixtures/w/width_check_scan.sh` now reads the line below and measures it,
 # and measures the whole discovered corpus beside it as a ratchet -- so the
 # reading grows when the tree does rather than when somebody remembers
 # (REDS %277's lesson, applied to the roster that taught it).
@@ -31,7 +31,7 @@ say "width-check: Language EN -- a fixed width says what a value can hold; usize
 say "width-check: Style Gauge at Meter -- every number below is read by the scan on this run and printed as its own output, never recited here."
 say "width-check: Lens TAME -- safety first: usize is a boundary type, not a design type. A line carrying a seam cast passes free, because a seam cast is correct Tiger code rather than debt."
 
-let control = run ["sh" "tools/fixtures/width_check_control.sh"]
+let control = run ["sh" "tools/fixtures/w/width_check_control.sh"]
 assert control.ok else "width-check: the control must complete on its planted repositories"
 say control.out
 assert control.out contains "control_verdict=ok" else "width-check: the control must reach its own verdict"
@@ -48,7 +48,7 @@ assert control.out contains "corpus_over_files_ceiling_refused=yes" else "width-
 assert control.out contains "corpus_over_lines_ceiling_refused=yes" else "width-check: one line past the ceiling must refuse"
 assert control.out contains "no_roster_refused=yes" else "width-check: a tree with no roster must refuse rather than read zero and call it clean"
 
-let scan = run ["sh" "tools/fixtures/width_check_scan.sh"]
+let scan = run ["sh" "tools/fixtures/w/width_check_scan.sh"]
 say scan.out
 assert scan.ok else "width-check: authored usize stands where the tree promised a fixed width -- read the scan's own lines"
 assert scan.out contains "verdict=ok" else "width-check: the living scan must reach its own verdict"

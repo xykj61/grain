@@ -44,7 +44,7 @@
 # under its byte bound -- reported here, gated nowhere, because a pin cannot reach bound while its
 # room holds days flat, and folding the room is Keaton's word.
 #
-# Pen: tools/fixtures/index_fold_control.sh -- fifteen behaviors on real directory trees in a
+# Pen: tools/fixtures/i/index_fold_control.sh -- fifteen behaviors on real directory trees in a
 # throwaway pen, five refusals bitten and ten honest readings left free, the ratchet ceiling
 # proven from both sides by planting 41 rows and then 42, so no override exists and none is
 # wanted. Run from the repository root.
@@ -53,7 +53,7 @@ say "index-fold: Language EN -- a room and its index describe one set, so they a
 say "index-fold: Style Gauge, Meter -- every count below is the scan's own output, read from the tree rather than recited here."
 say "index-fold: Lens TAME -- bound everything: the fold gives the index the ceiling the room already had, and the pin's bytes become a consequence rather than a promise."
 
-let scan = run ["sh" "tools/fixtures/index_fold_scan.sh"]
+let scan = run ["sh" "tools/fixtures/i/index_fold_scan.sh"]
 say scan.out
 assert scan.ok else "index-fold: the scan must complete"
 assert scan.out contains "stale_rows_gated=0" else "index-fold: an enforced room holds no row for a day it has already folded -- run the index fold"
@@ -64,7 +64,7 @@ assert scan.out contains "room=session-logs stale=0 roster=enforce" else "index-
 # A meter reading no rooms reports clean while measuring nothing, so the corpus is measured too.
 assert (scan.out contains "rooms_measured=0" == false) else "index-fold: a zero-room reading would report clean over an empty tree"
 
-let control = run ["sh" "tools/fixtures/index_fold_control.sh"]
+let control = run ["sh" "tools/fixtures/i/index_fold_control.sh"]
 say control.out
 assert control.ok else "index-fold: the control must complete"
 assert control.out contains "control_fail=0" else "index-fold: every planted behavior must read as written"

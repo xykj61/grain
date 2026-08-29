@@ -25,7 +25,7 @@ entry = (
     "### 69. IronBeetle ep006 chooses Zig where never-frees make temporal bugs rare.\n"
     "**Ran:** `rishi/bin/rishi run tools/equinox/witness/equinox_ironbeetle_ep006_choir_witness.rish` · **Stamp:** `"
     + stamp
-    + "` · **Witness:** `tools/gen/chapter/ironbeetle_ep006_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep006_census.sh` · choir `equinox_ironbeetle_ep006_choir_witness.rish`\n"
+    + "` · **Witness:** `tools/gen/chapter/ironbeetle_ep006_census_witness.rish` · scan `tools/fixtures/i/ironbeetle_ep006_census.sh` · choir `equinox_ironbeetle_ep006_choir_witness.rish`\n"
     "Expected IRON=present · EP006 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, "
     "and verdict=absent on a missing iron shelf. Metal answered GREEN. "
     "Ep003 and ep007 gaps stay open. Clean-room study only.\n\n"

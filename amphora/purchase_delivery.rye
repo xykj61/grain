@@ -300,7 +300,7 @@ fn run_verify_file(io: std.Io, path: []const u8, vessel_path: ?[]const u8) !u8 {
 fn run_selftest(io: std.Io) !u8 {
     const cwd = std.Io.Dir.cwd();
     var buf: [max_slip_len]u8 = undefined;
-    const text = try cwd.readFile(io, "tools/fixtures/purchase_delivery_lap1.bron", &buf);
+    const text = try cwd.readFile(io, "tools/fixtures/p/purchase_delivery_lap1.bron", &buf);
     var fields: SlipFields = undefined;
     try parse_slip(text, &fields);
     assert(std.mem.eql(u8, fields.format, "commerce-delivery-v1"));
@@ -310,7 +310,7 @@ fn run_selftest(io: std.Io) !u8 {
     try verify_slip(text);
 
     var vessel_buf: [max_slip_len]u8 = undefined;
-    const vessel = try cwd.readFile(io, "tools/fixtures/amphora_vessel_lap1.bron", &vessel_buf);
+    const vessel = try cwd.readFile(io, "tools/fixtures/a/amphora_vessel_lap1.bron", &vessel_buf);
     try verify_against_vessel(text, vessel);
 
     var bad: [max_slip_len]u8 = undefined;

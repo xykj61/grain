@@ -29,7 +29,7 @@ assert demo.ok else "amphora vessel_fetch_delivery demo exited non-zero"
 assert demo.out contains "GREEN" else "amphora vessel_fetch_delivery demo not GREEN"
 
 say "amphora-lap3: pour → fetch → scrub witness..."
-let witness = run ["sh" "tools/fixtures/amphora_lap3_witness.sh"]
+let witness = run ["sh" "tools/fixtures/a/amphora_lap3_witness.sh"]
 assert witness.ok else "Amphora lap 3 witness failed"
 assert witness.out contains "GREEN" else "Amphora lap 3 did not report GREEN"
 assert witness.out contains "fetch-by-digest" else "Amphora lap 3 missing fetch claim"

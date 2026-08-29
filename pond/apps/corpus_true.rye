@@ -4,7 +4,7 @@
 //! bounds. This closing rung proves the harder thing -- **the reading is true to the
 //! bytes**: what a voice reports (the outline, the fence kinds, the word count) matches
 //! what the real document actually contains, cross-checked by a second, independent
-//! fence-aware tool (tools/fixtures/md_truth.awk). A voice a reader cannot check is a
+//! fence-aware tool (tools/fixtures/m/md_truth.awk). A voice a reader cannot check is a
 //! voice that can quietly drift; this rung binds the reading to a corpus a keeper can
 //! open and count for themselves.
 //!

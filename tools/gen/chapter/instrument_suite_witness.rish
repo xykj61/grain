@@ -8,7 +8,7 @@ say "instrument-suite: Language EN — every meter the arc identified, run toget
 say "instrument-suite: Style Radiant — counsel named nine; thing-not-name accreted tenth."
 say "instrument-suite: Lens TAME — find the completion; refuse manufactured work."
 
-let green = run ["sh" "tools/fixtures/instrument_suite_scan.sh"]
+let green = run ["sh" "tools/fixtures/i/instrument_suite_scan.sh"]
 say green.out
 assert green.ok else "instrument-suite: living scan must exit 0"
 assert green.out contains "pass=10" else "instrument-suite: want pass=10"
@@ -26,7 +26,7 @@ assert green.out contains "limb_thing_not_name=GREEN" else "instrument-suite: wa
 assert green.out contains "instrument_suite=ok" else "instrument-suite: want suite ok"
 assert green.out contains "verdict=ok" else "instrument-suite: want verdict=ok"
 
-let red = run ["sh" "tools/fixtures/instrument_suite_scan.sh" "prove-red"]
+let red = run ["sh" "tools/fixtures/i/instrument_suite_scan.sh" "prove-red"]
 say red.out
 assert (red.ok == false) else "instrument-suite: prove-red must refuse"
 assert red.out contains "RED_manufactured_suite_pass" else "instrument-suite: prove-red want manufactured refusal"

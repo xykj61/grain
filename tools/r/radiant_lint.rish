@@ -18,6 +18,6 @@
 #   rishi/bin/rishi run tools/r/radiant_lint.rish
 
 say "radiant lint: ratchet advisory…"
-let scan = run ["rishi/bin/rishi" "run" "tools/fixtures/radiant_lint_scan.rish"]
+let scan = run ["rishi/bin/rishi" "run" "tools/fixtures/r/radiant_lint_scan.rish"]
 say scan.out
 say "GREEN: radiant lint — advisories printed; witness never fails."

@@ -28,7 +28,7 @@ assert bleeds.ok else "equinox-tb-cache-surface: bleeds limb failed"
 assert bleeds.out contains "GREEN: tb-buffer-bleeds" else "equinox-tb-cache-surface: bleeds not GREEN"
 
 # Refuse -- absent clone path (any of the three scans)
-let refuse = run ["sh" "tools/fixtures/tigerbeetle_cache_inplace_census.sh" "tools/fixtures/tigerbeetle_ABSENT"]
+let refuse = run ["sh" "tools/fixtures/t/tigerbeetle_cache_inplace_census.sh" "tools/fixtures/tigerbeetle_ABSENT"]
 say refuse.out
 assert refuse.ok == false else "equinox-tb-cache-surface: absent clone must fail"
 assert refuse.out contains "CLONE=ABSENT" else "equinox-tb-cache-surface: want CLONE=ABSENT"

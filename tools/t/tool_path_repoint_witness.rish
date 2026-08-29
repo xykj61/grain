@@ -8,7 +8,7 @@
 # being proven on a tree whose right answer is known before it runs.
 #
 # WHAT IS PROVEN, all of it on a throwaway git repository built by
-# tools/fixtures/tool_path_repoint_control.sh, so nine behaviors are read rather than argued:
+# tools/fixtures/t/tool_path_repoint_control.sh, so nine behaviors are read rather than argued:
 #
 #   A living file citing a flat path that folded is REPOINTED.
 #   A dated-basename file citing the very same path is LEFT BYTE-IDENTICAL -- accrete-never-break,
@@ -37,7 +37,7 @@
 # the honest steady state after the fold.
 #
 # Chapter: the tools fold -- the repoint that followed the move.
-# Kin: tools/fixtures/tool_path_repoint_scan.sh - tools/fixtures/tool_path_repoint_control.sh -
+# Kin: tools/fixtures/t/tool_path_repoint_scan.sh - tools/fixtures/t/tool_path_repoint_control.sh -
 # tools/t/tool_path_resolve.rish - tools/t/tool_path_witness.rish -
 # tools/d/dated_path_repoint_witness.rish (the sibling this follows) -
 # .claude/rules/stamp-and-name.md
@@ -50,8 +50,8 @@ say "tool-path-repoint: Style Gauge at Meter -- nine behaviors on a throwaway re
 say "tool-path-repoint: Lens TAME -- safety first: the field is read in dry mode only, every claim comes from the control's own output rather than from this file's memory, and the rule that protects dated testimony is tested rather than trusted."
 
 let bin = "rishi/bin/rishi"
-let control = "tools/fixtures/tool_path_repoint_control.sh"
-let scan = "tools/fixtures/tool_path_repoint_scan.sh"
+let control = "tools/fixtures/t/tool_path_repoint_control.sh"
+let scan = "tools/fixtures/t/tool_path_repoint_scan.sh"
 
 # ---------------------------------------------------------------------------------------------
 # PART ONE -- the nine behaviors, on a tree whose answers are known before the tool runs.

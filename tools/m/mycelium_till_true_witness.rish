@@ -3,12 +3,12 @@
 # Chapter D (Kresfa & Mycelium) - Mycelium consensus - the double-spend verdict - rung r4 -- the arc closes.
 # r1 fixed the verdict, r2 let it travel, r3 read it across a Knot -- all over Dags seated in code. This
 # closing rung carries the reader onto a REAL on-disk Cord record carrying a genuine double-spend a keeper
-# can open and walk (tools/fixtures/till_dag.bron, produced reproducibly by mycelium/till_fixture_gen).
+# can open and walk (tools/fixtures/t/till_dag.bron, produced reproducibly by mycelium/till_fixture_gen).
 #
 # The crux this witness proves -- two tools, one answer: the app (mycelium/till_true) parses the record,
 # rebuilds the Dag under cord.add (re-verifying every signature), resolves it through the Till, and reports
 # the signer of the spent-out draw of the contested treasury, the draw count, and the short count; an
-# independent awk reading of the same bytes (tools/fixtures/till_dag_truth.awk), applying the simplest honest
+# independent awk reading of the same bytes (tools/fixtures/t/till_dag_truth.awk), applying the simplest honest
 # slice of the agreed order -- supply accounting in round order -- names the SAME spent-out signer and the
 # same counts. So the loser of a contested treasury can never drift from an order a keeper can walk by hand.
 # The fixture is reproducible (the generator re-emits byte-identical bytes), and a tampered record refuses
@@ -38,13 +38,13 @@ assert selftest.out contains "a tampered header refused BadFormat" else "myceliu
 # The crux -- two tools, one answer. The app's measure triple must equal awk's reading of the same bytes.
 let app = run ["sh" "-c" "${bin} measure 2>&1"]
 assert app.ok else "mycelium-till-true: app measure exited non-zero"
-let awk = run ["sh" "-c" "awk -f tools/fixtures/till_dag_truth.awk tools/fixtures/till_dag.bron"]
+let awk = run ["sh" "-c" "awk -f tools/fixtures/t/till_dag_truth.awk tools/fixtures/t/till_dag.bron"]
 assert awk.ok else "mycelium-till-true: awk truth read failed"
 assert awk.out contains "a09aa5f47a6759802ff955f8dc2d2a14a5c99d23be97f864127ff9383455a4f0 2 1" else "mycelium-till-true: awk triple not the round-2 spent-out draw · drew 2 · short 1"
 assert app.out == awk.out else "mycelium-till-true: app and awk disagree — the spent-out draw drifted from the bytes"
 
 # The fixture is genuinely what the Cord emits, not a hand-mock -- the generator re-emits byte-identical bytes.
-let regen = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye run mycelium/till_fixture_gen.rye 2>/tmp/till_regen.bron >/dev/null && diff -q tools/fixtures/till_dag.bron /tmp/till_regen.bron && echo REPRODUCIBLE"]
+let regen = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye run mycelium/till_fixture_gen.rye 2>/tmp/till_regen.bron >/dev/null && diff -q tools/fixtures/t/till_dag.bron /tmp/till_regen.bron && echo REPRODUCIBLE"]
 assert regen.ok else "mycelium-till-true: fixture is not reproducible — the generator drifted"
 assert regen.out contains "REPRODUCIBLE" else "mycelium-till-true: fixture regeneration did not match"
 

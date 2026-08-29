@@ -13,7 +13,7 @@ say "copy-sameness: Language EN — one fold, many copies, no drift."
 say "copy-sameness: Style Radiant — fourteen symlinks, one real file, no drift."
 say "copy-sameness: Lens TAME — sameness asserted, never assumed."
 
-let scan = run ["sh" "tools/fixtures/copy_sameness_scan.sh"]
+let scan = run ["sh" "tools/fixtures/c/copy_sameness_scan.sh"]
 say scan.out
 assert scan.out contains "verdict=ok" else "copy-sameness: a copy has drifted from tally/copy.rye"
 # values_apart: the scan's status and its verdict key must agree. If they ever

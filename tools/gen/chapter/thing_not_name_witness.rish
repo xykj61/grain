@@ -8,7 +8,7 @@ say "thing-not-name: Language EN — find emitted keys; filename search is not e
 say "thing-not-name: Style Radiant — two roofs can hold one kind of value."
 say "thing-not-name: Lens TAME — planted emitter · shed now-key · standalone fascia_health."
 
-let green = run ["sh" "tools/fixtures/thing_not_name_scan.sh"]
+let green = run ["sh" "tools/fixtures/t/thing_not_name_scan.sh"]
 say green.out
 assert green.ok else "thing-not-name: living scan must exit 0"
 assert green.out contains "control_gate=honored" else "thing-not-name: want control gate"
@@ -25,7 +25,7 @@ assert green.out contains "roofs=2" else "thing-not-name: want two roofs"
 assert green.out contains "law=look_for_the_thing_not_the_name" else "thing-not-name: want law"
 assert green.out contains "verdict=ok" else "thing-not-name: want verdict=ok"
 
-let red = run ["sh" "tools/fixtures/thing_not_name_scan.sh" "prove-red"]
+let red = run ["sh" "tools/fixtures/t/thing_not_name_scan.sh" "prove-red"]
 say red.out
 assert (red.ok == false) else "thing-not-name: prove-red must refuse"
 assert red.out contains "RED_looked_for_name_not_thing" else "thing-not-name: prove-red want name refusal"

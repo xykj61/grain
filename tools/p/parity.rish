@@ -22,7 +22,7 @@ say seat.out
 let cost_init = run ["sh" "-c" "mkdir -p tools/.cache/parity-cost && : > tools/.cache/parity-cost/current.tsv && echo suite > tools/.cache/parity-cost/chapter && echo cost_init_ok"]
 say cost_init.out
 
-let preflight = run ["sh" "tools/p/parity_time_one.sh" "preflight" "--" "sh" "tools/fixtures/wasmtime_preflight.sh"]
+let preflight = run ["sh" "tools/p/parity_time_one.sh" "preflight" "--" "sh" "tools/fixtures/w/wasmtime_preflight.sh"]
 assert preflight.ok else "wasmtime preflight script failed"
 if (preflight.out != "") then say preflight.out
 

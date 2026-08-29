@@ -28,7 +28,7 @@
 #   spelling at ZERO, with one named instrument excluded: the control carries both elder shapes
 #   as planted probes, because proving a refusal requires having the thing that fails.
 #
-# Kin: tools/fixtures/fixture_depth_control.sh - .claude/rules/stamp-and-name.md (the letter
+# Kin: tools/fixtures/f/fixture_depth_control.sh - .claude/rules/stamp-and-name.md (the letter
 # fold) - tools/t/tool_path_resolve.rish (the resolver that recovers stale flat references).
 #
 # Run from the repository root:
@@ -38,7 +38,7 @@ say "fixture-depth: Language EN -- a fold that moves a script one directory deep
 say "fixture-depth: Style Gauge at Meter -- six behaviors in a pen, each proven from the side that can fail, then a census over the room itself holding the elder shapes at zero with the one instrument named."
 say "fixture-depth: Lens TAME -- safety first: the walk is bounded at 8 steps and loud past the bound, the refusal is shown rather than assumed, and the census is measured on every run rather than remembered."
 
-let control = "tools/fixtures/fixture_depth_control.sh"
+let control = "tools/fixtures/f/fixture_depth_control.sh"
 
 # ---------------------------------------------------------------------------------------------
 # PART ONE -- the six pen behaviors, read from the control rather than re-argued here.
@@ -69,7 +69,7 @@ let two_up = trim (run ["sh" "-c" "git ls-files 'tools/fixtures/*.sh' | grep -v 
 assert two_up == "0" else "fixture-depth: the elder two-up-from-dollar-zero arithmetic must be held at zero in the folded room -- found ${two_up} files carrying it"
 say "census one GREEN -- zero fixtures scripts compute the root by two-up depth arithmetic (the control's planted probe excluded by name)"
 
-let elder_source = trim (run ["sh" "-c" "git ls-files 'tools/fixtures/*.sh' | grep -v fixture_depth_control | xargs grep -lF 'pwd)/shell_portable.sh\"' 2>/dev/null | wc -l | tr -d ' '"]).out
+let elder_source = trim (run ["sh" "-c" "git ls-files 'tools/fixtures/*.sh' | grep -v fixture_depth_control | xargs grep -lF 'pwd)/shell_portable.sh' 2>/dev/null | wc -l | tr -d ' '"]).out
 assert elder_source == "0" else "fixture-depth: the elder sibling source spelling must be held at zero in the folded room -- found ${elder_source} files carrying it"
 say "census two GREEN -- zero fixtures scripts source shell_portable by the elder sibling spelling (the control's planted probe excluded by name)"
 

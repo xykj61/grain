@@ -6,7 +6,7 @@
 
 say "designed-not-built: counting functional specs in flight..."
 
-let result = run ["rishi/bin/rishi" "run" "tools/fixtures/designed_not_built_scan.rish"]
+let result = run ["rishi/bin/rishi" "run" "tools/fixtures/d/designed_not_built_scan.rish"]
 assert result.ok else "designed-not-built scan script failed"
 
 say result.out

@@ -21,13 +21,13 @@ say "stub-length: Language EN -- a quantity a sentence asserts belongs beside th
 say "stub-length: Style Radiant -- the measurement leads, and the sentence answers to it."
 say "stub-length: Lens TAME -- the shape is measured, the claim is bounded, the blindness refuses."
 
-let red = run ["sh" "tools/fixtures/ladder_stub_length_scan.sh" "prove-red"]
+let red = run ["sh" "tools/fixtures/l/ladder_stub_length_scan.sh" "prove-red"]
 say red.out
 assert red.out contains "RED_stub_claim_drift_caught" else "stub-length: a card claiming a wrong stub length passed -- the drift leg proves nothing"
 assert red.out contains "RED_no_stubs_refused_rather_than_ok" else "stub-length: an empty source tree answered ok -- a scan must never bless its own blindness"
 assert red.out contains "RED_harness_self_delegation_caught" else "stub-length: a harness delegating to itself passed -- the eaten-harness leg proves nothing"
 
-let scan = run ["sh" "tools/fixtures/ladder_stub_length_scan.sh"]
+let scan = run ["sh" "tools/fixtures/l/ladder_stub_length_scan.sh"]
 say scan.out
 assert scan.out contains "stub_lines=3" else "stub-length: the delegating stub on disk is no longer three lines -- read the card's arithmetic before the next lift"
 assert scan.out contains "verdict=ok" else "stub-length: the live card names a stub length the tree does not measure, or the harness delegates to itself"

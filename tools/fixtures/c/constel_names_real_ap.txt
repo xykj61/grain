@@ -1,0 +1,13 @@
+# tools/fixtures/c/constel_names_real_ap.txt -- the planted real @p, refused by its vowel.
+#
+# A galaxy, a star, two planet halves, and a whole planet -- the exact shapes constel/name.rye's
+# selftest refuses VowelPresent, and the exact shapes a newcomer might copy out of elder Urbit's
+# own documentation. Every one carries a vowel and none carries a digit, so NEITHER proof admits
+# them: this fixture is the one that must make verdict=unsafe fire. It is never a seated draw.
+#
+# Law: active-designing/20260814-fill-constel-naming-law.md - module: constel/name.rye
+zod
+sarlev
+sampel
+palnet
+sampel-palnet

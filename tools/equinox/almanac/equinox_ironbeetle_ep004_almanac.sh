@@ -25,7 +25,7 @@ entry = (
     "### 67. IronBeetle ep004 refuses to shard the ledger; one serial core, pipelined rest.\n"
     "**Ran:** `rishi/bin/rishi run tools/equinox/witness/equinox_ironbeetle_ep004_choir_witness.rish` · **Stamp:** `"
     + stamp
-    + "` · **Witness:** `tools/gen/chapter/ironbeetle_ep004_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep004_census.sh` · choir `equinox_ironbeetle_ep004_choir_witness.rish`\n"
+    + "` · **Witness:** `tools/gen/chapter/ironbeetle_ep004_census_witness.rish` · scan `tools/fixtures/i/ironbeetle_ep004_census.sh` · choir `equinox_ironbeetle_ep004_choir_witness.rish`\n"
     "Expected IRON=present · EP004 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, "
     "and verdict=absent on a missing iron shelf. Metal answered GREEN. "
     "Ep003 gap stays open. Clean-room study only.\n\n"

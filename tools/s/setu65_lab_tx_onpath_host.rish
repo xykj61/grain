@@ -9,7 +9,7 @@
 
 let zig = "vendor/zig-toolchain/zig"
 let check = "linengrow/bin/setu65_lab_tx_check"
-let find_iface = "tools/fixtures/setu6_find_gadget_iface.sh"
+let find_iface = "tools/fixtures/s/setu6_find_gadget_iface.sh"
 
 say "setu65-host: building lab TX check…"
 let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build linengrow/setu65_lab_tx_check.rye -lc -femit-bin=${check}"]

@@ -40,14 +40,14 @@ say "seed-link: Language EN -- one page serves two repositories, and a promise k
 say "seed-link: Style Radiant -- the tree names a withheld room in prose rather than pointing at a door that is not there."
 say "seed-link: Lens TAME -- safety first: the seed is the face a stranger meets, and a broken front door is what they meet first."
 
-let scan = run ["sh" "tools/fixtures/seed_link_scan.sh"]
+let scan = run ["sh" "tools/fixtures/s/seed_link_scan.sh"]
 assert scan.ok else "seed-link: a shipped document links into a room the seed does not carry -- read the scan's own lines"
 say scan.out
 assert scan.out contains "front_door_links_outside_seed=0" else "seed-link: every front-door link must land on a path the seed ships"
 assert scan.out contains "verdict=ok" else "seed-link: the scan must balance before it is believed"
 say "field GREEN -- the front door reads whole in the field and in the seed alike"
 
-let control = run ["sh" "tools/fixtures/seed_link_control.sh"]
+let control = run ["sh" "tools/fixtures/s/seed_link_control.sh"]
 assert control.ok else "seed-link: the control must complete"
 say control.out
 assert control.out contains "agreeing_free=yes" else "seed-link: a front door linking only into shipped rooms must pass free"

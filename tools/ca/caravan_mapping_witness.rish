@@ -38,8 +38,8 @@ let bin = "caravan/bin/mapping"
 let constants = "vendor/sel4/libsel4/sel4_arch_include/riscv64/sel4/sel4_arch/constants.h"
 let mode = "vendor/sel4/libsel4/sel4_arch_include/riscv64/sel4/sel4_arch/objecttype.h"
 let arch = "vendor/sel4/libsel4/arch_include/riscv/sel4/arch/objecttype.h"
-let scan = "tools/fixtures/caravan_mapping_geometry_scan.sh"
-let control = "tools/fixtures/caravan_mapping_geometry_control.sh"
+let scan = "tools/fixtures/c/caravan_mapping_geometry_scan.sh"
+let control = "tools/fixtures/c/caravan_mapping_geometry_control.sh"
 let build_dir = "tools/.build/caravan_mapping"
 
 let mk = run ["sh" "-c" "mkdir -p caravan/bin ${build_dir}"]

@@ -17,7 +17,7 @@ const slcl1_version = "20260704.020800";
 
 fn run_selftest(io: std.Io) !u8 {
     const kp = kumara.keypair_from_seed(&rc.slcl1_seed);
-    const fixture_path = "tools/fixtures/slcl1_fact.bron";
+    const fixture_path = "tools/fixtures/s/slcl1_fact.bron";
     const cwd = Dir.cwd();
 
     var fact_buf: [rc.max_fact_len]u8 = undefined;

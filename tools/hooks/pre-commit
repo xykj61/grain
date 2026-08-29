@@ -12,14 +12,14 @@
 # hook's own witness.
 #
 # The discipline was already written, in a comment at the head of
-# tools/fixtures/readme_metrics_scan.sh: "Add a witness or a module and this block goes stale, so it
+# tools/fixtures/r/readme_metrics_scan.sh: "Add a witness or a module and this block goes stale, so it
 # is regenerated in the same commit." A rule living in a comment is a rule no program runs, which is
 # the lesson REDS %150 paid for about a roster in prose. This is that comment, made executable.
 #
 # A THIRD PAGE JOINED THEM on 20260825: construction/REDS.md opens with three numbers about its own
 # row spine, and REDS %127, %141, and %229 are the same fault three times -- a hand books a row and
 # republishes the total, and one of those two acts carries no guard at the moment it happens. So
-# the ledger's headline is generated here too, by tools/fixtures/reds_ledger_headline_write.sh.
+# the ledger's headline is generated here too, by tools/fixtures/r/reds_ledger_headline_write.sh.
 #
 # A FOURTH DUTY, AND A DIFFERENT KIND, joined on 20260828: the living pins' byte bounds. The three
 # rules above regenerate a page; this one refuses a commit and regenerates nothing, because a pin
@@ -61,7 +61,7 @@
 # frequent half is worth closing here.
 #
 # Proven both ways by tools/g/generated_page_freshness_witness.rish over
-# tools/fixtures/generated_page_freshness_control.sh, on a throwaway repository; the ledger rule's
+# tools/fixtures/g/generated_page_freshness_control.sh, on a throwaway repository; the ledger rule's
 # own writer is proven by tools/r/reds_ledger_headline_witness.rish.
 # Armed by rishi/bin/rishi run tools/i/install_hooks.rish.
 
@@ -121,8 +121,8 @@ fi
 # the trigger is the ledger itself being staged in any way, rather than a file kind arriving.
 ledger_moved=$(git diff --cached --name-only -- construction/REDS.md 'construction/archive/REDS-*.md')
 if [ -n "$ledger_moved" ]; then
-  refresh_page tools/fixtures/reds_ledger_headline_write.sh construction/REDS.md \
-    /bin/sh tools/fixtures/reds_ledger_headline_write.sh write
+  refresh_page tools/fixtures/r/reds_ledger_headline_write.sh construction/REDS.md \
+    /bin/sh tools/fixtures/r/reds_ledger_headline_write.sh write
 fi
 
 # RULE THREE -- the living pins' byte bounds. Trigger: a rostered pin is staged at all. This rule
@@ -133,8 +133,8 @@ fi
 # four such deaths refused a lap of 20260828 with this rule's own over-bound prose. And a crash
 # is told from a measurement: the pin prose is spoken only when the report carries the RED
 # detail; a scan that could not measure refuses honestly in its own words, still failing closed.
-if [ -f tools/fixtures/pin_bound_touch_scan.sh ] && [ -f tools/fixtures/living_pin_guard_roster.txt ]; then
-  if ! pin_report=$(/bin/sh tools/fixtures/pin_bound_touch_scan.sh staged 2>&1); then
+if [ -f tools/fixtures/p/pin_bound_touch_scan.sh ] && [ -f tools/fixtures/l/living_pin_guard_roster.txt ]; then
+  if ! pin_report=$(/bin/sh tools/fixtures/p/pin_bound_touch_scan.sh staged 2>&1); then
     if echo "$pin_report" | grep -q '^detail=RED_touched_pin_over_bound'; then
       echo "pre-commit: this commit stages a living pin that is over the byte bound its own header" >&2
       echo "declares. A pin is read in one breath beside a lap, so the overage is spent back out of" >&2
@@ -146,7 +146,7 @@ if [ -f tools/fixtures/pin_bound_touch_scan.sh ] && [ -f tools/fixtures/living_p
       echo "over-bound pin -- read the scan's own words below and repair the bench or the jail." >&2
       echo "$pin_report" | head -4 >&2
     fi
-    echo "  full reading: /bin/sh tools/fixtures/pin_bound_touch_scan.sh staged" >&2
+    echo "  full reading: /bin/sh tools/fixtures/p/pin_bound_touch_scan.sh staged" >&2
     refused=yes
   fi
 fi

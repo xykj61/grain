@@ -8,7 +8,7 @@
 
 let mode = "matrix"
 if length args != 0 then let mode = args[0]
-let r = run ["bash" "tools/fixtures/prin_dispatch.sh" mode]
+let r = run ["bash" "tools/fixtures/p/prin_dispatch.sh" mode]
 if r.out != "" then say r.out
 
 # Scope modes: assert without if/assert else clash (else binds to if when cond is false).

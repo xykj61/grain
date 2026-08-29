@@ -50,15 +50,15 @@
 #   rishi/bin/rishi run tools/s/standing_equipment_witness.rish
 #
 # To refresh the run card, which is untracked by design:
-#   sh tools/fixtures/standing_equipment_run.sh              # cold open -- the every-lap tier
-#   sh tools/fixtures/standing_equipment_run.sh --hot        # after `git add` -- staged paths are mine
-#   sh tools/fixtures/standing_equipment_run.sh --all        # every tier, choirs included
+#   sh tools/fixtures/s/standing_equipment_run.sh              # cold open -- the every-lap tier
+#   sh tools/fixtures/s/standing_equipment_run.sh --hot        # after `git add` -- staged paths are mine
+#   sh tools/fixtures/s/standing_equipment_run.sh --all        # every tier, choirs included
 
 say "standing-equipment: Language EN -- the roster of what guards this tree stood in a paragraph, so nothing could run it, count it, or say when each guard last answered."
 say "standing-equipment: Style Radiant -- the roster is a file now, every path in it is real, and running it leaves a record on disk rather than in the memory of a round."
 say "standing-equipment: Lens TAME -- safety first: a guard that cannot red guards nothing, and a guard that is never run guards nothing either."
 
-let scan = run ["sh" "tools/fixtures/standing_equipment_scan.sh"]
+let scan = run ["sh" "tools/fixtures/s/standing_equipment_scan.sh"]
 assert scan.ok else "standing-equipment: the roster names something the tree cannot honor -- read the scan's own lines"
 say scan.out
 assert scan.out contains "guards_path_missing=0" else "standing-equipment: every rostered path must name a file that exists"
@@ -69,7 +69,7 @@ assert scan.out contains "runs_red=0" else "standing-equipment: a recorded red i
 assert scan.out contains "verdict=ok" else "standing-equipment: the scan must balance before it is believed"
 say "field GREEN -- every rostered guard names a real file, and no recorded run is red"
 
-let control = run ["sh" "tools/fixtures/standing_equipment_control.sh"]
+let control = run ["sh" "tools/fixtures/s/standing_equipment_control.sh"]
 assert control.ok else "standing-equipment: the control must complete"
 say control.out
 assert control.out contains "agreeing_free=yes" else "standing-equipment: a whole roster over real paths must pass free"

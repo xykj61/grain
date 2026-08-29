@@ -8,7 +8,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "sh tools/fixtures/tame_style_scan.sh advise"
+            "command": "sh tools/fixtures/t/tame_style_scan.sh advise"
           }
         ]
       }

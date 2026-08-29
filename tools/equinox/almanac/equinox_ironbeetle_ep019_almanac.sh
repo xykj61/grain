@@ -25,7 +25,7 @@ entry = (
     "### 79. IronBeetle ep019 reduces storage to a sorted array; tables are index plus value blocks.\n"
     "**Ran:** `rishi/bin/rishi run tools/equinox/witness/equinox_ironbeetle_ep019_choir_witness.rish` · **Stamp:** `"
     + stamp
-    + "` · **Witness:** `tools/gen/chapter/ironbeetle_ep019_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep019_census.sh` · choir `equinox_ironbeetle_ep019_choir_witness.rish`\n"
+    + "` · **Witness:** `tools/gen/chapter/ironbeetle_ep019_census_witness.rish` · scan `tools/fixtures/i/ironbeetle_ep019_census.sh` · choir `equinox_ironbeetle_ep019_choir_witness.rish`\n"
     "Expected IRON=present · EP019 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, "
     "and verdict=absent on a missing iron shelf. Metal answered GREEN. "
     "Clean-room study only.\n\n"

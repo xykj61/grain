@@ -17,7 +17,7 @@ assert welcome.out contains "GUIDE_TYPES=yes" else "equinox-tb-off-by-one-choir:
 assert welcome.out contains "TAME_OBO=yes" else "equinox-tb-off-by-one-choir: want TAME_OBO"
 assert welcome.out contains "ELDER_CACHE=yes" else "equinox-tb-off-by-one-choir: want ELDER_CACHE"
 
-let refuse = run ["sh" "tools/fixtures/tigerbeetle_off_by_one_census.sh" "tools/fixtures/tigerbeetle_ABSENT"]
+let refuse = run ["sh" "tools/fixtures/t/tigerbeetle_off_by_one_census.sh" "tools/fixtures/tigerbeetle_ABSENT"]
 say refuse.out
 assert refuse.ok == false else "equinox-tb-off-by-one-choir: absent clone must fail"
 assert refuse.out contains "verdict=absent" else "equinox-tb-off-by-one-choir: want verdict=absent"

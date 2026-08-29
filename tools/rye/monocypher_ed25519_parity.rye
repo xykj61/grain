@@ -1,6 +1,6 @@
 //! tools/rye/monocypher_ed25519_parity.rye -- our authored crypto/ed25519_sign.rye asked for its OWN Ed25519 public key and signatures, printed one
 //! lowercase-hex value per line, so tools/cr/crypto_monocypher_ed25519_parity_witness.rish can diff our bytes against the vendored Monocypher's C
-//! (tools/fixtures/monocypher_ed25519_harness.c) byte-for-byte -- the SIGNING primitive the Lotus signed carry (and every Kumara-signed record)
+//! (tools/fixtures/m/monocypher_ed25519_harness.c) byte-for-byte -- the SIGNING primitive the Lotus signed carry (and every Kumara-signed record)
 //! rests on, proven against the audit's parity target. Chapter G (Cryptography - Rye-native, Monocypher-parity, audit-ready).
 //!
 //! The seed is RFC 8032 §7.1 TEST 2's own published secret key. The three printed lines are, in order: the public key derived from the seed

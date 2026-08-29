@@ -1,6 +1,6 @@
 # REDS %292 -- three renames and an ASCII sweep moved the tree, and four witnesses were never told
 
-*Folded off the living pin on `20260827.165500` by `tools/fixtures/reds_fold.sh`, **CLOSED**. The
+*Folded off the living pin on `20260827.165500` by `tools/fixtures/r/reds_fold.sh`, **CLOSED**. The
 pin was carrying five rows from two hands at 25,235 bytes of its 24,576 -- the shed lane's `%292`
 and `%293` and the Dream lane's `%294` and `%295`, around the still-open `%291` -- so the oldest
 closed row moved to make room. `%289` and `%290` folded in the same round, to

@@ -14,7 +14,7 @@
 //! Siloed, dev-only, demo seeds -- no real key, no funds, no network, no custody.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/cord_knot_fixture_gen.rye \
-//!     2> tools/fixtures/cord_knot.bron
+//!     2> tools/fixtures/c/cord_knot.bron
 
 const std = @import("std");
 const assert = std.debug.assert;

@@ -14,7 +14,7 @@ say "reds-ledger: Language EN — a red owned out loud is a memory; recorded, a 
 say "reds-ledger: Style Radiant — three fields per row, no softening."
 say "reds-ledger: Lens TAME — the pin's bound is named and checked."
 
-let scan = run ["sh" "tools/fixtures/reds_ledger_scan.sh"]
+let scan = run ["sh" "tools/fixtures/r/reds_ledger_scan.sh"]
 say scan.out
 assert scan.out contains "verdict=ok" else "reds-ledger: a row is incomplete or the pin is past bound"
 assert scan.ok else "reds-ledger: the verdict reads ok while the status fails — they must agree"

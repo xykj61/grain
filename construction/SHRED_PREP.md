@@ -32,7 +32,7 @@
 | **W** | **Walked, cited, kept** — a named set examined against the shed conditions on a stamp and held, so a later pass reads the row rather than re-walking | Cut refused, with the measurement recorded |
 
 Class **H** is for Grep + Amphora later. It is **not** Class A.  
-Class **O** (`20260731.124815` · room home `20260731.135609` · **word-scope e128** `20260731.232004`): neither fund anchor nor writing fossil — simply never pointed at. Instrument: `tools/fixtures/shed_census_scan.sh`. Membership is a **measured property**; the census is authority. **Keaton's authorizing word is on the class and/or the rooms — not on each orphan filename.** `SAFE.md` refuses whole on any listed path. Paths stay unnamed here; rooms wait the opening word.
+Class **O** (`20260731.124815` · room home `20260731.135609` · **word-scope e128** `20260731.232004`): neither fund anchor nor writing fossil — simply never pointed at. Instrument: `tools/fixtures/s/shed_census_scan.sh`. Membership is a **measured property**; the census is authority. **Keaton's authorizing word is on the class and/or the rooms — not on each orphan filename.** `SAFE.md` refuses whole on any listed path. Paths stay unnamed here; rooms wait the opening word.
 
 ### Class O — word-scope (e128)
 
@@ -92,10 +92,10 @@ open for the next fossil a molt seats, and the word stays **shred RED** until th
 
 | Elder | Living mutant | What the cut asks |
 | --- | --- | --- |
-| `tools/fixtures/dated_classify.py` | `tools/fixtures/dated_classify.rish`, parity-proven by `dated_classify_seam.sh`, gated by `tools/d/dated_classify_witness.rish` | Zero operational citers reach the elder (measured `20260828`). The seam's parity legs retire with it; the cut moves the fascia meter's `tools_py` signal to zero. |
+| `tools/fixtures/d/dated_classify.py` | `tools/fixtures/d/dated_classify.rish`, parity-proven by `dated_classify_seam.sh`, gated by `tools/d/dated_classify_witness.rish` | Zero operational citers reach the elder (measured `20260828`). The seam's parity legs retire with it; the cut moves the fascia meter's `tools_py` signal to zero. |
 
 **Every cut basename is seated as a LISTED deliberate absence** in
-[`../tools/fixtures/dated_path_exclusions.sh`](../tools/fixtures/dated_path_exclusions.sh), so the
+[`../tools/fixtures/d/dated_path_exclusions.sh`](../tools/fixtures/d/dated_path_exclusions.sh), so the
 census reads a surviving reference as intent. Walk-back: checkpoint `20260827.162143`.
 
 **And the shed proved eight chapter witnesses rather than one.** Each had been written to prove a

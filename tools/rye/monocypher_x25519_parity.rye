@@ -1,6 +1,6 @@
 //! tools/rye/monocypher_x25519_parity.rye -- our authored crypto/x25519.rye asked for its OWN X25519 public keys and shared secrets over RFC 7748
 //! §6.1's Alice/Bob key exchange, printed one 64-hex-character value per line, so tools/cr/crypto_monocypher_x25519_parity_witness.rish can diff our
-//! bytes against the vendored Monocypher's C (tools/fixtures/monocypher_x25519_harness.c) byte-for-byte -- the key agreement the Kumara sealed door
+//! bytes against the vendored Monocypher's C (tools/fixtures/m/monocypher_x25519_harness.c) byte-for-byte -- the key agreement the Kumara sealed door
 //! (crypto/kumara_sealed.rye) rests on, proven against the audit's parity target. Chapter G (Cryptography - Rye-native, Monocypher-parity, audit-ready).
 //!
 //! The two private scalars are RFC 7748 §6.1's own published Alice and Bob keys. The four printed lines are, in order: Alice's public key

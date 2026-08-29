@@ -5,7 +5,7 @@
 # grain-os/grain). personal and sub_exclude paths never enter; name-bearing
 # files are withheld for the M3 scrub pass, so the seed is clean by
 # construction. The heavy file work is a POSIX seam in
-# tools/fixtures/sow_project.sh; this script is the thin Rishi driver.
+# tools/fixtures/s/sow_project.sh; this script is the thin Rishi driver.
 #
 # Plans: external-research/20260808-045124 (Movement I, the mechanism) and
 # 20260808-183336 (the compact root). Layout: 20260808-183636 (field + seed).
@@ -13,7 +13,7 @@
 #
 #   rishi/bin/rishi run tools/s/sow.rish
 
-let proj = run ["sh" "tools/fixtures/sow_project.sh"]
+let proj = run ["sh" "tools/fixtures/s/sow_project.sh"]
 say proj.out
 assert proj.ok else "sow projection failed to run"
 assert (proj.out contains "SOW_OK") else "sow projection did not complete cleanly"

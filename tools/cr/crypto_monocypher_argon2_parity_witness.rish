@@ -11,7 +11,7 @@
 # device. Grain will face a security audit; parity against the ACTUAL library an auditor names, not merely a recited constant, is the honest way
 # to earn it.
 # Kin: crypto/argon2.rye (our authored KDF, GREEN against RFC 9106's known-answers and Zig's std.crypto) - crypto/blake2b.rye (the hash its whole
-# diffusion is) - tools/rye/monocypher_argon2_parity.rye (our printing harness) - tools/fixtures/monocypher_argon2_harness.c (Monocypher's printing
+# diffusion is) - tools/rye/monocypher_argon2_parity.rye (our printing harness) - tools/fixtures/m/monocypher_argon2_harness.c (Monocypher's printing
 # harness) - tools/cr/crypto_monocypher_aead_parity_witness.rish (the AEAD sibling). Monocypher stays the parity TARGET, vendored and unmodified,
 # never a copied line -- our own Rye, studied clean-room (.claude/rules/gratitude-licenses.md).
 #
@@ -36,7 +36,7 @@ let cout = "crypto/bin/monocypher_argon2.out"
 let rout = "crypto/bin/rye_argon2.out"
 
 # 1. Build the Monocypher C harness, linking the unmodified vendored source with zig cc.
-let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src tools/fixtures/monocypher_argon2_harness.c vendor/monocypher/src/monocypher.c -o ${cbin}"]
+let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src tools/fixtures/m/monocypher_argon2_harness.c vendor/monocypher/src/monocypher.c -o ${cbin}"]
 assert cbuild.ok else "crypto-monocypher-argon2-parity: Monocypher C harness build failed — ${cbuild.err}"
 
 # 2. Run the Monocypher C harness -- three Argon2 hex lines: Argon2d, Argon2i, Argon2id.

@@ -265,7 +265,7 @@ assert (trim hooks_path_run.out) == "tools/hooks" else "REFUSE chatgpt-mind: pro
 
 let pre_commit_hook = repo_root + "/tools/hooks/pre-commit"
 let commit_msg_hook = repo_root + "/tools/hooks/commit-msg"
-let mind_lane_scan = repo_root + "/tools/fixtures/chatgpt_mind_lane.awk"
+let mind_lane_scan = repo_root + "/tools/fixtures/c/chatgpt_mind_lane.awk"
 let mind_lane_sha256 = "62cc0dd65b0df7215ffd7e4a78274fe0e4a122b4787d8def24ef19ead2b96071"
 let pre_commit_file = run ["test" "-f" pre_commit_hook]
 let pre_commit_exec = run ["test" "-x" pre_commit_hook]
@@ -396,7 +396,7 @@ assert jail_plan contains "sandbox-exec" else "REFUSE chatgpt-mind: outer jail d
 assert jail_plan contains "(deny default)" else "REFUSE chatgpt-mind: outer jail plan is not deny-by-default"
 assert jail_plan contains repo_root else "REFUSE chatgpt-mind: outer jail plan does not name this repository"
 assert jail_plan contains "(allow file-write*" else "REFUSE chatgpt-mind: outer jail plan lacks an explicit write lane"
-let dq = read-file "tools/fixtures/dquote.txt"
+let dq = read-file "tools/fixtures/d/dquote.txt"
 assert length dq == 1 else "REFUSE chatgpt-mind: quote fixture is not one byte"
 assert (codex_exec contains dq) == false else "REFUSE chatgpt-mind: canonical Codex CLI path cannot be encoded safely in the jail plan"
 let codex_plan_allow = "(allow file-read* (literal " + dq + codex_exec + dq + "))"

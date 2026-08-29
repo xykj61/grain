@@ -14,15 +14,15 @@
 # proceeds into compile and its ordinary failure exits NON-3, which is what keeps the gate from
 # becoming a bypass.
 #
-# Pen: tools/fixtures/pond_display_gate_control.sh. Kin: tools/p/pond_ring_lantern_witness.rish and
-# tools/fixtures/pond_build_drawn_terminal.rish, both of which read the same exit code.
+# Pen: tools/fixtures/p/pond_display_gate_control.sh. Kin: tools/p/pond_ring_lantern_witness.rish and
+# tools/fixtures/p/pond_build_drawn_terminal.rish, both of which read the same exit code.
 # Run from the repository root.
 
 say "display-gate: Language EN -- a witness says whether it ran, and why, on the machine it ran on."
 say "display-gate: Style Gauge -- the gate names the absent library, so a reader can provision it."
 say "display-gate: Lens TAME -- safety first: a gate proven only shut is indistinguishable from a bypass."
 
-let control = run ["sh" "tools/fixtures/pond_display_gate_control.sh"]
+let control = run ["sh" "tools/fixtures/p/pond_display_gate_control.sh"]
 assert control.ok else "display-gate: the control must complete"
 say control.out
 assert control.out contains "case=gate_fires ok" else "display-gate: an absent seam must gate at exit 3"

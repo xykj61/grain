@@ -9,7 +9,7 @@ say "tend-hygiene-census: Language EN — measure; do not invent code."
 say "tend-hygiene-census: Style Radiant — fascia speaks; the waymark yields."
 say "tend-hygiene-census: Lens TAME — e31 · design-shapes · almanac seat 37."
 
-let scan = run ["sh" "tools/fixtures/tend_hygiene_census.sh"]
+let scan = run ["sh" "tools/fixtures/t/tend_hygiene_census.sh"]
 say scan.out
 assert scan.ok else "tend-hygiene-census: census failed"
 assert scan.out contains "verdict=ok" else "tend-hygiene-census: want verdict=ok"

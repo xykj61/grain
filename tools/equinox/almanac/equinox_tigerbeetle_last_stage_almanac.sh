@@ -25,7 +25,7 @@ entry = (
     "### 59. The last stage keeps trying, stays small, and laughs before the next pass.\n"
     "**Ran:** `rishi/bin/rishi run tools/equinox/witness/equinox_tigerbeetle_last_stage_choir_witness.rish` · **Stamp:** `"
     + stamp
-    + "` · **Witness:** `tools/gen/chapter/tigerbeetle_last_stage_census_witness.rish` · scan `tools/fixtures/tigerbeetle_last_stage_census.sh` · choir `equinox_tigerbeetle_last_stage_choir_witness.rish`\n"
+    + "` · **Witness:** `tools/gen/chapter/tigerbeetle_last_stage_census_witness.rish` · scan `tools/fixtures/t/tigerbeetle_last_stage_census.sh` · choir `equinox_tigerbeetle_last_stage_choir_witness.rish`\n"
     "Expected CLONE=present · GUIDE_LAST · GUIDE_FUN · GUIDE_SMALL · GUIDE_BILBO · TAME_LAST · STYLE · ELDER_TOOL · RADIANT, "
     "and verdict=absent on a missing clone path. Metal answered GREEN. Clean-room study only.\n\n"
 )

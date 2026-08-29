@@ -9,13 +9,13 @@ let bin = "pond/bin/drawn-terminal"
 
 # A Wayland application on a headless pier is a machine fact, never a tree red (REDS %173).
 # One shared probe answers for every caller; it exits 3, and only 3, when a seam is absent.
-let gate = run ["sh" "-c" "sh tools/fixtures/display_seam_probe.sh >/dev/null 2>&1; test $? -eq 3"]
+let gate = run ["sh" "-c" "sh tools/fixtures/d/display_seam_probe.sh >/dev/null 2>&1; test $? -eq 3"]
 if gate.ok then say "GATED: drawn-terminal wants a host with a display -- no graphical link seam here."
 if gate.ok then say "GATED: run it on a Wayland host, or provision the seams -- a NixOS rebuild, a hand's gate."
 if gate.ok then exit 0
 
 say "build: Realidream query device view — drawn-terminal compile"
-let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
+let build = run ["sh" "tools/fixtures/p/pond_build_drawn_terminal.sh"]
 assert build.ok else "drawn_terminal build failed for query device view witness"
 assert build.out contains "GREEN:" else "drawn_terminal build did not reach GREEN"
 

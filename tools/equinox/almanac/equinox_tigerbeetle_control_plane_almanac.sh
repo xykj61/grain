@@ -7,7 +7,7 @@ if grep -q '^### 26\.' "$ALMANAC"; then
   exit 0
 fi
 STAMP=$(TZ=America/New_York date '+%Y%m%d.%H%M%S')
-CENSUS=$(sh tools/fixtures/tigerbeetle_control_plane_census.sh)
+CENSUS=$(sh tools/fixtures/t/tigerbeetle_control_plane_census.sh)
 export STAMP
 export CENSUS
 python3 - <<'PY'
@@ -28,7 +28,7 @@ entry = (
     "### 26. Control plane spends asserts freely; data plane gates the dear checks behind verify.\n"
     "**Ran:** `rishi/bin/rishi run tools/gen/chapter/tigerbeetle_control_plane_census_witness.rish` · **Stamp:** `"
     + stamp
-    + "` · **Witness:** `tools/gen/chapter/tigerbeetle_control_plane_census_witness.rish` · `tools/fixtures/tigerbeetle_control_plane_census.sh` · submodule `gratitude/tigerbeetle`\n"
+    + "` · **Witness:** `tools/gen/chapter/tigerbeetle_control_plane_census_witness.rish` · `tools/fixtures/t/tigerbeetle_control_plane_census.sh` · submodule `gratitude/tigerbeetle`\n"
     "Expected CLONE=present · GUIDE_PLANE=yes · ARCH_PLANE=yes · TAME_BRIDGE=yes · STYLE=yes "
     "with constants.verify≥20 and files_verify≥10. "
     "Metal answered GREEN. Census: "

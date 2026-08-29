@@ -21,12 +21,12 @@
 # interactive clear/refresh needs a real terminal).
 
 GRAIN_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || echo "${GRAIN_ROOT:-$HOME/grain}")"
-_PRIN_M="$GRAIN_ROOT/tools/fixtures/prin_matrix.sh"
-_PRIN_T="$GRAIN_ROOT/tools/fixtures/prin_ticker.sh"
-_PRIN_D="$GRAIN_ROOT/tools/fixtures/prin_dual.sh"
-_PRIN_X="$GRAIN_ROOT/tools/fixtures/prin_dispatch.sh"
+_PRIN_M="$GRAIN_ROOT/tools/fixtures/p/prin_matrix.sh"
+_PRIN_T="$GRAIN_ROOT/tools/fixtures/p/prin_ticker.sh"
+_PRIN_D="$GRAIN_ROOT/tools/fixtures/p/prin_dual.sh"
+_PRIN_X="$GRAIN_ROOT/tools/fixtures/p/prin_dispatch.sh"
 
-alias prin='(cd "$GRAIN_ROOT" && bash tools/fixtures/prin_dispatch.sh)'
+alias prin='(cd "$GRAIN_ROOT" && bash tools/fixtures/p/prin_dispatch.sh)'
 alias p='(cd "$GRAIN_ROOT" && bash "$_PRIN_M" matrix)'
 alias pm='(cd "$GRAIN_ROOT" && bash "$_PRIN_M" matrix)'
 alias pr='(cd "$GRAIN_ROOT" && bash "$_PRIN_M" rain)'

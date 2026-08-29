@@ -15,7 +15,7 @@
 # fails quietly. The page split three ways in that round, and the roster moved to lotus/MODULES.md
 # where a program can hold it.
 #
-# ONE SCAN, TWO DIRECTORIES. tools/fixtures/module_roster_scan.sh takes the directory as an
+# ONE SCAN, TWO DIRECTORIES. tools/fixtures/m/module_roster_scan.sh takes the directory as an
 # argument, so image/ and lotus/ are held by one rule rather than by two copies of it. The scan
 # was named image_module_roster_scan.sh until lotus/ became its second reader; a rule written twice
 # is a rule two files may quietly come to disagree about.
@@ -39,7 +39,7 @@
 # The rung's own witness proves the rung -- 239 of them stand in tools/al/ -- and this proves the
 # roster.
 #
-# Pen: tools/fixtures/module_roster_control.sh -- sixteen behaviors on real directories in a
+# Pen: tools/fixtures/m/module_roster_control.sh -- sixteen behaviors on real directories in a
 # throwaway pen, nine refusals bitten and seven honest readings left free, so no override exists
 # and none is wanted. Run from the repository root.
 
@@ -47,7 +47,7 @@ say "lotus-module-roster: Language EN -- the page a reader learns this directory
 say "lotus-module-roster: Style Gauge, Meter -- every count below is the scan's own output, read from the tree rather than recited here."
 say "lotus-module-roster: Lens TAME -- a bijection rather than a tally, and the corpus size published beside the verdict so a reading over nothing can never report clean."
 
-let scan = run ["sh" "tools/fixtures/module_roster_scan.sh" "census" "lotus"]
+let scan = run ["sh" "tools/fixtures/m/module_roster_scan.sh" "census" "lotus"]
 say scan.out
 assert scan.ok else "lotus-module-roster: the scan must complete -- a module has landed without a row, or a row outlived its module"
 assert scan.out contains "page=lotus/MODULES.md" else "lotus-module-roster: the scan must read the lotus roster rather than another directory's"
@@ -60,7 +60,7 @@ assert scan.out contains "bijection=yes" else "lotus-module-roster: the table an
 # A meter reading no modules finds no fault and would report clean while measuring nothing.
 assert (scan.out contains "modules_on_disk=0" == false) else "lotus-module-roster: a zero-module reading would report clean over an empty directory"
 
-let control = run ["sh" "tools/fixtures/module_roster_control.sh"]
+let control = run ["sh" "tools/fixtures/m/module_roster_control.sh"]
 say control.out
 assert control.ok else "lotus-module-roster: the control must complete"
 assert control.out contains "control_fail=0" else "lotus-module-roster: every planted behavior must read as written"

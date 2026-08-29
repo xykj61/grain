@@ -2,7 +2,7 @@
 #
 #   rishi/bin/rishi run tools/l/living_docs_roster_witness.rish
 #
-# WHY. tools/fixtures/living_docs_lint_roster.sh decides which living pages the docs meter reads,
+# WHY. tools/fixtures/l/living_docs_lint_roster.sh decides which living pages the docs meter reads,
 # and for its whole life it was a hand-written list of nine module READMEs. The tree holds
 # thirty-four module front doors, so the meter read six of them and reported green over the rest.
 # The four largest documents anywhere in the tree were among the unread -- image/README.md at
@@ -45,7 +45,7 @@
 # resolve (living_docs_lint duty 2). This guard proves only that the meter can see the page, which
 # is the one thing every other reading depends on.
 #
-# Pen: tools/fixtures/living_docs_roster_control.sh -- sixteen behaviors on real git repositories
+# Pen: tools/fixtures/l/living_docs_roster_control.sh -- sixteen behaviors on real git repositories
 # in a throwaway pen, five refusals bitten and eleven honest readings left free, the ratchet
 # ceiling proven from both sides by planting six over-bound pages and then seven, so no override
 # exists and none is wanted. Run from the repository root.
@@ -54,7 +54,7 @@ say "living-docs-roster: Language EN -- a meter reads the pages its roster names
 say "living-docs-roster: Style Gauge, Meter -- every count below is the scan's own output, read from the tree rather than recited here."
 say "living-docs-roster: Lens TAME -- say why: the rule asks git for the tree rather than globbing it, so a scratch file never becomes a door and a generated corpus never becomes a duty."
 
-let scan = run ["sh" "tools/fixtures/living_docs_roster_scan.sh"]
+let scan = run ["sh" "tools/fixtures/l/living_docs_roster_scan.sh"]
 say scan.out
 assert scan.ok else "living-docs-roster: the scan must complete -- a front door stands off the meter, or the roster names a file that is gone"
 assert scan.out contains "unrostered=0" else "living-docs-roster: every module front door must be on the roster the meter reads"
@@ -66,7 +66,7 @@ assert scan.out contains "verdict=ok" else "living-docs-roster: the scan must ag
 # A meter reading no doors reports clean while measuring nothing, so the corpus is measured too.
 assert (scan.out contains "front_doors=0" == false) else "living-docs-roster: a zero-door reading would report clean over an empty tree"
 
-let control = run ["sh" "tools/fixtures/living_docs_roster_control.sh"]
+let control = run ["sh" "tools/fixtures/l/living_docs_roster_control.sh"]
 say control.out
 assert control.ok else "living-docs-roster: the control must complete"
 assert control.out contains "control_fail=0" else "living-docs-roster: every planted behavior must read as written"

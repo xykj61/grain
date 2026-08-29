@@ -50,12 +50,12 @@ From the repository root:
 
 ```bash
 # Build (prepare -> compile -> prove)
-rishi/bin/rishi run tools/fixtures/pond_build_drawn_terminal.rish
+rishi/bin/rishi run tools/fixtures/p/pond_build_drawn_terminal.rish
 ```
 
 | Step | Command | Purpose |
 |------|---------|---------|
-| **Build** | `rishi/bin/rishi run tools/fixtures/pond_build_drawn_terminal.rish` | Staged compile; asserts prepare/compile/prove/GREEN |
+| **Build** | `rishi/bin/rishi run tools/fixtures/p/pond_build_drawn_terminal.rish` | Staged compile; asserts prepare/compile/prove/GREEN |
 | **Witness (session mirror)** | `rishi/bin/rishi run tools/s/slc2a_ring3_session.rish` | Headless session mirror (build + `sessiontest`) |
 | **Witness (SLC-2b)** | `rishi/bin/rishi run tools/s/slc2b_keyboard.rish` | Dexter keyboard path (build + `keyboardtest`) -- parity **145** |
 | **Metalsmoke** | `rishi/bin/rishi run tools/s/slc2a_ring3_metal.rish` | Thin-lap Wayland slice (needs `WAYLAND_DISPLAY`) |
@@ -64,7 +64,7 @@ rishi/bin/rishi run tools/fixtures/pond_build_drawn_terminal.rish
 **Metal close (Kaeden):** rishi preflight and metalsmoke, then live on GNOME Wayland:
 
 ```bash
-rishi/bin/rishi run tools/fixtures/pond_metal_close_preflight.rish
+rishi/bin/rishi run tools/fixtures/p/pond_metal_close_preflight.rish
 rishi/bin/rishi run tools/s/slc2a_ring3_metal.rish
 pond/bin/drawn-terminal
 ```
@@ -93,7 +93,7 @@ rye/bin/rye build pond/apps/drawn_terminal.rye brushstroke/xdg-shell-protocol.c 
 To watch build lines stream during a long compile (rishi buffers until exit), run the hosted script directly:
 
 ```bash
-sh tools/fixtures/pond_build_drawn_terminal.sh
+sh tools/fixtures/p/pond_build_drawn_terminal.sh
 ```
 
 </details>

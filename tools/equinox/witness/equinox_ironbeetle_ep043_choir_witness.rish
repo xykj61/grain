@@ -14,7 +14,7 @@ assert welcome.out contains "TEACH=yes" else "equinox-iron-ep043-choir: want TEA
 assert welcome.out contains "CLEAN=yes" else "equinox-iron-ep043-choir: want CLEAN"
 assert welcome.out contains "MATKLAD_OK=yes" else "equinox-iron-ep043-choir: want MATKLAD_OK"
 
-let refuse = run ["sh" "tools/fixtures/ironbeetle_ep043_census.sh" "tools/fixtures/ironbeetle_ABSENT"]
+let refuse = run ["sh" "tools/fixtures/i/ironbeetle_ep043_census.sh" "tools/fixtures/ironbeetle_ABSENT"]
 say refuse.out
 assert refuse.ok == false else "equinox-iron-ep043-choir: absent shelf must fail"
 assert refuse.out contains "verdict=absent" else "equinox-iron-ep043-choir: want verdict=absent"

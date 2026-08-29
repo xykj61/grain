@@ -11,7 +11,7 @@
 # three drains, with the forgery walls, the empty nudge, and the capacity refusal all exercised
 # -- run twice from cleared ground. State is what the run leaves in caravan/.regions: head and
 # tail indices plus every slot's addressed, sequence-numbered bytes. The comparator is one
-# fixture body (tools/fixtures/caravan_drain_replay_compare.sh), so the honest pass and the
+# fixture body (tools/fixtures/c/caravan_drain_replay_compare.sh), so the honest pass and the
 # tampered refusal read the same code.
 #
 # The falsifier, answered by naming: no stamp, no process id, and no allocator address enters a
@@ -58,7 +58,7 @@ let snap_two = run ["sh" "-c" "cp caravan/.regions/* ${pen}/b/"]
 assert snap_two.ok else "caravan-drain-replay: run two left no region state to snapshot"
 
 # The claim: every byte of state identical across the two runs.
-let same = run ["sh" "tools/fixtures/caravan_drain_replay_compare.sh" "${pen}/a" "${pen}/b"]
+let same = run ["sh" "tools/fixtures/c/caravan_drain_replay_compare.sh" "${pen}/a" "${pen}/b"]
 assert same.ok else "caravan-drain-replay: the two runs left different state -- ${same.out}"
 assert same.out contains "verdict=identical" else "caravan-drain-replay: the comparator must say identical -- ${same.out}"
 assert same.out contains "regions_compared=4" else "caravan-drain-replay: the two-client system leaves four region stores, and the comparison must see all four -- ${same.out}"
@@ -66,7 +66,7 @@ assert same.out contains "regions_compared=4" else "caravan-drain-replay: the tw
 # The refusal, proven from the failing side: one flipped byte in one store is caught by name.
 let tamper = run ["sh" "-c" "f=$(ls ${pen}/b | head -1) && printf 'X' | dd of=${pen}/b/$f bs=1 count=1 conv=notrunc 2>/dev/null && printf '%s' $f"]
 assert tamper.ok else "caravan-drain-replay: could not tamper the snapshot"
-let bitten = run ["sh" "tools/fixtures/caravan_drain_replay_compare.sh" "${pen}/a" "${pen}/b"]
+let bitten = run ["sh" "tools/fixtures/c/caravan_drain_replay_compare.sh" "${pen}/a" "${pen}/b"]
 assert bitten.ok == false else "caravan-drain-replay: a flipped byte must refuse -- it read identical instead"
 assert bitten.out contains "verdict=differs" else "caravan-drain-replay: the refusal names its verdict -- ${bitten.out}"
 assert bitten.out contains "differs between the two runs" else "caravan-drain-replay: the refusal names the differing store -- ${bitten.out}"
@@ -74,7 +74,7 @@ assert bitten.out contains "differs between the two runs" else "caravan-drain-re
 # A missing state file is a difference before any byte is read.
 let drop = run ["sh" "-c" "f=$(ls ${pen}/b | head -1) && rm ${pen}/b/$f"]
 assert drop.ok else "caravan-drain-replay: could not drop a snapshot file"
-let unequal_sets = run ["sh" "tools/fixtures/caravan_drain_replay_compare.sh" "${pen}/a" "${pen}/b"]
+let unequal_sets = run ["sh" "tools/fixtures/c/caravan_drain_replay_compare.sh" "${pen}/a" "${pen}/b"]
 assert unequal_sets.ok == false else "caravan-drain-replay: a missing state file must refuse"
 assert unequal_sets.out contains "different state-file sets" else "caravan-drain-replay: the set refusal says why -- ${unequal_sets.out}"
 

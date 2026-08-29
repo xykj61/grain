@@ -28,7 +28,7 @@ entry = (
     "**Ran:** `rishi/bin/rishi run tools/equinox/witness/equinox_e111_date_dialect_choir_witness.rish` · **Stamp:** `"
     + stamp
     + "` · **Witness:** `tools/equinox/witness/equinox_e111_date_dialect_witness.rish` · "
-    "scan `tools/fixtures/equinox_e111_date_dialect_scan.sh`\n"
+    "scan `tools/fixtures/e/equinox_e111_date_dialect_scan.sh`\n"
     "Expected control_gate · dialect_transformed=11 · hyphenated_last_updated=0 · "
     "17_of_17_compact · lint label-only dep · seat_128 reserved · surface_count=4 · "
     "fork not_consumed · shelf end ep045 · baton breach 0. "

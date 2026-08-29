@@ -14,7 +14,7 @@ assert welcome.out contains "halls_expected=13" else "equinox-baton-census-choir
 assert welcome.out contains "census_breach_count=0" else "equinox-baton-census-choir: want breach census zero"
 
 # Refuse: a missing museum path is loud, not silent.
-let refuse = run ["sh" "tools/fixtures/baton_museum_census_scan.sh" "tools/fixtures/baton_museum_ABSENT"]
+let refuse = run ["sh" "tools/fixtures/b/baton_museum_census_scan.sh" "tools/fixtures/baton_museum_ABSENT"]
 say refuse.out
 assert refuse.ok == false else "equinox-baton-census-choir: absent museum must fail status"
 assert refuse.out contains "verdict=missing_museum" else "equinox-baton-census-choir: want missing_museum verdict"

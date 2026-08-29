@@ -16,7 +16,7 @@ assert welcome.out contains "GUIDE_WHY=yes" else "equinox-tb-say-why-choir: want
 assert welcome.out contains "TAME_RADIANT=yes" else "equinox-tb-say-why-choir: want TAME_RADIANT"
 assert welcome.out contains "RADIANT=yes" else "equinox-tb-say-why-choir: want RADIANT"
 
-let refuse = run ["sh" "tools/fixtures/tigerbeetle_say_why_census.sh" "tools/fixtures/tigerbeetle_ABSENT"]
+let refuse = run ["sh" "tools/fixtures/t/tigerbeetle_say_why_census.sh" "tools/fixtures/tigerbeetle_ABSENT"]
 say refuse.out
 assert refuse.ok == false else "equinox-tb-say-why-choir: absent clone must fail"
 assert refuse.out contains "verdict=absent" else "equinox-tb-say-why-choir: want verdict=absent"

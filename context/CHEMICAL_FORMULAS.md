@@ -103,7 +103,7 @@ when a checklist empties. The cycle the chapter names are drawn from has its met
 
 **A formula is checkable in a way a paragraph is not.** If a sentence claims an operation is
 idempotent, you nod. If a line says `infusion(world') -> world'`, you can go and test it -- and this
-tree does, in `tools/fixtures/document_mirror_control.sh` among others.
+tree does, in `tools/fixtures/d/document_mirror_control.sh` among others.
 
 **It exposes what a description hides.** Writing the mitra prep as
 `fossil + mutant + banner + row` makes the four inputs visible at a glance, so a prep missing its

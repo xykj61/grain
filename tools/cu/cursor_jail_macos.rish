@@ -119,9 +119,9 @@ let home = env "HOME"
 # newline fixture the WireGuard client script already relies on), so SBPL's
 # own quoted path syntax is built by joining fragments around this fixture
 # rather than by escaping inside a string literal.
-let dq = read-file "tools/fixtures/dquote.txt"
-let nl = read-file "tools/fixtures/newline.txt"
-let bs = read-file "tools/fixtures/backslash.txt"
+let dq = read-file "tools/fixtures/d/dquote.txt"
+let nl = read-file "tools/fixtures/n/newline.txt"
+let bs = read-file "tools/fixtures/b/backslash.txt"
 let esc_dq = join [bs dq] ""
 
 # Apple's Seatbelt resolves an overlapping allow/deny pair to deny,

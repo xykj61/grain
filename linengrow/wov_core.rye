@@ -751,7 +751,7 @@ pub fn accept_exit_dual(
 fn check_fixture_bundle(io: std.Io, expected: []const u8) !void {
     const cwd = Dir.cwd();
     var buf: [max_bundle_len]u8 = undefined;
-    const read = try cwd.readFile(io, "tools/fixtures/wov_exit_bundle_v1.bron", &buf);
+    const read = try cwd.readFile(io, "tools/fixtures/w/wov_exit_bundle_v1.bron", &buf);
     if (!std.mem.eql(u8, read, expected)) return error.FixtureMismatch;
 }
 

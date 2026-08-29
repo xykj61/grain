@@ -1,7 +1,7 @@
 # tools/s/shell_dialect_witness.rish -- this tree's guards speak one shell, on two piers.
 #   rishi/bin/rishi run tools/s/shell_dialect_witness.rish
 #
-# WHAT IT STANDS OVER. tools/fixtures/shell_dialect_scan.sh, which counts GNU-only shell idioms in
+# WHAT IT STANDS OVER. tools/fixtures/s/shell_dialect_scan.sh, which counts GNU-only shell idioms in
 # tracked guards and holds FOUR families -- the GNU-only xargs flags, the GNU-only date parse, PCRE,
 # and the GNU-only stat field flag -- each under a ceiling that only falls. A family earns its gate
 # by costing a real reading on a real host; the two still advisory are reported until they do.
@@ -12,7 +12,7 @@
 # proven again by BEHAVIOUR -- a real guard of this tree reading the same number under both
 # dialects while a planted elder copy still breaks.
 #
-# WHERE IT STANDS. The twelve gated sites moved to tools/fixtures/shell_portable.sh on
+# WHERE IT STANDS. The twelve gated sites moved to tools/fixtures/s/shell_portable.sh on
 # 20260826.062128, so the ceiling is ZERO and the family is a ratchet: the next GNU-only xargs reds
 # on the lap it arrives. The repair is proven by BEHAVIOUR as well as by spelling -- exec_bit_scan.sh
 # read directly_invoked=18 on GNU and 0 under a BSD-shaped xargs before it, printing verdict=ok both
@@ -28,7 +28,7 @@ say "shell-dialect: Language EN -- a guard that runs on one host measures one ho
 say "shell-dialect: Style Gauge Meter -- the ceiling is counted, the mechanism is reproduced."
 say "shell-dialect: Lens TAME -- safety first; a refusal proven only one way is not proven."
 
-let green = run ["sh" "tools/fixtures/shell_dialect_scan.sh"]
+let green = run ["sh" "tools/fixtures/s/shell_dialect_scan.sh"]
 say green.out
 assert green.ok else "shell-dialect: the living measure must exit 0"
 assert green.out contains "verdict=ok" else "shell-dialect: want verdict ok"
@@ -38,7 +38,7 @@ assert green.out contains "gated_family=xargs_arg_file_or_delimiter" else "shell
 # prove the spelling was ever broken. This leg builds an xargs that refuses -a and -d exactly as
 # BSD xargs does, and reproduces the confident wrong zero on metal -- then shows the portable form
 # surviving the same shim. Without this leg the repair would rest on a claim about another host.
-let mech = run ["sh" "tools/fixtures/shell_dialect_scan.sh" "prove-dialect"]
+let mech = run ["sh" "tools/fixtures/s/shell_dialect_scan.sh" "prove-dialect"]
 say mech.out
 assert mech.ok else "shell-dialect: the mechanism proof must exit 0"
 assert mech.out contains "gnu_form_under_bsd=0" else "shell-dialect: want the GNU form zeroed under a BSD xargs"
@@ -49,7 +49,7 @@ assert mech.out contains "portable_form_under_bsd=1" else "shell-dialect: want t
 # run, that a planted copy carrying the elder spelling still breaks, so the leg cannot pass a
 # subject that is quietly broken. Its own vacuum is closed too: the plant must first read correctly
 # on GNU before its silence under the shim is allowed to mean anything.
-let port = run ["sh" "tools/fixtures/shell_dialect_scan.sh" "prove-portable"]
+let port = run ["sh" "tools/fixtures/s/shell_dialect_scan.sh" "prove-portable"]
 say port.out
 assert port.ok else "shell-dialect: the behaviour proof must exit 0"
 assert port.out contains "planted_elder_bsd_shaped=0" else "shell-dialect: want the planted elder spelling still zeroed"
@@ -59,11 +59,11 @@ assert port.out contains "verdict=ok" else "shell-dialect: want the behaviour pr
 # ceiling. At zero there is no tree one site under the reading, so the plant supplies it: the same
 # single planted site passes at a ceiling of 1 and refuses at 0. A ceiling proven only in the
 # passing direction cannot be told from a bypass.
-let planted = run ["sh" "tools/fixtures/shell_dialect_scan.sh" "prove-red"]
+let planted = run ["sh" "tools/fixtures/s/shell_dialect_scan.sh" "prove-red"]
 assert (planted.ok == false) else "shell-dialect: a planted site past the ceiling must refuse"
 assert planted.out contains "verdict=over_ceiling" else "shell-dialect: want the refusal named"
 
-let admits = run ["sh" "-c" "SHELL_DIALECT_CEILING=1 sh tools/fixtures/shell_dialect_scan.sh prove-red"]
+let admits = run ["sh" "-c" "SHELL_DIALECT_CEILING=1 sh tools/fixtures/s/shell_dialect_scan.sh prove-red"]
 assert admits.ok else "shell-dialect: the same planted site must pass at a ceiling of one"
 
 assert green.out contains "gated_ceiling=0" else "shell-dialect: the ceiling stands at zero -- a ceiling only falls"
@@ -94,40 +94,40 @@ assert green.out contains "gated_stat_c_ceiling=0" else "shell-dialect: the stat
 # absent that must be subtracted -- so the right answer is exactly two, and the leg refuses if the
 # corpus answer moves. Borrowed from dated_path_control.sh's throwaway tree, which runs the same
 # scan in about a second where the field takes forty-five.
-let pcre = run ["sh" "tools/fixtures/shell_dialect_scan.sh" "prove-pcre"]
+let pcre = run ["sh" "tools/fixtures/s/shell_dialect_scan.sh" "prove-pcre"]
 say pcre.out
 assert pcre.ok else "shell-dialect: the PCRE behaviour proof must exit 0 -- both dialects must read one number"
 assert pcre.out contains "corpus_answer_wanted=2" else "shell-dialect: want the pen's own answer named"
 assert pcre.out contains "planted_elder_bsd_shaped=0" else "shell-dialect: want the planted elder PCRE spelling still zeroed"
 assert pcre.out contains "verdict=ok" else "shell-dialect: want the PCRE behaviour proof green"
 
-let pcre_planted = run ["sh" "tools/fixtures/shell_dialect_scan.sh" "prove-pcre-red"]
+let pcre_planted = run ["sh" "tools/fixtures/s/shell_dialect_scan.sh" "prove-pcre-red"]
 assert (pcre_planted.ok == false) else "shell-dialect: a planted PCRE site past the ceiling must refuse"
 assert pcre_planted.out contains "verdict=over_grep_p_ceiling" else "shell-dialect: want the PCRE refusal named"
 
-let pcre_admits = run ["sh" "-c" "SHELL_DIALECT_GREP_P_CEILING=1 sh tools/fixtures/shell_dialect_scan.sh prove-pcre-red"]
+let pcre_admits = run ["sh" "-c" "SHELL_DIALECT_GREP_P_CEILING=1 sh tools/fixtures/s/shell_dialect_scan.sh prove-pcre-red"]
 assert pcre_admits.ok else "shell-dialect: the same planted PCRE site must pass at a ceiling of one"
 
 # THE STAT REPAIR, and this one needs no shim to show the fault -- the fault is what a GNU host
 # does today, so the leg reproduces it directly and then proves the repaired order survives a stat
 # with no field flag at all. An order proven only on the host it was written for is an order
 # nobody checked.
-let statp = run ["sh" "tools/fixtures/shell_dialect_scan.sh" "prove-stat"]
+let statp = run ["sh" "tools/fixtures/s/shell_dialect_scan.sh" "prove-stat"]
 say statp.out
 assert statp.ok else "shell-dialect: the stat behaviour proof must exit 0"
 assert statp.out contains "repaired_lines_on_gnu=1" else "shell-dialect: want the repair answering exactly one line on GNU"
 assert statp.out contains "repaired_lines_under_bsd_shaped=1" else "shell-dialect: want the repair answering under a stat that refuses the GNU flag"
 assert statp.out contains "verdict=ok" else "shell-dialect: want the stat behaviour proof green"
 
-let stat_planted = run ["sh" "tools/fixtures/shell_dialect_scan.sh" "prove-stat-red"]
+let stat_planted = run ["sh" "tools/fixtures/s/shell_dialect_scan.sh" "prove-stat-red"]
 assert (stat_planted.ok == false) else "shell-dialect: a planted stat site past the ceiling must refuse"
 assert stat_planted.out contains "verdict=over_stat_c_ceiling" else "shell-dialect: want the stat refusal named"
 
-let stat_admits = run ["sh" "-c" "SHELL_DIALECT_STAT_C_CEILING=1 sh tools/fixtures/shell_dialect_scan.sh prove-stat-red"]
+let stat_admits = run ["sh" "-c" "SHELL_DIALECT_STAT_C_CEILING=1 sh tools/fixtures/s/shell_dialect_scan.sh prove-stat-red"]
 assert stat_admits.ok else "shell-dialect: the same planted stat site must pass at a ceiling of one"
 
 # THE SECOND GATED FAMILY, held at zero the same way. `date -d` cost this tree a real reading before
-# it was gated: tools/fixtures/one_clock_provenance_scan.sh called every stamp in the tree
+# it was gated: tools/fixtures/o/one_clock_provenance_scan.sh called every stamp in the tree
 # unparsable under a BSD date, and tools/o/one_clock_witness.rish refused on its own PASS fixture
 # (REDS %250). Seven lines moved to stamp_epoch, epoch_stamp and stamp_ahead in shell_portable.sh.
 assert green.out contains "gated_date_family=date_parse_or_relative" else "shell-dialect: want the gated date family named"
@@ -152,18 +152,18 @@ assert green.out contains "roster_symlinks_skipped=" else "shell-dialect: want t
 # in the same round that wrote it (REDS %259). The scan refuses under `host_changed_the_reading`
 # when the two dialects disagree, so exit status carries the equality and the witness reads the
 # properties instead: the plant broke, and the leg is green.
-let dated = run ["sh" "tools/fixtures/shell_dialect_scan.sh" "prove-date"]
+let dated = run ["sh" "tools/fixtures/s/shell_dialect_scan.sh" "prove-date"]
 say dated.out
 assert dated.ok else "shell-dialect: the date behaviour proof must exit 0 -- the two dialects must read one number"
 assert dated.out contains "planted_elder_bsd_shaped=0" else "shell-dialect: want the planted elder date spelling still broken"
 assert dated.out contains "verdict=ok" else "shell-dialect: want the date behaviour proof green"
 
 # The date ceiling from both sides, on one planted tree, exactly as the xargs ceiling is proven.
-let date_planted = run ["sh" "tools/fixtures/shell_dialect_scan.sh" "prove-date-red"]
+let date_planted = run ["sh" "tools/fixtures/s/shell_dialect_scan.sh" "prove-date-red"]
 assert (date_planted.ok == false) else "shell-dialect: a planted date site past the ceiling must refuse"
 assert date_planted.out contains "verdict=over_date_ceiling" else "shell-dialect: want the date refusal named"
 
-let date_admits = run ["sh" "-c" "SHELL_DIALECT_DATE_CEILING=1 sh tools/fixtures/shell_dialect_scan.sh prove-date-red"]
+let date_admits = run ["sh" "-c" "SHELL_DIALECT_DATE_CEILING=1 sh tools/fixtures/s/shell_dialect_scan.sh prove-date-red"]
 assert date_admits.ok else "shell-dialect: the same planted date site must pass at a ceiling of one"
 
 # The two newest helpers, proven by DOING rather than by counting. A call-site count says a spelling
@@ -171,7 +171,7 @@ assert date_admits.ok else "shell-dialect: the same planted date site must pass 
 # host's own `readlink -f` on six real paths including a symlink and a name carrying a space, and
 # `sed_inplace` is read back for its bytes AND its mode -- the mode being the half `mv` would lose
 # and the exec-bit law would then book (REDS %159).
-let portable = run ["sh" "tools/fixtures/shell_portable_control.sh"]
+let portable = run ["sh" "tools/fixtures/s/shell_portable_control.sh"]
 say portable.out
 assert portable.ok else "shell-dialect: the portable-helper control must exit 0"
 assert portable.out contains "fail=0" else "shell-dialect: no helper behaviour may miss"

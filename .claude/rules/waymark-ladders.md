@@ -54,7 +54,7 @@ Before the first rung is written as `X0` / `X1` / … in TASKS, ROADMAP, compres
 
 **Hand-seated names on the exclude roster** (not waymark draws): **SEVA** (viewer; absent from flw), **MAND** (M vane; in flw), **MONA** (prior name of Mand — one chapter). **SALA** retired from exclude with the Sala→Seva alias close.
 
-Word-list pin: `tools/fixtures/flw-four-letter.txt` · witness `tools/w/waymark_derive_witness.rish`.
+Word-list pin: `tools/fixtures/f/flw-four-letter.txt` · witness `tools/w/waymark_derive_witness.rish`.
 
 ## Accrete-never-break
 

@@ -28,7 +28,7 @@ say "caravan-wrap-class: Style Gauge -- one scan, three claims: the room whole, 
 say "caravan-wrap-class: Lens TAME -- bound in the shape, said why at the site; the meter counts what the law names and leaves the rest free."
 
 # Claim one: the live room, whole and seen.
-let live = run ["sh" "tools/fixtures/caravan_wrap_class_scan.sh"]
+let live = run ["sh" "tools/fixtures/c/caravan_wrap_class_scan.sh"]
 assert live.ok else "caravan-wrap-class: the room must read whole -- ${live.out}"
 # invariant: the meter sees the seated sites -- a scan reading zero sites reads nothing at all
 assert live.out contains "unclassified=0" else "caravan-wrap-class: every wrap site carries its classification -- ${live.out}"
@@ -42,7 +42,7 @@ let pen = trim pen_mk.out
 # Claim two: an unclassified wrap refuses by name.
 let plant_bad = run ["sh" "-c" "printf '%s\n' 'fn slot(seq: u32) u32 {' '    const ring: u32 = seq % cap;' '    return ring;' '}' > ${pen}/caravan/unclassified.rye"]
 assert plant_bad.ok else "caravan-wrap-class: could not plant the unclassified wrap"
-let red = run ["sh" "tools/fixtures/caravan_wrap_class_scan.sh" "${pen}"]
+let red = run ["sh" "tools/fixtures/c/caravan_wrap_class_scan.sh" "${pen}"]
 # invariant: the refusal is proven from the failing side, on metal, in this run
 assert red.ok == false else "caravan-wrap-class: a planted unclassified wrap must refuse -- it passed instead"
 assert red.out contains "unclassified=1" else "caravan-wrap-class: the refusal counts the planted site -- ${red.out}"
@@ -55,7 +55,7 @@ let plant_good = run ["sh" "-c" "printf '%s\n' '// invariant: wrap-as-periodic -
 assert plant_good.ok else "caravan-wrap-class: could not plant the classified wrap"
 let plant_pred = run ["sh" "-c" "printf '%s\n' 'fn aligned(x: u64, page: u64) bool {' '    return x % page == 0;' '}' > ${pen}/caravan/predicate.rye"]
 assert plant_pred.ok else "caravan-wrap-class: could not plant the predicate"
-let free = run ["sh" "tools/fixtures/caravan_wrap_class_scan.sh" "${pen}"]
+let free = run ["sh" "tools/fixtures/c/caravan_wrap_class_scan.sh" "${pen}"]
 assert free.ok else "caravan-wrap-class: a classified wrap and a predicate must both stay free -- ${free.out}"
 assert free.out contains "classified=1" else "caravan-wrap-class: the classified plant is read as classified -- ${free.out}"
 assert free.out contains "predicates_free=1" else "caravan-wrap-class: the predicate plant stays free -- ${free.out}"

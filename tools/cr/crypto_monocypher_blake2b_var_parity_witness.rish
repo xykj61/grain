@@ -13,7 +13,7 @@
 # for. This rung proves that variable-output core STANDALONE against Monocypher's own length-parameterized crypto_blake2b, the output-length counterpart
 # to the way the standalone ChaCha20 and Poly1305 rungs prove the AEAD's cores in their own right.
 # Kin: crypto/blake2b.rye (our authored BLAKE2b + hash_var, GREEN against Zig's std.crypto and RFC 7693) - tools/rye/monocypher_blake2b_var_parity.rye
-# (our printing harness) - tools/fixtures/monocypher_blake2b_var_harness.c (Monocypher's printing harness) - tools/cr/crypto_monocypher_parity_witness.rish
+# (our printing harness) - tools/fixtures/m/monocypher_blake2b_var_harness.c (Monocypher's printing harness) - tools/cr/crypto_monocypher_parity_witness.rish
 # (the first BLAKE2b rung, the 64-byte full digest -- together they prove BLAKE2b at its full width and at every shorter output length). Monocypher stays
 # the parity TARGET, vendored and unmodified, never a copied line, studied clean-room (.claude/rules/gratitude-licenses.md).
 #
@@ -35,7 +35,7 @@ let cout = "crypto/bin/monocypher_blake2b_var.out"
 let rout = "crypto/bin/rye_blake2b_var.out"
 
 # 1. Build the Monocypher C harness, linking the unmodified vendored source with zig cc.
-let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src tools/fixtures/monocypher_blake2b_var_harness.c vendor/monocypher/src/monocypher.c -o ${cbin}"]
+let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src tools/fixtures/m/monocypher_blake2b_var_harness.c vendor/monocypher/src/monocypher.c -o ${cbin}"]
 assert cbuild.ok else "crypto-monocypher-blake2b-var-parity: Monocypher C harness build failed — ${cbuild.err}"
 
 # 2. Run the Monocypher C harness -- six variable-length digest hex lines.

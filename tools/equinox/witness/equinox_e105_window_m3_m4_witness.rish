@@ -31,7 +31,7 @@ say m4.out
 assert m4.ok else "e105-window-m3-m4: M4 H1 fence RED"
 assert m4.out contains "GREEN: radiant-h1-fence" else "e105-window-m3-m4: want M4 GREEN"
 
-let scan = run ["sh" "tools/fixtures/equinox_e105_window_m3_m4_scan.sh"]
+let scan = run ["sh" "tools/fixtures/e/equinox_e105_window_m3_m4_scan.sh"]
 say scan.out
 assert scan.ok else "e105-window-m3-m4: home scan must exit 0"
 assert scan.out contains "control_gate=honored" else "e105-window-m3-m4: want control_gate"

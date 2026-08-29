@@ -10,7 +10,7 @@
 //! the whole consensus rests on: the order and supply the batched Cord reports are
 //! true to the bytes.
 //!
-//! The corpus is `tools/fixtures/cord_batch_dag.bron`, a genuine record produced
+//! The corpus is `tools/fixtures/c/cord_batch_dag.bron`, a genuine record produced
 //! reproducibly by `mycelium/cord_batch_fixture_gen.rye` (the honest two-batch scene
 //! -- issued 1000 - taxed 300 - supply 700 - one star, across two blocks),
 //! `@embedFile`-bound at compile time through a symlink in `mycelium/corpora/` -- no
@@ -19,7 +19,7 @@
 //! `add_batch` (re-verifying every block and fact signature, requiring every parent
 //! already held), commits it, and reports the **block count**, the **folded supply**,
 //! and the **star count**; the r4 witness cross-checks that triple against
-//! `tools/fixtures/cord_batch_truth.awk`'s reading of the same file -- two tools, one
+//! `tools/fixtures/c/cord_batch_truth.awk`'s reading of the same file -- two tools, one
 //! answer. And the record is genuinely a committed batched Cord: the block lines are
 //! in agreed order, so re-committing reproduces the file's order (the identity
 //! permutation), and re-rendering the parsed Dag reproduces the embedded bytes exactly.

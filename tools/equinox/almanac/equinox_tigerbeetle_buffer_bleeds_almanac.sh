@@ -25,7 +25,7 @@ entry = (
     "### 53. Buffer bleeds stay guarded; alloc meets defer in one glance.\n"
     "**Ran:** `rishi/bin/rishi run tools/equinox/witness/equinox_tigerbeetle_buffer_bleeds_choir_witness.rish` · **Stamp:** `"
     + stamp
-    + "` · **Witness:** `tools/gen/chapter/tigerbeetle_buffer_bleeds_census_witness.rish` · scan `tools/fixtures/tigerbeetle_buffer_bleeds_census.sh` · choir `equinox_tigerbeetle_buffer_bleeds_choir_witness.rish`\n"
+    + "` · **Witness:** `tools/gen/chapter/tigerbeetle_buffer_bleeds_census_witness.rish` · scan `tools/fixtures/t/tigerbeetle_buffer_bleeds_census.sh` · choir `equinox_tigerbeetle_buffer_bleeds_choir_witness.rish`\n"
     "Expected CLONE=present · GUIDE_BLEED · GUIDE_GROUP · TAME_BLEED · STYLE · ELDER_SHRINK · RADIANT, "
     "and verdict=absent on a missing clone path. Metal answered GREEN. Clean-room study only.\n\n"
 )

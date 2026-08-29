@@ -8,7 +8,7 @@ say "dated-pattern: Language EN — one classifier; planted live and dated contr
 say "dated-pattern: Style Radiant — prose law already lived; code now shares one definition."
 say "dated-pattern: Lens TAME — living-vs-dated · shared dated_classify."
 
-let green = run ["sh" "tools/fixtures/dated_pattern_scan.sh"]
+let green = run ["sh" "tools/fixtures/d/dated_pattern_scan.sh"]
 say green.out
 assert green.ok else "dated-pattern: living scan must exit 0"
 assert green.out contains "control_gate=honored" else "dated-pattern: want control gate"
@@ -22,7 +22,7 @@ assert green.out contains "shared_dated_testimony=" else "dated-pattern: want sh
 assert green.out contains "verdict=ok" else "dated-pattern: want verdict=ok"
 assert green.out contains "shred=RED" else "dated-pattern: shred stays RED"
 
-let red = run ["sh" "tools/fixtures/dated_pattern_scan.sh" "prove-red"]
+let red = run ["sh" "tools/fixtures/d/dated_pattern_scan.sh" "prove-red"]
 say red.out
 assert (red.ok == false) else "dated-pattern: prove-red must refuse"
 assert red.out contains "RED_dated_definition_blind" else "dated-pattern: prove-red want blind refusal"

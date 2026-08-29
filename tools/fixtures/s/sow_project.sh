@@ -1,0 +1,147 @@
+#!/bin/sh
+# sow_project.sh -- project the clean public seed from the private field.
+#
+# POSIX seam (cp / sed / git-ls-files) per ORGANIZING's .sh boundary; driven by
+# tools/s/sow.rish, which reads template-manifest.bron. The mechanism named in
+# external-research/20260808-045124 (Movement I), pinned to the seed/ target by
+# 20260808-062500 (field + seed layout).
+#
+# Discipline (safety first, TAME order):
+#   - `template` and `scrub` paths are candidates; `personal` is never iterated
+#     and `sub_exclude` whole-paths are skipped, so neither can leak.
+#   - The two submodules (gratitude, vendor) are withheld from the copy; the
+#     seed re-adds them via .gitmodules rather than vendoring gigabytes.
+#   - A file with no maintainer identity is copied verbatim.
+#   - A file that names the maintainer is run through the name->role scrub
+#     (tools/fixtures/s/sow_scrub.sed). If it comes out identity-clean it is
+#     kept scrubbed; if it still carries a functional handle or a code literal
+#     (xykj61, debrided, bandun, pacpet-solreb) it is WITHHELD for human
+#     judgment. So the seed is clean by construction, not by trust.
+#   - Only git-tracked files move (git ls-files), so build output under
+#     gitignored bin/.cache dirs never reaches the seed.
+#
+# NOTE: the witness this feeds proves no identity STRING and no personal PATH
+# survive. It does not prove a full editorial privacy review -- that is the
+# human read that gates M4 (publish), never this mechanism alone.
+#
+# ONE PROJECTION AT A TIME (seated 20260824.104946, REDS %193). This script clears
+# seed/ and rebuilds it, so while it runs the directory is a partial tree. Anything
+# else reading seed/ in that window reads a half-answer: on 20260824 a projection run
+# beside the standing roster -- whose own `sow` guard re-projects -- reported
+# `copied=1644` against the 6,948 the same tree gives alone, a 76% shortfall that
+# reads exactly like an allowlist that stopped matching. The measurement was the only
+# thing wrong, and it took knowing the expected number to notice.
+#
+# The reading is the cheap half of the cost. The expensive half is that seed/ is the
+# PUBLIC face: sow_leak_scan.sh, sow_witness.rish, and publish-seed.sh all gate on
+# what stands in that directory, and a gate that reads a tree still being written has
+# examined a set nobody chose. IDENT_CLEAN over a partial projection is a true
+# statement about the wrong corpus.
+#
+# So the lock is a refusal rather than a wait: a second projection exits non-zero and
+# says who holds it, because a queued run would still hand the reader a number from a
+# tree that changed under them. Held in a directory rather than a file, since mkdir is
+# atomic on every POSIX filesystem where a two-step test-then-create is not. Released
+# on EXIT, INT, and TERM, and a lock left by a killed run names its dead pid so the
+# next run can clear it rather than wedge forever.
+set -eu
+
+LOCK="${SEED_LOCK_DIR:-seed.projection.lock}"
+if ! mkdir "$LOCK" 2>/dev/null; then
+  holder=$(cat "$LOCK/pid" 2>/dev/null || echo unknown)
+  if [ "$holder" != unknown ] && ! kill -0 "$holder" 2>/dev/null; then
+    # The holder is gone -- a killed run left the lock behind. Clear it and take it.
+    echo "sow: clearing a lock left by dead pid $holder" >&2
+    rm -rf "$LOCK"
+    mkdir "$LOCK" 2>/dev/null || { echo "sow: cannot take the projection lock" >&2; exit 3; }
+  else
+    echo "sow: a projection is already running (pid $holder) -- refusing to build seed/ twice at once" >&2
+    echo "sow: seed/ is rebuilt in place, so a second run would hand both readers a partial tree" >&2
+    exit 3
+  fi
+fi
+printf '%s\n' "$$" > "$LOCK/pid"
+trap 'rm -rf "$LOCK"' EXIT INT TERM
+
+MANIFEST="template-manifest.bron"
+SEED="seed"
+SCRUB="tools/fixtures/s/sow_scrub.sed"
+# Maintainer identity: real names, the retired copyright name, the forge
+# handles, and the real Azimuth points. One place; the witness reuses it.
+IDENT='Keaton|Kaeden|Livermore|Reyklah|Dunsford|Mayacama|xykj61|debrided|bandun|pacpet-solreb|keatonsiya|xnkg30|veganreyklah|cherry996|415.?915.?6666|npub1[a-z0-9]{40}|6Rb5E|AHs34|siyafund|bitscape|thebittradingcompany|xykj61atgmail|xykld2|xy96gen-z|S[a]bin|H[e]rtz|groupproject36|grain_energy|grain.energy|Grain Energy|Siya Fund|Vultr|Wenatchee|Sabey|Washoe County|Daylight DC-1|Tlon Corporation|0646 2132 D3E6|DBF8 5343 7A93|keatondun|keatonlivermore|teamcarry11|xwb122m|b122mnet|xnflor3|kaexvx9|kj3x39|b122m|construction3x39|vegancpa|veganaccountant|veganarchitect|veganbookkeeper|@gmail.com|Sealy|Zendex|CC8BA671|06462132|DxE|Direct Action Everywhere|wayne-hsiung|helen-atthowe|sarah-guo|kyler-murray|ariana-grande|kamala-harris|Pacific Time|Pacific time|66041JEA306288|bhagavan851c05a|kae3g|Brooke|Alexandra Livermore|Smart Access|maicmalamurr|Siya'
+
+[ -f "$MANIFEST" ] || { echo "sow: $MANIFEST missing" >&2; exit 1; }
+[ -f "$SCRUB" ]    || { echo "sow: $SCRUB missing" >&2; exit 1; }
+
+mkdir -p "$SEED"
+# Clear prior projection content; preserve the seed repo's own .git if present.
+find "$SEED" -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} + 2>/dev/null || true
+: > "$SEED/.sow-withheld.log"
+: > "$SEED/.sow-scrubbed.log"
+: > "$SEED/.sow-excluded.log"
+
+# sub_exclude entries: either a whole path (e.g. linengrow) or a single file
+# inside a scrub directory (e.g. a foundations biography essay). A file is
+# excluded when it equals a sub_exclude entry or lives under one.
+SUBEX=$(grep -E '^sub_exclude ' "$MANIFEST" | awk '{print $2}' || true)
+# ALLOWLIST posture (Keaton's word 20260810): ship ONLY explicitly-cleared `allow`
+# paths; everything else in the tree is withheld by default. This flips the seed from
+# a denylist (scrub-everything) to an allowlist after five audit passes each found new
+# private data. Allowed paths are STILL scrubbed and IDENT-checked below (defense in
+# depth), and sub_exclude still withholds files inside an allowed dir.
+PATHS=$(grep -E '^allow ' "$MANIFEST" | awk '{print $2}' | grep -vxE 'gratitude|vendor' || true)
+
+is_subex() {
+  for x in $SUBEX; do
+    case "$1" in "$x"|"$x"/*) return 0;; esac
+  done
+  return 1
+}
+
+for p in $PATHS; do
+  is_subex "$p" && continue   # whole-path exclusion (e.g. linengrow)
+  for f in $(git ls-files -- "$p"); do
+    [ -f "$f" ] || continue
+    # File-granular exclusion -- deliberate personal withhold inside a shared dir
+    # (a foundations biography essay); the doctrine beside it still ships.
+    if is_subex "$f"; then
+      printf '%s\n' "$f" >> "$SEED/.sow-excluded.log"; continue
+    fi
+    dest="$SEED/$f"
+    # Key-material guard -- refuse anything shaped like a key or a fingerprint
+    # roster, whatever its verdict. context/PUBKEYS.md is the canonical committed
+    # fingerprint file and lives inside a scrub dir; a name-scrub cannot catch a
+    # fingerprint, so this basename guard is what withholds it. PUBKEYS.template.md
+    # (placeholders) does NOT match the exact `PUBKEYS.md` glob and ships.
+    case $(basename "$f") in
+      *siya*|*Siya*|PUBKEYS.md|keys_*|*.pem|*.key|*.asc|*.gpg|*.sec|*.secret)
+        printf '%s\n' "$f" >> "$SEED/.sow-withheld.log"; continue;;
+    esac
+    # Embedded key material -- a real pubkey or PGP block in any file, whatever
+    # its name. Withheld for the M3 pass, which swaps real keys for placeholders.
+    if grep -IqE 'ssh-(ed25519|rsa) AAAA|BEGIN (OPENSSH|PGP|RSA|EC) (PRIVATE|PUBLIC) KEY' "$f" 2>/dev/null; then
+      printf '%s\n' "$f" >> "$SEED/.sow-withheld.log"; continue
+    fi
+    if grep -Iqi -E "$IDENT" "$f" 2>/dev/null; then
+      mkdir -p "$(dirname "$dest")"
+      sed -f "$SCRUB" "$f" > "$dest"
+      # invariant: a scrubbed copy keeps the mode the tree tracks -- the seed's own
+      # commit-msg hook is one of these files, and a dropped exec bit disarms it.
+      [ -x "$f" ] && chmod +x "$dest"
+      if grep -Iqi -E "$IDENT" "$dest" 2>/dev/null; then
+        rm -f "$dest"
+        printf '%s\n' "$f" >> "$SEED/.sow-withheld.log"
+      else
+        printf '%s\n' "$f" >> "$SEED/.sow-scrubbed.log"
+      fi
+    else
+      mkdir -p "$(dirname "$dest")"
+      cp -a "$f" "$dest"
+    fi
+  done
+done
+
+COPIED=$(find "$SEED" -type f ! -name '.sow-withheld.log' ! -name '.sow-scrubbed.log' | wc -l | tr -d ' ')
+SCRUBBED=$(grep -c '' "$SEED/.sow-scrubbed.log" 2>/dev/null || echo 0)
+WITHHELD=$(grep -c '' "$SEED/.sow-withheld.log" 2>/dev/null || echo 0)
+echo "SOW_OK copied=$COPIED scrubbed=$SCRUBBED withheld=$WITHHELD"

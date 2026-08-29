@@ -21,7 +21,7 @@
 #   4. The public seed arms the same wall. publish-seed.sh re-creates seed/.git on every run,
 #      so the arming lives in the script -- checked by doing it, not by reading it.
 #
-# Kin: tools/fixtures/commit_message_guard_scan.sh (the cases), tools/hooks/commit-msg (the wall),
+# Kin: tools/fixtures/c/commit_message_guard_scan.sh (the cases), tools/hooks/commit-msg (the wall),
 # tools/i/install_hooks.rish (arming it), .claude/rules/git-signing.md (both rules).
 #
 # This authors no commit -- it feeds planted messages to the shipped hook and compares.
@@ -34,7 +34,7 @@ say "commit-guard: Language EN -- the commit-message wall stands, and answers on
 say "commit-guard: Style Radiant -- a guard is worth what its welcomes are worth; the cases that must pass are checked as hard as the cases that must fail."
 say "commit-guard: Lens TAME -- the shipped hook is fed planted messages, never a copy, so this can never pass by measuring something the tree does not run. Purely local -- no key, no network, no funds, no device."
 
-let scan = run ["sh" "tools/fixtures/commit_message_guard_scan.sh"]
+let scan = run ["sh" "tools/fixtures/c/commit_message_guard_scan.sh"]
 assert scan.ok else "commit-guard: the guard scan failed to run -- ${scan.err}"
 say scan.out
 

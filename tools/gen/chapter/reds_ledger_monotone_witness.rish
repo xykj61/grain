@@ -33,7 +33,7 @@ let count = run ["sh" "-c" "ls construction/archive/REDS-*rows-*.md | wc -l | tr
 assert count.ok else "reds-monotone: could not find the fold archives on disk"
 assert (trim count.out) != "0" else "reds-monotone: no fold archive stands on disk, yet the living pin is a folded ledger"
 
-let scan = run ["sh" "-c" "sh tools/fixtures/reds_ledger_monotone_scan.sh construction/archive/REDS-*rows-*.md construction/REDS.md"]
+let scan = run ["sh" "-c" "sh tools/fixtures/r/reds_ledger_monotone_scan.sh construction/archive/REDS-*rows-*.md construction/REDS.md"]
 say scan.out
 assert scan.out contains "verdict=ok" else "reds-monotone: row indices are not 1..N monotone across the fold archives and the living pin"
 assert scan.ok else "reds-monotone: the verdict reads ok while the status fails -- they must agree"
@@ -49,26 +49,26 @@ assert scan.ok else "reds-monotone: the verdict reads ok while the status fails 
 # that stops reaching every row still refuses -- and welcomes the growth the ledger is for. Raise it
 # when a fold lands; it only ever goes up. The exact count is printed above by the scan, measured
 # rather than recited (REDS %110).
-let floor = run ["sh" "-c" "sh tools/fixtures/reds_ledger_monotone_scan.sh construction/archive/REDS-*rows-*.md construction/REDS.md | sed -n 's/^rows=//p' | { read n; test $n -ge 121; }"]
+let floor = run ["sh" "-c" "sh tools/fixtures/r/reds_ledger_monotone_scan.sh construction/archive/REDS-*rows-*.md construction/REDS.md | sed -n 's/^rows=//p' | { read n; test $n -ge 121; }"]
 assert floor.ok else "reds-monotone: the spine reaches fewer rows than the floor it once reached -- a shrinking ledger is a red"
 
 # RED path one -- a gap. The control is generated rather than tracked, so it can never
 # drift from the shape this scan enforces.
-let gap = run ["sh" "-c" "d=$(mktemp -d); { echo '**REDS %1 -- a.** b'; echo '**REDS %3 -- c.** d'; } > $d/L.md; sh tools/fixtures/reds_ledger_monotone_scan.sh $d/L.md; s=$?; rm -rf $d; exit $s"]
+let gap = run ["sh" "-c" "d=$(mktemp -d); { echo '**REDS %1 -- a.** b'; echo '**REDS %3 -- c.** d'; } > $d/L.md; sh tools/fixtures/r/reds_ledger_monotone_scan.sh $d/L.md; s=$?; rm -rf $d; exit $s"]
 assert (gap.ok == false) else "reds-monotone: a gap in the spine must refuse"
 assert gap.out contains "verdict=not_monotone" else "reds-monotone: want the gap refused by name"
 assert gap.out contains "expected row 2, found 3" else "reds-monotone: want the gap naming exactly which row is missing"
 
 # RED path two -- the prose shape is really read. Were this scan still blind to it, a
 # ledger written entirely in prose would answer no_rows rather than counting three.
-let prose = run ["sh" "-c" "d=$(mktemp -d); { echo '**REDS %1 -- a.** b'; echo '**REDS %2 -- c.** d'; echo '**REDS %3 -- e.** f'; } > $d/L.md; sh tools/fixtures/reds_ledger_monotone_scan.sh $d/L.md; s=$?; rm -rf $d; exit $s"]
+let prose = run ["sh" "-c" "d=$(mktemp -d); { echo '**REDS %1 -- a.** b'; echo '**REDS %2 -- c.** d'; echo '**REDS %3 -- e.** f'; } > $d/L.md; sh tools/fixtures/r/reds_ledger_monotone_scan.sh $d/L.md; s=$?; rm -rf $d; exit $s"]
 assert prose.ok else "reds-monotone: a ledger written in the prose shape must be counted -- ${prose.out}"
 assert prose.out contains "rows=3" else "reds-monotone: want all three prose rows seen"
 
 # RED path three -- a closure note keeps the number of the row it speaks about, and that
 # is a whole ledger rather than a duplicate. A gate that reds on valid input teaches the
 # bench to route around it (REDS %100), so this welcome is proven beside the refusals.
-let note = run ["sh" "-c" "d=$(mktemp -d); { echo '**REDS %1 -- a.** b'; echo '**REDS %1 CLOSED -- a.** Released.'; echo '**REDS %2 -- c.** d'; } > $d/L.md; sh tools/fixtures/reds_ledger_monotone_scan.sh $d/L.md; s=$?; rm -rf $d; exit $s"]
+let note = run ["sh" "-c" "d=$(mktemp -d); { echo '**REDS %1 -- a.** b'; echo '**REDS %1 CLOSED -- a.** Released.'; echo '**REDS %2 -- c.** d'; } > $d/L.md; sh tools/fixtures/r/reds_ledger_monotone_scan.sh $d/L.md; s=$?; rm -rf $d; exit $s"]
 assert note.ok else "reds-monotone: a row and its own closure note must read as one row -- ${note.out}"
 assert note.out contains "mentions=3" else "reds-monotone: want all three mentions counted"
 assert note.out contains "rows=2" else "reds-monotone: want the closure note read as the row it speaks about"
@@ -80,13 +80,13 @@ assert note.out contains "duplicate_headlines=0" else "reds-monotone: a row and 
 # booked there, shifted here by %252's merge repair, then re-seated a second time when it
 # arrived again from upstream. The ceiling holds that line and only ever falls; the pairs
 # themselves live on dated shelves, so resolving them is Keaton's word under `debride`.
-let atceil = run ["sh" "-c" "d=$(mktemp -d); { echo '**REDS %1 -- a.** x'; echo '**REDS %2 -- a.** x'; echo '**REDS %3 -- b.** x'; echo '**REDS %4 -- b.** x'; echo '**REDS %5 -- c.** x'; echo '**REDS %6 -- c.** x'; } > $d/L.md; sh tools/fixtures/reds_ledger_monotone_scan.sh $d/L.md; s=$?; rm -rf $d; exit $s"]
+let atceil = run ["sh" "-c" "d=$(mktemp -d); { echo '**REDS %1 -- a.** x'; echo '**REDS %2 -- a.** x'; echo '**REDS %3 -- b.** x'; echo '**REDS %4 -- b.** x'; echo '**REDS %5 -- c.** x'; echo '**REDS %6 -- c.** x'; } > $d/L.md; sh tools/fixtures/r/reds_ledger_monotone_scan.sh $d/L.md; s=$?; rm -rf $d; exit $s"]
 assert atceil.ok else "reds-monotone: three duplicate headlines is the line as it stands and must pass -- ${atceil.out}"
 assert atceil.out contains "duplicate_headlines=3" else "reds-monotone: want all three duplicate headlines counted"
 
 # RED path seven -- one past the ceiling. A gate proven only in the passing direction cannot be
 # told from a bypass, so the refusal is planted and watched to refuse, and it names the pair.
-let overceil = run ["sh" "-c" "d=$(mktemp -d); { echo '**REDS %1 -- a.** x'; echo '**REDS %2 -- a.** x'; echo '**REDS %3 -- b.** x'; echo '**REDS %4 -- b.** x'; echo '**REDS %5 -- c.** x'; echo '**REDS %6 -- c.** x'; echo '**REDS %7 -- d.** x'; echo '**REDS %8 -- d.** x'; } > $d/L.md; sh tools/fixtures/reds_ledger_monotone_scan.sh $d/L.md; s=$?; rm -rf $d; exit $s"]
+let overceil = run ["sh" "-c" "d=$(mktemp -d); { echo '**REDS %1 -- a.** x'; echo '**REDS %2 -- a.** x'; echo '**REDS %3 -- b.** x'; echo '**REDS %4 -- b.** x'; echo '**REDS %5 -- c.** x'; echo '**REDS %6 -- c.** x'; echo '**REDS %7 -- d.** x'; echo '**REDS %8 -- d.** x'; } > $d/L.md; sh tools/fixtures/r/reds_ledger_monotone_scan.sh $d/L.md; s=$?; rm -rf $d; exit $s"]
 assert (overceil.ok == false) else "reds-monotone: a fourth incident standing under two numbers must refuse"
 assert overceil.out contains "verdict=duplicate_rows" else "reds-monotone: want the double-book refused by name"
 assert overceil.out contains "duplicate_headlines=4" else "reds-monotone: want the fourth duplicate counted"
@@ -94,13 +94,13 @@ assert overceil.out contains "one headline under %7 %8" else "reds-monotone: a r
 
 # The welcome beside it -- distinct headlines read zero, so the reading is measuring rather than
 # matching anything that rhymes.
-let distinct = run ["sh" "-c" "d=$(mktemp -d); { echo '**REDS %1 -- a.** x'; echo '**REDS %2 -- b.** x'; echo '**REDS %3 -- c.** x'; } > $d/L.md; sh tools/fixtures/reds_ledger_monotone_scan.sh $d/L.md; s=$?; rm -rf $d; exit $s"]
+let distinct = run ["sh" "-c" "d=$(mktemp -d); { echo '**REDS %1 -- a.** x'; echo '**REDS %2 -- b.** x'; echo '**REDS %3 -- c.** x'; } > $d/L.md; sh tools/fixtures/r/reds_ledger_monotone_scan.sh $d/L.md; s=$?; rm -rf $d; exit $s"]
 assert distinct.ok else "reds-monotone: a ledger of distinct headlines must pass -- ${distinct.out}"
 assert distinct.out contains "duplicate_headlines=0" else "reds-monotone: want distinct headlines read as zero"
 
 # RED path four -- a file holding no rows at all, the REDS %97 shape: a scan reading a real
 # file and answering zero, where the zero is its own blindness rather than the ledger's virtue.
-let empty = run ["sh" "-c" "d=$(mktemp -d); echo '# a ledger with nothing in it' > $d/L.md; sh tools/fixtures/reds_ledger_monotone_scan.sh $d/L.md; s=$?; rm -rf $d; exit $s"]
+let empty = run ["sh" "-c" "d=$(mktemp -d); echo '# a ledger with nothing in it' > $d/L.md; sh tools/fixtures/r/reds_ledger_monotone_scan.sh $d/L.md; s=$?; rm -rf $d; exit $s"]
 assert (empty.ok == false) else "reds-monotone: a ledger holding no rows must refuse"
 assert empty.out contains "verdict=no_rows" else "reds-monotone: want the empty ledger refused by name"
 
@@ -113,9 +113,9 @@ assert empty.out contains "verdict=no_rows" else "reds-monotone: want the empty 
 # disagreement, since a number a human republishes is a number that will one day be
 # republished wrong. This is the happy zone's mirrored pair at the ledger's own seam: one
 # side counts, the other side publishes, and the contract check lives with the publisher.
-let measured = run ["sh" "-c" "sh tools/fixtures/reds_ledger_monotone_scan.sh construction/archive/REDS-*rows-*.md construction/REDS.md | sed -n 's/^rows=//p'"]
+let measured = run ["sh" "-c" "sh tools/fixtures/r/reds_ledger_monotone_scan.sh construction/archive/REDS-*rows-*.md construction/REDS.md | sed -n 's/^rows=//p'"]
 assert measured.ok else "reds-monotone: could not measure the spine for the headline check"
-let headline = run ["sh" "-c" "sh tools/fixtures/reds_ledger_headline_scan.sh construction/REDS.md ${trim measured.out}"]
+let headline = run ["sh" "-c" "sh tools/fixtures/r/reds_ledger_headline_scan.sh construction/REDS.md ${trim measured.out}"]
 say headline.out
 assert headline.ok else "reds-monotone: the ledger's headline disagrees with its own measured spine"
 assert headline.out contains "verdict=ok" else "reds-monotone: want the headline agreeing with the measurement by name"
@@ -123,14 +123,14 @@ assert headline.out contains "verdict=ok" else "reds-monotone: want the headline
 # RED path five -- a headline that drifts. Generated rather than tracked, so the control can
 # never drift from the shape the scan enforces, and the refusal is proven on metal rather
 # than argued from the source.
-let drift = run ["sh" "-c" "d=$(mktemp -d); { echo '**Rows: 41 - in the tree before the ledger: 6 - recovered by opening it: 14 - added under the reds-first law: 21**'; echo 'Every number from 1 to 41 is used.'; } > $d/L.md; sh tools/fixtures/reds_ledger_headline_scan.sh $d/L.md 42; s=$?; rm -rf $d; exit $s"]
+let drift = run ["sh" "-c" "d=$(mktemp -d); { echo '**Rows: 41 - in the tree before the ledger: 6 - recovered by opening it: 14 - added under the reds-first law: 21**'; echo 'Every number from 1 to 41 is used.'; } > $d/L.md; sh tools/fixtures/r/reds_ledger_headline_scan.sh $d/L.md 42; s=$?; rm -rf $d; exit $s"]
 assert (drift.ok == false) else "reds-monotone: a headline disagreeing with the measurement must refuse"
 assert drift.out contains "verdict=headline_drift" else "reds-monotone: want the drift refused by name"
 assert drift.out contains "headline total 41 disagrees with the measured 42" else "reds-monotone: want the drift naming which number is wrong"
 
 # RED path six -- a ledger reciting no headline at all, the REDS %97 shape once more: a scan
 # reading a real file and finding nothing to check, where the nothing is its own blindness.
-let bare = run ["sh" "-c" "d=$(mktemp -d); echo '# a ledger that publishes no total' > $d/L.md; sh tools/fixtures/reds_ledger_headline_scan.sh $d/L.md 7; s=$?; rm -rf $d; exit $s"]
+let bare = run ["sh" "-c" "d=$(mktemp -d); echo '# a ledger that publishes no total' > $d/L.md; sh tools/fixtures/r/reds_ledger_headline_scan.sh $d/L.md 7; s=$?; rm -rf $d; exit $s"]
 assert (bare.ok == false) else "reds-monotone: a ledger publishing no total must refuse"
 assert bare.out contains "verdict=no_headline" else "reds-monotone: want the missing headline refused by name"
 

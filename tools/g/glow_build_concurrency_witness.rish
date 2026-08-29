@@ -14,7 +14,7 @@
 # the difference. The unguarded twin must fail -- a control that survives proves nothing -- and the guarded
 # worker must not fail at all, must answer on every lane, and must leave no temporary behind.
 #
-# Kin: tools/fixtures/glow_build_concurrency_scan.sh (the experiment), tools/g/glow_run_worker.sh (the guards),
+# Kin: tools/fixtures/g/glow_build_concurrency_scan.sh (the experiment), tools/g/glow_run_worker.sh (the guards),
 # tools/ca/caravan_suite_witness.rish and tools/g/glow_tend_a1_suite.rish (the two choirs that raced).
 #
 # This authors no build -- it runs and compares. Purely local: no key, no signature, no network, no funds, no device.
@@ -26,7 +26,7 @@ say "glow-build-concurrency: Language EN -- two witnesses may build at once, and
 say "glow-build-concurrency: Style Radiant -- the guard is measured against a control generated from the very worker it guards, so the proof can never drift away from the code."
 say "glow-build-concurrency: Lens TAME -- safety before speed: one bounded lock, one atomic rename. RED names which half gave way. Purely local -- no key, no network, no funds, no device."
 
-let scan = run ["sh" "tools/fixtures/glow_build_concurrency_scan.sh"]
+let scan = run ["sh" "tools/fixtures/g/glow_build_concurrency_scan.sh"]
 assert scan.ok else "glow-build-concurrency: the concurrency scan failed to run -- ${scan.err}"
 say scan.out
 

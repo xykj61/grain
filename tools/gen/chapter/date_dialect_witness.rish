@@ -9,7 +9,7 @@ say "date-dialect: Language EN — planted controls before library totals."
 say "date-dialect: Style Radiant — carry the transformation; advance no date."
 say "date-dialect: Lens TAME — standing instrument · compact Last updated."
 
-let green = run ["sh" "tools/fixtures/date_dialect_scan.sh"]
+let green = run ["sh" "tools/fixtures/d/date_dialect_scan.sh"]
 say green.out
 assert green.ok else "date-dialect: living scan must exit 0"
 assert green.out contains "tracked_controls=honored" else "date-dialect: want tracked controls"
@@ -23,7 +23,7 @@ assert green.out contains "verdict=one_dialect" else "date-dialect: want one_dia
 assert green.out contains "date_dialect_scan=ok" else "date-dialect: want scan ok"
 assert green.out contains "verdict=ok" else "date-dialect: want verdict=ok"
 
-let red = run ["sh" "tools/fixtures/date_dialect_scan.sh" "prove-red"]
+let red = run ["sh" "tools/fixtures/d/date_dialect_scan.sh" "prove-red"]
 say red.out
 assert (red.ok == false) else "date-dialect: prove-red must refuse"
 assert red.out contains "RED_C2-compact" else "date-dialect: prove-red want C2 refusal"

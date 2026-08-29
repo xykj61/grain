@@ -1,6 +1,6 @@
 //! tools/rye/monocypher_argon2_parity.rye -- our authored crypto/argon2.rye asked for its OWN Argon2 derived key over RFC 9106's primary p=4
 //! vector, printed one hex line per mode (Argon2d, Argon2i, Argon2id), so tools/cr/crypto_monocypher_argon2_parity_witness.rish can diff our
-//! bytes against the vendored Monocypher's C (tools/fixtures/monocypher_argon2_harness.c) byte-for-byte -- the memory-hard password KDF Vault's
+//! bytes against the vendored Monocypher's C (tools/fixtures/m/monocypher_argon2_harness.c) byte-for-byte -- the memory-hard password KDF Vault's
 //! seal rests on, proven against the audit's parity target. Chapter G (Cryptography - Rye-native, Monocypher-parity, audit-ready) -- the fifth
 //! Monocypher-SOURCE parity rung, extending the four the decision wave named to Argon2, the primitive Monocypher itself implements.
 //!

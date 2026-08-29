@@ -12,7 +12,7 @@
 # vendored library IS the external anchor, standing beside the round-trip identity and Monocypher's own published vectors proven in the module's
 # own witness (tools/cr/crypto_elligator_witness.rish).
 # Kin: crypto/elligator.rye (our authored primitive, GREEN against Monocypher's own elligator_dir/elligator_inv vectors and the round-trip
-# identity) - tools/rye/monocypher_elligator_parity.rye (our printing harness) - tools/fixtures/monocypher_elligator_harness.c (Monocypher's
+# identity) - tools/rye/monocypher_elligator_parity.rye (our printing harness) - tools/fixtures/m/monocypher_elligator_harness.c (Monocypher's
 # printing harness) - crypto/fe25519.rye (the field both stand on). Monocypher stays the parity TARGET, vendored and unmodified, never a copied
 # line, studied clean-room (.claude/rules/gratitude-licenses.md).
 #
@@ -36,7 +36,7 @@ let cout = "crypto/bin/monocypher_elligator.out"
 let rout = "crypto/bin/rye_elligator.out"
 
 # 1. Build the Monocypher C harness, linking the unmodified vendored source with zig cc.
-let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src tools/fixtures/monocypher_elligator_harness.c vendor/monocypher/src/monocypher.c -o ${cbin}"]
+let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src tools/fixtures/m/monocypher_elligator_harness.c vendor/monocypher/src/monocypher.c -o ${cbin}"]
 assert cbuild.ok else "crypto-monocypher-elligator-parity: Monocypher C harness build failed — ${cbuild.err}"
 
 # 2. Run the Monocypher C harness -- thirty-two lines.

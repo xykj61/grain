@@ -23,7 +23,7 @@ let seal = run ["bash" "tools/p/pond_exit_bron_master_seal.sh" "--season-closed"
 assert seal.ok else "master-seal --season-closed failed"
 
 say "pond col2 probes: re-measure three-door bus against pond-required…"
-let doors = run ["bash" "tools/fixtures/pond_sixbar_bus_doors.sh" "--write-dir" cache]
+let doors = run ["bash" "tools/fixtures/p/pond_sixbar_bus_doors.sh" "--write-dir" cache]
 assert doors.ok else "bus doors probe failed"
 let bus_env_raw = read-file "${cache}/bus_env"
 let bus_sock_raw = read-file "${cache}/bus_socket"

@@ -27,7 +27,7 @@ let e = ?! (?! true)
 assert e == true else "?! (?! true) should return true"
 
 # A non-boolean body refuses -- a child that negates an integer exits non-zero.
-let bad_type = run ["rishi/bin/rishi" "run" "tools/fixtures/rune_not_bad_type.rish"]
+let bad_type = run ["rishi/bin/rishi" "run" "tools/fixtures/r/rune_not_bad_type.rish"]
 assert bad_type.ok == false else "?! on a non-boolean must refuse (child should exit non-zero)"
 
 say "GREEN: Rishi rune-not — ?! evaluates a body, requires a boolean, negates it, nests, and refuses what is not a boolean."

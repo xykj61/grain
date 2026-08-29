@@ -5,7 +5,7 @@
 # all over Knots sealed in code. This closing rung carries the reader onto a real on-disk format cord-knot-v1
 # record a keeper can open and add up. The app parses the record, verifies the recovered Knot against its own
 # digest, and reports the folded supply and star count; this witness cross-checks that pair against
-# tools/fixtures/cord_knot_truth.awk reading the same bytes -- two tools, one answer (700 1). The fixture is
+# tools/fixtures/c/cord_knot_truth.awk reading the same bytes -- two tools, one answer (700 1). The fixture is
 # genuinely what the Knot emits (reproducible via mycelium/cord_knot_fixture_gen.rye), it verifies, it
 # re-renders to the embedded bytes exactly, and a tampered record is never read as true. Demo keeper seeds
 # only -- no real key, no funds, no network, no custody.
@@ -35,7 +35,7 @@ assert selftest.out contains "a tampered header refused BadFormat" else "myceliu
 # The crux -- two tools, one answer. The app's measure pair must equal awk's reading of the same bytes.
 let app = run ["sh" "-c" "${bin} measure 2>&1"]
 assert app.ok else "mycelium-cord-knot-true: measure exited non-zero"
-let awk = run ["sh" "-c" "awk -f tools/fixtures/cord_knot_truth.awk tools/fixtures/cord_knot.bron"]
+let awk = run ["sh" "-c" "awk -f tools/fixtures/c/cord_knot_truth.awk tools/fixtures/c/cord_knot.bron"]
 assert awk.ok else "mycelium-cord-knot-true: awk truth read failed"
 assert awk.out contains "700 1" else "mycelium-cord-knot-true: awk pair not 700 1"
 assert app.out == awk.out else "mycelium-cord-knot-true: app and awk disagree â€” the reading drifted from the bytes"
@@ -43,7 +43,7 @@ assert app.out == awk.out else "mycelium-cord-knot-true: app and awk disagree â€
 # The fixture is genuinely what the Knot emits -- regenerate and diff, proving no hand-mock.
 let gen = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/cord_knot_fixture_gen.rye -femit-bin=mycelium/bin/cord_knot_fixture_gen"]
 assert gen.ok else "mycelium-cord-knot-true: fixture generator build failed"
-let regen = run ["sh" "-c" "mycelium/bin/cord_knot_fixture_gen 2> /tmp/cord_knot_regen.bron; diff tools/fixtures/cord_knot.bron /tmp/cord_knot_regen.bron && echo REPRODUCIBLE"]
+let regen = run ["sh" "-c" "mycelium/bin/cord_knot_fixture_gen 2> /tmp/cord_knot_regen.bron; diff tools/fixtures/c/cord_knot.bron /tmp/cord_knot_regen.bron && echo REPRODUCIBLE"]
 assert regen.ok else "mycelium-cord-knot-true: fixture regeneration failed"
 assert regen.out contains "REPRODUCIBLE" else "mycelium-cord-knot-true: the regenerated fixture drifted from the committed one"
 

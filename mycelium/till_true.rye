@@ -8,7 +8,7 @@
 //! record carrying a genuine double-spend a keeper can open and walk, and proves the
 //! property the whole treasury rests on: the SPENT-OUT draw is true to the bytes.
 //!
-//! The corpus is `tools/fixtures/till_dag.bron`, a genuine record produced reproducibly
+//! The corpus is `tools/fixtures/t/till_dag.bron`, a genuine record produced reproducibly
 //! by `mycelium/till_fixture_gen.rye` (genesis funds 1000; a 100 draw uncontested; two
 //! keepers each drawing 700, won at round 1, short at round 2), `@embedFile`-bound at
 //! compile time through a symlink in `mycelium/corpora/` -- no network, the bytes read are
@@ -16,7 +16,7 @@
 //! `cord_bron`, **rebuilds** the Dag under `cord.add` (re-verifying every signature),
 //! resolves it through `till`, and reports the **signer of the spent-out draw**, the
 //! **draw count**, and the **short count**; the r4 witness cross-checks that triple
-//! against `tools/fixtures/till_dag_truth.awk`'s reading of the same file -- two tools, one
+//! against `tools/fixtures/t/till_dag_truth.awk`'s reading of the same file -- two tools, one
 //! answer. The awk applies the simplest honest slice of the agreed order (supply
 //! accounting in round order); the app applies the full commit tie-break; on this fixture
 //! the two round-1 draws both fit and the loser is the round-2 draw, so both name the

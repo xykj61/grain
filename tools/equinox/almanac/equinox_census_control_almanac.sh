@@ -25,7 +25,7 @@ entry = (
     "### 99. Census control seats planted positives and a planted negative: no total until the control reads; naive H1 refuses.\n"
     "**Ran:** `rishi/bin/rishi run tools/equinox/witness/equinox_census_control_choir_witness.rish` · **Stamp:** `"
     + stamp
-    + "` · **Witness:** `tools/gen/chapter/census_control_witness.rish` · scan `tools/fixtures/census_control_scan.sh` · choir `equinox_census_control_choir_witness.rish`\n"
+    + "` · **Witness:** `tools/gen/chapter/census_control_witness.rish` · scan `tools/fixtures/c/census_control_scan.sh` · choir `equinox_census_control_choir_witness.rish`\n"
     "Expected duties_honored=3 · true=1 · naive=4 · marker stamp in shape · glow cache untracked, "
     "and prove-red (naive-as-total) exits non-zero. Metal answered GREEN. "
     "Commence arc fills chapter seven after the IronBeetle written shelf ended; invent none.\n\n"

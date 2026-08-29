@@ -8,7 +8,7 @@
 # clearest form the fault takes, and nothing in the tree could see any of it. REDS %201.
 #
 # This is the fifth time this shape has been booked -- REDS %187, %190, %192, %199 -- so it stops
-# being a habit and becomes a reading: tools/fixtures/declared_model.sh answers the question once,
+# being a habit and becomes a reading: tools/fixtures/d/declared_model.sh answers the question once,
 # from .claude/settings.json, the file that actually drives which model Claude Code loads. A
 # description agrees with the thing it describes, so the driver is the source.
 #
@@ -39,14 +39,14 @@ say "declared-model: Language EN -- a constant spelled four ways is a constant t
 say "declared-model: Style Gauge -- the driver is the reading, and every description agrees with it."
 say "declared-model: Lens TAME -- say why, once, in one place, and let the rest of the tree cite it."
 
-let scan = run ["sh" "tools/fixtures/declared_model_scan.sh"]
+let scan = run ["sh" "tools/fixtures/d/declared_model_scan.sh"]
 assert scan.ok else "declared-model: a site that states which model this clone runs disagrees with the driver"
 say scan.out
 assert scan.out contains "declaring_over=0" else "declared-model: every declaring site must name the model the driver names"
 assert scan.out contains "verdict=ok" else "declared-model: the scan must balance before it is believed"
 say "field GREEN -- one model, named once, agreed everywhere it is described"
 
-let control = run ["sh" "tools/fixtures/declared_model_control.sh"]
+let control = run ["sh" "tools/fixtures/d/declared_model_control.sh"]
 assert control.ok else "declared-model: the control must complete"
 say control.out
 assert control.out contains "agreement_free=yes" else "declared-model: a tree whose sites agree must pass free"

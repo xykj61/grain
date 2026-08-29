@@ -6,7 +6,7 @@
 # format cord-batch-v1 record a keeper can open and walk, and proves the order and supply the batched Cord
 # reports are true to the bytes.
 #
-# tools/fixtures/cord_batch_truth.awk reads the same file independently; the witness asserts the app's
+# tools/fixtures/c/cord_batch_truth.awk reads the same file independently; the witness asserts the app's
 # triple (blocks-supply-stars) equals awk's -- two tools, one answer (2 700 1). The fixture is genuinely
 # reproducible (the generator re-emits byte-identical bytes), and the record is a genuine committed batched
 # Cord (the app rebuilds under add_batch, re-verifying every signature, and re-committing reproduces the
@@ -40,7 +40,7 @@ assert selftest.out contains "The fact-batching arc closes" else "mycelium-cord-
 # The crux -- two tools, one answer. The app's measure triple must equal awk's reading of the same bytes.
 let app = run ["sh" "-c" "${bin} measure 2>&1"]
 assert app.ok else "mycelium-cord-batch-true: app measure exited non-zero"
-let awk = run ["sh" "-c" "awk -f tools/fixtures/cord_batch_truth.awk tools/fixtures/cord_batch_dag.bron"]
+let awk = run ["sh" "-c" "awk -f tools/fixtures/c/cord_batch_truth.awk tools/fixtures/c/cord_batch_dag.bron"]
 assert awk.ok else "mycelium-cord-batch-true: awk truth read failed"
 assert awk.out contains "2 700 1" else "mycelium-cord-batch-true: awk triple not 2 700 1"
 assert app.out == awk.out else "mycelium-cord-batch-true: app and awk disagree â€” the reading drifted from the bytes"
@@ -49,7 +49,7 @@ assert app.out == awk.out else "mycelium-cord-batch-true: app and awk disagree â
 # path and diff (never overwrite the committed fixture in a read-only witness).
 let gen = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/cord_batch_fixture_gen.rye -femit-bin=mycelium/bin/cord_batch_fixture_gen"]
 assert gen.ok else "mycelium-cord-batch-true: fixture generator build failed"
-let regen = run ["sh" "-c" "mycelium/bin/cord_batch_fixture_gen 2> /tmp/cord_batch_dag_regen.bron; diff tools/fixtures/cord_batch_dag.bron /tmp/cord_batch_dag_regen.bron && echo REPRODUCIBLE"]
+let regen = run ["sh" "-c" "mycelium/bin/cord_batch_fixture_gen 2> /tmp/cord_batch_dag_regen.bron; diff tools/fixtures/c/cord_batch_dag.bron /tmp/cord_batch_dag_regen.bron && echo REPRODUCIBLE"]
 assert regen.ok else "mycelium-cord-batch-true: the fixture generator did not reproduce the committed bytes"
 assert regen.out contains "REPRODUCIBLE" else "mycelium-cord-batch-true: the regenerated fixture drifted from the committed one"
 

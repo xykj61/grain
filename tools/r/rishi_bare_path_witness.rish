@@ -12,7 +12,7 @@ say "rishi-bare-path: Language EN -- a tool teaches by what it accepts, so the s
 say "rishi-bare-path: Style Civic -- name what the tool rewards. It rewarded knowing a subcommand; it now rewards the habit a newcomer arrives with."
 say "rishi-bare-path: Lens TAME -- safety first: the suffix bounds the shorthand, every refusal keeps its name and its exit code, and the control proves both sides. Purely local -- no key, no network, no funds, no device."
 
-let control = run ["sh" "tools/fixtures/rishi_bare_path_control.sh"]
+let control = run ["sh" "tools/fixtures/r/rishi_bare_path_control.sh"]
 assert control.ok else "rishi-bare-path: the control must complete"
 say control.out
 assert control.out contains "control_verdict=ok" else "rishi-bare-path: the control must reach its own verdict"

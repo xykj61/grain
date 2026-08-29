@@ -23,8 +23,8 @@ assert have.ok else "dep-crawl: root file absent"
 
 # Bounded BFS in a POSIX seam -- Rishi holds the asserts, the scan holds the
 # shell variables. Rishi reads every $name in a string as interpolation, so a
-# shell body cannot live inline; tools/fixtures/*_scan.sh is the seated shape.
-let crawl = run ["sh" "tools/fixtures/dep_crawl_scan.sh" root]
+# shell body cannot live inline; tools/fixtures/*/*_scan.sh is the seated shape.
+let crawl = run ["sh" "tools/fixtures/d/dep_crawl_scan.sh" root]
 say crawl.out
 assert crawl.out contains "verdict=ok" else "dep-crawl: a bound bit before the closure closed"
 # values_apart: the scan's status and its verdict key must agree. If they ever
