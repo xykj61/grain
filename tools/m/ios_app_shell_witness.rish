@@ -1,0 +1,62 @@
+# tools/m/ios_app_shell_witness.rish -- a real iOS app, installed and launched by the platform,
+# proven from both sides.
+#
+# LOCA -- the app the platform launches (20260829.095045). This witness builds the shell probe
+# with the iOS recipe (a witness builds what it runs), packs the FLAT iOS bundle -- plist and
+# executable side by side, no Contents/MacOS -- around the tracked plist fixture, and proves the
+# platform's door from both sides on a booted simulator:
+#   RED   -- a copy stripped of Info.plist refuses to install: the plist is load-bearing at the
+#            install door, shown by taking it away.
+#   GREEN -- the whole bundle installs, and simctl launch --console runs it under the
+#            platform's own launcher; the console carries the delegate's launch line, the
+#            run-loop line, and GREEN, and the process ends itself so this witness stays
+#            bounded.
+# Requires a booted simulator (open -a Simulator wakes the service; simctl boot a device).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/ios_app_shell_witness.rish
+
+let pen = "/tmp/grain_ios_shell_pen"
+let app = "/tmp/grain_ios_shell_pen/Grain.app"
+let stripped = "/tmp/grain_ios_shell_pen/Stripped.app"
+let bundle_id = "ww.grain.shell.ios"
+
+say "ios-app-shell: Language EN -- the platform's own launcher drives a Rye delegate."
+
+let booted = run ["sh" "-c" "xcrun simctl list devices booted | grep -c Booted"]
+assert booted.ok else "ios-app-shell: no booted simulator -- open -a Simulator, then simctl boot a device"
+
+# The witness builds the binary it runs, with the five-flag recipe plus the frameworks.
+# The SDK path carries no spaces, so the command line stays quote-free -- Rishi strings pass no
+# backslash escapes through to the shell.
+let build = run ["sh" "-c" "SDK=$(xcrun --sdk iphonesimulator --show-sdk-path) && env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build tools/rye/ios_app_shell_probe.rye -femit-bin=tools/.build/ios_app_shell -target aarch64-ios-simulator --sysroot $SDK -L/usr/lib -F$SDK/System/Library/Frameworks -fstrip -lobjc -framework UIKit -framework CoreGraphics -framework QuartzCore -framework CoreFoundation"]
+assert build.ok else "ios-app-shell: the probe must build with the iOS recipe"
+
+let wipe = run ["rm" "-rf" pen]
+assert wipe.ok else "ios-app-shell: pen wipe"
+let mk = run ["mkdir" "-p" app]
+assert mk.ok else "ios-app-shell: bundle mkdir"
+let plist = run ["cp" "tools/fixtures/m/grain_ios_shell_info.plist" "/tmp/grain_ios_shell_pen/Grain.app/Info.plist"]
+assert plist.ok else "ios-app-shell: plist copy"
+let bin = run ["cp" "tools/.build/ios_app_shell" "/tmp/grain_ios_shell_pen/Grain.app/ios_app_shell"]
+assert bin.ok else "ios-app-shell: binary into the bundle"
+
+# RED -- the install door refuses a bundle without its plist.
+let copy = run ["cp" "-R" app stripped]
+assert copy.ok else "ios-app-shell: stripped copy"
+let strip = run ["rm" "/tmp/grain_ios_shell_pen/Stripped.app/Info.plist"]
+assert strip.ok else "ios-app-shell: plist strip"
+let refused = run ["xcrun" "simctl" "install" "booted" stripped]
+assert (refused.ok == false) else "ios-app-shell: a bundle without its plist must refuse to install"
+say "ios-app-shell: RED leg bites -- without Info.plist, the install door refuses."
+
+# GREEN -- install whole, launch under the platform's own launcher, read the console.
+let installed = run ["xcrun" "simctl" "install" "booted" app]
+assert installed.ok else "ios-app-shell: the whole bundle must install"
+let launched = run ["xcrun" "simctl" "launch" "--console" "booted" bundle_id]
+assert launched.err contains "the platform launched into Rye" else "ios-app-shell: the launch line must arrive from the delegate"
+assert launched.err contains "the run loop ran" else "ios-app-shell: the scheduled close must arrive on the platform's timer"
+assert launched.err contains "GREEN" else "ios-app-shell: the probe must speak GREEN before its close"
+say "ios-app-shell: console carried launch, loop, and GREEN from inside the platform's own launch."
+
+say "GREEN: ios-app-shell -- UIApplicationMain drove a runtime-registered Rye delegate, installed and launched by the platform, refused without its plist."

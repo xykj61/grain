@@ -1,0 +1,127 @@
+//! tools/rye/ios_app_shell_probe.rye -- a real iOS application: UIApplicationMain bootstraps a
+//! Rye delegate, launched as an installed bundle by the simulator itself.
+//!
+//! Rung: LOCA -- the app the platform launches (20260829.095045)
+//!
+//! WHY THIS PROBE EXISTS. The view-seam rung walked UIKit's drawing road without an application
+//! object; this rung takes the shell whole. UIApplicationMain is a plain C function -- the
+//! friendlier bootstrap the iOS-door reading named -- and it takes the DELEGATE CLASS BY NAME,
+//! which fits a runtime-registered class perfectly: GrainRyeDelegateIOS registers over NSObject
+//! with two Rye methods before the call, and the platform finds it, instantiates it, and drives
+//! the launch sequence into Rye. The probe is packed as a real .app (iOS bundles are flat: the
+//! plist and the executable side by side), installed with simctl install, and LAUNCHED BY THE
+//! PLATFORM -- SpringBoard's own road, not a spawned process.
+//!
+//! WHAT IT PROVES, on metal, inside iOS: UIApplicationMain accepts a runtime-registered
+//! delegate; application:didFinishLaunchingWithOptions: arrives in Rye with the platform's own
+//! application object; the run loop then runs -- a second Rye method arrives via
+//! performSelector:withObject:afterDelay: on the platform's timer -- and the probe ends itself
+//! with a clean exit its launcher can read. The delegate encodings are protocol-sourced (no
+//! superclass record exists -- the honest asymmetry the macOS lifecycle rung named), so the
+//! read-back proves storage and the launch proves dispatch.
+//!
+//! WHAT IT DOES NOT PROVE. Scenes, windows, touches, backgrounding, or the store's road --
+//! later rungs and custody. An iOS app never self-terminates in shipping practice; a PROBE ends
+//! itself so its witness stays bounded, and says so here rather than pretending otherwise.
+//!
+//! BOTH SIDES. The witness proves the bundle door from both sides (a plist-stripped copy
+//! refuses to install), and PROBE_PROVE_RED keeps the seam's gate: a false declaration against
+//! the loaded UIKit dies at exit 134 before any registration.
+//!
+//! Build and run: rishi/bin/rishi run tools/m/ios_app_shell_witness.rish
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const c = std.c;
+
+const objc = @import("objc_seam.rye");
+
+pub extern fn UIApplicationMain(argc: c_int, argv: ?[*][*:0]u8, principal: ?objc.Id, delegate_name: ?objc.Id) c_int;
+
+const delegate_class_name = "GrainRyeDelegateIOS";
+const did_finish_types = "B@:@@";
+const close_types = "v@:@";
+
+// The bounded stand: the run loop breathes this long between launch and the probe's own close.
+const close_after_seconds: f64 = 0.5;
+
+const SendPerformAfter = *const fn (objc.Id, objc.Sel, objc.Sel, ?objc.Id, f64) callconv(.c) void;
+
+var launch_step: u32 = 0;
+var close_sel: objc.Sel = undefined;
+
+/// The platform's launch call, in Rye: the application object arrives, the answer is YES, and
+/// the close is scheduled on the platform's own timer so the run loop must run to reach it.
+fn did_finish_launching(self: objc.Id, sel: objc.Sel, application: objc.Id, options: ?objc.Id) callconv(.c) bool {
+    _ = sel;
+    _ = options;
+    // invariant: the platform hands the delegate it instantiated and a real application.
+    assert(@intFromPtr(self) != 0);
+    assert(@intFromPtr(application) != 0);
+    // invariant: launch arrives once.
+    assert(launch_step == 0);
+    launch_step = 1;
+    print("ios-app-shell: application:didFinishLaunchingWithOptions: -- the platform launched into Rye.\n", .{});
+    objc.send(SendPerformAfter)(self, objc.sel_registerName("performSelector:withObject:afterDelay:"), close_sel, null, close_after_seconds);
+    return true;
+}
+
+/// The scheduled close: proof the run loop ran past launch. A probe ends itself; an app never
+/// would, and the header says so.
+fn close_probe(self: objc.Id, sel: objc.Sel, argument: ?objc.Id) callconv(.c) void {
+    _ = sel;
+    _ = argument;
+    // invariant: the platform hands the delegate it holds.
+    assert(@intFromPtr(self) != 0);
+    // invariant: the close only ever follows the launch.
+    assert(launch_step == 1);
+    launch_step = 2;
+    print("ios-app-shell: the run loop ran -- the scheduled close arrived on the platform's timer.\n", .{});
+    print("ios-app-shell: GREEN -- UIApplicationMain drove a Rye delegate through launch and loop; the probe ends itself.\n", .{});
+    std.process.exit(0);
+}
+
+pub fn main() !void {
+    print("ios-app-shell: Language EN -- a real iOS app, its delegate registered at runtime in Rye.\n", .{});
+
+    const prove_red = c.getenv("PROBE_PROVE_RED") != null;
+
+    const object_class = objc.objc_getClass("NSObject") orelse return error.NSObjectAbsent;
+    const string_class = objc.objc_getClass("NSString") orelse return error.NSStringAbsent;
+    const view_class = objc.objc_getClass("UIView") orelse return error.UIKitAbsent;
+
+    if (prove_red) {
+        print("ios-app-shell: prove-red -- declaring a signature the loaded UIKit does not have.\n", .{});
+        _ = objc.verify(view_class, "initWithFrame:", "v@:", false);
+        @panic("objc seam: prove-red reached the send, which means the gate does not gate");
+    }
+
+    // The seam reads the loaded frameworks before anything registers.
+    const sel_utf8 = objc.verify(string_class, "stringWithUTF8String:", "@@:r*", true);
+    _ = objc.verify(object_class, "performSelector:withObject:afterDelay:", "v@::@d", false);
+    print("ios-app-shell: seam verified against the loaded UIKit and Foundation.\n", .{});
+
+    // The delegate: two Rye methods on a runtime-registered class. Protocol-sourced encodings
+    // carry no superclass record; the read-back proves storage, the launch proves dispatch.
+    close_sel = objc.sel_registerName("grainCloseProbe:");
+    const my_class = objc.allocate_class(object_class, delegate_class_name);
+    _ = objc.add_method(my_class, "application:didFinishLaunchingWithOptions:", objc.imp(&did_finish_launching), did_finish_types);
+    _ = objc.add_method(my_class, "grainCloseProbe:", objc.imp(&close_probe), close_types);
+    objc.objc_registerClassPair(my_class);
+    _ = objc.verify(my_class, "application:didFinishLaunchingWithOptions:", did_finish_types, false);
+    _ = objc.verify(my_class, "grainCloseProbe:", close_types, false);
+    print("ios-app-shell: class {s} registered -- two Rye methods, read back stored.\n", .{delegate_class_name});
+
+    const delegate_name = objc.send(objc.SendClassStr)(string_class, sel_utf8, delegate_class_name) orelse return error.NameAbsent;
+
+    // invariant: the launch sequence has not begun before the platform owns the process.
+    assert(launch_step == 0);
+    // An empty argc/argv pair, honestly: the platform reads the real process arguments from the
+    // kernel through NSProcessInfo regardless, and this std carries no argv surface to forward.
+    const status = UIApplicationMain(0, null, null, delegate_name);
+    // UIApplicationMain returns only on failure paths; the probe's own close exits inside the
+    // scheduled Rye method, so reaching here is itself the refusal.
+    print("ios-app-shell: REFUSED -- UIApplicationMain returned {d} without the close arriving.\n", .{status});
+    @panic("ios app shell: the platform's bootstrap returned instead of launching");
+}
