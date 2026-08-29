@@ -12,6 +12,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | Stamp | Log | What it recorded |
 |---|---|---|
 | `20260829.070953` | [a witness builds what it runs](20260829/20260829-070953_a-witness-builds-what-it-runs.kyri) | %334 ratchet 19 -> 14; the card nib resolved to nothing |
+| `20260829.064107` | [the door the record cannot name](20260829/20260829-064107_the-door-the-record-cannot-name.kyri) | orbit four: 2 of 4 path elements absent inside; 3 duties keyless |
 | `20260829.054303` | [the three the enclosure keeps](20260829/20260829-054303_the-three-the-enclosure-keeps.kyri) | orbit three on metal: 3 writable paths outlive the close, none in pier |
 | `20260829.054002` | [the skip planted in both languages](20260829/20260829-054002_the-skip-planted-in-both-languages.kyri) | %340's skip reaches the shell control; both ceilings both ways |
 | `20260829.043703` | [Sundial readings carry provenance](20260829/20260829-043703_sundial-readings-carry-provenance.kyri) | Dream: sourced health readings; sourceless refused; unbuilt 20 -> 19 |
