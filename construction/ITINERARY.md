@@ -58,14 +58,14 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `380a85ae43` -- this round's parent, already on `xy`.
+**Git nib:** `5db7593c9e` -- this round's own.
 
-**Now.** **A health reading carries the path back to its witness.**
+**Now.** **An enclosure that forgets is a promise about time.**
 
-**Sundial readings carry provenance.** Each status carries unit, date, and source; an empty source
-refuses as `SourcelessReading`. Its witness builds what it runs, and the unbuilt floor falls
-**20 -> 19**. Comlink's hosted wire is GREEN; its device half waits on absent
-`qemu-system-riscv64`.
+**Orbit three, asked on metal:** three writable host paths outlive the close -- `/dev/shm`,
+`/tmp/.X11-unix`, `/run/user/<uid>` -- none under the pier, every one a jail default. The private
+home and `/tmp` came back forgotten, `/run` refused the write, zero disagreements with the plan.
+Closing any of them is a seat: the runtime room carries Wayland. Reading `20260829-054303`.
 
 **MANY HANDS + skills** (granted `20260828`): launches may manage multiple CLI agents; custody
 stays MANUAL, each checkout keeps one writer. Root `SKILL.md` opens the three. Every clone seats
@@ -75,14 +75,13 @@ stays MANUAL, each checkout keeps one writer. Root `SKILL.md` opens the three. E
 rostered, `%338` booked, 3 doors costed in `20260829-031804`; his seat.
 **Width:** `glow/rune_shape.rye` publishes `usize` in 5 fields and 5 accessors; 59 gate
 fixtures await his word. **Mind's:** the reconnect stash,
-`%281`/`%291`, and this pier's two `enclosure.conf` pins. **Sibling find:** Hush's policy
-scan refuses, its state scan green; the SHA-3 symlink double-count closes at the root in `%340`
--- 548 characters over 56 links.
+`%281`/`%291`, and this pier's two `enclosure.conf` pins. **Roster:** 90 guards,
+89 green; `rule_twin` 39/36 alone reds, and that is gate %7.
 **Seats:** can the roster's own witness be rostered; may a `mask` soften the `map` above it; a
 capability tier for `comlink_r1_dual_stack`'s IPv6 leg.
 
-**Next doors.** Dream: Caravan and Tally. Hush: orbit two's grants brush Caravan's
-capability pieces and want Dream's nod; the realized mounts read here.
+**Next doors.** Dream: Caravan and Tally. Hush: orbit two's grants still want Dream's nod;
+orthogonal to it, orbit three's survivors are costed and wait on a word.
 
 ---
 ## Landed arcs
@@ -211,7 +210,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260829.043703` | Sundial readings carry provenance | [log](../session-logs/date/20260829/20260829-043703_sundial-readings-carry-provenance.kyri) |
+| `20260829.054303` | The three the enclosure keeps -- orbit three asked on metal | [log](../session-logs/date/20260829/20260829-054303_the-three-the-enclosure-keeps.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line here until the next replaces it.
 

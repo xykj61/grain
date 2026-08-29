@@ -1,0 +1,70 @@
+# tools/p/pond_enclosure_ephemeral_witness.rish -- what the enclosure forgets, proven rather than promised.
+#
+#   rishi/bin/rishi run tools/p/pond_enclosure_ephemeral_witness.rish
+#
+# WHAT THIS HOLDS. Orbit three of the quest that retires ai-jail is "the memory that forgets" -- an
+# enclosure whose $HOME and /tmp dissolve on exit while the pier persists, done when a planted secret
+# written outside the pier is provably absent after the enclosure closes. Two guards already read the
+# enclosure and neither asked that question: pond_policy_launcher_witness.rish reads what the launcher
+# SPELLS, pond_enclosure_built_witness.rish reads what the plan BUILDS, and both are questions about
+# what an agent can SEE. This one asks how long what it WRITES lasts.
+#
+# THE TWO LEGS. The plan leg classifies every mount row by lifetime -- a tmpfs dissolves, a read-only
+# bind keeps nothing because nothing can be written, a read-write bind hands the byte to the host --
+# and gates the record's own `ephemeral` claims against it. The metal leg plants one marker per
+# candidate path inside a real enclosure, lets it close, and reads the host. Where the two disagree
+# the scan refuses, because a classification nobody checked against a kernel is a claim.
+#
+# MEASURED ON THIS PIER `20260829`: the private home and /tmp came back FORGOTTEN, and /dev/shm,
+# /tmp/.X11-unix and /run/user/<uid> came back CARRYING THE MARKER. Three writable host paths outlive
+# the close, none of them under the pier, every one of them a jail default rather than a flag Pond
+# passes. That is orbit three's own falsifier, met on metal, and the ceiling holds it at three.
+#
+# THE READING BESIDE IT. active-designing/20260829-054303_the-three-the-enclosure-keeps.md carries
+# the argument this guard only counts: the lifetime table, the metal reading path by path, and what
+# closing each of the three survivors would cost.
+#
+# WHAT THIS DOES NOT REACH. Whether a survivor SHOULD be closed. The runtime directory carries the
+# Wayland socket and /dev/shm carries shared memory a browser needs, so closing one changes what a
+# running agent can do -- a seat rather than a sweep, and the quest's own custody line names any
+# round that weakens or reshapes an isolation boundary as check-in territory.
+#
+# ACCRETE-ONLY. This reads ai-jail's own plan and Pond's record and rewrites neither. The probe leg
+# starts one enclosure and removes every marker it plants, on the host, whether it survived or not.
+# The ENCLOSURE selector stays ai-jail until the switchover round lands behind its audit.
+
+say "enclosure-ephemeral: Language EN -- an enclosure that forgets is a promise about time, so the reading is taken over time."
+say "enclosure-ephemeral: Style Gauge, Meter -- each note names the path and where the host keeps it, so a count becomes a line to open."
+say "enclosure-ephemeral: Lens TAME -- safety first: the plan roster and the probe roster are both bounded, the gate is proven from both sides, and the metal leg refuses to be skipped where it could have run."
+
+let control = run ["sh" "tools/fixtures/p/pond_enclosure_ephemeral_control.sh"]
+assert control.ok else "enclosure-ephemeral: the control must complete -- ${control.out}"
+say control.out
+assert control.out contains "control_failures=0" else "enclosure-ephemeral: every planted behavior must hold"
+assert control.out contains "control_verdict=ok" else "enclosure-ephemeral: the control must report ok"
+assert control.out contains "unforgotten_claim_refused=yes" else "enclosure-ephemeral: a kept path claimed ephemeral must refuse"
+assert control.out contains "forgotten_claim_passes=yes" else "enclosure-ephemeral: an honest ephemeral claim must pass free"
+assert control.out contains "ceiling_at_bound_passes=yes" else "enclosure-ephemeral: the ceiling must be proven from the passing side"
+assert control.out contains "ceiling_one_past_refuses=yes" else "enclosure-ephemeral: the ceiling must be proven from the refusing side"
+assert control.out contains "lift_absent_refuses=yes" else "enclosure-ephemeral: a missing plan reader must refuse rather than guess"
+
+let scan = run ["sh" "tools/fixtures/p/pond_enclosure_ephemeral_scan.sh"]
+assert scan.ok else "enclosure-ephemeral: the plan reading must complete -- ${scan.out}"
+say scan.out
+assert scan.out contains "unforgotten_claims=0" else "enclosure-ephemeral: no path the record calls ephemeral may be one the plan keeps"
+assert scan.out contains "verdict=ok" else "enclosure-ephemeral: the plan reading must read ok"
+assert scan.out contains "probe_read=no" else "enclosure-ephemeral: an ordinary run starts no enclosure"
+
+let jail = run ["sh" "-c" "command -v ai-jail >/dev/null 2>&1 && echo JAIL_PRESENT || echo JAIL_ABSENT"]
+assert jail.ok else "enclosure-ephemeral: the host reading must complete"
+say jail.out
+if (jail.out contains "JAIL_ABSENT") then say "enclosure-ephemeral: ai-jail is absent here, so the metal leg is skipped by the host rather than by the guard, and the plan reading above stands alone."
+if (jail.out contains "JAIL_PRESENT") then say "enclosure-ephemeral: ai-jail stands here, so the reading below is the kernel's own answer and a skip refuses."
+
+let probe = run ["sh" "tools/fixtures/p/pond_enclosure_ephemeral_scan.sh" "--probe"]
+assert probe.ok else "enclosure-ephemeral: the probe run must complete -- ${probe.out}"
+say probe.out
+assert probe.out contains "probe_disagreements=0" else "enclosure-ephemeral: the kernel and the plan must agree about what survives"
+assert probe.out contains "verdict=ok" else "enclosure-ephemeral: the probe run must read ok"
+
+say "GREEN: pond enclosure-ephemeral -- every path the record calls ephemeral dissolves, the survivors are counted and named, and where a jail stands the kernel has been asked."
