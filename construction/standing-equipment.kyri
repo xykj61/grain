@@ -578,3 +578,48 @@ guard witness_own_build
 path tools/w/witness_own_build_witness.rish
 tier lap
 seated 20260828.213503
+
+# waymark_rung_drift -- the mark law (.claude/rules/stamp-and-name.md) retired the ascending rung
+# as a mark for planned work, and two ladders numbered right past it for a week because nothing
+# counted the shape (%329). This meter counts <seated-waymark><digits> in living tracked files
+# under a ceiling that only falls. It landed 20260828 with no roster row, so nothing ran it: its
+# first hearing on this pier, the lap that rostered it, read one mark over the ceiling. `lap`
+# because the scan is one batched grep over git's own file list, under a second on this pier.
+
+guard waymark_rung_drift
+path tools/w/waymark_rung_drift_witness.rish
+tier lap
+seated 20260828.233813
+
+# tally_bud -- the Pedersen bud vector, pinned and moved. A pinned constant earns trust only when
+# a witness moves it, so this holds a passing vector and refuses a planted generator byte, a
+# planted domain, and an amount that moves the answer. `lap` because it costs 6.2s on this pier
+# and Tally is the arc under active work, which is the same reasoning caravan_suite stands on.
+
+guard tally_bud
+path tools/t/tally_bud_witness.rish
+tier lap
+seated 20260828.233813
+
+# counsel_census -- the counsel campaign's own value reading: which of the 941 closed pieces are
+# still leaned on, ordered by citer count, so Phase 1 lifts by measurement rather than by memory.
+# `cadence` because it costs 32.2s on this pier and the room it reads is closed -- a census of a
+# room that no longer grows changes on the laps that lift from it, not on every lap.
+
+guard counsel_census
+path tools/co/counsel_census_witness.rish
+tier cadence
+seated 20260828.233813
+
+# pond_enclosure_built -- the record against what the enclosure actually BUILDS. Its sibling
+# pond_policy_launcher reads the record against the launcher and says in its own header that it
+# compares what the launcher SPELLS; ai-jail supplies twenty-one more mounts from its own defaults,
+# and the record named six of twenty-seven until this row's lap. The scan reads `ai-jail --dry-run`
+# -- the bwrap plan printed without starting anything -- gates `undeclared_builds` at zero against
+# a pinned measurement so a clone with no jail still reads it, and reports drift between the pinned
+# plan and a live one. `lap` because the scan is 0.12s and the whole witness 2.4s on this pier.
+
+guard pond_enclosure_built
+path tools/p/pond_enclosure_built_witness.rish
+tier lap
+seated 20260828.233813

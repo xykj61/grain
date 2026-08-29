@@ -25,13 +25,36 @@
 # Every sweep that lowers the count lowers the ceiling with it; a rise reds the witness on the
 # lap it arrives.
 #
+# IT FIRED ON ITS FIRST HEARING, 20260828, and one of the two marks it caught was this law's own.
+# The reading stood at 17,249. A `ZETA`-plus-digit mark had entered a living Rye doc comment in
+# the macOS grid probe that landed that evening; a `FORA`-plus-digit mark stood inside
+# construction/ITINERARY.md's Standing block, in the very sentence teaching that counters are
+# retired. The mark law's own clause on illustration answers the second: an example in prose is a
+# SHAPE, so the card reads the mark with an `<N>` placeholder now and the sentence stopped being an
+# instance of what it forbids. The door row naming that granted door keeps its number, because it
+# names a booked thing rather than illustrating a form.
+#
+# AND THE HEADER YOU ARE READING PAID THE SAME TOLL. The first draft of this paragraph spelled
+# both marks in their counter form, the meter read its own explanation, and the count went back up
+# by two. A scan is a living tracked file, so a guard that names what it caught in the shape it
+# refuses raises its own reading -- which is the law being exactly as literal as it promised.
+# Placeholders here, for the same reason the card uses them.
+#
+# A SYMLINKED SOURCE IS COUNTED ONCE PER TRACKED PATH. `git ls-files` lists a symlink and its
+# target as two paths, and grep follows the link, so one mark in one file can be read twice: the
+# Rye doc comment above stood at brushstroke/skate_grid.rye with tools/rye/skate_grid.rye pointing
+# at it, and repairing the one line lowered this reading by two. That inflates the count and can
+# never hide a mark, which is the safe direction for a ratchet, so it is written down here rather
+# than repaired -- de-duplicating by content would move the ceiling by an amount nobody has
+# measured, and that is its own lap.
+#
 # RUNG_ROOT and RUNG_CEILING are the witness's pen knobs -- a control proves both sides on a
 # planted repository; neither is an override word for the live tree.
 
 set -eu
 
 ROOT="${RUNG_ROOT:-.}"
-CEILING="${RUNG_CEILING:-17248}"
+CEILING="${RUNG_CEILING:-17245}"
 
 marks='HAWM|TUBE|ZETA|JABS|LULU|STOA|SETU|SUNN|POLE|SOON|JARL|BUHR|TACT|GISM|AYRE|DAHL|KOFF|CION|VOLS|LOWE|OFFY|GRAD|AHOY|WADE|HUNK|DREY|FORA|ALES|DISC|SEVA|MAND|MONA'
 

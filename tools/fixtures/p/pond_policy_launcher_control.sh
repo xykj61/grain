@@ -101,11 +101,20 @@ expect "the new mount refuses while undeclared" 1 "verdict=unspelled_mount" "$p"
 printf 'rw-map /home/youruser/grain/loops/codex:/home/youruser/.config/codex\n' >> "$p/pond/enclosure_policy.kyri"
 expect "declaring it in the record returns the pen to green" 0 "verdict=green" "$p"
 
-# 14-15. The reverse reading moves, and never gates.
+# 14-15. The reverse reading moves, and never gates. The baseline is READ off a run rather than
+# spelled: the record's roster of the jail's own defaults grew from one line to nine on 20260828,
+# when the default mount plan was measured, and a control carrying a number goes stale the lap the
+# truth moves. What this case proves is the DIRECTION -- removing a declaration lowers the reading
+# by exactly one and still passes -- which is what makes it a reported reading rather than a gate.
 p=$(new_pen unbuilt)
-expect "the record's ai-jail defaults are reported" 0 "unbuilt_maps=1" "$p"
-sed -i '\|^map /nix/store$|d' "$p/pond/enclosure_policy.kyri"
-expect "and removing one lowers the reading without refusing" 0 "unbuilt_maps=0" "$p"
+base=$(sh "$SCAN" --root "$p" 2>&1 | sed -n 's/^unbuilt_maps=//p')
+if [ "${base:-0}" -lt 1 ]; then
+  echo "no: the unbuilt baseline must carry at least one line for this case to prove anything"
+  fail=$((fail + 1))
+fi
+expect "the record's ai-jail defaults are reported" 0 "unbuilt_maps=$base" "$p"
+sed -i '\|^map /usr$|d' "$p/pond/enclosure_policy.kyri"
+expect "and removing one lowers the reading without refusing" 0 "unbuilt_maps=$((base - 1))" "$p"
 
 # 16-17. A launcher flag the record carries no line for is reported, not gated.
 p=$(new_pen flags)
@@ -113,12 +122,16 @@ expect "the undeclared flag is reported" 0 "undeclared_flags=1" "$p"
 sed -i 's/ --no-gpu}"/ --no-gpu --no-pictures}"/' "$p/tools/ag/agent-jail.sh"
 expect "a second undeclared flag raises the reading and still passes" 0 "undeclared_flags=2" "$p"
 
-# 18-19. The map bound, proven from both sides.
+# 18-19. The map bound, proven from both sides. Both the bound and the record's own starting count
+# are read off a run, so this case pads to the bound wherever the record happens to stand.
 p=$(new_pen bound_under)
-i=0
-while [ $i -lt 25 ]; do printf 'map /nix/pad%s\n' "$i" >> "$p/pond/enclosure_policy.kyri"; i=$((i + 1)); done
-expect "thirty-two declared maps sit inside the bound" 0 "declared_maps=32" "$p"
-printf 'map /nix/pad25\n' >> "$p/pond/enclosure_policy.kyri"
+first=$(sh "$SCAN" --root "$p" 2>&1)
+maxmaps=$(printf '%s\n' "$first" | sed -n 's/^max_maps=\([0-9]*\).*/\1/p')
+have=$(printf '%s\n' "$first" | sed -n 's/^declared_maps=//p')
+i=$have
+while [ "$i" -lt "$maxmaps" ]; do printf 'map /nix/pad%s\n' "$i" >> "$p/pond/enclosure_policy.kyri"; i=$((i + 1)); done
+expect "declared maps exactly at the bound sit inside it" 0 "declared_maps=$maxmaps" "$p"
+printf 'map /nix/padover\n' >> "$p/pond/enclosure_policy.kyri"
 expect "one past the bound refuses" 1 "verdict=unbounded" "$p"
 
 # 20. The flag bound, from the refusing side.

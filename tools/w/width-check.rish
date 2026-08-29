@@ -55,4 +55,4 @@ assert scan.out contains "verdict=ok" else "width-check: the living scan must re
 assert scan.out contains "declared_roster_flagged=0" else "width-check: the declared roster is gated at zero"
 assert scan.out contains "exempt_declared=yes" else "width-check: the named exemption must still be a rostered module, or the pin guards nothing"
 
-say "GREEN: width-check -- the declared roster reads zero authored usize, the one named seam exemption stands at its pin, the discovered corpus holds under a ceiling that only falls, and thirteen behaviors are proven on planted repositories in both directions."
+say "GREEN: width-check -- the declared roster reads zero authored usize, the one named seam exemption stands at its pin, the discovered corpus holds under a ceiling that only falls, and nineteen behaviors are proven on planted repositories in both directions."
