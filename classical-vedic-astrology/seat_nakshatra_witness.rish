@@ -10,16 +10,29 @@
 #   RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build classical-vedic-astrology/seat_nakshatra.rye -femit-bin=classical-vedic-astrology/bin/seat_nakshatra
 #   rishi/bin/rishi run classical-vedic-astrology/seat_nakshatra_witness.rish
 
+# Build the binary this witness proves, rather than assuming a previous lap left one behind.
+# The build was named in a header comment above and then the path was invoked directly, so on any
+# clone without that build it died with a bare CommandFailed naming no cause -- a refusal a reader
+# cannot act on is the fault this tree calls a guard that guards nothing (REDS %334).
+let zig = "vendor/zig-toolchain/zig"
+let build = run ["sh" "-c" "mkdir -p classical-vedic-astrology/bin && env RYE_ZIG=${zig} rye/bin/rye build classical-vedic-astrology/seat_nakshatra.rye -femit-bin=classical-vedic-astrology/bin/seat_nakshatra"]
+assert build.ok else "seat_nakshatra: build failed -- ${build.err}"
+
 # The tool's own selftest -- first/last mansions, past-universe none, the example seat.
 let st = run ["classical-vedic-astrology/bin/seat_nakshatra" "selftest"]
 assert st.ok else "seat_nakshatra selftest must exit 0"
 assert (st.err contains "GREEN") else "selftest must report GREEN"
-assert (st.err contains "point 0 wears Ashvini") else "the first point must wear the first mansion"
+# SAY WHY THE NAMES HERE MOVED. The 20260823.201533 correction rotated the roster by two
+# into the Taittiriya order -- Krittika at seat zero rather than Ashvini. This witness kept
+# the elder roster on both its name assertions, and nothing caught the disagreement: the
+# binary was absent here and stale where it was present, so the witness died on the missing
+# file before it ever read an answer (REDS %334). The seat numbers never moved.
+assert (st.err contains "point 0 wears Krittika") else "the first point must wear the first mansion"
 
 # A named point resolves to its seat and nakshatra.
 let p = run ["classical-vedic-astrology/bin/seat_nakshatra" "267"]
 assert p.ok else "seat_nakshatra must resolve a point"
 assert (p.out contains "seat 23") else "point 267 sits in seat 23"
-assert (p.out contains "nakshatra Shatabhishak") else "point 267 wears Shatabhishak"
+assert (p.out contains "nakshatra Uttara Bhadrapada") else "point 267 wears Uttara Bhadrapada"
 
 say "GREEN: seat nakshatra witness -- a point's public d27 seat named as its nakshatra outfit."

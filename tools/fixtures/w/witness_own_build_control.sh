@@ -96,15 +96,22 @@ out=$(verdict_of "$d")
 echo "$out" | grep -q 'invoked_ignored=0' && echo "shell_c_unread=yes" || echo "shell_c_unread=no"
 
 # 8. absent_now is a fact about one machine, reported and never gating. The same pen reads 0 with
-#    the artifact present and 1 without it, and its verdict never moves.
+#    the artifact present and 1 without it, and ITS VERDICT NEVER MOVES. The comparison is between
+#    the two readings rather than against a literal `ok`, and the difference started to matter the
+#    day the ceiling became a wall at zero: this pen carries one unbuilt pair on purpose -- it has
+#    to, since absent_now only ever counts UNBUILT artifacts -- so both readings are refused now,
+#    and a case pinned to `ok` reported the wall as a presence fault. What must hold is that
+#    changing PRESENCE alone changed nothing, which is what is asserted.
 d=$(build presence 'let r = run ["bin/thing" "selftest"]')
 printf 'built\n' > "$d/bin/thing"
 out=$(verdict_of "$d")
 echo "$out" | grep -q 'absent_now=0' && echo "present_reads_zero=yes" || echo "present_reads_zero=no"
+v_present=$(echo "$out" | grep '^verdict=')
 rm -f "$d/bin/thing"
 out=$(verdict_of "$d")
 echo "$out" | grep -q 'absent_now=1' && echo "absent_counted=yes" || echo "absent_counted=no"
-echo "$out" | grep -q 'verdict=ok' && echo "absent_never_gates=yes" || echo "absent_never_gates=no"
+v_absent=$(echo "$out" | grep '^verdict=')
+[ "$v_present" = "$v_absent" ] && echo "absent_never_gates=yes" || echo "absent_never_gates=no"
 
 # 9. A comment naming a binary invokes nothing. Free, and the pen still reads a real invocation, so
 #    the empty-extraction refusal below stays the only thing that can produce a zero.
@@ -185,19 +192,20 @@ out=$(verdict_of "$d")
 echo "$out" | grep -q 'delegated_built=0' && echo "self_hop_uncredited=yes" || echo "self_hop_uncredited=no"
 echo "$out" | grep -q 'unbuilt_pairs=1 ' && echo "self_hop_counted=yes" || echo "self_hop_counted=no"
 
-# 11. The ratchet, from both sides. The planted counts track the LIVE ceiling: lower the ceiling and
-#     these two move with it, or the control proves a ceiling the tree no longer holds.
-d=$(build ratchet_under 'let r = run ["bin/thing" "selftest"]')
-( cd "$d" && i=2; while [ "$i" -le 4 ]; do printf 'let r = run ["bin/thing%s" "selftest"]\n' "$i" > "tools/spare${i}_witness.rish"; i=$((i + 1)); done
-  git add -A && git commit -qm 'pen: four unbuilt pairs' ) >/dev/null 2>&1
+# 11. The ratchet, from both sides -- and it is a WALL now, so the two plants sit at 0 and 1. The
+#     planted counts track the LIVE ceiling: change the ceiling and these two move with it, or the
+#     control proves a ceiling the tree no longer holds. Under is a witness that builds what it
+#     runs, which is the only shape that reads zero once the ceiling is zero.
+d=$(build ratchet_under 'let b = run ["sh" "-c" "rye build src/thing.rye -femit-bin=bin/thing"]
+let r = run ["bin/thing" "selftest"]')
 out=$(verdict_of "$d")
-echo "$out" | grep -q 'unbuilt_pairs=4 ' && echo "ratchet_counted=yes" || echo "ratchet_counted=no"
+echo "$out" | grep -q 'unbuilt_pairs=0 ' && echo "ratchet_counted=yes" || echo "ratchet_counted=no"
 echo "$out" | grep -q 'verdict=ok' && echo "ratchet_under_free=yes" || echo "ratchet_under_free=no"
 
-( cd "$d" && printf 'let r = run ["bin/thing5" "selftest"]\n' > tools/spare5_witness.rish \
+( cd "$d" && printf 'let r = run ["bin/thing2" "selftest"]\n' > tools/spare2_witness.rish \
   && git add -A && git commit -qm 'pen: one over the ceiling' ) >/dev/null 2>&1
 out=$(verdict_of "$d")
-echo "$out" | grep -q 'unbuilt_pairs=5 ' && echo "ratchet_over_counted=yes" || echo "ratchet_over_counted=no"
+echo "$out" | grep -q 'unbuilt_pairs=1 ' && echo "ratchet_over_counted=yes" || echo "ratchet_over_counted=no"
 echo "$out" | grep -q 'verdict=witness_without_build' && echo "ratchet_over_refused=yes" || echo "ratchet_over_refused=no"
 
 echo "control_verdict=ok"

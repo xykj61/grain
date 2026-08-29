@@ -12,6 +12,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | Stamp | Log | What it recorded |
 |---|---|---|
 | `20260829.142251` | [the card breathes and the sameness measured](20260829/20260829-142251_the-card-breathes-and-the-sameness-measured.kyri) | air rota lap: card condensed 24575 -> 22762, LOCA seated in Now; 114 almanac twins counted |
+| `20260829.141956` | [the name a missing build hid](20260829/20260829-141956_the-name-a-missing-build-hid.kyri) | four witnesses build what they run; the fourth names a stale roster |
 | `20260829.140140` | [the row that heard the silence](20260829/20260829-140140_the-row-that-heard-the-silence.kyri) | aether rota lap: the card one byte from full, LOCA unnamed on it; condense booked |
 | `20260829.134715` | [the row that smelled the door](20260829/20260829-134715_the-row-that-smelled-the-door.kyri) | earth rota lap: doorway guard red at 33 unroomed pages, unrostered; %342 booked |
 | `20260829.133913` | [the card learns its siblings lessons](20260829/20260829-133913_the-card-learns-its-siblings-lessons.kyri) | context loading, rota, guardrails join the Sound card; two-seats-one-tree measured |

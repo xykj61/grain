@@ -11,6 +11,14 @@
 # Build first:  rye build settlement/constellation.rye -femit-bin=settlement/bin/constellation
 #   rishi/bin/rishi run tools/s/settlement_constellation_witness.rish
 
+# Build the binary this witness proves, rather than assuming a previous lap left one behind.
+# The build was named in a header comment above and then the path was invoked directly, so on any
+# clone without that build it died with a bare CommandFailed naming no cause -- a refusal a reader
+# cannot act on is the fault this tree calls a guard that guards nothing (REDS %334).
+let zig = "vendor/zig-toolchain/zig"
+let build = run ["sh" "-c" "mkdir -p settlement/bin && env RYE_ZIG=${zig} rye/bin/rye build settlement/constellation.rye -femit-bin=settlement/bin/constellation"]
+assert build.ok else "settlement constellation: build failed -- ${build.err}"
+
 let st = run ["settlement/bin/constellation" "selftest"]
 assert st.ok else "settlement constellation selftest must exit 0"
 assert (st.err contains "GREEN") else "settlement constellation must report GREEN"

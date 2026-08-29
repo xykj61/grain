@@ -9,6 +9,14 @@
 #   RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build kumara/contact.rye -femit-bin=kumara/bin/contact
 #   rishi/bin/rishi run tools/k/kumara_contact_witness.rish
 
+# Build the binary this witness proves, rather than assuming a previous lap left one behind.
+# The build was named in a header comment above and then the path was invoked directly, so on any
+# clone without that build it died with a bare CommandFailed naming no cause -- a refusal a reader
+# cannot act on is the fault this tree calls a guard that guards nothing (REDS %334).
+let zig = "vendor/zig-toolchain/zig"
+let build = run ["sh" "-c" "mkdir -p kumara/bin && env RYE_ZIG=${zig} rye/bin/rye build kumara/contact.rye -femit-bin=kumara/bin/contact"]
+assert build.ok else "kumara contact: build failed -- ${build.err}"
+
 # The module's own selftest -- delegate, live, tamper-refused, resolve, rotate.
 let st = run ["kumara/bin/contact" "selftest"]
 assert st.ok else "kumara contact selftest must exit 0"
