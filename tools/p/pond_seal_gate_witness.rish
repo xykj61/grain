@@ -1,0 +1,50 @@
+# tools/p/pond_seal_gate_witness.rish -- every launcher that admits pond reaches the master seal.
+#
+#   rishi/bin/rishi run tools/p/pond_seal_gate_witness.rish
+#
+# WHAT THIS HOLDS. Three tracked launchers carry the same gate -- tools/ag/agent-jail.sh,
+# tools/cu/cursor-jail.sh and tools/l/launch-zed.sh.example each read an ENCLOSURE selector and
+# admit the value pond only after tools/p/pond_exit_bron_master_seal.sh --require returns zero.
+# That seal is the custody boundary for the season flip: it demands a detached signature verifying
+# against the cold master fingerprint alone, so an agent inside the jail cannot open the season by
+# writing a sentinel. Until this witness, one guard read one of the three.
+#
+# THREE READINGS GATED AT ZERO. A file admitting pond that never reaches --require, which is the
+# escape direction. A seal call standing where nothing reads its exit code, which is REDS %311's
+# vacuous wall one room over -- `--require || true` is a gate in shape and an open door in fact.
+# And a caller the seal's own header does not name, which is docs-implementation-sync: on
+# 20260829 that header named two of its three callers and missed agent-jail.sh, the launcher the
+# standing loop runs.
+#
+# WHAT THIS DOES NOT REACH. Whether the seal is itself sound, which pond_enclosure_scorecard.rish
+# reads. Whether the shell honours an exit code, which is the shell's own contract. And a trailing
+# comment after live code, since the scan strips full-line comments only -- named in its header as
+# the reading's own limit rather than repaired with parsing a reader would stop trusting.
+#
+# ACCRETE-ONLY. This reads launchers and the seal and rewrites none of them. The ENCLOSURE selector
+# stays ai-jail until the switchover round lands behind its audit.
+
+say "seal-gate: Language EN -- a rule written three times is a rule three files may quietly come to disagree about."
+say "seal-gate: Style Gauge, Meter -- each detail line names the launcher, so a count becomes a file to open."
+say "seal-gate: Lens TAME -- safety first: the candidate roster is bounded, all three gates are proven from both sides, and a root git cannot read refuses rather than reading green off an empty roster."
+
+let scan = run ["sh" "tools/fixtures/p/pond_seal_gate_scan.sh"]
+assert scan.ok else "seal-gate: the scan must complete -- ${scan.out}"
+say scan.out
+assert scan.out contains "ungated_pond=0" else "seal-gate: a launcher admitting pond must reach the master seal with --require"
+assert scan.out contains "unrefused_seal=0" else "seal-gate: a seal call whose exit code nothing reads is a wall with no needle"
+assert scan.out contains "unnamed_callers=0" else "seal-gate: the seal's own header must name every launcher that calls it"
+assert scan.out contains "sealed_gates=3" else "seal-gate: three launchers carry this gate today -- a change of that number is a lap, not a drift"
+assert scan.out contains "verdict=green" else "seal-gate: the gate roster must read green"
+
+let control = run ["sh" "tools/fixtures/p/pond_seal_gate_control.sh"]
+assert control.ok else "seal-gate: the control must complete -- ${control.out}"
+say control.out
+assert control.out contains "control_fail=0" else "seal-gate: every planted behavior must hold"
+assert control.out contains "control_verdict=ok" else "seal-gate: the control must report ok"
+assert control.out contains "ungated_freed" else "seal-gate: each refusal must be proven from both sides, plant and removal"
+assert control.out contains "guardplant_outside_room_bites" else "seal-gate: the fixtures-room exemption must be the pair of conditions, never the filename alone"
+assert control.out contains "gitless_unreadable" else "seal-gate: a root git cannot read must refuse rather than report an empty roster"
+assert control.out contains "bound_over" else "seal-gate: the candidate bound must be proven from both sides"
+
+say "GREEN: pond seal-gate -- every launcher admitting pond reaches the master seal, and every refusal is proven from both sides."
