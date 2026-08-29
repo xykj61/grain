@@ -1,0 +1,171 @@
+//! tools/rye/ios_view_seam_probe.rye -- movement one's shape spoken in UIView: a Rye view class
+//! registered on iOS, its drawRect: dispatched by the platform, judged by the reference pins.
+//!
+//! Rung: LOCA -- the door walked (20260829.093744)
+//!
+//! WHY THIS PROBE EXISTS. The iOS-door reading claimed movement one ports whole -- same runtime
+//! ABI, two selector spellings, a y-flip -- and a claim that cheap to test deserves testing over
+//! trusting. This probe is the macOS view-class probe's twin on iOS: the checked seam verifies
+//! its selectors against the LOADED UIKit, GrainRyeViewIOS registers over UIView with a Rye
+//! drawRect: (checked against the superclass's own record before the add, the %335 lesson), and
+//! the platform dispatches into it through CALayer's renderInContext: -- UIKit's own
+//! drawLayer:-to-drawRect: road, walked without an application object, which is what lets the
+//! whole proof run under simctl spawn and speak on stdout.
+//!
+//! WHAT IT PROVES, on metal, inside iOS: the seam's verify reads UIKit's own encodings; a class
+//! pair registers and answers by name; the platform calls the Rye drawRect: (this probe never
+//! sends it); inside the callback the reference grid rasterizes and its claims MATCH THE PINS --
+//! the same lit count and Keccak digest macOS answered -- and the callback draws through the
+//! platform's own context into a bitmap this probe owns, whose rendered bytes light real pixels.
+//!
+//! WHAT IT DOES NOT PROVE. UIApplicationMain, scenes, SpringBoard launch, or touches -- the app
+//! shell's iOS twin is its own rung. And the rendered-bitmap DIGEST is reported rather than
+//! pinned on first landing: the draw crosses UIKit's compositing road, and whether that road is
+//! byte-preserving at one-to-one scale is a fact to discover, never to assume.
+//!
+//! BOTH SIDES. PROBE_PROVE_RED declares a signature the loaded UIKit does not have and must die
+//! at the seam (exit 134), where the ordinary run passes the same gate.
+//!
+//! Build and spawn (the four-flag recipe from the iOS-door reading, plus frameworks):
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build tools/rye/ios_view_seam_probe.rye \
+//!     -femit-bin=tools/.build/ios_view_seam -target aarch64-ios-simulator \
+//!     --sysroot "$(xcrun --sdk iphonesimulator --show-sdk-path)" -L/usr/lib -fstrip \
+//!     -lobjc -framework UIKit -framework CoreGraphics -framework QuartzCore
+//!   xcrun simctl spawn booted ./tools/.build/ios_view_seam
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const c = std.c;
+
+const objc = @import("objc_seam.rye");
+const skate = @import("skate_grid.rye");
+const claims_mod = @import("surface_claims.rye");
+const reference = @import("surface_reference.rye");
+
+// UIKit's own current-context door -- a plain C symbol, no selector needed.
+pub extern fn UIGraphicsGetCurrentContext() ?*anyopaque;
+
+const view_class_name = "GrainRyeViewIOS";
+const draw_rect_types = "v@:{CGRect={CGPoint=dd}{CGSize=dd}}";
+const alpha_premultiplied_last: u32 = 1;
+
+const SendRectInit = *const fn (objc.Id, objc.Sel, objc.CGRect) callconv(.c) ?objc.Id;
+const SendPtrArg = *const fn (objc.Id, objc.Sel, ?*anyopaque) callconv(.c) void;
+
+// The callback's state and surfaces, named and bounded: one buffer the grid rasterizes into,
+// one the platform's render lands in, both the reference geometry.
+var draw_calls: u32 = 0;
+var callback_pins_matched = false;
+var grid_pixels: [reference.surface_bytes]u8 = undefined;
+var render_pixels: [reference.surface_bytes]u8 = undefined;
+var arena_backing: [1 << 20]u8 = undefined;
+
+/// The Rye function iOS calls. It rasterizes the reference grid, judges it against the pins
+/// INSIDE the callback -- proof the pure core answers identically on the platform's own stack --
+/// and draws the picture through the context the platform pushed.
+fn draw_rect(self: objc.Id, sel: objc.Sel, dirty: objc.CGRect) callconv(.c) void {
+    _ = sel;
+    // invariant: the platform hands the receiver it registered, never nil.
+    assert(@intFromPtr(self) != 0);
+    // invariant: a draw covers real area.
+    assert(dirty.size.width > 0);
+    assert(dirty.size.height > 0);
+    // invariant: the count of platform calls stays inside its named width.
+    assert(draw_calls < std.math.maxInt(u32));
+    draw_calls += 1;
+
+    var fixed = std.heap.FixedBufferAllocator.init(arena_backing[0..]);
+    var grid = skate.Grid.init(fixed.allocator(), reference.grid_cols, reference.grid_rows) catch {
+        @panic("ios view seam: grid allocation failed inside a named arena");
+    };
+    reference.compose(&grid);
+    grid.rasterize(grid_pixels[0..], reference.surface_width * reference.bytes_per_pixel, @intCast(reference.surface_width), @intCast(reference.surface_height), reference.background, reference.foreground, reference.pixel_scale);
+    const claim = claims_mod.claims_for(grid_pixels[0..], reference.surface_width * reference.bytes_per_pixel, reference.surface_width, reference.surface_height, reference.background);
+    callback_pins_matched = reference.matches_pins(claim);
+    // invariant: the pure core answers the pinned claims on the platform's own stack.
+    assert(callback_pins_matched);
+
+    const context = UIGraphicsGetCurrentContext();
+    // invariant: inside a platform-dispatched draw, UIKit has pushed a current context.
+    assert(context != null);
+    const space = objc.CGColorSpaceCreateDeviceRGB() orelse return;
+    const bitmap = objc.CGBitmapContextCreate(@ptrCast(&grid_pixels), reference.surface_width, reference.surface_height, 8, reference.surface_width * reference.bytes_per_pixel, space, alpha_premultiplied_last) orelse return;
+    const image = objc.CGBitmapContextCreateImage(bitmap) orelse return;
+    objc.CGContextDrawImage(context, .{ .origin = .{ .x = 0, .y = 0 }, .size = dirty.size }, image);
+    objc.CFRelease(image);
+    objc.CFRelease(bitmap);
+    objc.CFRelease(space);
+}
+
+pub fn main() !void {
+    print("ios-view-seam: Language EN -- movement one's shape in UIView, judged by the same pins.\n", .{});
+
+    const prove_red = c.getenv("PROBE_PROVE_RED") != null;
+
+    const view_class = objc.objc_getClass("UIView") orelse return error.UIKitAbsent;
+    const layer_class = objc.objc_getClass("CALayer") orelse return error.QuartzAbsent;
+
+    if (prove_red) {
+        print("ios-view-seam: prove-red -- declaring a signature the loaded UIKit does not have.\n", .{});
+        _ = objc.verify(view_class, "initWithFrame:", "v@:", false);
+        @panic("objc seam: prove-red reached the send, which means the gate does not gate");
+    }
+
+    // The seam reads UIKit's own encodings -- the same gate, a different framework loaded.
+    const sel_view_init = objc.verify(view_class, "initWithFrame:", "@@:{CGRect={CGPoint=dd}{CGSize=dd}}", false);
+    const sel_layer = objc.verify(view_class, "layer", "@@:", false);
+    const sel_render = objc.verify(layer_class, "renderInContext:", "v@:^{CGContext=}", false);
+    print("ios-view-seam: seam verified -- 3 UIKit selectors match the loaded encodings.\n", .{});
+
+    // The independent authority before the add, then the registration (the %335 lesson).
+    _ = objc.verify(view_class, "drawRect:", draw_rect_types, false);
+    const my_class = objc.allocate_class(view_class, view_class_name);
+    _ = objc.add_method(my_class, "drawRect:", objc.imp(&draw_rect), draw_rect_types);
+    objc.objc_registerClassPair(my_class);
+    const found = objc.objc_getClass(view_class_name);
+    // invariant: a registered class answers by name on iOS exactly as on macOS.
+    assert(found != null);
+    assert(found.? == my_class);
+    const sel_view_alloc = objc.verify(my_class, "alloc", "@@:", true);
+    print("ios-view-seam: class {s} registered over UIView.\n", .{view_class_name});
+
+    const frame = objc.CGRect{
+        .origin = .{ .x = 0, .y = 0 },
+        .size = .{ .width = @floatFromInt(reference.surface_width), .height = @floatFromInt(reference.surface_height) },
+    };
+    const raw_view = objc.send(objc.SendClassId)(my_class, sel_view_alloc) orelse return error.ViewAllocAbsent;
+    const view = objc.send(SendRectInit)(raw_view, sel_view_init, frame) orelse return error.ViewInitAbsent;
+    const layer = objc.send(objc.SendId)(view, sel_layer) orelse return error.LayerAbsent;
+
+    // The platform's own road into the callback: rendering the layer walks CALayer to the
+    // view's drawLayer: to the Rye drawRect: -- this probe never sends drawRect: itself.
+    @memset(render_pixels[0..], 0);
+    const space = objc.CGColorSpaceCreateDeviceRGB() orelse return error.ColorSpaceAbsent;
+    const target = objc.CGBitmapContextCreate(@ptrCast(&render_pixels), reference.surface_width, reference.surface_height, 8, reference.surface_width * reference.bytes_per_pixel, space, alpha_premultiplied_last) orelse return error.BitmapContextAbsent;
+    // invariant: the platform has not called the Rye drawRect: before the render walks it.
+    assert(draw_calls == 0);
+    objc.send(SendPtrArg)(layer, sel_render, target);
+
+    // invariant: the platform dispatched the Rye function -- the rung's whole claim.
+    assert(draw_calls >= 1);
+    // invariant: the pins matched inside the callback, on the platform's own stack.
+    assert(callback_pins_matched);
+
+    // The rendered bitmap: report what crossed the platform's drawing road. The lit count is
+    // asserted real; the digest is reported for the next rung to pin or refuse.
+    const rendered = claims_mod.claims_for(render_pixels[0..], reference.surface_width * reference.bytes_per_pixel, reference.surface_width, reference.surface_height, reference.background);
+    // invariant: the platform's road delivered real pixels, never an empty field.
+    assert(rendered.lit > 0);
+    var hex_buffer: [claims_mod.digest_length * 2]u8 = undefined;
+    var i: u32 = 0;
+    while (i < claims_mod.digest_length) : (i += 1) {
+        _ = std.fmt.bufPrint(hex_buffer[i * 2 .. i * 2 + 2], "{x:0>2}", .{rendered.digest[i]}) catch unreachable;
+    }
+    print("ios-view-seam: draw_calls={d} callback_pins=matched rendered_lit={d} pinned_lit={d} rendered_digest={s}\n", .{ draw_calls, rendered.lit, reference.pinned_lit, hex_buffer[0..] });
+    if (rendered.lit == reference.pinned_lit and reference.matches_pins(rendered)) {
+        print("ios-view-seam: the platform's drawing road is byte-preserving at one-to-one -- rendered claims equal the pins.\n", .{});
+    }
+
+    print("ios-view-seam: GREEN -- UIView carried movement one's shape whole; the same seam, the same pins, inside iOS.\n", .{});
+}
