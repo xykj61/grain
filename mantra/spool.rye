@@ -110,6 +110,15 @@ pub fn spool_content(
     // invariant: a content that fits the spool fits its resin count too
     assert(content.len <= max_resins * beading.max_resin_bytes);
 
+    // A winding deposits resin by resin, so a store filling part-way through would leave
+    // this artifact's earlier beads behind -- held by no spool, named by no catalog, and
+    // unreclaimable, since a BeadStore only ever appends. Every bead THIS winding
+    // deposits sits at an index at or above the mark (one it deduped against was already
+    // below it), so restoring the count on the way out undoes exactly this winding and
+    // touches no bead an earlier artifact named.
+    const store_mark: u32 = store.count;
+    errdefer store.count = store_mark;
+
     const whole_len: u32 = @intCast(content.len);
     digest_raw(content, &sp.whole_digest);
     sp.whole_len = whole_len;
@@ -218,6 +227,62 @@ fn fill(buf: []u8, byte: u8) void {
     while (i < buf.len) : (i += 1) buf[i] = byte;
 }
 
+// Fill buf so no two beads carry the same bytes: a bead's first byte holds the
+// artifact's tag and its remaining bytes hold the bead's own index, so two beads agree
+// only when both tag and index agree. A test meaning to fill the shared store has to
+// deposit a distinct bead every time, and a pattern whose period is the bead size does
+// the opposite -- it dedups to a single bead and exercises nothing.
+fn fill_distinct_beads(buf: []u8, tag: u8) void {
+    // invariant: the buffer fits the spool ceiling, so a u32 index carries it
+    assert(buf.len <= max_content_bytes);
+    const n: u32 = @intCast(buf.len); // seam cast: a slice length is usize, our counts are u32
+    // invariant: a bead index fits one byte, so two beads of one artifact never agree
+    assert(n / spool_bead_size <= 256);
+    var k: u32 = 0;
+    while (k < n) : (k += 1) {
+        const j: u32 = k / spool_bead_size;
+        buf[k] = if (k % spool_bead_size == 0) tag else @intCast(j & 0xFF);
+    }
+    // invariant: the fill covered the whole buffer
+    assert(k == n);
+}
+
+/// A winding that meets the shared store's bound refuses StoreFull and leaves the store
+/// exactly as it found it, so a failed call spends none of a bounded resource. Returns
+/// the bead count held across the refusal, which is the reading that proves it.
+fn refusal_leaves_store_whole(out: []u8) !u32 {
+    var store_f: beading.BeadStore = .empty();
+    var a: [max_content_bytes]u8 = undefined; // a ceiling artifact: 64 resins, 128 beads
+    var b: [max_content_bytes / 2]u8 = undefined; // half of one: 32 resins, 64 beads
+    var c: [max_content_bytes]u8 = undefined; // a second ceiling artifact: 128 beads
+    fill_distinct_beads(a[0..], 'A');
+    fill_distinct_beads(b[0..], 'B');
+    fill_distinct_beads(c[0..], 'D');
+
+    var sp_a: Spool = .empty();
+    var sp_b: Spool = .empty();
+    var sp_c: Spool = .empty();
+    _ = try spool_content(&store_f, a[0..], &sp_a);
+    _ = try spool_content(&store_f, b[0..], &sp_b);
+    const held: u32 = store_f.count;
+    // invariant: the store stands near its bound, so the next ceiling winding must refuse
+    assert(held > beading.max_store_beads - (max_resins * 2));
+
+    if (spool_content(&store_f, c[0..], &sp_c)) |_| {
+        return error.StoreFull; // a winding past the bound must never report success
+    } else |err| {
+        // invariant: the refusal is the store's own named error, reached through the spool
+        assert(err == error.StoreFull);
+    }
+    // invariant: the refused winding left no bead behind -- the count is where it began
+    assert(store_f.count == held);
+
+    // invariant: what was stored before the refusal still recalls whole and byte-for-byte
+    const na = try unspool(&store_f, &sp_a, out);
+    assert(std.mem.eql(u8, out[0..na], a[0..]));
+    return held;
+}
+
 /// A real document winds across ordered resins and unwinds byte-for-byte -- the very
 /// refusal red %73 booked now runs GREEN.
 fn welcome_real(store: *beading.BeadStore, content: []const u8, out: []u8, label: []const u8) !SpoolReport {
@@ -282,22 +347,31 @@ fn run_spool_selftest() !u8 {
         assert(std.mem.eql(u8, out_b[0..nb], b[0..])); // still whole after dedup
     }
 
-    // The ceiling is honest, not merely named: a large artifact filling most of the
-    // spool actually winds into the shared store and unwinds whole. Build a distinct
-    // pattern per byte so no two beads dedup -- the store bound is exercised in full.
+    // The ceiling is honest, not merely named: a large artifact filling every resin winds
+    // into the shared store and unwinds whole, and every bead differs from every other so
+    // the winding deposits all of them. The assertions read the STORE's own count, since
+    // the report's bead_count is the number of beads ADDRESSED and a deduping pattern
+    // makes those two numbers disagree while the printed line reads the same either way.
     {
         var store_c: beading.BeadStore = .empty();
         var wide: [max_content_bytes]u8 = undefined;
-        var k: u32 = 0;
-        while (k < wide.len) : (k += 1) wide[k] = @intCast(k & 0xFF);
+        fill_distinct_beads(wide[0..], 'C');
         var sp: Spool = .empty();
         const rep_c = try spool_content(&store_c, wide[0..], &sp);
         assert(sp.resin_count == max_resins); // a ceiling artifact fills every resin
+        // invariant: no bead dedups against another, so every bead addressed is deposited
+        assert(rep_c.beads_deduped == 0);
+        // invariant: the deposit count matches the beads the winding addressed
+        assert(rep_c.beads_deposited == rep_c.bead_count);
+        // invariant: the store itself holds them -- the one reading a report cannot fake
+        assert(store_c.count == rep_c.bead_count);
         const nc = try unspool(&store_c, &sp, out[0..]);
         assert(nc == wide.len);
         assert(std.mem.eql(u8, out[0..nc], wide[0..])); // the whole ceiling recalls whole
-        print("spool: ceiling — {d} B across {d} resins ({d} beads) wound and unwound whole\n", .{
-            nc, sp.resin_count, rep_c.bead_count,
+        print("spool: ceiling -- {d} B across {d} resins ({d} beads) wound and unwound whole; {d} deposited, {d} deduped, store holds {d} of {d}\n", .{
+            nc,                    sp.resin_count,      rep_c.bead_count,
+            rep_c.beads_deposited, rep_c.beads_deduped, store_c.count,
+            beading.max_store_beads,
         });
     }
 
@@ -357,8 +431,15 @@ fn run_spool_selftest() !u8 {
         }
     }
 
+    // Unwelcome: a winding that meets the shared store's bound refuses StoreFull and
+    // spends none of it -- the refusal arrives with the store exactly as it was found.
+    const held_across_refusal = try refusal_leaves_store_whole(out[0..]);
+
     print("spool: same bytes wound twice share one content address (stable name)\n", .{});
     print("spool: dedup dividend — a shared leading resin deposited its beads once\n", .{});
+    print("spool: a winding past the store bound refused StoreFull; store held {d} of {d} on both sides of the refusal\n", .{
+        held_across_refusal, beading.max_store_beads,
+    });
     print("spool: tampered bead, tampered resin index, truncated spool refused whole GREEN\n", .{});
     print("spool: an artifact past {d} B refused ContentTooLarge (the honest ceiling)\n", .{max_content_bytes});
     print("spool: version {s}\n", .{spool_version});

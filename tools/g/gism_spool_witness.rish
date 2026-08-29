@@ -1,7 +1,7 @@
 # tools/g/gism_spool_witness.rish -- GISM red %73: the spool (chunking storage).
 #
 # Chapter 2, Yield: every module stands on real bytes. GISM Journey 6 booked red %73 --
-# a real front-door document (SECURITY.md 2689 B; context/TWO_ROOMS.md 6079 B) refuses
+# a real front-door document (SECURITY.md; context/TWO_ROOMS.md -- sizes read from disk) refuses
 # ContentTooLarge because it does not fit one 512-byte resin, and the fix is not a
 # bound-bump (max_resin_bytes is structurally capped) but a storage layer above beading.
 # This witness proves the spool closes that red on metal: a real document winds across
@@ -25,22 +25,31 @@ assert build.ok else "gism-red73: spool build failed"
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
 assert selftest.ok else "gism-red73: spool selftest exited non-zero"
 assert selftest.out contains "GREEN" else "gism-red73: selftest did not speak GREEN"
-assert selftest.out contains "security.md — 2689 B across 6 resins" else "gism-red73: security.md spool missing"
-assert selftest.out contains "two_rooms.md — 6079 B across 12 resins" else "gism-red73: two_rooms.md spool missing"
-assert selftest.out contains "ceiling — 32768 B across 64 resins (128 beads) wound and unwound whole" else "gism-red73: honest ceiling not reached"
+# The real documents' sizes are READ, never spelled. A witness that pins a byte count it
+# does not own goes red the day somebody edits the document, for no reason connected to
+# the code it guards -- which is what happened here: SECURITY.md and context/TWO_ROOMS.md
+# were edited after this witness was written, and its pinned 2689/6079 stood untrue and
+# unread, since no roster runs this file. Two tools, one answer, read from disk.
+let sec = run ["sh" "-c" "wc -c < SECURITY.md | tr -d ' \n'"]
+assert sec.ok else "gism-red73: could not measure SECURITY.md"
+let two = run ["sh" "-c" "wc -c < context/TWO_ROOMS.md | tr -d ' \n'"]
+assert two.ok else "gism-red73: could not measure context/TWO_ROOMS.md"
+
+assert selftest.out contains "security.md — ${sec.out} B across 6 resins" else "gism-red73: security.md spool missing"
+assert selftest.out contains "two_rooms.md — ${two.out} B across 12 resins" else "gism-red73: two_rooms.md spool missing"
+
+# The ceiling reads the STORE's own count, never the report's bead_count. Those two agree
+# only when no bead dedups, and the elder fill made all 128 beads identical -- one bead
+# deposited, 127 deduped -- so this line passed while the store held 1 of its 256.
+assert selftest.out contains "ceiling -- 32768 B across 64 resins (128 beads) wound and unwound whole; 128 deposited, 0 deduped, store holds 128 of 256" else "gism-red73: the ceiling did not fill the shared store"
+
+# A winding that meets the bound refuses StoreFull and spends none of it: the store's
+# count reads the same on both sides of the refusal, so no orphan bead outlives it.
+assert selftest.out contains "refused StoreFull; store held 192 of 256 on both sides of the refusal" else "gism-red73: a refused winding did not leave the store whole"
 assert selftest.out contains "same bytes wound twice share one content address" else "gism-red73: stable name missing"
 assert selftest.out contains "dedup dividend" else "gism-red73: dedup dividend missing"
 assert selftest.out contains "tampered bead, tampered resin index, truncated spool refused whole GREEN" else "gism-red73: tamper refusals missing"
 assert selftest.out contains "refused ContentTooLarge (the honest ceiling)" else "gism-red73: over-ceiling refusal missing"
-
-# Cross-check the real document sizes the spool wound against the files on disk -- two
-# tools, one answer (the honest-adversary discipline Yield lives by).
-let sec_bytes = run ["sh" "-c" "wc -c < SECURITY.md | tr -d ' '"]
-assert sec_bytes.ok else "gism-red73: could not measure SECURITY.md"
-assert sec_bytes.out contains "2689" else "gism-red73: SECURITY.md is not 2689 B on disk"
-let tr_bytes = run ["sh" "-c" "wc -c < context/TWO_ROOMS.md | tr -d ' '"]
-assert tr_bytes.ok else "gism-red73: could not measure context/TWO_ROOMS.md"
-assert tr_bytes.out contains "6079" else "gism-red73: context/TWO_ROOMS.md is not 6079 B on disk"
 
 # Beading is re-run untouched -- the store capacity rose additively; the primitive the
 # spool stands on stays its own GREEN binary.
