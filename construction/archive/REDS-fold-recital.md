@@ -175,3 +175,5 @@ at a closed fold.*
 *Row %312 folded to [`REDS-the-flag-that-failed-closed-rows-312.md`](REDS-the-flag-that-failed-closed-rows-312.md) on `20260828.125441`, **CLOSED** -- the interim flag that disabled the only execution path there is, booked and closed inside one hour. Folded the lap after it was written, with `%307`, to make room for `%313`.*
 
 *Row %335 folded to [`REDS-the-dead-nil-guards-rows-335.md`](REDS-the-dead-nil-guards-rows-335.md) on `20260828.232444`, **CLOSED** -- the seam send types whose non-optional returns made every nil assert after them dead in law, booked and repaired inside the LOCA rung that found them; folded on its own lap, as %310 and %312 were, because every elder row in the pin still reads OPEN.*
+
+*Row %336 folded to [`REDS-the-ring-spent-as-a-label-rows-336.md`](REDS-the-ring-spent-as-a-label-rows-336.md) on `20260829.005357`, **CLOSED** -- the calendar quest spent as a plan label, booked and repaired in one lap; born on its shelf directly, as the pin stands five bytes under its bound and every elder row still reads OPEN.*

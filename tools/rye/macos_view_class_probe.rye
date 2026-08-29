@@ -24,7 +24,7 @@
 //! CATransaction commit fires rather than when the window orders front.
 //!
 //! WHAT IT DOES NOT PROVE. Resize, retina backing scale, a display link, frame pacing, input
-//! selectors on the class, or a bundle -- those are later rungs of quest one and beyond. Nothing
+//! selectors on the class, or a bundle -- those are later rungs of movement one and beyond. Nothing
 //! about SwiftUI, which stays the one surface Rye cannot reach.
 //!
 //! BOTH SIDES. The new gate on this rung is the free-name check ahead of class allocation:

@@ -3,7 +3,7 @@
 //!
 //! Rung: LOCA -- the input the ring admits (20260829.004209)
 //!
-//! WHY THIS PROBE EXISTS. Rung one of quest two proved the ring pure: every refusal the Swift
+//! WHY THIS PROBE EXISTS. Movement two's first rung proved the ring pure: every refusal the Swift
 //! tests assert, asserted again in Rye. This rung closes the platform half: a Rye view class
 //! carries FIVE Rye-implemented methods -- drawRect:, acceptsFirstResponder, keyDown:, keyUp:,
 //! mouseDown:, mouseUp: -- and AppKit's own sendEvent: dispatch walks keyboard and mouse events

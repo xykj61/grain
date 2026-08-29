@@ -326,6 +326,18 @@ own red, so each room gets its own round.
 fifteen behaviors on real directory trees in a throwaway pen, the ceiling shown from both sides by
 planting 0 rows and then 1, so no override exists and none is wanted.
 
+## A calendar ring is a capacity, never a label -- amended `20260829.005357`
+
+The panchanga's five rings -- **orbit 15, quest 75, journey 375, equinox 1,875, chapter 9,375
+rounds** ([`../../foundations/20260826-014901_the-panchanga.md`](../../foundations/20260826-014901_the-panchanga.md))
+-- are counted capacities of the calendar: a ring's name says how many rounds it holds, the way a
+litre says how much water. Borrowing one as a subdivision label for a plan -- "quest one" for a
+two-rung stretch of a ladder -- spends a counted word on an uncounted thing, the same squat REDS
+%330 booked for the equinox guard family, one ring over. **A plan's parts are movements**, marked
+by stamp and name like every other mark; the ladder keeps its waymark; the rings keep their
+numbers. Caught by Keaton `20260829` after one night's misuse reached a seat card and five living
+headers (REDS %336).
+
 ## Accrete-never-break
 
 Every dated log, counsel note, waymark, and commit that already wrote `Fold AI`, `f0-f63`, or `STOA178`
