@@ -56,10 +56,15 @@
 
 set -eu
 
-# WHY THIS NUMBER. 46 is the reading on 20260828 after the two Comlink witnesses took the build
-# their sibling already carried, down from 48. It only ever falls: a witness repaired lowers it,
-# and a new witness invoking an unbuilt artifact raises it past the ceiling on the lap it arrives.
-CEILING=46
+# WHY THIS NUMBER. 38 is the reading on 20260829 after Mandate's seven witnesses took the
+# build their Comlink sibling already carried -- store, serve, bucket, wal, keyed, named_serve
+# and comlink_serve, every one GREEN from an emptied mandate/bin/. Seven repairs and one
+# rename: amphora_dogfood_witness left the tree carrying three pairs and
+# amphora_first_resident_witness arrived carrying two, so 46 fell to 38 rather than to 39.
+# It read 46 on 20260828 and 48 before the two Comlink witnesses. It only ever falls: a
+# witness repaired lowers it, and a new witness invoking an unbuilt artifact raises it past
+# the ceiling on the lap it arrives.
+CEILING=38
 
 command -v git >/dev/null 2>&1 || { echo "verdict=no_git"; echo "refused: this scan reads the tracked tree, so it wants git" >&2; exit 1; }
 git rev-parse --git-dir >/dev/null 2>&1 || { echo "verdict=no_repo"; echo "refused: not inside a git repository" >&2; exit 1; }

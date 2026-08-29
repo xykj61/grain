@@ -58,15 +58,15 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `82fc267a82` -- this commit's parent.
+**Git nib:** `a73327b6ed` -- this commit's parent.
 
-**Now.** **A guard on no clock guards nothing, and three were born that way today.**
+**Now.** **A ceiling that only falls reds when the population grows.**
 
-**`witness_reach` red at 1115 against 1113.** Comlink's `topology`, `turn_route` and
-`handshake_turn` take `tier lap` rows -- 2s each cold, build included -- so the reading falls to
-**1112**, ceiling too. That pays another lane's debt: `tally_bud`, `counsel_census` and
-`waymark_rung_drift` were born unclocked. `r1_dual_stack` stays off: its IPv6 leg is a
-CAPABILITY the `host` word cannot say.
+**`rule_twin` 39 against 36** -- three rule pairs seated today were born drifted; gate %7 holds
+each pair as its own reading. `radiant_negation` closed here: the LOCA row reads `zero Swift
+linked`, register only, 0.71 -> 0.62. **Mandate's seven build what they run** -- `/mandate/bin/`
+is gitignored whole, so each died on a missing file; all GREEN from an emptied bin.
+`unbuilt_pairs` **46 -> 38**.
 
 **MANY HANDS + skills** (granted `20260828`): launches may manage multiple CLI agents; custody
 stays MANUAL and each checkout keeps one writer. Root `SKILL.md` opens the three skills. Every
@@ -210,7 +210,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260828.231614` | Comlink's three pure proofs take a clock; the reach ceiling falls to 1112 | [log](../session-logs/date/20260828/20260828-231614_the-guard-on-no-clock.kyri) |
+| `20260829.001603` | Mandate's seven build what they run; a register red closed | [log](../session-logs/date/20260829/20260829-001603_the-witness-that-builds-what-it-runs.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line here until the next replaces it.
 
