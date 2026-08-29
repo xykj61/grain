@@ -134,9 +134,16 @@ condition a mitra shed asks -- *the mutant carries the elder's content* -- fails
 
 *A Class W row records that a named set was measured against the shed conditions and held. It exists so a later molt pass reads a number instead of repeating a walk.*
 
-### W4 -- the census's top piece, and the lesson it taught the campaign (`20260828.212441`)
+### W5 -- the almanac machinery, held as one unit with its choir (`20260829.150417`)
 
-The counsel campaign's first lift walked `counsel/date/20260724/20260724-141612_names-maps-and-open-questions.md` -- the census's most-cited piece at 7 living citers -- and held it, because its insights were **already lifted the day they were spoken**: `STEWARDS.md`, `context/APARIGRAHA.md`, `context/OPEN_QUESTIONS.md`, and `context/THREATS.md` were each born from this sitting and cite it as their provenance header, and the three `tools/fixtures/r/radiant_*` citations are corpus-sample roles, replaced only on the day a shed circles. The campaign's lesson, written where the next lap reads: **a high citer count at the census's top is mostly provenance credit, and provenance is testimony-shaped -- the lift hunts body-leaning citations, and a census that told the two apart would order better.** Named for a later census rev, not built tonight.
+A survey read the 114 `tools/equinox/almanac/` scripts as consumed; the depth reading held them:
+condensed same-day to one engine plus 114 data stubs (4,639 -> 1,410 lines, parity 114/114), the
+stubs serve **107 living witness calls** the cadence roster still sings. Only the append function
+is consumed, and no cut removes it separately. **Any future cut takes choir plus room as one unit,
+folded into the %330 design lap.** Cut refused; walk saved; account in the `20260829-145726` log.
+
+### W4 -- the census's top piece (`20260828.212441`) -- folded whole to [`archive/SHRED_PREP-w4-census-top-20260828.md`](archive/SHRED_PREP-w4-census-top-20260828.md): held because its insights were lifted the day they were spoken; the lesson (top-of-census citer counts are mostly provenance credit) rides the shelf.
+
 ### W1 -- the thirty-nine of `active-designing/` (`20260823.182512`)
 
 Keaton pasted a browse of the public seed's `active-designing/` room -- twenty-eight day folders and **thirty-nine named documents** -- and asked whether the old ones can shed. Measured that stamp:

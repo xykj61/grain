@@ -1,12 +1,14 @@
 # Lexicon -- Module Names and Their Meanings
 
 **Language:** EN
-**Last updated:** `20260801.024840` (CLI-doc + Crossing-lean pass, during the rested Equinox chapter)
+**Last updated:** `20260829.150417` (row-condense ratchet seated; Lap row repointed at the daily words)
 **Style:** Gauge (see `GAUGE_STYLE.md`)
 
 ---
 
 Living vocabulary for the Grain family (Glow language - Grain umbrella). Each name teaches its function. Provenance for the three names given on 2026-06-30 lives in `specs/20260630-004512_module-name-provenance.md`. Module, aspect, and the graduation rule: [`specs/20260702-035018_graduation-rule.md`](specs/20260702-035018_graduation-rule.md).
+
+**A row defines; the shelves remember** (ratchet seated `20260829.150417`, Keaton's word -- condense on touch, never a sweep). This ledger measured 187 KB with rows averaging 531 bytes because many carry landing history -- nibs, dated links, chapter chronicles -- beside their definition. A row's whole job is a one-clause definition, its seat date, and one pointer to where the story lives; the history belongs in the dated rooms the pointer names. **When a lap touches a row for any reason, it leaves it condensed to that shape.** The `20260821-175723` daily-words row and the Lap row are the finished pattern.
 
 ## Project names
 
