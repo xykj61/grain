@@ -28,11 +28,19 @@ LIVE="$ROOT/pond/enclosure_policy.kyri"
 REFUSE="$ROOT/tools/fixtures/p/pond_enclosure_policy_refuse.kyri"
 HOLD="$ROOT/tools/fixtures/p/pond_enclosure_policy_hold.kyri"
 
-if ! test -x "$BIN"; then
-  mkdir -p "$ROOT/pond/bin"
-  env RYE_ZIG="${RYE_ZIG:-$ROOT/vendor/zig-toolchain/zig}" \
-    "$ROOT/rye/bin/rye" build "$ROOT/pond/enclosure_policy.rye" -femit-bin="$BIN"
-fi
+# THE BUILD IS THIS SCAN'S OWN, EVERY RUN. This line read `if ! test -x "$BIN"` until `20260829`,
+# so a binary built once stood forever and every later edit to pond/enclosure_policy.rye was
+# invisible here. The lap that seated the `user` mark watched it happen: the new mark was refused as
+# an unknown token by a build that predated it, and the SELFTEST leg above passed on those same
+# stale bytes, so the scan reported a module that no longer existed. A guard that runs a build it
+# did not make cannot tell you the source moved. That is REDS %334's family one step on -- there a
+# witness named its build in a comment and ran the binary; here a scan made a build and never
+# remade it. Measured on this pier `20260829`: the whole scan runs 1.4s from a deleted binary, of
+# which the build is 0.8s -- so owning the build costs under a second and buys the one thing this
+# reading exists for.
+mkdir -p "$ROOT/pond/bin"
+env RYE_ZIG="${RYE_ZIG:-$ROOT/vendor/zig-toolchain/zig}" \
+  "$ROOT/rye/bin/rye" build "$ROOT/pond/enclosure_policy.rye" -femit-bin="$BIN"
 
 pen=$(mktemp -d)
 trap 'rm -rf "$pen"' EXIT INT TERM
@@ -69,7 +77,7 @@ echo "SELFTEST ok every mark answers as its comment says"
 # fails here. The counts ride beside the name for the same reason -- a line that quietly stops
 # refusing moves them.
 expect 2 'forbidden declaration: map /sys' "$BIN" check "$LIVE"
-expect 2 'place=27 hold=2 refuse=2' "$BIN" check "$LIVE"
+expect 2 'place=28 hold=2 refuse=2' "$BIN" check "$LIVE"
 echo "ROUNDTRIP ok pond/enclosure_policy.kyri reads whole; today's lap refuses on the enclosure's own /sys"
 
 # A forbidden mount refuses, and the receipt names the mount rather than counting it.
@@ -106,5 +114,17 @@ expect 1 'verdict=hold' "$BIN" explain device /dev/kvm
 expect 2 'verdict=refuse' "$BIN" explain map /tmp
 expect 2 'unknown declaration mark' "$BIN" explain tunnel /dev/net/tun
 echo "EXPLAIN ok place, hold, refuse, and an unknown mark"
+
+# The door's first duty, read at the same terminal door. Every branch of the `user` mark is shown
+# here as well as inside the selftest, because this is where an operator meets it: `invoking` is
+# what the launcher does and places; root refuses by either spelling; a bare uid holds, since no
+# flag this launcher passes could set it; and a placeholder refuses, because in this mark the value
+# is the whole claim rather than a structure a placeholder could keep.
+expect 0 'verdict=place'  "$BIN" explain user invoking
+expect 2 'verdict=refuse' "$BIN" explain user root
+expect 2 'verdict=refuse' "$BIN" explain user 0
+expect 1 'verdict=hold'   "$BIN" explain user 1000
+expect 2 'verdict=refuse' "$BIN" explain user '<uid>'
+echo "USER ok invoking places, root refuses by name and by number, a bare uid holds, a placeholder refuses"
 
 echo "GREEN: pond enclosure-policy -- policy as a value; the forbidden mount refused by name"

@@ -333,6 +333,19 @@ while read -r duty state; do
   esac
 done < "$work/duties"
 
+# The `user` declaration, lifted here and settled by the probe below. A duty the record can now
+# state is a duty something has to check, or the key is a comment with a colon in it -- so the
+# declared value is read on the derived leg and compared against a running kernel on the metal one.
+# `unstated` is the pre-seating shape and stays free: a record that names no user makes no claim,
+# and the gap count above is already the reading for that.
+user_declared=$(sed -n 's/^user \(.*\)$/\1/p' "$work/record" | head -1)
+[ -n "${user_declared:-}" ] || user_declared=unstated
+if [ "$user_declared" = invoking ]; then
+  echo "user: the record declares \`user invoking\`, so the enclosure runs the agent as whoever opened the door"
+elif [ "$user_declared" != unstated ]; then
+  echo "user: the record declares \`user $user_declared\`, a fixed uid the probe leg settles against the kernel"
+fi
+
 # ---------------------------------------------------------------------------
 # THE PROBE -- the same questions, asked inside a running enclosure.
 #
@@ -383,6 +396,21 @@ if [ "$WANT_PROBE" = yes ]; then
       door_disagreements=$(wc -l < "$work/probe.disagree" | tr -d ' ')
 
       echo "probe: the agent runs as uid $probe_uid, and claude refuses --dangerously-skip-permissions at uid 0"
+      # The declaration settled against the kernel. `invoking` is settled against the uid running
+      # this scan, which IS the invoking user; a fixed uid is settled against itself. A record
+      # naming a user the enclosure does not run as is the `network off` fault wearing a new mark
+      # (REDS %329), so it joins the gate the other probe readings already share rather than being
+      # printed beside them.
+      if [ "$user_declared" != unstated ]; then
+        want_uid=$user_declared
+        [ "$user_declared" != invoking ] || want_uid=$(id -u)
+        if [ "$probe_uid" = "$want_uid" ]; then
+          echo "probe: the record declares \`user $user_declared\` and the enclosure ran as uid $probe_uid, which agrees"
+        else
+          door_disagreements=$((door_disagreements + 1))
+          echo "user $user_declared derived=$want_uid metal=$probe_uid" >> "$work/probe.disagree"
+        fi
+      fi
       echo "probe: the entry reads $probe_entry from inside"
       if [ "$entry_state" = declared ] && [ "$probe_entry" = missing ]; then
         door_disagreements=$((door_disagreements + 1))
@@ -399,7 +427,7 @@ fi
 
 echo "path_elements=$path_count path_undeclared=$path_undeclared ceiling=$path_undeclared_ceiling path_host_absent=$path_host_absent path_dead=$path_dead"
 echo "entry_state=$entry_state entry_unreachable=$entry_unreachable env_assignments=$env_count env_undeclared=$env_undeclared"
-echo "duties_undeclared=$duties_undeclared private_home=$private_home"
+echo "duties_undeclared=$duties_undeclared private_home=$private_home user_declared=$user_declared"
 echo "jail_present=$jail_present probe_read=$probe_read probe_asked=$probe_asked probe_uid=$probe_uid probe_entry=$probe_entry door_disagreements=$door_disagreements"
 
 if [ "$entry_unreachable" -gt 0 ]; then

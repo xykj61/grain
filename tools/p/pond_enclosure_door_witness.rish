@@ -57,6 +57,9 @@ assert control.out contains "ceiling_one_past_refuses=yes" else "enclosure-door:
 assert control.out contains "lift_no_jail_path_refuses=yes" else "enclosure-door: a launcher that stops publishing its search path must refuse rather than guess"
 assert control.out contains "lift_no_exec_refuses=yes" else "enclosure-door: a launcher that stops publishing its exec line must refuse rather than guess"
 assert control.out contains "duties_declared_counted=yes" else "enclosure-door: a record that grows keys for the door duties must read zero"
+assert control.out contains "duties_absent_user_unstated=yes" else "enclosure-door: a record naming no user must read unstated rather than guess at one"
+assert control.out contains "user_invoking_read=yes" else "enclosure-door: the record's `user invoking` must reach the derived reading"
+assert control.out contains "duties_declared_user_read=yes" else "enclosure-door: a record naming a fixed uid must reach the derived reading too"
 
 let scan = run ["sh" "tools/fixtures/p/pond_enclosure_door_scan.sh"]
 assert scan.ok else "enclosure-door: the derived reading must complete -- ${scan.out}"
@@ -64,6 +67,12 @@ say scan.out
 assert scan.out contains "entry_unreachable=0" else "enclosure-door: the enclosure must be able to start the program it exists to run"
 assert scan.out contains "verdict=ok" else "enclosure-door: the derived reading must read ok"
 assert scan.out contains "probe_read=no" else "enclosure-door: an ordinary run starts no enclosure"
+assert scan.out contains "user_declared=invoking" else "enclosure-door: the record's own `user` declaration must reach the reading"
+# The gap is pinned rather than merely printed, for the reason pond_enclosure_policy_scan.sh pins
+# its own counts: a duty that quietly stops being counted moves this number, and so does the next
+# one seated. Two stand today -- `entry` and `env` -- and the lap that seats either moves this line
+# on purpose, which is the whole point of writing it down.
+assert scan.out contains "duties_undeclared=2" else "enclosure-door: two door duties stand unnamed today; a lap that seats one moves this pin in the same breath"
 
 let jail = run ["sh" "-c" "command -v ai-jail >/dev/null 2>&1 && echo JAIL_PRESENT || echo JAIL_ABSENT"]
 assert jail.ok else "enclosure-door: the host reading must complete"
@@ -76,5 +85,24 @@ assert probe.ok else "enclosure-door: the probe run must complete -- ${probe.out
 say probe.out
 assert probe.out contains "door_disagreements=0" else "enclosure-door: the kernel and the record must agree about what the door carries"
 assert probe.out contains "verdict=ok" else "enclosure-door: the probe run must read ok"
+assert probe.out contains "which agrees" else "enclosure-door: the record's `user` declaration must be settled against the kernel rather than reported beside it"
 
-say "GREEN: pond enclosure-door -- the entry is reachable, every search-path element answers as derived, and the three duties the record cannot name are counted where a reader finds them."
+# THE SETTLING, PROVEN FROM THE REFUSING SIDE. The run above agrees, and an agreement is the one
+# reading that cannot tell a working comparison from a comparison nobody makes. So the probe runs
+# once more against a record declaring a uid this enclosure cannot be running as, and the scan must
+# refuse. The pen lives outside the tree, so no tracked byte moves and the record on disk is read
+# rather than edited.
+let pen = run ["sh" "-c" "mktemp -d"]
+assert pen.ok else "enclosure-door: the refusing-side proof needs a workspace"
+let pen_dir = trim pen.out
+let wrong = "${pen_dir}/wrong.kyri"
+let plant = run ["sh" "-c" "sed 's|^user invoking|user 65534|' pond/enclosure_policy.kyri > ${wrong}"]
+assert plant.ok else "enclosure-door: the planted record must be written"
+let bit = run ["sh" "tools/fixtures/p/pond_enclosure_door_scan.sh" "--probe" "--policy" "${wrong}"]
+say bit.out
+let swept = run ["sh" "-c" "rm -rf ${pen_dir}"]
+assert swept.ok else "enclosure-door: the pen must be swept"
+if (jail.out contains "JAIL_PRESENT") then assert (bit.out contains "verdict=door_disagrees") else "enclosure-door: a record naming a uid the enclosure does not run as must refuse, and this bench has the jail to prove it"
+if (jail.out contains "JAIL_ABSENT") then say "enclosure-door: the uid settling refuses only where an enclosure can start, so its refusing side is unproven on this bench -- said out loud rather than skipped in silence."
+
+say "GREEN: pond enclosure-door -- the entry is reachable, every search-path element answers as derived, the record's `user` is settled against the kernel from both sides, and the two duties still unnamed are counted where a reader finds them."
