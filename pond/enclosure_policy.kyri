@@ -52,12 +52,34 @@
 # `map /nix/store` LEFT WITH THIS LAP. It was the record's honest guess at a jail default and the
 # plan says the default is `/nix`, whole. One right line replaces one near-miss.
 #
+# THE DOOR'S FIRST DUTY, SEATED 20260829. Every mark in this record until now described the ROOM
+# -- what an agent inside can see, write, or reach. Three duties describe the DOOR instead: which
+# program starts (`entry`), what environment it carries (`env`), and which user it runs as
+# (`user`). The grammar could state none of them, which is orbit four's own measure of distance,
+# counted by tools/fixtures/p/pond_enclosure_door_scan.sh. `user` is seated first because it is the
+# cheapest to check and the one an unattended lap already leans on.
+#
+# `invoking` RATHER THAN A NUMBER, MEASURED RATHER THAN PROPOSED. The reading that opened this door
+# (active-designing/20260829-064107_the-door-the-record-cannot-name.md) proposed one key and one
+# integer. Three measurements on this pier refute the integer, and they are the same three that
+# refuted `network off` above: tools/ag/agent-jail.sh spells no uid flag on its exec line,
+# `ai-jail --help` offers no uid or user option at all, and the door guard's probe leg read the
+# agent running at the invoking user's own uid. A number here would be a claim nothing keeps --
+# which is the REDS %329 fault exactly, one mark over. So the record declares what the launcher
+# does: the enclosure runs the agent as whoever opened the door.
+#
+# `root` REFUSES BY NAME, because tools/ag/agent-jail.sh already tells an operator the opposite in
+# its own words -- claude refuses --dangerously-skip-permissions at uid 0, so run the jail as a
+# non-root user. That note is a comment somebody hopes is read; this line is a thing a program
+# checks.
+#
 #   pond/bin/enclosure-policy check pond/enclosure_policy.kyri
 format pond-enclosure-policy-v1
 name agent-jail-lap
 private-home yes
 network on
 gpu no
+user invoking
 map /run/current-system
 persist /home/youruser/grain
 ephemeral /tmp

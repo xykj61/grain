@@ -58,9 +58,9 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `e67d903ec9` -- this round's own.
+**Git nib:** `c564a2aa4f` -- this round's own.
 
-**Now.** **LOCA -- the macOS native surface, and its iOS twin.**
+**Now.** **LOCA lands on two operating systems; Pond's record learns who walks through its door.**
 
 **The LOCA ladder** (drawn `20260828.222500`): the first pass walked whole -- five movements, a
 Rye view, window, input ring, lifecycle, and parity claims with **zero Swift linked** -- and a
@@ -70,8 +70,15 @@ ring, and the parity pins (`lit=16268`, one house-Keccak digest) identical on **
 systems**. The tri-OS close waits on the pier's `wayland-seed parity`. Account:
 `session-logs/date/20260829/`; landed Now rows on the `20260829-141640` shelf.
 
-**Pond doors:** `spool_cloth` promises 4 large artifacts over a store holding **2** -- three
-options in %341; the seal's header omitted `tools/ag/agent-jail.sh` (`pond_seal_gate` gates 3).
+**The door's first duty** (`20260829-143651`): every mark in Pond's grammar described the ROOM;
+none said who walks through the DOOR. `user` seats first of three duties -- `invoking`, not a
+number, since no uid flag exists to keep one (a number would be `network off` again, %329). Root
+refuses by name and by number. `duties_undeclared` 3 -> **2**, and the claim is settled against a
+running kernel from both sides. Beside it, `pond_enclosure_policy_scan.sh` built its binary once
+and reran it forever, so a source change was invisible while SELFTEST passed on bytes that no
+longer existed (%334's family); it owns its build now, 0.8s of a 1.4s scan.
+
+**Other Pond doors:** `spool_cloth` promises 4 large artifacts over a store holding **2** (%341).
 
 **MANY HANDS** (granted `20260828`): custody stays MANUAL, one writer per checkout. Root
 `SKILL.md`; every clone seats `ww` (`grain-ww/grain`, gate %1) and `.git/ssh_config_jail`.
@@ -81,12 +88,14 @@ returned 811B and %291's new evidence spent 711 of it; `pin_deadlocked=1` still 
 `%338` booked, 3 doors in `20260829-031804`; his seat.
 **Width:** `glow/rune_shape.rye` publishes `usize` in 5 fields and 5 accessors; 59 fixtures
 await his word. **Mind's:** the reconnect stash, `%281`/`%291`, two `enclosure.conf` pins here.
-**Roster:** 93 guards; `rule_twin` 39/36 is gate %7, and 3 Pond rows red on the Mac read green
-here -- Hush's. **Seats:** rostering the roster's own witness; a `mask` softening the `map`; an
-IPv6 tier for `comlink_r1_dual_stack`.
+**Roster here (cold, `20260829.143651`):** 93 guards, 90 green -- `rule_twin` 39/36 is gate %7,
+`width_check`'s tree-wide count 331/329 is another body's, `remember_git_nib` closes here;
+`witness_reach` is GREEN, the Mac's fix landed. **Seats:** rostering the roster's own witness; a
+`mask` softening the `map`; an IPv6 tier for `comlink_r1_dual_stack`.
 
-**Next doors.** Dream: Caravan and Tally. Hush: those Pond rows (a `host linux` want, unmeasured
-here), then orbit four (`20260829-054303`).
+**Next doors.** Dream: Caravan and Tally. Hush: the Mac's 3 Pond rows -- `xargs -r` at
+`pond_enclosure_door_scan.sh:158` is a GNU extension BSD refuses, so at least one wants a repair
+rather than `host linux`; then `env`, the second door duty.
 
 ---
 ## Landed arcs
@@ -202,7 +211,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260829.141956` | The name a missing build hid | [log](../session-logs/date/20260829/20260829-141956_the-name-a-missing-build-hid.kyri) |
+| `20260829.143651` | The door's first duty -- Pond's record can say who walks through it | [log](../session-logs/date/20260829/20260829-143651_the-doors-first-duty.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it. (The cadence
 stays CUT `20260826` -- the custody-gates block above carries the sentence; the duplicate section

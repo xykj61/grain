@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260829.143651` | [the door's first duty](20260829/20260829-143651_the-doors-first-duty.kyri) | Pond's record can say who walks through it; a scan stopped running a stale build |
 | `20260829.151912` | [the argv named once boots twice](20260829/20260829-151912_the-argv-named-once-boots-twice.kyri) | tools/co condense: 135 sites to 45 fn calls, two labs GREEN on real qemu; the destaging hand named |
 | `20260829.151128` | [the spiral turn holds the cut](20260829/20260829-151128_the-spiral-turn-holds-the-cut.kyri) | fire again by the formula: W5 holds the almanac machinery; three survey verdicts seated |
 | `20260829.145726` | [the fire row cuts three bodies to one](20260829/20260829-145726_the-fire-row-cuts-three-bodies-to-one.kyri) | enclosure door, 15 wire-lab shims, almanac engine 114/114 parity; five slices landed |

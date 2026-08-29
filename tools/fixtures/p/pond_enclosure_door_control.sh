@@ -14,7 +14,10 @@
 #
 # WHAT THIS CONTROL DOES NOT REACH. The probe itself, which starts a real enclosure: a pen cannot
 # convincingly fake a kernel, and faking one would prove the fake. tools/p/pond_enclosure_door_witness.rish
-# runs the probe on metal where ai-jail stands, and says so plainly when it cannot.
+# runs the probe on metal where ai-jail stands, and says so plainly when it cannot. That division
+# reaches the `user` mark too: the cases below prove the record's declaration is READ, from both
+# spellings and from its absence, and the witness proves it is SETTLED -- agreeing on the living
+# record and refusing on a planted uid the enclosure cannot be running as.
 #
 # USAGE
 #   sh tools/fixtures/p/pond_enclosure_door_control.sh
@@ -167,6 +170,10 @@ pen=$(new_pen duties_absent)
 want duties_absent_passes ok "$(run_scan "$pen")"
 saw duties_absent_counted "$pen" 'duties_undeclared=3'
 saw duties_absent_named "$pen" 'the record names no `entry`'
+# A record naming no user makes no claim, so the derived reading says `unstated` rather than
+# guessing at one -- which is what keeps the probe comparison below silent on a record that has not
+# seated the mark.
+saw duties_absent_user_unstated "$pen" 'user_declared=unstated'
 
 pen=$(new_pen duties_declared)
 cat >> "$pen/pond/enclosure_policy.kyri" <<'EOF'
@@ -176,6 +183,20 @@ user 1000
 EOF
 want duties_declared_passes ok "$(run_scan "$pen")"
 saw duties_declared_counted "$pen" 'duties_undeclared=0'
+saw duties_declared_user_read "$pen" 'user_declared=1000'
+saw duties_declared_user_named "$pen" 'a fixed uid the probe leg settles against the kernel'
+
+# ---- The `user` mark on its own, seated 20260829. The record can now state who the enclosure runs
+# as, so the derived leg lifts that value and the probe leg settles it against a kernel. Both
+# spellings are read here; the settling itself needs a running enclosure and is proven on metal by
+# tools/p/pond_enclosure_door_witness.rish, which plants a uid the enclosure cannot be running as
+# and watches the scan refuse.
+pen=$(new_pen user_invoking)
+printf 'user invoking\n' >> "$pen/pond/enclosure_policy.kyri"
+want user_invoking_passes ok "$(run_scan "$pen")"
+saw user_invoking_read "$pen" 'user_declared=invoking'
+saw user_invoking_named "$pen" 'runs the agent as whoever opened the door'
+saw user_invoking_counted "$pen" 'duties_undeclared=2'
 
 # ---- Reading six: the lift. The search path and the exec line are read out of the launcher at run
 # time, so losing either makes this refuse rather than guess at a default it once saw.

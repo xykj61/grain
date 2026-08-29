@@ -43,22 +43,31 @@ const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 
-pub const pond_enclosure_policy_version = "20260828.233813";
+pub const pond_enclosure_policy_version = "20260829.143651";
 
 /// A policy small enough to hold in one reading is a policy somebody audits. 8 KiB is the same
 /// bound customs reads a manifest under, so the two seams agree on what "one document" means.
 pub const max_policy_len: u32 = 8192;
-/// Twice the largest real policy in this tree: the agent-jail lap declares thirty-two, counted
+/// Twice the largest real policy in this tree: the agent-jail lap declares **thirty-two**, counted
 /// `20260829` off pond/enclosure_policy.kyri the way the parser counts -- comments, blank lines,
-/// and the `format` line skipped. It read eleven until that record grew from six mounts to the
-/// twenty-seven the enclosure actually builds, and a bound's reason is worth no more than its
-/// number. The bound refuses runaway input while leaving honest growth room.
+/// and the `format` and `name` lines skipped. It read eleven until that record grew from six mounts
+/// to the twenty-seven the enclosure actually builds, and a bound's reason is worth no more than
+/// its number. The bound refuses runaway input while leaving honest growth room.
+///
+/// The count was re-measured when the `user` mark seated, and it had been one high: this line read
+/// thirty-two while the record carried thirty-one, and the `name` line was missing from the list of
+/// what the parser skips. Seating `user` makes thirty-two true, which is the accident worth naming
+/// -- a number that becomes correct on its own is still a number nobody measured.
 pub const max_declarations: u32 = 64;
 /// Linux carries a path to 4096 bytes. A declaration past 256 names something no operator checks
 /// by eye, and an enclosure nobody reads is an enclosure nobody trusts.
 pub const max_path_len: u32 = 256;
 /// The widest value is the rw-map form host:jail -- two bounded paths and one separator.
 pub const max_value_len: u32 = max_path_len * 2 + 1;
+/// A uid is at most ten decimal digits, because the kernel's own `uid_t` is 32 bits wide and
+/// 4294967295 is ten characters long. A longer run of digits names no user any enclosure could
+/// run as, so it is refused at the door rather than parsed and then judged.
+pub const max_uid_digits: u32 = 10;
 
 pub const Verdict = enum {
     place,
@@ -91,6 +100,12 @@ pub const Kind = enum {
     /// Nothing of the host's crosses, so a graft is judged on where it stands rather than on the
     /// host-sharing roster the map marks take.
     graft,
+    /// The user the enclosure runs its agent as. Every mark above describes the ROOM -- what an
+    /// agent inside can see, write, or reach. This one describes the DOOR: who walks through it.
+    /// It is the first of the three door duties the record could not state at all (`entry`,
+    /// `env`, `user`), and it is seated first because it is the cheapest to check and the one an
+    /// unattended lap already depends on.
+    user,
 };
 
 pub const Receipt = struct {
@@ -135,6 +150,7 @@ fn kind_name(k: Kind) []const u8 {
         .fresh => "fresh",
         .mask => "mask",
         .graft => "graft",
+        .user => "user",
     };
 }
 
@@ -152,6 +168,7 @@ pub fn kind_for_token(token: []const u8) ?Kind {
     if (std.mem.eql(u8, token, "fresh")) return .fresh;
     if (std.mem.eql(u8, token, "mask")) return .mask;
     if (std.mem.eql(u8, token, "graft")) return .graft;
+    if (std.mem.eql(u8, token, "user")) return .user;
     return null;
 }
 
@@ -380,6 +397,51 @@ fn verdict_for_fresh(value: []const u8) Verdict {
     return .hold;
 }
 
+/// Who the enclosure runs its agent as. Measured on this pier `20260829`, three ways, the same
+/// three that refuted `network off` one line up in the record: `tools/ag/agent-jail.sh` passes no
+/// uid flag on its exec line, `ai-jail --help` offers no uid or user option at all, and the door
+/// guard's probe leg read the agent running at the invoking user's own uid. So `invoking` is what
+/// the launcher does, and it is the one answer that places.
+///
+/// `root` refuses by name, because the launcher's own note tells an operator the opposite -- claude
+/// refuses `--dangerously-skip-permissions` at uid 0, so an enclosure declaring root declares the
+/// one arrangement the door it describes warns against. Root by number is root by name, so `0`,
+/// `00`, and `000` refuse with it.
+///
+/// A bare non-zero uid HOLDS rather than places, on the reasoning `verdict_for_network` already
+/// carries: no flag this launcher passes could set it, so the record would be claiming something
+/// nothing keeps -- exactly the `network off` fault. Hold says an operator may want it and should
+/// say so out loud, and it leaves the roster open for a Pond enclosure that genuinely sets a uid.
+///
+/// A placeholder refuses, and that is the one place this mark parts from the path marks. The
+/// record writes `<uid>` inside an rw-map path and that line still places, because a path is judged
+/// on its structure and a placeholder keeps the structure. Here the value IS the whole claim, so a
+/// placeholder leaves nothing to check -- which is the comment somebody hopes is read that this
+/// mark exists to replace.
+fn verdict_for_user(value: []const u8) Verdict {
+    // invariant: the value is judged inside the declared bound.
+    assert(value.len <= max_value_len);
+    if (std.mem.eql(u8, value, "invoking")) return .place;
+    if (std.mem.eql(u8, value, "root")) return .refuse;
+    if (value.len == 0) return .refuse;
+    if (value.len > max_uid_digits) return .refuse;
+    for (value) |c| {
+        if (c < '0') return .refuse;
+        if (c > '9') return .refuse;
+    }
+    // invariant: every byte reaching here is a decimal digit, which the loop above established.
+    assert(value[0] >= '0');
+    // invariant: and the same bound holds from the other side.
+    assert(value[0] <= '9');
+    // Root by number is root by name, and a run of zeroes names uid zero however it is spelled.
+    var all_zero = true;
+    for (value) |c| {
+        if (c != '0') all_zero = false;
+    }
+    if (all_zero) return .refuse;
+    return .hold;
+}
+
 pub fn verdict_for_declaration(kind: Kind, value: []const u8) Verdict {
     // invariant: a declaration is judged inside the declared bound.
     assert(value.len <= max_value_len);
@@ -393,6 +455,7 @@ pub fn verdict_for_declaration(kind: Kind, value: []const u8) Verdict {
         .gpu => verdict_for_gpu(value),
         .device => verdict_for_device(value),
         .fresh => verdict_for_fresh(value),
+        .user => verdict_for_user(value),
         // A mask closes and a graft supplies; neither carries a host room across the wall, so both
         // take the structural reading alone, exactly as persist and ephemeral do.
         .persist, .ephemeral, .mask, .graft => verdict_for_path(value),
@@ -521,6 +584,22 @@ fn run_selftest() !u8 {
     assert(verdict_for_declaration(.graft, "/etc/resolv.conf") == .place);
     assert(verdict_for_declaration(.graft, "/tmp/.ai-jail-landlock") == .place);
     assert(verdict_for_declaration(.graft, "/home/youruser/.ssh/config") == .refuse);
+    // The door's first duty. `invoking` is what the launcher does; root refuses by either spelling;
+    // a bare uid holds because no flag this launcher passes could set it; a placeholder and a word
+    // nobody defined refuse, because here the value is the whole claim.
+    assert(verdict_for_declaration(.user, "invoking") == .place);
+    assert(verdict_for_declaration(.user, "root") == .refuse);
+    assert(verdict_for_declaration(.user, "0") == .refuse);
+    assert(verdict_for_declaration(.user, "000") == .refuse);
+    assert(verdict_for_declaration(.user, "1000") == .hold);
+    assert(verdict_for_declaration(.user, "65534") == .hold);
+    assert(verdict_for_declaration(.user, "<uid>") == .refuse);
+    assert(verdict_for_declaration(.user, "nobody") == .refuse);
+    assert(verdict_for_declaration(.user, "") == .refuse);
+    assert(verdict_for_declaration(.user, "10x") == .refuse);
+    // Ten digits is the widest uid a 32-bit uid_t can name, and eleven names nobody.
+    assert(verdict_for_declaration(.user, "4294967295") == .hold);
+    assert(verdict_for_declaration(.user, "12345678901") == .refuse);
 
     // The structural readings, each refusing for its own stated reason.
     assert(verdict_for_path("relative/path") == .refuse);
