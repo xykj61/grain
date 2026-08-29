@@ -153,36 +153,28 @@ pub fn main() !void {
     assert(lit > 0);
     print("macos-cell-grid: grid={d}x{d} cells scale={d} surface={d}x{d} lit_pixels={d}\n", .{ grid_cols, grid_rows, pixel_scale, surface_width, surface_height, lit });
 
-    const shared = objc.send(objc.SendClassId)(app_class, sel_shared);
-    // invariant: the shared application answers before a window is asked for.
-    assert(@intFromPtr(shared) != 0);
-    objc.send(objc.SendIdI64)(shared, sel_policy, activation_policy_regular);
+    // Nil-answering messages are unwrapped with a named error at the call, because the optional
+    // in the send type is the check -- an assert after a non-optional return would be dead code.
+    const shared = objc.send(objc.SendClassId)(app_class, sel_shared) orelse return error.SharedApplicationAbsent;
+    _ = objc.send(objc.SendIdI64)(shared, sel_policy, activation_policy_regular);
 
     const rect = objc.CGRect{
         .origin = .{ .x = 140, .y = 140 },
         .size = .{ .width = @floatFromInt(surface_width), .height = @floatFromInt(surface_height) },
     };
-    const raw = objc.send(objc.SendClassId)(window_class, sel_alloc);
-    // invariant: allocation answers before initialization is attempted.
-    assert(@intFromPtr(raw) != 0);
-    const window = objc.send(objc.SendWindowInit)(raw, sel_init, rect, style_titled | style_closable | style_resizable, backing_buffered, false);
-    // invariant: the window initialized rather than returning nil.
-    assert(@intFromPtr(window) != 0);
+    const raw = objc.send(objc.SendClassId)(window_class, sel_alloc) orelse return error.WindowAllocAbsent;
+    const window = objc.send(objc.SendWindowInit)(raw, sel_init, rect, style_titled | style_closable | style_resizable, backing_buffered, false) orelse return error.WindowInitAbsent;
 
-    const title = objc.send(objc.SendClassStr)(string_class, sel_utf8, "Grain -- Skate cells, no Swift");
+    const title = objc.send(objc.SendClassStr)(string_class, sel_utf8, "Grain -- Skate cells, no Swift") orelse return error.TitleAbsent;
     objc.send(SendIdArg)(window, sel_title, title);
 
     const space = objc.CGColorSpaceCreateDeviceRGB() orelse return error.ColorSpaceAbsent;
     const context = objc.CGBitmapContextCreate(@ptrCast(&pixels), surface_width, surface_height, 8, surface_width * bytes_per_pixel, space, alpha_premultiplied_last) orelse return error.BitmapContextAbsent;
     const image = objc.CGBitmapContextCreateImage(context) orelse return error.ImageAbsent;
 
-    const content = objc.send(objc.SendId)(window, sel_content);
-    // invariant: the window handed back a content view to draw into.
-    assert(@intFromPtr(content) != 0);
+    const content = objc.send(objc.SendId)(window, sel_content) orelse return error.ContentViewAbsent;
     objc.send(SendBool)(content, sel_wants_layer, true);
-    const layer = objc.send(objc.SendId)(content, sel_layer);
-    // invariant: a layer-backed view answers with its layer.
-    assert(@intFromPtr(layer) != 0);
+    const layer = objc.send(objc.SendId)(content, sel_layer) orelse return error.LayerAbsent;
     objc.send(SendPtr)(layer, sel_contents, image);
 
     objc.send(SendIdArg)(window, sel_front, null);
@@ -192,8 +184,8 @@ pub fn main() !void {
     // The input half. One synthetic event is posted into this process's own queue, and the loop
     // below must dequeue it, read its type, and dispatch it -- which is the whole of what a
     // backend's event pump does, proven small.
-    const mode = objc.send(objc.SendClassStr)(string_class, sel_utf8, "kCFRunLoopDefaultMode");
-    const past = objc.send(objc.SendClassId)(date_class, sel_distant_past);
+    const mode = objc.send(objc.SendClassStr)(string_class, sel_utf8, "kCFRunLoopDefaultMode") orelse return error.ModeAbsent;
+    const past = objc.send(objc.SendClassId)(date_class, sel_distant_past) orelse return error.DateAbsent;
     const synthetic = objc.send(SendOtherEvent)(
         event_class,
         sel_other_event,
@@ -209,9 +201,13 @@ pub fn main() !void {
     ) orelse return error.EventNotCreated;
     objc.send(SendIdArgBool)(shared, sel_post, synthetic, true);
 
+    // Each turn runs inside its own autorelease pool, so what the platform autoreleases per
+    // turn drains per turn; the mode, past date, and title made before the loop sit below the
+    // pool's boundary and stand for the whole run.
     var turn: u32 = 0;
     var seen: u32 = 0;
     while (turn < max_event_turns) : (turn += 1) {
+        const pool = objc.objc_autoreleasePoolPush();
         const event = objc.send(SendNextEvent)(shared, sel_next, event_mask_any, past, mode, true);
         if (event) |got| {
             const kind = objc.send(SendU64)(got, sel_event_type);
@@ -219,6 +215,7 @@ pub fn main() !void {
             if (seen == 1) print("macos-cell-grid: event dequeued type={d} (application-defined is {d})\n", .{ kind, event_type_application_defined });
             objc.send(SendIdArg)(shared, sel_send_event, got);
         }
+        objc.objc_autoreleasePoolPop(pool);
         var pause = c.timespec{ .sec = 0, .nsec = 10_000_000 };
         _ = c.nanosleep(&pause, null);
     }

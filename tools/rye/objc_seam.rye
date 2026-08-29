@@ -14,6 +14,17 @@
 //! stronger than a compile-time header check -- it is the framework on this machine rather than
 //! an SDK's description of it. It earned itself on its first run, catching two of the probe's own
 //! eight declarations where a forgotten return type read `@:` against the framework's `@@:`.
+//!
+//! TWO DIRECTIONS, ONE BOUNDARY. `send` casts outward -- a message into the framework. `imp`
+//! casts inward -- a Rye function handed to the runtime as a method implementation, so the
+//! platform can call back into this tree's own code. Both are reinterpretations of a function
+//! pointer, so both live here. The checks differ in strength, and honesty wants that named:
+//! outward, `verify` compares a declaration against the framework's own independent record;
+//! inward, the runtime stores whatever `types` string the caller hands `class_addMethod`, so
+//! reading it back proves the registration held and nothing more. The independent inward
+//! authority is the SUPERCLASS's compiled record of the selector being overridden -- verify the
+//! declared encoding against that, before the add, whenever an added selector overrides an
+//! inherited one.
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -32,6 +43,14 @@ pub extern fn objc_msgSend() void;
 pub extern fn class_getInstanceMethod(cls: ?Class, sel: Sel) ?Method;
 pub extern fn class_getClassMethod(cls: ?Class, sel: Sel) ?Method;
 pub extern fn method_getTypeEncoding(m: ?Method) ?[*:0]const u8;
+pub extern fn objc_allocateClassPair(superclass: ?Class, name: [*:0]const u8, extra_bytes: usize) ?Class;
+pub extern fn objc_registerClassPair(cls: Class) void;
+pub extern fn class_addMethod(cls: ?Class, sel: Sel, implementation: *const anyopaque, types: [*:0]const u8) bool;
+
+/// A class this tree registers carries no extra instance bytes: callback state lives in the
+/// program's own named variables, where TAME can see and bound it, rather than in runtime-managed
+/// ivars it cannot.
+pub const extra_ivar_bytes: u32 = 0;
 
 /// CGRect is four doubles, which is what AppKit's NSRect is on every 64-bit Apple target.
 pub const CGPoint = extern struct { x: f64, y: f64 };
@@ -41,9 +60,18 @@ pub const CGRect = extern struct { origin: CGPoint, size: CGSize };
 pub extern fn CGColorSpaceCreateDeviceRGB() ?*anyopaque;
 pub extern fn CGBitmapContextCreate(data: ?*anyopaque, width: usize, height: usize, bits_per_component: usize, bytes_per_row: usize, space: ?*anyopaque, bitmap_info: u32) ?*anyopaque;
 pub extern fn CGBitmapContextCreateImage(context: ?*anyopaque) ?*anyopaque;
+pub extern fn CGContextSetRGBFillColor(context: ?*anyopaque, red: f64, green: f64, blue: f64, alpha: f64) void;
+pub extern fn CGContextFillRect(context: ?*anyopaque, rect: CGRect) void;
 
 /// The one cast, in the one place. Every caller reaches a message through a verified selector.
 pub fn send(comptime Fn: type) Fn {
+    comptime {
+        const info = @typeInfo(Fn);
+        // invariant: only a pointer type can carry a message signature.
+        assert(info == .pointer);
+        // invariant: the pointee is a function, so the cast target can actually be called.
+        assert(@typeInfo(info.pointer.child) == .@"fn");
+    }
     return @ptrCast(&objc_msgSend);
 }
 
@@ -91,13 +119,72 @@ pub fn verify(cls: ?Class, name: [*:0]const u8, want: []const u8, class_method: 
     return sel;
 }
 
-pub const SendId = *const fn (Id, Sel) callconv(.c) Id;
-pub const SendClassId = *const fn (Class, Sel) callconv(.c) Id;
+/// The inward cast, beside `send`'s outward one: a Rye function becomes an Objective-C IMP the
+/// runtime can dispatch to. Kept here so a backend never writes a pointer cast of its own; the
+/// declared encoding is proven after registration by handing the class back to `verify`, which
+/// reads the runtime's own record of what was added.
+pub fn imp(function: anytype) *const anyopaque {
+    comptime {
+        const info = @typeInfo(@TypeOf(function));
+        // invariant: only a pointer becomes an IMP; a bare value refuses at compile time.
+        assert(info == .pointer);
+        // invariant: the pointee is a function, so the runtime receives something it can call.
+        assert(@typeInfo(info.pointer.child) == .@"fn");
+    }
+    return @ptrCast(function);
+}
+
+/// Allocate one class pair under a free name, refusing before the runtime is mutated: a name
+/// already seated dies here, since registering over it would shadow a class other code is
+/// already messaging.
+pub fn allocate_class(superclass: Class, name: [*:0]const u8) Class {
+    // invariant: the parent is a real class the runtime already holds.
+    assert(@intFromPtr(superclass) != 0);
+    if (objc_getClass(name) != null) {
+        print("objc-seam: REFUSED -- class {s} is already seated in this runtime; nothing was allocated.\n", .{name});
+        @panic("objc seam: class name already seated; refused before allocation");
+    }
+    const cls = objc_allocateClassPair(superclass, name, extra_ivar_bytes);
+    // invariant: a free name over a real superclass always allocates.
+    assert(cls != null);
+    return cls.?;
+}
+
+/// Seat one method on a class not yet registered, and hand back its selector. The runtime must
+/// acknowledge the add; the declared encoding is then proven through `verify` once the class is
+/// registered, the same gate every framework selector passes.
+pub fn add_method(cls: Class, name: [*:0]const u8, implementation: *const anyopaque, types: [*:0]const u8) Sel {
+    // invariant: the class is real before the runtime is touched.
+    assert(@intFromPtr(cls) != 0);
+    // invariant: the implementation points at code rather than at nothing.
+    assert(@intFromPtr(implementation) != 0);
+    const sel = sel_registerName(name);
+    const added = class_addMethod(cls, sel, implementation, types);
+    // invariant: the runtime acknowledged the method rather than dropping it.
+    assert(added);
+    return sel;
+}
+
+// A message that answers an object may answer nil, and the optional keeps that fact in the
+// type. A nil landing in a non-optional pointer is illegal behavior BEFORE any assert could
+// read it -- the compiler marks such returns nonnull and may fold the guard away -- so a
+// send type declares `?Id` wherever the selector can honestly answer nothing, and the caller
+// checks with `orelse` rather than trusting.
+pub const SendId = *const fn (Id, Sel) callconv(.c) ?Id;
+pub const SendClassId = *const fn (Class, Sel) callconv(.c) ?Id;
 pub const SendIdVoid = *const fn (Id, Sel) callconv(.c) void;
 pub const SendIdBool = *const fn (Id, Sel, bool) callconv(.c) void;
-pub const SendIdI64 = *const fn (Id, Sel, i64) callconv(.c) void;
+// setActivationPolicy: answers whether the policy took (its verified encoding is B@:q); the
+// return type says so, and a caller that does not need the answer discards it aloud with `_ =`.
+pub const SendIdI64 = *const fn (Id, Sel, i64) callconv(.c) bool;
 pub const SendIdIdVoid = *const fn (Id, Sel, ?Id) callconv(.c) void;
 pub const SendIdPtrVoid = *const fn (Id, Sel, ?*anyopaque) callconv(.c) void;
 pub const SendIdInteger = *const fn (Id, Sel) callconv(.c) i64;
-pub const SendClassStr = *const fn (Class, Sel, [*:0]const u8) callconv(.c) Id;
-pub const SendWindowInit = *const fn (Id, Sel, CGRect, u64, u64, bool) callconv(.c) Id;
+pub const SendClassStr = *const fn (Class, Sel, [*:0]const u8) callconv(.c) ?Id;
+pub const SendWindowInit = *const fn (Id, Sel, CGRect, u64, u64, bool) callconv(.c) ?Id;
+
+// The autorelease pool, reached by its C entry points. A pump that dequeues events and makes
+// dates inside its loop wraps each turn in a pool, so what the platform autoreleases per turn
+// drains per turn -- the loop a real backend stands in is bounded in memory as well as turns.
+pub extern fn objc_autoreleasePoolPush() ?*anyopaque;
+pub extern fn objc_autoreleasePoolPop(pool: ?*anyopaque) void;
