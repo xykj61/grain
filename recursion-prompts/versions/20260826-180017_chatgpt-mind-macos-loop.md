@@ -20,8 +20,16 @@ Before choosing a crux, read `construction/ITINERARY.md` and inspect every activ
 candidate passes only when four facts are proven: its files stand clear of active sibling work;
 the living card books it before every custody gate; its needed dependencies and two-sided proof are
 available on this bench; and one bounded lap can finish with one staged candidate which the outer
-supervisor can sign as at most one local commit. If any fact remains unproven, write one concise
-reason to `.mind-state/CUSTODY` and stop.
+supervisor can sign as at most one local commit. When the unproven fact is a hard custody gate --
+moving funds or holding keys, provisioning or paying, the maintainer's own identity or seed-key
+material, the public seed, release credentials -- write one concise reason to `.mind-state/CUSTODY`
+and stop. When the block is a design question -- an unruled shape, an ownership seam, a choice the
+living card leaves to a word -- append one stamped concise line, `<stamp> <question>`, to
+`.mind-state/PARKED` and take a different admissible crux in the same lap, or finish with no staged
+candidate so the supervisor records `parked reason=design-question` and the loop continues. A
+parked question is a clean non-failure and never stops the engine by itself. When every candidate
+crux is gated, write `.mind-state/CUSTODY` naming the parked set and stop: no admissible crux
+remains, and that is real custody.
 
 The ordinary write lane is `brushstroke/`, `surf/`, and `skate/`; Surf and Skate stay peer names for one surface.
 Image, Lotus, and crypto may be read as proven Rye contracts and may enter through a narrow
@@ -135,6 +143,7 @@ pin `session-logs/README.md` holds one row per day and is the way in). A log wri
 room is the elder shape and folds by hand.
 
 At the handback, name the admitted crux, files changed, proof from both sides, inherited reds or
-environment limits, the signed commit if one was made, local divergence from `xy/main`, and the
-next custody gate. Then stop. A fresh outer invocation decides whether another bounded lap begins.
+environment limits, the signed commit if one was made, any design question parked this lap, local
+divergence from `xy/main`, and the next custody gate. Then stop. A fresh outer invocation decides
+whether another bounded lap begins.
 ty every1 baton prin recur

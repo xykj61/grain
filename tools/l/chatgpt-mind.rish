@@ -15,6 +15,18 @@ let max_laps_hard = 24
 let max_failures_hard = 5
 let max_backoff_seconds = 300
 let max_local_ahead = 32
+# .mind-state/PARKED is the lap's append-only ledger of parked design questions, one stamped
+# line each. 64 KiB holds far more one-line questions than a bounded loop can write, and it
+# matches the receipt byte walls this launcher already uses.
+let max_parked_bytes = 65536
+# The all-cruxes-parked CUSTODY note carries the whole PARKED ledger plus one header line, so
+# its wall is the ledger wall plus one KiB of header room.
+let max_custody_note_bytes = 66560
+# Three consecutive parked laps close the loop as real custody: a lap that three times running
+# finds every admissible crux gated by a design question is rereading a card a fourth read will
+# not change, while one working lap resets the streak -- so three stops a spin without letting
+# two genuinely distinct parked questions stop the engine on their own.
+let max_consecutive_parked = 3
 let sketchbook_pin = "99b87f20f1fdbd2fc216cb13c07bdd0531916d27"
 
 let mode = ""
@@ -116,6 +128,8 @@ let lock_rel = state_rel + "/run.lock"
 let stop_rel = state_rel + "/STOP"
 let stop_abs = state_abs + "/STOP"
 let custody_abs = state_abs + "/CUSTODY"
+let custody_rel = state_rel + "/CUSTODY"
+let parked_rel = state_rel + "/PARKED"
 let transaction_rel = state_rel + "/TRANSACTION"
 let transaction_abs = state_abs + "/TRANSACTION"
 let preflight_rel = state_rel + "/preflight"
@@ -640,7 +654,7 @@ if internal_lap == false then acquire-lock lock_rel
 let launcher_abs = repo_root + "/tools/l/chatgpt-mind.rish"
 let internal_out = log_rel + "/supervisor.out"
 let internal_err = log_rel + "/supervisor.err"
-let phase_values = ["supervisor reason=starting" "supervisor reason=unclassified" "lap-preflight reason=dirty-tree" "lap-preflight reason=xy-advanced" "lap-preflight reason=stop" "lap-preflight reason=custody" "lap-preflight reason=transaction" "lap-preflight reason=head" "last-message reason=initialization" "codex-exec reason=running" "codex-output reason=byte-wall" "codex-exec reason=nonzero" "custody reason=recorded" "git-postcondition reason=inner-commit" "git-postcondition reason=no-candidate" "git-postcondition reason=unstaged" "git-postcondition reason=untracked" "git-postcondition reason=path-wall" "git-postcondition reason=path-ceiling" "git-postcondition reason=lane" "git-postcondition reason=forbidden-path" "git-postcondition reason=diff-wall" "git-postcondition reason=commit-message" "git-postcondition reason=config-drift" "git-postcondition reason=hook-failed" "git-postcondition reason=xy-advanced" "git-postcondition reason=transaction" "git-postcondition reason=signing-failed" "git-postcondition reason=signature" "git-postcondition reason=commit-ceiling" "git-postcondition reason=ref-update" "git-postcondition reason=post-cas" "complete reason=signed-commit"]
+let phase_values = ["supervisor reason=starting" "supervisor reason=unclassified" "lap-preflight reason=dirty-tree" "lap-preflight reason=xy-advanced" "lap-preflight reason=stop" "lap-preflight reason=custody" "lap-preflight reason=transaction" "lap-preflight reason=head" "last-message reason=initialization" "codex-exec reason=running" "codex-output reason=byte-wall" "codex-exec reason=nonzero" "custody reason=recorded" "custody reason=all-cruxes-parked" "parked reason=design-question" "git-postcondition reason=parked-ledger" "git-postcondition reason=inner-commit" "git-postcondition reason=no-candidate" "git-postcondition reason=unstaged" "git-postcondition reason=untracked" "git-postcondition reason=path-wall" "git-postcondition reason=path-ceiling" "git-postcondition reason=lane" "git-postcondition reason=forbidden-path" "git-postcondition reason=diff-wall" "git-postcondition reason=commit-message" "git-postcondition reason=config-drift" "git-postcondition reason=hook-failed" "git-postcondition reason=xy-advanced" "git-postcondition reason=transaction" "git-postcondition reason=signing-failed" "git-postcondition reason=signature" "git-postcondition reason=commit-ceiling" "git-postcondition reason=ref-update" "git-postcondition reason=post-cas" "complete reason=signed-commit"]
 let newline_run = run ["/usr/bin/printf" "\n"]
 assert newline_run.ok else "REFUSE chatgpt-mind: newline witness could not be rendered"
 let newline = newline_run.out
@@ -654,7 +668,11 @@ let phase_seed = write-phase "supervisor reason=starting"
 assert phase_seed.ok else "REFUSE chatgpt-mind: could not initialize the bounded phase receipt"
 assert phase-held "supervisor reason=starting" else "REFUSE chatgpt-mind: initialized phase receipt is malformed"
 fn run-one-lap lap: run-bounded { argv: ["/usr/bin/env" "MIND_INTERNAL_LAP=1" "MIND_STATE_DIR=${state_abs}" "MIND_CODEX_HOME=${codex_home_abs}" "MIND_RISHI_BIN=${rishi_bin}" "MIND_AI_JAIL_BIN=${ai_jail}" "MIND_CODEX_BIN=${codex_exec}" rishi_bin "run" launcher_abs "lap" (str lap)], stdin: "", stdin-max: 0, stdout-path: internal_out, stdout-max: max_supervisor_bytes, stderr-path: internal_err, stderr-max: max_supervisor_bytes, stdout-relay: true, stderr-relay: true }
-fn mind-loop lap max failures ceiling delay: ?: (lap > max) (0) (?: ((run-one-lap lap).ok) (mind-loop (lap + 1) max 0 ceiling delay) (?: ((failures + 1) >= ceiling) (1) (?: ((run ["sleep" (str delay)]).ok) (mind-loop lap max (failures + 1) ceiling (clamp (delay * 2) 0 max_backoff_seconds)) (1))))
+# A parked lap exits clean with its own receipt, so the loop reads the receipt to keep the
+# consecutive-park streak: 0 means the loop completed, 1 means the failure circuit opened, and
+# 2 means max_consecutive_parked laps in a row parked -- no admissible crux remains.
+fn lap-parked ignored: ?& [(phase-file-safe 0) ((trim (read-file phase_rel)) == "parked reason=design-question")]
+fn mind-loop lap max failures ceiling delay parked: ?: (lap > max) (0) (?: ((run-one-lap lap).ok) (?: (lap-parked 0) (?: ((parked + 1) >= max_consecutive_parked) (2) (mind-loop (lap + 1) max 0 ceiling delay (parked + 1))) (mind-loop (lap + 1) max 0 ceiling delay 0)) (?: ((failures + 1) >= ceiling) (1) (?: ((run ["sleep" (str delay)]).ok) (mind-loop lap max (failures + 1) ceiling (clamp (delay * 2) 0 max_backoff_seconds) parked) (1))))
 
 let once_result = ?: (mode == "once") (run-one-lap 1) ({ok: true, overflow: ""})
 assert ?| [(mode != "once") (once_result.overflow == "")] else "REFUSE chatgpt-mind: lap failed at supervisor-output reason=byte-wall; bounded detail remains private"
@@ -663,17 +681,28 @@ let once_phase_raw = ?: (mode == "once") (trim (read-file phase_rel)) ("not-run"
 assert ?| [(mode != "once") (phase-held once_phase_raw)] else "REFUSE chatgpt-mind: lap phase receipt is not one finite mode-0600 regular line"
 let once_phase = ?: (mode == "once") (public-phase once_phase_raw) ("not-run")
 assert ?| [(mode != "once") once_result.ok] else "REFUSE chatgpt-mind: lap failed phase=${once_phase}; bounded detail remains in ${internal_err}"
-assert ?| [(mode != "once") (once_phase == "complete reason=signed-commit")] else "REFUSE chatgpt-mind: successful lap lacks its signed-commit receipt"
-if mode == "once" then say "chatgpt-mind: lap one complete with one signed local commit"
+assert ?| [(mode != "once") (once_phase == "complete reason=signed-commit") (once_phase == "parked reason=design-question")] else "REFUSE chatgpt-mind: successful lap lacks its signed-commit or parked receipt"
+if ?& [(mode == "once") (once_phase == "complete reason=signed-commit")] then say "chatgpt-mind: lap one complete with one signed local commit"
+if ?& [(mode == "once") (once_phase == "parked reason=design-question")] then say "chatgpt-mind: lap one parked its design question; no candidate was demanded"
 if mode == "once" then exit 0
 
-let loop_result = ?: (mode == "loop") (mind-loop 1 max_laps 0 failure_ceiling backoff_seconds) (0)
+let loop_result = ?: (mode == "loop") (mind-loop 1 max_laps 0 failure_ceiling backoff_seconds 0) (0)
+# Three consecutive parked laps mean no admissible crux remains, and that is real custody
+# rather than a soft skip: the parked set is written into CUSTODY so every later armed run
+# refuses at the standing wall until a word clears it.
+let custody_note_err = log_rel + "/custody-note.err"
+let all_parked = ?& [(mode == "loop") (loop_result == 2)]
+let custody_note = ?: all_parked ("all-cruxes-parked: ${max_consecutive_parked} consecutive laps parked their design questions; no admissible crux remains. Parked set:" + newline + (?: ((run ["test" "-f" parked_rel]).ok) (read-file parked_rel) (""))) ("")
+let custody_write = ?: all_parked (run-bounded { argv: ["/usr/bin/printf" "%s" custody_note], stdin: "", stdin-max: 0, stdout-path: custody_rel, stdout-max: max_custody_note_bytes, stderr-path: custody_note_err, stderr-max: 4096 }) ({ok: true, overflow: ""})
+assert custody_write.ok else "REFUSE chatgpt-mind: all-cruxes-parked custody note could not be written"
+let phase_all_parked = ?: all_parked (write-phase "custody reason=all-cruxes-parked") ({ok: true, overflow: ""})
+assert phase_all_parked.ok else "REFUSE chatgpt-mind: loop could not seat its all-cruxes-parked phase"
 assert ?| [(mode != "loop") (phase-file-safe 0)] else "REFUSE chatgpt-mind: loop phase receipt is not a mode-0600 regular nonsymlink file"
 let loop_phase_raw = ?: (mode == "loop") (trim (read-file phase_rel)) ("not-run")
 assert ?| [(mode != "loop") (phase-held loop_phase_raw)] else "REFUSE chatgpt-mind: loop phase receipt is not one finite mode-0600 regular line"
 let loop_phase = ?: (mode == "loop") (public-phase loop_phase_raw) ("not-run")
 assert ?| [(mode != "loop") (loop_result == 0)] else "REFUSE chatgpt-mind: circuit opened phase=${loop_phase}; bounded detail remains in ${internal_err}"
-assert ?| [(mode != "loop") (loop_phase == "complete reason=signed-commit")] else "REFUSE chatgpt-mind: successful loop lacks its signed-commit receipt"
+assert ?| [(mode != "loop") (loop_phase == "complete reason=signed-commit") (loop_phase == "parked reason=design-question")] else "REFUSE chatgpt-mind: successful loop lacks its signed-commit or parked receipt"
 if mode == "loop" then say "chatgpt-mind: bounded loop completed ${max_laps} lap(s); no push was attempted"
 if mode == "loop" then exit 0
 
@@ -713,6 +742,17 @@ assert last_init.ok else "REFUSE chatgpt-mind: could not initialize bounded last
 let message_init_err = "${log_rel}/lap-${lap_number}.message-init.err"
 let message_init = run-bounded { argv: ["/usr/bin/true"], stdin: "", stdin-max: 0, stdout-path: commit_message_rel, stdout-max: max_commit_message_bytes, stderr-path: message_init_err, stderr-max: 4096 }
 assert message_init.ok else "REFUSE chatgpt-mind: could not initialize the bounded commit-message file"
+# PARKED before-image: the parked-ledger postcondition below tells an append from a rewrite by
+# prefix, so the before bytes are held across the Codex child. PARKED is loop-local state under
+# the untracked state directory; it is never staged and never a candidate path.
+let parked_link_pre = run ["test" "-L" parked_rel]
+assert parked_link_pre.ok == false else "REFUSE chatgpt-mind: PARKED cannot be a symlink"
+let parked_present_pre = (run ["test" "-f" parked_rel]).ok
+let parked_size_pre_run = ?: parked_present_pre (run ["/usr/bin/stat" "-f" "%z" parked_rel]) ({ok: true, out: "0"})
+assert parked_size_pre_run.ok else "REFUSE chatgpt-mind: PARKED size is unreadable"
+let parked_size_pre = parse (trim parked_size_pre_run.out)
+assert parked_size_pre <= max_parked_bytes else "REFUSE chatgpt-mind: PARKED crossed its byte wall"
+let parked_before = ?: parked_present_pre (read-file parked_rel) ("")
 let prompt_text = read-file prompt_rel
 let phase_codex_running = write-phase "codex-exec reason=running"
 assert phase_codex_running.ok else "REFUSE chatgpt-mind: internal lap could not seat its Codex running phase"
@@ -733,9 +773,36 @@ let prepared_head_run = git-run ["-C" repo_root "rev-parse" "HEAD"]
 assert prepared_head_run.ok else "REFUSE chatgpt-mind: could not read candidate HEAD"
 assert (trim prepared_head_run.out) == before else "REFUSE chatgpt-mind: jailed Codex created a commit instead of a staged candidate"
 
+# Parked-ledger postcondition: bounded, regular, append-only. Hard custody was already checked
+# above and keeps its exact refusal; PARKED holds only design questions the lap chose to park.
+let phase_parked_ledger = write-phase "git-postcondition reason=parked-ledger"
+assert phase_parked_ledger.ok else "REFUSE chatgpt-mind: internal lap could not seat its parked-ledger phase"
+let parked_link_post = run ["test" "-L" parked_rel]
+assert parked_link_post.ok == false else "REFUSE chatgpt-mind: PARKED cannot be a symlink"
+let parked_present_post = (run ["test" "-f" parked_rel]).ok
+let parked_size_post_run = ?: parked_present_post (run ["/usr/bin/stat" "-f" "%z" parked_rel]) ({ok: true, out: "0"})
+assert parked_size_post_run.ok else "REFUSE chatgpt-mind: PARKED size is unreadable"
+let parked_size_post = parse (trim parked_size_post_run.out)
+assert parked_size_post <= max_parked_bytes else "REFUSE chatgpt-mind: PARKED crossed its byte wall"
+let parked_after = ?: parked_present_post (read-file parked_rel) ("")
+assert ?| [(parked_after == parked_before) (parked_before == "") (parked_after starts-with parked_before)] else "REFUSE chatgpt-mind: PARKED must grow append-only"
+let parked_grew = (length parked_after) > (length parked_before)
+
 let phase_no_candidate = write-phase "git-postcondition reason=no-candidate"
 assert phase_no_candidate.ok else "REFUSE chatgpt-mind: internal lap could not seat its candidate phase"
 let staged_probe = git-run ["-C" repo_root "diff" "--cached" "--quiet" "--ignore-submodules=none"]
+# A lap that appended a design question and staged nothing is a CLEAN parked lap rather than a
+# failure: the question waits for a word while the loop takes a different crux next lap. A lap
+# that parked a question and still staged a candidate simply continues below.
+let parked_lap = ?& [parked_grew (staged_probe.code == 0)]
+let parked_tree_clean = ?: parked_lap (repo-clean repo_root) (true)
+assert ?| [(parked_lap == false) parked_tree_clean] else "REFUSE chatgpt-mind: parked lap left a dirty tree"
+let phase_parked = ?: parked_lap (write-phase "parked reason=design-question") ({ok: true, overflow: ""})
+assert phase_parked.ok else "REFUSE chatgpt-mind: internal lap could not seat its parked receipt"
+let parked_receipt_held = ?: parked_lap (phase-held "parked reason=design-question") (true)
+assert ?| [(parked_lap == false) parked_receipt_held] else "REFUSE chatgpt-mind: parked receipt is malformed"
+if parked_lap then say "chatgpt-mind: lap ${lap_number} parked its design question; no candidate was demanded"
+if parked_lap then exit 0
 assert staged_probe.code == 1 else "REFUSE chatgpt-mind: lap did not stage exactly one candidate"
 
 let phase_unstaged = write-phase "git-postcondition reason=unstaged"

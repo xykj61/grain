@@ -129,12 +129,32 @@ key material remains outside the repository.
 One exact receipt forms the public phase boundary. Each internal lap writes one
 mode-0600 line to `.mind-state/logs/lap.phase`. The line belongs to the
 launcher's finite phase-and-reason allowlist. The vocabulary separates lap
-preflight, Codex running, Codex output, Codex exit, custody, staged-candidate and Git
+preflight, Codex running, Codex output, Codex exit, custody, the parked ledger,
+a parked design question, staged-candidate and Git
 postconditions, signing, verification, and
 `complete reason=signed-commit`. A regular single line inside the byte ceiling
 earns its reading. Every other shape reads
 `supervisor reason=unclassified`. Detailed stderr remains private evidence;
 the receipt alone labels the phase.
+
+CUSTODY and PARKED split two different stops (seated `20260828`, a user-owned
+signed supervisor update). `.mind-state/CUSTODY` keeps its exact standing
+refusals for the hard gates -- moving funds or holding keys, provisioning or
+paying, the maintainer's identity, the seed, release credentials -- unchanged
+in file, strings, and effect. `.mind-state/PARKED` is an append-only,
+byte-bounded ledger of parked design questions, one stamped concise line each.
+A lap that appends a question and stages nothing exits clean with
+`parked reason=design-question`: no candidate is demanded, no circuit strike
+lands, and the loop continues to the next lap. The launcher proves the ledger
+grew append-only under `git-postcondition reason=parked-ledger` before reading
+the lap as parked, so a park can never quietly edit an earlier question. Three
+consecutive parked laps -- the named `max_consecutive_parked` ceiling -- close
+the loop with `custody reason=all-cruxes-parked` and write CUSTODY naming the
+parked set, because a queue with no admissible crux left is real custody rather
+than a soft skip; one working lap resets the streak. The split exists because
+on `20260828` the loop twice recorded a design question already answered
+upstream as CUSTODY and stopped where it could have parked the question and
+taken a different crux.
 
 Power is an observation rather than an authority source. The launcher reports
 AC or battery and both sleep readings. It admits the same bounded `once` or
@@ -196,7 +216,13 @@ bounded staged change and its bounded message. Their planted legs exercise an
 inner commit, zero and over-ceiling path sets, worktree residue, unsafe message
 shapes, caller Git poisoning, a Sound-owned path, alternate host signers and
 fingerprints, and GPG or agent mappings into the jail. Each plant returns
-custody with the prior HEAD. The Rishi runtime
+custody with the prior HEAD. The parked plants prove the custody split from
+both sides: a planted parked lap reads `parked reason=design-question` and
+opens no circuit, two parks around a working lap keep the loop alive with the
+streak reset, three consecutive parks close as `custody reason=all-cruxes-parked`
+with a CUSTODY file naming the parked set that the next run refuses at the
+standing wall, and a rewritten parked ledger refuses under its parked-ledger
+phase. The Rishi runtime
 fixtures separately prove the stream ceilings and owned cleanup on metal.
 
 The shell file remains a compatibility witness; deletion stays outside this
