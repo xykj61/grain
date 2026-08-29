@@ -25,42 +25,14 @@ const print = std.debug.print;
 
 const skate = @import("skate_grid.rye");
 const claims_mod = @import("surface_claims.rye");
+const reference = @import("surface_reference.rye");
 
-// The reference geometry: the cell probe's own, proven on a live window twice tonight.
-const grid_cols: u32 = 44;
-const grid_rows: u32 = 9;
-const pixel_scale: u32 = 2;
-const surface_width: u32 = grid_cols * skate.cell_w * pixel_scale;
-const surface_height: u32 = grid_rows * skate.cell_h * pixel_scale;
-const bytes_per_pixel: u32 = 4;
-const surface_bytes: u32 = surface_width * surface_height * bytes_per_pixel;
-
-// The pins. The lit count is the reading the finding page recorded from the macOS window
-// (16,268 glyph pixels); the digest was printed by this witness's own discovery run on
-// 20260829 and pinned in the same lap, the seam's discover-then-pin habit.
-const pinned_lit: u32 = 16268;
-const pinned_digest_hex = "9bb9e1decddb9c1742a210af4acb9e62f925d0acfd1f9c57067cceb88caa7874";
-
-const background = skate.Color{ .r = 18, .g = 18, .b = 24 };
-const foreground = skate.Color{ .r = 235, .g = 235, .b = 235 };
-
-/// The reference composition -- byte for byte the macOS cell probe's compose, because the
-/// oracle must be a picture a backend has actually presented.
-fn compose(grid: *skate.Grid) void {
-    // invariant: the grid this witness composes is the grid it declared.
-    assert(grid.cols == grid_cols);
-    assert(grid.rows == grid_rows);
-    grid.set_palette(1, .{ .r = 255, .g = 210, .b = 120 });
-    grid.set_palette(2, .{ .r = 130, .g = 220, .b = 255 });
-    grid.put_line(0, "Brushstroke cells, on a macOS window.");
-    grid.put_line(1, "rasterized by brushstroke/skate_grid.rye");
-    grid.put_line(2, "the same module the Wayland seed imports.");
-    grid.put_line(4, "no Swift is linked into this binary.");
-    grid.put_line(5, "every selector verified before it is sent.");
-    grid.put_line(7, "one event will arrive from our own queue.");
-    grid.put_color_run(0, 0, grid_cols, 1);
-    grid.put_color_run(5, 0, grid_cols, 2);
-}
+// The picture, the geometry, and the pins all live in surface_reference.rye -- one copy the
+// witness, the macOS probe, and the Wayland seed share, so nothing can drift between them.
+const surface_width: u32 = reference.surface_width;
+const surface_height: u32 = reference.surface_height;
+const bytes_per_pixel: u32 = reference.bytes_per_pixel;
+const surface_bytes: u32 = reference.surface_bytes;
 
 var pixels_a: [surface_bytes]u8 = undefined;
 var pixels_b: [surface_bytes]u8 = undefined;
@@ -70,14 +42,14 @@ pub fn main() !void {
     print("surface-parity: Language EN -- one Grid, one oracle: a lit count and a digest, never an eye.\n", .{});
 
     var fixed = std.heap.FixedBufferAllocator.init(arena_backing[0..]);
-    var grid = try skate.Grid.init(fixed.allocator(), grid_cols, grid_rows);
-    compose(&grid);
+    var grid = try skate.Grid.init(fixed.allocator(), reference.grid_cols, reference.grid_rows);
+    reference.compose(&grid);
 
-    grid.rasterize(pixels_a[0..], surface_width * bytes_per_pixel, @intCast(surface_width), @intCast(surface_height), background, foreground, pixel_scale);
-    grid.rasterize(pixels_b[0..], surface_width * bytes_per_pixel, @intCast(surface_width), @intCast(surface_height), background, foreground, pixel_scale);
+    grid.rasterize(pixels_a[0..], surface_width * bytes_per_pixel, @intCast(surface_width), @intCast(surface_height), reference.background, reference.foreground, reference.pixel_scale);
+    grid.rasterize(pixels_b[0..], surface_width * bytes_per_pixel, @intCast(surface_width), @intCast(surface_height), reference.background, reference.foreground, reference.pixel_scale);
 
-    const a = claims_mod.claims_for(pixels_a[0..], surface_width * bytes_per_pixel, surface_width, surface_height, background);
-    const b = claims_mod.claims_for(pixels_b[0..], surface_width * bytes_per_pixel, surface_width, surface_height, background);
+    const a = claims_mod.claims_for(pixels_a[0..], surface_width * bytes_per_pixel, surface_width, surface_height, reference.background);
+    const b = claims_mod.claims_for(pixels_b[0..], surface_width * bytes_per_pixel, surface_width, surface_height, reference.background);
 
     // Determinism: two rasterizations of one Grid answer one claim.
     // invariant: the rasterizer is a function, byte for byte.
@@ -85,34 +57,29 @@ pub fn main() !void {
 
     // Independence: the claims module's lit count and skate_grid's own counter are two
     // implementations of one definition, and they must agree on the reference picture.
-    const grid_lit = grid.lit_pixel_count(pixels_a[0..], surface_width * bytes_per_pixel, @intCast(surface_width), @intCast(surface_height), background);
+    const grid_lit = grid.lit_pixel_count(pixels_a[0..], surface_width * bytes_per_pixel, @intCast(surface_width), @intCast(surface_height), reference.background);
     // invariant: two counters, one definition, one answer.
     assert(a.lit == grid_lit);
 
-    // The pins: the lit count the live window recorded, and the digest this witness pinned.
-    // invariant: the reference picture lights exactly the pixels the finding measured.
-    assert(a.lit == pinned_lit);
+    // The pins, judged by the reference module's own comparator so this witness and every
+    // backend read one comparison.
     var hex_buffer: [claims_mod.digest_length * 2]u8 = undefined;
     var i: u32 = 0;
     while (i < claims_mod.digest_length) : (i += 1) {
         _ = std.fmt.bufPrint(hex_buffer[i * 2 .. i * 2 + 2], "{x:0>2}", .{a.digest[i]}) catch unreachable;
     }
     const hex = hex_buffer[0..];
-    if (std.mem.eql(u8, pinned_digest_hex, "PIN_ME")) {
-        print("surface-parity: discover digest = {s}\n", .{hex});
-        print("surface-parity: pin it into pinned_digest_hex and run again; discovery is never left in place.\n", .{});
-        return error.DigestUnpinned;
-    }
-    // invariant: the reference digest is the pinned digest, byte for byte.
-    assert(std.mem.eql(u8, hex, pinned_digest_hex));
+    print("surface-parity: lit={d} digest={s} surface={d}x{d}\n", .{ a.lit, hex, surface_width, surface_height });
+    // invariant: the reference picture answers exactly the pinned claims.
+    assert(a.lit == reference.pinned_lit);
+    assert(reference.matches_pins(a));
 
     // The refusing side: one visible byte flipped moves the digest -- a wall proven only in
     // the passing direction cannot be told from a bypass.
     pixels_b[0] = pixels_b[0] +% 1;
-    const tampered = claims_mod.claims_for(pixels_b[0..], surface_width * bytes_per_pixel, surface_width, surface_height, background);
-    // invariant: a tampered surface answers a different claim.
+    const tampered = claims_mod.claims_for(pixels_b[0..], surface_width * bytes_per_pixel, surface_width, surface_height, reference.background);
+    // invariant: a tampered surface answers a different claim, and fails the pins.
     assert(!claims_mod.same(a, tampered));
-
-    print("surface-parity: lit={d} digest={s} surface={d}x{d}\n", .{ a.lit, hex, surface_width, surface_height });
+    assert(!reference.matches_pins(tampered));
     print("surface-parity: GREEN -- the oracle stands: deterministic, two counters agreeing, pinned, and tamper-visible.\n", .{});
 }
