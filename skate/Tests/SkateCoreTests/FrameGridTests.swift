@@ -107,6 +107,36 @@ final class FrameGridTests: XCTestCase {
     XCTAssertNil(frame.byte(row: 1, column: 0))
   }
 
+  func testBrushstrokeFrameRefusalsPreserveAllStoredState() throws {
+    let fullNib = (0..<SkateCoreBounds.nibBytes).map { UInt8($0) }
+    let fullLine = Array(repeating: UInt8(0x41), count: SkateCoreBounds.columns)
+    var frame = try BrushstrokeFrame(atNib: fullNib, maxLines: 2)
+    try frame.append(line: fullLine)
+    let before = frame
+
+    XCTAssertThrowsError(try frame.append(line: [UInt8]())) { error in
+      XCTAssertEqual(error as? BrushstrokeFrameError, .emptyLine)
+    }
+    XCTAssertTrue(frame.hasSameStoredState(as: before))
+
+    XCTAssertThrowsError(
+      try frame.append(
+        line: Array(repeating: UInt8(0x42), count: SkateCoreBounds.columns + 1)
+      )
+    ) { error in
+      XCTAssertEqual(error as? BrushstrokeFrameError, .lineTooWide(limit: SkateCoreBounds.columns))
+    }
+    XCTAssertTrue(frame.hasSameStoredState(as: before))
+
+    var oneLineFrame = try BrushstrokeFrame(atNib: fullNib, maxLines: 1)
+    try oneLineFrame.append(line: fullLine)
+    let oneLineBefore = oneLineFrame
+    XCTAssertThrowsError(try oneLineFrame.append(line: [0x43])) { error in
+      XCTAssertEqual(error as? BrushstrokeFrameError, .tooManyLines(limit: 1))
+    }
+    XCTAssertTrue(oneLineFrame.hasSameStoredState(as: oneLineBefore))
+  }
+
   func testPaletteRunPaintsInsideItsBound() throws {
     var frame = try BrushstrokeFrame(atNib: [0x6e], maxLines: SkateCoreBounds.rows)
     try frame.append(line: Array("paint".utf8))

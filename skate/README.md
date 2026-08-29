@@ -106,6 +106,11 @@ after each refusal compares all 320 cells, 320 palette indexes, and eight colors
 value. The alias-sameness test assigns each peer name directly to the other at compile time,
 operates through both, and receives the same reserved-slot refusal with the same unchanged state.
 
+The Brushstroke append control begins with the full 128-byte nib and a full forty-byte line. Empty,
+forty-first-byte, and past-declared-ceiling appends each return their named error while all 459
+stored values remain equal to a value-copy snapshot, including unused line seats hidden from the
+public frame reader.
+
 The media controls admit the exact HUNK2 plane at its last cell and seventh palette slot, Lotus's
 full sample and peak ceilings, and a thirty-two-byte digest claim. They refuse short or long planes,
 a non-block cell, palette slots zero and eight, an impossible Lotus level, and digest widths of
