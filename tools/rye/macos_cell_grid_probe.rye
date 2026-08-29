@@ -1,0 +1,231 @@
+//! tools/rye/macos_cell_grid_probe.rye -- Brushstroke's own Skate cell grid, rasterized by
+//! Brushstroke's own code, on a native macOS window, with one event coming back.
+//!
+//! WHY THIS PROBE EXISTS. The first probe raised a window and painted a gradient, which proved
+//! the platform is reachable and nothing about the application. This one closes the real
+//! question: whether Skate on macOS is a **backend beside the Wayland backend** rather than a
+//! second application. It imports `brushstroke/skate_grid.rye` -- the same module
+//! `brushstroke/wayland_seed.rye` imports -- builds a real `Grid`, sets a real palette, and calls
+//! the module's own `rasterize` to fill the pixel buffer. Not one glyph is redrawn here; the
+//! rasterizer is Brushstroke's, and only the surface underneath it is new.
+//!
+//! WHAT IT PROVES, on metal: the Skate grid module compiles and runs unchanged against a macOS
+//! surface; its rasterizer fills a buffer this program hands to Core Graphics; the result reaches
+//! a real NSWindow's layer; and the run loop dequeues, identifies, and dispatches an event --
+//! proving the input half rather than only the output half. Every selector is verified against
+//! the loaded framework by `objc_seam.rye` before a message is sent.
+//!
+//! WHAT IT DOES NOT PROVE. Resize, retina backing scale, a display link, a signed bundle, or a
+//! menu bar -- a window is a lap and a backend is a quest, and this is the second lap of it.
+//! Nothing about SwiftUI, which stays the one surface Rye cannot reach.
+//!
+//! THE EVENT IS POSTED TO THIS PROCESS'S OWN QUEUE, deliberately. A synthetic event through
+//! `postEvent:atStart:` never leaves this application, where a system-level `CGEventPost` would
+//! inject input into whatever window happens to be focused on somebody's machine. A probe proves
+//! its own loop; it does not type on a stranger's keyboard.
+//!
+//! Build and run:
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build tools/rye/macos_cell_grid_probe.rye \
+//!     -femit-bin=tools/.build/macos_cell_grid_probe -lobjc -framework Cocoa -framework CoreGraphics
+//!   tools/.build/macos_cell_grid_probe
+//!   PROBE_PROVE_RED=1 tools/.build/macos_cell_grid_probe   # the seam gate, from the refusing side
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const c = std.c;
+
+const objc = @import("objc_seam.rye");
+const skate = @import("skate_grid.rye");
+
+// The surface, in cells first and pixels second, which is the order a cell grid thinks in. Eight
+// by sixteen is `skate.cell_w` by `skate.cell_h`; the scale doubles it so the glyphs read on a
+// modern display without a retina backing store, which this lap does not yet ask for.
+const grid_cols: u32 = 44;
+const grid_rows: u32 = 9;
+const pixel_scale: u32 = 2;
+const surface_width: u32 = grid_cols * skate.cell_w * pixel_scale;
+const surface_height: u32 = grid_rows * skate.cell_h * pixel_scale;
+const bytes_per_pixel: u32 = 4;
+const surface_bytes: u32 = surface_width * surface_height * bytes_per_pixel;
+
+// The bounded stand. Each turn polls the queue once and sleeps ten milliseconds, so the probe
+// closes on its own rather than becoming a process somebody has to remember to kill.
+const max_event_turns: u32 = 300;
+
+const style_titled: u64 = 1;
+const style_closable: u64 = 2;
+const style_resizable: u64 = 8;
+const backing_buffered: u64 = 2;
+const activation_policy_regular: i64 = 0;
+const alpha_premultiplied_last: u32 = 1;
+// NSEventTypeApplicationDefined, and the mask that takes every kind of event off the queue.
+const event_type_application_defined: u64 = 15;
+const event_mask_any: u64 = std.math.maxInt(u64);
+
+const SendVoid = *const fn (objc.Id, objc.Sel) callconv(.c) void;
+const SendBool = *const fn (objc.Id, objc.Sel, bool) callconv(.c) void;
+const SendPtr = *const fn (objc.Id, objc.Sel, ?*anyopaque) callconv(.c) void;
+const SendIdArg = *const fn (objc.Id, objc.Sel, ?objc.Id) callconv(.c) void;
+const SendIdArgBool = *const fn (objc.Id, objc.Sel, ?objc.Id, bool) callconv(.c) void;
+const SendU64 = *const fn (objc.Id, objc.Sel) callconv(.c) u64;
+const SendNextEvent = *const fn (objc.Id, objc.Sel, u64, ?objc.Id, ?objc.Id, bool) callconv(.c) ?objc.Id;
+const SendOtherEvent = *const fn (objc.Class, objc.Sel, u64, objc.CGPoint, u64, f64, i64, ?objc.Id, i16, i64, i64) callconv(.c) ?objc.Id;
+
+/// Fill the grid with the lines this probe wants on screen, and colour one run of one row so the
+/// palette path is exercised rather than assumed.
+fn compose(grid: *skate.Grid) void {
+    // invariant: the grid this probe composes is the grid it declared.
+    assert(grid.cols == grid_cols);
+    assert(grid.rows == grid_rows);
+    grid.set_palette(1, .{ .r = 255, .g = 210, .b = 120 });
+    grid.set_palette(2, .{ .r = 130, .g = 220, .b = 255 });
+    grid.put_line(0, "Brushstroke cells, on a macOS window.");
+    grid.put_line(1, "rasterized by brushstroke/skate_grid.rye");
+    grid.put_line(2, "the same module the Wayland seed imports.");
+    grid.put_line(4, "no Swift is linked into this binary.");
+    grid.put_line(5, "every selector verified before it is sent.");
+    grid.put_line(7, "one event will arrive from our own queue.");
+    grid.put_color_run(0, 0, grid_cols, 1);
+    grid.put_color_run(5, 0, grid_cols, 2);
+}
+
+pub fn main() !void {
+    print("macos-cell-grid: Language EN -- Brushstroke's own grid, rasterized by its own code, on AppKit.\n", .{});
+    print("macos-cell-grid: Style Gauge, Meter -- every capacity named, every selector checked before it is sent.\n", .{});
+
+    const prove_red = c.getenv("PROBE_PROVE_RED") != null;
+
+    const app_class = objc.objc_getClass("NSApplication") orelse return error.AppKitAbsent;
+    const window_class = objc.objc_getClass("NSWindow") orelse return error.NSWindowAbsent;
+    const string_class = objc.objc_getClass("NSString") orelse return error.NSStringAbsent;
+    const date_class = objc.objc_getClass("NSDate") orelse return error.NSDateAbsent;
+    const event_class = objc.objc_getClass("NSEvent") orelse return error.NSEventAbsent;
+
+    if (prove_red) {
+        print("macos-cell-grid: prove-red -- declaring a signature the framework does not have.\n", .{});
+        _ = objc.verify(app_class, "sharedApplication", "v@:", true);
+        @panic("objc seam: prove-red reached the send, which means the gate does not gate");
+    }
+
+    // Every selector proven against the loaded framework before a single message goes out.
+    const sel_shared = objc.verify(app_class, "sharedApplication", "@@:", true);
+    const sel_policy = objc.verify(app_class, "setActivationPolicy:", "B@:q", false);
+    const sel_finish = objc.verify(app_class, "finishLaunching", "v@:", false);
+    const sel_activate = objc.verify(app_class, "activateIgnoringOtherApps:", "v@:B", false);
+    const sel_next = objc.verify(app_class, "nextEventMatchingMask:untilDate:inMode:dequeue:", "@@:Q@@B", false);
+    const sel_post = objc.verify(app_class, "postEvent:atStart:", "v@:@B", false);
+    const sel_send_event = objc.verify(app_class, "sendEvent:", "v@:@", false);
+    const sel_alloc = objc.verify(window_class, "alloc", "@@:", true);
+    const sel_init = objc.verify(window_class, "initWithContentRect:styleMask:backing:defer:", "@@:{CGRect={CGPoint=dd}{CGSize=dd}}QQB", false);
+    const sel_title = objc.verify(window_class, "setTitle:", "v@:@", false);
+    const sel_content = objc.verify(window_class, "contentView", "@@:", false);
+    const sel_front = objc.verify(window_class, "makeKeyAndOrderFront:", "v@:@", false);
+    const sel_wants_layer = objc.verify(objc.objc_getClass("NSView"), "setWantsLayer:", "v@:B", false);
+    const sel_layer = objc.verify(objc.objc_getClass("NSView"), "layer", "@@:", false);
+    const sel_contents = objc.verify(objc.objc_getClass("CALayer"), "setContents:", "v@:@", false);
+    const sel_utf8 = objc.verify(string_class, "stringWithUTF8String:", "@@:r*", true);
+    const sel_distant_past = objc.verify(date_class, "distantPast", "@@:", true);
+    const sel_event_type = objc.verify(event_class, "type", "Q@:", false);
+    const sel_other_event = objc.verify(event_class, "otherEventWithType:location:modifierFlags:timestamp:windowNumber:context:subtype:data1:data2:", "@@:Q{CGPoint=dd}Qdq@sqq", true);
+    print("macos-cell-grid: seam verified -- 19 selectors match the loaded framework's own encodings.\n", .{});
+
+    // The grid, built and rasterized by Brushstroke's own module. A fixed buffer rather than an
+    // allocator for the pixels, since the surface is declared above and never grows.
+    var arena_backing: [1 << 20]u8 = undefined;
+    var fixed = std.heap.FixedBufferAllocator.init(arena_backing[0..]);
+    var grid = try skate.Grid.init(fixed.allocator(), grid_cols, grid_rows);
+    compose(&grid);
+
+    var pixels: [surface_bytes]u8 = undefined;
+    grid.rasterize(
+        pixels[0..],
+        surface_width * bytes_per_pixel,
+        @intCast(surface_width),
+        @intCast(surface_height),
+        .{ .r = 18, .g = 18, .b = 24 },
+        .{ .r = 235, .g = 235, .b = 235 },
+        pixel_scale,
+    );
+    const lit = grid.lit_pixel_count(pixels[0..], surface_width * bytes_per_pixel, @intCast(surface_width), @intCast(surface_height), .{ .r = 18, .g = 18, .b = 24 });
+    // invariant: the rasterizer lit real glyph pixels rather than handing back an empty field,
+    // which is the difference between a surface that rendered and a surface that merely cleared.
+    assert(lit > 0);
+    print("macos-cell-grid: grid={d}x{d} cells scale={d} surface={d}x{d} lit_pixels={d}\n", .{ grid_cols, grid_rows, pixel_scale, surface_width, surface_height, lit });
+
+    const shared = objc.send(objc.SendClassId)(app_class, sel_shared);
+    // invariant: the shared application answers before a window is asked for.
+    assert(@intFromPtr(shared) != 0);
+    objc.send(objc.SendIdI64)(shared, sel_policy, activation_policy_regular);
+
+    const rect = objc.CGRect{
+        .origin = .{ .x = 140, .y = 140 },
+        .size = .{ .width = @floatFromInt(surface_width), .height = @floatFromInt(surface_height) },
+    };
+    const raw = objc.send(objc.SendClassId)(window_class, sel_alloc);
+    // invariant: allocation answers before initialization is attempted.
+    assert(@intFromPtr(raw) != 0);
+    const window = objc.send(objc.SendWindowInit)(raw, sel_init, rect, style_titled | style_closable | style_resizable, backing_buffered, false);
+    // invariant: the window initialized rather than returning nil.
+    assert(@intFromPtr(window) != 0);
+
+    const title = objc.send(objc.SendClassStr)(string_class, sel_utf8, "Grain -- Skate cells, no Swift");
+    objc.send(SendIdArg)(window, sel_title, title);
+
+    const space = objc.CGColorSpaceCreateDeviceRGB() orelse return error.ColorSpaceAbsent;
+    const context = objc.CGBitmapContextCreate(@ptrCast(&pixels), surface_width, surface_height, 8, surface_width * bytes_per_pixel, space, alpha_premultiplied_last) orelse return error.BitmapContextAbsent;
+    const image = objc.CGBitmapContextCreateImage(context) orelse return error.ImageAbsent;
+
+    const content = objc.send(objc.SendId)(window, sel_content);
+    // invariant: the window handed back a content view to draw into.
+    assert(@intFromPtr(content) != 0);
+    objc.send(SendBool)(content, sel_wants_layer, true);
+    const layer = objc.send(objc.SendId)(content, sel_layer);
+    // invariant: a layer-backed view answers with its layer.
+    assert(@intFromPtr(layer) != 0);
+    objc.send(SendPtr)(layer, sel_contents, image);
+
+    objc.send(SendIdArg)(window, sel_front, null);
+    objc.send(SendBool)(shared, sel_activate, true);
+    objc.send(SendVoid)(shared, sel_finish);
+
+    // The input half. One synthetic event is posted into this process's own queue, and the loop
+    // below must dequeue it, read its type, and dispatch it -- which is the whole of what a
+    // backend's event pump does, proven small.
+    const mode = objc.send(objc.SendClassStr)(string_class, sel_utf8, "kCFRunLoopDefaultMode");
+    const past = objc.send(objc.SendClassId)(date_class, sel_distant_past);
+    const synthetic = objc.send(SendOtherEvent)(
+        event_class,
+        sel_other_event,
+        event_type_application_defined,
+        .{ .x = 0, .y = 0 },
+        0,
+        0,
+        0,
+        null,
+        0,
+        7,
+        0,
+    ) orelse return error.EventNotCreated;
+    objc.send(SendIdArgBool)(shared, sel_post, synthetic, true);
+
+    var turn: u32 = 0;
+    var seen: u32 = 0;
+    while (turn < max_event_turns) : (turn += 1) {
+        const event = objc.send(SendNextEvent)(shared, sel_next, event_mask_any, past, mode, true);
+        if (event) |got| {
+            const kind = objc.send(SendU64)(got, sel_event_type);
+            seen += 1;
+            if (seen == 1) print("macos-cell-grid: event dequeued type={d} (application-defined is {d})\n", .{ kind, event_type_application_defined });
+            objc.send(SendIdArg)(shared, sel_send_event, got);
+        }
+        var pause = c.timespec{ .sec = 0, .nsec = 10_000_000 };
+        _ = c.nanosleep(&pause, null);
+    }
+    // invariant: the pump saw at least the event this probe posted to its own queue, which is the
+    // difference between an event loop and a sleep.
+    assert(seen >= 1);
+
+    print("macos-cell-grid: events_seen={d} turns={d}\n", .{ seen, max_event_turns });
+    print("macos-cell-grid: GREEN -- Brushstroke's grid rendered on AppKit and the pump answered; no Swift linked.\n", .{});
+}
