@@ -4,7 +4,7 @@
 **Language:** EN
 **Style:** Gauge, Field setting (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
-**Status:** Mixed -- the widened Sound lane is seated on Keaton's word `20260826`; every per-module move below is a proposal sized to one round, none begun
+**Status:** Mixed -- the lane is seated on Keaton's word `20260826`; Scribe and Settlement have landed, and the remaining per-module moves are one-round proposals
 **Kin:** [`20260826-151528_the-three-stars-of-the-aether-row.md`](20260826-151528_the-three-stars-of-the-aether-row.md) -- [`20260826-014902_eight-modules-through-the-optimization-spine.md`](20260826-014902_eight-modules-through-the-optimization-spine.md) -- [`20260826-021136_caravan-rearchitected-the-optimization-spine.md`](20260826-021136_caravan-rearchitected-the-optimization-spine.md) -- [`../foundations/20260826-021731_aether-the-row-that-hears.md`](../foundations/20260826-021731_aether-the-row-that-hears.md) -- [`../expanding-prompts/20260826-033051_pond-completes-the-enclosure.md`](../expanding-prompts/20260826-033051_pond-completes-the-enclosure.md)
 
 The why, said once before any module moves: **the constellation exists so one person's whole
@@ -70,7 +70,7 @@ survey; the moves are proposals, one round each.
 | Pleac | choir-and-bijection | wire join/split as Rishi builtins; round-trip proven, empty separator refused | none |
 | Press | gauge-register | reconcile the crushed index to the four pieces on disk; grade at Door | publishing is Keaton's word |
 | Scribe | wrap-named | the first baton-v1 read: a planted document, dispatch and fields proven inside the bounds | JARL word-gated beyond local |
-| Settlement | replayable-fold | fold one spawn-adopt-transfer sequence twice byte-identical, a reorder shown divergent; register it | chain-adjacent |
+| Settlement | replayable-fold | **Landed `20260829.095918`:** spawn-adopt-transfer folds twice byte-identical; a valid reorder diverges while visible member state stays equal; transfer before spawn refuses | chain-adjacent |
 | Spellbook | choir-and-bijection | verify the eighteen spell homes resolve; count the emerging as a ratchet; grade at Door | new spells are Keaton's word |
 | Sundial | gauge-register | emit carries unit, date, and source per reading; a sourceless reading refused by name | none |
 | Vault | bound-in-shape | named refusals at split's edge (t under two, t over n, n over max), proven both sides on the fake key | hard keys gate |

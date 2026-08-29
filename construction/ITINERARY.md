@@ -58,18 +58,13 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `8dc023d68c` -- this round's own.
+**Git nib:** `0ab5808353` -- this round's pre-amend sibling.
 
-**Now.** **A gate written three times, read once.**
+**Now.** **Order is part of the settlement record.**
 
-**The ceiling that held one bead** (`20260829-124742`): the one test naming the bead store's
-bound filled it with **1 of 256** -- `k & 0xFF` has the bead size as its period. Fixed; an exact
-`errdefer` rollback; two size-pinned witnesses freed (%341). **Door for `pond/apps/`:** `spool_cloth`
-promises 4 large artifacts over a store holding **2**; three options in %341.
-
-**The seal gate** (`20260829-123529`): three launchers admit `ENCLOSURE=pond` only behind the
-master seal; one guard read one. `pond_seal_gate` finds them by `git grep`, gates three at zero,
-and read 1 -- the seal's header omitted `tools/ag/agent-jail.sh`.
+**Settlement replay (`20260829-100327`):** spawn-adopt-transfer returned the same 32 bytes twice;
+spawn-transfer-adopt kept sponsor 15 and keeper 42 equal while its digest differed; transfer before
+spawn refused `NotSpawned`. The cadence roster names the witness.
 
 **MANY HANDS** (granted `20260828`): custody stays MANUAL, one writer per checkout. Root
 `SKILL.md`; every clone seats `ww` (`grain-ww/grain`, gate %1) and `.git/ssh_config_jail`.
@@ -82,8 +77,8 @@ await his word. **Mind's:** the reconnect stash, `%281`/`%291`, two `enclosure.c
 here -- Hush's. **Seats:** rostering the roster's own witness; a `mask` softening the `map`; an
 IPv6 tier for `comlink_r1_dual_stack`.
 
-**Next doors.** Dream: Caravan and Tally. Hush: those Pond rows (a `host linux` want, unmeasured
-here), then orbit four (`20260829-054303`).
+**Next doors.** Dream: the next fully local, unpicked constellation row. Hush: orbit two wants
+Dream's nod; orbits three and four each leave one costed edit waiting on a word.
 
 ---
 ## Landed arcs
@@ -212,7 +207,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260829.124742` | The ceiling that held one bead | [log](../session-logs/date/20260829/20260829-124742_the-ceiling-that-held-one-bead.kyri) |
+| `20260829.100327` | Order stays in the settlement fold | [log](../session-logs/date/20260829/20260829-100327_order-stays-in-the-settlement-fold.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it.
 

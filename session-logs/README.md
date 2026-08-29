@@ -56,7 +56,7 @@ when the day closes.
 | Day | Rows | Shelf |
 |---|---|---|
 | `through-20260721` | 0 | [`date/README-index-through-20260721.md`](date/README-index-through-20260721.md) |
-| `20260829` **open** | 22 | [`date/README-index-20260829.md`](date/README-index-20260829.md) |
+| `20260829` **open** | 37 | [`date/README-index-20260829.md`](date/README-index-20260829.md) |
 | `20260828` | 64 | [`date/README-index-20260828.md`](date/README-index-20260828.md) |
 | `20260827` | 45 | [`date/README-index-20260827.md`](date/README-index-20260827.md) |
 | `20260826` | 44 | [`date/README-index-20260826.md`](date/README-index-20260826.md) |

@@ -749,3 +749,14 @@ guard pond_seal_gate
 path tools/p/pond_seal_gate_witness.rish
 tier lap
 seated 20260829.123529
+
+# settlement_replay -- the planted event fold behind the constellation's local model.
+# It proves identical spawn-adopt-transfer input returns identical bytes, a reorder
+# changes the record even where visible member state agrees, and transfer before spawn
+# refuses. `cadence` keeps the stable local model heard without adding two builds to
+# both halves of every lap.
+
+guard settlement_replay
+path tools/s/settlement_replay_witness.rish
+tier cadence
+seated 20260829.095918

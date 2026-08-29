@@ -1,0 +1,157 @@
+//! Settlement replay -- the small fold that remembers event order.
+//!
+//! A settlement may reach the same visible member after two different histories.
+//! This module folds each declared event into a fixed-width digest, so the same
+//! spawn-adopt-transfer sequence returns the same bytes and a reorder does not.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const Sha3_256 = std.crypto.hash.sha3.Sha3_256;
+
+const digest_len: u32 = Sha3_256.digest_length;
+const event_wire_len: u32 = 1 + 4 + 4;
+const fold_wire_len: u32 = digest_len + event_wire_len;
+
+pub const ReplayError = error{
+    AlreadySpawned,
+    NotSpawned,
+    BadSponsor,
+    BadKeeper,
+};
+
+pub const Event = union(enum) {
+    spawn: struct { member: u32, sponsor: u32 },
+    adopt: struct { member: u32, sponsor: u32 },
+    transfer: struct { member: u32, keeper: u32 },
+};
+
+pub const State = struct {
+    member: u32,
+    sponsor: u32,
+    keeper: u32,
+    spawned: bool,
+    events: u32,
+    digest: [digest_len]u8,
+
+    pub fn init(member: u32) State {
+        return .{
+            .member = member,
+            .sponsor = 0,
+            .keeper = 0,
+            .spawned = false,
+            .events = 0,
+            .digest = .{0} ** digest_len,
+        };
+    }
+};
+
+fn event_bytes(event: Event) [event_wire_len]u8 {
+    var out: [event_wire_len]u8 = undefined;
+    switch (event) {
+        .spawn => |v| {
+            out[0] = 1;
+            std.mem.writeInt(u32, out[1..5], v.member, .little);
+            std.mem.writeInt(u32, out[5..9], v.sponsor, .little);
+        },
+        .adopt => |v| {
+            out[0] = 2;
+            std.mem.writeInt(u32, out[1..5], v.member, .little);
+            std.mem.writeInt(u32, out[5..9], v.sponsor, .little);
+        },
+        .transfer => |v| {
+            out[0] = 3;
+            std.mem.writeInt(u32, out[1..5], v.member, .little);
+            std.mem.writeInt(u32, out[5..9], v.keeper, .little);
+        },
+    }
+    return out;
+}
+
+fn remember(state: *State, event: Event) void {
+    const encoded = event_bytes(event);
+    var wire: [fold_wire_len]u8 = undefined;
+    for (state.digest, 0..) |b, i| wire[i] = b;
+    for (encoded, 0..) |b, i| wire[digest_len + i] = b;
+    Sha3_256.hash(&wire, &state.digest, .{});
+    state.events += 1;
+}
+
+/// Apply one declared settlement event and include its exact position in the fold.
+pub fn apply(state: *State, event: Event) ReplayError!void {
+    switch (event) {
+        .spawn => |v| {
+            if (state.spawned) return error.AlreadySpawned;
+            if (v.member != state.member) return error.NotSpawned;
+            if (v.sponsor == 0) return error.BadSponsor;
+            state.spawned = true;
+            state.sponsor = v.sponsor;
+        },
+        .adopt => |v| {
+            if (!state.spawned or v.member != state.member) return error.NotSpawned;
+            if (v.sponsor == 0 or v.sponsor == state.sponsor) return error.BadSponsor;
+            state.sponsor = v.sponsor;
+        },
+        .transfer => |v| {
+            if (!state.spawned or v.member != state.member) return error.NotSpawned;
+            if (v.keeper == 0) return error.BadKeeper;
+            state.keeper = v.keeper;
+        },
+    }
+    remember(state, event);
+}
+
+pub fn fold(member: u32, events: []const Event) ReplayError!State {
+    var state = State.init(member);
+    for (events) |event| try apply(&state, event);
+    return state;
+}
+
+fn digest_hex(digest: *const [digest_len]u8) [digest_len * 2]u8 {
+    var out: [digest_len * 2]u8 = undefined;
+    for (digest, 0..) |b, i| {
+        _ = std.fmt.bufPrint(out[i * 2 ..][0..2], "{x:0>2}", .{b}) catch unreachable;
+    }
+    return out;
+}
+
+fn run_selftest() !u8 {
+    const ordered = [_]Event{
+        .{ .spawn = .{ .member = 267, .sponsor = 27 } },
+        .{ .adopt = .{ .member = 267, .sponsor = 15 } },
+        .{ .transfer = .{ .member = 267, .keeper = 42 } },
+    };
+    const reordered = [_]Event{
+        .{ .spawn = .{ .member = 267, .sponsor = 27 } },
+        .{ .transfer = .{ .member = 267, .keeper = 42 } },
+        .{ .adopt = .{ .member = 267, .sponsor = 15 } },
+    };
+
+    const first = try fold(267, &ordered);
+    const second = try fold(267, &ordered);
+    const moved = try fold(267, &reordered);
+    assert(std.mem.eql(u8, &first.digest, &second.digest));
+    assert(!std.mem.eql(u8, &first.digest, &moved.digest));
+    assert(first.sponsor == moved.sponsor and first.keeper == moved.keeper);
+    assert(first.events == 3 and moved.events == 3);
+
+    const before_spawn = [_]Event{
+        .{ .transfer = .{ .member = 267, .keeper = 42 } },
+    };
+    if (fold(267, &before_spawn)) |_| return error.TransferBeforeSpawnAccepted else |err| {
+        if (err != error.NotSpawned) return err;
+    }
+
+    const ordered_hex = digest_hex(&first.digest);
+    const reordered_hex = digest_hex(&moved.digest);
+    print("settlement replay: ordered={s}\n", .{ordered_hex});
+    print("settlement replay: reordered={s}\n", .{reordered_hex});
+    print("settlement replay: same order returns the same 32 bytes; a reorder differs while sponsor=15 keeper=42 stay equal\n", .{});
+    print("settlement replay: transfer before spawn refuses NotSpawned\n", .{});
+    print("GREEN: settlement replay -- three events fold deterministically and order remains part of the record.\n", .{});
+    return 0;
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    return run_selftest();
+}

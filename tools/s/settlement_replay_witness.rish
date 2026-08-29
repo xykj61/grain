@@ -1,0 +1,21 @@
+# settlement_replay_witness.rish -- the settlement event fold remembers order.
+#
+# Builds what it runs, executes the same planted spawn-adopt-transfer sequence
+# twice, and compares every output byte. The module also proves a valid reorder
+# changes the digest and a transfer before spawn refuses by name.
+
+let zig = "vendor/zig-toolchain/zig"
+let build = run ["sh" "-c" "mkdir -p settlement/bin && env RYE_ZIG=${zig} rye/bin/rye build settlement/replay.rye -femit-bin=settlement/bin/replay"]
+assert build.ok else "settlement replay: build failed -- ${build.err}"
+
+let first = run ["settlement/bin/replay"]
+let second = run ["settlement/bin/replay"]
+assert first.ok else "settlement replay: first run must exit 0"
+assert second.ok else "settlement replay: second run must exit 0"
+assert (first.err == second.err) else "settlement replay: the same sequence must return byte-identical output"
+assert (first.err contains "same order returns the same 32 bytes") else "settlement replay: same-order proof missing"
+assert (first.err contains "a reorder differs while sponsor=15 keeper=42 stay equal") else "settlement replay: reordered sequence must diverge by history, not visible member state"
+assert (first.err contains "transfer before spawn refuses NotSpawned") else "settlement replay: invalid order refusal missing"
+assert (first.err contains "GREEN") else "settlement replay: GREEN line missing"
+
+say "GREEN: settlement replay -- spawn-adopt-transfer returns byte-identical output twice, a valid reorder changes the fold, and transfer before spawn refuses by name."
