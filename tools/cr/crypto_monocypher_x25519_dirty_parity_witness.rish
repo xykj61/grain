@@ -15,7 +15,7 @@
 # agree -- the value we match is the canonical dirty key, not one implementation's quirk.
 # Kin: crypto/x25519_dirty.rye (our authored primitive) - crypto/x25519.rye (the CLEAN ladder whose field composition it reuses) -
 # crypto/elligator.rye (the map that hides the dirty key) - tools/rye/monocypher_x25519_dirty_parity.rye (our printing harness) -
-# tools/fixtures/monocypher_x25519_dirty_harness.c (Monocypher's printing harness) - crypto/fe25519.rye (the field both stand on). Monocypher
+# tools/fixtures/m/monocypher_x25519_dirty_harness.c (Monocypher's printing harness) - crypto/fe25519.rye (the field both stand on). Monocypher
 # stays the parity TARGET, vendored and unmodified, never a copied line, studied clean-room (.claude/rules/gratitude-licenses.md).
 #
 # The thirty-two C lines: sixteen dirty_small answers (secret key sk[j] = (i*7 + j*3 + 1) mod 256 -> its 64-hex dirty public key) then sixteen
@@ -40,7 +40,7 @@ let cfast = "crypto/bin/monocypher_x25519_dirty.fast"
 let rout = "crypto/bin/rye_x25519_dirty.out"
 
 # 1. Build the Monocypher C harness, linking the unmodified vendored source with zig cc.
-let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src tools/fixtures/monocypher_x25519_dirty_harness.c vendor/monocypher/src/monocypher.c -o ${cbin}"]
+let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src tools/fixtures/m/monocypher_x25519_dirty_harness.c vendor/monocypher/src/monocypher.c -o ${cbin}"]
 assert cbuild.ok else "crypto-monocypher-x25519-dirty-parity: Monocypher C harness build failed — ${cbuild.err}"
 
 # 2. Run the Monocypher C harness -- thirty-two lines (sixteen dirty_small, then sixteen dirty_fast).

@@ -9,7 +9,7 @@ say "e104-hold-class-o: Language EN — control first; then hold what honesty ca
 say "e104-hold-class-o: Style Radiant — exclusion hides; holding discloses."
 say "e104-hold-class-o: Lens TAME — e104 · i8 · Class O rooms · almanac seat 108 · ch7 12/16."
 
-let fascia_control = run ["sh" "tools/fixtures/equinox_e104_hold_class_o_control.sh"]
+let fascia_control = run ["sh" "tools/fixtures/e/equinox_e104_hold_class_o_control.sh"]
 say fascia_control.out
 assert fascia_control.ok else "e104-hold-class-o: current/history seam control RED"
 assert fascia_control.out contains "current Class A 5 and fascia 51 welcomed" else "e104-hold-class-o: want later living values welcomed"
@@ -30,7 +30,7 @@ say scope.out
 assert scope.ok else "e104-hold-class-o: prin_scope RED"
 assert scope.out contains "GREEN: prin-scope" else "e104-hold-class-o: want scope GREEN"
 
-let scan = run ["sh" "tools/fixtures/equinox_e104_hold_class_o_scan.sh"]
+let scan = run ["sh" "tools/fixtures/e/equinox_e104_hold_class_o_scan.sh"]
 say scan.out
 assert scan.ok else "e104-hold-class-o: hold scan must exit 0"
 assert scan.out contains "control_gate=honored" else "e104-hold-class-o: want control_gate"

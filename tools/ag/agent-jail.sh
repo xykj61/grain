@@ -331,7 +331,7 @@ esac
 #
 # HOST-BOUND ON PURPOSE, so `readlink -f` stays. This script runs the agent inside ai-jail, which is
 # bubblewrap over a Linux kernel and a /nix store; there is no bench where it runs and GNU readlink
-# is absent. The portable `resolve_path` in tools/fixtures/shell_portable.sh exists for the guards
+# is absent. The portable `resolve_path` in tools/fixtures/s/shell_portable.sh exists for the guards
 # that DO cross to the second pier, and reaching for it here would spend a line implying this script
 # travels. It does not, and the law says to gate where the requirement is known.
 AGENT_BIN="$(readlink -f "$AGENT_BIN")"

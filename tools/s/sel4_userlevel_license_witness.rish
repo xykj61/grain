@@ -10,7 +10,7 @@
 # intends BSD" would be a poor thing to have linked against. So the license read recorded a per-file SPDX sweep as a standing obligation
 # at fetch time. The fetch has happened; this is the sweep, and it runs from here on rather than once.
 #
-# THE FOUR CLAIMS, each counted from the files on disk by tools/fixtures/vendored_license_scan.sh:
+# THE FOUR CLAIMS, each counted from the files on disk by tools/fixtures/v/vendored_license_scan.sh:
 #   1. Every file in libsel4 carries an SPDX tag -- an untagged file is an unknown licence, which is worse than a wrong one.
 #   2. Every one of those tags is BSD-2-Clause, and none is any flavour of GPL. This is the claim Caravan's right to link rests on.
 #   3. The kernel side really is copyleft, counted rather than assumed, so the boundary is proven to exist rather than described.
@@ -32,7 +32,7 @@ say "sel4-userlevel-license: Language EN -- a project-level licence verdict is n
 say "sel4-userlevel-license: Style Radiant -- the boundary is proven from both sides. The userlevel must be wholly BSD-2-Clause and wholly tagged; the kernel must really be the copyleft half, counted rather than described. A split asserted from one side only is a claim, and from both sides it is a measurement."
 say "sel4-userlevel-license: Lens TAME -- the sweep is per file, the numbers come from disk at run time, and Microkit's GPL files are bounded BY PATH rather than by count, so a new one outside the board-overlay directory cannot hide inside a tally that still reads two. This audits SPDX tags, never licence text; counsel remains the authority where distribution or money is at stake."
 
-let scan = run ["sh" "tools/fixtures/vendored_license_scan.sh"]
+let scan = run ["sh" "tools/fixtures/v/vendored_license_scan.sh"]
 assert scan.ok else "sel4-userlevel-license: the SPDX census could not run -- are vendor/sel4 and vendor/microkit checked out? (git submodule update --init --recursive)"
 
 # 1. Nothing untagged: an unknown licence is worse than a wrong one.

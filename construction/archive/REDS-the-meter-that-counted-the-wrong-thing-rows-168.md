@@ -2,7 +2,7 @@
 
 **Folded here** `20260823.152322` from [`../REDS.md`](../REDS.md), every byte kept, on the lap it
 was booked, as row %171 carried the living pin past its 24,576-byte bound. CLOSED. Its repair is
-written into `tools/fixtures/room_bound_scan.sh`, which now carries two counting rules and prints
+written into `tools/fixtures/r/room_bound_scan.sh`, which now carries two counting rules and prints
 `counts=all` beside the second, and into the mark law's *a room folds by what its files are found
 by*.
 

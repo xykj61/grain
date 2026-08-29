@@ -1,5 +1,5 @@
 //! tools/rye/monocypher_x25519_dirty_parity.rye -- our authored crypto/x25519_dirty.rye asked for its OWN dirty X25519 public keys over the same
-//! sixteen secret keys the Monocypher C harness (tools/fixtures/monocypher_x25519_dirty_harness.c) prints, so
+//! sixteen secret keys the Monocypher C harness (tools/fixtures/m/monocypher_x25519_dirty_harness.c) prints, so
 //! tools/cr/crypto_monocypher_x25519_dirty_parity_witness.rish can diff our bytes against the vendored Monocypher's C byte-for-byte -- the "dirty"
 //! public key that makes Elligator key-hiding uniform, proven against the audit's parity target. Chapter G (Cryptography - Rye-native,
 //! Monocypher-parity, audit-ready).

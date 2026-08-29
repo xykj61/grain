@@ -4988,7 +4988,7 @@ pub fn close_the_quarrel(
 /// meaning rather than drift, and a lift preserves what it finds.
 
 ///
-/// Measured by `../tools/fixtures/caravan_ladder_carry_scan.sh`.
+/// Measured by `../tools/fixtures/c/caravan_ladder_carry_scan.sh`.
 pub fn note_path(comptime rung: type, buf: *[rung.max_note_path_len]u8, domain: []const u8, suffix: []const u8) rung.NoteError![]const u8 {
     // invariant: a note always names the dependent it belongs to
     assert(domain.len >= 1);
@@ -5083,7 +5083,7 @@ pub fn case_path(comptime rung: type, buf: *[rung.max_note_path_len]u8, forum: [
 /// worth its own lap; folding it in here would widen this one across a second
 /// family of twenty-nine.
 ///
-/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+/// Measured by `../tools/fixtures/c/caravan_ladder_print_scan.sh`.
 pub fn hand_path(comptime rung: type, buf: *[rung.max_note_path_len]u8, address: []const u8) rung.NoteError![]const u8 {
     // invariant: a hand is only ever read for an address a run may carry to
     assert(rung.addressable(address));
@@ -5121,7 +5121,7 @@ pub fn hand_path(comptime rung: type, buf: *[rung.max_note_path_len]u8, address:
 /// its own ceiling, its own directory, and its own error set through the type it
 /// hands in -- so a rung that widens the ceiling widens the path it writes.
 ///
-/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+/// Measured by `../tools/fixtures/c/caravan_ladder_print_scan.sh`.
 pub fn tell_path(comptime rung: type, buf: *[rung.max_note_path_len]u8, address: []const u8) rung.NoteError![]const u8 {
     // invariant: an answer is only ever written to an address a run may carry to
     assert(rung.addressable(address));
@@ -5165,7 +5165,7 @@ pub fn tell_path(comptime rung: type, buf: *[rung.max_note_path_len]u8, address:
 /// Every symbol this body reaches already stood public in all thirty-one rungs,
 /// so the lift widens nothing. Measured rather than read: `REACH_OK
 /// family=renew_path folding=31 widens=0 stub=3 fall=720` from
-/// `../tools/fixtures/ladder_reach_visibility_scan.sh`.
+/// `../tools/fixtures/l/ladder_reach_visibility_scan.sh`.
 pub fn renew_path(comptime rung: type, buf: *[rung.max_note_path_len]u8, address: []const u8) rung.NoteError![]const u8 {
     // invariant: a renewal is only ever read for an address a run may carry to
     assert(rung.addressable(address));
@@ -5211,7 +5211,7 @@ pub fn renew_path(comptime rung: type, buf: *[rung.max_note_path_len]u8, address
 /// Every symbol this body reaches already stood public in all thirty-one rungs,
 /// so the lift widens nothing. Measured rather than read: `REACH_OK
 /// family=ask_path folding=31 widens=0 stub=3 fall=660` from
-/// `../tools/fixtures/ladder_reach_visibility_scan.sh`.
+/// `../tools/fixtures/l/ladder_reach_visibility_scan.sh`.
 pub fn ask_path(comptime rung: type, buf: *[rung.max_note_path_len]u8, address: []const u8) rung.NoteError![]const u8 {
     // invariant: a question is only ever asked of an address a run may carry to
     assert(rung.addressable(address));
@@ -5261,7 +5261,7 @@ pub fn ask_path(comptime rung: type, buf: *[rung.max_note_path_len]u8, address: 
 /// Every symbol this body reaches already stood public in all sixteen rungs, so
 /// the lift widens nothing of any kind. Measured rather than read: `REACH_OK
 /// family=found_path folding=16 widens=0 stub=3 fall=375` from
-/// `../tools/fixtures/ladder_reach_visibility_scan.sh`.
+/// `../tools/fixtures/l/ladder_reach_visibility_scan.sh`.
 pub fn found_path(comptime rung: type, buf: *[rung.max_note_path_len]u8, address: []const u8) rung.NoteError![]const u8 {
     // invariant: a finding is only ever written to an address a run may carry to
     assert(rung.addressable(address));
@@ -5311,7 +5311,7 @@ pub fn found_path(comptime rung: type, buf: *[rung.max_note_path_len]u8, address
 /// Every symbol this body reaches already stood public in all fifteen rungs, so
 /// the lift widens nothing of any kind. Measured rather than read: `REACH_OK
 /// family=suits_path folding=15 widens=0 stub=3 fall=350` from
-/// `../tools/fixtures/ladder_reach_visibility_scan.sh`.
+/// `../tools/fixtures/l/ladder_reach_visibility_scan.sh`.
 pub fn suits_path(comptime rung: type, buf: *[rung.max_note_path_len]u8, address: []const u8) rung.NoteError![]const u8 {
     // invariant: a word is only ever sought at an address a run may reach
     assert(rung.addressable(address));
@@ -5391,7 +5391,7 @@ pub fn tell_outcome(comptime rung: type, io: std.Io, address: []const u8, result
 /// report nested as deep as that rung stands. The staircase beneath the
 /// accessor stays where it is written; only the body above it is written once.
 ///
-/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+/// Measured by `../tools/fixtures/c/caravan_ladder_print_scan.sh`.
 pub fn tell_the_reader(
     comptime rung: type,
     io: std.Io,
@@ -5485,7 +5485,7 @@ pub fn tell_the_reader(
 /// The rung the family was born on writes the body differently and is left
 /// alone.
 ///
-/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+/// Measured by `../tools/fixtures/c/caravan_ladder_print_scan.sh`.
 pub fn tell_the_reopener(
     comptime rung: type,
     io: std.Io,
@@ -5557,7 +5557,7 @@ pub fn tell_the_reopener(
 /// that reaches it. The chain stood at the same depth in all eight rungs, and it
 /// stands once here now, where a single reading governs every rung that calls in.
 ///
-/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+/// Measured by `../tools/fixtures/c/caravan_ladder_print_scan.sh`.
 pub fn tell_desist_runs(
     comptime rung: type,
     comptime bare_word: []const u8,
@@ -5630,7 +5630,7 @@ pub fn tell_desist_runs(
 /// handed in, so each rung still reads its own report wherever that rung nests
 /// it.
 ///
-/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+/// Measured by `../tools/fixtures/c/caravan_ladder_print_scan.sh`.
 pub fn tell_desist_half(
     comptime rung: type,
     comptime bare_word: []const u8,
@@ -5691,7 +5691,7 @@ pub fn tell_desist_half(
 /// to have every accessor it needed already standing, so `tell_beckon_own` folded
 /// as a comptime table each rung reads its own share of.
 ///
-/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+/// Measured by `../tools/fixtures/c/caravan_ladder_print_scan.sh`.
 pub fn tell_desist_third(
     comptime rung: type,
     comptime bare_word: []const u8,
@@ -5925,7 +5925,7 @@ const own_telling = [_]TellTier{
 /// The two words are `comptime`, the way the desisting telling takes them, so
 /// each rung hands in the pair naming which plan its two columns report.
 ///
-/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+/// Measured by `../tools/fixtures/c/caravan_ladder_print_scan.sh`.
 pub fn tell_beckon_own(
     comptime rung: type,
     comptime bare_word: []const u8,
@@ -5981,7 +5981,7 @@ pub fn tell_beckon_own(
 /// declaration that this dependent falls -- is reached through that rung, so
 /// each rung still measures its own report and its own store.
 ///
-/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+/// Measured by `../tools/fixtures/c/caravan_ladder_print_scan.sh`.
 pub fn stand_taking_and_returning_reach(
     comptime rung: type,
     io: std.Io,
@@ -6036,7 +6036,7 @@ pub fn stand_taking_and_returning_reach(
 /// this arc has taken and half again the fold before it. The whole-body meter
 /// named it on the lap that meter was born, so this fold was chosen by
 /// measurement rather than by which family somebody happened to look at
-/// (`../tools/fixtures/caravan_ladder_carry_scan.sh`).
+/// (`../tools/fixtures/c/caravan_ladder_carry_scan.sh`).
 ///
 /// Thirty-six of the thirty-seven stood identical on their own. The
 /// thirty-seventh is `recant.rye`, the rung that *owns* the recanting tier: it
@@ -6059,7 +6059,7 @@ pub fn stand_taking_and_returning_reach(
 /// carries 2,898 lines across 43 rungs and `reap_oldest` 1,716 across 40, and
 /// both now stand public for the folds that come for them.
 ///
-/// Measured by `../tools/fixtures/caravan_ladder_carry_scan.sh`.
+/// Measured by `../tools/fixtures/c/caravan_ladder_carry_scan.sh`.
 pub fn mend_the_plan(
     comptime rung: type,
     allocator: std.mem.Allocator,
@@ -6247,7 +6247,7 @@ pub fn mend_the_plan(
 /// apiece -- 2,700 carried lines, the largest family standing on the ladder
 /// once `mend_the_plan` was lifted, and named here by the whole-body meter
 /// rather than by which name somebody happened to look at
-/// (`../tools/fixtures/caravan_ladder_carry_scan.sh`).
+/// (`../tools/fixtures/c/caravan_ladder_carry_scan.sh`).
 ///
 /// All thirty-seven stood identical on their own, and every one of the
 /// eighteen symbols this body reaches -- its own report and the tiers beneath
@@ -6267,7 +6267,7 @@ pub fn mend_the_plan(
 /// text. The rung hands itself in, and each still reckons its own plan,
 /// against its own wire, into its own report.
 ///
-/// Measured by `../tools/fixtures/caravan_ladder_carry_scan.sh`.
+/// Measured by `../tools/fixtures/c/caravan_ladder_carry_scan.sh`.
 pub fn reckon_the_plan(
     comptime rung: type,
     io: std.Io,
@@ -6376,7 +6376,7 @@ pub fn reckon_the_plan(
 ///
 /// Nothing varies between the forty-three, so nothing arrives as comptime text.
 ///
-/// Measured by `../tools/fixtures/caravan_ladder_carry_scan.sh`.
+/// Measured by `../tools/fixtures/c/caravan_ladder_carry_scan.sh`.
 pub fn fill_table(
     comptime rung: type,
     allocator: std.mem.Allocator,
@@ -6480,7 +6480,7 @@ pub fn fill_table(
 ///
 /// Nothing varies between the forty-three, so nothing arrives as comptime text.
 ///
-/// Measured by `../tools/fixtures/caravan_ladder_carry_scan.sh`.
+/// Measured by `../tools/fixtures/c/caravan_ladder_carry_scan.sh`.
 pub fn confer_slot(comptime rung: type, table: *const rung.Table, at: u32) ?u32 {
     // invariant: a candidate always stands inside the record
     assert(at < table.held);
@@ -6564,7 +6564,7 @@ pub fn confer_slot(comptime rung: type, table: *const rung.Table, at: u32) ?u32 
 ///
 /// Nothing varies between the forty, so nothing arrives as comptime text.
 ///
-/// Measured by `../tools/fixtures/caravan_ladder_carry_scan.sh`.
+/// Measured by `../tools/fixtures/c/caravan_ladder_carry_scan.sh`.
 pub fn confer_one(
     comptime rung: type,
     io: std.Io,
@@ -6842,7 +6842,7 @@ pub fn record_the_dispute(
 /// two imports, `queue_store` and `serve`. A fold pays its successors, and it
 /// pays them best by never handing them a split.
 ///
-/// Measured by `../tools/fixtures/caravan_ladder_carry_scan.sh`.
+/// Measured by `../tools/fixtures/c/caravan_ladder_carry_scan.sh`.
 pub fn graft_promised_reach(
     comptime rung: type,
     io: std.Io,
@@ -6915,7 +6915,7 @@ pub fn graft_promised_reach(
 /// depth, so it is no fold family at all and widening it costs its thirty-three
 /// and no more. Every other symbol this body reaches already stood public.
 ///
-/// Measured by `../tools/fixtures/caravan_ladder_carry_scan.sh`.
+/// Measured by `../tools/fixtures/c/caravan_ladder_carry_scan.sh`.
 pub fn hear_the_reader(
     comptime rung: type,
     io: std.Io,
@@ -7014,7 +7014,7 @@ pub fn hear_the_reader(
 /// fold after fold P, and it says the same thing from the other side: a fold's
 /// price is set by what its predecessors already made public.
 ///
-/// Measured by `../tools/fixtures/caravan_ladder_carry_scan.sh`.
+/// Measured by `../tools/fixtures/c/caravan_ladder_carry_scan.sh`.
 pub fn settle_the_plan(
     comptime rung: type,
     io: std.Io,
@@ -8386,7 +8386,7 @@ pub fn pruned(comptime rung: type, io: std.Io, domain: []const u8, count: u32) r
 /// one still measures against its own ceiling, because the bound arrives with
 /// the type handed in.
 ///
-/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+/// Measured by `../tools/fixtures/c/caravan_ladder_print_scan.sh`.
 pub fn addressable(comptime rung: type, address: []const u8) bool {
     if (address.len == 0) return false;
     if (address.len > rung.max_address_len) return false;
@@ -8410,7 +8410,7 @@ pub fn addressable(comptime rung: type, address: []const u8) bool {
 /// its own readers' directory and its own path ceiling through the type it hands
 /// in -- so a rung that moves where its readers live moves the box it writes.
 ///
-/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+/// Measured by `../tools/fixtures/c/caravan_ladder_print_scan.sh`.
 pub fn box_path(comptime rung: type, buf: *[rung.max_note_path_len]u8, address: []const u8) rung.NoteError![]const u8 {
     // invariant: a box is only ever built for an address a run may carry to
     assert(addressable(rung, address));
@@ -8448,7 +8448,7 @@ pub fn box_path(comptime rung: type, buf: *[rung.max_note_path_len]u8, address: 
 /// that owns the note. Each still opens its own plan's own drawer, because the
 /// path builder and the plan name both arrive with the type handed in.
 ///
-/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+/// Measured by `../tools/fixtures/c/caravan_ladder_print_scan.sh`.
 pub fn amend_published(comptime rung: type, io: std.Io) ?[2]rung.Settlement {
     var path_buf: [rung.max_note_path_len]u8 = undefined;
     const path = rung.note_path(&path_buf, rung.plan_name, ".amend") catch return null;
@@ -8476,7 +8476,7 @@ pub fn amend_published(comptime rung: type, io: std.Io) ?[2]rung.Settlement {
 /// Thirty-five rungs held this body byte for byte, and each still writes into
 /// its own readers' directory in its own settlement alphabet.
 ///
-/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+/// Measured by `../tools/fixtures/c/caravan_ladder_print_scan.sh`.
 pub fn deliver(comptime rung: type, io: std.Io, address: []const u8, was: rung.Settlement, now: rung.Settlement) rung.NoteError!void {
     // invariant: a delivery always names two readings that actually differ
     assert(was != now);
@@ -8503,7 +8503,7 @@ pub fn deliver(comptime rung: type, io: std.Io, address: []const u8, was: rung.S
 /// of the box it just wrote into, since the box and the alphabet both arrive
 /// with the type handed in.
 ///
-/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+/// Measured by `../tools/fixtures/c/caravan_ladder_print_scan.sh`.
 pub fn delivered_to(comptime rung: type, io: std.Io, address: []const u8) ?[2]rung.Settlement {
     if (!addressable(rung, address)) return null;
     var path_buf: [rung.max_note_path_len]u8 = undefined;
@@ -8531,7 +8531,7 @@ pub fn delivered_to(comptime rung: type, io: std.Io, address: []const u8) ?[2]ru
 /// Thirty-five rungs held this body byte for byte, each reading its own dispatch
 /// alphabet through the type handed in.
 ///
-/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+/// Measured by `../tools/fixtures/c/caravan_ladder_print_scan.sh`.
 pub fn carried_in(comptime rung: type, amended: u32, addressed: bool, dispatch: rung.Dispatch) u32 {
     // invariant: a run never posts more corrections than a wire may hold
     assert(amended <= 1);
@@ -8549,7 +8549,7 @@ pub fn carried_in(comptime rung: type, amended: u32, addressed: bool, dispatch: 
 ///
 /// Thirty-five rungs held this body byte for byte.
 ///
-/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+/// Measured by `../tools/fixtures/c/caravan_ladder_print_scan.sh`.
 pub fn held_in(comptime rung: type, amended: u32, addressed: bool, dispatch: rung.Dispatch) u32 {
     // invariant: a run never posts more corrections than a wire may hold
     assert(amended <= 1);
@@ -8574,7 +8574,7 @@ pub fn held_in(comptime rung: type, amended: u32, addressed: bool, dispatch: run
 ///
 /// Thirty-five rungs held this body byte for byte.
 ///
-/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+/// Measured by `../tools/fixtures/c/caravan_ladder_print_scan.sh`.
 pub fn posted_unreached(comptime rung: type, amended: u32, addressed: bool, dispatch: rung.Dispatch) u32 {
     // invariant: a run never posts more corrections than a wire may hold
     assert(amended <= 1);
@@ -8593,7 +8593,7 @@ pub fn posted_unreached(comptime rung: type, amended: u32, addressed: bool, disp
 /// Thirty-five rungs held this body byte for byte, each naming the refusal out
 /// of its own error set.
 ///
-/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+/// Measured by `../tools/fixtures/c/caravan_ladder_print_scan.sh`.
 pub fn unaddressed_reach(comptime rung: type, addressed: bool, carried: u32) ?rung.RunError {
     // invariant: a run never carries more corrections than it posted
     assert(carried <= 1);
@@ -8617,7 +8617,7 @@ pub fn unaddressed_reach(comptime rung: type, addressed: bool, carried: u32) ?ru
 ///
 /// Thirty-five rungs held this body byte for byte.
 ///
-/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+/// Measured by `../tools/fixtures/c/caravan_ladder_print_scan.sh`.
 pub fn carry_refusal(
     comptime rung: type,
     posted: ?[2]rung.Settlement,
@@ -8657,7 +8657,7 @@ pub fn carry_refusal(
 /// with the type handed in, including the accessor that finds this tier's own
 /// report inside a report nested as deep as that rung stands.
 ///
-/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+/// Measured by `../tools/fixtures/c/caravan_ladder_print_scan.sh`.
 pub fn carry_the_amendment(
     comptime rung: type,
     io: std.Io,
@@ -8716,7 +8716,7 @@ pub fn carry_the_amendment(
 ///
 /// Twenty-six rungs held this body byte for byte.
 ///
-/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+/// Measured by `../tools/fixtures/c/caravan_ladder_print_scan.sh`.
 pub fn regard_published(comptime rung: type, io: std.Io) ?rung.Regard {
     var path_buf: [rung.max_note_path_len]u8 = undefined;
     const path = rung.note_path(&path_buf, rung.plan_name, ".regard") catch return null;
@@ -8740,7 +8740,7 @@ pub fn regard_published(comptime rung: type, io: std.Io) ?rung.Regard {
 ///
 /// Twenty-six rungs held this body byte for byte.
 ///
-/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+/// Measured by `../tools/fixtures/c/caravan_ladder_print_scan.sh`.
 pub fn regard_note(comptime rung: type, io: std.Io, regard: rung.Regard) rung.NoteError!void {
     // invariant: only a word standing under a quarrel is ever published as one
     assert(regard == .under);
@@ -8758,7 +8758,7 @@ pub fn regard_note(comptime rung: type, io: std.Io, regard: rung.Regard) rung.No
 ///
 /// Twenty-seven rungs held this body byte for byte.
 ///
-/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+/// Measured by `../tools/fixtures/c/caravan_ladder_print_scan.sh`.
 pub fn standing_note(comptime rung: type, io: std.Io, plea: rung.Plea) rung.NoteError!void {
     // invariant: only a pressed quarrel is ever carried past its own run
     assert(rung.endures(plea));
@@ -8775,7 +8775,7 @@ pub fn standing_note(comptime rung: type, io: std.Io, plea: rung.Plea) rung.Note
 ///
 /// Twenty-four rungs held this body byte for byte.
 ///
-/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+/// Measured by `../tools/fixtures/c/caravan_ladder_print_scan.sh`.
 pub fn dwell_note(comptime rung: type, io: std.Io, runs: u32) rung.NoteError!void {
     // invariant: an age only ever reaches the wire once it has stood a run
     assert(runs >= 1);
@@ -8794,7 +8794,7 @@ pub fn dwell_note(comptime rung: type, io: std.Io, runs: u32) rung.NoteError!voi
 ///
 /// Twenty-three rungs held this body byte for byte.
 ///
-/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+/// Measured by `../tools/fixtures/c/caravan_ladder_print_scan.sh`.
 pub fn swell_published(comptime rung: type, io: std.Io) ?rung.Volume {
     var path_buf: [rung.max_note_path_len]u8 = undefined;
     const path = rung.note_path(&path_buf, rung.plan_name, ".swell") catch return null;
@@ -8827,7 +8827,7 @@ pub fn swell_published(comptime rung: type, io: std.Io) ?rung.Volume {
 /// Twenty-two rungs held this body byte for byte, four more differed only by the word
 /// `pub`, and the enduring tier owner came home on three lines of identity accessor.
 ///
-/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+/// Measured by `../tools/fixtures/c/caravan_ladder_print_scan.sh`.
 pub fn carry_the_position(
     comptime rung: type,
     io: std.Io,
@@ -8905,7 +8905,7 @@ pub fn carry_the_position(
 /// the word `pub`, and the heeding tier owner held it too once the identity accessor
 /// it never needed was named -- so the family reads as one text across twenty-six.
 ///
-/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+/// Measured by `../tools/fixtures/c/caravan_ladder_print_scan.sh`.
 pub fn weigh_the_standing(
     comptime rung: type,
     io: std.Io,
@@ -8989,7 +8989,7 @@ pub fn weigh_the_standing(
 /// Twenty-two rungs held this body byte for byte, one more differed only by the word
 /// `pub`, and the dating tier owner came home on three lines of identity accessor.
 ///
-/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+/// Measured by `../tools/fixtures/c/caravan_ladder_print_scan.sh`.
 pub fn date_the_standing(
     comptime rung: type,
     io: std.Io,
@@ -9076,7 +9076,7 @@ pub fn date_the_standing(
 /// Twenty-two rungs held this body byte for byte, and the heralding tier owner came
 /// home on three lines of identity accessor.
 ///
-/// Measured by `../tools/fixtures/caravan_ladder_print_scan.sh`.
+/// Measured by `../tools/fixtures/c/caravan_ladder_print_scan.sh`.
 pub fn herald_the_standing(
     comptime rung: type,
     io: std.Io,
@@ -9770,7 +9770,7 @@ pub fn meet_the_debt(comptime rung: type, io: std.Io, meet: rung.Meet, report_ou
 /// Every symbol this body reaches already stood public in all fifteen, so the
 /// lift widens nothing. Measured rather than read: `REACH_OK
 /// family=apprise_the_raiser folding=15 widens=0 stub=3 fall=658` from
-/// `../tools/fixtures/ladder_reach_visibility_scan.sh`.
+/// `../tools/fixtures/l/ladder_reach_visibility_scan.sh`.
 pub fn apprise_the_raiser(comptime rung: type, io: std.Io, apprise: rung.Apprise, report_out: *rung.Report) (rung.RunError || rung.NoteError)!void {
     const finding = rung.redress_written(io);
     const redressed_count: u32 = if (finding != null) 1 else 0;
@@ -9893,7 +9893,7 @@ pub fn redress_the_meeting(comptime rung: type, io: std.Io, redress: rung.Redres
 /// Every symbol this body reaches already stood public in all eight rungs, so
 /// the lift widens nothing of any kind. Measured rather than read:
 /// `REACH_OK family=mind_the_impasse folding=8 widens=0 stub=3 fall=350` from
-/// `../tools/fixtures/ladder_reach_visibility_scan.sh`.
+/// `../tools/fixtures/l/ladder_reach_visibility_scan.sh`.
 pub fn mind_the_impasse(comptime rung: type, io: std.Io, mind: rung.Mind, report_out: *rung.Report) (rung.RunError || rung.NoteError)!void {
     const handed = rung.hold_standing(io);
     const word = rung.holds_rest(handed);
@@ -10015,7 +10015,7 @@ pub fn press_path(comptime rung: type, buf: *[rung.max_note_path_len]u8, address
 /// Every symbol this body reaches already stood public in all thirty-nine
 /// rungs, so the lift widens nothing of any kind. Measured rather than read:
 /// `REACH_OK family=bearing_note folding=39 widens=0 stub=3 fall=342` from
-/// `../tools/fixtures/ladder_reach_visibility_scan.sh`.
+/// `../tools/fixtures/l/ladder_reach_visibility_scan.sh`.
 pub fn bearing_note(comptime rung: type, io: std.Io, held: u32, borne_mask: u32) rung.NoteError!void {
     // invariant: a bearing note never names more phases than one record holds
     assert(held <= rung.max_queue_len);
@@ -10068,7 +10068,7 @@ pub fn bearing_published(comptime rung: type, io: std.Io, held: u32) u32 {
 /// Every symbol this body reaches already stood public in all thirty-eight
 /// rungs, so the lift widens nothing of any kind. Measured rather than read:
 /// `REACH_OK family=appraisal_note folding=38 widens=0 stub=3 fall=333` from
-/// `../tools/fixtures/ladder_reach_visibility_scan.sh`.
+/// `../tools/fixtures/l/ladder_reach_visibility_scan.sh`.
 pub fn appraisal_note(comptime rung: type, io: std.Io, held: u32, weighed_mask: u32) rung.NoteError!void {
     // invariant: an appraisal note never names more phases than one record holds
     assert(held <= rung.max_queue_len);
@@ -10120,7 +10120,7 @@ pub fn appraisal_published(comptime rung: type, io: std.Io, held: u32) u32 {
 /// was taken ahead of the queue's own head, which returned six lines more at a
 /// price of sixty-eight openings. Measured rather than read:
 /// `REACH_OK family=recant_note folding=37 widens=0 stub=3 fall=324` from
-/// `../tools/fixtures/ladder_reach_visibility_scan.sh`.
+/// `../tools/fixtures/l/ladder_reach_visibility_scan.sh`.
 pub fn recant_note(comptime rung: type, io: std.Io, held: u32, taken_back_mask: u32) rung.NoteError!void {
     // invariant: a recant note never names more phases than one record holds
     assert(held <= rung.max_queue_len);
@@ -10191,7 +10191,7 @@ pub fn confirm(comptime rung: type, io: std.Io, domain: []const u8, depth: u32) 
 /// Every symbol this body reaches already stood public in all fourteen, so the
 /// lift widens nothing. Measured rather than read: `REACH_OK
 /// family=weigh_the_answer folding=14 widens=0 stub=3 fall=624` from
-/// `../tools/fixtures/ladder_reach_visibility_scan.sh`.
+/// `../tools/fixtures/l/ladder_reach_visibility_scan.sh`.
 pub fn weigh_the_answer(comptime rung: type, io: std.Io, suffice: rung.Suffice, report_out: *rung.Report) (rung.RunError || rung.NoteError)!void {
     var address_buf: [rung.max_address_len]u8 = undefined;
     const address = rung.address_published(io, &address_buf);
@@ -10260,7 +10260,7 @@ pub fn weigh_the_answer(comptime rung: type, io: std.Io, suffice: rung.Suffice, 
 /// The body reaches three symbols and every one already stood public in all
 /// forty-four, so the lift widens nothing. Measured rather than read: `REACH_OK
 /// family=confirm_pruned folding=44 widens=0 stub=3 fall=516` from
-/// `../tools/fixtures/ladder_reach_visibility_scan.sh`.
+/// `../tools/fixtures/l/ladder_reach_visibility_scan.sh`.
 pub fn confirm_pruned(comptime rung: type, io: std.Io, domain: []const u8, count: u32) bool {
     // invariant: a confirmation always names the dependent it waits on
     assert(domain.len >= 1);
@@ -10313,7 +10313,7 @@ pub fn read_words(comptime rung: type, io: std.Io, domain: []const u8, out: *run
 /// The body reaches two symbols, `max_note_path_len` and `note_path`, both
 /// already public in all forty-four, so the lift widens nothing. Measured
 /// rather than read: `REACH_OK family=read_count folding=44 widens=0 stub=3
-/// fall=487` from `../tools/fixtures/ladder_reach_visibility_scan.sh`.
+/// fall=487` from `../tools/fixtures/l/ladder_reach_visibility_scan.sh`.
 pub fn read_count(comptime rung: type, io: std.Io, domain: []const u8, suffix: []const u8) rung.NoteError!u8 {
     // invariant: a note always names the dependent it belongs to
     assert(domain.len >= 1);
@@ -10390,7 +10390,7 @@ pub fn load_one(io: std.Io, path: []const u8, buf: []u8) ?system.System {
 /// published first as a uniformity ratchet -- each is already a three-line stub
 /// delegating here -- and the lift then widens nothing. Measured rather than
 /// read: `REACH_OK family=seat_note folding=44 widens=0 stub=3 fall=531` from
-/// `../tools/fixtures/ladder_reach_visibility_scan.sh`.
+/// `../tools/fixtures/l/ladder_reach_visibility_scan.sh`.
 pub fn seat_note(comptime rung: type, io: std.Io, domain: []const u8, suffix: []const u8, bytes: []const u8) rung.NoteError!void {
     // invariant: a note always names the dependent it belongs to
     assert(domain.len >= 1);
@@ -10430,7 +10430,7 @@ pub fn seat_note(comptime rung: type, io: std.Io, domain: []const u8, suffix: []
 /// has folded -- and every one already stood public in all thirteen, so the
 /// lift widens nothing. Measured rather than read: `REACH_OK
 /// family=take_up_again folding=13 widens=0 stub=3 fall=540` from
-/// `../tools/fixtures/ladder_reach_visibility_scan.sh`.
+/// `../tools/fixtures/l/ladder_reach_visibility_scan.sh`.
 pub fn take_up_again(comptime rung: type, io: std.Io, reopen: rung.Reopen, report_out: *rung.Report) (rung.RunError || rung.NoteError)!void {
     var address_buf: [rung.max_address_len]u8 = undefined;
     const address = rung.address_published(io, &address_buf);
@@ -10544,7 +10544,7 @@ pub fn read_own_line(
 ///
 /// Measured rather than read: `REACH_OK family=look_again folding=12 widens=0
 /// widens_fn=0 widens_import=0 widens_const=0 stub=3 fall=528` from
-/// `../tools/fixtures/ladder_reach_visibility_scan.sh`.
+/// `../tools/fixtures/l/ladder_reach_visibility_scan.sh`.
 ///
 /// **This is the first family the arc has folded that widens nothing of any
 /// kind.** All fourteen symbols the body reaches -- `again_standing`,
@@ -10621,7 +10621,7 @@ pub fn look_again(comptime rung: type, io: std.Io, reweigh: rung.Reweigh, report
 ///
 /// Measured rather than read: `REACH_OK family=revoke_one folding=40 widens=40
 /// widens_fn=0 widens_import=40 widens_const=0 stub=9 fall=468` from
-/// `../tools/fixtures/ladder_reach_visibility_scan.sh`.
+/// `../tools/fixtures/l/ladder_reach_visibility_scan.sh`.
 ///
 /// **The lift pays none of the forty widenings the meter priced.** All forty
 /// are one import binding apiece, and all forty bind `cycle` -- a shared module
@@ -11195,7 +11195,7 @@ pub fn read_the_reply(
 /// Every symbol this body reaches already stood public in all seven rungs, so
 /// the lift widens nothing of any kind. Measured rather than read: `REACH_OK
 /// family=hold_the_matter folding=7 widens=0 stub=3 fall=336` from
-/// `../tools/fixtures/ladder_reach_visibility_scan.sh`.
+/// `../tools/fixtures/l/ladder_reach_visibility_scan.sh`.
 pub fn hold_the_matter(comptime rung: type, io: std.Io, forbear: rung.Forbear, report_out: *rung.Report) (rung.RunError || rung.NoteError)!void {
     if (rung.desist_of(report_out).walled >= 1) {
         // The wall stands, so the relay is stayed: a matter this correspondence
@@ -11282,7 +11282,7 @@ pub fn hold_the_matter(comptime rung: type, io: std.Io, forbear: rung.Forbear, r
 /// the lift widens nothing of any kind. Measured rather than read: `QUEUE_ROW
 /// family=bound_the_relay fall=312 folding=7 lines=55 stub=3 widens=0
 /// widens_fn=0 widens_const=0` from
-/// `../tools/fixtures/ladder_reach_visibility_scan.sh`, read before the lift.
+/// `../tools/fixtures/l/ladder_reach_visibility_scan.sh`, read before the lift.
 pub fn bound_the_relay(comptime rung: type, io: std.Io, named_before: ?[rung.max_minds_bytes]u8, desist: rung.Desist, report_out: *rung.Report) (rung.RunError || rung.NoteError)!void {
     const mark = rung.mind_published(io);
     const named = rung.mind_of(report_out).minded >= 1 and mark != null;
@@ -11362,7 +11362,7 @@ pub fn bound_the_relay(comptime rung: type, io: std.Io, named_before: ?[rung.max
 ///
 /// Measured rather than read: `REACH_OK family=asked_of folding=31 widens=62
 /// widens_fn=31 widens_import=0 widens_const=31 stub=3 fall=360` from
-/// `../tools/fixtures/ladder_reach_visibility_scan.sh`, read before the lift.
+/// `../tools/fixtures/l/ladder_reach_visibility_scan.sh`, read before the lift.
 pub fn asked_of(comptime rung: type, io: std.Io, address: []const u8) ?[2]rung.Settlement {
     if (!rung.addressable(address)) return null;
     var path_buf: [rung.max_note_path_len]u8 = undefined;

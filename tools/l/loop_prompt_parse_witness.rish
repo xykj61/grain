@@ -17,7 +17,7 @@
 # WHAT PASSES FREE. The narration around the commands. Its apostrophes are correct English, and a
 # guard that measured them would be reading prose as code, which is the mirror of the fault.
 #
-# Pen: tools/fixtures/loop_prompt_parse_control.sh -- eight cases, the lone apostrophe bitten and
+# Pen: tools/fixtures/l/loop_prompt_parse_control.sh -- eight cases, the lone apostrophe bitten and
 # its line named, prose left free, the outer loop measured beside the jail elder, and an empty or
 # absent printout told apart from a failing one. Run from the repository root.
 
@@ -25,13 +25,13 @@ say "loop-prompt-parse: Language EN -- a recipe that cannot be run is a recipe i
 say "loop-prompt-parse: Style Gauge -- the reading is a parse, so the number is checkable by anyone."
 say "loop-prompt-parse: Lens TAME -- printed text is untested code until something tests it."
 
-let scan = run ["sh" "tools/fixtures/loop_prompt_parse_scan.sh"]
+let scan = run ["sh" "tools/fixtures/l/loop_prompt_parse_scan.sh"]
 say scan.out
 assert scan.ok else "loop-prompt-parse: a printed command does not parse -- read the scan's own detail lines"
 assert scan.out contains "verdict=every_printed_line_parses" else "loop-prompt-parse: the scan must reach the clean verdict"
 assert scan.out contains "lines_that_do_not_parse=0" else "loop-prompt-parse: no printed command may fail to parse"
 
-let control = run ["sh" "tools/fixtures/loop_prompt_parse_control.sh"]
+let control = run ["sh" "tools/fixtures/l/loop_prompt_parse_control.sh"]
 say control.out
 assert control.ok else "loop-prompt-parse: the control must complete"
 assert control.out contains "case=clean_free ok" else "loop-prompt-parse: a correctly doubled apostrophe must pass"

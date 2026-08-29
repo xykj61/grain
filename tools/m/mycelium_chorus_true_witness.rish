@@ -7,7 +7,7 @@
 # Cord record a keeper can open and hash, proving the property the whole Chorus rests on: the agreed
 # position is TRUE TO THE BYTES, the distinct count the threshold reads is the count of members present,
 # and every member's order-head is the order the fixture folds. The corpus reuses the Lapse's own fixture
-# tools/fixtures/lapse_dag.bron (a funder credits Alice 200; a pledge to Bob lapses and comes home; a
+# tools/fixtures/l/lapse_dag.bron (a funder credits Alice 200; a pledge to Bob lapses and comes home; a
 # pledge to Carol stays open), @embedFile-bound through the mycelium/corpora/ symlink -- no network.
 #
 # The crux this witness proves is TWO TOOLS, ONE ANSWER: the app parses the record through cord_bron,
@@ -46,7 +46,7 @@ assert selftest.out contains "The Mycelium Chorus's agent-doable arc closes" els
 # The crux -- two tools, one answer. The app's measure tuple must equal awk's reading of the same bytes.
 let app = run ["sh" "-c" "${bin} measure 2>&1"]
 assert app.ok else "mycelium-chorus-true: app measure exited non-zero"
-let awk = run ["sh" "-c" "awk -f tools/fixtures/statement_dag_truth.awk tools/fixtures/lapse_dag.bron"]
+let awk = run ["sh" "-c" "awk -f tools/fixtures/s/statement_dag_truth.awk tools/fixtures/l/lapse_dag.bron"]
 assert awk.ok else "mycelium-chorus-true: awk truth read failed"
 assert awk.out contains "bc7cbcb5636375fa1d82434d466724d92377f53b980695dd49d26d0ce12205a5 100 100 200" else "mycelium-chorus-true: awk tuple not the funded account · balance 100 · reserved 100 · received 200"
 assert app.out == awk.out else "mycelium-chorus-true: app and awk disagree — the agreed position drifted from the bytes"

@@ -1,0 +1,29 @@
+# tools/fixtures/c/constel_names.txt -- the seated draws of the Constel test-network naming law.
+#
+# Fake, self-invented constellation names for sandbox / testnet / localhost Comlink p2p
+# networks run INSIDE the jailed pier. Siloed, dev-only, never a real address, never a seed
+# artifact.
+#
+# Every name here carries BOTH structural proofs that it can never parse as a real @p:
+#   digit      -- a decimal digit anywhere. A real @p body is lowercase letters and hyphens
+#                 drawn from a fixed 256-syllable table holding no digits. Seated 20260813.
+#   vowel-free -- no a, e, i, o or u. Each of the 512 real syllables carries exactly one vowel
+#                 and `y` never appears in the table. Seated 20260814, and the law
+#                 constel/name.rye check_ship enforces at constel/handshake.rye's border.
+#
+# The first draws (20260813) carried the digit alone, and every one of them failed check_ship on
+# its vowel -- two rooms of this tree disagreeing about five names nothing compared (REDS %306).
+# The redraw below is each elder name with its vowels dropped, so the kinship stays readable and
+# both proofs stand on every seated name:
+#
+#   xnqvel34 -> xnqvl34   xzkerith58 -> xzkrth58   xwmur-dol12 -> xwmr-dl12
+#   maqwintel06 -> mqwntl06   sunveknar90 -> snvknr90
+#
+# Law: active-designing/20260814-fill-constel-naming-law.md (seated, vowel-free)
+#      active-designing/date/20260813/20260813-022222_constel-test-network-naming-law.md (elder)
+# Witness: tools/co/constel_naming_witness.rish. Comment lines (#) and blank lines are skipped.
+xnqvl34
+xzkrth58
+xwmr-dl12
+mqwntl06
+snvknr90

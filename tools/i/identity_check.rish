@@ -10,7 +10,7 @@
 # Run from the repository root:
 #   rishi/bin/rishi run tools/i/identity_check.rish
 
-let verdict = run ["rishi/bin/rishi" "run" "tools/fixtures/identity_shape.rish"]
+let verdict = run ["rishi/bin/rishi" "run" "tools/fixtures/i/identity_shape.rish"]
 assert verdict.ok else "identity shape script must pass"
 say verdict.out
 assert verdict.out contains "IDENTITY-GREEN" else "identity must reach a green verdict"

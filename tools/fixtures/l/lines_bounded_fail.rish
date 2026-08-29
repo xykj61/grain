@@ -1,0 +1,2 @@
+let t = read-file "tools/fixtures/t/twenty_lines.txt"
+let _ = lines-bounded t max 10

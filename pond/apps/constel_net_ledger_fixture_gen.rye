@@ -2,7 +2,7 @@
 //!
 //! Rung four reads a genuine on-disk ledger record and cross-checks the harness's fold against an
 //! independent measure. This generator produces that fixture reproducibly, so the on-disk bytes are
-//! exactly what the ledger renders -- a keeper can regenerate `tools/fixtures/constel_net_ledger.bron`
+//! exactly what the ledger renders -- a keeper can regenerate `tools/fixtures/c/constel_net_ledger.bron`
 //! and get the identical record, never a hand-mocked shape. It opens a demo sovereign ledger (rung
 //! one), issues 100, taxes 30, and reserves the star `vega` for 20 (rung two -- supply folds to 50),
 //! builds a portable ledger (rung three), and prints the `format constel-ledger-v1` record.
@@ -13,7 +13,7 @@
 //! The record prints on stderr (the tree's `std.debug.print` convention), so capture stderr:
 //!
 //!   rye build pond/apps/constel_net_ledger_fixture_gen.rye -femit-bin=pond/bin/constel-net-ledger-fixture-gen
-//!   pond/bin/constel-net-ledger-fixture-gen 2> tools/fixtures/constel_net_ledger.bron
+//!   pond/bin/constel-net-ledger-fixture-gen 2> tools/fixtures/c/constel_net_ledger.bron
 
 const std = @import("std");
 const assert = std.debug.assert;

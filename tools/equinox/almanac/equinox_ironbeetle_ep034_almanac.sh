@@ -25,7 +25,7 @@ entry = (
     "### 89. IronBeetle ep034 forbids half-sync callbacks; asynchronous always means the next tick, and prefetch stays parallel while commit stays sequential.\n"
     "**Ran:** `rishi/bin/rishi run tools/equinox/witness/equinox_ironbeetle_ep034_choir_witness.rish` · **Stamp:** `"
     + stamp
-    + "` · **Witness:** `tools/gen/chapter/ironbeetle_ep034_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep034_census.sh` · choir `equinox_ironbeetle_ep034_choir_witness.rish`\n"
+    + "` · **Witness:** `tools/gen/chapter/ironbeetle_ep034_census_witness.rish` · scan `tools/fixtures/i/ironbeetle_ep034_census.sh` · choir `equinox_ironbeetle_ep034_choir_witness.rish`\n"
     "Expected IRON=present · EP034 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, "
     "and verdict=absent on a missing iron shelf. Metal answered GREEN. "
     "Clean-room study only.\n\n"

@@ -1,6 +1,6 @@
 //! tools/rye/monocypher_blake2b_var_parity.rye -- our authored crypto/blake2b.rye asked for its OWN VARIABLE-LENGTH BLAKE2b (hash_var) over six
 //! (output-length, message) pairs, printed one 2*out_len-hex-character digest per line, so tools/cr/crypto_monocypher_blake2b_var_parity_witness.rish
-//! can diff our bytes against the vendored Monocypher's C (tools/fixtures/monocypher_blake2b_var_harness.c) byte-for-byte. Chapter G
+//! can diff our bytes against the vendored Monocypher's C (tools/fixtures/m/monocypher_blake2b_var_harness.c) byte-for-byte. Chapter G
 //! (Cryptography - Rye-native, Monocypher-parity, audit-ready).
 //!
 //! The existing BLAKE2b parity rung proves only the 64-byte full digest; this harness exercises crypto/blake2b.rye's hash_var -- the length-

@@ -25,7 +25,7 @@ entry = (
     "### 45. Hot loops stand alone; the compiler proves less, the reader sees more.\n"
     "**Ran:** `rishi/bin/rishi run tools/equinox/witness/equinox_tigerbeetle_be_explicit_choir_witness.rish` · **Stamp:** `"
     + stamp
-    + "` · **Witness:** `tools/gen/chapter/tigerbeetle_be_explicit_census_witness.rish` · scan `tools/fixtures/tigerbeetle_be_explicit_census.sh` · choir `equinox_tigerbeetle_be_explicit_choir_witness.rish`\n"
+    + "` · **Witness:** `tools/gen/chapter/tigerbeetle_be_explicit_census_witness.rish` · scan `tools/fixtures/t/tigerbeetle_be_explicit_census.sh` · choir `equinox_tigerbeetle_be_explicit_choir_witness.rish`\n"
     "Expected CLONE=present · GUIDE_EXPLICIT · GUIDE_HOTLOOP · TAME_EXPLICIT · STYLE · COMPACTION, "
     "and verdict=absent on a missing clone path. Metal answered GREEN. Clean-room study only.\n\n"
 )

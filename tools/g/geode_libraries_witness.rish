@@ -13,7 +13,7 @@
 #   `image` and `lotus`, 463 modules between them, because their proofs are named for what they
 #   prove rather than where it lives. A confident wrong zero is worse than no number.
 #   The module count asks git what the tree keeps, proven on real repositories in a temporary pen
-#   by tools/fixtures/geode_libraries_control.sh. The `glow` room keeps a `.cache` of 108 generated
+#   by tools/fixtures/g/geode_libraries_control.sh. The `glow` room keeps a `.cache` of 108 generated
 #   modules the repository ignores, and a plain `find` published 238 where the tree keeps 130 -- a
 #   number that moved when somebody compiled and drifted with no commit behind it (REDS %216).
 #
@@ -30,7 +30,7 @@ say "geode-libraries: Lens TAME -- the witness count is taken by reference rathe
 # The counting rule is proven before the page is trusted, and it is proven on real git repositories
 # rather than described. A rule proven only where it passes cannot be told from a rule that counts
 # every file on disk, which is precisely the rule this replaced.
-let control = run ["sh" "tools/fixtures/geode_libraries_control.sh"]
+let control = run ["sh" "tools/fixtures/g/geode_libraries_control.sh"]
 assert control.ok else "geode-libraries: the control must complete"
 say control.out
 assert control.out contains "control_verdict=ok" else "geode-libraries: the control must reach its own verdict"
@@ -40,7 +40,7 @@ assert control.out contains "an untracked, unignored module counts -- read 2" el
 assert control.out contains "a room holding only ignored modules leaves the index -- read 0" else "geode-libraries: a room the tree keeps no module in leaves the index"
 assert control.out contains "control_fail=0" else "geode-libraries: every planted reading must hold"
 
-let fresh = run ["sh" "-c" "sh tools/fixtures/geode_libraries_scan.sh render | cksum"]
+let fresh = run ["sh" "-c" "sh tools/fixtures/g/geode_libraries_scan.sh render | cksum"]
 assert fresh.ok else "geode-libraries: a fresh render must succeed"
 let onshelf = run ["sh" "-c" "cksum < docs-geode/libraries/README.md"]
 assert onshelf.ok else "geode-libraries: the page must be readable"

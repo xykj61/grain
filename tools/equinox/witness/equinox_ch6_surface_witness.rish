@@ -93,7 +93,7 @@ say ep043.out
 assert ep043.ok else "equinox-ch6-surface: ep043 limb failed"
 assert ep043.out contains "GREEN: iron-ep043" else "equinox-ch6-surface: ep043 not GREEN"
 
-let scan = run ["sh" "tools/fixtures/equinox_ch6_surface_scan.sh"]
+let scan = run ["sh" "tools/fixtures/e/equinox_ch6_surface_scan.sh"]
 say scan.out
 assert scan.ok else "equinox-ch6-surface: surface scan must exit 0"
 assert scan.out contains "limbs=16" else "equinox-ch6-surface: want limbs 16"
@@ -102,7 +102,7 @@ assert scan.out contains "no_almanac_seat=honored" else "equinox-ch6-surface: wa
 assert scan.out contains "verdict=ok" else "equinox-ch6-surface: want verdict=ok"
 
 # Refuse -- absent iron shelf
-let refuse_iron = run ["sh" "tools/fixtures/ironbeetle_ep043_census.sh" "tools/fixtures/ironbeetle_ABSENT"]
+let refuse_iron = run ["sh" "tools/fixtures/i/ironbeetle_ep043_census.sh" "tools/fixtures/ironbeetle_ABSENT"]
 say refuse_iron.out
 assert refuse_iron.ok == false else "equinox-ch6-surface: absent iron must fail"
 assert refuse_iron.out contains "IRON=ABSENT" else "equinox-ch6-surface: want IRON=ABSENT"

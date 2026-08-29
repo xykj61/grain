@@ -13,7 +13,7 @@ say "tb-buffer-bleeds: Lens TAME — e47 · clean-room study · almanac seat 53.
 let clone = run ["test" "-d" "gratitude/tigerbeetle/src"]
 assert clone.ok else "tb-buffer-bleeds: gratitude/tigerbeetle/src ABSENT — host clone first"
 
-let census = run ["sh" "tools/fixtures/tigerbeetle_buffer_bleeds_census.sh"]
+let census = run ["sh" "tools/fixtures/t/tigerbeetle_buffer_bleeds_census.sh"]
 say census.out
 assert census.ok else "tb-buffer-bleeds: census failed or thin"
 assert census.out contains "CLONE=present" else "tb-buffer-bleeds: want CLONE=present"

@@ -117,7 +117,7 @@ a power of two under that cliff rather than at it, by the same reasoning that pu
 256. `counsel/date/20260728` at 311 is the shelf that taught this (REDS %315): it stood among %301's
 booked folds with nowhere lawful to go. A shelf past 768 reds the witness, and the named escape is
 the hour fold, `date/YYYYMMDD/HH/` -- equally pure, since the hour is characters 10 and 11 of the
-basename. Proven from both sides in `tools/fixtures/room_bound_control.sh`: a pen shelf past its
+basename. Proven from both sides in `tools/fixtures/r/room_bound_control.sh`: a pen shelf past its
 bound refuses with `terminal_over` counted, and one standing exactly at the bound walks free.
 
 **A room earns ENFORCE by folding.** Once a room has been carried across, its references repointed and
@@ -143,7 +143,7 @@ the narrow pattern; a grep for the three spellings this tree writes stamps in fo
 across fifteen files** (REDS %178), so the remainder in that row was itself counted from memory. All
 nineteen read `[_.]`, `(_|\.)`, or `(_<sprig>)?\.` now, and
 [`../../tools/d/dated_spelling_witness.rish`](../../tools/d/dated_spelling_witness.rish) over
-[`../../tools/fixtures/dated_spelling_scan.sh`](../../tools/fixtures/dated_spelling_scan.sh) gates 4,705
+[`../../tools/fixtures/d/dated_spelling_scan.sh`](../../tools/fixtures/d/dated_spelling_scan.sh) gates 4,705
 living tracked sources at zero, proven both ways on real git repositories in a throwaway pen. Two of
 the eleven unnamed sites carried a consequence past a miscount: the guard that refuses edits to dated
 artifacts could not see a sprigless log, and the repointer's map, candidate filter, and line matcher
@@ -220,7 +220,7 @@ Zig refuses an import that escapes the root file's directory, so a bare-name `@i
 relationship the language enforces, and a room whose members import one another that way is one room by
 the compiler's own rule. The extension is visible in the basename, so the resolver stays a pure function.
 
-**A meter reads the room by its own rule.** `tools/fixtures/room_bound_scan.sh` counts a day-folded room
+**A meter reads the room by its own rule.** `tools/fixtures/r/room_bound_scan.sh` counts a day-folded room
 by dated basenames and a letter-folded room by every flat entry, printing `counts=all` beside the second.
 That distinction is why `tools/` reached **7.4x the bound with every guard green**: not one of its entries
 carried a stamp, so the dated count read zero for the room's whole life.
@@ -307,11 +307,11 @@ that one page**: `living_pin_max_bytes[session-logs/README.md] = 57344`, derived
 rows plus 8,192 for prose. **The general bound is unchanged at 24,576 for every other pin**, and
 the argument for the exception is that the two serve different readings -- 24,576 bounds a page an
 agent reads **whole**, while an index is read from the **top**, which is what a lap is instructed
-to do. [`../../tools/fixtures/living_pin_max_bytes.sh`](../../tools/fixtures/living_pin_max_bytes.sh)
+to do. [`../../tools/fixtures/l/living_pin_max_bytes.sh`](../../tools/fixtures/l/living_pin_max_bytes.sh)
 answers per page, so no meter spells either number.
 
 [`../../tools/i/index_fold_witness.rish`](../../tools/i/index_fold_witness.rish) over
-[`../../tools/fixtures/index_fold_scan.sh`](../../tools/fixtures/index_fold_scan.sh) holds
+[`../../tools/fixtures/i/index_fold_scan.sh`](../../tools/fixtures/i/index_fold_scan.sh) holds
 **`session-logs` at zero** stale rows -- the room a hand has carried across, front door and all --
 and ratchets the rest under a ceiling that only falls: `active-designing` 86, `counsel` 112,
 `expanding-prompts` 78, `waymarks` 41, **317** together on the day it was seated. All four have
@@ -322,7 +322,7 @@ ratchet stays, because it is the roof a room opened tomorrow arrives under befor
 its front door. Folding a room's
 index also rewrites its front door, and four front doors written in a hurry is how a fix becomes its
 own red, so each room gets its own round.
-[`../../tools/fixtures/index_fold_control.sh`](../../tools/fixtures/index_fold_control.sh) proves
+[`../../tools/fixtures/i/index_fold_control.sh`](../../tools/fixtures/i/index_fold_control.sh) proves
 fifteen behaviors on real directory trees in a throwaway pen, the ceiling shown from both sides by
 planting 0 rows and then 1, so no override exists and none is wanted.
 

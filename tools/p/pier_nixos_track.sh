@@ -45,7 +45,7 @@ nix-instantiate --parse "${SRC}/configuration.nix" >/dev/null || { echo "REFUSE:
 #
 # HOST-BOUND ON PURPOSE, so `readlink -f` stays. Every line of this script addresses /etc/nixos and
 # `nixos-rebuild` as root on the pier; a bench without GNU readlink is a bench without the thing
-# this script edits. `resolve_path` in tools/fixtures/shell_portable.sh serves the guards that
+# this script edits. `resolve_path` in tools/fixtures/s/shell_portable.sh serves the guards that
 # cross, and using it here would imply a portability this file has no use for.
 if [ -L /etc/nixos ] && [ "$(readlink -f /etc/nixos)" = "$(readlink -f "$SRC")" ]; then
   echo "/etc/nixos already tracks ${SRC} -- rebuilding only."

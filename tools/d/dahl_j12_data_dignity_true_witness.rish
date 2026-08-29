@@ -8,7 +8,7 @@
 # pond/apps/data_dignity_fixture_gen.rye, demo seeds only) through a pond/apps/corpora/ symlink, parses it
 # through rung three, and reports the bequeathed count, the rested count, and the heir-held count -- the
 # last computed by actually running the signed succession (rebuild) and resolving each item's holder. The
-# crux is the cross-check: tools/fixtures/data_dignity_truth.awk reads the marks structurally and the
+# crux is the cross-check: tools/fixtures/d/data_dignity_truth.awk reads the marks structurally and the
 # witness asserts the app's triple equals awk's -- two tools, one answer (2 1 2) -- so a succession's outcome
 # can never drift from a record a keeper can count. And the record is genuinely dignity-honest:
 # still_dignity_honest re-verifies both proofs, and rebuild leaves the heir holding the bequeathed set with
@@ -37,7 +37,7 @@ assert selftest.out contains "refused BadFormat" else "dahl-j12r4: tamper refusa
 # The crux -- two tools, one answer. The app's measure triple must equal awk's reading of the same bytes.
 let app = run ["sh" "-c" "${bin} measure 2>&1"]
 assert app.ok else "dahl-j12r4: app measure exited non-zero"
-let awk = run ["sh" "-c" "awk -f tools/fixtures/data_dignity_truth.awk surf/fixtures/estate.bron"]
+let awk = run ["sh" "-c" "awk -f tools/fixtures/d/data_dignity_truth.awk surf/fixtures/estate.bron"]
 assert awk.ok else "dahl-j12r4: awk truth read failed"
 assert app.out contains "2 1 2" else "dahl-j12r4: app triple not 2 1 2"
 assert awk.out contains "2 1 2" else "dahl-j12r4: awk triple not 2 1 2"

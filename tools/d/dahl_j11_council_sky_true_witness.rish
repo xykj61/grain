@@ -8,7 +8,7 @@
 # reproducibly by pond/apps/council_sky_fixture_gen.rye, demo seeds only) through a pond/apps/corpora/
 # symlink, parses it through rung three, and reports the seated size, the ballot count, and the
 # decided-proposal count (distinct proposals whose one-sided tally reaches the quorum -- a proposal short
-# of quorum holds open and is not counted). The crux is the cross-check: tools/fixtures/council_sky_truth.awk
+# of quorum holds open and is not counted). The crux is the cross-check: tools/fixtures/c/council_sky_truth.awk
 # reads the size and quorum, dedups ballots, and counts decided proposals independently, and the witness
 # asserts the app's triple equals awk's -- two tools, one answer (3 3 1). And the record is genuinely
 # tie-free and quorum-honest: still_quorum_honest re-verifies every ballot signature, and rebuild recovers
@@ -37,7 +37,7 @@ assert selftest.out contains "refused BadFormat" else "dahl-j11r4: tamper refusa
 # The crux -- two tools, one answer. The app's measure triple must equal awk's reading of the same bytes.
 let app = run ["sh" "-c" "${bin} measure 2>&1"]
 assert app.ok else "dahl-j11r4: app measure exited non-zero"
-let awk = run ["sh" "-c" "awk -f tools/fixtures/council_sky_truth.awk surf/fixtures/council.bron"]
+let awk = run ["sh" "-c" "awk -f tools/fixtures/c/council_sky_truth.awk surf/fixtures/council.bron"]
 assert awk.ok else "dahl-j11r4: awk truth read failed"
 assert app.out contains "3 3 1" else "dahl-j11r4: app triple not 3 3 1"
 assert awk.out contains "3 3 1" else "dahl-j11r4: awk triple not 3 3 1"

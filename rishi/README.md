@@ -105,7 +105,7 @@ tested first and none of them ends in `.rish`, so a script can never shadow one.
 is neither a subcommand nor a `.rish` path still earns a refusal: `rishi rn x.rish` reads as a typo
 of `run` and is told so, rather than being run. Proven by
 [`../tools/r/rishi_bare_path_witness.rish`](../tools/r/rishi_bare_path_witness.rish) over
-[`../tools/fixtures/rishi_bare_path_control.sh`](../tools/fixtures/rishi_bare_path_control.sh),
+[`../tools/fixtures/r/rishi_bare_path_control.sh`](../tools/fixtures/r/rishi_bare_path_control.sh),
 nine behaviors on the built binary.
 
 ## Interactive REPL (`rishi` / `rishi repl`)
@@ -152,7 +152,7 @@ rishi/bin/rishi run rishi/tests/lists.rish    # lists, contains, and equality
 rishi/bin/rishi run rishi/tests/records.rish  # records, field access, and equality
 rishi/bin/rishi run rishi/tests/run.rish      # running commands, results as records
 rishi/bin/rishi run rishi/tests/run_bounded.rish # bounded stdin/output and overflow reap
-tools/fixtures/rishi_bounded_process_control.sh   # capture/relay parity and cleanup controls
+tools/fixtures/r/rishi_bounded_process_control.sh   # capture/relay parity and cleanup controls
 rishi/bin/rishi run rishi/tests/map_where.rish # transforming and filtering lists
 rishi/bin/rishi run rishi/tests/strings.rish      # composing strings by interpolation
 rishi/bin/rishi run rishi/tests/arithmetic.rish   # integer arithmetic and grouping

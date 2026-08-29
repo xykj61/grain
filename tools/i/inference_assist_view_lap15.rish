@@ -1,7 +1,7 @@
 # inference_assist_view_lap15.rish -- Assist view: fence-rye + blocks on snippets band.
 let bin = "pond/bin/drawn-terminal"
 say "build: inference assist view lap 15 — drawn-terminal compile"
-let build = run ["sh" "tools/fixtures/pond_build_drawn_terminal.sh"]
+let build = run ["sh" "tools/fixtures/p/pond_build_drawn_terminal.sh"]
 assert build.ok else "drawn_terminal build failed for assist view lap 15"
 assert build.out contains "GREEN:" else "drawn_terminal build did not reach GREEN"
 let view = run ["sh" "-c" "${bin} assistviewtest 2>&1"]

@@ -1,5 +1,5 @@
 //! tools/rye/monocypher_sha512_parity.rye -- our authored crypto/sha512.rye asked for its OWN SHA-512 digests over the same five inputs the Monocypher C
-//! harness (tools/fixtures/monocypher_sha512_harness.c) prints, so tools/cr/crypto_monocypher_sha512_parity_witness.rish can diff our bytes against the
+//! harness (tools/fixtures/m/monocypher_sha512_harness.c) prints, so tools/cr/crypto_monocypher_sha512_parity_witness.rish can diff our bytes against the
 //! vendored Monocypher's C byte-for-byte -- the hash Ed25519 signs with (RFC 8032 / FIPS 180-4), proven against the audit's parity target. Chapter G
 //! (Cryptography - Rye-native, Monocypher-parity, audit-ready).
 //!

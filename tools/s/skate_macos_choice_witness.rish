@@ -20,7 +20,7 @@ say "skate-macos-choice: Language EN -- one native shell, one bounded owned core
 say "skate-macos-choice: Style Gauge Field -- the comparison gives both candidates their strongest form, then chooses on checkable language and repository ground."
 say "skate-macos-choice: Lens TAME -- platform allocation is named outside the owned-state promise; capacity, wrap, inputs, histories, and failures are named inside it."
 
-let scan = run ["sh" "tools/fixtures/skate_macos_choice_scan.sh"]
+let scan = run ["sh" "tools/fixtures/s/skate_macos_choice_scan.sh"]
 assert scan.ok else "skate-macos-choice: the living decision drifted from its sources, boundary, or index"
 say scan.out
 assert scan.out contains "required_claims=25" else "skate-macos-choice: the scan's required contract changed without this witness changing with it"
@@ -33,7 +33,7 @@ assert scan.out contains "sketchbook_receipt=yes" else "skate-macos-choice: the 
 assert scan.out contains "swift_gratitude=yes" else "skate-macos-choice: Swift's gratitude must keep the Objective-C lineage and no-endorsement boundary"
 assert scan.out contains "verdict=ok" else "skate-macos-choice: the live scan must balance before it is believed"
 
-let control = run ["sh" "tools/fixtures/skate_macos_choice_control.sh"]
+let control = run ["sh" "tools/fixtures/s/skate_macos_choice_control.sh"]
 assert control.ok else "skate-macos-choice: the planted RED paths did not all refuse"
 say control.out
 assert control.out contains "reversed_choice_refused=yes" else "skate-macos-choice: a reversed architecture choice must red"

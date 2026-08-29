@@ -13,7 +13,7 @@
 //! Siloed, dev-only, demo ship and keeper seeds -- no real key, no funds, no network, no real value.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/testament_fixture_gen.rye \
-//!     2> tools/fixtures/testament_cert.bron
+//!     2> tools/fixtures/t/testament_cert.bron
 
 const std = @import("std");
 const assert = std.debug.assert;

@@ -8,7 +8,7 @@
 //! reservation a keeper can open and walk, and proves the property the whole Lapse rests on: the LAPSED
 //! recipient -- the one the coins never reached because the order's clock ran out -- is true to the bytes.
 //!
-//! The corpus is `tools/fixtures/lapse_dag.bron`, a genuine record produced reproducibly by
+//! The corpus is `tools/fixtures/l/lapse_dag.bron`, a genuine record produced reproducibly by
 //! `mycelium/lapse_fixture_gen.rye` (a demo funder credits Alice 200; Alice pledges 100 to Bob under
 //! deadline 2 at round 1; Alice posts it at round 2 -- yet the post rides order position 2, so the clock has
 //! reached the deadline and the pledge LAPSES, the hundred home to Alice, the post a no-op; Alice pledges
@@ -17,7 +17,7 @@
 //! readings must agree: the app parses the record through `cord_bron`, **rebuilds** the Dag under `cord.add`
 //! (re-verifying every signature), resolves it through `lapse`, and reports the **lapsed recipient**, the
 //! **lapsed count**, and the **open count**; the r4 witness cross-checks that triple against
-//! `tools/fixtures/lapse_dag_truth.awk`'s reading of the same file -- two tools, one answer. The awk applies
+//! `tools/fixtures/l/lapse_dag_truth.awk`'s reading of the same file -- two tools, one answer. The awk applies
 //! the simplest honest slice of the agreed order (deadline-clock accounting in file order, lapsing an open
 //! pledge the moment the running position reaches its deadline); the app applies the full commit tie-break;
 //! the genesis is first and the order is round-ascending, so both name the same lapsed recipient.

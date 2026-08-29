@@ -44,7 +44,7 @@ pub const ConstelError = error{
 /// The one load-bearing promise of the Constel naming law, mirrored in Rye: a real @p body after
 /// its `~` is lowercase letters and hyphens only (a fixed 256-syllable table with no digits), so a
 /// digit anywhere is a structural proof the name can never be a real address. This is exactly the
-/// check `tools/fixtures/constel_naming_scan.sh` runs; the harness draws from the seated law rather
+/// check `tools/fixtures/c/constel_naming_scan.sh` runs; the harness draws from the seated law rather
 /// than inventing a parallel rule.
 pub fn name_safe(name: []const u8) bool {
     // invariant: an empty name is not a name, and carries no safety.

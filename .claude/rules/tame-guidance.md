@@ -72,7 +72,7 @@ When these pull against each other, safety wins. When safety and performance are
 
 ## Tidy rules (`tame_style_check`)
 
-**Witness:** `tools/t/tame_style_check.rish` - **Scan:** `tools/fixtures/tame_style_scan.sh` - **Brief:** `active-designing/date/20260707/20260707-164612_tame-tidy-rules-brief.md` - **Study:** `external-research/20260707-053212_tigerbeetle-alignment-study.md`
+**Witness:** `tools/t/tame_style_check.rish` - **Scan:** `tools/fixtures/t/tame_style_scan.sh` - **Brief:** `active-designing/date/20260707/20260707-164612_tame-tidy-rules-brief.md` - **Study:** `external-research/20260707-053212_tigerbeetle-alignment-study.md`
 
 **Bans fail parity** -- fix before commit:
 

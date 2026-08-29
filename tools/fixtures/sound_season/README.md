@@ -19,13 +19,13 @@ Per-motion protocol (six promises · promise 4):
 ```sh
 # before first git mv / reference turn
 LINK_WITNESS_SNAPSHOT=/tmp/sound_breach_before.txt \
-  sh tools/fixtures/link_witness_scan.sh
+  sh tools/fixtures/l/link_witness_scan.sh
 
 # … yonder + re-point inside declared scope …
 
 # after — must GREEN (no new missing targets)
 LINK_WITNESS_COMPARE=/tmp/sound_breach_before.txt \
-  sh tools/fixtures/link_witness_scan.sh
+  sh tools/fixtures/l/link_witness_scan.sh
 ```
 
 Snapshots stay on the bench (`/tmp` or a local untracked path). Do **not** commit host-absolute dangling dumps into this shelf — paths in the snapshot format are absolute today.

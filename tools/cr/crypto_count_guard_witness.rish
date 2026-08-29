@@ -33,21 +33,21 @@ assert list_all.ok else "crypto-count-guard: could not list crypto/*.rye — ${l
 # it, while both front doors went on reciting a count it would have corrected. It cannot simply move: rye resolves a nested import relative
 # to the importing file's own directory, so a module importing sha3.rye by bare name stands beside it by the language's rule.
 #
-# So the tool class is DECLARED, in tools/fixtures/crypto_tool_modules.txt, and a row is a REDIRECT rather than an excuse. Three assertions
+# So the tool class is DECLARED, in tools/fixtures/c/crypto_tool_modules.txt, and a row is a REDIRECT rather than an excuse. Three assertions
 # below make it one: the declared file exists, the witness that proves it exists, and that witness stands on the standing roster. A redirect
 # pointing nowhere reds exactly like an unproven file, which is what keeps this from being a bypass with a comment over it.
-let tools_decl = "tools/fixtures/crypto_tool_modules.txt"
+let tools_decl = "tools/fixtures/c/crypto_tool_modules.txt"
 let have_decl = run ["sh" "-c" "test -f ${tools_decl} && echo yes || echo no"]
 assert (trim have_decl.out) == "yes" else "crypto-count-guard: the tool declaration is missing at ${tools_decl}; without it this guard cannot tell a tool from an unproven primitive"
 
 let list_tools = run ["sh" "-c" "grep -vE '^[[:space:]]*(#|$)' ${tools_decl} | awk '{print $1}' | sort -u > crypto/bin/.cc_tools.txt"]
 assert list_tools.ok else "crypto-count-guard: could not read the tool declaration — ${list_tools.err}"
 
-# The three assertions, run by tools/fixtures/crypto_tool_declaration_scan.sh so the loop lives where a shell variable is a shell
+# The three assertions, run by tools/fixtures/c/crypto_tool_declaration_scan.sh so the loop lives where a shell variable is a shell
 # variable. Each is gated at zero: a declared module with no file on disk, a redirect to a witness that is not a file, and -- the one
 # this round exists for -- a redirect to a guard the standing roster does not name. An unrun guard guards nothing, so a tool excused
 # from the suite must name a proof a lap actually runs, or the declaration would launder an unproven file into a green count.
-let decl = run ["sh" "tools/fixtures/crypto_tool_declaration_scan.sh"]
+let decl = run ["sh" "tools/fixtures/c/crypto_tool_declaration_scan.sh"]
 assert decl.ok else "crypto-count-guard: the tool-declaration scan must complete -- see stderr"
 say decl.out
 assert decl.out contains "malformed=0" else "crypto-count-guard: a tool declaration row does not carry exactly three fields (module, witness, roster guard)"
@@ -60,7 +60,7 @@ assert decl.out contains "verdict=ok" else "crypto-count-guard: the tool declara
 # Fourteen behaviors on real trees in a throwaway pen: nine refusals bitten -- a module nobody wrote, a redirect to no file, a guard the
 # roster does not name, a two-field row, a four-field row, a guard name one letter short, a guard name that is only a prefix of a real
 # one, three faults at once, and an absent declaration -- and five honest readings left free.
-let decl_control = run ["sh" "tools/fixtures/crypto_tool_declaration_control.sh"]
+let decl_control = run ["sh" "tools/fixtures/c/crypto_tool_declaration_control.sh"]
 assert decl_control.ok else "crypto-count-guard: the tool-declaration control must complete -- see stderr"
 assert decl_control.out contains "cases_fail=0" else "crypto-count-guard: a planted declaration case did not behave -- ${decl_control.out}"
 assert decl_control.out contains "control_verdict=ok" else "crypto-count-guard: the declaration control must agree with itself before its exemptions are believed"

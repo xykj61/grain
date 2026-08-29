@@ -25,7 +25,7 @@ entry = (
     "### 94. IronBeetle ep040 overlaps read, merge, and write in three pipeline slots; bar and beat clocks pace one compaction round.\n"
     "**Ran:** `rishi/bin/rishi run tools/equinox/witness/equinox_ironbeetle_ep040_choir_witness.rish` · **Stamp:** `"
     + stamp
-    + "` · **Witness:** `tools/gen/chapter/ironbeetle_ep040_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep040_census.sh` · choir `equinox_ironbeetle_ep040_choir_witness.rish`\n"
+    + "` · **Witness:** `tools/gen/chapter/ironbeetle_ep040_census_witness.rish` · scan `tools/fixtures/i/ironbeetle_ep040_census.sh` · choir `equinox_ironbeetle_ep040_choir_witness.rish`\n"
     "Expected IRON=present · EP040 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, "
     "and verdict=absent on a missing iron shelf. Metal answered GREEN. "
     "Clean-room study only.\n\n"

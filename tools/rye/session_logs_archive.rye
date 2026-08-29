@@ -40,7 +40,7 @@ const fixture_root = "tools/fixtures/session_logs_archive";
 /// The shape required is the WHOLE stamp -- `YYYYMMDD-HHMMSS`, fifteen characters -- and that
 /// strictness is load-bearing rather than fussy. Three tools must agree on what a dated file is:
 /// this one moves them, `tools/d/dated_path_resolve.rish` recovers references to them from the
-/// stamp alone, and `tools/fixtures/room_bound_scan.sh` counts them against the bound. An older,
+/// stamp alone, and `tools/fixtures/r/room_bound_scan.sh` counts them against the bound. An older,
 /// looser test here accepted a day-only name like `20260814-fill-ales28-x.md` and would have
 /// folded 33 such files in `active-designing` that the resolver cannot recover, since it needs
 /// the time to compute a home. A file a fold can move but a resolver cannot find is the one thing
@@ -693,7 +693,7 @@ fn run_selftest(a: std.mem.Allocator, io: std.Io, root: []const u8) !void {
     defer a.free(pin_now);
     // The planted row names a log that really sits under date/20260702/, so the shelf link it
     // becomes resolves. A pen reference that resolves nowhere raises the tree's own lost-reference
-    // census, since tools/fixtures/dated_path_scan.sh reads the filesystem rather than the index,
+    // census, since tools/fixtures/d/dated_path_scan.sh reads the filesystem rather than the index,
     // and a sandbox left behind by a selftest is on that filesystem (REDS %200).
     const theta_dir = try std.fs.path.join(a, &.{ logs, "date", "20260702" });
     defer a.free(theta_dir);

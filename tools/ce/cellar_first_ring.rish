@@ -7,7 +7,7 @@
 
 say "cellar first lap: export -> verify (golden digest) -> restore -> tamper must fail..."
 
-let result = run ["sh" "tools/fixtures/cellar_ring1_witness.sh"]
+let result = run ["sh" "tools/fixtures/c/cellar_ring1_witness.sh"]
 say result.out
 
 assert result.ok else "cellar first lap witness failed"

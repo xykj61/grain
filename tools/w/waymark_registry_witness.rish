@@ -15,13 +15,13 @@
 #
 # Once GREEN, the elder names scattered in old logs and history are redundant --
 # this file, sealed and re-derivable, holds the canonical naming truth. The crypto
-# lives in tools/fixtures/waymark_registry_verify.sh; this witness runs it and
-# asserts. Corpus pin: tools/fixtures/flw-four-letter.txt (naming-grade, SHA3-512).
+# lives in tools/fixtures/w/waymark_registry_verify.sh; this witness runs it and
+# asserts. Corpus pin: tools/fixtures/f/flw-four-letter.txt (naming-grade, SHA3-512).
 
 let reg = run ["test" "-f" "construction/waymark-registry.bron"]
 assert reg.ok else "construction/waymark-registry.bron not found -- run from the repo root"
 
-let verify = run ["sh" "tools/fixtures/waymark_registry_verify.sh"]
+let verify = run ["sh" "tools/fixtures/w/waymark_registry_verify.sh"]
 assert verify.ok else "registry verification failed: ${verify.out}"
 assert (verify.out contains "SEAL_OK") else "seal mismatch -- the registry body was edited without resealing"
 assert (verify.out contains "DERIVE_OK") else "a corpus row did not re-derive from its input"
@@ -33,7 +33,7 @@ say "${verify.out}"
 # neither can see a mark that is simply ABSENT: a missing row is well-formed. AHOY stood in the
 # rule table and in 24 living files with no row in this registry, and this witness was GREEN the
 # whole time (REDS %298's class -- the guard reads structure, and the absence is well-formed).
-let whole = run ["sh" "tools/fixtures/waymark_table_registry_completeness.sh"]
+let whole = run ["sh" "tools/fixtures/w/waymark_table_registry_completeness.sh"]
 say whole.out
 assert whole.ok else "a waymark seated in the rule table has no row in the registry the rule calls the authority -- derive it and re-seal"
 assert (whole.out contains "verdict=ok") else "the completeness read must balance before it is believed"

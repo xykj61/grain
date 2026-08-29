@@ -10,7 +10,7 @@ say "bounds-home-census: Language EN — ten pairs, one living table."
 say "bounds-home-census: Style Radiant — inherit, never invent."
 say "bounds-home-census: Lens TAME — e28 · design-shapes · almanac seat 34."
 
-let scan = run ["sh" "tools/fixtures/bounds_home_census.sh"]
+let scan = run ["sh" "tools/fixtures/b/bounds_home_census.sh"]
 say scan.out
 assert scan.ok else "bounds-home-census: census failed"
 assert scan.out contains "verdict=ok" else "bounds-home-census: want verdict=ok"

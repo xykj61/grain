@@ -6,12 +6,12 @@
 # on-disk Cord record a keeper can open and walk, and proves the property the whole Statement rests on: an
 # account's own line -- WHERE DO I STAND? -- is true to the bytes.
 #
-# The crux is TWO TOOLS, ONE ANSWER: mycelium/statement_true parses tools/fixtures/lapse_dag.bron (the
+# The crux is TWO TOOLS, ONE ANSWER: mycelium/statement_true parses tools/fixtures/l/lapse_dag.bron (the
 # Lapse's own fixture, reused since a statement is a projection of exactly the resolved ledger the Lapse
 # produces) through cord_bron, rebuilds the Dag under cord.add (re-verifying every signature), resolves it
 # through lapse, projects the genesis-funded account's Statement through statement, and reports the account
 # key with its balance - reserved - received; this witness cross-checks that against
-# tools/fixtures/statement_dag_truth.awk's independent per-account deadline-clock reading of the same bytes.
+# tools/fixtures/s/statement_dag_truth.awk's independent per-account deadline-clock reading of the same bytes.
 # The awk ticks the same clock in file order (reserving on a pledge, coins home on a lapse or void, paying a
 # recipient on a post) that the app's fold applies, so the app's full resolve and the awk's file-order
 # accounting name one position -- an account's own line can never drift from an order a keeper walks by hand.
@@ -44,13 +44,13 @@ assert selftest.out contains "a tampered header refused BadFormat" else "myceliu
 # The crux -- two tools, one answer. The app's measure tuple must equal awk's reading of the same bytes.
 let app = run ["sh" "-c" "${bin} measure 2>&1"]
 assert app.ok else "mycelium-statement-true: app measure exited non-zero"
-let awk = run ["sh" "-c" "awk -f tools/fixtures/statement_dag_truth.awk tools/fixtures/lapse_dag.bron"]
+let awk = run ["sh" "-c" "awk -f tools/fixtures/s/statement_dag_truth.awk tools/fixtures/l/lapse_dag.bron"]
 assert awk.ok else "mycelium-statement-true: awk truth read failed"
 assert awk.out contains "bc7cbcb5636375fa1d82434d466724d92377f53b980695dd49d26d0ce12205a5 100 100 200" else "mycelium-statement-true: awk tuple not the funded account · balance 100 · reserved 100 · received 200"
 assert app.out == awk.out else "mycelium-statement-true: app and awk disagree — the account's line drifted from the bytes"
 
 # The fixture is genuinely what the Cord emits, not a hand-mock -- the generator re-emits byte-identical bytes.
-let regen = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye run mycelium/lapse_fixture_gen.rye 2>/tmp/statement_regen.bron >/dev/null && diff -q tools/fixtures/lapse_dag.bron /tmp/statement_regen.bron && echo REPRODUCIBLE"]
+let regen = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye run mycelium/lapse_fixture_gen.rye 2>/tmp/statement_regen.bron >/dev/null && diff -q tools/fixtures/l/lapse_dag.bron /tmp/statement_regen.bron && echo REPRODUCIBLE"]
 assert regen.ok else "mycelium-statement-true: fixture is not reproducible — the generator drifted"
 assert regen.out contains "REPRODUCIBLE" else "mycelium-statement-true: fixture regeneration did not match"
 

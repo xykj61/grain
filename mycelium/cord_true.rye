@@ -9,7 +9,7 @@
 //! keeper can open and walk, and proves the property the whole consensus rests on:
 //! the order the Cord reports is true to the bytes.
 //!
-//! The corpus is `tools/fixtures/cord_dag.bron`, a genuine record produced
+//! The corpus is `tools/fixtures/c/cord_dag.bron`, a genuine record produced
 //! reproducibly by `mycelium/cord_fixture_gen.rye` (the honest four-block scene --
 //! issued 1000 - taxed 300 - supply 700 - one star), `@embedFile`-bound at compile
 //! time through a symlink in `mycelium/corpora/` -- no network, the bytes read are
@@ -17,7 +17,7 @@
 //! through r3, **rebuilds** the Dag under r1's own `add` (re-verifying every
 //! signature, requiring every parent already held), commits it, and reports the
 //! **block count**, the **folded supply**, and the **star count**; the r4 witness
-//! cross-checks that triple against `tools/fixtures/cord_dag_truth.awk`'s reading of
+//! cross-checks that triple against `tools/fixtures/c/cord_dag_truth.awk`'s reading of
 //! the same file -- two tools, one answer. And the record is genuinely a committed
 //! Cord: the fixture's block lines are in agreed order, so re-committing the rebuilt
 //! Dag reproduces the file's order (the identity permutation), and re-rendering the

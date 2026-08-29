@@ -3,7 +3,7 @@
 # Run from the repository root:
 #   rishi/bin/rishi run tools/s/slc1_repl_step1.rish
 
-let result = run ["sh" "-c" "rishi/bin/rishi repl < tools/fixtures/slc1_repl_step1.input"]
+let result = run ["sh" "-c" "rishi/bin/rishi repl < tools/fixtures/s/slc1_repl_step1.input"]
 
 assert result.ok else "rishi repl exited non-zero"
 assert result.out contains "7" else "binding from first line should be visible on the second"

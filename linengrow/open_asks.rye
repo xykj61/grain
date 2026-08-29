@@ -45,7 +45,7 @@ pub const max_reputation_cycles: u32 = 8;
 
 pub const oa2_payload_header: u32 = kumara.signature_length + 4;
 
-/// Pinned witness request -- canonical bytes for `tools/fixtures/open_asks_request.bron`.
+/// Pinned witness request -- canonical bytes for `tools/fixtures/o/open_asks_request.bron`.
 pub const witness_canonical_request =
     \\poster c050c5637a44fa8629fff3cccce2300cb362a63d99d95fc54145266f4332445a
     \\title animator for researcher interview visuals
@@ -946,7 +946,7 @@ fn append_oa1_welcome_log(
     ref_hex: [ref_hex_len]u8,
     stipend: i64,
 } {
-    const fixture_path = "tools/fixtures/open_asks_request.bron";
+    const fixture_path = "tools/fixtures/o/open_asks_request.bron";
     const cwd = Dir.cwd();
     var fixture_buf: [max_oa_fact]u8 = undefined;
     const fixture_read = try cwd.readFile(io, fixture_path, &fixture_buf);
@@ -1186,7 +1186,7 @@ pub fn run_escrow_welcome_fold(io: std.Io) !FoldState {
 
     const cwd = Dir.cwd();
     var fixture_buf: [max_oa_fact]u8 = undefined;
-    const fixture_read = try cwd.readFile(io, "tools/fixtures/open_asks_request.bron", &fixture_buf);
+    const fixture_read = try cwd.readFile(io, "tools/fixtures/o/open_asks_request.bron", &fixture_buf);
     var req_fields: RequestFields = undefined;
     try parse_request_fields(fixture_read, &req_fields);
     assert(std.mem.eql(u8, req_fields.poster, keys.poster_hex[0..64]));
@@ -1238,7 +1238,7 @@ fn run_escrow_selftest(io: std.Io) !u8 {
 
     const cwd = Dir.cwd();
     var fixture_buf: [max_oa_fact]u8 = undefined;
-    const fixture_read = try cwd.readFile(io, "tools/fixtures/open_asks_request.bron", &fixture_buf);
+    const fixture_read = try cwd.readFile(io, "tools/fixtures/o/open_asks_request.bron", &fixture_buf);
     var req_fields: RequestFields = undefined;
     try parse_request_fields(fixture_read, &req_fields);
     var canonical_req: [max_oa_fact]u8 = undefined;

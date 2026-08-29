@@ -2,7 +2,7 @@
 #
 #   rishi/bin/rishi run tools/gen/chapter/vols_survey_witness.rish
 #
-# Proves the survey census (tools/fixtures/vols_survey_scan.sh) is complete BY
+# Proves the survey census (tools/fixtures/v/vols_survey_scan.sh) is complete BY
 # CONSTRUCTION and honest about the testimony boundary -- the crux of Journey 13's r1.
 # Where the module labeling guard scans a hand-listed set, this scan DERIVES its input
 # from the tree, so a capability born tomorrow appears without anyone editing the tool.
@@ -23,7 +23,7 @@ say "vols-survey: Style Radiant — name every living site, keep faith with ever
 say "vols-survey: Lens TAME — the input set is derived, not hand-listed; the testimony boundary holds; two tools give one count."
 
 # The census runs completely over the derived fixture set and reports honest totals.
-let survey = run ["sh" "tools/fixtures/vols_survey_scan.sh" "tools/fixtures/vols_survey_tree"]
+let survey = run ["sh" "tools/fixtures/v/vols_survey_scan.sh" "tools/fixtures/vols_survey_tree"]
 say survey.out
 assert survey.out contains "verdict=ok" else "vols-survey: the census did not run completely"
 assert survey.ok else "vols-survey: census verdict and status disagree"
@@ -42,7 +42,7 @@ assert survey.out contains "hits=1" else "vols-survey: a permitted code (lap 4b 
 
 # Two tools, one answer -- an independent grep -r traversal (not the scan's find-loop)
 # over the same derived set, excluding the testimony dir, counts the identical hit.
-let cross = run ["sh" "tools/fixtures/vols_survey_crosscount.sh" "tools/fixtures/vols_survey_tree"]
+let cross = run ["sh" "tools/fixtures/v/vols_survey_crosscount.sh" "tools/fixtures/vols_survey_tree"]
 say "vols-survey: independent grep -r cross-check —"
 say cross.out
 assert cross.out contains "crosshits=1" else "vols-survey: the independent measure disagrees with the census hit count"
@@ -58,8 +58,8 @@ assert boundary.out contains "1" else "vols-survey: the testimony fixture lost i
 
 # Report the LIVE source-tree census informationally -- the real map LOWE will relabel
 # against. Not asserted to zero: a survey names the work; the seal proves it done.
-let live = run ["sh" "tools/fixtures/vols_survey_scan.sh" "."]
-let live_totals = run ["sh" "-c" "sh tools/fixtures/vols_survey_scan.sh . | grep -E '^(surfaces|sites|hits)='"]
+let live = run ["sh" "tools/fixtures/v/vols_survey_scan.sh" "."]
+let live_totals = run ["sh" "-c" "sh tools/fixtures/v/vols_survey_scan.sh . | grep -E '^(surfaces|sites|hits)='"]
 say "vols-survey: live source-tree census —"
 say live_totals.out
 assert live.out contains "verdict=ok" else "vols-survey: the live census did not run completely"

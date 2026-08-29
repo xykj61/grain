@@ -16,7 +16,7 @@ say "almanac-breach: Language EN — the elder rests at its archive address."
 say "almanac-breach: Style Radiant — relocate and re-point; never rewrite."
 say "almanac-breach: Lens TAME — both sides witnessed, testimony untouched."
 
-let scan = run ["sh" "tools/fixtures/almanac_breach_scan.sh"]
+let scan = run ["sh" "tools/fixtures/a/almanac_breach_scan.sh"]
 say scan.out
 assert scan.out contains "verdict=ok" else "almanac-breach: the breach is incomplete inside its scope"
 assert scan.out contains "elder_lines=310" else "almanac-breach: the elder lost bytes — a breach preserves every one"

@@ -1,7 +1,7 @@
 # tools/t/tally_roster_witness.rish -- every tally module answers to a witness, or is counted.
 #
 # The choir-and-bijection calling reaching the allocator room (the constellation charter's own
-# tally row): coverage is a reading taken off disk by tools/fixtures/tally_roster_scan.sh --
+# tally row): coverage is a reading taken off disk by tools/fixtures/t/tally_roster_scan.sh --
 # 14 modules, 6 covered by anchored name, 3 test-program exceptions, 5 uncovered under a
 # ceiling of 6 that only falls (measured 20260826 at seating). Three claims, in order: the live
 # room reads whole and SEEN; a planted newborn module with no witness refuses past the ceiling
@@ -17,7 +17,7 @@ say "tally-roster: Style Gauge -- one scan, a falling ceiling, and a pen proving
 say "tally-roster: Lens TAME -- the ceiling is named, the count is checked at the edge, and the matcher anchors the whole name."
 
 # Claim one: the live room, whole and seen.
-let live = run ["sh" "tools/fixtures/tally_roster_scan.sh"]
+let live = run ["sh" "tools/fixtures/t/tally_roster_scan.sh"]
 assert live.ok else "tally-roster: the room must read whole -- ${live.out}"
 assert live.out contains "verdict=ok" else "tally-roster: want the live verdict ok -- ${live.out}"
 assert live.out contains "modules_total=14" else "tally-roster: the roster moved -- re-read the census before trusting the ceiling: ${live.out}"
@@ -32,13 +32,13 @@ let seed_pen = run ["sh" "-c" "printf '%s\n' '// pen module' > ${pen}/tally/copy
 assert seed_pen.ok else "tally-roster: could not seed the pen"
 
 # Claim two, the passing side first: one covered module, ceiling zero, verdict ok.
-let clean = run ["sh" "-c" "TALLY_ROSTER_CEILING=0 sh tools/fixtures/tally_roster_scan.sh ${pen}"]
+let clean = run ["sh" "-c" "TALLY_ROSTER_CEILING=0 sh tools/fixtures/t/tally_roster_scan.sh ${pen}"]
 assert clean.ok else "tally-roster: a fully covered pen must pass at a ceiling of zero -- ${clean.out}"
 
 # The newborn arrives with no check: past the ceiling, refused by name.
 let plant = run ["sh" "-c" "printf '%s\n' '// newborn, no witness' > ${pen}/tally/newborn.rye"]
 assert plant.ok else "tally-roster: could not plant the newborn"
-let red = run ["sh" "-c" "TALLY_ROSTER_CEILING=0 sh tools/fixtures/tally_roster_scan.sh ${pen}"]
+let red = run ["sh" "-c" "TALLY_ROSTER_CEILING=0 sh tools/fixtures/t/tally_roster_scan.sh ${pen}"]
 assert red.ok == false else "tally-roster: a planted newborn past the ceiling must refuse -- it passed instead"
 assert red.out contains "verdict=over_ceiling" else "tally-roster: the refusal names its verdict -- ${red.out}"
 assert red.out contains "uncovered: tally/newborn.rye" else "tally-roster: the refusal names the module that owes its check -- ${red.out}"
@@ -46,14 +46,14 @@ assert red.out contains "uncovered: tally/newborn.rye" else "tally-roster: the r
 # Claim three: a longer word never credits a shorter name. tally_budget does not cover bud.
 let bud = run ["sh" "-c" "printf '%s\n' '// bud module' > ${pen}/tally/bud.rye && printf '%s\n' '# budget check, not buds' > ${pen}/tools/t/tally_budget_check.rish"]
 assert bud.ok else "tally-roster: could not plant the longer-word pair"
-let anchored = run ["sh" "-c" "TALLY_ROSTER_CEILING=2 sh tools/fixtures/tally_roster_scan.sh ${pen}"]
+let anchored = run ["sh" "-c" "TALLY_ROSTER_CEILING=2 sh tools/fixtures/t/tally_roster_scan.sh ${pen}"]
 assert anchored.ok else "tally-roster: two honest uncovered under a ceiling of two must pass -- ${anchored.out}"
 assert anchored.out contains "uncovered: tally/bud.rye" else "tally-roster: tally_budget must never credit bud -- the matcher anchors the whole name: ${anchored.out}"
 
 # And the same fence from the other side: the newborn gains its check and the pen heals.
 let heal = run ["sh" "-c" "printf '%s\n' '# newborn check' > ${pen}/tools/t/tally_newborn_witness.rish && printf '%s\n' '# bud check' > ${pen}/tools/t/tally_bud.rish"]
 assert heal.ok else "tally-roster: could not heal the pen"
-let green = run ["sh" "-c" "TALLY_ROSTER_CEILING=0 sh tools/fixtures/tally_roster_scan.sh ${pen}"]
+let green = run ["sh" "-c" "TALLY_ROSTER_CEILING=0 sh tools/fixtures/t/tally_roster_scan.sh ${pen}"]
 assert green.ok else "tally-roster: a healed pen must pass at zero -- covering is the door the ceiling falls through: ${green.out}"
 
 let pen_rm = run ["sh" "-c" "rm -rf ${pen}"]

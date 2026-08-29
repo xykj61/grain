@@ -4,12 +4,12 @@
 # Chapter D (Kresfa & Mycelium) - Puddle fleet orchestration - rung r4 -- reads true.
 # r1 derived the berth, r2 healed the fleet, r3 let it travel -- all over fleets seated in code. r4 carries
 # the reader onto a REAL on-disk `format puddle-fleet-v1` record a keeper can open and count
-# (tools/fixtures/puddle_fleet.bron, produced reproducibly by mycelium/puddle_fleet_fixture_gen.rye,
+# (tools/fixtures/p/puddle_fleet.bron, produced reproducibly by mycelium/puddle_fleet_fixture_gen.rye,
 # @embedFile-bound through the mycelium/corpora/ symlink).
 #
 # The crux this witness proves is TWO TOOLS, ONE ANSWER: the app parses the record through r3's reader and
 # reports the roster shape (hosts - worlds - total capacity), and this witness cross-checks that triple
-# against tools/fixtures/puddle_fleet_truth.awk's reading of the same bytes. Genuineness beyond the triple:
+# against tools/fixtures/p/puddle_fleet_truth.awk's reading of the same bytes. Genuineness beyond the triple:
 # the fleet berths over the real bytes (every world on a real host within capacity, none orphaned), the
 # record is a fixed point (re-render reproduces the embedded bytes), the fixture is reproducible, and a
 # tampered header refuses BadFormat. Composes puddle + puddle_bron public API only; demo seeds -- no key, no
@@ -41,7 +41,7 @@ assert selftest.out contains "The Puddle's agent-doable arc closes" else "myceli
 # The crux -- two tools, one answer. The app's measure triple must equal awk's reading of the same bytes.
 let app = run ["sh" "-c" "${bin} measure 2>&1"]
 assert app.ok else "mycelium-puddle-true: app measure exited non-zero"
-let awk = run ["sh" "-c" "awk -f tools/fixtures/puddle_fleet_truth.awk tools/fixtures/puddle_fleet.bron"]
+let awk = run ["sh" "-c" "awk -f tools/fixtures/p/puddle_fleet_truth.awk tools/fixtures/p/puddle_fleet.bron"]
 assert awk.ok else "mycelium-puddle-true: awk truth read failed"
 assert awk.out contains "4 6 16" else "mycelium-puddle-true: awk triple not 4 6 16"
 assert app.out == awk.out else "mycelium-puddle-true: app and awk disagree — the reading drifted from the bytes"
@@ -51,7 +51,7 @@ assert app.out == awk.out else "mycelium-puddle-true: app and awk disagree — t
 # committed fixture in a read-only witness).
 let gen = run ["sh" "-c" "mkdir -p mycelium/bin && env RYE_ZIG=${zig} rye/bin/rye build mycelium/puddle_fleet_fixture_gen.rye -femit-bin=mycelium/bin/puddle_fleet_fixture_gen"]
 assert gen.ok else "mycelium-puddle-true: fixture generator build failed"
-let regen = run ["sh" "-c" "mycelium/bin/puddle_fleet_fixture_gen 2> /tmp/puddle_fleet_regen.bron; diff tools/fixtures/puddle_fleet.bron /tmp/puddle_fleet_regen.bron && echo REPRODUCIBLE"]
+let regen = run ["sh" "-c" "mycelium/bin/puddle_fleet_fixture_gen 2> /tmp/puddle_fleet_regen.bron; diff tools/fixtures/p/puddle_fleet.bron /tmp/puddle_fleet_regen.bron && echo REPRODUCIBLE"]
 assert regen.ok else "mycelium-puddle-true: the fixture generator did not reproduce the committed bytes"
 assert regen.out contains "REPRODUCIBLE" else "mycelium-puddle-true: the regenerated fixture drifted from the committed one"
 

@@ -9,7 +9,7 @@ say "fact-fold-census: Language EN — shape, page, and metal agree."
 say "fact-fold-census: Style Radiant — supply is a fold, not an authority."
 say "fact-fold-census: Lens TAME — e30 · design-shapes · almanac seat 36."
 
-let scan = run ["sh" "tools/fixtures/fact_fold_census.sh"]
+let scan = run ["sh" "tools/fixtures/f/fact_fold_census.sh"]
 say scan.out
 assert scan.ok else "fact-fold-census: census failed"
 assert scan.out contains "verdict=ok" else "fact-fold-census: want verdict=ok"

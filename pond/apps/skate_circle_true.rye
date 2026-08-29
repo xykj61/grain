@@ -11,7 +11,7 @@
 //! own. Two independent readings must agree: the app parses the record through rung three and reports
 //! the member count, the link count, and the **mutual-link count** (an unordered pair both of whose
 //! directed requests appear -- a one-sided hold is not counted), and the witness cross-checks that
-//! triple against `tools/fixtures/skate_circle_truth.awk`'s reading of the same file -- two tools, one
+//! triple against `tools/fixtures/s/skate_circle_truth.awk`'s reading of the same file -- two tools, one
 //! answer. And the record is genuinely consent-honest: `still_consented` re-verifies every carried
 //! signature against the demo keyring, so the fixture is a real signed circle, not a hollow shape.
 //!

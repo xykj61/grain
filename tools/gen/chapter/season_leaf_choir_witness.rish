@@ -13,7 +13,7 @@ say "season-leaf-choir: Language EN -- a room nobody hears keeps a green that is
 say "season-leaf-choir: Style Gauge Meter -- discovered, sung, and proven from both sides."
 say "season-leaf-choir: Lens TAME -- safety first; a refusal proven only one way is not proven."
 
-let green = run ["sh" "tools/fixtures/season_leaf_choir_scan.sh"]
+let green = run ["sh" "tools/fixtures/s/season_leaf_choir_scan.sh"]
 say green.out
 assert green.ok else "season-leaf-choir: the live sing must exit 0"
 assert green.out contains "choir=honored" else "season-leaf-choir: want choir honored"
@@ -26,13 +26,13 @@ assert green.out contains "verdict=ok" else "season-leaf-choir: want verdict ok"
 # room, so the floor is the reading that tells them apart.
 assert green.out contains "leaf_floor=honored" else "season-leaf-choir: want at least the floor of leaves discovered"
 
-let low = run ["sh" "-c" "SEASON_LEAF_FLOOR=99999 sh tools/fixtures/season_leaf_choir_scan.sh"]
+let low = run ["sh" "-c" "SEASON_LEAF_FLOOR=99999 sh tools/fixtures/s/season_leaf_choir_scan.sh"]
 assert (low.ok == false) else "season-leaf-choir: an unreachable floor must refuse"
 assert low.out contains "want_at_least_99999_leaves_got_" else "season-leaf-choir: want the floor named in its refusal"
 
 # The other side. A choir that only ever passes cannot be told from a choir singing nothing at
 # all, so one rung that refuses is planted and the choir must name it and refuse.
-let red = run ["sh" "tools/fixtures/season_leaf_choir_scan.sh" "prove-red"]
+let red = run ["sh" "tools/fixtures/s/season_leaf_choir_scan.sh" "prove-red"]
 assert (red.ok == false) else "season-leaf-choir: prove-red must refuse"
 assert red.out contains "RED_planted_refusal_caught" else "season-leaf-choir: want the plant caught"
 assert red.out contains "equinox_planted_refusal_witness" else "season-leaf-choir: want the plant named"

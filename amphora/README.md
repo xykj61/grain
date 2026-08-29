@@ -34,7 +34,7 @@ Canonical roof: [`src/main.rye`](src/main.rye) -- `//!` header + Q3 metal. HTML 
 | **Chunk (landed)** | Large resin beyond one datagram -- kind **0x33** chunks + `ResinAssembler`; 400 B witness |
 | **Purchase delivery (landed)** | Commerce slip binds `vessel_parent` + `payment` under Kumara; Granary is the sharing surface; Mandi is the vessel market floor (seated `165634`) |
 
-**Forge surface:** Realidream `forgeviewtest` pours `amphora_lap3_tree` via `tools/fixtures/forge_view_pour.sh`, then folds the sealed bundle onto Skate (`tools/r/realidream_forge_view.rish`).
+**Forge surface:** Realidream `forgeviewtest` pours `amphora_lap3_tree` via `tools/fixtures/f/forge_view_pour.sh`, then folds the sealed bundle onto Skate (`tools/r/realidream_forge_view.rish`).
 
 **Ground:** silo [`foundations/20260703-201612_the-sealed-crossing.md`](../foundations/20260703-201612_the-sealed-crossing.md) - study [`external-research/20260703-201612_the-amphora-and-the-crossing.md`](../external-research/20260703-201612_the-amphora-and-the-crossing.md) - sealed crossing plainly [`external-research/20260710-002952_sealed-crossing-plainly.md`](../external-research/20260710-002952_sealed-crossing-plainly.md) - crossing metal plainly [`external-research/20260710-145313_amphora-crossing-plainly.md`](../external-research/20260710-145313_amphora-crossing-plainly.md)
 

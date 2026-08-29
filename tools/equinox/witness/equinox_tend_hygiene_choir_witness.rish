@@ -12,7 +12,7 @@ assert welcome.ok else "equinox-tend-hygiene-choir: welcome RED"
 assert welcome.out contains "GREEN: tend-hygiene-census" else "equinox-tend-hygiene-choir: welcome missing GREEN"
 assert welcome.out contains "tend_waymarks=3" else "equinox-tend-hygiene-choir: want three waymarks"
 
-let refuse = run ["sh" "tools/fixtures/tend_hygiene_census.sh" "tools/fixtures/tend_hygiene_ABSENT.brix"]
+let refuse = run ["sh" "tools/fixtures/t/tend_hygiene_census.sh" "tools/fixtures/tend_hygiene_ABSENT.brix"]
 say refuse.out
 assert refuse.ok == false else "equinox-tend-hygiene-choir: absent shape must fail"
 assert refuse.out contains "verdict=missing_shape" else "equinox-tend-hygiene-choir: want missing_shape"

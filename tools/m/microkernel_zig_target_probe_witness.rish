@@ -13,7 +13,7 @@
 #
 # CLEAN ROOM, AND WHY THIS NEEDED NO GATE. No seL4 or Genode source, header, or line is fetched, copied, or reproduced. Both are copyleft --
 # seL4 GPLv2, Genode AGPLv3 -- and are studied for design concepts only (.claude/rules/gratitude-licenses.md). The stub in
-# tools/fixtures/microkernel_cap_stub.c is our own, carrying the shape the whole family shares: a capability is an opaque handle, an
+# tools/fixtures/m/microkernel_cap_stub.c is our own, carrying the shape the whole family shares: a capability is an opaque handle, an
 # invocation takes a handle, a label, and a word, and returns a word. The toolchain either emits that call shape freestanding or it does
 # not, and which kernel sits on the far side changes nothing about the answer.
 #
@@ -31,8 +31,8 @@ say "microkernel-target-probe: Style Radiant -- three things a capability microk
 say "microkernel-target-probe: Lens TAME -- every claim is a build or a byte read from one. The architecture of each image is read from its ELF header rather than trusted from the flag that asked for it, the libc question is answered by counting dynamic NEEDED entries, and the ABI claim carries its own RED path. Purely local -- no kernel booted, no capability invoked, no hardware, no network."
 
 let zig = "vendor/zig-toolchain/zig"
-let probe = "tools/fixtures/microkernel_probe.rye"
-let stub = "tools/fixtures/microkernel_cap_stub.c"
+let probe = "tools/fixtures/m/microkernel_probe.rye"
+let stub = "tools/fixtures/m/microkernel_cap_stub.c"
 
 let mk = run ["sh" "-c" "mkdir -p tools/.build"]
 assert mk.ok else "microkernel-target-probe: could not make tools/.build"

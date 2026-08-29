@@ -25,7 +25,7 @@ entry = (
     "### 104. Commence M9 ascent: handbacks consumed outward, nested return_surface_p59 waiting, commence-arc prose saga PROPOSED — nine waymark beats, seats 97–103, shelf end ep045.\n"
     "**Ran:** `rishi/bin/rishi run tools/equinox/witness/equinox_commence_m9_choir_witness.rish` · **Stamp:** `"
     + stamp
-    + "` · **Witness:** `tools/gen/chapter/commence_m9_ascent_witness.rish` · scan `tools/fixtures/commence_m9_ascent_scan.sh` · choir `equinox_commence_m9_choir_witness.rish`\n"
+    + "` · **Witness:** `tools/gen/chapter/commence_m9_ascent_witness.rish` · scan `tools/fixtures/c/commence_m9_ascent_scan.sh` · choir `equinox_commence_m9_choir_witness.rish`\n"
     "Expected control_gate · ascent_saga PROPOSED · ascent_beats=9 · ascent_handbacks · "
     "ascent_nested=return_surface_p59 not_consumed · ascent_almanac seats 97–103 · "
     "ascent_shelf_end=ep045 · ascent_ep046=absent · baton breach 0. "

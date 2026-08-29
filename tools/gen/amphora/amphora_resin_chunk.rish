@@ -34,7 +34,7 @@ assert chunkdemo.out contains "GREEN" else "amphora chunkdemo not GREEN"
 assert chunkdemo.out contains "400" else "amphora chunkdemo missing 400 B claim"
 
 say "amphora-chunk: pour → chunked fetch → scrub..."
-let witness = run ["sh" "tools/fixtures/amphora_chunk_witness.sh"]
+let witness = run ["sh" "tools/fixtures/a/amphora_chunk_witness.sh"]
 assert witness.ok else "Amphora resin chunk witness failed"
 assert witness.out contains "GREEN" else "Amphora resin chunk did not report GREEN"
 assert witness.out contains "SCRUB ok" else "Amphora resin chunk missing cold scrub"

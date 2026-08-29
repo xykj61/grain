@@ -11,7 +11,7 @@
 //! bytes read are the tree's own. Two independent readings must agree: the app parses the record through
 //! rung three and reports the **bequeathed count**, the **rested count**, and the **heir-held count** -- the
 //! last computed by *actually running* the signed succession (rung three's `rebuild`) and resolving each
-//! item's holder -- and the witness cross-checks that triple against `tools/fixtures/data_dignity_truth.awk`'s
+//! item's holder -- and the witness cross-checks that triple against `tools/fixtures/d/data_dignity_truth.awk`'s
 //! reading of the same file (which reads the marks structurally) -- two tools, one answer. And the record is
 //! genuinely dignity-honest: `still_dignity_honest` re-verifies both carried proofs against the demo
 //! keyring, and `rebuild` recovers the heir holding exactly the bequeathed set with the rested holding

@@ -28,7 +28,7 @@ entry = (
     "a root that holds a raise is a **Bench**, and only a bench runs witnesses; "
     "name the root when a measurement is reported; Bench row accretes kinship; "
     "seat 128 stays reserved; surface census six kept.\n"
-    "**Ran:** `sh tools/fixtures/equinox_e121_roots_bench_amend_scan.sh` · **Stamp:** `"
+    "**Ran:** `sh tools/fixtures/e/equinox_e121_roots_bench_amend_scan.sh` · **Stamp:** `"
     + stamp
     + "` · **Witness:** `tools/equinox/witness/equinox_e121_roots_bench_amend_witness.rish` · "
     "counsel `counsel/date/20260731/20260731-220432_e121-roots-bench-amend.md` · "

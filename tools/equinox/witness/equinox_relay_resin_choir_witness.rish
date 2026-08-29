@@ -13,13 +13,13 @@ assert welcome.out contains "GREEN: relay-resin-census" else "equinox-relay-resi
 assert welcome.out contains "max_limb_beads=12" else "equinox-relay-resin-choir: want bound twelve"
 
 # Refuse: thirteen named beads without a manifest mark.
-let refuse = run ["sh" "tools/fixtures/relay_resin_census.sh" "context/design-shapes/relay_resin.brix" "tools/fixtures/relay_resin_limb_overbound.txt"]
+let refuse = run ["sh" "tools/fixtures/r/relay_resin_census.sh" "context/design-shapes/relay_resin.brix" "tools/fixtures/r/relay_resin_limb_overbound.txt"]
 say refuse.out
 assert refuse.ok == false else "equinox-relay-resin-choir: overbound limb must fail status"
 assert refuse.out contains "verdict=over_bound" else "equinox-relay-resin-choir: want over_bound verdict"
 
 # Absent shape is loud.
-let absent = run ["sh" "tools/fixtures/relay_resin_census.sh" "tools/fixtures/relay_resin_ABSENT.brix"]
+let absent = run ["sh" "tools/fixtures/r/relay_resin_census.sh" "tools/fixtures/relay_resin_ABSENT.brix"]
 say absent.out
 assert absent.ok == false else "equinox-relay-resin-choir: absent shape must fail"
 assert absent.out contains "verdict=missing_shape" else "equinox-relay-resin-choir: want missing_shape"

@@ -4,7 +4,7 @@
 # `construction/archive/`, one directory deeper, and its relative links stop being true on the way.
 # A hand forgot that at REDS %247 and again at REDS %270. The second row named the pattern out loud:
 # a fix that ends in "someone remembers" has forecast its own second firing, and this ledger's own
-# law answers it -- a lantern that fires twice becomes a loom. `tools/fixtures/reds_fold.sh` is the
+# law answers it -- a lantern that fires twice becomes a loom. `tools/fixtures/r/reds_fold.sh` is the
 # loom; this witness is what keeps it honest.
 #
 # THREE READINGS. The control on planted trees, the living shelves read for the fault the loom
@@ -18,7 +18,7 @@ say "reds-fold: Lens TAME -- every refusal is named, the row count is bounded, a
 
 # 1 -- the control. Real pins and real shelves in a throwaway pen: the welcome, the two link
 # classes, the exception, the five named refusals, and the bound from both sides.
-let control = run ["sh" "tools/fixtures/reds_fold_control.sh"]
+let control = run ["sh" "tools/fixtures/r/reds_fold_control.sh"]
 say control.out
 assert control.ok else "reds-fold: the control must exit 0"
 assert control.out contains "pass=23" else "reds-fold: want twenty-three behaviors proven"
@@ -35,7 +35,7 @@ assert (trim short.out) == "0" else "reds-fold: a shelf carries a link one level
 # 3 -- the standing catch, which found this fault within the round both times it happened. It reads
 # every living document rather than the shelves alone, so it answers a wider question than duty 2
 # and is the reason the loom is prevention rather than repair.
-let reach = run ["sh" "tools/fixtures/readme_reach_scan.sh"]
+let reach = run ["sh" "tools/fixtures/r/readme_reach_scan.sh"]
 assert reach.ok else "reds-fold: the reach scan must run"
 assert reach.out contains "broken_in_living=0" else "reds-fold: a living document holds a broken link"
 say "readme_reach: broken_in_living=0"

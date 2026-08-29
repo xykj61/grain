@@ -11,7 +11,7 @@
 # What3words-inspired in spirit only -- no what3words code, word list, or
 # algorithm is copied; only the idea (a stable function from a name to a
 # word, so no two independent namers ever have to coordinate to stay
-# unique). Corpus pin: tools/fixtures/flw-four-letter.txt -- whole-file twin
+# unique). Corpus pin: tools/fixtures/f/flw-four-letter.txt -- whole-file twin
 # of elder old/doc/spec/flw.txt with an attribution header (Option C,
 # counsel 20260724.150246 ruling). Header lines stay above
 # "# body unmodified below"; extract skips them. Full design:
@@ -21,7 +21,7 @@
 #   extracted sorted-unique count == 5526
 #   SHA3-512(extracted corpus) == corpus_digest below
 #
-# Hashes with SHA3-512 (this tree's own Keccak via tools/fixtures/sha3.sh, ratified
+# Hashes with SHA3-512 (this tree's own Keccak via tools/fixtures/s/sha3.sh, ratified
 # host oracle for the family -- context/specs/20260703-191112_resins-and-
 # hash-tiers.md), never plain SHA-2/sha256sum: a waymark is a naming-grade,
 # durable identity ("this name must mean one thing for as long as the work
@@ -46,10 +46,10 @@ assert mk_cache.ok else "could not create tools/.cache/waymark/"
 # Spec: context/specs/20260716-115927_waymark-ladder-naming-and-g0-collision-fix.md
 let corpus_digest = "615dbeb79c631115505ba71713aabdae243dcf4c1ae77109f325583a2c0e282cf6fc009d54802a268f04e3c170f705f4bd7203e018f00f5c443ae5e79808d8cc"
 let corpus_count_pin = "5526"
-let fixture_path = "tools/fixtures/flw-four-letter.txt"
+let fixture_path = "tools/fixtures/f/flw-four-letter.txt"
 let corpus_path = "tools/.cache/waymark/corpus.txt"
 
-let corpus_run = run ["sh" "tools/fixtures/waymark_corpus_extract.sh" "${fixture_path}" "${corpus_path}"]
+let corpus_run = run ["sh" "tools/fixtures/w/waymark_corpus_extract.sh" "${fixture_path}" "${corpus_path}"]
 assert corpus_run.ok else "could not read/derive the flw-four-letter fixture corpus"
 
 let count_run = run ["sh" "-c" "wc -l < ${corpus_path}"]
@@ -64,7 +64,7 @@ assert corpus_size == corpus_count_pin else "corpus count drifted from naming-gr
 # and tools/w/waymark_registry_witness.rish re-derives all thirty-one marks, so a drift of one digit
 # reds on the lap it enters. An empty digest still must never masquerade as corpus drift; the shim
 # refuses a short or non-hex answer rather than passing it along.
-let sha3 = "tools/fixtures/sha3.sh"
+let sha3 = "tools/fixtures/s/sha3.sh"
 say "sha3-512 oracle: ${sha3} (this tree's own Keccak)"
 
 let digest_run = run ["sh" "-c" "sh ${sha3} 512 ${corpus_path}"]

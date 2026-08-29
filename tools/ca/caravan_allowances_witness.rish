@@ -52,7 +52,7 @@ say "caravan-allowances: Lens TAME -- bound everything, say why; the module's as
 let zig = "vendor/zig-toolchain/zig"
 let bin = "caravan/bin/allowances"
 let header = "vendor/microkit/libmicrokit/include/microkit.h"
-let scan = "tools/fixtures/caravan_allowance_symbol_scan.sh"
+let scan = "tools/fixtures/c/caravan_allowance_symbol_scan.sh"
 let build_dir = "tools/.build/caravan_allowances"
 
 let mk = run ["sh" "-c" "mkdir -p caravan/bin ${build_dir}"]
@@ -120,7 +120,7 @@ assert gone.out contains "verdict=missing-header" else "caravan-allowances: an a
 # 4e. THE FINDING IS LOAD-BEARING, proven by widening a bound until the module refuses. An assert
 # nobody has ever seen fail is a sentence rather than a check, and this is the whole reason the
 # module IMPORTS those three Caravan constants instead of copying their values.
-let widen = run ["sh" "-c" "sh tools/fixtures/caravan_allowance_widen_control.sh ${zig} ${build_dir}/pen"]
+let widen = run ["sh" "-c" "sh tools/fixtures/c/caravan_allowance_widen_control.sh ${zig} ${build_dir}/pen"]
 assert widen.ok else "caravan-allowances: the widen control did not run"
 say widen.out
 assert widen.out contains "baseline=ok" else "caravan-allowances: the pen must build and pass with every bound as the tree keeps it, or a broken pen would read as a proof"

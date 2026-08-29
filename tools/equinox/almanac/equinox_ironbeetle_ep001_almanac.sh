@@ -26,7 +26,7 @@ entry = (
     "### 65. IronBeetle ep001 teaches the wire that needs no parser; checksum meets cast before trust.\n"
     "**Ran:** `rishi/bin/rishi run tools/equinox/witness/equinox_ironbeetle_ep001_choir_witness.rish` · **Stamp:** `"
     + stamp
-    + "` · **Witness:** `tools/gen/chapter/ironbeetle_ep001_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep001_census.sh` · choir `equinox_ironbeetle_ep001_choir_witness.rish`\n"
+    + "` · **Witness:** `tools/gen/chapter/ironbeetle_ep001_census_witness.rish` · scan `tools/fixtures/i/ironbeetle_ep001_census.sh` · choir `equinox_ironbeetle_ep001_choir_witness.rish`\n"
     "Expected IRON=present · EP001 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, "
     "and verdict=absent on a missing iron shelf. Metal answered GREEN. "
     "Chapter five opens; clean-room study only.\n\n"

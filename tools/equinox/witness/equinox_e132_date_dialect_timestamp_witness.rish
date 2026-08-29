@@ -4,7 +4,7 @@ say "e132-dialect-stamp: Language EN — compact Last updated accepts date or fu
 say "e132-dialect-stamp: Style Radiant — the instrument aged; the Lexicon did not."
 say "e132-dialect-stamp: Lens TAME — e132 · suite 10/10 · shred held · 128 reserved."
 
-let green = run ["sh" "tools/fixtures/equinox_e132_date_dialect_timestamp_scan.sh"]
+let green = run ["sh" "tools/fixtures/e/equinox_e132_date_dialect_timestamp_scan.sh"]
 assert green.ok else "e132-dialect-stamp: living scan must exit 0"
 assert green.out contains "pattern=honored" else "e132-dialect-stamp: want pattern"
 assert green.out contains "compact_accepts=date_or_stamp" else "e132-dialect-stamp: want date_or_stamp"
@@ -17,7 +17,7 @@ assert green.out contains "shred=RED" else "e132-dialect-stamp: want shred RED"
 assert green.out contains "seat_128=reserved_close_choir" else "e132-dialect-stamp: want 128 reserved"
 assert green.out contains "verdict=ok" else "e132-dialect-stamp: want verdict ok"
 
-let red = run ["sh" "tools/fixtures/equinox_e132_date_dialect_timestamp_scan.sh" "prove-red"]
+let red = run ["sh" "tools/fixtures/e/equinox_e132_date_dialect_timestamp_scan.sh" "prove-red"]
 assert (red.ok == false) else "e132-dialect-stamp: prove-red must refuse"
 assert red.out contains "RED_compact_rejects_full_stamp" else "e132-dialect-stamp: prove-red want refuse"
 

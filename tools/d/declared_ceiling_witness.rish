@@ -59,7 +59,7 @@
 # living_docs_roster_scan.sh, and reds_ledger_scan.sh, six sites in all. The lap before this one
 # named three of the five from memory and left them; the tree held five, measured (REDS %199).
 #
-# tools/fixtures/living_pin_max_bytes.sh is the one reading now. It resolves the law from its own
+# tools/fixtures/l/living_pin_max_bytes.sh is the one reading now. It resolves the law from its own
 # location rather than the caller's working directory, so a scan that later cd's into a pen still
 # reads the real tree's law, and it refuses with a named reason rather than defaulting -- a meter
 # whose bound silently defaults reports green over an unmeasured tree.
@@ -79,7 +79,7 @@
 # WHAT IT DOES NOT REACH. Whether a declared number is the RIGHT number -- that is a judgement, and
 # this is a count. And any bound written in prose rather than in a form a parser reaches.
 #
-# Pen: tools/fixtures/declared_ceiling_control.sh -- twenty-seven behaviors across fifty
+# Pen: tools/fixtures/d/declared_ceiling_control.sh -- twenty-seven behaviors across fifty
 # assertions on real pages and real git repositories in a throwaway pen, both ceilings, both
 # bounds, and both halves of the meter-copy reading shown from both sides. Run from the
 # repository root.
@@ -88,7 +88,7 @@ say "declared-ceiling: Language EN -- a page that writes down how long it will s
 say "declared-ceiling: Style Gauge, Meter -- every count below is the scan's own output, read from the tree rather than recited here."
 say "declared-ceiling: Lens TAME -- the declaration is spelled exactly so it stays checkable, the corpus is discovered rather than listed, and the reading this cannot gate is counted in the open."
 
-let scan = run ["sh" "tools/fixtures/declared_ceiling_scan.sh" "census"]
+let scan = run ["sh" "tools/fixtures/d/declared_ceiling_scan.sh" "census"]
 say scan.out
 assert scan.ok else "declared-ceiling: a page stands above the ceiling it declares, or declares one no tool can read -- read the scan's own lines"
 assert scan.out contains "verdict=ok" else "declared-ceiling: the census must agree with itself"
@@ -100,10 +100,10 @@ assert scan.out contains "bounds_disagree=0" else "declared-ceiling: a pin citin
 assert (scan.out contains "bounds_declaring=0" == false) else "declared-ceiling: the byte-bound reading over no declarations would report clean while measuring nothing"
 assert scan.out contains "living_pin_max_bytes=24576" else "declared-ceiling: the number must come from the seated law, and the law states 24576"
 assert scan.out contains "law_copies_deciding=0" else "declared-ceiling: a meter deciding with its own copy of the bound can disagree with the law while reporting green"
-assert (scan.out contains "verdict=law_number_copied" == false) else "declared-ceiling: the one reading is tools/fixtures/living_pin_max_bytes.sh, and every meter calls it"
+assert (scan.out contains "verdict=law_number_copied" == false) else "declared-ceiling: the one reading is tools/fixtures/l/living_pin_max_bytes.sh, and every meter calls it"
 assert (scan.out contains "verdict=law_recitation_spread" == false) else "declared-ceiling: the number may be written down in fewer places than yesterday, never more"
 
-let control = run ["sh" "tools/fixtures/declared_ceiling_control.sh"]
+let control = run ["sh" "tools/fixtures/d/declared_ceiling_control.sh"]
 say control.out
 assert control.ok else "declared-ceiling: the control must complete"
 assert control.out contains "control_fail=0" else "declared-ceiling: every planted behavior must read as written"

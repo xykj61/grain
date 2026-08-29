@@ -13,27 +13,27 @@
 # ALLOW_BASELINE is IGNORED in COMPARE -- if it can suppress a red there, STOP.
 #
 #   rishi/bin/rishi run tools/l/link_witness.rish
-#   LINK_WITNESS_SNAPSHOT=/tmp/dangling_before.txt sh tools/fixtures/link_witness_scan.sh
-#   LINK_WITNESS_COMPARE=/tmp/dangling_before.txt  sh tools/fixtures/link_witness_scan.sh
+#   LINK_WITNESS_SNAPSHOT=/tmp/dangling_before.txt sh tools/fixtures/l/link_witness_scan.sh
+#   LINK_WITNESS_COMPARE=/tmp/dangling_before.txt  sh tools/fixtures/l/link_witness_scan.sh
 
 say "link_witness: fixture PASS (valid relative links)…"
-let pass = run ["sh" "-c" "LINK_WITNESS_FILES='context/fixtures/link_witness_valid.md' sh tools/fixtures/link_witness_scan.sh"]
+let pass = run ["sh" "-c" "LINK_WITNESS_FILES='context/fixtures/link_witness_valid.md' sh tools/fixtures/l/link_witness_scan.sh"]
 say pass.out
 assert pass.ok else "link_witness valid fixture RED — witness broken"
 
 say "link_witness: fixture FAIL (broken relative link)…"
-let fail = run ["sh" "-c" "LINK_WITNESS_FILES='context/fixtures/link_witness_broken.md' sh tools/fixtures/link_witness_scan.sh"]
+let fail = run ["sh" "-c" "LINK_WITNESS_FILES='context/fixtures/link_witness_broken.md' sh tools/fixtures/l/link_witness_scan.sh"]
 assert fail.ok == false else "link_witness broken fixture passed — witness toothless"
 assert fail.out contains "dangling" else "broken fixture must report dangling"
 
 say "link_witness: tree walk (baseline allow)…"
 # Hardcoded ALLOW_BASELINE=1 -- Rishi does not expand shell ${...} in string literals.
-let walk = run ["sh" "-c" "LINK_WITNESS_ALLOW_BASELINE=1 sh tools/fixtures/link_witness_scan.sh"]
+let walk = run ["sh" "-c" "LINK_WITNESS_ALLOW_BASELINE=1 sh tools/fixtures/l/link_witness_scan.sh"]
 say walk.out
 assert walk.ok else "link_witness tree walk RED"
 
 say "link_witness: ROUND MODE self-check (snapshot · compare equal · deliberate break)…"
-let round = run ["sh" "tools/fixtures/link_witness_round_mode_selfcheck.sh"]
+let round = run ["sh" "tools/fixtures/l/link_witness_round_mode_selfcheck.sh"]
 say round.out
 assert round.ok else "link_witness ROUND MODE self-check RED"
 

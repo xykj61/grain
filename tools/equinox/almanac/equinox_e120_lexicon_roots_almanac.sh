@@ -26,7 +26,7 @@ entry = (
     "client surfaces — Claude web · Claude iOS · Cursor AppImage desktop · Cursor iOS; "
     "distinct from Bench · pier · Pond · digest/Tilak roots; seat 128 stays reserved; "
     "surface census six kept; close-seat answered kept.\n"
-    "**Ran:** `sh tools/fixtures/equinox_e120_lexicon_roots_scan.sh` · **Stamp:** `"
+    "**Ran:** `sh tools/fixtures/e/equinox_e120_lexicon_roots_scan.sh` · **Stamp:** `"
     + stamp
     + "` · **Witness:** `tools/equinox/witness/equinox_e120_lexicon_roots_witness.rish` · "
     "counsel `counsel/date/20260731/20260731-215300_e120-lexicon-roots.md` · "

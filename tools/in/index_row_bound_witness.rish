@@ -44,14 +44,14 @@ say "index-row-bound: Language EN -- an index is the way in, and the log is the 
 say "index-row-bound: Style Gauge -- the bound comes from the pin's own arithmetic rather than from taste."
 say "index-row-bound: Lens TAME -- bound everything, and say where the number came from."
 
-let scan = run ["sh" "tools/fixtures/index_row_bound_scan.sh"]
+let scan = run ["sh" "tools/fixtures/i/index_row_bound_scan.sh"]
 assert scan.ok else "index-row-bound: a living index row stands above the 192 bytes an index row is given"
 say scan.out
 assert scan.out contains "rows_over=0" else "index-row-bound: every living index row must point rather than restate"
 assert scan.out contains "verdict=ok" else "index-row-bound: the scan must balance before it is believed"
 say "field GREEN -- the pin holds one day of pointers rather than one day of abstracts"
 
-let control = run ["sh" "tools/fixtures/index_row_bound_control.sh"]
+let control = run ["sh" "tools/fixtures/i/index_row_bound_control.sh"]
 assert control.ok else "index-row-bound: the control must complete"
 say control.out
 assert control.out contains "at_bound_free=yes" else "index-row-bound: a row of exactly 192 bytes must pass free"

@@ -11,7 +11,7 @@ let seam_cmd = "grep 'usize' tally/seed.rye 2>/dev/null | grep -v '@intCast' | g
 let tally = run ["sh" "-c" seam_cmd]
 assert trim tally.out == "0" else "Tally exemplar must pass seam-aware lint"
 
-let bad = "tools/fixtures/width_check_authored_usize.rye"
+let bad = "tools/fixtures/w/width_check_authored_usize.rye"
 let bad_cmd = "grep 'usize' ${bad} 2>/dev/null | grep -v '@intCast' | grep -v '@as(usize' | wc -l"
 let authored = run ["sh" "-c" bad_cmd]
 assert trim authored.out != "0" else "authored usize fixture must fail seam-aware lint"

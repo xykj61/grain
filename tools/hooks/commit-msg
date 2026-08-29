@@ -32,7 +32,7 @@
 #
 # Installed by `tools/i/install_hooks.rish` (which sets `core.hooksPath` to this directory).
 # Proven by `tools/co/commit_message_guard_witness.rish` over
-# `tools/fixtures/commit_message_guard_scan.sh`.
+# `tools/fixtures/c/commit_message_guard_scan.sh`.
 set -eu
 
 MSG_FILE=$1
@@ -84,7 +84,7 @@ fi
 # `.claude/rules/mechanism-sentence.md`.
 #
 # The list below is the ONE source of truth for the vocabulary, and
-# `tools/fixtures/mechanism_sentence_scan.sh` carries the same line; the witness asserts
+# `tools/fixtures/m/mechanism_sentence_scan.sh` carries the same line; the witness asserts
 # the two agree, so this wall and its meter can never drift apart.
 # MECHANISM-WORDS-BEGIN
 MECH_WORDS='function fn parameter argument import call struct field signature symbol declaration module file script directory constant type'
@@ -100,7 +100,7 @@ MECH_WORDS='function fn parameter argument import call struct field signature sy
 # rather than a change, so there is no mechanism for it to name. It is recognised by the
 # `crashed-meteor` subject that only `publish-seed.sh` writes (was `Grain OS -- `, then `grain-ww -- `, both 20260828, Keaton's word); every commit in this tree wears a
 # lowercase `component: ` prefix instead and can never borrow it. Proven both ways by
-# `tools/fixtures/mechanism_wall_scan.sh`. This is a named exemption, never a bypass -- there
+# `tools/fixtures/m/mechanism_wall_scan.sh`. This is a named exemption, never a bypass -- there
 # is no flag, no env var, and no comment that turns the wall off.
 subject=$(printf '%s\n' "$body" | sed -n '1p')
 prose=$(printf '%s\n' "$body" | sed -e '1d')

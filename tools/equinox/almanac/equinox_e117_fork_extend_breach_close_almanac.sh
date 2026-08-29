@@ -28,11 +28,11 @@ entry = (
     "BREACH as let close — census_breach_count=0 banked approval closed unspent; "
     "roof reconciliation already e116; geode stays APPROVED GATED; shred RED; "
     "seat 128 stays reserved; surface census four kept.\n"
-    "**Ran:** `sh tools/fixtures/equinox_e117_fork_extend_breach_close_scan.sh` · **Stamp:** `"
+    "**Ran:** `sh tools/fixtures/e/equinox_e117_fork_extend_breach_close_scan.sh` · **Stamp:** `"
     + stamp
     + "` · **Witness:** `tools/equinox/witness/equinox_e117_fork_extend_breach_close_witness.rish` · "
     "counsel `counsel/date/20260731/20260731-170354_e117-fork-extend-breach-let-close.md` · "
-    "scan `tools/fixtures/equinox_e117_fork_extend_breach_close_scan.sh`\n"
+    "scan `tools/fixtures/e/equinox_e117_fork_extend_breach_close_scan.sh`\n"
     "Expected control_gate · instruments_tracked · fork_word=EXTEND · "
     "handback_status=not_consumed · breach_status=closed_unspent · "
     "geode APPROVED_GATED · seat_128 reserved · surface_count=4 · "

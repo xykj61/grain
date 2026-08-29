@@ -80,7 +80,7 @@ say "caravan-ladder-print: Language EN -- the printing every rung carries forwar
 say "caravan-ladder-print: Style Radiant -- measurement beats memory; a shape two honest meters could not see becomes a third meter before it becomes a design call."
 say "caravan-ladder-print: Lens TAME -- safety first: the ceiling is named, the counting is proven by hand on a corpus, the seventy-line ratchet prints rather than gates, and every refusal has a name."
 
-let living = run ["sh" "tools/fixtures/caravan_ladder_print_scan.sh"]
+let living = run ["sh" "tools/fixtures/c/caravan_ladder_print_scan.sh"]
 assert living.ok else "caravan-ladder-print: the living ladder scan must exit 0 -- ${living.out}"
 assert living.out contains "PRINT_OK carried=2686 ceiling=2800" else "caravan-ladder-print: want the living printing under its named ceiling"
 assert living.out contains "PRINT_MODULES 114 holding=43" else "caravan-ladder-print: want 43 of the 114 modules holding a printing family -- the 42 rungs and the harness the fold gave two bodies to. The denominator has moved three times without the numerator moving once: 110 to 111 when the Region body folded into caravan/region.rye, then to 113 as allowances.rye and address_space.rye landed, then to 114 when caravan/study_door.rye lifted the study cohort door. None of the four prints, so only the population grew (REDS %219)."
@@ -126,11 +126,11 @@ say "caravan-ladder-print: ratchet -- four printing bodies stand past TAME's sev
 # The meters beside this one, read here so the three numbers stand together and none can drift from the others unseen.
 # The printing carry is what remains of a number that opened at 5,955, and it stands beside a byte-identical check
 # meter reading 47 and a spine reading 0. Three windows on one ladder, each honest about what it sees.
-let copy = run ["sh" "tools/fixtures/caravan_ladder_copy_scan.sh"]
+let copy = run ["sh" "tools/fixtures/c/caravan_ladder_copy_scan.sh"]
 assert copy.ok else "caravan-ladder-print: the check meter must still stand -- ${copy.out}"
 assert copy.out contains "copied_lines=47" else "caravan-ladder-print: want the byte-identical check meter standing where the last fold left it"
 
-let spine = run ["sh" "tools/fixtures/caravan_ladder_spine_scan.sh"]
+let spine = run ["sh" "tools/fixtures/c/caravan_ladder_spine_scan.sh"]
 assert spine.ok else "caravan-ladder-print: the spine meter must still stand -- ${spine.out}"
 assert spine.out contains "SPINE_LINES total=19 distinct=19 carried=0" else "caravan-ladder-print: want the orchestration spine still folded"
 say "caravan-ladder-print: the meters beside it -- checks carry 47, the spine carries 0, the printing carries 2,686"
@@ -140,7 +140,7 @@ say "caravan-ladder-print: the meters beside it -- checks carry 47, the spine ca
 # line of its own. So ten lines stand, five of them different, five already written -- and three bodies stand, one of
 # them a whole copy carrying three lines. Both shapes this scan reads, countable by eye in the fixture itself, which is
 # what makes this a proof of the counter rather than a second opinion from it.
-let corpus = run ["sh" "-c" "CARAVAN_LADDER_DIR=tools/fixtures/caravan_ladder_print_corpus CARAVAN_PRINT_CEILING=10 CARAVAN_PRINT_BOUND=3 sh tools/fixtures/caravan_ladder_print_scan.sh"]
+let corpus = run ["sh" "-c" "CARAVAN_LADDER_DIR=tools/fixtures/caravan_ladder_print_corpus CARAVAN_PRINT_CEILING=10 CARAVAN_PRINT_BOUND=3 sh tools/fixtures/c/caravan_ladder_print_scan.sh"]
 assert corpus.ok else "caravan-ladder-print: the corpus scan must exit 0 -- ${corpus.out}"
 assert corpus.out contains "PRINT_MODULES 2 holding=2" else "caravan-ladder-print: want the corpus read as two rungs, both printing"
 assert corpus.out contains "PRINT_BODIES 3 distinct=2 identical=1 identical_lines=3" else "caravan-ladder-print: want three bodies, one of them a whole copy of three lines"
@@ -149,21 +149,21 @@ assert corpus.out contains "PRINT_NEIGHBOR carried=3" else "caravan-ladder-print
 assert corpus.out contains "PRINT_RATCHET over_bound=1 bound=3 longest=top@tell_the_tier:4" else "caravan-ladder-print: want the ratchet naming the one body past a bound set to bite"
 
 # RED path one -- a corpus holding no rung modules at all.
-let empty = run ["sh" "-c" "d=$(mktemp -d); CARAVAN_LADDER_DIR=$d sh tools/fixtures/caravan_ladder_print_scan.sh; s=$?; rmdir $d; exit $s"]
+let empty = run ["sh" "-c" "d=$(mktemp -d); CARAVAN_LADDER_DIR=$d sh tools/fixtures/c/caravan_ladder_print_scan.sh; s=$?; rmdir $d; exit $s"]
 assert (empty.ok == false) else "caravan-ladder-print: an empty corpus must refuse"
 assert empty.out contains "reason=no_modules" else "caravan-ladder-print: want the empty corpus refused by name"
 
 # RED path two -- real modules that hold no printing. This is the REDS %97 shape: a scan reading a real corpus and
 # answering zero, where the zero is the scan's blindness rather than the tree's virtue. Here the zero refuses instead --
 # which matters most for this scan of the three, since it is the one whose window was just shown to be a choice.
-let hollow = run ["sh" "-c" "d=$(mktemp -d); printf 'const std = @import(\"std\");\\n' > $d/hollow.rye; CARAVAN_LADDER_DIR=$d sh tools/fixtures/caravan_ladder_print_scan.sh; s=$?; rm -rf $d; exit $s"]
+let hollow = run ["sh" "-c" "d=$(mktemp -d); printf 'const std = @import(\"std\");\\n' > $d/hollow.rye; CARAVAN_LADDER_DIR=$d sh tools/fixtures/c/caravan_ladder_print_scan.sh; s=$?; rm -rf $d; exit $s"]
 assert (hollow.ok == false) else "caravan-ladder-print: a corpus with no printing must refuse"
 assert hollow.out contains "reason=no_printing" else "caravan-ladder-print: want the hollow corpus refused by name"
 
 # RED path three -- the ceiling has teeth. The corpus carries five lines; held at four, it refuses, which proves the
 # ceiling is a real gate rather than a printed number. The proof runs on the corpus rather than the living ladder,
 # because a gate must be provable without breaking the thing it guards.
-let ceiling = run ["sh" "-c" "CARAVAN_LADDER_DIR=tools/fixtures/caravan_ladder_print_corpus CARAVAN_PRINT_CEILING=4 sh tools/fixtures/caravan_ladder_print_scan.sh"]
+let ceiling = run ["sh" "-c" "CARAVAN_LADDER_DIR=tools/fixtures/caravan_ladder_print_corpus CARAVAN_PRINT_CEILING=4 sh tools/fixtures/c/caravan_ladder_print_scan.sh"]
 assert (ceiling.ok == false) else "caravan-ladder-print: a printing carry past its ceiling must refuse"
 assert ceiling.out contains "reason=past_ceiling" else "caravan-ladder-print: want the ceiling breach refused by name"
 

@@ -37,7 +37,7 @@ assert q1.out contains "EXIT:0" else "a2-n-sum: quad accept did not exit 0"
 assert q1.out contains "4" else "a2-n-sum: quad accept did not speak 4"
 
 say "a2-n-sum: sum under @u32 must refuse (wrong nest)..."
-let plant = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "tools/fixtures/gate-fold-sum-on-u32.glow" "3"]
+let plant = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "tools/fixtures/g/gate-fold-sum-on-u32.glow" "3"]
 assert plant.err contains "SampleDoesNotNest" else "a2-n-sum: wrong-nest plant was accepted"
 
 say "a2-n-sum: pair neighbor still green (3 5 → 8)..."

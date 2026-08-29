@@ -579,7 +579,7 @@ assert result.ok else "build failed"   // invariant: build succeeded before test
 if result.ok == false then say "(non-zero exit)"
 ```
 
-A witness that wants to know **which** fault occurred reads a named `verdict=` key out of `out`, and asserts that the two channels agree -- see the scan-seam convention in `tools/fixtures/*_scan.sh`.
+A witness that wants to know **which** fault occurred reads a named `verdict=` key out of `out`, and asserts that the two channels agree -- see the scan-seam convention in `tools/fixtures/*/*_scan.sh`.
 
 ```
 let result = run "zig" ["build"]
@@ -613,7 +613,7 @@ These are the machine-checkable rules -- the lint surface. The discipline is the
 | Rule | Check |
 |------|-------|
 | **No authored `usize` in published `.rye`** (seam casts blessed) | `tools/w/width-check.rish` (live, TH-1) |
-| **Dated artifacts on main stay Tier-2 sealed** (living ledger - freeze pointer - recorded Radiant pass); **Tier 1 proof paths refuse edit** | `tools/d/dated_guard.rish` (live; roster `tools/fixtures/dated_guard_tier1.txt`; spec [`living-vs-dated.md`](specs/living-vs-dated.md)) |
+| **Dated artifacts on main stay Tier-2 sealed** (living ledger - freeze pointer - recorded Radiant pass); **Tier 1 proof paths refuse edit** | `tools/d/dated_guard.rish` (live; roster `tools/fixtures/d/dated_guard_tier1.txt`; spec [`living-vs-dated.md`](specs/living-vs-dated.md)) |
 | **Radiant surface advisory** (bare but-word - emoji - benediction - co-author - header) | `tools/r/radiant_lint.rish` (ratchet advisory; never fails) |
 | **Radiant pass claim preserve** (tokens - modality - structure - pinned digests) | `tools/cl/claim_preserve_witness.rish` - includes `markdown_structure_witness` (blocking for any pass) |
 | **Unqualified assert** | `tools/t/tame-check.rish` (live witness, TH-2c) |
@@ -624,7 +624,7 @@ These are the machine-checkable rules -- the lint surface. The discipline is the
 | **No tabs, no trailing whitespace** | `tools/t/tame-check.rish` (witness) |
 | **Line length <= 100 columns** | flag lines past 100, allowing a URL or a multiline-string result that itself fits |
 | **One `# Title` per markdown** | flag any `.md` with zero or more than one top-level `#`, fenced code ignored -- directly serving our doc-heavy tree |
-| **Living docs lint (roster advisory)** | `tools/l/living_docs_lint.rish` -- five duties; ratchet advisory; prints in parity ch.1 beside `tame_style`; roster in `tools/fixtures/living_docs_lint_roster.sh` |
+| **Living docs lint (roster advisory)** | `tools/l/living_docs_lint.rish` -- five duties; ratchet advisory; prints in parity ch.1 beside `tame_style`; roster in `tools/fixtures/l/living_docs_lint_roster.sh` |
 | **signed-Kumara parity (proven-seat)** | `tools/p/proven_seat_signed_kumara_parity.rish` -- parity ch.2 tail; fetch gates; build+serial when bench staged; jail-safe ADVISE skip |
 | **No leftover `FIXME` or `dbg(`** | flag both before merge; `FIXME` is welcome while iterating, gone before main |
 | **Disjoint copies through `tally/copy.rye`** | `copyForwards`/`copyBackwards` banned; `@memcpy` counted down as a ratchet; new code calls `copy_disjoint` -- `tools/t/tame_style_check.rish` (live) |
@@ -633,7 +633,7 @@ These are the machine-checkable rules -- the lint surface. The discipline is the
 | **Call-result compared to an error** | `) == error.` and `) != error.` banned at the call seam (silent `anyerror` upcast); a captured `\|err\|` compared inside an assert stays welcome -- the refined seam, reasoned in the alignment study |
 | **`usingnamespace` - `!comptime` - `Self = @This()`** | banned verbatim, as upstream -- `tools/t/tame_style_check.rish` (live) |
 
-**Ratchet advisories -- print every parity run, never fail** (`tools/t/tame_style_check.rish` second half; hand-run `rishi/bin/rishi run tools/t/tame_style_scan_advise.rish` or `sh tools/fixtures/tame_style_scan.sh advise`):
+**Ratchet advisories -- print every parity run, never fail** (`tools/t/tame_style_check.rish` second half; hand-run `rishi/bin/rishi run tools/t/tame_style_scan_advise.rish` or `sh tools/fixtures/t/tame_style_scan.sh advise`):
 
 | Ratchet | Law on touch |
 |---------|----------------|
@@ -644,11 +644,11 @@ These are the machine-checkable rules -- the lint surface. The discipline is the
 | **functions past 70 lines** | split at the natural seam (welcome/unwelcome, per-kind arms, wire hops, loop bodies); one idea per function |
 | **zero `assert(` in core modules** | import `const assert = std.debug.assert` and name contract postconditions; honest exempt list in `tame_style_scan.sh` (guests, aurora freestanding, signal handler, font table, line editor, exit constants) |
 
-**Scan roster** (`tools/fixtures/tame_style_scan.sh`): `mantra`, `caravan`, `linengrow`, `comlink`, `rishi/src`, `tally`, `aurora`, `pond`, `brushstroke`, `rye/src`. **`tools/`** snake_case chapter closed at **0** (`20260707.203612`); **`parseInt(` ratchet** closed at **0** (`20260707.213000`).
+**Scan roster** (`tools/fixtures/t/tame_style_scan.sh`): `mantra`, `caravan`, `linengrow`, `comlink`, `rishi/src`, `tally`, `aurora`, `pond`, `brushstroke`, `rye/src`. **`tools/`** snake_case chapter closed at **0** (`20260707.203612`); **`parseInt(` ratchet** closed at **0** (`20260707.213000`).
 
 **POSIX seams -- keep `.sh` entry points, orchestration in `.rish`:** witness-support scans migrated (`tame_style_scan` mode router + bans + advise; `rs1_args_max`, `rw1_exact_probe`, `opening_lines_scan`, `tame_check_mantra`, `tame_check_scan`, `chrono_version_scan`, `identity_shape`, `designed_not_built_scan`, `two_rooms_doorway_scan`, `tame_style_long_fn` -- counsel `042112`, extended `155500`-`161200`); migrated `.sh` elders thin-delegate to native (`160200`); legacy parity scripts `tame_style_scan_*_legacy.sh` stay for selftest diff only; glob/per-file seams (`chrono_version_roster.sh`, `two_rooms_doorway_*`, `tame_style_long_fn_one.sh`) documented above. **Map-transform / list ceiling (`160700`, narrowed `160800`, raised `20260724`, raised `20260725`):** `max_list_items = 1024` in `rishi/src/main.rye` (advise roster crossed 256 -> 512; two_rooms doorway roster crossed 512 -> 1024 at 524 pages). Inner `map` / `where` over a list fails with `ListTooLong` past that named bound; `lines` itself allocates unbound. Witness: `tools/r/rishi_list_bound_witness.rish`. **Structural QEMU orchestration** -- all eleven `comlink/run_*_wire_lab.sh` and `aurora/run.sh` thin-delegate to `tools/*_wire_lab.rish` / `tools/au/aurora_run.rish` using `spawn` / `wait-for` (wire labs) or blocking `run` (aurora single-process wake); counsel `20260708.035600`. **Permanent `.sh`:** `rye/bootstrap.sh` (cold start before `rye` exists); external interpreters (`cast_a_chart_host.sh`, `tools/cu/cursor-jail.sh`, `tools/f/fetch_gratitude_web.sh`); interactive REPL-over-stdin scripts (`slc1_accept.sh`, `slc1_version_step2.sh` -- `run` sets `.stdin = .ignore`; shell redirect stays). **Where-input wall (`042112`, narrowed `155500`, worked `160500`):** nested `where (where list as x: ...) as x: ...` fails -- chain sequential `let passN = where passN-1 ...` instead; `map` + record fields still cover most multi-check scans. **List indexing is real:** `expr[n]` and `.len` work generally on any list, not only the specially-bound `args` -- a correction to this file's own earlier silence on the point. **Stream discipline:** `say` always writes to stdout via `std.Io.File.stdout()`; the runtime's own `print`-based messages (argument-count rejection, file-not-found, and similar) use `std.debug.print`, hardcoded to stderr regardless of context -- a script capturing another Rishi process's result needs to know which field carries which. **Count idiom:** `for-each` cannot accumulate -- use `map` -> `join` with `" + "` -> `sh -c "echo $((${expr}))"` (`tools/r/rish_count_selftest.rish`). **Shell-body harvest (`20260725.040520`):** a `.sh` body under a `.rish` wrapper is a permitted temporary shape while Rishi lacks the word; each body notes the missing verb; duty 8 of `living_docs_lint` counts bodies past 40 lines (ratchet only falls). Four named laps: accumulate - read bounded - filter chained - quote safe -- see `expanding-prompts/date/20260725/20260725-040520_rishi-four-harvest-laps.md`. Exemptions stay: bootstrap - external interpreters - interactive stdin.
 
-**Standing exempt -- intentional-violation fixtures:** files built to *hold* a violation the lint must catch (e.g. `tools/fixtures/width_check_authored_usize.rye` for TH-1 width) stay as wrong as their purpose requires. Migrating them toward compliance would disable the proof they supply -- same logic as elder Amber goldens. No ratchet reaches for them.
+**Standing exempt -- intentional-violation fixtures:** files built to *hold* a violation the lint must catch (e.g. `tools/fixtures/w/width_check_authored_usize.rye` for TH-1 width) stay as wrong as their purpose requires. Migrating them toward compliance would disable the proof they supply -- same logic as elder Amber goldens. No ratchet reaches for them.
 
 **Standing exempt -- digest-pinned HAWM1 `sala:` memos:** product fixture literals `sala:open rishi session` - `sala:type let x = 42` - `sala:frame 8-line skate view` in `linengrow/glow_seva_b0_demo_fixture.rye` (and elder fold companions) are covered by HAWM1 root `99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe`. They are immutable by cryptographic construction. Renaming them to `seva:` would disable that proof -- same standing-exempt logic as intentional-violation fixtures. The Seva migration is complete; these bytes remain history on purpose. Lexicon **Sala** row - `tools/s/seva_rename_witness.rish` assert the STOP.
 

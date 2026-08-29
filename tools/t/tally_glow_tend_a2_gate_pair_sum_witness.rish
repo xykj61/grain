@@ -22,7 +22,7 @@ assert ok.out contains "EXIT:0" else "a2-pair: accept did not exit 0"
 assert ok.out contains "8" else "a2-pair: accept did not speak 8"
 
 say "a2-pair: sum under @u32 must refuse (wrong nest)..."
-let plant = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "tools/fixtures/gate-fold-sum-on-u32.glow" "3"]
+let plant = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "tools/fixtures/g/gate-fold-sum-on-u32.glow" "3"]
 assert plant.err contains "SampleDoesNotNest" else "a2-pair: wrong-nest plant was accepted"
 
 say "a2-pair: sumto neighbor still green..."

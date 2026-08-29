@@ -25,7 +25,7 @@ entry = (
     "### 107. Equinox e103 Class A refine + window_min: fascia metric i7 excludes four honest Siya-turn anchors; fall baseline is window_min; fascia 92→100.\n"
     "**Ran:** `rishi/bin/rishi run tools/equinox/witness/equinox_e103_class_a_window_choir_witness.rish` · **Stamp:** `"
     + stamp
-    + "` · **Witness:** `tools/equinox/witness/equinox_e103_class_a_window_witness.rish` · scan `tools/fixtures/equinox_e103_class_a_window_scan.sh` · choir `equinox_e103_class_a_window_choir_witness.rish`\n"
+    + "` · **Witness:** `tools/equinox/witness/equinox_e103_class_a_window_witness.rish` · scan `tools/fixtures/e/equinox_e103_class_a_window_scan.sh` · choir `equinox_e103_class_a_window_choir_witness.rish`\n"
     "Expected control_gate · refine_memcpy paid · metric_rev=i7 · class_a=0 · "
     "class_a_honest_excluded=4 · baseline_kind=window_min · fascia=100 · fork not_consumed · "
     "seats 97–106 · shelf end ep045 · baton breach 0. "

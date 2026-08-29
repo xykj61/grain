@@ -2,13 +2,13 @@
 #
 # Chapter D (Kresfa & Mycelium) - Mycelium consensus - the reading half, rung 4 -- the arc closes. Rungs 1-3
 # read corpora seated in code (a hand-seeded fold.Log, a committed cord.Dag, a sealed Knot). This closing
-# rung carries the voice onto a real on-disk `format cord-dag-v1` record -- tools/fixtures/cord_dag.bron, the
+# rung carries the voice onto a real on-disk `format cord-dag-v1` record -- tools/fixtures/c/cord_dag.bron, the
 # honest four-block scene (issued 1000 - taxed 300 - supply 700 - one star vega), @embedFile-bound through a
 # pond/apps/corpora/ symlink -- and reads its supply through rung one's Lantern-metered answer_over, the same
 # voice a person asks.
 #
 # The crux: two independent tools give one answer. The Ledger Voice's `measure` prints `<supply> <stars>` as
-# the voice reads them; tools/fixtures/cord_dag_truth.awk reads the same bytes by hand (supply = issued −
+# the voice reads them; tools/fixtures/c/cord_dag_truth.awk reads the same bytes by hand (supply = issued −
 # taxed over the block lines, stars the kind-3 lines). Both say `700 1` -- so the supply the intelligence
 # reports can never drift from a record a keeper can open and add up. cord_true already proved the *fold*
 # reads a real Cord true; this proves the *voice* does. A tampered record reads nothing (BadFormat). Demo
@@ -47,7 +47,7 @@ assert voice.ok else "mycelium-ledger-query-true: measure exited non-zero"
 assert voice.out contains "700 1" else "mycelium-ledger-query-true: the voice did not read '700 1' over the real ledger"
 
 # cord_dag_truth.awk prints '<blocks> <supply> <stars>'; its supply-stars tail must equal the voice's pair.
-let awk = run ["sh" "-c" "awk -f tools/fixtures/cord_dag_truth.awk tools/fixtures/cord_dag.bron"]
+let awk = run ["sh" "-c" "awk -f tools/fixtures/c/cord_dag_truth.awk tools/fixtures/c/cord_dag.bron"]
 assert awk.ok else "mycelium-ledger-query-true: awk reading failed"
 assert awk.out contains "4 700 1" else "mycelium-ledger-query-true: awk did not read '4 700 1' from the same bytes"
 

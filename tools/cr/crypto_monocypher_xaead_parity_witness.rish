@@ -12,7 +12,7 @@
 # -- the 24-byte-nonce XChaCha20-Poly1305 that HChaCha20-derives its subkey -- which is the API a caller actually invokes.
 # Kin: crypto/xchacha20.rye (our authored XChaCha20-Poly1305, GREEN against Zig's std.crypto and the published KAT) - crypto/aead.rye (the RFC
 # 8439 AEAD it runs under the derived subkey) - crypto/chacha20.rye - crypto/poly1305.rye - tools/rye/monocypher_xaead_parity.rye (our printing
-# harness) - tools/fixtures/monocypher_xaead_harness.c (Monocypher's printing harness) - tools/cr/crypto_monocypher_aead_parity_witness.rish (the
+# harness) - tools/fixtures/m/monocypher_xaead_harness.c (Monocypher's printing harness) - tools/cr/crypto_monocypher_aead_parity_witness.rish (the
 # IETF-nonce sibling). Monocypher stays the parity TARGET, vendored and unmodified, never a copied line (.claude/rules/gratitude-licenses.md).
 #
 # THE PARITY: crypto_aead_lock is XChaCha20-Poly1305 (draft-irtf-cfrg-xchacha §2.3) -- subkey = HChaCha20(key, nonce[0..16]); subnonce =
@@ -35,7 +35,7 @@ let cout = "crypto/bin/monocypher_xaead.out"
 let rout = "crypto/bin/rye_xaead.out"
 
 # 1. Build the Monocypher C harness, linking the unmodified vendored source with zig cc.
-let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src tools/fixtures/monocypher_xaead_harness.c vendor/monocypher/src/monocypher.c -o ${cbin}"]
+let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src tools/fixtures/m/monocypher_xaead_harness.c vendor/monocypher/src/monocypher.c -o ${cbin}"]
 assert cbuild.ok else "crypto-monocypher-xaead-parity: Monocypher C harness build failed — ${cbuild.err}"
 
 # 2. Run the Monocypher C harness -- two AEAD hex lines: ciphertext then tag.

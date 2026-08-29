@@ -5,7 +5,7 @@
 # Run from the repository root:
 #   rishi/bin/rishi run tools/t/tame_check_th2b.rish
 
-let result = run ["rishi/bin/rishi" "run" "tools/fixtures/tame_check_mantra.rish"]
+let result = run ["rishi/bin/rishi" "run" "tools/fixtures/t/tame_check_mantra.rish"]
 assert result.ok else "Mantra must have zero unqualified std.debug.assert calls and import-once binding in each file"
 
 say "GREEN: TH-2b — Mantra reads bare assert; module gated clean."

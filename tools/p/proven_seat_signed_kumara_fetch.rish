@@ -51,7 +51,7 @@ assert ed_hdr contains "crypto_ed25519_check" else "teacher header must declare 
 say "signed-Kumara fetch: four teacher files + LICENCE.md · crypto_ed25519_check declared"
 
 say "signed-Kumara fetch: assert 2 — red-avoid on guest source (≥2 checks)…"
-let red_scan = run ["bash" "tools/fixtures/signed_kumara_red_avoid.sh" guest]
+let red_scan = run ["bash" "tools/fixtures/s/signed_kumara_red_avoid.sh" guest]
 assert red_scan.ok else "red-avoid scan failed"
 let red_note = trim red_scan.out
 assert red_note == "OK" else "red-avoid failed: want crypto_ed25519_check at least twice and crypto_eddsa_ absent"

@@ -2,7 +2,7 @@
 
 **Language:** EN - **Voice:** Kyri - **Style:** Gauge, Field setting (see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md))
 **Status:** Checkable -- **240 modules** stand in this directory on `20260824.091754`, and every one of them has a row below.
-**Held to the directory by** [`../tools/l/lotus_module_roster_witness.rish`](../tools/l/lotus_module_roster_witness.rish) over [`../tools/fixtures/module_roster_scan.sh`](../tools/fixtures/module_roster_scan.sh), which gates `unrostered`, `phantom`, `duplicate_rows`, and `mismatched_rows` at zero.
+**Held to the directory by** [`../tools/l/lotus_module_roster_witness.rish`](../tools/l/lotus_module_roster_witness.rish) over [`../tools/fixtures/m/module_roster_scan.sh`](../tools/fixtures/m/module_roster_scan.sh), which gates `unrostered`, `phantom`, `duplicate_rows`, and `mismatched_rows` at zero.
 
 This page exists because the front door could not hold it honestly. On `20260824` `README.md` stood at **297,878 bytes** and named **83** of the 240 modules beside it, with one name -- `channel.rye` -- belonging to `constel/` and `pond/apps/` rather than here. So 157 modules had landed with nobody adding a line, and the page read exactly like a full account (REDS %190, the third firing of the shape first booked as %184).
 

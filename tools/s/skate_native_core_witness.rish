@@ -20,13 +20,13 @@ let boundary = run ["sh" "-c" "if grep -Eq 'import (AppKit|Foundation)|Unsafe|(^
 assert boundary.ok else "skate-native-core: platform import, unsafe seam, or dynamic owned collection entered the core"
 assert boundary.out contains "BOUNDARY_OK" else "skate-native-core: core boundary did not hold"
 
-let aliases = run ["sh" "tools/fixtures/alias_sameness_scan.sh"]
+let aliases = run ["sh" "tools/fixtures/a/alias_sameness_scan.sh"]
 say aliases.out
 assert aliases.ok else "skate-native-core: Surf and Skate must remain peer names over one identity"
 assert aliases.out contains "alias_faults=0" else "skate-native-core: alias-sameness found a living asymmetry"
 assert aliases.out contains "alias_verdict=ok" else "skate-native-core: alias-sameness must agree with itself"
 
-let alias_control = run ["sh" "tools/fixtures/alias_sameness_control.sh"]
+let alias_control = run ["sh" "tools/fixtures/a/alias_sameness_control.sh"]
 say alias_control.out
 assert alias_control.ok else "skate-native-core: alias-sameness control must complete"
 assert alias_control.out contains "control_cases=8" else "skate-native-core: eight alias-sameness behaviors must be exercised"

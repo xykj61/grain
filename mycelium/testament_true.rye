@@ -6,7 +6,7 @@
 //!
 //! r1 sealed a named constellation's verdict and verified it offline, r2 carried its fault tolerance, r3 let
 //! it travel as a record -- all over certificates sealed in the same process. r4 carries the reader onto a
-//! REAL on-disk `format testament-v1` certificate a keeper can open and read -- `tools/fixtures/testament_cert.bron`,
+//! REAL on-disk `format testament-v1` certificate a keeper can open and read -- `tools/fixtures/t/testament_cert.bron`,
 //! produced reproducibly by `mycelium/testament_fixture_gen.rye`, `@embedFile`-bound at compile time through
 //! the `mycelium/corpora/` symlink (no network).
 //!

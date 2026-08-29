@@ -1,5 +1,5 @@
 //! tools/rye/monocypher_hmac_sha512_parity.rye -- our authored crypto/hmac_sha512.rye asked for its OWN HMAC-SHA-512 tags over the same five inputs the
-//! Monocypher C harness (tools/fixtures/monocypher_hmac_sha512_harness.c) prints, so tools/cr/crypto_monocypher_hmac_sha512_parity_witness.rish can diff our
+//! Monocypher C harness (tools/fixtures/m/monocypher_hmac_sha512_harness.c) prints, so tools/cr/crypto_monocypher_hmac_sha512_parity_witness.rish can diff our
 //! bytes against the vendored Monocypher's C byte-for-byte -- the keyed MAC HKDF-SHA512 and BIP32 key derivation are built on (RFC 2104 / RFC 4231),
 //! proven against the audit's parity target. Chapter G (Cryptography - Rye-native, Monocypher-parity, audit-ready).
 //!

@@ -13,7 +13,7 @@ assert welcome.out contains "GREEN: fact-fold-census" else "equinox-fact-fold-ch
 assert welcome.out contains "pairs_matched=3" else "equinox-fact-fold-choir: want three pairs"
 assert welcome.out contains "supply=872" else "equinox-fact-fold-choir: want supply=872"
 
-let refuse = run ["sh" "tools/fixtures/fact_fold_census.sh" "tools/fixtures/fact_fold_ABSENT.brix"]
+let refuse = run ["sh" "tools/fixtures/f/fact_fold_census.sh" "tools/fixtures/fact_fold_ABSENT.brix"]
 say refuse.out
 assert refuse.ok == false else "equinox-fact-fold-choir: absent shape must fail"
 assert refuse.out contains "verdict=missing_shape" else "equinox-fact-fold-choir: want missing_shape"

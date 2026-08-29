@@ -1,5 +1,5 @@
 # dated_classify_witness.rish -- the Rishi dated/live classifier, living mutant of the
-# elder tools/fixtures/dated_classify.py.
+# elder tools/fixtures/d/dated_classify.py.
 #
 # Proves the mutant classifies the planted controls exactly as the canon defines and
 # emits a self-consistent census with every definition line the roofs read. Self-
@@ -8,14 +8,14 @@
 #
 #   rishi/bin/rishi run tools/d/dated_classify_witness.rish
 
-let bin = "tools/fixtures/dated_classify.rish"
+let bin = "tools/fixtures/d/dated_classify.rish"
 
 # The live control declares a living-ledger header, so it is live surface though dated-named.
-let live_ctl = trim (run ["rishi/bin/rishi" "run" bin "classify" "tools/fixtures/fascia_health_live_control.md"]).out
+let live_ctl = trim (run ["rishi/bin/rishi" "run" bin "classify" "tools/fixtures/f/fascia_health_live_control.md"]).out
 assert live_ctl == "live" else "the live control must classify as live"
 
 # The dated control carries a stamp and no living header -- dated testimony.
-let dated_ctl = trim (run ["rishi/bin/rishi" "run" bin "classify" "tools/fixtures/20260731-150648_fascia_health_dated_control.md"]).out
+let dated_ctl = trim (run ["rishi/bin/rishi" "run" bin "classify" "tools/fixtures/2/20260731-150648_fascia_health_dated_control.md"]).out
 assert dated_ctl == "dated" else "the dated control must classify as dated"
 
 # A path with no dated stamp is always live surface.

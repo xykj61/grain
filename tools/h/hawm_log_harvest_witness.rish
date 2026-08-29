@@ -10,8 +10,8 @@ say "hawm-harvest: inventary surfaces named…"
 let inventary = run ["sh" "-c" "test -f active-designing/yonder/date/20260722/20260722-152523_stoa275-hawm-log-harvest-inventory.md"]
 assert inventary.ok else "missing STOA275 inventary brief"
 
-let fixture = run ["sh" "-c" "test -f tools/fixtures/hawm_harvest_v1.bron"]
-assert fixture.ok else "missing tools/fixtures/hawm_harvest_v1.bron"
+let fixture = run ["sh" "-c" "test -f tools/fixtures/h/hawm_harvest_v1.bron"]
+assert fixture.ok else "missing tools/fixtures/h/hawm_harvest_v1.bron"
 
 let worker = run ["sh" "-c" "test -x tools/h/hawm_log_harvest_worker.sh || chmod +x tools/h/hawm_log_harvest_worker.sh"]
 assert worker.ok else "hawm_log_harvest_worker.sh not executable"

@@ -10,7 +10,7 @@ assert seat_check.ok else "TWO_ROOMS or canonical gloss spec not seated"
 
 say "two-rooms doorway: scanning forward-facing pages..."
 
-let result = run ["rishi/bin/rishi" "run" "tools/fixtures/two_rooms_doorway_scan.rish"]
+let result = run ["rishi/bin/rishi" "run" "tools/fixtures/t/two_rooms_doorway_scan.rish"]
 if result.ok == false then say "two-rooms doorway scan stderr:"
 if result.ok == false then say result.err
 assert result.ok else "two-rooms doorway scan failed"

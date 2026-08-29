@@ -13,7 +13,7 @@
 # key length in its parameter block, turning the hash into a keyed authenticator. This rung proves that keyed core STANDALONE against Monocypher's own
 # crypto_blake2b_keyed, the MAC counterpart to the way the variable-length rung proved the length-parameterized core in its own right.
 # Kin: crypto/blake2b.rye (our authored BLAKE2b + hash_keyed, GREEN against Zig's std.crypto keyed BLAKE2b-512 and the RFC 7693 unkeyed anchors) -
-# tools/rye/monocypher_blake2b_keyed_parity.rye (our printing harness) - tools/fixtures/monocypher_blake2b_keyed_harness.c (Monocypher's printing harness) -
+# tools/rye/monocypher_blake2b_keyed_parity.rye (our printing harness) - tools/fixtures/m/monocypher_blake2b_keyed_harness.c (Monocypher's printing harness) -
 # tools/cr/crypto_monocypher_blake2b_var_parity_witness.rish (the variable-length rung -- together they prove BLAKE2b unkeyed at every width AND keyed).
 # Monocypher stays the parity TARGET, vendored and unmodified, never a copied line, studied clean-room (.claude/rules/gratitude-licenses.md).
 #
@@ -36,7 +36,7 @@ let cout = "crypto/bin/monocypher_blake2b_keyed.out"
 let rout = "crypto/bin/rye_blake2b_keyed.out"
 
 # 1. Build the Monocypher C harness, linking the unmodified vendored source with zig cc.
-let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src tools/fixtures/monocypher_blake2b_keyed_harness.c vendor/monocypher/src/monocypher.c -o ${cbin}"]
+let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src tools/fixtures/m/monocypher_blake2b_keyed_harness.c vendor/monocypher/src/monocypher.c -o ${cbin}"]
 assert cbuild.ok else "crypto-monocypher-blake2b-keyed-parity: Monocypher C harness build failed — ${cbuild.err}"
 
 # 2. Run the Monocypher C harness -- six keyed digest hex lines.

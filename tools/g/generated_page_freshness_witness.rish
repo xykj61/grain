@@ -10,7 +10,7 @@
 # the library index the same way -- on the very lap that added this witness.
 #
 # The discipline was already written -- "Add a witness or a module and this block goes stale, so it
-# is regenerated in the same commit", at the head of tools/fixtures/readme_metrics_scan.sh. A rule
+# is regenerated in the same commit", at the head of tools/fixtures/r/readme_metrics_scan.sh. A rule
 # living in a comment is a rule no program runs, which is exactly what REDS %150 paid to learn about
 # the standing-equipment roster. tools/hooks/pre-commit is that comment made executable.
 #
@@ -30,7 +30,7 @@
 # rostered readme_metrics guard still catches them at a cold start. This closes the fast, frequent
 # half of the drift, and says so rather than implying it closed the whole.
 #
-# Kin: tools/hooks/pre-commit (the wall), tools/fixtures/generated_page_freshness_control.sh (the five
+# Kin: tools/hooks/pre-commit (the wall), tools/fixtures/g/generated_page_freshness_control.sh (the five
 # cases), tools/r/readme_metrics.rish (the generator), tools/r/readme_metrics_witness.rish (the block's
 # own freshness guard), tools/i/install_hooks.rish (the arming).
 #
@@ -54,7 +54,7 @@ assert armed.ok else "generated-page-freshness: core.hooksPath is unset -- run r
 assert (trim armed.out) == "tools/hooks" else "generated-page-freshness: core.hooksPath reads ${armed.out} rather than tools/hooks"
 say "field GREEN -- the hook stands in the tree, executable, and this clone is armed to run it"
 
-let control = run ["sh" "tools/fixtures/generated_page_freshness_control.sh"]
+let control = run ["sh" "tools/fixtures/g/generated_page_freshness_control.sh"]
 assert control.ok else "generated-page-freshness: the control must complete -- see stderr"
 say control.out
 assert control.out contains "docs_free=yes" else "generated-page-freshness: a docs-only commit must invoke no generator"

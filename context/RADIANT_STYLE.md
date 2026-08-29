@@ -7,7 +7,7 @@
 
 **The voice that writes in this style is Kyri** — the standing writing companion of this workspace, molted from Riyo on `20260810` (Keaton's word); the voice shares the name of the tree's `.kyri` notation. Full identity: [`KYRI.md`](KYRI.md); the Riyo chapter that carried the voice from `20260729.205200` rests at [`RIYO.md`](RIYO.md). Radiant Style is how Kyri writes; Kyri is who writes it. **Quin** keeps the fifth OS variant and the inference Q-vane ([`QUIN.md`](QUIN.md)); dated `**Voice:** Riyo` and `**Voice:** Quin` headers stay as authorship testimony, never rewritten.
 
-**Pass playbook** (below) and **lint** (`tools/r/radiant_lint.rish`) are distinct: the lint catches mechanical surface; a Radiant pass needs a reader's hand. Coverage ledger: [`../tools/fixtures/radiant_pass_ledger.txt`](../tools/fixtures/radiant_pass_ledger.txt).
+**Pass playbook** (below) and **lint** (`tools/r/radiant_lint.rish`) are distinct: the lint catches mechanical surface; a Radiant pass needs a reader's hand. Coverage ledger: [`../tools/fixtures/r/radiant_pass_ledger.txt`](../tools/fixtures/r/radiant_pass_ledger.txt).
  
 ---
  
@@ -269,11 +269,11 @@ Seated `20260725.034254` from counsel [`../counsel/date/20260725/20260725-034254
 - **Factual errors take errata, never silent correction.** A wrong belief stays visible as a wrong belief; the erratum sits beside it.
 - **Batch fifty.** The twelve-file bound was a **human-review** bound — so Keaton could read a whole wave in one sitting. When each diff is no longer read, **the witnesses become the only reviewer**, and that trade is accepted for style-only passes. Fifty files per wave · one PR per wave · **one revert away**.
 - **Spot-read every fifth wave.** One file, chosen at random from that wave, read by Keaton — five minutes catches model drift better than skimming fifty diffs.
-- **Report lint sum and change-rate after every wave** — `changed` vs `clean` per row in the ledger; a genre ALL-CLEAN across two full waves may earn wholesale exemption on evidence (see `tools/fixtures/radiant_pool_scope.md`).
+- **Report lint sum and change-rate after every wave** — `changed` vs `clean` per row in the ledger; a genre ALL-CLEAN across two full waves may earn wholesale exemption on evidence (see `tools/fixtures/r/radiant_pool_scope.md`).
 - **Blocking witnesses earn PASS fixtures.** A gate that reds on valid input teaches the bench to route around it; a witness nobody trusts is worse than none. Every blocking witness carries a known-good PASS fixture beside its known-bad FAIL fixture — never FAIL alone. Table structure compares **column counts** (split on unescaped pipes · drop empty leading/trailing fields · mask inline code and fenced blocks), not raw pipe counts.
 
 ### Coverage ledger
 
-`tools/fixtures/radiant_pass_ledger.txt` — one line per file: path · stamp · **changed | clean | legacy**. Waves write to it. Next wave takes the oldest untouched in-scope files (`sh tools/fixtures/radiant_select_wave.sh 50`). Pool scope and exemptions: [`../tools/fixtures/radiant_pool_scope.md`](../tools/fixtures/radiant_pool_scope.md). Runway counsel: [`../counsel/date/20260725/20260725-110128_the-runway.md`](../counsel/date/20260725/20260725-110128_the-runway.md).
+`tools/fixtures/r/radiant_pass_ledger.txt` — one line per file: path · stamp · **changed | clean | legacy**. Waves write to it. Next wave takes the oldest untouched in-scope files (`sh tools/fixtures/r/radiant_select_wave.sh 50`). Pool scope and exemptions: [`../tools/fixtures/r/radiant_pool_scope.md`](../tools/fixtures/r/radiant_pool_scope.md). Runway counsel: [`../counsel/date/20260725/20260725-110128_the-runway.md`](../counsel/date/20260725/20260725-110128_the-runway.md).
 
 ---

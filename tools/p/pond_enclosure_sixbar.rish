@@ -129,7 +129,7 @@ say "pond sixbar bar6: host home refuse OK"
 
 # Claude 210800: three-door bus measure -- env - concrete socket - netns (gap row, not forced red).
 say "pond sixbar bar6: three-door bus measure…"
-let doors = run ["bash" "tools/fixtures/pond_sixbar_bus_doors.sh" "--write-dir" cache]
+let doors = run ["bash" "tools/fixtures/p/pond_sixbar_bus_doors.sh" "--write-dir" cache]
 assert doors.ok else "bar6: three-door bus probe failed"
 assert doors.out contains "bus_env=" else "bar6: bus_env missing from probe"
 assert doors.out contains "bus_socket=" else "bar6: bus_socket missing from probe"

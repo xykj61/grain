@@ -6,7 +6,7 @@
 # Run from the repository root:
 #   rishi/bin/rishi run tools/t/tally_caller_map_witness.rish
 
-let scan = run ["sh" "tools/fixtures/tally_caller_map_scan.sh"]
+let scan = run ["sh" "tools/fixtures/t/tally_caller_map_scan.sh"]
 if scan.ok == false then say "MISSING caller symlink or file:"
 if scan.ok == false then say scan.out
 assert scan.ok else "tally caller map has a broken consumer path"

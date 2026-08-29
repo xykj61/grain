@@ -11,7 +11,7 @@
 
 let index = "session-logs/README.md"
 let rows_file = "tools/.cache/session_logs_index_rows.txt"
-let awk_prog = "tools/fixtures/session_logs_index_prepend.awk"
+let awk_prog = "tools/fixtures/s/session_logs_index_prepend.awk"
 
 let have_index = run ["test" "-f" index]
 assert have_index.ok else "session-logs/README.md missing"

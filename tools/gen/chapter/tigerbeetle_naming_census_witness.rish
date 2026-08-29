@@ -13,7 +13,7 @@ say "tb-naming: Lens TAME — e41 · clean-room study · almanac seat 47."
 let clone = run ["test" "-d" "gratitude/tigerbeetle/src"]
 assert clone.ok else "tb-naming: gratitude/tigerbeetle/src ABSENT — host clone first"
 
-let census = run ["sh" "tools/fixtures/tigerbeetle_naming_census.sh"]
+let census = run ["sh" "tools/fixtures/t/tigerbeetle_naming_census.sh"]
 say census.out
 assert census.ok else "tb-naming: census failed or thin"
 assert census.out contains "CLONE=present" else "tb-naming: want CLONE=present"

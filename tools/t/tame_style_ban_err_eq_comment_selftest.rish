@@ -7,9 +7,9 @@
 # Run from the repository root:
 #   rishi/bin/rishi run tools/t/tame_style_ban_err_eq_comment_selftest.rish
 
-let helper = "tools/fixtures/tame_style_ban_noncomment_files.sh"
-let code = "tools/fixtures/tame_style_ban_err_eq_code.rye"
-let comment = "tools/fixtures/tame_style_ban_err_eq_comment.rye"
+let helper = "tools/fixtures/t/tame_style_ban_noncomment_files.sh"
+let code = "tools/fixtures/t/tame_style_ban_err_eq_code.rye"
+let comment = "tools/fixtures/t/tame_style_ban_err_eq_comment.rye"
 
 assert (read-file code) contains ") == error." else "code plant missing ) == error."
 assert (read-file comment) contains ") == error." else "comment plant missing ) == error."

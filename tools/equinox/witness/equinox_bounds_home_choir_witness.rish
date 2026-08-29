@@ -15,7 +15,7 @@ assert welcome.out contains "GREEN: bounds-home-census" else "equinox-bounds-hom
 assert welcome.out contains "pairs_matched=10" else "equinox-bounds-home-choir: want ten pairs"
 
 # Refuse: a missing shape path is loud, not silent.
-let refuse = run ["sh" "tools/fixtures/bounds_home_census.sh" "tools/fixtures/bounds_home_ABSENT.brix"]
+let refuse = run ["sh" "tools/fixtures/b/bounds_home_census.sh" "tools/fixtures/bounds_home_ABSENT.brix"]
 say refuse.out
 assert refuse.ok == false else "equinox-bounds-home-choir: absent shape must fail status"
 assert refuse.out contains "verdict=missing_shape" else "equinox-bounds-home-choir: want missing_shape verdict"

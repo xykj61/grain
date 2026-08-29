@@ -26,7 +26,7 @@ say "enclosure-state: Language EN -- a config that outranks a seated move is a p
 say "enclosure-state: Style Gauge, Meter -- the reading names the variable, so a count becomes a line to open."
 say "enclosure-state: Lens TAME -- safety first: the adopt roster is bounded, the refusal is proven from both sides, and a pin holding live state is never overridden."
 
-let control = run ["sh" "tools/fixtures/pond_enclosure_state_control.sh"]
+let control = run ["sh" "tools/fixtures/p/pond_enclosure_state_control.sh"]
 say control.out
 assert control.ok else "enclosure-state: the control must complete"
 assert control.out contains "control=green" else "enclosure-state: every planted case must answer as its comment says"
@@ -38,7 +38,7 @@ assert control.out contains "HEAL an empty pin yields to an occupied room" else 
 assert control.out contains "HEAL an occupied pin keeps its place" else "enclosure-state: live state must never be overridden"
 assert control.out contains "control_fail=0" else "enclosure-state: no planted case may fail"
 
-let scan = run ["sh" "tools/fixtures/pond_enclosure_state_scan.sh"]
+let scan = run ["sh" "tools/fixtures/p/pond_enclosure_state_scan.sh"]
 say scan.out
 assert scan.ok else "enclosure-state: the tracked example must name no elder path"
 assert scan.out contains "pinned_elders=0" else "enclosure-state: pinned_elders is gated at zero"

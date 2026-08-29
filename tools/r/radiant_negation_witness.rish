@@ -34,14 +34,14 @@ say "radiant-negation: Language EN -- the living rules state what holds, and eve
 say "radiant-negation: Style Radiant -- affirmative contrast is the point, so the meter counts the negative constructions a reader actually meets and lets a seated compound like accrete-never-break read as vocabulary."
 say "radiant-negation: Lens TAME -- measurement beats memory; a feeling about the prose becomes a number per file, the ratchet only ever tightens, and a planted prohibition control proves the refusal on metal."
 
-let green = run ["sh" "tools/fixtures/radiant_negation_scan.sh"]
+let green = run ["sh" "tools/fixtures/r/radiant_negation_scan.sh"]
 assert green.ok else "radiant-negation: the living scan must exit 0 -- ${green.out}"
 assert green.out contains "enforce_risen=0" else "radiant-negation: a living rule rose above its own baseline -- state what holds, then name the exception once"
 assert green.out contains "advisory=ratchet_report" else "radiant-negation: want the advisory roster reported as a ratchet"
 assert green.out contains "register_target=0.40" else "radiant-negation: want the register named, so the sweep has somewhere to aim"
 assert green.out contains "verdict=ok" else "radiant-negation: want verdict ok"
 
-let red = run ["sh" "tools/fixtures/radiant_negation_scan.sh" "prove-red"]
+let red = run ["sh" "tools/fixtures/r/radiant_negation_scan.sh" "prove-red"]
 assert (red.ok == false) else "radiant-negation: prove-red must refuse, not merely report"
 assert red.out contains "RED_negation_rise_caught" else "radiant-negation: prove-red want the prohibition control caught"
 

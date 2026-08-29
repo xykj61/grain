@@ -12,7 +12,7 @@
 # Run from the repository root:
 #   rishi/bin/rishi run tools/am/amphora_bounds_agree.rish
 
-let scan = "tools/fixtures/amphora_bounds_agree_scan.sh"
+let scan = "tools/fixtures/a/amphora_bounds_agree_scan.sh"
 let agree = "tools/fixtures/amphora_bounds_plants/agree"
 let disagree = "tools/fixtures/amphora_bounds_plants/disagree"
 let alias_agree = "tools/fixtures/amphora_bounds_plants/alias_agree"

@@ -8,7 +8,7 @@
 #
 # WHAT IS PROVEN HERE.
 #
-#   Every room is discovered rather than listed. `tools/fixtures/room_bound_scan.sh` walks every
+#   Every room is discovered rather than listed. `tools/fixtures/r/room_bound_scan.sh` walks every
 #   top-level directory holding a dated file at its own level, so a room created tomorrow appears
 #   in the report without anyone remembering to add it.
 #
@@ -56,7 +56,7 @@ say "room-bound: Language EN -- a room that outgrows a reader stops being a room
 say "room-bound: Style Radiant -- three claims. Rooms are discovered rather than listed. All eight enforced rooms are named and stand under 256, six counted by dated basename and two -- tools and glow/gen -- by every flat entry. And the gate is proven to close in both directions: on a room over its bound, and on an enforced room that has gone missing."
 say "room-bound: Lens TAME -- the bound is named at 256 rather than at GitHub's 1,000, because a maximum set at the cliff fails on the day it matters; every count below is the scan's own output rather than this file's memory."
 
-let scan = "tools/fixtures/room_bound_scan.sh"
+let scan = "tools/fixtures/r/room_bound_scan.sh"
 
 let roster = run ["sh" scan]
 # The message names BOTH causes, because it fired for the second one on a real clone and sent a
@@ -94,7 +94,7 @@ assert roster.out contains "roster=enforce" else "room-bound: at least one room 
 
 # The RED path, built rather than trusted. A room of three dated files under a bound of two must
 # be refused, and refused by name, so the gate is known to close.
-let control = run ["sh" "tools/fixtures/room_bound_control.sh"]
+let control = run ["sh" "tools/fixtures/r/room_bound_control.sh"]
 assert control.ok else "room-bound: the two-phase control must complete"
 say control.out
 assert control.out contains "over_named_by_room=yes" else "room-bound: an over-bound room must be refused by name rather than by a bare count"

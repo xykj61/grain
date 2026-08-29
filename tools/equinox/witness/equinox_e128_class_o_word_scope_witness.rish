@@ -4,7 +4,7 @@ say "e128-class-o-word-scope: Language EN — class and rooms, not eight hundred
 say "e128-class-o-word-scope: Style Radiant — census is authority; the cut waits the opening word."
 say "e128-class-o-word-scope: Lens TAME — e128 · word-scope · shred RED · 128 reserved."
 
-let green = run ["sh" "tools/fixtures/equinox_e128_class_o_word_scope_scan.sh"]
+let green = run ["sh" "tools/fixtures/e/equinox_e128_class_o_word_scope_scan.sh"]
 assert green.ok else "e128-class-o-word-scope: living scan must exit 0"
 assert green.out contains "word_scope=honored" else "e128-class-o-word-scope: want word_scope"
 assert green.out contains "word_scope_law=class_and_rooms_not_per_path" else "e128-class-o-word-scope: want law"
@@ -13,7 +13,7 @@ assert green.out contains "seat_128=reserved_close_choir" else "e128-class-o-wor
 assert green.out contains "no_content_seat_claimed=honored" else "e128-class-o-word-scope: want no 128 spend"
 assert green.out contains "verdict=ok" else "e128-class-o-word-scope: want verdict ok"
 
-let red = run ["sh" "tools/fixtures/equinox_e128_class_o_word_scope_scan.sh" "prove-red"]
+let red = run ["sh" "tools/fixtures/e/equinox_e128_class_o_word_scope_scan.sh" "prove-red"]
 assert (red.ok == false) else "e128-class-o-word-scope: prove-red must refuse"
 assert red.out contains "RED_class_o_per_path_tax" else "e128-class-o-word-scope: prove-red want per-path tax refuse"
 

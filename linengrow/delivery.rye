@@ -28,7 +28,7 @@ const SOCK_DGRAM: c_uint = 2;
 // THE HOST NUMBERS THESE, NEVER THIS FILE. `std.c` reads SOL_SOCKET 0xffff and SO_REUSEADDR
 // 0x0004 on a BSD kernel where Linux reads 1 and 2, so a literal here is one kernel's dialect
 // standing on every kernel it is built for. REDS %282; the class is metered by
-// tools/fixtures/socket_dialect_scan.sh.
+// tools/fixtures/s/socket_dialect_scan.sh.
 const SOL_SOCKET: c_int = c.SOL.SOCKET;
 const SO_REUSEADDR: c_int = c.SO.REUSEADDR;
 
@@ -70,7 +70,7 @@ fn slcl1_keypair() kumara.KeyPair {
 
 fn load_signed_payload(io: std.Io) !struct { payload: [rc.slcl2_payload_header + rc.slcl2_max_fact]u8, payload_len: u32, pubkey: kumara.PublicKey } {
     const kp = slcl1_keypair();
-    const fixture_path = "tools/fixtures/slcl1_fact.bron";
+    const fixture_path = "tools/fixtures/s/slcl1_fact.bron";
     const cwd = Dir.cwd();
 
     var fact_buf: [rc.max_fact_len]u8 = undefined;

@@ -14,7 +14,7 @@ say "voice-roster-negative: Style Radiant — a refusal observed on every run."
 say "voice-roster-negative: Lens TAME — negative space beside positive."
 
 # A name no declaration site carries, and none should.
-let absent = run ["sh" "tools/fixtures/voice_roster_scan.sh" "Nobody"]
+let absent = run ["sh" "tools/fixtures/v/voice_roster_scan.sh" "Nobody"]
 assert absent.out contains "verdict=drift" else "voice-roster-negative: guard accepted a voice the tree never declared"
 assert absent.ok == false else "voice-roster-negative: refusal did not set a failing status"
 assert absent.out contains "detail: drifted" else "voice-roster-negative: no site was named as drifting"
@@ -22,7 +22,7 @@ assert absent.out contains "detail: drifted" else "voice-roster-negative: no sit
 # The standing voice still passes, so the guard discriminates rather than refusing all.
 # Standing voice molted Riyo -> Kyri on 20260810 (Keaton's word); Riyo is now a
 # fossil voice and no longer carried at the living declaration sites.
-let standing = run ["sh" "tools/fixtures/voice_roster_scan.sh" "Kyri"]
+let standing = run ["sh" "tools/fixtures/v/voice_roster_scan.sh" "Kyri"]
 assert standing.ok else "voice-roster-negative: standing-voice call did not succeed"
 assert standing.out contains "verdict=ok" else "voice-roster-negative: standing voice no longer passes"
 

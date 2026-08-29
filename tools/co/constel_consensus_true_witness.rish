@@ -6,10 +6,10 @@
 # convergence to a real on-disk record a keeper can open and count, and proves the property the whole
 # consensus rests on: the order two honest nodes converge to is true to the bytes.
 #
-# The crux this witness proves: the app parses the canonical committed record (tools/fixtures/cord_dag.bron),
+# The crux this witness proves: the app parses the canonical committed record (tools/fixtures/c/cord_dag.bron),
 # rebuilds the Dag under r1's own add (re-verifying every signature), commits it, folds the real Mycelium
 # law, and reports blocks-supply-stars; this witness cross-checks that triple against
-# tools/fixtures/cord_dag_truth.awk's reading of the same bytes -- two tools, one answer (4 700 1). And the
+# tools/fixtures/c/cord_dag_truth.awk's reading of the same bytes -- two tools, one answer (4 700 1). And the
 # converged mesh is genuine: two nodes begun from their own separate genesis gossip to convergence and the
 # converged Dag renders byte-identically to the on-disk record, so the network agrees on exactly the bytes a
 # keeper can count. A tampered header refuses BadFormat. Demo keeper seeds only -- no real key, no funds, no
@@ -43,7 +43,7 @@ assert selftest.out contains "The gossip-convergence arc closes" else "constel-t
 # The crux cross-check: the app's reading matches an independent awk reading of the same real bytes.
 let reading = run ["sh" "-c" "${bin} measure 2>&1"]
 assert reading.ok else "constel-true: measure exited non-zero"
-let truth = run ["sh" "-c" "awk -f tools/fixtures/cord_dag_truth.awk tools/fixtures/cord_dag.bron"]
+let truth = run ["sh" "-c" "awk -f tools/fixtures/c/cord_dag_truth.awk tools/fixtures/c/cord_dag.bron"]
 assert truth.ok else "constel-true: awk truth measurement failed"
 assert reading.out == truth.out else "constel-true: the reading disagrees with the independent awk count of the same bytes"
 

@@ -1,5 +1,5 @@
 //! tools/rye/monocypher_verify_parity.rye -- our authored crypto/verify.rye asked for its OWN constant-time equality verdict over the same fifteen
-//! (width, a, b) cases the Monocypher C harness (tools/fixtures/monocypher_verify_harness.c) prints, so
+//! (width, a, b) cases the Monocypher C harness (tools/fixtures/m/monocypher_verify_harness.c) prints, so
 //! tools/cr/crypto_monocypher_verify_parity_witness.rish can diff our bytes against the vendored Monocypher's C byte-for-byte -- the constant-time
 //! compare every MAC, tag, and signature-equality check rests on, proven against the audit's parity target. Chapter G (Cryptography - Rye-native,
 //! Monocypher-parity, audit-ready).

@@ -16,7 +16,7 @@ assert welcome.out contains "GUIDE_SEVENTY=yes" else "equinox-tb-seventy-line-ch
 assert welcome.out contains "TIDY=yes" else "equinox-tb-seventy-line-choir: want TIDY"
 assert welcome.out contains "RATCHET=yes" else "equinox-tb-seventy-line-choir: want RATCHET"
 
-let refuse = run ["sh" "tools/fixtures/tigerbeetle_seventy_line_census.sh" "tools/fixtures/tigerbeetle_ABSENT"]
+let refuse = run ["sh" "tools/fixtures/t/tigerbeetle_seventy_line_census.sh" "tools/fixtures/tigerbeetle_ABSENT"]
 say refuse.out
 assert refuse.ok == false else "equinox-tb-seventy-line-choir: absent clone must fail"
 assert refuse.out contains "verdict=absent" else "equinox-tb-seventy-line-choir: want verdict=absent"

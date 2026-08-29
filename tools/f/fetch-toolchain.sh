@@ -16,4 +16,4 @@
 # Run from the repository root.
 
 set -eu
-exec sh tools/fixtures/fetch_toolchain_scan.sh "$@"
+exec sh tools/fixtures/f/fetch_toolchain_scan.sh "$@"

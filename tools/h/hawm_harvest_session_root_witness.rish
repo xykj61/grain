@@ -11,7 +11,7 @@ let helpers = run ["sh" "-c" "test -f tools/h/hawm1_capture_session_root.sh && t
 assert helpers.ok else "missing capture helper or harvest worker"
 
 say "hawm-root: fixture names session_root…"
-let fix = run ["sh" "-c" "grep -q '^session_root 99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe$' tools/fixtures/hawm_harvest_v1.bron"]
+let fix = run ["sh" "-c" "grep -q '^session_root 99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe$' tools/fixtures/h/hawm_harvest_v1.bron"]
 assert fix.ok else "fixture missing deterministic seva-b0 session_root"
 
 say "hawm-root: ensure a 64-hex root file (capture from prior HAWM1 out or fixture)…"

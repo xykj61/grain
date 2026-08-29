@@ -36,7 +36,7 @@ invert by hand.
 
 ```sh
 printf 'Grain' > /tmp/g.bin
-sh tools/fixtures/sha3.sh 256 /tmp/g.bin
+sh tools/fixtures/s/sha3.sh 256 /tmp/g.bin
 ```
 
 ```
@@ -57,7 +57,7 @@ answers, which anyone can look up and which stay fixed wherever this tree goes.
 ## 3. Ask whether any room has outgrown a reader
 
 ```sh
-sh tools/fixtures/room_bound_scan.sh
+sh tools/fixtures/r/room_bound_scan.sh
 ```
 
 ```
@@ -77,7 +77,7 @@ the 1,000-entry listing cap a browser gives up at, so a room reaches its fold wi
 ## 4. Read the health of the day
 
 ```sh
-sh tools/fixtures/fascia_metric_v0.sh
+sh tools/fixtures/f/fascia_metric_v0.sh
 ```
 
 ```

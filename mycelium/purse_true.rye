@@ -8,7 +8,7 @@
 //! a genuine per-account double-spend a keeper can open and walk, and proves the property the whole
 //! purse rests on: the SPENT-OUT holder is true to the bytes.
 //!
-//! The corpus is `tools/fixtures/purse_dag.bron`, a genuine record produced reproducibly by
+//! The corpus is `tools/fixtures/p/purse_dag.bron`, a genuine record produced reproducibly by
 //! `mycelium/purse_fixture_gen.rye` (a demo funder credits Alice 100; Alice -> Bob 100 wins at round 1;
 //! Bob -> Dan 40 moves uncontested at round 2; Alice -> Carol 100 comes up short at round 2, her purse
 //! emptied by the winning transfer), `@embedFile`-bound at compile time through a symlink in
@@ -16,7 +16,7 @@
 //! agree: the app parses the record through `cord_bron`, **rebuilds** the Dag under `cord.add`
 //! (re-verifying every signature), resolves it through `purse`, and reports the **signer of the
 //! spent-out transfer**, the **moved count**, and the **short count**; the r4 witness cross-checks that
-//! triple against `tools/fixtures/purse_dag_truth.awk`'s reading of the same file -- two tools, one
+//! triple against `tools/fixtures/p/purse_dag_truth.awk`'s reading of the same file -- two tools, one
 //! answer. The awk applies the simplest honest slice of the agreed order (per-account balance
 //! accounting in file order); the app applies the full commit tie-break; the losing transfer is
 //! unambiguously the round-2 one and the two paying moves touch disjoint accounts, so both name the

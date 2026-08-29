@@ -12,7 +12,7 @@
 //! Siloed, dev-only, demo host and world seeds -- no real key, no funds, no network, no world provisioned.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/puddle_fleet_fixture_gen.rye \
-//!     2> tools/fixtures/puddle_fleet.bron
+//!     2> tools/fixtures/p/puddle_fleet.bron
 
 const std = @import("std");
 const assert = std.debug.assert;

@@ -7,8 +7,8 @@
 #
 #   rishi/bin/rishi run tools/g/glow_digraph_twin_witness.rish
 
-let fixture = "tools/fixtures/glow_digraph_table.txt"
-let wrong = "tools/fixtures/glow_digraph_table_wrong_order.txt"
+let fixture = "tools/fixtures/g/glow_digraph_table.txt"
+let wrong = "tools/fixtures/g/glow_digraph_table_wrong_order.txt"
 let desk = "glow/gen/s/sample-digraph-table.glow"
 let shape = "glow/gen/s/shape-digraph-table.glow"
 
@@ -18,9 +18,9 @@ assert ((read-file wrong) contains "+$") else "wrong-order fixture missing +$"
 assert ((read-file desk) contains "rows='") else "desk missing rows cord"
 assert ((read-file shape) contains "digraph-table-shape") else "shape desk missing"
 
-let rye = run ["sh" "tools/fixtures/glow_digraph_rye_extract.sh"]
+let rye = run ["sh" "tools/fixtures/g/glow_digraph_rye_extract.sh"]
 assert rye.ok else "rye digraph extract failed"
-let glow = run ["sh" "tools/fixtures/glow_digraph_desk_extract.sh"]
+let glow = run ["sh" "tools/fixtures/g/glow_digraph_desk_extract.sh"]
 assert glow.ok else "glow desk digraph extract failed"
 
 let rye_n = length (where (lines rye.out) as ln: ln != "")
@@ -33,16 +33,16 @@ assert fix_n == 28 else "fixture count not 28"
 assert wrong_n == 28 else "wrong-order fixture count not 28"
 
 # Byte-identical line streams -- order is law.
-let cmp_rye = run ["sh" "-c" "tools/fixtures/glow_digraph_rye_extract.sh | cmp -s - ${fixture}"]
+let cmp_rye = run ["sh" "-c" "tools/fixtures/g/glow_digraph_rye_extract.sh | cmp -s - ${fixture}"]
 assert cmp_rye.ok else "rye extract != fixture (order or glyphs drifted)"
-let cmp_glow = run ["sh" "-c" "tools/fixtures/glow_digraph_desk_extract.sh | cmp -s - ${fixture}"]
+let cmp_glow = run ["sh" "-c" "tools/fixtures/g/glow_digraph_desk_extract.sh | cmp -s - ${fixture}"]
 assert cmp_glow.ok else "glow desk extract != fixture"
 
 # Rye extract and Glow desk extract are byte-identical to each other.
 assert rye.out == glow.out else "rye extract != glow desk extract (twin drift)"
 
 # Negative space: wrong-order fixture must fail cmp against the Rye extract.
-let cmp_wrong = run ["sh" "-c" "tools/fixtures/glow_digraph_rye_extract.sh | cmp -s - ${wrong}"]
+let cmp_wrong = run ["sh" "-c" "tools/fixtures/g/glow_digraph_rye_extract.sh | cmp -s - ${wrong}"]
 assert cmp_wrong.ok == false else "wrong-order fixture must fail cmp — gate inconclusive"
 
 # Tokenizer face: each fixture digraph is Kind.rune2 length 2.

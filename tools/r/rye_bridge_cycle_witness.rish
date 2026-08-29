@@ -19,7 +19,7 @@
 # Rye allow a mutual import?" was asked of the compiler rather than of memory. It answered with a
 # segmentation fault.
 #
-# WHAT IS PROVEN, on metal, over `tools/fixtures/rye_bridge_cycle_control.sh`.
+# WHAT IS PROVEN, on metal, over `tools/fixtures/r/rye_bridge_cycle_control.sh`.
 #   Two `.rye` files that import each other bridge, compile, link, and run, with a value crossing
 #   the cycle and returning unchanged.
 #   The root of the walk is reachable BY NAME from one of its own dependencies -- one file, one
@@ -46,7 +46,7 @@ say "rye-bridge-cycle: Language EN -- Rye builds every .rye file this tree holds
 say "rye-bridge-cycle: Style Radiant -- the fault was measured rather than reasoned about; the compiler was asked a question and answered with a segfault, so the question became a witness."
 say "rye-bridge-cycle: Lens TAME -- safety first: no unbounded recursion, a named error at a named bound, and both the welcome and the refusal proven on a corpus whose answer is known by construction."
 
-let control = run ["sh" "tools/fixtures/rye_bridge_cycle_control.sh"]
+let control = run ["sh" "tools/fixtures/r/rye_bridge_cycle_control.sh"]
 assert control.ok else "rye-bridge-cycle: the build bridge did not survive its own corpus -- ${control.err}"
 say control.out
 

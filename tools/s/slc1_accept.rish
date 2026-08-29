@@ -9,7 +9,7 @@ let zig = "vendor/zig-toolchain/zig"
 let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/src/main.rye -femit-bin=mantra/bin/mantra"]
 assert build.ok else "mantra build failed for SLC-1 acceptance witness"
 
-let result = run ["sh" "tools/fixtures/slc1_accept.sh"]
+let result = run ["sh" "tools/fixtures/s/slc1_accept.sh"]
 
 assert result.ok else "SLC-1 acceptance pass exited non-zero"
 assert result.out contains "GREEN: SLC-1 ACCEPT" else "the four verbs did not all prove out in one session"

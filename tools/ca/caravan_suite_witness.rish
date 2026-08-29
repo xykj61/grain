@@ -62,7 +62,7 @@ let witnesses = [ "tools/ca/caravan_abandon_witness.rish" "tools/ca/caravan_abat
 # The bijection, read by the scan both this choir and the every-lap ladder meter pull, so the roster is
 # one question answered in one place (REDS %101). Singing 98 witnesses costs minutes; asking whether the
 # roster is whole costs two greps -- and it is the asking that catches a witness born unheard.
-let roster = run ["sh" "tools/fixtures/caravan_roster_bijection_scan.sh"]
+let roster = run ["sh" "tools/fixtures/c/caravan_roster_bijection_scan.sh"]
 assert roster.ok else "caravan-suite: the roster bijection must hold before the choir sings -- ${roster.out}"
 assert roster.out contains "ROSTER_OK" else "caravan-suite: want the roster whole in both directions -- ${roster.out}"
 

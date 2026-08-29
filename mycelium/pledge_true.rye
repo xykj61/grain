@@ -8,14 +8,14 @@
 //! two-phase transfer a keeper can open and walk, and proves the property the whole Pledge rests on: the
 //! HONORED recipient is true to the bytes.
 //!
-//! The corpus is `tools/fixtures/pledge_dag.bron`, a genuine record produced reproducibly by
+//! The corpus is `tools/fixtures/p/pledge_dag.bron`, a genuine record produced reproducibly by
 //! `mycelium/pledge_fixture_gen.rye` (a demo funder credits Alice 200; Alice pledges 100 to Bob at round 1;
 //! Alice posts it at round 2, honoring it so the reserved hundred reaches Bob; Alice pledges 100 to Carol at
 //! round 3 and leaves it open), `@embedFile`-bound at compile time through a symlink in `mycelium/corpora/` --
 //! no network, the bytes read are the tree's own. Two independent readings must agree: the app parses the
 //! record through `cord_bron`, **rebuilds** the Dag under `cord.add` (re-verifying every signature), resolves
 //! it through `pledge`, and reports the **honored recipient**, the **posted count**, and the **open count**;
-//! the r4 witness cross-checks that triple against `tools/fixtures/pledge_dag_truth.awk`'s reading of the same
+//! the r4 witness cross-checks that triple against `tools/fixtures/p/pledge_dag_truth.awk`'s reading of the same
 //! file -- two tools, one answer. The awk applies the simplest honest slice of the agreed order (pledge-state
 //! accounting in file order); the app applies the full commit tie-break; the single post unambiguously honors
 //! the round-1 pledge, so both name the same honored recipient.

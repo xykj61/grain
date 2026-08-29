@@ -12,7 +12,7 @@ say "gen-trya: Lens TAME — prep only; no wallet, gas, domain claim, or live de
 let verb = ""
 if length args != 0 then let verb = args[0]
 
-let prep = run ["sh" "tools/fixtures/gen_trya_fund_prep.sh" verb]
+let prep = run ["sh" "tools/fixtures/g/gen_trya_fund_prep.sh" verb]
 assert prep.ok else "gen-trya REFUSE or seat door failed — see stderr"
 assert prep.out contains "GREEN: gen-trya" else "gen-trya missing GREEN line"
 assert prep.out contains "sign_index=5" else "gen-trya Virgo seat index unnamed"
@@ -21,7 +21,7 @@ assert prep.out contains "dedication: Ariana Grande" else "gen-trya dedication u
 assert prep.out contains "trya_fund=prep" else "gen-trya prep flag missing"
 say prep.out
 
-let refuse = run ["sh" "tools/fixtures/gen_trya_fund_prep.sh" "deploy"]
+let refuse = run ["sh" "tools/fixtures/g/gen_trya_fund_prep.sh" "deploy"]
 assert (refuse.ok == false) else "gen-trya refuse-walk broken: deploy must exit RED"
 
 say "GREEN: gen-trya — prep grow open; Ariana dedication seated; deploy refuse post-fold RED."

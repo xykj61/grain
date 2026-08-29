@@ -100,13 +100,13 @@ say "qa-report-card: Language EN -- a ceiling tells a writer what to avoid; a gr
 say "qa-report-card: Style Gauge -- the same measurement read the other way up, and two more beside it."
 say "qa-report-card: Lens TAME -- honesty first: a page whose claims have gone false reads F whatever else it scores."
 
-let scan = run ["sh" "tools/fixtures/qa_report_card_scan.sh"]
+let scan = run ["sh" "tools/fixtures/q/qa_report_card_scan.sh"]
 assert scan.ok else "qa-report-card: more door documents sit below B on their counted half than the ceiling allows"
 say scan.out
 assert scan.out contains "verdict=ok" else "qa-report-card: the roster reading must balance before it is believed"
 say "field GREEN -- every front door read as a report card, and the ratchet holds"
 
-let control = run ["sh" "tools/fixtures/qa_report_card_control.sh"]
+let control = run ["sh" "tools/fixtures/q/qa_report_card_control.sh"]
 assert control.ok else "qa-report-card: the control must complete"
 say control.out
 assert control.out contains "scale_exact=yes" else "qa-report-card: the scale must read exactly at all nine boundaries, from both sides"

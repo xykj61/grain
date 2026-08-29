@@ -42,10 +42,10 @@ let i = ?| []
 assert i == false else "?| [] is the identity of or — false"
 
 # A non-boolean element refuses -- a child that ands an integer exits non-zero.
-let bad_and = run ["rishi/bin/rishi" "run" "tools/fixtures/rune_and_bad_type.rish"]
+let bad_and = run ["rishi/bin/rishi" "run" "tools/fixtures/r/rune_and_bad_type.rish"]
 assert bad_and.ok == false else "?& over a non-boolean must refuse (child should exit non-zero)"
 
-let bad_or = run ["rishi/bin/rishi" "run" "tools/fixtures/rune_or_bad_type.rish"]
+let bad_or = run ["rishi/bin/rishi" "run" "tools/fixtures/r/rune_or_bad_type.rish"]
 assert bad_or.ok == false else "?| over a non-boolean must refuse (child should exit non-zero)"
 
 say "GREEN: Rishi rune-connective — ?& and ?| fold a bounded list of booleans, nest over comparisons, honor the empty identity, and refuse non-booleans."

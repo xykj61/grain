@@ -51,7 +51,7 @@
 #
 # Exit is permanent-failure when the reference resolves nowhere, so a caller can gate on it.
 #
-# Proven by tools/d/dated_path_witness.rish. Kin: tools/fixtures/dated_path_scan.sh (the census)
+# Proven by tools/d/dated_path_witness.rish. Kin: tools/fixtures/d/dated_path_scan.sh (the census)
 # and .claude/rules/stamp-and-name.md (the mark law this rests on).
 #
 # Run from the repository root.

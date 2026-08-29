@@ -7,7 +7,7 @@
 #
 # The crux this witness proves is TWO TOOLS, ONE ANSWER, TWICE OVER: the app parses the real fixture through
 # cord_bron, rebuilds the Dag under cord.add (re-verifying every signature), makes a voucher over the
-# genesis-funded account, and emits the vouched triple; tools/fixtures/statement_dag_truth.awk reads the same
+# genesis-funded account, and emits the vouched triple; tools/fixtures/s/statement_dag_truth.awk reads the same
 # bytes with an independent per-account deadline-clock accounting and names the identical position (app.out
 # == awk.out). And the order-head the node signed equals the head recomputed from the fixture's own agreed
 # order (asserted inside the app), so the signed order is the fixture's own, not a number from another world.
@@ -41,7 +41,7 @@ assert selftest.out contains "The Mycelium Voucher's agent-doable arc closes" el
 # The crux -- two tools, one answer. The app's measure tuple must equal awk's reading of the same bytes.
 let app = run ["sh" "-c" "${bin} measure 2>&1"]
 assert app.ok else "mycelium-voucher-true: app measure exited non-zero"
-let awk = run ["sh" "-c" "awk -f tools/fixtures/statement_dag_truth.awk tools/fixtures/lapse_dag.bron"]
+let awk = run ["sh" "-c" "awk -f tools/fixtures/s/statement_dag_truth.awk tools/fixtures/l/lapse_dag.bron"]
 assert awk.ok else "mycelium-voucher-true: awk truth read failed"
 assert awk.out contains "bc7cbcb5636375fa1d82434d466724d92377f53b980695dd49d26d0ce12205a5 100 100 200" else "mycelium-voucher-true: awk tuple not the funded account · balance 100 · reserved 100 · received 200"
 assert app.out == awk.out else "mycelium-voucher-true: app and awk disagree — the vouched position drifted from the bytes"

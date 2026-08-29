@@ -32,7 +32,7 @@
 # prose and no grep reads it. The module's own witness proves the module; this proves the map
 # reaches it.
 #
-# Pen: tools/fixtures/mycelium_map_roster_control.sh -- fifteen behaviors on real directories in a
+# Pen: tools/fixtures/m/mycelium_map_roster_control.sh -- fifteen behaviors on real directories in a
 # throwaway pen, eight refusals bitten and seven honest readings left free. Two carry the load: a
 # suffix DROPPED from the page must leave its companions unreachable, which is what proves the rule
 # is read from the README rather than recited in the scan; and a two-suffix name over an unnamed
@@ -42,7 +42,7 @@ say "mycelium-map-roster: Language EN -- the map a reader enters Mycelium by rea
 say "mycelium-map-roster: Style Gauge, Meter -- every count below is the scan's own output, read from the tree rather than recited here."
 say "mycelium-map-roster: Lens TAME -- the rule is read from the README, so the guard cannot drift from the page it guards; corpus size published beside the verdict."
 
-let scan = run ["sh" "tools/fixtures/mycelium_map_roster_scan.sh"]
+let scan = run ["sh" "tools/fixtures/m/mycelium_map_roster_scan.sh"]
 say scan.out
 assert scan.ok else "mycelium-map-roster: the scan must complete -- a module stands outside the map and its rule, or an entry outlived its module"
 assert scan.out contains "unreachable=0" else "mycelium-map-roster: every mycelium/*.rye is named in the map or reached by a seated suffix"
@@ -57,7 +57,7 @@ assert (scan.out contains "modules_on_disk=0" == false) else "mycelium-map-roste
 # The rule is what makes the page short enough to read, so its presence is asserted rather than assumed.
 assert (scan.out contains "suffixes_seated=0" == false) else "mycelium-map-roster: the suffix table must seat at least one rule, or every companion reads unreachable"
 
-let control = run ["sh" "tools/fixtures/mycelium_map_roster_control.sh"]
+let control = run ["sh" "tools/fixtures/m/mycelium_map_roster_control.sh"]
 say control.out
 assert control.ok else "mycelium-map-roster: the control must complete"
 assert control.out contains "control_fail=0" else "mycelium-map-roster: every planted behavior must read as written"

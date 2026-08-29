@@ -65,13 +65,13 @@ assert voice.out contains "drift=0" else "sunn14: voice-roster want zero drift"
 
 # --- SOURCE thickness welcome + thin refuse ---------------------------------
 
-let thick = run ["sh" "tools/fixtures/sunn_source_thickness_scan.sh" "SOURCE.md"]
+let thick = run ["sh" "tools/fixtures/s/sunn_source_thickness_scan.sh" "SOURCE.md"]
 say thick.out
 assert thick.ok else "sunn14: living SOURCE thickness RED"
 assert thick.out contains "verdict=ok" else "sunn14: living SOURCE want verdict=ok"
 assert thick.out contains "bytes=" else "sunn14: living SOURCE want bytes="
 
-let thin = run ["sh" "tools/fixtures/sunn_source_thickness_scan.sh" "tools/fixtures/sunn_source_THIN.md"]
+let thin = run ["sh" "tools/fixtures/s/sunn_source_thickness_scan.sh" "tools/fixtures/s/sunn_source_THIN.md"]
 say thin.out
 assert thin.ok == false else "sunn14: thin SOURCE stub must fail"
 assert thin.out contains "verdict=thin" else "sunn14: thin stub want verdict=thin"

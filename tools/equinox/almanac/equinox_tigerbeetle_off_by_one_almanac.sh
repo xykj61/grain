@@ -25,7 +25,7 @@ entry = (
     "### 55. Index, count, and size stay distinct; division shows its intent.\n"
     "**Ran:** `rishi/bin/rishi run tools/equinox/witness/equinox_tigerbeetle_off_by_one_choir_witness.rish` · **Stamp:** `"
     + stamp
-    + "` · **Witness:** `tools/gen/chapter/tigerbeetle_off_by_one_census_witness.rish` · scan `tools/fixtures/tigerbeetle_off_by_one_census.sh` · choir `equinox_tigerbeetle_off_by_one_choir_witness.rish`\n"
+    + "` · **Witness:** `tools/gen/chapter/tigerbeetle_off_by_one_census_witness.rish` · scan `tools/fixtures/t/tigerbeetle_off_by_one_census.sh` · choir `equinox_tigerbeetle_off_by_one_choir_witness.rish`\n"
     "Expected CLONE=present · GUIDE_OBO · GUIDE_TYPES · GUIDE_DIV · TAME_OBO · STYLE · ELDER_CACHE · RADIANT, "
     "and verdict=absent on a missing clone path. Metal answered GREEN. Clean-room study only.\n\n"
 )

@@ -16,7 +16,7 @@ assert selftest.out contains "GREEN" else "pond customs selftest not GREEN"
 assert selftest.out contains "place" else "pond customs selftest missing place"
 
 say "pond-customs: admit / hold / refuse + Amphora receipt..."
-let witness = run ["sh" "tools/fixtures/pond_customs_witness.sh"]
+let witness = run ["sh" "tools/fixtures/p/pond_customs_witness.sh"]
 assert witness.ok else "Pond customs witness failed"
 assert witness.out contains "GREEN" else "Pond customs did not report GREEN"
 assert witness.out contains "ADMIT ok" else "Pond customs missing ADMIT"

@@ -7,7 +7,7 @@
 # between markers that say plainly it is not to be hand-edited.
 #
 # Four numbers only, chosen because they move when something REAL changes rather than every
-# commit -- the reasoning is in tools/fixtures/readme_metrics_scan.sh, and the commit count and
+# commit -- the reasoning is in tools/fixtures/r/readme_metrics_scan.sh, and the commit count and
 # tracked-file count are deliberately absent.
 #
 # USAGE
@@ -19,7 +19,7 @@
 let mode = "render"
 if length args != 0 then let mode = args[0]
 
-let scan = run ["sh" "tools/fixtures/readme_metrics_scan.sh"]
+let scan = run ["sh" "tools/fixtures/r/readme_metrics_scan.sh"]
 assert scan.ok else "readme-metrics: the scan must complete before anything is rendered -- see stderr"
 assert scan.out contains "verdict=ok" else "readme-metrics: the scan must balance before its numbers are shown"
 
@@ -68,7 +68,7 @@ let mkdir = run ["mkdir" "-p" "tools/.build"]
 assert mkdir.ok else "readme-metrics: the build directory must exist before the block is written"
 write-file block_path block
 
-let spliced = run ["sh" "tools/fixtures/readme_metrics_splice.sh" "README.md" block_path]
+let spliced = run ["sh" "tools/fixtures/r/readme_metrics_splice.sh" "README.md" block_path]
 assert spliced.ok else "readme-metrics: the splice must succeed -- see stderr; the markers must already exist in README.md"
 assert spliced.out contains "spliced=README.md" else "readme-metrics: the splice must name what it wrote"
 

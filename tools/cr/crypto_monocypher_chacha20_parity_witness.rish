@@ -11,7 +11,7 @@
 # own crypto_chacha20_ietf -- so the stream cipher every AEAD, Vault seal, and Comlink session enciphers against now stands proven in its own right, the
 # stream-cipher counterpart to the standalone Poly1305 rung before it.
 # Kin: crypto/chacha20.rye (our authored stream cipher, GREEN against Zig's std.crypto and the RFC vectors) - tools/rye/monocypher_chacha20_parity.rye (our
-# printing harness) - tools/fixtures/monocypher_chacha20_harness.c (Monocypher's printing harness) - tools/cr/crypto_monocypher_poly1305_parity_witness.rish
+# printing harness) - tools/fixtures/m/monocypher_chacha20_harness.c (Monocypher's printing harness) - tools/cr/crypto_monocypher_poly1305_parity_witness.rish
 # (the Poly1305 sibling -- together they prove both AEAD halves standalone). Monocypher stays the parity TARGET, vendored and unmodified, never a copied
 # line, studied clean-room (.claude/rules/gratitude-licenses.md).
 #
@@ -33,7 +33,7 @@ let cout = "crypto/bin/monocypher_chacha20.out"
 let rout = "crypto/bin/rye_chacha20.out"
 
 # 1. Build the Monocypher C harness, linking the unmodified vendored source with zig cc.
-let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src tools/fixtures/monocypher_chacha20_harness.c vendor/monocypher/src/monocypher.c -o ${cbin}"]
+let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src tools/fixtures/m/monocypher_chacha20_harness.c vendor/monocypher/src/monocypher.c -o ${cbin}"]
 assert cbuild.ok else "crypto-monocypher-chacha20-parity: Monocypher C harness build failed — ${cbuild.err}"
 
 # 2. Run the Monocypher C harness -- six keystream/ciphertext hex lines.

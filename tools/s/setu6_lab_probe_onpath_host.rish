@@ -9,7 +9,7 @@
 
 let zig = "vendor/zig-toolchain/zig"
 let check = "linengrow/bin/setu6_device_lab_check"
-let find_iface = "tools/fixtures/setu6_find_gadget_iface.sh"
+let find_iface = "tools/fixtures/s/setu6_find_gadget_iface.sh"
 
 say "setu6-host: probing for USB gadget / NCM iface…"
 let found = run ["sh" "-c" "ip -o link show 2>/dev/null | grep -E 'usb0|: ncm|enx[0-9a-f]+' | head -3 || true"]

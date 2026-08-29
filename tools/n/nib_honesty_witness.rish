@@ -43,7 +43,7 @@ say "nib-honesty: Language EN -- every hash the operator card advertises resolve
 say "nib-honesty: Style Radiant -- two voices, two laws. The nib is the landed edge and answers to the loom; a checkpoint is a walk-back and is off main by construction, so this guard asks of both only what both can honestly promise."
 say "nib-honesty: Lens TAME -- measurement beats memory; reachability is computed against the object store and the remotes, the Git nib is read BY NAME rather than by first match, and a planted floating-nib control proves the refusal on metal."
 
-let green = run ["sh" "tools/fixtures/nib_honesty_scan.sh"]
+let green = run ["sh" "tools/fixtures/n/nib_honesty_scan.sh"]
 assert green.ok else "nib-honesty: the living sweep must exit 0 -- ${green.out}"
 assert green.out contains "card=construction/ITINERARY.md" else "nib-honesty: want the tracked living card, not the untracked hardlink"
 assert green.out contains "gone=0" else "nib-honesty: an advertised hash resolves nowhere -- a floating claim, refused by name. On a fresh clone this is expected for local-only checkpoints; on the pier that wrote the card it is a broken walk-back"
@@ -52,7 +52,7 @@ assert green.out contains "git_nib_state_law=tools/r/remember_git_nib_witness.ri
 assert green.out contains "local_only_checkpoints=" else "nib-honesty: want local-only walk-backs counted and named"
 assert green.out contains "verdict=ok" else "nib-honesty: want verdict ok"
 
-let red = run ["sh" "tools/fixtures/nib_honesty_scan.sh" "prove-red"]
+let red = run ["sh" "tools/fixtures/n/nib_honesty_scan.sh" "prove-red"]
 assert (red.ok == false) else "nib-honesty: prove-red must refuse, not merely report"
 assert red.out contains "RED_floating_nib_caught=2" else "nib-honesty: prove-red want both planted floating hashes caught"
 

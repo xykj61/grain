@@ -25,7 +25,7 @@ entry = (
     "### 100. Commence M5 re-cuts every green behind the proven census control: glow desk, baton museum, rune alphabet, hygiene, prin-scope, advisory-11, and tracked inventory.\n"
     "**Ran:** `rishi/bin/rishi run tools/equinox/witness/equinox_commence_m5_choir_witness.rish` · **Stamp:** `"
     + stamp
-    + "` · **Witness:** `tools/gen/chapter/commence_m5_recut_witness.rish` · scan `tools/fixtures/commence_m5_recut_scan.sh` · choir `equinox_commence_m5_choir_witness.rish`\n"
+    + "` · **Witness:** `tools/gen/chapter/commence_m5_recut_witness.rish` · scan `tools/fixtures/c/commence_m5_recut_scan.sh` · choir `equinox_commence_m5_choir_witness.rish`\n"
     "Expected control_gate=honored · advisory 11/11 · inventory behind control · baton breach 0 · "
     "glow · alphabet · hygiene · prin-scope GREEN. Pinned meters (sundial · fascia · shred) stay pinned. "
     "Metal answered GREEN. Commence arc fills chapter seven; invent none.\n\n"

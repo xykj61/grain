@@ -2,7 +2,7 @@
 #
 #   rishi/bin/rishi run tools/s/sow_lock_witness.rish
 #
-# WHY. tools/fixtures/sow_project.sh clears seed/ and rebuilds it, so while it runs the
+# WHY. tools/fixtures/s/sow_project.sh clears seed/ and rebuilds it, so while it runs the
 # directory is a partial tree. On 20260824 a projection run beside the standing roster --
 # whose own `sow` guard re-projects -- reported `copied=1644` where the same tree alone
 # gives 6,961, a 76% shortfall that reads exactly like an allowlist that stopped matching
@@ -29,7 +29,7 @@
 # by an earlier run makes that projection refuse with exit 3 and turns `sow` red. Two guards,
 # one property, and the expensive half runs on demand:
 #
-#   sh tools/fixtures/sow_lock_control.sh          # all six, 171s
+#   sh tools/fixtures/s/sow_lock_control.sh          # all six, 171s
 #
 # WHAT IT DOES NOT REACH. Whether the projection's OUTPUT is correct -- `sow` proves that,
 # and the leak scan proves it carries no identity. This proves only that two of them cannot
@@ -39,7 +39,7 @@ say "sow-lock: Language EN -- one projection at a time, so a gate never reads a 
 say "sow-lock: Style Gauge, Meter -- every count below is the control's own output, read from a run rather than recited here."
 say "sow-lock: Lens TAME -- safety first: the refusal is proven on metal, and the one behavior this fast pass skips is named and gated by another guard rather than left silent."
 
-let control = run ["sh" "tools/fixtures/sow_lock_control.sh" "fast"]
+let control = run ["sh" "tools/fixtures/s/sow_lock_control.sh" "fast"]
 say control.out
 assert control.ok else "sow-lock: the control must complete"
 assert control.out contains "control_mode=fast" else "sow-lock: the fast pass must be the one that ran, so the timing claim above stays true"

@@ -33,7 +33,7 @@ Keaton's word `20260827.172118`: force-push `debrided` to match `xy`.
 stale lineage. One commit, `6420adc891` (*caravan: the probe backgrounds the service alone*, authored
 `03:25:53`, committed `04:21:12`), sits above the debride's own checkpoint commit and **never reached
 `xy` in any form** -- its 25 files include a new 61-line fixture
-`tools/fixtures/caravan_subscribe_poll_signal.sh`, the REDS shelf
+`tools/fixtures/c/caravan_subscribe_poll_signal.sh`, the REDS shelf
 `REDS-the-glob-that-was-the-guard-rows-290.md`, the session log
 `20260827-022424_the-glob-that-was-the-guard.kyri`, eight `tools/ca/` witness renames onto the
 `_witness` suffix, and edits to `caravan/LADDER.md`, `manual/reference/caravan-capabilities.md`, and
@@ -64,7 +64,7 @@ tree, and the next red any of them found could not have been written down.
 
 Rows `%293` and `%294` folded to
 [`archive/REDS-the-round-moves-more-than-it-is-about-rows-293-294.md`](archive/REDS-the-round-moves-more-than-it-is-about-rows-293-294.md)
-by `tools/fixtures/reds_fold.sh`, returning the ledger to **19,476**. The card's **Now** block gave
+by `tools/fixtures/r/reds_fold.sh`, returning the ledger to **19,476**. The card's **Now** block gave
 up its two long retellings of `%296` and `%297` -- both CLOSED, both now held by the ledger and its
 archives -- keeping the one live instruction each carried.
 
@@ -112,7 +112,7 @@ whose living mutants stand, the two counsel naming fossils superseded by the LEX
 row, and the two freshly bannered charter elders (the three-stars page and the planets page,
 both superseded by the six-bodies charter) -- cut on Keaton's circled word with every living
 citer repointed first and every cut basename seated as a LISTED deliberate absence in
-`tools/fixtures/dated_path_exclusions.sh`. The pin's Class H table becomes a shed-complete
+`tools/fixtures/d/dated_path_exclusions.sh`. The pin's Class H table becomes a shed-complete
 record; Classes O, A, and W stand untouched, since a mitra shed cuts only the friend-shape:
 a fossil whose mutant lives.
 
@@ -411,7 +411,7 @@ ranked-remainder's settled prose, the Landed-arcs roster, and eighteen Prior-lap
 **Swept.** `lotus/README.md` fell from **297,878 bytes** to a Door front page; its rung index, its
 rung sections, and its road-on narrative moved whole into `lotus/LADDER.md`, and a new
 `lotus/MODULES.md` rosters all 240 modules. In the same round
-`tools/fixtures/image_module_roster_scan.sh` was renamed **`tools/fixtures/module_roster_scan.sh`**,
+`tools/fixtures/image_module_roster_scan.sh` was renamed **`tools/fixtures/m/module_roster_scan.sh`**,
 since the scan already took the directory as an argument and a second directory was about to use it.
 Four living references repointed: the image witness, the image control, `image/MODULES.md`, and the
 scan's own body.
@@ -1225,7 +1225,7 @@ git show 6e9c381f4c:expanded-prompts/20260810-054332_green-witness-record-seed-r
 ### `20260818.030354` -- waymark file *content* debrided from all history (deep debride, force-pushed)
 
 **Walk-back nib:** `d2b28a3e25` -- held **LOCALLY only** at the safety tag `pre-content-debride-d2b28a3e25` until git GC; no longer on the remotes after the rewrite.
-**Swept:** the last place the superseded marks lived -- the **file content** of dated testimony (kept session logs, the log index, counsel prose, and the historical body of every renamed file), swapped to the living marks (DREY, FORA, WADE, LOWE, Dimeroll) across all history. The corpus fixture `tools/fixtures/flw-four-letter.txt` (which holds several marks as legitimate dictionary words, the derivation source) and the sealed registry were **protected by path exclusion**; vendored trees (`rye/lib`, `gratitude`, `vendor`) were excluded as mark-free. Every rewritten commit re-signed; `origin` + `xykj61` force-pushed.
+**Swept:** the last place the superseded marks lived -- the **file content** of dated testimony (kept session logs, the log index, counsel prose, and the historical body of every renamed file), swapped to the living marks (DREY, FORA, WADE, LOWE, Dimeroll) across all history. The corpus fixture `tools/fixtures/f/flw-four-letter.txt` (which holds several marks as legitimate dictionary words, the derivation source) and the sealed registry were **protected by path exclusion**; vendored trees (`rye/lib`, `gratitude`, `vendor`) were excluded as mark-free. Every rewritten commit re-signed; `origin` + `xykj61` force-pushed.
 **What waits there, worth recalling:** at nib `d2b28a3e25` (local safety tag only) every file still reads its superseded mark in prose and code, and `git show` recovers the full pre-content record. The registry (`construction/waymark-registry.bron`) holds every mark ever drawn, sealed and re-derivable (witness GREEN), so nothing canonical is lost. Recovery: `git reset --hard pre-content-debride-d2b28a3e25` locally **before GC**, or re-clone from a machine that still holds the old history.
 
 ### `20260818.003328` -- waymark filenames + commit messages debrided from all history (deep debride, force-pushed)

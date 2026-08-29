@@ -9,7 +9,7 @@
 //! property the whole namespace rests on: the WINNER of a contested name is true to the
 //! bytes.
 //!
-//! The corpus is `tools/fixtures/tenure_dag.bron`, a genuine record produced
+//! The corpus is `tools/fixtures/t/tenure_dag.bron`, a genuine record produced
 //! reproducibly by `mycelium/tenure_fixture_gen.rye` (genesis funds; "vega" uncontested;
 //! "bandun" reserved by one keeper at round 1 and contested by another at round 2),
 //! `@embedFile`-bound at compile time through a symlink in `mycelium/corpora/` -- no
@@ -18,7 +18,7 @@
 //! (re-verifying every signature), resolves it through `tenure`, and reports the
 //! **holder of "bandun"** (the winning signer), the **held count**, and the **reservation
 //! count**; the r4 witness cross-checks that triple against
-//! `tools/fixtures/tenure_dag_truth.awk`'s reading of the same file -- two tools, one
+//! `tools/fixtures/t/tenure_dag_truth.awk`'s reading of the same file -- two tools, one
 //! answer. The awk applies the simplest honest slice of the agreed order (earlier round
 //! wins); the app applies the full commit tie-break; on this fixture the rounds differ,
 //! so both name the same holder.

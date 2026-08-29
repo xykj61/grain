@@ -1,6 +1,6 @@
 //! tools/rye/monocypher_edx_parity.rye -- our authored crypto/ed25519_to_x25519.rye asked for its OWN Edwards<->Montgomery key conversion, printed one
 //! 64-hex-character value per line, so tools/cr/crypto_monocypher_edx_parity_witness.rish can diff our bytes against the vendored Monocypher's C
-//! (tools/fixtures/monocypher_edx_harness.c) byte-for-byte -- the identity-unification map that lets one Ed25519 key both sign and agree, proven
+//! (tools/fixtures/m/monocypher_edx_harness.c) byte-for-byte -- the identity-unification map that lets one Ed25519 key both sign and agree, proven
 //! against the audit's parity target. Chapter G (Cryptography - Rye-native, Monocypher-parity, audit-ready).
 //!
 //! The three printed lines are, in order: eddsa_to_x25519(Edwards base) -- RFC 7748 §4.1 fixes it to u = 9; eddsa_to_x25519(RFC 8032 Test 1 public

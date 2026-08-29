@@ -16,7 +16,7 @@ assert welcome.out contains "halls_expected=4" else "equinox-design-shapes-choir
 assert welcome.out contains "census_breach_count=0" else "equinox-design-shapes-choir: want breach census zero"
 
 # Refuse: a missing wing path is loud, not silent.
-let refuse = run ["sh" "tools/fixtures/design_shapes_census_scan.sh" "tools/fixtures/design_shapes_ABSENT"]
+let refuse = run ["sh" "tools/fixtures/d/design_shapes_census_scan.sh" "tools/fixtures/design_shapes_ABSENT"]
 say refuse.out
 assert refuse.ok == false else "equinox-design-shapes-choir: absent wing must fail status"
 assert refuse.out contains "verdict=missing_wing" else "equinox-design-shapes-choir: want missing_wing verdict"

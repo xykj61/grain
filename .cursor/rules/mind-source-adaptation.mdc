@@ -30,6 +30,6 @@ Apply this rule only inside the bounded MIND outer loop. It permits one eligible
 - Stop on ambiguity, license uncertainty, unsupported dynamic behavior, unbounded allocation or recursion, a target-language gap, active overlap, missing provenance, or incomplete proof.
 - Finish at most one conversion and one signed local commit per lap. Never push automatically.
 
-Preflight meter: `tools/fixtures/mind_source_adaptation_scan.sh`.
+Preflight meter: `tools/fixtures/m/mind_source_adaptation_scan.sh`.
 
 Canonical Claude twin: `.claude/rules/mind-source-adaptation.md`.

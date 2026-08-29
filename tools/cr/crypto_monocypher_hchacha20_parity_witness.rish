@@ -11,7 +11,7 @@
 # the AEAD flagship, yet never STANDALONE against Monocypher's own crypto_chacha20_h -- so the subkey-derivation core the whole XChaCha nonce-extension
 # rests on now stands proven in its own right, the nonce-extension counterpart to the standalone ChaCha20 and Poly1305 rungs that prove the AEAD's other halves.
 # Kin: crypto/xchacha20.rye (our authored HChaCha20 + XChaCha20-Poly1305 AEAD, GREEN against Zig's std.crypto and the draft vector) - tools/rye/monocypher_hchacha20_parity.rye
-# (our printing harness) - tools/fixtures/monocypher_hchacha20_harness.c (Monocypher's printing harness) - tools/cr/crypto_monocypher_chacha20_parity_witness.rish
+# (our printing harness) - tools/fixtures/m/monocypher_hchacha20_harness.c (Monocypher's printing harness) - tools/cr/crypto_monocypher_chacha20_parity_witness.rish
 # (the standalone ChaCha20 sibling -- together they prove the XChaCha construction's cores standalone). Monocypher stays the parity TARGET, vendored and
 # unmodified, never a copied line, studied clean-room (.claude/rules/gratitude-licenses.md).
 #
@@ -32,7 +32,7 @@ let cout = "crypto/bin/monocypher_hchacha20.out"
 let rout = "crypto/bin/rye_hchacha20.out"
 
 # 1. Build the Monocypher C harness, linking the unmodified vendored source with zig cc.
-let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src tools/fixtures/monocypher_hchacha20_harness.c vendor/monocypher/src/monocypher.c -o ${cbin}"]
+let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src tools/fixtures/m/monocypher_hchacha20_harness.c vendor/monocypher/src/monocypher.c -o ${cbin}"]
 assert cbuild.ok else "crypto-monocypher-hchacha20-parity: Monocypher C harness build failed — ${cbuild.err}"
 
 # 2. Run the Monocypher C harness -- six subkey hex lines.

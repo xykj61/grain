@@ -19,7 +19,7 @@ assert selftest.out contains "GREEN" else "amphora vessel seal selftest not GREE
 assert selftest.out contains "AEAD" else "amphora vessel seal selftest missing AEAD"
 
 say "amphora-seal: pour sealed vessel + scrub open-check..."
-let witness = run ["sh" "tools/fixtures/amphora_vessel_seal_witness.sh"]
+let witness = run ["sh" "tools/fixtures/a/amphora_vessel_seal_witness.sh"]
 assert witness.ok else "Amphora vessel seal witness failed"
 assert witness.out contains "GREEN" else "Amphora vessel seal did not report GREEN"
 assert witness.out contains "SEAL ok" else "Amphora vessel seal missing SEAL ok"

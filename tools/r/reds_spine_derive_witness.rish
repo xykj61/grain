@@ -25,16 +25,16 @@ let root = run ["test" "-f" "construction/REDS.md"]
 assert root.ok else "reds-spine-derive: run from the repo root (construction/REDS.md not found)"
 
 # invariant: the scan this witness reads must exist.
-let has_scan = run ["test" "-f" "tools/fixtures/reds_spine_derive_scan.sh"]
-assert has_scan.ok else "reds-spine-derive: tools/fixtures/reds_spine_derive_scan.sh is missing"
+let has_scan = run ["test" "-f" "tools/fixtures/r/reds_spine_derive_scan.sh"]
+assert has_scan.ok else "reds-spine-derive: tools/fixtures/r/reds_spine_derive_scan.sh is missing"
 
 # 1. The control first -- a gate whose refusal has never been watched is a gate nobody has proven.
-let control = run ["sh" "tools/fixtures/reds_spine_derive_control.sh"]
+let control = run ["sh" "tools/fixtures/r/reds_spine_derive_control.sh"]
 assert control.ok else "reds-spine-derive: the control is RED -- ${control.out}${control.err}"
 assert control.out contains "control_verdict=ok" else "reds-spine-derive: the control did not reach control_verdict=ok"
 
 # 2. Then this tree, against the anointed remote.
-let scan = run ["sh" "tools/fixtures/reds_spine_derive_scan.sh"]
+let scan = run ["sh" "tools/fixtures/r/reds_spine_derive_scan.sh"]
 assert scan.out contains "verdict=ok" else "reds-spine-derive: the living ledger disagrees with the anointed spine --\n${scan.out}"
 
 say "reds-spine-derive: the reading on this tree --\n${scan.out}"

@@ -15,7 +15,7 @@ assert zig_ver.ok else "pinned ziglang toolchain missing at vendor/zig-toolchain
 
 let mkdir = run ["mkdir" "-p" "tools/bin"]
 assert mkdir.ok else "could not create tools/bin"
-let build = run ["env" "RYE_ZIG=${zig}" "rye/bin/rye" "build" "tools/fixtures/tame_usize_audit_test.rye" "-femit-bin=tools/bin/tame-usize-audit-test"]
+let build = run ["env" "RYE_ZIG=${zig}" "rye/bin/rye" "build" "tools/fixtures/t/tame_usize_audit_test.rye" "-femit-bin=tools/bin/tame-usize-audit-test"]
 if build.ok == false then say "tame_usize_audit build stdout:"
 if build.ok == false then say build.out
 if build.ok == false then say "tame_usize_audit build stderr:"

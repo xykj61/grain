@@ -11,7 +11,7 @@ say "gen-shyu: Lens TAME — prep only; design sponsor is not a paid buy."
 let verb = ""
 if length args != 0 then let verb = args[0]
 
-let prep = run ["sh" "tools/fixtures/gen_shyu_fund_prep.sh" verb]
+let prep = run ["sh" "tools/fixtures/g/gen_shyu_fund_prep.sh" verb]
 assert prep.ok else "gen-shyu REFUSE or seat door failed — see stderr"
 assert prep.out contains "GREEN: gen-shyu" else "gen-shyu missing GREEN line"
 assert prep.out contains "sign_index=6" else "gen-shyu Libra seat index unnamed"
@@ -22,7 +22,7 @@ assert prep.out contains "recommend: used 4-cyl" else "gen-shyu used-mobility le
 assert prep.out contains "shyu_fund=prep" else "gen-shyu prep flag missing"
 say prep.out
 
-let refuse = run ["sh" "tools/fixtures/gen_shyu_fund_prep.sh" "deploy"]
+let refuse = run ["sh" "tools/fixtures/g/gen_shyu_fund_prep.sh" "deploy"]
 assert (refuse.ok == false) else "gen-shyu refuse-walk broken: deploy must exit RED"
 
 say "GREEN: gen-shyu — prep open; Wayne dedication · Hyundai sponsor · used lean; deploy refuse post-fold RED."

@@ -6,7 +6,7 @@
 //! commerce folds share the same glass under the thin-view exception.
 //!
 //! Build (from repo root -- prefer rishi):
-//!   rishi/bin/rishi run tools/fixtures/pond_build_drawn_terminal.rish
+//!   rishi/bin/rishi run tools/fixtures/p/pond_build_drawn_terminal.rish
 //!
 //! Manual rye escape hatch: see pond/README.md
 //!
@@ -187,25 +187,25 @@ const open_asks_view_max_lines: u32 = 8;
 const open_asks_escrow_view_max_lines: u32 = 8;
 const open_asks_reputation_view_max_lines: u32 = 8;
 const open_asks_civic_sight_view_max_lines: u32 = 8;
-const murr_mint_fixture = "tools/fixtures/murr_m1_mint.bron";
-const wov_bundle_fixture = "tools/fixtures/wov_exit_bundle_v1.bron";
+const murr_mint_fixture = "tools/fixtures/m/murr_m1_mint.bron";
+const wov_bundle_fixture = "tools/fixtures/w/wov_exit_bundle_v1.bron";
 const dimeroll_journal_fixture = "dimeroll/fixtures/journal.bron";
 const ember_corpus_fixture = "ember/fixtures/rye_corpus.bron";
 const lantern_completion_fixture = "lantern/fixtures/completion.bron";
 const lantern_echo_fixture = "lantern/fixtures/completion_echo.bron";
 const lantern_user_fixture = "lantern/fixtures/completion_user.bron";
-const tablecloth_query_hits_fixture = "tools/fixtures/tablecloth_query_hits.bron";
-const tablecloth_query_device_hits_fixture = "tools/fixtures/tablecloth_query_device_hits.bron";
+const tablecloth_query_hits_fixture = "tools/fixtures/t/tablecloth_query_hits.bron";
+const tablecloth_query_device_hits_fixture = "tools/fixtures/t/tablecloth_query_device_hits.bron";
 const forge_cellar_manifest_fixture = "tools/fixtures/.forge_view_bundle/manifest.bron";
 const amphora_vessel_fixture = "tools/fixtures/.forge_view_bundle/vessel.bron";
-const amphora_device_fetch_hits_fixture = "tools/fixtures/amphora_device_fetch_hits.bron";
+const amphora_device_fetch_hits_fixture = "tools/fixtures/a/amphora_device_fetch_hits.bron";
 const scribble_snippets_fixture = "scribble/fixtures/session_snippets.md";
 const scribble_rish_snippets_fixture = "scribble/fixtures/session_rish_snippets.md";
 const scribble_outline_fixture = "scribble/fixtures/outline.md";
 const scribble_outline_h3_fixture = "scribble/fixtures/outline_h3.md";
 const scribble_fence_kinds_fixture = "scribble/fixtures/fence_kinds.md";
-const forge_query_hits_fixture = "tools/fixtures/forge_query_hits.bron";
-const forge_query_device_hits_fixture = "tools/fixtures/forge_query_device_hits.bron";
+const forge_query_hits_fixture = "tools/fixtures/f/forge_query_hits.bron";
+const forge_query_device_hits_fixture = "tools/fixtures/f/forge_query_device_hits.bron";
 const granary_front_page_fixture = "granary/fixtures/front_page.md";
 const status_full_text = "transcript full — earlier lines still ran; :quit to close";
 const poll_timeout_ms: i32 = 50;
@@ -1151,7 +1151,7 @@ fn run_query_unified_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
 }
 
 /// Realidream forge view -- the cellar + Amphora vessel from a live pour bundle.
-/// Witness runs tools/fixtures/forge_view_pour.sh before forgeviewtest.
+/// Witness runs tools/fixtures/f/forge_view_pour.sh before forgeviewtest.
 fn compose_forge_view_lines(garden: std.mem.Allocator, io: std.Io) ![]surface.SkateLine {
     const cwd = std.Io.Dir.cwd();
     var buf: [2048]u8 = undefined;
@@ -1307,7 +1307,7 @@ fn run_forge_device_view_witness(garden: std.mem.Allocator, io: std.Io) !u8 {
 
     const cwd = std.Io.Dir.cwd();
     var buf: [2048]u8 = undefined;
-    const hosted = try cwd.readFile(io, "tools/fixtures/forge_cellar_manifest.bron", &buf);
+    const hosted = try cwd.readFile(io, "tools/fixtures/f/forge_cellar_manifest.bron", &buf);
     if (field_value(hosted, "wire")) |_| return error.HostedMarkedDevice;
 
     var out: [160]u8 = undefined;

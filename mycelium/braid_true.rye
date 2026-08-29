@@ -8,14 +8,14 @@
 //! chain a keeper can open and walk, and proves the property the whole Braid rests on: the atom's ALL-OR-
 //! NOTHING is true to the bytes -- a chain whose final link overdraws reverses whole, and not one coin moves.
 //!
-//! The corpus is `tools/fixtures/braid_dag.bron`, a genuine record produced reproducibly by
+//! The corpus is `tools/fixtures/b/braid_dag.bron`, a genuine record produced reproducibly by
 //! `mycelium/braid_fixture_gen.rye` (a demo funder credits Alice 100 and Bob 50; a three-link braid routes
 //! Alice->Bob 100, Bob->Carol 120, Carol->Dave 200 -- the final link overdraws, so the whole chain reverses),
 //! `@embedFile`-bound at compile time through a symlink in `mycelium/corpora/` -- no network, the bytes read
 //! are the tree's own. Two independent readings must agree: the app parses the record through `cord_bron`,
 //! **rebuilds** the Dag under `cord.add` (re-verifying every signature), resolves it through `braid`, and
 //! reports the **terminal recipient**, the **committed count**, and the **rejected count**; the r4 witness
-//! cross-checks that triple against `tools/fixtures/braid_dag_truth.awk`'s reading of the same file -- two
+//! cross-checks that triple against `tools/fixtures/b/braid_dag_truth.awk`'s reading of the same file -- two
 //! tools, one answer. The awk seeds balances from the genesis credits and simulates the chain atomically in
 //! file order (round-ascending here); the app applies the full agreed-order resolution; the single chain's
 //! reversal is unambiguous, so both name the same terminal recipient and the same reject verdict.

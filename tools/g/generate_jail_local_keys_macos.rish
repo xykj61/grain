@@ -114,8 +114,8 @@ assert known_hosts_check.ok else "known_hosts_jail came back empty -- ssh-keysca
 # have no \" escape (see cursor_jail_macos.rish's own note on the same
 # gap), so the SSH config text below is built by joining fragments
 # around this fixture rather than escaping inside a string literal.
-let dq = read-file "tools/fixtures/dquote.txt"
-let nl = read-file "tools/fixtures/newline.txt"
+let dq = read-file "tools/fixtures/d/dquote.txt"
+let nl = read-file "tools/fixtures/n/newline.txt"
 
 let sc_a = "# Local-only, never tracked (lives inside .git/, not repo content)."
 let sc_b = "# Written by tools/g/generate_jail_local_keys_macos.rish. Routes this repo's"

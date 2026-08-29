@@ -56,7 +56,7 @@ Safety first, performance second, joy third. Compiler fork (slice `len: u32`) is
 
 ## Tidy rules (`tame_style_check`)
 
-**Witness:** `tools/t/tame_style_check.rish` - **Scan:** `tools/fixtures/tame_style_scan.sh` - **Brief:** `active-designing/date/20260707/20260707-164612_tame-tidy-rules-brief.md`
+**Witness:** `tools/t/tame_style_check.rish` - **Scan:** `tools/fixtures/t/tame_style_scan.sh` - **Brief:** `active-designing/date/20260707/20260707-164612_tame-tidy-rules-brief.md`
 
 **Bans fail parity** -- fix before commit:
 

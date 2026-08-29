@@ -7,7 +7,7 @@
 # target the whole time, which is exactly why nobody caught it, and why a syllable count was never
 # going to.
 #
-# The meter that already stood, tools/fixtures/radiant_negation_scan.sh, counts NEGATION WORDS
+# The meter that already stood, tools/fixtures/r/radiant_negation_scan.sh, counts NEGATION WORDS
 # across `.claude/rules/*.md` alone. Two honest gaps: the front door was never on its roster, and
 # negative FRAMING -- fails, broken, lost, refused, stale, problem -- went uncounted. The two
 # meters are siblings rather than rivals: one guards the rules, this one guards the door.
@@ -44,14 +44,14 @@ say "prose-register: Language EN -- a style label nobody measures is a wish, and
 say "prose-register: Style Gauge -- the door setting, held at a number rather than at an intention."
 say "prose-register: Lens TAME -- safety first: the front door is what a stranger meets, and it was the least measured page we own."
 
-let scan = run ["sh" "tools/fixtures/prose_register_scan.sh"]
+let scan = run ["sh" "tools/fixtures/p/prose_register_scan.sh"]
 assert scan.ok else "prose-register: a door document reads more negatively than the style it claims"
 say scan.out
 assert scan.out contains "door_over_ceiling=0" else "prose-register: every door document must hold at or under 20% negative sentences"
 assert scan.out contains "verdict=ok" else "prose-register: the scan must balance before it is believed"
 say "field GREEN -- the front door reads the way the style says it does"
 
-let control = run ["sh" "tools/fixtures/prose_register_control.sh"]
+let control = run ["sh" "tools/fixtures/p/prose_register_control.sh"]
 assert control.ok else "prose-register: the control must complete"
 say control.out
 assert control.out contains "warm_reads_low=yes" else "prose-register: affirmative prose must measure low"

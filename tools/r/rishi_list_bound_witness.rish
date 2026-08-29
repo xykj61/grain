@@ -31,7 +31,7 @@ assert selftest.ok else "tame_style_scan_advise_selftest failed"
 assert selftest.out contains "GREEN" else "advise selftest not GREEN"
 
 # Doorway scan is the roster that crossed 512 (524 pages as of this pin).
-let doorway = run ["rishi/bin/rishi" "run" "tools/fixtures/two_rooms_doorway_scan.rish"]
+let doorway = run ["rishi/bin/rishi" "run" "tools/fixtures/t/two_rooms_doorway_scan.rish"]
 assert doorway.ok else "two_rooms doorway scan ListTooLong or other failure"
 assert doorway.out contains "OK   doorway scan complete" else "doorway scan missing OK"
 

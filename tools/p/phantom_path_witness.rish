@@ -3,7 +3,7 @@
 # WHY THIS RUNG. REDS %153 found an untracked compatibility symlink `work-in-progress -> crux`
 # at this pier's root and repaired the twenty-six document links resolving through it. The
 # machinery was never in that sweep's scope, and a census of path literals inside tracked tool
-# sources found 116 more across 58 files. `tools/fixtures/reds_first_scan.sh` set
+# sources found 116 more across 58 files. `tools/fixtures/r/reds_first_scan.sh` set
 # `ledger="work-in-progress/REDS.md"`. `tools/co/compass_rose.rish` printed NOW_OK from a
 # `test -f work-in-progress/TASKS.md`. The Radiant lint's roster named three living cards
 # through the elder room. And `.brix`, the descriptor listing the bricks Mantra tracks, carried
@@ -43,14 +43,14 @@ say "phantom-path: Language EN -- a guard's promise is worth what it is worth on
 say "phantom-path: Style Radiant -- the tree states which paths its tools read, and the tracked index is what states it."
 say "phantom-path: Lens TAME -- safety first: a guard reading a room the repository lacks reports on a tree nobody else has."
 
-let scan = run ["sh" "tools/fixtures/phantom_path_scan.sh"]
+let scan = run ["sh" "tools/fixtures/p/phantom_path_scan.sh"]
 assert scan.ok else "phantom-path: a tool reads a path that resolves here and is absent from the repository -- read the scan's own lines"
 say scan.out
 assert scan.out contains "phantom_paths=0" else "phantom-path: every literal a tool reads must be one a fresh clone carries"
 assert scan.out contains "verdict=ok" else "phantom-path: the scan must balance before it is believed"
 say "field GREEN -- every path a tracked tool reads lands inside the tracked tree"
 
-let control = run ["sh" "tools/fixtures/phantom_path_control.sh"]
+let control = run ["sh" "tools/fixtures/p/phantom_path_control.sh"]
 assert control.ok else "phantom-path: the control must complete"
 say control.out
 assert control.out contains "case=clean_free ok" else "phantom-path: a tree whose tools read only tracked paths must pass free"

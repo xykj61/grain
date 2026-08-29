@@ -25,7 +25,7 @@ entry = (
     "### 91. IronBeetle ep036 keeps a cache that always hits via stash: a promise with a batch-sized deadline, plus an undo log for linked transfers.\n"
     "**Ran:** `rishi/bin/rishi run tools/equinox/witness/equinox_ironbeetle_ep036_choir_witness.rish` · **Stamp:** `"
     + stamp
-    + "` · **Witness:** `tools/gen/chapter/ironbeetle_ep036_census_witness.rish` · scan `tools/fixtures/ironbeetle_ep036_census.sh` · choir `equinox_ironbeetle_ep036_choir_witness.rish`\n"
+    + "` · **Witness:** `tools/gen/chapter/ironbeetle_ep036_census_witness.rish` · scan `tools/fixtures/i/ironbeetle_ep036_census.sh` · choir `equinox_ironbeetle_ep036_choir_witness.rish`\n"
     "Expected IRON=present · EP036 · HONORS · SOURCE · TEACH · RHYME · CLEAN · MATKLAD_OK, "
     "and verdict=absent on a missing iron shelf. Metal answered GREEN. "
     "Clean-room study only.\n\n"

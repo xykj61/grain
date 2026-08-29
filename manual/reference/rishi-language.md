@@ -34,7 +34,7 @@ A script is a sequence of statements, one per line. `#` opens a comment to end o
 ```
 let zig = "vendor/zig-toolchain/zig"
 let witnesses = ["sha3_256_test" "version_test"]
-let build = run ["rishi/bin/rishi" "run" "tools/fixtures/pond_build_drawn_terminal.rish"]
+let build = run ["rishi/bin/rishi" "run" "tools/fixtures/p/pond_build_drawn_terminal.rish"]
 ```
 
 `let` binds a name to a value. Bindings do not rebind; a new meaning takes a new name, in the accrete-never-break spirit. Name bindings for what they *are* rather than how they were computed.
@@ -86,7 +86,7 @@ its custody to the runtime. Rishi *must* release an owned lock after normal
 return, runtime or assertion failure, `exit`, HUP, INT, and TERM. It *must not*
 follow a symlink, remove a changed-kind path, or delete recursively. Proven by
 `rishi/tests/run_bounded.rish` and
-`tools/fixtures/rishi_bounded_process_control.sh`, including planted just-over,
+`tools/fixtures/r/rishi_bounded_process_control.sh`, including planted just-over,
 unsafe-path, held-lock, failed-body, and signal cases.
 
 ## 5. File I/O -- `read-file`, `write-file`, `list-dir`

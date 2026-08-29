@@ -24,7 +24,7 @@ The vocabulary this rides on is already seated in `context/LEXICON.md`:
 - **Prep, never cut** — molt books Class H entries and seats mutants; it never opens the Amphora shred. `shred / shed` is a separate, circled word.
 - **Accrete-never-break** — the fossil stays on disk until a circled shred proves parity. Overwrite-in-place of a living name is **not** a molt and **not** a shred.
 - **Live clock** — every mutant's new stamp is read from the live host clock, never fabricated (`[[live-clock-stamps]]` · one-clock law).
-- **Measurement beats memory** — the shred census (`tools/fixtures/shed_census_scan.sh`) is authority for Class O membership, not recall.
+- **Measurement beats memory** — the shred census (`tools/fixtures/s/shed_census_scan.sh`) is authority for Class O membership, not recall.
 
 ## Why the word exists
 

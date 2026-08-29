@@ -30,8 +30,8 @@ entry = (
     + stamp
     + "` · **Witness:** `tools/equinox/witness/equinox_e115_instrument_suite_witness.rish` · "
     "standing `tools/gen/chapter/instrument_suite_witness.rish` · "
-    "scan `tools/fixtures/instrument_suite_scan.sh` · "
-    "equinox scan `tools/fixtures/equinox_e115_instrument_suite_scan.sh`\n"
+    "scan `tools/fixtures/i/instrument_suite_scan.sh` · "
+    "equinox scan `tools/fixtures/e/equinox_e115_instrument_suite_scan.sh`\n"
     "Expected control_gate · instruments_tracked · pass=10 · fail=0 · "
     "prove-red RED_manufactured_suite_pass · remaining=keaton_gated · "
     "seat_128 reserved · surface_count=4 · fork not_consumed · shelf end ep045 · "

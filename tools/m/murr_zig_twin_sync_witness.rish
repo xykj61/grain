@@ -11,7 +11,7 @@ say "murr-zig-twin: Language EN — MUR rye/zig twin sync (module step 7)."
 say "murr-zig-twin: Style Radiant — rye authored · zig emit bridge · no mala drift."
 say "murr-zig-twin: Lens TAME — prove absence of tracked zig twin debt."
 
-let probe = run ["bash" "tools/fixtures/murr_zig_twin_sync.sh"]
+let probe = run ["bash" "tools/fixtures/m/murr_zig_twin_sync.sh"]
 assert probe.ok else "murr zig twin sync REFUSE — see stderr"
 assert probe.out contains "witness:murr-zig-twin GREEN" else "murr zig twin missing GREEN witness line"
 assert probe.out contains "GREEN: murr-zig-twin" else "murr zig twin missing GREEN summary"

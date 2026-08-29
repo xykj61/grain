@@ -9,7 +9,7 @@
 //! keeper can open and hash, and proves the property the whole Voucher rests on: the vouched position is
 //! TRUE TO THE BYTES, and the order-head the node signed is the very order the fixture folds.
 //!
-//! The corpus reuses the Lapse's own fixture `tools/fixtures/lapse_dag.bron` (a demo funder credits Alice
+//! The corpus reuses the Lapse's own fixture `tools/fixtures/l/lapse_dag.bron` (a demo funder credits Alice
 //! 200; Alice pledges 100 to Bob under a deadline the order's clock reaches, so it LAPSES and the hundred
 //! comes home; Alice pledges 100 to Carol under a far deadline, left OPEN), `@embedFile`-bound at compile
 //! time through the existing `mycelium/corpora/` symlink -- no network, the bytes read are the tree's own.
@@ -19,7 +19,7 @@
 //! Two independent readings must agree, twice over:
 //!   - THE POSITION -- the app parses the record through `cord_bron`, REBUILDS the Dag under `cord.add`
 //!     (re-verifying every signature), makes a voucher over the genesis-funded account, and emits the
-//!     vouched triple; the r4 witness cross-checks it against `tools/fixtures/statement_dag_truth.awk`'s
+//!     vouched triple; the r4 witness cross-checks it against `tools/fixtures/s/statement_dag_truth.awk`'s
 //!     per-account deadline-clock reading of the same bytes -- two tools, one answer.
 //!   - THE ORDER-HEAD -- the head recomputed from the rebuilt fixture Dag (`voucher.order_head_of`) equals
 //!     the head the node signed inside the voucher, so the signed order is the fixture's own agreed order,

@@ -55,7 +55,7 @@ let zig = "vendor/zig-toolchain/zig"
 let bin = "caravan/bin/untyped"
 let errors = "vendor/sel4/libsel4/include/sel4/errors.h"
 let arch = "vendor/sel4/libsel4/sel4_arch_include/riscv64/sel4/sel4_arch/constants.h"
-let control = "tools/fixtures/caravan_untyped_control.sh"
+let control = "tools/fixtures/c/caravan_untyped_control.sh"
 let build_dir = "tools/.build/caravan_untyped"
 
 let mk = run ["sh" "-c" "mkdir -p caravan/bin ${build_dir}"]

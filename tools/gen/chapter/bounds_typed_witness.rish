@@ -29,7 +29,7 @@ say "bounds-typed: Language EN — declared bounds carry their type."
 say "bounds-typed: Style Radiant — count the population; turn the ratchet on touch."
 say "bounds-typed: Lens TAME — root rule 2, witnessed for the first time."
 
-let scan = run ["sh" "tools/fixtures/bounds_typed_scan.sh"]
+let scan = run ["sh" "tools/fixtures/b/bounds_typed_scan.sh"]
 say scan.out
 assert scan.out contains "verdict=ok" else "bounds-typed: a declared bound lacks its type"
 # values_apart: the scan's status and its verdict key must agree. If they ever

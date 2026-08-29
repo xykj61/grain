@@ -30,7 +30,7 @@ say ch7.out
 assert ch7.ok else "e110-ch8-reserve: ch7 surface RED"
 assert ch7.out contains "GREEN: equinox-ch7-surface" else "e110-ch8-reserve: want ch7 surface GREEN"
 
-let scan = run ["sh" "tools/fixtures/equinox_e110_ch8_reserve_scan.sh"]
+let scan = run ["sh" "tools/fixtures/e/equinox_e110_ch8_reserve_scan.sh"]
 say scan.out
 assert scan.ok else "e110-ch8-reserve: scan must exit 0"
 assert scan.out contains "control_gate=honored" else "e110-ch8-reserve: want control_gate"

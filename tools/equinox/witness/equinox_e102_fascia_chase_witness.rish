@@ -9,7 +9,7 @@ say "e102-fascia-chase: Language EN — control first; then re-cut the connectiv
 say "e102-fascia-chase: Style Radiant — pins reform when a round re-cuts; window catches falls."
 say "e102-fascia-chase: Lens TAME — e102 · fascia chase · almanac seat 106 · ch7 10/16."
 
-let fascia_control = run ["sh" "tools/fixtures/equinox_e102_fascia_chase_control.sh"]
+let fascia_control = run ["sh" "tools/fixtures/e/equinox_e102_fascia_chase_control.sh"]
 say fascia_control.out
 assert fascia_control.ok else "e102-fascia-chase: current/history seam control RED"
 assert fascia_control.out contains "current 51 welcomed" else "e102-fascia-chase: want later living grade welcomed"
@@ -30,7 +30,7 @@ say scope.out
 assert scope.ok else "e102-fascia-chase: prin_scope RED"
 assert scope.out contains "GREEN: prin-scope" else "e102-fascia-chase: want scope GREEN"
 
-let scan = run ["sh" "tools/fixtures/equinox_e102_fascia_chase_scan.sh"]
+let scan = run ["sh" "tools/fixtures/e/equinox_e102_fascia_chase_scan.sh"]
 say scan.out
 assert scan.ok else "e102-fascia-chase: chase scan must exit 0"
 assert scan.out contains "control_gate=honored" else "e102-fascia-chase: want control_gate"

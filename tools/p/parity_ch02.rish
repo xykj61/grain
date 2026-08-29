@@ -13,7 +13,7 @@
 let _parity_seat = run ["sh" "tools/p/parity_zig_cache_seat.sh"]
 say _parity_seat.out
 let _parity_cost_boot = run ["sh" "tools/p/parity_cost_boot.sh" "ch02"]
-let preflight = run ["sh" "tools/p/parity_time_one.sh" "preflight" "--" "sh" "tools/fixtures/wasmtime_preflight.sh"]
+let preflight = run ["sh" "tools/p/parity_time_one.sh" "preflight" "--" "sh" "tools/fixtures/w/wasmtime_preflight.sh"]
 assert preflight.ok else "wasmtime preflight script failed"
 if (preflight.out != "") then say preflight.out
 

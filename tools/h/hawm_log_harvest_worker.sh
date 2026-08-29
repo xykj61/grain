@@ -16,7 +16,7 @@ cd "$REPO_ROOT"
 CACHE="$REPO_ROOT/tools/.cache/hawm0"
 META="$CACHE/hawm0-boot-meta.txt"
 OUT="$CACHE/hawm-harvest.bron"
-FIXTURE="$REPO_ROOT/tools/fixtures/hawm_harvest_v1.bron"
+FIXTURE="$REPO_ROOT/tools/fixtures/h/hawm_harvest_v1.bron"
 STAMP="$(date '+%Y%m%d.%H%M%S')"
 
 use_fixture=0

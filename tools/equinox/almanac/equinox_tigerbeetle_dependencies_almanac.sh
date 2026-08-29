@@ -25,7 +25,7 @@ entry = (
     "### 57. Dependencies stay at zero beyond Zig; supply-chain risk stays out of the stack.\n"
     "**Ran:** `rishi/bin/rishi run tools/equinox/witness/equinox_tigerbeetle_dependencies_choir_witness.rish` · **Stamp:** `"
     + stamp
-    + "` · **Witness:** `tools/gen/chapter/tigerbeetle_dependencies_census_witness.rish` · scan `tools/fixtures/tigerbeetle_dependencies_census.sh` · choir `equinox_tigerbeetle_dependencies_choir_witness.rish`\n"
+    + "` · **Witness:** `tools/gen/chapter/tigerbeetle_dependencies_census_witness.rish` · scan `tools/fixtures/t/tigerbeetle_dependencies_census.sh` · choir `equinox_tigerbeetle_dependencies_choir_witness.rish`\n"
     "Expected CLONE=present · GUIDE_DEPS · GUIDE_ZERO · GUIDE_ZIG · GUIDE_SUPPLY · TAME_DEPS · STYLE · ELDER_STYLE · RADIANT, "
     "and verdict=absent on a missing clone path. Metal answered GREEN. Clean-room study only.\n\n"
 )

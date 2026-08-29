@@ -67,11 +67,11 @@
 # `enrich/` room they import. Each shim target deepened one level to `../../crypto/`.
 #
 # WHAT IS NOT PROVEN. Nothing here moves a file or repoints a reference; the resolver reads and
-# reports. `tools/fixtures/tool_path_repoint_scan.sh` does the repointing, and proves itself.
+# reports. `tools/fixtures/t/tool_path_repoint_scan.sh` does the repointing, and proves itself.
 #
 # Chapter: the tools fold -- the resolver, and the move it made safe.
-# Kin: tools/t/tool_path_resolve.rish - tools/fixtures/tool_path_scan.sh -
-# tools/fixtures/tool_path_control.sh - tools/fixtures/tool_path_repoint_scan.sh -
+# Kin: tools/t/tool_path_resolve.rish - tools/fixtures/t/tool_path_scan.sh -
+# tools/fixtures/t/tool_path_control.sh - tools/fixtures/t/tool_path_repoint_scan.sh -
 # tools/d/dated_path_resolve.rish (the sibling this follows) -
 # .claude/rules/stamp-and-name.md - expanding-prompts/20260823-124407_the-ranked-remainder.md
 #
@@ -87,8 +87,8 @@ let bin = "rishi/bin/rishi"
 # stale citations below survive its apply run, and the price of that exclusion is exactly this: the
 # file's own LIVE references are the one set no tool will move for it.
 let tool = "tools/t/tool_path_resolve.rish"
-let scan = "tools/fixtures/tool_path_scan.sh"
-let control = "tools/fixtures/tool_path_control.sh"
+let scan = "tools/fixtures/t/tool_path_scan.sh"
+let control = "tools/fixtures/t/tool_path_control.sh"
 
 # ---------------------------------------------------------------------------------------------
 # PART ONE -- the verdicts, each on a real case standing in this tree today.
@@ -96,7 +96,7 @@ let control = "tools/fixtures/tool_path_control.sh"
 
 # A path that never moved: `tools/fixtures/` was a subdirectory before the fold and is one after,
 # so its citations are as true today as they were yesterday and must read `home` unchanged.
-let standing_ref = "tools/fixtures/tool_path_scan.sh"
+let standing_ref = "tools/fixtures/t/tool_path_scan.sh"
 let standing = run [bin "run" tool standing_ref]
 assert standing.ok else "tool-path: a tool standing at its own path must resolve"
 assert standing.out contains "verdict=home" else "tool-path: a path that still stands must read home rather than being recovered"
@@ -130,7 +130,7 @@ let moved_ref = "tools/dated_path_scan.sh"
 let moved = run [bin "run" tool moved_ref]
 assert moved.ok else "tool-path: a file the letter rule cannot predict must still be recovered"
 assert moved.out contains "verdict=recovered-by-index" else "tool-path: a file outside the letter rule must be recovered by the index"
-assert moved.out contains "home=tools/fixtures/dated_path_scan.sh" else "tool-path: the index must name the file actual home"
+assert moved.out contains "home=tools/fixtures/d/dated_path_scan.sh" else "tool-path: the index must name the file actual home"
 say "verdict four GREEN -- a file the letter rule cannot predict is recovered by the index"
 
 # A basename genuinely living at two paths inside `tools/` itself. This is a real case rather
@@ -224,7 +224,7 @@ say "RED three GREEN -- a room caught mid-move names both candidates rather than
 
 # Every home named above is checked to actually exist. A resolver returning a path which is not
 # there would be worse than one returning nothing, so the claim is spent rather than assumed.
-let homes = [standing_ref "tools/ca/caravan_suite_witness.rish" "tools/e/exec_bit_witness.rish" "tools/fixtures/dated_path_scan.sh" "tools/am/amphora_lap1.rish" "tools/gen/amphora/amphora_lap1.rish"]
+let homes = [standing_ref "tools/ca/caravan_suite_witness.rish" "tools/e/exec_bit_witness.rish" "tools/fixtures/d/dated_path_scan.sh" "tools/am/amphora_lap1.rish" "tools/gen/amphora/amphora_lap1.rish"]
 let missing_homes = where homes as h: ((run ["test" "-e" h]).ok == false)
 assert (length missing_homes) == 0 else "tool-path: every home the resolver names must exist on disk"
 say "RED four GREEN -- every home named by a verdict above stands on disk"

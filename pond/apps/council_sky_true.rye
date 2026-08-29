@@ -12,7 +12,7 @@
 //! agree: the app parses the record through rung three and reports the **seated size**, the **ballot
 //! count**, and the **decided-proposal count** (distinct proposals whose one-sided tally reaches the
 //! quorum -- a proposal short of quorum holds open and is not counted), and the witness cross-checks that
-//! triple against `tools/fixtures/council_sky_truth.awk`'s reading of the same file -- two tools, one
+//! triple against `tools/fixtures/c/council_sky_truth.awk`'s reading of the same file -- two tools, one
 //! answer. And the record is genuinely tie-free and quorum-honest: `still_quorum_honest` re-verifies
 //! every carried ballot signature against the demo keyring, and `rebuild` recovers proposal A's passage
 //! and proposal B's open hold exactly, so the fixture is a real signed council, not a hollow shape.

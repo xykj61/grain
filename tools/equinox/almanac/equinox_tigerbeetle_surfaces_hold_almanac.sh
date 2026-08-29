@@ -25,7 +25,7 @@ entry = (
     "### 63. The TigerBeetle surfaces hold with IronBeetle beside them: DX, mid, style, and the lesson shelf GREEN together.\n"
     "**Ran:** `rishi/bin/rishi run tools/equinox/witness/equinox_tigerbeetle_surfaces_hold_witness.rish` · **Stamp:** `"
     + stamp
-    + "` · **Witness:** `tools/equinox/witness/equinox_tigerbeetle_surfaces_hold_witness.rish` · iron `tools/fixtures/ironbeetle_shelf_census.sh`\n"
+    + "` · **Witness:** `tools/equinox/witness/equinox_tigerbeetle_surfaces_hold_witness.rish` · iron `tools/fixtures/i/ironbeetle_shelf_census.sh`\n"
     "Expected say-why GREEN · off-by-one GREEN · style-numbers GREEN · IRON present · COUNT≥34 · ep001 · ep045, "
     "and ABSENT refuses on a missing iron shelf or clone. Metal answered GREEN. Surfaces hold toward chapter-four close. Clean-room study only.\n\n"
 )

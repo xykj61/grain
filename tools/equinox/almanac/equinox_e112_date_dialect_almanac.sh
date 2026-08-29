@@ -29,8 +29,8 @@ entry = (
     + stamp
     + "` · **Witness:** `tools/equinox/witness/equinox_e112_date_dialect_witness.rish` · "
     "standing `tools/gen/chapter/date_dialect_witness.rish` · "
-    "scan `tools/fixtures/date_dialect_scan.sh` · "
-    "equinox scan `tools/fixtures/equinox_e112_date_dialect_witness_scan.sh`\n"
+    "scan `tools/fixtures/d/date_dialect_scan.sh` · "
+    "equinox scan `tools/fixtures/e/equinox_e112_date_dialect_witness_scan.sh`\n"
     "Expected control_gate · controls_honored=2 · hyphenated=0 · compact=17 · "
     "verdict=one_dialect · prove-red RED_C2-compact · elder e111 · seat_128 reserved · "
     "surface_count=4 · fork not_consumed · shelf end ep045 · baton breach 0. "

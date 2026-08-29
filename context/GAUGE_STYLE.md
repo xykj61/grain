@@ -108,7 +108,7 @@ Every Radiant move holds here without exception.
   about the world and wrong as a sentence's first move, and each is doubly tempting because it
   sounds like wisdom. Seated `20260823.201533` on Keaton's word, after exactly that sentence
   shipped in a Door-setting guide. `rot`, `rots`, and `stale` are already counted by
-  `tools/fixtures/prose_register_scan.sh`; this line names the *construction* the count alone
+  `tools/fixtures/p/prose_register_scan.sh`; this line names the *construction* the count alone
   cannot see.
 - **Active voice by default.** Reserve the passive for when the actor genuinely does not matter.
 - **Affirmative contrast.** Prefer *rather than* to a heavy *not*, and *yet* to *but*.
@@ -448,8 +448,8 @@ beautifully and serves nothing on the card is a B on two readings and a D on the
 ### The tool, and what it refuses to invent
 
 ```
-sh tools/fixtures/qa_report_card.sh <path> [--setting door|field|meter] [--service N] [--truth N]
-sh tools/fixtures/qa_report_card.sh --letter <0-100>
+sh tools/fixtures/q/qa_report_card.sh <path> [--setting door|field|meter] [--service N] [--truth N]
+sh tools/fixtures/q/qa_report_card.sh --letter <0-100>
 ```
 
 Without `--service` it prints what it counted, prints the inputs a judge needs -- living citers,

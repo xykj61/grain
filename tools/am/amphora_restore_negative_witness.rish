@@ -10,7 +10,7 @@
 let season = "tools/fixtures/cellar_ring1_tree"
 let home = "/tmp/amphora_rneg_home"
 let vessel = "/tmp/amphora_rneg_home/v.bron"
-let tamp_sh = "tools/fixtures/amphora_tamper_seal_cargo.sh"
+let tamp_sh = "tools/fixtures/a/amphora_tamper_seal_cargo.sh"
 
 let wipe = run ["rm" "-rf" home]
 assert wipe.ok else "rneg: home wipe"

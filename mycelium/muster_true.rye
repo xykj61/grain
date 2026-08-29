@@ -11,7 +11,7 @@
 //! passes, the enrolled-voice count the threshold reads is the count of members present, and a roll of
 //! strangers refuses the same real quorum.
 //!
-//! The corpus reuses the Lapse's own fixture `tools/fixtures/lapse_dag.bron` (a demo funder credits Alice
+//! The corpus reuses the Lapse's own fixture `tools/fixtures/l/lapse_dag.bron` (a demo funder credits Alice
 //! 200; Alice pledges 100 to Bob under a deadline the order's clock reaches, so it LAPSES and the hundred
 //! comes home; Alice pledges 100 to Carol under a far deadline, left OPEN), `@embedFile`-bound at compile
 //! time through the existing `mycelium/corpora/` symlink -- no network, the bytes read are the tree's own.
@@ -21,7 +21,7 @@
 //! Two independent readings must agree, and the roll's verdict must be honest:
 //!   - THE POSITION -- the app parses the record through `cord_bron`, REBUILDS the Dag under `cord.add`
 //!     (re-verifying every signature), gathers a three-node quorum over the genesis-funded account, and
-//!     emits the agreed triple; the r4 witness cross-checks it against `tools/fixtures/statement_dag_truth.awk`'s
+//!     emits the agreed triple; the r4 witness cross-checks it against `tools/fixtures/s/statement_dag_truth.awk`'s
 //!     per-account deadline-clock reading of the same bytes -- two tools, one answer.
 //!   - THE VERDICT -- the roll enrolling exactly the mesh's three nodes passes the real quorum
 //!     (`pass_muster`), the Byzantine threshold their number sets is three, the enrolled-voice count is the

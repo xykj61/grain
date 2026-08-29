@@ -7,7 +7,7 @@ seal dc5442c7bdba4f0daecb4f1106a0d42a64f3673a3da06e36aa7fa1f742f9230e4bf57efb894
 # The immutable, self-verifying registry of every waymark ever drawn (living, retired, abandoned, transient, hand-seated).
 # Each corpus-drawn row is proven on metal: SHA3-512(input)[:8] as hex, mod corpus_size, +1 = index; corpus[index] = mark.
 # The seal is the SHA3-512 of the sealed body below (from the marker line, exclusive). Any edit breaks the seal.
-# Witness: tools/w/waymark_registry_witness.rish -- verifies the seal AND re-derives every corpus mark. Corpus pin: tools/fixtures/flw-four-letter.txt.
+# Witness: tools/w/waymark_registry_witness.rish -- verifies the seal AND re-derives every corpus mark. Corpus pin: tools/fixtures/f/flw-four-letter.txt.
 # Re-sealed 20260826.013711: the unit word season molted to chapter in row notes (panchanga seating); body re-sealed.
 # Re-sealed 20260817.224342 under the waymark-elder debride: the five breach-elder rows removed; the registry records only living and hand-seated marks.
 # Re-sealed 20260825.234631: POLE input debrided to hand-seated under the DJINN pseudonym word; the mark keeps its seat.

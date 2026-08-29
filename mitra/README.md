@@ -19,7 +19,7 @@ kit in one place:
 
 | Step | Instrument |
 |---|---|
-| Survey the candidates | [`../tools/fixtures/shed_census_scan.sh`](../tools/fixtures/shed_census_scan.sh) |
+| Survey the candidates | [`../tools/fixtures/s/shed_census_scan.sh`](../tools/fixtures/s/shed_census_scan.sh) |
 | Prep ledger, class rows | `../construction/SHRED_PREP.md` |
 | Resolve a dated reference | [`../tools/d/dated_path_resolve.rish`](../tools/d/dated_path_resolve.rish) |
 | Repoint living citers | [`../tools/d/dated_path_repoint.rish`](../tools/d/dated_path_repoint.rish) |

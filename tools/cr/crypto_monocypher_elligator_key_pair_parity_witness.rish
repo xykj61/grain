@@ -15,7 +15,7 @@
 # equals Monocypher's DJB block, which its C actually calls).
 # Kin: crypto/elligator_key_pair.rye (our authored composition) - crypto/elligator.rye (the map/rev it drives) - crypto/x25519_dirty.rye (the
 # dirty key it hides) - crypto/chacha20.rye (the keystream it seeds with) - tools/rye/monocypher_elligator_key_pair_parity.rye (our printing harness) -
-# tools/fixtures/monocypher_elligator_key_pair_harness.c (Monocypher's printing harness) - crypto/fe25519.rye (the field all stand on). Monocypher
+# tools/fixtures/m/monocypher_elligator_key_pair_harness.c (Monocypher's printing harness) - crypto/fe25519.rye (the field all stand on). Monocypher
 # stays the parity TARGET, vendored and unmodified, never a copied line, studied clean-room (.claude/rules/gratitude-licenses.md).
 #
 # The thirty-two lines from each side: for each of sixteen deterministic seeds seed[j] = (i*7 + j*3 + 1) mod 256, the 64-hex secret_key then the
@@ -37,7 +37,7 @@ let cout = "crypto/bin/monocypher_elligator_key_pair.out"
 let rout = "crypto/bin/rye_elligator_key_pair.out"
 
 # 1. Build the Monocypher C harness, linking the unmodified vendored source with zig cc.
-let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src tools/fixtures/monocypher_elligator_key_pair_harness.c vendor/monocypher/src/monocypher.c -o ${cbin}"]
+let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src tools/fixtures/m/monocypher_elligator_key_pair_harness.c vendor/monocypher/src/monocypher.c -o ${cbin}"]
 assert cbuild.ok else "crypto-monocypher-elligator-key-pair-parity: Monocypher C harness build failed — ${cbuild.err}"
 
 # 2. Run the Monocypher C harness -- thirty-two lines (secret_key, hidden) for each of sixteen seeds.

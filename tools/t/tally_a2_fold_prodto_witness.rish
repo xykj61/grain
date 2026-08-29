@@ -37,7 +37,7 @@ assert over.ok else "a2-prodto: past-wall failed to run"
 assert over.out contains "0" else "a2-prodto: 9 did not speak 0"
 
 say "a2-prodto: a bound past twelve is refused BY NAME, never wrapped..."
-let plant = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "tools/fixtures/gate-fold-prodto-bound-13.glow" "3"]
+let plant = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "tools/fixtures/g/gate-fold-prodto-bound-13.glow" "3"]
 assert plant.err contains "FoldBoundTooLarge" else "a2-prodto: a 13 bound was accepted — the product would leave u32"
 
 say "a2-prodto: the first fold verb still stands..."

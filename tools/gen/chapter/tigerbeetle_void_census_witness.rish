@@ -12,7 +12,7 @@ say "tb-void-census: Lens TAME — e18 · clean-room study · almanac seat 24."
 let clone = run ["test" "-d" "gratitude/tigerbeetle/src"]
 assert clone.ok else "tb-void-census: gratitude/tigerbeetle/src ABSENT — host clone first"
 
-let census = run ["sh" "tools/fixtures/tigerbeetle_void_census.sh"]
+let census = run ["sh" "tools/fixtures/t/tigerbeetle_void_census.sh"]
 say census.out
 assert census.ok else "tb-void-census: census failed or thin"
 assert census.out contains "CLONE=present" else "tb-void-census: want CLONE=present"

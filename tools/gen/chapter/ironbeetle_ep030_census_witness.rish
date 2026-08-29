@@ -12,7 +12,7 @@ say "iron-ep030: Lens TAME — e80 · clean-room study · almanac seat 85."
 let shelf = run ["test" "-d" "gratitude/ironbeetle"]
 assert shelf.ok else "iron-ep030: gratitude/ironbeetle ABSENT — host shelf first"
 
-let census = run ["sh" "tools/fixtures/ironbeetle_ep030_census.sh"]
+let census = run ["sh" "tools/fixtures/i/ironbeetle_ep030_census.sh"]
 say census.out
 assert census.ok else "iron-ep030: census failed or thin"
 assert census.out contains "IRON=present" else "iron-ep030: want IRON=present"

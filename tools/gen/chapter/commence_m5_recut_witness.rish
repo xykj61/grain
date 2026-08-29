@@ -41,7 +41,7 @@ say scope.out
 assert scope.ok else "commence-m5: prin_scope RED"
 assert scope.out contains "GREEN: prin-scope" else "commence-m5: want scope GREEN"
 
-let scan = run ["sh" "tools/fixtures/commence_m5_recut_scan.sh"]
+let scan = run ["sh" "tools/fixtures/c/commence_m5_recut_scan.sh"]
 say scan.out
 assert scan.ok else "commence-m5: m5 scan must exit 0"
 assert scan.out contains "control_gate=honored" else "commence-m5: want control_gate"

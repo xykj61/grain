@@ -13,7 +13,7 @@
 # `active-designing/yonder/`. Four in all, found on 20260825 by a meter looking at something else.
 #
 # WHAT IS CHECKED, and gated at ZERO. Every tracked non-prose file carrying `](`, read through
-# tools/fixtures/qa_report_card.sh -- the reading is CITED rather than copied, so what counts as a
+# tools/fixtures/q/qa_report_card.sh -- the reading is CITED rather than copied, so what counts as a
 # citation is decided in one place. Measured at seating: 85 programs scanned, 0 broken. The
 # population is small and closed, so a ratchet would be the wrong shape; there is nothing to migrate.
 #
@@ -47,14 +47,14 @@ say "comment-citation: Language EN -- a citation is a promise, and a program mak
 say "comment-citation: Style Gauge -- one reading, cited from the report card rather than spelled again beside it."
 say "comment-citation: Lens TAME -- references are promises; a path that moved is repointed rather than left to a reader to discover."
 
-let scan = run ["sh" "tools/fixtures/comment_citation_scan.sh"]
+let scan = run ["sh" "tools/fixtures/c/comment_citation_scan.sh"]
 assert scan.ok else "comment-citation: a program cites a path that does not resolve -- read its own line"
 say scan.out
 assert scan.out contains "broken_citations=0" else "comment-citation: this reading is gated at zero, because the population is small and closed"
 assert scan.out contains "verdict=ok" else "comment-citation: the scan must agree with itself before it is believed"
 say "field GREEN -- every path a program cites in a comment resolves on this tree"
 
-let control = run ["sh" "tools/fixtures/comment_citation_control.sh"]
+let control = run ["sh" "tools/fixtures/c/comment_citation_control.sh"]
 assert control.ok else "comment-citation: the control must complete"
 say control.out
 assert control.out contains "resolving_citation_free=yes" else "comment-citation: a citation that lands must cost nothing"

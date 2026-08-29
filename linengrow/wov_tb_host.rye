@@ -142,7 +142,7 @@ fn run_from_book(io: std.Io, book: *wov.Book) !u8 {
     // Same golden grammar as exit honesty.
     const cwd = Dir.cwd();
     var golden_buf: [wov.max_bundle_len]u8 = undefined;
-    const golden = try cwd.readFile(io, "tools/fixtures/wov_exit_bundle_v1.bron", &golden_buf);
+    const golden = try cwd.readFile(io, "tools/fixtures/w/wov_exit_bundle_v1.bron", &golden_buf);
     if (!std.mem.eql(u8, golden, published.bundle[0..published.bundle_len])) return error.FixtureMismatch;
     print("wov-tb-host: exit bundle matches lap-1 golden — GREEN welcome\n", .{});
 
@@ -166,7 +166,7 @@ fn run_from_book(io: std.Io, book: *wov.Book) !u8 {
 
 fn run_selftest(io: std.Io) !u8 {
     var buf: [max_projection_len]u8 = undefined;
-    const text = try load_projection_file(io, "tools/fixtures/wov_tb_projection_v1.bron", &buf);
+    const text = try load_projection_file(io, "tools/fixtures/w/wov_tb_projection_v1.bron", &buf);
     var book = try book_from_projection(text);
     return run_from_book(io, &book);
 }

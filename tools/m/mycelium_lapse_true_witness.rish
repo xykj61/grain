@@ -6,10 +6,10 @@
 # a keeper can open and walk, and proves the property the whole Lapse rests on: the LAPSED recipient -- the
 # one the coins never reached because the order's clock ran out -- is true to the bytes.
 #
-# The crux is TWO TOOLS, ONE ANSWER: mycelium/lapse_true parses tools/fixtures/lapse_dag.bron through
+# The crux is TWO TOOLS, ONE ANSWER: mycelium/lapse_true parses tools/fixtures/l/lapse_dag.bron through
 # cord_bron, rebuilds the Dag under cord.add (re-verifying every signature), resolves it through lapse, and
 # reports the lapsed recipient, the lapsed count, and the open count; this witness cross-checks that triple
-# against tools/fixtures/lapse_dag_truth.awk's independent reading of the same bytes. The awk ticks a clock
+# against tools/fixtures/l/lapse_dag_truth.awk's independent reading of the same bytes. The awk ticks a clock
 # in file order, lapsing an open pledge the moment the running position reaches its deadline (the same order
 # the app's fold applies), so the app's full commit tie-break and the awk's file-order accounting name the
 # same lapsed recipient -- a reservation the order let expire can never drift from an order a keeper walks by
@@ -42,13 +42,13 @@ assert selftest.out contains "a tampered header refused BadFormat" else "myceliu
 # The crux -- two tools, one answer. The app's measure triple must equal awk's reading of the same bytes.
 let app = run ["sh" "-c" "${bin} measure 2>&1"]
 assert app.ok else "mycelium-lapse-true: app measure exited non-zero"
-let awk = run ["sh" "-c" "awk -f tools/fixtures/lapse_dag_truth.awk tools/fixtures/lapse_dag.bron"]
+let awk = run ["sh" "-c" "awk -f tools/fixtures/l/lapse_dag_truth.awk tools/fixtures/l/lapse_dag.bron"]
 assert awk.ok else "mycelium-lapse-true: awk truth read failed"
 assert awk.out contains "55154f42065ea5a1bea05463826be2684eb92df92c100027aabaae57ca554207 1 1" else "mycelium-lapse-true: awk triple not Bob's lapsed pledge · lapsed 1 · open 1"
 assert app.out == awk.out else "mycelium-lapse-true: app and awk disagree — the lapsed recipient drifted from the bytes"
 
 # The fixture is genuinely what the Cord emits, not a hand-mock -- the generator re-emits byte-identical bytes.
-let regen = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye run mycelium/lapse_fixture_gen.rye 2>/tmp/lapse_regen.bron >/dev/null && diff -q tools/fixtures/lapse_dag.bron /tmp/lapse_regen.bron && echo REPRODUCIBLE"]
+let regen = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye run mycelium/lapse_fixture_gen.rye 2>/tmp/lapse_regen.bron >/dev/null && diff -q tools/fixtures/l/lapse_dag.bron /tmp/lapse_regen.bron && echo REPRODUCIBLE"]
 assert regen.ok else "mycelium-lapse-true: fixture is not reproducible — the generator drifted"
 assert regen.out contains "REPRODUCIBLE" else "mycelium-lapse-true: fixture regeneration did not match"
 

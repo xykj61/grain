@@ -16,7 +16,7 @@ assert selftest.out contains "GREEN" else "amphora purchase_delivery selftest no
 assert selftest.out contains "vessel bind" else "amphora purchase_delivery missing vessel bind"
 
 say "amphora-delivery: pour → slip → scrub → verify..."
-let witness = run ["sh" "tools/fixtures/amphora_purchase_delivery_witness.sh"]
+let witness = run ["sh" "tools/fixtures/a/amphora_purchase_delivery_witness.sh"]
 assert witness.ok else "Amphora purchase delivery witness failed"
 assert witness.out contains "GREEN" else "Amphora purchase delivery did not report GREEN"
 assert witness.out contains "DELIVERY ok" else "Amphora purchase delivery missing DELIVERY ok"

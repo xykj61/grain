@@ -10,7 +10,7 @@
 let native = run ["rishi/bin/rishi" "run" "tools/t/tame_style_scan_advise.rish"]
 assert native.ok else "native advise failed"
 
-let legacy = run ["sh" "tools/fixtures/tame_style_scan.sh" "advise-legacy"]
+let legacy = run ["sh" "tools/fixtures/t/tame_style_scan.sh" "advise-legacy"]
 assert legacy.ok else "legacy advise failed"
 
 assert native.out contains "ratchet: @memcpy application sites =" else "native missing memcpy ratchet"

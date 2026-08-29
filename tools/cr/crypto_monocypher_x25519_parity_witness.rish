@@ -8,7 +8,7 @@
 # proving Rye output equals Monocypher output byte-for-byte." X25519 is exactly the primitive crypto/kumara_sealed.rye's confidentiality door agrees
 # with, so proving it against the actual audit target hardens that door directly.
 # Kin: crypto/x25519.rye (our authored key agreement, GREEN against Zig's std.crypto) - tools/rye/monocypher_x25519_parity.rye (our printing harness) -
-# tools/fixtures/monocypher_x25519_harness.c (Monocypher's printing harness) - tools/cr/crypto_monocypher_parity_witness.rish (the BLAKE2b sibling).
+# tools/fixtures/m/monocypher_x25519_harness.c (Monocypher's printing harness) - tools/cr/crypto_monocypher_parity_witness.rish (the BLAKE2b sibling).
 # Monocypher stays the parity TARGET, vendored and unmodified, never a copied line -- our own Rye, studied clean-room
 # (.claude/rules/gratitude-licenses.md).
 #
@@ -29,7 +29,7 @@ let cout = "crypto/bin/monocypher_x25519.out"
 let rout = "crypto/bin/rye_x25519.out"
 
 # 1. Build the Monocypher C harness, linking the unmodified vendored source with zig cc.
-let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src tools/fixtures/monocypher_x25519_harness.c vendor/monocypher/src/monocypher.c -o ${cbin}"]
+let cbuild = run ["sh" "-c" "mkdir -p crypto/bin && ${zig} cc -O2 -I vendor/monocypher/src tools/fixtures/m/monocypher_x25519_harness.c vendor/monocypher/src/monocypher.c -o ${cbin}"]
 assert cbuild.ok else "crypto-monocypher-x25519-parity: Monocypher C harness build failed — ${cbuild.err}"
 
 # 2. Run the Monocypher C harness -- four X25519 hex lines.

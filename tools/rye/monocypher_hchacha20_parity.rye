@@ -1,5 +1,5 @@
 //! tools/rye/monocypher_hchacha20_parity.rye -- our authored crypto/xchacha20.rye asked for its OWN HChaCha20 subkey over the same six inputs the
-//! Monocypher C harness (tools/fixtures/monocypher_hchacha20_harness.c) prints, so tools/cr/crypto_monocypher_hchacha20_parity_witness.rish can
+//! Monocypher C harness (tools/fixtures/m/monocypher_hchacha20_harness.c) prints, so tools/cr/crypto_monocypher_hchacha20_parity_witness.rish can
 //! diff our bytes against the vendored Monocypher's C byte-for-byte -- the nonce-extension core the whole XChaCha line folds through, proven
 //! against the audit's parity target. Chapter G (Cryptography - Rye-native, Monocypher-parity, audit-ready).
 //!

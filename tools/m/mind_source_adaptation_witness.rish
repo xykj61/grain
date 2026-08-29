@@ -3,8 +3,8 @@
 # WHY THIS RUNG. The MIND outer loop holds a standing grant: one eligible source adaptation per
 # lap (.sh/.bash -> .rish, .html -> .brush, .py -> .glow only when booked), bounded by the rule
 # at .claude/rules/mind-source-adaptation.md. The rule's preflight meter is
-# tools/fixtures/mind_source_adaptation_scan.sh, and its both-ways control,
-# tools/fixtures/mind_source_adaptation_control.sh, proved seventeen planted cases -- and then
+# tools/fixtures/m/mind_source_adaptation_scan.sh, and its both-ways control,
+# tools/fixtures/m/mind_source_adaptation_control.sh, proved seventeen planted cases -- and then
 # nothing ran it. A control nothing runs is a proof that stops being one the first time the scan
 # drifts, so this witness gives the control a caller in the suite's own voice.
 #
@@ -27,7 +27,7 @@ say "mind-adapt: Style Radiant -- the named mappings pass free, every ineligible
 say "mind-adapt: Lens TAME -- bound one adaptation per lap; refuse before mutation; a control nothing runs protects nothing."
 
 say "mind-adapt: the seventeen-case control runs both ways..."
-let control = run ["sh" "tools/fixtures/mind_source_adaptation_control.sh"]
+let control = run ["sh" "tools/fixtures/m/mind_source_adaptation_control.sh"]
 assert control.ok else "mind-adapt: the control refused -- a planted case no longer decides the way the rule says"
 assert control.out contains "control_cases=17" else "mind-adapt: the control must run all seventeen planted cases"
 assert control.out contains "control_fail=0" else "mind-adapt: every planted case must decide the way the rule says"
@@ -35,7 +35,7 @@ assert control.out contains "control_verdict=ok" else "mind-adapt: the control m
 say "field GREEN -- four mappings welcome, thirteen refusals bite, seventeen of seventeen"
 
 say "mind-adapt: a malformed decide refuses (usage exits 2)..."
-let usage = run ["sh" "-c" "sh tools/fixtures/mind_source_adaptation_scan.sh --decide .sh .rish 2>/dev/null; test $? -eq 2"]
+let usage = run ["sh" "-c" "sh tools/fixtures/m/mind_source_adaptation_scan.sh --decide .sh .rish 2>/dev/null; test $? -eq 2"]
 assert usage.ok else "mind-adapt: the scan must refuse a decide call missing its ten policy fields"
 say "field GREEN -- the decider refuses a call that names too little to decide"
 

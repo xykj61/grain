@@ -2,7 +2,7 @@
 //!
 //! Rung four reads a genuine on-disk constel record and cross-checks the harness's reading against an
 //! independent measure. This generator produces that fixture reproducibly, so the on-disk bytes are
-//! exactly what the harness renders -- a keeper can regenerate `tools/fixtures/constel_net.bron` and get
+//! exactly what the harness renders -- a keeper can regenerate `tools/fixtures/c/constel_net.bron` and get
 //! the identical record, never a hand-mocked shape. It settles the demo d12-d60 branch (rung two),
 //! builds a portable roster (rung three), and prints the `format constel-net-v1` record to stdout.
 //!
@@ -12,7 +12,7 @@
 //! The record prints on stderr (the tree's `std.debug.print` convention), so capture stderr:
 //!
 //!   rye build pond/apps/constel_net_fixture_gen.rye -femit-bin=pond/bin/constel-net-fixture-gen
-//!   pond/bin/constel-net-fixture-gen 2> tools/fixtures/constel_net.bron
+//!   pond/bin/constel-net-fixture-gen 2> tools/fixtures/c/constel_net.bron
 
 const std = @import("std");
 const assert = std.debug.assert;

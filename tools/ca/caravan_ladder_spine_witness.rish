@@ -46,7 +46,7 @@ say "caravan-ladder-spine: Language EN -- the orchestration no rung copies forwa
 say "caravan-ladder-spine: Style Radiant -- measurement beats memory; the meter that found a cost a neighbor could not see is the wall that keeps the fold answering it."
 say "caravan-ladder-spine: Lens TAME -- safety first: the ceiling is named, the counting is proven by hand on a corpus, the seventy-line ratchet prints rather than gates, and every refusal has a name."
 
-let living = run ["sh" "tools/fixtures/caravan_ladder_spine_scan.sh"]
+let living = run ["sh" "tools/fixtures/c/caravan_ladder_spine_scan.sh"]
 assert living.ok else "caravan-ladder-spine: the living ladder scan must exit 0 -- ${living.out}"
 assert living.out contains "SPINE_OK carried=0 ceiling=40" else "caravan-ladder-spine: want the living spine under its named ceiling"
 assert living.out contains "SPINE_MODULES 114 holding=1" else "caravan-ladder-spine: want exactly one of the 114 ladder modules holding a spine -- the harness. The denominator has moved three times without the numerator moving once: 110 to 111 at the Region fold, to 113 as allowances.rye and address_space.rye landed, and to 114 when caravan/study_door.rye lifted the study cohort door. None of the four holds a spine, so only the population grew (REDS %219)."
@@ -68,7 +68,7 @@ say "caravan-ladder-spine: second reading -- no spine line stands in the rung di
 # move. 47 was the byte-identical carry before the lift and it is the byte-identical carry after. That is the honest
 # proof the lift removed a cost rather than trading it for a cheaper-looking one: the near carry fell 897 to 0 while
 # the number a lift could most easily have inflated stayed exactly where it stood.
-let copy = run ["sh" "tools/fixtures/caravan_ladder_copy_scan.sh"]
+let copy = run ["sh" "tools/fixtures/c/caravan_ladder_copy_scan.sh"]
 assert copy.ok else "caravan-ladder-spine: the copy meter must still stand -- ${copy.out}"
 assert copy.out contains "copied_lines=47" else "caravan-ladder-spine: want the byte-identical meter standing exactly where the lift found it"
 say "caravan-ladder-spine: the meter beside it -- byte-identical carry stands at 47, unmoved, while the near carry stands at the zero this meter asserts above"
@@ -78,7 +78,7 @@ say "caravan-ladder-spine: the meter beside it -- byte-identical carry stands at
 # them different, and exactly five are a line already written -- countable by eye in the fixture itself, which is what
 # makes this a proof of the counter rather than a second opinion from it. The living reading now says zero, and a
 # counter that could only ever say zero would prove nothing; this corpus is what keeps the zero meaningful.
-let corpus = run ["sh" "-c" "CARAVAN_LADDER_DIR=tools/fixtures/caravan_ladder_spine_corpus CARAVAN_SPINE_FN=walk_the_case CARAVAN_SPINE_CEILING=10 CARAVAN_SPINE_BOUND=6 sh tools/fixtures/caravan_ladder_spine_scan.sh"]
+let corpus = run ["sh" "-c" "CARAVAN_LADDER_DIR=tools/fixtures/caravan_ladder_spine_corpus CARAVAN_SPINE_FN=walk_the_case CARAVAN_SPINE_CEILING=10 CARAVAN_SPINE_BOUND=6 sh tools/fixtures/c/caravan_ladder_spine_scan.sh"]
 assert corpus.ok else "caravan-ladder-spine: the corpus scan must exit 0 -- ${corpus.out}"
 assert corpus.out contains "SPINE_MODULES 2 holding=2" else "caravan-ladder-spine: want the corpus read as two rungs, both holding a spine"
 assert corpus.out contains "SPINE_LINES total=12 distinct=7 carried=5" else "caravan-ladder-spine: want twelve lines, seven distinct, five carried"
@@ -86,20 +86,20 @@ assert corpus.out contains "SPINE_NEIGHBOR carried=5" else "caravan-ladder-spine
 assert corpus.out contains "SPINE_RATCHET over_bound=1 bound=6 longest=top:7" else "caravan-ladder-spine: want the ratchet naming the one spine past a bound set to bite"
 
 # RED path one -- a corpus holding no rung modules at all.
-let empty = run ["sh" "-c" "d=$(mktemp -d); CARAVAN_LADDER_DIR=$d sh tools/fixtures/caravan_ladder_spine_scan.sh; s=$?; rmdir $d; exit $s"]
+let empty = run ["sh" "-c" "d=$(mktemp -d); CARAVAN_LADDER_DIR=$d sh tools/fixtures/c/caravan_ladder_spine_scan.sh; s=$?; rmdir $d; exit $s"]
 assert (empty.ok == false) else "caravan-ladder-spine: an empty corpus must refuse"
 assert empty.out contains "reason=no_modules" else "caravan-ladder-spine: want the empty corpus refused by name"
 
 # RED path two -- real modules that hold no spine. This is the REDS %97 shape: a scan reading a real corpus and
 # answering zero, where the zero is the scan's blindness rather than the tree's virtue. Here the zero refuses instead.
-let hollow = run ["sh" "-c" "d=$(mktemp -d); printf 'const std = @import(\"std\");\\n' > $d/hollow.rye; CARAVAN_LADDER_DIR=$d sh tools/fixtures/caravan_ladder_spine_scan.sh; s=$?; rm -rf $d; exit $s"]
+let hollow = run ["sh" "-c" "d=$(mktemp -d); printf 'const std = @import(\"std\");\\n' > $d/hollow.rye; CARAVAN_LADDER_DIR=$d sh tools/fixtures/c/caravan_ladder_spine_scan.sh; s=$?; rm -rf $d; exit $s"]
 assert (hollow.ok == false) else "caravan-ladder-spine: a corpus with no spine must refuse"
 assert hollow.out contains "reason=no_spine" else "caravan-ladder-spine: want the hollow corpus refused by name"
 
 # RED path three -- the ceiling has teeth. The corpus carries five lines; held at four, it refuses, which proves the
 # ceiling is a real gate rather than a printed number. The proof runs on the corpus rather than the living ladder,
 # because a gate must be provable without breaking the thing it guards.
-let ceiling = run ["sh" "-c" "CARAVAN_LADDER_DIR=tools/fixtures/caravan_ladder_spine_corpus CARAVAN_SPINE_FN=walk_the_case CARAVAN_SPINE_CEILING=4 sh tools/fixtures/caravan_ladder_spine_scan.sh"]
+let ceiling = run ["sh" "-c" "CARAVAN_LADDER_DIR=tools/fixtures/caravan_ladder_spine_corpus CARAVAN_SPINE_FN=walk_the_case CARAVAN_SPINE_CEILING=4 sh tools/fixtures/c/caravan_ladder_spine_scan.sh"]
 assert (ceiling.ok == false) else "caravan-ladder-spine: a spine carry past its ceiling must refuse"
 assert ceiling.out contains "reason=past_ceiling" else "caravan-ladder-spine: want the ceiling breach refused by name"
 

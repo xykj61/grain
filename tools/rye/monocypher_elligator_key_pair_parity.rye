@@ -1,5 +1,5 @@
 //! tools/rye/monocypher_elligator_key_pair_parity.rye -- our authored crypto/elligator_key_pair.rye asked for its OWN hidden keypairs over the same
-//! sixteen seeds the Monocypher C harness (tools/fixtures/monocypher_elligator_key_pair_harness.c) prints, so
+//! sixteen seeds the Monocypher C harness (tools/fixtures/m/monocypher_elligator_key_pair_harness.c) prints, so
 //! tools/cr/crypto_monocypher_elligator_key_pair_parity_witness.rish can diff our bytes against the vendored Monocypher's C byte-for-byte -- the
 //! hidden keypair that closes the Elligator key-hiding arc, proven against the audit's parity target. Chapter G (Cryptography - Rye-native,
 //! Monocypher-parity, audit-ready).

@@ -48,7 +48,7 @@ say "witness-reach: Lens TAME -- safety first: a MENTION is refused and only a C
 
 # The control first. The call/mention line is this meter's whole difficulty, and the tree cannot
 # show it every shape it must judge, so the shapes are planted in throwaway git repositories.
-let control = run ["sh" "tools/fixtures/witness_reach_control.sh"]
+let control = run ["sh" "tools/fixtures/w/witness_reach_control.sh"]
 assert control.ok else "witness-reach: the control must complete -- ${control.err}"
 say control.out
 assert control.out contains "control_verdict=ok" else "witness-reach: the control must reach its own verdict -- ${control.out}"
@@ -131,7 +131,7 @@ assert control.out contains "ok   outside_dark: both plants are dark, nothing na
 assert control.out contains "ok   outside_convention: removing the plants returns the reading" else "witness-reach: the outside reading must be proven from the far side too"
 
 # Now the living tree.
-let living = run ["sh" "tools/fixtures/witness_reach_scan.sh"]
+let living = run ["sh" "tools/fixtures/w/witness_reach_scan.sh"]
 assert living.ok else "witness-reach: the living scan must complete -- ${living.err}"
 say living.out
 assert living.out contains "WITNESS_REACH" else "witness-reach: the scan must print its own reading"
@@ -147,7 +147,7 @@ assert living.out contains "outside_convention=" else "witness-reach: the outsid
 assert living.out contains "outside_dark=" else "witness-reach: the dark reading must print on every run"
 
 # The standing reading is read from the roster, so it can never be zero while the roster has rows.
-let standing = run ["sh" "-c" "sh tools/fixtures/witness_reach_scan.sh --standing | wc -l | tr -d ' \n'"]
+let standing = run ["sh" "-c" "sh tools/fixtures/w/witness_reach_scan.sh --standing | wc -l | tr -d ' \n'"]
 assert standing.ok else "witness-reach: could not count the standing set -- ${standing.err}"
 assert (trim standing.out) != "0" else "witness-reach: the roster has rows, so the standing set must not be empty"
 

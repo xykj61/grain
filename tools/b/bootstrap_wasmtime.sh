@@ -4,7 +4,7 @@
 # Resolve order: PATH first, then tools/.cache/wasmtime/wasmtime (gitignored pin).
 # Network only when both are empty. Witnesses never call this for the wire.
 #
-# Digest fixture: tools/fixtures/wasmtime_31_0_0.sha256 -- sha256 of the installed
+# Digest fixture: tools/fixtures/w/wasmtime_31_0_0.sha256 -- sha256 of the installed
 # binary. First seating (fetch or first pin verify with no fixture) records TOFU
 # loudly; later seatings assert.
 #
@@ -16,7 +16,7 @@ cd "$ROOT"
 
 PIN_DIR="tools/.cache/wasmtime"
 PIN="${PIN_DIR}/wasmtime"
-FIXTURE="tools/fixtures/wasmtime_31_0_0.sha256"
+FIXTURE="tools/fixtures/w/wasmtime_31_0_0.sha256"
 VERSION="31.0.0"
 BASE_URL="https://github.com/bytecodealliance/wasmtime/releases/download/v${VERSION}"
 

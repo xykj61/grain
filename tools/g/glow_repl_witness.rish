@@ -15,7 +15,7 @@ if build.ok == false then say "rishi-glow-wit rebuild stderr:"
 if build.ok == false then say build.err
 assert build.ok else "rishi-glow-wit rebuild failed"
 
-let session = run ["sh" "-c" "env RYE_ZIG=${zig} ${bin} glow < tools/fixtures/glow_repl_stdin.txt"]
+let session = run ["sh" "-c" "env RYE_ZIG=${zig} ${bin} glow < tools/fixtures/g/glow_repl_stdin.txt"]
 assert session.ok else "glow repl session exited non-zero"
 let text = "${session.out}${session.err}"
 assert text contains "glow -- sixteen single-line heads" else "missing warm greeting"

@@ -34,14 +34,14 @@ say "log-has-a-row: Language EN -- a record nobody can reach from the front door
 say "log-has-a-row: Style Gauge -- the room and its index describe one set, and this counts the halves."
 say "log-has-a-row: Lens TAME -- a refusal must stop the lap, rather than quietly decline to write."
 
-let scan = run ["sh" "tools/fixtures/log_has_a_row_scan.sh"]
+let scan = run ["sh" "tools/fixtures/l/log_has_a_row_scan.sh"]
 assert scan.ok else "log-has-a-row: a log sits flat in the room with no row in the index that promises to hold it"
 say scan.out
 assert scan.out contains "logs_without_a_row=0" else "log-has-a-row: every flat log must be named by the pin"
 assert scan.out contains "verdict=ok" else "log-has-a-row: the scan must balance before it is believed"
 say "field GREEN -- every flat log is reachable from the front door"
 
-let control = run ["sh" "tools/fixtures/log_has_a_row_control.sh"]
+let control = run ["sh" "tools/fixtures/l/log_has_a_row_control.sh"]
 assert control.ok else "log-has-a-row: the control must complete"
 say control.out
 assert control.out contains "row_present_free=yes" else "log-has-a-row: a log with its row must pass free"

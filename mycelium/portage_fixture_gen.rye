@@ -13,7 +13,7 @@
 //! Siloed, dev-only, demo world/keeper seeds -- no real key, no funds, no network, no value crossed.
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run mycelium/portage_fixture_gen.rye \
-//!     2> tools/fixtures/portage_record.bron
+//!     2> tools/fixtures/p/portage_record.bron
 
 const std = @import("std");
 const assert = std.debug.assert;

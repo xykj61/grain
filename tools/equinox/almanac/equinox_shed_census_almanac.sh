@@ -25,7 +25,7 @@ entry = (
     "### 102. Commence M7 weave: shed census behind proven control — C1 keeps reachable, C2 exposes unreachable; orphan floor informs Class O propose.\n"
     "**Ran:** `rishi/bin/rishi run tools/equinox/witness/equinox_shed_census_choir_witness.rish` · **Stamp:** `"
     + stamp
-    + "` · **Witness:** `tools/gen/chapter/shed_census_witness.rish` · scan `tools/fixtures/shed_census_scan.sh` · choir `equinox_shed_census_choir_witness.rish`\n"
+    + "` · **Witness:** `tools/gen/chapter/shed_census_witness.rish` · scan `tools/fixtures/s/shed_census_scan.sh` · choir `equinox_shed_census_choir_witness.rish`\n"
     "Expected control_gate · tracked planted controls · C1=REFERENCED · C2=ORPHAN · "
     "controls 2 of 2 · orphan floor · fascia_health_now/if_shed · shred=RED · prove-red refuses. "
     "Class O propose-never-seat. Metal answered GREEN. Invent none.\n\n"

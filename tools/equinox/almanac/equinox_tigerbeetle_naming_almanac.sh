@@ -25,7 +25,7 @@ entry = (
     "### 47. Names carry nouns and verbs just right; units trail, abbreviation stays out.\n"
     "**Ran:** `rishi/bin/rishi run tools/equinox/witness/equinox_tigerbeetle_naming_choir_witness.rish` · **Stamp:** `"
     + stamp
-    + "` · **Witness:** `tools/gen/chapter/tigerbeetle_naming_census_witness.rish` · scan `tools/fixtures/tigerbeetle_naming_census.sh` · choir `equinox_tigerbeetle_naming_choir_witness.rish`\n"
+    + "` · **Witness:** `tools/gen/chapter/tigerbeetle_naming_census_witness.rish` · scan `tools/fixtures/t/tigerbeetle_naming_census.sh` · choir `equinox_tigerbeetle_naming_choir_witness.rish`\n"
     "Expected CLONE=present · GUIDE_NAMING · GUIDE_UNITS · GUIDE_ABBREV · TAME_NAMING · TAME_UNITS · "
     "SUPPLEMENT_NAMING · STYLE · LEXICON, "
     "and verdict=absent on a missing clone path. Metal answered GREEN. Clean-room study only.\n\n"

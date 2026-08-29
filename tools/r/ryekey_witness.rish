@@ -1,7 +1,7 @@
 # tools/r/ryekey_witness.rish -- the build receipt's control, on a clock.
 #   rishi/bin/rishi run tools/r/ryekey_witness.rish
 #
-# WHAT IT STANDS OVER. tools/fixtures/ryekey_control.sh, which proves rye's build receipt from both
+# WHAT IT STANDS OVER. tools/fixtures/r/ryekey_control.sh, which proves rye's build receipt from both
 # sides in a throwaway pen: fifteen legs, six flipped inputs that must each rebuild, one hit that
 # must skip, the RYE_BUILD_FRESH bypass, the run and no-emit exemptions, and two builds that must
 # agree byte for byte. Roughly nineteen seconds on this pier, measured 20260826.090745.
@@ -27,7 +27,7 @@ say "ryekey: Language EN -- a receipt proven from both sides, on a clock that ru
 say "ryekey: Style Gauge Meter -- fifteen legs counted, the stale binary named rather than reddened."
 say "ryekey: Lens TAME -- safety first; a control proven only in the hit direction cannot be told from a bypass."
 
-let control = run ["sh" "tools/fixtures/ryekey_control.sh"]
+let control = run ["sh" "tools/fixtures/r/ryekey_control.sh"]
 say control.out
 assert control.ok else "ryekey: the control must exit 0 -- either fifteen legs green or an honest machine-fact skip"
 assert control.out contains "ryekey_verdict=" else "ryekey: a control that named no verdict has answered nothing"

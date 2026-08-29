@@ -11,11 +11,11 @@
 #   4. Status rooms on rostered living pages
 #   5. docs/ pin-strings byte-match canon (PUBKEYS - master-seal - exit card)
 #   6. living pin size <= living_pin_max_bytes, read from the seated law by
-#      tools/fixtures/living_pin_max_bytes.sh; near-bound (>=90%) names fold + SEASONS roster
+#      tools/fixtures/l/living_pin_max_bytes.sh; near-bound (>=90%) names fold + SEASONS roster
 #   7. tools/**/*.py count -- target zero (Python-at-seam law)
 #   8. shell bodies (>40 lines) beneath .rish wrappers -- harvest ratchet (only falls)
 #
-# First-lap roster: tools/fixtures/living_docs_lint_roster.sh
+# First-lap roster: tools/fixtures/l/living_docs_lint_roster.sh
 # Design: active-designing/date/20260712/20260712-221600_docs-compression-layer-design.md
 # Pin law: context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md
 # Growth law: context/specs/append-only-growth-law.md
@@ -27,6 +27,6 @@
 #   rishi/bin/rishi run tools/l/living_docs_lint.rish
 
 say "living-docs lint: ratchet advisory (eight duties)…"
-let scan = run ["rishi/bin/rishi" "run" "tools/fixtures/living_docs_lint_scan.rish"]
+let scan = run ["rishi/bin/rishi" "run" "tools/fixtures/l/living_docs_lint_scan.rish"]
 say scan.out
 say "GREEN: living-docs lint — advisories printed; witness never fails."

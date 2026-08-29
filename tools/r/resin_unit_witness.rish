@@ -18,7 +18,7 @@ assert granary.ok else "granary_resin_wire failed"
 assert granary.out contains "GREEN" else "granary_resin_wire not GREEN"
 
 say "resin-unit: amphora chunk fixture (cargo path)..."
-let chunk = run ["sh" "tools/fixtures/amphora_chunk_witness.sh"]
+let chunk = run ["sh" "tools/fixtures/a/amphora_chunk_witness.sh"]
 assert chunk.ok else "amphora_chunk_witness failed"
 assert chunk.out contains "GREEN" else "amphora_chunk_witness not GREEN"
 assert chunk.out contains "SCRUB ok" else "amphora_chunk_witness missing SCRUB ok"

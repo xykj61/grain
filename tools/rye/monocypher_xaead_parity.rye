@@ -1,7 +1,7 @@
 //! tools/rye/monocypher_xaead_parity.rye -- our authored crypto/xchacha20.rye asked for its OWN XChaCha20-Poly1305 ciphertext and tag over a
 //! published known-answer (key 0x45×32, nonce 0x2a×24, associated data "Additional data", the RFC's 114-byte plaintext), printed one hex
 //! value per line, so tools/cr/crypto_monocypher_xaead_parity_witness.rish can diff our bytes against the vendored Monocypher's C
-//! (tools/fixtures/monocypher_xaead_harness.c) byte-for-byte -- Monocypher's FLAGSHIP AEAD, crypto_aead_lock, the 24-byte-nonce authenticated
+//! (tools/fixtures/m/monocypher_xaead_harness.c) byte-for-byte -- Monocypher's FLAGSHIP AEAD, crypto_aead_lock, the 24-byte-nonce authenticated
 //! encryption Lotus's signed carry, Vault, and Comlink will actually reach for. Chapter G (Cryptography - Rye-native, Monocypher-parity,
 //! audit-ready) -- the SIXTH Monocypher-source parity rung, closing the extended-nonce path the IETF-nonce AEAD rung did not exercise.
 //!

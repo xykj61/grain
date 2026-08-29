@@ -9,14 +9,14 @@
 //! and add up, and proves the property the whole checkpoint rests on: the sealed
 //! supply the Knot reports is true to the bytes.
 //!
-//! The corpus is `tools/fixtures/cord_knot.bron`, a genuine record produced
+//! The corpus is `tools/fixtures/c/cord_knot.bron`, a genuine record produced
 //! reproducibly by `mycelium/cord_knot_fixture_gen.rye` (the honest four-fact history's
 //! Knot -- issued 1000 - taxed 300 - supply 700 - one star vega), `@embedFile`-bound at
 //! compile time through a symlink in `mycelium/corpora/` -- no network, the bytes read
 //! are the tree's own. Two independent readings must agree: the app parses the record
 //! through r2, **verifies** the recovered Knot against its own digest, and reports the
 //! **folded supply** and the **star count**; the r4 witness cross-checks that pair
-//! against `tools/fixtures/cord_knot_truth.awk`'s reading of the same file -- two tools,
+//! against `tools/fixtures/c/cord_knot_truth.awk`'s reading of the same file -- two tools,
 //! one answer. And the record is genuinely a sealed Knot: it verifies, it continues to
 //! a lawful supply, and re-rendering the parsed Knot reproduces the embedded bytes exactly.
 //!

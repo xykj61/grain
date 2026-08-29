@@ -44,7 +44,7 @@
 # Chapter: the Six-Chapter double-seat, Chapter C thread (Lotus -- the creative suite) -- waymark ALES.
 # Design read: active-designing/20260825-132121_a-choir-for-the-largest-unheard-family.md
 # Kin: tools/cr/crypto_suite_witness.rish and tools/ca/caravan_suite_witness.rish (the elder choirs this is shaped
-# after), tools/fixtures/ales_roster_bijection_scan.sh (the bijection both halves read),
+# after), tools/fixtures/a/ales_roster_bijection_scan.sh (the bijection both halves read),
 # tools/al/ales_roster_witness.rish (the every-lap half, which proves the scan's refusals from both sides).
 #
 # This authors no audio -- it builds and runs. Purely local: no key, no signature, no network, no funds, no real
@@ -67,9 +67,9 @@ say "ales-suite: Lens TAME -- every tools/al/ales_*_witness.rish on disk is asse
 # that is sound -- measured on `20260825.132121`, when a second timing overlapped a single-witness
 # run and refused at `ales_compress_witness` after 28 seconds. A false RED is worse than a slow
 # guard, since Standfast stops the line for it and the line was never broken. The lock is the shape
-# `tools/fixtures/sow_project.sh` already proved (REDS %193), held in its own file so one body
+# `tools/fixtures/s/sow_project.sh` already proved (REDS %193), held in its own file so one body
 # serves both callers rather than two copies drifting (REDS %215).
-let lock = run ["sh" "tools/fixtures/ales_sing_lock.sh" "take"]
+let lock = run ["sh" "tools/fixtures/a/ales_sing_lock.sh" "take"]
 assert lock.ok else "ales-suite: another sing holds lotus/bin -- ${lock.out}"
 
 let mk = run ["sh" "-c" "rm -rf lotus/bin && mkdir -p lotus/bin"]
@@ -80,7 +80,7 @@ let witnesses = [ "tools/al/ales_album_diff_sheet_witness.rish" "tools/al/ales_a
 # The bijection, read by the scan this choir and the every-lap meter both pull, so the roster is one question
 # answered in one place (REDS %101). Singing 240 witnesses costs four to five minutes; asking whether the
 # roster is whole costs two greps -- and it is the asking that catches a witness born unheard.
-let roster = run ["sh" "tools/fixtures/ales_roster_bijection_scan.sh"]
+let roster = run ["sh" "tools/fixtures/a/ales_roster_bijection_scan.sh"]
 assert roster.ok else "ales-suite: the roster bijection must hold before the choir sings -- ${roster.out}"
 assert roster.out contains "ROSTER_OK" else "ales-suite: want the roster whole in both directions -- ${roster.out}"
 
@@ -92,7 +92,7 @@ say "ales-suite: roster whole -- ${n_disk} per-rung witnesses on disk, each regi
 
 for-each witnesses as w do assert (run ["rishi/bin/rishi" "run" w]).ok else "ales-suite: a per-rung witness went RED -- ${w}"
 
-let unlock = run ["sh" "tools/fixtures/ales_sing_lock.sh" "free"]
+let unlock = run ["sh" "tools/fixtures/a/ales_sing_lock.sh" "free"]
 assert unlock.ok else "ales-suite: could not release the sing lock -- ${unlock.out}"
 
 say "GREEN ales-suite -- ${n_disk} Lotus witnesses registered and run, every rung of Chapter C's creative suite heard in one voice"

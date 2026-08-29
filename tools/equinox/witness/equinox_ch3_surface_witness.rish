@@ -10,7 +10,7 @@ say "equinox-ch3-surface: Style Radiant — the living surface holds as one."
 say "equinox-ch3-surface: Lens TAME — e42 · almanac seat 48 · ch3 full."
 
 # Limb 0 -- design-shapes wing (leaf scan)
-let wing = run ["sh" "tools/fixtures/design_shapes_census_scan.sh"]
+let wing = run ["sh" "tools/fixtures/d/design_shapes_census_scan.sh"]
 say wing.out
 assert wing.ok else "equinox-ch3-surface: wing census failed"
 assert wing.out contains "verdict=ok" else "equinox-ch3-surface: wing not ok"
@@ -56,7 +56,7 @@ assert naming.ok else "equinox-ch3-surface: naming limb failed"
 assert naming.out contains "GREEN: tb-naming" else "equinox-ch3-surface: naming not GREEN"
 
 # Refuse -- absent design-shapes wing
-let refuse = run ["sh" "tools/fixtures/design_shapes_census_scan.sh" "tools/fixtures/design_shapes_ABSENT"]
+let refuse = run ["sh" "tools/fixtures/d/design_shapes_census_scan.sh" "tools/fixtures/design_shapes_ABSENT"]
 say refuse.out
 assert refuse.ok == false else "equinox-ch3-surface: absent wing must fail"
 assert refuse.out contains "verdict=missing_wing" else "equinox-ch3-surface: want missing_wing"

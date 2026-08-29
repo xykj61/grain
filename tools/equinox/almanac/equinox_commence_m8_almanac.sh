@@ -25,7 +25,7 @@ entry = (
     "### 103. Commence M8 saga: the ordered commence-arc story behind the proven control — eight waymark beats, seats 97–102, shelf end ep045.\n"
     "**Ran:** `rishi/bin/rishi run tools/equinox/witness/equinox_commence_m8_choir_witness.rish` · **Stamp:** `"
     + stamp
-    + "` · **Witness:** `tools/gen/chapter/commence_m8_saga_witness.rish` · scan `tools/fixtures/commence_m8_saga_scan.sh` · choir `equinox_commence_m8_choir_witness.rish`\n"
+    + "` · **Witness:** `tools/gen/chapter/commence_m8_saga_witness.rish` · scan `tools/fixtures/c/commence_m8_saga_scan.sh` · choir `equinox_commence_m8_choir_witness.rish`\n"
     "Expected control_gate · saga_home · saga_beats=8 · saga_almanac seats 97–102 · "
     "saga_shelf_end=ep045 · saga_ep046=absent · baton breach 0. "
     "Saga != see != weave. Metal answered GREEN. Invent none.\n\n"

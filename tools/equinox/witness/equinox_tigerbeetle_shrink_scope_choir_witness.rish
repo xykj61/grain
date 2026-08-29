@@ -17,7 +17,7 @@ assert welcome.out contains "GUIDE_POCPOU=yes" else "equinox-tb-shrink-scope-cho
 assert welcome.out contains "TAME_SHRINK=yes" else "equinox-tb-shrink-scope-choir: want TAME_SHRINK"
 assert welcome.out contains "ELDER_CACHE=yes" else "equinox-tb-shrink-scope-choir: want ELDER_CACHE"
 
-let refuse = run ["sh" "tools/fixtures/tigerbeetle_shrink_scope_census.sh" "tools/fixtures/tigerbeetle_ABSENT"]
+let refuse = run ["sh" "tools/fixtures/t/tigerbeetle_shrink_scope_census.sh" "tools/fixtures/tigerbeetle_ABSENT"]
 say refuse.out
 assert refuse.ok == false else "equinox-tb-shrink-scope-choir: absent clone must fail"
 assert refuse.out contains "verdict=absent" else "equinox-tb-shrink-scope-choir: want verdict=absent"

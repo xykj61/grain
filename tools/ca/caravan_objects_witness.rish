@@ -35,7 +35,7 @@ let bin = "caravan/bin/objects"
 let generic = "vendor/sel4/libsel4/include/sel4/objecttype.h"
 let mode = "vendor/sel4/libsel4/sel4_arch_include/riscv64/sel4/sel4_arch/objecttype.h"
 let arch = "vendor/sel4/libsel4/arch_include/riscv/sel4/arch/objecttype.h"
-let scan = "tools/fixtures/caravan_object_symbol_scan.sh"
+let scan = "tools/fixtures/c/caravan_object_symbol_scan.sh"
 let build_dir = "tools/.build/caravan_objects"
 
 let mk = run ["sh" "-c" "mkdir -p caravan/bin ${build_dir}"]
@@ -93,7 +93,7 @@ assert red_anchor.out contains "verdict=drift" else "caravan-objects: RED path o
 
 # 6. RED PATH TWO -- a tier boundary moved by one must fail the module's own self-test. Planted in a COPY, so the
 #    living module is never touched, and built with the same compiler that built the green one.
-let gap = run ["sh" "-c" "sh tools/fixtures/caravan_object_tier_control.sh ${zig} ${build_dir}"]
+let gap = run ["sh" "-c" "sh tools/fixtures/c/caravan_object_tier_control.sh ${zig} ${build_dir}"]
 assert gap.ok else "caravan-objects: the tier control did not run"
 assert gap.out contains "planted=1" else "caravan-objects: the gapped copy was not planted -- the RED path would have proven nothing"
 assert gap.out contains "verdict=refused" else "caravan-objects: RED path two did not fire -- a tier boundary moved by one passed its own self-test"

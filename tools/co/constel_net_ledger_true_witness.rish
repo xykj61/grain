@@ -3,11 +3,11 @@
 # Rungs one through three ran a sovereign ledger over the fake net's money, reserved stars beside its
 # topology, and let a folded ledger travel as a format constel-ledger-v1 record -- all over ledgers seated
 # in code. This closing rung carries the reader onto a REAL on-disk ledger record
-# (tools/fixtures/constel_net_ledger.bron, produced reproducibly by
+# (tools/fixtures/c/constel_net_ledger.bron, produced reproducibly by
 # pond/apps/constel_net_ledger_fixture_gen.rye, @embedFile-bound through a pond/apps/corpora/ symlink) and
 # proves what the reader reports is true to the bytes. The crux is the cross-check: constel_net_ledger_true
 # re-folds the record through the real Mycelium law and reports fact count - supply - reservations, and
-# tools/fixtures/constel_net_ledger_truth.awk reads the same file independently; the witness asserts the
+# tools/fixtures/c/constel_net_ledger_truth.awk reads the same file independently; the witness asserts the
 # app's triple equals awk's -- two tools, one answer (3 50 1). The fixture is genuinely reproducible (the
 # generator re-emits identical bytes) and the record is a genuine, law-safe ledger. Demo keeper seeds only
 # -- no key, no funds, no network, no custody (gate %3 and gate %4 untouched).
@@ -39,7 +39,7 @@ assert selftest.out contains "The ledger's agent-doable arc closes" else "conste
 # The crux -- two tools, one answer. The app's measure triple must equal awk's reading of the same bytes.
 let app = run ["sh" "-c" "${bin} measure 2>&1"]
 assert app.ok else "constel-net-ledger-true: app measure exited non-zero"
-let awk = run ["sh" "-c" "awk -f tools/fixtures/constel_net_ledger_truth.awk tools/fixtures/constel_net_ledger.bron"]
+let awk = run ["sh" "-c" "awk -f tools/fixtures/c/constel_net_ledger_truth.awk tools/fixtures/c/constel_net_ledger.bron"]
 assert awk.ok else "constel-net-ledger-true: awk truth read failed"
 assert awk.out contains "3 50 1" else "constel-net-ledger-true: awk triple not 3 50 1"
 assert app.out == awk.out else "constel-net-ledger-true: app and awk disagree â€” the reading drifted from the bytes"
@@ -49,7 +49,7 @@ assert app.out == awk.out else "constel-net-ledger-true: app and awk disagree â€
 # the committed fixture in a read-only witness).
 let gen = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build pond/apps/constel_net_ledger_fixture_gen.rye -femit-bin=pond/bin/constel-net-ledger-fixture-gen"]
 assert gen.ok else "constel-net-ledger-true: fixture generator build failed"
-let regen = run ["sh" "-c" "pond/bin/constel-net-ledger-fixture-gen 2> /tmp/constel_net_ledger_regen.bron; diff tools/fixtures/constel_net_ledger.bron /tmp/constel_net_ledger_regen.bron && echo REPRODUCIBLE"]
+let regen = run ["sh" "-c" "pond/bin/constel-net-ledger-fixture-gen 2> /tmp/constel_net_ledger_regen.bron; diff tools/fixtures/c/constel_net_ledger.bron /tmp/constel_net_ledger_regen.bron && echo REPRODUCIBLE"]
 assert regen.ok else "constel-net-ledger-true: the fixture generator did not reproduce the committed bytes"
 assert regen.out contains "REPRODUCIBLE" else "constel-net-ledger-true: the regenerated fixture drifted from the committed one"
 

@@ -14,7 +14,7 @@
 #
 # Both are sound proofs of non-@p, so the SAFETY promise has never been in question. What the tree
 # lacked was any reading of the two together: every one of the five names
-# tools/fixtures/constel_names.txt seated carried a vowel, so constel/handshake.rye -- which calls
+# tools/fixtures/c/constel_names.txt seated carried a vowel, so constel/handshake.rye -- which calls
 # check_ship and check_constellation at its border -- would have refused every name the ten
 # pond/apps/constel_net*.rye modules use, and FORA31, the socket rung, is where they would first
 # have met (REDS %306).
@@ -63,7 +63,7 @@ say "constel: Lens TAME -- safety first: the union gate never weakens, and the s
 
 # The welcome. Every name here is one constel/name.rye's selftest asserts lawful, so a green line
 # means the shell mirror and the module agree case for case rather than by eye.
-let law = run ["sh" "tools/fixtures/constel_naming_scan.sh" "tools/fixtures/constel_names_law.txt"]
+let law = run ["sh" "tools/fixtures/c/constel_naming_scan.sh" "tools/fixtures/c/constel_names_law.txt"]
 say law.out
 assert law.ok else "constel: the law's own admitted names must pass free"
 assert law.out contains "verdict=ok" else "constel: a name the module admits was refused by its shell mirror"
@@ -78,7 +78,7 @@ assert law.out contains "split_digit_absent=6" else "constel: the open direction
 assert (law.out contains "fault=") == false else "constel: a lawful name must carry no fault"
 
 # The refusal, planted from the module's own selftest -- the exact shapes a newcomer might copy.
-let real_ap = run ["sh" "tools/fixtures/constel_naming_scan.sh" "tools/fixtures/constel_names_real_ap.txt"]
+let real_ap = run ["sh" "tools/fixtures/c/constel_naming_scan.sh" "tools/fixtures/c/constel_names_real_ap.txt"]
 say real_ap.out
 assert (real_ap.ok == false) else "constel: a real @p must refuse, and the status must say so"
 assert real_ap.out contains "verdict=unsafe first=zod" else "constel: the scan must name the first real @p it met"
@@ -89,7 +89,7 @@ assert real_ap.out contains "seated_admitted=0" else "constel: the seated law mu
 assert real_ap.out contains "digit_bearing=0" else "constel: a real @p carries no digit, which is the elder proof's whole point"
 
 # Each named fault the module can return from a names file, planted one per line.
-let faults = run ["sh" "tools/fixtures/constel_naming_scan.sh" "tools/fixtures/constel_names_faults.txt"]
+let faults = run ["sh" "tools/fixtures/c/constel_naming_scan.sh" "tools/fixtures/c/constel_names_faults.txt"]
 say faults.out
 assert (faults.ok == false) else "constel: a planted fault must refuse, and the status must say so"
 assert faults.out contains "fault=NameTooLong" else "constel: a name past max_ship_len must refuse by name"
@@ -99,7 +99,7 @@ assert faults.out contains "names=5" else "constel: the fault fixture's own coun
 assert faults.out contains "seated_admitted=0" else "constel: no planted fault may be admitted"
 
 # The elder planted negative, kept whole: it bites at the same name it has always named.
-let planted = run ["sh" "tools/fixtures/constel_naming_scan.sh" "tools/fixtures/constel_names_unsafe.txt"]
+let planted = run ["sh" "tools/fixtures/c/constel_naming_scan.sh" "tools/fixtures/c/constel_names_unsafe.txt"]
 say planted.out
 assert planted.out contains "verdict=unsafe" else "constel: the scan failed to flag an @p-shaped name"
 assert planted.out contains "first=sarlev" else "constel: the scan did not name the offending @p-shaped draw"
@@ -108,7 +108,7 @@ assert (planted.ok == false) else "constel: the unsafe verdict and status disagr
 # The seated draws, after the 20260828 redraw. Safe by the elder proof -- every one carries a digit
 # -- AND admitted by the seated law, every one, because every one is vowel-free. Both readings agree
 # on all five, which is what the redraw bought, so the whole split reads zero here.
-let seated = run ["sh" "tools/fixtures/constel_naming_scan.sh" "tools/fixtures/constel_names.txt"]
+let seated = run ["sh" "tools/fixtures/c/constel_naming_scan.sh" "tools/fixtures/c/constel_names.txt"]
 say seated.out
 assert seated.ok else "constel: a seated constel name is safe under neither proof -- it could parse as a real @p"
 assert seated.out contains "verdict=ok" else "constel: every seated name must be provably never a real @p"
