@@ -2,12 +2,14 @@
 #
 #   rishi/bin/rishi run tools/p/pond_seal_gate_witness.rish
 #
-# WHAT THIS HOLDS. Three tracked launchers carry the same gate -- tools/ag/agent-jail.sh,
-# tools/cu/cursor-jail.sh and tools/l/launch-zed.sh.example each read an ENCLOSURE selector and
-# admit the value pond only after tools/p/pond_exit_bron_master_seal.sh --require returns zero.
+# WHAT THIS HOLDS. One admission door carries the gate -- tools/e/enclosure_gate.sh reads the
+# ENCLOSURE selector and admits the value pond only after
+# tools/p/pond_exit_bron_master_seal.sh --require returns zero; tools/ag/agent-jail.sh,
+# tools/cu/cursor-jail.sh and tools/l/launch-zed.sh.example each enter through it (each carried
+# the gate in full until 20260829, sharing zero literal lines, with drift already begun).
 # That seal is the custody boundary for the season flip: it demands a detached signature verifying
 # against the cold master fingerprint alone, so an agent inside the jail cannot open the season by
-# writing a sentinel. Until this witness, one guard read one of the three.
+# writing a sentinel. Until this witness, one guard read one of the elder three.
 #
 # THREE READINGS GATED AT ZERO. A file admitting pond that never reaches --require, which is the
 # escape direction. A seal call standing where nothing reads its exit code, which is REDS %311's
@@ -34,7 +36,7 @@ say scan.out
 assert scan.out contains "ungated_pond=0" else "seal-gate: a launcher admitting pond must reach the master seal with --require"
 assert scan.out contains "unrefused_seal=0" else "seal-gate: a seal call whose exit code nothing reads is a wall with no needle"
 assert scan.out contains "unnamed_callers=0" else "seal-gate: the seal's own header must name every launcher that calls it"
-assert scan.out contains "sealed_gates=3" else "seal-gate: three launchers carry this gate today -- a change of that number is a lap, not a drift"
+assert scan.out contains "sealed_gates=1" else "seal-gate: one admission door carries this gate today (was three launchers until 20260829) -- a change of that number is a lap, not a drift"
 assert scan.out contains "verdict=green" else "seal-gate: the gate roster must read green"
 
 let control = run ["sh" "tools/fixtures/p/pond_seal_gate_control.sh"]

@@ -1,9 +1,11 @@
 #!/usr/bin/env sh
 # pond_seal_gate_scan.sh -- every launcher that admits ENCLOSURE=pond reaches the master seal.
 #
-# WHAT THIS READS. Three tracked launchers carry the same eight-line gate: they read an ENCLOSURE
-# selector, and they admit the value `pond` only after tools/p/pond_exit_bron_master_seal.sh
-# --require returns zero. That seal is the custody boundary for the season flip -- it demands a
+# WHAT THIS READS. One admission door, tools/e/enclosure_gate.sh, carries the gate: it reads the
+# ENCLOSURE selector and admits the value `pond` only after tools/p/pond_exit_bron_master_seal.sh
+# --require returns zero, and the launchers enter through it (until 20260829 three launchers each
+# carried the same eight-line gate in full, and this scan held the copies in agreement; the door
+# is that agreement made structural). That seal is the custody boundary for the season flip -- it demands a
 # detached signature verifying against the cold master fingerprint alone, so an agent inside the
 # jail cannot open the season by writing a sentinel. This scan discovers the launchers rather than
 # listing them, and holds three readings of each.

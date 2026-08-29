@@ -12,10 +12,12 @@
 #   --season-closed  bron and .asc absent - policy ready (scorecard sleep)
 #   --require        bron + .asc present - VALIDSIG from master fpr only
 #
-# Shared by tools/ag/agent-jail.sh - tools/cu/cursor-jail.sh - tools/l/launch-zed.sh - and the
-# scorecard witness. agent-jail.sh is the launcher the standing loop runs, and this line named the
-# other two without it until 20260829, when tools/fixtures/p/pond_seal_gate_scan.sh read the claim
-# and counted the gap. That scan holds unnamed_callers at zero, so the claim stays true.
+# Reached by launchers through tools/e/enclosure_gate.sh -- the one admission door, seated
+# 20260829, through which tools/ag/agent-jail.sh, tools/cu/cursor-jail.sh, and
+# tools/l/launch-zed.sh all enter -- and read directly by the scorecard witness. The gate stood
+# written in each launcher until then; this line once named two of those three callers, the gap
+# tools/fixtures/p/pond_seal_gate_scan.sh counted on 20260829, and that scan holds
+# unnamed_callers at zero, so the claim stays true.
 
 set -euo pipefail
 

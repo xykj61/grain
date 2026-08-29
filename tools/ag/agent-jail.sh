@@ -238,17 +238,10 @@ GH_STATE="${GH_STATE:-$REPO/.gh}"
 CODEX_STATE="${CODEX_STATE:-$LOOPS/codex}"
 prefer_adopted_room CODEX_STATE "$LOOPS/codex"
 AIJAIL_FLAGS="${AIJAIL_FLAGS:---private-home --no-docker --no-gpu}"
-ENCLOSURE="${ENCLOSURE:-ai-jail}"
-
-EXIT_BRON="${REPO_ROOT}/bron-resins/pond-supersede-exit.bron"
-if [ "$ENCLOSURE" = "pond" ]; then
-  if ! bash "${REPO_ROOT}/tools/p/pond_exit_bron_master_seal.sh" --require; then
-    exit 1
-  fi
-elif [ "$ENCLOSURE" != "ai-jail" ]; then
-  echo "REFUSE: ENCLOSURE must be ai-jail or pond (got: ${ENCLOSURE})" >&2
-  exit 1
-fi
+# The one admission door: reads the ENCLOSURE selector, admits pond only behind
+# the master seal, refuses anything else. This gate stood written here in full
+# until 20260829; the shared body and its custody story live in the door itself.
+ENCLOSURE="$(ENCLOSURE="${ENCLOSURE:-}" sh "${REPO_ROOT}/tools/e/enclosure_gate.sh")" || exit 1
 
 resolve_aijail() {
   local c

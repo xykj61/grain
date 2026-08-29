@@ -116,19 +116,10 @@ REPO="${REPO:-$REPO_ROOT}"
 CURSOR_STATE="${CURSOR_STATE:-$REPO/.cursor-state}"
 AIJAIL_FLAGS="${AIJAIL_FLAGS:---private-home --no-docker}"
 LANE_KVM="${LANE_KVM:-false}"
-ENCLOSURE="${ENCLOSURE:-ai-jail}"
-
-# Retreat flag (Claude 212412) - master-seal (Claude 213600): pond only after
-# exit bron present AND detached .asc verifies against master 0646 2132... alone.
-EXIT_BRON="${REPO_ROOT}/bron-resins/pond-supersede-exit.bron"
-if [ "$ENCLOSURE" = "pond" ]; then
-  if ! bash "${REPO_ROOT}/tools/p/pond_exit_bron_master_seal.sh" --require; then
-    exit 1
-  fi
-elif [ "$ENCLOSURE" != "ai-jail" ]; then
-  echo "REFUSE: ENCLOSURE must be ai-jail or pond (got: ${ENCLOSURE})" >&2
-  exit 1
-fi
+# The one admission door (was the retreat flag, Claude 212412, and master-seal
+# gate, Claude 213600, written here in full until 20260829): reads ENCLOSURE,
+# admits pond only behind the master seal, refuses anything else.
+ENCLOSURE="$(ENCLOSURE="${ENCLOSURE:-}" sh "${REPO_ROOT}/tools/e/enclosure_gate.sh")" || exit 1
 
 # A-narrow: LANE_KVM authorizes /dev/kvm via our gate, not via teacher ai-jail.
 # ai-jail has no --kvm; keep the lane off for daily editor sessions. One-shot
