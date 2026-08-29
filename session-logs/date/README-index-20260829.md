@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260829.013348` | [the picture both backends agree on](20260829/20260829-013348_the-picture-both-backends-agree-on.kyri) | reference module seats; macOS answers pins live: lit 16268 matched |
 | `20260829.012534` | [the claims both backends answer](20260829/20260829-012534_the-claims-both-backends-answer.kyri) | movement four's oracle: lit 16268 pinned, house Keccak digest, tamper-visible |
 | `20260829.011429` | [the lifecycle the delegate steers](20260829/20260829-011429_the-lifecycle-the-delegate-steers.kyri) | movement three closes: run owns the loop, the refusal honored, exit 0 |
 | `20260829.010630` | [the bundle the finder opens](20260829/20260829-010630_the-bundle-the-finder-opens.kyri) | Movement seated in LEXICON; Grain.app opens the Finder's way, refuses without its plist |

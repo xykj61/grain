@@ -37,17 +37,19 @@ const c = std.c;
 
 const objc = @import("objc_seam.rye");
 const skate = @import("skate_grid.rye");
+const claims_mod = @import("surface_claims.rye");
+const reference = @import("surface_reference.rye");
 
-// The surface, in cells first and pixels second, which is the order a cell grid thinks in. Eight
-// by sixteen is `skate.cell_w` by `skate.cell_h`; the scale doubles it so the glyphs read on a
-// modern display without a retina backing store, which this lap does not yet ask for.
-const grid_cols: u32 = 44;
-const grid_rows: u32 = 9;
-const pixel_scale: u32 = 2;
-const surface_width: u32 = grid_cols * skate.cell_w * pixel_scale;
-const surface_height: u32 = grid_rows * skate.cell_h * pixel_scale;
-const bytes_per_pixel: u32 = 4;
-const surface_bytes: u32 = surface_width * surface_height * bytes_per_pixel;
+// The surface is THE REFERENCE PICTURE -- geometry, palette, and pins all imported from
+// surface_reference.rye, so this backend and the Wayland one answer one oracle (LOCA movement
+// four). The names below stay local so the rest of the file reads as it always did.
+const grid_cols: u32 = reference.grid_cols;
+const grid_rows: u32 = reference.grid_rows;
+const pixel_scale: u32 = reference.pixel_scale;
+const surface_width: u32 = reference.surface_width;
+const surface_height: u32 = reference.surface_height;
+const bytes_per_pixel: u32 = reference.bytes_per_pixel;
+const surface_bytes: u32 = reference.surface_bytes;
 
 // The bounded stand. Each turn polls the queue once and sleeps ten milliseconds, so the probe
 // closes on its own rather than becoming a process somebody has to remember to kill.
@@ -72,23 +74,7 @@ const SendU64 = *const fn (objc.Id, objc.Sel) callconv(.c) u64;
 const SendNextEvent = *const fn (objc.Id, objc.Sel, u64, ?objc.Id, ?objc.Id, bool) callconv(.c) ?objc.Id;
 const SendOtherEvent = *const fn (objc.Class, objc.Sel, u64, objc.CGPoint, u64, f64, i64, ?objc.Id, i16, i64, i64) callconv(.c) ?objc.Id;
 
-/// Fill the grid with the lines this probe wants on screen, and colour one run of one row so the
-/// palette path is exercised rather than assumed.
-fn compose(grid: *skate.Grid) void {
-    // invariant: the grid this probe composes is the grid it declared.
-    assert(grid.cols == grid_cols);
-    assert(grid.rows == grid_rows);
-    grid.set_palette(1, .{ .r = 255, .g = 210, .b = 120 });
-    grid.set_palette(2, .{ .r = 130, .g = 220, .b = 255 });
-    grid.put_line(0, "Brushstroke cells, on a macOS window.");
-    grid.put_line(1, "rasterized by brushstroke/skate_grid.rye");
-    grid.put_line(2, "the same module the Wayland seed imports.");
-    grid.put_line(4, "no Swift is linked into this binary.");
-    grid.put_line(5, "every selector verified before it is sent.");
-    grid.put_line(7, "one event will arrive from our own queue.");
-    grid.put_color_run(0, 0, grid_cols, 1);
-    grid.put_color_run(5, 0, grid_cols, 2);
-}
+// The composition lives in surface_reference.rye now -- one picture, one pin, every backend.
 
 pub fn main() !void {
     print("macos-cell-grid: Language EN -- Brushstroke's own grid, rasterized by its own code, on AppKit.\n", .{});
@@ -135,7 +121,7 @@ pub fn main() !void {
     var arena_backing: [1 << 20]u8 = undefined;
     var fixed = std.heap.FixedBufferAllocator.init(arena_backing[0..]);
     var grid = try skate.Grid.init(fixed.allocator(), grid_cols, grid_rows);
-    compose(&grid);
+    reference.compose(&grid);
 
     var pixels: [surface_bytes]u8 = undefined;
     grid.rasterize(
@@ -143,15 +129,27 @@ pub fn main() !void {
         surface_width * bytes_per_pixel,
         @intCast(surface_width),
         @intCast(surface_height),
-        .{ .r = 18, .g = 18, .b = 24 },
-        .{ .r = 235, .g = 235, .b = 235 },
+        reference.background,
+        reference.foreground,
         pixel_scale,
     );
-    const lit = grid.lit_pixel_count(pixels[0..], surface_width * bytes_per_pixel, @intCast(surface_width), @intCast(surface_height), .{ .r = 18, .g = 18, .b = 24 });
+    const lit = grid.lit_pixel_count(pixels[0..], surface_width * bytes_per_pixel, @intCast(surface_width), @intCast(surface_height), reference.background);
     // invariant: the rasterizer lit real glyph pixels rather than handing back an empty field,
     // which is the difference between a surface that rendered and a surface that merely cleared.
     assert(lit > 0);
     print("macos-cell-grid: grid={d}x{d} cells scale={d} surface={d}x{d} lit_pixels={d}\n", .{ grid_cols, grid_rows, pixel_scale, surface_width, surface_height, lit });
+
+    // The parity contract (LOCA movement four): this backend answers the claims for the buffer
+    // it is about to present, and they must match the reference pins -- the same oracle the
+    // Wayland seed answers, so parity is a number and a digest rather than an eye.
+    const claim = claims_mod.claims_for(pixels[0..], surface_width * bytes_per_pixel, surface_width, surface_height, reference.background);
+    // invariant: the contract's counter and the grid's own counter agree on this buffer.
+    assert(claim.lit == lit);
+    if (!reference.matches_pins(claim)) {
+        print("macos-cell-grid: REFUSED -- this backend's claims disagree with the reference pins; parity is broken.\n", .{});
+        @panic("surface parity: the presented buffer does not match the pinned claims");
+    }
+    print("macos-cell-grid: surface_claim lit={d} pins=matched (movement four contract)\n", .{claim.lit});
 
     // Nil-answering messages are unwrapped with a named error at the call, because the optional
     // in the send type is the check -- an assert after a non-optional return would be dead code.

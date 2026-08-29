@@ -1,0 +1,69 @@
+//! brushstroke/surface_reference.rye -- the one reference picture, and the pins every backend
+//! answers to.
+//!
+//! Rung: LOCA -- the picture both backends must agree on (20260829.013000)
+//!
+//! Parity needs one picture, composed one way, pinned once. This module holds it: the exact
+//! grid the macOS cell probe first showed on a live window, its geometry, its palette, and the
+//! two pinned claims -- the lit count that window recorded, and the house-Keccak digest the
+//! parity witness discovered and pinned. A backend joins the contract by rendering THIS grid at
+//! THIS geometry, handing its presentation buffer to surface_claims.claims_for, and matching
+//! these pins. The witness, the macOS probe, and the Wayland seed all import the picture from
+//! here, so no second copy can drift.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const skate = @import("skate_grid.rye");
+const claims_mod = @import("surface_claims.rye");
+
+// The reference geometry: proven on a live macOS window, packed rows, scale two.
+pub const grid_cols: u32 = 44;
+pub const grid_rows: u32 = 9;
+pub const pixel_scale: u32 = 2;
+pub const surface_width: u32 = grid_cols * skate.cell_w * pixel_scale;
+pub const surface_height: u32 = grid_rows * skate.cell_h * pixel_scale;
+pub const bytes_per_pixel: u32 = 4;
+pub const surface_bytes: u32 = surface_width * surface_height * bytes_per_pixel;
+
+pub const background = skate.Color{ .r = 18, .g = 18, .b = 24 };
+pub const foreground = skate.Color{ .r = 235, .g = 235, .b = 235 };
+
+// The pins. The lit count is the live window's own reading (the finding page recorded it); the
+// digest is the parity witness's discover-then-pin, our own Keccak over the visible bytes.
+pub const pinned_lit: u32 = 16268;
+pub const pinned_digest_hex = "9bb9e1decddb9c1742a210af4acb9e62f925d0acfd1f9c57067cceb88caa7874";
+
+/// The reference composition, byte for byte the picture the live window showed.
+pub fn compose(grid: *skate.Grid) void {
+    // invariant: the grid being composed is the reference geometry, never a lookalike.
+    assert(grid.cols == grid_cols);
+    assert(grid.rows == grid_rows);
+    grid.set_palette(1, .{ .r = 255, .g = 210, .b = 120 });
+    grid.set_palette(2, .{ .r = 130, .g = 220, .b = 255 });
+    grid.put_line(0, "Brushstroke cells, on a macOS window.");
+    grid.put_line(1, "rasterized by brushstroke/skate_grid.rye");
+    grid.put_line(2, "the same module the Wayland seed imports.");
+    grid.put_line(4, "no Swift is linked into this binary.");
+    grid.put_line(5, "every selector verified before it is sent.");
+    grid.put_line(7, "one event will arrive from our own queue.");
+    grid.put_color_run(0, 0, grid_cols, 1);
+    grid.put_color_run(5, 0, grid_cols, 2);
+}
+
+/// Does a backend's claim match the pins? Answered as a bool so a caller chooses its own
+/// refusal -- a witness asserts, a probe prints REFUSED and dies.
+pub fn matches_pins(claims: claims_mod.SurfaceClaims) bool {
+    // invariant: the claim being judged fits a real surface.
+    assert(claims.lit <= surface_width * surface_height);
+    if (claims.lit != pinned_lit) return false;
+    var hex_buffer: [claims_mod.digest_length * 2]u8 = undefined;
+    var i: u32 = 0;
+    while (i < claims_mod.digest_length) : (i += 1) {
+        _ = std.fmt.bufPrint(hex_buffer[i * 2 .. i * 2 + 2], "{x:0>2}", .{claims.digest[i]}) catch unreachable;
+    }
+    // invariant: the pin is a full digest, never a prefix.
+    assert(pinned_digest_hex.len == claims_mod.digest_length * 2);
+    return std.mem.eql(u8, hex_buffer[0..], pinned_digest_hex);
+}
