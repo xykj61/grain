@@ -30,7 +30,12 @@
 #   row_absent       -- a named row is not in the pin. Either it is already folded or the number is
 #                       a typo, and both want a human's eye rather than a silent skip.
 #   row_open         -- a named row still reads OPEN. The pin keeps what is open; folding one would
-#                       hide live work on a shelf nobody reads for live work.
+#                       hide live work on a shelf nobody reads for live work. Since door B
+#                       (20260829, Keaton's word; active-designing/20260829-031804): the row's
+#                       LAST bold status marker decides -- **BOOKED** and **CLOSED** fold, **OPEN**
+#                       refuses, and a markerless row keeps the elder whole-word test. The one OPEN
+#                       flag had carried two meanings, live defect and booked remainder, and the
+#                       pin deadlocked on the second (%338).
 #   too_many_rows    -- more than the bound below. Every collection names a maximum (TAME).
 #
 # WHAT IT LEAVES TO A HAND, on purpose: the shelf's header prose and the row in
@@ -82,11 +87,31 @@ done | sort -n -u > "$work/rows.txt"
 while IFS= read -r n; do
   row=$(awk -v n="$n" 'index($0,"**REDS %"n" ")==1{print; found=1; exit} END{exit !found}' "$PIN") \
     || fail "row %$n is not in $PIN" row_absent
-  # A row that still reads OPEN stays on the pin. The test is the whole uppercase word, so prose
-  # that merely says "opened" is left alone; awk's ERE is used rather than grep -E because the
-  # grep on this bench mishandles an anchored alternation (the same dialect care as REDS %234).
-  printf '%s\n' "$row" | awk '{ if ($0 ~ /(^|[^A-Za-z])OPEN([^A-Za-z]|$)/) exit 1 }' \
-    || fail "row %$n still reads OPEN; the pin keeps what is open" row_open
+  # Door B: the row's LAST bold status marker decides, read the way
+  # reds_status_consistency_scan.sh reads it, so status has one definition everywhere. BOOKED
+  # (defect repaired, remainder booked as a ratchet, a seat, or a lap) and CLOSED fold; OPEN
+  # refuses; a markerless row keeps the elder whole-word test -- prose that merely says "opened"
+  # is left alone, and awk's ERE is used rather than grep -E because the grep on this bench
+  # mishandles an anchored alternation (the same dialect care as REDS %234).
+  marker=$(printf '%s\n' "$row" | awk '{
+    found = ""
+    s = $0
+    while (match(s, /\*\*(OPEN|CLOSED|BOOKED)[^*]*\*\*/)) {
+      found = substr(s, RSTART + 2, 4)
+      s = substr(s, RSTART + RLENGTH)
+    }
+    print found
+  }')
+  case "$marker" in
+    BOOK|CLOS) ;;
+    OPEN)
+      fail "row %$n reads OPEN at its last marker; the pin keeps what is open" row_open
+      ;;
+    *)
+      printf '%s\n' "$row" | awk '{ if ($0 ~ /(^|[^A-Za-z])OPEN([^A-Za-z]|$)/) exit 1 }' \
+        || fail "row %$n still reads OPEN; the pin keeps what is open" row_open
+      ;;
+  esac
   printf '%s\n' "$row" >> "$work/moved.txt"
 done < "$work/rows.txt"
 

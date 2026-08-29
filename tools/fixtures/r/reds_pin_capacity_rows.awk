@@ -6,33 +6,42 @@
 #
 # TWO QUESTIONS, TWO READINGS, on purpose:
 #
-#   fold_refused()  the whole uppercase word OPEN anywhere on the line. This is the test
-#                   reds_fold.sh itself refuses a fold on, so it is the only honest way to ask
-#                   "would the fold tool accept this row?"
+#   fold_refused()  would reds_fold.sh refuse this row? Since door B (20260829): the LAST bold
+#                   status marker decides -- BOOKED and CLOSED fold, OPEN refuses, and a
+#                   markerless row keeps the elder whole-uppercase-word test. This mirrors the
+#                   fold tool's own case, so it is the only honest way to ask the question.
 #
-#   last_marker()   the LAST bold marker beginning OPEN or CLOSED. This is the row's DECLARED
-#                   status, read the way reds_status_consistency_scan.sh reads it, because a row
-#                   that closes writes the newer word after the older one.
-#
-# They differ by four rows in this tree today, and each is correct about its own question.
+#   last_marker()   the LAST bold marker beginning OPEN, CLOSED, or BOOKED. This is the row's
+#                   DECLARED status, read the way reds_status_consistency_scan.sh reads it,
+#                   because a row that closes writes the newer word after the older one. BOOKED
+#                   (door B) means the defect's instances stand repaired and the remainder is a
+#                   ratchet, a seat, or a booked lap -- not open, not closed.
 #
 #   awk -f reds_pin_capacity_rows.awk -v mode=pin       FILE   # shell assignments for eval
 #   awk -f reds_pin_capacity_rows.awk -v mode=open_rows FILE   # one row number per line
 
-function fold_refused(s) { return (s ~ /(^|[^A-Za-z])OPEN([^A-Za-z]|$)/) }
-
-function last_marker(s,   pos, rest, hit, len, found) {
+function last_marker(s,   pos, rest, hit, len, found, word) {
   found = "unmarked"
   pos = 1
   while (1) {
     rest = substr(s, pos)
-    if (!match(rest, /\*\*(OPEN|CLOSED)[^*]*\*\*/)) break
+    if (!match(rest, /\*\*(OPEN|CLOSED|BOOKED)[^*]*\*\*/)) break
     hit = pos + RSTART - 1
     len = RLENGTH
-    found = (substr(s, hit + 2, 4) == "OPEN") ? "open" : "closed"
+    word = substr(s, hit + 2, 4)
+    if (word == "OPEN") found = "open"
+    else if (word == "BOOK") found = "booked"
+    else found = "closed"
     pos = hit + len
   }
   return found
+}
+
+function fold_refused(s,   m) {
+  m = last_marker(s)
+  if (m == "booked" || m == "closed") return 0
+  if (m == "open") return 1
+  return (s ~ /(^|[^A-Za-z])OPEN([^A-Za-z]|$)/)
 }
 
 function row_number(s,   r) {

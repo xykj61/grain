@@ -21,7 +21,7 @@ say "reds-fold: Lens TAME -- every refusal is named, the row count is bounded, a
 let control = run ["sh" "tools/fixtures/r/reds_fold_control.sh"]
 say control.out
 assert control.ok else "reds-fold: the control must exit 0"
-assert control.out contains "pass=23" else "reds-fold: want twenty-three behaviors proven"
+assert control.out contains "pass=27" else "reds-fold: want twenty-seven behaviors proven (twenty-three elder, plus door B's four: a BOOKED row folds though its prose carries the bare word OPEN, it leaves the pin, a bold-OPEN row refuses, and that refusal names itself)"
 assert control.out contains "fail=0" else "reds-fold: no behavior may miss"
 
 # 2 -- the living shelves, read for the fault itself. A shelf holds rows that already moved, so a

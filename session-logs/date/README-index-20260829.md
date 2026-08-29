@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260829.155341` | [the flag that said two things](20260829/20260829-155341_the-flag-that-said-two-things.kyri) | door B lands: BOOKED seats, eight rows drain, the pin 24828 -> 5388; deadlock over |
 | `20260829.153150` | [the water row tastes the loops](20260829/20260829-153150_the-water-row-tastes-the-loops.kyri) | launcher audit answered; %344 books the charter that outran itself; fn-drift guard GREEN 12/12 |
 | `20260829.151912` | [the argv named once boots twice](20260829/20260829-151912_the-argv-named-once-boots-twice.kyri) | tools/co condense: 135 sites to 45 fn calls, two labs GREEN on real qemu; the destaging hand named |
 | `20260829.151128` | [the spiral turn holds the cut](20260829/20260829-151128_the-spiral-turn-holds-the-cut.kyri) | fire again by the formula: W5 holds the almanac machinery; three survey verdicts seated |
