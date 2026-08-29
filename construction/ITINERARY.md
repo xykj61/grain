@@ -55,7 +55,7 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `138cabf1b0` -- this round's own.
+**Git nib:** `3a18a64ca0` -- this round's own.
 
 **Now.** **The dead-letter box filled twice, and the second time a meter read it.**
 
@@ -199,7 +199,7 @@ the measurement class behind it is
 [`../active-designing/20260824-080208_the-roster-that-decides-what-gets-measured.md`](../active-designing/20260824-080208_the-roster-that-decides-what-gets-measured.md).
 
 **Named and waiting on their own lap:** the **fascia weave** (39 browsed `active-designing/`
-documents); **`docs/STOA.md`** at 166 lines against its declared `<=80`; ten pages wanting a
+documents); ten pages wanting a
 Status line; the **`constels/`** room and the **kres/kresfa chapter** (seated
 `20260823.122619`). Two i10 ratchets, migrate-on-touch: 26 `parseInt(` sites, 14 over-70
 functions. Third mitra shed prepped (`SHRED_PREP.md` Class H), cut RED until circled.
@@ -212,7 +212,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260828.193027` | the Glow choir -- 26 witnesses get a clock | [log](../session-logs/date/20260828/20260828-193027_the-witnesses-nobody-ran.kyri) |
+| `20260828.201439` | STOA folds its thirteen rungs home; the title-grade form closes | [log](../session-logs/date/20260828/20260828-201439_the-ladder-that-outran-its-own-page.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line here until the next replaces it.
 
