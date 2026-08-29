@@ -34,9 +34,12 @@ fails=0
 ok() { echo "case=$1 ok"; }
 no() { echo "case=$1 FAILED -- $2"; fails=$((fails + 1)); }
 
-mkdir -p "$pen/tools/fixtures" "$pen/context/specs" "$pen/construction"
-cp "$scan" "$pen/tools/fixtures/pin_bound_touch_scan.sh"
-cp "$reader" "$pen/tools/fixtures/living_pin_max_bytes.sh"
+# The pen wears the root's two markers -- rishi/bin and tools/fixtures -- and mirrors the folded
+# letter rooms, so the copies' depth-proof walk (letter fold, seated 20260828) resolves the pen
+# root: the scan reaches the reader at l/, and the reader reads the pen's own law.
+mkdir -p "$pen/tools/fixtures/p" "$pen/tools/fixtures/l" "$pen/rishi/bin" "$pen/context/specs" "$pen/construction"
+cp "$scan" "$pen/tools/fixtures/p/pin_bound_touch_scan.sh"
+cp "$reader" "$pen/tools/fixtures/l/living_pin_max_bytes.sh"
 
 # The pen's own law. Small numbers keep every plant a few bytes wide, and the bracketed line proves
 # the per-path exception is honored by this reading rather than only by the roster guard.
@@ -222,18 +225,21 @@ hookpen=$(mktemp -d) || exit 1
 trap 'rm -rf "$pen" "$hookpen"' EXIT
 
 if [ -f tools/hooks/pre-commit ]; then
-  mkdir -p "$hookpen/tools/hooks" "$hookpen/tools/fixtures" "$hookpen/context/specs" \
-           "$hookpen/construction" "$hookpen/rishi/bin"
+  # The hookpen mirrors the folded letter rooms (letter fold, seated 20260828), so the copied
+  # scan's depth-proof walk resolves the pen root and the hook finds each file where the real
+  # tree now keeps it.
+  mkdir -p "$hookpen/tools/hooks" "$hookpen/tools/fixtures/p" "$hookpen/tools/fixtures/l" \
+           "$hookpen/context/specs" "$hookpen/construction" "$hookpen/rishi/bin"
   cp tools/hooks/pre-commit "$hookpen/tools/hooks/pre-commit"
-  cp "$scan" "$hookpen/tools/fixtures/pin_bound_touch_scan.sh"
-  cp "$reader" "$hookpen/tools/fixtures/living_pin_max_bytes.sh"
+  cp "$scan" "$hookpen/tools/fixtures/p/pin_bound_touch_scan.sh"
+  cp "$reader" "$hookpen/tools/fixtures/l/living_pin_max_bytes.sh"
   chmod +x "$hookpen/tools/hooks/pre-commit"
   printf '#!/bin/sh\nexit 0\n' > "$hookpen/rishi/bin/rishi"
   chmod +x "$hookpen/rishi/bin/rishi"
   cp "$pen/context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md" \
      "$hookpen/context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md"
   printf 'construction/A.md%s10%sPin A%senforce\n' "$TAB" "$TAB" "$TAB" \
-    > "$hookpen/tools/fixtures/living_pin_guard_roster.txt"
+    > "$hookpen/tools/fixtures/l/living_pin_guard_roster.txt"
 
   hfill() {
     : > "$hookpen/$1"

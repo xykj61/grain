@@ -299,8 +299,11 @@ check "27 bitten: the recitation form spreading past its ceiling refuses" "law_r
 # without ever letting a partial path stand in for a stated one.
 reading=tools/fixtures/living_pin_max_bytes.sh
 rp=$(mktemp -d)
-mkdir -p "$rp/context/specs" "$rp/tools/fixtures"
-cp "$reading" "$rp/tools/fixtures/"
+# The pen wears the root's two markers -- rishi/bin and tools/fixtures -- and mirrors the folded
+# letter room, so the copied reading's depth-proof walk (letter fold, seated 20260828) resolves
+# the pen root and reads the pen's law.
+mkdir -p "$rp/context/specs" "$rp/tools/fixtures/l" "$rp/rishi/bin"
+cp "$reading" "$rp/tools/fixtures/l/"
 cat > "$rp/context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md" <<'LAW'
 # pen law
 ```
@@ -308,7 +311,7 @@ living_pin_max_bytes = 1000
 living_pin_max_bytes[a/README.md] = 4000
 ```
 LAW
-r() { sh "$rp/tools/fixtures/living_pin_max_bytes.sh" "$@" 2>/dev/null; }
+r() { sh "$rp/tools/fixtures/l/living_pin_max_bytes.sh" "$@" 2>/dev/null; }
 check "28 free: no argument answers the general bound" "1000" "$(r)"
 check "28 free: a named page answers its own bound" "4000" "$(r a/README.md)"
 check "28 free: an unnamed page answers the general bound" "1000" "$(r b/README.md)"

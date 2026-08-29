@@ -1,7 +1,20 @@
 #!/usr/bin/env sh
 # cellar_manifest_tilak_witness.sh -- I6: Tilak three-field manifest + legacy still reads.
 set -eu
-ROOT=$(CDPATH= cd "$(dirname "$0")/../.." && pwd)
+# Root by upward walk (seated 20260828): the letter fold moved this script one
+# directory deeper, and fixed ../.. depth arithmetic is what broke. The walk finds
+# the first ancestor holding rishi/bin and tools/fixtures -- git-free so pen copies
+# outside a repository still resolve -- bounded at 8 steps, loud past the bound.
+ROOT=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
+_fd_steps=0
+while [ ! -d "$ROOT/rishi/bin" ] || [ ! -d "$ROOT/tools/fixtures" ]; do
+  _fd_steps=$((_fd_steps + 1))
+  if [ "$_fd_steps" -gt 8 ] || [ "$ROOT" = "/" ] || [ -z "$ROOT" ]; then
+    echo "$0: no tree root within 8 steps (needs rishi/bin and tools/fixtures)" >&2
+    exit 2
+  fi
+  ROOT=$(dirname "$ROOT")
+done
 LEGACY_GOLDEN=fdca5dfde2bd63212322248a8f95e351c087bd6b0b14016de66a55d69cc090a4
 TILAK_GOLDEN=a0ddfe504f39d04b44a35cb1b43ac4220ca93abf8bea02df9ed0040e44d41978
 SRC="$ROOT/tools/fixtures/cellar_ring1_tree"

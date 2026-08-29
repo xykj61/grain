@@ -60,8 +60,10 @@ if [ -n "$extra" ]; then
 fi
 
 # Advisory ratchet: elders join on touch. Counted every run, never a failure.
+# The letter fold (seated 20260828) moved every flat scan one directory deeper, so the
+# glob spans the letter rooms rather than the room root.
 elders=0
-for f in tools/fixtures/*_scan.sh; do
+for f in tools/fixtures/*/*_scan.sh; do
   [ "$f" = "$self" ] && continue
   case "$roster" in *"$f"*) continue ;; esac
   elders=$((elders + 1))

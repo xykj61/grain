@@ -21,7 +21,11 @@
 
 set -u
 
-SCAN=$(pwd)/tools/fixtures/readme_reach_scan.sh
+# The launch directory is the repository root; it is held by name so the close below returns to
+# it directly rather than by depth arithmetic off the scan's path, which the letter fold
+# (seated 20260828) moved one directory deeper.
+ROOT=$(pwd)
+SCAN=$ROOT/tools/fixtures/readme_reach_scan.sh
 faults=0
 pen=$(mktemp -d)
 trap 'rm -rf "$pen"' EXIT INT TERM
@@ -101,7 +105,7 @@ else
   check external_free ok "$(verdict_of "$out")/$(value_of "$out" broken_total)"
 fi
 
-cd "$(dirname "$SCAN")/../.." 2>/dev/null || cd /
+cd "$ROOT" 2>/dev/null || cd /
 if [ "$faults" -eq 0 ]; then echo "control=ok"; exit 0; fi
 echo "control=faults faults=$faults"
 exit 2

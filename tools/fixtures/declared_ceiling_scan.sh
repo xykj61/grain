@@ -147,9 +147,23 @@ law_recite_ceiling="${DECLARED_LAW_RECITE_CEILING:-6}"
 # tools/fixtures/living_pin_max_bytes.sh and every meter now calls it (REDS %199).
 # The helper names its own reason on stderr -- law missing, or law stating no readable number --
 # so the refusal carries the reason rather than a generic verdict.
+# Root by upward walk (seated 20260828): the letter fold moved this script one
+# directory deeper, and fixed ../.. depth arithmetic is what broke. The walk finds
+# the first ancestor holding rishi/bin and tools/fixtures -- git-free so pen copies
+# outside a repository still resolve -- bounded at 8 steps, loud past the bound.
+_fd_root=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
+_fd_steps=0
+while [ ! -d "$_fd_root/rishi/bin" ] || [ ! -d "$_fd_root/tools/fixtures" ]; do
+  _fd_steps=$((_fd_steps + 1))
+  if [ "$_fd_steps" -gt 8 ] || [ "$_fd_root" = "/" ] || [ -z "$_fd_root" ]; then
+    echo "$0: no tree root within 8 steps (needs rishi/bin and tools/fixtures)" >&2
+    exit 2
+  fi
+  _fd_root=$(dirname "$_fd_root")
+done
 LIVING_PIN_MAX_BYTES="${DECLARED_BOUND_MAX_BYTES:-}"
 if [ -z "$LIVING_PIN_MAX_BYTES" ]; then
-  if ! LIVING_PIN_MAX_BYTES=$(sh "$(dirname "$0")/living_pin_max_bytes.sh" 2>&1); then
+  if ! LIVING_PIN_MAX_BYTES=$(sh "$_fd_root/tools/fixtures/l/living_pin_max_bytes.sh" 2>&1); then
     echo "detail: $LIVING_PIN_MAX_BYTES"
     echo "verdict=law_unreadable"
     exit 1
@@ -183,7 +197,7 @@ for f in $FILES; do
       # rather than a card read whole, so it holds 256 rows at 192 bytes each (REDS %205).
       page_law="$LIVING_PIN_MAX_BYTES"
       if [ -z "${DECLARED_BOUND_MAX_BYTES:-}" ]; then
-        page_law=$(sh "$(dirname "$0")/living_pin_max_bytes.sh" "$f" 2>/dev/null) || page_law="$LIVING_PIN_MAX_BYTES"
+        page_law=$(sh "$_fd_root/tools/fixtures/l/living_pin_max_bytes.sh" "$f" 2>/dev/null) || page_law="$LIVING_PIN_MAX_BYTES"
       fi
       bwant="$page_law"
       if [ -n "$spelled" ]; then

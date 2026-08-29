@@ -10,7 +10,20 @@
 # FAILS without polluting the living tools/*.py census.
 set -eu
 
-HERE=$(CDPATH= cd -- "$(dirname "$0")/../.." && pwd)
+# Root by upward walk (seated 20260828): the letter fold moved this script one
+# directory deeper, and fixed ../.. depth arithmetic is what broke. The walk finds
+# the first ancestor holding rishi/bin and tools/fixtures -- git-free so pen copies
+# outside a repository still resolve -- bounded at 8 steps, loud past the bound.
+HERE=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
+_fd_steps=0
+while [ ! -d "$HERE/rishi/bin" ] || [ ! -d "$HERE/tools/fixtures" ]; do
+  _fd_steps=$((_fd_steps + 1))
+  if [ "$_fd_steps" -gt 8 ] || [ "$HERE" = "/" ] || [ -z "$HERE" ]; then
+    echo "$0: no tree root within 8 steps (needs rishi/bin and tools/fixtures)" >&2
+    exit 2
+  fi
+  HERE=$(dirname "$HERE")
+done
 SCAN_ROOT=${TOOLS_PY_SCAN_ROOT:-$HERE}
 cd "$SCAN_ROOT"
 

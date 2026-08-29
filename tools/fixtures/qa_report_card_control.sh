@@ -20,9 +20,11 @@ reg=tools/fixtures/prose_register_scan.sh
 
 pen=$(mktemp -d)
 trap 'rm -rf "$pen"' EXIT INT TERM
-mkdir -p "$pen/tools/fixtures"
-cp "$card" "$pen/tools/fixtures/"
-cp "$reg" "$pen/tools/fixtures/"
+# The pen mirrors the folded letter rooms (letter fold, seated 20260828): the card sits at q/
+# and lifts measure() from the register scan at p/.
+mkdir -p "$pen/tools/fixtures/q" "$pen/tools/fixtures/p"
+cp "$card" "$pen/tools/fixtures/q/"
+cp "$reg" "$pen/tools/fixtures/p/"
 
 run() { ( cd "$pen" && QA_CARD_ROOT=. sh tools/fixtures/qa_report_card.sh "$@" 2>&1 ); }
 val() { echo "$1" | sed -n "s/^$2=\([^ ]*\).*/\1/p" | head -1; }

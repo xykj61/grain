@@ -27,9 +27,11 @@ trap 'rm -rf "$pen"' EXIT INT TERM
 # Build one pen tree. `want` is the model every declaring site should name.
 build() {
   d=$1; want=$2
-  rm -rf "$d"; mkdir -p "$d/.claude/rules" "$d/tools/fixtures" "$d/recursion-prompts/seed"
-  cp "$scan_abs" "$d/tools/fixtures/declared_model_scan.sh"
-  cp "$read_abs" "$d/tools/fixtures/declared_model.sh"
+  # The pen wears the root's two markers and mirrors the folded letter room (letter fold,
+  # seated 20260828), so the copied reading's depth-proof walk resolves the pen root.
+  rm -rf "$d"; mkdir -p "$d/.claude/rules" "$d/tools/fixtures/d" "$d/rishi/bin" "$d/recursion-prompts/seed"
+  cp "$scan_abs" "$d/tools/fixtures/d/declared_model_scan.sh"
+  cp "$read_abs" "$d/tools/fixtures/d/declared_model.sh"
   printf '{ "model": "%s", "effortLevel": "max" }\n' "$want" > "$d/.claude/settings.json"
   printf 'model %s\neffort max\n' "$want" > "$d/GLOW_PROFILE.template.bron"
   printf 'The loop runs `"model": "%s"` at max effort.\n' "$want" > "$d/recursion-prompts/seed/autonomous-loop.seed.md"

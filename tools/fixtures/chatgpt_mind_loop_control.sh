@@ -4,7 +4,20 @@
 
 set -euo pipefail
 
-ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
+# Root by upward walk (seated 20260828): the letter fold moved this script one
+# directory deeper, and fixed ../.. depth arithmetic is what broke. The walk finds
+# the first ancestor holding rishi/bin and tools/fixtures -- git-free so pen copies
+# outside a repository still resolve -- bounded at 8 steps, loud past the bound.
+ROOT=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
+_fd_steps=0
+while [ ! -d "$ROOT/rishi/bin" ] || [ ! -d "$ROOT/tools/fixtures" ]; do
+  _fd_steps=$((_fd_steps + 1))
+  if [ "$_fd_steps" -gt 8 ] || [ "$ROOT" = "/" ] || [ -z "$ROOT" ]; then
+    echo "$0: no tree root within 8 steps (needs rishi/bin and tools/fixtures)" >&2
+    exit 2
+  fi
+  ROOT=$(dirname "$ROOT")
+done
 SOURCE="$ROOT/tools/l/chatgpt-mind.sh"
 RISHI_SOURCE="$ROOT/tools/l/chatgpt-mind.rish"
 HANDOFF_SOURCE="$ROOT/tools/l/launch-mind-cardinal-chapter.rish"
@@ -79,7 +92,7 @@ HOMEBREW_GPG_AGENT=/opt/homebrew/Cellar/gnupg/2.5.18/bin/gpg-agent
   echo "FAIL: canonical Homebrew GPG agent is not a regular executable" >&2
   exit 1
 }
-mkdir -p "$REPO/tools/l/mind-bin" "$REPO/tools/l/mind-shell" "$REPO/tools/fixtures" "$REPO/tools/hooks" "$REPO/rishi/bin" "$REPO/arbor" "$REPO/recursion-prompts/versions" \
+mkdir -p "$REPO/tools/l/mind-bin" "$REPO/tools/l/mind-shell" "$REPO/tools/fixtures/c" "$REPO/tools/fixtures/d" "$REPO/tools/hooks" "$REPO/rishi/bin" "$REPO/arbor" "$REPO/recursion-prompts/versions" \
   "$REPO/construction" "$REPO/gratitude" "$REPO/scribble" "$REPO/lattice" \
   "$REPO/lantern" "$REPO/ember" "$REPO/brushstroke" "$HOME_PEN/.codex" "$BIN" "$RELEASE_ROOT/bin"
 REPO_CANONICAL=$(/bin/realpath "$REPO")

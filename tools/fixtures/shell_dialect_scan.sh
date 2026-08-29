@@ -455,7 +455,10 @@ ELDER
     { print }
     /shell_portable\.sh"$/ && !seen { print ". \"" elder "\""; seen = 1 }
   ' tools/fixtures/one_clock_provenance_scan.sh > "$pen/tools/fixtures/planted_one_clock_provenance_scan.sh"
-  cp tools/fixtures/shell_portable.sh "$pen/tools/fixtures/"
+  # The pen wears the root's two markers and the helper sits in its letter room, so the plant's
+  # depth-proof walk (letter fold, seated 20260828) resolves the pen root and finds the helper.
+  mkdir -p "$pen/rishi/bin" "$pen/tools/fixtures/s"
+  cp tools/fixtures/shell_portable.sh "$pen/tools/fixtures/s/"
 
   read_ok() {
     ONE_CLOCK_PROVENANCE_BASE=HEAD ONE_CLOCK_PROVENANCE_STAMPS=20260101.120000 \
@@ -535,7 +538,10 @@ if [ "$mode" = prove-portable ]; then
   # The plant is one line of one copy, and the helper travels beside it because the copy sources it.
   sed "s|^xargs_lines_batched 400 \"\$work/living.txt\" .*|xargs -a \"\$work/living.txt\" -d '\\n' -n 400 \\\\|" \
     tools/fixtures/exec_bit_scan.sh > "$pen/tools/fixtures/planted_exec_bit_scan.sh"
-  cp tools/fixtures/shell_portable.sh "$pen/tools/fixtures/"
+  # The pen wears the root's two markers and the helper sits in its letter room, so the plant's
+  # depth-proof walk (letter fold, seated 20260828) resolves the pen root and finds the helper.
+  mkdir -p "$pen/rishi/bin" "$pen/tools/fixtures/s"
+  cp tools/fixtures/shell_portable.sh "$pen/tools/fixtures/s/"
 
   read_invoked() { sh "$1" 2>/dev/null | sed -n 's/^directly_invoked=\([0-9][0-9]*\)$/\1/p' | head -1; }
   live_gnu=$(read_invoked tools/fixtures/exec_bit_scan.sh)

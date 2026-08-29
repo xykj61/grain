@@ -107,8 +107,22 @@ echo "rows=$rows"
 echo "thin_rows=$thin"
 echo "vague_rows=$vague"
 echo "bytes=$bytes"
+# Root by upward walk (seated 20260828): the letter fold moved this script one
+# directory deeper, and fixed ../.. depth arithmetic is what broke. The walk finds
+# the first ancestor holding rishi/bin and tools/fixtures -- git-free so pen copies
+# outside a repository still resolve -- bounded at 8 steps, loud past the bound.
+_fd_root=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
+_fd_steps=0
+while [ ! -d "$_fd_root/rishi/bin" ] || [ ! -d "$_fd_root/tools/fixtures" ]; do
+  _fd_steps=$((_fd_steps + 1))
+  if [ "$_fd_steps" -gt 8 ] || [ "$_fd_root" = "/" ] || [ -z "$_fd_root" ]; then
+    echo "$0: no tree root within 8 steps (needs rishi/bin and tools/fixtures)" >&2
+    exit 2
+  fi
+  _fd_root=$(dirname "$_fd_root")
+done
 # The seated bound, read from the law rather than spelled here. One reading, one home (REDS %199).
-max_bytes=$(sh "$(dirname "$0")/living_pin_max_bytes.sh")
+max_bytes=$(sh "$_fd_root/tools/fixtures/l/living_pin_max_bytes.sh")
 echo "living_pin_max_bytes=$max_bytes"
 if [ "$bytes" -gt "$max_bytes" ]; then
   echo "detail: ledger past the living-pin bound; fold closed seasons to archive"

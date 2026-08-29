@@ -35,7 +35,21 @@ set -u
 
 # One dialect for both piers: xargs_lines / xargs_lines_batched run a command over a
 # newline-delimited path list in a spelling GNU and BSD userland both accept.
-. "$(CDPATH= cd "$(dirname "$0")" && pwd)/shell_portable.sh"
+# Root by upward walk (seated 20260828): the letter fold moved this script one
+# directory deeper, and fixed ../.. depth arithmetic is what broke. The walk finds
+# the first ancestor holding rishi/bin and tools/fixtures -- git-free so pen copies
+# outside a repository still resolve -- bounded at 8 steps, loud past the bound.
+_fd_root=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
+_fd_steps=0
+while [ ! -d "$_fd_root/rishi/bin" ] || [ ! -d "$_fd_root/tools/fixtures" ]; do
+  _fd_steps=$((_fd_steps + 1))
+  if [ "$_fd_steps" -gt 8 ] || [ "$_fd_root" = "/" ] || [ -z "$_fd_root" ]; then
+    echo "$0: no tree root within 8 steps (needs rishi/bin and tools/fixtures)" >&2
+    exit 2
+  fi
+  _fd_root=$(dirname "$_fd_root")
+done
+. "$_fd_root/tools/fixtures/s/shell_portable.sh"
 
 # The ratchet's ceiling only ever falls. Measured 20260823: 58 tracked shebang files sat at
 # 100644 with nothing invoking any of them directly. Lowered to 57 on 20260824.112806, when a
