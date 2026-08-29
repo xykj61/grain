@@ -62,6 +62,10 @@ pub extern fn CGBitmapContextCreate(data: ?*anyopaque, width: usize, height: usi
 pub extern fn CGBitmapContextCreateImage(context: ?*anyopaque) ?*anyopaque;
 pub extern fn CGContextSetRGBFillColor(context: ?*anyopaque, red: f64, green: f64, blue: f64, alpha: f64) void;
 pub extern fn CGContextFillRect(context: ?*anyopaque, rect: CGRect) void;
+pub extern fn CGContextDrawImage(context: ?*anyopaque, rect: CGRect, image: ?*anyopaque) void;
+// Core Foundation's one release call, so a probe that makes a CG object per draw can also let it
+// go per draw -- a bounded loop is bounded in objects as well as in turns.
+pub extern fn CFRelease(cf: ?*anyopaque) void;
 
 /// The one cast, in the one place. Every caller reaches a message through a verified selector.
 pub fn send(comptime Fn: type) Fn {

@@ -1,0 +1,330 @@
+//! tools/rye/macos_resize_scale_probe.rye -- resize and retina backing scale reach the grid as a
+//! real cell-count change, in a Rye view class the platform calls back.
+//!
+//! Rung: LOCA -- the grid that follows the window (20260829.002129)
+//!
+//! WHY THIS PROBE EXISTS. Rung one proved AppKit dispatches drawRect: into a Rye function on the
+//! platform's own schedule. What it refused to claim was geometry: a real backend's grid is a
+//! FUNCTION of the surface -- points times backing scale, divided by the glyph cell -- and this
+//! rung proves that function live. Every draw derives its column and row counts from the view's
+//! own bounds and the window's backing scale, builds Brushstroke's own Skate grid at exactly
+//! those counts, and rasterizes it; then the window is resized out from under the view, and the
+//! platform's next display pass arrives at a DIFFERENT cell count, computed the same way.
+//!
+//! WHAT IT PROVES, on metal: the declared drawRect: encoding matches the superclass's own record
+//! before the add; the backing scale is read from the window and enters the cell arithmetic (the
+//! expected counts below are computed from it, and asserted); a programmatic setContentSize:
+//! reaches the Rye drawRect: through the platform's display machinery as a real cell-count
+//! change -- at least two distinct grid geometries over the run, each matching its own expected
+//! arithmetic; and the grid at every geometry is a real Skate grid whose rasterizer lit pixels.
+//!
+//! WHAT IT DOES NOT PROVE. Live drag-resize by a human hand (the probe resizes
+//! programmatically; the display path is the same), a display link, frame pacing, IME, or a
+//! bundle. Nothing about SwiftUI, which stays the one surface Rye cannot reach.
+//!
+//! BOTH SIDES. The new gate on this rung is the cell bound: a surface asking for more columns
+//! than the named ceiling is REFUSED before any grid is allocated. `PROBE_PROVE_RED=1` asks for
+//! exactly that and must die at the gate (exit 134), where the ordinary run passes the same gate
+//! at every draw.
+//!
+//! Build and run:
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build tools/rye/macos_resize_scale_probe.rye \
+//!     -femit-bin=tools/.build/macos_resize_scale_probe -lobjc -framework Cocoa -framework CoreGraphics
+//!   tools/.build/macos_resize_scale_probe
+//!   PROBE_PROVE_RED=1 tools/.build/macos_resize_scale_probe   # the cell-bound gate, refusing side
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const c = std.c;
+
+const objc = @import("objc_seam.rye");
+const skate = @import("skate_grid.rye");
+
+// The window's two lives, in points. The resize is the experiment: the second size must produce
+// a different cell count at any backing scale this probe accepts.
+const start_w_points: u32 = 384;
+const start_h_points: u32 = 240;
+const resized_w_points: u32 = 560;
+const resized_h_points: u32 = 320;
+
+// The grid's ceilings, and the surface sized to hold the largest lawful grid. At the accepted
+// scale ceiling (4.0) the resized window asks 280 columns of the bound below -- refused -- so
+// the ordinary sizes are chosen to fit at any scale up to 2.0, which is what this bench runs.
+const max_cols: u32 = 160;
+const max_rows: u32 = 64;
+const bytes_per_pixel: u32 = 4;
+const max_surface_bytes: u32 = (max_cols * skate.cell_w) * (max_rows * skate.cell_h) * bytes_per_pixel;
+
+// The bounded stands, in run-loop turns of at most ten milliseconds each.
+const max_event_turns: u32 = 120;
+const max_redraw_turns: u32 = 120;
+const turn_block_seconds: f64 = 0.01;
+
+// Backing scale travels as a whole-number percentage, so the cell arithmetic stays in u32 and
+// the one float in the program is the platform's own answer at the seam.
+const min_scale_x100: u32 = 100;
+const max_scale_x100: u32 = 400;
+
+const style_titled: u64 = 1;
+const style_closable: u64 = 2;
+const style_resizable: u64 = 8;
+const backing_buffered: u64 = 2;
+const activation_policy_regular: i64 = 0;
+const event_mask_any: u64 = std.math.maxInt(u64);
+const alpha_premultiplied_last: u32 = 1;
+
+const view_class_name = "GrainRyeResizeView";
+const draw_rect_types = "v@:{CGRect={CGPoint=dd}{CGSize=dd}}";
+
+const SendVoid = *const fn (objc.Id, objc.Sel) callconv(.c) void;
+const SendBool = *const fn (objc.Id, objc.Sel, bool) callconv(.c) void;
+const SendIdArg = *const fn (objc.Id, objc.Sel, ?objc.Id) callconv(.c) void;
+const SendRectInit = *const fn (objc.Id, objc.Sel, objc.CGRect) callconv(.c) ?objc.Id;
+const SendRect = *const fn (objc.Id, objc.Sel) callconv(.c) objc.CGRect;
+const SendSizeArg = *const fn (objc.Id, objc.Sel, objc.CGSize) callconv(.c) void;
+const SendF64 = *const fn (objc.Id, objc.Sel) callconv(.c) f64;
+const SendPtrRet = *const fn (objc.Id, objc.Sel) callconv(.c) ?*anyopaque;
+const SendNextEvent = *const fn (objc.Id, objc.Sel, u64, ?objc.Id, ?objc.Id, bool) callconv(.c) ?objc.Id;
+const SendClassDouble = *const fn (objc.Class, objc.Sel, f64) callconv(.c) ?objc.Id;
+
+// The callback's state, in the program's own named variables. The surface and arena are global
+// because drawRect: arrives on the platform's stack, and TAME wants the big buffers named and
+// bounded rather than growing a frame.
+var scale_x100: u32 = 100;
+var draw_calls: u32 = 0;
+var last_cols: u32 = 0;
+var last_rows: u32 = 0;
+var distinct_geometries: u32 = 0;
+var surface: [max_surface_bytes]u8 = undefined;
+var arena_backing: [1 << 20]u8 = undefined;
+var graphics_context_class: ?objc.Class = null;
+var sel_current_context: objc.Sel = undefined;
+var sel_cg_context: objc.Sel = undefined;
+var sel_bounds: objc.Sel = undefined;
+
+/// Points become backing-store pixels through the platform's own scale, kept as a percentage so
+/// the arithmetic stays integral.
+fn points_to_px(points: u32) u32 {
+    // invariant: the scale was read from the window and accepted before any conversion.
+    assert(scale_x100 >= min_scale_x100);
+    assert(scale_x100 <= max_scale_x100);
+    return (points * scale_x100) / 100;
+}
+
+/// How many whole cells fit a pixel length -- the one place the grid's size is computed, and the
+/// gate this rung proves from both sides: past the ceiling it refuses before any allocation.
+fn cells_for(px_len: u32, cell_px: u32, max_cells: u32) u32 {
+    // invariant: a cell has real width; a zero divisor is a programming error, never data.
+    assert(cell_px > 0);
+    // invariant: the surface being divided is real.
+    assert(px_len > 0);
+    const cells = px_len / cell_px;
+    if (cells > max_cells) {
+        print("macos-resize-scale: REFUSED -- {d}px asks {d} cells of a ceiling of {d}; nothing was allocated.\n", .{ px_len, cells, max_cells });
+        @panic("resize probe: cell bound exceeded; refused before allocation");
+    }
+    // invariant: at least one cell survives the division, so a grid is never empty.
+    assert(cells >= 1);
+    return cells;
+}
+
+/// The Rye function AppKit calls. Every arrival derives the grid from the surface it is handed,
+/// so a resize IS a cell-count change rather than a stretched picture.
+fn draw_rect(self: objc.Id, sel: objc.Sel, dirty: objc.CGRect) callconv(.c) void {
+    _ = sel;
+    _ = dirty;
+    // invariant: the platform hands the receiver it registered, never nil.
+    assert(@intFromPtr(self) != 0);
+    // invariant: the count of platform calls stays inside its named width.
+    assert(draw_calls < std.math.maxInt(u32));
+    draw_calls += 1;
+
+    const bounds = objc.send(SendRect)(self, sel_bounds);
+    // invariant: a view being drawn has real area.
+    assert(bounds.size.width > 0);
+    assert(bounds.size.height > 0);
+
+    const px_w = points_to_px(@intFromFloat(bounds.size.width));
+    const px_h = points_to_px(@intFromFloat(bounds.size.height));
+    const cols = cells_for(px_w, skate.cell_w, max_cols);
+    const rows = cells_for(px_h, skate.cell_h, max_rows);
+    if (cols != last_cols or rows != last_rows) {
+        distinct_geometries += 1;
+        last_cols = cols;
+        last_rows = rows;
+        print("macos-resize-scale: geometry {d} -- {d}x{d} cells from {d}x{d}px at scale_x100={d}\n", .{ distinct_geometries, cols, rows, px_w, px_h, scale_x100 });
+    }
+
+    // Brushstroke's own grid at exactly the derived counts, rasterized by its own code.
+    var fixed = std.heap.FixedBufferAllocator.init(arena_backing[0..]);
+    var grid = skate.Grid.init(fixed.allocator(), cols, rows) catch {
+        @panic("resize probe: grid allocation failed inside a named arena");
+    };
+    grid.set_palette(1, .{ .r = 255, .g = 210, .b = 120 });
+    grid.put_line(0, "the grid follows the window");
+    grid.put_line(2, "cols x rows derive from bounds x scale");
+    grid.put_color_run(0, 0, cols, 1);
+
+    const surf_w = cols * skate.cell_w;
+    const surf_h = rows * skate.cell_h;
+    const surf_bytes = surf_w * surf_h * bytes_per_pixel;
+    // invariant: the largest lawful grid fits the named surface, so the slice below is whole.
+    assert(surf_bytes <= max_surface_bytes);
+    grid.rasterize(surface[0..surf_bytes], surf_w * bytes_per_pixel, @intCast(surf_w), @intCast(surf_h), .{ .r = 18, .g = 18, .b = 24 }, .{ .r = 235, .g = 235, .b = 235 }, 1);
+    const lit = grid.lit_pixel_count(surface[0..surf_bytes], surf_w * bytes_per_pixel, @intCast(surf_w), @intCast(surf_h), .{ .r = 18, .g = 18, .b = 24 });
+    // invariant: the rasterizer lit real glyph pixels at this geometry rather than only clearing.
+    assert(lit > 0);
+
+    const current = objc.send(objc.SendClassId)(graphics_context_class.?, sel_current_context);
+    // invariant: inside drawRect: the platform always has a current graphics context.
+    assert(current != null);
+    const context = objc.send(SendPtrRet)(current.?, sel_cg_context);
+    // invariant: a current context always wraps a Core Graphics context.
+    assert(context != null);
+
+    const space = objc.CGColorSpaceCreateDeviceRGB() orelse return;
+    const bitmap = objc.CGBitmapContextCreate(@ptrCast(&surface), surf_w, surf_h, 8, surf_w * bytes_per_pixel, space, alpha_premultiplied_last) orelse return;
+    const image = objc.CGBitmapContextCreateImage(bitmap) orelse return;
+    objc.CGContextDrawImage(context, .{ .origin = .{ .x = 0, .y = 0 }, .size = bounds.size }, image);
+    // A CG object made per draw is released per draw, so the bounded stand is bounded in memory.
+    objc.CFRelease(image);
+    objc.CFRelease(bitmap);
+    objc.CFRelease(space);
+}
+
+/// One pooled turn of the platform's own loop: block briefly, dispatch what arrives.
+fn pump_turn(shared: objc.Id, date_class: objc.Class, sel_until: objc.Sel, sel_next: objc.Sel, sel_send_event: objc.Sel, mode: objc.Id) !void {
+    // invariant: the application and the mode string are real for every turn.
+    assert(@intFromPtr(shared) != 0);
+    assert(@intFromPtr(mode) != 0);
+    const pool = objc.objc_autoreleasePoolPush();
+    const until = objc.send(SendClassDouble)(date_class, sel_until, turn_block_seconds) orelse return error.DateAbsent;
+    const event = objc.send(SendNextEvent)(shared, sel_next, event_mask_any, until, mode, true);
+    if (event) |got| objc.send(SendIdArg)(shared, sel_send_event, got);
+    objc.objc_autoreleasePoolPop(pool);
+}
+
+pub fn main() !void {
+    print("macos-resize-scale: Language EN -- the grid follows the window; AppKit calls a Rye drawRect: at every size.\n", .{});
+
+    const prove_red = c.getenv("PROBE_PROVE_RED") != null;
+
+    const app_class = objc.objc_getClass("NSApplication") orelse return error.AppKitAbsent;
+    const window_class = objc.objc_getClass("NSWindow") orelse return error.NSWindowAbsent;
+    const string_class = objc.objc_getClass("NSString") orelse return error.NSStringAbsent;
+    const date_class = objc.objc_getClass("NSDate") orelse return error.NSDateAbsent;
+    const view_class = objc.objc_getClass("NSView") orelse return error.NSViewAbsent;
+    graphics_context_class = objc.objc_getClass("NSGraphicsContext") orelse return error.GraphicsContextAbsent;
+
+    if (prove_red) {
+        print("macos-resize-scale: prove-red -- asking for a grid past the named cell bound.\n", .{});
+        _ = cells_for(1_000_000, skate.cell_w, max_cols);
+        @panic("resize probe: prove-red got a grid past the bound, which means the gate does not gate");
+    }
+
+    // Every selector proven against the loaded framework before a single message goes out.
+    const sel_shared = objc.verify(app_class, "sharedApplication", "@@:", true);
+    const sel_policy = objc.verify(app_class, "setActivationPolicy:", "B@:q", false);
+    const sel_finish = objc.verify(app_class, "finishLaunching", "v@:", false);
+    const sel_activate = objc.verify(app_class, "activateIgnoringOtherApps:", "v@:B", false);
+    const sel_next = objc.verify(app_class, "nextEventMatchingMask:untilDate:inMode:dequeue:", "@@:Q@@B", false);
+    const sel_send_event = objc.verify(app_class, "sendEvent:", "v@:@", false);
+    const sel_alloc = objc.verify(window_class, "alloc", "@@:", true);
+    const sel_init = objc.verify(window_class, "initWithContentRect:styleMask:backing:defer:", "@@:{CGRect={CGPoint=dd}{CGSize=dd}}QQB", false);
+    const sel_title = objc.verify(window_class, "setTitle:", "v@:@", false);
+    const sel_set_content = objc.verify(window_class, "setContentView:", "v@:@", false);
+    const sel_front = objc.verify(window_class, "makeKeyAndOrderFront:", "v@:@", false);
+    const sel_number = objc.verify(window_class, "windowNumber", "q@:", false);
+    const sel_set_size = objc.verify(window_class, "setContentSize:", "v@:{CGSize=dd}", false);
+    const sel_backing = objc.verify(window_class, "backingScaleFactor", "d@:", false);
+    const sel_view_init = objc.verify(view_class, "initWithFrame:", "@@:{CGRect={CGPoint=dd}{CGSize=dd}}", false);
+    const sel_utf8 = objc.verify(string_class, "stringWithUTF8String:", "@@:r*", true);
+    const sel_until = objc.verify(date_class, "dateWithTimeIntervalSinceNow:", "@@:d", true);
+    sel_current_context = objc.verify(graphics_context_class, "currentContext", "@@:", true);
+    sel_cg_context = objc.verify(graphics_context_class, "CGContext", "^{CGContext=}@:", false);
+    sel_bounds = objc.verify(view_class, "bounds", "{CGRect={CGPoint=dd}{CGSize=dd}}@:", false);
+    print("macos-resize-scale: seam verified -- 20 framework selectors match the loaded encodings.\n", .{});
+
+    // The independent authority for the declared encoding, before the add (rung one's lesson).
+    _ = objc.verify(view_class, "drawRect:", draw_rect_types, false);
+    const my_class = objc.allocate_class(view_class, view_class_name);
+    _ = objc.add_method(my_class, "drawRect:", objc.imp(&draw_rect), draw_rect_types);
+    objc.objc_registerClassPair(my_class);
+    const found = objc.objc_getClass(view_class_name);
+    // invariant: a registered class answers by name, exactly as a framework class does.
+    assert(found != null);
+    // invariant: the name resolves to the very class this probe allocated, never a shadow.
+    assert(found.? == my_class);
+    _ = objc.verify(my_class, "drawRect:", draw_rect_types, false);
+    const sel_view_alloc = objc.verify(my_class, "alloc", "@@:", true);
+    print("macos-resize-scale: class {s} registered; drawRect: checked against the superclass before the add.\n", .{view_class_name});
+
+    const shared = objc.send(objc.SendClassId)(app_class, sel_shared) orelse return error.SharedApplicationAbsent;
+    _ = objc.send(objc.SendIdI64)(shared, sel_policy, activation_policy_regular);
+
+    const frame = objc.CGRect{
+        .origin = .{ .x = 200, .y = 200 },
+        .size = .{ .width = @floatFromInt(start_w_points), .height = @floatFromInt(start_h_points) },
+    };
+    const raw_view = objc.send(objc.SendClassId)(my_class, sel_view_alloc) orelse return error.ViewAllocAbsent;
+    const view = objc.send(SendRectInit)(raw_view, sel_view_init, .{ .origin = .{ .x = 0, .y = 0 }, .size = frame.size }) orelse return error.ViewInitAbsent;
+    const raw_window = objc.send(objc.SendClassId)(window_class, sel_alloc) orelse return error.WindowAllocAbsent;
+    const window = objc.send(objc.SendWindowInit)(raw_window, sel_init, frame, style_titled | style_closable | style_resizable, backing_buffered, false) orelse return error.WindowInitAbsent;
+    const title = objc.send(objc.SendClassStr)(string_class, sel_utf8, "Grain -- the grid follows the window") orelse return error.TitleAbsent;
+    objc.send(SendIdArg)(window, sel_title, title);
+    objc.send(SendIdArg)(window, sel_set_content, view);
+
+    // The backing scale, read from the window BEFORE any draw so every geometry derives from it.
+    const scale = objc.send(SendF64)(window, sel_backing);
+    // invariant: the platform reports a real magnification.
+    assert(scale > 0);
+    scale_x100 = @intFromFloat(@round(scale * 100.0));
+    // invariant: the scale is one this probe's arithmetic accepts, or the run stops here.
+    assert(scale_x100 >= min_scale_x100);
+    assert(scale_x100 <= max_scale_x100);
+    print("macos-resize-scale: backing scale_x100={d}\n", .{scale_x100});
+
+    // invariant: no draw has happened before the window is shown, so every count is the display
+    // machinery's doing.
+    assert(draw_calls == 0);
+    objc.send(SendIdArg)(window, sel_front, null);
+    objc.send(SendBool)(shared, sel_activate, true);
+    objc.send(SendVoid)(shared, sel_finish);
+    const number = objc.send(objc.SendIdInteger)(window, sel_number);
+    // invariant: an ordered-front window carries a real window number.
+    assert(number > 0);
+
+    const mode = objc.send(objc.SendClassStr)(string_class, sel_utf8, "kCFRunLoopDefaultMode") orelse return error.ModeAbsent;
+
+    var turn: u32 = 0;
+    while (turn < max_event_turns) : (turn += 1) {
+        try pump_turn(shared, date_class, sel_until, sel_next, sel_send_event, mode);
+        if (draw_calls >= 1) break;
+    }
+    // invariant: the platform drew the first geometry.
+    assert(draw_calls >= 1);
+    // invariant: the first geometry is the start size's own arithmetic, scale included.
+    assert(last_cols == cells_for(points_to_px(start_w_points), skate.cell_w, max_cols));
+    assert(last_rows == cells_for(points_to_px(start_h_points), skate.cell_h, max_rows));
+    const after_first = draw_calls;
+
+    // The experiment: resize the window out from under the view, and stand in the loop until the
+    // platform's own display pass arrives at the new geometry.
+    objc.send(SendSizeArg)(window, sel_set_size, .{ .width = @floatFromInt(resized_w_points), .height = @floatFromInt(resized_h_points) });
+    var redraw_turn: u32 = 0;
+    while (redraw_turn < max_redraw_turns) : (redraw_turn += 1) {
+        try pump_turn(shared, date_class, sel_until, sel_next, sel_send_event, mode);
+        if (draw_calls > after_first and distinct_geometries >= 2) break;
+    }
+    // invariant: the resize reached the Rye function as a draw, not only as a frame change.
+    assert(draw_calls > after_first);
+    // invariant: the resize reached the GRID -- a second distinct cell geometry, the rung's claim.
+    assert(distinct_geometries >= 2);
+    // invariant: the second geometry is the resized size's own arithmetic, scale included.
+    assert(last_cols == cells_for(points_to_px(resized_w_points), skate.cell_w, max_cols));
+    assert(last_rows == cells_for(points_to_px(resized_h_points), skate.cell_h, max_rows));
+
+    print("macos-resize-scale: draw_calls={d} geometries={d} final={d}x{d} cells\n", .{ draw_calls, distinct_geometries, last_cols, last_rows });
+    print("macos-resize-scale: GREEN -- resize and backing scale reached the grid as a real cell-count change; no Swift linked.\n", .{});
+}
