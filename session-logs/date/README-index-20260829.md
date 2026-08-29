@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260829.160959` | [the wall sized to a quieter Codex](20260829/20260829-160959_the-wall-sized-to-a-quieter-codex.kyri) | Mind's crash diagnosed to the byte: stderr 1048576 = max_log_bytes; Dream absorbs, Mind refuses |
 | `20260829.160207` | [the ledger reads clean](20260829/20260829-160207_the-ledger-reads-clean.kyri) | %337 BOOKED, %338 CLOSED where they lie; open_rows=0 across the spine, ceiling falls to 0 |
 | `20260829.155341` | [the flag that said two things](20260829/20260829-155341_the-flag-that-said-two-things.kyri) | door B lands: BOOKED seats, eight rows drain, the pin 24828 -> 5388; deadlock over |
 | `20260829.153150` | [the water row tastes the loops](20260829/20260829-153150_the-water-row-tastes-the-loops.kyri) | launcher audit answered; %344 books the charter that outran itself; fn-drift guard GREEN 12/12 |
