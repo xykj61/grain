@@ -58,14 +58,15 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `42179a3ad8` -- this round's own.
+**Git nib:** `c22c389921` -- this round's own.
 
-**Now.** **A witness named its build in a comment, and a comment builds nothing.**
+**Now.** **A guard on no clock guards nothing, and three were born that way today.**
 
-**`%334`.** `comlink/bin/` is gitignored, so two Comlink witnesses proved nothing on a clone;
-both carry the build their sibling already had, GREEN with the binaries deleted first.
-`witness_own_build` ratchets `unbuilt_pairs` at **46** over 35 witnesses, 21 pen behaviors both
-ways, `absent_now=14` reported. Comlink's four proofs are named by no runner in the tree.
+**`witness_reach` red at 1115 against 1113.** Comlink's `topology`, `turn_route` and
+`handshake_turn` take `tier lap` rows -- 2s each cold, build included -- so the reading falls to
+**1112**, ceiling too. That pays another lane's debt: `tally_bud`, `counsel_census` and
+`waymark_rung_drift` were born unclocked. `r1_dual_stack` stays off: its IPv6 leg is a
+CAPABILITY the `host` word cannot say.
 
 **MANY HANDS + skills** (granted `20260828`): launches may manage multiple CLI agents; custody
 stays MANUAL and each checkout keeps one writer. Root `SKILL.md` opens the three skills. Every
@@ -209,7 +210,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260828.213503` | Two Comlink witnesses build what they run; the own-build meter seats | [log](../session-logs/date/20260828/20260828-213503_the-build-that-lived-in-a-comment.kyri) |
+| `20260828.231614` | Comlink's three pure proofs take a clock; the reach ceiling falls to 1112 | [log](../session-logs/date/20260828/20260828-231614_the-guard-on-no-clock.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line here until the next replaces it.
 

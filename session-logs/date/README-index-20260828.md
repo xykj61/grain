@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260828.231614` | [the guard on no clock](20260828/20260828-231614_the-guard-on-no-clock.kyri) | three Comlink proofs take a lap row; reach 1115 -> 1112 |
 | `20260828.222500` | [the journey that opens on measurement](20260828/20260828-222500_the-journey-that-opens-on-measurement.kyri) | LOCA seated, five quests named; a reading on Mind |
 | `20260828.222017` | [the grid that crossed a platform](20260828/20260828-222017_the-grid-that-crossed-a-platform.kyri) | Brushstroke rasterizer on AppKit: 16,268 lit pixels, the pump answering |
 | `20260828.220813` | [the seam that checks itself](20260828/20260828-220813_the-seam-that-checks-itself.kyri) | the challenge found the real hole; the objc seam now verifies against the loaded framework |
