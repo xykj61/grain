@@ -3,12 +3,13 @@ stamp 20260826.013711
 voice Kyri
 corpus_digest 615dbeb79c631115505ba71713aabdae243dcf4c1ae77109f325583a2c0e282cf6fc009d54802a268f04e3c170f705f4bd7203e018f00f5c443ae5e79808d8cc
 corpus_size 5526
-seal dc5442c7bdba4f0daecb4f1106a0d42a64f3673a3da06e36aa7fa1f742f9230e4bf57efb894078f72c4a1719e150103c3c53cfa58466464890b4febd00e61ce9
+seal d9b38999995c172e43bdca483759b7bb3a129eafcc8a4da10ca6e93a81cbb900c4cbed60eac81bc0685a2a195c47043b39d33af6061b77d7c1484ed291ed1f59
 # The immutable, self-verifying registry of every waymark ever drawn (living, retired, abandoned, transient, hand-seated).
 # Each corpus-drawn row is proven on metal: SHA3-512(input)[:8] as hex, mod corpus_size, +1 = index; corpus[index] = mark.
 # The seal is the SHA3-512 of the sealed body below (from the marker line, exclusive). Any edit breaks the seal.
 # Witness: tools/w/waymark_registry_witness.rish -- verifies the seal AND re-derives every corpus mark. Corpus pin: tools/fixtures/f/flw-four-letter.txt.
 # Re-sealed 20260826.013711: the unit word season molted to chapter in row notes (panchanga seating); body re-sealed.
+# Re-sealed 20260828.222500: LOCA drawn for the macOS native surface journey; body re-sealed.
 # Re-sealed 20260817.224342 under the waymark-elder debride: the five breach-elder rows removed; the registry records only living and hand-seated marks.
 # Re-sealed 20260825.234631: POLE input debrided to hand-seated under the DJINN pseudonym word; the mark keeps its seat.
 # Re-sealed 20260821.023219: DISC seated for the Chapter G SLH-DSA ladder (Keaton's word -- name the arc and start it).
@@ -52,3 +53,4 @@ mark SETU | input (hand-seated) | index 0 | status hand-seated | note USB hearth
 mark SEVA | input (hand-seated) | index 0 | status hand-seated | note viewer; absent from flw
 mark MAND | input (hand-seated) | index 0 | status hand-seated | note the M vane; in flw, excluded from draws
 mark MONA | input (hand-seated) | index 0 | status hand-seated | note prior name of MAND, one season
+mark LOCA | input macos-native-surface-rye-backend | index 2761 | status living | note macOS native surface -- Rye/AppKit backend beside Wayland (drawn 20260828.222500)
