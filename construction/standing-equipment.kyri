@@ -547,3 +547,15 @@ guard fixture_depth
 path tools/f/fixture_depth_witness.rish
 tier lap
 seated 20260828.202325
+
+# witness_own_build -- a witness that runs a gitignored artifact also builds it. comlink/bin/ is
+# ignored, so a clone carries no binary: two Comlink witnesses named their build in a header
+# comment and then invoked the path, and both read GREEN on a bench where an August lap had left
+# binaries behind. Their sibling comlink_topology_witness.rish already carried the repair, so one
+# of three was fixed and nothing counted the other two. `lap` because the scan reads 1,730
+# witnesses in 4.7s on this pier, one awk and one batched check-ignore rather than a call per file.
+
+guard witness_own_build
+path tools/w/witness_own_build_witness.rish
+tier lap
+seated 20260828.213503
