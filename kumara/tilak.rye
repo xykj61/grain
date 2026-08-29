@@ -419,11 +419,15 @@ fn run_selftest() !u8 {
     if (inst.p.version != 1) return error.PointVersionWrong;
     if (tier_of(inst.p.number) != .star) return error.TierWrong;
 
-    // The bind verifies both ways; a tampered bind refuses.
+    // The bind verifies both ways; each signature direction refuses independently.
     if (!verify_bind(&inst.b)) return error.BindDidNotVerify;
-    var bad_bind = inst.b;
-    bad_bind.sig_by_key[0] ^= 0x01;
-    if (verify_bind(&bad_bind)) return error.TamperedBindVerified;
+    var bad_key_signature = inst.b;
+    bad_key_signature.sig_by_key[0] ^= 0x01;
+    if (verify_bind(&bad_key_signature)) return error.TamperedKeySignatureVerified;
+    var bad_keeper_signature = inst.b;
+    bad_keeper_signature.sig_by_keeper[0] ^= 0x01;
+    if (verify_bind(&bad_keeper_signature)) return error.TamperedKeeperSignatureVerified;
+    print("kumara tilak: bind_refusals=2 -- key signature and keeper signature refused independently.\n", .{});
 
     // The turn verifies under the identity key; a bumped counter breaks the signature.
     if (!verify_turn(&inst.t, inst.b.kumara_pubkey)) return error.TurnDidNotVerify;

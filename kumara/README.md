@@ -20,7 +20,7 @@ Kumara is Grain's identity. It begins where trust actually begins — a keypair 
 - **The capabilities** (tend · sow · hand) — the three lendable powers, management · spawn · transfer, each a keeper-signed grant naming exactly one holder. A capability moves by a fresh signed grant, never by copying an old one.
 - **The parent link** (sponsor) — every point has a topology default parent (its d12·d60 sponsor); a child may escape to a chosen one, and that escape is the child's word alone, signed by the child's own key.
 
-All five tilaks are seated, and each carries a signature by its authorizing party: the bind's mutual pair, the turn under the identity key, each capability under the keeper, the sponsor escape under the child. Every claim traces to a signature; every tamper refuses.
+All five tilaks are seated, and each carries a signature by its authorizing party: the bind's mutual pair, the turn under the identity key, each capability under the keeper, the sponsor escape under the child. Every claim traces to a signature; each direction of the mutual bind refuses independently when its signature changes.
 
 ## Template and instance
 
@@ -30,7 +30,7 @@ A **template** is this shape; an **instance** is one filled quintet of tilaks fo
 
 ```
 rye build kumara/tilak.rye -femit-bin=kumara/bin/tilak
-kumara/bin/tilak selftest      # a bind verifies both ways; a tampered bind refuses (diagnostics on stderr)
+kumara/bin/tilak selftest      # a bind verifies both ways; each changed signature refuses (diagnostics on stderr)
 kumara/bin/tilak emit          # print an example instance as Bron facts (data on stdout)
 rishi/bin/rishi run tools/k/kumara_tilak_witness.rish
 ```

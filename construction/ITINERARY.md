@@ -72,11 +72,11 @@ four of eight dead on a wiped bin: `amphora` runs `vessel-core` and `vessel-seal
 stays MANUAL and each checkout keeps one writer. Root `SKILL.md` opens the three skills. Every
 clone seats `ww` (`grain-ww/grain`, gate %1) and `.git/ssh_config_jail`.
 
-**Still open, one structural:** the REDS pin sits within a few bytes of **24,576** and every row
-reads OPEN, so `reds_fold.sh` has nothing lawful to fold; four reds went unbooked on `20260828`
-for that reason alone -- a row wants the seat the fold tool leaves open. **Width:** `glow/rune_shape.rye` publishes `usize` in 5 fields and 5
-accessors; 59 gate fixtures await his word. **Mind's:** the reconnect patch in grain-mind's own
-stash. `%281`/`%291` stay his, as does this pier's `enclosure.conf`, still pinning two.
+**Still open:** the REDS pin is near **24,576** bytes and every row is OPEN, so four reds await a
+lawful fold seat. **Width:** `glow/rune_shape.rye` publishes `usize` in 5 fields and 5 accessors;
+59 gate fixtures await his word. **Mind's:** the reconnect stash, `%281`/`%291`, and this pier's
+two `enclosure.conf` pins. **Sibling finds:** Sound's SHA-3 symlink double-counts nine comment
+characters; Hush's policy scan refuses while its state scan is green.
 **Seats:** whether the roster's own witness can be rostered; whether a `mask` may soften the `map`
 it covers; and a capability tier for `comlink_r1_dual_stack`'s IPv6 leg.
 
@@ -210,7 +210,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260829.013811` | Amphora's eight build what they run; REDS %337 | [log](../session-logs/date/20260829/20260829-013811_the-meter-that-counts-one-call.kyri) |
+| `20260829.023652` | Kumara's bind refuses both directions | [log](../session-logs/date/20260829/20260829-023652_the-bind-refuses-both-directions.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line here until the next replaces it.
 

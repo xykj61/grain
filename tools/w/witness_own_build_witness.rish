@@ -14,7 +14,7 @@
 # repair without a meter looks like a month later. This is the meter.
 #
 # WHAT IS PROVEN, on metal.
-#   The unbuilt-pair reading stands under a ceiling that only falls: 21 pairs across 20 witnesses
+#   The unbuilt-pair reading stands under a ceiling that only falls: 20 pairs across 19 witnesses
 #   invoke a gitignored artifact their own file never builds, down from 38 when Amphora's eight
 #   took all three of their own builds -- and four of the eight needed a build this scan does not
 #   count, because amphora shells out to vessel-core and vessel-seal as siblings at runtime.
@@ -46,7 +46,7 @@ let scan = run ["sh" "tools/fixtures/w/witness_own_build_scan.sh"]
 assert scan.ok else "own-build: a witness invokes an artifact it never builds -- read the scan's own lines"
 say scan.out
 assert scan.out contains "verdict=ok" else "own-build: the scan must balance before it is believed"
-assert scan.out contains "unbuilt_pairs=21 " else "own-build: the ratchet reads 21; lower the ceiling when a repair lands"
+assert scan.out contains "unbuilt_pairs=20 " else "own-build: the ratchet reads 20; lower the ceiling when a repair lands"
 assert scan.out contains "self_built=" else "own-build: the credited pairs must be counted, never assumed"
 say "field GREEN -- the unbuilt reading stands under a ceiling that only falls"
 
