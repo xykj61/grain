@@ -6,10 +6,12 @@
 # reader validates (member+, roll, stamp, next), carrying the health line the recursion
 # batons can hold.
 #
-# Build first (the vendored toolchain):
-#   mkdir -p sundial/bin
-#   RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build sundial/sundial.rye -femit-bin=sundial/bin/sundial
 #   rishi/bin/rishi run tools/s/sundial_witness.rish
+
+let mkdir = run ["mkdir" "-p" "sundial/bin"]
+assert mkdir.ok else "sundial bin directory must be writable"
+let build = run ["env" "RYE_ZIG=vendor/zig-toolchain/zig" "rye/bin/rye" "build" "sundial/sundial.rye" "-femit-bin=sundial/bin/sundial"]
+assert build.ok else "sundial witness must build the binary it runs"
 
 # The module's own selftest -- counts, percent, all-green, empty-safe.
 let st = run ["sundial/bin/sundial" "selftest"]
@@ -17,6 +19,7 @@ assert st.ok else "sundial selftest must exit 0"
 assert (st.err contains "GREEN") else "selftest must report GREEN"
 assert (st.err contains "3 of 4 green") else "the face must show three of four green"
 assert (st.err contains "75%") else "three of four green must read 75 percent"
+assert (st.err contains "SourcelessReading") else "a sourceless reading must be refused by name"
 
 # The emitted health face is a valid Ledgerworks roll-up baton.
 let em = run ["sundial/bin/sundial" "emit"]
@@ -26,5 +29,8 @@ assert (em.out contains "archetype ledgerworks") else "the roll-up must declare 
 assert (em.out contains "roll 4 of 5 green") else "the roll-up must aggregate its members"
 assert (em.out contains "health 80%") else "the health line must carry the percent"
 assert (em.out contains "fascia 41") else "the health line must carry the fascia metric"
+assert (em.out contains "unit witness-status") else "every member must carry its unit"
+assert (em.out contains "date 20260829") else "every member must carry its date"
+assert (em.out contains "source kumara-tilak") else "every member must carry its source"
 
-say "GREEN: sundial witness — the health of the day at a glance, emitted as a Ledgerworks roll-up."
+say "GREEN: sundial witness -- the health of the day at a glance, emitted as a Ledgerworks roll-up."

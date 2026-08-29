@@ -21,16 +21,21 @@ const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 
-pub const sundial_version = "20260810.104500";
+pub const sundial_version = "20260829.043703";
 
 // A sundial holds at most this many module readings -- the tree is bounded, named once.
 pub const max_modules: u32 = 256;
 
-/// One reading: a module's name and whether its witness stands green.
+/// One reading, with enough provenance to understand and reproduce it.
 pub const Reading = struct {
     name: []const u8,
     green: bool,
+    unit: []const u8,
+    date: []const u8,
+    source: []const u8,
 };
+
+pub const AddError = error{SourcelessReading};
 
 /// The health face: a bounded set of readings and the tree's fascia metric.
 pub const Sundial = struct {
@@ -45,11 +50,25 @@ pub const Sundial = struct {
         return .{ .readings = undefined, .count = 0, .fascia = fascia };
     }
 
-    /// Record one module's witness status. Bounded by max_modules.
-    pub fn add(self: *Sundial, name: []const u8, green: bool) void {
+    /// Record one sourced module status. Bounded by max_modules.
+    pub fn add(
+        self: *Sundial,
+        name: []const u8,
+        green: bool,
+        unit: []const u8,
+        date: []const u8,
+        source: []const u8,
+    ) AddError!void {
+        if (source.len == 0) return error.SourcelessReading;
         // invariant: the face never holds more readings than its bound.
         assert(self.count < max_modules);
-        self.readings[self.count] = .{ .name = name, .green = green };
+        self.readings[self.count] = .{
+            .name = name,
+            .green = green,
+            .unit = unit,
+            .date = date,
+            .source = source,
+        };
         self.count += 1;
         // invariant: the count climbed by one and stays within the bound.
         assert(self.count <= max_modules);
@@ -82,10 +101,10 @@ pub const Sundial = struct {
 
 fn run_selftest() !u8 {
     var s = Sundial.init(41); // a fascia reading of 41
-    s.add("kumara", true);
-    s.add("vault", true);
-    s.add("basin", true);
-    s.add("mandate", false); // one witness red
+    try s.add("kumara", true, "witness-status", "20260829", "kumara-tilak");
+    try s.add("vault", true, "witness-status", "20260829", "vault-split");
+    try s.add("basin", true, "witness-status", "20260829", "basin-suite");
+    try s.add("mandate", false, "witness-status", "20260829", "mandate-suite");
 
     if (s.count != 4) return error.CountWrong;
     if (s.green_count() != 3) return error.GreenCountWrong;
@@ -99,15 +118,23 @@ fn run_selftest() !u8 {
 
     // A fully-green sundial reads all-green and 100 percent.
     var whole = Sundial.init(100);
-    whole.add("scribe", true);
-    whole.add("sundial", true);
+    try whole.add("scribe", true, "witness-status", "20260829", "scribe-reader");
+    try whole.add("sundial", true, "witness-status", "20260829", "sundial-selftest");
     if (!whole.all_green()) return error.NotAllGreen;
     if (whole.health_percent() != 100) return error.WholeNotFull;
 
-    print("sundial: four modules read — three green, one red; the face shows 3 of 4 green, health 75%, fascia 41.\n", .{});
+    var refused = Sundial.init(0);
+    if (refused.add("unknown", true, "witness-status", "20260829", "")) |_| {
+        return error.SourcelessReadingAccepted;
+    } else |err| {
+        if (err != error.SourcelessReading) return err;
+    }
+
+    print("sundial: four modules read -- three green, one red; the face shows 3 of 4 green, health 75%, fascia 41.\n", .{});
     print("sundial: an empty face divides by zero never (reads 0), a whole face reads all-green at 100%.\n", .{});
+    print("sundial: a sourceless reading is refused as SourcelessReading.\n", .{});
     print("sundial: version {s}\n", .{sundial_version});
-    print("GREEN: sundial — the health of the day at a glance: green of total, the health percent, the fascia, and an honest all-green.\n", .{});
+    print("GREEN: sundial -- the health of the day at a glance: green of total, the health percent, the fascia, and an honest all-green.\n", .{});
     return 0;
 }
 
@@ -128,17 +155,24 @@ fn status(green: bool) []const u8 {
 /// Emit the health face as a Ledgerworks roll-up baton the Scribe reader validates.
 fn run_emit(io: std.Io) !u8 {
     var s = Sundial.init(41);
-    s.add("kumara", true);
-    s.add("vault", true);
-    s.add("basin", true);
-    s.add("scribe", true);
-    s.add("mandate", false);
+    try s.add("kumara", true, "witness-status", "20260829", "kumara-tilak");
+    try s.add("vault", true, "witness-status", "20260829", "vault-split");
+    try s.add("basin", true, "witness-status", "20260829", "basin-suite");
+    try s.add("scribe", true, "witness-status", "20260829", "scribe-reader");
+    try s.add("mandate", false, "witness-status", "20260829", "mandate-suite");
     put_line(io, "format baton-v1\n", .{});
     put_line(io, "archetype ledgerworks\n", .{});
     put_line(io, "stamp {s}\n", .{sundial_version});
     var i: u32 = 0;
     while (i < s.count) : (i += 1) {
-        put_line(io, "member {s} {s}\n", .{ s.readings[i].name, status(s.readings[i].green) });
+        const reading = s.readings[i];
+        put_line(io, "member {s} {s} unit {s} date {s} source {s}\n", .{
+            reading.name,
+            status(reading.green),
+            reading.unit,
+            reading.date,
+            reading.source,
+        });
     }
     put_line(io, "roll {d} of {d} green\n", .{ s.green_count(), s.count });
     put_line(io, "health {d}% fascia {d}\n", .{ s.health_percent(), s.fascia });

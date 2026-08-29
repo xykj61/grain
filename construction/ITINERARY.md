@@ -58,13 +58,14 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `43f9db0ac5` -- this round's own.
+**Git nib:** `380a85ae43` -- this round's parent, already on `xy`.
 
-**Now.** **A wall armed at a verb guards that verb.**
+**Now.** **A health reading carries the path back to its witness.**
 
-**REDS %339** -- `12d675d65e` shipped both generated pages stale; that round closed by
-cherry-pick, and git runs `pre-commit` for two paths of five; the hook asks *did my sibling run*. **%340** -- a census followed 56 symlinks; `[ -L ]` skips them, ceiling **4333->3794**.
-Both renumbered twice on rebases meeting published rows.
+**Sundial readings carry provenance.** Each status carries unit, date, and source; an empty source
+refuses as `SourcelessReading`. Its witness builds what it runs, and the unbuilt floor falls
+**20 -> 19**. Comlink's hosted wire is GREEN; its device half waits on absent
+`qemu-system-riscv64`.
 
 **MANY HANDS + skills** (granted `20260828`): launches may manage multiple CLI agents; custody
 stays MANUAL, each checkout keeps one writer. Root `SKILL.md` opens the three. Every clone seats
@@ -210,7 +211,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260829.013539` | The commit no hook saw -- REDS %339 and %340 booked, closed | [log](../session-logs/date/20260829/20260829-013539_the-commit-no-hook-saw.kyri) |
+| `20260829.043703` | Sundial readings carry provenance | [log](../session-logs/date/20260829/20260829-043703_sundial-readings-carry-provenance.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line here until the next replaces it.
 
