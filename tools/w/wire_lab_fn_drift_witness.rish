@@ -1,0 +1,39 @@
+# tools/w/wire_lab_fn_drift_witness.rish -- the wire-lab fn macro stays one macro.
+#
+#   rishi/bin/rishi run tools/w/wire_lab_fn_drift_witness.rish
+#
+# WHAT THIS HOLDS. The 15 tools/co wire-lab orchestrators each name the guest build and the
+# two QEMU argv shapes once, as three fn lines hoisted 20260829 from 135 repeated sites
+# (byte-gated transformer, two labs proven GREEN on real qemu). Rishi has no cross-file
+# include, so the fn lines are 15 deliberate copies of one body -- and this witness is the
+# contract check at that seam: every lab's fn lines must read byte-identical to the teaching
+# head's (comlink_device_wire_lab.rish), and the long templates must not return raw outside
+# the fns. The happy zone does the daily holding in under a second; the thin edge -- a real
+# qemu boot -- belongs to the labs' own gating witnesses, which run the labs themselves.
+#
+# TWO READINGS GATED AT ZERO. fn_drift, one file's macro wandering from the family's -- the
+# disease the hoist cured, returning quietly. raw_sites, a repeated template line reappearing
+# outside a fn definition -- the disease returning loudly. A missing or fn-less head reads
+# unreadable rather than green off nothing.
+
+say "wire-lab-fn: Language EN -- fifteen copies of one body are fifteen files that may quietly come to disagree."
+say "wire-lab-fn: Style Gauge, Meter -- each detail line names the lab, so a count becomes a file to open."
+say "wire-lab-fn: Lens TAME -- safety first: both refusals proven from both sides, and a green off an absent head refused."
+
+let scan = run ["sh" "tools/fixtures/w/wire_lab_fn_drift_scan.sh"]
+assert scan.ok else "wire-lab-fn: the scan must complete -- ${scan.out}"
+say scan.out
+assert scan.out contains "fn_drift=0" else "wire-lab-fn: a lab's fn lines drifted from the teaching head's"
+assert scan.out contains "raw_sites=0" else "wire-lab-fn: a raw template line stands outside the fns"
+assert scan.out contains "verdict=green" else "wire-lab-fn: the family must read green"
+
+let control = run ["sh" "tools/fixtures/w/wire_lab_fn_drift_control.sh"]
+assert control.ok else "wire-lab-fn: the control must complete -- ${control.out}"
+say control.out
+assert control.out contains "control_fail=0" else "wire-lab-fn: every planted behavior must hold"
+assert control.out contains "control_verdict=ok" else "wire-lab-fn: the control must report ok"
+assert control.out contains "drift_freed" else "wire-lab-fn: the drift refusal must be proven from both sides"
+assert control.out contains "raw_freed" else "wire-lab-fn: the raw-site refusal must be proven from both sides"
+assert control.out contains "headfnless_unreadable" else "wire-lab-fn: a head stripped of its fns must refuse rather than read green"
+
+say "GREEN: wire-lab-fn -- the macro named once stays named once, and every refusal is proven from both sides."

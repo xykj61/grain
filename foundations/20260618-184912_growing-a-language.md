@@ -29,7 +29,7 @@ Growing Rye taught us a method, and the method is worth more than any single ste
 2. **Wear a thin costume first.** The first version did almost nothing of its own -- it passed work through to the foundation and proved it ran end to end. Only once it ran did we begin to diverge. A thing that runs, however humble, teaches more than a grand design that does not.
 3. **Own the core by path.** We load our own standard library explicitly, by location, so we always know whose code is in force. Ownership you cannot point to is ownership you cannot trust.
 4. **Diverge by strengthening, not rewriting.** Our changes are additive and behavior-preserving, each proven against the foundation by a gate, each stamped on our own clock. We change what the code *says* far more often than what it *does*, and we never break what we have given.
-5. **Dogfood, and gate.** We test against growing witnesses, and a parity gate proves our divergences keep their promises. Safety lives in the process, not only in the person.
+5. **Live in it as first resident, and gate.** We use what we build as our own daily tool, test against growing witnesses, and a parity gate proves our divergences keep their promises. Safety lives in the process, not only in the person.
 
 Underneath all five lies one principle we hold as near to law as design offers: **a complex system that works is invariably found to have grown from a simpler system that worked.** A complex system designed whole, from scratch, rarely comes to life and cannot be patched into life; the honest path is to begin with something simple that runs and let it become the larger thing by degrees. So we never reach first for the finished, intricate whole -- we reach for the smallest version that works, and grow it.
 
@@ -49,7 +49,7 @@ The five moves carry over, lightly adapted:
 - **Wear a thin costume first** -- the first `rishi` is a small Rye program that reads a `.rish` file and runs it, doing only what the first real script needs. Humble, yet running.
 - **Own the core by path** -- Rishi's builtins are our own, loaded explicitly, so we always know whose `run`, whose `map`, whose `assert` is in force.
 - **Diverge by accretion** -- Rishi grows one feature at a time, each proven, each stamped, nothing taken away once given.
-- **Dogfood and gate** -- the first program Rishi runs is the gate itself.
+- **First resident, and gate** -- the first program Rishi runs is the gate itself.
 
 ---
 
@@ -57,7 +57,7 @@ The five moves carry over, lightly adapted:
 
 Here is the gift hiding in the question. We do not have to guess how large the first Rishi should be -- the parity gate tells us. To run the gate, Rishi must be able to name a small list (the witnesses), run a process and capture its result as a *structured value* (output and exit status together), compare two such results, keep a running tally, and assert a final verdict. That handful of abilities **is** the first Rishi. The gate is the specification; we build exactly enough language to express it, and no more.
 
-And a quiet circle closes. Rye is strengthened, pass by pass; the parity gate guards each pass; the gate is written in Rishi; and Rishi is grown on Rye. So the language we grow from Rye becomes the tool that protects Rye's own becoming. The child keeps watch over the parent. There is no finer dogfooding than that, and no safer place to begin Rishi than the one program we most need it to run correctly.
+And a quiet circle closes. Rye is strengthened, pass by pass; the parity gate guards each pass; the gate is written in Rishi; and Rishi is grown on Rye. So the language we grow from Rye becomes the tool that protects Rye's own becoming. The child keeps watch over the parent. There is no finer first residency than that, and no safer place to begin Rishi than the one program we most need it to run correctly.
 
 ---
 
