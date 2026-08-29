@@ -91,7 +91,7 @@ set -eu
 # alternative was marking %338 closed while the deadlock still stands, and a count that flatters the
 # lap taking it is worth less than a blank.
 UNRECORDED_SHELVES_CEILING=${UNRECORDED_SHELVES_CEILING:-62}
-SHELF_OPEN_ROWS_CEILING=${SHELF_OPEN_ROWS_CEILING:-2}
+SHELF_OPEN_ROWS_CEILING=${SHELF_OPEN_ROWS_CEILING:-0}
 
 PIN=${REDS_PIN:-construction/REDS.md}
 ARCHIVE_GLOB=${REDS_ARCHIVE_GLOB:-"construction/archive/REDS-*rows-*.md"}
