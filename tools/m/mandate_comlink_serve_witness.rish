@@ -9,6 +9,14 @@
 # Build first:  rye build mandate/comlink_serve.rye -femit-bin=mandate/bin/comlink_serve
 #   rishi/bin/rishi run tools/m/mandate_comlink_serve_witness.rish
 
+# Build the binary this witness proves, rather than assuming a previous lap left one behind.
+# mandate/bin/ is gitignored (.gitignore:191), so a clone carries none of these binaries: this
+# witness named its build in the header comment above and then invoked the path, which died on a
+# missing file rather than on a Mandate fact. The repair its Comlink sibling already carried.
+let zig = "vendor/zig-toolchain/zig"
+let build = run ["sh" "-c" "mkdir -p mandate/bin && env RYE_ZIG=${zig} rye/bin/rye build mandate/comlink_serve.rye -femit-bin=mandate/bin/comlink_serve"]
+assert build.ok else "mandate comlink_serve: build failed -- ${build.err}"
+
 let st = run ["mandate/bin/comlink_serve" "selftest"]
 assert st.ok else "mandate comlink_serve selftest must exit 0"
 assert (st.err contains "GREEN") else "mandate comlink_serve must report GREEN"

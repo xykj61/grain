@@ -9,6 +9,14 @@
 # Build first:  rye build mandate/bucket.rye -femit-bin=mandate/bin/bucket
 #   rishi/bin/rishi run tools/m/mandate_bucket_witness.rish
 
+# Build the binary this witness proves, rather than assuming a previous lap left one behind.
+# mandate/bin/ is gitignored (.gitignore:191), so a clone carries none of these binaries: this
+# witness named its build in the header comment above and then invoked the path, which died on a
+# missing file rather than on a Mandate fact. The repair its Comlink sibling already carried.
+let zig = "vendor/zig-toolchain/zig"
+let build = run ["sh" "-c" "mkdir -p mandate/bin && env RYE_ZIG=${zig} rye/bin/rye build mandate/bucket.rye -femit-bin=mandate/bin/bucket"]
+assert build.ok else "mandate bucket: build failed -- ${build.err}"
+
 let st = run ["mandate/bin/bucket" "selftest"]
 assert st.ok else "mandate bucket selftest must exit 0"
 assert (st.err contains "GREEN") else "mandate bucket must report GREEN"
