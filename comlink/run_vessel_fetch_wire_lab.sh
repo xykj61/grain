@@ -1,9 +1,4 @@
 #!/bin/sh
 # comlink/run_vessel_fetch_wire_lab.sh -- Amphora vessel-fetch device wire over virtio-net.
-set -eu
-
-here="$(cd "$(dirname "$0")" && pwd)"
-repo="$(cd "$here/.." && pwd)"
-cd "$repo"
-
-exec rishi/bin/rishi run tools/co/comlink_vessel_fetch_wire_lab.rish
+# One body for all labs lives beside this file: run_wire_lab.sh (since 20260829).
+exec sh "$(cd "$(dirname "$0")" && pwd)/run_wire_lab.sh" vessel_fetch
