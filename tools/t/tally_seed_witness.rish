@@ -1,0 +1,40 @@
+# tools/t/tally_seed_witness.rish -- the first bounded region holds both edges.
+#
+# The live seed fills a 64-byte region exactly, refuses byte 65 by name, clears,
+# and begins again at byte zero. Two source plants press the other side: a
+# 63-byte backing store cannot satisfy the pinned allocations, and asking the
+# full region for zero bytes cannot stand in for the overflow refusal.
+
+say "tally-seed: Language EN -- the first bounded region holds both edges."
+say "tally-seed: Style Gauge, Meter -- the live path passes and each moved edge refuses."
+say "tally-seed: Lens TAME -- allocation ends at a named bound, and clear returns to zero."
+
+let zig = "vendor/zig-toolchain/zig"
+let zig_ver = run [zig "version"]
+assert zig_ver.ok else "tally-seed: pinned toolchain missing"
+
+let mkbin = run ["mkdir" "-p" "tally/bin"]
+assert mkbin.ok else "tally-seed: could not create tally/bin"
+
+let build = run ["env" "RYE_ZIG=${zig}" "rye/bin/rye" "build" "tally/seed.rye" "-femit-bin=tally/bin/tally-seed"]
+if build.ok == false then say build.err
+assert build.ok else "tally-seed: live seed failed to build"
+
+let live = run ["tally/bin/tally-seed"]
+assert live.ok else "tally-seed: live seed exited non-zero"
+assert live.out contains "tally seed: all facts held." else "tally-seed: live seed did not report its held facts"
+say "tally-seed: live region filled, refused overflow, cleared, and began again"
+
+let short = run ["sh" "-c" "d=$(mktemp -d); cp tally/region.rye $d/region.rye; sed 's/BACKING_LEN: u32 = 64/BACKING_LEN: u32 = 63/' tally/seed.rye > $d/seed.rye; if cmp -s tally/seed.rye $d/seed.rye; then echo plant=absent; else echo plant=landed; fi; if env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build $d/seed.rye -femit-bin=$d/short >/dev/null 2>&1 && $d/short >/dev/null 2>&1; then echo refused=no; else echo refused=yes; fi; rm -rf $d"]
+assert short.ok else "tally-seed: short-backing plant could not run"
+assert short.out contains "plant=landed" else "tally-seed: short-backing plant changed nothing"
+assert short.out contains "refused=yes" else "tally-seed: a 63-byte region satisfied 64 bytes of pinned allocation"
+say "tally-seed: short-backing plant refused"
+
+let edge = run ["sh" "-c" "d=$(mktemp -d); cp tally/region.rye $d/region.rye; sed 's/const overflow = region.alloc(1)/const overflow = region.alloc(0)/' tally/seed.rye > $d/seed.rye; if cmp -s tally/seed.rye $d/seed.rye; then echo plant=absent; else echo plant=landed; fi; if env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build $d/seed.rye -femit-bin=$d/edge >/dev/null 2>&1 && $d/edge >/dev/null 2>&1; then echo refused=no; else echo refused=yes; fi; rm -rf $d"]
+assert edge.ok else "tally-seed: overflow-edge plant could not run"
+assert edge.out contains "plant=landed" else "tally-seed: overflow-edge plant changed nothing"
+assert edge.out contains "refused=yes" else "tally-seed: a zero-byte success stood in for the overflow refusal"
+say "tally-seed: overflow-edge plant refused"
+
+say "GREEN: tally seed -- live fill, overflow, clear and reuse held; short backing and a moved overflow edge both refused."

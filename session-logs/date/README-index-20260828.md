@@ -17,6 +17,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260828.233813` | [the enclosure that named a sixth](20260828/20260828-233813_the-enclosure-that-named-a-sixth-of-itself.kyri) | three roster reds; the jail's 21 default mounts declared |
 | `20260828.232444` | [the view that owns its drawing](20260828/20260828-232444_the-view-that-owns-its-drawing.kyri) | LOCA quest one rung one GREEN; REDS %335 booked and repaired |
 | `20260828.231614` | [the guard on no clock](20260828/20260828-231614_the-guard-on-no-clock.kyri) | three Comlink proofs take a lap row; reach 1115 -> 1112 |
+| `20260828.222157` | [the seed and the two clocks](20260828/20260828-222157_the-seed-and-the-two-clocks.kyri) | Dream: seed gains both edges; two lost witnesses take clocks |
 | `20260828.222500` | [the journey that opens on measurement](20260828/20260828-222500_the-journey-that-opens-on-measurement.kyri) | LOCA seated, five quests named; a reading on Mind |
 | `20260828.222017` | [the grid that crossed a platform](20260828/20260828-222017_the-grid-that-crossed-a-platform.kyri) | Brushstroke rasterizer on AppKit: 16,268 lit pixels, the pump answering |
 | `20260828.220813` | [the seam that checks itself](20260828/20260828-220813_the-seam-that-checks-itself.kyri) | the challenge found the real hole; the objc seam now verifies against the loaded framework |
