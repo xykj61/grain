@@ -103,7 +103,12 @@ verb="${1:-census}"
 # between readings. Discovery skips full-line comments now, and the page is LISTED in
 # dated_path_exclusions.sh by decision, so the subtraction is on the record and this comment is
 # free to name it. Proven both ways: remove the listing and the same tree reads 183.
-LOST_CEILING=168   # 178 until 20260826.052900. A ceiling only falls. The chapter molt of
+LOST_CEILING=165   # 168 until 20260829.081500, when in-root git worktrees left the corpus and
+                   # the field's own reading stood alone: a peer's checkout was supplying 148
+                   # of 296 gone and 22 of 39 ambiguous, so this gate read 335 and the tree
+                   # read 165. A ceiling only falls, and the three it falls by are repairs
+                   # that landed since 20260826 and had nowhere to show.
+                   # 178 until 20260826.052900. The chapter molt of
                    # 20260826 re-seated eleven foundations at fresh stamps and debrided the elder
                    # ones, which took the census to 390: a MOLT changes a basename where a FOLD
                    # keeps it, so the resolver recovers the second and can never recover the
@@ -198,6 +203,22 @@ for _rd in $(dp_readmit_dirs); do
     "$_rd" 2>/dev/null | sed "s|^\./||; $DP_REF_STRIP" >> "$work/pairs.txt"
 done
 set +f
+
+# EVERY IN-ROOT WORKTREE, filtered one step later for the same reason -- grep matches a directory
+# by NAME and a worktree is known by its PATH. A worktree is a second checkout of this same
+# repository, so counting it reads a photograph of the field as the field, and its commit is not
+# this one, so its references to any room folded since read GONE. Removing them is what lets this
+# census measure the tree rather than whichever peer happens to have a checkout open, which is the
+# deeper fault: a meter whose reading depends on untracked scratch is measuring the bench.
+# The derivation and its evidence live in dated_path_exclusions.sh beside the other exclusions.
+# Read line by line rather than word by word: a worktree is named by whoever ran `git worktree
+# add`, so its path may carry a space, and this loop sits below the `set +f` above where a glob
+# character would expand as well.
+dp_worktree_dirs | while IFS= read -r _wt; do
+  [ -n "$_wt" ] || continue
+  grep -v "^${_wt}/" "$work/pairs.txt" > "$work/pairs.nowt" 2>/dev/null || : > "$work/pairs.nowt"
+  mv "$work/pairs.nowt" "$work/pairs.txt"
+done
 
 # grep has no --exclude-path, so the path roster is applied here instead -- the same list, one step
 # later. A page that DEMONSTRATES recovery must quote a reference that no longer resolves, and

@@ -77,6 +77,55 @@ DP_EXCLUDE_ROOT_DIRS="./seed"
 # The directory name that root path reduces to -- what grep must be given, since it matches names.
 DP_EXCLUDE_ROOT_NAMES="seed"
 
+# A CHECKOUT OF THIS SAME REPOSITORY IS NOT THE FIELD -- derived from git, never named by hand.
+#
+# WHY. `git worktree add` makes a second, complete checkout of this repository, at a different
+# commit, in its own directory. When that directory sits INSIDE the root -- which is where the
+# MANY HANDS grant puts them, `.gitignore:140` reserving `/.claude/worktrees/` for exactly this --
+# the census walks it and reads a photograph of the field as the field.
+#
+# This is the `seed/` argument one room over, and it lands harder. The projection copies HEAD, so
+# its references are at least current; a worktree stands at whatever commit its hand is working,
+# so every reference it carries to a room folded since reads GONE. Measured `20260829` with one
+# worktree present at `e33a8cc48`: 148 of 296 `gone` and 22 of 39 `ambiguous` were its copies, so
+# the lost-reference gate read 335 against a ceiling of 168 and the field itself read 165.
+#
+# The repointer took the sharper half. It WRITES -- `cat "$f.dpr" > "$f"` -- and enumerates by
+# walking `.`, so its dry run named exactly one file to rewrite and that file was inside the
+# peer's checkout: `.claude/worktrees/<hand>/docs-geode/demos/README.md`. The field's own copy of
+# that page is already on DP_EXCLUDE_PATHS below; the copy evaded it because that roster anchors
+# at the root. A tool the mark law names as the standing repair would have written into land it
+# does not own, and touched nothing in the field at all.
+#
+# DERIVED RATHER THAN NAMED, because a hand-typed roster grows when somebody remembers (REDS
+# %277). `git worktree list --porcelain` is the authority, so a worktree made tomorrow is pruned
+# on the lap it arrives.
+#
+# WHAT IT NEVER PRUNES. The main worktree is the field, so the root itself is dropped by identity.
+# A worktree OUTSIDE the root is not walked in the first place and needs no entry. And run from
+# INSIDE a worktree, `--show-toplevel` answers that worktree, no sibling sits beneath it, and the
+# roster is empty -- which is right, because from in there that checkout IS the field.
+#
+# SILENT OUTSIDE A REPOSITORY, on purpose: the control corpus runs these tools from a throwaway
+# pen before `git init`, and a roster that refused there would break the proof rather than the
+# fault.
+dp_worktree_dirs() {
+  command -v git >/dev/null 2>&1 || return 0
+  _dp_root=$(git rev-parse --show-toplevel 2>/dev/null) || return 0
+  [ -n "$_dp_root" ] || return 0
+  git worktree list --porcelain 2>/dev/null | while IFS= read -r _dp_line; do
+    case "$_dp_line" in
+      "worktree "*) _dp_wt=${_dp_line#worktree } ;;
+      *) continue ;;
+    esac
+    # The main worktree is the field itself; pruning it would prune everything.
+    [ "$_dp_wt" = "$_dp_root" ] && continue
+    case "$_dp_wt" in
+      "$_dp_root"/*) printf '%s\n' "${_dp_wt#"$_dp_root"/}" ;;
+    esac
+  done
+}
+
 # Rooms pruned only as collateral of a name match above, to be scanned in their own pass and
 # folded back into the corpus. A consumer that skips this re-admit is blind to the room.
 DP_READMIT_DIRS="recursion-prompts/seed"
@@ -344,6 +393,13 @@ dp_find_prune() {
   done
   for _d in $DP_EXCLUDE_ROOT_DIRS; do
     if [ "$_first" = 1 ]; then _dp="-path $_d"; _first=0; else _dp="$_dp -o -path $_d"; fi
+  done
+  # Every in-root worktree, so a walker never descends into a second checkout of this same
+  # repository. find anchors a path cleanly, which is what this side needs and grep cannot give.
+  # `set -f` above keeps a glob character literal here; the find test is built one line at a time
+  # so a worktree path carrying a space stays one path rather than becoming two.
+  for _d in $(dp_worktree_dirs); do
+    if [ "$_first" = 1 ]; then _dp="-path ./$_d"; _first=0; else _dp="$_dp -o -path ./$_d"; fi
   done
   set -- $_dp
   set +f
