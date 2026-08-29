@@ -168,3 +168,7 @@ The live season table and open doors below stand.
 
 | `20260824.084007` | The page that named half its directory -- Open Image split, `image_module_roster` seated 43rd | REDS %189 |
 | `20260824.062207` | The ladder table that named 73 of 110 -- Caravan front door split into a Door page, a ladder record, and a harness record | REDS %184 |
+
+## Released `20260828.210500` -- the optimization spine, closed row
+
+- **The optimization spine CLOSES, five of five** (`20260826`, Sound): wrap named room-wide, the bound in its own name, the drain a replayable fold, the region base derived from its index (twelve windows abutting), the wafer's first consumer named. Witnesses in `tools/ca/`.

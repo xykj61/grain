@@ -1,0 +1,21 @@
+# tools/co/counsel_census_witness.rish -- the counsel campaign's census covers the whole room.
+#
+#   rishi/bin/rishi run tools/co/counsel_census_witness.rish
+#
+# Phase 0 of the counsel campaign (Keaton's word, 20260828): before a piece is molted, the tree
+# measures who leans on it. This proves the census reads every counsel piece and answers with
+# its own verdict -- coverage asserted against git's count, never recited.
+
+say "counsel-census: Language EN -- who still leans on which counsel piece, measured."
+say "counsel-census: Style Gauge, Meter -- coverage equals git's own count or the census refuses."
+say "counsel-census: Lens TAME -- a campaign that lifts by value needs a value reading that is whole."
+
+let expected = run ["sh" "-c" "git ls-files 'counsel/*.md' | grep -c ."]
+assert expected.ok else "counsel-census: git must count the room"
+
+let census = run ["sh" "tools/fixtures/c/counsel_census_scan.sh"]
+assert census.ok else "counsel-census: the census must complete"
+assert census.out contains "verdict=ok" else "counsel-census: the census must agree with itself"
+assert census.out contains "pieces=${trim expected.out}" else "counsel-census: every counsel piece must be read -- the census's pieces count must equal git's"
+
+say "GREEN: counsel-census -- the room is measured whole, and the campaign lifts by citer count rather than by memory."
