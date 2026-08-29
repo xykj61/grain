@@ -709,3 +709,13 @@ guard pond_enclosure_door
 path tools/p/pond_enclosure_door_witness.rish
 tier lap
 seated 20260829.064107
+
+# lattice_suite -- forty small arithmetic witnesses heard as one bounded choir. Each lap builds
+# Lattice and proves an admitted operation beside its shape refusal; the suite also refuses when
+# a newborn lap witness stands outside its forty-seat roster. `cadence` keeps the stable arithmetic
+# family heard without adding forty repeated builds to both halves of every systems lap.
+
+guard lattice_suite
+path tools/l/lattice_suite_witness.rish
+tier cadence
+seated 20260829.061739

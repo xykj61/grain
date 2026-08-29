@@ -1,0 +1,16 @@
+# lattice_suite_witness.rish -- one choir for Lattice's forty bounded operations.
+#
+# The suite first pins the on-disk roster at forty, then runs every registered lap.
+# Each lap builds the module and proves its admitted operation plus its shape refusal,
+# so one GREEN closes both sides of every arithmetic seam. A new unregistered lap
+# raises the disk count and refuses here rather than standing unheard.
+
+let disk = run ["sh" "-c" "find tools/l -maxdepth 1 -type f -name 'lattice_lap*.rish' | wc -l | tr -d ' \n'"]
+assert disk.ok else "lattice-suite: could not count the lap witnesses -- ${disk.err}"
+assert (trim disk.out) == "40" else "lattice-suite: expected forty lap witnesses on disk -- ${disk.out}"
+
+let witnesses = [ "tools/l/lattice_lap1.rish" "tools/l/lattice_lap2.rish" "tools/l/lattice_lap3.rish" "tools/l/lattice_lap4.rish" "tools/l/lattice_lap5.rish" "tools/l/lattice_lap6.rish" "tools/l/lattice_lap7.rish" "tools/l/lattice_lap8.rish" "tools/l/lattice_lap9.rish" "tools/l/lattice_lap10.rish" "tools/l/lattice_lap11.rish" "tools/l/lattice_lap12.rish" "tools/l/lattice_lap13.rish" "tools/l/lattice_lap14.rish" "tools/l/lattice_lap15.rish" "tools/l/lattice_lap16.rish" "tools/l/lattice_lap17.rish" "tools/l/lattice_lap18.rish" "tools/l/lattice_lap19.rish" "tools/l/lattice_lap20.rish" "tools/l/lattice_lap21.rish" "tools/l/lattice_lap22.rish" "tools/l/lattice_lap23.rish" "tools/l/lattice_lap24.rish" "tools/l/lattice_lap25.rish" "tools/l/lattice_lap26.rish" "tools/l/lattice_lap27.rish" "tools/l/lattice_lap28.rish" "tools/l/lattice_lap29.rish" "tools/l/lattice_lap30.rish" "tools/l/lattice_lap31.rish" "tools/l/lattice_lap32.rish" "tools/l/lattice_lap33.rish" "tools/l/lattice_lap34.rish" "tools/l/lattice_lap35.rish" "tools/l/lattice_lap36.rish" "tools/l/lattice_lap37.rish" "tools/l/lattice_lap38.rish" "tools/l/lattice_lap39.rish" "tools/l/lattice_lap40.rish" ]
+
+for-each witnesses as witness do assert (run ["rishi/bin/rishi" "run" witness]).ok else "lattice-suite: a lap witness went red -- ${witness}"
+
+say "GREEN lattice-suite -- forty Lattice witnesses registered and run; each operation and its shape refusal proved on metal"
