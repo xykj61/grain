@@ -8,7 +8,21 @@ size="$(wc -l < "$corpus" | tr -d ' ')"
 # SHA3-512 from this tree's own Keccak (crypto/sha3_digest.rye), not from an openssl the host may
 # or may not carry. Same algorithm, so every seated draw below is unchanged -- and the registry
 # witness re-derives all of them, so a drift of one digit would red on the lap it entered.
-SHA3="$(CDPATH= cd "$(dirname "$0")" && pwd)/sha3.sh"
+# Root by upward walk (seated 20260828): the letter fold moved this script one
+# directory deeper, and fixed ../.. depth arithmetic is what broke. The walk finds
+# the first ancestor holding rishi/bin and tools/fixtures -- git-free so pen copies
+# outside a repository still resolve -- bounded at 8 steps, loud past the bound.
+_fd_root=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
+_fd_steps=0
+while [ ! -d "$_fd_root/rishi/bin" ] || [ ! -d "$_fd_root/tools/fixtures" ]; do
+  _fd_steps=$((_fd_steps + 1))
+  if [ "$_fd_steps" -gt 8 ] || [ "$_fd_root" = "/" ] || [ -z "$_fd_root" ]; then
+    echo "$0: no tree root within 8 steps (needs rishi/bin and tools/fixtures)" >&2
+    exit 2
+  fi
+  _fd_root=$(dirname "$_fd_root")
+done
+SHA3="$_fd_root/tools/fixtures/s/sha3.sh"
 draw() {
   name="$1"
   expect="$2"

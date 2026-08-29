@@ -75,15 +75,17 @@ chmod +x rishi/bin/rishi
 printf '# generator stand-in, read by the hook only for its presence\n' > tools/r/readme_metrics.rish
 printf '# generator stand-in, read by the hook only for its presence\n' > tools/g/geode_libraries.rish
 
-mkdir -p docs-geode/libraries tools/fixtures construction
+# The pen mirrors the folded letter room (letter fold, seated 20260828): the hook and the writer
+# both name the r/ paths the real tree now keeps.
+mkdir -p docs-geode/libraries tools/fixtures/r construction
 printf 'witnesses=0\n' > README.md
 printf 'witnesses=0\n' > docs-geode/libraries/README.md
 printf 'a page\n' > NOTES.md
 
 # The ledger rule runs the tree's own writer and its own spine scan, copied in rather than stubbed.
-cp "$root/tools/fixtures/reds_ledger_headline_write.sh" tools/fixtures/reds_ledger_headline_write.sh
-cp "$root/tools/fixtures/reds_ledger_monotone_scan.sh" tools/fixtures/reds_ledger_monotone_scan.sh
-chmod +x tools/fixtures/reds_ledger_headline_write.sh tools/fixtures/reds_ledger_monotone_scan.sh
+cp "$root/tools/fixtures/reds_ledger_headline_write.sh" tools/fixtures/r/reds_ledger_headline_write.sh
+cp "$root/tools/fixtures/reds_ledger_monotone_scan.sh" tools/fixtures/r/reds_ledger_monotone_scan.sh
+chmod +x tools/fixtures/r/reds_ledger_headline_write.sh tools/fixtures/r/reds_ledger_monotone_scan.sh
 
 # A ledger holding rows 1..21, with a headline deliberately left at 1. Twenty-one rather than a
 # handful, so the derived remainder stays a natural number as the real ledger's does.

@@ -3,9 +3,11 @@
 # WHAT THIS IS FOR. A guard asks the host a small number of questions, and three of them have a
 # different answer on each pier. This file answers each once, in a spelling every host accepts, so
 # a guard measures the tree rather than the machine it happens to be running on. Source it and call
-# the function that names your question:
+# the function that names your question. The letter fold (seated 20260828) separated siblings, so
+# the spelling walks to the root first -- the depth-proof block every fixtures guard now carries --
+# and sources this file at its letter-room home:
 #
-#   . "$(CDPATH= cd "$(dirname "$0")" && pwd)/shell_portable.sh"
+#   . "$_fd_root/tools/fixtures/s/shell_portable.sh"
 #
 #   xargs_lines "$work/files.txt" grep -lE "$pattern"          # a path list reaches a command
 #   xargs_lines_batched 400 "$work/files.txt" awk -f "$prog"    # ... in bounded batches

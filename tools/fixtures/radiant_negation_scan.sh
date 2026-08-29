@@ -29,9 +29,24 @@
 set -eu
 
 MODE=${1:-}
-HERE="$(CDPATH= cd "$(dirname "$0")" && pwd)"
-BASELINE=${BASELINE:-$HERE/radiant_negation_baseline.txt}
-CONTROL=$HERE/radiant_negation_control/prohibition_control.md
+# Root by upward walk (seated 20260828): the letter fold moved this script one
+# directory deeper, and fixed ../.. depth arithmetic is what broke. The walk finds
+# the first ancestor holding rishi/bin and tools/fixtures -- git-free so pen copies
+# outside a repository still resolve -- bounded at 8 steps, loud past the bound.
+_fd_root=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
+_fd_steps=0
+while [ ! -d "$_fd_root/rishi/bin" ] || [ ! -d "$_fd_root/tools/fixtures" ]; do
+  _fd_steps=$((_fd_steps + 1))
+  if [ "$_fd_steps" -gt 8 ] || [ "$_fd_root" = "/" ] || [ -z "$_fd_root" ]; then
+    echo "$0: no tree root within 8 steps (needs rishi/bin and tools/fixtures)" >&2
+    exit 2
+  fi
+  _fd_root=$(dirname "$_fd_root")
+done
+# The baseline is a flat fixture the fold moved into its letter room; the control corpus is a
+# fixtures SUBDIRECTORY, which the fold leaves in place.
+BASELINE=${BASELINE:-$_fd_root/tools/fixtures/r/radiant_negation_baseline.txt}
+CONTROL=$_fd_root/tools/fixtures/radiant_negation_control/prohibition_control.md
 
 # The negation family counted, by WHOLE FIELD rather than by substring -- so a seated hyphenated
 # term reads as vocabulary rather than as a negative construction. `accrete-never-break` is the

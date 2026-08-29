@@ -54,8 +54,10 @@ echo "private_copy_refused=$([ "$planted" -gt 0 ] && echo yes || echo no)"
 # getting it wrong: matching on "named in code" alone returned real documents that had merely
 # MOVED, and matching on "sprig absent" alone returns every document that was ever DELETED.
 dpen=$(mktemp -d)
-mkdir -p "$dpen/tools/fixtures" "$dpen/foundations" "$dpen/vendor/x"
-cp "$root/tools/fixtures/dated_path_exclusions.sh" "$dpen/tools/fixtures/"
+# The roster copy sits in its letter room, mirroring the fold (seated 20260828), so the pen's
+# self-exclusion path agrees with the real tree's spelling of it.
+mkdir -p "$dpen/tools/fixtures/d" "$dpen/foundations" "$dpen/vendor/x"
+cp "$root/tools/fixtures/dated_path_exclusions.sh" "$dpen/tools/fixtures/d/"
 
 # a real document, and a witness naming it at a DIFFERENT stamp -- a move, never a planting
 : > "$dpen/foundations/20260501-120000_a-real-page.md"

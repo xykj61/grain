@@ -13,7 +13,21 @@ FIX=tools/fixtures/flw-four-letter.txt
 [ -f "$REG" ] || { echo "REG_MISSING"; exit 2; }
 # SHA3-512 from this tree's own Keccak, not from an openssl the host may or may not carry. The
 # seal and every re-derived mark below are unchanged, because the algorithm is unchanged.
-SHA3="$(CDPATH= cd "$(dirname "$0")" && pwd)/sha3.sh"
+# Root by upward walk (seated 20260828): the letter fold moved this script one
+# directory deeper, and fixed ../.. depth arithmetic is what broke. The walk finds
+# the first ancestor holding rishi/bin and tools/fixtures -- git-free so pen copies
+# outside a repository still resolve -- bounded at 8 steps, loud past the bound.
+_fd_root=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
+_fd_steps=0
+while [ ! -d "$_fd_root/rishi/bin" ] || [ ! -d "$_fd_root/tools/fixtures" ]; do
+  _fd_steps=$((_fd_steps + 1))
+  if [ "$_fd_steps" -gt 8 ] || [ "$_fd_root" = "/" ] || [ -z "$_fd_root" ]; then
+    echo "$0: no tree root within 8 steps (needs rishi/bin and tools/fixtures)" >&2
+    exit 2
+  fi
+  _fd_root=$(dirname "$_fd_root")
+done
+SHA3="$_fd_root/tools/fixtures/s/sha3.sh"
 
 sh tools/fixtures/waymark_corpus_extract.sh "$FIX" "$CORP" >/dev/null 2>&1 || { echo "CORPUS_FAIL"; exit 2; }
 SIZE=$(wc -l < "$CORP" | tr -d ' ')

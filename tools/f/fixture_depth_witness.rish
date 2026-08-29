@@ -1,0 +1,76 @@
+# tools/f/fixture_depth_witness.rish -- the fixtures letter fold's depth-proof root walk, proven.
+#
+# WHY THIS RUNG. The letter fold of `tools/fixtures/` (seated 20260828, the last room of REDS
+# %301) moved every flat fixture one directory deeper, and 61 scripts in that room computed the
+# repository root by fixed depth arithmetic -- `ROOT=$(cd "$(dirname "$0")/../.." && pwd)`.
+# Depth arithmetic is a promise about where a file sits, and a fold is precisely what breaks it:
+# two-up from a letter room is `tools/`, and every path built on it reads a tree that is not
+# there. The same fold separates siblings, so the elder sibling source
+# `. "$(dirname "$0")/shell_portable.sh"` stops landing where citer and target now sit in
+# different letter rooms.
+#
+# THE SHAPE THIS PROVES. The depth-proof walk climbs upward from a script's own directory to the
+# first ancestor holding both `rishi/bin` and `tools/fixtures` -- the root's own furniture --
+# bounded at 8 steps and refusing loudly past the bound. Git-free on purpose: controls copy scans
+# into pens outside any repository, and a pen that plants the two marker directories is a root
+# the walk finds the same way the real tree is.
+#
+# WHAT IS PROVEN, all of it on metal.
+#
+#   Six behaviors on real files in a throwaway pen, by the control: the elder two-up arithmetic
+#   one directory deeper resolves the WRONG root (the refusal shown), the walk resolves the right
+#   root from BOTH depths, the elder sibling source breaks from a letter room (shown), the new
+#   source spelling lands from both depths, and the walk refuses loudly, exit 2, where no marked
+#   root stands within the bound.
+#
+#   The room itself holds the shape. A census over every tracked `.sh` under `tools/fixtures/`
+#   gates the elder two-up-from-dollar-zero arithmetic at ZERO, and the elder sibling source
+#   spelling at ZERO, with one named instrument excluded: the control carries both elder shapes
+#   as planted probes, because proving a refusal requires having the thing that fails.
+#
+# Kin: tools/fixtures/fixture_depth_control.sh - .claude/rules/stamp-and-name.md (the letter
+# fold) - tools/t/tool_path_resolve.rish (the resolver that recovers stale flat references).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/f/fixture_depth_witness.rish
+
+say "fixture-depth: Language EN -- a fold that moves a script one directory deeper breaks every root computed by depth arithmetic, silently, in the scripts a tree trusts to measure itself. This proves the replacement walk answers from both depths and refuses where no root stands."
+say "fixture-depth: Style Gauge at Meter -- six behaviors in a pen, each proven from the side that can fail, then a census over the room itself holding the elder shapes at zero with the one instrument named."
+say "fixture-depth: Lens TAME -- safety first: the walk is bounded at 8 steps and loud past the bound, the refusal is shown rather than assumed, and the census is measured on every run rather than remembered."
+
+let control = "tools/fixtures/fixture_depth_control.sh"
+
+# ---------------------------------------------------------------------------------------------
+# PART ONE -- the six pen behaviors, read from the control rather than re-argued here.
+# ---------------------------------------------------------------------------------------------
+
+let controlled = run ["sh" control]
+assert controlled.ok else "fixture-depth: the control must build its pens and prove every behavior"
+assert controlled.out contains "behavior_one=elder_arithmetic_wrong_root_shown" else "fixture-depth: the elder two-up arithmetic one directory deeper must be shown naming the wrong root"
+assert controlled.out contains "behavior_two=walk_right_root_from_flat_seat" else "fixture-depth: the walk must answer the right root from the elder flat depth"
+assert controlled.out contains "behavior_three=walk_right_root_from_letter_room" else "fixture-depth: the walk must answer the right root from the letter-room depth"
+assert controlled.out contains "behavior_four=elder_sibling_source_breaks_from_letter_room" else "fixture-depth: the elder sibling source must be shown breaking from a letter room"
+assert controlled.out contains "behavior_five=new_source_spelling_lands_from_both_depths" else "fixture-depth: the new source spelling must land the helper from both depths"
+assert controlled.out contains "behavior_six=walk_refuses_loudly_past_the_bound code=2" else "fixture-depth: the walk must refuse with exit 2 where no marked root stands within 8 steps"
+assert controlled.out contains "behaviors_proven=6" else "fixture-depth: all six control behaviors must be proven, not merely attempted"
+assert controlled.out contains "verdict=ok" else "fixture-depth: the control must close on verdict=ok"
+say "control GREEN -- six behaviors on real files in a pen: the wrong root shown, the right root from both depths, the elder source broken, the new source landed, the bound refusing loudly"
+
+# ---------------------------------------------------------------------------------------------
+# PART TWO -- the room itself, censused on every run. The population is asserted nonzero first,
+# so a zero offender count can never be the vacuous truth of an empty scan (REDS %161's shape).
+# ---------------------------------------------------------------------------------------------
+
+let population = trim (run ["sh" "-c" "git ls-files 'tools/fixtures/*.sh' | wc -l | tr -d ' '"]).out
+assert (population == "0") == false else "fixture-depth: the census population must be nonzero -- an empty room proves nothing"
+say "census population: ${population} tracked .sh files under tools/fixtures/"
+
+let two_up = trim (run ["sh" "-c" "git ls-files 'tools/fixtures/*.sh' | grep -v fixture_depth_control | xargs grep -lE 'dirname (-- )?\"\\$0\"\\)/\\.\\./\\.\\.' 2>/dev/null | wc -l | tr -d ' '"]).out
+assert two_up == "0" else "fixture-depth: the elder two-up-from-dollar-zero arithmetic must be held at zero in the folded room -- found ${two_up} files carrying it"
+say "census one GREEN -- zero fixtures scripts compute the root by two-up depth arithmetic (the control's planted probe excluded by name)"
+
+let elder_source = trim (run ["sh" "-c" "git ls-files 'tools/fixtures/*.sh' | grep -v fixture_depth_control | xargs grep -lF 'pwd)/shell_portable.sh\"' 2>/dev/null | wc -l | tr -d ' '"]).out
+assert elder_source == "0" else "fixture-depth: the elder sibling source spelling must be held at zero in the folded room -- found ${elder_source} files carrying it"
+say "census two GREEN -- zero fixtures scripts source shell_portable by the elder sibling spelling (the control's planted probe excluded by name)"
+
+say "fixture-depth: GREEN -- the walk stands proven from both depths and both sides, and the room it protects carries zero elder depth arithmetic and zero elder sibling sources, measured on this run."

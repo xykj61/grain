@@ -7,7 +7,21 @@
 # a project-level verdict is not a licence. The obligation recorded with the license read
 # (external-research/20260821-041056) was a per-file sweep at fetch time, and this is it, turned into something that runs every lap.
 set -eu
-cd "$(dirname "$0")/../.."
+# Root by upward walk (seated 20260828): the letter fold moved this script one
+# directory deeper, and fixed ../.. depth arithmetic is what broke. The walk finds
+# the first ancestor holding rishi/bin and tools/fixtures -- git-free so pen copies
+# outside a repository still resolve -- bounded at 8 steps, loud past the bound.
+ROOT=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
+_fd_steps=0
+while [ ! -d "$ROOT/rishi/bin" ] || [ ! -d "$ROOT/tools/fixtures" ]; do
+  _fd_steps=$((_fd_steps + 1))
+  if [ "$_fd_steps" -gt 8 ] || [ "$ROOT" = "/" ] || [ -z "$ROOT" ]; then
+    echo "$0: no tree root within 8 steps (needs rishi/bin and tools/fixtures)" >&2
+    exit 2
+  fi
+  ROOT=$(dirname "$ROOT")
+done
+cd "$ROOT"
 
 count_tag() { grep -rhoE 'SPDX-License-Identifier:[[:space:]]*[A-Za-z0-9._+-]+' "$1" 2>/dev/null | sed 's/.*: *//' | grep -cx "$2" || true; }
 

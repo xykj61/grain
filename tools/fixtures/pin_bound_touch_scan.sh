@@ -54,8 +54,21 @@
 # Law: context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md
 set -eu
 
-HERE=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
-BOUND_READER="$HERE/living_pin_max_bytes.sh"
+# Root by upward walk (seated 20260828): the letter fold moved this script one
+# directory deeper, and fixed ../.. depth arithmetic is what broke. The walk finds
+# the first ancestor holding rishi/bin and tools/fixtures -- git-free so pen copies
+# outside a repository still resolve -- bounded at 8 steps, loud past the bound.
+_fd_root=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
+_fd_steps=0
+while [ ! -d "$_fd_root/rishi/bin" ] || [ ! -d "$_fd_root/tools/fixtures" ]; do
+  _fd_steps=$((_fd_steps + 1))
+  if [ "$_fd_steps" -gt 8 ] || [ "$_fd_root" = "/" ] || [ -z "$_fd_root" ]; then
+    echo "$0: no tree root within 8 steps (needs rishi/bin and tools/fixtures)" >&2
+    exit 2
+  fi
+  _fd_root=$(dirname "$_fd_root")
+done
+BOUND_READER="$_fd_root/tools/fixtures/l/living_pin_max_bytes.sh"
 
 MODE=staged
 ROSTER=tools/fixtures/living_pin_guard_roster.txt

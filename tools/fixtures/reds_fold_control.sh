@@ -47,9 +47,11 @@ build_pen() {
     echo '---'
   } > "$pen/t/construction/archive/REDS-planted-rows-1-2.md"
   cp "$root/tools/fixtures/reds_fold.sh" "$pen/t/tools_reds_fold.sh" 2>/dev/null || true
-  mkdir -p "$pen/t/tools/fixtures"
-  cp "$root/tools/fixtures/reds_fold.sh" "$pen/t/tools/fixtures/reds_fold.sh"
-  cp "$root/tools/fixtures/reds_fold_reanchor.sh" "$pen/t/tools/fixtures/reds_fold_reanchor.sh"
+  # The pen mirrors the folded letter room (letter fold, seated 20260828): the fold tool reaches
+  # its reanchor sibling by the r/ path the real tree now keeps.
+  mkdir -p "$pen/t/tools/fixtures/r"
+  cp "$root/tools/fixtures/reds_fold.sh" "$pen/t/tools/fixtures/r/reds_fold.sh"
+  cp "$root/tools/fixtures/reds_fold_reanchor.sh" "$pen/t/tools/fixtures/r/reds_fold_reanchor.sh"
 }
 
 run_fold() {

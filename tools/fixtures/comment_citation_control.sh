@@ -23,8 +23,13 @@ done
 
 pen=$(mktemp -d)
 trap 'rm -rf "$pen"' EXIT INT TERM
-mkdir -p "$pen/tools/fixtures" "$pen/context/specs" "$pen/lib" "$pen/apps/one"
-cp "$scan" "$card" "$reg" "$pen/tools/fixtures/"
+# The pen mirrors the folded letter rooms (letter fold, seated 20260828): the scan reaches the
+# card at q/, and the card lifts measure() from the register scan at p/.
+mkdir -p "$pen/tools/fixtures/c" "$pen/tools/fixtures/q" "$pen/tools/fixtures/p" \
+         "$pen/context/specs" "$pen/lib" "$pen/apps/one"
+cp "$scan" "$pen/tools/fixtures/c/"
+cp "$card" "$pen/tools/fixtures/q/"
+cp "$reg" "$pen/tools/fixtures/p/"
 
 ( cd "$pen" && git init -q . && git config user.email pen@example.invalid && git config user.name pen )
 

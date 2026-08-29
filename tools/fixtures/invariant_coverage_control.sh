@@ -20,10 +20,14 @@ abs=$(CDPATH= cd -- "$(dirname -- "$scan")" && pwd)/$(basename "$scan")
 
 pen=$(mktemp -d)
 trap 'rm -rf "$pen"' EXIT INT TERM
-mkdir -p "$pen/tools/fixtures" "$pen/m"
-# The scan sources shell_portable.sh beside it, so the helper travels into the pen with it --
-# a copied guard that cannot find its own dialect helper refuses before it reads a line.
-cp "$abs" "$(dirname "$abs")/shell_portable.sh" "$pen/tools/fixtures/"
+# The pen mirrors the folded room (letter fold seated 20260828): the scan sits in its letter
+# room, the dialect helper in s/, and the pen wears the root's two markers -- rishi/bin and
+# tools/fixtures -- so the scan's depth-proof walk finds the pen root the same way it finds the
+# real one. A copied guard that cannot find its own dialect helper refuses before it reads a line.
+mkdir -p "$pen/rishi/bin" "$pen/tools/fixtures/i" "$pen/tools/fixtures/s" "$pen/m"
+fixtures_room=$(CDPATH= cd -- "$(dirname -- "$abs")/.." && pwd)
+cp "$abs" "$pen/tools/fixtures/i/"
+cp "$fixtures_room/s/shell_portable.sh" "$pen/tools/fixtures/s/"
 ( cd "$pen" && git init -q . ) >/dev/null 2>&1
 
 put() { cat > "$pen/m/$1"; ( cd "$pen" && git add -A ) >/dev/null 2>&1; }

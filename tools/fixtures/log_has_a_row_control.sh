@@ -17,8 +17,10 @@ abs=$(CDPATH= cd -- "$(dirname -- "$scan")" && pwd)/$(basename "$scan")
 
 pen=$(mktemp -d)
 trap 'rm -rf "$pen"' EXIT INT TERM
-mkdir -p "$pen/tools/fixtures"
-cp "$abs" "$pen/tools/fixtures/"
+# The pen mirrors the folded letter room (letter fold, seated 20260828), matching the path the
+# run() below names.
+mkdir -p "$pen/tools/fixtures/l"
+cp "$abs" "$pen/tools/fixtures/l/"
 
 room() { rm -rf "$pen/session-logs"; mkdir -p "$pen/session-logs/date/20260101"; }
 pin()  { { echo "# Session logs"; echo; echo "| Stamp | Log | Meaning |"; echo "|---|---|---|"

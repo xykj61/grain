@@ -26,8 +26,22 @@ ITINERARY=construction/ITINERARY.md
 PRIN=tools/gen/chapter/prin_scope.rish
 ALMANAC=rye-learning-process/GLOW_ALMANAC.md
 ELDER=tools/equinox/witness/equinox_e122_roots_bench_kinds_witness.rish
+# Root by upward walk (seated 20260828): the letter fold moved this script one
+# directory deeper, and fixed ../.. depth arithmetic is what broke. The walk finds
+# the first ancestor holding rishi/bin and tools/fixtures -- git-free so pen copies
+# outside a repository still resolve -- bounded at 8 steps, loud past the bound.
+_fd_root=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
+_fd_steps=0
+while [ ! -d "$_fd_root/rishi/bin" ] || [ ! -d "$_fd_root/tools/fixtures" ]; do
+  _fd_steps=$((_fd_steps + 1))
+  if [ "$_fd_steps" -gt 8 ] || [ "$_fd_root" = "/" ] || [ -z "$_fd_root" ]; then
+    echo "$0: no tree root within 8 steps (needs rishi/bin and tools/fixtures)" >&2
+    exit 2
+  fi
+  _fd_root=$(dirname "$_fd_root")
+done
 # The seated bound, read from the law rather than spelled here. One reading, one home (REDS %199).
-MAX_BYTES=$(sh "$(dirname "$0")/living_pin_max_bytes.sh")
+MAX_BYTES=$(sh "$_fd_root/tools/fixtures/l/living_pin_max_bytes.sh")
 
 if test "$MODE" = "prove-red"; then
   # Prefer C1 zero-byte control; fall back to thin emptied fixture.
