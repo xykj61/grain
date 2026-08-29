@@ -8,16 +8,7 @@
 
 *Accrete-never-break: fossils stay on disk until a circled shred proves parity. This list prepares the hand; it does not authorize a cut. Overwrite-in-place of a living name (e148) is not a shred — git history and cold storage keep the elder commits.*
 
-### Cellar (e148) — Amber name superseded · cellar kept whole · no shred
-
-| Field | Standing |
-| --- | --- |
-| Path | **Supersede in place** — living code names **Cellar**; module + witness green |
-| Elder e138 | **Withdrawn as living keep-Amber law** — history in git · counsel kept as dated seat |
-| e137 breach | **Withdrawn** — not a living cut plan |
-| Pause | **Cellar pause** — no new Amber-named metal (name gone from living code) |
-| Redact/shred cellar | **Refused** as living plan — custody first · build nothing that destroys |
-| `cellar/` | **Kept whole** · `cellar_first_ring` green · was `amber/` |
+### Cellar (e148) — settled: Amber superseded in place; living code names **Cellar** (module + witness green); `cellar/` kept whole (was `amber/`); elders e138/e137 withdrawn; redact/shred **refused** — custody first.
 
 ---
 
@@ -31,7 +22,6 @@
 | **M** | **Mitra shed prep** — a fossil with a living mutant seated, its living citers repointed, and a banner on its face. Prepared like a friend rather than cut like a weed: the elder stays readable and every reference still lands. | Prep complete · cut still RED |
 | **W** | **Walked, cited, kept** — a named set examined against the shed conditions on a stamp and held, so a later pass reads the row rather than re-walking | Cut refused, with the measurement recorded |
 
-Class **H** is for Grep + Amphora later. It is **not** Class A.  
 Class **O** (`20260731.124815` · room home `20260731.135609` · **word-scope e128** `20260731.232004`): neither fund anchor nor writing fossil — simply never pointed at. Instrument: `tools/fixtures/s/shed_census_scan.sh`. Membership is a **measured property**; the census is authority. **Keaton's authorizing word is on the class and/or the rooms — not on each orphan filename.** `SAFE.md` refuses whole on any listed path. Paths stay unnamed here; rooms wait the opening word.
 
 ### Class O — word-scope (e128)
@@ -70,10 +60,8 @@ Prior pin (counsel e184): orphans **895** · health_now **41** — delta **+26**
 
 ## Class H -- SHED COMPLETE `20260827.162143`, and the record of what was cut
 
-*Keaton circled the second mitra shed on `20260827`. Ten prepped fossils were cut in one pass,
-every one with its mutant standing and every living citer repointed first. The rows stay as the
-record: a shed names what it cut, so a reference met in testimony reads as intent. Class H stays
-open for the next fossil a molt seats, and the word stays **shred RED** until the next circle.*
+*The second mitra shed, circled `20260827`: ten fossils cut, every mutant standing, every living
+citer repointed first. The rows stay as the record; the word stays **shred RED** until the next circle.*
 
 | Elder cut | Living mutant | Where its references went |
 | --- | --- | --- |
@@ -146,6 +134,9 @@ condition a mitra shed asks -- *the mutant carries the elder's content* -- fails
 
 *A Class W row records that a named set was measured against the shed conditions and held. It exists so a later molt pass reads a number instead of repeating a walk.*
 
+### W4 -- the census's top piece, and the lesson it taught the campaign (`20260828.212441`)
+
+The counsel campaign's first lift walked `counsel/date/20260724/20260724-141612_names-maps-and-open-questions.md` -- the census's most-cited piece at 7 living citers -- and held it, because its insights were **already lifted the day they were spoken**: `STEWARDS.md`, `context/APARIGRAHA.md`, `context/OPEN_QUESTIONS.md`, and `context/THREATS.md` were each born from this sitting and cite it as their provenance header, and the three `tools/fixtures/r/radiant_*` citations are corpus-sample roles, replaced only on the day a shed circles. The campaign's lesson, written where the next lap reads: **a high citer count at the census's top is mostly provenance credit, and provenance is testimony-shaped -- the lift hunts body-leaning citations, and a census that told the two apart would order better.** Named for a later census rev, not built tonight.
 ### W1 -- the thirty-nine of `active-designing/` (`20260823.182512`)
 
 Keaton pasted a browse of the public seed's `active-designing/` room -- twenty-eight day folders and **thirty-nine named documents** -- and asked whether the old ones can shed. Measured that stamp:
@@ -160,7 +151,7 @@ Keaton pasted a browse of the public seed's `active-designing/` room -- twenty-e
 | Fewest citations on any one | **3** (`20260727-101510_the-acme-onboarding-walk.md`) |
 | Most | **46** (`20260706-023912_the-referential-namespace.md`) |
 
-**Held, on three conditions plus one.** A living mutant seats before a fossil joins Class H (none of the thirty-nine has one); Class O wants a basename no file names (the floor is three); the cut stays RED until circled; and all thirty-nine are dated testimony, resolved rather than rewritten.
+**Held:** no mutant seated (Class H needs one); Class O floor is three; cut RED until circled; all thirty-nine are testimony.
 
 **Named for its own round, rather than started:** a fascia weave over the seven clusters these fall into (Open Asks 8, Steward/commerce 4, SLC ladder 6, Dimeroll 3, language and Glow 4, inference voices 2, foundational singles 12), shaped as a **living index page per cluster** in `active-designing/` rather than as cross-links edited into thirty-nine dated bodies.
 
@@ -305,9 +296,6 @@ living rows and may sweep on touch; dated testimony keeps every syllable it ever
 
 ## Shed complete -- the mitra shed, circled `20260826.032839`
 
-Keaton circled the prepped mitra shed on `20260826`: twelve fossils cut, every one with its
-living mutant GREEN and its citers repointed before the cut -- the six chapter-era calendar
-molts, two bit-chapter molts, two sync molts, single-stranded, and every-climate. Six pond
-sources repointed to the living realidream in the same pass. The full roster and prep detail
-rest in this file's own history at the walk-back of the cut.
+The first mitra shed, circled `20260826`: twelve fossils cut, mutants GREEN, citers repointed
+first. The roster and prep detail rest in this file's own history at the walk-back of the cut.
 
