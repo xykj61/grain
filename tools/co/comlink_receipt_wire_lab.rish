@@ -8,6 +8,13 @@
 
 let zig = "vendor/zig-toolchain/zig"
 let build_dir = "comlink/.build"
+
+# Sameness is the macro: build/qemu shapes named once as fns, callers spawn/run
+# the returned argv (the handle law) -- full account: comlink_device_wire_lab.rish.
+
+fn build_guest src elf: run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${src} -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/${elf}"]
+fn qemu_rx cable elf: ["timeout" "60" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,listen=${cable}" "-kernel" "${build_dir}/${elf}"]
+fn qemu_tx cable elf: ["timeout" "30" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,connect=${cable}" "-kernel" "${build_dir}/${elf}"]
 let port_raw = env "COMLINK_RECEIPT_LAB_PORT"
 if port_raw == "" then let port = "15556" else let port = port_raw
 let sock = "127.0.0.1:${port}"
@@ -15,16 +22,16 @@ let sock = "127.0.0.1:${port}"
 let prep = run ["sh" "-c" "mkdir -p ${build_dir}"]
 assert prep.ok else "receipt wire lab mkdir failed"
 
-let build_rx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_receipt_rx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/receipt-rx.elf"]
+let build_rx = build_guest "comlink/guest_receipt_rx.rye" "receipt-rx.elf"
 assert build_rx.ok else "receipt rx guest build failed"
 
-let build_tx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_receipt_tx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/receipt-tx.elf"]
+let build_tx = build_guest "comlink/guest_receipt_tx.rye" "receipt-tx.elf"
 assert build_tx.ok else "receipt tx guest build failed"
 
-let rx = spawn ["timeout" "60" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,listen=${sock}" "-kernel" "${build_dir}/receipt-rx.elf"]
+let rx = spawn (qemu_rx sock "receipt-rx.elf")
 let pause = run ["sleep" "1"]
 assert pause.ok else "receipt lap sleep failed"
-let tx = run ["timeout" "30" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,connect=${sock}" "-kernel" "${build_dir}/receipt-tx.elf"]
+let tx = run (qemu_tx sock "receipt-tx.elf")
 let rx_done = wait-for rx
 assert rx_done.out contains "sealed receipt GREEN" else "slcl2 device wire lab RED"
 

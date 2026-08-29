@@ -6,6 +6,13 @@
 
 let zig = "vendor/zig-toolchain/zig"
 let build_dir = "comlink/.build"
+
+# Sameness is the macro: build/qemu shapes named once as fns, callers spawn/run
+# the returned argv (the handle law) -- full account: comlink_device_wire_lab.rish.
+
+fn build_guest src elf: run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${src} -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/${elf}"]
+fn qemu_rx cable elf: ["timeout" "60" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,listen=${cable}" "-kernel" "${build_dir}/${elf}"]
+fn qemu_tx cable elf: ["timeout" "30" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,connect=${cable}" "-kernel" "${build_dir}/${elf}"]
 let port_mint_raw = env "COMLINK_MUR_MINT_LAB_PORT"
 if port_mint_raw == "" then let port_mint = "15569" else let port_mint = port_mint_raw
 let port_receipt_raw = env "COMLINK_MUR_RECEIPT_LAB_PORT"
@@ -16,29 +23,29 @@ let sock_receipt = "127.0.0.1:${port_receipt}"
 let prep = run ["sh" "-c" "mkdir -p ${build_dir}"]
 assert prep.ok else "murr wire lab mkdir failed"
 
-let build_mint_rx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_murr_mint_rx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/murr-mint-rx.elf"]
+let build_mint_rx = build_guest "comlink/guest_murr_mint_rx.rye" "murr-mint-rx.elf"
 assert build_mint_rx.ok else "murr mint rx guest build failed"
 
-let build_mint_tx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_murr_mint_tx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/murr-mint-tx.elf"]
+let build_mint_tx = build_guest "comlink/guest_murr_mint_tx.rye" "murr-mint-tx.elf"
 assert build_mint_tx.ok else "murr mint tx guest build failed"
 
-let build_receipt_rx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_murr_receipt_rx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/murr-receipt-rx.elf"]
+let build_receipt_rx = build_guest "comlink/guest_murr_receipt_rx.rye" "murr-receipt-rx.elf"
 assert build_receipt_rx.ok else "murr receipt rx guest build failed"
 
-let build_receipt_tx = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build comlink/guest_murr_receipt_tx.rye -target riscv64-freestanding-none -mcmodel=medium -fno-entry -T aurora/layout.ld -femit-bin=${build_dir}/murr-receipt-tx.elf"]
+let build_receipt_tx = build_guest "comlink/guest_murr_receipt_tx.rye" "murr-receipt-tx.elf"
 assert build_receipt_tx.ok else "murr receipt tx guest build failed"
 
-let mint_rx = spawn ["timeout" "60" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,listen=${sock_mint}" "-kernel" "${build_dir}/murr-mint-rx.elf"]
+let mint_rx = spawn (qemu_rx sock_mint "murr-mint-rx.elf")
 let mint_pause = run ["sleep" "1"]
 assert mint_pause.ok else "mint hop sleep failed"
-let mint_tx = run ["timeout" "30" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,connect=${sock_mint}" "-kernel" "${build_dir}/murr-mint-tx.elf"]
+let mint_tx = run (qemu_tx sock_mint "murr-mint-tx.elf")
 let mint_rx_done = wait-for mint_rx
 assert mint_rx_done.out contains "sealed mint GREEN" else "mint hop RED"
 
-let receipt_rx = spawn ["timeout" "60" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,listen=${sock_receipt}" "-kernel" "${build_dir}/murr-receipt-rx.elf"]
+let receipt_rx = spawn (qemu_rx sock_receipt "murr-receipt-rx.elf")
 let receipt_pause = run ["sleep" "1"]
 assert receipt_pause.ok else "receipt hop sleep failed"
-let receipt_tx = run ["timeout" "30" "qemu-system-riscv64" "-machine" "virt" "-bios" "none" "-nographic" "-global" "virtio-mmio.force-legacy=false" "-device" "virtio-net-device,netdev=net0" "-netdev" "socket,id=net0,connect=${sock_receipt}" "-kernel" "${build_dir}/murr-receipt-tx.elf"]
+let receipt_tx = run (qemu_tx sock_receipt "murr-receipt-tx.elf")
 let receipt_rx_done = wait-for receipt_rx
 assert receipt_rx_done.out contains "sealed receipt GREEN" else "receipt hop RED"
 

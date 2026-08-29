@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260829.151912` | [the argv named once boots twice](20260829/20260829-151912_the-argv-named-once-boots-twice.kyri) | tools/co condense: 135 sites to 45 fn calls, two labs GREEN on real qemu; the destaging hand named |
 | `20260829.151128` | [the spiral turn holds the cut](20260829/20260829-151128_the-spiral-turn-holds-the-cut.kyri) | fire again by the formula: W5 holds the almanac machinery; three survey verdicts seated |
 | `20260829.145726` | [the fire row cuts three bodies to one](20260829/20260829-145726_the-fire-row-cuts-three-bodies-to-one.kyri) | enclosure door, 15 wire-lab shims, almanac engine 114/114 parity; five slices landed |
 | `20260829.142251` | [the card breathes and the sameness measured](20260829/20260829-142251_the-card-breathes-and-the-sameness-measured.kyri) | air rota lap: card condensed 24575 -> 22762, LOCA seated in Now; 114 almanac twins counted |
