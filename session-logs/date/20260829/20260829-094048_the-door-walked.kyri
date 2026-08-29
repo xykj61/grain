@@ -1,0 +1,20 @@
+format session-log-v1
+stamp 20260829.094048
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role interactive bench, Sound seat -- Glow language custody
+modality text
+model claude-fable-5
+model_status active runtime, product-reported identity
+voice Kyri
+host anonymized macOS arm64 bench, one-clock zone America/New_York
+title The door walked -- a Rye view class on iOS, dispatched by the platform, judged by the same pins
+prompt Keaton's kg on the next movement: the UIKit seam rung, movement one's shape spoken in UIView.
+think The probe is the macOS view-class probe's twin with iOS's own road in: the seam verifies three selectors against the loaded UIKit, GrainRyeViewIOS registers over UIView with the drawRect encoding checked against the superclass first, and the platform dispatches into the Rye function through CALayer's renderInContext -- the drawLayer-to-drawRect road, walked without any application object so the whole proof runs under simctl spawn and speaks on stdout.
+think The recipe grew two flags on measurement: framework search paths are NOT sysroot-prepended the way library paths are, so -F takes the absolute SDK path, and CoreFoundation links explicitly where Cocoa once carried it. The simulator strips the environment, and SIMCTL_CHILD_ is the platform's own prefix for passing it -- three more lines for the reading's next hand.
+obs Inside the booted iPhone: draw_calls=1 with the probe never sending drawRect itself, callback_pins=matched -- the pure core answering the identical lit constant and digest on the platform's stack -- and the prove-red leg REFUSED a false declaration against the loaded UIKit at exit 134. Movement one's shape carried whole.
+obs One discovery reported rather than falsely pinned: the rendered bitmap lit 37,967 pixels against the pinned 16,268 -- the platform's drawing road antialiases at what should be one-to-one -- which is the strongest validation yet of the contract's own design: claims are taken at the hand-off, and the far side of a compositor is never the oracle.
+loom probe=ios_view_seam draw_calls=1 callback_pins=matched rendered_lit=37967 pinned_lit=16268 prove_red_exit=134 new_flags=2
+file tools/rye/ios_view_seam_probe.rye the twin: same seam, same pins, iOS's own dispatch road
+recommend check-in the iOS app-shell rung (UIApplicationMain with a Rye delegate) and the touch-input rung both open mechanically from here; the antialiasing discovery may deserve one line in the reading on Keaton's word
