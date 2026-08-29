@@ -58,7 +58,7 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `3561104a7f` -- this round's own.
+**Git nib:** `b90cf32160` -- this round's own.
 
 **Now.** **An enclosure that forgets is a promise about time.**
 
@@ -210,7 +210,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260829.054002` | The skip planted in both languages | [log](../session-logs/date/20260829/20260829-054002_the-skip-planted-in-both-languages.kyri) |
+| `20260829.070953` | A witness builds what it runs | [log](../session-logs/date/20260829/20260829-070953_a-witness-builds-what-it-runs.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line here until the next replaces it.
 

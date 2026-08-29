@@ -9,6 +9,15 @@
 #   RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build scribe/reader.rye -femit-bin=scribe/bin/reader
 #   rishi/bin/rishi run tools/b/bat_fleet_witness.rish
 
+# Build the reader this witness runs, rather than assuming a previous lap left one behind.
+# scribe/bin/ is gitignored (.gitignore:193), so a clone carries no binary at all: the "Build
+# first" line above is documentation, and a comment builds nothing (REDS %334). Its sibling
+# tools/s/scribe_reader_witness.rish builds the same reader, because each header tells a reader
+# to run that witness directly.
+let zig = "vendor/zig-toolchain/zig"
+let build = run ["sh" "-c" "mkdir -p scribe/bin && env RYE_ZIG=${zig} rye/bin/rye build scribe/reader.rye -femit-bin=scribe/bin/reader"]
+assert build.ok else "bat fleet: scribe reader build failed -- ${build.err}"
+
 # 1. The reader validates every shape and refuses a short Galleon (its selftest).
 let st = run ["scribe/bin/reader" "selftest"]
 assert st.ok else "scribe reader selftest must exit 0"

@@ -10,6 +10,13 @@
 # Build first:  rye build vault/shard.rye -femit-bin=vault/bin/shard
 #   rishi/bin/rishi run tools/v/vault_shard_witness.rish
 
+# Build the binary this witness proves, rather than assuming a previous lap left one behind.
+# vault/bin/ is gitignored (.gitignore:192), so a clone carries no binary at all: the "Build
+# first" line above is documentation, and a comment builds nothing (REDS %334).
+let zig = "vendor/zig-toolchain/zig"
+let build = run ["sh" "-c" "mkdir -p vault/bin && env RYE_ZIG=${zig} rye/bin/rye build vault/shard.rye -femit-bin=vault/bin/shard"]
+assert build.ok else "vault shard: build failed -- ${build.err}"
+
 let st = run ["vault/bin/shard" "selftest"]
 assert st.ok else "vault shard selftest must exit 0"
 assert (st.err contains "GREEN") else "vault shard must report GREEN"
