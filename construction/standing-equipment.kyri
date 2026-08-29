@@ -591,14 +591,24 @@ seated 20260828.213503
 # this bench 20260828 with comlink/bin/ emptied first: 2s each, its own zig build included, no
 # socket bound and no process spawned. `lap` rather than `cadence` for that cost.
 #
-# Their fourth sibling tools/co/comlink_r1_dual_stack_witness.rish stays off this roster on
-# purpose. Its leg B binds both address families on loopback and its own header calls RED correct
-# on a host without IPv6, so a rostered seat would turn an environment fact into every body's red
-# lap; it costs 151s here besides, the a1 suite included. The `host` field cannot carry it: `host
-# macos` is a tier for PLACE, and this condition is one of CAPABILITY -- a Linux bench routing IPv6
-# keeps the promise a macOS bench without it breaks, so the OS word would encode something untrue.
-# A capability tier is a design question rather than a row, and it is named on the card instead of
-# guessed at here.
+# Their fourth sibling tools/co/comlink_r1_dual_stack_witness.rish takes its seat here on
+# 20260829, and the field it waited for is the reason it now can. Its leg B reads the loopback
+# interface table and requires BOTH address families on it, so a red there is an ENVIRONMENT fact
+# -- this host has not configured a family -- rather than a finding about Comlink, and an
+# unconditional row would turn one bench's configuration into every body's red lap. The `host`
+# field cannot carry it: `host macos` is a tier for PLACE, and this condition is one of CAPABILITY
+# -- a Linux bench routing IPv6 keeps the promise a Linux bench without it breaks, so the OS word
+# would encode something untrue. `capability ipv6` is that word, seated 20260829 and proven in all
+# three of its answers: present runs, absent skips BY NAME and is counted, and unknown RUNS --
+# since skipping on an unknown is how a tier stops being a cadence and becomes an exemption. The
+# runner's probe reads `::1` on lo0 here, so the guard runs on this bench and a bench without the
+# family reads its own name in `skipped_capability` rather than vanishing from the roster.
+#
+# `cadence` for the cost: 105s measured here 20260829.175031, its own a1 suite included, against
+# the 2s each of its three pure siblings above. The elder note in this room read 151s; a witness
+# timed under a lap's own load reads high, and the number a row carries should be measured by the
+# lap that writes it. Either reading is two orders above the siblings, which is what `cadence`
+# answers -- it sings on the fifth round rather than every lap.
 
 guard comlink_topology
 path tools/co/comlink_topology_witness.rish
@@ -614,6 +624,13 @@ guard comlink_handshake_turn
 path tools/co/comlink_handshake_turn_witness.rish
 tier lap
 seated 20260828.231614
+
+guard comlink_r1_dual_stack
+path tools/co/comlink_r1_dual_stack_witness.rish
+tier cadence
+capability ipv6
+seated 20260829.175031
+
 # waymark_rung_drift -- the mark law (.claude/rules/stamp-and-name.md) retired the ascending rung
 # as a mark for planned work, and two ladders numbered right past it for a week because nothing
 # counted the shape (%329). This meter counts <seated-waymark><digits> in living tracked files

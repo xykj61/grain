@@ -58,7 +58,7 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `1b97235944` -- this round's own.
+**Git nib:** `53eaa7afa2` -- this round's own.
 
 **Now.** **LOCA lands on two operating systems; Pond's record learns who walks through its door.**
 
@@ -82,23 +82,25 @@ longer existed (%334's family); it owns its build now, 0.8s of a 1.4s scan.
 `host` for PLACE -- what a host CAN DO. `capability ipv6` probes the loopback table: present runs,
 absent is skipped BY NAME and counted, and **unknown RUNS** -- skipping on an unknown is how a tier
 becomes an exemption. 23 control cases, `host`'s own among them (it landed at %295 with none).
-Left: the `comlink_r1_dual_stack` row itself, held off a peer's staged roster; its witness is GREEN
-here, and its header's "bind both families on loopback" was an `ifconfig` read all along.
+Seated `20260829.175031`: the `comlink_r1_dual_stack` row takes `capability ipv6` and `tier
+cadence` -- 105s measured here against its three pure siblings' 2s -- so the field's first row is
+a Comlink row, and the roster note that called a capability tier "a design question rather than a
+row" is rewritten to say what the row now is.
 
 **Other Pond doors:** `spool_cloth` promises 4 large artifacts over a store holding **2** (%341).
 
 **MANY HANDS** (granted `20260828`): custody stays MANUAL, one writer per checkout. Root
 `SKILL.md`; every clone seats `ww` (`grain-ww/grain`, gate %1) and `.git/ssh_config_jail`.
 
-**Still open:** REDS reads 24,476/**24,576**, 100B free, 8 OPEN, 0 foldable -- %334's fold
-returned 811B and %291's new evidence spent 711 of it; `pin_deadlocked=1` still stands.
-`%338` booked, 3 doors in `20260829-031804`; his seat.
+**Still open:** REDS reads **7,537/24,576**, 17,039B free, **1 row, 0 OPEN**, 1 foldable,
+`pin_deadlocked=0` -- door B's drain healed the pin and `%345` is the row standing. Every clause
+this block carried before was measured false.
 **Width:** `glow/rune_shape.rye` publishes `usize` in 5 fields and 5 accessors; 59 fixtures
 await his word. **Mind's:** the reconnect stash, `%281`/`%291`, two `enclosure.conf` pins here.
-**Roster here (over the shipped tree, `20260829.143651`):** 93 guards, **91 green**, 2 red --
-`rule_twin` 39/36 is gate %7 and `width_check`'s tree-wide count 331/329 is another body's;
-`witness_reach`, `nib_honesty` and `remember_git_nib` all GREEN. **Seats:** rostering the roster's own witness; a
-`mask` softening the `map`.
+**Roster here (cold, `tree_moved=no`, `20260829.170437`):** 94 guards, **88 green**, 6 red --
+`rule_twin` 39/36 is gate %7, `width_check` 331/329 is another body's, `pond_policy_launcher` and
+`pond_enclosure_door` are Hush's two; `geode_libraries` (32 against a fresh 33) and
+`remember_git_nib` (three commits behind) closed here. **Seat:** rostering the roster's own witness.
 
 **Next doors.** Dream: Caravan and Tally. Hush: the Mac's 3 Pond rows -- `xargs -r` at
 `pond_enclosure_door_scan.sh:158` is a GNU extension BSD refuses, so at least one wants a repair
@@ -218,7 +220,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260829.143651` | The door's first duty -- Pond's record can say who walks through it | [log](../session-logs/date/20260829/20260829-143651_the-doors-first-duty.kyri) |
+| `20260829.175244` | The row the field was built for -- dual-stack seated on `capability ipv6` | [log](../session-logs/date/20260829/20260829-175244_the-row-the-field-was-built-for.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it. (The cadence
 stays CUT `20260826` -- the custody-gates block above carries the sentence; the duplicate section
