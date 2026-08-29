@@ -519,6 +519,25 @@ path tools/p/pond_enclosure_state_witness.rish
 tier lap
 seated 20260828.170003
 
+# pond_policy_launcher -- the enclosure record and the launcher it claims to describe, compared.
+# pond/enclosure_policy.kyri declares what the agent-jail lap builds and tools/ag/agent-jail.sh
+# builds it; two spellings of one contract stood side by side and nothing compared them, so the
+# record carried `network off` for an enclosure sharing the host's own network namespace (REDS
+# %329). Two readings gate at zero: a mount the launcher makes and the record never declared,
+# which is the escape direction orbit two must rule out, and a closure claim with no flag behind
+# it. The reverse readings and the `ai-jail --help` reading are reported, since a guard that reds
+# on a machine without the jail is a guard someone turns off. `lap` rather than `cadence` for the
+# same reason its two siblings chose it -- the enclosure arc is under active work and this guard's
+# whole subject is the pair of files orbit two will derive its grant set from. The cost is named
+# rather than hidden: 13.4s measured 20260828, of which the 25-pen control is 9.9s and the scan
+# itself 0.4s. When the quest's orbit five closes and these two files stop moving, this row falls
+# to `cadence` -- the control re-proves the guard rather than the tree.
+
+guard pond_policy_launcher
+path tools/p/pond_policy_launcher_witness.rish
+tier lap
+seated 20260828.202621
+
 # glow_choir -- the 26 Glow-family witnesses that no runner on disk named. A survey on 20260828
 # traced every tracked runner and found them reached by nothing: not this roster, not the three
 # tend suites, not another witness. One of the 26 was already RED, citing a brief that had folded

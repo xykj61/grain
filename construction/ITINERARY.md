@@ -80,7 +80,7 @@ be rostered when its scan reads the card its red would land on.
 
 **Sound:** repoint 3 broken links in `tools/fixtures/r/radiant_pool_scope.md` after the fixture fold.
 
-**Next doors.** Dream: Caravan and Tally. Hush: Pond orbit two.
+**Next doors.** Dream: Caravan and Tally. Hush: orbit two's grant set, %335 landed.
 
 ---
 ## Landed arcs

@@ -9,11 +9,26 @@
 # are exact; only the handle stands in. The four state binds read `loops/<body>/`, the one room
 # read-scope.md seated on 20260827; agent-jail.sh adopts an elder `.claude-state` on next launch.
 #
+# THE NETWORK LINE, MEASURED RATHER THAN ASSUMED (20260828, REDS %329). This record read
+# `network off` from its first day. It is refuted three ways on this pier: the jail's own network
+# namespace is byte-identical to the host's (`net:[4026531833]` read from /proc/<pid>/ns/net for a
+# live jailed agent and for the host shell beside it, while their PID namespaces differ, so the
+# reading can tell a shared namespace from an unshared one); `ai-jail --help` offers no network
+# option at all, only --tailscale, --ssh, and --pictures; and neither agent-jail.sh nor
+# enclosure.conf.example spells a network flag. So the enclosure this record describes carries
+# full host network, and no flag the launcher could pass would close it.
+#
+# `network on` is therefore the honest declaration, and it makes this policy read HOLD rather than
+# PLACE -- which is the module's own design working. An open network is check-in territory by the
+# quest's custody line, so `on` waits for a word instead of passing quietly. The lap wants the
+# network (an agent that cannot reach its API does nothing), and now the record says so out loud
+# where an operator reads it.
+#
 #   pond/bin/enclosure-policy check pond/enclosure_policy.kyri
 format pond-enclosure-policy-v1
 name agent-jail-lap
 private-home yes
-network off
+network on
 gpu no
 map /nix/store
 map /run/current-system
