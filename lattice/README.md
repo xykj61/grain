@@ -1,7 +1,7 @@
 # Lattice -- the arithmetic voice, in bounded gardens
 
 **Stamp:** `20260827.185500` - **Language:** EN - **Voice:** Kyri - **Style:** Gauge, Door setting (see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md))
-**Status:** Living module -- **laps 0 through 39 green**, ops through `hard_sigmoid` - `rsqrt` - `hardtanh` - `cube`, each with its own witness
+**Status:** Living module -- **laps 0 through 39 green**, all forty run together on Linux `20260829` by [`lattice_suite_witness.rish`](../tools/l/lattice_suite_witness.rish)
 **Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
 [`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
 path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
@@ -79,6 +79,7 @@ sized honestly, a number meaning what it measures rather than what anyone wished
 ```bash
 rishi/bin/rishi run tools/l/lattice_lap40.rish     # the newest rung -- cube
 rishi/bin/rishi run tools/l/lattice_lap1.rish      # the first -- matmul 2x2
+rishi/bin/rishi run tools/l/lattice_suite_witness.rish # all forty, admitted and refused sides
 ```
 
 *The eight rungs above lap 31 stood on disk and undocumented until `20260827`: the table stopped at
