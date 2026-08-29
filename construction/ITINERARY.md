@@ -76,8 +76,8 @@ options in %341; the seal's header omitted `tools/ag/agent-jail.sh` (`pond_seal_
 **MANY HANDS** (granted `20260828`): custody stays MANUAL, one writer per checkout. Root
 `SKILL.md`; every clone seats `ww` (`grain-ww/grain`, gate %1) and `.git/ssh_config_jail`.
 
-**Still open:** REDS reads 23,765/**24,576** with 811B free, 8 OPEN, 0 foldable -- %334's
-fold returned the first headroom since the meter read `pin_deadlocked=1`, which still stands;
+**Still open:** REDS reads 24,476/**24,576**, 100B free, 8 OPEN, 0 foldable -- %334's fold
+returned 811B and %291's new evidence spent 711 of it; `pin_deadlocked=1` still stands.
 `%338` booked, 3 doors in `20260829-031804`; his seat.
 **Width:** `glow/rune_shape.rye` publishes `usize` in 5 fields and 5 accessors; 59 fixtures
 await his word. **Mind's:** the reconnect stash, `%281`/`%291`, two `enclosure.conf` pins here.
