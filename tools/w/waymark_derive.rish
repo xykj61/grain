@@ -117,7 +117,7 @@ say "corpus sha3-512: ${digest_val}"
 # Placeholder below is the most recent seat; change it when drawing the next.
 # Most recent seats (breach molt debride replacements 20260817):
 #   input_name rests on WADE's below.
-let input_name = "slh-dsa-hash-based-signature-ladder"
+let input_name = "macos-native-surface-rye-backend"  # LOCA, seated 20260828.222500
 
 let hash_run = run ["sh" "-c" "printf '%s' '${input_name}' | sh ${sha3} 512 - | cut -c1-8"]
 assert hash_run.ok else "sha3-512 of the ladder name failed"
