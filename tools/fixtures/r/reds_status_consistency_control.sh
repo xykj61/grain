@@ -7,7 +7,9 @@
 # -- an over-eager reading that refused ordinary rows would make reds-first impossible, which is a
 # worse failure than the one the scan was written for.
 #
-# Twenty-nine cases on planted markdown in a throwaway directory. The pen is handed to the scan through
+# Thirty-four cases on planted markdown in a throwaway directory -- the count this file's own
+# `cases_ok=` line prints, rather than a number recited beside it, which is how the elder
+# twenty-nine outlived three additions. The pen is handed to the scan through
 # REDS_SPINE_GLOB, which tools/fixtures/r/reds_spine_files.sh honors, so the living ledger is never
 # read here and never written.
 #
@@ -171,14 +173,30 @@ run_pen
 check last_marker_wins 'closed_rows=1'
 check last_marker_not_open 'open_rows=0'
 
-# ---- fold_blocked: a row this reading calls closed, carrying the word the fold tool refuses ------
+# ---- fold_blocked: a MARKERLESS row carrying the word the fold tool refuses ---------------------
+# Door B moved this reading in commit 344e349b2: the fold tool reads the marker first, so a MARKED
+# row carrying the bare word OPEN in its prose folds fine, and only a markerless one is still
+# refused at row_open. That commit edited the scan's awk block and left these cases asserting the
+# elder reading, so `fold_blocked_counted` and `fold_blocked_named` stood RED from door B until
+# 20260829 and the whole guard was off -- docs-implementation-sync one layer over, since a control
+# is a guard's proof and a stale proof turns the guard off rather than merely dating it.
 fresh_pen
 : > "$PEN/a.md"
-row a.md 41 'It stood OPEN for a day. **CLOSED** -- the guard is rostered now.'
+row a.md 41 'It stood OPEN for a day, and nobody marked it either way.'
 run_pen
 [ "$CODE" -eq 0 ] && say fold_blocked_ungated ok || say fold_blocked_ungated RED
 check fold_blocked_counted 'fold_blocked_rows=1'
 check fold_blocked_named 'fold_blocked %41'
+
+# ---- and the same bare word under a MARKER folds free, which is door B itself -------------------
+# The pair is the point: a refusal proven only in the biting direction cannot be told from a guard
+# that refuses everything, and this is the exact row the elder cases planted while expecting a hit.
+fresh_pen
+: > "$PEN/a.md"
+row a.md 41 'It stood OPEN for a day. **CLOSED** -- the guard is rostered now.'
+run_pen
+check fold_blocked_marked_free 'fold_blocked_rows=0'
+check fold_blocked_marked_closed 'closed_rows=1'
 
 # ---- and prose about an opening is not that word --------------------------------------------------
 fresh_pen

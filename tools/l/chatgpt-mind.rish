@@ -13,9 +13,10 @@ let max_prompt_bytes = 24576
 # measurement of the true ceiling, and the parking rung in mind-loop below is what makes
 # any wall survivable.
 let max_log_bytes = 4194304
-# The child relays BOTH codex streams into its own stdout, so the supervisor's wall holds
-# two log walls plus 64 KiB of harness lines: 2 x 4,194,304 + 65,536.
-let max_supervisor_bytes = 8454144
+# Relay is per-stream (child stdout to stdout, stderr to stderr), so each supervisor wall
+# holds one relayed log wall plus the interpreter's 64 KiB supervisor margin -- the same
+# formula the elder 1,114,112 encoded at 1 MiB, and exactly the interpreter's own ceiling.
+let max_supervisor_bytes = 4259840
 let max_commit_message_bytes = 4096
 let max_candidate_paths = 64
 let max_laps_hard = 24

@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260829.163028` | [the tier for what a host can do](20260829/20260829-163028_the-tier-for-what-a-host-can-do.kyri) | roster gains a capability field; absence planted, no override |
 | `20260829.162912` | [the three rungs and the always-fleet](20260829/20260829-162912_the-three-rungs-and-the-always-fleet.kyri) | Mind's harness repaired (wall 4 MiB, parking, ff-pull), probe GREEN; the 24/7-all-lanes design drafted |
 | `20260829.161840` | [custody that recovers](20260829/20260829-161840_custody-that-recovers.kyri) | the Mind recommendation: park the leavings; three rungs make 24/7 -- wall, parking, skip |
 | `20260829.160959` | [the wall sized to a quieter Codex](20260829/20260829-160959_the-wall-sized-to-a-quieter-codex.kyri) | Mind's crash diagnosed to the byte: stderr 1048576 = max_log_bytes; Dream absorbs, Mind refuses |

@@ -93,4 +93,8 @@ assert past.ok else "reds-status-consistency: the row past the highest must refu
 assert past.out contains "past_end_exit=1" else "reds-status-consistency: want exit 1 for the row past the end"
 
 say ""
-say "GREEN: reds-status-consistency -- control 32/32 - both gates zero - the reading agrees with the spine at its live edge."
+# The count is not spelled here. This line recited `control 32/32` while the control ran 29, then
+# 32, then 34 cases, and a recited total is the one part of a green line that can go false while
+# every assertion above it still holds (REDS %110's lesson, on a witness's own closing sentence).
+# The assertion that matters is `cases_red=0` above; the control prints its own `cases_ok=`.
+say "GREEN: reds-status-consistency -- every planted case agrees - both gates zero - the reading agrees with the spine at its live edge."

@@ -21,15 +21,21 @@
 #   which is REDS %219 wearing a field name.
 #   Every `ran` line in the run card names a guard the roster actually seats.
 #   No run-card line records a red or an absent guard.
-#   Forty-three behaviors are proven on throwaway rosters in a temporary pen -- ten refusals
-#   bitten, and the runner itself driven over a planted roster with a stub interpreter, since a
-#   tier is only a cadence if the program that reads it actually selects by it. Sixteen of the
-#   forty-three run inside a real git repository the control creates and throws away, because two
-#   of the runner's refusals are about the repository rather than the roster. Seven are the tree
-#   digest: a stub guard that writes nothing leaves it still, one that writes a file moves it.
-#   Nine are the unclosed lap: a clean cold open runs its guard, one staged path refuses the same
-#   pass before any guard starts, `--hot` passes that same tree, a guard asked for by name runs
-#   free over it, and `--hot --all` still selects every tier.
+#   Every `capability` names one the runner probes -- `ipv6` today. A capability is a tier for what
+#   a host CAN DO, beside `host` for PLACE and `tier` for TIME, and its probe answers present,
+#   absent, or UNKNOWN. An unknown RUNS the guard, because skipping on an unknown is how a
+#   capability tier stops being a cadence and becomes an exemption.
+#   The behaviors are proven on throwaway rosters in a temporary pen and counted by the control's
+#   own `control_verdict` line rather than recited here -- this paragraph said `forty-three` while
+#   the control ran more, which is the drift a witness header can least afford. Refusals are
+#   planted and then removed, the runner is driven over planted rosters with a stub interpreter
+#   since a tier is only a cadence if the program reading it actually selects by it, and a share of
+#   the cases run inside a real git repository the control creates and throws away, because some of
+#   the runner's refusals are about the repository rather than the roster: the tree digest (a stub
+#   guard writing nothing leaves it still, one writing a file moves it) and the unclosed lap (a
+#   clean cold open runs its guard, one staged path refuses the same pass before any guard starts,
+#   `--hot` passes that same tree, a guard asked for by name runs free over it, and `--hot --all`
+#   still selects every tier).
 #
 #   A full-roster pass opening on a dirty index means a lap ended at `git add`, which left this
 #   tree's generated pages stale three times (REDS %188, %220, %223). The runner refuses it under
@@ -124,6 +130,45 @@ assert control.out contains "hot_still_reads_staged=yes" else "standing-equipmen
 assert control.out contains "staged_named_guard_free=yes" else "standing-equipment: a guard asked for by name is no lap open and runs free"
 assert control.out contains "hot_composes_with_all=yes" else "standing-equipment: --hot must compose with --all"
 
+# The capability tier, in all three of its probe answers (seated 20260829). `host` is a tier for
+# PLACE and `tier` is a tier for TIME; this is a tier for what a host CAN DO, and the roster's own
+# note under comlink_r1_dual_stack asked for the word rather than guessing at it. The control
+# shadows `ip` and `ifconfig` on PATH to hand the probe a fake host, so absence is planted without
+# any override existing inside the runner.
+assert control.out contains "capability_present_runs=yes" else "standing-equipment: a capability the host has must run its guard like any other row"
+assert control.out contains "capability_present_skips_none=yes" else "standing-equipment: a present capability must skip nothing"
+assert control.out contains "capability_absent_skips=yes" else "standing-equipment: a capability the host lacks must skip its guard"
+assert control.out contains "capability_absent_counted=yes" else "standing-equipment: a capability skip must be counted"
+assert control.out contains "capability_absent_named=yes" else "standing-equipment: a capability skip must name the guard and the capability, never merely count"
+assert control.out contains "capability_absent_still_passes=yes" else "standing-equipment: a capability skip is a cadence rather than a fault, so the pass still reads ok"
+assert control.out contains "capability_absent_card_silent=yes" else "standing-equipment: a skipped guard must write no run-card line, since it did not run"
+assert control.out contains "capability_by_name_runs=yes" else "standing-equipment: a guard asked for by name runs wherever it stands, capability or no"
+assert control.out contains "capability_by_name_unfiltered=yes" else "standing-equipment: a by-name run must not report a skip it did not make"
+
+# The third answer is the safety of the whole field. A probe that cannot read the host answers
+# UNKNOWN and the guard RUNS -- because skipping on an unknown is how a capability tier stops being
+# a cadence and becomes an exemption, thinning a roster to nothing while every meter reads green.
+assert control.out contains "capability_unknown_runs=yes" else "standing-equipment: a capability the probe cannot read must RUN its guard, never skip it"
+assert control.out contains "capability_unknown_skips_none=yes" else "standing-equipment: an unreadable probe must report no skip"
+assert control.out contains "unknown_capability_still_runs=yes" else "standing-equipment: a capability no probe knows must still run its guard rather than make it vanish"
+assert control.out contains "unknown_capability_refused=yes" else "standing-equipment: the scan must refuse a roster naming a capability no runner probes"
+assert control.out contains "unknown_capability_counted=yes" else "standing-equipment: an unknown capability must be counted as well as refused"
+assert control.out contains "capability_gated_counted=yes" else "standing-equipment: a capability-gated row must be counted on its own line"
+assert control.out contains "known_capability_free=yes" else "standing-equipment: a roster naming a capability the runner probes must pass free"
+
+# The host tier arrived at REDS %295 with no case in this control and no assertion here, so the
+# axis the capability field copies had neither a green side nor a red one. Both are proven now,
+# against the host the pass actually stands on.
+assert control.out contains "host_elsewhere_skips=yes" else "standing-equipment: a row gated to another host must be skipped here"
+assert control.out contains "host_elsewhere_counted=yes" else "standing-equipment: a host skip must be counted"
+assert control.out contains "host_elsewhere_named=yes" else "standing-equipment: a host skip must name the guard and the host it wants"
+assert control.out contains "host_here_runs=yes" else "standing-equipment: a row gated to THIS host must run"
+assert control.out contains "host_here_skips_none=yes" else "standing-equipment: a row gated to this host must report no skip"
+assert control.out contains "unknown_host_refused=yes" else "standing-equipment: the scan must refuse a roster naming a host no runner answers to"
+assert control.out contains "unknown_host_counted=yes" else "standing-equipment: an unknown host must be counted as well as refused"
+
+assert scan.out contains "guards_unknown_capability=0" else "standing-equipment: every capability must name one the runner probes"
+
 # THE EVIDENCE A RED LEAVES (REDS %266). A verdict with no words behind it cannot be rooted, which
 # this tree learned when caravan_suite read red under the roster and GREEN alone with the record
 # holding nothing to tell the two apart. Both halves are proven: a red keeps its guard's stdout AND
@@ -154,6 +199,9 @@ assert control.out contains "past_bound_stops_enumerating=yes" else "standing-eq
 assert control.out contains "past_bound_still_passes=yes" else "standing-equipment: a full box past the bound still reports rather than refusing"
 assert control.out contains "nogit_box_reads_zero=yes" else "standing-equipment: a pen outside git answers zero rather than refusing"
 assert control.out contains "control_verdict=ok" else "standing-equipment: the control must agree with itself"
-say "RED and GREEN paths proven -- ten refusals bitten across sixty-two behaviors, and the runner driven over a planted roster in and out of a real repository"
+# No total is spelled here. This line read `sixty-two behaviors` while the control ran more, the
+# same drift the header above just shed: a recited count is the one part of a green line that goes
+# false while every assertion over it still holds. The control prints its own tally.
+say "RED and GREEN paths proven -- every refusal planted and then freed, and the runner driven over planted rosters in and out of a real repository"
 
 say "GREEN: standing-equipment -- the roster is a list a program reads, each row names its cadence, and running it writes down when."
