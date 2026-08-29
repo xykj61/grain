@@ -34,7 +34,9 @@
 # single trigger would either miss one or fire on everything:
 #
 #   rule one   the fast front-door numbers -- README.md and docs-geode/libraries/README.md.
-#              Trigger: a tools/*_witness.rish or a *.rye file ARRIVES or LEAVES.
+#              Trigger: a tools/*_witness.rish or a *.rye file ARRIVES or LEAVES, OR a debt stands
+#              in the git directory because a commit landed by a path git skips this hook for
+#              (REDS %337; tools/hooks/post-commit records it).
 #   rule two   the ledger's headline -- construction/REDS.md.
 #              Trigger: the ledger or one of its fold shelves is staged at all.
 #   rule three the living pins' byte bounds -- every page on the pin roster.
@@ -53,8 +55,12 @@
 #   5. When a page changed and it DID hold unstaged edits, refuses the commit and says so plainly.
 #      The refreshed page is already in the worktree; the author stages it.
 #
-# WHAT IS NOT COVERED, said plainly: the fascia grade and the rooms-over-bound count can drift from
-# a commit that adds no witness and no module, and this hook is silent about both. Rule three reads
+# WHAT IS NOT COVERED, said plainly: this hook runs for `git commit` and `git commit --amend` and
+# for no other path -- `git cherry-pick` and `git rebase` skip it, and tools/hooks/post-commit is
+# the sibling that notices and records the debt rule one pays here. `git merge --no-ff` skips both,
+# and this tree's seated send merges --ff-only, which creates no commit and stales nothing. The
+# fascia grade and the rooms-over-bound count can drift from a commit that adds no witness and no
+# module, and this hook is silent about both. Rule three reads
 # a pin only when the round stages it, so a pin that crosses its bound by a hand editing it outside
 # a commit goes unread here. The rostered guards still catch all three at a cold start -- and on
 # this bench a cold roster pass runs for roughly half an hour, which is the whole reason the fast,
@@ -109,8 +115,18 @@ refresh_page() {
 
 # RULE ONE -- the fast front-door numbers. They move only when a witness or a module arrives or
 # leaves, which is precisely what most laps here do.
+#
+# THE SECOND TRIGGER, added 20260829 (REDS %337): a debt recorded by tools/hooks/post-commit. Git
+# runs pre-commit for `git commit` and `git commit --amend` and for nothing else, so a commit made
+# by `git rebase` or `git cherry-pick` -- which the twice-pulled send REQUIRES whenever the anointed
+# remote moved -- lands without this hook ever seeing it. post-commit notices that and writes
+# `derived-pages-owed` in the git directory; this reads it, so the next ordinary commit here pays
+# the debt whether or not it moves a witness of its own. The marker is cleared by post-commit when
+# a commit actually LANDS, never here, since a refusal further down would otherwise forget a debt
+# that is still owed.
 moved=$(git diff --cached --name-only --diff-filter=AD -- 'tools/*_witness.rish' '*.rye')
-if [ -n "$moved" ]; then
+owed="$(git rev-parse --git-dir)/derived-pages-owed"
+if [ -n "$moved" ] || [ -f "$owed" ]; then
   refresh_page tools/r/readme_metrics.rish README.md \
     rishi/bin/rishi run tools/r/readme_metrics.rish write
   refresh_page tools/g/geode_libraries.rish docs-geode/libraries/README.md \
@@ -152,5 +168,19 @@ if [ -f tools/fixtures/p/pin_bound_touch_scan.sh ] && [ -f tools/fixtures/l/livi
 fi
 
 [ "$refused" = no ] || exit 1
-[ -n "$staged" ] && echo "pre-commit: regenerated and staged with this commit --$staged"
+
+# Spelled as an `if` rather than `[ ... ] && echo ...`, because under `set -eu` a failing AND-list
+# is a shell-dialect question this hook has no reason to ask, and a line after it now depends on
+# reaching it. The control proves the resting path on metal either way; this makes it plain.
+if [ -n "$staged" ]; then
+  echo "pre-commit: regenerated and staged with this commit --$staged"
+fi
+
+# THE TOKEN, read by tools/hooks/post-commit. It is dropped only here, on the path where this hook
+# has actually had its say, so a commit that reaches post-commit without it is a commit git made by
+# a path that skips pre-commit entirely. Asking `did my sibling run` reads the property directly,
+# where probing for .git/rebase-merge and its three cousins infers it from a list somebody has to
+# keep current. A refusal above exits before this line, which is correct: no commit is made, so
+# nothing is owed and nothing is excused.
+: > "$(git rev-parse --git-dir)/pre-commit-ran"
 exit 0

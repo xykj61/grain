@@ -181,3 +181,5 @@ at a closed fold.*
 *Row %337 folded to [`REDS-the-meter-that-counts-one-call-rows-337.md`](REDS-the-meter-that-counts-one-call-rows-337.md) on `20260829.013811`, **OPEN** on the 21 pairs that remain -- a repair sized to a meter's direct-invocation list left four of eight witnesses dead on a wiped bin; born on its shelf, as %335 and %336 were.*
 
 *Row %338 folded to [`REDS-the-ledger-that-could-not-book-a-red-rows-338.md`](REDS-the-ledger-that-could-not-book-a-red-rows-338.md) on `20260829.031804`, **OPEN** on the seat it names -- the pin could not accept a row and four green meters were all asking about consistency rather than capacity; born on its shelf, as %335, %336 and %337 were, which is the row's own subject.*
+
+*Row %339 folded to [`REDS-the-commit-no-hook-saw-rows-339.md`](REDS-the-commit-no-hook-saw-rows-339.md) on `20260829.013539`, **CLOSED** -- two generated pages shipped stale through a cherry-picked round, booked and repaired in one lap; born on its shelf directly, as %336 through %338 were, the pin standing five bytes under its bound.*

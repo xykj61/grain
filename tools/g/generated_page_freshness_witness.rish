@@ -22,8 +22,25 @@
 #     refreshed page left in the worktree and nothing of the author's swept into the commit.
 #   Once the page is staged as the refusal asked, the commit proceeds and adds nothing further.
 #   A tree with no rishi on disk commits exactly as before -- the depersonalized seed's case.
-# And in the field: this clone's core.hooksPath names the tree's own tracked hooks, and the
-#   pre-commit file is executable, since git skips a non-executable hook in silence.
+#   A cherry-picked commit runs NO pre-commit, and tools/hooks/post-commit records the debt.
+#   The next ordinary commit, adding no witness of its own, PAYS that debt: both pages refreshed
+#     and staged, and the marker cleared.
+#   An ordinary commit with no debt standing leaves both generators alone -- the second trigger
+#     did not turn rule one into "fire on everything".
+#   A rebased commit records the debt the same way, read by the same question.
+#   A commit REFUSED while a debt stands leaves the debt standing, since a debt is paid by a commit
+#     landing rather than by a pre-commit having merely had its say.
+#   With no rishi on disk, a cherry-pick records no debt -- post-commit keeps pre-commit's own gate.
+# And in the field: this clone's core.hooksPath names the tree's own tracked hooks, and both the
+#   pre-commit and post-commit files are executable, since git skips a non-executable hook in
+#   silence.
+#
+# THE READING THE SEQUENCER CASES REST ON, measured on real repositories in a pen 20260829 and
+# written here because it is the load-bearing fact: git runs pre-commit for `git commit` and
+# `git commit --amend`, and for no other path. `git cherry-pick` and `git rebase` skip it and run
+# post-commit; `git merge --no-ff` skips both. The twice-pulled send this tree runs REQUIRES a
+# rebase whenever the anointed remote moved, so a round closing that way ships its generated pages
+# stale -- which is what happened on 20260829 and what REDS %337 books.
 #
 # WHAT IS NOT PROVEN. That the fascia grade and the rooms-over-bound count are current -- both can
 # drift from a commit adding no witness and no module, and this rung is silent about both. The
@@ -38,7 +55,7 @@
 #   rishi/bin/rishi run tools/g/generated_page_freshness_witness.rish
 
 say "generated-page-freshness: Language EN -- a generated number is worth more than a typed one only while it is regenerated, so the commit that moves it is the commit that refreshes it."
-say "generated-page-freshness: Style Gauge, Meter -- eight behaviors proven on a throwaway repository over all three generated pages, and the honest silence about fascia named rather than implied."
+say "generated-page-freshness: Style Gauge, Meter -- fourteen behaviors proven on a throwaway repository over all three generated pages, and the honest silence about fascia and about git merge --no-ff named rather than implied."
 say "generated-page-freshness: Lens TAME -- safety first: the hook stages only its own regeneration, and refuses rather than sweep an author's unstaged edits into a commit they never wrote."
 
 let hook = "tools/hooks/pre-commit"
@@ -48,6 +65,16 @@ assert present.ok else "generated-page-freshness: ${hook} is missing -- the wall
 
 let runnable = run ["sh" "-c" "test -x ${hook}"]
 assert runnable.ok else "generated-page-freshness: ${hook} is not executable -- git would skip it in silence"
+
+# The sibling that reads the paths pre-commit never sees. Its mode is checked as hard as the
+# wall's, because a hook at 100644 is a hook git skips without a word (`.claude/rules/exec-bit.md`).
+let after = "tools/hooks/post-commit"
+
+let after_present = run ["sh" "-c" "test -f ${after}"]
+assert after_present.ok else "generated-page-freshness: ${after} is missing -- the sequencer paths have no reader"
+
+let after_runnable = run ["sh" "-c" "test -x ${after}"]
+assert after_runnable.ok else "generated-page-freshness: ${after} is not executable -- git would skip it in silence"
 
 let armed = run ["git" "config" "--get" "core.hooksPath"]
 assert armed.ok else "generated-page-freshness: core.hooksPath is unset -- run rishi/bin/rishi run tools/i/install_hooks.rish"
@@ -65,7 +92,13 @@ assert control.out contains "ledger_free=yes" else "generated-page-freshness: a 
 assert control.out contains "ledger_staged=yes" else "generated-page-freshness: a REDS row booked with the headline behind must have the headline regenerated and staged into that same commit"
 assert control.out contains "ledger_dirty_refused=yes" else "generated-page-freshness: a ledger carrying the author's own unstaged edits must refuse rather than sweep them in"
 assert control.out contains "no_rishi_free=yes" else "generated-page-freshness: a tree without rishi must commit exactly as before"
+assert control.out contains "pick_owed=yes" else "generated-page-freshness: a cherry-picked commit runs no pre-commit, so post-commit must record the debt"
+assert control.out contains "debt_paid=yes" else "generated-page-freshness: the next ordinary commit must pay a standing debt, refreshing and staging both pages"
+assert control.out contains "quiet_no_debt=yes" else "generated-page-freshness: with no debt standing and no witness moving, rule one must still rest"
+assert control.out contains "rebase_owed=yes" else "generated-page-freshness: a rebased commit must record the debt by the same reading"
+assert control.out contains "debt_kept_on_refusal=yes" else "generated-page-freshness: a refused commit must LEAVE the debt standing -- it is paid by a landing, never by an intent"
+assert control.out contains "no_rishi_no_debt=yes" else "generated-page-freshness: with no rishi on disk a cherry-pick must record no debt"
 assert control.out contains "control_verdict=ok" else "generated-page-freshness: the control must agree with itself"
-say "RED and GREEN paths proven -- two refusals, four welcomes, and two rests"
+say "RED and GREEN paths proven -- three refusals, six welcomes, and five rests"
 
 say "GREEN: generated-page-freshness -- the commit that moves a generated page's numbers is the commit that refreshes it."

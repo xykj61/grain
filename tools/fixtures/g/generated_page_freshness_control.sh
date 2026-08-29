@@ -14,6 +14,12 @@
 #   a REDS row booked with the headline behind            -> the headline regenerated AND staged
 #   a REDS row booked while the ledger carries edits      -> REFUSED, the author stages it
 #   no rishi on disk at all                               -> the hook rests, the commit proceeds
+#   a cherry-picked commit                                -> pre-commit SKIPPED, post-commit records the debt
+#   the next ordinary commit, adding no witness           -> the debt is PAID, both pages refreshed and staged
+#   an ordinary commit with no debt standing              -> rule one rests, nothing extra staged
+#   a rebased commit                                      -> pre-commit SKIPPED, post-commit records the debt
+#   a debt standing while a page carries author edits     -> REFUSED, and the debt STILL STANDS
+#   no rishi on disk, a cherry-pick                       -> post-commit rests, no debt recorded
 #
 # Two pages rather than one, because the tree holds two: README.md and the crushed library index
 # docs-geode/libraries/README.md. Both count witnesses, and the roster caught the second one drifting
@@ -29,7 +35,18 @@
 # runs, and that is what the three cases tell apart.
 #
 # EXPECTED: docs_free=yes, clean_staged=yes, dirty_refused=yes, fresh_quiet=yes, ledger_free=yes,
-#           ledger_staged=yes, ledger_dirty_refused=yes, no_rishi_free=yes.
+#           ledger_staged=yes, ledger_dirty_refused=yes, no_rishi_free=yes, pick_owed=yes,
+#           debt_paid=yes, quiet_no_debt=yes, rebase_owed=yes, debt_kept_on_refusal=yes,
+#           no_rishi_no_debt=yes.
+#
+# THE SIX SEQUENCER CASES, added 20260829 (REDS %337). Git runs pre-commit for `git commit` and
+# `git commit --amend` and for nothing else. The twice-pulled send this tree runs REQUIRES a rebase
+# whenever the anointed remote moved, so `git rebase` and `git cherry-pick` are the ordinary close
+# of a contested round rather than exotic paths -- and a round that closed that way on 20260829
+# shipped both pages stale inside a commit that added a witness. tools/hooks/post-commit records
+# that debt and rule one of pre-commit pays it on the next ordinary commit. Both halves are proven
+# here, and the refusal path is proven to KEEP the debt rather than forget it, because a debt
+# cleared by an intent rather than by a landing is a debt silently dropped.
 #
 # Driven by tools/g/generated_page_freshness_witness.rish. Run from the repository root.
 
@@ -50,7 +67,8 @@ git config commit.gpgsign false
 # too or the control proves a shape the hook no longer has.
 mkdir -p tools/hooks tools/r tools/g rishi/bin
 cp "$root/tools/hooks/pre-commit" tools/hooks/pre-commit
-chmod +x tools/hooks/pre-commit
+cp "$root/tools/hooks/post-commit" tools/hooks/post-commit
+chmod +x tools/hooks/pre-commit tools/hooks/post-commit
 git config core.hooksPath tools/hooks
 
 # The stand-in generator: it counts the witnesses the INDEX holds and splices that number
@@ -102,7 +120,12 @@ n=1
 while [ "$n" -le 21 ]; do book_row "$n"; n=$((n + 1)); done
 git add -A
 git commit -qm "seed the fixture" --no-verify
-rm -f .generator-ran
+# The marker goes with the mark. This seed commit plants a starting state rather than testing a
+# path, and `--no-verify` skips pre-commit exactly as a cherry-pick does -- so post-commit records
+# a debt for it, correctly, and case 1 would then read that debt rather than its own trigger. That
+# `--no-verify` is caught at all is a property worth naming: this tree forbids the flag
+# (`.claude/rules/git-signing.md`), and a commit that reaches for it anyway leaves a mark here.
+rm -f .generator-ran .git/derived-pages-owed
 
 # 1 -- a docs-only commit leaves the generator alone.
 printf 'a page, edited\n' > NOTES.md
@@ -164,6 +187,69 @@ ledger_dirty_refused=$([ "$ledger_code" -ne 0 ] && echo yes || echo no)
 git add construction/REDS.md
 git commit -qm "book two rows, staged as asked" >/dev/null
 
+owed=".git/derived-pages-owed"
+
+# 9 -- a cherry-picked commit. Git runs no pre-commit for it, so the witness it carries lands with
+#      the pages left behind, and post-commit records the debt. The planted side commit is made
+#      with --no-verify on purpose: a fixture has to produce the commit shape a CONFLICTED
+#      cherry-pick produces -- a witness added and the pages stale -- and the rule forbidding
+#      --no-verify governs this tree's own commits rather than a pen planting testimony.
+main_branch=$(git rev-parse --abbrev-ref HEAD)
+git checkout -q -b side
+printf '# a fourth witness\n' > tools/fourth_witness.rish
+git add tools/fourth_witness.rish
+git commit -qm "a witness, planted with its pages behind" --no-verify
+git checkout -q "$main_branch"
+rm -f .generator-ran "$owed"
+git cherry-pick side >/dev/null 2>&1
+picked_front=$(git show HEAD:README.md | sed -n 's/^witnesses=//p')
+pick_owed=$([ -f "$owed" ] && [ ! -f .generator-ran ] && [ "$picked_front" = 2 ] && echo yes || echo no)
+
+# 10 -- the next ordinary commit adds no witness at all, so rule one's own trigger stays quiet and
+#       the DEBT is what fires it. Both pages come up to the three witnesses the index now holds,
+#       are staged into that commit, and the marker is cleared by the landing.
+printf 'a page, edited for the debt\n' > NOTES.md
+git add NOTES.md
+git commit -qm "an ordinary commit that owes two pages" >/dev/null
+paid_front=$(git show HEAD:README.md | sed -n 's/^witnesses=//p')
+paid_index=$(git show HEAD:docs-geode/libraries/README.md | sed -n 's/^witnesses=//p')
+debt_paid=$([ "$paid_front" = 3 ] && [ "$paid_index" = 3 ] && [ ! -f "$owed" ] \
+  && git diff --quiet && echo yes || echo no)
+rm -f .generator-ran
+
+# 11 -- the trigger has not become "everything". With no debt standing and no witness moving, the
+#       very next ordinary commit leaves both generators alone.
+printf 'a page, edited again for quiet\n' > NOTES.md
+git add NOTES.md
+git commit -qm "an ordinary commit owing nothing" >/dev/null
+quiet_no_debt=$([ ! -f .generator-ran ] && [ ! -f "$owed" ] && echo yes || echo no)
+
+# 12 -- a rebase records the debt the same way, and by the same reading: the token pre-commit drops
+#       is absent, so the sibling did not run. Nothing here names a sequencer directory.
+git checkout -q -b feat HEAD~1
+printf 'a branch page\n' > FEAT.md
+git add FEAT.md
+git commit -qm "work on a branch" >/dev/null
+rm -f .generator-ran "$owed"
+git rebase "$main_branch" >/dev/null 2>&1
+rebase_owed=$([ -f "$owed" ] && [ ! -f .generator-ran ] && echo yes || echo no)
+git checkout -q "$main_branch"
+
+# 13 -- a debt stands while README carries unstaged edits of the author's own. The commit is
+#       refused, and the debt is STILL THERE afterwards: it is cleared by a commit LANDING, never
+#       by a pre-commit that merely had its say, or a refusal would forget a page still owed.
+: > "$owed"
+printf 'witnesses=3\nhand-edited by the author\n' > README.md
+printf 'a page, edited under a standing debt\n' > NOTES.md
+git add NOTES.md
+debt_code=0
+git commit -qm "an ordinary commit refused while owing" >/dev/null 2>&1 || debt_code=$?
+debt_kept_on_refusal=$([ "$debt_code" -ne 0 ] && [ -f "$owed" ] && echo yes || echo no)
+git checkout -q -- README.md
+git add -A
+git commit -qm "pay the debt as the hook asked" >/dev/null
+rm -f .generator-ran
+
 # 5 -- no rishi on disk: the hook rests and the commit proceeds, which is the seed's case.
 rm -rf rishi
 printf '# a third witness\n' > tools/third_witness.rish
@@ -171,6 +257,18 @@ git add tools/third_witness.rish
 seed_code=0
 git commit -qm "add the third witness" >/dev/null 2>&1 || seed_code=$?
 no_rishi_free=$([ "$seed_code" -eq 0 ] && [ ! -f .generator-ran ] && echo yes || echo no)
+
+# 14 -- and post-commit keeps the same first gate: with no rishi on disk there is no generator to
+#       owe a page, so a cherry-pick records no debt. Without this the seed's own root commit would
+#       mark a debt nothing in it could ever pay.
+rm -f "$owed"
+git checkout -q -b seedside
+printf '# a fifth witness\n' > tools/fifth_witness.rish
+git add tools/fifth_witness.rish
+git commit -qm "a witness with no rishi on disk" --no-verify
+git checkout -q "$main_branch"
+git cherry-pick seedside >/dev/null 2>&1
+no_rishi_no_debt=$([ ! -f "$owed" ] && echo yes || echo no)
 
 echo "docs_free=$docs_free"
 echo "clean_staged=$clean_staged"
@@ -180,10 +278,19 @@ echo "ledger_free=$ledger_free"
 echo "ledger_staged=$ledger_staged"
 echo "ledger_dirty_refused=$ledger_dirty_refused"
 echo "no_rishi_free=$no_rishi_free"
+echo "pick_owed=$pick_owed"
+echo "debt_paid=$debt_paid"
+echo "quiet_no_debt=$quiet_no_debt"
+echo "rebase_owed=$rebase_owed"
+echo "debt_kept_on_refusal=$debt_kept_on_refusal"
+echo "no_rishi_no_debt=$no_rishi_no_debt"
 
 if [ "$docs_free" = yes ] && [ "$clean_staged" = yes ] && [ "$dirty_refused" = yes ] \
   && [ "$fresh_quiet" = yes ] && [ "$ledger_free" = yes ] && [ "$ledger_staged" = yes ] \
-  && [ "$ledger_dirty_refused" = yes ] && [ "$no_rishi_free" = yes ]; then
+  && [ "$ledger_dirty_refused" = yes ] && [ "$no_rishi_free" = yes ] \
+  && [ "$pick_owed" = yes ] && [ "$debt_paid" = yes ] && [ "$quiet_no_debt" = yes ] \
+  && [ "$rebase_owed" = yes ] && [ "$debt_kept_on_refusal" = yes ] \
+  && [ "$no_rishi_no_debt" = yes ]; then
   echo "control_verdict=ok"
 else
   echo "control_verdict=wrong"

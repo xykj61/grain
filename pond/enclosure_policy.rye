@@ -48,8 +48,11 @@ pub const pond_enclosure_policy_version = "20260828.233813";
 /// A policy small enough to hold in one reading is a policy somebody audits. 8 KiB is the same
 /// bound customs reads a manifest under, so the two seams agree on what "one document" means.
 pub const max_policy_len: u32 = 8192;
-/// Four times the largest real policy in this tree: the agent-jail lap declares eleven. The bound
-/// refuses runaway input while leaving honest growth room.
+/// Twice the largest real policy in this tree: the agent-jail lap declares thirty-two, counted
+/// `20260829` off pond/enclosure_policy.kyri the way the parser counts -- comments, blank lines,
+/// and the `format` line skipped. It read eleven until that record grew from six mounts to the
+/// twenty-seven the enclosure actually builds, and a bound's reason is worth no more than its
+/// number. The bound refuses runaway input while leaving honest growth room.
 pub const max_declarations: u32 = 64;
 /// Linux carries a path to 4096 bytes. A declaration past 256 names something no operator checks
 /// by eye, and an enclosure nobody reads is an enclosure nobody trusts.

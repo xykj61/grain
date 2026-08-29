@@ -15,6 +15,12 @@
 # alongside, refusing rather than sweeping in an author's unstaged edits. Proven both ways by
 # tools/g/generated_page_freshness_witness.rish.
 #
+# And tools/hooks/post-commit, its sibling, which reads the commits pre-commit never sees. Git runs
+# pre-commit for `git commit` and `git commit --amend` and for no other path, so a commit made by
+# `git rebase` or `git cherry-pick` -- the ordinary close of a round whose remote moved -- lands
+# with those pages unrefreshed. post-commit notices, records the debt in the git directory, and the
+# next ordinary commit pays it. REDS %337 is the round that shipped both pages stale that way.
+#
 # The setting is per-clone and per-machine on purpose; it is not something a repository can
 # turn on for someone else, which is the same reason a fresh clone must run this once.
 #
@@ -43,6 +49,14 @@ assert pre_present.ok else "install-hooks: ${pre} is missing -- nothing to arm"
 let pre_runnable = run ["sh" "-c" "test -x ${pre}"]
 assert pre_runnable.ok else "install-hooks: ${pre} is not executable -- git would skip it silently"
 
+let post = "tools/hooks/post-commit"
+
+let post_present = run ["sh" "-c" "test -f ${post}"]
+assert post_present.ok else "install-hooks: ${post} is missing -- nothing to arm"
+
+let post_runnable = run ["sh" "-c" "test -x ${post}"]
+assert post_runnable.ok else "install-hooks: ${post} is not executable -- git would skip it silently"
+
 let armed = run ["git" "config" "core.hooksPath" "tools/hooks"]
 assert armed.ok else "install-hooks: could not set core.hooksPath -- ${armed.err}"
 
@@ -50,4 +64,4 @@ let readback = run ["git" "config" "--get" "core.hooksPath"]
 assert readback.ok else "install-hooks: core.hooksPath did not read back -- ${readback.err}"
 assert (trim readback.out) == "tools/hooks" else "install-hooks: core.hooksPath reads ${readback.out} rather than tools/hooks"
 
-say "GREEN: install-hooks -- core.hooksPath now names tools/hooks; the commit-msg wall and the front-door pre-commit are armed on this clone."
+say "GREEN: install-hooks -- core.hooksPath now names tools/hooks; the commit-msg wall, the front-door pre-commit, and its post-commit sibling are armed on this clone."
