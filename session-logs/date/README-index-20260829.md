@@ -21,6 +21,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260829.153150` | [the water row tastes the loops](20260829/20260829-153150_the-water-row-tastes-the-loops.kyri) | launcher audit answered; %344 books the charter that outran itself; fn-drift guard GREEN 12/12 |
 | `20260829.151912` | [the argv named once boots twice](20260829/20260829-151912_the-argv-named-once-boots-twice.kyri) | tools/co condense: 135 sites to 45 fn calls, two labs GREEN on real qemu; the destaging hand named |
 | `20260829.151128` | [the spiral turn holds the cut](20260829/20260829-151128_the-spiral-turn-holds-the-cut.kyri) | fire again by the formula: W5 holds the almanac machinery; three survey verdicts seated |
+| `20260829.150837` | [the stack held the third step](20260829/20260829-150837_the-stack-held-the-third-step.kyri) | Dream: exact stack bound passes, one-past refuses; Tally gaps 3 -> 2 |
 | `20260829.145726` | [the fire row cuts three bodies to one](20260829/20260829-145726_the-fire-row-cuts-three-bodies-to-one.kyri) | enclosure door, 15 wire-lab shims, almanac engine 114/114 parity; five slices landed |
 | `20260829.143651` | [the door's first duty](20260829/20260829-143651_the-doors-first-duty.kyri) | Pond's record can say who walks through it; a scan stopped running a stale build |
 | `20260829.142251` | [the card breathes and the sameness measured](20260829/20260829-142251_the-card-breathes-and-the-sameness-measured.kyri) | air rota lap: card condensed 24575 -> 22762, LOCA seated in Now; 114 almanac twins counted |

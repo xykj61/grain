@@ -1,0 +1,35 @@
+# tools/t/tally_stack_witness.rish -- the bounded stack answers from both sides.
+#
+# The passing side fills the stack exactly, reads it back in reverse order, and observes empty as
+# a value. The refusal side adds one push to that same two-slot test and requires the stack's own
+# bound assert to stop the process. This is the direct ownership edge used by tally_roster.
+#
+# Purely local: no key, network, funds, or device. Run from the repository root:
+#   rishi/bin/rishi run tools/t/tally_stack_witness.rish
+
+say "tally-stack: the exact bound passes, the next push refuses, and empty stays a value."
+
+let zig = "vendor/zig-toolchain/zig"
+let mkdir = run ["mkdir" "-p" "tally/bin"]
+assert mkdir.ok else "tally-stack: could not create tally/bin"
+
+let build = run ["env" "RYE_ZIG=${zig}" "rye/bin/rye" "build" "tally/stack_test.rye" "-femit-bin=tally/bin/tally-stack-test"]
+assert build.ok else "tally-stack: the passing test must build -- ${build.out}"
+let pass = run ["tally/bin/tally-stack-test"]
+assert pass.ok else "tally-stack: the exact-bound and empty-value paths must pass -- ${pass.out}"
+assert pass.err contains "GREEN: tally stack" else "tally-stack: the passing side must speak its result -- ${pass.err}"
+
+let pen_mk = run ["mktemp" "-d"]
+assert pen_mk.ok else "tally-stack: could not make the refusal pen"
+let pen = trim pen_mk.out
+let plant = run ["sh" "-c" "cp tally/stack.rye ${pen}/stack.rye && sed 's/assert(t.top == 2);/t.push(7); assert(t.top == 3);/' tally/stack_test.rye > ${pen}/stack_test.rye"]
+assert plant.ok else "tally-stack: could not plant the over-bound push"
+let red_build = run ["env" "RYE_ZIG=${zig}" "rye/bin/rye" "build" "${pen}/stack_test.rye" "-femit-bin=${pen}/tally-stack-over"]
+assert red_build.ok else "tally-stack: the refusal plant must build -- ${red_build.out}"
+let red = run ["${pen}/tally-stack-over"]
+assert red.ok == false else "tally-stack: the push beyond max must refuse"
+
+let clean = run ["rm" "-rf" "${pen}"]
+assert clean.ok else "tally-stack: could not remove the refusal pen"
+
+say "GREEN: tally stack witness -- exact bound and empty passed; one push beyond max refused."
