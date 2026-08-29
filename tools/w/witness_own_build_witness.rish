@@ -1,0 +1,79 @@
+# tools/w/witness_own_build_witness.rish -- a witness builds what it runs, or it proves nothing on
+# a clone.
+#
+# WHY THIS RUNG. comlink/bin/ is gitignored (.gitignore:185), so a fresh clone carries no Comlink
+# binary at all. Two witnesses named their build in a header COMMENT -- "Build first:  rye build
+# comlink/handshake_turn.rye -femit-bin=comlink/bin/handshake-turn" -- and then ran the path
+# directly with `run ["comlink/bin/handshake-turn" "selftest"]`. A comment builds nothing. On this
+# pier both read GREEN, because an August lap left binaries behind; on a clone both died on a
+# missing file rather than on a handshake fact, and no clock existed to say so -- all four Comlink
+# witnesses are named by no runner in the tree.
+#
+# Their sibling tools/co/comlink_topology_witness.rish already carried the repair and recorded the
+# discovery in its own comment. One of three was fixed and the other two were left, which is what a
+# repair without a meter looks like a month later. This is the meter.
+#
+# WHAT IS PROVEN, on metal.
+#   The unbuilt-pair reading stands under a ceiling that only falls: 46 pairs across 35 witnesses
+#   invoke a gitignored artifact their own file never builds, down from 48 when the two Comlink
+#   witnesses took the build their sibling already had.
+#   Twenty-one behaviors on throwaway git repositories: the good shape free and credited, the
+#   defect counted, the comment-only build refused exactly as it stood in Comlink, a tracked binary
+#   free, the interpreter and compiler free by named rule, a vendored path free, the `sh -c` limit
+#   asserted rather than described, absent_now reported from both sides and gating neither, a
+#   comment mention free, an empty extraction refused, and the ratchet counted, free at its
+#   ceiling and refused one over.
+#
+# WHAT IS REPORTED RATHER THAN GATED. `absent_now`, the unbuilt artifacts missing from THIS
+# filesystem -- a fact about one machine, where a bench that has been building for weeks reads
+# lower than a clone. `built_elsewhere`, the artifacts some other tracked runner builds: real, and
+# still not the promise a witness makes, since every one of these headers tells a reader to run the
+# witness directly.
+#
+# WHAT IS NOT PROVEN. That a build succeeds, that an artifact does anything worth doing, or that a
+# binary reached through `run ["sh" "-c" ...]` is carried. Only that a witness invoking a path the
+# repository declines to carry also builds it.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/w/witness_own_build_witness.rish
+
+say "own-build: Language EN -- a witness that runs what the repository never carries proves nothing on a clone."
+say "own-build: Style Gauge, Meter -- the reading is a count of promises a fresh clone cannot keep."
+say "own-build: Lens TAME -- safety first: a comment describing a build is documentation, and the gap is the defect."
+
+let scan = run ["sh" "tools/fixtures/w/witness_own_build_scan.sh"]
+assert scan.ok else "own-build: a witness invokes an artifact it never builds -- read the scan's own lines"
+say scan.out
+assert scan.out contains "verdict=ok" else "own-build: the scan must balance before it is believed"
+assert scan.out contains "unbuilt_pairs=46 " else "own-build: the ratchet reads 46; lower the ceiling when a repair lands"
+assert scan.out contains "self_built=" else "own-build: the credited pairs must be counted, never assumed"
+say "field GREEN -- the unbuilt reading stands under a ceiling that only falls"
+
+let control = run ["sh" "tools/fixtures/w/witness_own_build_control.sh"]
+assert control.ok else "own-build: the control must complete"
+say control.out
+assert control.out contains "self_built_free=yes" else "own-build: a witness that builds what it runs must pass free"
+assert control.out contains "self_built_credited=yes" else "own-build: the build must be credited, never merely tolerated"
+assert control.out contains "self_built_reads_zero=yes" else "own-build: a clean pen must read zero rather than merely pass"
+assert control.out contains "unbuilt_counted=yes" else "own-build: an unbuilt pair must be counted"
+assert control.out contains "unbuilt_witness_counted=yes" else "own-build: the witness holding it must be counted too"
+assert control.out contains "invoked_seen=yes" else "own-build: the reading must find the invocation it is meant to find"
+assert control.out contains "comment_build_refused=yes" else "own-build: a build named only in a comment builds nothing"
+assert control.out contains "comment_build_uncredited=yes" else "own-build: a comment must never earn the credit a build earns"
+assert control.out contains "tracked_binary_free=yes" else "own-build: a tracked binary is carried by the clone"
+assert control.out contains "bootstrap_free=yes" else "own-build: the interpreter and the compiler are bootstrap facts"
+assert control.out contains "vendor_free=yes" else "own-build: a vendored path is provisioned by submodule update"
+assert control.out contains "shell_c_unread=yes" else "own-build: the sh -c limit must be asserted, not merely described"
+assert control.out contains "present_reads_zero=yes" else "own-build: a present artifact must read absent_now=0"
+assert control.out contains "absent_counted=yes" else "own-build: a missing artifact must be reported"
+assert control.out contains "absent_never_gates=yes" else "own-build: a fact about one machine must never gate the tree"
+assert control.out contains "comment_mention_free=yes" else "own-build: a comment naming a binary invokes nothing"
+assert control.out contains "empty_extraction_refused=yes" else "own-build: a reading of zero is a broken reading, never a clean tree"
+assert control.out contains "ratchet_counted=yes" else "own-build: the ratchet must count rather than saturate"
+assert control.out contains "ratchet_under_free=yes" else "own-build: a ratchet at its ceiling must pass free"
+assert control.out contains "ratchet_over_counted=yes" else "own-build: the ratchet must count past its ceiling"
+assert control.out contains "ratchet_over_refused=yes" else "own-build: a ratchet over its ceiling must refuse"
+assert control.out contains "control_verdict=ok" else "own-build: the control must agree with itself"
+say "RED and GREEN paths proven -- six refusals bitten, fifteen honest readings left free"
+
+say "GREEN: own-build -- a witness that runs a path the repository declines to carry also builds it."
