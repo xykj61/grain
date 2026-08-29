@@ -1,0 +1,91 @@
+//! brushstroke/surface_claims.rye -- the surface contract's measurable half: what any backend
+//! must be able to say about a rendered Grid, so parity is a number and a digest, never an eye.
+//!
+//! Rung: LOCA -- the claims both backends answer (20260829.011800)
+//!
+//! Movement four of the LOCA ladder wants wayland_seed and the macOS backend to be two
+//! implementations of one contract. The contract's checkable half lives here, beside the
+//! modules it serves and reorganizing nothing: a backend hands over the pixel buffer it is
+//! about to present, and this module answers the two facts parity is judged by -- how many
+//! pixels the rasterizer lit against the background, and the SHA3-256 of the visible bytes.
+//! Two backends presenting the same Grid at the same geometry must answer identically; what a
+//! compositor does to the bytes afterward is its own business, which is why the digest is taken
+//! HERE, at the hand-off, rather than from any screen.
+//!
+//! The digest is OUR OWN Keccak -- crypto/keccak256.rye over crypto/sha3.rye, reached by the
+//! symlink idiom -- rather than the inherited std hasher, which is the exact substitution REDS
+//! %112 named silent and refused once already. Contract v1 takes PACKED rows (stride equals
+//! visible width), so the whole presented buffer hashes in one bounded call; a padded stride is
+//! a named later door, refused loudly here rather than half-served.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const skate = @import("skate_grid.rye");
+const keccak = @import("keccak256.rye");
+
+pub const digest_length: u32 = keccak.digest_256;
+// The widest surface a claim will walk: the same ceiling family the macOS probes name, with
+// room for the Wayland seed's own dims. Say why: a bound here catches a caller handing a
+// garbage geometry before the walk reads it.
+pub const max_claim_width: u32 = 4096;
+pub const max_claim_height: u32 = 4096;
+const bytes_per_pixel: u32 = 4;
+
+pub const SurfaceClaims = struct {
+    lit: u32,
+    digest: [digest_length]u8,
+};
+
+/// The two facts a backend answers for a buffer it is about to present. `lit` counts pixels
+/// whose RGB disagrees with the background -- the same definition skate_grid's own
+/// lit_pixel_count uses, implemented independently so a parity witness can prove the two
+/// agree rather than trusting one copy.
+pub fn claims_for(pixels: []const u8, stride: u32, width: u32, height: u32, bg: skate.Color) SurfaceClaims {
+    // invariant: the geometry is real and inside the named ceilings.
+    assert(width >= 1);
+    assert(height >= 1);
+    assert(width <= max_claim_width);
+    assert(height <= max_claim_height);
+    // invariant: contract v1 takes packed rows -- the stride IS the visible width -- so the
+    // buffer and the picture are one span and the digest is one bounded call.
+    assert(stride == width * bytes_per_pixel);
+    assert(pixels.len >= @as(usize, stride) * @as(usize, height));
+    // invariant: the whole visible buffer fits the house hasher's own named ceiling.
+    assert(width * bytes_per_pixel * height <= keccak.max_message_bytes);
+
+    var lit: u32 = 0;
+    var y: u32 = 0;
+    while (y < height) : (y += 1) {
+        const row_start: usize = @as(usize, y) * @as(usize, stride);
+        const row = pixels[row_start .. row_start + (width * bytes_per_pixel)];
+        var x: u32 = 0;
+        while (x < width) : (x += 1) {
+            const at = x * bytes_per_pixel;
+            // The rasterizer writes little-endian xRGB: byte zero carries blue and byte two
+            // carries red, the same order skate_grid's own counter reads -- one definition,
+            // proven to agree by the parity witness rather than assumed.
+            const off_background = row[at + 0] != bg.b or row[at + 1] != bg.g or row[at + 2] != bg.r;
+            if (off_background) lit += 1;
+        }
+    }
+    const visible: usize = @as(usize, stride) * @as(usize, height);
+    const digest = keccak.hash256(pixels[0..visible]) catch {
+        @panic("surface claims: the bounded buffer outgrew the hasher's ceiling after the assert let it pass");
+    };
+    const claims = SurfaceClaims{ .lit = lit, .digest = digest };
+    // invariant: no surface lights more pixels than it holds.
+    assert(claims.lit <= width * height);
+    return claims;
+}
+
+/// Two claims agree when both facts agree -- the comparator parity witnesses call, seated
+/// beside the type so backends compare by meaning rather than by memory.
+pub fn same(a: SurfaceClaims, b: SurfaceClaims) bool {
+    // invariant: both claims fit their own surfaces' arithmetic.
+    assert(a.lit <= max_claim_width * max_claim_height);
+    assert(b.lit <= max_claim_width * max_claim_height);
+    if (a.lit != b.lit) return false;
+    return std.mem.eql(u8, a.digest[0..], b.digest[0..]);
+}
