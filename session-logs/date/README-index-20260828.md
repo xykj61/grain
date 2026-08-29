@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260828.220813` | [the seam that checks itself](20260828/20260828-220813_the-seam-that-checks-itself.kyri) | the challenge found the real hole; the objc seam now verifies against the loaded framework |
 | `20260828.220119` | [the backend beside the backend](20260828/20260828-220119_the-backend-beside-the-backend.kyri) | the recommendation: AppKit through Rye, the second probe before the yonder |
 | `20260828.215659` | [the window Rye raised](20260828/20260828-215659_the-window-rye-raised.kyri) | macOS needs no Swift: a native window painted from Rye, zero Swift linked |
 | `20260828.214018` | [the children hit the wall](20260828/20260828-214018_the-children-hit-the-wall.kyri) | the split lands verified; Mind carried fold-aware |
