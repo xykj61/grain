@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260828.234152` | [the words the tree chooses](20260828/20260828-234152_the-words-the-tree-chooses.kyri) | dependent, first resident, red seated in rules and guides; debride prepared |
 | `20260828.232444` | [the view that owns its drawing](20260828/20260828-232444_the-view-that-owns-its-drawing.kyri) | LOCA quest one rung one GREEN; REDS %335 booked and repaired |
 | `20260828.231614` | [the guard on no clock](20260828/20260828-231614_the-guard-on-no-clock.kyri) | three Comlink proofs take a lap row; reach 1115 -> 1112 |
 | `20260828.222500` | [the journey that opens on measurement](20260828/20260828-222500_the-journey-that-opens-on-measurement.kyri) | LOCA seated, five quests named; a reading on Mind |

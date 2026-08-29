@@ -35,6 +35,7 @@ The highest points, token-dense; the full form is [`context/TAME_CORE.md`](../..
 - Accrete, never break -- **three tiers**: Tier 1 sealed by proof (absolute); Tier 2 sealed by testimony (recorded Radiant pass / errata); Tier 3 open to revision. Only Tier 1 is absolute. Canon: `context/TAME_GUIDANCE.md` section 4.
 - One value model: string, integer, bool, list, record -- composed side by side, never tangled.
 - **`snake_case`** for functions, variables, and file names.
+- **Seated word choices** (`20260828.233241`): **dependent** over *child* for supervised or spawned things (`std.process.Child` keeps Zig's name); **red** / **error** over *bug*; **first resident** over the banned *dogfooding* -- [`vocabulary-dependent.md`](vocabulary-dependent.md) - [`vocabulary-red-over-bug.md`](vocabulary-red-over-bug.md) - [`vocabulary-first-resident.md`](vocabulary-first-resident.md).
 
 ## Explicit widths (authored Rye)
 

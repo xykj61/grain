@@ -1,0 +1,24 @@
+---
+description: The word dogfooding is banned — the tree's phrase is first resident; attach when describing using our own tools daily
+alwaysApply: false
+---
+
+# First Resident -- the banned word is dogfooding
+
+**Canonical:** `context/LEXICON.md` -- **First resident** seated `20260728.200807`; carries the practice sense from `20260828.233241` on Keaton's word, which bans the elder word.
+
+The word **dogfooding** -- every form: dogfood, dogfooded, vegan-dogfood -- is **banned in living prose**. The tree's own phrase for the practice, using what we build as our own daily tool, is **first resident**: the one who lives in the house before anyone else is asked to.
+
+| Prefer | Rather than |
+|--------|-------------|
+| **first resident** / **living in the house we build** | dogfooding |
+| **eating our own cooking** | eating our own dogfood |
+
+## What this does not retire
+
+- **Dated testimony and commit history** keep every word they wrote; dated filenames stay.
+- **Living filenames molt:** a living file named with the banned word takes a path molt -- renamed, every inbound reference repointed in the same commit, its witness run GREEN after the move.
+- The elder **Vegan-dogfood** lexicon row stays as the record of its chapter; it seats no new use.
+- **Teacher quotes** keep their words when the industry term is the thing being taught.
+
+Canonical Claude twin: `.claude/rules/vocabulary-first-resident.md`.
