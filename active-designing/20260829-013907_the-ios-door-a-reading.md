@@ -4,7 +4,7 @@
 **Language:** EN
 **Style:** Gauge, Field setting
 **Voice:** Kyri
-**Status:** Living reading -- LOCA movement five; measures taken on this Mac, no build shipped
+**Status:** Living reading, mixed room -- LOCA movement five; the measures are checkable on this Mac, the projections bounded and since closed, no build shipped
 **Standing on:** [`../tools/rye/objc_seam.rye`](../tools/rye/objc_seam.rye) - [`../brushstroke/skate_event_ring.rye`](../brushstroke/skate_event_ring.rye) - [`../brushstroke/surface_claims.rye`](../brushstroke/surface_claims.rye) - the four closed movements of the LOCA ladder
 **Custody:** every account, certificate, and submission stays at Keaton's gate; this page reads, it does not enroll
 

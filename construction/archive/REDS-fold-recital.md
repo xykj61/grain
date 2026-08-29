@@ -187,3 +187,5 @@ at a closed fold.*
 *Row %340 folded to [`REDS-the-bytes-counted-twice-rows-340.md`](REDS-the-bytes-counted-twice-rows-340.md) on `20260829.033150`, **CLOSED** -- a character census followed 56 symlinks and set its ceiling on the doubled reading; born on its shelf, as %336 through %339 were.*
 
 *Row %341 folded to [`REDS-the-ceiling-that-held-one-bead-rows-341.md`](REDS-the-ceiling-that-held-one-bead-rows-341.md) on `20260829.124742`, **CLOSED** -- a ceiling test filled the shared store with one bead of its 256 and printed 128, booked and repaired in one lap; born on its shelf, as %336 through %340 were.*
+
+*Row %342 folded to [`REDS-the-door-nobody-smelled-rows-342.md`](REDS-the-door-nobody-smelled-rows-342.md) on `20260829.134715`, **CLOSED** for this seat's pages with the backlog booked -- the doorway witness red at 33 unroomed pages and rostered by nothing, caught by the earth row's own rota lap; born on its shelf as %335 and %336 were.*
