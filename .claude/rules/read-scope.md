@@ -52,6 +52,13 @@ handed) and inner-loop information (a sandbox's scratch, a session's cached auth
 is bounded reading rather than secrecy: six loops each walking five other loops' state is
 thirty reads a round, none of which changes what the lap does next.
 
+**The one shared window is `session-output/`** (gitignored, seated `20260828` on Keaton's word):
+each loop tees its outer transcript to one per-seat file there, overwritten in place --
+`mkdir -p session-output && <loop> 2>&1 | tee session-output/<seat>.txt` -- so any agent reads a
+peer loop's full output by named path rather than a hand pasting it. A read window, never a state
+room: the loops' own state stays in `loops/`, and nothing in `session-output/` is a record --
+`session-logs/` remains the journal.
+
 ## Open shelves
 
 `construction/` pins (the card, REDS, the registries) - `context/` guides - `foundations/` -

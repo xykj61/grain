@@ -382,3 +382,4 @@ construction/standing-equipment-reds/
 
 # Build receipts -- a .ryekey stamp beside an emitted binary is local state, never content
 *.ryekey
+/session-output/
