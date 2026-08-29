@@ -132,8 +132,12 @@ and the front door speak one sensory grammar.
 164 KB dictionary and called both one lap's reading, which schedules a filename rather than
 attention. `context/LEXICON.md` and `context/TAME_GUIDANCE.md` are **references consulted on
 demand**, so they left the rota and kept their standing. `context/KYRI.md`,
-`context/GAUGE_STYLE.md`, `context/RADIANT_STYLE.md`, and `context/TWILIGHT_STYLE.md` load **every** lap by this section's
-own first paragraph, so a rota slot was pure duplication. The two itineraries moved to **section 3,
+`context/RADIANT_STYLE.md`, and `context/TWILIGHT_STYLE.md` load **every** lap by this section's
+own first paragraph, so a rota slot was pure duplication. `context/GAUGE_STYLE.md` is the one
+deliberate double: it loads every lap **as voice** and keeps its Air-Dual seat **as study** --
+speaking a register daily and pressing the prose against the register's own ceilings once per
+orbit are different acts, and the air threshold teaches through exactly that seat (amended
+`20260829.150417`; this paragraph once listed it among the retired while the grid seated it). The two itineraries moved to **section 3,
 the route**, where the loop already reads them. Four domain visions -- hardware, Mycelium, the
 singularity, Pond -- and three indexes left the rota and stayed in the tree; a lap rarely writes
 different code for having re-read a vision, and the compass walks the indexes already.
