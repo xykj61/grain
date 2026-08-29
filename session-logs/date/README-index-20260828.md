@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260828.235500` | [the six messages molted](20260828/20260828-235500_the-six-messages-molted.kyri) | window rewrite lands locally, trees byte-identical; force-push waits for Keaton |
 | `20260828.235039` | [the names the ban reaches](20260828/20260828-235039_the-names-the-ban-reaches.kyri) | filename molts land; sala census finds fossils only; own-build ratchet 46 -> 45 |
 | `20260828.234152` | [the words the tree chooses](20260828/20260828-234152_the-words-the-tree-chooses.kyri) | dependent, first resident, red seated in rules and guides; debride prepared |
 | `20260828.232444` | [the view that owns its drawing](20260828/20260828-232444_the-view-that-owns-its-drawing.kyri) | LOCA quest one rung one GREEN; REDS %335 booked and repaired |
