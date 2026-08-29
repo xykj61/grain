@@ -120,16 +120,16 @@ echo "$out" | grep -q 'verdict=extraction_empty' && echo "empty_extraction_refus
 # 11. The ratchet, from both sides. The planted counts track the LIVE ceiling: lower the ceiling and
 #     these two move with it, or the control proves a ceiling the tree no longer holds.
 d=$(build ratchet_under 'let r = run ["bin/thing" "selftest"]')
-( cd "$d" && i=2; while [ "$i" -le 19 ]; do printf 'let r = run ["bin/thing%s" "selftest"]\n' "$i" > "tools/spare${i}_witness.rish"; i=$((i + 1)); done
-  git add -A && git commit -qm 'pen: nineteen unbuilt pairs' ) >/dev/null 2>&1
+( cd "$d" && i=2; while [ "$i" -le 14 ]; do printf 'let r = run ["bin/thing%s" "selftest"]\n' "$i" > "tools/spare${i}_witness.rish"; i=$((i + 1)); done
+  git add -A && git commit -qm 'pen: fourteen unbuilt pairs' ) >/dev/null 2>&1
 out=$(verdict_of "$d")
-echo "$out" | grep -q 'unbuilt_pairs=19 ' && echo "ratchet_counted=yes" || echo "ratchet_counted=no"
+echo "$out" | grep -q 'unbuilt_pairs=14 ' && echo "ratchet_counted=yes" || echo "ratchet_counted=no"
 echo "$out" | grep -q 'verdict=ok' && echo "ratchet_under_free=yes" || echo "ratchet_under_free=no"
 
-( cd "$d" && printf 'let r = run ["bin/thing20" "selftest"]\n' > tools/spare20_witness.rish \
+( cd "$d" && printf 'let r = run ["bin/thing15" "selftest"]\n' > tools/spare15_witness.rish \
   && git add -A && git commit -qm 'pen: one over the ceiling' ) >/dev/null 2>&1
 out=$(verdict_of "$d")
-echo "$out" | grep -q 'unbuilt_pairs=20 ' && echo "ratchet_over_counted=yes" || echo "ratchet_over_counted=no"
+echo "$out" | grep -q 'unbuilt_pairs=15 ' && echo "ratchet_over_counted=yes" || echo "ratchet_over_counted=no"
 echo "$out" | grep -q 'verdict=witness_without_build' && echo "ratchet_over_refused=yes" || echo "ratchet_over_refused=no"
 
 echo "control_verdict=ok"

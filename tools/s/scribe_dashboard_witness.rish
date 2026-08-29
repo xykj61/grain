@@ -10,6 +10,13 @@
 #   RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build scribe/dashboard.rye -femit-bin=scribe/bin/dashboard
 #   rishi/bin/rishi run tools/s/scribe_dashboard_witness.rish
 
+# Build the binary this witness proves, rather than assuming a previous lap left one behind.
+# scribe/bin/ is gitignored (.gitignore:193), so a clone carries no binary at all: the "Build
+# first" lines above are documentation, and a comment builds nothing (REDS %334).
+let zig = "vendor/zig-toolchain/zig"
+let build = run ["sh" "-c" "mkdir -p scribe/bin && env RYE_ZIG=${zig} rye/bin/rye build scribe/dashboard.rye -femit-bin=scribe/bin/dashboard"]
+assert build.ok else "scribe dashboard: build failed -- ${build.err}"
+
 # The module's own selftest -- three shelves fill, Unread is honest, the lens is exact.
 let st = run ["scribe/bin/dashboard" "selftest"]
 assert st.ok else "scribe dashboard selftest must exit 0"
