@@ -16,18 +16,18 @@ let pen = run ["sh" "-c" "pen=$(mktemp -d); cd $pen && git init -q . && mkdir -p
 assert pen.ok else "rung-drift: the pen must build"
 let pen_dir = trim pen.out
 
-let bitten = run ["sh" "-c" "RUNG_ROOT=${pen_dir} RUNG_CEILING=1 sh tools/fixtures/waymark_rung_drift_scan.sh"]
+let bitten = run ["sh" "-c" "RUNG_ROOT=${pen_dir} RUNG_CEILING=1 sh tools/fixtures/w/waymark_rung_drift_scan.sh"]
 assert (bitten.ok == false) else "rung-drift: two planted marks over a pen ceiling of one must refuse"
 assert bitten.out contains "verdict=rung_drift" else "rung-drift: the refusal must wear its own verdict"
 
-let freed = run ["sh" "-c" "RUNG_ROOT=${pen_dir} RUNG_CEILING=2 sh tools/fixtures/waymark_rung_drift_scan.sh"]
+let freed = run ["sh" "-c" "RUNG_ROOT=${pen_dir} RUNG_CEILING=2 sh tools/fixtures/w/waymark_rung_drift_scan.sh"]
 assert freed.ok else "rung-drift: two marks at a pen ceiling of exactly two must walk free"
 assert freed.out contains "verdict=ok" else "rung-drift: the boundary must be met from the passing side too"
 
 let cleanup = run ["sh" "-c" "rm -rf ${pen_dir}"]
 assert cleanup.ok else "rung-drift: the pen must be returned"
 
-let live = run ["sh" "tools/fixtures/waymark_rung_drift_scan.sh"]
+let live = run ["sh" "tools/fixtures/w/waymark_rung_drift_scan.sh"]
 say live.out
 assert live.ok else "rung-drift: a numbered rung mark entered living prose past the ceiling -- write the waymark, stamp, and plain name instead (.claude/rules/stamp-and-name.md)"
 assert live.out contains "verdict=ok" else "rung-drift: the live reading must agree with its own exit"
