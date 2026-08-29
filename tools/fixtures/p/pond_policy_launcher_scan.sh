@@ -68,9 +68,11 @@ POLICY="$ROOT/pond/enclosure_policy.kyri"
 if [ ! -f "$JAIL" ]; then echo "scan=absent detail=no_launcher"; exit 1; fi
 if [ ! -f "$POLICY" ]; then echo "scan=absent detail=no_policy"; exit 1; fi
 
-# max_maps bounds the mount roster read off either side. Six stand in the launcher and seven in the
-# record today; thirty-two leaves a body per seat on the six-body constellation with room to spare
-# and still refuses a generated file.
+# max_maps bounds the mount roster read off either side. Six stand in the launcher; the record held
+# seven when this bound was drawn and holds fifteen since 20260828, when ai-jail's own twenty-one
+# default mounts were measured and declared. Thirty-two leaves a body per seat on the six-body
+# constellation with room to spare and still refuses a generated file, so the bound stands where it
+# was -- the reading doubled and stayed under half of it.
 max_maps=32
 # max_flags bounds the flag list. Three stand; sixteen is the same shape of headroom.
 max_flags=16
@@ -185,6 +187,10 @@ flag_count=$(printf '%s' "$flags" | grep -c . || true)
 echo "built_maps=$built_count"
 echo "declared_maps=$declared_count"
 echo "launcher_flags=$flag_count"
+# The bounds are printed rather than left in the source, so the control reads them off a run
+# instead of spelling them. A control that spells a number goes stale the lap the truth moves,
+# which is exactly what happened to three of its cases on 20260828.
+echo "max_maps=$max_maps max_flags=$max_flags"
 
 if [ "$built_count" -gt "$max_maps" ] || [ "$declared_count" -gt "$max_maps" ]; then
   echo "detail: a mount roster exceeds max_maps $max_maps"

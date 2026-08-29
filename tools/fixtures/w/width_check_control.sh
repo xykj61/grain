@@ -105,13 +105,39 @@ i=1; : > "$pen/f1.rye"
 while [ "$i" -le "$over" ]; do printf 'var p%s: usize = 0;\n' "$i" >> "$pen/f1.rye"; i=$((i + 1)); done
 stage "$pen"; want corpus_over_lines_ceiling_refused refuse "$(run_scan "$pen")"
 
+# ---- Reading eight: the three sharpenings of 20260828, each shown from BOTH sides. Every case
+# plants into the DECLARED roster, which is gated at zero, so a pass and a refusal are the same
+# reading rather than a ratchet's arithmetic.
+#
+# A comment carrying the word says nothing about width; the same text as code does.
+pen=$(new_pen comment '"a.rye"')
+printf '//! the answer this seam writes for `usize` and builds in\n/// a usize by any other name\n// var i: usize = 0;\n' > "$pen/a.rye"
+stage "$pen"; want comment_usize_free ok "$(run_scan "$pen")"
+printf 'var i: usize = 0;\n' >> "$pen/a.rye"
+stage "$pen"; want comment_uncommented_refused refuse "$(run_scan "$pen")"
+
+# An extern declaration must match the C ABI, so its width is not ours to choose. The same
+# signature without `extern` is ours, and refuses.
+pen=$(new_pen externfn '"a.rye"')
+printf 'pub extern fn CGBitmapContextCreate(data: ?*anyopaque, width: usize, height: usize) ?*anyopaque;\n' > "$pen/a.rye"
+stage "$pen"; want extern_fn_seam_free ok "$(run_scan "$pen")"
+printf 'pub fn our_own(width: usize, height: usize) void {}\n' >> "$pen/a.rye"
+stage "$pen"; want extern_fn_without_extern_refused refuse "$(run_scan "$pen")"
+
+# An identifier merely containing the five letters carries no type; a real annotation does.
+pen=$(new_pen wholeword '"a.rye"')
+printf 'const slice = self.cells[base..][0..n_usize];\nconst also = my_usize_total + usize_count;\n' > "$pen/a.rye"
+stage "$pen"; want identifier_substring_free ok "$(run_scan "$pen")"
+printf 'var n_usize: usize = 0;\n' >> "$pen/a.rye"
+stage "$pen"; want identifier_with_real_type_refused refuse "$(run_scan "$pen")"
+
 # ---- Reading seven: a tree with no roster file at all refuses rather than reading zero.
 pen=$pen_root/noroster
 mkdir -p "$pen"
 ( cd "$pen" && git init -q . )
 want no_roster_refused refuse "$(sh "$SCAN" --root "$pen" >/dev/null 2>&1; echo $?)"
 
-echo "control_checks=13"
+echo "control_checks=19"
 echo "control_failures=$fails"
 if [ "$fails" -eq 0 ]; then echo "control_verdict=ok"; exit 0; fi
 echo "control_verdict=behavior_missing" >&2

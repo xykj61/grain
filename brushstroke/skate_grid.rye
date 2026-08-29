@@ -12,7 +12,7 @@ const std = @import("std");
 const assert = std.debug.assert;
 const font8x8 = @import("font8x8_data.rye");
 
-/// Optional glyphs for cell values 128..255 (ZETA4 emoji atlas). Slot i = cell 128+i.
+/// Optional glyphs for cell values 128..255 (the ZETA emoji atlas). Slot i = cell 128+i.
 pub var extended_glyphs: ?*const [128][8]u8 = null;
 const tally_copy = @import("tally_copy.rye");
 

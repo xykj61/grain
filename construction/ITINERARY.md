@@ -14,7 +14,7 @@
 ### Standing, every lap
 
 - **ASCII-first.** Write every new document, comment, and commit message in plain ASCII -- `--`, `-`, `'`, `"`, `->`, `<=`, `gamma_2` rather than em-dashes, middots, curly quotes, arrows, or non-ASCII math. The one exception is a named set of work rounds (a Unicode module's own fixtures). This card was corrupted to mojibake once (REDS %83). Rule: `.claude/rules/ascii-first.md`.
-- **Stamp and name, never an ascending mark.** Mark a lap by its one-clock stamp and a plain name -- `the standing movement (20260821-142939)` -- rather than `Fold AI`, `f0-f63`, or `X0/X1` for planned work. Count a total with `git log --grep ... | wc -l`. Waymarks stay (names, not counts); `rung` stays where a real ladder exists in code. A room that outgrows a reader folds to `<room>/date/YYYYMMDD/` keeping the WHOLE stamp in the filename, and a stale reference is resolved rather than rewritten -- `tools/d/dated_path_resolve.rish`. No fold ships without `tools/d/dated_path_witness.rish` GREEN, and a REDS fold runs through `tools/fixtures/r/reds_fold.sh`. **Waymark rungs are the retired form too** (%329): mark a rung by waymark, module or plain name, and stamp -- `FORA31`-shaped counters red `tools/w/waymark_rung_drift_witness.rish`, whose ceiling only falls. New `equinox_eNNN` guards take stamp-and-name (%330 books the family rename). Rule: `.claude/rules/stamp-and-name.md`.
+- **Stamp and name, never an ascending mark.** Mark a lap by its one-clock stamp and a plain name -- `the standing movement (20260821-142939)` -- rather than `Fold AI`, `f0-f63`, or `X0/X1` for planned work. Count a total with `git log --grep ... | wc -l`. Waymarks stay (names, not counts); `rung` stays where a real ladder exists in code. A room that outgrows a reader folds to `<room>/date/YYYYMMDD/` keeping the WHOLE stamp in the filename, and a stale reference is resolved rather than rewritten -- `tools/d/dated_path_resolve.rish`. No fold ships without `tools/d/dated_path_witness.rish` GREEN, and a REDS fold runs through `tools/fixtures/r/reds_fold.sh`. **Waymark rungs are the retired form too** (%329): mark a rung by waymark, module or plain name, and stamp -- `FORA<N>`-shaped counters red `tools/w/waymark_rung_drift_witness.rish`, whose ceiling only falls. New `equinox_eNNN` guards take stamp-and-name (%330 books the family rename). Rule: `.claude/rules/stamp-and-name.md`.
 - **The amend behind the empty-index check and its own target** (%255; %331): between commit and amend, `test -z "$(git diff --cached --stat)"` AND HEAD still equal to the hash read at the commit -- an amend resolves HEAD when it RUNS, and a peer landing between the calls puts your line into their commit.
 - **Fetch-before-book** (`20260827`, %230/%252 closed): read a REDS row number only after `git fetch xy`; a collision renumbers to the fetched head.
 - **Spelling: American.** `color` never `colour`; normalize on touch.
@@ -58,7 +58,7 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `a73327b6ed` -- this commit's parent.
+**Git nib:** `7c7cf08623` -- this round's own.
 
 **Now.** **A ceiling that only falls reds when the population grows.**
 
@@ -72,16 +72,16 @@ is gitignored whole, so each died on a missing file; all GREEN from an emptied b
 stays MANUAL and each checkout keeps one writer. Root `SKILL.md` opens the three skills. Every
 clone seats `ww` (`grain-ww/grain`, gate %1) and `.git/ssh_config_jail`.
 
-**Still open, one structural:** REDS stands at **24,571 of 24,576** even after this evening's fold --
-`%334` fit only after four trims, and **%335 could not land at all**, so a full row wants the seat `reds_fold.sh` leaves open. **Width ratchet:** `glow/rune_shape.rye`
-publishes `usize` in 5 fields and 5 accessors; 59 gate fixtures await his word. **Mind's:**
-the reconnect patch in grain-mind's own stash (review recipe in its log). `%281`/`%291` stay his, as does this
-pier's `enclosure.conf`, still pinning two. **Seat:** whether the roster's own witness can
-be rostered when its scan reads the card its red would land on.
+**Still open, one structural:** the REDS pin sits within a few bytes of **24,576** and every row
+reads OPEN, so `reds_fold.sh` has nothing lawful to fold; four reds went unbooked on `20260828`
+for that reason alone -- a row wants the seat the fold tool leaves open. **Width:** `glow/rune_shape.rye` publishes `usize` in 5 fields and 5
+accessors; 59 gate fixtures await his word. **Mind's:** the reconnect patch in grain-mind's own
+stash. `%281`/`%291` stay his, as does this pier's `enclosure.conf`, still pinning two.
+**Seats:** whether the roster's own witness can be rostered; whether a `mask` may soften the `map`
+it covers; and a capability tier for `comlink_r1_dual_stack`'s IPv6 leg.
 
-**Sound:** repoint 3 broken links in `tools/fixtures/r/radiant_pool_scope.md` after the fixture fold.
-
-**Next doors.** Dream: Caravan and Tally. Hush: orbit two's grant set.
+**Next doors.** Dream: Caravan and Tally. Hush: orbit two's grants -- the record names all 27
+mounts now and refuses `map /sys` (`20260828.233813`).
 
 ---
 ## Landed arcs
@@ -149,7 +149,7 @@ For any self-paced or outer-jail loop: recur through all agent-doable work, yet 
 5. **Deep debride / history rewrite + force-push** of the living tree -- named target, Keaton's explicit word.
 6. **Seating a new module in a collaborator's domain** (e.g. DJINN's surface lead) beyond authored implementation-floor code -- the invitation and lead are the collaborator's to accept.
 
-7. **Reconciling the 36 drifted `.claude`/`.cursor` rule pairs** (REDS %194) -- the drift runs **both ways**, so a bulk merge in either direction silently deletes a live safety rule and each pair is its own reading. `sh tools/fixtures/r/rule_twin_scan.sh diff <name>` shows one; `rule_twin` holds the count under a ceiling that only falls.
+7. **Reconciling the 39 drifted `.claude`/`.cursor` rule pairs** (REDS %194, over its 36 ceiling since `20260829`) -- the drift runs **both ways**, so a bulk merge in either direction silently deletes a live safety rule and each pair is its own reading. `sh tools/fixtures/r/rule_twin_scan.sh diff <name>` shows one.
 
 Everything else -- design, code, witnesses, docs, weaves, seed *projection* (not push), reds -- is agent-doable and does not wait.
 
@@ -214,10 +214,9 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 **One row, on purpose.** A landed lap keeps one line here until the next replaces it.
 
-## The cadence -- CUT `20260826`, gate %1 stays his
+## The cadence -- CUT `20260826`
 
-No lap publishes on a count; gate %1 stays his, and the live reading sits in *Custody gates*.
-Testimony:
+No lap publishes on a count; gate %1 governs alone, above. Testimony:
 [`../foundations/20260823-111029_the-seed-that-ships-every-fifth-round.md`](../foundations/20260823-111029_the-seed-that-ships-every-fifth-round.md).
 
 ## The laps

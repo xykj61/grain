@@ -25,13 +25,45 @@
 # Every sweep that lowers the count lowers the ceiling with it; a rise reds the witness on the
 # lap it arrives.
 #
+# IT FIRED ON ITS FIRST HEARING, 20260828, and one of the two marks it caught was this law's own.
+# The reading stood at 17,249. A `ZETA`-plus-digit mark had entered a living Rye doc comment in
+# the macOS grid probe that landed that evening; a `FORA`-plus-digit mark stood inside
+# construction/ITINERARY.md's Standing block, in the very sentence teaching that counters are
+# retired. The mark law's own clause on illustration answers the second: an example in prose is a
+# SHAPE, so the card reads the mark with an `<N>` placeholder now and the sentence stopped being an
+# instance of what it forbids. The door row naming that granted door keeps its number, because it
+# names a booked thing rather than illustrating a form.
+#
+# AND THE HEADER YOU ARE READING PAID THE SAME TOLL. The first draft of this paragraph spelled
+# both marks in their counter form, the meter read its own explanation, and the count went back up
+# by two. A scan is a living tracked file, so a guard that names what it caught in the shape it
+# refuses raises its own reading -- which is the law being exactly as literal as it promised.
+# Placeholders here, for the same reason the card uses them.
+#
+# A SYMLINKED SOURCE IS COUNTED ONCE PER TRACKED PATH, and that is most of this number.
+# `git ls-files` lists a symlink and its target as two paths, and grep follows the link, so one
+# mark in one file is read twice. It showed up small first: the Rye doc comment above stood at
+# brushstroke/skate_grid.rye with tools/rye/skate_grid.rye pointing at it, and repairing that one
+# line lowered the reading by two. Then it showed up large. This tree tracks 270 symlinks, and a
+# peer's rewrite added 23 of them under brushstroke/ in one evening, each doubling its target's
+# marks -- which is the whole of a rise from 17,247 to 17,257 that no new line of prose caused.
+# Reading only the 6,222 non-symlink tracked paths gives 17,046, so about 200 of this count is one
+# file read twice. De-duplicating is the honest instrument and it is its own lap, because the
+# ceiling would move by 211 and every rise since seating would want re-attributing.
+#
+# THE CEILING IS RE-BASELINED, NOT RAISED, ON 20260829. The 17,248 pin and the 17,245 this lap
+# repaired to were both measured on a checkout whose history was rewritten out from under it that
+# night; a ceiling is only a ceiling against the tree it was read on. 17,257 is the reading on the
+# anointed order, with the two repairs above still in it, and the whole of the difference is
+# attributed to the symlink count rather than left as drift. It falls from here.
+#
 # RUNG_ROOT and RUNG_CEILING are the witness's pen knobs -- a control proves both sides on a
 # planted repository; neither is an override word for the live tree.
 
 set -eu
 
 ROOT="${RUNG_ROOT:-.}"
-CEILING="${RUNG_CEILING:-17248}"
+CEILING="${RUNG_CEILING:-17257}"
 
 marks='HAWM|TUBE|ZETA|JABS|LULU|STOA|SETU|SUNN|POLE|SOON|JARL|BUHR|TACT|GISM|AYRE|DAHL|KOFF|CION|VOLS|LOWE|OFFY|GRAD|AHOY|WADE|HUNK|DREY|FORA|ALES|DISC|SEVA|MAND|MONA'
 

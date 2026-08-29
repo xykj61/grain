@@ -14,6 +14,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260828.235500` | [the six messages molted](20260828/20260828-235500_the-six-messages-molted.kyri) | window rewrite lands locally, trees byte-identical; force-push waits for Keaton |
 | `20260828.235039` | [the names the ban reaches](20260828/20260828-235039_the-names-the-ban-reaches.kyri) | filename molts land; sala census finds fossils only; own-build ratchet 46 -> 45 |
 | `20260828.234152` | [the words the tree chooses](20260828/20260828-234152_the-words-the-tree-chooses.kyri) | dependent, first resident, red seated in rules and guides; debride prepared |
+| `20260828.233813` | [the enclosure that named a sixth](20260828/20260828-233813_the-enclosure-that-named-a-sixth-of-itself.kyri) | three roster reds; the jail's 21 default mounts declared |
 | `20260828.232444` | [the view that owns its drawing](20260828/20260828-232444_the-view-that-owns-its-drawing.kyri) | LOCA quest one rung one GREEN; REDS %335 booked and repaired |
 | `20260828.231614` | [the guard on no clock](20260828/20260828-231614_the-guard-on-no-clock.kyri) | three Comlink proofs take a lap row; reach 1115 -> 1112 |
 | `20260828.222500` | [the journey that opens on measurement](20260828/20260828-222500_the-journey-that-opens-on-measurement.kyri) | LOCA seated, five quests named; a reading on Mind |
