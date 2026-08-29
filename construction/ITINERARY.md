@@ -88,9 +88,9 @@ returned 811B and %291's new evidence spent 711 of it; `pin_deadlocked=1` still 
 `%338` booked, 3 doors in `20260829-031804`; his seat.
 **Width:** `glow/rune_shape.rye` publishes `usize` in 5 fields and 5 accessors; 59 fixtures
 await his word. **Mind's:** the reconnect stash, `%281`/`%291`, two `enclosure.conf` pins here.
-**Roster here (cold, `20260829.143651`):** 93 guards, 90 green -- `rule_twin` 39/36 is gate %7,
-`width_check`'s tree-wide count 331/329 is another body's, `remember_git_nib` closes here;
-`witness_reach` is GREEN, the Mac's fix landed. **Seats:** rostering the roster's own witness; a
+**Roster here (over the shipped tree, `20260829.143651`):** 93 guards, **91 green**, 2 red --
+`rule_twin` 39/36 is gate %7 and `width_check`'s tree-wide count 331/329 is another body's;
+`witness_reach`, `nib_honesty` and `remember_git_nib` all GREEN. **Seats:** rostering the roster's own witness; a
 `mask` softening the `map`; an IPv6 tier for `comlink_r1_dual_stack`.
 
 **Next doors.** Dream: Caravan and Tally. Hush: the Mac's 3 Pond rows -- `xargs -r` at
