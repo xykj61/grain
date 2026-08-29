@@ -22,6 +22,21 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ---
 
+## `20260829.141640` -- the card condense (walk-back `e4e80e5677`)
+
+**Walk-back nib:** `e4e80e5677` -- HEAD before the condense commit. The departing ITINERARY stands
+whole at `git show e4e80e5677:construction/ITINERARY.md`, 24,575 of its 24,576 bytes spent.
+
+**Swept:** `construction/ITINERARY.md` only -- the Compass Chapter table, the granted Open-doors
+rows, the duplicate cadence section, and the landed Now paragraphs move to a fresh archive shelf
+word for word; the LOCA ladder's line seats in their place. On Keaton's word (`20260829`,
+"apprive all recommended doors with my word granted" -- the condense was the recommended door the
+aether rota lap named).
+
+**What waits there, worth recalling:** the Compass Chapter's four-equinox table with its waymark
+column, the granted rows' own phrasings (FORA31's ref counts, the MOX rehearsal's two GREEN pens),
+and the seal-gate and one-bead Now paragraphs in their working-day voice.
+
 ## `20260828.234152` -- the word-molt deep debride of six MANY HANDS commit messages (walk-back `0a393a469`)
 
 **Walk-back nib:** `0a393a469` -- the LOCA rung landing, HEAD before this debride's own commits. The
