@@ -1,0 +1,74 @@
+#!/bin/sh
+# post-commit -- notice the commits that never ran pre-commit, and say the pages they owe.
+#
+# WHY THIS HOOK EXISTS. tools/hooks/pre-commit refreshes the two generated front-door pages --
+# README.md and docs-geode/libraries/README.md -- inside the commit that moves their numbers. It
+# does that for `git commit` and for `git commit --amend`, and for nothing else, because git runs
+# pre-commit for those two paths alone. Measured on real repositories in a throwaway pen
+# (tools/fixtures/g/generated_page_freshness_control.sh, cases 9 and 10):
+#
+#   git commit           pre-commit fires    post-commit fires
+#   git commit --amend   pre-commit fires    post-commit fires
+#   git cherry-pick      SKIPPED             post-commit fires
+#   git rebase           SKIPPED             post-commit fires
+#   git merge --no-ff    SKIPPED             SKIPPED
+#
+# The twice-pulled send this tree runs REQUIRES a rebase whenever the anointed remote moved
+# (`construction/ITINERARY.md`, the sync rota), so the third and fourth rows are not exotic paths
+# -- they are the ordinary close of a contested round. On 20260829 a round landed through a
+# cherry-picked re-derivation, and BOTH pages shipped stale in a commit that added a witness. The
+# tree was clean, every witness the round re-ran was green, and the staleness surfaced at the NEXT
+# lap's cold roster as two red rows in somebody else's round (REDS %337).
+#
+# HOW IT KNOWS, and why it asks this question rather than another. The obvious reading is to detect
+# the sequencer -- probe for .git/rebase-merge, .git/rebase-apply, .git/sequencer, CHERRY_PICK_HEAD
+# -- and that is an inference from four situations to the property actually wanted. This asks the
+# property directly: DID MY SIBLING RUN? pre-commit drops a token in the git directory on its
+# success path, and this hook reads it. A path git adds tomorrow, or one nobody thought of, answers
+# correctly on the first run without anyone editing a list of four names.
+#
+# BOTH MARKERS LIVE INSIDE THE GIT DIRECTORY, never in the work tree, and that is the safety
+# property: a rebase refuses to continue over unstaged changes, so a hook that wrote into the tree
+# mid-replay could wedge the very rebase it was helping. These files are invisible to `git status`.
+#
+# WHAT IT COSTS. Two file tests and at most one `: >` -- microseconds. Rendering here was weighed
+# and declined: the two generators take 3.1s and 9.4s measured on this bench 20260829, and a rebase
+# replaying ten commits would pay two minutes to answer a question the next commit answers free.
+# So the debt is RECORDED here and PAID by the next pre-commit, which already knows how to refresh
+# a page and how to behave about the author's own unstaged edits.
+#
+# WHAT THIS DOES NOT REACH, said plainly. `git merge --no-ff` creates a commit and runs neither
+# hook, so a page staled by one goes unseen here. This tree's seated send merges `--ff-only`, which
+# creates no commit at all and stales nothing, so the gap sits off the path the tree walks -- named
+# rather than closed, because a `post-merge` hook would also fire on every `git pull` fast-forward
+# and mark a debt no local commit incurred. The rostered guards remain the backstop for both.
+#
+# Proven both ways by tools/g/generated_page_freshness_witness.rish over
+# tools/fixtures/g/generated_page_freshness_control.sh.
+# Armed by rishi/bin/rishi run tools/i/install_hooks.rish.
+
+set -eu
+
+# The same first gate pre-commit keeps: a tree without rishi -- the depersonalized seed, a shallow
+# checkout -- carries neither generator, so it can owe no page. Without this the seed's own root
+# commit would mark a debt nothing in it could pay.
+[ -x rishi/bin/rishi ] || exit 0
+
+gitdir=$(git rev-parse --git-dir)
+ran="$gitdir/pre-commit-ran"
+owed="$gitdir/derived-pages-owed"
+
+if [ -f "$ran" ]; then
+  # The commit that just landed ran pre-commit, so rule one had its say -- including the case where
+  # it fired BECAUSE a debt was standing. The debt is paid by the landing, never by the intent.
+  rm -f "$ran" "$owed"
+  exit 0
+fi
+
+: > "$owed"
+echo "post-commit: this commit did not run pre-commit -- a rebase, a cherry-pick, or a path like"
+echo "  them. The two generated pages were not refreshed with it. The next commit here will do it,"
+echo "  or refresh them now:"
+echo "    rishi/bin/rishi run tools/r/readme_metrics.rish write"
+echo "    rishi/bin/rishi run tools/g/geode_libraries.rish write"
+exit 0
