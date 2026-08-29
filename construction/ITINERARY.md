@@ -56,7 +56,7 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `bd72bc0ffd` -- this round's own.
+**Git nib:** `409dfbda05` -- this round's own.
 
 **Now.** **The dead-letter box filled twice; the second time a meter read it.**
 
