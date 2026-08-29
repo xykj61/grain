@@ -578,3 +578,34 @@ guard witness_own_build
 path tools/w/witness_own_build_witness.rish
 tier lap
 seated 20260828.213503
+
+# Comlink's three pure proofs, seated 20260828.231614. comlink/topology.rye, turn_route.rye and
+# handshake_turn.rye each carry a selftest this tree already trusted, and each was reached by no
+# roster row, no choir and no runner -- they ran when a hand typed their name and at no other time,
+# which is the sentence REDS %334 left standing when it repaired their builds. Measured cold on
+# this bench 20260828 with comlink/bin/ emptied first: 2s each, its own zig build included, no
+# socket bound and no process spawned. `lap` rather than `cadence` for that cost.
+#
+# Their fourth sibling tools/co/comlink_r1_dual_stack_witness.rish stays off this roster on
+# purpose. Its leg B binds both address families on loopback and its own header calls RED correct
+# on a host without IPv6, so a rostered seat would turn an environment fact into every body's red
+# lap; it costs 151s here besides, the a1 suite included. The `host` field cannot carry it: `host
+# macos` is a tier for PLACE, and this condition is one of CAPABILITY -- a Linux bench routing IPv6
+# keeps the promise a macOS bench without it breaks, so the OS word would encode something untrue.
+# A capability tier is a design question rather than a row, and it is named on the card instead of
+# guessed at here.
+
+guard comlink_topology
+path tools/co/comlink_topology_witness.rish
+tier lap
+seated 20260828.231614
+
+guard comlink_turn_route
+path tools/co/comlink_turn_route_witness.rish
+tier lap
+seated 20260828.231614
+
+guard comlink_handshake_turn
+path tools/co/comlink_handshake_turn_witness.rish
+tier lap
+seated 20260828.231614

@@ -169,7 +169,18 @@ done
 # already RED when it was first run: tools/g/glow_g5_nock_family_notes_witness.rish asserted on a brief
 # that had folded to active-designing/yonder/, and no clock existed to report it. The family ceiling
 # fell 222 -> 220 in the same motion, one family for the choir and one for the members it gathered.
-CEILING=${WITNESS_REACH_CEILING:-1113}
+# 1113 -> 1112 on 20260828.231614, a fall of 1 in the ceiling while the READING fell 1115 -> 1112.
+# Both numbers matter, and they are different numbers. The three rows that landed with this note are
+# Comlink's pure proofs -- tools/co/comlink_{topology,turn_route,handshake_turn}_witness.rish -- each
+# reached by nothing since it was written, which is the card's own open sentence and this lane's own
+# debt. They are NOT what reddened this gate. The reading stood at 1115 against a ceiling of 1113
+# because three witnesses were born onto no clock in the four hours before it: tools/t/tally_bud,
+# tools/co/counsel_census, and tools/w/waymark_rung_drift. Rostering three Comlink files pays their
+# overage with another lane's slack, so the fact is written here rather than absorbed: those three
+# still run when a hand types their name, and clocking them is their authors' lap. The ceiling falls
+# to the reading with no slack so the next unclocked birth reds on the lap it arrives, which is the
+# whole point of a ratchet that only falls.
+CEILING=${WITNESS_REACH_CEILING:-1112}
 # The family ceiling, seated 20260828 at what the tree measured that day: 220 of 292 families carry
 # no clock at all. It only falls, and it falls whenever a family's first roster row lands. It is a
 # ratchet rather than a wall at zero for the same reason CEILING is: a wall that refuses ordinary
