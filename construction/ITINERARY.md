@@ -58,18 +58,20 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `8dc023d68c` -- this round's own.
+**Git nib:** `e67d903ec9` -- this round's own.
 
-**Now.** **A gate written three times, read once.**
+**Now.** **LOCA -- the macOS native surface, and its iOS twin.**
 
-**The ceiling that held one bead** (`20260829-124742`): the one test naming the bead store's
-bound filled it with **1 of 256** -- `k & 0xFF` has the bead size as its period. Fixed; an exact
-`errdefer` rollback; two size-pinned witnesses freed (%341). **Door for `pond/apps/`:** `spool_cloth`
-promises 4 large artifacts over a store holding **2**; three options in %341.
+**The LOCA ladder** (drawn `20260828.222500`): the first pass walked whole -- five movements, a
+Rye view, window, input ring, lifecycle, and parity claims with **zero Swift linked** -- and a
+second pass of ten rungs carried the same core to iOS: cross recipe measured, both witnesses
+GREEN inside a booted simulator, a real installed app, real touch and cancellation through the
+ring, and the parity pins (`lit=16268`, one house-Keccak digest) identical on **two operating
+systems**. The tri-OS close waits on the pier's `wayland-seed parity`. Account:
+`session-logs/date/20260829/`; landed Now rows on the `20260829-141640` shelf.
 
-**The seal gate** (`20260829-123529`): three launchers admit `ENCLOSURE=pond` only behind the
-master seal; one guard read one. `pond_seal_gate` finds them by `git grep`, gates three at zero,
-and read 1 -- the seal's header omitted `tools/ag/agent-jail.sh`.
+**Pond doors:** `spool_cloth` promises 4 large artifacts over a store holding **2** -- three
+options in %341; the seal's header omitted `tools/ag/agent-jail.sh` (`pond_seal_gate` gates 3).
 
 **MANY HANDS** (granted `20260828`): custody stays MANUAL, one writer per checkout. Root
 `SKILL.md`; every clone seats `ww` (`grain-ww/grain`, gate %1) and `.git/ssh_config_jail`.
@@ -92,20 +94,11 @@ Mandate, Acme DX, CION, **AHOY** beside **WADE**, Singularity, **BUHR**'s MCP su
 **TACT** Journeys 1, 2, 4, the recursion cellar, the image module, the Constel quorum, the
 rune naming -- proven on metal, the account in `session-logs/`.
 
-## The Compass Chapter -- OPEN `20260809.021829` (Keaton's word)
+## The Compass Chapter -- OPEN `20260809.021829`, now at JARL
 
-**256 rounds - four equinoxes = four compass directions.** Nesting: **Round - Quest 4 - Journey 16 - Equinox 64 - Chapter 256**.
-
-| Order | Equinox | Waymark | Holds |
-|---|---|---|---|
-| **1 -- OPEN, the finishing edge** | The Language | **SOON** [x] | Rishi language spine complete; Brix-infuse, PLEAC, the cookbook in the interpreter, TAME core/shelf; all eight Aurora boot stages cross-building freestanding `riscv64`. Open: Aurora |
-| **2 -- word-gated** | Identity & Network | **JARL** | Kumara (5 tilaks) - Comlink turn-route and live handshake - d12-d60 topology - the settlement constellation - Vault, Mandate, Scribe |
-| **3 -- word-gated** | Surface & Intelligence | **BUHR** | Realidream DAG surface - the four voices - MCP-in-Bron - Tablecloth |
-| **4 -- word-gated** | The World | **TACT** | Ship-Pilot - publishing - Grainphone - commerce - CONTRIBUTING four-doors - Grain Energy PBC |
-
-**Now at JARL.** Four seats witnessed GREEN; the next-chapter breach is OPEN `20260810`
-(Pond seated, Pool retired, Kyri the one voice; loadable skies to run). Charter:
-[`../expanding-prompts/date/20260810/20260810-000032_the-next-season-breach-charter.md`](../expanding-prompts/date/20260810/20260810-000032_the-next-season-breach-charter.md).
+Four equinoxes (SOON [x] - JARL - BUHR - TACT); four JARL seats witnessed GREEN; the
+next-chapter breach OPEN `20260810`. The four-equinox table reads whole on the
+[`20260829-141640` shelf](archive/20260829-141640_itinerary-settled-decisions.md).
 
 ---
 
@@ -166,18 +159,14 @@ so the armed-wall promise rides on the publisher.
 | Door | Kind |
 |------|------|
 | **Next JARL step** -- escape, membership-commitment shrink, or the scarcity call | live |
-| **The Glow tree, and FORA31** -- GRANTED `20260827` (`approve all doors`): the `src/` room names (205 refs), `loops/<body>/` (54), `glow/gen/` folding by letter (340 vs 256), then the socket, then the **deep debride** on its own precondition. All in `active-designing/20260827-174816` | **GRANTED** |
 | **Breach OPEN `20260810`** -- Pond = application module (Pool retired) - **skies lap 1** - **topology inclusive** (galaxy is star is planet, 720/universe, sponsor by mod, **outfit** roles; 6 witnesses GREEN) - **Kyri** the notation (was Bron) - **Skate** = the social network | breach - live |
 | **MOX constellation on SUI** -- `xykj61` as the maintainer's planet; which instantiation answers for which point, and how a planet resolves to a Mycelium store. Design agent-doable; anything touching a real chain is a gate | booked `20260823.184309` |
-| **The pen, the gossip, and the derived spine** -- the %230 answer proposed (stamp-keyed rows, number derived at merge); design and read at `active-designing/20260825-205011` - `external-research/20260825-205011`. The seat stays Keaton's | booked `20260825.205011` |
-| **Three real MOX, one Constel** -- the rehearsal RUNS (`20260825`): in-process and three-process localhost pens both GREEN; the one ungated seam is a real address. Comlink-served gate and Vultr provisioning stay gates; design at `active-designing/20260825-133156` | booked, rehearsal `20260825` |
-| **Reprove only what moved** -- FAST/COLD ruling GRANTED (`20260825.181028`); the two engineering gates (hit rate, lap-tail reorder) are the door. Design: `active-designing/20260825-173153` | granted |
 | **Three corridor bundles placed, held at the gate** -- fiber (KC), headwaters (Gallatin), works (Brazos); Laps 6-9 await the word. Prompts: `expanding-prompts/20260825-1719{12,18,24}_*.md` | check-in `20260825.171907` |
 | **Kumara seed-key derivation** -- one high-entropy seed in Vault from which the Comlink X25519/Ed25519 and post-quantum SLH-DSA-SHAKE-256s keys derive by domain-separated SHAKE-256, the path carrying a scheme tag and a version. An agent writes and witnesses the derivation against test vectors and fake constel identities and stops there | booked - custody-gated |
 | **Keaton's own Kumara instance** -- generate from his real seed + keeper, by his hand alone | JARL - when ready |
 | **Held doors** -- TAME core/shelf - Identity Remake/Kumara - Geode - Grainphone - Realidream - Pond seven - data-dignity - succession - Mand ring-3 - O3 gen-home | awaiting Keaton |
 
-*Four resolved rows read whole on the shelf.*
+*Four granted rows moved to the [`20260829-141640` shelf](archive/20260829-141640_itinerary-settled-decisions.md); four elder resolved rows on the `20260824` one.*
 ---
 
 ## Card habits
@@ -212,14 +201,11 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260829.124742` | The ceiling that held one bead | [log](../session-logs/date/20260829/20260829-124742_the-ceiling-that-held-one-bead.kyri) |
+| `20260829.140140` | The row that heard the silence -- the card condense booked, then granted | [log](../session-logs/date/20260829/20260829-140140_the-row-that-heard-the-silence.kyri) |
 
-**One row, on purpose.** A landed lap keeps one line until the next replaces it.
-
-## The cadence -- CUT `20260826`
-
-No lap publishes on a count; gate %1 governs alone, above. Testimony:
-[`../foundations/20260823-111029_the-seed-that-ships-every-fifth-round.md`](../foundations/20260823-111029_the-seed-that-ships-every-fifth-round.md).
+**One row, on purpose.** A landed lap keeps one line until the next replaces it. (The cadence
+stays CUT `20260826` -- the custody-gates block above carries the sentence; the duplicate section
+left with the `20260829-141640` shelf.)
 
 ## The laps
 
