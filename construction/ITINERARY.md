@@ -58,22 +58,21 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `409dfbda05` -- this round's own.
+**Git nib:** `492a26f452` -- this round's own.
 
-**Now.** **The dead-letter box filled twice; the second time a meter read it.**
+**Now.** **A witness named its build in a comment, and a comment builds nothing.**
 
-**`%328`.** The runner's ledger writes announce a skipped room now, and it reads
-`git stash list` on line one -- each entry by message and file count, reported never gated,
-bounded at 16. Control 62 behaviors, zero no, where HEAD read 21 unseen for two days.
-
-**`%327` out of the same box** -- a lap recovered by `git checkout <stash> --`; `pond_enclosure_state` gates `pinned_elders` at zero.
+**`%334`.** `comlink/bin/` is gitignored, so two Comlink witnesses proved nothing on a clone;
+both carry the build their sibling already had, GREEN with the binaries deleted first.
+`witness_own_build` ratchets `unbuilt_pairs` at **46** over 35 witnesses, 21 pen behaviors both
+ways, `absent_now=14` reported. Comlink's four proofs are named by no runner in the tree.
 
 **MANY HANDS + skills** (granted `20260828`): launches may manage multiple CLI agents; custody
 stays MANUAL and each checkout keeps one writer. Root `SKILL.md` opens the three skills. Every
 clone seats `ww` (`grain-ww/grain`, gate %1) and `.git/ssh_config_jail`.
 
-**Still open, one structural:** every pin row reads OPEN and their bytes alone near the bound,
-so `reds_fold.sh` refusing OPEN rows is no longer a tidy seat. **Width ratchet:** `glow/rune_shape.rye`
+**Still open, one structural:** REDS stands at **24,571 of 24,576** even after this evening's fold --
+`%334` fit only after four trims, so a full row still wants the seat `reds_fold.sh` leaves open. **Width ratchet:** `glow/rune_shape.rye`
 publishes `usize` in 5 fields and 5 accessors; 59 gate fixtures await his word. **Mind's:**
 the reconnect patch in grain-mind's own stash (review recipe in its log). `%281`/`%291` stay his, as does this
 pier's `enclosure.conf`, still pinning two. **Seat:** whether the roster's own witness can
@@ -210,7 +209,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260828.201439` | STOA folds its thirteen rungs home; the title-grade form closes | [log](../session-logs/date/20260828/20260828-201439_the-ladder-that-outran-its-own-page.kyri) |
+| `20260828.213503` | Two Comlink witnesses build what they run; the own-build meter seats | [log](../session-logs/date/20260828/20260828-213503_the-build-that-lived-in-a-comment.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line here until the next replaces it.
 

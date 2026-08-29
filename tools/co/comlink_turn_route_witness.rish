@@ -8,6 +8,14 @@
 # Build first:  rye build comlink/turn_route.rye -femit-bin=comlink/bin/turn-route
 #   rishi/bin/rishi run tools/co/comlink_turn_route_witness.rish
 
+# Build the binary this witness proves, rather than assuming a previous lap left one behind.
+# comlink/bin/ is gitignored (.gitignore:185), so a clone carries no binary at all: the "Build
+# first" line above is documentation, and a comment builds nothing. Its sibling
+# tools/co/comlink_topology_witness.rish already carries this repair.
+let zig = "vendor/zig-toolchain/zig"
+let build = run ["sh" "-c" "mkdir -p comlink/bin && env RYE_ZIG=${zig} rye/bin/rye build comlink/turn_route.rye -femit-bin=comlink/bin/turn-route"]
+assert build.ok else "comlink turn-route: build failed -- ${build.err}"
+
 let st = run ["comlink/bin/turn-route" "selftest"]
 assert st.ok else "comlink turn-route selftest must exit 0"
 assert (st.err contains "GREEN") else "turn-route must report GREEN"
