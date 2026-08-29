@@ -1,0 +1,35 @@
+# tools/w/waymark_rung_drift_witness.rish -- ascending rung marks in living files stay under a
+# ceiling that only falls (REDS %329, the mark law's meter).
+#
+#   rishi/bin/rishi run tools/w/waymark_rung_drift_witness.rish
+#
+# The mark law retired HAWM7-shaped rung marks on 20260821.160050 and two ladders numbered past
+# it for a week, because the law had no meter. This witness runs the scan on the live tree and
+# proves the ceiling from both sides on a planted git repository in a pen: one mark past a pen
+# ceiling refuses, and a count standing exactly at it walks free.
+
+say "rung-drift: Language EN -- a rung is marked by waymark, stamp, and plain name; a counter is the retired form."
+say "rung-drift: Style Gauge, Meter -- the ceiling only falls, and the reading is the scan's own."
+say "rung-drift: Lens TAME -- the boundary proven from both sides before the live reading is trusted."
+
+let pen = run ["sh" "-c" "pen=$(mktemp -d); cd $pen && git init -q . && mkdir -p docs && printf 'the FORA7 rung lands\\nthe FORA8 rung lands\\n' > docs/page.md && git add -A && git -c user.email=c@x -c user.name=c commit -qm p --no-gpg-sign 2>/dev/null; echo $pen"]
+assert pen.ok else "rung-drift: the pen must build"
+let pen_dir = trim pen.out
+
+let bitten = run ["sh" "-c" "RUNG_ROOT=${pen_dir} RUNG_CEILING=1 sh tools/fixtures/waymark_rung_drift_scan.sh"]
+assert (bitten.ok == false) else "rung-drift: two planted marks over a pen ceiling of one must refuse"
+assert bitten.out contains "verdict=rung_drift" else "rung-drift: the refusal must wear its own verdict"
+
+let freed = run ["sh" "-c" "RUNG_ROOT=${pen_dir} RUNG_CEILING=2 sh tools/fixtures/waymark_rung_drift_scan.sh"]
+assert freed.ok else "rung-drift: two marks at a pen ceiling of exactly two must walk free"
+assert freed.out contains "verdict=ok" else "rung-drift: the boundary must be met from the passing side too"
+
+let cleanup = run ["sh" "-c" "rm -rf ${pen_dir}"]
+assert cleanup.ok else "rung-drift: the pen must be returned"
+
+let live = run ["sh" "tools/fixtures/waymark_rung_drift_scan.sh"]
+say live.out
+assert live.ok else "rung-drift: a numbered rung mark entered living prose past the ceiling -- write the waymark, stamp, and plain name instead (.claude/rules/stamp-and-name.md)"
+assert live.out contains "verdict=ok" else "rung-drift: the live reading must agree with its own exit"
+
+say "GREEN: rung-drift -- the retired mark is countable, the ceiling only falls, and both sides of the boundary are proven on metal."
