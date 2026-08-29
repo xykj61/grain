@@ -749,3 +749,15 @@ guard pond_seal_gate
 path tools/p/pond_seal_gate_witness.rish
 tier lap
 seated 20260829.123529
+
+# The wire-lab fn macro stays one macro: fifteen orchestrators each carry three fn lines hoisted
+# from 135 repeated template sites (20260829), and Rishi has no cross-file include, so the lines
+# are deliberate copies read against the teaching head. Readings at zero: fn_drift (one file's
+# macro wandering) and raw_sites (a template returning outside the fns). `lap` because scan plus
+# control run under ten seconds -- the happy zone holds daily; the real qemu boots stay with the
+# labs' own gating witnesses.
+
+guard wire_lab_fn_drift
+path tools/w/wire_lab_fn_drift_witness.rish
+tier lap
+seated 20260829.153150
