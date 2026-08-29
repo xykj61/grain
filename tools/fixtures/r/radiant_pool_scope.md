@@ -3,7 +3,7 @@
 **Language:** EN  
 **Stamp:** `20260725.110354`  
 **Status:** Checkable — **campaign STOPPED** `20260725.114400` · passes **on-touch only** · **The Sound Chapter** may enroll newborns, walk named arcs, and (separately) run **yes-seated breach** yonder/re-point motions (`20260727.220947`)  
-**Ground:** completion [`20260725-113115_radiant-pass-completion-report.md`](../../counsel/date/20260725/20260725-113115_radiant-pass-completion-report.md) appendix · repair relay `20260725.114400` · Sound [`../../counsel/date/20260727/20260727-220947_the-sound-season-and-the-seated-breach.md`](../../counsel/date/20260727/20260727-220947_the-sound-season-and-the-seated-breach.md) · Radiant Lint history [`../../counsel/date/20260727/20260727-213740_checkpoint-bookmark-and-the-radiant-lint-season.md`](../../counsel/date/20260727/20260727-213740_checkpoint-bookmark-and-the-radiant-lint-season.md)
+**Ground:** completion [`20260725-113115_radiant-pass-completion-report.md`](../../../counsel/date/20260725/20260725-113115_radiant-pass-completion-report.md) appendix · repair relay `20260725.114400` · Sound [`../../counsel/date/20260727/20260727-220947_the-sound-season-and-the-seated-breach.md`](../../../counsel/date/20260727/20260727-220947_the-sound-season-and-the-seated-breach.md) · Radiant Lint history [`../../counsel/date/20260727/20260727-213740_checkpoint-bookmark-and-the-radiant-lint-season.md`](../../../counsel/date/20260727/20260727-213740_checkpoint-bookmark-and-the-radiant-lint-season.md)
 
 Radiant pass `20260727.230010` — Sound Arc III: edu added to select_wave; gratitude hold restated
 

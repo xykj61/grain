@@ -58,7 +58,7 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `492a26f452` -- this round's own.
+**Git nib:** `f29b3dbd27` -- this round's own.
 
 **Now.** **A witness named its build in a comment, and a comment builds nothing.**
 
@@ -72,7 +72,7 @@ stays MANUAL and each checkout keeps one writer. Root `SKILL.md` opens the three
 clone seats `ww` (`grain-ww/grain`, gate %1) and `.git/ssh_config_jail`.
 
 **Still open, one structural:** REDS stands at **24,571 of 24,576** even after this evening's fold --
-`%334` fit only after four trims, so a full row still wants the seat `reds_fold.sh` leaves open. **Width ratchet:** `glow/rune_shape.rye`
+`%334` fit only after four trims, and **%335 could not land at all**, so a full row wants the seat `reds_fold.sh` leaves open. **Width ratchet:** `glow/rune_shape.rye`
 publishes `usize` in 5 fields and 5 accessors; 59 gate fixtures await his word. **Mind's:**
 the reconnect patch in grain-mind's own stash (review recipe in its log). `%281`/`%291` stay his, as does this
 pier's `enclosure.conf`, still pinning two. **Seat:** whether the roster's own witness can
@@ -80,7 +80,7 @@ be rostered when its scan reads the card its red would land on.
 
 **Sound:** repoint 3 broken links in `tools/fixtures/r/radiant_pool_scope.md` after the fixture fold.
 
-**Next doors.** Dream: Caravan and Tally. Hush: orbit two's grant set, %335 landed.
+**Next doors.** Dream: Caravan and Tally. Hush: orbit two's grant set.
 
 ---
 ## Landed arcs
