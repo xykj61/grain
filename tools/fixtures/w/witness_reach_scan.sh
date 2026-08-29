@@ -193,6 +193,28 @@ done
 # and its row belongs to the lane that can run it GREEN on a Mac before promising it. Until then
 # this is a Linux bench carrying one macOS debt it cannot pay, said out loud rather than hidden in
 # a number.
+#
+# The macOS debt above was PAID on 20260829.104233, on the Mac bench the paragraph asks for:
+# tools/m/macos_app_bundle_witness.rish ran GREEN there in 4s -- both legs, the stripped bundle
+# refused by `open -W` and the whole one opened through LaunchServices -- and took a roster row at
+# `tier cadence`, `host macos`, beside skate_native_core. The `macos` family left the census.
+#
+# The ceiling STANDS at 1108 rather than falling, and the reason is one file rather than slack.
+# tools/m/ios_app_shell_witness.rish landed at 20260829.095045 and opened a second singleton
+# family, so the reading was 1109 against 1108 and 221 against 220 -- both exactly one over, which
+# is the gate doing what it was rewritten to do, meeting a birth on the lap it arrives. Paying the
+# macOS debt returns both readings to their ceilings and no further, so the fall the repair earned
+# is exactly spent by the birth. Said out loud rather than absorbed, which is the discipline three
+# paragraphs above already keeps for the Comlink rows.
+#
+# WHY THE iOS ROW IS NOT ROSTERED BESIDE ITS SIBLING. Its precondition is a BOOTED SIMULATOR, not a
+# host: `xcrun simctl list devices booted` is machine state a reboot clears, where `host macos`
+# answers a question about the machine's kind. Rostered, it would red on every lap where nobody
+# had booted a device, and a guard that reds on ordinary work is a guard somebody turns off. The
+# seated tiers say `lap`, `cadence`, and `host`; none of them says `when a device is booted`. So
+# this is a Mac bench carrying one iOS debt it declines to promise falsely, and the honest move is
+# either a tier that can express a live precondition or a witness that boots its own device --
+# both of which are their own lap, and the second is LOCA's own lane.
 CEILING=${WITNESS_REACH_CEILING:-1108}
 # The family ceiling, seated 20260828 at what the tree measured that day: 220 of 292 families carry
 # no clock at all. It only falls, and it falls whenever a family's first roster row lands. It is a

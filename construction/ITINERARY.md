@@ -58,13 +58,13 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `82bcb704e7` -- this round's own.
+**Git nib:** `0b56d7bcdd` -- this round's own.
 
 **Now.** **A checkout of this same repository is not the field.**
 
-**The census read a peer's worktree as the tree** (`20260829-084438`): 170 of 335 lost references
-were that copy, and the repointer, which WRITES, named a file inside it. Both prune in-root
-worktrees from `git worktree list` now; ceiling 168 -> 165.
+**A guard met a birth** (`20260829-104233`): reach read `unreached` 1109/1108 and
+`wholly_unreached` 221/220, two singletons. This bench paid `macos`, GREEN in 4s at `tier cadence`
+`host macos`; `ios` declines a clock -- a booted simulator is state.
 
 **The ratchet that had a floor** (`20260829-094256`): 10 of `witness_own_build`'s 14 unbuilt pairs
 were builds one hop away; ceiling 14 -> 4, no witness edited.
@@ -77,8 +77,8 @@ stays MANUAL, each checkout keeps one writer. Root `SKILL.md`. Every clone seats
 rostered, `%338` booked, 3 doors costed in `20260829-031804`; his seat.
 **Width:** `glow/rune_shape.rye` publishes `usize` in 5 fields and 5 accessors; 59 gate
 fixtures await his word. **Mind's:** the reconnect stash,
-`%281`/`%291`, and this pier's two `enclosure.conf` pins. **Roster:** `rule_twin`
-39/36 reds alone, and that is gate %7.
+`%281`/`%291`, and this pier's two `enclosure.conf` pins. **Roster:** 4 red of 92 --
+`rule_twin` 39/36 is gate %7, three Pond rows are Hush's.
 **Seats:** can the roster's own witness be rostered; may a `mask` soften the `map`; a
 capability tier for `comlink_r1_dual_stack`'s IPv6 leg.
 
@@ -213,7 +213,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260829.094256` | The ratchet that had a floor | [log](../session-logs/date/20260829/20260829-094256_the-ratchet-that-had-a-floor.kyri) |
+| `20260829.104233` | A guard met a birth | [log](../session-logs/date/20260829/20260829-104233_a-guard-met-a-birth.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line here until the next replaces it.
 
