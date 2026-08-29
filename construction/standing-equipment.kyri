@@ -48,7 +48,7 @@
 format standing-equipment-v1
 stamp 20260825.183336
 voice Kyri
-runner tools/fixtures/standing_equipment_run.sh
+runner tools/fixtures/s/standing_equipment_run.sh
 card construction/standing-equipment-runs.kyri
 
 guard banner_room
@@ -536,3 +536,14 @@ path tools/s/skate_native_core_witness.rish
 tier cadence
 host macos
 seated 20260828.194500
+
+# fixture_depth -- the depth-proof root walk the fixtures letter fold (REDS %301's last room)
+# seated across tools/fixtures/. The witness drives the pen control -- wrong root shown, right
+# root from both depths, elder sibling source broken, new source landed, the 8-step bound
+# refusing loudly -- and censuses the room at zero elder shapes. `lap` because the control
+# costs about a second on this pier, and the census reads git rather than walking disk.
+
+guard fixture_depth
+path tools/f/fixture_depth_witness.rish
+tier lap
+seated 20260828.202325
