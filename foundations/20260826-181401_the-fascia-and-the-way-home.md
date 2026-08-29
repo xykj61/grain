@@ -26,16 +26,16 @@ rewards; under TAME every bound is named and every surprising number says why.
 Five instruments take the reading today, from the door inward:
 
 - **The path home.** Every room's front page carries a *Where this sits* line, and
-  [`../tools/fixtures/fascia_home_link_scan.sh`](../tools/fixtures/fascia_home_link_scan.sh)
+  [`../tools/fixtures/f/fascia_home_link_scan.sh`](../tools/fixtures/f/fascia_home_link_scan.sh)
   holds rooms without one at **zero** -- measured `20260826` at 118 of 118 with a ceiling of
   none missing. A reader anywhere is one link from home.
-- **Living links resolve.** [`../tools/fixtures/readme_reach_scan.sh`](../tools/fixtures/readme_reach_scan.sh)
-  and [`../tools/fixtures/foundations_link_scan.sh`](../tools/fixtures/foundations_link_scan.sh)
+- **Living links resolve.** [`../tools/fixtures/r/readme_reach_scan.sh`](../tools/fixtures/r/readme_reach_scan.sh)
+  and [`../tools/fixtures/f/foundations_link_scan.sh`](../tools/fixtures/f/foundations_link_scan.sh)
   hold broken links in living pages at **zero**, while
-  [`../tools/fixtures/tracked_link_scan.sh`](../tools/fixtures/tracked_link_scan.sh) sweeps
+  [`../tools/fixtures/t/tracked_link_scan.sh`](../tools/fixtures/t/tracked_link_scan.sh) sweeps
   the tracked tree; dated testimony keeps its elder spellings and is *resolved* rather than
   rewritten, by [`../tools/d/dated_path_resolve.rish`](../tools/d/dated_path_resolve.rish).
-- **The census.** [`../tools/fixtures/dated_path_scan.sh`](../tools/fixtures/dated_path_scan.sh)
+- **The census.** [`../tools/fixtures/d/dated_path_scan.sh`](../tools/fixtures/d/dated_path_scan.sh)
   reads every dated reference in the tree -- 22,523 on `20260826` -- and classifies each:
   home, recoverable, ambiguous, gone. Its **lost** count sits under a no-slack ceiling in
   [`../tools/d/dated_path_witness.rish`](../tools/d/dated_path_witness.rish), so a cut that
@@ -47,7 +47,7 @@ Five instruments take the reading today, from the door inward:
   and kin) watches the same tissue from inside a season. Read **51 of 100** on `20260826` --
   an honest middle, named on the living card, with the chapter-era floor of 92 standing as
   the aim.
-- **The card, per document.** [`../tools/fixtures/qa_report_card.sh`](../tools/fixtures/qa_report_card.sh)
+- **The card, per document.** [`../tools/fixtures/q/qa_report_card.sh`](../tools/fixtures/q/qa_report_card.sh)
   grades one artifact's relations directly: **Truth** counts every cited path resolved as
   written and gates the whole card to F below 60, and **Service** asks whether a live line
   reaches the page and a reader actually passes through it. A page's confidence is its card,
