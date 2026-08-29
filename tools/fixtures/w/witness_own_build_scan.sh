@@ -120,7 +120,14 @@ set -eu
 # It read 46 on 20260828 and 48 before the two Comlink witnesses. It only ever falls: a
 # witness repaired lowers it, and a new witness invoking an unbuilt artifact raises it past
 # the ceiling on the lap it arrives.
-CEILING=4
+CEILING=0
+# AND WHY IT FELL THE LAST FOUR. 0 is the reading on 20260829 once Kumara's contact, Settlement's
+# constellation and names, and the nakshatra seat each took the build their Comlink sibling
+# already carried. Every one was proven from an ABSENT artifact rather than from a bench that
+# had been building for weeks -- all four were missing on the macOS clone this repair ran on,
+# which is the machine state the meter was written about. The reading is now a WALL rather
+# than a ratchet: a witness invoking a path the repository declines to carry reds on the lap
+# it arrives, and there is no population left to grandfather.
 # AND WHY IT FELL TEN IN ONE LAP WITHOUT A WITNESS BEING TOUCHED. 4 is the reading on 20260829 once
 # this scan learned to follow ONE HOP. Ten of the fourteen it had been counting were honest -- five
 # Pond ring witnesses and five Glow witnesses, each building through a tracked script it runs -- and

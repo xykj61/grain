@@ -76,8 +76,9 @@ options in %341; the seal's header omitted `tools/ag/agent-jail.sh` (`pond_seal_
 **MANY HANDS** (granted `20260828`): custody stays MANUAL, one writer per checkout. Root
 `SKILL.md`; every clone seats `ww` (`grain-ww/grain`, gate %1) and `.git/ssh_config_jail`.
 
-**Still open:** REDS reads 24,571/**24,576**, 9 OPEN, 0 foldable; `%338` booked, 3 doors in
-`20260829-031804`; his seat.
+**Still open:** REDS reads 23,765/**24,576** with 811B free, 8 OPEN, 0 foldable -- %334's
+fold returned the first headroom since the meter read `pin_deadlocked=1`, which still stands;
+`%338` booked, 3 doors in `20260829-031804`; his seat.
 **Width:** `glow/rune_shape.rye` publishes `usize` in 5 fields and 5 accessors; 59 fixtures
 await his word. **Mind's:** the reconnect stash, `%281`/`%291`, two `enclosure.conf` pins here.
 **Roster:** 93 guards; `rule_twin` 39/36 is gate %7, and 3 Pond rows red on the Mac read green
@@ -201,7 +202,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260829.140140` | The row that heard the silence -- the card condense booked, then granted | [log](../session-logs/date/20260829/20260829-140140_the-row-that-heard-the-silence.kyri) |
+| `20260829.141956` | The name a missing build hid | [log](../session-logs/date/20260829/20260829-141956_the-name-a-missing-build-hid.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it. (The cadence
 stays CUT `20260826` -- the custody-gates block above carries the sentence; the duplicate section

@@ -49,7 +49,7 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 | [`pleac/`](../../pleac/README.md) | 3 | 6 |
 | [`pond/`](../../pond/README.md) | 153 | 160 |
 | [`rishi/`](../../rishi/README.md) | 2 | 1730 |
-| [`rye/`](../../rye/README.md) | 117 | 1265 |
+| [`rye/`](../../rye/README.md) | 117 | 1267 |
 | [`scribble/`](../../scribble/README.md) | 2 | 2 |
 | [`scribe/`](../../scribe/README.md) | 2 | 4 |
 | [`settlement/`](../../settlement/README.md) | 2 | 3 |

@@ -59,9 +59,14 @@ fn run_selftest() !u8 {
     if (!std.mem.eql(u8, last, "Bharani")) return error.LastWrong;
     // Past the universe, a point wears no outfit.
     if (nakshatra_of(topology.council_sky.universe_points()) != null) return error.PastWorn;
-    // The example point 267 wears Shatabhishak (Varuna, a water seat) -- seat 23.
+    // The example point 267 sits at seat 23 and wears Uttara Bhadrapada.
+    //
+    // SAY WHY THIS NAME MOVED. The 20260823.201533 correction rotated the roster by two into the
+    // Taittiriya order (Krittika at seat zero, not Ashvini), and this example kept the elder
+    // roster's name for seat 23. The geometry never moved: outfit_seat(267) reads 23 before and
+    // after, so the seat is the checked fact and the name is what the rotation carried.
     const ex = nakshatra_of(267) orelse return error.NoExample;
-    if (!std.mem.eql(u8, ex, "Shatabhishak")) return error.ExampleWrong;
+    if (!std.mem.eql(u8, ex, "Uttara Bhadrapada")) return error.ExampleWrong;
 
     print("seat nakshatra: point 0 wears {s}, point 404 wears {s}, point 267 wears {s}; past the universe, none.\n", .{ first, last, ex });
     print("seat nakshatra: version {s}\n", .{seat_nakshatra_version});

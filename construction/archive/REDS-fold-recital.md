@@ -189,3 +189,7 @@ at a closed fold.*
 *Row %341 folded to [`REDS-the-ceiling-that-held-one-bead-rows-341.md`](REDS-the-ceiling-that-held-one-bead-rows-341.md) on `20260829.124742`, **CLOSED** -- a ceiling test filled the shared store with one bead of its 256 and printed 128, booked and repaired in one lap; born on its shelf, as %336 through %340 were.*
 
 *Row %342 folded to [`REDS-the-door-nobody-smelled-rows-342.md`](REDS-the-door-nobody-smelled-rows-342.md) on `20260829.134715`, **CLOSED** for this seat's pages with the backlog booked -- the doorway witness red at 33 unroomed pages and rostered by nothing, caught by the earth row's own rota lap; born on its shelf as %335 and %336 were.*
+
+*Row %334 folded to [`REDS-a-witness-builds-what-it-runs-rows-334.md`](REDS-a-witness-builds-what-it-runs-rows-334.md) on `20260829.141956`, **CLOSED** -- forty-six witnesses promising a build a clone cannot keep, closed at zero when the last four took their own; the first fold off the pin since the capacity meter read `pin_deadlocked=1`, returning 811 bytes.*
+
+*Row %343 folded to [`REDS-the-name-a-missing-build-hid-rows-343.md`](REDS-the-name-a-missing-build-hid-rows-343.md) on `20260829.141956`, **CLOSED** on the drift with the rostering seat named -- a nakshatra roster rotated by two while three assertions kept the elder names, hidden six days by the missing build %334 closes; born on its shelf as %335 through %342 were.*
