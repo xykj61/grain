@@ -20,6 +20,14 @@
 //! publishing surface leans on Swift in a way macOS does not -- which is exactly why the Swift
 //! work is deferred forward rather than discarded.
 //!
+//! THE SEAM IS THE WHOLE SAFETY QUESTION, and it is checked rather than trusted. Casting
+//! `objc_msgSend` to a signature is an unchecked reinterpretation, which is exactly what TAME
+//! puts above every convenience this path buys -- so every selector is verified against
+//! `method_getTypeEncoding` from the LOADED framework before a single message is sent. The check
+//! earned itself on its first run by catching two of this file's own eight declarations. Prove
+//! the gate from both sides: `PROBE_PROVE_RED=1` declares a signature the framework does not have
+//! and must die before the send (exit 134), where the ordinary run passes the same gate.
+//!
 //! Build and run:
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build tools/rye/macos_window_probe.rye \
 //!     -femit-bin=tools/.build/macos_window_probe -lobjc -framework Cocoa -framework CoreGraphics
@@ -59,6 +67,65 @@ const Sel = *opaque {};
 extern fn objc_getClass(name: [*:0]const u8) ?Class;
 extern fn sel_registerName(name: [*:0]const u8) Sel;
 extern fn objc_msgSend() void;
+
+// THE SEAM IS CHECKED, not trusted. Casting objc_msgSend to a signature is an unchecked
+// reinterpretation, and an unchecked reinterpretation at sixty call sites is the one thing TAME
+// puts above every convenience this path buys. The Objective-C runtime is introspectable, so the
+// check is available: class_getInstanceMethod answers null for a selector that does not exist,
+// and method_getTypeEncoding hands back the signature the LOADED framework actually has. Every
+// selector this probe sends is verified against that encoding at construction, before a single
+// message is sent -- which is a stronger reading than a compile-time header check, since it is
+// the runtime on this machine rather than an SDK's description of it.
+const Method = *opaque {};
+extern fn class_getInstanceMethod(cls: ?Class, sel: Sel) ?Method;
+extern fn class_getClassMethod(cls: ?Class, sel: Sel) ?Method;
+extern fn method_getTypeEncoding(m: ?Method) ?[*:0]const u8;
+
+const max_encoding_bytes: u32 = 128;
+
+/// Keep only the type letters of an Objective-C encoding, dropping the frame offsets it carries:
+/// `v24@0:8@16` reads as `v@:@`, which is the shape a caller actually has to get right.
+fn shape(encoding: []const u8, out: []u8) []const u8 {
+    // invariant: the output buffer can hold every byte the encoding could contribute.
+    assert(out.len >= encoding.len);
+    var n: u32 = 0;
+    for (encoding) |ch| {
+        if (ch >= '0' and ch <= '9') continue;
+        out[n] = ch;
+        n += 1;
+    }
+    // invariant: a real encoding always yields at least a return type and the two hidden arguments.
+    assert(n >= 3);
+    return out[0..n];
+}
+
+/// Prove one selector before it is ever sent: it exists on this class, and the signature the
+/// loaded framework reports is the signature this program declared.
+fn verify(cls: ?Class, name: [*:0]const u8, want: []const u8, class_method: bool) Sel {
+    const sel = sel_registerName(name);
+    const method = if (class_method) class_getClassMethod(cls, sel) else class_getInstanceMethod(cls, sel);
+    // invariant: the selector is implemented by the class we are about to message.
+    assert(method != null);
+    const raw = method_getTypeEncoding(method);
+    // invariant: an implemented method always carries a type encoding.
+    assert(raw != null);
+    const encoding = std.mem.span(raw.?);
+    // invariant: the encoding fits the bound this file declares for it.
+    assert(encoding.len < max_encoding_bytes);
+    var buffer: [max_encoding_bytes]u8 = undefined;
+    const got = shape(encoding, buffer[0..]);
+    // A declared shape of "?" is discovery: print what the framework says and send anyway. It is
+    // how the constants below were learned rather than guessed, and it is never left in place.
+    if (std.mem.eql(u8, want, "?")) {
+        print("macos-window-probe: discover {s} = {s}\n", .{ name, got });
+        return sel;
+    }
+    if (!std.mem.eql(u8, got, want)) {
+        print("macos-window-probe: REFUSED -- selector {s} reads {s}, this program declared {s}\n", .{ name, got, want });
+        @panic("objc seam: declared signature disagrees with the loaded framework");
+    }
+    return sel;
+}
 
 // CGRect is four doubles, which is what AppKit's NSRect is on every 64-bit Apple target.
 const CGPoint = extern struct { x: f64, y: f64 };
@@ -113,6 +180,13 @@ fn paint(buffer: []u8) void {
 pub fn main() !void {
     print("macos-window-probe: Language EN -- Rye raises a native window; no Swift is linked.\n", .{});
 
+    // BOTH SIDES, because a wall proven only in the passing direction cannot be told from a
+    // bypass. `prove-red` declares a signature the framework does not have and must die at the
+    // seam before a single message is sent; the ordinary run below must pass the same gate.
+    // Read through libc rather than the standard library's process helpers, whose shape moves
+    // between toolchain revisions; getenv is a C ABI this seam already depends on.
+    const prove_red = c.getenv("PROBE_PROVE_RED") != null;
+
     const app_class = objc_getClass("NSApplication") orelse {
         print("macos-window-probe: REFUSED -- NSApplication did not answer; AppKit is not loaded.\n", .{});
         return error.AppKitAbsent;
@@ -120,21 +194,37 @@ pub fn main() !void {
     const window_class = objc_getClass("NSWindow") orelse return error.NSWindowAbsent;
     const string_class = objc_getClass("NSString") orelse return error.NSStringAbsent;
 
-    const shared = send(SendClassId)(app_class, sel_registerName("sharedApplication"));
+    // Every selector below is proven against the loaded framework before it is sent.
+    if (prove_red) {
+        print("macos-window-probe: prove-red -- declaring a signature the framework does not have.\n", .{});
+        _ = verify(app_class, "sharedApplication", "v@:", true);
+        @panic("objc seam: prove-red reached the send, which means the gate does not gate");
+    }
+    const sel_shared = verify(app_class, "sharedApplication", "@@:", true);
+    const sel_policy = verify(app_class, "setActivationPolicy:", "B@:q", false);
+    const sel_alloc = verify(window_class, "alloc", "@@:", true);
+    const sel_init = verify(window_class, "initWithContentRect:styleMask:backing:defer:", "@@:{CGRect={CGPoint=dd}{CGSize=dd}}QQB", false);
+    const sel_title = verify(window_class, "setTitle:", "v@:@", false);
+    const sel_content = verify(window_class, "contentView", "@@:", false);
+    const sel_front = verify(window_class, "makeKeyAndOrderFront:", "v@:@", false);
+    const sel_number = verify(window_class, "windowNumber", "q@:", false);
+    print("macos-window-probe: seam verified -- 8 selectors match the loaded framework's own encodings.\n", .{});
+
+    const shared = send(SendClassId)(app_class, sel_shared);
     // invariant: the shared application exists before any window is asked for.
     assert(@intFromPtr(shared) != 0);
-    send(SendIdI64)(shared, sel_registerName("setActivationPolicy:"), activation_policy_regular);
+    send(SendIdI64)(shared, sel_policy, activation_policy_regular);
 
     const rect = CGRect{
         .origin = .{ .x = 160, .y = 160 },
         .size = .{ .width = @floatFromInt(frame_width), .height = @floatFromInt(frame_height) },
     };
-    const raw = send(SendClassId)(window_class, sel_registerName("alloc"));
+    const raw = send(SendClassId)(window_class, sel_alloc);
     // invariant: allocation answers before initialization is attempted.
     assert(@intFromPtr(raw) != 0);
     const window = send(SendWindowInit)(
         raw,
-        sel_registerName("initWithContentRect:styleMask:backing:defer:"),
+        sel_init,
         rect,
         style_titled | style_closable | style_resizable,
         backing_buffered,
@@ -144,7 +234,7 @@ pub fn main() !void {
     assert(@intFromPtr(window) != 0);
 
     const title = send(SendClassStr)(string_class, sel_registerName("stringWithUTF8String:"), "Grain -- Rye drew this");
-    send(SendIdIdVoid)(window, sel_registerName("setTitle:"), title);
+    send(SendIdIdVoid)(window, sel_title, title);
 
     var pixels: [frame_bytes]u8 = undefined;
     paint(pixels[0..]);
@@ -161,7 +251,7 @@ pub fn main() !void {
     ) orelse return error.BitmapContextAbsent;
     const image = CGBitmapContextCreateImage(context) orelse return error.ImageAbsent;
 
-    const content = send(SendId)(window, sel_registerName("contentView"));
+    const content = send(SendId)(window, sel_content);
     // invariant: the window handed back a content view to draw into.
     assert(@intFromPtr(content) != 0);
     send(SendIdBool)(content, sel_registerName("setWantsLayer:"), true);
@@ -170,10 +260,10 @@ pub fn main() !void {
     assert(@intFromPtr(layer) != 0);
     send(SendIdPtrVoid)(layer, sel_registerName("setContents:"), image);
 
-    send(SendIdIdVoid)(window, sel_registerName("makeKeyAndOrderFront:"), null);
+    send(SendIdIdVoid)(window, sel_front, null);
     send(SendIdBool)(shared, sel_registerName("activateIgnoringOtherApps:"), true);
 
-    const number = send(SendIdInteger)(window, sel_registerName("windowNumber"));
+    const number = send(SendIdInteger)(window, sel_number);
     // invariant: an ordered-front window carries a real window number, which is the system's own
     // receipt that this window exists on screen rather than only in this process's memory.
     assert(number > 0);
