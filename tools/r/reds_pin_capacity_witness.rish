@@ -1,0 +1,74 @@
+# tools/r/reds_pin_capacity_witness.rish -- the ledger can still accept a row, and its trail holds.
+#
+# Four meters read construction/REDS.md and every one asks whether what is written is CONSISTENT.
+# This one asks whether anything more can be WRITTEN. On 20260829 the pin stood at 24,571 bytes of
+# the 24,576 its header declares, all nine rows marked OPEN, so reds_fold.sh had no lawful move and
+# three reds were born onto single-row shelves instead -- one of them, %337, still live. Every
+# standing meter read green through all of it, because capacity was nobody's question.
+#
+# Capacity is REPORTED here, never gated: raising a page's bound is Keaton's word, seated that way
+# once already for session-logs/README.md, and a gate would red on every ordinary lap until he
+# speaks. What is gated is the trail -- a recital line pointing at a shelf that is not on disk.
+#
+#   rishi/bin/rishi run tools/r/reds_pin_capacity_witness.rish
+say "reds-pin-capacity: reading the living ledger's capacity and its trail"
+
+let scan = run ["sh" "tools/fixtures/r/reds_pin_capacity_scan.sh"]
+say scan.out
+assert scan.ok else "reds-pin-capacity: the scan refuses over the living ledger"
+assert scan.out contains "verdict=ok" else "reds-pin-capacity: want a clean verdict over the living ledger"
+
+# The readings this scan exists to publish are present and named, so an edit that silently drops
+# one is caught here rather than by a reader wondering where the number went.
+assert scan.out contains "pin_bytes=" else "reds-pin-capacity: want the pin's size reported"
+assert scan.out contains "pin_bound=" else "reds-pin-capacity: want the pin's bound reported"
+assert scan.out contains "rows_that_fit=" else "reds-pin-capacity: want the capacity reading reported"
+assert scan.out contains "pin_deadlocked=" else "reds-pin-capacity: want the deadlock reading reported"
+assert scan.out contains "shelf_open_rows=" else "reds-pin-capacity: want exiled live reds counted"
+assert scan.out contains "phantom_recital_shelves=0" else "reds-pin-capacity: the recital must reach every shelf it names"
+
+# The bound is CITED rather than copied, which is the discipline living_pin_max_bytes.sh exists to
+# hold (REDS %197, %199) and the same one the QA card keeps when it reaches for measure(). Compared
+# in the shell so the law's own number is the only spelling anywhere in this pair.
+let cited = run ["sh" "-c" "law=$(sh tools/fixtures/l/living_pin_max_bytes.sh construction/REDS.md); sh tools/fixtures/r/reds_pin_capacity_scan.sh | grep -q ^pin_bound=$law"]
+assert cited.ok else "reds-pin-capacity: the scan's bound must be the law's own number, never a copy"
+
+# TWO INSTRUMENTS, ONE ANSWER. This scan reads a row's DECLARED status the way
+# reds_status_consistency_scan.sh does, and a reading spelled twice is a reading two files may come
+# to disagree about (REDS %231). So the agreement is PROVEN rather than promised: the open rows on
+# the pin plus the open rows on the shelves must equal that scan's own count over the whole spine.
+# A first draft used the fold tool's looser bare-word test here and reported five live reds on
+# shelves where one exists; this assertion is what would have caught it.
+let agree = run ["sh" "-c" "d=$(mktemp -d); sh tools/fixtures/r/reds_pin_capacity_scan.sh > $d/cap.txt; sh tools/fixtures/r/reds_status_consistency_scan.sh > $d/st.txt; pin=$(sed -n 's/^pin_open_rows=//p' $d/cap.txt); shelf=$(sed -n 's/^shelf_open_rows=//p' $d/cap.txt); tot=$(sed -n 's/^open_rows=//p' $d/st.txt); echo pin=$pin shelf=$shelf spine=$tot; rm -rf $d; test $((pin + shelf)) -eq $tot"]
+say agree.out
+assert agree.ok else "reds-pin-capacity: this scan and reds_status_consistency_scan.sh must count the same open reds"
+
+# RED path -- the gate really bites. A recital naming a shelf that is not on disk is a trail that
+# ends mid-sentence, and a guard proven only in the passing direction cannot be told from a bypass.
+let broken = run ["sh" "-c" "d=$(mktemp -d); printf '# pen\n\n**REDS %%1 -- x.** This row reads **CLOSED**.\n' > $d/REDS.md; printf 'Row 66 folded to (REDS-planted-rows-66.md).\n' > $d/recital.md; REDS_PIN=$d/REDS.md REDS_ARCHIVE_GLOB=$d/REDS-*rows-*.md REDS_RECITAL=$d/recital.md REDS_PIN_BOUND=100000 sh tools/fixtures/r/reds_pin_capacity_scan.sh; s=$?; rm -rf $d; exit $s"]
+assert (broken.ok == false) else "reds-pin-capacity: a recital line naming an absent shelf must refuse"
+assert broken.out contains "verdict=recital_trail_broken" else "reds-pin-capacity: want the broken trail refused by name"
+assert broken.out contains "detail: phantom_recital" else "reds-pin-capacity: want the phantom shelf named"
+
+# RED path two -- the deadlock is really seen. An all-open pin with no headroom is the state the
+# living ledger stood in on 20260829, and a meter blind to it is why nobody was told.
+let dead = run ["sh" "-c" "d=$(mktemp -d); printf '# pen\n\n**REDS %%1 -- x.** This stands **OPEN**.\n**REDS %%2 -- y.** This stands **OPEN** too.\n' > $d/REDS.md; : > $d/recital.md; b=$(wc -c < $d/REDS.md | tr -d ' '); REDS_PIN=$d/REDS.md REDS_ARCHIVE_GLOB=$d/none-*.md REDS_RECITAL=$d/recital.md REDS_PIN_BOUND=$b sh tools/fixtures/r/reds_pin_capacity_scan.sh; s=$?; rm -rf $d; exit $s"]
+assert dead.ok else "reds-pin-capacity: a deadlock is reported, never gated"
+assert dead.out contains "pin_deadlocked=1" else "reds-pin-capacity: an all-open pin with no headroom is a deadlock"
+assert dead.out contains "rows_that_fit=0" else "reds-pin-capacity: want the capacity reading at zero"
+
+# GREEN path -- the same shape with one foldable row is NOT a deadlock, so the reading tells the two
+# apart rather than firing on a full pin alone.
+let lawful = run ["sh" "-c" "d=$(mktemp -d); printf '# pen\n\n**REDS %%1 -- x.** This stands **OPEN**.\n**REDS %%2 -- y.** This reads **CLOSED**.\n' > $d/REDS.md; : > $d/recital.md; b=$(wc -c < $d/REDS.md | tr -d ' '); REDS_PIN=$d/REDS.md REDS_ARCHIVE_GLOB=$d/none-*.md REDS_RECITAL=$d/recital.md REDS_PIN_BOUND=$b sh tools/fixtures/r/reds_pin_capacity_scan.sh; s=$?; rm -rf $d; exit $s"]
+assert lawful.ok else "reds-pin-capacity: a foldable row is an ordinary full pin, never a deadlock"
+assert lawful.out contains "pin_deadlocked=0" else "reds-pin-capacity: a lawful fold breaks the deadlock"
+
+# The control proves every case on real files in a throwaway pen -- refusals planted and removed,
+# welcomes asserted as hard as refusals, both ceilings shown from both sides.
+let control = run ["sh" "tools/fixtures/r/reds_pin_capacity_control.sh"]
+say control.out
+assert control.ok else "reds-pin-capacity: the control refuses"
+assert control.out contains "control_verdict=ok" else "reds-pin-capacity: want every planted behavior to hold"
+assert control.out contains "cases_failed=0" else "reds-pin-capacity: want no behavior changed"
+
+say "reds-pin-capacity: GREEN -- capacity read, trail whole, both refusals bitten"

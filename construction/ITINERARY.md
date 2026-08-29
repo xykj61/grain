@@ -58,7 +58,7 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `4db74a8a55` -- this round's parent, already on the remote (%315).
+**Git nib:** `1f7d66b17e` -- this round's own commit, rebased onto `xy` (%315).
 
 **Now.** **A meter reads one edge of a promise; a repair sized to it is undersized.**
 
@@ -72,11 +72,11 @@ four of eight dead on a wiped bin: `amphora` runs `vessel-core` and `vessel-seal
 stays MANUAL and each checkout keeps one writer. Root `SKILL.md` opens the three skills. Every
 clone seats `ww` (`grain-ww/grain`, gate %1) and `.git/ssh_config_jail`.
 
-**Still open:** the REDS pin is near **24,576** bytes and every row is OPEN, so four reds await a
-lawful fold seat. **Width:** `glow/rune_shape.rye` publishes `usize` in 5 fields and 5 accessors;
-59 gate fixtures await his word. **Mind's:** the reconnect stash, `%281`/`%291`, and this pier's
-two `enclosure.conf` pins. **Sibling finds:** Sound's SHA-3 symlink double-counts nine comment
-characters; Hush's policy scan refuses while its state scan is green.
+**Still open, one structural:** REDS reads 24,571/**24,576**, 9 OPEN, 0 foldable -- metered and
+rostered, `%338` booked, 3 doors costed in `20260829-031804`; his seat. **Width:** `glow/rune_shape.rye` publishes `usize`
+in 5 fields and 5 accessors; 59 gate fixtures await his word. **Mind's:** the reconnect stash,
+`%281`/`%291`, and this pier's two `enclosure.conf` pins. **Sibling finds:** Sound's SHA-3 symlink
+double-counts nine comment characters; Hush's policy scan refuses while its state scan is green.
 **Seats:** whether the roster's own witness can be rostered; whether a `mask` may soften the `map`
 it covers; and a capability tier for `comlink_r1_dual_stack`'s IPv6 leg.
 
