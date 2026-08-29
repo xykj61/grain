@@ -17,6 +17,20 @@ assert wipe.ok else "rneg: home wipe"
 let mk = run ["mkdir" "-p" home]
 assert mk.ok else "rneg: home mkdir"
 
+# The witness builds the binaries it runs, rather than assuming a previous lap left them
+# behind. amphora/bin/ is gitignored (.gitignore:336), so a clone carries none of them and
+# this witness died on a missing file rather than on an Amphora fact (REDS %334).
+# All three, whatever this file names in run position: amphora/src/main.rye:138 and :176
+# resolve vessel-seal and vessel-core as SIBLING SUBPROCESSES, so `pour` needs them present.
+# The mkdir comes first because rye build refuses an absent -femit-bin directory (REDS %337).
+let zig = "vendor/zig-toolchain/zig"
+let build_amphora = run ["sh" "-c" "mkdir -p amphora/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/src/main.rye -femit-bin=amphora/bin/amphora"]
+assert build_amphora.ok else "amphora_rneg: amphora build failed -- ${build_amphora.err}"
+let build_core = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_core.rye -femit-bin=amphora/bin/vessel-core"]
+assert build_core.ok else "amphora_rneg: vessel-core build failed -- ${build_core.err}"
+let build_seal = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_seal.rye -femit-bin=amphora/bin/vessel-seal"]
+assert build_seal.ok else "amphora_rneg: vessel-seal build failed -- ${build_seal.err}"
+
 let pour = run ["amphora/bin/amphora" "pour" season vessel]
 assert pour.ok else "rneg: seed pour must pass"
 

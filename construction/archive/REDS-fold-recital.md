@@ -177,3 +177,5 @@ at a closed fold.*
 *Row %335 folded to [`REDS-the-dead-nil-guards-rows-335.md`](REDS-the-dead-nil-guards-rows-335.md) on `20260828.232444`, **CLOSED** -- the seam send types whose non-optional returns made every nil assert after them dead in law, booked and repaired inside the LOCA rung that found them; folded on its own lap, as %310 and %312 were, because every elder row in the pin still reads OPEN.*
 
 *Row %336 folded to [`REDS-the-ring-spent-as-a-label-rows-336.md`](REDS-the-ring-spent-as-a-label-rows-336.md) on `20260829.005357`, **CLOSED** -- the calendar quest spent as a plan label, booked and repaired in one lap; born on its shelf directly, as the pin stands five bytes under its bound and every elder row still reads OPEN.*
+
+*Row %337 folded to [`REDS-the-meter-that-counts-one-call-rows-337.md`](REDS-the-meter-that-counts-one-call-rows-337.md) on `20260829.013811`, **OPEN** on the 21 pairs that remain -- a repair sized to a meter's direct-invocation list left four of eight witnesses dead on a wiped bin; born on its shelf, as %335 and %336 were.*

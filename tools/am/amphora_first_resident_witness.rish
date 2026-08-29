@@ -16,9 +16,20 @@ assert wipe.ok else "first_resident: home wipe"
 let mk = run ["mkdir" "-p" home]
 assert mk.ok else "first_resident: home mkdir"
 
-# The witness builds the binary it runs (REDS %334: a build named in a comment builds nothing).
-let build = run ["env" "RYE_ZIG=vendor/zig-toolchain/zig" "rye/bin/rye" "build" "amphora/src/main.rye" "-femit-bin=amphora/bin/amphora"]
+# The witness builds the binaries it runs (REDS %334: a build named in a comment builds
+# nothing). The directory is made first: rye build refuses an absent -femit-bin directory
+# with "unable to open output directory", so a clone died here even with the build line.
+# All three, whatever this file names in run position: amphora/src/main.rye:138 and :176
+# resolve vessel-seal and vessel-core as SIBLING SUBPROCESSES, so `pour` needs them present
+# (REDS %337).
+let zig = "vendor/zig-toolchain/zig"
+let build = run ["sh" "-c" "mkdir -p amphora/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/src/main.rye -femit-bin=amphora/bin/amphora"]
 assert build.ok else "first_resident: amphora build must succeed"
+
+let build_core = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_core.rye -femit-bin=amphora/bin/vessel-core"]
+assert build_core.ok else "first_resident: vessel-core build failed -- ${build_core.err}"
+let build_seal = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_seal.rye -femit-bin=amphora/bin/vessel-seal"]
+assert build_seal.ok else "first_resident: vessel-seal build failed -- ${build_seal.err}"
 
 let pour = run ["amphora/bin/amphora" "pour" season vessel]
 assert pour.ok else "first_resident: pour must exit ok"
