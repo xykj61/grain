@@ -25,7 +25,9 @@ PRINTER_SOURCE="$ROOT/tools/l/print-mind-cardinal-prompt.rish"
 RISHI_BIN="$ROOT/rishi/bin/rishi"
 ELDER="$ROOT/tools/l/launch-claude-chapter.rish"
 EXPECTED_SOURCE_SHA256=ee508804d2e441884cc55706da401eaadbf19d06542da0bb7c7f5652a576a234
-EXPECTED_ELDER_SHA256=74257cbb8e398eade94004290e029d7c4c830043a844794cf8c139ef76ab0e1e
+# Refreshed 20260828: the fixtures letter fold (090743826) repointed scan paths inside the
+# elder Claude launcher and left this pin stale; the control follows the granted launcher.
+EXPECTED_ELDER_SHA256=3e57cc0e6f59297c6e924622bb6343e5564b53f2f406ff79eabd0c8664a0ef3f
 PEN="$(mktemp -d "${TMPDIR:-/tmp}/chatgpt-mind-control.XXXXXX")"
 cleanup() {
   if [ -n "${CONTROL_GNUPGHOME:-}" ]; then
@@ -52,6 +54,7 @@ FAKE_LOG="$PEN/codex-invocations"
 FAKE_STATUS_LOG="$PEN/codex-status-invocations"
 FAKE_JAIL_LOG="$PEN/jail-invocations"
 FAKE_NESTED_GIT_LOG="$PEN/nested-git"
+FAKE_PARK_COUNTER="$PEN/park-counter"
 HOMEBREW_GIT_LINK=/opt/homebrew/bin/git
 HOMEBREW_GIT=/opt/homebrew/Cellar/git/2.53.0_1/bin/git
 HOMEBREW_GIT_PCRE=/opt/homebrew/Cellar/pcre2/10.47_1/lib/libpcre2-8.0.dylib
@@ -215,6 +218,26 @@ if [ "${FAKE_CODEX_FORBIDDEN_PATH:-0}" = 1 ]; then
   "$GRAIN_MIND_GIT" add -f -- .mind-state/forced-candidate.txt
   printf '%s\n' 'mind: refuse the forced state candidate' > .mind-state/signing/commit-message.txt
   chmod 600 .mind-state/signing/commit-message.txt
+fi
+if [ "${FAKE_CODEX_PARK_REWRITE:-0}" = 1 ]; then
+  printf '%s rewrote the parked ledger\n' "$(date +%Y%m%d.%H%M%S)" > .mind-state/PARKED
+  exit 0
+fi
+if [ -n "${FAKE_CODEX_PARK_PLAN:-}" ]; then
+  park_index=0
+  [ ! -f "$FAKE_PARK_COUNTER" ] || park_index=$(cat "$FAKE_PARK_COUNTER")
+  park_index=$((park_index + 1))
+  printf '%s\n' "$park_index" > "$FAKE_PARK_COUNTER"
+  park_step=$(printf '%s' "$FAKE_CODEX_PARK_PLAN" | cut -c "$park_index")
+  if [ "$park_step" = p ]; then
+    printf '%s parked design question %s\n' "$(date +%Y%m%d.%H%M%S)" "$park_index" >> .mind-state/PARKED
+    exit 0
+  fi
+  printf 'worked lap %s\n' "$park_index" > brushstroke/mind-control-candidate.txt
+  "$GRAIN_MIND_GIT" add -- brushstroke/mind-control-candidate.txt
+  printf '%s\n' 'mind: sign the bounded control candidate' > .mind-state/signing/commit-message.txt
+  chmod 600 .mind-state/signing/commit-message.txt
+  exit 0
 fi
 exit "${FAKE_CODEX_EXIT:-0}"
 EOF
@@ -412,7 +435,7 @@ CONTROL_SIGNING_KEY=$("$HOMEBREW_GPG" --batch --with-colons --list-secret-keys \
 
 export HOME="$HOME_PEN"
 export PATH="$BIN:/usr/bin:/bin"
-export FAKE_LOG FAKE_STATUS_LOG FAKE_JAIL_LOG FAKE_NESTED_GIT_LOG REPO_CANONICAL
+export FAKE_LOG FAKE_STATUS_LOG FAKE_JAIL_LOG FAKE_NESTED_GIT_LOG FAKE_PARK_COUNTER REPO_CANONICAL
 export MIND_GIT_WRAPPER MIND_SHELL_ROOT MIND_GIT_PATH
 
 run_launcher() {
@@ -1413,6 +1436,112 @@ if grep -F "$HOMEBREW_GPG" "$FAKE_JAIL_LOG" >/dev/null; then
   exit 1
 fi
 
+# The custody split (seated 20260828): a design question parks -- one stamped line appended to
+# .mind-state/PARKED, no candidate staged -- and the lap is a CLEAN non-failure that neither
+# demands a candidate nor strikes the circuit. Three consecutive parks close the loop as
+# all-cruxes-parked custody, and the CUSTODY wall that close writes then refuses the next run
+# exactly as a hand-planted CUSTODY always has. The planted plan string spends one letter per
+# lap: p parks, anything else stages a working candidate.
+: > "$FAKE_LOG"
+rm -f "$REPO/.mind-state/PARKED" "$FAKE_PARK_COUNTER"
+parked_head_before=$("$HOMEBREW_GIT" -C "$REPO" rev-parse HEAD)
+export FAKE_CODEX_PARK_PLAN=p
+run_rishi_launcher once --arm-once >"$PEN/parked-once.out" 2>"$PEN/parked-once.err" || {
+  echo "FAIL: a parked lap was refused instead of read as a clean non-failure" >&2
+  exit 1
+}
+unset FAKE_CODEX_PARK_PLAN
+[ "$("$HOMEBREW_GIT" -C "$REPO" rev-parse HEAD)" = "$parked_head_before" ] \
+  || { echo "FAIL: parked lap moved HEAD" >&2; exit 1; }
+phase_is 'parked reason=design-question' \
+  || { echo "FAIL: parked lap lacked its exact structured receipt" >&2; exit 1; }
+grep -F 'lap one parked its design question; no candidate was demanded' "$PEN/parked-once.out" >/dev/null \
+  || { echo "FAIL: parked once lost its public handback" >&2; exit 1; }
+[ ! -e "$REPO/.mind-state/CUSTODY" ] \
+  || { echo "FAIL: a single parked lap escalated itself to custody" >&2; exit 1; }
+[ "$(wc -l < "$REPO/.mind-state/PARKED" | tr -d ' ')" -eq 1 ] \
+  || { echo "FAIL: parked lap did not append exactly one stamped line" >&2; exit 1; }
+grep -E '^[0-9]{8}\.[0-9]{6} parked design question 1$' "$REPO/.mind-state/PARKED" >/dev/null \
+  || { echo "FAIL: parked line lost its stamp-and-question shape" >&2; exit 1; }
+
+# Two consecutive parks, one working lap, two more parks: five laps, no circuit, no custody --
+# the working lap resets the streak, or four total parks would have closed the loop below three.
+: > "$FAKE_LOG"
+rm -f "$REPO/.mind-state/PARKED" "$FAKE_PARK_COUNTER"
+reset_head_before=$("$HOMEBREW_GIT" -C "$REPO" rev-parse HEAD)
+export FAKE_CODEX_PARK_PLAN=ppwpp
+run_rishi_launcher loop --arm-loop --max-laps 5 --failure-ceiling 2 --backoff-seconds 0 \
+  >"$PEN/parked-reset.out" 2>"$PEN/parked-reset.err" || {
+  echo "FAIL: two consecutive parks around a working lap did not keep the loop alive" >&2
+  exit 1
+}
+unset FAKE_CODEX_PARK_PLAN
+[ "$(grep -c -- '--sandbox danger-full-access' "$FAKE_LOG")" -eq 5 ] \
+  || { echo "FAIL: park-reset loop did not run all five laps" >&2; exit 1; }
+[ "$("$HOMEBREW_GIT" -C "$REPO" rev-list --count "$reset_head_before..HEAD")" -eq 1 ] \
+  || { echo "FAIL: the one working lap did not land exactly one signed commit" >&2; exit 1; }
+[ "$(wc -l < "$REPO/.mind-state/PARKED" | tr -d ' ')" -eq 4 ] \
+  || { echo "FAIL: four parked laps did not append four stamped lines" >&2; exit 1; }
+[ ! -e "$REPO/.mind-state/CUSTODY" ] \
+  || { echo "FAIL: a broken streak still closed the loop as custody" >&2; exit 1; }
+phase_is 'parked reason=design-question' \
+  || { echo "FAIL: final parked lap lost its receipt after the streak reset" >&2; exit 1; }
+
+# Three consecutive parks close the loop: lap four never runs, the public phase and receipt
+# read all-cruxes-parked custody, and CUSTODY names the whole parked set.
+: > "$FAKE_LOG"
+rm -f "$REPO/.mind-state/PARKED" "$FAKE_PARK_COUNTER"
+export FAKE_CODEX_PARK_PLAN=pppw
+if run_rishi_launcher loop --arm-loop --max-laps 4 --failure-ceiling 2 --backoff-seconds 0 \
+  >"$PEN/parked-close.out" 2>"$PEN/parked-close.err"
+then
+  echo "FAIL: three consecutive parked laps did not close the loop" >&2
+  exit 1
+fi
+unset FAKE_CODEX_PARK_PLAN
+[ "$(grep -c -- '--sandbox danger-full-access' "$FAKE_LOG")" -eq 3 ] \
+  || { echo "FAIL: the parked ceiling did not stop after exactly three laps" >&2; exit 1; }
+grep -F 'phase=custody reason=all-cruxes-parked' "$PEN/parked-close.err" >/dev/null \
+  || { echo "FAIL: exhausted-crux close lost its public typed phase" >&2; exit 1; }
+phase_is 'custody reason=all-cruxes-parked' \
+  || { echo "FAIL: exhausted-crux close lacked its exact structured receipt" >&2; exit 1; }
+[ -f "$REPO/.mind-state/CUSTODY" ] \
+  || { echo "FAIL: exhausted-crux close did not write its CUSTODY wall" >&2; exit 1; }
+grep -F 'no admissible crux remains' "$REPO/.mind-state/CUSTODY" >/dev/null \
+  || { echo "FAIL: written CUSTODY does not say why it exists" >&2; exit 1; }
+[ "$(grep -c 'parked design question' "$REPO/.mind-state/CUSTODY")" -eq 3 ] \
+  || { echo "FAIL: written CUSTODY does not name the full parked set" >&2; exit 1; }
+
+# The wall the close wrote stands exactly as a hand-planted CUSTODY always has: the next armed
+# run refuses before any model command.
+: > "$FAKE_LOG"
+if run_rishi_launcher once --arm-once >"$PEN/parked-wall.out" 2>"$PEN/parked-wall.err"; then
+  echo "FAIL: the CUSTODY wall written by all-cruxes-parked was ignored" >&2
+  exit 1
+fi
+grep -F 'CUSTODY is present' "$PEN/parked-wall.err" >/dev/null \
+  || { echo "FAIL: the written CUSTODY wall lost its exact standing refusal" >&2; exit 1; }
+[ ! -s "$FAKE_LOG" ] || { echo "FAIL: the written CUSTODY wall reached Codex" >&2; exit 1; }
+rm -f "$REPO/.mind-state/CUSTODY" "$REPO/.mind-state/PARKED" "$FAKE_PARK_COUNTER"
+
+# The parked ledger is append-only: a lap that rewrites it instead of appending refuses under
+# its own parked-ledger phase, so a park can never quietly edit an earlier question.
+: > "$FAKE_LOG"
+printf '%s\n' '20260828.000000 seeded parked question' > "$REPO/.mind-state/PARKED"
+export FAKE_CODEX_PARK_REWRITE=1
+if run_rishi_launcher once --arm-once >"$PEN/parked-rewrite.out" 2>"$PEN/parked-rewrite.err"; then
+  echo "FAIL: a rewritten parked ledger was accepted as an append" >&2
+  exit 1
+fi
+unset FAKE_CODEX_PARK_REWRITE
+grep -F 'phase=git-postcondition reason=parked-ledger' "$PEN/parked-rewrite.err" >/dev/null \
+  || { echo "FAIL: rewritten parked ledger lost its public typed phase" >&2; exit 1; }
+phase_is 'git-postcondition reason=parked-ledger' \
+  || { echo "FAIL: rewritten parked ledger lacked its exact structured receipt" >&2; exit 1; }
+grep -F 'PARKED must grow append-only' "$REPO/.mind-state/logs/supervisor.err" >/dev/null \
+  || { echo "FAIL: rewritten parked ledger lost its exact private refusal" >&2; exit 1; }
+rm -f "$REPO/.mind-state/PARKED"
+
 # A failure at the branch compare-and-swap must leave a persistent custody
 # marker. A later launcher may report it, but may never steal or clear it.
 : > "$FAKE_LOG"
@@ -1519,4 +1648,4 @@ printf '%s\n' '# planted shell drift' >> "$PEN/shell-drift.sh"
 [ "$(shasum -a 256 "$PEN/shell-drift.sh" | awk '{print $1}')" != "$EXPECTED_SOURCE_SHA256" ] \
   || { echo "FAIL: planted shell drift escaped source hash" >&2; exit 1; }
 
-echo "GREEN chatgpt-mind-loop: shell witness preserved; pure prompt is byte-identical; public handoff survives spaces; Rishi requires a full clone, canonical Homebrew Git through nested shells, arbitrary exact read-only jail maps, mode-0600 config, private TMPDIR, and the jailed repository root; it gates isolated credential presence, disables Codex's unbounded connection retries so failures return to the circuit, relays bounded streams, records exact finite phase receipts including a live Codex child, admits battery laps, scrubs host Git and GPG configuration variables, admits only regular Brushstroke, Surf, and Skate candidates, signs one bounded candidate outside the jail, keeps a non-stealable transaction marker through post-CAS proof, keeps custody primary below the byte wall, and owns lock, STOP/CUSTODY, circuit, and signal behavior; planted linked-worktree, Apple-Git, configuration-poison, phase-shape, transaction, sibling-lane, forbidden-state, handoff, printer, launcher, relay, and shell drift are caught"
+echo "GREEN chatgpt-mind-loop: shell witness preserved; pure prompt is byte-identical; public handoff survives spaces; Rishi requires a full clone, canonical Homebrew Git through nested shells, arbitrary exact read-only jail maps, mode-0600 config, private TMPDIR, and the jailed repository root; it gates isolated credential presence, disables Codex's unbounded connection retries so failures return to the circuit, relays bounded streams, records exact finite phase receipts including a live Codex child, admits battery laps, parks a design question as a clean lap without a candidate or a circuit strike, resets the parked streak on one working lap, closes three consecutive parks as all-cruxes-parked custody whose written CUSTODY wall then refuses like any planted CUSTODY, scrubs host Git and GPG configuration variables, admits only regular Brushstroke, Surf, and Skate candidates, signs one bounded candidate outside the jail, keeps a non-stealable transaction marker through post-CAS proof, keeps custody primary below the byte wall, and owns lock, STOP/CUSTODY, circuit, and signal behavior; planted linked-worktree, Apple-Git, configuration-poison, phase-shape, transaction, sibling-lane, forbidden-state, parked-ledger-rewrite, handoff, printer, launcher, relay, and shell drift are caught"
