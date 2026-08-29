@@ -68,10 +68,9 @@ bounded at 16. Control 62 behaviors, zero no, where HEAD read 21 unseen for two 
 
 **`%327` out of the same box** -- a lap recovered by `git checkout <stash> --`; `pond_enclosure_state` gates `pinned_elders` at zero.
 
-**MANY HANDS + the skills door** (granted `20260828`): every launch card may spin up and manage
-multiple CLI agents -- custody gates MANUAL, one writer per checkout -- and root `SKILL.md` opens
-the Spellbook, Chemical Formulas, Civic TAME. Every clone seats the `ww` door
-(`grain-ww/grain`, gate %1) and points `core.sshCommand` at `.git/ssh_config_jail`.
+**MANY HANDS + skills** (granted `20260828`): launches may manage multiple CLI agents; custody
+stays MANUAL and each checkout keeps one writer. Root `SKILL.md` opens the three skills. Every
+clone seats `ww` (`grain-ww/grain`, gate %1) and `.git/ssh_config_jail`.
 
 **Still open, one structural:** every pin row reads OPEN and their bytes alone near the bound,
 so `reds_fold.sh` refusing OPEN rows is no longer a tidy seat. **Width ratchet:** `glow/rune_shape.rye`
@@ -79,6 +78,8 @@ publishes `usize` in 5 fields and 5 accessors; 59 gate fixtures await his word. 
 the reconnect patch in grain-mind's own stash (review recipe in its log). `%281`/`%291` stay his, as does this
 pier's `enclosure.conf`, still pinning two. **Seat:** whether the roster's own witness can
 be rostered when its scan reads the card its red would land on.
+
+**Sound:** repoint 3 broken links in `tools/fixtures/r/radiant_pool_scope.md` after the fixture fold.
 
 **Next doors.** Dream: Caravan and Tally. Hush: Pond orbit two.
 

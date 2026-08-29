@@ -61,6 +61,8 @@ it here. The pin keeps the three most recent, which is the live edge a reader wa
 
 *Rows %216-%217 folded to [`archive/REDS-a-build-cache-and-two-mirrors-rows-216-217.md`](REDS-a-build-cache-and-two-mirrors-rows-216-217.md) on `20260825.052000`, both **CLOSED** -- a library index that asked the filesystem where it meant to ask the repository, publishing 238 modules where the tree keeps 130; and a 110-page sweep that treated two mirrors and a page carrying a declared ceiling as ordinary READMEs.*
 
+*Row %333 folded to [`REDS-the-witness-the-fold-left-behind-rows-333.md`](REDS-the-witness-the-fold-left-behind-rows-333.md) on `20260828.213016`, **CLOSED** -- Tally's known-answer witness stood outside the ancestry the fixture fold carried, and the restored functional census proved the passing vector plus both refusal sides.*
+
 *Row %218 folded to [`archive/REDS-a-citation-in-a-comment-rows-218.md`](REDS-a-citation-in-a-comment-rows-218.md) on `20260825.092953`, **CLOSED** -- four Markdown citations inside `.rye` doc comments naming paths that never existed, found by the report card's Truth reading and now gated at zero by `comment_citation_witness`.*
 
 *Row %219 folded to [`archive/REDS-a-choir-off-the-roster-rows-219.md`](REDS-a-choir-off-the-roster-rows-219.md) on `20260825.110922`, **CLOSED** -- a ceiling that only falls stood crossed for two laps because the choir that measures it stood off the roster, closed by lifting one nine-line door into `caravan/study_door.rye` and seating the choir. Moved here as row %220 carried the living pin past its 24,576-byte bound.*

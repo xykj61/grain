@@ -1,0 +1,53 @@
+# tools/t/tally_bud_witness.rish -- the Pedersen commitment answers for itself.
+#
+# The passing side pins commit(1000, dew = 0x11 repeated). Three plants press the
+# other side: a pinned generator byte, the domain string, and the amount. The first
+# two must refuse; the third must remain internally green while moving the vector.
+
+say "tally-bud: Language EN -- the commitment answers for itself from both sides."
+say "tally-bud: Style Gauge, Meter setting -- each plant names what moved and what caught it."
+say "tally-bud: Lens TAME -- a pinned constant earns trust only when a witness moves it."
+
+let zig = "vendor/zig-toolchain/zig"
+let zig_ver = run [zig "version"]
+assert zig_ver.ok else "tally-bud: pinned toolchain missing"
+
+let mkbin = run ["mkdir" "-p" "tally/bin"]
+assert mkbin.ok else "tally-bud: could not create tally/bin"
+
+let build = run ["env" "RYE_ZIG=${zig}" "rye/bin/rye" "build" "tally/bud.rye" "-femit-bin=tally/bin/tally-bud"]
+if build.ok == false then say build.err
+assert build.ok else "tally-bud: build failed"
+
+let self = run ["tally/bin/tally-bud" "selftest"]
+assert self.ok else "tally-bud: selftest exited non-zero"
+assert self.err contains "version 20260709.194437" else "tally-bud: pinned version moved"
+assert self.err contains "vector amount1000 dew11 01260009c2a0a2ed11e5976cd9401a618571c94f16f643b9663e025313b80777" else "tally-bud: known answer moved"
+say "tally-bud: passing vector held"
+
+let tamper_byte = run ["sh" "-c" "d=$(mktemp -d); sed 's/0x9c, 0xf8/0x9d, 0xf8/' tally/bud.rye > $d/bud.rye; if cmp -s tally/bud.rye $d/bud.rye; then echo plant=absent; else echo plant=landed; fi; env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build $d/bud.rye -femit-bin=$d/hurt >/dev/null 2>&1 || echo build=failed; if $d/hurt selftest >/dev/null 2>&1; then echo refused=no; else echo refused=yes; fi; rm -rf $d"]
+assert tamper_byte.ok else "tally-bud: byte plant could not run"
+assert tamper_byte.out contains "plant=landed" else "tally-bud: byte plant changed nothing"
+assert tamper_byte.out contains "refused=yes" else "tally-bud: moved generator byte passed"
+say "tally-bud: generator-byte plant refused"
+
+let tamper_domain = run ["sh" "-c" "d=$(mktemp -d); sed 's|pedersen-H/v1|pedersen-H/v2|' tally/bud.rye > $d/bud.rye; if cmp -s tally/bud.rye $d/bud.rye; then echo plant=absent; else echo plant=landed; fi; env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build $d/bud.rye -femit-bin=$d/hurt >/dev/null 2>&1 || echo build=failed; if $d/hurt selftest >/dev/null 2>&1; then echo refused=no; else echo refused=yes; fi; rm -rf $d"]
+assert tamper_domain.ok else "tally-bud: domain plant could not run"
+assert tamper_domain.out contains "plant=landed" else "tally-bud: domain plant changed nothing"
+assert tamper_domain.out contains "refused=yes" else "tally-bud: moved domain passed"
+say "tally-bud: domain plant refused"
+
+let moved = run ["sh" "-c" "d=$(mktemp -d); sed 's/1000/1001/g' tally/bud.rye > $d/bud.rye; if cmp -s tally/bud.rye $d/bud.rye; then echo plant=absent; else echo plant=landed; fi; env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build $d/bud.rye -femit-bin=$d/moved >/dev/null 2>&1 || echo build=failed; if $d/moved selftest 2>&1 | grep -q '01260009c2a0a2ed11e5976cd9401a618571c94f16f643b9663e025313b80777'; then echo vector=same; else echo vector=moved; fi; if $d/moved selftest >/dev/null 2>&1; then echo selftest=green; else echo selftest=red; fi; rm -rf $d"]
+assert moved.ok else "tally-bud: amount plant could not run"
+assert moved.out contains "plant=landed" else "tally-bud: amount plant changed nothing"
+assert moved.out contains "selftest=green" else "tally-bud: amount plant must pass the relational checks"
+assert moved.out contains "vector=moved" else "tally-bud: amount plant must move the known answer"
+say "tally-bud: amount plant stayed internally green and moved the vector"
+
+let build_shim = run ["env" "RYE_ZIG=${zig}" "rye/bin/rye" "build" "tally/pedersen.rye" "-femit-bin=tally/bin/tally-pedersen"]
+assert build_shim.ok else "tally-bud: deprecated shim failed to build"
+let shim = run ["tally/bin/tally-pedersen" "selftest"]
+assert shim.ok else "tally-bud: deprecated shim failed to run"
+assert shim.err contains "vector amount1000 dew11 01260009c2a0a2ed11e5976cd9401a618571c94f16f643b9663e025313b80777" else "tally-bud: shim moved off bud's answer"
+
+say "GREEN: tally bud -- passing vector pinned; generator byte and domain refused; amount moved only the known answer; shim agreed."
