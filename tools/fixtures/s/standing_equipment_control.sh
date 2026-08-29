@@ -453,6 +453,159 @@ case "$out" in *"1 further entries unenumerated"*) echo "past_bound_says_so=yes"
 case "$out" in *"stash@{16} "*) echo "past_bound_stops_enumerating=no" ;; *) echo "past_bound_stops_enumerating=yes" ;; esac
 case "$out" in *"run_verdict=ok"*) echo "past_bound_still_passes=yes" ;; *) echo "past_bound_still_passes=no" ;; esac
 
+# --- the capability tier, proven in all three of its answers ------------------------------------
+# `capability` is a tier for what a host CAN DO, beside `host` (a tier for PLACE) and `tier` (a tier
+# for TIME). Its probe returns present, absent, or unknown, and the third answer is the one that
+# decides whether the field is a cadence or an exemption -- so all three are planted here.
+#
+# HOW ABSENCE IS PLANTED, without putting an override into the runner. The probe reads the host's
+# own loopback interface through `ip` and `ifconfig`, so the control shadows those two commands on
+# PATH and hands the probe a fake host. Nothing in the runner learns it is being tested, and there
+# is no environment variable that turns the field off -- a gate with a door beside it is a habit
+# again, and this control would be the one holding the door.
+mkdir -p "$pen/fakebin"
+cat > "$pen/fakebin/ip" <<'EOF'
+#!/bin/sh
+exit 1
+EOF
+chmod +x "$pen/fakebin/ip"
+
+cat > "$pen/capable.kyri" <<'EOF'
+format standing-equipment-v1
+guard alpha
+path tools/real_witness.rish
+tier lap
+seated 20260822.000000
+
+guard needs_six
+path tools/real_witness.rish
+tier lap
+capability ipv6
+seated 20260829.000000
+EOF
+
+run_capability() {
+  # $1 -- what the fake ifconfig says; every argument after it goes to the runner. The shift is
+  # load-bearing: without it the stub's own body arrives as a guard name and every case reads a
+  # one-guard pass, which is what the first draft of this block did.
+  _lo_says="$1"
+  shift
+  cat > "$pen/fakebin/ifconfig" <<EOF
+#!/bin/sh
+$_lo_says
+EOF
+  chmod +x "$pen/fakebin/ifconfig"
+  rm -f "$pen/cap-card.kyri"
+  ( cd "$pen" && PATH="$pen/fakebin:$PATH" STANDING_ROSTER=capable.kyri STANDING_CARD=cap-card.kyri \
+      sh "$runner" "$@" 2>/dev/null ) || true
+}
+
+# present -- the host keeps the promise, so the guard runs like any other row
+out=$(run_capability 'echo "inet6 ::1 prefixlen 128"')
+case "$out" in *"guards_run=2"*) echo "capability_present_runs=yes" ;; *) echo "capability_present_runs=no" ;; esac
+case "$out" in *"skipped_capability=0"*) echo "capability_present_skips_none=yes" ;; *) echo "capability_present_skips_none=no" ;; esac
+
+# absent -- the guard is skipped, and NAMED, and counted. All three, because a skip nobody can read
+# is the exemption this field exists not to be.
+out=$(run_capability 'echo "inet 127.0.0.1 netmask 0xff000000"')
+case "$out" in *"guards_run=1"*) echo "capability_absent_skips=yes" ;; *) echo "capability_absent_skips=no" ;; esac
+case "$out" in *"skipped_capability=1"*) echo "capability_absent_counted=yes" ;; *) echo "capability_absent_counted=no" ;; esac
+case "$out" in *"skipped_capability needs_six wants=ipv6"*) echo "capability_absent_named=yes" ;; *) echo "capability_absent_named=no" ;; esac
+case "$out" in *"run_verdict=ok"*) echo "capability_absent_still_passes=yes" ;; *) echo "capability_absent_still_passes=no" ;; esac
+if grep -q "^ran alpha " "$pen/cap-card.kyri" && ! grep -q "^ran needs_six " "$pen/cap-card.kyri"; then
+  echo "capability_absent_card_silent=yes"
+else
+  echo "capability_absent_card_silent=no"
+fi
+
+# unknown -- the probe could read nothing, and the guard RUNS. This is the safety direction: a bench
+# whose probe tools go missing must not quietly thin its own roster to nothing while reading green.
+out=$(run_capability 'exit 1')
+case "$out" in *"guards_run=2"*) echo "capability_unknown_runs=yes" ;; *) echo "capability_unknown_runs=no" ;; esac
+case "$out" in *"skipped_capability=0"*) echo "capability_unknown_skips_none=yes" ;; *) echo "capability_unknown_skips_none=no" ;; esac
+
+# a hand asking for the guard BY NAME runs it wherever it stands, so the refusal that follows names
+# the real absence rather than this filter -- the same escape `host` already keeps.
+out=$(run_capability 'echo "inet 127.0.0.1 netmask 0xff000000"' needs_six)
+case "$out" in *"guards_run=1"*) echo "capability_by_name_runs=yes" ;; *) echo "capability_by_name_runs=no" ;; esac
+case "$out" in *"skipped_capability=0"*) echo "capability_by_name_unfiltered=yes" ;; *) echo "capability_by_name_unfiltered=no" ;; esac
+
+# a capability the probe has never heard of reads unknown and therefore RUNS. The scan is what
+# refuses that roster; the runner's job is to never make a guard vanish.
+cat > "$pen/badcap-roster.kyri" <<'EOF'
+format standing-equipment-v1
+guard alpha
+path tools/real_witness.rish
+tier lap
+capability telepathy
+seated 20260829.000000
+EOF
+out=$( ( cd "$pen" && PATH="$pen/fakebin:$PATH" STANDING_ROSTER=badcap-roster.kyri STANDING_CARD=badcap-card.kyri \
+        sh "$runner" 2>/dev/null ) || true )
+case "$out" in *"guards_run=1"*) echo "unknown_capability_still_runs=yes" ;; *) echo "unknown_capability_still_runs=no" ;; esac
+
+# --- and the scan refuses that same roster, which is the half the runner deliberately does not ---
+out=$(run_scan badcap-roster.kyri good-card.kyri)
+case "$out" in *"verdict=roster_broken"*) echo "unknown_capability_refused=yes" ;; *) echo "unknown_capability_refused=no" ;; esac
+case "$out" in *"guards_unknown_capability=1"*) echo "unknown_capability_counted=yes" ;; *) echo "unknown_capability_counted=no" ;; esac
+out=$(run_scan capable.kyri good-card.kyri)
+case "$out" in *"guards_capability_gated=1"*) echo "capability_gated_counted=yes" ;; *) echo "capability_gated_counted=no" ;; esac
+case "$out" in *"guards_unknown_capability=0"*) echo "known_capability_free=yes" ;; *) echo "known_capability_free=no" ;; esac
+
+# --- the host tier, which arrived at REDS %295 with no case of its own --------------------------
+# Found while seating the capability field beside it: `host` was proven by neither this control nor
+# the witness, so the axis it copies had no green side and no red one. Its two answers are planted
+# here now, against the host this pass actually stands on, so neither axis is taken on trust.
+here_host=$(uname -s)
+case "$here_host" in
+  Darwin) mine=macos; theirs=linux ;;
+  Linux)  mine=linux;  theirs=macos ;;
+  *)      mine=other;  theirs=linux ;;
+esac
+cat > "$pen/hosted.kyri" <<EOF
+format standing-equipment-v1
+guard alpha
+path tools/real_witness.rish
+tier lap
+seated 20260822.000000
+
+guard elsewhere
+path tools/real_witness.rish
+tier lap
+host $theirs
+seated 20260828.000000
+EOF
+out=$( ( cd "$pen" && STANDING_ROSTER=hosted.kyri STANDING_CARD=host-card.kyri \
+        sh "$runner" 2>/dev/null ) || true )
+case "$out" in *"guards_run=1"*) echo "host_elsewhere_skips=yes" ;; *) echo "host_elsewhere_skips=no" ;; esac
+case "$out" in *"skipped_host=1"*) echo "host_elsewhere_counted=yes" ;; *) echo "host_elsewhere_counted=no" ;; esac
+case "$out" in *"skipped_host elsewhere wants=$theirs"*) echo "host_elsewhere_named=yes" ;; *) echo "host_elsewhere_named=no" ;; esac
+
+cat > "$pen/hosted-here.kyri" <<EOF
+format standing-equipment-v1
+guard alpha
+path tools/real_witness.rish
+tier lap
+host $mine
+seated 20260828.000000
+EOF
+out=$( ( cd "$pen" && STANDING_ROSTER=hosted-here.kyri STANDING_CARD=host-here-card.kyri \
+        sh "$runner" 2>/dev/null ) || true )
+case "$out" in *"guards_run=1"*) echo "host_here_runs=yes" ;; *) echo "host_here_runs=no" ;; esac
+case "$out" in *"skipped_host=0"*) echo "host_here_skips_none=yes" ;; *) echo "host_here_skips_none=no" ;; esac
+
+cat > "$pen/badhost.kyri" <<'EOF'
+format standing-equipment-v1
+guard alpha
+path tools/real_witness.rish
+tier lap
+host solaris
+seated 20260828.000000
+EOF
+out=$(run_scan badhost.kyri good-card.kyri)
+case "$out" in *"verdict=roster_broken"*) echo "unknown_host_refused=yes" ;; *) echo "unknown_host_refused=no" ;; esac
+case "$out" in *"guards_unknown_host=1"*) echo "unknown_host_counted=yes" ;; *) echo "unknown_host_counted=no" ;; esac
+
 # A pen outside git answers zero rather than refusing -- the same shape the staged reading keeps,
 # so a control can drive this runner without standing inside a repository.
 out=$( ( cd "$pen" && STANDING_ROSTER=cadence.kyri STANDING_CARD=run-card.kyri \

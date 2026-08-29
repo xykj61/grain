@@ -116,10 +116,14 @@ const Func = struct {
 const max_spawn_handles: u32 = 8;
 const max_cleanup_paths: u32 = 4;
 const max_process_input_bytes: u32 = 65536;
-// One MiB remains the ordinary child-stream wall. The additional 64 KiB is the
-// largest margin a nested supervisor may explicitly request for its own bounded
-// status/refusal text while relaying that child stream.
-const max_process_output_bytes: u32 = 1114112;
+// Four MiB is the ordinary child-stream wall -- raised from one MiB on 20260829,
+// when codex-cli 0.150 (which routes every tool call through its code-mode host
+// and echoes diffs verbosely) filled the elder wall to the exact byte on an
+// ordinary good lap. The additional 64 KiB is unchanged: the largest margin a
+// nested supervisor may explicitly request for its own bounded status/refusal
+// text while relaying that child stream. Relay is per-stream, so one child wall
+// plus one margin is the widest lawful request.
+const max_process_output_bytes: u32 = 4259840;
 const process_io_window_bytes: u32 = 4096;
 const max_safe_process_path_bytes: u32 = 512;
 const supports_signal_cleanup = builtin.os.tag != .windows and std.posix.Sigaction != void;

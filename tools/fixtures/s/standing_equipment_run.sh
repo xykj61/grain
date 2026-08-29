@@ -231,29 +231,85 @@ case "$(uname -s)" in
   Linux)  this_host=linux ;;
   *)      this_host=other ;;
 esac
-awk -v want="$want_tier" -v only="$only" -v here="$this_host" '
+
+# A row may also carry `capability ipv6` (seated 20260829): where `host` is a tier for PLACE and
+# `tier` is a tier for TIME, this is a tier for what a host CAN DO. The two are different questions
+# and the roster's own note under `comlink_r1_dual_stack` says why: a Linux bench routing IPv6 keeps
+# a promise a Linux bench without it breaks, so `host linux` would encode something untrue. That
+# note asked for this word and declined to guess at it; this is the guess made and proven.
+#
+# THREE ANSWERS, NOT TWO, and the third is the whole safety of the field. A probe returns `present`,
+# `absent`, or `unknown` -- and an UNKNOWN RUNS THE GUARD. Skipping on an unknown is exactly how a
+# capability tier stops being a cadence and becomes an exemption: the probe's own tools go missing
+# on some future bench, every capability reads unknown, and a roster quietly thins to nothing while
+# every meter stays green. TAME settles the direction -- a guard that runs and reds honestly costs
+# one lap, and a guard silently skipped costs the promise. So absence is the only answer that skips,
+# and it must be positively read.
+#
+# ONLY WHAT THE ROSTER ASKS FOR IS PROBED, rather than a list kept here beside the scan's own. Two
+# copies of one list is the drift this tree keeps paying for, so the runner reads the words off the
+# roster and the scan alone refuses one no runner knows. A word this function does not know reads
+# `unknown` and therefore RUNS -- the scan refuses that roster, and if a hand runs it anyway the
+# guard still runs rather than vanishing.
+capability_state() {
+  case "$1" in
+    ipv6)
+      # The same interface table the elder probe reads, and named as such rather than dressed up:
+      # Linux spells the loopback `lo` under iproute2, Darwin spells it `lo0` and ships no `ip`.
+      # This asks the host a host question. It does NOT prove the tree can bind a socket, and no
+      # capability probe should be read as proving anything the guard it gates exists to prove.
+      _lo=$( { ip -o addr show lo 2>/dev/null || ifconfig lo0 2>/dev/null; } || true )
+      [ -n "$_lo" ] || { echo unknown; return 0; }
+      case "$_lo" in
+        *"::1"*) echo present ;;
+        *)       echo absent ;;
+      esac
+      ;;
+    *) echo unknown ;;
+  esac
+}
+
+caps_absent=" "
+for _cap in $(awk '$1 == "capability" { print $2 }' "$roster" 2>/dev/null | sort -u); do
+  if [ "$(capability_state "$_cap")" = absent ]; then
+    caps_absent="$caps_absent$_cap "
+  fi
+done
+awk -v want="$want_tier" -v only="$only" -v here="$this_host" -v capsabsent="$caps_absent" '
+  function reset() { name = ""; path = ""; tier = ""; host = ""; cap = "" }
   function flush(   t) {
     if (name == "") return
     t = (tier == "" ? "lap" : tier)
-    if (only != "" && name != only)                { name = ""; path = ""; tier = ""; host = ""; return }
-    if (only == "" && want != "all" && t != want)  { name = ""; path = ""; tier = ""; host = ""; return }
-    if (only == "" && host != "" && host != here)  { print "SKIPHOST", name, host; name = ""; path = ""; tier = ""; host = ""; return }
+    if (only != "" && name != only)                { reset(); return }
+    if (only == "" && want != "all" && t != want)  { reset(); return }
+    if (only == "" && host != "" && host != here)  { print "SKIPHOST", name, host; reset(); return }
+    if (only == "" && cap != "" && index(capsabsent, " " cap " ") > 0) { print "SKIPCAP", name, cap; reset(); return }
     print name, (path == "" ? "-" : path), t
-    name = ""; path = ""; tier = ""; host = ""
+    reset()
   }
-  $1 == "guard" { flush(); name = $2; next }
-  $1 == "path"  { if (name != "") path = $2; next }
-  $1 == "tier"  { if (name != "") tier = $2; next }
-  $1 == "host"  { if (name != "") host = $2; next }
+  $1 == "guard"      { flush(); name = $2; next }
+  $1 == "path"       { if (name != "") path = $2; next }
+  $1 == "tier"       { if (name != "") tier = $2; next }
+  $1 == "host"       { if (name != "") host = $2; next }
+  $1 == "capability" { if (name != "") cap = $2; next }
   END { flush() }
 ' "$roster" > "$pen/selected"
 grep '^SKIPHOST ' "$pen/selected" > "$pen/skiphost" || true
-grep -v '^SKIPHOST ' "$pen/selected" > "$pen/todo" || true
+grep '^SKIPCAP ' "$pen/selected" > "$pen/skipcap" || true
+grep -vE '^(SKIPHOST|SKIPCAP) ' "$pen/selected" > "$pen/todo" || true
 skipped_host=$(grep -c '' "$pen/skiphost" || true)
+skipped_capability=$(grep -c '' "$pen/skipcap" || true)
 while read -r _ skipname skiphost; do
   [ -n "$skipname" ] || continue
   echo "skipped_host $skipname wants=$skiphost here=$this_host"
 done < "$pen/skiphost"
+# Named, never merely counted. A guard skipped for a capability this host lacks is still ON the one
+# roster and still SEEN by every pass; what changes is that this pass says out loud which promise it
+# could not ask for and why, so a thinning roster reads as a thinning roster rather than as a green.
+while read -r _ skipname skipcap; do
+  [ -n "$skipname" ] || continue
+  echo "skipped_capability $skipname wants=$skipcap here=absent"
+done < "$pen/skipcap"
 
 awk '{print $1}' "$pen/todo" | sort -u > "$pen/running"
 
@@ -348,6 +404,7 @@ echo "guards_green=$green"
 echo "guards_red=$red"
 echo "host=$this_host"
 echo "skipped_host=$skipped_host"
+echo "skipped_capability=$skipped_capability"
 echo "tree_at_close=$tree_close"
 echo "tree_moved=$moved"
 

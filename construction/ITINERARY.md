@@ -78,6 +78,13 @@ running kernel from both sides. Beside it, `pond_enclosure_policy_scan.sh` built
 and reran it forever, so a source change was invisible while SELFTEST passed on bytes that no
 longer existed (%334's family); it owns its build now, 0.8s of a 1.4s scan.
 
+**The capability tier** (`20260829-163028`): the roster's third field, beside `tier` for TIME and
+`host` for PLACE -- what a host CAN DO. `capability ipv6` probes the loopback table: present runs,
+absent is skipped BY NAME and counted, and **unknown RUNS** -- skipping on an unknown is how a tier
+becomes an exemption. 23 control cases, `host`'s own among them (it landed at %295 with none).
+Left: the `comlink_r1_dual_stack` row itself, held off a peer's staged roster; its witness is GREEN
+here, and its header's "bind both families on loopback" was an `ifconfig` read all along.
+
 **Other Pond doors:** `spool_cloth` promises 4 large artifacts over a store holding **2** (%341).
 
 **MANY HANDS** (granted `20260828`): custody stays MANUAL, one writer per checkout. Root
@@ -91,7 +98,7 @@ await his word. **Mind's:** the reconnect stash, `%281`/`%291`, two `enclosure.c
 **Roster here (over the shipped tree, `20260829.143651`):** 93 guards, **91 green**, 2 red --
 `rule_twin` 39/36 is gate %7 and `width_check`'s tree-wide count 331/329 is another body's;
 `witness_reach`, `nib_honesty` and `remember_git_nib` all GREEN. **Seats:** rostering the roster's own witness; a
-`mask` softening the `map`; an IPv6 tier for `comlink_r1_dual_stack`.
+`mask` softening the `map`.
 
 **Next doors.** Dream: Caravan and Tally. Hush: the Mac's 3 Pond rows -- `xargs -r` at
 `pond_enclosure_door_scan.sh:158` is a GNU extension BSD refuses, so at least one wants a repair

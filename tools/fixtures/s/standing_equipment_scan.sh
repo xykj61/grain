@@ -42,11 +42,21 @@ known_tiers="lap cadence"
 # on that host and is reported skipped by name elsewhere. A word outside this list is refused the
 # same way an unknown tier is -- a guard gated to a host no runner answers to would run nowhere.
 known_hosts="macos linux"
+# The capabilities the runner probes (seated 20260829): a row carrying `capability ipv6` runs only
+# where the runner's own probe finds that capability present, and is reported skipped by name
+# everywhere else. `host` is a tier for PLACE and `tier` is a tier for TIME; this is a tier for what
+# a host CAN DO, and the two are genuinely different questions -- a Linux bench routing IPv6 keeps a
+# promise a bench without it cannot, so gating that guard on `host linux` would encode something
+# untrue about every Linux bench that lacks it. The roster's own note under `comlink_r1_dual_stack`
+# asked for exactly this word and declined to guess at it. A capability outside this list is refused
+# the same way an unknown tier is: a guard gated on a capability no runner probes would run nowhere,
+# in silence, which is REDS %219's shape wearing a third field.
+known_capabilities="ipv6"
 
 names=$(mktemp); paths_missing=$(mktemp); halfrows=$(mktemp)
 unrostered=$(mktemp); reds=$(mktemp); ranlist=$(mktemp)
-badtiers=$(mktemp); cadence_names=$(mktemp); badhosts=$(mktemp)
-trap 'rm -f "$names" "$paths_missing" "$halfrows" "$unrostered" "$reds" "$ranlist" "$badtiers" "$cadence_names" "$badhosts"' EXIT
+badtiers=$(mktemp); cadence_names=$(mktemp); badhosts=$(mktemp); badcaps=$(mktemp)
+trap 'rm -f "$names" "$paths_missing" "$halfrows" "$unrostered" "$reds" "$ranlist" "$badtiers" "$cadence_names" "$badhosts" "$badcaps"' EXIT
 
 rostered=0
 missing=0
@@ -54,6 +64,8 @@ half=0
 unknown_tier=0
 unknown_host=0
 host_gated=0
+unknown_capability=0
+capability_gated=0
 tier_lap=0
 tier_cadence=0
 
@@ -62,6 +74,7 @@ name=""
 sawpath=0
 tier=""
 host=""
+capability=""
 close_record() {
   [ -n "$name" ] || return 0
   if [ "$sawpath" -ne 1 ]; then half=$((half + 1)); echo "$name" >> "$halfrows"; fi
@@ -83,7 +96,14 @@ close_record() {
       *) unknown_host=$((unknown_host + 1)); echo "$name -> $host" >> "$badhosts" ;;
     esac
   fi
-  name=""; sawpath=0; tier=""; host=""
+  if [ -n "$capability" ]; then
+    capability_gated=$((capability_gated + 1))
+    case " $known_capabilities " in
+      *" $capability "*) ;;
+      *) unknown_capability=$((unknown_capability + 1)); echo "$name -> $capability" >> "$badcaps" ;;
+    esac
+  fi
+  name=""; sawpath=0; tier=""; host=""; capability=""
 }
 
 while IFS= read -r line; do
@@ -110,6 +130,10 @@ while IFS= read -r line; do
     host\ *)
       [ -n "$name" ] || continue
       host=$(printf '%s' "$line" | awk '{print $2}')
+      ;;
+    capability\ *)
+      [ -n "$name" ] || continue
+      capability=$(printf '%s' "$line" | awk '{print $2}')
       ;;
     *) ;;
   esac
@@ -165,6 +189,8 @@ echo "guards_half_written=$half"
 echo "guards_unknown_tier=$unknown_tier"
 echo "guards_host_gated=$host_gated"
 echo "guards_unknown_host=$unknown_host"
+echo "guards_capability_gated=$capability_gated"
+echo "guards_unknown_capability=$unknown_capability"
 echo "tier_lap=$tier_lap"
 echo "tier_cadence=$tier_cadence"
 echo "runs_recorded=$recorded"
@@ -179,10 +205,12 @@ echo "newest_run=${newest:-none}"
 [ "$half" -eq 0 ] || sed 's/^/half_written: /' "$halfrows"
 [ "$unknown_tier" -eq 0 ] || sed 's/^/unknown_tier: /' "$badtiers"
 [ "$unknown_host" -eq 0 ] || sed 's/^/unknown_host: /' "$badhosts"
+[ "$unknown_capability" -eq 0 ] || sed 's/^/unknown_capability: /' "$badcaps"
 [ "$stray" -eq 0 ] || sed 's/^/unrostered: /' "$unrostered"
 [ "$red" -eq 0 ] || sed 's/^/red: /' "$reds"
 
 if [ "$missing" -eq 0 ] && [ "$half" -eq 0 ] && [ "$unknown_tier" -eq 0 ] && [ "$unknown_host" -eq 0 ] \
+   && [ "$unknown_capability" -eq 0 ] \
   && [ "$stray" -eq 0 ] && [ "$red" -eq 0 ]; then
   echo "verdict=ok"
   exit 0
