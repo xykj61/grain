@@ -736,3 +736,16 @@ path tools/m/macos_app_bundle_witness.rish
 tier cadence
 host macos
 seated 20260829.104233
+
+# pond_seal_gate -- the custody gate for the season flip, read wherever it is spelled. Three tracked
+# launchers admit ENCLOSURE=pond only behind pond_exit_bron_master_seal.sh --require, and
+# pond_policy_launcher reads exactly one of them because that is the one Pond's record describes.
+# This discovers the launchers with `git grep` rather than listing them (%301, %326) and gates three
+# readings at zero: an ungated pond, a seal call whose exit code nothing reads (%311's vacuous wall,
+# one room over), and a caller the seal's own header does not name. `lap` because scan plus control
+# is 9s on this pier, the same weight as pond_enclosure_door beside it.
+
+guard pond_seal_gate
+path tools/p/pond_seal_gate_witness.rish
+tier lap
+seated 20260829.123529

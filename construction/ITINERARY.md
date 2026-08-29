@@ -58,31 +58,32 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `8954c8c7ca` -- this round's own.
+**Git nib:** `8dc023d68c` -- this round's own.
 
-**Now.** **A checkout of this same repository is not the field.**
+**Now.** **A gate written three times, read once.**
 
-**The ceiling that held one bead** (`20260829-124742`): the one test naming the bead store's bound
-filled it with **1 of 256** -- `k & 0xFF` has the bead size as its period. Fixed; an exact
-`errdefer` rollback; two size-pinned witnesses freed (%341). **Door for `pond/apps/`:**
-`spool_cloth` promises 4 large artifacts over a store holding **2**; three options costed in %341.
+**The ceiling that held one bead** (`20260829-124742`): the one test naming the bead store's
+bound filled it with **1 of 256** -- `k & 0xFF` has the bead size as its period. Fixed; an exact
+`errdefer` rollback; two size-pinned witnesses freed (%341). **Door for `pond/apps/`:** `spool_cloth`
+promises 4 large artifacts over a store holding **2**; three options in %341.
 
-**MANY HANDS + skills** (granted `20260828`): launches may manage multiple CLI agents; custody
-stays MANUAL, each checkout keeps one writer. Root `SKILL.md`. Every clone seats
-`ww` (`grain-ww/grain`, gate %1) and `.git/ssh_config_jail`.
+**The seal gate** (`20260829-123529`): three launchers admit `ENCLOSURE=pond` only behind the
+master seal; one guard read one. `pond_seal_gate` finds them by `git grep`, gates three at zero,
+and read 1 -- the seal's header omitted `tools/ag/agent-jail.sh`.
 
-**Still open, one structural:** REDS reads 24,571/**24,576**, 9 OPEN, 0 foldable -- metered and
-rostered, `%338` booked, 3 doors costed in `20260829-031804`; his seat.
-**Width:** `glow/rune_shape.rye` publishes `usize` in 5 fields and 5 accessors; 59 gate
-fixtures await his word. **Mind's:** the reconnect stash,
-`%281`/`%291`, and this pier's two `enclosure.conf` pins. **Roster:** 4 red of 92 --
-`rule_twin` 39/36 is gate %7, three Pond rows are Hush's.
-**Seats:** can the roster's own witness be rostered; may a `mask` soften the `map`; a
-capability tier for `comlink_r1_dual_stack`'s IPv6 leg.
+**MANY HANDS** (granted `20260828`): custody stays MANUAL, one writer per checkout. Root
+`SKILL.md`; every clone seats `ww` (`grain-ww/grain`, gate %1) and `.git/ssh_config_jail`.
 
-**Next doors.** Dream: Caravan and Tally, on `grain-dream` -- %281/%291 answered here.
-Hush: the Zed launch path; orbit two wants Dream's nod; orbits three and four hold four costed
-edits (`20260829-054303`).
+**Still open:** REDS reads 24,571/**24,576**, 9 OPEN, 0 foldable; `%338` booked, 3 doors in
+`20260829-031804`; his seat.
+**Width:** `glow/rune_shape.rye` publishes `usize` in 5 fields and 5 accessors; 59 fixtures
+await his word. **Mind's:** the reconnect stash, `%281`/`%291`, two `enclosure.conf` pins here.
+**Roster:** 93 guards; `rule_twin` 39/36 is gate %7, and 3 Pond rows red on the Mac read green
+here -- Hush's. **Seats:** rostering the roster's own witness; a `mask` softening the `map`; an
+IPv6 tier for `comlink_r1_dual_stack`.
+
+**Next doors.** Dream: Caravan and Tally. Hush: those Pond rows (a `host linux` want, unmeasured
+here), then orbit four (`20260829-054303`).
 
 ---
 ## Landed arcs
@@ -205,7 +206,7 @@ functions. Third mitra shed prepped (`SHRED_PREP.md` Class H), cut RED until cir
 
 ## Prior laps -- landed, with the detail in the log that recorded it
 
-This card keeps the live edge; the logs keep the account. Earlier rows are shelved at
+The logs keep the account. Earlier rows are shelved at
 [`archive/20260824-130807_itinerary-settled-decisions.md`](archive/20260824-130807_itinerary-settled-decisions.md)
 and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210_itinerary-landed-laps.md).
 
@@ -213,7 +214,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 |---|---|---|
 | `20260829.124742` | The ceiling that held one bead | [log](../session-logs/date/20260829/20260829-124742_the-ceiling-that-held-one-bead.kyri) |
 
-**One row, on purpose.** A landed lap keeps one line here until the next replaces it.
+**One row, on purpose.** A landed lap keeps one line until the next replaces it.
 
 ## The cadence -- CUT `20260826`
 
