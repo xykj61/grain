@@ -72,7 +72,24 @@ its C ABI documents, which movement one's shape makes cheap to test and cheaper 
 registered class that macOS accepted. Confidence: high on the pure core, moderate on the first
 drawn view, and every store-facing step waits at the custody gate regardless.
 
-## What this reading refuses
+## Measured addendum, the same night (`20260829.014500`)
+
+The door opened faster than the projection allowed: the rye wrapper already forwards every flag,
+and the gap was only the recipe. Measured working on this Mac:
+
+```
+env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build tools/rye/skate_event_ring_witness.rye \
+  -femit-bin=tools/.build/ring_ios_sim \
+  -target aarch64-ios-simulator --sysroot "$(xcrun --sdk iphonesimulator --show-sdk-path)" \
+  -L/usr/lib -fstrip
+```
+
+`file` answers `Mach-O 64-bit executable arm64`. Three findings inside the recipe: with a
+sysroot set, the compiler PREPENDS it to `-L` paths, so the library path is given
+sysroot-relative (`-L/usr/lib`, never the SDK's absolute path); `-fstrip` retires the one
+undefined symbol (`__dyld_get_image_header_containing_address`, a legacy dyld call the std
+debug unwinder references and newer SDKs no longer export); and nothing in the ring, the
+claims, or the language needed a single edit -- the pure core crossed as written.
 
 No account, no certificate, no submission, no shipped build -- the movement's own stops. And no
 claim that Tahoe-styled polish comes free: the one true fork from the finding page stands on
