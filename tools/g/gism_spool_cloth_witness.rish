@@ -27,17 +27,17 @@ assert selftest.ok else "gism-red73-name: spool_cloth selftest exited non-zero"
 assert selftest.out contains "GREEN" else "gism-red73-name: selftest did not speak GREEN"
 assert selftest.out contains "stored 3 names over 2 real documents" else "gism-red73-name: real-document naming missing"
 assert selftest.out contains "security-copy deposited 0 beads, deduped 11" else "gism-red73-name: dedup dividend missing"
-assert selftest.out contains "fetch by name returned 2689/2689/6079 real bytes, each byte-for-byte" else "gism-red73-name: byte-for-byte fetch missing"
+# The documents' sizes are READ, never spelled -- the same fault this witness's sibling
+# carried: a pinned 2689/6079 went untrue the day SECURITY.md and context/TWO_ROOMS.md
+# were edited, and no roster runs either file, so neither red was ever seen. A witness
+# owns the behaviour it guards, never the byte count of somebody else's document.
+let sec = run ["sh" "-c" "wc -c < SECURITY.md | tr -d ' \n'"]
+assert sec.ok else "gism-red73-name: could not measure SECURITY.md"
+let two = run ["sh" "-c" "wc -c < context/TWO_ROOMS.md | tr -d ' \n'"]
+assert two.ok else "gism-red73-name: could not measure context/TWO_ROOMS.md"
+assert selftest.out contains "fetch by name returned ${sec.out}/${sec.out}/${two.out} real bytes, each byte-for-byte" else "gism-red73-name: byte-for-byte fetch missing"
 assert selftest.out contains "format spool-cloth-v1 manifest round-tripped 3 artifacts" else "gism-red73-name: manifest round-trip missing"
 assert selftest.out contains "tampered bead, unknown name, taken name, empty name, bad manifest refused GREEN" else "gism-red73-name: refusals missing"
-
-# Cross-check the real document sizes against the files on disk -- two tools, one answer.
-let sec_bytes = run ["sh" "-c" "wc -c < SECURITY.md | tr -d ' '"]
-assert sec_bytes.ok else "gism-red73-name: could not measure SECURITY.md"
-assert sec_bytes.out contains "2689" else "gism-red73-name: SECURITY.md is not 2689 B on disk"
-let tr_bytes = run ["sh" "-c" "wc -c < context/TWO_ROOMS.md | tr -d ' '"]
-assert tr_bytes.ok else "gism-red73-name: could not measure context/TWO_ROOMS.md"
-assert tr_bytes.out contains "6079" else "gism-red73-name: context/TWO_ROOMS.md is not 6079 B on disk"
 
 # The spool is re-run untouched -- the naming layer composes its public API only.
 let spool_bin = "mantra/bin/spool"

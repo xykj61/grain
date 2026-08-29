@@ -185,3 +185,5 @@ at a closed fold.*
 *Row %339 folded to [`REDS-the-commit-no-hook-saw-rows-339.md`](REDS-the-commit-no-hook-saw-rows-339.md) on `20260829.013539`, **CLOSED** -- two generated pages shipped stale through a cherry-picked round, booked and repaired in one lap; born on its shelf directly, as %336 through %338 were, the pin standing five bytes under its bound.*
 
 *Row %340 folded to [`REDS-the-bytes-counted-twice-rows-340.md`](REDS-the-bytes-counted-twice-rows-340.md) on `20260829.033150`, **CLOSED** -- a character census followed 56 symlinks and set its ceiling on the doubled reading; born on its shelf, as %336 through %339 were.*
+
+*Row %341 folded to [`REDS-the-ceiling-that-held-one-bead-rows-341.md`](REDS-the-ceiling-that-held-one-bead-rows-341.md) on `20260829.124742`, **CLOSED** -- a ceiling test filled the shared store with one bead of its 256 and printed 128, booked and repaired in one lap; born on its shelf, as %336 through %340 were.*

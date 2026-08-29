@@ -58,16 +58,14 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `0b56d7bcdd` -- this round's own.
+**Git nib:** `8954c8c7ca` -- this round's own.
 
 **Now.** **A checkout of this same repository is not the field.**
 
-**A guard met a birth** (`20260829-104233`): reach read `unreached` 1109/1108 and
-`wholly_unreached` 221/220, two singletons. This bench paid `macos`, GREEN in 4s at `tier cadence`
-`host macos`; `ios` declines a clock -- a booted simulator is state.
-
-**The ratchet that had a floor** (`20260829-094256`): 10 of `witness_own_build`'s 14 unbuilt pairs
-were builds one hop away; ceiling 14 -> 4, no witness edited.
+**The ceiling that held one bead** (`20260829-124742`): the one test naming the bead store's bound
+filled it with **1 of 256** -- `k & 0xFF` has the bead size as its period. Fixed; an exact
+`errdefer` rollback; two size-pinned witnesses freed (%341). **Door for `pond/apps/`:**
+`spool_cloth` promises 4 large artifacts over a store holding **2**; three options costed in %341.
 
 **MANY HANDS + skills** (granted `20260828`): launches may manage multiple CLI agents; custody
 stays MANUAL, each checkout keeps one writer. Root `SKILL.md`. Every clone seats
@@ -213,7 +211,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260829.104233` | A guard met a birth | [log](../session-logs/date/20260829/20260829-104233_a-guard-met-a-birth.kyri) |
+| `20260829.124742` | The ceiling that held one bead | [log](../session-logs/date/20260829/20260829-124742_the-ceiling-that-held-one-bead.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line here until the next replaces it.
 
