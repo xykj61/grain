@@ -13,7 +13,7 @@ let max_prompt_bytes = 24576
 # measurement of the true ceiling, and the parking rung in mind-loop below is what makes
 # any wall survivable.
 let max_log_bytes = 4194304
-# Relay is per-stream (child stdout to stdout, stderr to stderr), so each supervisor wall
+# Relay is per-stream (the dependent's stdout to stdout, stderr to stderr), so each supervisor wall
 # holds one relayed log wall plus the interpreter's 64 KiB supervisor margin -- the same
 # formula the elder 1,114,112 encoded at 1 MiB, and exactly the interpreter's own ceiling.
 let max_supervisor_bytes = 4259840
@@ -554,7 +554,7 @@ say "chatgpt-mind: screensaver and power settings remain unchanged"
 if dry_run then say "chatgpt-mind: dry-run only; Codex will not be invoked"
 if dry_run then say "chatgpt-mind: bounded laps ${max_laps}, failure ceiling ${failure_ceiling}, backoff ${backoff_seconds} seconds"
 if dry_run then say "chatgpt-mind: Codex unbounded connection retries are disabled so failures return to the supervisor circuit"
-if dry_run then say "chatgpt-mind: planned inner command maps Codex, canonical Homebrew Git, its two runtime libraries, and the tracked child-shell Git doorway read-only; the inner lap stages one candidate, while the outer supervisor alone signs and verifies it with user-held host GPG"
+if dry_run then say "chatgpt-mind: planned inner command maps Codex, canonical Homebrew Git, its two runtime libraries, and the tracked dependent-shell Git doorway read-only; the inner lap stages one candidate, while the outer supervisor alone signs and verifies it with user-held host GPG"
 if dry_run then exit 0
 
 fn file-absent path: (run ["test" "!" "-e" path]).ok
@@ -767,7 +767,7 @@ let message_init_err = "${log_rel}/lap-${lap_number}.message-init.err"
 let message_init = run-bounded { argv: ["/usr/bin/true"], stdin: "", stdin-max: 0, stdout-path: commit_message_rel, stdout-max: max_commit_message_bytes, stderr-path: message_init_err, stderr-max: 4096 }
 assert message_init.ok else "REFUSE chatgpt-mind: could not initialize the bounded commit-message file"
 # PARKED before-image: the parked-ledger postcondition below tells an append from a rewrite by
-# prefix, so the before bytes are held across the Codex child. PARKED is loop-local state under
+# prefix, so the before bytes are held across the Codex dependent. PARKED is loop-local state under
 # the untracked state directory; it is never staged and never a candidate path.
 let parked_link_pre = run ["test" "-L" parked_rel]
 assert parked_link_pre.ok == false else "REFUSE chatgpt-mind: PARKED cannot be a symlink"

@@ -116,13 +116,13 @@ const Func = struct {
 const max_spawn_handles: u32 = 8;
 const max_cleanup_paths: u32 = 4;
 const max_process_input_bytes: u32 = 65536;
-// Four MiB is the ordinary child-stream wall -- raised from one MiB on 20260829,
+// Four MiB is the ordinary dependent-stream wall -- raised from one MiB on 20260829,
 // when codex-cli 0.150 (which routes every tool call through its code-mode host
 // and echoes diffs verbosely) filled the elder wall to the exact byte on an
 // ordinary good lap. The additional 64 KiB is unchanged: the largest margin a
 // nested supervisor may explicitly request for its own bounded status/refusal
-// text while relaying that child stream. Relay is per-stream, so one child wall
-// plus one margin is the widest lawful request.
+// text while relaying that dependent's stream. Relay is per-stream, so one
+// dependent-stream wall plus one margin is the widest lawful request.
 const max_process_output_bytes: u32 = 4259840;
 const process_io_window_bytes: u32 = 4096;
 const max_safe_process_path_bytes: u32 = 512;
@@ -248,7 +248,7 @@ const ExitSlot = struct {
 pub const Env = struct {
     items: [max_env_bindings]Binding = undefined,
     count: u32 = 0,
-    /// User functions, by pointer -- a child scope copies the small pointer array,
+    /// User functions, by pointer -- a call's derived scope copies the small pointer array,
     /// never the bodies, so calls and folds stay cheap.
     funcs: [max_funcs]*const Func = undefined,
     func_count: u32 = 0,
@@ -890,7 +890,7 @@ fn interpret(allocator: std.mem.Allocator, io: std.Io, env: *Env, source: []cons
                 return 0;
             }
             if (err == error.Interrupted) {
-                print("rishi: interrupted; child reaped and script resources releasing\n", .{});
+                print("rishi: interrupted; dependent reaped and script resources releasing\n", .{});
                 return 130;
             }
             if (err == error.AssertionFailed) {
@@ -1678,7 +1678,7 @@ fn bounded_process_result(
 /// declared argv. Child input and both output streams stay inside explicit byte
 /// walls. Output is streamed to private repository-relative files. An opt-in
 /// relay writes the same accepted bytes to Rishi's corresponding parent stream,
-/// without replay after completion. An overrun terminates and reaps the child
+/// without replay after completion. An overrun terminates and reaps the dependent
 /// and returns which stream crossed its wall.
 fn do_run_bounded(allocator: std.mem.Allocator, io: std.Io, env: *Env, spec_text: []const u8) EvalError!Value {
     const spec_value = try eval_expr(allocator, io, env, spec_text);
