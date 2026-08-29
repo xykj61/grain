@@ -91,6 +91,16 @@ undefined symbol (`__dyld_get_image_header_containing_address`, a legacy dyld ca
 debug unwinder references and newer SDKs no longer export); and nothing in the ring, the
 claims, or the language needed a single edit -- the pure core crossed as written.
 
+**And it ran (`20260829.093058`).** A booted iPhone 17 Pro simulator, `simctl spawn`, both
+witnesses: the event ring answers GREEN with every Swift-born refusal standing inside iOS, and
+the parity oracle answers `lit=16268` and the identical Keccak digest, hex for hex, that the
+macOS window answered live. Movement four's parity claim now holds across two operating
+systems, with only the compositor-attached Wayland half waiting at the pier. The projection
+above said the pure core would run in the simulator within one sitting of the wrapper door
+opening; it ran within the hour, and the falsifier never fired. (One machine note for the next
+hand: CoreSimulator's launchd service was down, and `simctl` waits on it silently, forever --
+`open -a Simulator` starts the service and everything after is ordinary.)
+
 No account, no certificate, no submission, no shipped build -- the movement's own stops. And no
 claim that Tahoe-styled polish comes free: the one true fork from the finding page stands on
 iOS too, and if SwiftUI's delivery of the platform look ever becomes the goal, the whole ladder

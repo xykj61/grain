@@ -11,6 +11,8 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260829.093058` | [green from inside ios](20260829/20260829-093058_green-from-inside-ios.kyri) | both witnesses spawn GREEN on a booted iPhone; pins identical across two OSes |
+| `20260829.084438` | [a checkout is not the field](20260829/20260829-084438_a-checkout-is-not-the-field.kyri) | lost refs 335 -> 165; repointer stops writing into a peer |
 | `20260829.070953` | [a witness builds what it runs](20260829/20260829-070953_a-witness-builds-what-it-runs.kyri) | %334 ratchet 19 -> 14; the card nib resolved to nothing |
 | `20260829.064107` | [the door the record cannot name](20260829/20260829-064107_the-door-the-record-cannot-name.kyri) | orbit four: 2 of 4 path elements absent inside; 3 duties keyless |
 | `20260829.061739` | [the lattice heard all forty](20260829/20260829-061739_the-lattice-heard-all-forty.kyri) | Dream: forty arithmetic seams run together, admitted and refused |
