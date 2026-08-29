@@ -24,7 +24,7 @@ let scan = run ["sh" "tools/fixtures/p/pond_enclosure_policy_scan.sh"]
 assert scan.ok else "enclosure-policy: the scan must complete"
 say scan.out
 assert scan.out contains "SELFTEST ok" else "enclosure-policy: every mark must answer as its comment says"
-assert scan.out contains "ROUNDTRIP ok" else "enclosure-policy: today's honest policy must place every declaration"
+assert scan.out contains "ROUNDTRIP ok" else "enclosure-policy: today's honest policy must read whole, holding only on its open network"
 assert scan.out contains "REFUSE ok" else "enclosure-policy: a forbidden mount must refuse by name"
 assert scan.out contains "REMOVAL ok" else "enclosure-policy: removing the plant must return the same file to green"
 assert scan.out contains "HOLD ok" else "enclosure-policy: the seated device lane must wait for a word"

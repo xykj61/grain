@@ -1,0 +1,38 @@
+# tools/p/pond_policy_launcher_witness.rish -- the record and the launcher it claims to describe.
+#
+#   rishi/bin/rishi run tools/p/pond_policy_launcher_witness.rish
+#
+# WHAT THIS HOLDS. pond/enclosure_policy.kyri says what the agent-jail lap builds; the launcher
+# builds it. Two spellings of one contract stood side by side and nothing compared them, so the
+# record shipped `network off` for an enclosure whose network namespace is the host's own -- read
+# on metal from /proc/<pid>/ns/net, with the PID namespaces differing so the instrument can tell a
+# shared namespace from an unshared one (REDS %329). Two readings are gated at zero here: a mount
+# the record never declared, which is the escape direction orbit two must rule out, and a closure
+# claim with no flag behind it, which is the promise nothing keeps.
+#
+# WHAT THIS DOES NOT REACH. Whether ai-jail honors the flags it is handed. This proves the two
+# tracked files agree; the enclosure bwrap actually assembles is the metal reading, reported by the
+# scan where the jail is installed and gated nowhere, since a guard that reds on somebody else's
+# machine is a guard someone turns off.
+#
+# ACCRETE-ONLY. This reads the ai-jail launcher and Pond's own record. It rewrites neither, and the
+# ENCLOSURE selector stays ai-jail until the switchover round lands behind its audit.
+
+say "policy-launcher: Language EN -- a record nobody checks against its subject is a second spelling of the truth."
+say "policy-launcher: Style Gauge, Meter -- each detail line names the declaration, so a count becomes a line to open."
+say "policy-launcher: Lens TAME -- safety first: both rosters are bounded, both gates are proven from both sides, and the metal reading is reported rather than trusted."
+
+let scan = run ["sh" "tools/fixtures/p/pond_policy_launcher_scan.sh"]
+assert scan.ok else "policy-launcher: the scan must complete -- ${scan.out}"
+say scan.out
+assert scan.out contains "unspelled_maps=0" else "policy-launcher: the launcher must mount nothing the record fails to declare"
+assert scan.out contains "unsupported_closures=0" else "policy-launcher: a record claiming a facility closed must point at the flag that closes it"
+assert scan.out contains "verdict=green" else "policy-launcher: the seam must read green"
+
+let control = run ["sh" "tools/fixtures/p/pond_policy_launcher_control.sh"]
+assert control.ok else "policy-launcher: the control must complete -- ${control.out}"
+say control.out
+assert control.out contains "control_fail=0" else "policy-launcher: every planted behavior must hold"
+assert control.out contains "control_verdict=ok" else "policy-launcher: the control must report ok"
+
+say "GREEN: pond policy-launcher -- the record and the launcher agree, and both gates are proven from both sides."

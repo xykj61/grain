@@ -22,6 +22,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260828.212441` | [the census before the lift](20260828/20260828-212441_the-census-before-the-lift.kyri) | 941 pieces measured; three grants, three hands |
 | `20260828.205706` | [the fold lands whole](20260828/20260828-205706_the-fold-lands-whole.kyri) | %301 five of five; %331 %332 close; the fusion word named |
 | `20260828.203907` | [the counter and the window](20260828/20260828-203907_the-counter-and-the-window.kyri) | %329 closed, %330 booked; the fleet instructed; transcripts get a room |
+| `20260828.202621` | [the network the record closed](20260828/20260828-202621_the-network-the-record-closed.kyri) | %329: Pond declared a wall the enclosure never had |
 | `20260828.201439` | [the ladder that outran its own page](20260828/20260828-201439_the-ladder-that-outran-its-own-page.kyri) | STOA334-346 fold home; a nib that resolved to nothing |
 | `20260828.195411` | [the shelf bound and the many hands](20260828/20260828-195411_the-shelf-bound-and-the-many-hands.kyri) | 768 seated for terminal shelves; the fixtures fold delegated |
 | `20260828.194236` | [the roster learns where](20260828/20260828-194236_the-roster-learns-where.kyri) | %295 closes on the host tier; the ceiling wall names its exemption |

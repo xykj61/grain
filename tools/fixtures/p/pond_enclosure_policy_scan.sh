@@ -53,9 +53,14 @@ expect() {
 expect 0 GREEN "$BIN" selftest
 echo "SELFTEST ok every mark answers as its comment says"
 
-# The honest policy of the lap running today round-trips whole.
-expect 0 'verdict=place' "$BIN" check "$LIVE"
-echo "ROUNDTRIP ok pond/enclosure_policy.kyri places every declaration"
+# The honest policy of the lap running today round-trips whole, and HOLDS on exactly one line.
+# This leg read `verdict=place` until 20260828, because the record claimed `network off` for an
+# enclosure whose network namespace is the host's own -- refuted on metal, REDS %329. Naming the
+# holding declaration rather than counting holds is what lets this leg refuse a drift in any OTHER
+# line: a second hold, or a different one, changes the message and fails here.
+expect 1 'awaits a word: network on' "$BIN" check "$LIVE"
+expect 1 'place=11 hold=1 refuse=0' "$BIN" check "$LIVE"
+echo "ROUNDTRIP ok pond/enclosure_policy.kyri reads whole; today's lap holds on its open network"
 
 # A forbidden mount refuses, and the receipt names the mount rather than counting it.
 expect 2 'forbidden declaration: map /home/youruser/.ssh' "$BIN" check "$REFUSE"
