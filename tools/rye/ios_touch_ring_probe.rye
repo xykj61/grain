@@ -102,6 +102,25 @@ fn touches_began(self: objc.Id, sel: objc.Sel, touches: objc.Id, event: ?objc.Id
     admit_touch(.touch_down, touches, self);
 }
 
+fn touches_moved(self: objc.Id, sel: objc.Sel, touches: objc.Id, event: ?objc.Id) callconv(.c) void {
+    _ = sel;
+    _ = event;
+    // invariant: the platform hands the receiver it registered.
+    assert(@intFromPtr(self) != 0);
+    admit_touch(.touch_moved, touches, self);
+}
+
+/// Wired and stored, its platform dispatch awaiting an honest cancellation: the system cancels
+/// touches on its own interruptions, and no synthetic road fakes one truthfully. The handler's
+/// registration is proven by read-back; its firing is a later rung's claim.
+fn touches_cancelled(self: objc.Id, sel: objc.Sel, touches: objc.Id, event: ?objc.Id) callconv(.c) void {
+    _ = sel;
+    _ = event;
+    // invariant: the platform hands the receiver it registered.
+    assert(@intFromPtr(self) != 0);
+    admit_touch(.touch_cancelled, touches, self);
+}
+
 fn touches_ended(self: objc.Id, sel: objc.Sel, touches: objc.Id, event: ?objc.Id) callconv(.c) void {
     _ = sel;
     _ = event;
@@ -123,20 +142,31 @@ fn close_probe(self: objc.Id, sel: objc.Sel, argument: ?objc.Id) callconv(.c) vo
     assert(@intFromPtr(self) != 0);
     if (closed) return;
     closed = true;
-    if (admitted < 2) {
-        print("ios-touch-ring: REFUSED -- the deadline passed with {d} admissions; no finger arrived.\n", .{admitted});
+    if (admitted < 3) {
+        print("ios-touch-ring: REFUSED -- the deadline passed with {d} admissions; no dragging finger arrived.\n", .{admitted});
         std.process.exit(2);
     }
+    // The drain: one down, at least one moved between, one up -- the platform's own phase
+    // order surviving the ring whole, which only a real drag satisfies.
     const down = ring.remove_first() orelse @panic("touch ring: the drain found an empty ring");
-    const up = ring.remove_first() orelse @panic("touch ring: the drain found one event of two");
-    // invariant: the platform's order survives the ring -- the finger lands before it lifts.
+    // invariant: the finger lands before anything else.
     assert(down.kind == input.InputKind.touch_down);
-    assert(up.kind == input.InputKind.touch_up);
-    // invariant: a real tap carries a real location on both phases.
-    assert(down.x_points >= 0);
-    assert(up.x_points >= 0);
-    print("ios-touch-ring: drained down=({d},{d}) up=({d},{d}) in order\n", .{ down.x_points, down.y_points, up.x_points, up.y_points });
-    print("ios-touch-ring: GREEN -- a real finger crossed the platform's dispatch, the domain event, and the proven ring; the iOS twin story closes.\n", .{});
+    var moved_count: u32 = 0;
+    var last = ring.remove_first() orelse @panic("touch ring: the drain found one event only");
+    while (last.kind == input.InputKind.touch_moved) {
+        moved_count += 1;
+        last = ring.remove_first() orelse @panic("touch ring: the drag never lifted");
+    }
+    // invariant: the phases between down and up are moves and nothing else.
+    assert(last.kind == input.InputKind.touch_up);
+    // invariant: a drag moves at least once -- the rung's own claim.
+    assert(moved_count >= 1);
+    // invariant: the ring drained whole.
+    assert(ring.is_empty());
+    // invariant: a real drag travels -- the lift stands apart from the landing.
+    assert(down.x_points != last.x_points or down.y_points != last.y_points);
+    print("ios-touch-ring: drained down=({d},{d}) moved={d} up=({d},{d}) in order\n", .{ down.x_points, down.y_points, moved_count, last.x_points, last.y_points });
+    print("ios-touch-ring: GREEN -- a real drag crossed the platform's dispatch, all phases in order, through the proven ring.\n", .{});
     std.process.exit(0);
 }
 
@@ -248,6 +278,8 @@ pub fn main() !void {
     // authority (the %335 lesson holds on iOS exactly as on macOS).
     _ = objc.verify(view_class, "touchesBegan:withEvent:", touch_types, false);
     _ = objc.verify(view_class, "touchesEnded:withEvent:", touch_types, false);
+    _ = objc.verify(view_class, "touchesMoved:withEvent:", touch_types, false);
+    _ = objc.verify(view_class, "touchesCancelled:withEvent:", touch_types, false);
     print("ios-touch-ring: seam verified against the loaded UIKit and Foundation.\n", .{});
 
     close_sel = objc.sel_registerName("grainCloseProbe:");
@@ -255,8 +287,11 @@ pub fn main() !void {
     const my_view_class = objc.allocate_class(view_class, view_class_name);
     _ = objc.add_method(my_view_class, "touchesBegan:withEvent:", objc.imp(&touches_began), touch_types);
     _ = objc.add_method(my_view_class, "touchesEnded:withEvent:", objc.imp(&touches_ended), touch_types);
+    _ = objc.add_method(my_view_class, "touchesMoved:withEvent:", objc.imp(&touches_moved), touch_types);
+    _ = objc.add_method(my_view_class, "touchesCancelled:withEvent:", objc.imp(&touches_cancelled), touch_types);
     objc.objc_registerClassPair(my_view_class);
     _ = objc.verify(my_view_class, "touchesBegan:withEvent:", touch_types, false);
+    _ = objc.verify(my_view_class, "touchesCancelled:withEvent:", touch_types, false);
 
     const my_delegate_class = objc.allocate_class(object_class, delegate_class_name);
     _ = objc.add_method(my_delegate_class, "application:didFinishLaunchingWithOptions:", objc.imp(&did_finish_launching), did_finish_types);

@@ -13,11 +13,12 @@ const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 
-// The six doors the backends admit today: keys and mouse from macOS, touches from iOS (widened
-// `20260829.111001`, the touch rung). IME, dead keys, scroll, and motion are their own later
-// rungs; a kind is added by widening this enum, max_kind, and the proving probes together.
-pub const InputKind = enum(u8) { key_down = 1, key_up = 2, mouse_down = 3, mouse_up = 4, touch_down = 5, touch_up = 6 };
-pub const max_kind: u8 = 6;
+// The eight doors the backends admit today: keys and mouse from macOS, and the four touch
+// phases from iOS (down/up widened `20260829.111001`; moved/cancelled `20260829.123524`).
+// IME, dead keys, and scroll are their own later rungs; a kind is added by widening this
+// enum, max_kind, and the proving probes together.
+pub const InputKind = enum(u8) { key_down = 1, key_up = 2, mouse_down = 3, mouse_up = 4, touch_down = 5, touch_up = 6, touch_moved = 7, touch_cancelled = 8 };
+pub const max_kind: u8 = 8;
 
 /// One admitted input: the kind, the platform's own code (keyCode for keys, button number for
 /// mouse), and the location in window points (zero for keys, which carry no location).
