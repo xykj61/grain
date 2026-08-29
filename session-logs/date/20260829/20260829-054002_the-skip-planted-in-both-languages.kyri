@@ -1,0 +1,36 @@
+format session-log-v1
+stamp 20260829.054002
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role SILENCE seat -- infrastructure Glow, autonomous terminal loop on the macOS bench
+modality text
+model claude-opus-5
+model_status active runtime, product-reported identity
+voice Kyri
+host anonymized macOS arm64 bench, one-clock zone America/New_York
+coordination user coordinated separate sessions
+collaborator_session none reachable -- ListAgents answered "No reachable agents" at lap open, per REDS %291
+collaborator_scope a peer working a SEPARATE CLONE landed 276ea0a7d during this lap; seen only by git fetch, never by ListAgents
+title The skip planted in both languages -- and the duplicate lap that paid for it
+prompt The autonomous seat prompt: roster cold, reds first, rota row N mod 5, QA on touch, read scope; pick up the running thread.
+think Rota N=3709, row 4 -- earth, the row that smells: the concrete fact before it is argued with. Read the threshold page, the one-clock law, TWO_ROOMS, and the marked value. The row's own instruction is to trust the first reading off the door and check it against the witness, which is exactly what this lap ended up doing twice.
+think Roster cold: 90 guards, 85 green, 5 red, tree_moved=no, all five pre-existing. Of the five, rule_twin is custody gate %7, two are Pond on a macOS bench (Hush's lane), dated_path is 335/168 and large. ascii_comment at 4,342 over 4,333 was the one both small and mine.
+think Smelled the ground rather than taking the card's sentence: measured 56 symlinked .rye paths carrying 548 of the 4,342 characters, every one already counted at its target, and tools/rye/sha3.rye carrying exactly the nine that broke the ceiling. Repaired both scans, extended both controls, asserted in the witness, GREEN.
+think Then fetch-before-book, per the standing directive, and xy had moved: 380a85ae4 "tools: the bytes a census counted twice" -- the same root, the same 3,794, landed at 05:02 by a peer in another clone while I measured. Their commit is published and mine was not, so theirs is the base and mine rebases onto it. No second implementation.
+think Read their work before keeping a line of my own. Their skip is one line, [ -L "$f" ] && continue, carrying a house sentence from caravan_wrap_class_scan.sh, and their control grows 7 -> 9 readings. Two things their lap did not reach: the SHELL control plants no symlink case at all, and the RYE control still proved its ceiling only in the passing direction while its shell sibling proved both. Those two I kept; everything else of mine I dropped.
+obs My own resolver was wrong on its first run and the tree caught it, not me: I ran readlink "$f" after cd-ing into the file's own directory, so the path no longer existed, dirname read ".", and 36 of 224 symlinks reported a target outside the list. Redone with realpath: 224 of 224 resolve into the list, chars_at_risk=0. A measurement I had already written a sentence about was wrong for one line of shell.
+obs I had also built the safer half -- count a symlink resolving OUTSIDE the scan's list rather than skipping every link -- and dropped it on purpose. It guards an empty set today (224 of 224 resolve inside), it competes with a peer's freshly landed line, and re-editing landed work to add machinery for nothing is churn. Named here so the option is recoverable rather than forgotten.
+obs Declined to book a red for the duplicated lap, and the reason is a timestamp. My roster opened 04:52:54; their commit is dated 05:02:38. Their work did not exist upstream when my lap opened, so no fetch-first open could have seen it -- the twice-pulled way worked exactly as written, and caught it at the one moment it was catchable. %291 already owns the root and is gated on Keaton's word. Booking a row against a discipline that worked, into a pin that is full and deadlocked (%338), would be the wrong move twice over.
+obs What the duplication bought is the same thing %291 recorded: a second reader. Their lap left the shell half of its own repair unproven and the Rye ceiling one-sided; this lap found both and closed them. Two hands on one repair is waste that pays a dividend when the second hand reads rather than re-implements.
+obs The card had 27 bytes of headroom, so the Now block was written to fit twice: my first draft ran 167 over, my second fit by silently dropping a peer's live Comlink fact, and the third paid for that fact out of my own sentences. A page that full makes every edit a trade, which is %338's own subject one lap later.
+loom ascii_meter rye_chars=3794 rye_files=314 rye_ceiling=3794 symlinks_deduped=224 chars_double_counted=548 shell_chars=505 shell_ceiling=505
+loom control_proofs rye_readings=9 shell_readings=15 rye_ceiling_both_ways=yes shell_skip_both_ways=yes skip_deleted_shell_reads=8of7
+loom roster_cold guards=90 green=85 red=5 tree_moved=no closed_this_lap=1
+loom qa witness=98A+ rye_control=98A+ shell_control=98A+
+loom rota_n=3709 rota_row=4 rota_name=earth hand_advanced=no
+file tools/fixtures/s/shell_comment_ascii_control.sh the symlink case %340 never planted here, in that control's own vocabulary
+file tools/fixtures/r/rye_comment_ascii_control.sh the ceiling proven from both sides, as its shell sibling always was
+file tools/as/ascii_comment_witness.rish five new assertions, so the control's new answers are read rather than printed
+file construction/ITINERARY.md the Now block rewritten to fit, both facts kept
+recommend keep-going the ascii_comment red is closed and four roster reds stand: rule_twin is custody gate %7, two are Pond on a macOS bench, and dated_path at 335/168 is the one left in reach. The REDS capacity deadlock (%338) still wants his seat, and the card now sits 18 bytes under its own bound.

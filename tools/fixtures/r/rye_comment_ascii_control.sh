@@ -20,6 +20,10 @@
 #   9  and the target it points at is still counted on its own row, so the skip drops a duplicate
 #      rather than a file
 #
+# AND THE CEILING, FROM BOTH SIDES, as its shell sibling has kept all along. The pen is pushed one
+# character past the scan's own ceiling and read again, then the plant is removed and the reading
+# must return green. There is no override.
+#
 # USAGE
 #   sh tools/fixtures/r/rye_comment_ascii_control.sh
 #
@@ -71,5 +75,23 @@ case "$out" in *"room/line_comment.rye"*) echo "symlink_target_kept=yes";; *) ec
 
 # four prose files, one character each, and nothing else -- five would mean the link was followed
 case "$out" in *"chars=4 "*) echo "total_is_four=yes";; *) echo "total_is_four=no";; esac
+case "$out" in *"under_ceiling=yes"*) echo "clean_pen_under_ceiling=yes";; *) echo "clean_pen_under_ceiling=no";; esac
+
+# THE CEILING, FROM BOTH SIDES -- the reading this control lacked while its shell sibling kept it.
+# A refusal proven only in the passing direction cannot be told from a bypass: a ceiling no pen has
+# ever crossed may be a number nothing reads. The scan's own ceiling is read out of its output
+# rather than spelled here, so this stays true on the next lap that lowers it.
+ceiling=$(printf '%s' "$out" | sed -n 's/.* ceiling=\([0-9][0-9]*\) .*/\1/p')
+over=$((ceiling + 1))
+{ printf '// '; i=0; while [ "$i" -lt "$over" ]; do printf '\xe2\x80\x94'; i=$((i + 1)); done; printf '\n'; } > room/over.rye
+git add -A >/dev/null 2>&1
+loud=$(sh "$scan" 2>/dev/null)
+echo "$loud" | sed 's/^/over_/'
+case "$loud" in *"under_ceiling=no"*) echo "over_ceiling_refuses=yes";; *) echo "over_ceiling_refuses=no";; esac
+
+rm -f room/over.rye
+git add -A >/dev/null 2>&1
+back=$(sh "$scan" 2>/dev/null)
+case "$back" in *"under_ceiling=yes"*) echo "removed_returns_green=yes";; *) echo "removed_returns_green=no";; esac
 
 echo "control_verdict=ok"

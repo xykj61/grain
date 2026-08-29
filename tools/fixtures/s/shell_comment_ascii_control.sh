@@ -6,7 +6,7 @@
 # lesson at a string literal, by hand and the expensive way. So every reading is planted in a
 # throwaway git repository and proven from both sides before it is trusted on 2,823 real files.
 #
-# WHAT IS PROVEN -- thirteen behaviors, and each one is a claim the scan makes out loud:
+# WHAT IS PROVEN -- fifteen behaviors, and each one is a claim the scan makes out loud:
 #    1  a `#` comment with non-ASCII is counted in a `.rish` source
 #    2  a `#` comment with non-ASCII is counted in a `.sh` source
 #    3  an indented comment is counted, so leading whitespace does not hide prose
@@ -21,6 +21,10 @@
 #   11  a `<<EOF` written inside a comment does not open a heredoc
 #   12  a trailing comment after code is NOT counted -- the deliberate undercount, named in the scan
 #   13  the vendored rooms are left out, since those files are not ours to convert
+#   14  a SYMLINK to a counted source is not counted a second time -- `git ls-files` lists a link
+#       and its target as two paths, and following both counts one set of bytes twice (REDS %340)
+#   15  and the target it points at is still counted on its own row, so the skip drops a duplicate
+#       rather than a file
 #
 # AND THE CEILING, FROM BOTH SIDES. A refusal proven only in the passing direction cannot be told
 # from a bypass, so the pen is pushed over the ceiling and read again. There is no override.
@@ -59,6 +63,14 @@ printf "cat <<<\"x\"\n# after herestring $em one\n"             > room/herestrin
 printf "# prose naming <<EOF in passing\n# after $em one\n"     > room/comment_opener.sh
 printf "echo hi  # trailing $em one\n"                          > room/trailing.sh
 printf "# theirs $em one\n"                                     > vendor/theirs/x.rish
+
+# A link beside its target, the shape `tools/rye/sha3.rye` took on `20260829` one language over.
+# `git ls-files` lists a link and its target as two paths, and following both counts one set of
+# bytes twice; the Rye meter read 4,342 against a ceiling of 4,333 that way and reported a rise
+# nobody had written (REDS %340). That repair reached this scan's `[ -L "$f" ] && continue` line
+# and stopped short of this control, so the shell half of it stood unproven -- and this tree tracks
+# exactly one symlinked `.rish` today, which is why the reading is planted rather than waited for.
+ln -s sh_comment.sh room/link_to_sh_comment.sh
 git add -A >/dev/null 2>&1; git commit -qm plant >/dev/null 2>&1
 
 out=$(sh "$scan" --list 2>/dev/null)
@@ -74,7 +86,12 @@ for name in heredoc_plain.sh heredoc_quoted.sh heredoc_dash.sh heredoc_strict.sh
 done
 case "$out" in *"vendor/theirs"*) echo "vendor_excluded=no";; *) echo "vendor_excluded=yes";; esac
 
-# Seven prose files, one character each, and nothing else.
+# The symlink is tracked and resolves to a counted comment, so a meter that follows it reads eight.
+case "$out" in *"room/link_to_sh_comment.sh"*) echo "symlink_skipped=no";; *) echo "symlink_skipped=yes";; esac
+# And the skip drops the duplicate rather than the file: the target still counts on its own row.
+case "$out" in *"room/sh_comment.sh"*) echo "symlink_target_kept=yes";; *) echo "symlink_target_kept=no";; esac
+
+# Seven prose files, one character each, and nothing else -- eight would mean the link was followed.
 case "$out" in *"chars=7 "*) echo "total_is_seven=yes";; *) echo "total_is_seven=no";; esac
 case "$out" in *"under_ceiling=yes"*) echo "clean_pen_under_ceiling=yes";; *) echo "clean_pen_under_ceiling=no";; esac
 
