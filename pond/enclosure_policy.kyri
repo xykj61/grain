@@ -24,16 +24,65 @@
 # network (an agent that cannot reach its API does nothing), and now the record says so out loud
 # where an operator reads it.
 #
+# THE JAIL'S OWN DEFAULTS, MEASURED 20260828 (orbit two's first lap). Until this lap the record
+# declared six mounts, and the enclosure builds twenty-seven. The missing twenty-one come from
+# ai-jail's own defaults rather than from any flag the launcher passes, so
+# tools/fixtures/p/pond_policy_launcher_scan.sh -- which compares this record against what the
+# launcher SPELLS -- could not see them, and said so in its own header. They are declared below,
+# read off `ai-jail --dry-run`, which prints the bwrap plan without starting anything. The
+# instrument is tools/fixtures/p/pond_enclosure_built_scan.sh and the measurement it read is
+# pinned at tools/fixtures/p/pond_enclosure_default_plan.kyri.
+#
+# THREE OF THOSE LINES DO NOT PLACE, AND THAT IS THE FINDING. `map /sys` refuses, because this
+# module's own roster refuses a whole-/sys map by name -- it hands back exactly what the
+# namespaces were raised to hold -- and the enclosure read-only-binds all of it. The four `mask`
+# lines under it close the classic corners (firmware, the security and debug interfaces, the fuse
+# control), and a reading that could weigh a mask against the map above it would be a real
+# improvement and a LOOSENING, so it waits for a word rather than being written by the lap that
+# found the problem. `rw-map /tmp/.X11-unix:/tmp/.X11-unix` refuses for the roster's other line:
+# a shared host /tmp, here the X11 socket directory every X client on the host can be reached
+# through, which arrives because the launcher passes no --no-display. `device /dev/shm` holds, as
+# every device outside the seated GPU lane does.
+#
+# So this record now reads REFUSE, exit 2, naming the first line to open. That is the module
+# working rather than a regression -- the same shape as `network on` holding a week earlier. Pond
+# will not admit this enclosure as it stands, and orbit two derives its grants from a record that
+# says so out loud.
+#
+# `map /nix/store` LEFT WITH THIS LAP. It was the record's honest guess at a jail default and the
+# plan says the default is `/nix`, whole. One right line replaces one near-miss.
+#
 #   pond/bin/enclosure-policy check pond/enclosure_policy.kyri
 format pond-enclosure-policy-v1
 name agent-jail-lap
 private-home yes
 network on
 gpu no
-map /nix/store
 map /run/current-system
 persist /home/youruser/grain
 ephemeral /tmp
+
+# The jail's own defaults, in the order the plan builds them.
+map /usr
+map /bin
+map /lib64
+map /nix
+map /etc
+map /opt
+map /sys
+fresh /dev
+fresh /proc
+ephemeral /run
+graft /nix/store/<hash>-hosts
+graft /etc/resolv.conf
+graft /tmp/.ai-jail-landlock
+mask /sys/firmware
+mask /sys/kernel/security
+mask /sys/kernel/debug
+mask /sys/fs/fuse
+device /dev/shm
+rw-map /tmp/.X11-unix:/tmp/.X11-unix
+rw-map /run/user/<uid>:/run/user/<uid>
 rw-map /home/youruser/grain/loops/claude:/home/youruser/.claude
 rw-map /home/youruser/grain/loops/cursor:/home/youruser/.cursor
 rw-map /home/youruser/grain/loops/cursor/xdg-config:/home/youruser/.config/cursor

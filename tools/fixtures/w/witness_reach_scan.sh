@@ -180,11 +180,25 @@ done
 # still run when a hand types their name, and clocking them is their authors' lap. The ceiling falls
 # to the reading with no slack so the next unclocked birth reds on the lap it arrives, which is the
 # whole point of a ratchet that only falls.
-CEILING=${WITNESS_REACH_CEILING:-1112}
+#
+# Their three took their clocks the same evening, on the lap that measured the enclosure's own
+# mounts: waymark_rung_drift and tally_bud at `lap`, counsel_census at `cadence`. So the debt the
+# paragraph above names as another lane's is paid by its own lane too, and the ceiling falls again
+# to whatever the two sets of rows leave -- measured, never assumed: 1107, six rows below 1113.
+#
+# 1107 -> 1108, and 219 -> 220, on the rebase that followed, and the one row is named rather than
+# absorbed: tools/m/macos_app_bundle_witness.rish landed unrostered, opens a family of its own, and
+# CANNOT take a clock on this pier -- it builds a macOS app bundle and dies at `app-bundle: the
+# shell probe must build` on Linux. `host macos` is the seated tier for exactly that (REDS %295),
+# and its row belongs to the lane that can run it GREEN on a Mac before promising it. Until then
+# this is a Linux bench carrying one macOS debt it cannot pay, said out loud rather than hidden in
+# a number.
+CEILING=${WITNESS_REACH_CEILING:-1108}
 # The family ceiling, seated 20260828 at what the tree measured that day: 220 of 292 families carry
 # no clock at all. It only falls, and it falls whenever a family's first roster row lands. It is a
 # ratchet rather than a wall at zero for the same reason CEILING is: a wall that refuses ordinary
 # work is a wall somebody turns off.
+# Lowered 220 -> 219 on 20260828 by the same three roster rows.
 FAMILY_CEILING=${WITNESS_REACH_FAMILY_CEILING:-220}
 
 mode="${1:-}"
@@ -406,11 +420,22 @@ unreached=$(wc -l < "$pen/unreached" | tr -d ' ')
 # summary line names how many families there are and how many are WHOLLY unreached.
 family_names() { sed -E 's|^tools/[^/]+/||; s|^.*/||' "$1" | cut -d_ -f1; }
 
+# THE JOIN KEY IS SORTED THE WAY THE JOIN READS IT. Both censuses below build two tables and join
+# them on the family name, and both once sorted the WHOLE line under the host locale while `join`
+# compared field one alone. Those are two different orders: a locale sort weighs the tab and the
+# count, so `hawm` could land after a longer name beginning with the same letters, and `join`
+# answered `input is not in sorted order` on stderr and then silently DROPPED the rows it could no
+# longer match. A dropped row here reads as a family that is not wholly unreached, so the gated
+# number came out LOW -- a guard under-reporting in the safe-looking direction, which is the
+# direction nobody checks. `LC_ALL=C sort -t<tab> -k1,1` sorts by the key the join uses, in the
+# byte order it uses, so the two agree by construction rather than by luck of the locale.
+sort_by_family() { LC_ALL=C sort -t"$(printf '\t')" -k1,1; }
+
 # families <set-file> -- one line per family: share, unreached/total, name, ranked by share then size.
 families() {
-  family_names "$pen/all" | sort | uniq -c | awk '{ print $2 "\t" $1 }' | sort > "$pen/fam_tot"
-  family_names "$1"       | sort | uniq -c | awk '{ print $2 "\t" $1 }' | sort > "$pen/fam_sel"
-  join -t"$(printf '\t')" "$pen/fam_tot" "$pen/fam_sel" \
+  family_names "$pen/all" | sort | uniq -c | awk '{ print $2 "\t" $1 }' | sort_by_family > "$pen/fam_tot"
+  family_names "$1"       | sort | uniq -c | awk '{ print $2 "\t" $1 }' | sort_by_family > "$pen/fam_sel"
+  LC_ALL=C join -t"$(printf '\t')" "$pen/fam_tot" "$pen/fam_sel" \
     | awk -F'\t' '{ printf "%6.1f%%  %4d/%-4d  %s\n", 100*$3/$2, $3, $2, $1 }' \
     | sort -rn -k1
 }
@@ -421,9 +446,9 @@ families() {
 # leaves `unreached` exactly where it stood, and unguards the whole family -- which is the case the
 # single total is blind to, and the case this number exists to catch.
 wholly_unreached_count() {
-  family_names "$pen/all"       | sort | uniq -c | awk '{ print $2 "\t" $1 }' | sort > "$pen/fam_tot"
-  family_names "$pen/unreached" | sort | uniq -c | awk '{ print $2 "\t" $1 }' | sort > "$pen/fam_unr"
-  join -t"$(printf '\t')" "$pen/fam_tot" "$pen/fam_unr" | awk -F'\t' '$2 == $3' | wc -l | tr -d ' '
+  family_names "$pen/all"       | sort | uniq -c | awk '{ print $2 "\t" $1 }' | sort_by_family > "$pen/fam_tot"
+  family_names "$pen/unreached" | sort | uniq -c | awk '{ print $2 "\t" $1 }' | sort_by_family > "$pen/fam_unr"
+  LC_ALL=C join -t"$(printf '\t')" "$pen/fam_tot" "$pen/fam_unr" | awk -F'\t' '$2 == $3' | wc -l | tr -d ' '
 }
 
 families_total=$(family_names "$pen/all" | sort -u | wc -l | tr -d ' ')

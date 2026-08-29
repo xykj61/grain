@@ -1,0 +1,49 @@
+# tools/fixtures/p/pond_enclosure_default_plan.kyri -- the mount plan ai-jail builds from its own
+# defaults, measured rather than remembered.
+#
+# WHAT THIS IS. `ai-jail --dry-run` prints the bwrap argument vector without starting anything.
+# Run in a scratch directory with the flags tools/ag/agent-jail.sh spells by default, every mount
+# in that plan is a default except the two the invocation itself creates -- the working
+# directory's own bind and the private home's tmpfs -- and both are dropped here. What remains is
+# what the enclosure supplies whatever a launcher asks for.
+#
+# WHY IT IS PINNED. tools/fixtures/p/pond_enclosure_built_scan.sh gates
+# pond/enclosure_policy.kyri against this plan, so the same reading lands on a clone with no jail
+# installed. Where ai-jail IS installed the scan reads a live dry run too and reports any
+# disagreement as `plan_drift`, which is the signal to measure again and re-pin. This file is
+# TESTIMONY -- a reading taken on a named host at a named stamp -- rather than a rule anyone chose.
+#
+# NORMALIZED IN FOUR RULES, so nothing a pier knows about its operator reaches the tree: a host
+# home becomes /home/youruser (the record's own placeholder convention), a runtime directory's
+# numeric owner becomes <uid>, a nix store hash becomes <hash>, and bwrap's per-run temporary
+# names lose their pid and nanosecond fields. The scan applies the same four to a live plan.
+#
+# The rows are bwrap's own words. The scan translates them into the record's declaration marks;
+# that table lives in the scan, in one place, so a live plan and this one are read by one
+# instrument.
+format pond-enclosure-default-plan-v1
+measured 20260828.232919
+host framework-linux-x86_64
+jail ai-jail 1.16.2
+flags --private-home --no-docker --no-gpu
+ro-bind /usr /usr
+ro-bind /bin /bin
+ro-bind /lib64 /lib64
+ro-bind /nix /nix
+ro-bind /etc /etc
+ro-bind /tmp/bwrap-hosts /nix/store/<hash>-hosts
+ro-bind /opt /opt
+ro-bind /sys /sys
+dev /dev
+proc /proc
+tmpfs /tmp
+tmpfs /run
+ro-bind /tmp/bwrap-resolv /etc/resolv.conf
+tmpfs /sys/firmware
+tmpfs /sys/kernel/security
+tmpfs /sys/kernel/debug
+tmpfs /sys/fs/fuse
+dev-bind /dev/shm /dev/shm
+bind /tmp/.X11-unix /tmp/.X11-unix
+bind /run/user/<uid> /run/user/<uid>
+ro-bind /nix/store/<hash>-ai-jail/bin/.ai-jail-wrapped /tmp/.ai-jail-landlock

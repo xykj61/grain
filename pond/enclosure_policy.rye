@@ -24,6 +24,15 @@
 //! orbit one of `expanding-prompts/20260826-033051_pond-completes-the-enclosure.md`. The elder
 //! vision, policy as a value in Rishi, is `rishi/examples/pond.rish`.
 //!
+//! THREE MARKS ARRIVED 20260828, and each answers a sentence the elder eight could not say. An
+//! enclosure does more than bind host paths in: it raises filesystems of its own (`fresh`), lays
+//! empty ones over paths to hide what a wider mount left underneath (`mask`), and stands its own
+//! generated files at paths inside its walls (`graft`). Writing any of those three as a `map`
+//! would claim a host room crossed the wall when none did -- `map /proc` says the enclosure hands
+//! back the host's process table, and `fresh /proc` says it raises its own. Opposite claims about
+//! isolation, so they get opposite words. New marks accrete; a mark once published keeps its
+//! meaning (`foundations/20260703-202312_the-marked-value.md`).
+//!
 //! WHAT THIS DOES NOT REACH. Declaring a policy and enforcing one are two rounds. This reads a
 //! policy and marks it; driving it through Caravan's capability and address-space pieces is
 //! orbit two. The three bus doors of Bar 6 -- the session-bus environment variable, the runtime
@@ -34,7 +43,7 @@ const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 
-pub const pond_enclosure_policy_version = "20260828.002135";
+pub const pond_enclosure_policy_version = "20260828.233813";
 
 /// A policy small enough to hold in one reading is a policy somebody audits. 8 KiB is the same
 /// bound customs reads a manifest under, so the two seams agree on what "one document" means.
@@ -66,6 +75,19 @@ pub const Kind = enum {
     device,
     persist,
     ephemeral,
+    /// A new kernel filesystem raised inside the enclosure rather than a bind of the host's --
+    /// what bwrap's `--dev` and `--proc` do. The distinction is the whole point: `map /proc`
+    /// would say the enclosure hands back the host's process table, and `fresh /proc` says it
+    /// raises its own, which is the opposite claim about isolation.
+    fresh,
+    /// An empty filesystem laid over a path so whatever a wider mount put underneath is
+    /// unreachable. A mask only ever closes, so it needs no sharing roster of its own.
+    mask,
+    /// A file the enclosure supplies to itself, standing at a path inside its own walls -- the
+    /// synthesized hosts file, the resolver's configuration, the sandbox's own re-exec wrapper.
+    /// Nothing of the host's crosses, so a graft is judged on where it stands rather than on the
+    /// host-sharing roster the map marks take.
+    graft,
 };
 
 pub const Receipt = struct {
@@ -107,6 +129,9 @@ fn kind_name(k: Kind) []const u8 {
         .device => "device",
         .persist => "persist",
         .ephemeral => "ephemeral",
+        .fresh => "fresh",
+        .mask => "mask",
+        .graft => "graft",
     };
 }
 
@@ -121,6 +146,9 @@ pub fn kind_for_token(token: []const u8) ?Kind {
     if (std.mem.eql(u8, token, "device")) return .device;
     if (std.mem.eql(u8, token, "persist")) return .persist;
     if (std.mem.eql(u8, token, "ephemeral")) return .ephemeral;
+    if (std.mem.eql(u8, token, "fresh")) return .fresh;
+    if (std.mem.eql(u8, token, "mask")) return .mask;
+    if (std.mem.eql(u8, token, "graft")) return .graft;
     return null;
 }
 
@@ -328,6 +356,27 @@ fn verdict_for_device(value: []const u8) Verdict {
     return .hold;
 }
 
+/// A fresh filesystem is the enclosure raising its own, so the roster is closed at the two the
+/// kernel actually offers this way -- `/dev` and `/proc`. Anything else holds rather than refuses,
+/// on the same reasoning `verdict_for_device` gives: the roster of things an enclosure might
+/// honestly want stays open, and a name nobody has thought about earns a word rather than a wall.
+fn verdict_for_fresh(value: []const u8) Verdict {
+    // invariant: the value is judged inside the declared bound.
+    assert(value.len <= max_value_len);
+    // The roster answers before the structural reading, and the reason is the whole point of this
+    // mark. `verdict_for_path` refuses `/proc` and `/sys` by name because a MAP of either hands
+    // back exactly what the namespaces were raised to hold -- and a fresh `/proc` is the opposite
+    // act, the enclosure raising its own process table. Both are literals, so no key room can
+    // hide inside one.
+    if (std.mem.eql(u8, value, "/dev")) return .place;
+    if (std.mem.eql(u8, value, "/proc")) return .place;
+    const structural = verdict_for_path(value);
+    if (structural != .place) return structural;
+    // invariant: a path that passed the structural reading is absolute and non-empty.
+    assert(value.len > 0);
+    return .hold;
+}
+
 pub fn verdict_for_declaration(kind: Kind, value: []const u8) Verdict {
     // invariant: a declaration is judged inside the declared bound.
     assert(value.len <= max_value_len);
@@ -340,7 +389,10 @@ pub fn verdict_for_declaration(kind: Kind, value: []const u8) Verdict {
         .network => verdict_for_network(value),
         .gpu => verdict_for_gpu(value),
         .device => verdict_for_device(value),
-        .persist, .ephemeral => verdict_for_path(value),
+        .fresh => verdict_for_fresh(value),
+        // A mask closes and a graft supplies; neither carries a host room across the wall, so both
+        // take the structural reading alone, exactly as persist and ephemeral do.
+        .persist, .ephemeral, .mask, .graft => verdict_for_path(value),
     };
 }
 
@@ -457,6 +509,15 @@ fn run_selftest() !u8 {
     assert(verdict_for_declaration(.device, "/dev/kvm") == .hold);
     assert(verdict_for_declaration(.device, "/dev/mem") == .refuse);
     assert(verdict_for_declaration(.device, "/home/youruser/grain") == .refuse);
+    assert(verdict_for_declaration(.fresh, "/dev") == .place);
+    assert(verdict_for_declaration(.fresh, "/proc") == .place);
+    assert(verdict_for_declaration(.fresh, "/sys") == .refuse);
+    assert(verdict_for_declaration(.fresh, "/opt") == .hold);
+    assert(verdict_for_declaration(.mask, "/sys/kernel/debug") == .place);
+    assert(verdict_for_declaration(.mask, "relative") == .refuse);
+    assert(verdict_for_declaration(.graft, "/etc/resolv.conf") == .place);
+    assert(verdict_for_declaration(.graft, "/tmp/.ai-jail-landlock") == .place);
+    assert(verdict_for_declaration(.graft, "/home/youruser/.ssh/config") == .refuse);
 
     // The structural readings, each refusing for its own stated reason.
     assert(verdict_for_path("relative/path") == .refuse);

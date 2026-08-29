@@ -58,11 +58,13 @@ if [ $# -ge 2 ] && [ "$1" = "--root" ]; then root=$2; fi
 cd "$root" || { echo "verdict=not_at_root" >&2; exit 1; }
 [ -f tools/w/width-check.rish ] || { echo "verdict=no_declared_roster" >&2; exit 1; }
 
-# The ratchet's ceilings only ever fall. Measured 20260826.210603 over 1,891 authored sources on
-# the lap the meter first had a body -- the honest opening reading of a population nobody had ever
-# counted, rather than a target anybody chose.
-corpus_files_ceiling=359
-corpus_lines_ceiling=1365
+# The ratchet's ceilings only ever fall. First measured 20260826.210603 at 359 files and 1,365
+# lines over 1,891 sources -- the honest opening reading of a population nobody had ever counted.
+# Lowered 20260828 to the sharper filter below, which drops comment prose, the inherited-C
+# `extern fn` seam, and identifiers merely containing the five letters: 329 files and 1,263 lines
+# over 1,899 sources, on a committed tree.
+corpus_files_ceiling=329
+corpus_lines_ceiling=1263
 
 # The named exemption, pinned. Five seam-derived locals in the Rishi interpreter; see the header.
 exempt_path=rishi/src/main.rye
@@ -71,9 +73,35 @@ exempt_pinned=5
 work=$(mktemp -d)
 trap 'rm -rf "$work"' EXIT INT TERM
 
-# The seam-aware reading, in one place. A line carrying `usize` and neither seam marker is flagged.
+# The seam-aware reading, in one place. A line is flagged when it carries the WORD `usize` in
+# authored code and names no seam. Five filters, and each earns its place by a line the meter
+# read wrong on 20260828.
+#
+#   `@intCast`, `@as(usize`   the inherited-std seam TAME already welcomes -- the elder pair.
+#   a comment line            `//`, `///`, `//!` is prose. The header of tools/rye/objc_seam.rye
+#                             says the word `usize` while declaring nothing, and 48 such lines
+#                             stood across the corpus, each counted as authored width.
+#   `extern fn`               the inherited-C seam. `CGBitmapContextCreate` takes `size_t` in
+#                             CoreGraphics, so a Rye declaration of it MUST read `usize` or the
+#                             call is wrong at the ABI. Converting one would break the binding
+#                             rather than tighten it, so it is a seam by the same argument that
+#                             seats `@intCast` -- the width is not ours to choose. 6 lines.
+#   the whole word            `grep -w`. `n_usize` is an identifier holding a value some earlier
+#                             `@intCast` already widened, and the line carries no type at all.
+#                             52 lines read as authored width for having those five letters
+#                             inside a name.
+#
+# Measured 20260828 over the same 1,899 sources: 362 files and 1,369 lines under the elder pair,
+# 329 and 1,263 under all five. The 33 files and 106 lines between them were never authored width,
+# and the ceilings below fall to the sharper reading. The gated DECLARED roster reads zero under
+# both filters, so nothing this sharpening does can loosen the wall that refuses.
 count_authored() {
-  grep 'usize' "$1" 2>/dev/null | grep -v '@intCast' | grep -v '@as(usize' | wc -l | tr -d ' '
+  grep 'usize' "$1" 2>/dev/null \
+    | grep -v '@intCast' \
+    | grep -v '@as(usize' \
+    | grep -vE '^[[:space:]]*//' \
+    | grep -v 'extern fn' \
+    | grep -cw 'usize' | tr -d ' '
 }
 
 # The DECLARED roster, read out of width-check.rish itself, so the file that makes the promise is
