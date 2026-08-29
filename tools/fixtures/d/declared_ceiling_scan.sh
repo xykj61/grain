@@ -118,7 +118,7 @@ BOUNDS_PROSE=""
 BOUNDS_DISAGREE=""
 
 # The title-grade form may shrink and may not spread. Measured 20260824.121500: one page.
-grade_ceiling="${DECLARED_CEILING_GRADE_CEILING:-1}"
+grade_ceiling="${DECLARED_CEILING_GRADE_CEILING:-0}"
 
 # A living pin past its declared byte bound. Measured 20260824.130807: one page,
 # session-logs/README.md, whose rows fold when its logs fold and whose log fold runs on Keaton's
