@@ -1,0 +1,201 @@
+//! tools/rye/macos_app_shell_probe.rye -- the application shell's first breath: a menu bar
+//! seated from Rye, and a receipt that proves how the process was born.
+//!
+//! Rung: LOCA -- the bundle the Finder opens (20260829.010011)
+//!
+//! WHY THIS PROBE EXISTS. Movement three of the LOCA ladder is the application shell: the menu
+//! bar, the lifecycle a real app has, and an .app bundle that launches from the Finder rather
+//! than only from a terminal. This rung takes the first two claims small: it builds a real main
+//! menu through the checked seam -- an app menu holding a Quit item wired to terminate: --
+//! seats it with setMainMenu:, raises a titled window, stands a bounded pooled pump, and then
+//! writes a one-line RECEIPT naming how it was born: the main bundle's own path, whether that
+//! path is an .app bundle or a bare binary, the window number, and the menu's item count. A
+//! probe launched by the Finder has no terminal to print to, so the receipt is how the bundle
+//! witness reads the truth back out.
+//!
+//! WHAT IT PROVES, on metal: the menu selectors cross the same verified seam as every other
+//! call; NSApp reports the menu this probe seated (read back, never assumed); the window
+//! carries a real number; and the receipt says bundle when NSBundle's own mainBundle path ends
+//! in .app, terminal when it does not -- the honest detector the witness's two legs rely on.
+//!
+//! WHAT IT DOES NOT PROVE. The full run-loop lifecycle (applicationDidFinishLaunching and kin
+//! through a delegate class -- a later rung of this movement), signing, notarization, or
+//! Gatekeeper's view of a downloaded copy: this bundle is unsigned and local, which macOS
+//! launches freely; the signed road waits at the custody gate.
+//!
+//! BOTH SIDES. The probe keeps the seam gate (PROBE_PROVE_RED declares a signature the
+//! framework does not have and dies at exit 134); the BUNDLE's own refusing side lives in the
+//! witness, which strips Info.plist from a copy and proves the Finder path refuses to launch
+//! it, where the whole bundle opens and leaves a bundle-mode receipt.
+//!
+//! Build and run:
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build tools/rye/macos_app_shell_probe.rye \
+//!     -femit-bin=tools/.build/macos_app_shell_probe -lobjc -framework Cocoa -framework CoreGraphics
+//!   tools/.build/macos_app_shell_probe
+//!   rishi/bin/rishi run tools/m/macos_app_bundle_witness.rish   # the bundle, both legs
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const c = std.c;
+
+const objc = @import("objc_seam.rye");
+
+// The window, in points, and the bounded stand in pooled run-loop turns.
+const view_w_points: u32 = 384;
+const view_h_points: u32 = 200;
+const max_event_turns: u32 = 150;
+const turn_block_seconds: f64 = 0.01;
+
+// The receipt: one line, bounded, at a named absolute path the witness wipes and reads. /tmp
+// because a Finder-born process has no useful working directory and no terminal.
+const receipt_path = "/tmp/grain_app_shell_receipt.txt";
+const max_receipt_bytes: u32 = 512;
+const max_bundle_path_bytes: u32 = 1024;
+
+const style_titled: u64 = 1;
+const style_closable: u64 = 2;
+const backing_buffered: u64 = 2;
+const activation_policy_regular: i64 = 0;
+const event_mask_any: u64 = std.math.maxInt(u64);
+
+const SendVoid = *const fn (objc.Id, objc.Sel) callconv(.c) void;
+const SendBool = *const fn (objc.Id, objc.Sel, bool) callconv(.c) void;
+const SendIdArg = *const fn (objc.Id, objc.Sel, ?objc.Id) callconv(.c) void;
+const SendStrRet = *const fn (objc.Id, objc.Sel) callconv(.c) ?[*:0]const u8;
+const SendMenuItemInit = *const fn (objc.Id, objc.Sel, ?objc.Id, ?objc.Sel, ?objc.Id) callconv(.c) ?objc.Id;
+const SendNextEvent = *const fn (objc.Id, objc.Sel, u64, ?objc.Id, ?objc.Id, bool) callconv(.c) ?objc.Id;
+const SendClassDouble = *const fn (objc.Class, objc.Sel, f64) callconv(.c) ?objc.Id;
+
+pub fn main(init: std.process.Init) !void {
+    const io = init.io;
+    print("macos-app-shell: Language EN -- a menu bar from Rye, and a receipt naming how the process was born.\n", .{});
+
+    const prove_red = c.getenv("PROBE_PROVE_RED") != null;
+
+    const app_class = objc.objc_getClass("NSApplication") orelse return error.AppKitAbsent;
+    const window_class = objc.objc_getClass("NSWindow") orelse return error.NSWindowAbsent;
+    const string_class = objc.objc_getClass("NSString") orelse return error.NSStringAbsent;
+    const date_class = objc.objc_getClass("NSDate") orelse return error.NSDateAbsent;
+    const menu_class = objc.objc_getClass("NSMenu") orelse return error.NSMenuAbsent;
+    const menu_item_class = objc.objc_getClass("NSMenuItem") orelse return error.NSMenuItemAbsent;
+    const bundle_class = objc.objc_getClass("NSBundle") orelse return error.NSBundleAbsent;
+
+    if (prove_red) {
+        print("macos-app-shell: prove-red -- declaring a signature the framework does not have.\n", .{});
+        _ = objc.verify(app_class, "sharedApplication", "v@:", true);
+        @panic("objc seam: prove-red reached the send, which means the gate does not gate");
+    }
+
+    // Every selector proven against the loaded framework before a single message goes out.
+    const sel_shared = objc.verify(app_class, "sharedApplication", "@@:", true);
+    const sel_policy = objc.verify(app_class, "setActivationPolicy:", "B@:q", false);
+    const sel_finish = objc.verify(app_class, "finishLaunching", "v@:", false);
+    const sel_activate = objc.verify(app_class, "activateIgnoringOtherApps:", "v@:B", false);
+    const sel_next = objc.verify(app_class, "nextEventMatchingMask:untilDate:inMode:dequeue:", "@@:Q@@B", false);
+    const sel_send_event = objc.verify(app_class, "sendEvent:", "v@:@", false);
+    const sel_set_main_menu = objc.verify(app_class, "setMainMenu:", "v@:@", false);
+    const sel_main_menu = objc.verify(app_class, "mainMenu", "@@:", false);
+    const sel_alloc = objc.verify(window_class, "alloc", "@@:", true);
+    const sel_init = objc.verify(window_class, "initWithContentRect:styleMask:backing:defer:", "@@:{CGRect={CGPoint=dd}{CGSize=dd}}QQB", false);
+    const sel_title = objc.verify(window_class, "setTitle:", "v@:@", false);
+    const sel_front = objc.verify(window_class, "makeKeyAndOrderFront:", "v@:@", false);
+    const sel_number = objc.verify(window_class, "windowNumber", "q@:", false);
+    const sel_utf8 = objc.verify(string_class, "stringWithUTF8String:", "@@:r*", true);
+    const sel_utf8_out = objc.verify(string_class, "UTF8String", "r*@:", false);
+    const sel_until = objc.verify(date_class, "dateWithTimeIntervalSinceNow:", "@@:d", true);
+    const sel_menu_alloc = objc.verify(menu_class, "alloc", "@@:", true);
+    const sel_menu_init = objc.verify(menu_class, "initWithTitle:", "@@:@", false);
+    const sel_menu_add = objc.verify(menu_class, "addItem:", "v@:@", false);
+    const sel_menu_count = objc.verify(menu_class, "numberOfItems", "q@:", false);
+    const sel_item_alloc = objc.verify(menu_item_class, "alloc", "@@:", true);
+    const sel_item_init = objc.verify(menu_item_class, "initWithTitle:action:keyEquivalent:", "@@:@:@", false);
+    const sel_item_submenu = objc.verify(menu_item_class, "setSubmenu:", "v@:@", false);
+    const sel_main_bundle = objc.verify(bundle_class, "mainBundle", "@@:", true);
+    const sel_bundle_path = objc.verify(bundle_class, "bundlePath", "@@:", false);
+    print("macos-app-shell: seam verified -- 24 framework selectors match the loaded encodings.\n", .{});
+
+    const shared = objc.send(objc.SendClassId)(app_class, sel_shared) orelse return error.SharedApplicationAbsent;
+    _ = objc.send(objc.SendIdI64)(shared, sel_policy, activation_policy_regular);
+
+    // The menu bar: a main menu whose first item carries the app submenu, and the submenu holds
+    // one real item -- Quit, wired to terminate: with the platform's own q equivalent. The
+    // action selector is registered rather than verified: verify proves a class implements a
+    // selector before a SEND, and this probe never sends terminate: -- the menu system does.
+    const main_menu_title = objc.send(objc.SendClassStr)(string_class, sel_utf8, "MainMenu") orelse return error.TitleAbsent;
+    const app_menu_title = objc.send(objc.SendClassStr)(string_class, sel_utf8, "Grain") orelse return error.TitleAbsent;
+    const quit_title = objc.send(objc.SendClassStr)(string_class, sel_utf8, "Quit Grain") orelse return error.TitleAbsent;
+    const quit_key = objc.send(objc.SendClassStr)(string_class, sel_utf8, "q") orelse return error.TitleAbsent;
+    const empty = objc.send(objc.SendClassStr)(string_class, sel_utf8, "") orelse return error.TitleAbsent;
+    const sel_terminate = objc.sel_registerName("terminate:");
+
+    const raw_main = objc.send(objc.SendClassId)(menu_class, sel_menu_alloc) orelse return error.MenuAllocAbsent;
+    const main_menu = objc.send(SendMenuItemInit)(raw_main, sel_menu_init, main_menu_title, null, null) orelse return error.MenuInitAbsent;
+    const raw_app_menu = objc.send(objc.SendClassId)(menu_class, sel_menu_alloc) orelse return error.MenuAllocAbsent;
+    const app_menu = objc.send(SendMenuItemInit)(raw_app_menu, sel_menu_init, app_menu_title, null, null) orelse return error.MenuInitAbsent;
+    const raw_quit = objc.send(objc.SendClassId)(menu_item_class, sel_item_alloc) orelse return error.ItemAllocAbsent;
+    const quit_item = objc.send(SendMenuItemInit)(raw_quit, sel_item_init, quit_title, sel_terminate, quit_key) orelse return error.ItemInitAbsent;
+    objc.send(SendIdArg)(app_menu, sel_menu_add, quit_item);
+    const raw_holder = objc.send(objc.SendClassId)(menu_item_class, sel_item_alloc) orelse return error.ItemAllocAbsent;
+    const holder = objc.send(SendMenuItemInit)(raw_holder, sel_item_init, empty, null, empty) orelse return error.ItemInitAbsent;
+    objc.send(SendIdArg)(holder, sel_item_submenu, app_menu);
+    objc.send(SendIdArg)(main_menu, sel_menu_add, holder);
+    objc.send(SendIdArg)(shared, sel_set_main_menu, main_menu);
+
+    // Read the menu back from the platform rather than trusting the seating.
+    const seated = objc.send(objc.SendId)(shared, sel_main_menu) orelse return error.MainMenuAbsent;
+    const seated_items = objc.send(objc.SendIdInteger)(seated, sel_menu_count);
+    // invariant: the menu NSApp reports carries the item this probe added.
+    assert(seated_items >= 1);
+    const app_menu_items = objc.send(objc.SendIdInteger)(app_menu, sel_menu_count);
+    // invariant: the app submenu carries its Quit item.
+    assert(app_menu_items >= 1);
+
+    const frame = objc.CGRect{
+        .origin = .{ .x = 240, .y = 240 },
+        .size = .{ .width = @floatFromInt(view_w_points), .height = @floatFromInt(view_h_points) },
+    };
+    const raw_window = objc.send(objc.SendClassId)(window_class, sel_alloc) orelse return error.WindowAllocAbsent;
+    const window = objc.send(objc.SendWindowInit)(raw_window, sel_init, frame, style_titled | style_closable, backing_buffered, false) orelse return error.WindowInitAbsent;
+    const title = objc.send(objc.SendClassStr)(string_class, sel_utf8, "Grain -- the shell breathes") orelse return error.TitleAbsent;
+    objc.send(SendIdArg)(window, sel_title, title);
+    objc.send(SendIdArg)(window, sel_front, null);
+    objc.send(SendBool)(shared, sel_activate, true);
+    objc.send(SendVoid)(shared, sel_finish);
+    const number = objc.send(objc.SendIdInteger)(window, sel_number);
+    // invariant: an ordered-front window carries a real window number.
+    assert(number > 0);
+
+    // How was this process born? NSBundle's own answer: a Finder-launched bundle's path ends in
+    // .app; a bare binary's main bundle is the directory holding it.
+    const bundle = objc.send(objc.SendClassId)(bundle_class, sel_main_bundle) orelse return error.MainBundleAbsent;
+    const path_string = objc.send(objc.SendId)(bundle, sel_bundle_path) orelse return error.BundlePathAbsent;
+    const path_utf8 = objc.send(SendStrRet)(path_string, sel_utf8_out) orelse return error.BundlePathBytesAbsent;
+    const path = std.mem.span(path_utf8);
+    // invariant: the platform answers a real path inside the named bound.
+    assert(path.len > 0);
+    assert(path.len < max_bundle_path_bytes);
+    const born_in_bundle = std.mem.endsWith(u8, path, ".app");
+
+    // The bounded stand, pooled per turn, so the shell is visibly an app for a moment.
+    const mode = objc.send(objc.SendClassStr)(string_class, sel_utf8, "kCFRunLoopDefaultMode") orelse return error.ModeAbsent;
+    var turn: u32 = 0;
+    while (turn < max_event_turns) : (turn += 1) {
+        const pool = objc.objc_autoreleasePoolPush();
+        const until = objc.send(SendClassDouble)(date_class, sel_until, turn_block_seconds) orelse return error.DateAbsent;
+        const event = objc.send(SendNextEvent)(shared, sel_next, event_mask_any, until, mode, true);
+        if (event) |got| objc.send(SendIdArg)(shared, sel_send_event, got);
+        objc.objc_autoreleasePoolPop(pool);
+    }
+
+    // The receipt: one bounded line the witness reads, because a Finder-born process has no
+    // terminal for its GREEN to reach.
+    var receipt_buffer: [max_receipt_bytes]u8 = undefined;
+    const receipt = try std.fmt.bufPrint(receipt_buffer[0..], "mode={s} window={d} main_menu_items={d} app_menu_items={d} turns={d}\n", .{ if (born_in_bundle) "bundle" else "terminal", number, seated_items, app_menu_items, max_event_turns });
+    // invariant: the receipt stays inside its named bound.
+    assert(receipt.len <= max_receipt_bytes);
+    try std.Io.Dir.cwd().writeFile(io, .{ .sub_path = receipt_path, .data = receipt });
+
+    print("macos-app-shell: {s}", .{receipt});
+    print("macos-app-shell: GREEN -- the menu bar is seated and read back; the receipt names the birth; no Swift linked.\n", .{});
+}

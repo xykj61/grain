@@ -152,6 +152,7 @@ Full loop bounds: [`construction/ready-to-ask-claude.md`](../construction/ready-
 | Term | One line |
 |------|----------|
 | **Module** | A named home -- its own directory, invariants, budgets, witnesses |
+| **Movement** | Seated `20260829.010011` on Keaton's word -- **a plan's named part**: a bounded stretch of rounds that closes on its own claim rather than on a count, marked by stamp and name. The uncounted middle word between a **round** (one sitting) and the **ladder** it serves -- a movement usually holds several rounds, so it is kin to round rather than a synonym for it. LOCA's five movements are the first ladder to wear it. Distinct on purpose from the panchanga's counted rings (orbit 15 - quest 75 - journey 375 - equinox 1,875 - chapter 9,375), whose names are capacities, never labels (REDS %336 - [`../.claude/rules/stamp-and-name.md`](../.claude/rules/stamp-and-name.md)). Elder kin: the Movements I/II of counsel essays. |
 | **Aspect** | A named capability inside a module's boundary, sharing the host's budget, owning no directory of its own |
 | **Graduation** | An aspect becomes a module when its **second consumer** arrives from outside its host |
 
