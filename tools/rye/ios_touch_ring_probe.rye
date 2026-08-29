@@ -110,15 +110,18 @@ fn touches_moved(self: objc.Id, sel: objc.Sel, touches: objc.Id, event: ?objc.Id
     admit_touch(.touch_moved, touches, self);
 }
 
-/// Wired and stored, its platform dispatch awaiting an honest cancellation: the system cancels
-/// touches on its own interruptions, and no synthetic road fakes one truthfully. The handler's
-/// registration is proven by read-back; its firing is a later rung's claim.
+/// The honest cancellation road: the system cancels a drag when another application takes the
+/// screen mid-touch -- a real interruption, never a fake -- so this handler both admits the
+/// cancelled phase and schedules the close, exactly as a lift does.
 fn touches_cancelled(self: objc.Id, sel: objc.Sel, touches: objc.Id, event: ?objc.Id) callconv(.c) void {
     _ = sel;
     _ = event;
     // invariant: the platform hands the receiver it registered.
     assert(@intFromPtr(self) != 0);
     admit_touch(.touch_cancelled, touches, self);
+    if (delegate_ref) |delegate| {
+        objc.send(SendPerformAfter)(delegate, objc.sel_registerName("performSelector:withObject:afterDelay:"), close_sel, null, close_after_touch_seconds);
+    }
 }
 
 fn touches_ended(self: objc.Id, sel: objc.Sel, touches: objc.Id, event: ?objc.Id) callconv(.c) void {
@@ -157,16 +160,22 @@ fn close_probe(self: objc.Id, sel: objc.Sel, argument: ?objc.Id) callconv(.c) vo
         moved_count += 1;
         last = ring.remove_first() orelse @panic("touch ring: the drag never lifted");
     }
-    // invariant: the phases between down and up are moves and nothing else.
-    assert(last.kind == input.InputKind.touch_up);
+    // invariant: a drag ends exactly two ways -- the finger lifts, or the platform cancels;
+    // the phases between are moves and nothing else.
+    assert(last.kind == input.InputKind.touch_up or last.kind == input.InputKind.touch_cancelled);
     // invariant: a drag moves at least once -- the rung's own claim.
     assert(moved_count >= 1);
     // invariant: the ring drained whole.
     assert(ring.is_empty());
-    // invariant: a real drag travels -- the lift stands apart from the landing.
-    assert(down.x_points != last.x_points or down.y_points != last.y_points);
-    print("ios-touch-ring: drained down=({d},{d}) moved={d} up=({d},{d}) in order\n", .{ down.x_points, down.y_points, moved_count, last.x_points, last.y_points });
-    print("ios-touch-ring: GREEN -- a real drag crossed the platform's dispatch, all phases in order, through the proven ring.\n", .{});
+    if (last.kind == input.InputKind.touch_up) {
+        // invariant: a completed drag travels -- the lift stands apart from the landing.
+        assert(down.x_points != last.x_points or down.y_points != last.y_points);
+        print("ios-touch-ring: drained down=({d},{d}) moved={d} up=({d},{d}) in order\n", .{ down.x_points, down.y_points, moved_count, last.x_points, last.y_points });
+        print("ios-touch-ring: GREEN -- a real drag crossed the platform's dispatch, all phases in order, through the proven ring.\n", .{});
+    } else {
+        print("ios-touch-ring: drained down=({d},{d}) moved={d} CANCELLED=({d},{d}) in order\n", .{ down.x_points, down.y_points, moved_count, last.x_points, last.y_points });
+        print("ios-touch-ring: GREEN -- the platform cancelled a real drag mid-flight and the cancellation crossed the ring in order; the eighth door is walked.\n", .{});
+    }
     std.process.exit(0);
 }
 

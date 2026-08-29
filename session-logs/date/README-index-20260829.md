@@ -11,6 +11,8 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260829.125110` | [the eighth door walked](20260829/20260829-125110_the-eighth-door-walked.kyri) | the platform cancels a real drag mid-flight; both drag endings proven on one build |
+| `20260829.124742` | [the ceiling that held one bead](20260829/20260829-124742_the-ceiling-that-held-one-bead.kyri) | a ceiling test filled the store with 1 bead of 256; rollback seated |
 | `20260829.123816` | [the drag the phases kept](20260829/20260829-123816_the-drag-the-phases-kept.kyri) | a real swipe: down, 27 moves, up, in order through the ring; kinds widen to eight |
 | `20260829.114143` | [the frame the store remembers](20260829/20260829-114143_the-frame-the-store-remembers.kyri) | golden claim addressed ac80b306; pixels refused at the 512 resin ceiling; card made true |
 | `20260829.112903` | [the third metal invited](20260829/20260829-112903_the-third-metal-invited.kyri) | wayland_seed joins the contract: parity subcommand + hand-off claim; pier runs it |
