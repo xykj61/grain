@@ -143,16 +143,20 @@ fn send(comptime Fn: type) Fn {
     return @ptrCast(&objc_msgSend);
 }
 
-const SendId = *const fn (Id, Sel) callconv(.c) Id;
-const SendClassId = *const fn (Class, Sel) callconv(.c) Id;
+// A message that answers an object may answer nil, and the optional keeps that fact in the
+// type -- a nil landing in a non-optional pointer is illegal behavior before any assert could
+// read it, so the guard lives in an `orelse` at the call rather than a dead assert after it.
+const SendId = *const fn (Id, Sel) callconv(.c) ?Id;
+const SendClassId = *const fn (Class, Sel) callconv(.c) ?Id;
 const SendIdVoid = *const fn (Id, Sel) callconv(.c) void;
 const SendIdBool = *const fn (Id, Sel, bool) callconv(.c) void;
-const SendIdI64 = *const fn (Id, Sel, i64) callconv(.c) void;
+// setActivationPolicy: answers whether the policy took (verified B@:q); discarded aloud with `_ =`.
+const SendIdI64 = *const fn (Id, Sel, i64) callconv(.c) bool;
 const SendIdIdVoid = *const fn (Id, Sel, ?Id) callconv(.c) void;
 const SendIdPtrVoid = *const fn (Id, Sel, ?*anyopaque) callconv(.c) void;
 const SendIdInteger = *const fn (Id, Sel) callconv(.c) i64;
-const SendClassStr = *const fn (Class, Sel, [*:0]const u8) callconv(.c) Id;
-const SendWindowInit = *const fn (Id, Sel, CGRect, u64, u64, bool) callconv(.c) Id;
+const SendClassStr = *const fn (Class, Sel, [*:0]const u8) callconv(.c) ?Id;
+const SendWindowInit = *const fn (Id, Sel, CGRect, u64, u64, bool) callconv(.c) ?Id;
 
 /// Paint the probe's own frame: a plain vertical wash with a lighter band across its middle, so
 /// a glance tells our pixels from a window the system filled for us.
@@ -210,18 +214,14 @@ pub fn main() !void {
     const sel_number = verify(window_class, "windowNumber", "q@:", false);
     print("macos-window-probe: seam verified -- 8 selectors match the loaded framework's own encodings.\n", .{});
 
-    const shared = send(SendClassId)(app_class, sel_shared);
-    // invariant: the shared application exists before any window is asked for.
-    assert(@intFromPtr(shared) != 0);
-    send(SendIdI64)(shared, sel_policy, activation_policy_regular);
+    const shared = send(SendClassId)(app_class, sel_shared) orelse return error.SharedApplicationAbsent;
+    _ = send(SendIdI64)(shared, sel_policy, activation_policy_regular);
 
     const rect = CGRect{
         .origin = .{ .x = 160, .y = 160 },
         .size = .{ .width = @floatFromInt(frame_width), .height = @floatFromInt(frame_height) },
     };
-    const raw = send(SendClassId)(window_class, sel_alloc);
-    // invariant: allocation answers before initialization is attempted.
-    assert(@intFromPtr(raw) != 0);
+    const raw = send(SendClassId)(window_class, sel_alloc) orelse return error.WindowAllocAbsent;
     const window = send(SendWindowInit)(
         raw,
         sel_init,
@@ -229,11 +229,9 @@ pub fn main() !void {
         style_titled | style_closable | style_resizable,
         backing_buffered,
         false,
-    );
-    // invariant: the window initialized rather than returning nil.
-    assert(@intFromPtr(window) != 0);
+    ) orelse return error.WindowInitAbsent;
 
-    const title = send(SendClassStr)(string_class, sel_registerName("stringWithUTF8String:"), "Grain -- Rye drew this");
+    const title = send(SendClassStr)(string_class, sel_registerName("stringWithUTF8String:"), "Grain -- Rye drew this") orelse return error.TitleAbsent;
     send(SendIdIdVoid)(window, sel_title, title);
 
     var pixels: [frame_bytes]u8 = undefined;
@@ -251,13 +249,9 @@ pub fn main() !void {
     ) orelse return error.BitmapContextAbsent;
     const image = CGBitmapContextCreateImage(context) orelse return error.ImageAbsent;
 
-    const content = send(SendId)(window, sel_content);
-    // invariant: the window handed back a content view to draw into.
-    assert(@intFromPtr(content) != 0);
+    const content = send(SendId)(window, sel_content) orelse return error.ContentViewAbsent;
     send(SendIdBool)(content, sel_registerName("setWantsLayer:"), true);
-    const layer = send(SendId)(content, sel_registerName("layer"));
-    // invariant: a layer-backed view answers with its layer.
-    assert(@intFromPtr(layer) != 0);
+    const layer = send(SendId)(content, sel_registerName("layer")) orelse return error.LayerAbsent;
     send(SendIdPtrVoid)(layer, sel_registerName("setContents:"), image);
 
     send(SendIdIdVoid)(window, sel_front, null);

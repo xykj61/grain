@@ -1,0 +1,264 @@
+//! tools/rye/macos_view_class_probe.rye -- a view class registered from Rye at runtime, whose
+//! drawRect: is a Rye function the platform itself calls back.
+//!
+//! Rung: LOCA -- the view that owns its drawing (20260828.225736)
+//!
+//! WHY THIS PROBE EXISTS. Both earlier probes borrow the window's content view and set a finished
+//! image on its layer, so the platform never calls back into Rye at all. A real backend owns a
+//! view: a class allocated through `objc_allocateClassPair`, given a Rye `drawRect:` through
+//! `class_addMethod`, and registered -- after which AppKit's own display machinery dispatches
+//! into this tree's code on the platform's schedule. That is the first place the seam grows a
+//! NEW KIND OF CALL rather than another selector, which is why this rung exists on its own.
+//!
+//! WHAT IT PROVES, on metal: a class pair allocates under a free name and refuses a seated one;
+//! the registered class answers `objc_getClass` by name exactly as a framework class does; the
+//! encoding declared for `drawRect:` matches the SUPERCLASS's own compiled record of the
+//! selector being overridden -- the one independent inward authority -- checked before the add,
+//! and reads back intact from the runtime after registration; ordering the window front makes
+//! AppKit call
+//! the Rye function -- this probe never sends `drawRect:` itself -- and marking the view dirty
+//! makes a later run-loop cycle call it again, with the band it paints moving so a redraw is
+//! visibly a redraw. The pump blocks in `nextEventMatchingMask:` with a short future date, which
+//! is the loop a real backend stands in; the first draft polled with `distantPast` and a sleep,
+//! and the display pass never ran, because a layer-backed view draws when the run loop's own
+//! CATransaction commit fires rather than when the window orders front.
+//!
+//! WHAT IT DOES NOT PROVE. Resize, retina backing scale, a display link, frame pacing, input
+//! selectors on the class, or a bundle -- those are later rungs of quest one and beyond. Nothing
+//! about SwiftUI, which stays the one surface Rye cannot reach.
+//!
+//! BOTH SIDES. The new gate on this rung is the free-name check ahead of class allocation:
+//! `PROBE_PROVE_RED=1` asks for a class pair under a name the runtime already holds, and must
+//! die at the seam before the runtime is touched (exit 134), where the ordinary run passes the
+//! same gate under its own name.
+//!
+//! Build and run:
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build tools/rye/macos_view_class_probe.rye \
+//!     -femit-bin=tools/.build/macos_view_class_probe -lobjc -framework Cocoa -framework CoreGraphics
+//!   tools/.build/macos_view_class_probe
+//!   PROBE_PROVE_RED=1 tools/.build/macos_view_class_probe   # the free-name gate, refusing side
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const c = std.c;
+
+const objc = @import("objc_seam.rye");
+
+// The view's frame, in pixels. Bounded and named, because every buffer in this tree names its
+// own ceiling; the size is chosen to read as a window rather than a test swatch.
+const view_width: u32 = 384;
+const view_height: u32 = 240;
+
+// The bounded stand. Each turn blocks in the event queue for at most ten milliseconds, so the
+// probe closes on its own rather than becoming a process somebody has to remember to kill; the
+// redraw half stands a shorter watch of its own after the view is marked dirty.
+const max_event_turns: u32 = 180;
+const max_redraw_turns: u32 = 60;
+const turn_block_seconds: f64 = 0.01;
+
+// AppKit's own constants, spelled here rather than imported, since a header is a C artifact and
+// these are the whole of what this probe needs from it.
+const style_titled: u64 = 1;
+const style_closable: u64 = 2;
+const style_resizable: u64 = 8;
+const backing_buffered: u64 = 2;
+const activation_policy_regular: i64 = 0;
+const event_mask_any: u64 = std.math.maxInt(u64);
+
+// The name this probe seats in the runtime. Its own name, distinct from every framework class,
+// so the free-name refusal in allocate_class can never fire on an honest run.
+const view_class_name = "GrainRyeView";
+
+// The declared encoding for drawRect: -- void return, receiver, selector, one NSRect by value.
+// Proven after registration by reading it back from the runtime through the verify gate.
+const draw_rect_types = "v@:{CGRect={CGPoint=dd}{CGSize=dd}}";
+
+const SendVoid = *const fn (objc.Id, objc.Sel) callconv(.c) void;
+const SendBool = *const fn (objc.Id, objc.Sel, bool) callconv(.c) void;
+const SendIdArg = *const fn (objc.Id, objc.Sel, ?objc.Id) callconv(.c) void;
+const SendRectInit = *const fn (objc.Id, objc.Sel, objc.CGRect) callconv(.c) ?objc.Id;
+const SendPtrRet = *const fn (objc.Id, objc.Sel) callconv(.c) ?*anyopaque;
+const SendNextEvent = *const fn (objc.Id, objc.Sel, u64, ?objc.Id, ?objc.Id, bool) callconv(.c) ?objc.Id;
+const SendClassDouble = *const fn (objc.Class, objc.Sel, f64) callconv(.c) ?objc.Id;
+
+// The callback's state: plain module variables rather than runtime ivars, where TAME can see and
+// bound them (extra_ivar_bytes in the seam is zero for the same reason). The selectors the
+// callback sends are verified in main, before the class that will call it is registered.
+var draw_calls: u32 = 0;
+var graphics_context_class: ?objc.Class = null;
+var sel_current_context: objc.Sel = undefined;
+var sel_cg_context: objc.Sel = undefined;
+
+/// The Rye function AppKit calls. Seated as GrainRyeView's drawRect: implementation, so every
+/// arrival here was dispatched by the platform's own display machinery -- nothing in this file
+/// ever sends drawRect:. It fills the dirty rect and paints one band whose row follows the call
+/// count, so a second call is visibly a redraw rather than a cached first frame.
+fn draw_rect(self: objc.Id, sel: objc.Sel, dirty: objc.CGRect) callconv(.c) void {
+    _ = sel;
+    // invariant: the platform hands the receiver it registered, never nil.
+    assert(@intFromPtr(self) != 0);
+    // invariant: a draw covers real area; a zero dirty rect would be a call with nothing to do.
+    assert(dirty.size.width > 0);
+    assert(dirty.size.height > 0);
+    // invariant: the count of platform calls stays inside its named width.
+    assert(draw_calls < std.math.maxInt(u32));
+    draw_calls += 1;
+
+    const current = objc.send(objc.SendClassId)(graphics_context_class.?, sel_current_context);
+    // invariant: inside drawRect: the platform always has a current graphics context.
+    assert(current != null);
+    const context = objc.send(SendPtrRet)(current.?, sel_cg_context);
+    // invariant: a current context always wraps a Core Graphics context.
+    assert(context != null);
+
+    objc.CGContextSetRGBFillColor(context, 0.07, 0.07, 0.10, 1.0);
+    objc.CGContextFillRect(context, dirty);
+    const band_height: f64 = 24;
+    const band_row: f64 = @floatFromInt((draw_calls * 32) % view_height);
+    objc.CGContextSetRGBFillColor(context, 1.0, 0.82, 0.47, 1.0);
+    objc.CGContextFillRect(context, .{
+        .origin = .{ .x = 0, .y = band_row },
+        .size = .{ .width = @floatFromInt(view_width), .height = band_height },
+    });
+}
+
+pub fn main() !void {
+    print("macos-view-class: Language EN -- a Rye-implemented view class; AppKit calls drawRect: back into Rye.\n", .{});
+
+    const prove_red = c.getenv("PROBE_PROVE_RED") != null;
+
+    const app_class = objc.objc_getClass("NSApplication") orelse return error.AppKitAbsent;
+    const window_class = objc.objc_getClass("NSWindow") orelse return error.NSWindowAbsent;
+    const string_class = objc.objc_getClass("NSString") orelse return error.NSStringAbsent;
+    const date_class = objc.objc_getClass("NSDate") orelse return error.NSDateAbsent;
+    const view_class = objc.objc_getClass("NSView") orelse return error.NSViewAbsent;
+    graphics_context_class = objc.objc_getClass("NSGraphicsContext") orelse return error.GraphicsContextAbsent;
+
+    if (prove_red) {
+        print("macos-view-class: prove-red -- allocating a class pair under a name the runtime already holds.\n", .{});
+        _ = objc.allocate_class(view_class, "NSView");
+        @panic("objc class pair: prove-red allocated over a seated name, which means the gate does not gate");
+    }
+
+    // Every selector proven against the loaded framework before a single message goes out.
+    const sel_shared = objc.verify(app_class, "sharedApplication", "@@:", true);
+    const sel_policy = objc.verify(app_class, "setActivationPolicy:", "B@:q", false);
+    const sel_finish = objc.verify(app_class, "finishLaunching", "v@:", false);
+    const sel_activate = objc.verify(app_class, "activateIgnoringOtherApps:", "v@:B", false);
+    const sel_next = objc.verify(app_class, "nextEventMatchingMask:untilDate:inMode:dequeue:", "@@:Q@@B", false);
+    const sel_send_event = objc.verify(app_class, "sendEvent:", "v@:@", false);
+    const sel_alloc = objc.verify(window_class, "alloc", "@@:", true);
+    const sel_init = objc.verify(window_class, "initWithContentRect:styleMask:backing:defer:", "@@:{CGRect={CGPoint=dd}{CGSize=dd}}QQB", false);
+    const sel_title = objc.verify(window_class, "setTitle:", "v@:@", false);
+    const sel_set_content = objc.verify(window_class, "setContentView:", "v@:@", false);
+    const sel_front = objc.verify(window_class, "makeKeyAndOrderFront:", "v@:@", false);
+    const sel_number = objc.verify(window_class, "windowNumber", "q@:", false);
+    const sel_view_init = objc.verify(view_class, "initWithFrame:", "@@:{CGRect={CGPoint=dd}{CGSize=dd}}", false);
+    const sel_needs_display = objc.verify(view_class, "setNeedsDisplay:", "v@:B", false);
+    const sel_utf8 = objc.verify(string_class, "stringWithUTF8String:", "@@:r*", true);
+    const sel_until = objc.verify(date_class, "dateWithTimeIntervalSinceNow:", "@@:d", true);
+    sel_current_context = objc.verify(graphics_context_class, "currentContext", "@@:", true);
+    sel_cg_context = objc.verify(graphics_context_class, "CGContext", "^{CGContext=}@:", false);
+    print("macos-view-class: seam verified -- 18 framework selectors match the loaded encodings.\n", .{});
+
+    // The independent authority for the declared encoding: NSView's own compiled record of the
+    // selector this class is about to override. A read-back after the add would only echo the
+    // string this probe stored, so the honest check runs against the superclass, before the add.
+    _ = objc.verify(view_class, "drawRect:", draw_rect_types, false);
+
+    // The new kind of call: a class pair allocated under a free name, a Rye function seated as
+    // its drawRect:, and the pair registered with the runtime.
+    const my_class = objc.allocate_class(view_class, view_class_name);
+    _ = objc.add_method(my_class, "drawRect:", objc.imp(&draw_rect), draw_rect_types);
+    objc.objc_registerClassPair(my_class);
+
+    const found = objc.objc_getClass(view_class_name);
+    // invariant: a registered class answers by name, exactly as a framework class does.
+    assert(found != null);
+    // invariant: the name resolves to the very class this probe allocated, never a shadow.
+    assert(found.? == my_class);
+    // The read-back after registration proves the runtime holds what was added -- storage, not
+    // truth; the truth check is the superclass verify above -- and that the inherited alloc is
+    // reachable through the registered class.
+    _ = objc.verify(my_class, "drawRect:", draw_rect_types, false);
+    const sel_view_alloc = objc.verify(my_class, "alloc", "@@:", true);
+    print("macos-view-class: class {s} registered -- drawRect: reads back {s} from the runtime's own record.\n", .{ view_class_name, draw_rect_types });
+
+    // Nil-answering messages are unwrapped with a named error at the call, because the optional
+    // in the send type is the check -- an assert after a non-optional return would be dead code.
+    const shared = objc.send(objc.SendClassId)(app_class, sel_shared) orelse return error.SharedApplicationAbsent;
+    _ = objc.send(objc.SendIdI64)(shared, sel_policy, activation_policy_regular);
+
+    const frame = objc.CGRect{
+        .origin = .{ .x = 180, .y = 180 },
+        .size = .{ .width = @floatFromInt(view_width), .height = @floatFromInt(view_height) },
+    };
+
+    const raw_view = objc.send(objc.SendClassId)(my_class, sel_view_alloc) orelse return error.ViewAllocAbsent;
+    const view = objc.send(SendRectInit)(raw_view, sel_view_init, .{
+        .origin = .{ .x = 0, .y = 0 },
+        .size = frame.size,
+    }) orelse return error.ViewInitAbsent;
+
+    const raw_window = objc.send(objc.SendClassId)(window_class, sel_alloc) orelse return error.WindowAllocAbsent;
+    const window = objc.send(objc.SendWindowInit)(raw_window, sel_init, frame, style_titled | style_closable | style_resizable, backing_buffered, false) orelse return error.WindowInitAbsent;
+
+    const title = objc.send(objc.SendClassStr)(string_class, sel_utf8, "Grain -- a Rye view class draws") orelse return error.TitleAbsent;
+    objc.send(SendIdArg)(window, sel_title, title);
+    objc.send(SendIdArg)(window, sel_set_content, view);
+
+    // invariant: the platform has not called the Rye drawRect: before the window is shown, so
+    // every count below is the display machinery's doing rather than a leftover.
+    assert(draw_calls == 0);
+
+    objc.send(SendIdArg)(window, sel_front, null);
+    objc.send(SendBool)(shared, sel_activate, true);
+    objc.send(SendVoid)(shared, sel_finish);
+
+    const number = objc.send(objc.SendIdInteger)(window, sel_number);
+    // invariant: an ordered-front window carries a real window number, the system's own receipt
+    // that this window exists on screen rather than only in this process's memory.
+    assert(number > 0);
+    const after_front = draw_calls;
+    print("macos-view-class: window_number={d} draw_calls_after_order_front={d}\n", .{ number, after_front });
+
+    // The bounded stand: block in the platform's own event loop, a short slice at a time. This
+    // is where the display pass lives -- a layer-backed view draws when the run loop's
+    // CATransaction commit fires, so standing in the loop is what invites the callback. Each
+    // turn runs inside its own autorelease pool, so what the platform autoreleases per turn
+    // drains per turn; the mode and title made before the loop sit below the pool's boundary.
+    const mode = objc.send(objc.SendClassStr)(string_class, sel_utf8, "kCFRunLoopDefaultMode") orelse return error.ModeAbsent;
+    var turn: u32 = 0;
+    while (turn < max_event_turns) : (turn += 1) {
+        const pool = objc.objc_autoreleasePoolPush();
+        const until = objc.send(SendClassDouble)(date_class, sel_until, turn_block_seconds) orelse return error.DateAbsent;
+        const event = objc.send(SendNextEvent)(shared, sel_next, event_mask_any, until, mode, true);
+        if (event) |got| objc.send(SendIdArg)(shared, sel_send_event, got);
+        objc.objc_autoreleasePoolPop(pool);
+    }
+    // invariant: the platform called the Rye drawRect: at least once -- the whole claim of this
+    // rung, and the difference between a registered class and a decorative one.
+    assert(draw_calls >= 1);
+    const after_pump = draw_calls;
+
+    // The redraw half: mark the view dirty and stand in the loop again. The probe still never
+    // sends drawRect: -- a later run-loop cycle walks the hierarchy and dispatches the
+    // registered IMP on the platform's own schedule.
+    objc.send(SendBool)(view, sel_needs_display, true);
+    var redraw_turn: u32 = 0;
+    while (redraw_turn < max_redraw_turns) : (redraw_turn += 1) {
+        const pool = objc.objc_autoreleasePoolPush();
+        const until = objc.send(SendClassDouble)(date_class, sel_until, turn_block_seconds) orelse return error.DateAbsent;
+        const event = objc.send(SendNextEvent)(shared, sel_next, event_mask_any, until, mode, true);
+        if (event) |got| objc.send(SendIdArg)(shared, sel_send_event, got);
+        objc.objc_autoreleasePoolPop(pool);
+        if (draw_calls > after_pump) break;
+    }
+    // invariant: an invalidation reaches the same Rye function again, so drawing follows the
+    // platform's schedule rather than happening once at startup.
+    assert(draw_calls > after_pump);
+
+    print("macos-view-class: draw_calls after_front={d} after_pump={d} after_invalidate={d}\n", .{ after_front, after_pump, draw_calls });
+    print("macos-view-class: GREEN -- AppKit dispatched drawRect: into Rye {d} times; no Swift linked.\n", .{draw_calls});
+}
