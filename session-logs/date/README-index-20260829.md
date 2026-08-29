@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260829.054303` | [the three the enclosure keeps](20260829/20260829-054303_the-three-the-enclosure-keeps.kyri) | orbit three on metal: 3 writable paths outlive the close, none in pier |
 | `20260829.043703` | [Sundial readings carry provenance](20260829/20260829-043703_sundial-readings-carry-provenance.kyri) | Dream: sourced health readings; sourceless refused; unbuilt 20 -> 19 |
 | `20260829.032411` | [the ledger that could not book a red](20260829/20260829-032411_the-ledger-that-could-not-book-a-red.kyri) | pin full, 9 of 9 open; capacity meter lands, %338 booked |
 | `20260829.023652` | [the bind refuses both directions](20260829/20260829-023652_the-bind-refuses-both-directions.kyri) | Dream: Kumara's fixture-key bind refuses each signature direction |

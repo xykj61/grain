@@ -675,3 +675,20 @@ guard reds_pin_capacity
 path tools/r/reds_pin_capacity_witness.rish
 tier lap
 seated 20260829.031804
+
+# pond_enclosure_ephemeral -- the two guards above ask what the enclosure lets an agent SEE, one
+# from the launcher's flags and one from the jail's own plan. Neither asks how long what it WRITES
+# lasts, which is orbit three's whole question: the memory that forgets. This classifies every mount
+# row by lifetime -- a tmpfs dissolves, a read-only bind keeps nothing, a read-write bind hands the
+# byte to the host -- gates the record's `ephemeral` claims against that reading at zero, and holds
+# the writable paths outliving the close outside the pier at a ceiling of 3. Its `--probe` leg plants
+# one marker per candidate inside a real enclosure, lets it close, and reads the host: measured
+# 20260829, the private home and /tmp came back forgotten and /dev/shm, /tmp/.X11-unix and
+# /run/user/<uid> came back carrying the marker, with zero disagreements against the plan. `lap`
+# because the whole witness including the live probe is 3.0s on this pier, and the probe is the only
+# reader of the private home's own claim, which the pinned plan drops.
+
+guard pond_enclosure_ephemeral
+path tools/p/pond_enclosure_ephemeral_witness.rish
+tier lap
+seated 20260829.054303
