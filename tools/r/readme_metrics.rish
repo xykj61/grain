@@ -58,6 +58,17 @@ let block = "${begin}${nl}${nl}${body}${nl}${nl}${close}"
 
 if mode == "render" then say block
 
+# check compares before it answers -- an earlier form exited ok here without ever reading the
+# page, so `check` blessed a stale README for as long as nobody noticed (proven by Silence's
+# lap, 20260828: readme_metrics_check.sh read drift=3 while this mode exited 0). The fixture
+# owns the comparison; this mode owns refusing on its verdict.
+let chk = ?: (mode == "check") (run ["sh" "tools/fixtures/r/readme_metrics_check.sh" "README.md"]) (run ["true"])
+let chk_code = ?: chk.ok 0 1
+let chk_word = ?: chk.ok "readme-metrics: check GREEN -- the page matches the tree" "readme-metrics: REFUSED -- the page has drifted; regenerate with rishi/bin/rishi run tools/r/readme_metrics.rish write"
+if mode == "check" then say chk.out
+if mode == "check" then say chk_word
+if mode == "check" then exit chk_code
+
 if mode != "write" then exit exit-ok
 
 # Rishi strings are bounded and an 18 KB README overruns that bound, so the claim stays here and
