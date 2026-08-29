@@ -58,15 +58,15 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `0c6570b3ab` -- this commit's parent.
+**Git nib:** `4db74a8a55` -- this round's parent, already on the remote (%315).
 
-**Now.** **A ceiling that only falls reds when the population grows.**
+**Now.** **A meter reads one edge of a promise; a repair sized to it is undersized.**
 
-**`rule_twin` 39 against 36** -- three rule pairs seated today were born drifted; gate %7 holds
-each pair as its own reading. `radiant_negation` closed here: the LOCA row reads `zero Swift
-linked`, register only, 0.71 -> 0.62. **Mandate's seven build what they run** -- `/mandate/bin/`
-is gitignored whole, so each died on a missing file; all GREEN from an emptied bin.
-`unbuilt_pairs` **46 -> 38**.
+**Amphora's eight build what they run.** Sized to the scan's direct-invocation set, the repair left
+four of eight dead on a wiped bin: `amphora` runs `vessel-core` and `vessel-seal` as siblings
+(`amphora/src/main.rye:138,176`), and `rye build` refuses an absent `-femit-bin` dir, so a
+**credited** line could not run either. All eight carry all three, proven alone.
+`unbuilt_pairs` **38 -> 21**; **REDS %337** shelved.
 
 **MANY HANDS + skills** (granted `20260828`): launches may manage multiple CLI agents; custody
 stays MANUAL and each checkout keeps one writer. Root `SKILL.md` opens the three skills. Every
@@ -210,7 +210,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260829.001603` | Mandate's seven build what they run; a register red closed | [log](../session-logs/date/20260829/20260829-001603_the-witness-that-builds-what-it-runs.kyri) |
+| `20260829.013811` | Amphora's eight build what they run; REDS %337 | [log](../session-logs/date/20260829/20260829-013811_the-meter-that-counts-one-call.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line here until the next replaces it.
 

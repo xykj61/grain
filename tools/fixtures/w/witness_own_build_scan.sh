@@ -56,7 +56,26 @@
 
 set -eu
 
-# WHY THIS NUMBER. 38 is the reading on 20260829 after Mandate's seven witnesses took the
+# WHY THIS NUMBER. 21 is the reading on 20260829 after Amphora's eight witnesses took their own
+# builds -- pour, pour_negative, carry, carry_negative, restore, restore_negative, grand_round and
+# first_resident, seventeen pairs over amphora/bin/{amphora,vessel-core,vessel-seal}, every one
+# GREEN from an emptied amphora/bin/.
+#
+# THAT REPAIR IS WIDER THAN THIS READING, and the gap is worth naming here rather than rediscovering.
+# Patching each witness to build only the artifacts THIS SCAN lists left four of the eight still
+# dead on an emptied bin: they name `amphora` alone in run position, and amphora/src/main.rye:138
+# and :176 resolve vessel-seal and vessel-core as SIBLING SUBPROCESSES at runtime. So a witness can
+# satisfy this meter exactly and still die on a clone. The reading is a floor on the promise rather
+# than the whole of it -- see THE HONEST LIMIT above, which says the same thing from the other side.
+# All eight carry all three builds now, and each was proven alone from a wiped directory.
+#
+# A SECOND GAP, measured the same way: rye build refuses an absent -femit-bin directory with
+# "unable to open output directory", so every build line makes amphora/bin/ first. The line already
+# standing in amphora_first_resident_witness.rish lacked that mkdir and would have failed on a
+# clone even though the scan credited it.
+#
+# THE ELDER READINGS, kept so the fall stays followable. 38 was the reading earlier on 20260829,
+# after Mandate's seven witnesses took the
 # build their Comlink sibling already carried -- store, serve, bucket, wal, keyed, named_serve
 # and comlink_serve, every one GREEN from an emptied mandate/bin/. Seven repairs and one
 # rename: amphora_dogfood_witness left the tree carrying three pairs and
@@ -64,7 +83,7 @@ set -eu
 # It read 46 on 20260828 and 48 before the two Comlink witnesses. It only ever falls: a
 # witness repaired lowers it, and a new witness invoking an unbuilt artifact raises it past
 # the ceiling on the lap it arrives.
-CEILING=38
+CEILING=21
 
 command -v git >/dev/null 2>&1 || { echo "verdict=no_git"; echo "refused: this scan reads the tracked tree, so it wants git" >&2; exit 1; }
 git rev-parse --git-dir >/dev/null 2>&1 || { echo "verdict=no_repo"; echo "refused: not inside a git repository" >&2; exit 1; }
