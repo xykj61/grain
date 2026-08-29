@@ -64,6 +64,36 @@ The Swift path's cost is already paid and already measured: **REDS %295** exists
 `xcrun swift test` cannot run on the Linux pier, which is what the host tier was seated to answer.
 That is one guard rooted to one machine, plus a second value model and a second proof idiom.
 
+## The seam, which is the whole safety question
+
+The first draft of this page recommended the Rye path on one-value-model and operations
+arguments, and Keaton pushed on whether that is really the most TAME-guided road. It was not, and
+the gap was in the place TAME cares most. Casting `objc_msgSend` to a signature is an
+**unchecked reinterpretation of a function pointer**: get an argument width wrong and the failure
+is silent corruption rather than a type error. Swift's Objective-C interop is generated from real
+headers and checked by the compiler. **Safety is TAME's first priority, above clarity and joy,
+and at that seam Swift was ahead.**
+
+TAME already carries the answer, in the rule it writes for `usize` -- *a boundary type, not a
+design type; assert the bound, cast at the edge* -- and in the shape of `copy_disjoint`, where
+one intentional `@memcpy` lives inside one named wrapper. What the first draft missed is that
+**the Objective-C runtime is introspectable**: `class_getInstanceMethod` answers null for a
+selector that does not exist, and `method_getTypeEncoding` returns the signature the *loaded*
+framework actually has. So the cast is checkable, at construction, once, against the runtime on
+this machine rather than an SDK's description of it.
+
+The probe does that now. Eight selectors are verified before any message is sent, and the check
+**earned itself on its first run** by catching two of this file's own declarations -- `@:` where
+the framework reads `@@:`, a forgotten return type that would have been silent. The gate is
+proven from both sides: `PROBE_PROVE_RED=1` declares a signature the framework does not have and
+dies at the seam with exit 134, naming what it read against what was declared, while the ordinary
+run passes the same gate and raises the window.
+
+That reading is arguably **stronger than a compile-time header check**, since it is the framework
+actually loaded rather than the one the SDK described. What it costs is the discipline of keeping
+every selector in one seam module -- the `copy_disjoint` shape -- rather than letting casts spread
+through a backend.
+
 ## The counterweights, stated honestly
 
 **Ghostty** -- in this tree's own gratitude library -- is a Zig core with a *Swift* macOS shell,
