@@ -179,3 +179,5 @@ at a closed fold.*
 *Row %336 folded to [`REDS-the-ring-spent-as-a-label-rows-336.md`](REDS-the-ring-spent-as-a-label-rows-336.md) on `20260829.005357`, **CLOSED** -- the calendar quest spent as a plan label, booked and repaired in one lap; born on its shelf directly, as the pin stands five bytes under its bound and every elder row still reads OPEN.*
 
 *Row %337 folded to [`REDS-the-meter-that-counts-one-call-rows-337.md`](REDS-the-meter-that-counts-one-call-rows-337.md) on `20260829.013811`, **OPEN** on the 21 pairs that remain -- a repair sized to a meter's direct-invocation list left four of eight witnesses dead on a wiped bin; born on its shelf, as %335 and %336 were.*
+
+*Row %338 folded to [`REDS-the-ledger-that-could-not-book-a-red-rows-338.md`](REDS-the-ledger-that-could-not-book-a-red-rows-338.md) on `20260829.031804`, **OPEN** on the seat it names -- the pin could not accept a row and four green meters were all asking about consistency rather than capacity; born on its shelf, as %335, %336 and %337 were, which is the row's own subject.*

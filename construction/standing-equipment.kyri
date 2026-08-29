@@ -658,3 +658,20 @@ guard pond_enclosure_built
 path tools/p/pond_enclosure_built_witness.rish
 tier lap
 seated 20260828.233813
+
+# reds_pin_capacity -- the four guards above all ask whether construction/REDS.md is CONSISTENT;
+# none asked whether anything more could be WRITTEN. On 20260829 the pin stood at 24,571 of its
+# 24,576 bytes with all nine rows marked OPEN, so reds_fold.sh had no lawful move, four reds went
+# unbooked on 20260828, and three more were born onto single-row shelves -- one of them, %337,
+# still live, which is the exact state the fold tool refuses a fold to prevent. Every one of those
+# four guards read green throughout (REDS %338). Gates phantom_recital_shelves at zero, ratchets
+# unrecorded_shelves at 62 and shelf_open_rows at 2, and REPORTS the capacity table and
+# pin_deadlocked -- reported rather than gated because raising a page's bound is Keaton's word, and
+# a gate that reds on ordinary work is a gate someone turns off. `lap` rather than `cadence`: awk
+# over the spine and a pen control, 1s for the scan and 3s for the whole witness measured on this
+# pier 20260829, and the page it reads is the page every lap chooses its work from.
+
+guard reds_pin_capacity
+path tools/r/reds_pin_capacity_witness.rish
+tier lap
+seated 20260829.031804
