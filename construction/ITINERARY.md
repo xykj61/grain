@@ -14,7 +14,7 @@
 ### Standing, every lap
 
 - **ASCII-first.** Write every new document, comment, and commit message in plain ASCII -- `--`, `-`, `'`, `"`, `->`, `<=`, `gamma_2` rather than em-dashes, middots, curly quotes, arrows, or non-ASCII math. The one exception is a named set of work rounds (a Unicode module's own fixtures). This card was corrupted to mojibake once (REDS %83). Rule: `.claude/rules/ascii-first.md`.
-- **Stamp and name, never an ascending mark.** Mark a lap by its one-clock stamp and a plain name -- `the standing movement (20260821-142939)` -- rather than `Fold AI`, `f0-f63`, or `X0/X1` for planned work. Count a total with `git log --grep ... | wc -l`. Waymarks stay (names, not counts); `rung` stays where a real ladder exists in code. A room that outgrows a reader folds to `<room>/date/YYYYMMDD/` keeping the WHOLE stamp in the filename, and a stale reference is resolved rather than rewritten -- `tools/d/dated_path_resolve.rish`. No fold ships without `tools/d/dated_path_witness.rish` GREEN, and a REDS fold runs through `tools/fixtures/reds_fold.sh`. Rule: `.claude/rules/stamp-and-name.md`.
+- **Stamp and name, never an ascending mark.** Mark a lap by its one-clock stamp and a plain name -- `the standing movement (20260821-142939)` -- rather than `Fold AI`, `f0-f63`, or `X0/X1` for planned work. Count a total with `git log --grep ... | wc -l`. Waymarks stay (names, not counts); `rung` stays where a real ladder exists in code. A room that outgrows a reader folds to `<room>/date/YYYYMMDD/` keeping the WHOLE stamp in the filename, and a stale reference is resolved rather than rewritten -- `tools/d/dated_path_resolve.rish`. No fold ships without `tools/d/dated_path_witness.rish` GREEN, and a REDS fold runs through `tools/fixtures/reds_fold.sh`. **Waymark rungs are the retired form too** (%329): mark a rung by waymark, module or plain name, and stamp -- `FORA31`-shaped counters red `tools/w/waymark_rung_drift_witness.rish`, whose ceiling only falls. New `equinox_eNNN` guards take stamp-and-name (%330 books the family rename). Rule: `.claude/rules/stamp-and-name.md`.
 - **The amend behind the empty-index check** (`20260827`, %255 closed): between commit and nib amend run `test -z "$(git diff --cached --stat)"` -- an occupied index refuses the amend.
 - **Fetch-before-book** (`20260827`, %230/%252 closed): read a REDS row number only after `git fetch xy`; a collision renumbers to the fetched head.
 - **Spelling: American.** Use `color`, not `colour`; normalize `colour -> color` on touch. This is a USA project.
@@ -24,6 +24,7 @@
 - **A lap ends at the commit, never at `git add`.** `tools/hooks/pre-commit` regenerates `README.md`'s metrics block and `docs-geode/libraries/README.md` when a round adds a witness, and it fires at `git commit`. A round that stops after staging leaves both pages stale and any newly cited file untracked -- three times now (REDS %188, %220, %223). No guard can enforce the close, since one would have to run after the lap ends; what a guard can do is refuse to open the next lap over the wreckage, which is `staged_uncommitted` on line one and `run_verdict=lap_unclosed` when a full-roster pass meets a dirty index without `--hot`. **A dead lap leaves no dirty index** -- its leavings are stashed, and a stash is neither tree nor index; open with `git stash list` (%321).
 - **Grade what you touch.** Every document, comment block, or design the lap opens gets one reading: `sh tools/fixtures/qa_report_card.sh <path> --setting door|field|meter --service N`. Four readings meaned to one grade -- Register, Reach, Truth (a gate: under 60 reads F), Service (judged against this card, in four questions: named, reached, current, and which side it carries -- public `grain-os/grain`, working `xy`, or both). **B or better stands.** Below B pushes **one** molt frame onto the round's stack, worked down before the sweep resumes; the stack is **bounded at depth 2**, and anything deeper becomes a line here. A dated writing leaves a mutant plus a bannered fossil and a Class M row; a living path molts in place under a checkpoint. **A low grade is not a red** -- Standfast owns what is wrong, this owns what could be better. **Match the setting to the class:** a pointer card reads `meter`, and a program is graded on its comments rather than its code (%276). Rule: `.claude/rules/quality-assurance.md`.
 - **Reds first.** Close the open agent-closable rows in `construction/REDS.md` before new work; a red you cannot close is surfaced like a gate rather than routed around.
+- **Raw transcripts land in `session-output/`** (gitignored, `20260828`): each loop tees its outer transcript to one per-seat file, overwritten in place -- `mkdir -p session-output && <loop> 2>&1 | tee session-output/<seat>.txt` -- so agents read a peer's full output by path, not by paste.
 - **Read scope -- open shelves and closed stacks** (`20260827.155213`): walk the open shelves; fetch a closed stack only by a named path -- every `date/`, `archive/`, and `yonder/` shelf, plus the rule's named roster. Never `ls` the root (`MAP.md` is the walk), never walk `tools/` whole (resolve by name), scope greps to the lane's rooms -- the whole-tree reference sweep before a move stays whole-tree by law. **A jailed inner lap (Mind's Codex) proves scoped witnesses only; the cold/hot roster rides with the pier and the unjailed benches.** Rule: `.claude/rules/read-scope.md`.
 - **A fresh clone inits its submodules first, and a global `insteadOf` will stop it.** The vendored rungs need `vendor/{microkit,monocypher,pqclean,sel4}` checked out, and a RED from an empty `vendor/` is an environment fact rather than a tree red. A host that rewrites `https://github.com/` to ssh (this bench does) cannot clone the public third-party submodules at all, since the key has no rights there -- `GIT_CONFIG_GLOBAL=/dev/null git submodule update --init <path>` clones each one over plain https without touching the host's config. `--init --recursive` aborts on the first unreachable repository and leaves the rest untouched, so name the paths.
 
@@ -57,40 +58,34 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 **Git nib:** `3a18a64ca0` -- this round's own.
 
-**Now.** **The dead-letter box filled twice, and the second time a meter read it.**
+**Now.** **The dead-letter box filled twice; the second time a meter read it.**
 
-**`%328`.** `standing_equipment_run.sh` writes its hit ledger and receipt under `construction/`,
-which a pen has no reason to own, so a bare `>>` died there and took the runner with it before a
-guard ran -- **21 of its control's 46 behaviors** read `no` for two days, unseen: the witness that
-says so is on no roster and has no caller. Both writes announce a skipped room now; the runner
-reads `git stash list` on line one, each entry by message and file count, **reported and never
-gated**, bounded at 16, seeing untracked files a bare `git stash show` drops. Control **62
-behaviors, zero `no`**, where HEAD read 21.
+**`%328`.** The runner's ledger writes announce a skipped room now, and it reads
+`git stash list` on line one -- each entry by message and file count, reported never gated,
+bounded at 16. Control 62 behaviors, zero no, where HEAD read 21 unseen for two days.
 
-**`%327` out of the same box** -- a finished lap recovered by `git checkout <stash> -- `, mode
-`100755` intact; `pond_enclosure_state` gates `pinned_elders` at zero over 24 pen cases.
+**`%327` out of the same box** -- a lap recovered by `git checkout <stash> --`; `pond_enclosure_state` gates `pinned_elders` at zero.
 
 **MANY HANDS + the skills door** (granted `20260828`): every launch card may spin up and manage
 multiple CLI agents -- custody gates MANUAL, one writer per checkout -- and root `SKILL.md` opens
-the Spellbook, Chemical Formulas, and Civic TAME. Every clone seats the `ww` door
+the Spellbook, Chemical Formulas, Civic TAME. Every clone seats the `ww` door
 (`grain-ww/grain`, gate %1) and points `core.sshCommand` at `.git/ssh_config_jail`.
 
-**Still open, and one is structural:** every pin row reads OPEN and their bytes alone pass the
-bound, so `%327` and `%328` were written short to fit and the next red has no room --
-`reds_fold.sh` refusing OPEN rows is no longer a tidy seat. **Width ratchet:** `glow/rune_shape.rye`
+**Still open, one structural:** every pin row reads OPEN and their bytes alone near the bound,
+so `reds_fold.sh` refusing OPEN rows is no longer a tidy seat. **Width ratchet:** `glow/rune_shape.rye`
 publishes `usize` in 5 fields and 5 accessors; 59 gate fixtures await his word. **Mind's:**
-`declared_ceiling`'s bound-copy, and the `20260828-142844` log. `%281`/`%291` stay his, as does this
+the reconnect patch in grain-mind's own stash (review recipe in its log). `%281`/`%291` stay his, as does this
 pier's `enclosure.conf`, still pinning two. **Seat:** whether the roster's own witness can
 be rostered when its scan reads the card its red would land on.
 
-**Next doors.** Dream: Caravan and Tally, then the constellation table. Hush: Pond orbit two.
+**Next doors.** Dream: Caravan and Tally. Hush: Pond orbit two.
 
 ---
 ## Landed arcs
 
-Mandate, Acme DX, the CION ratchet, **AHOY** beside **WADE**, Singularity, **BUHR**'s MCP
-surface, **TACT** Journeys 1, 2, 4, the recursion cellar, the image module, the Constel
-quorum, the rune naming -- proven on metal, the account in `session-logs/`.
+Mandate, Acme DX, CION, **AHOY** beside **WADE**, Singularity, **BUHR**'s MCP surface,
+**TACT** Journeys 1, 2, 4, the recursion cellar, the image module, the Constel quorum, the
+rune naming -- proven on metal, the account in `session-logs/`.
 
 ## The Compass Chapter -- OPEN `20260809.021829` (Keaton's word)
 
