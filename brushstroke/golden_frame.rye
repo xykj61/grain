@@ -28,6 +28,7 @@ const qoi = @import("qoi.rye");
 const tablecloth = @import("tablecloth.rye");
 const beading = @import("mantra/beading.rye");
 const image_artifact = @import("image_artifact.rye");
+const spread = @import("spread.rye");
 
 const claim_name = "golden/surface-claim.txt";
 const twin_name = "golden/surface-claim-twin.txt";
@@ -80,7 +81,7 @@ pub fn main(init: std.process.Init) !u8 {
             // invariant: the refusal is the artifact road's own named ceiling.
             assert(e == error.StreamTooLarge);
         }
-        print("golden-frame: pixels refused honestly -- {d} raw bytes against the {d}-byte resin ceiling; multi-resin artifacts are the named door.\n", .{ reference.surface_bytes, tablecloth.max_content_bytes });
+        print("golden-frame: pixels refused honestly -- {d} raw bytes against the {d}-byte resin ceiling; the spread widens an artifact to {d} parts ({d} bytes), and the frame past that waits on the store's own growth, max_store_beads.\n", .{ reference.surface_bytes, tablecloth.max_content_bytes, spread.max_spread_parts, spread.max_spread_bytes });
     }
 
     // The store: the claim beaded under its name, the twin proving bead-level dedup.
