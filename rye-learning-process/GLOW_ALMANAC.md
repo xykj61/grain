@@ -14,6 +14,8 @@
 
 **Four chapters × sixteen entries = sixty-four findings**, one chapter per equinox of the season that fills it. The bound is the book's own: at sixty-four, the almanac closes and a successor is chartered, exactly as seasons close. Chapters carry no themes in advance — findings arrive in the order the code runs, and the order is part of the record.
 
+*Amended `20260829.145059`: the record outran this charter without a word — the book holds eight chapters and one hundred twenty-seven entries, and no successor was ever chartered at sixty-four. The bound the book actually keeps is the chapter of sixteen; the sixty-four-entry close is retired as written, and a volume close now waits on its own explicit word rather than a count (the same lesson the seed cadence learned on `20260826`). The paragraph above stays as the founding intent, read against this note.*
+
 ## The entry form
 
 ```
