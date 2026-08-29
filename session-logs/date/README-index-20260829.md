@@ -11,6 +11,8 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260829.112903` | [the third metal invited](20260829/20260829-112903_the-third-metal-invited.kyri) | wayland_seed joins the contract: parity subcommand + hand-off claim; pier runs it |
+| `20260829.112105` | [the finger the ring admits](20260829/20260829-112105_the-finger-the-ring-admits.kyri) | a real tap crosses platform, domain event, and ring inside iOS |
 | `20260829.104233` | [a guard met a birth](20260829/20260829-104233_a-guard-met-a-birth.kyri) | reach gate one past both ceilings; the Mac bench paid its named debt |
 | `20260829.094256` | [the ratchet that had a floor](20260829/20260829-094256_the-ratchet-that-had-a-floor.kyri) | %334 ratchet 14 -> 4; ten "defects" were builds one hop away |
 | `20260829.094048` | [the door walked](20260829/20260829-094048_the-door-walked.kyri) | a Rye view class on iOS, dispatched by the platform, judged by the same pins |
