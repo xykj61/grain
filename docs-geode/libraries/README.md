@@ -48,8 +48,8 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 | [`mycelium/`](../../mycelium/README.md) | 97 | 84 |
 | [`pleac/`](../../pleac/README.md) | 3 | 6 |
 | [`pond/`](../../pond/README.md) | 152 | 159 |
-| [`rishi/`](../../rishi/README.md) | 2 | 1724 |
-| [`rye/`](../../rye/README.md) | 117 | 1244 |
+| [`rishi/`](../../rishi/README.md) | 2 | 1722 |
+| [`rye/`](../../rye/README.md) | 117 | 1245 |
 | [`scribble/`](../../scribble/README.md) | 2 | 2 |
 | [`scribe/`](../../scribe/README.md) | 2 | 4 |
 | [`settlement/`](../../settlement/README.md) | 2 | 3 |

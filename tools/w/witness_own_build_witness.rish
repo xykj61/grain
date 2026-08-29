@@ -45,7 +45,7 @@ let scan = run ["sh" "tools/fixtures/w/witness_own_build_scan.sh"]
 assert scan.ok else "own-build: a witness invokes an artifact it never builds -- read the scan's own lines"
 say scan.out
 assert scan.out contains "verdict=ok" else "own-build: the scan must balance before it is believed"
-assert scan.out contains "unbuilt_pairs=46 " else "own-build: the ratchet reads 46; lower the ceiling when a repair lands"
+assert scan.out contains "unbuilt_pairs=45 " else "own-build: the ratchet reads 45; lower the ceiling when a repair lands"
 assert scan.out contains "self_built=" else "own-build: the credited pairs must be counted, never assumed"
 say "field GREEN -- the unbuilt reading stands under a ceiling that only falls"
 
