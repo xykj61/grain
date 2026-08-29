@@ -719,3 +719,20 @@ guard lattice_suite
 path tools/l/lattice_suite_witness.rish
 tier cadence
 seated 20260829.061739
+
+# macos_app_bundle -- the Finder door, proven from both sides on a Mac. The witness builds
+# tools/rye/macos_app_shell_probe.rye with Cocoa and CoreGraphics, assembles Grain.app in a /tmp
+# pen around the tracked plist fixture, strips Info.plist from a copy and proves `open -W` refuses
+# it, then opens the whole bundle through LaunchServices and reads the receipt the probe wrote from
+# a process that never had a terminal -- `mode=bundle window=5308 main_menu_items=1`, measured on
+# this bench 20260829.104233, GREEN in 4s. It stood in tools/fixtures/w/witness_reach_scan.sh's own
+# ceiling comment as the one debt a Linux pier could not pay, and this is the Mac bench that pays
+# it. `host macos` because `open` needs a window server, and `cadence` beside its macOS-surface
+# sibling skate_native_core, because the guard opens a real window and a hand may call it by name
+# on any lap.
+
+guard macos_app_bundle
+path tools/m/macos_app_bundle_witness.rish
+tier cadence
+host macos
+seated 20260829.104233
