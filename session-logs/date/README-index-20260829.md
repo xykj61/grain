@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260829.140140` | [the row that heard the silence](20260829/20260829-140140_the-row-that-heard-the-silence.kyri) | aether rota lap: the card one byte from full, LOCA unnamed on it; condense booked |
 | `20260829.134715` | [the row that smelled the door](20260829/20260829-134715_the-row-that-smelled-the-door.kyri) | earth rota lap: doorway guard red at 33 unroomed pages, unrostered; %342 booked |
 | `20260829.133913` | [the card learns its siblings lessons](20260829/20260829-133913_the-card-learns-its-siblings-lessons.kyri) | context loading, rota, guardrails join the Sound card; two-seats-one-tree measured |
 | `20260829.130253` | [the cloth laid wider](20260829/20260829-130253_the-cloth-laid-wider.kyri) | the spread lands: 15 parts by measured budget, five walls proven in one run |
