@@ -94,6 +94,37 @@ actually loaded rather than the one the SDK described. What it costs is the disc
 every selector in one seam module -- the `copy_disjoint` shape -- rather than letting casts spread
 through a backend.
 
+## The second probe: Brushstroke's own grid, on AppKit, with the pump answering
+
+The window proved the platform. The question it left open was whether Skate on macOS is a
+**backend beside the Wayland backend** or a second application, and that one is closed now too.
+`tools/rye/macos_cell_grid_probe.rye` imports `brushstroke/skate_grid.rye` -- the same module
+`brushstroke/wayland_seed.rye` imports, reached by the symlink idiom `tally_copy.rye` already
+uses -- builds a real `Grid`, sets a real palette, and calls the module's **own** `rasterize`.
+Not one glyph is redrawn: the rasterizer is Brushstroke's, and only the surface underneath it
+is new. Its reading:
+
+```
+macos-cell-grid: seam verified -- 19 selectors match the loaded framework's own encodings.
+macos-cell-grid: grid=44x9 cells scale=2 surface=704x288 lit_pixels=16268
+macos-cell-grid: event dequeued type=15 (application-defined is 15)
+macos-cell-grid: events_seen=6 turns=300
+```
+
+**16,268 lit glyph pixels** is the rasterizer's own count of what it drew, so the surface rendered
+rather than merely cleared. And the input half is proven beside the output half: a synthetic event
+posted to this process's own queue -- never a system-level injection into a stranger's focused
+window -- was dequeued, identified by type, and dispatched, which is the whole of what a backend's
+event pump does, shown small.
+
+The seam earned itself twice more here. Of nineteen declarations it caught `stringWithUTF8String:`
+reading `@@:r*` where the caller wrote `@@:*` -- the `r` is `const`, a difference no compiler on
+this path would have raised. Eleven of the twelve new guesses were right; the check exists for the
+twelfth.
+
+What stays open is honest and bounded: resize, retina backing scale, a display link, a menu bar,
+and a signed bundle. **A window is a lap, a backend is a quest**, and this is the second lap.
+
 ## The counterweights, stated honestly
 
 **Ghostty** -- in this tree's own gratitude library -- is a Zig core with a *Swift* macOS shell,

@@ -1,0 +1,103 @@
+//! tools/rye/objc_seam.rye -- the one place this tree sends an Objective-C message, and the
+//! only place it casts a function pointer to do it.
+//!
+//! WHY ONE MODULE. Casting `objc_msgSend` to a signature is an unchecked reinterpretation: get an
+//! argument width wrong and the failure is a wrong register read rather than a type error. TAME's
+//! answer to an unsafe seam is the one it writes for `usize` and builds into `copy_disjoint` --
+//! keep it in a single named boundary, assert at the edge, and never let it spread into the
+//! design. This is that boundary for AppKit. A backend built on it never writes `@ptrCast`.
+//!
+//! WHY IT IS CHECKED RATHER THAN TRUSTED. The Objective-C runtime is introspectable, so the cast
+//! is verifiable: `class_getInstanceMethod` answers null for a selector that does not exist, and
+//! `method_getTypeEncoding` returns the signature the LOADED framework actually has. `verify`
+//! compares that against the caller's declaration BEFORE any message is sent, which reads
+//! stronger than a compile-time header check -- it is the framework on this machine rather than
+//! an SDK's description of it. It earned itself on its first run, catching two of the probe's own
+//! eight declarations where a forgotten return type read `@:` against the framework's `@@:`.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+pub const max_encoding_bytes: u32 = 128;
+
+pub const Class = *opaque {};
+pub const Id = *opaque {};
+pub const Sel = *opaque {};
+pub const Method = *opaque {};
+
+pub extern fn objc_getClass(name: [*:0]const u8) ?Class;
+pub extern fn sel_registerName(name: [*:0]const u8) Sel;
+pub extern fn objc_msgSend() void;
+pub extern fn class_getInstanceMethod(cls: ?Class, sel: Sel) ?Method;
+pub extern fn class_getClassMethod(cls: ?Class, sel: Sel) ?Method;
+pub extern fn method_getTypeEncoding(m: ?Method) ?[*:0]const u8;
+
+/// CGRect is four doubles, which is what AppKit's NSRect is on every 64-bit Apple target.
+pub const CGPoint = extern struct { x: f64, y: f64 };
+pub const CGSize = extern struct { width: f64, height: f64 };
+pub const CGRect = extern struct { origin: CGPoint, size: CGSize };
+
+pub extern fn CGColorSpaceCreateDeviceRGB() ?*anyopaque;
+pub extern fn CGBitmapContextCreate(data: ?*anyopaque, width: usize, height: usize, bits_per_component: usize, bytes_per_row: usize, space: ?*anyopaque, bitmap_info: u32) ?*anyopaque;
+pub extern fn CGBitmapContextCreateImage(context: ?*anyopaque) ?*anyopaque;
+
+/// The one cast, in the one place. Every caller reaches a message through a verified selector.
+pub fn send(comptime Fn: type) Fn {
+    return @ptrCast(&objc_msgSend);
+}
+
+/// Keep only the type letters of an Objective-C encoding, dropping the frame offsets it carries:
+/// `v24@0:8@16` reads as `v@:@`, which is the shape a caller actually has to get right.
+pub fn shape(encoding: []const u8, out: []u8) []const u8 {
+    // invariant: the output buffer can hold every byte the encoding could contribute.
+    assert(out.len >= encoding.len);
+    var n: u32 = 0;
+    for (encoding) |ch| {
+        if (ch >= '0' and ch <= '9') continue;
+        out[n] = ch;
+        n += 1;
+    }
+    // invariant: a real encoding always yields at least a return type and the two hidden arguments.
+    assert(n >= 3);
+    return out[0..n];
+}
+
+/// Prove one selector before it is ever sent: it exists on this class, and the signature the
+/// loaded framework reports is the signature the caller declared. A declared shape of "?" is
+/// discovery -- it prints what the framework says and sends anyway, which is how a caller learns
+/// an encoding rather than guessing it, and it is never left in place.
+pub fn verify(cls: ?Class, name: [*:0]const u8, want: []const u8, class_method: bool) Sel {
+    const sel = sel_registerName(name);
+    const method = if (class_method) class_getClassMethod(cls, sel) else class_getInstanceMethod(cls, sel);
+    // invariant: the selector is implemented by the class we are about to message.
+    assert(method != null);
+    const raw = method_getTypeEncoding(method);
+    // invariant: an implemented method always carries a type encoding.
+    assert(raw != null);
+    const encoding = std.mem.span(raw.?);
+    // invariant: the encoding fits the bound this module declares for it.
+    assert(encoding.len < max_encoding_bytes);
+    var buffer: [max_encoding_bytes]u8 = undefined;
+    const got = shape(encoding, buffer[0..]);
+    if (std.mem.eql(u8, want, "?")) {
+        print("objc-seam: discover {s} = {s}\n", .{ name, got });
+        return sel;
+    }
+    if (!std.mem.eql(u8, got, want)) {
+        print("objc-seam: REFUSED -- selector {s} reads {s}, the caller declared {s}\n", .{ name, got, want });
+        @panic("objc seam: declared signature disagrees with the loaded framework");
+    }
+    return sel;
+}
+
+pub const SendId = *const fn (Id, Sel) callconv(.c) Id;
+pub const SendClassId = *const fn (Class, Sel) callconv(.c) Id;
+pub const SendIdVoid = *const fn (Id, Sel) callconv(.c) void;
+pub const SendIdBool = *const fn (Id, Sel, bool) callconv(.c) void;
+pub const SendIdI64 = *const fn (Id, Sel, i64) callconv(.c) void;
+pub const SendIdIdVoid = *const fn (Id, Sel, ?Id) callconv(.c) void;
+pub const SendIdPtrVoid = *const fn (Id, Sel, ?*anyopaque) callconv(.c) void;
+pub const SendIdInteger = *const fn (Id, Sel) callconv(.c) i64;
+pub const SendClassStr = *const fn (Class, Sel, [*:0]const u8) callconv(.c) Id;
+pub const SendWindowInit = *const fn (Id, Sel, CGRect, u64, u64, bool) callconv(.c) Id;
