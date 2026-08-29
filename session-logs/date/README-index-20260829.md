@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260829.104233` | [a guard met a birth](20260829/20260829-104233_a-guard-met-a-birth.kyri) | reach gate one past both ceilings; the Mac bench paid its named debt |
 | `20260829.094256` | [the ratchet that had a floor](20260829/20260829-094256_the-ratchet-that-had-a-floor.kyri) | %334 ratchet 14 -> 4; ten "defects" were builds one hop away |
 | `20260829.094048` | [the door walked](20260829/20260829-094048_the-door-walked.kyri) | a Rye view class on iOS, dispatched by the platform, judged by the same pins |
 | `20260829.093058` | [green from inside ios](20260829/20260829-093058_green-from-inside-ios.kyri) | both witnesses spawn GREEN on a booted iPhone; pins identical across two OSes |

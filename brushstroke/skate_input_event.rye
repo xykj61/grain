@@ -13,9 +13,11 @@ const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 
-// The four doors this backend admits today. IME, dead keys, scroll, and motion are their own
-// later rungs; a kind is added by widening this enum and the witness together.
-pub const InputKind = enum(u8) { key_down = 1, key_up = 2, mouse_down = 3, mouse_up = 4 };
+// The six doors the backends admit today: keys and mouse from macOS, touches from iOS (widened
+// `20260829.111001`, the touch rung). IME, dead keys, scroll, and motion are their own later
+// rungs; a kind is added by widening this enum, max_kind, and the proving probes together.
+pub const InputKind = enum(u8) { key_down = 1, key_up = 2, mouse_down = 3, mouse_up = 4, touch_down = 5, touch_up = 6 };
+pub const max_kind: u8 = 6;
 
 /// One admitted input: the kind, the platform's own code (keyCode for keys, button number for
 /// mouse), and the location in window points (zero for keys, which carry no location).
@@ -30,7 +32,7 @@ pub const InputEvent = struct {
 pub fn make(kind: InputKind, code: u16, x_points: i32, y_points: i32) InputEvent {
     // invariant: the kind is one of the seated doors.
     assert(@intFromEnum(kind) >= 1);
-    assert(@intFromEnum(kind) <= 4);
+    assert(@intFromEnum(kind) <= max_kind);
     return .{ .kind = kind, .code = code, .x_points = x_points, .y_points = y_points };
 }
 
