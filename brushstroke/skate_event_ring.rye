@@ -1,0 +1,138 @@
+//! brushstroke/skate_event_ring.rye -- the fixed event admission boundary of Surf and Skate,
+//! ported from skate/Sources/SkateCore/EventRing.swift with the same bounds and refusals.
+//!
+//! Rung: LOCA -- the ring the refusals crossed (20260829.002846-round)
+//!
+//! One neutral, fixed-capacity event queue for the headless core. It owns 128 optional seats
+//! inline, keeps admitted and removed totals as monotonic u64 counters, and uses modulo only to
+//! select a physical seat. A full ring refuses before mutation and never evicts an older event;
+//! the counter refuses at the unsigned ceiling rather than wrapping. The type bounds queue
+//! structure, never an arbitrary payload's nested storage -- a shell seats and proves its fixed
+//! domain event type separately before offering untrusted platform input here. The Swift source
+//! stays the specification; this port must keep every refusal its tests assert, and
+//! tools/rye/skate_event_ring_witness.rye asserts them again in Rye.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+// 128 seats -- the same bound SkateCoreBounds.eventCapacity names on the Swift side. The two
+// sources must agree, or the port is a fork rather than a port.
+pub const event_capacity: u32 = 128;
+
+pub const RingError = error{ Full, CounterExhausted };
+
+pub fn EventRing(comptime Event: type) type {
+    return struct {
+        const Ring = @This();
+
+        seats: [event_capacity]?Event,
+        head: u64,
+        tail: u64,
+
+        /// A logically empty ring at counter zero.
+        pub fn init() Ring {
+            return init_at(0);
+        }
+
+        /// Begin empty at a supplied monotonic counter origin -- the proof seam that reaches
+        /// the unsigned ceiling without spending u64-max queue operations.
+        pub fn init_at(counter_origin: u64) Ring {
+            const ring = Ring{
+                .seats = [_]?Event{null} ** event_capacity,
+                .head = counter_origin,
+                .tail = counter_origin,
+            };
+            // invariant: equal counters are the empty state, whatever the origin.
+            assert(ring.head == ring.tail);
+            // invariant: an origin ring holds nothing.
+            assert(ring.tail - ring.head == 0);
+            return ring;
+        }
+
+        pub fn count(ring: *const Ring) u32 {
+            // invariant: the removed total never passes the admitted total.
+            assert(ring.tail >= ring.head);
+            const distance = ring.tail - ring.head;
+            // invariant: the ring never holds more than its named capacity.
+            assert(distance <= event_capacity);
+            return @intCast(distance);
+        }
+
+        pub fn is_empty(ring: *const Ring) bool {
+            // invariant: the counters read as a history before they read as a state.
+            assert(ring.tail >= ring.head);
+            return ring.head == ring.tail;
+        }
+
+        /// Peek the oldest admitted event without removing it.
+        pub fn first(ring: *const Ring) ?Event {
+            // invariant: the removed total never passes the admitted total.
+            assert(ring.tail >= ring.head);
+            if (ring.head >= ring.tail) return null;
+            const seat = ring.seats[physical_slot(ring.head)];
+            // invariant: an admitted event occupies its physical seat.
+            assert(seat != null);
+            return seat;
+        }
+
+        /// Read one physical seat through its linear counter -- the proof seam the exhaustion
+        /// witness reads to show a refused append touched nothing.
+        pub fn stored_event(ring: *const Ring, counter: u64) ?Event {
+            // invariant: the counters read as a history whenever a seat is inspected.
+            assert(ring.tail >= ring.head);
+            return ring.seats[physical_slot(counter)];
+        }
+
+        /// Admit one event, refusing before mutation: a full ring and an exhausted counter both
+        /// leave every seat and both counters exactly as they stood.
+        pub fn append(ring: *Ring, event: Event) RingError!void {
+            if (ring.count() >= event_capacity) return RingError.Full;
+            const next_tail = try advanced(ring.tail);
+            const slot = physical_slot(ring.tail);
+            // invariant: an available seat is empty before it is written.
+            assert(ring.seats[slot] == null);
+            ring.seats[slot] = event;
+            ring.tail = next_tail;
+            // invariant: admission never passes the capacity.
+            assert(ring.count() <= event_capacity);
+        }
+
+        /// Remove and answer the oldest event, or null on an empty ring; the vacated seat is
+        /// cleared so the wrap can prove reuse against emptiness.
+        pub fn remove_first(ring: *Ring) ?Event {
+            if (ring.head >= ring.tail) return null;
+            const slot = physical_slot(ring.head);
+            const seat = ring.seats[slot];
+            // invariant: an admitted event occupies its physical seat.
+            assert(seat != null);
+            ring.seats[slot] = null;
+            ring.head += 1;
+            // invariant: removal never passes admission.
+            assert(ring.tail >= ring.head);
+            return seat;
+        }
+
+        fn physical_slot(counter: u64) u32 {
+            const slot: u32 = @intCast(counter % event_capacity);
+            // invariant: the modulo lands inside the named seats.
+            assert(slot < event_capacity);
+            return slot;
+        }
+
+        /// The counter's own gate: refuse at the unsigned ceiling rather than wrap, so the
+        /// monotonic totals stay a true history of the ring.
+        pub fn advanced(counter: u64) RingError!u64 {
+            if (counter == std.math.maxInt(u64)) return RingError.CounterExhausted;
+            const next = counter + 1;
+            // invariant: advancing is strictly monotonic.
+            assert(next > counter);
+            return next;
+        }
+    };
+}
+
+// Alias-sameness: both spoken names ARE the one neutral type -- compile-time aliases, never
+// wrappers, per .claude/rules/alias-sameness.md (the Surf and Skate seating).
+pub const SurfEventRing = EventRing;
+pub const SkateEventRing = EventRing;

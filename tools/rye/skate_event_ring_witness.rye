@@ -1,0 +1,152 @@
+//! tools/rye/skate_event_ring_witness.rye -- every refusal the Swift EventRing tests assert,
+//! asserted again in Rye against the same bounds (LOCA quest two, rung one).
+//!
+//! Mirrors skate/Tests/SkateCoreTests/EventRingTests.swift case for case: fill-then-refuse
+//! without eviction, physical wrap keeping linear FIFO order, the counter refusing before
+//! unsigned wrap, exhaustion refusing without mutation at the ceiling, and alias-sameness of
+//! the two spoken names. The refusing legs are inside the run -- each wall is walked into and
+//! must bite, and each bite is followed by whole-state assertions, since a refusal that mutates
+//! is worse than no refusal at all.
+//!
+//! Run from the repository root:
+//!   rye run tools/rye/skate_event_ring_witness.rye
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const ring_mod = @import("skate_event_ring.rye");
+
+pub fn main() !void {
+    print("skate-event-ring: Language EN -- the Swift tests' refusals, asserted again in Rye.\n", .{});
+    print("skate-event-ring: Style Gauge, Meter -- one bound, both sides of every wall.\n", .{});
+
+    const capacity = ring_mod.event_capacity;
+    // invariant: the port and the Swift specification name one bound.
+    assert(capacity == 128);
+
+    // Fill, refuse without eviction, drain in order -- the Swift
+    // testEventRingFillsThenRefusesWithoutEviction, walked in Rye.
+    var ring = ring_mod.EventRing(u32).init();
+    var i: u32 = 0;
+    while (i < capacity) : (i += 1) try ring.append(i);
+    const head_before = ring.head;
+    const tail_before = ring.tail;
+    const first_before = ring.first();
+    // invariant: a full ring still answers its oldest event.
+    assert(first_before != null);
+    if (ring.append(capacity)) |_| {
+        @panic("event ring: the 129th admission was accepted, so the wall does not wall");
+    } else |err| {
+        // invariant: the refusal is the named Full error, never a different door.
+        assert(err == ring_mod.RingError.Full);
+    }
+    // invariant: the refusal mutated nothing -- both counters, the count, and the oldest event
+    // stand exactly as they stood.
+    assert(ring.head == head_before);
+    assert(ring.tail == tail_before);
+    assert(ring.count() == capacity);
+    assert(ring.first() != null);
+    assert(ring.first().? == first_before.?);
+    i = 0;
+    while (i < capacity) : (i += 1) {
+        const got = ring.remove_first();
+        // invariant: removal answers in admission order, whole.
+        assert(got != null);
+        assert(got.? == i);
+    }
+    // invariant: a drained ring answers null and reads empty.
+    assert(ring.remove_first() == null);
+    assert(ring.is_empty());
+    print("skate-event-ring: full refuses without eviction; the FIFO drains whole.\n", .{});
+
+    // Physical wrap keeps linear FIFO order -- testEventRingPhysicalWrapKeepsLinearFIFOOrder.
+    var wrap = ring_mod.EventRing(u32).init();
+    i = 0;
+    while (i < capacity) : (i += 1) try wrap.append(i);
+    const moved: u32 = 96;
+    i = 0;
+    while (i < moved) : (i += 1) {
+        const got = wrap.remove_first();
+        // invariant: the pre-wrap removals answer in order.
+        assert(got != null);
+        assert(got.? == i);
+    }
+    i = capacity;
+    while (i < capacity + moved) : (i += 1) try wrap.append(i);
+    // invariant: the wrapped ring is exactly full again, and its counters are linear history
+    // rather than physical positions.
+    assert(wrap.count() == capacity);
+    assert(wrap.head == moved);
+    assert(wrap.tail == capacity + moved);
+    i = moved;
+    while (i < capacity + moved) : (i += 1) {
+        const got = wrap.remove_first();
+        // invariant: order survives the physical wrap.
+        assert(got != null);
+        assert(got.? == i);
+    }
+    // invariant: the wrapped ring drains to empty like any other.
+    assert(wrap.is_empty());
+    print("skate-event-ring: the physical wrap keeps linear FIFO order, head={d} tail={d}.\n", .{ moved, capacity + moved });
+
+    // The counter refuses before unsigned wrap -- testEventCounterRefusesBeforeUnsignedWrap.
+    if (ring_mod.EventRing(u32).advanced(std.math.maxInt(u64))) |_| {
+        @panic("event ring: the counter passed the unsigned ceiling, so the gate does not gate");
+    } else |err| {
+        // invariant: the ceiling refuses as CounterExhausted, never as Full.
+        assert(err == ring_mod.RingError.CounterExhausted);
+    }
+
+    // Exhaustion refuses without mutation -- testEventRingCounterExhaustionRefusesWithoutMutation,
+    // through the same counter-origin proof seam the Swift side keeps.
+    var edge = ring_mod.EventRing(u32).init_at(std.math.maxInt(u64) - 1);
+    try edge.append(7);
+    const edge_head = edge.head;
+    const edge_tail = edge.tail;
+    const edge_first = edge.first();
+    // invariant: the seat the exhausted counter would have taken is empty before the refusal.
+    assert(edge.stored_event(std.math.maxInt(u64)) == null);
+    if (edge.append(8)) |_| {
+        @panic("event ring: an exhausted counter admitted an event, so the gate does not gate");
+    } else |err| {
+        // invariant: the ceiling inside append refuses as CounterExhausted.
+        assert(err == ring_mod.RingError.CounterExhausted);
+    }
+    // invariant: the refusal mutated nothing -- counters, count, oldest event, the would-be
+    // seat, and emptiness all stand.
+    assert(edge.head == edge_head);
+    assert(edge.tail == edge_tail);
+    assert(edge.count() == 1);
+    assert(edge.first() != null);
+    assert(edge.first().? == edge_first.?);
+    assert(edge.stored_event(std.math.maxInt(u64)) == null);
+    assert(!edge.is_empty());
+    const seven = edge.remove_first();
+    // invariant: the admitted event survives its neighbor's refusal, whole.
+    assert(seven != null);
+    assert(seven.? == 7);
+    assert(edge.is_empty());
+    print("skate-event-ring: exhaustion at the u64 ceiling refuses without mutation.\n", .{});
+
+    // Alias-sameness -- testSurfAndSkateEventRingAliasesShareOneIdentity: the two spoken names
+    // are one compile-time type, so a value moves between them as itself.
+    comptime {
+        assert(ring_mod.SurfEventRing(u8) == ring_mod.SkateEventRing(u8));
+        assert(ring_mod.SurfEventRing(u8) == ring_mod.EventRing(u8));
+    }
+    var surf = ring_mod.SurfEventRing(u8).init();
+    try surf.append(7);
+    const skate_ring: ring_mod.SkateEventRing(u8) = surf;
+    const surf_again: ring_mod.SurfEventRing(u8) = skate_ring;
+    const skate_first = skate_ring.first();
+    // invariant: the value crossed both names unchanged.
+    assert(skate_first != null);
+    assert(skate_first.? == 7);
+    // invariant: the aliases carry one identity, counters included.
+    assert(surf_again.head == surf.head);
+    assert(surf_again.tail == surf.tail);
+    print("skate-event-ring: Surf and Skate speak one ring; the aliases are the type itself.\n", .{});
+
+    print("skate-event-ring: GREEN -- every Swift refusal stands in Rye: capacity={d}, full refuses whole, the counter refuses at the ceiling, order survives the wrap.\n", .{capacity});
+}
