@@ -8,7 +8,11 @@
 [`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
 path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 
-**Comlink carries a sealed datagram, and the format never forks.** `wire_format.rye` defines one offset layout and one seal/open pair, and every rung above it -- a hosted UDP socket on localhost, or a real virtio-net link between two freestanding guests on QEMU virt -- reads and writes exactly the same bytes. A fact that crosses this wire arrives whole or not at all; nothing here retries a partial frame.
+**Comlink carries a sealed datagram, and the format stays whole.** `wire_format.rye` defines one
+offset layout and one seal/open pair. Every rung above it reads and writes those same bytes. That
+includes a hosted UDP socket on localhost and a real virtio-net link between two freestanding
+guests on QEMU virt. A fact that crosses this wire arrives whole or stays with its sender. Each
+message fits one frame.
 
 ## The Core
 
@@ -22,7 +26,12 @@ path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 | [`handshake_turn.rye`](handshake_turn.rye) | the live handshake -- the introduction gate (`discovery/introduce.rye`) admits a peer and the rotation gate (`turn_route.rye`) keys the wire, in one breath; identity and rotation gate **independently**, so a valid introduction still routes only to a verified freshest key. `handshake_wire` **closes the loop**: the peer's turn arrives on the wire in the descriptor bytes (`turn_to_bytes`), doubly held -- the introducer signed the descriptor, the turn carries the peer's own signature |
 | [`topology.rye`](topology.rye) | the **d12-d60 fractal address space** -- twelve galaxies to a universe, five stars to a galaxy (its d5), twelve planets to a star (its d12), a galaxy leading a d60 of sixty; a point number decodes to a place, a place's sponsor climbs planet->star->galaxy (the `sponsor` tilak's own parent link), and two places share a route counted in honest hops -- within a galaxy, one bridge across. The number spaces **nest inclusively** like Azimuth (`20260810`): a galaxy is also a star and a planet (720/universe, sponsor by mod), wearing each lower role as an outfit. **The geometry is a loadable `Sky`**: the seated d12-d60 is `compass_sky`, and a differently-shaped `council_sky` (15-3-9, a d27 of 27, 405/universe inclusive) round-trips by the same law -- a community may load its own shape, toward Pond loading a sky like a game |
 
-`device_wire.rye`'s hosted selftest is the fast path -- no QEMU, and it is where `virtio_net.rye`'s five hand-designed wire structures (`VirtioNetHdr`, `VqDesc`, `VqAvail`, `VqUsedElem`, `VqUsed`) get proved padding-free at compile time via Tally's `no_padding`, before anything freestanding ever runs. A stale camelCase-era call site (`negotiateFeatures` where `virtio_net.rye` had already migrated to `negotiate_features`) sat undetected here for one full season, because nothing in the parity suite ever built this file's own hosted binary -- only the freestanding lab downstream of it. Both the rename and the gap now stand closed: [`counsel/20260707-053212_tigerbeetle-alignment-study.md`](../external-research/20260707-053212_tigerbeetle-alignment-study.md) named the discipline, and this season's bench found where it had not yet reached.
+`device_wire.rye`'s hosted selftest is the fast path and needs no QEMU. It proves five wire
+structures padding-free at compile time through Tally's `no_padding`: `VirtioNetHdr`, `VqDesc`,
+`VqAvail`, `VqUsedElem`, and `VqUsed`. A camel-case call site once stayed here after
+`virtio_net.rye` moved to `negotiate_features`. The parity suite built only the downstream
+freestanding lab, so it missed this hosted binary. The hosted check now builds and runs beside the
+lab. The alignment study names the discipline that caught the gap.
 
 ## The Guest Fleet
 

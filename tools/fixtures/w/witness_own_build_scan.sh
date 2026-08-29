@@ -56,7 +56,9 @@
 
 set -eu
 
-# WHY THIS NUMBER. 21 is the reading on 20260829 after Amphora's eight witnesses took their own
+# WHY THIS NUMBER. 19 is the reading on 20260829 after Sundial's witness took its own build. The
+# prior reading was 20 after Kumara's bind witness took its own build, and 21 after Amphora's eight
+# witnesses took their own
 # builds -- pour, pour_negative, carry, carry_negative, restore, restore_negative, grand_round and
 # first_resident, seventeen pairs over amphora/bin/{amphora,vessel-core,vessel-seal}, every one
 # GREEN from an emptied amphora/bin/.
@@ -83,7 +85,7 @@ set -eu
 # It read 46 on 20260828 and 48 before the two Comlink witnesses. It only ever falls: a
 # witness repaired lowers it, and a new witness invoking an unbuilt artifact raises it past
 # the ceiling on the lap it arrives.
-CEILING=20
+CEILING=19
 
 command -v git >/dev/null 2>&1 || { echo "verdict=no_git"; echo "refused: this scan reads the tracked tree, so it wants git" >&2; exit 1; }
 git rev-parse --git-dir >/dev/null 2>&1 || { echo "verdict=no_repo"; echo "refused: not inside a git repository" >&2; exit 1; }
