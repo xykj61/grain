@@ -231,6 +231,17 @@ assert control.out contains "broken_gone=1" else "dated-path: the control's ghos
 assert control.out contains "verdict=ok" else "dated-path: the control census must balance"
 say "census control GREEN -- a corpus whose answer is known by construction is walked correctly, one home and one ghost"
 
+# A CHECKOUT OF THIS SAME REPOSITORY IS NOT THE FIELD, proven on a real `git worktree add` in the
+# pen and from both sides. On 20260829 one peer worktree standing inside this root supplied 148 of
+# 296 gone and 22 of 39 ambiguous references, so the gate below read 335 against a ceiling of 168
+# while the tree itself read 165 -- and the repointer, which WRITES, named exactly one file to
+# rewrite and that file was inside the peer's checkout.
+assert control.out contains "walk_sees_worktree_refs=2" else "dated-path: the pen's recursive walk must actually reach the worktree copy, or the exclusion below proves nothing"
+assert control.out contains "worktree_roster=hand " else "dated-path: the roster must name the added worktree, root-relative, derived from git rather than typed"
+assert control.out contains "roster_names_pen_root=0" else "dated-path: the roster must never name the root itself -- the main worktree is the field, and pruning it would prune everything"
+assert control.out contains "refs_total=4" else "dated-path: an ORDINARY copied directory must still be counted, or the worktree reading cannot be told from a walker that never descends"
+say "worktree GREEN -- the walk reaches the copy, the census declines it, an ordinary copy is still counted, and the root is never pruned"
+
 # ONE LIST, read by both tools. They kept private copies for a day, diverged twice, and the second
 # divergence let the repointer rewrite the stale fixture three asserts above -- leaving the rung
 # that proves the fold rule works proving nothing (REDS %121). A rule like that is only worth

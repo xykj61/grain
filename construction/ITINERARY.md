@@ -58,30 +58,32 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `280fc24000` -- this round's pre-amend sibling.
+**Git nib:** `598bc1ad77` -- this round's own.
 
-**Now.** **A room an agent cannot enter is a room.**
+**Now.** **A checkout of this same repository is not the field.**
 
-**Orbit four, the door on metal:** the launcher's last exec line decides entry, search path, env and
-uid; the record has a key for none of the four. Two of its 4 path elements arrive absent -- one the
-host lacks, one the private home dissolves -- 0 disagreements, entry gated at zero, 3 duties
-undeclared. Both edits are seats. Reading `20260829-064107`.
+**The dated-path census read a peer's worktree as the tree** (`20260829-084438`): 170 of its 335
+lost references were that copy, and the repointer, which WRITES, named one file to rewrite inside
+it. Both prune in-root worktrees now, from `git worktree list`; ceiling 168 -> 165.
+
+**Orbit three:** three writable host paths outlive the close -- `/dev/shm`, `/tmp/.X11-unix`,
+`/run/user/<uid>` -- none under the pier. Closing any is a seat. Reading `20260829-054303`.
 
 **MANY HANDS + skills** (granted `20260828`): launches may manage multiple CLI agents; custody
-stays MANUAL, each checkout keeps one writer. Root `SKILL.md` opens the three. Every clone seats
+stays MANUAL, each checkout keeps one writer. Root `SKILL.md`. Every clone seats
 `ww` (`grain-ww/grain`, gate %1) and `.git/ssh_config_jail`.
 
 **Still open, one structural:** REDS reads 24,571/**24,576**, 9 OPEN, 0 foldable -- metered and
 rostered, `%338` booked, 3 doors costed in `20260829-031804`; his seat.
 **Width:** `glow/rune_shape.rye` publishes `usize` in 5 fields and 5 accessors; 59 gate
 fixtures await his word. **Mind's:** the reconnect stash,
-`%281`/`%291`, and this pier's two `enclosure.conf` pins. **Roster:** 92 guards,
-91 green; `rule_twin` 39/36 alone reds, and that is gate %7.
-**Seats:** can the roster's own witness be rostered; may a `mask` soften the `map` above it; a
+`%281`/`%291`, and this pier's two `enclosure.conf` pins. **Roster:** `rule_twin`
+39/36 reds alone, and that is gate %7.
+**Seats:** can the roster's own witness be rostered; may a `mask` soften the `map`; a
 capability tier for `comlink_r1_dual_stack`'s IPv6 leg.
 
-**Next doors.** Dream: Caravan and Tally. Hush: orbit two wants Dream's nod; orbits three and four
-each leave one costed edit waiting on a word.
+**Next doors.** Dream: Caravan and Tally. Hush: orbit two's grants still want Dream's nod;
+orthogonal to it, orbit three's survivors are costed and wait on a word.
 
 ---
 ## Landed arcs
@@ -210,7 +212,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260829.070953` | A witness builds what it runs | [log](../session-logs/date/20260829/20260829-070953_a-witness-builds-what-it-runs.kyri) |
+| `20260829.084438` | A checkout is not the field | [log](../session-logs/date/20260829/20260829-084438_a-checkout-is-not-the-field.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line here until the next replaces it.
 
