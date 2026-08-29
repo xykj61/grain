@@ -22,6 +22,22 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ---
 
+## `20260829.192321` -- the dependent-stream word-molt deep debride (walk-back `be976e4227`)
+
+**Walk-back nib:** `be976e4227` -- HEAD before the sweep commit and the rewrite. The departing
+history holds `fa34b7a43` with *child-stream* in its subject and body; the rewrite spans
+`fa34b7a43~1..HEAD`, message-only, every tree byte-identical (`56828d1bcadb` before and after),
+every commit re-signed, both remotes force-pushed on Keaton's word naming the commit.
+
+**Swept:** the phrase *child-stream* molts to *dependent-stream* in that one commit's subject and
+body -- the same molt-breach pattern as the six MANY HANDS messages of `20260828.234152` -- and
+seven living comment hits sweep in the same round (`rishi/src/main.rye`, `tools/l/chatgpt-mind.rish`);
+identifiers and `std.process` seam names keep Zig's words, and directory-child refusal strings keep
+their different sense.
+
+**What waits there, worth recalling:** the departing subject read "rishi: the child-stream wall
+grows to four MiB" -- the day's own voice, inherited from the elder comment it was editing.
+
 ## `20260829.141640` -- the card condense (walk-back `e4e80e5677`)
 
 **Walk-back nib:** `e4e80e5677` -- HEAD before the condense commit. The departing ITINERARY stands
