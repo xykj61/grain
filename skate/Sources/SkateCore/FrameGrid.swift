@@ -283,6 +283,33 @@ public struct BrushstrokeFrame: Sendable {
     return atNib[offset]
   }
 
+  /// Compare all 459 stored values for refusal proofs. This package-internal
+  /// seam includes unused line seats, which the public admitted-value readers
+  /// intentionally keep hidden.
+  func hasSameStoredState(as other: borrowing BrushstrokeFrame) -> Bool {
+    if atNibCount != other.atNibCount { return false }
+    if maxLines != other.maxLines { return false }
+    if lineCount != other.lineCount { return false }
+
+    var nibOffset = 0
+    while nibOffset < SkateCoreBounds.nibBytes {
+      if atNib[nibOffset] != other.atNib[nibOffset] { return false }
+      nibOffset += 1
+    }
+
+    var row = 0
+    while row < SkateCoreBounds.rows {
+      if lines[row].count != other.lines[row].count { return false }
+      var column = 0
+      while column < SkateCoreBounds.columns {
+        if lines[row].bytes[column] != other.lines[row].bytes[column] { return false }
+        column += 1
+      }
+      row += 1
+    }
+    return true
+  }
+
   public func lowered() throws -> FrameGrid {
     guard lineCount > 0 else { throw BrushstrokeFrameError.emptyFrame }
     precondition(lineCount <= maxLines)

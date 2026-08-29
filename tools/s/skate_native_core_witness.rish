@@ -4,15 +4,15 @@
 # palette seats, and a 128-seat event ring in InlineArray storage. A frame carries Brushstroke's
 # own one-through-eight declared line ceiling. Surf and Skate are compile-time aliases over the
 # same frame, media receipt, and event ring. The controls prove the living fold; media bounds; the
-# refusing frame edges; full-ring refusal without eviction; FIFO order across physical wrap; and
-# unsigned-counter refusal before arithmetic or ring mutation. AppKit and C stay outside this
-# headless core.
+# refusing frame edges with all 459 Brushstroke values preserved; full-ring refusal without
+# eviction; FIFO order across physical wrap; and unsigned-counter refusal before arithmetic or
+# ring mutation. AppKit and C stay outside this headless core.
 
 say "skate-native-core: Language EN -- Brushstroke lends one bounded Frame; Surf and Skate are peer names for its one native grid."
 say "skate-native-core: Style Gauge Door -- the sizes, owner, refusal, and platform edge are named."
 say "skate-native-core: Lens TAME -- fixed storage, bounded walks, and atomic refusal before mutation."
 
-let shape = run ["sh" "-c" "grep -q 'InlineArray<128, UInt8>' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'InlineArray<8, BrushstrokeLine>' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'InlineArray<320, UInt8>' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'InlineArray<8, SkateColor>' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'InlineArray<128, Event?>' skate/Sources/SkateCore/EventRing.swift && grep -q 'init(counterOrigin: UInt64)' skate/Sources/SkateCore/EventRing.swift && grep -q 'let nextTail = try Self.advanced(tail)' skate/Sources/SkateCore/EventRing.swift && grep -q 'throw EventRingError.full' skate/Sources/SkateCore/EventRing.swift && grep -q 'public let maxLines: Int' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'lineCount < maxLines' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'public typealias SurfFrameGrid = FrameGrid' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'public typealias SkateFrameGrid = FrameGrid' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'public typealias SurfEventRing' skate/Sources/SkateCore/EventRing.swift && grep -q 'public typealias SkateEventRing' skate/Sources/SkateCore/EventRing.swift && grep -q '@available(macOS 26.0, \*)' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'StrictMemorySafety' skate/Package.swift && grep -q '\-warnings-as-errors' skate/Package.swift && echo SHAPE_OK"]
+let shape = run ["sh" "-c" "grep -q 'InlineArray<128, UInt8>' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'InlineArray<8, BrushstrokeLine>' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'InlineArray<320, UInt8>' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'InlineArray<8, SkateColor>' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'InlineArray<128, Event?>' skate/Sources/SkateCore/EventRing.swift && grep -q 'func hasSameStoredState(as other: borrowing BrushstrokeFrame)' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'init(counterOrigin: UInt64)' skate/Sources/SkateCore/EventRing.swift && grep -q 'let nextTail = try Self.advanced(tail)' skate/Sources/SkateCore/EventRing.swift && grep -q 'throw EventRingError.full' skate/Sources/SkateCore/EventRing.swift && grep -q 'public let maxLines: Int' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'lineCount < maxLines' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'public typealias SurfFrameGrid = FrameGrid' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'public typealias SkateFrameGrid = FrameGrid' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'public typealias SurfEventRing' skate/Sources/SkateCore/EventRing.swift && grep -q 'public typealias SkateEventRing' skate/Sources/SkateCore/EventRing.swift && grep -q '@available(macOS 26.0, \*)' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'StrictMemorySafety' skate/Package.swift && grep -q '\-warnings-as-errors' skate/Package.swift && echo SHAPE_OK"]
 assert shape.ok else "skate-native-core: fixed shape or strict build setting missing"
 assert shape.out contains "SHAPE_OK" else "skate-native-core: fixed shape did not hold"
 
@@ -44,6 +44,7 @@ assert test.out contains "testDeclaredLineCeilingOutsideOneThroughEightRefuses" 
 assert test.out contains "testSurfAndSkateAliasesShareOneFrameIdentityAndRefusalContract" else "skate-native-core: Surf and Skate alias-sameness control not exercised"
 assert test.out contains "testNinthLineRefusesWithoutChangingFrame" else "skate-native-core: ninth-line control not exercised"
 assert test.out contains "testFortyFirstByteRefusesWithoutChangingFrame" else "skate-native-core: forty-first-byte control not exercised"
+assert test.out contains "testBrushstrokeFrameRefusalsPreserveAllStoredState" else "skate-native-core: Brushstroke append refusals did not prove all 459 stored values unchanged"
 assert test.out contains "testInvalidPaletteRunsRefuseAtomically" else "skate-native-core: atomic paint controls not exercised"
 assert test.out contains "testFrameGridRefusalsPreserveWholeState" else "skate-native-core: frame refusals did not prove all 648 owned values unchanged"
 assert test.out contains "testImageLotusAndDigestValuesJoinOneBoundedMediaReceipt" else "skate-native-core: joined media receipt not exercised"
