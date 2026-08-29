@@ -1,0 +1,369 @@
+//! tools/rye/macos_input_ring_probe.rye -- the platform's own input, dispatched into Rye
+//! callbacks and admitted through the event ring's proven walls.
+//!
+//! Rung: LOCA -- the input the ring admits (20260829.004209)
+//!
+//! WHY THIS PROBE EXISTS. Rung one of quest two proved the ring pure: every refusal the Swift
+//! tests assert, asserted again in Rye. This rung closes the platform half: a Rye view class
+//! carries FIVE Rye-implemented methods -- drawRect:, acceptsFirstResponder, keyDown:, keyUp:,
+//! mouseDown:, mouseUp: -- and AppKit's own sendEvent: dispatch walks keyboard and mouse events
+//! into them, where each is translated to the seated domain event and admitted to the ring. The
+//! ring is drained afterward and the admitted events must match what was posted, in order --
+//! nothing platform-shaped crosses the ring, and nothing admitted is lost or reordered.
+//!
+//! WHAT IT PROVES, on metal: the registered class receives real event dispatch (first-responder
+//! keyboard routing and hit-tested mouse routing, both the platform's own); the translation at
+//! the seam preserves kind, code, and location; the ring preserves FIFO under platform feeding;
+//! and the ring's Full wall stands at the platform seam -- the prove-red leg pre-fills all 128
+//! seats, lets AppKit dispatch one more key, and must die on the ring's own named refusal with
+//! nothing evicted (exit 134), where the ordinary run admits its whole budget.
+//!
+//! WHAT IT DOES NOT PROVE. IME, dead keys, international layouts, scroll, motion, or modifier
+//! chords -- their own rungs. Nothing about threads beyond the platform's own dispatch thread,
+//! which is the thread this pump stands on.
+//!
+//! THE EVENTS ARE POSTED TO THIS PROCESS'S OWN QUEUE, deliberately: postEvent:atStart: never
+//! leaves this application, where a system-level injection would type on a stranger's keyboard.
+//!
+//! Build and run:
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build tools/rye/macos_input_ring_probe.rye \
+//!     -femit-bin=tools/.build/macos_input_ring_probe -lobjc -framework Cocoa -framework CoreGraphics
+//!   tools/.build/macos_input_ring_probe
+//!   PROBE_PROVE_RED=1 tools/.build/macos_input_ring_probe   # the ring's Full wall, refusing side
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const c = std.c;
+
+const objc = @import("objc_seam.rye");
+const ring_mod = @import("skate_event_ring.rye");
+const input = @import("skate_input_event.rye");
+
+// The window, in points; the synthetic mouse lands well inside it.
+const view_w_points: u32 = 384;
+const view_h_points: u32 = 240;
+const mouse_x_points: i32 = 30;
+const mouse_y_points: i32 = 40;
+// 'k' on the ANSI layout -- distinctive enough to tell the probe's own keys from a stray press.
+const probe_key_code: u16 = 40;
+
+// The bounded stands, in run-loop turns of at most ten milliseconds each. The settling stand
+// runs before any event is posted, so the window's frame is the frame the events bind to.
+const max_event_turns: u32 = 200;
+const settle_turns: u32 = 30;
+const turn_block_seconds: f64 = 0.01;
+const posted_budget: u32 = 4;
+
+const style_titled: u64 = 1;
+const style_closable: u64 = 2;
+const backing_buffered: u64 = 2;
+const activation_policy_regular: i64 = 0;
+const event_mask_any: u64 = std.math.maxInt(u64);
+// NSEventType constants, spelled here: the four doors this probe walks.
+const event_type_key_down: u64 = 10;
+const event_type_key_up: u64 = 11;
+const event_type_left_mouse_down: u64 = 1;
+const event_type_left_mouse_up: u64 = 2;
+
+const view_class_name = "GrainRyeInputView";
+const draw_rect_types = "v@:{CGRect={CGPoint=dd}{CGSize=dd}}";
+const event_arg_types = "v@:@";
+const accepts_types = "B@:";
+
+const SendVoid = *const fn (objc.Id, objc.Sel) callconv(.c) void;
+const SendBool = *const fn (objc.Id, objc.Sel, bool) callconv(.c) void;
+const SendIdArg = *const fn (objc.Id, objc.Sel, ?objc.Id) callconv(.c) void;
+const SendIdArgBool = *const fn (objc.Id, objc.Sel, ?objc.Id, bool) callconv(.c) void;
+const SendIdRetBool = *const fn (objc.Id, objc.Sel, ?objc.Id) callconv(.c) bool;
+const SendRectInit = *const fn (objc.Id, objc.Sel, objc.CGRect) callconv(.c) ?objc.Id;
+const SendRect = *const fn (objc.Id, objc.Sel) callconv(.c) objc.CGRect;
+const SendPoint = *const fn (objc.Id, objc.Sel) callconv(.c) objc.CGPoint;
+const SendU16 = *const fn (objc.Id, objc.Sel) callconv(.c) u16;
+const SendI64 = *const fn (objc.Id, objc.Sel) callconv(.c) i64;
+const SendPtrRet = *const fn (objc.Id, objc.Sel) callconv(.c) ?*anyopaque;
+const SendNextEvent = *const fn (objc.Id, objc.Sel, u64, ?objc.Id, ?objc.Id, bool) callconv(.c) ?objc.Id;
+const SendClassDouble = *const fn (objc.Class, objc.Sel, f64) callconv(.c) ?objc.Id;
+const SendKeyEvent = *const fn (objc.Class, objc.Sel, u64, objc.CGPoint, u64, f64, i64, ?objc.Id, ?objc.Id, ?objc.Id, bool, u16) callconv(.c) ?objc.Id;
+const SendMouseEvent = *const fn (objc.Class, objc.Sel, u64, objc.CGPoint, u64, f64, i64, ?objc.Id, i64, i64, f32) callconv(.c) ?objc.Id;
+
+// The ring and the callback's state, in named globals: the callbacks arrive on the platform's
+// dispatch and reach the program through what the program names, never through hidden ivars.
+var ring = ring_mod.EventRing(input.InputEvent).init();
+var admitted: u32 = 0;
+var prove_red_full = false;
+var sel_key_code: objc.Sel = undefined;
+var sel_button_number: objc.Sel = undefined;
+var sel_location: objc.Sel = undefined;
+var sel_bounds: objc.Sel = undefined;
+var sel_current_context: objc.Sel = undefined;
+var sel_cg_context: objc.Sel = undefined;
+var graphics_context_class: ?objc.Class = null;
+
+/// Translate-and-admit, the one door every callback walks. On Full the ring has already proven
+/// it mutates nothing; here the probe proves the wall STANDS at the platform seam -- the
+/// prove-red leg dies on it by design, and an ordinary run dying here overdrew its own budget.
+fn admit(kind: input.InputKind, code: u16, x_points: i32, y_points: i32) void {
+    const event = input.make(kind, code, x_points, y_points);
+    ring.append(event) catch |err| {
+        // invariant: the only refusal admission can answer is the named Full.
+        assert(err == ring_mod.RingError.Full);
+        print("macos-input-ring: REFUSED -- the ring is full at {d}; the event was not admitted and nothing was evicted.\n", .{ring_mod.event_capacity});
+        if (prove_red_full) @panic("input ring: full refused at the platform seam; the wall walls");
+        @panic("input ring: admission refused inside the probe's own budget");
+    };
+    // invariant: the admitted count stays inside its named width.
+    assert(admitted < std.math.maxInt(u32));
+    admitted += 1;
+}
+
+fn key_down(self: objc.Id, sel: objc.Sel, event: objc.Id) callconv(.c) void {
+    _ = sel;
+    // invariant: the platform hands a real receiver and a real event.
+    assert(@intFromPtr(self) != 0);
+    assert(@intFromPtr(event) != 0);
+    admit(.key_down, objc.send(SendU16)(event, sel_key_code), 0, 0);
+}
+
+fn key_up(self: objc.Id, sel: objc.Sel, event: objc.Id) callconv(.c) void {
+    _ = sel;
+    // invariant: the platform hands a real receiver and a real event.
+    assert(@intFromPtr(self) != 0);
+    assert(@intFromPtr(event) != 0);
+    admit(.key_up, objc.send(SendU16)(event, sel_key_code), 0, 0);
+}
+
+/// Mouse events carry a window-point location and a button number; both cross into the domain
+/// event exactly, so the drain can prove the translation whole.
+fn mouse_common(kind: input.InputKind, event: objc.Id) void {
+    const button = objc.send(SendI64)(event, sel_button_number);
+    // invariant: a button number fits the domain event's code width.
+    assert(button >= 0);
+    assert(button <= std.math.maxInt(u16));
+    const at = objc.send(SendPoint)(event, sel_location);
+    admit(kind, @intCast(button), @intFromFloat(at.x), @intFromFloat(at.y));
+}
+
+fn mouse_down(self: objc.Id, sel: objc.Sel, event: objc.Id) callconv(.c) void {
+    _ = sel;
+    // invariant: the platform hands a real receiver and a real event.
+    assert(@intFromPtr(self) != 0);
+    assert(@intFromPtr(event) != 0);
+    mouse_common(.mouse_down, event);
+}
+
+fn mouse_up(self: objc.Id, sel: objc.Sel, event: objc.Id) callconv(.c) void {
+    _ = sel;
+    // invariant: the platform hands a real receiver and a real event.
+    assert(@intFromPtr(self) != 0);
+    assert(@intFromPtr(event) != 0);
+    mouse_common(.mouse_up, event);
+}
+
+/// The view volunteers for the key chain, so keyboard dispatch has somewhere to land.
+fn accepts_first_responder(self: objc.Id, sel: objc.Sel) callconv(.c) bool {
+    _ = sel;
+    // invariant: the platform hands the receiver it registered.
+    assert(@intFromPtr(self) != 0);
+    // invariant: the answer is the constant the class promises.
+    assert(true);
+    return true;
+}
+
+/// A quiet dark fill, so the window shows intent rather than leftovers while input flows.
+fn draw_rect(self: objc.Id, sel: objc.Sel, dirty: objc.CGRect) callconv(.c) void {
+    _ = sel;
+    // invariant: the platform hands the receiver it registered, never nil.
+    assert(@intFromPtr(self) != 0);
+    // invariant: a draw covers real area.
+    assert(dirty.size.width > 0);
+    const current = objc.send(objc.SendClassId)(graphics_context_class.?, sel_current_context);
+    // invariant: inside drawRect: the platform always has a current graphics context.
+    assert(current != null);
+    const context = objc.send(SendPtrRet)(current.?, sel_cg_context);
+    // invariant: a current context always wraps a Core Graphics context.
+    assert(context != null);
+    objc.CGContextSetRGBFillColor(context, 0.07, 0.09, 0.07, 1.0);
+    objc.CGContextFillRect(context, dirty);
+}
+
+fn pump_turn(shared: objc.Id, date_class: objc.Class, sel_until: objc.Sel, sel_next: objc.Sel, sel_send_event: objc.Sel, mode: objc.Id) !void {
+    // invariant: the application and the mode string are real for every turn.
+    assert(@intFromPtr(shared) != 0);
+    assert(@intFromPtr(mode) != 0);
+    const pool = objc.objc_autoreleasePoolPush();
+    const until = objc.send(SendClassDouble)(date_class, sel_until, turn_block_seconds) orelse return error.DateAbsent;
+    const event = objc.send(SendNextEvent)(shared, sel_next, event_mask_any, until, mode, true);
+    if (event) |got| objc.send(SendIdArg)(shared, sel_send_event, got);
+    objc.objc_autoreleasePoolPop(pool);
+}
+
+pub fn main() !void {
+    print("macos-input-ring: Language EN -- platform input, dispatched into Rye, admitted through the ring's own walls.\n", .{});
+
+    const prove_red = c.getenv("PROBE_PROVE_RED") != null;
+
+    const app_class = objc.objc_getClass("NSApplication") orelse return error.AppKitAbsent;
+    const window_class = objc.objc_getClass("NSWindow") orelse return error.NSWindowAbsent;
+    const string_class = objc.objc_getClass("NSString") orelse return error.NSStringAbsent;
+    const date_class = objc.objc_getClass("NSDate") orelse return error.NSDateAbsent;
+    const view_class = objc.objc_getClass("NSView") orelse return error.NSViewAbsent;
+    const event_class = objc.objc_getClass("NSEvent") orelse return error.NSEventAbsent;
+    graphics_context_class = objc.objc_getClass("NSGraphicsContext") orelse return error.GraphicsContextAbsent;
+
+    // Every selector proven against the loaded framework before a single message goes out.
+    const sel_shared = objc.verify(app_class, "sharedApplication", "@@:", true);
+    const sel_policy = objc.verify(app_class, "setActivationPolicy:", "B@:q", false);
+    const sel_finish = objc.verify(app_class, "finishLaunching", "v@:", false);
+    const sel_activate = objc.verify(app_class, "activateIgnoringOtherApps:", "v@:B", false);
+    const sel_next = objc.verify(app_class, "nextEventMatchingMask:untilDate:inMode:dequeue:", "@@:Q@@B", false);
+    const sel_send_event = objc.verify(app_class, "sendEvent:", "v@:@", false);
+    const sel_post = objc.verify(app_class, "postEvent:atStart:", "v@:@B", false);
+    const sel_alloc = objc.verify(window_class, "alloc", "@@:", true);
+    const sel_init = objc.verify(window_class, "initWithContentRect:styleMask:backing:defer:", "@@:{CGRect={CGPoint=dd}{CGSize=dd}}QQB", false);
+    const sel_title = objc.verify(window_class, "setTitle:", "v@:@", false);
+    const sel_set_content = objc.verify(window_class, "setContentView:", "v@:@", false);
+    const sel_front = objc.verify(window_class, "makeKeyAndOrderFront:", "v@:@", false);
+    const sel_number = objc.verify(window_class, "windowNumber", "q@:", false);
+    const sel_first_responder = objc.verify(window_class, "makeFirstResponder:", "B@:@", false);
+    const sel_view_init = objc.verify(view_class, "initWithFrame:", "@@:{CGRect={CGPoint=dd}{CGSize=dd}}", false);
+    const sel_utf8 = objc.verify(string_class, "stringWithUTF8String:", "@@:r*", true);
+    const sel_until = objc.verify(date_class, "dateWithTimeIntervalSinceNow:", "@@:d", true);
+    sel_key_code = objc.verify(event_class, "keyCode", "S@:", false);
+    sel_button_number = objc.verify(event_class, "buttonNumber", "q@:", false);
+    sel_location = objc.verify(event_class, "locationInWindow", "{CGPoint=dd}@:", false);
+    sel_bounds = objc.verify(view_class, "bounds", "{CGRect={CGPoint=dd}{CGSize=dd}}@:", false);
+    sel_current_context = objc.verify(graphics_context_class, "currentContext", "@@:", true);
+    sel_cg_context = objc.verify(graphics_context_class, "CGContext", "^{CGContext=}@:", false);
+    const sel_key_event = objc.verify(event_class, "keyEventWithType:location:modifierFlags:timestamp:windowNumber:context:characters:charactersIgnoringModifiers:isARepeat:keyCode:", "@@:Q{CGPoint=dd}Qdq@@@BS", true);
+    const sel_mouse_event = objc.verify(event_class, "mouseEventWithType:location:modifierFlags:timestamp:windowNumber:context:eventNumber:clickCount:pressure:", "@@:Q{CGPoint=dd}Qdq@qqf", true);
+    print("macos-input-ring: seam verified -- 24 framework selectors match the loaded encodings.\n", .{});
+
+    // The independent authority for every added encoding: the superclass's own compiled record
+    // of each selector this class overrides, read before the add (the rung-one lesson).
+    _ = objc.verify(view_class, "drawRect:", draw_rect_types, false);
+    _ = objc.verify(view_class, "keyDown:", event_arg_types, false);
+    _ = objc.verify(view_class, "keyUp:", event_arg_types, false);
+    _ = objc.verify(view_class, "mouseDown:", event_arg_types, false);
+    _ = objc.verify(view_class, "mouseUp:", event_arg_types, false);
+    _ = objc.verify(view_class, "acceptsFirstResponder", accepts_types, false);
+
+    const my_class = objc.allocate_class(view_class, view_class_name);
+    _ = objc.add_method(my_class, "drawRect:", objc.imp(&draw_rect), draw_rect_types);
+    _ = objc.add_method(my_class, "keyDown:", objc.imp(&key_down), event_arg_types);
+    _ = objc.add_method(my_class, "keyUp:", objc.imp(&key_up), event_arg_types);
+    _ = objc.add_method(my_class, "mouseDown:", objc.imp(&mouse_down), event_arg_types);
+    _ = objc.add_method(my_class, "mouseUp:", objc.imp(&mouse_up), event_arg_types);
+    _ = objc.add_method(my_class, "acceptsFirstResponder", objc.imp(&accepts_first_responder), accepts_types);
+    objc.objc_registerClassPair(my_class);
+    const found = objc.objc_getClass(view_class_name);
+    // invariant: a registered class answers by name, exactly as a framework class does.
+    assert(found != null);
+    // invariant: the name resolves to the very class this probe allocated, never a shadow.
+    assert(found.? == my_class);
+    const sel_view_alloc = objc.verify(my_class, "alloc", "@@:", true);
+    print("macos-input-ring: class {s} registered -- six Rye methods, each checked against the superclass first.\n", .{view_class_name});
+
+    // BOTH SIDES. The prove-red leg fills every seat BEFORE the platform dispatches, so the one
+    // key it posts must walk into the ring's Full wall inside the callback and die there --
+    // nothing evicted, exit 134 -- where the ordinary run admits its whole budget.
+    if (prove_red) {
+        print("macos-input-ring: prove-red -- filling all {d} seats before the platform dispatches.\n", .{ring_mod.event_capacity});
+        prove_red_full = true;
+        var fill: u32 = 0;
+        while (fill < ring_mod.event_capacity) : (fill += 1) {
+            try ring.append(input.make(.key_down, 0, 0, 0));
+        }
+        // invariant: the pre-fill reached exactly the wall.
+        assert(ring.count() == ring_mod.event_capacity);
+    }
+
+    const shared = objc.send(objc.SendClassId)(app_class, sel_shared) orelse return error.SharedApplicationAbsent;
+    _ = objc.send(objc.SendIdI64)(shared, sel_policy, activation_policy_regular);
+
+    const frame = objc.CGRect{
+        .origin = .{ .x = 220, .y = 220 },
+        .size = .{ .width = @floatFromInt(view_w_points), .height = @floatFromInt(view_h_points) },
+    };
+    const raw_view = objc.send(objc.SendClassId)(my_class, sel_view_alloc) orelse return error.ViewAllocAbsent;
+    const view = objc.send(SendRectInit)(raw_view, sel_view_init, .{ .origin = .{ .x = 0, .y = 0 }, .size = frame.size }) orelse return error.ViewInitAbsent;
+    const raw_window = objc.send(objc.SendClassId)(window_class, sel_alloc) orelse return error.WindowAllocAbsent;
+    const window = objc.send(objc.SendWindowInit)(raw_window, sel_init, frame, style_titled | style_closable, backing_buffered, false) orelse return error.WindowInitAbsent;
+    const title = objc.send(objc.SendClassStr)(string_class, sel_utf8, "Grain -- input crosses the ring") orelse return error.TitleAbsent;
+    objc.send(SendIdArg)(window, sel_title, title);
+    objc.send(SendIdArg)(window, sel_set_content, view);
+    objc.send(SendIdArg)(window, sel_front, null);
+    objc.send(SendBool)(shared, sel_activate, true);
+    objc.send(SendVoid)(shared, sel_finish);
+    const number = objc.send(objc.SendIdInteger)(window, sel_number);
+    // invariant: an ordered-front window carries a real window number.
+    assert(number > 0);
+    const took_key = objc.send(SendIdRetBool)(window, sel_first_responder, view);
+    // invariant: the view volunteered and the window seated it in the key chain.
+    assert(took_key);
+
+    // Let the window settle before any event binds to it: the window manager may nudge a fresh
+    // frame after order-front, and a mouse event posted against the unsettled frame comes back
+    // with its location shifted by exactly that nudge -- measured live, (30,40) arriving as
+    // (27,38). A bounded settling stand pins the frame the events will ride.
+    const mode = objc.send(objc.SendClassStr)(string_class, sel_utf8, "kCFRunLoopDefaultMode") orelse return error.ModeAbsent;
+    var settle: u32 = 0;
+    while (settle < settle_turns) : (settle += 1) {
+        try pump_turn(shared, date_class, sel_until, sel_next, sel_send_event, mode);
+    }
+
+    // The probe's own four events, posted to this process's own queue in FIFO order. The
+    // characters ride only inside the platform event; the domain event carries the keyCode.
+    const chars = objc.send(objc.SendClassStr)(string_class, sel_utf8, "k") orelse return error.CharsAbsent;
+    const at = objc.CGPoint{ .x = @floatFromInt(mouse_x_points), .y = @floatFromInt(mouse_y_points) };
+    const kd = objc.send(SendKeyEvent)(event_class, sel_key_event, event_type_key_down, at, 0, 0, number, null, chars, chars, false, probe_key_code) orelse return error.KeyEventAbsent;
+    const ku = objc.send(SendKeyEvent)(event_class, sel_key_event, event_type_key_up, at, 0, 0, number, null, chars, chars, false, probe_key_code) orelse return error.KeyEventAbsent;
+    const md = objc.send(SendMouseEvent)(event_class, sel_mouse_event, event_type_left_mouse_down, at, 0, 0, number, null, 1, 1, 1.0) orelse return error.MouseEventAbsent;
+    const mu = objc.send(SendMouseEvent)(event_class, sel_mouse_event, event_type_left_mouse_up, at, 0, 0, number, null, 2, 1, 0.0) orelse return error.MouseEventAbsent;
+    objc.send(SendIdArgBool)(shared, sel_post, kd, false);
+    objc.send(SendIdArgBool)(shared, sel_post, ku, false);
+    objc.send(SendIdArgBool)(shared, sel_post, md, false);
+    objc.send(SendIdArgBool)(shared, sel_post, mu, false);
+
+    var turn: u32 = 0;
+    while (turn < max_event_turns) : (turn += 1) {
+        try pump_turn(shared, date_class, sel_until, sel_next, sel_send_event, mode);
+        if (admitted >= posted_budget) break;
+    }
+
+    if (prove_red) {
+        @panic("input ring: prove-red pumped its key through a full ring without a refusal, which means the wall does not wall");
+    }
+
+    print("macos-input-ring: after pump admitted={d} turns={d}\n", .{ admitted, turn });
+    // invariant: the platform dispatched the whole budget into the ring.
+    assert(admitted >= posted_budget);
+
+    // The drain: the probe's four must come back through the ring in FIFO order, exact in kind,
+    // code, and location -- a stray real keystroke may interleave, so the match is a
+    // subsequence walk rather than a positional one.
+    const expected = [posted_budget]input.InputEvent{
+        input.make(.key_down, probe_key_code, 0, 0),
+        input.make(.key_up, probe_key_code, 0, 0),
+        input.make(.mouse_down, 0, mouse_x_points, mouse_y_points),
+        input.make(.mouse_up, 0, mouse_x_points, mouse_y_points),
+    };
+    var matched: u32 = 0;
+    var drained: u32 = 0;
+    while (ring.remove_first()) |got| {
+        drained += 1;
+        // invariant: the drain never outruns what admission counted.
+        assert(drained <= admitted);
+        if (matched < posted_budget and input.same(got, expected[matched])) {
+            matched += 1;
+        } else {
+            print("macos-input-ring: drained stray kind={d} code={d} at=({d},{d})\n", .{ @intFromEnum(got.kind), got.code, got.x_points, got.y_points });
+        }
+    }
+    print("macos-input-ring: admitted={d} drained={d} matched={d} of {d} posted\n", .{ admitted, drained, matched, posted_budget });
+    // invariant: every admitted event was drained -- the ring ends empty.
+    assert(ring.is_empty());
+    // invariant: the four posted events crossed the ring whole and in order.
+    assert(matched == posted_budget);
+    print("macos-input-ring: GREEN -- keyboard and mouse crossed the seam, the ring, and the drain whole; no Swift linked.\n", .{});
+}
