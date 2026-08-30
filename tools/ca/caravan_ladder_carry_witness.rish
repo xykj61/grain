@@ -39,7 +39,8 @@
 # Five claims, each proven on metal:
 #   1. The living ladder's whole carry counts clean under a named ceiling, and the ceiling comes down as folds land.
 #   2. The carry the three named meters see is named beside it, so no reader mistakes a window for the room.
-#   3. The fold queue is read off the ladder rather than claimed, largest family first.
+#   3. The fold queue is read off the ladder rather than claimed, largest actionable family first;
+#      bodies already delegating to ladder_checks stay counted and leave the queue.
 #   4. The counting itself is right, proven on a two-rung corpus whose three bodies -- two distinct, one a whole copy
 #      carrying three lines -- are countable by eye in the fixture, and whose second body opens on a prefix no meter on
 #      this ladder names, which is the whole reason this one exists.
@@ -75,11 +76,13 @@ say "caravan-ladder-carry: living ladder -- ${living.out}"
 # The fold queue, asserted so it stays a measurement rather than a memory. The largest family is named here by number
 # so a lap that folds it must come back and say so, and a lap that grows a larger one cannot pass quietly.
 assert living.out contains "CARRY_FAMILIES 699" else "caravan-ladder-carry: want every carrying family counted -- 699 since the region lifted on 20260825.010500"
-assert living.out contains "CARRY_TOP mend_the_plan: 37 rungs x 19 lines = 684 carried" else "caravan-ladder-carry: want the largest carrying family named off the ladder"
-assert living.out contains "CARRY_TOP fill_table: 43 rungs x 16 lines = 672 carried" else "caravan-ladder-carry: want the family standing second in the queue named beside the first"
-assert living.out contains "CARRY_TOP start_one: 42 rungs x 14 lines = 574 carried" else "caravan-ladder-carry: want the family standing third in the queue named beside the two above it"
-assert living.out contains "CARRY_TOP confer_one: 40 rungs x 12 lines = 468 carried" else "caravan-ladder-carry: want the row standing fourth in the queue the scan prints"
-say "caravan-ladder-carry: the fold queue -- reclaim_notes left it, the row the queue prices at nothing of any kind. Every rung declaring it wrote one body byte for byte and every one of them folded, so the family left the queue whole rather than leaving a residue behind. Each now calls a three-line stub reaching ladder_checks.reclaim_notes, and the body reaches seat_note through the rung handed in, so a reclamation writes into whichever rung own directory called it. The row widened nothing because seat_note already stood public in every folding rung, which is what a widens_fn and widens_const of zero says in words. The two meters are meant to be read together rather than one standing in for the other: this one says what a family costs today, that one says what a lift would return."
+assert living.out contains "CARRY_QUEUE 576 actionable_families" else "caravan-ladder-carry: want the actionable queue counted beside the whole carry"
+assert (living.out contains "CARRY_TOP mend_the_plan:") == false else "caravan-ladder-carry: an already lifted delegate must leave the actionable queue"
+assert living.out contains "CARRY_TOP answered_by: 34 rungs x 13 lines = 429 carried" else "caravan-ladder-carry: want the largest actionable family named off the ladder"
+assert living.out contains "CARRY_TOP confer_words: 43 rungs x 10 lines = 420 carried" else "caravan-ladder-carry: want the second actionable family named beside the first"
+assert living.out contains "CARRY_TOP renewed_by: 31 rungs x 13 lines = 390 carried" else "caravan-ladder-carry: want the third actionable family named beside the two above it"
+assert living.out contains "CARRY_TOP ask_again: 31 rungs x 13 lines = 390 carried" else "caravan-ladder-carry: want the fourth actionable family named off the same reading"
+say "caravan-ladder-carry: the fold queue -- 576 ordinary copied families remain actionable; 123 delegate families stay in the whole carry and leave the selector. answered_by now leads at 429 carried lines."
 
 
 # The three named meters, read here beside the wide one so no reader mistakes a window for the room. Every number below
@@ -107,6 +110,17 @@ assert corpus.ok else "caravan-ladder-carry: the corpus scan must exit 0 -- ${co
 assert corpus.out contains "CARRY_MODULES 2" else "caravan-ladder-carry: want the corpus read as two rungs"
 assert corpus.out contains "CARRY_BODIES 3 distinct=2 copies=1 carried_lines=3" else "caravan-ladder-carry: want three bodies, two distinct, one a whole copy of three lines"
 assert corpus.out contains "CARRY_TOP weigh_the_corpus: 2 rungs x 3 lines = 3 carried" else "caravan-ladder-carry: want the corpus family named the way the living queue is named"
+
+# The queue seam, proven in both directions. Two ordinary copies remain a fold candidate. Two
+# copies of a body already forwarding into ladder_checks still contribute to the whole carry,
+# while the actionable queue leaves that family out. The total and the selector therefore answer
+# separate questions without either hiding the bytes that remain on disk.
+let queue = run ["sh" "-c" "d=$(mktemp -d); printf 'fn real_body(a: u32) u32 {\n    return a + 1;\n}\nfn folded_body(rung: type) void {\n    return ladder_checks.folded_body(rung);\n}\n' > $d/left.rye; cp $d/left.rye $d/right.rye; CARAVAN_LADDER_DIR=$d CARAVAN_CARRY_CEILING=6 CARAVAN_CARRY_TOP=5 sh tools/fixtures/c/caravan_ladder_carry_scan.sh; s=$?; rm -rf $d; exit $s"]
+assert queue.ok else "caravan-ladder-carry: the queue control must pass -- ${queue.out}"
+assert queue.out contains "CARRY_BODIES 4 distinct=2 copies=2 carried_lines=6" else "caravan-ladder-carry: delegates must remain in the whole carry"
+assert queue.out contains "CARRY_QUEUE 1 actionable_families" else "caravan-ladder-carry: want exactly the ordinary family actionable"
+assert queue.out contains "CARRY_TOP real_body: 2 rungs x 3 lines = 3 carried" else "caravan-ladder-carry: an ordinary copied body must stay in the queue"
+assert (queue.out contains "CARRY_TOP folded_body:") == false else "caravan-ladder-carry: an already folded delegate must leave the queue"
 
 # RED path one -- a corpus holding no rung modules at all.
 let empty = run ["sh" "-c" "d=$(mktemp -d); CARAVAN_LADDER_DIR=$d sh tools/fixtures/c/caravan_ladder_carry_scan.sh; s=$?; rmdir $d; exit $s"]
@@ -136,4 +150,4 @@ let ceiling = run ["sh" "-c" "CARAVAN_LADDER_DIR=tools/fixtures/caravan_ladder_c
 assert (ceiling.ok == false) else "caravan-ladder-carry: a carry past its ceiling must refuse"
 assert ceiling.out contains "reason=past_ceiling" else "caravan-ladder-carry: want the ceiling breach refused by name"
 
-say "GREEN: caravan-ladder-carry -- the Caravan ladder whole carry stands counted under a ceiling this lap lowered, every number of it printed above as the scan own output rather than recited here. The reclaim_notes family lifted: one body moved into caravan/ladder_checks.rye as a published function taking the rung as a comptime type parameter, seated directly above the reclaim_one that calls it, and every rung that declared it now calls a three-line stub. The row widened nothing of any kind, since seat_note already stood public in every folding rung. It is the third lap running the arc read a price beside a return before choosing, and the second where the free head and the honest lift agreed without a hand weighing them (REDS %146) -- here they agreed absolutely, since this row alone among the free ones costs no import re-export either. The fall the scan predicted before the lap began is the fall the meter read after it, which is what this ceiling falling by that exact amount records, lap after lap."
+say "GREEN: caravan-ladder-carry -- the whole carry remains counted under its exact ceiling, and the fold selector now names only bodies that have work left to lift. The planted ordinary family stays actionable; the planted ladder_checks delegate stays in the total and leaves the queue. On the living ladder, 699 copied families remain counted, 576 are actionable, and answered_by leads the next fold at 429 carried lines."

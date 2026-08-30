@@ -58,7 +58,7 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `5d6892f6b2` -- this round's own.
+**Git nib:** `432760f334` -- this round's own.
 
 **Now.** **The instrument the fleet measures itself with admits one pass at a time (%359 CLOSED);
 Mystery raises the Lotus ladder to B.**
@@ -220,7 +220,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260830.124924` | One pass at a time -- the roster runner takes a lock, and a second pass in one tree refuses by name | [log](../session-logs/date/20260830/20260830-124924_one-pass-at-a-time.kyri) |
+| `20260830.145851` | Caravan's carry keeps 699 families counted while 576 actionable folds select cleanly | [log](../session-logs/date/20260830/20260830-145851_the-queue-names-work-left.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it.
 
