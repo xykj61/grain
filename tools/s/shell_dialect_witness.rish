@@ -2,9 +2,13 @@
 #   rishi/bin/rishi run tools/s/shell_dialect_witness.rish
 #
 # WHAT IT STANDS OVER. tools/fixtures/s/shell_dialect_scan.sh, which counts GNU-only shell idioms in
-# tracked guards and holds FOUR families -- the GNU-only xargs flags, the GNU-only date parse, PCRE,
-# and the GNU-only stat field flag -- each under a ceiling that only falls. A family earns its gate
-# by costing a real reading on a real host; the two still advisory are reported until they do.
+# tracked guards and holds SIX families -- the GNU-only xargs flags, the GNU-only date parse, PCRE,
+# the GNU-only stat field flag, the in-place edit flag, and the resolve flag on readlink -- each
+# under a ceiling that only falls. A family earns its gate by costing a real reading on a real host,
+# and on 20260830 the last two earned theirs: both Pond guards that carried them red on the macOS
+# bench, and one family had grown from five sites to fourteen while it was counted and gated by
+# nothing. Nothing is advisory here now, which is the point -- an advisory that names its own
+# promotion condition in prose is a condition nobody checks.
 #
 # WHAT IT STANDS ON. The scan reads every tracked shell source once, past comment lines, past its
 # own two files that spell the idioms on purpose, and past tracked symlinks, which name one source
@@ -68,12 +72,42 @@ assert admits.ok else "shell-dialect: the same planted site must pass at a ceili
 
 assert green.out contains "gated_ceiling=0" else "shell-dialect: the ceiling stands at zero -- a ceiling only falls"
 
-# The two families still advisory are reported rather than gated, and the witness proves they are
-# REPORTED -- a number printed is a number the next round can act on, where a silent family is one
-# nobody sees. Each is named WITHOUT its flag on purpose: the scan reads prose inside a string as a
-# site, so a guard spelling the idiom it hunts would count itself forever.
-assert green.out contains "advisory_readlink_f=" else "shell-dialect: want the GNU-only readlink advisory printed"
-assert green.out contains "advisory_sed_i_bare=" else "shell-dialect: want the GNU-only in-place sed advisory printed"
+# THE FIFTH AND SIXTH GATED FAMILIES, promoted from advisory 20260830. Each is still named WITHOUT
+# its flag on purpose: the scan reads prose inside a string as a site, so a guard spelling the idiom
+# it hunts would count itself forever -- and now that both families are gated rather than reported,
+# a guard that counted itself would refuse the tree instead of merely overstating a footnote.
+#
+# THE FIFTH stands at zero and is enforced. All fourteen of its sites were in the two Pond fixtures
+# whose guards red on the macOS bench, and they took the portable helper in the same round.
+assert green.out contains "gated_sed_i_family=sed_in_place_flag" else "shell-dialect: want the gated in-place-edit family named"
+assert green.out contains "gated_sed_i_sites=0" else "shell-dialect: the in-place-edit family stands at zero"
+assert green.out contains "gated_sed_i_ceiling=0" else "shell-dialect: the in-place-edit ceiling stands at zero -- a ceiling only falls"
+
+# THE SIXTH is a ratchet above zero, and the witness pins the number rather than the shape, because
+# the reason it cannot reach zero is worth catching if it changes: five of its seven sites are the
+# portable helper's OWN control calling the elder spelling to compare against, each guarded by a
+# probe, and a sixth is the launcher the Pond quest's accrete-only boundary holds untouched. A
+# ratchet still refuses the eighth, which is the growth the family above went unmeasured through.
+assert green.out contains "gated_readlink_f_family=readlink_resolve_flag" else "shell-dialect: want the gated resolve-flag family named"
+assert green.out contains "gated_readlink_f_sites=7" else "shell-dialect: the resolve-flag family stands at seven"
+assert green.out contains "gated_readlink_f_ceiling=7" else "shell-dialect: the resolve-flag ceiling stands at seven -- a ceiling only falls"
+
+# BOTH PROVEN FROM BOTH SIDES, on a plant, exactly as the four before them. A refusal shown only in
+# the passing direction cannot be told from a bypass, so each plant must refuse at the standing
+# ceiling and pass one ceiling higher.
+let sedp = run ["sh" "tools/fixtures/s/shell_dialect_scan.sh" "prove-sed-red"]
+assert (sedp.ok == false) else "shell-dialect: a planted in-place-edit site past the ceiling must refuse"
+assert sedp.out contains "verdict=over_sed_i_ceiling" else "shell-dialect: want the in-place-edit refusal named"
+
+let sed_admits = run ["sh" "-c" "SHELL_DIALECT_SED_I_CEILING=1 sh tools/fixtures/s/shell_dialect_scan.sh prove-sed-red"]
+assert sed_admits.ok else "shell-dialect: the same planted in-place-edit site must pass at a ceiling of one"
+
+let rlp = run ["sh" "tools/fixtures/s/shell_dialect_scan.sh" "prove-readlink-red"]
+assert (rlp.ok == false) else "shell-dialect: a planted resolve-flag site past the ratchet must refuse"
+assert rlp.out contains "verdict=over_readlink_f_ceiling" else "shell-dialect: want the resolve-flag refusal named"
+
+let rl_admits = run ["sh" "-c" "SHELL_DIALECT_READLINK_F_CEILING=8 sh tools/fixtures/s/shell_dialect_scan.sh prove-readlink-red"]
+assert rl_admits.ok else "shell-dialect: the same planted resolve-flag site must pass one ceiling higher"
 
 # THE THIRD AND FOURTH GATED FAMILIES, promoted from advisory on 20260826.090745. PCRE stood in the
 # two guards this tree leans on hardest -- the dated-path census, whose lost count gates every room
@@ -177,4 +211,4 @@ assert portable.ok else "shell-dialect: the portable-helper control must exit 0"
 assert portable.out contains "fail=0" else "shell-dialect: no helper behaviour may miss"
 assert portable.out contains "pass=25" else "shell-dialect: want twenty-five helper behaviours proven"
 
-say "GREEN: shell-dialect -- four gated families stand at zero under ceilings of zero, three real guards read the same on both dialects while planted elder copies still break, the elder stat order is reproduced on this host and its repair proven under a stat that refuses the GNU flag, and every ceiling is proven from both sides on one planted tree"
+say "GREEN: shell-dialect -- five gated families stand at zero and a sixth at a ratchet of seven, three real guards read the same on both dialects while planted elder copies still break, the elder stat order is reproduced on this host and its repair proven under a stat that refuses the GNU flag, and every one of the six ceilings is proven from both sides on a planted tree"

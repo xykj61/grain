@@ -110,6 +110,46 @@ GREP_P_CEILING=${SHELL_DIALECT_GREP_P_CEILING:-0}
 STAT_C_RE='stat[[:space:]]+(-[a-zA-Z]+[[:space:]]+)*-c([^a-zA-Z]|$)'
 STAT_C_CEILING=${SHELL_DIALECT_STAT_C_CEILING:-0}
 
+# The GNU-only in-place edit flag is the sharpest of these families, because the two dialects have
+# NO overlap at all. GNU takes its suffix attached or omits it, so the bare form edits in place.
+# BSD requires a suffix operand and reads the next word as one, so the same line hands the script
+# to the backup extension, finds no script left, and refuses. Neither spelling runs on both piers,
+# which is why the tree writes neither: `sed_inplace` in `shell_portable.sh` writes a temporary and
+# copies it back THROUGH the original inode, a spelling every host runs that also preserves the
+# mode the repository tracks where `mv` would not (the exec-bit law).
+#
+# WHY IT LEFT THE ADVISORY TIER, on the condition this guard's own witness set. That header reads
+# "a family earns its gate by costing a real reading on a real host; the two still advisory are
+# reported until they do." The reading came: `pond_enclosure_door` and `pond_policy_launcher` both
+# red on the macOS bench across two laps (`20260829` session logs), and 14 of the tree's 14 counted
+# sites stood in exactly those two guards' fixtures. The family had also GROWN while nobody was
+# watching -- this file's own advisory note recorded five sites measured `20260826.090745`, and the
+# count read fourteen on `20260829`. Nine new instances of a construct this guard already named,
+# written into the one lane whose guards red on the bench the construct breaks. An advisory that
+# names its own promotion condition in prose is a condition nobody checks; a ceiling is the thing
+# that checks it, which is this row's whole teaching (REDS row below).
+SED_I_RE='sed[[:space:]]+(-[a-zA-Z]+[[:space:]]+)*-i([[:space:]]|$)'
+SED_I_CEILING=${SHELL_DIALECT_SED_I_CEILING:-0}
+
+# The GNU-only resolve flag on readlink makes a path absolute with its symlinks followed. BSD
+# carried no such flag for most of its life and macOS gained one only lately, so a tree reaching
+# for it bets on the age of the second bench rather than on a spelling both accept. `resolve_path`
+# asks the shell instead -- `cd` into the directory and let `pwd -P` do the resolving -- which every
+# POSIX shell answers. Proven equal to the elder spelling on this pier `20260830` against the real
+# value the door scan resolves, empty input included.
+#
+# A RATCHET RATHER THAN A GATE, and the reason is written here rather than left to be rediscovered.
+# Of the seven sites standing, FIVE are in `tools/fixtures/s/shell_portable_control.sh`, which calls
+# the elder spelling on purpose to compare `resolve_path` against it -- and guards every call behind
+# a probe that says out loud when it skips, so those five are safe on a BSD bench by construction. A
+# sixth is in `tools/ag/agent-jail.sh`, which the Pond quest's accrete-only boundary holds untouched
+# until the enclosure switchover lands behind its audit. So this family can honestly fall to two and
+# no further today, and a ceiling of zero would name a number no edit in this tree is allowed to
+# reach. What a ratchet still does is refuse the eighth site, which is exactly the growth that went
+# unmeasured in the family above.
+READLINK_F_RE='readlink[[:space:]]+(-[a-zA-Z]+[[:space:]]+)*-[a-zA-Z]*f([^a-zA-Z]|$)'
+READLINK_F_CEILING=${SHELL_DIALECT_READLINK_F_CEILING:-7}
+
 pen=$(mktemp -d)
 trap 'rm -rf "$pen"' EXIT
 roster="$pen/roster"
@@ -166,6 +206,23 @@ if [ "$mode" = prove-stat-red ]; then
   # ryekey_control.sh carried it -- BSD spelling first, GNU spelling behind an `||`.
   printf 'btime() { stat -f %%Fm "$BIN" 2>/dev/null || stat -c %%.Y "$BIN" 2>/dev/null; }\n' > "$pen/planted_stat_scan.sh"
   echo "$pen/planted_stat_scan.sh" >> "$roster"
+fi
+
+if [ "$mode" = prove-sed-red ]; then
+  # This family's ceiling stands at zero once the fourteen Pond sites take the portable helper, so
+  # the tree holds no site one under the reading and the plant supplies it: one bare in-place edit,
+  # which must refuse at a ceiling of zero and pass at a ceiling of one. A ceiling proven only in
+  # the passing direction cannot be told from a bypass.
+  printf 'sed -i "s|a|b|" "$f"\n' > "$pen/planted_sed_scan.sh"
+  echo "$pen/planted_sed_scan.sh" >> "$roster"
+fi
+
+if [ "$mode" = prove-readlink-red ]; then
+  # This family's ceiling stands ABOVE zero, so the tree already holds sites under the reading and
+  # the plant proves the CEILING rather than the pattern: one site more than the ratchet admits must
+  # refuse, and the same plant must pass one ceiling higher. Both directions, on the same plant.
+  printf 'p=$(readlink -f "$f")\n' > "$pen/planted_readlink_scan.sh"
+  echo "$pen/planted_readlink_scan.sh" >> "$roster"
 fi
 
 
@@ -649,13 +706,19 @@ echo "gated_stat_c_family=stat_field_format"
 echo "gated_stat_c_sites=$stat_c_sites"
 echo "gated_stat_c_ceiling=$STAT_C_CEILING"
 
-# Advisory, and honest about it: counted this round, gated by nothing. Each is GNU-only, and
-# neither has yet been proven on metal to have cost this tree a wrong number, so neither spends a
-# ceiling it has not earned. Measured `20260826.090745`: `readlink -f` stands at five counted lines
-# over four real sites, and `sed -i` at five over four, each family's fifth being this guard's own
-# witness naming it in prose.
-echo "advisory_readlink_f=$(count_family 'readlink[[:space:]]+(-[a-zA-Z]+[[:space:]]+)*-[a-zA-Z]*f([^a-zA-Z]|$)')"
-echo "advisory_sed_i_bare=$(count_family 'sed[[:space:]]+(-[a-zA-Z]+[[:space:]]+)*-i([[:space:]]|$)')"
+# THE FIFTH AND SIXTH GATED FAMILIES, promoted from advisory `20260830` on the condition this
+# guard's own witness named -- each had by then cost a real reading on a real host. Both were
+# counted here and gated by nothing for four days while one of them grew from five sites to
+# fourteen. The keys keep the `gated_` prefix the other four wear, so a reader who greps this
+# guard's output for what it holds finds six families rather than four and two footnotes.
+sed_i_sites=$(count_family "$SED_I_RE")
+readlink_f_sites=$(count_family "$READLINK_F_RE")
+echo "gated_sed_i_family=sed_in_place_flag"
+echo "gated_sed_i_sites=$sed_i_sites"
+echo "gated_sed_i_ceiling=$SED_I_CEILING"
+echo "gated_readlink_f_family=readlink_resolve_flag"
+echo "gated_readlink_f_sites=$readlink_f_sites"
+echo "gated_readlink_f_ceiling=$READLINK_F_CEILING"
 
 if [ "$sites" -gt "$CEILING" ]; then
   echo "verdict=over_ceiling"
@@ -678,6 +741,18 @@ fi
 if [ "$stat_c_sites" -gt "$STAT_C_CEILING" ]; then
   echo "verdict=over_stat_c_ceiling"
   echo "refused: $stat_c_sites gated stat-field sites against a ceiling of $STAT_C_CEILING -- a ceiling only falls."
+  exit 1
+fi
+
+if [ "$sed_i_sites" -gt "$SED_I_CEILING" ]; then
+  echo "verdict=over_sed_i_ceiling"
+  echo "refused: $sed_i_sites gated in-place-edit sites against a ceiling of $SED_I_CEILING -- a ceiling only falls."
+  exit 1
+fi
+
+if [ "$readlink_f_sites" -gt "$READLINK_F_CEILING" ]; then
+  echo "verdict=over_readlink_f_ceiling"
+  echo "refused: $readlink_f_sites gated resolve-flag sites against a ceiling of $READLINK_F_CEILING -- a ceiling only falls."
   exit 1
 fi
 

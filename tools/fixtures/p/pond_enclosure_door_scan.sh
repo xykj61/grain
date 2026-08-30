@@ -81,6 +81,12 @@ while [ ! -d "$ROOT/rishi/bin" ] || [ ! -d "$ROOT/tools/fixtures" ]; do
   ROOT=$(dirname "$ROOT")
 done
 
+# THE DIALECT HELPERS, sourced here on purpose: `--root` below repoints ROOT at a pen, and a pen
+# holds a record and a launcher rather than this library. `resolve_path` replaces the GNU-only
+# `-f` spelling of readlink, which BSD carried for none of its life and macOS gained only lately,
+# so reaching for it bets on the age of the second bench rather than on a spelling both accept.
+. "$ROOT/tools/fixtures/s/shell_portable.sh"
+
 POLICY_OVERRIDE=""
 LAUNCHER_OVERRIDE=""
 ENTRY_OVERRIDE=""
@@ -155,7 +161,16 @@ private_home=$(sed -n 's/^private-home \(.*\)$/\1/p' "$work/record" | head -1)
 
 record_home=$(sed -n 's#^rw-map [^:]*:\(.*\)/\.claude$#\1#p' "$work/record" | head -1)
 if [ -z "${record_home:-}" ]; then
-  record_home=$(sed -n 's/^persist \(.*\)$/\1/p' "$work/record" | head -1 | xargs -r dirname)
+  # A PATH IS ONE OPERAND, so it is quoted rather than piped through a word splitter. The elder
+  # spelling ended `| xargs -r dirname` and carried two faults. `-r` is a GNU extension BSD never
+  # had. And xargs splits on blanks, so a `persist` path holding a space reached dirname as TWO
+  # operands and came back as two lines -- measured on this pier `20260830`, where
+  # `/home/user/my pier/loops/claude` answered `/home/user` and `pier/loops` in place of one path.
+  # This leg is the fallback, latent while the rw-map line above answers on the living record, and
+  # `record_home` is the namespace every later path comparison is measured against, so a wrong one
+  # would be wrong everywhere at once rather than in one reading.
+  _persist_first=$(sed -n 's/^persist \(.*\)$/\1/p' "$work/record" | head -1)
+  if [ -n "$_persist_first" ]; then record_home=$(dirname "$_persist_first"); fi
 fi
 if [ -z "${record_home:-}" ]; then
   echo "detail: the record names no home, so a launcher path under \${HOST_HOME} cannot be placed"
@@ -238,7 +253,7 @@ entry_host=""
 if [ -n "$ENTRY_OVERRIDE" ]; then
   entry_host=$ENTRY_OVERRIDE
 elif command -v claude >/dev/null 2>&1; then
-  entry_host=$(readlink -f "$(command -v claude)" 2>/dev/null || true)
+  entry_host=$(resolve_path "$(command -v claude)" 2>/dev/null || true)
 fi
 
 entry_unreachable=0

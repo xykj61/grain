@@ -29,6 +29,13 @@ HERE=$(CDPATH= cd "$(dirname "$0")" && pwd)
 SCAN=$HERE/pond_enclosure_door_scan.sh
 [ -f "$SCAN" ] || { echo "control_verdict=scan_absent" >&2; exit 1; }
 
+# THE DIALECT HELPER, sourced from its letter room beside this one. The single plant below edits a
+# pen launcher in place, and the GNU and BSD spellings of that flag have no overlap at all, so the
+# tree writes neither: `sed_inplace` writes a temporary and copies it back through the original
+# inode. Why it matters here: this control is one of the two Pond guards that red on the macOS
+# bench, and a control that cannot run there proves nothing there.
+. "$HERE/../s/shell_portable.sh"
+
 pen_root=$(mktemp -d)
 trap 'rm -rf "$pen_root"' EXIT INT TERM
 
@@ -159,7 +166,7 @@ want env_declared_passes ok "$(run_scan "$pen")"
 saw env_declared_named "$pen" 'env_assignments=2 env_undeclared=0'
 
 pen=$(new_pen env_undeclared)
-sed -i 's#^GH_STATE=.*#GH_STATE="${GH_STATE:-/var/cache/gh}"#' "$pen/tools/ag/agent-jail.sh"
+sed_inplace 's#^GH_STATE=.*#GH_STATE="${GH_STATE:-/var/cache/gh}"#' "$pen/tools/ag/agent-jail.sh"
 want env_undeclared_reported ok "$(run_scan "$pen")"
 saw env_undeclared_counted "$pen" 'env_undeclared=1'
 saw env_undeclared_detail "$pen" 'so what the agent writes there dissolves'
