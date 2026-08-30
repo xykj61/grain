@@ -83,7 +83,10 @@ while IFS= read -r f; do
   [ -f "$f" ] || continue
   pairs_of < "$f" >> "$work/local.txt"
 done < "$work/files.txt"
-sort -n -u -o "$work/local.txt" "$work/local.txt"
+# Bytewise unique, never numeric: `sort -n -u` compares by the leading number alone, so two
+# stamps under one number look equal and one is silently dropped -- the very fault reading 4
+# gates. Order is irrelevant to every consumer; the maxima sort numerically for themselves.
+sort -u -o "$work/local.txt" "$work/local.txt"
 
 local_rows=$(grep -c '[0-9]' "$work/local.txt" || true)
 if [ "$local_rows" -gt "$MAX_ROWS" ]; then
@@ -110,7 +113,7 @@ if git rev-parse --verify --quiet "$anointed" >/dev/null 2>&1; then
     | while IFS= read -r f; do
         git show "$anointed:$f" 2>/dev/null | pairs_of
       done >> "$work/shared.txt"
-  sort -n -u -o "$work/shared.txt" "$work/shared.txt"
+  sort -u -o "$work/shared.txt" "$work/shared.txt"
 fi
 
 shared_rows=$(grep -c '[0-9]' "$work/shared.txt" || true)
@@ -166,6 +169,18 @@ awk '{print $2}' "$work/local.txt" | sort | uniq -d | while IFS= read -r s; do
   [ -n "$s" ] && echo "detail: stamp_duplicate $s -- the commit-hash tiebreak decides this pair"
 done
 
+# READING 4 (%369) -- one number carrying two stamps in THIS tree's own ledger. The gated
+# rebinding reads local against anointed; this reads the local spine against itself, which is
+# how the %364 double-booking was measured before its row was written: distinct (number, stamp)
+# pairs counted against distinct numbers, held equal. Held at zero like the rebinding gate --
+# a number meaning two rows breaks every citation that trusts it.
+pair_count=$(sort -u "$work/local.txt" | grep -c . || true)
+number_count=$(awk '{print $1}' "$work/local.txt" | sort -u | grep -c . || true)
+double_booked=$((pair_count - number_count))
+awk '{print $1}' "$work/local.txt" | sort | uniq -d | while IFS= read -r n; do
+  [ -n "$n" ] && echo "detail: double_booked %$n -- this tree binds one number to two stamps"
+done
+
 # The allocator. A new row takes one above the ANOINTED maximum, never one above the local
 # maximum -- reading the local tree is the fault, not the fix. With no anointed ref reachable,
 # the local maximum is all there is, and the reading says so plainly.
@@ -193,7 +208,9 @@ echo "rebindings=$rebindings"
 echo "squatters=$squatters"
 echo "dropped_upstream_stamps=$dropped"
 echo "stamp_duplicates=$stamp_duplicates"
+echo "double_booked=$double_booked"
 echo "next_free=$next_free"
 
 if [ "$rebindings" -ne 0 ]; then echo "verdict=rebinding"; exit 1; fi
+if [ "$double_booked" -ne 0 ]; then echo "verdict=double_booked"; exit 1; fi
 echo "verdict=ok"

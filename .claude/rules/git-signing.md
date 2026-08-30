@@ -20,7 +20,7 @@ Concretely, the seed repo sets `commit.gpgsign false` in its **own** `seed/.git/
 cd ~/grain/seed
 git config commit.gpgsign false          # local to seed/ only
 git add -A
-git commit --amend -m "grain-ww -- the crashed meteor"
+git commit --amend -m "crashed-meteor"
 git push --force origin main             # origin here IS grain-os/grain
 ```
 
