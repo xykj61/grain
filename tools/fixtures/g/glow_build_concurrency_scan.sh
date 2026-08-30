@@ -54,7 +54,9 @@ echo "CONC_LANES $LANES"
 
 # --- 1. the guards are still there -------------------------------------------------
 guards=0
-grep -q '^flock -w "\$BUILD_LOCK_WAIT" 9' "$WORKER" && guards=$((guards + 1))
+# The lock molted from flock to the portable directory lock at REDS %279; this scan
+# slept unheard through that molt and kept grepping the elder spelling (found 20260830).
+grep -q '^lock_acquire "\$BUILD_LOCK" "\$BUILD_LOCK_WAIT"' "$WORKER" && guards=$((guards + 1))
 grep -q '^  mv -f "\$_dst\.\$TMP_TAG" "\$_dst"' "$WORKER" && guards=$((guards + 1))
 echo "CONC_GUARDS_PRESENT $guards"
 if test "$guards" -ne 2; then
@@ -64,13 +66,13 @@ fi
 
 # --- 2. the twin without them, generated from the worker itself ---------------------
 awk '
-  /^exec 9>"\$BUILD_LOCK"$/      { skip = 5 }
+  /^lock_acquire "\$BUILD_LOCK" "\$BUILD_LOCK_WAIT" \|\| \{$/ { skip = 4 }
   skip > 0                        { skip = skip - 1; next }
   /^  mv -f "\$_dst\.\$TMP_TAG" "\$_dst"$/ { next }
   { gsub(/-femit-bin="\$_dst\.\$TMP_TAG"/, "-femit-bin=\"$_dst\""); print }
 ' "$WORKER" > "$TWIN"
 
-if grep -q 'flock' "$TWIN"; then
+if grep -q 'lock_acquire "\$BUILD_LOCK"' "$TWIN"; then
   echo "CONC_BAD the control twin still holds a lock -- the strip did not apply"
   exit 0
 fi
@@ -85,6 +87,12 @@ done
 wait
 test -f "$WORKDIR/ufail" && unguarded_fails=$(wc -l < "$WORKDIR/ufail" | tr -d ' ')
 echo "CONC_UNGUARDED_FAILS $unguarded_fails"
+
+# The stripped twin orphans .building tags by design -- its atomic install is the very
+# thing section 2 removes -- so the floor is swept before section 3, or the leftover
+# count reads the twin's intentional debris as the real worker's sins (found 20260830,
+# 24 twin tags counted against a clean guarded run).
+rm -f glow/bin/*.building.* 2>/dev/null || true
 
 # --- 3. the real worker, same lanes -------------------------------------------------
 guarded_fails=0

@@ -17,8 +17,8 @@ echo "$PAIRS" | grep -q 'const pairs' || {
 }
 
 COUNT=$(echo "$PAIRS" | grep -oE '"[^"]{2}"' | wc -l | tr -d ' ')
-test "$COUNT" = "28" || {
-  echo "FAIL: expected 28 digraphs in match_rune2, got $COUNT"
+test "$COUNT" = "30" || {
+  echo "FAIL: expected 30 digraphs in match_rune2, got $COUNT"
   exit 1
 }
 

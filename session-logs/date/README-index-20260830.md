@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260830.193650` | [The unheard sweep -- census 30, sidecar rides](20260830-193650_unheard-sweep-census-30-sidecar.kyri) | Sound closes %372/%373; concurrency witness GREEN |
 | `20260830.190807` | [no python on the path](20260830/20260830-190807_no-python-on-the-path.kyri) | the circled cut lands; the seam restored; three stops answered |
 | `20260830.184835` | [three words, three doors](20260830/20260830-184835_three-words-three-doors.kyri) | the spine heals gaplessly at %365-369+%370; windows rule; seed prose |
 | `20260830.184215` | [the batons the day left](20260830/20260830-184215_the-batons-the-day-left.kyri) | a spine collision, a lane question, a seed spelling -- all at the word |
