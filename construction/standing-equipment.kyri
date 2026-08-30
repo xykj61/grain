@@ -839,3 +839,19 @@ guard borrowed_number
 path tools/b/borrowed_number_witness.rish
 tier lap
 seated 20260830.072125
+
+# unheard_guard -- the other half of this file's own law, written at its head and unmeasured until
+# now: a guard that cannot red guards nothing, AND a guard that is never run guards nothing either.
+# The reading takes every tracked witness and choir outside the fixture pens, closes the set this
+# roster can reach -- rostered, or named on a non-comment line of something already reached -- and
+# holds the remainder under a ceiling that only falls. REDS %357 measured what the gap costs: three
+# witnesses of one family red at HEAD for days, none of them rostered, while a 96-guard cold pass
+# read 95 green. Measured here `20260830`: 1,756 guards, 603 heard, 1,153 unheard, 41 of those
+# choirs that sing families of their own. The git hooks were checked as a second standing runner
+# and name no guard at all, so this roster is the whole seed.
+# `lap` on 5s measured here -- one batched awk pass over the tree, plus a six-pen control.
+
+guard unheard_guard
+path tools/u/unheard_guard_witness.rish
+tier lap
+seated 20260830.095947
