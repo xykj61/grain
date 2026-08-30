@@ -935,12 +935,17 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("lower: eq with mul refused MalformedBody -- gth alone in v1 -- GREEN\n", .{});
 
-    if (lower.lower_source_welcome(mul_src, &buf)) |_| {
-        return error.StrangerFaceAccepted;
-    } else |err| {
-        if (err != rb.ParseError.MulNotYetLowered) return err;
-    }
-    print("lower: mul cond lower answers MulNotYetLowered until mul-b -- GREEN\n", .{});
+    // mul-b (20260829.215618): the wait leg becomes the landing leg -- the emit is here.
+    const n_mul = try lower.lower_source_welcome(mul_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n_mul], "fn bartis_mul(lit: u32, width: u32, height: u32)") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_mul], "const area: u64 = @as(u64, width) * @as(u64, height);") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_mul], "bartis_mul(5, 3, 4) == 1") != null);
+    print("lower: mul-b welcome lowers to bartis_mul with the u64 area -- GREEN\n", .{});
+
+    const n_mul_argv = try lower.lower_source_argv_sample(mul_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n_mul_argv], "argv[3]") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_mul_argv], "bartis_mul(lit, width, height)") != null);
+    print("lower: mul-b argv speaks three samples through bartis_mul -- GREEN\n", .{});
 
     print("GREEN: Glow `|=` bartis — identity · argv · call-body · amount-shape · amount argv · count-shape · count argv · kind-shape · kind argv · kind flip · xact-shape · xact argv · xact flip · xfer-shape · xfer argv · xfer flip · pair-shape · pair argv · pair flip · triple-shape · triple argv · triple flip · quad-shape · quad argv · quad flip · penta-shape · penta argv · penta flip · hexa-shape · hexa argv · hexa flip · hepta-shape · hepta argv · hepta flip · octa-shape · octa argv · octa flip · nona-shape · nona argv · nona flip · nesting-nests · STOA338 pair-faces metal; STOA100–147 · STOA253 identity emit · STOA259 N-field flip · STOA293 tagged payload flip · STOA297 tagged unit flip · STOA300 kind argv · STOA303 xact argv · STOA305 xfer argv · STOA307–321 pair…nona argv · STOA324 `$:` argv sameness collapse.\n", .{});
     return 0;

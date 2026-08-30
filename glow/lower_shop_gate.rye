@@ -66,6 +66,7 @@ pub const bartis_xfer_demo_amount: u32 = 3;
 /// Baked multi-field pair (matches mold-pair welcome - STOA126).
 pub const bartis_pair_demo_from: u32 = 5;
 pub const bartis_pair_demo_amount: u32 = 3;
+pub const bartis_mul_demo_third: u32 = 4; // mul-b: demo area 3 * 4 = 12 sits above from = 5, so the else arm answers
 pub const bartis_triple_demo_from: u32 = 5;
 pub const bartis_triple_demo_amount: u32 = 3;
 pub const bartis_triple_demo_fee: u32 = 1;
@@ -248,7 +249,8 @@ fn expect_for(spec: *const rb.GateSpec) LowerError!u32 {
         .cond_eq => return error.SampleDoesNotNest,
         .cond_eq_faces => pair_arm_value(spec, bartis_pair_demo_from == bartis_pair_demo_amount),
         .cond_gth_faces => pair_arm_value(spec, bartis_pair_demo_from > bartis_pair_demo_amount),
-        .cond_gth_mul => return error.MulNotYetLowered,
+        // mul-b: the demo compare widens to u64 exactly as the emitted gate does -- one law, two homes.
+        .cond_gth_mul => if (@as(u64, bartis_pair_demo_from) > @as(u64, bartis_pair_demo_amount) * @as(u64, bartis_mul_demo_third)) spec.cond_then else spec.cond_else,
         .fold_sumto => fold_sumto_expect(bartis_demo_sample, spec.fold_bound),
         .fold_sum => try fold_sum_n_expect(spec),
         .fold_prodto => fold_prodto_expect(bartis_demo_sample, spec.fold_bound),
@@ -608,6 +610,24 @@ fn emit_argv2_speaking_main(out: []u8, used: *u32, zface: []const u8, zfb: []con
     try append_print(out, used, "    const {s} = std.fmt.parseInt(u32, argv[1], 10) catch return 2;\n", .{zface});
     try append_print(out, used, "    const {s} = std.fmt.parseInt(u32, argv[2], 10) catch return 2;\n", .{zfb});
     try append_print(out, used, "    const answer: u32 = bartis_pair({s}, {s});\n", .{ zface, zfb });
+    try append_print(out, used, "    var buf: [12]u8 = undefined;\n", .{});
+    try append_print(out, used, "    const line = std.fmt.bufPrint(&buf, \"{{d}}\\n\", .{{answer}}) catch return 2;\n", .{});
+    try append_print(out, used, "    const io = init.io;\n", .{});
+    try append_print(out, used, "    std.Io.File.stdout().writeStreamingAll(io, line) catch return 2;\n", .{});
+    try append_print(out, used, "    return 0;\n", .{});
+    try append_print(out, used, "}}\n", .{});
+}
+
+/// mul-b: the three-sample speaking main -- the composed cond's faces arrive as argv.
+fn emit_argv3_speaking_main(out: []u8, used: *u32, zface: []const u8, zfb: []const u8, zfc: []const u8) LowerError!void {
+    try append_print(out, used, "pub fn main(init: std.process.Init) !u8 {{\n", .{});
+    try append_print(out, used, "    const alloc = init.arena.allocator();\n", .{});
+    try append_print(out, used, "    const argv = try init.minimal.args.toSlice(alloc);\n", .{});
+    try append_print(out, used, "    if (argv.len < 4) return 2;\n", .{});
+    try append_print(out, used, "    const {s} = std.fmt.parseInt(u32, argv[1], 10) catch return 2;\n", .{zface});
+    try append_print(out, used, "    const {s} = std.fmt.parseInt(u32, argv[2], 10) catch return 2;\n", .{zfb});
+    try append_print(out, used, "    const {s} = std.fmt.parseInt(u32, argv[3], 10) catch return 2;\n", .{zfc});
+    try append_print(out, used, "    const answer: u32 = bartis_mul({s}, {s}, {s});\n", .{ zface, zfb, zfc });
     try append_print(out, used, "    var buf: [12]u8 = undefined;\n", .{});
     try append_print(out, used, "    const line = std.fmt.bufPrint(&buf, \"{{d}}\\n\", .{{answer}}) catch return 2;\n", .{});
     try append_print(out, used, "    const io = init.io;\n", .{});
@@ -1261,7 +1281,19 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             try emit_gate_fn(out, &used, face, zface, body_return, comment);
             try emit_welcome_main(out, &used, zface, expect);
         },
-        .cond_gth_mul => return error.MulNotYetLowered,
+        .cond_gth_mul => {
+            // mul-b (20260829.215618): the composed cond lowers; the area widens to u64 at
+            // birth, so a u32 * u32 product has nowhere to overflow and the compare stays exact.
+            var zb: [rb.max_face_len]u8 = undefined;
+            const bn = try zig_safe_ident(rb.face2_slice(spec), &zb);
+            const zfb = zb[0..bn];
+            var zc: [rb.max_face_len]u8 = undefined;
+            const cn = try zig_safe_ident(rb.face3_slice(spec), &zc);
+            const zfc = zc[0..cn];
+            try append_print(out, &used, "/// Lowered from Glow mul cond -- mul-b: the area widens to u64, so overflow cannot happen.\n", .{});
+            try append_print(out, &used, "fn bartis_mul({s}: u32, {s}: u32, {s}: u32) u32 {{\n    const area: u64 = @as(u64, {s}) * @as(u64, {s});\n    return if (@as(u64, {s}) > area) {d} else {d};\n}}\n\n", .{ zface, zfb, zfc, zfb, zfc, zface, spec.cond_then, spec.cond_else });
+            try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n    return if (bartis_mul({d}, {d}, {d}) == {d}) 0 else 1;\n}}\n", .{ bartis_pair_demo_from, bartis_pair_demo_amount, bartis_mul_demo_third, expect });
+        },
         .cond_eq_faces, .cond_gth_faces => {
             var zb: [rb.max_face_len]u8 = undefined;
             const bn = try zig_safe_ident(rb.face2_slice(spec), &zb);
@@ -1450,7 +1482,18 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             try emit_gate_fn(out, &used, face, zface, body_return, comment);
             try emit_argv_speaking_main(out, &used, zface);
         },
-        .cond_gth_mul => return error.MulNotYetLowered,
+        .cond_gth_mul => {
+            // mul-b: the argv road speaks -- three samples parse, the widened compare answers.
+            var zb: [rb.max_face_len]u8 = undefined;
+            const bn = try zig_safe_ident(rb.face2_slice(spec), &zb);
+            const zfb = zb[0..bn];
+            var zc: [rb.max_face_len]u8 = undefined;
+            const cn = try zig_safe_ident(rb.face3_slice(spec), &zc);
+            const zfc = zc[0..cn];
+            try append_print(out, &used, "/// Lowered from Glow mul cond -- mul-b: the area widens to u64, so overflow cannot happen.\n", .{});
+            try append_print(out, &used, "fn bartis_mul({s}: u32, {s}: u32, {s}: u32) u32 {{\n    const area: u64 = @as(u64, {s}) * @as(u64, {s});\n    return if (@as(u64, {s}) > area) {d} else {d};\n}}\n\n", .{ zface, zfb, zfc, zfb, zfc, zface, spec.cond_then, spec.cond_else });
+            try emit_argv3_speaking_main(out, &used, zface, zfb, zfc);
+        },
         .cond_eq_faces, .cond_gth_faces => {
             var zb: [rb.max_face_len]u8 = undefined;
             const bn = try zig_safe_ident(rb.face2_slice(spec), &zb);

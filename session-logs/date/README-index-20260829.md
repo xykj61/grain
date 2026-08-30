@@ -11,9 +11,10 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
-| `20260829.175244` | [the row the field was built for](20260829/20260829-175244_the-row-the-field-was-built-for.kyri) | dual-stack seated on `capability ipv6`; two reds closed |
+| `20260829.220804` | [mul-b lands and the numbers that stay](20260829/20260829-220804_mul-b-lands-and-the-numbers-that-stay.kyri) | the claims law speaks in Glow on metal; STOA/ALES keep their rungs |
 | `20260829.214621` | [mul-a seats and the taste of runes](20260829/20260829-214621_mul-a-seats-and-the-taste-of-runes.kyri) | the composed cond parses (5 legs, 114 elder greens); the custodian's three style answers |
 | `20260829.213350` | [the rune the language wants](20260829/20260829-213350_the-rune-the-language-wants.kyri) | the pair survey ends at a mul gap -- a rune ruling on the sill; no twin desk minted |
+| `20260829.175244` | [the row the field was built for](20260829/20260829-175244_the-row-the-field-was-built-for.kyri) | dual-stack seated on `capability ipv6`; two reds closed |
 | `20260829.212731` | [the walls speak Glow and the crop fits](20260829/20260829-212731_the-walls-speak-glow-and-the-crop-fits.kyri) | three Skate desks GREEN with parity anchors; %347 closes Mind's 49-byte crop find |
 | `20260829.211412` | [the measure humbled the middle](20260829/20260829-211412_the-measure-humbled-the-middle.kyri) | gate %7: 1 of 39 additive, 38 two-way stay readings; Mind's exact-length find repaired, pins unmoved |
 | `20260829.210617` | [the fusion lands scoped](20260829/20260829-210617_the-fusion-lands-scoped.kyri) | --scoped proven both ways: 59-guard map, receipt v2, 7 control cases; hit-rate 16% decided the shape |

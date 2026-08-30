@@ -58,7 +58,7 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `53eaa7afa2` -- this round's own.
+**Git nib:** `a4e8034a28` -- this round's own.
 
 **Now.** **LOCA lands on two operating systems; Pond's record learns who walks through its door.**
 
@@ -87,9 +87,9 @@ row" is rewritten to say what the row now is.
 
 **Other Pond doors:** `spool_cloth` promises 4 large artifacts over a store holding **2** (%341).
 
-**Glow rune door** (Sound's custody, `20260829.213233`): the gate shop's conditional speaks
-`gth`/`eq` only, so `lit <= width x height` cannot be said in Glow. Wanted: `mul` in condition
-operands, or a composed face. Ruling with Keaton.
+**Glow rune door** (landed `20260829.215618`): `mul` speaks in cond operands -- the area
+widens to u64, and the claims law runs at `src/gate/gate-surface-lit-area-u32.glow`
+(golden 16268 vs 704x288 lawful; the wrap probe proven on metal).
 
 **MANY HANDS** (granted `20260828`): custody stays MANUAL, one writer per checkout. Root
 `SKILL.md`; every clone seats `ww` (`grain-ww/grain`, gate %1) and `.git/ssh_config_jail`.
