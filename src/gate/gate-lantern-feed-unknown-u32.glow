@@ -1,0 +1,16 @@
+::  name       lantern feed unknown gate
+::  shape      stop-reason text-len - ints (@u32) -> face kind - int (@u32)
+::  invariant  answers 2 (unknown) when the stop is err_stop (2) OR the text is empty; answers 1 (proposed) otherwise
+::  example    2 5 -> 2 · 0 0 -> 2 · 0 5 -> 1
+::  readers    Lantern · the asking voice · Glow
+::  nib        lantern-face-v0 · the feed's kind law spoken in Glow (20260830)
+::
+::  The feed's ruling, in the language's first or-composition: a machine's answer
+::  is unknown when its stop was an error or its text is empty, and proposed
+::  otherwise -- never settled, which is a witness's word. This is face_kind_for
+::  in pond/apps/lantern_face.rye spoken whole: reason 2 is err_stop's ordinal in
+::  lantern_core's StoppedReason (eos, length, err_stop, stop_sequence), and the
+::  answers are FaceKind ordinals (settled, proposed, unknown). The witness holds
+::  every spelling to one truth so no language drifts alone.
+|=  [reason=@u32 text_len=@u32]
+?:  (or (eq reason 2) (eq text_len 0))  2  1

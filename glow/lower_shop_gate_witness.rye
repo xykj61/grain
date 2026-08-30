@@ -989,6 +989,33 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("lower: and admits gth and eq inner conds alone -- GREEN\n", .{});
 
+    // or (20260830.004822): the and's sibling -- the feed's kind law becomes sayable.
+    const or_src = "|=  [reason=@u32 len=@u32]\n?:  (or (eq reason 2) (eq len 0))  2  1\n";
+    const or_spec = try rb.parse_source(or_src);
+    assert(or_spec.body == .cond_or_pair);
+    assert(or_spec.and_op1 == 2);
+    assert(or_spec.and_rhs1 == 2);
+    assert(or_spec.and_op2 == 2);
+    assert(or_spec.and_rhs2 == 0);
+    print("lower: or composed cond parses to cond_or_pair -- GREEN\n", .{});
+
+    const n_or = try lower.lower_source_welcome(or_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n_or], "fn bartis_or(reason: u32, len: u32)") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_or], "(reason == 2) or (len == 0)") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_or], "bartis_or(5, 3) == 1") != null);
+    print("lower: or welcome lowers either comparison as one boolean -- GREEN\n", .{});
+
+    const n_or_argv = try lower.lower_source_argv_sample(or_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n_or_argv], "bartis_or(reason, len)") != null);
+    print("lower: or argv speaks two samples through bartis_or -- GREEN\n", .{});
+
+    if (rb.parse_source("|=  [a=@u32 b=@u32]\n?:  (or (mul a 2) (gth b 0))  0  1\n")) |_| {
+        return error.StrangerFaceAccepted;
+    } else |err| {
+        if (err != rb.ParseError.MalformedBody) return err;
+    }
+    print("lower: or admits gth and eq inner conds alone -- GREEN\n", .{});
+
     print("GREEN: Glow `|=` bartis — identity · argv · call-body · amount-shape · amount argv · count-shape · count argv · kind-shape · kind argv · kind flip · xact-shape · xact argv · xact flip · xfer-shape · xfer argv · xfer flip · pair-shape · pair argv · pair flip · triple-shape · triple argv · triple flip · quad-shape · quad argv · quad flip · penta-shape · penta argv · penta flip · hexa-shape · hexa argv · hexa flip · hepta-shape · hepta argv · hepta flip · octa-shape · octa argv · octa flip · nona-shape · nona argv · nona flip · nesting-nests · STOA338 pair-faces metal; STOA100–147 · STOA253 identity emit · STOA259 N-field flip · STOA293 tagged payload flip · STOA297 tagged unit flip · STOA300 kind argv · STOA303 xact argv · STOA305 xfer argv · STOA307–321 pair…nona argv · STOA324 `$:` argv sameness collapse.\n", .{});
     return 0;
 }

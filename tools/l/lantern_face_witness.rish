@@ -57,6 +57,17 @@ let u3 = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "src/gate
 assert u3.ok else "lantern-face: unknown-law(0,5) failed to run"
 assert u3.out contains "1" else "lantern-face: unknown-law(0,5) -- a settled answer is lawful"
 
+say "lantern-face: the feed's kind law in Glow -- the language's first or-composition..."
+let f1 = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "src/gate/gate-lantern-feed-unknown-u32.glow" "2" "5"]
+assert f1.ok else "lantern-face: feed-law(2,5) failed to run"
+assert f1.out contains "2" else "lantern-face: feed-law(2,5) -- an error stop answers unknown"
+let f2 = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "src/gate/gate-lantern-feed-unknown-u32.glow" "0" "0"]
+assert f2.ok else "lantern-face: feed-law(0,0) failed to run"
+assert f2.out contains "2" else "lantern-face: feed-law(0,0) -- an empty completion answers unknown"
+let f3 = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "src/gate/gate-lantern-feed-unknown-u32.glow" "0" "5"]
+assert f3.ok else "lantern-face: feed-law(0,5) failed to run"
+assert f3.out contains "1" else "lantern-face: feed-law(0,5) -- a finished answer arrives proposed"
+
 say "lantern-face: parity anchors -- one number, two languages..."
 let rye_wall = run ["grep" "-c" "pub const max_face_text: u32 = 38;" "pond/apps/lantern_face.rye"]
 assert rye_wall.ok else "lantern-face: the Rye budget moved or renamed -- re-anchor both spellings together"
@@ -66,5 +77,9 @@ let kind_order = run ["grep" "-c" "pub const FaceKind = enum { settled, proposed
 assert kind_order.ok else "lantern-face: the FaceKind order moved -- the unknown-law desk's kind 2 must move with it"
 let rye_law = run ["grep" "-c" "AnswerWithUnknown" "pond/apps/lantern_face.rye"]
 assert rye_law.ok else "lantern-face: the Rye uncertainty refusal moved or renamed -- re-anchor both spellings together"
+let stop_order = run ["grep" "-c" "eos," "lantern/lantern_core.rye"]
+assert stop_order.ok else "lantern-face: the StoppedReason order moved -- the feed desk's reason 2 must move with it"
+let feed_fn = run ["grep" "-c" "pub fn face_kind_for" "pond/apps/lantern_face.rye"]
+assert feed_fn.ok else "lantern-face: face_kind_for moved or renamed -- the feed desk speaks its law"
 
 say "GREEN: lantern-face -- the asking voice has a face, its law refuses invented certainty, and both languages speak one wall."

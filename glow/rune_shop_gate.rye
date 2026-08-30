@@ -110,6 +110,7 @@ pub const BodyKind = enum {
     fold_prod, // STOA336: list fold by product over any closed tuple
     cond_gth_mul, // mul-a (20260829.214107): (gth face (mul face2 face3)) over a three-face header -- parse seats; lower waits for mul-b
     cond_and_pair, // and (20260830.000850): (and (gth|eq face dec) (gth|eq face2 dec)) over the pair header -- the composed condition the face's uncertainty law asked for
+    cond_or_pair, // or (20260830.004822): the and's sibling -- either inner cond satisfies, the shape the feed's kind law asked for
 };
 
 /// A parsed thin bartis gate: sample face + optional named shape + body kind.
@@ -239,7 +240,9 @@ fn parse_body(src: []const u8, toks: []const tokens.Token, start: u32, face_text
         const cond_op = tokens.slice_of(src, toks[@as(usize, @intCast(i))]);
         const is_gth = std.mem.eql(u8, cond_op, "gth");
         const is_eq = std.mem.eql(u8, cond_op, "eq");
-        if (std.mem.eql(u8, cond_op, "and")) {
+        const is_and = std.mem.eql(u8, cond_op, "and");
+        const is_or = std.mem.eql(u8, cond_op, "or");
+        if (is_and or is_or) {
             // and (20260830.000850): `?:  (and (gth|eq face dec) (gth|eq face2 dec))  dec  dec`
             // -- the composed condition, the shape the face's own uncertainty law asked for
             // (an unknown AND a nonzero answer refuses). Exactly the pair header; each inner
@@ -293,7 +296,7 @@ fn parse_body(src: []const u8, toks: []const tokens.Token, start: u32, face_text
             if (i >= n or toks[@as(usize, @intCast(i))].kind != .decimal) return error.MalformedBody;
             spec.cond_else = try parse_decimal_u32(tokens.slice_of(src, toks[@as(usize, @intCast(i))]));
             i += 1;
-            spec.body = .cond_and_pair;
+            spec.body = if (is_and) .cond_and_pair else .cond_or_pair;
             return i;
         }
         if (!is_gth and !is_eq) return error.MalformedBody;
@@ -601,8 +604,8 @@ pub fn parse_source(src: []const u8) ParseError!GateSpec {
             if (spec.face2_len == 0) return error.MalformedBody;
             if (spec.face3_len == 0) return error.MalformedBody;
         },
-        .cond_and_pair => {
-            // and: the composed condition is exactly the pair shape, whole.
+        .cond_and_pair, .cond_or_pair => {
+            // and/or: the composed condition is exactly the pair shape, whole.
             if (spec.face2_len == 0) return error.MalformedBody;
             if (spec.face3_len != 0) return error.MalformedBody;
         },
