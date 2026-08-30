@@ -35,6 +35,14 @@ exactly thirty-two public bytes, the width of `crypto/sha3.rye`'s SHA3-256 resul
 holds those values beside one native frame. Surf and Skate are compile-time aliases over this
 receipt too.
 
+The first Image history receipt carries already-rendered edit lines without moving Image's grammar
+or replay algorithms into Swift. `ImageEditRecordClaim` admits one through forty-nine caller bytes,
+the full line width proved by `image/photo_edits.rye`. `ImageEditHistory` keeps sixty-four such
+claims in order, with three thousand one hundred thirty-six payload bytes owned inline. A full
+history returns `ImageEditHistoryError.historyFull` before changing any admitted record. Surf and
+Skate are direct aliases over this history as well. This receipt is separate from the still-open
+semantic-node shape; it makes no choice about that later value model.
+
 ## Alias-sameness
 
 Grain already calls a lawful pair of names with one behavior
@@ -63,6 +71,8 @@ MIND-owned instance.
   seven.
 - The event ring owns exactly 128 inline seats. It never evicts an admitted event, and its physical
   slot may wrap while its public head and tail counts stay linear.
+- An Image edit history owns sixty-four inline record seats and forty-nine inline bytes per record.
+  It keeps admitted record claims in order and never evicts one to admit another.
 - An admitted image plane owns exactly three hundred twenty full-block cells and three hundred
   twenty palette indexes. Each index is one through seven, matching HUNK2's fixed anchor palette.
 - A Lotus meter reading owns a count from zero through two to the twenty-sixth samples, a peak no
@@ -73,6 +83,8 @@ MIND-owned instance.
 - A missing or 129-byte nib, a line ceiling of zero or nine, a line past the declared ceiling, a
   forty-first byte, an invalid row or range, and an invalid palette seat return a named error
   before owned state changes.
+- An empty edit record, a fiftieth record byte, and a sixty-fifth history append return named errors
+  before owned history state changes.
 
 The input collection belongs to the caller. The core checks its count, then copies it into
 `InlineArray` storage. This promise covers Grain-owned frame state. AppKit, Swift, callers, and the
@@ -88,9 +100,11 @@ for that later choice.
 ## Prove the seam
 
 ```sh
-env CLANG_MODULE_CACHE_PATH="$PWD/tools/.build/skate-clang-cache" \
+env DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer \
+  CLANG_MODULE_CACHE_PATH="$PWD/tools/.build/skate-clang-cache" \
   SWIFT_MODULE_CACHE_PATH="$PWD/tools/.build/skate-swift-cache" \
-  xcrun swift test --disable-sandbox --package-path skate \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift \
+  test --disable-sandbox --package-path skate \
   --scratch-path "$PWD/tools/.build/skate-core"
 
 rishi/bin/rishi run tools/s/skate_native_core_witness.rish
@@ -116,6 +130,12 @@ full sample and peak ceilings, and a thirty-two-byte digest claim. They refuse s
 a non-block cell, palette slots zero and eight, an impossible Lotus level, and digest widths of
 thirty-one and thirty-three. A repeated import yields the same cells, indexes, and fixed anchors.
 
+The Image history controls admit its exact sixty-four-record and forty-nine-byte bounds, including
+the maximum-width crop line from Image's public renderer. Empty and fifty-byte record claims refuse.
+The sixty-fifth append refuses with all three thousand one hundred thirty-six admitted payload
+bytes equal to a value-copy snapshot. Compile-time assignments prove that Surf and Skate name the
+same history identity.
+
 The event controls fill all 128 seats, refuse the next event without eviction, drain in FIFO order,
 and cross the physical end while keeping the same linear order. A package-internal proof origin
 also starts one empty ring just below the unsigned ceiling and admits one event. At the ceiling,
@@ -124,6 +144,8 @@ compile-time assignment proves that Surf and Skate name the same event-ring iden
 
 This slice establishes the core contract alone. Visual form, animation, domain, identity, release,
 and model settings remain later seats at their existing custody gates. Swift does not decode QOI,
-meter PCM, recompute SHA3, or verify a digest in this slice; those operations remain in their proven
-Rye modules. A future cross-language boundary must prove that the carried digest matches the bytes
-before it may remove the word `Claim`. The fixed floor is ready for the later AppKit shell.
+meter PCM, recompute SHA3, verify a digest, parse an edit line, or replay an edit in this slice;
+those operations remain in their proven Rye modules. A future cross-language boundary must prove
+that the carried digest matches the bytes before it may remove the word `Claim`, and Image remains
+the authority for every edit record this history carries. The fixed floor is ready for the later
+AppKit shell.

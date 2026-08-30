@@ -1,12 +1,14 @@
 # tools/s/skate_native_core_witness.rish -- the fixed Brushstroke Frame reaches native Surf and Skate.
 #
 # The Swift target owns a 40-by-8 cell grid, eight line seats, a 128-byte nib identity, eight
-# palette seats, and a 128-seat event ring in InlineArray storage. A frame carries Brushstroke's
-# own one-through-eight declared line ceiling. Surf and Skate are compile-time aliases over the
-# same frame, media receipt, and event ring. The controls prove the living fold; media bounds; the
+# palette seats, a 128-seat event ring, and Image's 64-by-49-byte edit history in InlineArray
+# storage. A frame carries Brushstroke's own one-through-eight declared line ceiling. Surf and
+# Skate are compile-time aliases over the same frame, media receipt, event ring, and edit history.
+# The controls prove the living fold; media and history bounds; the
 # refusing frame edges with all 459 Brushstroke values preserved; full-ring refusal without
-# eviction; FIFO order across physical wrap; and unsigned-counter refusal before arithmetic or
-# ring mutation. AppKit and C stay outside this headless core.
+# eviction; a full edit history with all 3,136 payload bytes preserved; FIFO order across physical
+# wrap; and unsigned-counter refusal before arithmetic or ring mutation. AppKit and C stay outside
+# this headless core. Image keeps the edit grammar and replay algorithms.
 
 say "skate-native-core: Language EN -- Brushstroke lends one bounded Frame; Surf and Skate are peer names for its one native grid."
 say "skate-native-core: Style Gauge Door -- the sizes, owner, refusal, and platform edge are named."
@@ -15,6 +17,10 @@ say "skate-native-core: Lens TAME -- fixed storage, bounded walks, and atomic re
 let shape = run ["sh" "-c" "grep -q 'InlineArray<128, UInt8>' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'InlineArray<8, BrushstrokeLine>' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'InlineArray<320, UInt8>' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'InlineArray<8, SkateColor>' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'InlineArray<128, Event?>' skate/Sources/SkateCore/EventRing.swift && grep -q 'func hasSameStoredState(as other: borrowing BrushstrokeFrame)' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'init(counterOrigin: UInt64)' skate/Sources/SkateCore/EventRing.swift && grep -q 'let nextTail = try Self.advanced(tail)' skate/Sources/SkateCore/EventRing.swift && grep -q 'throw EventRingError.full' skate/Sources/SkateCore/EventRing.swift && grep -q 'public let maxLines: Int' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'lineCount < maxLines' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'public typealias SurfFrameGrid = FrameGrid' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'public typealias SkateFrameGrid = FrameGrid' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'public typealias SurfEventRing' skate/Sources/SkateCore/EventRing.swift && grep -q 'public typealias SkateEventRing' skate/Sources/SkateCore/EventRing.swift && grep -q '@available(macOS 26.0, \*)' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'StrictMemorySafety' skate/Package.swift && grep -q '\-warnings-as-errors' skate/Package.swift && echo SHAPE_OK"]
 assert shape.ok else "skate-native-core: fixed shape or strict build setting missing"
 assert shape.out contains "SHAPE_OK" else "skate-native-core: fixed shape did not hold"
+
+let history_shape = run ["/bin/bash" "-c" "grep -q 'InlineArray<49, UInt8>' skate/Sources/SkateCore/ImageEditHistory.swift && grep -q 'InlineArray<64, ImageEditRecordClaim?>' skate/Sources/SkateCore/ImageEditHistory.swift && grep -q 'public static let imageEditCapacity = 64' skate/Sources/SkateCore/ImageEditHistory.swift && grep -q 'public static let imageEditRecordBytes = 49' skate/Sources/SkateCore/ImageEditHistory.swift && grep -q 'pub const max_edits: u32 = 64;' image/photo_edits.rye && grep -q 'pub const per_line_bound: u32 = 49;' image/photo_edits.rye && grep -q 'public typealias SurfImageEditHistory = ImageEditHistory' skate/Sources/SkateCore/ImageEditHistory.swift && grep -q 'public typealias SkateImageEditHistory = ImageEditHistory' skate/Sources/SkateCore/ImageEditHistory.swift && echo HISTORY_SHAPE_OK"]
+assert history_shape.ok else "skate-native-core: Image history shape drifted from its Rye contract"
+assert history_shape.out contains "HISTORY_SHAPE_OK" else "skate-native-core: Image history shape did not hold"
 
 let boundary = run ["sh" "-c" "if grep -Eq 'import (AppKit|Foundation)|Unsafe|(^|[^[:alnum:]_])Array<|(^|[^[:alnum:]_])Dictionary<|(^|[^[:alnum:]_])ContiguousArray<|(^|[^[:alnum:]_])Set<' skate/Sources/SkateCore/*.swift; then exit 1; else echo BOUNDARY_OK; fi"]
 assert boundary.ok else "skate-native-core: platform import, unsafe seam, or dynamic owned collection entered the core"
@@ -33,7 +39,7 @@ assert alias_control.out contains "control_cases=8" else "skate-native-core: eig
 assert alias_control.out contains "control_fail=0" else "skate-native-core: every alias-sameness behavior must answer as planted"
 assert alias_control.out contains "control_verdict=ok" else "skate-native-core: alias-sameness control must agree with itself"
 
-let test = run ["sh" "-c" "mkdir -p tools/.build/skate-clang-cache tools/.build/skate-swift-cache && env CLANG_MODULE_CACHE_PATH=$PWD/tools/.build/skate-clang-cache SWIFT_MODULE_CACHE_PATH=$PWD/tools/.build/skate-swift-cache xcrun swift test --disable-sandbox --package-path skate --scratch-path $PWD/tools/.build/skate-core 2>&1"]
+let test = run ["/bin/bash" "-c" "mkdir -p tools/.build/skate-clang-cache tools/.build/skate-swift-cache && env DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer CLANG_MODULE_CACHE_PATH=$PWD/tools/.build/skate-clang-cache SWIFT_MODULE_CACHE_PATH=$PWD/tools/.build/skate-swift-cache /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift test --disable-sandbox --package-path skate --scratch-path $PWD/tools/.build/skate-core 2>&1"]
 assert test.ok else "skate-native-core: Swift tests failed"
 assert test.out contains "testBrushstrokeFrameLowersDeterministically" else "skate-native-core: living deterministic fold not exercised"
 assert test.out contains "testMissingAtNibRefuses" else "skate-native-core: missing-nib control not exercised"
@@ -50,6 +56,10 @@ assert test.out contains "testFrameGridRefusalsPreserveWholeState" else "skate-n
 assert test.out contains "testImageLotusAndDigestValuesJoinOneBoundedMediaReceipt" else "skate-native-core: joined media receipt not exercised"
 assert test.out contains "testImageSkatePlaneRefusesMalformedPlanesBeforeAdmission" else "skate-native-core: malformed media plane controls not exercised"
 assert test.out contains "testLotusMeterAndDigestClaimsKeepTheirExactBounds" else "skate-native-core: meter and digest bounds not exercised"
+assert test.out contains "testImageEditHistoryAdmitsExactBoundsAndKeepsOrder" else "skate-native-core: Image edit-history exact bounds and order not exercised"
+assert test.out contains "testImageEditRecordRefusesEmptyAndFiftiethByte" else "skate-native-core: Image edit-record width controls not exercised"
+assert test.out contains "testImageEditHistoryFullRefusalPreservesAllStoredBytes" else "skate-native-core: full Image history did not prove all stored bytes unchanged"
+assert test.out contains "testSurfAndSkateImageEditHistoryAliasesShareOneIdentity" else "skate-native-core: Image history alias-sameness not exercised"
 assert test.out contains "testEventRingFillsThenRefusesWithoutEviction" else "skate-native-core: full event-ring refusal not exercised"
 assert test.out contains "testEventRingPhysicalWrapKeepsLinearFIFOOrder" else "skate-native-core: physical event-ring wrap not exercised"
 assert test.out contains "testEventCounterRefusesBeforeUnsignedWrap" else "skate-native-core: event counter ceiling not exercised"
@@ -61,5 +71,5 @@ assert test.out contains "testSurfAndSkateEventRingAliasesShareOneIdentity" else
 assert test.out contains ", with 0 failures" else "skate-native-core: zero-failure verdict missing"
 assert test.out contains "Executed " else "skate-native-core: the suite must report how many tests it executed"
 
-say "RED and GREEN paths proven -- one deterministic fold lives; the named identity, media, event, exact-bound, refusal, and mutation claims hold."
-say "GREEN: skate-native-core -- Surf and Skate share one Brushstroke Frame and event-ring identity, storage shape, and refusal contract."
+say "RED and GREEN paths proven -- one deterministic fold lives; the named identity, media, history, event, exact-bound, refusal, and mutation claims hold."
+say "GREEN: skate-native-core -- Surf and Skate share one Brushstroke Frame, event-ring, and Image edit-history identity, storage shape, and refusal contract."
