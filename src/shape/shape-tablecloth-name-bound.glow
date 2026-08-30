@@ -1,0 +1,42 @@
+::  name       tablecloth name bound
+::  shape      bytes -- int (@u32), bound 48 -- a length, with an alphabet standing beside it
+::  invariant  a stored name fits forty-eight bytes and is one whole manifest field
+::  example    48
+::  readers    Tablecloth - Pond - Glow Tend - shape museum
+::  nib        tablecloth-v1 at 20260812.142132
+::
+::  Tablecloth's fourth pedestal, and the last of its bounds to take one. It names max_name from
+::  brushstroke/tablecloth.rye, which bounds how long an artifact's human name may be.
+::
+::  Why this desk shows a number AND a list. On 20260830 max_name was found doing a second job
+::  nobody had written down. The Brix-facing manifest writes one line per artifact,
+::  `artifact <name> <digest> <len>`, and reads it back by splitting on newline and then on space,
+::  so a name carrying either byte renders a line this module's own parser refuses. The length
+::  bound was never the thing preventing that: the shortest lawful artifact line is 77 bytes, so
+::  at 48 no name is long enough to carry a forged one, and the grammar was safe by ARITHMETIC
+::  rather than by a rule. Raise the bound for longer human names and the forgery comes back in
+::  reach, with nothing in the number's own comment to warn whoever raises it.
+::
+::  So the wall is written down now, and what it holds is an ALPHABET rather than a length:
+::
+::  the bytes the manifest grammar reserves, as name_is_one_field refuses them:
+::    space - newline
+::  that is the whole alphabet the wall removes.
+::
+::  Three facts, and each can fail while the other two agree. The number equals max_name. The
+::  bytes listed equal the bytes name_is_one_field actually refuses -- add a third to the wall and
+::  this desk goes quiet about it until it is written here. And store_artifact still consults that
+::  wall, so the invariant above stays wired rather than merely written: delete the one call and
+::  the first two readings agree over a store that accepts anything.
+::
+::  Unlike this room's error-paths desk, the number here is not a count of the list. There, the
+::  example IS the set's size, so the desk can contradict itself. Here the example is a length and
+::  the list is an alphabet -- two facts, neither derivable from the other, so each is read against
+::  the Rye rather than against its neighbor.
+::
+::  What this desk does not reach. Whether forty-eight is the right length, which is Tablecloth's
+::  own design question. And pond/apps/spool_cloth.rye, whose store took the same wall in the same
+::  shape on the same day; its bounds are Pond's to display.
++$  tablecloth-name-bound-shape
+  $:  bytes=@u32
+  ==
