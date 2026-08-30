@@ -47,7 +47,7 @@ fn parse(src: []const u8, out: *[max_pairs]Pair) InfuseError!u32 {
         if (n >= max_pairs) return error.TooManyPairs;
         // invariant: a line stays within the bounded length.
         if (line.len > max_line) return error.LineTooLong;
-        var sp: usize = 0; // seam: slice index over a std source
+        var sp: u32 = 0; // u32 scan index by the width law -- the line is bounded far under it, and the index coerces at the slice edge
         while (sp < line.len and line[sp] != ' ') : (sp += 1) {}
         const key = line[0..sp];
         // invariant: a key stays within the bounded length.
