@@ -58,6 +58,21 @@ assert up.ok else "birth-a-clone: could not point main at xy/main"
 let hk = run ["git" "-C" dest "config" "core.hooksPath" "tools/hooks"]
 assert hk.ok else "birth-a-clone: could not seat the tracked hooks"
 
+# Signing is repo-local and never cloned, the same lesson the ssh step taught: the identity
+# and key id copy from the field, and gpg.program keeps the field's absolute wrapper -- host-
+# shared custody material behind per-clone config, so every newborn signs as the one keeper.
+fn field-conf name: trim (run ["git" "-C" field "config" "--local" name]).out
+let sg1 = run ["git" "-C" dest "config" "user.signingkey" (field-conf "user.signingkey")]
+assert sg1.ok else "birth-a-clone: could not seat user.signingkey"
+let sg2 = run ["git" "-C" dest "config" "user.name" (field-conf "user.name")]
+assert sg2.ok else "birth-a-clone: could not seat user.name"
+let sg3 = run ["git" "-C" dest "config" "user.email" (field-conf "user.email")]
+assert sg3.ok else "birth-a-clone: could not seat user.email"
+let sg4 = run ["git" "-C" dest "config" "gpg.program" (field-conf "gpg.program")]
+assert sg4.ok else "birth-a-clone: could not seat gpg.program"
+let sg5 = run ["git" "-C" dest "config" "commit.gpgsign" "true"]
+assert sg5.ok else "birth-a-clone: could not seat commit.gpgsign"
+
 # The four named submodules, over plain https with the host's global config held aside.
 let sm = run ["env" "GIT_CONFIG_GLOBAL=/dev/null" "git" "-C" dest "submodule" "update" "--init" "vendor/microkit" "vendor/monocypher" "vendor/pqclean" "vendor/sel4"]
 assert sm.ok else "birth-a-clone: the named submodules refused -- ${sm.err}"
