@@ -58,54 +58,55 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `9a0ab27b92` -- this round's own.
+**Git nib:** `a04cc0eef7` -- this round's own.
 
-**Now.** **The pier's one line closes tri-OS; Mystery raises the Lotus ladder to B; Mind
-repairs `spread.rye`; Pond's remaining duties and `spool_cloth` stay live.**
+**Now.** **Pond's door names its environment; the duty left is the switchover, and `spool_cloth`
+carries %354's other half. Mystery raises the Lotus ladder to B.**
 
-**The live front** (condensed at the `20260830.012039` boundary; the walk-back checkpoint
-holds the departing accounts, and the `20260829`-`20260830` day shelves hold every landed lap):
-- **Tri-OS** BOOKED for Dream: LOCA parity via `brushstroke/wayland_seed.rye` on the pier;
-  pins in `surface_reference.rye`. Both prior OSes GREEN; the nine-seat snapshot landed
-  `89e6da952`; the AppKit role translation and deployment floor stay Keaton's gates.
+**The live front** (condensed `20260830.012039`; the checkpoint holds the departing accounts and
+the day shelves hold every landed lap):
+- **Tri-OS** BOOKED for Dream: LOCA parity via `brushstroke/wayland_seed.rye`; pins in
+  `surface_reference.rye`. Both prior OSes GREEN, snapshot `89e6da952`; the AppKit role
+  translation and deployment floor stay Keaton's gates.
 - **CION Tier C** RULED quality-first (`20260830.004431`,
   [campaign](../expanding-prompts/20260829-221841_cion-resumes-the-rung-mark-molt-campaign.md)):
-  Mystery raises `lotus/LADDER.md` (D/62) to B before a citation moves; the map is GREEN.
-- **Mind's next:** its lane -- the spread twins closed upstream (%350's class), and the
-  symlink-ownership answer is seated: a width-ratchet touch is tree law any hand may carry;
-  no wall widens for it.
-- **Pond live:** `duties_undeclared` **2**; `spool_cloth` promises 4 artifacts over a store
-  holding **2** (%341).
+  Mystery raises `lotus/LADDER.md` (D/62) to B before a citation moves.
+- **Mind's next:** its lane -- the spread twins closed upstream (%350's class); a width-ratchet
+  touch is tree law any hand may carry, and no wall widens for it.
+- **Pond live:** `duties_undeclared` **1** -- `env` seated `20260830` as `KEY=value`, its value
+  half read as a search path; the door guard settles it against the exec line at
+  `env_disagreements` **zero, enforced**, refusing side proven without a kernel. Only `entry` is
+  left, and it IS the switchover -- a gate, not a lap. `spool_cloth` still promises 4 artifacts
+  over a store holding **2** (%341), and carries %354's separator half too.
 - **Language custody:** the growth law is
   [a-rune-is-earned-by-a-law](../foundations/20260830-011530_a-rune-is-earned-by-a-law.md);
   nested composition waits as a named door.
 - **Pond dialect** (REDS %352, landed): two GNU-only shell families left advisory are gated now
   -- in-place at **0**, readlink's resolve flag a **ratchet at 7**, six families and none advisory.
-  The Mac's next run is the falsifier.
 
 **MANY HANDS** (granted `20260828`): custody stays MANUAL, one writer per checkout. Root
 `SKILL.md`; every clone seats `ww` (`grain-ww/grain`, gate %1) and `.git/ssh_config_jail`.
 
-**Sibling finds (`20260830.002502`):** Mind owns `%349` and one width line in
-`brushstroke/spread.rye`; Hush owns one in `pond/apps/spread.rye`; Sound owns two bare labels in
-`lattice/README.md` and the new WADE<N> mark in `pond/apps/lantern_face_theme.rye`. Mystery's
-module-label guard fails open on BSD grep; its portable form finds two elder labels in
-`tools/gen/chapter/fascia_metric_v0.rish`, so that repair stays booked beside the sibling labels.
+**Sibling finds (`20260830.002502`):** Sound owns two bare labels in `lattice/README.md` and the
+WADE<N> mark in `pond/apps/lantern_face_theme.rye`. Mystery's module-label guard fails open on BSD
+grep; its portable form finds two elder labels in `tools/gen/chapter/fascia_metric_v0.rish`.
 
-**Still open:** REDS has 1 OPEN row, `%354` -- booked this lap, its Tablecloth half repaired and
-its `spool_cloth` twin named for Hush. (`%349` reads CLOSED on the ledger; this line had lagged it.)
-`glow/rune_shape.rye` keeps its width custody; Mind keeps the reconnect stash, `%281`/`%291`, and
-two `enclosure.conf` pins.
-**Roster here** (cold, then hot over this round's staged paths, `tree_moved=no`, `20260830`,
-`grain-silence`): 96 run, **92 green**, 4 red -- gate %7, Hush's `pond_enclosure_door`, and the two
-nib guards this round's own commit closes. No new red, so no standfast.
-**Sibling find for Hush (REDS %354):** `pond/apps/spool_cloth.rye` carries Tablecloth's separator
-hole exactly -- `max_name = 48`, length-only checks at 112-113, a space-delimited manifest tokenized
-back. Named rather than touched: Pond's file, live with %341, so the two want one sitting.
-`pond/apps/tablecloth.rye` holds the three-line shape to copy.
-**Next doors.** Dream: Caravan and Tally. Hush: `env`, the second door duty, and %354's twin.
-Silence: Tablecloth's nine ClothError paths on a count pedestal -- `NameHasSeparator` joined the
-eight this lap.
+**Still open:** `%354` -- Tablecloth half repaired by Silence, `spool_cloth` twin ACCEPTED by Hush
+and next. `glow/rune_shape.rye` keeps width custody; Mind keeps the reconnect stash, `%281`/`%291`,
+and two `enclosure.conf` pins.
+**Roster here** (cold then hot, `tree_moved=no`, `20260830`, `grain-hush`): 96 run, **95 green**,
+1 red -- gate %7 alone. Two closed on metal: `%355`, two absolute interpreter spellings nested in
+the very file `%353` repaired, where exit 127 satisfied `bitten.ok == false` and a refusing-side
+proof passed vacuously; and `%356`, a read buffer sized AT its own bound, making that check
+unreachable, so an 8,468-byte record parsed as 31 declarations of 34. `%347`-`%349` folded.
+**Cross-bench, unreproduced:** `pond_enclosure_door` reds on `grain-silence`, GREEN here with the
+probe; its `env` reading normalizes both sides through `to_record`, so it should travel. That
+bench's next line is the falsifier.
+**Named, not taken:** `pond/enclosure_policy.kyri` stands at 8,120 of 8,192, nearly all of it the
+comment that makes it auditable; `entry`'s paragraph meets that wall, and widening a bound is your
+word (%347).
+**Next doors.** Dream: Caravan and Tally. Hush: `%354`'s `spool_cloth` twin and %341's
+four-against-two, one sitting. Silence: Tablecloth's nine ClothError paths.
 ---
 ## Landed arcs
 
@@ -220,7 +221,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260830.030609` | A name is one field -- the manifest separator refused at the store edge | [log](../session-logs/date/20260830/20260830-030609_a-name-is-one-field.kyri) |
+| `20260830.033016` | The door names its environment -- `env` seats, two reds close | [log](../session-logs/date/20260830/20260830-033016_the-door-names-its-environment.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it.
 

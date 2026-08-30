@@ -43,21 +43,28 @@ const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 
-pub const pond_enclosure_policy_version = "20260829.143651";
+pub const pond_enclosure_policy_version = "20260830.031001";
 
 /// A policy small enough to hold in one reading is a policy somebody audits. 8 KiB is the same
 /// bound customs reads a manifest under, so the two seams agree on what "one document" means.
 pub const max_policy_len: u32 = 8192;
-/// Twice the largest real policy in this tree: the agent-jail lap declares **thirty-two**, counted
-/// `20260829` off pond/enclosure_policy.kyri the way the parser counts -- comments, blank lines,
-/// and the `format` and `name` lines skipped. It read eleven until that record grew from six mounts
-/// to the twenty-seven the enclosure actually builds, and a bound's reason is worth no more than
-/// its number. The bound refuses runaway input while leaving honest growth room.
+/// Comfortably above the largest real policy in this tree: the agent-jail lap declares
+/// **thirty-four**, counted `20260830` off pond/enclosure_policy.kyri the way the parser counts --
+/// comments, blank lines, and the `format` and `name` lines skipped. It read eleven until that
+/// record grew from six mounts to the twenty-seven the enclosure actually builds, thirty-one until
+/// `user` seated, and thirty-two until `env` seated its two lines. The bound refuses runaway input
+/// while leaving honest growth room.
 ///
-/// The count was re-measured when the `user` mark seated, and it had been one high: this line read
-/// thirty-two while the record carried thirty-one, and the `name` line was missing from the list of
-/// what the parser skips. Seating `user` makes thirty-two true, which is the accident worth naming
-/// -- a number that becomes correct on its own is still a number nobody measured.
+/// This line once read *twice the largest real policy*, and that ratio was true on the day it was
+/// written and has been drifting toward one ever since -- 64 against 11, then 32, now 34. A bound's
+/// reason is worth no more than its number, so the reason is restated as what 64 actually is: a
+/// power of two well above every record this tree writes, re-measured on the lap that moves the
+/// record rather than recited.
+///
+/// The count was re-measured when `user` seated and had been one high -- thirty-two against a
+/// record carrying thirty-one, with the `name` line missing from the list of what the parser skips.
+/// Seating `user` made thirty-two true, which is the accident worth keeping named: a number that
+/// becomes correct on its own is still a number nobody measured.
 pub const max_declarations: u32 = 64;
 /// Linux carries a path to 4096 bytes. A declaration past 256 names something no operator checks
 /// by eye, and an enclosure nobody reads is an enclosure nobody trusts.
@@ -106,6 +113,11 @@ pub const Kind = enum {
     /// `env`, `user`), and it is seated first because it is the cheapest to check and the one an
     /// unattended lap already depends on.
     user,
+    /// The environment the enclosure hands the agent across the threshold, one variable per line.
+    /// The second of the three door duties, seated `20260830` after `user` and before `entry`, in
+    /// the order the reading that opened them proposed: cheapest to check first, and the seat that
+    /// declares an enclosure of our own last.
+    env,
 };
 
 pub const Receipt = struct {
@@ -151,6 +163,7 @@ fn kind_name(k: Kind) []const u8 {
         .mask => "mask",
         .graft => "graft",
         .user => "user",
+        .env => "env",
     };
 }
 
@@ -169,6 +182,7 @@ pub fn kind_for_token(token: []const u8) ?Kind {
     if (std.mem.eql(u8, token, "mask")) return .mask;
     if (std.mem.eql(u8, token, "graft")) return .graft;
     if (std.mem.eql(u8, token, "user")) return .user;
+    if (std.mem.eql(u8, token, "env")) return .env;
     return null;
 }
 
@@ -442,6 +456,90 @@ fn verdict_for_user(value: []const u8) Verdict {
     return .hold;
 }
 
+/// An environment variable's name, judged before its value, with three answers and a reason for
+/// each. A name carrying a byte outside `[A-Za-z0-9_]`, or one starting with a digit, refuses:
+/// that is not a name any `exec` could set, so the line describes an assignment that could never
+/// happen.
+///
+/// A name carrying a lowercase letter HOLDS. It is a perfectly legal environment variable, and the
+/// standing reading that settles this mark -- tools/fixtures/p/pond_enclosure_door_scan.sh -- lifts
+/// assignments off the launcher's exec line with `^[A-Z_][A-Z0-9_]*=`, so a lowercase key names an
+/// assignment that reading cannot see. A declaration nothing can settle is a claim nothing keeps,
+/// which is the `network off` fault of REDS %329 one mark over. Hold says an operator may want it
+/// and should say so out loud, and it leaves the roster open for the day the reading widens.
+fn verdict_for_env_key(key: []const u8) Verdict {
+    // invariant: the caller has established the key carries bytes before asking.
+    assert(key.len > 0);
+    // invariant: a key is judged inside the same bound its whole declaration is.
+    assert(key.len <= max_value_len);
+    var portable = true;
+    for (key) |c| {
+        const upper = c >= 'A' and c <= 'Z';
+        const lower = c >= 'a' and c <= 'z';
+        const digit = c >= '0' and c <= '9';
+        if (!upper and !lower and !digit and c != '_') return .refuse;
+        if (lower) portable = false;
+    }
+    // A leading digit is the one name shape a shell will not set, so it refuses rather than holds.
+    if (key[0] >= '0' and key[0] <= '9') return .refuse;
+    if (!portable) return .hold;
+    return .place;
+}
+
+/// What the enclosure hands the agent across the threshold: one `KEY=value` assignment per line,
+/// written the way the exec line writes it, so an operator comparing the record with the launcher
+/// reads the same bytes on both sides. That is the same reasoning that gave `rw-map` the
+/// `host:jail` spelling a bind mount already uses -- a compound value borrows the separator of the
+/// thing it describes.
+///
+/// The value half reads as a search path: one or more `:`-separated elements, each taking the
+/// structural reading, worst answer winning. A single path is the one-element case, so
+/// `GH_CONFIG_DIR` and `PATH` need no separate rule between them.
+///
+/// It takes `verdict_for_path` rather than `verdict_for_host_path`, for the reason `persist` and
+/// `ephemeral` already give: an env value is a POINTER the agent follows once it is inside, and it
+/// carries nothing across the wall. The mounts do that. So the host-sharing roster has no work
+/// here, while the key-room refusal has more work than under any other mark -- a value naming
+/// `.ssh` or `.gnupg` is the record telling the agent where custody material lives, and custody
+/// stays the operator's own hand.
+///
+/// An empty element refuses, and it refuses for free: POSIX reads an empty search-path element as
+/// the current directory, which resolves against whatever directory the launcher happened to stand
+/// in, and `verdict_for_path` already refuses a relative path by name for exactly that reason.
+///
+/// A placeholder inside a value PLACES, which is where this mark parts from `user`. There the value
+/// was the whole claim, so `<uid>` left nothing to check; here the value is a path and a
+/// placeholder keeps a path's structure -- the courtesy the record's own `rw-map /run/user/<uid>`
+/// line already receives.
+///
+/// WHAT THIS MARK DOES NOT REACH: a variable that must be ABSENT or EMPTY. docs/ENCLOSURE.md
+/// Bar 6 asks for `$DBUS_SESSION_BUS_ADDRESS` empty, and a `KEY=value` line can only say what a
+/// variable IS. Naming an absence is a different shape with a different refusal, and it wants
+/// its own lap rather than a special value smuggled into this one.
+fn verdict_for_env(value: []const u8) Verdict {
+    // invariant: the value is judged inside the declared bound.
+    assert(value.len <= max_value_len);
+    const eq = std.mem.indexOfScalar(u8, value, '=') orelse return .refuse;
+    if (eq == 0) return .refuse;
+    if (eq + 1 >= value.len) return .refuse;
+    const key = value[0..eq];
+    const paths = value[eq + 1 ..];
+    // invariant: the key half carries bytes, which the `eq == 0` guard established.
+    assert(key.len > 0);
+    // invariant: the value half carries bytes, which the guard above it established.
+    assert(paths.len > 0);
+    const shape = verdict_for_env_key(key);
+    if (shape == .refuse) return .refuse;
+    // The element walk needs no bound of its own: each step consumes at least the separator, so a
+    // value already held under max_value_len yields at most that many elements plus one.
+    var walk = std.mem.splitScalar(u8, paths, ':');
+    var folded = shape;
+    while (walk.next()) |element| {
+        folded = fold_verdict(folded, verdict_for_path(element));
+    }
+    return folded;
+}
+
 pub fn verdict_for_declaration(kind: Kind, value: []const u8) Verdict {
     // invariant: a declaration is judged inside the declared bound.
     assert(value.len <= max_value_len);
@@ -456,6 +554,7 @@ pub fn verdict_for_declaration(kind: Kind, value: []const u8) Verdict {
         .device => verdict_for_device(value),
         .fresh => verdict_for_fresh(value),
         .user => verdict_for_user(value),
+        .env => verdict_for_env(value),
         // A mask closes and a graft supplies; neither carries a host room across the wall, so both
         // take the structural reading alone, exactly as persist and ephemeral do.
         .persist, .ephemeral, .mask, .graft => verdict_for_path(value),
@@ -517,9 +616,24 @@ pub fn inspect_policy(text: []const u8) PolicyError!Receipt {
 
 fn run_check(io: std.Io, path: []const u8) !u8 {
     const cwd = std.Io.Dir.cwd();
-    var buf: [max_policy_len]u8 = undefined;
+    // ONE BYTE PAST THE BOUND, ON PURPOSE. `readFile` fills the buffer it is handed and stops; it
+    // does not refuse a longer file. So a buffer sized AT the bound reads a record past the bound
+    // IN PART, and every number after that describes a document nobody wrote -- measured here
+    // `20260830`, when an 8,468-byte record read as 31 declarations of 34, the three lost lines
+    // never judged and the half-line at the cut counted as a refusal of a declaration that does not
+    // exist. `inspect_policy` has always opened with a length check, and a buffer sized at the
+    // bound made that check unreachable by construction: the caller could never hand it a value
+    // large enough to fire. Reading one byte more is what makes the refusal reachable, so a record
+    // past the bound refuses BY NAME instead of being quietly shortened.
+    var buf: [max_policy_len + 1]u8 = undefined;
     const text = try cwd.readFile(io, path, &buf);
-    const receipt = try inspect_policy(text);
+    const receipt = inspect_policy(text) catch |err| {
+        if (err == error.PolicyTooLong) {
+            print("REFUSE: pond enclosure-policy -- {s} is longer than max_policy_len={d}\n", .{ path, max_policy_len });
+            return 2;
+        }
+        return err;
+    };
     print("pond enclosure-policy: {s} place={d} hold={d} refuse={d} verdict={s}\n", .{
         path,
         receipt.place_count,
@@ -601,6 +715,35 @@ fn run_selftest() !u8 {
     assert(verdict_for_declaration(.user, "4294967295") == .hold);
     assert(verdict_for_declaration(.user, "12345678901") == .refuse);
 
+    // The door's second duty. The value is one KEY=value assignment written the exec line's own
+    // way, and its value half reads as a search path, so one rule serves a single directory and a
+    // four-element PATH alike.
+    assert(verdict_for_declaration(.env, "GH_CONFIG_DIR=/home/youruser/grain/.gh") == .place);
+    assert(verdict_for_declaration(.env, "PATH=/run/current-system/sw/bin:/bin") == .place);
+    assert(verdict_for_declaration(.env, "PATH=/bin") == .place);
+    // A key room is what this mark refuses hardest: a pointer at custody material is still a
+    // pointer at custody material, and one bad element in a list refuses the whole line.
+    assert(verdict_for_declaration(.env, "SSH_AUTH_DIR=/home/youruser/.ssh") == .refuse);
+    assert(verdict_for_declaration(.env, "PATH=/bin:/home/youruser/.gnupg/bin") == .refuse);
+    // An empty element is POSIX's spelling of the current directory, which resolves against
+    // wherever the launcher happened to stand.
+    assert(verdict_for_declaration(.env, "PATH=/bin::/usr/bin") == .refuse);
+    assert(verdict_for_declaration(.env, "PATH=relative/bin") == .refuse);
+    assert(verdict_for_declaration(.env, "PATH=/bin:/nix/store/../etc") == .refuse);
+    // Both halves carry bytes, and a line with no `=` names no assignment at all.
+    assert(verdict_for_declaration(.env, "GH_CONFIG_DIR") == .refuse);
+    assert(verdict_for_declaration(.env, "=/home/youruser/grain/.gh") == .refuse);
+    assert(verdict_for_declaration(.env, "GH_CONFIG_DIR=") == .refuse);
+    assert(verdict_for_declaration(.env, "") == .refuse);
+    // A name no exec could set refuses; a lowercase name is legal and HOLDS, because the standing
+    // reading that settles this mark lifts uppercase assignments alone.
+    assert(verdict_for_declaration(.env, "2PATH=/bin") == .refuse);
+    assert(verdict_for_declaration(.env, "GH-CONFIG=/bin") == .refuse);
+    assert(verdict_for_declaration(.env, "http_proxy=/bin") == .hold);
+    // A placeholder keeps a path's structure and places, where the `user` mark's placeholder
+    // refuses -- there the value was the whole claim.
+    assert(verdict_for_declaration(.env, "XDG_RUNTIME_DIR=/run/user/<uid>") == .place);
+
     // The structural readings, each refusing for its own stated reason.
     assert(verdict_for_path("relative/path") == .refuse);
     assert(verdict_for_path("/nix/store/../etc") == .refuse);
@@ -670,6 +813,26 @@ fn run_selftest() !u8 {
     // The refusal names the mount rather than counting it, which is this module's whole promise.
     assert(std.mem.eql(u8, forbidden_r.offender, "map /home/youruser/.ssh"));
 
+
+    // The `env` mark read through the parser rather than one value at a time, and its refusal
+    // named rather than counted -- the promise every other mark keeps.
+    const with_env =
+        \\map /nix/store
+        \\env PATH=/run/current-system/sw/bin:/bin
+        \\env GH_CONFIG_DIR=/home/youruser/grain/.gh
+    ;
+    const with_env_r = try inspect_policy(with_env);
+    assert(with_env_r.verdict == .place);
+    assert(with_env_r.place_count == 3);
+
+    const env_forbidden =
+        \\map /nix/store
+        \\env SSH_AUTH_DIR=/home/youruser/.ssh
+    ;
+    const env_forbidden_r = try inspect_policy(env_forbidden);
+    assert(env_forbidden_r.verdict == .refuse);
+    assert(std.mem.eql(u8, env_forbidden_r.offender, "env SSH_AUTH_DIR=/home/youruser/.ssh"));
+
     // An unknown mark is refused whole -- the wreck rule for types.
     const stranger =
         \\map /nix/store
@@ -678,6 +841,13 @@ fn run_selftest() !u8 {
     const stranger_r = try inspect_policy(stranger);
     assert(stranger_r.verdict == .refuse);
     assert(std.mem.eql(u8, stranger_r.offender, "tunnel /dev/net/tun"));
+
+    // A record past the bound refuses by name rather than being read in part. This check was
+    // unreachable from run_check until `20260830`, because the caller sized its buffer AT the
+    // bound and `readFile` fills a buffer rather than refusing -- so the one guard against a
+    // truncated reading could never be handed a value that fired it.
+    const too_long = [_]u8{'m'} ** (max_policy_len + 1);
+    if (inspect_policy(&too_long)) |_| return error.PolicyTooLongPassed else |_| {}
 
     // A record carrying only header fields declares no enclosure at all.
     if (inspect_policy("# comment\nformat x\nname y\n")) |_| return error.EmptyPolicyPassed else |_| {}

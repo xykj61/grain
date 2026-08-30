@@ -73,6 +73,23 @@
 # non-root user. That note is a comment somebody hopes is read; this line is a thing a program
 # checks.
 #
+# THE DOOR'S SECOND DUTY, SEATED 20260830. `env` names what the launcher hands across the
+# threshold, one variable per line, written the way the exec line writes it -- `KEY=value` -- so an
+# operator comparing it with tools/ag/agent-jail.sh reads the same bytes on both sides. The two
+# lines below are that exec line's own assignments in this record's placeholder namespace, and
+# tools/fixtures/p/pond_enclosure_door_scan.sh settles them against it at zero. `entry` stays last
+# on purpose: naming the program inside the record is the switchover, which is Keaton's word. The
+# mark's own reasoning lives beside verdict_for_env in pond/enclosure_policy.rye.
+#
+# `GH_CONFIG_DIR` POINTS AT A CREDENTIAL ROOM AND PLACES, which is this seat's finding. An env value
+# is a pointer the agent follows once inside; `persist /home/youruser/grain` above is the mount that
+# carries `.gh` across, as an ancestor. Adding `.gh` to the key-room roster would refuse the pointer
+# and leave that door open -- a wall on the sign rather than on the room. Its own lap.
+#
+# AND THE BOUND READS THIS COMMENT. max_policy_len is 8,192 bytes over the whole document, and the
+# header is most of it; `entry`'s paragraph will meet that wall. A record past the bound now refuses
+# by name rather than being read in part (REDS `20260830.032600`), so the wall is loud when it arrives.
+#
 #   pond/bin/enclosure-policy check pond/enclosure_policy.kyri
 format pond-enclosure-policy-v1
 name agent-jail-lap
@@ -80,6 +97,8 @@ private-home yes
 network on
 gpu no
 user invoking
+env GH_CONFIG_DIR=/home/youruser/grain/.gh
+env PATH=/run/current-system/sw/bin:/nix/var/nix/profiles/default/bin:/home/youruser/.nix-profile/bin:/bin
 map /run/current-system
 persist /home/youruser/grain
 ephemeral /tmp

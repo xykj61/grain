@@ -60,6 +60,13 @@ assert control.out contains "duties_declared_counted=yes" else "enclosure-door: 
 assert control.out contains "duties_absent_user_unstated=yes" else "enclosure-door: a record naming no user must read unstated rather than guess at one"
 assert control.out contains "user_invoking_read=yes" else "enclosure-door: the record's `user invoking` must reach the derived reading"
 assert control.out contains "duties_declared_user_read=yes" else "enclosure-door: a record naming a fixed uid must reach the derived reading too"
+assert control.out contains "env_agrees_passes=yes" else "enclosure-door: a record declaring what the exec line spells must walk free"
+assert control.out contains "env_agrees_counted=yes" else "enclosure-door: an agreeing record must read zero disagreements"
+assert control.out contains "env_key_missing_refuses=yes" else "enclosure-door: a spelled assignment the record omits must refuse"
+assert control.out contains "env_value_drift_refuses=yes" else "enclosure-door: a key both sides name at different values must refuse"
+assert control.out contains "env_value_drift_counted=yes" else "enclosure-door: one drift must count once rather than once from each side"
+assert control.out contains "env_extra_refuses=yes" else "enclosure-door: a declared assignment the launcher never makes must refuse"
+assert control.out contains "env_unstated_passes=yes" else "enclosure-door: a record naming no env makes no claim and must walk free"
 
 let scan = run ["sh" "tools/fixtures/p/pond_enclosure_door_scan.sh"]
 assert scan.ok else "enclosure-door: the derived reading must complete -- ${scan.out}"
@@ -70,9 +77,11 @@ assert scan.out contains "probe_read=no" else "enclosure-door: an ordinary run s
 assert scan.out contains "user_declared=invoking" else "enclosure-door: the record's own `user` declaration must reach the reading"
 # The gap is pinned rather than merely printed, for the reason pond_enclosure_policy_scan.sh pins
 # its own counts: a duty that quietly stops being counted moves this number, and so does the next
-# one seated. Two stand today -- `entry` and `env` -- and the lap that seats either moves this line
-# on purpose, which is the whole point of writing it down.
-assert scan.out contains "duties_undeclared=2" else "enclosure-door: two door duties stand unnamed today; a lap that seats one moves this pin in the same breath"
+# one seated. ONE stands today -- `entry` -- since `env` seated on `20260830` and took the count from
+# two to one; `entry` is the switchover and moves it to zero on Keaton's word. Writing the number
+# down is what makes each seating visible in the guard rather than only in the record.
+assert scan.out contains "duties_undeclared=1" else "enclosure-door: one door duty stands unnamed today; the lap that seats `entry` moves this pin in the same breath"
+assert scan.out contains "env_declared=2 env_state=declared env_disagreements=0" else "enclosure-door: the record's two env declarations must say exactly what the exec line spells"
 
 let jail = run ["sh" "-c" "command -v ai-jail >/dev/null 2>&1 && echo JAIL_PRESENT || echo JAIL_ABSENT"]
 assert jail.ok else "enclosure-door: the host reading must complete"
@@ -100,9 +109,23 @@ let plant = run ["sh" "-c" "sed 's|^user invoking|user 65534|' pond/enclosure_po
 assert plant.ok else "enclosure-door: the planted record must be written"
 let bit = run ["sh" "tools/fixtures/p/pond_enclosure_door_scan.sh" "--probe" "--policy" "${wrong}"]
 say bit.out
+# THE `env` SETTLING, PROVEN FROM THE REFUSING SIDE -- and this half needs no kernel. The mark is
+# settled against the launcher's own exec line rather than against a running enclosure, so its
+# refusal shows on every bench rather than only where ai-jail stands. A pen copy of the living
+# record whose GH_CONFIG_DIR names a different room must refuse, and must name both spellings so an
+# operator reads which side to change.
+let env_wrong = "${pen_dir}/env-wrong.kyri"
+let env_plant = run ["sh" "-c" "sed 's|^env GH_CONFIG_DIR=.*|env GH_CONFIG_DIR=/home/youruser/grain/.elsewhere|' pond/enclosure_policy.kyri > ${env_wrong}"]
+assert env_plant.ok else "enclosure-door: the planted env record must be written"
+let env_bit = run ["sh" "tools/fixtures/p/pond_enclosure_door_scan.sh" "--policy" "${env_wrong}"]
+say env_bit.out
+assert (env_bit.ok == false) else "enclosure-door: a record whose env declaration disagrees with the exec line must refuse"
+assert env_bit.out contains "verdict=env_disagrees" else "enclosure-door: that refusal must wear its own verdict rather than any other"
+assert env_bit.out contains "env_disagreements=1" else "enclosure-door: one drift must be counted once, rather than once from each side"
+
 let swept = run ["sh" "-c" "rm -rf ${pen_dir}"]
 assert swept.ok else "enclosure-door: the pen must be swept"
 if (jail.out contains "JAIL_PRESENT") then assert (bit.out contains "verdict=door_disagrees") else "enclosure-door: a record naming a uid the enclosure does not run as must refuse, and this bench has the jail to prove it"
 if (jail.out contains "JAIL_ABSENT") then say "enclosure-door: the uid settling refuses only where an enclosure can start, so its refusing side is unproven on this bench -- said out loud rather than skipped in silence."
 
-say "GREEN: pond enclosure-door -- the entry is reachable, every search-path element answers as derived, the record's `user` is settled against the kernel from both sides, and the two duties still unnamed are counted where a reader finds them."
+say "GREEN: pond enclosure-door -- the entry is reachable, every search-path element answers as derived, the record's `user` is settled against the kernel and its `env` against the exec line, both from the refusing side, and the one duty still unnamed is counted where a reader finds it."

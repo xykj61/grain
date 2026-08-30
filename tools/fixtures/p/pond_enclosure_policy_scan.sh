@@ -75,9 +75,15 @@ echo "SELFTEST ok every mark answers as its comment says"
 # Naming the refusing declaration rather than counting refusals is what lets this leg catch a
 # drift in any OTHER line: a third refusal, or a different first one, changes the message and
 # fails here. The counts ride beside the name for the same reason -- a line that quietly stops
-# refusing moves them.
+# refusing moves them. The place count moved 28 -> 30 on `20260830` when the door's second duty
+# seated its two `env` lines. It also moved for a reason worth keeping named: until that lap the
+# checker read the record into a buffer sized AT max_policy_len, and `readFile` fills a buffer
+# rather than refusing -- so an 8,468-byte record read as 31 declarations of 34, with the half-line
+# at the cut counted as a refusal of a declaration that does not exist. The reader takes one byte
+# more than the bound now, so the length check that was unreachable by construction fires, and the
+# TOOLONG leg below proves it from both sides.
 expect 2 'forbidden declaration: map /sys' "$BIN" check "$LIVE"
-expect 2 'place=28 hold=2 refuse=2' "$BIN" check "$LIVE"
+expect 2 'place=30 hold=2 refuse=2' "$BIN" check "$LIVE"
 echo "ROUNDTRIP ok pond/enclosure_policy.kyri reads whole; today's lap refuses on the enclosure's own /sys"
 
 # A forbidden mount refuses, and the receipt names the mount rather than counting it.
@@ -126,5 +132,32 @@ expect 2 'verdict=refuse' "$BIN" explain user 0
 expect 1 'verdict=hold'   "$BIN" explain user 1000
 expect 2 'verdict=refuse' "$BIN" explain user '<uid>'
 echo "USER ok invoking places, root refuses by name and by number, a bare uid holds, a placeholder refuses"
+
+
+# The door's second duty, read at the same terminal door. The value is one KEY=value assignment
+# written the exec line's own way, and its value half reads as a search path so one rule serves a
+# single directory and a four-element PATH alike. A key room refuses hardest here -- a pointer at
+# custody material is still a pointer at custody material -- and an empty element refuses for free,
+# since POSIX reads one as the current directory. A lowercase key HOLDS rather than refuses: it is a
+# legal variable that the door guard's uppercase lift cannot see, so it is a claim nothing settles.
+expect 0 'verdict=place'  "$BIN" explain env 'GH_CONFIG_DIR=/home/youruser/grain/.gh'
+expect 0 'verdict=place'  "$BIN" explain env 'PATH=/run/current-system/sw/bin:/bin'
+expect 2 'verdict=refuse' "$BIN" explain env 'SSH_AUTH_DIR=/home/youruser/.ssh'
+expect 2 'verdict=refuse' "$BIN" explain env 'PATH=/bin::/usr/bin'
+expect 2 'verdict=refuse' "$BIN" explain env 'GH_CONFIG_DIR'
+expect 1 'verdict=hold'   "$BIN" explain env 'http_proxy=/bin'
+echo "ENV ok a KEY=value places, a key room and an empty element refuse, a lowercase key holds"
+
+# THE BOUND, PROVEN FROM BOTH SIDES ON REAL FILES. A record one byte past max_policy_len must
+# refuse BY NAME, and the same record trimmed back under it must return to its ordinary verdict --
+# a refusal proven only in the passing direction cannot be told from a bypass, and this one hid
+# behind a buffer sized at the bound until `20260830`.
+long="$pen/too-long.kyri"
+head -c 8192 "$LIVE" > "$long"
+printf '# %s\n' "$(awk 'BEGIN { while (i++ < 120) printf "x" }')" >> "$long"
+expect 2 'is longer than max_policy_len=8192' "$BIN" check "$long"
+head -c 8000 "$LIVE" > "$long"
+expect 2 'verdict=refuse' "$BIN" check "$long"
+echo "TOOLONG ok a record past the bound refuses by name, and one under it is read whole"
 
 echo "GREEN: pond enclosure-policy -- policy as a value; the forbidden mount refused by name"
