@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260829.231546` | [the nine-nodes sitting](20260829/20260829-231546_the-nine-nodes-sitting.kyri) | SkateCore semantic snapshot ruled: 1+8 seats, nib labels, grid rects |
 | `20260829.231148` | [the trees that held real work](20260829/20260829-231148_the-trees-that-held-real-work.kyri) | mind rebases its laps home; mystery stashes its refused lap by name |
 | `20260829.230409` | [the pipe that went quiet](20260829/20260829-230409_the-pipe-that-went-quiet.kyri) | jq unbuffered behind the tee; a lap heartbeat line |
 | `20260829.225955` | [two pier trees, two refusals, two right answers](20260829/20260829-225955_two-pier-trees-two-refusals-two-right-answers.kyri) | hush discards its copies; dream rebases its own laps home |

@@ -62,12 +62,12 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 **Now.** **LOCA lands on two operating systems; Pond's record learns who walks through its door.**
 
-**The LOCA ladder** (drawn `20260828.222500`): first pass walked whole -- a Rye view, window,
-ring, lifecycle, parity claims, **zero Swift linked** -- and a ten-rung second pass carried the
-core to iOS: witnesses GREEN in a booted simulator, a real app, real touch through the ring,
-parity pins identical on **two OSes**. Tri-OS waits on the pier's `wayland-seed parity`.
-Account: `session-logs/date/20260829/`. The first Skate laws speak in Glow (`src/gate/`), and
-`mul` landed the claims law on metal (`20260829.215618`).
+**The LOCA ladder** (drawn `20260828.222500`): both passes walked -- a Rye view, window, ring,
+lifecycle, parity claims, zero Swift linked; the core on iOS, witnesses GREEN in a booted
+simulator, parity pins identical on **two OSes**. Tri-OS waits on the pier's `wayland-seed
+parity`. Skate laws and the `mul` claims law speak in Glow on metal (`src/gate/`).
+**SkateCore nodes** SEATED `20260829.231546`: nine seats, nib-width labels, grid rects -- the
+nine-nodes note in `active-designing/`; Mind unparks its `20260829.154845`.
 
 **The door's first duty** (`20260829-143651`): every mark in Pond's grammar described the ROOM;
 none said who walks through the DOOR. `user` seats first of three duties -- `invoking`, not a
