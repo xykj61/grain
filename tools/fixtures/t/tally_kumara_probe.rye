@@ -1,0 +1,30 @@
+//! Direct caller for tally/kumara.rye, copied beside that module by its witness.
+
+const std = @import("std");
+const kumara = @import("kumara.rye");
+
+pub fn main(init: std.process.Init) !u8 {
+    _ = init;
+    const seed: [kumara.seed_length]u8 = .{0x42} ** kumara.seed_length;
+    const first = kumara.keypair_from_seed(&seed);
+    const second = kumara.keypair_from_seed(&seed);
+    if (!std.mem.eql(u8, &first.public_key.bytes, &second.public_key.bytes)) {
+        return error.NondeterministicKey;
+    }
+
+    const message = "tally kumara direct witness";
+    const signature = kumara.sign(message, first, null);
+    try kumara.verify(message, signature, first.public_key);
+    if (kumara.verify("tally kumara changed witness", signature, first.public_key)) |_| {
+        return error.TamperAccepted;
+    } else |err| if (err != error.VerifyFailed) return err;
+
+    const raw = signature.toBytes();
+    try kumara.verify_bytes(message, &raw, first.public_key);
+    if (kumara.verify_bytes(message, raw[0..63], first.public_key)) |_| {
+        return error.ShortAccepted;
+    } else |err| if (err != error.VerifyFailed) return err;
+
+    std.debug.print("kumara-direct-ok\n", .{});
+    return 0;
+}

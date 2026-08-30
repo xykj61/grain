@@ -28,7 +28,7 @@ Beside the allocator itself, Tally holds a second kind of thing: small, universa
 | [`maybe.rye`](maybe.rye) | `maybe(ok)` -- the dual of `assert`: a condition that may honestly be true or false, turned into a name a reader can search for | TigerBeetle's `stdx.maybe`, matched at the letter |
 | [`no_padding.rye`](no_padding.rye) | `no_padding(T)` -- proves at compile time that an `extern struct` carries no hidden padding between or after its fields | TigerBeetle's `stdx.no_padding`, ported and honestly simplified (no `u128` branch -- this tree has no field wide enough to need it yet) |
 | [`parse_int.rye`](parse_int.rye) | Bounded integer parse mark -- refuse overflow and trailing junk at the door | Hosted callers (caravan - linengrow - ...) |
-| [`kumara.rye`](kumara.rye) | Ed25519 identity mark -- personal-server public face without private halves in-tree | Urbit point-identity spirit - saga key pane |
+| [`kumara.rye`](kumara.rye) | Ed25519 identity mark -- fixture keys prove the direct seam; personal private halves stay out of tree | Urbit point-identity spirit - saga key pane |
 | [`bud.rye`](bud.rye) | Pedersen commitment mark (Bud) | Disclosure / SLCL4 family |
 | [`pedersen.rye`](pedersen.rye) | Deprecated re-export -> `bud.rye` | Name kept for elder import paths |
 

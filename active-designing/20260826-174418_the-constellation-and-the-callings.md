@@ -74,7 +74,7 @@ survey; the moves are proposals, one round each.
 | Spellbook | choir-and-bijection | verify the eighteen spell homes resolve; count the emerging as a ratchet; grade at Door | new spells are Keaton's word |
 | Sundial | gauge-register | emit carries unit, date, and source per reading; a sourceless reading refused by name | none |
 | Vault | bound-in-shape | named refusals at split's edge (t under two, t over n, n over max), proven both sides on the fake key | hard keys gate |
-| Tally | choir-and-bijection | a module-to-witness roster meter; six uncovered held as a falling ratchet; a newborn refused unregistered | none |
+| Tally | choir-and-bijection | LANDED `20260830.102631`: the module-to-witness roster reached zero; a newborn refuses unregistered | none |
 | Lattice | bound-in-shape | rerun the forty witnesses; refresh the stale parity head in the same commit | none |
 | Lantern | wrap-named | sweep the living README head tips to nibs on touch, re-dated | horizons take a check-in |
 | Ember | derived-not-stored | rerun the five corpus witnesses over the letter-folded paths; re-date the counts | training spend takes a check-in |
