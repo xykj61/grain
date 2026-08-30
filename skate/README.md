@@ -139,8 +139,10 @@ same history identity.
 The event controls fill all 128 seats, refuse the next event without eviction, drain in FIFO order,
 and cross the physical end while keeping the same linear order. A package-internal proof origin
 also starts one empty ring just below the unsigned ceiling and admits one event. At the ceiling,
-the next append returns `counterExhausted` with both counters and every seat unchanged. A
-compile-time assignment proves that Surf and Skate name the same event-ring identity.
+the next append returns `counterExhausted`. A value-copy comparison reads both counters and all 128
+physical seats after the full and counter-exhaustion refusals, proving all 130 stored values stay
+unchanged in each case. A compile-time assignment proves that Surf and Skate name the same
+event-ring identity.
 
 This slice establishes the core contract alone. Visual form, animation, domain, identity, release,
 and model settings remain later seats at their existing custody gates. Swift does not decode QOI,

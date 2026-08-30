@@ -5,10 +5,10 @@
 # storage. A frame carries Brushstroke's own one-through-eight declared line ceiling. Surf and
 # Skate are compile-time aliases over the same frame, media receipt, event ring, and edit history.
 # The controls prove the living fold; media and history bounds; the
-# refusing frame edges with all 459 Brushstroke values preserved; full-ring refusal without
-# eviction; a full edit history with all 3,136 payload bytes preserved; FIFO order across physical
-# wrap; and unsigned-counter refusal before arithmetic or ring mutation. AppKit and C stay outside
-# this headless core. Image keeps the edit grammar and replay algorithms.
+# refusing frame edges with all 459 Brushstroke values preserved; both event-ring refusals with all
+# 130 stored ring values preserved; a full edit history with all 3,136 payload bytes preserved;
+# FIFO order across physical wrap; and unsigned-counter refusal before arithmetic or ring mutation.
+# AppKit and C stay outside this headless core. Image keeps the edit grammar and replay algorithms.
 
 say "skate-native-core: Language EN -- Brushstroke lends one bounded Frame; Surf and Skate are peer names for its one native grid."
 say "skate-native-core: Style Gauge Door -- the sizes, owner, refusal, and platform edge are named."
@@ -64,6 +64,7 @@ assert test.out contains "testEventRingFillsThenRefusesWithoutEviction" else "sk
 assert test.out contains "testEventRingPhysicalWrapKeepsLinearFIFOOrder" else "skate-native-core: physical event-ring wrap not exercised"
 assert test.out contains "testEventCounterRefusesBeforeUnsignedWrap" else "skate-native-core: event counter ceiling not exercised"
 assert test.out contains "testEventRingCounterExhaustionRefusesWithoutMutation" else "skate-native-core: event counter refusal did not prove whole-state preservation"
+assert test.out contains "testEventRingRefusalsPreserveEveryStoredSeat" else "skate-native-core: event refusals did not compare every stored seat"
 assert test.out contains "testSurfAndSkateEventRingAliasesShareOneIdentity" else "skate-native-core: event alias-sameness not exercised"
 # The verdict reads ZERO FAILURES rather than an exact test count -- a pinned "21" made every
 # honestly added test red this witness, which is the candidate-proof-boundary custody stop of
