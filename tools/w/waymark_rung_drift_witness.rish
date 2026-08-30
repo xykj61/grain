@@ -15,7 +15,7 @@ say "rung-stamp-map: Language EN -- a landing keeps its name while the one-clock
 say "rung-stamp-map: Style Gauge, Meter -- every derived row names the commit that supports it."
 say "rung-stamp-map: Lens TAME -- an absent or altered source refuses before a citation moves."
 
-let map_live = run ["/bin/bash" "tools/fixtures/w/waymark_rung_stamp_map_scan.sh"]
+let map_live = run ["bash" "tools/fixtures/w/waymark_rung_stamp_map_scan.sh"]
 say map_live.out
 assert map_live.ok else "rung-stamp-map: the live fixture must agree with both ledgers and landed history"
 assert map_live.out contains "map_rows=588" else "rung-stamp-map: every landed label in both ladders must have one row"
@@ -25,7 +25,7 @@ assert map_live.out contains "ledger_rows=17" else "rung-stamp-map: each explici
 assert map_live.out contains "spot_checks=10" else "rung-stamp-map: the commit attachment must be sampled across both ladders"
 assert map_live.out contains "verdict=ok" else "rung-stamp-map: the live scan must agree with its exit"
 
-let map_control = run ["/bin/bash" "tools/fixtures/w/waymark_rung_stamp_map_control.sh"]
+let map_control = run ["bash" "tools/fixtures/w/waymark_rung_stamp_map_control.sh"]
 say map_control.out
 assert map_control.ok else "rung-stamp-map: the planted controls must complete"
 assert map_control.out contains "author_stamp_refusal=yes" else "rung-stamp-map: changing an author stamp must refuse against git history"
@@ -41,22 +41,22 @@ say "rung-drift: Language EN -- a rung is marked by waymark, stamp, and plain na
 say "rung-drift: Style Gauge, Meter -- the ceiling only falls, and the reading is the scan's own."
 say "rung-drift: Lens TAME -- the boundary proven from both sides before the live reading is trusted."
 
-let pen = run ["/bin/bash" "-c" "set -eu; mkdir -p .mind-state/tmp; pen=$(mktemp -d .mind-state/tmp/rung-drift.XXXXXX); mkdir -p $pen/docs; echo 'the FORA7 rung lands' > $pen/docs/page.md; echo 'the FORA8 rung lands' >> $pen/docs/page.md; echo 'docs/page.md' > $pen/files.lst; echo $pen"]
+let pen = run ["bash" "-c" "set -eu; mkdir -p .mind-state/tmp; pen=$(mktemp -d .mind-state/tmp/rung-drift.XXXXXX); mkdir -p $pen/docs; echo 'the FORA7 rung lands' > $pen/docs/page.md; echo 'the FORA8 rung lands' >> $pen/docs/page.md; echo 'docs/page.md' > $pen/files.lst; echo $pen"]
 assert pen.ok else "rung-drift: the pen must build"
 let pen_dir = trim pen.out
 
-let bitten = run ["/bin/bash" "-c" "RUNG_ROOT=${pen_dir} RUNG_FILE_LIST=${pen_dir}/files.lst RUNG_CEILING=1 /bin/bash tools/fixtures/w/waymark_rung_drift_scan.sh"]
+let bitten = run ["bash" "-c" "RUNG_ROOT=${pen_dir} RUNG_FILE_LIST=${pen_dir}/files.lst RUNG_CEILING=1 /bin/bash tools/fixtures/w/waymark_rung_drift_scan.sh"]
 assert (bitten.ok == false) else "rung-drift: two planted marks over a pen ceiling of one must refuse"
 assert bitten.out contains "verdict=rung_drift" else "rung-drift: the refusal must wear its own verdict"
 
-let freed = run ["/bin/bash" "-c" "RUNG_ROOT=${pen_dir} RUNG_FILE_LIST=${pen_dir}/files.lst RUNG_CEILING=2 /bin/bash tools/fixtures/w/waymark_rung_drift_scan.sh"]
+let freed = run ["bash" "-c" "RUNG_ROOT=${pen_dir} RUNG_FILE_LIST=${pen_dir}/files.lst RUNG_CEILING=2 /bin/bash tools/fixtures/w/waymark_rung_drift_scan.sh"]
 assert freed.ok else "rung-drift: two marks at a pen ceiling of exactly two must walk free"
 assert freed.out contains "verdict=ok" else "rung-drift: the boundary must be met from the passing side too"
 
-let cleanup = run ["/bin/bash" "-c" "rm -rf ${pen_dir}"]
+let cleanup = run ["bash" "-c" "rm -rf ${pen_dir}"]
 assert cleanup.ok else "rung-drift: the pen must be returned"
 
-let live = run ["/bin/bash" "tools/fixtures/w/waymark_rung_drift_scan.sh"]
+let live = run ["bash" "tools/fixtures/w/waymark_rung_drift_scan.sh"]
 say live.out
 assert live.ok else "rung-drift: a numbered rung mark entered living prose past the ceiling -- write the waymark, stamp, and plain name instead (.claude/rules/stamp-and-name.md)"
 assert live.out contains "verdict=ok" else "rung-drift: the live reading must agree with its own exit"

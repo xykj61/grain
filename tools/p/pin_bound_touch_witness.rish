@@ -17,25 +17,25 @@ say "pin-bound-touch: Style Gauge Meter -- index bytes - per-path bound - refusa
 say "pin-bound-touch: Lens TAME -- bound everything, and check at the edge the round can still fix."
 
 # Reported, not gated: what the tree's own pins read right now. e123 is the gate on this reading.
-let live = run ["/bin/bash" "tools/fixtures/p/pin_bound_touch_scan.sh" "worktree"]
+let live = run ["bash" "tools/fixtures/p/pin_bound_touch_scan.sh" "worktree"]
 say live.out
 say "report: the worktree reading above is e123's gate, printed here for the lap's eye only"
 
 # The RED path, proven rather than assumed -- a guard shown only in the passing direction cannot
 # be told from a bypass.
-let red = run ["/bin/bash" "tools/fixtures/p/pin_bound_touch_scan.sh" "prove-red"]
+let red = run ["bash" "tools/fixtures/p/pin_bound_touch_scan.sh" "prove-red"]
 assert (red.ok == false) else "pin-bound-touch: prove-red must refuse"
 assert red.out contains "RED_touched_pin_over_bound" else "pin-bound-touch: prove-red want the named refusal"
 
-let absent = run ["/bin/bash" "tools/fixtures/p/pin_bound_touch_scan.sh" "staged" "--roster" "tools/fixtures/absent-roster.txt"]
+let absent = run ["bash" "tools/fixtures/p/pin_bound_touch_scan.sh" "staged" "--roster" "tools/fixtures/absent-roster.txt"]
 assert (absent.ok == false) else "pin-bound-touch: a missing roster must refuse rather than read green"
 assert absent.out contains "RED_roster_absent" else "pin-bound-touch: want the roster-absent refusal"
 
-let unknown = run ["/bin/bash" "tools/fixtures/p/pin_bound_touch_scan.sh" "--nonsense"]
+let unknown = run ["bash" "tools/fixtures/p/pin_bound_touch_scan.sh" "--nonsense"]
 assert (unknown.ok == false) else "pin-bound-touch: an argument the scan does not know must refuse"
 assert unknown.out contains "RED_unknown_argument" else "pin-bound-touch: want the unknown-argument refusal"
 
-let pen = run ["/bin/bash" "tools/fixtures/p/pin_bound_touch_control.sh"]
+let pen = run ["bash" "tools/fixtures/p/pin_bound_touch_control.sh"]
 say pen.out
 assert pen.ok else "pin-bound-touch: the pen must pass"
 assert pen.out contains "cases_failed=0" else "pin-bound-touch: every planted case must pass"

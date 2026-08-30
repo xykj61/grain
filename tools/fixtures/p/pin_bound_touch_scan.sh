@@ -25,11 +25,11 @@
 # at 24,579 -- and four commits shipped over a red roster row. A lantern that fires twice becomes a
 # loom (REDS %316). This is the loom.
 #
-#   /bin/bash tools/fixtures/p/pin_bound_touch_scan.sh                  # what this commit ships
-#   /bin/bash tools/fixtures/p/pin_bound_touch_scan.sh head             # what HEAD shipped
-#   /bin/bash tools/fixtures/p/pin_bound_touch_scan.sh worktree         # every pin, off disk
-#   /bin/bash tools/fixtures/p/pin_bound_touch_scan.sh prove-red        # the planted refusal
-#   /bin/bash tools/fixtures/p/pin_bound_touch_scan.sh staged --roster <path>   # a pen roster
+#   bash tools/fixtures/p/pin_bound_touch_scan.sh                  # what this commit ships
+#   bash tools/fixtures/p/pin_bound_touch_scan.sh head             # what HEAD shipped
+#   bash tools/fixtures/p/pin_bound_touch_scan.sh worktree         # every pin, off disk
+#   bash tools/fixtures/p/pin_bound_touch_scan.sh prove-red        # the planted refusal
+#   bash tools/fixtures/p/pin_bound_touch_scan.sh staged --roster <path>   # a pen roster
 #
 # WHAT IT READS, and why off the index rather than off disk. `git cat-file -s :<path>` is the size
 # of the blob the commit will actually carry, and a worktree read answers about bytes that may never
