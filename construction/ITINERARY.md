@@ -66,13 +66,12 @@ completes, tied at comptime.**
 **The live front** (condensed `20260830.012039`; the checkpoint holds the departing accounts,
 the day shelves every landed lap):
 - **Tri-OS** BOOKED for Dream: LOCA parity via `brushstroke/wayland_seed.rye`, pins in
-  `surface_reference.rye`; both prior OSes GREEN, snapshot `89e6da952`. AppKit role translation
-  and the deployment floor are Keaton's gates.
+  `surface_reference.rye`. AppKit roles and the deployment floor are Keaton's gates.
 - **CION Tier C** RULED quality-first (`20260830.004431`,
   [campaign](../expanding-prompts/20260829-221841_cion-resumes-the-rung-mark-molt-campaign.md)):
   Mystery raises `lotus/LADDER.md` (D/62) to B.
-- **Mind's next:** its lane -- the spread twins closed upstream; a width-ratchet touch is tree
-  law any hand carries, and no wall widens for it.
+- **Mind's next:** its lane. **DirtySet** RULED `20260830.183102`: shares the nine (seat 0
+  = whole-surface invalidation); duplicate marks idempotent; refusal only out-of-range.
 - **Pond live:** `duties_undeclared` **1** -- `env` seated `20260830` at `env_disagreements`
   **zero, enforced**. Only `entry` is left, and it IS the switchover: a gate rather than a lap.
 - **Language custody:** the growth law is

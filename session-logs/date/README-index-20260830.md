@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260830.183654` | [the mark that molted and the set that stays a set](20260830/20260830-183654_the-mark-that-molted-and-the-set-that-stays-a-set.kyri) | TUBE0 molts home; DirtySet shares the nine, idempotent |
 | `20260830.165431` | [the parked package comes home](20260830/20260830-165431_the-parked-package-comes-home.kyri) | 121 rungs GREEN; the carry lands at %364-368 |
 | `20260830.163957` | [the carry waits for its choir](20260830/20260830-163957_the-carry-waits-for-its-choir.kyri) | the pier package renumbers to %364-368; the suite runs unbounded |
 | `20260830.165042` | [the ceiling and the header](20260830/20260830-165042_the-ceiling-and-the-header.kyri) | Comlink's payload bound takes a desk and a comptime tie |
