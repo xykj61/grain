@@ -248,6 +248,7 @@ fn expect_for(spec: *const rb.GateSpec) LowerError!u32 {
         .cond_eq => return error.SampleDoesNotNest,
         .cond_eq_faces => pair_arm_value(spec, bartis_pair_demo_from == bartis_pair_demo_amount),
         .cond_gth_faces => pair_arm_value(spec, bartis_pair_demo_from > bartis_pair_demo_amount),
+        .cond_gth_mul => return error.MulNotYetLowered,
         .fold_sumto => fold_sumto_expect(bartis_demo_sample, spec.fold_bound),
         .fold_sum => try fold_sum_n_expect(spec),
         .fold_prodto => fold_prodto_expect(bartis_demo_sample, spec.fold_bound),
@@ -1108,6 +1109,7 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             .cond_eq => return error.SampleDoesNotNest,
             .cond_eq_faces => return error.PairNotYetLowered,
             .cond_gth_faces => return error.PairNotYetLowered,
+            .cond_gth_mul => return error.MulNotYetLowered,
             .fold_sumto => return error.SampleDoesNotNest,
             .fold_sum => return error.SampleDoesNotNest,
             .fold_prodto => return error.SampleDoesNotNest,
@@ -1133,6 +1135,7 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             .cond_eq => return error.SampleDoesNotNest,
             .cond_eq_faces => return error.PairNotYetLowered,
             .cond_gth_faces => return error.PairNotYetLowered,
+            .cond_gth_mul => return error.MulNotYetLowered,
             .fold_sumto => return error.SampleDoesNotNest,
             .fold_sum => return error.SampleDoesNotNest,
             .fold_prodto => return error.SampleDoesNotNest,
@@ -1158,6 +1161,7 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             .cond_eq => return error.SampleDoesNotNest,
             .cond_eq_faces => return error.PairNotYetLowered,
             .cond_gth_faces => return error.PairNotYetLowered,
+            .cond_gth_mul => return error.MulNotYetLowered,
             .fold_sumto => return error.SampleDoesNotNest,
             .fold_sum => return error.SampleDoesNotNest,
             .fold_prodto => return error.SampleDoesNotNest,
@@ -1186,6 +1190,7 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             .cond_eq => return error.SampleDoesNotNest,
             .cond_eq_faces => return error.PairNotYetLowered,
             .cond_gth_faces => return error.PairNotYetLowered,
+            .cond_gth_mul => return error.MulNotYetLowered,
             .fold_sumto => return error.SampleDoesNotNest,
             .fold_sum => {
                 var comment_buf: [192]u8 = undefined;
@@ -1256,6 +1261,7 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             try emit_gate_fn(out, &used, face, zface, body_return, comment);
             try emit_welcome_main(out, &used, zface, expect);
         },
+        .cond_gth_mul => return error.MulNotYetLowered,
         .cond_eq_faces, .cond_gth_faces => {
             var zb: [rb.max_face_len]u8 = undefined;
             const bn = try zig_safe_ident(rb.face2_slice(spec), &zb);
@@ -1312,6 +1318,7 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             .cond_eq => return error.SampleDoesNotNest,
             .cond_eq_faces => return error.PairNotYetLowered,
             .cond_gth_faces => return error.PairNotYetLowered,
+            .cond_gth_mul => return error.MulNotYetLowered,
             .fold_sumto => return error.SampleDoesNotNest,
             .fold_sum => return error.SampleDoesNotNest,
             .fold_prodto => return error.SampleDoesNotNest,
@@ -1332,6 +1339,7 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             .cond_eq => return error.SampleDoesNotNest,
             .cond_eq_faces => return error.PairNotYetLowered,
             .cond_gth_faces => return error.PairNotYetLowered,
+            .cond_gth_mul => return error.MulNotYetLowered,
             .fold_sumto => return error.SampleDoesNotNest,
             .fold_sum => return error.SampleDoesNotNest,
             .fold_prodto => return error.SampleDoesNotNest,
@@ -1352,6 +1360,7 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             .cond_eq => return error.SampleDoesNotNest,
             .cond_eq_faces => return error.PairNotYetLowered,
             .cond_gth_faces => return error.PairNotYetLowered,
+            .cond_gth_mul => return error.MulNotYetLowered,
             .fold_sumto => return error.SampleDoesNotNest,
             .fold_sum => return error.SampleDoesNotNest,
             .fold_prodto => return error.SampleDoesNotNest,
@@ -1373,6 +1382,7 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             .cond_eq => return error.SampleDoesNotNest,
             .cond_eq_faces => return error.PairNotYetLowered,
             .cond_gth_faces => return error.PairNotYetLowered,
+            .cond_gth_mul => return error.MulNotYetLowered,
             .fold_sumto => return error.SampleDoesNotNest,
             .fold_sum => {
                 var comment_buf: [192]u8 = undefined;
@@ -1440,6 +1450,7 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             try emit_gate_fn(out, &used, face, zface, body_return, comment);
             try emit_argv_speaking_main(out, &used, zface);
         },
+        .cond_gth_mul => return error.MulNotYetLowered,
         .cond_eq_faces, .cond_gth_faces => {
             var zb: [rb.max_face_len]u8 = undefined;
             const bn = try zig_safe_ident(rb.face2_slice(spec), &zb);
