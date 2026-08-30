@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260830.011003` | [the face earns its claim](20260830/20260830-011003_the-face-earns-its-claim.kyri) | 1128 lit pixels pinned, lawful through the mul desk; tri-OS booked |
 | `20260830.005741` | [the red everyone believed was booked](20260830/20260830-005741_the-red-everyone-believed-was-booked.kyri) | the width gate greens; %350 CLOSED; the ceilings fall to 328/1262 |
 | `20260830.005103` | [the language learns or](20260830/20260830-005103_the-language-learns-or.kyri) | the sibling composition lands; the feed's kind law speaks in Glow |
 | `20260830.004431` | [the map waits for a hand](20260830/20260830-004431_the-map-waits-for-a-hand.kyri) | Mystery's 588-rung map lap signed by hand; quality-first ruled |

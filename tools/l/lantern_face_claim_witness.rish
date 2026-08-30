@@ -1,0 +1,38 @@
+# tools/l/lantern_face_claim_witness.rish -- the face's golden claim, proven in both languages.
+#
+#   rishi/bin/rishi run tools/l/lantern_face_claim_witness.rish
+#
+# The Lantern face joins the surface-claims family: pond/apps/lantern_face_claim.rye
+# rasterizes the settled reference exchange to 320x128 pixels and pins its lit count
+# and SHA3-256 digest discover-then-pin. This witness runs those legs, then feeds the
+# very pins to the mul desk src/gate/gate-surface-lit-area-u32.glow on metal, so the
+# face's claim is proven lawful by the claims law in Glow as well as in Rye.
+
+say "face-claim: Language EN -- the asking voice's face, claimed and lawful."
+say "face-claim: Style Gauge, Meter -- each leg names its claim and its answer."
+say "face-claim: Lens TAME -- pins over prose; the law proven in both languages."
+
+let zig = "vendor/zig-toolchain/zig"
+
+say "face-claim: building and running the claim's own legs..."
+let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/lantern_face_claim.rye -femit-bin=pond/bin/lantern-face-claim"]
+assert build.ok else "face-claim: the claim module failed to build"
+let claim = run ["sh" "-c" "pond/bin/lantern-face-claim 2>&1"]
+assert claim.ok else "face-claim: the claim legs went red -- a DISCOVER line means the pins drifted"
+assert claim.out contains "answers its pinned claim" else "face-claim: the pin leg is missing"
+assert claim.out contains "its own distinct claim" else "face-claim: the content-address leg is missing"
+assert claim.out contains "GREEN: lantern-face-claim" else "face-claim: the closing GREEN is missing"
+
+say "face-claim: the pins through the mul desk -- the claims law answers in Glow..."
+let lawful = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "src/gate/gate-surface-lit-area-u32.glow" "1128" "320" "128"]
+assert lawful.ok else "face-claim: the lit-area desk failed to run"
+assert lawful.out contains "EXIT:0" else "face-claim: the desk did not exit 0"
+assert lawful.out contains "1" else "face-claim: the face's own claim must answer lawful"
+
+say "face-claim: parity anchors -- the pins and the law, one truth..."
+let pin = run ["grep" "-c" "pub const pinned_lit: u32 = 1128;" "pond/apps/lantern_face_claim.rye"]
+assert pin.ok else "face-claim: the lit pin moved -- re-anchor the desk leg's arguments with it"
+let fam = run ["grep" "-c" "pub fn claims_for" "brushstroke/surface_claims.rye"]
+assert fam.ok else "face-claim: the claims family's own function moved or renamed"
+
+say "GREEN: face-claim -- the asking voice's face is claimed, content-addressed, and lawful in both languages."

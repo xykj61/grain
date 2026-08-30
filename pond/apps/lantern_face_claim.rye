@@ -1,0 +1,106 @@
+//! lantern_face_claim.rye -- the face earns its golden claim.
+//!
+//! The Lantern face joins the surface-claims family: the settled reference exchange
+//! is composed, dressed from the base sheet, and rasterized to real pixels, and the
+//! two facts a backend answers for a buffer -- the lit count and the SHA3-256 of the
+//! visible bytes -- are pinned here discover-then-pin, exactly as
+//! brushstroke/surface_reference.rye pins the reference composition. The claim is
+//! then held to the claims family's own law: lit stays at or under width times
+//! height, the law the mul desk speaks in Glow, and the witness feeds these very
+//! pins to that desk on metal so the face's claim is proven lawful in both
+//! languages.
+//!
+//!   rye build pond/apps/lantern_face_claim.rye -femit-bin=pond/bin/lantern-face-claim
+//!   pond/bin/lantern-face-claim
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const face = @import("lantern_face.rye");
+const skate = @import("brushstroke/skate_grid.rye");
+const claims = @import("brushstroke/surface_claims.rye");
+const tokens = @import("brushstroke/tokens.rye");
+
+const lantern_face_claim_version = "20260830.010131";
+
+// The face's presented geometry at scale one: forty columns of eight-wide cells and
+// eight rows of sixteen-tall cells -- 320 by 128 pixels, four bytes each.
+pub const claim_width: u32 = face.face_cols * skate.cell_w;
+pub const claim_height: u32 = face.face_rows * skate.cell_h;
+const claim_stride: u32 = claim_width * 4;
+
+// The house ground and ink, the same pair the reference surface presents on, so the
+// face's claim sits in the family rather than beside it.
+const bg = skate.Color{ .r = 18, .g = 18, .b = 24 };
+const fg = skate.Color{ .r = 235, .g = 235, .b = 235 };
+
+// The reference exchange -- the settled face the claim pins. Byte-stable on purpose:
+// a claim is a promise about exact content.
+const ref_question = "what holds the nine nodes";
+const ref_answer = "the eight-line ceiling plus one";
+
+// The pins. Discovered by running this module once and reading its own printout,
+// then seated -- the discover-then-pin habit the reference surface taught.
+pub const pinned_lit: u32 = 1128;
+pub const pinned_digest_hex = "986b85ad777d9497ba164361f44a8bb96aca70ff5daba133ce872978c1101465";
+
+fn hex_of(digest: [32]u8, out: *[64]u8) []const u8 {
+    const alphabet = "0123456789abcdef";
+    for (digest, 0..) |b, i| {
+        out[i * 2] = alphabet[b >> 4];
+        out[i * 2 + 1] = alphabet[b & 0x0F];
+    }
+    return out[0..64];
+}
+
+fn compose_reference(garden: std.mem.Allocator) !skate.Grid {
+    var grid = try skate.Grid.init(garden, face.face_cols, face.face_rows);
+    try face.compose_face(&grid, ref_question, ref_answer, .settled);
+    _ = try face.dress_face(&grid, .settled, tokens.base_sheet);
+    return grid;
+}
+
+fn claim_of(garden: std.mem.Allocator, grid: *skate.Grid) !claims.SurfaceClaims {
+    const canvas = try garden.alloc(u8, @as(usize, claim_stride) * @as(usize, claim_height));
+    grid.rasterize(canvas, claim_stride, @intCast(claim_width), @intCast(claim_height), bg, fg, 1);
+    return claims.claims_for(canvas, claim_stride, claim_width, claim_height, bg);
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+
+    var grid = try compose_reference(garden);
+    const claim = try claim_of(garden, &grid);
+    var hexbuf: [64]u8 = undefined;
+    const hex = hex_of(claim.digest, &hexbuf);
+
+    if (claim.lit != pinned_lit or !std.mem.eql(u8, hex, pinned_digest_hex)) {
+        print("lantern-face-claim: DISCOVER lit={d} digest={s}\n", .{ claim.lit, hex });
+        return 3;
+    }
+    print("lantern-face-claim: the settled face answers its pinned claim -- GREEN\n", .{});
+
+    // invariant: the claims family's own law -- no honest count exceeds the area.
+    assert(claim.lit > 0);
+    assert(claim.lit <= claim_width * claim_height);
+    print("lantern-face-claim: lit stays inside the 320x128 area -- the claims law holds -- GREEN\n", .{});
+
+    var grid2 = try compose_reference(garden);
+    const claim2 = try claim_of(garden, &grid2);
+    // invariant: one composition, one claim -- the face is deterministic to the byte.
+    assert(claim2.lit == claim.lit);
+    assert(std.mem.eql(u8, &claim2.digest, &claim.digest));
+    print("lantern-face-claim: a second composition answers the same claim -- GREEN\n", .{});
+
+    var grid3 = try skate.Grid.init(garden, face.face_cols, face.face_rows);
+    try face.compose_face(&grid3, ref_question, "", .unknown);
+    _ = try face.dress_face(&grid3, .unknown, tokens.base_sheet);
+    const claim3 = try claim_of(garden, &grid3);
+    // invariant: different content, different claim -- the digest is content-addressed.
+    assert(!std.mem.eql(u8, &claim3.digest, &claim.digest));
+    assert(claim3.lit != claim.lit);
+    print("lantern-face-claim: the unknown face carries its own distinct claim -- GREEN\n", .{});
+
+    print("GREEN: lantern-face-claim -- the asking voice's face is claimed, content-addressed, and lawful.\n", .{});
+    return 0;
+}
