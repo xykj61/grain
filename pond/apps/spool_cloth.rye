@@ -17,7 +17,9 @@
 //! so a tampered byte anywhere refuses before a single byte is trusted. The Brix-facing
 //! face is a `format spool-cloth-v1` manifest: one `large <name> <whole-hex> <len>
 //! <resins>` line per artifact, render and parse round-tripping name, address, length,
-//! and resin count.
+//! and resin count. A name is one field of that line, so a space or a newline inside one
+//! refuses at the store edge (NameHasSeparator) rather than rendering a manifest this
+//! module's own parser rejects.
 //!
 //!   rye build pond/apps/spool_cloth.rye -femit-bin=pond/bin/spool-cloth
 //!   pond/bin/spool-cloth selftest
@@ -34,12 +36,29 @@ const parse_int = @import("parse_int.rye");
 
 pub const spool_cloth_version = "20260812.192400";
 
-// A large artifact's human name. Short and plain, so a manifest line stays readable.
+// A large artifact's human name. Short and plain, so a manifest line stays readable. A
+// bound on LENGTH alone: the manifest's grammar is held by name_is_one_field below, rather
+// than by this number staying too small for a forged line to fit inside a name.
 pub const max_name: u32 = 48;
 // How many large artifacts one cloth holds. Bounded small on purpose: each entry owns a
 // whole spool (its ordered resin recipe, ~33 KB), so the catalog is heavy by design --
 // four named large artifacts is ample for the naming crux and keeps the store legible.
+// This bounds NAMES, and the shared store is a second wall that bounds BYTES; read
+// guaranteed_full_artifacts below before trusting this number as a capacity.
 pub const max_large_artifacts: u32 = 4;
+
+// What one ceiling-sized artifact costs the shared store, derived rather than spelled: it
+// fills every one of the spool's max_resins resins, and the spool beads each full resin at
+// beading.max_bead_bytes, so a full max_resin_bytes resin becomes that many beads.
+const full_artifact_beads: u32 = spool.max_resins * (beading.max_resin_bytes / beading.max_bead_bytes);
+
+// How many CEILING artifacts a shared store holds from empty. max_large_artifacts counts
+// names and this counts bytes, and today the two disagree -- so a caller storing real
+// ceiling artifacts meets StoreFull while catalog seats still stand free, and the selftest
+// prints both readings rather than a comment spelling numbers that drift. Published because
+// an advertised bound a caller cannot reach is a promise nobody can check (REDS %341).
+// Floor division on purpose: a guarantee rounds down.
+pub const guaranteed_full_artifacts: u32 = beading.max_store_beads / full_artifact_beads;
 
 const digest_raw_len: u32 = 32;
 const digest_hex_len: u32 = digest_raw_len * 2;
@@ -47,6 +66,7 @@ const digest_hex_len: u32 = digest_raw_len * 2;
 pub const ClothError = error{
     NameEmpty,
     NameTooLong,
+    NameHasSeparator,
     NameTaken,
     UnknownArtifact,
     CatalogFull,
@@ -99,10 +119,31 @@ fn write_hex_lower(bytes: []const u8, out: []u8) void {
     assert(i == bytes.len);
 }
 
+// A name travels the manifest as one field on one line, so the two bytes that grammar
+// reserves can never sit inside one: a space would split the name across two fields, and a
+// newline would split its line in two. Read at the edge a name enters, so every name the
+// catalog holds renders a line that parses back. One shape with tablecloth's own wall,
+// because both modules flatten a name into a space-delimited line and read it back.
+fn name_is_one_field(name: []const u8) bool {
+    // invariant: the scan reads a name already inside its length bound
+    assert(name.len <= max_name);
+    var i: u32 = 0;
+    while (i < name.len) : (i += 1) {
+        if (name[i] == ' ' or name[i] == '\n') return false;
+    }
+    // invariant: a name that reaches here was read whole
+    assert(i == name.len);
+    return true;
+}
+
 /// Store a large artifact under a name. The content is wound across ordered resins into
 /// the shared store (dedup earned across artifacts that share resins), and the catalog
-/// records the name and the whole spool. Refuses an empty/overlong/taken name, a full
-/// catalog, and (through the spool) content past the spool ceiling (ContentTooLarge).
+/// records the name and the whole spool. Refuses an empty/overlong/taken name, a name
+/// carrying a manifest separator (NameHasSeparator), a full catalog, and (through the
+/// spool) content past the spool ceiling (ContentTooLarge) or a shared store with no room
+/// left (StoreFull) -- the refusal a caller storing ceiling artifacts meets FIRST, since
+/// the store pays for guaranteed_full_artifacts of them where the catalog advertises
+/// max_large_artifacts names.
 pub fn store_large(
     cat: *LargeCatalog,
     store: *beading.BeadStore,
@@ -111,6 +152,7 @@ pub fn store_large(
 ) (beading.BeadError || spool.SpoolError || ClothError)!spool.SpoolReport {
     if (name.len == 0) return error.NameEmpty; // a name carries at least one byte
     if (name.len > max_name) return error.NameTooLong; // a name fits its budget
+    if (!name_is_one_field(name)) return error.NameHasSeparator; // a name is one manifest field
     if (cat.find(name) != null) return error.NameTaken; // names are unique in a cloth
     if (cat.count >= max_large_artifacts) return error.CatalogFull; // the catalog is bounded
     // invariant: room remains for exactly this entry
@@ -251,6 +293,78 @@ pub fn parse_manifest(text: []const u8, man: *Manifest) ClothError!void {
 const doc_security = @embedFile("corpora/security.md");
 const doc_two_rooms = @embedFile("corpora/two_rooms.md");
 
+// Distinct bead content for the ceiling leg: each bead carries the artifact's tag in its
+// first byte and its own index in the rest, so no two beads of one artifact agree and no
+// bead of one artifact agrees with another's. Written here rather than reached for in the
+// spool, because a naming layer composes the spool's published API alone; it reads the
+// bead size through beading's own constant, which is what the spool beads each resin at.
+fn fill_distinct(buf: []u8, tag: u8) void {
+    // invariant: the fill covers at most one ceiling artifact
+    assert(buf.len <= spool.max_content_bytes);
+    const n: u32 = @intCast(buf.len); // seam cast: a slice length is usize, our counts are u32
+    // invariant: a bead index fits one byte, so two beads of one artifact never agree
+    assert(n / beading.max_bead_bytes <= 256);
+    var k: u32 = 0;
+    while (k < n) : (k += 1) {
+        const j: u32 = k / beading.max_bead_bytes;
+        buf[k] = if (k % beading.max_bead_bytes == 0) tag else @intCast(j & 0xFF);
+    }
+    // invariant: the fill reached the end of the buffer
+    assert(k == n);
+}
+
+/// The catalog counts names and the shared store pays in beads, so a caller storing real
+/// ceiling artifacts meets StoreFull with catalog seats still free. Fills the store from
+/// empty with guaranteed_full_artifacts ceiling artifacts, proves the next one refuses, and
+/// proves the refusal left the named artifacts whole. Returns the beads held across it,
+/// which is the reading a report cannot fake (REDS %341).
+fn store_refuses_on_beads_not_seats(out: []u8) !u32 {
+    var store_f: beading.BeadStore = .empty();
+    var cat_f: LargeCatalog = .empty();
+    var wide: [spool.max_content_bytes]u8 = undefined;
+    // invariant: the store holds at least one ceiling artifact, or this layer cannot serve
+    // the artifacts it exists to name
+    assert(guaranteed_full_artifacts >= 1);
+    // invariant: the catalog advertises at least what the store guarantees
+    assert(max_large_artifacts >= guaranteed_full_artifacts);
+
+    var a: u32 = 0;
+    while (a < guaranteed_full_artifacts) : (a += 1) {
+        // invariant: an artifact tag fits one byte, so every artifact's beads stay distinct
+        assert(a < 255);
+        fill_distinct(wide[0..], @intCast(a + 1));
+        var nm_buf: [16]u8 = undefined;
+        const nm = std.fmt.bufPrint(nm_buf[0..], "full{d}.bin", .{a}) catch return error.Overflow;
+        const rep = try store_large(&cat_f, &store_f, nm, wide[0..]);
+        // invariant: a ceiling artifact dedups against nothing, so every bead is deposited
+        assert(rep.beads_deduped == 0);
+    }
+    const held: u32 = store_f.count;
+    // invariant: less room remains than one more ceiling artifact needs -- which is the
+    // whole reason the next store refuses, stated rather than assumed from the numbers
+    assert(beading.max_store_beads - held < full_artifact_beads);
+
+    fill_distinct(wide[0..], @intCast(guaranteed_full_artifacts + 1));
+    if (store_large(&cat_f, &store_f, "one-too-many.bin", wide[0..])) |_| {
+        return error.StoreFull; // a name the store cannot pay for must never report success
+    } else |err| {
+        // invariant: the refusal is the store's own named error, reached through the spool
+        assert(err == error.StoreFull);
+    }
+    // invariant: the catalog refused on BYTES with seats to spare -- the two bounds disagree
+    assert(cat_f.count == guaranteed_full_artifacts);
+    assert(cat_f.count < max_large_artifacts);
+    // invariant: the refused store left no bead behind
+    assert(store_f.count == held);
+
+    // invariant: every name held before the refusal still fetches whole and byte-for-byte
+    fill_distinct(wide[0..], 1);
+    const nf = try fetch_large(&cat_f, &store_f, "full0.bin", out);
+    assert(nf == wide.len);
+    assert(std.mem.eql(u8, out[0..nf], wide[0..]));
+    return held;
+}
+
 fn run_spool_cloth_selftest() !u8 {
     var store: beading.BeadStore = .empty();
     var cat: LargeCatalog = .empty();
@@ -336,6 +450,45 @@ fn run_spool_cloth_selftest() !u8 {
         assert(err == error.NameEmpty);
     }
 
+    // Unwelcome: a name carrying a manifest separator refuses at the edge. A space would
+    // split the name across two fields; a newline would split its line in two.
+    {
+        if (store_large(&cat, &store, "my notes", doc_two_rooms)) |_| {
+            return error.NameHasSeparator;
+        } else |err| {
+            assert(err == error.NameHasSeparator);
+        }
+        if (store_large(&cat, &store, "two\nlines", doc_two_rooms)) |_| {
+            return error.NameHasSeparator;
+        } else |err| {
+            assert(err == error.NameHasSeparator);
+        }
+    }
+
+    // And the reason that wall stands, proven from the parser's side rather than argued:
+    // the line such a name WOULD have rendered reads as a different shape and refuses. So
+    // without the wall a lawfully stored name could publish a manifest this module's own
+    // parser rejects. 256 bytes holds the header, one line, a 64-char address, a length,
+    // and a resin count.
+    {
+        var line_buf: [256]u8 = undefined;
+        var hex: [digest_hex_len]u8 = undefined;
+        write_hex_lower(cat.entries[0].spool.whole_digest[0..], hex[0..]);
+        const split = std.fmt.bufPrint(line_buf[0..], "format spool-cloth-v1\nlarge my notes {s} {d} {d}\n", .{
+            hex[0..], cat.entries[0].spool.whole_len, cat.entries[0].spool.resin_count,
+        }) catch return error.Overflow;
+        var bad_split: Manifest = undefined;
+        if (parse_manifest(split, &bad_split)) |_| {
+            return error.BadManifest;
+        } else |err| {
+            assert(err == error.BadManifest);
+        }
+    }
+
+    // Unwelcome: the catalog counts names and the store pays in beads, so a ceiling artifact
+    // past what the store holds refuses StoreFull with catalog seats still free.
+    const held = try store_refuses_on_beads_not_seats(out[0..]);
+
     // Unwelcome: a manifest with the wrong header refuses.
     {
         var bad: Manifest = undefined;
@@ -357,6 +510,11 @@ fn run_spool_cloth_selftest() !u8 {
         man.count, man_len,
     });
     print("spool_cloth: tampered bead, unknown name, taken name, empty name, bad manifest refused GREEN\n", .{});
+    print("spool_cloth: a name carrying a manifest separator refused whole GREEN\n", .{});
+    print("spool_cloth: the store pays in beads -- {d} ceiling artifacts held {d} of {d} beads, and the next refused StoreFull with {d} of {d} catalog seats free\n", .{
+        guaranteed_full_artifacts, held,          beading.max_store_beads,
+        max_large_artifacts - guaranteed_full_artifacts, max_large_artifacts,
+    });
     print("spool_cloth: version {s}\n", .{spool_cloth_version});
     print("GREEN: a large real document gets a name; fetch returns the true bytes, whole.\n", .{});
     return 0;

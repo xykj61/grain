@@ -29,7 +29,11 @@ assert selftest.ok else "gism-red73-receipt: spool_receipt selftest exited non-z
 assert selftest.out contains "GREEN" else "gism-red73-receipt: selftest did not speak GREEN"
 assert selftest.out contains "wound across 6 resins under the owner's signature" else "gism-red73-receipt: winding-under-signature missing"
 assert selftest.out contains "the detached receipt carries the identical signed word" else "gism-red73-receipt: detached-receipt equality missing"
-assert selftest.out contains "reassembled 2689 B from the resins" else "gism-red73-receipt: reassembly missing"
+# The document's size is READ, never spelled -- the pin 2689 went untrue the day
+# SECURITY.md was edited, and no roster runs this guard to say so.
+let sec = run ["sh" "-c" "wc -c < SECURITY.md | tr -d ' \n'"]
+assert sec.ok else "gism-red73-receipt: could not measure SECURITY.md"
+assert selftest.out contains "reassembled ${sec.out} B from the resins" else "gism-red73-receipt: reassembly missing"
 assert selftest.out contains "travelled through Bron" else "gism-red73-receipt: Bron travel missing"
 assert selftest.out contains "still matching the reassembled bytes" else "gism-red73-receipt: post-travel match missing"
 assert selftest.out contains "tampered reassembled content refused" else "gism-red73-receipt: tamper refusal missing"
@@ -38,11 +42,13 @@ assert selftest.out contains "unknown record field refused" else "gism-red73-rec
 
 # The digest the receipt bound is cross-checked against an independent sha256sum of the
 # same real file -- two tools, one answer, so the signed provenance can never drift from
-# what a keeper computes by hand.
-let sum = run ["sh" "-c" "sha256sum SECURITY.md | cut -d' ' -f1"]
+# what a keeper computes by hand. The answer is READ rather than spelled: the elder form
+# named the comparison correctly and then wrote the expected hex out twice, which turned a
+# cross-check into a third pin on somebody else's document. A spelled digest is the same
+# defect as a spelled byte count, one layer deeper and invisible to a grep for the count.
+let sum = run ["sh" "-c" "sha256sum SECURITY.md | cut -d' ' -f1 | tr -d ' \n'"]
 assert sum.ok else "gism-red73-receipt: could not sha256sum SECURITY.md"
-assert sum.out contains "5d34cc8b399262cfb12e593ab2ac509afce038ba661cdacab0904736defe571c" else "gism-red73-receipt: SECURITY.md sha256 drifted on disk"
-assert selftest.out contains "5d34cc8b399262cfb12e593ab2ac509afce038ba661cdacab0904736defe571c" else "gism-red73-receipt: receipt digest does not match the file's sha256"
+assert selftest.out contains "${sum.out}" else "gism-red73-receipt: receipt digest does not match the file's sha256"
 
 # The owner-signed store and the receipt machinery are re-run untouched -- spool_receipt
 # composes their public API only.

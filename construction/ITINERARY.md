@@ -58,55 +58,53 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `a04cc0eef7` -- this round's own.
+**Git nib:** `902c45606d` -- this round's own.
 
-**Now.** **Pond's door names its environment; the duty left is the switchover, and `spool_cloth`
-carries %354's other half. Mystery raises the Lotus ladder to B.**
+**Now.** **`spool_cloth`'s name is one field and its store now says what it can pay for; the one
+Pond duty left IS the switchover. Mystery raises the Lotus ladder to B.**
 
-**The live front** (condensed `20260830.012039`; the checkpoint holds the departing accounts and
-the day shelves hold every landed lap):
-- **Tri-OS** BOOKED for Dream: LOCA parity via `brushstroke/wayland_seed.rye`; pins in
-  `surface_reference.rye`. Both prior OSes GREEN, snapshot `89e6da952`; the AppKit role
-  translation and deployment floor stay Keaton's gates.
+**The live front** (condensed `20260830.012039`; the checkpoint holds the departing accounts,
+the day shelves every landed lap):
+- **Tri-OS** BOOKED for Dream: LOCA parity via `brushstroke/wayland_seed.rye`, pins in
+  `surface_reference.rye`; both prior OSes GREEN, snapshot `89e6da952`. AppKit role translation
+  and the deployment floor are Keaton's gates.
 - **CION Tier C** RULED quality-first (`20260830.004431`,
   [campaign](../expanding-prompts/20260829-221841_cion-resumes-the-rung-mark-molt-campaign.md)):
-  Mystery raises `lotus/LADDER.md` (D/62) to B before a citation moves.
-- **Mind's next:** its lane -- the spread twins closed upstream (%350's class); a width-ratchet
-  touch is tree law any hand may carry, and no wall widens for it.
-- **Pond live:** `duties_undeclared` **1** -- `env` seated `20260830` as `KEY=value`, its value
-  half read as a search path; the door guard settles it against the exec line at
-  `env_disagreements` **zero, enforced**, refusing side proven without a kernel. Only `entry` is
-  left, and it IS the switchover -- a gate, not a lap. `spool_cloth` still promises 4 artifacts
-  over a store holding **2** (%341), and carries %354's separator half too.
+  Mystery raises `lotus/LADDER.md` (D/62) to B.
+- **Mind's next:** its lane -- the spread twins closed upstream; a width-ratchet touch is tree
+  law any hand carries, and no wall widens for it.
+- **Pond live:** `duties_undeclared` **1** -- `env` seated `20260830` as `KEY=value`, settled
+  against the exec line at `env_disagreements` **zero, enforced**, and proven refusing with no
+  kernel. Only `entry` is left, and it IS the switchover -- a gate rather than a lap.
 - **Language custody:** the growth law is
   [a-rune-is-earned-by-a-law](../foundations/20260830-011530_a-rune-is-earned-by-a-law.md);
-  nested composition waits as a named door.
-- **Pond dialect** (REDS %352, landed): two GNU-only shell families left advisory are gated now
-  -- in-place at **0**, readlink's resolve flag a **ratchet at 7**, six families and none advisory.
+  nested composition is a named door.
+- **Pond dialect** (%352, shelved): six shell families gated, none advisory -- in-place **0**,
+  readlink's resolve flag a ratchet at **7**.
+- **Spool family** (%341, %354, %357 all closed): a `pond/apps/` name is one manifest field,
+  `guaranteed_full_artifacts` publishes what the store pays for -- **2** ceiling artifacts against
+  **4** advertised names, printed rather than argued -- and every spool witness reads from disk.
 
-**MANY HANDS** (granted `20260828`): custody stays MANUAL, one writer per checkout. Root
-`SKILL.md`; every clone seats `ww` (`grain-ww/grain`, gate %1) and `.git/ssh_config_jail`.
+**MANY HANDS** (`20260828`): custody MANUAL, one writer per checkout. Root `SKILL.md`; every
+clone seats `ww` (`grain-ww/grain`, gate %1) and `.git/ssh_config_jail`.
 
 **Sibling finds (`20260830.002502`):** Sound owns two bare labels in `lattice/README.md` and the
 WADE<N> mark in `pond/apps/lantern_face_theme.rye`. Mystery's module-label guard fails open on BSD
-grep; its portable form finds two elder labels in `tools/gen/chapter/fascia_metric_v0.rish`.
+grep; portable, it finds two elder labels in `tools/gen/chapter/fascia_metric_v0.rish`.
 
-**Still open:** `%354` -- Tablecloth half repaired by Silence, `spool_cloth` twin ACCEPTED by Hush
-and next. `glow/rune_shape.rye` keeps width custody; Mind keeps the reconnect stash, `%281`/`%291`,
-and two `enclosure.conf` pins.
+**Still open:** `glow/rune_shape.rye` keeps width custody; Mind keeps the reconnect stash,
+`%281`/`%291`, and two `enclosure.conf` pins. **Loom named, unbuilt** (%357): a guard reading every
+`assert ... contains` for a literal that is a tracked file's size or digest, at zero -- fired twice.
 **Roster here** (cold then hot, `tree_moved=no`, `20260830`, `grain-hush`): 96 run, **95 green**,
-1 red -- gate %7 alone. Two closed on metal: `%355`, two absolute interpreter spellings nested in
-the very file `%353` repaired, where exit 127 satisfied `bitten.ok == false` and a refusing-side
-proof passed vacuously; and `%356`, a read buffer sized AT its own bound, making that check
-unreachable, so an 8,468-byte record parsed as 31 declarations of 34. `%347`-`%349` folded.
-**Cross-bench, unreproduced:** `pond_enclosure_door` reds on `grain-silence`, GREEN here with the
-probe; its `env` reading normalizes both sides through `to_record`, so it should travel. That
-bench's next line is the falsifier.
+1 red -- gate %7 alone. `%357` closed on metal: three unrostered spool witnesses spelled a byte
+count of `SECURITY.md` or `context/TWO_ROOMS.md`, red at HEAD since those files were edited --
+%341 repaired the two it had open and never grepped the family. `%350`-`%352` folded.
+**Cross-bench, unreproduced:** `pond_enclosure_door` reds on `grain-silence`, GREEN here; its `env`
+reading normalizes both sides through `to_record`, so it should travel. That bench decides.
 **Named, not taken:** `pond/enclosure_policy.kyri` stands at 8,120 of 8,192, nearly all of it the
-comment that makes it auditable; `entry`'s paragraph meets that wall, and widening a bound is your
-word (%347).
-**Next doors.** Dream: Caravan and Tally. Hush: `%354`'s `spool_cloth` twin and %341's
-four-against-two, one sitting. Silence: Tablecloth's nine ClothError paths.
+comment that makes it auditable; `entry`'s paragraph meets that wall, and widening it is yours (%347).
+**Next doors.** Dream: Caravan, Tally. Hush: the %357 loom, or its question one layer up --
+how many unrostered guards are red right now. Silence: Tablecloth's nine ClothError paths.
 ---
 ## Landed arcs
 
@@ -221,7 +219,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260830.033016` | The door names its environment -- `env` seats, two reds close | [log](../session-logs/date/20260830/20260830-033016_the-door-names-its-environment.kyri) |
+| `20260830.055018` | A name is one field here too -- `spool_cloth` walls its manifest and says what its store pays for; %357 closes three unrostered guards | [log](../session-logs/date/20260830/20260830-055018_the-repair-that-closed-an-instance.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it.
 

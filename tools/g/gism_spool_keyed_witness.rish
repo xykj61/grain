@@ -27,16 +27,23 @@ let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
 assert selftest.ok else "gism-red73-owned: spool_keyed selftest exited non-zero"
 assert selftest.out contains "GREEN" else "gism-red73-owned: selftest did not speak GREEN"
 assert selftest.out contains "belongs to a settled Kumara point" else "gism-red73-owned: identity vouching missing"
-assert selftest.out contains "SECURITY.md (2689 B) and TWO_ROOMS.md (6079 B) wound across resins, owner-signed, fetched byte-for-byte, resolving to planet and star" else "gism-red73-owned: owner-signed large fetch missing"
+# The documents' sizes are READ, never spelled. This witness pinned 2689/6079, both files
+# were edited afterwards, and the pin stood untrue with nobody watching -- no roster runs
+# this guard. Reading them makes the assertion compare two tools' answers: the selftest
+# prints what it embedded, the shell reads what is on disk, and a disagreement is the real
+# defect. A witness owns the behaviour it guards, never the byte count of somebody else's
+# document.
+let sec = run ["sh" "-c" "wc -c < SECURITY.md | tr -d ' \n'"]
+assert sec.ok else "gism-red73-owned: could not measure SECURITY.md"
+let two = run ["sh" "-c" "wc -c < context/TWO_ROOMS.md | tr -d ' \n'"]
+assert two.ok else "gism-red73-owned: could not measure context/TWO_ROOMS.md"
+assert selftest.out contains "SECURITY.md (${sec.out} B) and TWO_ROOMS.md (${two.out} B) wound across resins, owner-signed, fetched byte-for-byte, resolving to planet and star" else "gism-red73-owned: owner-signed large fetch missing"
 assert selftest.out contains "every refusal holds — a non-owner (no resin wound), a forged signature, a content-mismatched signature, and a tampered bead" else "gism-red73-owned: refusals missing"
 
-# Cross-check the real document sizes against the files on disk -- two tools, one answer.
-let sec_bytes = run ["sh" "-c" "wc -c < SECURITY.md | tr -d ' '"]
-assert sec_bytes.ok else "gism-red73-owned: could not measure SECURITY.md"
-assert sec_bytes.out contains "2689" else "gism-red73-owned: SECURITY.md is not 2689 B on disk"
-let tr_bytes = run ["sh" "-c" "wc -c < context/TWO_ROOMS.md | tr -d ' '"]
-assert tr_bytes.ok else "gism-red73-owned: could not measure context/TWO_ROOMS.md"
-assert tr_bytes.out contains "6079" else "gism-red73-owned: context/TWO_ROOMS.md is not 6079 B on disk"
+# The elder cross-check block stood here, asserting each file was its spelled size on disk.
+# It is gone rather than repaired: with the size read above and interpolated, the selftest
+# assertion IS that comparison -- embedded against disk, in one reading. Re-spelling the
+# number below it would only give the drift a second place to live.
 
 # The naming layer and the small owner-signed catalog are re-run untouched -- the large
 # owner-signed store composes their public API only.

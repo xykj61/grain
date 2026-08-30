@@ -7,7 +7,8 @@
 # byte-for-byte. It is the layer provenance needs to carry a signed real large document.
 # This witness proves it on metal: two real documents named and fetched whole, the
 # dedup dividend across a second name, the format spool-cloth-v1 manifest round-tripped,
-# and every refusal (tampered bead, unknown/taken/empty name, bad manifest header).
+# and every refusal (tampered bead, unknown/taken/empty/separator-carrying name, bad
+# manifest header, and a ceiling artifact the shared store cannot pay for).
 # It re-runs the spool untouched -- spool_cloth composes its public API only.
 #
 # Run from the repository root:
@@ -38,6 +39,15 @@ assert two.ok else "gism-red73-name: could not measure context/TWO_ROOMS.md"
 assert selftest.out contains "fetch by name returned ${sec.out}/${sec.out}/${two.out} real bytes, each byte-for-byte" else "gism-red73-name: byte-for-byte fetch missing"
 assert selftest.out contains "format spool-cloth-v1 manifest round-tripped 3 artifacts" else "gism-red73-name: manifest round-trip missing"
 assert selftest.out contains "tampered bead, unknown name, taken name, empty name, bad manifest refused GREEN" else "gism-red73-name: refusals missing"
+assert selftest.out contains "a name carrying a manifest separator refused whole GREEN" else "gism-red73-name: separator-name refusal missing -- a name is one manifest field"
+# The two numbers are PINNED here on purpose, unlike the document sizes read above. Those
+# belong to somebody else's file and go untrue when it is edited; these are this module's
+# own derived bounds, and the whole reading is that they DISAGREE -- the catalog advertises
+# four names while the store pays for two ceiling artifacts (REDS %341). Move max_store_beads,
+# max_resins, or max_large_artifacts and this line reds, which is the guard asking a hand to
+# re-read whether the catalog still over-advertises rather than quietly agreeing with itself.
+assert selftest.out contains "2 ceiling artifacts held 256 of 256 beads" else "gism-red73-name: the store's own bead reading missing or moved"
+assert selftest.out contains "refused StoreFull with 2 of 4 catalog seats free" else "gism-red73-name: the catalog-versus-store disagreement missing or moved"
 
 # The spool is re-run untouched -- the naming layer composes its public API only.
 let spool_bin = "mantra/bin/spool"

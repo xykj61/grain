@@ -62,7 +62,11 @@ pub const KeyedLargeCatalog = struct {
 /// then is the content wound across resins and named (spool_cloth's store_large), and the
 /// owning point recorded. A non-owner refuses (NotOwner), a forged or content-mismatched
 /// signature refuses (BadSignature) before a single resin is wound, and spool_cloth's own
-/// refusals (NameTaken, CatalogFull, ContentTooLarge) still hold.
+/// refusals still hold -- NameTaken, CatalogFull, ContentTooLarge, a name carrying a
+/// manifest separator (NameHasSeparator), and a shared store with no room left (StoreFull).
+/// A verified deed and a good keeper signature buy a place in the catalog, never a pass
+/// through the name wall: the name arrives here from the caller and goes straight to
+/// store_large, so the wall that keeps a manifest parseable stands on the signed path too.
 pub fn store_owned_large(
     kc: *KeyedLargeCatalog,
     store: *beading.BeadStore,
