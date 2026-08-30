@@ -27,6 +27,15 @@ assert face.out contains "proposed, never settled" else "lantern-face: the real-
 assert face.out contains "no stop reason earns settled" else "lantern-face: the settled-is-earned leg is missing"
 assert face.out contains "GREEN: lantern-face" else "lantern-face: the closing GREEN is missing"
 
+say "lantern-face: the .brush-themed variant -- the cascade recolors one settledness..."
+let tbuild = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/lantern_face_theme.rye -femit-bin=pond/bin/lantern-face-theme"]
+assert tbuild.ok else "lantern-face: the themed variant failed to build"
+let theme = run ["sh" "-c" "pond/bin/lantern-face-theme 2>&1"]
+assert theme.ok else "lantern-face: the themed legs went red -- read its own GREEN lines"
+assert theme.out contains "unknown wears the authored stone edge" else "lantern-face: the themed unknown leg is missing"
+assert theme.out contains "a theme naming no marker key refuses" else "lantern-face: the markerless refusal leg is missing"
+assert theme.out contains "GREEN: lantern-face-theme" else "lantern-face: the themed closing GREEN is missing"
+
 say "lantern-face: the Glow wall -- 38 lawful, 39 past the budget..."
 let g38 = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "src/gate/gate-lantern-face-text-u32.glow" "38"]
 assert g38.ok else "lantern-face: gate(38) failed to run"
