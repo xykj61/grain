@@ -48,6 +48,18 @@ let r128 = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "src/ga
 assert r128.ok else "skate-gates: ring(128) failed to run"
 assert r128.out contains "0" else "skate-gates: ring(128) -- the Full wall holds in Glow as in Rye"
 
+say "skate-gates: lit-area law -- golden claim admits, one past refuses, the wrap probe holds..."
+let g1 = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "src/gate/gate-surface-lit-area-u32.glow" "16268" "704" "288"]
+assert g1.ok else "skate-gates: lit-area(golden) failed to run"
+assert g1.out contains "EXIT:0" else "skate-gates: lit-area(golden) did not exit 0"
+assert g1.out contains "1" else "skate-gates: lit-area(golden) -- the pinned claim is lawful"
+let g2 = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "src/gate/gate-surface-lit-area-u32.glow" "202753" "704" "288"]
+assert g2.ok else "skate-gates: lit-area(202753) failed to run"
+assert g2.out contains "0" else "skate-gates: lit-area(202753) -- one past the area refuses"
+let g3 = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "src/gate/gate-surface-lit-area-u32.glow" "4294967295" "65536" "65536"]
+assert g3.ok else "skate-gates: lit-area(wrap probe) failed to run"
+assert g3.out contains "1" else "skate-gates: lit-area(wrap) -- a u32 product wraps 65536 x 65536 to zero and wrongly refuses; the u64 area admits"
+
 say "skate-gates: the malformed plant must still refuse..."
 let plant = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "tools/fixtures/g/gate-count-u32.glow" "3"]
 assert plant.err contains "MalformedBody" else "skate-gates: the malformed plant was accepted -- the grammar wall fell"
@@ -57,5 +69,7 @@ let kind_truth = run ["grep" "-c" "pub const max_kind: u8 = 8;" "brushstroke/ska
 assert kind_truth.ok else "skate-gates: the Rye kind wall moved or renamed -- re-anchor both spellings together"
 let ring_truth = run ["grep" "-c" "pub const event_capacity: u32 = 128;" "brushstroke/skate_event_ring.rye"]
 assert ring_truth.ok else "skate-gates: the Rye ring wall moved or renamed -- re-anchor both spellings together"
+let lit_truth = run ["grep" "-c" "pub const pinned_lit: u32 = 16268;" "brushstroke/surface_reference.rye"]
+assert lit_truth.ok else "skate-gates: the golden lit pin moved or renamed -- re-anchor the desk's example with it"
 
-say "GREEN: skate-gates -- three walls speak in Glow, both sides proven, and neither language can drift alone."
+say "GREEN: skate-gates -- four laws speak in Glow, both sides proven, and neither language can drift alone."

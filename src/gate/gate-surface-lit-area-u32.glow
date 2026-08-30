@@ -1,0 +1,15 @@
+::  name       surface lit-area law gate
+::  shape      lit width height - ints (@u32) -> lawful - int (@u32)
+::  invariant  answers 1 while lit stays at or under width x height; answers 0 past the area
+::  example    16268 704 288 -> 1 · 202753 704 288 -> 0
+::  readers    Brushstroke · the surface claims family · Glow
+::  nib        loca-surface-claims · the claims law made sayable by mul-b (20260829)
+::
+::  A backend's claim carries the pixels it lit, and no honest count exceeds the
+::  buffer's own area. Rye's wall is structural -- surface_claims.rye counts lit
+::  inside a width x height walk, and pinned_lit = 16268 in surface_reference.rye
+::  is the golden reading against 704 x 288 = 202752. This desk is that law made
+::  runnable in Glow: the first composed cond, (gth lit (mul width height)),
+::  landed by mul-b with the area widened to u64 so overflow has nowhere to live.
+|=  [lit=@u32 width=@u32 height=@u32]
+?:  (gth lit (mul width height))  0  1
