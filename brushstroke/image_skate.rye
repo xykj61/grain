@@ -114,6 +114,10 @@ pub fn down_map(
     if (pm.width == 0 or pm.height == 0) return error.EmptyImage;
     if (cols == 0 or rows == 0) return error.EmptyImage;
     if (cols > max_map_cols or rows > max_map_rows) return error.GridTooLarge;
+    // %349: a request past the source would empty the integer partition below, and the
+    // partition's asserts state an internal invariant -- so the caller-reachable case
+    // refuses here by name before any of them can fire.
+    if (cols > pm.width or rows > pm.height) return error.GridExceedsSource;
     // invariant: the decoded buffer is exactly four bytes per pixel.
     assert(pm.pixels.len == @as(usize, pm.width) * @as(usize, pm.height) * 4);
 
@@ -133,7 +137,8 @@ pub fn down_map(
         while (gc < cols) : (gc += 1) {
             const x0 = gc * width / cols;
             const x1 = (gc + 1) * width / cols;
-            // invariant: a block spans at least one pixel -- the partition never empties.
+            // invariant: a block spans at least one pixel -- the edge refused any request
+            // past the source (%349), so the partition never empties.
             assert(y1 > y0);
             assert(x1 > x0);
 
@@ -209,6 +214,22 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
         assert(grid.cells[left_i] == block_cell);
         assert(grid.cells[right_i] == block_cell);
     }
+
+    // %349 proven both ways: a request past the source refuses by name, and the
+    // exact source-sized request welcomes with one cell per pixel.
+    if (down_map(garden, &pm, pm.width + 1, rows)) |_| {
+        return error.OversizeColsAccepted;
+    } else |err| {
+        assert(err == error.GridExceedsSource);
+    }
+    if (down_map(garden, &pm, cols, pm.height + 1)) |_| {
+        return error.OversizeRowsAccepted;
+    } else |err| {
+        assert(err == error.GridExceedsSource);
+    }
+    const grid_exact = try down_map(garden, &pm, pm.width, pm.height);
+    assert(grid_exact.cols == pm.width);
+    assert(grid_exact.rows == pm.height);
 
     // Deterministic: a second down-map of the same image yields the same cells and fg indices.
     const grid2 = try down_map(garden, &pm, cols, rows);
