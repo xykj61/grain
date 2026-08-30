@@ -64,6 +64,7 @@
 #   sh tools/fixtures/s/standing_equipment_run.sh                 # cold open -- tier lap, dirty index refuses
 #   sh tools/fixtures/s/standing_equipment_run.sh --hot           # after `git add` -- the staged paths are mine
 #   sh tools/fixtures/s/standing_equipment_run.sh --all           # every tier, choirs included
+#   sh tools/fixtures/s/standing_equipment_run.sh --scoped        # only what moved since the full receipt
 #   sh tools/fixtures/s/standing_equipment_run.sh --tier cadence  # one tier
 #   sh tools/fixtures/s/standing_equipment_run.sh banner_room     # one guard by name, whatever its tier
 #
@@ -85,12 +86,14 @@ want_tier=lap
 only=""
 hot=no
 probe=no
+scoped=no
 
 # A loop rather than a single case, so `--hot` composes with `--all` and with `--tier`. A bare word
 # is a guard name and selects every tier, which is what asking for one guard has always meant.
 while [ $# -gt 0 ]; do
   case "$1" in
     --hot)  hot=yes ;;
+    --scoped) scoped=yes ;;
     --receipt-probe) probe=yes ;;
     --all)  want_tier=all ;;
     --tier) shift
@@ -103,6 +106,24 @@ while [ $# -gt 0 ]; do
 done
 
 [ -f "$roster" ] || { echo "refused: no roster at $roster" >&2; exit 1; }
+
+# THE SCOPED PASS (the fusion build's Move 2+3 synthesis, granted -- the skip word given
+# 20260828; design active-designing/20260825-173153_reprove-only-what-moved.md). A scoped run
+# proves the DELTA since the last full green receipt: guards whose derived watch-set intersects
+# the changed files run, guards the map calls DISCOVERY always run, and everything else is
+# skipped BY NAME against a named basis. Three walls hold it honest: it composes with nothing
+# that changes what "the roster" means (--all is the cadence's full choir, a bare guard name is
+# already a hand's own scope); it refuses outright without a full-run receipt carrying a head to
+# diff from; and a scoped close NEVER writes the receipt -- receipts chain only from full greens,
+# so a skip can never become the basis of the next skip.
+if [ "$scoped" = yes ] && [ -n "$only" ]; then
+  echo "refused: --scoped with a guard name -- a by-name run is already a hand's own scope" >&2
+  exit 1
+fi
+if [ "$scoped" = yes ] && [ "$want_tier" != lap ]; then
+  echo "refused: --scoped serves the lap tier only; the cadence sings the full choir" >&2
+  exit 1
+fi
 
 stamp=$(TZ=America/New_York date +%Y%m%d.%H%M%S)
 
@@ -193,8 +214,12 @@ echo "tree_at_open=$tree_open"
 # is where the week's hit rate is read from, one row per open. `--receipt-probe` stops here,
 # runs zero guards, and says so in its own verdict -- a probe never wears the roster's green.
 receipt_state=none
+receipt_head=""
+receipt_scope=""
 if [ -f "$receipt" ]; then
   rec=$(sed -n 's/^digest //p' "$receipt" | head -1)
+  receipt_head=$(sed -n 's/^head //p' "$receipt" | head -1)
+  receipt_scope=$(sed -n 's/^scope //p' "$receipt" | head -1)
   if [ "$rec" = "$tree_open" ]; then receipt_state=match; else receipt_state=miss; fi
 fi
 echo "roster_receipt=$receipt_state"
@@ -311,6 +336,63 @@ while read -r _ skipname skipcap; do
   echo "skipped_capability $skipname wants=$skipcap here=absent"
 done < "$pen/skipcap"
 
+# The scoped filter, after every other selection has spoken. The basis must be a FULL green
+# receipt carrying a head this repository holds; the changed set is that head to HEAD plus every
+# porcelain path (staged, unstaged, untracked alike -- the same breadth the tree digest reads);
+# the map comes from its own fixture, one line per guard, DISCOVERY or a watch-set. A guard whose
+# map row is missing runs -- absence is the answer that runs, exactly as the capability tier holds.
+skipped_scope=0
+if [ "$scoped" = yes ]; then
+  scope_map="${STANDING_SCOPE_MAP:-tools/fixtures/s/standing_equipment_scope_map.sh}"
+  if [ "$receipt_scope" != full ] || [ -z "$receipt_head" ] \
+    || ! git rev-parse --verify --quiet "$receipt_head^{commit}" >/dev/null 2>&1; then
+    echo "run_verdict=scoped_no_basis"
+    echo "refused: --scoped wants a FULL green receipt with a head to diff from -- run the full roster once" >&2
+    exit 1
+  fi
+  [ -f "$scope_map" ] || { echo "refused: no scope map at $scope_map" >&2; exit 1; }
+  { git diff --name-only "$receipt_head" HEAD 2>/dev/null
+    git status --porcelain 2>/dev/null | awk '{ $1=""; sub(/^ /,""); print }' \
+      | sed 's/^"\(.*\)"$/\1/' | awk -F' -> ' '{ print $NF }'
+  } | sort -u > "$pen/changed"
+  changed_n=$(grep -c . "$pen/changed" || true)
+  echo "scoped_basis=$receipt_head"
+  echo "scoped_changed=$changed_n"
+  sh "$scope_map" > "$pen/scopemap" || { echo "refused: the scope map fixture failed" >&2; exit 1; }
+  : > "$pen/todo.scoped"
+  while read -r name path tier_word; do
+    [ -n "$name" ] || continue
+    maprow=$(awk -v g="$name" '$1 == g { $1=""; sub(/^ /,""); print; exit }' "$pen/scopemap")
+    keep=no
+    if [ -z "$maprow" ] || [ "$maprow" = DISCOVERY ]; then
+      # Absence runs, exactly as the capability tier holds: a guard the map does not know is
+      # never skipped, so a newborn guard is safe before anyone maps it.
+      keep=yes
+    else
+      # Watch words are shell patterns; a word ending in / watches its whole room. The case
+      # matcher gives glob semantics natively, and changed sets are small on the passes this
+      # mode exists for.
+      while IFS= read -r cf; do
+        [ -n "$cf" ] || continue
+        for w in $maprow; do
+          case "$w" in */) w="$w*" ;; esac
+          # shellcheck disable=SC2254
+          case "$cf" in $w) keep=yes; break ;; esac
+        done
+        [ "$keep" = yes ] && break
+      done < "$pen/changed"
+    fi
+    if [ "$keep" = yes ]; then
+      printf '%s %s %s\n' "$name" "$path" "$tier_word" >> "$pen/todo.scoped"
+    else
+      skipped_scope=$((skipped_scope + 1))
+      echo "skipped_scope $name basis=$receipt_head"
+    fi
+  done < "$pen/todo"
+  cat "$pen/todo.scoped" > "$pen/todo"
+fi
+echo "skipped_scope=$skipped_scope"
+
 awk '{print $1}' "$pen/todo" | sort -u > "$pen/running"
 
 # Keep every card line whose guard this pass leaves alone, so a slower tier keeps its own history.
@@ -422,23 +504,38 @@ if [ "$moved" = yes ]; then
   exit 1
 fi
 
-# The record a future open compares against, written only at a fully green, unmoved close --
-# so the receipt can never speak a green the roster did not prove on this exact tree.
-{
-  echo "# construction/standing-equipment-receipt.kyri -- the last fully green close on THIS pier."
-  echo "# The hit-rate meter's record (fusion build, measurement only); skipped by nothing."
-  echo "format standing-equipment-receipt-v1"
-  echo "digest $tree_close"
-  echo "guards $ran"
-  echo "stamp $stamp"
-} > "$receipt_tmp"
-# Same room, same reason as the hit ledger above: a pen has no `construction/` to write into.
-if [ -d "$(dirname "$receipt")" ]; then
-  cat "$receipt_tmp" > "$receipt"
+# The record a future open compares against, written only at a fully green, unmoved close of a
+# FULL pass -- so the receipt can never speak a green the roster did not prove on this exact
+# tree, and never one a scoped or by-name pass merely inherited. A scoped close writing the
+# receipt would let a skip become the basis of the next skip, which is the one road from
+# evidence to rumor this whole design exists to close; a single-guard green overwriting the
+# full roster's record was the same road at a walk (found on the fusion lap, 20260829). The
+# head rides beside the digest because a digest cannot be diffed from and a commit can.
+run_scope=full
+[ "$scoped" = yes ] && run_scope=scoped
+[ -n "$only" ] && run_scope=named
+if [ "$run_scope" = full ]; then
+  {
+    echo "# construction/standing-equipment-receipt.kyri -- the last fully green FULL close on THIS pier."
+    echo "# The fusion build's basis record; written by full passes alone, consulted by --scoped."
+    echo "format standing-equipment-receipt-v2"
+    echo "digest $tree_close"
+    echo "head $(git rev-parse HEAD 2>/dev/null || echo no_head)"
+    echo "scope full"
+    echo "tier $want_tier"
+    echo "guards $ran"
+    echo "stamp $stamp"
+  } > "$receipt_tmp"
+  # Same room, same reason as the hit ledger above: a pen has no `construction/` to write into.
+  if [ -d "$(dirname "$receipt")" ]; then
+    cat "$receipt_tmp" > "$receipt"
+  else
+    echo "roster_receipt_write=skipped_no_room"
+  fi
+  rm -f "$receipt_tmp"
 else
-  echo "roster_receipt_write=skipped_no_room"
+  echo "roster_receipt_write=withheld_scope_$run_scope"
 fi
-rm -f "$receipt_tmp"
 
 echo "run_verdict=ok"
 exit 0

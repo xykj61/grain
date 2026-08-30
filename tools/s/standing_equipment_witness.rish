@@ -198,6 +198,13 @@ assert control.out contains "past_bound_says_so=yes" else "standing-equipment: a
 assert control.out contains "past_bound_stops_enumerating=yes" else "standing-equipment: enumeration stops at max_stash_entries"
 assert control.out contains "past_bound_still_passes=yes" else "standing-equipment: a full box past the bound still reports rather than refusing"
 assert control.out contains "nogit_box_reads_zero=yes" else "standing-equipment: a pen outside git answers zero rather than refusing"
+assert control.out contains "scoped_no_basis_refused=yes" else "standing-equipment: --scoped without a full receipt must refuse outright"
+assert control.out contains "full_receipt_carries_head=yes" else "standing-equipment: a full green close writes the v2 receipt with a head to diff from"
+assert control.out contains "scoped_watched_runs=yes" else "standing-equipment: a change inside a guard's watch-set must run that guard"
+assert control.out contains "scoped_unwatched_skips_by_name=yes" else "standing-equipment: a change outside every watch-set skips the guard BY NAME against a named basis"
+assert control.out contains "scoped_close_withholds_receipt=yes" else "standing-equipment: a scoped close never writes the receipt -- a skip must never become the basis of the next skip"
+assert control.out contains "scoped_receipt_unmoved=yes" else "standing-equipment: the receipt's bytes stand unmoved across a scoped close"
+assert control.out contains "scoped_unmapped_runs=yes" else "standing-equipment: a guard absent from the map always runs -- absence is the answer that runs"
 assert control.out contains "control_verdict=ok" else "standing-equipment: the control must agree with itself"
 # No total is spelled here. This line read `sixty-two behaviors` while the control ran more, the
 # same drift the header above just shed: a recited count is the one part of a green line that goes
