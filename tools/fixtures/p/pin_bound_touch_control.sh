@@ -12,10 +12,18 @@
 # stand in here, since the reader resolves the law from its own location rather than from the
 # caller's working directory.
 #
-#   sh tools/fixtures/p/pin_bound_touch_control.sh
+#   /bin/bash tools/fixtures/p/pin_bound_touch_control.sh
 #
 # Run from the repository root; the pen is removed on exit whether it passes or fails.
 set -u
+
+# The Codex supervisor exposes its canonical Git through a small shell launcher. Invoke that
+# launcher under the same explicit Bash proven for the scan; calling its macOS /bin/sh shebang
+# directly would re-enter the selector this enclosure cannot read. Ordinary benches keep their
+# native `git` command.
+if [ -n "${GRAIN_MIND_GIT:-}" ] && [ -f "$GRAIN_MIND_GIT" ]; then
+  git() { /bin/bash "$GRAIN_MIND_GIT" "$@"; }
+fi
 
 scan=tools/fixtures/p/pin_bound_touch_scan.sh
 reader=tools/fixtures/l/living_pin_max_bytes.sh
@@ -27,7 +35,8 @@ for f in "$scan" "$reader"; do
   fi
 done
 
-pen=$(mktemp -d) || exit 1
+mkdir -p .mind-state/tmp
+pen=$(mktemp -d .mind-state/tmp/pin-bound.XXXXXX) || exit 1
 trap 'rm -rf "$pen"' EXIT
 
 fails=0
@@ -70,10 +79,10 @@ fill() {
   && git config user.name Pen && git config commit.gpgsign false ) || {
   echo "control=refused"; echo "refused: the pen could not become a git repository" >&2; exit 1; }
 
-run()      { ( cd "$pen" && sh tools/fixtures/p/pin_bound_touch_scan.sh "$@" 2>/dev/null ); }
+run()      { ( cd "$pen" && PIN_BOUND_SHELL=/bin/bash /bin/bash tools/fixtures/p/pin_bound_touch_scan.sh "$@" 2>/dev/null ); }
 verdict()  { run "$@" | grep '^verdict=' | head -1 | cut -d= -f2; }
 key()      { k=$1; shift; run "$@" | grep "^$k=" | head -1 | cut -d= -f2; }
-exits()    { ( cd "$pen" && sh tools/fixtures/p/pin_bound_touch_scan.sh "$@" >/dev/null 2>&1 ); echo $?; }
+exits()    { ( cd "$pen" && PIN_BOUND_SHELL=/bin/bash /bin/bash tools/fixtures/p/pin_bound_touch_scan.sh "$@" >/dev/null 2>&1 ); echo $?; }
 
 # --- a first commit, so HEAD exists and every pin starts lawful ---------------------------------
 fill construction/A.md 50
@@ -221,7 +230,7 @@ run staged --roster "$roster" | grep -q '^pin_absent=construction/SOFT.md' \
 # The scan is proven above; this proves the HOOK, by doing. A second pen gets the real
 # tools/hooks/pre-commit, the real default roster path, a fake rishi so the hook's own top gate does
 # not rest it, and a pin one byte past the bound -- then `git commit` is run for real.
-hookpen=$(mktemp -d) || exit 1
+hookpen=$(mktemp -d .mind-state/tmp/pin-bound-hook.XXXXXX) || exit 1
 trap 'rm -rf "$pen" "$hookpen"' EXIT
 
 if [ -f tools/hooks/pre-commit ]; then

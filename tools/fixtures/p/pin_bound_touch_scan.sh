@@ -25,11 +25,11 @@
 # at 24,579 -- and four commits shipped over a red roster row. A lantern that fires twice becomes a
 # loom (REDS %316). This is the loom.
 #
-#   sh tools/fixtures/p/pin_bound_touch_scan.sh                  # the index -- what this commit ships
-#   sh tools/fixtures/p/pin_bound_touch_scan.sh head             # what HEAD's own commit shipped
-#   sh tools/fixtures/p/pin_bound_touch_scan.sh worktree         # every rostered pin, off disk
-#   sh tools/fixtures/p/pin_bound_touch_scan.sh prove-red        # the planted refusal
-#   sh tools/fixtures/p/pin_bound_touch_scan.sh staged --roster <path>   # the pen's own roster
+#   /bin/bash tools/fixtures/p/pin_bound_touch_scan.sh                  # what this commit ships
+#   /bin/bash tools/fixtures/p/pin_bound_touch_scan.sh head             # what HEAD shipped
+#   /bin/bash tools/fixtures/p/pin_bound_touch_scan.sh worktree         # every pin, off disk
+#   /bin/bash tools/fixtures/p/pin_bound_touch_scan.sh prove-red        # the planted refusal
+#   /bin/bash tools/fixtures/p/pin_bound_touch_scan.sh staged --roster <path>   # a pen roster
 #
 # WHAT IT READS, and why off the index rather than off disk. `git cat-file -s :<path>` is the size
 # of the blob the commit will actually carry, and a worktree read answers about bytes that may never
@@ -70,6 +70,33 @@ while [ ! -d "$_fd_root/rishi/bin" ] || [ ! -d "$_fd_root/tools/fixtures" ]; do
 done
 BOUND_READER="$_fd_root/tools/fixtures/l/living_pin_max_bytes.sh"
 
+# A caller may hand down the shell it has already proved. Direct readings repeat the same bounded
+# probe: this scan starts under an explicit interpreter, but its elder bound reader is a second
+# process and must not fall back through an unreadable selector shell. The probe exercises the
+# substitution-plus-cd shape that the 20260829 macOS enclosure garbled, rather than trusting a
+# version banner that never asks the failing question.
+BOUND_SHELL=${PIN_BOUND_SHELL:-}
+bound_shell_works() {
+  "$1" -c '_r=$(CDPATH= cd -- "$1" && pwd) && [ -d "$_r" ]' \
+    pin-bound-probe "$_fd_root/tools/fixtures/l" >/dev/null 2>&1
+}
+if [ -n "$BOUND_SHELL" ] && ! bound_shell_works "$BOUND_SHELL"; then
+  BOUND_SHELL=""
+fi
+if [ -z "$BOUND_SHELL" ]; then
+  for candidate in /bin/bash bash /bin/sh sh; do
+    if bound_shell_works "$candidate"; then
+      BOUND_SHELL=$candidate
+      break
+    fi
+  done
+fi
+if [ -z "$BOUND_SHELL" ]; then
+  echo "detail=RED_bound_reader_shell_absent"
+  echo "verdict=misread"
+  exit 1
+fi
+
 MODE=staged
 ROSTER=tools/fixtures/l/living_pin_guard_roster.txt
 
@@ -96,7 +123,7 @@ if [ "$MODE" = prove-red ]; then
   # which declared_ceiling_scan.sh correctly reads as deciding with a copy, and which would go
   # quietly false the day the number moves.
   prove_pin=tools/fixtures/pin_bound_touch_prove_red_pin.md
-  prove_bound=$(sh "$BOUND_READER" "$prove_pin")
+  prove_bound=$("$BOUND_SHELL" "$BOUND_READER" "$prove_pin")
   echo "pin_over=$prove_pin"
   echo "detail=RED_touched_pin_over_bound"
   echo "detail_path=$prove_pin"
@@ -168,7 +195,7 @@ pin_absent=$path"
   fi
 
   TOUCHED_PINS=$((TOUCHED_PINS + 1))
-  BOUND=$(sh "$BOUND_READER" "$path")
+  BOUND=$("$BOUND_SHELL" "$BOUND_READER" "$path")
 
   if [ "$BYTES" -le "$BOUND" ]; then
     REPORT="$REPORT
