@@ -236,12 +236,19 @@ fn parse_body(src: []const u8, toks: []const tokens.Token, start: u32, face_text
         i += 1;
         if (i >= n or toks[@as(usize, @intCast(i))].kind != .lparen) return error.MalformedBody;
         i += 1;
-        if (i >= n or toks[@as(usize, @intCast(i))].kind != .ident) return error.MalformedBody;
+        if (i >= n) return error.MalformedBody;
+        // alias-sameness (20260830.010901): the ancestor's ?& and ?| runes are peer spellings
+        // of the word operators and and or -- one body kind, one parse path, one emit, and
+        // neither spelling owns a behavior of its own. The rune head admits only the two
+        // composition runes; every other rune at the cond head refuses by name.
+        const head_is_rune = toks[@as(usize, @intCast(i))].kind == .rune2;
+        if (!head_is_rune and toks[@as(usize, @intCast(i))].kind != .ident) return error.MalformedBody;
         const cond_op = tokens.slice_of(src, toks[@as(usize, @intCast(i))]);
-        const is_gth = std.mem.eql(u8, cond_op, "gth");
-        const is_eq = std.mem.eql(u8, cond_op, "eq");
-        const is_and = std.mem.eql(u8, cond_op, "and");
-        const is_or = std.mem.eql(u8, cond_op, "or");
+        const is_gth = !head_is_rune and std.mem.eql(u8, cond_op, "gth");
+        const is_eq = !head_is_rune and std.mem.eql(u8, cond_op, "eq");
+        const is_and = if (head_is_rune) std.mem.eql(u8, cond_op, "?&") else std.mem.eql(u8, cond_op, "and");
+        const is_or = if (head_is_rune) std.mem.eql(u8, cond_op, "?|") else std.mem.eql(u8, cond_op, "or");
+        if (head_is_rune and !is_and and !is_or) return error.MalformedBody;
         if (is_and or is_or) {
             // and (20260830.000850): `?:  (and (gth|eq face dec) (gth|eq face2 dec))  dec  dec`
             // -- the composed condition, the shape the face's own uncertainty law asked for
