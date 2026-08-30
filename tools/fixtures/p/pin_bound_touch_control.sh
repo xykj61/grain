@@ -12,7 +12,7 @@
 # stand in here, since the reader resolves the law from its own location rather than from the
 # caller's working directory.
 #
-#   /bin/bash tools/fixtures/p/pin_bound_touch_control.sh
+#   bash tools/fixtures/p/pin_bound_touch_control.sh
 #
 # Run from the repository root; the pen is removed on exit whether it passes or fails.
 set -u
@@ -22,7 +22,7 @@ set -u
 # directly would re-enter the selector this enclosure cannot read. Ordinary benches keep their
 # native `git` command.
 if [ -n "${GRAIN_MIND_GIT:-}" ] && [ -f "$GRAIN_MIND_GIT" ]; then
-  git() { /bin/bash "$GRAIN_MIND_GIT" "$@"; }
+  git() { bash "$GRAIN_MIND_GIT" "$@"; }
 fi
 
 scan=tools/fixtures/p/pin_bound_touch_scan.sh
@@ -79,10 +79,10 @@ fill() {
   && git config user.name Pen && git config commit.gpgsign false ) || {
   echo "control=refused"; echo "refused: the pen could not become a git repository" >&2; exit 1; }
 
-run()      { ( cd "$pen" && PIN_BOUND_SHELL=/bin/bash /bin/bash tools/fixtures/p/pin_bound_touch_scan.sh "$@" 2>/dev/null ); }
+run()      { ( cd "$pen" && PIN_BOUND_SHELL=bash bash tools/fixtures/p/pin_bound_touch_scan.sh "$@" 2>/dev/null ); }
 verdict()  { run "$@" | grep '^verdict=' | head -1 | cut -d= -f2; }
 key()      { k=$1; shift; run "$@" | grep "^$k=" | head -1 | cut -d= -f2; }
-exits()    { ( cd "$pen" && PIN_BOUND_SHELL=/bin/bash /bin/bash tools/fixtures/p/pin_bound_touch_scan.sh "$@" >/dev/null 2>&1 ); echo $?; }
+exits()    { ( cd "$pen" && PIN_BOUND_SHELL=bash bash tools/fixtures/p/pin_bound_touch_scan.sh "$@" >/dev/null 2>&1 ); echo $?; }
 
 # --- a first commit, so HEAD exists and every pin starts lawful ---------------------------------
 fill construction/A.md 50

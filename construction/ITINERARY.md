@@ -58,7 +58,7 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `a56fc4b3b1` -- this round's own.
+**Git nib:** `5331506d4b` -- this round's own.
 
 **Now.** **The pier's one line closes tri-OS; Mystery raises the Lotus ladder to B; Mind
 repairs `spread.rye`; Pond's remaining duties and `spool_cloth` stay live.**
@@ -99,7 +99,8 @@ module-label guard fails open on BSD grep; its portable form finds two elder lab
 **Still open:** REDS has 1 OPEN row, Mind-owned `%349`. `glow/rune_shape.rye` keeps its width
 custody; Mind keeps the reconnect stash, `%281`/`%291`, and two `enclosure.conf` pins.
 **Roster here** (cold+hot then re-verified, `tree_moved=no`, `20260830`, `grain-hush`): 95 run,
-**92 green**, 3 red -- gate %7, and two `/bin/bash` literals this round repaired.
+**92 green**, 3 red -- gate %7, and two guards this round repaired and booked (REDS %353): an
+absolute interpreter path in a witness family, refusing on a pier whose `/bin` is empty.
 `witness_reach` is CLOSED: both lantern witnesses now carry roster rows, so the family is
 reached and the count is back under its ceiling.
 **Found, not taken:** the session-logs pin's day table has no `20260830` row -- a peer's room.
