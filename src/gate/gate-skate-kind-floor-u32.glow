@@ -1,0 +1,13 @@
+::  name       skate kind floor gate
+::  shape      kind - int (@u32) -> lawful - int (@u32)
+::  invariant  answers 0 for the unseated kind zero; answers 1 for any named kind
+::  example    0 -> 0 · 1 -> 1
+::  readers    Skate · the native surface · Glow
+::  nib        loca-skate-binding-v0 · the ceiling's sibling (20260829)
+::
+::  Rye's InputKind enum starts at key_down = 1 -- zero names no door -- so the
+::  floor is a wall of its own, spoken in its own desk because the lowerer
+::  speaks one conditional per body. A caller composes floor and ceiling to
+::  admit exactly the eight seated kinds.
+|=  sample=@u32
+?:  (eq sample 0)  0  1
