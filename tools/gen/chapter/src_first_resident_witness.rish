@@ -226,18 +226,18 @@ let agate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" adesk]
 assert agate.ok else "first-resident: app shape lower/build/run failed"
 assert agate.out contains "EXIT:0" else "first-resident: app shape did not exit 0"
 
-say "first-resident: app tube0-manifest-field-count..."
-let udesk = "src/shape/shape-tube0-manifest-field-count.glow"
-let uplacard = run ["sh" "-c" "head -n 7 src/shape/shape-tube0-manifest-field-count.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
-assert uplacard.ok else "first-resident: app tube0 placard scan failed"
+say "first-resident: app tube-manifest-field-count..."
+let udesk = "src/shape/shape-tube-manifest-field-count.glow"
+let uplacard = run ["sh" "-c" "head -n 7 src/shape/shape-tube-manifest-field-count.glow | grep -E -c '^::  (name|shape|invariant|example|readers|nib)'"]
+assert uplacard.ok else "first-resident: app tube-manifest placard scan failed"
 let ucount = trim uplacard.out
-assert ucount == "6" else "first-resident: app tube0 placard missing six lines"
-let ufields = run ["sh" "-c" "grep -q 'example    4' src/shape/shape-tube0-manifest-field-count.glow && grep -q 'name' src/shape/shape-tube0-manifest-field-count.glow && grep -q 'version' src/shape/shape-tube0-manifest-field-count.glow && grep -q 'capabilities' src/shape/shape-tube0-manifest-field-count.glow && grep -q 'iteration-bound' src/shape/shape-tube0-manifest-field-count.glow && grep -q 'APK' src/shape/shape-tube0-manifest-field-count.glow && echo TUBE0_OK"]
-assert ufields.ok else "first-resident: app tube0 fields scan failed"
-assert ufields.out contains "TUBE0_OK" else "first-resident: app tube0 four fields / APK refuse not named"
+assert ucount == "6" else "first-resident: app tube-manifest placard missing six lines"
+let ufields = run ["sh" "-c" "grep -q 'example    4' src/shape/shape-tube-manifest-field-count.glow && grep -q 'name' src/shape/shape-tube-manifest-field-count.glow && grep -q 'version' src/shape/shape-tube-manifest-field-count.glow && grep -q 'capabilities' src/shape/shape-tube-manifest-field-count.glow && grep -q 'iteration-bound' src/shape/shape-tube-manifest-field-count.glow && grep -q 'APK' src/shape/shape-tube-manifest-field-count.glow && echo TUBE_OK"]
+assert ufields.ok else "first-resident: app tube-manifest fields scan failed"
+assert ufields.out contains "TUBE_OK" else "first-resident: app tube-manifest four fields / APK refuse not named"
 let ugate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" udesk]
-assert ugate.ok else "first-resident: app tube0 shape lower/build/run failed"
-assert ugate.out contains "EXIT:0" else "first-resident: app tube0 shape did not exit 0"
+assert ugate.ok else "first-resident: app tube-manifest shape lower/build/run failed"
+assert ugate.out contains "EXIT:0" else "first-resident: app tube-manifest shape did not exit 0"
 
 say "first-resident: sec grant-family-count..."
 let cdesk = "src/shape/shape-grant-family-count.glow"

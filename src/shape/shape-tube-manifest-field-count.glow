@@ -1,0 +1,13 @@
+::  name       tube manifest field count
+::  shape      fields - int (@u32)
+::  invariant  the TUBE app-manifest mold (landed as the elder tube0 rung) carries four fields: name · version · capabilities · iteration-bound
+::  example    4
+::  readers    Pool · TUBE · Surface app room
+::  nib        surface-p19-v0
+::
+::  Surface Chapter p19 — second pedestal in src/app (Pool agents).
+::  Names the TUBE app-manifest mold field count from docs/TUBE.md.
+::  Does not seat packaging · APK · NativeActivity · or revive pond/apps.
++$  tube-manifest-field-count-shape
+  $:  fields=@u32
+  ==

@@ -27,7 +27,7 @@ The data-structure museum: every non-networked shape on its own pedestal, viewab
 | [`shape-pool-agent-slot.glow`](shape-pool-agent-slot.glow) | Pool agent slots (slots = 1) | same |
 | [`tilak-root-count.glow`](tilak-root-count.glow) | Hardcoded engine roots (roots = 2) | same |
 | [`shape-manifest-field-count.glow`](shape-manifest-field-count.glow) | Amphora manifest entry fields (fields = 3) | same |
-| [`shape-tube0-manifest-field-count.glow`](shape-tube0-manifest-field-count.glow) | TUBE0 app-manifest fields (fields = 4) | same |
+| [`shape-tube-manifest-field-count.glow`](shape-tube-manifest-field-count.glow) | TUBE app-manifest fields (fields = 4) | same |
 | [`shape-grant-family-count.glow`](shape-grant-family-count.glow) | Glow grant families (families = 3) | same |
 | [`shape-mand-ring-count.glow`](shape-mand-ring-count.glow) | Mand witnessed rings (rings = 3) | same |
 | [`shape-caravan-max-name-len.glow`](shape-caravan-max-name-len.glow) | Caravan `max_name_len=48` (Tend C3) | `tools/ca/caravan_glow_tend_limb3_witness.rish` |
