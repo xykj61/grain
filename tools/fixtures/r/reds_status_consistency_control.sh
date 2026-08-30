@@ -114,6 +114,27 @@ run_pen
 check phantom_named 'phantom_closure -- %41 names %77'
 check phantom_counted 'phantom_closures=1'
 
+# ---- a custody gate is not a ledger row, and a real phantom still bites beside it ------------
+# REDS %375: `%` marks every number this tree assigns itself, so `gate %5` beside a closing word
+# read as a claim about row 5. Both sides are proven -- the gate walks free, and a bare `%77` in
+# the same sentence is still caught, so the exemption is narrow rather than a hole. Two of the
+# four BITE -- a scan stripped of the exemption flips gate_reference_free and gate_not_a_row.
+# The narrowness pair cannot: a stripped scan is STRICTER, so it passes those either way, and
+# they are written down as companions rather than counted as refusals they are not.
+fresh_pen
+: > "$PEN/a.md"
+row a.md 41 'Every full pass closes red at gate %5 and gate %7, both named on the card.'
+run_pen
+[ "$CODE" -eq 0 ] && say gate_reference_free ok || say gate_reference_free RED
+check gate_not_a_row 'phantom_closures=0'
+
+fresh_pen
+: > "$PEN/a.md"
+row a.md 41 'Held at gate `%5`, and `%77`{s own clause closes with it.'
+run_pen
+[ "$CODE" -eq 1 ] && say gate_exemption_narrow ok || say gate_exemption_narrow RED
+check gate_exemption_named 'phantom_closure -- %41 names %77'
+
 # ---- a markerless pointer line must never erase a status ------------------------------------
 fresh_pen
 : > "$PEN/a.md"
