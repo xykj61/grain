@@ -860,3 +860,28 @@ guard unheard_guard
 path tools/u/unheard_guard_witness.rish
 tier lap
 seated 20260830.095947
+
+# comlink_glow_tend -- Comlink's payload ceiling, displayed and tied. The vane stood in the shape
+# museum with one desk, a dual-stack POLICY, while thirty-five bounds went undisplayed, so the
+# widest wire surface in the tree was the least shown. `max_wire_payload` = 340 sizes real
+# buffers, gates asserts, and two further bounds derive from it -- and it is DERIVED upstream, as
+# `wire_capacity - off_cipher`, where four fifths of the header is decided inside the crypto
+# library. It was right by arithmetic rather than by a rule: 188 is 188 only because Ed25519 signs
+# in 64 bytes, and the card books Kumara moving to SLH-DSA-SHAKE-256s. Three modules spelled the
+# answer as a bare literal and named no upstream room.
+#
+# The scan compares rooms and carries no value of its own, so an honest raise walks free (control
+# case 23). What a scan cannot do is evaluate the library widths, so the tie is handed to the
+# compiler: `max_wire_payload <= wf.max_message` at comptime, proven both ways on metal in a
+# throwaway pen -- as written it builds, inverted it stops the build. Twenty-six control cases,
+# five welcomes and twenty-one refusals. The tie count is a FLOOR, so amphora/ tying its own room
+# later is welcomed rather than punished.
+#
+# `cadence` because two legs reach metal -- the tie probe builds two modules and the desk lowers
+# through Glow and builds with the Zig toolchain, the same clock the Glow witnesses beside it
+# keep. Measured here `20260830.164837`: 10s whole, of which the pure scan and control are under a second.
+
+guard comlink_glow_tend
+path tools/co/comlink_glow_tend_witness.rish
+tier cadence
+seated 20260830.164837

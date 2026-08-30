@@ -8,6 +8,7 @@ const assert = std.debug.assert;
 const ns = @import("recall_lap1.rye");
 const tcq = @import("recall_tablecloth_query.rye");
 const tally_copy = @import("tally_copy.rye");
+const wf = @import("wire_format.rye");
 
 pub const query_wire_version = "20260710.140500";
 
@@ -22,6 +23,15 @@ const flag_path: u8 = 1 << 4;
 
 pub const max_wire_hits: u32 = 8;
 pub const max_wire_payload: u32 = 340;
+comptime {
+    // invariant: a payload this module builds fits the room the sealed datagram leaves after its
+    // header, so this ceiling can never outrun the wire that carries it. The number above is a
+    // literal for readability; this tie is what keeps it honest when the envelope moves, since
+    // `max_message` is derived as `wire_capacity - off_cipher` and a wider Kumara signature moves
+    // `off_cipher` -- and every offset behind it -- without touching a line in this file.
+    assert(max_wire_payload <= wf.max_message);
+}
+
 
 pub const WireError = error{
     BadKind,

@@ -1,0 +1,91 @@
+# tools/co/comlink_glow_tend_witness.rish -- Comlink's payload bound, and the wire it stands on.
+#
+#   rishi/bin/rishi run tools/co/comlink_glow_tend_witness.rish
+#
+# WHY THIS RUNG. Comlink stood in the shape museum with exactly one desk -- a dual-stack POLICY --
+# while thirty-five bounds went undisplayed, which made the widest wire surface in the tree the
+# least shown. The payload ceiling is the one that earns the first bound desk: 340 sizes real
+# buffers (`var req_buf: [max_wire_payload]u8`), gates asserts (`assert(off <= max_wire_payload)`),
+# and two further bounds derive from it. Three modules spell it as a bare literal and a fourth
+# derives its own ceiling from one of those literals, so the copy propagates.
+#
+# WHAT MADE IT WORTH A ROUND. The number is right today and was right by ARITHMETIC rather than by
+# a rule. `wire_format.rye` derives `max_message = wire_capacity - off_cipher`, and off_cipher is
+# 188 only because Ed25519 signs in 64 bytes. The card books Kumara signing with
+# SLH-DSA-SHAKE-256s, whose signature is far wider; that moves off_tag, off_cipher, and
+# max_message with it, and until 20260830 nothing connected the deciding room to the three that
+# copy its answer. This is REDS %354's shape one vane over: a bound doing a second job with
+# nothing in its own comment to warn whoever changes it.
+#
+# THREE READINGS, AND WHY THEY FIRE APART. The desk's number equals what wire_format derives, with
+# capacity and header read apart. The literals in the copying rooms equal that number -- move one
+# and a desk-only reading stays quiet. And the comptime tie still stands, because a law the
+# compiler no longer checks is a sentence: delete those blocks and the first two readings agree
+# perfectly over a wire nothing proves a payload fits.
+#
+# THE READING A SHELL CANNOT TAKE, AND WHO TAKES IT. Four fifths of the header is decided inside
+# the crypto library, and no grep evaluates ChaCha20Poly1305's nonce length. The compiler does.
+# So the tie is proven on metal by tools/fixtures/c/comlink_payload_tie_probe.sh, which asks it
+# twice in a throwaway pen: the tie as written compiles, and the same tie inverted stops the build
+# at comptime. Without the second half a comptime block that is never evaluated would pass the
+# first in perfect silence.
+#
+# WHAT THIS WITNESS DELIBERATELY DOES NOT PIN. The number 340. An elder Tend witness greps for the
+# literal in both rooms, which writes the value a THIRD time inside the guard -- so raising a
+# bound honestly in both real rooms still reds until a hand edits the guard, and a guard that reds
+# on correct work is a guard someone turns off. What IS pinned is the header's COMPOSITION, which
+# no honest raise moves: reshaping the envelope is a review gate, and the two pinned lines move
+# together or neither does.
+#
+# WHAT THIS RUNG DOES NOT REACH. Whether 528 is the right capacity, which is Comlink's own design
+# question. And amphora/vessel_fetch_wire.rye, which carries the same literal in the same shape
+# and derives two bounds from it; that room is Amphora's to tie, so the tie count is read as a
+# FLOOR -- a third room taking its own half walks free rather than reds.
+
+say "comlink-tend: Lens TAME -- bound everything and say why: the wire names its ceiling, the pedestal names the ceiling, and this proves the two are one number arrived at by one route."
+
+say "comlink-tend: the pedestal against the wire it stands on..."
+let scan = run ["sh" "tools/fixtures/c/comlink_glow_tend_scan.sh"]
+assert scan.ok else "comlink-tend: the pedestal and the wire disagree -- read the verdict line"
+say scan.out
+assert scan.out contains "verdict=agree" else "comlink-tend: the pedestal and the wire must name one number"
+assert scan.out contains "placard_order=name shape invariant example readers nib" else "comlink-tend: the placard's six lines keep their seated order"
+assert scan.out contains "citation=yes" else "comlink-tend: a derived bound's pedestal names the room that decides it, the room whose compiler already held the law, and the room left to another hand"
+assert scan.out contains "wire_derives=yes" else "comlink-tend: max_message must still be DERIVED from capacity and header, not respelled as a literal"
+assert scan.out contains "rehearsal_tie=yes" else "comlink-tend: the elder comptime tie in rehearsal_wire must still stand"
+say "field GREEN -- the desk stands on what wire_format publishes, read apart and compared"
+
+say "comlink-tend: the header's composition -- a review gate, not a comparison (see the header)..."
+assert scan.out contains "desk_header_names=sender nonce name sig tag" else "comlink-tend: the header's five fields are PINNED here; reshaping the envelope is a review gate, so move this line and its twin"
+assert scan.out contains "rye_header_names=sender nonce name sig tag" else "comlink-tend: the offset chain is pinned beside the desk's composition, so both move together or neither does"
+say "pins GREEN -- the envelope's shape stands where it stood"
+
+say "comlink-tend: the control, both ways..."
+let control = run ["sh" "tools/fixtures/c/comlink_glow_tend_control.sh"]
+assert control.ok else "comlink-tend: the control must complete"
+say control.out
+assert control.out contains "welcomes=5" else "comlink-tend: an honest raise, a reshaped header holding its ceiling, a third room tying its own half, and a reworded desk must all walk free"
+assert control.out contains "refusals=21" else "comlink-tend: every reading must refuse from its own side"
+assert control.out contains "wrong=0" else "comlink-tend: no case may land on the side it was not planted for"
+assert control.out contains "control_verdict=ok" else "comlink-tend: the control must agree with itself"
+say "RED and GREEN paths proven -- twenty-one plantings refused, five honest trees welcomed"
+
+say "comlink-tend: the comptime tie, on metal, both ways..."
+let tie = run ["sh" "tools/fixtures/c/comlink_payload_tie_probe.sh"]
+assert tie.ok else "comlink-tend: the comptime tie must be proven on metal"
+say tie.out
+assert tie.out contains "verdict=proven" else "comlink-tend: the tie must hold as written and refuse when inverted"
+assert tie.out contains "tie_holds=2" else "comlink-tend: both tied modules must compile against the real library widths"
+assert tie.out contains "tie_refuses=2" else "comlink-tend: both inverted ties must stop the build at comptime, or the block is never evaluated"
+say "metal GREEN -- the compiler proves the ceiling fits the wire, and refuses when it does not"
+
+let zig = "vendor/zig-toolchain/zig"
+let desk = "src/shape/shape-comlink-wire-payload-bound.glow"
+
+say "comlink-tend: lower, build, run the payload pedestal..."
+let gate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" desk]
+assert gate.ok else "comlink-tend: the payload pedestal must lower, build, and run"
+assert gate.out contains "EXIT:0" else "comlink-tend: the payload pedestal did not exit 0"
+say "glow GREEN -- the desk lowers through Glow, builds through Zig, and runs"
+
+say "GREEN: comlink Glow Tend -- max_wire_payload stands on a pedestal beside the header it is the complement of, compared to the room that derives it rather than copied from it, and held there by a tie the compiler evaluates."

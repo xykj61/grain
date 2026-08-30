@@ -1,0 +1,65 @@
+::  name       comlink wire payload bound
+::  shape      bytes -- int (@u32), bound 340 -- the room a sealed datagram leaves for its message
+::  invariant  a wire payload fits the room the datagram header leaves behind, and the compiler says so
+::  example    340
+::  readers    Comlink - Mantra - Amphora - Glow Tend - shape museum
+::  nib        comlink-wire-v1 at 20260705.225412
+::
+::  Comlink's second pedestal, and its first bound. The vane stood in this room with one desk --
+::  a dual-stack POLICY -- while thirty-five bounds went undisplayed, which made the widest wire
+::  surface in the tree the least shown. This desk names the one number the others lean on.
+::
+::  WHERE THE NUMBER IS DECIDED. comlink/wire_format.rye publishes the sealed datagram layout and
+::  derives the payload ceiling rather than spelling it:
+::
+::    max_message = wire_capacity - off_cipher
+::
+::  The capacity is a literal 528. The header is a chain of offsets, and off_cipher is where the
+::  ciphertext starts -- so the header's width IS the ceiling's complement. Measured on metal
+::  20260830 against the crypto widths the module actually imports:
+::
+::  the header the datagram spends before its message, in the order wire_format composes it:
+::    sender 32 - nonce 12 - name 64 - sig 64 - tag 16
+::  that is 188 bytes, and 528 - 188 is the 340 above.
+::
+::  Only `sender` is a literal in that chain. The other four are read from the library --
+::  ChaCha20Poly1305's nonce and tag, Sha3_512's digest, and Kumara's signature -- so four fifths
+::  of this number is decided somewhere no reader of comlink/ would think to look.
+::
+::  WHY A DESK, RATHER THAN A COMMENT. Three modules spell 340 as a bare literal named
+::  `max_wire_payload`, and it is load-bearing in each: it sizes real buffers
+::  (`var req_buf: [max_wire_payload]u8`), gates asserts (`assert(off <= max_wire_payload)`), and
+::  two further bounds derive from it (`max_single_body`, `max_chunk_body`). A fourth module,
+::  comlink/recall_batch_wire.rye, derives its own ceiling from one of those literals, so the copy
+::  propagates. None of the three cited the room that decides the number.
+::
+::  The number is right today and was safe by ARITHMETIC rather than by a rule -- 340 equals 340
+::  because Ed25519 signs in 64 bytes. The card books Kumara signing with SLH-DSA-SHAKE-256s,
+::  whose signature is far wider; that moves off_tag, off_cipher, and max_message with it, and
+::  until this lap nothing connected the two rooms. This is the shape REDS %354 cost a round to
+::  learn one vane over: a bound doing a second job with nothing in its own comment to warn
+::  whoever changes it.
+::
+::  WHAT IS WIRED, AND WHAT IS ONLY WRITTEN. comlink/rehearsal_wire.rye already held the law at
+::  comptime -- `assert(payload_max <= wf.max_message)` -- so one of four payload-bounding modules
+::  proved the relation and three stated it in prose while spelling a literal. The two that live
+::  in mantra/ hold the same comptime tie from 20260830, so the COMPILER now refuses a payload
+::  ceiling that outruns its wire. Proven both ways on metal before it shipped: the tie inverted
+::  refuses at comptime, the tie as written builds green.
+::
+::  Three readings carry this desk, and each can fail while the other two agree. The number equals
+::  what wire_format derives, capacity and header read apart. The literals in the copying rooms
+::  equal that number -- move one and a desk-only reading stays quiet. And the comptime tie still
+::  stands in the rooms that hold it, because a law the compiler no longer checks is a sentence:
+::  delete those three blocks and the first two readings agree perfectly over a wire nothing
+::  proves a payload fits.
+::
+::  WHAT THIS DESK DOES NOT REACH. Whether 528 is the right capacity, which is Comlink's own
+::  design question. The four library widths, which this room reads rather than decides -- a
+::  change inside ChaCha20Poly1305 or Sha3_512 moves the header without touching a line here, and
+::  the comptime tie rather than this desk is what would catch it. And
+::  amphora/vessel_fetch_wire.rye, which carries the same literal in the same shape and derives
+::  two bounds from it; that room is Amphora's to tie, and it is named here rather than touched.
++$  comlink-wire-payload-bound-shape
+  $:  bytes=@u32
+  ==
