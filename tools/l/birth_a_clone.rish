@@ -1,0 +1,85 @@
+# tools/l/birth_a_clone.rish -- give a fleet body its own tree, whole and proven.
+#
+# One tree per star (seated 20260829 on Keaton's word, after REDS %291 bit four times in one
+# day through a shared checkout): every loop body works its own clone. This tool is the birth,
+# run FROM the field where rishi already lives:
+#
+#   rishi/bin/rishi run tools/l/birth_a_clone.rish /Users/<user>/grain-<body>
+#
+# What a birth does, in order: clone from the field's own objects with the anointed remotes
+# seated (xy, then debrided); point core.hooksPath at the tracked hooks so the walls travel;
+# init the four named vendor submodules over plain https with the host's global config held
+# aside (the card's own recipe -- a rewriting insteadOf cannot reach the public repos); copy
+# the vendored toolchain (403 MB, host-provisioned, untracked); bootstrap rye from source and
+# build rishi with it, so the newborn's binaries carry its own tree's provenance; then prove
+# the birth by running a real witness inside the newborn. What remains for a hand afterward
+# is only what custody keeps there: a codex login for a Codex seat, and the launch paste.
+#
+# KIN, the way home: the law is one-tree-per-star in the fleet re-map
+# (session-logs/date/20260829/20260829-194829_the-fleet-remapped-on-the-days-evidence.kyri);
+# the submodule recipe is the living card's Standing block; the hooks law is
+# .claude/rules/git-signing.md; grain-mind is the elder precedent this tool generalizes.
+
+say "birth-a-clone: one tree per star -- clone, remotes, hooks, submodules, toolchain, rye, rishi, witness."
+
+assert args.len == 1 else "birth-a-clone: name exactly one destination path"
+let dest = args[0]
+assert (run ["test" "-e" dest]).ok == false else "birth-a-clone: destination already exists -- a birth never overwrites"
+
+let field_run = run ["git" "rev-parse" "--show-toplevel"]
+assert field_run.ok else "birth-a-clone: run from inside the field"
+let field = trim field_run.out
+
+# The clone: local objects, then the anointed remotes replace the local origin, so the
+# newborn's history and its lanes both read exactly like every sibling's.
+let cl = run ["git" "clone" field dest]
+assert cl.ok else "birth-a-clone: the clone refused -- ${cl.err}"
+let rr = run ["git" "-C" dest "remote" "remove" "origin"]
+assert rr.ok else "birth-a-clone: could not remove the local origin"
+let ax = run ["git" "-C" dest "remote" "add" "xy" "git@github.com:xykj61/grain.git"]
+assert ax.ok else "birth-a-clone: could not seat remote xy"
+let ag = run ["git" "-C" dest "remote" "add" "debrided" "git@github.com:debrided/grain.git"]
+assert ag.ok else "birth-a-clone: could not seat remote debrided"
+
+# The transport: .git contents are never cloned, so the newborn takes its own copy of the
+# field's repo-local ssh config (the key paths inside stay absolute to the host's shared
+# deploy keys) and points core.sshCommand at its own copy -- grain-mind's own precedent.
+let sc = run ["cp" (field + "/.git/ssh_config_jail") (dest + "/.git/ssh_config_jail")]
+assert sc.ok else "birth-a-clone: the ssh config copy refused"
+let scfg = run ["git" "-C" dest "config" "core.sshCommand" ("ssh -F " + dest + "/.git/ssh_config_jail")]
+assert scfg.ok else "birth-a-clone: could not seat core.sshCommand"
+
+let fx = run ["git" "-C" dest "fetch" "xy"]
+assert fx.ok else "birth-a-clone: the first fetch from xy refused -- ${fx.err}"
+let up = run ["git" "-C" dest "branch" "--set-upstream-to=xy/main" "main"]
+assert up.ok else "birth-a-clone: could not point main at xy/main"
+
+# The walls travel with the tree: hooksPath at the tracked hooks, exactly as the field keeps it.
+let hk = run ["git" "-C" dest "config" "core.hooksPath" "tools/hooks"]
+assert hk.ok else "birth-a-clone: could not seat the tracked hooks"
+
+# The four named submodules, over plain https with the host's global config held aside.
+let sm = run ["env" "GIT_CONFIG_GLOBAL=/dev/null" "git" "-C" dest "submodule" "update" "--init" "vendor/microkit" "vendor/monocypher" "vendor/pqclean" "vendor/sel4"]
+assert sm.ok else "birth-a-clone: the named submodules refused -- ${sm.err}"
+
+# The toolchain is host-provisioned and untracked; the newborn takes the field's copy.
+let tc = run ["cp" "-R" (field + "/vendor/zig-toolchain") (dest + "/vendor/zig-toolchain")]
+assert tc.ok else "birth-a-clone: the toolchain copy refused"
+
+# The newborn builds its own rye from its own source, then its own rishi with that rye --
+# binaries carrying the tree's provenance rather than another checkout's.
+let ry = run ["sh" (dest + "/rye/bootstrap.sh")]
+assert ry.ok else "birth-a-clone: the rye bootstrap refused -- ${ry.err}"
+# The emit directory is untracked and must exist before the build asks for it -- %337's own
+# lesson, met again at birth.
+let rb = run ["mkdir" "-p" (dest + "/rishi/bin")]
+assert rb.ok else "birth-a-clone: could not make rishi/bin"
+let ri = run ["sh" "-c" ("cd " + dest + " && env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye build rishi/src/main.rye -femit-bin=rishi/bin/rishi")]
+assert ri.ok else "birth-a-clone: the rishi build refused -- ${ri.err}"
+
+# The proof: a real witness runs GREEN inside the newborn, on the newborn's own binaries.
+let wt = run ["sh" "-c" ("cd " + dest + " && rishi/bin/rishi run tools/w/wire_lab_fn_drift_witness.rish")]
+assert wt.ok else "birth-a-clone: the newborn's witness refused -- ${wt.out}"
+assert wt.out contains "GREEN: wire-lab-fn" else "birth-a-clone: the newborn's witness must speak GREEN"
+
+say "GREEN: birth-a-clone -- ${dest} stands whole: remotes xy and debrided, tracked hooks, four submodules, its own rye and rishi, one witness GREEN inside it. A codex login and the launch paste remain a hand's."

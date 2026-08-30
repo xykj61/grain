@@ -12,6 +12,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | Stamp | Log | What it recorded |
 |---|---|---|
 | `20260829.175244` | [the row the field was built for](20260829/20260829-175244_the-row-the-field-was-built-for.kyri) | dual-stack seated on `capability ipv6`; two reds closed |
+| `20260829.200656` | [two trees born proven](20260829/20260829-200656_two-trees-born-proven.kyri) | birth-a-clone lands; grain-silence and grain-mystery stand whole, witness GREEN inside each |
 | `20260829.194829` | [the fleet remapped on the day's evidence](20260829/20260829-194829_the-fleet-remapped-on-the-days-evidence.kyri) | Mystery to a macOS Codex loop on the campaign lane; one tree per star fleet-wide; his word |
 | `20260829.194157` | [the knife ran clean](20260829/20260829-194157_the-knife-ran-clean.kyri) | the rewrite verified: 9 signed, tree byte-identical, zero child-stream; the force at his keys |
 | `20260829.192838` | [the synthesis round of the stopped fleet](20260829/20260829-192838_the-synthesis-round-of-the-stopped-fleet.kyri) | %346 the inherited word; the debride runs; a stopped hand's send completes; the fleet's map drawn |
