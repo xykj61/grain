@@ -220,7 +220,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260830.113255` | Caravan's front door derives its 114-module and 121-witness readings; each stale direction refuses alone | [log](../session-logs/date/20260830/20260830-113255_the-door-counts-what-stands.kyri) |
+| `20260830.133751` | Caravan's ladder prose joins the measured 114-module wall; three stale directions refuse alone | [log](../session-logs/date/20260830/20260830-133751_the-second-count-joins-the-wall.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it.
 

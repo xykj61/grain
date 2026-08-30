@@ -17,21 +17,24 @@ printf '# witness\n' > "$PEN/tools/ca/caravan_seed_witness.rish"
 printf 'let witnesses = [ "tools/ca/caravan_seed_witness.rish" ]\n' > "$PEN/roster.rish"
 
 write_door() {
-  printf '**Status:** Checkable -- %s modules in this directory and %s registered witnesses in tools, measured today\n' "$1" "$2" > "$PEN/caravan/README.md"
+  printf '**Status:** Checkable -- %s modules in this directory and %s registered witnesses in tools, measured today\n\n**[`LADDER.md`](LADDER.md)** holds the full table of all %s modules.\n' "$1" "$2" "$3" > "$PEN/caravan/README.md"
 }
 run_scan() {
   CARAVAN_DIR="$PEN/caravan" CARAVAN_README="$PEN/caravan/README.md" CARAVAN_TOOLS_DIR="$PEN/tools" CARAVAN_ROSTER_FILE="$PEN/roster.rish" sh tools/fixtures/c/caravan_door_count_scan.sh
 }
 
-write_door 2 1
+write_door 2 1 2
 run_scan >/dev/null
-echo '1 free: measured module and witness counts pass'
-write_door 1 1
+echo '1 free: measured module, witness, and ladder counts pass'
+write_door 1 1 2
 if run_scan >/dev/null 2>&1; then exit 1; fi
 echo '2 bitten: a stale module count refuses'
-write_door 2 2
+write_door 2 2 2
 if run_scan >/dev/null 2>&1; then exit 1; fi
 echo '3 bitten: a stale witness count refuses'
-echo 'control_cases=3'
+write_door 2 1 1
+if run_scan >/dev/null 2>&1; then exit 1; fi
+echo '4 bitten: a stale ladder count refuses'
+echo 'control_cases=4'
 echo 'control_fail=0'
 echo 'control_verdict=ok'
