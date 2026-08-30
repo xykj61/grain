@@ -110,7 +110,7 @@ the plan has quietly stopped writing to them, in the box they already read.
 Each later ring imports an earlier one, or restates its shape one step further out, so every rung
 stands as it was written and the ladder reads as a history as well as a design.
 
-**[`LADDER.md`](LADDER.md)** holds the full table of all 110 modules and the record of what each
+**[`LADDER.md`](LADDER.md)** holds the full table of all 114 modules and the record of what each
 rung proves and why it exists.
 
 ## The shared harness

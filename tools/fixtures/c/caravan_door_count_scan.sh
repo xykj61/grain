@@ -14,10 +14,12 @@ modules=$(printf '%s\n' "$module_out" | sed -n 's/^modules_on_disk=//p')
 witnesses=$(printf '%s\n' "$roster_out" | sed -n 's/^ROSTER_DISK //p')
 door_modules=$(sed -n 's/^\*\*Status:\*\* Checkable -- \([0-9][0-9]*\) modules.*/\1/p' "$README")
 door_witnesses=$(sed -n 's/^\*\*Status:\*\*.*and \([0-9][0-9]*\) registered witnesses.*/\1/p' "$README")
+ladder_modules=$(sed -n 's/^\*\*\[`LADDER.md`\].*all \([0-9][0-9]*\) modules.*/\1/p' "$README")
 
 echo "modules_measured=$modules modules_declared=${door_modules:-unread}"
 echo "witnesses_measured=$witnesses witnesses_declared=${door_witnesses:-unread}"
-if [ -n "$door_modules" ] && [ -n "$door_witnesses" ] && [ "$modules" = "$door_modules" ] && [ "$witnesses" = "$door_witnesses" ]; then
+echo "ladder_modules_declared=${ladder_modules:-unread}"
+if [ -n "$door_modules" ] && [ -n "$door_witnesses" ] && [ -n "$ladder_modules" ] && [ "$modules" = "$door_modules" ] && [ "$witnesses" = "$door_witnesses" ] && [ "$modules" = "$ladder_modules" ]; then
   echo "verdict=ok"
   exit 0
 fi

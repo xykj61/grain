@@ -77,9 +77,10 @@ assert door.out contains "verdict=ok" else "caravan-ladder-roster: the door coun
 let door_control = run ["sh" "tools/fixtures/c/caravan_door_count_control.sh"]
 say door_control.out
 assert door_control.ok else "caravan-ladder-roster: the door-count control must complete"
-assert door_control.out contains "1 free: measured module and witness counts pass" else "caravan-ladder-roster: the honest door seam must pass"
+assert door_control.out contains "1 free: measured module, witness, and ladder counts pass" else "caravan-ladder-roster: the honest door seam must pass"
 assert door_control.out contains "2 bitten: a stale module count refuses" else "caravan-ladder-roster: module-count drift must bite"
 assert door_control.out contains "3 bitten: a stale witness count refuses" else "caravan-ladder-roster: witness-count drift must bite"
+assert door_control.out contains "4 bitten: a stale ladder count refuses" else "caravan-ladder-roster: ladder-count drift must bite"
 
 say ""
 say "GREEN: caravan-ladder-roster -- the ladder table and the caravan directory are one set, gated at zero in four readings and proven both ways on real directories."
