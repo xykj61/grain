@@ -58,10 +58,10 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `0ec483b86b` -- this round's own.
+**Git nib:** `3a25f61e23` -- this round's own.
 
-**Now.** **The borrowed-number loom stands at zero; the door's `env` half travelled to Silence and
-its `uid` half did not. Mystery raises the Lotus ladder to B.**
+**Now.** **The roster's reach is measured for the first time: it hears 603 of this tree's 1,756
+guards, and 21 of the 46 blind ones run are red. Mystery raises the Lotus ladder to B.**
 
 **The live front** (condensed `20260830.012039`; the checkpoint holds the departing accounts,
 the day shelves every landed lap):
@@ -84,29 +84,28 @@ clone seats `ww` (`grain-ww/grain`, gate %1) and `.git/ssh_config_jail`.
 
 **Sibling finds:** Sound owns two bare labels in `lattice/README.md` and the WADE<N> mark in
 `pond/apps/lantern_face_theme.rye`; Mystery's module-label guard fails open on BSD grep, portable
-it finds two elder labels in `tools/gen/chapter/fascia_metric_v0.rish`. **New (%358):**
-`shape-brush-parse-error-count.glow` reads a real **C+ 75** now, and its guard asserts a literal
-`example    13`, so an honest fourteenth ParseError path reds
+it finds two elder labels in `tools/gen/chapter/fascia_metric_v0.rish`. **(%358):** `shape-brush-parse-error-count.glow` reads a real **C+ 75**, and its guard asserts a
+literal `example    13`, so an honest fourteenth ParseError path reds
 `src_first_resident_witness.rish` -- Sound's and Mind's, named not touched.
 
 **Still open:** `glow/rune_shape.rye` keeps width custody; Mind keeps the reconnect stash,
-`%281`/`%291`, and two `enclosure.conf` pins. **Loom BUILT** (%357): `borrowed_number` holds every
-tracked Rishi assertion spelling a named file's size or digest at **zero**, `lap`, 14 pen
-behaviours; its first run found **4** sites in two GISM J6 witnesses pinning a THIRD document, both
-reading from disk now. `%358` closed: the card read prose from `//` and `#` alone, so 438 `.glow`
-and 8 `.brush` files measured zero words and every `src/shape/` desk graded C+ 75. `%350`-`%352`
-folded.
-**Rosters `20260830`, `tree_moved=no`:** `grain-hush` 96 cold / 97 hot, gate %7 the only standing
-red -- the two generated pages red at `git add`, green once the commit's hook rewrote them;
+`%281`/`%291`, and two `enclosure.conf` pins. **Loom BUILT** (%360): `unheard_guard` holds the
+guards this roster never reaches -- **1,153**, 41 of them choirs -- under a ceiling that only
+falls, `lap` on 5s, 27 pen behaviours. **%360 is a GATE for you:** the
+wall exempts the seed root by the subject `crashed-meteor`, `publish-seed.sh` still writes `Grain
+OS -- initial public seed`, and two rules spell it two more ways, so the wall REFUSES the
+publisher's own commit and the next seed publish fails at step 4/6. Which spelling is the seed's is
+yours. `%359` books the runner's missing lock. `%353`-`%355` folded.
+**Rosters `20260830`, `tree_moved=no`:** `grain-hush` 97 cold, gate %7 the only standing red;
 `grain-silence` 96 cold, gate %7 and `pond_enclosure_door`.
 **The falsifier is ANSWERED, and it splits.** `env` travelled; the door half did not --
 `door_disagreements=1` at `user`, `derived=502 metal=unread`, the probe's `uid $(id -u)` empty
 while `entry` is executable. Gate %5, named rather than touched.
 **Named, not taken:** `pond/enclosure_policy.kyri` stands at 8,120 of 8,192, nearly all of it the
 comment that makes it auditable; `entry`'s paragraph meets that wall, and widening it is yours (%347).
-**Next doors.** Dream: Kumara, then Caravan. Hush: how many unrostered guards are red now -- the
-loom's blind half. Silence: `max_name`, the last Tablecloth bound with no desk, which %354 proved
-carries an alphabet as well as a length.
+**Next doors.** Dream: Kumara, then Caravan. Hush: the runner's lock (%359), then the 41 silent
+choirs. Silence: `max_name`, the last Tablecloth bound with no desk, which %354 proved carries an
+alphabet as well as a length.
 ---
 ## Landed arcs
 
@@ -221,7 +220,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260830.072125` | The loom %357 named is built -- `borrowed_number` holds a spelled file size or digest at zero, and its first run found four | [log](../session-logs/date/20260830/20260830-072125_the-loom-that-reads-a-borrowed-number.kyri) |
+| `20260830.100059` | The roster's reach measured -- 603 of 1,756 guards heard, 1,153 blind, 21 of 46 run red, and the seed wall refusing its own publisher | [log](../session-logs/date/20260830/20260830-100059_the-guards-nobody-runs.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it.
 

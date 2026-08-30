@@ -1,0 +1,78 @@
+# tools/u/unheard_guard_witness.rish -- a guard that is never run guards nothing.
+#   rishi/bin/rishi run tools/u/unheard_guard_witness.rish
+#
+# WHAT IT STANDS OVER. tools/fixtures/u/unheard_guard_scan.sh, which reads every tracked witness
+# and choir outside the fixture pens, closes the set the standing roster can reach, and holds the
+# remainder -- the guards nothing runs -- under a ceiling that only falls. A second, sharper
+# reading holds the unheard guards that themselves sing three or more others, because a silent
+# choir takes its whole family with it.
+#
+# WHAT IT STANDS ON. Twenty-seven behaviours proven on real git repositories in a throwaway pen by
+# tools/fixtures/u/unheard_guard_control.sh, welcomes asserted as hard as refusals: a rostered
+# guard is heard, a guard it runs is heard, reach is transitive, reach flows only out of what is
+# heard, a sibling named only in a comment stays unheard, fixture-pen material is never population,
+# both ceilings refuse from both sides on one pen, an empty population refuses, an empty roster
+# refuses under its own name, a missing roster reads the same, and the scan refuses outside a
+# repository rather than reading the filesystem.
+#
+# WHY THIS EXISTS. REDS %357 found three witnesses of one family red at HEAD, each failing since
+# the day a document they pinned was edited, and none of them on the standing roster -- so a
+# 96-guard cold pass read 95 green while three guards outside it had been failing for days. REDS
+# %219 was the same shape one layer up: a whole choir standing off the roster, which the ledger
+# named a refusal nobody receives. The roster's own header already writes both halves of the law --
+# a guard that cannot red guards nothing, and a guard that is never run guards nothing either. The
+# first half has had a meter for months. This is the second half's.
+#
+# WHAT IT DOES NOT REACH. Whether a hand CAN run a guard. A witness invoked from a README, a
+# launcher, or a seat prompt is perfectly runnable and still unheard here, because the reading
+# measures what the standing roster hears on a lap nobody is watching -- which is the population
+# REDS %357 was drawn from.
+#
+# Purely local: no key, no signature, no network, no funds, no real device.
+
+say "unheard-guard: Language EN -- a guard that is never run guards nothing."
+say "unheard-guard: Style Gauge Meter -- the reading is counted, its ceiling only falls, and every refusal is proven from both sides."
+say "unheard-guard: Lens TAME -- safety first; a generous reading under-reports and can never invent a red."
+
+let green = run ["sh" "tools/fixtures/u/unheard_guard_scan.sh"]
+say green.out
+assert green.ok else "unheard-guard: the living measure must exit 0 -- ${green.out}"
+assert green.out contains "verdict=ok" else "unheard-guard: want verdict ok -- ${green.out}"
+assert green.out contains "unheard_ceiling=1153" else "unheard-guard: the ceiling stands where it was measured -- a ceiling only falls"
+assert green.out contains "unheard_choir_ceiling=41" else "unheard-guard: the choir ceiling stands where it was measured"
+
+# THE VACUUMS, closed before the count is believed. A reading that reaches no guards prints zero
+# unheard, and a zero nobody planted looks exactly like a heard tree (REDS %240). Both vacuums are
+# proven on real repositories by the control below; this leg names them so a control that quietly
+# dropped one could not read green here.
+
+# THE CEILING FROM BOTH SIDES, ON THE LIVING TREE. This ratchet sits well above zero, so one under
+# the live reading exists without planting anything: the same tree refuses at unheard-1 and passes
+# at the seated ceiling. The number is read out of the scan's own output rather than spelled here,
+# so this leg cannot drift away from the reading it proves.
+let under = run ["sh" "-c" "n=$(sh tools/fixtures/u/unheard_guard_scan.sh | sed -n 's/^unheard=//p'); UNHEARD_GUARD_CEILING=$((n-1)) sh tools/fixtures/u/unheard_guard_scan.sh"]
+assert (under.ok == false) else "unheard-guard: a ceiling one under the live reading must refuse"
+assert under.out contains "verdict=over_ceiling" else "unheard-guard: want the wide refusal named -- ${under.out}"
+
+let choir_under = run ["sh" "-c" "n=$(sh tools/fixtures/u/unheard_guard_scan.sh | sed -n 's/^unheard_choirs=//p'); UNHEARD_CHOIR_CEILING=$((n-1)) sh tools/fixtures/u/unheard_guard_scan.sh"]
+assert (choir_under.ok == false) else "unheard-guard: a choir ceiling one under the live reading must refuse"
+assert choir_under.out contains "verdict=over_choir_ceiling" else "unheard-guard: want the choir refusal named apart from the wide one -- ${choir_under.out}"
+
+# THE READING ITSELF, proven on planted trees rather than trusted. Each leg is named here as well
+# as counted, because a control reporting fail=0 while quietly dropping a leg reports nothing.
+let control = run ["sh" "tools/fixtures/u/unheard_guard_control.sh"]
+say control.out
+assert control.ok else "unheard-guard: the control must exit 0"
+assert control.out contains "verdict=control_green" else "unheard-guard: want the control green"
+assert control.out contains "fail=0" else "unheard-guard: the control must carry no red leg"
+assert control.out contains "ok   heard counts alpha (rostered) and beta (run by alpha)" else "unheard-guard: the reach leg is missing"
+assert control.out contains "ok   delta, named only in a comment, reads unheard" else "unheard-guard: the comment leg is missing"
+assert control.out contains "ok   a witness under tools/fixtures/ is pen material, never population" else "unheard-guard: the pen-material leg is missing"
+assert control.out contains "ok   reach is transitive -- a, b, and c are all heard" else "unheard-guard: the transitive leg is missing"
+assert control.out contains "ok   y and z stay unheard: reach flows only out of what is heard" else "unheard-guard: the direction leg is missing"
+assert control.out contains "ok   a silent suite naming three rungs counts as one unheard choir" else "unheard-guard: the choir leg is missing"
+assert control.out contains "ok   a tree holding no guards refuses rather than printing a green zero" else "unheard-guard: the population vacuum leg is missing"
+assert control.out contains "ok   an empty roster refuses -- every guard would read unheard for the wrong reason" else "unheard-guard: the roster vacuum leg is missing"
+assert control.out contains "ok   outside a git repository the scan refuses rather than reading the filesystem" else "unheard-guard: the no-repository leg is missing"
+
+say "GREEN: unheard-guard -- the roster's reach is measured, the unheard remainder stands under a ceiling that only falls, both ceilings refuse one under the live reading, and every welcome is proven on a pen."
