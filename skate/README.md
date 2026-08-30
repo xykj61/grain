@@ -40,8 +40,16 @@ or replay algorithms into Swift. `ImageEditRecordClaim` admits one through forty
 the full line width proved by `image/photo_edits.rye`. `ImageEditHistory` keeps sixty-four such
 claims in order, with three thousand one hundred thirty-six payload bytes owned inline. A full
 history returns `ImageEditHistoryError.historyFull` before changing any admitted record. Surf and
-Skate are direct aliases over this history as well. This receipt is separate from the still-open
-semantic-node shape; it makes no choice about that later value model.
+Skate are direct aliases over this history as well.
+
+The first semantic snapshot now regenerates the presentable frame whole. One root plus the eight
+declared-line seats gives `AccessibilitySnapshot` nine inline node seats. Every node owns one
+closed role, 128 inline label-byte seats, and a row-local cell rect. The root admits the frame's
+one-through-128-byte at-nib identity, and the caller supplies its grid rect; each text-line node
+admits its one-through-forty already-rendered bytes. An oversized semantic source returns
+`AccessibilitySnapshotError.accessibilityTooLarge` before replacing any of the last whole
+snapshot's nine physical seats. Surf and Skate are direct aliases over this value too. The later
+AppKit translation, interactive roles, and action vocabulary remain outside this headless type.
 
 ## Alias-sameness
 
@@ -73,6 +81,10 @@ MIND-owned instance.
   slot may wrap while its public head and tail counts stay linear.
 - An Image edit history owns sixty-four inline record seats and forty-nine inline bytes per record.
   It keeps admitted record claims in order and never evicts one to admit another.
+- An accessibility snapshot owns exactly nine inline node seats: one frame root and eight text
+  lines. Each root label owns one through 128 bytes, each text-line label owns one through forty,
+  and every node owns row zero through seven, column start zero through thirty-nine, and a
+  one-through-forty-cell row-local rect.
 - An admitted image plane owns exactly three hundred twenty full-block cells and three hundred
   twenty palette indexes. Each index is one through seven, matching HUNK2's fixed anchor palette.
 - A Lotus meter reading owns a count from zero through two to the twenty-sixth samples, a peak no
@@ -85,6 +97,9 @@ MIND-owned instance.
   before owned state changes.
 - An empty edit record, a fiftieth record byte, and a sixty-fifth history append return named errors
   before owned history state changes.
+- An empty label, a 129-byte root label, a forty-first text-line byte, an invalid row, column start,
+  or cell span, and a tenth semantic node return named errors before a node or snapshot replaces
+  its prior whole value.
 
 The input collection belongs to the caller. The core checks its count, then copies it into
 `InlineArray` storage. This promise covers Grain-owned frame state. AppKit, Swift, callers, and the
@@ -143,6 +158,16 @@ the next append returns `counterExhausted`. A value-copy comparison reads both c
 physical seats after the full and counter-exhaustion refusals, proving all 130 stored values stay
 unchanged in each case. A compile-time assignment proves that Surf and Skate name the same
 event-ring identity.
+
+The accessibility controls regenerate one exact frame root and eight forty-byte line nodes. The
+root carries all 128 at-nib bytes, every line keeps its rendered bytes and grid row, and compile-time
+assignments pass the finished snapshot through both peer names. Repeating one regeneration produces
+the same node values and physical seats. Empty labels, a 129-byte frame label, a forty-first line
+byte, rows and column starts on both sides of their bounds, empty and over-wide cell counts, and a
+span crossing column forty all refuse by name. A ten-node source returns `accessibilityTooLarge`
+with the prior count, all nine physical seats, and every node's 128 inline label bytes unchanged.
+Regenerating a shorter frame also proves that every retired physical seat is cleared before the new
+whole snapshot appears.
 
 This slice establishes the core contract alone. Visual form, animation, domain, identity, release,
 and model settings remain later seats at their existing custody gates. Swift does not decode QOI,

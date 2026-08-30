@@ -1,14 +1,16 @@
 # tools/s/skate_native_core_witness.rish -- the fixed Brushstroke Frame reaches native Surf and Skate.
 #
 # The Swift target owns a 40-by-8 cell grid, eight line seats, a 128-byte nib identity, eight
-# palette seats, a 128-seat event ring, and Image's 64-by-49-byte edit history in InlineArray
-# storage. A frame carries Brushstroke's own one-through-eight declared line ceiling. Surf and
-# Skate are compile-time aliases over the same frame, media receipt, event ring, and edit history.
+# palette seats, a 128-seat event ring, Image's 64-by-49-byte edit history, and a nine-node
+# semantic snapshot in InlineArray storage. A frame carries Brushstroke's own one-through-eight
+# declared line ceiling. Surf and Skate are compile-time aliases over the same frame, media receipt,
+# event ring, edit history, and accessibility snapshot.
 # The controls prove the living fold; media and history bounds; the
 # refusing frame edges with all 459 Brushstroke values preserved; both event-ring refusals with all
-# 130 stored ring values preserved; a full edit history with all 3,136 payload bytes preserved;
-# FIFO order across physical wrap; and unsigned-counter refusal before arithmetic or ring mutation.
-# AppKit and C stay outside this headless core. Image keeps the edit grammar and replay algorithms.
+# 130 stored ring values preserved; a full edit history with all 3,136 payload bytes preserved; a
+# ten-node accessibility source with all nine prior physical seats preserved; FIFO order across
+# physical wrap; and unsigned-counter refusal before arithmetic or ring mutation. AppKit and C stay
+# outside this headless core. Image keeps the edit grammar and replay algorithms.
 
 say "skate-native-core: Language EN -- Brushstroke lends one bounded Frame; Surf and Skate are peer names for its one native grid."
 say "skate-native-core: Style Gauge Door -- the sizes, owner, refusal, and platform edge are named."
@@ -21,6 +23,14 @@ assert shape.out contains "SHAPE_OK" else "skate-native-core: fixed shape did no
 let history_shape = run ["/bin/bash" "-c" "grep -q 'InlineArray<49, UInt8>' skate/Sources/SkateCore/ImageEditHistory.swift && grep -q 'InlineArray<64, ImageEditRecordClaim?>' skate/Sources/SkateCore/ImageEditHistory.swift && grep -q 'public static let imageEditCapacity = 64' skate/Sources/SkateCore/ImageEditHistory.swift && grep -q 'public static let imageEditRecordBytes = 49' skate/Sources/SkateCore/ImageEditHistory.swift && grep -q 'pub const max_edits: u32 = 64;' image/photo_edits.rye && grep -q 'pub const per_line_bound: u32 = 49;' image/photo_edits.rye && grep -q 'public typealias SurfImageEditHistory = ImageEditHistory' skate/Sources/SkateCore/ImageEditHistory.swift && grep -q 'public typealias SkateImageEditHistory = ImageEditHistory' skate/Sources/SkateCore/ImageEditHistory.swift && echo HISTORY_SHAPE_OK"]
 assert history_shape.ok else "skate-native-core: Image history shape drifted from its Rye contract"
 assert history_shape.out contains "HISTORY_SHAPE_OK" else "skate-native-core: Image history shape did not hold"
+
+let accessibility_shape = run ["/bin/bash" "-c" "grep -q 'public static let accessibilityNodeCapacity = 1 + rows' skate/Sources/SkateCore/AccessibilitySnapshot.swift && grep -q 'InlineArray<128, UInt8>' skate/Sources/SkateCore/AccessibilitySnapshot.swift && grep -q 'InlineArray<9, AccessibilityNode?>' skate/Sources/SkateCore/AccessibilitySnapshot.swift && grep -q 'case .frame: labelLimit = SkateCoreBounds.nibBytes' skate/Sources/SkateCore/AccessibilitySnapshot.swift && grep -q 'case .textLine: labelLimit = SkateCoreBounds.columns' skate/Sources/SkateCore/AccessibilitySnapshot.swift && grep -q 'case accessibilityTooLarge(limit: Int)' skate/Sources/SkateCore/AccessibilitySnapshot.swift && grep -q 'func hasSameStoredState(as other: borrowing AccessibilitySnapshot)' skate/Sources/SkateCore/AccessibilitySnapshot.swift && grep -q 'public typealias SurfAccessibilitySnapshot = AccessibilitySnapshot' skate/Sources/SkateCore/AccessibilitySnapshot.swift && grep -q 'public typealias SkateAccessibilitySnapshot = AccessibilitySnapshot' skate/Sources/SkateCore/AccessibilitySnapshot.swift && echo ACCESSIBILITY_SHAPE_OK"]
+assert accessibility_shape.ok else "skate-native-core: nine-node accessibility shape or atomic refusal seam missing"
+assert accessibility_shape.out contains "ACCESSIBILITY_SHAPE_OK" else "skate-native-core: accessibility shape did not hold"
+
+let accessibility_parity = run ["/bin/bash" "-c" "grep -q 'pub const max_frame_lines: u32 = 8;' brushstroke/brush_parse.rye && grep -q 'pub const brush_skate_cols: u32 = 40;' brushstroke/brush_parse.rye && grep -q 'pub const brush_skate_rows: u32 = max_frame_lines;' brushstroke/brush_parse.rye && grep -q 'pub const max_pin_bytes: u32 = 128;' brushstroke/brush_parse.rye && grep -q 'public static let columns = 40' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'public static let rows = 8' skate/Sources/SkateCore/FrameGrid.swift && grep -q 'public static let nibBytes = 128' skate/Sources/SkateCore/FrameGrid.swift && echo ACCESSIBILITY_PARITY_OK"]
+assert accessibility_parity.ok else "skate-native-core: Swift accessibility bounds drifted from Brushstroke's Rye constants"
+assert accessibility_parity.out contains "ACCESSIBILITY_PARITY_OK" else "skate-native-core: accessibility parity did not hold"
 
 let boundary = run ["sh" "-c" "if grep -Eq 'import (AppKit|Foundation)|Unsafe|(^|[^[:alnum:]_])Array<|(^|[^[:alnum:]_])Dictionary<|(^|[^[:alnum:]_])ContiguousArray<|(^|[^[:alnum:]_])Set<' skate/Sources/SkateCore/*.swift; then exit 1; else echo BOUNDARY_OK; fi"]
 assert boundary.ok else "skate-native-core: platform import, unsafe seam, or dynamic owned collection entered the core"
@@ -66,11 +76,16 @@ assert test.out contains "testEventCounterRefusesBeforeUnsignedWrap" else "skate
 assert test.out contains "testEventRingCounterExhaustionRefusesWithoutMutation" else "skate-native-core: event counter refusal did not prove whole-state preservation"
 assert test.out contains "testEventRingRefusalsPreserveEveryStoredSeat" else "skate-native-core: event refusals did not compare every stored seat"
 assert test.out contains "testSurfAndSkateEventRingAliasesShareOneIdentity" else "skate-native-core: event alias-sameness not exercised"
+assert test.out contains "testAccessibilitySnapshotRegeneratesRootAndEightLinesAtExactBounds" else "skate-native-core: exact nine-node accessibility snapshot not exercised"
+assert test.out contains "testAccessibilityRegenerationIsDeterministic" else "skate-native-core: repeated accessibility regeneration did not prove one stable value"
+assert test.out contains "testAccessibilityTooLargeRefusesWithLastWholeSnapshotUnchanged" else "skate-native-core: accessibility overflow did not preserve every prior physical seat"
+assert test.out contains "testAccessibilityRegenerationClearsEveryRetiredPhysicalSeat" else "skate-native-core: accessibility regeneration did not clear retired scratch seats"
+assert test.out contains "testAccessibilityNodeBoundsRefuseBeforeAValueExists" else "skate-native-core: accessibility label and rect bounds not exercised"
 # The verdict reads ZERO FAILURES rather than an exact test count -- a pinned "21" made every
 # honestly added test red this witness, which is the candidate-proof-boundary custody stop of
 # 20260828. The named-test asserts above still hold the floor: each seated behavior must appear.
 assert test.out contains ", with 0 failures" else "skate-native-core: zero-failure verdict missing"
 assert test.out contains "Executed " else "skate-native-core: the suite must report how many tests it executed"
 
-say "RED and GREEN paths proven -- one deterministic fold lives; the named identity, media, history, event, exact-bound, refusal, and mutation claims hold."
-say "GREEN: skate-native-core -- Surf and Skate share one Brushstroke Frame, event-ring, and Image edit-history identity, storage shape, and refusal contract."
+say "RED and GREEN paths proven -- one deterministic fold lives; the named identity, media, history, event, accessibility, exact-bound, refusal, and mutation claims hold."
+say "GREEN: skate-native-core -- Surf and Skate share one Brushstroke Frame, event-ring, Image edit-history, and semantic-snapshot identity, storage shape, and refusal contract."
