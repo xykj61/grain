@@ -1,0 +1,14 @@
+::  name       lantern face text budget gate
+::  shape      text bytes - int (@u32) -> lawful - int (@u32)
+::  invariant  answers 1 while text stays at or under the 38-byte face budget; answers 0 past it
+::  example    38 -> 1 · 39 -> 0
+::  readers    Lantern · Realidream · Glow
+::  nib        lantern-face-v0 · the asking voice's wall spoken in Glow (20260829)
+::
+::  A face row leads with a two-byte voice mark on the forty-column proof grid, so
+::  its text budget is thirty-eight bytes -- max_face_text in
+::  pond/apps/lantern_face.rye, refused by name rather than clipped. This desk is
+::  that wall made runnable in Glow; the witness holds the two spellings to one
+::  number so neither drifts alone.
+|=  sample=@u32
+?:  (gth sample 38)  0  1

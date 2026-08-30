@@ -1,0 +1,173 @@
+//! lantern_face.rye -- the first Lantern face: an asking-voice exchange on the Skate grid.
+//!
+//! Lantern is the asking voice -- the honest question and the honest "i don't know"
+//! (context/QUIN.md). This face paints one bounded exchange onto the 40x8 proof grid:
+//! the question row, the answer row, and a marker row naming how settled the answer is.
+//! The face's own law is the voice's contract made structural: **an unknown that
+//! carries an answer refuses** (AnswerWithUnknown), so uncertainty is named rather
+//! than papered over, and a settled or proposed row with no answer refuses the other
+//! way (EmptyAnswer). Width refusals come before any mutation -- the grid's own
+//! put_line clips at forty columns silently, and an honest face refuses rather than
+//! clips.
+//!
+//! Additive by construction: it imports brushstroke/skate_grid alone and calls only
+//! its public functions, the same discipline the realidream view family keeps.
+//!
+//!   rye build pond/apps/lantern_face.rye -femit-bin=pond/bin/lantern-face
+//!   pond/bin/lantern-face
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const skate = @import("brushstroke/skate_grid.rye");
+
+const lantern_face_version = "20260829.233003";
+
+// The face lives on the .brush proof geometry -- forty columns by eight rows, the
+// same 40x8 that brush_parse.rye pins as brush_skate_cols and brush_skate_rows --
+// so a face fits any surface the brush pipeline already paints.
+pub const face_cols: u32 = 40;
+pub const face_rows: u32 = 8;
+
+// Every row leads with a two-byte voice mark ("? ", ". ", "~ ", "= "), so the text
+// budget is the forty columns minus that prefix -- refused at the edge, never clipped.
+pub const prefix_width: u32 = 2;
+pub const max_face_text: u32 = 38;
+
+// The honest answer when there is none -- the asking voice's own words, first-class.
+pub const unknown_line = "~ i don't know";
+
+pub const FaceKind = enum { settled, proposed, unknown };
+
+pub const FaceError = error{
+    EmptyQuestion,
+    QuestionTooWide,
+    AnswerTooWide,
+    EmptyAnswer,
+    AnswerWithUnknown,
+};
+
+/// Compose one prefixed row into the caller's buffer and hand back the slice.
+fn face_row(mark: *const [2]u8, text: []const u8, buf: *[face_cols]u8) []const u8 {
+    // invariant: the caller validated the width, so the row always fits the grid.
+    assert(text.len <= @as(usize, max_face_text));
+    buf[0] = mark[0];
+    buf[1] = mark[1];
+    for (text, 0..) |b, i| buf[@as(usize, prefix_width) + i] = b;
+    const n: usize = @as(usize, prefix_width) + text.len;
+    // invariant: a composed row never exceeds the face's forty columns.
+    assert(n <= @as(usize, face_cols));
+    return buf[0..n];
+}
+
+/// The answer row's text for a kind -- unknown speaks the honest marker itself.
+pub fn answer_line(kind: FaceKind, answer: []const u8, buf: *[face_cols]u8) []const u8 {
+    // invariant: unknown carries no answer text; the validators refused it upstream.
+    assert(kind != .unknown or answer.len == 0);
+    // invariant: a settled or proposed answer fits the text budget.
+    assert(answer.len <= @as(usize, max_face_text));
+    if (kind == .unknown) return unknown_line;
+    return face_row(". ", answer, buf);
+}
+
+fn marker_text(kind: FaceKind) []const u8 {
+    return switch (kind) {
+        .settled => "settled",
+        .proposed => "proposed",
+        .unknown => "unknown",
+    };
+}
+
+/// Paint one exchange onto the grid's first three rows. Every refusal lands before
+/// the first mutation, so a refused face leaves the grid exactly as it found it.
+pub fn compose_face(grid: *skate.Grid, question: []const u8, answer: []const u8, kind: FaceKind) FaceError!void {
+    // invariant: the face composes onto its own geometry, never a lookalike grid.
+    assert(grid.cols == face_cols);
+    assert(grid.rows >= 3);
+    if (question.len == 0) return error.EmptyQuestion;
+    if (question.len > @as(usize, max_face_text)) return error.QuestionTooWide;
+    if (answer.len > @as(usize, max_face_text)) return error.AnswerTooWide;
+    if (kind == .unknown) {
+        // The voice's contract made structural: an unknown that carries an answer
+        // is an invented certainty, and the face refuses it by name.
+        if (answer.len != 0) return error.AnswerWithUnknown;
+    } else {
+        if (answer.len == 0) return error.EmptyAnswer;
+    }
+    var qbuf: [face_cols]u8 = undefined;
+    var abuf: [face_cols]u8 = undefined;
+    var mbuf: [face_cols]u8 = undefined;
+    grid.put_line(0, face_row("? ", question, &qbuf));
+    grid.put_line(1, answer_line(kind, answer, &abuf));
+    grid.put_line(2, face_row("= ", marker_text(kind), &mbuf));
+}
+
+fn expect_row(grid: *skate.Grid, row: u32, want: []const u8) bool {
+    const cells = grid.row_cells(row);
+    // invariant: the readback row is the full forty columns the grid owns.
+    assert(cells.len == @as(usize, face_cols));
+    if (want.len > cells.len) return false;
+    return std.mem.eql(u8, cells[0..want.len], want);
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    var grid = try skate.Grid.init(garden, face_cols, face_rows);
+
+    try compose_face(&grid, "what holds the nine nodes", "the eight-line ceiling plus one", .settled);
+    assert(expect_row(&grid, 0, "? what holds the nine nodes"));
+    assert(expect_row(&grid, 1, ". the eight-line ceiling plus one"));
+    assert(expect_row(&grid, 2, "= settled"));
+    print("lantern-face: settled exchange paints its three rows -- GREEN\n", .{});
+
+    var grid2 = try skate.Grid.init(garden, face_cols, face_rows);
+    try compose_face(&grid2, "does the pier hold wayland parity", "", .unknown);
+    assert(expect_row(&grid2, 1, unknown_line));
+    assert(expect_row(&grid2, 2, "= unknown"));
+    print("lantern-face: the honest i-don't-know is a first-class answer -- GREEN\n", .{});
+
+    var grid3 = try skate.Grid.init(garden, face_cols, face_rows);
+    try compose_face(&grid3, "which door opens next", "the lantern face itself", .proposed);
+    assert(expect_row(&grid3, 2, "= proposed"));
+    print("lantern-face: proposed marks plainly what is not yet settled -- GREEN\n", .{});
+
+    const wide = "x" ** 39;
+    var grid4 = try skate.Grid.init(garden, face_cols, face_rows);
+    if (compose_face(&grid4, wide, "a", .settled)) |_| {
+        return error.WideQuestionAccepted;
+    } else |err| {
+        // invariant: the width refusal names itself rather than clipping.
+        assert(err == error.QuestionTooWide);
+    }
+    assert(expect_row(&grid4, 0, " " ** 8));
+    print("lantern-face: a 39-byte question refuses by name, grid untouched -- GREEN\n", .{});
+
+    var grid5 = try skate.Grid.init(garden, face_cols, face_rows);
+    if (compose_face(&grid5, "is this settled", "yes it is", .unknown)) |_| {
+        return error.InventedCertaintyAccepted;
+    } else |err| {
+        assert(err == error.AnswerWithUnknown);
+    }
+    print("lantern-face: an unknown carrying an answer refuses -- the voice's law -- GREEN\n", .{});
+
+    var grid6 = try skate.Grid.init(garden, face_cols, face_rows);
+    if (compose_face(&grid6, "", "an answer", .settled)) |_| {
+        return error.EmptyQuestionAccepted;
+    } else |err| {
+        assert(err == error.EmptyQuestion);
+    }
+    if (compose_face(&grid6, "a question", "", .proposed)) |_| {
+        return error.EmptyAnswerAccepted;
+    } else |err| {
+        assert(err == error.EmptyAnswer);
+    }
+    print("lantern-face: empty question and empty settled answer refuse -- GREEN\n", .{});
+
+    const exact = "y" ** 38;
+    var grid7 = try skate.Grid.init(garden, face_cols, face_rows);
+    try compose_face(&grid7, exact, exact, .settled);
+    print("lantern-face: the exact 38-byte budget welcomes on both rows -- GREEN\n", .{});
+
+    print("GREEN: lantern-face -- the asking voice has a face, and its uncertainty law holds.\n", .{});
+    return 0;
+}
