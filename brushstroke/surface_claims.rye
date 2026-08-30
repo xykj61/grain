@@ -51,7 +51,11 @@ pub fn claims_for(pixels: []const u8, stride: u32, width: u32, height: u32, bg: 
     // invariant: contract v1 takes packed rows -- the stride IS the visible width -- so the
     // buffer and the picture are one span and the digest is one bounded call.
     assert(stride == width * bytes_per_pixel);
-    assert(pixels.len >= @as(usize, stride) * @as(usize, height));
+    // invariant: exact length, not merely enough -- the packed-rows contract above says the
+    // buffer IS the picture, and a longer buffer means some caller's packing claim is false.
+    // Was `>=` until 20260829, admitting what the comment refused; Mind's lap caught the drift
+    // from a bench that could not touch Rye, and the orbit rule carried it here.
+    assert(pixels.len == @as(usize, stride) * @as(usize, height));
     // invariant: the whole visible buffer fits the house hasher's own named ceiling.
     assert(width * bytes_per_pixel * height <= keccak.max_message_bytes);
 
