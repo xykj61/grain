@@ -23,7 +23,9 @@
 # Transcripts land INSIDE the tree (session-output/<seat>.txt rendered, <seat>.jsonl raw
 # for the claude seats), per the read-scope law's shared window -- /tmp is not durable in
 # every enclosure. The gates-only sentinel is a file because the stream echoes the prompt,
-# which contains the words GATES-ONLY, so a grep on the stream would false-stop.
+# which contains the words GATES-ONLY, so a grep on the stream would false-stop. jq runs
+# --unbuffered: with a tee behind it its stdout is a pipe rather than a tty, and a
+# block-buffering jq shows a silent terminal until kilobytes accumulate (20260829).
 set -eu
 
 seat=${1:-}
@@ -62,7 +64,7 @@ run_lap() {
     claude --dangerously-skip-permissions --effort max --output-format stream-json --verbose \
       -p "$(cat "$prompt_file")" \
       | tee "session-output/${seat}.jsonl" \
-      | jq -Rrj -f tools/s/stream_render.jq \
+      | jq --unbuffered -Rrj -f tools/s/stream_render.jq \
       | tee "session-output/${seat}.txt"
     ;;
   esac
@@ -70,6 +72,7 @@ run_lap() {
 
 while [ "$(date +%s)" -lt "$deadline" ]; do
   rm -f .loop-gates-only
+  echo "fleet-loop: lap $((laps + 1)) opens at $(TZ=America/New_York date +%H:%M:%S)"
   if ! sh tools/f/fleet_round_open.sh; then
     echo 'ROUND-OPEN: fetch refused; retrying in 60s'
     sleep 60
