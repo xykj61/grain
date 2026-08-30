@@ -66,7 +66,8 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 ring, lifecycle, parity claims, **zero Swift linked** -- and a ten-rung second pass carried the
 core to iOS: witnesses GREEN in a booted simulator, a real app, real touch through the ring,
 parity pins identical on **two OSes**. Tri-OS waits on the pier's `wayland-seed parity`.
-Account: `session-logs/date/20260829/`. The first Skate laws now speak in Glow (`src/gate/`).
+Account: `session-logs/date/20260829/`. The first Skate laws speak in Glow (`src/gate/`), and
+`mul` landed the claims law on metal (`20260829.215618`).
 
 **The door's first duty** (`20260829-143651`): every mark in Pond's grammar described the ROOM;
 none said who walks through the DOOR. `user` seats first of three duties -- `invoking`, not a
@@ -87,9 +88,8 @@ row" is rewritten to say what the row now is.
 
 **Other Pond doors:** `spool_cloth` promises 4 large artifacts over a store holding **2** (%341).
 
-**Glow rune door** (landed `20260829.215618`): `mul` speaks in cond operands -- the area
-widens to u64, and the claims law runs at `src/gate/gate-surface-lit-area-u32.glow`
-(golden 16268 vs 704x288 lawful; the wrap probe proven on metal).
+**CION campaign** SEATED `20260829.222718`: Mystery molts rung marks to stamp-and-name
+(`expanding-prompts/20260829-221841_cion-resumes-the-rung-mark-molt-campaign.md`); wall widened.
 
 **MANY HANDS** (granted `20260828`): custody stays MANUAL, one writer per checkout. Root
 `SKILL.md`; every clone seats `ww` (`grain-ww/grain`, gate %1) and `.git/ssh_config_jail`.

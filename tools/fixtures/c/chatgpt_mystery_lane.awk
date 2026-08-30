@@ -22,10 +22,17 @@ BEGIN {
   # QA rows, index rows, and its own session log on its day shelf. The rooms
   # below are the prose and ledger surfaces those campaigns touch. A or M only,
   # exactly as the cardinal wall keeps it: a fold or shed DELETES, and deletion
-  # stays a hand's act -- a campaign lap that needs one parks it. Code lanes,
-  # agent rules, and the root doors stay outside; a candidate wanting them
-  # parks its question rather than widening its own wall.
-  if (path !~ /^(session-logs|construction|context|foundations|active-designing|active-development|external-research|counsel|docs|docs-geode|expanding-prompts|waymarks)\/[A-Za-z0-9._\/-]+$/)
+  # stays a hand's act -- a campaign lap that needs one parks it. Agent rules
+  # and the root doors stay outside; a candidate wanting them parks its
+  # question rather than widening its own wall.
+  #
+  # WIDENED 20260829.222718 on the user's word: the CION rung-mark molt campaign
+  # (expanding-prompts/20260829-221841_cion-resumes-the-rung-mark-molt-campaign.md)
+  # converts landed-rung citations to stamp-and-name inside code rooms, so glow,
+  # lotus, tools, linengrow, and brushstroke join the roots. A or M only still
+  # holds, so the campaign's rename tiers (A and B) stay a hand's act, and the
+  # per-lap witness-GREEN discipline rides in the campaign page rather than here.
+  if (path !~ /^(session-logs|construction|context|foundations|active-designing|active-development|external-research|counsel|docs|docs-geode|expanding-prompts|waymarks|glow|lotus|tools|linengrow|brushstroke)\/[A-Za-z0-9._\/-]+$/)
     held = 0
   if (path ~ /(^|\/)\.\.?($|\/)/)
     held = 0

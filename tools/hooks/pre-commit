@@ -133,24 +133,40 @@ if [ -n "$moved" ] || [ -f "$owed" ]; then
     rishi/bin/rishi run tools/g/geode_libraries.rish write
 fi
 
+# The scan shell is probed, never assumed (20260829 -- Mind and Mystery, one root, two crashed
+# loops): macOS /bin/sh is the selector wrapper -- it reads /private/var/select/sh at start, and
+# a jail that denies that read leaves it half-alive, garbling exactly the substitution-plus-cd
+# shape the scans open with -- while bare `sh` from PATH was the same wrapper by another name
+# (the 20260828 deaths the pin-wall comment below records). /bin/bash consults nothing and ran
+# the full pin scan clean inside the same jail, so each candidate proves the failing shape
+# itself -- a substitution, a CDPATH-clean cd, a pwd -- before it is trusted; a bench where only
+# the wrapper answers keeps the elder spelling and refuses honestly downstream.
+scan_shell=/bin/sh
+for cand in /bin/bash bash /bin/sh; do
+  if "$cand" -c '_r=$(CDPATH= cd -- tools/fixtures/p && pwd) && [ -d "$_r" ]' 2>/dev/null; then
+    scan_shell=$cand
+    break
+  fi
+done
+
 # RULE TWO -- the ledger's headline. It moves whenever a row is booked or a fold shelf lands, so
 # the trigger is the ledger itself being staged in any way, rather than a file kind arriving.
 ledger_moved=$(git diff --cached --name-only -- construction/REDS.md 'construction/archive/REDS-*.md')
 if [ -n "$ledger_moved" ]; then
   refresh_page tools/fixtures/r/reds_ledger_headline_write.sh construction/REDS.md \
-    /bin/sh tools/fixtures/r/reds_ledger_headline_write.sh write
+    "$scan_shell" tools/fixtures/r/reds_ledger_headline_write.sh write
 fi
 
 # RULE THREE -- the living pins' byte bounds. Trigger: a rostered pin is staged at all. This rule
 # refuses rather than regenerating, and it reads the INDEX rather than the worktree, because
 # `git cat-file -s :<path>` is the size of the blob this commit will actually carry.
-# The scan is spelled /bin/sh, never bare sh: inside Mind's jail the PATH resolves sh to the
-# macOS shell selector wrapper, which reads /private/var/select/sh and dies under the deny --
-# four such deaths refused a lap of 20260828 with this rule's own over-bound prose. And a crash
-# is told from a measurement: the pin prose is spoken only when the report carries the RED
+# The scan runs under the probed $scan_shell above: bare `sh` was the selector wrapper by
+# another name (four deaths refused a lap of 20260828 with this rule's own over-bound prose),
+# and the fixed /bin/sh that repaired that fell to the same wrapper's denied read inside the
+# 20260829 jail. A crash is told from a measurement: the pin prose is spoken only when the report carries the RED
 # detail; a scan that could not measure refuses honestly in its own words, still failing closed.
 if [ -f tools/fixtures/p/pin_bound_touch_scan.sh ] && [ -f tools/fixtures/l/living_pin_guard_roster.txt ]; then
-  if ! pin_report=$(/bin/sh tools/fixtures/p/pin_bound_touch_scan.sh staged 2>&1); then
+  if ! pin_report=$("$scan_shell" tools/fixtures/p/pin_bound_touch_scan.sh staged 2>&1); then
     if echo "$pin_report" | grep -q '^detail=RED_touched_pin_over_bound'; then
       echo "pre-commit: this commit stages a living pin that is over the byte bound its own header" >&2
       echo "declares. A pin is read in one breath beside a lap, so the overage is spent back out of" >&2
@@ -162,7 +178,7 @@ if [ -f tools/fixtures/p/pin_bound_touch_scan.sh ] && [ -f tools/fixtures/l/livi
       echo "over-bound pin -- read the scan's own words below and repair the bench or the jail." >&2
       echo "$pin_report" | head -4 >&2
     fi
-    echo "  full reading: /bin/sh tools/fixtures/p/pin_bound_touch_scan.sh staged" >&2
+    echo "  full reading: $scan_shell tools/fixtures/p/pin_bound_touch_scan.sh staged" >&2
     refused=yes
   fi
 fi

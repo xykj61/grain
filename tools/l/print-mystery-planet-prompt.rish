@@ -10,7 +10,7 @@
 #   rishi/bin/rishi run tools/l/print-mystery-planet-prompt.rish
 
 let arbor = read-file "arbor/launch-mystery-chapter.arbor"
-let mystery = read-file "recursion-prompts/versions/20260829-202500_codex-mystery-macos-loop.md"
+let mystery = read-file "recursion-prompts/versions/20260829-222718_codex-mystery-macos-loop-cion.md"
 let mystery_end = (length mystery) - 1
 
 # `say arbor` adds the one blank separator after Arbor's existing final newline.
