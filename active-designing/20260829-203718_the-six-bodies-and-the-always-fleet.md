@@ -74,6 +74,17 @@ all six loops are stopped**, one hand performing every lane in one bounded round
 disjoint exactly as the table draws them. Launcher:
 `tools/l/launch-choir-synthesis-chapter.rish`.
 
+## Windows and residences -- the symlink lane rule (seated `20260830.184416`, the word granted)
+
+**The physical room owns a file; a symlink room is a window.** An edit made through a window
+lands in the owner's lane, so a lap that reaches through `comlink/` into `mantra/` or
+`amphora/`, or through `brushstroke/` into `pond/apps/`, is working the owner's room and
+answers to that room's seat -- exactly the cautious read Silence took restoring Amphora's
+file, and the ruling the spread twins already carried for the width ratchet. Two standing
+qualifiers ride with it: a tree-law ratchet touch (width, vocabulary) may be carried by any
+hand through either door, and a wall that lists rooms lists residences -- a window grants no
+lane a symlink's reach would widen.
+
 ## The closed stacks, unchanged
 
 The tree stays a library with two floors -- open shelves walked by default, closed stacks
