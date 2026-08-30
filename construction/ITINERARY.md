@@ -58,7 +58,7 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `a4e8034a28` -- this round's own.
+**Git nib:** `25235ef0ea` -- this round's own.
 
 **Now.** **LOCA lands on two operating systems; Pond's record learns who walks through its door.**
 
@@ -99,14 +99,14 @@ widens to u64, and the claims law runs at `src/gate/gate-surface-lit-area-u32.gl
 this block carried before was measured false.
 **Width:** `glow/rune_shape.rye` publishes `usize` in 5 fields and 5 accessors; 59 fixtures
 await his word. **Mind's:** the reconnect stash, `%281`/`%291`, two `enclosure.conf` pins here.
-**Roster here (cold, `tree_moved=no`, `20260829.170437`):** 94 guards, **88 green**, 6 red --
-`rule_twin` 39/36 is gate %7, `width_check` 331/329 is another body's, `pond_policy_launcher` and
-`pond_enclosure_door` are Hush's two; `geode_libraries` (32 against a fresh 33) and
-`remember_git_nib` (three commits behind) closed here. **Seat:** rostering the roster's own witness.
+**Roster here (cold and hot, `tree_moved=no`, `20260829.202116`, `grain-silence`):** 94 guards,
+**89 green**, 5 red -- gate %7, another body's, Hush's two, and `remember_git_nib`, closed by
+this round's own commit. **Seat:** rostering the roster's own witness.
 
 **Next doors.** Dream: Caravan and Tally. Hush: the Mac's 3 Pond rows -- `xargs -r` at
 `pond_enclosure_door_scan.sh:158` is a GNU extension BSD refuses, so at least one wants a repair
-rather than `host linux`; then `env`, the second door duty.
+rather than `host linux`; then `env`, the second door duty. Silence: Tablecloth's other
+bounds, each a compare-never-copy pedestal.
 
 ---
 ## Landed arcs
@@ -222,7 +222,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260829.175244` | The row the field was built for -- dual-stack seated on `capability ipv6` | [log](../session-logs/date/20260829/20260829-175244_the-row-the-field-was-built-for.kyri) |
+| `20260829.210056` | The number compared, not copied -- Tablecloth's first Glow desk, and a guard an honest raise walks through | [log](../session-logs/date/20260829/20260829-210056_the-number-compared-not-copied.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it.
 
