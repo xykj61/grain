@@ -374,6 +374,8 @@ construction/standing-equipment-receipt.kyri
 construction/standing-equipment-hitrate.kyri
 # The evidence a red guard leaves behind (REDS %266) -- this pier's failures, not the tree's.
 construction/standing-equipment-reds/
+# The run lock (REDS %359) -- one pass at a time in one tree, held only while a pass runs.
+construction/standing-equipment-run.lock.d/
 
 # Personal material, debrided from all history 20260823.072824 (REDS %162, third
 # resolution; checkpoint 20260823.072824). These live on disk for their author and stay

@@ -37,6 +37,15 @@
 #   `--hot` passes that same tree, a guard asked for by name runs free over it, and `--hot --all`
 #   still selects every tier).
 #
+#   ONE PASS AT A TIME. The runner takes a directory lock at zero wait before it measures anything,
+#   and a second pass in the same tree refuses under `run_verdict=run_in_flight` naming the pid that
+#   holds it. Two cold passes ran in one tree for fifty minutes with nothing to say so, while a
+#   choir that clears its own bin directory before it sings deleted binaries the other pass was
+#   using (REDS %359). The lock primitive is proven in tools/fixtures/s/shell_portable_control.sh;
+#   what is proven here is the runner's use of it, and the load-bearing case is that a refusing
+#   pass leaves the holder's lock exactly where it found it -- a release armed on the refusing side
+#   would walk a third pass straight in.
+#
 #   A full-roster pass opening on a dirty index means a lap ended at `git add`, which left this
 #   tree's generated pages stale three times (REDS %188, %220, %223). The runner refuses it under
 #   `run_verdict=lap_unclosed`. The refusal is proven beside the case it must NOT bite, since a
@@ -205,6 +214,25 @@ assert control.out contains "scoped_unwatched_skips_by_name=yes" else "standing-
 assert control.out contains "scoped_close_withholds_receipt=yes" else "standing-equipment: a scoped close never writes the receipt -- a skip must never become the basis of the next skip"
 assert control.out contains "scoped_receipt_unmoved=yes" else "standing-equipment: the receipt's bytes stand unmoved across a scoped close"
 assert control.out contains "scoped_unmapped_runs=yes" else "standing-equipment: a guard absent from the map always runs -- absence is the answer that runs"
+
+# ONE PASS AT A TIME (REDS %359). Two cold passes ran in this pier's tree for fifty minutes and
+# neither said so, while a choir that clears its own bin directory before it sings deleted the
+# binaries the other pass's rungs were using. The lock primitive -- taken, refused, released,
+# reaped -- is proven in tools/fixtures/s/shell_portable_control.sh; these prove the runner's own
+# use of it. The load-bearing one is refusal_keeps_holders_lock: a release armed on the refusing
+# side would free the holder's lock and walk a third pass straight in.
+assert control.out contains "lock_taken=yes" else "standing-equipment: a pass must take the run lock and say so"
+assert control.out contains "locked_pass_still_ok=yes" else "standing-equipment: taking the lock must leave an otherwise green pass green"
+assert control.out contains "lock_released_at_exit=yes" else "standing-equipment: the lock must leave with the pass that took it"
+assert control.out contains "held_lock_refuses=yes" else "standing-equipment: a second pass in one tree must refuse under run_verdict=run_in_flight"
+assert control.out contains "held_lock_names_owner=yes" else "standing-equipment: the refusal must name the pid that holds the lock"
+assert control.out contains "held_lock_runs_no_guard=yes" else "standing-equipment: a refused pass must run no guard at all"
+assert control.out contains "held_lock_writes_no_card=yes" else "standing-equipment: a refused pass must write no run card"
+assert control.out contains "refusal_keeps_holders_lock=yes" else "standing-equipment: a pass that never took the lock must never remove one"
+assert control.out contains "dead_owner_reaped=yes" else "standing-equipment: a lock whose owner has died must be reaped rather than waited out"
+assert control.out contains "no_lock_room_says_so=yes" else "standing-equipment: a pen with no room to lock in must say so rather than skip in silence"
+assert control.out contains "no_lock_room_still_runs=yes" else "standing-equipment: a skipped lock must not stop the pass"
+
 assert control.out contains "control_verdict=ok" else "standing-equipment: the control must agree with itself"
 # No total is spelled here. This line read `sixty-two behaviors` while the control ran more, the
 # same drift the header above just shed: a recited count is the one part of a green line that goes

@@ -60,6 +60,13 @@
 # asked -- and nothing it did learn is thrown away. A pen outside a repository reads `nogit` for
 # both, which never moves, so a control can drive this runner without standing inside git.
 #
+# IT ALSO REFUSES A SECOND PASS IN THE SAME TREE. Before it measures anything, a pass takes a
+# directory lock at ZERO wait, and one that finds it held refuses under `run_verdict=run_in_flight`
+# naming the pid that holds it. Two cold passes stood in one tree for fifty minutes with nothing in
+# either to say so (REDS %359), and the said-why for zero wait rather than a queue sits beside the
+# acquisition below. The lock path is relative to the repository root, so the six-body fleet's
+# other trees are lawful concurrency and only a second pass in THIS tree refuses.
+#
 # USAGE
 #   sh tools/fixtures/s/standing_equipment_run.sh                 # cold open -- tier lap, dirty index refuses
 #   sh tools/fixtures/s/standing_equipment_run.sh --hot           # after `git add` -- the staged paths are mine
@@ -73,6 +80,12 @@
 # Run from the repository root. Slow by nature -- it runs a roster.
 
 set -eu
+
+# The lock this runner takes lives in shell_portable.sh beside the tree's other dialect repairs,
+# because `flock(1)` is util-linux and macOS ships none at all (REDS %279). Sourced by the script's
+# own directory rather than by a path from the root, so a pen-driven run finds it wherever it stands.
+_run_here=$(CDPATH= cd "$(dirname "$0")" && pwd)
+. "$_run_here/shell_portable.sh"
 
 roster="${STANDING_ROSTER:-construction/standing-equipment.kyri}"
 card="${STANDING_CARD:-construction/standing-equipment-runs.kyri}"
@@ -180,6 +193,46 @@ while [ "$i" -lt "$stashed" ] && [ "$i" -lt "$max_stash_entries" ]; do
 done
 if [ "$stashed" -gt "$max_stash_entries" ]; then
   echo "detail: $((stashed - max_stash_entries)) further entries unenumerated (max_stash_entries=$max_stash_entries)"
+fi
+
+# ONE PASS AT A TIME, and it comes before every refusal that asks a hand to change the tree. This
+# runner held no lock at all, so a second pass started beside a first and both ran to completion:
+# two cold passes stood in ~/grain-hush from 20260830.091545 to 20260830.093000, fifty minutes,
+# with nothing in the output of either to say so (REDS %359). The contention is not merely slow.
+# tools/ca/caravan_suite_witness.rish clears caravan/bin/ before it sings -- REDS %92's own repair
+# for cold-start self-sufficiency -- so one pass deletes the binaries the other pass's rungs are
+# partway through using, and both passes append to the one run card, interleaving the record of
+# which pass proved what.
+#
+# ZERO WAIT, AND A NAMED REFUSAL RATHER THAN A QUEUE. A pass that silently waits half an hour is a
+# pass whose reading nobody can date: the stamp it writes names the moment it started waiting, and
+# the tree it measures is whatever the first pass left. So the second pass refuses under
+# `run_verdict=run_in_flight`, naming the pid that holds the lock, and whoever ran it reads the
+# first pass's output instead.
+#
+# WHY HERE, ahead of the unclosed-lap refusal. That refusal tells a hand to commit, and a hand
+# committing while another pass measures moves the tree under it -- which is the very reading
+# `tree_moved` exists to catch. A pass that cannot run says the runner is busy first.
+lock="${STANDING_LOCK:-construction/standing-equipment-run.lock.d}"
+if [ -d "$(dirname "$lock")" ]; then
+  if lock_acquire "$lock" 0; then
+    # The release is armed ONLY on the side that acquired. A refusing pass that released would
+    # free the holder's lock and walk a third pass straight in.
+    trap 'rm -rf "$pen"; lock_release "$lock"' EXIT INT TERM
+    echo "run_lock=held"
+  else
+    owner=$(cat "$lock/pid" 2>/dev/null || true)
+    [ -n "$owner" ] || owner=unknown
+    echo "run_lock=in_flight pid=$owner"
+    echo "run_verdict=run_in_flight"
+    echo "refused: another roster pass holds $lock (pid $owner) -- read its output rather than opening a second." >&2
+    exit 1
+  fi
+else
+  # Same room, same reason as the hit ledger and the receipt below: a pen has no construction/ to
+  # lock inside. The skip SAYS SO, because a silent one is how this reading would go quietly false
+  # on the day that room moved.
+  echo "run_lock=skipped_no_room"
 fi
 
 # A full-roster pass opening on a dirty index is a lap that ended at `git add` (REDS %188, %220,

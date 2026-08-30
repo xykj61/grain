@@ -688,4 +688,78 @@ out=$( ( cd "$scopepen" && STANDING_ROSTER=roster.kyri STANDING_CARD=card.kyri \
         sh "$runner" --scoped 2>/dev/null ) || true )
 case "$out" in *"guards_run=1"*) echo "scoped_unmapped_runs=yes" ;; *) echo "scoped_unmapped_runs=no" ;; esac
 
+
+# ONE PASS AT A TIME (REDS %359). Two cold passes stood in this pier's own tree for fifty minutes
+# with nothing in the runner to say so, and the contention is not merely slow: a choir that clears
+# its own bin directory before it sings deletes the binaries another pass's rungs are partway
+# through using. The lock PRIMITIVE -- taken, refused, released, and reaped when its owner has
+# died -- is proven in tools/fixtures/s/shell_portable_control.sh; what is proven HERE is the
+# runner's own use of it. A pass takes the lock and says so, a second pass refuses BY NAME rather
+# than queueing, a refusing pass runs no guard and leaves the holder's lock exactly where it found
+# it, a lock whose owner has died is reaped rather than waited out, and a pen with no room to lock
+# in says so and still runs.
+lockpen="$pen/lockpen"
+mkdir -p "$lockpen/rishi/bin"
+cat > "$lockpen/rishi/bin/rishi" <<'EOF'
+#!/bin/sh
+exit 0
+EOF
+chmod +x "$lockpen/rishi/bin/rishi"
+: > "$lockpen/guard.sh"
+cat > "$lockpen/roster.kyri" <<'EOF'
+format standing-equipment-v1
+guard alpha
+path guard.sh
+tier lap
+seated 20260830.000000
+EOF
+
+# <lock-path> <card> [args...] -- the lock path is a parameter so the pen can hold a real one,
+# where every other case in this file runs where no lock room exists at all.
+run_locked() {
+  _lk=$1
+  _cd=$2
+  shift 2
+  ( cd "$lockpen" && STANDING_ROSTER=roster.kyri STANDING_CARD="$_cd" STANDING_LOCK="$_lk" \
+      sh "$runner" "$@" 2>/dev/null ) || true
+}
+
+# The free side first: an unheld lock is taken, the pass runs, and the lock leaves with it.
+out=$(run_locked lock.d card.kyri)
+case "$out" in *"run_lock=held"*) echo "lock_taken=yes" ;; *) echo "lock_taken=no" ;; esac
+case "$out" in *"run_verdict=ok"*) echo "locked_pass_still_ok=yes" ;; *) echo "locked_pass_still_ok=no" ;; esac
+if [ -d "$lockpen/lock.d" ]; then echo "lock_released_at_exit=no"; else echo "lock_released_at_exit=yes"; fi
+
+# A live owner refuses the second pass, by name, before a single guard runs.
+mkdir -p "$lockpen/lock.d"
+printf '%s\n' "$$" > "$lockpen/lock.d/pid"
+rm -f "$lockpen/held-card.kyri"
+out=$(run_locked lock.d held-card.kyri)
+case "$out" in *"run_verdict=run_in_flight"*) echo "held_lock_refuses=yes" ;; *) echo "held_lock_refuses=no" ;; esac
+case "$out" in *"pid=$$"*) echo "held_lock_names_owner=yes" ;; *) echo "held_lock_names_owner=no" ;; esac
+case "$out" in *"guards_run="*) echo "held_lock_runs_no_guard=no" ;; *) echo "held_lock_runs_no_guard=yes" ;; esac
+if [ -f "$lockpen/held-card.kyri" ]; then echo "held_lock_writes_no_card=no"; else echo "held_lock_writes_no_card=yes"; fi
+# THE LOAD-BEARING ONE. A pass that never took the lock must never remove one -- a release armed
+# on the refusing side would free the holder's lock and walk a third pass straight in.
+if [ -d "$lockpen/lock.d" ]; then echo "refusal_keeps_holders_lock=yes"; else echo "refusal_keeps_holders_lock=no"; fi
+
+# A lock whose owner has died is reaped rather than waited out, so a killed pass costs one retry
+# rather than every later pass. The pid is a child run and waited on, which has certainly exited.
+# The lock is re-made first: a runner that wrongly released the holder's lock leaves nothing to
+# write a pid into, and a leg that dies takes every reading after it down with it. A broken runner
+# should print a full card of noes rather than a truncated one.
+mkdir -p "$lockpen/lock.d"
+( exit 0 ) & dead=$!
+wait "$dead" 2>/dev/null || true
+printf '%s\n' "$dead" > "$lockpen/lock.d/pid"
+out=$(run_locked lock.d dead-card.kyri)
+case "$out" in *"run_verdict=ok"*) echo "dead_owner_reaped=yes" ;; *) echo "dead_owner_reaped=no" ;; esac
+rm -rf "$lockpen/lock.d"
+
+# A pen with no room to lock in says so and still runs, exactly as the hit ledger and the receipt
+# already do -- a silent skip is how this reading would go quietly false the day that room moved.
+out=$(run_locked no/such/room/lock.d room-card.kyri)
+case "$out" in *"run_lock=skipped_no_room"*) echo "no_lock_room_says_so=yes" ;; *) echo "no_lock_room_says_so=no" ;; esac
+case "$out" in *"guards_run=1"*) echo "no_lock_room_still_runs=yes" ;; *) echo "no_lock_room_still_runs=no" ;; esac
+
 echo "control_verdict=ok"
