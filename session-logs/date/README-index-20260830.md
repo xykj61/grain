@@ -14,6 +14,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260830.161058` | [two loops back to work](20260830/20260830-161058_two-loops-back-to-work.kyri) | Mind and Mystery re-arm over the day's cures |
 | `20260830.160941` | [one scope short](20260830/20260830-160941_one-scope-short.kyri) | the delete wants admin:gpg_key; two roads handed to Keaton |
 | `20260830.160738` | [the copy GitHub keeps](20260830/20260830-160738_the-copy-github-keeps.kyri) | the stored key lacks the new UID; one re-upload cures both clones |
+| `20260830.161637` | [the door already walked](20260830/20260830-161637_the-door-already-walked.kyri) | max_name built twice; both builds reconciled (%364) |
 | `20260830.145851` | [the queue names work left](20260830/20260830-145851_the-queue-names-work-left.kyri) | Caravan separates total carry from actionable folds |
 | `20260830.133751` | [the second count joins the wall](20260830/20260830-133751_the-second-count-joins-the-wall.kyri) | Caravan's ladder count joins the roster wall |
 | `20260830.113255` | [the door counts what stands](20260830/20260830-113255_the-door-counts-what-stands.kyri) | Caravan's 114 modules and 121 witnesses derive |

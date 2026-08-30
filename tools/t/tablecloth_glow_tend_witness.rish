@@ -41,6 +41,13 @@
 # contradict itself: a length and an alphabet are two facts, and each is read against the Rye
 # rather than against its neighbor.
 #
+# AND EVERY BOUND DESK SPELLS ITS NUMBER TWICE, which pressing this bound is what found. A bound
+# pedestal writes its value in the `shape` line and again under `example`, and until 20260830 this
+# scan read only the second -- so a hand raising a bound in the Rye and under `example` could leave
+# the shape line behind, and every reading stayed quiet because the drift never left the desk.
+# Both spellings are read now, for all three bound desks; the error desk is not asked, since its
+# number is a set's SIZE and its shape line says so in words rather than naming a bound.
+#
 # WHAT IS PROVEN, on metal.
 #   All four placards read in the order src/shape/PLACARD.md seats: name, shape, invariant,
 #   example, readers, nib.
@@ -60,7 +67,9 @@
 #   `store_artifact` still consults that wall -- so the invariant the desk displays stays wired
 #   rather than merely written.
 #   All four desks lower through Glow, build through the Zig toolchain, and run to EXIT:0.
-#   Every reading refuses from the other side: thirty-five plantings in a throwaway pen, each
+#   Each bound pedestal agrees with ITSELF: the number in its `shape` line equals the number under
+#   `example`, so a bound desk's two spellings cannot part inside one file.
+#   Every reading refuses from the other side: thirty-eight plantings in a throwaway pen, each
 #   caught by the reading it was planted against, and six honest trees walking free -- among them a
 #   tenth refusal path added in all three rooms at once, and a third reserved byte added to the
 #   wall and to its desk together. Those walk free because the SCAN carries no roster of its own:
@@ -92,6 +101,9 @@ say scan.out
 assert scan.out contains "verdict=agree" else "tablecloth-tend: each pedestal and its source must name one number"
 assert scan.out contains "citation=yes" else "tablecloth-tend: a pedestal names the source its number came from"
 assert scan.out contains "content_citation=yes" else "tablecloth-tend: a derived bound's pedestal names both the declaring and the deciding room"
+assert scan.out contains "desk_bound=32" else "tablecloth-tend: the catalog desk's shape line and its example are one number"
+assert scan.out contains "content_desk_bound=512" else "tablecloth-tend: the content desk's shape line and its example are one number"
+assert scan.out contains "name_desk_bound=48" else "tablecloth-tend: the name desk's shape line and its example are one number"
 assert scan.out contains "cloth_derives=yes" else "tablecloth-tend: the content budget must still follow beading's resin budget"
 assert scan.out contains "placard_order=name shape invariant example readers nib" else "tablecloth-tend: the placard's six lines keep their seated order"
 assert scan.out contains "content_placard_order=name shape invariant example readers nib" else "tablecloth-tend: the second placard keeps the same seated order"
@@ -114,10 +126,10 @@ let control = run ["sh" "tools/fixtures/t/tablecloth_glow_tend_control.sh"]
 assert control.ok else "tablecloth-tend: the control must complete"
 say control.out
 assert control.out contains "welcomes=6" else "tablecloth-tend: an honest tree, three honest raises, an honestly added refusal path, and an honestly widened wall must all walk free"
-assert control.out contains "refusals=35" else "tablecloth-tend: every reading must refuse from its own side"
+assert control.out contains "refusals=38" else "tablecloth-tend: every reading must refuse from its own side"
 assert control.out contains "wrong=0" else "tablecloth-tend: no case may land on the side it was not planted for"
 assert control.out contains "control_verdict=ok" else "tablecloth-tend: the control must agree with itself"
-say "RED and GREEN paths proven -- thirty-five plantings refused, six honest trees welcomed"
+say "RED and GREEN paths proven -- thirty-eight plantings refused, six honest trees welcomed"
 
 let zig = "vendor/zig-toolchain/zig"
 let desk = "src/shape/shape-tablecloth-catalog-capacity.glow"

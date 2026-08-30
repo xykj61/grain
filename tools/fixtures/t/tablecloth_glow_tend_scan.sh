@@ -85,6 +85,9 @@
 #   name_desk_bytes            the reserved bytes the name pedestal lists, sorted and named
 #   rye_wall_bytes             the bytes name_is_one_field refuses, sorted and named
 #   wall_wired                 whether store_artifact still consults that wall
+#   desk_bound                 the bound the catalog desk's own shape line spells
+#   content_desk_bound         the bound the content desk's own shape line spells
+#   name_desk_bound            the bound the name desk's own shape line spells
 #   verdict                    agree, or the one reading that refused
 #
 # The catalog readings are decided before the content readings, so a fault in the elder pedestal
@@ -128,6 +131,20 @@ placard_of() {
 example_of() {
   if [ -f "$1" ]; then
     got=$(sed -n 's/^::  example  *\([0-9][0-9]*\) *$/\1/p' "$1" | head -1)
+    [ -n "$got" ] || got=none
+    printf '%s\n' "$got"
+  else
+    printf 'none\n'
+  fi
+}
+
+# The bound a pedestal spells in its own `shape` line. A bound desk writes its number TWICE -- once
+# in the shape line and once under `example` -- and until 20260830 only the second was read, so the
+# two could part inside one file with nothing to say so. The error desk is never asked: its number
+# is a set's SIZE, and its shape line says that in words rather than naming a bound.
+bound_of() {
+  if [ -f "$1" ]; then
+    got=$(sed -n 's/^::  shape .*bound \([0-9][0-9]*\).*$/\1/p' "$1" | head -1)
     [ -n "$got" ] || got=none
     printf '%s\n' "$got"
   else
@@ -214,6 +231,8 @@ echo "citation=$citation"
 
 desk_example=$(example_of "$desk")
 echo "desk_example=$desk_example"
+desk_bound=$(bound_of "$desk")
+echo "desk_bound=$desk_bound"
 
 rye_max_artifacts=none
 if [ -f "$rye" ]; then
@@ -237,6 +256,8 @@ echo "content_citation=$content_citation"
 
 content_desk_example=$(example_of "$content_desk")
 echo "content_desk_example=$content_desk_example"
+content_desk_bound=$(bound_of "$content_desk")
+echo "content_desk_bound=$content_desk_bound"
 
 beading_max_resin_bytes=none
 if [ -f "$beading" ]; then
@@ -289,6 +310,8 @@ echo "name_citation=$name_citation"
 
 name_desk_example=$(example_of "$name_desk")
 echo "name_desk_example=$name_desk_example"
+name_desk_bound=$(bound_of "$name_desk")
+echo "name_desk_bound=$name_desk_bound"
 
 rye_max_name=none
 if [ -f "$rye" ]; then
@@ -325,6 +348,8 @@ elif [ "$desk_example" = none ]; then
   verdict=desk_example_missing
 elif [ "$rye_max_artifacts" = none ]; then
   verdict=rye_bound_missing
+elif [ "$desk_bound" != "$desk_example" ]; then
+  verdict=desk_self_disagree
 elif [ "$desk_example" != "$rye_max_artifacts" ]; then
   verdict=disagree
 elif [ ! -f "$content_desk" ]; then
@@ -341,6 +366,8 @@ elif [ "$beading_max_resin_bytes" = none ]; then
   verdict=beading_bound_missing
 elif [ "$cloth_derives" != yes ]; then
   verdict=derivation_broken
+elif [ "$content_desk_bound" != "$content_desk_example" ]; then
+  verdict=content_desk_self_disagree
 elif [ "$content_desk_example" != "$beading_max_resin_bytes" ]; then
   verdict=content_disagree
 elif [ ! -f "$error_desk" ]; then
@@ -369,6 +396,8 @@ elif [ "$name_desk_example" = none ]; then
   verdict=name_example_missing
 elif [ "$rye_max_name" = none ]; then
   verdict=rye_name_bound_missing
+elif [ "$name_desk_bound" != "$name_desk_example" ]; then
+  verdict=name_desk_self_disagree
 elif [ "$name_desk_example" != "$rye_max_name" ]; then
   verdict=name_disagree
 elif [ -z "$name_desk_bytes" ]; then
