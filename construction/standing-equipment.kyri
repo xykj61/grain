@@ -826,3 +826,16 @@ guard lantern_face_claim
 path tools/l/lantern_face_claim_witness.rish
 tier lap
 seated 20260830.021200
+
+# borrowed_number -- the loom REDS %357 named and left unbuilt. The class had fired twice: a
+# witness typing another document's byte count or SHA-256 into an assertion, and that document
+# moving underneath it. %341 repaired two instances, %357 found three more in the same family the
+# next day, all red since the day SECURITY.md and context/TWO_ROOMS.md were edited and none of
+# them rostered. The reading catches a pin while it is still TRUE, which is the only moment
+# catching it is cheap; a pin that has already gone stale is a red the witness itself declares.
+# `lap` on 40s measured here `20260830.072125` -- four scan passes and a fourteen-behaviour pen.
+
+guard borrowed_number
+path tools/b/borrowed_number_witness.rish
+tier lap
+seated 20260830.072125

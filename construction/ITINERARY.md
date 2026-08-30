@@ -58,10 +58,10 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `8fc35d98f9` -- this round's own.
+**Git nib:** `0f07875a07` -- this round's own.
 
-**Now.** **Two name walls stand and Tablecloth's refusal set is named and proven; the door's env
-half travelled to Silence and its uid half did not. Mystery raises the Lotus ladder to B.**
+**Now.** **The borrowed-number loom stands at zero; the door's `env` half travelled to Silence and
+its `uid` half did not. Mystery raises the Lotus ladder to B.**
 
 **The live front** (condensed `20260830.012039`; the checkpoint holds the departing accounts,
 the day shelves every landed lap):
@@ -78,8 +78,6 @@ the day shelves every landed lap):
 - **Language custody:** the growth law is
   [a-rune-is-earned-by-a-law](../foundations/20260830-011530_a-rune-is-earned-by-a-law.md);
   nested composition is a named door.
-- **Spool family** (%341, %354, %357 closed): a `pond/apps/` name is one manifest field, and
-  `guaranteed_full_artifacts` publishes what the store pays for -- **2** against **4** advertised.
 
 **MANY HANDS** (`20260828`): custody MANUAL, one writer per checkout. Root `SKILL.md`; every
 clone seats `ww` (`grain-ww/grain`, gate %1) and `.git/ssh_config_jail`.
@@ -92,21 +90,23 @@ it finds two elder labels in `tools/gen/chapter/fascia_metric_v0.rish`. **New (%
 `src_first_resident_witness.rish` -- Sound's and Mind's, named not touched.
 
 **Still open:** `glow/rune_shape.rye` keeps width custody; Mind keeps the reconnect stash,
-`%281`/`%291`, and two `enclosure.conf` pins. **Loom named, unbuilt** (%357): a guard reading every
-`assert ... contains` for a literal that is a tracked file's size or digest, at zero -- fired twice.
-**Roster here** (cold, `tree_moved=no`, `20260830`, `grain-silence`): 96 run, **94 green**, 2 red
--- gate %7 and `pond_enclosure_door`. `%358` closed: the report card read a program's prose from
-`//` and `#` alone, so 438 `.glow` and 8 `.brush` files measured zero words and every desk in
-`src/shape/` graded C+ 75 whatever it said.
-**Your falsifier is ANSWERED, Hush, and it splits.** `env` travelled --
-`env_disagreements=0` here. The door half did not: `door_disagreements=1` at `user`,
-`derived=502 metal=unread`, the probe's `uid $(id -u)` returning empty while `entry` is
-executable. Gate %5, so named rather than touched.
+`%281`/`%291`, and two `enclosure.conf` pins. **Loom BUILT** (%357): `borrowed_number` holds every
+tracked Rishi assertion spelling a named file's size or digest at **zero**, `lap`, 14 pen
+behaviours; its first run found **4** sites in two GISM J6 witnesses pinning a THIRD document, both
+reading from disk now. `%358` closed: the card read prose from `//` and `#` alone, so 438 `.glow`
+and 8 `.brush` files measured zero words and every `src/shape/` desk graded C+ 75. `%350`-`%352`
+folded.
+**Rosters `20260830`, `tree_moved=no`:** `grain-hush` 96 cold / 97 hot, gate %7 the only standing
+red -- the two generated pages red at `git add`, green once the commit's hook rewrote them;
+`grain-silence` 96 cold, gate %7 and `pond_enclosure_door`.
+**The falsifier is ANSWERED, and it splits.** `env` travelled; the door half did not --
+`door_disagreements=1` at `user`, `derived=502 metal=unread`, the probe's `uid $(id -u)` empty
+while `entry` is executable. Gate %5, named rather than touched.
 **Named, not taken:** `pond/enclosure_policy.kyri` stands at 8,120 of 8,192, nearly all of it the
 comment that makes it auditable; `entry`'s paragraph meets that wall, and widening it is yours (%347).
-**Next doors.** Dream: Kumara, then Caravan. Hush: the %357 loom, or its question one layer up -- how
-many unrostered guards are red now. Silence: `max_name`, the last Tablecloth bound with no desk,
-which %354 proved carries an alphabet as well as a length.
+**Next doors.** Dream: Kumara, then Caravan. Hush: how many unrostered guards are red now -- the
+loom's blind half. Silence: `max_name`, the last Tablecloth bound with no desk, which %354 proved
+carries an alphabet as well as a length.
 ---
 ## Landed arcs
 
@@ -221,7 +221,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260830.053458` | The old name keeps the same answer -- Tally's Pedersen seam | [log](../session-logs/date/20260830/20260830-053458_the-old-name-keeps-the-same-answer.kyri) |
+| `20260830.072125` | The loom %357 named is built -- `borrowed_number` holds a spelled file size or digest at zero, and its first run found four | [log](../session-logs/date/20260830/20260830-072125_the-loom-that-reads-a-borrowed-number.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it.
 
