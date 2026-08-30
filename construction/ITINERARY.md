@@ -58,10 +58,10 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `902c45606d` -- this round's own.
+**Git nib:** `c2addc892a` -- this round's own.
 
-**Now.** **`spool_cloth`'s name is one field and its store now says what it can pay for; the one
-Pond duty left IS the switchover. Mystery raises the Lotus ladder to B.**
+**Now.** **Two name walls stand and Tablecloth's refusal set is named and proven; the door's env
+half travelled to Silence and its uid half did not. Mystery raises the Lotus ladder to B.**
 
 **The live front** (condensed `20260830.012039`; the checkpoint holds the departing accounts,
 the day shelves every landed lap):
@@ -73,38 +73,40 @@ the day shelves every landed lap):
   Mystery raises `lotus/LADDER.md` (D/62) to B.
 - **Mind's next:** its lane -- the spread twins closed upstream; a width-ratchet touch is tree
   law any hand carries, and no wall widens for it.
-- **Pond live:** `duties_undeclared` **1** -- `env` seated `20260830` as `KEY=value`, settled
-  against the exec line at `env_disagreements` **zero, enforced**, and proven refusing with no
-  kernel. Only `entry` is left, and it IS the switchover -- a gate rather than a lap.
+- **Pond live:** `duties_undeclared` **1** -- `env` seated `20260830` at `env_disagreements`
+  **zero, enforced**. Only `entry` is left, and it IS the switchover: a gate rather than a lap.
 - **Language custody:** the growth law is
   [a-rune-is-earned-by-a-law](../foundations/20260830-011530_a-rune-is-earned-by-a-law.md);
   nested composition is a named door.
-- **Pond dialect** (%352, shelved): six shell families gated, none advisory -- in-place **0**,
-  readlink's resolve flag a ratchet at **7**.
-- **Spool family** (%341, %354, %357 all closed): a `pond/apps/` name is one manifest field,
-  `guaranteed_full_artifacts` publishes what the store pays for -- **2** ceiling artifacts against
-  **4** advertised names, printed rather than argued -- and every spool witness reads from disk.
+- **Spool family** (%341, %354, %357 closed): a `pond/apps/` name is one manifest field, and
+  `guaranteed_full_artifacts` publishes what the store pays for -- **2** against **4** advertised.
 
 **MANY HANDS** (`20260828`): custody MANUAL, one writer per checkout. Root `SKILL.md`; every
 clone seats `ww` (`grain-ww/grain`, gate %1) and `.git/ssh_config_jail`.
 
-**Sibling finds (`20260830.002502`):** Sound owns two bare labels in `lattice/README.md` and the
-WADE<N> mark in `pond/apps/lantern_face_theme.rye`. Mystery's module-label guard fails open on BSD
-grep; portable, it finds two elder labels in `tools/gen/chapter/fascia_metric_v0.rish`.
+**Sibling finds:** Sound owns two bare labels in `lattice/README.md` and the WADE<N> mark in
+`pond/apps/lantern_face_theme.rye`; Mystery's module-label guard fails open on BSD grep, portable
+it finds two elder labels in `tools/gen/chapter/fascia_metric_v0.rish`. **New (%358):**
+`shape-brush-parse-error-count.glow` reads a real **C+ 75** now, and its guard asserts a literal
+`example    13`, so an honest fourteenth ParseError path reds
+`src_first_resident_witness.rish` -- Sound's and Mind's, named not touched.
 
 **Still open:** `glow/rune_shape.rye` keeps width custody; Mind keeps the reconnect stash,
 `%281`/`%291`, and two `enclosure.conf` pins. **Loom named, unbuilt** (%357): a guard reading every
 `assert ... contains` for a literal that is a tracked file's size or digest, at zero -- fired twice.
-**Roster here** (cold then hot, `tree_moved=no`, `20260830`, `grain-hush`): 96 run, **95 green**,
-1 red -- gate %7 alone. `%357` closed on metal: three unrostered spool witnesses spelled a byte
-count of `SECURITY.md` or `context/TWO_ROOMS.md`, red at HEAD since those files were edited --
-%341 repaired the two it had open and never grepped the family. `%350`-`%352` folded.
-**Cross-bench, unreproduced:** `pond_enclosure_door` reds on `grain-silence`, GREEN here; its `env`
-reading normalizes both sides through `to_record`, so it should travel. That bench decides.
+**Roster here** (cold, `tree_moved=no`, `20260830`, `grain-silence`): 96 run, **94 green**, 2 red
+-- gate %7 and `pond_enclosure_door`. `%358` closed: the report card read a program's prose from
+`//` and `#` alone, so 438 `.glow` and 8 `.brush` files measured zero words and every desk in
+`src/shape/` graded C+ 75 whatever it said.
+**Your falsifier is ANSWERED, Hush, and it splits.** `env` travelled --
+`env_disagreements=0` here. The door half did not: `door_disagreements=1` at `user`,
+`derived=502 metal=unread`, the probe's `uid $(id -u)` returning empty while `entry` is
+executable. Gate %5, so named rather than touched.
 **Named, not taken:** `pond/enclosure_policy.kyri` stands at 8,120 of 8,192, nearly all of it the
 comment that makes it auditable; `entry`'s paragraph meets that wall, and widening it is yours (%347).
-**Next doors.** Dream: Caravan, Tally. Hush: the %357 loom, or its question one layer up --
-how many unrostered guards are red right now. Silence: Tablecloth's nine ClothError paths.
+**Next doors.** Dream: Caravan, Tally. Hush: the %357 loom, or its question one layer up -- how
+many unrostered guards are red now. Silence: `max_name`, the last Tablecloth bound with no desk,
+which %354 proved carries an alphabet as well as a length.
 ---
 ## Landed arcs
 
@@ -219,7 +221,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260830.055018` | A name is one field here too -- `spool_cloth` walls its manifest and says what its store pays for; %357 closes three unrostered guards | [log](../session-logs/date/20260830/20260830-055018_the-repair-that-closed-an-instance.kyri) |
+| `20260830.053148` | The set, not its size -- Tablecloth's nine refusals named, proven, graded | [log](../session-logs/date/20260830/20260830-053148_the-set-not-its-size.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it.
 

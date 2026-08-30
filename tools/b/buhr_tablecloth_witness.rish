@@ -8,11 +8,21 @@
 # (the dedup dividend), a tampered bead or an unknown name refuses, and the Brix-facing
 # `format tablecloth-v1` manifest round-trips name, address, and length field for field.
 #
+# EVERY DECLARED REFUSAL IS EXERCISED. `ClothError` publishes nine paths, and from
+# 20260830.053148 the selftest reaches all nine on metal. Two had stood declared and
+# unproven since the rung landed: `CatalogFull`, which needs a cloth filled to
+# `max_artifacts` before the next name can be refused, and `Overflow`, which
+# `render_manifest` returns at two separate doors -- the header that will not fit, and
+# the artifact line that will not fit after it. Both doors are proven, because a proof of
+# one says nothing about the other. The count is held by
+# tools/t/tablecloth_glow_tend_witness.rish, which compares the desk's set of names to the
+# set ClothError declares.
+#
 # Run from the repository root:
 #   rishi/bin/rishi run tools/b/buhr_tablecloth_witness.rish
 
-say "buhr7: Language EN — a name pins a content address over the content-addressed BeadStore."
-say "buhr7: Lens TAME — no new storage; reassembly proves every bead by digest; tamper and unknown name refused."
+say "buhr7: Language EN -- a name pins a content address over the content-addressed BeadStore."
+say "buhr7: Lens TAME -- no new storage; reassembly proves every bead by digest; tamper and unknown name refused."
 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "pond/bin/tablecloth"
@@ -31,6 +41,7 @@ assert selftest.out contains "tampered bead, unknown name, taken name refused wh
 assert selftest.out contains "empty name, overlong name, oversized content refused whole GREEN" else "buhr7: name/size refusals missing"
 assert selftest.out contains "a name carrying a manifest separator refused whole GREEN" else "buhr7: separator-name refusal missing -- a name is one manifest field"
 assert selftest.out contains "bad manifest header refused GREEN" else "buhr7: bad-manifest refusal missing"
+assert selftest.out contains "a full catalog and a manifest buffer too small refused whole GREEN" else "buhr7: catalog-full / render-overflow refusals missing -- every declared ClothError path is proven"
 
 # The content-addressed store Tablecloth names over stays its own green binary -- the
 # naming layer composes over beading's public deposit/reassemble/verify only.
@@ -41,4 +52,4 @@ let beading_selftest = run ["sh" "-c" "${beading_bin} selftest 2>&1"]
 assert beading_selftest.ok else "buhr7: beading selftest exited non-zero"
 assert beading_selftest.out contains "GREEN" else "buhr7: beading did not speak GREEN"
 
-say "buhr7: GREEN — Tablecloth binds a name to a content address; fetch returns the true bytes, tamper and unknown name refuse."
+say "buhr7: GREEN -- Tablecloth binds a name to a content address; fetch returns the true bytes, tamper and unknown name refuse."

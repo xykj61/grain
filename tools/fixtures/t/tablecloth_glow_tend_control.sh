@@ -2,8 +2,8 @@
 # tools/fixtures/t/tablecloth_glow_tend_control.sh -- the Tablecloth drift scan, proven both ways.
 #
 # A refusal proven only in the passing direction cannot be told from a bypass, so every reading
-# here is shown from both sides: planted and refused, then removed and welcomed. Nineteen cases run
-# in a throwaway pen holding just the four files the scan reads.
+# here is shown from both sides: planted and refused, then removed and welcomed. Twenty-eight cases
+# run in a throwaway pen holding just the five files the scan reads.
 #
 # The second case is the one this guard exists for. An elder Tend witness greps for the literal
 # number in both rooms, so raising a bound honestly -- moving it in the Rye AND on the pedestal --
@@ -16,7 +16,13 @@
 # leaves every number in agreement and the link gone, and that refuses on its own reading (case
 # 14), because values agreeing prove nothing about whether the two budgets are still one budget.
 #
-# EXPECTED: control_verdict=ok, with welcomes=3 and refusals=16.
+# Cases 20 through 28 hold the third pedestal, whose number counts NAMES. Case 21 is the one that
+# reading exists for: a path renamed in the Rye alone leaves the count at nine on both sides, so a
+# guard comparing counts stays perfectly quiet while the set underneath it has changed. Here the
+# names are compared as sets and it refuses. Case 20 is its welcome -- a tenth path added honestly
+# in all three places walks free, because the scan carries no roster of its own.
+#
+# EXPECTED: control_verdict=ok, with welcomes=4 and refusals=24.
 #
 # Driven by tools/t/tablecloth_glow_tend_witness.rish. Run from the repository root.
 
@@ -26,6 +32,7 @@ root="$(pwd)"
 scan="$root/tools/fixtures/t/tablecloth_glow_tend_scan.sh"
 desk_src="$root/src/shape/shape-tablecloth-catalog-capacity.glow"
 content_src="$root/src/shape/shape-tablecloth-content-budget.glow"
+error_src="$root/src/shape/shape-tablecloth-error-paths.glow"
 rye_src="$root/brushstroke/tablecloth.rye"
 beading_src="$root/mantra/beading.rye"
 
@@ -42,6 +49,7 @@ pen() {
   mkdir -p "$work/pen/src/shape" "$work/pen/brushstroke" "$work/pen/mantra"
   cp "$desk_src" "$work/pen/src/shape/shape-tablecloth-catalog-capacity.glow"
   cp "$content_src" "$work/pen/src/shape/shape-tablecloth-content-budget.glow"
+  cp "$error_src" "$work/pen/src/shape/shape-tablecloth-error-paths.glow"
   cp "$rye_src" "$work/pen/brushstroke/tablecloth.rye"
   cp "$beading_src" "$work/pen/mantra/beading.rye"
 }
@@ -82,6 +90,7 @@ edit() {
 
 deskf="$work/pen/src/shape/shape-tablecloth-catalog-capacity.glow"
 contentf="$work/pen/src/shape/shape-tablecloth-content-budget.glow"
+errorf="$work/pen/src/shape/shape-tablecloth-error-paths.glow"
 ryef="$work/pen/brushstroke/tablecloth.rye"
 beadingf="$work/pen/mantra/beading.rye"
 
@@ -187,11 +196,63 @@ pen
 grep -v '^pub const max_resin_bytes: u32 = ' "$beadingf" > "$beadingf.t" && cat "$beadingf.t" > "$beadingf" && rm -f "$beadingf.t"
 check "the beading bound unpublished" beading_bound_missing refuse
 
+# 20 -- the honest growth of an error SET: a tenth path declared in the Rye, listed on the desk,
+# and counted by the desk's own example. Three real rooms move and the guard stays quiet, because
+# it holds no roster of its own.
+pen
+edit "$ryef" 's/^    BadManifest,$/    BadManifest,\n    NameFrozen,/'
+edit "$errorf" 's/^::    CatalogFull - ContentTooLarge - Overflow - BadManifest$/::    CatalogFull - ContentTooLarge - Overflow - BadManifest - NameFrozen/'
+edit "$errorf" 's/^::  example    9$/::  example    10/'
+check "a tenth refusal path added in all three places" agree welcome
+
+# 21 -- THE case this reading exists for. One path renamed in the Rye alone. The count is nine on
+# both sides and stays nine, so a guard comparing counts sees nothing at all; the sets differ.
+pen
+edit "$ryef" 's/^    NameTaken,$/    NameHeld,/'
+check "a path renamed under an unchanged count" error_names_disagree refuse
+
+# 22 -- the desk's example moved alone, so the pedestal contradicts its own list.
+pen
+edit "$errorf" 's/^::  example    9$/::  example    10/'
+check "the error desk disagrees with itself" error_desk_self_disagree refuse
+
+# 23 -- a name added to the desk and counted there, and never declared in the Rye.
+pen
+edit "$errorf" 's/^::    CatalogFull - ContentTooLarge - Overflow - BadManifest$/::    CatalogFull - ContentTooLarge - Overflow - BadManifest - NameFrozen/'
+edit "$errorf" 's/^::  example    9$/::  example    10/'
+check "the error desk names a path the rye does not" error_names_disagree refuse
+
+# 24 -- a placard line dropped from the error pedestal.
+pen
+grep -v '^::  readers ' "$errorf" > "$errorf.t" && cat "$errorf.t" > "$errorf" && rm -f "$errorf.t"
+check "an error placard line dropped" error_placard_wrong refuse
+
+# 25 -- the source citation stripped, leaving nine names with nowhere to be checked against.
+pen
+edit "$errorf" 's|brushstroke/tablecloth.rye|the rye module|g'
+check "the error citation stripped" error_citation_missing refuse
+
+# 26 -- the error pedestal gone.
+pen
+rm -f "$errorf"
+check "the error pedestal absent" error_desk_missing refuse
+
+# 27 -- the Rye present and its error set no longer published.
+pen
+edit "$ryef" 's/^pub const ClothError = error{$/pub const ClothError = struct{/'
+check "the rye error set unpublished" rye_error_paths_missing refuse
+
+# 28 -- the enumeration's opening sentence reworded, so the region no longer reads. The desk's
+# names become unreadable rather than wrong, and the verdict says so rather than blaming the set.
+pen
+edit "$errorf" 's/^::  the refusal paths, as ClothError declares them:$/::  the refusal paths ClothError declares:/'
+check "the enumeration region unreadable" error_enumeration_missing refuse
+
 echo "welcomes=$welcomes"
 echo "refusals=$refusals"
 echo "wrong=$wrong"
 
-if [ "$welcomes" -eq 3 ] && [ "$refusals" -eq 16 ] && [ "$wrong" -eq 0 ]; then
+if [ "$welcomes" -eq 4 ] && [ "$refusals" -eq 24 ] && [ "$wrong" -eq 0 ]; then
   echo "control_verdict=ok"
 else
   echo "control_verdict=wrong"

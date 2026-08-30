@@ -119,6 +119,15 @@ sed -n '/^measure() {/,/^}/p' "$reg_scan" > "$work/measure.sh"
 # and returned a reading grade of 86 against a ceiling of 9, flooring Reach at 0 and the card at C.
 # The page was fine; the instrument was reading the wrong half of it (REDS %276).
 #
+# THE MARK IS THE LANGUAGE'S, AND GLOW'S IS `::`. That repair named `//` and `#` and left this
+# tree's own notation out. Glow opens a comment with `::`, and so do the `.brush` placards, so the
+# extractor found no prose in either and emitted an empty file -- 438 tracked `.glow` files and 8
+# `.brush` ones, every one of them measuring zero words. Zero words is not a low reading; it is NO
+# reading, and the card scored it regardless, so all 34 residents of the shape museum graded C+ 75
+# whatever they said and no writing could move one of them. `::` joins the alternation from
+# 20260830.053148, and the grades discriminate at once: the same four desks read A 92, B 83, C+ 75,
+# A+ 98 (REDS %358).
+#
 # So the artifact is classified once, here, and both readings feed on the answer. This is the same
 # `truth_source` split the citation reading already makes further down, hoisted so that one
 # classification serves all three rather than two that can come to disagree.
@@ -134,9 +143,9 @@ else
   # line straight back into the heading rule this repair exists to escape. A shebang is an
   # instruction to the kernel rather than a word to a reader, so it is dropped.
   awk 'NR == 1 && /^#!/ { next }
-       /^[ \t]*(\/\/|#)/ {
+       /^[ \t]*(\/\/|#|::)/ {
          line = $0
-         sub(/^[ \t]*(\/\/[\/!]?|#)[ ]?/, "", line)
+         sub(/^[ \t]*(\/\/[\/!]?|#|::)[ ]?/, "", line)
          print line
        }' "$root/$path" > "$work/prose.txt"
   prose_path="$work/prose.txt"

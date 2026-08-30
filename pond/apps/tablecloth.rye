@@ -457,6 +457,48 @@ fn run_tablecloth_selftest() !u8 {
         }
     }
 
+    // Unwelcome: a full catalog refuses the next name. A fresh cloth, so the working one
+    // keeps the three artifacts the rest of the selftest reads. Every name here holds the
+    // same content, so beading dedups to one bead and the store never fills instead --
+    // the catalog is what is being filled, and it is the catalog that must refuse.
+    {
+        var store_f: beading.BeadStore = .empty();
+        var cat_f: Catalog = .empty();
+        var n: u32 = 0;
+        while (n < max_artifacts) : (n += 1) {
+            // "f31.txt" is seven bytes, so sixteen holds every name this loop writes.
+            var nm: [16]u8 = undefined;
+            const name = std.fmt.bufPrint(nm[0..], "f{d}.txt", .{n}) catch return error.Overflow;
+            _ = try store_artifact(&cat_f, &store_f, name, doc_a);
+        }
+        // invariant: the catalog stands exactly full before the refusal is asked of it
+        assert(cat_f.count == max_artifacts);
+        if (store_artifact(&cat_f, &store_f, "one-too-many.txt", doc_a)) |_| {
+            return error.CatalogFull;
+        } else |err| {
+            assert(err == error.CatalogFull);
+        }
+    }
+
+    // Unwelcome: a manifest rendered into a buffer that cannot hold it refuses rather than
+    // truncating. Proven at BOTH doors, because render_manifest returns Overflow twice and a
+    // proof of one says nothing about the other: eight bytes cannot hold the twenty-one-byte
+    // header, and forty holds the header while no whole artifact line fits after it.
+    {
+        var tiny: [8]u8 = undefined;
+        if (render_manifest(&cat, tiny[0..])) |_| {
+            return error.Overflow;
+        } else |err| {
+            assert(err == error.Overflow);
+        }
+        var short: [40]u8 = undefined;
+        if (render_manifest(&cat, short[0..])) |_| {
+            return error.Overflow;
+        } else |err| {
+            assert(err == error.Overflow);
+        }
+    }
+
     print("tablecloth: stored 3 names over 2 contents; one content stored once, named twice\n", .{});
     print("tablecloth: dedup dividend - notes-copy deposited {d} beads, deduped {d}\n", .{
         rep_copy.beads_deposited, rep_copy.beads_deduped,
@@ -471,6 +513,7 @@ fn run_tablecloth_selftest() !u8 {
     print("tablecloth: empty name, overlong name, oversized content refused whole GREEN\n", .{});
     print("tablecloth: a name carrying a manifest separator refused whole GREEN\n", .{});
     print("tablecloth: bad manifest header refused GREEN\n", .{});
+    print("tablecloth: a full catalog and a manifest buffer too small refused whole GREEN\n", .{});
     print("tablecloth: version {s}\n", .{tablecloth_version});
     print("GREEN: BUHR-J7r1 tablecloth; a name pins a content address, fetch returns the true bytes.\n", .{});
     return 0;
