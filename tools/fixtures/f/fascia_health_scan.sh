@@ -16,7 +16,7 @@ set -eu
 MODE=${1:-}
 LIVE=tools/fixtures/f/fascia_health_live_control.md
 # Dated control path assembled so prove-red stories stay explicit.
-DATED_DIR=tools/fixtures
+DATED_DIR=tools/fixtures/2 # repointed 20260830.014444: the letter fold filed the dated control under its stamp's first character
 DATED_STAMP=20260731-150648
 DATED_STEM=fascia_health_dated_control
 DATED="${DATED_DIR}/${DATED_STAMP}_${DATED_STEM}.md"
