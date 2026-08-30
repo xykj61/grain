@@ -67,5 +67,19 @@ assert control.out contains "7 free: a ring name carrying a space still binds it
 assert control.out contains "8 free: a row in a second table on the page rosters its module" else "caravan-ladder-roster: the helpers table must roster the same way"
 assert control.out contains "12 free: a module and its row leaving together read clean at two" else "caravan-ladder-roster: an honest removal must pass free"
 
+# The front door carries the two living corpus counts a reader meets first. Bind those claims to
+# the module and witness rosters, then prove each drift direction in a pen.
+let door = run ["sh" "tools/fixtures/c/caravan_door_count_scan.sh"]
+say door.out
+assert door.ok else "caravan-ladder-roster: the front door must agree with both living rosters"
+assert door.out contains "verdict=ok" else "caravan-ladder-roster: the door counts must be measured rather than remembered"
+
+let door_control = run ["sh" "tools/fixtures/c/caravan_door_count_control.sh"]
+say door_control.out
+assert door_control.ok else "caravan-ladder-roster: the door-count control must complete"
+assert door_control.out contains "1 free: measured module and witness counts pass" else "caravan-ladder-roster: the honest door seam must pass"
+assert door_control.out contains "2 bitten: a stale module count refuses" else "caravan-ladder-roster: module-count drift must bite"
+assert door_control.out contains "3 bitten: a stale witness count refuses" else "caravan-ladder-roster: witness-count drift must bite"
+
 say ""
 say "GREEN: caravan-ladder-roster -- the ladder table and the caravan directory are one set, gated at zero in four readings and proven both ways on real directories."

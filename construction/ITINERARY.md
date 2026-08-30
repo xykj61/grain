@@ -220,7 +220,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260830.100059` | The roster's reach measured -- 603 of 1,756 guards heard, 1,153 blind, 21 of 46 run red, and the seed wall refusing its own publisher | [log](../session-logs/date/20260830/20260830-100059_the-guards-nobody-runs.kyri) |
+| `20260830.113255` | Caravan's front door derives its 114-module and 121-witness readings; each stale direction refuses alone | [log](../session-logs/date/20260830/20260830-113255_the-door-counts-what-stands.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it.
 

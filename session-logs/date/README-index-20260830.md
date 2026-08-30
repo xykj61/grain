@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260830.113255` | [the door counts what stands](20260830/20260830-113255_the-door-counts-what-stands.kyri) | Caravan's 114 modules and 121 witnesses derive |
 | `20260830.102631` | [the last Tally seat answers](20260830/20260830-102631_the-last-tally-seat-answers.kyri) | Kumara directly witnessed; Tally roster reaches zero |
 | `20260830.100059` | [the guards nobody runs](20260830/20260830-100059_the-guards-nobody-runs.kyri) | 603 of 1,756 guards heard; 21 of 46 blind ones red |
 | `20260830.072125` | [the loom that reads a borrowed number](20260830/20260830-072125_the-loom-that-reads-a-borrowed-number.kyri) | %357's loom built; four pins found, repaired |
