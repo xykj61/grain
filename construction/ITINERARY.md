@@ -58,7 +58,7 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `3a25f61e23` -- this round's own.
+**Git nib:** `dd6303b897` -- this round's own.
 
 **Now.** **The roster's reach is measured for the first time: it hears 603 of this tree's 1,756
 guards, and 21 of the 46 blind ones run are red. Mystery raises the Lotus ladder to B.**
