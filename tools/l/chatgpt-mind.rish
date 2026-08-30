@@ -287,8 +287,15 @@ assert (trim hooks_path_run.out) == "tools/hooks" else "REFUSE chatgpt-mind: pro
 
 let pre_commit_hook = repo_root + "/tools/hooks/pre-commit"
 let commit_msg_hook = repo_root + "/tools/hooks/commit-msg"
-let mind_lane_scan = repo_root + "/tools/fixtures/c/chatgpt_mind_lane.awk"
-let mind_lane_sha256 = "62cc0dd65b0df7215ffd7e4a78274fe0e4a122b4787d8def24ef19ead2b96071"
+# The seat (20260829, the fleet re-map): this supervisor serves two Codex bodies. MIND_SEAT
+# selects cardinal (default -- Mind, the Surf/Skate lane) or mystery (the campaign lane), and
+# BOTH seats' lane-scanner pins stay spelled here in the tracked harness -- an env-supplied
+# pin would be a door beside the wall, so the env selects between pinned pairs and nothing more.
+let seat_env = env "MIND_SEAT"
+let seat = ?: (seat_env == "") ("cardinal") (seat_env)
+assert ?| [(seat == "cardinal") (seat == "mystery")] else "REFUSE chatgpt-mind: MIND_SEAT must be cardinal or mystery"
+let mind_lane_scan = ?: (seat == "mystery") (repo_root + "/tools/fixtures/c/chatgpt_mystery_lane.awk") (repo_root + "/tools/fixtures/c/chatgpt_mind_lane.awk")
+let mind_lane_sha256 = ?: (seat == "mystery") ("6cff0e3586f1ed728355b486ae7154e8e65222bfd32305e88473c466f6cca024") ("62cc0dd65b0df7215ffd7e4a78274fe0e4a122b4787d8def24ef19ead2b96071")
 let pre_commit_file = run ["test" "-f" pre_commit_hook]
 let pre_commit_exec = run ["test" "-x" pre_commit_hook]
 let pre_commit_link = run ["test" "-L" pre_commit_hook]
@@ -355,7 +362,8 @@ if mode == "stop" then say "chatgpt-mind: stop requested at ${stop_abs}"
 if mode == "stop" then exit 0
 
 let printer_err = preflight_rel + "/printer.err"
-let printer = run-bounded { argv: [rishi_bin "run" "tools/l/print-mind-cardinal-prompt.rish"], stdin: "", stdin-max: 0, stdout-path: prompt_rel, stdout-max: max_prompt_bytes, stderr-path: printer_err, stderr-max: 4096 }
+let prompt_printer = ?: (seat == "mystery") ("tools/l/print-mystery-planet-prompt.rish") ("tools/l/print-mind-cardinal-prompt.rish")
+let printer = run-bounded { argv: [rishi_bin "run" prompt_printer], stdin: "", stdin-max: 0, stdout-path: prompt_rel, stdout-max: max_prompt_bytes, stderr-path: printer_err, stderr-max: 4096 }
 assert printer.ok else "REFUSE chatgpt-mind: canonical Rishi prompt printer failed"
 assert printer.stdout-bytes >= 1 else "REFUSE chatgpt-mind: canonical prompt is empty"
 
