@@ -60,8 +60,8 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 **Git nib:** `cfb8eb67a3` -- this round's own.
 
-**Now.** **Comlink's payload ceiling takes the vane's first bound desk -- 340 beside the
-188-byte header it completes, tied at comptime.**
+**Now.** **Comlink's payload ceiling takes a desk: 340 beside the 188-byte header it
+completes, tied at comptime.**
 
 **The live front** (condensed `20260830.012039`; the checkpoint holds the departing accounts,
 the day shelves every landed lap):
@@ -105,9 +105,9 @@ yours. `%359` CLOSED; `%353`-`%355` folded.
 it the comment that makes it auditable; `entry`'s paragraph meets that wall, and widening it is yours.
 **Next doors.** Dream: Kumara, then Caravan. Hush: the 41 silent choirs (%360); the roster's own
 auditor waits on gate %7 -- rostering it while `rule_twin` reds would red every cold pass.
-Silence: Comlink's other bounds, beading first.
-`amphora/vessel_fetch_wire.rye` copies the tied literal untied, Amphora's. **%364** books the
-detached-head read.
+Silence: Comlink's other bounds. `amphora/vessel_fetch_wire.rye` copies it untied, Amphora's.
+**%369 GATE:** `%364` names two published rows, the earlier holds, so Caravan's
+`%364`-`%368` move; another lane's, yours.
 ---
 ## Landed arcs
 
@@ -222,7 +222,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260830.165042` | Comlink's payload ceiling takes a desk and a comptime tie; guard rostered (%360 holds) | [log](../session-logs/date/20260830/20260830-165042_the-ceiling-and-the-header.kyri) |
+| `20260830.165042` | Comlink's payload ceiling: a desk, a tie, the guard rostered | [log](../session-logs/date/20260830/20260830-165042_the-ceiling-and-the-header.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it.
 
