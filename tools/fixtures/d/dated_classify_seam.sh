@@ -3,7 +3,10 @@
 #
 # Rishi owns the interface (tools/fixtures/d/dated_classify.rish); this POSIX-sh seam
 # holds the two ripgrep patterns Rishi has no native regex for, exactly as the elder
-# dated_classify.py delegated to Python's `re`. One definition lives here, reached
+# dated_classify.py delegated to Python's `re` (that elder cut on the circled word,
+# 20260830.190407; this seam stays as the engine until its own sh-to-Rishi adaptation,
+# which waits on Hush's standing grant and the regex reach Rishi does not yet carry).
+# One definition lives here, reached
 # only through the rish, so no two roofs can drift (REDS 40).
 #
 # Canon: context/specs/living-vs-dated.md

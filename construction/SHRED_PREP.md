@@ -80,7 +80,7 @@ citer repointed first. The rows stay as the record; the word stays **shred RED**
 
 | Elder | Living mutant | What the cut asks |
 | --- | --- | --- |
-| `tools/fixtures/d/dated_classify.py` | `tools/fixtures/d/dated_classify.rish`, parity-proven by `dated_classify_seam.sh`, gated by `tools/d/dated_classify_witness.rish` | Zero operational citers reach the elder (measured `20260828`). The seam's parity legs retire with it; the cut moves the fascia meter's `tools_py` signal to zero. |
+| `tools/fixtures/d/dated_classify.py` | `tools/fixtures/d/dated_classify.rish`, gated by `tools/d/dated_classify_witness.rish` | **CUT `20260830.190407`** on the circled word: elder and its parity seam removed, zero operational citers re-verified, the successor's witness GREEN on the lap of the cut. |
 
 **Every cut basename is seated as a LISTED deliberate absence** in
 [`../tools/fixtures/d/dated_path_exclusions.sh`](../tools/fixtures/d/dated_path_exclusions.sh), so the

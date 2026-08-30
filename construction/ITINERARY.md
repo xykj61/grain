@@ -92,9 +92,10 @@ literal `example    13`, so an honest fourteenth ParseError path reds
 **Still open:** `glow/rune_shape.rye` keeps width custody; Mind keeps the reconnect stash,
 `%281`/`%291`, two `enclosure.conf` pins. **%360 FALLS:** the five guards our rules demand now
 stand rostered for **18s** a lap -- `unheard` 1,153 -> **1,144**, choirs 41 -> 40.
-**%360's GATE is ONE WORD:** the wall exempts the seed root at `crashed-meteor` alone, while
-`publish-seed.sh` AND its own fixture BOTH write `Grain OS -- initial public seed`. Three agree,
-the wall moved; `mechanism_sentence` REDS until you say it. `%359`/`%370` CLOSED; `%353`-`%355` folded.
+**%360's gate SETTLED `20260830.190407`:** the seed subject is `crashed-meteor` -- the wall,
+the FIELD's publisher, and both rules speak it, and the real publish shipped on it. The
+remainder is the pier clones' stale untracked `publish-seed.sh` copies: refresh at Keaton's
+hand (copy the field's). `%359`/`%370` CLOSED; `%353`-`%355` folded.
 **Rosters `20260830`:** `grain-hush` 103/102, gate %7 alone; 122 rostered; `grain-silence` 96 cold, gate %7 and `pond_enclosure_door`.
 **The falsifier splits:** `env` travelled; the door half did not --
 `door_disagreements=1` at `user`, `derived=502 metal=unread`. Gate %5, named not touched.
