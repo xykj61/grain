@@ -62,7 +62,12 @@ the spelling is `<plain name> (<WAYMARK> <stamp>)`, exactly as illustrated.
   867 citing files. Fold to `active-designing/date/20260814/` (the day is the basename's first
   eight characters, so the move stays invertible); living citers repoint, dated citers resolve.
 - **Tier C -- content citations, rung -> stamp-and-name, per file on touch**: the ~9,200 living
-  hits, worked one file per lap from the census's own worklist (top: `glow/lower_shop_gate.rye`
+  hits, worked one file per lap from the census's own worklist. RULED `20260830.004431`
+  (Mystery's parked question, the map lap): **a conversion target below B takes its quality
+  lap first** -- the grade law rides the campaign rather than yielding to it, so a D-graded
+  `lotus/LADDER.md` is raised (or split, its elder rungs shelved) to B before one citation
+  moves, and the worklist order bends to quality rather than reseating targets around it.
+  (Top of the worklist: `glow/lower_shop_gate.rye`
   124, `context/TAME_GUIDANCE.md` 99, `lotus/LADDER.md` 294). Interlocking grep-pins (a witness
   asserting a doc still names STOA130) repair in the same commit or the lap parks. The
   rung-drift ceiling falls with every landed lap.
