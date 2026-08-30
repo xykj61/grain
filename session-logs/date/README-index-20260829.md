@@ -12,6 +12,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | Stamp | Log | What it recorded |
 |---|---|---|
 | `20260829.175244` | [the row the field was built for](20260829/20260829-175244_the-row-the-field-was-built-for.kyri) | dual-stack seated on `capability ipv6`; two reds closed |
+| `20260829.210617` | [the fusion lands scoped](20260829/20260829-210617_the-fusion-lands-scoped.kyri) | --scoped proven both ways: 59-guard map, receipt v2, 7 control cases; hit-rate 16% decided the shape |
 | `20260829.204032` | [the charter matches the fleet](20260829/20260829-204032_the-charter-matches-the-fleet.kyri) | claim clauses x3; the always-fleet charter molts in, ten citers repointed; parked ref proven redundant |
 | `20260829.203002` | [the planet finds its voice](20260829/20260829-203002_the-planet-finds-its-voice.kyri) | Mystery's seat whole: MIND_SEAT, pinned campaign wall 13/13, own arbor; verified to the login |
 | `20260829.200656` | [two trees born proven](20260829/20260829-200656_two-trees-born-proven.kyri) | birth-a-clone lands; grain-silence and grain-mystery stand whole, witness GREEN inside each |

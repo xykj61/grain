@@ -612,4 +612,80 @@ out=$( ( cd "$pen" && STANDING_ROSTER=cadence.kyri STANDING_CARD=run-card.kyri \
         sh "$runner" 2>/dev/null ) || true )
 case "$out" in *"stashed_entries=0"*) echo "nogit_box_reads_zero=yes" ;; *) echo "nogit_box_reads_zero=no" ;; esac
 
+# THE SCOPED PASS, proven from both sides (the fusion build, 20260829). A fresh git pen with a
+# seed commit, a stub rishi, a one-guard roster, and a pen-local map naming what alpha watches.
+# The receipt basis is written by a FULL run first; then a watched edit must RUN the guard, an
+# unwatched edit must SKIP it by name, an unmapped guard must always run, a scoped close must
+# WITHHOLD the receipt, and a missing basis must refuse the mode outright.
+scopepen="$pen/scopepen"
+mkdir -p "$scopepen/rishi/bin"
+( cd "$scopepen" && git init -q . && git config user.email a@b.c && git config user.name t \
+  && git config commit.gpgsign false && echo seed > watched.txt && echo seed > other.txt \
+  && git add watched.txt other.txt && git commit -qm "seed" ) >/dev/null 2>&1
+cat > "$scopepen/roster.kyri" <<'EOF'
+format standing-equipment-v1
+guard alpha
+path guard.sh
+tier lap
+seated 20260829.000000
+EOF
+: > "$scopepen/guard.sh"
+cat > "$scopepen/rishi/bin/rishi" <<'EOF'
+#!/bin/sh
+exit 0
+EOF
+chmod +x "$scopepen/rishi/bin/rishi"
+cat > "$scopepen/map.sh" <<'EOF'
+#!/bin/sh
+echo "alpha watched.txt guard.sh roster.kyri"
+EOF
+# The scaffolding commits, exactly as a real tree's does -- otherwise every untracked pen file
+# rides the porcelain into every changed set and roster.kyri (watched) defeats the skip case.
+( cd "$scopepen" && git add -A && git commit -qm scaffold ) >/dev/null 2>&1
+
+# Refusal first: --scoped with no receipt at all.
+out=$( ( cd "$scopepen" && STANDING_ROSTER=roster.kyri STANDING_CARD=card.kyri \
+        STANDING_RECEIPT=receipt.kyri STANDING_HITRATE=hits.kyri STANDING_SCOPE_MAP=map.sh \
+        sh "$runner" --scoped 2>/dev/null ) || true )
+case "$out" in *"run_verdict=scoped_no_basis"*) echo "scoped_no_basis_refused=yes" ;; *) echo "scoped_no_basis_refused=no" ;; esac
+
+# The full run writes the v2 receipt with a head to diff from.
+out=$( ( cd "$scopepen" && STANDING_ROSTER=roster.kyri STANDING_CARD=card.kyri \
+        STANDING_RECEIPT=receipt.kyri STANDING_HITRATE=hits.kyri \
+        sh "$runner" 2>/dev/null ) || true )
+if grep -q '^head ' "$scopepen/receipt.kyri" 2>/dev/null && grep -q '^scope full' "$scopepen/receipt.kyri" 2>/dev/null; then
+  echo "full_receipt_carries_head=yes"
+else
+  echo "full_receipt_carries_head=no"
+fi
+
+# A watched edit runs the guard.
+echo moved >> "$scopepen/watched.txt"
+out=$( ( cd "$scopepen" && STANDING_ROSTER=roster.kyri STANDING_CARD=card.kyri \
+        STANDING_RECEIPT=receipt.kyri STANDING_HITRATE=hits.kyri STANDING_SCOPE_MAP=map.sh \
+        sh "$runner" --scoped 2>/dev/null ) || true )
+case "$out" in *"guards_run=1"*) echo "scoped_watched_runs=yes" ;; *) echo "scoped_watched_runs=no" ;; esac
+
+# An unwatched edit skips it by name, and the scoped close withholds the receipt.
+( cd "$scopepen" && git checkout -q -- watched.txt )
+echo moved >> "$scopepen/other.txt"
+receipt_before=$(cat "$scopepen/receipt.kyri" 2>/dev/null || true)
+out=$( ( cd "$scopepen" && STANDING_ROSTER=roster.kyri STANDING_CARD=card.kyri \
+        STANDING_RECEIPT=receipt.kyri STANDING_HITRATE=hits.kyri STANDING_SCOPE_MAP=map.sh \
+        sh "$runner" --scoped 2>/dev/null ) || true )
+case "$out" in *"skipped_scope alpha"*) echo "scoped_unwatched_skips_by_name=yes" ;; *) echo "scoped_unwatched_skips_by_name=no" ;; esac
+case "$out" in *"roster_receipt_write=withheld_scope_scoped"*) echo "scoped_close_withholds_receipt=yes" ;; *) echo "scoped_close_withholds_receipt=no" ;; esac
+receipt_after=$(cat "$scopepen/receipt.kyri" 2>/dev/null || true)
+if [ "$receipt_before" = "$receipt_after" ]; then echo "scoped_receipt_unmoved=yes"; else echo "scoped_receipt_unmoved=no"; fi
+
+# A guard the map does not know always runs -- absence is the answer that runs.
+cat > "$scopepen/map.sh" <<'EOF'
+#!/bin/sh
+echo "somebody_else nothing.txt"
+EOF
+out=$( ( cd "$scopepen" && STANDING_ROSTER=roster.kyri STANDING_CARD=card.kyri \
+        STANDING_RECEIPT=receipt.kyri STANDING_HITRATE=hits.kyri STANDING_SCOPE_MAP=map.sh \
+        sh "$runner" --scoped 2>/dev/null ) || true )
+case "$out" in *"guards_run=1"*) echo "scoped_unmapped_runs=yes" ;; *) echo "scoped_unmapped_runs=no" ;; esac
+
 echo "control_verdict=ok"

@@ -354,11 +354,6 @@ guard tally_roster
 path tools/t/tally_roster_witness.rish
 seated 20260826.224730
 
-guard counsel_census
-path tools/co/counsel_census_witness.rish
-tier cadence
-seated 20260828.222157
-
 guard socket_dialect
 path tools/s/socket_dialect_witness.rish
 seated 20260827.004535
