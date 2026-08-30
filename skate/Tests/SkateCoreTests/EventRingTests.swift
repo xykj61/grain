@@ -82,6 +82,24 @@ final class EventRingTests: XCTestCase {
     XCTAssertTrue(ring.isEmpty)
   }
 
+  func testEventRingRefusalsPreserveEveryStoredSeat() throws {
+    var fullRing = EventRing<Int>()
+    for event in 0..<SkateCoreBounds.eventCapacity {
+      try fullRing.append(event)
+    }
+    let fullBefore = fullRing
+
+    XCTAssertThrowsError(try fullRing.append(SkateCoreBounds.eventCapacity))
+    assertSameStoredState(fullRing, fullBefore)
+
+    var ceilingRing = EventRing<Int>(counterOrigin: UInt64.max - 1)
+    try ceilingRing.append(7)
+    let ceilingBefore = ceilingRing
+
+    XCTAssertThrowsError(try ceilingRing.append(8))
+    assertSameStoredState(ceilingRing, ceilingBefore)
+  }
+
   func testSurfAndSkateEventRingAliasesShareOneIdentity() throws {
     var surf = SurfEventRing<UInt8>()
     try surf.append(7)
@@ -91,5 +109,27 @@ final class EventRingTests: XCTestCase {
     XCTAssertEqual(skate.first(), 7)
     XCTAssertEqual(surfAgain.head, surf.head)
     XCTAssertEqual(surfAgain.tail, surf.tail)
+  }
+
+  private func assertSameStoredState<Event: Equatable & Sendable>(
+    _ actual: EventRing<Event>,
+    _ expected: EventRing<Event>,
+    file: StaticString = #filePath,
+    line: UInt = #line
+  ) {
+    XCTAssertEqual(actual.head, expected.head, file: file, line: line)
+    XCTAssertEqual(actual.tail, expected.tail, file: file, line: line)
+
+    var physicalSeat = 0
+    while physicalSeat < SkateCoreBounds.eventCapacity {
+      XCTAssertEqual(
+        actual.storedEvent(at: UInt64(physicalSeat)),
+        expected.storedEvent(at: UInt64(physicalSeat)),
+        "physical event seat \(physicalSeat)",
+        file: file,
+        line: line
+      )
+      physicalSeat += 1
+    }
   }
 }
