@@ -7,7 +7,7 @@ CLAUDE_RULE=${ALIAS_SAMENESS_CLAUDE_RULE:-.claude/rules/alias-sameness.md}
 CURSOR_RULE=${ALIAS_SAMENESS_CURSOR_RULE:-.cursor/rules/alias-sameness.mdc}
 SWIFT_CORE=${ALIAS_SAMENESS_SWIFT_CORE:-skate/Sources/SkateCore/FrameGrid.swift}
 PACKAGE=${ALIAS_SAMENESS_PACKAGE:-skate/Package.swift}
-LIVING_FILES=${ALIAS_SAMENESS_LIVING_FILES:-"context/LEXICON.md tools/l/launch-mind-cardinal-chapter.rish active-designing/20260827-155213_the-six-bodies-and-the-closed-stacks.md skate/README.md"}
+LIVING_FILES=${ALIAS_SAMENESS_LIVING_FILES:-"context/LEXICON.md tools/l/launch-mind-cardinal-chapter.rish active-designing/20260829-203718_the-six-bodies-and-the-always-fleet.md skate/README.md"}
 
 checks=0
 faults=0

@@ -7,7 +7,7 @@
 # Skate bindings, written high and lowered to green-witnessed Rye -- and GLOW LANGUAGE CUSTODY,
 # because a rune ruling wants the bench where Keaton is in the loop. The systems core it held
 # before (Caravan, Tally, the constellation table) rides with Dream, Codex on the pier. Charter:
-# active-designing/20260827-155213_the-six-bodies-and-the-closed-stacks.md.
+# active-designing/20260829-203718_the-six-bodies-and-the-always-fleet.md.
 #
 # Refreshed 20260829.002846-round on Keaton's word: the card now carries the lane's living
 # ladder (LOCA) and the one-index law the desktop recursion session learned twice in one night.
@@ -19,7 +19,7 @@ let root = run ["test" "-f" "construction/ITINERARY.md"]
 assert root.ok else "run from the repo root (construction/ITINERARY.md not found)"
 
 # invariant: the living charter this star lives in must exist.
-let charter = run ["test" "-f" "active-designing/20260827-155213_the-six-bodies-and-the-closed-stacks.md"]
+let charter = run ["test" "-f" "active-designing/20260829-203718_the-six-bodies-and-the-always-fleet.md"]
 assert charter.ok else "the six-bodies charter is missing"
 
 say "SOUND -- the fixed star of the aether row (night twin Silence)"
@@ -60,7 +60,7 @@ say ""
 say "EVERY LAP OPENS BY READING, never by remembering -- the context loads"
 say "fresh, exactly as the loop launchers demand of their laps:"
 say "   construction/ITINERARY.md -- the living card: Standing laws, then Now"
-say "   active-designing/20260827-155213_the-six-bodies-and-the-closed-stacks.md"
+say "   active-designing/20260829-203718_the-six-bodies-and-the-always-fleet.md"
 say "   MAP.md -- the walk; never ls the root"
 say "And the ROTA OF THE CANON rides here as everywhere: each lap deep-reads"
 say "ONE ROW of the 5 x 3 council grid (recursion-prompts/seed/"

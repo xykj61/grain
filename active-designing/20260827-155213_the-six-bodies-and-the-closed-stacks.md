@@ -4,7 +4,11 @@
 **Language:** EN
 **Style:** Gauge, Field setting (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
-**Status:** Living charter -- seated on Keaton's word `20260827` (the Sound-Dream role swap, the
+**Status:** Fossil -- the living charter is
+[`20260829-203718_the-six-bodies-and-the-always-fleet.md`](20260829-203718_the-six-bodies-and-the-always-fleet.md)
+(the fleet re-map: one tree per star, Mystery's move to the campaign lane, claim-as-override);
+this page stands whole as the closed-stacks elder and the `20260827` swap's record. Was: Living
+charter -- seated on Keaton's word `20260827` (the Sound-Dream role swap, the
 Codex pier loop, and the read-scope law); molted from
 [`20260827-144712_the-three-stars-and-their-planets.md`](20260827-144712_the-three-stars-and-their-planets.md),
 which stands whole as the planets elder.

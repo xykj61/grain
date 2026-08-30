@@ -3,7 +3,7 @@
 **Seated:** `20260827.155213` on Keaton's word - **Status:** Living
 **Kin:** [`collaboration`](collaboration.md) (*References are promises*) - [`stamp-and-name`](stamp-and-name.md) (the resolvers) - [`quality-assurance`](quality-assurance.md) (on-touch, never on-walk)
 **Map:** [`../../MAP.md`](../../MAP.md) is the walk that replaces the `ls`.
-**Charter:** [`../../active-designing/20260827-155213_the-six-bodies-and-the-closed-stacks.md`](../../active-designing/20260827-155213_the-six-bodies-and-the-closed-stacks.md)
+**Charter:** [`../../active-designing/20260829-203718_the-six-bodies-and-the-always-fleet.md`](../../active-designing/20260829-203718_the-six-bodies-and-the-always-fleet.md)
 
 **The tree is a library with two floors.** The **open shelves** are the rooms a lap walks by
 default. The **closed stacks** are rooms held whole and real -- nothing deleted, hidden, or
