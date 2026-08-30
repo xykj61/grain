@@ -1,5 +1,5 @@
-# tools/t/tablecloth_glow_tend_witness.rish -- Tablecloth's first Glow desk, and the drift it
-# cannot hide.
+# tools/t/tablecloth_glow_tend_witness.rish -- Tablecloth's Glow desks, and the drift they cannot
+# hide.
 #
 #   rishi/bin/rishi run tools/t/tablecloth_glow_tend_witness.rish
 #
@@ -8,56 +8,77 @@
 # Tablecloth stood there not at all, with zero Glow desks of any kind, while `brushstroke/
 # tablecloth.rye` publishes the catalog capacity that the Brix-facing manifest and the four
 # `comlink/guest_tablecloth_query_*` wires both lean on. A bound nothing names outside its own
-# source is a bound only its author can check. This seats the first pedestal and the guard that
-# keeps it honest.
+# source is a bound only its author can check. This holds the pedestals and the guard that keeps
+# them honest.
+#
+# THE TWO PEDESTALS, AND WHY THE SECOND IS A DIFFERENT KIND. `max_artifacts` is a literal
+# tablecloth.rye spells for itself, so its desk is compared against that one file.
+# `max_content_bytes` is a DERIVATION -- `= beading.max_resin_bytes` -- so tablecloth.rye names the
+# bound and mantra/beading.rye decides it. The desk's number is therefore compared against the
+# deciding room, and the derivation is read as a fact of its own: respell it as a literal and every
+# number still agrees while the link is gone, so the next honest raise of `max_resin_bytes` would
+# move one room and leave the other behind with nothing to say so.
 #
 # WHAT IS PROVEN, on metal.
-#   The placard reads in the order src/shape/PLACARD.md seats: name, shape, invariant, example,
+#   Both placards read in the order src/shape/PLACARD.md seats: name, shape, invariant, example,
 #   readers, nib.
-#   The pedestal names the Rye file its number comes from, so a reader can walk to the source.
-#   The number the pedestal shows EQUALS the number brushstroke/tablecloth.rye publishes as
-#   `max_artifacts`. The scan reads both and compares; it carries no value of its own, so raising
-#   the bound honestly in both rooms leaves the guard quiet -- proven as a welcome, not assumed.
-#   The desk lowers through Glow, builds through the Zig toolchain, and runs to EXIT:0.
-#   Every reading refuses from the other side: eight plantings in a throwaway pen, each caught by
-#   the reading it was planted against, and two honest trees walking free.
+#   The catalog pedestal names the Rye file its number comes from. The content pedestal names BOTH
+#   rooms -- the file that declares the bound and the file that holds the number -- because a
+#   derived bound owes a reader two addresses.
+#   The number each pedestal shows EQUALS the number its source publishes: `max_artifacts` from
+#   brushstroke/tablecloth.rye, `max_resin_bytes` from mantra/beading.rye. The scan reads both
+#   sides and compares; it carries no value of its own, so raising either bound honestly leaves the
+#   guard quiet -- proven as a welcome, not assumed.
+#   tablecloth.rye still DERIVES its content budget from beading's resin budget.
+#   Both desks lower through Glow, build through the Zig toolchain, and run to EXIT:0.
+#   Every reading refuses from the other side: sixteen plantings in a throwaway pen, each caught by
+#   the reading it was planted against, and three honest trees walking free.
 #
-# WHAT IS NOT PROVEN. Whether thirty-two is the right capacity -- that is Tablecloth's own design
-# question and a pedestal only displays what the source decided. Whether the catalog's other
-# bounds agree with anything: `max_name`, `max_content_bytes`, and the eight ClothError paths wait
-# for their own pedestals. And any behavior of the store itself, which
-# tools/b/buhr_tablecloth_witness.rish already holds on real bytes.
+# WHAT IS NOT PROVEN. Whether thirty-two is the right capacity and five hundred twelve the right
+# budget -- those are Tablecloth's and Mantra's own design questions, and a pedestal only displays
+# what the source decided. Whether the catalog's remaining bounds agree with anything: `max_name`
+# and the eight ClothError paths wait for their own pedestals. And any behavior of the store
+# itself, which tools/b/buhr_tablecloth_witness.rish already holds on real bytes.
 
-say "tablecloth-tend: Language EN -- Tablecloth holds a thing by what it is, and until now it held nothing in the shape museum. This seats its first pedestal."
-say "tablecloth-tend: Style Gauge -- the placard reads in the museum's seated order, and the number it shows is compared to the source rather than remembered."
-say "tablecloth-tend: Lens TAME -- bound everything and say why: the catalog names a maximum, the pedestal names the maximum, and this proves the two are one number."
+say "tablecloth-tend: Language EN -- Tablecloth holds a thing by what it is, and it now holds two of its own bounds in the shape museum."
+say "tablecloth-tend: Style Gauge -- each placard reads in the museum's seated order, and each number it shows is compared to the source rather than remembered."
+say "tablecloth-tend: Lens TAME -- bound everything and say why: the catalog names its maximums, the pedestals name the maximums, and this proves each pair is one number."
 
-say "tablecloth-tend: the pedestal against its source..."
+say "tablecloth-tend: the pedestals against their sources..."
 let scan = run ["sh" "tools/fixtures/t/tablecloth_glow_tend_scan.sh"]
-assert scan.ok else "tablecloth-tend: the pedestal and brushstroke/tablecloth.rye disagree -- read the verdict line"
+assert scan.ok else "tablecloth-tend: a pedestal and its source disagree -- read the verdict line"
 say scan.out
-assert scan.out contains "verdict=agree" else "tablecloth-tend: the two rooms must name one number"
+assert scan.out contains "verdict=agree" else "tablecloth-tend: each pedestal and its source must name one number"
 assert scan.out contains "citation=yes" else "tablecloth-tend: a pedestal names the source its number came from"
+assert scan.out contains "content_citation=yes" else "tablecloth-tend: a derived bound's pedestal names both the declaring and the deciding room"
+assert scan.out contains "cloth_derives=yes" else "tablecloth-tend: the content budget must still follow beading's resin budget"
 assert scan.out contains "placard_order=name shape invariant example readers nib" else "tablecloth-tend: the placard's six lines keep their seated order"
-say "field GREEN -- the pedestal and the Rye source name one capacity"
+assert scan.out contains "content_placard_order=name shape invariant example readers nib" else "tablecloth-tend: the second placard keeps the same seated order"
+say "field GREEN -- both pedestals stand on the numbers their sources publish"
 
 say "tablecloth-tend: the control, both ways..."
 let control = run ["sh" "tools/fixtures/t/tablecloth_glow_tend_control.sh"]
 assert control.ok else "tablecloth-tend: the control must complete"
 say control.out
-assert control.out contains "welcomes=2" else "tablecloth-tend: an honest tree and an honest raise must both walk free"
-assert control.out contains "refusals=8" else "tablecloth-tend: every reading must refuse from its own side"
+assert control.out contains "welcomes=3" else "tablecloth-tend: an honest tree and both honest raises must walk free"
+assert control.out contains "refusals=16" else "tablecloth-tend: every reading must refuse from its own side"
 assert control.out contains "wrong=0" else "tablecloth-tend: no case may land on the side it was not planted for"
 assert control.out contains "control_verdict=ok" else "tablecloth-tend: the control must agree with itself"
-say "RED and GREEN paths proven -- eight plantings refused, two honest trees welcomed"
+say "RED and GREEN paths proven -- sixteen plantings refused, three honest trees welcomed"
 
 let zig = "vendor/zig-toolchain/zig"
 let desk = "src/shape/shape-tablecloth-catalog-capacity.glow"
+let content_desk = "src/shape/shape-tablecloth-content-budget.glow"
 
-say "tablecloth-tend: lower, build, run..."
+say "tablecloth-tend: lower, build, run the catalog pedestal..."
 let gate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" desk]
-assert gate.ok else "tablecloth-tend: the pedestal must lower, build, and run"
-assert gate.out contains "EXIT:0" else "tablecloth-tend: the pedestal did not exit 0"
-say "metal GREEN -- the desk lowers through Glow, builds through Zig, and runs"
+assert gate.ok else "tablecloth-tend: the catalog pedestal must lower, build, and run"
+assert gate.out contains "EXIT:0" else "tablecloth-tend: the catalog pedestal did not exit 0"
 
-say "GREEN: tablecloth Glow Tend -- max_artifacts stands on a pedestal, compared to its source rather than copied from it."
+say "tablecloth-tend: lower, build, run the content pedestal..."
+let gate2 = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" content_desk]
+assert gate2.ok else "tablecloth-tend: the content pedestal must lower, build, and run"
+assert gate2.out contains "EXIT:0" else "tablecloth-tend: the content pedestal did not exit 0"
+say "metal GREEN -- both desks lower through Glow, build through Zig, and run"
+
+say "GREEN: tablecloth Glow Tend -- max_artifacts and max_content_bytes stand on pedestals, each compared to the room that decides it rather than copied from it."

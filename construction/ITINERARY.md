@@ -58,7 +58,7 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `9ac443503d` -- this round's own.
+**Git nib:** `0e26aaab19` -- this round's own.
 
 **Now.** **The pier's one line closes tri-OS; Mystery raises the Lotus ladder to B; Mind
 repairs `spread.rye`; Pond's remaining duties and `spool_cloth` stay live.**
@@ -92,8 +92,14 @@ module-label guard fails open on BSD grep; its portable form finds two elder lab
 
 **Still open:** REDS has 1 OPEN row, Mind-owned `%349`. `glow/rune_shape.rye` keeps its width
 custody; Mind keeps the reconnect stash, `%281`/`%291`, and two `enclosure.conf` pins.
-**Next doors.** Dream: Caravan and Tally. Hush: Pond's `xargs -r` portability and `env` duty.
-Silence: Tablecloth's remaining compare-never-copy bounds.
+**Roster here** (hot after rebase, `tree_moved=no`, `20260830.024500`, `grain-silence`): 94
+guards, **90 green**, 4 red -- gate %7, Hush's two, and `witness_reach`, which was green on this
+tree before the rebase and red after: `tools/l/lantern_face_witness.rish` and
+`tools/l/lantern_face_claim_witness.rish` landed with no roster row, so the `lantern_face` family
+is wholly unreached and the count reads 221 against a ceiling of 220.
+**Next doors.** Sound: seat that row (the ceiling only falls, so a row is the repair, never a
+raise). Dream: Caravan and Tally. Hush: Pond's `xargs -r` portability and `env` duty.
+Silence: Tablecloth's `max_name`, then its eight ClothError paths.
 
 ---
 ## Landed arcs
