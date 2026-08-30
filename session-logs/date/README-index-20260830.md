@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260830.184215` | [the batons the day left](20260830/20260830-184215_the-batons-the-day-left.kyri) | a spine collision, a lane question, a seed spelling -- all at the word |
 | `20260830.183654` | [the mark that molted and the set that stays a set](20260830/20260830-183654_the-mark-that-molted-and-the-set-that-stays-a-set.kyri) | TUBE0 molts home; DirtySet shares the nine, idempotent |
 | `20260830.165431` | [the parked package comes home](20260830/20260830-165431_the-parked-package-comes-home.kyri) | 121 rungs GREEN; the carry lands at %364-368 |
 | `20260830.163957` | [the carry waits for its choir](20260830/20260830-163957_the-carry-waits-for-its-choir.kyri) | the pier package renumbers to %364-368; the suite runs unbounded |
