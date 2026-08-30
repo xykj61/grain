@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260829.225955` | [two pier trees, two refusals, two right answers](20260829/20260829-225955_two-pier-trees-two-refusals-two-right-answers.kyri) | hush discards its copies; dream rebases its own laps home |
 | `20260829.225328` | [the prompt leaves the quotes and the loops find their trees](20260829/20260829-225328_the-prompt-leaves-the-quotes-and-the-loops-find-their-trees.kyri) | one anchored fleet-loop.sh; three seat-prompt files; census essay kept |
 | `20260829.222718` | [one root, two crashes, and the campaign handed to Mystery](20260829/20260829-222718_one-root-two-crashes-and-the-campaign-handed-to-mystery.kyri) | the hook probes its scan shell; CION seats on Mystery |
 | `20260829.221841` | [the word that stops and the chapter that resumes](20260829/20260829-221841_the-word-that-stops-and-the-chapter-that-resumes.kyri) | standfast refused for rung marks; CION campaign drafted PROPOSED |
