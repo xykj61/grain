@@ -14,6 +14,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260829.235814` | [the partition that can empty](20260829/20260829-235814_the-partition-that-can-empty.kyri) | down_map's caller-reachable assert booked OPEN as %349 for Mind |
 | `20260829.235656` | [the face speaks from real output](20260829/20260829-235656_the-face-speaks-from-real-output.kyri) | a pinned completion feeds the face; no stop reason earns settled |
 | `20260829.235042` | [the marker wears its kind](20260829/20260829-235042_the-marker-wears-its-kind.kyri) | the styled rung: head, flow, edge -- three kinds, three seated colors |
+| `20260829.234125` | [the rungs found their clocks](20260829/20260829-234125_the-rungs-found-their-clocks.kyri) | 588 labels mapped; false-zero meter repaired; sibling reds routed |
 | `20260829.233639` | [the asking voice gets a face](20260829/20260829-233639_the-asking-voice-gets-a-face.kyri) | lantern_face paints an honest exchange; AnswerWithUnknown refuses |
 | `20260829.233501` | [the ring read every stored seat](20260829/20260829-233501_the-ring-read-every-stored-seat.kyri) | Mind: both EventRing refusals compare all 130 stored values |
 | `20260829.231546` | [the nine-nodes sitting](20260829/20260829-231546_the-nine-nodes-sitting.kyri) | SkateCore semantic snapshot ruled: 1+8 seats, nib labels, grid rects |

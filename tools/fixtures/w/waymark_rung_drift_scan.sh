@@ -1,5 +1,5 @@
 #!/bin/sh
-# tools/fixtures/waymark_rung_drift_scan.sh -- ascending rung marks in living files, under a
+# tools/fixtures/w/waymark_rung_drift_scan.sh -- ascending rung marks in living files, under a
 # ceiling that only falls.
 #
 # WHY. The mark law (.claude/rules/stamp-and-name.md, seated 20260821.160050) retired the
@@ -56,29 +56,44 @@
 # night; a ceiling is only a ceiling against the tree it was read on. 17,257 is the reading on the
 # anointed order, with the two repairs above still in it, and the whole of the difference is
 # attributed to the symlink count rather than left as drift. It falls from here.
+# The recovered CION map candidate reads 17,247 before moving a citation: 17,246 from its first
+# reading plus one sibling-owned WADE<N> mark that landed while the candidate waited. The committed
+# ceiling still falls 17,257 -> 17,247, and the sibling mark is routed on ITINERARY rather than
+# hidden by raising the old candidate's reading.
 #
-# RUNG_ROOT and RUNG_CEILING are the witness's pen knobs -- a control proves both sides on a
-# planted repository; neither is an override word for the live tree.
+# RUNG_ROOT, RUNG_CEILING, and RUNG_FILE_LIST are the witness's pen knobs -- a control proves
+# both sides on planted tracked-path input; none is an override word for the live tree.
 
 set -eu
 
 ROOT="${RUNG_ROOT:-.}"
-CEILING="${RUNG_CEILING:-17257}"
+CEILING="${RUNG_CEILING:-17247}"
 
 marks='HAWM|TUBE|ZETA|JABS|LULU|STOA|SETU|SUNN|POLE|SOON|JARL|BUHR|TACT|GISM|AYRE|DAHL|KOFF|CION|VOLS|LOWE|OFFY|GRAD|AHOY|WADE|HUNK|DREY|FORA|ALES|DISC|SEVA|MAND|MONA'
 
-files=$(mktemp); trap 'rm -f "$files"' EXIT
-( cd "$ROOT" && git ls-files 2>/dev/null ) \
-  | grep -vE '(^|/)[0-9]{8}-[0-9]{6}[_.]' \
-  | grep -vE '^(session-logs|counsel|waymarks|bron-resins|vendor|gratitude|seed)/' \
-  > "$files" || : > "$files"
+mkdir -p .mind-state/tmp
+state_tmp=$(CDPATH= cd .mind-state/tmp && pwd)
+files=$(mktemp "$state_tmp/rung-drift-files.XXXXXX"); trap 'rm -f "$files"' EXIT
+if [ -n "${RUNG_FILE_LIST:-}" ]; then
+  [ -f "$RUNG_FILE_LIST" ] || { echo "verdict=file_list_absent"; exit 1; }
+  grep -qE '(^/|(^|/)\.\.(/|$))' "$RUNG_FILE_LIST" \
+    && { echo "verdict=file_list_escapes"; exit 1; }
+  cp "$RUNG_FILE_LIST" "$files"
+else
+  ( cd "$ROOT" && git ls-files 2>/dev/null ) \
+    | grep -vE '(^|/)[0-9]{8}-[0-9]{6}[_.]' \
+    | grep -vE '^(session-logs|counsel|waymarks|bron-resins|vendor|gratitude|seed)/' \
+    > "$files" || : > "$files"
+fi
 
 # NUL-delimited into grep: a bare xargs splits on spaces inside tracked filenames, and the
 # count then drifts by whatever a half-name happens to reach -- measured +/-6 between two
 # checkouts of one identical tree on the day this meter landed.
 count=0
 if [ -s "$files" ]; then
-  count=$(( cd "$ROOT" && tr '\n' '\0' < "$files" | xargs -0 grep -ahoE "(^|[^A-Za-z])($marks)[0-9]+" ) 2>/dev/null | grep -c . || true)
+  # Keep command substitution and its inner subshell visibly separate. The ambiguous `$((` form
+  # ran as Bash and as arithmetic under different shells, where the latter reported a false zero.
+  count=$( ( cd "$ROOT" && tr '\n' '\0' < "$files" | xargs -0 grep -ahoE "(^|[^A-Za-z])($marks)[0-9]+" ) 2>/dev/null | grep -c . || true )
 fi
 
 echo "rung_marks_living=$count"

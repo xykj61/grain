@@ -88,25 +88,24 @@ row" is rewritten to say what the row now is.
 
 **Other Pond doors:** `spool_cloth` promises 4 large artifacts over a store holding **2** (%341).
 
-**CION campaign** SEATED `20260829.222718`: Mystery molts rung marks to stamp-and-name
-(`expanding-prompts/20260829-221841_cion-resumes-the-rung-mark-molt-campaign.md`); wall widened.
+**CION** SEATED `20260829.222718`: Mystery's 588-row author-clock map is GREEN and all 17
+explicit STOA stamps agree. Required-next `lotus/LADDER.md` declares Field and reads D/62:
+custody chooses a quality/split lap or reseats `glow/lower_shop_gate.rye`; no citation moves.
+[Campaign](../expanding-prompts/20260829-221841_cion-resumes-the-rung-mark-molt-campaign.md).
 
 **MANY HANDS** (granted `20260828`): custody stays MANUAL, one writer per checkout. Root
 `SKILL.md`; every clone seats `ww` (`grain-ww/grain`, gate %1) and `.git/ssh_config_jail`.
 
-**Still open:** REDS reads **7,537/24,576**, 17,039B free, **1 row, 0 OPEN**, 1 foldable,
-`pin_deadlocked=0` -- door B's drain healed the pin and `%345` is the row standing. Every clause
-this block carried before was measured false.
-**Width:** `glow/rune_shape.rye` publishes `usize` in 5 fields and 5 accessors; 59 fixtures
-await his word. **Mind's:** the reconnect stash, `%281`/`%291`, two `enclosure.conf` pins here.
-**Roster here (cold and hot, `tree_moved=no`, `20260829.202116`, `grain-silence`):** 94 guards,
-**89 green**, 5 red -- gate %7, another body's, Hush's two, and `remember_git_nib`, closed by
-this round's own commit. **Seat:** rostering the roster's own witness.
+**Sibling finds (`20260830.002502`):** Mind owns `%349` and one width line in
+`brushstroke/spread.rye`; Hush owns one in `pond/apps/spread.rye`; Sound owns two bare labels in
+`lattice/README.md` and the new WADE<N> mark in `pond/apps/lantern_face_theme.rye`. Mystery's
+module-label guard fails open on BSD grep; its portable form finds two elder labels in
+`tools/gen/chapter/fascia_metric_v0.rish`, so that repair stays booked beside the sibling labels.
 
-**Next doors.** Dream: Caravan and Tally. Hush: the Mac's 3 Pond rows -- `xargs -r` at
-`pond_enclosure_door_scan.sh:158` is a GNU extension BSD refuses, so at least one wants a repair
-rather than `host linux`; then `env`, the second door duty. Silence: Tablecloth's other
-bounds, each a compare-never-copy pedestal.
+**Still open:** REDS has 1 OPEN row, Mind-owned `%349`. `glow/rune_shape.rye` keeps its width
+custody; Mind keeps the reconnect stash, `%281`/`%291`, and two `enclosure.conf` pins.
+**Next doors.** Dream: Caravan and Tally. Hush: Pond's `xargs -r` portability and `env` duty.
+Silence: Tablecloth's remaining compare-never-copy bounds.
 
 ---
 ## Landed arcs
@@ -222,7 +221,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260829.210056` | The number compared, not copied -- Tablecloth's first Glow desk, and a guard an honest raise walks through | [log](../session-logs/date/20260829/20260829-210056_the-number-compared-not-copied.kyri) |
+| `20260830.002759` | The map crosses intact -- current drift and pin seams reproved | [log](../session-logs/date/20260830/20260830-002759_the-map-crosses-intact.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it.
 

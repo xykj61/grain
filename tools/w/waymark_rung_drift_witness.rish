@@ -1,33 +1,62 @@
-# tools/w/waymark_rung_drift_witness.rish -- ascending rung marks in living files stay under a
-# ceiling that only falls (REDS %329, the mark law's meter).
+# tools/w/waymark_rung_drift_witness.rish -- the CION conversion map stands while ascending rung
+# marks in living files stay under a ceiling that only falls (REDS %329, the mark law's meter).
 #
 #   rishi/bin/rishi run tools/w/waymark_rung_drift_witness.rish
 #
-# The mark law retired HAWM7-shaped rung marks on 20260821.160050 and two ladders numbered past
-# it for a week, because the law had no meter. This witness runs the scan on the live tree and
-# proves the ceiling from both sides on a planted git repository in a pen: one mark past a pen
-# ceiling refuses, and a count standing exactly at it walks free.
+# The opening campaign lap maps every STOA and ALES rung to the author clock of its landing
+# commit before a citation moves. Its controls alter history and ledger readings, remove a row,
+# and exercise the honest census fallback. The mark law retired HAWM7-shaped rung marks on
+# 20260821.160050 and two ladders numbered past it for a week, because the law had no meter. This
+# witness then proves the ceiling from both sides on planted tracked-path input in a Grain-tree
+# pen. Explicit Bash keeps the controls clear of the macOS selector shell that this Codex
+# enclosure cannot read.
+
+say "rung-stamp-map: Language EN -- a landing keeps its name while the one-clock stamp carries order."
+say "rung-stamp-map: Style Gauge, Meter -- every derived row names the commit that supports it."
+say "rung-stamp-map: Lens TAME -- an absent or altered source refuses before a citation moves."
+
+let map_live = run ["/bin/bash" "tools/fixtures/w/waymark_rung_stamp_map_scan.sh"]
+say map_live.out
+assert map_live.ok else "rung-stamp-map: the live fixture must agree with both ledgers and landed history"
+assert map_live.out contains "map_rows=588" else "rung-stamp-map: every landed label in both ladders must have one row"
+assert map_live.out contains "resolved_rows=588" else "rung-stamp-map: every derived label must carry its author stamp"
+assert map_live.out contains "census_rows=0" else "rung-stamp-map: a recoverable landing must not hide behind a census mark"
+assert map_live.out contains "ledger_rows=17" else "rung-stamp-map: each explicit STOA ledger stamp must agree with the author clock"
+assert map_live.out contains "spot_checks=10" else "rung-stamp-map: the commit attachment must be sampled across both ladders"
+assert map_live.out contains "verdict=ok" else "rung-stamp-map: the live scan must agree with its exit"
+
+let map_control = run ["/bin/bash" "tools/fixtures/w/waymark_rung_stamp_map_control.sh"]
+say map_control.out
+assert map_control.ok else "rung-stamp-map: the planted controls must complete"
+assert map_control.out contains "author_stamp_refusal=yes" else "rung-stamp-map: changing an author stamp must refuse against git history"
+assert map_control.out contains "ledger_stamp_refusal=yes" else "rung-stamp-map: changing an explicit ledger stamp must refuse"
+assert map_control.out contains "coverage_refusal=yes" else "rung-stamp-map: removing a landed row must refuse"
+assert map_control.out contains "census_fallback=yes" else "rung-stamp-map: an honestly underivable row must keep its number"
+assert map_control.out contains "one_clock_host_independent=yes" else "rung-stamp-map: the one-clock stamp must not drift with the host zone"
+assert map_control.out contains "control_verdict=ok" else "rung-stamp-map: the controls must agree with themselves"
+
+say "GREEN: rung-stamp-map -- 588 labels stand, author and ledger seams bite, and census remains an honest fallback."
 
 say "rung-drift: Language EN -- a rung is marked by waymark, stamp, and plain name; a counter is the retired form."
 say "rung-drift: Style Gauge, Meter -- the ceiling only falls, and the reading is the scan's own."
 say "rung-drift: Lens TAME -- the boundary proven from both sides before the live reading is trusted."
 
-let pen = run ["sh" "-c" "pen=$(mktemp -d); cd $pen && git init -q . && mkdir -p docs && printf 'the FORA7 rung lands\\nthe FORA8 rung lands\\n' > docs/page.md && git add -A && git -c user.email=c@x -c user.name=c commit -qm p --no-gpg-sign 2>/dev/null; echo $pen"]
+let pen = run ["/bin/bash" "-c" "set -eu; mkdir -p .mind-state/tmp; pen=$(mktemp -d .mind-state/tmp/rung-drift.XXXXXX); mkdir -p $pen/docs; echo 'the FORA7 rung lands' > $pen/docs/page.md; echo 'the FORA8 rung lands' >> $pen/docs/page.md; echo 'docs/page.md' > $pen/files.lst; echo $pen"]
 assert pen.ok else "rung-drift: the pen must build"
 let pen_dir = trim pen.out
 
-let bitten = run ["sh" "-c" "RUNG_ROOT=${pen_dir} RUNG_CEILING=1 sh tools/fixtures/w/waymark_rung_drift_scan.sh"]
+let bitten = run ["/bin/bash" "-c" "RUNG_ROOT=${pen_dir} RUNG_FILE_LIST=${pen_dir}/files.lst RUNG_CEILING=1 /bin/bash tools/fixtures/w/waymark_rung_drift_scan.sh"]
 assert (bitten.ok == false) else "rung-drift: two planted marks over a pen ceiling of one must refuse"
 assert bitten.out contains "verdict=rung_drift" else "rung-drift: the refusal must wear its own verdict"
 
-let freed = run ["sh" "-c" "RUNG_ROOT=${pen_dir} RUNG_CEILING=2 sh tools/fixtures/w/waymark_rung_drift_scan.sh"]
+let freed = run ["/bin/bash" "-c" "RUNG_ROOT=${pen_dir} RUNG_FILE_LIST=${pen_dir}/files.lst RUNG_CEILING=2 /bin/bash tools/fixtures/w/waymark_rung_drift_scan.sh"]
 assert freed.ok else "rung-drift: two marks at a pen ceiling of exactly two must walk free"
 assert freed.out contains "verdict=ok" else "rung-drift: the boundary must be met from the passing side too"
 
-let cleanup = run ["sh" "-c" "rm -rf ${pen_dir}"]
+let cleanup = run ["/bin/bash" "-c" "rm -rf ${pen_dir}"]
 assert cleanup.ok else "rung-drift: the pen must be returned"
 
-let live = run ["sh" "tools/fixtures/w/waymark_rung_drift_scan.sh"]
+let live = run ["/bin/bash" "tools/fixtures/w/waymark_rung_drift_scan.sh"]
 say live.out
 assert live.ok else "rung-drift: a numbered rung mark entered living prose past the ceiling -- write the waymark, stamp, and plain name instead (.claude/rules/stamp-and-name.md)"
 assert live.out contains "verdict=ok" else "rung-drift: the live reading must agree with its own exit"
