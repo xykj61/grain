@@ -109,6 +109,7 @@ pub const BodyKind = enum {
     fold_prodto, // STOA334: product 1..n within bound (verb is a name)
     fold_prod, // STOA336: list fold by product over any closed tuple
     cond_gth_mul, // mul-a (20260829.214107): (gth face (mul face2 face3)) over a three-face header -- parse seats; lower waits for mul-b
+    cond_and_pair, // and (20260830.000850): (and (gth|eq face dec) (gth|eq face2 dec)) over the pair header -- the composed condition the face's uncertainty law asked for
 };
 
 /// A parsed thin bartis gate: sample face + optional named shape + body kind.
@@ -129,6 +130,10 @@ pub const GateSpec = struct {
     gate: [max_gate_len]u8 = [_]u8{0} ** max_gate_len,
     gate_len: u32 = 0,
     cond_rhs: u32 = 0, // STOA331: gth right-hand literal
+    and_op1: u8 = 0, // and: 1=gth 2=eq for the first face's inner cond
+    and_rhs1: u32 = 0, // and: the first inner cond's literal
+    and_op2: u8 = 0, // and: 1=gth 2=eq for the second face's inner cond
+    and_rhs2: u32 = 0, // and: the second inner cond's literal
     cond_then: u32 = 0, // STOA331: answer when sample > rhs
     then_face: u8 = 0, // STOA341: 0=literal · 1=first face · 2=second face
     else_face: u8 = 0, // STOA341: the arm selects a face instead of a literal
@@ -234,6 +239,63 @@ fn parse_body(src: []const u8, toks: []const tokens.Token, start: u32, face_text
         const cond_op = tokens.slice_of(src, toks[@as(usize, @intCast(i))]);
         const is_gth = std.mem.eql(u8, cond_op, "gth");
         const is_eq = std.mem.eql(u8, cond_op, "eq");
+        if (std.mem.eql(u8, cond_op, "and")) {
+            // and (20260830.000850): `?:  (and (gth|eq face dec) (gth|eq face2 dec))  dec  dec`
+            // -- the composed condition, the shape the face's own uncertainty law asked for
+            // (an unknown AND a nonzero answer refuses). Exactly the pair header; each inner
+            // cond speaks gth or eq over its own face in header order with a literal RHS; the
+            // arms stay literal decimals. Rishi already speaks `?&` -- the shop takes the word
+            // spelling beside gth, eq, and mul, and the `?&` rune stays an alias-sameness door.
+            if (face2_text.len == 0) return error.MalformedBody;
+            if (face3_text.len != 0) return error.MalformedBody;
+            i += 1;
+            if (i >= n or toks[@as(usize, @intCast(i))].kind != .lparen) return error.MalformedBody;
+            i += 1;
+            if (i >= n or toks[@as(usize, @intCast(i))].kind != .ident) return error.MalformedBody;
+            const op1 = tokens.slice_of(src, toks[@as(usize, @intCast(i))]);
+            if (std.mem.eql(u8, op1, "gth")) {
+                spec.and_op1 = 1;
+            } else if (std.mem.eql(u8, op1, "eq")) {
+                spec.and_op1 = 2;
+            } else return error.MalformedBody;
+            i += 1;
+            if (i >= n or toks[@as(usize, @intCast(i))].kind != .ident) return error.MalformedBody;
+            if (!std.mem.eql(u8, tokens.slice_of(src, toks[@as(usize, @intCast(i))]), face_text)) return error.BodyFaceMismatch;
+            i += 1;
+            if (i >= n or toks[@as(usize, @intCast(i))].kind != .decimal) return error.MalformedBody;
+            spec.and_rhs1 = try parse_decimal_u32(tokens.slice_of(src, toks[@as(usize, @intCast(i))]));
+            i += 1;
+            if (i >= n or toks[@as(usize, @intCast(i))].kind != .rparen) return error.MalformedBody;
+            i += 1;
+            if (i >= n or toks[@as(usize, @intCast(i))].kind != .lparen) return error.MalformedBody;
+            i += 1;
+            if (i >= n or toks[@as(usize, @intCast(i))].kind != .ident) return error.MalformedBody;
+            const op2 = tokens.slice_of(src, toks[@as(usize, @intCast(i))]);
+            if (std.mem.eql(u8, op2, "gth")) {
+                spec.and_op2 = 1;
+            } else if (std.mem.eql(u8, op2, "eq")) {
+                spec.and_op2 = 2;
+            } else return error.MalformedBody;
+            i += 1;
+            if (i >= n or toks[@as(usize, @intCast(i))].kind != .ident) return error.MalformedBody;
+            if (!std.mem.eql(u8, tokens.slice_of(src, toks[@as(usize, @intCast(i))]), face2_text)) return error.BodyFaceMismatch;
+            i += 1;
+            if (i >= n or toks[@as(usize, @intCast(i))].kind != .decimal) return error.MalformedBody;
+            spec.and_rhs2 = try parse_decimal_u32(tokens.slice_of(src, toks[@as(usize, @intCast(i))]));
+            i += 1;
+            if (i >= n or toks[@as(usize, @intCast(i))].kind != .rparen) return error.MalformedBody;
+            i += 1;
+            if (i >= n or toks[@as(usize, @intCast(i))].kind != .rparen) return error.MalformedBody;
+            i += 1;
+            if (i >= n or toks[@as(usize, @intCast(i))].kind != .decimal) return error.MalformedBody;
+            spec.cond_then = try parse_decimal_u32(tokens.slice_of(src, toks[@as(usize, @intCast(i))]));
+            i += 1;
+            if (i >= n or toks[@as(usize, @intCast(i))].kind != .decimal) return error.MalformedBody;
+            spec.cond_else = try parse_decimal_u32(tokens.slice_of(src, toks[@as(usize, @intCast(i))]));
+            i += 1;
+            spec.body = .cond_and_pair;
+            return i;
+        }
         if (!is_gth and !is_eq) return error.MalformedBody;
         i += 1;
         if (i >= n or toks[@as(usize, @intCast(i))].kind != .ident) return error.MalformedBody;
@@ -538,6 +600,11 @@ pub fn parse_source(src: []const u8) ParseError!GateSpec {
             // mul-a: the composed cond is exactly the three-face shape, whole.
             if (spec.face2_len == 0) return error.MalformedBody;
             if (spec.face3_len == 0) return error.MalformedBody;
+        },
+        .cond_and_pair => {
+            // and: the composed condition is exactly the pair shape, whole.
+            if (spec.face2_len == 0) return error.MalformedBody;
+            if (spec.face3_len != 0) return error.MalformedBody;
         },
         else => {
             if (spec.face2_len != 0) return error.MalformedBody;
