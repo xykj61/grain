@@ -44,6 +44,11 @@
 # HOW IT IS KEPT HONEST. tools/s/standing_equipment_witness.rish proves every path exists,
 # refuses a run card naming a guard the roster never seated, and refuses any recorded RED.
 # Add a guard by adding a record here; the meter counts the file rather than a sentence.
+#
+# ONE PASS AT A TIME. The runner takes a directory lock at zero wait before it measures anything,
+# so a second pass in the SAME tree refuses by name rather than deleting binaries out from under
+# the first (REDS %359). The lock path is relative to the repository root, so the fleet's other
+# trees run freely beside each other.
 
 format standing-equipment-v1
 stamp 20260825.183336
