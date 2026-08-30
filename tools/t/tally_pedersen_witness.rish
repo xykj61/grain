@@ -1,0 +1,46 @@
+# tools/t/tally_pedersen_witness.rish -- the retired import path stays the same path to Bud.
+#
+# The passing side compiles a caller through tally/pedersen.rye and pins the answer also printed
+# by tally/bud.rye. The refusal side removes one forwarded name in a throwaway pen; that same
+# caller must stop at compile time. This proves the compatibility seam from both sides without
+# giving the deprecated name a second implementation.
+
+say "tally-pedersen: Language EN -- the retired import path keeps Bud's exact public answer."
+say "tally-pedersen: Style Gauge, Meter setting -- one caller passes through the shim, then a missing forward refuses."
+say "tally-pedersen: Lens TAME -- compatibility is one implementation and a checked forwarding seam."
+
+let zig = "vendor/zig-toolchain/zig"
+let zig_ver = run [zig "version"]
+assert zig_ver.ok else "tally-pedersen: pinned toolchain missing"
+
+let pen_mk = run ["sh" "-c" "d=$(mktemp -d) && mkdir -p $d/tally && printf '%s' $d"]
+assert pen_mk.ok else "tally-pedersen: could not build the pen -- ${pen_mk.err}"
+let pen = trim pen_mk.out
+
+let copy_modules = run ["cp" "tally/bud.rye" "tally/pedersen.rye" "${pen}/tally/"]
+assert copy_modules.ok else "tally-pedersen: could not place the two modules in the pen"
+
+let write_probe = run ["sh" "-c" "printf 'const std = @import(\"std\");\nconst pedersen = @import(\"pedersen.rye\");\npub fn main(init: std.process.Init) !u8 {\n    _ = init;\n    const dew = [_]u8{0x11} ** pedersen.scalar_len;\n    const point = try pedersen.commit(1000, &dew);\n    var out: [pedersen.point_len * 2]u8 = undefined;\n    pedersen.point_to_hex(point, &out);\n    if (pedersen.pedersen_version.len != pedersen.bud_version.len) return error.VersionDrift;\n    if (pedersen.h_domain.len == 0 or pedersen.pinned_h_bytes.len != pedersen.point_len) return error.SurfaceDrift;\n    std.debug.print(\"{s}\\n\", .{out});\n    return 0;\n}\n' > ${pen}/tally/probe.rye"]
+assert write_probe.ok else "tally-pedersen: could not write the seam probe"
+
+# Passing side: the elder name reaches Bud's pinned known answer.
+let build_green = run ["env" "RYE_ZIG=${zig}" "rye/bin/rye" "build" "${pen}/tally/probe.rye" "-femit-bin=${pen}/probe"]
+assert build_green.ok else "tally-pedersen: the complete forwarding seam must compile -- ${build_green.err}"
+let green = run ["${pen}/probe"]
+assert green.ok else "tally-pedersen: the caller through the shim must run"
+assert green.err contains "01260009c2a0a2ed11e5976cd9401a618571c94f16f643b9663e025313b80777" else "tally-pedersen: the shim moved off Bud's pinned answer -- ${green.err}"
+say "tally-pedersen: complete shim reached Bud's pinned answer"
+
+# Refusal side: one absent forward makes the same caller fail at the seam.
+let plant = run ["sh" "-c" "sed '/pub const commit = bud.commit;/d' tally/pedersen.rye > ${pen}/tally/pedersen.rye && if grep -q 'pub const commit' ${pen}/tally/pedersen.rye; then echo plant=absent; else echo plant=landed; fi"]
+assert plant.ok else "tally-pedersen: missing-forward plant could not run"
+assert plant.out contains "plant=landed" else "tally-pedersen: missing-forward plant changed nothing"
+let red = run ["env" "RYE_ZIG=${zig}" "rye/bin/rye" "build" "${pen}/tally/probe.rye" "-femit-bin=${pen}/hurt"]
+assert red.ok == false else "tally-pedersen: a caller crossed a shim with its commit forward absent"
+assert red.err contains "no member named 'commit'" else "tally-pedersen: the refusal must name the absent forward -- ${red.err}"
+say "tally-pedersen: missing commit forward refused at compile time"
+
+let pen_rm = run ["sh" "-c" "rm -rf ${pen}"]
+assert pen_rm.ok else "tally-pedersen: could not remove the pen"
+
+say "GREEN: tally pedersen -- the complete shim reached Bud's pinned answer; removing one forward refused the same caller at compile time."

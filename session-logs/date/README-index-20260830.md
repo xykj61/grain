@@ -13,6 +13,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 |---|---|---|
 | `20260830.055018` | [the repair that closed an instance](20260830/20260830-055018_the-repair-that-closed-an-instance.kyri) | `spool_cloth` walled; %341, %354, %357 closed |
 | `20260830.053148` | [the set, not its size](20260830/20260830-053148_the-set-not-its-size.kyri) | Tablecloth's nine refusals named and proven; %357 -- the meter blind to Glow |
+| `20260830.053458` | [the old name keeps the same answer](20260830/20260830-053458_the-old-name-keeps-the-same-answer.kyri) | Tally's Pedersen shim gains a two-sided witness; ceiling 2 -> 1 |
 | `20260830.033016` | [the door names its environment](20260830/20260830-033016_the-door-names-its-environment.kyri) | `env` seats as the second door duty; two reds close, the pin folds |
 | `20260830.030609` | [a name is one field](20260830/20260830-030609_a-name-is-one-field.kyri) | Tablecloth refuses a manifest separator at the store edge; %354 booked |
 | `20260830.020032` | [the key learns its name](20260830/20260830-020032_the-key-learns-its-name.kyri) | the grain-mind key gains the committer's email; gh re-add at his keys |

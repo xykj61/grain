@@ -58,7 +58,7 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `c2addc892a` -- this round's own.
+**Git nib:** `8fc35d98f9` -- this round's own.
 
 **Now.** **Two name walls stand and Tablecloth's refusal set is named and proven; the door's env
 half travelled to Silence and its uid half did not. Mystery raises the Lotus ladder to B.**
@@ -104,7 +104,7 @@ it finds two elder labels in `tools/gen/chapter/fascia_metric_v0.rish`. **New (%
 executable. Gate %5, so named rather than touched.
 **Named, not taken:** `pond/enclosure_policy.kyri` stands at 8,120 of 8,192, nearly all of it the
 comment that makes it auditable; `entry`'s paragraph meets that wall, and widening it is yours (%347).
-**Next doors.** Dream: Caravan, Tally. Hush: the %357 loom, or its question one layer up -- how
+**Next doors.** Dream: Kumara, then Caravan. Hush: the %357 loom, or its question one layer up -- how
 many unrostered guards are red now. Silence: `max_name`, the last Tablecloth bound with no desk,
 which %354 proved carries an alphabet as well as a length.
 ---
@@ -221,7 +221,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260830.053148` | The set, not its size -- Tablecloth's nine refusals named, proven, graded | [log](../session-logs/date/20260830/20260830-053148_the-set-not-its-size.kyri) |
+| `20260830.053458` | The old name keeps the same answer -- Tally's Pedersen seam | [log](../session-logs/date/20260830/20260830-053458_the-old-name-keeps-the-same-answer.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it.
 
