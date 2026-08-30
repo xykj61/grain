@@ -15,7 +15,7 @@
 # the round the way any single loop does. Choir is for the quiet hour: the loops rest, one
 # synthesis round sweeps every lane forward a step, and the loops wake to a fresher tree.
 #
-# Charter: active-designing/20260827-155213_the-six-bodies-and-the-closed-stacks.md (the seventh
+# Charter: active-designing/20260829-203718_the-six-bodies-and-the-always-fleet.md (the seventh
 # seat section). Lexicon: the Choir row.
 #
 #   rishi/bin/rishi run tools/l/launch-choir-synthesis-chapter.rish
@@ -25,7 +25,7 @@ let root = run ["test" "-f" "construction/ITINERARY.md"]
 assert root.ok else "run from the repo root (construction/ITINERARY.md not found)"
 
 # invariant: the living charter this seat lives in must exist.
-let charter = run ["test" "-f" "active-designing/20260827-155213_the-six-bodies-and-the-closed-stacks.md"]
+let charter = run ["test" "-f" "active-designing/20260829-203718_the-six-bodies-and-the-always-fleet.md"]
 assert charter.ok else "the six-bodies charter is missing"
 
 say "CHOIR -- the synthesis launch (six voices, one performance)"
