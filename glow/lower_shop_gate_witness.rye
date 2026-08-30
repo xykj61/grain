@@ -1016,6 +1016,33 @@ fn run_selftest(init: std.process.Init) !u8 {
     }
     print("lower: or admits gth and eq inner conds alone -- GREEN\n", .{});
 
+    // alias-sameness (20260830.010901): ?& and ?| are peer spellings -- same spec, same emit.
+    const and_rune_src = "|=  [kind=@u32 len=@u32]\n?:  (?& (eq kind 2) (gth len 0))  0  1\n";
+    const and_rune_spec = try rb.parse_source(and_rune_src);
+    assert(and_rune_spec.body == .cond_and_pair);
+    assert(and_rune_spec.and_op1 == and_spec.and_op1);
+    assert(and_rune_spec.and_rhs1 == and_spec.and_rhs1);
+    assert(and_rune_spec.and_op2 == and_spec.and_op2);
+    assert(and_rune_spec.and_rhs2 == and_spec.and_rhs2);
+    var rune_buf: [8192]u8 = undefined;
+    const n_word_emit = try lower.lower_source_welcome(and_src, &buf);
+    const n_rune_emit = try lower.lower_source_welcome(and_rune_src, &rune_buf);
+    assert(n_word_emit == n_rune_emit);
+    assert(std.mem.eql(u8, buf[0..n_word_emit], rune_buf[0..n_rune_emit]));
+    print("lower: the ?& rune and the and word emit byte-identical programs -- GREEN\n", .{});
+
+    const or_rune_src = "|=  [reason=@u32 len=@u32]\n?:  (?| (eq reason 2) (eq len 0))  2  1\n";
+    const or_rune_spec = try rb.parse_source(or_rune_src);
+    assert(or_rune_spec.body == .cond_or_pair);
+    print("lower: the ?| rune parses to the same cond_or_pair -- GREEN\n", .{});
+
+    if (rb.parse_source("|=  [a=@u32 b=@u32]\n?:  (?~ (eq a 2) (gth b 0))  0  1\n")) |_| {
+        return error.StrangerFaceAccepted;
+    } else |err| {
+        if (err != rb.ParseError.MalformedBody) return err;
+    }
+    print("lower: a stranger rune at the cond head refuses by name -- GREEN\n", .{});
+
     print("GREEN: Glow `|=` bartis — identity · argv · call-body · amount-shape · amount argv · count-shape · count argv · kind-shape · kind argv · kind flip · xact-shape · xact argv · xact flip · xfer-shape · xfer argv · xfer flip · pair-shape · pair argv · pair flip · triple-shape · triple argv · triple flip · quad-shape · quad argv · quad flip · penta-shape · penta argv · penta flip · hexa-shape · hexa argv · hexa flip · hepta-shape · hepta argv · hepta flip · octa-shape · octa argv · octa flip · nona-shape · nona argv · nona flip · nesting-nests · STOA338 pair-faces metal; STOA100–147 · STOA253 identity emit · STOA259 N-field flip · STOA293 tagged payload flip · STOA297 tagged unit flip · STOA300 kind argv · STOA303 xact argv · STOA305 xfer argv · STOA307–321 pair…nona argv · STOA324 `$:` argv sameness collapse.\n", .{});
     return 0;
 }

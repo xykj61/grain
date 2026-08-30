@@ -1,0 +1,13 @@
+::  name       lantern unknown law gate, rune spelling
+::  shape      kind answer-len - ints (@u32) -> lawful - int (@u32)
+::  invariant  answers exactly as gate-lantern-unknown-law-u32.glow on every input -- one law, two spellings
+::  example    2 5 -> 0 · 2 0 -> 1
+::  readers    Lantern · the asking voice · Glow
+::  nib        lantern-face-v0 · the ancestor's ?& as a peer spelling (alias-sameness, 20260830)
+::
+::  The same uncertainty law, spoken in the ancestor's rune: ?& and the word `and`
+::  are peer spellings of one composed condition -- one body kind, one parse path,
+::  one emit, proven byte-identical in the shop witness and answer-identical on
+::  metal beside its word-spelled twin. Neither spelling owns a behavior of its own.
+|=  [kind=@u32 answer_len=@u32]
+?:  (?& (eq kind 2) (gth answer_len 0))  0  1
