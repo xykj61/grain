@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260830.013025` | [the gate that held its shape](20260830/20260830-013025_the-gate-that-held-its-shape.kyri) | the seed publish moves to Keaton's keys; the field level everywhere |
 | `20260830.012207` | [the boundary condense](20260830/20260830-012207_the-boundary-condense.kyri) | Now re-aims at the live front; the card buys back 1,283 bytes |
 | `20260830.011727` | [the clause the method left quiet](20260830/20260830-011727_the-clause-the-method-left-quiet.kyri) | a-rune-is-earned-by-a-law seats at QA 92; Mind's nine seats await a hand |
 | `20260830.011259` | [the runes take their seats](20260830/20260830-011259_the-runes-take-their-seats.kyri) | ?& and ?| seat as peer spellings -- byte-identical, answer-identical |
