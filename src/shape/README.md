@@ -39,6 +39,8 @@ The data-structure museum: every non-networked shape on its own pedestal, viewab
 | [`shape-comlink-ipv6-dual-stack.glow`](shape-comlink-ipv6-dual-stack.glow) | Comlink dual-stack policy=1 (R1 · three walls inline) | `tools/co/comlink_r1_dual_stack_witness.rish` (leg A pure · leg B metal) |
 | [`shape-tablecloth-catalog-capacity.glow`](shape-tablecloth-catalog-capacity.glow) | Tablecloth `max_artifacts=32` -- the vane's first Glow desk of any kind | `tools/t/tablecloth_glow_tend_witness.rish` (scan compares, control proves both ways) |
 | [`shape-tablecloth-content-budget.glow`](shape-tablecloth-content-budget.glow) | Tablecloth `max_content_bytes=512` -- a derived bound, read out of the room that decides it | `tools/t/tablecloth_glow_tend_witness.rish` (same guard; the derivation is its own reading) |
+| [`shape-tablecloth-error-paths.glow`](shape-tablecloth-error-paths.glow) | Tablecloth's nine `ClothError` refusals -- a set's size, with the set listed so a rename cannot pass under it | `tools/t/tablecloth_glow_tend_witness.rish` (same guard; names compared as sorted sets) |
+| [`shape-tablecloth-name-bound.glow`](shape-tablecloth-name-bound.glow) | Tablecloth `max_name=48` -- a length, with the alphabet its manifest wall removes standing beside it | `tools/t/tablecloth_glow_tend_witness.rish` (same guard; length, bytes, and the wall still wired) |
 
 ```
 rishi/bin/rishi run tools/m/mantra_glow_tend_limb1_witness.rish

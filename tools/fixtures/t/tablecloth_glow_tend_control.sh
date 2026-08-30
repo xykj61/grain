@@ -2,8 +2,8 @@
 # tools/fixtures/t/tablecloth_glow_tend_control.sh -- the Tablecloth drift scan, proven both ways.
 #
 # A refusal proven only in the passing direction cannot be told from a bypass, so every reading
-# here is shown from both sides: planted and refused, then removed and welcomed. Twenty-eight cases
-# run in a throwaway pen holding just the five files the scan reads.
+# here is shown from both sides: planted and refused, then removed and welcomed. Forty-one cases
+# run in a throwaway pen holding just the six files the scan reads.
 #
 # The second case is the one this guard exists for. An elder Tend witness greps for the literal
 # number in both rooms, so raising a bound honestly -- moving it in the Rye AND on the pedestal --
@@ -22,7 +22,15 @@
 # names are compared as sets and it refuses. Case 20 is its welcome -- a tenth path added honestly
 # in all three places walks free, because the scan carries no roster of its own.
 #
-# EXPECTED: control_verdict=ok, with welcomes=4 and refusals=24.
+# Cases 29 through 41 hold the fourth pedestal, whose number is a LENGTH with an alphabet standing
+# beside it. Case 35 is the one that desk exists for: a third byte joins the wall in the Rye alone,
+# and the length reading stays perfectly quiet -- 48 equals 48 on both sides -- which is REDS %354's
+# whole lesson, that the length was never the wall. Case 37 is its welcome, the same byte added to
+# the wall and to the desk together. Case 39 is the third reading's own: the wall left standing and
+# no longer consulted, where the length and the alphabet both still agree over a store that accepts
+# anything.
+#
+# EXPECTED: control_verdict=ok, with welcomes=6 and refusals=35.
 #
 # Driven by tools/t/tablecloth_glow_tend_witness.rish. Run from the repository root.
 
@@ -33,6 +41,7 @@ scan="$root/tools/fixtures/t/tablecloth_glow_tend_scan.sh"
 desk_src="$root/src/shape/shape-tablecloth-catalog-capacity.glow"
 content_src="$root/src/shape/shape-tablecloth-content-budget.glow"
 error_src="$root/src/shape/shape-tablecloth-error-paths.glow"
+name_src="$root/src/shape/shape-tablecloth-name-bound.glow"
 rye_src="$root/brushstroke/tablecloth.rye"
 beading_src="$root/mantra/beading.rye"
 
@@ -43,13 +52,14 @@ welcomes=0
 refusals=0
 wrong=0
 
-# pen -- a fresh copy of exactly the four files the scan reads, and nothing else.
+# pen -- a fresh copy of exactly the six files the scan reads, and nothing else.
 pen() {
   rm -rf "$work/pen"
   mkdir -p "$work/pen/src/shape" "$work/pen/brushstroke" "$work/pen/mantra"
   cp "$desk_src" "$work/pen/src/shape/shape-tablecloth-catalog-capacity.glow"
   cp "$content_src" "$work/pen/src/shape/shape-tablecloth-content-budget.glow"
   cp "$error_src" "$work/pen/src/shape/shape-tablecloth-error-paths.glow"
+  cp "$name_src" "$work/pen/src/shape/shape-tablecloth-name-bound.glow"
   cp "$rye_src" "$work/pen/brushstroke/tablecloth.rye"
   cp "$beading_src" "$work/pen/mantra/beading.rye"
 }
@@ -91,6 +101,7 @@ edit() {
 deskf="$work/pen/src/shape/shape-tablecloth-catalog-capacity.glow"
 contentf="$work/pen/src/shape/shape-tablecloth-content-budget.glow"
 errorf="$work/pen/src/shape/shape-tablecloth-error-paths.glow"
+namef="$work/pen/src/shape/shape-tablecloth-name-bound.glow"
 ryef="$work/pen/brushstroke/tablecloth.rye"
 beadingf="$work/pen/mantra/beading.rye"
 
@@ -248,11 +259,86 @@ pen
 edit "$errorf" 's/^::  the refusal paths, as ClothError declares them:$/::  the refusal paths ClothError declares:/'
 check "the enumeration region unreadable" error_enumeration_missing refuse
 
+
+# 29 -- the honest raise of the fourth bound: max_name moves in both rooms and the guard stays
+# quiet, because it carries no length of its own.
+pen
+edit "$namef" 's/^::  example    48$/::  example    64/'
+edit "$ryef" 's/^pub const max_name: u32 = 48;$/pub const max_name: u32 = 64;/'
+check "the name bound raised in both rooms" agree welcome
+
+# 30 -- the name pedestal drifts ahead of the Rye.
+pen
+edit "$namef" 's/^::  example    48$/::  example    49/'
+check "the name desk moved alone" name_disagree refuse
+
+# 31 -- the name pedestal gone.
+pen
+rm -f "$namef"
+check "the name pedestal absent" name_desk_missing refuse
+
+# 32 -- a placard line dropped from the name pedestal.
+pen
+grep -v '^::  invariant ' "$namef" > "$namef.t" && cat "$namef.t" > "$namef" && rm -f "$namef.t"
+check "a name placard line dropped" name_placard_wrong refuse
+
+# 33 -- the source citation stripped, leaving a length with nowhere to be checked against.
+pen
+edit "$namef" 's|brushstroke/tablecloth.rye|the rye module|g'
+check "the name citation stripped" name_citation_missing refuse
+
+# 34 -- the Rye present and max_name no longer published.
+pen
+grep -v '^pub const max_name: u32 = ' "$ryef" > "$ryef.t" && cat "$ryef.t" > "$ryef" && rm -f "$ryef.t"
+check "the name bound unpublished" rye_name_bound_missing refuse
+
+# 35 -- THE case this pedestal exists for. A third byte joins the wall in the Rye alone. The
+# LENGTH reading stays perfectly quiet -- 48 equals 48 on both sides -- which is REDS %354's whole
+# lesson: the length was never the wall. The alphabets differ, and that is what refuses.
+pen
+edit "$ryef" "s|or name\[i\] == '\\\\n') return false;|or name[i] == '\\\\n' or name[i] == '\\\\t') return false;|"
+check "a byte added to the wall in the rye alone" name_bytes_disagree refuse
+
+# 36 -- a byte dropped from the wall in the Rye alone, so the desk promises a wall wider than the
+# one that stands. Same reading, other direction.
+pen
+edit "$ryef" "s| or name\[i\] == '\\\\n'||"
+check "a byte dropped from the wall" name_bytes_disagree refuse
+
+# 37 -- the honest growth of the alphabet: a third byte added in BOTH rooms walks free, because
+# the scan reads the wall rather than remembering it.
+pen
+edit "$ryef" "s|or name\[i\] == '\\\\n') return false;|or name[i] == '\\\\n' or name[i] == '\\\\t') return false;|"
+edit "$namef" 's/^::    space - newline$/::    space - newline - tab/'
+check "a byte added to the wall in both rooms" agree welcome
+
+# 38 -- the desk names a byte the wall does not refuse.
+pen
+edit "$namef" 's/^::    space - newline$/::    space - newline - tab/'
+check "the name desk names a byte the wall does not" name_bytes_disagree refuse
+
+# 39 -- the wall left standing and no longer consulted: the one call gone from store_artifact.
+# Both the length and the alphabet still agree, over a store that accepts anything.
+pen
+grep -v 'if (!name_is_one_field(name)) return error.NameHasSeparator;' "$ryef" > "$ryef.t" && cat "$ryef.t" > "$ryef" && rm -f "$ryef.t"
+check "the wall no longer consulted" wall_unwired refuse
+
+# 40 -- the enumeration's opening sentence reworded, so the region no longer reads. The desk's
+# bytes become unreadable rather than wrong, and the verdict says so rather than blaming the wall.
+pen
+edit "$namef" 's/^::  the bytes the manifest grammar reserves, as name_is_one_field refuses them:$/::  the bytes the manifest grammar reserves:/'
+check "the name enumeration region unreadable" name_alphabet_missing refuse
+
+# 41 -- the wall function itself no longer published under the name the desk cites.
+pen
+edit "$ryef" 's/^fn name_is_one_field(name: \[\]const u8) bool {$/fn name_is_one_field_off(name: []const u8) bool {/'
+check "the wall function unpublished" rye_wall_missing refuse
+
 echo "welcomes=$welcomes"
 echo "refusals=$refusals"
 echo "wrong=$wrong"
 
-if [ "$welcomes" -eq 4 ] && [ "$refusals" -eq 24 ] && [ "$wrong" -eq 0 ]; then
+if [ "$welcomes" -eq 6 ] && [ "$refusals" -eq 35 ] && [ "$wrong" -eq 0 ]; then
   echo "control_verdict=ok"
 else
   echo "control_verdict=wrong"
