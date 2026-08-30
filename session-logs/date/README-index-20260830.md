@@ -11,4 +11,5 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260830.000539` | [the face takes any theme](20260830/20260830-000539_the-face-takes-any-theme.kyri) | the .brush cascade recolors one settledness; the v0 face family closes |
 | `20260830.000121` | [the shelf learns to take every hand](20260830/20260830-000121_the-shelf-learns-to-take-every-hand.kyri) | merge=union for day indexes ends the prepend-conflict class |

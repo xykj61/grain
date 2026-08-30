@@ -1,0 +1,21 @@
+::  name       lantern face stone-edge theme
+::  shape      a style: layer that recolors the face's unknown marker (edge) only
+::  invariant  the edge token stays warm/low-blue; head and flow inherit from the base
+::  example    an unknown marker in warm stone rather than the base's warm rule
+::  readers    brush_parse.rye -> tokens.resolve -> lantern_face_theme
+::  nib        lantern-face-theme-v0
+::
+::  A .brush theme for the asking voice's face: it names only the `edge` token --
+::  the color the honest i-don't-know marker wears -- and leaves head (settled)
+::  and flow (proposed) to inherit from the base sheet, proving the cascade
+::  recolors one settledness without touching its siblings.
+::  Tongue: Glow · Bron · TAME · Radiant. Never JS · HTML · CSS · JSON.
+::
+::  at-nib:     lantern-face-stone-edge
+::  present:    Frame
+::  max-lines:  8
+::  style:
+::    edge 0xFFB08A5A
+::  lines:
+::    lantern face, stone edge theme
+::  refuse:     src/web · Wasm/Web backend · CSS rail · a { } stylesheet

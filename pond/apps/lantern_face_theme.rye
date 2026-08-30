@@ -1,0 +1,108 @@
+//! lantern_face_theme.rye -- the .brush-themed Lantern face: the last door of v0's family.
+//!
+//! The plain face dresses its settledness marker from the base sheet; this variant
+//! closes the authoring loop the realidream theme rung proved: a `.brush` file's
+//! `style:` block overrides a marker token, the WADE1 cascade infuses that override
+//! over `tokens.base_sheet`, and `dress_face` wears the resolved sheet. The shipped
+//! fixture recolors `edge` alone -- the honest i-don't-know's color -- so unknown
+//! wears the authored stone while settled and proposed inherit untouched, proving
+//! the cascade reaches one settledness without moving its siblings.
+//!
+//! Additive by construction: imports lantern_face, brush_parse, tokens, and
+//! skate_grid, calling only their public functions.
+//!
+//!   rye build pond/apps/lantern_face_theme.rye -femit-bin=pond/bin/lantern-face-theme
+//!   pond/bin/lantern-face-theme
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const face = @import("lantern_face.rye");
+const bp = @import("brushstroke/brush_parse.rye");
+const tokens = @import("brushstroke/tokens.rye");
+const skate = @import("brushstroke/skate_grid.rye");
+
+const lantern_face_theme_version = "20260830.000332";
+
+// The shipped theme and the stone it authors -- warm and low-blue (R176 > G138 > B90),
+// so it passes the design system's own palette law, and distinct from the base sheet's
+// edge_warm so the recolor is unmistakable.
+const theme_path = "pond/apps/lantern-face.brush";
+const themed_edge = skate.Color{ .r = 0xB0, .g = 0x8A, .b = 0x5A };
+
+pub const ThemeError = error{
+    ThemeMissingMarker,
+};
+
+/// Resolve a face theme: read the `.brush`, validate it through the real authoring
+/// loop, collect its `style:` block, require at least one marker key (head, flow,
+/// or edge -- a face theme that recolors none of them is a mistake worth naming),
+/// and infuse the override over the base sheet. Returns the resolved byte length.
+pub fn resolve_face_theme(io: std.Io, path: []const u8, out: []u8) !u32 {
+    // invariant: a real theme path names a file to read.
+    assert(path.len > 0);
+    // invariant: the resolved sheet fits the token-sheet bound.
+    assert(out.len <= tokens.max_sheet_bytes);
+    const garden = std.heap.page_allocator;
+    const cwd = std.Io.Dir.cwd();
+    const src = try cwd.readFileAlloc(io, path, garden, .limited(bp.max_brush_bytes));
+    defer garden.free(src);
+    const surface = try bp.parse_brush(src);
+    if (surface.style_count == 0) return error.ThemeMissingMarker;
+    var override_buf: [bp.max_style_bytes]u8 = undefined;
+    const over_len = try bp.collect_brush_style(src, &override_buf);
+    // invariant: a declared style block collects at least one token line.
+    assert(over_len > 0);
+    const over = override_buf[0..over_len];
+    const names_marker = std.mem.indexOf(u8, over, "edge ") != null or
+        std.mem.indexOf(u8, over, "head ") != null or
+        std.mem.indexOf(u8, over, "flow ") != null;
+    if (!names_marker) return error.ThemeMissingMarker;
+    return tokens.resolve(tokens.base_sheet, over, out);
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const io = init.io;
+
+    var sheet_buf: [tokens.max_sheet_bytes]u8 = undefined;
+    const sheet_len = try resolve_face_theme(io, theme_path, &sheet_buf);
+    const sheet = sheet_buf[0..sheet_len];
+
+    var grid = try skate.Grid.init(garden, face.face_cols, face.face_rows);
+    try face.compose_face(&grid, "does the pier hold wayland parity", "", .unknown);
+    const themed = try face.dress_face(&grid, .unknown, sheet);
+    // invariant: the unknown marker wears the authored stone, byte for byte.
+    assert(std.meta.eql(themed, themed_edge));
+    print("lantern-face-theme: unknown wears the authored stone edge -- GREEN\n", .{});
+
+    var grid2 = try skate.Grid.init(garden, face.face_cols, face.face_rows);
+    try face.compose_face(&grid2, "which door opens next", "the themed face", .settled);
+    const themed_settled = try face.dress_face(&grid2, .settled, sheet);
+    var grid3 = try skate.Grid.init(garden, face.face_cols, face.face_rows);
+    try face.compose_face(&grid3, "which door opens next", "the themed face", .settled);
+    const base_settled = try face.dress_face(&grid3, .settled, tokens.base_sheet);
+    // invariant: a theme naming only edge leaves settled's head color inherited.
+    assert(std.meta.eql(themed_settled, base_settled));
+    print("lantern-face-theme: settled inherits the base head untouched -- GREEN\n", .{});
+
+    var probe_buf: [tokens.max_sheet_bytes]u8 = undefined;
+    if (resolve_face_theme(io, "pond/apps/read-source.brush", &probe_buf)) |_| {
+        return error.MarkerlessThemeAccepted;
+    } else |err| {
+        // invariant: a theme naming no marker key refuses by name.
+        assert(err == error.ThemeMissingMarker);
+    }
+    print("lantern-face-theme: a theme naming no marker key refuses -- GREEN\n", .{});
+
+    const accent_len = try resolve_face_theme(io, "pond/apps/warm-accent.brush", &probe_buf);
+    var grid4 = try skate.Grid.init(garden, face.face_cols, face.face_rows);
+    try face.compose_face(&grid4, "which door opens next", "the themed face", .settled);
+    const accent_settled = try face.dress_face(&grid4, .settled, probe_buf[0..accent_len]);
+    // invariant: a head-only accent theme moves settled away from the base head.
+    assert(!std.meta.eql(accent_settled, base_settled));
+    print("lantern-face-theme: a head-only accent recolors settled -- one authoring loop, every face -- GREEN\n", .{});
+
+    print("GREEN: lantern-face-theme -- the face takes any .brush theme, and the cascade recolors one settledness at a time.\n", .{});
+    return 0;
+}
