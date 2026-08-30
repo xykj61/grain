@@ -1,0 +1,14 @@
+::  name       lantern unknown law gate
+::  shape      kind answer-len - ints (@u32) -> lawful - int (@u32)
+::  invariant  answers 0 when kind is unknown (2) AND the answer is nonempty; answers 1 otherwise
+::  example    2 5 -> 0 · 2 0 -> 1 · 0 5 -> 1
+::  readers    Lantern · the asking voice · Glow
+::  nib        lantern-face-v0 · the uncertainty law spoken in Glow (20260830)
+::
+::  The face's deepest law, in the language's first composed condition: an unknown
+::  that carries an answer is an invented certainty, and it refuses -- exactly the
+::  AnswerWithUnknown refusal pond/apps/lantern_face.rye holds in Rye, with kind 2
+::  the unknown ordinal of FaceKind (settled, proposed, unknown). The witness holds
+::  the two spellings to one truth so neither language drifts alone.
+|=  [kind=@u32 answer_len=@u32]
+?:  (and (eq kind 2) (gth answer_len 0))  0  1

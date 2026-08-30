@@ -45,10 +45,26 @@ let g39 = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "src/gat
 assert g39.ok else "lantern-face: gate(39) failed to run"
 assert g39.out contains "0" else "lantern-face: gate(39) -- one past the budget refuses"
 
+say "lantern-face: the uncertainty law in Glow -- the language's first composed condition..."
+let u1 = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "src/gate/gate-lantern-unknown-law-u32.glow" "2" "5"]
+assert u1.ok else "lantern-face: unknown-law(2,5) failed to run"
+assert u1.out contains "EXIT:0" else "lantern-face: unknown-law(2,5) did not exit 0"
+assert u1.out contains "0" else "lantern-face: unknown-law(2,5) -- an unknown carrying an answer refuses"
+let u2 = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "src/gate/gate-lantern-unknown-law-u32.glow" "2" "0"]
+assert u2.ok else "lantern-face: unknown-law(2,0) failed to run"
+assert u2.out contains "1" else "lantern-face: unknown-law(2,0) -- the honest unknown is lawful"
+let u3 = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "src/gate/gate-lantern-unknown-law-u32.glow" "0" "5"]
+assert u3.ok else "lantern-face: unknown-law(0,5) failed to run"
+assert u3.out contains "1" else "lantern-face: unknown-law(0,5) -- a settled answer is lawful"
+
 say "lantern-face: parity anchors -- one number, two languages..."
 let rye_wall = run ["grep" "-c" "pub const max_face_text: u32 = 38;" "pond/apps/lantern_face.rye"]
 assert rye_wall.ok else "lantern-face: the Rye budget moved or renamed -- re-anchor both spellings together"
 let glow_wall = run ["grep" "-c" "(gth sample 38)" "src/gate/gate-lantern-face-text-u32.glow"]
 assert glow_wall.ok else "lantern-face: the Glow budget moved -- re-anchor both spellings together"
+let kind_order = run ["grep" "-c" "pub const FaceKind = enum { settled, proposed, unknown };" "pond/apps/lantern_face.rye"]
+assert kind_order.ok else "lantern-face: the FaceKind order moved -- the unknown-law desk's kind 2 must move with it"
+let rye_law = run ["grep" "-c" "AnswerWithUnknown" "pond/apps/lantern_face.rye"]
+assert rye_law.ok else "lantern-face: the Rye uncertainty refusal moved or renamed -- re-anchor both spellings together"
 
 say "GREEN: lantern-face -- the asking voice has a face, its law refuses invented certainty, and both languages speak one wall."

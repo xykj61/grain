@@ -947,6 +947,48 @@ fn run_selftest(init: std.process.Init) !u8 {
     assert(std.mem.indexOf(u8, buf[0..n_mul_argv], "bartis_mul(lit, width, height)") != null);
     print("lower: mul-b argv speaks three samples through bartis_mul -- GREEN\n", .{});
 
+    // and (20260830.000850): the composed condition -- parse, emit, refusals, one movement.
+    const and_src = "|=  [kind=@u32 len=@u32]\n?:  (and (eq kind 2) (gth len 0))  0  1\n";
+    const and_spec = try rb.parse_source(and_src);
+    assert(and_spec.body == .cond_and_pair);
+    assert(and_spec.and_op1 == 2);
+    assert(and_spec.and_rhs1 == 2);
+    assert(and_spec.and_op2 == 1);
+    assert(and_spec.and_rhs2 == 0);
+    print("lower: and composed cond parses to cond_and_pair -- GREEN\n", .{});
+
+    const n_and = try lower.lower_source_welcome(and_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n_and], "fn bartis_and(kind: u32, len: u32)") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_and], "(kind == 2) and (len > 0)") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_and], "bartis_and(5, 3) == 1") != null);
+    print("lower: and welcome lowers both comparisons as one boolean -- GREEN\n", .{});
+
+    const n_and_argv = try lower.lower_source_argv_sample(and_src, &buf);
+    assert(std.mem.indexOf(u8, buf[0..n_and_argv], "argv[2]") != null);
+    assert(std.mem.indexOf(u8, buf[0..n_and_argv], "bartis_and(kind, len)") != null);
+    print("lower: and argv speaks two samples through bartis_and -- GREEN\n", .{});
+
+    if (rb.parse_source("|=  a=@u32\n?:  (and (eq a 2) (gth b 0))  0  1\n")) |_| {
+        return error.StrangerFaceAccepted;
+    } else |err| {
+        if (err != rb.ParseError.MalformedBody) return err;
+    }
+    print("lower: and without the pair header refused MalformedBody -- GREEN\n", .{});
+
+    if (rb.parse_source("|=  [a=@u32 b=@u32]\n?:  (and (eq b 2) (gth a 0))  0  1\n")) |_| {
+        return error.StrangerFaceAccepted;
+    } else |err| {
+        if (err != rb.ParseError.BodyFaceMismatch) return err;
+    }
+    print("lower: and faces out of header order refused BodyFaceMismatch -- GREEN\n", .{});
+
+    if (rb.parse_source("|=  [a=@u32 b=@u32]\n?:  (and (mul a 2) (gth b 0))  0  1\n")) |_| {
+        return error.StrangerFaceAccepted;
+    } else |err| {
+        if (err != rb.ParseError.MalformedBody) return err;
+    }
+    print("lower: and admits gth and eq inner conds alone -- GREEN\n", .{});
+
     print("GREEN: Glow `|=` bartis — identity · argv · call-body · amount-shape · amount argv · count-shape · count argv · kind-shape · kind argv · kind flip · xact-shape · xact argv · xact flip · xfer-shape · xfer argv · xfer flip · pair-shape · pair argv · pair flip · triple-shape · triple argv · triple flip · quad-shape · quad argv · quad flip · penta-shape · penta argv · penta flip · hexa-shape · hexa argv · hexa flip · hepta-shape · hepta argv · hepta flip · octa-shape · octa argv · octa flip · nona-shape · nona argv · nona flip · nesting-nests · STOA338 pair-faces metal; STOA100–147 · STOA253 identity emit · STOA259 N-field flip · STOA293 tagged payload flip · STOA297 tagged unit flip · STOA300 kind argv · STOA303 xact argv · STOA305 xfer argv · STOA307–321 pair…nona argv · STOA324 `$:` argv sameness collapse.\n", .{});
     return 0;
 }
