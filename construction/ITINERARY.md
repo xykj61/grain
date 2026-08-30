@@ -62,13 +62,11 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 **Now.** **LOCA lands on two operating systems; Pond's record learns who walks through its door.**
 
-**The LOCA ladder** (drawn `20260828.222500`): the first pass walked whole -- five movements, a
-Rye view, window, input ring, lifecycle, and parity claims with **zero Swift linked** -- and a
-second pass of ten rungs carried the same core to iOS: cross recipe measured, both witnesses
-GREEN inside a booted simulator, a real installed app, real touch and cancellation through the
-ring, and the parity pins (`lit=16268`, one house-Keccak digest) identical on **two operating
-systems**. The tri-OS close waits on the pier's `wayland-seed parity`. Account:
-`session-logs/date/20260829/`; landed Now rows on the `20260829-141640` shelf.
+**The LOCA ladder** (drawn `20260828.222500`): first pass walked whole -- a Rye view, window,
+ring, lifecycle, parity claims, **zero Swift linked** -- and a ten-rung second pass carried the
+core to iOS: witnesses GREEN in a booted simulator, a real app, real touch through the ring,
+parity pins identical on **two OSes**. Tri-OS waits on the pier's `wayland-seed parity`.
+Account: `session-logs/date/20260829/`. The first Skate laws now speak in Glow (`src/gate/`).
 
 **The door's first duty** (`20260829-143651`): every mark in Pond's grammar described the ROOM;
 none said who walks through the DOOR. `user` seats first of three duties -- `invoking`, not a
@@ -88,6 +86,10 @@ a Comlink row, and the roster note that called a capability tier "a design quest
 row" is rewritten to say what the row now is.
 
 **Other Pond doors:** `spool_cloth` promises 4 large artifacts over a store holding **2** (%341).
+
+**Glow rune door** (Sound's custody, `20260829.213233`): the gate shop's conditional speaks
+`gth`/`eq` only, so `lit <= width x height` cannot be said in Glow. Wanted: `mul` in condition
+operands, or a composed face. Ruling with Keaton.
 
 **MANY HANDS** (granted `20260828`): custody stays MANUAL, one writer per checkout. Root
 `SKILL.md`; every clone seats `ww` (`grain-ww/grain`, gate %1) and `.git/ssh_config_jail`.
