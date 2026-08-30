@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260830.011727` | [the clause the method left quiet](20260830/20260830-011727_the-clause-the-method-left-quiet.kyri) | a-rune-is-earned-by-a-law seats at QA 92; Mind's nine seats await a hand |
 | `20260830.011259` | [the runes take their seats](20260830/20260830-011259_the-runes-take-their-seats.kyri) | ?& and ?| seat as peer spellings -- byte-identical, answer-identical |
 | `20260830.011003` | [the face earns its claim](20260830/20260830-011003_the-face-earns-its-claim.kyri) | 1128 lit pixels pinned, lawful through the mul desk; tri-OS booked |
 | `20260830.005741` | [the red everyone believed was booked](20260830/20260830-005741_the-red-everyone-believed-was-booked.kyri) | the width gate greens; %350 CLOSED; the ceilings fall to 328/1262 |
