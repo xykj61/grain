@@ -66,8 +66,10 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 lifecycle, parity claims, zero Swift linked; the core on iOS, witnesses GREEN in a booted
 simulator, parity pins identical on **two OSes**. Tri-OS waits on the pier's `wayland-seed
 parity`. Skate laws and the `mul` claims law speak in Glow on metal (`src/gate/`).
-**SkateCore nodes** SEATED `20260829.231546`: nine seats, nib-width labels, grid rects -- the
-nine-nodes note in `active-designing/`; Mind unparks its `20260829.154845`.
+**SkateCore nodes** SEATED `20260829.231546`: nine seats, nib labels, grid rects -- the
+nine-nodes note; Mind unparked.
+**Tri-OS door** BOOKED for Dream: LOCA parity via `brushstroke/wayland_seed.rye` on the
+pier; pins in `surface_reference.rye`.
 
 **The door's first duty** (`20260829-143651`): every mark in Pond's grammar described the ROOM;
 none said who walks through the DOOR. `user` seats first of three duties -- `invoking`, not a
