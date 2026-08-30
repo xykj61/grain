@@ -688,6 +688,56 @@ out=$( ( cd "$scopepen" && STANDING_ROSTER=roster.kyri STANDING_CARD=card.kyri \
         sh "$runner" --scoped 2>/dev/null ) || true )
 case "$out" in *"guards_run=1"*) echo "scoped_unmapped_runs=yes" ;; *) echo "scoped_unmapped_runs=no" ;; esac
 
+# THE RED THAT COSTS THE RECEIPT, proven from both sides (REDS %374). A receipt is written past the
+# red exit, so a full pass carrying any red writes none and --scoped has no basis forever after --
+# which on a tree whose reds are parked at a custody gate is a permanent state rather than a delay.
+# Four readings: a red close NAMES the withholding and writes no receipt; the --scoped that follows
+# names the guards that blocked it; a run card with no red at all keeps the elder sentence's
+# `none`; and a green close writes the receipt while printing no withholding, so the line is caused
+# by the red rather than always printed. Three of the four BITE -- a runner stripped of both
+# lines flips red_close_names_withholding, blocked_basis_names_the_guard, and
+# unblocked_basis_reads_none to no. The fourth cannot: a stripped runner also prints no
+# withholding, so green_close_names_no_withholding is a COMPANION to the first rather than a
+# gate of its own, and it is written down that way rather than counted as a refusal it is not.
+# The stub interpreter is what reds and greens here, since
+# the runner's verdict is the guard's own exit status.
+cat > "$scopepen/rishi/bin/rishi" <<'STUB'
+#!/bin/sh
+exit 1
+STUB
+chmod +x "$scopepen/rishi/bin/rishi"
+rm -f "$scopepen/receipt.kyri"
+out=$( ( cd "$scopepen" && STANDING_ROSTER=roster.kyri STANDING_CARD=card.kyri \
+        STANDING_RECEIPT=receipt.kyri STANDING_HITRATE=hits.kyri \
+        sh "$runner" 2>/dev/null ) || true )
+case "$out" in *"roster_receipt_write=withheld_guard_red"*) echo "red_close_names_withholding=yes" ;; *) echo "red_close_names_withholding=no" ;; esac
+if [ -f "$scopepen/receipt.kyri" ]; then echo "red_close_writes_no_receipt=no"; else echo "red_close_writes_no_receipt=yes"; fi
+
+out=$( ( cd "$scopepen" && STANDING_ROSTER=roster.kyri STANDING_CARD=card.kyri \
+        STANDING_RECEIPT=receipt.kyri STANDING_HITRATE=hits.kyri STANDING_SCOPE_MAP=map.sh \
+        sh "$runner" --scoped 2>/dev/null ) || true )
+case "$out" in *"scoped_basis_blocked=alpha"*) echo "blocked_basis_names_the_guard=yes" ;; *) echo "blocked_basis_names_the_guard=no" ;; esac
+case "$out" in *"run_verdict=scoped_no_basis"*) echo "blocked_basis_still_refuses=yes" ;; *) echo "blocked_basis_still_refuses=no" ;; esac
+
+# The other side of the same reading: no card, so nothing blocked, and the elder advice stands.
+mv "$scopepen/card.kyri" "$scopepen/card.kept"
+out=$( ( cd "$scopepen" && STANDING_ROSTER=roster.kyri STANDING_CARD=card.kyri \
+        STANDING_RECEIPT=receipt.kyri STANDING_HITRATE=hits.kyri STANDING_SCOPE_MAP=map.sh \
+        sh "$runner" --scoped 2>/dev/null ) || true )
+case "$out" in *"scoped_basis_blocked=none"*) echo "unblocked_basis_reads_none=yes" ;; *) echo "unblocked_basis_reads_none=no" ;; esac
+
+# And the green side, so the withholding line is known to be caused rather than constant.
+cat > "$scopepen/rishi/bin/rishi" <<'STUB'
+#!/bin/sh
+exit 0
+STUB
+chmod +x "$scopepen/rishi/bin/rishi"
+out=$( ( cd "$scopepen" && STANDING_ROSTER=roster.kyri STANDING_CARD=card.kyri \
+        STANDING_RECEIPT=receipt.kyri STANDING_HITRATE=hits.kyri \
+        sh "$runner" 2>/dev/null ) || true )
+case "$out" in *"withheld_guard_red"*) echo "green_close_names_no_withholding=no" ;; *) echo "green_close_names_no_withholding=yes" ;; esac
+if [ -f "$scopepen/receipt.kyri" ]; then echo "green_close_writes_receipt=yes"; else echo "green_close_writes_receipt=no"; fi
+
 
 # ONE PASS AT A TIME (REDS %359). Two cold passes stood in this pier's own tree for fifty minutes
 # with nothing in the runner to say so, and the contention is not merely slow: a choir that clears

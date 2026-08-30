@@ -215,6 +215,20 @@ assert control.out contains "scoped_close_withholds_receipt=yes" else "standing-
 assert control.out contains "scoped_receipt_unmoved=yes" else "standing-equipment: the receipt's bytes stand unmoved across a scoped close"
 assert control.out contains "scoped_unmapped_runs=yes" else "standing-equipment: a guard absent from the map always runs -- absence is the answer that runs"
 
+# A RED COSTS THE RECEIPT (REDS %374). The receipt is written past the red exit, so a full pass
+# carrying any red writes none and --scoped is left without a basis -- permanently, where a tree's
+# reds sit at a custody gate the living card names. This pier carries two such, pond_enclosure_door
+# at gate %5 and rule_twin at gate %7, and its --scoped answered "run the full roster once" to a
+# hand who had already run it twice that morning. Three of these four bite under a stripped runner;
+# the green-close reading is a companion to the first rather than a gate of its own.
+assert control.out contains "red_close_names_withholding=yes" else "standing-equipment: a full pass that closes red must name the receipt it withheld"
+assert control.out contains "red_close_writes_no_receipt=yes" else "standing-equipment: a close carrying a red writes no receipt"
+assert control.out contains "blocked_basis_names_the_guard=yes" else "standing-equipment: --scoped without a basis must name the red guards that blocked it"
+assert control.out contains "blocked_basis_still_refuses=yes" else "standing-equipment: naming the blockers changes the diagnosis, never the refusal"
+assert control.out contains "unblocked_basis_reads_none=yes" else "standing-equipment: a run card with no red reads none, and the elder advice stands"
+assert control.out contains "green_close_names_no_withholding=yes" else "standing-equipment: a green close names no withholding -- the line is caused by the red"
+assert control.out contains "green_close_writes_receipt=yes" else "standing-equipment: a fully green full close writes the receipt"
+
 # ONE PASS AT A TIME (REDS %359). Two cold passes ran in this pier's tree for fifty minutes and
 # neither said so, while a choir that clears its own bin directory before it sings deleted the
 # binaries the other pass's rungs were using. The lock primitive -- taken, refused, released,

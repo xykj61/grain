@@ -128,6 +128,16 @@ function last_marker(s,   pos, rest, hit, len, found, word) {
     ctx = substr($0, s, window * 2 + len)
     pos = hit + len
     cc = ctx
+    # A CUSTODY GATE WEARS THE SAME SIGIL AS A LEDGER ROW. `.claude/rules/git-signing.md`
+    # seats `%` for any number this tree assigns itself -- REDS rows, custody gates, errata,
+    # study numbers alike -- so `gate %5` inside a sentence carrying a closing word read as a
+    # claim about REDS row 5, and refused a ledger that was entirely correct (REDS %375). A
+    # gate is never a row, so the word that always precedes one is read and the pair dropped
+    # before the tokens are scanned. Narrow on purpose: only the literal word `gate` and the number
+    # touching it, with the backtick this tree quotes numbers in allowed between them, so
+    # `closed by %5` keeps every tooth it had. A line-wrapped `gate` and its number fall outside
+    # this, exactly as they fall outside the per-line scan itself.
+    gsub(/[Gg]ate `?[%#][0-9][0-9]*/, "gate", cc)
     while (match(cc, /[%#][0-9][0-9]*/)) {
       tok = substr(cc, RSTART + 1, RLENGTH - 1)
       cc = substr(cc, RSTART + RLENGTH)

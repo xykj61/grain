@@ -399,8 +399,26 @@ if [ "$scoped" = yes ]; then
   scope_map="${STANDING_SCOPE_MAP:-tools/fixtures/s/standing_equipment_scope_map.sh}"
   if [ "$receipt_scope" != full ] || [ -z "$receipt_head" ] \
     || ! git rev-parse --verify --quiet "$receipt_head^{commit}" >/dev/null 2>&1; then
+    # WHICH OF THE TWO REMEDIES IS THEIRS. A missing receipt has two causes that want opposite
+    # answers, and the elder sentence gave one answer to both. Either no full pass has closed here
+    # yet, and running the roster earns the basis; or every full pass here closes red, a receipt is
+    # written only from a fully green close, and running it again changes nothing at all. On a tree
+    # whose reds sit at a custody gate the living card names, the second is permanent (REDS %374).
+    # The run card is the only evidence standing at this point, since this refusal comes before a
+    # guard runs, and it holds the last verdict of each guard ON THIS PIER. Eight names are printed
+    # and the rest counted, because a refusal that prints a roster is a refusal nobody reads.
+    blocked=$(awk '$1 == "ran" && $4 == "red" {
+        n++
+        if (n <= 8) { printf "%s%s", sep, $2; sep = "," }
+      } END { if (n > 8) printf ",+%d more", n - 8 }' "$card" 2>/dev/null || true)
+    [ -n "$blocked" ] || blocked=none
+    echo "scoped_basis_blocked=$blocked"
     echo "run_verdict=scoped_no_basis"
-    echo "refused: --scoped wants a FULL green receipt with a head to diff from -- run the full roster once" >&2
+    if [ "$blocked" = none ]; then
+      echo "refused: --scoped wants a FULL green receipt with a head to diff from -- run the full roster once" >&2
+    else
+      echo "refused: --scoped wants a FULL GREEN receipt; the last full pass here closed red at $blocked, and a receipt is written only from a fully green close" >&2
+    fi
     exit 1
   fi
   [ -f "$scope_map" ] || { echo "refused: no scope map at $scope_map" >&2; exit 1; }
@@ -543,7 +561,20 @@ echo "skipped_capability=$skipped_capability"
 echo "tree_at_close=$tree_close"
 echo "tree_moved=$moved"
 
+# The scope word, computed here rather than beside the receipt below, because a pass that refuses
+# has to name what the refusal COST as well as what it found.
+run_scope=full
+[ "$scoped" = yes ] && run_scope=scoped
+[ -n "$only" ] && run_scope=named
+
 if [ "$red" -ne 0 ]; then
+  # A RED COSTS THE RECEIPT, AND THAT IS SAID HERE RATHER THAN LEFT TO BE INFERRED. The receipt is
+  # written below, past this exit, so a full pass carrying any red writes none -- and `--scoped`
+  # reads that receipt for its basis. Where a tree's reds sit at a custody gate the living card
+  # names, that is a permanent state rather than a delay: this pier carries two, pond_enclosure_door
+  # at gate %5 and rule_twin at gate %7, so no pass here can ever close fully green and the fusion
+  # build's cheaper pass can never be earned (REDS %374).
+  [ "$run_scope" = full ] && echo "roster_receipt_write=withheld_guard_red"
   echo "run_verdict=guard_red"
   echo "refused: a rostered guard answered red -- read its own line" >&2
   exit 1
@@ -564,9 +595,6 @@ fi
 # evidence to rumor this whole design exists to close; a single-guard green overwriting the
 # full roster's record was the same road at a walk (found on the fusion lap, 20260829). The
 # head rides beside the digest because a digest cannot be diffed from and a commit can.
-run_scope=full
-[ "$scoped" = yes ] && run_scope=scoped
-[ -n "$only" ] && run_scope=named
 if [ "$run_scope" = full ]; then
   {
     echo "# construction/standing-equipment-receipt.kyri -- the last fully green FULL close on THIS pier."
