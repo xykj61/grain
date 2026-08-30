@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260829.221841` | [the word that stops and the chapter that resumes](20260829/20260829-221841_the-word-that-stops-and-the-chapter-that-resumes.kyri) | standfast refused for rung marks; CION campaign drafted PROPOSED |
 | `20260829.220804` | [mul-b lands and the numbers that stay](20260829/20260829-220804_mul-b-lands-and-the-numbers-that-stay.kyri) | the claims law speaks in Glow on metal; STOA/ALES keep their rungs |
 | `20260829.214621` | [mul-a seats and the taste of runes](20260829/20260829-214621_mul-a-seats-and-the-taste-of-runes.kyri) | the composed cond parses (5 legs, 114 elder greens); the custodian's three style answers |
 | `20260829.213350` | [the rune the language wants](20260829/20260829-213350_the-rune-the-language-wants.kyri) | the pair survey ends at a mul gap -- a rune ruling on the sill; no twin desk minted |
