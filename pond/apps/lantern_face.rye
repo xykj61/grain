@@ -10,8 +10,8 @@
 //! put_line clips at forty columns silently, and an honest face refuses rather than
 //! clips.
 //!
-//! Additive by construction: it imports brushstroke/skate_grid alone and calls only
-//! its public functions, the same discipline the realidream view family keeps.
+//! Additive by construction: it imports skate_grid, tokens, and lantern_core and
+//! calls only their public functions, the discipline the realidream family keeps.
 //!
 //!   rye build pond/apps/lantern_face.rye -femit-bin=pond/bin/lantern-face
 //!   pond/bin/lantern-face
@@ -21,6 +21,7 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const skate = @import("brushstroke/skate_grid.rye");
 const tokens = @import("brushstroke/tokens.rye");
+const lantern = @import("lantern/lantern_core.rye");
 
 const lantern_face_version = "20260829.233003";
 
@@ -131,6 +132,28 @@ pub fn dress_face(grid: *skate.Grid, kind: FaceKind, sheet: []const u8) !skate.C
     return tokens.dress_run(grid, marker_row, 0, run_end, sheet, marker_token(kind), marker_slot);
 }
 
+// The feed's ruling, Lantern's contract made structural at the seam: a machine's
+// finished answer arrives as PROPOSED -- settled is earned by a witness, never by
+// the sampler. An error stop or an empty completion is the honest unknown, and a
+// length stop that left text behind is a proposal cut short, still proposed.
+pub fn face_kind_for(resp: lantern.Response) FaceKind {
+    if (resp.stopped_reason == .err_stop) return .unknown;
+    if (resp.text.len == 0) return .unknown;
+    return .proposed;
+}
+
+/// Compose the face straight from a Lantern response. Unknown discards the
+/// response text -- an error stop's fragment is not an answer -- and every
+/// width refusal passes through by name rather than clipping.
+pub fn face_from_response(grid: *skate.Grid, question: []const u8, resp: lantern.Response) FaceError!FaceKind {
+    const kind = face_kind_for(resp);
+    // invariant: the ruling never seats settled from the machine alone.
+    assert(kind != .settled);
+    const answer: []const u8 = if (kind == .unknown) "" else resp.text;
+    try compose_face(grid, question, answer, kind);
+    return kind;
+}
+
 fn expect_row(grid: *skate.Grid, row: u32, want: []const u8) bool {
     const cells = grid.row_cells(row);
     // invariant: the readback row is the full forty columns the grid owns.
@@ -205,6 +228,40 @@ pub fn main(init: std.process.Init) !u8 {
     assert(!std.meta.eql(settled_color, unknown_color));
     assert(!std.meta.eql(proposed_color, unknown_color));
     print("lantern-face: the marker wears its kind -- head, flow, edge, three distinct colors -- GREEN\n", .{});
+
+    const io = init.io;
+    const cwd = std.Io.Dir.cwd();
+    const fixture = try cwd.readFileAlloc(io, "lantern/fixtures/completion.bron", garden, .limited(4096));
+    const resp = try lantern.parse_fixture(fixture);
+    var gridf = try skate.Grid.init(garden, face_cols, face_rows);
+    const fed_kind = try face_from_response(&gridf, "what does the forge advise", resp);
+    assert(fed_kind == .proposed);
+    assert(expect_row(&gridf, 1, ". use init.garden not ArgIterator"));
+    assert(expect_row(&gridf, 2, "= proposed"));
+    print("lantern-face: a real pinned completion feeds the face -- proposed, never settled -- GREEN\n", .{});
+
+    var gride = try skate.Grid.init(garden, face_cols, face_rows);
+    const err_resp = lantern.Response{ .text = "half a fragment", .tokens_in = 1, .tokens_out = 1, .stopped_reason = .err_stop };
+    const err_kind = try face_from_response(&gride, "what stopped the run", err_resp);
+    assert(err_kind == .unknown);
+    assert(expect_row(&gride, 1, unknown_line));
+    print("lantern-face: an error stop discards its fragment and speaks unknown -- GREEN\n", .{});
+
+    var gridl = try skate.Grid.init(garden, face_cols, face_rows);
+    const cut_resp = lantern.Response{ .text = "a proposal cut short", .tokens_in = 1, .tokens_out = 1, .stopped_reason = .length };
+    assert((try face_from_response(&gridl, "was the budget enough", cut_resp)) == .proposed);
+    var gridz = try skate.Grid.init(garden, face_cols, face_rows);
+    const empty_resp = lantern.Response{ .text = "", .tokens_in = 1, .tokens_out = 0, .stopped_reason = .eos };
+    assert((try face_from_response(&gridz, "anything at all", empty_resp)) == .unknown);
+    print("lantern-face: a length stop stays proposed; an empty eos is unknown -- GREEN\n", .{});
+
+    const reasons = [_]lantern.StoppedReason{ .eos, .length, .err_stop, .stop_sequence };
+    for (reasons) |reason| {
+        const probe = lantern.Response{ .text = "x", .tokens_in = 1, .tokens_out = 1, .stopped_reason = reason };
+        // invariant: no stop reason earns settled -- settled is a witness's word.
+        assert(face_kind_for(probe) != .settled);
+    }
+    print("lantern-face: no stop reason earns settled across the whole enum -- GREEN\n", .{});
 
     print("GREEN: lantern-face -- the asking voice has a face, and its uncertainty law holds.\n", .{});
     return 0;

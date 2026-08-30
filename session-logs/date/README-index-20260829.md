@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260829.235656` | [the face speaks from real output](20260829/20260829-235656_the-face-speaks-from-real-output.kyri) | a pinned completion feeds the face; no stop reason earns settled |
 | `20260829.235042` | [the marker wears its kind](20260829/20260829-235042_the-marker-wears-its-kind.kyri) | the styled rung: head, flow, edge -- three kinds, three seated colors |
 | `20260829.233639` | [the asking voice gets a face](20260829/20260829-233639_the-asking-voice-gets-a-face.kyri) | lantern_face paints an honest exchange; AnswerWithUnknown refuses |
 | `20260829.231546` | [the nine-nodes sitting](20260829/20260829-231546_the-nine-nodes-sitting.kyri) | SkateCore semantic snapshot ruled: 1+8 seats, nib labels, grid rects |

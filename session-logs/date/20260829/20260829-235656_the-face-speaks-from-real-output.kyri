@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260829.235656
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role interactive bench, Sound seat -- the interface half, Lantern
+modality text
+model claude-fable-5
+model_status active runtime, product-reported identity
+voice Kyri
+host anonymized macOS arm64 bench, one-clock zone America/New_York
+title the face speaks from real output -- and no stop reason earns settled
+prompt kg; the booked crux was feeding the face from lantern/'s real output rather than literals.
+think The mechanism: pond/apps/lantern_face.rye imports lantern/lantern_core.rye (the pond-side room resolves the local copy) and gains two functions. face_kind_for maps a lantern Response to a FaceKind under the seam's ruling -- err_stop or an empty completion answers unknown, everything else answers proposed -- and face_from_response composes the face from a question and a Response, discarding an error stop's fragment (a fragment is not an answer) and passing width refusals through by name. The ruling is Lantern's own contract made structural: a machine's finished answer arrives as PROPOSED, and settled is earned by a witness, never by the sampler -- proven over the whole StoppedReason enum by a loop asserting face_kind_for never returns settled, and on metal by feeding the real pinned fixture lantern/fixtures/completion.bron through parse_fixture into the face: the row reads back ". use init.garden not ArgIterator" under "= proposed". Twelve legs GREEN; the witness gains two asserts; TAME clean.
+think Two of my own defects caught before the send: a vacuous assert (kind != .unknown or true -- always true, exactly the %335 shape the seat card carries as its own warning) removed, and the module header's "imports skate_grid alone" claim refreshed to name all three imports -- docs-implementation-sync inside one file.
+obs The face now has its whole v0 arc: compose, dress, feed -- pure, styled, and honest against real output. The one remaining booked face door is the .brush-themed variant; beyond it the face waits for Lantern's later laps (weights-by-hash, Caravan supervision) to give it live completions rather than pinned ones.
+loom witness=lantern_face legs=12 fixture=completion.bron enum_swept=4 tame=clean
+file pond/apps/lantern_face.rye face_kind_for, face_from_response, the vacuous assert removed
+file tools/l/lantern_face_witness.rish two feed asserts
+file session-logs/date/README-index-20260829.md the shelf takes this row
+recommend check-in the face's v0 arc is whole; Sound's open doors are the .brush-themed variant, the pier wayland read, or the fleet's next paste
