@@ -1,0 +1,61 @@
+# tools/g/glow_skate_gates_witness.rish -- the first Skate laws spoken in Glow, proven both sides.
+#
+#   rishi/bin/rishi run tools/g/glow_skate_gates_witness.rish
+#
+# Three atomic desks (one conditional per body, as the lowerer speaks today -- probed on metal
+# 20260829 before these desks were written: a nested ?: refuses MalformedBody):
+# the kind ceiling (eight seated doors), the kind floor (zero names none), and the ring's
+# admission (128 seats). Each is proven on both sides, the malformed plant still refuses, and
+# TWO PARITY ANCHORS hold Glow and Rye to one truth: max_kind = 8 in skate_input_event.rye and
+# event_capacity = 128 in skate_event_ring.rye must read exactly what the desks encode, so
+# neither spelling can drift alone -- the same one-definition discipline the surface claims
+# family keeps at its hand-off.
+
+say "skate-gates: Language EN -- the native surface's walls, made runnable in Glow itself."
+say "skate-gates: Style Gauge, Meter -- each leg names its desk and its answer."
+say "skate-gates: Lens TAME -- both sides witnessed; the malformed plant must refuse; parity anchored."
+
+let zig = "vendor/zig-toolchain/zig"
+
+say "skate-gates: kind ceiling -- 3 and 8 lawful, 9 past the wall..."
+let c3 = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "src/gate/gate-skate-kind-ceiling-u32.glow" "3"]
+assert c3.ok else "skate-gates: ceiling(3) failed to run"
+assert c3.out contains "EXIT:0" else "skate-gates: ceiling(3) did not exit 0"
+assert c3.out contains "1" else "skate-gates: ceiling(3) must answer lawful"
+let c8 = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "src/gate/gate-skate-kind-ceiling-u32.glow" "8"]
+assert c8.ok else "skate-gates: ceiling(8) failed to run"
+assert c8.out contains "1" else "skate-gates: ceiling(8) -- the eighth door is seated"
+let c9 = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "src/gate/gate-skate-kind-ceiling-u32.glow" "9"]
+assert c9.ok else "skate-gates: ceiling(9) failed to run"
+assert c9.out contains "0" else "skate-gates: ceiling(9) must refuse past the eight"
+
+say "skate-gates: kind floor -- 0 unseated, 1 lawful..."
+let f0 = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "src/gate/gate-skate-kind-floor-u32.glow" "0"]
+assert f0.ok else "skate-gates: floor(0) failed to run"
+assert f0.out contains "0" else "skate-gates: floor(0) -- zero names no door"
+let f1 = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "src/gate/gate-skate-kind-floor-u32.glow" "1"]
+assert f1.ok else "skate-gates: floor(1) failed to run"
+assert f1.out contains "1" else "skate-gates: floor(1) -- key_down is the first door"
+
+say "skate-gates: ring admission -- 5 and 127 admit, 128 is the Full wall..."
+let r5 = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "src/gate/gate-skate-ring-admit-u32.glow" "5"]
+assert r5.ok else "skate-gates: ring(5) failed to run"
+assert r5.out contains "1" else "skate-gates: ring(5) must admit"
+let r127 = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "src/gate/gate-skate-ring-admit-u32.glow" "127"]
+assert r127.ok else "skate-gates: ring(127) failed to run"
+assert r127.out contains "1" else "skate-gates: ring(127) -- the last seat admits"
+let r128 = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "src/gate/gate-skate-ring-admit-u32.glow" "128"]
+assert r128.ok else "skate-gates: ring(128) failed to run"
+assert r128.out contains "0" else "skate-gates: ring(128) -- the Full wall holds in Glow as in Rye"
+
+say "skate-gates: the malformed plant must still refuse..."
+let plant = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "tools/fixtures/g/gate-count-u32.glow" "3"]
+assert plant.err contains "MalformedBody" else "skate-gates: the malformed plant was accepted -- the grammar wall fell"
+
+say "skate-gates: parity anchors -- one truth per wall, in both languages..."
+let kind_truth = run ["grep" "-c" "pub const max_kind: u8 = 8;" "brushstroke/skate_input_event.rye"]
+assert kind_truth.ok else "skate-gates: the Rye kind wall moved or renamed -- re-anchor both spellings together"
+let ring_truth = run ["grep" "-c" "pub const event_capacity: u32 = 128;" "brushstroke/skate_event_ring.rye"]
+assert ring_truth.ok else "skate-gates: the Rye ring wall moved or renamed -- re-anchor both spellings together"
+
+say "GREEN: skate-gates -- three walls speak in Glow, both sides proven, and neither language can drift alone."

@@ -1,0 +1,15 @@
+::  name       skate kind ceiling gate
+::  shape      kind - int (@u32) -> lawful - int (@u32)
+::  invariant  answers 1 while the input kind stays within the eight seated doors; answers 0 past the wall
+::  example    3 -> 1 · 9 -> 0
+::  readers    Skate · the native surface · Glow
+::  nib        loca-skate-binding-v0 · the first Skate law spoken in Glow (20260829)
+::
+::  The event ring's domain seats eight input kinds -- key and mouse and touch,
+::  down and up, moved and cancelled -- and Rye's own wall is max_kind = 8 in
+::  brushstroke/skate_input_event.rye. This gate is that ceiling made runnable
+::  in Glow itself; the witness proves the two spellings agree rather than
+::  letting either drift alone. The floor (a kind of zero) is its sibling
+::  gate's law, one conditional per desk as the lowerer speaks today.
+|=  sample=@u32
+?:  (gth sample 8)  0  1

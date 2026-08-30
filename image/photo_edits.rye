@@ -34,9 +34,13 @@ pub const photo_edits_version = "20260813.155719";
 /// construction so a list can never grow unbounded (TAME bound).
 pub const max_edits: u32 = 64;
 
-/// A safe upper bound on one rendered verb line: the longest is `adjust -255 65536 65536\n`, well inside 48
-/// bytes. The whole record is the 22-byte header plus one bounded line per edit (TAME bound at construction).
-pub const per_line_bound: u32 = 48;
+/// A safe upper bound on one rendered verb line. The longest is crop at its four maximum u32 fields --
+/// `crop 4294967295 4294967295 4294967295 4294967295\n` -- exactly 49 bytes (4 + 1 + 4x10 + 3 + 1). The
+/// elder bound of 48 was sized to `adjust -255 65536 65536\n` and forgot crop's full width, so a VALID
+/// maximum crop line overflowed it by one byte -- found by Mind's controls from a bench that could not
+/// touch Rye (20260829), widened here on the granted word: a bound that refuses a valid value is a wrong
+/// bound. The whole record is the 22-byte header plus one bounded line per edit (TAME bound at construction).
+pub const per_line_bound: u32 = 49;
 pub const max_edits_bytes: u32 = 22 + max_edits * per_line_bound;
 
 pub const EditsError = error{
