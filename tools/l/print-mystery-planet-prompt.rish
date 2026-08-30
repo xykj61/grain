@@ -1,0 +1,19 @@
+# print-mystery-planet-prompt.rish -- pure canonical MYSTERY prompt printer.
+#
+# One authority, exactly as the cardinal printer keeps it: read the two seated prompt
+# sources and emit their canonical composition. No process, service, authentication,
+# jail, Git, state, lock, loop, write, environment, or network authority. The shared
+# supervisor `tools/l/chatgpt-mind.rish` invokes this printer at MIND_SEAT=mystery;
+# neither file duplicates the Arbor voice or the seat's operating law.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/l/print-mystery-planet-prompt.rish
+
+let arbor = read-file "arbor/launch-mystery-chapter.arbor"
+let mystery = read-file "recursion-prompts/versions/20260829-202500_codex-mystery-macos-loop.md"
+let mystery_end = (length mystery) - 1
+
+# `say arbor` adds the one blank separator after Arbor's existing final newline.
+# Removing the seat law's final newline before `say` restores that one newline exactly.
+say arbor
+say slice mystery 0 mystery_end
