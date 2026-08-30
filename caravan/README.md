@@ -1,9 +1,9 @@
 # Caravan -- Process Supervision
 
 **Language:** EN
-**Last updated:** `20260824.062207` (the front door -- the rung record and the harness record moved to their own pages)
+**Last updated:** `20260830.113255` (the living module and witness counts now close on their own guard)
 **Style:** Gauge, Door setting (see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md))
-**Status:** Checkable -- 110 modules in this directory, and 109 witnesses in `../tools/ca/` standing over them, counted `20260824`
+**Status:** Checkable -- 114 modules in this directory and 121 registered witnesses in `../tools/ca/`, measured `20260830` by the two rosters named below
 **Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
 [`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
 path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
