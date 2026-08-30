@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260830.015823` | [the page pinned in time](20260830/20260830-015823_the-page-pinned-in-time.kyri) | xy was current; the browser URL carried a before cursor |
 | `20260830.014856` | [the census that whispered](20260830/20260830-014856_the-census-that-whispered.kyri) | %351 CLOSED; the spread twins clear; the unverified key named |
 | `20260830.013025` | [the gate that held its shape](20260830/20260830-013025_the-gate-that-held-its-shape.kyri) | the seed publish moves to Keaton's keys; the field level everywhere |
 | `20260830.012207` | [the boundary condense](20260830/20260830-012207_the-boundary-condense.kyri) | Now re-aims at the live front; the card buys back 1,283 bytes |
