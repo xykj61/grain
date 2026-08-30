@@ -1,7 +1,7 @@
 # shape — Structures
 
 **Language:** EN  
-**Last updated:** `20260829.210056` (Tablecloth's first pedestal seated -- the museum's number is compared to its source rather than copied from it)  
+**Last updated:** `20260830.001122` (Tablecloth's content budget seated -- the room's first derived bound, compared against the module that decides it)  
 **Status:** Living -- room open; Surface pedestals + Glow Tend structure pedestals + Comlink R1 + Tablecloth
 **Where this sits:** home is [`../../README.md`](../../README.md) - a first hour in your hands is
 [`../../docs-geode/tutorials/the-first-hour.md`](../../docs-geode/tutorials/the-first-hour.md) - the whole
@@ -38,6 +38,7 @@ The data-structure museum: every non-networked shape on its own pedestal, viewab
 | [`shape-caravan-supervisor-exit-meanings.glow`](shape-caravan-supervisor-exit-meanings.glow) | Caravan three exit meanings (Tend C4) | `tools/ca/caravan_glow_tend_limb4_witness.rish` |
 | [`shape-comlink-ipv6-dual-stack.glow`](shape-comlink-ipv6-dual-stack.glow) | Comlink dual-stack policy=1 (R1 · three walls inline) | `tools/co/comlink_r1_dual_stack_witness.rish` (leg A pure · leg B metal) |
 | [`shape-tablecloth-catalog-capacity.glow`](shape-tablecloth-catalog-capacity.glow) | Tablecloth `max_artifacts=32` -- the vane's first Glow desk of any kind | `tools/t/tablecloth_glow_tend_witness.rish` (scan compares, control proves both ways) |
+| [`shape-tablecloth-content-budget.glow`](shape-tablecloth-content-budget.glow) | Tablecloth `max_content_bytes=512` -- a derived bound, read out of the room that decides it | `tools/t/tablecloth_glow_tend_witness.rish` (same guard; the derivation is its own reading) |
 
 ```
 rishi/bin/rishi run tools/m/mantra_glow_tend_limb1_witness.rish

@@ -1,0 +1,22 @@
+::  name       tablecloth content budget
+::  shape      content-bytes -- int (@u32), bound 512
+::  invariant  one artifact's whole content fits what a single bead-index can address
+::  example    512
+::  readers    Tablecloth - Mantra beading - Glow Tend - shape museum
+::  nib        tablecloth-v1 at 20260812.142132
+::
+::  Tablecloth's second pedestal, and the first in this room whose number its own module never
+::  spells. brushstroke/tablecloth.rye declares the bound as
+::  `pub const max_content_bytes: u32 = beading.max_resin_bytes;` -- a derivation, so the value
+::  is decided one room over, in mantra/beading.rye, where `max_resin_bytes` reads 512. Walk to
+::  the declaring file and you find a name; the deciding file holds the number. So this desk
+::  cites both rooms, and the guard beside it reads 512 out of beading rather than out of itself.
+::
+::  Why the derivation is its own reading. Respell tablecloth's line as a literal 512 and every
+::  number here still agrees, while the sentence above has quietly become false: the artifact
+::  budget would no longer follow the resin budget, and the next honest raise of
+::  `max_resin_bytes` would leave the two apart with nothing to say so. So the guard reads the
+::  derivation as a fact of its own, beside the values it compares.
++$  tablecloth-content-budget-shape
+  $:  content-bytes=@u32
+  ==
