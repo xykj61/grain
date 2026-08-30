@@ -295,7 +295,7 @@ let seat_env = env "MIND_SEAT"
 let seat = ?: (seat_env == "") ("cardinal") (seat_env)
 assert ?| [(seat == "cardinal") (seat == "mystery")] else "REFUSE chatgpt-mind: MIND_SEAT must be cardinal or mystery"
 let mind_lane_scan = ?: (seat == "mystery") (repo_root + "/tools/fixtures/c/chatgpt_mystery_lane.awk") (repo_root + "/tools/fixtures/c/chatgpt_mind_lane.awk")
-let mind_lane_sha256 = ?: (seat == "mystery") ("6cff0e3586f1ed728355b486ae7154e8e65222bfd32305e88473c466f6cca024") ("62cc0dd65b0df7215ffd7e4a78274fe0e4a122b4787d8def24ef19ead2b96071")
+let mind_lane_sha256 = ?: (seat == "mystery") ("3fed4364a13bd20d2051d91a6fa2abd48e5ec873706dd2e03b60234f5f3016df") ("62cc0dd65b0df7215ffd7e4a78274fe0e4a122b4787d8def24ef19ead2b96071")
 let pre_commit_file = run ["test" "-f" pre_commit_hook]
 let pre_commit_exec = run ["test" "-x" pre_commit_hook]
 let pre_commit_link = run ["test" "-L" pre_commit_hook]

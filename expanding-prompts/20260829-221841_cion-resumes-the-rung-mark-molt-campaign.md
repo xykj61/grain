@@ -1,7 +1,10 @@
 # CION resumes -- the rung-mark molt campaign for a high-volume seat
 
 **Stamp:** `20260829.221841` -- **Language:** EN -- **Style:** New Gauge, Field -- **Voice:** Kyri
-**Status:** PROPOSED -- no rename, rewrite, or cut runs from this page until Keaton's word seats it
+**Status:** SEATED `20260829.222718` on Keaton's word -- Mystery carries the campaign (seat card
+`recursion-prompts/versions/20260829-222718_codex-mystery-macos-loop-cion.md`, lane wall widened
+to the campaign's code rooms); the conversion spelling below is seated with it. Tier D's cuts
+still wait for a circled word per cut, as the tier itself says.
 **Chapter:** CION (VOLS - LOWE - OFFY - GRAD). VOLS ran and is instrumented; the first LOWE sweep
 landed; the GRAD seal stands GREEN. This page is the remainder the spec already names: "the wider
 LOWE relabel across the rest of the living collection and any OFFY cut."
@@ -46,8 +49,8 @@ Tier C needs a rung-to-stamp map before a single citation moves: derive each run
 stamp from `git log` plus the two ledgers that already narrate them (`docs/STOA.md`,
 `lotus/LADDER.md`), written once into a tracked fixture and proven by spot-checks against commit
 dates. A citation then converts as `STOA332` -> `the fold speaks (STOA 20260721.HHMMSS)` --
-waymark kept as a name, stamp carrying the order. The exact conversion spelling is an OPEN
-RULING for Keaton before Tier C begins.
+waymark kept as a name, stamp carrying the order. SEATED `20260829.222718` with the campaign:
+the spelling is `<plain name> (<WAYMARK> <stamp>)`, exactly as illustrated.
 
 ## The tiers, sized from the census
 
