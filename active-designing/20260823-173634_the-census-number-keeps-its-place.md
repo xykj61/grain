@@ -4,6 +4,13 @@
 **Question asked:** should the `%NNN` REDS row pattern be remodelled chronologically, in the shape of the mark law, as an immediate itinerary standfast?
 **Answer:** the pattern **stands**, and the mark law gains the exemption in writing.
 **Kin:** [`../.claude/rules/stamp-and-name.md`](../.claude/rules/stamp-and-name.md) - [`../.claude/rules/reds-first.md`](../.claude/rules/reds-first.md) - [`../external-research/20260823-173634_when-a-number-is-honest.md`](../external-research/20260823-173634_when-a-number-is-honest.md)
+**Reviewed and kept** `20260829.222718`, when the CION rung-mark campaign seated
+([`../expanding-prompts/20260829-221841_cion-resumes-the-rung-mark-molt-campaign.md`](../expanding-prompts/20260829-221841_cion-resumes-the-rung-mark-molt-campaign.md)):
+the two divide cleanly, and neither bends the other. This essay governs **identity numbers of
+record** -- a REDS `%N` is what a row IS, cited from commit bodies no molt can reach. The
+campaign converts **living citations** of ladder rungs, where the number is one spelling of a
+landed step that a stamp and a name can carry whole; and its own falsifier returns any rung
+whose stamp cannot be derived to exactly this essay's ruling. REDS `%N` stands untouched.
 
 ## The tension, stated fairly
 

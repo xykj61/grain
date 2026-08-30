@@ -47,7 +47,7 @@ rather than stops**.
 | **Sound** (star, fixed) | Claude Desktop, macOS -- the interactive bench | `~/grain` (the field) | **The interface half of Grain in Glow** -- Realidream, the Lantern faces, the Skate bindings -- with **Glow language custody** and **the captain's hat** (a cross-lane repair on Keaton's word is captaincy, never trespass, ending where the stopped hand runs again) | `tools/l/launch-sound-fixed-chapter.rish` (the conversation is the loop) |
 | **Silence** (Sound's planet) | Claude Code day-loop, macOS Terminal | `~/grain-silence` | **The infrastructure half of Grain in Glow** -- Mantra, Comlink, Tablecloth, the Caravan seams as Glow ports | `tools/l/launch-silence-planet-chapter.rish` |
 | **Dream** (star, dual) | Codex in ai-jail on the Vultr pier | `~/grain-dream` | **The systems core**: Caravan and Tally, the toroidal optimizations, the Scribe seams, the constellation table | `tools/l/launch-dream-dual-chapter.rish` |
-| **Hush** (Dream's planet) | Claude Code day-loop, pier | pier `~/grain` | **Pond completes the enclosure** under the accrete-only boundary, and the standing adaptation grant | `tools/l/launch-hush-planet-chapter.rish` |
+| **Hush** (Dream's planet) | Claude Code day-loop, pier | pier `~/grain-hush` | **Pond completes the enclosure** under the accrete-only boundary, and the standing adaptation grant | `tools/l/launch-hush-planet-chapter.rish` |
 
 The orbit rule holds unchanged: **a planet defers to its star where lanes brush**, a
 sibling-body find becomes a line on `construction/ITINERARY.md`, and wherever any checkout is
