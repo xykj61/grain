@@ -63,8 +63,8 @@ cd "$root" || { echo "verdict=not_at_root" >&2; exit 1; }
 # Lowered 20260828 to the sharper filter below, which drops comment prose, the inherited-C
 # `extern fn` seam, and identifiers merely containing the five letters: 329 files and 1,263 lines
 # over 1,899 sources, on a committed tree.
-corpus_files_ceiling=329
-corpus_lines_ceiling=1263
+corpus_files_ceiling=328
+corpus_lines_ceiling=1262
 
 # The named exemption, pinned. Five seam-derived locals in the Rishi interpreter; see the header.
 exempt_path=rishi/src/main.rye

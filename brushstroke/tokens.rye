@@ -241,7 +241,7 @@ fn token_argb(sheet: []const u8, key: []const u8) !u32 {
         assert(seen <= infuse.max_pairs);
         const line = std.mem.trim(u8, raw, " \t\r");
         if (line.len == 0 or line[0] == '#') continue;
-        var sp: usize = 0; // seam: slice index over a std source line
+        var sp: u32 = 0; // u32 scan index by the width law -- the line is bounded far under it, and the index coerces at the slice edge
         while (sp < line.len and line[sp] != ' ') : (sp += 1) {}
         if (!std.mem.eql(u8, line[0..sp], key)) continue;
         const val = std.mem.trim(u8, line[sp..], " \t");
