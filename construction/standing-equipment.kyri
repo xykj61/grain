@@ -851,9 +851,10 @@ seated 20260830.072125
 # roster can reach -- rostered, or named on a non-comment line of something already reached -- and
 # holds the remainder under a ceiling that only falls. REDS %357 measured what the gap costs: three
 # witnesses of one family red at HEAD for days, none of them rostered, while a 96-guard cold pass
-# read 95 green. Measured here `20260830`: 1,756 guards, 603 heard, 1,153 unheard, 41 of those
-# choirs that sing families of their own. The git hooks were checked as a second standing runner
-# and name no guard at all, so this roster is the whole seed.
+# read 95 green. Measured here `20260830.095947`: 1,756 guards, 603 heard, 1,153 unheard, 41 of
+# those choirs that sing families of their own; re-measured `20260830.154940` after the five
+# rule-named rows below landed: 614 heard, 1,144 unheard, 40 choirs. The git hooks were checked as
+# a second standing runner and name no guard at all, so this roster is the whole seed.
 # `lap` on 5s measured here -- one batched awk pass over the tree, plus a six-pen control.
 
 guard unheard_guard
@@ -885,3 +886,52 @@ guard comlink_glow_tend
 path tools/co/comlink_glow_tend_witness.rish
 tier cadence
 seated 20260830.164837
+
+# THE GUARDS OUR OWN RULES ALREADY DEMAND (REDS %360). The census that row books found 1,153
+# tracked guards this roster reaches on no lap at all, and five of them are not merely unrun --
+# each is named by a LIVING RULE that instructs a lap to run it. A rule that names a check and a
+# roster that never runs it are one sentence disagreeing with itself, and the disagreement is not
+# free: the sixth of that set, `mechanism_sentence_witness`, reds on metal right now because the
+# commit wall's one named seed exemption moved out from under both the publisher and the wall's own
+# fixture, and nothing was listening. It stays off this roster until that spelling is Keaton's word
+# (custody gate %1); these five stood GREEN on metal before their rows were written, because
+# rostering a red guard reds every cold pass in the fleet.
+#
+# WHAT THEY COST, measured here 20260830 on this pier, each run alone: waymark_derive 1s,
+# commit_message_guard 2s, waymark_registry 3s, sel4_userlevel_license 0s, crypto_vendored_parity
+# 12s -- 18s together against a cold pass of 2,425s, which is why every one of them is `lap` rather
+# than `cadence`. The cheapest of them was already the most overdue: `gratitude-licenses.md` calls
+# the seL4 sweep "a standing check, not a one-time read," and it had never been run by a standing
+# pass at all.
+#
+# WHAT ROSTERING THEM BUYS, stated honestly against the alternative. `unheard` falls 1,153 -> 1,144 (nine)
+# and `unheard_choirs` 41 -> 40. That is HALF what the single largest silent choir would have
+# bought, and the count is not the value: what a rostered guard is worth is what breaks while it is
+# silent. The larger choirs live in Glow, STOA, SUNN and the equinox family, where REDS %360
+# measured a 46% red rate in lanes this seat does not hold, and rostering another lane's red guard
+# would red every body's cold pass.
+
+guard commit_message_guard
+path tools/co/commit_message_guard_witness.rish
+tier lap
+seated 20260830.154940
+
+guard waymark_derive
+path tools/w/waymark_derive_witness.rish
+tier lap
+seated 20260830.154940
+
+guard waymark_registry
+path tools/w/waymark_registry_witness.rish
+tier lap
+seated 20260830.154940
+
+guard sel4_userlevel_license
+path tools/s/sel4_userlevel_license_witness.rish
+tier lap
+seated 20260830.154940
+
+guard crypto_vendored_parity
+path tools/cr/crypto_vendored_parity_suite.rish
+tier lap
+seated 20260830.154940

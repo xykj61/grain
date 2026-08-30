@@ -53,8 +53,8 @@
 # population refuses, and so does an empty roster.
 set -eu
 
-CEILING="${UNHEARD_GUARD_CEILING:-1153}"
-CHOIR_CEILING="${UNHEARD_CHOIR_CEILING:-41}"
+CEILING="${UNHEARD_GUARD_CEILING:-1144}"
+CHOIR_CEILING="${UNHEARD_CHOIR_CEILING:-40}"
 ROSTER="${UNHEARD_GUARD_ROSTER:-construction/standing-equipment.kyri}"
 mode="${1:-measure}"
 

@@ -191,4 +191,20 @@ assert control.out contains "midline_still_read=yes" else "qa-report-card: a // 
 assert control.out contains "control_verdict=ok" else "qa-report-card: the control must agree with itself"
 say "seventy-two behaviors proven in a throwaway pen, the scale read at every boundary from both sides"
 
+# THE JUDGED READING NAMES ITS OWN SCALE (REDS %361). The composite is the mean of four readings on
+# one 0-100 scale, so `--service` is 0-100 -- and that clause lived in exactly one place, the loop's
+# seat prompt, while this card, the rules, and the tool's usage line all dropped it. A hand reading
+# any of those answers three of four, the tool reads 3 of 100, and a page that grades A+ returns C+,
+# which under the Standing block pushes a molt frame. Both branches are read, because the judged
+# branch is where a hand learns what to hand in.
+let scaled = run ["sh" "tools/fixtures/q/qa_report_card.sh" "construction/standing-equipment.kyri" "--setting" "meter" "--service" "50"]
+assert scaled.ok else "qa-report-card: the card must run on a real living path -- ${scaled.out}"
+assert scaled.out contains "service_scale=0-100" else "qa-report-card: the judged reading must print its scale beside itself, never only in the arithmetic"
+assert scaled.out contains "worth 25 each" else "qa-report-card: the scale must say how the four questions divide, since four is what a hand counts"
+
+let judged = run ["sh" "tools/fixtures/q/qa_report_card.sh" "construction/standing-equipment.kyri" "--setting" "meter"]
+assert judged.ok else "qa-report-card: the card must run with the judged reading withheld -- ${judged.out}"
+assert judged.out contains "service_scale=0-100" else "qa-report-card: the branch that asks for the judgment must name the scale it wants"
+say "the judged reading carries its own scale, in both the given and the withheld branch"
+
 say "GREEN: qa-report-card -- quality assurance, as a grade a writer can aim at."
