@@ -92,6 +92,7 @@ pub const ParseError = error{
     MalformedBody,
     FoldBoundTooLarge, // STOA334: prodto bound past 12 would leave u32
     PairNotYetLowered, // STOA338a: pair-faces parse seats; lower waits for 338b
+    MulNotYetLowered, // mul-a: the composed mul cond parses; the lower lands with mul-b
     TooManyTokens,
     BadToken,
 };
@@ -107,6 +108,7 @@ pub const BodyKind = enum {
     fold_sum, // STOA333/335: fold-sum closed tuple fields (pair…nona)
     fold_prodto, // STOA334: product 1..n within bound (verb is a name)
     fold_prod, // STOA336: list fold by product over any closed tuple
+    cond_gth_mul, // mul-a (20260829.214107): (gth face (mul face2 face3)) over a three-face header -- parse seats; lower waits for mul-b
 };
 
 /// A parsed thin bartis gate: sample face + optional named shape + body kind.
@@ -117,6 +119,10 @@ pub const GateSpec = struct {
     face_len: u32 = 0,
     face2: [max_face_len]u8 = [_]u8{0} ** max_face_len,
     face2_len: u32 = 0,
+    // mul-a: `face3_len > 0` means a three-face header `[a=@u32 b=@u32 c=@u32]` -- the shape
+    // the lit-vs-area law asked for, the first cond whose operand composes two faces.
+    face3: [max_face_len]u8 = [_]u8{0} ** max_face_len,
+    face3_len: u32 = 0,
     shape_name: [max_shape_len]u8 = [_]u8{0} ** max_shape_len,
     shape_name_len: u32 = 0,
     body: BodyKind = .identity,
@@ -142,6 +148,13 @@ pub fn face2_slice(spec: *const GateSpec) []const u8 {
     // past it would read the bytes that follow the field
     assert(spec.face2_len <= max_face_len);
     return spec.face2[0..spec.face2_len];
+}
+
+pub fn face3_slice(spec: *const GateSpec) []const u8 {
+    // invariant: the slice below is taken from a fixed buffer of that size, so a stored length
+    // past it would read the bytes that follow the field
+    assert(spec.face3_len <= max_face_len);
+    return spec.face3[0..spec.face3_len];
 }
 
 pub fn shape_name_slice(spec: *const GateSpec) []const u8 {
@@ -183,7 +196,7 @@ pub fn is_n_field_call_gate(gate: []const u8) bool {
     return std.mem.eql(u8, gate, "flip");
 }
 
-fn parse_body(src: []const u8, toks: []const tokens.Token, start: u32, face_text: []const u8, face2_text: []const u8, spec: *GateSpec) ParseError!u32 {
+fn parse_body(src: []const u8, toks: []const tokens.Token, start: u32, face_text: []const u8, face2_text: []const u8, face3_text: []const u8, spec: *GateSpec) ParseError!u32 {
     var i = start;
     const n: u32 = @intCast(toks.len);
     if (i >= n) return error.MalformedBody;
@@ -228,6 +241,37 @@ fn parse_body(src: []const u8, toks: []const tokens.Token, start: u32, face_text
         if (!std.mem.eql(u8, cond_face, face_text)) return error.BodyFaceMismatch;
         i += 1;
         if (i >= n) return error.MalformedBody;
+        if (toks[@as(usize, @intCast(i))].kind == .lparen) {
+            // mul-a (20260829.214107): `?:  (gth face (mul face2 face3))  dec  dec` -- the first
+            // cond whose operand composes two faces, the shape the claims family's own law
+            // (lit at or under width times height) asked for. Requires the three-face header,
+            // admits gth alone in v1, and the arms stay literal decimals. The lower answers
+            // MulNotYetLowered until mul-b, exactly as pair-faces seated under STOA338a.
+            if (!is_gth) return error.MalformedBody;
+            if (face3_text.len == 0) return error.MalformedBody;
+            i += 1;
+            if (i >= n or toks[@as(usize, @intCast(i))].kind != .ident) return error.MalformedBody;
+            if (!std.mem.eql(u8, tokens.slice_of(src, toks[@as(usize, @intCast(i))]), "mul")) return error.MalformedBody;
+            i += 1;
+            if (i >= n or toks[@as(usize, @intCast(i))].kind != .ident) return error.MalformedBody;
+            if (!std.mem.eql(u8, tokens.slice_of(src, toks[@as(usize, @intCast(i))]), face2_text)) return error.BodyFaceMismatch;
+            i += 1;
+            if (i >= n or toks[@as(usize, @intCast(i))].kind != .ident) return error.MalformedBody;
+            if (!std.mem.eql(u8, tokens.slice_of(src, toks[@as(usize, @intCast(i))]), face3_text)) return error.BodyFaceMismatch;
+            i += 1;
+            if (i >= n or toks[@as(usize, @intCast(i))].kind != .rparen) return error.MalformedBody;
+            i += 1;
+            if (i >= n or toks[@as(usize, @intCast(i))].kind != .rparen) return error.MalformedBody;
+            i += 1;
+            if (i >= n or toks[@as(usize, @intCast(i))].kind != .decimal) return error.MalformedBody;
+            spec.cond_then = try parse_decimal_u32(tokens.slice_of(src, toks[@as(usize, @intCast(i))]));
+            i += 1;
+            if (i >= n or toks[@as(usize, @intCast(i))].kind != .decimal) return error.MalformedBody;
+            spec.cond_else = try parse_decimal_u32(tokens.slice_of(src, toks[@as(usize, @intCast(i))]));
+            i += 1;
+            spec.body = .cond_gth_mul;
+            return i;
+        }
         if (toks[@as(usize, @intCast(i))].kind == .ident) {
             // STOA338 face-vs-face -- requires a pair-faces header.
             if (face2_text.len == 0) return error.MalformedBody;
@@ -356,6 +400,7 @@ pub fn parse_source(src: []const u8) ParseError!GateSpec {
     var spec: GateSpec = .{};
     var face_text: []const u8 = undefined;
     var face2_text: []const u8 = &[_]u8{};
+    var face3_text: []const u8 = &[_]u8{};
 
     // STOA338: pair-faces header `|=  [a=@u32 b=@u32]`.
     if (i < n and toks[@as(usize, @intCast(i))].kind == .lbracket) {
@@ -383,6 +428,22 @@ pub fn parse_source(src: []const u8) ParseError!GateSpec {
         nest_type.assert_aura_nests(aura2, "@u32") catch return error.SampleDoesNotNest;
         nest_type.assert_sample_nesting_nests(false, aura2, "@u32") catch return error.SampleDoesNotNest;
         i += 1;
+        // mul-a: an optional THIRD face -- `[a=@u32 b=@u32 c=@u32]` -- the header the composed
+        // mul cond requires. Distinct from both siblings, nested @u32 like them.
+        if (i < n and toks[@as(usize, @intCast(i))].kind == .ident) {
+            face3_text = tokens.slice_of(src, toks[@as(usize, @intCast(i))]);
+            if (face3_text.len == 0 or face3_text.len > max_face_len) return error.MissingFace;
+            if (std.mem.eql(u8, face3_text, face_text)) return error.MalformedBody;
+            if (std.mem.eql(u8, face3_text, face2_text)) return error.MalformedBody;
+            i += 1;
+            if (i >= n or toks[@as(usize, @intCast(i))].kind != .equals) return error.MissingEquals;
+            i += 1;
+            if (i >= n or toks[@as(usize, @intCast(i))].kind != .aura) return error.MissingAura;
+            const aura3 = tokens.slice_of(src, toks[@as(usize, @intCast(i))]);
+            nest_type.assert_aura_nests(aura3, "@u32") catch return error.SampleDoesNotNest;
+            nest_type.assert_sample_nesting_nests(false, aura3, "@u32") catch return error.SampleDoesNotNest;
+            i += 1;
+        }
         if (i >= n or toks[@as(usize, @intCast(i))].kind != .rbracket) return error.MalformedBody;
         i += 1;
 
@@ -394,6 +455,10 @@ pub fn parse_source(src: []const u8) ParseError!GateSpec {
         spec.face_len = @intCast(face_text.len);
         tally_copy.copy_disjoint(u8, spec.face2[0..face2_text.len], face2_text);
         spec.face2_len = @intCast(face2_text.len);
+        if (face3_text.len > 0) {
+            tally_copy.copy_disjoint(u8, spec.face3[0..face3_text.len], face3_text);
+            spec.face3_len = @intCast(face3_text.len);
+        }
     } else {
         // Ident (sample face name).
         if (i >= n or toks[@as(usize, @intCast(i))].kind != .ident) return error.MissingFace;
@@ -443,7 +508,7 @@ pub fn parse_source(src: []const u8) ParseError!GateSpec {
         }
     }
 
-    i = try parse_body(src, toks, i, face_text, face2_text, &spec);
+    i = try parse_body(src, toks, i, face_text, face2_text, face3_text, &spec);
 
     // Trailing newlines only -- anything else is a malformed body.
     while (i < n) : (i += 1) {
@@ -466,6 +531,13 @@ pub fn parse_source(src: []const u8) ParseError!GateSpec {
         },
         .cond_eq_faces, .cond_gth_faces => {
             if (spec.face2_len == 0) return error.MalformedBody;
+            // A pair body over a three-face header would leave a face nothing reads.
+            if (spec.face3_len != 0) return error.MalformedBody;
+        },
+        .cond_gth_mul => {
+            // mul-a: the composed cond is exactly the three-face shape, whole.
+            if (spec.face2_len == 0) return error.MalformedBody;
+            if (spec.face3_len == 0) return error.MalformedBody;
         },
         else => {
             if (spec.face2_len != 0) return error.MalformedBody;

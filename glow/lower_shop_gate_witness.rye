@@ -905,6 +905,43 @@ fn run_selftest(init: std.process.Init) !u8 {
     print("lower: glow/gen/g/gate-pair-gth-faces.glow parses pair-faces gth -- GREEN\n", .{});
 
     print("lower: version {s}\n", .{witness_version});
+    // mul-a (20260829.214107): the composed cond parses; the lower waits for mul-b.
+    const mul_src = "|=  [lit=@u32 width=@u32 height=@u32]\n?:  (gth lit (mul width height))  0  1\n";
+    const mul_spec = try rb.parse_source(mul_src);
+    assert(mul_spec.body == .cond_gth_mul);
+    assert(std.mem.eql(u8, rb.face3_slice(&mul_spec), "height"));
+    assert(mul_spec.cond_then == 0);
+    assert(mul_spec.cond_else == 1);
+    print("lower: mul-a three-face composed cond parses to cond_gth_mul -- GREEN\n", .{});
+
+    if (rb.parse_source("|=  [a=@u32 b=@u32]\n?:  (gth a (mul b c))  0  1\n")) |_| {
+        return error.StrangerFaceAccepted;
+    } else |err| {
+        if (err != rb.ParseError.MalformedBody) return err;
+    }
+    print("lower: mul without a three-face header refused MalformedBody -- GREEN\n", .{});
+
+    if (rb.parse_source("|=  [a=@u32 b=@u32 c=@u32]\n?:  (gth a (mul c b))  0  1\n")) |_| {
+        return error.StrangerFaceAccepted;
+    } else |err| {
+        if (err != rb.ParseError.BodyFaceMismatch) return err;
+    }
+    print("lower: mul faces out of header order refused BodyFaceMismatch -- GREEN\n", .{});
+
+    if (rb.parse_source("|=  [a=@u32 b=@u32 c=@u32]\n?:  (eq a (mul b c))  0  1\n")) |_| {
+        return error.StrangerFaceAccepted;
+    } else |err| {
+        if (err != rb.ParseError.MalformedBody) return err;
+    }
+    print("lower: eq with mul refused MalformedBody -- gth alone in v1 -- GREEN\n", .{});
+
+    if (lower.lower_source_welcome(mul_src, &buf)) |_| {
+        return error.StrangerFaceAccepted;
+    } else |err| {
+        if (err != rb.ParseError.MulNotYetLowered) return err;
+    }
+    print("lower: mul cond lower answers MulNotYetLowered until mul-b -- GREEN\n", .{});
+
     print("GREEN: Glow `|=` bartis — identity · argv · call-body · amount-shape · amount argv · count-shape · count argv · kind-shape · kind argv · kind flip · xact-shape · xact argv · xact flip · xfer-shape · xfer argv · xfer flip · pair-shape · pair argv · pair flip · triple-shape · triple argv · triple flip · quad-shape · quad argv · quad flip · penta-shape · penta argv · penta flip · hexa-shape · hexa argv · hexa flip · hepta-shape · hepta argv · hepta flip · octa-shape · octa argv · octa flip · nona-shape · nona argv · nona flip · nesting-nests · STOA338 pair-faces metal; STOA100–147 · STOA253 identity emit · STOA259 N-field flip · STOA293 tagged payload flip · STOA297 tagged unit flip · STOA300 kind argv · STOA303 xact argv · STOA305 xfer argv · STOA307–321 pair…nona argv · STOA324 `$:` argv sameness collapse.\n", .{});
     return 0;
 }
