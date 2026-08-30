@@ -22,6 +22,7 @@ let face = run ["sh" "-c" "pond/bin/lantern-face 2>&1"]
 assert face.ok else "lantern-face: the face's legs went red -- read its own GREEN lines"
 assert face.out contains "the honest i-don't-know is a first-class answer" else "lantern-face: the unknown leg is missing"
 assert face.out contains "an unknown carrying an answer refuses" else "lantern-face: the voice's law leg is missing"
+assert face.out contains "the marker wears its kind" else "lantern-face: the styled marker leg is missing"
 assert face.out contains "GREEN: lantern-face" else "lantern-face: the closing GREEN is missing"
 
 say "lantern-face: the Glow wall -- 38 lawful, 39 past the budget..."

@@ -20,6 +20,7 @@ const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 const skate = @import("brushstroke/skate_grid.rye");
+const tokens = @import("brushstroke/tokens.rye");
 
 const lantern_face_version = "20260829.233003";
 
@@ -102,6 +103,34 @@ pub fn compose_face(grid: *skate.Grid, question: []const u8, answer: []const u8,
     grid.put_line(2, face_row("= ", marker_text(kind), &mbuf));
 }
 
+// The styled marker rung (WADE tokens): each settledness wears its own seated sheet
+// key rather than a fresh color -- settled takes `head` (Ochre, the living edge),
+// proposed takes `flow` (Weld, derived and still in motion), and unknown takes
+// `edge` (the warm rule at the boundary of knowing). One palette slot serves the
+// marker run; the face owns its grid, so slot one is free.
+pub const marker_slot: u8 = 1;
+pub const marker_row: u32 = 2;
+
+pub fn marker_token(kind: FaceKind) []const u8 {
+    return switch (kind) {
+        .settled => "head",
+        .proposed => "flow",
+        .unknown => "edge",
+    };
+}
+
+/// Dress the composed marker row in its kind's token. Call after compose_face --
+/// the plain face stands on its own, and the dressing is an additive step.
+pub fn dress_face(grid: *skate.Grid, kind: FaceKind, sheet: []const u8) !skate.Color {
+    // invariant: the dressing lands on the face's own geometry.
+    assert(grid.cols == face_cols);
+    assert(grid.rows > marker_row);
+    const run_end: u32 = prefix_width + @as(u32, @intCast(marker_text(kind).len));
+    // invariant: the marker run covers the mark and its word, inside the forty columns.
+    assert(run_end <= face_cols);
+    return tokens.dress_run(grid, marker_row, 0, run_end, sheet, marker_token(kind), marker_slot);
+}
+
 fn expect_row(grid: *skate.Grid, row: u32, want: []const u8) bool {
     const cells = grid.row_cells(row);
     // invariant: the readback row is the full forty columns the grid owns.
@@ -167,6 +196,15 @@ pub fn main(init: std.process.Init) !u8 {
     var grid7 = try skate.Grid.init(garden, face_cols, face_rows);
     try compose_face(&grid7, exact, exact, .settled);
     print("lantern-face: the exact 38-byte budget welcomes on both rows -- GREEN\n", .{});
+
+    const settled_color = try dress_face(&grid, .settled, tokens.base_sheet);
+    const proposed_color = try dress_face(&grid3, .proposed, tokens.base_sheet);
+    const unknown_color = try dress_face(&grid2, .unknown, tokens.base_sheet);
+    // invariant: the three settledness kinds wear three distinct sheet colors.
+    assert(!std.meta.eql(settled_color, proposed_color));
+    assert(!std.meta.eql(settled_color, unknown_color));
+    assert(!std.meta.eql(proposed_color, unknown_color));
+    print("lantern-face: the marker wears its kind -- head, flow, edge, three distinct colors -- GREEN\n", .{});
 
     print("GREEN: lantern-face -- the asking voice has a face, and its uncertainty law holds.\n", .{});
     return 0;
