@@ -61,7 +61,7 @@
 #   citations on 20260825, and repairing them would have written through the links into six correct
 #   bodies. Reading the data before acting on it is what stopped that, the same way REDS %213 did.
 #
-# WHAT IS PROVEN, on metal. Sixty-seven behaviors in a throwaway pen. The scale at every one of its
+# WHAT IS PROVEN, on metal. Seventy-two behaviors in a throwaway pen. The scale at every one of its
 # nine boundaries from both sides, and no minus grade anywhere. The register flip proven to BE the
 # register scan's own number rather than a second measurement -- and proven load-bearing, since
 # removing measure() from that scan makes the card refuse. Reach falling when a page reaches past
@@ -77,6 +77,14 @@
 # named; a fabricated stamp still costing twenty and still named. Pointed at a copy of the card
 # carrying the old rule, the control refuses 13 of those 17 and passes exactly the 4 that describe
 # behavior which must NOT change -- so it is proven to bite rather than assumed to.
+#
+# And a program's prose is whatever ITS OWN language marks as a comment. Glow opens one with `::`,
+# as do the `.brush` placards, and the extractor knew only `//` and `#` -- so 438 tracked `.glow`
+# files and 8 `.brush` ones measured zero words, and all 34 residents of the shape museum graded
+# C+ 75 whatever they said (REDS %358). Proven from both sides: a placard behind a mark the card
+# knows is read and weighed, the same placard behind a mark it does not know reads nothing, and a
+# `::` sitting mid-sentence in a `//` comment stays prose rather than becoming a second head to
+# strip.
 #
 # WHAT IS REPORTED, as a ratchet under a ceiling that only ever falls. The twelve-document door
 # roster, read as report cards, counted where the COUNTED half alone puts a page below B. One at
@@ -175,7 +183,12 @@ assert control.out contains "quoted_syntax_free=yes" else "qa-report-card: a pag
 assert control.out contains "quoted_syntax_not_cited=yes" else "qa-report-card: and the quoted span leaves the denominator rather than resolving inside it"
 assert control.out contains "real_link_beside_quote_counted=yes" else "qa-report-card: a real broken link beside a quoted one still costs twenty -- quoting is no way to stop being read"
 assert control.out contains "real_link_beside_quote_named=yes" else "qa-report-card: and it must still be named, so it can be repaired"
+assert control.out contains "glow_prose_read=yes" else "qa-report-card: a Glow placard's :: prose must be read as prose"
+assert control.out contains "glow_words_counted=yes" else "qa-report-card: a Glow placard must measure more than zero words"
+assert control.out contains "unknown_mark_reads_nothing=yes" else "qa-report-card: the comment-mark clause must be load-bearing -- an unknown mark reads nothing"
+assert control.out contains "midline_unstripped=yes" else "qa-report-card: :: mid-sentence is prose, never a second comment head"
+assert control.out contains "midline_still_read=yes" else "qa-report-card: a // comment mentioning :: keeps its whole sentence"
 assert control.out contains "control_verdict=ok" else "qa-report-card: the control must agree with itself"
-say "sixty-seven behaviors proven in a throwaway pen, the scale read at every boundary from both sides"
+say "seventy-two behaviors proven in a throwaway pen, the scale read at every boundary from both sides"
 
 say "GREEN: qa-report-card -- quality assurance, as a grade a writer can aim at."

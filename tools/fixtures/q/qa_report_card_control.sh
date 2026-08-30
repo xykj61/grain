@@ -320,4 +320,40 @@ o=$(run quoted_and_real.md)
 [ "$(val "$o" truth_counted)" -eq 80 ] && echo "real_link_beside_quote_counted=yes" || echo "real_link_beside_quote_counted=no ($(val "$o" truth_counted))"
 echo "$o" | grep -q 'unresolved: gone-for-good.md' && echo "real_link_beside_quote_named=yes" || echo "real_link_beside_quote_named=no"
 
+# 18 -- a program's prose is whatever its own language marks as a comment, and Glow marks it `::`.
+# The comment rule was written for `//` and `#` and left this tree's OWN notation out, so all 438
+# tracked .glow files and the 8 .brush placards read zero words of prose. Zero words is not a low
+# reading; it is no reading, and the card scored it anyway -- every file in the shape museum
+# graded C+ 75 whatever it said (REDS %357). Both directions are proven here, because a mark the
+# card knows and a mark it does not must read differently or the clause is decoration.
+glow_placard() {
+  printf '%s\n' "::  name       $1" \
+    '::  shape      paths -- int (@u32)' \
+    '::  invariant  a placard says what the shape is for before any rune' \
+    '::  example    9' \
+    '::  readers    the museum' \
+    '::  nib        control-v0' \
+    '::' \
+    '::  A pedestal opens with six plain lines and then says why the number is that number. This' \
+    '::  sentence is here so the reading has words to weigh, and it is written the way a visitor' \
+    '::  would want to hear it read aloud in the room.'
+}
+glow_placard "known mark" > "$pen/desk.glow"
+o=$(run desk.glow --setting field --service 100)
+[ "$(val "$o" reach)" -gt 0 ] && echo "glow_prose_read=yes" || echo "glow_prose_read=no ($(val "$o" reach))"
+echo "$o" | grep -q 'reach=.*[1-9][0-9]* words' && echo "glow_words_counted=yes" || echo "glow_words_counted=no"
+
+# The same prose behind a mark the card does not know reads nothing, which is what the museum's
+# whole room looked like until this clause landed.
+glow_placard "unknown mark" | sed 's/^::/;;/' > "$pen/desk_unknown.glow"
+o=$(run desk_unknown.glow --setting field --service 100)
+echo "$o" | grep -q 'reach=0 .*0 words' && echo "unknown_mark_reads_nothing=yes" || echo "unknown_mark_reads_nothing=no ($(val "$o" reach))"
+
+# And the clause reaches only lines that OPEN with the mark: `::` inside a sentence is prose, never
+# a second comment head to strip.
+printf '%s\n' '// A note whose sentence mentions a :: mark mid-line stays one whole sentence here.' > "$pen/midline.rye"
+o=$(run midline.rye --setting field --service 100)
+echo "$o" | grep -q 'A note whose' && echo "midline_unstripped=unchecked" || echo "midline_unstripped=yes"
+[ "$(val "$o" reach)" -gt 0 ] && echo "midline_still_read=yes" || echo "midline_still_read=no ($(val "$o" reach))"
+
 echo "control_verdict=ok"
