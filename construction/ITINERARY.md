@@ -72,7 +72,9 @@ holds the departing accounts, and the `20260829`-`20260830` day shelves hold eve
   [campaign page](../expanding-prompts/20260829-221841_cion-resumes-the-rung-mark-molt-campaign.md)):
   Mystery raises or splits `lotus/LADDER.md` (D/62) to B before one citation moves; the
   588-rung map is GREEN on main.
-- **Mind's booked next:** the `brushstroke/spread.rye` width repair, then its lane.
+- **Mind's next:** its lane -- the spread twins closed upstream (%350's class), and the
+  symlink-ownership answer is seated: a width-ratchet touch is tree law any hand may carry;
+  no wall widens for it.
 - **Pond live:** `duties_undeclared` **2**; `spool_cloth` promises 4 artifacts over a store
   holding **2** (%341).
 - **Language custody:** the growth law is

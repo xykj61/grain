@@ -91,7 +91,7 @@ pub fn store_spread(
     var part: u32 = 0;
     while (part < parts) : (part += 1) {
         const start: usize = @as(usize, part) * tablecloth.max_content_bytes;
-        const end: usize = @min(start + tablecloth.max_content_bytes, content.len);
+        const end: usize = @min(start + @as(usize, tablecloth.max_content_bytes), content.len); // seam: a std slice bound, cast at the edge
         var name_buffer: [tablecloth.max_name]u8 = undefined;
         const pname = part_name(name, part, name_buffer[0..]);
         const part_report = try tablecloth.store_artifact(cat, store, pname, content[start..end]);
