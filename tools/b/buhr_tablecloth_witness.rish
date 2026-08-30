@@ -29,6 +29,7 @@ assert selftest.out contains "fetch by name returned 77/77/79 bytes, each equal 
 assert selftest.out contains "format tablecloth-v1 manifest round-tripped 3 artifacts" else "buhr7: manifest round-trip missing"
 assert selftest.out contains "tampered bead, unknown name, taken name refused whole GREEN" else "buhr7: tamper/unknown/taken refusals missing"
 assert selftest.out contains "empty name, overlong name, oversized content refused whole GREEN" else "buhr7: name/size refusals missing"
+assert selftest.out contains "a name carrying a manifest separator refused whole GREEN" else "buhr7: separator-name refusal missing -- a name is one manifest field"
 assert selftest.out contains "bad manifest header refused GREEN" else "buhr7: bad-manifest refusal missing"
 
 # The content-addressed store Tablecloth names over stays its own green binary -- the

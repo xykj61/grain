@@ -14,7 +14,9 @@
 //!
 //! The Brix-facing face is a `format tablecloth-v1` flat-Bron manifest - one line per
 //! artifact, `artifact <name> <digest> <len>` - the Bron a Brix descriptor evaluates to.
-//! Render and parse round-trip it name for name and address for address.
+//! Render and parse round-trip it name for name and address for address. A name is one
+//! field of that line, so a space or a newline inside one refuses at the store edge
+//! (NameHasSeparator) rather than rendering a manifest this module's own parser rejects.
 //!
 //!   rye build pond/apps/tablecloth.rye -femit-bin=pond/bin/tablecloth
 //!   pond/bin/tablecloth selftest
@@ -30,7 +32,9 @@ const parse_int = @import("parse_int.rye");
 
 pub const tablecloth_version = "20260812.142132";
 
-// An artifact's human name. Short and plain, so a manifest line stays readable.
+// An artifact's human name. Short and plain, so a manifest line stays readable. A bound on
+// LENGTH alone: the manifest's grammar is held by name_is_one_field below, rather than by
+// this number staying too small for a forged line to fit inside a name.
 pub const max_name: u32 = 48;
 // The catalog's capacity - how many named artifacts one cloth holds.
 pub const max_artifacts: u32 = 32;
@@ -45,6 +49,7 @@ const max_index_bytes: u32 = beading.max_resin_bytes;
 pub const ClothError = error{
     NameEmpty,
     NameTooLong,
+    NameHasSeparator,
     NameTaken,
     UnknownArtifact,
     CatalogFull,
@@ -102,10 +107,27 @@ fn write_hex_lower(bytes: []const u8, out: []u8) void {
     assert(i == bytes.len);
 }
 
+// A name travels the manifest as one field on one line, so the two bytes that grammar
+// reserves can never sit inside one: a space would split the name across two fields, and a
+// newline would split its line in two. Read at the edge a name enters, so every name the
+// catalog holds renders a line that parses back.
+fn name_is_one_field(name: []const u8) bool {
+    // invariant: the scan reads a name already inside its length bound
+    assert(name.len <= max_name);
+    var i: u32 = 0;
+    while (i < name.len) : (i += 1) {
+        if (name[i] == ' ' or name[i] == '\n') return false;
+    }
+    // invariant: a name that reaches here was read whole
+    assert(i == name.len);
+    return true;
+}
+
 /// Store an artifact under a name. The content is beaded into the shared store (dedup
 /// earned across artifacts that share bytes) and the catalog records the name and the
 /// content address. Returns the beading report so a caller can see the dedup dividend.
-/// Refuses an empty or overlong name, a taken name, a full catalog, and oversized content.
+/// Refuses an empty, overlong, or separator-carrying name, a taken name, a full catalog,
+/// and oversized content.
 pub fn store_artifact(
     cat: *Catalog,
     store: *beading.BeadStore,
@@ -114,6 +136,7 @@ pub fn store_artifact(
 ) (beading.BeadError || ClothError)!beading.BeadReport {
     if (name.len == 0) return error.NameEmpty; // a name carries at least one byte
     if (name.len > max_name) return error.NameTooLong; // a name fits its budget
+    if (!name_is_one_field(name)) return error.NameHasSeparator; // a name is one manifest field
     if (content.len > max_content_bytes) return error.ContentTooLarge; // fits a resin
     if (cat.find(name) != null) return error.NameTaken; // names are unique in a cloth
     if (cat.count >= max_artifacts) return error.CatalogFull; // the catalog is bounded
@@ -378,6 +401,40 @@ fn run_tablecloth_selftest() !u8 {
         }
     }
 
+    // Unwelcome: a name carrying a manifest separator refuses at the edge. A space would
+    // split the name across two fields; a newline would split its line in two.
+    {
+        if (store_artifact(&cat, &store, "my notes", doc_a)) |_| {
+            return error.NameHasSeparator;
+        } else |err| {
+            assert(err == error.NameHasSeparator);
+        }
+        if (store_artifact(&cat, &store, "two\nlines", doc_a)) |_| {
+            return error.NameHasSeparator;
+        } else |err| {
+            assert(err == error.NameHasSeparator);
+        }
+    }
+
+    // And the reason that wall stands, proven from the parser's side rather than argued:
+    // the line such a name WOULD have rendered reads as a different shape and refuses. So
+    // without the wall a lawfully stored name could publish a manifest this module's own
+    // parser rejects. 256 bytes holds the header, one line, a 64-char address, and a length.
+    {
+        var line_buf: [256]u8 = undefined;
+        var hex: [digest_hex_len]u8 = undefined;
+        write_hex_lower(cat.entries[0].whole_digest[0..], hex[0..]);
+        const split = std.fmt.bufPrint(line_buf[0..], "format tablecloth-v1\nartifact my notes {s} {d}\n", .{
+            hex[0..], cat.entries[0].whole_len,
+        }) catch return error.Overflow;
+        var bad: Manifest = undefined;
+        if (parse_manifest(split, &bad)) |_| {
+            return error.BadManifest;
+        } else |err| {
+            assert(err == error.BadManifest);
+        }
+    }
+
     // Unwelcome: content past the resin bound refuses.
     {
         var big: [max_content_bytes + 1]u8 = undefined;
@@ -412,6 +469,7 @@ fn run_tablecloth_selftest() !u8 {
     });
     print("tablecloth: tampered bead, unknown name, taken name refused whole GREEN\n", .{});
     print("tablecloth: empty name, overlong name, oversized content refused whole GREEN\n", .{});
+    print("tablecloth: a name carrying a manifest separator refused whole GREEN\n", .{});
     print("tablecloth: bad manifest header refused GREEN\n", .{});
     print("tablecloth: version {s}\n", .{tablecloth_version});
     print("GREEN: BUHR-J7r1 tablecloth; a name pins a content address, fetch returns the true bytes.\n", .{});
