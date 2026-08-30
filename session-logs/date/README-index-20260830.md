@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260830.102631` | [the last Tally seat answers](20260830/20260830-102631_the-last-tally-seat-answers.kyri) | Kumara directly witnessed; Tally roster reaches zero |
 | `20260830.072125` | [the loom that reads a borrowed number](20260830/20260830-072125_the-loom-that-reads-a-borrowed-number.kyri) | %357's loom built; four pins found, repaired |
 | `20260830.055018` | [the repair that closed an instance](20260830/20260830-055018_the-repair-that-closed-an-instance.kyri) | `spool_cloth` walled; %341, %354, %357 closed |
 | `20260830.053148` | [the set, not its size](20260830/20260830-053148_the-set-not-its-size.kyri) | Tablecloth's nine refusals named and proven; %357 -- the meter blind to Glow |

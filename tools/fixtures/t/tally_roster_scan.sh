@@ -29,7 +29,9 @@
 # 20260828.222157: seed gains its direct two-sided witness, so the ceiling falls 4 -> 3.
 # 20260829: stack gains its direct exact-bound and over-bound witness, so the ceiling falls 3 -> 2.
 # 20260830.053458: pedersen's compatibility seam gains its direct passing answer and missing-forward
-# refusal, so the ceiling falls 2 -> 1. Kumara is the last uncovered module.
+# refusal, so the ceiling falls 2 -> 1.
+# 20260830.102631: Kumara gains its direct fixture-key witness with the typed and raw refusal walls
+# proven load-bearing, so the ceiling falls 1 -> 0 and the Tally roster reads whole.
 #
 # Honest limit, named where it can be read: the anchored name-match reads OWNERSHIP by the
 # room's own naming convention, and a name is not yet a run -- a witness could name a module and
@@ -44,7 +46,7 @@
 # module; verdict=ok exits 0, verdict=over_ceiling exits 1, no room exits 2.
 
 root=${1:-.}
-CEILING="${TALLY_ROSTER_CEILING:-1}"
+CEILING="${TALLY_ROSTER_CEILING:-0}"
 
 if [ ! -d "$root/tally" ] || [ ! -d "$root/tools/t" ]; then
   echo "verdict=no_room"
