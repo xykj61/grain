@@ -58,42 +58,26 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `25235ef0ea` -- this round's own.
+**Git nib:** `9ac443503d` -- this round's own.
 
-**Now.** **LOCA lands on two operating systems; Pond's record learns who walks through its door.**
+**Now.** **The pier's one line closes tri-OS; Mystery raises the Lotus ladder to B; Mind
+repairs `spread.rye`; Pond's remaining duties and `spool_cloth` stay live.**
 
-**The LOCA ladder** (drawn `20260828.222500`): both passes walked -- a Rye view, window, ring,
-lifecycle, parity claims, zero Swift linked; the core on iOS, witnesses GREEN in a booted
-simulator, parity pins identical on **two OSes**. Tri-OS waits on the pier's `wayland-seed
-parity`. Skate laws and the `mul` claims law speak in Glow on metal (`src/gate/`).
-**SkateCore nodes** SEATED `20260829.231546`: nine seats, nib labels, grid rects -- the
-nine-nodes note; Mind unparked.
-**Tri-OS door** BOOKED for Dream: LOCA parity via `brushstroke/wayland_seed.rye` on the
-pier; pins in `surface_reference.rye`.
-
-**The door's first duty** (`20260829-143651`): every mark in Pond's grammar described the ROOM;
-none said who walks through the DOOR. `user` seats first of three duties -- `invoking`, not a
-number, since no uid flag exists to keep one (a number would be `network off` again, %329). Root
-refuses by name and by number. `duties_undeclared` 3 -> **2**, and the claim is settled against a
-running kernel from both sides. Beside it, `pond_enclosure_policy_scan.sh` built its binary once
-and reran it forever, so a source change was invisible while SELFTEST passed on bytes that no
-longer existed (%334's family); it owns its build now, 0.8s of a 1.4s scan.
-
-**The capability tier** (`20260829-163028`): the roster's third field, beside `tier` for TIME and
-`host` for PLACE -- what a host CAN DO. `capability ipv6` probes the loopback table: present runs,
-absent is skipped BY NAME and counted, and **unknown RUNS** -- skipping on an unknown is how a tier
-becomes an exemption. 23 control cases, `host`'s own among them (it landed at %295 with none).
-Seated `20260829.175031`: the `comlink_r1_dual_stack` row takes `capability ipv6` and `tier
-cadence` -- 105s measured here against its three pure siblings' 2s -- so the field's first row is
-a Comlink row, and the roster note that called a capability tier "a design question rather than a
-row" is rewritten to say what the row now is.
-
-**Other Pond doors:** `spool_cloth` promises 4 large artifacts over a store holding **2** (%341).
-
-**CION** SEATED `20260829.222718`: Mystery's 588-row author-clock map is GREEN and all 17
-explicit STOA stamps agree. Required-next `lotus/LADDER.md` declares Field and reads D/62:
-custody chooses a quality/split lap or reseats `glow/lower_shop_gate.rye`; no citation moves.
-[Campaign](../expanding-prompts/20260829-221841_cion-resumes-the-rung-mark-molt-campaign.md).
+**The live front** (condensed at the `20260830.012039` boundary; the walk-back checkpoint
+holds the departing accounts, and the `20260829`-`20260830` day shelves hold every landed lap):
+- **Tri-OS** BOOKED for Dream: LOCA parity via `brushstroke/wayland_seed.rye` on the pier;
+  pins in `surface_reference.rye`. Both prior OSes GREEN; the nine-seat snapshot landed
+  `89e6da952`; the AppKit role translation and deployment floor stay Keaton's gates.
+- **CION Tier C** RULED quality-first (`20260830.004431`, on the
+  [campaign page](../expanding-prompts/20260829-221841_cion-resumes-the-rung-mark-molt-campaign.md)):
+  Mystery raises or splits `lotus/LADDER.md` (D/62) to B before one citation moves; the
+  588-rung map is GREEN on main.
+- **Mind's booked next:** the `brushstroke/spread.rye` width repair, then its lane.
+- **Pond live:** `duties_undeclared` **2**; `spool_cloth` promises 4 artifacts over a store
+  holding **2** (%341).
+- **Language custody:** the growth law is
+  [a-rune-is-earned-by-a-law](../foundations/20260830-011530_a-rune-is-earned-by-a-law.md);
+  nested composition waits as a named door.
 
 **MANY HANDS** (granted `20260828`): custody stays MANUAL, one writer per checkout. Root
 `SKILL.md`; every clone seats `ww` (`grain-ww/grain`, gate %1) and `.git/ssh_config_jail`.

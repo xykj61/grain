@@ -22,6 +22,16 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ---
 
+## `20260830.012039` -- the round-set boundary condense of the Now region (walk-back `89e6da9523`)
+
+**Walk-back nib:** `89e6da9523` -- HEAD before the condense commit. **Swept:** the landed
+Prior-lap accounts in ITINERARY's Now region -- the door's-first-duty block (Hush's user-duty
+lap, nine lines), the capability-tier block (the ipv6 row's seating, ten lines), and the landed
+halves of the LOCA and CION lines -- roughly thirty lines, every one recorded in the day-shelf
+logs of `20260829`-`20260830`. **What waits there, worth recalling:** the capability-tier
+block's own prose on why unknown RUNS (a tier becoming an exemption), and the duty block's
+uid-flag reasoning -- both argued more fully at the walk-back than the logs compress them.
+
 ## `20260829.192321` -- the dependent-stream word-molt deep debride (walk-back `be976e4227`)
 
 **Walk-back nib:** `be976e4227` -- HEAD before the sweep commit and the rewrite. The departing
