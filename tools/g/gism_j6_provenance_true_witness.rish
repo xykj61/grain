@@ -8,6 +8,11 @@
 # the same file on disk -- two tools, one answer -- so a signature can never vouch for bytes
 # the corpus does not contain. This closes GISM Journey 6.
 #
+# Both readings are READ from disk and interpolated, never spelled. A hand-typed length or
+# digest is a copy of a fact the document is free to change without, and this family has paid
+# for that twice (REDS %341, %357); read, the assertion compares two tools' answers to each
+# other rather than each to one constant.
+#
 # Run from the repository root:
 #   rishi/bin/rishi run tools/g/gism_j6_provenance_true_witness.rish
 
@@ -20,20 +25,19 @@ let bin = "pond/bin/provenance-true"
 let build = run ["sh" "-c" "mkdir -p pond/bin && env RYE_ZIG=${zig} rye/bin/rye build pond/apps/provenance_true.rye -femit-bin=${bin}"]
 assert build.ok else "gism-j6r4: provenance_true build failed"
 
+# The crux cross-check, measured before it is compared: the signed facts must equal an
+# independent measurement of the real file.
+let real = "waymarks/date/20260801/20260801-134653_e182-q46-errors-named-green.md"
+let wc = run ["sh" "-c" "wc -c < ${real} | tr -d ' \n'"]
+assert wc.ok else "gism-j6r4: wc -c over the real file failed"
+let sha = run ["sh" "-c" "sha256sum ${real} | cut -d' ' -f1 | tr -d ' \n'"]
+assert sha.ok else "gism-j6r4: sha256sum over the real file failed"
+
 let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
 assert selftest.ok else "gism-j6r4: provenance_true selftest exited non-zero"
 assert selftest.out contains "GREEN" else "gism-j6r4: selftest did not speak GREEN"
-assert selftest.out contains "signed_len 213" else "gism-j6r4: signed length line missing"
-assert selftest.out contains "signed_sha256 2010d1606c18cafac511b630be7e6bcaf1a9ec34cf9902ca7106deb4aaee0a6d" else "gism-j6r4: signed digest line missing"
+assert selftest.out contains "signed_len ${wc.out}" else "gism-j6r4: signed length disagrees with wc -c over the real file"
+assert selftest.out contains "signed_sha256 ${sha.out}" else "gism-j6r4: signed digest disagrees with sha256sum over the real file"
 assert selftest.out contains "true to the real bytes (a neighbor refuses)" else "gism-j6r4: tight-binding line missing"
-
-# The crux cross-check: the signed facts equal an independent measurement of the real file.
-let real = "waymarks/date/20260801/20260801-134653_e182-q46-errors-named-green.md"
-let wc = run ["sh" "-c" "wc -c < ${real} | tr -d ' '"]
-assert wc.ok else "gism-j6r4: wc -c over the real file failed"
-assert wc.out contains "213" else "gism-j6r4: wc -c disagrees with the signed length"
-let sha = run ["sh" "-c" "sha256sum ${real} | cut -d' ' -f1"]
-assert sha.ok else "gism-j6r4: sha256sum over the real file failed"
-assert sha.out contains "2010d1606c18cafac511b630be7e6bcaf1a9ec34cf9902ca7106deb4aaee0a6d" else "gism-j6r4: sha256sum disagrees with the signed digest"
 
 say "GREEN: GISM-J6r4 — the signed length and digest are true to the real file (wc -c + sha256sum agree); GISM Journey 6 (Provenance) stands complete end to end."

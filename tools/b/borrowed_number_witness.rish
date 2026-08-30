@@ -1,0 +1,73 @@
+# tools/b/borrowed_number_witness.rish -- no witness in this tree pins another file's byte count.
+#   rishi/bin/rishi run tools/b/borrowed_number_witness.rish
+#
+# WHAT IT STANDS OVER. tools/fixtures/b/borrowed_number_scan.sh, which reads every tracked Rishi
+# source for an assertion comparing a literal that is exactly the current byte size, or the current
+# SHA-256, of a tracked file the same source names -- and holds that count at zero.
+#
+# WHAT IT STANDS ON. Fourteen behaviours proven on real git repositories in a throwaway pen by
+# tools/fixtures/b/borrowed_number_control.sh, welcomes asserted as hard as refusals: a borrowed
+# count and a borrowed digest are found, the read-and-interpolate repair is not, a number with no
+# subject beside it is free, a number living only in an else message is free, a subject under the
+# hundred-byte floor is free, an ambiguous bare basename binds nothing, the ceiling refuses from
+# both sides on one pen, and an empty source list refuses rather than reading a green zero.
+#
+# WHY THIS EXISTS. REDS %341 found two witnesses asserting a spelled byte count of a document they
+# did not own, repaired both, and named a third by hand. REDS %357 found three more in the same
+# family a day later, red since the day SECURITY.md and context/TWO_ROOMS.md were edited, none of
+# them on the standing roster -- so a 96-guard cold pass read 95 green while three guards outside
+# it had been failing for days. A repair closes an instance; a grep closes a family; and a lantern
+# that fires twice becomes a loom.
+#
+# WHAT THE FIRST RUN FOUND. Four sites in two witnesses the two prior firings never named, pinning
+# a THIRD document -- both GISM Journey 6 provenance witnesses spelled the length and digest of a
+# waymark green-claim, and each claimed in its own header to cross-check the app against wc -c and
+# sha256sum "two tools, one answer" while routing both comparisons through one hand-typed constant.
+# They were green, and they were one edit away from being neither. Repaired in the same round: each
+# now reads its subject from disk and interpolates, so the assertion IS the cross-check its header
+# promised.
+say "borrowed-number: Language EN -- a witness owns the behaviour it guards, never another file's facts."
+say "borrowed-number: Style Gauge Meter -- the ceiling is counted, the reading is proven on a pen."
+say "borrowed-number: Lens TAME -- safety first; a refusal proven only one way is not proven."
+
+let green = run ["sh" "tools/fixtures/b/borrowed_number_scan.sh"]
+say green.out
+assert green.ok else "borrowed-number: the living measure must exit 0"
+assert green.out contains "verdict=ok" else "borrowed-number: want verdict ok"
+assert green.out contains "borrowed_numbers=0" else "borrowed-number: a borrowed number stands in a tracked witness"
+assert green.out contains "borrowed_ceiling=0" else "borrowed-number: the ceiling stands at zero -- a ceiling only falls"
+
+# THE VACUUM, closed before the count is believed. A reading that reaches no sources prints zero
+# sites, and a zero nobody planted looks exactly like a healthy tree (REDS %240). This leg hands
+# the scan an empty source list and requires a refusal, so silence can never pass for green.
+let vacuum = run ["sh" "tools/fixtures/b/borrowed_number_scan.sh" "prove-vacuum"]
+assert (vacuum.ok == false) else "borrowed-number: an empty source list must refuse"
+assert vacuum.out contains "verdict=no_sources" else "borrowed-number: want the vacuum refusal named"
+
+# THE CEILING, read from both sides on ONE plant, so the two readings differ only in the ceiling.
+# At zero there is no tree one site under the reading, so the plant supplies it: the same planted
+# site refuses at zero and passes at one. A ceiling proven only in the passing direction cannot be
+# told from a bypass.
+let planted = run ["sh" "tools/fixtures/b/borrowed_number_scan.sh" "prove-red"]
+assert (planted.ok == false) else "borrowed-number: a planted borrowed number must refuse"
+assert planted.out contains "verdict=over_ceiling" else "borrowed-number: want the refusal named"
+
+let admits = run ["sh" "-c" "BORROWED_NUMBER_CEILING=1 sh tools/fixtures/b/borrowed_number_scan.sh prove-red"]
+assert admits.ok else "borrowed-number: the same planted site must pass one ceiling higher"
+assert admits.out contains "verdict=ok" else "borrowed-number: want the higher ceiling green"
+
+# THE READING ITSELF, proven on planted trees rather than trusted. Each leg is named here as well
+# as counted, because a control reporting fail=0 while quietly dropping a leg reports nothing.
+let control = run ["sh" "tools/fixtures/b/borrowed_number_control.sh"]
+say control.out
+assert control.ok else "borrowed-number: the control must exit 0"
+assert control.out contains "verdict=control_green" else "borrowed-number: want the control green"
+assert control.out contains "fail=0" else "borrowed-number: the control must carry no red leg"
+assert control.out contains "ok   a borrowed byte count is found" else "borrowed-number: the count leg is missing"
+assert control.out contains "ok   a borrowed digest named in a comment is found" else "borrowed-number: the digest leg is missing"
+assert control.out contains "ok   the read-and-interpolate repair is not counted" else "borrowed-number: the welcome leg is missing"
+assert control.out contains "ok   a size only in the else message is free" else "borrowed-number: the else-message leg is missing"
+assert control.out contains "ok   an ambiguous bare basename binds nothing" else "borrowed-number: the ambiguity leg is missing"
+assert control.out contains "ok   an empty source list refuses" else "borrowed-number: the vacuum leg is missing"
+
+say "GREEN: borrowed-number -- no tracked witness pins another file's size or digest; the reading refuses a plant, refuses a vacuum, and welcomes the read-and-interpolate repair."
