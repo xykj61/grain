@@ -21,7 +21,7 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 | [`amphora/`](../../amphora/README.md) | 7 | 13 |
 | [`aurora/`](../../aurora/README.md) | 7 | 6 |
 | [`brix/`](../../brix/README.md) | 1 | 2 |
-| [`caravan/`](../../caravan/README.md) | 112 | 126 |
+| [`caravan/`](../../caravan/README.md) | 112 | 125 |
 | [`classical-vedic-astrology/`](../../classical-vedic-astrology/README.md) | 1 | 0 |
 | [`comlink/`](../../comlink/README.md) | 73 | 11 |
 | [`constel/`](../../constel/README.md) | 32 | 39 |

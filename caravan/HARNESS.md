@@ -951,3 +951,19 @@ The fall the meter read is **5,141** -- larger again than the lap before it, and
 
 **The lesson this lap adds is that a movement is a better fold unit than a body.** The queue names one family at a time because it measures one name at a time, yet `the_standing` had been calling these four in sequence since the spine finished growing at `refer`. Reading the harness for what it already runs together found four families where the queue showed one -- and four tier owners whose accessors, born together, cost twelve lines and folded two hundred and sixteen.
 
+
+## The selector names work left -- `20260830.145851`
+
+The whole-carry meter still reads every copied body on the ladder: **58,496 carried lines across
+699 families** on `20260830`, measured by `caravan_ladder_carry_scan.sh`. Its printed fold queue had
+quietly become a second question. The first twelve rows were bodies already lifted into
+`ladder_checks`, each a small delegate whose only job is forwarding to the shared harness. They
+still cost lines and belong in the total, while lifting them again would add another forwarding
+layer and move no behavior.
+
+The selector now keeps those two readings apart. Delegate families remain in `CARRY_FAMILIES` and
+`CARRY_DELEGATES`; `CARRY_QUEUE` and `CARRY_TOP` name ordinary copied bodies with work left to lift.
+The living reading is **576 actionable families**, with `answered_by` first at **429 carried lines**.
+The witness proves both directions on one planted corpus: an ordinary copied body stays in the
+queue, and an otherwise identical copied delegate stays in the whole carry while leaving the
+queue. The count remains a count; the queue becomes a selector again.

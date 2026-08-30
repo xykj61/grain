@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260830.145851` | [the queue names work left](20260830/20260830-145851_the-queue-names-work-left.kyri) | Caravan separates total carry from actionable folds |
 | `20260830.133751` | [the second count joins the wall](20260830/20260830-133751_the-second-count-joins-the-wall.kyri) | Caravan's ladder count joins the roster wall |
 | `20260830.113255` | [the door counts what stands](20260830/20260830-113255_the-door-counts-what-stands.kyri) | Caravan's 114 modules and 121 witnesses derive |
 | `20260830.124924` | [one pass at a time](20260830/20260830-124924_one-pass-at-a-time.kyri) | the roster runner locks; a second pass in one tree refuses |

@@ -38,10 +38,12 @@
 #   carry. The last number is the carry, and it is the one a design call rests
 #   on (REDS %93: a tally repeated from memory drifts).
 #
-#   CARRY_TOP names the families carrying the most, largest first, each as
-#   `name:rungs x lines = carried`. This is the fold queue, printed rather than
-#   remembered, so the next fold is chosen by measurement rather than by which
-#   family somebody happened to look at.
+#   CARRY_TOP names the actionable families carrying the most, largest first,
+#   each as `name:rungs x lines = carried`. A body that already delegates to
+#   `ladder_checks` stays in the total and in CARRY_DELEGATES, yet leaves this
+#   queue: lifting an already lifted body would only add another forwarding
+#   layer. This keeps the fold queue a selector rather than a second carry
+#   total.
 #
 # CARAVAN_CARRY_CEILING (the default named below): how many carried lines the ladder may
 # hold. The scan prints what stands today rather than reciting it here, since a
@@ -169,10 +171,17 @@ awk '
   FNR == 1 { inb = 0 }
   $0 ~ /^(pub )?fn [a-z_][a-z0-9_]*\(/ {
     name = ($1 == "pub") ? $3 : $2
-    sub(/\(.*/, "", name); inb = 1; body = ""; n = 0
+    sub(/\(.*/, "", name); inb = 1; body = ""; n = 0; is_delegate = 0
   }
-  inb { keyed = $0; sub(/^pub /, "", keyed); body = body keyed "\n"; n++ }
+  inb {
+    keyed = $0
+    sub(/^pub /, "", keyed)
+    body = body keyed "\n"
+    if (keyed ~ /return ladder_checks\./) is_delegate = 1
+    n++
+  }
   inb && /^}$/ {
+    if (is_delegate) delegates[body] = 1
     seen[body]++
     lines[body] = n
     if (seen[body] == 1) family[body] = name
@@ -186,6 +195,9 @@ awk '
         copies += seen[b] - 1
         carried += (seen[b] - 1) * lines[b]
         printf "%d %d %d %s\n", (seen[b] - 1) * lines[b], seen[b], lines[b], family[b] > "'"$work"'/families"
+        if (!delegates[b]) {
+          printf "%d %d %d %s\n", (seen[b] - 1) * lines[b], seen[b], lines[b], family[b] > "'"$work"'/queue"
+        }
       }
     }
     printf "%d %d %d %d\n", bodies + 0, distinct + 0, copies + 0, carried + 0
@@ -220,11 +232,15 @@ echo "CARRY_BODIES ${bodies} distinct=${distinct} copies=${copies} carried_lines
 if [ -f "$work/families" ]; then
   families=$(wc -l < "$work/families" | tr -d ' ')
   echo "CARRY_FAMILIES ${families} carrying=1_or_more_copies"
-  sort -rn "$work/families" | head -n "$TOP" | while read -r carry count len name; do
+  queue_families=0
+  test ! -f "$work/queue" || queue_families=$(wc -l < "$work/queue" | tr -d ' ')
+  echo "CARRY_QUEUE ${queue_families} actionable_families note=delegates_stay_in_total"
+  sort -rn "$work/queue" | head -n "$TOP" | while read -r carry count len name; do
     echo "CARRY_TOP ${name}: ${count} rungs x ${len} lines = ${carry} carried"
   done
 else
   echo "CARRY_FAMILIES 0 carrying=1_or_more_copies"
+  echo "CARRY_QUEUE 0 actionable_families note=delegates_stay_in_total"
 fi
 
 if [ "$carried" -gt "$CEILING" ]; then
