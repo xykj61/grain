@@ -42,6 +42,16 @@ say "caravan-suite: Language EN -- the Caravan choir: one run that hears every p
 say "caravan-suite: Style Radiant -- a rung is proven when a witness says so, and an arc is proven when nothing in it is unheard. The roster is checked before it is sung, so the count this witness prints is measured rather than remembered."
 say "caravan-suite: Lens TAME -- every tools/caravan_*_witness.rish on disk is asserted registered here, every registration is asserted to exist on disk, and then each is asserted GREEN. RED names exactly which rung broke the bijection or the run. Purely local -- no key, no network, no funds, no device."
 
+# The choir owns one runtime room at a time. Its children still use their elder
+# fixed paths, so two choirs may share the tree only by taking this door in
+# turn. The directory creation is atomic on POSIX hosts. Its pid names the
+# Rishi parent, which lets a later run reap a lock left by a stopped choir.
+# The 900-second ceiling is longer than one measured choir and keeps a live
+# holder bounded rather than turning serialization into an endless wait.
+let suite_lock = run ["sh" "-c" "set -eu; lock=caravan/.suite-runtime/lock.d; mkdir -p caravan/.suite-runtime; waited=0; while ! mkdir $lock 2>/dev/null; do if [ -s $lock/pid ]; then owner=$(cat $lock/pid 2>/dev/null || printf ''); case $owner in ''|*[!0-9]*) : ;; *) kill -0 $owner 2>/dev/null || { rm -rf $lock; continue; } ;; esac; fi; [ $waited -ge 900 ] && { echo CARAVAN_SUITE_LOCK_TIMEOUT; exit 1; }; sleep 1; waited=$((waited + 1)); done; printf '%s\n' $PPID > $lock/pid; printf 'CARAVAN_SUITE_LOCK_ACQUIRED waited_seconds=%s\n' $waited" ]
+assert suite_lock.ok else "caravan-suite: the bounded runtime-room lock refused -- ${suite_lock.out} ${suite_lock.err}"
+assert suite_lock.out contains "CARAVAN_SUITE_LOCK_ACQUIRED" else "caravan-suite: the runtime-room lock returned without naming admission"
+
 # The choir sings from a cold tree, always (REDS %92). Thirty-six rungs ran a shared
 # caravan/bin/read without building it, so this suite had never once proven itself
 # on a clean checkout -- it passed on whatever an earlier run had left warm, and the
@@ -73,5 +83,8 @@ let n_disk = trim disk_c.out
 say "caravan-suite: roster whole -- ${n_disk} per-rung witnesses on disk, each registered here and each registering a real file. Singing them now."
 
 for-each witnesses as w do assert (run ["rishi/bin/rishi" "run" w]).ok else "caravan-suite: a per-rung witness went RED -- ${w}"
+
+let suite_unlock = run ["sh" "-c" "rm -rf caravan/.suite-runtime/lock.d"]
+assert suite_unlock.ok else "caravan-suite: the runtime room stayed locked after the choir closed"
 
 say "GREEN caravan-suite -- ${n_disk} Caravan witnesses registered and run, every rung of the Microkernel Target arc heard in one voice"

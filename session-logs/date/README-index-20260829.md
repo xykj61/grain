@@ -19,6 +19,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260829.233501` | [the ring read every stored seat](20260829/20260829-233501_the-ring-read-every-stored-seat.kyri) | Mind: both EventRing refusals compare all 130 stored values |
 | `20260829.231546` | [the nine-nodes sitting](20260829/20260829-231546_the-nine-nodes-sitting.kyri) | SkateCore semantic snapshot ruled: 1+8 seats, nib labels, grid rects |
 | `20260829.231148` | [the trees that held real work](20260829/20260829-231148_the-trees-that-held-real-work.kyri) | mind rebases its laps home; mystery stashes its refused lap by name |
+| `20260829.231112` | [the parked seam comes home](20260829/20260829-231112_the-parked-seam-comes-home.kyri) | Dream serializes two Caravan choirs; both 121-witness runs GREEN |
 | `20260829.230409` | [the pipe that went quiet](20260829/20260829-230409_the-pipe-that-went-quiet.kyri) | jq unbuffered behind the tee; a lap heartbeat line |
 | `20260829.225955` | [two pier trees, two refusals, two right answers](20260829/20260829-225955_two-pier-trees-two-refusals-two-right-answers.kyri) | hush discards its copies; dream rebases its own laps home |
 | `20260829.225328` | [the prompt leaves the quotes and the loops find their trees](20260829/20260829-225328_the-prompt-leaves-the-quotes-and-the-loops-find-their-trees.kyri) | one anchored fleet-loop.sh; three seat-prompt files; census essay kept |
@@ -30,6 +31,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260829.213350` | [the rune the language wants](20260829/20260829-213350_the-rune-the-language-wants.kyri) | the pair survey ends at a mul gap -- a rune ruling on the sill; no twin desk minted |
 | `20260829.212731` | [the walls speak Glow and the crop fits](20260829/20260829-212731_the-walls-speak-glow-and-the-crop-fits.kyri) | three Skate desks GREEN with parity anchors; %347 closes Mind's 49-byte crop find |
 | `20260829.211412` | [the measure humbled the middle](20260829/20260829-211412_the-measure-humbled-the-middle.kyri) | gate %7: 1 of 39 additive, 38 two-way stay readings; Mind's exact-length find repaired, pins unmoved |
+| `20260829.211021` | [the two rosters and the one tree](20260829/20260829-211021_the-two-rosters-and-the-one-tree.kyri) | Caravan runtime isolation defect named from both sides; derived pins refreshed |
 | `20260829.210617` | [the fusion lands scoped](20260829/20260829-210617_the-fusion-lands-scoped.kyri) | --scoped proven both ways: 59-guard map, receipt v2, 7 control cases; hit-rate 16% decided the shape |
 | `20260829.210056` | [compared, not copied](20260829/20260829-210056_the-number-compared-not-copied.kyri) | Tablecloth's first Glow desk; the guard compares, never copies, the bound |
 | `20260829.204032` | [the charter matches the fleet](20260829/20260829-204032_the-charter-matches-the-fleet.kyri) | claim clauses x3; the always-fleet charter molts in, ten citers repointed; parked ref proven redundant |
