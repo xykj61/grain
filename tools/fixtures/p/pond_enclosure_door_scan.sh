@@ -35,6 +35,7 @@
 #   path_host_absent     search-path elements the host itself lacks              machine fact, reported
 #   env_undeclared       an env path value under no declared subtree             reported
 #   duties_undeclared    door duties the record's grammar cannot express at all  reported
+#   env_disagreements    a declared env assignment the exec line does not make   ZERO, ENFORCED
 #   probe_*              the same questions asked inside a running enclosure     reported
 #
 # WHY THE RATCHET IS THE DERIVED HALF AND THE MACHINE FACT IS NOT. `path_undeclared` reads the record
@@ -361,6 +362,81 @@ elif [ "$user_declared" != unstated ]; then
   echo "user: the record declares \`user $user_declared\`, a fixed uid the probe leg settles against the kernel"
 fi
 
+
+# ---------------------------------------------------------------------------
+# THE `env` DECLARATION, SETTLED AGAINST THE EXEC LINE THAT MAKES IT.
+#
+# The duty count above says the record CAN state its environment; this reading asks whether what it
+# states is true. The instrument is the exec line itself, which is the ground truth for what crosses
+# this threshold, so the settling is fully derived and answers the same on every pier -- no probe,
+# no jail, no kernel. That is why it gates at zero where `path_host_absent` only reports: one reads
+# the record against the launcher, the other reads one bench's own filesystem.
+#
+# BOTH DIRECTIONS COUNT. A declared assignment the launcher does not spell is the `network off`
+# fault wearing a third mark (REDS %329) -- a claim nothing keeps. A spelled assignment the record
+# does not declare is the gap this mark was seated to close, still standing. And a key both sides
+# name at different values is the drift that would otherwise stay invisible, since each side reads
+# fine alone.
+#
+# THE NAMESPACES LINE UP FIRST. The record writes the placeholder convention its own header explains
+# (/home/youruser and its project bind) while the launcher spells host paths, so every spelled value
+# goes through `to_record` before any comparison. PATH is rebuilt from the elements reading one
+# already normalized, in the launcher's own order, rather than normalized a second time here.
+#
+# UNSTATED IS FREE. A record naming no `env` at all makes no claim, and `duties_undeclared` above is
+# already the reading for that -- the same courtesy `user_declared=unstated` takes, and the reason
+# every pen written before this mark existed still passes.
+# ---------------------------------------------------------------------------
+sed -n 's/^env \(.*\)$/\1/p' "$work/record" > "$work/env.declared"
+env_declared_count=$(wc -l < "$work/env.declared" | tr -d ' ')
+if [ "$env_declared_count" -gt "$max_env" ]; then
+  echo "detail: the record declares $env_declared_count env assignments past max_env=$max_env"
+  echo "verdict=unbounded"; exit 1
+fi
+
+env_state=unstated
+env_disagreements=0
+if [ "$env_declared_count" -gt 0 ]; then
+  env_state=declared
+  path_record=$(awk '{ print $1 }' "$work/path.read" | tr '\n' ':' | sed 's/:$//')
+  : > "$work/env.spelled"
+  while read -r assign; do
+    [ -n "${assign:-}" ] || continue
+    ekey=${assign%%=*}
+    evalue=${assign#*=}
+    case "$ekey" in
+      PATH) evalue=$path_record ;;
+      GH_CONFIG_DIR) evalue=$(to_record "$gh_state") ;;
+      *) evalue=$(to_record "$(echo "$evalue" | sed -e "s#\${HOST_HOME}#$host_home#g" -e "s#\$HOME#$host_home#g")") ;;
+    esac
+    echo "$ekey=$evalue" >> "$work/env.spelled"
+  done < "$work/env.raw"
+
+  while read -r one; do
+    [ -n "${one:-}" ] || continue
+    ekey=${one%%=*}
+    if grep -qxF "$one" "$work/env.declared"; then
+      echo "env: the record declares \`$one\`, which is what the exec line spells"
+    elif cut -d= -f1 "$work/env.declared" | grep -qxF "$ekey"; then
+      env_disagreements=$((env_disagreements + 1))
+      echo "detail: the exec line spells \`$one\` and the record declares \`$(awk -F= -v k="$ekey" '$1 == k { print; exit }' "$work/env.declared")\`"
+    else
+      env_disagreements=$((env_disagreements + 1))
+      echo "detail: the exec line spells \`$one\` and the record declares no \`$ekey\` at all"
+    fi
+  done < "$work/env.spelled"
+
+  while read -r one; do
+    [ -n "${one:-}" ] || continue
+    ekey=${one%%=*}
+    grep -qxF "$one" "$work/env.spelled" && continue
+    # A key both sides name was already counted from the spelled side, so counting it again here
+    # would read one drift as two.
+    cut -d= -f1 "$work/env.spelled" | grep -qxF "$ekey" && continue
+    env_disagreements=$((env_disagreements + 1))
+    echo "detail: the record declares \`$one\` and the exec line spells no \`$ekey\` at all"
+  done < "$work/env.declared"
+fi
 # ---------------------------------------------------------------------------
 # THE PROBE -- the same questions, asked inside a running enclosure.
 #
@@ -443,6 +519,7 @@ fi
 echo "path_elements=$path_count path_undeclared=$path_undeclared ceiling=$path_undeclared_ceiling path_host_absent=$path_host_absent path_dead=$path_dead"
 echo "entry_state=$entry_state entry_unreachable=$entry_unreachable env_assignments=$env_count env_undeclared=$env_undeclared"
 echo "duties_undeclared=$duties_undeclared private_home=$private_home user_declared=$user_declared"
+echo "env_declared=$env_declared_count env_state=$env_state env_disagreements=$env_disagreements"
 echo "jail_present=$jail_present probe_read=$probe_read probe_asked=$probe_asked probe_uid=$probe_uid probe_entry=$probe_entry door_disagreements=$door_disagreements"
 
 if [ "$entry_unreachable" -gt 0 ]; then
@@ -451,6 +528,10 @@ if [ "$entry_unreachable" -gt 0 ]; then
 fi
 if [ "$path_undeclared" -gt "$path_undeclared_ceiling" ]; then
   echo "verdict=over_ceiling"
+  exit 1
+fi
+if [ "$env_disagreements" -gt 0 ]; then
+  echo "verdict=env_disagrees"
   exit 1
 fi
 if [ "$probe_read" = yes ] && [ "$door_disagreements" -gt 0 ]; then

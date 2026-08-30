@@ -182,10 +182,16 @@ saw duties_absent_named "$pen" 'the record names no `entry`'
 # seated the mark.
 saw duties_absent_user_unstated "$pen" 'user_declared=unstated'
 
+# The `env` lines here took the seated `KEY=value` spelling on `20260830`. This pen was written
+# before the mark existed and guessed at `env KEY value`, which cost nothing while the duty count
+# only asked whether a line began with `env `. It costs everything now: the settling reading below
+# compares the declaration against the exec line, so a pen must declare what its own launcher
+# spells or refuse -- which is the guard working.
 pen=$(new_pen duties_declared)
 cat >> "$pen/pond/enclosure_policy.kyri" <<'EOF'
 entry /nix/store/pen-hash/bin/claude
-env GH_CONFIG_DIR /home/youruser/grain/.gh
+env GH_CONFIG_DIR=/home/youruser/grain/.gh
+env PATH=/run/current-system/sw/bin:/nix/var/nix/profiles/default/bin:/home/youruser/.nix-profile/bin:/bin
 user 1000
 EOF
 want duties_declared_passes ok "$(run_scan "$pen")"
@@ -204,6 +210,60 @@ want user_invoking_passes ok "$(run_scan "$pen")"
 saw user_invoking_read "$pen" 'user_declared=invoking'
 saw user_invoking_named "$pen" 'runs the agent as whoever opened the door'
 saw user_invoking_counted "$pen" 'duties_undeclared=2'
+
+
+# ---- The `env` mark on its own, seated 20260830. The record can now state the environment that
+# crosses the threshold, so the derived leg lifts those lines and settles them against the exec line
+# that makes them. This settling needs no kernel -- the launcher IS the ground truth -- so unlike the
+# `user` mark both directions are proven right here, on planted trees, on any bench.
+#
+# The pen's own two assignments, in the record's namespace: GH_STATE reads $REPO/.gh, and $REPO is
+# the pen root, which `to_record` speaks as the record's persist line; the search path is the four
+# elements new_pen's launcher spells, with ${HOST_HOME} spoken as the record's home.
+env_pair() { # env_pair <pen> -- append the two declarations the pen's own launcher spells
+  cat >> "$1/pond/enclosure_policy.kyri" <<'EOP'
+env GH_CONFIG_DIR=/home/youruser/grain/.gh
+env PATH=/run/current-system/sw/bin:/nix/var/nix/profiles/default/bin:/home/youruser/.nix-profile/bin:/bin
+EOP
+}
+
+pen=$(new_pen env_agrees)
+env_pair "$pen"
+want env_agrees_passes ok "$(run_scan "$pen")"
+saw env_agrees_counted "$pen" 'env_declared=2 env_state=declared env_disagreements=0'
+saw env_agrees_named "$pen" 'which is what the exec line spells'
+saw env_agrees_duties "$pen" 'duties_undeclared=2'
+
+# A key the exec line spells and the record leaves out is the gap this mark closes, still standing.
+pen=$(new_pen env_key_missing)
+printf 'env GH_CONFIG_DIR=/home/youruser/grain/.gh\n' >> "$pen/pond/enclosure_policy.kyri"
+want env_key_missing_refuses refuse "$(run_scan "$pen")"
+saw env_key_missing_named "$pen" 'verdict=env_disagrees'
+saw env_key_missing_detail "$pen" 'the record declares no `PATH` at all'
+
+# A key both sides name at different values is the drift neither side can see alone, and it is
+# counted ONCE rather than once from each direction.
+pen=$(new_pen env_value_drift)
+env_pair "$pen"
+sed_inplace 's#^env GH_CONFIG_DIR=.*#env GH_CONFIG_DIR=/home/youruser/grain/.elsewhere#' "$pen/pond/enclosure_policy.kyri"
+want env_value_drift_refuses refuse "$(run_scan "$pen")"
+saw env_value_drift_named "$pen" 'verdict=env_disagrees'
+saw env_value_drift_counted "$pen" 'env_disagreements=1'
+saw env_value_drift_detail "$pen" 'and the record declares `GH_CONFIG_DIR=/home/youruser/grain/.elsewhere`'
+
+# A declared assignment the launcher never makes is a claim nothing keeps -- REDS %329 one mark over.
+pen=$(new_pen env_extra)
+env_pair "$pen"
+printf 'env EDITOR=/home/youruser/grain/tools/bin/ed\n' >> "$pen/pond/enclosure_policy.kyri"
+want env_extra_refuses refuse "$(run_scan "$pen")"
+saw env_extra_named "$pen" 'verdict=env_disagrees'
+saw env_extra_detail "$pen" 'the exec line spells no `EDITOR` at all'
+
+# And the passing side of the same gate at the same pen: a record that says nothing about env makes
+# no claim, so it walks free and the duty count is the reading that speaks for it.
+pen=$(new_pen env_unstated)
+want env_unstated_passes ok "$(run_scan "$pen")"
+saw env_unstated_counted "$pen" 'env_declared=0 env_state=unstated env_disagreements=0'
 
 # ---- Reading six: the lift. The search path and the exec line are read out of the launcher at run
 # time, so losing either makes this refuse rather than guess at a default it once saw.

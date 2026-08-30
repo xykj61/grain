@@ -41,15 +41,26 @@ say "rung-drift: Language EN -- a rung is marked by waymark, stamp, and plain na
 say "rung-drift: Style Gauge, Meter -- the ceiling only falls, and the reading is the scan's own."
 say "rung-drift: Lens TAME -- the boundary proven from both sides before the live reading is trusted."
 
+# THE INTERPRETER IS NAMED BY PATH LOOKUP HERE TOO, and the two legs below are why REDS %353
+# was not the whole repair. That row swept twelve absolute `/bin/bash` spellings out of this
+# family and left two standing INSIDE this file -- nested in the `bash -c` strings on the pen
+# legs, where a grep for an interpreter in command position cannot see them. On a pier whose
+# /bin is empty the elder spelling exited 127 with `No such file or directory`, which
+# satisfied `bitten.ok == false` for a reason that has nothing to do with rung drift: a
+# refusing-side proof passing VACUOUSLY, which is the one failure a refusing-side proof
+# exists to prevent. It was caught only because the assert beside it also reads the verdict
+# text, so the lesson is the pair: a refusal must refuse, AND it must refuse for its own
+# reason. Measured on this pier `20260830`: /bin holds `sh` alone and bash resolves to
+# /run/current-system/sw/bin/bash.
 let pen = run ["bash" "-c" "set -eu; mkdir -p .mind-state/tmp; pen=$(mktemp -d .mind-state/tmp/rung-drift.XXXXXX); mkdir -p $pen/docs; echo 'the FORA7 rung lands' > $pen/docs/page.md; echo 'the FORA8 rung lands' >> $pen/docs/page.md; echo 'docs/page.md' > $pen/files.lst; echo $pen"]
 assert pen.ok else "rung-drift: the pen must build"
 let pen_dir = trim pen.out
 
-let bitten = run ["bash" "-c" "RUNG_ROOT=${pen_dir} RUNG_FILE_LIST=${pen_dir}/files.lst RUNG_CEILING=1 /bin/bash tools/fixtures/w/waymark_rung_drift_scan.sh"]
+let bitten = run ["bash" "-c" "RUNG_ROOT=${pen_dir} RUNG_FILE_LIST=${pen_dir}/files.lst RUNG_CEILING=1 bash tools/fixtures/w/waymark_rung_drift_scan.sh"]
 assert (bitten.ok == false) else "rung-drift: two planted marks over a pen ceiling of one must refuse"
 assert bitten.out contains "verdict=rung_drift" else "rung-drift: the refusal must wear its own verdict"
 
-let freed = run ["bash" "-c" "RUNG_ROOT=${pen_dir} RUNG_FILE_LIST=${pen_dir}/files.lst RUNG_CEILING=2 /bin/bash tools/fixtures/w/waymark_rung_drift_scan.sh"]
+let freed = run ["bash" "-c" "RUNG_ROOT=${pen_dir} RUNG_FILE_LIST=${pen_dir}/files.lst RUNG_CEILING=2 bash tools/fixtures/w/waymark_rung_drift_scan.sh"]
 assert freed.ok else "rung-drift: two marks at a pen ceiling of exactly two must walk free"
 assert freed.out contains "verdict=ok" else "rung-drift: the boundary must be met from the passing side too"
 
