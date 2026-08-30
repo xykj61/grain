@@ -1,8 +1,8 @@
 # shape — Structures
 
 **Language:** EN  
-**Last updated:** `20260802.162841` (Equinox e222 — Comlink R1 pier policy=1 seated · rival withdrawn)  
-**Status:** Living — room open; Surface pedestals + Glow Tend structure pedestals + Comlink R1
+**Last updated:** `20260829.210056` (Tablecloth's first pedestal seated -- the museum's number is compared to its source rather than copied from it)  
+**Status:** Living -- room open; Surface pedestals + Glow Tend structure pedestals + Comlink R1 + Tablecloth
 **Where this sits:** home is [`../../README.md`](../../README.md) - a first hour in your hands is
 [`../../docs-geode/tutorials/the-first-hour.md`](../../docs-geode/tutorials/the-first-hour.md) - the whole
 path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURCE.md)
@@ -37,6 +37,7 @@ The data-structure museum: every non-networked shape on its own pedestal, viewab
 | [`shape-mantra-store-dir-count.glow`](shape-mantra-store-dir-count.glow) | Mantra Store three dirs (Tend M4) | `tools/m/mantra_glow_tend_limb4_witness.rish` |
 | [`shape-caravan-supervisor-exit-meanings.glow`](shape-caravan-supervisor-exit-meanings.glow) | Caravan three exit meanings (Tend C4) | `tools/ca/caravan_glow_tend_limb4_witness.rish` |
 | [`shape-comlink-ipv6-dual-stack.glow`](shape-comlink-ipv6-dual-stack.glow) | Comlink dual-stack policy=1 (R1 · three walls inline) | `tools/co/comlink_r1_dual_stack_witness.rish` (leg A pure · leg B metal) |
+| [`shape-tablecloth-catalog-capacity.glow`](shape-tablecloth-catalog-capacity.glow) | Tablecloth `max_artifacts=32` -- the vane's first Glow desk of any kind | `tools/t/tablecloth_glow_tend_witness.rish` (scan compares, control proves both ways) |
 
 ```
 rishi/bin/rishi run tools/m/mantra_glow_tend_limb1_witness.rish
@@ -47,6 +48,7 @@ rishi/bin/rishi run tools/au/aurora_glow_tend_limb3_witness.rish
 rishi/bin/rishi run tools/t/tally_glow_tend_limb6_witness.rish
 rishi/bin/rishi run tools/ca/caravan_glow_tend_limb4_witness.rish
 rishi/bin/rishi run tools/co/comlink_r1_dual_stack_witness.rish
+rishi/bin/rishi run tools/t/tablecloth_glow_tend_witness.rish
 ```
 
 Tend pedestal tier COMPLETE — Aurora A1–A4 · Mantra M1–M4 · Tally/Caravan as seated · Comlink R1. a1 deciding gates + a2 fold lean wait elsewhere. Reify map: [`../../counsel/date/20260802/20260802-011821_q58-scope-and-tend-src-reify.md`](../../counsel/date/20260802/20260802-011821_q58-scope-and-tend-src-reify.md).
