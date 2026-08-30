@@ -22,7 +22,7 @@
 - **Rota of the canon.** Each lap, deep-read ONE ROW of the 5 x 3 council grid in `recursion-prompts/seed/autonomous-loop.seed.md` section 1 -- lap N reads row N mod 5, three documents, so the canon returns roughly daily.
 - **Roster cold, then hot -- and hold still while it runs.** Open the lap with `sh tools/fixtures/s/standing_equipment_run.sh`, let it finish; run again after `git add` as `... --hot` so the green measures the tree the commit ships (%174). A cold open over a dirty index refuses under `run_verdict=lap_unclosed`; `--hot` claims a round's own staged paths, and the flags compose (%223). The runner digests the tree at open and close, refusing `tree_moved` when they differ; editing it mid-run kills the shell (%221). **`--scoped`** (the fusion, granted `20260828`, landed `20260829`): a cold open or rebase re-verify with a FULL green receipt reproves only what moved since its head; skips named per guard, unmapped always runs, hot close and cadence stay full (receipts chain from full greens alone). **Counts come from the scan, never here.** Roster `construction/standing-equipment.kyri`. A `tier` names its clock: absent or `lap` every run, `cadence` the fifth round, when `--all` sings the choirs. A tier is a cadence, never an exemption; an unknown word refuses at zero.
 - **A lap ends at the commit, never at `git add`.** `tools/hooks/pre-commit` regenerates `README.md`'s metrics block and `docs-geode/libraries/README.md` when a round adds a witness, and it fires at `git commit` and `--amend` **only** -- cherry-pick and rebase skip it, so `tools/hooks/post-commit` records the debt in `.git/` and rule one pays it next commit (%339). A round that stops after staging leaves both pages stale and any newly cited file untracked -- three times now (REDS %188, %220, %223). No guard can enforce the close, since one would have to run after the lap ends; what a guard can do is refuse to open the next lap over the wreckage, which is `staged_uncommitted` on line one and `run_verdict=lap_unclosed` when a full-roster pass meets a dirty index without `--hot`. **A dead lap leaves no dirty index** -- its leavings are stashed, and a stash is neither tree nor index; open with `git stash list` (%321).
-- **Grade what you touch.** Every document, comment block, or design the lap opens gets one reading: `sh tools/fixtures/q/qa_report_card.sh <path> --setting door|field|meter --service N`. Four readings meaned to one grade -- Register, Reach, Truth (a gate: under 60 reads F), Service (judged against this card, in four questions: named, reached, current, and which side it carries -- public `grain-os/grain`, working `xy`, or both). **B or better stands.** Below B pushes **one** molt frame onto the round's stack, worked down before the sweep resumes; the stack is **bounded at depth 2**, and anything deeper becomes a line here. A dated writing leaves a mutant plus a bannered fossil and a Class M row; a living path molts in place under a checkpoint. **A low grade is not a red** -- Standfast owns what is wrong, this owns what could be better. **Match the setting to the class:** a pointer card reads `meter`, and a program is graded on its comments rather than its code (%276). Rule: `.claude/rules/quality-assurance.md`.
+- **Grade what you touch.** Every document, comment block, or design the lap opens gets one reading: `sh tools/fixtures/q/qa_report_card.sh <path> --setting door|field|meter --service N`. Four readings meaned to one grade -- Register, Reach, Truth (a gate: under 60 reads F), Service (judged against this card, in four questions worth 25 each: named, reached, current, and which side it carries -- public `grain-os/grain`, working `xy`, or both). **B or better stands.** Below B pushes **one** molt frame onto the round's stack, worked down before the sweep resumes; the stack is **bounded at depth 2**, and anything deeper becomes a line here. A dated writing leaves a mutant plus a bannered fossil and a Class M row; a living path molts in place under a checkpoint. **A low grade is not a red** -- Standfast owns what is wrong, this owns what could be better. **Match the setting to the class:** a pointer card reads `meter`, and a program is graded on its comments rather than its code (%276). Rule: `.claude/rules/quality-assurance.md`.
 - **Reds first.** Close open agent-closable rows in `construction/REDS.md` before new work; one you cannot close surfaces like a gate.
 - **Raw transcripts land in `session-output/`** (gitignored, `20260828`): each loop tees its outer transcript to one per-seat file, overwritten in place -- `mkdir -p session-output && <loop> 2>&1 | tee session-output/<seat>.txt` -- so agents read a peer's full output by path, not by paste.
 - **Read scope -- open shelves and closed stacks** (`20260827.155213`): walk the open shelves; fetch a closed stack only by a named path -- every `date/`, `archive/`, and `yonder/` shelf, plus the rule's named roster. Never `ls` the root (`MAP.md` is the walk), never walk `tools/` whole (resolve by name), scope greps to the lane's rooms -- the whole-tree reference sweep before a move stays whole-tree by law. **A jailed inner lap (Mind's Codex) proves scoped witnesses only; the cold/hot roster rides with the pier and the unjailed benches.** Rule: `.claude/rules/read-scope.md`.
@@ -58,7 +58,7 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `cfb8eb67a3` -- this round's own.
+**Git nib:** `1399504689` -- this round's own.
 
 **Now.** **Comlink's payload ceiling takes a desk: 340 beside the 188-byte header it
 completes, tied at comptime.**
@@ -84,26 +84,24 @@ clone seats `ww` (`grain-ww/grain`, gate %1) and `.git/ssh_config_jail`.
 **Sibling finds:** Sound owns two bare labels in `lattice/README.md` and the WADE<N> mark in
 `pond/apps/lantern_face_theme.rye`; Mystery's module-label guard fails open on BSD grep, portable
 it finds two elder labels in `tools/gen/chapter/fascia_metric_v0.rish`. **For Pond:**
-`spool_cloth.rye` carries the same `max_name=48` and wall with no pedestal, read unchanged by the
-new reader -- Hush's, named not touched. **(%358):** `shape-brush-parse-error-count.glow` reads a real **C+ 75**, and its guard asserts a
+`spool_cloth.rye` carries the same `max_name=48` and wall with no pedestal -- Hush's.
+**(%358):** `shape-brush-parse-error-count.glow` reads **C+ 75** and its guard asserts a
 literal `example    13`, so an honest fourteenth ParseError path reds
-`src_first_resident_witness.rish` -- Sound's and Mind's, named not touched.
+`src_first_resident_witness.rish` -- Sound's and Mind's.
 
 **Still open:** `glow/rune_shape.rye` keeps width custody; Mind keeps the reconnect stash,
-`%281`/`%291`, and two `enclosure.conf` pins. **Loom BUILT** (%360): `unheard_guard` holds **1,153**
-guards this roster never reaches, 41 of them choirs, under a falling ceiling. **%360 is a
-GATE for you:** the
-wall exempts the seed root by the subject `crashed-meteor`, `publish-seed.sh` still writes `Grain
-OS -- initial public seed`, and two rules spell it two more ways, so the wall REFUSES the
-publisher's own commit and the next seed publish fails at step 4/6. Which spelling is the seed's is
-yours. `%359` CLOSED; `%353`-`%355` folded.
-**Rosters `20260830`:** `grain-hush` 98 cold/97 green, gate %7; `grain-silence` 96 cold, gate %7 and `pond_enclosure_door`.
+`%281`/`%291`, two `enclosure.conf` pins. **%360 FALLS:** the five guards our rules demand now
+stand rostered for **18s** a lap -- `unheard` 1,153 -> **1,144**, choirs 41 -> 40.
+**%360's GATE is ONE WORD:** the wall exempts the seed root at `crashed-meteor` alone, while
+`publish-seed.sh` AND its own fixture BOTH write `Grain OS -- initial public seed`. Three agree,
+the wall moved; `mechanism_sentence` REDS until you say it. `%359`/`%370` CLOSED; `%353`-`%355` folded.
+**Rosters `20260830`:** `grain-hush` 103/102, gate %7 alone; 122 rostered; `grain-silence` 96 cold, gate %7 and `pond_enclosure_door`.
 **The falsifier splits:** `env` travelled; the door half did not --
 `door_disagreements=1` at `user`, `derived=502 metal=unread`. Gate %5, named not touched.
 **Named, not taken (%347):** `pond/enclosure_policy.kyri` stands at 8,120 of 8,192, nearly all of
 it the comment that makes it auditable; `entry`'s paragraph meets that wall, and widening it is yours.
-**Next doors.** Dream: Kumara, then Caravan. Hush: the 41 silent choirs (%360); the roster's own
-auditor waits on gate %7 -- rostering it while `rule_twin` reds would red every cold pass.
+**Next doors.** Dream: Kumara, then Caravan. Hush: the digest red, then the lane-safe choirs
+(`drey` 17, `acme_dx` 11); the auditor still waits on gate %7.
 Silence: Comlink's other bounds. `amphora/vessel_fetch_wire.rye` copies it untied, Amphora's.
 **%369 GATE:** `%364` names two published rows, the earlier holds, so Caravan's
 `%364`-`%368` move; another lane's, yours.

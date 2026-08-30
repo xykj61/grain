@@ -38,8 +38,8 @@ let green = run ["sh" "tools/fixtures/u/unheard_guard_scan.sh"]
 say green.out
 assert green.ok else "unheard-guard: the living measure must exit 0 -- ${green.out}"
 assert green.out contains "verdict=ok" else "unheard-guard: want verdict ok -- ${green.out}"
-assert green.out contains "unheard_ceiling=1153" else "unheard-guard: the ceiling stands where it was measured -- a ceiling only falls"
-assert green.out contains "unheard_choir_ceiling=41" else "unheard-guard: the choir ceiling stands where it was measured"
+assert green.out contains "unheard_ceiling=1144" else "unheard-guard: the ceiling stands where it was measured -- a ceiling only falls"
+assert green.out contains "unheard_choir_ceiling=40" else "unheard-guard: the choir ceiling stands where it was measured"
 
 # THE VACUUMS, closed before the count is believed. A reading that reaches no guards prints zero
 # unheard, and a zero nobody planted looks exactly like a heard tree (REDS %240). Both vacuums are

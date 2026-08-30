@@ -46,7 +46,12 @@
 # two it cannot count, and the second thing to read is always the artifact itself.
 #
 # USAGE
-#   sh tools/fixtures/q/qa_report_card.sh <path> [--setting door|field|meter] [--service N] [--truth N]
+#   sh tools/fixtures/q/qa_report_card.sh <path> [--setting door|field|meter] [--service 0-100] [--truth 0-100]
+#
+# BOTH JUDGED FLAGS ARE 0-100, the same scale the three counted readings use, because the composite
+# is their mean. Service is four questions worth 25 each -- named, reached, current, and which side
+# it carries. Handing in a count out of four reads as 3 of 100 and drops the grade three letters,
+# which is REDS %361: the scale lived only in the loop's seat prompt, so the card now prints it.
 #   sh tools/fixtures/q/qa_report_card.sh --letter <0-100>
 #
 # Run from the repository root.
@@ -434,6 +439,11 @@ echo "service_inputs living_citers=$citers named_by_card=$named_by_card in_seed=
 truth=$truth_given
 [ "$truth" -lt 0 ] && truth=$truth_counted
 echo "truth=$truth"
+
+# The scale, printed where the judgment is made rather than only where the arithmetic is (REDS
+# %361). Additive on purpose: a witness, two launchers, and three scans read this card, so the
+# `service=` line keeps its shape and this one stands beside it.
+echo "service_scale=0-100 -- four questions worth 25 each: named, reached, current, side"
 
 if [ "$service" -lt 0 ]; then
   echo "service=judged"

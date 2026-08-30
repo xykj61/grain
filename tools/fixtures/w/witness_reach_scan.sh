@@ -215,13 +215,21 @@ done
 # this is a Mac bench carrying one iOS debt it declines to promise falsely, and the honest move is
 # either a tier that can express a live precondition or a witness that boots its own device --
 # both of which are their own lap, and the second is LOCA's own lane.
-CEILING=${WITNESS_REACH_CEILING:-1108}
+#
+# LOWERED 1108 -> 1093 on 20260830.154940 by five roster rows, and the fall is the largest a single
+# lap has spent here because these guards were never choirs -- they are the five that a LIVING RULE
+# already instructed a lap to run and no lap ran (REDS %360): commit_message_guard, waymark_derive,
+# waymark_registry, sel4_userlevel_license, and crypto_vendored_parity, each proven GREEN on metal
+# before its row was written and costing 18s together. The family reading fell 220 -> 218 in the
+# same motion, two families gaining their first clock.
+CEILING=${WITNESS_REACH_CEILING:-1093}
 # The family ceiling, seated 20260828 at what the tree measured that day: 220 of 292 families carry
 # no clock at all. It only falls, and it falls whenever a family's first roster row lands. It is a
 # ratchet rather than a wall at zero for the same reason CEILING is: a wall that refuses ordinary
 # work is a wall somebody turns off.
 # Lowered 220 -> 219 on 20260828 by the same three roster rows.
-FAMILY_CEILING=${WITNESS_REACH_FAMILY_CEILING:-220}
+# Lowered 220 -> 218 on 20260830 by the five rule-named rows above.
+FAMILY_CEILING=${WITNESS_REACH_FAMILY_CEILING:-218}
 
 mode="${1:-}"
 roster=construction/standing-equipment.kyri
