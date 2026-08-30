@@ -13,6 +13,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 |---|---|---|
 | `20260830.165431` | [the parked package comes home](20260830/20260830-165431_the-parked-package-comes-home.kyri) | 121 rungs GREEN; the carry lands at %364-368 |
 | `20260830.163957` | [the carry waits for its choir](20260830/20260830-163957_the-carry-waits-for-its-choir.kyri) | the pier package renumbers to %364-368; the suite runs unbounded |
+| `20260830.165042` | [the ceiling and the header](20260830/20260830-165042_the-ceiling-and-the-header.kyri) | Comlink's payload bound takes a desk and a comptime tie |
 | `20260830.161058` | [two loops back to work](20260830/20260830-161058_two-loops-back-to-work.kyri) | Mind and Mystery re-arm over the day's cures |
 | `20260830.160941` | [one scope short](20260830/20260830-160941_one-scope-short.kyri) | the delete wants admin:gpg_key; two roads handed to Keaton |
 | `20260830.160738` | [the copy GitHub keeps](20260830/20260830-160738_the-copy-github-keeps.kyri) | the stored key lacks the new UID; one re-upload cures both clones |

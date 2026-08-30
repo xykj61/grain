@@ -1,7 +1,7 @@
 # shape — Structures
 
 **Language:** EN  
-**Last updated:** `20260830.161358` (the roster caught up to the room -- six residents it had never listed, and two rows whose numbers their desks had moved past; REDS %364)  
+**Last updated:** `20260830.164624` (Comlink's first bound desk -- the payload ceiling, displayed beside the header it is the complement of)  
 **Status:** Living -- room open; Surface pedestals + Glow Tend structure pedestals + Comlink R1 + Tablecloth
 **Where this sits:** home is [`../../README.md`](../../README.md) - a first hour in your hands is
 [`../../docs-geode/tutorials/the-first-hour.md`](../../docs-geode/tutorials/the-first-hour.md) - the whole
@@ -47,6 +47,7 @@ The data-structure museum: every non-networked shape on its own pedestal, viewab
 | [`shape-tablecloth-content-budget.glow`](shape-tablecloth-content-budget.glow) | Tablecloth `max_content_bytes=512` -- a derived bound, read out of the room that decides it | `tools/t/tablecloth_glow_tend_witness.rish` (same guard; the derivation is its own reading) |
 | [`shape-tablecloth-error-paths.glow`](shape-tablecloth-error-paths.glow) | Tablecloth's nine `ClothError` refusals -- a set's size, with the set listed so a rename cannot pass under it | `tools/t/tablecloth_glow_tend_witness.rish` (same guard; names compared as sorted sets) |
 | [`shape-tablecloth-name-bound.glow`](shape-tablecloth-name-bound.glow) | Tablecloth `max_name=48` -- a length, with the alphabet its manifest wall removes standing beside it | `tools/t/tablecloth_glow_tend_witness.rish` (same guard; length, bytes, and the wall still wired) |
+| [`shape-comlink-wire-payload-bound.glow`](shape-comlink-wire-payload-bound.glow) | Comlink `max_wire_payload=340` -- a derived ceiling, shown beside the 188-byte header it is the complement of | `tools/co/comlink_glow_tend_witness.rish` (scan, control, and a comptime tie proven on metal) |
 
 ```
 rishi/bin/rishi run tools/m/mantra_glow_tend_limb1_witness.rish
@@ -58,6 +59,7 @@ rishi/bin/rishi run tools/t/tally_glow_tend_limb6_witness.rish
 rishi/bin/rishi run tools/ca/caravan_glow_tend_limb4_witness.rish
 rishi/bin/rishi run tools/co/comlink_r1_dual_stack_witness.rish
 rishi/bin/rishi run tools/t/tablecloth_glow_tend_witness.rish
+rishi/bin/rishi run tools/co/comlink_glow_tend_witness.rish
 ```
 
 Tend pedestal tier COMPLETE — Aurora A1–A4 · Mantra M1–M4 · Tally/Caravan as seated · Comlink R1. a1 deciding gates + a2 fold lean wait elsewhere. Reify map: [`../../counsel/date/20260802/20260802-011821_q58-scope-and-tend-src-reify.md`](../../counsel/date/20260802/20260802-011821_q58-scope-and-tend-src-reify.md).
