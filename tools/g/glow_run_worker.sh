@@ -164,7 +164,9 @@ lock_acquire "$BUILD_LOCK" "$BUILD_LOCK_WAIT" || {
 TMP_TAG="building.$$"
 # The lock leaves with the temporaries: a directory outlives its owner where a descriptor lock does
 # not, so releasing it on every exit path is what keeps the next run from waiting out its bound.
-cleanup_tmp() { rm -f "glow/bin/glow_run.$TMP_TAG" "$BIN.$TMP_TAG"; lock_release "$BUILD_LOCK"; }
+# The .ryekey sidecar rides every emit and must ride the install and the cleanup too --
+# 4,666 orphaned building tags, two per successful lane, taught this on 20260830.
+cleanup_tmp() { rm -f "glow/bin/glow_run.$TMP_TAG" "glow/bin/glow_run.$TMP_TAG.ryekey" "$BIN.$TMP_TAG" "$BIN.$TMP_TAG.ryekey"; lock_release "$BUILD_LOCK"; }
 trap cleanup_tmp EXIT INT TERM
 
 # build_atomic <source.rye> <final-bin> -- emit beside the target, then rename.
@@ -173,6 +175,7 @@ build_atomic() {
   _dst=$2
   env RYE_ZIG="$ZIG" rye/bin/rye build "$_src" -femit-bin="$_dst.$TMP_TAG"
   mv -f "$_dst.$TMP_TAG" "$_dst"
+  if test -f "$_dst.$TMP_TAG.ryekey"; then mv -f "$_dst.$TMP_TAG.ryekey" "$_dst.ryekey"; fi
 }
 
 # STOA344 - O3: same-dir alias so plants import the vane inside the module path (one source, compiler-followed).

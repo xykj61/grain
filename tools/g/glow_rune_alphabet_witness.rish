@@ -13,4 +13,4 @@ assert gate.out contains "OK" else "glow rune alphabet G1 gate missing OK"
 # rather than grepping the sentence below for a bare number (REDS %283).
 say gate.out
 
-say "GREEN: Glow rune alphabet G1+G2 — 28 heads · TAME family index · tokens.rye bound; STOA90–91 · bartis STOA100 · barket STOA111."
+say "GREEN: Glow rune alphabet G1+G2 — 30 heads · TAME family index · tokens.rye bound; STOA90–91 · bartis STOA100 · barket STOA111."
