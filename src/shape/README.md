@@ -1,7 +1,7 @@
 # shape — Structures
 
 **Language:** EN  
-**Last updated:** `20260830.001122` (Tablecloth's content budget seated -- the room's first derived bound, compared against the module that decides it)  
+**Last updated:** `20260830.161358` (the roster caught up to the room -- six residents it had never listed, and two rows whose numbers their desks had moved past; REDS %364)  
 **Status:** Living -- room open; Surface pedestals + Glow Tend structure pedestals + Comlink R1 + Tablecloth
 **Where this sits:** home is [`../../README.md`](../../README.md) - a first hour in your hands is
 [`../../docs-geode/tutorials/the-first-hour.md`](../../docs-geode/tutorials/the-first-hour.md) - the whole
@@ -20,10 +20,16 @@ The data-structure museum: every non-networked shape on its own pedestal, viewab
 | [`shape-brush-skate-rows.glow`](shape-brush-skate-rows.glow) | Thin Skate proof grid height (rows = 8) | same |
 | [`shape-brush-max-bytes.glow`](shape-brush-max-bytes.glow) | `.brush` source ceiling (bytes = 16384) | same |
 | [`shape-brush-max-pin-bytes.glow`](shape-brush-max-pin-bytes.glow) | One pin value ceiling (bytes = 128) | same |
-| [`shape-brush-parse-error-count.glow`](shape-brush-parse-error-count.glow) | Named `ParseError` paths (errors = 10) | same |
-| [`shape-brush-surface-field-count.glow`](shape-brush-surface-field-count.glow) | `BrushSurface` fields (fields = 4) | same |
+| [`shape-brush-parse-error-count.glow`](shape-brush-parse-error-count.glow) | Named `ParseError` paths (errors = 13) | same |
+| [`shape-brush-surface-field-count.glow`](shape-brush-surface-field-count.glow) | `BrushSurface` fields (fields = 5) | same |
 | [`shape-brush-frame-field-count.glow`](shape-brush-frame-field-count.glow) | `BrushFrame` fields (fields = 3) | same |
 | [`shape-brush-pin-key-count.glow`](shape-brush-pin-key-count.glow) | Required `.brush` pins (keys = 4) | same |
+| [`shape-pool-agent-slot.glow`](shape-pool-agent-slot.glow) | Pool agent slots (slots = 1) | same |
+| [`tilak-root-count.glow`](tilak-root-count.glow) | Hardcoded engine roots (roots = 2) | same |
+| [`shape-manifest-field-count.glow`](shape-manifest-field-count.glow) | Amphora manifest entry fields (fields = 3) | same |
+| [`shape-tube0-manifest-field-count.glow`](shape-tube0-manifest-field-count.glow) | TUBE0 app-manifest fields (fields = 4) | same |
+| [`shape-grant-family-count.glow`](shape-grant-family-count.glow) | Glow grant families (families = 3) | same |
+| [`shape-mand-ring-count.glow`](shape-mand-ring-count.glow) | Mand witnessed rings (rings = 3) | same |
 | [`shape-caravan-max-name-len.glow`](shape-caravan-max-name-len.glow) | Caravan `max_name_len=48` (Tend C3) | `tools/ca/caravan_glow_tend_limb3_witness.rish` |
 | [`shape-tally-parse-int-laws.glow`](shape-tally-parse-int-laws.glow) | Tally `parse_int` two refuse laws (Tend T4) | `tools/t/tally_glow_tend_limb4_witness.rish` |
 | [`shape-tally-stack-laws.glow`](shape-tally-stack-laws.glow) | Tally stack three laws (Tend T6) | `tools/t/tally_glow_tend_limb6_witness.rish` |

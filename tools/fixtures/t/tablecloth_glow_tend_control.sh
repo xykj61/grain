@@ -30,7 +30,7 @@
 # no longer consulted, where the length and the alphabet both still agree over a store that accepts
 # anything.
 #
-# EXPECTED: control_verdict=ok, with welcomes=6 and refusals=35.
+# EXPECTED: control_verdict=ok, with welcomes=6 and refusals=38.
 #
 # Driven by tools/t/tablecloth_glow_tend_witness.rish. Run from the repository root.
 
@@ -112,12 +112,14 @@ check "the pedestals as written" agree welcome
 # 2 -- the honest raise: the literal bound moves in BOTH rooms and the guard stays quiet.
 pen
 edit "$deskf" 's/^::  example    32$/::  example    64/'
+edit "$deskf" 's/bound 32$/bound 64/'
 edit "$ryef" 's/^pub const max_artifacts: u32 = 32;$/pub const max_artifacts: u32 = 64;/'
 check "a literal bound raised in both rooms" agree welcome
 
 # 3 -- the pedestal drifts ahead of the Rye.
 pen
 edit "$deskf" 's/^::  example    32$/::  example    33/'
+edit "$deskf" 's/bound 32$/bound 33/'
 check "the desk moved alone" disagree refuse
 
 # 4 -- the Rye drifts ahead of the pedestal, which is the direction that actually happens.
@@ -164,11 +166,13 @@ check "the rye bound unpublished" rye_bound_missing refuse
 pen
 edit "$beadingf" 's/^pub const max_resin_bytes: u32 = 512;$/pub const max_resin_bytes: u32 = 1024;/'
 edit "$contentf" 's/^::  example    512$/::  example    1024/'
+edit "$contentf" 's/bound 512$/bound 1024/'
 check "a derived bound raised where it is decided" agree welcome
 
 # 12 -- the content pedestal drifts ahead of beading.
 pen
 edit "$contentf" 's/^::  example    512$/::  example    1024/'
+edit "$contentf" 's/bound 512$/bound 1024/'
 check "the content desk moved alone" content_disagree refuse
 
 # 13 -- beading drifts ahead of the content pedestal.
@@ -264,12 +268,14 @@ check "the enumeration region unreadable" error_enumeration_missing refuse
 # quiet, because it carries no length of its own.
 pen
 edit "$namef" 's/^::  example    48$/::  example    64/'
+edit "$namef" 's/, bound 48/, bound 64/'
 edit "$ryef" 's/^pub const max_name: u32 = 48;$/pub const max_name: u32 = 64;/'
 check "the name bound raised in both rooms" agree welcome
 
 # 30 -- the name pedestal drifts ahead of the Rye.
 pen
 edit "$namef" 's/^::  example    48$/::  example    49/'
+edit "$namef" 's/, bound 48/, bound 49/'
 check "the name desk moved alone" name_disagree refuse
 
 # 31 -- the name pedestal gone.
@@ -334,11 +340,27 @@ pen
 edit "$ryef" 's/^fn name_is_one_field(name: \[\]const u8) bool {$/fn name_is_one_field_off(name: []const u8) bool {/'
 check "the wall function unpublished" rye_wall_missing refuse
 
+# 42 -- the catalog desk's shape line moved alone. Its `example` still equals the Rye, so every
+# reading this scan had before 20260830 stays perfectly quiet while the desk contradicts itself.
+pen
+edit "$deskf" 's/bound 32$/bound 64/'
+check "the catalog desk disagrees with its own shape line" desk_self_disagree refuse
+
+# 43 -- the same drift on the derived desk.
+pen
+edit "$contentf" 's/bound 512$/bound 1024/'
+check "the content desk disagrees with its own shape line" content_desk_self_disagree refuse
+
+# 44 -- and on the name desk, where the length is one of two facts the pedestal carries.
+pen
+edit "$namef" 's/, bound 48/, bound 64/'
+check "the name desk disagrees with its own shape line" name_desk_self_disagree refuse
+
 echo "welcomes=$welcomes"
 echo "refusals=$refusals"
 echo "wrong=$wrong"
 
-if [ "$welcomes" -eq 6 ] && [ "$refusals" -eq 35 ] && [ "$wrong" -eq 0 ]; then
+if [ "$welcomes" -eq 6 ] && [ "$refusals" -eq 38 ] && [ "$wrong" -eq 0 ]; then
   echo "control_verdict=ok"
 else
   echo "control_verdict=wrong"
