@@ -27,6 +27,12 @@ while [ ! -d "$ROOT/rishi/bin" ] || [ ! -d "$ROOT/tools/fixtures" ]; do
 done
 SCAN="$ROOT/tools/fixtures/p/pond_policy_launcher_scan.sh"
 
+# THE DIALECT HELPERS. Each plant below edits a pen file in place, and the two spellings of that
+# have no overlap: GNU takes the suffix attached or not at all, BSD requires one and reads the next
+# word as it. `sed_inplace` writes a temporary and copies back through the original inode, which
+# every host runs and which preserves the mode the repository tracks where `mv` would not.
+. "$ROOT/tools/fixtures/s/shell_portable.sh"
+
 pen_root=$(mktemp -d)
 trap 'rm -rf "$pen_root"' EXIT INT TERM
 pass=0
@@ -65,38 +71,40 @@ expect "both gates read zero on the live seam" 0 "unsupported_closures=0" "$p"
 
 # 3-4. REDS %329 itself, planted and removed: a closure claim with no flag behind it.
 p=$(new_pen closure)
-sed -i 's/^network on$/network off/' "$p/pond/enclosure_policy.kyri"
+sed_inplace 's/^network on$/network off/' "$p/pond/enclosure_policy.kyri"
 expect "a closure claim with no flag refuses" 1 "verdict=unsupported_closure" "$p"
 expect "the refusal names the facility and the missing flag" 1 "the launcher passes no --no-network" "$p"
-sed -i 's/^network off$/network on/' "$p/pond/enclosure_policy.kyri"
+sed_inplace 's/^network off$/network on/' "$p/pond/enclosure_policy.kyri"
 expect "removing the plant returns the same pen to green" 0 "verdict=green" "$p"
 
 # 5-6. The same row for a DIFFERENT facility, so the check is the roster rather than one word.
 p=$(new_pen gpu)
-sed -i 's/ --no-gpu}"/}"/' "$p/tools/ag/agent-jail.sh"
+sed_inplace 's/ --no-gpu}"/}"/' "$p/tools/ag/agent-jail.sh"
 expect "gpu no refuses when the launcher stops passing --no-gpu" 1 "verdict=unsupported_closure" "$p"
-sed -i 's/ --no-docker}"/ --no-docker --no-gpu}"/' "$p/tools/ag/agent-jail.sh"
+sed_inplace 's/ --no-docker}"/ --no-docker --no-gpu}"/' "$p/tools/ag/agent-jail.sh"
 expect "restoring the flag returns the same pen to green" 0 "verdict=green" "$p"
 
 # 7-8. An open claim needs no flag, which is the asymmetry the scan is built on.
 p=$(new_pen openclaim)
-sed -i 's/^gpu no$/gpu yes/' "$p/pond/enclosure_policy.kyri"
-sed -i 's/ --no-gpu}"/}"/' "$p/tools/ag/agent-jail.sh"
+sed_inplace 's/^gpu no$/gpu yes/' "$p/pond/enclosure_policy.kyri"
+sed_inplace 's/ --no-gpu}"/}"/' "$p/tools/ag/agent-jail.sh"
 expect "an open gpu claim stands with no flag behind it" 0 "verdict=green" "$p"
 expect "and it is counted as an open claim rather than a closure" 0 "open_claims=2" "$p"
 
 # 9-11. The escape direction: a mount the record never named.
 p=$(new_pen mount)
-sed -i 's|^  --rw-map "${CODEX_STATE}:${HOST_HOME}/.codex"$|  --rw-map "${CODEX_STATE}:${HOST_HOME}/.codex"\n  --rw-map "${CLAUDE_STATE}:${HOST_HOME}/.ssh"|' "$p/tools/ag/agent-jail.sh"
+sed_inplace 's|^  --rw-map "${CODEX_STATE}:${HOST_HOME}/.codex"$|&\
+  --rw-map "${CLAUDE_STATE}:${HOST_HOME}/.ssh"|' "$p/tools/ag/agent-jail.sh"
 expect "a mount the record never declared refuses" 1 "verdict=unspelled_mount" "$p"
 expect "the refusal names the mount rather than counting it" 1 "/home/youruser/.ssh" "$p"
-sed -i '\|--rw-map "${CLAUDE_STATE}:${HOST_HOME}/.ssh"|d' "$p/tools/ag/agent-jail.sh"
+sed_inplace '\|--rw-map "${CLAUDE_STATE}:${HOST_HOME}/.ssh"|d' "$p/tools/ag/agent-jail.sh"
 expect "removing the extra mount returns the same pen to green" 0 "verdict=green" "$p"
 
 # 12-13. Declaring the planted mount is the other way to green, so the gate reads the PAIR rather
 # than the launcher alone -- the point of a seam guard.
 p=$(new_pen declared)
-sed -i 's|^  --rw-map "${CODEX_STATE}:${HOST_HOME}/.codex"$|  --rw-map "${CODEX_STATE}:${HOST_HOME}/.codex"\n  --rw-map "${CODEX_STATE}:${HOST_HOME}/.config/codex"|' "$p/tools/ag/agent-jail.sh"
+sed_inplace 's|^  --rw-map "${CODEX_STATE}:${HOST_HOME}/.codex"$|&\
+  --rw-map "${CODEX_STATE}:${HOST_HOME}/.config/codex"|' "$p/tools/ag/agent-jail.sh"
 expect "the new mount refuses while undeclared" 1 "verdict=unspelled_mount" "$p"
 printf 'rw-map /home/youruser/grain/loops/codex:/home/youruser/.config/codex\n' >> "$p/pond/enclosure_policy.kyri"
 expect "declaring it in the record returns the pen to green" 0 "verdict=green" "$p"
@@ -113,13 +121,13 @@ if [ "${base:-0}" -lt 1 ]; then
   fail=$((fail + 1))
 fi
 expect "the record's ai-jail defaults are reported" 0 "unbuilt_maps=$base" "$p"
-sed -i '\|^map /usr$|d' "$p/pond/enclosure_policy.kyri"
+sed_inplace '\|^map /usr$|d' "$p/pond/enclosure_policy.kyri"
 expect "and removing one lowers the reading without refusing" 0 "unbuilt_maps=$((base - 1))" "$p"
 
 # 16-17. A launcher flag the record carries no line for is reported, not gated.
 p=$(new_pen flags)
 expect "the undeclared flag is reported" 0 "undeclared_flags=1" "$p"
-sed -i 's/ --no-gpu}"/ --no-gpu --no-pictures}"/' "$p/tools/ag/agent-jail.sh"
+sed_inplace 's/ --no-gpu}"/ --no-gpu --no-pictures}"/' "$p/tools/ag/agent-jail.sh"
 expect "a second undeclared flag raises the reading and still passes" 0 "undeclared_flags=2" "$p"
 
 # 18-19. The map bound, proven from both sides. Both the bound and the record's own starting count
@@ -136,7 +144,7 @@ expect "one past the bound refuses" 1 "verdict=unbounded" "$p"
 
 # 20. The flag bound, from the refusing side.
 p=$(new_pen bound_flags)
-sed -i 's/ --no-gpu}"/ --no-gpu --f1 --f2 --f3 --f4 --f5 --f6 --f7 --f8 --f9 --f10 --f11 --f12 --f13 --f14 --f15}"/' "$p/tools/ag/agent-jail.sh"
+sed_inplace 's/ --no-gpu}"/ --no-gpu --f1 --f2 --f3 --f4 --f5 --f6 --f7 --f8 --f9 --f10 --f11 --f12 --f13 --f14 --f15}"/' "$p/tools/ag/agent-jail.sh"
 expect "a runaway flag list refuses" 1 "verdict=unbounded" "$p"
 
 # 21-23. Both halves of the seam must be present, and the record must name its own root.
@@ -144,7 +152,7 @@ p=$(new_pen nolauncher); rm -f "$p/tools/ag/agent-jail.sh"
 expect "an absent launcher refuses rather than guessing" 1 "detail=no_launcher" "$p"
 p=$(new_pen nopolicy); rm -f "$p/pond/enclosure_policy.kyri"
 expect "an absent record refuses rather than guessing" 1 "detail=no_policy" "$p"
-p=$(new_pen noroot); sed -i '\|^persist |d' "$p/pond/enclosure_policy.kyri"
+p=$(new_pen noroot); sed_inplace '\|^persist |d' "$p/pond/enclosure_policy.kyri"
 expect "a record naming no root refuses rather than spelling a host path" 1 "verdict=unreadable" "$p"
 
 # 24. The metal reading is present on a pier with the jail and never gates either way.

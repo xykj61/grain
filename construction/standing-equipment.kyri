@@ -799,3 +799,30 @@ guard tablecloth_glow_tend
 path tools/t/tablecloth_glow_tend_witness.rish
 tier cadence
 seated 20260829.210056
+
+# lantern_face -- the asking voice's face, landed by a peer `20260830.000539` with no roster row
+# beside it. `witness_reach` caught the gap on the very next hot pass: a witness nothing enumerates
+# is a witness family with no clock, and that reading stood at 221 wholly-unreached families
+# against a ceiling of 220. The guard's own refusal names the repair -- give it a roster row rather
+# than raise the ceiling -- so this is the row rather than a raised number.
+#
+# `lap` because the whole witness, including the Glow wall and the two-language parity anchors,
+# runs in 9.5s measured on this pier `20260830.011217`, which is inside the cost every lap already
+# pays for its Pond siblings. It builds and runs the face's own legs, proves the `.brush`-themed
+# cascade recolors one settledness, walks the Glow budget wall at 38 lawful against 39 past it,
+# and closes on one number read in two languages.
+
+guard lantern_face
+path tools/l/lantern_face_witness.rish
+tier lap
+seated 20260830.011217
+
+# lantern_face_claim -- the face's sibling, landed in the same peer arc `20260830` and unrostered
+# with it. `witness_reach` counts a FAMILY rather than a file, so rostering one of the two left
+# `lantern_face` wholly unreached all the same; a peer's own card names both, which is how this
+# second row was found. `lap` on 4.4s measured here `20260830.021200`.
+
+guard lantern_face_claim
+path tools/l/lantern_face_claim_witness.rish
+tier lap
+seated 20260830.021200

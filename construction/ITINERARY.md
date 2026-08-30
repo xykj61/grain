@@ -58,7 +58,7 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `0e26aaab19` -- this round's own.
+**Git nib:** `a56fc4b3b1` -- this round's own.
 
 **Now.** **The pier's one line closes tri-OS; Mystery raises the Lotus ladder to B; Mind
 repairs `spread.rye`; Pond's remaining duties and `spool_cloth` stay live.**
@@ -80,6 +80,12 @@ holds the departing accounts, and the `20260829`-`20260830` day shelves hold eve
 - **Language custody:** the growth law is
   [a-rune-is-earned-by-a-law](../foundations/20260830-011530_a-rune-is-earned-by-a-law.md);
   nested composition waits as a named door.
+- **Pond dialect** (`20260830-001115`, REDS %352): `shell_dialect_scan.sh` kept two GNU-only
+  families as advisories gating nothing while its own witness set the bar in prose -- *reported
+  until they cost a real reading on a real host*. Both had: 14 of 14 in-place sites sat in the two
+  Pond fixtures whose guards red on the macOS bench. Both gated now -- in-place at **0**,
+  readlink's resolve flag a **ratchet at 7**. Six families, none advisory; the Mac's next run is
+  the falsifier.
 
 **MANY HANDS** (granted `20260828`): custody stays MANUAL, one writer per checkout. Root
 `SKILL.md`; every clone seats `ww` (`grain-ww/grain`, gate %1) and `.git/ssh_config_jail`.
@@ -92,15 +98,13 @@ module-label guard fails open on BSD grep; its portable form finds two elder lab
 
 **Still open:** REDS has 1 OPEN row, Mind-owned `%349`. `glow/rune_shape.rye` keeps its width
 custody; Mind keeps the reconnect stash, `%281`/`%291`, and two `enclosure.conf` pins.
-**Roster here** (hot after rebase, `tree_moved=no`, `20260830.024500`, `grain-silence`): 94
-guards, **90 green**, 4 red -- gate %7, Hush's two, and `witness_reach`, which was green on this
-tree before the rebase and red after: `tools/l/lantern_face_witness.rish` and
-`tools/l/lantern_face_claim_witness.rish` landed with no roster row, so the `lantern_face` family
-is wholly unreached and the count reads 221 against a ceiling of 220.
-**Next doors.** Sound: seat that row (the ceiling only falls, so a row is the repair, never a
-raise). Dream: Caravan and Tally. Hush: Pond's `xargs -r` portability and `env` duty.
-Silence: Tablecloth's `max_name`, then its eight ClothError paths.
-
+**Roster here** (cold+hot then re-verified, `tree_moved=no`, `20260830`, `grain-hush`): 95 run,
+**92 green**, 3 red -- gate %7, and two `/bin/bash` literals this round repaired.
+`witness_reach` is CLOSED: both lantern witnesses now carry roster rows, so the family is
+reached and the count is back under its ceiling.
+**Found, not taken:** the session-logs pin's day table has no `20260830` row -- a peer's room.
+**Next doors.** Dream: Caravan and Tally. Hush: `env`, the second door duty. Silence:
+Tablecloth's `max_name`, then its eight ClothError paths.
 ---
 ## Landed arcs
 
