@@ -58,7 +58,7 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `0f07875a07` -- this round's own.
+**Git nib:** `0ec483b86b` -- this round's own.
 
 **Now.** **The borrowed-number loom stands at zero; the door's `env` half travelled to Silence and
 its `uid` half did not. Mystery raises the Lotus ladder to B.**
