@@ -13,7 +13,8 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 |---|---|---|
 | `20260831.122010` | [The grammar answers for the setting](20260831/20260831-122010_the-grammar-answers-for-the-setting.kyri) | %404 closed; 8 reds to 3; a shelf's seven rows |
 | `20260831.114656` | [The check wall earns its keep](20260831/20260831-114656_the-check-wall-earns-its-keep.kyri) | selector map withdrawn at the seated assert |
-| `20260831.113648` | [The refusal carries its words](20260831/20260831-113648_the-refusal-carries-its-words.kyri) | %403 closed; selector mapped; hold released |
+| `20260831.113648` | [The refusal carries its words](20260831/20260831-113648_the-refusal-carries-its-words.kyri) | %404 closed; selector mapped; hold released |
+| `20260831.113927` | [A table is not a paragraph](20260831/20260831-113927_a-table-is-not-a-paragraph.kyri) | %397's remainder lands; %405 %406 close two pens and a shelf |
 | `20260831.095907` | [The same repair from two hands](20260831/20260831-095907_the-same-repair-from-two-hands.kyri) | %398 closed twice; theirs stands; %400 books the figure |
 | `20260831.095637` | [The reading that found its prose](20260831/20260831-095637_the-reading-that-found-its-prose.kyri) | %402: a notation's document is its comment block |
 | `20260831.074836` | [Two walls over one room](20260831/20260831-074836_two-walls-over-one-room.kyri) | Pond's catalog capacity takes a desk; %396 %397 %398 |

@@ -29,6 +29,10 @@
 #                       the inputs a reader needs and stops there, because a number nobody measured
 #                       is worse than a blank.
 #
+# A REFERENCE TABLE IS HELD OUT OF BOTH COUNTED READINGS and reported beside them, because both are
+# computed over sentences and a table has none. The shape is read off the line's own face and is
+# argued in tools/fixtures/q/reference_block.awk (REDS %397).
+#
 # ALL THREE OF THOSE READINGS ARGUED IN FULL beside the code that carries them, further down.
 # The short of it: a meter that instructs a repair which would make the artifact worse is the thing
 # to fix -- telling an index to pad itself with prose, telling a page that its blessed placeholder
@@ -74,6 +78,29 @@ letter_for() {
   else echo "F"
   fi
 }
+
+# --- What this card reads, named by the card ------------------------------------------------------
+# The card CITES two readings rather than spelling either: measure() and the sentence floor come out
+# of the register scan, and the reference-block shape out of the classifier beside this file. That
+# is the right design and it has one cost -- every throwaway pen that stages the card must stage the
+# whole chain, and a pen is a hand-kept list in someone else's guard.
+#
+# Adding the classifier proved the cost twice in one lap. Two pens went quiet at once: the citation
+# guard's, and this card's own elder-card leg, which stages a second copy to prove a repair from a
+# rewording. Neither pen was wrong when it was written; each was a copy of a list that had moved
+# (REDS %405).
+#
+# So the list lives here, beside the code that reads it, and a pen asks rather than remembers.
+#
+#   sh tools/fixtures/q/qa_report_card.sh --deps
+#
+# The control builds a pen from nothing but this answer and runs the card in it, so a third citation
+# added without a line here fails on the lap that adds it rather than in whichever guard runs next.
+if [ "${1:-}" = "--deps" ]; then
+  echo "tools/fixtures/p/prose_register_scan.sh"
+  echo "tools/fixtures/q/reference_block.awk"
+  exit 0
+fi
 
 if [ "${1:-}" = "--letter" ]; then
   [ $# -ge 2 ] || { echo "qa: --letter wants a score" >&2; exit 1; }
@@ -251,6 +278,42 @@ if [ "$artifact_kind" = notation ] && [ "$setting" = meter ]; then
     xref_ceiling=3
   fi
 fi
+
+# --- The reference block: a table is not a paragraph ---------------------------------------------
+# Both readings below are computed over SENTENCES, and a reference table has none. This tree writes
+# its key lists without terminal punctuation -- `#   store_wired      whether store_large still
+# consults that wall` -- so a run of them carries no sentence end and merges into whatever sentence
+# abuts it. The card then weighs a head as if it held a handful of enormous ones.
+#
+# Measured on one file, single-variable: add a terminal period to each of 28 such lines in
+# tools/fixtures/p/pond_spool_cloth_glow_tend_scan.sh, change nothing else, and Register moves
+# 48 -> 74, Reach 30 -> 90, composite 74 -> A 91. Seventeen composite points of punctuation, on a
+# file whose content did not move (REDS %397).
+#
+# So a reference block is held out of both readings and REPORTED beside them, the way declaration
+# docs already are. What counts as one is read off the line's own face, and the shape with its two
+# thresholds is argued in tools/fixtures/q/reference_block.awk -- CITED rather than spelled here,
+# the same discipline measure() and the register floor already keep, so one reading serves the card
+# and its control rather than two that can come to disagree.
+#
+# IT RUNS AFTER the branch above rather than inside it, so all three artifact kinds are read the
+# same way. A notation's records arrive here already carrying the period that branch appends, and
+# the ones that are ALSO a key table -- template-manifest.bron's 123 `template  <path>  # why`
+# lines -- are held out here as well; both roads end at "this is not prose", which is the answer.
+#
+# WHAT THIS REACHES, measured 20260831. Across every tracked program source: 154 heads carry a
+# block, 928 lines in all, and holding them out moves 130 of those files -- 57 across the B door,
+# one below it, mean +7.2, and ZERO crossing under the register floor, so every rise is Reach and
+# no page became unmeasurable. Eighty-four of the 154 are `.glow` desks, whose six-line placard IS
+# the genre. It is NOT a tree-wide lift: over the 135 `.rye`, `.rish` and `.sh` sources sampled
+# every 37th, exactly one carries a block and the below-B count stands at 64 either way -- so the
+# standing question about Door's ceiling of 9 against module heads is untouched by this, which is
+# worth knowing before anyone answers it.
+ref_awk="$root/tools/fixtures/q/reference_block.awk"
+[ -f "$ref_awk" ] || { echo "qa: the reference reading is missing at $ref_awk" >&2; exit 1; }
+awk -v MODE=prose -f "$ref_awk" "$prose_path" > "$work/prose.txt"
+reference_lines=$(awk -v MODE=count -f "$ref_awk" "$prose_path")
+prose_path="$work/prose.txt"
 
 set -- $(measure "$prose_path")
 sentences=$1
@@ -515,6 +578,7 @@ fi
 # --- The card ------------------------------------------------------------------------------------
 echo "qa_path=$path"
 echo "qa_setting=$setting"
+echo "reference_lines=$reference_lines (held out of both readings and reported, like declaration docs)"
 if [ "$artifact_kind" = program ]; then
   set -- $(measure "$work/program-meter.txt")
   meter_sentences=$1

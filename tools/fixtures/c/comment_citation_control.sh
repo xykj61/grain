@@ -16,20 +16,27 @@ set -u
 
 scan=tools/fixtures/c/comment_citation_scan.sh
 card=tools/fixtures/q/qa_report_card.sh
-reg=tools/fixtures/p/prose_register_scan.sh
-for f in "$scan" "$card" "$reg"; do
+for f in "$scan" "$card"; do
+  [ -f "$f" ] || { echo "control_verdict=missing_$f" >&2; exit 1; }
+done
+# The card CITES its readings rather than spelling them, so a pen that stages the card stages the
+# whole chain -- and the chain is asked of the card rather than remembered here. Staging the citer
+# alone makes the card refuse, and a refusing card prints no `truth_source=` line at all, which
+# reads as every case in this control going quiet at once (REDS %405).
+deps=$(sh "$card" --deps)
+for f in $deps; do
   [ -f "$f" ] || { echo "control_verdict=missing_$f" >&2; exit 1; }
 done
 
 pen=$(mktemp -d)
 trap 'rm -rf "$pen"' EXIT INT TERM
 # The pen mirrors the folded letter rooms (letter fold, seated 20260828): the scan reaches the
-# card at q/, and the card lifts measure() from the register scan at p/.
+# card at q/, and the card reaches everything it cites at the paths `--deps` names.
 mkdir -p "$pen/tools/fixtures/c" "$pen/tools/fixtures/q" "$pen/tools/fixtures/p" \
          "$pen/context/specs" "$pen/lib" "$pen/apps/one"
 cp "$scan" "$pen/tools/fixtures/c/"
 cp "$card" "$pen/tools/fixtures/q/"
-cp "$reg" "$pen/tools/fixtures/p/"
+for f in $deps; do mkdir -p "$pen/$(dirname "$f")" && cp "$f" "$pen/$f"; done
 
 ( cd "$pen" && git init -q . && git config user.email pen@example.invalid && git config user.name pen )
 

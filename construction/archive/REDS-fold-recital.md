@@ -250,3 +250,6 @@ at a closed fold.*
 *Rows %398 and %399 folded to [`REDS-a-borrowed-reading-and-a-kept-list-rows-398-399.md`](REDS-a-borrowed-reading-and-a-kept-list-rows-398-399.md) on `20260831.100704`, both **CLOSED** -- one shape in two rooms -- each guard borrowed a reading correctly and kept its own copy of the input that reading needs, and a borrowed classification drifts where a borrowed constant cannot.*
 
 *Row %402 folded to [`REDS-the-notation-reads-whole-rows-402.md`](REDS-the-notation-reads-whole-rows-402.md) on `20260831.113610`, **CLOSED** -- one classification answered two questions that wanted different answers -- the notation kind now reads its own body.*
+*Row %401 folded to [`REDS-the-remedy-in-the-instruments-header-rows-401.md`](REDS-the-remedy-in-the-instruments-header-rows-401.md) on `20260831.113917`, **BOOKED** -- a remedy documented only in an instrument's own header is a remedy that instrument's users never receive.*
+
+*Rows %405 and %406 folded to [`REDS-what-a-guard-cannot-see-rows-405-406.md`](REDS-what-a-guard-cannot-see-rows-405-406.md) on `20260831.132349`, both **CLOSED** -- a guard sees the room it was pointed at, and misses whatever stands one room over.*
