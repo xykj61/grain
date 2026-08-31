@@ -7,6 +7,12 @@
 # law answers it -- a lantern that fires twice becomes a loom. `tools/fixtures/r/reds_fold.sh` is the
 # loom; this witness is what keeps it honest.
 #
+# AND THE TRAIL, from `20260830`. The loom writes the recital row as well -- which rows moved, on
+# what stamp, onto which shelf -- because those three facts were always the tool's own, and asking a
+# hand to copy them cost two folds their trail in one day (`unrecorded_shelves` one over its ceiling,
+# twice). The clause saying what the rows taught still comes from a person, through a required
+# `--why`, and the tool refuses without it.
+#
 # THREE READINGS. The control on planted trees, the living shelves read for the fault the loom
 # exists to prevent, and the standing catch that bit the fault both times it happened.
 #
@@ -21,7 +27,7 @@ say "reds-fold: Lens TAME -- every refusal is named, the row count is bounded, a
 let control = run ["sh" "tools/fixtures/r/reds_fold_control.sh"]
 say control.out
 assert control.ok else "reds-fold: the control must exit 0"
-assert control.out contains "pass=27" else "reds-fold: want twenty-seven behaviors proven (twenty-three elder, plus door B's four: a BOOKED row folds though its prose carries the bare word OPEN, it leaves the pin, a bold-OPEN row refuses, and that refusal names itself)"
+assert control.out contains "pass=62" else "reds-fold: want sixty-two behaviors proven -- twenty-seven elder (the welcome, both link classes, the exception, the five named refusals, the row bound from both sides, and door B's four) plus thirty-five for the trail: the line's own shape row by row, the status word read rather than inferred, the clause bound from both sides, and the six refusals that leave pin, shelf and recital exactly as they stood"
 assert control.out contains "fail=0" else "reds-fold: no behavior may miss"
 
 # 2 -- the living shelves, read for the fault itself. A shelf holds rows that already moved, so a
@@ -41,4 +47,4 @@ assert reach.out contains "broken_in_living=0" else "reds-fold: a living documen
 say "readme_reach: broken_in_living=0"
 
 say ""
-say "GREEN: reds-fold -- the loom moves a row and re-anchors both link classes, leaves the pin's own pointer and unlinked prose byte-identical, refuses an OPEN row, an absent row, an unnamed shelf, a missing shelf and a fold past its bound, and every living shelf reads clean"
+say "GREEN: reds-fold -- the loom moves a row, re-anchors both link classes, and writes the fold's own recital row from the rows, the stamp and the shelf it already holds; it leaves the pin's own pointer and unlinked prose byte-identical, refuses an OPEN row, an absent row, an unnamed shelf, a missing shelf, a fold past its bound, a missing or oversized or non-ASCII clause, a malformed stamp, a missing recital and an unknown option, and every living shelf reads clean"

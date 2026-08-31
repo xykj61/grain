@@ -34,7 +34,7 @@ set -e
 # `date -d` is a GNU extension. Read under a BSD `date` the parse fails, the fallback answers
 # "now", and every artifact prints age=0d -- a wrong age that looks exactly like a young one. The
 # portable parse lives beside this tree's other dialect answers.
-. "$(CDPATH= cd "$(dirname "$0")" && pwd)/../fixtures/shell_portable.sh"
+. "$(CDPATH= cd "$(dirname "$0")" && pwd)/../fixtures/s/shell_portable.sh"
 COUNT="${1:-4}"
 cd "$(CDPATH= cd -- "$(dirname "$0")/../.." && pwd)"
 

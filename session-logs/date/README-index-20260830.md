@@ -11,9 +11,10 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
-| `20260830.223624` | [The captain's wake holds still](20260830-223624_the-captains-wake-holds-still.kyri) | the field pauses pushes for Mind's sign window |
-| `20260830.223110` | [The index and the commit agree](20260830-223110_the-index-and-the-commit-agree.kyri) | %376 sealed seat-side; six surfaces worded |
-| `20260830.222505` | [A law earns the first nesting](20260830-222505_a-law-earns-the-first-nesting.kyri) | and-of-ors lands with desk, twin, and refusal |
+| `20260830.224714` | [The fold writes its own trail](20260830/20260830-224714_the-fold-writes-its-own-trail.kyri) | %381 loom, %382 dialect red closed |
+| `20260830.223624` | [The captain's wake holds still](20260830/20260830-223624_the-captains-wake-holds-still.kyri) | the field pauses pushes for Mind's sign window |
+| `20260830.223110` | [The index and the commit agree](20260830/20260830-223110_the-index-and-the-commit-agree.kyri) | %376 sealed seat-side; six surfaces worded |
+| `20260830.222505` | [A law earns the first nesting](20260830/20260830-222505_a-law-earns-the-first-nesting.kyri) | and-of-ors lands with desk, twin, and refusal |
 | `20260830.215132` | [The pedestal pins become agreements](20260830/20260830-215132_the-pedestal-pins-become-agreements.kyri) | %358 repaired both ways; WADE mark molts |
 | `20260830.213805` | [The fascia meter speaks git grep](20260830/20260830-213805_fascia-meter-speaks-git-grep.kyri) | portable door taken; parity exact at 68 |
 | `20260830.213140` | [The helper runs from the field](20260830/20260830-213140_helper-runs-from-the-field.kyri) | a lagging seat tree lacks what it has not pulled |
@@ -34,17 +35,17 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260830.210459` | [DirtySet explained, pastes reprinted](20260830/20260830-210459_dirtyset-explained-pastes-reprinted.kyri) | teaching turn; nine-seat dirty-region record |
 | `20260830.205759` | [Generated-pages debt paid, fleet triaged](20260830/20260830-205759_generated-pages-debt-fleet-triage.kyri) | fascia block reads 68; both Codex stops custody-clean |
 | `20260830.205759` | [Generated-pages debt paid, fleet triaged](20260830/20260830-205759_generated-pages-debt-fleet-triage.kyri) | fascia block reads 68; both Codex stops custody-clean |
-| `20260830.220309` | [Forty laps earn their names](20260830-220309_forty-laps-earn-their-names.kyri) | lattice CION molt whole; Mind's cure pre-flighted |
-| `20260830.215132` | [The pedestal pins become agreements](20260830-215132_the-pedestal-pins-become-agreements.kyri) | %358 repaired both ways; WADE mark molts |
-| `20260830.213805` | [The fascia meter speaks git grep](20260830-213805_fascia-meter-speaks-git-grep.kyri) | portable door taken; parity exact at 68 |
-| `20260830.213140` | [The helper runs from the field](20260830-213140_helper-runs-from-the-field.kyri) | a lagging seat tree lacks what it has not pulled |
-| `20260830.212759` | [The re-arm printer and the honest meter](20260830-212759_fleet-rearm-printer-and-honest-meter.kyri) | fleet_rearm lands; %379 booked and folded under bound |
-| `20260830.211850` | [DirtySet sealed, fleet re-armed](20260830-211850_dirtyset-name-sealed.kyri) | the name stands on Keaton's word |
-| `20260830.211655` | [Drift, the word between](20260830-211655_drift-the-word-between.kyri) | dirty / drift / stale -- the seam's three seats |
-| `20260830.211505` | [Mind parks, Mystery healthy, name held](20260830-211505_mind-park-mystery-healthy-name-pushback.kyri) | stash-by-name cure; OutdatedSet declined |
-| `20260830.210700` | [The DirtySet name ruling](20260830-210700_dirtyset-name-ruling.kyri) | recommend keep; RepaintSet the honest alternative |
-| `20260830.210459` | [DirtySet explained, pastes reprinted](20260830-210459_dirtyset-explained-pastes-reprinted.kyri) | teaching turn; nine-seat dirty-region record |
-| `20260830.205759` | [Generated-pages debt paid, fleet triaged](20260830-205759_generated-pages-debt-fleet-triage.kyri) | fascia block reads 68; both Codex stops custody-clean |
+| `20260830.220309` | [Forty laps earn their names](20260830/20260830-220309_forty-laps-earn-their-names.kyri) | lattice CION molt whole; Mind's cure pre-flighted |
+| `20260830.215132` | [The pedestal pins become agreements](20260830/20260830-215132_the-pedestal-pins-become-agreements.kyri) | %358 repaired both ways; WADE mark molts |
+| `20260830.213805` | [The fascia meter speaks git grep](20260830/20260830-213805_fascia-meter-speaks-git-grep.kyri) | portable door taken; parity exact at 68 |
+| `20260830.213140` | [The helper runs from the field](20260830/20260830-213140_helper-runs-from-the-field.kyri) | a lagging seat tree lacks what it has not pulled |
+| `20260830.212759` | [The re-arm printer and the honest meter](20260830/20260830-212759_fleet-rearm-printer-and-honest-meter.kyri) | fleet_rearm lands; %379 booked and folded under bound |
+| `20260830.211850` | [DirtySet sealed, fleet re-armed](20260830/20260830-211850_dirtyset-name-sealed.kyri) | the name stands on Keaton's word |
+| `20260830.211655` | [Drift, the word between](20260830/20260830-211655_drift-the-word-between.kyri) | dirty / drift / stale -- the seam's three seats |
+| `20260830.211505` | [Mind parks, Mystery healthy, name held](20260830/20260830-211505_mind-park-mystery-healthy-name-pushback.kyri) | stash-by-name cure; OutdatedSet declined |
+| `20260830.210700` | [The DirtySet name ruling](20260830/20260830-210700_dirtyset-name-ruling.kyri) | recommend keep; RepaintSet the honest alternative |
+| `20260830.210459` | [DirtySet explained, pastes reprinted](20260830/20260830-210459_dirtyset-explained-pastes-reprinted.kyri) | teaching turn; nine-seat dirty-region record |
+| `20260830.205759` | [Generated-pages debt paid, fleet triaged](20260830/20260830-205759_generated-pages-debt-fleet-triage.kyri) | fascia block reads 68; both Codex stops custody-clean |
 | `20260830.165037` | [The destination owns its constant](20260830/20260830-165037_the-destination-owns-its-constant.kyri) | Caravan prices `answered_by` at 34 openings; destination-owned constants cost zero |
 | `20260830.204814` | [The frame that holds what it seals](20260830/20260830-204814_the-frame-that-holds-what-it-seals.kyri) | two nesting layers at zero; only the derived one was safe |
 | `20260830.200925` | [The post on the line](20260830/20260830-200925_the-post-on-the-line.kyri) | carriage tied in three families; the bead post stood at zero slack |

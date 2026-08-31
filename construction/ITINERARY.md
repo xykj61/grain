@@ -59,10 +59,10 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *Carry card for terminal - phone - waymarks. Refreshed on **remember**. Debrided to Compass Chapter `20260809.024320`; those greens live in code and counsel.*
 
-**Git nib:** `9077163e84` -- this round's own.
+**Git nib:** `9c19cf1b12` -- this round's own.
 
-**Now.** **The digest proving a pass measured one tree read its shape alone; a
-status letter stands still while bytes move.**
+**Now.** **The fold held the trail's three facts and left a hand to copy them,
+so two folds in one day shipped with no trail at all.**
 
 **The live front** (condensed `20260830.012039`; the checkpoint holds the departing accounts,
 the day shelves every landed lap):
@@ -95,15 +95,15 @@ source to AGREEMENT, proven biting both ways. Mystery: rung drift reads 17,248 a
 `%281`/`%291`, two `enclosure.conf` pins. **%360's SIXTH LANDS:** its wall fixture kept
 the retired seed subject, so its witness was refused by the wall it tests: two
 lines, GREEN, rostered: **all six our rules demand run each lap.**
-**Rosters `20260830`:** `grain-hush` 104/101 hot, four closed; `rule_twin` at **%7**,
+**Rosters `20260830`:** `grain-hush` 104/98 hot, three rows; `rule_twin` at **%7**,
 drift **38 over 36**: three vocab rules drifted since `20260828`, both ways.
 124 rostered; silence 26/96.
 **The falsifier splits:** `env` travelled; the door half did not --
 `door_disagreements=1` at `user`, `derived=502 metal=unread`. Gate %5, named not touched.
 **Named, not taken (%347):** `pond/enclosure_policy.kyri` 8,120/8,192; widening the wall is yours.
-**Next doors.** Dream: Kumara, then Caravan. Hush: lane-safe choirs
-(`drey` 17, `acme_dx` 11), then the fold-trail loom: two shelves landed today
-with no recital line, which `reds_fold.sh` could write. %7 gates the auditor.
+**Next doors.** Dream: Kumara, then Caravan. Hush: the fold-trail loom LANDED
+(`--why` required, trail written); next %383's lap -- a commit-time read of a
+day shelf's links -- then the choirs. %7 gates the auditor.
 Silence: the link frame is tied (`20260830.204814`) -- 554 is 12 + 14 + 528 and neither room
 imports the other. `vessel_fetch_wire.rye` stays Amphora's; `virtio_net.rye` comments read
 **C+ 78**, a carded molt.
