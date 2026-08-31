@@ -1,5 +1,10 @@
 # living_docs_lint.rish -- ratchet-advisory living-docs lint (eight duties).
 #
+# WHAT THIS IS FOR. The tree's living pages carry promises a reader can follow: a link
+# that opens, a page the roster names, a word the Lexicon still seats, a size small
+# enough to read in one sitting. This runs eight small readings over those pages and
+# prints what it finds. It advises and never refuses, so a lap reads it and chooses.
+#
 # Kaeden seated the name 20260712.222800 - Claude counsel at bench 4fa8363.
 # Print every parity run; never fail. Hardening horizon: link-breaks may earn
 # a gate once the docs shelf proves stable.
@@ -11,7 +16,11 @@
 #   4. Status rooms on rostered living pages
 #   5. docs/ pin-strings byte-match canon (PUBKEYS - master-seal - exit card)
 #   6. living pin size <= living_pin_max_bytes, read from the seated law by
-#      tools/fixtures/l/living_pin_max_bytes.sh; near-bound (>=90%) names fold + SEASONS roster
+#      tools/fixtures/l/living_pin_max_bytes.sh; near-bound (>=90% of the page's OWN bound) names
+#      fold + SEASONS roster, its remaining headroom, and the count of paths weighed. The weighed
+#      set is the docs roster UNION the seated pin roster
+#      (tools/fixtures/l/living_pin_guard_roster.txt) -- four of the seven seated pins stood outside
+#      this duty until REDS %396. Gated by tools/l/living_pin_near_bound_witness.rish.
 #   7. tools/**/*.py count -- target zero (Python-at-seam law)
 #   8. shell bodies (>40 lines) beneath .rish wrappers -- harvest ratchet (only falls)
 #

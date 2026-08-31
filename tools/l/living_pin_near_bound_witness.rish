@@ -1,0 +1,63 @@
+# tools/l/living_pin_near_bound_witness.rish -- the pin advisory reads the set the law names.
+#
+#   rishi/bin/rishi run tools/l/living_pin_near_bound_witness.rish
+#
+# WHY. The pin law seats one roster and one bound reading so that two roofs cannot disagree about
+# which pages are pins or about how heavy a pin may be. Duty 6 of the docs lint kept the bound
+# reading -- tools/fixtures/l/living_pin_max_bytes.sh, one home since REDS %199 -- and walked a
+# docs roster of its own, so four of the seven pins seated in
+# tools/fixtures/l/living_pin_guard_roster.txt were never weighed by it: EQUINOX_SEAT_MAP, REDS,
+# SHRED_PREP and prin_scope. Measured on 20260831, duty 6 advised on glow/README.md and
+# construction/ITINERARY.md and said nothing about construction/REDS.md at 24,555 of 24,576 or
+# construction/SHRED_PREP.md at 24,366 -- 99.9% and 99.1% of their bounds. The pin it could not see
+# had shipped 1,040 bytes over that same morning (REDS %395), and the guard that would have caught
+# the overage weighs only the pins a commit stages, which a rebase never does.
+#
+# THE SECOND FAULT, in the same duty. The near list hung off an `elif` below the past-bound list, so
+# it printed only while nothing was over. The one moment a reader most wants to know which pins are
+# about to follow is the moment one of them has already crossed, and that is precisely the moment
+# the elder form went quiet.
+#
+# WHAT THIS PROVES, and where. The control builds real trees in a throwaway pen and reads what duty
+# 6 says about each: a seated pin absent from the docs roster is named, the same pen with the union
+# line reverted says nothing about it, a docs page absent from the seated roster is still named, a
+# near pin prints beside a past-bound one, the same pen with the near list hung back off the over
+# list goes silent, a page carrying its own bound is advised against ITS number, that same page
+# comfortably under its own bound says nothing, and a path standing on both rosters is weighed once.
+# Five of the nine bite against the departing scan, which is what tells a repair from a rewording.
+#
+# WHAT IT DOES NOT REACH. The live tree's own reading, which tools/l/living_docs_lint.rish already
+# prints on every roster pass at a cost of 55 seconds -- paying for it twice would buy nothing. And
+# whether a page NEAR its bound should be folded, condensed, or left alone, which is a hand's
+# judgement about meaning rather than a number.
+#
+# WHY IT IS ITS OWN GUARD rather than an assertion inside the lint. living_docs_lint is a ratchet
+# advisory that never fails by design, so a check placed there could not red -- and a guard that
+# cannot red guards nothing.
+#
+# Pen: tools/fixtures/l/living_pin_near_bound_control.sh -- nine behaviors, both faults shown from
+# the side where the reading goes silent. Run from the repository root.
+
+say "living-pin-near-bound: Language EN -- a pin advisory is worth exactly the set of pins it weighs."
+say "living-pin-near-bound: Style Gauge, Meter -- every count below is the control's own output."
+say "living-pin-near-bound: Lens TAME -- say why: the union is the law's own roster joined to the docs roster, so the reading covers the set the law names rather than the set this duty happened to hold."
+
+let control = run ["sh" "tools/fixtures/l/living_pin_near_bound_control.sh"]
+say control.out
+assert control.ok else "living-pin-near-bound: the control must complete"
+assert control.out contains "control_checks=9" else "living-pin-near-bound: all nine behaviors must be read"
+assert control.out contains "control_failures=0" else "living-pin-near-bound: every planted behavior must read as written"
+assert control.out contains "control_verdict=ok" else "living-pin-near-bound: the control must agree with itself"
+
+assert control.out contains "seated_pin_named=yes" else "living-pin-near-bound: a pin the law seats must be weighed even when the docs roster lacks it"
+assert control.out contains "seated_pin_silent_without_union=no" else "living-pin-near-bound: reverting the union must silence that reading, or the union carries nothing"
+assert control.out contains "docs_page_still_named=yes" else "living-pin-near-bound: the union must add without taking away"
+assert control.out contains "over_bound_named=yes" else "living-pin-near-bound: a pin past its bound must be named"
+assert control.out contains "near_printed_beside_over=yes" else "living-pin-near-bound: the near list must print beside the past-bound list"
+assert control.out contains "near_silent_when_hung_off_over=no" else "living-pin-near-bound: hanging the near list off the over list must silence it, or the split carries nothing"
+assert control.out contains "own_bound_in_message=yes" else "living-pin-near-bound: a page carrying its own bound must be advised against ITS number"
+assert control.out contains "own_bound_page_silent=no" else "living-pin-near-bound: a page far under its own bound must say nothing"
+assert control.out contains "union_dedupes=yes" else "living-pin-near-bound: a path on both rosters must be weighed once"
+
+say ""
+say "GREEN: living-pin-near-bound -- duty 6 weighs the docs roster joined to the seated pin roster, advises each page against its own bound with its headroom named, and prints the near list beside the past-bound one; nine behaviors proven in a throwaway pen, both faults shown from the silent side."

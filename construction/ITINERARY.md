@@ -30,25 +30,25 @@
 
 ### Seated, and still live
 
+*The panchanga, the fusion build, and the landed arcs rest on the [fourth shelf](archive/20260831-090000_itinerary-settled-decisions.md).*
+
 - **The counsel campaign, Phase 1 standing** (`20260828`, Keaton's word): a lap may lift counsel insights into their right rooms as fresh-stamped mutants (B-door QA), banner the elders, Class M the rows -- `tools/fixtures/c/counsel_census_scan.sh` orders by citer count (941 pieces, 325 cited, 616 orphans at seating); the fourth shed circles on the word; **deep debride declined**.
 - **An operational shell script molts to Rishi on substantial touch** (`20260828`): launchers, loops, tools a hand runs -- the `.sh -> .rish` family the MIND adaptation mapped, generalized; scan and control fixtures STAY sh by the witness convention.
 
-- **The panchanga** (seated `20260826`): rings of five over the rota of fifteen -- orbit 15 - quest 75 - journey 375 - equinox 1,875 - **chapter** 9,375; *chapter* replaces *season*. Charter: `foundations/20260826-014901_the-panchanga.md`.
 - **The six bodies, the always-fleet** (re-mapped `20260829.203718`, Keaton's word): **one tree per star** and **claim-as-override**. **Mind** (Codex supervisor, `~/grain-mind` -- Surf/Skate) + **Mystery** (same supervisor, `MIND_SEAT=mystery`, `~/grain-mystery` -- the maintenance campaigns); **Sound** (Claude Desktop, the field -- interface Glow, **language custody**, captain's hat) + **Silence** (Claude day-loop, `~/grain-silence` -- infrastructure Glow); **Dream** (Codex in ai-jail, pier -- systems core) + **Hush** (Claude day-loop, pier -- Pond). Charter: the always-fleet page, `20260829.203718`, in `active-designing/`.
 - **Fleet re-arm helper** LANDED: `sh tools/f/fleet_rearm.sh` -- status, reason, paste; gates warned.
-- **The fusion build -- IN FLIGHT** (`20260828`, the skip word given): a derived file-to-witness map and receipt-gated `--scoped` passes, the full choir on cadence; design `20260825.181028`.
 - **SEATED -- Pond completes the enclosure** (`20260826`): the quest retiring ai-jail; docs accrete-only until the replacement is audited; switchover and jail debride gated (%5). Plan: `expanding-prompts/20260826-033051_pond-completes-the-enclosure.md`.
 - **STANDFAST -- the Dexter orbit** (`20260826`): 15 rounds; door `dexter/README.md`.
 - **Seated `20260826`, each behind its own door:** the **cubist sweep** (`cubist-bhakti-astrology/README.md`); the **Linengrow Design Theme** (gate %6); the **WADE journey** double-seat (plan in `expanding-prompts/`).
-- **Seated names, breaches, and the debride grant** rest on the [third shelf](archive/20260831-023122_itinerary-settled-decisions.md), landed rather than directive; **Scooter - Dexter - Ember** are in `context/LEXICON.md`, each breach keeps its walk-back in [`CHECKPOINTS.md`](CHECKPOINTS.md). Live clause: the debride grant (`20260823.045448`) covers renames, message rewrites, force push, reclone; a deep debride takes Keaton's word naming its target.
-- **The crypto spine** (`20260815`) -- four decisions whole on the [first shelf](archive/20260824-130807_itinerary-settled-decisions.md): Rye first, Glow on green-witnessed Rye; Chapter G double-seated; SHA-3/SHAKE preferred; **Kumara signs SLH-DSA-SHAKE-256s**, oracle GREEN. The identity key is the gate; the library is agent-doable.
+- **Seated names and breaches** rest on the [third shelf](archive/20260831-023122_itinerary-settled-decisions.md), each walk-back in [`CHECKPOINTS.md`](CHECKPOINTS.md). Live clause: the debride grant (`20260823.045448`) covers renames, message rewrites, force push, reclone; a deep debride takes Keaton's word naming its target.
+- **The crypto spine** (`20260815`) -- four decisions whole on the [first shelf](archive/20260824-130807_itinerary-settled-decisions.md). Live clause: the identity key is the gate, the library is agent-doable.
 - **Caravan -- semi-standfast, raised priority.** A touched module gets its opening comment as **Door** prose and its bound comments as **Meter**, per *Grade what you touch*. %163 one layer down.
 
 ### Now -- the live front
 
-**Git nib:** `dd96caf128` -- this round's own.
+**Git nib:** `43c980c06a` -- this round's own.
 
-**Now.** **Two walls stand over one room -- one counts seats, the other counts bytes -- and the desk names both ends of the range.**
+**Now.** **A guard that borrows a shared reading and keeps its own list of what to feed it drifts the day that list grows.**
 
 **The live front** (condensed `20260831.023122`; the day shelves hold every landed lap):
 - **Tri-OS** BOOKED for Dream: LOCA parity via `brushstroke/wayland_seed.rye`, pins in
@@ -82,33 +82,35 @@ round's opening stash stop an in-flight pass in its own tree.
 `%281`/`%291`, two `enclosure.conf` pins. **Named (%347):** `pond/enclosure_policy.kyri`
 8,120/8,192; the wall is yours.
 **Rosters `20260831`:** four guards hold **55%** of a pass and 35 cost a second or less, so a mean
-read as a rate misses by an hour. Cold **108/104**, hot **108/103**, `tree_moved=no` both. Of the
-hot five, **none is this round's**: `rule_twin` %7, `%398`, and `geode_libraries`/`nib_honesty`/
-`remember_git_nib` all red at `51b656a32b` itself -- the last three resolve at the commit hook and
-the amend.
-**%396 FOLDED:** a `TMPDIR` inside `.git` put three controls' pens INSIDE the tree, so each lost
-the case asserting the pen looks like nowhere. **%397:** 28 periods on a reference table moved one
-head **C 74 -> A 91**, content unchanged. **%398, YOURS:** `%392`'s landed repair turned
-`comment_citation` red -- it cites the card rather than copying it, so the split dial dropped its
-four exclusions. `577479ade8` reads 0 broken, `51b656a32b` reads 10, same 108 programs, nothing of
-mine in either. Gates at zero, so EVERY body's pass closes `guard_red` until it is placed.
-`%393`/`%394`/`%395` FOLDED.
+read as a rate misses by an hour. This seat: cold **108/104** at 1,523 guard-s, hot **109/104** at
+1,313, `tree_moved=no` both. What stays red is the three named gates -- `rule_twin` %7,
+`pond_enclosure_door` %5, `commit_message_guard` (%393's untracked publisher) -- plus the two
+generated pages the commit hook rewrites.
+**%398 TAKEN AND CLOSED, by a narrower reading than the finding named:** the exclusions never
+engaged. The card classifies a file BEFORE it picks which lines to read, `%392` added `.bron`/`.kyri`
+to that classifier correctly, and the ten are prose that was never this guard's population. The scan
+asks the card for `truth_source` in the call already reading citations: **94 scanned, 13 prose
+skipped, 0 broken**. **`%399`, mine, the same class:** duty 6's near-bound advisory -- the only
+reading that speaks BEFORE a pin crosses -- borrowed the law's bound and kept its own roster, so
+`REDS.md`, `SHRED_PREP.md`, `EQUINOX_SEAT_MAP.md` and `prin_scope.rish` had never been weighed while
+card and ledger stood at **3** and **21 bytes free**, all three pin guards green. It reads the seated
+roster now, each page's own bound and headroom named. **A borrowed classification drifts where a
+borrowed constant cannot.** `%393`-`%396` FOLDED by the pier, `%392`/`%397` by me.
 **Next doors.** Dream: Scribe baton-v1. Caravan keeps a 5-second seam and sings on cadence or
 touch. Kumara LANDED. Hush: `spool_cloth`'s eight `ClothError`
-paths are its last bound wanting a desk; the shape room's other 37 nibs are unread. Silence: **%392 closed twice.** The pier landed the
-same split first, from the grammar rather than contiguity -- **theirs stands, mine parks**. What only my pass holds is the **population**: over 134 sources sampled every 37th the landed card
-reads **61 below B** where the elder at `577479ade` read **all 134 A+** at `meter`; my own build
-read 60, the cross-check. **Yours:** Door's ceiling is **9**, a dense head runs
-12-17, and I read enough to say the grades are honest. **Door, not taken:**
-`rule_twin_additive_scan.sh` reads `quality-assurance` as the roster's ONE `additive:claude` pair,
-+3 lines the twin lacks -- gate %7.
+paths are its last bound wanting a desk; the shape room's other 37 nibs are unread. Silence: `standing-equipment.kyri` reads **C+ 75**, a frame past this round's depth. The card is
+structurally at its bound -- Standing alone is **7,008 of 24,576** -- so a **fourth
+settled-decisions shelf** is the lap that fixes it, not another live-front cut.
+**Yours, two.** Door's ceiling is **9** against module heads that run 12-17, which is what puts
+**61 of 134** sampled sources below B -- the grades are honest, so the question is the ceiling. And
+gate %7: `rule_twin_additive_scan.sh` reads `quality-assurance` as the roster's ONE `additive:claude`
+pair, +3 lines the twin lacks, and carrying them deletes nothing.
 **%374 OPEN:** the receipt-chain question stays yours -- none has ever been earned here.
 ---
 ## Landed arcs
 
-Mandate, Acme DX, CION, AHOY beside WADE, Singularity, BUHR's MCP surface, TACT Journeys 1, 2 and
-4, the recursion cellar, the image module, the Constel quorum, the rune naming -- each proven on
-metal, each account in `session-logs/`.
+Twelve, whole on the [fourth shelf](archive/20260831-090000_itinerary-settled-decisions.md); each
+account is in `session-logs/`.
 
 ## The Compass Chapter -- OPEN `20260809.021829`, now at JARL
 
@@ -217,6 +219,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260831.074836` | Two walls over one room -- Pond's catalog capacity takes a desk, and a table's missing periods move a grade two letters | [log](../session-logs/date/20260831/20260831-074836_two-walls-over-one-room.kyri) |
+| `20260831.080221` | The borrowed reading and the list it kept -- `%398` taken and closed, `%399` booked, the same class one room over | [log](../session-logs/date/20260831/20260831-080221_the-borrowed-reading-and-the-list-it-kept.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)

@@ -59,7 +59,7 @@ Fold when the pin nears its bound — measured, matching the responsive rhythm.
 
 ## Lint
 
-`tools/living_docs_lint.rish` carries a **sixth, ratchet-advisory duty**: flag any living document on its pin roster past `living_pin_max_bytes`, and advise when a pin is near the bound (≥ 90%) naming the fold and the genre seasons roster. Printed every parity run; never fails the witness.
+`tools/living_docs_lint.rish` carries a **sixth, ratchet-advisory duty**: flag any living document past `living_pin_max_bytes`, and advise when a pin is near the bound (at or over 90% of the page's OWN bound) naming the fold, the genre seasons roster, and the bytes still free. **The set it weighs is the docs roster joined to the seated pin roster** [`../../tools/fixtures/l/living_pin_guard_roster.txt`](../../tools/fixtures/l/living_pin_guard_roster.txt), deduplicated, with `weighed=<n>` printed beside the verdict: the duty kept a docs roster of its own until REDS %396, so four of the seven seated pins -- `EQUINOX_SEAT_MAP.md`, `REDS.md`, `SHRED_PREP.md` and `prin_scope.rish` -- had never been weighed by it, while the ledger stood at 21 bytes free. One roster and one bound reading is the whole of this law, and a duty that borrows the number while keeping its own list has taken half of it. Gated by [`../../tools/l/living_pin_near_bound_witness.rish`](../../tools/l/living_pin_near_bound_witness.rish). Printed every parity run; never fails the witness.
 
 ---
 
