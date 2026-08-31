@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260831.122834` | [The seven rows find their shelf](20260831/20260831-122834_the-seven-rows-find-their-shelf.kyri) | seven duplicate bare links leave the closed day index |
 | `20260831.122010` | [The grammar answers for the setting](20260831/20260831-122010_the-grammar-answers-for-the-setting.kyri) | %404 closed; 8 reds to 3; a shelf's seven rows |
 | `20260831.114656` | [The check wall earns its keep](20260831/20260831-114656_the-check-wall-earns-its-keep.kyri) | selector map withdrawn at the seated assert |
 | `20260831.113648` | [The refusal carries its words](20260831/20260831-113648_the-refusal-carries-its-words.kyri) | %404 closed; selector mapped; hold released |

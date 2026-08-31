@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `4da9f3d0ed` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `b108c1c026` -- HEAD's parent, resolvable everywhere (%401).
 
 **Now.** **A pen is a copy, and a copy of a list is a list that will be wrong.**
 
@@ -223,6 +223,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260831.122010` | The grammar answers for the setting -- `%404` closed, five reds down to three, a shelf's seven rows repaired | [log](../session-logs/date/20260831/20260831-122010_the-grammar-answers-for-the-setting.kyri) |
+| `20260831.122834` | Seven duplicate bare links leave the closed day index | [log](../session-logs/date/20260831/20260831-122834_the-seven-rows-find-their-shelf.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)
