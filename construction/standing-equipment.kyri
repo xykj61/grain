@@ -909,6 +909,34 @@ path tools/co/comlink_carriage_witness.rish
 tier cadence
 seated 20260830.200925
 
+# comlink_nesting -- whether a frame this tree sends holds the datagram it seals. Every layer of a
+# network stack wraps the layer above it, so each container must hold its own header plus the whole
+# payload: `container >= header + payload`. Comlink has two such layers and BOTH stand at zero
+# slack, and only one of them is safe. The datagram layer is zero because wire_format.rye DERIVES
+# it -- `max_message = wire_capacity - off_cipher` -- so raising the capacity raises the message in
+# the same expression. The frame layer is zero because it is SPELLED: `max_frame` is the literal 554
+# in comlink/virtio_net.rye, `wire_capacity` is the literal 528 in comlink/wire_format.rye, 554 is
+# 12 + 14 + 528 exactly, and a doc comment was the only thing joining them. The two rooms cannot
+# import each other -- virtio_net.rye is freestanding and imports nothing, wire_format.rye reaches
+# std and kumara -- so the arithmetic had nowhere to live but prose. Measured before the guard was
+# written: raising `wire_capacity` 528 -> 576 and changing nothing else still BUILDS GREEN for
+# riscv64-freestanding, and the guests' own frame arithmetic run hosted reads `index out of bounds:
+# index 602, len 554`. Twenty-seven of fifty-nine guests lay a datagram in at that offset, and
+# dg_len is `off_cipher + message.len`, so a short message never reaches the ceiling and a full one
+# lands on it exactly -- content-dependent, which is why a fixture carrying a short message passes
+# forever. virtio_net.rye publishes `frame_carries` and device_wire.rye evaluates it at comptime.
+# Sixteen control cases on real files in a throwaway pen, twelve refusals and four welcomes, and a
+# probe that asks the compiler six times -- the tie inverted, the three plausible real edits
+# (capacity raised, ethernet header grown a VLAN tag, virtio header widened by a field), and an
+# honest raise of `max_frame` that must walk free. Measured here `20260830.204814`: 6s whole, of
+# which the pure scan and control are 2s. At tier cadence because the probe builds a Rye module six
+# times over, the same clock its carriage sibling keeps.
+
+guard comlink_nesting
+path tools/co/comlink_nesting_witness.rish
+tier cadence
+seated 20260830.204814
+
 # THE GUARDS OUR OWN RULES ALREADY DEMAND (REDS %360). The census that row books found 1,153
 # tracked guards this roster reaches on no lap at all, and five of them are not merely unrun --
 # each is named by a LIVING RULE that instructs a lap to run it. A rule that names a check and a

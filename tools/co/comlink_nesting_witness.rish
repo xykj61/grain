@@ -1,0 +1,96 @@
+# tools/co/comlink_nesting_witness.rish -- the link-frame nesting relation, across the room that
+# owns the frame and the room that owns the datagram.
+#
+#   rishi/bin/rishi run tools/co/comlink_nesting_witness.rish
+#
+# WHY THIS RUNG. Every layer of a network stack wraps the layer above it, so each container must
+# hold its own header plus the whole payload it carries -- container >= header + payload. Comlink
+# has two such layers, and until 20260830 the outer one was joined by a doc comment alone.
+#
+# WHAT MADE IT WORTH A ROUND. Both layers stand at ZERO slack, and only one of them is safe. The
+# datagram layer is zero because comlink/wire_format.rye DERIVES it: max_message is
+# wire_capacity - off_cipher, so raising the capacity raises the message in the same expression.
+# The frame layer is zero because it is SPELLED: max_frame is the literal 554 in
+# comlink/virtio_net.rye, wire_capacity is the literal 528 in comlink/wire_format.rye, and 554 is
+# 12 + 14 + 528 exactly.
+#
+# WHY THE TWO ROOMS COULD NOT SIMPLY CHECK EACH OTHER. comlink/virtio_net.rye is freestanding --
+# it drives virtio-net MMIO from a riscv64 guest with no operating system, defines its own
+# three-line assert, and imports nothing. comlink/wire_format.rye reaches std, std.debug.print,
+# and kumara. Neither can import the other, so the arithmetic had nowhere to live except a third
+# room that sees both -- which is why it ended up in prose.
+#
+# MEASURED RATHER THAN REASONED, before a line of this was written. Raising wire_capacity
+# 528 -> 576 and changing nothing else: the guest still BUILDS GREEN for riscv64-freestanding,
+# and the guests' own frame arithmetic run hosted reads `index out of bounds: index 602, len 554`.
+# Nothing refused. Twenty-seven of Comlink's fifty-nine guests lay a sealed datagram into the
+# frame with the identical three lines, and dg_len is off_cipher + message.len -- so a short
+# message never reaches the ceiling and a full one lands on it exactly. The failure is
+# content-dependent, which is why a fixture carrying a short message passes forever.
+#
+# THREE READINGS, AND WHY THEY FIRE APART. The rows the desk shows equal what the Rye publishes,
+# so a bound moved in one room and not the other is seen. The relation holds for both rows by
+# arithmetic computed here rather than pinned, so an honest raise in both rooms walks free. And
+# the comptime tie still stands, because a law the compiler no longer checks is a sentence:
+# delete that line and the first two readings agree perfectly over code nothing proves will carry
+# what it sends.
+#
+# THE READING A SHELL CANNOT TAKE, AND WHO TAKES IT. A grep proves a comptime block is WRITTEN
+# and can never prove it is EVALUATED. The compiler can, so the tie probe asks it six times in a
+# throwaway pen: the module compiles as it stands, the tie inverted stops the build, and three
+# PLAUSIBLE REAL EDITS stop it too -- the capacity raised, the ethernet header grown a VLAN tag,
+# the virtio device header widened by one field. None of those three touches max_frame or its
+# comment. The sixth asking is the opposite one: raising max_frame to a full ethernet MTU must
+# WALK FREE, and that is asserted as hard as any refusal.
+#
+# WHAT THIS WITNESS DELIBERATELY DOES NOT PIN. The slack. A lap that gives the frame real
+# headroom moves it from 0 upward, and that is better work rather than a fault. A guard that reds
+# on an improvement is a guard someone turns off.
+#
+# WHAT THIS RUNG DOES NOT REACH. Whether 554 is the right frame size, which is Comlink's and
+# Aurora's own design question; this room reads it. The value of off_cipher, which is a chain of
+# crypto library widths and belongs to the wire-payload desk that tools/co/comlink_glow_tend_witness.rish
+# already guards -- cited here, never restated. And the hosted UDP lane in comlink/hosted_wire.rye,
+# which hands its datagram to the kernel and declares no frame of its own.
+
+say "comlink-nesting: Lens TAME -- bound everything and say why: a frame this tree sends is a frame that holds what it seals, and the compiler is the one that says so."
+
+say "comlink-nesting: the desk against the rooms that publish the numbers..."
+let scan = run ["sh" "tools/fixtures/c/comlink_nesting_scan.sh"]
+assert scan.ok else "comlink-nesting: the desk and the Rye disagree -- read the verdict line"
+say scan.out
+assert scan.out contains "verdict=ok" else "comlink-nesting: every nesting layer must hold header plus payload"
+assert scan.out contains "placard_order=name-shape-invariant-example-readers-nib" else "comlink-nesting: the placard's six lines keep their seated order"
+assert scan.out contains "citation=ok" else "comlink-nesting: the desk names both rooms it reads and the room that ties them"
+assert scan.out contains "rows_agree=yes" else "comlink-nesting: a bound moved in the Rye moves on the desk in the same commit"
+assert scan.out contains "desk_capacity_agrees=yes" else "comlink-nesting: a teaching surface that lies in its own table teaches the wrong number"
+assert scan.out contains "capacity_holds=2" else "comlink-nesting: both layers must carry what they nest"
+assert scan.out contains "derivation_written=yes" else "comlink-nesting: the inner layer is safe because it is derived -- spell it out and it stops being safe"
+assert scan.out contains "padding_proof_written=yes" else "comlink-nesting: summing VirtioNetHdr's fields gives its size only while the struct carries no padding"
+say "field GREEN -- two rows read out of the Rye, and the relation computed rather than remembered"
+
+say "comlink-nesting: the posts on the line, reported and never gated (see the header)..."
+assert scan.out contains "tightest=" else "comlink-nesting: every layer at the least room is named on every run, so headroom is visible rather than assumed"
+say "slack reported -- raising it is better work, so no ceiling stands here"
+
+say "comlink-nesting: the control, both ways..."
+let control = run ["sh" "tools/fixtures/c/comlink_nesting_control.sh"]
+assert control.ok else "comlink-nesting: the control must complete"
+say control.out
+assert control.out contains "verdict=proven" else "comlink-nesting: every planted fault refuses and every honest tree walks free"
+assert control.out contains "cases=16" else "comlink-nesting: sixteen behaviours are asked, and the count is asserted so a dropped case cannot pass unseen"
+assert control.out contains "refusals=12" else "comlink-nesting: twelve planted faults, each refused"
+assert control.out contains "welcomes=4" else "comlink-nesting: four honest trees, each let through"
+assert control.out contains "wrong=0" else "comlink-nesting: no answer may disagree with what the control expects"
+
+say "comlink-nesting: the tie, asked of the compiler rather than of a grep..."
+let probe = run ["sh" "tools/fixtures/c/comlink_nesting_tie_probe.sh"]
+assert probe.ok else "comlink-nesting: the tie probe must complete"
+say probe.out
+assert probe.out contains "verdict=proven" else "comlink-nesting: the tie must hold, and refuse"
+assert probe.out contains "tie_holds=1" else "comlink-nesting: the tied module compiles against the real constants"
+assert probe.out contains "tie_refuses=1" else "comlink-nesting: the tie inverted must stop the build, or the block is one nobody evaluates"
+assert probe.out contains "edit_refuses=3" else "comlink-nesting: all three plausible real edits must stop at comptime"
+assert probe.out contains "raise_welcomes=1" else "comlink-nesting: an honest raise of the frame must walk free"
+
+say "comlink-nesting GREEN -- the frame carries the datagram, the desk shows it, and the compiler refuses the edits that would break it"

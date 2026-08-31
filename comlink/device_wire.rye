@@ -109,8 +109,26 @@ fn selftest_layout_proof() !u8 {
     return 0;
 }
 
+/// The link frame holds a whole sealed datagram beneath its two headers. Twenty-seven guests lay
+/// a datagram in at `virtio_net_hdr_len + eth_header_len` and send `poff + dg_len`, so the frame
+/// stays at least that sum for every one of them. The two numbers live apart -- virtio_net.rye is
+/// freestanding, wire_format.rye reaches std and kumara -- and this room holds both, so this is
+/// where they meet.
+fn selftest_nesting_proof() !u8 {
+    // invariant: the frame carries the whole datagram plus both headers, checked by the compiler,
+    // since a compiler is the one reader here that can refuse a build
+    comptime assert(vn.frame_carries(@intCast(wf.wire_capacity)));
+    // invariant: the header width above is the struct's own size, which holds while the struct
+    // stays padding-free -- proved one function above and restated here, so the proof travels
+    // beside the arithmetic that leans on it
+    comptime assert(no_padding(vn.VirtioNetHdr));
+    print("comlink device wire: link frame proved to carry a whole sealed datagram at compile time\n", .{});
+    return 0;
+}
+
 fn run_selftest() !u8 {
     _ = try selftest_layout_proof();
+    _ = try selftest_nesting_proof();
     try selftest_descriptor_fixture();
     try selftest_wire_format_round_trip();
     print("comlink device wire: selftest GREEN — sub-lap 1 descriptor algebra and seal/open on fixture\n", .{});

@@ -58,7 +58,9 @@ pub const queue_rx: u32 = 0;
 pub const queue_tx: u32 = 1;
 
 pub const queue_depth: u32 = 4;
-/// Room for virtio/eth link headers plus a full `wire_format.wire_capacity` datagram (528 + 12 + 14).
+/// Room for the two link headers plus a whole `wire_format.wire_capacity` datagram: 12 + 14 + 528.
+/// The arithmetic is `frame_carries` below, and comlink/device_wire.rye evaluates it at comptime
+/// against the format's own capacity, since this number and that one live in separate rooms.
 pub const max_frame: u32 = 554;
 pub const legacy_vring_align: u32 = 4;
 pub const legacy_page_align: u32 = 4096;
@@ -79,6 +81,14 @@ pub const VirtioNetHdr = extern struct {
 pub const virtio_net_hdr_len: u32 = @sizeOf(VirtioNetHdr);
 pub const eth_header_len: u32 = 14;
 pub const lab_ethertype: u16 = 0x1201;
+
+/// The link frame carries a whole sealed datagram beneath two headers -- the virtio-net header the
+/// device reads, then the ethernet header the link reads. This room stays freestanding and imports
+/// nothing, so it publishes the arithmetic here and a room holding both numbers evaluates it at
+/// comptime.
+pub fn frame_carries(wire_capacity: u32) bool {
+    return virtio_net_hdr_len + eth_header_len + wire_capacity <= max_frame;
+}
 
 pub const link_pattern_len: u32 = 32;
 pub const link_pattern_fill: u8 = 0xAB;

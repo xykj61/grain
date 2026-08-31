@@ -1,0 +1,111 @@
+::  name       comlink link frame nesting bound
+::  shape      bytes -- int (@u32), bound 554 -- the room a link frame leaves for a whole datagram
+::  invariant  a frame this tree sends holds the datagram beneath its headers, and the compiler says so
+::  example    554
+::  readers    Comlink - Aurora - Mantra - Glow Tend - shape museum
+::  nib        comlink-nesting-v1 at 20260830.204814
+::
+::  Comlink's fourth pedestal, and the third of its bounds. The first desk named the room a
+::  sealed datagram leaves for its message -- 340 bytes. The second named what happens when the
+::  thing carried is larger than that, and gets cut into counted pieces. This one names the
+::  layer BELOW both: the link frame that has to hold a whole datagram, headers and all.
+::
+::  THE RELATION, IN ONE LINE. Every layer of a network stack wraps the layer above it, so each
+::  container must hold its own header plus the whole payload it carries:
+::
+::    container >= header + payload
+::
+::  Break it and a fixed buffer is written past its end. There is no truncation and no refusal
+::  at the door -- the bytes simply land outside the array, in a bare-metal guest, at a fixed
+::  address in guest RAM.
+::
+::  THE TWO LAYERS, MEASURED ON METAL 20260830 by building them and printing the constants:
+::
+::    layer     container            header               payload              need  slack
+::    datagram  wire_capacity  528   off_cipher     188   max_message    340    528      0
+::    frame     max_frame      554   link_headers    26   wire_capacity  528    554      0
+::
+::  `link_headers` is `virtio_net_hdr_len` plus `eth_header_len` -- 12 and 14. The first is
+::  `@sizeOf(VirtioNetHdr)` rather than a literal, so it is the struct's own width, and it is a
+::  width only while the struct stays padding-free, which device_wire.rye proves at comptime.
+::
+::  BOTH STAND AT ZERO, AND ONLY ONE OF THEM IS SAFE. That is the whole finding, and it is worth
+::  saying plainly because zero slack looks equally alarming in both rows and is not.
+::
+::  The datagram row is zero because it is DERIVED. comlink/wire_format.rye writes
+::  `max_message = wire_capacity - off_cipher`, so the payload is defined as whatever the header
+::  leaves behind. Raise the capacity and the message grows with it, in the same expression, on
+::  the same line. The relation cannot come apart, because there is only one number.
+::
+::  The frame row is zero because it is SPELLED. `max_frame` is the literal 554 in
+::  comlink/virtio_net.rye, `wire_capacity` is the literal 528 in comlink/wire_format.rye, and
+::  until 20260830 the only thing joining them was a doc comment above the first:
+::
+::    /// Room for virtio/eth link headers plus a full `wire_format.wire_capacity` datagram
+::    /// (528 + 12 + 14).
+::
+::  Correct to the byte, and inert. A sentence does not stop a build.
+::
+::  WHY THE TWO ROOMS CANNOT SIMPLY CHECK EACH OTHER. comlink/virtio_net.rye is freestanding --
+::  it drives virtio-net MMIO from a riscv64 guest with no operating system, defines its own
+::  three-line `assert`, and imports nothing. comlink/wire_format.rye reaches std, std.debug.print,
+::  and kumara for the signature. Neither can import the other, so the arithmetic has nowhere to
+::  live except a third room that sees both -- which is exactly why it ended up in prose.
+::
+::  MEASURED, RATHER THAN REASONED. The plausible real edit is a capacity a growing tree raises,
+::  and it was pressed on metal before a line of this was written:
+::
+::    wire_capacity 528 -> 576, nothing else changed
+::    the guest still builds:  rye build comlink/guest_2way_source_tx.rye
+::                             -target riscv64-freestanding-none    GREEN
+::    the same arithmetic run: index out of bounds: index 602, len 554
+::
+::  Nothing refused. The frame overrun is entirely a runtime fact, in a guest with no operating
+::  system underneath it to notice, and the build that produced it was green.
+::
+::  WHO LEANS ON IT. 57 of Comlink's 59 freestanding guests import both rooms, and 27 of them lay
+::  a sealed datagram into the frame with the identical four lines:
+::
+::    const poff = eoff + vn.eth_header_len;                 //  12 + 14 = 26
+::    tally_copy.copy_disjoint(u8, buf[poff..][0..dg_len], scratch[0..dg_len]);
+::    const total: u32 = poff + dg_len;                      //  26 + 528 = 554
+::    tx.send(total);                                        //  asserts total <= max_frame
+::
+::  `dg_len` is `off_cipher + message.len`, so a short message never reaches the ceiling and a
+::  full one lands on it exactly. The failure is content-dependent in the same way the bead
+::  family's was: a fixture carrying a short message passes forever.
+::
+::  WHAT IS WIRED, AND WHAT IS ONLY WRITTEN. From 20260830 the relation is published where the
+::  container lives and evaluated where both numbers are visible:
+::
+::    comlink/virtio_net.rye   `frame_carries(wire_capacity)` -- the arithmetic, published by the
+::                             room that owns max_frame, so a reader moving that number meets it
+::    comlink/device_wire.rye  two comptime asserts -- the relation called with wire_format's own
+::                             capacity, and the padding-free proof the header width leans on,
+::                             restated here so deleting it cannot quietly widen the header
+::
+::  The tie was proven able to REFUSE before it shipped -- inverted, and then by the plausible
+::  real edits: `wire_capacity` raised to 576 stops the build, `eth_header_len` raised to 18 for
+::  a VLAN tag stops the build, a field added to VirtioNetHdr stops the build. A tie proven only
+::  in the passing direction cannot be told from a comptime block nobody evaluates.
+::
+::  THREE READINGS CARRY THIS DESK, and each can fail while the other two agree. The rows the
+::  desk lists equal what the Rye publishes, so a bound moved in one room and not the desk is
+::  seen. The relation holds for both rows by the scan's own arithmetic, computed rather than
+::  pinned, so an honest raise in both rooms walks free. And the comptime tie still stands in the
+::  room that holds it -- delete that line and the first two readings agree perfectly over code
+::  nothing proves will carry what it sends.
+::
+::  THE SLACK IS REPORTED, NEVER GATED. A lap that raises `max_frame` to a full ethernet MTU
+::  moves the frame row's slack from 0 to something comfortable, and that is better work rather
+::  than a fault. A guard that reds on an improvement is a guard someone turns off.
+::
+::  WHAT THIS DESK DOES NOT REACH. Whether 554 is the right frame size, which is Comlink's and
+::  Aurora's design question; this room reads it. Whether the guests SHOULD each carry the tie --
+::  the relation is between constants, so one evaluation settles it for all 57, and the reading
+::  is a FLOOR rather than an equality, so a guest taking its own copy walks free. And the
+::  hosted UDP lane in comlink/hosted_wire.rye, which hands its datagram to the kernel and
+::  declares no frame of its own: measured, and there is no third row to show.
++$  comlink-link-frame-nesting-shape
+  $:  bytes=@u32
+  ==
