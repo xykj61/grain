@@ -46,9 +46,9 @@
 
 ### Now -- the live front
 
-**Git nib:** `8ee33f62d0` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `2673222037` -- HEAD's parent, resolvable everywhere (%401).
 
-**Now.** **A guard that borrows a shared reading and keeps its own list of what to feed it drifts the day that list grows.**
+**Now.** **A repair aimed at a comment mark lands in the branch that owns an extractor, and the fault walks in through the branch that has none.**
 
 **The live front** (condensed `20260831.023122`; the day shelves hold every landed lap):
 - **Tri-OS** BOOKED for Dream: LOCA parity via `brushstroke/wayland_seed.rye`, pins in
@@ -72,8 +72,7 @@ clone seats `ww` (`grain-ww/grain`, gate %1) and `.git/ssh_config_jail`.
 labels in `tools/gen/chapter/fascia_metric_v0.rish`. **Tablecloth, two, cross-lane:** its name desk
 reads one of `max_name`'s two call sites (`parse_manifest` reads it too, over the same fixed
 `[max_name]u8`), and four `*_example_missing` verdicts carry no control case -- deleting the
-`example` line lands on `placard_wrong` one reading earlier. **Tablecloth, third:** its scan reads **C 73** for
-%397's reason, 102 head lines with no table periods. **Dream's parked package:**
+`example` line lands on `placard_wrong` one reading earlier. **Dream's parked package:**
 `xy/pier/diverged-20260831-064342` holds the roster-pen fix unlanded since 06:43, not mine to
 rebase. **CION:** `drey`'s rung marks are the retired form (%329). **Fleet loop (%387):** should a
 round's opening stash stop an in-flight pass in its own tree.
@@ -81,29 +80,28 @@ round's opening stash stop an in-flight pass in its own tree.
 **Still open:** `glow/rune_shape.rye` keeps width custody; Mind keeps the reconnect stash,
 `%281`/`%291`, two `enclosure.conf` pins. **Named (%347):** `pond/enclosure_policy.kyri`
 8,120/8,192; the wall is yours.
-**Rosters `20260831`:** field cold **108/104**, hot **109/104**; pier hot **109/106**,
-`tree_moved=no`. **`%401` BOOKED -- the nib is now HEAD's PARENT:**
-the seated order pins the PRE-AMEND hash, which the amend replaces and no push carries, so five
-bodies of six red `nib_honesty` and `remember_git_nib` every lap. The guard's own header has said so
-all along, with the repair: **a parent is already pushed, and it needs no seat.** Applied here; the
-RULE still names the breaking state, a %7-care twin edit for its own lap. Also `%374`'s answer.
+**Rosters `20260831`:** field **108/104**; pier and this seat **109/106**, `tree_moved=no`. **`%401` BOOKED -- the nib is now HEAD's PARENT**, since the seated
+order pinned the PRE-AMEND hash that the amend replaces and no push carries, reddening
+`nib_honesty` and `remember_git_nib` on five bodies of six every lap. **A parent is already pushed,
+and it needs no seat.** Applied; the RULE still names the breaking state, a %7-care twin edit.
 **Cold pass and editing lap run serially.**
-**%398 CLOSED TWICE, two hands, no contact** -- one mechanism down to the variable names. **The
-earlier landing stands; the pier's parks** on a `pier/` branch. The card
-classifies a file BEFORE picking lines, so the exclusions never engaged and the ten were prose this
-guard never owned. Reads **95 scanned, 13 skipped, 0 broken**. Additive from the pier: the case that
-ASKS the card which extensions are prose rather than asserting it, red both ways.
-**`%400` OPEN, theirs to word:** four sites recite **107**/**94** where the instrument prints
-**13**/**95**. **`%399` the same class:** the near-bound advisory borrowed the law's bound and
-kept its own roster, so four seated pins went unweighed at **3** and **21 bytes free**. **A borrowed
-classification drifts where a borrowed constant cannot.** `%393`-`%399` FOLDED.
+**%398 CLOSED TWICE, two hands, no contact** -- one mechanism down to the variable names; the
+earlier landing stands, the pier's parks on a `pier/` branch. **`%400` OPEN, theirs to word:** four
+sites recite **107**/**94** where the instrument prints **13**/**95**. **A borrowed classification
+drifts where a borrowed constant cannot.** `%393`-`%399` FOLDED, whole on their shelves.
 **Worth your word:** nothing shows a red is worked, so two hands spent a morning on one line.
 Should an OPEN row carry a **claim** -- seat and stamp, at start rather than landing?
-**Next doors.** Dream: Settlement's replayable fold. Caravan keeps a 5-second seam and sings on cadence or
-touch. Kumara LANDED. Hush: `%397`'s remainder -- a card reading a reference block BESIDE the prose
--- then `spool_cloth`'s eight `ClothError` paths; 37 shape nibs unread. Silence: `standing-equipment.kyri` reads **C+ 75**, a frame past this round's depth. The card is
-structurally at its bound -- Standing alone is **7,008 of 24,576** -- so a **fourth
-settled-decisions shelf** is the lap that fixes it, not another live-front cut.
+**`%402` TAKEN AND CLOSED -- the card's door read the wrong half of the file it named.** A `.kyri`
+classified as prose, so `#` -- its COMMENT sigil -- was dropped as a heading and 457 records with no
+terminal punctuation fused into ONE 915-word sentence: grade **327**, Reach 0. **All nineteen**
+notation files with real comment prose read one sentence and **exactly 75**, `%358`'s own signature.
+`%276` and `%358` taught the PROGRAM extractor `#` and `::`; a notation goes down the prose branch,
+which has none. Third `artifact_kind`; reads **A 91**, its weakness legible at
+last: **38% negative**, whose Gauge answer is Meter.
+**Next doors.** Dream: Settlement's replayable fold. Caravan keeps a 5-second seam, singing on
+cadence or touch. Hush: `%397`'s remainder -- a card reading a reference block BESIDE the prose
+-- then `spool_cloth`'s eight `ClothError` paths; 37 shape nibs unread. Silence: **which setting a roster
+takes**, now measurable rather than asserted.
 **Yours, two.** Door's ceiling is **9** against module heads that run 12-17, which is what puts
 **61 of 134** sampled sources below B -- the grades are honest, so the question is the ceiling. And
 gate %7: `rule_twin_additive_scan.sh` reads `quality-assurance` as the roster's ONE `additive:claude`
@@ -222,6 +220,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
+| `20260831.095637` | The reading that found its prose -- `%402`, a notation's document is its comment block | [log](../session-logs/date/20260831/20260831-095637_the-reading-that-found-its-prose.kyri) |
 | `20260831.095907` | The same repair from two hands -- `%398` closed twice, the earlier landing stands, `%400` books the figures beside the instrument | [log](../session-logs/date/20260831/20260831-095907_the-same-repair-from-two-hands.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)
