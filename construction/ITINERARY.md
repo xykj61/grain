@@ -107,9 +107,9 @@ with no recital line, which `reds_fold.sh` could write. %7 gates the auditor.
 Silence: the link frame is tied (`20260830.204814`) -- 554 is 12 + 14 + 528 and neither room
 imports the other. `vessel_fetch_wire.rye` stays Amphora's; `virtio_net.rye` comments read
 **C+ 78**, a carded molt.
-**%374/%376 OPEN, one class -- two right mechanisms composing wrong.** A receipt past the red
-exit bars `--scoped` (%5, %7); a path-limited commit over the staging hook leaves the index
-pre-hook, so the amend guard refuses a clean tree. Repairs named, yours.
+**%376 SEALED `20260830.223044`** on Keaton's word: the seat-side practice -- stage exactly,
+prove the index clean, commit whole-index -- worded on every seat card; hook pages ride the
+commit. **%374 OPEN:** the receipt-chain question stays yours.
 ---
 ## Landed arcs
 
