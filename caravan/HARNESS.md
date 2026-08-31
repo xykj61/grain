@@ -967,3 +967,17 @@ The living reading is **576 actionable families**, with `answered_by` first at *
 The witness proves both directions on one planted corpus: an ordinary copied body stays in the
 queue, and an otherwise identical copied delegate stays in the whole carry while leaving the
 queue. The count remains a count; the queue becomes a selector again.
+
+## The destination owns its own constants -- `20260830.165037`
+
+The reach meter priced `answered_by` at **68 openings**: 34 private `hand_path` functions and 34
+private `Dir` constants. That was the source tree's price rather than the moved body's price. The
+destination harness already declares `const Dir = std.Io.Dir;` byte for byte, so the lifted body
+resolves `Dir` there without opening any rung declaration. The remaining price is **34 function
+openings**, one `hand_path` in each folding rung.
+
+The scan now keeps that seam visible as `REACH_OWNED` rather than dropping it from the account. A
+planted constant identical to the harness declaration costs zero openings; changing only the
+harness value makes both rung constants count again. The name is insufficient and the declaration
+is the proof. On the living ladder, `answered_by` still returns 330 lines and still waits behind a
+real function-opening choice, while its constant column reads zero for a reason the machine names.

@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260830.165037` | [The destination owns its constant](20260830/20260830-165037_the-destination-owns-its-constant.kyri) | Caravan prices `answered_by` at 34 openings; destination-owned constants cost zero |
 | `20260830.200925` | [The post on the line](20260830/20260830-200925_the-post-on-the-line.kyri) | carriage tied in three families; the bead post stood at zero slack |
 | `20260830.193650` | [The unheard sweep -- census 30, sidecar rides](20260830/20260830-193650_unheard-sweep-census-30-sidecar.kyri) | Sound closes %372/%373; concurrency witness GREEN |
 | `20260830.192524` | [a red costs the receipt](20260830/20260830-192524_a-red-costs-the-receipt.kyri) | a red close names the receipt it withheld; a gate is not a row |
@@ -20,6 +21,9 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260830.183654` | [the mark that molted and the set that stays a set](20260830/20260830-183654_the-mark-that-molted-and-the-set-that-stays-a-set.kyri) | TUBE0 molts home; DirtySet shares the nine, idempotent |
 | `20260830.165431` | [the parked package comes home](20260830/20260830-165431_the-parked-package-comes-home.kyri) | 121 rungs GREEN; the carry lands at %365-369 (shifted from 364-368 on the word) |
 | `20260830.163957` | [the carry waits for its choir](20260830/20260830-163957_the-carry-waits-for-its-choir.kyri) | the pier package renumbers (finally %365-369); the suite runs unbounded |
+| `20260830.165037` | [the destination owns its constant](20260830/20260830-165037_the-destination-owns-its-constant.kyri) | `answered_by` costs 34 openings at the harness seam |
+| `20260830.165431` | [the parked package comes home](20260830/20260830-165431_the-parked-package-comes-home.kyri) | 121 rungs GREEN; the carry lands at %364-368 |
+| `20260830.163957` | [the carry waits for its choir](20260830/20260830-163957_the-carry-waits-for-its-choir.kyri) | the pier package renumbers to %364-368; the suite runs unbounded |
 | `20260830.165042` | [the ceiling and the header](20260830/20260830-165042_the-ceiling-and-the-header.kyri) | Comlink's payload bound takes a desk and a comptime tie |
 | `20260830.161058` | [two loops back to work](20260830/20260830-161058_two-loops-back-to-work.kyri) | Mind and Mystery re-arm over the day's cures |
 | `20260830.160941` | [one scope short](20260830/20260830-160941_one-scope-short.kyri) | the delete wants admin:gpg_key; two roads handed to Keaton |

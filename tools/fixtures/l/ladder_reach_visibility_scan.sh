@@ -92,6 +92,35 @@ if [ "$FAMILY" = "prove-red" ]; then
     esac
     rm -f "$ctl/left_t.rye" "$ctl/right_t.rye"
 
+    # A private constant costs no opening when the destination harness already
+    # owns the same declaration. The shared body resolves that unqualified name
+    # in the harness after the lift. Exact declaration text is the boundary: a
+    # same-named constant with a different value remains a rung dependency.
+    printf 'const Shared = 7;\npub fn uses_shared() u32 {\n    return Shared;\n}\n' > "$ctl/left_h.rye"
+    printf 'const Shared = 7;\npub fn uses_shared() u32 {\n    return Shared;\n}\n' > "$ctl/right_h.rye"
+    printf 'const Shared = 7;\n' > "$ctl/harness.rye"
+    out=$(LADDER_DIR="$ctl" LADDER_HARNESS=harness.rye sh "$0" uses_shared 2>&1) || true
+    printf '%s\n' "$out" | sed 's/^/control-harness-owned: /'
+    case "$out" in
+        *"widens=0 widens_fn=0 widens_import=0 widens_const=0"*)
+            case "$out" in
+                *"REACH_OWNED symbol=Shared kind=const"*)
+                    echo "RED_harness_owned_constant_resolved_at_destination" ;;
+                *) echo "verdict=prove_red_hid_harness_owned_constant_without_naming_it"; fails=1 ;;
+            esac ;;
+        *) echo "verdict=prove_red_charged_a_constant_the_harness_owns_exactly"; fails=1 ;;
+    esac
+
+    printf 'const Shared = 8;\n' > "$ctl/harness.rye"
+    out=$(LADDER_DIR="$ctl" LADDER_HARNESS=harness.rye sh "$0" uses_shared 2>&1) || true
+    printf '%s\n' "$out" | sed 's/^/control-harness-differs: /'
+    case "$out" in
+        *"widens=2 widens_fn=0 widens_import=0 widens_const=2"*)
+            echo "RED_same_name_different_constant_stays_priced" ;;
+        *) echo "verdict=prove_red_name_match_hid_a_different_constant"; fails=1 ;;
+    esac
+    rm -f "$ctl/left_h.rye" "$ctl/right_h.rye" "$ctl/harness.rye"
+
     # One rule may be written `pub fn` in one rung and `fn` in another, and the
     # difference is a single word about who may call it rather than anything
     # about what it says. Keying on the raw text put that word inside the hash,
@@ -533,6 +562,7 @@ widens_fn=0
 widens_import=0
 widens_const=0
 : > "$work/private"
+: > "$work/owned"
 : > "$work/reached_all"
 while read -r base; do
     [ -n "$base" ] || continue
@@ -561,6 +591,19 @@ while read -r base; do
         [ -n "$name" ] || continue
         echo "$name" >> "$work/reached_all"
         if [ "$vis" = "PRIV" ]; then
+            # A constant already declared byte-for-byte in the destination
+            # harness resolves there after the lift. Keep it visible as an
+            # owned seam while leaving it out of the rung-opening price. A
+            # name-only match is deliberately insufficient: two constants may
+            # share a name and carry different values.
+            if [ "$kind" = "const" ]; then
+                rung_decl=$(grep -E "^(pub )?const ${name}([ =:]|$)" "$DIR/$base" | head -1 | sed 's/^pub //')
+                harness_decl=$(grep -E "^(pub )?const ${name}([ =:]|$)" "$DIR/$HARNESS" 2>/dev/null | head -1 | sed 's/^pub //' || true)
+                if [ -n "$rung_decl" ] && [ "$rung_decl" = "$harness_decl" ]; then
+                    printf '%s %s %s\n' "$name" "$kind" "$base" >> "$work/owned"
+                    continue
+                fi
+            fi
             widens=$((widens + 1))
             case "$kind" in
                 fn) widens_fn=$((widens_fn + 1)) ;;
@@ -579,6 +622,20 @@ if [ "$widens" -gt 0 ]; then
     sort "$work/private" | uniq -c | sort -rn | while read -r n name kind rung; do
         echo "REACH_PRIVATE symbol=$name kind=$kind rungs=$n first=$rung"
     done
+fi
+
+if [ -s "$work/owned" ]; then
+    sort -k1,1 -k2,2 -k3,3 "$work/owned" |
+        awk '
+            $1 != name || $2 != kind {
+                if (count) print count, name, kind, first
+                name = $1; kind = $2; first = $3; count = 0
+            }
+            { count = count + 1 }
+            END { if (count) print count, name, kind, first }
+        ' | sort -rn | while read -r n name kind rung; do
+            echo "REACH_OWNED symbol=$name kind=$kind rungs=$n first=$rung"
+        done
 fi
 
 # The stub a fold leaves behind is the signature plus two lines -- the return
