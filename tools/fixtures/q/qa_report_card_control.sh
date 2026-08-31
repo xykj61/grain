@@ -353,7 +353,56 @@ echo "$o" | grep -q 'reach=0 .*0 words' && echo "unknown_mark_reads_nothing=yes"
 # a second comment head to strip.
 printf '%s\n' '// A note whose sentence mentions a :: mark mid-line stays one whole sentence here.' > "$pen/midline.rye"
 o=$(run midline.rye --setting field --service 100)
-echo "$o" | grep -q 'A note whose' && echo "midline_unstripped=unchecked" || echo "midline_unstripped=yes"
-[ "$(val "$o" reach)" -gt 0 ] && echo "midline_still_read=yes" || echo "midline_still_read=no ($(val "$o" reach))"
+[ "$(val "$o" program_head_lines)" -eq 0 ] && echo "midline_unstripped=yes" || echo "midline_unstripped=no"
+[ "$(val "$o" program_meter_lines)" -eq 0 ] && echo "midline_still_read=yes" || echo "midline_still_read=no"
+
+# 19 -- a program carries its settings in its comment forms, never in the caller's word. The Door
+# head stays readable while refusal-heavy invariant lines stay exact at Meter. Declaration docs
+# are the third form in the grammar; the card reports them and assigns them to neither pole.
+cat > "$pen/two_poles.rye" <<'EOF'
+//! A small queue keeps ready work in a fixed array. A reader can learn its purpose here.
+//! The module owns the capacity and reports when the queue is full.
+//! Each item keeps its place until a caller removes it.
+//! The public operations share one capacity declared below.
+//! A caller receives a named error when the array is full.
+//! The queue changes in one direction for each successful call.
+//! Its tests can read the same state that production code changes.
+//! This head tells a new reader what the module provides.
+const std = @import("std");
+/// Adds one item to the queue.
+pub fn add() void {
+    // invariant: no write may pass the fixed queue bound.
+    // invariant: a full queue cannot accept another item.
+}
+EOF
+door_program=$(run two_poles.rye --setting door --service 100)
+field_program=$(run two_poles.rye --setting field --service 100)
+meter_program=$(run two_poles.rye --setting meter --service 100)
+door_letter=$(val "$door_program" letter)
+[ "$door_letter" = "$(val "$field_program" letter)" ] \
+  && [ "$door_letter" = "$(val "$meter_program" letter)" ] \
+  && echo "program_setting_independent=yes" || echo "program_setting_independent=no"
+[ "$(val "$door_program" program_head_lines)" -eq 8 ] \
+  && echo "program_head_is_door=yes" || echo "program_head_is_door=no"
+[ "$(val "$door_program" program_meter_lines)" -eq 2 ] \
+  && echo "program_bounds_are_meter=yes" || echo "program_bounds_are_meter=no"
+[ "$(val "$door_program" program_decl_lines)" -eq 1 ] \
+  && echo "program_decl_reported=yes" || echo "program_decl_reported=no"
+[ "$(val "$door_program" meter_register)" -eq 100 ] \
+  && [ "$(val "$door_program" meter_reach)" -eq 100 ] \
+  && echo "program_meter_unscored=yes" || echo "program_meter_unscored=no"
+
+# Both poles are load-bearing. A hostile bound sentence must leave the Door reading unchanged, and
+# a hostile module head must still lower it even when the caller asks for Meter.
+cp "$pen/two_poles.rye" "$pen/bound_hostile.rye"
+printf '%s\n' '    // invariant: no bound can fail and no fault may pass and nothing is accepted.' \
+  >> "$pen/bound_hostile.rye"
+hostile_bound=$(run bound_hostile.rye --setting door --service 100)
+[ "$(val "$door_program" register)" -eq "$(val "$hostile_bound" register)" ] \
+  && echo "program_meter_cannot_lower_door=yes" || echo "program_meter_cannot_lower_door=no"
+sed 's/A small queue keeps/No small queue can keep/' "$pen/two_poles.rye" > "$pen/head_hostile.rye"
+hostile_head=$(run head_hostile.rye --setting meter --service 100)
+[ "$(val "$hostile_head" register)" -lt "$(val "$meter_program" register)" ] \
+  && echo "program_door_still_scored=yes" || echo "program_door_still_scored=no"
 
 echo "control_verdict=ok"

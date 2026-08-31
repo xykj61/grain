@@ -137,23 +137,43 @@ sed -n '/^measure() {/,/^}/p' "$reg_scan" > "$work/measure.sh"
 # `truth_source` split the citation reading already makes further down, hoisted so that one
 # classification serves all three rather than two that can come to disagree.
 case "$path" in
-  *.md|*.mdc|*.markdown) artifact_kind=prose ;;
-  *)                     artifact_kind=program ;;
+  *.md|*.mdc|*.markdown|*.bron|*.kyri) artifact_kind=prose ;;
+  *)                                       artifact_kind=program ;;
 esac
 
 if [ "$artifact_kind" = prose ]; then
   prose_path="$root/$path"
 else
-  # The marker comes off so each line reads as the sentence it is; leaving `# ` on would send every
-  # line straight back into the heading rule this repair exists to escape. A shebang is an
-  # instruction to the kernel rather than a word to a reader, so it is dropped.
-  awk 'NR == 1 && /^#!/ { next }
-       /^[ \t]*(\/\/|#|::)/ {
+  # A program carries two settings in one file. The grammar names the Door: `//!` is a module
+  # document in Rye, while a leading `#` or `::` block is the module document in the other family
+  # tongues. Meter is narrower: the seated `invariant:` line beside a bound or assert. Declaration
+  # docs (`///`) and loose comments are useful prose, yet neither pole owns them, so the card names
+  # their count and leaves them out rather than letting a typed --setting decide their grade.
+  awk '
+    function clean(line) {
+      sub(/^[ \t]*(\/\/!|#|::)[ ]?/, "", line)
+      return line
+    }
+    NR == 1 && /^#!/ { next }
+    !code && /^[ \t]*\/\/!/ { print clean($0); next }
+    !code && /^[ \t]*(#|::)/ { print clean($0); next }
+    !code && /^[ \t]*$/ { next }
+    { code = 1 }
+  ' "$root/$path" > "$work/program-head.txt"
+  awk '/^[ \t]*(\/\/|#|::)/ && /invariant:/ {
          line = $0
          sub(/^[ \t]*(\/\/[\/!]?|#|::)[ ]?/, "", line)
          print line
-       }' "$root/$path" > "$work/prose.txt"
-  prose_path="$work/prose.txt"
+       }' "$root/$path" > "$work/program-meter.txt"
+  program_decl_lines=$(awk '/^[ \t]*\/\/\// { n++ } END { print n + 0 }' "$root/$path")
+  program_meter_lines=$(wc -l < "$work/program-meter.txt" | tr -d ' ')
+  program_head_lines=$(wc -l < "$work/program-head.txt" | tr -d ' ')
+  prose_path="$work/program-head.txt"
+
+  # The caller chooses a document's setting. A program's two settings come from Gauge itself, so
+  # the same bytes must read the same whichever legacy word a hand supplies.
+  grade_ceiling=9
+  xref_ceiling=1
 fi
 
 set -- $(measure "$prose_path")
@@ -283,7 +303,9 @@ if [ "$declares_index" = yes ] && [ "$words" -lt "$index_floor" ]; then
 fi
 
 # Meter carries no reach budget, because refusal-first prose is the subject rather than a fault.
-[ "$setting" = "meter" ] && { register=100; reach=100; reach_mode=meter; register_mode=meter; }
+# A whole program is never Meter: its head remains Door and its bound lines are reported below.
+[ "$setting" = "meter" ] && [ "$artifact_kind" = prose ] \
+  && { register=100; reach=100; reach_mode=meter; register_mode=meter; }
 
 # --- Truth, the counted half: every relative link resolves somewhere ------------------------------
 # A relative citation belongs to the BODY that wrote it, and a symlink is a second door onto one
@@ -336,8 +358,8 @@ illustrations=0
 # question of a link inside a fenced block or a backtick span reaches 20+ documents and wants its
 # own round with its own measurement, rather than riding along on this one.
 case "$path" in
-  *.md|*.mdc|*.markdown) truth_source=prose ;;
-  *)                     truth_source=comments ;;
+  *.md|*.mdc|*.markdown|*.bron|*.kyri) truth_source=prose ;;
+  *)                                       truth_source=comments ;;
 esac
 
 if [ "$truth_source" = prose ]; then
@@ -417,6 +439,19 @@ fi
 # --- The card ------------------------------------------------------------------------------------
 echo "qa_path=$path"
 echo "qa_setting=$setting"
+if [ "$artifact_kind" = program ]; then
+  set -- $(measure "$work/program-meter.txt")
+  meter_sentences=$1
+  meter_negatives=$2
+  meter_neg_pct=$3
+  meter_words=$(awk '{ for (i = 1; i <= NF; i++) n++ } END { print n + 0 }' "$work/program-meter.txt")
+  echo "program_dial=split (module head Door; invariant bounds Meter; declaration docs reported)"
+  echo "program_head_lines=$program_head_lines"
+  echo "program_meter_lines=$program_meter_lines"
+  echo "program_decl_lines=$program_decl_lines"
+  echo "meter_register=100 (negative $meter_neg_pct% of $meter_sentences sentences reported, not scored)"
+  echo "meter_reach=100 ($meter_words words reported, not scored)"
+fi
 if [ "$register_mode" = scored ]; then
   echo "register=$register (negative $neg_pct% of $sentences sentences)"
 else
