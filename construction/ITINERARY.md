@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `7023063e9d` -- this round's own.
+**Git nib:** `c3fa64ed59` -- this round's own.
 
 **Now.** **A program's grammar chooses its Door and Meter readings; the caller's setting no longer changes the grade.**
 
@@ -92,13 +92,13 @@ Caught by `wc -c`. `%390`/`%391` FOLDED. **Named:** weigh every ENFORCE pin at t
 **Next doors.** Dream: Scribe baton-v1. Caravan keeps a 5-second seam and sings on cadence or
 touch. Kumara LANDED. Hush: `spool_cloth`'s bounds want desks --
 `max_large_artifacts`, `guaranteed_full_artifacts`, eight `ClothError` paths; and the shape room's
-other 37 residents have never had their nib read. Silence: the carded `virtio_net.rye` molt
-LANDED -- Door head, Register **65 -> 73**, device-wire GREEN, code byte-identical. Reach would not move and **%392** says why: the head reads **8.8** against Door's 9,
-the 501 words of `// invariant:` read **16.4** against a ceiling Meter leaves uncapped, and the
-card averages them. **%393** CLOSED -- `operations_conformance_witness` builds into
-gitignored `mandate/bin/` without making it, so `acme_dx` is green on a bench that built Mandate and
-red on a clone that has not; one `mkdir -p`. Its fourth red, `commit_message_guard`, greps the
-untracked `publish-seed.sh` -- not taken.
+other 37 residents have never had their nib read. Silence: **%392 closed twice.** The pier landed the
+same split first, from the grammar rather than contiguity -- **theirs stands, mine parks**. What only my pass holds is the **population**: over 134 sources sampled every 37th the landed card
+reads **61 below B** where the elder at `577479ade` read **all 134 A+** at `meter`; my own build
+read 60, the cross-check. **Yours:** Door's ceiling is **9**, a dense head runs
+12-17, and I read enough to say the grades are honest. **Door, not taken:**
+`rule_twin_additive_scan.sh` reads `quality-assurance` as the roster's ONE `additive:claude` pair,
++3 lines the twin lacks -- gate %7.
 **%389 fired twice more in one day:** against the hand that took its mitigation (shelf names read
 free on `xy/main`, the pier spending `%390`/`%391` inside the window), and here -- `next_free` read
 392, the pier published `%392`/`%393` during my 43-minute hot pass, mine renumbered to `%394` and
@@ -218,6 +218,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260831.065204` | The setting comes from the grammar -- `%392` closes with Door and Meter read apart | [log](../session-logs/date/20260831/20260831-065204_the-setting-comes-from-the-grammar.kyri) |
+| `20260831.072403` | The same split landed twice -- `%392` closed by two hands, and the population it moved | [log](../session-logs/date/20260831/20260831-072403_the-same-split-landed-twice.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)
