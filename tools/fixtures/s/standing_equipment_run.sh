@@ -24,7 +24,8 @@
 # runner does not know is refused by tools/fixtures/s/standing_equipment_scan.sh rather than run past,
 # because a guard on such a tier would run on no lap at all, in silence.
 #
-# WHAT IT WRITES. construction/standing-equipment-runs.kyri, one `ran <name> <stamp> <verdict> <tier>`
+# WHAT IT WRITES. construction/standing-equipment-runs.kyri, one
+# `ran <name> <stamp> <verdict> <tier> <seconds>`
 # line per guard. Lines for guards this pass left alone are KEPT, so a default run preserves the
 # cadence tier's own history rather than erasing it. The card is untracked by design -- it measures
 # THIS pier's history, and a fresh clone that has run nothing should say so.
@@ -574,6 +575,7 @@ fi
 ran=0
 green=0
 red=0
+seconds=0
 
 # A RED THAT KEEPS NO WORDS CANNOT BE ROOTED. This loop discarded every guard's output, so a red
 # printed one word -- the guard's name -- and whoever read it later had to reproduce the failure to
@@ -592,8 +594,21 @@ red=0
 # drives -- writing it mid-run would turn every red into a `tree_moved` refusal as well.
 red_room="construction/standing-equipment-reds"
 
+# WHAT A GUARD COST, recorded beside what it answered (REDS %388). This loop wrote a verdict and
+# no elapsed time, so the run card held a hundred verdicts and not one cost -- and a lap deciding
+# whether a pass fits its own clock had nothing to read but a window it had watched. On
+# `20260831.023122` a lap watched 15 guards for 30 minutes, took 2 min/guard as a rate, projected a
+# 106-guard close at three and a half hours, and shipped without a full roster. Measured here the
+# next hour over 28 guards: a **median of 2.5 seconds against a mean of 31**, `sow` at 280 and
+# `living_card_ascii` at 189, three guards holding 65% of 865 seconds. A mean fifteen times its own
+# median is not a rate, and no window of a distribution that skewed predicts the rest of it.
+#
+# TWO `date` FORKS PER GUARD, against guards measured in seconds -- a cost worth paying to stop
+# guessing. Seconds rather than anything finer, because this reading exists to size a PASS: a guard
+# that finishes inside a second is one no lap ever needs to think about, and it reads 0 honestly.
 while read -r name path tier; do
   [ -n "$name" ] || continue
+  guard_open=$(date +%s)
   if [ "$path" != "-" ] && [ -f "$path" ]; then
     if rishi/bin/rishi run "$path" > "$pen/out.$$" 2>&1; then
       verdict=green
@@ -609,8 +624,10 @@ while read -r name path tier; do
     verdict=absent
     red=$((red + 1))
   fi
-  echo "ran $name $stamp $verdict $tier" >> "$pen/fresh"
-  echo "$name $verdict"
+  guard_seconds=$(( $(date +%s) - guard_open ))
+  seconds=$((seconds + guard_seconds))
+  echo "ran $name $stamp $verdict $tier $guard_seconds" >> "$pen/fresh"
+  echo "$name $verdict ${guard_seconds}s"
   ran=$((ran + 1))
 done < "$pen/todo"
 
@@ -648,6 +665,8 @@ moved=no
 
 echo "tier_run=$want_tier"
 echo "guards_run=$ran"
+# The pass's own cost, so a hand reads what it just spent without opening the card (REDS %388).
+echo "guards_seconds=$seconds"
 echo "guards_green=$green"
 echo "guards_red=$red"
 echo "host=$this_host"

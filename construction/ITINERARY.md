@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `ea026e363b` -- this round's own.
+**Git nib:** `474e0bed51` -- this round's own.
 
 **Now.** **Two guards read green over the shelf a third read red, because
 the law moved the file they were written for.**
@@ -78,18 +78,19 @@ opening stash stop an in-flight pass in its own tree before moving the tree bene
 **Still open:** `glow/rune_shape.rye` keeps width custody; Mind keeps the reconnect stash,
 `%281`/`%291`, two `enclosure.conf` pins. **Named, not taken (%347):**
 `pond/enclosure_policy.kyri` 8,120/8,192; the wall is yours.
-**Rosters `20260831`:** the hot pass read **15 guards, all green**, then was stopped at 30
-minutes -- 2 min/guard at load 3.16 on four vCPUs shared with Dream's pass, so a 106-guard
-close wanted ~3.5 hours and this round had already been lost twice. SIGTERM released the lock
-through the runner's own trap (%387's repair, first field use). Each touched witness was
-proven alone. `rule_twin` holds at **%7**; `pond_enclosure_door` GREEN, gate %5 untouched.
-**Next doors.** Dream: Kumara, then Caravan. Hush: the twice-lost round LANDED -- two choirs
-rostered (`unheard` 1,144 -> **1,116**, choirs 40 -> **37**, closing %360 in this lane), the
-orphan-lock refusal, %386 and %387. Then this card's own recording blocks, halved here; the
-rest of them are a lap. Silence: `index_row_bound` derives the OPEN day shelf (%388) --
-23 duplicate stamps and six rows past 192 that a links-only guard never saw; the closed
-`20260830` shelf took a hand, since the guard leaves closed shelves alone. **%389** a fold
-allocates per tree, and one round collided four times on numbers and once on a fold.
+**Rosters `20260831`:** the cold pass ran **28 guards, all green, in 865 s** beside Dream's
+`--hot` pass on four shared vCPUs, then SIGTERM to land the round. Cost is **median 2.5 s,
+mean 31, max 280** (`sow` 280, `living_card_ascii` 189, `dated_path` 90) -- so the elder
+`~3.5 hours` was a mean read as a rate. **%390 repaired:** the run card carries `<seconds>`
+and the scan publishes total, absent, slowest. `runs_red` fell **6 -> 1** -- five were stale
+mid-round state, re-proven green through the runner; `rule_twin` at **%7** stands alone.
+**%391:** the session-logs pin opened on its oldest shelf; the row moved to its foot.
+**Next doors.** Dream: Kumara, then Caravan. Hush: the roster records what it costs, so a lap
+sizes its own pass; `%386`/`%387` FOLDED to make room -- the pin stood at **28 bytes free**
+after Dream's two rows, so a fold is now the price of booking anything. Silence:
+`index_row_bound` derives the OPEN day shelf (%388) -- 23 duplicate stamps and six rows past
+192 that a links-only guard never saw; the closed `20260830` shelf took a hand. **%389:** a
+fold allocates per tree, and one round collided four times on numbers and once on a fold.
 `virtio_net.rye` reads **C+ 78**, a carded molt.
 **%374 OPEN:** the receipt-chain question stays yours -- none has ever been earned here.
 ---
@@ -207,6 +208,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260831.000928` | The stopped line and the second fetch | [log](../session-logs/date/20260831/20260831-000928_the-stopped-line-and-the-second-fetch.kyri) |
+| `20260831.031509` | The roster learns what it costs -- a verdict gets its seconds, and a mean stops passing for a rate | [log](../session-logs/date/20260831/20260831-031509_the-roster-learns-what-it-costs.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)

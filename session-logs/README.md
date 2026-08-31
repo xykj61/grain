@@ -60,7 +60,6 @@ REDS %385 booked. A day's number is derived by counting its shelf on the lap tha
 
 | Day | Rows | Shelf |
 |---|---|---|
-| `through-20260721` | 775 | [`date/README-index-through-20260721.md`](date/README-index-through-20260721.md) |
 | `20260831` **open** | **open** | [`date/README-index-20260831.md`](date/README-index-20260831.md) |
 | `20260830` | 69 | [`date/README-index-20260830.md`](date/README-index-20260830.md) |
 | `20260829` | 84 | [`date/README-index-20260829.md`](date/README-index-20260829.md) |
@@ -101,5 +100,6 @@ REDS %385 booked. A day's number is derived by counting its shelf on the lap tha
 | `20260724` | 51 | [`date/README-index-20260724.md`](date/README-index-20260724.md) |
 | `20260722` | 161 | [`date/README-index-20260722.md`](date/README-index-20260722.md) |
 | `20260722-shelf` | 80 | [`date/README-index-20260722-shelf.md`](date/README-index-20260722-shelf.md) |
+| `through-20260721` | 775 | [`date/README-index-through-20260721.md`](date/README-index-through-20260721.md) |
 
 Full roster with counts: [`CHAPTERS.md`](CHAPTERS.md).
