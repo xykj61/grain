@@ -59,10 +59,10 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *Carry card for terminal - phone - waymarks. Refreshed on **remember**. Debrided to Compass Chapter `20260809.024320`; those greens live in code and counsel.*
 
-**Git nib:** `705eae43c2` -- this round's own.
+**Git nib:** `e6217826c8` -- this round's own.
 
-**Now.** **The post standing on the line: three families cut a whole into pieces, and
-the tightest carried what it accepts by exactly zero. The compiler holds it now.**
+**Now.** **The frame that holds what it seals: two layers nest, both at zero, and only
+the derived one was safe. The compiler holds the spelled one now.**
 
 **The live front** (condensed `20260830.012039`; the checkpoint holds the departing accounts,
 the day shelves every landed lap):
@@ -97,17 +97,18 @@ reads 17,248 against 17,247 after rebase.
 **%360's gate SETTLED `20260830.190407`:** `crashed-meteor` everywhere, publish shipped;
 remainder: pier clones' stale `publish-seed.sh`, your hand.
 `%359`/`%370` CLOSED; `%353`-`%355` folded.
-**Rosters `20260830`:** `grain-hush` 103/102; **123** rostered; `grain-silence` 60 of 96 in 25m, gate %7.
+**Rosters `20260830`:** `grain-hush` 103/102; **124** rostered; `grain-silence` 26 of 96, zero red, gates %5/%7.
 **The falsifier splits:** `env` travelled; the door half did not --
 `door_disagreements=1` at `user`, `derived=502 metal=unread`. Gate %5, named not touched.
 **Named, not taken (%347):** `pond/enclosure_policy.kyri` 8,120/8,192; widening the wall is yours.
 **Next doors.** Dream: Kumara, then Caravan. Hush: the digest red, then the lane-safe choirs
 (`drey` 17, `acme_dx` 11); the auditor still waits on gate %7.
-Silence: Comlink's remaining bounds. `vessel_fetch_wire.rye` is the untied third -- Amphora's.
-**%374 and %376 OPEN, one class -- two right mechanisms composing into a wrong reading.** A
-receipt written past the red exit, so a gated red bars `--scoped` (%5, %7); and a path-limited
-commit over the staging pre-commit hook, leaving the index at the pre-hook blob so the amend
-guard refuses a clean tree. Both proven both ways in a pen; three repairs named -- yours.
+Silence: the link frame is tied (`20260830.204814`) -- 554 is 12 + 14 + 528 and neither room
+imports the other. `vessel_fetch_wire.rye` stays Amphora's; `virtio_net.rye` comments read
+**C+ 78**, a carded molt.
+**%374/%376 OPEN, one class -- two right mechanisms composing wrong.** A receipt past the red
+exit bars `--scoped` (%5, %7); a path-limited commit over the staging hook leaves the index
+pre-hook, so the amend guard refuses a clean tree. Repairs named, yours.
 ---
 ## Landed arcs
 
@@ -222,7 +223,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260830.165037` | Caravan prices `answered_by` at the harness: 34 openings | [log](../session-logs/date/20260830/20260830-165037_the-destination-owns-its-constant.kyri) |
+| `20260830.204814` | The frame that holds what it seals: link nesting tied | [log](../session-logs/date/20260830/20260830-204814_the-frame-that-holds-what-it-seals.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it.
 

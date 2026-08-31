@@ -15,6 +15,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260830.210459` | [DirtySet explained, pastes reprinted](20260830-210459_dirtyset-explained-pastes-reprinted.kyri) | teaching turn; nine-seat dirty-region record |
 | `20260830.205759` | [Generated-pages debt paid, fleet triaged](20260830-205759_generated-pages-debt-fleet-triage.kyri) | fascia block reads 68; both Codex stops custody-clean |
 | `20260830.165037` | [The destination owns its constant](20260830/20260830-165037_the-destination-owns-its-constant.kyri) | Caravan prices `answered_by` at 34 openings; destination-owned constants cost zero |
+| `20260830.204814` | [The frame that holds what it seals](20260830/20260830-204814_the-frame-that-holds-what-it-seals.kyri) | two nesting layers at zero; only the derived one was safe |
 | `20260830.200925` | [The post on the line](20260830/20260830-200925_the-post-on-the-line.kyri) | carriage tied in three families; the bead post stood at zero slack |
 | `20260830.193650` | [The unheard sweep -- census 30, sidecar rides](20260830/20260830-193650_unheard-sweep-census-30-sidecar.kyri) | Sound closes %372/%373; concurrency witness GREEN |
 | `20260830.192524` | [a red costs the receipt](20260830/20260830-192524_a-red-costs-the-receipt.kyri) | a red close names the receipt it withheld; a gate is not a row |
