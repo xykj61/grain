@@ -1,72 +1,66 @@
 #!/bin/sh
-# tools/fixtures/p/pond_spool_cloth_glow_tend_scan.sh -- Pond's spool-cloth name pedestal and its
-# Rye source, read apart and compared.
+# tools/fixtures/p/pond_spool_cloth_glow_tend_scan.sh -- Pond's two spool-cloth pedestals, read
+# against the rooms that decide them.
 #
-# WHY THIS SHAPE. A Glow Tend pedestal names a bound a Rye module already holds, so the pedestal
-# earns its place only while the two agree. The elder Tend witnesses in this tree check that
-# agreement by grepping for the LITERAL number twice -- `example    48` in the desk and
-# `max_name: u32 = 48` in the Rye -- which writes the value a THIRD time, inside the guard. Raise
-# such a bound honestly in both real rooms and the guard still reds, because the copy nobody
-# thought of has not moved. A guard that reds on correct work is a guard someone turns off.
+# A pedestal in src/shape/ names a bound a Rye module holds. It earns its place while the two
+# agree, so this reads both sides and compares them.
 #
-# So this scan holds no value of its own. It reads what the desk shows, reads what the Rye
-# publishes, and compares them. The bound may move; the questions it answers do not.
+# THE SCAN HOLDS NO VALUE OF ITS OWN. Elder Tend guards grep for the literal number twice, which
+# writes it a third time inside the guard; raise the bound honestly in both rooms and such a guard
+# still reds, because the copy nobody thought of has not moved. A guard that reds on correct work
+# is a guard someone turns off. So the bound may move here and the questions stay the same.
 #
-# ONE PEDESTAL, FIVE READINGS, EACH ABLE TO FAIL ALONE.
+# TWO PEDESTALS, ONE SCAN, the way Tablecloth's four desks share one. One verdict line names the
+# first reading that refused across both. The desks carry the arguments; this file carries the
+# readings.
 #
-#   the desk agrees with ITSELF -- a bound desk spells its number twice, once in the `shape` line
-#   and once under `example`, and the two can part inside one file with nothing to say so;
-#   the desk agrees with the RYE -- the number equals `max_name`;
-#   the ALPHABET agrees -- the bytes the desk lists equal the bytes `name_is_one_field` refuses,
-#   because a length bound and a grammar wall are different facts, and REDS %354 cost a round to
-#   learn that the first was doing the second's job by arithmetic;
-#   the STORE edge is wired -- `store_large` still consults that wall, because a function refusing
-#   exactly the right bytes refuses nothing at all while no caller asks it;
-#   the MANIFEST edge is wired -- `parse_manifest` still reads the same bound.
+#   shape-spool-cloth-name-bound.glow       max_name, and the bytes its manifest wall removes.
+#   shape-spool-cloth-catalog-capacity.glow max_large_artifacts, and the artifacts the store pays for.
 #
-# WHY THE FIFTH READING EXISTS HERE AND NOT ON TABLECLOTH'S DESK. This module reads `max_name` at
-# the two places a name enters, and only one of them is a policy refusal. A parsed entry's name
-# lands in a fixed `[max_name]u8` field, so with that check gone a hand-authored manifest carrying
-# a sixty-byte name is copied past the end of the array -- a refusal downgraded to a panic. The
-# store edge and the manifest edge fire apart: delete either call and the other still stands, so
-# they are two readings rather than one wearing two names (.claude/rules/derived-spine.md).
+# Two regions are read from fixed opening and closing sentences the desks keep, rather than from
+# prose: the name desk's alphabet, and the capacity desk's list of constants. Prose carries other
+# plain words, and a guard reading whichever ones happen to be there is a guard the next honest
+# paragraph breaks.
 #
-# The desk's alphabet is read from a delimited region rather than from prose, because prose carries
-# other plain words and a guard reading whichever ones happen to be there is a guard the next
-# honest paragraph breaks. The region opens and closes on two fixed sentences the desk keeps, and
-# the words sit at a four-space indent inside it.
+# WHAT IT READS, for the name pedestal
+#   placard_order    the desk's first six placard keywords, in seated order.
+#   citation         whether the desk names the Rye file its number and wall come from.
+#   desk_example     the length the pedestal displays.
+#   desk_bound       the length the pedestal's own shape line spells.
+#   rye_max_name     the length pond/apps/spool_cloth.rye publishes.
+#   desk_bytes       the reserved bytes the pedestal lists, sorted and named.
+#   rye_wall_bytes   the bytes name_is_one_field refuses, sorted and named; a byte the table does.
+#                    not know reads `unnamed:<literal>` and refuses rather than passing quietly.
+#   store_wired      whether store_large still consults that wall.
+#   parse_wired      whether parse_manifest still reads that bound.
+#   desk_nib         the module version the pedestal says it displays at.
+#   rye_version      the version pond/apps/spool_cloth.rye publishes.
 #
-# The wall's bytes are read out of the function body and rendered as plain words, so a byte the
-# name table does not know reads `unnamed:<literal>` and refuses rather than passing quietly.
+# and for the capacity pedestal, whose companion number is DERIVED rather than published
+#   capacity_placard_order, capacity_citation, capacity_desk_example, capacity_desk_bound.
+#                    the same four questions, asked of the second desk.
+#   rye_max_large_artifacts   the seat count pond/apps/spool_cloth.rye publishes.
+#   capacity_desk_inputs      the four constants the desk lists, sorted `name=value`.
+#   mantra_inputs             the same four, read from the rooms that publish them.
+#   rye_guarantee             those four RECOMPUTED, in the order the module composes them.
+#   capacity_desk_guarantee   the guarantee the desk states in words.
+#   capacity_derivation_wired whether the module still derives it rather than spelling it.
+#   capacity_store_wired      whether store_large still refuses a full catalog.
+#   capacity_parse_wired      whether parse_manifest still refuses an overlong manifest.
+#   capacity_keyed_wired      whether pond/apps/spool_keyed.rye still sizes owners by this bound.
+#   capacity_desk_nib         the version the capacity pedestal says it displays at.
+#   verdict          agree, or the one reading that refused.
 #
-# AND THE NIB'S VALUE IS READ, WHICH NO DESK IN THIS ROOM HAS HAD BEFORE. PLACARD.md seats six
-# lines and says why the last one is there -- a pedestal always displays a value AT a nib. Every
-# placard-order reading in the tree counts the `nib` KEYWORD and stops; across all 37 residents
-# standing before this one, the stamp after it is compared to nothing. A module whose version moves
-# while its desk keeps the elder nib is a desk saying, in its own words, that it shows a value from
-# a release the module has left. So the stamp is compared against the version the Rye publishes,
-# and an honest bump moves both -- proven as a welcome rather than assumed.
+# Each reading can fail while the others agree, which the control proves by reading a survivor by
+# name while its neighbour refuses. Two readings that always fire together would be one reading
+# wearing two names (.claude/rules/derived-spine.md).
 #
-# WHAT IT READS
-#   placard_order    the desk's first six placard keywords, in seated order
-#   citation         whether the desk names the Rye file its number and wall come from
-#   desk_example     the length the pedestal displays
-#   desk_bound       the length the pedestal's own shape line spells
-#   rye_max_name     the length pond/apps/spool_cloth.rye publishes
-#   desk_bytes       the reserved bytes the pedestal lists, sorted and named
-#   rye_wall_bytes   the bytes name_is_one_field refuses, sorted and named
-#   store_wired      whether store_large still consults that wall
-#   parse_wired      whether parse_manifest still reads that bound
-#   desk_nib         the module version the pedestal says it displays at
-#   rye_version      the version pond/apps/spool_cloth.rye publishes
-#   verdict          agree, or the one reading that refused
-#
-# WHAT IT DOES NOT READ. Whether forty-eight is the right length -- that is Pond's design question
-# -- and whether the desk lowers and runs, which the witness drives the toolchain for. This stays a
-# pure text reading so a control can run it dozens of times in a pen for nothing.
+# WHAT IT DOES NOT READ. Whether the numbers are the right numbers, which is Pond's design
+# question, and whether a desk lowers and runs, which the witness drives the toolchain for. This
+# stays a pure text reading so a control can run it dozens of times in a pen for nothing.
 #
 # USAGE
-#   sh tools/fixtures/p/pond_spool_cloth_glow_tend_scan.sh [<root>]
+#   sh tools/fixtures/p/pond_spool_cloth_glow_tend_scan.sh [<root>].
 #
 # Driven by tools/p/pond_spool_cloth_glow_tend_witness.rish. Run from the repository root.
 
@@ -74,7 +68,11 @@ set -eu
 
 root=${1:-.}
 desk="$root/src/shape/shape-spool-cloth-name-bound.glow"
+capacity_desk="$root/src/shape/shape-spool-cloth-catalog-capacity.glow"
 rye="$root/pond/apps/spool_cloth.rye"
+keyed="$root/pond/apps/spool_keyed.rye"
+beading="$root/mantra/beading.rye"
+spool_rye="$root/mantra/spool.rye"
 
 expect_order='name shape invariant example readers nib'
 
@@ -161,6 +159,49 @@ desk_bytes_of() {
   fi
 }
 
+# The guarantee a capacity pedestal states in words, so a derived number is DISPLAYED rather than
+# left for a reader to work out. Read as a literal, then checked against the arithmetic below.
+guarantee_of() {
+  if [ -f "$1" ]; then
+    got=$(sed -n 's/^::  the guarantee is \([0-9][0-9]*\) ceiling artifacts.*$/\1/p' "$1" | head -1)
+    [ -n "$got" ] || got=none
+    printf '%s\n' "$got"
+  else
+    printf 'none\n'
+  fi
+}
+
+# The constants a capacity pedestal lists, as sorted `name=value` pairs. Read from the delimited
+# region only, for the reason the alphabet region above is: prose carries other plain words, and a
+# guard reading whichever ones happen to be there is a guard the next honest paragraph breaks.
+# `LC_ALL=C sort` because these names carry underscores, and a locale that files `_` after a letter
+# would order the desk's list and the modules' list differently while both said the same thing.
+desk_inputs_of() {
+  if [ -f "$1" ]; then
+    sed -n '/^::  the constants that decide it, each published one room away:$/,/^::  that is the whole budget behind the guarantee\.$/p' "$1" \
+      | sed -n 's/^::    \([a-z_][a-z_]*\) \([0-9][0-9]*\)$/\1=\2/p' \
+      | LC_ALL=C sort | tr '\n' ' ' | sed 's/ *$//'
+  fi
+}
+
+# One published constant, read from whichever module declares it. Searched rather than tabled: three
+# of these live in mantra/beading.rye and one in mantra/spool.rye, and a guard holding a table of
+# which room owns which name would red the day Mantra moved one honestly. A name no module publishes
+# reads `none`, which no comparison can match.
+const_of() {
+  _name=$1
+  shift
+  for _f in "$@"; do
+    [ -f "$_f" ] || continue
+    _got=$(sed -n "s/^pub const $_name: u32 = \([0-9][0-9]*\);\$/\1/p" "$_f" | head -1)
+    if [ -n "$_got" ]; then
+      printf '%s\n' "$_got"
+      return 0
+    fi
+  done
+  printf 'none\n'
+}
+
 placard_order=$(placard_of "$desk")
 echo "placard_order=$placard_order"
 
@@ -216,6 +257,110 @@ if [ -f "$rye" ]; then
 fi
 echo "rye_version=$rye_version"
 
+# ---- the capacity pedestal: seats, and the bytes behind them ----------------------------------
+
+capacity_placard_order=$(placard_of "$capacity_desk")
+echo "capacity_placard_order=$capacity_placard_order"
+
+# This desk names four rooms rather than one, and it is read as ONE citation because a desk citing
+# three of the four leaves a reader unable to check the arithmetic at all -- the same fault, however
+# many lines it takes. The number is decided in pond/apps/spool_cloth.rye, the guarantee in
+# mantra/beading.rye and mantra/spool.rye, and the third array it sizes in pond/apps/spool_keyed.rye.
+capacity_citation=no
+if [ -f "$capacity_desk" ] \
+  && grep -q 'pond/apps/spool_cloth.rye' "$capacity_desk" \
+  && grep -q 'pond/apps/spool_keyed.rye' "$capacity_desk" \
+  && grep -q 'mantra/beading.rye' "$capacity_desk" \
+  && grep -q 'mantra/spool.rye' "$capacity_desk"; then
+  capacity_citation=yes
+fi
+echo "capacity_citation=$capacity_citation"
+
+capacity_desk_example=$(example_of "$capacity_desk")
+echo "capacity_desk_example=$capacity_desk_example"
+capacity_desk_bound=$(bound_of "$capacity_desk")
+echo "capacity_desk_bound=$capacity_desk_bound"
+
+rye_max_large_artifacts=none
+if [ -f "$rye" ]; then
+  found=$(sed -n 's/^pub const max_large_artifacts: u32 = \([0-9][0-9]*\);$/\1/p' "$rye" | head -1)
+  [ -z "$found" ] || rye_max_large_artifacts=$found
+fi
+echo "rye_max_large_artifacts=$rye_max_large_artifacts"
+
+capacity_desk_inputs=$(desk_inputs_of "$capacity_desk")
+echo "capacity_desk_inputs=$capacity_desk_inputs"
+
+# The same four names, read from the rooms that publish them. Listed in LC_ALL=C sorted order here
+# so the two sides are built the same way rather than sorted the same way by luck.
+mantra_max_bead_bytes=$(const_of max_bead_bytes "$beading" "$spool_rye")
+mantra_max_resin_bytes=$(const_of max_resin_bytes "$beading" "$spool_rye")
+mantra_max_resins=$(const_of max_resins "$beading" "$spool_rye")
+mantra_max_store_beads=$(const_of max_store_beads "$beading" "$spool_rye")
+mantra_inputs="max_bead_bytes=$mantra_max_bead_bytes max_resin_bytes=$mantra_max_resin_bytes max_resins=$mantra_max_resins max_store_beads=$mantra_max_store_beads"
+echo "mantra_inputs=$mantra_inputs"
+
+# The guarantee, RECOMPUTED from what those rooms publish rather than read from a copy. Two floor
+# divisions, which is what u32 division does in the Rye, in the same order the module writes them:
+# a full resin becomes max_resin_bytes / max_bead_bytes beads, a ceiling artifact fills max_resins
+# of those, and the store pays for max_store_beads of them. A zero or an absent constant refuses
+# rather than dividing, since a guard that divides by nothing reports a crash as a disagreement.
+rye_guarantee=none
+case "$mantra_max_bead_bytes:$mantra_max_resin_bytes:$mantra_max_resins:$mantra_max_store_beads" in
+  *none*) rye_guarantee=none ;;
+  *)
+    if [ "$mantra_max_bead_bytes" -gt 0 ]; then
+      full_beads=$(( mantra_max_resins * (mantra_max_resin_bytes / mantra_max_bead_bytes) ))
+      if [ "$full_beads" -gt 0 ]; then
+        rye_guarantee=$(( mantra_max_store_beads / full_beads ))
+      fi
+    fi
+    ;;
+esac
+echo "rye_guarantee=$rye_guarantee"
+
+capacity_desk_guarantee=$(guarantee_of "$capacity_desk")
+echo "capacity_desk_guarantee=$capacity_desk_guarantee"
+
+# The module still DERIVES the guarantee rather than spelling it. Respell it as a literal and every
+# number above still agrees while the desk's sentence has gone false, so this is a fact of its own.
+capacity_derivation_wired=no
+if [ -f "$rye" ] \
+  && grep -q 'const full_artifact_beads: u32 = spool.max_resins \* (beading.max_resin_bytes / beading.max_bead_bytes);' "$rye" \
+  && grep -q 'pub const guaranteed_full_artifacts: u32 = beading.max_store_beads / full_artifact_beads;' "$rye"; then
+  capacity_derivation_wired=yes
+fi
+echo "capacity_derivation_wired=$capacity_derivation_wired"
+
+# The catalog edge, read rather than inferred: store_large refuses a full catalog.
+capacity_store_wired=no
+if [ -f "$rye" ] \
+  && grep -q 'if (cat.count >= max_large_artifacts) return error\.CatalogFull;' "$rye"; then
+  capacity_store_wired=yes
+fi
+echo "capacity_store_wired=$capacity_store_wired"
+
+# The manifest edge: parse_manifest refuses a manifest carrying more lines than the bound.
+capacity_parse_wired=no
+if [ -f "$rye" ] \
+  && grep -q 'if (man.count >= max_large_artifacts) return error\.CatalogFull;' "$rye"; then
+  capacity_parse_wired=yes
+fi
+echo "capacity_parse_wired=$capacity_parse_wired"
+
+# The third array, one module over, and the reading no desk in this room has carried before.
+# pond/apps/spool_keyed.rye sizes its owners array by THIS bound. Give that array a literal of its
+# own and a raise here leaves it short, so store_owned_large writes owners[before] past the end.
+capacity_keyed_wired=no
+if [ -f "$keyed" ] \
+  && grep -q 'owners: \[cloth\.max_large_artifacts\]u32,' "$keyed"; then
+  capacity_keyed_wired=yes
+fi
+echo "capacity_keyed_wired=$capacity_keyed_wired"
+
+capacity_desk_nib=$(nib_of "$capacity_desk")
+echo "capacity_desk_nib=$capacity_desk_nib"
+
 verdict=agree
 if [ ! -f "$desk" ]; then
   verdict=desk_missing
@@ -249,6 +394,56 @@ elif [ "$rye_version" = none ]; then
   verdict=rye_version_missing
 elif [ "$desk_nib" != "$rye_version" ]; then
   verdict=nib_disagree
+fi
+
+# The capacity pedestal's chain, run only once the name pedestal agrees, so one verdict line names
+# the first reading that refused across both desks rather than two competing for it.
+if [ "$verdict" = agree ]; then
+  if [ ! -f "$capacity_desk" ]; then
+    verdict=capacity_desk_missing
+  elif [ ! -f "$beading" ]; then
+    verdict=beading_missing
+  elif [ ! -f "$spool_rye" ]; then
+    verdict=spool_missing
+  elif [ ! -f "$keyed" ]; then
+    verdict=keyed_missing
+  elif [ "$capacity_placard_order" != "$expect_order" ]; then
+    verdict=capacity_placard_wrong
+  elif [ "$capacity_citation" != yes ]; then
+    verdict=capacity_citation_missing
+  elif [ "$capacity_desk_example" = none ]; then
+    verdict=capacity_desk_example_missing
+  elif [ "$rye_max_large_artifacts" = none ]; then
+    verdict=rye_seats_missing
+  elif [ "$capacity_desk_bound" != "$capacity_desk_example" ]; then
+    verdict=capacity_desk_self_disagree
+  elif [ "$capacity_desk_example" != "$rye_max_large_artifacts" ]; then
+    verdict=capacity_disagree
+  elif [ -z "$capacity_desk_inputs" ]; then
+    verdict=capacity_inputs_missing
+  elif [ "$capacity_desk_inputs" != "$mantra_inputs" ]; then
+    verdict=capacity_inputs_disagree
+  elif [ "$capacity_desk_guarantee" = none ]; then
+    verdict=capacity_guarantee_missing
+  elif [ "$rye_guarantee" = none ]; then
+    verdict=mantra_guarantee_unreadable
+  elif [ "$capacity_desk_guarantee" != "$rye_guarantee" ]; then
+    verdict=capacity_guarantee_disagree
+  elif [ "$capacity_derivation_wired" != yes ]; then
+    verdict=capacity_derivation_unwired
+  elif [ "$capacity_store_wired" != yes ]; then
+    verdict=capacity_store_unwired
+  elif [ "$capacity_parse_wired" != yes ]; then
+    verdict=capacity_parse_unwired
+  elif [ "$capacity_keyed_wired" != yes ]; then
+    verdict=capacity_keyed_unwired
+  elif [ "$rye_max_large_artifacts" -lt "$rye_guarantee" ]; then
+    verdict=capacity_order_wrong
+  elif [ "$capacity_desk_nib" = none ]; then
+    verdict=capacity_nib_missing
+  elif [ "$capacity_desk_nib" != "$rye_version" ]; then
+    verdict=capacity_nib_disagree
+  fi
 fi
 
 echo "verdict=$verdict"

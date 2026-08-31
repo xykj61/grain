@@ -46,9 +46,9 @@
 
 ### Now -- the live front
 
-**Git nib:** `c3fa64ed59` -- this round's own.
+**Git nib:** `dd96caf128` -- this round's own.
 
-**Now.** **A program's grammar chooses its Door and Meter readings; the caller's setting no longer changes the grade.**
+**Now.** **Two walls stand over one room -- one counts seats, the other counts bytes -- and the desk names both ends of the range.**
 
 **The live front** (condensed `20260831.023122`; the day shelves hold every landed lap):
 - **Tri-OS** BOOKED for Dream: LOCA parity via `brushstroke/wayland_seed.rye`, pins in
@@ -72,37 +72,36 @@ clone seats `ww` (`grain-ww/grain`, gate %1) and `.git/ssh_config_jail`.
 labels in `tools/gen/chapter/fascia_metric_v0.rish`. **Tablecloth, two, cross-lane:** its name desk
 reads one of `max_name`'s two call sites (`parse_manifest` reads it too, over the same fixed
 `[max_name]u8`), and four `*_example_missing` verdicts carry no control case -- deleting the
-`example` line lands on `placard_wrong` one reading earlier. **CION:** `drey`'s rung marks are the retired
-form (%329). **Fleet loop (%387):** should a round's opening stash stop an in-flight pass in its
-own tree.
+`example` line lands on `placard_wrong` one reading earlier. **Tablecloth, third:** its scan reads **C 73** for
+%397's reason, 102 head lines with no table periods. **Dream's parked package:**
+`xy/pier/diverged-20260831-064342` holds the roster-pen fix unlanded since 06:43, not mine to
+rebase. **CION:** `drey`'s rung marks are the retired form (%329). **Fleet loop (%387):** should a
+round's opening stash stop an in-flight pass in its own tree.
 
 **Still open:** `glow/rune_shape.rye` keeps width custody; Mind keeps the reconnect stash,
 `%281`/`%291`, two `enclosure.conf` pins. **Named (%347):** `pond/enclosure_policy.kyri`
 8,120/8,192; the wall is yours.
-**Rosters `20260831`:** guard cost is **median 3 s, mean 25.7, max 840** (`caravan_suite`) -- four
-hold **55%** of a pass and 35 cost a second or less, so `~3.5 hours` and `55 min` were each a mean
-read as a rate. BOTH halves ran whole: cold and hot each **108 guards, 107
-green**, 2,774 s and 2,568 s, `tree_moved=no`, guard time 2,772 of 2,774 -- a pass IS its guards.
-`rule_twin` at **%7** is the one red.
-**%394, mine:** `pkill -f` matches every process on the HOST, and three bodies here run
-`standing_equipment_run.sh` -- stop a runner by pid, read from `/proc/<pid>/cwd`.
-**%395, mine, and it shipped:** REDS went **1,040 over** its enforced bound on the rebase, green
-throughout -- `pin_bound_touch` weighs only pins a commit STAGES, and a rebase skips the hook.
-Caught by `wc -c`. `%390`/`%391` FOLDED. **Named:** weigh every ENFORCE pin at the open.
+**Rosters `20260831`:** four guards hold **55%** of a pass and 35 cost a second or less, so a mean
+read as a rate misses by an hour. Cold **108/104**, hot **108/103**, `tree_moved=no` both. Of the
+hot five, **none is this round's**: `rule_twin` %7, `%398`, and `geode_libraries`/`nib_honesty`/
+`remember_git_nib` all red at `51b656a32b` itself -- the last three resolve at the commit hook and
+the amend.
+**%396 FOLDED:** a `TMPDIR` inside `.git` put three controls' pens INSIDE the tree, so each lost
+the case asserting the pen looks like nowhere. **%397:** 28 periods on a reference table moved one
+head **C 74 -> A 91**, content unchanged. **%398, YOURS:** `%392`'s landed repair turned
+`comment_citation` red -- it cites the card rather than copying it, so the split dial dropped its
+four exclusions. `577479ade8` reads 0 broken, `51b656a32b` reads 10, same 108 programs, nothing of
+mine in either. Gates at zero, so EVERY body's pass closes `guard_red` until it is placed.
+`%393`/`%394`/`%395` FOLDED.
 **Next doors.** Dream: Scribe baton-v1. Caravan keeps a 5-second seam and sings on cadence or
-touch. Kumara LANDED. Hush: `spool_cloth`'s bounds want desks --
-`max_large_artifacts`, `guaranteed_full_artifacts`, eight `ClothError` paths; and the shape room's
-other 37 residents have never had their nib read. Silence: **%392 closed twice.** The pier landed the
+touch. Kumara LANDED. Hush: `spool_cloth`'s eight `ClothError`
+paths are its last bound wanting a desk; the shape room's other 37 nibs are unread. Silence: **%392 closed twice.** The pier landed the
 same split first, from the grammar rather than contiguity -- **theirs stands, mine parks**. What only my pass holds is the **population**: over 134 sources sampled every 37th the landed card
 reads **61 below B** where the elder at `577479ade` read **all 134 A+** at `meter`; my own build
 read 60, the cross-check. **Yours:** Door's ceiling is **9**, a dense head runs
 12-17, and I read enough to say the grades are honest. **Door, not taken:**
 `rule_twin_additive_scan.sh` reads `quality-assurance` as the roster's ONE `additive:claude` pair,
 +3 lines the twin lacks -- gate %7.
-**%389 fired twice more in one day:** against the hand that took its mitigation (shelf names read
-free on `xy/main`, the pier spending `%390`/`%391` inside the window), and here -- `next_free` read
-392, the pier published `%392`/`%393` during my 43-minute hot pass, mine renumbered to `%394` and
-the stamp never moved. The window is the round, not the check. `%388`/`%389` FOLDED.
 **%374 OPEN:** the receipt-chain question stays yours -- none has ever been earned here.
 ---
 ## Landed arcs
@@ -218,6 +217,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260831.072403` | The same split landed twice -- `%392` closed by two hands, and the population it moved | [log](../session-logs/date/20260831/20260831-072403_the-same-split-landed-twice.kyri) |
+| `20260831.074836` | Two walls over one room -- Pond's catalog capacity takes a desk, and a table's missing periods move a grade two letters | [log](../session-logs/date/20260831/20260831-074836_two-walls-over-one-room.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)

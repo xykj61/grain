@@ -1087,13 +1087,23 @@ seated 20260831.014630
 # It is compared against spool_cloth_version now, so a module whose version moves while its desk
 # keeps the elder nib reds here.
 #
-# Twenty-three control cases -- four welcomes, nineteen refusals -- and six named readings.
+# A SECOND PEDESTAL JOINED IT 20260831.073652, and it carries a THIRD reading of its own kind.
+# max_large_artifacts is shown beside the ceiling artifacts the shared bead store can pay for --
+# four seats against a guarantee of two, measured on metal by the module's own selftest, since the
+# catalog counts NAMES and the store counts BYTES. That guarantee is derived two levels deep out of
+# mantra/beading.rye and mantra/spool.rye, so the scan RECOMPUTES it rather than reading a copy and
+# reads the module's own derivation as a fact beside it. And the bound is the length of three fixed
+# arrays in TWO modules: the third, KeyedLargeCatalog.owners in pond/apps/spool_keyed.rye, has no
+# wall of its own and rides on store_large's through a `try` -- so the scan reads the bound where it
+# CROSSES a module boundary, which no desk in this room had done before.
 #
-# `cadence` because the metal leg lowers the desk through Glow and builds it with the Zig
+# Forty-seven control cases -- seven welcomes, forty refusals -- and thirteen named readings.
+#
+# `cadence` because the metal legs lower both desks through Glow and build them with the Zig
 # toolchain, the same clock its Tablecloth sibling and the six Glow witnesses beside it keep.
-# Measured on this pier 20260831, GREEN before this row was written: 7s whole, of which the Zig
-# build is 4s; the pure scan and control run in under a second, so a hand asking for the guard by
-# name pays almost nothing.
+# Re-measured on this pier 20260831.073652, GREEN before this row moved: 24s whole -- 17s of it the
+# forty-seven-case control, the rest two Zig builds -- against a cold pass of 2,317s. The pure scan
+# still runs in under a second, so a hand asking it by name pays almost nothing.
 
 guard pond_spool_cloth_glow_tend
 path tools/p/pond_spool_cloth_glow_tend_witness.rish

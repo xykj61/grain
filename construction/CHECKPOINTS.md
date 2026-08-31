@@ -22,6 +22,21 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ---
 
+## `20260831.075100` -- the scan header that grew past its own door (walk-back `51b656a32b`)
+
+**Walk-back nib:** `51b656a32b` -- HEAD before this lap's commit. **Swept:** the 98-line comment
+head of `tools/fixtures/p/pond_spool_cloth_glow_tend_scan.sh`, cut to roughly a third. **What waits
+there, worth recalling:** the long-form arguments the head carried -- the REDS %354 arithmetic story,
+the three-arrays-across-two-modules reading, and the Tablecloth comparison. None of it is lost: the
+first lives on `src/shape/shape-spool-cloth-name-bound.glow`, the second and third on
+`src/shape/shape-spool-cloth-catalog-capacity.glow` and in the witness header, which is where a
+reader looking for an argument goes. The head was a third copy. **Why:** the QA report card reads a
+module head at **Door** (`program_dial=split`, seated with `%392`'s repair), and 1,019 words at
+reading grade 15 against Door's 9 read **C 72** -- below the B door, which pushes one molt frame. A
+living path with inbound citers keeps its name, so this molted in place.
+
+---
+
 ## `20260831.023122` -- the third settled-decisions shelf, and the heading that named one block for eleven (walk-back `29938104bc`)
 
 **Walk-back nib:** `29938104bc` -- HEAD before the condense commit. **Swept:** three landed

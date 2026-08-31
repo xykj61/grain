@@ -1,0 +1,76 @@
+::  name       spool cloth catalog capacity
+::  shape      seats -- int (@u32), bound 4 -- the names a cloth holds, beside the ceiling artifacts its store can pay for
+::  invariant  a cloth names at most four large artifacts, and its shared store pays for at least two of them at the ceiling
+::  example    4
+::  readers    Spool Cloth - Spool Keyed - Glow Tend - shape museum
+::  nib        spool-cloth-v1 at 20260812.192400
+::
+::  Two walls stand over one room, and this module writes down only one of them. max_large_artifacts
+::  from pond/apps/spool_cloth.rye bounds how many NAMES a cloth holds -- four catalog seats, each
+::  owning a whole spool. The shared BeadStore in mantra/beading.rye is the second wall, and it
+::  bounds BYTES, so a caller storing ceiling-sized artifacts meets StoreFull while catalog seats
+::  still stand free.
+::
+::  Measured on metal 20260831, by the module's own selftest, in one line: two ceiling artifacts
+::  held 256 of 256 beads, and the next refused StoreFull with two of four catalog seats free.
+::
+::  Why both numbers stand on one pedestal, and why neither is the capacity alone. A desk showing
+::  four advertises a capacity a caller storing real ceiling documents cannot reach, which is REDS
+::  %341's own class -- an advertised bound nobody can reach is a promise nobody can check. A desk
+::  showing two would be wrong the other way, since a cloth full of SMALL artifacts reaches all
+::  four seats, and the selftest stores three names over two real documents while the bead budget
+::  stays far away. So the honest reading is a range with both ends named: four names always, two
+::  ceiling artifacts guaranteed, and where a real cloth lands between them is decided by the bytes
+::  it is handed.
+::
+::  Why the housemate next door needs no such reading, checked rather than assumed. Tablecloth
+::  seats 32 artifacts and each fits ONE resin, so 32 ceiling artifacts cost 64 of the store's 256
+::  beads and every seat is reachable. A spool artifact spans 64 resins, which is the whole
+::  difference: the same store, the same seats-and-bytes pair, and only here do the two disagree.
+::
+::  the guarantee is 2 ceiling artifacts, derived rather than spelled:
+::    max_store_beads / (max_resins * (max_resin_bytes / max_bead_bytes))
+::
+::  the constants that decide it, each published one room away:
+::    max_resins 64
+::    max_resin_bytes 512
+::    max_bead_bytes 256
+::    max_store_beads 256
+::  that is the whole budget behind the guarantee.
+::
+::  Three of those four are published by mantra/beading.rye and the fourth, max_resins, by
+::  mantra/spool.rye. Walk to pond/apps/spool_cloth.rye and you find two names; the deciding rooms
+::  hold the numbers, so the guard beside this desk recomputes the quotient out of Mantra rather
+::  than reading a copy of it here.
+::
+::  Why the derivation is read as a fact of its own. Respell guaranteed_full_artifacts as a literal
+::  2 and every number on this desk still agrees, while the sentence above has quietly gone false:
+::  the guarantee would stop following the store, and the next honest raise of max_store_beads
+::  would leave the two apart with nothing to say so. The sibling desk next door learned that on a
+::  one-line alias (shape-tablecloth-content-budget.glow). Here the derivation is two levels deep
+::  and reaches across two modules, so there is more of it to come loose.
+::
+::  What this number sizes, which is why its walls matter more than its value. max_large_artifacts
+::  is the length of THREE fixed arrays in TWO modules: LargeCatalog.entries and Manifest.entries
+::  in pond/apps/spool_cloth.rye, and KeyedLargeCatalog.owners in pond/apps/spool_keyed.rye. Two
+::  walls stand in front of them -- store_large refuses a full catalog and parse_manifest refuses
+::  an overlong manifest, both with CatalogFull. The third array has no wall of its own:
+::  store_owned_large writes owners[before] after store_large returns, so its bounds ride on the
+::  first wall through a `try`. Delete that one line and two arrays in two modules are written past
+::  their end.
+::
+::  Eight facts, each able to fail while the other seven agree. The number equals
+::  max_large_artifacts. The four constants equal what their own modules publish. The guarantee
+::  equals what those four compute. The module still derives it rather than spelling it.
+::  store_large still refuses a full catalog, and parse_manifest still refuses an overlong
+::  manifest -- two readings rather than one, since deleting either call leaves the other standing.
+::  Spool Keyed still sizes its owners array by this same bound. And the seats still stand at or
+::  above the guarantee, which is the invariant this module's own selftest asserts: raise the store
+::  past the catalog and both that assert and this desk move together.
+::
+::  What this desk does not reach. Whether four is the right number of seats, and whether the store
+::  should pay for more of them -- both Pond's own design questions. And the eight ClothError
+::  paths, which are this module's remaining bound and want their own desk.
++$  spool-cloth-catalog-capacity-shape
+  $:  seats=@u32
+  ==
