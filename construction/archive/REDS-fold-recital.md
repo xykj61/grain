@@ -238,3 +238,9 @@ at a closed fold.*
 *Rows %388 and %389 folded to [`REDS-the-guard-and-the-allocator-rows-388-389.md`](REDS-the-guard-and-the-allocator-rows-388-389.md) on `20260831.043856`, both **BOOKED** -- a guard reading a file the law had moved, and the allocation of a number and a shelf by one tree among six.*
 
 *Rows %390 and %391 folded to [`REDS-the-cost-and-the-door-rows-390-391.md`](REDS-the-cost-and-the-door-rows-390-391.md) on `20260831.062211`, both **BOOKED** -- an instrument honest in every field it prints can still hand its reader the wrong number.*
+
+*Rows %394 and %395 folded to [`REDS-the-kill-and-the-wall-rows-394-395.md`](REDS-the-kill-and-the-wall-rows-394-395.md) on `20260831.073750`, both **BOOKED** -- a process filter and a pin bound both read a scope narrower than the fault they were drawn for -- one signalled every body on the pier, the other weighed only the pins a commit staged.*
+
+*Row %393 folded to [`REDS-the-directory-nobody-made-rows-393.md`](REDS-the-directory-nobody-made-rows-393.md) on `20260831.074833`, **CLOSED** -- a build that assumes its own output directory is a build that passes on the bench that already ran it.*
+
+*Row %396 folded to [`REDS-a-borrowed-scope-rows-396.md`](REDS-a-borrowed-scope-rows-396.md) on `20260831.083155`, **BOOKED** -- an environment variable is inherited by every process a pass starts, so a fix scoped to one mktemp call reached every control that builds a pen.*

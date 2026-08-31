@@ -1,5 +1,5 @@
-# tools/p/pond_spool_cloth_glow_tend_witness.rish -- Pond's spool-cloth name bound on a pedestal,
-# and the drift it cannot hide.
+# tools/p/pond_spool_cloth_glow_tend_witness.rish -- Pond's two spool-cloth pedestals, and the
+# drift neither can hide.
 #
 #   rishi/bin/rishi run tools/p/pond_spool_cloth_glow_tend_witness.rish
 #
@@ -56,9 +56,32 @@
 #   moves while its desk keeps the elder nib is a desk saying it shows a value from a release the
 #   module has left, and an honest bump moves both, proven as a welcome.
 #   The desk lowers through Glow, builds through the Zig toolchain, and runs to EXIT:0.
-#   Every reading refuses from the other side: nineteen plantings in a throwaway pen, each caught by
-#   the reading it was planted against, four honest trees walking free, and six named readings
-#   checked while a neighbour refuses -- which is how the two edges are shown to be two.
+#   Every reading refuses from the other side: forty plantings in a throwaway pen, each caught by
+#   the reading it was planted against, seven honest trees walking free, and thirteen named readings
+#   checked while a neighbour refuses -- which is how each set of edges is shown to be several.
+#
+# AND THE SECOND PEDESTAL, seated 20260831: max_large_artifacts, the catalog's seat count, shown
+# beside a number this module never spells. The shared BeadStore is a second wall over the same
+# room, and it counts BYTES where the catalog counts NAMES -- so a caller storing ceiling-sized
+# artifacts meets StoreFull with seats still free. Measured on metal by the module's own selftest:
+# two ceiling artifacts held 256 of 256 beads, and the next refused with two of four seats free.
+#
+# That guarantee is DERIVED two levels deep across two modules -- max_store_beads divided by
+# max_resins times (max_resin_bytes over max_bead_bytes) -- so the scan RECOMPUTES it out of
+# mantra/beading.rye and mantra/spool.rye rather than reading a copy, and reads the module's own
+# derivation as a fact of its own: respell it as a literal 2 and every number still agrees while
+# the sentence has gone false.
+#
+# THE READING NO DESK IN THIS ROOM HAS CARRIED. The bound is the length of THREE fixed arrays in
+# TWO modules -- LargeCatalog.entries and Manifest.entries here, and KeyedLargeCatalog.owners in
+# pond/apps/spool_keyed.rye. Two walls stand in front of them, and the third array has none of its
+# own: store_owned_large writes owners[before] after store_large returns, riding on that refusal
+# through a `try`. So the bound is read where it CROSSES a module boundary, and the control proves
+# the three fire apart by reading each survivor by name while its neighbour refuses.
+#
+# The housemate next door needs none of this, checked rather than assumed: Tablecloth seats 32
+# artifacts of one resin each, which costs 64 of the store's 256 beads, so every seat is reachable.
+# A spool artifact spans 64 resins, and that is the whole difference.
 #
 # WHERE A ROSTER DOES LIVE, said plainly, because the sentence above is true of the scan and not of
 # this file. This witness PINS one list the scan deliberately declines to hold -- the two reserved
@@ -67,14 +90,15 @@
 # moving it is worth a hand's eye. The cost is one line edited here on an honest change, and the
 # reason is written down so the next hand meets a review gate rather than a mystery.
 #
-# WHAT IS NOT PROVEN. Whether forty-eight is the right name length, which is Pond's own design
-# question, and whether the arithmetic that makes 48 safe still holds if the manifest grammar
-# changes -- a pedestal displays what the source decided. And any behavior of the catalog itself,
-# which pond/apps/spool_cloth.rye's own selftest holds on real bytes.
+# WHAT IS NOT PROVEN. Whether forty-eight is the right name length or four the right number of
+# seats, which are Pond's own design questions, and whether the arithmetic that makes 48 safe still
+# holds if the manifest grammar changes -- a pedestal displays what the source decided. And any
+# behavior of the catalog itself, which pond/apps/spool_cloth.rye's own selftest holds on real
+# bytes. The eight ClothError paths are this module's remaining bound and want their own desk.
 
-say "spool-cloth-tend: Language EN -- the spool binds a name to a whole artifact, and that name's bound now stands in the shape museum beside its housemate's."
+say "spool-cloth-tend: Language EN -- the spool binds a name to a whole artifact, and both the name's bound and the catalog's capacity now stand in the shape museum beside their housemate's."
 say "spool-cloth-tend: Style Gauge -- the placard reads in the museum's seated order, and the number it shows is compared to the source rather than remembered."
-say "spool-cloth-tend: Lens TAME -- bound everything and say why: the catalog names its maximum, the pedestal names the maximum, and this proves the pair is one number read at two edges."
+say "spool-cloth-tend: Lens TAME -- bound everything and say why: the module names its maxima, the pedestals name them, and this proves each is one number read at every edge that reads it -- two for the name, three for the seats, across two modules."
 
 say "spool-cloth-tend: the pedestal against its source..."
 let scan = run ["sh" "tools/fixtures/p/pond_spool_cloth_glow_tend_scan.sh"]
@@ -87,6 +111,15 @@ assert scan.out contains "desk_bound=48" else "spool-cloth-tend: the desk's shap
 assert scan.out contains "store_wired=yes" else "spool-cloth-tend: store_large must still consult name_is_one_field, or the desk's invariant is only written"
 assert scan.out contains "parse_wired=yes" else "spool-cloth-tend: parse_manifest must still read max_name, or a manifest line copies past the end of a fixed field"
 say "field GREEN -- the pedestal stands on what its source publishes, at both edges the bound is read"
+say "spool-cloth-tend: the capacity pedestal -- seats, and the bytes behind them..."
+assert scan.out contains "capacity_placard_order=name shape invariant example readers nib" else "spool-cloth-tend: the capacity placard's six lines keep their seated order"
+assert scan.out contains "capacity_citation=yes" else "spool-cloth-tend: the capacity desk names all four rooms its number and its guarantee come from"
+assert scan.out contains "capacity_desk_bound=4" else "spool-cloth-tend: the capacity desk's shape line and its example are one number"
+assert scan.out contains "capacity_store_wired=yes" else "spool-cloth-tend: store_large must still refuse a full catalog, or two arrays in two modules are written past their end"
+assert scan.out contains "capacity_parse_wired=yes" else "spool-cloth-tend: parse_manifest must still refuse an overlong manifest"
+assert scan.out contains "capacity_keyed_wired=yes" else "spool-cloth-tend: spool_keyed must still size its owners array by this bound rather than by a literal of its own"
+assert scan.out contains "capacity_derivation_wired=yes" else "spool-cloth-tend: the guarantee must stay derived from the store rather than spelled"
+say "capacity GREEN -- four seats stand beside the ceiling artifacts the store can pay for, and the bound is wired at all three arrays"
 
 say "spool-cloth-tend: the nib -- the placard's sixth line, read rather than trusted..."
 assert scan.out contains "verdict=agree" else "spool-cloth-tend: the desk's nib and the module's version must be one stamp"
@@ -101,15 +134,16 @@ say "spool-cloth-tend: the control, both ways..."
 let control = run ["sh" "tools/fixtures/p/pond_spool_cloth_glow_tend_control.sh"]
 assert control.ok else "spool-cloth-tend: the control must complete"
 say control.out
-assert control.out contains "welcomes=4" else "spool-cloth-tend: an honest tree, an honest raise, an honestly widened wall, and an honest version bump must all walk free"
-assert control.out contains "refusals=19" else "spool-cloth-tend: every reading must refuse from its own side"
-assert control.out contains "readings=6" else "spool-cloth-tend: each edge must be read while its neighbour refuses, or the two are one reading wearing two names"
+assert control.out contains "welcomes=7" else "spool-cloth-tend: an honest tree, two honest raises, an honestly widened wall, an honest store raise, and an honest version bump across BOTH desks must all walk free"
+assert control.out contains "refusals=40" else "spool-cloth-tend: every reading must refuse from its own side"
+assert control.out contains "readings=13" else "spool-cloth-tend: each edge must be read while its neighbour refuses, or the three are one reading wearing three names"
 assert control.out contains "wrong=0" else "spool-cloth-tend: no case may land on the side it was not planted for"
 assert control.out contains "control_verdict=ok" else "spool-cloth-tend: the control must agree with itself"
-say "RED and GREEN paths proven -- nineteen plantings refused, four honest trees welcomed, six readings held"
+say "RED and GREEN paths proven -- forty plantings refused, seven honest trees welcomed, thirteen readings held"
 
 let zig = "vendor/zig-toolchain/zig"
 let desk = "src/shape/shape-spool-cloth-name-bound.glow"
+let capacity_desk = "src/shape/shape-spool-cloth-catalog-capacity.glow"
 
 say "spool-cloth-tend: lower, build, run the name-bound pedestal..."
 let gate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" desk]
@@ -117,4 +151,10 @@ assert gate.ok else "spool-cloth-tend: the name-bound pedestal must lower, build
 assert gate.out contains "EXIT:0" else "spool-cloth-tend: the name-bound pedestal did not exit 0"
 say "metal GREEN -- the desk lowers through Glow, builds through Zig, and runs"
 
-say "GREEN: spool-cloth Glow Tend -- max_name stands on a pedestal with the alphabet its wall removes beside it, compared to the room that decides it rather than copied from it, and proven wired at both the store edge and the manifest edge."
+say "spool-cloth-tend: lower, build, run the catalog-capacity pedestal..."
+let cap_gate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" capacity_desk]
+assert cap_gate.ok else "spool-cloth-tend: the catalog-capacity pedestal must lower, build, and run"
+assert cap_gate.out contains "EXIT:0" else "spool-cloth-tend: the catalog-capacity pedestal did not exit 0"
+say "metal GREEN -- both pedestals lower through Glow, build through Zig, and run"
+
+say "GREEN: spool-cloth Glow Tend -- two pedestals stand. max_name shows the alphabet its wall removes beside it and is proven wired at both the store edge and the manifest edge; max_large_artifacts shows the ceiling artifacts its shared store can pay for, recomputed out of Mantra rather than copied, and proven wired at all three arrays the bound sizes across two modules."

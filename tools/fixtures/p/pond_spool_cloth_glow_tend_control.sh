@@ -40,7 +40,11 @@ set -eu
 root="$(pwd)"
 scan="$root/tools/fixtures/p/pond_spool_cloth_glow_tend_scan.sh"
 desk_src="$root/src/shape/shape-spool-cloth-name-bound.glow"
+capacity_src="$root/src/shape/shape-spool-cloth-catalog-capacity.glow"
 rye_src="$root/pond/apps/spool_cloth.rye"
+keyed_src="$root/pond/apps/spool_keyed.rye"
+beading_src="$root/mantra/beading.rye"
+spool_src="$root/mantra/spool.rye"
 
 work="$(mktemp -d)"
 trap 'rm -rf "$work"' EXIT
@@ -53,9 +57,13 @@ wrong=0
 # pen -- a fresh copy of exactly the two files the scan reads, and nothing else.
 pen() {
   rm -rf "$work/pen"
-  mkdir -p "$work/pen/src/shape" "$work/pen/pond/apps"
+  mkdir -p "$work/pen/src/shape" "$work/pen/pond/apps" "$work/pen/mantra"
   cp "$desk_src" "$work/pen/src/shape/shape-spool-cloth-name-bound.glow"
+  cp "$capacity_src" "$work/pen/src/shape/shape-spool-cloth-catalog-capacity.glow"
   cp "$rye_src" "$work/pen/pond/apps/spool_cloth.rye"
+  cp "$keyed_src" "$work/pen/pond/apps/spool_keyed.rye"
+  cp "$beading_src" "$work/pen/mantra/beading.rye"
+  cp "$spool_src" "$work/pen/mantra/spool.rye"
 }
 
 # check <label> <want-verdict> <want refuse|welcome>
@@ -110,7 +118,11 @@ edit() {
 }
 
 deskf="$work/pen/src/shape/shape-spool-cloth-name-bound.glow"
+capf="$work/pen/src/shape/shape-spool-cloth-catalog-capacity.glow"
 ryef="$work/pen/pond/apps/spool_cloth.rye"
+keyedf="$work/pen/pond/apps/spool_keyed.rye"
+beadf="$work/pen/mantra/beading.rye"
+spoolf="$work/pen/mantra/spool.rye"
 
 # 1 -- the tree as it stands.
 pen
@@ -215,11 +227,14 @@ check "the manifest edge no longer reading the bound" parse_unwired refuse
 reading "the store edge still stands while the manifest edge is gone" store_wired yes
 reading "the alphabet still agrees while the manifest edge is gone" rye_wall_bytes "newline space"
 
-# 20 -- an honest version bump, moved in both rooms.
+# 20 -- an honest version bump, moved in every room that displays it. Two desks show this module's
+# version now, so a bump costs three lines rather than two -- which is what a pedestal displaying a
+# value AT a nib means once a module has more than one pedestal.
 pen
 edit "$ryef" 's/^pub const spool_cloth_version = "20260812.192400";$/pub const spool_cloth_version = "20260901.000000";/'
 edit "$deskf" 's/^::  nib        spool-cloth-v1 at 20260812.192400$/::  nib        spool-cloth-v1 at 20260901.000000/'
-check "a version bumped in the Rye and on the desk together" agree welcome
+edit "$capf" 's/^::  nib        spool-cloth-v1 at 20260812.192400$/::  nib        spool-cloth-v1 at 20260901.000000/'
+check "a version bumped in the Rye and on both desks together" agree welcome
 
 # 21 -- the module moves and the desk keeps the elder nib.
 pen
@@ -237,12 +252,155 @@ pen
 edit "$ryef" '/^pub const spool_cloth_version = "20260812.192400";$/d'
 check "the module publishing no version" rye_version_missing refuse
 
+# ---- the capacity pedestal ---------------------------------------------------------------------
+#
+# Nineteen more plantings, three more welcomes, and four more named readings. The capacity desk
+# shows a number whose companion is DERIVED two levels deep across two modules, and the bound it
+# displays sizes three fixed arrays in two of them -- so the plants below have to move a value in as
+# many as three rooms at once to reach the reading they are aimed at.
+
+# 24 -- both pedestals as written.
+pen
+check "the capacity pedestal as written" agree welcome
+
+# 25 -- an honest raise of the seats, moved in the Rye and on the desk together.
+pen
+edit "$capf" 's/, bound 4 --/, bound 8 --/; s/^::  example    4$/::  example    8/'
+edit "$ryef" 's/^pub const max_large_artifacts: u32 = 4;$/pub const max_large_artifacts: u32 = 8;/'
+check "the seats raised in the Rye and on the desk together" agree welcome
+
+# 26 -- an honest raise of the STORE, which moves a derived number: the guarantee goes 2 to 4, and
+# the desk carries both the constant and the guarantee it decides.
+pen
+edit "$beadf" 's/^pub const max_store_beads: u32 = 256;$/pub const max_store_beads: u32 = 512;/'
+edit "$capf" 's/^::    max_store_beads 256$/::    max_store_beads 512/; s/^::  the guarantee is 2 ceiling artifacts/::  the guarantee is 4 ceiling artifacts/'
+check "the store raised in Mantra and on the desk together" agree welcome
+reading "the seats stay where they were while the guarantee moves" rye_max_large_artifacts 4
+
+# 27 -- no capacity pedestal at all.
+pen
+rm -f "$capf"
+check "the capacity pedestal missing" capacity_desk_missing refuse
+
+# 28 -- the room that decides three of the four constants, gone.
+pen
+rm -f "$beadf"
+check "mantra/beading.rye missing" beading_missing refuse
+
+# 29 -- the room that decides the fourth, gone.
+pen
+rm -f "$spoolf"
+check "mantra/spool.rye missing" spool_missing refuse
+
+# 30 -- the module holding the third array, gone.
+pen
+rm -f "$keyedf"
+check "pond/apps/spool_keyed.rye missing" keyed_missing refuse
+
+# 31 -- the capacity placard out of its seated order.
+pen
+edit "$capf" 's/^::  invariant  /::  zinvariant /'
+check "the capacity placard out of seated order" capacity_placard_wrong refuse
+
+# 32 -- a desk citing no room, so its arithmetic can be checked nowhere.
+pen
+edit "$capf" 's|mantra/beading.rye|the bead room|g'
+check "the capacity desk naming no deciding room" capacity_citation_missing refuse
+
+# 33 -- the displayed value in words. Deleting the line lands one reading earlier at the placard
+# order, which is the shadow this family met once already, so the keyword keeps its seated place.
+pen
+edit "$capf" 's/^::  example    4$/::  example    four/'
+check "the capacity desk showing no readable example" capacity_desk_example_missing refuse
+
+# 34 -- the published seats gone.
+pen
+edit "$ryef" '/^pub const max_large_artifacts: u32 = 4;$/d'
+check "the Rye publishing no seat bound" rye_seats_missing refuse
+
+# 35 -- the capacity desk spells its number twice and the two part inside one file.
+pen
+edit "$capf" 's/, bound 4 --/, bound 6 --/'
+check "the capacity desk disagreeing with its own shape line" capacity_desk_self_disagree refuse
+
+# 36 -- the seats raised in the Rye alone.
+pen
+edit "$ryef" 's/^pub const max_large_artifacts: u32 = 4;$/pub const max_large_artifacts: u32 = 8;/'
+check "the seats raised and the capacity desk left behind" capacity_disagree refuse
+
+# 37 -- the constants region gone, so a derived number stands with no arithmetic under it.
+pen
+edit "$capf" '/^::  the constants that decide it, each published one room away:$/,/^::  that is the whole budget behind the guarantee\.$/d'
+check "the capacity desk listing no constants" capacity_inputs_missing refuse
+
+# 38 -- one constant misquoted on the desk while the guarantee still happens to agree.
+pen
+edit "$capf" 's/^::    max_resins 64$/::    max_resins 32/'
+check "a constant misquoted on the desk" capacity_inputs_disagree refuse
+reading "the guarantee itself still agrees while an input drifts" rye_guarantee 2
+
+# 39 -- the guarantee line carrying no number.
+pen
+edit "$capf" 's/^::  the guarantee is 2 ceiling artifacts, derived rather than spelled:$/::  the guarantee is derived rather than spelled:/'
+check "the capacity desk stating no guarantee" capacity_guarantee_missing refuse
+
+# 40 -- the store raised in Mantra and on the desk's list, and the guarantee left at the elder
+# number. This is the fault the recomputation exists for: every literal agrees with its own room.
+pen
+edit "$beadf" 's/^pub const max_store_beads: u32 = 256;$/pub const max_store_beads: u32 = 512;/'
+edit "$capf" 's/^::    max_store_beads 256$/::    max_store_beads 512/'
+check "the store raised and the guarantee left behind" capacity_guarantee_disagree refuse
+
+# 41 -- the derivation respelled as a literal, with every number still agreeing.
+pen
+edit "$ryef" 's|^pub const guaranteed_full_artifacts: u32 = beading.max_store_beads / full_artifact_beads;$|pub const guaranteed_full_artifacts: u32 = 2;|'
+check "the guarantee spelled rather than derived" capacity_derivation_unwired refuse
+reading "every constant still agrees while the derivation is gone" capacity_desk_inputs "max_bead_bytes=256 max_resin_bytes=512 max_resins=64 max_store_beads=256"
+
+# 42 -- the catalog edge unwired, which panics two arrays in two modules rather than one.
+pen
+edit "$ryef" '/if (cat.count >= max_large_artifacts) return error\.CatalogFull;/d'
+check "store_large no longer refusing a full catalog" capacity_store_unwired refuse
+reading "the manifest edge still stands while the catalog edge is gone" capacity_parse_wired yes
+reading "the keyed array still names this bound while the catalog edge is gone" capacity_keyed_wired yes
+
+# 43 -- the manifest edge unwired.
+pen
+edit "$ryef" '/if (man.count >= max_large_artifacts) return error\.CatalogFull;/d'
+check "parse_manifest no longer refusing an overlong manifest" capacity_parse_unwired refuse
+reading "the catalog edge still stands while the manifest edge is gone" capacity_store_wired yes
+
+# 44 -- the third array given a literal of its own, one module over.
+pen
+edit "$keyedf" 's/^    owners: \[cloth.max_large_artifacts\]u32,$/    owners: [4]u32,/'
+check "spool_keyed sizing its owners array by a literal" capacity_keyed_unwired refuse
+reading "both walls still stand while the third array leaves the bound" capacity_store_wired yes
+
+# 45 -- the store raised past the catalog, consistently in every room. Nothing disagrees, and the
+# invariant the module's own selftest asserts has gone false.
+pen
+edit "$beadf" 's/^pub const max_store_beads: u32 = 256;$/pub const max_store_beads: u32 = 1024;/'
+edit "$capf" 's/^::    max_store_beads 256$/::    max_store_beads 1024/; s/^::  the guarantee is 2 ceiling artifacts/::  the guarantee is 8 ceiling artifacts/'
+check "the store paying for more artifacts than the catalog seats" capacity_order_wrong refuse
+
+# 46 -- the capacity nib naming no version.
+pen
+edit "$capf" 's/^::  nib        spool-cloth-v1 at 20260812.192400$/::  nib        spool-cloth-v1/'
+check "the capacity nib naming no version" capacity_nib_missing refuse
+
+# 47 -- the module moves and the capacity desk keeps the elder nib. The name desk's nib moves with
+# the module here, so this reaches the capacity reading rather than its neighbour's.
+pen
+edit "$ryef" 's/^pub const spool_cloth_version = "20260812.192400";$/pub const spool_cloth_version = "20260901.000000";/'
+edit "$deskf" 's/^::  nib        spool-cloth-v1 at 20260812.192400$/::  nib        spool-cloth-v1 at 20260901.000000/'
+check "the module version moved and the capacity desk's nib stayed" capacity_nib_disagree refuse
+
 echo "welcomes=$welcomes"
 echo "refusals=$refusals"
 echo "readings=$readings"
 echo "wrong=$wrong"
 
-if [ "$welcomes" -eq 4 ] && [ "$refusals" -eq 19 ] && [ "$readings" -eq 6 ] && [ "$wrong" -eq 0 ]; then
+if [ "$welcomes" -eq 7 ] && [ "$refusals" -eq 40 ] && [ "$readings" -eq 13 ] && [ "$wrong" -eq 0 ]; then
   echo "control_verdict=ok"
 else
   echo "control_verdict=wrong"
