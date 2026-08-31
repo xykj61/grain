@@ -436,10 +436,13 @@ drift apart. A tree that spells a constant twice has already booked that lesson 
 **A document** takes all four readings as written above.
 
 **A module's comments** take the same dial the code section describes. Register and Reach run over
-the comment text; the module's opening comment is read at **Door** and a comment beside a bound at
-**Meter**. Service asks whether a reader arriving cold can say what the module is for. A module
-whose every comment sits at Meter is precise and hard to enter, and that shows up here as a low
-Service against a high Register, which is exactly the shape *"kind of an obscure assembly"* names.
+the comment text in two named readings: the module's opening comment is scored at **Door**, while
+each `invariant:` comment beside a bound is reported at **Meter**. Declaration docs such as `///`
+stay visible as their own count because they are neither a module head nor a bound. The program's
+grammar chooses these settings, so a caller's `--setting` word cannot change its grade. Service
+asks whether a reader arriving cold can say what the module is for. A module whose every comment
+sits at Meter is precise and hard to enter, and that shows up here as a low Service against a high
+Register, which is exactly the shape *"kind of an obscure assembly"* names.
 
 **A design** puts most of its weight on Service and Truth: does this shape serve a live line, and
 does what it claims still hold. Register and Reach read the essay carrying it. A design that reads

@@ -188,8 +188,15 @@ assert control.out contains "glow_words_counted=yes" else "qa-report-card: a Glo
 assert control.out contains "unknown_mark_reads_nothing=yes" else "qa-report-card: the comment-mark clause must be load-bearing -- an unknown mark reads nothing"
 assert control.out contains "midline_unstripped=yes" else "qa-report-card: :: mid-sentence is prose, never a second comment head"
 assert control.out contains "midline_still_read=yes" else "qa-report-card: a // comment mentioning :: keeps its whole sentence"
+assert control.out contains "program_setting_independent=yes" else "qa-report-card: a program's grammar chooses its settings, never the caller's word"
+assert control.out contains "program_head_is_door=yes" else "qa-report-card: the module head must be read at Door"
+assert control.out contains "program_bounds_are_meter=yes" else "qa-report-card: invariant bounds must be read at Meter"
+assert control.out contains "program_decl_reported=yes" else "qa-report-card: declaration docs belong to neither pole and must stay visible"
+assert control.out contains "program_meter_unscored=yes" else "qa-report-card: Meter bound prose is reported rather than simplified"
+assert control.out contains "program_meter_cannot_lower_door=yes" else "qa-report-card: refusal-heavy bound prose must not lower the Door reading"
+assert control.out contains "program_door_still_scored=yes" else "qa-report-card: a weak module head must still lower the card when the caller asks for Meter"
 assert control.out contains "control_verdict=ok" else "qa-report-card: the control must agree with itself"
-say "seventy-two behaviors proven in a throwaway pen, the scale read at every boundary from both sides"
+say "seventy-nine behaviors proven in a throwaway pen, the scale read at every boundary from both sides"
 
 # THE JUDGED READING NAMES ITS OWN SCALE (REDS %361). The composite is the mean of four readings on
 # one 0-100 scale, so `--service` is 0-100 -- and that clause lived in exactly one place, the loop's
