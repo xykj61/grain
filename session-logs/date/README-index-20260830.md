@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260830.210459` | [DirtySet explained, pastes reprinted](20260830-210459_dirtyset-explained-pastes-reprinted.kyri) | teaching turn; nine-seat dirty-region record |
 | `20260830.205759` | [Generated-pages debt paid, fleet triaged](20260830-205759_generated-pages-debt-fleet-triage.kyri) | fascia block reads 68; both Codex stops custody-clean |
 | `20260830.165037` | [The destination owns its constant](20260830/20260830-165037_the-destination-owns-its-constant.kyri) | Caravan prices `answered_by` at 34 openings; destination-owned constants cost zero |
 | `20260830.200925` | [The post on the line](20260830/20260830-200925_the-post-on-the-line.kyri) | carriage tied in three families; the bead post stood at zero slack |
