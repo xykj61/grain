@@ -30,70 +30,82 @@ case "$verb" in
     ;;
 esac
 
-# Every signal below is an rg count piped through wc -l, and a substitution
-# whose command is absent yields an empty stream that wc reads as ZERO -- so a
-# host without rg would grade every signal clean and print GREEN over a tree
-# it never read. Mystery's jailed lap caught this on 20260830 (REDS %374):
-# refuse by name instead, and the metrics scan upstream already turns a
-# refusal into fascia=unknown / verdict=unmeasured.
-command -v rg >/dev/null 2>&1 || {
-  echo "fascia-metric-v0 REFUSE: rg absent -- every signal would read a false zero" >&2
-  exit 3
+# The search engine is git grep, because git is the one binary every enclosure
+# already carries -- Mystery's jail map holds no rg, and a meter must run
+# wherever its tree runs (REDS %379 booked the false-zero this replaces; its
+# rg-absent refusal is superseded by not needing rg at all). count_hits keeps
+# the row's lesson structural: git grep exits 0 on hits and 1 on none, and
+# anything else -- a bad pathspec, a missing dir -- REFUSES by name rather
+# than reading as a clean zero.
+count_hits() {
+  # The || arm keeps set -e from killing a lawful no-hits exit 1.
+  ch_out=$(git grep -n "$@" 2>&1) && ch_code=0 || ch_code=$?
+  if [ "$ch_code" -gt 1 ]; then
+    echo "fascia-metric-v0 REFUSE: git grep failed ($ch_out)" >&2
+    exit 3
+  fi
+  if [ -z "$ch_out" ]; then echo 0; else printf '%s\n' "$ch_out" | wc -l | tr -d ' '; fi
 }
 
 metric_rev=i10
 
 # Self-path excludes -- the meter must not grade its own Inner Scope seats.
-EXCLUDE_SELF='!**/fascia_metric*'
-EXCLUDE_I45='!**/inner-scope-i[4-9]*'
-EXCLUDE_I4STAMP='!**/20260728-023240*'
-EXCLUDE_I5STAMP='!**/20260728-023555*'
-EXCLUDE_I6STAMP='!**/20260728-023941*'
+EXCLUDE_SELF=':(exclude,glob)**/fascia_metric*'
+EXCLUDE_I45=':(exclude,glob)**/inner-scope-i[4-9]*'
+EXCLUDE_I4STAMP=':(exclude,glob)**/20260728-023240*'
+EXCLUDE_I5STAMP=':(exclude,glob)**/20260728-023555*'
+EXCLUDE_I6STAMP=':(exclude,glob)**/20260728-023941*'
 
 # --- signal 1: superseded mentions (living design paths) ---
-superseded="$(rg -n --no-heading '\b[Ss]uperseded\b' \
-  counsel active-designing expanding-prompts work-in-progress context \
-  --glob '!**/quin-workshop/**' \
-  --glob '!**/archive/**' \
-  --glob '!**/date/**' \
-  --glob '!**/yonder/**' \
-  --glob '!**/session-logs/**' \
-  --glob "$EXCLUDE_SELF" \
-  --glob "$EXCLUDE_I45" \
-  --glob "$EXCLUDE_I4STAMP" \
-  --glob "$EXCLUDE_I5STAMP" \
-  --glob "$EXCLUDE_I6STAMP" 2>/dev/null | wc -l | tr -d ' ')"
+S1_DIRS=""
+for d in counsel active-designing expanding-prompts work-in-progress context; do
+  [ -e "$d" ] && S1_DIRS="$S1_DIRS $d"
+done
+# shellcheck disable=SC2086 -- the dir list word-splits on purpose.
+superseded="$(count_hits -wE '[Ss]uperseded' -- $S1_DIRS \
+  ':(exclude,glob)**/quin-workshop/**' \
+  ':(exclude,glob)**/archive/**' \
+  ':(exclude,glob)**/date/**' \
+  ':(exclude,glob)**/yonder/**' \
+  ':(exclude,glob)**/session-logs/**' \
+  "$EXCLUDE_SELF" \
+  "$EXCLUDE_I45" \
+  "$EXCLUDE_I4STAMP" \
+  "$EXCLUDE_I5STAMP" \
+  "$EXCLUDE_I6STAMP")"
 superseded="${superseded:-0}"
 
 # --- signal 2: outstanding ratchet advisories (nonzero cheap categories) ---
-ROSTER="mantra caravan linengrow comlink rishi/src tally aurora pond brushstroke rye/src"
+ROSTER_RYE=""
+for d in mantra caravan linengrow comlink rishi/src tally aurora pond brushstroke rye/src; do
+  [ -e "$d" ] && ROSTER_RYE="$ROSTER_RYE :(glob)$d/**/*.rye"
+done
 ROSTER_GLOW="glow/tokens.rye glow/lower_named_cast.rye glow/lower_shape.rye glow/lower_shop_gate.rye glow/lower_shop_nest.rye"
 tools_py="$(find tools -name '*.py' -type f ! -path 'tools/.cache/*' ! -path 'tools/.build/*' 2>/dev/null | wc -l | tr -d ' ')"
 tools_py="${tools_py:-0}"
-memcpy_app="$(rg -n --no-heading '@memcpy\(' $ROSTER $ROSTER_GLOW \
-  --glob '*.rye' 2>/dev/null | wc -l | tr -d ' ')"
+# shellcheck disable=SC2086 -- the pathspec lists word-split on purpose.
+memcpy_app="$(count_hits -E '@memcpy\(' -- $ROSTER_RYE $ROSTER_GLOW)"
 memcpy_app="${memcpy_app:-0}"
-if [ "$memcpy_app" -gt 0 ] && rg -q '@memcpy\(' tally/copy.rye 2>/dev/null; then
+if [ "$memcpy_app" -gt 0 ] && git grep -qE '@memcpy\(' -- tally/copy.rye 2>/dev/null; then
   memcpy_app=$((memcpy_app - 1))
 fi
 [ "$memcpy_app" -lt 0 ] && memcpy_app=0
-camel="$(rg -n --no-heading '^( *)?(pub )?fn [a-z]+[A-Z]' $ROSTER $ROSTER_GLOW \
-  --glob '*.rye' 2>/dev/null | wc -l | tr -d ' ')"
+# shellcheck disable=SC2086
+camel="$(count_hits -E '^( *)?(pub )?fn [a-z]+[A-Z]' -- $ROSTER_RYE $ROSTER_GLOW)"
 camel="${camel:-0}"
-parseint="$(rg -n --no-heading 'parseInt\(' $ROSTER $ROSTER_GLOW \
-  --glob '*.rye' 2>/dev/null | wc -l | tr -d ' ')"
+# shellcheck disable=SC2086
+parseint="$(count_hits -E 'parseInt\(' -- $ROSTER_RYE $ROSTER_GLOW)"
 parseint="${parseint:-0}"
 # Prefer application-site lean: drop canonical home when present.
 if [ -f tally/parse_int.rye ]; then
-  parseint_canon="$(rg -n --no-heading 'parseInt\(' tally/parse_int.rye 2>/dev/null | wc -l | tr -d ' ')"
+  parseint_canon="$(count_hits -E 'parseInt\(' -- tally/parse_int.rye)"
   parseint_canon="${parseint_canon:-0}"
   parseint=$((parseint - parseint_canon))
   [ "$parseint" -lt 0 ] && parseint=0
 fi
 # Glow lower emit strings print Zig source containing parseInt -- not app call
 # sites (door named u72; exclusion seated u74). Matches advise roster lean.
-parseint_emit="$(rg -n --no-heading 'parseInt\(' \
-  glow/lower_shop_gate.rye glow/lower_shop_nest.rye 2>/dev/null | wc -l | tr -d ' ')"
+parseint_emit="$(count_hits -E 'parseInt\(' -- glow/lower_shop_gate.rye glow/lower_shop_nest.rye)"
 parseint_emit="${parseint_emit:-0}"
 parseint=$((parseint - parseint_emit))
 [ "$parseint" -lt 0 ] && parseint=0
@@ -107,26 +119,22 @@ ratchet_out=0
 # --- signal 3: target-class A hits (Seva Fund lineage - held disclosed) ---
 # yonder excluded (f2 - 20260730.093112) -- same relocate kit as superseded
 # i8: count the hits; name the honest anchors; do NOT exclude them into silence.
-class_a="$(rg -n --no-heading 'Seva Fund|%seva|seva\.fund' \
-  --glob '!**/quin-workshop/**' \
-  --glob '!**/archive/**' \
-  --glob '!**/yonder/**' \
-  --glob '!**/session-logs/**' \
-  --glob '!**/20260728-011055_the-fascia-season-charter.md' \
-  --glob "$EXCLUDE_SELF" \
-  --glob "$EXCLUDE_I45" \
-  --glob "!**/20260728-023240*" \
-  --glob "!**/20260728-023555*" \
-  --glob "!**/20260728-023941*" \
-  --glob "$EXCLUDE_I4STAMP" \
-  --glob "$EXCLUDE_I5STAMP" \
-  --glob "$EXCLUDE_I6STAMP" 2>/dev/null | wc -l | tr -d ' ')"
+class_a="$(count_hits -E 'Seva Fund|%seva|seva\.fund' -- . \
+  ':(exclude,glob)**/quin-workshop/**' \
+  ':(exclude,glob)**/archive/**' \
+  ':(exclude,glob)**/yonder/**' \
+  ':(exclude,glob)**/session-logs/**' \
+  ':(exclude,glob)**/20260728-011055_the-fascia-season-charter.md' \
+  "$EXCLUDE_SELF" \
+  "$EXCLUDE_I45" \
+  "$EXCLUDE_I4STAMP" \
+  "$EXCLUDE_I5STAMP" \
+  "$EXCLUDE_I6STAMP")"
 class_a="${class_a:-0}"
-class_a_held="$(rg -n --no-heading 'Seva Fund|%seva|seva\.fund' \
+class_a_held="$(count_hits -E 'Seva Fund|%seva|seva\.fund' -- \
   context/LEXICON.md \
   counsel/date/20260727/20260727-152801_the-siya-turn.md \
-  mycelium/constellation/SPEC.md \
-  2>/dev/null | wc -l | tr -d ' ')"
+  mycelium/constellation/SPEC.md)"
 class_a_held="${class_a_held:-0}"
 
 # --- signal 4: over-70-line functions (authored .rye roster) ---
