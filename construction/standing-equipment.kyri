@@ -1004,3 +1004,15 @@ guard mechanism_sentence
 path tools/m/mechanism_sentence_witness.rish
 tier lap
 seated 20260830.202400
+
+# glow_preset_offset -- Sound's nesting law landed `20260830` carrying its own witness and no clock,
+# so the first pass after the fast-forward read `witness_reach` at 1,094 unreached against a ceiling
+# of 1,093, and `unheard_guard` rose with it. That guard's own refusal names the answer: put the new
+# one on a clock rather than raise the ceiling. Measured 31s on metal here and GREEN before this row
+# was written. `lap` rather than `cadence` because Glow's composition is the arc under active change
+# -- the same reason `caravan_suite` pays its minutes every pass.
+
+guard glow_preset_offset
+path tools/g/glow_preset_offset_witness.rish
+tier lap
+seated 20260830.233618

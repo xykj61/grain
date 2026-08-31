@@ -21,9 +21,31 @@ set -eu
 home=${FLEET_HOME:-$HOME}
 git_bin=${FLEET_GIT:-git}
 
-# BSD stat speaks -f %m and GNU stat -c %Y; this fleet spans a Mac and a Linux
-# pier, so both spellings are tried and an absent file reads age unknown.
-mtime_of() { stat -f %m "$1" 2>/dev/null || stat -c %Y "$1" 2>/dev/null || echo 0; }
+# This fleet spans a Mac and a Linux pier, so the mtime question has the tree's
+# one answer rather than a second copy of it. Root by upward walk (the spelling
+# every fixtures guard carries since the letter fold), then source the helper.
+_fd_root=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
+_fd_steps=0
+while [ ! -d "$_fd_root/rishi/bin" ] || [ ! -d "$_fd_root/tools/fixtures" ]; do
+  _fd_steps=$((_fd_steps + 1))
+  if [ "$_fd_steps" -gt 8 ] || [ "$_fd_root" = "/" ] || [ -z "$_fd_root" ]; then
+    echo "$0: no tree root within 8 steps (needs rishi/bin and tools/fixtures)" >&2
+    exit 2
+  fi
+  _fd_root=$(dirname "$_fd_root")
+done
+. "$_fd_root/tools/fixtures/s/shell_portable.sh"
+
+# `file_mtime` asks GNU first, because GNU's refusal is the clean one: BSD `stat -f`
+# on a GNU host reads as --file-system and prints a block report BEFORE the `||`
+# ever fires, so a BSD-first pair answers with both legs concatenated (REDS %260).
+# The helper answers in fractional seconds and the age arithmetic below is whole
+# seconds, so the fraction is dropped here rather than in the shared answer.
+mtime_of() {
+  _m=$(file_mtime "$1" 2>/dev/null) || _m=
+  [ -n "$_m" ] || _m=0
+  echo "${_m%%.*}"
+}
 
 # One seat per call: name, directory under $home, kind (codex|claude|field).
 report_seat() {
