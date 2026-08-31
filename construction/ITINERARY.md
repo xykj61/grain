@@ -36,7 +36,7 @@
 - **An operational shell script molts to Rishi on substantial touch** (`20260828`): launchers, loops, tools a hand runs -- the `.sh -> .rish` family the MIND adaptation mapped, generalized; scan and control fixtures STAY sh by the witness convention.
 
 - **The six bodies, the always-fleet** (re-mapped `20260829.203718`, Keaton's word): **one tree per star** and **claim-as-override**. **Mind** (Codex supervisor, `~/grain-mind` -- Surf/Skate) + **Mystery** (same supervisor, `MIND_SEAT=mystery`, `~/grain-mystery` -- the maintenance campaigns); **Sound** (Claude Desktop, the field -- interface Glow, **language custody**, captain's hat) + **Silence** (Claude day-loop, `~/grain-silence` -- infrastructure Glow); **Dream** (Codex in ai-jail, pier -- systems core) + **Hush** (Claude day-loop, pier -- Pond). Charter: the always-fleet page, `20260829.203718`, in `active-designing/`.
-- **Fleet re-arm helper** LANDED: `sh tools/f/fleet_rearm.sh` -- status, reason, paste; gates warned.
+- **Fleet re-arm helper**: `sh tools/f/fleet_rearm.sh` -- status, reason, paste.
 - **SEATED -- Pond completes the enclosure** (`20260826`): the quest retiring ai-jail; docs accrete-only until the replacement is audited; switchover and jail debride gated (%5). Plan: `expanding-prompts/20260826-033051_pond-completes-the-enclosure.md`.
 - **STANDFAST -- the Dexter orbit** (`20260826`): 15 rounds; door `dexter/README.md`.
 - **Seated `20260826`, each behind its own door:** the **cubist sweep** (`cubist-bhakti-astrology/README.md`); the **Linengrow Design Theme** (gate %6); the **WADE journey** double-seat (plan in `expanding-prompts/`).
@@ -62,8 +62,8 @@
   **zero, enforced**. Only `entry` is left, and it IS the switchover: a gate, not a lap.
 - **Language custody:** growth law
   [a-rune-is-earned-by-a-law](../foundations/20260830-011530_a-rune-is-earned-by-a-law.md);
-  **the first core LANDED `20260830.224500`** -- `|%`: three Lantern laws, one source
-  (`gate-lantern-face-core`, GREEN, arm-parity); nesting OPENED `20260830.221500`.
+  **the first core LANDED `20260830.224500`** -- `|%` (`gate-lantern-face-core`, GREEN);
+  nesting OPENED `20260830.221500`.
 
 **MANY HANDS** (`20260828`): custody MANUAL, one writer per checkout. Root `SKILL.md`; every
 clone seats `ww` (`grain-ww/grain`, gate %1) and `.git/ssh_config_jail`.
@@ -108,7 +108,8 @@ programs below B, **51 sat under the register floor** with nothing measurable ag
 scored at grades 9-23. The ceiling question is the second number's alone -- and Gauge's own table
 seats **witness headers** at Meter where the card grades every program head at Door. And gate %7: `rule_twin_additive_scan.sh` reads `quality-assurance` as the roster's ONE `additive:claude`
 pair, +3 lines the twin lacks, and carrying them deletes nothing.
-**%374 OPEN:** the receipt-chain question stays yours -- none has ever been earned here.
+**%374 RULED `20260831.115500`**: a gated-only close writes its receipt DISCLOSING the
+gate names; `--scoped` re-prints them. Roster lane builds.
 ---
 ## Landed arcs
 
