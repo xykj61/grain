@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `2673222037` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `3744d7e040` -- HEAD's parent, resolvable everywhere (%401).
 
 **Now.** **A repair aimed at a comment mark lands in the branch that owns an extractor, and the fault walks in through the branch that has none.**
 
@@ -75,33 +75,31 @@ reads one of `max_name`'s two call sites (`parse_manifest` reads it too, over th
 `example` line lands on `placard_wrong` one reading earlier. **Dream's parked package:**
 `xy/pier/diverged-20260831-064342` holds the roster-pen fix unlanded since 06:43, not mine to
 rebase. **CION:** `drey`'s rung marks are the retired form (%329). **Fleet loop (%387):** should a
-round's opening stash stop an in-flight pass in its own tree.
+round's opening stash stop an in-flight pass in its own tree. **Shelf `20260830` repaired:** after
+its own 14-link repair, 7 more rows arrived -- 4 written at the pin's depth, 3 stale rebase twins
+beside repaired ones; 73 rows for 73 logs now, pin count 69 -> 73. A row is born on its shelf, so
+its link opens with the day.
 
 **Still open:** `glow/rune_shape.rye` keeps width custody; Mind keeps the reconnect stash,
 `%281`/`%291`, two `enclosure.conf` pins. **Named (%347):** `pond/enclosure_policy.kyri`
 8,120/8,192; the wall is yours.
-**Rosters `20260831`:** field **108/104**; pier and this seat **109/106**, `tree_moved=no`. **`%401` BOOKED -- the nib is now HEAD's PARENT**, since the seated
-order pinned the PRE-AMEND hash that the amend replaces and no push carries, reddening
-`nib_honesty` and `remember_git_nib` on five bodies of six every lap. **A parent is already pushed,
-and it needs no seat.** Applied; the RULE still names the breaking state, a %7-care twin edit.
-**Cold pass and editing lap run serially.**
-**%398 CLOSED TWICE, two hands, no contact** -- one mechanism down to the variable names; the
-earlier landing stands, the pier's parks on a `pier/` branch. **`%400` OPEN, theirs to word:** four
-sites recite **107**/**94** where the instrument prints **13**/**95**. **A borrowed classification
-drifts where a borrowed constant cannot.** `%393`-`%399` FOLDED, whole on their shelves.
+**Roster, this seat `20260831`:** **109/101**, 8 red closed to 3 -- the three gates. **`%401`
+applied.** **Cold pass and editing lap run serially.**
+**`%400` OPEN, theirs to word:** four sites recite **107**/**94** where the instrument prints
+**13**/**95** -- a borrowed classification drifts where a borrowed constant cannot.
 **Worth your word:** nothing shows a red is worked, so two hands spent a morning on one line.
 Should an OPEN row carry a **claim** -- seat and stamp, at start rather than landing?
-**`%402` TAKEN AND CLOSED -- the card's door read the wrong half of the file it named.** A `.kyri`
-classified as prose, so `#` -- its COMMENT sigil -- was dropped as a heading and 457 records with no
-terminal punctuation fused into ONE 915-word sentence: grade **327**, Reach 0. **All nineteen**
-notation files with real comment prose read one sentence and **exactly 75**, `%358`'s own signature.
-`%276` and `%358` taught the PROGRAM extractor `#` and `::`; a notation goes down the prose branch,
-which has none. Third `artifact_kind`; reads **A 91**, its weakness legible at
-last: **38% negative**, whose Gauge answer is Meter.
+**`%404` CLOSED -- a roster's setting comes from its own grammar.** `%402` taught the card to find
+a notation's prose and left the flag beside it: Meter switches BOTH scored readings off, so all
+nineteen documented notation files read **exactly 94** -- the constant `%402` had just removed,
+reachable by typing. A comment block is a document, so Meter is refused and the read falls to Field
+(**81-92**, every one >= B); no comment block is all record, and the pass stands. **3,983 of 4,090**
+`.kyri`/`.bron` carry none, 3,928 of them logs their own rule already seats at Meter.
 **Next doors.** Dream: Settlement's replayable fold. Caravan keeps a 5-second seam, singing on
 cadence or touch. Hush: `%397`'s remainder -- a card reading a reference block BESIDE the prose
--- then `spool_cloth`'s eight `ClothError` paths; 37 shape nibs unread. Silence: **which setting a roster
-takes**, now measurable rather than asserted.
+-- then `spool_cloth`'s eight `ClothError` paths; 37 shape nibs unread. Silence: the roster's setting is
+**Field**, decided; next is whether a record-only notation should DEFAULT to Meter -- 3,928 logs
+sit where the QA habit and the session-log rule disagree.
 **Yours, two.** Door's ceiling is **9** against module heads that run 12-17, which is what puts
 **61 of 134** sampled sources below B -- the grades are honest, so the question is the ceiling. And
 gate %7: `rule_twin_additive_scan.sh` reads `quality-assurance` as the roster's ONE `additive:claude`
@@ -220,7 +218,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260831.095637` | The reading that found its prose -- `%402`, a notation's document is its comment block | [log](../session-logs/date/20260831/20260831-095637_the-reading-that-found-its-prose.kyri) |
-| `20260831.095907` | The same repair from two hands -- `%398` closed twice, the earlier landing stands, `%400` books the figures beside the instrument | [log](../session-logs/date/20260831/20260831-095907_the-same-repair-from-two-hands.kyri) |
+| `20260831.122010` | The grammar answers for the setting -- `%404` closed, five reds down to three, a shelf's seven rows repaired | [log](../session-logs/date/20260831/20260831-122010_the-grammar-answers-for-the-setting.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)
