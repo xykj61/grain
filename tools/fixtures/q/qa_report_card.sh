@@ -137,12 +137,49 @@ sed -n '/^measure() {/,/^}/p' "$reg_scan" > "$work/measure.sh"
 # `truth_source` split the citation reading already makes further down, hoisted so that one
 # classification serves all three rather than two that can come to disagree.
 case "$path" in
-  *.md|*.mdc|*.markdown|*.bron|*.kyri) artifact_kind=prose ;;
-  *)                                       artifact_kind=program ;;
+  *.md|*.mdc|*.markdown)     artifact_kind=prose ;;
+  *.bron|*.kyri)             artifact_kind=notation ;;
+  *)                         artifact_kind=program ;;
 esac
 
 if [ "$artifact_kind" = prose ]; then
   prose_path="$root/$path"
+elif [ "$artifact_kind" = notation ]; then
+  # THE THIRD FAMILY THE SAME FAULT REACHED. Kyri and Bron are key-value notations: `#` opens a
+  # COMMENT, and every other line is one `key value` record. Read raw, the file gives BOTH readings
+  # the wrong half. measure() drops a leading `#` as a Markdown heading, which is right for a
+  # document and exactly inverted here, since a notation file keeps its whole document behind that
+  # sigil. And a record carries no terminal punctuation, so consecutive records fuse into ONE
+  # pseudo-sentence rather than being dropped one at a time by the reading's own under-four-words
+  # floor -- the floor that already handles a short line correctly when something separates them.
+  #
+  # Measured 20260831 on construction/standing-equipment.kyri: 498 comment lines carrying 7,271
+  # words -- the file's whole argument -- were thrown away, and 457 record lines were read as a
+  # single 915-word sentence, for a reading grade of 327, Reach 0, and a composite of C+ 75 -- a
+  # number measured wholly on the half that says nothing. All nineteen tracked notation files
+  # carrying 200 words or more of comment prose read EXACTLY ONE sentence that day, template-
+  # manifest.bron at 1,786 words of it. One sentence nineteen times is the signature of a reading
+  # that never found the prose.
+  #
+  # WHY IT ARRIVED THROUGH THIS DOOR. REDS %276 made this repair for programs and %358 taught it
+  # Glow's `::`; both landed inside the program branch, which is where the extractor lives. A
+  # notation file classifies as PROSE, where no extractor runs at all, so the third family walked
+  # in past two repairs aimed at it. The mark is the language's -- and so is the record.
+  #
+  # So the sigil comes off each comment line, and each record line closes with a period of its own.
+  # A record then meets the under-four-words floor alone and drops out, exactly as a table row
+  # already does; a long field value -- a session log's `obs` line -- stays one unit and is read.
+  # A comment whose own content opens with a bullet still reads as a bullet, which is the same
+  # answer Markdown gets and the reason this branch prepares text rather than holding a second
+  # reading of its own.
+  awk '
+    /^[ \t]*$/ { print; next }
+    /^#/ { line = $0; sub(/^#[ ]?/, "", line); print line; next }
+    { print $0 "." }
+  ' "$root/$path" > "$work/notation-body.txt"
+  notation_comment_lines=$(awk '/^#/ { n++ } END { print n + 0 }' "$root/$path")
+  notation_record_lines=$(awk '!/^#/ && !/^[ \t]*$/ { n++ } END { print n + 0 }' "$root/$path")
+  prose_path="$work/notation-body.txt"
 else
   # A program carries two settings in one file. The grammar names the Door: `//!` is a module
   # document in Rye, while a leading `#` or `::` block is the module document in the other family
@@ -304,7 +341,7 @@ fi
 
 # Meter carries no reach budget, because refusal-first prose is the subject rather than a fault.
 # A whole program is never Meter: its head remains Door and its bound lines are reported below.
-[ "$setting" = "meter" ] && [ "$artifact_kind" = prose ] \
+[ "$setting" = "meter" ] && [ "$artifact_kind" != program ] \
   && { register=100; reach=100; reach_mode=meter; register_mode=meter; }
 
 # --- Truth, the counted half: every relative link resolves somewhere ------------------------------
@@ -451,6 +488,11 @@ if [ "$artifact_kind" = program ]; then
   echo "program_decl_lines=$program_decl_lines"
   echo "meter_register=100 (negative $meter_neg_pct% of $meter_sentences sentences reported, not scored)"
   echo "meter_reach=100 ($meter_words words reported, not scored)"
+fi
+if [ "$artifact_kind" = notation ]; then
+  echo "notation_dial=split (the comment block is the document; records are data, counted here)"
+  echo "notation_comment_lines=$notation_comment_lines"
+  echo "notation_record_lines=$notation_record_lines"
 fi
 if [ "$register_mode" = scored ]; then
   echo "register=$register (negative $neg_pct% of $sentences sentences)"

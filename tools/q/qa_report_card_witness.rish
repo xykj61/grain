@@ -61,7 +61,9 @@
 #   citations on 20260825, and repairing them would have written through the links into six correct
 #   bodies. Reading the data before acting on it is what stopped that, the same way REDS %213 did.
 #
-# WHAT IS PROVEN, on metal. Seventy-two behaviors in a throwaway pen. The scale at every one of its
+# WHAT IS PROVEN, on metal. Eighty-three behaviors in a throwaway pen -- the control's own yes/no
+# readings, counted rather than recited, after this file carried 72 in one place and 79 in another.
+# The scale at every one of its
 # nine boundaries from both sides, and no minus grade anywhere. The register flip proven to BE the
 # register scan's own number rather than a second measurement -- and proven load-bearing, since
 # removing measure() from that scan makes the card refuse. Reach falling when a page reaches past
@@ -85,6 +87,18 @@
 # knows is read and weighed, the same placard behind a mark it does not know reads nothing, and a
 # `::` sitting mid-sentence in a `//` comment stays prose rather than becoming a second head to
 # strip.
+#
+# AND A NOTATION'S PROSE IS ITS COMMENT BLOCK, WHILE ITS RECORDS ARE DATA. Kyri and Bron open a
+# comment with `#` and close a record with nothing, so a `.kyri` read as a document lost its whole
+# argument to the heading rule and read its records as ONE pseudo-sentence: 498 comment lines and
+# 7,271 words dropped from `construction/standing-equipment.kyri`, 457 records read as a single
+# 915-word sentence, a reading grade of 327, and the same C+ 75 the shape museum wore one family
+# earlier -- nineteen notation files, one number (REDS %400). Both repairs above taught the PROGRAM
+# extractor a new mark; a notation classifies as prose, where no extractor runs, so the third family
+# arrived through the one door neither repair covered. Proven from both sides: two rosters with
+# identical records and opposite heads that the card now tells apart and the elder card could not,
+# two hundred more records moving neither the sentence count nor the grade, and the elder reading
+# shown answering one sentence, which is the fault's own signature.
 #
 # WHAT IS REPORTED, as a ratchet under a ceiling that only ever falls. The twelve-document door
 # roster, read as report cards, counted where the COUNTED half alone puts a page below B. One at
@@ -195,8 +209,16 @@ assert control.out contains "program_decl_reported=yes" else "qa-report-card: de
 assert control.out contains "program_meter_unscored=yes" else "qa-report-card: Meter bound prose is reported rather than simplified"
 assert control.out contains "program_meter_cannot_lower_door=yes" else "qa-report-card: refusal-heavy bound prose must not lower the Door reading"
 assert control.out contains "program_door_still_scored=yes" else "qa-report-card: a weak module head must still lower the card when the caller asks for Meter"
+assert control.out contains "notation_comment_read=yes" else "qa-report-card: a notation file keeps its document behind `#`, so that block must be read rather than dropped as a heading"
+assert control.out contains "notation_register_discriminates=yes" else "qa-report-card: two rosters with identical records and opposite heads must not read the same register"
+assert control.out contains "notation_counts_reported=yes" else "qa-report-card: the card must name how many lines it read as document and how many it counted as data"
+assert control.out contains "notation_records_are_data=yes" else "qa-report-card: two hundred more records must move neither the sentence count nor the grade"
+assert control.out contains "notation_meter_unscored=yes" else "qa-report-card: Meter frees a notation file exactly as it frees a document, so a session log is unmoved"
+assert control.out contains "notation_fields_still_read=yes" else "qa-report-card: a long field value is prose and stays read, whatever the comment block holds"
+assert control.out contains "notation_elder_was_blind=yes" else "qa-report-card: the elder classifier must be shown unable to tell the two plants apart"
+assert control.out contains "notation_elder_read_one_sentence=yes" else "qa-report-card: the elder reading must be shown answering one sentence, which is the fault's own signature"
 assert control.out contains "control_verdict=ok" else "qa-report-card: the control must agree with itself"
-say "seventy-nine behaviors proven in a throwaway pen, the scale read at every boundary from both sides"
+say "eighty-three behaviors proven in a throwaway pen, the scale read at every boundary from both sides"
 
 # THE JUDGED READING NAMES ITS OWN SCALE (REDS %361). The composite is the mean of four readings on
 # one 0-100 scale, so `--service` is 0-100 -- and that clause lived in exactly one place, the loop's

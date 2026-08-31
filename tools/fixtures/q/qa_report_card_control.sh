@@ -405,4 +405,106 @@ hostile_head=$(run head_hostile.rye --setting meter --service 100)
 [ "$(val "$hostile_head" register)" -lt "$(val "$meter_program" register)" ] \
   && echo "program_door_still_scored=yes" || echo "program_door_still_scored=no"
 
+
+# 8 -- a notation file's document is its comment block, and its records are data. Kyri and Bron
+# open a comment with `#`, which the prose reading drops as a Markdown heading, and close a record
+# with nothing at all, so consecutive records fuse into one pseudo-sentence rather than meeting the
+# reading's under-four-words floor one at a time. Both halves are planted here, and both are read a
+# second time through a card carrying the elder classifier, since a repair proven only in the
+# passing direction cannot be told from a rewording.
+cat > "$pen/roster_warm.kyri" <<'EOF'
+# roster_warm.kyri -- the standing guards, as a list a program can read.
+#
+# WHY THIS FILE EXISTS. A roster names each guard the tree runs, so the list can be counted and
+# dated rather than trusted. Each row carries the path a runner invokes and the clock it runs on.
+# A reader arriving today finds the same rows a reader found last season, and each row says plainly
+# what it stands for. The tree keeps its own record of every round it runs.
+# WHAT A ROW MEANS. One record per standing check, naming the path, the tier, and the stamp it was
+# seated. A guard names its own clock, so a choir sings on a slower one and still gets heard.
+# HOW IT IS KEPT HONEST. The witness proves every path exists and every recited count matches.
+format roster-v1
+stamp 20260831.100000
+voice Kyri
+EOF
+i=0
+while [ $i -lt 30 ]; do
+  printf 'guard example_%s\npath tools/e/example_%s.rish\ntier lap\nstamp 20260831.100000\n' "$i" "$i" >> "$pen/roster_warm.kyri"
+  i=$((i + 1))
+done
+sed 's/^# WHY THIS FILE EXISTS\. A roster names each guard the tree runs, so the list can be counted and/# WHY THIS FILE EXISTS. No roster can be trusted, and nothing here is safe from error, so the list/; s/^# dated rather than trusted\. Each row carries the path a runner invokes and the clock it runs on\./# fails or breaks without it. Each row is wrong or missing until a guard refuses the broken one./; s/^# A reader arriving today finds the same rows a reader found last season, and each row says plainly/# A reader who cannot follow it is lost, and a stale row is worse than no row, never useful./; s/^# what it stands for\. The tree keeps its own record of every round it runs\./# Nothing is proven and no claim is safe, so a missing witness is a broken promise, not a risk./' \
+  "$pen/roster_warm.kyri" > "$pen/roster_cold.kyri"
+
+warm_notation=$(run roster_warm.kyri --setting field --service 100)
+cold_notation=$(run roster_cold.kyri --setting field --service 100)
+
+[ "$(val "$cold_notation" register_mode)" = scored ] \
+  && [ "$(val "$cold_notation" register)" -lt 100 ] \
+  && echo "notation_comment_read=yes" || echo "notation_comment_read=no"
+[ "$(val "$warm_notation" register)" -gt "$(val "$cold_notation" register)" ] \
+  && echo "notation_register_discriminates=yes" || echo "notation_register_discriminates=no"
+[ "$(val "$warm_notation" notation_comment_lines)" -eq 9 ] \
+  && [ "$(val "$warm_notation" notation_record_lines)" -eq 123 ] \
+  && echo "notation_counts_reported=yes" || echo "notation_counts_reported=no"
+
+# Records are data: two hundred more of them must move neither the sentence count nor the grade.
+cp "$pen/roster_warm.kyri" "$pen/roster_long.kyri"
+i=0
+while [ $i -lt 50 ]; do
+  printf 'guard filler_%s\npath tools/f/filler_%s.rish\ntier cadence\nstamp 20260831.100000\n' "$i" "$i" >> "$pen/roster_long.kyri"
+  i=$((i + 1))
+done
+long_notation=$(run roster_long.kyri --setting field --service 100)
+warm_sent=$(echo "$warm_notation" | sed -n 's/^register=[0-9]* (negative [0-9]*% of \([0-9]*\) sentences.*/\1/p')
+long_sent=$(echo "$long_notation" | sed -n 's/^register=[0-9]* (negative [0-9]*% of \([0-9]*\) sentences.*/\1/p')
+warm_grade=$(echo "$warm_notation" | sed -n 's/^reach=[0-9]* (grade \([0-9]*\).*/\1/p')
+long_grade=$(echo "$long_notation" | sed -n 's/^reach=[0-9]* (grade \([0-9]*\).*/\1/p')
+[ "$warm_sent" = "$long_sent" ] && [ "$warm_grade" = "$long_grade" ] \
+  && echo "notation_records_are_data=yes" || echo "notation_records_are_data=no"
+
+# Meter frees a notation file exactly as it frees a document, so a session log read at Meter is
+# unmoved by any of this.
+meter_notation=$(run roster_cold.kyri --setting meter --service 100)
+[ "$(val "$meter_notation" register)" -eq 100 ] && [ "$(val "$meter_notation" reach)" -eq 100 ] \
+  && echo "notation_meter_unscored=yes" || echo "notation_meter_unscored=no"
+
+# A record's VALUE is prose when it is prose. A log-shaped plant carries no comment block at all,
+# and its long fields must still be read rather than dropped with the short ones.
+cat > "$pen/log_shaped.kyri" <<'EOF'
+format session-log-v1
+stamp 20260831.100000
+voice Kyri
+title the reading that found its prose
+obs THE CARD READS A NOTATION FILE BY ITS OWN GRAMMAR NOW. A comment line gives up its sigil and a
+obs record line closes with a period, so a short field falls under the four-word floor by itself.
+obs THE SAME BYTES READ THE SAME NUMBER WHERE THE GRAMMAR AGREES. A document keeps every reading it
+obs already had, and a program keeps its head and its bounds exactly where the split put them.
+obs A LONG FIELD IS PROSE AND STAYS READ. The record carries the sentence, so the sentence is read.
+obs THE SHORT FIELDS LEAVE THE READING RATHER THAN JOINING IT. A stamp is data and reads as data.
+obs EVERY ROW HERE CARRIES ENOUGH WORDS TO CLEAR THE FLOOR THE REGISTER SCAN ALREADY PUBLISHES.
+obs THE FLOOR IS EIGHT SENTENCES AND THIS PLANT CARRIES MORE THAN EIGHT OF THEM ON PURPOSE.
+obs A PLANT UNDER THE FLOOR WOULD READ ONE HUNDRED WHATEVER IT SAID AND PROVE NOTHING AT ALL.
+recommend keep-going the reading now measures the half of the file that carries the argument
+EOF
+log_notation=$(run log_shaped.kyri --setting field --service 100)
+[ "$(val "$log_notation" register_mode)" = scored ] \
+  && [ "$(val "$log_notation" notation_comment_lines)" -eq 0 ] \
+  && echo "notation_fields_still_read=yes" || echo "notation_fields_still_read=no"
+
+# The elder classifier, carried back into a copy of the card. It sent a notation file down the
+# prose path, where no extractor runs, so the whole comment block was invisible: warm and cold must
+# read IDENTICALLY there. This is the leg that tells a repair from a rewording.
+mkdir -p "$pen/elder/tools/fixtures/q" "$pen/elder/tools/fixtures/p"
+sed 's/^  \*\.bron|\*\.kyri)             artifact_kind=notation ;;$/  *.bron|*.kyri)             artifact_kind=prose ;;/' \
+  "$pen/tools/fixtures/q/qa_report_card.sh" > "$pen/elder/tools/fixtures/q/qa_report_card.sh"
+cp "$pen/tools/fixtures/p/prose_register_scan.sh" "$pen/elder/tools/fixtures/p/"
+cp "$pen/roster_warm.kyri" "$pen/roster_cold.kyri" "$pen/elder/"
+elder() { ( cd "$pen/elder" && QA_CARD_ROOT=. sh tools/fixtures/q/qa_report_card.sh "$@" 2>&1 ); }
+elder_warm=$(elder roster_warm.kyri --setting field --service 100)
+elder_cold=$(elder roster_cold.kyri --setting field --service 100)
+[ "$(val "$elder_warm" register)" = "$(val "$elder_cold" register)" ] \
+  && [ "$(val "$elder_warm" composite)" = "$(val "$elder_cold" composite)" ] \
+  && echo "notation_elder_was_blind=yes" || echo "notation_elder_was_blind=no"
+elder_sent=$(echo "$elder_warm" | sed -n 's/^register=[0-9]* (negative [0-9]*% of \([0-9]*\) sentences.*/\1/p')
+[ "$elder_sent" = 1 ] && echo "notation_elder_read_one_sentence=yes" || echo "notation_elder_read_one_sentence=no"
+
 echo "control_verdict=ok"
