@@ -1,0 +1,4 @@
+|%
+++  half-open
+|=  sample=@u32
+?:  (gth sample 5)  1  0

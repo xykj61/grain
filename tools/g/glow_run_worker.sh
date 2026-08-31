@@ -66,6 +66,13 @@ sample-u32|gate-sample-u32|gate-double-u32|gate-pleac-double-u32|gate-surface-do
       ;;
   esac
   ;;
+gate-lantern-face-core)
+  # core: argv[1] is the arm ordinal, then that arm's one or two samples.
+  test "$NARGS" -eq 2 -o "$NARGS" -eq 3 || {
+    echo "FAIL: ${STEM}.glow needs an arm ordinal and its one or two @u32 samples"
+    exit 2
+  }
+  ;;
 gate-kind-tag|gate-barket-kind-tag)
   test "$NARGS" -eq 1 || {
     echo "FAIL: ${STEM}.glow needs exactly one kind unit tag (mint|send)"

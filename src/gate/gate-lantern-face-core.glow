@@ -1,0 +1,22 @@
+::  name       lantern face core
+::  shape      arm faces - ints (@u32) -> answer - int (@u32)
+::  invariant  three arms answer exactly as their three standing single desks
+::  example    1 38 -> 1 · 1 39 -> 0 · 2 2 5 -> 0 · 2 2 0 -> 1 · 3 2 5 -> 2 · 3 0 5 -> 1
+::  readers    Lantern · the asking voice · Glow
+::  nib        the language's first core -- three laws, one source, one module (20260830)
+::
+::  The Lantern face's three laws under one roof: the 38-byte text wall, the
+::  unknown-carrying-an-answer refusal, and the feed's kind law. Each arm is
+::  the same gate its standing desk speaks alone; the core adds one thing --
+::  a home -- and the witness holds every arm to its single desk's answers.
+|%
+++  face-text-law
+|=  sample=@u32
+?:  (gth sample 38)  0  1
+++  unknown-law
+|=  [kind=@u32 answer_len=@u32]
+?:  (and (eq kind 2) (gth answer_len 0))  0  1
+++  feed-law
+|=  [reason=@u32 text_len=@u32]
+?:  (or (eq reason 2) (eq text_len 0))  2  1
+--

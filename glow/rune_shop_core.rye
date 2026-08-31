@@ -1,0 +1,138 @@
+//! glow/rune_shop_core.rye -- parse a `|%` core: several named gates, one source.
+//!
+//! The first module form of the language, earned by the Lantern face's three
+//! proven laws wanting one home (20260830.224500). A core opens with `|%`,
+//! carries up to max_core_arms arms -- each `++  <name>` followed by a whole
+//! two-line gate the gate shop already parses -- and closes with `--`. Depth
+//! is one: an arm is a gate, never another core, until a law wants more.
+//!
+//! The walk is line-level on purpose: each arm's two gate lines are handed
+//! whole to rune_shop_gate.parse_source, so the core adds composition and
+//! zero new gate grammar -- one parser per form, no second reading of `?:`.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const rb = @import("rune_shop_gate.rye");
+const tally_copy = @import("tally_copy.rye");
+
+/// Bound: the face needs three arms; eight is one power of two above, named
+/// here so a runaway source refuses rather than growing without a ceiling.
+pub const max_core_arms: u32 = 8;
+pub const max_arm_name_len: u32 = 32;
+/// Bound: an arm's mini-source is its two gate lines and their newlines.
+pub const max_arm_src_len: u32 = 256;
+/// A core's live lines: the open and close plus three per arm.
+pub const core_max_lines: u32 = 2 + max_core_arms * 3;
+
+pub const CoreError = error{
+    NotACore,
+    MalformedCore,
+    TooManyArms,
+    EmptyCore,
+    ArmNameTooLong,
+    ArmSourceTooLong,
+} || rb.ParseError;
+
+pub const ArmSpec = struct {
+    name: [max_arm_name_len]u8 = [_]u8{0} ** max_arm_name_len,
+    name_len: u32 = 0,
+    gate: rb.GateSpec = .{},
+};
+
+pub const CoreSpec = struct {
+    arms: [max_core_arms]ArmSpec = [_]ArmSpec{.{}} ** max_core_arms,
+    arm_count: u32 = 0,
+};
+
+pub fn arm_name_slice(arm: *const ArmSpec) []const u8 {
+    // invariant: the stored length never exceeds the buffer it indexes.
+    assert(arm.name_len <= max_arm_name_len);
+    return arm.name[0..@as(usize, @intCast(arm.name_len))];
+}
+
+/// One line of the source: the bytes between newlines, comments and blanks
+/// skipped by the caller's walk.
+fn line_is_blank_or_comment(line: []const u8) bool {
+    const t = trim(line);
+    if (t.len == 0) return true;
+    if (t.len >= 2 and t[0] == ':' and t[1] == ':') return true;
+    return false;
+}
+
+fn trim(s: []const u8) []const u8 {
+    var a: u32 = 0;
+    var b: u32 = @as(u32, @intCast(s.len));
+    while (a < b and (s[@as(usize, @intCast(a))] == ' ' or s[@as(usize, @intCast(a))] == '\t')) : (a += 1) {}
+    while (b > a and (s[@as(usize, @intCast(b - 1))] == ' ' or s[@as(usize, @intCast(b - 1))] == '\t' or s[@as(usize, @intCast(b - 1))] == '\r')) : (b -= 1) {}
+    return s[@as(usize, @intCast(a))..@as(usize, @intCast(b))];
+}
+
+/// True when the whole source is a core -- its first live line opens `|%`.
+pub fn looks_like_core(src: []const u8) bool {
+    var it = std.mem.splitScalar(u8, src, '\n');
+    while (it.next()) |line| {
+        if (line_is_blank_or_comment(line)) continue;
+        const t = trim(line);
+        return t.len >= 2 and t[0] == '|' and t[1] == '%';
+    }
+    return false;
+}
+
+/// Parse the whole core. Arms are handed to the gate shop two lines at a time.
+pub fn parse_core(src: []const u8) CoreError!CoreSpec {
+    if (src.len == 0) return error.NotACore;
+    if (!looks_like_core(src)) return error.NotACore;
+    var spec: CoreSpec = .{};
+    var it = std.mem.splitScalar(u8, src, '\n');
+    var opened = false;
+    var closed = false;
+    while (it.next()) |raw| {
+        if (line_is_blank_or_comment(raw)) continue;
+        const line = trim(raw);
+        if (!opened) {
+            // invariant: looks_like_core proved the first live line opens the core.
+            assert(line.len >= 2);
+            assert(line[0] == '|');
+            assert(line[1] == '%');
+            opened = true;
+            continue;
+        }
+        if (line.len == 2 and line[0] == '-' and line[1] == '-') {
+            closed = true;
+            break;
+        }
+        // Every arm begins `++  <name>`.
+        if (!(line.len >= 2 and line[0] == '+' and line[1] == '+')) return error.MalformedCore;
+        const name = trim(line[2..]);
+        if (name.len == 0) return error.MalformedCore;
+        if (name.len > max_arm_name_len) return error.ArmNameTooLong;
+        if (spec.arm_count >= max_core_arms) return error.TooManyArms;
+        // The arm's gate: the next two live lines, handed whole to the gate shop.
+        var arm_src: [max_arm_src_len]u8 = undefined;
+        var used: u32 = 0;
+        var lines_taken: u32 = 0;
+        while (lines_taken < 2) {
+            const gate_raw = it.next() orelse return error.MalformedCore;
+            if (line_is_blank_or_comment(gate_raw)) continue;
+            const gate_line = trim(gate_raw);
+            if (used + @as(u32, @intCast(gate_line.len)) + 1 > max_arm_src_len) return error.ArmSourceTooLong;
+            tally_copy.copy_disjoint(u8, arm_src[@as(usize, @intCast(used))..@as(usize, @intCast(used)) + gate_line.len], gate_line);
+            used += @as(u32, @intCast(gate_line.len));
+            arm_src[@as(usize, @intCast(used))] = '\n';
+            used += 1;
+            lines_taken += 1;
+        }
+        const arm = &spec.arms[@as(usize, @intCast(spec.arm_count))];
+        arm.gate = try rb.parse_source(arm_src[0..@as(usize, @intCast(used))]);
+        tally_copy.copy_disjoint(u8, arm.name[0..name.len], name);
+        arm.name_len = @as(u32, @intCast(name.len));
+        spec.arm_count += 1;
+    }
+    if (!closed) return error.MalformedCore;
+    if (spec.arm_count == 0) return error.EmptyCore;
+    // invariant: a parsed core holds at least one arm and closed its own door.
+    assert(spec.arm_count >= 1);
+    assert(spec.arm_count <= max_core_arms);
+    return spec;
+}

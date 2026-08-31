@@ -62,8 +62,8 @@
   **zero, enforced**. Only `entry` is left, and it IS the switchover: a gate, not a lap.
 - **Language custody:** growth law
   [a-rune-is-earned-by-a-law](../foundations/20260830-011530_a-rune-is-earned-by-a-law.md);
-  **nesting OPENED `20260830.221500`** -- the shelf-offset law earned the and-of-ors
-  (`gate-pond-preset-offset-u32`, GREEN); deeper waits for its own law.
+  **the first core LANDED `20260830.224500`** -- `|%`: three Lantern laws, one source
+  (`gate-lantern-face-core`, GREEN, arm-parity); nesting OPENED `20260830.221500`.
 
 **MANY HANDS** (`20260828`): custody MANUAL, one writer per checkout. Root `SKILL.md`; every
 clone seats `ww` (`grain-ww/grain`, gate %1) and `.git/ssh_config_jail`.
