@@ -69,7 +69,7 @@ survey; the moves are proposals, one round each.
 | Mikrophone | bound-in-shape | re-prove DREY whole post-sweep, wall_ms per rung recorded as loom | hardware %2; served transport |
 | Pleac | choir-and-bijection | wire join/split as Rishi builtins; round-trip proven, empty separator refused | none |
 | Press | gauge-register | reconcile the crushed index to the four pieces on disk; grade at Door | publishing is Keaton's word |
-| Scribe | wrap-named | the first baton-v1 read: a planted document, dispatch and fields proven inside the bounds | JARL word-gated beyond local |
+| Scribe | wrap-named | LANDED `20260831.072403`: a planted baton-v1 crosses the bounded disk seam; wrong-format, absent, and oversize documents refuse by name | JARL word-gated beyond local |
 | Settlement | replayable-fold | fold one spawn-adopt-transfer sequence twice byte-identical, a reorder shown divergent; register it | chain-adjacent |
 | Spellbook | choir-and-bijection | verify the eighteen spell homes resolve; count the emerging as a ratchet; grade at Door | new spells are Keaton's word |
 | Sundial | gauge-register | emit carries unit, date, and source per reading; a sourceless reading refused by name | none |

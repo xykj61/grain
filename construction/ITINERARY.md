@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `43c980c06a` -- this round's own.
+**Git nib:** `82f0127eda` -- this round's own.
 
 **Now.** **A guard that borrows a shared reading and keeps its own list of what to feed it drifts the day that list grows.**
 
@@ -96,7 +96,7 @@ reading that speaks BEFORE a pin crosses -- borrowed the law's bound and kept it
 card and ledger stood at **3** and **21 bytes free**, all three pin guards green. It reads the seated
 roster now, each page's own bound and headroom named. **A borrowed classification drifts where a
 borrowed constant cannot.** `%393`-`%396` FOLDED by the pier, `%392`/`%397` by me.
-**Next doors.** Dream: Scribe baton-v1. Caravan keeps a 5-second seam and sings on cadence or
+**Next doors.** Dream: Settlement's replayable fold. Caravan keeps a 5-second seam and sings on cadence or
 touch. Kumara LANDED. Hush: `spool_cloth`'s eight `ClothError`
 paths are its last bound wanting a desk; the shape room's other 37 nibs are unread. Silence: `standing-equipment.kyri` reads **C+ 75**, a frame past this round's depth. The card is
 structurally at its bound -- Standing alone is **7,008 of 24,576** -- so a **fourth

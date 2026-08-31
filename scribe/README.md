@@ -17,10 +17,14 @@ A Kyri document is `format <name>` on the first line, then `key value` fields �
 - **Parses** a document into its fields, **zero-copy** — a field is a pair of slices *into the source text*, never a copy. The document borrows the bytes; the caller keeps them.
 - **Dispatches by format** — `is_session_log` and `is_baton` tell a `format session-log-v1` from a `format baton-v1` with one honest reader. This is the seated counsel made real: **one notation, many formats** — never a sprawl of extensions.
 - Reads a field by key (`get`, first occurrence) and counts a **repeatable** key (`count_key`, every occurrence — `think`, `file`). Bounded: `max_source_len`, `max_fields`.
+- Reads one baton from a named path through a buffer one byte wider than `max_source_len`.
+  The extra byte tells an exact-bound document from a truncated one. Wrong-format, absent,
+  and oversize documents each refuse by name.
 
 ```
 rye build scribe/reader.rye -femit-bin=scribe/bin/reader
 scribe/bin/reader selftest
+scribe/bin/reader read scribe/first-baton.kyri
 rishi/bin/rishi run tools/s/scribe_reader_witness.rish
 ```
 
