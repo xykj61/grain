@@ -910,6 +910,16 @@ assert message_size <= max_commit_message_bytes else "REFUSE chatgpt-mind: bound
 
 let phase_xy_post = write-phase "git-postcondition reason=xy-advanced"
 assert phase_xy_post.ok else "REFUSE chatgpt-mind: internal lap could not seat its post-candidate xy phase"
+# catch-up (20260831, Keaton's word): when xy advanced during the lap, one ff-only pull
+# carries the tree forward with the staged candidate riding -- git itself refuses the
+# pull when an advanced path collides with the candidate, and the assert below then
+# refuses exactly as it always did. The lap base rebinds to the caught-up HEAD so the
+# one-signed-commit proof still measures this lap's own work alone. Three proven
+# candidates died at this line in one weekend on unrelated field commits.
+let xy_catchup = ?: (xy-integrated repo_root) ({ok: true}) (git-run ["-C" repo_root "pull" "--ff-only" "xy" "main"])
+let before_refresh = git-run ["-C" repo_root "rev-parse" "HEAD"]
+assert before_refresh.ok else "REFUSE chatgpt-mind: could not read HEAD after the xy catch-up"
+let before = trim before_refresh.out
 assert xy-integrated repo_root else "REFUSE chatgpt-mind: xy/main advanced during the lap"
 
 let phase_config = write-phase "git-postcondition reason=config-drift"
