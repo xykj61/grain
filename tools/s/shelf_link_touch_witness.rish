@@ -1,0 +1,60 @@
+# tools/s/shelf_link_touch_witness.rish -- a round that writes a day-shelf row proves the row opens.
+#   rishi/bin/rishi run tools/s/shelf_link_touch_witness.rish
+#
+# WHAT THIS GATES, and what it deliberately leaves to its elder. `readme_reach` already gates every
+# broken link in a living file reachable from the front door, and a second assertion on that same
+# reading would be a second roof over one question. So this witness gates only what is its own:
+# that the commit-time reading refuses a bare stamped basename off the INDEX, that it refuses in the
+# pen from both sides, that it AGREES with readme_reach over one planted fault, and that
+# tools/hooks/pre-commit actually turns a real `git commit` away. The live tree's own worktree
+# reading is printed here as a report, never asserted -- readme_reach owns that gate, and one fault
+# should red in one place.
+#
+# REDS %383 named this reading in its own third field: a commit-time reading of the touched day
+# shelf's own links, in tools/hooks/pre-commit beside the pages it already regenerates, so a row is
+# refused on the lap that writes it rather than found by a pass an hour later.
+say "shelf-link-touch: Language EN -- a row born on a shelf opens the log it names."
+say "shelf-link-touch: Style Gauge Meter -- index blobs - one gated class - refusal named."
+say "shelf-link-touch: Lens TAME -- bound everything, and check at the edge the round can still fix."
+
+# Reported, not gated: what the tree's own shelves read right now. readme_reach is the gate on the
+# wider reading; this line is for the lap's eye.
+let live = run ["sh" "tools/fixtures/s/shelf_link_touch_scan.sh" "worktree"]
+say "report: the tracked-shelf reading below is readme_reach's gate, printed here for the lap's eye"
+assert live.out contains "bare_stamped_absent=0" else "shelf-link-touch: a bare stamped basename stands in a tracked shelf -- repair it"
+assert live.out contains "verdict=ok" else "shelf-link-touch: the tracked shelves must read clean"
+
+# The RED path, proven rather than assumed -- a guard shown only in the passing direction cannot be
+# told from a bypass.
+let red = run ["sh" "tools/fixtures/s/shelf_link_touch_scan.sh" "prove-red"]
+assert (red.ok == false) else "shelf-link-touch: prove-red must refuse"
+assert red.out contains "RED_shelf_row_link_absent" else "shelf-link-touch: prove-red want the named refusal"
+
+let unknown = run ["sh" "tools/fixtures/s/shelf_link_touch_scan.sh" "--nonsense"]
+assert (unknown.ok == false) else "shelf-link-touch: an argument the scan does not know must refuse"
+assert unknown.out contains "RED_unknown_argument" else "shelf-link-touch: want the unknown-argument refusal"
+
+let pen = run ["bash" "tools/fixtures/s/shelf_link_touch_control.sh"]
+say pen.out
+assert pen.ok else "shelf-link-touch: the pen must pass"
+assert pen.out contains "cases_failed=0" else "shelf-link-touch: every planted case must pass"
+assert pen.out contains "case=bare_basename_bitten ok" else "shelf-link-touch: a bare stamped basename must refuse"
+assert pen.out contains "case=bare_basename_freed ok" else "shelf-link-touch: and pass once the day room is named"
+assert pen.out contains "case=repair_named ok" else "shelf-link-touch: the refusal must name the one right answer"
+assert pen.out contains "case=both_refuse_planted ok" else "shelf-link-touch: this reading and readme_reach must refuse one plant together"
+assert pen.out contains "case=both_pass_repaired ok" else "shelf-link-touch: and both must pass once it is repaired"
+assert pen.out contains "case=other_broken_free ok" else "shelf-link-touch: a dated cross-room reference is resolved, never gated"
+assert pen.out contains "case=other_broken_counted ok" else "shelf-link-touch: and it must still be counted"
+assert pen.out contains "case=index_reads_tracked_log ok" else "shelf-link-touch: the index is the reading, not the disk"
+assert pen.out contains "case=external_links_free ok" else "shelf-link-touch: http, mailto and a bare fragment are not tree paths"
+assert pen.out contains "case=no_shelf_no_reading ok" else "shelf-link-touch: a round touching no shelf must read none"
+assert pen.out contains "case=deleted_shelf_absent ok" else "shelf-link-touch: a removed shelf reads absent"
+assert pen.out contains "case=hook_lawful_commits ok" else "shelf-link-touch: the hook must let a lawful row commit"
+assert pen.out contains "case=hook_refuses_bare_row ok" else "shelf-link-touch: the hook itself must refuse a real commit"
+assert pen.out contains "case=hook_says_why ok" else "shelf-link-touch: the refusal must say plainly what is wrong"
+assert pen.out contains "case=hook_names_repair ok" else "shelf-link-touch: the refusal must name the repair"
+assert pen.out contains "case=hook_frees_repaired ok" else "shelf-link-touch: the hook must let a repaired row through"
+assert pen.out contains "case=hook_rests_off_shelves ok" else "shelf-link-touch: a commit touching no shelf passes free"
+assert pen.out contains "verdict=ok" else "shelf-link-touch: want pen verdict ok"
+
+say "GREEN: shelf-link-touch -- refusals both ways - agreement with readme_reach proven - 28 cases in the pen"

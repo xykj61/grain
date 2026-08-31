@@ -59,10 +59,10 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *Carry card for terminal - phone - waymarks. Refreshed on **remember**. Debrided to Compass Chapter `20260809.024320`; those greens live in code and counsel.*
 
-**Git nib:** `9c19cf1b12` -- this round's own.
+**Git nib:** `61ea50dff3` -- this round's own.
 
-**Now.** **The fold held the trail's three facts and left a hand to copy them,
-so two folds in one day shipped with no trail at all.**
+**Now.** **The wall that refuses a commit body naming a path that does not exist
+stops at the file that commit edits.**
 
 **The live front** (condensed `20260830.012039`; the checkpoint holds the departing accounts,
 the day shelves every landed lap):
@@ -88,28 +88,28 @@ VOLS rows are the campaign's). Mystery's module-label guard fails open on BSD gr
 it finds elder labels in `tools/gen/chapter/fascia_metric_v0.rish`.
 **For Pond:** `spool_cloth.rye` carries the same `max_name=48` and wall with no pedestal --
 Hush's. **%358 REPAIRED `20260830`:** the three double-pinned pedestal legs hold placard and
-source to AGREEMENT, proven biting both ways. Mystery: rung drift reads 17,248 against
-17,247 after rebase.
+source to AGREEMENT, proven both ways.
 
-**Still open:** `glow/rune_shape.rye` keeps width custody; Mind keeps the reconnect stash,
-`%281`/`%291`, two `enclosure.conf` pins. **%360's SIXTH LANDS:** its wall fixture kept
-the retired seed subject, so its witness was refused by the wall it tests: two
-lines, GREEN, rostered: **all six our rules demand run each lap.**
-**Rosters `20260830`:** `grain-hush` 104/98 hot, three rows; `rule_twin` at **%7**,
-drift **38 over 36**: three vocab rules drifted since `20260828`, both ways.
-124 rostered; silence 26/96.
-**The falsifier splits:** `env` travelled; the door half did not --
-`door_disagreements=1` at `user`, `derived=502 metal=unread`. Gate %5, named not touched.
-**Named, not taken (%347):** `pond/enclosure_policy.kyri` 8,120/8,192; widening the wall is yours.
-**Next doors.** Dream: Kumara, then Caravan. Hush: the fold-trail loom LANDED
-(`--why` required, trail written); next %383's lap -- a commit-time read of a
-day shelf's links -- then the choirs. %7 gates the auditor.
+**Still open:** `glow/rune_shape.rye` keeps width custody; Mind keeps the reconnect
+stash, `%281`/`%291`, two `enclosure.conf` pins.
+**Rosters `20260831`:** `grain-hush` cold 105/103 in 63min, hot 106/100 in 47min --
+both beside Dream's own passes on four shared vCPUs. Of the six hot reds, three are the
+pay-at-commit pages the hook regenerates; `rule_twin` holds at **%7**.
+`pond_enclosure_door` reads GREEN -- `door_disagreements=1` at `user` is answered;
+gate %5 stands, untouched.
+**Named, not taken (%347):** `pond/enclosure_policy.kyri` 8,120/8,192; widening the wall
+is yours.
+**Next doors.** Dream: Kumara, then Caravan. Hush: `shelf_link_touch` LANDED as
+pre-commit **rule four** -- %383 CLOSED, a shelf row refused on the lap that writes it;
+next the lane-safe choirs (drey 17, acme_dx 11), %360's remainder. Two reds booked on the
+way: **%384** the same shape a third room over -- a stamp-shaped illustration inside a
+living pin, read by nothing until the 45-minute census, and it fired TWICE, the second time
+in the row booking it (*the dead thing must not be named even to say it was removed*);
+**%385** two pins publish a lap count nobody derives, 18 numbers repaired, 15 of 40 rows
+drifted, ten reading 0.
 Silence: the link frame is tied (`20260830.204814`) -- 554 is 12 + 14 + 528 and neither room
-imports the other. `vessel_fetch_wire.rye` stays Amphora's; `virtio_net.rye` comments read
-**C+ 78**, a carded molt.
-**%376 SEALED `20260830.223044`** on Keaton's word: the seat-side practice -- stage exactly,
-prove the index clean, commit whole-index -- worded on every seat card; hook pages ride the
-commit. **%374 OPEN:** the receipt-chain question stays yours.
+imports the other. `virtio_net.rye` comments read **C+ 78**, a carded molt.
+**%374 OPEN:** the receipt-chain question stays yours -- it cost this lap a second full pass.
 ---
 ## Landed arcs
 
@@ -224,7 +224,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260830.201648` | The digest read the shape; now it reads the content | [log](../session-logs/date/20260830/20260830-201648_the-shape-and-the-bytes.kyri) |
+| `20260831.003448` | The row opens the log it names -- %383 closed at commit time | [log](../session-logs/date/20260831/20260831-003448_the-row-opens-the-log-it-names.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it.
 
