@@ -1,0 +1,70 @@
+# tools/g/glow_core_witness.rish -- the first Glow core: three laws, one source.
+#
+#   rishi/bin/rishi run tools/g/glow_core_witness.rish
+#
+# gate-lantern-face-core.glow holds the Lantern face's three proven laws as
+# arms of one `|%` core, lowered to one Rye module with a dispatching argv
+# main. Each arm is held to the SAME answers its standing single desk gives
+# on the same samples -- two homes, one truth -- and the refusals are proven:
+# an unnamed arm ordinal, a core that never closes, and a core with no arms.
+
+say "glow-core: Language EN -- the module form, earned by three laws wanting one home."
+say "glow-core: Style Gauge, Meter -- each leg names its arm, its samples, its answer."
+say "glow-core: Lens TAME -- bounds and refusals proven beside the welcomes."
+
+let zig = "vendor/zig-toolchain/zig"
+let core = "src/gate/gate-lantern-face-core.glow"
+
+say "glow-core: arm 1 against the face-text desk..."
+let c1a = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" core "1" "38"]
+assert c1a.ok else "glow-core: core arm 1 (38) failed to run"
+let d1a = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "src/gate/gate-lantern-face-text-u32.glow" "38"]
+assert d1a.ok else "glow-core: the face-text desk (38) failed to run"
+assert (trim c1a.out) == (trim d1a.out) else "glow-core: arm 1 and its desk disagree at 38"
+let c1b = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" core "1" "39"]
+assert c1b.ok else "glow-core: core arm 1 (39) failed to run"
+let d1b = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "src/gate/gate-lantern-face-text-u32.glow" "39"]
+assert d1b.ok else "glow-core: the face-text desk (39) failed to run"
+assert (trim c1b.out) == (trim d1b.out) else "glow-core: arm 1 and its desk disagree at 39"
+
+say "glow-core: arm 2 against the unknown-law desk..."
+let c2a = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" core "2" "2" "5"]
+assert c2a.ok else "glow-core: core arm 2 (2,5) failed to run"
+let d2a = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "src/gate/gate-lantern-unknown-law-u32.glow" "2" "5"]
+assert d2a.ok else "glow-core: the unknown-law desk (2,5) failed to run"
+assert (trim c2a.out) == (trim d2a.out) else "glow-core: arm 2 and its desk disagree at (2,5)"
+let c2b = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" core "2" "2" "0"]
+assert c2b.ok else "glow-core: core arm 2 (2,0) failed to run"
+let d2b = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "src/gate/gate-lantern-unknown-law-u32.glow" "2" "0"]
+assert d2b.ok else "glow-core: the unknown-law desk (2,0) failed to run"
+assert (trim c2b.out) == (trim d2b.out) else "glow-core: arm 2 and its desk disagree at (2,0)"
+
+say "glow-core: arm 3 against the feed-law desk..."
+let c3a = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" core "3" "2" "5"]
+assert c3a.ok else "glow-core: core arm 3 (2,5) failed to run"
+let d3a = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "src/gate/gate-lantern-feed-unknown-u32.glow" "2" "5"]
+assert d3a.ok else "glow-core: the feed-law desk (2,5) failed to run"
+assert (trim c3a.out) == (trim d3a.out) else "glow-core: arm 3 and its desk disagree at (2,5)"
+let c3b = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" core "3" "0" "5"]
+assert c3b.ok else "glow-core: core arm 3 (0,5) failed to run"
+let d3b = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" "src/gate/gate-lantern-feed-unknown-u32.glow" "0" "5"]
+assert d3b.ok else "glow-core: the feed-law desk (0,5) failed to run"
+assert (trim c3b.out) == (trim d3b.out) else "glow-core: arm 3 and its desk disagree at (0,5)"
+
+say "glow-core: the refusals -- unnamed arm, unclosed core, empty core..."
+let bad_arm = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" core "4" "1"]
+assert (bad_arm.ok == false) else "glow-core: an unnamed arm ordinal must refuse"
+let unclosed = run ["sh" "-c" "glow/bin/glow_run --sample-argv tools/fixtures/g/glow_core_unclosed_refuses.glow 2>&1"]
+assert unclosed.out contains "MalformedCore" else "glow-core: a core that never closes must refuse by name"
+let empty = run ["sh" "-c" "glow/bin/glow_run --sample-argv tools/fixtures/g/glow_core_empty_refuses.glow 2>&1"]
+assert empty.out contains "EmptyCore" else "glow-core: a core with no arms must refuse by name"
+
+say "glow-core: parity anchors -- the three standing desks the arms mirror..."
+let a1 = run ["grep" "-c" "(gth sample 38)" "src/gate/gate-lantern-face-text-u32.glow"]
+assert a1.ok else "glow-core: the face-text desk moved -- re-anchor the core's arm 1"
+let a2 = run ["grep" "-c" "(and (eq kind 2) (gth answer_len 0))" "src/gate/gate-lantern-unknown-law-u32.glow"]
+assert a2.ok else "glow-core: the unknown-law desk moved -- re-anchor the core's arm 2"
+let a3 = run ["grep" "-c" "(or (eq reason 2) (eq text_len 0))" "src/gate/gate-lantern-feed-unknown-u32.glow"]
+assert a3.ok else "glow-core: the feed-law desk moved -- re-anchor the core's arm 3"
+
+say "GREEN: glow-core -- three laws live under one roof, every arm answers as its standing desk, and the malformed shapes refuse by name."

@@ -43,6 +43,7 @@ const lower_core = @import("lower_core.rye");
 const lower_shape = @import("lower_shape.rye");
 const lower_named_cast = @import("lower_named_cast.rye");
 const lower_shop_gate = @import("lower_shop_gate.rye");
+const lower_shop_core = @import("lower_shop_core.rye");
 const lower_shop_nest = @import("lower_shop_nest.rye");
 
 
@@ -135,18 +136,39 @@ pub fn main(init: std.process.Init) !u8 {
         print("glow_run: no Glow line in {s}\n", .{glow_path});
         return 2;
     }
-    if (line_count > lower_multi.max_lines) {
+    // core (20260830.224500): a `|%` source lawfully carries up to core_max_lines
+    // live lines, so the six-line gate ceiling steps aside for the form alone.
+    const is_core = lower_shop_core.looks_like_core(src);
+    if (line_count > lower_multi.max_lines and !is_core) {
         print("glow_run: too many Glow lines in {s}\n", .{glow_path});
         return 2;
     }
+    if (is_core and line_count > lower_shop_core.core_max_lines) {
+        print("glow_run: too many core lines in {s}\n", .{glow_path});
+        return 2;
+    }
     // G3 cast is one line; STOA101/114 bartis/barket argv is two live lines.
-    if (sample_argv and line_count != 1 and line_count != 2) {
+    if (sample_argv and line_count != 1 and line_count != 2 and !is_core) {
         print("glow_run: --sample-argv needs one cast line or a 2-line bartis/barket in {s}\n", .{glow_path});
         return 2;
     }
 
     var rye_buf: [4096]u8 = undefined;
     const rye_len: u32 = blk: {
+        // core (20260830.224500): a `|%` source lowers to one module whose argv
+        // main dispatches by arm ordinal. The core speaks argv only -- its
+        // answers live per arm, so the welcome road refuses by name -- and it
+        // routes ahead of the six-line collect its arm count would overflow.
+        if (is_core) {
+            if (!sample_argv) {
+                print("glow_run: core lower failed (CoreWantsArgv)\n", .{});
+                return 1;
+            }
+            break :blk lower_shop_core.lower_core_argv(src, &rye_buf) catch |err| {
+                print("glow_run: core argv-sample lower failed ({s})\n", .{@errorName(err)});
+                return 1;
+            };
+        }
         if (line_count >= 2) {
             var lines: [lower_multi.max_lines][]const u8 = undefined;
             const n = lower_multi.collect_lines(src, &lines) catch {

@@ -16,6 +16,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260830.223624` | [The captain's wake holds still](20260830/20260830-223624_the-captains-wake-holds-still.kyri) | the field pauses pushes for Mind's sign window |
 | `20260830.223110` | [The index and the commit agree](20260830/20260830-223110_the-index-and-the-commit-agree.kyri) | %376 sealed seat-side; six surfaces worded |
 | `20260830.222505` | [A law earns the first nesting](20260830/20260830-222505_a-law-earns-the-first-nesting.kyri) | and-of-ors lands with desk, twin, and refusal |
+| `20260830.225159` | [Three laws, one roof](20260830-225159_three-laws-one-roof.kyri) | the first Glow core lands, arm-parity proven |
 | `20260830.223846` | [The crux is the core](20260830-223846_the-crux-is-the-core.kyri) | several gates, one source -- the module door named |
 | `20260830.223624` | [The captain's wake holds still](20260830-223624_the-captains-wake-holds-still.kyri) | the field pauses pushes for Mind's sign window |
 | `20260830.223110` | [The index and the commit agree](20260830-223110_the-index-and-the-commit-agree.kyri) | %376 sealed seat-side; six surfaces worded |
