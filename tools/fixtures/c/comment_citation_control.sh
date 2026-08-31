@@ -157,4 +157,21 @@ sed 's|prose=$((prose + 1)); continue ;;|prose=$((prose + 1)) ;;|' \
 o=$(run)
 echo "$o" | grep -q 'verdict=broken_citation' && echo "log_bitten_without_skip=yes" || echo "log_bitten_without_skip=no"
 
+# 13 -- the prefilter above is a COST filter, and case 11 rests on it never being a second answer.
+# The scan's comment says the three extensions it drops "are prose under every reading"; this asks
+# the card, which is the only thing entitled to say so, and asks it for the two notations the skip
+# now carries as well. Two spellings of one class is the drift REDS %398 booked, and an invariant
+# asserted in a comment is one nobody reruns.
+cp "$scan" "$pen/tools/fixtures/c/comment_citation_scan.sh"
+prose_agrees=yes
+for ext in md mdc markdown kyri bron; do
+  printf 'a page citing [x](nowhere/at/all.md)\n' > "$pen/lib/probe.$ext"
+  k=$( cd "$pen" && QA_CARD_ROOT=. sh tools/fixtures/q/qa_report_card.sh "lib/probe.$ext" --setting meter --service 100 2>/dev/null | grep -c '^truth_source=prose' )
+  # Every failing extension is named rather than only the last, since a reader told `no_at_bron`
+  # would reasonably conclude the other four still agreed.
+  [ "$k" -eq 1 ] || { if [ "$prose_agrees" = yes ]; then prose_agrees="no_at_$ext"; else prose_agrees="$prose_agrees,$ext"; fi; }
+  rm -f "$pen/lib/probe.$ext"
+done
+echo "prefilter_matches_card_prose=$prose_agrees"
+
 echo "control_verdict=ok"

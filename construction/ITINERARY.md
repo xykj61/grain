@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `82f0127eda` -- this round's own.
+**Git nib:** `8ee33f62d0` -- HEAD's parent, resolvable everywhere (%401).
 
 **Now.** **A guard that borrows a shared reading and keeps its own list of what to feed it drifts the day that list grows.**
 
@@ -81,24 +81,27 @@ round's opening stash stop an in-flight pass in its own tree.
 **Still open:** `glow/rune_shape.rye` keeps width custody; Mind keeps the reconnect stash,
 `%281`/`%291`, two `enclosure.conf` pins. **Named (%347):** `pond/enclosure_policy.kyri`
 8,120/8,192; the wall is yours.
-**Rosters `20260831`:** four guards hold **55%** of a pass and 35 cost a second or less, so a mean
-read as a rate misses by an hour. This seat: cold **108/104** at 1,523 guard-s, hot **109/104** at
-1,313, `tree_moved=no` both. What stays red is the three named gates -- `rule_twin` %7,
-`pond_enclosure_door` %5, `commit_message_guard` (%393's untracked publisher) -- plus the two
-generated pages the commit hook rewrites.
-**%398 TAKEN AND CLOSED, by a narrower reading than the finding named:** the exclusions never
-engaged. The card classifies a file BEFORE it picks which lines to read, `%392` added `.bron`/`.kyri`
-to that classifier correctly, and the ten are prose that was never this guard's population. The scan
-asks the card for `truth_source` in the call already reading citations: **94 scanned, 13 prose
-skipped, 0 broken**. **`%399`, mine, the same class:** duty 6's near-bound advisory -- the only
-reading that speaks BEFORE a pin crosses -- borrowed the law's bound and kept its own roster, so
-`REDS.md`, `SHRED_PREP.md`, `EQUINOX_SEAT_MAP.md` and `prin_scope.rish` had never been weighed while
-card and ledger stood at **3** and **21 bytes free**, all three pin guards green. It reads the seated
-roster now, each page's own bound and headroom named. **A borrowed classification drifts where a
-borrowed constant cannot.** `%393`-`%396` FOLDED by the pier, `%392`/`%397` by me.
+**Rosters `20260831`:** field cold **108/104**, hot **109/104**; pier hot **109/106**,
+`tree_moved=no`. **`%401` BOOKED -- the nib is now HEAD's PARENT:**
+the seated order pins the PRE-AMEND hash, which the amend replaces and no push carries, so five
+bodies of six red `nib_honesty` and `remember_git_nib` every lap. The guard's own header has said so
+all along, with the repair: **a parent is already pushed, and it needs no seat.** Applied here; the
+RULE still names the breaking state, a %7-care twin edit for its own lap. Also `%374`'s answer.
+**Cold pass and editing lap run serially.**
+**%398 CLOSED TWICE, two hands, no contact** -- one mechanism down to the variable names. **The
+earlier landing stands; the pier's parks** on a `pier/` branch. The card
+classifies a file BEFORE picking lines, so the exclusions never engaged and the ten were prose this
+guard never owned. Reads **95 scanned, 13 skipped, 0 broken**. Additive from the pier: the case that
+ASKS the card which extensions are prose rather than asserting it, red both ways.
+**`%400` OPEN, theirs to word:** four sites recite **107**/**94** where the instrument prints
+**13**/**95**. **`%399` the same class:** the near-bound advisory borrowed the law's bound and
+kept its own roster, so four seated pins went unweighed at **3** and **21 bytes free**. **A borrowed
+classification drifts where a borrowed constant cannot.** `%393`-`%399` FOLDED.
+**Worth your word:** nothing shows a red is worked, so two hands spent a morning on one line.
+Should an OPEN row carry a **claim** -- seat and stamp, at start rather than landing?
 **Next doors.** Dream: Settlement's replayable fold. Caravan keeps a 5-second seam and sings on cadence or
-touch. Kumara LANDED. Hush: `spool_cloth`'s eight `ClothError`
-paths are its last bound wanting a desk; the shape room's other 37 nibs are unread. Silence: `standing-equipment.kyri` reads **C+ 75**, a frame past this round's depth. The card is
+touch. Kumara LANDED. Hush: `%397`'s remainder -- a card reading a reference block BESIDE the prose
+-- then `spool_cloth`'s eight `ClothError` paths; 37 shape nibs unread. Silence: `standing-equipment.kyri` reads **C+ 75**, a frame past this round's depth. The card is
 structurally at its bound -- Standing alone is **7,008 of 24,576** -- so a **fourth
 settled-decisions shelf** is the lap that fixes it, not another live-front cut.
 **Yours, two.** Door's ceiling is **9** against module heads that run 12-17, which is what puts
@@ -219,6 +222,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260831.080221` | The borrowed reading and the list it kept -- `%398` taken and closed, `%399` booked, the same class one room over | [log](../session-logs/date/20260831/20260831-080221_the-borrowed-reading-and-the-list-it-kept.kyri) |
+| `20260831.095907` | The same repair from two hands -- `%398` closed twice, the earlier landing stands, `%400` books the figures beside the instrument | [log](../session-logs/date/20260831/20260831-095907_the-same-repair-from-two-hands.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)
