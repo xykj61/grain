@@ -74,7 +74,7 @@
 # moves 130 of them -- 57 across the B door, one below it, mean +7.2. Exactly one living non-dated
 # prose file of 1,503 carries a block at all, so the reading is surgical rather than sweeping.
 #
-# WHAT IS PROVEN, on metal. One hundred and nine behaviors in a throwaway pen -- the control's own
+# WHAT IS PROVEN, on metal. One hundred and seventeen behaviors in a throwaway pen -- the control's own
 # yes/no readings, counted rather than recited, after this file carried 72 in one place and 79 in
 # another.
 # The scale at every one of its
@@ -88,8 +88,8 @@
 # to invent a Service it did not measure, refusing an absent path, and refusing an unknown setting.
 #
 # And the two new readings proven from BOTH sides. A declaring short page read as an index; a
-# declaring LONG page still graded and still penalized; a short page declaring nothing still graded
-# and still penalized; a declaration in the body reaching nothing. A placeholder costing nothing and
+# declaring LONG page still graded and still penalized; a short page declaring nothing still
+# penalized for its link density; a declaration in the body reaching nothing. A placeholder costing nothing and
 # named; a fabricated stamp still costing twenty and still named. Pointed at a copy of the card
 # carrying the old rule, the control refuses 13 of those 17 and passes exactly the 4 that describe
 # behavior which must NOT change -- so it is proven to bite rather than assumed to.
@@ -129,6 +129,32 @@
 # because twelve of the nineteen exceed Door's 20% register ceiling and eight exceed its grade
 # ceiling of 9; a typed `--setting door` is still honored, since whether that ceiling of 9 is right
 # at all is its own open question and settling it inside this repair would be reaching.
+#
+# AND THE GRADE CARRIES THE FLOOR THE REGISTER READING ALREADY HELD (REDS %407, 20260831). The lap
+# opened on a question: should a record-only notation DEFAULT to Meter, given that 3,928 session
+# logs sit between a card grading at Field and a rule seating logs at Meter. Measurement answered a
+# different one. A reading grade is two rates -- words per sentence, syllables per word -- so it
+# wants a denominator exactly as a share does, and one of the card's two scored readings checked
+# that denominator while the other scored on. Across 385 sampled artifacts (55 record-only notation
+# files, a 60-log sample, 163 programs, all 107 documented notation files), 207 sat under the
+# register scan's own eight-sentence floor and 137 of them still took a scored Reach below 100.
+# Seventeen carried zero words of prose and read reach=0, the lowest point on the scale, for a page
+# the card had read nothing of. A one-line module head shows it plainest:
+# active-designing/docs/glow/fixtures/anchor_bad.rye printed `meter_reach=100 (0 words reported, not
+# scored)` beside `reach=0 (grade 0 against 9 ... 0 words)` in one run. Data corpora show it
+# largest, where the syllable heuristic counts vowel groups inside a 128-character hex string --
+# mycelium/corpora/braid_dag.bron reads 6.1 syllables per word and a grade of 59 over 30 words --
+# and 41 of the 55 record-only files read D+ on that alone.
+#
+# So the grade term takes the same cited floor, and the cross-reference term keeps the index door it
+# already had. Two terms, two doors, deliberately independent: a twenty-word page with five links
+# keeps its link penalty, because a rate stays a rate, while it stops being graded on a readability
+# score twenty words can carry. That independence is what let this land beside a decision the index
+# door made on purpose, and all four of that door's legs still pass unchanged. Session logs stand
+# exactly where they stood -- 0 of 60 sat under the floor with a scored grade -- so measurement
+# answers the door that sent this lap out: a record-only notation already reads correctly at Field,
+# and defaulting the family to Meter would hand 3,985 files the constant the repair one row above
+# had just removed.
 #
 # WHAT IS REPORTED, as a ratchet under a ceiling that only ever falls. The twelve-document door
 # roster, read as report cards, counted where the COUNTED half alone puts a page below B. One at
@@ -283,8 +309,16 @@ assert control.out contains "reference_source_load_bearing=yes" else "qa-report-
 assert control.out contains "deps_list_is_complete=yes" else "qa-report-card: a pen built from nothing but --deps must run the card, or the list has gone stale"
 assert control.out contains "deps_list_is_named=yes" else "qa-report-card: --deps must name every reading the card cites, not one of them"
 assert control.out contains "deps_list_resolves=yes" else "qa-report-card: every path --deps names must exist"
+assert control.out contains "grade_floor_frees_the_corpus=yes" else "qa-report-card: a reading grade needs a denominator, so prose under the register scan's own floor is reported rather than scored"
+assert control.out contains "grade_floor_names_the_grade=yes" else "qa-report-card: the grade must still be printed when it is not scored, the same way the register share is"
+assert control.out contains "empty_prose_reads_full=yes" else "qa-report-card: a file with nothing to read cannot be unreadable -- zero words must not score zero"
+assert control.out contains "floors_agree_across_readings=yes" else "qa-report-card: one card reading one prose_path must not report one scored reading and score the other"
+assert control.out contains "long_prose_still_graded=yes" else "qa-report-card: prose that clears the floor is graded exactly as before, or the floor is an exemption"
+assert control.out contains "link_penalty_survives_the_floor=yes" else "qa-report-card: the grade floor and the index door are separate terms -- a short undeclared page keeps its link penalty"
+assert control.out contains "elder_grade_scored_the_unmeasurable=yes" else "qa-report-card: the elder card must be shown scoring a grade it had no denominator for, and an empty file at zero"
+assert control.out contains "grade_floor_repair_bites=yes" else "qa-report-card: the repaired card must read the corpus and the empty file differently than the elder one, or it is a rewording"
 assert control.out contains "control_verdict=ok" else "qa-report-card: the control must agree with itself"
-say "one hundred and nine behaviors proven in a throwaway pen, the scale read at every boundary from both sides"
+say "one hundred and seventeen behaviors proven in a throwaway pen, the scale read at every boundary from both sides"
 
 # THE JUDGED READING NAMES ITS OWN SCALE (REDS %361). The composite is the mean of four readings on
 # one 0-100 scale, so `--service` is 0-100 -- and that clause lived in exactly one place, the loop's

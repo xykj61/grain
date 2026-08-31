@@ -391,18 +391,17 @@ reach_raw=$(awk -v gc="$grade_ceiling" -v xc="$xref_ceiling" '
     per100 = links * 100 / words
     go = grade - gc;   if (go < 0) go = 0
     xo = per100 - xc;  if (xo < 0) xo = 0
-    reach = 100 - 10 * int(go + 0.5) - 10 * int(xo + 0.5)
-    if (reach < 0) reach = 0
-    # The same reading with the cross-reference term dropped, for a page whose links ARE its
-    # content. Computed here so one arithmetic answers both readings rather than two that can drift.
-    reach_prose = 100 - 10 * int(go + 0.5)
-    if (reach_prose < 0) reach_prose = 0
-    printf "%d %d %d %d %d %d\n", reach, reach_prose, int(grade + 0.5), int(per100 + 0.5), words, links
+    # THE TWO OVERAGES ARE PRINTED RATHER THAN ONE COMPOSED READING, so each can be freed on its
+    # own condition without a second arithmetic beside this one that could drift from it. The
+    # grade term is freed below the sentence floor; the cross-reference term is freed for a
+    # declared index. The empty exit above prints both overages as zero, which is the whole of
+    # the repair for a file with nothing to read: no overage, so no penalty.
+    printf "%d %d %d %d %d %d\n", int(go + 0.5), int(xo + 0.5), int(grade + 0.5), int(per100 + 0.5), words, links
   }
 ' "$prose_path")
 set -- $reach_raw
-reach=$1
-reach_prose=$2
+grade_over=$1
+xref_over=$2
 grade=$3
 xrefs=$4
 words=$5
@@ -435,16 +434,53 @@ declares_index=no
 awk 'NR <= 40 { if ($0 ~ /^---[ \t]*$/) exit; print }' "$root/$path" \
   | grep -qE '[*][*]Depth:[*][*][^|]*routing|[*][*]Kind:[*][*][^|]*index' && declares_index=yes
 
+# THE FLOOR THE REGISTER READING ALREADY HOLDS, HONORED BY THE GRADE TERM AS WELL (REDS %407). A
+# reading grade is two rates -- words per sentence, and syllables per word -- so it needs a
+# denominator big enough to mean something, exactly as a share does. The card was checking that
+# denominator for one scored reading and not the other, and in one run over one prose_path it would
+# print `register=100 ... reported, not scored` beside a scored grade computed from the same words.
+#
+# THE EMPTY CASE IS THE PLAIN ONE, AND IT WAS THE WORST READING ON THE SCALE. When the prepared
+# prose carries no sentence at all the awk above took an early exit whose first field was the reach
+# itself, so a file with NOTHING to read scored Reach zero -- while its own grade printed 0 against
+# a ceiling of 9. Measured 20260831 over 385 sampled artifacts: 17 carried zero words of prose and
+# every one of them read reach=0.
+#
+# WHAT THE FLOOR REACHES, MEASURED RATHER THAN ESTIMATED. Of those 385 -- 55 record-only notation
+# files, a 60-log sample, 163 programs, and all 107 documented notation files -- 207 sat under this
+# floor and 137 of them took a scored Reach below 100 anyway. The worst readings are data corpora,
+# where the syllable heuristic counts vowel groups inside a 128-character hex string:
+# mycelium/corpora/braid_dag.bron reads 6.1 syllables per word and a grade of 59 over 30 words, and
+# 41 of the 55 record-only files read D+ on that alone. Session logs are untouched -- 0 of 60 sat
+# under the floor with a scored grade -- which is the answer to the door that sent this lap out.
+#
+# TWO TERMS, TWO DOORS, DELIBERATELY INDEPENDENT. The grade term is freed by a MEASURED sentence
+# count; the cross-reference term is freed only by the index door below, which needs a page to
+# DECLARE itself an index and to MEASURE as one. Keeping them apart is what lets this floor land
+# without touching that decision: a twenty-word page with five links stays penalized for its link
+# density, because a rate is still a rate, while it stops being graded on a readability score no
+# twenty words can carry. The floor is read from the register scan rather than spelled here, so one
+# number governs both readings and neither can drift from the other.
+grade_mode=scored
 reach_mode=graded
+if [ "$sentences" -lt "$register_floor" ]; then
+  grade_mode=reported
+  grade_over=0
+fi
 if [ "$declares_index" = yes ] && [ "$words" -lt "$index_floor" ]; then
   reach_mode=index
-  reach=$reach_prose
+  xref_over=0
 fi
+
+# One arithmetic, composed after both doors have had their say, so a page that qualifies for
+# neither, either, or both is answered by the same line rather than by three of them.
+reach=$(( 100 - 10 * grade_over - 10 * xref_over ))
+[ "$reach" -lt 0 ] && reach=0
 
 # Meter carries no reach budget, because refusal-first prose is the subject rather than a fault.
 # A whole program is never Meter: its head remains Door and its bound lines are reported below.
 [ "$setting" = "meter" ] && [ "$artifact_kind" != program ] \
-  && { register=100; reach=100; reach_mode=meter; register_mode=meter; }
+  && { register=100; reach=100; reach_mode=meter; register_mode=meter; grade_mode=meter; }
 
 # --- Truth, the counted half: every relative link resolves somewhere ------------------------------
 # A relative citation belongs to the BODY that wrote it, and a symlink is a second door onto one
@@ -604,12 +640,19 @@ else
   echo "register=$register (negative $neg_pct% of $sentences sentences reported, not scored)"
 fi
 echo "register_mode=$register_mode (floor $register_floor sentences, cited from prose_register_scan.sh)"
-if [ "$reach_mode" = index ]; then
-  echo "reach=$reach (grade $grade against $grade_ceiling; xrefs $xrefs per 100w reported, not scored; $words words, $links links)"
+if [ "$grade_mode" = reported ]; then
+  grade_note="grade $grade against $grade_ceiling reported, not scored"
 else
-  echo "reach=$reach (grade $grade against $grade_ceiling; xrefs $xrefs per 100w against $xref_ceiling; $words words, $links links)"
+  grade_note="grade $grade against $grade_ceiling"
 fi
-echo "reach_mode=$reach_mode (declares_index=$declares_index; prose floor $index_floor words)"
+if [ "$reach_mode" = index ]; then
+  xref_note="xrefs $xrefs per 100w reported, not scored"
+else
+  xref_note="xrefs $xrefs per 100w against $xref_ceiling"
+fi
+echo "reach=$reach ($grade_note; $xref_note; $words words, $links links)"
+echo "reach_mode=$reach_mode (declares_index=$declares_index; index floor $index_floor words)"
+echo "grade_mode=$grade_mode (floor $register_floor sentences, cited from prose_register_scan.sh)"
 echo "truth_counted=$truth_counted ($unresolved of $cited cited paths unresolved; $illustrations placeholder shapes read as illustrations)"
 echo "truth_source=$truth_source (a program cites in its comments; a prose file cites everywhere)"
 [ "$path_kind" = symlink ] && echo "path_kind=symlink (citations read from the body at $dir)"

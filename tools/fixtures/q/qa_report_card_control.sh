@@ -352,7 +352,13 @@ echo "$o" | grep -q 'reach=.*[1-9][0-9]* words' && echo "glow_words_counted=yes"
 # whole room looked like until this clause landed.
 glow_placard "unknown mark" | sed 's/^::/;;/' > "$pen/desk_unknown.glow"
 o=$(run desk_unknown.glow --setting field --service 100)
-echo "$o" | grep -q 'reach=0 .*0 words' && echo "unknown_mark_reads_nothing=yes" || echo "unknown_mark_reads_nothing=no ($(val "$o" reach))"
+# WHAT THIS LEG ASSERTS ON, AND WHY IT MOVED (REDS %407). Reading nothing is measured by the word
+# count, and the card used to answer a zero word count with reach=0 -- the worst reading on the
+# scale for a file it had not read at all. The grade floor retired that, so the leg now reads the
+# words and the reported mode, which is what "the card saw nothing here" has always actually meant.
+echo "$o" | grep -q 'reach=100 (grade 0 .*0 words, 0 links)' \
+  && [ "$(val "$o" grade_mode)" = reported ] \
+  && echo "unknown_mark_reads_nothing=yes" || echo "unknown_mark_reads_nothing=no ($(val "$o" reach))"
 
 # And the clause reaches only lines that OPEN with the mark: `::` inside a sentence is prose, never
 # a second comment head to strip.
@@ -682,5 +688,110 @@ rm -rf "$deps_pen"
 [ "$(echo "$deps" | wc -l | tr -d ' ')" -ge 2 ] && echo "deps_list_is_named=yes" || echo "deps_list_is_named=no"
 for d in $deps; do [ -f "$d" ] || { echo "deps_list_resolves=no ($d)"; deps_bad=1; }; done
 [ "${deps_bad:-0}" = 0 ] && echo "deps_list_resolves=yes"
+
+# 8c -- THE GRADE TERM CARRIES THE FLOOR THE REGISTER READING ALREADY HOLDS (REDS %407). A reading
+# grade is two rates, words per sentence and syllables per word, so it needs a denominator the same
+# way a share does -- and the card checked that denominator for one scored reading and not the
+# other. Measured 20260831 over 385 sampled artifacts: 207 sat under the floor and 137 of them took
+# a scored Reach below 100 anyway, 17 of those carrying no prose at all and reading reach=0.
+#
+# The plants below press on both sides of the floor and on both terms, because the grade term and
+# the cross-reference term are freed by different doors on purpose.
+cat > "$pen/hex_corpus.bron" <<'EOF'
+format cord-dag-v1
+block 174d54c6d3de2d3bba9d1d089ec807b039a24e79357bf2570d622338c10f8a6b553ee95ee6e69cc2486c7bbd1875477247542c4622a36a8e4fe8f5af4480c10c 0 1 100 - a6624a7b97068874da0f3534fd9585ba34a280466bce20e2a8eceeebf4e6ec654fedafcbe147fd26b310ab6da5996d40761ceedc79c1edda239ce388691d3003
+block 174d54c6d3de2d3bba9d1d089ec807b039a24e79357bf2570d622338c10f8a6b553ee95ee6e69cc2486c7bbd1875477247542c4622a36a8e4fe8f5af4480c10c 1 1 100 - a6624a7b97068874da0f3534fd9585ba34a280466bce20e2a8eceeebf4e6ec654fedafcbe147fd26b310ab6da5996d40761ceedc79c1edda239ce388691d3003
+block 174d54c6d3de2d3bba9d1d089ec807b039a24e79357bf2570d622338c10f8a6b553ee95ee6e69cc2486c7bbd1875477247542c4622a36a8e4fe8f5af4480c10c 2 1 100 - a6624a7b97068874da0f3534fd9585ba34a280466bce20e2a8eceeebf4e6ec654fedafcbe147fd26b310ab6da5996d40761ceedc79c1edda239ce388691d3003
+block 174d54c6d3de2d3bba9d1d089ec807b039a24e79357bf2570d622338c10f8a6b553ee95ee6e69cc2486c7bbd1875477247542c4622a36a8e4fe8f5af4480c10c 3 1 100 - a6624a7b97068874da0f3534fd9585ba34a280466bce20e2a8eceeebf4e6ec654fedafcbe147fd26b310ab6da5996d40761ceedc79c1edda239ce388691d3003
+block 174d54c6d3de2d3bba9d1d089ec807b039a24e79357bf2570d622338c10f8a6b553ee95ee6e69cc2486c7bbd1875477247542c4622a36a8e4fe8f5af4480c10c 4 1 100 - a6624a7b97068874da0f3534fd9585ba34a280466bce20e2a8eceeebf4e6ec654fedafcbe147fd26b310ab6da5996d40761ceedc79c1edda239ce388691d3003
+EOF
+hex=$(run hex_corpus.bron --setting field --service 100)
+[ "$(val "$hex" grade_mode)" = reported ] \
+  && [ "$(val "$hex" reach)" -eq 100 ] \
+  && echo "grade_floor_frees_the_corpus=yes" || echo "grade_floor_frees_the_corpus=no ($(val "$hex" reach))"
+
+# The number is still PRINTED, exactly as the register reading prints a share it declined to score.
+# A free pass that hides its own reading teaches a reader nothing.
+echo "$hex" | grep -q 'grade [0-9]* against [0-9]* reported, not scored' \
+  && echo "grade_floor_names_the_grade=yes" || echo "grade_floor_names_the_grade=no"
+
+# A file with NOTHING to read cannot be unreadable. Every field here sits under the four-word floor,
+# so no sentence survives to be measured and both overages are zero.
+cat > "$pen/empty_prose.kyri" <<'EOF'
+format cord-dag-v1
+parent caad12b54ff58719
+parent 528cde6b1772d1fe
+block 5f671329
+EOF
+empty=$(run empty_prose.kyri --setting field --service 100)
+[ "$(val "$empty" reach)" -eq 100 ] \
+  && echo "$empty" | grep -q 'reach=100 (grade 0 .* 0 words, 0 links)' \
+  && echo "empty_prose_reads_full=yes" || echo "empty_prose_reads_full=no ($(val "$empty" reach))"
+
+# The two scored readings now answer the same denominator question the same way, which is the whole
+# of the fault: one card, one prose_path, two readings disagreeing about whether there was enough
+# prose to measure.
+[ "$(val "$empty" register_mode)" = "$(val "$empty" grade_mode)" ] \
+  && [ "$(val "$hex" register_mode)" = "$(val "$hex" grade_mode)" ] \
+  && echo "floors_agree_across_readings=yes" || echo "floors_agree_across_readings=no"
+
+# THE PRESERVATION LEG, and the one that keeps the floor from becoming an exemption. Prose that
+# clears the floor is graded exactly as before, and a hard page is still penalized for being hard.
+cat > "$pen/long_hard.md" <<'EOF'
+The instrumentation subsystem's heterogeneous reconciliation methodology necessitates
+comprehensive architectural reconsideration throughout the interdependent modules.
+Organizational infrastructure modernization presupposes substantial methodological
+realignment across every participating administrative constituency involved here.
+Consequently the aforementioned reconciliation apparatus demonstrates considerable
+operational inefficiency whenever computational resources become disproportionately
+constrained. Institutional documentation requirements invariably accompany such
+comprehensive reorganizational undertakings within contemporary engineering practice.
+Additionally the corresponding verification procedures demand extraordinary diligence
+from participating implementation specialists throughout the transitional interval.
+Notwithstanding these considerations the underlying architectural presuppositions
+remain fundamentally unaltered by the reconciliation methodology described above.
+Furthermore the interdependent configuration parameters necessitate individualized
+reconsideration whenever organizational circumstances demonstrably deteriorate.
+Simultaneously the accompanying instrumentation continues generating substantial
+quantities of intermediate diagnostic material requiring subsequent interpretation.
+Comparatively equivalent methodologies demonstrate indistinguishable characteristics
+under experimentally comparable operational circumstances throughout the interval.
+Nevertheless the architectural reconsideration remains provisionally incomplete until
+supplementary verification procedures accompany every participating implementation.
+Ultimately the reconciliation methodology accommodates considerable heterogeneity
+without compromising the interdependent architectural presuppositions established.
+EOF
+hard=$(run long_hard.md --setting door --service 100)
+[ "$(val "$hard" grade_mode)" = scored ] \
+  && [ "$(val "$hard" reach)" -lt 100 ] \
+  && echo "long_prose_still_graded=yes" || echo "long_prose_still_graded=no ($(val "$hard" grade_mode)/$(val "$hard" reach))"
+
+# THE OTHER TERM IS UNTOUCHED, which is what lets this floor land without reopening the index door's
+# own decision. linky.md is section 4's twenty-word probe: undeclared and short, so its grade is
+# freed and its link density is still scored. A page that declares nothing still cannot buy relief
+# from a rate it genuinely exceeds.
+linky=$(run linky.md --setting door --service 100)
+[ "$(val "$linky" grade_mode)" = reported ] \
+  && [ "$(val "$linky" reach)" -lt 100 ] \
+  && echo "link_penalty_survives_the_floor=yes" || echo "link_penalty_survives_the_floor=no ($(val "$linky" reach))"
+
+# THE LEG THAT TELLS A REPAIR FROM A REWORDING, built by carrying the elder reading back into a copy
+# of the card. Two lines make the elder: the floor condition, and the empty exit whose first field
+# WAS the reach itself rather than the grade overage. With both restored, the corpus reads zero and
+# the empty file reads zero -- the readings this repair was written against.
+mkdir -p "$pen/eldergrade/tools/fixtures/q" "$pen/eldergrade/tools/fixtures/p"
+sed 's/^if \[ "\$sentences" -lt "\$register_floor" \]; then$/if false; then/; s/^    if (sent == 0 || words == 0) { print "0 0 0 0 0 0"; exit }$/    if (sent == 0 || words == 0) { print "10 0 0 0 0 0"; exit }/' \
+  "$pen/tools/fixtures/q/qa_report_card.sh" > "$pen/eldergrade/tools/fixtures/q/qa_report_card.sh"
+for d in $deps; do mkdir -p "$pen/eldergrade/$(dirname "$d")" && cp "$d" "$pen/eldergrade/$d"; done
+cp "$pen/hex_corpus.bron" "$pen/empty_prose.kyri" "$pen/eldergrade/"
+eldergrade() { ( cd "$pen/eldergrade" && QA_CARD_ROOT=. sh tools/fixtures/q/qa_report_card.sh "$@" 2>&1 ); }
+eg_hex=$(eldergrade hex_corpus.bron --setting field --service 100)
+eg_empty=$(eldergrade empty_prose.kyri --setting field --service 100)
+[ "$(val "$eg_hex" reach)" -eq 0 ] \
+  && [ "$(val "$eg_empty" reach)" -eq 0 ] \
+  && echo "elder_grade_scored_the_unmeasurable=yes" || echo "elder_grade_scored_the_unmeasurable=no"
+[ "$(val "$eg_hex" composite)" != "$(val "$hex" composite)" ] \
+  && [ "$(val "$eg_empty" composite)" != "$(val "$empty" composite)" ] \
+  && echo "grade_floor_repair_bites=yes" || echo "grade_floor_repair_bites=no"
 
 echo "control_verdict=ok"

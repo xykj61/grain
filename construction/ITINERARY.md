@@ -46,9 +46,9 @@
 
 ### Now -- the live front
 
-**Git nib:** `216502e194` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `77b183e953` -- HEAD's parent, resolvable everywhere (%401).
 
-**Now.** **A pen is a copy, and a copy of a list is a list that will be wrong.**
+**Now.** **A free pass one reading earns by measurement is a free pass its twin has already argued for.**
 
 **The live front** (condensed `20260831.023122`; the day shelves hold every landed lap):
 - **Tri-OS** BOOKED for Dream: LOCA parity via `brushstroke/wayland_seed.rye`, pins in
@@ -79,18 +79,11 @@ round's opening stash stop an in-flight pass in its own tree.
 **Still open:** `glow/rune_shape.rye` keeps width custody; Mind keeps the reconnect stash,
 `%281`/`%291`, two `enclosure.conf` pins. **Named (%347):** `pond/enclosure_policy.kyri`
 8,120/8,192; the wall is yours.
-**Roster, this seat `20260831`:** **109/101**, 8 red closed to 3 -- the three gates. **`%401`
-applied.** **Cold pass and editing lap run serially.**
+**Roster, this seat `20260831`:** **109/106**, 3 red -- the three gates, cold, `tree_moved=no`.
 **`%400` OPEN, theirs to word:** four sites recite **107**/**94** where the instrument prints
 **13**/**95** -- a borrowed classification drifts where a borrowed constant cannot.
 **Worth your word:** nothing shows a red is worked, so two hands spent a morning on one line.
 Should an OPEN row carry a **claim** -- seat and stamp, at start rather than landing?
-**`%404` CLOSED -- a roster's setting comes from its own grammar.** `%402` taught the card to find
-a notation's prose and left the flag beside it: Meter switches BOTH scored readings off, so all
-nineteen documented notation files read **exactly 94** -- the constant `%402` had just removed,
-reachable by typing. A comment block is a document, so Meter is refused and the read falls to Field
-(**81-92**, every one >= B); no comment block is all record, and the pass stands. **3,983 of 4,090**
-`.kyri`/`.bron` carry none, 3,928 of them logs their own rule already seats at Meter.
 **`%405`, `%406` CLOSED -- a guard sees the room it was pointed at.** `%397`'s remainder landed:
 the card holds a **reference block** out of both counted readings and reports it. **It moves a
 genre, not the tree** -- 154 heads carry one (84 `.glow` desks), 57 cross B, **zero** under the
@@ -99,16 +92,20 @@ Door's ceiling is untouched. That second citation silenced **two pens at once**,
 own copy of what to stage -- `--deps` names what the card reads. And a `20260830` shelf row at the
 pin's depth pointed nowhere four nights running (**0-4-5-6-7**) -- the SECOND such repair on that
 shelf -- unseen because `index_row_bound` reads the OPEN shelf. Two hands, the same 73 rows.
-**Next doors.** Dream left the peer's parked Settlement package whole; Sundial's row now matches
-its witness. Caravan keeps a 5-second seam, singing on
-cadence or touch. Hush: `spool_cloth`'s eight `ClothError` paths;
-37 shape nibs unread. Silence: the roster's setting is
-**Field**, decided; next is whether a record-only notation should DEFAULT to Meter -- 3,928 logs
-sit where the QA habit and the session-log rule disagree.
+**`%407` CLOSED -- the grade carries the floor the register reading already held**, so a page with
+nothing to read stops scoring **reach=0**. **137 rose, none fell**, 99 crossed B; **117** legs
+GREEN. `%405`'s `--deps` repaired this lap's own elder pen. Row and log carry the reading.
+**Next doors.** Dream left the peer's parked Settlement package whole; Sundial's row now matches its
+witness. Caravan keeps a 5-second seam, singing on cadence or touch. Hush: `spool_cloth`'s eight
+`ClothError` paths; 37 shape nibs unread. Silence: the DEFAULT-to-Meter door is answered by
+measurement -- session logs moved **0 of 60**, so Field already reads them right and the family the
+question named was never the one bleeding.
 **Yours, two.** Door's ceiling is **9** against module heads that run 12-17, which is what puts
-**61 of 134** sampled sources below B -- **the table artifact is ruled OUT** (that sample moves 0),
-so the grades are honest and the question is the ceiling. And
-gate %7: `rule_twin_additive_scan.sh` reads `quality-assurance` as the roster's ONE `additive:claude`
+**61 of 134** sampled sources below B -- the table artifact is ruled OUT (that sample moves 0), and
+`%407` names a second one that is not: of **115 of 163** sampled
+programs below B, **51 sat under the register floor** with nothing measurable against **64** truly
+scored at grades 9-23. The ceiling question is the second number's alone -- and Gauge's own table
+seats **witness headers** at Meter where the card grades every program head at Door. And gate %7: `rule_twin_additive_scan.sh` reads `quality-assurance` as the roster's ONE `additive:claude`
 pair, +3 lines the twin lacks, and carrying them deletes nothing.
 **%374 OPEN:** the receipt-chain question stays yours -- none has ever been earned here.
 ---
@@ -224,6 +221,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260831.144433` | Sundial's constellation row catches its landed witness | [log](../session-logs/date/20260831/20260831-144433_sundials-row-catches-its-witness.kyri) |
+| `20260831.133122` | The floor both readings needed -- `%407` closed, 137 readings freed, none lowered | [log](../session-logs/date/20260831/20260831-133122_the-floor-both-readings-needed.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)
