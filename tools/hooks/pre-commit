@@ -30,7 +30,17 @@
 # over and construction/ITINERARY.md 3 bytes over, and four commits shipped across a red roster row
 # (REDS %316). A lantern that fires twice becomes a loom.
 #
-# THREE RULES, EACH WITH ITS OWN TRIGGER, because the pages go stale for different reasons and a
+# A FIFTH DUTY, AND THE SECOND OF THE REFUSING KIND, joined on 20260831: a day-shelf row opens the
+# log it names. A session log is born on session-logs/date/YYYYMMDD/ and its row is prepended to
+# session-logs/date/README-index-YYYYMMDD.md, one directory ABOVE the log, so a row written
+# `](YYYYMMDD-HHMMSS_sprig.kyri)` resolves to nowhere. On 20260830 FOURTEEN rows of that shape stood
+# on one shelf from four hands in one evening, and eleven of the same shape had been repaired by
+# hand the lap before (REDS %383). Both guards that catch it -- readme_reach, and reds_fold running
+# the same scan -- run only inside a 45-minute roster pass, so every hand wrote its row, passed a
+# roster, and learned about the row an hour later from somebody else's repair. The repair rate
+# matched the writing rate exactly, which is a lantern rather than a loom.
+#
+# FOUR RULES, EACH WITH ITS OWN TRIGGER, because the pages go stale for different reasons and a
 # single trigger would either miss one or fire on everything:
 #
 #   rule one   the fast front-door numbers -- README.md and docs-geode/libraries/README.md.
@@ -41,6 +51,9 @@
 #              Trigger: the ledger or one of its fold shelves is staged at all.
 #   rule three the living pins' byte bounds -- every page on the pin roster.
 #              Trigger: this commit stages a rostered pin at all. Refuses rather than regenerates.
+#   rule four  a day-shelf row's link -- every shelf index this commit stages.
+#              Trigger: none of its own; the scan reads the staged set and rests at zero shelves.
+#              Refuses rather than regenerates, and names the one repair it can compute.
 #
 # WHAT EACH RULE DOES, in order:
 #   1. Rests unless rishi is executable here. A tree without it -- the depersonalized seed, a
@@ -179,6 +192,39 @@ if [ -f tools/fixtures/p/pin_bound_touch_scan.sh ] && [ -f tools/fixtures/l/livi
       echo "$pin_report" | head -4 >&2
     fi
     echo "  full reading: $scan_shell tools/fixtures/p/pin_bound_touch_scan.sh staged" >&2
+    refused=yes
+  fi
+fi
+
+# RULE FOUR -- a day-shelf row opens the log it names. It refuses rather than regenerating, for the
+# same reason rule three does: a row whose link is wrong may carry the wrong day room or the wrong
+# filename, and only the author knows which. The wall names the one answer it can compute -- the
+# shelf's own day room, which is a pure function of the target's stamp -- and leaves the writing to
+# a hand.
+#
+# NO TRIGGER OF ITS OWN, deliberately. Rules one and two gate on a trigger because a render costs
+# ten seconds; this reading costs one `git diff --cached` and a grep, and it rests at
+# `shelves_read=0` on the many commits that stage no shelf. Spelling the shelf pattern here as well
+# as in the scan would put one rule in two files, which is the fault REDS %382 booked one room over.
+# The scan holds the pattern; this holds the refusal's words.
+#
+# THE READING IS OFF THE INDEX, so `git cat-file -e :<target>` asks whether the commit being made
+# actually carries the log the row names -- a round that stages the row and forgets the log reads
+# green off a worktree that still holds both.
+if [ -f tools/fixtures/s/shelf_link_touch_scan.sh ]; then
+  if ! shelf_report=$("$scan_shell" tools/fixtures/s/shelf_link_touch_scan.sh staged 2>&1); then
+    if echo "$shelf_report" | grep -q '^detail=RED_shelf_row_link_absent'; then
+      echo "pre-commit: this commit stages a day-shelf row that links a file this commit does not" >&2
+      echo "carry. A shelf sits one directory above the logs it lists, so a bare filename resolves" >&2
+      echo "beside the shelf rather than inside the day room. The repair is named below." >&2
+      echo "$shelf_report" | grep -E '^(detail_shelf|detail_target|detail_repair|detail_repair_exists|bare_stamped_absent)=' >&2
+    else
+      echo "pre-commit: the shelf-row wall could not MEASURE the staged set, and a wall that cannot" >&2
+      echo "measure refuses rather than waves through. This is an environment fault, never a broken" >&2
+      echo "row -- read the scan's own words below and repair the bench or the jail." >&2
+      echo "$shelf_report" | head -4 >&2
+    fi
+    echo "  full reading: $scan_shell tools/fixtures/s/shelf_link_touch_scan.sh staged" >&2
     refused=yes
   fi
 fi

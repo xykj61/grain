@@ -1016,3 +1016,18 @@ guard glow_preset_offset
 path tools/g/glow_preset_offset_witness.rish
 tier lap
 seated 20260830.233618
+
+# shelf_link_touch -- the commit-time half of the day-shelf link reading (REDS %383). `readme_reach`
+# already gates every broken link in a living file at zero, and `reds_fold` runs the same scan as its
+# third duty, so one bad shelf row reds two rostered guards -- 45 minutes after it was written. This
+# one reads only the shelves a commit stages, off the index, and `tools/hooks/pre-commit` carries it
+# as rule four, so a row is refused on the lap that writes it. The two readings cannot disagree about
+# the gated class: the pen plants ONE fault and drives BOTH scans over it, requiring both to refuse
+# and then both to pass. 28 cases in a throwaway pen, five arming the real hook. 11s on metal, GREEN
+# before this row was written. `lap` rather than `cadence` because a shelf row is written on nearly
+# every lap this tree runs, which is exactly when a wall this cheap should be listening.
+
+guard shelf_link_touch
+path tools/s/shelf_link_touch_witness.rish
+tier lap
+seated 20260831.003448

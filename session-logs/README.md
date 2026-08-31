@@ -55,9 +55,10 @@ when the day closes.
 
 | Day | Rows | Shelf |
 |---|---|---|
-| `through-20260721` | 0 | [`date/README-index-through-20260721.md`](date/README-index-through-20260721.md) |
-| `20260830` **open** | 28 | [`date/README-index-20260830.md`](date/README-index-20260830.md) |
-| `20260829` | 82 | [`date/README-index-20260829.md`](date/README-index-20260829.md) |
+| `through-20260721` | 775 | [`date/README-index-through-20260721.md`](date/README-index-through-20260721.md) |
+| `20260831` **open** | 1 | [`date/README-index-20260831.md`](date/README-index-20260831.md) |
+| `20260830` | 92 | [`date/README-index-20260830.md`](date/README-index-20260830.md) |
+| `20260829` | 84 | [`date/README-index-20260829.md`](date/README-index-20260829.md) |
 | `20260828` | 66 | [`date/README-index-20260828.md`](date/README-index-20260828.md) |
 | `20260827` | 45 | [`date/README-index-20260827.md`](date/README-index-20260827.md) |
 | `20260826` | 44 | [`date/README-index-20260826.md`](date/README-index-20260826.md) |
@@ -83,17 +84,17 @@ when the day closes.
 | `20260805` | 1 | [`date/README-index-20260805.md`](date/README-index-20260805.md) |
 | `20260804` | 21 | [`date/README-index-20260804.md`](date/README-index-20260804.md) |
 | `20260803` | 13 | [`date/README-index-20260803.md`](date/README-index-20260803.md) |
-| `20260802` | 75 | [`date/README-index-20260802.md`](date/README-index-20260802.md) |
-| `20260801` | 41 | [`date/README-index-20260801.md`](date/README-index-20260801.md) |
-| `20260731` | 0 | [`date/README-index-20260731.md`](date/README-index-20260731.md) |
-| `20260730` | 0 | [`date/README-index-20260730.md`](date/README-index-20260730.md) |
-| `20260729` | 0 | [`date/README-index-20260729.md`](date/README-index-20260729.md) |
-| `20260728` | 0 | [`date/README-index-20260728.md`](date/README-index-20260728.md) |
-| `20260727` | 0 | [`date/README-index-20260727.md`](date/README-index-20260727.md) |
-| `20260726` | 0 | [`date/README-index-20260726.md`](date/README-index-20260726.md) |
-| `20260725` | 0 | [`date/README-index-20260725.md`](date/README-index-20260725.md) |
-| `20260724` | 0 | [`date/README-index-20260724.md`](date/README-index-20260724.md) |
-| `20260722` | 0 | [`date/README-index-20260722.md`](date/README-index-20260722.md) |
-| `20260722-shelf` | 0 | [`date/README-index-20260722-shelf.md`](date/README-index-20260722-shelf.md) |
+| `20260802` | 77 | [`date/README-index-20260802.md`](date/README-index-20260802.md) |
+| `20260801` | 58 | [`date/README-index-20260801.md`](date/README-index-20260801.md) |
+| `20260731` | 51 | [`date/README-index-20260731.md`](date/README-index-20260731.md) |
+| `20260730` | 145 | [`date/README-index-20260730.md`](date/README-index-20260730.md) |
+| `20260729` | 32 | [`date/README-index-20260729.md`](date/README-index-20260729.md) |
+| `20260728` | 223 | [`date/README-index-20260728.md`](date/README-index-20260728.md) |
+| `20260727` | 38 | [`date/README-index-20260727.md`](date/README-index-20260727.md) |
+| `20260726` | 25 | [`date/README-index-20260726.md`](date/README-index-20260726.md) |
+| `20260725` | 181 | [`date/README-index-20260725.md`](date/README-index-20260725.md) |
+| `20260724` | 51 | [`date/README-index-20260724.md`](date/README-index-20260724.md) |
+| `20260722` | 161 | [`date/README-index-20260722.md`](date/README-index-20260722.md) |
+| `20260722-shelf` | 80 | [`date/README-index-20260722-shelf.md`](date/README-index-20260722-shelf.md) |
 
 Full roster with counts: [`CHAPTERS.md`](CHAPTERS.md).
