@@ -46,10 +46,10 @@
 
 ### Now -- the live front
 
-**Git nib:** `f878869725` -- this round's own.
+**Git nib:** `ea026e363b` -- this round's own.
 
-**Now.** **A round is not landed until it is committed, and this one proved it by being
-lost twice before it was.**
+**Now.** **Two guards read green over the shelf a third read red, because
+the law moved the file they were written for.**
 
 **The live front** (condensed `20260831.023122`; the day shelves hold every landed lap):
 - **Tri-OS** BOOKED for Dream: LOCA parity via `brushstroke/wayland_seed.rye`, pins in
@@ -86,8 +86,11 @@ proven alone. `rule_twin` holds at **%7**; `pond_enclosure_door` GREEN, gate %5 
 **Next doors.** Dream: Kumara, then Caravan. Hush: the twice-lost round LANDED -- two choirs
 rostered (`unheard` 1,144 -> **1,116**, choirs 40 -> **37**, closing %360 in this lane), the
 orphan-lock refusal, %386 and %387. Then this card's own recording blocks, halved here; the
-rest of them are a lap. Silence: the link frame is tied (`20260830.204814`) -- 554 is
-12 + 14 + 528, neither room importing the other. `virtio_net.rye` reads **C+ 78**, a carded molt.
+rest of them are a lap. Silence: `index_row_bound` derives the OPEN day shelf (%388) --
+23 duplicate stamps and six rows past 192 that a links-only guard never saw; the closed
+`20260830` shelf took a hand, since the guard leaves closed shelves alone. **%389** a fold
+allocates per tree, and one round collided four times on numbers and once on a fold.
+`virtio_net.rye` reads **C+ 78**, a carded molt.
 **%374 OPEN:** the receipt-chain question stays yours -- none has ever been earned here.
 ---
 ## Landed arcs
@@ -204,6 +207,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260831.023122` | The round lost twice lands, and a heading learns to name what stands under it | [log](../session-logs/date/20260831/20260831-023122_the-round-that-would-not-stay-lost.kyri) |
+| `20260831.000928` | The stopped line and the second fetch | [log](../session-logs/date/20260831/20260831-000928_the-stopped-line-and-the-second-fetch.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)
