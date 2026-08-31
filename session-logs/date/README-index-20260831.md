@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260831.031048` | [The setting a hand types](20260831/20260831-031048_the-setting-a-hand-types.kyri) | the virtio_net molt lands; %392 %393 |
 | `20260831.000928` | [The stopped line and the second fetch](20260831/20260831-000928_the-stopped-line-and-the-second-fetch.kyri) | the guard reads its shelf; %388 %389 |
 | `20260831.031509` | [The roster learns what it costs](20260831/20260831-031509_the-roster-learns-what-it-costs.kyri) | a verdict gets its seconds; %390 and %391 booked |
 | `20260831.023122` | [The round that would not stay lost](20260831/20260831-023122_the-round-that-would-not-stay-lost.kyri) | a twice-lost lap lands; the card gets a third shelf |

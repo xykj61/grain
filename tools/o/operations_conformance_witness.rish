@@ -14,9 +14,13 @@
 #
 #   rishi/bin/rishi run tools/o/operations_conformance_witness.rish
 
-# Build the Mandate binaries the operation witnesses run.
+# Build the Mandate binaries the operation witnesses run. `mandate/bin/` is gitignored build
+# output, so a clone that has never built Mandate does not have it -- and `-femit-bin` into a
+# missing directory fails the build for a reason that has nothing to do with the code. The
+# directory is made here rather than assumed, so this reads the same on a fresh clone as on a
+# bench that has built before.
 let zig = "vendor/zig-toolchain/zig"
-let build = run ["sh" "-c" "for m in store serve bucket wal comlink_serve; do env RYE_ZIG=${zig} rye/bin/rye build mandate/$m.rye -femit-bin=mandate/bin/$m || exit 1; done"]
+let build = run ["sh" "-c" "mkdir -p mandate/bin && for m in store serve bucket wal comlink_serve; do env RYE_ZIG=${zig} rye/bin/rye build mandate/$m.rye -femit-bin=mandate/bin/$m || exit 1; done"]
 assert build.ok else "operations: a Mandate binary did not build"
 
 # run -- the store answers its selftest.

@@ -46,10 +46,10 @@
 
 ### Now -- the live front
 
-**Git nib:** `474e0bed51` -- this round's own.
+**Git nib:** `1a972e63e5` -- this round's own.
 
-**Now.** **Two guards read green over the shelf a third read red, because
-the law moved the file they were written for.**
+**Now.** **One law puts two prose settings inside a source file and the meter grades it at one,
+so a module reads C, C+ or A by the word a hand types.**
 
 **The live front** (condensed `20260831.023122`; the day shelves hold every landed lap):
 - **Tri-OS** BOOKED for Dream: LOCA parity via `brushstroke/wayland_seed.rye`, pins in
@@ -87,11 +87,20 @@ mid-round state, re-proven green through the runner; `rule_twin` at **%7** stand
 **%391:** the session-logs pin opened on its oldest shelf; the row moved to its foot.
 **Next doors.** Dream: Kumara, then Caravan. Hush: the roster records what it costs, so a lap
 sizes its own pass; `%386`/`%387` FOLDED to make room -- the pin stood at **28 bytes free**
-after Dream's two rows, so a fold is now the price of booking anything. Silence:
-`index_row_bound` derives the OPEN day shelf (%388) -- 23 duplicate stamps and six rows past
-192 that a links-only guard never saw; the closed `20260830` shelf took a hand. **%389:** a
-fold allocates per tree, and one round collided four times on numbers and once on a fold.
-`virtio_net.rye` reads **C+ 78**, a carded molt.
+after Dream's two rows, so a fold is now the price of booking anything. Silence: the carded
+`virtio_net.rye` molt LANDED -- Door head, Register **65 -> 73**, device-wire GREEN on metal,
+code byte-identical; `sub-lap` kept whole for Mystery. Reach would not move and **%392** says
+why: the head reads **8.8** against Door's 9, the 501 words of `// invariant:` read **16.4**
+against a ceiling Meter leaves uncapped, and the card averages them. **%393** CLOSED --
+`operations_conformance_witness` builds into gitignored `mandate/bin/` without making it, so
+`acme_dx` is green on a bench that has built Mandate and red on a clone that has not; one
+`mkdir -p`, proven from a deleted directory, and it fell out of the reds between two hot
+passes (108 guards, **105 green**, `tree_moved=no`, over the shipped tree). Its fourth red,
+`commit_message_guard`, greps the untracked `publish-seed.sh` and cannot pass without it --
+named, not taken. **%389 fired again on this round**, against the hand that took its
+mitigation: shelf names were compared to `xy/main` and found free, and the pier had still
+spent `%390`/`%391` and folded the same two rows inside the window. The window is the round,
+not the check. `%388`/`%389` FOLDED for room.
 **%374 OPEN:** the receipt-chain question stays yours -- none has ever been earned here.
 ---
 ## Landed arcs
@@ -208,6 +217,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260831.031509` | The roster learns what it costs -- a verdict gets its seconds, and a mean stops passing for a rate | [log](../session-logs/date/20260831/20260831-031509_the-roster-learns-what-it-costs.kyri) |
+| `20260831.031048` | The setting a hand types | [log](../session-logs/date/20260831/20260831-031048_the-setting-a-hand-types.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)

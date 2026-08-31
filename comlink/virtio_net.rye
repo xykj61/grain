@@ -1,8 +1,19 @@
-//! comlink/virtio_net.rye -- virtio-net MMIO types and freestanding driver seed.
+//! comlink/virtio_net.rye -- the virtio-net card as a guest sees it.
 //!
-//! Shared by hosted descriptor validation (`device_wire.rye`) and freestanding
-//! guests on QEMU virt. One letter for constants, bounds, and the sub-lap 2 link
-//! pattern -- no format fork between hosted algebra and bare-metal carriage.
+//! A virtio network card is the network card QEMU hands a guest. The guest sets it up by
+//! writing to a small block of memory-mapped registers, then passes frames through two
+//! shared rings, one for sending and one for receiving. This file holds every number that
+//! exchange needs -- register offsets, status and feature bits, the ring layout, and the
+//! fixed guest addresses the rings sit at -- beside a small driver that walks the setup in
+//! the order the device expects and moves one frame at a time.
+//!
+//! Two callers share those numbers, which is why they live in one file. The hosted checker
+//! in `device_wire.rye` reads them on a desktop; the freestanding guests read the same ones
+//! on QEMU's RISC-V `virt` board. Both sides therefore agree on the frame by construction.
+//! This file imports nothing, so an arithmetic two rooms each need is published here and
+//! evaluated at comptime by whichever room holds both numbers -- `frame_carries` below is
+//! that arithmetic, and the fill bytes the sub-lap 2 link test writes are here for the same
+//! reason.
 
 // --- Virtio MMIO (modern + legacy subset for virtio-net on riscv virt) ---
 
