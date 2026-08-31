@@ -35,6 +35,7 @@
 
 - **The panchanga** (seated `20260826`): rings of five over the rota of fifteen -- orbit 15 - quest 75 - journey 375 - equinox 1,875 - **chapter** 9,375; *chapter* replaces *season*. Charter: `foundations/20260826-014901_the-panchanga.md`.
 - **The six bodies, the always-fleet** (re-mapped `20260829.203718`, Keaton's word): **one tree per star** and **claim-as-override**. **Mind** (Codex supervisor, `~/grain-mind` -- Surf/Skate) + **Mystery** (same supervisor, `MIND_SEAT=mystery`, `~/grain-mystery` -- the maintenance campaigns); **Sound** (Claude Desktop, the field -- interface Glow, **language custody**, captain's hat) + **Silence** (Claude day-loop, `~/grain-silence` -- infrastructure Glow); **Dream** (Codex in ai-jail, pier -- systems core) + **Hush** (Claude day-loop, pier -- Pond). Charter: the always-fleet page, `20260829.203718`, in `active-designing/`.
+- **Fleet re-arm helper** (`20260830.211500`): status + reason + relaunch, one script; never over CUSTODY. Next round.
 - **The fusion build -- IN FLIGHT** (`20260828`, the skip word given): a derived file-to-witness map and receipt-gated `--scoped` passes, the full choir on cadence; design `20260825.181028`.
 - **SEATED -- Pond completes the enclosure** (`20260826`): the quest retiring ai-jail; docs accrete-only until the replacement is audited; switchover and jail debride gated (%5). Plan: `expanding-prompts/20260826-033051_pond-completes-the-enclosure.md`.
 - **STANDFAST -- the Dexter orbit** (`20260826`): 15 rounds; door `dexter/README.md`.
@@ -91,16 +92,15 @@ literal `example    13`, so an honest fourteenth ParseError path reds
 reads 17,248 against 17,247 after rebase.
 
 **Still open:** `glow/rune_shape.rye` keeps width custody; Mind keeps the reconnect stash,
-`%281`/`%291`, two `enclosure.conf` pins. **%360 FALLS:** the five guards our rules demand now
-stand rostered for **18s** a lap -- `unheard` 1,153 -> **1,144**, choirs 41 -> 40.
-**%360's gate SETTLED `20260830.190407`:** the seed subject is `crashed-meteor` everywhere
-and the publish shipped; the remainder is the pier clones' stale `publish-seed.sh`, your hand.
+`%281`/`%291`, two `enclosure.conf` pins. **%360 FALLS:** five rule-demanded guards rostered,
+**18s**/lap -- `unheard` 1,153 -> **1,144**, choirs 41 -> 40.
+**%360's gate SETTLED `20260830.190407`:** `crashed-meteor` everywhere, publish shipped;
+remainder: pier clones' stale `publish-seed.sh`, your hand.
 `%359`/`%370` CLOSED; `%353`-`%355` folded.
 **Rosters `20260830`:** `grain-hush` 103/102; **123** rostered; `grain-silence` 60 of 96 in 25m, gate %7.
 **The falsifier splits:** `env` travelled; the door half did not --
 `door_disagreements=1` at `user`, `derived=502 metal=unread`. Gate %5, named not touched.
-**Named, not taken (%347):** `pond/enclosure_policy.kyri` at 8,120 of 8,192, nearly all comment;
-`entry`'s paragraph meets that wall, and widening it is yours.
+**Named, not taken (%347):** `pond/enclosure_policy.kyri` 8,120/8,192; widening the wall is yours.
 **Next doors.** Dream: Kumara, then Caravan. Hush: the digest red, then the lane-safe choirs
 (`drey` 17, `acme_dx` 11); the auditor still waits on gate %7.
 Silence: Comlink's remaining bounds. `vessel_fetch_wire.rye` is the untied third -- Amphora's.
