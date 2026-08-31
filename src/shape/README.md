@@ -1,8 +1,8 @@
 # shape — Structures
 
 **Language:** EN  
-**Last updated:** `20260830.204814` (Comlink's third bound desk -- the link frame that has to hold a whole datagram, and the two layers that nest)  
-**Status:** Living -- room open; Surface pedestals + Glow Tend structure pedestals + Comlink R1 + Tablecloth
+**Last updated:** `20260831.045858` (the spool's name bound -- a length read at two call sites, and the placard's sixth line read for the first time in this room)  
+**Status:** Living -- room open; Surface pedestals + Glow Tend structure pedestals + Comlink R1 + Tablecloth + Spool Cloth
 **Where this sits:** home is [`../../README.md`](../../README.md) - a first hour in your hands is
 [`../../docs-geode/tutorials/the-first-hour.md`](../../docs-geode/tutorials/the-first-hour.md) - the whole
 path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURCE.md)
@@ -50,6 +50,7 @@ The data-structure museum: every non-networked shape on its own pedestal, viewab
 | [`shape-comlink-wire-payload-bound.glow`](shape-comlink-wire-payload-bound.glow) | Comlink `max_wire_payload=340` -- a derived ceiling, shown beside the 188-byte header it is the complement of | `tools/co/comlink_glow_tend_witness.rish` (scan, control, and a comptime tie proven on metal) |
 | [`shape-comlink-chunked-carriage-bound.glow`](shape-comlink-chunked-carriage-bound.glow) | Comlink `max_beads=8` -- the relation `whole <= pieces * piece`, across the three families that cut a whole and carry the pieces | `tools/co/comlink_carriage_witness.rish` (scan, 20 control cases, and seven comptime askings on metal) |
 | [`shape-comlink-link-frame-nesting.glow`](shape-comlink-link-frame-nesting.glow) | Comlink `max_frame=554` -- the relation `container >= header + payload`, across the two layers that nest, one derived and one spelled | `tools/co/comlink_nesting_witness.rish` (scan, 16 control cases, and six comptime askings on metal) |
+| [`shape-spool-cloth-name-bound.glow`](shape-spool-cloth-name-bound.glow) | Spool Cloth `max_name=48` -- a length read at BOTH call sites, with the alphabet its manifest wall removes beside it | `tools/p/pond_spool_cloth_glow_tend_witness.rish` (scan of eleven readings, 23 control cases with six named readings, and the desk run on metal) |
 
 ```
 rishi/bin/rishi run tools/m/mantra_glow_tend_limb1_witness.rish

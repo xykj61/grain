@@ -1058,3 +1058,38 @@ guard drey
 path tools/d/drey_witness.rish
 tier lap
 seated 20260831.014630
+
+# Spool Cloth's name bound, seated 20260831.045858 -- the second half of one room's naming layer arriving
+# in the shape museum. Tablecloth's four desks landed 20260829 and 20260830 and the last of them
+# left the invitation on its own placard: pond/apps/spool_cloth.rye took the same wall in the same
+# shape on the same day. The two modules are housemates rather than neighbours, since
+# brushstroke/tablecloth.rye is a symlink into pond/apps/, so this is one room finishing its
+# thought rather than a new vane arriving.
+#
+# The guard is shaped like its sibling: the scan reads the number the desk shows and the number the
+# Rye publishes and compares them, holding no value of its own, so raising the bound honestly in
+# both rooms walks free -- proven as a welcome beside the refusals rather than assumed.
+#
+# IT CARRIES TWO READINGS ITS SIBLING DOES NOT, and both were found by reading rather than by
+# copying. First, this module reads max_name at TWO call sites: store_large refuses a long name
+# with NameTooLong, and parse_manifest refuses a long field with BadManifest -- and the second
+# guards an array's end rather than a policy, since a parsed name lands in a fixed [max_name]u8.
+# They fire apart, so the control reads the survivor by name while its neighbour refuses. Second,
+# the placard's SIXTH line is read by VALUE: PLACARD.md gives the nib its reason -- a pedestal
+# displays a value AT a nib -- and every placard reading in the tree counts that keyword and stops,
+# so across the 37 residents standing before this desk the stamp after it was compared to nothing.
+# It is compared against spool_cloth_version now, so a module whose version moves while its desk
+# keeps the elder nib reds here.
+#
+# Twenty-three control cases -- four welcomes, nineteen refusals -- and six named readings.
+#
+# `cadence` because the metal leg lowers the desk through Glow and builds it with the Zig
+# toolchain, the same clock its Tablecloth sibling and the six Glow witnesses beside it keep.
+# Measured on this pier 20260831, GREEN before this row was written: 7s whole, of which the Zig
+# build is 4s; the pure scan and control run in under a second, so a hand asking for the guard by
+# name pays almost nothing.
+
+guard pond_spool_cloth_glow_tend
+path tools/p/pond_spool_cloth_glow_tend_witness.rish
+tier cadence
+seated 20260831.045858

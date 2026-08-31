@@ -1,0 +1,120 @@
+# tools/p/pond_spool_cloth_glow_tend_witness.rish -- Pond's spool-cloth name bound on a pedestal,
+# and the drift it cannot hide.
+#
+#   rishi/bin/rishi run tools/p/pond_spool_cloth_glow_tend_witness.rish
+#
+# WHY THIS RUNG. Tablecloth's four bounds took their desks between 20260829 and 20260830, and the
+# last of them left a note on its own placard: pond/apps/spool_cloth.rye took the same wall in the
+# same shape on the same day, and its bounds were left to be displayed. The two modules are
+# housemates rather than neighbours -- brushstroke/tablecloth.rye, which every Tablecloth desk
+# cites, is a symlink into pond/apps/ -- so this is the second half of one room's naming layer
+# arriving in the museum, and the first desk that names a pond/apps/ path outright. spool_cloth.rye
+# publishes the name bound its Brix-facing manifest and every caller storing a large artifact both
+# lean on, and a bound nothing names outside its own source is a bound only its author can check.
+#
+# WHAT THE DESK SHOWS, AND WHY IT SHOWS TWO THINGS. `max_name = 48` bounds how LONG a large
+# artifact's name may be. The manifest grammar needs something else entirely: that a name carry
+# neither of the two bytes its line is split on, since the Brix face writes
+# `large <name> <whole-hex> <len> <resins>` and reads it back by splitting on newline and then on
+# space. Those are different facts and neither follows from the other, which is what REDS %354 cost
+# a round to learn one module over. The length was doing the grammar's job by ARITHMETIC -- the
+# shortest lawful large line is 76 bytes, so at 48 no name is long enough to carry a forged one --
+# and raising the bound for longer human names would have put the forgery back in reach with
+# nothing in the number's own comment to say so. So the desk shows the number AND lists the bytes.
+#
+# WHY THIS DESK CARRIES A READING TABLECLOTH'S DOES NOT. Tablecloth's name desk reads its bound at
+# one call site. This module reads `max_name` at the two places a name enters, and only one of them
+# is a policy refusal: `store_large` turns away a long name with NameTooLong, and `parse_manifest`
+# turns away a long field with BadManifest. The second guards an array's end rather than a policy.
+# A parsed entry's name lands in a fixed `[max_name]u8` field, so with that check gone a
+# hand-authored manifest carrying a sixty-byte name is copied past the end of the array -- a
+# refusal downgraded to a panic. A pedestal claiming the bound is wired while reading one of its
+# two call sites would say something true about half the module.
+#
+# The two edges are read as two readings rather than one because they fire apart: delete either
+# call and the other still stands, which the control proves in both directions rather than
+# asserting. Two readings that always fire together would be one reading wearing two names
+# (.claude/rules/derived-spine.md), and these are not that.
+#
+# WHAT IS PROVEN, on metal.
+#   The placard reads in the order src/shape/PLACARD.md seats: name, shape, invariant, example,
+#   readers, nib.
+#   The pedestal names the Rye file its number and its wall come from.
+#   The number the pedestal shows EQUALS `max_name` as pond/apps/spool_cloth.rye publishes it. The
+#   scan reads both sides and compares; it carries no value of its own, so raising the bound
+#   honestly in both rooms leaves the guard quiet -- proven as a welcome rather than assumed.
+#   The desk agrees with ITSELF: the number in its `shape` line equals the number under `example`,
+#   so a bound desk's two spellings cannot part inside one file.
+#   The pedestal lists the bytes `name_is_one_field` refuses, compared as sorted sets, so a third
+#   byte joining the wall in the Rye alone reds here while every length still agrees.
+#   `store_large` still consults that wall, and `parse_manifest` still reads that bound, so the
+#   invariant the desk displays stays wired at both edges rather than merely written.
+#   The nib the desk says it displays at equals the version the module publishes. PLACARD.md seats
+#   six lines and gives the sixth its reason -- a pedestal always displays a value AT a nib -- and
+#   every placard reading in the tree counts that KEYWORD and stops, so across the 37 residents
+#   standing before this desk the stamp after it is compared to nothing. A module whose version
+#   moves while its desk keeps the elder nib is a desk saying it shows a value from a release the
+#   module has left, and an honest bump moves both, proven as a welcome.
+#   The desk lowers through Glow, builds through the Zig toolchain, and runs to EXIT:0.
+#   Every reading refuses from the other side: nineteen plantings in a throwaway pen, each caught by
+#   the reading it was planted against, four honest trees walking free, and six named readings
+#   checked while a neighbour refuses -- which is how the two edges are shown to be two.
+#
+# WHERE A ROSTER DOES LIVE, said plainly, because the sentence above is true of the scan and not of
+# this file. This witness PINS one list the scan deliberately declines to hold -- the two reserved
+# bytes -- so widening the wall reds here even where the scan welcomes it. That is a pin rather
+# than a comparison, and it is deliberate: the alphabet a store forbids is a published surface, and
+# moving it is worth a hand's eye. The cost is one line edited here on an honest change, and the
+# reason is written down so the next hand meets a review gate rather than a mystery.
+#
+# WHAT IS NOT PROVEN. Whether forty-eight is the right name length, which is Pond's own design
+# question, and whether the arithmetic that makes 48 safe still holds if the manifest grammar
+# changes -- a pedestal displays what the source decided. And any behavior of the catalog itself,
+# which pond/apps/spool_cloth.rye's own selftest holds on real bytes.
+
+say "spool-cloth-tend: Language EN -- the spool binds a name to a whole artifact, and that name's bound now stands in the shape museum beside its housemate's."
+say "spool-cloth-tend: Style Gauge -- the placard reads in the museum's seated order, and the number it shows is compared to the source rather than remembered."
+say "spool-cloth-tend: Lens TAME -- bound everything and say why: the catalog names its maximum, the pedestal names the maximum, and this proves the pair is one number read at two edges."
+
+say "spool-cloth-tend: the pedestal against its source..."
+let scan = run ["sh" "tools/fixtures/p/pond_spool_cloth_glow_tend_scan.sh"]
+assert scan.ok else "spool-cloth-tend: the pedestal and its source disagree -- read the verdict line"
+say scan.out
+assert scan.out contains "verdict=agree" else "spool-cloth-tend: the pedestal and its source must name one number"
+assert scan.out contains "placard_order=name shape invariant example readers nib" else "spool-cloth-tend: the placard's six lines keep their seated order"
+assert scan.out contains "citation=yes" else "spool-cloth-tend: the pedestal names the source its number and its wall come from"
+assert scan.out contains "desk_bound=48" else "spool-cloth-tend: the desk's shape line and its example are one number"
+assert scan.out contains "store_wired=yes" else "spool-cloth-tend: store_large must still consult name_is_one_field, or the desk's invariant is only written"
+assert scan.out contains "parse_wired=yes" else "spool-cloth-tend: parse_manifest must still read max_name, or a manifest line copies past the end of a fixed field"
+say "field GREEN -- the pedestal stands on what its source publishes, at both edges the bound is read"
+
+say "spool-cloth-tend: the nib -- the placard's sixth line, read rather than trusted..."
+assert scan.out contains "verdict=agree" else "spool-cloth-tend: the desk's nib and the module's version must be one stamp"
+say "nib GREEN -- the desk displays its value at the version the module publishes"
+
+say "spool-cloth-tend: the pinned alphabet -- a review gate, not a comparison (see the header)..."
+assert scan.out contains "desk_bytes=newline space" else "spool-cloth-tend: the two reserved bytes are PINNED here; widening the wall is a review gate, so move this line and its twin"
+assert scan.out contains "rye_wall_bytes=newline space" else "spool-cloth-tend: the wall's own bytes are pinned beside the desk's, so both move together or neither does"
+say "pin GREEN -- the forbidden alphabet stands where it stood"
+
+say "spool-cloth-tend: the control, both ways..."
+let control = run ["sh" "tools/fixtures/p/pond_spool_cloth_glow_tend_control.sh"]
+assert control.ok else "spool-cloth-tend: the control must complete"
+say control.out
+assert control.out contains "welcomes=4" else "spool-cloth-tend: an honest tree, an honest raise, an honestly widened wall, and an honest version bump must all walk free"
+assert control.out contains "refusals=19" else "spool-cloth-tend: every reading must refuse from its own side"
+assert control.out contains "readings=6" else "spool-cloth-tend: each edge must be read while its neighbour refuses, or the two are one reading wearing two names"
+assert control.out contains "wrong=0" else "spool-cloth-tend: no case may land on the side it was not planted for"
+assert control.out contains "control_verdict=ok" else "spool-cloth-tend: the control must agree with itself"
+say "RED and GREEN paths proven -- nineteen plantings refused, four honest trees welcomed, six readings held"
+
+let zig = "vendor/zig-toolchain/zig"
+let desk = "src/shape/shape-spool-cloth-name-bound.glow"
+
+say "spool-cloth-tend: lower, build, run the name-bound pedestal..."
+let gate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" desk]
+assert gate.ok else "spool-cloth-tend: the name-bound pedestal must lower, build, and run"
+assert gate.out contains "EXIT:0" else "spool-cloth-tend: the name-bound pedestal did not exit 0"
+say "metal GREEN -- the desk lowers through Glow, builds through Zig, and runs"
+
+say "GREEN: spool-cloth Glow Tend -- max_name stands on a pedestal with the alphabet its wall removes beside it, compared to the room that decides it rather than copied from it, and proven wired at both the store edge and the manifest edge."
