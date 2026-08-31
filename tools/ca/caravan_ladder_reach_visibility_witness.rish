@@ -48,6 +48,8 @@ say red.out
 assert red.out contains "RED_no_family_refused_rather_than_ok" else "reach-visibility: a name no rung declares answered ok -- a scan must never bless its own blindness"
 assert red.out contains "RED_no_identical_refused_rather_than_ok" else "reach-visibility: a name whose every body differs answered ok -- nothing folds there"
 assert red.out contains "RED_capitalized_type_priced_rather_than_unseen" else "reach-visibility: a private type the shared body names priced at zero -- a meter that reads only lowercase names cannot see a struct (REDS %140)"
+assert red.out contains "RED_harness_owned_constant_resolved_at_destination" else "reach-visibility: a constant already owned byte-for-byte by the destination harness was still charged as a rung opening"
+assert red.out contains "RED_same_name_different_constant_stays_priced" else "reach-visibility: a same-named constant with a different declaration disappeared behind the harness name"
 assert red.out contains "RED_one_rule_read_as_one_family_across_two_visibilities" else "reach-visibility: one rule written pub in one rung and private in another read as two families -- the visibility keyword belongs beside the key rather than inside it (REDS %144)"
 assert red.out contains "RED_queue_blindness_refused_rather_than_empty" else "reach-visibility: a ladder where no two rungs write one body answered ok with an empty queue -- an empty list and a blindness read identically (REDS %97)"
 assert red.out contains "RED_queue_ranked_by_fall_where_carry_ordered_the_other_way" else "reach-visibility: the queue ordered by carry rather than by fall -- a carry list over-weights breadth and hides the deep families entirely (REDS %145)"
@@ -94,17 +96,18 @@ assert folded.ok else "reach-visibility: the lifted family must still read clean
 let queue = run ["sh" "tools/fixtures/l/ladder_reach_visibility_scan.sh" "queue"]
 say queue.out
 # The queue names TWO heads now, and this lap is why. `answered_by` has led by
-# fall for two laps at a price of sixty-eight openings -- thirty-four private
-# functions and thirty-four private constants that thirty-four rungs each chose
-# to keep -- and both laps the bench read that price and quietly took the free
-# row beneath it. A meter whose recommendation the discipline steps past by hand
+# fall for two laps at a reported price of sixty-eight openings. Thirty-four are
+# private functions the fold must open. The other thirty-four are one exact
+# `Dir` declaration the destination harness already owns, so charging them made
+# the meter price the source tree rather than the seam after the move.
+# A meter whose recommendation the discipline steps past by hand
 # is REDS %145's shape one level deeper (REDS %146): it answers "what returns
 # the most" where the reader asked "what should I take next." So `free_head`
 # stands beside `head`, naming the best fall among families that publish no
 # function and no constant. An import binding re-exported stays free, since
 # every lift this arc has taken widened imports and nothing else.
 assert queue.out contains "QUEUE_OK head=answered_by fall=330 free_head=confer_words free_fall=294 examined=45 families=699" else "reach-visibility: want both heads named -- the best fall, and the best fall that costs nothing"
-assert queue.out contains "QUEUE_ROW family=answered_by fall=330 folding=34 lines=13 stub=3 widens=68 widens_fn=34 widens_const=34 carry=429" else "reach-visibility: want the priced head carrying its price in its own row, split by kind, so a reader prices it without a second run"
+assert queue.out contains "QUEUE_ROW family=answered_by fall=330 folding=34 lines=13 stub=3 widens=34 widens_fn=34 widens_const=0 carry=429" else "reach-visibility: want the priced head carrying only the declarations the destination does not already own"
 assert queue.out contains "QUEUE_ROW family=confer_words fall=294 folding=43 lines=10 stub=3 widens=43 widens_fn=0 widens_const=0 carry=420" else "reach-visibility: want the free head carrying its own kind of price -- forty-three rungs of a ten-line body, free by the two columns the meter prices and costing forty-three import re-exports, which every lift of this arc has measured as free"
 assert queue.out contains "QUEUE_ROW family=rests_path fall=250 folding=11 lines=28 stub=3 widens=0 widens_fn=0 widens_const=0 carry=280" else "reach-visibility: want the best row costing nothing of any kind, not even an import re-export -- the free head prices forty-three of those, so free-by-the-columns and free-absolutely stay two readings the meter keeps side by side"
 assert queue.ok else "reach-visibility: the ranked queue must read cleanly"
@@ -199,17 +202,16 @@ assert third.out contains "REACH_OK family=mend_the_plan folding=37 widens=222 w
 assert third.ok else "reach-visibility: the row behind the head must read cleanly"
 
 # The row standing fourth by fall, and the one that still prices a function
-# column beside an equal column of constants, one opening of each kind per rung.
-# It led the shortlist this lap retired, and the ranked queue puts three deeper
-# families above it -- so the demotion is readable here rather than merely
-# announced. It is pinned so the next reader can check the arc's standing
-# answer rather than trust it: if a constant column keeps resolving from above,
-# this row costs nothing either.
+# column beside a constant resolved at the destination. It led the shortlist
+# this lap retired, and the ranked queue puts three deeper families above it.
+# The exact `Dir` declaration stands in both the rungs and the harness, so the
+# function opening remains priced while the constant opening does not.
 let paired = run ["sh" "tools/fixtures/l/ladder_reach_visibility_scan.sh" "answered_by"]
 say paired.out
 assert paired.out contains "REACH_FAMILY family=answered_by declared=34 identical=34 lines=13" else "reach-visibility: want answered_by standing as thirty-four declarations holding thirty-four identical bodies at thirteen lines"
-assert paired.out contains "REACH_OK family=answered_by folding=34 widens=68 widens_fn=34 widens_import=0 widens_const=34 stub=3 fall=330" else "reach-visibility: want answered_by standing fourth by fall, repeating the paired-column shape at thirty-four openings of each kind"
-assert paired.ok else "reach-visibility: the paired-column row must read cleanly"
+assert paired.out contains "REACH_OK family=answered_by folding=34 widens=34 widens_fn=34 widens_import=0 widens_const=0 stub=3 fall=330" else "reach-visibility: want answered_by priced at the thirty-four hand_path openings the destination still needs"
+assert paired.out contains "REACH_OWNED symbol=Dir kind=const rungs=34" else "reach-visibility: want the thirty-four exact Dir declarations named as destination-owned rather than silently dropped"
+assert paired.ok else "reach-visibility: the destination-owned row must read cleanly"
 
 # This lap's lift, reading a fall of zero now that its family is folded. It is
 # the first row of the arc chosen by the free head rather than by the head: the
@@ -266,6 +268,6 @@ assert sink.ok else "reach-visibility: the sink meter must read cleanly"
 # detail sees what each opening actually is rather than only that it is one.
 assert sibling.out contains "REACH_PRIVATE symbol=capabilities kind=import" else "reach-visibility: want each private symbol naming its kind beside it"
 assert paired.out contains "REACH_PRIVATE symbol=hand_path kind=fn" else "reach-visibility: want a private function named as a function"
-assert paired.out contains "REACH_PRIVATE symbol=Dir kind=const" else "reach-visibility: want a private constant named as a constant, the column this lap answered from above"
+assert paired.out contains "REACH_OWNED symbol=Dir kind=const" else "reach-visibility: want the destination-owned constant named beside the private function the fold must still open"
 
-say "GREEN: reach-visibility -- the widening cost of a fold is read off the body it lifts, the fold line is honored, the cost is counted by kind rather than summed across kinds, and the queue is ranked off every foldable family and priced. The queue names two heads now, and that is this lap own correction. Ranking by return alone had led with answered_by for two laps at a price of sixty-eight openings, thirty-four private functions and thirty-four private constants that thirty-four rungs each chose to keep, and both laps the bench read that price and took the free row beneath it by hand. A meter whose recommendation the discipline steps past is REDS %145 shape one level deeper, so free_head stands beside head, naming the best fall among families that publish no function and no constant, both numbers printed rather than one chosen here (REDS %146). The reclaim_notes family lifted on that reading, and it is the first row of the arc free by both readings at once: every folding rung shed its shared reclamation body for a three-line stub, and the row published no function, opened no constant, and re-exported no import either, since every rung declaring it already imported this harness for the stubs beside it. The priced head offered a few lines more at a real cost and waits, still honestly named. Read after the fold the row prices the stubs own private imports of this harness, asserted above, which is what every folded family reads. The sink window fell with the lift, both numbers asserted above, because a lifted body leaves the rungs rather than the harness. A rung the harness imports still holds nearly five times what the arc believed before the keyword left the key, so the one-way door stays worth measuring twice before it is opened (REDS %130, %137, %144, %145, %146)."
+say "GREEN: reach-visibility -- the widening cost of a fold is read at the destination seam. Exact constants already owned by the harness stay named and cost no rung opening; a same-named different declaration remains priced. answered_by therefore costs thirty-four hand_path openings rather than sixty-eight openings, while its thirty-four Dir bindings resolve byte-for-byte in the harness. The queue still names both return and free heads, the fold line stays measured, and both blindnesses refuse by name."

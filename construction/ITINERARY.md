@@ -56,9 +56,9 @@ Signing with the maintainer's identity key stays the custody gate; the library i
 NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.034037` and held at
 ([`the bench measured`](../external-research/20260821-034037_the-bench-measured-and-the-standing-gauge-protocol.md)).
 
-*One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
+*Carry card for terminal - phone - waymarks. Refreshed on **remember**. Debrided to Compass Chapter `20260809.024320`; those greens live in code and counsel.*
 
-**Git nib:** `7808dc3dd8` -- this round's own.
+**Git nib:** `705eae43c2` -- this round's own.
 
 **Now.** **The post standing on the line: three families cut a whole into pieces, and
 the tightest carried what it accepts by exactly zero. The compiler holds it now.**
@@ -81,13 +81,14 @@ the day shelves every landed lap):
 **MANY HANDS** (`20260828`): custody MANUAL, one writer per checkout. Root `SKILL.md`; every
 clone seats `ww` (`grain-ww/grain`, gate %1) and `.git/ssh_config_jail`.
 
-**Sibling finds:** Sound owns two bare labels in `lattice/README.md` and the WADE<N> mark in
+**Sibling finds:** Sound owns bare labels in `lattice/README.md` and the WADE<N> mark in
 `pond/apps/lantern_face_theme.rye`; Mystery's module-label guard fails open on BSD grep, portable
-it finds two elder labels in `tools/gen/chapter/fascia_metric_v0.rish`. **For Pond:**
+it finds elder labels in `tools/gen/chapter/fascia_metric_v0.rish`. **For Pond:**
 `spool_cloth.rye` carries the same `max_name=48` and wall with no pedestal -- Hush's.
 **(%358):** `shape-brush-parse-error-count.glow` reads **C+ 75** and its guard asserts a
 literal `example    13`, so an honest fourteenth ParseError path reds
-`src_first_resident_witness.rish` -- Sound's and Mind's.
+`src_first_resident_witness.rish` -- Sound's and Mind's. Mystery: rung drift
+reads 17,248 against 17,247 after rebase.
 
 **Still open:** `glow/rune_shape.rye` keeps width custody; Mind keeps the reconnect stash,
 `%281`/`%291`, two `enclosure.conf` pins. **%360 FALLS:** the five guards our rules demand now
@@ -221,7 +222,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260830.200925` | The post on the line: carriage tied, bead slack zero | [log](../session-logs/date/20260830/20260830-200925_the-post-on-the-line.kyri) |
+| `20260830.165037` | Caravan prices `answered_by` at the harness: 34 openings | [log](../session-logs/date/20260830/20260830-165037_the-destination-owns-its-constant.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it.
 
