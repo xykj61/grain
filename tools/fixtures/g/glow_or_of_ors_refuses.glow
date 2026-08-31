@@ -1,0 +1,2 @@
+|=  [offset=@u32 count=@u32]
+?:  (or (or (gth offset 5) (eq offset 5)) (or (gth count 0) (eq count 0)))  0  1

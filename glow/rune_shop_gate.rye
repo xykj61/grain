@@ -111,6 +111,7 @@ pub const BodyKind = enum {
     cond_gth_mul, // mul-a (20260829.214107): (gth face (mul face2 face3)) over a three-face header -- parse seats; lower waits for mul-b
     cond_and_pair, // and (20260830.000850): (and (gth|eq face dec) (gth|eq face2 dec)) over the pair header -- the composed condition the face's uncertainty law asked for
     cond_or_pair, // or (20260830.004822): the and's sibling -- either inner cond satisfies, the shape the feed's kind law asked for
+    cond_and_of_ors, // nested (20260830.221500): an and whose two operands are each an or-pair of comparisons -- the exact depth-2 shape the shelf-offset law asked for (pond/apps/preset_shelf.rye:104); deeper nesting waits for a law that wants it
 };
 
 /// A parsed thin bartis gate: sample face + optional named shape + body kind.
@@ -135,12 +136,62 @@ pub const GateSpec = struct {
     and_rhs1: u32 = 0, // and: the first inner cond's literal
     and_op2: u8 = 0, // and: 1=gth 2=eq for the second face's inner cond
     and_rhs2: u32 = 0, // and: the second inner cond's literal
+    nest_op: [4]u8 = [_]u8{0} ** 4, // and-of-ors: 1=gth 2=eq per inner comparison, reading order
+    nest_lhs: [4]u8 = [_]u8{0} ** 4, // and-of-ors: 1=first face 2=second face on each comparison's left
+    nest_rhs_face: [4]u8 = [_]u8{0} ** 4, // and-of-ors: 0=literal, else the header face on the right
+    nest_rhs: [4]u32 = [_]u32{0} ** 4, // and-of-ors: the literal right side when nest_rhs_face is 0
     cond_then: u32 = 0, // STOA331: answer when sample > rhs
     then_face: u8 = 0, // STOA341: 0=literal · 1=first face · 2=second face
     else_face: u8 = 0, // STOA341: the arm selects a face instead of a literal
     cond_else: u32 = 0, // STOA331: answer otherwise
     fold_bound: u32 = 0, // STOA332: sumto wall (inclusive max n)
 };
+
+/// nested: parse one `(gth|eq <face> <face|decimal>)` comparison into slot `slot`.
+/// The left side must be a header face; the right side is a literal or the other
+/// header face -- the shape the shelf-offset law speaks (offset against count).
+fn parse_nested_cmp(src: []const u8, toks: []const tokens.Token, start: u32, n: u32, face1: []const u8, face2: []const u8, spec: *GateSpec, slot: u32) !u32 {
+    // invariant: exactly four comparison seats exist in an and-of-ors.
+    assert(slot < 4);
+    // invariant: the first header face is named before any comparison parses.
+    assert(face1.len != 0);
+    // invariant: the second header face is named before any comparison parses.
+    assert(face2.len != 0);
+    var i = start;
+    if (i >= n or toks[@as(usize, @intCast(i))].kind != .lparen) return error.MalformedBody;
+    i += 1;
+    if (i >= n or toks[@as(usize, @intCast(i))].kind != .ident) return error.MalformedBody;
+    const op = tokens.slice_of(src, toks[@as(usize, @intCast(i))]);
+    if (std.mem.eql(u8, op, "gth")) {
+        spec.nest_op[slot] = 1;
+    } else if (std.mem.eql(u8, op, "eq")) {
+        spec.nest_op[slot] = 2;
+    } else return error.MalformedBody;
+    i += 1;
+    if (i >= n or toks[@as(usize, @intCast(i))].kind != .ident) return error.MalformedBody;
+    const lhs = tokens.slice_of(src, toks[@as(usize, @intCast(i))]);
+    if (std.mem.eql(u8, lhs, face1)) {
+        spec.nest_lhs[slot] = 1;
+    } else if (std.mem.eql(u8, lhs, face2)) {
+        spec.nest_lhs[slot] = 2;
+    } else return error.BodyFaceMismatch;
+    i += 1;
+    if (i >= n) return error.MalformedBody;
+    if (toks[@as(usize, @intCast(i))].kind == .decimal) {
+        spec.nest_rhs_face[slot] = 0;
+        spec.nest_rhs[slot] = try parse_decimal_u32(tokens.slice_of(src, toks[@as(usize, @intCast(i))]));
+    } else if (toks[@as(usize, @intCast(i))].kind == .ident) {
+        const rhs = tokens.slice_of(src, toks[@as(usize, @intCast(i))]);
+        if (std.mem.eql(u8, rhs, face1)) {
+            spec.nest_rhs_face[slot] = 1;
+        } else if (std.mem.eql(u8, rhs, face2)) {
+            spec.nest_rhs_face[slot] = 2;
+        } else return error.BodyFaceMismatch;
+    } else return error.MalformedBody;
+    i += 1;
+    if (i >= n or toks[@as(usize, @intCast(i))].kind != .rparen) return error.MalformedBody;
+    return i + 1;
+}
 
 pub fn face_slice(spec: *const GateSpec) []const u8 {
     // invariant: the slice below is taken from a fixed buffer of that size, so a stored length
@@ -261,8 +312,46 @@ fn parse_body(src: []const u8, toks: []const tokens.Token, start: u32, face_text
             i += 1;
             if (i >= n or toks[@as(usize, @intCast(i))].kind != .lparen) return error.MalformedBody;
             i += 1;
-            if (i >= n or toks[@as(usize, @intCast(i))].kind != .ident) return error.MalformedBody;
-            const op1 = tokens.slice_of(src, toks[@as(usize, @intCast(i))]);
+            if (i >= n) return error.MalformedBody;
+            // nested (20260830.221500): when the first operand's own head is `or` (or its
+            // rune ?|), the condition is an and-of-ors -- both operands or-pairs, depth
+            // exactly two by construction. Only `and` composes ors: an or-of-ors has no
+            // law wanting it and refuses by name, which keeps the grammar a closed table.
+            const t0 = toks[@as(usize, @intCast(i))];
+            const t0_text = tokens.slice_of(src, t0);
+            const t0_is_or = (t0.kind == .ident and std.mem.eql(u8, t0_text, "or")) or (t0.kind == .rune2 and std.mem.eql(u8, t0_text, "?|"));
+            if (t0_is_or) {
+                if (!is_and) return error.MalformedBody;
+                i += 1;
+                i = try parse_nested_cmp(src, toks, i, n, face_text, face2_text, spec, 0);
+                i = try parse_nested_cmp(src, toks, i, n, face_text, face2_text, spec, 1);
+                if (i >= n or toks[@as(usize, @intCast(i))].kind != .rparen) return error.MalformedBody;
+                i += 1;
+                if (i >= n or toks[@as(usize, @intCast(i))].kind != .lparen) return error.MalformedBody;
+                i += 1;
+                if (i >= n) return error.MalformedBody;
+                const t1 = toks[@as(usize, @intCast(i))];
+                const t1_text = tokens.slice_of(src, t1);
+                const t1_is_or = (t1.kind == .ident and std.mem.eql(u8, t1_text, "or")) or (t1.kind == .rune2 and std.mem.eql(u8, t1_text, "?|"));
+                if (!t1_is_or) return error.MalformedBody;
+                i += 1;
+                i = try parse_nested_cmp(src, toks, i, n, face_text, face2_text, spec, 2);
+                i = try parse_nested_cmp(src, toks, i, n, face_text, face2_text, spec, 3);
+                if (i >= n or toks[@as(usize, @intCast(i))].kind != .rparen) return error.MalformedBody;
+                i += 1;
+                if (i >= n or toks[@as(usize, @intCast(i))].kind != .rparen) return error.MalformedBody;
+                i += 1;
+                if (i >= n or toks[@as(usize, @intCast(i))].kind != .decimal) return error.MalformedBody;
+                spec.cond_then = try parse_decimal_u32(tokens.slice_of(src, toks[@as(usize, @intCast(i))]));
+                i += 1;
+                if (i >= n or toks[@as(usize, @intCast(i))].kind != .decimal) return error.MalformedBody;
+                spec.cond_else = try parse_decimal_u32(tokens.slice_of(src, toks[@as(usize, @intCast(i))]));
+                i += 1;
+                spec.body = .cond_and_of_ors;
+                return i;
+            }
+            if (t0.kind != .ident) return error.MalformedBody;
+            const op1 = t0_text;
             if (std.mem.eql(u8, op1, "gth")) {
                 spec.and_op1 = 1;
             } else if (std.mem.eql(u8, op1, "eq")) {
@@ -611,7 +700,7 @@ pub fn parse_source(src: []const u8) ParseError!GateSpec {
             if (spec.face2_len == 0) return error.MalformedBody;
             if (spec.face3_len == 0) return error.MalformedBody;
         },
-        .cond_and_pair, .cond_or_pair => {
+        .cond_and_pair, .cond_or_pair, .cond_and_of_ors => {
             // and/or: the composed condition is exactly the pair shape, whole.
             if (spec.face2_len == 0) return error.MalformedBody;
             if (spec.face3_len != 0) return error.MalformedBody;

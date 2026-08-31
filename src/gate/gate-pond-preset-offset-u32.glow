@@ -1,0 +1,14 @@
+::  name       pond preset offset gate
+::  shape      offset count - ints (@u32) -> lawful - int (@u32)
+::  invariant  answers 0 when offset is at or past count, unless both stand at zero; answers 1 otherwise
+::  example    0 0 -> 1 · 0 5 -> 1 · 5 5 -> 0 · 7 5 -> 0 · 1 0 -> 0
+::  readers    Pond · the hearth shelf · Glow
+::  nib        preset-shelf offset law spoken in Glow (20260830)
+::
+::  The shelf-offset law from pond/apps/preset_shelf.rye -- an offset at or past
+::  the listing's count refuses BadOffset, except the empty listing's zero offset,
+::  which is lawful. In seated operators that is an and over two ors: at-or-past
+::  is gth or eq, and "not both zero" is either face above zero. The language's
+::  first nested composition, earned by exactly this law.
+|=  [offset=@u32 count=@u32]
+?:  (and (or (gth offset count) (eq offset count)) (or (gth offset 0) (gth count 0)))  0  1

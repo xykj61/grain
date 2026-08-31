@@ -31,7 +31,7 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 | [`edu/`](../../edu/README.md) | 2 | 6 |
 | [`ember/`](../../ember/README.md) | 2 | 5 |
 | [`encoding/`](../../encoding/README.md) | 8 | 16 |
-| [`glow/`](../../glow/README.md) | 130 | 109 |
+| [`glow/`](../../glow/README.md) | 130 | 110 |
 | [`granary/`](../../granary/README.md) | 7 | 2 |
 | [`image/`](../../image/README.md) | 225 | 252 |
 | [`kumara/`](../../kumara/README.md) | 2 | 3 |
@@ -47,8 +47,8 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 | [`mikrophone/`](../../mikrophone/README.md) | 16 | 18 |
 | [`mycelium/`](../../mycelium/README.md) | 97 | 84 |
 | [`pleac/`](../../pleac/README.md) | 3 | 6 |
-| [`pond/`](../../pond/README.md) | 156 | 163 |
-| [`rishi/`](../../rishi/README.md) | 2 | 1762 |
+| [`pond/`](../../pond/README.md) | 156 | 164 |
+| [`rishi/`](../../rishi/README.md) | 2 | 1763 |
 | [`rye/`](../../rye/README.md) | 117 | 1312 |
 | [`scribble/`](../../scribble/README.md) | 2 | 2 |
 | [`scribe/`](../../scribe/README.md) | 2 | 4 |

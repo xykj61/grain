@@ -1,0 +1,55 @@
+# tools/g/glow_preset_offset_witness.rish -- the shelf-offset law, spoken nested in Glow.
+#
+#   rishi/bin/rishi run tools/g/glow_preset_offset_witness.rish
+#
+# The language's first nested composition -- an and whose two operands are each
+# an or-pair -- earned by the shelf-offset law in pond/apps/preset_shelf.rye:
+# an offset at or past the count refuses BadOffset, except the empty listing's
+# zero offset, which is lawful. Five metal answers mirror the Rye law, the rune
+# twin answers as the word twin (alias-sameness), and the or-of-ors shape no law
+# wants refuses by name, keeping the grammar a closed table.
+
+say "preset-offset: Language EN -- the shelf-offset law, one law in two languages."
+say "preset-offset: Style Gauge, Meter -- each leg names its samples and its answer."
+say "preset-offset: Lens TAME -- the refusal proven beside the welcomes."
+
+let zig = "vendor/zig-toolchain/zig"
+let desk = "src/gate/gate-pond-preset-offset-u32.glow"
+let rune_desk = "src/gate/gate-pond-preset-offset-rune-u32.glow"
+
+say "preset-offset: five metal answers on the word desk..."
+let a1 = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" desk "0" "0"]
+assert a1.ok else "preset-offset: desk(0,0) failed to run"
+assert a1.out contains "1" else "preset-offset: (0,0) -- the empty listing's zero offset is lawful"
+let a2 = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" desk "0" "5"]
+assert a2.ok else "preset-offset: desk(0,5) failed to run"
+assert a2.out contains "1" else "preset-offset: (0,5) -- an offset under the count is lawful"
+let a3 = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" desk "5" "5"]
+assert a3.ok else "preset-offset: desk(5,5) failed to run"
+assert a3.out contains "0" else "preset-offset: (5,5) -- an offset at the count refuses"
+let a4 = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" desk "7" "5"]
+assert a4.ok else "preset-offset: desk(7,5) failed to run"
+assert a4.out contains "0" else "preset-offset: (7,5) -- an offset past the count refuses"
+let a5 = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" desk "1" "0"]
+assert a5.ok else "preset-offset: desk(1,0) failed to run"
+assert a5.out contains "0" else "preset-offset: (1,0) -- an offset past the empty listing refuses"
+
+say "preset-offset: alias-sameness on metal -- the rune twin answers as the word twin..."
+let r1 = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" rune_desk "5" "5"]
+assert r1.ok else "preset-offset: rune-twin(5,5) failed to run"
+assert r1.out contains "0" else "preset-offset: rune-twin(5,5) must answer as the word twin"
+let r2 = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" rune_desk "0" "0"]
+assert r2.ok else "preset-offset: rune-twin(0,0) failed to run"
+assert r2.out contains "1" else "preset-offset: rune-twin(0,0) must answer as the word twin"
+
+say "preset-offset: the closed table -- an or-of-ors has no law wanting it and refuses..."
+let plant = run ["sh" "-c" "glow/bin/glow_run --sample-argv tools/fixtures/g/glow_or_of_ors_refuses.glow 2>&1"]
+assert plant.out contains "MalformedBody" else "preset-offset: the or-of-ors shape must refuse by name"
+
+say "preset-offset: parity anchors -- the Rye law the desk mirrors..."
+let rye_law = run ["grep" "-c" "if (offset >= listing.count and !(offset == 0 and listing.count == 0)) return error.BadOffset;" "pond/apps/preset_shelf.rye"]
+assert rye_law.ok else "preset-offset: the Rye shelf-offset law moved or reworded -- re-anchor both spellings together"
+let nest_kind = run ["grep" "-c" "cond_and_of_ors" "glow/rune_shop_gate.rye"]
+assert nest_kind.ok else "preset-offset: the nested body kind moved or renamed"
+
+say "GREEN: preset-offset -- the shelf-offset law speaks nested Glow, five answers mirror the Rye, the rune twin agrees, and the unwanted shape refuses."
