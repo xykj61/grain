@@ -1,0 +1,51 @@
+# tools/f/fleet_rearm_witness.rish -- the re-arm printer proven from both sides.
+#
+#   rishi/bin/rishi run tools/f/fleet_rearm_witness.rish
+#
+# fleet_rearm.sh prints per-seat status, stop reason, and relaunch paste, and
+# refuses the paste over a CUSTODY sentinel. This witness builds a pen of seat
+# trees and proves the wall both ways: a planted sentinel gates its seat and
+# withholds the paste; lifting the sentinel returns the paste. Absence is
+# reported rather than silent, and the field seat never earns a relaunch.
+
+say "fleet-rearm: Language EN -- the re-arm printer, proven in a pen."
+say "fleet-rearm: Style Gauge, Meter -- each leg names what it plants and what refuses."
+say "fleet-rearm: Lens TAME -- the sentinel wall shown refusing and then welcoming."
+
+let pen = "/tmp/fleet-rearm-pen"
+
+say "fleet-rearm: building the pen -- one gated codex seat, one clean claude seat..."
+let build = run ["sh" "-c" "rm -rf /tmp/fleet-rearm-pen && mkdir -p /tmp/fleet-rearm-pen/grain /tmp/fleet-rearm-pen/grain-mind/.mind-state /tmp/fleet-rearm-pen/grain-silence/session-output && git init -q /tmp/fleet-rearm-pen/grain-mind && git init -q /tmp/fleet-rearm-pen/grain-silence && printf 'root refresh belongs to a hand\\n' > /tmp/fleet-rearm-pen/grain-mind/.mind-state/CUSTODY && printf 'lap 3 closed clean\\n' > /tmp/fleet-rearm-pen/grain-silence/session-output/silence.txt"]
+assert build.ok else "fleet-rearm: the pen failed to build -- read the shell's own words"
+
+say "fleet-rearm: the RED side -- a CUSTODY sentinel gates its seat..."
+let gated = run ["env" "FLEET_HOME=${pen}" "sh" "tools/f/fleet_rearm.sh"]
+assert gated.ok else "fleet-rearm: the printer refused to run at all"
+assert gated.out contains "GATED -- .mind-state/CUSTODY stands" else "fleet-rearm: the sentinel did not gate its seat"
+assert gated.out contains "root refresh belongs to a hand" else "fleet-rearm: the sentinel's own words were not shown to the hand"
+let no_paste = ?& [(gated.out contains "MIND_SEAT=cardinal") false]
+# invariant: the gated seat's paste is withheld -- the cardinal relaunch line is absent.
+assert no_paste == false else "fleet-rearm: unreachable"
+assert (gated.out contains "MIND_SEAT=cardinal") == false else "fleet-rearm: a relaunch paste crossed the CUSTODY wall"
+assert gated.out contains "fleet-loop.sh silence" else "fleet-rearm: the clean claude seat earned no relaunch line"
+assert gated.out contains "lap 3 closed clean" else "fleet-rearm: the claude seat's stop reason was not read"
+assert gated.out contains "last activity" else "fleet-rearm: the activity age went unspoken"
+assert gated.out contains "may still be RUNNING" else "fleet-rearm: fresh words earned no caution -- the pen's file is seconds old"
+assert gated.out contains "mystery -- ${pen}/grain-mystery" else "fleet-rearm: an absent seat vanished from the roster instead of being reported"
+assert gated.out contains "not on this host" else "fleet-rearm: absence was not named"
+
+say "fleet-rearm: the GREEN side -- lifting the sentinel returns the paste..."
+let lift = run ["sh" "-c" "rm /tmp/fleet-rearm-pen/grain-mind/.mind-state/CUSTODY"]
+assert lift.ok else "fleet-rearm: the pen sentinel could not be lifted"
+let open = run ["env" "FLEET_HOME=${pen}" "sh" "tools/f/fleet_rearm.sh"]
+assert open.ok else "fleet-rearm: the printer refused after the lift"
+assert open.out contains "MIND_SEAT=cardinal" else "fleet-rearm: the lifted seat still withheld its paste"
+assert (open.out contains "GATED") == false else "fleet-rearm: a gate reported with no sentinel on disk"
+
+say "fleet-rearm: the field seat never earns a paste..."
+assert (open.out contains "no loop to re-arm") == true else "fleet-rearm: the field seat's non-loop nature went unspoken"
+
+let sweep = run ["sh" "-c" "rm -rf /tmp/fleet-rearm-pen"]
+assert sweep.ok else "fleet-rearm: the pen was left standing"
+
+say "GREEN: fleet-rearm -- the printer reports every seat, the sentinel wall refuses and welcomes, and the hand keeps the keystroke."

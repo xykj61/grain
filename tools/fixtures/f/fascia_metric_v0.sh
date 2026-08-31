@@ -30,6 +30,17 @@ case "$verb" in
     ;;
 esac
 
+# Every signal below is an rg count piped through wc -l, and a substitution
+# whose command is absent yields an empty stream that wc reads as ZERO -- so a
+# host without rg would grade every signal clean and print GREEN over a tree
+# it never read. Mystery's jailed lap caught this on 20260830 (REDS %374):
+# refuse by name instead, and the metrics scan upstream already turns a
+# refusal into fascia=unknown / verdict=unmeasured.
+command -v rg >/dev/null 2>&1 || {
+  echo "fascia-metric-v0 REFUSE: rg absent -- every signal would read a false zero" >&2
+  exit 3
+}
+
 metric_rev=i10
 
 # Self-path excludes -- the meter must not grade its own Inner Scope seats.
