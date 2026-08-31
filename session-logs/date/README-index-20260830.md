@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260830.211850` | [DirtySet sealed, fleet re-armed](20260830-211850_dirtyset-name-sealed.kyri) | the name stands on Keaton's word |
 | `20260830.211655` | [Drift, the word between](20260830-211655_drift-the-word-between.kyri) | dirty / drift / stale -- the seam's three seats |
 | `20260830.211505` | [Mind parks, Mystery healthy, name held](20260830-211505_mind-park-mystery-healthy-name-pushback.kyri) | stash-by-name cure; OutdatedSet declined |
 | `20260830.210700` | [The DirtySet name ruling](20260830-210700_dirtyset-name-ruling.kyri) | recommend keep; RepaintSet the honest alternative |
