@@ -258,6 +258,20 @@ fn expect_for(spec: *const rb.GateSpec) LowerError!u32 {
             const hit = if (spec.body == .cond_and_pair) lhs and rhs else lhs or rhs;
             break :blk if (hit) spec.cond_then else spec.cond_else;
         },
+        // nested: the and-of-ors demo expect walks its four comparison seats the
+        // same way the emitted gate will, so expect and gate stay one law.
+        .cond_and_of_ors => blk2: {
+            var hits: [4]bool = undefined;
+            var k: u32 = 0;
+            while (k < 4) : (k += 1) {
+                // The index casts sit at the array seam; the walk itself stays u32.
+                const ki = @as(usize, @intCast(k));
+                const lhsv: u32 = if (spec.nest_lhs[ki] == 1) bartis_pair_demo_from else bartis_pair_demo_amount;
+                const rhsv: u32 = if (spec.nest_rhs_face[ki] == 0) spec.nest_rhs[ki] else if (spec.nest_rhs_face[ki] == 1) bartis_pair_demo_from else bartis_pair_demo_amount;
+                hits[ki] = if (spec.nest_op[ki] == 1) lhsv > rhsv else lhsv == rhsv;
+            }
+            break :blk2 if ((hits[0] or hits[1]) and (hits[2] or hits[3])) spec.cond_then else spec.cond_else;
+        },
         .fold_sumto => fold_sumto_expect(bartis_demo_sample, spec.fold_bound),
         .fold_sum => try fold_sum_n_expect(spec),
         .fold_prodto => fold_prodto_expect(bartis_demo_sample, spec.fold_bound),
@@ -606,6 +620,24 @@ fn emit_welcome_main(out: []u8, used: *u32, zface: []const u8, expect: u32) Lowe
 // plant SPEAKS its answer now (the fold family's own shape, "EXIT:0 + spoken answer prove
 // it"), and the truth lives with the witness that reads the spoken digit per input. Deleting
 // the emitter rather than fixing it makes the tautology unwritable.
+
+/// nested: render comparison seat `k` as Zig source -- face or literal on the
+/// right, the header faces by ordinal on the left, gth and eq as > and ==.
+fn nested_cmp_str(spec: *const rb.GateSpec, k: u32, zface: []const u8, zfb: []const u8, buf: []u8) LowerError![]const u8 {
+    // invariant: the seat exists before any render.
+    assert(k < 4);
+    // The index cast sits at the array seam; the parameter stays u32.
+    const ki = @as(usize, @intCast(k));
+    // invariant: the seat's operator was parsed before any render.
+    assert(spec.nest_op[ki] == 1 or spec.nest_op[ki] == 2);
+    const lhs: []const u8 = if (spec.nest_lhs[ki] == 1) zface else zfb;
+    const op: []const u8 = if (spec.nest_op[ki] == 1) ">" else "==";
+    if (spec.nest_rhs_face[ki] == 0) {
+        return std.fmt.bufPrint(buf, "{s} {s} {d}", .{ lhs, op, spec.nest_rhs[ki] }) catch return error.Overflow;
+    }
+    const rhs: []const u8 = if (spec.nest_rhs_face[ki] == 1) zface else zfb;
+    return std.fmt.bufPrint(buf, "{s} {s} {s}", .{ lhs, op, rhs }) catch return error.Overflow;
+}
 
 /// PLEAC 1.2 -- the speaking argv main: the gate's answer reaches stdout.
 /// say is argv-only; the welcome road refuses it honestly at expect_for.
@@ -1154,7 +1186,7 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             .cond_eq_faces => return error.PairNotYetLowered,
             .cond_gth_faces => return error.PairNotYetLowered,
             .cond_gth_mul => return error.MulNotYetLowered,
-            .cond_and_pair, .cond_or_pair => return error.PairNotYetLowered,
+            .cond_and_pair, .cond_or_pair, .cond_and_of_ors => return error.PairNotYetLowered,
             .fold_sumto => return error.SampleDoesNotNest,
             .fold_sum => return error.SampleDoesNotNest,
             .fold_prodto => return error.SampleDoesNotNest,
@@ -1181,7 +1213,7 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             .cond_eq_faces => return error.PairNotYetLowered,
             .cond_gth_faces => return error.PairNotYetLowered,
             .cond_gth_mul => return error.MulNotYetLowered,
-            .cond_and_pair, .cond_or_pair => return error.PairNotYetLowered,
+            .cond_and_pair, .cond_or_pair, .cond_and_of_ors => return error.PairNotYetLowered,
             .fold_sumto => return error.SampleDoesNotNest,
             .fold_sum => return error.SampleDoesNotNest,
             .fold_prodto => return error.SampleDoesNotNest,
@@ -1208,7 +1240,7 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             .cond_eq_faces => return error.PairNotYetLowered,
             .cond_gth_faces => return error.PairNotYetLowered,
             .cond_gth_mul => return error.MulNotYetLowered,
-            .cond_and_pair, .cond_or_pair => return error.PairNotYetLowered,
+            .cond_and_pair, .cond_or_pair, .cond_and_of_ors => return error.PairNotYetLowered,
             .fold_sumto => return error.SampleDoesNotNest,
             .fold_sum => return error.SampleDoesNotNest,
             .fold_prodto => return error.SampleDoesNotNest,
@@ -1238,7 +1270,7 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             .cond_eq_faces => return error.PairNotYetLowered,
             .cond_gth_faces => return error.PairNotYetLowered,
             .cond_gth_mul => return error.MulNotYetLowered,
-            .cond_and_pair, .cond_or_pair => return error.PairNotYetLowered,
+            .cond_and_pair, .cond_or_pair, .cond_and_of_ors => return error.PairNotYetLowered,
             .fold_sumto => return error.SampleDoesNotNest,
             .fold_sum => {
                 var comment_buf: [192]u8 = undefined;
@@ -1337,6 +1369,24 @@ fn emit(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             try append_print(out, &used, "fn {s}({s}: u32, {s}: u32) u32 {{\n    return if (({s} {s} {d}) {s} ({s} {s} {d})) {d} else {d};\n}}\n\n", .{ gate_name, zface, zfb, zface, op1, spec.and_rhs1, joiner, zfb, op2, spec.and_rhs2, spec.cond_then, spec.cond_else });
             try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n    return if ({s}({d}, {d}) == {d}) 0 else 1;\n}}\n", .{ gate_name, bartis_pair_demo_from, bartis_pair_demo_amount, expect });
         },
+        .cond_and_of_ors => {
+            // nested: an and over two or-pairs -- the depth-2 shape the
+            // shelf-offset law asked for, on the welcome road's selftest.
+            var zb: [rb.max_face_len]u8 = undefined;
+            const bn = try zig_safe_ident(rb.face2_slice(spec), &zb);
+            const zfb = zb[0..bn];
+            var c0b: [rb.max_face_len * 2 + 16]u8 = undefined;
+            var c1b: [rb.max_face_len * 2 + 16]u8 = undefined;
+            var c2b: [rb.max_face_len * 2 + 16]u8 = undefined;
+            var c3b: [rb.max_face_len * 2 + 16]u8 = undefined;
+            const c0 = try nested_cmp_str(spec, 0, zface, zfb, &c0b);
+            const c1 = try nested_cmp_str(spec, 1, zface, zfb, &c1b);
+            const c2 = try nested_cmp_str(spec, 2, zface, zfb, &c2b);
+            const c3 = try nested_cmp_str(spec, 3, zface, zfb, &c3b);
+            try append_print(out, &used, "/// Lowered from Glow and-of-ors cond -- nested composition (20260830.221500).\n", .{});
+            try append_print(out, &used, "fn bartis_and_of_ors({s}: u32, {s}: u32) u32 {{\n    return if ((({s}) or ({s})) and (({s}) or ({s}))) {d} else {d};\n}}\n\n", .{ zface, zfb, c0, c1, c2, c3, spec.cond_then, spec.cond_else });
+            try append_print(out, &used, "pub fn main(_: std.process.Init) !u8 {{\n    return if (bartis_and_of_ors({d}, {d}) == {d}) 0 else 1;\n}}\n", .{ bartis_pair_demo_from, bartis_pair_demo_amount, expect });
+        },
         .cond_eq_faces, .cond_gth_faces => {
             var zb: [rb.max_face_len]u8 = undefined;
             const bn = try zig_safe_ident(rb.face2_slice(spec), &zb);
@@ -1394,7 +1444,7 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             .cond_eq_faces => return error.PairNotYetLowered,
             .cond_gth_faces => return error.PairNotYetLowered,
             .cond_gth_mul => return error.MulNotYetLowered,
-            .cond_and_pair, .cond_or_pair => return error.PairNotYetLowered,
+            .cond_and_pair, .cond_or_pair, .cond_and_of_ors => return error.PairNotYetLowered,
             .fold_sumto => return error.SampleDoesNotNest,
             .fold_sum => return error.SampleDoesNotNest,
             .fold_prodto => return error.SampleDoesNotNest,
@@ -1416,7 +1466,7 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             .cond_eq_faces => return error.PairNotYetLowered,
             .cond_gth_faces => return error.PairNotYetLowered,
             .cond_gth_mul => return error.MulNotYetLowered,
-            .cond_and_pair, .cond_or_pair => return error.PairNotYetLowered,
+            .cond_and_pair, .cond_or_pair, .cond_and_of_ors => return error.PairNotYetLowered,
             .fold_sumto => return error.SampleDoesNotNest,
             .fold_sum => return error.SampleDoesNotNest,
             .fold_prodto => return error.SampleDoesNotNest,
@@ -1438,7 +1488,7 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             .cond_eq_faces => return error.PairNotYetLowered,
             .cond_gth_faces => return error.PairNotYetLowered,
             .cond_gth_mul => return error.MulNotYetLowered,
-            .cond_and_pair, .cond_or_pair => return error.PairNotYetLowered,
+            .cond_and_pair, .cond_or_pair, .cond_and_of_ors => return error.PairNotYetLowered,
             .fold_sumto => return error.SampleDoesNotNest,
             .fold_sum => return error.SampleDoesNotNest,
             .fold_prodto => return error.SampleDoesNotNest,
@@ -1461,7 +1511,7 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             .cond_eq_faces => return error.PairNotYetLowered,
             .cond_gth_faces => return error.PairNotYetLowered,
             .cond_gth_mul => return error.MulNotYetLowered,
-            .cond_and_pair, .cond_or_pair => return error.PairNotYetLowered,
+            .cond_and_pair, .cond_or_pair, .cond_and_of_ors => return error.PairNotYetLowered,
             .fold_sumto => return error.SampleDoesNotNest,
             .fold_sum => {
                 var comment_buf: [192]u8 = undefined;
@@ -1553,6 +1603,24 @@ fn emit_argv(spec: *const rb.GateSpec, out: []u8) LowerError!u32 {
             try append_print(out, &used, "/// Lowered from Glow {s} cond -- the composed condition (20260830.000850).\n", .{joiner});
             try append_print(out, &used, "fn {s}({s}: u32, {s}: u32) u32 {{\n    return if (({s} {s} {d}) {s} ({s} {s} {d})) {d} else {d};\n}}\n\n", .{ gate_name, zface, zfb, zface, op1, spec.and_rhs1, joiner, zfb, op2, spec.and_rhs2, spec.cond_then, spec.cond_else });
             try emit_argv2_and_speaking_main(out, &used, zface, zfb, gate_name);
+        },
+        .cond_and_of_ors => {
+            // nested: the argv road speaks -- two samples parse, four comparisons
+            // answer as one law through the depth-2 boolean.
+            var zb: [rb.max_face_len]u8 = undefined;
+            const bn = try zig_safe_ident(rb.face2_slice(spec), &zb);
+            const zfb = zb[0..bn];
+            var c0b: [rb.max_face_len * 2 + 16]u8 = undefined;
+            var c1b: [rb.max_face_len * 2 + 16]u8 = undefined;
+            var c2b: [rb.max_face_len * 2 + 16]u8 = undefined;
+            var c3b: [rb.max_face_len * 2 + 16]u8 = undefined;
+            const c0 = try nested_cmp_str(spec, 0, zface, zfb, &c0b);
+            const c1 = try nested_cmp_str(spec, 1, zface, zfb, &c1b);
+            const c2 = try nested_cmp_str(spec, 2, zface, zfb, &c2b);
+            const c3 = try nested_cmp_str(spec, 3, zface, zfb, &c3b);
+            try append_print(out, &used, "/// Lowered from Glow and-of-ors cond -- nested composition (20260830.221500).\n", .{});
+            try append_print(out, &used, "fn bartis_and_of_ors({s}: u32, {s}: u32) u32 {{\n    return if ((({s}) or ({s})) and (({s}) or ({s}))) {d} else {d};\n}}\n\n", .{ zface, zfb, c0, c1, c2, c3, spec.cond_then, spec.cond_else });
+            try emit_argv2_and_speaking_main(out, &used, zface, zfb, "bartis_and_of_ors");
         },
         .cond_eq_faces, .cond_gth_faces => {
             var zb: [rb.max_face_len]u8 = undefined;

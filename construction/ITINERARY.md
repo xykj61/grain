@@ -35,7 +35,7 @@
 
 - **The panchanga** (seated `20260826`): rings of five over the rota of fifteen -- orbit 15 - quest 75 - journey 375 - equinox 1,875 - **chapter** 9,375; *chapter* replaces *season*. Charter: `foundations/20260826-014901_the-panchanga.md`.
 - **The six bodies, the always-fleet** (re-mapped `20260829.203718`, Keaton's word): **one tree per star** and **claim-as-override**. **Mind** (Codex supervisor, `~/grain-mind` -- Surf/Skate) + **Mystery** (same supervisor, `MIND_SEAT=mystery`, `~/grain-mystery` -- the maintenance campaigns); **Sound** (Claude Desktop, the field -- interface Glow, **language custody**, captain's hat) + **Silence** (Claude day-loop, `~/grain-silence` -- infrastructure Glow); **Dream** (Codex in ai-jail, pier -- systems core) + **Hush** (Claude day-loop, pier -- Pond). Charter: the always-fleet page, `20260829.203718`, in `active-designing/`.
-- **Fleet re-arm helper** LANDED: `sh tools/f/fleet_rearm.sh` -- status, stop reason, paste; gates and fresh seats warned.
+- **Fleet re-arm helper** LANDED: `sh tools/f/fleet_rearm.sh` -- status, reason, paste; gates warned.
 - **The fusion build -- IN FLIGHT** (`20260828`, the skip word given): a derived file-to-witness map and receipt-gated `--scoped` passes, the full choir on cadence; design `20260825.181028`.
 - **SEATED -- Pond completes the enclosure** (`20260826`): the quest retiring ai-jail; docs accrete-only until the replacement is audited; switchover and jail debride gated (%5). Plan: `expanding-prompts/20260826-033051_pond-completes-the-enclosure.md`.
 - **STANDFAST -- the Dexter orbit** (`20260826`): 15 rounds; door `dexter/README.md`.
@@ -75,17 +75,17 @@ the day shelves every landed lap):
   = whole-surface invalidation); duplicate marks idempotent; refusal only out-of-range.
 - **Pond live:** `duties_undeclared` **1** -- `env` seated `20260830` at `env_disagreements`
   **zero, enforced**. Only `entry` is left, and it IS the switchover: a gate rather than a lap.
-- **Language custody:** the growth law is
+- **Language custody:** growth law
   [a-rune-is-earned-by-a-law](../foundations/20260830-011530_a-rune-is-earned-by-a-law.md);
-  nested composition is a named door.
+  **nesting OPENED `20260830.221500`** -- the shelf-offset law earned the and-of-ors
+  (`gate-pond-preset-offset-u32`, GREEN); deeper waits for its own law.
 
 **MANY HANDS** (`20260828`): custody MANUAL, one writer per checkout. Root `SKILL.md`; every
 clone seats `ww` (`grain-ww/grain`, gate %1) and `.git/ssh_config_jail`.
 
-**Sibling finds:** lattice labels REPAIRED `20260830`: forty lap files molted to
-`lattice_<op>_witness.rish`, every citer repointed, suite GREEN; the VOLS ledger rows are the
-campaign's bookkeeping. Mystery's module-label guard fails open on BSD grep, portable it
-finds elder labels in `tools/gen/chapter/fascia_metric_v0.rish`.
+**Sibling finds:** lattice labels REPAIRED `20260830` (forty files semantic, suite GREEN;
+VOLS rows are the campaign's). Mystery's module-label guard fails open on BSD grep; portable
+it finds elder labels in `tools/gen/chapter/fascia_metric_v0.rish`.
 **For Pond:** `spool_cloth.rye` carries the same `max_name=48` and wall with no pedestal --
 Hush's. **%358 REPAIRED `20260830`:** the three double-pinned pedestal legs hold placard and
 source to AGREEMENT, proven biting both ways. Mystery: rung drift reads 17,248 against
