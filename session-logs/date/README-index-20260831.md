@@ -12,6 +12,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | Stamp | Log | What it recorded |
 |---|---|---|
 | `20260831.071031` | [The choir pays once for each song](20260831/20260831-071031_the-choir-pays-once-for-each-song.kyri) | Caravan keeps a 5-second seam; full choir moves to cadence |
+| `20260831.072403` | [The same split landed twice](20260831/20260831-072403_the-same-split-landed-twice.kyri) | %392 closed by two hands; the population measured |
 | `20260831.070341` | [Neither half binds alone](20260831/20260831-070341_neither-half-binds-alone.kyri) | Kumara counts five refusals; two hostile bind plants red |
 | `20260831.065204` | [The setting comes from the grammar](20260831/20260831-065204_the-setting-comes-from-the-grammar.kyri) | `%392` closes; program Door and Meter split |
 | `20260831.045858` | [The bound read at both edges](20260831/20260831-045858_the-bound-read-at-both-edges.kyri) | Pond spool cloth takes a desk; the placard nib gets read |
