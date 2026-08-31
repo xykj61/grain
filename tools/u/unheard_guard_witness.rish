@@ -38,8 +38,13 @@ let green = run ["sh" "tools/fixtures/u/unheard_guard_scan.sh"]
 say green.out
 assert green.ok else "unheard-guard: the living measure must exit 0 -- ${green.out}"
 assert green.out contains "verdict=ok" else "unheard-guard: want verdict ok -- ${green.out}"
-assert green.out contains "unheard_ceiling=1144" else "unheard-guard: the ceiling stands where it was measured -- a ceiling only falls"
-assert green.out contains "unheard_choir_ceiling=40" else "unheard-guard: the choir ceiling stands where it was measured"
+# THE PUBLISHED CEILING, PINNED HERE ON PURPOSE. The scan carries the operative number and this
+# line carries the published one, so the two disagree the moment either moves alone and a fall
+# costs a deliberate hand in both files. That is what "only falls" buys: the assert pins
+# equality rather than a direction, so it refuses a quiet fall as loudly as a rise. Lowered
+# 1,144 -> 1,116 and 40 -> 37 on 20260831, when `acme_dx` and `drey` joined the roster.
+assert green.out contains "unheard_ceiling=1116" else "unheard-guard: the ceiling stands where it was measured -- a ceiling only falls"
+assert green.out contains "unheard_choir_ceiling=37" else "unheard-guard: the choir ceiling stands where it was measured"
 
 # THE VACUUMS, closed before the count is believed. A reading that reaches no guards prints zero
 # unheard, and a zero nobody planted looks exactly like a heard tree (REDS %240). Both vacuums are

@@ -227,9 +227,47 @@ if [ -d "$(dirname "$lock")" ]; then
   else
     owner=$(cat "$lock/pid" 2>/dev/null || true)
     [ -n "$owner" ] || owner=unknown
-    echo "run_lock=in_flight pid=$owner"
+    # WHOSE LAP IS THAT PASS STILL RUNNING FOR? The refusal above tells a hand to read the holder's
+    # output instead, and that advice quietly assumes somebody is left to read it. Twice in two laps
+    # on 20260831 nobody was: a lap died with its pass still running, the pass reparented to init,
+    # and the NEXT round's opening stash (%321) moved the tree the orphan had digested at its open,
+    # so its verdict was already fixed at `tree_moved` while it went on holding this lock for
+    # another forty minutes. Both mechanisms are right alone. Together they lock the new lap out of
+    # the instrument its own card tells it to open with, and the refusal's advice points at a reader
+    # who has gone.
+    #
+    # SO THE READING IS TAKEN AND REPORTED, AND NOTHING IS REAPED. `lock_acquire` already reaps an
+    # owner that has EXITED; an orphan has not exited, and it is still a live writer appending to
+    # the one run card, so killing it from here would be one pass ending another's -- exactly the
+    # cross-hand act REDS %291 asks a body never to take. This line names the condition and the
+    # repair; a hand acts.
+    #
+    # `ps -o ppid=` rather than /proc, because macOS ships no /proc and this reading is worth
+    # nothing on the one platform it cannot run. WHAT IT MEASURES IS THE PARENT, and the honest
+    # sentence is *the process that started it has exited* rather than *it is abandoned*: a pass
+    # launched deliberately by init would read the same, and a host running a subreaper reparents
+    # an orphan to the reaper rather than to 1, which reads `alive`. The reading therefore
+    # UNDER-reports -- it never accuses a live lap of being gone, and that is the direction to be
+    # wrong in.
+    parent=unknown
+    case "$owner" in
+      ''|*[!0-9]*) : ;;
+      *)
+        owner_parent=$(ps -o ppid= -p "$owner" 2>/dev/null | tr -d ' ')
+        case "$owner_parent" in
+          '') : ;;
+          1) parent=gone ;;
+          *) parent=alive ;;
+        esac
+        ;;
+    esac
+    echo "run_lock=in_flight pid=$owner parent=$parent"
     echo "run_verdict=run_in_flight"
     echo "refused: another roster pass holds $lock (pid $owner) -- read its output rather than opening a second." >&2
+    if [ "$parent" = gone ]; then
+      echo "detail: that pass's parent has exited, so its output reaches nobody and its lock outlives the lap that took it." >&2
+      echo "detail: stop it with \`kill -TERM $owner\`, which runs this runner's own EXIT trap and releases the lock; SIGKILL bypasses the trap and leaves the lock behind for the next pass to reap." >&2
+    fi
     exit 1
   fi
 else

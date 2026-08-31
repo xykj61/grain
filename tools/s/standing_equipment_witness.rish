@@ -44,7 +44,12 @@
 #   using (REDS %359). The lock primitive is proven in tools/fixtures/s/shell_portable_control.sh;
 #   what is proven here is the runner's use of it, and the load-bearing case is that a refusing
 #   pass leaves the holder's lock exactly where it found it -- a release armed on the refusing side
-#   would walk a third pass straight in.
+#   would walk a third pass straight in. The refusal also reads WHOSE LAP the holder is running
+#   for: a pass whose parent has exited is one whose output reaches nobody, and whose lock outlives
+#   the lap that took it, so the refusal names that and names `kill -TERM` as the repair -- the
+#   signal the runner's own trap answers, where SIGKILL leaves the lock behind. It reaps nothing:
+#   an orphan is still a live writer (REDS %291). Both sides are proven, since a reading that
+#   answered `gone` for every holder would tell a hand nothing.
 #
 #   A full-roster pass opening on a dirty index means a lap ended at `git add`, which left this
 #   tree's generated pages stale three times (REDS %188, %220, %223). The runner refuses it under
@@ -261,6 +266,20 @@ assert control.out contains "held_lock_names_owner=yes" else "standing-equipment
 assert control.out contains "held_lock_runs_no_guard=yes" else "standing-equipment: a refused pass must run no guard at all"
 assert control.out contains "held_lock_writes_no_card=yes" else "standing-equipment: a refused pass must write no run card"
 assert control.out contains "refusal_keeps_holders_lock=yes" else "standing-equipment: a pass that never took the lock must never remove one"
+# WHOSE LAP IS THE HOLDER RUNNING FOR (20260831). The refusal tells a hand to read the holder's
+# output instead, which assumes a reader. Twice in two laps there was none: a lap died with its
+# pass still running, the pass reparented to init, and the next round's opening stash (%321) moved
+# the tree that orphan had digested -- so its verdict was already fixed at `tree_moved` while it
+# held the lock for another forty minutes and locked the new lap out of its own opening pass. The
+# runner reads the holder's parent now and says so, and BOTH sides are proven: a holder whose
+# parent is alive must read `alive`, or the reading is stuck on and tells a hand nothing.
+assert control.out contains "live_parent_reads_alive=yes" else "standing-equipment: a holder whose parent is alive must read parent=alive -- a reading that always says gone is stuck on"
+assert control.out contains "orphan_plant=ok" else "standing-equipment: the pen could not orphan a process, so the gone side is unproven here -- this is a HOST fact rather than a runner defect (a subreaper adopts orphans instead of init), and it wants reading before it is treated as a red"
+assert control.out contains "orphan_parent_reads_gone=yes" else "standing-equipment: a holder whose parent has exited must read parent=gone"
+assert control.out contains "orphan_still_refuses=yes" else "standing-equipment: naming the holder as orphaned changes the diagnosis, never the refusal"
+assert control.out contains "orphan_names_the_repair=yes" else "standing-equipment: the orphan refusal must name kill -TERM, which runs the runner's trap and releases the lock where SIGKILL leaves it behind"
+assert control.out contains "orphan_left_running=yes" else "standing-equipment: a refused pass must never stop the holder -- an orphan is still a live writer, and reaping one would be a body ending another's work (REDS %291)"
+assert control.out contains "orphan_keeps_its_lock=yes" else "standing-equipment: a refused pass must leave an orphan's lock exactly where it found it"
 assert control.out contains "dead_owner_reaped=yes" else "standing-equipment: a lock whose owner has died must be reaped rather than waited out"
 assert control.out contains "no_lock_room_says_so=yes" else "standing-equipment: a pen with no room to lock in must say so rather than skip in silence"
 assert control.out contains "no_lock_room_still_runs=yes" else "standing-equipment: a skipped lock must not stop the pass"

@@ -53,10 +53,15 @@ same breath. So this pin holds no rows of its own -- it holds the way in, and it
 the room. The newest day's shelf is the one to open; it stays open while its day runs and freezes
 when the day closes.
 
+**Only a closed day carries a count.** The live day reads `open` in both columns, the way
+`CHAPTERS.md` has always written it: an open shelf gains a row every lap, so a number typed
+there is wrong before the ink dries, and the hand that must remember to bump it is the fault
+REDS %385 booked. A day's number is derived by counting its shelf on the lap that closes it.
+
 | Day | Rows | Shelf |
 |---|---|---|
 | `through-20260721` | 775 | [`date/README-index-through-20260721.md`](date/README-index-through-20260721.md) |
-| `20260831` **open** | 1 | [`date/README-index-20260831.md`](date/README-index-20260831.md) |
+| `20260831` **open** | **open** | [`date/README-index-20260831.md`](date/README-index-20260831.md) |
 | `20260830` | 92 | [`date/README-index-20260830.md`](date/README-index-20260830.md) |
 | `20260829` | 84 | [`date/README-index-20260829.md`](date/README-index-20260829.md) |
 | `20260828` | 66 | [`date/README-index-20260828.md`](date/README-index-20260828.md) |

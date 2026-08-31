@@ -53,8 +53,13 @@
 # population refuses, and so does an empty roster.
 set -eu
 
-CEILING="${UNHEARD_GUARD_CEILING:-1144}"
-CHOIR_CEILING="${UNHEARD_CHOIR_CEILING:-40}"
+# THE CEILINGS ONLY FALL. 1,116 and 37 measured 20260831, after `acme_dx` and `drey` joined the
+# roster: 28 guards moved from unheard to heard on two rows, and three choirs with them --
+# the two rostered plus `operations_conformance`, which `acme_dx` sings. A guard that arrives
+# unrostered raises the reading and is refused, and the refusal names the answer: put it on a
+# clock rather than raise the number.
+CEILING="${UNHEARD_GUARD_CEILING:-1116}"
+CHOIR_CEILING="${UNHEARD_CHOIR_CEILING:-37}"
 ROSTER="${UNHEARD_GUARD_ROSTER:-construction/standing-equipment.kyri}"
 mode="${1:-measure}"
 
