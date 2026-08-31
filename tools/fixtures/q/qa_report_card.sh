@@ -213,6 +213,45 @@ else
   xref_ceiling=1
 fi
 
+# WHICH SETTING A ROSTER TAKES, ANSWERED BY MEASUREMENT RATHER THAN ASSERTED. The free pass belongs
+# where there is nothing to read, and a notation file's own grammar says which case it is in.
+#
+# Measured 20260831 across all 4,090 tracked .bron and .kyri files, and the family splits cleanly:
+# 3,983 carry ZERO comment lines and 107 carry at least one. The zero side is 3,928 session logs --
+# which .claude/rules/session-logs.md already seats at Meter -- plus 55 pure data corpora under
+# mycelium/corpora/, pond/apps/corpora/ and bat/. Those files are all record, they are Gauge's own
+# "ledger rows", and Meter is right for them. The other side is the rosters, registries, manifests
+# and system descriptors, and REDS %402 established what those files are: the comment block is the
+# document, and the records are data counted beside it.
+#
+# So Meter frees a notation ONLY when there is no comment block. Where a document stands, the free
+# pass is refused, because freeing it makes the reading a CONSTANT: register and reach are both set
+# to 100 below, leaving a composite fixed by Truth and Service alone. Measured on the nineteen
+# notation files carrying 200 words or more of comment prose, every one of them read EXACTLY 94 at
+# Meter with Service held at 75 -- one number across nineteen different inputs, which is the same
+# disconnected reading %402 repaired and the same signature (one sentence, composite 75) it read on
+# its way in. At Field the same nineteen read 81 to 92, an eleven-point spread, every one at or
+# above B. The class needs no relief to clear the door; it needed an instrument that could tell its
+# members apart.
+#
+# WHY FIELD IS THE FALLBACK AND NOT DOOR. Meter carries no ceiling to fall back ON -- its
+# grade_ceiling is 0 -- so a refused notation must be read at a real one, and Field is this card's
+# own default. The measurement agrees: of the nineteen, twelve exceed Door's 20% register ceiling
+# and eight exceed its grade ceiling of 9, against three and two at Field's. A typed `--setting
+# door` is still honored, because whether Door's ceiling of 9 is right at all is a separate open
+# question on the live card, and settling it quietly inside a different repair would be reaching.
+notation_meter="n/a (meter not asked for)"
+if [ "$artifact_kind" = notation ] && [ "$setting" = meter ]; then
+  if [ "$notation_comment_lines" -eq 0 ]; then
+    notation_meter="free (no comment block -- the file is all record)"
+  else
+    notation_meter="refused ($notation_comment_lines comment lines carry a document; read at field)"
+    setting=field
+    grade_ceiling=11
+    xref_ceiling=3
+  fi
+fi
+
 set -- $(measure "$prose_path")
 sentences=$1
 negatives=$2
@@ -493,6 +532,7 @@ if [ "$artifact_kind" = notation ]; then
   echo "notation_dial=split (the comment block is the document; records are data, counted here)"
   echo "notation_comment_lines=$notation_comment_lines"
   echo "notation_record_lines=$notation_record_lines"
+  echo "notation_meter=$notation_meter"
 fi
 if [ "$register_mode" = scored ]; then
   echo "register=$register (negative $neg_pct% of $sentences sentences)"

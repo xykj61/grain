@@ -61,7 +61,7 @@
 #   citations on 20260825, and repairing them would have written through the links into six correct
 #   bodies. Reading the data before acting on it is what stopped that, the same way REDS %213 did.
 #
-# WHAT IS PROVEN, on metal. Eighty-three behaviors in a throwaway pen -- the control's own yes/no
+# WHAT IS PROVEN, on metal. Ninety-three behaviors in a throwaway pen -- the control's own yes/no
 # readings, counted rather than recited, after this file carried 72 in one place and 79 in another.
 # The scale at every one of its
 # nine boundaries from both sides, and no minus grade anywhere. The register flip proven to BE the
@@ -99,6 +99,22 @@
 # identical records and opposite heads that the card now tells apart and the elder card could not,
 # two hundred more records moving neither the sentence count nor the grade, and the elder reading
 # shown answering one sentence, which is the fault's own signature.
+#
+# WHICH SETTING A NOTATION TAKES, decided by grammar rather than by the typed word (20260831). The
+# repair above made a roster's document readable and left the escape hatch beside it: `--setting
+# meter` sets register and reach both to 100, so every one of those nineteen files read EXACTLY 94
+# with Service held at 75 -- one number across nineteen different inputs, which is the disconnected
+# reading the repair had just removed, available for the typing. The card now asks the file. A
+# notation carrying a comment block has a document, so Meter is refused and the reading falls to
+# Field, this card's own default, since Meter carries no ceiling to fall back on. A notation with no
+# comment block is all record, so the free pass stands. The split is the family's, not an
+# invention: measured across all 4,090 tracked `.bron` and `.kyri` files, 3,983 carry zero comment
+# lines -- 3,928 session logs, which `.claude/rules/session-logs.md` already seats at Meter, plus 55
+# data corpora -- and 107 carry a document. At Field the nineteen read 81 to 92, an eleven-point
+# spread, every one at or above B, so the class never needed the relief. Field rather than Door
+# because twelve of the nineteen exceed Door's 20% register ceiling and eight exceed its grade
+# ceiling of 9; a typed `--setting door` is still honored, since whether that ceiling of 9 is right
+# at all is its own open question and settling it inside this repair would be reaching.
 #
 # WHAT IS REPORTED, as a ratchet under a ceiling that only ever falls. The twelve-document door
 # roster, read as report cards, counted where the COUNTED half alone puts a page below B. One at
@@ -213,12 +229,19 @@ assert control.out contains "notation_comment_read=yes" else "qa-report-card: a 
 assert control.out contains "notation_register_discriminates=yes" else "qa-report-card: two rosters with identical records and opposite heads must not read the same register"
 assert control.out contains "notation_counts_reported=yes" else "qa-report-card: the card must name how many lines it read as document and how many it counted as data"
 assert control.out contains "notation_records_are_data=yes" else "qa-report-card: two hundred more records must move neither the sentence count nor the grade"
-assert control.out contains "notation_meter_unscored=yes" else "qa-report-card: Meter frees a notation file exactly as it frees a document, so a session log is unmoved"
+assert control.out contains "notation_document_refuses_meter=yes" else "qa-report-card: a notation carrying a comment block has a document to read, so Meter's free pass must be refused rather than granted"
+assert control.out contains "notation_refused_meter_falls_to_field=yes" else "qa-report-card: Meter carries no ceiling to fall back on, so a refused notation reads at the card's own default"
+assert control.out contains "notation_meter_cannot_lift_field=yes" else "qa-report-card: the typed word must not move the reading -- the same bytes read the same letter at meter and at field"
+assert control.out contains "notation_meter_refusal_named=yes" else "qa-report-card: the card must say which half of the grammar answered, rather than quietly reading something else"
+assert control.out contains "notation_record_only_keeps_meter=yes" else "qa-report-card: a notation with no comment block is all record, and Meter is right for it -- a session log stays unmoved"
+assert control.out contains "notation_free_pass_named=yes" else "qa-report-card: the free pass must name itself too, since a silent grant reads exactly like a silent refusal"
+assert control.out contains "notation_elder_meter_was_constant=yes" else "qa-report-card: the elder meter test must be shown returning one number for two opposite rosters"
+assert control.out contains "notation_meter_repair_bites=yes" else "qa-report-card: the repaired card must read a documented roster differently than the elder one, or it is a rewording"
 assert control.out contains "notation_fields_still_read=yes" else "qa-report-card: a long field value is prose and stays read, whatever the comment block holds"
 assert control.out contains "notation_elder_was_blind=yes" else "qa-report-card: the elder classifier must be shown unable to tell the two plants apart"
 assert control.out contains "notation_elder_read_one_sentence=yes" else "qa-report-card: the elder reading must be shown answering one sentence, which is the fault's own signature"
 assert control.out contains "control_verdict=ok" else "qa-report-card: the control must agree with itself"
-say "eighty-three behaviors proven in a throwaway pen, the scale read at every boundary from both sides"
+say "ninety-three behaviors proven in a throwaway pen, the scale read at every boundary from both sides"
 
 # THE JUDGED READING NAMES ITS OWN SCALE (REDS %361). The composite is the mean of four readings on
 # one 0-100 scale, so `--service` is 0-100 -- and that clause lived in exactly one place, the loop's

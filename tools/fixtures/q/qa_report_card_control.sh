@@ -461,11 +461,26 @@ long_grade=$(echo "$long_notation" | sed -n 's/^reach=[0-9]* (grade \([0-9]*\).*
 [ "$warm_sent" = "$long_sent" ] && [ "$warm_grade" = "$long_grade" ] \
   && echo "notation_records_are_data=yes" || echo "notation_records_are_data=no"
 
-# Meter frees a notation file exactly as it frees a document, so a session log read at Meter is
-# unmoved by any of this.
-meter_notation=$(run roster_cold.kyri --setting meter --service 100)
-[ "$(val "$meter_notation" register)" -eq 100 ] && [ "$(val "$meter_notation" reach)" -eq 100 ] \
-  && echo "notation_meter_unscored=yes" || echo "notation_meter_unscored=no"
+# 8b -- WHICH SETTING A NOTATION TAKES, decided by its own grammar rather than by the typed word.
+# Meter sets register and reach both to 100, so a file it frees has a composite fixed by Truth and
+# Service alone -- the same number whatever it says. That is right where the file is all record and
+# wrong where a document stands, and a notation file wears the difference in its comment lines.
+meter_documented=$(run roster_cold.kyri --setting meter --service 100)
+[ "$(val "$meter_documented" register_mode)" = scored ] \
+  && [ "$(val "$meter_documented" register)" -lt 100 ] \
+  && echo "notation_document_refuses_meter=yes" || echo "notation_document_refuses_meter=no"
+[ "$(val "$meter_documented" qa_setting)" = field ] \
+  && echo "notation_refused_meter_falls_to_field=yes" || echo "notation_refused_meter_falls_to_field=no"
+
+# The typed word must not be able to move the reading, which is the whole point of taking the
+# setting from the grammar. Meter and field read the same bytes to the same letter.
+[ "$(val "$meter_documented" composite)" = "$(val "$cold_notation" composite)" ] \
+  && [ "$(val "$meter_documented" letter)" = "$(val "$cold_notation" letter)" ] \
+  && echo "notation_meter_cannot_lift_field=yes" || echo "notation_meter_cannot_lift_field=no"
+
+# The refusal names itself, so a reader knows which half of the grammar answered.
+echo "$meter_documented" | grep -q '^notation_meter=refused' \
+  && echo "notation_meter_refusal_named=yes" || echo "notation_meter_refusal_named=no"
 
 # A record's VALUE is prose when it is prose. A log-shaped plant carries no comment block at all,
 # and its long fields must still be read rather than dropped with the short ones.
@@ -489,6 +504,38 @@ log_notation=$(run log_shaped.kyri --setting field --service 100)
 [ "$(val "$log_notation" register_mode)" = scored ] \
   && [ "$(val "$log_notation" notation_comment_lines)" -eq 0 ] \
   && echo "notation_fields_still_read=yes" || echo "notation_fields_still_read=no"
+
+# The other half of the grammar. A record-only notation -- a session log, a data corpus -- carries
+# no document at all, so Meter is exactly right for it and the free pass stands. Measured 20260831:
+# 3,983 of 4,090 tracked notation files are on this side, 3,928 of them session logs, which
+# .claude/rules/session-logs.md already seats at Meter. Freeing what has nothing to read is the
+# same judgement as refusing what does.
+meter_record_only=$(run log_shaped.kyri --setting meter --service 100)
+[ "$(val "$meter_record_only" register)" -eq 100 ] \
+  && [ "$(val "$meter_record_only" reach)" -eq 100 ] \
+  && [ "$(val "$meter_record_only" register_mode)" = meter ] \
+  && echo "notation_record_only_keeps_meter=yes" || echo "notation_record_only_keeps_meter=no"
+echo "$meter_record_only" | grep -q '^notation_meter=free' \
+  && echo "notation_free_pass_named=yes" || echo "notation_free_pass_named=no"
+
+# THE LEG THAT TELLS A REPAIR FROM A REWORDING. A card carrying the elder meter test -- one that
+# asked only whether the artifact was a program -- freed the documented roster too, so warm and
+# cold rosters both read the SAME composite there whatever their prose said. Measured on the tree
+# 20260831: all nineteen notation files carrying 200 words or more of comment prose read exactly 94
+# at Meter with Service at 75, one number across nineteen different inputs.
+mkdir -p "$pen/eldermeter/tools/fixtures/q" "$pen/eldermeter/tools/fixtures/p"
+sed 's/^if \[ "\$artifact_kind" = notation \] \&\& \[ "\$setting" = meter \]; then$/if false; then/' \
+  "$pen/tools/fixtures/q/qa_report_card.sh" > "$pen/eldermeter/tools/fixtures/q/qa_report_card.sh"
+cp "$pen/tools/fixtures/p/prose_register_scan.sh" "$pen/eldermeter/tools/fixtures/p/"
+cp "$pen/roster_warm.kyri" "$pen/roster_cold.kyri" "$pen/eldermeter/"
+eldermeter() { ( cd "$pen/eldermeter" && QA_CARD_ROOT=. sh tools/fixtures/q/qa_report_card.sh "$@" 2>&1 ); }
+em_warm=$(eldermeter roster_warm.kyri --setting meter --service 100)
+em_cold=$(eldermeter roster_cold.kyri --setting meter --service 100)
+[ "$(val "$em_warm" composite)" = "$(val "$em_cold" composite)" ] \
+  && [ "$(val "$em_cold" register)" -eq 100 ] \
+  && echo "notation_elder_meter_was_constant=yes" || echo "notation_elder_meter_was_constant=no"
+[ "$(val "$meter_documented" composite)" != "$(val "$em_cold" composite)" ] \
+  && echo "notation_meter_repair_bites=yes" || echo "notation_meter_repair_bites=no"
 
 # The elder classifier, carried back into a copy of the card. It sent a notation file down the
 # prose path, where no extractor runs, so the whole comment block was invisible: warm and cold must
