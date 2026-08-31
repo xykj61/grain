@@ -46,9 +46,9 @@
 
 ### Now -- the live front
 
-**Git nib:** `3744d7e040` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `4da9f3d0ed` -- HEAD's parent, resolvable everywhere (%401).
 
-**Now.** **A repair aimed at a comment mark lands in the branch that owns an extractor, and the fault walks in through the branch that has none.**
+**Now.** **A pen is a copy, and a copy of a list is a list that will be wrong.**
 
 **The live front** (condensed `20260831.023122`; the day shelves hold every landed lap):
 - **Tri-OS** BOOKED for Dream: LOCA parity via `brushstroke/wayland_seed.rye`, pins in
@@ -72,13 +72,9 @@ clone seats `ww` (`grain-ww/grain`, gate %1) and `.git/ssh_config_jail`.
 labels in `tools/gen/chapter/fascia_metric_v0.rish`. **Tablecloth, two, cross-lane:** its name desk
 reads one of `max_name`'s two call sites (`parse_manifest` reads it too, over the same fixed
 `[max_name]u8`), and four `*_example_missing` verdicts carry no control case -- deleting the
-`example` line lands on `placard_wrong` one reading earlier. **Dream's parked package:**
-`xy/pier/diverged-20260831-064342` holds the roster-pen fix unlanded since 06:43, not mine to
-rebase. **CION:** `drey`'s rung marks are the retired form (%329). **Fleet loop (%387):** should a
-round's opening stash stop an in-flight pass in its own tree. **Shelf `20260830` repaired:** after
-its own 14-link repair, 7 more rows arrived -- 4 written at the pin's depth, 3 stale rebase twins
-beside repaired ones; 73 rows for 73 logs now, pin count 69 -> 73. A row is born on its shelf, so
-its link opens with the day.
+`example` line lands on `placard_wrong` one reading earlier. **Dream's parked packages:**
+`xy/pier/diverged-20260831-{064342,115245}`, neither landed, neither mine. **CION:** `drey`'s rung marks are the retired form (%329). **Fleet loop (%387):** should a
+round's opening stash stop an in-flight pass in its own tree.
 
 **Still open:** `glow/rune_shape.rye` keeps width custody; Mind keeps the reconnect stash,
 `%281`/`%291`, two `enclosure.conf` pins. **Named (%347):** `pond/enclosure_policy.kyri`
@@ -95,13 +91,22 @@ nineteen documented notation files read **exactly 94** -- the constant `%402` ha
 reachable by typing. A comment block is a document, so Meter is refused and the read falls to Field
 (**81-92**, every one >= B); no comment block is all record, and the pass stands. **3,983 of 4,090**
 `.kyri`/`.bron` carry none, 3,928 of them logs their own rule already seats at Meter.
+**`%405`, `%406` CLOSED -- a guard sees the room it was pointed at.** `%397`'s remainder landed:
+the card holds a **reference block** out of both counted readings and reports it. **It moves a
+genre, not the tree** -- 154 heads carry one (84 `.glow` desks), 57 cross B, **zero** under the
+register floor; of 135 sampled every 37th, ONE has a block and below-B reads **64 either way**, so
+Door's ceiling is untouched. That second citation silenced **two pens at once**, each holding its
+own copy of what to stage -- `--deps` names what the card reads. And a `20260830` shelf row at the
+pin's depth pointed nowhere four nights running (**0-4-5-6-7**) -- the SECOND such repair on that
+shelf -- unseen because `index_row_bound` reads the OPEN shelf. Two hands, the same 73 rows.
 **Next doors.** Dream: Settlement's replayable fold. Caravan keeps a 5-second seam, singing on
-cadence or touch. Hush: `%397`'s remainder -- a card reading a reference block BESIDE the prose
--- then `spool_cloth`'s eight `ClothError` paths; 37 shape nibs unread. Silence: the roster's setting is
+cadence or touch. Hush: `spool_cloth`'s eight `ClothError` paths;
+37 shape nibs unread. Silence: the roster's setting is
 **Field**, decided; next is whether a record-only notation should DEFAULT to Meter -- 3,928 logs
 sit where the QA habit and the session-log rule disagree.
 **Yours, two.** Door's ceiling is **9** against module heads that run 12-17, which is what puts
-**61 of 134** sampled sources below B -- the grades are honest, so the question is the ceiling. And
+**61 of 134** sampled sources below B -- **the table artifact is ruled OUT** (that sample moves 0),
+so the grades are honest and the question is the ceiling. And
 gate %7: `rule_twin_additive_scan.sh` reads `quality-assurance` as the roster's ONE `additive:claude`
 pair, +3 lines the twin lacks, and carrying them deletes nothing.
 **%374 OPEN:** the receipt-chain question stays yours -- none has ever been earned here.

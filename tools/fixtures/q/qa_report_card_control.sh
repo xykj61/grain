@@ -14,17 +14,22 @@
 set -u
 
 card=tools/fixtures/q/qa_report_card.sh
+refblock=tools/fixtures/q/reference_block.awk
 reg=tools/fixtures/p/prose_register_scan.sh
 [ -f "$card" ] || { echo "control_verdict=card_missing" >&2; exit 1; }
 [ -f "$reg" ] || { echo "control_verdict=register_missing" >&2; exit 1; }
+[ -f "$refblock" ] || { echo "control_verdict=reference_block_missing" >&2; exit 1; }
+# Everything the card cites, asked of the card rather than remembered here (REDS %405).
+deps=$(sh "$card" --deps)
 
 pen=$(mktemp -d)
 trap 'rm -rf "$pen"' EXIT INT TERM
 # The pen mirrors the folded letter rooms (letter fold, seated 20260828): the card sits at q/
-# and lifts measure() from the register scan at p/.
+# and lifts measure() from the register scan at p/, and reads the reference-block classifier
+# beside itself at q/.
 mkdir -p "$pen/tools/fixtures/q" "$pen/tools/fixtures/p"
 cp "$card" "$pen/tools/fixtures/q/"
-cp "$reg" "$pen/tools/fixtures/p/"
+for d in $deps; do mkdir -p "$pen/$(dirname "$d")" && cp "$d" "$pen/$d"; done
 
 run() { ( cd "$pen" && QA_CARD_ROOT=. sh tools/fixtures/q/qa_report_card.sh "$@" 2>&1 ); }
 val() { echo "$1" | sed -n "s/^$2=\([^ ]*\).*/\1/p" | head -1; }
@@ -526,7 +531,7 @@ echo "$meter_record_only" | grep -q '^notation_meter=free' \
 mkdir -p "$pen/eldermeter/tools/fixtures/q" "$pen/eldermeter/tools/fixtures/p"
 sed 's/^if \[ "\$artifact_kind" = notation \] \&\& \[ "\$setting" = meter \]; then$/if false; then/' \
   "$pen/tools/fixtures/q/qa_report_card.sh" > "$pen/eldermeter/tools/fixtures/q/qa_report_card.sh"
-cp "$pen/tools/fixtures/p/prose_register_scan.sh" "$pen/eldermeter/tools/fixtures/p/"
+for d in $deps; do mkdir -p "$pen/eldermeter/$(dirname "$d")" && cp "$d" "$pen/eldermeter/$d"; done
 cp "$pen/roster_warm.kyri" "$pen/roster_cold.kyri" "$pen/eldermeter/"
 eldermeter() { ( cd "$pen/eldermeter" && QA_CARD_ROOT=. sh tools/fixtures/q/qa_report_card.sh "$@" 2>&1 ); }
 em_warm=$(eldermeter roster_warm.kyri --setting meter --service 100)
@@ -543,7 +548,7 @@ em_cold=$(eldermeter roster_cold.kyri --setting meter --service 100)
 mkdir -p "$pen/elder/tools/fixtures/q" "$pen/elder/tools/fixtures/p"
 sed 's/^  \*\.bron|\*\.kyri)             artifact_kind=notation ;;$/  *.bron|*.kyri)             artifact_kind=prose ;;/' \
   "$pen/tools/fixtures/q/qa_report_card.sh" > "$pen/elder/tools/fixtures/q/qa_report_card.sh"
-cp "$pen/tools/fixtures/p/prose_register_scan.sh" "$pen/elder/tools/fixtures/p/"
+for d in $deps; do mkdir -p "$pen/elder/$(dirname "$d")" && cp "$d" "$pen/elder/$d"; done
 cp "$pen/roster_warm.kyri" "$pen/roster_cold.kyri" "$pen/elder/"
 elder() { ( cd "$pen/elder" && QA_CARD_ROOT=. sh tools/fixtures/q/qa_report_card.sh "$@" 2>&1 ); }
 elder_warm=$(elder roster_warm.kyri --setting field --service 100)
@@ -553,5 +558,129 @@ elder_cold=$(elder roster_cold.kyri --setting field --service 100)
   && echo "notation_elder_was_blind=yes" || echo "notation_elder_was_blind=no"
 elder_sent=$(echo "$elder_warm" | sed -n 's/^register=[0-9]* (negative [0-9]*% of \([0-9]*\) sentences.*/\1/p')
 [ "$elder_sent" = 1 ] && echo "notation_elder_read_one_sentence=yes" || echo "notation_elder_read_one_sentence=no"
+
+# 20 -- A TABLE IS NOT A PARAGRAPH. Both counted readings are computed over SENTENCES, and a
+# reference table has none: this tree writes its key lists without terminal punctuation, so a run of
+# them merges into whatever sentence abuts it and the card weighs the head as if it held a handful
+# of enormous ones. Twenty-eight such lines moved one real scan from C 74 to A 91 with its content
+# unchanged -- seventeen composite points of punctuation (REDS %397).
+#
+# The crux is the first pair, and it is one paragraph read twice: the SAME prose must read the SAME
+# grade whether or not a punctuation-free table sits beside it.
+para='# A queue keeps ready work in a fixed array, and a reader learns its purpose here.
+# The module owns the capacity and reports plainly when the queue is full.
+# Each item keeps its place until a caller removes it, in the order it arrived.
+# The public operations share one capacity, declared beside the array below.
+# A caller receives a named error the moment the array has no room left.
+# The queue moves in one direction for each call that succeeds.
+# Its tests read the same state that the production path changes.
+# This head tells a new reader what the module provides, and stops there.'
+table='#
+#   ready          how many items the queue holds right now, before any caller has been answered
+#   capacity       the fixed ceiling the array was built with, declared once beside the array
+#   accepted       items the queue took in, counted since the last reset of the counters
+#   refused        items turned away because the array had no room left for another one
+#   high_water     the largest depth the queue reached across the whole run, kept for tuning
+#   resets         how many times a caller cleared the queue and started the counters again
+#   waiters        callers parked until room appears, counted at the moment of the reading
+#   drained        whether the queue emptied at least once since the counters were last reset'
+
+printf '%s\n' "$para" > "$pen/plain.rye"
+printf '%s\n%s\n' "$para" "$table" > "$pen/tabled.rye"
+plain=$(run plain.rye --service 100)
+tabled=$(run tabled.rye --service 100)
+[ "$(val "$plain" register)" = "$(val "$tabled" register)" ] \
+  && [ "$(val "$plain" reach)" = "$(val "$tabled" reach)" ] \
+  && echo "table_leaves_prose_unmoved=yes" \
+  || echo "table_leaves_prose_unmoved=no ($(val "$plain" register)/$(val "$plain" reach) vs $(val "$tabled" register)/$(val "$tabled" reach))"
+[ "$(val "$plain" reference_lines)" -eq 0 ] && echo "paragraph_holds_no_table=yes" || echo "paragraph_holds_no_table=no"
+[ "$(val "$tabled" reference_lines)" -eq 8 ] && echo "table_counted=yes" || echo "table_counted=no ($(val "$tabled" reference_lines))"
+echo "$tabled" | grep -q '^reference_lines=8 ' && echo "table_named=yes" || echo "table_named=no"
+
+# And the hold-out is what does the work rather than the plant being harmless. One token of the
+# classifier's own threshold is mutated in the pen so no block ever forms -- which is the card as it
+# read before this repair -- and the SAME two files then disagree by ten register and thirty reach.
+# A pass proven only in the passing direction cannot be told from a reading that does nothing.
+sed 's/if (entries >= 2)/if (entries >= 99999)/' \
+  "$pen/tools/fixtures/q/reference_block.awk" > "$pen/blind.awk"
+mv "$pen/tools/fixtures/q/reference_block.awk" "$pen/keep.awk"
+cp "$pen/blind.awk" "$pen/tools/fixtures/q/reference_block.awk"
+bp=$(run plain.rye --service 100)
+bt=$(run tabled.rye --service 100)
+mv "$pen/keep.awk" "$pen/tools/fixtures/q/reference_block.awk"
+[ "$(val "$bp" reach)" -gt "$(val "$bt" reach)" ] \
+  && [ "$(val "$bp" register)" -gt "$(val "$bt" register)" ] \
+  && echo "hold_out_load_bearing=yes" \
+  || echo "hold_out_load_bearing=no ($(val "$bp" register)/$(val "$bp" reach) vs $(val "$bt" register)/$(val "$bt" reach))"
+
+# ONE entry is not a block. A single double-spaced line is far more often prose than a table, and
+# holding a lone line out would quietly shrink a page's measured prose. Both sides on one shape:
+# one entry is read as prose, and the second entry makes both a block.
+printf '%s\n#\n#   ready      how many items the queue holds right now\n' "$para" > "$pen/one_entry.rye"
+o=$(run one_entry.rye --service 100)
+[ "$(val "$o" reference_lines)" -eq 0 ] && echo "lone_entry_stays_prose=yes" || echo "lone_entry_stays_prose=no ($(val "$o" reference_lines))"
+printf '%s\n#\n#   ready      how many items the queue holds right now\n#   capacity   the fixed ceiling the array was built with\n' "$para" > "$pen/two_entry.rye"
+o=$(run two_entry.rye --service 100)
+[ "$(val "$o" reference_lines)" -eq 2 ] && echo "two_entries_make_a_block=yes" || echo "two_entries_make_a_block=no ($(val "$o" reference_lines))"
+
+# A wrapped description rides with the entry that opened it, since a line indented past the key
+# column is the same row carrying on. Without this the run breaks at every wrap: fourteen real
+# entries in tools/fixtures/t/tool_path_scan.sh read as three lone lines before it was written.
+printf '%s\n#\n#   ready      how many items the queue holds right now, counted before any caller\n#              has been answered, so a reader sees the depth rather than the throughput\n#   capacity   the fixed ceiling the array was built with\n' "$para" > "$pen/wrapped.rye"
+o=$(run wrapped.rye --service 100)
+[ "$(val "$o" reference_lines)" -eq 3 ] && echo "continuation_rides_along=yes" || echo "continuation_rides_along=no ($(val "$o" reference_lines))"
+
+# A blank line ends a block, because a blank line is how this tree ends a table. Two entries with a
+# blank between them are two lone lines, and a lone line stays prose.
+printf '%s\n#\n#   ready      how many items the queue holds right now\n#\n#   capacity   the fixed ceiling the array was built with\n' "$para" > "$pen/split.rye"
+o=$(run split.rye --service 100)
+[ "$(val "$o" reference_lines)" -eq 0 ] && echo "blank_ends_a_block=yes" || echo "blank_ends_a_block=no ($(val "$o" reference_lines))"
+
+# Entries at different key columns are different tables, never one block.
+printf '%s\n#\n#   ready      how many items the queue holds right now\n#       capacity   the fixed ceiling the array was built with\n' "$para" > "$pen/uneven.rye"
+o=$(run uneven.rye --service 100)
+[ "$(val "$o" reference_lines)" -eq 0 ] && echo "key_column_binds_a_block=yes" || echo "key_column_binds_a_block=no ($(val "$o" reference_lines))"
+
+# A prose file is read the same way. Measured 20260831: exactly one living non-dated prose file of
+# 1,503 carries a reference block at all -- template-manifest.bron, whose every line reads
+# `template  <path>  # why` -- so this clause is written for the genre rather than for a population.
+printf 'This page explains one small thing and then shows the keys it uses.\n\n    ready      how many items the queue holds right now\n    capacity   the fixed ceiling the array was built with\n' > "$pen/doc.md"
+o=$(run doc.md --setting field --service 100)
+[ "$(val "$o" reference_lines)" -eq 2 ] && echo "prose_table_held_out=yes" || echo "prose_table_held_out=no ($(val "$o" reference_lines))"
+
+# A fenced block is left alone. Both readings already skip a fence, so reaching in would move no
+# grade and would only inflate the count the card prints.
+printf 'This page shows a listing inside a fence, which both readings already read past.\n\n```\n  ready      how many items the queue holds right now\n  capacity   the fixed ceiling the array was built with\n```\n' > "$pen/fenced.md"
+o=$(run fenced.md --setting field --service 100)
+[ "$(val "$o" reference_lines)" -eq 0 ] && echo "fence_left_alone=yes" || echo "fence_left_alone=no ($(val "$o" reference_lines))"
+
+# And the reading is CITED rather than spelled beside the card, the same discipline measure() and
+# the register floor already keep: losing the classifier refuses rather than guessing a zero.
+mv "$pen/tools/fixtures/q/reference_block.awk" "$pen/reference_block.away"
+o=$(run tabled.rye --service 100)
+mv "$pen/reference_block.away" "$pen/tools/fixtures/q/reference_block.awk"
+echo "$o" | grep -q 'reference reading is missing' && echo "reference_source_load_bearing=yes" || echo "reference_source_load_bearing=no"
+
+# 21 -- the card names what it reads, and the naming is proven by building a pen from nothing else.
+# Two pens went quiet in one lap when the card gained a second citation: the citation guard's, and
+# this control's own elder-card leg. Neither was wrong when it was written; each held a copy of a
+# list that had moved (REDS %405). So the list lives beside the code and a pen asks for it, and this
+# case is what keeps the answer honest -- a third citation added without a line in `--deps` fails
+# here, on the lap that adds it, rather than in whichever guard happens to run next.
+deps_pen=$(mktemp -d)
+mkdir -p "$deps_pen/tools/fixtures/q"
+cp "$card" "$deps_pen/tools/fixtures/q/"
+for d in $deps; do mkdir -p "$deps_pen/$(dirname "$d")" && cp "$d" "$deps_pen/$d"; done
+printf '%s\n' '# A queue keeps ready work in a fixed array, and a reader learns its purpose here.' \
+  '# The module owns the capacity and reports plainly when the queue is full.' \
+  '# Each item keeps its place until a caller removes it, in the order it arrived.' \
+  '# A caller receives a named error the moment the array has no room left.' > "$deps_pen/probe.rye"
+deps_out=$( cd "$deps_pen" && QA_CARD_ROOT=. sh tools/fixtures/q/qa_report_card.sh probe.rye --service 100 2>&1 )
+rm -rf "$deps_pen"
+[ "$(val "$deps_out" letter)" != "" ] && echo "deps_list_is_complete=yes" \
+  || echo "deps_list_is_complete=no ($deps_out)"
+[ "$(echo "$deps" | wc -l | tr -d ' ')" -ge 2 ] && echo "deps_list_is_named=yes" || echo "deps_list_is_named=no"
+for d in $deps; do [ -f "$d" ] || { echo "deps_list_resolves=no ($d)"; deps_bad=1; }; done
+[ "${deps_bad:-0}" = 0 ] && echo "deps_list_resolves=yes"
 
 echo "control_verdict=ok"

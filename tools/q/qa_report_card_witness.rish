@@ -61,8 +61,22 @@
 #   citations on 20260825, and repairing them would have written through the links into six correct
 #   bodies. Reading the data before acting on it is what stopped that, the same way REDS %213 did.
 #
-# WHAT IS PROVEN, on metal. Ninety-three behaviors in a throwaway pen -- the control's own yes/no
-# readings, counted rather than recited, after this file carried 72 in one place and 79 in another.
+# A TABLE IS NOT A PARAGRAPH, 20260831. Both counted readings are computed over SENTENCES, and a
+# reference table has none: this tree writes its key lists without terminal punctuation, so a run of
+# them merges into whatever sentence abuts it and the card weighs a head as if it held a handful of
+# enormous ones. Twenty-eight such lines moved one real scan from C 74 to A 91 with its content
+# unchanged (REDS %397). A reference block is now held out of both readings and REPORTED beside the
+# prose, the way declaration docs already are, and what counts as one is read off the line's own
+# face -- an entry is a bare identifier followed by two or more spaces, a continuation is indented
+# past that entry's key column, and a block is two or more entries sharing one key column. TWO
+# entries rather than one, because a lone double-spaced line is prose far more often than a table.
+# Measured across the tree: 154 program heads carry a block, 928 lines in all, and holding them out
+# moves 130 of them -- 57 across the B door, one below it, mean +7.2. Exactly one living non-dated
+# prose file of 1,503 carries a block at all, so the reading is surgical rather than sweeping.
+#
+# WHAT IS PROVEN, on metal. One hundred and nine behaviors in a throwaway pen -- the control's own
+# yes/no readings, counted rather than recited, after this file carried 72 in one place and 79 in
+# another.
 # The scale at every one of its
 # nine boundaries from both sides, and no minus grade anywhere. The register flip proven to BE the
 # register scan's own number rather than a second measurement -- and proven load-bearing, since
@@ -240,8 +254,37 @@ assert control.out contains "notation_meter_repair_bites=yes" else "qa-report-ca
 assert control.out contains "notation_fields_still_read=yes" else "qa-report-card: a long field value is prose and stays read, whatever the comment block holds"
 assert control.out contains "notation_elder_was_blind=yes" else "qa-report-card: the elder classifier must be shown unable to tell the two plants apart"
 assert control.out contains "notation_elder_read_one_sentence=yes" else "qa-report-card: the elder reading must be shown answering one sentence, which is the fault's own signature"
+assert control.out contains "table_leaves_prose_unmoved=yes" else "qa-report-card: one paragraph must read one grade whether or not a punctuation-free table sits beside it"
+assert control.out contains "paragraph_holds_no_table=yes" else "qa-report-card: ordinary prose holds no reference block, so nothing is quietly held out of it"
+assert control.out contains "table_counted=yes" else "qa-report-card: the held-out lines must be counted"
+assert control.out contains "table_named=yes" else "qa-report-card: and named on the card, so a reader sees what was read past"
+assert control.out contains "hold_out_load_bearing=yes" else "qa-report-card: with the block scored inside the prose the same two files must disagree -- a hold-out proven only in the passing direction cannot be told from one that does nothing"
+assert control.out contains "lone_entry_stays_prose=yes" else "qa-report-card: one entry is not a block -- a lone double-spaced line is prose far more often than a table"
+assert control.out contains "two_entries_make_a_block=yes" else "qa-report-card: and the second entry must make a block, or the threshold proves nothing"
+assert control.out contains "continuation_rides_along=yes" else "qa-report-card: a wrapped description rides with the entry that opened it, or every wrap breaks its own run"
+assert control.out contains "blank_ends_a_block=yes" else "qa-report-card: a blank line ends a block, because a blank line is how this tree ends a table"
+assert control.out contains "key_column_binds_a_block=yes" else "qa-report-card: entries at different key columns are different tables, never one block"
+assert control.out contains "prose_table_held_out=yes" else "qa-report-card: a prose file's reference block is read the same way a program's is"
+assert control.out contains "fence_left_alone=yes" else "qa-report-card: a fenced listing is already read past, so reaching in would inflate the count and move no grade"
+assert control.out contains "reference_source_load_bearing=yes" else "qa-report-card: the reference reading is cited, so losing its source must refuse rather than guess a zero"
+assert control.out contains "table_leaves_prose_unmoved=yes" else "qa-report-card: one paragraph must read one grade whether or not a punctuation-free table sits beside it"
+assert control.out contains "paragraph_holds_no_table=yes" else "qa-report-card: ordinary prose holds no reference block, so nothing is quietly held out of it"
+assert control.out contains "table_counted=yes" else "qa-report-card: the held-out lines must be counted"
+assert control.out contains "table_named=yes" else "qa-report-card: and named on the card, so a reader sees what was read past"
+assert control.out contains "hold_out_load_bearing=yes" else "qa-report-card: with the block scored inside the prose the same two files must disagree -- a hold-out proven only in the passing direction cannot be told from one that does nothing"
+assert control.out contains "lone_entry_stays_prose=yes" else "qa-report-card: one entry is not a block -- a lone double-spaced line is prose far more often than a table"
+assert control.out contains "two_entries_make_a_block=yes" else "qa-report-card: and the second entry must make a block, or the threshold proves nothing"
+assert control.out contains "continuation_rides_along=yes" else "qa-report-card: a wrapped description rides with the entry that opened it, or every wrap breaks its own run"
+assert control.out contains "blank_ends_a_block=yes" else "qa-report-card: a blank line ends a block, because a blank line is how this tree ends a table"
+assert control.out contains "key_column_binds_a_block=yes" else "qa-report-card: entries at different key columns are different tables, never one block"
+assert control.out contains "prose_table_held_out=yes" else "qa-report-card: a prose file's reference block is read the same way a program's is"
+assert control.out contains "fence_left_alone=yes" else "qa-report-card: a fenced listing is already read past, so reaching in would inflate the count and move no grade"
+assert control.out contains "reference_source_load_bearing=yes" else "qa-report-card: the reference reading is cited, so losing its source must refuse rather than guess a zero"
+assert control.out contains "deps_list_is_complete=yes" else "qa-report-card: a pen built from nothing but --deps must run the card, or the list has gone stale"
+assert control.out contains "deps_list_is_named=yes" else "qa-report-card: --deps must name every reading the card cites, not one of them"
+assert control.out contains "deps_list_resolves=yes" else "qa-report-card: every path --deps names must exist"
 assert control.out contains "control_verdict=ok" else "qa-report-card: the control must agree with itself"
-say "ninety-three behaviors proven in a throwaway pen, the scale read at every boundary from both sides"
+say "one hundred and nine behaviors proven in a throwaway pen, the scale read at every boundary from both sides"
 
 # THE JUDGED READING NAMES ITS OWN SCALE (REDS %361). The composite is the mean of four readings on
 # one 0-100 scale, so `--service` is 0-100 -- and that clause lived in exactly one place, the loop's
