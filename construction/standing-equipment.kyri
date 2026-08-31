@@ -1031,3 +1031,30 @@ guard shelf_link_touch
 path tools/s/shelf_link_touch_witness.rish
 tier lap
 seated 20260831.003448
+
+# acme_dx and drey -- two choirs the roster could not hear, and the last two this seat can reach
+# alone (REDS %360). The census reads a choir as a witness that runs three or more siblings, and a
+# silent choir takes its whole family down with it (REDS %219). Forty stood unheard; these two are
+# the pair whose families sit in no other body's lane, so rostering them crosses nobody. `acme_dx`
+# sings the Acme developer-arc conformance witnesses, one of which -- `operations_conformance` --
+# is a choir in its own right, so the pair reaches further than its two rows suggest. `drey` sings
+# the Mikrophone firmware rungs, all pure Rye on the bench: no disk, no network, no key, no funds.
+# NEITHER FAMILY'S SIZE IS TYPED HERE. Both grow, and a count written beside a thing that grows
+# stops the day it is typed -- which is REDS %386, found in `drey`'s own header on this same lap.
+# The census counts them: `sh tools/fixtures/u/unheard_guard_scan.sh choirs`. What it read as the
+# two rows landed, 20260831: heard 660 -> 688, unheard 1,144 -> 1,116, unheard choirs 40 -> 37.
+#
+# COST IS WHY BOTH SIT ON `lap` RATHER THAN `cadence`. Measured on this pier 20260831, each run
+# alone and GREEN before its row was written: acme_dx 3s, drey 5s -- 8s together, against a cold
+# roster pass of 63 minutes. A tier is a cadence rather than an exemption, and eight seconds buys
+# no exemption worth taking.
+
+guard acme_dx
+path tools/ac/acme_dx_witness.rish
+tier lap
+seated 20260831.014630
+
+guard drey
+path tools/d/drey_witness.rish
+tier lap
+seated 20260831.014630

@@ -228,3 +228,7 @@ at a closed fold.*
 *Rows %377-%380 folded to [`REDS-what-a-meter-actually-reads-rows-377-380.md`](REDS-what-a-meter-actually-reads-rows-377-380.md) on `20260830.224237`, each **CLOSED** -- four instruments that each read a stand-in rather than the thing: a fold meter pricing constants the destination harness already declared, a ledger headline left behind the row that moved it, a missing `rg` read as an empty stream and called a clean tree, and a roster digest reading a status letter while the bytes under it moved.*
 
 *Rows %376, %381 and %382 folded to [`REDS-one-answer-two-homes-rows-376-382.md`](REDS-one-answer-two-homes-rows-376-382.md) on `20260831.003429`, each **CLOSED** -- a correct answer kept in a second place is two answers that happen to agree today: an index forked from a commit, a trail fact left for a hand to copy, and a portable helper rewritten because it was hard to find.*
+
+*Row %383 folded to [`REDS-a-row-opens-its-log-rows-383.md`](REDS-a-row-opens-its-log-rows-383.md) on `20260831.015500`, **CLOSED** -- a guard on the slow clock cannot teach the habit it guards, so the reading moved to the commit that writes the row.*
+
+*Rows %384 and %385 folded to [`REDS-typed-into-a-living-pin-rows-384-385.md`](REDS-typed-into-a-living-pin-rows-384-385.md) on `20260831.021718`, both **BOOKED** -- a claim typed by hand into a living pin, beside the thing it described, and read by nothing until a census on a slow clock -- one a path that named no file, one a count that had stopped moving.*

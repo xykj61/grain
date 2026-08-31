@@ -878,6 +878,49 @@ if [ -f "$lockpen/held-card.kyri" ]; then echo "held_lock_writes_no_card=no"; el
 # THE LOAD-BEARING ONE. A pass that never took the lock must never remove one -- a release armed
 # on the refusing side would free the holder's lock and walk a third pass straight in.
 if [ -d "$lockpen/lock.d" ]; then echo "refusal_keeps_holders_lock=yes"; else echo "refusal_keeps_holders_lock=no"; fi
+# WHOSE LAP IS THE HOLDER RUNNING FOR -- the negative side, taken from the case just above. The
+# control's own pid holds that lock and the control's parent is alive, so a reading that answered
+# `gone` here would answer it for every holder, and a refusal that always fires tells a hand
+# nothing. This is the same discipline the refusals keep: a reading proven only where it fires
+# cannot be told from a reading that is stuck on.
+case "$out" in *"parent=alive"*) echo "live_parent_reads_alive=yes" ;; *) echo "live_parent_reads_alive=no" ;; esac
+
+# THE POSITIVE SIDE, planted for real. A lap that dies with its pass still running leaves the pass
+# reparented to init, holding this lock, its output going to nobody -- twice in two laps on
+# 20260831. The plant is a grandchild whose parent exits immediately, which is exactly how the real
+# orphan is made.
+#
+# THE PLANT IS VERIFIED BEFORE IT IS TRUSTED. A host running a subreaper reparents an orphan to the
+# reaper rather than to init, so on such a host this plant cannot be made at all and the case would
+# fail for the host's reason rather than the runner's. So the control reads the plant's own parent
+# first and says `orphan_plant=unavailable` where the plant did not take, because a silent skip is
+# how this reading would go quietly false on the day the host changed.
+mkdir -p "$lockpen/lock.d"
+sh -c 'sleep 30 & printf "%s\n" "$!" > "$0"' "$lockpen/orphan.pid"
+orphan=$(cat "$lockpen/orphan.pid" 2>/dev/null || true)
+orphan_parent=$(ps -o ppid= -p "$orphan" 2>/dev/null | tr -d ' ')
+if [ "$orphan_parent" = 1 ]; then
+  echo "orphan_plant=ok"
+  printf '%s\n' "$orphan" > "$lockpen/lock.d/pid"
+  rm -f "$lockpen/orphan-card.kyri"
+  orphan_out=$(run_locked lock.d orphan-card.kyri 2>&1)
+  orphan_err=$( ( cd "$lockpen" && STANDING_ROSTER=roster.kyri STANDING_CARD=orphan-err.kyri \
+      STANDING_LOCK=lock.d sh "$runner" 2>&1 >/dev/null ) || true )
+  case "$orphan_out" in *"parent=gone"*) echo "orphan_parent_reads_gone=yes" ;; *) echo "orphan_parent_reads_gone=no" ;; esac
+  case "$orphan_out" in *"run_verdict=run_in_flight"*) echo "orphan_still_refuses=yes" ;; *) echo "orphan_still_refuses=no" ;; esac
+  # The repair is named, and it names SIGTERM: the runner's trap releases the lock on TERM, where
+  # SIGKILL bypasses it and leaves the lock for the next pass to reap. The previous lap paid that
+  # difference by hand.
+  case "$orphan_err" in *"kill -TERM $orphan"*) echo "orphan_names_the_repair=yes" ;; *) echo "orphan_names_the_repair=no" ;; esac
+  # AND IT STILL TAKES NO ACTION. An orphan is a live writer, so a pass that reaped one would be
+  # one body ending another's work (REDS %291). The holder must be alive after the refusal.
+  if kill -0 "$orphan" 2>/dev/null; then echo "orphan_left_running=yes"; else echo "orphan_left_running=no"; fi
+  if [ -d "$lockpen/lock.d" ]; then echo "orphan_keeps_its_lock=yes"; else echo "orphan_keeps_its_lock=no"; fi
+  kill "$orphan" 2>/dev/null || true
+else
+  echo "orphan_plant=unavailable"
+fi
+rm -rf "$lockpen/lock.d"
 
 # A lock whose owner has died is reaped rather than waited out, so a killed pass costs one retry
 # rather than every later pass. The pid is a child run and waited on, which has certainly exited.

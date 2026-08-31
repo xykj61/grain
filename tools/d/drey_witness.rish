@@ -1,19 +1,24 @@
-# tools/d/drey_witness.rish -- the whole Mikrophone firmware journey, proven in one command (DREY0-DREY16).
+# tools/d/drey_witness.rish -- the whole Mikrophone firmware journey, every rung proven in one command.
 #
 # Chapter A (Hardware & Right-to-Repair) - waymark DREY - Mikrophone firmware journey - aggregate witness.
 # Front door: mikrophone/README.md.
 #
-# The Mikrophone firmware journey grew from one crux -- a session that forgets -- to eleven proven rungs: the memory that
-# forgets, the wire that carries only the committed, the record button, the whole loop, the far side's verify-before-keep
-# discipline, the carry meeting, the bounded archive, the content-addressed catalog, the manifest of holdings, the
-# want-response that closes a local content-addressed sync, and the redaction that lets a keeper forget one span on
-# purpose. Each rung has its own witness; this one runs all eleven in rung order and asserts each GREEN, so the whole
-# journey proves from cold in a single command -- the reference weave the front door names.
+# The Mikrophone firmware journey grew from one crux -- a session that forgets. Each rung has its own witness, and this
+# one runs every rung in rung order and asserts each GREEN, so the whole journey proves from cold in a single command --
+# the reference weave the front door names.
+#
+# THE COUNT IS NOT WRITTEN HERE, ON PURPOSE. This header once said `eleven proven rungs` and recited all eleven by name,
+# and the printed banner below once named the range `DREY0` through `DREY13`. The file ran SIXTEEN rungs by then. A count
+# typed into a comment stops moving the day it is typed, while the legs below keep being added -- REDS %110 and %93 taught
+# that for the ledger's own headline, %385 for the session-log shelves, and %386 books it here. So the roll call lives in
+# one place only: the closing GREEN line, which names each rung it just ran. To count them, ask the file rather than
+# this sentence:
+#   grep -c '^let .* = run \[' tools/d/drey_witness.rish
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/d/drey_witness.rish
 
-say "drey: Language EN — the whole Mikrophone firmware journey (DREY0–DREY13), each rung's witness run in order and asserted GREEN in one command."
+say "drey: Language EN -- the whole Mikrophone firmware journey, each rung's witness run in rung order and asserted GREEN in one command; the closing line names every rung it ran."
 say "drey: Style Radiant — a device that forgets on purpose, proven whole: a capture held only while powered, kept only on a deliberate commit, redacted where a keeper strikes it, carried only when committed, and received only once proven — no byte crossing that a keeper did not need, none kept that cannot be proven."
 say "drey: Lens TAME — every rung is pure Rye on the bench, bounded, invariant-asserted, refusing by name; no disk, no network, no key, no funds. Serving over a real transport stays the Comlink-served gate; real hardware stays custody gate %2."
 

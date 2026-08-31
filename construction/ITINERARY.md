@@ -61,11 +61,10 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 **Git nib:** `61ea50dff3` -- this round's own.
 
-**Now.** **The wall that refuses a commit body naming a path that does not exist
-stops at the file that commit edits.**
+**Now.** **A lap dying mid-sentence is the ordinary case here, and every artifact is
+built for it except the one holding a lock.**
 
-**The live front** (condensed `20260830.012039`; the checkpoint holds the departing accounts,
-the day shelves every landed lap):
+**The live front** (condensed `20260830.012039`; the day shelves hold every landed lap):
 - **Tri-OS** BOOKED for Dream: LOCA parity via `brushstroke/wayland_seed.rye`, pins in
   `surface_reference.rye`. AppKit roles and the deployment floor are Keaton's gates.
 - **CION Tier C** RULED quality-first (`20260830.004431`,
@@ -74,7 +73,7 @@ the day shelves every landed lap):
 - **Mind's next:** its lane. **DirtySet** RULED `20260830.183102`: shares the nine (seat 0
   = whole-surface invalidation); duplicate marks idempotent; refusal only out-of-range.
 - **Pond live:** `duties_undeclared` **1** -- `env` seated `20260830` at `env_disagreements`
-  **zero, enforced**. Only `entry` is left, and it IS the switchover: a gate rather than a lap.
+  **zero, enforced**. Only `entry` is left, and it IS the switchover: a gate, not a lap.
 - **Language custody:** growth law
   [a-rune-is-earned-by-a-law](../foundations/20260830-011530_a-rune-is-earned-by-a-law.md);
   **nesting OPENED `20260830.221500`** -- the shelf-offset law earned the and-of-ors
@@ -83,33 +82,32 @@ the day shelves every landed lap):
 **MANY HANDS** (`20260828`): custody MANUAL, one writer per checkout. Root `SKILL.md`; every
 clone seats `ww` (`grain-ww/grain`, gate %1) and `.git/ssh_config_jail`.
 
-**Sibling finds:** lattice labels REPAIRED `20260830` (forty files semantic, suite GREEN;
-VOLS rows are the campaign's). Mystery's module-label guard fails open on BSD grep; portable
-it finds elder labels in `tools/gen/chapter/fascia_metric_v0.rish`.
-**For Pond:** `spool_cloth.rye` carries the same `max_name=48` and wall with no pedestal --
-Hush's. **%358 REPAIRED `20260830`:** the three double-pinned pedestal legs hold placard and
-source to AGREEMENT, proven both ways.
+**Sibling finds** (the `20260830` repairs rest on their day shelf): Mystery's module-label
+guard fails open on BSD grep; portable, it finds elder labels in
+`tools/gen/chapter/fascia_metric_v0.rish`. **Pond:** `spool_cloth.rye` carries the same
+`max_name=48` and wall with no pedestal -- Hush's.
+**For CION:** `drey`'s rung marks are the retired form (%329), untouched here.
+**For the fleet loop (%387's remainder):** should a round's opening stash stop an in-flight
+pass in its own tree before moving the tree beneath it -- a loop change, so it is named.
 
-**Still open:** `glow/rune_shape.rye` keeps width custody; Mind keeps the reconnect
-stash, `%281`/`%291`, two `enclosure.conf` pins.
-**Rosters `20260831`:** `grain-hush` cold 105/103 in 63min, hot 106/100 in 47min --
-both beside Dream's own passes on four shared vCPUs. Of the six hot reds, three are the
-pay-at-commit pages the hook regenerates; `rule_twin` holds at **%7**.
-`pond_enclosure_door` reads GREEN -- `door_disagreements=1` at `user` is answered;
-gate %5 stands, untouched.
-**Named, not taken (%347):** `pond/enclosure_policy.kyri` 8,120/8,192; widening the wall
-is yours.
-**Next doors.** Dream: Kumara, then Caravan. Hush: `shelf_link_touch` LANDED as
-pre-commit **rule four** -- %383 CLOSED, a shelf row refused on the lap that writes it;
-next the lane-safe choirs (drey 17, acme_dx 11), %360's remainder. Two reds booked on the
-way: **%384** the same shape a third room over -- a stamp-shaped illustration inside a
-living pin, read by nothing until the 45-minute census, and it fired TWICE, the second time
-in the row booking it (*the dead thing must not be named even to say it was removed*);
-**%385** two pins publish a lap count nobody derives, 18 numbers repaired, 15 of 40 rows
-drifted, ten reading 0.
-Silence: the link frame is tied (`20260830.204814`) -- 554 is 12 + 14 + 528 and neither room
-imports the other. `virtio_net.rye` comments read **C+ 78**, a carded molt.
-**%374 OPEN:** the receipt-chain question stays yours -- it cost this lap a second full pass.
+**Still open:** `glow/rune_shape.rye` keeps width custody; Mind keeps the reconnect stash,
+`%281`/`%291`, two `enclosure.conf` pins.
+**Rosters `20260831`:** the cold open was REFUSED -- an orphaned pass from the dead lap
+held the lock, its verdict already fixed by the round-open stash (%387). SIGTERM released
+it through the runner's own trap; the **hot** pass carries this round's green.
+`rule_twin` holds at **%7**.
+`pond_enclosure_door` GREEN; `door_disagreements=1` at `user` is answered, gate %5 untouched.
+**Named, not taken (%347):** `pond/enclosure_policy.kyri` 8,120/8,192; the wall is yours.
+**Next doors.** Dream: Kumara, then Caravan. Hush: the **lane-safe choirs LANDED** --
+`acme_dx` and `drey` at `tier lap`, 8s together, carrying **28** guards into hearing:
+`unheard` 1,144 -> **1,116**, choirs 40 -> **37**. That closes %360's remainder in this
+lane; its 21 red guards in the Glow, STOA, SUNN and equinox lanes stay with their owners. **%386** and **%387 BOOKED**,
+their accounts in the ledger: a witness header that published three rung counts for
+sixteen legs, and a roster pass that outlived its lap and held the lock anyway.
+**%384** and **%385** folded to their shelf, laps still booked.
+Silence: the link frame is tied (`20260830.204814`) -- 554 is 12 + 14 + 528, neither room
+importing the other. `virtio_net.rye` comments read **C+ 78**, a carded molt.
+**%374 OPEN:** the receipt-chain question stays yours -- none has ever been earned here.
 ---
 ## Landed arcs
 
@@ -224,7 +222,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260831.003448` | The row opens the log it names -- %383 closed at commit time | [log](../session-logs/date/20260831/20260831-003448_the-row-opens-the-log-it-names.kyri) |
+| `20260831.022006` | A dead lap's pass held the lock; the refusal reads whose lap it runs for | [log](../session-logs/date/20260831/20260831-022006_the-pass-that-outlived-its-lap.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it.
 
