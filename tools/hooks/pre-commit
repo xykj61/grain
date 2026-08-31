@@ -104,10 +104,14 @@ refresh_page() {
   if git diff --quiet -- "$page"; then dirty=no; else dirty=yes; fi
   before=$(git hash-object "$page")
 
-  if ! "$@" >/dev/null 2>&1; then
-    echo "pre-commit: $generator is present and failed -- run" >&2
-    echo "  $*" >&2
-    echo "and read its error before committing." >&2
+  # The generator's own words ride the refusal -- a jailed hook is the one
+  # place nobody can rerun the command by hand, and two seats once stood
+  # twelve hours on an error this line used to discard (20260831).
+  gen_out=$("$@" 2>&1) && gen_ok=yes || gen_ok=no
+  if [ "$gen_ok" = no ]; then
+    echo "pre-commit: $generator is present and failed -- its own last words:" >&2
+    printf '%s\n' "$gen_out" | tail -12 >&2
+    echo "pre-commit: rerun by hand: $*" >&2
     exit 1
   fi
 

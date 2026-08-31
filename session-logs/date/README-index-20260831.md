@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260831.113648` | [The refusal carries its words](20260831/20260831-113648_the-refusal-carries-its-words.kyri) | %403 closed; selector mapped; hold released |
 | `20260831.095907` | [The same repair from two hands](20260831/20260831-095907_the-same-repair-from-two-hands.kyri) | %398 closed twice; theirs stands; %400 books the figure |
 | `20260831.095637` | [The reading that found its prose](20260831/20260831-095637_the-reading-that-found-its-prose.kyri) | %402: a notation's document is its comment block |
 | `20260831.074836` | [Two walls over one room](20260831/20260831-074836_two-walls-over-one-room.kyri) | Pond's catalog capacity takes a desk; %396 %397 %398 |
