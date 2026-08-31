@@ -126,6 +126,24 @@ assert control.out contains "moved_tree_refuses=yes" else "standing-equipment: a
 assert control.out contains "moved_tree_keeps_lines=yes" else "standing-equipment: a moved tree must still print every guard line it learned"
 assert control.out contains "red_outranks_moved=yes" else "standing-equipment: a guard red is the louder finding and keeps the verdict"
 
+# The digest reads CONTENT, not only the status letter (REDS %380). Porcelain names a path and a
+# status letter and nothing else, so a file already dirty reads the same however often its bytes
+# change. Each refusal below is proven with the file dirty BEFORE the pass opens, so only the bytes
+# can move; the welcomes keep an ordinary dirty round free, since a reading that refused every
+# staged round would be turned off within the week. Run against the elder runner this same control
+# answers no to all six refusals and yes to all four welcomes, which is what makes them load-bearing.
+assert control.out contains "porcelain_blind_to_content=yes" else "standing-equipment: the control must show the status letter standing still across a content edit"
+assert control.out contains "modified_rewrite_moves=yes" else "standing-equipment: rewriting an already-modified file under the run must move the digest"
+assert control.out contains "modified_rewrite_refuses=yes" else "standing-equipment: rewriting an already-modified file under the run must refuse under run_verdict=tree_moved"
+assert control.out contains "untracked_rewrite_moves=yes" else "standing-equipment: rewriting an already-untracked file under the run must move the digest"
+assert control.out contains "restaged_rewrite_moves=yes" else "standing-equipment: re-staging an edit under a --hot pass must move the digest"
+assert control.out contains "restaged_rewrite_refuses=yes" else "standing-equipment: re-staging an edit under a --hot pass must refuse under run_verdict=tree_moved"
+assert control.out contains "staged_modified_rewrite_moves=yes" else "standing-equipment: rewriting a staged-and-modified file under the run must move the digest"
+assert control.out contains "dirty_still_tree_reads_no=yes" else "standing-equipment: a dirty tree that stands still must read tree_moved=no"
+assert control.out contains "dirty_still_tree_passes=yes" else "standing-equipment: a dirty tree that stands still must pass"
+assert control.out contains "staged_still_tree_reads_no=yes" else "standing-equipment: a staged tree standing still under --hot must read tree_moved=no"
+assert control.out contains "staged_still_tree_passes=yes" else "standing-equipment: a staged tree standing still under --hot must pass"
+
 # The unclosed lap, both sides, on the same real repository. A reading on line one persuaded and the
 # class fired again eleven hours later (REDS %223), so the runner refuses rather than reports -- and
 # the refusal is proven against a clean cold open, which it must leave entirely alone.
@@ -250,7 +268,7 @@ assert control.out contains "no_lock_room_still_runs=yes" else "standing-equipme
 assert control.out contains "control_verdict=ok" else "standing-equipment: the control must agree with itself"
 # No total is spelled here. This line read `sixty-two behaviors` while the control ran more, the
 # same drift the header above just shed: a recited count is the one part of a green line that goes
-# false while every assertion over it still holds. The control prints its own tally.
+# false while every assertion over it still holds. Count them by reading the asserts above.
 say "RED and GREEN paths proven -- every refusal planted and then freed, and the runner driven over planted rosters in and out of a real repository"
 
 say "GREEN: standing-equipment -- the roster is a list a program reads, each row names its cadence, and running it writes down when."

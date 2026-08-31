@@ -985,3 +985,22 @@ guard crypto_vendored_parity
 path tools/cr/crypto_vendored_parity_suite.rish
 tier lap
 seated 20260830.154940
+
+# AND THE SIXTH, one lap later (REDS %360, %380's own round). The comment above says this guard
+# stays off the roster until the seed subject is Keaton's word. That word came on `20260830.190407`
+# and the living card carries it: the subject is `crashed-meteor`, spoken by the wall, by the
+# field's publisher, and by both rules, and the real publish shipped on it. What remained was a
+# tracked file nobody had swept -- `tools/fixtures/m/mechanism_wall_scan.sh` still planted the
+# retired `Grain OS -- initial public seed` as the exempt subject and `caravan: initial public seed`
+# as the borrow attempt beside it, so the fixture the witness trusts was refused by the wall it
+# tests and `WALL_EXEMPTS_SEED_ROOT` read 0. Two lines carry the settled spelling, and the borrower
+# keeps its teeth: fed `caravan: crashed-meteor` the wall still refuses, since the exemption matches
+# the whole subject rather than a suffix. GREEN on metal before this row was written, 1s alone.
+# `unheard` fell 1,144 -> 1,143 as this row landed, and came back to 1,144 in the same window as two
+# unrostered witnesses landed upstream. The ceiling stands where it was published; the reading is
+# what moved, and this row is still the last of the six our own rules demanded.
+
+guard mechanism_sentence
+path tools/m/mechanism_sentence_witness.rish
+tier lap
+seated 20260830.202400

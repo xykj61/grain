@@ -59,10 +59,10 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *Carry card for terminal - phone - waymarks. Refreshed on **remember**. Debrided to Compass Chapter `20260809.024320`; those greens live in code and counsel.*
 
-**Git nib:** `e6217826c8` -- this round's own.
+**Git nib:** `9077163e84` -- this round's own.
 
-**Now.** **The frame that holds what it seals: two layers nest, both at zero, and only
-the derived one was safe. The compiler holds the spelled one now.**
+**Now.** **The digest proving a pass measured one tree read its shape alone; a
+status letter stands still while bytes move.**
 
 **The live front** (condensed `20260830.012039`; the checkpoint holds the departing accounts,
 the day shelves every landed lap):
@@ -91,17 +91,18 @@ source to AGREEMENT, proven biting both ways. Mystery: rung drift reads 17,248 a
 17,247 after rebase.
 
 **Still open:** `glow/rune_shape.rye` keeps width custody; Mind keeps the reconnect stash,
-`%281`/`%291`, two `enclosure.conf` pins. **%360 FALLS:** five rule-demanded guards rostered,
-**18s**/lap -- `unheard` 1,153 -> **1,144**, choirs 41 -> 40.
-**%360's gate SETTLED `20260830.190407`:** `crashed-meteor` everywhere, publish shipped;
-remainder: pier clones' stale `publish-seed.sh`, your hand.
-`%359`/`%370` CLOSED; `%353`-`%355` folded.
-**Rosters `20260830`:** `grain-hush` 103/102; **124** rostered; `grain-silence` 26 of 96, zero red, gates %5/%7.
+`%281`/`%291`, two `enclosure.conf` pins. **%360's SIXTH LANDS:** its wall fixture kept
+the retired seed subject, so its witness was refused by the wall it tests: two
+lines, GREEN, rostered: **all six our rules demand run each lap.**
+**Rosters `20260830`:** `grain-hush` 104/101 hot, four closed; `rule_twin` at **%7**,
+drift **38 over 36**: three vocab rules drifted since `20260828`, both ways.
+124 rostered; silence 26/96.
 **The falsifier splits:** `env` travelled; the door half did not --
 `door_disagreements=1` at `user`, `derived=502 metal=unread`. Gate %5, named not touched.
 **Named, not taken (%347):** `pond/enclosure_policy.kyri` 8,120/8,192; widening the wall is yours.
-**Next doors.** Dream: Kumara, then Caravan. Hush: the digest red, then the lane-safe choirs
-(`drey` 17, `acme_dx` 11); the auditor still waits on gate %7.
+**Next doors.** Dream: Kumara, then Caravan. Hush: lane-safe choirs
+(`drey` 17, `acme_dx` 11), then the fold-trail loom: two shelves landed today
+with no recital line, which `reds_fold.sh` could write. %7 gates the auditor.
 Silence: the link frame is tied (`20260830.204814`) -- 554 is 12 + 14 + 528 and neither room
 imports the other. `vessel_fetch_wire.rye` stays Amphora's; `virtio_net.rye` comments read
 **C+ 78**, a carded molt.
@@ -222,7 +223,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260830.204814` | The frame that holds what it seals: link nesting tied | [log](../session-logs/date/20260830/20260830-204814_the-frame-that-holds-what-it-seals.kyri) |
+| `20260830.201648` | The digest read the shape; now it reads the content | [log](../session-logs/date/20260830/20260830-201648_the-shape-and-the-bytes.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it.
 

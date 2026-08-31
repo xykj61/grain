@@ -11,23 +11,33 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
-| `20260830.215132` | [The pedestal pins become agreements](20260830-215132_the-pedestal-pins-become-agreements.kyri) | %358 repaired both ways; WADE mark molts |
-| `20260830.213805` | [The fascia meter speaks git grep](20260830-213805_fascia-meter-speaks-git-grep.kyri) | portable door taken; parity exact at 68 |
-| `20260830.213140` | [The helper runs from the field](20260830-213140_helper-runs-from-the-field.kyri) | a lagging seat tree lacks what it has not pulled |
-| `20260830.212759` | [The re-arm printer and the honest meter](20260830-212759_fleet-rearm-printer-and-honest-meter.kyri) | fleet_rearm lands; %379 booked and folded under bound |
-| `20260830.211850` | [DirtySet sealed, fleet re-armed](20260830-211850_dirtyset-name-sealed.kyri) | the name stands on Keaton's word |
-| `20260830.211655` | [Drift, the word between](20260830-211655_drift-the-word-between.kyri) | dirty / drift / stale -- the seam's three seats |
-| `20260830.211505` | [Mind parks, Mystery healthy, name held](20260830-211505_mind-park-mystery-healthy-name-pushback.kyri) | stash-by-name cure; OutdatedSet declined |
-| `20260830.210700` | [The DirtySet name ruling](20260830-210700_dirtyset-name-ruling.kyri) | recommend keep; RepaintSet the honest alternative |
-| `20260830.210459` | [DirtySet explained, pastes reprinted](20260830-210459_dirtyset-explained-pastes-reprinted.kyri) | teaching turn; nine-seat dirty-region record |
-| `20260830.205759` | [Generated-pages debt paid, fleet triaged](20260830-205759_generated-pages-debt-fleet-triage.kyri) | fascia block reads 68; both Codex stops custody-clean |
+| `20260830.215132` | [The pedestal pins become agreements](20260830/20260830-215132_the-pedestal-pins-become-agreements.kyri) | %358 repaired both ways; WADE mark molts |
+| `20260830.213805` | [The fascia meter speaks git grep](20260830/20260830-213805_fascia-meter-speaks-git-grep.kyri) | portable door taken; parity exact at 68 |
+| `20260830.213140` | [The helper runs from the field](20260830/20260830-213140_helper-runs-from-the-field.kyri) | a lagging seat tree lacks what it has not pulled |
+| `20260830.212759` | [The re-arm printer and the honest meter](20260830/20260830-212759_fleet-rearm-printer-and-honest-meter.kyri) | fleet_rearm lands; %379 booked and folded under bound |
+| `20260830.211850` | [DirtySet sealed, fleet re-armed](20260830/20260830-211850_dirtyset-name-sealed.kyri) | the name stands on Keaton's word |
+| `20260830.211655` | [Drift, the word between](20260830/20260830-211655_drift-the-word-between.kyri) | dirty / drift / stale -- the seam's three seats |
+| `20260830.211505` | [Mind parks, Mystery healthy, name held](20260830/20260830-211505_mind-park-mystery-healthy-name-pushback.kyri) | stash-by-name cure; OutdatedSet declined |
+| `20260830.210700` | [The DirtySet name ruling](20260830/20260830-210700_dirtyset-name-ruling.kyri) | recommend keep; RepaintSet the honest alternative |
+| `20260830.210459` | [DirtySet explained, pastes reprinted](20260830/20260830-210459_dirtyset-explained-pastes-reprinted.kyri) | teaching turn; nine-seat dirty-region record |
+| `20260830.205759` | [Generated-pages debt paid, fleet triaged](20260830/20260830-205759_generated-pages-debt-fleet-triage.kyri) | fascia block reads 68; both Codex stops custody-clean |
+| `20260830.213805` | [The fascia meter speaks git grep](20260830/20260830-213805_fascia-meter-speaks-git-grep.kyri) | portable door taken; parity exact at 68 |
+| `20260830.213140` | [The helper runs from the field](20260830/20260830-213140_helper-runs-from-the-field.kyri) | a lagging seat tree lacks what it has not pulled |
+| `20260830.212759` | [The re-arm printer and the honest meter](20260830/20260830-212759_fleet-rearm-printer-and-honest-meter.kyri) | fleet_rearm lands; %380 booked and folded under bound |
+| `20260830.211850` | [DirtySet sealed, fleet re-armed](20260830/20260830-211850_dirtyset-name-sealed.kyri) | the name stands on Keaton's word |
+| `20260830.211655` | [Drift, the word between](20260830/20260830-211655_drift-the-word-between.kyri) | dirty / drift / stale -- the seam's three seats |
+| `20260830.211505` | [Mind parks, Mystery healthy, name held](20260830/20260830-211505_mind-park-mystery-healthy-name-pushback.kyri) | stash-by-name cure; OutdatedSet declined |
+| `20260830.210700` | [The DirtySet name ruling](20260830/20260830-210700_dirtyset-name-ruling.kyri) | recommend keep; RepaintSet the honest alternative |
+| `20260830.210459` | [DirtySet explained, pastes reprinted](20260830/20260830-210459_dirtyset-explained-pastes-reprinted.kyri) | teaching turn; nine-seat dirty-region record |
+| `20260830.205759` | [Generated-pages debt paid, fleet triaged](20260830/20260830-205759_generated-pages-debt-fleet-triage.kyri) | fascia block reads 68; both Codex stops custody-clean |
+| `20260830.205759` | [Generated-pages debt paid, fleet triaged](20260830/20260830-205759_generated-pages-debt-fleet-triage.kyri) | fascia block reads 68; both Codex stops custody-clean |
 | `20260830.165037` | [The destination owns its constant](20260830/20260830-165037_the-destination-owns-its-constant.kyri) | Caravan prices `answered_by` at 34 openings; destination-owned constants cost zero |
 | `20260830.204814` | [The frame that holds what it seals](20260830/20260830-204814_the-frame-that-holds-what-it-seals.kyri) | two nesting layers at zero; only the derived one was safe |
 | `20260830.200925` | [The post on the line](20260830/20260830-200925_the-post-on-the-line.kyri) | carriage tied in three families; the bead post stood at zero slack |
+| `20260830.201648` | [the shape and the bytes](20260830/20260830-201648_the-shape-and-the-bytes.kyri) | the roster digest reads content; %380 booked, %360's sixth rostered |
 | `20260830.193650` | [The unheard sweep -- census 30, sidecar rides](20260830/20260830-193650_unheard-sweep-census-30-sidecar.kyri) | Sound closes %372/%373; concurrency witness GREEN |
 | `20260830.192524` | [a red costs the receipt](20260830/20260830-192524_a-red-costs-the-receipt.kyri) | a red close names the receipt it withheld; a gate is not a row |
-| `20260830.204735` | [The six-hundred-dollar month, read](20260830-204735_value-of-the-credits-reading.kyri) | underdriven rather than wasted; four doors named |
-| `20260830.193650` | [The unheard sweep -- census 30, sidecar rides](20260830-193650_unheard-sweep-census-30-sidecar.kyri) | Sound closes %372/%373; concurrency witness GREEN |
+| `20260830.204735` | [The six-hundred-dollar month, read](20260830/20260830-204735_value-of-the-credits-reading.kyri) | underdriven rather than wasted; four doors named |
 | `20260830.190807` | [no python on the path](20260830/20260830-190807_no-python-on-the-path.kyri) | the circled cut lands; the seam restored; three stops answered |
 | `20260830.184835` | [three words, three doors](20260830/20260830-184835_three-words-three-doors.kyri) | the spine heals gaplessly at %365-369+%370; windows rule; seed prose |
 | `20260830.184215` | [the batons the day left](20260830/20260830-184215_the-batons-the-day-left.kyri) | a spine collision, a lane question, a seed spelling -- all at the word |

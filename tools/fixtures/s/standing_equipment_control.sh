@@ -278,6 +278,92 @@ out=$( ( cd "$gitpen" && STANDING_ROSTER=quiet.kyri STANDING_CARD=run-card.kyri 
         sh "$runner" 2>/dev/null ) || true )
 case "$out" in *"run_verdict=guard_red"*) echo "red_outranks_moved=yes" ;; *) echo "red_outranks_moved=no" ;; esac
 
+
+# --- the digest reads content, not only the status letter, both sides (REDS %380) ---------
+# `git status --porcelain` prints a status letter and a path and nothing else, so a file already
+# carrying `M` reads `M path` however often its bytes change -- and so do `??`, `MM`, and a staged
+# `M ` re-staged. The digest above therefore stood still while a pass rewrote a file it had already
+# marked, and answered `tree_moved=no` over a tree that had moved. Four dirty shapes are proven
+# here from the side that bites, each with the file dirty BEFORE the pass opens so that its status
+# letter cannot move and only its bytes can. The control first shows the elder reading standing
+# still across exactly such an edit, so the new one is known to be doing work the old could not.
+# Two green sides follow, cold and hot: a dirty tree that stands still must still read
+# `tree_moved=no`, or the repair would refuse every ordinary round instead of the one it is for.
+# This pen is its own repository so the sections above and below keep the tree state they expect.
+digestpen="$pen/digestpen"
+mkdir -p "$digestpen/rishi/bin"
+( cd "$digestpen" && git init -q . && git config user.email a@b.c && git config user.name t \
+  && git config commit.gpgsign false && echo one > kept.txt && git add kept.txt \
+  && git commit -qm "seed" ) >/dev/null 2>&1
+cat > "$digestpen/quiet.kyri" <<'EOF'
+format standing-equipment-v1
+guard alpha
+path guard.sh
+tier lap
+seated 20260830.000000
+EOF
+: > "$digestpen/guard.sh"
+
+run_digestpen() {
+  ( cd "$digestpen" && STANDING_ROSTER=quiet.kyri STANDING_CARD=run-card.kyri \
+      sh "$runner" "$@" 2>/dev/null ) || true
+}
+# The stub IS the mid-run edit: whatever it writes, it writes between the open digest and the close.
+digest_stub() {
+  { printf '#!/bin/sh\n'; printf '%s\n' "$1"; printf 'exit 0\n'; } > "$digestpen/rishi/bin/rishi"
+  chmod +x "$digestpen/rishi/bin/rishi"
+}
+
+# The elder reading, shown blind on the very edit the new one must catch.
+( cd "$digestpen" && printf 'two\n' > kept.txt )
+before_status=$( cd "$digestpen" && git status --porcelain )
+( cd "$digestpen" && printf 'three\n' > kept.txt )
+after_status=$( cd "$digestpen" && git status --porcelain )
+if [ "$before_status" = "$after_status" ]; then
+  echo "porcelain_blind_to_content=yes"
+else
+  echo "porcelain_blind_to_content=no"
+fi
+
+# 1. A tracked file already unstaged-modified, rewritten under the run. Nothing is staged, so the
+#    cold pass opens rather than refusing, and the only thing that changes is the file's bytes.
+digest_stub "printf 'four\n' > kept.txt"
+out=$(run_digestpen)
+case "$out" in *"tree_moved=yes"*) echo "modified_rewrite_moves=yes" ;; *) echo "modified_rewrite_moves=no" ;; esac
+case "$out" in *"run_verdict=tree_moved"*) echo "modified_rewrite_refuses=yes" ;; *) echo "modified_rewrite_refuses=no" ;; esac
+
+# 2. An untracked file, rewritten under the run. `??` is as fixed a status letter as `M`.
+( cd "$digestpen" && git checkout -q -- kept.txt && printf 'u1\n' > loose.txt )
+digest_stub "printf 'u2\n' > loose.txt"
+out=$(run_digestpen)
+case "$out" in *"tree_moved=yes"*) echo "untracked_rewrite_moves=yes" ;; *) echo "untracked_rewrite_moves=no" ;; esac
+
+# 3. A staged file re-staged under the run -- the sharpest shape, because `--hot` is exactly the
+#    pass that runs over a round's own staged paths, and re-staging an edit is what a round does.
+( cd "$digestpen" && rm -f loose.txt && printf 's1\n' > kept.txt && git add kept.txt )
+digest_stub "printf 's2\n' > kept.txt; git add kept.txt"
+out=$(run_digestpen --hot)
+case "$out" in *"tree_moved=yes"*) echo "restaged_rewrite_moves=yes" ;; *) echo "restaged_rewrite_moves=no" ;; esac
+case "$out" in *"run_verdict=tree_moved"*) echo "restaged_rewrite_refuses=yes" ;; *) echo "restaged_rewrite_refuses=no" ;; esac
+
+# 4. A file both staged and modified, rewritten again under the run: `MM` before and `MM` after.
+( cd "$digestpen" && printf 'm1\n' > kept.txt && git add kept.txt && printf 'm2\n' > kept.txt )
+digest_stub "printf 'm3\n' > kept.txt"
+out=$(run_digestpen --hot)
+case "$out" in *"tree_moved=yes"*) echo "staged_modified_rewrite_moves=yes" ;; *) echo "staged_modified_rewrite_moves=no" ;; esac
+
+# The green sides. A tree can be dirty for a whole pass and move not one byte, which is what an
+# ordinary round looks like from here, and the content reading must leave it entirely alone.
+digest_stub ":"
+( cd "$digestpen" && git reset -q && git checkout -q -- kept.txt && printf 'still\n' > kept.txt )
+out=$(run_digestpen)
+case "$out" in *"tree_moved=no"*) echo "dirty_still_tree_reads_no=yes" ;; *) echo "dirty_still_tree_reads_no=no" ;; esac
+case "$out" in *"run_verdict=ok"*) echo "dirty_still_tree_passes=yes" ;; *) echo "dirty_still_tree_passes=no" ;; esac
+
+( cd "$digestpen" && git add kept.txt )
+out=$(run_digestpen --hot)
+case "$out" in *"tree_moved=no"*) echo "staged_still_tree_reads_no=yes" ;; *) echo "staged_still_tree_reads_no=no" ;; esac
+case "$out" in *"run_verdict=ok"*) echo "staged_still_tree_passes=yes" ;; *) echo "staged_still_tree_passes=no" ;; esac
 # --- the unclosed lap, proven from both sides on the same real repository -----------------
 # A full-roster pass opening on a dirty index is a lap that ended at `git add` (REDS %188, %220,
 # %223). The refusal has to be shown against the case it must NOT bite -- a clean cold open -- or a
