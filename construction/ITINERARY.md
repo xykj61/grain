@@ -51,8 +51,8 @@
 **Now.** **A free pass one reading earns by measurement is a free pass its twin has already argued for.**
 
 **The live front** (condensed `20260831.023122`; the day shelves hold every landed lap):
-- **Tri-OS** BOOKED for Dream: LOCA parity via `brushstroke/wayland_seed.rye`, pins in
-  `surface_reference.rye`. AppKit roles and the deployment floor are Keaton's gates.
+- **Tri-OS:** LOCA pins pass and reject tampering. Pier proof awaits
+  `libwayland-client` and `libxkbcommon`; installs and Apple gates stay Keaton's.
 - **CION Tier C** RULED quality-first (`20260830.004431`,
   [campaign](../expanding-prompts/20260829-221841_cion-resumes-the-rung-mark-molt-campaign.md)):
   Mystery raises `lotus/LADDER.md` (D/62) to B.
@@ -75,6 +75,7 @@ reads one of `max_name`'s two call sites (`parse_manifest` reads it too, over th
 `example` line lands on `placard_wrong` one reading earlier. **Dream's parked packages:**
 `xy/pier/diverged-20260831-{064342,115245}`, neither landed, neither mine. **CION:** `drey`'s rung marks are the retired form (%329). **Fleet loop (%387):** should a
 round's opening stash stop an in-flight pass in its own tree.
+**MAP QA:** C/72; 70 paths resolve; index classifier misses.
 
 **Still open:** `glow/rune_shape.rye` keeps width custody; Mind keeps the reconnect stash,
 `%281`/`%291`, two `enclosure.conf` pins. **Named (%347):** `pond/enclosure_policy.kyri`
