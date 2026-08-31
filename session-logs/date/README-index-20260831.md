@@ -13,6 +13,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 |---|---|---|
 | `20260831.144433` | [Sundial's row catches its witness](20260831/20260831-144433_sundials-row-catches-its-witness.kyri) | sourced reading GREEN; stale constellation row closes |
 | `20260831.122834` | [The seven rows find their shelf](20260831/20260831-122834_the-seven-rows-find-their-shelf.kyri) | seven duplicate bare links leave the closed day index |
+| `20260831.133122` | [The floor both readings needed](20260831/20260831-133122_the-floor-both-readings-needed.kyri) | %407 closed; 137 readings freed; a peer took %405 |
 | `20260831.122010` | [The grammar answers for the setting](20260831/20260831-122010_the-grammar-answers-for-the-setting.kyri) | %404 closed; 8 reds to 3; a shelf's seven rows |
 | `20260831.114656` | [The check wall earns its keep](20260831/20260831-114656_the-check-wall-earns-its-keep.kyri) | selector map withdrawn at the seated assert |
 | `20260831.113648` | [The refusal carries its words](20260831/20260831-113648_the-refusal-carries-its-words.kyri) | %404 closed; selector mapped; hold released |
