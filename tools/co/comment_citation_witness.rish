@@ -29,11 +29,14 @@
 # citations, and repairing them would have written through the links into six correct bodies and
 # broken all six at their real homes. git lists the body alone, so each is read exactly once.
 #
-# WHAT IS PROVEN, on metal. Seventeen behaviors on a real git repository in a throwaway pen -- a
+# WHAT IS PROVEN, on metal. Eighteen behaviors on a real git repository in a throwaway pen -- a
 # broken citation bitten, named, and counted; each of the five blessed shapes above left free; a
 # symlinked door adding nothing and a body's break reported once against the body rather than a
-# door; prose left to its own guard; and the card proven load-bearing, since losing it makes the
-# scan refuse rather than report zero.
+# door; prose left to its own guard; the card proven load-bearing, since losing it makes the scan
+# refuse rather than report zero; a dated log left alone with that skip counted, and bitten again
+# once the skip's own line is removed in the pen; and the cost prefilter proven to name only
+# extensions the card independently calls prose, which is the invariant the whole skip rests on
+# and the one this guard's own drift broke.
 #
 # WHAT IS NOT CHECKED. Whether the cited document still SAYS what the comment claims. That is
 # .claude/rules/docs-implementation-sync.md's job, and only a reader can do it.
@@ -75,7 +78,8 @@ assert control.out contains "card_load_bearing=yes" else "comment-citation: the 
 assert control.out contains "dated_testimony_left_alone=yes" else "comment-citation: a dated session log is prose, and prose belongs to another guard"
 assert control.out contains "prose_skip_counted=yes" else "comment-citation: the scope a guard read belongs beside its verdict"
 assert control.out contains "log_bitten_without_skip=yes" else "comment-citation: removing the prose skip must bite, or the skip carries nothing"
+assert control.out contains "prefilter_matches_card_prose=yes" else "comment-citation: every extension the cost prefilter drops must be one the card independently calls prose, or the two lists drift again"
 assert control.out contains "control_verdict=ok" else "comment-citation: the control must agree with itself"
-say "seventeen behaviors proven on a real git repository, the refusal shown as hard as the welcome"
+say "eighteen behaviors proven on a real git repository, the refusal shown as hard as the welcome"
 
 say "GREEN: comment-citation -- every path a program cites in a comment resolves."

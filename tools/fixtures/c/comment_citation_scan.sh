@@ -30,6 +30,14 @@
 # The last of those is the one that would have done damage. Six symlinked doors read as eleven
 # broken citations, and repairing them would have written through the links into six correct bodies.
 #
+# WHAT THIS LEAVES OPEN, measured rather than assumed. tools/fixtures/t/tracked_link_scan.sh reads
+# `.md` alone, so a citation written inside a LIVING `.kyri` or `.bron` is read by neither guard.
+# Measured 20260831: this tree tracks 4,080 such files, 13 of them carry `](`, and every one of the
+# 13 is dated testimony -- so the gap holds zero living files today. Teaching the link guard these
+# two notations is the obvious close and is NOT the right one alone: pointed at the same 13 dated
+# logs it would report the same ten fields, which is this guard's own finding in a second house.
+# Whatever closes it reads living files only, or carries the card's exclusions with it.
+#
 # WHAT IS GATED. Zero. This is a small, closed population -- 4 broken across 9,101 files when it was
 # first measured -- and every one of them is a promise a reader can already follow. A ratchet would
 # be the wrong shape here, because there is nothing to migrate.
