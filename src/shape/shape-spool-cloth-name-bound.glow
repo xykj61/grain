@@ -1,0 +1,54 @@
+::  name       spool cloth name bound
+::  shape      bytes -- int (@u32), bound 48 -- a length standing at two edges, with an alphabet beside it
+::  invariant  a named large artifact fits forty-eight bytes and is one whole manifest field
+::  example    48
+::  readers    Spool Cloth - Spool Keyed - Glow Tend - shape museum
+::  nib        spool-cloth-v1 at 20260812.192400
+::
+::  The spool's own name bound, and the sibling half of a wall already standing next door. It names
+::  max_name from pond/apps/spool_cloth.rye, which bounds how long a large artifact's human name may
+::  be. Tablecloth binds a name to one resin's bytes; this module binds a name to a whole spool, so
+::  a document too large for one resin still arrives under a name. The two are housemates rather
+::  than neighbours -- brushstroke/tablecloth.rye is a symlink into pond/apps/ -- and they took the
+::  same wall in the same shape on the same day.
+::
+::  Why this desk shows a number AND a list. The Brix-facing manifest writes one line per artifact,
+::  `large <name> <whole-hex> <len> <resins>`, and reads it back by splitting on newline and then on
+::  space, so a name carrying either byte renders a line this module's own parser refuses. The
+::  length bound was never the thing preventing that: the shortest lawful large line is 76 bytes --
+::  `large` and four separators is 9, the whole-digest hex is 64, and a length and a resin count are
+::  one digit each -- so at 48 no name is long enough to carry a forged one, and the grammar is safe
+::  by ARITHMETIC rather than by a rule. Raise the bound for longer human names and the forgery
+::  comes back in reach, with nothing in the number's own comment to warn whoever raises it. REDS
+::  %354 cost a round to learn exactly that next door, so the lesson is written on both desks.
+::
+::  So the wall is written down here, and what it holds is an ALPHABET rather than a length:
+::
+::  the bytes the manifest grammar reserves, as name_is_one_field refuses them:
+::    space - newline
+::  that is the whole alphabet the wall removes.
+::
+::  Why this desk shows two edges where Tablecloth's shows one. The number is read twice in the
+::  Rye, at the two places a name enters: store_large refuses a long name with NameTooLong, and
+::  parse_manifest refuses a long field with BadManifest. The second is not a courtesy. A parsed
+::  entry's name lands in a fixed [max_name]u8 field, so a hand-authored manifest carrying a
+::  sixty-byte name would be copied past the end of that array -- a refusal downgraded to a panic.
+::  A pedestal claiming the bound is wired while reading one of its two call sites would say
+::  something true about half the module.
+::
+::  Four facts, and each can fail while the other three agree. The number equals max_name. The
+::  bytes listed equal the bytes name_is_one_field actually refuses -- add a third to the wall and
+::  this desk goes quiet about it until it is written here. store_large still consults that wall,
+::  so the invariant above stays wired rather than merely written. And parse_manifest still reads
+::  the same bound, so the manifest edge stays closed where the array ends.
+::
+::  The number here is a length and the list is an alphabet -- two facts, neither derivable from
+::  the other -- so each is read against the Rye rather than against its neighbor. This desk has no
+::  self-agreement reading of the kind an error-paths desk carries, whose number IS its list's size.
+::
+::  What this desk does not reach. Whether forty-eight is the right length, which is Pond's own
+::  design question. And max_large_artifacts, guaranteed_full_artifacts, and the eight ClothError
+::  paths, which are this module's other bounds and want their own desks.
++$  spool-cloth-name-bound-shape
+  $:  bytes=@u32
+  ==

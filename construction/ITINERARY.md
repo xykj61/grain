@@ -46,10 +46,10 @@
 
 ### Now -- the live front
 
-**Git nib:** `1a972e63e5` -- this round's own.
+**Git nib:** `b668bef3d8` -- this round's own.
 
-**Now.** **One law puts two prose settings inside a source file and the meter grades it at one,
-so a module reads C, C+ or A by the word a hand types.**
+**Now.** **A bound read at two call sites takes a desk, and the second site
+holds a copy inside the array rather than a policy.**
 
 **The live front** (condensed `20260831.023122`; the day shelves hold every landed lap):
 - **Tri-OS** BOOKED for Dream: LOCA parity via `brushstroke/wayland_seed.rye`, pins in
@@ -70,37 +70,37 @@ so a module reads C, C+ or A by the word a hand types.**
 clone seats `ww` (`grain-ww/grain`, gate %1) and `.git/ssh_config_jail`.
 
 **Sibling finds:** Mystery's module-label guard fails open on BSD grep; portable, it finds
-elder labels in `tools/gen/chapter/fascia_metric_v0.rish`. **Pond:** `spool_cloth.rye` carries
-the same `max_name=48` and wall with no pedestal -- Hush's. **CION:** `drey`'s rung marks are
-the retired form (%329), untouched here. **Fleet loop (%387's remainder):** should a round's
-opening stash stop an in-flight pass in its own tree before moving the tree beneath it.
+elder labels in `tools/gen/chapter/fascia_metric_v0.rish`. **Tablecloth, two, both cross-lane:**
+its name desk reads one of `max_name`'s two call sites -- `parse_manifest` reads it too, over the
+same fixed `[max_name]u8` -- and four `*_example_missing` verdicts carry no control case, because
+deleting the `example` line lands on `placard_wrong` one reading earlier. **CION:** `drey`'s rung
+marks are the retired form (%329), untouched here. **Fleet loop (%387's remainder):** should a
+round's opening stash stop an in-flight pass in its own tree before moving the tree beneath it.
 
 **Still open:** `glow/rune_shape.rye` keeps width custody; Mind keeps the reconnect stash,
 `%281`/`%291`, two `enclosure.conf` pins. **Named, not taken (%347):**
 `pond/enclosure_policy.kyri` 8,120/8,192; the wall is yours.
-**Rosters `20260831`:** the cold pass ran **28 guards, all green, in 865 s** beside Dream's
-`--hot` pass on four shared vCPUs, then SIGTERM to land the round. Cost is **median 2.5 s,
-mean 31, max 280** (`sow` 280, `living_card_ascii` 189, `dated_path` 90) -- so the elder
-`~3.5 hours` was a mean read as a rate. **%390 repaired:** the run card carries `<seconds>`
-and the scan publishes total, absent, slowest. `runs_red` fell **6 -> 1** -- five were stale
-mid-round state, re-proven green through the runner; `rule_twin` at **%7** stands alone.
-**%391:** the session-logs pin opened on its oldest shelf; the row moved to its foot.
-**Next doors.** Dream: Kumara, then Caravan. Hush: the roster records what it costs, so a lap
-sizes its own pass; `%386`/`%387` FOLDED to make room -- the pin stood at **28 bytes free**
-after Dream's two rows, so a fold is now the price of booking anything. Silence: the carded
-`virtio_net.rye` molt LANDED -- Door head, Register **65 -> 73**, device-wire GREEN on metal,
-code byte-identical; `sub-lap` kept whole for Mystery. Reach would not move and **%392** says
-why: the head reads **8.8** against Door's 9, the 501 words of `// invariant:` read **16.4**
-against a ceiling Meter leaves uncapped, and the card averages them. **%393** CLOSED --
-`operations_conformance_witness` builds into gitignored `mandate/bin/` without making it, so
-`acme_dx` is green on a bench that has built Mandate and red on a clone that has not; one
-`mkdir -p`, proven from a deleted directory, and it fell out of the reds between two hot
-passes (108 guards, **105 green**, `tree_moved=no`, over the shipped tree). Its fourth red,
-`commit_message_guard`, greps the untracked `publish-seed.sh` and cannot pass without it --
-named, not taken. **%389 fired again on this round**, against the hand that took its
-mitigation: shelf names were compared to `xy/main` and found free, and the pier had still
-spent `%390`/`%391` and folded the same two rows inside the window. The window is the round,
-not the check. `%388`/`%389` FOLDED for room.
+**Rosters `20260831`:** guard cost is **median 3 s, mean 25.7, max 840** (`caravan_suite` 840,
+`sow` 274, `reds_row_present` 208) -- four hold **55%** of a pass and 35 cost a second or less, so `~3.5 hours` and the `55 min` after it were each a mean read as a rate. BOTH halves ran
+whole here: cold **108/107 green, 2,774 s**, hot **108/107, 2,568 s**, `tree_moved=no` on each,
+guard time 2,772 of the 2,774 wall -- a pass IS its guards. `rule_twin` at **%7** is the one red.
+**%394, mine:** `pkill -f` matches every process on the HOST and three bodies here run
+`standing_equipment_run.sh` by that name -- stop a runner by pid, read from `/proc/<pid>/cwd`.
+**Next doors.** Dream: Kumara, then Caravan. Hush: `spool_cloth`'s other bounds want desks --
+`max_large_artifacts`, `guaranteed_full_artifacts`, the eight `ClothError` paths; and the shape
+room's other 37 residents have never had their nib read. Silence: the carded `virtio_net.rye` molt
+LANDED -- Door head, Register **65 -> 73**, device-wire GREEN, code byte-identical; `sub-lap` kept
+whole for Mystery. Reach would not move and **%392** says why: the head reads **8.8** against
+Door's 9, the 501 words of `// invariant:` read **16.4** against a ceiling Meter leaves uncapped,
+and the card averages them. **%393** CLOSED -- `operations_conformance_witness` builds into
+gitignored `mandate/bin/` without making it, so `acme_dx` is green on a bench that built Mandate
+and red on a clone that has not; one `mkdir -p`, proven from a deleted directory. Its fourth red,
+`commit_message_guard`, greps the untracked `publish-seed.sh` -- not taken.
+**%389 fired twice more on one day:** once against the hand that took its mitigation (shelf names
+read free on `xy/main`, the pier spending `%390`/`%391` inside the same window), and once here --
+`next_free` read 392 before my hot pass and the pier published its own `%392` and `%393` during
+it. Mine renumbered to `%394`; the stamp never moved. The window is the round, not the check.
+`%388`/`%389` FOLDED for room.
 **%374 OPEN:** the receipt-chain question stays yours -- none has ever been earned here.
 ---
 ## Landed arcs
@@ -217,6 +217,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260831.031048` | The setting a hand types | [log](../session-logs/date/20260831/20260831-031048_the-setting-a-hand-types.kyri) |
+| `20260831.045858` | The bound read at both edges -- Pond's spool cloth takes a desk, and the placard's sixth line gets read | [log](../session-logs/date/20260831/20260831-045858_the-bound-read-at-both-edges.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)
