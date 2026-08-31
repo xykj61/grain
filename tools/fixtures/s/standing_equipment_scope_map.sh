@@ -55,7 +55,7 @@ glow_vane_pair_mirrors tools/g/glow_vane_pair_mirrors_witness.rish tools/g/glow_
 image_module_roster tools/i/image_module_roster_witness.rish tools/fixtures/m/module_roster_scan.sh image/
 index_fold tools/i/index_fold_witness.rish tools/fixtures/i/index_fold_scan.sh tools/rye/session_logs_archive.rye session-logs/ counsel/ active-designing/ expanding-prompts/ waymarks/ active-development/
 index_row_bound tools/in/index_row_bound_witness.rish tools/fixtures/i/index_row_bound_scan.sh session-logs/README.md
-lattice_suite tools/l/lattice_suite_witness.rish lattice/ tools/l/lattice_lap*.rish [build]
+lattice_suite tools/l/lattice_suite_witness.rish lattice/ tools/l/lattice_*_witness.rish [build]
 log_has_a_row tools/l/log_has_a_row_witness.rish tools/fixtures/l/log_has_a_row_scan.sh session-logs/
 loop_prompt_parse tools/l/loop_prompt_parse_witness.rish tools/fixtures/l/loop_prompt_parse_scan.sh recursion-prompts/ tools/l/launch-claude-chapter.rish
 lotus_module_roster tools/l/lotus_module_roster_witness.rish tools/fixtures/m/module_roster_scan.sh lotus/

@@ -112,7 +112,7 @@
 # wire lap <N>" -> "I2 snapshot wire"), and the three Nock sections match glow_riscv's naming
 # (core - macro layer - edit primitive). The structured codes lap <N>w-4 / lap <N>b (a word char
 # after the digit) are correctly untouched, as are every kept handle (nock_lap2_witness.rish,
-# let nock_lap2, tools/lattice_lapN.rish -- no space). docs-implementation-sync checked
+# let nock_lap2, the elder lattice_lapN names, molted to lattice_<op>_witness 20260830 -- no space). docs-implementation-sync checked
 # tree-wide: no driver asserts contains on parity_ch01's say output (parity.rish runs it and
 # reads .ok / the cost log), and parity itself checks .ok only on every sub-witness (never
 # contains on a lap string) -- so relabeling its own prose breaks nothing. Applied by a

@@ -82,9 +82,10 @@ the day shelves every landed lap):
 **MANY HANDS** (`20260828`): custody MANUAL, one writer per checkout. Root `SKILL.md`; every
 clone seats `ww` (`grain-ww/grain`, gate %1) and `.git/ssh_config_jail`.
 
-**Sibling finds:** Sound owns bare labels in `lattice/README.md` (the Lap ladder and its
-count-up lap files -- reference surgery, its own round); Mystery's module-label guard fails
-open on BSD grep, portable it finds elder labels in `tools/gen/chapter/fascia_metric_v0.rish`.
+**Sibling finds:** lattice labels REPAIRED `20260830`: forty lap files molted to
+`lattice_<op>_witness.rish`, every citer repointed, suite GREEN; the VOLS ledger rows are the
+campaign's bookkeeping. Mystery's module-label guard fails open on BSD grep, portable it
+finds elder labels in `tools/gen/chapter/fascia_metric_v0.rish`.
 **For Pond:** `spool_cloth.rye` carries the same `max_name=48` and wall with no pedestal --
 Hush's. **%358 REPAIRED `20260830`:** the three double-pinned pedestal legs hold placard and
 source to AGREEMENT, proven biting both ways. Mystery: rung drift reads 17,248 against
