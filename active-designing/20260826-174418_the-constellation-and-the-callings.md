@@ -72,7 +72,7 @@ survey; the moves are proposals, one round each.
 | Scribe | wrap-named | LANDED `20260831.072403`: a planted baton-v1 crosses the bounded disk seam; wrong-format, absent, and oversize documents refuse by name | JARL word-gated beyond local |
 | Settlement | replayable-fold | fold one spawn-adopt-transfer sequence twice byte-identical, a reorder shown divergent; register it | chain-adjacent |
 | Spellbook | choir-and-bijection | verify the eighteen spell homes resolve; count the emerging as a ratchet; grade at Door | new spells are Keaton's word |
-| Sundial | gauge-register | emit carries unit, date, and source per reading; a sourceless reading refused by name | none |
+| Sundial | gauge-register | LANDED `20260829.053426`: emit carries unit, date, and source; `SourcelessReading` refuses the empty source | none |
 | Vault | bound-in-shape | named refusals at split's edge (t under two, t over n, n over max), proven both sides on the fake key | hard keys gate |
 | Tally | choir-and-bijection | LANDED `20260830.102631`: the module-to-witness roster reached zero; a newborn refuses unregistered | none |
 | Lattice | bound-in-shape | rerun the forty witnesses; refresh the stale parity head in the same commit | none |
