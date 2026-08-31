@@ -1,0 +1,11 @@
+# lattice_maximum_witness.rish -- the Lattice maximum operation, proven on metal (landed `20260713.211127`).
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lattice/bin/lattice"
+let build = run ["sh" "-c" "mkdir -p lattice/bin && env RYE_ZIG=${zig} rye/bin/rye build lattice/lattice.rye -femit-bin=${bin}"]
+assert build.ok else "Lattice build failed"
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "Lattice selftest exited non-zero"
+assert selftest.out contains "GREEN" else "Lattice selftest not GREEN"
+assert selftest.out contains "maximum 2x2" else "Lattice missing maximum welcome"
+assert selftest.out contains "maximum shape mismatch" else "Lattice missing maximum unwelcome"
+say "GREEN: Lattice elementwise maximum with shape assert."

@@ -1,0 +1,11 @@
+# lattice_softmax_witness.rish -- the Lattice softmax operation, proven on metal (landed `20260713.211127`).
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lattice/bin/lattice"
+let build = run ["sh" "-c" "mkdir -p lattice/bin && env RYE_ZIG=${zig} rye/bin/rye build lattice/lattice.rye -femit-bin=${bin}"]
+assert build.ok else "Lattice build failed"
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "Lattice selftest exited non-zero"
+assert selftest.out contains "GREEN" else "Lattice selftest not GREEN"
+assert selftest.out contains "softmax 1x4" else "Lattice missing softmax welcome"
+assert selftest.out contains "softmax shape mismatch" else "Lattice missing softmax unwelcome"
+say "GREEN: Lattice row-wise softmax with shape assert."

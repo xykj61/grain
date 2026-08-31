@@ -1,0 +1,11 @@
+# lattice_leaky_relu_witness.rish -- the Lattice leaky_relu operation, proven on metal (landed `20260713.211127`).
+let zig = "vendor/zig-toolchain/zig"
+let bin = "lattice/bin/lattice"
+let build = run ["sh" "-c" "mkdir -p lattice/bin && env RYE_ZIG=${zig} rye/bin/rye build lattice/lattice.rye -femit-bin=${bin}"]
+assert build.ok else "Lattice build failed"
+let selftest = run ["sh" "-c" "${bin} selftest 2>&1"]
+assert selftest.ok else "Lattice selftest exited non-zero"
+assert selftest.out contains "GREEN" else "Lattice selftest not GREEN"
+assert selftest.out contains "leaky_relu 2x2" else "Lattice missing leaky_relu welcome"
+assert selftest.out contains "leaky_relu shape mismatch" else "Lattice missing leaky_relu unwelcome"
+say "GREEN: Lattice elementwise leaky ReLU with shape assert."

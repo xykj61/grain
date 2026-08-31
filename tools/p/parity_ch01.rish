@@ -552,8 +552,8 @@ assert sight_view.ok else "Linengrow sight view witness failed"
 say "GREEN: Linengrow sight view witness passed."
 
 say "witness suite: Lattice f32 matmul…"
-let lattice_lap1 = run ["sh" "tools/p/parity_time_one.sh" "lattice_lap1" "--" "rishi/bin/rishi" "run" "tools/l/lattice_lap1.rish"]
-assert lattice_lap1.ok else "Lattice f32 matmul witness failed"
+let lattice_matmul_w = run ["sh" "tools/p/parity_time_one.sh" "lattice_matmul" "--" "rishi/bin/rishi" "run" "tools/l/lattice_matmul_witness.rish"]
+assert lattice_matmul_w.ok else "Lattice f32 matmul witness failed"
 say "GREEN: Lattice f32 matmul witness passed."
 
 say "witness suite: Scribble markdown blocks…"
@@ -602,23 +602,23 @@ assert ember_query.ok else "Ember corpus query filter witness failed"
 say "GREEN: Ember corpus query filter witness passed."
 
 say "witness suite: Lattice elementwise add…"
-let lattice_lap2 = run ["sh" "tools/p/parity_time_one.sh" "lattice_lap2" "--" "rishi/bin/rishi" "run" "tools/l/lattice_lap2.rish"]
-assert lattice_lap2.ok else "Lattice elementwise add witness failed"
+let lattice_add_w = run ["sh" "tools/p/parity_time_one.sh" "lattice_add" "--" "rishi/bin/rishi" "run" "tools/l/lattice_add_witness.rish"]
+assert lattice_add_w.ok else "Lattice elementwise add witness failed"
 say "GREEN: Lattice elementwise add witness passed."
 
 say "witness suite: Lattice reshape…"
-let lattice_lap3 = run ["sh" "tools/p/parity_time_one.sh" "lattice_lap3" "--" "rishi/bin/rishi" "run" "tools/l/lattice_lap3.rish"]
-assert lattice_lap3.ok else "Lattice reshape witness failed"
+let lattice_reshape_w = run ["sh" "tools/p/parity_time_one.sh" "lattice_reshape" "--" "rishi/bin/rishi" "run" "tools/l/lattice_reshape_witness.rish"]
+assert lattice_reshape_w.ok else "Lattice reshape witness failed"
 say "GREEN: Lattice reshape witness passed."
 
 say "witness suite: Lattice reduce_sum…"
-let lattice_lap4 = run ["sh" "tools/p/parity_time_one.sh" "lattice_lap4" "--" "rishi/bin/rishi" "run" "tools/l/lattice_lap4.rish"]
-assert lattice_lap4.ok else "Lattice reduce_sum witness failed"
+let lattice_reduce_sum_w = run ["sh" "tools/p/parity_time_one.sh" "lattice_reduce_sum" "--" "rishi/bin/rishi" "run" "tools/l/lattice_reduce_sum_witness.rish"]
+assert lattice_reduce_sum_w.ok else "Lattice reduce_sum witness failed"
 say "GREEN: Lattice reduce_sum witness passed."
 
 say "witness suite: Lattice scale…"
-let lattice_lap5 = run ["sh" "tools/p/parity_time_one.sh" "lattice_lap5" "--" "rishi/bin/rishi" "run" "tools/l/lattice_lap5.rish"]
-assert lattice_lap5.ok else "Lattice scale witness failed"
+let lattice_scale_w = run ["sh" "tools/p/parity_time_one.sh" "lattice_scale" "--" "rishi/bin/rishi" "run" "tools/l/lattice_scale_witness.rish"]
+assert lattice_scale_w.ok else "Lattice scale witness failed"
 say "GREEN: Lattice scale witness passed."
 
 say "witness suite: Inference assist view (Skate fold)…"
@@ -857,8 +857,8 @@ assert exception_view.ok else "Dimeroll exception view witness failed"
 say "GREEN: Dimeroll exception view witness passed."
 
 say "witness suite: Lattice transpose…"
-let lattice_lap6 = run ["sh" "tools/p/parity_time_one.sh" "lattice_lap6" "--" "rishi/bin/rishi" "run" "tools/l/lattice_lap6.rish"]
-assert lattice_lap6.ok else "Lattice transpose witness failed"
+let lattice_transpose_w = run ["sh" "tools/p/parity_time_one.sh" "lattice_transpose" "--" "rishi/bin/rishi" "run" "tools/l/lattice_transpose_witness.rish"]
+assert lattice_transpose_w.ok else "Lattice transpose witness failed"
 say "GREEN: Lattice transpose witness passed."
 
 say "witness suite: Ember corpus rish view (kind rish → Skate)…"
@@ -877,8 +877,8 @@ assert pnl_view.ok else "Dimeroll P&L view witness failed"
 say "GREEN: Dimeroll P&L view witness passed."
 
 say "witness suite: Lattice elementwise mul…"
-let lattice_lap7 = run ["sh" "tools/p/parity_time_one.sh" "lattice_lap7" "--" "rishi/bin/rishi" "run" "tools/l/lattice_lap7.rish"]
-assert lattice_lap7.ok else "Lattice elementwise mul witness failed"
+let lattice_mul_w = run ["sh" "tools/p/parity_time_one.sh" "lattice_mul" "--" "rishi/bin/rishi" "run" "tools/l/lattice_mul_witness.rish"]
+assert lattice_mul_w.ok else "Lattice elementwise mul witness failed"
 say "GREEN: Lattice elementwise mul witness passed."
 
 say "witness suite: Scribble paragraphs view (prose → Skate)…"
@@ -897,8 +897,8 @@ assert lantern_lap4.ok else "Lantern top_p witness failed"
 say "GREEN: Lantern top_p witness passed."
 
 say "witness suite: Lattice fill…"
-let lattice_lap8 = run ["sh" "tools/p/parity_time_one.sh" "lattice_lap8" "--" "rishi/bin/rishi" "run" "tools/l/lattice_lap8.rish"]
-assert lattice_lap8.ok else "Lattice fill witness failed"
+let lattice_fill_w = run ["sh" "tools/p/parity_time_one.sh" "lattice_fill" "--" "rishi/bin/rishi" "run" "tools/l/lattice_fill_witness.rish"]
+assert lattice_fill_w.ok else "Lattice fill witness failed"
 say "GREEN: Lattice fill witness passed."
 
 say "witness suite: Dimeroll TB view (trial balance → Skate)…"
@@ -917,8 +917,8 @@ assert lantern_lap5.ok else "Lantern err_stop witness failed"
 say "GREEN: Lantern err_stop witness passed."
 
 say "witness suite: Lattice copy…"
-let lattice_lap9 = run ["sh" "tools/p/parity_time_one.sh" "lattice_lap9" "--" "rishi/bin/rishi" "run" "tools/l/lattice_lap9.rish"]
-assert lattice_lap9.ok else "Lattice copy witness failed"
+let lattice_copy_w = run ["sh" "tools/p/parity_time_one.sh" "lattice_copy" "--" "rishi/bin/rishi" "run" "tools/l/lattice_copy_witness.rish"]
+assert lattice_copy_w.ok else "Lattice copy witness failed"
 say "GREEN: Lattice copy witness passed."
 
 say "witness suite: Ember corpus rye prefix view (rye + pond/ → Skate)…"
@@ -937,8 +937,8 @@ assert lantern_lap6.ok else "Lantern stop_sequence witness failed"
 say "GREEN: Lantern stop_sequence witness passed."
 
 say "witness suite: Lattice sub…"
-let lattice_lap10 = run ["sh" "tools/p/parity_time_one.sh" "lattice_lap10" "--" "rishi/bin/rishi" "run" "tools/l/lattice_lap10.rish"]
-assert lattice_lap10.ok else "Lattice sub witness failed"
+let lattice_sub_w = run ["sh" "tools/p/parity_time_one.sh" "lattice_sub" "--" "rishi/bin/rishi" "run" "tools/l/lattice_sub_witness.rish"]
+assert lattice_sub_w.ok else "Lattice sub witness failed"
 say "GREEN: Lattice sub witness passed."
 
 say "witness suite: Dimeroll journal view (entries → Skate)…"
@@ -972,8 +972,8 @@ assert sight_view_lap2.ok else "Linengrow sight view journal on glass witness fa
 say "GREEN: Linengrow sight view journal on glass witness passed."
 
 say "witness suite: Lattice neg…"
-let lattice_lap11 = run ["sh" "tools/p/parity_time_one.sh" "lattice_lap11" "--" "rishi/bin/rishi" "run" "tools/l/lattice_lap11.rish"]
-assert lattice_lap11.ok else "Lattice neg witness failed"
+let lattice_neg_w = run ["sh" "tools/p/parity_time_one.sh" "lattice_neg" "--" "rishi/bin/rishi" "run" "tools/l/lattice_neg_witness.rish"]
+assert lattice_neg_w.ok else "Lattice neg witness failed"
 say "GREEN: Lattice neg witness passed."
 
 say "witness suite: Dimeroll chart view (accounts → Skate)…"
@@ -992,8 +992,8 @@ assert lantern_lap8.ok else "Lantern prompt pin witness failed"
 say "GREEN: Lantern prompt pin witness passed."
 
 say "witness suite: Lattice div…"
-let lattice_lap12 = run ["sh" "tools/p/parity_time_one.sh" "lattice_lap12" "--" "rishi/bin/rishi" "run" "tools/l/lattice_lap12.rish"]
-assert lattice_lap12.ok else "Lattice div witness failed"
+let lattice_div_w = run ["sh" "tools/p/parity_time_one.sh" "lattice_div" "--" "rishi/bin/rishi" "run" "tools/l/lattice_div_witness.rish"]
+assert lattice_div_w.ok else "Lattice div witness failed"
 say "GREEN: Lattice div witness passed."
 
 say "witness suite: Scribble rye snippets view (rye fences → Skate)…"
@@ -1012,8 +1012,8 @@ assert lantern_lap9.ok else "Lantern max_tokens pin witness failed"
 say "GREEN: Lantern max_tokens pin witness passed."
 
 say "witness suite: Lattice reduce_mean…"
-let lattice_lap13 = run ["sh" "tools/p/parity_time_one.sh" "lattice_lap13" "--" "rishi/bin/rishi" "run" "tools/l/lattice_lap13.rish"]
-assert lattice_lap13.ok else "Lattice reduce_mean witness failed"
+let lattice_reduce_mean_w = run ["sh" "tools/p/parity_time_one.sh" "lattice_reduce_mean" "--" "rishi/bin/rishi" "run" "tools/l/lattice_reduce_mean_witness.rish"]
+assert lattice_reduce_mean_w.ok else "Lattice reduce_mean witness failed"
 say "GREEN: Lattice reduce_mean witness passed."
 
 say "witness suite: Scribble rish snippets view (rish fences → Skate)…"
@@ -1032,8 +1032,8 @@ assert lantern_lap10.ok else "Lantern text pin witness failed"
 say "GREEN: Lantern text pin witness passed."
 
 say "witness suite: Lattice abs…"
-let lattice_lap14 = run ["sh" "tools/p/parity_time_one.sh" "lattice_lap14" "--" "rishi/bin/rishi" "run" "tools/l/lattice_lap14.rish"]
-assert lattice_lap14.ok else "Lattice abs witness failed"
+let lattice_abs_w = run ["sh" "tools/p/parity_time_one.sh" "lattice_abs" "--" "rishi/bin/rishi" "run" "tools/l/lattice_abs_witness.rish"]
+assert lattice_abs_w.ok else "Lattice abs witness failed"
 say "GREEN: Lattice abs witness passed."
 
 say "witness suite: Neth small serial core (bounded append + fold)…"
