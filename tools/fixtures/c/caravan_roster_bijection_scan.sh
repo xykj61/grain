@@ -45,7 +45,7 @@ trap 'rm -rf "$work"' EXIT
 # two still reaches.
 find "$TOOLS" -maxdepth 2 -name 'caravan_*_witness.rish' -type f \
   | sed 's:.*/::; s:\.rish$::' \
-  | grep -v '^caravan_suite_witness$' \
+  | grep -v -E '^caravan_(suite|roster_bijection)_witness$' \
   | sort > "$work/disk"
 
 # The names the roster registers, likewise bare and sorted.

@@ -1,0 +1,17 @@
+# The fast Caravan seam: every per-rung witness on disk is registered by the full suite,
+# and every registration names a witness. The serialized full sing runs on cadence.
+
+let scan = run ["sh" "tools/fixtures/c/caravan_roster_bijection_scan.sh"]
+say scan.out
+assert scan.ok else "caravan-roster-bijection: the witness roster must agree in both directions"
+assert scan.out contains "ROSTER_OK" else "caravan-roster-bijection: the roster must name the disk exactly"
+
+let control = run ["sh" "tools/fixtures/c/caravan_roster_bijection_control.sh"]
+say control.out
+assert control.ok else "caravan-roster-bijection: the hostile control must complete"
+assert control.out contains "honest_free=yes" else "caravan-roster-bijection: an exact set must pass"
+assert control.out contains "unheard_bitten=yes" else "caravan-roster-bijection: an unheard witness must refuse"
+assert control.out contains "phantom_bitten=yes" else "caravan-roster-bijection: a phantom registration must refuse"
+assert control.out contains "control_verdict=ok cases=3" else "caravan-roster-bijection: all three cases must agree"
+
+say "GREEN caravan-roster-bijection -- the cheap seam holds both directions; the full Caravan sing remains on cadence"

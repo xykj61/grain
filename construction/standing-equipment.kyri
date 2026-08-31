@@ -21,10 +21,11 @@
 # seated. A lap reads the roster twice, cold at the open and hot after `git add`, so every choir on
 # one tier would cost most of an hour a lap. So a guard names its own clock:
 #
-# COST DECIDES THE TIER, AND SO DOES WHAT IS MOVING. `caravan_suite` costs more than `ales_suite`
-# and stands on the every-lap tier, because Caravan is the arc under active work and had just held
-# a live refusal for two laps. `ales_suite` is cheaper and stands on `cadence`, because Chapter C's
-# Lotus rungs are stable. Revisit a row's tier when its family reopens.
+# COST DECIDES THE TIER, AND SO DOES WHAT IS MOVING. `caravan_suite` measured 840 seconds on
+# 20260831 and serializes 121 witnesses over shared runtime paths. Its roster bijection is cheap
+# and stays on every lap; the full sing runs on cadence, when scoped work reaches Caravan, or when
+# a hand asks for it by name. `ales_suite` also stands on cadence because its Lotus rungs are stable.
+# Revisit a row's tier when either family reopens.
 #
 #   tier lap       every roster run. What a record naming no tier means, which is why none of the
 #                  rows below had to be edited when the field arrived.
@@ -298,7 +299,12 @@ seated 20260825.092953
 
 guard caravan_suite
 path tools/ca/caravan_suite_witness.rish
+tier cadence
 seated 20260825.092953
+
+guard caravan_roster_bijection
+path tools/ca/caravan_roster_bijection_witness.rish
+seated 20260831.071031
 
 guard crypto_suite
 path tools/cr/crypto_suite_witness.rish
