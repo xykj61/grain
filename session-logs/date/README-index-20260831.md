@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260831.155653` | [The third metal finds the host edge](20260831/20260831-155653_the-third-metal-finds-the-host-edge.kyri) | shared pins GREEN; two host libraries stop the backend build |
 | `20260831.144433` | [Sundial's row catches its witness](20260831/20260831-144433_sundials-row-catches-its-witness.kyri) | sourced reading GREEN; stale constellation row closes |
 | `20260831.122834` | [The seven rows find their shelf](20260831/20260831-122834_the-seven-rows-find-their-shelf.kyri) | seven duplicate bare links leave the closed day index |
 | `20260831.133122` | [The floor both readings needed](20260831/20260831-133122_the-floor-both-readings-needed.kyri) | %407 closed; 137 readings freed; a peer took %405 |
