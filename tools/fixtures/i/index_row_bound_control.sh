@@ -22,6 +22,9 @@ trap 'rm -rf "$pen"' EXIT INT TERM
 # run() below names.
 mkdir -p "$pen/tools/fixtures/i" "$pen/session-logs/date"
 cp "$scan_abs" "$pen/tools/fixtures/i/"
+# The pin's own planted rows carry a link, and from 20260830 a row's link must resolve, so the
+# fixture the rows point at exists beside the pin the way a real log exists beside a real row.
+: > "$pen/session-logs/f.kyri"
 
 pad() { i=0; s=""; while [ "$i" -lt "$1" ]; do s="${s}x"; i=$((i + 1)); done; printf '%s' "$s"; }
 
@@ -74,12 +77,66 @@ o=$(run)
 pin "| \`20260824-100000\` | x | $(pad 400) |"
 o=$(run); [ "$(val "$o" rows)" = 0 ] && echo "hyphen_stamp_read_past=yes" || echo "hyphen_stamp_read_past=no"
 
-# 6 -- an immutable shelf keeps every byte it wrote, however long.
+
+# --- shelf helpers, added 20260830 with the open-shelf reading (REDS %381) --------------
+# A shelf is planted by day, so a control can say which one is OPEN (the newest) and which is
+# CLOSED (any older one) rather than hoping the scan guesses the same way this tree does.
+shelf() {                     # shelf <day> <line>...
+  day=$1; shift
+  { echo "# shelf"; echo; echo "| Stamp | Log | Meaning |"; echo "|---|---|---|"
+    for l in "$@"; do echo "$l"; done; } > "$pen/session-logs/date/README-index-$day.md"
+}
+noshelf() { rm -f "$pen"/session-logs/date/README-index-*.md; }
+# A row whose link resolves, and one whose link does not, so "points" is planted from both sides.
+linkrow() { printf '| `%s` | [t](%s) | m |\n' "$1" "$2"; }
+
+mkdir -p "$pen/session-logs/date/20260830"
+: > "$pen/session-logs/date/20260830/a.kyri"
+
+# 6a -- a CLOSED shelf keeps every byte it wrote, however long, and points wherever it pointed.
 pin "$(row 20260824.100000 120)"
-{ echo "# shelf"; row 20260101.010101 900; } > "$pen/session-logs/date/README-index-20260101.md"
+shelf 20260101 "$(row 20260101.010101 900)" "$(row 20260101.010101 120)" "$(linkrow 20260101.010102 nowhere.kyri)"
+shelf 20260830 "$(linkrow 20260830.100000 20260830/a.kyri)"
 o=$(run)
-[ "$(val "$o" verdict)" = ok ] && echo "shelf_free=yes" || echo "shelf_free=no"
-[ "$(val "$o" rows)" = 1 ] && echo "shelf_uncounted=yes" || echo "shelf_uncounted=no"
+[ "$(val "$o" verdict)" = ok ] && echo "closed_shelf_free=yes" || echo "closed_shelf_free=no"
+[ "$(val "$o" rows)" = 2 ] && echo "closed_shelf_uncounted=yes" || echo "closed_shelf_uncounted=no ($(val "$o" rows))"
+[ "$(val "$o" open_shelf)" = 20260830 ] && echo "open_shelf_named=yes" || echo "open_shelf_named=no"
+
+# 6b -- the OPEN shelf is the file a lap appends to, so the bound reaches it.
+shelf 20260830 "$(row 20260830.100000 193)"
+o=$(run)
+[ "$(val "$o" verdict)" = rows_over_bound ] && echo "open_shelf_bound_bitten=yes" || echo "open_shelf_bound_bitten=no"
+[ "$(val "$o" rows_over)" = 1 ] && echo "open_shelf_bound_counted=yes" || echo "open_shelf_bound_counted=no"
+
+# 6c -- a row that points nowhere fails "an index row points", read from the page's own directory.
+shelf 20260830 "$(linkrow 20260830.100000 20260830-100000_a.kyri)"
+o=$(run)
+[ "$(val "$o" verdict)" = rows_unresolved ] && echo "unresolved_bitten=yes" || echo "unresolved_bitten=no"
+[ "$(val "$o" rows_unresolved)" = 1 ] && echo "unresolved_counted=yes" || echo "unresolved_counted=no"
+echo "$o" | grep -q '^unresolved: .* -> 20260830-100000_a.kyri' && echo "unresolved_named=yes" || echo "unresolved_named=no"
+shelf 20260830 "$(linkrow 20260830.100000 20260830/a.kyri)"
+o=$(run); [ "$(val "$o" verdict)" = ok ] && echo "resolved_free=yes" || echo "resolved_free=no"
+
+# 6d -- two rows carrying one stamp are one log wearing two rows, which is how a rebase left a
+# stale row naming REDS numbers the ledger had moved past.
+shelf 20260830 "$(linkrow 20260830.100000 20260830/a.kyri)" "$(linkrow 20260830.100000 20260830/a.kyri)"
+o=$(run)
+[ "$(val "$o" verdict)" = rows_duplicate ] && echo "duplicate_bitten=yes" || echo "duplicate_bitten=no"
+[ "$(val "$o" rows_duplicate)" = 1 ] && echo "duplicate_counted=yes" || echo "duplicate_counted=no"
+shelf 20260830 "$(linkrow 20260830.100000 20260830/a.kyri)" "$(linkrow 20260830.100001 20260830/a.kyri)"
+o=$(run); [ "$(val "$o" verdict)" = ok ] && echo "distinct_stamps_free=yes" || echo "distinct_stamps_free=no"
+
+# 6e -- a `through-` gathering names no day, so it is never mistaken for the open shelf.
+shelf through-20260721 "$(row 20260721.010101 900)"
+o=$(run)
+[ "$(val "$o" open_shelf)" = 20260830 ] && echo "through_not_open=yes" || echo "through_not_open=no ($(val "$o" open_shelf))"
+[ "$(val "$o" verdict)" = ok ] && echo "through_free=yes" || echo "through_free=no"
+
+# 6f -- a room with no shelf yet contributes nothing rather than refusing, so a fresh clone reads.
+noshelf
+o=$(run)
+[ "$(val "$o" open_shelf)" = none ] && echo "no_shelf_none=yes" || echo "no_shelf_none=no"
+[ "$(val "$o" verdict)" = ok ] && echo "no_shelf_free=yes" || echo "no_shelf_free=no"
 
 # 7 -- an absent pin refuses rather than reading zero rows and calling it clean.
 rm -f "$pen/session-logs/README.md"

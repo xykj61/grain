@@ -8,6 +8,15 @@
 #
 # Keaton chose shorter rows on `20260824`. This rung is the number that makes the choice checkable.
 #
+# WHY IT READS THE OPEN SHELF, from `20260830` (REDS %381). This rung's own sentence has always been
+# "this gates the one file a lap appends to," and `20260827.171500` moved that file. A log is now
+# born on its day's shelf and its row prepended to `<room>/date/README-index-YYYYMMDD.md`, so the
+# pin holds one row per DAY and every row a lap writes lands on the shelf. Pointed at the pin alone
+# the scan measured **rows=0** and reported `verdict=ok` for four days, while the open shelf carried
+# 87 rows for 64 logs -- six over the bound, eleven links resolving to no file, and 23 duplicate
+# stamps, four of them a rebase re-applied over a corrected row. A guard reading an empty set is
+# greener than a guard that is right, and only the count told the two apart.
+#
 # THE BOUND, derived rather than chosen. A row costs about 123 bytes before it says anything: 21 for
 # the stamp cell, roughly 97 for the title-and-filename link, 5 for the pipes. The pin's own bound is
 # 24,576 and its prose takes about 2,100, leaving roughly 22,400 for rows. At **192 bytes** -- a
@@ -15,18 +24,21 @@
 # 116 rows and a meaning gets ~69 characters, which is a clause that points rather than a paragraph
 # that restates.
 #
-# WHAT IS PROVEN, on metal.
-#   Every row of the living pin stays at or under 192 bytes. Measured after the sweep: 36 rows,
-#   longest 188, pin **7,563 bytes** -- from 291,781 before the fold and 30,224 after it.
-#   Seventeen behaviors on planted pins in a throwaway pen: the bound free at exactly 192 and bitten
-#   at exactly 193, short rows free, one long row among three found and named, the longest reported,
-#   a header row and a delimiter row and prose carrying pipes all read past, a hyphen-form stamp
-#   read past because that shape is a filename rather than a row's first cell, an immutable shelf
-#   left uncounted however long its rows, an absent pin refused rather than read as zero rows and
-#   called clean, and the bound itself readable so a control can plant against it.
+# WHAT IS PROVEN, on metal. Three readings over the living pin AND the open shelf:
+#   every row at or under 192 bytes; every row's link resolving against the page's own directory;
+#   and no two rows sharing a stamp, since a duplicate is one log wearing two rows.
+#   Thirty-one behaviors on planted pins and planted shelves in a throwaway pen: the bound free at
+#   exactly 192 and bitten at exactly 193, short rows free, one long row among three found and
+#   named, the longest reported, a header row and a delimiter row and prose carrying pipes all read
+#   past, a hyphen-form stamp read past because that shape is a filename rather than a row's first
+#   cell, a CLOSED shelf carrying all three faults left free and uncounted, the OPEN shelf bitten by
+#   each of the three readings and freed by each of their repairs, a `through-` gathering never
+#   mistaken for the open day, a room with no shelf yet reading `none` rather than refusing, an
+#   absent pin refused rather than read as zero rows and called clean, and the bound itself readable
+#   so a control can plant against it.
 #
-# WHAT PASSES FREE, by named rule. A shelf at `<room>/date/README-index-YYYYMMDD.md` is immutable
-# once written and keeps every byte (accrete-never-break). This gates the one file a lap appends to.
+# WHAT PASSES FREE, by named rule. A CLOSED shelf -- any `README-index-<day>` that is not the newest
+# -- is immutable once its day closes and keeps every byte it wrote (accrete-never-break).
 #
 # WHAT THIS DOES NOT FIX, and it is the honest half. The room bound is 256 flat files and a
 # meaning-free row still costs ~123 bytes, so 256 rows need ~31,500 -- above the pin's 24,576
@@ -45,11 +57,13 @@ say "index-row-bound: Style Gauge -- the bound comes from the pin's own arithmet
 say "index-row-bound: Lens TAME -- bound everything, and say where the number came from."
 
 let scan = run ["sh" "tools/fixtures/i/index_row_bound_scan.sh"]
-assert scan.ok else "index-row-bound: a living index row stands above the 192 bytes an index row is given"
+assert scan.ok else "index-row-bound: a living index row stands above the 192 bytes an index row is given, points nowhere, or shares its stamp"
 say scan.out
 assert scan.out contains "rows_over=0" else "index-row-bound: every living index row must point rather than restate"
+assert scan.out contains "rows_unresolved=0" else "index-row-bound: a row that points nowhere is a way in that is not one"
+assert scan.out contains "rows_duplicate=0" else "index-row-bound: two rows carrying one stamp are one log wearing two rows"
 assert scan.out contains "verdict=ok" else "index-row-bound: the scan must balance before it is believed"
-say "field GREEN -- the pin holds one day of pointers rather than one day of abstracts"
+say "field GREEN -- the pin holds one day of pointers and the open shelf holds rows that point"
 
 let control = run ["sh" "tools/fixtures/i/index_row_bound_control.sh"]
 assert control.ok else "index-row-bound: the control must complete"
@@ -66,12 +80,26 @@ assert control.out contains "longest_reported=yes" else "index-row-bound: the lo
 assert control.out contains "non_rows_read_past=yes" else "index-row-bound: a header, a delimiter, and prose with pipes are not rows"
 assert control.out contains "non_rows_free=yes" else "index-row-bound: reading past a non-row must leave the verdict green"
 assert control.out contains "hyphen_stamp_read_past=yes" else "index-row-bound: a hyphen-form stamp is a filename, never a row's first cell"
-assert control.out contains "shelf_free=yes" else "index-row-bound: an immutable shelf keeps every byte it wrote"
-assert control.out contains "shelf_uncounted=yes" else "index-row-bound: a shelf row must not be counted against the living bound"
+assert control.out contains "closed_shelf_free=yes" else "index-row-bound: a closed shelf keeps every byte it wrote"
+assert control.out contains "closed_shelf_uncounted=yes" else "index-row-bound: a closed shelf's rows must not be counted against the living bound"
+assert control.out contains "open_shelf_named=yes" else "index-row-bound: the pass must name which shelf it read as open"
+assert control.out contains "open_shelf_bound_bitten=yes" else "index-row-bound: the open shelf is the file a lap appends to, so the bound must reach it"
+assert control.out contains "open_shelf_bound_counted=yes" else "index-row-bound: an over-bound shelf row must be counted"
+assert control.out contains "unresolved_bitten=yes" else "index-row-bound: a row pointing at no file must red"
+assert control.out contains "unresolved_counted=yes" else "index-row-bound: the count must name how many rows point nowhere"
+assert control.out contains "unresolved_named=yes" else "index-row-bound: an unresolved row must name its target, so it can be repointed"
+assert control.out contains "resolved_free=yes" else "index-row-bound: a row read from its own page's directory must resolve free"
+assert control.out contains "duplicate_bitten=yes" else "index-row-bound: two rows carrying one stamp must red"
+assert control.out contains "duplicate_counted=yes" else "index-row-bound: the count must name how many stamps stand twice"
+assert control.out contains "distinct_stamps_free=yes" else "index-row-bound: two rows carrying different stamps must pass free"
+assert control.out contains "through_not_open=yes" else "index-row-bound: a through- gathering names no day and is never the open shelf"
+assert control.out contains "through_free=yes" else "index-row-bound: a through- gathering keeps every byte it wrote"
+assert control.out contains "no_shelf_none=yes" else "index-row-bound: a room with no shelf yet must read none"
+assert control.out contains "no_shelf_free=yes" else "index-row-bound: a room with no shelf yet must pass rather than refuse"
 assert control.out contains "absent_pin_refused=yes" else "index-row-bound: an absent pin must refuse rather than read zero rows and call it clean"
 assert control.out contains "bound_readable=yes" else "index-row-bound: the bound must be readable, so a control can plant against it"
 assert control.out contains "bound_applies=yes" else "index-row-bound: the bound read must be the bound applied"
 assert control.out contains "control_verdict=ok" else "index-row-bound: the control must agree with itself"
-say "seventeen behaviors proven on planted pins, the bound shown at 192 and at 193"
+say "thirty-one behaviors proven on planted pins and shelves, each reading shown from both sides"
 
 say "GREEN: index-row-bound -- an index row points; it does not summarise."
