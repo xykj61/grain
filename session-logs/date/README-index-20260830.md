@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260830.211505` | [Mind parks, Mystery healthy, name held](20260830-211505_mind-park-mystery-healthy-name-pushback.kyri) | stash-by-name cure; OutdatedSet declined |
 | `20260830.210700` | [The DirtySet name ruling](20260830-210700_dirtyset-name-ruling.kyri) | recommend keep; RepaintSet the honest alternative |
 | `20260830.210459` | [DirtySet explained, pastes reprinted](20260830-210459_dirtyset-explained-pastes-reprinted.kyri) | teaching turn; nine-seat dirty-region record |
 | `20260830.205759` | [Generated-pages debt paid, fleet triaged](20260830-205759_generated-pages-debt-fleet-triage.kyri) | fascia block reads 68; both Codex stops custody-clean |
