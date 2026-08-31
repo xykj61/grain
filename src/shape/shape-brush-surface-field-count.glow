@@ -1,6 +1,6 @@
 ::  name       brush surface field count
 ::  shape      fields - int (@u32)
-::  invariant  BrushSurface carries five fields: at_nib · present · max_lines · line_count · style_count
+::  invariant  BrushSurface carries the fields at_nib · present · max_lines · line_count · style_count
 ::  example    5
 ::  readers    Brushstroke · Surface · .brush lower · refuse suite
 ::  nib        surface-p43-v0

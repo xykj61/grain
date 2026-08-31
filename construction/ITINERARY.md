@@ -82,14 +82,13 @@ the day shelves every landed lap):
 **MANY HANDS** (`20260828`): custody MANUAL, one writer per checkout. Root `SKILL.md`; every
 clone seats `ww` (`grain-ww/grain`, gate %1) and `.git/ssh_config_jail`.
 
-**Sibling finds:** Sound owns bare labels in `lattice/README.md` and the WADE<N> mark in
-`pond/apps/lantern_face_theme.rye`; Mystery's module-label guard fails open on BSD grep, portable
-it finds elder labels in `tools/gen/chapter/fascia_metric_v0.rish`. **For Pond:**
-`spool_cloth.rye` carries the same `max_name=48` and wall with no pedestal -- Hush's.
-**(%358):** `shape-brush-parse-error-count.glow` reads **C+ 75** and its guard asserts a
-literal `example    13`, so an honest fourteenth ParseError path reds
-`src_first_resident_witness.rish` -- Sound's and Mind's. Mystery: rung drift
-reads 17,248 against 17,247 after rebase.
+**Sibling finds:** Sound owns bare labels in `lattice/README.md` (the Lap ladder and its
+count-up lap files -- reference surgery, its own round); Mystery's module-label guard fails
+open on BSD grep, portable it finds elder labels in `tools/gen/chapter/fascia_metric_v0.rish`.
+**For Pond:** `spool_cloth.rye` carries the same `max_name=48` and wall with no pedestal --
+Hush's. **%358 REPAIRED `20260830`:** the three double-pinned pedestal legs hold placard and
+source to AGREEMENT, proven biting both ways. Mystery: rung drift reads 17,248 against
+17,247 after rebase.
 
 **Still open:** `glow/rune_shape.rye` keeps width custody; Mind keeps the reconnect stash,
 `%281`/`%291`, two `enclosure.conf` pins. **%360 FALLS:** five rule-demanded guards rostered,
