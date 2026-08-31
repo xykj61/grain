@@ -145,7 +145,18 @@ fi
 
 stamp=$(TZ=America/New_York date +%Y%m%d.%H%M%S)
 
-pen=$(mktemp -d)
+# A full pass can outlive a host's short /tmp lease: on this Linux pier the
+# Caravan choir ran for 35 minutes and the host reclaimed the runner's mktemp
+# directory while the choir still held the line (REDS %392). Inside a Git
+# checkout, keep the private pen under .git instead. It stays outside the tree
+# digest and lives for exactly as long as the runner's EXIT trap. Controls that
+# drive the runner outside Git keep the ordinary system temporary directory.
+git_dir=$(git rev-parse --absolute-git-dir 2>/dev/null || true)
+if [ -n "$git_dir" ] && [ -d "$git_dir" ]; then
+  pen=$(mktemp -d "$git_dir/standing-equipment.XXXXXX")
+else
+  pen=$(mktemp -d)
+fi
 receipt_tmp="$pen/receipt.kyri"
 trap 'rm -rf "$pen"' EXIT
 

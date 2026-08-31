@@ -282,6 +282,27 @@ seated 20260825.000000
 EOF
 : > "$gitpen/guard.sh"
 
+# A full roster may run past the host's lease on /tmp. The runner's own pen
+# therefore lives under .git whenever a repository exists. Plant a hostile
+# temporary-directory reclaim inside the guard: the run must still append its
+# card and close cleanly. With the elder mktemp-only runner, the guard deletes
+# the runner's pen too and the pass dies before it can write `ran alpha`.
+mkdir -p "$gitpen/host-tmp"
+cat > "$gitpen/rishi/bin/rishi" <<'EOF'
+#!/bin/sh
+rm -rf "$TMPDIR"
+exit 0
+EOF
+chmod +x "$gitpen/rishi/bin/rishi"
+out=$( ( cd "$gitpen" && TMPDIR="$gitpen/host-tmp" STANDING_ROSTER=quiet.kyri \
+        STANDING_CARD=lease-card.kyri sh "$runner" 2>/dev/null ) || true )
+case "$out" in *"run_verdict=ok"*) echo "git_pen_survives_tmp_reclaim=yes" ;; *) echo "git_pen_survives_tmp_reclaim=no" ;; esac
+if grep -q '^ran alpha ' "$gitpen/lease-card.kyri" 2>/dev/null; then
+  echo "git_pen_keeps_run_card=yes"
+else
+  echo "git_pen_keeps_run_card=no"
+fi
+
 # A stub that changes nothing: the tree stands still and the run answers ok.
 cat > "$gitpen/rishi/bin/rishi" <<'EOF'
 #!/bin/sh

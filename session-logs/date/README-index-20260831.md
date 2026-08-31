@@ -18,3 +18,10 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260831.022006` | [The pass that outlived its lap](20260831/20260831-022006_the-pass-that-outlived-its-lap.kyri) | a lap recovered from the stash; %387 booked |
 | `20260831.015752` | [The count beside the thing it counts](20260831/20260831-015752_the-count-beside-the-thing-it-counts.kyri) | two choirs join the roster; %386 booked, its guard refused |
 | `20260831.003448` | [The row opens the log it names](20260831/20260831-003448_the-row-opens-the-log-it-names.kyri) | %383 closed at commit time; two reds booked |
+Rows for `20260831`, newest first. A session log is born on this day's shelf and its row lands here
+in the same commit. Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin:
+[`../README.md`](../README.md).
+
+| Stamp | Log | What it recorded |
+|---|---|---|
+| `20260831.024926` | [The pen outlives the pass](20260831/20260831-024926_the-pen-outlives-the-pass.kyri) | %384 closed; a 35-minute roster keeps its card |

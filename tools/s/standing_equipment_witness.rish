@@ -131,6 +131,8 @@ assert control.out contains "all_runs_every_tier=yes" else "standing-equipment: 
 assert control.out contains "name_selects_any_tier=yes" else "standing-equipment: a guard named by hand runs whatever its tier"
 assert control.out contains "name_runs_only_that_guard=yes" else "standing-equipment: a guard named by hand runs alone"
 assert control.out contains "absent_path_reds_runner=yes" else "standing-equipment: a rostered path absent from disk must red the runner"
+assert control.out contains "git_pen_survives_tmp_reclaim=yes" else "standing-equipment: a repository run must keep its private pen past a host tmp reclaim"
+assert control.out contains "git_pen_keeps_run_card=yes" else "standing-equipment: a repository run must still record every guard after a host tmp reclaim"
 
 # The tree digest, both sides, on a real git repository the control builds and throws away. A lap
 # that begins editing while the roster runs gets verdicts spread across two trees, which is REDS
