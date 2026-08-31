@@ -1,6 +1,6 @@
 ::  name       brush parse error count
 ::  shape      errors - int (@u32)
-::  invariant  .brush refuse suite names thirteen ParseError paths
+::  invariant  .brush refuse suite names every ParseError path, one for one
 ::  example    13
 ::  readers    Brushstroke · Surface · refuse suite · .brush lower
 ::  nib        surface-p42-v0

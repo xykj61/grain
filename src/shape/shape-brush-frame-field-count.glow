@@ -1,6 +1,6 @@
 ::  name       brush frame field count
 ::  shape      fields - int (@u32)
-::  invariant  BrushFrame carries three fields: at_nib · max_lines · lines
+::  invariant  BrushFrame carries the fields at_nib · max_lines · lines
 ::  example    3
 ::  readers    Brushstroke · Surface · .brush lower · Skate grid
 ::  nib        surface-p44-v0
