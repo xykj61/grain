@@ -232,3 +232,5 @@ at a closed fold.*
 *Row %383 folded to [`REDS-a-row-opens-its-log-rows-383.md`](REDS-a-row-opens-its-log-rows-383.md) on `20260831.015500`, **CLOSED** -- a guard on the slow clock cannot teach the habit it guards, so the reading moved to the commit that writes the row.*
 
 *Rows %384 and %385 folded to [`REDS-typed-into-a-living-pin-rows-384-385.md`](REDS-typed-into-a-living-pin-rows-384-385.md) on `20260831.021718`, both **BOOKED** -- a claim typed by hand into a living pin, beside the thing it described, and read by nothing until a census on a slow clock -- one a path that named no file, one a count that had stopped moving.*
+
+*Rows %386 and %387 folded to [`REDS-the-instrument-that-could-not-measure-itself-rows-386-387.md`](REDS-the-instrument-that-could-not-measure-itself-rows-386-387.md) on `20260831.035428`, both **BOOKED** -- the instrument the fleet trusts to measure the tree kept no honest reading of itself -- one row a count its source had moved past, the other a pass outliving the lap that could read it.*

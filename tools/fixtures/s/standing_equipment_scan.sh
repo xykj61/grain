@@ -17,6 +17,11 @@
 #   Every `ran` line in the run card names a guard the roster actually seats.
 #   No run-card line records a red or an absent guard.
 #
+# WHAT THE PASS COST, reported rather than gated. `runs_seconds_total` sums the run card's sixth
+# field, `runs_seconds_absent` counts the rows written before that field existed, and
+# `runs_slowest` names the single guard that cost the most. Reported, because a slow guard is a
+# fact about the work rather than a defect (REDS %388).
+#
 # WHAT IS REPORTED, as a ratchet rather than a gate. The count per tier; how many rostered guards
 # have never run on this pier, in total and for the cadence tier alone; and the oldest recorded
 # run. A fresh clone has genuinely run nothing, so `never run here` is an honest reading rather
@@ -145,6 +150,15 @@ stray=0
 red=0
 newest=""
 oldest=""
+# WHAT THE PASS COST, read from the run card's sixth field (REDS %388). A row written before the
+# field existed carries five, and those count as ABSENT rather than as zero seconds -- a missing
+# measurement reading as a free guard is the same fault this reading exists to repair, one layer
+# down. `runs_slowest` names the guard rather than only its number, because the question a lap
+# actually asks is which guard to expect to wait on.
+seconds_total=0
+seconds_absent=0
+slowest_sec=0
+slowest_name="-"
 
 if [ -f "$card" ]; then
   while IFS= read -r line; do
@@ -153,6 +167,19 @@ if [ -f "$card" ]; then
         rname=$(printf '%s' "$line" | awk '{print $2}')
         rstamp=$(printf '%s' "$line" | awk '{print $3}')
         rverdict=$(printf '%s' "$line" | awk '{print $4}')
+        rseconds=$(printf '%s' "$line" | awk '{print $6}')
+        case "$rseconds" in
+          ''|*[!0-9]*) seconds_absent=$((seconds_absent + 1)) ;;
+          *) seconds_total=$((seconds_total + rseconds))
+             # The FIRST timed row always claims the seat, rather than only one costing more than
+             # zero. Comparing on `-gt` alone left a card whose every timed guard cost 0 reading
+             # `-:0`, which is the reading an entirely UNTIMED card gives -- two states wearing one
+             # answer, which is the fault this whole field exists to repair, one layer down.
+             if [ "$slowest_name" = "-" ] || [ "$rseconds" -gt "$slowest_sec" ]; then
+               slowest_sec=$rseconds
+               slowest_name=$rname
+             fi ;;
+        esac
         recorded=$((recorded + 1))
         echo "$rname" >> "$ranlist"
         if ! grep -qx "$rname" "$names"; then
@@ -196,6 +223,9 @@ echo "tier_cadence=$tier_cadence"
 echo "runs_recorded=$recorded"
 echo "runs_unrostered=$stray"
 echo "runs_red=$red"
+echo "runs_seconds_total=$seconds_total"
+echo "runs_seconds_absent=$seconds_absent"
+echo "runs_slowest=$slowest_name:$slowest_sec"
 echo "guards_never_run_here=$never"
 echo "cadence_never_run_here=$never_cadence"
 echo "oldest_run=${oldest:-none}"

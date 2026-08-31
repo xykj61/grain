@@ -13,6 +13,8 @@
 #   A run card recording a red verdict is refused.
 #   A tier the runner does not know is refused, and counted.
 #   A whole roster whose paths exist, with a card of greens, passes free -- with or without tiers.
+#   A card carrying the sixth field totals it and names its slowest guard; a card written before
+#     that field existed counts the row absent rather than reading it as a guard that cost nothing.
 #
 # WHAT THE RUNNER PROVES, which a scan reading a file cannot. A tier is only a cadence if the
 # runner honors it, so the runner is driven over a planted two-row roster with a stub interpreter:
@@ -146,6 +148,37 @@ out=$(run_scan cadence.kyri both-card.kyri)
 case "$out" in *"cadence_never_run_here=0"*) echo "cadence_run_lowers_count=yes" ;; *) echo "cadence_run_lowers_count=no" ;; esac
 case "$out" in *"verdict=ok"*) echo "tiered_card_free=yes" ;; *) echo "tiered_card_free=no" ;; esac
 
+# --- what the pass cost, read from the card's sixth field and from its absence -----------
+# A verdict without a cost left every lap to size a pass by watching a window of it (REDS %388),
+# so the field is proven from both sides: a card carrying it totals, names its slowest guard and
+# counts nothing absent, and a card written before the field existed says so rather than reading
+# a missing measurement as a guard that cost nothing.
+cat > "$pen/timed-card.kyri" <<'EOF'
+format standing-equipment-runs-v1
+ran alpha 20260822.100000 green lap 7
+EOF
+out=$(run_scan good.kyri timed-card.kyri)
+case "$out" in *"runs_seconds_total=7"*) echo "seconds_totalled=yes" ;; *) echo "seconds_totalled=no" ;; esac
+case "$out" in *"runs_slowest=alpha:7"*) echo "slowest_named=yes" ;; *) echo "slowest_named=no" ;; esac
+case "$out" in *"runs_seconds_absent=0"*) echo "seconds_present_counted=yes" ;; *) echo "seconds_present_counted=no" ;; esac
+case "$out" in *"verdict=ok"*) echo "timed_card_free=yes" ;; *) echo "timed_card_free=no" ;; esac
+
+# A guard that finished inside a second is TIMED at 0, and must not read as one that was never
+# timed at all. Both cards below total 0; only this one names a guard.
+cat > "$pen/zero-card.kyri" <<'EOF'
+format standing-equipment-runs-v1
+ran alpha 20260822.100000 green lap 0
+EOF
+out=$(run_scan good.kyri zero-card.kyri)
+case "$out" in *"runs_slowest=alpha:0"*) echo "zero_second_guard_named=yes" ;; *) echo "zero_second_guard_named=no" ;; esac
+case "$out" in *"runs_seconds_absent=0"*) echo "zero_second_not_absent=yes" ;; *) echo "zero_second_not_absent=no" ;; esac
+
+out=$(run_scan good.kyri good-card.kyri)
+case "$out" in *"runs_seconds_absent=1"*) echo "untimed_counted_absent=yes" ;; *) echo "untimed_counted_absent=no" ;; esac
+case "$out" in *"runs_seconds_total=0"*) echo "untimed_totals_zero=yes" ;; *) echo "untimed_totals_zero=no" ;; esac
+case "$out" in *"runs_slowest=-:0"*) echo "untimed_names_nobody=yes" ;; *) echo "untimed_names_nobody=no" ;; esac
+case "$out" in *"verdict=ok"*) echo "untimed_card_free=yes" ;; *) echo "untimed_card_free=no" ;; esac
+
 # --- a tier no runner honors would run on no lap at all, silently -----------------------
 cat > "$pen/badtier.kyri" <<'EOF'
 format standing-equipment-v1
@@ -180,16 +213,24 @@ out=$(run_runner)
 case "$out" in *"tier_run=lap"*) echo "default_is_lap=yes" ;; *) echo "default_is_lap=no" ;; esac
 case "$out" in *"guards_run=1"*) echo "default_runs_lap_only=yes" ;; *) echo "default_runs_lap_only=no" ;; esac
 case "$out" in *"staged_uncommitted=0"*) echo "no_git_reads_zero=yes" ;; *) echo "no_git_reads_zero=no" ;; esac
-if grep -q "^ran alpha .* lap$" "$pen/run-card.kyri" && ! grep -q "^ran choir " "$pen/run-card.kyri"; then
+if grep -qE "^ran alpha .* lap( |$)" "$pen/run-card.kyri" && ! grep -q "^ran choir " "$pen/run-card.kyri"; then
   echo "default_card_lap_only=yes"
 else
   echo "default_card_lap_only=no"
 fi
+# The runner's half of REDS %388: the card line it writes carries the guard's elapsed seconds, and
+# the pass reports its own total. A stub guard costs 0, which is a reading rather than an absence.
+if grep -qE "^ran alpha [0-9.]+ green lap [0-9][0-9]*$" "$pen/run-card.kyri"; then
+  echo "runner_records_seconds=yes"
+else
+  echo "runner_records_seconds=no"
+fi
+case "$out" in *"guards_seconds="*) echo "runner_totals_seconds=yes" ;; *) echo "runner_totals_seconds=no" ;; esac
 
 out=$(run_runner --tier cadence)
 case "$out" in *"guards_run=1"*) echo "tier_selects_one=yes" ;; *) echo "tier_selects_one=no" ;; esac
 # The earlier pass's line survives, so a slower tier never erases the faster one's history.
-if grep -q "^ran alpha " "$pen/run-card.kyri" && grep -q "^ran choir .* cadence$" "$pen/run-card.kyri"; then
+if grep -q "^ran alpha " "$pen/run-card.kyri" && grep -qE "^ran choir .* cadence( |$)" "$pen/run-card.kyri"; then
   echo "card_keeps_untouched=yes"
 else
   echo "card_keeps_untouched=no"
