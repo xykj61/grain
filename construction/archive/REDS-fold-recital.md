@@ -244,3 +244,5 @@ at a closed fold.*
 *Row %393 folded to [`REDS-the-directory-nobody-made-rows-393.md`](REDS-the-directory-nobody-made-rows-393.md) on `20260831.074833`, **CLOSED** -- a build that assumes its own output directory is a build that passes on the bench that already ran it.*
 
 *Row %396 folded to [`REDS-a-borrowed-scope-rows-396.md`](REDS-a-borrowed-scope-rows-396.md) on `20260831.083155`, **BOOKED** -- an environment variable is inherited by every process a pass starts, so a fix scoped to one mktemp call reached every control that builds a pen.*
+
+*Rows %392 and %398 folded to [`REDS-one-reading-two-roofs-rows-392-398.md`](REDS-one-reading-two-roofs-rows-392-398.md) on `20260831.085550`, both **CLOSED** -- the split dial landed, and the guard that cites the card rather than copying it went red on thirteen dated logs -- one rule in one place makes every change to it a change to everyone holding it.*

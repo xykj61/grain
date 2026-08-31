@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260831.085457` | [The population a guard reads](20260831/20260831-085457_the-population-a-guard-reads.kyri) | %398 closes at its root; the scan asks the card what prose is |
 | `20260831.074836` | [Two walls over one room](20260831/20260831-074836_two-walls-over-one-room.kyri) | Pond's catalog capacity takes a desk; %396 %397 %398 |
 | `20260831.071031` | [The choir pays once for each song](20260831/20260831-071031_the-choir-pays-once-for-each-song.kyri) | Caravan keeps a 5-second seam; full choir moves to cadence |
 | `20260831.072403` | [The same split landed twice](20260831/20260831-072403_the-same-split-landed-twice.kyri) | %392 closed by two hands; the population measured |

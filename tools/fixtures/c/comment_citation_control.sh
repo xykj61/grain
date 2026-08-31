@@ -7,6 +7,11 @@
 # left free -- including the symlink case, which is the one that would have damaged six correct
 # files if the guard had guessed instead of resolving.
 #
+# Cases 11 to 13 came from REDS %398, where the scan kept a prose list beside the card's own and
+# the two drifted. They prove the skip is counted rather than silent, that it turns on the file's
+# CLASS rather than on its content, and that every extension the speed prefilter drops is one the
+# card independently calls prose.
+#
 # USAGE
 #   sh tools/fixtures/c/comment_citation_control.sh
 #
@@ -134,5 +139,41 @@ mv "$pen/tools/fixtures/q/qa_report_card.sh" "$pen/keep.sh"
 o=$(run)
 echo "$o" | grep -q 'verdict=card_missing' && echo "card_load_bearing=yes" || echo "card_load_bearing=no"
 mv "$pen/keep.sh" "$pen/tools/fixtures/q/qa_report_card.sh"
+
+# 11 -- a file the CARD calls prose is skipped, and the count says so out loud. This is REDS %398:
+# the card gained `.bron` and `.kyri` as prose on 20260831 and this scan's candidate filter kept its
+# own older list, so 13 dated session logs arrived as programs and read 10 broken citations against
+# a guard gated at zero. A skip nobody can see is indistinguishable from a guard that stopped
+# reading, so the skip is COUNTED rather than silent.
+printf 'think a fold rewrote a header that already read [`REDS`](nowhere/at/all.md) correctly\n' > "$pen/lib/note.kyri"
+stage; o=$(run)
+echo "$o" | grep -q 'verdict=ok' && echo "prose_notation_skipped=yes" || echo "prose_notation_skipped=no"
+echo "$o" | grep -q 'prose_skipped=1' && echo "prose_skip_counted=yes" || echo "prose_skip_counted=no"
+
+# 12 -- and the skip is about the file's CLASS rather than about the content, which is the half that
+# tells a reading from a bypass. The identical broken target inside a program still refuses.
+{ printf '%s\n' "//! Ground: [\`gone\`](nowhere/at/all.md)"
+  printf '%s\n' 'const std = @import("std");'
+} > "$pen/lib/same.rye"
+stage; o=$(run)
+echo "$o" | grep -q 'verdict=broken_citation' && echo "same_target_in_program_bitten=yes" || echo "same_target_in_program_bitten=no"
+echo "$o" | grep -q 'broken: lib/same.rye' && echo "same_target_named=yes" || echo "same_target_named=no"
+rm -f "$pen/lib/same.rye"
+stage; o=$(run)
+echo "$o" | grep -q 'verdict=ok' && echo "same_target_removed_returns_green=yes" || echo "same_target_removed_returns_green=no"
+
+# 13 -- the candidate prefilter drops `.md`, `.mdc` and `.markdown` for SPEED, since running the
+# card over every tracked document would cost minutes. Correctness must not rest on that second
+# list, so every extension it drops is proven to be one the card independently calls prose -- and
+# so are the two notations the scan now skips by the card's own answer. Two spellings of one class
+# is exactly the drift %398 booked, and this is the case that would have caught it.
+prose_agrees=yes
+for ext in md mdc markdown kyri bron; do
+  printf 'a page citing [x](nowhere/at/all.md)\n' > "$pen/lib/probe.$ext"
+  k=$( cd "$pen" && QA_CARD_ROOT=. sh tools/fixtures/q/qa_report_card.sh "lib/probe.$ext" --setting meter --service 100 2>/dev/null | grep -c '^truth_source=prose' )
+  [ "$k" -eq 1 ] || { prose_agrees="no_at_$ext"; }
+  rm -f "$pen/lib/probe.$ext"
+done
+echo "prefilter_matches_card_prose=$prose_agrees"
 
 echo "control_verdict=ok"

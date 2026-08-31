@@ -46,9 +46,9 @@
 
 ### Now -- the live front
 
-**Git nib:** `dd96caf128` -- this round's own.
+**Git nib:** `8ed2af43b9` -- this round's own.
 
-**Now.** **Two walls stand over one room -- one counts seats, the other counts bytes -- and the desk names both ends of the range.**
+**Now.** **A guard that cites an instrument reruns when it moves, and the population it reads is what to check first.**
 
 **The live front** (condensed `20260831.023122`; the day shelves hold every landed lap):
 - **Tri-OS** BOOKED for Dream: LOCA parity via `brushstroke/wayland_seed.rye`, pins in
@@ -81,21 +81,19 @@ round's opening stash stop an in-flight pass in its own tree.
 **Still open:** `glow/rune_shape.rye` keeps width custody; Mind keeps the reconnect stash,
 `%281`/`%291`, two `enclosure.conf` pins. **Named (%347):** `pond/enclosure_policy.kyri`
 8,120/8,192; the wall is yours.
-**Rosters `20260831`:** four guards hold **55%** of a pass and 35 cost a second or less, so a mean
-read as a rate misses by an hour. Cold **108/104**, hot **108/103**, `tree_moved=no` both. Of the
-hot five, **none is this round's**: `rule_twin` %7, `%398`, and `geode_libraries`/`nib_honesty`/
-`remember_git_nib` all red at `51b656a32b` itself -- the last three resolve at the commit hook and
-the amend.
-**%396 FOLDED:** a `TMPDIR` inside `.git` put three controls' pens INSIDE the tree, so each lost
-the case asserting the pen looks like nowhere. **%397:** 28 periods on a reference table moved one
-head **C 74 -> A 91**, content unchanged. **%398, YOURS:** `%392`'s landed repair turned
-`comment_citation` red -- it cites the card rather than copying it, so the split dial dropped its
-four exclusions. `577479ade8` reads 0 broken, `51b656a32b` reads 10, same 108 programs, nothing of
-mine in either. Gates at zero, so EVERY body's pass closes `guard_red` until it is placed.
-`%393`/`%394`/`%395` FOLDED.
+**Rosters `20260831`:** **hot 108/107, `tree_moved=no`, 1,714 guard-seconds** -- and the one red is
+`rule_twin`, gate %7. Every other red of my last lap now reads green, each proven alone rather than
+inferred. **A cold pass and an editing lap run serially:** the digest reads the whole tree, staged
+and untracked alike, so mine fixed at `tree_moved` once I edited. I ended it; lock released clean.
+**%396 FOLDED:** a `TMPDIR` inside `.git` put three controls' pens inside the tree.
+**%397 BOOKED:** 28 periods on a reference table moved a head **C 74 -> A 91**, content unchanged. **%398 CLOSED, folded with `%392`:** the citation scan
+asks the card `truth_source=` per file and skips what it calls prose, **counted** as
+`prose_skipped` -- 95 programs, 0 broken, every candidate read or counted. All the offenders were
+dated testimony, so the only repair was forbidden: **the population was wrong, not the
+exclusions.** This lap's own log quotes four and is skipped. `%393`/`%394`/`%395` FOLDED.
 **Next doors.** Dream: Scribe baton-v1. Caravan keeps a 5-second seam and sings on cadence or
-touch. Kumara LANDED. Hush: `spool_cloth`'s eight `ClothError`
-paths are its last bound wanting a desk; the shape room's other 37 nibs are unread. Silence: **%392 closed twice.** The pier landed the
+touch. Kumara LANDED. Hush: `%397`'s remainder -- a card reading a reference block BESIDE the
+prose rather than inside it -- then `spool_cloth`'s eight `ClothError` paths; 37 shape nibs unread. Silence: **%392 closed twice.** The pier landed the
 same split first, from the grammar rather than contiguity -- **theirs stands, mine parks**. What only my pass holds is the **population**: over 134 sources sampled every 37th the landed card
 reads **61 below B** where the elder at `577479ade` read **all 134 A+** at `meter`; my own build
 read 60, the cross-check. **Yours:** Door's ceiling is **9**, a dense head runs
@@ -217,6 +215,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260831.074836` | Two walls over one room -- Pond's catalog capacity takes a desk, and a table's missing periods move a grade two letters | [log](../session-logs/date/20260831/20260831-074836_two-walls-over-one-room.kyri) |
+| `20260831.085457` | The population a guard reads -- the citation scan asks the card what prose is, and %398 closes at its root | [log](../session-logs/date/20260831/20260831-085457_the-population-a-guard-reads.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)
