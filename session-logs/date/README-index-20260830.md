@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260830.223624` | [The captain's wake holds still](20260830-223624_the-captains-wake-holds-still.kyri) | the field pauses pushes for Mind's sign window |
 | `20260830.223110` | [The index and the commit agree](20260830-223110_the-index-and-the-commit-agree.kyri) | %376 sealed seat-side; six surfaces worded |
 | `20260830.222505` | [A law earns the first nesting](20260830-222505_a-law-earns-the-first-nesting.kyri) | and-of-ors lands with desk, twin, and refusal |
 | `20260830.215132` | [The pedestal pins become agreements](20260830/20260830-215132_the-pedestal-pins-become-agreements.kyri) | %358 repaired both ways; WADE mark molts |
