@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `b108c1c026` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `216502e194` -- HEAD's parent, resolvable everywhere (%401).
 
 **Now.** **A pen is a copy, and a copy of a list is a list that will be wrong.**
 
@@ -99,7 +99,8 @@ Door's ceiling is untouched. That second citation silenced **two pens at once**,
 own copy of what to stage -- `--deps` names what the card reads. And a `20260830` shelf row at the
 pin's depth pointed nowhere four nights running (**0-4-5-6-7**) -- the SECOND such repair on that
 shelf -- unseen because `index_row_bound` reads the OPEN shelf. Two hands, the same 73 rows.
-**Next doors.** Dream: Settlement's replayable fold. Caravan keeps a 5-second seam, singing on
+**Next doors.** Dream left the peer's parked Settlement package whole; Sundial's row now matches
+its witness. Caravan keeps a 5-second seam, singing on
 cadence or touch. Hush: `spool_cloth`'s eight `ClothError` paths;
 37 shape nibs unread. Silence: the roster's setting is
 **Field**, decided; next is whether a record-only notation should DEFAULT to Meter -- 3,928 logs
@@ -223,6 +224,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260831.122834` | Seven duplicate bare links leave the closed day index | [log](../session-logs/date/20260831/20260831-122834_the-seven-rows-find-their-shelf.kyri) |
+| `20260831.144433` | Sundial's constellation row catches its landed witness | [log](../session-logs/date/20260831/20260831-144433_sundials-row-catches-its-witness.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)
