@@ -234,3 +234,5 @@ at a closed fold.*
 *Rows %384 and %385 folded to [`REDS-typed-into-a-living-pin-rows-384-385.md`](REDS-typed-into-a-living-pin-rows-384-385.md) on `20260831.021718`, both **BOOKED** -- a claim typed by hand into a living pin, beside the thing it described, and read by nothing until a census on a slow clock -- one a path that named no file, one a count that had stopped moving.*
 
 *Rows %386 and %387 folded to [`REDS-the-instrument-that-could-not-measure-itself-rows-386-387.md`](REDS-the-instrument-that-could-not-measure-itself-rows-386-387.md) on `20260831.035428`, both **BOOKED** -- the instrument the fleet trusts to measure the tree kept no honest reading of itself -- one row a count its source had moved past, the other a pass outliving the lap that could read it.*
+
+*Rows %388 and %389 folded to [`REDS-the-guard-and-the-allocator-rows-388-389.md`](REDS-the-guard-and-the-allocator-rows-388-389.md) on `20260831.043856`, both **BOOKED** -- a guard reading a file the law had moved, and the allocation of a number and a shelf by one tree among six.*
