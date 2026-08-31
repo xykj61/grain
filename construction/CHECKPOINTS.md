@@ -22,6 +22,27 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ---
 
+## `20260831.023122` -- the third settled-decisions shelf, and the heading that named one block for eleven (walk-back `29938104bc`)
+
+**Walk-back nib:** `29938104bc` -- HEAD before the condense commit. **Swept:** three landed
+rows from *Seated, and still live* -- the seated names (Scooter, Dexter, Ember), the seated
+breaches (all CUT, each with its own checkpoint row already here), and the twice-spent deep
+debride -- moved word for word to
+[`archive/20260831-023122_itinerary-settled-decisions.md`](archive/20260831-023122_itinerary-settled-decisions.md);
+the `## The laps` section, whose three sentences restated what *Prior laps* already says;
+the `Landed arcs` list, tightened to one sentence. The heading `### The crypto spine, seated
+20260815 -- the pointer` became `### Now -- the live front`, which is what the eleven blocks
+under it actually were; the four-line crypto pointer moved up into *Seated, and still live*
+as one bullet, and the `Host` line moved down into *Pier & hands*, where a reader looks for a
+bench fact. The card fell 24,562 to 23,224 of its 24,576 bytes.
+
+**What waits there, worth recalling:** the breach rows' own wording -- *"Oven -> Kiln through
+history CUT `20260827.043900`: word-bounded rewrite, HEAD tree byte-identical, testimony
+protected, re-signed, `xy` force-pushed whole"* -- which is the tightest account this tree has
+of what a deep debride actually costs and actually preserves, and the `Landed arcs` list in
+its full form, naming each arc that closed. Nothing was dropped: every term in the departing
+card was proven present in the new card or the shelf before the commit.
+
 ## `20260830.012039` -- the round-set boundary condense of the Now region (walk-back `89e6da9523`)
 
 **Walk-back nib:** `89e6da9523` -- HEAD before the condense commit. **Swept:** the landed

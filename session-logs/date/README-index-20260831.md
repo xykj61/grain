@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260831.023122` | [The round that would not stay lost](20260831/20260831-023122_the-round-that-would-not-stay-lost.kyri) | a twice-lost lap lands; the card gets a third shelf |
 | `20260831.022006` | [The pass that outlived its lap](20260831/20260831-022006_the-pass-that-outlived-its-lap.kyri) | a lap recovered from the stash; %387 booked |
 | `20260831.015752` | [The count beside the thing it counts](20260831/20260831-015752_the-count-beside-the-thing-it-counts.kyri) | two choirs join the roster; %386 booked, its guard refused |
 | `20260831.003448` | [The row opens the log it names](20260831/20260831-003448_the-row-opens-the-log-it-names.kyri) | %383 closed at commit time; two reds booked |
