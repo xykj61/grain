@@ -395,12 +395,7 @@ assert codex_exec_check.ok else "REFUSE chatgpt-mind: canonical Codex CLI target
 let codex_exec_link = run ["test" "-L" codex_exec]
 assert codex_exec_link.ok == false else "REFUSE chatgpt-mind: canonical Codex CLI path remains a symlink"
 let packed_refs_maps = ?: git_packed_refs_file.ok (["--map" git_packed_refs_abs]) ([])
-# /private/var/select is macOS's shell-selector directory: every /bin/sh spawn
-# reads it to choose bash-or-dash, and the unmapped path printed one Operation
-# not permitted per spawn through every jailed hook run -- six per candidate --
-# while the hook chain ran on the shim's fallback. Mapped read-only so the
-# noise ends and the selector behaves as macOS ships it (20260831, Keaton's word).
-let jail_maps = ["--map" "/private/var/select" "--map" codex_exec "--map" git_exec "--map" git_pcre "--map" git_intl "--map" rishi_abs "--map" git_wrapper_abs "--map" git_zshenv_abs "--map" git_zprofile_abs "--map" pre_commit_hook "--map" commit_msg_hook "--map" mind_lane_scan "--map" git_config_abs "--map" git_head_abs "--map" git_refs_abs "--map" git_logs_abs] + packed_refs_maps
+let jail_maps = ["--map" codex_exec "--map" git_exec "--map" git_pcre "--map" git_intl "--map" rishi_abs "--map" git_wrapper_abs "--map" git_zshenv_abs "--map" git_zprofile_abs "--map" pre_commit_hook "--map" commit_msg_hook "--map" mind_lane_scan "--map" git_config_abs "--map" git_head_abs "--map" git_refs_abs "--map" git_logs_abs] + packed_refs_maps
 
 let codex_help_out = preflight_rel + "/codex-help.out"
 let codex_help_err = preflight_rel + "/codex-help.err"
