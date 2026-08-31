@@ -450,6 +450,7 @@ fn run_selftest() !u8 {
     bad_sponsor.chosen_parent += 1;
     if (verify_sponsor(&bad_sponsor, inst.b.kumara_pubkey)) return error.TamperedSponsorVerified;
 
+    print("kumara tilak: refusal_cases=5 -- bind x2, turn, capability, and sponsor.\n", .{});
     print("kumara tilak: five tilaks — point, bind, turn, three caps, sponsor — each made, signed by its authorizing party, verified, refused on tamper.\n", .{});
     print("kumara tilak: version {s}\n", .{tilak_version});
     print("GREEN: kumara tilak — the whole identity template holds; every claim traces to a signature, every tamper refuses.\n", .{});

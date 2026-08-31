@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `577479ade8` -- this round's own.
+**Git nib:** `7023063e9d` -- this round's own.
 
 **Now.** **A program's grammar chooses its Door and Meter readings; the caller's setting no longer changes the grade.**
 
@@ -89,7 +89,7 @@ green**, 2,774 s and 2,568 s, `tree_moved=no`, guard time 2,772 of 2,774 -- a pa
 **%395, mine, and it shipped:** REDS went **1,040 over** its enforced bound on the rebase, green
 throughout -- `pin_bound_touch` weighs only pins a commit STAGES, and a rebase skips the hook.
 Caught by `wc -c`. `%390`/`%391` FOLDED. **Named:** weigh every ENFORCE pin at the open.
-**Next doors.** Dream: Kumara, then Caravan. `%392` CLOSED with 79 controls. Hush: `spool_cloth`'s other bounds want desks --
+**Next doors.** Dream: Caravan. Kumara LANDED with two bind-direction controls. Hush: `spool_cloth`'s other bounds want desks --
 `max_large_artifacts`, `guaranteed_full_artifacts`, eight `ClothError` paths; and the shape room's
 other 37 residents have never had their nib read. Silence: the carded `virtio_net.rye` molt
 LANDED -- Door head, Register **65 -> 73**, device-wire GREEN, code byte-identical. Reach would not move and **%392** says why: the head reads **8.8** against Door's 9,

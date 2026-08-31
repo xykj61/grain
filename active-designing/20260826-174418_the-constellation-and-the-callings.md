@@ -52,7 +52,7 @@ survey; the moves are proposals, one round each.
 |---|---|---|---|
 | Mantra | replayable-fold | run the tools/m recall-resin-beading family, then refresh the stale README head against the measured roster | none |
 | Mycelium | derived-not-stored | reconcile the README's ninety-eight to the measured hundred via the seated roster scan, citing the run | funds demo-only |
-| Kumara | choir-and-bijection | count the tilak refusal cases; plant the missing one-directional-bind RED | keys: fixture keys only |
+| Kumara | choir-and-bijection | LANDED `20260831.070341`: five refusal cases counted; deleting either bind direction reds the control | keys: fixture keys only |
 | Comlink | wrap-named | run the two fast-lane wire witnesses, then refresh the README Core table to what stands | QEMU slow lane; turn_route crosses keys |
 | Brix | bound-in-shape | audit the four infuse bounds for planted REDs; plant the missing too-small-output refusal | %6 for theme descriptors |
 | Tablecloth | derived-not-stored | bead one bounded fixture under two names; store growth exactly zero, the byte count printed | %6 for visual surfaces |
