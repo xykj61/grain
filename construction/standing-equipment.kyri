@@ -1109,3 +1109,20 @@ guard pond_spool_cloth_glow_tend
 path tools/p/pond_spool_cloth_glow_tend_witness.rish
 tier cadence
 seated 20260831.045858
+
+# living_pin_near_bound -- the near-bound advisory reads the set the pin law names. Duty 6 of the
+# docs lint is the one reading in this tree that speaks BEFORE a pin crosses its bound: e123 and
+# pin_bound_touch both ask whether a pin is OVER, and a pin three bytes under is not. On 20260831
+# the card and the ledger stood at 3 and 21 bytes free with all three of those guards green, and
+# the advisory that exists for exactly this said nothing about the ledger -- because it kept a docs
+# roster of its own and had never weighed four of the seven seated pins (REDS %396).
+#
+# `lap` rather than `cadence`: nine pen cases, 1s measured on this pier before the row was written,
+# and the reading it guards is the one that decides whether the next lap can write to the card at
+# all. Both faults are proven from the side where the reading goes silent -- five of the nine bite
+# against the departing scan -- since a repair proven only in the speaking direction cannot be told
+# from a rewording.
+
+guard living_pin_near_bound
+path tools/l/living_pin_near_bound_witness.rish
+seated 20260831.080221

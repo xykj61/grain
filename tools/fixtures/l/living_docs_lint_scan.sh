@@ -210,37 +210,67 @@ else
 fi
 
 # --- duty 6 (wc -c) -- past bound + near-bound fold advisory ---
-# Near = 90% of living_pin_max_bytes. Remedy: fold closed season -> seasons roster.
-LIVING_PIN_NEAR_BYTES=$((LIVING_PIN_MAX_BYTES * 90 / 100))   # the general near line; a page
-                                                            # with its own bound is near ITS 90%
+# Near = 90% of the page's OWN bound. Remedy: fold closed season -> seasons roster.
+#
+# WHICH PAGES ARE WEIGHED, and why the list is a union. The pin law names one roster and one bound
+# reading, so two roofs cannot disagree about which pages are pins or about how heavy a pin may be.
+# This duty kept the bound reading -- tools/fixtures/l/living_pin_max_bytes.sh, one home since
+# REDS %199 -- and walked a docs roster of its own, so four of the seven pins seated in
+# tools/fixtures/l/living_pin_guard_roster.txt were never weighed here at all: EQUINOX_SEAT_MAP,
+# REDS, SHRED_PREP and prin_scope. One of the four is construction/REDS.md, which shipped 1,040
+# bytes over its bound on 20260831 with every guard green (REDS %395) and stood at 99.9% of it while
+# this duty advised about two other pages. The union keeps every docs page this duty already watched
+# -- glow/README.md is bounded by the law and absent from the seated roster -- and adds the seated
+# seven, so the advisory covers the set the law names rather than the set this duty happened to hold.
+LIVING_PIN_NEAR_BYTES=$((LIVING_PIN_MAX_BYTES * 90 / 100))   # the general near line, printed in the
+                                                            # OK case; a page carrying its own bound
+                                                            # is weighed against ITS 90%
+PIN_GUARD_ROSTER="tools/fixtures/l/living_pin_guard_roster.txt"
+: >"$TMP/d6roster"
+cat "$ROSTER" >>"$TMP/d6roster"
+if [ -f "$PIN_GUARD_ROSTER" ]; then
+  # Column one is the path; comment and blank rows carry none.
+  awk -F'\t' '!/^#/ && NF > 0 && $1 != "" { print $1 }' "$PIN_GUARD_ROSTER" >>"$TMP/d6roster"
+fi
+sort -u "$TMP/d6roster" -o "$TMP/d6roster"
 : >"$TMP/d6"
 : >"$TMP/d6near"
+d6_weighed=0
 while IFS= read -r rel; do
   [ -n "$rel" ] && [ -f "$rel" ] || continue
   size=$(wc -c <"$rel" | tr -d ' ')
   page_max=$(sh "$ROOT/tools/fixtures/l/living_pin_max_bytes.sh" "$rel" 2>/dev/null) || page_max="$LIVING_PIN_MAX_BYTES"
+  d6_weighed=$((d6_weighed + 1))
   if [ "$size" -gt "$page_max" ]; then
-    echo "ADVISE duty6 living-pin-bytes ${rel}: ${size} > living_pin_max_bytes=${page_max}" >>"$TMP/d6"
+    echo "ADVISE duty6 living-pin-bytes ${rel}: ${size} > living_pin_max_bytes=${page_max} -- $((size - page_max)) over" >>"$TMP/d6"
   elif [ "$size" -ge $((page_max * 90 / 100)) ]; then
     dir=$(dirname "$rel")
     roster="${dir}/CHAPTERS.md"
+    # The page's OWN bound in its own line. The elder message spelled the general bound whatever the
+    # page was weighed against, so session-logs/README.md at 57,344 would have been advised against
+    # 24,576 -- a reading naming a number it did not use.
     if [ -f "$roster" ]; then
-      echo "ADVISE duty6 living-pin-near ${rel}: ${size} ≥ 90% of ${LIVING_PIN_MAX_BYTES} — fold closed season into archive/; roster ${roster}" >>"$TMP/d6near"
+      echo "ADVISE duty6 living-pin-near ${rel}: ${size} of ${page_max}, $((page_max - size)) free -- fold closed season into archive/; roster ${roster}" >>"$TMP/d6near"
     else
-      echo "ADVISE duty6 living-pin-near ${rel}: ${size} ≥ 90% of ${LIVING_PIN_MAX_BYTES} — fold closed season; seat ${dir}/CHAPTERS.md (append-only-growth-law)" >>"$TMP/d6near"
+      echo "ADVISE duty6 living-pin-near ${rel}: ${size} of ${page_max}, $((page_max - size)) free -- fold closed season; seat ${dir}/CHAPTERS.md (append-only-growth-law)" >>"$TMP/d6near"
     fi
   fi
-done <"$ROSTER"
+done <"$TMP/d6roster"
+echo "ADVISE duty6 weighed=${d6_weighed} paths (docs roster union seated pin roster)"
+# BOTH LISTS PRINT. The elder form reached the near list through an `elif`, so it printed only when
+# nothing was past bound -- and the one moment a reader most wants to know which pins are about to
+# follow is the moment one of them has already crossed.
 if [ -s "$TMP/d6" ]; then
   cat "$TMP/d6"
   echo "ADVISE duty6 count=$(wc -l <"$TMP/d6" | tr -d ' ')"
-elif [ -s "$TMP/d6near" ]; then
-  cat "$TMP/d6near"
-  echo "ADVISE duty6 near-count=$(wc -l <"$TMP/d6near" | tr -d ' ') — fold remedy named; never blocking"
-else
-  echo "OK   duty6 living pin bytes — all roster paths ≤ ${LIVING_PIN_MAX_BYTES} (near threshold ${LIVING_PIN_NEAR_BYTES})"
 fi
-
+if [ -s "$TMP/d6near" ]; then
+  cat "$TMP/d6near"
+  echo "ADVISE duty6 near-count=$(wc -l <"$TMP/d6near" | tr -d ' ') -- fold remedy named; never blocking"
+fi
+if [ ! -s "$TMP/d6" ] && [ ! -s "$TMP/d6near" ]; then
+  echo "OK   duty6 living pin bytes -- ${d6_weighed} paths within bound (general near threshold ${LIVING_PIN_NEAR_BYTES})"
+fi
 # --- duty 7 ---
 py_list=$(find tools -name '*.py' -type f 2>/dev/null | sort || true)
 py_n=$(printf '%s\n' "$py_list" | sed '/^$/d' | wc -l | tr -d ' ')

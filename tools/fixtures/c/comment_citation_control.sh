@@ -135,4 +135,26 @@ o=$(run)
 echo "$o" | grep -q 'verdict=card_missing' && echo "card_load_bearing=yes" || echo "card_load_bearing=no"
 mv "$pen/keep.sh" "$pen/tools/fixtures/q/qa_report_card.sh"
 
+# 11 -- dated testimony is prose, whatever its extension, and the card is what says so.
+# A .kyri session log carries `](` inside ordinary fields, and the card reads a prose file EVERY
+# line rather than comment lines only. On 20260831 that walked 107 logs into this population and
+# turned ten log fields into broken citations -- two integers, a placeholder shape, bare module
+# names in sentences (REDS %397). The prefilter in the scan drops .md, .mdc and .markdown for cost;
+# every other extension is the card's call, and it is asked.
+mkdir -p "$pen/session-logs/date/20260101"
+{ printf '%s\n' 'stamp 20260101.000000'
+  printf '%s\n' 'file lib/good.rye a note [x](nowhere/at/all.md) about a path'
+} > "$pen/session-logs/date/20260101/20260101-000000_a-log.kyri"
+stage; o=$(run)
+echo "$o" | grep -q 'verdict=ok' && echo "dated_testimony_left_alone=yes" || echo "dated_testimony_left_alone=no"
+echo "$o" | grep -q 'prose_skipped=1' && echo "prose_skip_counted=yes" || echo "prose_skip_counted=no"
+
+# 12 -- and with the skip removed, that same log is bitten. Case 11 rests on one line, so the line
+# is shown carrying the reading rather than assumed to.
+sed 's|prose=$((prose + 1)); continue ;;|prose=$((prose + 1)) ;;|' \
+  "$pen/tools/fixtures/c/comment_citation_scan.sh" > "$pen/plant.sh" \
+  && cat "$pen/plant.sh" > "$pen/tools/fixtures/c/comment_citation_scan.sh"
+o=$(run)
+echo "$o" | grep -q 'verdict=broken_citation' && echo "log_bitten_without_skip=yes" || echo "log_bitten_without_skip=no"
+
 echo "control_verdict=ok"

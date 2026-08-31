@@ -29,7 +29,7 @@
 # citations, and repairing them would have written through the links into six correct bodies and
 # broken all six at their real homes. git lists the body alone, so each is read exactly once.
 #
-# WHAT IS PROVEN, on metal. Fourteen behaviors on a real git repository in a throwaway pen -- a
+# WHAT IS PROVEN, on metal. Seventeen behaviors on a real git repository in a throwaway pen -- a
 # broken citation bitten, named, and counted; each of the five blessed shapes above left free; a
 # symlinked door adding nothing and a body's break reported once against the body rather than a
 # door; prose left to its own guard; and the card proven load-bearing, since losing it makes the
@@ -50,6 +50,7 @@ say "comment-citation: Lens TAME -- references are promises; a path that moved i
 let scan = run ["sh" "tools/fixtures/c/comment_citation_scan.sh"]
 assert scan.ok else "comment-citation: a program cites a path that does not resolve -- read its own line"
 say scan.out
+assert scan.out contains "prose_skipped=" else "comment-citation: the population this guard skipped as prose is printed beside the one it read (REDS %397)"
 assert scan.out contains "broken_citations=0" else "comment-citation: this reading is gated at zero, because the population is small and closed"
 assert scan.out contains "verdict=ok" else "comment-citation: the scan must agree with itself before it is believed"
 say "field GREEN -- every path a program cites in a comment resolves on this tree"
@@ -71,7 +72,10 @@ assert control.out contains "body_break_reported_once=yes" else "comment-citatio
 assert control.out contains "body_named_not_door=yes" else "comment-citation: and names the body, which is where the repair belongs"
 assert control.out contains "prose_left_to_its_own_guard=yes" else "comment-citation: prose has its own link guard; this one reads programs"
 assert control.out contains "card_load_bearing=yes" else "comment-citation: the reading is cited, so losing the card must refuse rather than report zero"
+assert control.out contains "dated_testimony_left_alone=yes" else "comment-citation: a dated session log is prose, and prose belongs to another guard"
+assert control.out contains "prose_skip_counted=yes" else "comment-citation: the scope a guard read belongs beside its verdict"
+assert control.out contains "log_bitten_without_skip=yes" else "comment-citation: removing the prose skip must bite, or the skip carries nothing"
 assert control.out contains "control_verdict=ok" else "comment-citation: the control must agree with itself"
-say "fourteen behaviors proven on a real git repository, the refusal shown as hard as the welcome"
+say "seventeen behaviors proven on a real git repository, the refusal shown as hard as the welcome"
 
 say "GREEN: comment-citation -- every path a program cites in a comment resolves."

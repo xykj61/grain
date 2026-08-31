@@ -16,7 +16,10 @@
 #
 # WHAT IS CHECKED. Every tracked non-prose file, for link targets on COMMENT lines only, using
 # tools/fixtures/q/qa_report_card.sh as the one reading -- CITED rather than copied, so the rule that
-# decides what a citation is lives in exactly one place. That card already knows the four things
+# decides what a citation is lives in exactly one place. WHICH FILES ARE PROSE is cited from the
+# same card, and was not always: this scan kept its own copy of the card's prose extensions until
+# REDS %397, and the day the card's list grew past it, 107 dated session logs walked in here as
+# programs. The reason is written beside the `case` that asks. That card already knows the four things
 # this check would otherwise get wrong, each learned from a real case on 20260825:
 #
 #   a placeholder shape is an illustration    `](date/YYYYMMDD/name)`, `](date/<day>/name)`
@@ -54,12 +57,34 @@ trap 'rm -rf "$work"' EXIT INT TERM
 
 files=0
 broken=0
+prose=0
 : > "$work/broken.txt"
 while IFS= read -r f; do
   [ -n "$f" ] || continue
   [ -f "$root/$f" ] || continue
+  card_out=$(COMMENT_CITATION_ROOT="$root" QA_CARD_ROOT="$root" sh "$card" "$f" --setting meter --service 100 2>/dev/null) || :
+  # WHICH FILES ARE PROGRAMS -- the card's decision, read from the card rather than kept here.
+  #
+  # The candidate list above once carried the whole answer in its own exclusions, `:!*.md :!*.mdc
+  # :!*.markdown`, which were the card's prose extensions spelled a second time. On 20260831 the
+  # card's list grew and this one did not: REDS %392 added `.bron` and `.kyri` to it, correctly,
+  # since a session log is prose rather than a program. 107 dated session logs walked into this
+  # population as programs, the card read them the way it reads prose -- every line, rather than
+  # comment lines only -- and ten ordinary log fields became broken citations: two integers
+  # (`32000`, `-32768`), a placeholder shape (`archive/NAME`), and bare module names inside
+  # sentences. Every one sits in dated testimony, which accrete-never-break protects and which this
+  # guard's own header never meant to read (REDS %397).
+  #
+  # So the classification is asked of the card, in the invocation that already reads the citations,
+  # at no added cost. What stays above is a PREFILTER for cost rather than a second answer: the
+  # three extensions it drops are prose under every reading, so it can only ever be too permissive
+  # -- and a file it lets through that the card calls prose is dropped right here, at the card's
+  # word.
+  case "$card_out" in
+    *"truth_source=prose"*) prose=$((prose + 1)); continue ;;
+  esac
   files=$((files + 1))
-  out=$(COMMENT_CITATION_ROOT="$root" QA_CARD_ROOT="$root" sh "$card" "$f" --setting meter --service 100 2>/dev/null | grep '^unresolved:') || :
+  out=$(printf '%s\n' "$card_out" | grep '^unresolved:') || :
   [ -n "$out" ] || continue
   n=$(printf '%s\n' "$out" | wc -l | tr -d ' ')
   broken=$((broken + n))
@@ -68,6 +93,7 @@ done < "$work/candidates.txt"
 
 [ -s "$work/broken.txt" ] && cat "$work/broken.txt"
 echo "programs_scanned=$files"
+echo "prose_skipped=$prose"
 echo "broken_citations=$broken"
 
 if [ "$broken" -eq 0 ]; then
