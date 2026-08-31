@@ -49,8 +49,12 @@
 # exemptions: a second exemption would be the hiding place this refusal exists to close.
 #
 # WHAT IT REPORTS WHEN IT FINISHES. `tree_at_open`, `tree_at_close`, and `tree_moved` -- a twelve-
-# character digest of `git rev-parse HEAD` plus `git status --porcelain`, taken before the first
-# guard and again after the last. The roster takes twenty minutes and a lap that begins editing
+# character digest of the tree's SHAPE and its CONTENT, taken before the first guard and again
+# after the last. The shape is `git rev-parse HEAD` plus `git status --porcelain`; the content is
+# `git diff HEAD` plus a hash of every untracked file, because a status letter reads the same
+# however often a dirty file's bytes change and the elder digest was blind to exactly that
+# (REDS %380). The whole reading and its cost sit beside the function itself.
+# The roster takes twenty minutes and a lap that begins editing
 # while it runs gets verdicts describing neither the tree it started on nor the tree it ended on.
 # REDS %221: this round did exactly that, and the round before it had already learned the lesson by
 # hand -- it stopped a pass at guard fifty for the same reason and wrote down why. A lantern that
@@ -247,11 +251,44 @@ fi
 
 # The tree this run is about to measure, in twelve characters. `git status --porcelain` covers
 # staged, unstaged, and untracked alike, so an untracked file written mid-run moves the digest --
-# which is the case that actually happened (REDS %221).
+# which is the case that actually happened (REDS %221). What porcelain prints is a status letter
+# and a path and nothing else, which is the case that happened next: a file already carrying `M`
+# reads `M path` however often its bytes change, and so do `??`, `MM`, and a staged `M ` re-staged.
+# A forty-minute pass could therefore close `tree_moved=no` over a tree it had rewritten entirely,
+# and `--hot` -- the pass that runs over a round's own staged paths -- reads worst of all, since
+# re-staging an edit is the ordinary motion of a round (REDS %380).
+#
+# So the CONTENT rides beside the shape, in two readings. `git diff HEAD --binary` carries every
+# tracked difference from HEAD, staged and unstaged in one reading, with a binary edit emitted as a
+# patch rather than as the one-line summary a plain diff gives; before a first commit there is no
+# HEAD to diff from, so the index's own blob hashes stand in, which is content under another name.
+# Untracked files go through `git hash-object --stdin-paths`, since git holds no content for a path
+# it has never been told about. ONE process for the whole list rather than one per file, and the
+# difference is not a nicety: measured in a pen at 2,003 untracked files, git's own hasher took
+# 45ms where a `sha256sum` per file took 10,393ms -- 231 times the cost, growing with a count this
+# runner does not control. Ignored paths stay outside both readings, which is what keeps this
+# runner's own card, receipt, hit ledger, and evidence room from moving the digest they sit beside.
+#
+# Porcelain stays, so the reading is a refinement rather than a replacement: it still names a
+# deletion and a rename compactly. Measured on this tree `20260830` at 15,165 tracked files and a
+# clean working directory, the whole function costs 261ms per call against the elder reading's 148ms
+# -- 113ms more, twice, across a pass that runs for forty minutes. One consequence is named rather
+# than left to be discovered: a receipt written by the elder digest cannot match this one, so the
+# first pass after this change reads `roster_receipt=miss` once and re-chains at its next full
+# green close. A miss runs every guard, which is the safe direction for a reading to fail in.
 tree_digest() {
   if git rev-parse --git-dir >/dev/null 2>&1; then
-    { git rev-parse HEAD 2>/dev/null || echo no_head; git status --porcelain 2>/dev/null; } \
-      | sha256sum | cut -c1-12
+    {
+      git rev-parse HEAD 2>/dev/null || echo no_head
+      git status --porcelain 2>/dev/null
+      if git rev-parse --verify --quiet HEAD >/dev/null 2>&1; then
+        git diff HEAD --binary 2>/dev/null
+      else
+        git ls-files -s 2>/dev/null
+      fi
+      git ls-files --others --exclude-standard 2>/dev/null \
+        | git hash-object --stdin-paths 2>/dev/null
+    } | sha256sum | cut -c1-12
   else
     echo nogit
   fi
@@ -283,12 +320,28 @@ echo "roster_receipt=$receipt_state"
 # `construction/` written into a pen moves the very tree digest three of those cases exist to read.
 # So the write is skipped where its room is absent, and the skip SAYS SO, because a silent skip is
 # how this reading would go quietly false on the day `construction/` moved.
-if [ -d "$(dirname "$hitledger")" ]; then
-  printf 'open %s digest %s receipt %s\n' "$stamp" "$tree_open" "$receipt_state" >> "$hitledger"
-else
-  echo "hitrate_ledger=skipped_no_room"
-fi
+#
+# AND THE ROW IS WRITTEN AT THE CLOSE, never here. This append used to run between the two digests,
+# which made the runner one of the things its own `tree_moved` reading measures: the row grows the
+# ledger by one line while the guards run, and a digest that reads CONTENT sees that growth. In
+# this repository the shelf is gitignored and so invisible either way; in the control's own pen it
+# is not, and the moment the digest learned to read bytes the pen answered `tree_moved=yes` on
+# every pass whose earlier case had created `construction/`. The run card and the evidence room
+# already keep this discipline and say why beside themselves -- the digest describes the tree the
+# GUARDS saw, rather than the tree plus this runner's bookkeeping. The ledger simply predated it
+# (REDS %380). The row still records the OPEN's own reading, since that is what it is computed
+# from; only the writing waits.
+hitledger_write() {
+  if [ -d "$(dirname "$hitledger")" ]; then
+    printf 'open %s digest %s receipt %s\n' "$stamp" "$tree_open" "$receipt_state" >> "$hitledger"
+  else
+    echo "hitrate_ledger=skipped_no_room"
+  fi
+}
 if [ "$probe" = yes ]; then
+  # A probe runs no guard and takes no close digest, so nothing can move between its open reading
+  # and this line -- it writes its own row here and leaves.
+  hitledger_write
   echo "run_verdict=receipt_probe"
   exit 0
 fi
@@ -528,6 +581,10 @@ done < "$pen/todo"
 # to `git status --porcelain` either way; ordering it this way means a clone where it is not yet
 # ignored still reads honestly.
 tree_close=$(tree_digest)
+
+# The open's hit-ledger row lands here, beside the card and the evidence and for the same
+# reason: nothing this runner writes belongs between its own two digests.
+hitledger_write
 
 # The evidence lands now, after the digest and beside the card, for the reason written above the
 # room's name. The old room is cleared first so a stale file can never be read as this run's
