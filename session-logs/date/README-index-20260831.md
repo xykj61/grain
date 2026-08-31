@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260831.070341` | [Neither half binds alone](20260831/20260831-070341_neither-half-binds-alone.kyri) | Kumara counts five refusals; two hostile bind plants red |
 | `20260831.065204` | [The setting comes from the grammar](20260831/20260831-065204_the-setting-comes-from-the-grammar.kyri) | `%392` closes; program Door and Meter split |
 | `20260831.045858` | [The bound read at both edges](20260831/20260831-045858_the-bound-read-at-both-edges.kyri) | Pond spool cloth takes a desk; the placard nib gets read |
 | `20260831.031048` | [The setting a hand types](20260831/20260831-031048_the-setting-a-hand-types.kyri) | the virtio_net molt lands; %392 %393 |

@@ -22,6 +22,13 @@ assert (st.err contains "GREEN") else "selftest must report GREEN"
 assert (st.err contains "five tilaks") else "the selftest must exercise all five tilaks"
 assert (st.err contains "every tamper refuses") else "every tampered tilak must be refused"
 assert (st.err contains "bind_refusals=2") else "both bind signature directions must refuse independently"
+assert (st.err contains "refusal_cases=5") else "the five signed-tilak refusal cases must stay counted"
+
+# Plant a verifier that trusts either half of the mutual bind alone. The control
+# must make both weakened directions red before this witness may call the pair whole.
+let bind_control = run ["sh" "tools/fixtures/k/kumara_tilak_bind_control.sh"]
+assert bind_control.ok else "one-directional bind controls must red on both sides -- ${bind_control.out}${bind_control.err}"
+assert (bind_control.out contains "plants=2 reds=2") else "both one-directional bind plants must be observed"
 
 # The emitted instance holds all seven records: point, bind, turn, three caps, sponsor.
 let em = run ["kumara/bin/tilak" "emit"]
