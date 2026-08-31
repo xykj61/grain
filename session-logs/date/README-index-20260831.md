@@ -13,6 +13,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 |---|---|---|
 | `20260831.095907` | [The same repair from two hands](20260831/20260831-095907_the-same-repair-from-two-hands.kyri) | %398 closed twice; theirs stands; %400 books the figure |
 | `20260831.095637` | [The reading that found its prose](20260831/20260831-095637_the-reading-that-found-its-prose.kyri) | %402: a notation's document is its comment block |
+| `20260831.101052` | [Order stays in the settlement fold](20260831/20260831-101052_order-stays-in-the-settlement-fold.kyri) | Settlement replay closes: same bytes, reorder diverges |
 | `20260831.074836` | [Two walls over one room](20260831/20260831-074836_two-walls-over-one-room.kyri) | Pond's catalog capacity takes a desk; %396 %397 %398 |
 | `20260831.080221` | [The borrowed reading and the list it kept](20260831/20260831-080221_the-borrowed-reading-and-the-list-it-kept.kyri) | %398 closed, %399 booked: one class twice |
 | `20260831.072627` | [The baton crosses the disk seam](20260831/20260831-072627_the-baton-crosses-the-disk-seam.kyri) | Scribe reads one planted baton; three refusal classes bite |

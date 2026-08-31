@@ -21,6 +21,11 @@ Sui splits the world into **owned** objects (a fast path, no global ordering for
 
 The `Constellation` holds Commitments alone. Any transition needing a member's private facts — a parent's keeper to authorize a spawn, a sponsor's keeper to adopt — takes that member's **Deed** and verifies it against its commitment by digest, so the shared surface stays minimal and private facts are proven on demand rather than stored for all to read. `verify(con, deed)` is the whole value of the split: anyone can prove an owned Deed is the current member, with no key ever leaving the owner's hand.
 
+[`replay.rye`](replay.rye) keeps the declared order beside that state. It folds each
+spawn, adoption, and transfer into a fixed 32-byte digest. The same sequence returns
+the same bytes; a valid reorder returns a different digest even when the member's
+visible sponsor and keeper finish equal.
+
 ## The constellation
 
 A galaxy leads a **d60** — its five stars and their sixty planets. Those, with the galaxy itself, settle as a **constellation**: a bounded circle of at most sixty-six commitments. [`constellation.rye`](constellation.rye) holds it, and keeps the five commitments of the ledger shape in our own words:
@@ -41,6 +46,7 @@ A ledger is only as strong as what it turns away. `constellation.rye`'s selftest
 rye build settlement/constellation.rye -femit-bin=settlement/bin/constellation
 settlement/bin/constellation selftest
 rishi/bin/rishi run tools/s/settlement_constellation_witness.rish
+rishi/bin/rishi run tools/s/settlement_replay_witness.rish
 ```
 
 ## The spoken name

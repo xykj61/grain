@@ -70,7 +70,7 @@ survey; the moves are proposals, one round each.
 | Pleac | choir-and-bijection | wire join/split as Rishi builtins; round-trip proven, empty separator refused | none |
 | Press | gauge-register | reconcile the crushed index to the four pieces on disk; grade at Door | publishing is Keaton's word |
 | Scribe | wrap-named | LANDED `20260831.072403`: a planted baton-v1 crosses the bounded disk seam; wrong-format, absent, and oversize documents refuse by name | JARL word-gated beyond local |
-| Settlement | replayable-fold | fold one spawn-adopt-transfer sequence twice byte-identical, a reorder shown divergent; register it | chain-adjacent |
+| Settlement | replayable-fold | LANDED `20260831.101052`: spawn-adopt-transfer folds twice byte-identical; a valid reorder diverges while visible state stays equal; transfer before spawn refuses | chain-adjacent |
 | Spellbook | choir-and-bijection | verify the eighteen spell homes resolve; count the emerging as a ratchet; grade at Door | new spells are Keaton's word |
 | Sundial | gauge-register | emit carries unit, date, and source per reading; a sourceless reading refused by name | none |
 | Vault | bound-in-shape | named refusals at split's edge (t under two, t over n, n over max), proven both sides on the fake key | hard keys gate |

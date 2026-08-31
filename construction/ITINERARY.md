@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `2673222037` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `09e6561fb4` -- HEAD's parent, resolvable everywhere (%401).
 
 **Now.** **A repair aimed at a comment mark lands in the branch that owns an extractor, and the fault walks in through the branch that has none.**
 
@@ -98,7 +98,7 @@ notation files with real comment prose read one sentence and **exactly 75**, `%3
 `%276` and `%358` taught the PROGRAM extractor `#` and `::`; a notation goes down the prose branch,
 which has none. Third `artifact_kind`; reads **A 91**, its weakness legible at
 last: **38% negative**, whose Gauge answer is Meter.
-**Next doors.** Dream: Settlement's replayable fold. Caravan keeps a 5-second seam, singing on
+**Next doors.** Dream: Settlement's replayable fold LANDED `20260831.101052`; Spellbook's home-resolution bijection is next. Caravan keeps a 5-second seam, singing on
 cadence or touch. Hush: `%397`'s remainder -- a card reading a reference block BESIDE the prose
 -- then `spool_cloth`'s eight `ClothError` paths; 37 shape nibs unread. Silence: **which setting a roster
 takes**, now measurable rather than asserted.
@@ -220,7 +220,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260831.095637` | The reading that found its prose -- `%402`, a notation's document is its comment block | [log](../session-logs/date/20260831/20260831-095637_the-reading-that-found-its-prose.kyri) |
-| `20260831.095907` | The same repair from two hands -- `%398` closed twice, the earlier landing stands, `%400` books the figures beside the instrument | [log](../session-logs/date/20260831/20260831-095907_the-same-repair-from-two-hands.kyri) |
+| `20260831.101052` | Settlement replay keeps declared order beside visible state | [log](../session-logs/date/20260831/20260831-101052_order-stays-in-the-settlement-fold.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)

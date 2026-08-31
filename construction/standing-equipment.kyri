@@ -1126,3 +1126,7 @@ seated 20260831.045858
 guard living_pin_near_bound
 path tools/l/living_pin_near_bound_witness.rish
 seated 20260831.080221
+
+guard settlement_replay
+path tools/s/settlement_replay_witness.rish
+seated 20260831.101052
