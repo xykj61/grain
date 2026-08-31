@@ -40,31 +40,18 @@
 - **SEATED -- Pond completes the enclosure** (`20260826`): the quest retiring ai-jail; docs accrete-only until the replacement is audited; switchover and jail debride gated (%5). Plan: `expanding-prompts/20260826-033051_pond-completes-the-enclosure.md`.
 - **STANDFAST -- the Dexter orbit** (`20260826`): 15 rounds; door `dexter/README.md`.
 - **Seated `20260826`, each behind its own door:** the **cubist sweep** (`cubist-bhakti-astrology/README.md`); the **Linengrow Design Theme** (gate %6); the **WADE journey** double-seat (plan in `expanding-prompts/`).
-- **Seated names (`20260816`):** **Scooter** = the CLI chat app on Pond; **Dexter** = the terminal module; **Ember** = the inference vane (`20260827`, REDS `%300`; **Lumen** retired, **Q-vane** a readable peer) gathering Lattice, Lantern, Ember, Scribble.
-- **Seated breaches (checkpoint first):** **the vane -> Ember** (`%300`; Q-vane a peer); **Bron -> Kyri** and **Quin voice -> Kyri**; **Oven -> Kiln through history** CUT `20260827.043900`: word-bounded rewrite, HEAD tree byte-identical, testimony protected, re-signed, `xy` force-pushed whole; benches reclone (checkpoint `20260827.040024`).
-- **Deep debride SPENT twice** (`20260825` DJINN; `20260826` season -> chapter); the standing grant (`20260823.045448`) covers renames, message rewrites, force push, reclone; re-signing proven (`20260817`).
-- **Caravan -- semi-standfast, raised priority.** Caravan work continues, and each module touched gets its opening comment as **Door** prose (*what is this for*) while comments beside a bound stay **Meter** (*why this number*). Keaton's *"kind of an obscure assembly"* is %163 one layer down. State-of-the-art code, explained in common English abstractions, made readable on the lap that touches it.
+- **Seated names, breaches, and the debride grant** rest on the [third shelf](archive/20260831-023122_itinerary-settled-decisions.md), landed rather than directive; **Scooter - Dexter - Ember** are in `context/LEXICON.md`, each breach keeps its walk-back in [`CHECKPOINTS.md`](CHECKPOINTS.md). Live clause: the debride grant (`20260823.045448`) covers renames, message rewrites, force push, reclone; a deep debride takes Keaton's word naming its target.
+- **The crypto spine** (`20260815`) -- four decisions whole on the [first shelf](archive/20260824-130807_itinerary-settled-decisions.md): Rye first, Glow on green-witnessed Rye; Chapter G double-seated; SHA-3/SHAKE preferred; **Kumara signs SLH-DSA-SHAKE-256s**, oracle GREEN. The identity key is the gate; the library is agent-doable.
+- **Caravan -- semi-standfast, raised priority.** A touched module gets its opening comment as **Door** prose and its bound comments as **Meter**, per *Grade what you touch*. %163 one layer down.
 
-### The crypto spine, seated `20260815` -- the pointer
+### Now -- the live front
 
-Four decisions stand, proven, and held whole at
-[`archive/20260824-130807_itinerary-settled-decisions.md`](archive/20260824-130807_itinerary-settled-decisions.md):
-**Rye first, Glow on green-witnessed Rye**; **Chapter G Cryptography** double-seated; **SHA-3/SHAKE
-preferred** for new designs; **Kumara signs with SLH-DSA-SHAKE-256s**, oracle GREEN on metal.
-Signing with the maintainer's identity key stays the custody gate; the library is agent-doable.
+**Git nib:** `f878869725` -- this round's own.
 
-**Host:** Framework - EDT (`America/New_York`) - Vultr SEA VPS (**AMD 4vCPU/8GB shared - 180GB
-NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.034037` and held at
-([`the bench measured`](../external-research/20260821-034037_the-bench-measured-and-the-standing-gauge-protocol.md)).
+**Now.** **A round is not landed until it is committed, and this one proved it by being
+lost twice before it was.**
 
-*Carry card for terminal - phone - waymarks. Refreshed on **remember**. Debrided to Compass Chapter `20260809.024320`; those greens live in code and counsel.*
-
-**Git nib:** `61ea50dff3` -- this round's own.
-
-**Now.** **A lap dying mid-sentence is the ordinary case here, and every artifact is
-built for it except the one holding a lock.**
-
-**The live front** (condensed `20260830.012039`; the day shelves hold every landed lap):
+**The live front** (condensed `20260831.023122`; the day shelves hold every landed lap):
 - **Tri-OS** BOOKED for Dream: LOCA parity via `brushstroke/wayland_seed.rye`, pins in
   `surface_reference.rye`. AppKit roles and the deployment floor are Keaton's gates.
 - **CION Tier C** RULED quality-first (`20260830.004431`,
@@ -82,38 +69,32 @@ built for it except the one holding a lock.**
 **MANY HANDS** (`20260828`): custody MANUAL, one writer per checkout. Root `SKILL.md`; every
 clone seats `ww` (`grain-ww/grain`, gate %1) and `.git/ssh_config_jail`.
 
-**Sibling finds** (the `20260830` repairs rest on their day shelf): Mystery's module-label
-guard fails open on BSD grep; portable, it finds elder labels in
-`tools/gen/chapter/fascia_metric_v0.rish`. **Pond:** `spool_cloth.rye` carries the same
-`max_name=48` and wall with no pedestal -- Hush's.
-**For CION:** `drey`'s rung marks are the retired form (%329), untouched here.
-**For the fleet loop (%387's remainder):** should a round's opening stash stop an in-flight
-pass in its own tree before moving the tree beneath it -- a loop change, so it is named.
+**Sibling finds:** Mystery's module-label guard fails open on BSD grep; portable, it finds
+elder labels in `tools/gen/chapter/fascia_metric_v0.rish`. **Pond:** `spool_cloth.rye` carries
+the same `max_name=48` and wall with no pedestal -- Hush's. **CION:** `drey`'s rung marks are
+the retired form (%329), untouched here. **Fleet loop (%387's remainder):** should a round's
+opening stash stop an in-flight pass in its own tree before moving the tree beneath it.
 
 **Still open:** `glow/rune_shape.rye` keeps width custody; Mind keeps the reconnect stash,
-`%281`/`%291`, two `enclosure.conf` pins.
-**Rosters `20260831`:** the cold open was REFUSED -- an orphaned pass from the dead lap
-held the lock, its verdict already fixed by the round-open stash (%387). SIGTERM released
-it through the runner's own trap; the **hot** pass carries this round's green.
-`rule_twin` holds at **%7**.
-`pond_enclosure_door` GREEN; `door_disagreements=1` at `user` is answered, gate %5 untouched.
-**Named, not taken (%347):** `pond/enclosure_policy.kyri` 8,120/8,192; the wall is yours.
-**Next doors.** Dream: Kumara, then Caravan. Hush: the **lane-safe choirs LANDED** --
-`acme_dx` and `drey` at `tier lap`, 8s together, carrying **28** guards into hearing:
-`unheard` 1,144 -> **1,116**, choirs 40 -> **37**. That closes %360's remainder in this
-lane; its 21 red guards in the Glow, STOA, SUNN and equinox lanes stay with their owners. **%386** and **%387 BOOKED**,
-their accounts in the ledger: a witness header that published three rung counts for
-sixteen legs, and a roster pass that outlived its lap and held the lock anyway.
-**%384** and **%385** folded to their shelf, laps still booked.
-Silence: the link frame is tied (`20260830.204814`) -- 554 is 12 + 14 + 528, neither room
-importing the other. `virtio_net.rye` comments read **C+ 78**, a carded molt.
+`%281`/`%291`, two `enclosure.conf` pins. **Named, not taken (%347):**
+`pond/enclosure_policy.kyri` 8,120/8,192; the wall is yours.
+**Rosters `20260831`:** the hot pass read **15 guards, all green**, then was stopped at 30
+minutes -- 2 min/guard at load 3.16 on four vCPUs shared with Dream's pass, so a 106-guard
+close wanted ~3.5 hours and this round had already been lost twice. SIGTERM released the lock
+through the runner's own trap (%387's repair, first field use). Each touched witness was
+proven alone. `rule_twin` holds at **%7**; `pond_enclosure_door` GREEN, gate %5 untouched.
+**Next doors.** Dream: Kumara, then Caravan. Hush: the twice-lost round LANDED -- two choirs
+rostered (`unheard` 1,144 -> **1,116**, choirs 40 -> **37**, closing %360 in this lane), the
+orphan-lock refusal, %386 and %387. Then this card's own recording blocks, halved here; the
+rest of them are a lap. Silence: the link frame is tied (`20260830.204814`) -- 554 is
+12 + 14 + 528, neither room importing the other. `virtio_net.rye` reads **C+ 78**, a carded molt.
 **%374 OPEN:** the receipt-chain question stays yours -- none has ever been earned here.
 ---
 ## Landed arcs
 
-Mandate, Acme DX, CION, **AHOY** beside **WADE**, Singularity, **BUHR**'s MCP surface,
-**TACT** Journeys 1, 2, 4, the recursion cellar, the image module, the Constel quorum, the
-rune naming -- proven on metal, the account in `session-logs/`.
+Mandate, Acme DX, CION, AHOY beside WADE, Singularity, BUHR's MCP surface, TACT Journeys 1, 2
+and 4, the recursion cellar, the image module, the Constel quorum, the rune naming -- proven on
+metal, each account in `session-logs/`.
 
 ## The Compass Chapter -- OPEN `20260809.021829`, now at JARL
 
@@ -131,6 +112,7 @@ Seated ladders: **HAWM - TUBE - ZETA - JABS - LULU - STOA - SETU - SUNN - POLE**
 
 ## Pier & hands
 
+- **Host** -- Framework - EDT (`America/New_York`) - Vultr SEA VPS (**AMD 4vCPU/8GB shared - 180GB NVMe** - never EWR); this session in ai-jail. Measured on metal `20260821.034037` ([the bench measured](../external-research/20260821-034037_the-bench-measured-and-the-standing-gauge-protocol.md)).
 - **Pier path** -- `~/grain`, which persists across jail resets - agent `home-xy-grain`.
 - **Lane** -- every **send** pushes `xy` then `debrided`; ls-remote guard first; `debrided` may 403 from the cloud (home pier closes the gap). Map: [`../PUBKEYS.md`](../PUBKEYS.md) - [`../context/REMOTE_ROSTER.md`](../context/REMOTE_ROSTER.md).
 - **Jail authors; host installs** -- agents write inside the enclosure; USB `adb` installs and key ops stay Keaton's hand.
@@ -222,14 +204,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260831.022006` | A dead lap's pass held the lock; the refusal reads whose lap it runs for | [log](../session-logs/date/20260831/20260831-022006_the-pass-that-outlived-its-lap.kyri) |
+| `20260831.023122` | The round lost twice lands, and a heading learns to name what stands under it | [log](../session-logs/date/20260831/20260831-023122_the-round-that-would-not-stay-lost.kyri) |
 
-**One row, on purpose.** A landed lap keeps one line until the next replaces it.
-
-## The laps
-
-*`TASKS.md` and `ROADMAP.md` fused in here on `20260823.103804` and are pointers now.* The live
-work-front is the **Now** block; a landed lap folds into a *Prior lap* line with its detail left in
-the log that recorded it, so this card stays single-stranded.
-
----
+**One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)
