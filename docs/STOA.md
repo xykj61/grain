@@ -9,7 +9,7 @@ product surfaces built on them. Compresses the silo; never replaces it.*
 **Molted:** `20260827.173952` in place, under checkpoint `3a606a8ac9` (180 inbound references keep the path)
 **Folded home:** `20260828.201439` -- the last thirteen rungs came in from their own sources
 **Kin:** [`../.claude/rules/waymark-ladders.md`](../.claude/rules/waymark-ladders.md) (STOA is a seated draw) - [`../.claude/rules/stamp-and-name.md`](../.claude/rules/stamp-and-name.md) (why STOA347 is stamped rather than counted) - [`COMPASS.md`](COMPASS.md) - home is [`../README.md`](../README.md)
-**Last row:** **STOA346**, GREEN `20260804.230305` -- and it is the last row *in the tree* as well.
+**Newest row:** the shop-growth arc, GREEN through `20260830.224500`; **STOA346** (`20260804.230305`) closed the counted era.
 
 **A row points at a witness; the witness holds the proof.** The ladder climbed 347 rungs between
 `20260718` and `20260804`, so a run of rungs that walked one shape a step at a time -- the N-field
@@ -67,6 +67,7 @@ and this page announced `STOA0-294` in its own head while the work ran on to STO
 | **STOA344** | The vane wall answers through the import door: `gardens_lawful` lands, the plant importing its vane by a same-dir cache alias with the expect in-plant | `glow_compose_tend_unary_witness` - `glow_run_worker.sh` - `gate-gardens-lawful.glow` | **GREEN** `20260804.005936` |
 | **STOA345** | Caravan kin through the wider door: `caps_lawful` and `dependents_lawful` land via `vane_decide_import` and a caravan directory alias | `glow_compose_tend_unary_witness` - `gate-{caps,dependents}-lawful.glow` | **GREEN** `20260804.012027` |
 | **STOA346** | The 2m mirrors: Caravan caps and Mantra floor each ask with two runtime faces, and cond operands bind in header order, honored in the desk. The 338 application arc closes across Tally, Caravan, and Mantra | `glow_vane_pair_mirrors_witness` | **GREEN** `20260804.230305` |
+| **the shop grows by law** -- `mul` in a cond operand, `and`/`or` pairs, the `?&`/`?|` alias twins, the and-of-ors nesting, and the first `|%` core: three Lantern laws, one source, one module | claims wall - face laws - shelf-offset law - three-laws-one-roof | `lantern_face(_claim)_witness` - `glow_preset_offset_witness` - `glow_core_witness` | **GREEN** `20260829.214107`...`20260830.224500` |
 
 Smoke: `glow_nest_type_witness` - `glow_shop_nest_parse_witness` - `glow_lower_shop_gate_witness` -
 `glow_digraph_twin_witness` - `glow_text_floor_witness`. The 26 Glow witnesses that no runner named
