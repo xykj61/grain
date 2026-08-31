@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260830.200925` | [The post on the line](20260830/20260830-200925_the-post-on-the-line.kyri) | carriage tied in three families; the bead post stood at zero slack |
 | `20260830.193650` | [The unheard sweep -- census 30, sidecar rides](20260830/20260830-193650_unheard-sweep-census-30-sidecar.kyri) | Sound closes %372/%373; concurrency witness GREEN |
 | `20260830.192524` | [a red costs the receipt](20260830/20260830-192524_a-red-costs-the-receipt.kyri) | a red close names the receipt it withheld; a gate is not a row |
 | `20260830.190807` | [no python on the path](20260830/20260830-190807_no-python-on-the-path.kyri) | the circled cut lands; the seam restored; three stops answered |

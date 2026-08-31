@@ -48,6 +48,7 @@ The data-structure museum: every non-networked shape on its own pedestal, viewab
 | [`shape-tablecloth-error-paths.glow`](shape-tablecloth-error-paths.glow) | Tablecloth's nine `ClothError` refusals -- a set's size, with the set listed so a rename cannot pass under it | `tools/t/tablecloth_glow_tend_witness.rish` (same guard; names compared as sorted sets) |
 | [`shape-tablecloth-name-bound.glow`](shape-tablecloth-name-bound.glow) | Tablecloth `max_name=48` -- a length, with the alphabet its manifest wall removes standing beside it | `tools/t/tablecloth_glow_tend_witness.rish` (same guard; length, bytes, and the wall still wired) |
 | [`shape-comlink-wire-payload-bound.glow`](shape-comlink-wire-payload-bound.glow) | Comlink `max_wire_payload=340` -- a derived ceiling, shown beside the 188-byte header it is the complement of | `tools/co/comlink_glow_tend_witness.rish` (scan, control, and a comptime tie proven on metal) |
+| [`shape-comlink-chunked-carriage-bound.glow`](shape-comlink-chunked-carriage-bound.glow) | Comlink `max_beads=8` -- the relation `whole <= pieces * piece`, across the three families that cut a whole and carry the pieces | `tools/co/comlink_carriage_witness.rish` (scan, 20 control cases, and seven comptime askings on metal) |
 
 ```
 rishi/bin/rishi run tools/m/mantra_glow_tend_limb1_witness.rish

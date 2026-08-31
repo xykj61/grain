@@ -5,6 +5,7 @@
 //! Scope: active-designing/date/20260706/20260706-023912_the-referential-namespace.md
 
 const std = @import("std");
+const assert = std.debug.assert;
 const sw = @import("recall_sync_wire.rye");
 const rb = @import("resin_batch.rye");
 const kumara = @import("kumara.rye");
@@ -19,6 +20,15 @@ pub const max_batch_wire: u32 = sw.max_wire_payload;
 pub const chunk_header_len: u32 = 9;
 pub const max_chunk_body: u32 = max_batch_wire - chunk_header_len;
 pub const max_batch_chunks: u16 = 16;
+comptime {
+    // invariant: a batch this wire accepts always divides into the chunks it allows.
+    // rb.max_batch_bytes is resin_batch's own ceiling on a batch body and batch_chunk_count
+    // refuses past max_batch_chunks, so the two rooms must agree about what fits -- otherwise
+    // a batch legal where it is built is refused where it is carried. Each file reads correct
+    // alone, which is the whole difficulty: neither reader sees the number that would make
+    // the other one wrong.
+    assert(rb.max_batch_bytes <= @as(u32, max_batch_chunks) * max_chunk_body);
+}
 
 pub const WireError = sw.WireError || error{
     BadChunk,
@@ -136,7 +146,6 @@ pub const BatchAssembler = struct {
 };
 
 pub fn run_chunk_wire_selftest() WireError!void {
-    const assert = std.debug.assert;
     var batch: [rb.max_batch_bytes]u8 = undefined;
     var i: u32 = 0;
     while (i < 700) : (i += 1) {
