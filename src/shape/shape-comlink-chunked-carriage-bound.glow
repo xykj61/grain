@@ -1,0 +1,90 @@
+::  name       comlink chunked carriage bound
+::  shape      beads -- int (@u32), bound 8 -- the most pieces a whole is allowed to divide into
+::  invariant  a whole this tree accepts always divides into the pieces it allows, and the compiler says so
+::  example    8
+::  readers    Comlink - Mantra - Amphora - Glow Tend - shape museum
+::  nib        comlink-carriage-v1 at 20260830.200925
+::
+::  Comlink's third pedestal, and the second of its bounds. The first desk named the number a
+::  single datagram leaves for its message -- 340 bytes. This one names what happens when the
+::  thing being carried is larger than that: it is cut into pieces, and the pieces are counted.
+::
+::  THE RELATION, IN ONE LINE. Three families in this tree cut a whole into pieces and carry
+::  them. Each publishes three numbers -- the whole's ceiling, one piece's size, and the most
+::  pieces allowed -- and for a whole the module ACCEPTS to actually cross, one relation must
+::  hold:
+::
+::    whole <= pieces * piece_size
+::
+::  Break it and nothing crashes and nothing corrupts. A caller hands over a whole the module
+::  accepted at its own door, and three lines later the same module refuses it -- TooManyBeads,
+::  or Overflow -- for being too large to carry. A legal input, refused by the code that called
+::  it legal.
+::
+::  THE THREE FAMILIES, MEASURED ON METAL 20260830 by building them and printing the constants:
+::
+::    family  rooms                                          whole  piece  pieces  capacity  slack
+::    batch   mantra/recall_batch_wire + mantra/resin_batch    4096    331      16      5296   1200
+::    vessel  amphora/vessel_fetch_wire                        1024    267       8      2136   1112
+::    bead    mantra/beading + mantra/recall_lap1               512     64       8       512      0
+::
+::  WHY THE BEAD ROW IS WHY THIS DESK EXISTS. Its slack is zero. Not small -- zero. A 512-byte
+::  resin is the largest this tree accepts, and the content-defined chunker in
+::  mantra/beading.rye cuts no piece shorter than `cdc_min_bead`, which is 64. Eight pieces of
+::  sixty-four is five hundred and twelve exactly, and `max_beads` is eight. The fence post
+::  stands precisely on the line.
+::
+::  Both of the numbers holding it there are the kind a routine lap moves. `cdc_min_bead` sits
+::  among the chunker's TUNING constants, beside a hash mask and a comment about average piece
+::  size -- filed under how the cutting behaves rather than under how much fits. And
+::  `max_resin_bytes` is a capacity that three rooms spell and a growing tree naturally raises.
+::
+::  MEASURED, RATHER THAN REASONED. Feeding 3,999 pseudorandom wholes through
+::  `bead_content_defined` on metal:
+::
+::    as it stands, whole=512:  0 refused, the worst content reaching exactly 8 beads
+::    max_resin_bytes 512->576: 9 refused with TooManyBeads, roughly one in every 444
+::
+::  Nine in four thousand is the shape of the harm. It is not a failure a sample finds, because
+::  it depends on the bytes: the same edit passes for 3,990 wholes and refuses for nine. A test
+::  written with one fixture would have shipped it, and the failure would have arrived later, in
+::  production, on somebody's actual content.
+::
+::  WHY A DESK, RATHER THAN A COMMENT. The relation spans two rooms in every family. The batch
+::  family's whole is `rb.max_batch_bytes` in mantra/resin_batch.rye and its carriage bound is
+::  `max_batch_chunks` in mantra/recall_batch_wire.rye, and each file reads correct alone. That
+::  is the whole difficulty: no reader of either file is looking at the number that would make
+::  the other one wrong.
+::
+::  WHAT IS WIRED, AND WHAT IS ONLY WRITTEN. From 20260830 the two families this lane holds
+::  carry the relation at comptime, so the COMPILER refuses an edit that breaks it:
+::
+::    mantra/beading.rye            three ties -- the content-defined path, the fixed-size path,
+::                                  and the claim its own max_beads comment has made since
+::                                  20260706, that a full bead-index is itself a legal resin
+::    mantra/recall_batch_wire.rye  one tie, reaching across into resin_batch's ceiling
+::
+::  Every one was proven able to REFUSE before it shipped -- inverted, and then by the plausible
+::  real edits: `cdc_min_bead` lowered to 32 stops the build, `max_resin_bytes` raised to 576
+::  stops the build, `max_batch_chunks` halved stops the build. A tie proven only in the passing
+::  direction cannot be told from a comptime block nobody evaluates.
+::
+::  THREE READINGS CARRY THIS DESK, and each can fail while the other two agree. The trios the
+::  desk lists equal what the Rye publishes, so a bound moved in one room and not the desk is
+::  seen. The relation holds for every trio by the scan's own arithmetic, computed rather than
+::  pinned, so an honest raise in both rooms walks free. And the comptime ties still stand in the
+::  rooms that hold them -- delete those blocks and the first two readings agree perfectly over
+::  code nothing proves will carry what it accepts.
+::
+::  THE SLACK IS REPORTED, NEVER GATED. A lap that gives beading real headroom -- raising
+::  `cdc_min_bead` to 128, say -- moves the tightest slack from 0 to 512, and that is better work
+::  rather than a fault. A guard that reds on an improvement is a guard someone turns off.
+::
+::  WHAT THIS DESK DOES NOT REACH. Whether these are the right ceilings, which is Comlink's and
+::  Mantra's own design question; this room reads them. Whether a whole SHOULD be cut at all, and
+::  at what size, which is the chunker's business. And amphora/vessel_fetch_wire.rye, which
+::  carries the third family in the same shape with 1,112 bytes of slack: that room is Amphora's
+::  to tie, and it is read and displayed here rather than edited.
++$  comlink-chunked-carriage-bound-shape
+  $:  beads=@u32
+  ==

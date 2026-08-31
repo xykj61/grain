@@ -44,8 +44,8 @@ pub const max_resin_bytes: u32 = 512;
 // A bead's byte budget. A sealed datagram carries 340 bytes of message; 256 leaves
 // headroom for the batch-frame per-entry overhead when wire carriage arrives.
 pub const max_bead_bytes: u32 = 256;
-// The largest number of beads one resin divides into. Eight 32-byte digests plus the
-// 4-byte header make a 292-byte index, itself a valid resin (<= max_resin_bytes).
+// The largest number of beads one resin divides into. Eight 32-byte digests beneath the
+// 36-byte index header make a 292-byte index, itself a valid resin (<= max_resin_bytes).
 pub const max_beads: u32 = 8;
 // A content-addressed bead store holds beads from many resins for the dedup dividend.
 // Raised 64 -> 256 for the spool (mantra/spool.rye): a large artifact wound across
@@ -64,6 +64,25 @@ const index_header_len: u32 = 36; // 32 whole_digest + 2 whole_len + 2 bead_coun
 const cdc_min_bead: u32 = 64; // no bead smaller than this, so bead counts stay bounded
 const cdc_max_bead: u32 = 256; // no bead larger than one bead budget (== max_bead_bytes)
 const cdc_mask: u64 = (1 << 5) - 1; // five zero bits: average bead near 80 bytes
+
+comptime {
+    // invariant: a whole this module accepts always divides into the beads it allows, at the
+    // smallest bead the content-defined chunker will ever cut. next_bead_end returns no bead
+    // shorter than cdc_min_bead, so ceil(max_resin_bytes / cdc_min_bead) is the worst bead
+    // count any legal content can force, and it must stay within max_beads -- otherwise
+    // bead_content_defined refuses a resin this same module accepted at its own door. The
+    // relation holds today by EXACTLY ZERO: 512 is 8 times 64. Measured 20260830, raising
+    // max_resin_bytes to 576 and changing nothing else refuses 9 of 3,999 pseudorandom
+    // wholes with TooManyBeads, which is why this is a tie rather than a comment.
+    assert(max_resin_bytes <= max_beads * cdc_min_bead);
+    // invariant: the same whole divides into the beads allowed on the fixed-size path too,
+    // where the caller chooses a bead_size no larger than max_bead_bytes.
+    assert(max_resin_bytes <= max_beads * max_bead_bytes);
+    // invariant: a full bead-index is itself a legal resin, since it is deposited and
+    // recalled as one. The max_beads comment has claimed this since 20260706; this is the
+    // line that checks it.
+    assert(index_header_len + max_beads * digest_raw_len <= max_resin_bytes);
+}
 
 // A deterministic gear table, one u64 per byte value, built at comptime by xorshift.
 const gear_table: [256]u64 = blk: {

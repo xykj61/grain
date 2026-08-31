@@ -887,6 +887,28 @@ path tools/co/comlink_glow_tend_witness.rish
 tier cadence
 seated 20260830.164837
 
+# comlink_carriage -- what a whole is cut into, and whether the pieces can carry it. Three families
+# in this tree cut a whole and carry the pieces, each publishing a whole's ceiling, a piece's size,
+# and a piece count -- and the relation `whole <= pieces * piece` was stated in no room, no comment,
+# and no guard. It held in all three by arithmetic nobody had written down, and the bead family held
+# it by EXACTLY ZERO margin: 512 <= 8 * 64, where the 64 is a chunker tuning constant filed beside a
+# hash mask rather than beside a carriage bound. Measured before the guard was written: raising
+# `max_resin_bytes` 512 -> 576 and changing nothing else refuses 9 of 3,999 pseudorandom wholes with
+# TooManyBeads -- a legal input refused by the module that accepted it two lines earlier, on 1 in 444
+# contents, which is why a single-fixture test would ship it. The two mantra/ rooms now carry the
+# relation at comptime; amphora/vessel_fetch_wire.rye carries the third family and is Amphora's to
+# tie, so the tie count is a FLOOR. Twenty control cases on real files in a throwaway pen, sixteen
+# refusals and four welcomes, and a probe that asks the compiler seven times -- four inverted ties
+# and the three plausible real edits that were measured to produce a wrong answer. Measured here
+# `20260830.200925`: 12s whole, of which the pure scan and control are under a second. At tier cadence
+# because it builds two Rye modules eight times over and lowers a desk through Glow, the same clock
+# the Glow witnesses beside it keep.
+
+guard comlink_carriage
+path tools/co/comlink_carriage_witness.rish
+tier cadence
+seated 20260830.200925
+
 # THE GUARDS OUR OWN RULES ALREADY DEMAND (REDS %360). The census that row books found 1,153
 # tracked guards this roster reaches on no lap at all, and five of them are not merely unrun --
 # each is named by a LIVING RULE that instructs a lap to run it. A rule that names a check and a

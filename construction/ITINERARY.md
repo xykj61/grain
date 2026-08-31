@@ -58,10 +58,10 @@ NVMe** - never EWR) - this session in ai-jail. Measured on metal `20260821.03403
 
 *One-page carry card for outer terminal - phone - waymarks. Refreshed when Keaton says **remember**. Debrided to the Compass Chapter `20260809.024320`; those greens live in the code and dated counsel.*
 
-**Git nib:** `c70f2e13d0` -- this round's own.
+**Git nib:** `7808dc3dd8` -- this round's own.
 
-**Now.** **A red costs the receipt: the roster now names what a red close withheld, and
-which guards block the cheaper pass.**
+**Now.** **The post standing on the line: three families cut a whole into pieces, and
+the tightest carried what it accepts by exactly zero. The compiler holds it now.**
 
 **The live front** (condensed `20260830.012039`; the checkpoint holds the departing accounts,
 the day shelves every landed lap):
@@ -92,21 +92,21 @@ literal `example    13`, so an honest fourteenth ParseError path reds
 **Still open:** `glow/rune_shape.rye` keeps width custody; Mind keeps the reconnect stash,
 `%281`/`%291`, two `enclosure.conf` pins. **%360 FALLS:** the five guards our rules demand now
 stand rostered for **18s** a lap -- `unheard` 1,153 -> **1,144**, choirs 41 -> 40.
-**%360's gate SETTLED `20260830.190407`:** the seed subject is `crashed-meteor` in the wall,
-the FIELD's publisher, and both rules, and the real publish shipped on it. The remainder is
-the pier clones' stale untracked `publish-seed.sh` copies, at Keaton's hand.
+**%360's gate SETTLED `20260830.190407`:** the seed subject is `crashed-meteor` everywhere
+and the publish shipped; the remainder is the pier clones' stale `publish-seed.sh`, your hand.
 `%359`/`%370` CLOSED; `%353`-`%355` folded.
-**Rosters `20260830`:** `grain-hush` 103/102, gate %7 alone; 122 rostered; `grain-silence` 96 cold, gate %7 and `pond_enclosure_door`.
+**Rosters `20260830`:** `grain-hush` 103/102; **123** rostered; `grain-silence` 60 of 96 in 25m, gate %7.
 **The falsifier splits:** `env` travelled; the door half did not --
 `door_disagreements=1` at `user`, `derived=502 metal=unread`. Gate %5, named not touched.
-**Named, not taken (%347):** `pond/enclosure_policy.kyri` stands at 8,120 of 8,192, nearly all of
-it the comment that makes it auditable; `entry`'s paragraph meets that wall, and widening it is yours.
+**Named, not taken (%347):** `pond/enclosure_policy.kyri` at 8,120 of 8,192, nearly all comment;
+`entry`'s paragraph meets that wall, and widening it is yours.
 **Next doors.** Dream: Kumara, then Caravan. Hush: the digest red, then the lane-safe choirs
 (`drey` 17, `acme_dx` 11); the auditor still waits on gate %7.
-Silence: Comlink's other bounds. `amphora/vessel_fetch_wire.rye` is Amphora's -- windows rule.
-**%374 OPEN:** the receipt is written past the red exit, so a tree whose reds sit at a gate
-never earns `--scoped` -- here `pond_enclosure_door` (%5) and `rule_twin` (%7), 2h27m a pass.
-The diagnosis is honest now; a receipt chaining from a gated red is yours. (%369/%371 CLOSED.)
+Silence: Comlink's remaining bounds. `vessel_fetch_wire.rye` is the untied third -- Amphora's.
+**%374 and %376 OPEN, one class -- two right mechanisms composing into a wrong reading.** A
+receipt written past the red exit, so a gated red bars `--scoped` (%5, %7); and a path-limited
+commit over the staging pre-commit hook, leaving the index at the pre-hook blob so the amend
+guard refuses a clean tree. Both proven both ways in a pen; three repairs named -- yours.
 ---
 ## Landed arcs
 
@@ -221,7 +221,7 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260830.192524` | A red costs the receipt: withholding and blockers named | [log](../session-logs/date/20260830/20260830-192524_a-red-costs-the-receipt.kyri) |
+| `20260830.200925` | The post on the line: carriage tied, bead slack zero | [log](../session-logs/date/20260830/20260830-200925_the-post-on-the-line.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it.
 

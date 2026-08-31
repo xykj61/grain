@@ -1,0 +1,97 @@
+# tools/co/comlink_carriage_witness.rish -- the chunked-carriage relation, across every room that
+# cuts a whole and every room that carries the pieces.
+#
+#   rishi/bin/rishi run tools/co/comlink_carriage_witness.rish
+#
+# WHY THIS RUNG. Three families in this tree cut a whole into pieces and carry them, and each
+# publishes three numbers: the whole's ceiling, one piece's size, and the most pieces allowed. For
+# a whole the module ACCEPTS to cross, one relation must hold -- whole <= pieces * piece_size --
+# and until 20260830 it was stated in no room, no comment, and no guard. It held in all three by
+# arithmetic nobody had written down.
+#
+# WHAT MADE IT WORTH A ROUND. The bead family held it by exactly ZERO margin. A 512-byte resin is
+# the largest mantra/beading.rye accepts, its content-defined chunker cuts no piece shorter than
+# cdc_min_bead = 64, and max_beads = 8. Eight sixty-fours is five hundred and twelve exactly. Both
+# numbers holding the post on the line are the kind a routine lap moves: cdc_min_bead sits among
+# the chunker's TUNING constants beside a hash mask, and max_resin_bytes is a capacity a growing
+# tree naturally raises.
+#
+# MEASURED RATHER THAN REASONED, before a line of this was written. Feeding 3,999 pseudorandom
+# wholes through bead_content_defined on metal: as it stands, 0 refused and the worst content
+# reaching exactly 8 beads; with max_resin_bytes raised to 576 and nothing else changed, 9 refused
+# with TooManyBeads -- a legal input refused by the module that accepted it two lines earlier.
+# Nine in four thousand is the shape of the harm, and it is content-dependent, which is exactly
+# why a single-fixture test would have shipped it.
+#
+# THREE READINGS, AND WHY THEY FIRE APART. The trios the desk shows equal what the Rye publishes,
+# so a bound moved in one room and not the other is seen. The relation holds for every trio by
+# arithmetic computed here rather than pinned, so a bound raised honestly in BOTH rooms walks free
+# while a raise that outruns its carriage reds. And the comptime ties still stand, because a law
+# the compiler no longer checks is a sentence: delete those blocks and the first two readings
+# agree perfectly over code nothing proves will carry what it accepts.
+#
+# THE READING A SHELL CANNOT TAKE, AND WHO TAKES IT. A grep proves a comptime block is WRITTEN and
+# can never prove it is EVALUATED. The compiler can, so the tie probe asks it seven times in a
+# throwaway pen: two modules compile as they stand, four inverted ties stop the build, and three
+# PLAUSIBLE REAL EDITS stop it too -- cdc_min_bead lowered, max_resin_bytes raised, max_batch_chunks
+# halved. The last three are the point: they are the edits that were measured to produce a wrong
+# answer, and they now cannot reach a build.
+#
+# WHAT THIS WITNESS DELIBERATELY DOES NOT PIN. The slack. A lap that gives beading real headroom
+# moves the tightest slack from 0 upward, and that is better work rather than a fault -- so slack
+# is reported and never gated. A guard that reds on an improvement is a guard someone turns off.
+#
+# WHAT THIS RUNG DOES NOT REACH. Whether these are the right ceilings, which is Mantra's and
+# Comlink's own design question; this room reads them. And amphora/vessel_fetch_wire.rye, which
+# carries the third family in the same shape with 1,112 bytes of slack: that room is Amphora's to
+# tie, so the tie count is read as a FLOOR -- a third room taking its own half walks free.
+
+say "comlink-carriage: Lens TAME -- bound everything and say why: a whole this tree accepts is a whole this tree can carry, and the compiler is the one that says so."
+
+say "comlink-carriage: the desk against the rooms that publish the numbers..."
+let scan = run ["sh" "tools/fixtures/c/comlink_carriage_scan.sh"]
+assert scan.ok else "comlink-carriage: the desk and the Rye disagree -- read the verdict line"
+say scan.out
+assert scan.out contains "verdict=ok" else "comlink-carriage: every carriage trio must satisfy whole <= pieces * piece"
+assert scan.out contains "placard_order=name-shape-invariant-example-readers-nib" else "comlink-carriage: the placard's six lines keep their seated order"
+assert scan.out contains "citation=ok" else "comlink-carriage: the desk names every room its families live in, including the one left to another hand"
+assert scan.out contains "rows_agree=yes" else "comlink-carriage: a bound moved in the Rye moves on the desk in the same commit"
+assert scan.out contains "desk_capacity_agrees=yes" else "comlink-carriage: a teaching surface that lies in its own table teaches the wrong number"
+assert scan.out contains "capacity_holds=3" else "comlink-carriage: all three families must carry what they accept"
+say "field GREEN -- three trios read out of the Rye, and the relation computed rather than remembered"
+
+say "comlink-carriage: the tightest post, reported and never gated (see the header)..."
+assert scan.out contains "tightest=bead:" else "comlink-carriage: the tightest family is named on every run, so headroom is visible rather than assumed"
+say "slack reported -- raising it is better work, so no ceiling stands here"
+
+say "comlink-carriage: the control, both ways..."
+let control = run ["sh" "tools/fixtures/c/comlink_carriage_control.sh"]
+assert control.ok else "comlink-carriage: the control must complete"
+say control.out
+assert control.out contains "cases=20" else "comlink-carriage: twenty plantings, each on a real file in a throwaway pen"
+assert control.out contains "refusals=16" else "comlink-carriage: every reading must refuse from its own side"
+assert control.out contains "welcomes=4" else "comlink-carriage: an honest raise, real headroom, a third room tying its own half, and a clean tree must all walk free"
+assert control.out contains "wrong=0" else "comlink-carriage: no case may land on the side it was not planted for"
+assert control.out contains "verdict=proven" else "comlink-carriage: the control must agree with itself"
+say "RED and GREEN paths proven -- sixteen plantings refused, four honest trees welcomed"
+
+say "comlink-carriage: the comptime ties, on metal, seven askings..."
+let tie = run ["sh" "tools/fixtures/c/comlink_carriage_tie_probe.sh"]
+assert tie.ok else "comlink-carriage: the carriage ties must be proven on metal"
+say tie.out
+assert tie.out contains "verdict=proven" else "comlink-carriage: the ties must hold as written and refuse when broken"
+assert tie.out contains "tie_holds=2" else "comlink-carriage: both tied modules must compile against their real constants"
+assert tie.out contains "tie_refuses=4" else "comlink-carriage: all four inverted ties must stop the build, or a block is never evaluated"
+assert tie.out contains "edit_refuses=3" else "comlink-carriage: the three edits measured to produce a wrong answer must not reach a build"
+say "metal GREEN -- the compiler refuses the edits that were measured to refuse a legal whole"
+
+let zig = "vendor/zig-toolchain/zig"
+let desk = "src/shape/shape-comlink-chunked-carriage-bound.glow"
+
+say "comlink-carriage: lower, build, run the carriage pedestal..."
+let gate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" desk]
+assert gate.ok else "comlink-carriage: the carriage pedestal must lower, build, and run"
+assert gate.out contains "EXIT:0" else "comlink-carriage: the carriage pedestal did not exit 0"
+say "glow GREEN -- the desk lowers through Glow, builds through Zig, and runs"
+
+say "GREEN: comlink chunked carriage -- three families that cut a whole into pieces now state what they always relied on, the tightest of them stands on a post the compiler will not let move, and the two edits measured to refuse a legal resin refuse to build instead."
