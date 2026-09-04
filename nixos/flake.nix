@@ -5,21 +5,20 @@
 # systemd. This pier stays NixOS: flakes pin inputs, configuration.nix is the
 # module. Grain's own infuse lives at brix/infuse.rye.
 #
-# ai-jail is an input of its own (not pkgs) because upstream builds with
-# rust-overlay rustc 1.97.1 and wraps BWRAP_BIN. Following nixos-26.05 would
-# miss that toolchain; the nested flake keeps its nixpkgs.
+# ai-jail is a GitHub-release overlay in configuration.nix, not a flake input.
+# Upstream's flake vendors crates.io during cargo-vendor; crates.io 403s the
+# default curl User-Agent (landlock-0.4.4, 20260904 on this pier). The
+# linux-x86_64 tarball is a glibc ELF; autoPatchelfHook is the stub-ld fix.
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
-    ai-jail.url = "github:akitaonrails/ai-jail";
   };
 
-  outputs = { nixpkgs, disko, ai-jail, ... }: {
+  outputs = { nixpkgs, disko, ... }: {
     nixosConfigurations.pier = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
-      specialArgs = { inherit ai-jail; };
       modules = [
         disko.nixosModules.disko
         ./disk-config.nix
