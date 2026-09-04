@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260904.081806` | [Flake pins ai-jail](20260904/20260904-081806_flake-pins-ai-jail.kyri) | system PATH after rebuild-outer |
 | `20260904.080747` | [Missing jail not a lap](20260904/20260904-080747_missing-jail-not-a-lap.kyri) | tee hid exit 1; FLEET_BARE watched door |
 | `20260904.075954` | [Pier incense pheromone GREEN](20260904/20260904-075954_pier-incense-pheromone-green.kyri) | rye version; wire-lab GREEN in both dests |
 | `20260904.075615` | [Bootstrap links libc](20260904/20260904-075615_bootstrap-links-libc.kyri) | -lc for getpid; resume rye with -lc |

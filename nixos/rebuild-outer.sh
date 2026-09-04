@@ -33,8 +33,14 @@ else
   echo "synced   -> $ETC/configuration.nix"
 fi
 
-# 2. Switch. The flake target is #pier (nixos/flake.nix). Using the repo path
-#    directly works whether or not /etc/nixos is a symlink.
+# 2. Lock ai-jail if this checkout has not yet recorded the input. The Mac
+#    bench has no nix, so flake.lock gains the nested rust-overlay nodes on
+#    the pier. Then switch. The flake target is #pier (nixos/flake.nix).
+if ! grep -q '"ai-jail"' "$REPO/flake.lock"; then
+  echo "lock     -> nix flake lock --update-input ai-jail"
+  ( cd "$REPO" && nix flake lock --update-input ai-jail )
+  echo "lock     -> flake.lock is now dirty; copy it to the field tree and send so the next pull already holds the pin"
+fi
 sudo nixos-rebuild switch --flake "$REPO#pier"
 
 # 3. Witness the two new interpreters are on the system PATH.
@@ -56,4 +62,7 @@ command -v claude && claude --version || echo "claude not on PATH"
 #    ran `codex --version` through versionCheckHook.
 command -v codex && codex --version || echo "codex not on PATH"
 
-echo "== rebuild-outer GREEN if perl, python3, claude, and codex printed versions above =="
+# 6. Confirm ai-jail landed on the system PATH (command -v, not a store pin).
+command -v ai-jail && ai-jail --version || echo "ai-jail not on PATH"
+
+echo "== rebuild-outer GREEN if perl, python3, claude, codex, and ai-jail printed versions above =="

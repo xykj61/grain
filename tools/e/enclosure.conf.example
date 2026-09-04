@@ -46,7 +46,10 @@ AIJAIL_FLAGS="--private-home --no-docker"
 #   echo "91458f153c7b0a87d79aae9014b558a0cfc4b160b7e390008a00c1adfc3edc21  ai-jail-linux-x86_64.tar.gz" | sha256sum -c -
 #   tar -xzf ai-jail-linux-x86_64.tar.gz && rm ai-jail-linux-x86_64.tar.gz
 # AIJAIL_BIN="$REPO/tools/.cache/bin/ai-jail"   # seated v1.12.0 · Claude pin 20260712.131200
-# NixOS: release tarballs hit stub-ld — prefer:
+# NixOS: release tarballs hit stub-ld. Standing door after rebuild-outer:
+#   /run/current-system/sw/bin/ai-jail  (nixos/flake.nix input ai-jail)
+# Leave AIJAIL_BIN unset so command -v finds that path. A store pin goes stale.
+# Interim, before the first switch that ships the input:
 #   nix profile install github:akitaonrails/ai-jail
 #   AIJAIL_BIN="$HOME/.nix-profile/bin/ai-jail"
 # Also keep empty /opt (bwrap ro-bind): systemd.tmpfiles.rules = [ "d /opt 0755 root root -" ];
