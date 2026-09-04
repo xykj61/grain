@@ -11,9 +11,28 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260904.155552` | [Earth ships run Claude Code](20260904/20260904-155552_earth-ships-run-claude-code.kyri) | Darwin host, Linux jail, stream-json |
+| `20260904.154200` | [Stop Dallas incense loops](20260904/20260904-154200_stop-dallas-incense-loops.kyri) | Incense stays this Mac; behind 2 |
+| `20260904.153428` | [Work kept, wait did not match](20260904/20260904-153428_work-kept-the-wait-did-not-match.kyri) | 110 min; 1de7ecd8df grep not rg |
+| `20260904.143259` | [73 bytes is the jail banners](20260904/20260904-143259_73-bytes-is-the-jail-banners.kyri) | 1h8m; text format; --network on |
+| `20260904.142848` | [Lap is live, ps argv is the seat prompt](20260904/20260904-142848_lap-is-live-ps-argv-is-the-seat-prompt.kyri) | pid 1793960; 1h8m; text format |
+| `20260904.141650` | [Incense stays this Mac, Claude on pier](20260904/20260904-141650_incense-stays-this-mac-claude-on-pier.kyri) | text format; tools/f after lap; no spend word |
 | `20260904.140937` | [Guards measure without ripgrep](20260904/20260904-140937_guards-measure-without-ripgrep.kyri) | dated_pattern and e123 GREEN; classify greps |
+| `20260904.131523` | [Waters even at 56ddbd435](20260904/20260904-131523_waters-even-at-56ddbd435.kyri) | dual-send GREEN; Git nib lags |
+| `20260904.130335` | [Incense keys wired, GitHub then send](20260904/20260904-130335_incense-keys-wired-github-then-send.kyri) | gpg.program under grain-incense |
+| `20260904.123603` | [Petrichor holds the profile](20260904/20260904-123603_petrichor-holds-the-profile.kyri) | 4642 bytes; cp onto incense |
+| `20260904.115737` | [Profile missing on incense](20260904/20260904-115737_profile-missing-on-incense.kyri) | gitignored; scp from local Mac terminal |
+| `20260904.112452` | [Loop completed, send waits on host keys](20260904/20260904-112452_loop-completed-send-waits-on-host-keys.kyri) | text dump; harvest gpg path; twelve files |
+| `20260904.104012` | [Forty-one minutes silent, wc the tee](20260904/20260904-104012_forty-one-minutes-silent-wc-the-tee.kyri) | measure incense.txt before Ctrl-C |
 | `20260904.103121` | [Close incense-owned roster reds](20260904/20260904-103121_incense-owned-roster-reds.kyri) | sed_i 0; remember-git-nib 0.47; %400 BOOKED |
+| `20260904.095500` | [Jailed pong GREEN, loop next](20260904/20260904-095500_jailed-pong-green-loop-next.kyri) | --network holds a tiny prompt |
+| `20260904.095132` | [Host pong GREEN, jail smoke next](20260904/20260904-095132_host-pong-green-jail-smoke-next.kyri) | 2026.08.04-aaa8809; Pong here and ready |
 | `20260904.095008` | [Incense pong GREEN](20260904/20260904-095008_incense-pong-green.kyri) | grain-incense Linux; xy/main clean |
+| `20260904.094540` | [Probes green, hang is the agent stream](20260904/20260904-094540_probes-green-hang-is-the-agent-stream.kyri) | auth and curl 200; pong next |
+| `20260904.094014` | [Bare lap silent too](20260904/20260904-094014_bare-lap-silent-too.kyri) | FLEET_BARE; Dallas to Cursor API |
+| `20260904.092600` | [Hung on retry attempt 1](20260904/20260904-092600_hung-on-retry-attempt-1.kyri) | 22 min; interrupt; isolate with FLEET_BARE |
+| `20260904.092237` | [Connection lost is the API retry](20260904/20260904-092237_connection-lost-is-the-api-retry.kyri) | agentn.global.api5; attempt 1 |
+| `20260904.091812` | [Silence after jail is the API](20260904/20260904-091812_silence-after-jail-is-the-api.kyri) | no printouts; first-token wait |
 | `20260904.085605` | [Pass --network into the jail](20260904/20260904-085605_pass-network-into-the-jail.kyri) | v1.20.2 defaults network off; EAI_AGAIN |
 | `20260904.084108` | [Map nscd into the jail](20260904/20260904-084108_map-nscd-into-the-jail.kyri) | EAI_AGAIN; /run/nscd for getaddrinfo |
 | `20260904.083756` | [Pier rebuild-outer GREEN](20260904/20260904-083756_pier-rebuild-outer-green.kyri) | ai-jail 1.20.2 on system PATH |
