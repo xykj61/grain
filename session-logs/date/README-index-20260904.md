@@ -11,6 +11,8 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260904.103121` | [Close incense-owned roster reds](20260904/20260904-103121_incense-owned-roster-reds.kyri) | sed_i 0; remember-git-nib 0.47; %400 BOOKED |
+| `20260904.095008` | [Incense pong GREEN](20260904/20260904-095008_incense-pong-green.kyri) | grain-incense Linux; xy/main clean |
 | `20260904.085605` | [Pass --network into the jail](20260904/20260904-085605_pass-network-into-the-jail.kyri) | v1.20.2 defaults network off; EAI_AGAIN |
 | `20260904.084108` | [Map nscd into the jail](20260904/20260904-084108_map-nscd-into-the-jail.kyri) | EAI_AGAIN; /run/nscd for getaddrinfo |
 | `20260904.083756` | [Pier rebuild-outer GREEN](20260904/20260904-083756_pier-rebuild-outer-green.kyri) | ai-jail 1.20.2 on system PATH |

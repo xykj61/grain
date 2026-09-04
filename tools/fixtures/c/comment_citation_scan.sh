@@ -18,8 +18,9 @@
 # tools/fixtures/q/qa_report_card.sh as the one reading -- CITED rather than copied, so the rule that
 # decides what a citation is lives in exactly one place. WHICH FILES ARE PROSE is cited from the
 # same card, and was not always: this scan kept its own copy of the card's prose extensions until
-# REDS %397, and the day the card's list grew past it, 107 dated session logs walked in here as
-# programs. The reason is written beside the `case` that asks. That card already knows the four things
+# REDS %397, and the day the card's list grew past it, dated session logs walked in here as
+# programs. How many is this scan's own `prose_skipped` field, printed each run -- this comment
+# cites that field rather than keeping a copy (REDS %400). The reason is written beside the `case` that asks. That card already knows the four things
 # this check would otherwise get wrong, each learned from a real case on 20260825:
 #
 #   a placeholder shape is an illustration    `](date/YYYYMMDD/name)`, `](date/<day>/name)`
@@ -76,8 +77,9 @@ while IFS= read -r f; do
   # The candidate list above once carried the whole answer in its own exclusions, `:!*.md :!*.mdc
   # :!*.markdown`, which were the card's prose extensions spelled a second time. On 20260831 the
   # card's list grew and this one did not: REDS %392 added `.bron` and `.kyri` to it, correctly,
-  # since a session log is prose rather than a program. 107 dated session logs walked into this
-  # population as programs, the card read them the way it reads prose -- every line, rather than
+  # since a session log is prose rather than a program. Dated session logs walked into this
+  # population as programs -- how many is `prose_skipped` on the next line, a field this comment cites
+  # (REDS %400). The card read them the way it reads prose -- every line, rather than
   # comment lines only -- and ten ordinary log fields became broken citations: two integers
   # (`32000`, `-32768`), a placeholder shape (`archive/NAME`), and bare module names inside
   # sentences. Every one sits in dated testimony, which accrete-never-break protects and which this

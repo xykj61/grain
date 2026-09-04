@@ -17,6 +17,10 @@ a module's comments, a design. One grade, four readings, a plain school scale, a
 sh tools/fixtures/q/qa_report_card.sh <path> [--setting door|field|meter] [--service N]
 ```
 
+For a program, the comment grammar carries the setting: its module head reads at Door, its
+`invariant:` bounds report at Meter, and declaration docs remain a named third count. The
+`--setting` flag remains accepted for command compatibility and does not choose a program's grade.
+
 ## The habit, in one line
 
 > **Touch it, read it, grade it. B or better stands. Below B pushes a frame.**
