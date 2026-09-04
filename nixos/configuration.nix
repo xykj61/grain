@@ -1,4 +1,4 @@
-{ modulesPath, pkgs, ... }:
+{ modulesPath, pkgs, ai-jail, ... }:
 {
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
@@ -183,7 +183,11 @@
   # perl - python3 -- outer-terminal interpreters for legacy scripts the pier
   #   still carries (the .sh/.pl fold to Rishi is in motion, not complete);
   #   available in the outer host shell for Keaton to run (seated 20260819).
-  environment.systemPackages = with pkgs; [
+  # ai-jail -- enclosure binary on /run/current-system/sw/bin after rebuild.
+  #   Release tarballs hit stub-ld; nix profile install was the interim door.
+  #   Leave AIJAIL_BIN unset so command -v finds the system path (a store pin
+  #   goes stale on the next switch).
+  environment.systemPackages = (with pkgs; [
     jq       # JSON -- live stream-json rendering for the season loop (agent visibility)
     tmux
     git
@@ -201,6 +205,8 @@
     s6-rc
     perl     # outer-terminal Perl -- legacy scripts pending the Rishi fold
     python3  # outer-terminal Python 3 -- absent on the pier before this (REDS memory)
+  ]) ++ [
+    ai-jail.packages.${pkgs.stdenv.hostPlatform.system}.default
   ];
 
   system.stateVersion = "26.05";
