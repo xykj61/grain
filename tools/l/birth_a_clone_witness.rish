@@ -30,4 +30,8 @@ assert executable.ok else "birth-a-clone: the copied zig must be proven executab
 let bare = run ["sh" "-c" "grep -n 'sh rye/bootstrap.sh' tools/l/birth_a_clone.rish | grep -v RYE_ZIG"]
 assert (bare.ok == false) else "birth-a-clone: a bootstrap line without RYE_ZIG would inherit a stale shell"
 
-say "GREEN: birth-a-clone -- rye bootstrap pins RYE_ZIG to the destination zig."
+# invariant: Linux glibc needs -lc for getpid; Darwin accepts it (proven 20260904).
+let libc = run ["sh" "-c" "grep -q -- '-lc' rye/bootstrap.sh"]
+assert libc.ok else "birth-a-clone: rye/bootstrap.sh must pass -lc so Linux getpid links"
+
+say "GREEN: birth-a-clone -- rye bootstrap pins RYE_ZIG to the destination zig, and links libc."
