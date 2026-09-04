@@ -57,11 +57,11 @@ cd "$root"
 prompt_file=tools/l/${seat}_seat_prompt.txt
 [ -f "$prompt_file" ] || { echo "fleet-loop: missing seat prompt $prompt_file"; exit 2; }
 
-# invariant: a seat runs only in its own tree (%291). Incense is the field
-# ~/grain; the other five names are the clone directory they were born with.
+# invariant: a seat runs only in its own tree (%291). Incense's unattended
+# loop is ~/grain-incense; the field ~/grain is the captain's GUI sitting.
 want_tree=
 case "$seat" in
-incense) want_tree=grain ;;
+incense) want_tree=grain-incense ;;
 furrow) want_tree=grain-furrow ;;
 harvest) want_tree=grain-harvest ;;
 silence) want_tree=grain-silence ;;

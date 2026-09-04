@@ -1,7 +1,7 @@
 # session-logs day index -- 20260903
 
 **Language:** EN
-**Status:** Chapter index -- OPEN while the day runs, immutable once the day closes
+**Status:** Chapter index -- CLOSED `20260904` (64 rows counted at close); immutable from here
 **Chapter:** `20260903`
 
 Rows for `20260903`, newest first. A session log is written straight to `date/YYYYMMDD/` and its

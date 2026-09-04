@@ -141,7 +141,7 @@ PASTE
 
 echo "fleet-rearm: the roster, every seat reported (home=$home)"
 report_seat sound grain field
-report_seat incense grain cursor
+report_seat incense grain-incense cursor
 report_seat furrow grain-furrow cursor
 report_seat harvest grain-harvest cursor
 report_seat mind grain-mind codex
