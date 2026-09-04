@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `40f82c5674` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `037384b095` -- HEAD's parent, resolvable everywhere (%401).
 
 **Now.** **A free pass one reading earns by measurement is a free pass its twin has already argued for.**
 
@@ -223,6 +223,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260903.222445` | SOURCE C0b first boot -- Ubuntu 22.04, panel password, kexec | [log](../session-logs/date/20260903/20260903-222445_source-c0b-ubuntu-kexec-first-boot.kyri) |
+| `20260903.225306` | Seed published both doors -- IDENT_CLEAN, 6b45db6 | [log](../session-logs/date/20260903/20260903-225306_seed-published-both-doors.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)
