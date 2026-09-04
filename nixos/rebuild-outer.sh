@@ -37,14 +37,8 @@ else
   echo "synced   -> $ETC/configuration.nix"
 fi
 
-# 2. Lock ai-jail if this checkout has not yet recorded the input. The Mac
-#    bench has no nix, so flake.lock gains the nested rust-overlay nodes on
-#    the pier. Then switch. The flake target is #pier (nixos/flake.nix).
-if ! grep -q '"ai-jail"' "$REPO/flake.lock"; then
-  echo "lock     -> nix flake lock --update-input ai-jail"
-  ( cd "$REPO" && nix flake lock --update-input ai-jail )
-  echo "lock     -> flake.lock is now dirty; copy it to the field tree and send so the next pull already holds the pin"
-fi
+# 2. Switch. The flake target is #pier. ai-jail is an overlay on the GitHub
+#    release tarball (configuration.nix), not a flake input -- no lock step.
 sudo nixos-rebuild switch --flake "$REPO#pier"
 
 # 3. Witness the two new interpreters are on the system PATH.

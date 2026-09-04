@@ -39,7 +39,7 @@ The public keys in the example are the token `REPLACE_WITH_YOUR_PUBLIC_KEY` -- n
 - **Stand the host with kexec** from [`../20260803-164117_0-standing-a-declared-pier.md`](../20260803-164117_0-standing-a-declared-pier.md) (curl, tar, `/root/kexec/run`). Ghost SSH: Enter, then `~.`. `nixos-infect` is a convert-in-place reboot that left IPv4 silent on `20260903`.
 - **After the first reboot `/etc/nixos` may be empty.** The flake lived on installer RAM. Write `flake.nix`, `disk-config.nix`, and `configuration.nix` back; `flake.lock` returns on the next eval.
 - **NAR hash mismatch during `nixos-install`:** `rm -rf /root/.cache/nix` and run the same install again. Reboot only on `status=0`.
-- **Do not copy the field's `nixos/`.** That snapshot carries real keys and `PermitRootLogin = "no"`. A laptop key that is not in it will not get in. The living flake also pins `ai-jail` (rust-overlay, GPL host tool). Templates stay lean for first boot; add that input from `nixos/flake.nix` after the steward can rebuild.
+- **Do not copy the field's `nixos/`.** That snapshot carries real keys and `PermitRootLogin = "no"`. A laptop key that is not in it will not get in. The living overlay patchelfs the `ai-jail` GitHub linux-x86_64 release (GPL host tool). Templates stay lean for first boot; copy that overlay from `nixos/configuration.nix` after the steward can rebuild.
 - **After steward:** `sudo -v` as `keeper`, then set `PermitRootLogin = "no"`. `sshd -T` prints nothing useful on OpenSSH 10 here. The generation's file is the witness:
   `grep -E 'PermitRootLogin|PasswordAuthentication' /run/current-system/etc/ssh/sshd_config`
 

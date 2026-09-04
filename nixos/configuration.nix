@@ -1,4 +1,4 @@
-{ modulesPath, pkgs, ai-jail, ... }:
+{ modulesPath, pkgs, ... }:
 {
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
@@ -167,6 +167,65 @@
           sourceProvenance = [ final.lib.sourceTypes.binaryNativeCode ];
         };
       });
+
+      # ai-jail: GitHub linux-x86_64 release, patchelf'd, BWRAP_BIN wrapped.
+      # The upstream flake builds from source and vendors crates.io; on this
+      # pier (20260904) cargo-vendor 403'd crate-landlock-0.4.4.tar.gz --
+      # crates.io blocks the default curl User-Agent (nixpkgs issue 558620).
+      # The release tarball is a glibc ELF (interpreter /lib64/ld-linux,
+      # NEEDED libgcc_s and libc, read on the Mac 20260904) so a bare extract
+      # hits NixOS stub-ld; autoPatchelfHook is the same road cursor-cli takes.
+      # Hash is the asset digest GitHub published for v1.20.2, sha256sum-checked
+      # on this Mac the same morning (03ab6f00...5b1c).
+      #
+      # To bump: read github.com/akitaonrails/ai-jail/releases/latest, then the
+      # ai-jail-linux-x86_64.tar.gz checksum on that page.
+      ai-jail = final.stdenv.mkDerivation (finalAttrs: {
+        pname = "ai-jail";
+        version = "1.20.2";
+
+        src = final.fetchurl {
+          url = "https://github.com/akitaonrails/ai-jail/releases/download/v${finalAttrs.version}/ai-jail-linux-x86_64.tar.gz";
+          sha256 = "03ab6f0066ba62d1fcf9085b171543cb5a23a349e1d3dd01c0222ab1aaed5b1c";
+        };
+
+        sourceRoot = ".";
+
+        nativeBuildInputs = [
+          final.autoPatchelfHook
+          final.makeWrapper
+        ];
+        buildInputs = [ final.stdenv.cc.cc.lib ];
+
+        dontStrip = true;
+
+        installPhase = ''
+          runHook preInstall
+          install -Dm755 ai-jail "$out/bin/ai-jail"
+          runHook postInstall
+        '';
+
+        postFixup = ''
+          wrapProgram "$out/bin/ai-jail" \
+            --set BWRAP_BIN "${final.lib.getExe final.bubblewrap}"
+        '';
+
+        doInstallCheck = true;
+        installCheckPhase = ''
+          runHook preInstallCheck
+          "$out/bin/ai-jail" --version
+          runHook postInstallCheck
+        '';
+
+        meta = {
+          description = "Linux enclosure for CLI agents -- bwrap, patchelf'd for NixOS";
+          homepage = "https://github.com/akitaonrails/ai-jail";
+          license = final.lib.licenses.gpl3Only;
+          mainProgram = "ai-jail";
+          platforms = [ "x86_64-linux" ];
+          sourceProvenance = [ final.lib.sourceTypes.binaryNativeCode ];
+        };
+      });
     })
   ];
 
@@ -184,10 +243,9 @@
   #   still carries (the .sh/.pl fold to Rishi is in motion, not complete);
   #   available in the outer host shell for Keaton to run (seated 20260819).
   # ai-jail -- enclosure binary on /run/current-system/sw/bin after rebuild.
-  #   Release tarballs hit stub-ld; nix profile install was the interim door.
-  #   Leave AIJAIL_BIN unset so command -v finds the system path (a store pin
-  #   goes stale on the next switch).
-  environment.systemPackages = (with pkgs; [
+  #   Overlay above patchelfs the GitHub linux-x86_64 tarball (v1.20.2) and
+  #   wraps BWRAP_BIN. Leave AIJAIL_BIN unset so command -v finds that path.
+  environment.systemPackages = with pkgs; [
     jq       # JSON -- live stream-json rendering for the season loop (agent visibility)
     tmux
     git
@@ -205,8 +263,7 @@
     s6-rc
     perl     # outer-terminal Perl -- legacy scripts pending the Rishi fold
     python3  # outer-terminal Python 3 -- absent on the pier before this (REDS memory)
-  ]) ++ [
-    ai-jail.packages.${pkgs.stdenv.hostPlatform.system}.default
+    ai-jail  # enclosure -- GitHub release, patchelf'd; not a crates.io build
   ];
 
   system.stateVersion = "26.05";
