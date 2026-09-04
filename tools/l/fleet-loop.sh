@@ -24,6 +24,7 @@
 #   LOOP_LAPS=1 sh tools/l/fleet-loop.sh pheromone
 #   LOOP_HOURS=6 sh tools/l/fleet-loop.sh petrichor
 #   FLEET_DRY=1 sh tools/l/fleet-loop.sh incense   # print the command; run nothing
+#   FLEET_BARE=1 LOOP_LAPS=1 sh tools/l/fleet-loop.sh incense  # Linux, no ai-jail
 #
 # Transcripts land INSIDE the tree (session-output/<seat>.txt rendered, <seat>.jsonl raw
 # for the claude seats), per the read-scope law's shared window -- /tmp is not durable in
@@ -35,10 +36,14 @@
 # Cursor print mode takes the prompt as an argv word after the flags (SOURCE.md).
 # Linux wraps in agent-jail.sh with --trust --sandbox disabled. Darwin passes --force
 # only (this Mac refused --trust/--sandbox on 20260903). Machines are doors: the same
-# seat uses the host's wrap. CURSOR_MODEL defaults to cursor-grok-4.6-xhigh
-# (unattended); a watched lap may set CURSOR_MODEL=cursor-grok-4.6-high.
+# seat uses the host's wrap. FLEET_BARE=1 skips the Linux jail (opt-in; a missing
+# ai-jail is a host install, not a counted lap). CURSOR_MODEL defaults to
+# cursor-grok-4.6-xhigh (unattended); a watched lap may set CURSOR_MODEL=cursor-grok-4.6-high.
 # agent-jail.sh is Linux-only (GNU readlink -f).
 set -eu
+# Honor pipeline status when the shell knows how (bash). dash has no pipefail;
+# a missing jail is then caught by the preflight below rather than by tee.
+(set -o pipefail) 2>/dev/null && set -o pipefail
 
 seat=${1:-}
 case "$seat" in
@@ -54,7 +59,7 @@ esac
 case "$seat" in
 incense | pheromone | petrichor | silence | hush | dream) ;;
 *)
-  echo "usage: sh tools/l/fleet-loop.sh incense|pheromone|petrichor|silence|hush|dream   [LOOP_HOURS=18] [LOOP_LAPS=0] [FLEET_DRY=1] [CURSOR_MODEL=cursor-grok-4.6-xhigh]"
+  echo "usage: sh tools/l/fleet-loop.sh incense|pheromone|petrichor|silence|hush|dream   [LOOP_HOURS=18] [LOOP_LAPS=0] [FLEET_DRY=1] [FLEET_BARE=1] [CURSOR_MODEL=cursor-grok-4.6-xhigh]"
   exit 2
   ;;
 esac
@@ -98,7 +103,7 @@ echo "fleet-loop: seat=$seat root=$root hours=$hours laps=${max_laps:-unbounded}
 cursor_lap_cmd() {
   case "$seat" in
   incense | pheromone | petrichor)
-    if [ "$(uname -s)" = Linux ]; then
+    if [ "$(uname -s)" = Linux ] && [ "${FLEET_BARE:-0}" != 1 ]; then
       printf '%s\n' "./tools/ag/agent-jail.sh cursor-agent -p --force --trust --sandbox disabled --output-format text --model ${cursor_model} <${prompt_file} as argv"
     else
       printf '%s\n' "cursor-agent -p --force --output-format text --model ${cursor_model} <${prompt_file} as argv"
@@ -123,10 +128,45 @@ if [ "${FLEET_DRY:-0}" = 1 ]; then
   exit 0
 fi
 
+# Linux jail presence -- the same doors agent-jail.sh resolve_aijail walks, plus
+# the NixOS profile the not-found message names. A missing binary is a host
+# install (jail authors; host installs), never a counted lap.
+linux_jail_present() {
+  if [ -f tools/e/enclosure.conf ]; then
+    # Same file agent-jail.sh sources. AIJAIL_BIN is the pin.
+    # shellcheck disable=SC1091
+    . tools/e/enclosure.conf
+  fi
+  if [ -n "${AIJAIL_BIN:-}" ] && [ -f "$AIJAIL_BIN" ] && [ -x "$AIJAIL_BIN" ]; then
+    return 0
+  fi
+  if command -v ai-jail >/dev/null 2>&1; then
+    return 0
+  fi
+  for c in \
+    "$root/tools/.cache/bin/ai-jail" \
+    "$root/gratitude/ai-jail/target/release/ai-jail" \
+    "$HOME/.local/bin/ai-jail" \
+    "$HOME/.nix-profile/bin/ai-jail" \
+    /usr/local/bin/ai-jail \
+    /usr/bin/ai-jail; do
+    if [ -x "$c" ]; then
+      return 0
+    fi
+  done
+  return 1
+}
+
 run_cursor() {
   _prompt=$(cat "$prompt_file")
   echo "fleet-loop: invoking cursor-agent model=$cursor_model -- Read/Grep lines come from the agent; silence after this line is the API, not round-open"
-  if [ "$(uname -s)" = Linux ]; then
+  if [ "$(uname -s)" = Linux ] && [ "${FLEET_BARE:-0}" != 1 ]; then
+    if ! linux_jail_present; then
+      echo "fleet-loop: ai-jail not on this host -- this attempt is not a counted lap"
+      echo "fleet-loop: host install on NixOS: nix profile install github:akitaonrails/ai-jail"
+      echo "fleet-loop: then pin AIJAIL_BIN in tools/e/enclosure.conf, or FLEET_BARE=1 LOOP_LAPS=1 for Darwin-style cursor-agent"
+      return 4
+    fi
     ./tools/ag/agent-jail.sh cursor-agent -p --force --trust --sandbox disabled \
       --output-format text --model "$cursor_model" "$_prompt" 2>&1 \
       | tee "session-output/${seat}.txt"
@@ -166,8 +206,8 @@ while [ "$(date +%s)" -lt "$deadline" ]; do
   fi
   rc=0
   run_lap || rc=$?
-  if [ "$rc" -eq 130 ] || [ "$rc" -eq 143 ]; then
-    echo "fleet-loop: interrupted (exit $rc) -- this attempt is not a counted lap"
+  if [ "$rc" -eq 130 ] || [ "$rc" -eq 143 ] || [ "$rc" -eq 4 ]; then
+    echo "fleet-loop: interrupted or invoke refused (exit $rc) -- this attempt is not a counted lap"
     break
   fi
   if [ "$rc" -ne 0 ]; then
