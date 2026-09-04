@@ -20,7 +20,10 @@ cp src/main.rye "$bridge"
 trap 'rm -f "$bridge"' EXIT
 
 mkdir -p bin
-"$zig" build-exe "$bridge" -femit-bin=bin/rye --zig-lib-dir lib
+# Zig 0.16 requires -lc for getpid (build_lock_acquire). Linux glibc hosts
+# refuse without it; Darwin accepts it. NixOS without FHS libc keeps the musl
+# recipe in docs-geode/tutorials/the-first-hour.md.
+"$zig" build-exe "$bridge" -femit-bin=bin/rye --zig-lib-dir lib -lc
 
 echo "bootstrapped: $here/bin/rye"
 ./bin/rye version
