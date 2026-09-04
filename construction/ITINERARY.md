@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `904cbb2c25` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `161cd94470` -- HEAD's parent, resolvable everywhere (%401).
 
 **Now.** **A free pass one reading earns by measurement is a free pass its twin has already argued for.**
 
@@ -223,6 +223,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260903.234111` | Earth-ship loop on incense furrow harvest | [log](../session-logs/date/20260903/20260903-234111_earth-ship-loop-via-cursor-agent.kyri) |
+| `20260903.234946` | Furrow stash then pull -- Harvest is Dallas | [log](../session-logs/date/20260903/20260903-234946_furrow-stash-then-one-lap.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)

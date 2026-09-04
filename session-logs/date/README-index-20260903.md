@@ -11,7 +11,9 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260903.234946` | [Furrow stash then pull](20260903/20260903-234946_furrow-stash-then-one-lap.kyri) | DirtySet named-stashed; Harvest is Dallas |
 | `20260903.234111` | [Earth-ship loop via cursor-agent](20260903/20260903-234111_earth-ship-loop-via-cursor-agent.kyri) | three seats, tree-match, harden-home jail |
+| `20260903.231727` | [Earth-ships sitting prompt](20260903/20260903-231727_earth-ships-cursor-sitting.kyri) | Door A 96; paste for the next chat |
 | `20260903.230137` | [Fresh chat for the Earth ships](20260903/20260903-230137_new-session-for-earth-ships.kyri) | new chat holds the Earth-ship loop |
 | `20260903.225306` | [Seed published both doors](20260903/20260903-225306_seed-published-both-doors.kyri) | grain-os and grain-ww at 6b45db6 |
 | `20260903.222900` | [Send both waters even](20260903/20260903-222900_send-both-waters-even.kyri) | xy and debrided at 40f82c5674 |
