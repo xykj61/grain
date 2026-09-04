@@ -1,0 +1,21 @@
+format session-log-v1
+stamp 20260904.115737
+editor Cursor IDE chat
+provider xAI via Cursor
+product Cursor
+role Incense sitting -- GLOW_PROFILE.bron missing on Dallas incense
+modality text
+model unverified
+model_status active runtime unverified
+configured_model Cursor Grok 4.6
+configured_reasoning high
+voice Kyri
+host macOS arm64 host, America/New_York one-clock zone
+title Profile missing on incense -- scp from a local Mac terminal
+prompt Keaton pasted key-gen assertion GLOW_PROFILE.bron has no name, grep no such file, empty user.name and user.email, harvest gpg.program still set, twelve files unsent.
+think The file is gitignored and was never born onto grain-incense. Mac field has it, name field present, 4906 bytes. This sitting's scp to pier was Permission denied publickey -- the agent does not hold the mosh key. Copy stays a local Terminal.app scp or a same-box cp if petrichor or pheromone already has the file. The two git config greps already wrote empty name and email; rerun them after the file exists. Do not generate keys from this agent. Do not LOOP_LAPS until that tree can sign.
+obs One writer. Do not print the profile. Host-shell copy, then generate_jail_local_keys_linux.rish.
+file GLOW_PROFILE.bron Mac field present; Dallas incense absent
+file tools/g/generate_jail_local_keys_linux.rish asserts name field
+file session-logs/date/20260904/20260904-115737_profile-missing-on-incense.kyri this sitting
+recommend check-in (Cursor) -- copy the profile from a local Mac terminal, then rerun key gen

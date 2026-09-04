@@ -1,10 +1,12 @@
 #!/bin/sh
 # fleet-loop.sh -- one outer loop for every prompt-file seat.
 #
-# Earth ships (Cursor Grok; names seated 20260904 on Keaton's word):
-# incense, pheromone, petrichor. Elder seat names furrow and harvest remap
-# to pheromone and petrichor, then refuse unless the tree basename matches.
-# Elder aether seats (Claude Code / Codex): silence, hush, dream -- kept.
+# Earth ships (names seated 20260904 on Keaton's word): incense, pheromone,
+# petrichor. Unattended laps run Claude Code (stream-json --verbose), Darwin
+# directly and Linux inside agent-jail.sh, matching launch-claude-chapter and
+# the hush/silence renderer. Elder seat names furrow and harvest remap to
+# pheromone and petrichor, then refuse unless the tree basename matches.
+# Elder aether seats: silence, hush (Claude Code), dream (Codex) -- kept.
 #
 # ANCHORED TO ITS OWN TREE (Keaton's word 20260829: a loop sources from its own folder
 # only). The script cds to the tree that CONTAINS it -- never the caller's cwd -- so a
@@ -27,19 +29,19 @@
 #   FLEET_BARE=1 LOOP_LAPS=1 sh tools/l/fleet-loop.sh incense  # Linux, no ai-jail
 #
 # Transcripts land INSIDE the tree (session-output/<seat>.txt rendered, <seat>.jsonl raw
-# for the claude seats), per the read-scope law's shared window -- /tmp is not durable in
+# for Claude seats), per the read-scope law's shared window -- /tmp is not durable in
 # every enclosure. The gates-only sentinel is a file because the stream echoes the prompt,
 # which contains the words GATES-ONLY, so a grep on the stream would false-stop. jq runs
 # --unbuffered: with a tee behind it its stdout is a pipe rather than a tty, and a
 # block-buffering jq shows a silent terminal until kilobytes accumulate (20260829).
+# Plain --verbose does not stream through a pipe (claude-code issue 733);
+# --output-format stream-json --verbose emits one JSON event per line.
 #
-# Cursor print mode takes the prompt as an argv word after the flags (SOURCE.md).
-# Linux wraps in agent-jail.sh with --trust --sandbox disabled. Darwin passes --force
-# only (this Mac refused --trust/--sandbox on 20260903). Machines are doors: the same
-# seat uses the host's wrap. FLEET_BARE=1 skips the Linux jail (opt-in; a missing
-# ai-jail is a host install, not a counted lap). CURSOR_MODEL defaults to
-# cursor-grok-4.6-xhigh (unattended); a watched lap may set CURSOR_MODEL=cursor-grok-4.6-high.
-# agent-jail.sh is Linux-only (GNU readlink -f).
+# Earth ships on Linux wrap in agent-jail.sh with --dangerously-skip-permissions
+# (launch-claude-chapter). Darwin and FLEET_BARE=1 run claude on the host.
+# agent-jail.sh is Linux-only (GNU readlink -f). Claude refuses the skip-permissions
+# flag as root -- run as a plain user. FLEET_BARE=1 skips the Linux jail (opt-in; a
+# missing ai-jail is a host install, not a counted lap).
 set -eu
 # Honor pipeline status when the shell knows how (bash). dash has no pipefail;
 # a missing jail is then caught by the preflight below rather than by tee.
@@ -59,7 +61,7 @@ esac
 case "$seat" in
 incense | pheromone | petrichor | silence | hush | dream) ;;
 *)
-  echo "usage: sh tools/l/fleet-loop.sh incense|pheromone|petrichor|silence|hush|dream   [LOOP_HOURS=18] [LOOP_LAPS=0] [FLEET_DRY=1] [FLEET_BARE=1] [CURSOR_MODEL=cursor-grok-4.6-xhigh]"
+  echo "usage: sh tools/l/fleet-loop.sh incense|pheromone|petrichor|silence|hush|dream   [LOOP_HOURS=18] [LOOP_LAPS=0] [FLEET_DRY=1] [FLEET_BARE=1]"
   exit 2
   ;;
 esac
@@ -91,32 +93,27 @@ fi
 
 hours=${LOOP_HOURS:-18}
 max_laps=${LOOP_LAPS:-0}
-cursor_model=${CURSOR_MODEL:-cursor-grok-4.6-xhigh}
 deadline=$(( $(date +%s) + hours * 3600 ))
 laps=0
 mkdir -p session-output
 
 echo "fleet-loop: seat=$seat root=$root hours=$hours laps=${max_laps:-unbounded}"
 
-# Print the command a lap would run. Linux wraps in agent-jail; Darwin does not.
+# Print the command a lap would run. Linux Earth ships wrap in agent-jail; Darwin does not.
 # The prompt stays a file -- never inlined here.
-cursor_lap_cmd() {
-  case "$seat" in
-  incense | pheromone | petrichor)
-    if [ "$(uname -s)" = Linux ] && [ "${FLEET_BARE:-0}" != 1 ]; then
-      printf '%s\n' "./tools/ag/agent-jail.sh cursor-agent -p --force --trust --sandbox disabled --output-format text --model ${cursor_model} <${prompt_file} as argv"
-    else
-      printf '%s\n' "cursor-agent -p --force --output-format text --model ${cursor_model} <${prompt_file} as argv"
-    fi
-    ;;
-  esac
+earth_claude_cmd() {
+  if [ "$(uname -s)" = Linux ] && [ "${FLEET_BARE:-0}" != 1 ]; then
+    printf '%s\n' "./tools/ag/agent-jail.sh --dangerously-skip-permissions claude --effort max --output-format stream-json --verbose -p <${prompt_file}>"
+  else
+    printf '%s\n' "claude --dangerously-skip-permissions --effort max --output-format stream-json --verbose -p <${prompt_file}>"
+  fi
 }
 
 if [ "${FLEET_DRY:-0}" = 1 ]; then
   echo "fleet-loop: FLEET_DRY=1 -- command only, no round-open, no lap"
   case "$seat" in
   incense | pheromone | petrichor)
-    cursor_lap_cmd
+    earth_claude_cmd
     ;;
   dream)
     echo "./tools/ag/agent-jail.sh codex exec --sandbox danger-full-access <${prompt_file} as argv"
@@ -157,30 +154,47 @@ linux_jail_present() {
   return 1
 }
 
-run_cursor() {
+# Claude Code stream: NDJSON to session-output/<seat>.jsonl, rendered text to <seat>.txt.
+# jq --unbuffered so a tee-pipe does not block-buffer (20260829). Without jq, both
+# files take the raw stream (hush/silence no-jq fallback; pier_jq_install.sh).
+stream_claude() {
+  if command -v jq >/dev/null 2>&1; then
+    tee "session-output/${seat}.jsonl" \
+      | jq --unbuffered -Rrj -f tools/s/stream_render.jq \
+      | tee "session-output/${seat}.txt"
+  else
+    echo "fleet-loop: jq not on PATH -- raw NDJSON (Darwin: brew install jq; NixOS: sudo sh tools/p/pier_jq_install.sh)"
+    tee "session-output/${seat}.jsonl" \
+      | tee "session-output/${seat}.txt"
+  fi
+}
+
+# Earth ships: Linux jail wrap like launch-claude-chapter; Darwin/FLEET_BARE host claude.
+run_earth_claude() {
   _prompt=$(cat "$prompt_file")
-  echo "fleet-loop: invoking cursor-agent model=$cursor_model -- Read/Grep lines come from the agent; silence after this line is the API, not round-open"
+  echo "fleet-loop: invoking claude --output-format stream-json --verbose -- tool lines render live; silence after this line is the API, not round-open"
   if [ "$(uname -s)" = Linux ] && [ "${FLEET_BARE:-0}" != 1 ]; then
     if ! linux_jail_present; then
       echo "fleet-loop: ai-jail not on this host -- this attempt is not a counted lap"
       echo "fleet-loop: host install on NixOS: nix profile install github:akitaonrails/ai-jail"
-      echo "fleet-loop: then pin AIJAIL_BIN in tools/e/enclosure.conf, or FLEET_BARE=1 LOOP_LAPS=1 for Darwin-style cursor-agent"
+      echo "fleet-loop: then pin AIJAIL_BIN in tools/e/enclosure.conf, or FLEET_BARE=1 LOOP_LAPS=1 for Darwin-style claude"
       return 4
     fi
-    ./tools/ag/agent-jail.sh cursor-agent -p --force --trust --sandbox disabled \
-      --output-format text --model "$cursor_model" "$_prompt" 2>&1 \
-      | tee "session-output/${seat}.txt"
+    ./tools/ag/agent-jail.sh --dangerously-skip-permissions claude \
+      --effort max --output-format stream-json --verbose \
+      -p "$_prompt" \
+      | stream_claude
   else
-    cursor-agent -p --force --output-format text --model "$cursor_model" \
-      "$_prompt" 2>&1 \
-      | tee "session-output/${seat}.txt"
+    claude --dangerously-skip-permissions --effort max --output-format stream-json --verbose \
+      -p "$_prompt" \
+      | stream_claude
   fi
 }
 
 run_lap() {
   case "$seat" in
   incense | pheromone | petrichor)
-    run_cursor
+    run_earth_claude
     ;;
   dream)
     ./tools/ag/agent-jail.sh codex exec --sandbox danger-full-access "$(cat "$prompt_file")" 2>&1 \
@@ -189,9 +203,7 @@ run_lap() {
   *)
     claude --dangerously-skip-permissions --effort max --output-format stream-json --verbose \
       -p "$(cat "$prompt_file")" \
-      | tee "session-output/${seat}.jsonl" \
-      | jq --unbuffered -Rrj -f tools/s/stream_render.jq \
-      | tee "session-output/${seat}.txt"
+      | stream_claude
     ;;
   esac
 }
