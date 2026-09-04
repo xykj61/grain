@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260904.075954` | [Pier incense pheromone GREEN](20260904/20260904-075954_pier-incense-pheromone-green.kyri) | rye version; wire-lab GREEN in both dests |
 | `20260904.075615` | [Bootstrap links libc](20260904/20260904-075615_bootstrap-links-libc.kyri) | -lc for getpid; resume rye with -lc |
 | `20260904.074901` | [Birth pins newborn zig](20260904/20260904-074901_birth-pins-newborn-zig.kyri) | RYE_ZIG leftover; resume rye in dest |
 | `20260904.015034` | [Pheromone petrichor seated](20260904/20260904-015034_pheromone-petrichor-seated.kyri) | names, Mac mv, pier birth paste |

@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `9cea99de0d` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `c91d691c7c` -- HEAD's parent, resolvable everywhere (%401).
 
 **Now.** **A free pass one reading earns by measurement is a free pass its twin has already argued for.**
 
@@ -135,7 +135,7 @@ Seated ladders: **HAWM - TUBE - ZETA - JABS - LULU - STOA - SETU - SUNN - POLE**
 - **Pier path** -- field `~/grain`; ships `grain-incense`, `grain-pheromone`, `grain-petrichor` (Host pier holds the metal tree). Trees persist across jail resets.
 - **Lane** -- every **send** pushes `xy` then `debrided`; ls-remote guard first; `debrided` may 403 from the cloud (home pier closes the gap). Map: [`../PUBKEYS.md`](../PUBKEYS.md) - [`../context/REMOTE_ROSTER.md`](../context/REMOTE_ROSTER.md).
 - **Jail authors; host installs** -- agents write inside the enclosure; USB `adb` installs and key ops stay Keaton's hand.
-- **Live state** -- Dallas as Petrichor (`Host pier`); `gh` as `xykj61`; mosh + cursor-agent login GREEN; pier births wait on the hand paste.
+- **Live state** -- Dallas as Petrichor (`Host pier`); incense and pheromone born, wire-lab GREEN; `gh` as `xykj61`; mosh + cursor-agent login GREEN.
 - **Cursor launch** -- field: Cursor.app. Unattended: `cursor-agent login` on that host, then the loop from that tree. Linux jail: `launch-cursor.rish --gpu`.
 - **Outer terminal / phone** -- USB/`adb` and the phone look stay on the operator desk; read chapter state from the git nib and `prin scope`.
 
@@ -223,6 +223,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260904.075615` | Bootstrap links libc for getpid | [log](../session-logs/date/20260904/20260904-075615_bootstrap-links-libc.kyri) |
+| `20260904.075954` | Pier incense and pheromone wire-lab GREEN | [log](../session-logs/date/20260904/20260904-075954_pier-incense-pheromone-green.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)
