@@ -4,7 +4,7 @@
 **Style:** Gauge (see `context/GAUGE_STYLE.md`)
 **Voice:** Kyri
 **Since:** `20260713.201910` (this fork's first commit)
-**Last updated:** `20260730.160405` (SUNN13 -- affirm Livermore - GitHub dual)
+**Last updated:** `20260903.213742` (SEA cancelled -- Dallas standing)
 
 ---
 
@@ -48,7 +48,7 @@ Public armor export is generated from `.gnupg-rye/` (gitignored). Paste card (lo
 
 **Codeberg - SSH** -- **retired** `20260729.141658`. Do not register new Codeberg deploy keys for this pier.
 
-**Vultr SEA VPS - SSH** -- minted `20260802` on the Framework for jail-lane auth to the future SEA instance; private half rests at `.ssh/id_ed25519_jail_vultr` (gitignored, line 170), never in the tree, never on counsel.
+**Vultr pier - SSH** -- minted `20260802` on the Framework for jail-lane auth to the SEA instance; private half rests at `.ssh/id_ed25519_jail_vultr` (gitignored, line 170), never in the tree, never on counsel. SEA cancelled `20260903`. The same public line sits on Dallas (`keeper` `authorized_keys`).
 
 ```
 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINxLRFDtsG7DOKgqwzTT5ruhKTiHN+cITAsArWlYHFmG xykj61@gmail.com xykj61 jail-only vultr SEA VPS (Linux Framework, Livermore)
@@ -60,7 +60,7 @@ Fingerprint:
 SHA256:qWVRwxzvNpo1VkiI7cETJPeHJg0Naj/Avfcwdv2Z2mE
 ```
 
-At deploy (Keaton's hands, SEA only): paste the public line into the Vultr SSH-keys panel or the instance `authorized_keys`; a `Host vultr-sea` block in `.ssh/config` points `IdentityFile` at the private half.
+Do not paste this line toward a cancelled instance. `Host vultr-sea` / `Host pier` at `137.220.32.171` is retired. Living SSH is `Host pier-2` (`45.32.204.176`, `User keeper`, Mac key `~/.ssh/id_ed25519_macbook_vultr`). The jail-vultr private half still unlocks the Dallas copy of this public line.
 
 ---
 

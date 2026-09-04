@@ -1,5 +1,8 @@
-# Template — copy to /etc/nixos/configuration.nix and replace every REPLACE line.
-# Living machine config stays outside grain (see nixos-guide/README.md).
+# Template -- copy to /etc/nixos/configuration.nix and replace every
+# REPLACE_WITH_YOUR_PUBLIC_KEY line with a real ssh public key.
+# Living machine config stays on the machine (see nixos-guide/templates/README.md).
+# Do not copy a field's tracked nixos/ -- that file holds real keys and may
+# close root without your laptop key.
 { modulesPath, pkgs, ... }:
 {
   imports = [
@@ -14,30 +17,48 @@
   networking.hostName = "pier";
   networking.useDHCP = true;
 
-  services.openssh.enable = true;
-  services.openssh.settings.PasswordAuthentication = false;
-  services.openssh.settings.PermitRootLogin = "prohibit-password";
+  # One-clock zone this tree names. Change it only when the host's clock law says so.
+  time.timeZone = "America/New_York";
 
+  services.openssh.enable = true;
+  services.openssh.settings = {
+    # First boot keeps keyed root so the install can finish. After the steward
+    # account has sudo, set this to "no".
+    PermitRootLogin = "prohibit-password";
+    PasswordAuthentication = false;
+    KbdInteractiveAuthentication = false;
+  };
+
+  users.users.root.hashedPassword = "!";
   users.users.root.openssh.authorizedKeys.keys = [
-    # REPLACE with every public key that should reach this machine.
-    "ssh-ed25519 AAAA…REPLACE… steward@tablet"
+    "ssh-ed25519 REPLACE_WITH_YOUR_PUBLIC_KEY steward@example"
   ];
 
+  users.users.keeper = {
+    isNormalUser = true;
+    description = "first steward of this pier";
+    extraGroups = [ "wheel" ];
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 REPLACE_WITH_YOUR_PUBLIC_KEY steward@example"
+    ];
+  };
+
+  security.sudo.wheelNeedsPassword = true;
+
   programs.mosh.enable = true;
+  networking.firewall.allowedUDPPortRanges = [
+    { from = 60000; to = 65535; }
+  ];
 
   nixpkgs.config.allowUnfree = true;
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  # gnupg — signed commits · bubblewrap — enclosure study · s6 — supervision study
-  # (s6 packages do not replace systemd as PID 1 on this host)
   environment.systemPackages = with pkgs; [
     tmux
     git
     cursor-cli
+    gh
     gnupg
-    bubblewrap
-    s6
-    s6-rc
   ];
 
   system.stateVersion = "26.05";

@@ -3,8 +3,10 @@
 # Reads template-manifest.bron and writes the identity-clean template subset
 # into seed/ (gitignored; the fresh Option-B public repo that becomes
 # grain-os/grain). personal and sub_exclude paths never enter; name-bearing
-# files are withheld for the M3 scrub pass, so the seed is clean by
-# construction. The heavy file work is a POSIX seam in
+# files are withheld when the scrub cannot finish; SSH public-key blobs in
+# a shipping file are stub-replaced so a NixOS config can land in grain-os
+# and grain-ww without authorizedKeys. Armor blocks stay withheld. The seed
+# is clean by construction. The heavy file work is a POSIX seam in
 # tools/fixtures/s/sow_project.sh; this script is the thin Rishi driver.
 #
 # Plans: external-research/20260808-045124 (Movement I, the mechanism) and

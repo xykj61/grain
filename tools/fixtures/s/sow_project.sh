@@ -117,9 +117,8 @@ for p in $PATHS; do
       *siya*|*Siya*|PUBKEYS.md|keys_*|*.pem|*.key|*.asc|*.gpg|*.sec|*.secret)
         printf '%s\n' "$f" >> "$SEED/.sow-withheld.log"; continue;;
     esac
-    # Embedded key material -- a real pubkey or PGP block in any file, whatever
-    # its name. Withheld for the M3 pass, which swaps real keys for placeholders.
-    if grep -IqE 'ssh-(ed25519|rsa) AAAA|BEGIN (OPENSSH|PGP|RSA|EC) (PRIVATE|PUBLIC) KEY' "$f" 2>/dev/null; then
+    # Armor blocks stay withheld -- a private or PGP blob is not a stub.
+    if grep -IqE 'BEGIN (OPENSSH|PGP|RSA|EC) (PRIVATE|PUBLIC) KEY' "$f" 2>/dev/null; then
       printf '%s\n' "$f" >> "$SEED/.sow-withheld.log"; continue
     fi
     if grep -Iqi -E "$IDENT" "$f" 2>/dev/null; then
@@ -137,6 +136,15 @@ for p in $PATHS; do
     else
       mkdir -p "$(dirname "$dest")"
       cp -a "$f" "$dest"
+    fi
+    # Public SSH blobs: keep the file, swap the key for a placeholder so a
+    # NixOS config can ship in grain-os / grain-ww without authorizedKeys.
+    if [ -f "$dest" ] && grep -IqE 'ssh-(ed25519|rsa) AAAA' "$dest" 2>/dev/null; then
+      stub_tmp="$dest.sow-stub"
+      sh tools/fixtures/s/sow_pubkey_stub.sh < "$dest" > "$stub_tmp"
+      cat "$stub_tmp" > "$dest"
+      rm -f "$stub_tmp"
+      [ -x "$f" ] && chmod +x "$dest"
     fi
   done
 done

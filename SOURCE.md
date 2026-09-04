@@ -4,7 +4,7 @@
 **Version:** `20260716.110152` (Glow warm-aura date atom -- chronological, later-is-larger)
 **Style:** Gauge Door (see `context/GAUGE_STYLE.md`)
 **Voice:** Kyri (molted from Riyo `20260810`)
-**Status:** Living guide -- last molted `20260824.014209`
+**Status:** Living guide -- last molted `20260903.215224`
 **Waymark:** **SUNN** -- `source-pier-papers-identity-refresh`
 
 ---
@@ -56,13 +56,27 @@ We recommend hosts in this order:
 
 Other Linux distros and **Windows** are honest **less preferred** -- not shame, just fewer witnessed paths in this tree. If you are coming from Windows: back up everything you care about; you may need one or two USB flash drives; you will have a way better time on Linux. NixOS will give you the best experience.
 
+### C0b -- Standing a NixOS cloud pier (witnessed `20260903`)
+
+The host install is [`nixos-guide/20260803-164117_0-standing-a-declared-pier.md`](nixos-guide/20260803-164117_0-standing-a-declared-pier.md) -- **kexec from Ubuntu into the NixOS installer**, then the disko flake. That is the road that finished `status=0`.
+
+Witnessed extras that guide did not yet carry:
+
+- After the first reboot **`/etc/nixos` may be empty.** The flake lived on installer RAM. Write `flake.nix`, `disk-config.nix`, and `configuration.nix` back from [`nixos-guide/templates/`](nixos-guide/templates/). `keeper` writes with `sudo tee`.
+- Living keys stay on the machine. Public seeds ship `REPLACE_WITH_YOUR_PUBLIC_KEY`. The field's tracked `nixos/` is a private snapshot.
+- NAR hash mismatch on `nixos-install`: `rm -rf /root/.cache/nix`, then the same install. Reboot on `status=0`.
+- After steward, `sudo -v` as `keeper`, then `PermitRootLogin = "no"`. The generation's file is `/run/current-system/etc/ssh/sshd_config`.
+- First-hour Rye and Rishi on this host use musl `-lc`; `RYE_ZIG` from the clone root. See [`docs-geode/tutorials/the-first-hour.md`](docs-geode/tutorials/the-first-hour.md).
+- `cursor-cli` is in the template packages. Sign in with `cursor-agent login`. Print mode takes the prompt as argv: `cursor-agent -p --force --trust --sandbox disabled pong`.
+- GitHub: a classic PAT over HTTPS first (`gh config set -h github.com git_protocol https` when login picked SSH with no pier key). Paste the SSH public line in the GitHub UI when the PAT stays lean. Then `rishi/bin/rishi run tools/g/generate_jail_local_keys_linux.rish` from host tmux, after `GLOW_PROFILE.bron` carries your forge email.
+
 ### C1 -- Install git (outer terminal, before Cursor)
 
 A clone over **HTTPS needs no separate `curl`** -- the distro `git` package already carries what HTTPS needs. One move per host:
 
 | Host | First-day command | Notes |
 |------|-------------------|--------|
-| **NixOS** | `nix-shell -p git` | Stated-pending on-metal witness. Durable settle-in: add `git` to `environment.systemPackages` in your configuration. |
+| **NixOS** | git from `environment.systemPackages`, or `nix-shell -p git` | Cloud flake witnessed `20260903`. |
 | **Ubuntu** | `sudo apt update && sudo apt install -y git` | **Pier-proven** on this Framework host. |
 | **macOS** | `xcode-select --install` | Stated-pending on-metal witness. Ships git; Homebrew arrives later in Part Two (key cards). |
 
@@ -71,11 +85,11 @@ Run these in an **ordinary outer terminal** -- outside Cursor, outside ai-jail.
 ### C2 -- Clone Grain
 
 ```bash
-git clone https://github.com/xykj61/grain.git ~/grain
+git clone https://github.com/grain-os/grain.git ~/grain
 cd ~/grain
 ```
 
-Public HTTPS, no fork, no keys yet. This pier's living public clone is **`xykj61/grain`**. A second GitHub remote, `debrided/grain`, may exist as the agentic research lane (`origin` on this pier) -- see [`context/REMOTE_ROSTER.md`](context/REMOTE_ROSTER.md). Living Cursor sends **dual-push** both remotes when both exist. **Codeberg is retired** from living push (Terms July 2026) until a new second forge is chosen.
+Public HTTPS, no fork, no keys yet. The public seed is **`grain-os/grain`**. A second public door is `grain-ww/grain`. This pier's working field is a private clone; a newcomer starts at the seed. Canonical remote count: [`context/REMOTE_ROSTER.md`](context/REMOTE_ROSTER.md). Living Cursor sends **dual-push** both field remotes when both exist. **Codeberg is retired** from living push (Terms July 2026) until a new second forge is chosen.
 
 Forks arrive naturally in Part Two, once forge accounts exist.
 
@@ -118,6 +132,8 @@ Cursor opens inside ai-jail and asks you to sign in through the browser. Use a r
 
 When that lands, Part One is done. Part Two builds the signed home.
 
+On a **NixOS cloud pier** with `cursor-cli` already in the flake, Part One can stop at `cursor-agent login` rather than an AppImage jail. The `20260903` sitting used that path; the AppImage jail stays Step 6.
+
 ---
 
 ## Part Two -- The Signed Home
@@ -145,7 +161,7 @@ Make a **GitHub** account -- <https://github.com> -- free, and the living forge 
 
 Pick a handle you can keep -- for example, `youruser`. Verify your email; the Verified badge later depends on it.
 
-**This pier** uses GitHub `xykj61/grain` as the public clone you just fetched, and may also carry `debrided/grain` as a second remote for agentic research. Canonical remote count: [`context/REMOTE_ROSTER.md`](context/REMOTE_ROSTER.md).
+**This pier** uses GitHub `grain-os/grain` as the public clone you just fetched. The working field is a private remote. Canonical remote count: [`context/REMOTE_ROSTER.md`](context/REMOTE_ROSTER.md).
 
 **Codeberg** (<https://codeberg.org>) was the second home for a season. It is **retired from living push** under Terms (July 2026) that bar mostly-LLM projects and cryptocurrency-related projects. Keep an account if you like; do not plan Part Two around Codeberg until Grain names a new second forge.
 

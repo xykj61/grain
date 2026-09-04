@@ -22,6 +22,18 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ---
 
+## `20260903.215224` -- first-hour and SOURCE NixOS molt (walk-back `1dd2baea8d`)
+
+**Walk-back nib:** `1dd2baea8d` -- HEAD before this lap's commit. **Swept:** living
+[`docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) and
+[`SOURCE.md`](../SOURCE.md) rewritten in place with the NixOS cloud path proven
+`20260903` (kexec, empty `/etc/nixos` after reboot, `sudo tee`, musl `-lc`,
+`RYE_ZIG` from clone root, `cursor-agent -p` needs a prompt argv). **What waits
+there, worth recalling:** the Ubuntu/AppImage six-step hour and SOURCE C2 cloning
+`xykj61/grain` as the newcomer clone -- kept in history at this nib; the public
+path now clones `grain-os/grain`. **Why:** living paths keep their names; a
+checkpoint marks the departing bodies.
+
 ## `20260831.075100` -- the scan header that grew past its own door (walk-back `51b656a32b`)
 
 **Walk-back nib:** `51b656a32b` -- HEAD before this lap's commit. **Swept:** the 98-line comment
