@@ -35,7 +35,7 @@
 - **The counsel campaign, Phase 1 standing** (`20260828`, Keaton's word): a lap may lift counsel insights into their right rooms as fresh-stamped mutants (B-door QA), banner the elders, Class M the rows -- `tools/fixtures/c/counsel_census_scan.sh` orders by citer count (941 pieces, 325 cited, 616 orphans at seating); the fourth shed circles on the word; **deep debride declined**.
 - **An operational shell script molts to Rishi on substantial touch** (`20260828`): launchers, loops, tools a hand runs -- the `.sh -> .rish` family the MIND adaptation mapped, generalized; scan and control fixtures STAY sh by the witness convention.
 
-- **The three Cursor stars** (`20260903`, Keaton's word; birth `20260904`): **Incense** loop `~/grain-incense` (Glow, captain), field GUI `~/grain`; **Furrow** `~/grain-furrow` (Surf/Skate); **Harvest** Dallas `/home/keeper/grain-harvest`. Loop: `sh tools/l/fleet-loop.sh incense|furrow|harvest` from that tree (recipe `tools/l/launch-earth-ships-chapter.rish`). One tree per star (%291). Parked: `~/grain-mystery`, `~/grain-silence`. Elder six-body charter `20260829.203718` stays testimony.
+- **The three Cursor stars** (`20260904` names): **Incense** law/review/captain, `grain-incense`, field `~/grain`; **Pheromone** molecular, `grain-pheromone`; **Petrichor** docs-geode and prose-product, `grain-petrichor`. Machines are doors. Loop `fleet-loop.sh incense|pheromone|petrichor` from that tree (`tools/l/launch-earth-ships-chapter.rish`). One writer per tree (%291). Parked: `~/grain-mystery`, `~/grain-silence`. Elder charter `20260829.203718` stays testimony.
 - **Fleet re-arm helper**: `sh tools/f/fleet_rearm.sh` -- status, reason, paste.
 - **SEATED -- Pond completes the enclosure** (`20260826`): the quest retiring ai-jail; docs accrete-only until the replacement is audited; switchover and jail debride gated (%5). Plan: `expanding-prompts/20260826-033051_pond-completes-the-enclosure.md`.
 - **STANDFAST -- the Dexter orbit** (`20260826`): 15 rounds; door `dexter/README.md`.
@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `9059099af4` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `7c477ef37e` -- HEAD's parent, resolvable everywhere (%401).
 
 **Now.** **A free pass one reading earns by measurement is a free pass its twin has already argued for.**
 
@@ -132,11 +132,11 @@ Seated ladders: **HAWM - TUBE - ZETA - JABS - LULU - STOA - SETU - SUNN - POLE**
 ## Pier & hands
 
 - **Host** -- this Mac (Incense, America/New_York) and Vultr Dallas (`45.32.204.176`, `Host pier`, `keeper`, AMD 4/8/180). Never EWR.
-- **Pier path** -- Incense field `~/grain` on this Mac; Incense unattended loop `~/grain-incense`; Harvest `/home/keeper/grain-harvest` on Dallas. Field and Harvest persist across jail resets.
+- **Pier path** -- field `~/grain`; ships `grain-incense`, `grain-pheromone`, `grain-petrichor` (Host pier holds the metal tree). Trees persist across jail resets.
 - **Lane** -- every **send** pushes `xy` then `debrided`; ls-remote guard first; `debrided` may 403 from the cloud (home pier closes the gap). Map: [`../PUBKEYS.md`](../PUBKEYS.md) - [`../context/REMOTE_ROSTER.md`](../context/REMOTE_ROSTER.md).
 - **Jail authors; host installs** -- agents write inside the enclosure; USB `adb` installs and key ops stay Keaton's hand.
-- **Live state** -- Dallas standing as Harvest (`Host pier`); `gh` as `xykj61` on the pier; mosh + cursor-agent login GREEN; Harvest jail not started this sitting.
-- **Cursor launch** -- Incense: Cursor.app. Harvest: `cursor-agent login`, then `-p` with `pong` as argv. Linux jail: `launch-cursor.rish --gpu`.
+- **Live state** -- Dallas as Petrichor (`Host pier`); `gh` as `xykj61`; mosh + cursor-agent login GREEN; pier births wait on the hand paste.
+- **Cursor launch** -- field: Cursor.app. Unattended: `cursor-agent login` on that host, then the loop from that tree. Linux jail: `launch-cursor.rish --gpu`.
 - **Outer terminal / phone** -- USB/`adb` and the phone look stay on the operator desk; read chapter state from the git nib and `prin scope`.
 
 ---
@@ -223,6 +223,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260904.005712` | Loop names the hang; Ctrl-C is not a lap | [log](../session-logs/date/20260904/20260904-005712_loop-names-the-hang.kyri) |
+| `20260904.015034` | Pheromone and petrichor seated; pier birth paste | [log](../session-logs/date/20260904/20260904-015034_pheromone-petrichor-seated.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)

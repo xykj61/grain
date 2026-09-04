@@ -133,7 +133,7 @@ PASTE
    cd ~/grain-mystery && git pull --ff-only xy main && GRAIN_ROOT=$(git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && env MIND_SEAT=mystery "$GRAIN_ROOT/rishi/bin/rishi" run "$GRAIN_ROOT/tools/l/chatgpt-mind.rish" loop --arm-loop --max-laps 3 --failure-ceiling 2 --backoff-seconds 15)
 PASTE
     ;;
-  silence | hush | dream | incense | furrow | harvest)
+  silence | hush | dream | incense | pheromone | petrichor)
     echo "   cd $tree && git pull --ff-only xy main && sh tools/l/fleet-loop.sh $name"
     ;;
   esac
@@ -142,8 +142,8 @@ PASTE
 echo "fleet-rearm: the roster, every seat reported (home=$home)"
 report_seat sound grain field
 report_seat incense grain-incense cursor
-report_seat furrow grain-furrow cursor
-report_seat harvest grain-harvest cursor
+report_seat pheromone grain-pheromone cursor
+report_seat petrichor grain-petrichor cursor
 report_seat mind grain-mind codex
 report_seat mystery grain-mystery codex
 report_seat silence grain-silence claude
