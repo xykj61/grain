@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `fa35545001` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `97a37b4bbb` -- HEAD's parent, resolvable everywhere (%401).
 
 **Now.** **A free pass one reading earns by measurement is a free pass its twin has already argued for.**
 
@@ -135,7 +135,7 @@ Seated ladders: **HAWM - TUBE - ZETA - JABS - LULU - STOA - SETU - SUNN - POLE**
 - **Pier path** -- Mac field `~/grain`; Host pier ships `grain-incense`, `grain-pheromone`, `grain-petrichor` (no `~/grain` on Dallas). NixOS rebuild from the checkout you pull, via `bash nixos/rebuild-outer.sh`.
 - **Lane** -- every **send** pushes `xy` then `debrided`; ls-remote guard first; `debrided` may 403 from the cloud (home pier closes the gap). Map: [`../PUBKEYS.md`](../PUBKEYS.md) - [`../context/REMOTE_ROSTER.md`](../context/REMOTE_ROSTER.md).
 - **Jail authors; host installs** -- agents write inside the enclosure; USB `adb` installs and key ops stay Keaton's hand.
-- **Live state** -- Dallas as Petrichor (`Host pier`); ai-jail overlay is the GitHub v1.20.2 tarball (patchelf), not crates.io. Rebuild from `grain-petrichor`.
+- **Live state** -- Dallas as Petrichor (`Host pier`); `rebuild-outer` GREEN `ai-jail 1.20.2` on PATH. Leave `AIJAIL_BIN` unset. Incense one-lap from `grain-incense`.
 - **Cursor launch** -- field: Cursor.app. Unattended: `cursor-agent login` on that host, then the loop from that tree. Linux jail: `launch-cursor.rish --gpu`.
 - **Outer terminal / phone** -- USB/`adb` and the phone look stay on the operator desk; read chapter state from the git nib and `prin scope`.
 
@@ -223,6 +223,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260904.083311` | ai-jail overlay skips crates.io | [log](../session-logs/date/20260904/20260904-083311_ai-jail-overlay-skips-crates.kyri) |
+| `20260904.083756` | Pier rebuild-outer GREEN ai-jail 1.20.2 | [log](../session-logs/date/20260904/20260904-083756_pier-rebuild-outer-green.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)
