@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260904.013013` | [Pheromone and petrichor](20260904/20260904-013013_pheromone-and-petrichor.kyri) | names pass; lanes are the gift; three axes |
 | `20260904.005712` | [Loop names the hang](20260904/20260904-005712_loop-names-the-hang.kyri) | invoking line; Ctrl-C is not a counted lap |
 | `20260904.002859` | [Pier holds its name](20260904/20260904-002859_pier-holds-its-name.kyri) | Dallas is Host pier; incense lap died on HTTP/2 |
 | `20260904.000453` | [Birth incense loop](20260904/20260904-000453_birth-incense-loop.kyri) | ~/grain-incense born; field stays ~/grain |
