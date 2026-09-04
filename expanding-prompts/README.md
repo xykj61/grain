@@ -7,7 +7,8 @@ path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 *A place where a request becomes a plan. When you hand me a seed of intent, I bring it here, read it closely through every lens we have built, and craft from it a fuller, clearer prompt for myself -- one I can then run. The seed stays yours; the expansion is how I make sure I have understood it, sharpened it, and lost none of it.*
 
 **Language:** EN
-**Last updated:** `20260811.211431` (AHOY front-door chapter - **ty every1** closing gesture seated)
+**Last updated:** `20260903.231727` (Earth-ships Cursor sitting prompt seated)
+
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
 **Chapters roster:** [`CHAPTERS.md`](CHAPTERS.md)
@@ -109,6 +110,7 @@ in its own name.
 
 | Stamp | Prompt | Meaning |
 |-------|--------|---------|
+| `20260903.231727` | [Earth ships -- Cursor sitting](20260903-231727_earth-ships-cursor-sitting.md) | Incense Furrow Harvest outer loop; paste for the next chat. |
 | `20260823.124407` | [The Ranked Remainder](20260823-124407_the-ranked-remainder.md) | The whole outstanding vision ordered Lindy-first and crux-first, each item carrying its cost, gate, and falsifier. |
 | `20260823.045448` | [The Gauge Standfast](20260823-045448_the-gauge-standfast.md) | Name the register, measure it, then sweep on a word -- the pass that seated Gauge Style. |
 
