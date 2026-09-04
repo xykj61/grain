@@ -11,6 +11,8 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260903.222445` | [SOURCE C0b first boot](20260903/20260903-222445_source-c0b-ubuntu-kexec-first-boot.kyri) | Ubuntu 22.04, panel password, kexec |
+| `20260903.222043` | [Molt names kexec](20260903/20260903-222043_molt-names-kexec-not-infect.kyri) | not 22.04 first boot, not infect |
 | `20260903.215224` | [First-hour SOURCE molt](20260903/20260903-215224_first-hour-source-nixos-molt.kyri) | kexec, musl -lc, pubkey stub, send |
 | `20260903.213742` | [SEA cancelled](20260903/20260903-213742_sea-cancelled-dallas-stands.kyri) | Dallas stands as Harvest; living pointers retargeted |
 | `20260903.212430` | [Dialect log recovered](20260903/20260903-212430_dialect-log-recovered-from-sea.kyri) | SEA kyri seated; REDS patch refused |

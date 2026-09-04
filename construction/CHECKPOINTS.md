@@ -22,6 +22,15 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ---
 
+## `20260903.222445` -- SOURCE C0b first-boot walk (walk-back `e0dcc33823`)
+
+**Walk-back nib:** `e0dcc33823` -- HEAD before this lap's commit. **Swept:** living
+[`SOURCE.md`](../SOURCE.md) C0b, adding the Ubuntu 22.04 springboard, panel
+password, laptop pubkey seat, and the three kexec commands proven `20260903`.
+**What waits there, worth recalling:** the shorter C0b that named kexec in one
+sentence and left first boot in the day logs. **Why:** Keaton asked the living
+page to carry that walk.
+
 ## `20260903.215224` -- first-hour and SOURCE NixOS molt (walk-back `1dd2baea8d`)
 
 **Walk-back nib:** `1dd2baea8d` -- HEAD before this lap's commit. **Swept:** living

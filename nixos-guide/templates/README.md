@@ -35,7 +35,8 @@ The public keys in the example are the token `REPLACE_WITH_YOUR_PUBLIC_KEY` -- n
 
 ## Witnessed extras (`20260903`, NixOS 26.05 cloud pier)
 
-- **Stand the host with kexec**, from [`../20260803-164117_0-standing-a-declared-pier.md`](../20260803-164117_0-standing-a-declared-pier.md). A convert-in-place one-liner left a cloud box dark (the network never came up).
+- **Springboard is Ubuntu 22.04**, first boot as `ssh -l root` with the panel password, then your laptop public key in `/root/.ssh/authorized_keys`.
+- **Stand the host with kexec** from [`../20260803-164117_0-standing-a-declared-pier.md`](../20260803-164117_0-standing-a-declared-pier.md) (curl, tar, `/root/kexec/run`). Ghost SSH: Enter, then `~.`. `nixos-infect` is a convert-in-place reboot that left IPv4 silent on `20260903`.
 - **After the first reboot `/etc/nixos` may be empty.** The flake lived on installer RAM. Write `flake.nix`, `disk-config.nix`, and `configuration.nix` back; `flake.lock` returns on the next eval.
 - **NAR hash mismatch during `nixos-install`:** `rm -rf /root/.cache/nix` and run the same install again. Reboot only on `status=0`.
 - **Do not copy the field's `nixos/`.** That snapshot carries real keys and `PermitRootLogin = "no"`. A laptop key that is not in it will not get in.
