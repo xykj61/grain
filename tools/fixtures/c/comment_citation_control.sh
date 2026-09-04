@@ -144,7 +144,8 @@ mv "$pen/keep.sh" "$pen/tools/fixtures/q/qa_report_card.sh"
 
 # 11 -- dated testimony is prose, whatever its extension, and the card is what says so.
 # A .kyri session log carries `](` inside ordinary fields, and the card reads a prose file EVERY
-# line rather than comment lines only. On 20260831 that walked 107 logs into this population and
+# line rather than comment lines only. On 20260831 that walked dated logs into this population
+# (the scan prints how many as prose_skipped; this comment cites that field -- REDS %400) and
 # turned ten log fields into broken citations -- two integers, a placeholder shape, bare module
 # names in sentences (REDS %397). The prefilter in the scan drops .md, .mdc and .markdown for cost;
 # every other extension is the card's call, and it is asked.

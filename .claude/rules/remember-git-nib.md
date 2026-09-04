@@ -11,8 +11,8 @@ When a send updates `construction/ITINERARY.md` **Git nib**, that update lands *
 
 1. Stage ITINERARY with the round's finishing-edge / bookmark updates in the **work** commit.  
 2. After that signed commit -- and after the final rebase, when the send takes one -- amend **at most once** so **Git nib** names `git rev-parse --short=10 HEAD~1`: **HEAD's parent**, a commit the round was built on and therefore one every clone already resolves. Writing pre-amend HEAD names the sibling state -- an object no other clone holds -- which stood as a fleet-wide double-red on five bodies out of six, every lap (REDS %401).  
-3. **Stop.** Do not chase a perfect fixed-point hash with further amends — the card may lag HEAD by one amend; `prin scope` is living HEAD.  
-4. Never push a pin-only follow-up.
+3. **Stop.** Further amends chasing a perfect fixed-point hash are out of scope -- the card may lag HEAD by one amend; `prin scope` is living HEAD.
+4. A pin-only follow-up stays off the remote.
 
 ## Why
 

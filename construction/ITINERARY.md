@@ -75,14 +75,13 @@ reads one of `max_name`'s two call sites (`parse_manifest` reads it too, over th
 `example` line lands on `placard_wrong` one reading earlier. **Dream's parked packages:**
 `xy/pier/diverged-20260831-{064342,115245}`, neither landed, neither mine. **CION:** `drey`'s rung marks are the retired form (%329). **Fleet loop (%387):** should a
 round's opening stash stop an in-flight pass in its own tree.
-**MAP QA:** C/72; 70 paths resolve; index classifier misses.
+**MAP QA:** C+/75 this sitting; 0 of 70 unresolved; index door wants under 100 prose words.
 
 **Still open:** `glow/rune_shape.rye` keeps width custody; Mind keeps the reconnect stash,
 `%281`/`%291`, two `enclosure.conf` pins. **Named (%347):** `pond/enclosure_policy.kyri`
 8,120/8,192; the wall is yours.
-**Roster, this seat `20260831`:** **109/106**, 3 red -- the three gates, cold, `tree_moved=no`.
-**`%400` OPEN, theirs to word:** four sites recite **107**/**94** where the instrument prints
-**13**/**95** -- a borrowed classification drifts where a borrowed constant cannot.
+**Roster, this seat `20260904`:** **109/99**, 10 red, cold, `tree_moved=no`.
+**`%400` BOOKED:** living sites cite `prose_skipped`; the commit body stays dated.
 **Worth your word:** nothing shows a red is worked, so two hands spent a morning on one line.
 Should an OPEN row carry a **claim** -- seat and stamp, at start rather than landing?
 **`%405`, `%406` CLOSED -- a guard sees the room it was pointed at.** `%397`'s remainder landed:
@@ -106,8 +105,7 @@ question named was never the one bleeding.
 `%407` names a second one that is not: of **115 of 163** sampled
 programs below B, **51 sat under the register floor** with nothing measurable against **64** truly
 scored at grades 9-23. The ceiling question is the second number's alone -- and Gauge's own table
-seats **witness headers** at Meter where the card grades every program head at Door. And gate %7: `rule_twin_additive_scan.sh` reads `quality-assurance` as the roster's ONE `additive:claude`
-pair, +3 lines the twin lacks, and carrying them deletes nothing.
+seats **witness headers** at Meter where the card grades every program head at Door. Gate %7: quality-assurance additive carried `20260904.103121`.
 **%374 RULED `20260831.115500`**: a gated-only close writes its receipt DISCLOSING the
 gate names; `--scoped` re-prints them. Roster lane builds.
 ---
@@ -223,6 +221,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260904.085605` | Pass --network into the agent jail | [log](../session-logs/date/20260904/20260904-085605_pass-network-into-the-jail.kyri) |
+| `20260904.103121` | Close incense-owned roster reds | [log](../session-logs/date/20260904/20260904-103121_incense-owned-roster-reds.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)
