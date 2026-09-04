@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260903.203230
+editor Cursor IDE chat
+provider xAI via Cursor
+product Cursor
+role Incense sitting -- Dallas GLOW_PROFILE.bron for key mint
+modality text
+model unverified
+model_status session identity names Cursor Grok 4.6; no CLI telemetry
+configured_model Cursor Grok 4.6
+configured_reasoning high
+voice Kyri
+host macOS arm64 host, America/New_York one-clock zone
+title Key generator needs GLOW_PROFILE.bron -- copy template, fill name email handle, gitignored
+prompt generate_jail_local_keys_linux asserted GLOW_PROFILE.bron has no name.
+think Clone has no filled profile. Generator greps name email handle_github. File is gitignored. Fill from PUBKEYS identity. Then rerun the generator from host tmux. gpg may be missing on Dallas -- add gnupg if which gpg fails. Codeberg key still mints; skip pasting there. Do not re-auth gh. Hold first-hour molt.
+obs Leave SEA up.
+file GLOW_PROFILE.template.bron the shape to copy
+recommend check-in (Cursor) -- after the generator prints the pubkey to paste

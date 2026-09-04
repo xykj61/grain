@@ -1,0 +1,19 @@
+format session-log-v1
+stamp 20260903.203443
+editor Cursor IDE chat
+provider xAI via Cursor
+product Cursor
+role Incense sitting -- Dallas GLOW_PROFILE email keaton.dunsford
+modality text
+model unverified
+model_status session identity names Cursor Grok 4.6; no CLI telemetry
+configured_model Cursor Grok 4.6
+configured_reasoning high
+voice Kyri
+host macOS arm64 host, America/New_York one-clock zone
+title Reprint profile fill and key mint with email keaton.dunsford@gmail.com
+prompt Change the email to keaton.dunsford@gmail.com and reprint all these steps.
+think Same copy-template, sed, grep, which gpg, generate_jail_local_keys_linux. Email on the GPG UID must be a verified address on the xykj61 GitHub account for Verified signatures. If a key was already minted with xykj61@gmail.com, delete .gnupg-rye before rerun. Hold first-hour molt. No gh re-auth.
+obs Leave SEA up.
+file GLOW_PROFILE.bron gitignored on Dallas
+recommend check-in (Cursor) -- after the generator prints the pubkey

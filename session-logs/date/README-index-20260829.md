@@ -32,6 +32,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260829.212731` | [the walls speak Glow and the crop fits](20260829/20260829-212731_the-walls-speak-glow-and-the-crop-fits.kyri) | three Skate desks GREEN with parity anchors; %347 closes Mind's 49-byte crop find |
 | `20260829.211412` | [the measure humbled the middle](20260829/20260829-211412_the-measure-humbled-the-middle.kyri) | gate %7: 1 of 39 additive, 38 two-way stay readings; Mind's exact-length find repaired, pins unmoved |
 | `20260829.211021` | [the two rosters and the one tree](20260829/20260829-211021_the-two-rosters-and-the-one-tree.kyri) | Caravan runtime isolation defect named from both sides; derived pins refreshed |
+| `20260829.210736` | [the dialect a guard assumes](20260829/20260829-210736_the-dialect-a-guard-assumes.kyri) | three Pond scans stop spelling GNU; recovered from SEA |
 | `20260829.210617` | [the fusion lands scoped](20260829/20260829-210617_the-fusion-lands-scoped.kyri) | --scoped proven both ways: 59-guard map, receipt v2, 7 control cases; hit-rate 16% decided the shape |
 | `20260829.210056` | [compared, not copied](20260829/20260829-210056_the-number-compared-not-copied.kyri) | Tablecloth's first Glow desk; the guard compares, never copies, the bound |
 | `20260829.204032` | [the charter matches the fleet](20260829/20260829-204032_the-charter-matches-the-fleet.kyri) | claim clauses x3; the always-fleet charter molts in, ten citers repointed; parked ref proven redundant |

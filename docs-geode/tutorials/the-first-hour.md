@@ -4,7 +4,7 @@
 is a map you will want **after** this hour.*
 
 **Language:** EN - **Style:** Gauge, Door setting - **Voice:** Kyri
-**Written:** `20260821.180613` - **Last updated:** `20260823.061415` (Gauge pass -- register only; every command, count, and path held exactly)
+**Written:** `20260821.180613` - **Last updated:** `20260903.215224` (NixOS cloud path -- musl `-lc`, `RYE_ZIG` from clone root)
 **Status:** Living - the beginner path
 **You will need:** a Linux or macOS terminal with `git`, `curl`, and `tar`, and about an hour.
 **Where this sits:** home is [`../../README.md`](../../README.md) - the whole path from nothing to a
@@ -82,6 +82,22 @@ cd ..
 
 That is a language bootstrapping on your machine. It is worth a moment.
 
+**On NixOS**, `./bootstrap.sh` stops: Zig 0.16 wants `-lc` for `getpid`, and this host has no FHS libc. From `rye/`, with Zig at the **clone** vendor (not `rye/vendor`):
+
+```sh
+cd rye
+unset RYE_ZIG
+zig="$PWD/../vendor/zig-toolchain/zig"
+cp src/main.rye src/main.rye.zig
+mkdir -p bin
+"$zig" build-exe src/main.rye.zig -femit-bin=bin/rye --zig-lib-dir lib -target x86_64-linux-musl -lc
+rm -f src/main.rye.zig
+./bin/rye version
+cd ..
+```
+
+Witnessed `20260903` on NixOS 26.05: `rye 20260827.023156`. `file(1)` is not on the host; skip it. Do not `export RYE_ZIG="$PWD/vendor/zig-toolchain/zig"` while you are still inside `rye/` -- that path does not exist.
+
 ## 4. Build Rishi, the shell
 
 **Rishi** is the faithful hand -- the shell that runs this tree. It is a Rye program, so Rye builds
@@ -91,6 +107,14 @@ it:
 mkdir -p rishi/bin
 export RYE_ZIG="$PWD/vendor/zig-toolchain/zig"
 rye/bin/rye build rishi/src/main.rye -femit-bin=rishi/bin/rishi
+```
+
+**On NixOS**, stay at the clone root and pass musl again:
+
+```sh
+mkdir -p rishi/bin
+export RYE_ZIG="$PWD/vendor/zig-toolchain/zig"
+./rye/bin/rye build rishi/src/main.rye -femit-bin=rishi/bin/rishi -target x86_64-linux-musl -lc
 ```
 
 Say hello:

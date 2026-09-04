@@ -35,7 +35,7 @@
 - **The counsel campaign, Phase 1 standing** (`20260828`, Keaton's word): a lap may lift counsel insights into their right rooms as fresh-stamped mutants (B-door QA), banner the elders, Class M the rows -- `tools/fixtures/c/counsel_census_scan.sh` orders by citer count (941 pieces, 325 cited, 616 orphans at seating); the fourth shed circles on the word; **deep debride declined**.
 - **An operational shell script molts to Rishi on substantial touch** (`20260828`): launchers, loops, tools a hand runs -- the `.sh -> .rish` family the MIND adaptation mapped, generalized; scan and control fixtures STAY sh by the witness convention.
 
-- **The six bodies, the always-fleet** (re-mapped `20260829.203718`, Keaton's word): **one tree per star** and **claim-as-override**. **Mind** (Codex supervisor, `~/grain-mind` -- Surf/Skate) + **Mystery** (same supervisor, `MIND_SEAT=mystery`, `~/grain-mystery` -- the maintenance campaigns); **Sound** (Claude Desktop, the field -- interface Glow, **language custody**, captain's hat) + **Silence** (Claude day-loop, `~/grain-silence` -- infrastructure Glow); **Dream** (Codex in ai-jail, pier -- systems core) + **Hush** (Claude day-loop, pier -- Pond). Charter: the always-fleet page, `20260829.203718`, in `active-designing/`.
+- **The three Cursor stars** (`20260903`, Keaton's word): **Incense** (`~/grain`, Glow, captain), **Furrow** (`~/grain-furrow`, Surf/Skate), **Harvest** (Dallas, `/home/keeper/grain-harvest`). One tree per star (%291). Parked: `~/grain-mystery`, `~/grain-silence`. Elder six-body charter `20260829.203718` stays testimony.
 - **Fleet re-arm helper**: `sh tools/f/fleet_rearm.sh` -- status, reason, paste.
 - **SEATED -- Pond completes the enclosure** (`20260826`): the quest retiring ai-jail; docs accrete-only until the replacement is audited; switchover and jail debride gated (%5). Plan: `expanding-prompts/20260826-033051_pond-completes-the-enclosure.md`.
 - **STANDFAST -- the Dexter orbit** (`20260826`): 15 rounds; door `dexter/README.md`.
@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `77b183e953` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `68bc5b5c41` -- HEAD's parent, resolvable everywhere (%401).
 
 **Now.** **A free pass one reading earns by measurement is a free pass its twin has already argued for.**
 
@@ -131,12 +131,12 @@ Seated ladders: **HAWM - TUBE - ZETA - JABS - LULU - STOA - SETU - SUNN - POLE**
 
 ## Pier & hands
 
-- **Host** -- Framework - EDT (`America/New_York`) - Vultr SEA VPS (**AMD 4vCPU/8GB shared - 180GB NVMe** - never EWR); this session in ai-jail. Measured on metal `20260821.034037` ([the bench measured](../external-research/20260821-034037_the-bench-measured-and-the-standing-gauge-protocol.md)).
-- **Pier path** -- `~/grain`, which persists across jail resets - agent `home-xy-grain`.
+- **Host** -- this Mac (Incense, America/New_York) and Vultr Dallas (`45.32.204.176`, `Host pier-2`, `keeper`, AMD 4/8/180). SEA cancelled `20260903`. Never EWR.
+- **Pier path** -- Incense `~/grain` on this Mac; Harvest `/home/keeper/grain-harvest` on Dallas. Both persist across jail resets.
 - **Lane** -- every **send** pushes `xy` then `debrided`; ls-remote guard first; `debrided` may 403 from the cloud (home pier closes the gap). Map: [`../PUBKEYS.md`](../PUBKEYS.md) - [`../context/REMOTE_ROSTER.md`](../context/REMOTE_ROSTER.md).
 - **Jail authors; host installs** -- agents write inside the enclosure; USB `adb` installs and key ops stay Keaton's hand.
-- **Live state** -- `gh` as `xykj61`, **agent-jail GREEN** (`./tools/ag/agent-jail.sh`), tmux `pier` standing.
-- **Cursor launch** -- `rishi/bin/rishi run tools/l/launch-cursor.rish --cursor ./Cursor-*.AppImage --gpu`.
+- **Live state** -- Dallas standing as Harvest; `gh` as `xykj61` on the pier; mosh + cursor-agent login GREEN; Harvest jail not started this sitting. SEA instance gone.
+- **Cursor launch** -- Incense: Cursor.app. Harvest: `cursor-agent login`, then `-p` with `pong` as argv. Linux jail: `launch-cursor.rish --gpu`.
 - **Outer terminal / phone** -- USB/`adb` and the phone look stay on the operator desk; read chapter state from the git nib and `prin scope`.
 
 ---
@@ -160,7 +160,7 @@ The publish push is Keaton's hand.
 For any self-paced or outer-jail loop: recur through all agent-doable work, yet **stop and surface -- never cross -- these custody, irreversible, and provisioning acts.** They are Keaton's hand by design:
 
 1. **The seed** -- each refresh takes its own word (AHOY3 final push DONE `20260812`; one force-push commit, anonymous, unsigned by design). Full row: [`archive/20260824-130807_itinerary-settled-decisions.md`](archive/20260824-130807_itinerary-settled-decisions.md).
-2. **Provisioning or paying** for any cloud/VPS/Pond/subscription (Vultr SEA IaC, WADE2/3) -- agents author IaC; Keaton provisions and pays.
+2. **Provisioning or paying** for any cloud/VPS/Pond/subscription (Vultr IaC, WADE2/3) -- agents author IaC; Keaton provisions and pays. SEA cancelled `20260903`; Dallas is the standing pier.
 3. **Moving funds, holding keys, or opening any custody/wallet/payment rail** -- Dimeroll records facts only; disbursement waits on licensed counsel.
 4. **Generating Keaton's own Kumara instance** from his real seed/keeper -- his hand alone.
 5. **Deep debride / history rewrite + force-push** of the living tree -- named target, Keaton's explicit word.
@@ -223,6 +223,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260831.133122` | The floor both readings needed -- `%407` closed, 137 readings freed, none lowered | [log](../session-logs/date/20260831/20260831-133122_the-floor-both-readings-needed.kyri) |
+| `20260903.215224` | First-hour and SOURCE NixOS molt -- kexec, musl `-lc`, pubkey stub | [log](../session-logs/date/20260903/20260903-215224_first-hour-source-nixos-molt.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)
