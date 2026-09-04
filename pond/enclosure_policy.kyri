@@ -100,6 +100,8 @@ user invoking
 env GH_CONFIG_DIR=/home/youruser/grain/.gh
 env PATH=/run/current-system/sw/bin:/nix/var/nix/profiles/default/bin:/home/youruser/.nix-profile/bin:/bin
 map /run/current-system
+map /run/nscd
+map /run/resolvconf
 persist /home/youruser/grain
 ephemeral /tmp
 

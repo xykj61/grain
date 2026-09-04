@@ -238,6 +238,16 @@ GH_STATE="${GH_STATE:-$REPO/.gh}"
 CODEX_STATE="${CODEX_STATE:-$LOOPS/codex}"
 prefer_adopted_room CODEX_STATE "$LOOPS/codex"
 AIJAIL_FLAGS="${AIJAIL_FLAGS:---private-home --no-docker --no-gpu}"
+# v1.20.2 defaults network off (SECURITY.md). Without --network, cursor-agent
+# dies with getaddrinfo EAI_AGAIN on api2.cursor.sh (Host pier 20260904.085119).
+# Kept off the :- default so pond_policy_launcher_control's flag-sed still
+# matches. A sourced enclosure.conf that omits it still gets the flag;
+# --no-network wins.
+case " $AIJAIL_FLAGS " in
+*" --no-network "*) ;;
+*" --network "*) ;;
+*) AIJAIL_FLAGS="$AIJAIL_FLAGS --network" ;;
+esac
 # The one admission door: reads the ENCLOSURE selector, admits pond only behind
 # the master seal, refuses anything else. This gate stood written here in full
 # until 20260829; the shared body and its custody story live in the door itself.

@@ -5,7 +5,7 @@
 **Status:** Checkable — enclosure and Pond supersede guide
 **Depth:** guide
 **Ceiling:** <=300 lines
-**Last updated:** 2026-07-12
+**Last updated:** `20260904`
 **Compresses:** [`counsel/date/20260712/20260712-090512_claude-ruling-enclosure-ai-jail-then-pond.md`](../counsel/date/20260712/20260712-090512_claude-ruling-enclosure-ai-jail-then-pond.md) · [`20260712-210800_pond-enclosure-scorecard-two-column.md`](../active-designing/date/20260712/20260712-210800_pond-enclosure-scorecard-two-column.md) · [`20260712-210800_pond-supersede-exit-criteria.md`](../active-designing/date/20260712/20260712-210800_pond-supersede-exit-criteria.md) · [`20260712-212412_pond-scorecard-claude-second-walk.md`](../active-designing/date/20260712/20260712-212412_pond-scorecard-claude-second-walk.md) · [`20260712-213600_pond-freeze-affirm-master-seal.md`](../active-designing/date/20260712/20260712-213600_pond-freeze-affirm-master-seal.md) · [`20260712-113900_lane-kvm-retire-dbus-escape.md`](../active-designing/date/20260712/20260712-113900_lane-kvm-retire-dbus-escape.md) · [`context/specs/enclosure-editors.md`](../context/specs/enclosure-editors.md)
 
 ---
@@ -33,7 +33,7 @@ Personal `tools/e/enclosure.conf` is gitignored; [`tools/e/enclosure.conf.exampl
 
 | Surface | Default | Role |
 |---------|---------|------|
-| **`AIJAIL_FLAGS`** | `--private-home --no-docker` | Passed to teacher ai-jail by `cursor-jail.sh` / `launch-zed.sh` |
+| **`AIJAIL_FLAGS`** | `--private-home --no-docker --no-gpu --network` | Passed to teacher ai-jail. v1.20.2 defaults network off; CLI agents append `--network` so APIs resolve. |
 | **`AIJAIL_BIN`** | optional | Pin teacher binary — v1.12.0 pin proved in example comments; tarball sha256 in witness header |
 | **`USE_GPU`** | `true` (Zed on Wayland) | `/dev/dri` passthrough when true |
 | **`LANE_KVM`** | `false` | A-narrow gate — `/dev/kvm` only when on |
