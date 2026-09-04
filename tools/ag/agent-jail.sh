@@ -357,9 +357,19 @@ if [ -f "${CLAUDE_STATE}/dot-claude.json" ]; then
   MAP_ARGS+=(--rw-map "${CLAUDE_STATE}/dot-claude.json:${HOST_HOME}/.claude.json")
 fi
 
-# NixOS: ai-jail tmpfs-replaces /run -- re-map the system profile so PATH tools resolve.
+# NixOS: ai-jail tmpfs-replaces /run. Map back the pieces the agent needs:
+# current-system for PATH, nscd for glibc getaddrinfo, resolvconf when
+# /etc/resolv.conf is a symlink into /run. Without nscd, cursor-agent dies
+# with getaddrinfo EAI_AGAIN on api2.cursor.sh (Host pier 20260904.083936).
+# Do not map all of /run -- that would expose /run/user sockets.
 if [ -e /run/current-system/sw ]; then
   MAP_ARGS+=(--map /run/current-system)
+fi
+if [ -e /run/nscd ]; then
+  MAP_ARGS+=(--map /run/nscd)
+fi
+if [ -e /run/resolvconf ]; then
+  MAP_ARGS+=(--map /run/resolvconf)
 fi
 
 DRY_ARGS=()
