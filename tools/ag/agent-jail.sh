@@ -14,8 +14,8 @@
 #   ./tools/ag/agent-jail.sh --dry-run claude --version
 #
 # Keeper pier / Linux: ai-jail --private-home; auth under project-local state
-# (.claude-state - .cursor-agent-state - .gh). See nixos-guide CLI-agents note
-# and context/specs/enclosure-editors.md.
+# (loops/claude - loops/cursor - loops/codex - .gh; the one room seated 20260827).
+# See nixos-guide CLI-agents note and context/specs/enclosure-editors.md.
 
 set -euo pipefail
 
@@ -36,7 +36,7 @@ Usage: ./tools/ag/agent-jail.sh [jail-opts] <claude|cursor-agent|agent|codex> [a
   cursor-agent     Cursor Agent CLI (nixpkgs cursor-cli / agent)
   agent            Alias for cursor-agent
   codex            OpenAI Codex CLI -- DREAM's seat. Its login state is mapped
-                   from .dream-state/codex-home onto ~/.codex, so the account
+                   from loops/codex onto ~/.codex, so the account
                    auth survives --private-home, which resets the jail's HOME on
                    exit. Pass codex's own args straight through, e.g.
                      ./tools/ag/agent-jail.sh codex login
@@ -61,12 +61,14 @@ Agent args after the command name pass through unchanged, so these are equal:
   ./tools/ag/agent-jail.sh agent --resume=83513e3f-ec89-4924-a12b-f11189b04927
   ./tools/ag/agent-jail.sh --resume=83513e3f-ec89-4924-a12b-f11189b04927 agent
 
-Project-local state (gitignored, survives private-home tmpfs):
-  .claude-state/                        -> $HOME/.claude inside the jail
-  .cursor-agent-state/                  -> $HOME/.cursor inside the jail
-  .cursor-agent-state/xdg-config/       -> $HOME/.config/cursor (auth.json)
+Project-local state (gitignored, survives private-home tmpfs). One room, `loops/`,
+seated 20260827; an elder directory at the root is adopted on the next launch:
+  loops/claude/                         -> $HOME/.claude inside the jail
+  loops/claude/dot-claude.json          -> $HOME/.claude.json (onboarding + theme)
+  loops/cursor/                         -> $HOME/.cursor inside the jail
+  loops/cursor/xdg-config/              -> $HOME/.config/cursor (auth.json)
+  loops/codex/                          -> $HOME/.codex inside the jail (codex auth)
   .gh/                                  -> GH_CONFIG_DIR for gh(1)
-  .dream-state/codex-home/              -> $HOME/.codex inside the jail (codex auth)
 
 Examples:
 
@@ -362,10 +364,28 @@ MAP_ARGS=(
   --rw-map "${CODEX_STATE}:${HOST_HOME}/.codex"
 )
 
-# Claude Code also reads $HOME/.claude.json (beside ~/.claude/).
-if [ -f "${CLAUDE_STATE}/dot-claude.json" ]; then
-  MAP_ARGS+=(--rw-map "${CLAUDE_STATE}/dot-claude.json:${HOST_HOME}/.claude.json")
+# Claude Code keeps hasCompletedOnboarding, the chosen theme, and per-project trust in
+# $HOME/.claude.json -- a FILE beside ~/.claude/, never inside it. --private-home makes $HOME a
+# tmpfs, so that file is absent in the jail and the exit discards whatever Claude writes there.
+#
+# This mount was conditional on loops/claude/dot-claude.json ALREADY existing, and the only
+# process that ever writes it is the jailed Claude -- into the tmpfs the exit throws away. So on
+# a fresh pier the condition could never come true, and the failing direction is silent: an
+# absent bind source is skipped rather than refused. Onboarding therefore ran on every jailed
+# launch, and its first screen is the theme picker, which previews a light scheme that reads as
+# invisible text on a dark terminal (REDS %408). The three sibling state directories above take
+# the opposite shape and are correct -- each is mkdir -p'd and then mounted unconditionally --
+# so the rule was already written and applied to three of the four things it governs.
+#
+# The file is SEEDED rather than the mount skipped. Empty JSON on purpose: a hand-written
+# hasCompletedOnboarding would be a guess at another program's config schema, which is a claim no
+# witness in this tree can hold. Claude writes its own record on the first jailed run, and it
+# persists from then on -- login and onboarding once per pier, exactly as CODEX_STATE promises
+# for codex above.
+if [ ! -f "${CLAUDE_STATE}/dot-claude.json" ]; then
+  printf '%s\n' '{}' >"${CLAUDE_STATE}/dot-claude.json"
 fi
+MAP_ARGS+=(--rw-map "${CLAUDE_STATE}/dot-claude.json:${HOST_HOME}/.claude.json")
 
 # NixOS: ai-jail tmpfs-replaces /run. Map back the pieces the agent needs:
 # current-system for PATH, nscd for glibc getaddrinfo, resolvconf when

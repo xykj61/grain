@@ -140,14 +140,31 @@ PASTE
 }
 
 echo "fleet-rearm: the roster, every seat reported (home=$home)"
-report_seat sound grain field
-report_seat incense grain-incense claude
-report_seat pheromone grain-pheromone claude
-report_seat petrichor grain-petrichor claude
+# ONE SEAT TABLE, READ RATHER THAN SPELLED (REDS %409). These rows were the fleet's sixth
+# independent copy of seat -> tree -> engine, and they had already drifted from fleet-loop.sh's:
+# this file reported nine seats where the loop admitted six, and the elder-name remap seated on
+# Keaton's word `20260904` lived in the loop and never reached here. Both read the roster now.
+#
+# Mind and Mystery are absent from the roster on purpose -- they are Codex supervisor seats with
+# their own law, and the relaunch case below still knows them by name. A seat this loop does not
+# find is reported by the fallback rows beneath, so a roster that cannot be read still prints a
+# card rather than nothing.
+fleet_roster_scan="$_fd_root/tools/fixtures/f/fleet_roster_scan.sh"
+if [ -f "$fleet_roster_scan" ]; then
+  sh "$fleet_roster_scan" | while read -r _seat _tree _engine _status; do
+    report_seat "$_seat" "$_tree" "$_engine"
+  done
+else
+  echo "fleet-rearm: no seat table at $fleet_roster_scan -- reporting the seats this file knows"
+  report_seat sound grain field
+  report_seat incense grain-incense claude
+  report_seat pheromone grain-pheromone claude
+  report_seat petrichor grain-petrichor claude
+  report_seat silence grain-silence claude
+  report_seat hush grain-hush claude
+  report_seat dream grain-dream codex
+fi
 report_seat mind grain-mind codex
 report_seat mystery grain-mystery codex
-report_seat silence grain-silence claude
-report_seat hush grain-hush claude
-report_seat dream grain-dream codex
 echo ""
 echo "fleet-rearm: a printed paste is an offer, never an act -- the hand chooses."

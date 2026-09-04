@@ -33,7 +33,9 @@ ZED_STATE="$REPO/.zed-state"
 # cursor-agent OAuth (auth.json) -- defaults to $CURSOR_AGENT_STATE/xdg-config
 # CURSOR_CONFIG_STATE="$REPO/loops/cursor/xdg-config"
 GH_STATE="$REPO/.gh"
-# Optional: copy host ~/.claude.json to $CLAUDE_STATE/dot-claude.json for quieter Claude starts
+# $CLAUDE_STATE/dot-claude.json is SEEDED by the launcher and mounted onto ~/.claude.json, where
+# Claude Code keeps hasCompletedOnboarding and the chosen theme. Nothing to copy by hand: this
+# line used to say `optional`, which described a workaround for REDS %408 rather than a setting.
 
 # ai-jail flags (space-separated). v1.20.2 defaults network off; CLI agents
 # need --network to reach their APIs. --no-network wins if you set it.

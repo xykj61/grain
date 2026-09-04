@@ -48,43 +48,41 @@ set -eu
 (set -o pipefail) 2>/dev/null && set -o pipefail
 
 seat=${1:-}
-case "$seat" in
-furrow)
-  echo "fleet-loop: furrow is now pheromone (Keaton's word 20260904)"
-  seat=pheromone
-  ;;
-harvest)
-  echo "fleet-loop: harvest is now petrichor (Keaton's word 20260904)"
-  seat=petrichor
-  ;;
-esac
-case "$seat" in
-incense | pheromone | petrichor | silence | hush | dream) ;;
-*)
-  echo "usage: sh tools/l/fleet-loop.sh incense|pheromone|petrichor|silence|hush|dream   [LOOP_HOURS=18] [LOOP_LAPS=0] [FLEET_DRY=1] [FLEET_BARE=1]"
-  exit 2
-  ;;
-esac
 
-# invariant: the tree this script lives in is the tree it runs against.
+# invariant: the tree this script lives in is the tree it runs against. The cd comes BEFORE the
+# seat is checked, because the seat table now lives in the tree rather than in this file.
 root=$(CDPATH= cd -- "$(dirname -- "$0")/../.." && pwd)
 cd "$root"
 [ -f construction/ITINERARY.md ] || { echo "fleet-loop: $root is not a tree root (no construction/ITINERARY.md)"; exit 2; }
+
+# ONE SEAT TABLE, READ RATHER THAN SPELLED (REDS %409). This file used to carry four independent
+# seat tables -- the allow-list, want_tree, and the two engine cases -- and fleet_rearm.sh carried
+# two more, six in all with nothing comparing them. Two had already drifted by `20260904`: this
+# loop admitted six seat names while the re-arm reported nine, and the elder-name remap seated on
+# Keaton's word lived here and not there. All six are lookups into construction/fleet-roster.kyri
+# now, so a ship joins, retires, or is renamed in one row.
+roster_scan=tools/fixtures/f/fleet_roster_scan.sh
+[ -f "$roster_scan" ] || { echo "fleet-loop: missing $roster_scan -- the seat table is unreadable"; exit 2; }
+
+# An elder name answers with its living seat and says so; anything else answers with itself.
+resolved=$(sh "$roster_scan" --resolve "$seat" 2>/dev/null || true)
+if [ -n "$resolved" ] && [ "$resolved" != "$seat" ]; then
+  echo "fleet-loop: $seat is now $resolved (construction/fleet-roster.kyri)"
+  seat=$resolved
+fi
+if ! sh "$roster_scan" --seats | grep -qx "$seat"; then
+  echo "usage: sh tools/l/fleet-loop.sh <seat>   [LOOP_HOURS=18] [LOOP_LAPS=0] [FLEET_DRY=1] [FLEET_BARE=1]"
+  echo "seats: $(sh "$roster_scan" --live | tr '\n' ' ')(live)  $(sh "$roster_scan" --seats | tr '\n' ' ')(all)"
+  exit 2
+fi
+engine=$(sh "$roster_scan" --engine "$seat")
 
 prompt_file=tools/l/${seat}_seat_prompt.txt
 [ -f "$prompt_file" ] || { echo "fleet-loop: missing seat prompt $prompt_file"; exit 2; }
 
 # invariant: a seat runs only in its own tree (%291). The field ~/grain is the
 # captain's GUI sitting, not an unattended loop tree. Machines are doors.
-want_tree=
-case "$seat" in
-incense) want_tree=grain-incense ;;
-pheromone) want_tree=grain-pheromone ;;
-petrichor) want_tree=grain-petrichor ;;
-silence) want_tree=grain-silence ;;
-hush) want_tree=grain-hush ;;
-dream) want_tree=grain-dream ;;
-esac
+want_tree=$(sh "$roster_scan" --tree "$seat")
 base=$(basename "$root")
 if [ "$base" != "$want_tree" ]; then
   echo "fleet-loop: seat $seat belongs in $want_tree; this tree is $base -- refusing"
@@ -97,7 +95,7 @@ deadline=$(( $(date +%s) + hours * 3600 ))
 laps=0
 mkdir -p session-output
 
-echo "fleet-loop: seat=$seat root=$root hours=$hours laps=${max_laps:-unbounded}"
+echo "fleet-loop: seat=$seat engine=$engine root=$root hours=$hours laps=${max_laps:-unbounded}"
 
 # Print the command a lap would run. Linux Earth ships wrap in agent-jail; Darwin does not.
 # The prompt stays a file -- never inlined here.
@@ -111,16 +109,10 @@ earth_claude_cmd() {
 
 if [ "${FLEET_DRY:-0}" = 1 ]; then
   echo "fleet-loop: FLEET_DRY=1 -- command only, no round-open, no lap"
-  case "$seat" in
-  incense | pheromone | petrichor)
-    earth_claude_cmd
-    ;;
-  dream)
-    echo "./tools/ag/agent-jail.sh codex exec --sandbox danger-full-access <${prompt_file} as argv"
-    ;;
-  *)
-    echo "claude --dangerously-skip-permissions --effort max --output-format stream-json --verbose -p <${prompt_file}>"
-    ;;
+  case "$engine" in
+  claude) earth_claude_cmd ;;
+  codex)  echo "./tools/ag/agent-jail.sh codex exec --sandbox danger-full-access <${prompt_file} as argv" ;;
+  *)      echo "fleet-loop: seat $seat carries engine '$engine' -- no unattended loop for it"; exit 2 ;;
   esac
   exit 0
 fi
@@ -192,18 +184,21 @@ run_earth_claude() {
 }
 
 run_lap() {
-  case "$seat" in
-  incense | pheromone | petrichor)
+  # The engine word comes off the roster, so `field` -- the interactive bench, which runs no
+  # unattended loop -- refuses here by name rather than falling into a claude branch that would
+  # start one. A seat with no engine would read as a row somebody forgot to finish; `field` is
+  # finished, and this is what it means.
+  case "$engine" in
+  claude)
     run_earth_claude
     ;;
-  dream)
+  codex)
     ./tools/ag/agent-jail.sh codex exec --sandbox danger-full-access "$(cat "$prompt_file")" 2>&1 \
       | tee "session-output/${seat}.txt"
     ;;
   *)
-    claude --dangerously-skip-permissions --effort max --output-format stream-json --verbose \
-      -p "$(cat "$prompt_file")" \
-      | stream_claude
+    echo "fleet-loop: seat $seat carries engine '$engine' -- no unattended loop for it"
+    return 4
     ;;
   esac
 }

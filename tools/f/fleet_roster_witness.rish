@@ -1,0 +1,31 @@
+# fleet_roster_witness.rish -- the fleet's one seat table, and the loop that reads it.
+#
+# The binding seat -> tree -> engine stood in six independent places across two executables, and
+# two had already drifted by 20260904: fleet-loop.sh admitted six seat names while fleet_rearm.sh
+# reported nine, and the elder-name remap seated on Keaton's word lived in one file and never
+# reached the other (REDS %409). construction/fleet-roster.kyri holds it once now, and this proves
+# the readers cannot disagree with it.
+#
+#   rishi/bin/rishi run tools/f/fleet_roster_witness.rish
+
+say "fleet-roster: Language EN -- one seat table, read by every instrument rather than spelled in each."
+say "fleet-roster: Style Gauge, Meter -- every leg is a reading, and every refusal is shown from both sides."
+say "fleet-roster: Lens TAME -- safety first: a table two files disagree about is one table plus a waiting red."
+
+# invariant: run from the repo root, where the seat table lives.
+let root = run ["test" "-f" "construction/fleet-roster.kyri"]
+assert root.ok else "run from the repo root (construction/fleet-roster.kyri not found)"
+
+# invariant: the reader the callers share must be present before any caller is judged by it.
+let reader = run ["test" "-f" "tools/fixtures/f/fleet_roster_scan.sh"]
+assert reader.ok else "tools/fixtures/f/fleet_roster_scan.sh is missing -- the seat table is unreadable"
+
+let control = run ["sh" "tools/fixtures/f/fleet_roster_control.sh"]
+say control.out
+assert control.ok else "fleet-roster: a reading disagreed with the table -- read the control's own lines"
+assert control.out contains "control_verdict=ok" else "fleet-roster: the control did not close ok"
+assert control.out contains "loop_spells_no_seat_table=yes" else "fleet-roster: a seventh seat table is being born in fleet-loop.sh"
+assert control.out contains "elder_name_resolves=yes" else "fleet-roster: an elder seat name no longer reaches its living seat"
+assert control.out contains "unknown_seat_refuses=yes" else "fleet-roster: a seat the table does not hold was answered rather than refused"
+
+say "GREEN: fleet-roster -- one table, and no reader that can disagree with it."

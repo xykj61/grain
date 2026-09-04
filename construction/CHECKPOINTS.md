@@ -22,6 +22,30 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ---
 
+## `20260904.190000` -- the card condensed to fit two new rows (walk-back `528fd63395`)
+
+**Walk-back nib:** `528fd63395` -- HEAD before this lap's commit. **Swept:** the living
+[`ITINERARY.md`](ITINERARY.md) live front, condensed six times in one lap to pay for `%408`,
+`%374` and `%409`, since the card opened at **24,551 of its 24,576 bytes** and every addition
+had to be a deletion. Also the living [`REDS.md`](REDS.md) pin, whose rows `%403`, `%404`,
+`%407` and then `%374`, `%400` moved to two new shelves.
+
+**What waits there, worth recalling:** five blocks that read whole at that nib and read short
+now. The **`%405`/`%406` account** -- the reference block held out of both counted readings,
+154 heads carrying one, 84 `.glow` desks, 57 crossing B, and the `--deps` repair that silenced
+two pens at once. The **`%407` account** -- 137 readings rose and none fell, 99 crossing B
+across 117 legs. The **`%400` BOOKED line** and the open question beside it: *should an OPEN row
+carry a claim -- seat and stamp, at start rather than landing?*, which nothing has answered and
+which this lap did not take. The **Roster line** naming the two `rg` guards repaired on a pier
+that ships none. And the **Silence DEFAULT-to-Meter finding** -- session logs moved 0 of 60, so
+Field already reads them right and the family the question named was never the one bleeding.
+
+**Why:** no debride was circled; this is the ordinary shape of a full card, and it is worth a
+cairn precisely because it is ordinary. A pin at its bound spends prose on every lap, and the
+prose it spends is chosen by whoever is typing rather than by anyone deciding. The structural
+question is named on the card and is Keaton's: **raise this one pin's bound** the way
+`session-logs/README.md` earned its own, **or fold the live front to a shelf.**
+
 ## `20260903.222445` -- SOURCE C0b first-boot walk (walk-back `e0dcc33823`)
 
 **Walk-back nib:** `e0dcc33823` -- HEAD before this lap's commit. **Swept:** living

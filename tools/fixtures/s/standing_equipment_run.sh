@@ -446,7 +446,7 @@ for _cap in $(awk '$1 == "capability" { print $2 }' "$roster" 2>/dev/null | sort
   fi
 done
 awk -v want="$want_tier" -v only="$only" -v here="$this_host" -v capsabsent="$caps_absent" '
-  function reset() { name = ""; path = ""; tier = ""; host = ""; cap = "" }
+  function reset() { name = ""; path = ""; tier = ""; host = ""; cap = ""; gate = "" }
   function flush(   t) {
     if (name == "") return
     t = (tier == "" ? "lap" : tier)
@@ -454,7 +454,7 @@ awk -v want="$want_tier" -v only="$only" -v here="$this_host" -v capsabsent="$ca
     if (only == "" && want != "all" && t != want)  { reset(); return }
     if (only == "" && host != "" && host != here)  { print "SKIPHOST", name, host; reset(); return }
     if (only == "" && cap != "" && index(capsabsent, " " cap " ") > 0) { print "SKIPCAP", name, cap; reset(); return }
-    print name, (path == "" ? "-" : path), t
+    print name, (path == "" ? "-" : path), t, (gate == "" ? "-" : gate)
     reset()
   }
   $1 == "guard"      { flush(); name = $2; next }
@@ -462,6 +462,7 @@ awk -v want="$want_tier" -v only="$only" -v here="$this_host" -v capsabsent="$ca
   $1 == "tier"       { if (name != "") tier = $2; next }
   $1 == "host"       { if (name != "") host = $2; next }
   $1 == "capability" { if (name != "") cap = $2; next }
+  $1 == "gate"       { if (name != "") gate = $2; next }
   END { flush() }
 ' "$roster" > "$pen/selected"
 grep '^SKIPHOST ' "$pen/selected" > "$pen/skiphost" || true
@@ -523,7 +524,7 @@ if [ "$scoped" = yes ]; then
   echo "scoped_changed=$changed_n"
   sh "$scope_map" > "$pen/scopemap" || { echo "refused: the scope map fixture failed" >&2; exit 1; }
   : > "$pen/todo.scoped"
-  while read -r name path tier_word; do
+  while read -r name path tier_word gate_word; do
     [ -n "$name" ] || continue
     maprow=$(awk -v g="$name" '$1 == g { $1=""; sub(/^ /,""); print; exit }' "$pen/scopemap")
     keep=no
@@ -546,7 +547,7 @@ if [ "$scoped" = yes ]; then
       done < "$pen/changed"
     fi
     if [ "$keep" = yes ]; then
-      printf '%s %s %s\n' "$name" "$path" "$tier_word" >> "$pen/todo.scoped"
+      printf '%s %s %s %s\n' "$name" "$path" "$tier_word" "$gate_word" >> "$pen/todo.scoped"
     else
       skipped_scope=$((skipped_scope + 1))
       echo "skipped_scope $name basis=$receipt_head"
@@ -575,6 +576,8 @@ fi
 ran=0
 green=0
 red=0
+gated=0
+gate_names=""
 seconds=0
 
 # A RED THAT KEEPS NO WORDS CANNOT BE ROOTED. This loop discarded every guard's output, so a red
@@ -606,7 +609,7 @@ red_room="construction/standing-equipment-reds"
 # TWO `date` FORKS PER GUARD, against guards measured in seconds -- a cost worth paying to stop
 # guessing. Seconds rather than anything finer, because this reading exists to size a PASS: a guard
 # that finishes inside a second is one no lap ever needs to think about, and it reads 0 honestly.
-while read -r name path tier; do
+while read -r name path tier gate; do
   [ -n "$name" ] || continue
   guard_open=$(date +%s)
   if [ "$path" != "-" ] && [ -f "$path" ]; then
@@ -614,13 +617,30 @@ while read -r name path tier; do
       verdict=green
       green=$((green + 1))
     else
-      verdict=red
-      red=$((red + 1))
+      # A RED AT A CUSTODY GATE IS A PARKED READING, NOT A BROKEN ONE (REDS %374, Keaton's word
+      # `20260904`). The counter below used to book both under one name, and this pier's gates are
+      # permanent by design -- pond at %5, the drifted rule pairs at %7, the untracked publisher at
+      # %1 -- so no pass here could ever close fully green and the fusion build's cheaper pass was
+      # unreachable BY CONSTRUCTION rather than by delay. Splitting the counter is the whole repair:
+      # `red` keeps its meaning of *this guard broke*, `gated` says *this guard is parked at a gate
+      # the card names*, and only the first refuses. The evidence is kept either way, because a
+      # parked reading a hand cannot read is a parked reading nobody can retire.
       tail -n 200 "$pen/out.$$" > "$pen/evidence.$name.txt"
       echo "  evidence $red_room/$name.txt"
+      if [ "$gate" != "-" ]; then
+        verdict=gated
+        gated=$((gated + 1))
+        gate_names="$gate_names$name($gate) "
+      else
+        verdict=red
+        red=$((red + 1))
+      fi
     fi
     rm -f "$pen/out.$$"
   else
+    # An absent path is never gated: a guard whose file is gone proves nothing, whatever a
+    # roster row claims about it, and letting a gate excuse absence would turn the field into
+    # the exemption the tier vocabulary refuses to be.
     verdict=absent
     red=$((red + 1))
   fi
@@ -669,6 +689,10 @@ echo "guards_run=$ran"
 echo "guards_seconds=$seconds"
 echo "guards_green=$green"
 echo "guards_red=$red"
+# Disclosed on every pass, empty or full, for the reason the enforced rooms are reported at every
+# count: a gate that vanishes from a meter is a gate nobody witnessed being retired.
+echo "guards_gated=$gated"
+[ -n "$gate_names" ] && echo "gated_at=${gate_names% }"
 echo "host=$this_host"
 echo "skipped_host=$skipped_host"
 echo "skipped_capability=$skipped_capability"
@@ -702,9 +726,12 @@ if [ "$moved" = yes ]; then
   exit 1
 fi
 
-# The record a future open compares against, written only at a fully green, unmoved close of a
-# FULL pass -- so the receipt can never speak a green the roster did not prove on this exact
-# tree, and never one a scoped or by-name pass merely inherited. A scoped close writing the
+# The record a future open compares against, written at an unmoved close of a FULL pass carrying
+# no BROKEN guard -- so the receipt can never speak a green the roster did not prove on this exact
+# tree, and never one a scoped or by-name pass merely inherited. A guard parked at a custody gate
+# the card names no longer costs the receipt (REDS %374, Keaton's word `20260904`); it is disclosed
+# inside it instead, since the honest reading is *nothing here broke* rather than *nothing here is
+# parked*, and this pier's gates are permanent by design. A scoped close writing the
 # receipt would let a skip become the basis of the next skip, which is the one road from
 # evidence to rumor this whole design exists to close; a single-guard green overwriting the
 # full roster's record was the same road at a walk (found on the fusion lap, 20260829). The
@@ -719,6 +746,14 @@ if [ "$run_scope" = full ]; then
     echo "scope full"
     echo "tier $want_tier"
     echo "guards $ran"
+    # THE RECEIPT DISCLOSES WHAT IT CHAINED PAST (REDS %374, granted `20260904`). A receipt that
+    # simply said `green` after a gated-only close would promise more than the pass proved, and
+    # `--scoped` reads this file for its basis -- so the gates ride in the record itself, and a
+    # reader of the receipt learns what was parked without rerunning anything. Zero gates writes
+    # the line anyway, at zero, so an absent line is a receipt from before this format rather
+    # than a pass that quietly had none.
+    echo "gated $gated"
+    [ -n "$gate_names" ] && echo "gated_at ${gate_names% }"
     echo "stamp $stamp"
   } > "$receipt_tmp"
   # Same room, same reason as the hit ledger above: a pen has no `construction/` to write into.

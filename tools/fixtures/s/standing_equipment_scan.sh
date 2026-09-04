@@ -57,11 +57,32 @@ known_hosts="macos linux"
 # the same way an unknown tier is: a guard gated on a capability no runner probes would run nowhere,
 # in silence, which is REDS %219's shape wearing a third field.
 known_capabilities="ipv6"
+# The gates the runner honors (REDS %374, Keaton's word `20260904`): a row carrying `gate %5` says
+# this guard's red is a reading PARKED at a custody gate the living card names, rather than a broken
+# one, so a full pass carrying only such reds still earns its receipt. `host` is a tier for PLACE,
+# `tier` a tier for TIME, `capability` a tier for what a host CAN DO -- this is a tier for what a
+# MAINTAINER HAS PARKED, and it is the one of the four that could become a free pass, because a
+# hand types it about its own tree.
+#
+# SO THE VOCABULARY IS NOT KEPT HERE. It is read out of `construction/ITINERARY.md`'s own custody
+# section -- the numbered list under the heading that tells an autonomous agent where to stop -- so
+# a roster can only claim a gate the card actually declares, and retiring a gate on the card
+# retires every roster row that leaned on it in the same edit. Two copies of one list is the drift
+# this tree keeps paying for; here it would also be the loophole.
+card_pin="${CARD_PIN:-construction/ITINERARY.md}"
+known_gates=$(
+  if [ -f "$card_pin" ]; then
+    sed -n '/^## Custody gates/,/^Everything else/p' "$card_pin" \
+      | sed -n 's/^\([0-9][0-9]*\)\. \*\*.*/%\1/p'
+  fi | tr '\n' ' '
+)
+# An empty vocabulary refuses every gate rather than welcoming them all: a card that cannot be read
+# is the one state where a gate claim has nothing behind it at all.
 
 names=$(mktemp); paths_missing=$(mktemp); halfrows=$(mktemp)
 unrostered=$(mktemp); reds=$(mktemp); ranlist=$(mktemp)
-badtiers=$(mktemp); cadence_names=$(mktemp); badhosts=$(mktemp); badcaps=$(mktemp)
-trap 'rm -f "$names" "$paths_missing" "$halfrows" "$unrostered" "$reds" "$ranlist" "$badtiers" "$cadence_names" "$badhosts" "$badcaps"' EXIT
+badtiers=$(mktemp); cadence_names=$(mktemp); badhosts=$(mktemp); badcaps=$(mktemp); badgates=$(mktemp)
+trap 'rm -f "$names" "$paths_missing" "$halfrows" "$unrostered" "$reds" "$ranlist" "$badtiers" "$cadence_names" "$badhosts" "$badcaps" "$badgates"' EXIT
 
 rostered=0
 missing=0
@@ -71,6 +92,8 @@ unknown_host=0
 host_gated=0
 unknown_capability=0
 capability_gated=0
+unknown_gate=0
+gate_parked=0
 tier_lap=0
 tier_cadence=0
 
@@ -80,6 +103,7 @@ sawpath=0
 tier=""
 host=""
 capability=""
+gate=""
 close_record() {
   [ -n "$name" ] || return 0
   if [ "$sawpath" -ne 1 ]; then half=$((half + 1)); echo "$name" >> "$halfrows"; fi
@@ -108,7 +132,14 @@ close_record() {
       *) unknown_capability=$((unknown_capability + 1)); echo "$name -> $capability" >> "$badcaps" ;;
     esac
   fi
-  name=""; sawpath=0; tier=""; host=""; capability=""
+  if [ -n "$gate" ]; then
+    gate_parked=$((gate_parked + 1))
+    case " $known_gates " in
+      *" $gate "*) ;;
+      *) unknown_gate=$((unknown_gate + 1)); echo "$name -> $gate" >> "$badgates" ;;
+    esac
+  fi
+  name=""; sawpath=0; tier=""; host=""; capability=""; gate=""
 }
 
 while IFS= read -r line; do
@@ -139,6 +170,10 @@ while IFS= read -r line; do
     capability\ *)
       [ -n "$name" ] || continue
       capability=$(printf '%s' "$line" | awk '{print $2}')
+      ;;
+    gate\ *)
+      [ -n "$name" ] || continue
+      gate=$(printf '%s' "$line" | awk '{print $2}')
       ;;
     *) ;;
   esac
@@ -186,7 +221,11 @@ if [ -f "$card" ]; then
           stray=$((stray + 1))
           echo "$rname" >> "$unrostered"
         fi
-        if [ "$rverdict" != "green" ]; then
+        # `gated` joins `green` as a verdict this scan does not count as red (REDS %374). The row
+        # says the runner ran the guard, it answered red, and its roster row parks that red at a
+        # card-named custody gate -- which is the state this instrument was itself unrunnable in,
+        # since the guard that proves the roster honest refused on exactly the trees carrying a gate.
+        if [ "$rverdict" != "green" ] && [ "$rverdict" != "gated" ]; then
           red=$((red + 1))
           echo "$rname $rverdict" >> "$reds"
         fi
@@ -218,6 +257,8 @@ echo "guards_host_gated=$host_gated"
 echo "guards_unknown_host=$unknown_host"
 echo "guards_capability_gated=$capability_gated"
 echo "guards_unknown_capability=$unknown_capability"
+echo "guards_gate_parked=$gate_parked"
+echo "guards_unknown_gate=$unknown_gate"
 echo "tier_lap=$tier_lap"
 echo "tier_cadence=$tier_cadence"
 echo "runs_recorded=$recorded"
@@ -236,11 +277,12 @@ echo "newest_run=${newest:-none}"
 [ "$unknown_tier" -eq 0 ] || sed 's/^/unknown_tier: /' "$badtiers"
 [ "$unknown_host" -eq 0 ] || sed 's/^/unknown_host: /' "$badhosts"
 [ "$unknown_capability" -eq 0 ] || sed 's/^/unknown_capability: /' "$badcaps"
+[ "$unknown_gate" -eq 0 ] || sed 's/^/unknown_gate: /' "$badgates"
 [ "$stray" -eq 0 ] || sed 's/^/unrostered: /' "$unrostered"
 [ "$red" -eq 0 ] || sed 's/^/red: /' "$reds"
 
 if [ "$missing" -eq 0 ] && [ "$half" -eq 0 ] && [ "$unknown_tier" -eq 0 ] && [ "$unknown_host" -eq 0 ] \
-   && [ "$unknown_capability" -eq 0 ] \
+   && [ "$unknown_capability" -eq 0 ] && [ "$unknown_gate" -eq 0 ] \
   && [ "$stray" -eq 0 ] && [ "$red" -eq 0 ]; then
   echo "verdict=ok"
   exit 0

@@ -982,4 +982,104 @@ out=$(run_locked no/such/room/lock.d room-card.kyri)
 case "$out" in *"run_lock=skipped_no_room"*) echo "no_lock_room_says_so=yes" ;; *) echo "no_lock_room_says_so=no" ;; esac
 case "$out" in *"guards_run=1"*) echo "no_lock_room_still_runs=yes" ;; *) echo "no_lock_room_still_runs=no" ;; esac
 
+# --- the custody gate, proven from both sides (REDS %374, Keaton's word `20260904`) ------------
+#
+# A red at a card-named custody gate is a PARKED reading rather than a broken one, so a full pass
+# carrying only such reds earns its receipt. This is the one roster field a hand types about its
+# own tree, so every leg below is asked in the direction that would make it a free pass.
+gatepen=$(mktemp -d)
+mkdir -p "$gatepen/rishi/bin" "$gatepen/construction"
+cat > "$gatepen/rishi/bin/rishi" <<'EOF'
+#!/bin/sh
+# argv is `run <path>`; a guard file holding the word `red` fails, anything else passes.
+grep -q red "$2" 2>/dev/null && exit 1
+exit 0
+EOF
+chmod +x "$gatepen/rishi/bin/rishi"
+: > "$gatepen/ok.sh"
+echo red > "$gatepen/parked.sh"
+echo red > "$gatepen/broken.sh"
+cat > "$gatepen/roster.kyri" <<'EOF'
+format standing-equipment-v1
+guard alpha
+path ok.sh
+tier lap
+seated 20260830.000000
+
+guard parked
+path parked.sh
+tier lap
+gate %5
+seated 20260830.000000
+EOF
+
+run_gate() { ( cd "$gatepen" && STANDING_ROSTER=roster.kyri STANDING_CARD="$1" \
+  STANDING_RECEIPT=construction/receipt.kyri sh "$runner" 2>/dev/null ) || true; }
+
+# A gated red does not refuse the pass, is counted apart from a broken one, and is DISCLOSED.
+out=$(run_gate gate-card.kyri)
+case "$out" in *"guards_red=0"*) echo "gated_red_not_counted_red=yes" ;; *) echo "gated_red_not_counted_red=no" ;; esac
+case "$out" in *"guards_gated=1"*) echo "gated_counted_apart=yes" ;; *) echo "gated_counted_apart=no" ;; esac
+case "$out" in *"gated_at=parked(%5)"*) echo "gate_disclosed_on_run=yes" ;; *) echo "gate_disclosed_on_run=no" ;; esac
+case "$out" in *"run_verdict=ok"*) echo "gated_only_close_passes=yes" ;; *) echo "gated_only_close_passes=no" ;; esac
+
+# ...and the receipt it earns says what it chained past, rather than a bare green.
+if grep -q '^gated 1$' "$gatepen/construction/receipt.kyri" 2>/dev/null; then
+  echo "receipt_names_gate_count=yes"; else echo "receipt_names_gate_count=no"; fi
+if grep -q '^gated_at parked(%5)$' "$gatepen/construction/receipt.kyri" 2>/dev/null; then
+  echo "receipt_names_the_gate=yes"; else echo "receipt_names_the_gate=no"; fi
+
+# THE BITING DIRECTION. One ungated red still costs the receipt and still refuses -- otherwise the
+# field is an off switch for the roster rather than a name for a parked reading.
+rm -f "$gatepen/construction/receipt.kyri"
+cat >> "$gatepen/roster.kyri" <<'EOF'
+
+guard broken
+path broken.sh
+tier lap
+seated 20260830.000000
+EOF
+out=$(run_gate broken-card.kyri)
+case "$out" in *"guards_red=1"*) echo "ungated_red_still_red=yes" ;; *) echo "ungated_red_still_red=no" ;; esac
+case "$out" in *"run_verdict=guard_red"*) echo "ungated_red_still_refuses=yes" ;; *) echo "ungated_red_still_refuses=no" ;; esac
+case "$out" in *"roster_receipt_write=withheld_guard_red"*) echo "ungated_red_costs_receipt=yes" ;; *) echo "ungated_red_costs_receipt=no" ;; esac
+if [ -f "$gatepen/construction/receipt.kyri" ]; then echo "broken_wrote_receipt=yes"; else echo "broken_wrote_receipt=no"; fi
+
+# AN ABSENT PATH IS NEVER GATED. A guard whose file is gone proves nothing, whatever its row says,
+# and letting a gate excuse absence turns the field into the exemption the tier words refuse to be.
+cat > "$gatepen/roster.kyri" <<'EOF'
+format standing-equipment-v1
+guard vanished
+path no-such-file.sh
+tier lap
+gate %5
+seated 20260830.000000
+EOF
+out=$(run_gate absent-card.kyri)
+case "$out" in *"guards_red=1"*) echo "gated_absent_still_red=yes" ;; *) echo "gated_absent_still_red=no" ;; esac
+case "$out" in *"run_verdict=guard_red"*) echo "gated_absent_still_refuses=yes" ;; *) echo "gated_absent_still_refuses=no" ;; esac
+
+# THE VOCABULARY IS THE CARD'S. A gate the card never declares is refused by the scan, and a card
+# that cannot be read empties the vocabulary and refuses EVERY gate -- fail closed, since an
+# unreadable card is the one state where a gate claim has nothing at all behind it.
+scan_gate() { ( cd "$gatepen" && CARD_PIN="$1" STANDING_ROSTER=roster.kyri \
+  STANDING_CARD=absent-card.kyri sh "$scan" 2>&1 ) || true; }
+cat > "$gatepen/card-with-5.md" <<'EOF'
+## Custody gates -- an autonomous agent STOPS here and surfaces (never crosses)
+5. **Deep debride** -- named target, the maintainer's explicit word.
+Everything else is agent-doable.
+EOF
+cat > "$gatepen/card-without-5.md" <<'EOF'
+## Custody gates -- an autonomous agent STOPS here and surfaces (never crosses)
+1. **The seed** -- each refresh takes its own word.
+Everything else is agent-doable.
+EOF
+out=$(scan_gate card-with-5.md)
+case "$out" in *"guards_unknown_gate=0"*) echo "card_declared_gate_welcomed=yes" ;; *) echo "card_declared_gate_welcomed=no" ;; esac
+out=$(scan_gate card-without-5.md)
+case "$out" in *"guards_unknown_gate=1"*) echo "undeclared_gate_refused=yes" ;; *) echo "undeclared_gate_refused=no" ;; esac
+out=$(scan_gate no-such-card.md)
+case "$out" in *"guards_unknown_gate=1"*) echo "unreadable_card_fails_closed=yes" ;; *) echo "unreadable_card_fails_closed=no" ;; esac
+rm -rf "$gatepen"
+
 echo "control_verdict=ok"
