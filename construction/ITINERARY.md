@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `7c477ef37e` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `8434231131` -- HEAD's parent, resolvable everywhere (%401).
 
 **Now.** **A free pass one reading earns by measurement is a free pass its twin has already argued for.**
 
@@ -223,6 +223,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260904.015034` | Pheromone and petrichor seated; pier birth paste | [log](../session-logs/date/20260904/20260904-015034_pheromone-petrichor-seated.kyri) |
+| `20260904.074901` | Birth pins RYE_ZIG to the newborn zig | [log](../session-logs/date/20260904/20260904-074901_birth-pins-newborn-zig.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)

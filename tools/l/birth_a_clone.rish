@@ -78,12 +78,21 @@ let sm = run ["env" "GIT_CONFIG_GLOBAL=/dev/null" "git" "-C" dest "submodule" "u
 assert sm.ok else "birth-a-clone: the named submodules refused -- ${sm.err}"
 
 # The toolchain is host-provisioned and untracked; the newborn takes the field's copy.
+# Refuse a missing or dangling source before the copy: a renamed checkout's leftover
+# RYE_ZIG is a different fault, pinned on the bootstrap line below.
+let zig_src = field + "/vendor/zig-toolchain/zig"
+assert (run ["test" "-x" zig_src]).ok else "birth-a-clone: the field has no executable vendor/zig-toolchain/zig"
 let tc = run ["cp" "-R" (field + "/vendor/zig-toolchain") (dest + "/vendor/zig-toolchain")]
 assert tc.ok else "birth-a-clone: the toolchain copy refused"
+let zig_dest = dest + "/vendor/zig-toolchain/zig"
+assert (run ["test" "-x" zig_dest]).ok else "birth-a-clone: the copied toolchain is not executable -- if vendor/zig-toolchain is a symlink to a renamed checkout, retarget it or run sh tools/f/fetch-toolchain.sh in the field"
 
 # The newborn builds its own rye from its own source, then its own rishi with that rye --
 # binaries carrying the tree's provenance rather than another checkout's.
-let ry = run ["sh" (dest + "/rye/bootstrap.sh")]
+# Pin RYE_ZIG to the newborn. rye/bootstrap.sh honors a pre-set RYE_ZIG, and a pier
+# shell may still export the elder checkout path (grain-harvest after the petrichor
+# mv, 20260904). The rishi build already pinned; the bootstrap did not.
+let ry = run ["sh" "-c" ("cd " + dest + " && env RYE_ZIG=" + zig_dest + " sh rye/bootstrap.sh")]
 assert ry.ok else "birth-a-clone: the rye bootstrap refused -- ${ry.err}"
 # The emit directory is untracked and must exist before the build asks for it -- %337's own
 # lesson, met again at birth.
