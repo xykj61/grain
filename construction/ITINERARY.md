@@ -35,7 +35,7 @@
 - **The counsel campaign, Phase 1 standing** (`20260828`, Keaton's word): a lap may lift counsel insights into their right rooms as fresh-stamped mutants (B-door QA), banner the elders, Class M the rows -- `tools/fixtures/c/counsel_census_scan.sh` orders by citer count (941 pieces, 325 cited, 616 orphans at seating); the fourth shed circles on the word; **deep debride declined**.
 - **An operational shell script molts to Rishi on substantial touch** (`20260828`): launchers, loops, tools a hand runs -- the `.sh -> .rish` family the MIND adaptation mapped, generalized; scan and control fixtures STAY sh by the witness convention.
 
-- **The three Cursor stars** (`20260903`, Keaton's word): **Incense** (`~/grain`, Glow, captain), **Furrow** (`~/grain-furrow`, Surf/Skate), **Harvest** (Dallas, `/home/keeper/grain-harvest`). Loop: `sh tools/l/fleet-loop.sh incense|furrow|harvest` (recipe `tools/l/launch-earth-ships-chapter.rish`). One tree per star (%291). Parked: `~/grain-mystery`, `~/grain-silence`. Elder six-body charter `20260829.203718` stays testimony.
+- **The three Cursor stars** (`20260903`, Keaton's word; birth `20260904`): **Incense** loop `~/grain-incense` (Glow, captain), field GUI `~/grain`; **Furrow** `~/grain-furrow` (Surf/Skate); **Harvest** Dallas `/home/keeper/grain-harvest`. Loop: `sh tools/l/fleet-loop.sh incense|furrow|harvest` from that tree (recipe `tools/l/launch-earth-ships-chapter.rish`). One tree per star (%291). Parked: `~/grain-mystery`, `~/grain-silence`. Elder six-body charter `20260829.203718` stays testimony.
 - **Fleet re-arm helper**: `sh tools/f/fleet_rearm.sh` -- status, reason, paste.
 - **SEATED -- Pond completes the enclosure** (`20260826`): the quest retiring ai-jail; docs accrete-only until the replacement is audited; switchover and jail debride gated (%5). Plan: `expanding-prompts/20260826-033051_pond-completes-the-enclosure.md`.
 - **STANDFAST -- the Dexter orbit** (`20260826`): 15 rounds; door `dexter/README.md`.
@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `161cd94470` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `a9c552cf8e` -- HEAD's parent, resolvable everywhere (%401).
 
 **Now.** **A free pass one reading earns by measurement is a free pass its twin has already argued for.**
 
@@ -132,7 +132,7 @@ Seated ladders: **HAWM - TUBE - ZETA - JABS - LULU - STOA - SETU - SUNN - POLE**
 ## Pier & hands
 
 - **Host** -- this Mac (Incense, America/New_York) and Vultr Dallas (`45.32.204.176`, `Host pier-2`, `keeper`, AMD 4/8/180). SEA cancelled `20260903`. Never EWR.
-- **Pier path** -- Incense `~/grain` on this Mac; Harvest `/home/keeper/grain-harvest` on Dallas. Both persist across jail resets.
+- **Pier path** -- Incense field `~/grain` on this Mac; Incense unattended loop `~/grain-incense`; Harvest `/home/keeper/grain-harvest` on Dallas. Field and Harvest persist across jail resets.
 - **Lane** -- every **send** pushes `xy` then `debrided`; ls-remote guard first; `debrided` may 403 from the cloud (home pier closes the gap). Map: [`../PUBKEYS.md`](../PUBKEYS.md) - [`../context/REMOTE_ROSTER.md`](../context/REMOTE_ROSTER.md).
 - **Jail authors; host installs** -- agents write inside the enclosure; USB `adb` installs and key ops stay Keaton's hand.
 - **Live state** -- Dallas standing as Harvest; `gh` as `xykj61` on the pier; mosh + cursor-agent login GREEN; Harvest jail not started this sitting. SEA instance gone.
@@ -223,6 +223,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260903.234946` | Furrow stash then pull -- Harvest is Dallas | [log](../session-logs/date/20260903/20260903-234946_furrow-stash-then-one-lap.kyri) |
+| `20260904.000453` | Incense loop born at ~/grain-incense | [log](../session-logs/date/20260904/20260904-000453_birth-incense-loop.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)

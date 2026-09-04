@@ -1,9 +1,10 @@
 # launch-earth-ships-chapter.rish -- print the Cursor Grok loop for Incense, Furrow, Harvest.
 #
 # Three Earth ships, seated 20260903 on Keaton's word. Incense is the galaxy and
-# captain (Glow, this Mac, ~/grain). Furrow is Surf and Skate (~/grain-furrow).
-# Harvest is the Dallas pier star (/home/keeper/grain-harvest). Each star writes
-# in its own tree. The elder six-body charter stays testimony.
+# captain (Glow). Unattended loop: ~/grain-incense. Field GUI sitting: ~/grain.
+# Furrow is Surf and Skate (~/grain-furrow). Harvest is the Dallas pier star
+# (/home/keeper/grain-harvest). Each star writes in its own tree. The elder
+# six-body charter stays testimony.
 #
 #   rishi/bin/rishi run tools/l/launch-earth-ships-chapter.rish
 #
@@ -27,11 +28,11 @@ assert harvest.ok else "tools/l/harvest_seat_prompt.txt is missing"
 say "EARTH SHIPS -- Incense, Furrow, Harvest (Cursor Grok)"
 say "===================================================="
 say ""
-say "One galaxy and two stars. Incense is captain and Glow, this Mac, tree"
-say "~/grain. Furrow is Surf and Skate, tree ~/grain-furrow. Harvest is the"
-say "Dallas pier, tree /home/keeper/grain-harvest. Run each loop from the"
-say "tree that holds it. Incense's unattended loop and a Cursor GUI sitting"
-say "share ~/grain: start the loop only when that sitting is stopped."
+say "One galaxy and two stars. Incense is captain and Glow. The unattended"
+say "loop is ~/grain-incense; the captain's Cursor GUI sitting stays in the"
+say "field ~/grain. Furrow is Surf and Skate, ~/grain-furrow. Harvest is the"
+say "Dallas pier, /home/keeper/grain-harvest. Run each loop from the tree"
+say "that holds it."
 say ""
 say "0) PRECONDITIONS, once per machine:"
 say "   - this repo cloned with the xy remote, git submodule update --init"
@@ -50,13 +51,15 @@ say "   ./tools/ag/agent-jail.sh cursor-agent -p --force --trust --sandbox disab
 say ""
 say "3) THE SEAT PROMPT is a file, tools/l/<seat>_seat_prompt.txt -- never a"
 say "   shell string. FLEET_DRY prints the command; LOOP_LAPS=1 runs one lap."
-say "   Each seat refuses unless the tree basename matches (grain, grain-furrow,"
-say "   grain-harvest): a Furrow prompt cannot run inside Incense's checkout."
-say "   Run one machine per paste. The loop's round-open stashes and adopts"
-say "   xy/main -- do not git pull in front of a dirty tree."
+say "   Each seat refuses unless the tree basename matches (grain-incense,"
+say "   grain-furrow, grain-harvest): a Furrow prompt cannot run inside"
+say "   Incense's loop tree. The field ~/grain is the captain's GUI sitting,"
+say "   not the unattended loop. Run one machine per paste. The loop's"
+say "   round-open stashes and adopts xy/main -- do not git pull in front"
+say "   of a dirty tree."
 say ""
-say "FLEET_DRY=1 sh tools/l/fleet-loop.sh incense"
-say "LOOP_LAPS=1 sh tools/l/fleet-loop.sh incense"
+say "cd ~/grain-incense && FLEET_DRY=1 sh tools/l/fleet-loop.sh incense"
+say "cd ~/grain-incense && LOOP_LAPS=1 sh tools/l/fleet-loop.sh incense"
 say ""
 say "   Furrow, this Mac, from that tree:"
 say "cd ~/grain-furrow && LOOP_LAPS=1 sh tools/l/fleet-loop.sh furrow"
@@ -68,9 +71,9 @@ say "4) THE LOOP -- anchored to the tree that holds the script; LOOP_HOURS"
 say "   bounds it (default 18). Unattended model is cursor-grok-4.6-xhigh;"
 say "   a watched lap may set CURSOR_MODEL=cursor-grok-4.6-high."
 say ""
-say "sh tools/l/fleet-loop.sh incense"
-say "sh tools/l/fleet-loop.sh furrow"
-say "sh tools/l/fleet-loop.sh harvest"
+say "cd ~/grain-incense && sh tools/l/fleet-loop.sh incense"
+say "cd ~/grain-furrow && sh tools/l/fleet-loop.sh furrow"
+say "cd /home/keeper/grain-harvest && sh tools/l/fleet-loop.sh harvest"
 say ""
 say "5) STREAMING: the loop tees text to session-output/<seat>.txt inside"
 say "   the tree -- the read-scope law's shared window."
