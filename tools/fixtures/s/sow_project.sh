@@ -139,7 +139,7 @@ for p in $PATHS; do
     fi
     # Public SSH blobs: keep the file, swap the key for a placeholder so a
     # NixOS config can ship in grain-os / grain-ww without authorizedKeys.
-    if [ -f "$dest" ] && grep -IqE 'ssh-(ed25519|rsa) AAAA' "$dest" 2>/dev/null; then
+    if [ -f "$dest" ] && grep -IqE 'ssh-(ed25519|rsa) AAAA[A-Za-z0-9+/]' "$dest" 2>/dev/null; then
       stub_tmp="$dest.sow-stub"
       sh tools/fixtures/s/sow_pubkey_stub.sh < "$dest" > "$stub_tmp"
       cat "$stub_tmp" > "$dest"

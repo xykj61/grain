@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260903.225306` | [Seed published both doors](20260903/20260903-225306_seed-published-both-doors.kyri) | grain-os and grain-ww at 6b45db6 |
 | `20260903.222900` | [Send both waters even](20260903/20260903-222900_send-both-waters-even.kyri) | xy and debrided at 40f82c5674 |
 | `20260903.222445` | [SOURCE C0b first boot](20260903/20260903-222445_source-c0b-ubuntu-kexec-first-boot.kyri) | Ubuntu 22.04, panel password, kexec |
 | `20260903.222043` | [Molt names kexec](20260903/20260903-222043_molt-names-kexec-not-infect.kyri) | not 22.04 first boot, not infect |

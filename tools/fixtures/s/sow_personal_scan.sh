@@ -12,7 +12,9 @@ for p in $(grep -E '^sub_exclude ' template-manifest.bron | awk '{print $2}'); d
 done
 keys=$(find seed \( -name 'keys_*' -o -name 'PUBKEYS.md' -o -name '*.pem' -o -name '*.key' -o -name '*.asc' -o -name '*.gpg' \) 2>/dev/null || true)
 # Content guard -- embedded key material, whatever the file is named.
-embedded=$(grep -rIlE 'ssh-(ed25519|rsa) AAAA|BEGIN (OPENSSH|PGP|RSA|EC) (PRIVATE|PUBLIC) KEY' seed 2>/dev/null || true)
+# AAAA must be followed by a base64 character: pedagogical `AAAA...`
+# ellipses in dated guides are placeholders, not keys.
+embedded=$(grep -rIlE 'ssh-(ed25519|rsa) AAAA[A-Za-z0-9+/]|BEGIN (OPENSSH|PGP|RSA|EC) (PRIVATE|PUBLIC) KEY' seed 2>/dev/null || true)
 if [ -z "$bad" ] && [ -z "$keys" ] && [ -z "$embedded" ]; then
   echo NO_PERSONAL
 else

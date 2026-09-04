@@ -24,7 +24,9 @@ printf '%s\n' "$out" | grep -Eq 'ssh-(ed25519|rsa) AAAA' \
   && { echo "control: no AAAA blob may remain" >&2; exit 1; }
 printf '%s\n' "$out" | grep -c 'REPLACE_WITH_YOUR_PUBLIC_KEY' | grep -qx 3 \
   || { echo "control: the already-stubbed line must pass through" >&2; exit 1; }
+grep -qE 'ssh-(ed25519|rsa) AAAA' "$stub" \
+  && { echo "control: helper must not carry the guarded byte run" >&2; exit 1; }
 
-echo "control_cases=4"
+echo "control_cases=5"
 echo "control_fail=0"
 echo "control_verdict=ok"
