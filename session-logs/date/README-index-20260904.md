@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260904.082508` | [Rebuild follows its tree](20260904/20260904-082508_rebuild-follows-its-tree.kyri) | no ~/grain on Dallas; petrichor paste |
 | `20260904.081806` | [Flake pins ai-jail](20260904/20260904-081806_flake-pins-ai-jail.kyri) | system PATH after rebuild-outer |
 | `20260904.080747` | [Missing jail not a lap](20260904/20260904-080747_missing-jail-not-a-lap.kyri) | tee hid exit 1; FLEET_BARE watched door |
 | `20260904.075954` | [Pier incense pheromone GREEN](20260904/20260904-075954_pier-incense-pheromone-green.kyri) | rye version; wire-lab GREEN in both dests |

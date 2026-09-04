@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `2d18ee5af0` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `6b2763cf34` -- HEAD's parent, resolvable everywhere (%401).
 
 **Now.** **A free pass one reading earns by measurement is a free pass its twin has already argued for.**
 
@@ -132,10 +132,10 @@ Seated ladders: **HAWM - TUBE - ZETA - JABS - LULU - STOA - SETU - SUNN - POLE**
 ## Pier & hands
 
 - **Host** -- this Mac (Incense, America/New_York) and Vultr Dallas (`45.32.204.176`, `Host pier`, `keeper`, AMD 4/8/180). Never EWR.
-- **Pier path** -- field `~/grain`; ships `grain-incense`, `grain-pheromone`, `grain-petrichor` (Host pier holds the metal tree). Trees persist across jail resets.
+- **Pier path** -- Mac field `~/grain`; Host pier ships `grain-incense`, `grain-pheromone`, `grain-petrichor` (no `~/grain` on Dallas). NixOS rebuild from the checkout you pull, via `bash nixos/rebuild-outer.sh`.
 - **Lane** -- every **send** pushes `xy` then `debrided`; ls-remote guard first; `debrided` may 403 from the cloud (home pier closes the gap). Map: [`../PUBKEYS.md`](../PUBKEYS.md) - [`../context/REMOTE_ROSTER.md`](../context/REMOTE_ROSTER.md).
 - **Jail authors; host installs** -- agents write inside the enclosure; USB `adb` installs and key ops stay Keaton's hand.
-- **Live state** -- Dallas as Petrichor (`Host pier`); living flake pins `ai-jail` (rebuild-outer is Keaton's hand). `FLEET_BARE=1` until that switch.
+- **Live state** -- Dallas as Petrichor (`Host pier`); no `~/grain`. Rebuild from `grain-petrichor`. `FLEET_BARE=1` until that switch.
 - **Cursor launch** -- field: Cursor.app. Unattended: `cursor-agent login` on that host, then the loop from that tree. Linux jail: `launch-cursor.rish --gpu`.
 - **Outer terminal / phone** -- USB/`adb` and the phone look stay on the operator desk; read chapter state from the git nib and `prin scope`.
 
@@ -223,6 +223,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260904.081806` | Living flake pins ai-jail | [log](../session-logs/date/20260904/20260904-081806_flake-pins-ai-jail.kyri) |
+| `20260904.082508` | rebuild-outer follows its own tree | [log](../session-logs/date/20260904/20260904-082508_rebuild-follows-its-tree.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)

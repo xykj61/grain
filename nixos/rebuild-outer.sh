@@ -1,31 +1,35 @@
 #!/usr/bin/env bash
-# rebuild-outer.sh -- switch the pier to this repo's NixOS config.
+# rebuild-outer.sh -- switch the pier to THIS checkout's NixOS config.
 #
 # RUN FROM A HOST tmux, OUTSIDE ./tools/ag/agent-jail.sh.
 # ai-jail sets "no new privileges", so sudo / nixos-rebuild escalates only from
 # the outer host shell, never from inside the agent sandbox.
 #
-# On this pier /etc/nixos is a SYMLINK to /home/keeper/grain/nixos, so editing
-# the repo already updates the live machine config -- no copy is needed and the
-# flake reads the repo directly. The script detects that case and skips straight
-# to the switch; only when the two configs are genuinely separate files does it
-# back up and sync (the earlier deploy convention, kept for a non-symlinked host).
+# Anchored to the directory that contains this script (same law as fleet-loop):
+# a Host pier may have grain-incense / grain-pheromone / grain-petrichor and no
+# ~/grain. Dallas as Petrichor: pull in grain-petrichor, then
+#   bash nixos/rebuild-outer.sh
+# from that tree's root. The flake path is this script's directory, never a
+# hardcoded /home/keeper/grain.
 #
-#   bash /home/keeper/grain/nixos/rebuild-outer.sh
+# If /etc/nixos already points at this same configuration.nix inode, skip copy.
+# If /etc/nixos is absent or a broken symlink (the old ~/grain path), skip copy
+# and switch this checkout's flake anyway.
 #
 set -euo pipefail
 
-REPO=/home/keeper/grain/nixos
+REPO=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 ETC=/etc/nixos
 STAMP="$(TZ=America/New_York date +%Y%m%d-%H%M%S)"
 
 echo "== rebuild-outer $STAMP =="
+echo "flake    -> $REPO#pier"
 
-# 1. Sync only when /etc/nixos is a SEPARATE file from the repo. The -ef test is
-#    true when both paths resolve to the same inode (the symlinked pier), in
-#    which case a cp would error "same file" and a backup would litter the repo.
-if [ "$REPO/configuration.nix" -ef "$ETC/configuration.nix" ]; then
-  echo "sync     -> skipped; /etc/nixos already tracks the repo (symlinked)"
+# 1. Sync only when /etc/nixos is a SEPARATE live file from this checkout.
+if [ ! -e "$ETC/configuration.nix" ]; then
+  echo "sync     -> skipped; $ETC/configuration.nix absent (empty dir or broken symlink)"
+elif [ "$REPO/configuration.nix" -ef "$ETC/configuration.nix" ]; then
+  echo "sync     -> skipped; /etc/nixos already tracks this checkout (symlinked)"
 else
   sudo cp -a "$ETC/configuration.nix" "$ETC/configuration.nix.bak-$STAMP"
   echo "backed up -> $ETC/configuration.nix.bak-$STAMP"
