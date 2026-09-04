@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260904.171409` | [The captain gets two doors](20260904/20260904-171409_the-captain-gets-two-doors.kyri) | Cursor era landed; Incense prompt; Daylight yonder |
 | `20260904.155552` | [Earth ships run Claude Code](20260904/20260904-155552_earth-ships-run-claude-code.kyri) | Darwin host, Linux jail, stream-json |
 | `20260904.154200` | [Stop Dallas incense loops](20260904/20260904-154200_stop-dallas-incense-loops.kyri) | Incense stays this Mac; behind 2 |
 | `20260904.153428` | [Work kept, wait did not match](20260904/20260904-153428_work-kept-the-wait-did-not-match.kyri) | 110 min; 1de7ecd8df grep not rg |
