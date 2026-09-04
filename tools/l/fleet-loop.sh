@@ -1,9 +1,13 @@
 #!/bin/sh
-# fleet-loop.sh -- one outer loop for every prompt-file seat: silence, hush, dream.
+# fleet-loop.sh -- one outer loop for every prompt-file seat.
+#
+# Earth ships (Cursor Grok, seated 20260903): incense, furrow, harvest.
+# Elder aether seats (Claude Code / Codex): silence, hush, dream -- kept, so a
+# parked tree still launches the recipe it already knows.
 #
 # ANCHORED TO ITS OWN TREE (Keaton's word 20260829: a loop sources from its own folder
 # only). The script cds to the tree that CONTAINS it -- never the caller's cwd -- so a
-# bench holding sibling trees (~/grain-silence; the pier's ~/grain-dream and ~/grain-hush)
+# bench holding sibling trees (~/grain-furrow; the pier's /home/keeper/grain-harvest)
 # can never run one seat's laps against another seat's checkout.
 #
 # THE PROMPT IS A FILE, tools/l/<seat>_seat_prompt.txt, never an inline shell string: an
@@ -16,9 +20,10 @@
 # pier. LOOP_LAPS bounds the lap count when set (0, the default, means unbounded); the
 # one-round-once recipe is LOOP_LAPS=1.
 #
-#   sh tools/l/fleet-loop.sh silence
-#   LOOP_LAPS=1 sh tools/l/fleet-loop.sh hush
-#   LOOP_HOURS=6 sh tools/l/fleet-loop.sh dream
+#   sh tools/l/fleet-loop.sh incense
+#   LOOP_LAPS=1 sh tools/l/fleet-loop.sh furrow
+#   LOOP_HOURS=6 sh tools/l/fleet-loop.sh harvest
+#   FLEET_DRY=1 sh tools/l/fleet-loop.sh incense   # print the command; run nothing
 #
 # Transcripts land INSIDE the tree (session-output/<seat>.txt rendered, <seat>.jsonl raw
 # for the claude seats), per the read-scope law's shared window -- /tmp is not durable in
@@ -26,13 +31,20 @@
 # which contains the words GATES-ONLY, so a grep on the stream would false-stop. jq runs
 # --unbuffered: with a tee behind it its stdout is a pipe rather than a tty, and a
 # block-buffering jq shows a silent terminal until kilobytes accumulate (20260829).
+#
+# Cursor print mode takes the prompt as an argv word after the flags (SOURCE.md).
+# Harvest's nixpkgs cursor-cli takes --trust --sandbox disabled, proven Dallas
+# 20260903. This Mac's cursor-agent (same day) refuses both as unknown, so incense
+# and furrow pass --force only. CURSOR_MODEL defaults to cursor-grok-4.6-xhigh
+# (unattended); a watched lap may set CURSOR_MODEL=cursor-grok-4.6-high.
+# agent-jail.sh is Linux-only (GNU readlink -f); Harvest wraps, the Mac seats do not.
 set -eu
 
 seat=${1:-}
 case "$seat" in
-silence | hush | dream) ;;
+incense | furrow | harvest | silence | hush | dream) ;;
 *)
-  echo "usage: sh tools/l/fleet-loop.sh silence|hush|dream   [LOOP_HOURS=18] [LOOP_LAPS=0]"
+  echo "usage: sh tools/l/fleet-loop.sh incense|furrow|harvest|silence|hush|dream   [LOOP_HOURS=18] [LOOP_LAPS=0] [FLEET_DRY=1] [CURSOR_MODEL=cursor-grok-4.6-xhigh]"
   exit 2
   ;;
 esac
@@ -45,16 +57,74 @@ cd "$root"
 prompt_file=tools/l/${seat}_seat_prompt.txt
 [ -f "$prompt_file" ] || { echo "fleet-loop: missing seat prompt $prompt_file"; exit 2; }
 
+# invariant: a seat runs only in its own tree (%291). Incense is the field
+# ~/grain; the other five names are the clone directory they were born with.
+want_tree=
+case "$seat" in
+incense) want_tree=grain ;;
+furrow) want_tree=grain-furrow ;;
+harvest) want_tree=grain-harvest ;;
+silence) want_tree=grain-silence ;;
+hush) want_tree=grain-hush ;;
+dream) want_tree=grain-dream ;;
+esac
+base=$(basename "$root")
+if [ "$base" != "$want_tree" ]; then
+  echo "fleet-loop: seat $seat belongs in $want_tree; this tree is $base -- refusing"
+  exit 2
+fi
+
 hours=${LOOP_HOURS:-18}
 max_laps=${LOOP_LAPS:-0}
+cursor_model=${CURSOR_MODEL:-cursor-grok-4.6-xhigh}
 deadline=$(( $(date +%s) + hours * 3600 ))
 laps=0
 mkdir -p session-output
 
 echo "fleet-loop: seat=$seat root=$root hours=$hours laps=${max_laps:-unbounded}"
 
+# Print the command a lap would run. Harvest wraps in agent-jail; the Mac seats
+# call cursor-agent on the host. The prompt stays a file -- never inlined here.
+cursor_lap_cmd() {
+  case "$seat" in
+  harvest)
+    printf '%s\n' "./tools/ag/agent-jail.sh cursor-agent -p --force --trust --sandbox disabled --output-format text --model ${cursor_model} <${prompt_file} as argv"
+    ;;
+  incense | furrow)
+    printf '%s\n' "cursor-agent -p --force --output-format text --model ${cursor_model} <${prompt_file} as argv"
+    ;;
+  esac
+}
+
+if [ "${FLEET_DRY:-0}" = 1 ]; then
+  echo "fleet-loop: FLEET_DRY=1 -- command only, no round-open, no lap"
+  case "$seat" in
+  incense | furrow | harvest)
+    cursor_lap_cmd
+    ;;
+  dream)
+    echo "./tools/ag/agent-jail.sh codex exec --sandbox danger-full-access <${prompt_file} as argv"
+    ;;
+  *)
+    echo "claude --dangerously-skip-permissions --effort max --output-format stream-json --verbose -p <${prompt_file}>"
+    ;;
+  esac
+  exit 0
+fi
+
 run_lap() {
   case "$seat" in
+  harvest)
+    # Outer jail bounds the inner sandbox. Linux only -- see header.
+    ./tools/ag/agent-jail.sh cursor-agent -p --force --trust --sandbox disabled \
+      --output-format text --model "$cursor_model" "$(cat "$prompt_file")" 2>&1 \
+      | tee "session-output/${seat}.txt"
+    ;;
+  incense | furrow)
+    cursor-agent -p --force --output-format text --model "$cursor_model" \
+      "$(cat "$prompt_file")" 2>&1 \
+      | tee "session-output/${seat}.txt"
+    ;;
   dream)
     # codex exec prints human-readable turns already; the tee is the whole tail.
     ./tools/ag/agent-jail.sh codex exec --sandbox danger-full-access "$(cat "$prompt_file")" 2>&1 \

@@ -1,0 +1,99 @@
+# launch-earth-ships-chapter.rish -- print the Cursor Grok loop for Incense, Furrow, Harvest.
+#
+# Three Earth ships, seated 20260903 on Keaton's word. Incense is the galaxy and
+# captain (Glow, this Mac, ~/grain). Furrow is Surf and Skate (~/grain-furrow).
+# Harvest is the Dallas pier star (/home/keeper/grain-harvest). Each star writes
+# in its own tree. The elder six-body charter stays testimony.
+#
+#   rishi/bin/rishi run tools/l/launch-earth-ships-chapter.rish
+#
+# THE PROMPT IS A FILE -- never a shell string. FLEET_DRY prints the command
+# without opening a round or launching an agent. LOOP_LAPS=1 is the one-lap recipe.
+
+# invariant: run from the repo root, where the durable memory lives.
+let root = run ["test" "-f" "construction/ITINERARY.md"]
+assert root.ok else "run from the repo root (construction/ITINERARY.md not found)"
+
+# invariant: the loop and the three seat prompts must exist before a hand pastes.
+let loop = run ["test" "-f" "tools/l/fleet-loop.sh"]
+assert loop.ok else "tools/l/fleet-loop.sh is missing"
+let incense = run ["test" "-f" "tools/l/incense_seat_prompt.txt"]
+assert incense.ok else "tools/l/incense_seat_prompt.txt is missing"
+let furrow = run ["test" "-f" "tools/l/furrow_seat_prompt.txt"]
+assert furrow.ok else "tools/l/furrow_seat_prompt.txt is missing"
+let harvest = run ["test" "-f" "tools/l/harvest_seat_prompt.txt"]
+assert harvest.ok else "tools/l/harvest_seat_prompt.txt is missing"
+
+say "EARTH SHIPS -- Incense, Furrow, Harvest (Cursor Grok)"
+say "===================================================="
+say ""
+say "One galaxy and two stars. Incense is captain and Glow, this Mac, tree"
+say "~/grain. Furrow is Surf and Skate, tree ~/grain-furrow. Harvest is the"
+say "Dallas pier, tree /home/keeper/grain-harvest. Run each loop from the"
+say "tree that holds it. Incense's unattended loop and a Cursor GUI sitting"
+say "share ~/grain: start the loop only when that sitting is stopped."
+say ""
+say "0) PRECONDITIONS, once per machine:"
+say "   - this repo cloned with the xy remote, git submodule update --init"
+say "   - cursor-agent on PATH, signed in: cursor-agent login"
+say "   - Harvest also needs ai-jail (agent-jail.sh is Linux-only)"
+say "   Power is a preference, never a gate: the repo is the durable memory."
+say ""
+say "1) SMOKE, this Mac (incense / furrow) -- --trust and --sandbox are unknown"
+say "   on this cursor-agent (measured 20260903); --force is the unattended door:"
+say ""
+say "cursor-agent -p --force --output-format text --model cursor-grok-4.6-xhigh pong"
+say ""
+say "2) SMOKE, Harvest (Dallas) -- SOURCE.md print-mode flags, inside the jail:"
+say ""
+say "   ./tools/ag/agent-jail.sh cursor-agent -p --force --trust --sandbox disabled --output-format text --model cursor-grok-4.6-xhigh pong"
+say ""
+say "3) THE SEAT PROMPT is a file, tools/l/<seat>_seat_prompt.txt -- never a"
+say "   shell string. FLEET_DRY prints the command; LOOP_LAPS=1 runs one lap."
+say "   Each seat refuses unless the tree basename matches (grain, grain-furrow,"
+say "   grain-harvest): a Furrow prompt cannot run inside Incense's checkout."
+say ""
+say "FLEET_DRY=1 sh tools/l/fleet-loop.sh incense"
+say "LOOP_LAPS=1 sh tools/l/fleet-loop.sh incense"
+say "cd ~/grain-furrow && git pull --ff-only xy main && LOOP_LAPS=1 sh tools/l/fleet-loop.sh furrow"
+say "cd /home/keeper/grain-harvest && git pull --ff-only xy main && LOOP_LAPS=1 sh tools/l/fleet-loop.sh harvest"
+say ""
+say "4) THE LOOP -- anchored to the tree that holds the script; LOOP_HOURS"
+say "   bounds it (default 18). Unattended model is cursor-grok-4.6-xhigh;"
+say "   a watched lap may set CURSOR_MODEL=cursor-grok-4.6-high."
+say ""
+say "sh tools/l/fleet-loop.sh incense"
+say "sh tools/l/fleet-loop.sh furrow"
+say "sh tools/l/fleet-loop.sh harvest"
+say ""
+say "5) STREAMING: the loop tees text to session-output/<seat>.txt inside"
+say "   the tree -- the read-scope law's shared window."
+say ""
+say "6) macOS CURSOR GUI JAIL -- until Pond completes the enclosure (gate %5)."
+say "   Jail-local SSH and GPG keys already live in-tree. Launch from an"
+say "   ordinary terminal. --harden-home is the Rish door (GREEN on this host"
+say "   20260903.234111). --private-home through Rish hits StringTooLong on"
+say "   this HOME enumeration; the bash elder still carries that flag:"
+say ""
+say "rishi/bin/rishi run tools/cu/cursor_jail_macos.rish --harden-home"
+say ""
+say "   Stronger fence, bash elder, same state room:"
+say "CURSOR_STATE=loops/editor-cursor ./tools/cu/cursor-jail-macos.sh --harden-home --private-home"
+say ""
+say "   Prove the fence any time:"
+say "rishi/bin/rishi run tools/cu/cursor_jail_macos_witness.rish"
+say ""
+say "   cursor-agent login on this Mac is still a hand: print-mode pong asked"
+say "   to sign in. Harvest's pong already stands. Run cursor-agent login in"
+say "   an ordinary terminal, then the Mac smoke line in step 1."
+say ""
+say "7) CUSTODY: the gates in ITINERARY stay MANUAL -- funds and keys,"
+say "   provisioning and paying, the maintainer's own identity, and the"
+say "   public seed. Row %387 (round-open stash vs an in-flight pass) waits"
+say "   on a written policy or on Keaton's word; this loop does not take it."
+say ""
+say "MANY HANDS (granted 20260828, Keaton's word): a seat may spin up"
+say "dependents when dividing a lap pays. Custody gates stay MANUAL, one"
+say "writer per checkout (%291), and the parent answers for what they stage."
+say ""
+say "GREEN: Earth-ships recipe printed -- one loop, three trees, prompt files, one-lap door."
