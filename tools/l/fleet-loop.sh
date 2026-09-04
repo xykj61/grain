@@ -114,6 +114,11 @@ fi
 
 run_lap() {
   case "$seat" in
+  harvest | incense | furrow)
+    echo "fleet-loop: invoking cursor-agent model=$cursor_model -- Read/Grep lines come from the agent; silence after this line is the API, not round-open"
+    ;;
+  esac
+  case "$seat" in
   harvest)
     # Outer jail bounds the inner sandbox. Linux only -- see header.
     ./tools/ag/agent-jail.sh cursor-agent -p --force --trust --sandbox disabled \
@@ -148,7 +153,15 @@ while [ "$(date +%s)" -lt "$deadline" ]; do
     sleep 60
     continue
   fi
-  run_lap || echo "fleet-loop: lap exited nonzero; the next round-open pull resumes the thread"
+  rc=0
+  run_lap || rc=$?
+  if [ "$rc" -eq 130 ] || [ "$rc" -eq 143 ]; then
+    echo "fleet-loop: interrupted (exit $rc) -- this attempt is not a counted lap"
+    break
+  fi
+  if [ "$rc" -ne 0 ]; then
+    echo "fleet-loop: lap exited $rc; the next round-open pull resumes the thread"
+  fi
   laps=$((laps + 1))
   if [ -f .loop-gates-only ]; then
     echo 'GATES-ONLY: loop paused'
