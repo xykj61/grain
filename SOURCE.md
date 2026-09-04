@@ -4,7 +4,7 @@
 **Version:** `20260716.110152` (Glow warm-aura date atom -- chronological, later-is-larger)
 **Style:** Gauge Door (see `context/GAUGE_STYLE.md`)
 **Voice:** Kyri (molted from Riyo `20260810`)
-**Status:** Living guide -- last molted `20260903.215224`
+**Status:** Living guide -- last molted `20260903.222445`
 **Waymark:** **SUNN** -- `source-pier-papers-identity-refresh`
 
 ---
@@ -58,7 +58,23 @@ Other Linux distros and **Windows** are honest **less preferred** -- not shame, 
 
 ### C0b -- Standing a NixOS cloud pier (witnessed `20260903`)
 
-The host install is [`nixos-guide/20260803-164117_0-standing-a-declared-pier.md`](nixos-guide/20260803-164117_0-standing-a-declared-pier.md) -- **kexec from Ubuntu into the NixOS installer**, then the disko flake. That is the road that finished `status=0`.
+The host install is [`nixos-guide/20260803-164117_0-standing-a-declared-pier.md`](nixos-guide/20260803-164117_0-standing-a-declared-pier.md). The road that finished `status=0` is **Ubuntu 22.04 as the springboard, then kexec into the NixOS installer**, then the disko flake.
+
+**First boot on Ubuntu 22.04.** The image answers SSH as **root** with the **panel password** the provider mailed. A laptop SSH public key is often still refused. Log in with that password (`ssh -l root <ip>` -- a missing `-l root` tries your laptop username). From the out-of-band console or that password session, append your laptop public key to `/root/.ssh/authorized_keys`. The same key then knocks without a password.
+
+**Leap.** As root on the springboard:
+
+```
+curl -L https://github.com/nix-community/nixos-images/releases/download/nixos-unstable/nixos-kexec-installer-noninteractive-x86_64-linux.tar.gz -o /root/kexec.tar.gz
+tar -xzf /root/kexec.tar.gz -C /root
+/root/kexec/run
+```
+
+The SSH session becomes a ghost. Press Enter, then `~.`, wait a minute, `ssh-keygen -R <ip>`, and knock again as `ssh -l root <ip>`. `hostname` reads `nixos-installer`. The Ubuntu panel password does not travel; the installer prints a random root password on the console when the laptop key missed the copy. Seat the public key again before the disk wipe.
+
+Disk on this SKU was `/dev/vda`. Continue guide 0 from tmux through disko and `nixos-install`.
+
+`nixos-infect` is a different road: a convert-in-place reboot that, on `20260903`, left IPv4 silent (no DHCP stanza unless `doNetConf=y`). Reinstall Ubuntu 22.04 and take kexec.
 
 Witnessed extras that guide did not yet carry:
 
