@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260904.175200` | [The jail's onboarding](20260904/20260904-175200_the-seat-table-written-once.kyri) | a mount conditional on what only it could create; NixOS cleared |
 | `20260904.171409` | [The captain gets two doors](20260904/20260904-171409_the-captain-gets-two-doors.kyri) | Cursor era landed; Incense prompt; Daylight yonder |
 | `20260904.155552` | [Earth ships run Claude Code](20260904/20260904-155552_earth-ships-run-claude-code.kyri) | Darwin host, Linux jail, stream-json |
 | `20260904.154200` | [Stop Dallas incense loops](20260904/20260904-154200_stop-dallas-incense-loops.kyri) | Incense stays this Mac; behind 2 |

@@ -251,6 +251,7 @@ seated 20260824.104946
 
 guard rule_twin
 path tools/r/rule_twin_witness.rish
+gate %7
 seated 20260824.112806
 
 guard width_check
@@ -513,6 +514,7 @@ seated 20260828.153046
 guard pond_enclosure_policy
 path tools/p/pond_enclosure_policy_witness.rish
 tier lap
+gate %5
 seated 20260828.002135
 
 # pond_enclosure_state -- the launcher's state house and the per-host config it reads, compared.
@@ -714,6 +716,7 @@ seated 20260829.031804
 guard pond_enclosure_ephemeral
 path tools/p/pond_enclosure_ephemeral_witness.rish
 tier lap
+gate %5
 seated 20260829.054303
 
 # pond_enclosure_door -- the three guards above read the ROOM: the flags the launcher spells, the plan
@@ -731,6 +734,7 @@ seated 20260829.054303
 guard pond_enclosure_door
 path tools/p/pond_enclosure_door_witness.rish
 tier lap
+gate %5
 seated 20260829.064107
 
 # lattice_suite -- forty small arithmetic witnesses heard as one bounded choir. Each lap builds
@@ -967,9 +971,33 @@ seated 20260830.204814
 # measured a 46% red rate in lanes this seat does not hold, and rostering another lane's red guard
 # would red every body's cold pass.
 
+# fleet_roster -- the fleet's one seat table, and the readers that must not disagree with it. The
+# binding seat -> tree -> engine stood in six independent places across two executables and two had
+# already drifted: fleet-loop.sh admitted six seat names while fleet_rearm.sh reported nine, and the
+# elder-name remap seated on Keaton's word `20260904` lived in the loop and never reached the
+# re-arm. A table two files disagree about is one table plus a waiting red (REDS %409).
+guard fleet_roster
+path tools/f/fleet_roster_witness.rish
+tier lap
+seated 20260904.190000
+
+# agent_jail -- the launcher every unattended Linux lap runs through, and the guard that proves it.
+# It stood UNROSTERED and RED at its first leg while the launcher worked perfectly: it grepped the
+# dry-run plan for `.claude-state` and `.cursor-agent-state`, the directories the `20260827`
+# one-room adoption moved under `loops/`. Nothing was listening, so three stale pins stood for eight
+# days and the launcher's real fault -- a `~/.claude.json` mount conditional on a file only the
+# jailed Claude could write -- rode in beside them (REDS %408, %360's unheard-guard class). Rostered
+# the lap it was repaired, since a guard proved green once and heard by nothing guards nothing.
+guard agent_jail
+path tools/ag/agent_jail_witness.rish
+tier lap
+host linux
+seated 20260904.182600
+
 guard commit_message_guard
 path tools/co/commit_message_guard_witness.rish
 tier lap
+gate %1
 seated 20260830.154940
 
 guard waymark_derive

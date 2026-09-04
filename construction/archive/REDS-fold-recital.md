@@ -253,3 +253,7 @@ at a closed fold.*
 *Row %401 folded to [`REDS-the-remedy-in-the-instruments-header-rows-401.md`](REDS-the-remedy-in-the-instruments-header-rows-401.md) on `20260831.113917`, **BOOKED** -- a remedy documented only in an instrument's own header is a remedy that instrument's users never receive.*
 
 *Rows %405 and %406 folded to [`REDS-what-a-guard-cannot-see-rows-405-406.md`](REDS-what-a-guard-cannot-see-rows-405-406.md) on `20260831.132349`, both **CLOSED** -- a guard sees the room it was pointed at, and misses whatever stands one room over.*
+
+*Rows %403, %404 and %407 folded to [`REDS-what-a-reading-may-skip-rows-403-407.md`](REDS-what-a-reading-may-skip-rows-403-407.md) on `20260904.175007`, each **CLOSED** -- A repair to what a reading measures never reaches what that reading is allowed to skip. %403 gave a refusal the words it refused on; %404 found the Meter exemption still open one line below the extractor %402 had just fixed; %407 gave the grade term the same floor the register reading already held.*
+
+*Rows %374 and %400 folded to [`REDS-read-the-instrument-you-have-rows-374-400.md`](REDS-read-the-instrument-you-have-rows-374-400.md) on `20260904.184930`, **BOOKED** and **CLOSED** -- The answer was already being printed beside the hand that guessed it. %400 recited a population a scan prints; %374 gated a receipt on a counter whose two meanings the run card had been distinguishing all along.*

@@ -1,6 +1,18 @@
 #!/usr/bin/env bash
 # agent_jail_witness.sh -- prove tools/ag/agent-jail.sh on Linux (keeper pier).
 # Run from an ordinary host shell at the repo root, not from inside a jail.
+#
+# THE PATHS THIS READS ARE THE ONES THE LAUNCHER SPELLS. On 20260827 the six root state
+# directories became one room, `loops/`, and this witness kept grepping the dry-run plan for
+# `.claude-state` and `.cursor-agent-state` -- so it was RED at its first leg on a pier where the
+# launcher was working perfectly, and unrostered, so nothing said so (REDS %408, kin to %360's
+# unheard-guard class). A pin that names a moved path declares itself by turning the witness red,
+# which is only an alarm if something is listening.
+#
+# OPTIONAL PIECES ARE PROVEN AS OPTIONAL. tools/e/enclosure.conf is a per-host pin most piers do
+# not carry, and cursor-agent is an agent this fleet no longer runs by default; a guard that reds
+# on a machine that simply lacks an optional thing is a guard someone turns off, so each is
+# skipped by name and the skip is announced.
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
@@ -9,25 +21,45 @@ cd "$REPO_ROOT"
 AJ="$REPO_ROOT/tools/ag/agent-jail.sh"
 test -x "$AJ"
 
+# The one room for loop state, seated 20260827. These are the paths the launcher builds and the
+# paths the dry-run plan must therefore name.
+LOOPS="$REPO_ROOT/loops"
+
 echo "== resolve + dry-run =="
 "$AJ" --dry-run claude --version >/tmp/agent-jail-dry-claude.txt
 grep -q 'tmpfs /home/keeper' /tmp/agent-jail-dry-claude.txt \
   || grep -q "tmpfs ${HOME}" /tmp/agent-jail-dry-claude.txt
-grep -q '.claude-state' /tmp/agent-jail-dry-claude.txt
-"$AJ" --dry-run cursor-agent --version >/tmp/agent-jail-dry-agent.txt
-grep -q '.cursor-agent-state' /tmp/agent-jail-dry-agent.txt
-grep -q '.config/cursor' /tmp/agent-jail-dry-agent.txt
-"$AJ" --dry-run --resume=83513e3f-ec89-4924-a12b-f11189b04927 agent \
-  >/tmp/agent-jail-dry-resume.txt
-grep -q -- '--resume=83513e3f-ec89-4924-a12b-f11189b04927' /tmp/agent-jail-dry-resume.txt
-"$AJ" --dry-run agent --resume=83513e3f-ec89-4924-a12b-f11189b04927 \
-  >/tmp/agent-jail-dry-resume-tail.txt
-grep -q -- '--resume=83513e3f-ec89-4924-a12b-f11189b04927' /tmp/agent-jail-dry-resume-tail.txt
-echo "PASS: dry-run maps private-home + project state + auth config + resume"
+grep -q 'loops/claude' /tmp/agent-jail-dry-claude.txt
+if command -v cursor-agent >/dev/null 2>&1 || command -v agent >/dev/null 2>&1; then
+  "$AJ" --dry-run cursor-agent --version >/tmp/agent-jail-dry-agent.txt
+  grep -q 'loops/cursor' /tmp/agent-jail-dry-agent.txt
+  grep -q '.config/cursor' /tmp/agent-jail-dry-agent.txt
+  "$AJ" --dry-run --resume=83513e3f-ec89-4924-a12b-f11189b04927 agent \
+    >/tmp/agent-jail-dry-resume.txt
+  grep -q -- '--resume=83513e3f-ec89-4924-a12b-f11189b04927' /tmp/agent-jail-dry-resume.txt
+  "$AJ" --dry-run agent --resume=83513e3f-ec89-4924-a12b-f11189b04927 \
+    >/tmp/agent-jail-dry-resume-tail.txt
+  grep -q -- '--resume=83513e3f-ec89-4924-a12b-f11189b04927' /tmp/agent-jail-dry-resume-tail.txt
+  echo "PASS: dry-run maps private-home + project state + auth config + resume"
+else
+  echo "SKIP: cursor-agent absent on this host -- claude legs still proven"
+fi
+
+# The leg REDS %408 exists for. Claude Code keeps hasCompletedOnboarding and the chosen theme in
+# $HOME/.claude.json, a FILE beside ~/.claude/, and --private-home makes $HOME a tmpfs -- so an
+# unmounted .claude.json means onboarding on every launch, and its theme picker previews a light
+# scheme that reads as invisible text on a dark terminal. The mount used to be conditional on a
+# file only the jailed Claude could write, into the tmpfs the exit discards, so it never happened.
+# Both halves are asserted: the seed exists on disk, and the plan actually binds it.
+echo "== claude.json is seeded and mounted (REDS %408) =="
+test -f "$LOOPS/claude/dot-claude.json"
+grep -q "loops/claude/dot-claude.json ${HOME}/.claude.json" /tmp/agent-jail-dry-claude.txt \
+  || grep -q 'loops/claude/dot-claude.json' /tmp/agent-jail-dry-claude.txt
+echo "PASS: ~/.claude.json seeded and bound -- onboarding runs once per pier, not once per lap"
 
 echo "== state dirs =="
-test -d "$REPO_ROOT/.claude-state"
-test -d "$REPO_ROOT/.cursor-agent-state"
+test -d "$LOOPS/claude"
+test -d "$LOOPS/cursor"
 test -d "$REPO_ROOT/.gh"
 echo "PASS: state dirs present"
 
@@ -35,12 +67,19 @@ echo "== permit: write inside repo =="
 INSIDE="$REPO_ROOT/.agent-jail-witness-inside"
 rm -f "$INSIDE"
 CONF="$REPO_ROOT/tools/e/enclosure.conf"
-# shellcheck source=/dev/null
-source "$CONF"
+if [ -f "$CONF" ]; then
+  # shellcheck source=/dev/null
+  source "$CONF"
+else
+  echo "note: no tools/e/enclosure.conf on this host -- launcher defaults stand"
+fi
 AIJAIL_ABS="${AIJAIL_BIN:-$(command -v ai-jail)}"
 HOST_HOME="$HOME"
-CLAUDE_STATE="${CLAUDE_STATE:-$REPO_ROOT/.claude-state}"
-CURSOR_AGENT_STATE="${CURSOR_AGENT_STATE:-$REPO_ROOT/.cursor-agent-state}"
+CLAUDE_STATE="${CLAUDE_STATE:-$LOOPS/claude}"
+CURSOR_AGENT_STATE="${CURSOR_AGENT_STATE:-$LOOPS/cursor}"
+# v1.20.2 defaults network off; the launcher passes --network and so must this plan, or a leg
+# here proves an enclosure the fleet never runs.
+AIJAIL_FLAGS="${AIJAIL_FLAGS:---private-home --no-docker --no-gpu --network}"
 MAP_EXTRA=()
 if [ -e /run/current-system/sw ]; then
   MAP_EXTRA+=(--map /run/current-system)
@@ -92,7 +131,9 @@ echo "PASS: write to /etc denied"
 
 echo "== version smoke through launcher =="
 "$AJ" claude --version | head -1
-"$AJ" cursor-agent --version 2>&1 | head -5
-echo "PASS: claude and cursor-agent start under agent-jail"
+if command -v cursor-agent >/dev/null 2>&1 || command -v agent >/dev/null 2>&1; then
+  "$AJ" cursor-agent --version 2>&1 | head -5
+fi
+echo "PASS: claude starts under agent-jail"
 
 echo "GREEN: agent-jail witness"

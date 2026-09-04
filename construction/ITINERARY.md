@@ -46,18 +46,17 @@
 
 ### Now -- the live front
 
-**Git nib:** `1de7ecd8df` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `528fd63395` -- HEAD's parent, resolvable everywhere (%401).
 
-**Now.** **A free pass one reading earns by measurement is a free pass its twin has already argued for.**
+**Now.** **A rule written six times is a rule six files may quietly come to disagree about.**
 
 **The live front** (condensed `20260831.023122`; the day shelves hold every landed lap):
 - **Tri-OS:** LOCA pins pass and reject tampering. Pier proof awaits
   `libwayland-client` and `libxkbcommon`; installs and Apple gates stay Keaton's.
 - **CION Tier C** RULED quality-first (`20260830.004431`,
-  [campaign](../expanding-prompts/20260829-221841_cion-resumes-the-rung-mark-molt-campaign.md)):
-  Mystery raises `lotus/LADDER.md` (D/62) to B.
-- **Mind's next:** its lane. **DirtySet** RULED `20260830.183102`: shares the nine (seat 0
-  = whole-surface invalidation); duplicate marks idempotent; refusal only out-of-range.
+  [campaign](../expanding-prompts/20260829-221841_cion-resumes-the-rung-mark-molt-campaign.md)).
+- **DirtySet** RULED `20260830.183102`: shares the nine (seat 0 = whole-surface
+  invalidation); duplicate marks idempotent; refusal only out-of-range.
 - **Pond live:** `duties_undeclared` **1** -- `env` seated `20260830` at `env_disagreements`
   **zero, enforced**. Only `entry` is left, and it IS the switchover: a gate, not a lap.
 - **Language custody:** growth law
@@ -77,37 +76,40 @@ reads one of `max_name`'s two call sites (`parse_manifest` reads it too, over th
 round's opening stash stop an in-flight pass in its own tree.
 **MAP QA:** C+/75 this sitting; 0 of 70 unresolved; index door wants under 100 prose words.
 
-**Still open:** `glow/rune_shape.rye` keeps width custody; Mind keeps the reconnect stash,
-`%281`/`%291`, two `enclosure.conf` pins. **Named (%347):** `pond/enclosure_policy.kyri`
-8,120/8,192; the wall is yours.
-**Roster, this seat `20260904`:** **109/100**, 9 red, cold, `tree_moved=no`. Two of those were `rg` on a pier that ships none; `search_text` and the classify seam now grep. This pin closes `remember_git_nib`.
-**`%400` BOOKED:** living sites cite `prose_skipped`; the commit body stays dated.
-**Worth your word:** nothing shows a red is worked, so two hands spent a morning on one line.
-Should an OPEN row carry a **claim** -- seat and stamp, at start rather than landing?
-**`%405`, `%406` CLOSED -- a guard sees the room it was pointed at.** `%397`'s remainder landed:
-the card holds a **reference block** out of both counted readings and reports it. **It moves a
-genre, not the tree** -- 154 heads carry one (84 `.glow` desks), 57 cross B, **zero** under the
-register floor; of 135 sampled every 37th, ONE has a block and below-B reads **64 either way**, so
-Door's ceiling is untouched. That second citation silenced **two pens at once**, each holding its
-own copy of what to stage -- `--deps` names what the card reads. And a `20260830` shelf row at the
-pin's depth pointed nowhere four nights running (**0-4-5-6-7**) -- the SECOND such repair on that
-shelf -- unseen because `index_row_bound` reads the OPEN shelf. Two hands, the same 73 rows.
-**`%407` CLOSED -- the grade carries the floor the register reading already held**, so a page with
-nothing to read stops scoring **reach=0**. **137 rose, none fell**, 99 crossed B; **117** legs
-GREEN. `%405`'s `--deps` repaired this lap's own elder pen. Row and log carry the reading.
-**Next doors.** Dream left the peer's parked Settlement package whole; Sundial's row now matches its
-witness. Caravan keeps a 5-second seam, singing on cadence or touch. Hush: `spool_cloth`'s eight
-`ClothError` paths; 37 shape nibs unread. Silence: the DEFAULT-to-Meter door is answered by
-measurement -- session logs moved **0 of 60**, so Field already reads them right and the family the
-question named was never the one bleeding.
-**Yours, two.** Door's ceiling is **9** against module heads that run 12-17, which is what puts
-**61 of 134** sampled sources below B -- the table artifact is ruled OUT (that sample moves 0), and
-`%407` names a second one that is not: of **115 of 163** sampled
-programs below B, **51 sat under the register floor** with nothing measurable against **64** truly
-scored at grades 9-23. The ceiling question is the second number's alone -- and Gauge's own table
-seats **witness headers** at Meter where the card grades every program head at Door. Gate %7: quality-assurance additive carried `20260904.103121`.
-**%374 RULED `20260831.115500`**: a gated-only close writes its receipt DISCLOSING the
-gate names; `--scoped` re-prints them. Roster lane builds.
+**Still open:** `glow/rune_shape.rye` keeps width custody; `%281`/`%291`, two `enclosure.conf`
+pins. **Named (%347):** `pond/enclosure_policy.kyri` 8,120/8,192; the wall is yours.
+**`%374` GRANTED and BUILT `20260904`.** The roster grows **`gate %N`** beside `tier` (time),
+`host` (place), `capability` (can-do) -- for **what a maintainer has parked**. A gated red books
+apart, so `red` means *this guard broke* again; a pass whose reds are all gated closes ok and
+writes the receipt, disclosing what it chained past. **The gate vocabulary is this card's own
+custody list, read at scan time**, and an unreadable card refuses every gate. Five rows carry it.
+An ungated red still refuses; an **absent path is never gated**. 15 legs, both ways.
+**Shelved:** `%403`/`%404`/`%407`, and `%374`/`%400` -- see
+[`the fold recital`](archive/REDS-fold-recital.md).
+**`%409` CLOSED -- the fleet's only real datum, written six times, two already drifted.**
+`seat -> tree -> engine` stood in six places across two files: the loop admitted **six** seat names
+where the re-arm reported **nine**, and the elder remap seated that same day lived in one and never
+reached the other. `construction/fleet-roster.kyri` holds it once now, read by
+`tools/fixtures/f/fleet_roster_scan.sh`; all six spellings are lookups. `status parked` keeps the
+six aether seats readable without pretending they run; `engine field` refuses an unattended lap by
+name. 17 legs, both sides -- including that a seat name in a loop case arm is a **seventh** copy.
+**`%408` CLOSED -- the mount that could only happen once it had already happened.**
+`agent-jail.sh` bound `~/.claude.json` only when `loops/claude/dot-claude.json` already existed,
+and the one process that writes it is the jailed Claude, into the tmpfs `--private-home` discards.
+So onboarding ran on **every** jailed launch, its picker previewing a light scheme that reads as
+invisible text. Seeded and bound, proven both ways. **NixOS is not at fault** -- the jail drops
+`TERMINFO_DIRS` and `LOCALE_ARCHIVE`, both harmless, measured. `agent_jail` stood red and
+unrostered; it is rostered, `unheard` 1117 -> **1116**.
+**Fleet `20260904`:** three Earth trees here, **six aether seats parked**. Charter
+[`seat-table-written-once`](../active-designing/20260904-175200_the-seat-table-written-once.md)
+step 1 LANDED; baton [`earth-trio-loop`](../recursion-prompts/versions/20260904-175200_earth-trio-loop.md).
+**Next doors.** Caravan keeps a 5-second seam. Hush: `spool_cloth`'s eight `ClothError`
+paths; 37 shape nibs unread.
+**Yours, one.** Door's ceiling is **9** against module heads that run 12-17. Of 163 sampled
+programs, 115 read below B -- yet **51 of those sat under the register floor** with nothing
+measurable, leaving **64** truly scored at grades 9-23. The ceiling question is that second
+number's alone, and Gauge's own table seats **witness headers** at Meter where this card grades
+every program head at Door. Gate %7: quality-assurance additive carried `20260904.103121`.
 ---
 ## Landed arcs
 
@@ -221,6 +223,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260904.155552` | Earth ships run Claude Code | [log](../session-logs/date/20260904/20260904-155552_earth-ships-run-claude-code.kyri) |
+| `20260904.175200` | The jail's onboarding, and one seat table | [log](../session-logs/date/20260904/20260904-175200_the-seat-table-written-once.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)

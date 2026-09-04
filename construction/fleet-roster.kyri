@@ -1,0 +1,81 @@
+# construction/fleet-roster.kyri -- the fleet's one seat table.
+#
+# WHY THIS FILE EXISTS. The binding seat -> tree -> engine is the fleet's only real datum, and it
+# was spelled in six independent places across two executables: fleet-loop.sh's allow-list, its
+# want_tree case, its FLEET_DRY case and its run_lap case, plus fleet_rearm.sh's report_seat rows
+# and its relaunch case. Nothing compared them, and by `20260904` two had already drifted -- the
+# loop admitted six seat names while the re-arm reported nine, and the elder-name remap seated on
+# Keaton's word lived in one file and not the other. A rule written six times is a rule six files
+# may quietly come to disagree about; this is that rule written once.
+#
+# THE SHAPE is the standing roster's own: a record opens with `seat` and carries plain key-value
+# lines until the next one. Read it with tools/fixtures/f/fleet_roster_scan.sh rather than by
+# grepping here, so one parse serves sh, Rishi, and the launcher prose alike.
+#
+# STATUS is the field that lets an elder seat stay readable without pretending it runs. `live` is
+# a seat the fleet sails today; `parked` is one whose tree no host currently holds, kept by name
+# because it may sail again and because an absent directory is a filesystem accident where a
+# parked row is a declaration. fleet_rearm.sh already reports an absent tree honestly; this makes
+# that honesty something a reader can check against intent.
+#
+# ELDER names the seat's prior spelling, so a hand who types the old word is corrected rather than
+# refused. The word is retired from the seat name, never from the reader's muscle memory.
+format fleet-roster-v1
+
+# -- the three Earth ships, names seated 20260904 on Keaton's word ----------------------------
+seat incense
+tree grain-incense
+engine claude
+lane law, active-designing, iterative review, and the captain's hat
+status live
+seated 20260904.013013
+
+seat pheromone
+tree grain-pheromone
+engine claude
+lane the molecular star -- the language details a rune wants
+elder furrow
+status live
+seated 20260904.013013
+
+seat petrichor
+tree grain-petrichor
+engine claude
+lane docs-geode (tend, never rename) and prose-product
+elder harvest
+status live
+seated 20260904.013013
+
+# -- the aether seats, parked. Their charter stays testimony at
+# active-designing/20260829-203718_the-six-bodies-and-the-always-fleet.md, and every law it earned
+# -- one tree per star, claim-as-override, the ruling seats -- the Earth trio inherits whole.
+seat silence
+tree grain-silence
+engine claude
+lane the infrastructure half of Grain in Glow
+status parked
+seated 20260829.203718
+
+seat hush
+tree grain-hush
+engine claude
+lane Pond completes the enclosure, under the accrete-only boundary
+status parked
+seated 20260829.203718
+
+seat dream
+tree grain-dream
+engine codex
+lane the systems core -- Caravan, Tally, the Scribe seams
+status parked
+seated 20260829.203718
+
+# The interactive field sitting. It runs no unattended loop, which is why `engine field` is its
+# own word rather than a blank: a seat with no engine would read as a row somebody forgot to
+# finish, and this one is finished.
+seat sound
+tree grain
+engine field
+lane the interactive bench -- Glow language custody, and where rulings land
+status parked
+seated 20260829.203718
