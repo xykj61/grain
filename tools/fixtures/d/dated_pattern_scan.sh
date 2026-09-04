@@ -10,6 +10,21 @@
 # Canon: context/specs/living-vs-dated.md
 set -eu
 
+# Root by upward walk (seated 20260828), then the portable search so this scan
+# names grep rather than `rg`. This pier ships no ripgrep; a missing binary is
+# not a tree defect (measured 20260830, still red 20260904).
+_fd_root=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
+_fd_steps=0
+while [ ! -d "$_fd_root/rishi/bin" ] || [ ! -d "$_fd_root/tools/fixtures" ]; do
+  _fd_steps=$((_fd_steps + 1))
+  if [ "$_fd_steps" -gt 8 ] || [ "$_fd_root" = "/" ] || [ -z "$_fd_root" ]; then
+    echo "$0: no tree root within 8 steps (needs rishi/bin and tools/fixtures)" >&2
+    exit 2
+  fi
+  _fd_root=$(dirname "$_fd_root")
+done
+. "$_fd_root/tools/fixtures/s/shell_portable.sh"
+
 MODE=${1:-}
 # Living mutant: the classifier now speaks Rishi (Python -> Rishi molt 20260809).
 CLASSIFY=tools/fixtures/d/dated_classify.rish
@@ -26,7 +41,7 @@ if ! test -f "$CONTROL_SCAN"; then
 fi
 CONTROL_OUT=$(sh "$CONTROL_SCAN")
 echo "$CONTROL_OUT" | sed 's/^/gate_/'
-echo "$CONTROL_OUT" | rg -q '^verdict=ok$' || {
+echo "$CONTROL_OUT" | search_text -q '^verdict=ok$' || {
   echo "control_gate=failed"
   echo "verdict=misread"
   exit 1
@@ -87,12 +102,12 @@ echo "controls_honored=2"
 echo "controls: 2 of 2 honored - definition released"
 
 # Law file must name the living header and dated stamp shape
-rg -qi 'living ledger' "$LAW" || {
+search_text -q -i 'living ledger' "$LAW" || {
   echo "law=failed"
   echo "verdict=misread"
   exit 1
 }
-rg -q 'YYYYMMDD-HHMMSS' "$LAW" || {
+search_text -q 'YYYYMMDD-HHMMSS' "$LAW" || {
   echo "law=failed"
   echo "verdict=misread"
   exit 1
@@ -102,7 +117,7 @@ echo "law_path=${LAW}"
 
 CENSUS=$($RISH "$CLASSIFY" census)
 echo "$CENSUS" | sed 's/^/shared_/'
-echo "$CENSUS" | rg -q '^verdict=ok$' || {
+echo "$CENSUS" | search_text -q '^verdict=ok$' || {
   echo "census=failed"
   echo "verdict=misread"
   exit 1

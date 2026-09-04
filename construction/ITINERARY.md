@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `bd4410a4b8` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `56ddbd435b` -- HEAD's parent, resolvable everywhere (%401).
 
 **Now.** **A free pass one reading earns by measurement is a free pass its twin has already argued for.**
 
@@ -80,7 +80,7 @@ round's opening stash stop an in-flight pass in its own tree.
 **Still open:** `glow/rune_shape.rye` keeps width custody; Mind keeps the reconnect stash,
 `%281`/`%291`, two `enclosure.conf` pins. **Named (%347):** `pond/enclosure_policy.kyri`
 8,120/8,192; the wall is yours.
-**Roster, this seat `20260904`:** **109/99**, 10 red, cold, `tree_moved=no`.
+**Roster, this seat `20260904`:** **109/100**, 9 red, cold, `tree_moved=no`. Two of those were `rg` on a pier that ships none; `search_text` and the classify seam now grep. This pin closes `remember_git_nib`.
 **`%400` BOOKED:** living sites cite `prose_skipped`; the commit body stays dated.
 **Worth your word:** nothing shows a red is worked, so two hands spent a morning on one line.
 Should an OPEN row carry a **claim** -- seat and stamp, at start rather than landing?
@@ -221,6 +221,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260904.103121` | Close incense-owned roster reds | [log](../session-logs/date/20260904/20260904-103121_incense-owned-roster-reds.kyri) |
+| `20260904.140937` | Guards measure without ripgrep | [log](../session-logs/date/20260904/20260904-140937_guards-measure-without-ripgrep.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)

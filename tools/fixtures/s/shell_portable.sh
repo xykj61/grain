@@ -16,6 +16,7 @@
 #   stamp_ahead 14400                                          # the stamp four hours from now
 #   file_mtime "$BIN"                                          # a file's mtime, fractional seconds
 #   lock_acquire glow/.cache/.build.lock 1800                  # one writer at a time, bounded wait
+#   search_text -q -i pattern file                             # grep; a pier without rg still measures
 #
 # WHY IT EXISTS. `xargs -a FILE` and `xargs -d '\n'` are GNU extensions. BSD xargs, which is what
 # macOS ships, has neither, so on that bench the whole pipeline fails and the count taken from its
@@ -228,6 +229,47 @@ lock_acquire() {
 # caller that never acquired it removes a directory that is not there, which costs nothing.
 lock_release() {
   rm -rf "$1"
+}
+
+# THE SEVENTH: searching a file. `rg` (ripgrep) is faster and sits on some piers; POSIX `grep`
+# sits on every one. A guard that names `rg` reds in 0s on a pier that never installed it -- this
+# one, measured 20260830 and still red 20260904 -- which is a missing binary rather than a tree
+# defect, and the living-pin scan's own law already says a witness must not depend on one bench's
+# tools. This function is grep, always, with the small flag set both GNU and BSD accept: -q -i -F
+# -E. Alternation in the pattern adds -E when the caller did not pass -F, so a `|` keeps meaning
+# "or" the way rg spelled it.
+#
+#   search_text [-q] [-i] [-F] [-E] pattern [file ...]
+# Reads stdin when no file is given, matching both tools.
+search_text() {
+  _st_q=
+  _st_i=
+  _st_F=
+  _st_E=
+  while [ $# -gt 0 ]; do
+    case $1 in
+      -q) _st_q=-q ;;
+      -i) _st_i=-i ;;
+      -F) _st_F=-F ;;
+      -E) _st_E=-E ;;
+      --) shift; break ;;
+      -*) printf 'search_text: unknown flag %s\n' "$1" >&2; return 2 ;;
+      *) break ;;
+    esac
+    shift
+  done
+  if [ $# -lt 1 ]; then
+    printf 'search_text: pattern required\n' >&2
+    return 2
+  fi
+  _st_pat=$1
+  shift
+  if [ -z "$_st_F" ] && [ -z "$_st_E" ]; then
+    case $_st_pat in
+      *\|*) _st_E=-E ;;
+    esac
+  fi
+  grep ${_st_q} ${_st_i} ${_st_F} ${_st_E} -- "$_st_pat" "$@"
 }
 
 # THE MECHANISM PROVES ITSELF ON THE HOST THAT RUNS IT, once per sourcing script, for three

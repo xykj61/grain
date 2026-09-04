@@ -2,12 +2,14 @@
 # dated_classify_seam.sh -- the regex seam for dated_classify.rish.
 #
 # Rishi owns the interface (tools/fixtures/d/dated_classify.rish); this POSIX-sh seam
-# holds the two ripgrep patterns Rishi has no native regex for, exactly as the elder
+# holds the two grep -E patterns Rishi has no native regex for, exactly as the elder
 # dated_classify.py delegated to Python's `re` (that elder cut on the circled word,
 # 20260830.190407; this seam stays as the engine until its own sh-to-Rishi adaptation,
 # which waits on Hush's standing grant and the regex reach Rishi does not yet carry).
 # One definition lives here, reached
 # only through the rish, so no two roofs can drift (REDS 40).
+# grep rather than `rg`: this pier ships no ripgrep, and a missing binary classified
+# every dated path as live (the is_dated_name miss fell through), measured 20260904.
 #
 # Canon: context/specs/living-vs-dated.md
 #   dated name   : (^|/)YYYYMMDD-HHMMSS_   anchored path segment
@@ -41,20 +43,21 @@ done
 # them open for writing to the dated-path repointer. The stamp alone marks testimony; what may
 # follow it is an underscore-sprig or the extension directly.
 DATED_RE='(^|/)[0-9]{8}-[0-9]{6}(_|\.)'
-HDR_RE='(?i)(\*\*Stamp:\*\* *living ledger|living ledger *\(born)'
+# Inline (?i) is a ripgrep/PCRE flag grep -E does not carry; -i on the call is the same.
+HDR_RE='(\*\*Stamp:\*\* *living ledger|living ledger *\(born)'
 SKIP_RE='\.(png|jpg|jpeg|gif|webp|ico|pdf|woff|woff2|ttf|otf|zip|gz|xz|wasm|so|o|a|bin|mp4|webm)$'
 
-is_dated_name() { printf '%s' "$1" | rg -q "$DATED_RE"; }
-is_skip_ext()   { printf '%s' "$1" | rg -q "$SKIP_RE"; }
-has_header()    { head -c 8000 "$1" 2>/dev/null | rg -q "$HDR_RE"; }
+is_dated_name() { printf '%s' "$1" | grep -qE "$DATED_RE"; }
+is_skip_ext()   { printf '%s' "$1" | grep -qE "$SKIP_RE"; }
+has_header()    { head -c 8000 "$1" 2>/dev/null | grep -qiE "$HDR_RE"; }
 
 # header_files <listfile> -- emit the paths in <listfile> that carry a living header in
-# their first 8000 bytes. A bulk `rg -l` (whole-file) narrows to a handful of candidates,
+# their first 8000 bytes. A bulk `grep -l` (whole-file) narrows to a handful of candidates,
 # then head -c 8000 confirms the byte bound exactly -- fast without loosening the semantics
-# classify uses. Thousands of per-file spawns collapse to one rg pass plus a few checks.
+# classify uses. Thousands of per-file spawns collapse to one grep pass plus a few checks.
 header_files() {
-  xargs_lines "$1" rg -l "$HDR_RE" 2>/dev/null | while IFS= read -r f; do
-    head -c 8000 "$f" 2>/dev/null | rg -q "$HDR_RE" && printf '%s\n' "$f"
+  xargs_lines "$1" grep -liE "$HDR_RE" 2>/dev/null | while IFS= read -r f; do
+    head -c 8000 "$f" 2>/dev/null | grep -qiE "$HDR_RE" && printf '%s\n' "$f"
   done
 }
 
@@ -70,9 +73,9 @@ census() {
   trap 'rm -f "$all" "$dn" "$tx"' EXIT
   git ls-files -z | tr '\0' '\n' > "$all"
   total=$(grep -c '' "$all")
-  rg "$DATED_RE" "$all" > "$dn" || true
+  grep -E "$DATED_RE" "$all" > "$dn" || true
   dated_named=$(grep -c '' "$dn" || true)
-  rg -v "$SKIP_RE" "$dn" > "$tx" || true
+  grep -vE "$SKIP_RE" "$dn" > "$tx" || true
   live_among=$(header_files "$tx" | grep -c '' || true)
   dated=$(( dated_named - live_among ))
   live=$(( total - dated ))
@@ -106,8 +109,8 @@ health() {
   all=$(mktemp); dn=$(mktemp); tx=$(mktemp); la=$(mktemp)
   trap 'rm -f "$all" "$dn" "$tx" "$la"' EXIT
   git ls-files -z | tr '\0' '\n' > "$all"
-  rg "$DATED_RE" "$all" > "$dn" || true
-  rg -v "$SKIP_RE" "$dn" > "$tx" || true
+  grep -E "$DATED_RE" "$all" > "$dn" || true
+  grep -vE "$SKIP_RE" "$dn" > "$tx" || true
   header_files "$tx" > "$la"
 
   # One awk pass: DN (dated-named) and LA (living-header rescue) are sets; a file is
@@ -164,15 +167,15 @@ shed() {
   git ls-files -z | tr '\0' '\n' > "$all"
   total=$(grep -c '' "$all")
   # true dated = dated-named, minus files rescued by a living header (like classify)
-  rg "$DATED_RE" "$all" > "$dn" || true
-  rg -v "$SKIP_RE" "$dn" > "$dtx" || true
+  grep -E "$DATED_RE" "$all" > "$dn" || true
+  grep -vE "$SKIP_RE" "$dn" > "$dtx" || true
   while IFS= read -r f; do has_header "$f" && printf '%s\n' "$f"; done < "$dtx" > "$resc"
   awk 'NR==FNR{r[$0]=1;next}!($0 in r)' "$resc" "$dn" > "$dtr"
   dated_ct=$(grep -c '' "$dtr")
   # mention floor: which dated basenames appear anywhere in tracked text content
   sed 's#.*/##' "$dtr" | sort -u > "$dbn"
-  rg -v "$SKIP_RE" "$all" > "$tf" || true
-  xargs_lines "$tf" rg -F -o -I -N --no-filename -f "$dbn" 2>/dev/null | sort -u > "$ment"
+  grep -vE "$SKIP_RE" "$all" > "$tf" || true
+  xargs_lines "$tf" grep -Foh -f "$dbn" 2>/dev/null | sort -u > "$ment"
   awk -F/ 'NR==FNR{m[$0]=1;next}{b=$0;sub(/.*\//,"",b); if(!(b in m)) print $0}' "$ment" "$dtr" > "$orph"
   orph_ct=$(grep -c '' "$orph")
 
