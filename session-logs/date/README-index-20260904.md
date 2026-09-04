@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260904.085605` | [Pass --network into the jail](20260904/20260904-085605_pass-network-into-the-jail.kyri) | v1.20.2 defaults network off; EAI_AGAIN |
 | `20260904.084108` | [Map nscd into the jail](20260904/20260904-084108_map-nscd-into-the-jail.kyri) | EAI_AGAIN; /run/nscd for getaddrinfo |
 | `20260904.083756` | [Pier rebuild-outer GREEN](20260904/20260904-083756_pier-rebuild-outer-green.kyri) | ai-jail 1.20.2 on system PATH |
 | `20260904.083311` | [ai-jail overlay skips crates](20260904/20260904-083311_ai-jail-overlay-skips-crates.kyri) | GitHub v1.20.2 tarball; crates.io 403 |

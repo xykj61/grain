@@ -35,10 +35,11 @@ ZED_STATE="$REPO/.zed-state"
 GH_STATE="$REPO/.gh"
 # Optional: copy host ~/.claude.json to $CLAUDE_STATE/dot-claude.json for quieter Claude starts
 
-# ai-jail flags (space-separated; default matches SOURCE.md)
-AIJAIL_FLAGS="--private-home --no-docker"
-# Headless pier / CLI agents: add --no-gpu
-# AIJAIL_FLAGS="--private-home --no-docker --no-gpu"
+# ai-jail flags (space-separated). v1.20.2 defaults network off; CLI agents
+# need --network to reach their APIs. --no-network wins if you set it.
+AIJAIL_FLAGS="--private-home --no-docker --no-gpu --network"
+# Headless pier / CLI agents already include --no-gpu above.
+# AIJAIL_FLAGS="--private-home --no-docker --no-gpu --network"
 # AIJAIL_BIN="/home/youruser/.local/bin/ai-jail"  # optional; avoids ./ai-jail source dir on PATH
 # Preferred pin (gitignored cache — survives jail $HOME reset):
 #   mkdir -p tools/.cache/bin && cd tools/.cache/bin
