@@ -77,5 +77,5 @@ ss -ulnp 2>/dev/null | grep -E '6000' || true
 echo ""
 echo "=== REMINDER: Vultr cloud-firewall panel ==="
 echo "NixOS opened the OS firewall only. If Vultr's cloud-firewall panel is on, it must"
-echo "also allow INBOUND UDP 60000-65535 (or at least 60000-61000). Then retry:  mosh pier-2"
+echo "also allow INBOUND UDP 60000-65535 (or at least 60000-61000). Then retry:  mosh pier"
 echo "DONE"
