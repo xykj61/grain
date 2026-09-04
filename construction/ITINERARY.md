@@ -35,7 +35,7 @@
 - **The counsel campaign, Phase 1 standing** (`20260828`, Keaton's word): a lap may lift counsel insights into their right rooms as fresh-stamped mutants (B-door QA), banner the elders, Class M the rows -- `tools/fixtures/c/counsel_census_scan.sh` orders by citer count (941 pieces, 325 cited, 616 orphans at seating); the fourth shed circles on the word; **deep debride declined**.
 - **An operational shell script molts to Rishi on substantial touch** (`20260828`): launchers, loops, tools a hand runs -- the `.sh -> .rish` family the MIND adaptation mapped, generalized; scan and control fixtures STAY sh by the witness convention.
 
-- **The three Cursor stars** (`20260903`, Keaton's word): **Incense** (`~/grain`, Glow, captain), **Furrow** (`~/grain-furrow`, Surf/Skate), **Harvest** (Dallas, `/home/keeper/grain-harvest`). One tree per star (%291). Parked: `~/grain-mystery`, `~/grain-silence`. Elder six-body charter `20260829.203718` stays testimony.
+- **The three Cursor stars** (`20260903`, Keaton's word): **Incense** (`~/grain`, Glow, captain), **Furrow** (`~/grain-furrow`, Surf/Skate), **Harvest** (Dallas, `/home/keeper/grain-harvest`). Loop: `sh tools/l/fleet-loop.sh incense|furrow|harvest` (recipe `tools/l/launch-earth-ships-chapter.rish`). One tree per star (%291). Parked: `~/grain-mystery`, `~/grain-silence`. Elder six-body charter `20260829.203718` stays testimony.
 - **Fleet re-arm helper**: `sh tools/f/fleet_rearm.sh` -- status, reason, paste.
 - **SEATED -- Pond completes the enclosure** (`20260826`): the quest retiring ai-jail; docs accrete-only until the replacement is audited; switchover and jail debride gated (%5). Plan: `expanding-prompts/20260826-033051_pond-completes-the-enclosure.md`.
 - **STANDFAST -- the Dexter orbit** (`20260826`): 15 rounds; door `dexter/README.md`.
@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `fbc03de76f` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `904cbb2c25` -- HEAD's parent, resolvable everywhere (%401).
 
 **Now.** **A free pass one reading earns by measurement is a free pass its twin has already argued for.**
 
@@ -223,6 +223,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260903.225306` | Seed published both doors -- IDENT_CLEAN, 6b45db6 | [log](../session-logs/date/20260903/20260903-225306_seed-published-both-doors.kyri) |
+| `20260903.234111` | Earth-ship loop on incense furrow harvest | [log](../session-logs/date/20260903/20260903-234111_earth-ship-loop-via-cursor-agent.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)

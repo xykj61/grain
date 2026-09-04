@@ -13,9 +13,10 @@
 # diagnosis, not the keystroke. Seated on the living card 20260830.211500,
 # from the credits reading's first door.
 #
-# Bounds, and why: 6 seats (the fleet's whole roster, so absence is reported
-# rather than silent); 8 tail lines and 800 bytes per stop-reason or sentinel
-# print (enough to read a refusal, too little to flood a terminal).
+# Bounds, and why: 9 seats (the three Earth ships plus the six aether seats,
+# so absence is reported rather than silent); 8 tail lines and 800 bytes per
+# stop-reason or sentinel print (enough to read a refusal, too little to flood
+# a terminal).
 set -eu
 
 home=${FLEET_HOME:-$HOME}
@@ -60,7 +61,7 @@ report_seat() {
     return 0
   fi
   if [ "$kind" = field ]; then
-    echo "   the interactive field -- no loop to re-arm"
+    echo "   the interactive field -- no loop to re-arm (Incense unattended paste is the incense row)"
     return 0
   fi
   if [ ! -d "$tree/.git" ]; then
@@ -91,7 +92,7 @@ report_seat() {
     tail -8 "$activity" 2>/dev/null | head -c 800 | sed 's/^/   | /'
     echo ""
   fi
-  if [ "$kind" = claude ] && [ -f "$tree/session-output/$name.txt" ]; then
+  if { [ "$kind" = claude ] || [ "$kind" = cursor ]; } && [ -f "$tree/session-output/$name.txt" ]; then
     activity="$tree/session-output/$name.txt"
     echo "   last transcript words:"
     tail -8 "$activity" 2>/dev/null | head -c 800 | sed 's/^/   | /'
@@ -132,7 +133,7 @@ PASTE
    cd ~/grain-mystery && git pull --ff-only xy main && GRAIN_ROOT=$(git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && env MIND_SEAT=mystery "$GRAIN_ROOT/rishi/bin/rishi" run "$GRAIN_ROOT/tools/l/chatgpt-mind.rish" loop --arm-loop --max-laps 3 --failure-ceiling 2 --backoff-seconds 15)
 PASTE
     ;;
-  silence | hush | dream)
+  silence | hush | dream | incense | furrow | harvest)
     echo "   cd $tree && git pull --ff-only xy main && sh tools/l/fleet-loop.sh $name"
     ;;
   esac
@@ -140,6 +141,9 @@ PASTE
 
 echo "fleet-rearm: the roster, every seat reported (home=$home)"
 report_seat sound grain field
+report_seat incense grain cursor
+report_seat furrow grain-furrow cursor
+report_seat harvest grain-harvest cursor
 report_seat mind grain-mind codex
 report_seat mystery grain-mystery codex
 report_seat silence grain-silence claude
