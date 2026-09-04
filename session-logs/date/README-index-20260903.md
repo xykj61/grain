@@ -11,7 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
-| `20260903.234946` | [Furrow stash then pull](20260903/20260903-234946_furrow-stash-then-one-lap.kyri) | DirtySet named-stashed; Harvest is Dallas |
+| `20260903.235717` | [Keep the field](20260903/20260903-235717_keep-the-field-incense-is-a-birth.kyri) | grain-incense would be a birth, not a rename |
 | `20260903.234111` | [Earth-ship loop via cursor-agent](20260903/20260903-234111_earth-ship-loop-via-cursor-agent.kyri) | three seats, tree-match, harden-home jail |
 | `20260903.231727` | [Earth-ships sitting prompt](20260903/20260903-231727_earth-ships-cursor-sitting.kyri) | Door A 96; paste for the next chat |
 | `20260903.230137` | [Fresh chat for the Earth ships](20260903/20260903-230137_new-session-for-earth-ships.kyri) | new chat holds the Earth-ship loop |
