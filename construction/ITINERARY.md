@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `037384b095` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `fbc03de76f` -- HEAD's parent, resolvable everywhere (%401).
 
 **Now.** **A free pass one reading earns by measurement is a free pass its twin has already argued for.**
 
