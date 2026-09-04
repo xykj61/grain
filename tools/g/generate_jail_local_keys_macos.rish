@@ -14,15 +14,16 @@
 # What it makes, all under this repo (gitignored, see .gitignore's "Local
 # key material" section):
 #   .ssh/id_ed25519_jail_github      -- dedicated SSH deploy key, github.com
-#   .ssh/id_ed25519_jail_codeberg    -- dedicated SSH deploy key, codeberg.org
-#   .ssh/known_hosts_jail            -- github.com + codeberg.org host keys,
-#                                        fetched fresh via ssh-keyscan, since
-#                                        --harden-home denies the real
-#                                        ~/.ssh/known_hosts too (same subpath
-#                                        as the keys above) and SSH host-key
-#                                        verification needs its own copy
+#   .ssh/known_hosts_jail            -- github.com host keys, fetched fresh
+#                                        via ssh-keyscan, since --harden-home
+#                                        denies the real ~/.ssh/known_hosts
+#                                        too (same subpath as the keys above)
+#                                        and SSH host-key verification needs
+#                                        its own copy. Codeberg is retired
+#                                        from living push; this script no
+#                                        longer scans or stanzas it.
 #   .git/ssh_config_jail            -- repo-local SSH config pointing at
-#                                        both files above, wired via
+#                                        the github files above, wired via
 #                                        core.sshCommand (this script sets
 #                                        it directly; see manual/guides/
 #                                        macos-ai-jail-setup.md for why)
@@ -34,8 +35,8 @@
 # one gitignored source of truth this tree already keeps (see
 # GLOW_PROFILE.template.bron). The GPG key's email is what lets a forge
 # show the signature as Verified, so it must match a verified address on
-# both accounts; the SSH comment carries the same identity so a glance at
-# the forge's key list names its owner. No identity is hardcoded here.
+# GitHub; the SSH comment carries the same identity so a glance at the
+# forge's key list names its owner. No identity is hardcoded here.
 #
 # Both kinds are generated passphrase-free on purpose: once --harden-home
 # denies this jail's own read of your real ~/.gnupg (where gpg-agent and
@@ -68,11 +69,8 @@ assert (profile_email != "") else "GLOW_PROFILE.bron has no 'email' -- fill it i
 
 let gh_handle_run = run ["sh" "-c" "grep '^handle_github ' GLOW_PROFILE.bron | head -1 | cut -d' ' -f2-"]
 let gh_handle = trim gh_handle_run.out
-let cb_handle_run = run ["sh" "-c" "grep '^handle_codeberg ' GLOW_PROFILE.bron | head -1 | cut -d' ' -f2-"]
-let cb_handle = trim cb_handle_run.out
 
 let gh_comment = join [profile_email " " gh_handle " jail-only github (macOS Seatbelt, no master identity)"] ""
-let cb_comment = join [profile_email " " cb_handle " jail-only codeberg (macOS Seatbelt, no master identity)"] ""
 let gpg_uid = join [profile_name " (" gh_handle ", jail-only macOS Seatbelt) <" profile_email ">"] ""
 say "Identity from GLOW_PROFILE.bron: ${gpg_uid}"
 
@@ -82,7 +80,6 @@ let ssh_chmod = run ["chmod" "700" "${repo}/.ssh"]
 assert ssh_chmod.ok else "could not chmod .ssh/ to 700"
 
 let gh_key_path = "${repo}/.ssh/id_ed25519_jail_github"
-let cb_key_path = "${repo}/.ssh/id_ed25519_jail_codeberg"
 
 let gh_exists = run ["test" "-f" gh_key_path]
 if gh_exists.ok then say "id_ed25519_jail_github already exists -- refreshing its comment to the current GLOW_PROFILE identity."
@@ -91,13 +88,6 @@ if (gh_exists.ok == false) then let gh_gen = run ["ssh-keygen" "-t" "ed25519" "-
 let gh_pub_check = run ["test" "-f" "${gh_key_path}.pub"]
 assert gh_pub_check.ok else "the github jail key is missing after generate/recomment -- see ssh-keygen's own error above"
 
-let cb_exists = run ["test" "-f" cb_key_path]
-if cb_exists.ok then say "id_ed25519_jail_codeberg already exists -- refreshing its comment to the current GLOW_PROFILE identity."
-if cb_exists.ok then let cb_recomment = run ["ssh-keygen" "-c" "-C" cb_comment "-f" cb_key_path]
-if (cb_exists.ok == false) then let cb_gen = run ["ssh-keygen" "-t" "ed25519" "-N" "" "-C" cb_comment "-f" cb_key_path]
-let cb_pub_check = run ["test" "-f" "${cb_key_path}.pub"]
-assert cb_pub_check.ok else "the codeberg jail key is missing after generate/recomment -- see ssh-keygen's own error above"
-
 # known_hosts also has to move: --harden-home denies the real
 # ~/.ssh/known_hosts (same subpath as the identity files above), and SSH
 # needs it for host-key verification regardless of which identity file
@@ -105,10 +95,10 @@ assert cb_pub_check.ok else "the codeberg jail key is missing after generate/rec
 # a stale entry is a real (if unlikely) risk, so this always re-scans
 # rather than skipping when the file already exists.
 let known_hosts_path = "${repo}/.ssh/known_hosts_jail"
-let keyscan = run ["sh" "-c" "ssh-keyscan github.com codeberg.org > '${known_hosts_path}' 2>/dev/null"]
-assert keyscan.ok else "ssh-keyscan failed -- check network reachability to github.com and codeberg.org"
+let keyscan = run ["sh" "-c" "ssh-keyscan github.com > '${known_hosts_path}' 2>/dev/null"]
+assert keyscan.ok else "ssh-keyscan failed -- check network reachability to github.com"
 let known_hosts_check = run ["sh" "-c" "test -s '${known_hosts_path}'"]
-assert known_hosts_check.ok else "known_hosts_jail came back empty -- ssh-keyscan reached neither host"
+assert known_hosts_check.ok else "known_hosts_jail came back empty -- ssh-keyscan reached no host"
 
 # A literal double quote, from a one-byte fixture -- Rish string literals
 # have no \" escape (see cursor_jail_macos.rish's own note on the same
@@ -130,14 +120,7 @@ let sc_j = "  User git"
 let sc_k = join ["  IdentityFile " gh_key_path] ""
 let sc_l = "  IdentitiesOnly yes"
 let sc_m = join ["  UserKnownHostsFile " known_hosts_path] ""
-let sc_n = ""
-let sc_o = "Host codeberg.org"
-let sc_p = "  HostName codeberg.org"
-let sc_q = "  User git"
-let sc_r = join ["  IdentityFile " cb_key_path] ""
-let sc_s = "  IdentitiesOnly yes"
-let sc_t = join ["  UserKnownHostsFile " known_hosts_path] ""
-let ssh_conf_lines = [sc_a sc_b sc_c sc_d sc_e sc_f sc_g sc_h sc_i sc_j sc_k sc_l sc_m sc_n sc_o sc_p sc_q sc_r sc_s sc_t]
+let ssh_conf_lines = [sc_a sc_b sc_c sc_d sc_e sc_f sc_g sc_h sc_i sc_j sc_k sc_l sc_m]
 let ssh_conf_text = join ssh_conf_lines nl
 let ssh_conf_path = "${repo}/.git/ssh_config_jail"
 write-file ssh_conf_path ssh_conf_text
@@ -187,19 +170,14 @@ say "wired: git config --local gpg.program -> ${gpg_wrapper_path}"
 say "wired: git config --local user.signingkey -> ${gpg_fpr}"
 
 say ""
-say "== Done. Paste these into both forges before relaunching with --harden-home. =="
+say "== Done. Paste these into GitHub before relaunching with --harden-home. =="
 say ""
 say "-- SSH deploy key for github.com (GitHub -> Settings -> SSH and GPG keys -> New SSH key) --"
 let gh_pub = run ["cat" "${gh_key_path}.pub"]
 let gh_pub_trimmed = trim gh_pub.out
 say gh_pub_trimmed
 say ""
-say "-- SSH deploy key for codeberg.org (Codeberg -> Settings -> SSH/GPG Keys -> Add Key) --"
-let cb_pub = run ["cat" "${cb_key_path}.pub"]
-let cb_pub_trimmed = trim cb_pub.out
-say cb_pub_trimmed
-say ""
-say "-- GPG signing key, both forges' GPG Keys section --"
+say "-- GPG signing key, GitHub GPG Keys section --"
 let fpr_run = run ["sh" "-c" "GNUPGHOME='${gnupg_home}' gpg --list-secret-keys --keyid-format=long"]
 let fpr_trimmed = trim fpr_run.out
 say fpr_trimmed
@@ -208,6 +186,6 @@ let armor_trimmed = trim armor_run.out
 say armor_trimmed
 say ""
 say "git is already wired to these files (core.sshCommand, gpg.program,"
-say "user.signingkey) -- nothing further to configure by hand. Once both"
-say "keys are pasted into both forges, relaunch with --harden-home:"
+say "user.signingkey) -- nothing further to configure by hand. Once the"
+say "keys are pasted into GitHub, relaunch with --harden-home:"
 say "  rishi/bin/rishi run tools/cu/cursor_jail_macos.rish --harden-home"

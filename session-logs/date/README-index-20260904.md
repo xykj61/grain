@@ -11,4 +11,5 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260904.002859` | [Pier holds its name](20260904/20260904-002859_pier-holds-its-name.kyri) | Dallas is Host pier; incense lap died on HTTP/2 |
 | `20260904.000453` | [Birth incense loop](20260904/20260904-000453_birth-incense-loop.kyri) | ~/grain-incense born; field stays ~/grain |

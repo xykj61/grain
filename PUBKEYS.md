@@ -4,7 +4,7 @@
 **Style:** Gauge (see `context/GAUGE_STYLE.md`)
 **Voice:** Kyri
 **Since:** `20260713.201910` (this fork's first commit)
-**Last updated:** `20260903.213742` (SEA cancelled -- Dallas standing)
+**Last updated:** `20260904.002859` (Dallas holds `Host pier`)
 
 ---
 
@@ -60,7 +60,7 @@ Fingerprint:
 SHA256:qWVRwxzvNpo1VkiI7cETJPeHJg0Naj/Avfcwdv2Z2mE
 ```
 
-Do not paste this line toward a cancelled instance. `Host vultr-sea` / `Host pier` at `137.220.32.171` is retired. Living SSH is `Host pier-2` (`45.32.204.176`, `User keeper`, Mac key `~/.ssh/id_ed25519_macbook_vultr`). The jail-vultr private half still unlocks the Dallas copy of this public line.
+Do not paste this line toward a cancelled instance. Living SSH is `Host pier` (`45.32.204.176`, `User keeper`). The elder aliases `Host pier-2`, `Host vultr-sea`, and the SEA address `137.220.32.171` are retired; Dallas now holds the name `pier`. The jail-vultr private half still unlocks the Dallas copy of this public line.
 
 ---
 
