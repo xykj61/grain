@@ -45,6 +45,12 @@ MAP_EXTRA=()
 if [ -e /run/current-system/sw ]; then
   MAP_EXTRA+=(--map /run/current-system)
 fi
+if [ -e /run/nscd ]; then
+  MAP_EXTRA+=(--map /run/nscd)
+fi
+if [ -e /run/resolvconf ]; then
+  MAP_EXTRA+=(--map /run/resolvconf)
+fi
 # shellcheck disable=SC2086
 "$AIJAIL_ABS" --no-save-config $AIJAIL_FLAGS \
   --rw-map "${CLAUDE_STATE}:${HOST_HOME}/.claude" \
