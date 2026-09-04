@@ -2,8 +2,8 @@
 #
 # The living mutant of the elder tools/fixtures/d/dated_classify.py (Python -> Rishi molt,
 # seated 20260809.030635). Rishi owns the interface -- arg dispatch and output -- over a
-# POSIX-sh regex seam (dated_classify_seam.sh) that holds the two ripgrep patterns Rishi
-# has no native regex for, exactly as the Python delegated to `re`. One definition, one
+# POSIX-sh regex seam (dated_classify_seam.sh) that holds the two grep -E patterns
+# Rishi has no native regex for, exactly as the Python delegated to `re`. One definition, one
 # caller, so no two roofs drift (REDS 40). Removing Python matters here: python3 is not
 # even on this pier's PATH, so the elder .py could not run at all.
 #

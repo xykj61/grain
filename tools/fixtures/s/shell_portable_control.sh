@@ -1,10 +1,11 @@
 #!/bin/sh
 # shell_portable_control.sh -- the newest portable helpers, proven by doing.
 #
-# WHY A CONTROL RATHER THAN A READING. `resolve_path` and `sed_inplace` exist so a guard reads the
-# same on both piers, and the only honest proof of that is behaviour: resolve a real symlink and
-# compare against the tool this bench does have, edit a real file and read its bytes and its mode
-# back. A count of call sites says a spelling changed; this says the spelling still works.
+# WHY A CONTROL RATHER THAN A READING. `resolve_path`, `sed_inplace`, and `search_text` exist so a
+# guard reads the same on both piers, and the only honest proof of that is behaviour: resolve a real
+# symlink and compare against the tool this bench does have, edit a real file and read its bytes
+# and its mode back, search a real file with grep on a pier that ships no ripgrep. A count of call
+# sites says a spelling changed; this says the spelling still works.
 #
 #   sh tools/fixtures/s/shell_portable_control.sh
 #
@@ -26,7 +27,7 @@ ok()   { pass=$((pass + 1)); echo "  ok   $1"; }
 bad()  { fail=$((fail + 1)); echo "  MISS $1"; }
 note() { skip=$((skip + 1)); echo "  skip $1"; }
 
-echo "shell-portable-control: resolve_path, sed_inplace and the build lock, proven on real files"
+echo "shell-portable-control: resolve_path, sed_inplace, the build lock, and search_text, proven on real files"
 
 mkdir -p "$pen/a/b" "$pen/other"
 echo hello > "$pen/a/b/file.txt"
@@ -123,6 +124,19 @@ rm -rf "$lk"
 
 # Releasing a lock nobody holds costs nothing, so a caller may release on every exit path.
 lock_release "$pen/never-held.d" && ok "releasing an unheld lock is harmless" || bad "releasing an unheld lock is harmless"
+
+# --- search_text -------------------------------------------------------------------------------
+# Proven on this pier, which ships no ripgrep: the helper is grep, so a green here is the
+# reading the two roster reds (dated_pattern, equinox_e123) were waiting on.
+printf 'alpha\nbeta\n' > "$pen/hay.txt"
+search_text -q alpha "$pen/hay.txt" && ok "search_text finds a match" || bad "search_text finds a match"
+search_text -q missing "$pen/hay.txt" && bad "search_text misses a missing needle" || ok "search_text misses a missing needle"
+search_text -q -i ALPHA "$pen/hay.txt" && ok "search_text -i matches across case" || bad "search_text -i matches across case"
+printf 'a|b\n' > "$pen/pipe.txt"
+search_text -q -F 'a|b' "$pen/pipe.txt" && ok "search_text -F treats a pipe as literal" || bad "search_text -F treats a pipe as literal"
+search_text -q 'al|zz' "$pen/hay.txt" && ok "search_text alternation matches without -F" || bad "search_text alternation matches without -F"
+printf 'hello\n' | search_text -q hello && ok "search_text reads stdin when no file is given" || bad "search_text reads stdin when no file is given"
+search_text -z alpha "$pen/hay.txt" >/dev/null 2>&1 && bad "search_text refuses an unknown flag" || ok "search_text refuses an unknown flag"
 
 echo "have_readlink_f=$have_rl"
 echo "pass=$pass"

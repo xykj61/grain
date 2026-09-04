@@ -42,6 +42,9 @@ while [ ! -d "$_fd_root/rishi/bin" ] || [ ! -d "$_fd_root/tools/fixtures" ]; do
 done
 # The seated bound, read from the law rather than spelled here. One reading, one home (REDS %199).
 MAX_BYTES=$(sh "$_fd_root/tools/fixtures/l/living_pin_max_bytes.sh")
+# grep rather than `rg`: this pier ships no ripgrep, and this scan's own law
+# says a witness must not depend on one bench's tools.
+. "$_fd_root/tools/fixtures/s/shell_portable.sh"
 
 if test "$MODE" = "prove-red"; then
   # Prefer C1 zero-byte control; fall back to thin emptied fixture.
@@ -77,7 +80,7 @@ fi
 
 CONTROL_OUT=$(sh "$CONTROL_SCAN")
 echo "$CONTROL_OUT"
-echo "$CONTROL_OUT" | rg -q '^verdict=ok$' || {
+echo "$CONTROL_OUT" | search_text -q '^verdict=ok$' || {
   echo "control_gate=failed"
   echo "verdict=misread"
   exit 1
@@ -141,7 +144,7 @@ if test "$C2_BYTES" -lt 100; then
   echo "detail=whole_control_thin"
   exit 1
 fi
-rg -q 'Living pin' "$C2" || {
+search_text -q 'Living pin' "$C2" || {
   echo "C2=failed"
   echo "verdict=misread"
   echo "detail=whole_control_header_missing"
@@ -185,7 +188,7 @@ while IFS="$(printf '\t')" read -r path min_bytes header bound_mode || test -n "
     exit 1
   fi
 
-  if ! rg -q -F "$header" "$path"; then
+  if ! search_text -q -F "$header" "$path"; then
     echo "pin=failed"
     echo "verdict=misread"
     echo "detail=pin_header_missing"
@@ -227,22 +230,22 @@ echo "living_pin_max_bytes=$MAX_BYTES"
 echo "pins=honored"
 
 # e122 kinds stay -- approve-all does not re-blur roots and Bench
-ROW=$(rg -F '| **roots** |' "$LEXICON" || true)
-echo "$ROW" | rg -q 'Claude web' || { echo "kinds=failed"; echo "verdict=misread"; exit 1; }
-if echo "$ROW" | rg -qi 'Framework itself|counsel container in the cloud'; then
+ROW=$(search_text -F '| **roots** |' "$LEXICON" || true)
+echo "$ROW" | search_text -q 'Claude web' || { echo "kinds=failed"; echo "verdict=misread"; exit 1; }
+if echo "$ROW" | search_text -q -i 'Framework itself|counsel container in the cloud'; then
   echo "kinds=failed"
   echo "verdict=misread"
   echo "detail=refuse_e121_reblur"
   exit 1
 fi
-BENCH=$(rg -F '| **Bench** |' "$LEXICON" || true)
-echo "$BENCH" | rg -qi 'Name the \*\*Bench\*\* when a measurement|Name the Bench when a measurement' || {
+BENCH=$(search_text -F '| **Bench** |' "$LEXICON" || true)
+echo "$BENCH" | search_text -q -i 'Name the \*\*Bench\*\* when a measurement|Name the Bench when a measurement' || {
   echo "kinds=failed"
   echo "verdict=misread"
   echo "detail=want_name_the_bench_law"
   exit 1
 }
-if rg -qi 'bench = raised root|bench equals raised root' "$ITINERARY" "$MAP" "$PRIN"; then
+if search_text -q -i 'bench = raised root|bench equals raised root' "$ITINERARY" "$MAP" "$PRIN"; then
   echo "kinds=failed"
   echo "verdict=misread"
   echo "detail=stale_e121_blur_still_standing"
@@ -251,19 +254,19 @@ fi
 echo "kinds=honored"
 echo "law=name_the_bench_when_a_measurement_is_reported"
 
-rg -qi 'living-pin|living pin guard|pin_empty|emptied|content guard' "$COUNSEL" "$ITINERARY" "$MAP" || {
+search_text -q -i 'living-pin|living pin guard|pin_empty|emptied|content guard' "$COUNSEL" "$ITINERARY" "$MAP" || {
   echo "living=failed"
   echo "verdict=misread"
   exit 1
 }
 echo "living=honored"
 
-rg -q 'RESERVED' "$MAP" || {
+search_text -q 'RESERVED' "$MAP" || {
   echo "reserve_keep=failed"
   echo "verdict=misread"
   exit 1
 }
-if rg -q 'seat \*\*128\*\*.*SPENT|128.*LANDED' "$MAP"; then
+if search_text -q 'seat \*\*128\*\*.*SPENT|128.*LANDED' "$MAP"; then
   echo "reserve_keep=failed"
   echo "verdict=misread"
   exit 1
@@ -281,7 +284,7 @@ fi
 echo "surface_keep=honored"
 echo "surface_count=6"
 
-rg -q '^### 126\.' "$ALMANAC" || {
+search_text -q '^### 126\.' "$ALMANAC" || {
   echo "almanac=failed"
   echo "verdict=misread"
   exit 1
@@ -293,12 +296,12 @@ echo "elder=honored"
 echo "elder_seat=e122"
 echo "elder_note=e122_kinds_kept_e123_guards_pins"
 
-if rg -q 'equinox_handback: return_surface_p59 CONSUMED' "$PRIN"; then
+if search_text -q 'equinox_handback: return_surface_p59 CONSUMED' "$PRIN"; then
   echo "fork=failed"
   echo "verdict=misread"
   exit 1
 fi
-rg -q 'equinox_handback: return_surface_p59' "$PRIN" || {
+search_text -q 'equinox_handback: return_surface_p59' "$PRIN" || {
   echo "fork=failed"
   echo "verdict=misread"
   exit 1

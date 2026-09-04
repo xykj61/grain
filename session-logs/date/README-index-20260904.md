@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260904.140937` | [Guards measure without ripgrep](20260904/20260904-140937_guards-measure-without-ripgrep.kyri) | dated_pattern and e123 GREEN; classify greps |
 | `20260904.103121` | [Close incense-owned roster reds](20260904/20260904-103121_incense-owned-roster-reds.kyri) | sed_i 0; remember-git-nib 0.47; %400 BOOKED |
 | `20260904.095008` | [Incense pong GREEN](20260904/20260904-095008_incense-pong-green.kyri) | grain-incense Linux; xy/main clean |
 | `20260904.085605` | [Pass --network into the jail](20260904/20260904-085605_pass-network-into-the-jail.kyri) | v1.20.2 defaults network off; EAI_AGAIN |
