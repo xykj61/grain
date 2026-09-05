@@ -479,6 +479,49 @@ SEED_PY
 fi
 MAP_ARGS+=(--rw-map "${CLAUDE_STATE}/dot-claude.json:${HOST_HOME}/.claude.json")
 
+# THE CAPTAIN'S VIEW -- peer trees mounted READ-ONLY, credentials denied outright.
+#
+# Seated `20260905` on Keaton's word. The captain holds law and review, and review wants to read a
+# peer's working tree -- including what it has not committed, which is the one thing `xy` cannot
+# show. The enclosure binds ONE tree by design (REDS %291: a shared checkout bit four times in a
+# day), and this does not loosen that: every peer arrives with `--map`, which is read-only, so the
+# captain can read a peer's work and cannot become a second writer in it.
+#
+# WHAT IS DENIED, and why denial rather than masking. Three paths inside every peer tree hold
+# credentials rather than work: `.gnupg-rye` is that ship's signing key, `.ssh` its deploy key, and
+# `loops/` its agent auth. `--deny-path` answers a permission error; `--mask` would answer an empty
+# directory, and an empty directory reads like a ship that has no keys rather than one whose keys
+# are none of the captain's business. A wall should say it is a wall.
+#
+# OPT-IN PER LAUNCH, and refused from any tree but the captain's. An unattended lap never sets the
+# variable, so the fleet's ordinary shape is unchanged; a hand asking to review sets it and says so.
+if [ "${FLEET_CAPTAIN_VIEW:-0}" = 1 ]; then
+  _cap_tree="$(basename "$REPO_ROOT")"
+  if [ "$_cap_tree" != grain-incense ]; then
+    echo "agent-jail: FLEET_CAPTAIN_VIEW is the captain's, and this is $_cap_tree -- refusing" >&2
+    exit 2
+  fi
+  _cap_pier="$(dirname "$REPO_ROOT")"
+  _cap_scan="$REPO_ROOT/tools/fixtures/f/fleet_roster_scan.sh"
+  if [ ! -f "$_cap_scan" ]; then
+    echo "agent-jail: FLEET_CAPTAIN_VIEW needs the roster scan at $_cap_scan -- refusing" >&2
+    exit 2
+  fi
+  _cap_n=0
+  for _cap_seat in $(sh "$_cap_scan" --live 2>/dev/null); do
+    _cap_name="$(sh "$_cap_scan" --tree "$_cap_seat" 2>/dev/null)"
+    [ -n "$_cap_name" ] || continue
+    [ "$_cap_name" = "$_cap_tree" ] && continue          # the captain's own tree is already rw
+    [ -d "$_cap_pier/$_cap_name" ] || continue           # a seat with no tree on this pier is skipped
+    MAP_ARGS+=(--map "$_cap_pier/$_cap_name")
+    MAP_ARGS+=(--deny-path "$_cap_pier/$_cap_name/.gnupg-rye")
+    MAP_ARGS+=(--deny-path "$_cap_pier/$_cap_name/.ssh")
+    MAP_ARGS+=(--deny-path "$_cap_pier/$_cap_name/loops")
+    _cap_n=$((_cap_n + 1))
+  done
+  echo "agent-jail: captain's view -- $_cap_n peer tree(s) read-only, keys and loops denied" >&2
+fi
+
 # NixOS: ai-jail tmpfs-replaces /run. Map back the pieces the agent needs:
 # current-system for PATH, nscd for glibc getaddrinfo, resolvconf when
 # /etc/resolv.conf is a symlink into /run. Without nscd, cursor-agent dies

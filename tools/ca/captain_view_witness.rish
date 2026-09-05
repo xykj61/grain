@@ -1,0 +1,36 @@
+# captain_view_witness.rish -- the captain reads a peer's work and never its keys.
+#
+#   rishi/bin/rishi run tools/ca/captain_view_witness.rish
+#
+# Seated `20260905` on Keaton's word, after the enclosure's display fault made the whole wall look
+# like the problem. It was two missing JSON fields, and the wall is worth keeping: `agent-jail.sh`
+# binds ONE tree because a shared checkout bit four times in one day (REDS %291).
+#
+# So the captain's view loosens nothing. Every peer arrives read-only, and the three paths that hold
+# credentials rather than work -- `.gnupg-rye`, `.ssh`, `loops/` -- are DENIED outright. The captain
+# can read what a peer has not committed, which is the one thing the anointed remote cannot show,
+# and cannot become a second writer in it or reach its keys.
+
+say "captain-view: Language EN -- read a peer's work, never a peer's keys."
+say "captain-view: Style Gauge, Meter -- every leg entered a real enclosure and tried the thing."
+say "captain-view: Lens TAME -- safety first: a flag is an intention, and the kernel is the answer."
+
+# invariant: run from the repo root, where the launcher and its control both live.
+let root = run ["test" "-f" "construction/ITINERARY.md"]
+assert root.ok else "run from the repo root (construction/ITINERARY.md not found)"
+
+# invariant: the launcher must stand before any reading of its behavior is believed.
+let present = run ["test" "-f" "tools/ag/agent-jail.sh"]
+assert present.ok else "tools/ag/agent-jail.sh is missing -- there is no enclosure to read"
+
+let control = run ["sh" "tools/fixtures/c/captain_view_control.sh"]
+say control.out
+assert control.ok else "captain-view: a leg read wrong -- see the control's own lines"
+assert control.out contains "fail=0" else "captain-view: the control closed with a failing leg"
+
+# invariant: the view stays opt-in. An unattended lap never sets the variable, so the fleet's
+# ordinary shape is one tree per ship whatever this witness proves about the captain's.
+let optin = run ["grep" "-q" "FLEET_CAPTAIN_VIEW:-0" "tools/ag/agent-jail.sh"]
+assert optin.ok else "captain-view: the view is no longer opt-in -- a peer tree would mount on every launch"
+
+say "captain-view: GREEN -- peer work readable, peer tree unwritable, peer keys denied on metal."
