@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `1163db2b81` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `e765ddffae` -- HEAD's parent, resolvable everywhere (%401).
 
 **Now.** **A control that names a machine cannot be run on the fleet it guards.**
 
@@ -148,7 +148,7 @@ and says which instrument.**
 across five guards. Whole in the ledger, with the two lines worth carrying: **an empty answer from
 a failed instrument is byte-identical to one from a clean collection**, and **before you make an
 expensive thing rare, find out whether it is expensive on purpose**.
-**`%420`'s named-not-built assert** -- a cardinality reading over the census headline, still owed on the lap that next opens `reds_ledger_monotone`.
+**`%420` LANDED** -- `reds_ledger_headline_scan.sh` counts each extraction's lines ahead of the arithmetic; a census stated twice refuses, proven both ways.
 **Six ships, one baton** (`tools/l/fleet_baton.txt`, prepended; a seat prompt is its lane stanza).
 **berthed** `20260904`: **bakery** (core infra, Lindy/crux), **diffuser** (moonshots, each with its
 falsifier), **grass** (four audits). Birth plus `claude login` -- both a hand.

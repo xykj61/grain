@@ -120,6 +120,16 @@ say headline.out
 assert headline.ok else "reds-monotone: the ledger's headline disagrees with its own measured spine"
 assert headline.out contains "verdict=ok" else "reds-monotone: want the headline agreeing with the measurement by name"
 
+# The census stands once (REDS %420). The three numbers above are each lifted with a
+# `head -n 1`, so a second copy of the census line was invisible to this check by
+# construction, and one stood in the living ledger through two commits before a rebase
+# found it by hand. The reading is asserted here on the live page rather than only in a
+# pen, because a cardinality that is never measured on the real ledger is a cardinality
+# nobody would notice going wrong.
+assert headline.out contains "duplicate_census_lines=0" else "reds-monotone: the ledger states its own census more than once, and only the first copy is read"
+assert headline.out contains "headline_total_lines=1" else "reds-monotone: want the census total standing exactly once"
+assert headline.out contains "headline_span_lines=1" else "reds-monotone: want the census span standing exactly once"
+
 # RED path five -- a headline that drifts. Generated rather than tracked, so the control can
 # never drift from the shape the scan enforces, and the refusal is proven on metal rather
 # than argued from the source.
@@ -134,4 +144,22 @@ let bare = run ["sh" "-c" "d=$(mktemp -d); echo '# a ledger that publishes no to
 assert (bare.ok == false) else "reds-monotone: a ledger publishing no total must refuse"
 assert bare.out contains "verdict=no_headline" else "reds-monotone: want the missing headline refused by name"
 
-say "GREEN: reds-monotone -- the spine accretes 1..N with no gaps -- N read off disk and printed above rather than recited here (REDS %108) -- across every fold archive found on disk and the living pin, both row shapes read, a closure note welcomed as the row it speaks about, one headline under two row numbers counted and held under a ceiling that only falls (REDS %287), the headline reciting the three numbers the spine measures, and every refusal named"
+# RED path seven -- the census line standing twice, which is REDS %420's own fault planted
+# byte for byte. Generated in a pen rather than read from the tree, so the case survives
+# the living ledger being repaired: a control that asserts against the real page reads a
+# lawful edit as a breach, which is REDS %422's lesson one room over.
+let census_dup = run ["sh" "-c" "d=$(mktemp -d); { echo '**Rows: 41 - in the tree before the ledger: 6 - recovered by opening it: 14 - added under the reds-first law: 21** Every number from 1 to 41 is used.'; echo '**Rows: 41 - in the tree before the ledger: 6 - recovered by opening it: 14 - added under the reds-first law: 21** Every number from 1 to 41 is used.'; } > $d/L.md; sh tools/fixtures/r/reds_ledger_headline_scan.sh $d/L.md 41; s=$?; rm -rf $d; exit $s"]
+assert (census_dup.ok == false) else "reds-monotone: a ledger stating its census twice must refuse"
+assert census_dup.out contains "verdict=duplicate_census" else "reds-monotone: want the duplicated census refused by name"
+assert census_dup.out contains "stands 2 times" else "reds-monotone: a refusal must name how many times the census stands, or nobody can read how far the page drifted"
+assert census_dup.out contains "duplicate_census_lines=3" else "reds-monotone: want all three extractions counting the duplicate, since each takes its own first line"
+
+# The welcome beside it -- the same pen with the plant removed passes, so the refusal is
+# proven from both sides. A refusal shown only in the failing direction cannot be told
+# from a scan that refuses everything.
+let census_one = run ["sh" "-c" "d=$(mktemp -d); echo '**Rows: 41 - in the tree before the ledger: 6 - recovered by opening it: 14 - added under the reds-first law: 21** Every number from 1 to 41 is used.' > $d/L.md; sh tools/fixtures/r/reds_ledger_headline_scan.sh $d/L.md 41; s=$?; rm -rf $d; exit $s"]
+assert census_one.ok else "reds-monotone: a census stated once must pass -- ${census_one.out}"
+assert census_one.out contains "duplicate_census_lines=0" else "reds-monotone: want the single census read as zero duplicates"
+assert census_one.out contains "verdict=ok" else "reds-monotone: want the single census welcomed by name"
+
+say "GREEN: reds-monotone -- the spine accretes 1..N with no gaps -- N read off disk and printed above rather than recited here (REDS %108) -- across every fold archive found on disk and the living pin, both row shapes read, a closure note welcomed as the row it speaks about, one headline under two row numbers counted and held under a ceiling that only falls (REDS %287), the headline reciting the three numbers the spine measures, the census line standing exactly once with the duplicate refused from both sides (REDS %420), and every refusal named"
