@@ -1022,6 +1022,117 @@ path tools/f/fleet_round_open_witness.rish
 tier lap
 seated 20260905.153500
 
+# THE MANTRA WITNESSES -- twenty proofs that ran only when a hand remembered. Measured `20260905`:
+# `mantra/` holds 32 Rye modules and 9,175 lines, **120 Rye files outside it reach into it** --
+# Brushstroke's photo library, Pond's apps, the editor's undo -- and NOT ONE of its ~26 witnesses
+# stood on this roster. The tree's most-depended-upon module had no standing guard. All twenty run
+# GREEN, timed here, and they are seated by what each one proves: the module's own contracts at
+# `lap`, and the surface built on top of it at `cadence`. Core cost, measured: 39s.
+
+guard mantra_bolt_apply_step
+path tools/m/mantra_bolt_apply_step_witness.rish
+tier lap
+seated 20260905.161500
+
+guard mantra_a2_list_fold
+path tools/m/mantra_a2_list_fold_witness.rish
+tier lap
+seated 20260905.161500
+
+guard mantra_gen_floor_a1_gate
+path tools/m/mantra_gen_floor_a1_gate_witness.rish
+tier lap
+seated 20260905.161500
+
+guard mantra_glow_tend_limb1
+path tools/m/mantra_glow_tend_limb1_witness.rish
+tier lap
+seated 20260905.161500
+
+guard mantra_glow_tend_limb2
+path tools/m/mantra_glow_tend_limb2_witness.rish
+tier lap
+seated 20260905.161500
+
+guard mantra_glow_tend_limb3
+path tools/m/mantra_glow_tend_limb3_witness.rish
+tier lap
+seated 20260905.161500
+
+guard mantra_glow_tend_limb4
+path tools/m/mantra_glow_tend_limb4_witness.rish
+tier lap
+seated 20260905.161500
+
+guard tube5_mantra_revision
+path tools/t/tube5_mantra_revision_witness.rish
+tier lap
+seated 20260905.161500
+
+# The Realidream surface built ON Mantra, at `cadence` -- the fifth round. These prove an editor
+# and a browser rather than the module's own contracts, so they answer on the slower clock. A
+# cadence is a clock, never an exemption. Surface cost, measured: 23s.
+
+guard buhr_mantra_browser
+path tools/b/buhr_mantra_browser_witness.rish
+tier cadence
+seated 20260905.161500
+
+guard buhr_mantra_browser_heads
+path tools/b/buhr_mantra_browser_heads_witness.rish
+tier cadence
+seated 20260905.161500
+
+guard buhr_mantra_browser_view
+path tools/b/buhr_mantra_browser_view_witness.rish
+tier cadence
+seated 20260905.161500
+
+guard buhr_mantra_browser_theme
+path tools/b/buhr_mantra_browser_theme_witness.rish
+tier cadence
+seated 20260905.161500
+
+guard buhr_mantra_browser_theme_stack
+path tools/b/buhr_mantra_browser_theme_stack_witness.rish
+tier cadence
+seated 20260905.161500
+
+guard buhr_mantra_browser_view_theme
+path tools/b/buhr_mantra_browser_view_theme_witness.rish
+tier cadence
+seated 20260905.161500
+
+guard buhr_mantra_browser_full_theme
+path tools/b/buhr_mantra_browser_full_theme_witness.rish
+tier cadence
+seated 20260905.161500
+
+guard buhr_mantra_editor
+path tools/b/buhr_mantra_editor_witness.rish
+tier cadence
+seated 20260905.161500
+
+guard buhr_mantra_editor_view
+path tools/b/buhr_mantra_editor_view_witness.rish
+tier cadence
+seated 20260905.161500
+
+guard buhr_mantra_editor_undo
+path tools/b/buhr_mantra_editor_undo_witness.rish
+tier cadence
+seated 20260905.161500
+
+guard buhr_mantra_editor_undo_view
+path tools/b/buhr_mantra_editor_undo_view_witness.rish
+tier cadence
+seated 20260905.161500
+
+guard buhr_mantra_editor_fork
+path tools/b/buhr_mantra_editor_fork_witness.rish
+tier cadence
+seated 20260905.161500
+
 # agent_jail -- the launcher every unattended Linux lap runs through, and the guard that proves it.
 # It stood UNROSTERED and RED at its first leg while the launcher worked perfectly: it grepped the
 # dry-run plan for `.claude-state` and `.cursor-agent-state`, the directories the `20260827`

@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `540d75a5b5` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `8cb601849a` -- HEAD's parent, resolvable everywhere (%401).
 
 **Now.** **A control that names a machine cannot be run on the fleet it guards.**
 
@@ -107,7 +107,11 @@ untracked.** The durable shape is `birth_a_clone` reconstructing it -- **yours, 
 **Landed this chapter** -- `%374`'s gate build, six utility fetches with their thanks, the naming
 study, the seed publisher, and rows `%408`, `%414`-`%424`: whole on the
 [landed-accounts shelf](archive/20260905-131102_itinerary-landed-accounts.md). **The seed is published on your word** --
-`grain-os` and `grain-ww` both at `5a54c2f`, 7,706 files, `NO_PERSONAL` (%426). **Pheromone's two custody finds are CLOSED** (%427, %428): every live seat's keyring and
+`grain-os` and `grain-ww` both at `5a54c2f`, 7,706 files, `NO_PERSONAL` (%426). **Mantra now has standing guards** -- 20 witnesses seated (`tier_lap` 113->121, `tier_cadence`
+25->37, +39s), after measuring that the tree's most-depended-upon module (120 inbound Rye files)
+had zero. The unbuilt half is charted in
+[Mantra was named for the weave](../active-designing/20260905-153729_mantra-was-named-for-the-weave.md).
+**Pheromone's two custody finds are CLOSED** (%427, %428): every live seat's keyring and
 transport now resolve inside its own tree, gated by `fleet_key_locality_witness`; and the
 round-open clears an interrupted rebase before anything reads the tree, with its first control.
 **ripgrep FETCHED `20260905.130819` closes the order** -- **Unlicense OR MIT**, the freest of the six

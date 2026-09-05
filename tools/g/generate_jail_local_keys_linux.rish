@@ -86,6 +86,24 @@ let gh_comment = join [profile_email " " gh_handle " jail-only github (Linux ai-
 let gpg_uid = join [profile_name " (" gh_handle ", jail-only Linux ai-jail) <" profile_email ">"] ""
 say "Identity from GLOW_PROFILE.bron: ${gpg_uid}"
 
+# ROTATION IS NAMED, NEVER SILENT. Both halves below SKIP when key material already stands -- the
+# ssh half recomments an existing key and the gpg half leaves the keyring alone -- and each says so
+# in a friendly line that reads exactly like success. A hand asking for fresh keys would get a
+# cheerful report and the old key (found `20260905`, before the ask reached a run). So a run that
+# means to rotate says `rotate`, and a run that does not is told plainly that nothing was replaced.
+#
+# Rotation MOVES the elder material aside under a one-clock stamp rather than deleting it: a
+# signing key is the one thing a tree cannot re-derive, and accrete-never-break holds hardest where
+# recovery is impossible. The elder stays on disk until a hand removes it.
+let arg0 = ""
+if length args != 0 then let arg0 = args[0]
+let want_rotate = arg0 == "rotate"
+let stamp_run = run ["sh" "-c" "TZ=America/New_York date +%Y%m%d-%H%M%S"]
+let rot_stamp = trim stamp_run.out
+if want_rotate then say "rotate: moving any elder key material aside under ${rot_stamp} -- nothing is deleted."
+if want_rotate then let rot_gpg = run ["sh" "-c" "[ -d '${repo}/.gnupg-rye' ] && mv '${repo}/.gnupg-rye' '${repo}/.gnupg-rye.superseded-${rot_stamp}' || true"]
+if want_rotate then let rot_ssh = run ["sh" "-c" "for f in '${repo}'/.ssh/id_ed25519_jail_*; do [ -e \"$f\" ] && mv \"$f\" \"$f.superseded-${rot_stamp}\"; done; true"]
+
 let ssh_mk = run ["mkdir" "-p" "${repo}/.ssh"]
 assert ssh_mk.ok else "could not create .ssh/ at the repo root"
 let ssh_chmod = run ["chmod" "700" "${repo}/.ssh"]
@@ -94,7 +112,7 @@ assert ssh_chmod.ok else "could not chmod .ssh/ to 700"
 let gh_key_path = "${repo}/.ssh/id_ed25519_jail_github"
 
 let gh_exists = run ["test" "-f" gh_key_path]
-if gh_exists.ok then say "id_ed25519_jail_github already exists -- refreshing its comment to the current GLOW_PROFILE identity."
+if gh_exists.ok then say "id_ed25519_jail_github already exists -- NO NEW SSH KEY WAS MADE, only its comment refreshed. To replace it, rerun with the word: rotate"
 if gh_exists.ok then let gh_recomment = run ["ssh-keygen" "-c" "-C" gh_comment "-f" gh_key_path]
 if (gh_exists.ok == false) then let gh_gen = run ["ssh-keygen" "-t" "ed25519" "-N" "" "-C" gh_comment "-f" gh_key_path]
 let gh_pub_check = run ["test" "-f" "${gh_key_path}.pub"]
@@ -152,7 +170,7 @@ let existing_keys = run ["sh" "-c" "GNUPGHOME='${gnupg_home}' gpg --list-secret-
 let key_count = trim existing_keys.out
 
 if (key_count == "0") then let gpg_gen = run ["sh" "-c" "GNUPGHOME='${gnupg_home}' gpg --batch --pinentry-mode loopback --passphrase '' --quick-generate-key '${gpg_uid}' ed25519 sign 2y"]
-if (key_count != "0") then say "A signing key already exists in .gnupg-rye/ -- leaving its key material alone (rerun after editing GLOW_PROFILE.bron only regenerates identity if you delete the key first)."
+if (key_count != "0") then say "A signing key already exists in .gnupg-rye/ -- NO NEW KEY WAS MADE. Its material is untouched. To replace it, rerun with: rishi/bin/rishi run tools/g/generate_jail_local_keys_linux.rish rotate"
 let gpg_check = run ["sh" "-c" "GNUPGHOME='${gnupg_home}' gpg --list-secret-keys --with-colons 2>/dev/null | grep -c '^sec'"]
 assert (trim gpg_check.out != "0") else "no signing key present in .gnupg-rye/ after generation -- see gpg's own error above"
 
@@ -163,10 +181,20 @@ assert (gpg_fpr != "") else "could not read the new key's own fingerprint back f
 # SOURCE.md Step 8c's own wrapper pattern -- a tiny script that always
 # finds the jail-local keyring, so signing survives a restart without
 # depending on GNUPGHOME being exported in the calling shell.
+#
+# THE HOME IS RESOLVED FROM THE SCRIPT'S OWN LOCATION, NOT TYPED IN (REDS %427). The elder form
+# wrote `export GNUPGHOME=<this repo's absolute path>`, which is right in the tree that generated
+# it and wrong in every tree it is later copied into -- and a tree IS copied, by
+# `birth_a_clone.rish`, which is how grain-pheromone came to sign out of a sibling's keyring and
+# then fail entirely inside its own jail, where the sibling is not bound. Reading `$0` at run time
+# makes a copy correct wherever it lands, and costs one subshell per signature.
 let gw_a = "#!/bin/sh"
-let gw_b = join ["export GNUPGHOME=" gnupg_home] ""
-let gw_c = join ["exec gpg " dq "$@" dq] ""
-let gpg_wrapper_lines = [gw_a gw_b gw_c]
+let gw_b = "# The home is this script's OWN directory, read at run time rather than typed, so a"
+let gw_c = "# copy of this file into another tree is correct there unedited (REDS %427)."
+let gw_d = join ["GNUPGHOME=$(CDPATH= cd -- " dq "$(dirname -- " dq "$0" dq ")" dq " && pwd) || exit 1"] ""
+let gw_e = "export GNUPGHOME"
+let gw_f = join ["exec gpg " dq "$@" dq] ""
+let gpg_wrapper_lines = [gw_a gw_b gw_c gw_d gw_e gw_f]
 let gpg_wrapper_text = join gpg_wrapper_lines nl
 let gpg_wrapper_path = "${gnupg_home}/gpg.sh"
 write-file gpg_wrapper_path gpg_wrapper_text

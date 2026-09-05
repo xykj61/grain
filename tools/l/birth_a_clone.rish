@@ -59,7 +59,13 @@ let skm = run ["chmod" "700" (dest + "/.ssh")]
 assert skm.ok else "birth-a-clone: could not close the newborn's .ssh to its owner"
 # Every path inside the copied config moves from the field to the newborn. `|` delimits the
 # expression because the values being substituted are absolute paths full of `/`.
-let sre = run ["sed" "-i" ("s|" + field + "/|" + dest + "/|g") (dest + "/.git/ssh_config_jail")]
+#
+# TEMP-THEN-CAT RATHER THAN `sed -i`. The in-place flag is not portable -- BSD sed reads the next
+# argument as a backup suffix and GNU sed does not -- and the tree gates it at zero
+# (`shell_dialect`). Writing through the original inode also preserves the mode the repository
+# tracks, which is the exec-bit law's own idiom.
+let scfg_path = dest + "/.git/ssh_config_jail"
+let sre = run ["sh" "-c" ("sed 's|" + field + "/|" + dest + "/|g' '" + scfg_path + "' > '" + scfg_path + ".tmp' && cat '" + scfg_path + ".tmp' > '" + scfg_path + "' && rm -f '" + scfg_path + ".tmp'")]
 assert sre.ok else "birth-a-clone: could not repoint the copied ssh config at the newborn"
 let sleft = run ["grep" "-c" field (dest + "/.git/ssh_config_jail")]
 assert sleft.ok == false else "birth-a-clone: the copied ssh config still names the field -- a path the newborn's jail cannot see"

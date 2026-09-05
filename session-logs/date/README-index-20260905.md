@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260905.154019` | [the factory and the friendly skip](20260905/20260905-154019_the-factory-and-the-friendly-skip.kyri) | Mantra gets guards; the generator stops lying. |
 | `20260905.151659` | [the letter that meant two things](20260905/20260905-151659_the-letter-that-meant-two-things.kyri) | `N` meant gpg failed, not unsigned; the fleet cross-verifies now. |
 | `20260905.151254` | [the guard that could be fooled by a symlink](20260905/20260905-151254_the-guard-that-could-be-fooled-by-a-symlink.kyri) | a disguise closed before it fired. |
 | `20260905.150536` | [both custody doors -- the jail binds one tree](20260905/20260905-150536_both-custody-doors-the-jail-binds-one-tree.kyri) | pheromone's keys come home. |
