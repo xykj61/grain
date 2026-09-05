@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `3ad02d8827` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `27f7587fdf` -- HEAD's parent, resolvable everywhere (%401).
 
 **Now.** **A control that names a machine cannot be run on the fleet it guards.**
 
@@ -88,36 +88,37 @@ receipt naming them. **The gate vocabulary is this card's own custody list, read
 a flag namespace shared with the sandbox, a home the sandbox replaces, and an instrument whose
 silence a ratchet read as good news. **A gate at zero fails safe when its instrument dies; a
 ceiling fails UNSAFE**, and this tree holds far more ceilings.
-**The utility yonder** (amended) -- **POSIX is not this project's floor, it is the dependency the
-project exists to leave.** Caravan is a root task on **seL4's userlevel side**: syscalls, no shell,
-no awk. The count is a **re-grow estimate**.
+**The utility yonder** (amended): **POSIX is not this project's floor, it is the dependency the
+project exists to leave** -- Caravan is a root task on **seL4's userlevel side**, so the count is a
+**re-grow estimate**.
 **Five fetched `20260905`**, thanked and catalogued in `gratitude/README.md`, every license read
 from its own file: **dawk** (Zig, MIT), **uutils** (Rust, MIT), **toybox** (**0BSD**), **sbase +
 ubase** (MIT, MIT/X). **The re-grow is two undertakings:** uutils answers the coreutils family
 (**5,380** sites), leaving `grep`/`sed`/`awk`/`find` (**3,129**) to their own projects; toybox
-holds all four, **10,854 of 11,971** in one binary. **The crux answered:** dawk refuses our
-`utf8_valid.awk` as **Unicode-native**, naming a requirement we had never written -- *keep the
-C-locale byte view* -- and toybox's awk carries it as **`-b : count bytes, not characters`**.
-**sbase's finding is the comparison** ([thanks](../gratitude/suckless-sbase-ubase.md)): 98 commands,
-median **91 lines** -- the elder claim *short enough to hold in the eye*, now a number. `cat` is
-**52 lines/1 flag** here, 68/4 in toybox, **796/11 plus a Windows port** in uutils. **The prices
-differ because the promises do** -- portability by subtraction, a whole userland in one binary,
-exact GNU compatibility on five OSes -- and only three side by side make each legible.
-**No `awk` in sbase**: agreement, not absence. Next: ripgrep, last since we have it.
+holds all four, **10,854 of 11,971**. **The crux answered:** dawk refuses our `utf8_valid.awk` as
+**Unicode-native**, naming a requirement we never wrote -- *keep the C-locale byte view* -- and
+toybox's awk carries it as **`-b`**. **The prices differ because the promises do:** `cat` is 52
+lines/1 flag in sbase (median **91**), 68/4 in toybox, **796/11 plus a Windows port** in uutils.
+Next: ripgrep, last since we have it.
+**SEED READY FOR YOUR HAND** (`20260905.124031`): **`sh publish-seed.sh --push`**.
+**`%423` CLOSED** -- `publish-seed.sh` was **absent** here, which is why `commit_message_guard` sat
+red behind gate %1 at `SEED_PUBLISHER_ARMS 0`: *a fresh seed/.git would publish unguarded.*
+Reconstructed from the rule and the guard's greps; guard **GREEN**, **gated 4 -> 3**, and **the
+gate field came off in the same lap** -- a gate over a green guard would excuse the NEXT red.
+Proven twice: **7,472 copied, 1,215 scrubbed, 135 withheld**, `IDENT_CLEAN`, `NO_PERSONAL`,
+`SOW_WITNESS_GREEN`; one parentless commit, **7,706 files**, `grain-ww`, unsigned by design.
+**Its bare form cannot publish** -- two public repos, irreversibly, so `--push` is its own word.
 **The naming study**
 ([`a-veteran-still-likes`](../external-research/yonder/20260905-110633_the-name-a-veteran-still-likes.md)):
-**241 of 241 authored files in Caravan/Comlink/Mantra/Tally are common English -- not one a
-coinage**, so the choice is **familiar used honestly versus familiar used misleadingly**. Rule:
-**wear the common name when you keep its promise; take a new name the moment you do not**, tested
-by *would a dev assuming the familiar meaning write a correct program?* The awk finding is exactly
-a NO. **Aliases stay rare** -- `alias-sameness`'s conditions fail when behaviours differ, and two
-names for one tool is a coin flip an agent makes every call with no feedback.
-**Single-stranded refuses the shortlist.** **It names nothing**, by its own argument.
-**`%421` CLOSED -- a newer file is not a better credential.** `%415`'s clause read `-nt` alone, and
-**signing out REWRITES the credential** with empty tokens -- so a logged-out file is the NEWEST on
-disk and outranks a working one (host 509 bytes/valid; petrichor 281/**zero-length**/12 min newer).
-**Usability now reads before freshness.** **Freshness is not fitness**, and a replication clause
-spreads a wrong reading rather than keeping it.
+**241 of 241 authored files are common English -- not one a coinage**, so the choice is **familiar
+used honestly versus familiar used misleadingly**. Rule: **wear the common name when you keep its
+promise; take a new name the moment you do not**. **Aliases stay rare** -- two names for one tool is
+a coin flip an agent makes every call with no feedback. **It names nothing**, by its own argument.
+**`%419`-`%422` CLOSED**, whole on the
+[a-claim-goes-stale shelf](archive/REDS-a-claim-goes-stale-rows-419-422.md) -- a credential newer by
+mtime and dead by contents, a guard reading a room it was no longer pointed at, a machine named by
+a check that could not see it, a stash holding a finished lap. **Freshness is not fitness**, and a
+replication clause spreads a wrong reading rather than keeping it.
 **`%417`/`%418` CLOSED**, on the [what-a-copy-carries shelf](archive/REDS-what-a-copy-carries-rows-417-418.md):
 **copying is the most invisible way to be wrong -- every step reports success and the error is in
 the payload.** `birth_a_clone` refuses an empty inherited value now, and `test -x`'s the wrapper.
@@ -308,6 +309,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260905.112846` | The prices differ because the promises do | [log](../session-logs/date/20260905/20260905-112846_the-prices-differ.kyri) |
+| `20260905.124031` | The seed is ready, and the gate came off | [log](../session-logs/date/20260905/20260905-124031_the-seed-is-ready.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)
