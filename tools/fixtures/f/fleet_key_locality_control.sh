@@ -58,11 +58,15 @@ git -C "$pen/grain-alpha" config gpg.program "$pen/grain-alpha/.gnupg-rye/gpg.sh
 ck "plant removed, green again" "verdict=every_path_is_local" "$(sh "$scan" 2>&1)"
 
 # 7-8. An IdentityFile into the sibling -- the ssh half, which lives in a different file.
-sed -i "s|IdentityFile .*|IdentityFile $pen/grain-beta/.ssh/id_jail|" "$pen/grain-alpha/.git/ssh_config_jail"
+cfg="$pen/grain-alpha/.git/ssh_config_jail"
+sed "s|IdentityFile .*|IdentityFile $pen/grain-beta/.ssh/id_jail|" "$cfg" > "$cfg.tmp" \
+  && cat "$cfg.tmp" > "$cfg" && rm -f "$cfg.tmp"   # temp-then-cat: portable, and the mode survives
 out=$(sh "$scan" 2>&1)
 ck "foreign IdentityFile bites" "verdict=foreign_path" "$out"
 ck "ssh half counted"           "foreign_paths=1"      "$out"
-sed -i "s|IdentityFile .*|IdentityFile $pen/grain-alpha/.ssh/id_jail|" "$pen/grain-alpha/.git/ssh_config_jail"
+cfg="$pen/grain-alpha/.git/ssh_config_jail"
+sed "s|IdentityFile .*|IdentityFile $pen/grain-alpha/.ssh/id_jail|" "$cfg" > "$cfg.tmp" \
+  && cat "$cfg.tmp" > "$cfg" && rm -f "$cfg.tmp"   # temp-then-cat: portable, and the mode survives
 
 # 9-10. A SYMLINK IS THE SAME FAULT IN DISGUISE. The config names a local path; the path lands in
 # the sibling. A guard comparing the written string calls this local and the ship still refuses.

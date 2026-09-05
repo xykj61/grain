@@ -1,5 +1,13 @@
 # The Mantrapod -- A Venture Pitch
 
+> **This page is a fossil, kept whole as testimony of `20260629.020012`.** The living pitch is
+> [`20260801-005853_mantrapod-venture-pitch.md`](20260801-005853_mantrapod-venture-pitch.md),
+> which supersedes it. Two things changed and nothing else: the umbrella name, from *Rye OS* to
+> **Grain**, and the voice and coauthor of record, from Reya 2 and Kaeden Reyklah to Riyo and
+> Keaton Livermore. Every argument, component, and number below stands as written.
+> Banner added `20260905.161500` -- the newer page already named this one; this one did not
+> name it back, and sixteen living pages cite this path.
+
 *A venture pitch for an open-hardware pocket computer: a reflective, paper-like device that holds your work only while you hold it, speaks through a single wire or stays offline entirely, runs the Rye OS operating system on an open processor, opens and mends with a small screwdriver, and connects you directly to a community economy that keeps value close to home. Built to be the most ecological computer a person can carry, and to hand attention back rather than take it.*
 
 **Stamp:** `20260629.020012`
