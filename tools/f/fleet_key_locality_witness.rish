@@ -1,0 +1,38 @@
+# fleet_key_locality_witness.rish -- every path a fleet tree's git config names lives in that tree.
+#
+#   rishi/bin/rishi run tools/f/fleet_key_locality_witness.rish
+#
+# `agent-jail.sh` binds ONE tree into the enclosure. So a `gpg.program` or an `IdentityFile`
+# pointing at a sibling tree is a path the ship cannot see from inside its own jail -- and the
+# fault is invisible from outside the wall, because outside the wall the sibling is right there.
+# grain-pheromone was born holding petrichor's wrapper and petrichor's deploy key, and could
+# neither sign nor push from its own enclosure while every host-prompt check passed.
+#
+# Nothing standing could have caught it. `.git/config` and `.git/ssh_config_jail` are UNTRACKED by
+# design -- they carry custody paths -- so tracked_link_scan, the commit hook's path check, and the
+# link duty are each blind to them by construction. Reading the working tree's own untracked files
+# is the one way this reading is available at all.
+
+say "fleet-key-locality: Language EN -- one jail binds one tree, so every path it needs lives inside it."
+say "fleet-key-locality: Style Gauge, Meter -- one reading, gated at zero, both directions proven."
+say "fleet-key-locality: Lens TAME -- safety first: a path into a sibling signs fine at a prompt and refuses in the jail."
+
+# invariant: run from the repo root, where the scan and the roster both live.
+let root = run ["test" "-f" "construction/ITINERARY.md"]
+assert root.ok else "run from the repo root (construction/ITINERARY.md not found)"
+
+# invariant: the meter must stand before any reading of it is believed.
+let present = run ["test" "-f" "tools/fixtures/f/fleet_key_locality_scan.sh"]
+assert present.ok else "tools/fixtures/f/fleet_key_locality_scan.sh is missing -- the meter cannot be read"
+
+let control = run ["sh" "tools/fixtures/f/fleet_key_locality_control.sh"]
+say control.out
+assert control.ok else "fleet-key-locality: a planted case read wrong -- see the control's own lines"
+assert control.out contains "fail=0" else "fleet-key-locality: the control closed with a failing leg"
+
+let live = run ["sh" "tools/fixtures/f/fleet_key_locality_scan.sh"]
+say live.out
+assert live.ok else "fleet-key-locality: the scan refused -- its instrument or the roster is unreadable"
+assert live.out contains "verdict=every_path_is_local" else "fleet-key-locality: a fleet tree names a path outside itself -- that ship cannot sign or push inside its jail"
+
+say "fleet-key-locality: GREEN -- every live seat's keyring and transport resolve inside its own tree."

@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `4216d06352` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `ac5cdd539a` -- HEAD's parent, resolvable everywhere (%401).
 
 **Now.** **A control that names a machine cannot be run on the fleet it guards.**
 
@@ -77,15 +77,16 @@ round's opening stash stop an in-flight pass in its own tree.
 **Petrichor's `%424`** (library index credited a room for the interpreter) and the `grep`-shim
 finding are on the [landed-accounts shelf](archive/20260905-131102_itinerary-landed-accounts.md).
 **Three laps booked `%423` in one hour**: `124031` landed, `124857` renumbered to `%424`, and
-`122517` **is unsent in `stash@{0}`** -- it derives **`%427`** on restore, since incense landed
-`%425` and `%426`. **`git stash list` is the open.**
+`122517` **is unsent in `stash@{0}`** -- it takes its number from the anointed spine on restore
+(`--next`), never from the one written in it. **`git stash list` is the open.**
 **Still open:** `glow/rune_shape.rye` width custody; `%281`/`%291`. **(%347):**
 `pond/enclosure_policy.kyri` 8,120/8,192; yours.
 **Landed this chapter** -- `%374`'s gate build, six utility fetches with their thanks, the naming
 study, the seed publisher, and rows `%408`, `%414`-`%424`: whole on the
 [landed-accounts shelf](archive/20260905-131102_itinerary-landed-accounts.md). **The seed is published on your word** --
-`grain-os` and `grain-ww` both at `5a54c2f`, 7,706 files, `NO_PERSONAL` (%426). **Pheromone's two custody finds are yours:** gate 3
-(per-tree `GNUPGHOME`) and the rebase-open repair in `fleet_round_open.sh`.
+`grain-os` and `grain-ww` both at `5a54c2f`, 7,706 files, `NO_PERSONAL` (%426). **Pheromone's two custody finds are CLOSED** (%427, %428): every live seat's keyring and
+transport now resolve inside its own tree, gated by `fleet_key_locality_witness`; and the
+round-open clears an interrupted rebase before anything reads the tree, with its first control.
 **ripgrep FETCHED `20260905.130819` closes the order** -- **Unlicense OR MIT**, the freest of the six
 ([thanks](../gratitude/burntsushi-ripgrep.md)). **The measurement is about us:** rg stands at
 **1,376 sites**, more than any borrowed tool, and **1,286 are `-q`/`-qi` -- exit code only**. So

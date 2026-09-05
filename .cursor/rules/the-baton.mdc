@@ -3,6 +3,7 @@ description: canonical twin of .claude/rules/the-baton.md
 alwaysApply: true
 ---
 
+# The Baton -- the opening every ship reads, written once
 
 **Seated:** `20260904.214754` on Keaton's word -- **Status:** Living
 **The file:** [`../../tools/l/fleet_baton.txt`](../../tools/l/fleet_baton.txt) -- **The roster:** [`../../construction/fleet-roster.kyri`](../../construction/fleet-roster.kyri) -- **The guard:** [`../../tools/f/fleet_roster_witness.rish`](../../tools/f/fleet_roster_witness.rish)
@@ -50,6 +51,37 @@ why it is a law rather than a habit.
 
 **Machines are doors.** A seat is a chair, not a computer: the same ship may sit at a Mac or at the
 pier, and what makes that safe is proving the other door is closed and opening with the twice-pull.
+
+## A tree carries its own keys (REDS `%427`)
+
+**`agent-jail.sh` binds ONE tree, so every path a ship needs lives inside that tree.** Its keyring
+is its own `.gnupg-rye`, its transport keys its own `.ssh`, and `gpg.program`, `core.sshCommand`,
+and every `IdentityFile` name paths under the ship's own root. A path into a sibling is a path the
+ship cannot see from inside its jail -- it signs fine at a host prompt and refuses every commit in
+the enclosure, which is the worst shape a fault can take: invisible from outside the wall, total
+inside it.
+
+**The shim resolves its own home.** `.gnupg-rye/gpg.sh` reads `GNUPGHOME` from its own `$0` rather
+than from a typed absolute path, so the file is correct in whatever tree it is copied into.
+`birth_a_clone.rish` copies the keyring and the ssh material into a newborn, rewrites the copied
+config from field to newborn, and refuses if the field's name survives the rewrite.
+
+**Nothing tracked can check this**, which is why the guard reads untracked files:
+`.git/config` and `.git/ssh_config_jail` hold custody paths and are untracked by design, so
+`tracked_link_scan`, the commit hook, and the link duty are each blind to them by construction.
+Gated by [`../../tools/f/fleet_key_locality_witness.rish`](../../tools/f/fleet_key_locality_witness.rish)
+over [`../../tools/fixtures/f/fleet_key_locality_scan.sh`](../../tools/fixtures/f/fleet_key_locality_scan.sh),
+foreign paths at zero, a seat whose tree is absent from this pier reported rather than counted.
+
+## A round-open clears a rebase before it reads the tree (REDS `%428`)
+
+**An interrupted rebase is a corpse, and `tools/f/fleet_round_open.sh` clears it first.** The
+pre-rebase tip is parked by name out of `orig-head`, then `git rebase --abort` restores the exact
+pre-rebase branch and HEAD; a rebase that will not abort exits 2 and asks for a hand rather than
+resetting. Every later step misreads a standing rebase -- the worktree reads dirty, HEAD is
+detached at a half-replayed commit, and the `reset --hard` abandons the rebase and leaves the real
+branch behind. **Do not run `git rebase --continue` on a tree that opens mid-rebase**; the open
+has already parked what was there.
 
 ## Claim-as-override
 
