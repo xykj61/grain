@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260904.204812` | [The card earns its own bound](20260904/20260904-204812_the-card-earns-its-bound.kyri) | an exception nothing had tested, since its one page never needed it |
 | `20260904.193221` | [Nine printers become one](20260904/20260904-193221_nine-printers-become-one.kyri) | the breach gets a guard that catches the next one, not the six already written |
 | `20260904.175200` | [The jail's onboarding](20260904/20260904-175200_the-seat-table-written-once.kyri) | a mount conditional on what only it could create; NixOS cleared |
 | `20260904.171409` | [The captain gets two doors](20260904/20260904-171409_the-captain-gets-two-doors.kyri) | Cursor era landed; Incense prompt; Daylight yonder |

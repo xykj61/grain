@@ -41,7 +41,18 @@ while [ ! -d "$_fd_root/rishi/bin" ] || [ ! -d "$_fd_root/tools/fixtures" ]; do
   _fd_root=$(dirname "$_fd_root")
 done
 # The seated bound, read from the law rather than spelled here. One reading, one home (REDS %199).
+#
+# AND READ PER PAGE, which is the second half of that same reading. The fixture takes an optional
+# path and answers that page's own bound; called bare it answers the general one, and this scan
+# called it bare and then measured EVERY pin against the answer. So a page carrying a seated
+# exception was refused for doing exactly what the law permits it -- `session-logs/README.md` at
+# 57,344 and `construction/ITINERARY.md` at 32,768 both read as over-bound here while the law and
+# the near-bound meter beside it read them as fine. Two meters, one number, opposite verdicts. The
+# general answer stays for the printed reading below, and each pin is now weighed against its own.
 MAX_BYTES=$(sh "$_fd_root/tools/fixtures/l/living_pin_max_bytes.sh")
+pin_max_bytes() {
+  sh "$_fd_root/tools/fixtures/l/living_pin_max_bytes.sh" "$1"
+}
 # grep rather than `rg`: this pier ships no ripgrep, and this scan's own law
 # says a witness must not depend on one bench's tools.
 . "$_fd_root/tools/fixtures/s/shell_portable.sh"
@@ -197,7 +208,8 @@ while IFS="$(printf '\t')" read -r path min_bytes header bound_mode || test -n "
     exit 1
   fi
 
-  if test "$BYTES" -gt "$MAX_BYTES"; then
+  PAGE_MAX=$(pin_max_bytes "$path")
+  if test "$BYTES" -gt "$PAGE_MAX"; then
     if test "$bound_mode" = "advisory" || test "$bound_mode" = "hold_over"; then
       # Over-bound is tidy debt; emptied is loss -- different responses (counsel prove).
       echo "pin_over_bound_advisory=$path"
@@ -209,12 +221,13 @@ while IFS="$(printf '\t')" read -r path min_bytes header bound_mode || test -n "
       echo "detail=pin_over_bound"
       echo "detail_path=$path"
       echo "detail_bytes=$BYTES"
-      echo "detail_max=$MAX_BYTES"
+      echo "detail_max=$PAGE_MAX"
       exit 1
     fi
   else
     echo "pin_ok=$path"
     echo "pin_bytes=$BYTES"
+    echo "pin_max=$PAGE_MAX"
   fi
 done < "$ROSTER"
 
