@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `e765ddffae` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `d6acba58dc` -- HEAD's parent, resolvable everywhere (%401).
 
 **Now.** **A control that names a machine cannot be run on the fleet it guards.**
 
@@ -80,21 +80,8 @@ finding are on the [landed-accounts shelf](archive/20260905-131102_itinerary-lan
 made it five laps running -- **the standing evidence for your open question**: should an OPEN row
 carry a claim, a seat and a stamp, at start rather than at landing. Take the number from `--next`,
 never from the one written in the row.
-**`%435` CLOSED -- two foundations were rewritten into their own ancestors and three instruments
-read it as correct.** A molt leaves a provenance line naming the elder; `0877e2b5a`'s repoint read
-it as a citation and aimed it at the mutant's own name, so `single-stranded` (the rota's Air-fixed
-seat) called itself its own reimagining, and `f758efdb2` shed the elder hours later. **Nothing saw
-it because a self-link resolves:** the link scans test `[ -e ]` and the card scores Truth by
-counting paths that FAIL to resolve, so the page read **A+/98**, `truth=100`, on a false first
-sentence -- **`%430`'s shape one day apart, a Truth measuring the wrong thing where a Register
-measured nothing.** All three repaired pages grade exactly as before; that is the evidence. Loom
-`provenance_self_reference`, rostered at birth, gated at zero, replayed against HEAD; 35 of 5,455
-self-link, two were claims. **`--next` read mid-rebase answers from a contaminated tree** -- 436
-over my own unshared row where the spine's highest is 434, `%428` in the ledger's instrument.
+**Landed `20260905`** -- `%435`, `%427`-`%429`, `%423`-`%426`, `%420`, `%413`/`%412`, `%411`/`%410`, `%409`, `%408`; Mantra's 20 guards, the ripgrep fetch, the aroma breach, the baton and the three berths, and the bound grant itself: whole on the [20260905.192154 shelf](archive/20260905-192154_itinerary-landed-accounts.md).
 **Pheromone's:** `shell_dialect` reds on two `sed -i` in `fleet_key_locality_control.sh`:61,65.
-**`%427`-`%429` folded** to the
-[instrument-room shelf](archive/REDS-the-room-the-instrument-stood-in-rows-427-429.md), whose own
-header carries what runs through them.
 **`%430` OPEN -- a floor that refuses to score must also refuse to vote.** The report card frees
 Register under 8 sentences, prints `reported, not scored`, and divides by four anyway: **560 of
 870** pages carry a blank voting **100**, **206** above Door's ceiling, **176** at B or better.
@@ -120,19 +107,6 @@ now reads `foundations/20260905-154954_the-clock-and-the-mark.md` (the clock tha
 the work can keep). The compressors and the library index are petrichor's lane: weave the new
 foundation into `docs-geode/` where the naming and marking pages already teach, and grade what you
 touch. Gated by `announced_length` on the roster, GREEN at zero.
-**Mantra now has standing guards** -- 20 witnesses seated (`tier_lap` 113->121, `tier_cadence`
-25->37, +39s), after measuring that the tree's most-depended-upon module (120 inbound Rye files)
-had zero. The unbuilt half is charted in
-[Mantra was named for the weave](../active-designing/20260905-153729_mantra-was-named-for-the-weave.md).
-**ripgrep FETCHED `20260905.130819` closes the order** -- **Unlicense OR MIT**, the freest of the six
-([thanks](../gratitude/burntsushi-ripgrep.md)). **The measurement is about us:** rg stands at
-**1,376 sites**, more than any borrowed tool, and **1,286 are `-q`/`-qi` -- exit code only**. So
-**93% of our use is a predicate**, and a re-grow owes not a grep but a bounded existence test over
-the tracked set, which `git grep -q` already is. **Met the same day:** `grep` here is **ugrep
-7.8.4** and refused a regex GNU grep accepts -- **a familiar name is not a familiar behaviour.**
-**`%423`-`%426` CLOSED**, whole on the
-[what-a-script-assumes shelf](archive/REDS-what-a-script-assumes-rows-423-426.md): **a script is
-quiet about the one thing that changes when it moves.**
 **THE LIVE FRONT NOW FOLDS** (`20260905.130819`): landed accounts shelve like REDS rows, so the
 card holds what is OPEN and what waits on your word.
 **All three ships sail** (`20260905`). **Gate 3 stands:** `.gnupg-rye/` holds
@@ -144,45 +118,11 @@ tiers -- **granted** (POSIX), **carried** (we ship it), **borrowed** (probe, fal
 seated in Tally as a bounded grant, carried by Caravan as a capability, declared through Mantra.
 **The reflex that should not wait for the design: a guard that cannot run its instrument refuses,
 and says which instrument.**
-**`%413`/`%412` CLOSED** -- the roster's clock went to forking, not reading: **1,510s -> 856s**
-across five guards. Whole in the ledger, with the two lines worth carrying: **an empty answer from
-a failed instrument is byte-identical to one from a clean collection**, and **before you make an
-expensive thing rare, find out whether it is expensive on purpose**.
-**`%420` LANDED** -- `reds_ledger_headline_scan.sh` counts each extraction's lines ahead of the arithmetic; a census stated twice refuses, proven both ways.
-**Six ships, one baton** (`tools/l/fleet_baton.txt`, prepended; a seat prompt is its lane stanza).
-**berthed** `20260904`: **bakery** (core infra, Lindy/crux), **diffuser** (moonshots, each with its
-falsifier), **grass** (four audits). Birth plus `claude login` -- both a hand.
-**`%411` and `%410` CLOSED** -- four behaviors every ship performed with no rule behind them (**a gap nothing misbehaves over is a gap no meter finds**), and a bound exception no guard had ever been asked to honor (**a conditional only one input reaches has been tested by nothing**); both whole on the [408-410](archive/REDS-what-nothing-misbehaved-over-rows-408-410.md) and [411-413](archive/REDS-what-a-wrapper-inherits-rows-411-413.md) shelves.
-**The aroma breach (`20260904.214754`, Keaton's word).** *Smell* retires from living instruction, twice: the
-earth row **breathes in** (aroma, scent), and a code *smell* is a **tell**. The threshold page is
-`foundations/20260826-021735_earth-the-row-that-breathes-in.md`, its elder basename LISTED as a
-deliberate absence so the census reads intent. **Working-tree depth, not deep** -- history keeps
-what history is for. **New Gauge, Radiant and Twilight are G-friendly by default**; a higher rating
-is opt-in for one named round and buys precision, never coarseness. Rule:
-[`vocabulary-aroma`](../.claude/rules/vocabulary-aroma.md).
-**The card's bound is raised to 32,768 on Keaton's word** (`20260904.204812`), derived rather than granted:
-16 standing directives x 512, plus 8,192 for the live front, plus 16,384 for the durable spine --
-measured at 7,008 / 5,161 / 12,406 on the day. **The general bound stays 24,576.** The card is read
-WHOLE every lap, so this costs ~2k tokens per lap per body and the law names that cost; the
-measured alternative was seventeen condensations in one session to fit three rows and a launcher.
-`SHRED_PREP` is NOT raised -- it folded a completed shed instead, because a finished section
-belongs on a shelf and only a page whose living parts outgrew the number earns a new one.
 
 **Worth your word, still unanswered** (condensed out under the old ceiling `20260904`, carried
 back now that there is room): nothing in the ledger shows a red is *being worked*, so two hands
 spent one morning on the same line. **Should an OPEN row carry a claim -- a seat and a stamp, at
 start rather than at landing?**
-**`%409` CLOSED** -- one seat table, six copies, two drifted; whole on the
-[rows 408-410 shelf](archive/REDS-what-nothing-misbehaved-over-rows-408-410.md).
-**`%408` CLOSED** -- `agent-jail.sh` bound `~/.claude.json` only when a file **only the jailed
-Claude could write** already existed, into a tmpfs the exit discards, so onboarding ran on every
-launch and its picker previewed a light scheme reading as invisible text. Seeded and bound.
-**NixOS was not at fault**, measured.
-**Fleet:** three Earth trees, six aether seats **parked**. Charter
-[`seat-table-written-once`](../active-designing/20260904-175200_the-seat-table-written-once.md)
-**steps 1-4 LANDED**. **The molt breach is enforced** -- a living launcher filename carrying a
-modality word without the elder banner reds at zero, so the guard catches the NEXT one. Captain
-prompt molted `20260904-193221`: the pier's tree is `~/grain-incense`, no `~/grain` on Dallas.
 **Yours, two (%417).** A **guided map** fits neither shape offered: `MAP.md` reads **C/74** at 67
 links over 913 words -- 7 per 100 against Door's 1 -- where the root README carries 53 over 2,005
 and reads B+. The index door frees the rate only under 100 words, a link list rather than a walk.
