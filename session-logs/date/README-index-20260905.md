@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260905.184640` | [the window retires, and the seat is sole](20260905/20260905-184640_the-window-retires-and-the-seat-is-sole.kyri) | one writer now; a peer's correction checked in both directions. |
 | `20260905.183854` | [the handoff read](20260905/20260905-183854_the-handoff-read.kyri) | three doors even at 2179fa1d6; both open reds want a word. |
 | `20260905.183603` | [the wrap that hid a citation](20260905/20260905-183603_the-wrap-that-hid-a-citation.kyri) | a line break defeated rule four. |
 | `20260905.183107` | [the handoff](20260905/20260905-183107_the-handoff.kyri) | the carry card for the next incense session. |
