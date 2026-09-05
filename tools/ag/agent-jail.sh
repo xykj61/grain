@@ -370,6 +370,32 @@ if [ ! -f "${CURSOR_CONFIG_STATE}/auth.json" ] && [ -f "${HOST_HOME}/.config/cur
   cp -a "${HOST_HOME}/.config/cursor/." "${CURSOR_CONFIG_STATE}/"
 fi
 
+# ONE LOGIN PER PIER, NOT ONE PER TREE (REDS %415). `claude login` writes to the HOST's
+# $HOME/.claude, and `--private-home` replaces $HOME inside the jail with a tmpfs -- so a login
+# typed at the pier shell reaches no tree at all, whichever directory it was typed in. The fleet
+# has six trees; without this, it has six logins, and each expires on its own clock.
+#
+# The rule is the cursor seed's above, plus a refresh clause the cursor one does not need. Copy
+# when the tree has none, AND when the host's is strictly newer -- because a token refreshes. The
+# jailed agent writes its own refreshed token into the tree's room, so the tree's copy is newer
+# after a working lap and is never clobbered; a fresh `claude login` on the pier makes the host's
+# newer, and every tree picks it up on its next launch. Whichever hand moved last wins, which is
+# the only rule that stays true without a hand remembering it.
+#
+# WHAT THIS IS NOT: no credential leaves this machine, none is written anywhere tracked --
+# `loops/` is gitignored and a closed stack -- and nothing here creates, holds or moves a custody
+# key. It carries the maintainer's own already-granted session from one directory of his own pier
+# to another, which is exactly what the cursor line above has done since it was written.
+if [ -f "${HOST_HOME}/.claude/.credentials.json" ]; then
+  if [ ! -f "${CLAUDE_STATE}/.credentials.json" ]; then
+    cp -p "${HOST_HOME}/.claude/.credentials.json" "${CLAUDE_STATE}/.credentials.json" \
+      && echo "agent-jail: seeded this tree's claude login from the host (one login per pier)" >&2
+  elif [ "${HOST_HOME}/.claude/.credentials.json" -nt "${CLAUDE_STATE}/.credentials.json" ]; then
+    cp -p "${HOST_HOME}/.claude/.credentials.json" "${CLAUDE_STATE}/.credentials.json" \
+      && echo "agent-jail: refreshed this tree's claude login from a newer host login" >&2
+  fi
+fi
+
 MAP_ARGS=(
   --rw-map "${CLAUDE_STATE}:${HOST_HOME}/.claude"
   --rw-map "${CURSOR_AGENT_STATE}:${HOST_HOME}/.cursor"

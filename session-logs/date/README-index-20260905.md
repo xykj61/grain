@@ -11,5 +11,6 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260905.014249` | [The login that never reached a tree](20260905/20260905-014249_the-login-that-never-reached-a-tree.kyri) | private-home replaces the home a login was written to |
 | `20260905.011715` | [Both sides owned the flag](20260905/20260905-011715_both-sides-owned-the-flag.kyri) | ai-jail and claude both own --verbose; the loop counted refusals as laps |
 | `20260905.001835` | [The instrument that could not say so](20260905/20260905-001835_the-instrument-that-could-not-say-so.kyri) | a failed pass and a clean tree read identically |

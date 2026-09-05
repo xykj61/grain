@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `edd2d10818` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `3acbe7ff07` -- HEAD's parent, resolvable everywhere (%401).
 
 **Now.** **A rule written six times is a rule six files may quietly come to disagree about.**
 
@@ -93,6 +93,15 @@ giant `-p` argument riding through two shells. **The loop stops now** after thre
 under ten seconds each, naming it an invocation fault. **A wrapper inherits its wrapper's
 namespace** -- any flag shared between a sandbox and what it sandboxes waits for the lap that
 first needs it.
+**`%415` CLOSED -- `claude login` writes to the HOST's home, and `--private-home` is the thing that
+replaces it.** A login typed at the pier shell reaches **no tree at all**, whichever directory it
+was typed in -- `cd` moves the working directory and the credential follows `$HOME`. Measured: host
+509 bytes, incense 509 (so incense worked), **pheromone and petrichor none**. The answer was already
+in the same file -- `agent-jail.sh` has seeded cursor's login from the host since it was written --
+and only one of the two agents ever got it. **One login per pier, not one per tree**: the launcher
+seeds when a tree has none and **refreshes when the host's is strictly newer**, so a jail-refreshed
+token is never clobbered and a fresh pier login reaches every ship. Nothing tracked, nothing off the
+machine, no custody key. **A sandbox that replaces a directory replaces everything anyone put there.**
 **LAUNCH:** `cd ~/grain-<seat> && git pull --ff-only xy main && sh tools/l/fleet-loop.sh <seat>`.
 **`%413` CLOSED (pass now **856s**, from 1,510 this morning) -- three more guards forking per item, and one repair that twice taught a guard to
 report a tree it never read.** `tracked_link` forked an awk AND a grep **per link** (~47,700
@@ -289,6 +298,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260905.011715` | Both sides owned the same flag | [log](../session-logs/date/20260905/20260905-011715_both-sides-owned-the-flag.kyri) |
+| `20260905.014249` | The login that never reached a tree | [log](../session-logs/date/20260905/20260905-014249_the-login-that-never-reached-a-tree.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)
