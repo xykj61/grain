@@ -88,6 +88,7 @@ rostered=0
 missing=0
 half=0
 unknown_tier=0
+undeclared_tier=0
 unknown_host=0
 host_gated=0
 unknown_capability=0
@@ -107,6 +108,12 @@ gate=""
 close_record() {
   [ -n "$name" ] || return 0
   if [ "$sawpath" -ne 1 ]; then half=$((half + 1)); echo "$name" >> "$halfrows"; fi
+  # A GUARD WITH NO `tier` LINE DEFAULTS TO `lap` SILENTLY, and 78 of 122 lap guards reached that
+  # tier by default rather than by decision (measured `20260905`). They ran every lap because nobody
+  # chose. The default stays -- a roster that refuses on a missing field would red on 62 guards at
+  # once, and a wall that reds on ordinary work is a wall somebody turns off -- so the count is
+  # REPORTED as a ratchet that only falls, and a hand deciding one on touch lowers it.
+  [ -n "$tier" ] || undeclared_tier=$((undeclared_tier + 1))
   t="${tier:-lap}"
   case " $known_tiers " in
     *" $t "*) ;;
@@ -253,6 +260,10 @@ echo "guards_rostered=$rostered"
 echo "guards_path_missing=$missing"
 echo "guards_half_written=$half"
 echo "guards_unknown_tier=$unknown_tier"
+echo "guards_undeclared_tier=$undeclared_tier"
+undeclared_ceiling="${UNDECLARED_TIER_CEILING:-62}"
+echo "undeclared_tier_ceiling=$undeclared_ceiling"
+if [ "$undeclared_tier" -le "$undeclared_ceiling" ]; then echo "undeclared_tier_under_ceiling=yes"; else echo "undeclared_tier_under_ceiling=no"; fi
 echo "guards_host_gated=$host_gated"
 echo "guards_unknown_host=$unknown_host"
 echo "guards_capability_gated=$capability_gated"
