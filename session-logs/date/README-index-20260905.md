@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260905.192825` | [the card folds rather than grows](20260905/20260905-192825_the-card-folds-rather-than-grows.kyri) | 92 bytes of headroom became 5,596. |
 | `20260905.190829` | [the census counted once](20260905/20260905-190829_the-census-counted-once.kyri) | %420 landed; a census stated twice now refuses. |
 | `20260905.184640` | [the window retires](20260905/20260905-184640_the-window-retires-and-the-seat-is-sole.kyri) | one writer now; a peer's correction checked both ways. |
 | `20260905.183854` | [the handoff read](20260905/20260905-183854_the-handoff-read.kyri) | three doors even at 2179fa1d6; both open reds want a word. |
