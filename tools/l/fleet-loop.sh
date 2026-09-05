@@ -117,6 +117,7 @@ mkdir -p session-output
 
 echo "fleet-loop: seat=$seat engine=$engine root=$root hours=$hours laps=${max_laps:-unbounded}"
 
+
 # Print the command a lap would run. Linux Earth ships wrap in agent-jail; Darwin does not.
 # The prompt stays a file -- never inlined here.
 earth_claude_cmd() {
@@ -135,6 +136,35 @@ if [ "${FLEET_DRY:-0}" = 1 ]; then
   *)      echo "fleet-loop: seat $seat carries engine '$engine' -- no unattended loop for it"; exit 2 ;;
   esac
   exit 0
+fi
+
+# The stagger sits AFTER the dry-run exit on purpose: `FLEET_DRY=1` promises to print a command
+# and run nothing, and a sleep is something. An elder draft placed it above and would have held
+# a dry run for the seat's full offset.
+# THE STAGGER -- a launch offset so ships' expensive phases interleave rather than collide.
+#
+# WHY AN OFFSET RATHER THAN A LOCK. The standing roster is the expensive phase, it is
+# single-threaded, and it runs INSIDE the jail. Each jail binds exactly one tree and gets its own
+# tmpfs `/tmp`, so no writable path is shared between ships and a cross-ship lock cannot be built
+# on this pier at all. What the host CAN do is choose when each loop starts.
+#
+# WHAT IT BUYS, measured `20260905` on this 4-core pier: the same four guards take 7,980ms alone,
+# 11,240ms with two competing cores (1.41x), and 22,451ms with five (2.81x). An offset helps only
+# while the expensive phase is under 1/N of a lap -- with six ships and a roster near a quarter of
+# each lap, overlap is arithmetic rather than luck, and no offset avoids it. So this is real relief
+# at three or four ships and no answer at six. Say so rather than let a knob imply otherwise.
+#
+# The seat's own position in the live roster picks its slot, so adding a ship re-spaces the fleet
+# with no per-seat number to keep in step.
+stagger=${FLEET_STAGGER:-0}
+if [ "$stagger" -gt 0 ] 2>/dev/null; then
+  slot=$(sh "$roster_scan" --live 2>/dev/null | grep -nx "$seat" | cut -d: -f1)
+  slot=${slot:-1}
+  wait_s=$(( (slot - 1) * stagger ))
+  if [ "$wait_s" -gt 0 ]; then
+    echo "fleet-loop: stagger -- $seat is slot $slot, holding ${wait_s}s so laps interleave"
+    sleep "$wait_s"
+  fi
 fi
 
 # Linux jail presence -- the same doors agent-jail.sh resolve_aijail walks, plus
