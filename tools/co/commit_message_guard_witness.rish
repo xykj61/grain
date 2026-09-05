@@ -42,7 +42,7 @@ assert scan.out contains "GUARD_HOOK_PRESENT 1" else "commit-guard: tools/hooks/
 
 # Every planted case answered the way the rules say it should.
 assert scan.out contains "GUARD_FAIL 0" else "commit-guard: a planted case answered the wrong way -- read the GUARD_CASE_BAD line above for which"
-assert scan.out contains "GUARD_PASS 25" else "commit-guard: the case roster changed size -- 25 cases are expected, so add the new one here when you add it there"
+assert scan.out contains "GUARD_PASS 28" else "commit-guard: the case roster changed size -- 28 cases are expected, so add the new one here when you add it there"
 
 # A refusal that does not name the fix costs the author a trip to the rules.
 assert scan.out contains "GUARD_TEACHES 1" else "commit-guard: the refusal does not name the percent form and the rule it comes from"
@@ -66,4 +66,4 @@ assert scan.out contains "GUARD_ARMED 1" else "commit-guard: this clone is not a
 assert scan.out contains "GUARD_OK" else "commit-guard: the scan reported GUARD_BAD -- read the line above"
 assert ((scan.out contains "GUARD_BAD") == false) else "commit-guard: GUARD_BAD present"
 
-say "GREEN: commit-guard -- 25 planted cases answered right, the refusal teaches its own fix, the message survives it, the public seed arms the same wall on every publish, and this clone stands armed."
+say "GREEN: commit-guard -- 28 planted cases answered right, the refusal teaches its own fix, the message survives it, the public seed arms the same wall on every publish, and this clone stands armed."

@@ -150,9 +150,27 @@ paths=$(printf '%s\n' "$body" | sed -e 's/`/ /g' -e 's/[(),;]/ /g' \
   | tr ' ' '\n' \
   | grep -E '^[A-Za-z0-9._-]+/[A-Za-z0-9._/-]+\.(md|mdc|kyri|bron|rish|rye|brix|sh|json|txt)$' \
   | sort -u)
+# AND A BARE DATED BASENAME IS CHECKED TOO, because a line break defeats the rule above. On
+# 20260905 a body cited `expanding-prompts/20260905-183418_the-handoff-...md` for a file whose real
+# stamp was 183107, and the wrap split it across two lines: the token `expanding-prompts/` carried
+# no extension and the token `20260905-183418_...md` carried no slash, so neither matched a pattern
+# needing both in one word. The guard written for a fabricated citation was walked past by a
+# newline. A basename of the one-clock shape is globally unique in this tree by the naming law, so
+# it can be resolved on its own -- and a body that names one is citing a file whether or not the
+# directory survived the wrap.
+dated=$(printf '%s\n' "$body" | sed -e 's/`/ /g' -e 's/[(),;]/ /g' \
+  | tr ' ' '\n' \
+  | grep -E '^[0-9]{8}-[0-9]{6}([_.][A-Za-z0-9._-]*)?\.(md|mdc|kyri|bron|rish|rye|brix|sh|json|txt)$' \
+  | sort -u)
+tracked=""
+if test -n "$dated"; then tracked=$(git ls-files 2>/dev/null | sed 's|.*/||' | sort -u); fi
+
 missing=""
 for pth in $paths; do
   test -e "$pth" || missing="$missing $pth"
+done
+for base in $dated; do
+  printf '%s\n' "$tracked" | grep -qxF "$base" || missing="$missing $base"
 done
 if test -n "$missing"; then
   fail=1

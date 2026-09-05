@@ -89,6 +89,14 @@ check refuse invented-tool  'tools: a subject\n\nThe script tools/z/no_such_witn
 check accept real-path      'context: a subject\n\nThe file README.md gained one function parameter in the module.'
 check accept real-nested    'tools: a subject\n\nThe script tools/hooks/commit-msg gained one function reading a parameter.'
 check accept bare-word      'context: a subject\n\nThe caravan module gained one function parameter and one import.'
+# AND A LINE BREAK MUST NOT WALK A CITATION PAST THE CHECK. On 20260905 a body cited a handoff by a
+# stamp typed from memory, and the wrap split it: `expanding-prompts/` carried no extension and
+# `20260905-183418_...md` carried no slash, so neither token matched a pattern needing both in one
+# word. The guard written for a fabricated citation was defeated by a newline. A basename of the
+# one-clock shape is globally unique by the naming law, so it is resolved on its own now.
+check refuse wrapped-invented 'context: a subject\n\nThe file added to the `expanding-prompts/` directory --\n`20260101-010101_never-written-at-all.md` -- names one function parameter.'
+check accept wrapped-real     'context: a subject\n\nThe file in the `session-logs/` directory --\n`README.md` -- names one function parameter in the module.'
+check accept dated-real       'tools: a subject\n\nThe script named 20260905-183107_the-handoff-from-the-eight-core-round.md holds one function parameter.'
 
 # --- the mechanism sentence: a body says what changed before what it means ---------
 # Added 20260822 with `.claude/rules/mechanism-sentence.md`. Proven in depth by
