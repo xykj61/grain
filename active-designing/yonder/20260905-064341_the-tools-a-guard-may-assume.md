@@ -37,9 +37,24 @@ it is missing.**
 
 | Tier | Meaning | On absence |
 |---|---|---|
-| **granted** | POSIX-mandated; every bench has it | assume it; a missing one is a broken bench, not a guard's problem |
-| **carried** | not POSIX, and we ship or vendor it | assume it, and a witness proves it *is* carried |
+| **granted** | the bench guarantees it (POSIX under a shell) | assume it; a missing one is a broken bench, not a guard's problem |
+| **carried** | not guaranteed, and we ship or vendor it | assume it, and a witness proves it *is* carried |
 | **borrowed** | present on some benches, absent on others | **probe, fall back, and announce which was used** |
+
+**`granted` means the BENCH guarantees it, and that is a smaller claim than it first reads**
+(amended `20260905.073903` on Keaton's word, correcting this page's first draft). The draft wrote
+*granted = POSIX-mandated*, which quietly made POSIX the floor of the whole project. It is the
+floor of the **bench** and not of the **destination**: Caravan is a root task on **seL4's userlevel
+side**, where there is a syscall interface and **no shell, no `awk`, no `grep`, no POSIX utility
+layer at all**. On the target, `granted` is nearly empty and every tool is something we wrote.
+
+That is not a footnote, it is the design's whole reason. **A tool grant matters most where nothing
+is granted.** And it makes the tier roster do double duty: on the bench it says what a guard may
+assume, and read from the other end it is **the re-grow list** -- 1,958 `grep` sites, 645 `sed`,
+434 `awk` are a work estimate for the Rye that must eventually answer for them. The elder
+`external-research/yonder/20260617-201612_useful-utilities.md` ordered its tiers by *how readily
+each becomes a TAME Rye module*; this page asks the same question from the near end, and the two
+lists are one list.
 
 `rg` is **borrowed** and treated as granted 991 times out of 992. `mktemp` is **borrowed** and
 treated as granted 353 times out of 353. `git` is **carried** -- no clone exists without it -- and
@@ -109,6 +124,25 @@ That is the honest objection to the whole design, and the honest answer is that 
 to pay in full. The value is that a *new* borrowed site is visible on the lap it enters -- the same
 value `unheard_guard` gives, where 1,116 unheard witnesses will likely never be zero and the ceiling
 still does its work every time it falls.
+
+## The re-grow, and whose hand it is
+
+**Nothing is fetched or written by this page.** When the word comes, the order is argued in the
+companion study and the shape here is only where each landing belongs:
+
+- **Tally** takes the grant type and its bounds, beside `garden`.
+- **Caravan** takes the grant as a **capability** on a supervised dependent -- and Caravan is also
+  the module that will one day *be* the thing with no utilities beneath it, which is why it owns
+  both ends of this.
+- **Mantra** takes the roster as a descriptor, so three instruments read one file.
+- **Aurora** is where a tier stops being theoretical, since a tier is a fact about the *target*.
+- **Rye** authors the base suite the re-grow produces; **Rishi** consumes it; **Glow** spells it
+  when a rune has earned a law.
+
+Every study lands in `gratitude/` with its source and license, and is thanked in writing -- one
+page per teacher as that room already does, in a `gratitude/utilities/` subfolder once there is
+more than one. We honor a tool by using it now and by re-growing its gift later, which is the
+elder study's own promise and not a new one.
 
 ## What this does not reach
 
