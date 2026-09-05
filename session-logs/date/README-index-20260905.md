@@ -16,6 +16,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260905.155840` | [two ships, and what a restart must not lose](20260905/20260905-155840_two-ships-and-what-a-restart-must-not-lose.kyri) | both launch commands. |
 | `20260905.155209` | [the looking was the limit](20260905/20260905-155209_the-looking-was-the-limit.kyri) | five live forecasts found by a meter; four cores answer the six-ship question. |
 | `20260905.154019` | [the factory and the friendly skip](20260905/20260905-154019_the-factory-and-the-friendly-skip.kyri) | Mantra gets guards; the generator stops lying. |
+| `20260905.160658` | [The page that became its own ancestor](20260905/20260905-160658_the-page-that-became-its-own-ancestor.kyri) | a self-link resolves, so three meters read it true. |
 | `20260905.151659` | [the letter that meant two things](20260905/20260905-151659_the-letter-that-meant-two-things.kyri) | `N` meant gpg failed, not unsigned; the fleet cross-verifies now. |
 | `20260905.151254` | [the guard that could be fooled by a symlink](20260905/20260905-151254_the-guard-that-could-be-fooled-by-a-symlink.kyri) | a disguise closed before it fired. |
 | `20260905.150536` | [both custody doors -- the jail binds one tree](20260905/20260905-150536_both-custody-doors-the-jail-binds-one-tree.kyri) | pheromone's keys come home. |
