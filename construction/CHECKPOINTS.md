@@ -24,6 +24,65 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ---
 
+## `20260905.134026` -- the card condenses two landed accounts to seat a restored row (walk-back `7a025005de`)
+
+**Walk-back nib:** `7a025005de`. **Swept:** roughly 850 bytes of the live front of
+[`ITINERARY.md`](ITINERARY.md), to make room for `%430` (booked `%423`, then `%425`, then `%427`) on a card at **32,765 of 32,768**
+-- three bytes. Five cuts, each of a finished account whose record stands whole elsewhere: the
+`%424` library-index reading shortened to its two numbers (the row holds the rest); the `%423`
+seed-publisher account tightened by a third; the `%423`-collision paragraph **removed entirely**,
+because it was an instruction to restore `stash@{0}` and this lap executed it; the five-fetch
+license roster dropped to a pointer at `gratitude/README.md`, which catalogues all five with every
+licence read from its own file; and the naming study's restatement of its own argument cut, since
+the rule it seats is the sentence beside it. **A sixth cut followed**, once `%428` needed a seat:
+the card carried a pointer at `%419`-`%422`'s shelf **and**, twenty lines below it, the standalone
+twelve-line `%419` and `%420` accounts -- two retellings of four rows the shelf already holds whole.
+The pointer stays, the twelve lines went, and the one live obligation inside them was kept as a
+sentence: `%420`'s cardinality assert over the census headline, still owed on the lap that next
+opens `reds_ledger_monotone`. **What waits there:** `%419`'s `4,056 logs in 0.17s across 36
+behaviors` and its *third firing in one day* reading, and `%420`'s `60776bcad` provenance -- every
+one of them whole at [`archive/REDS-a-claim-goes-stale-rows-419-422.md`](archive/REDS-a-claim-goes-stale-rows-419-422.md).
+**A seventh and eighth followed the REDS fold.** Booking the second row carried
+[`REDS.md`](REDS.md) to **27,237** against its **24,576**, reding both
+`equinox_e123_living_pin_guard` and `declared_ceiling` on one root, so `%423` and `%424` folded
+through `tools/fixtures/r/reds_fold.sh` at `20260905.143059`, onto a shelf named
+`REDS-the-proxy-that-stopped-standing-rows-423-424.md`, and the pin came back to **20,151**. **That
+shelf no longer exists** -- it was dropped for the peer's own fold two rebases later, so its name is
+written here as a name rather than a link, and those rows read at
+[`archive/REDS-what-a-script-assumes-rows-423-426.md`](archive/REDS-what-a-script-assumes-rows-423-426.md).
+Their card retellings then went the way `%419`'s had, to one pointer at that shelf. **What waits
+there:** `%423`'s `7,472 copied, 1,215 scrubbed, 135 withheld` projection proof and its *a gate is a
+claim about why a red cannot move* line, and `%424`'s per-room measurement (`1,764` of `1,770`,
+`1,224` of `1,313`) with the `33.9s` first draft that the token scan beat at `1.9s`. **One live
+claim was corrected rather than cut:** the card's `SEED READY FOR YOUR HAND` line now names
+`grain-incense` as the tree the publisher is on, which is that row's whole subject. **A ninth and
+tenth landed on the rebase**, when `xy` published its own `%425` and `%426` while this round was
+verifying: mine renumbered to `%427` and `%428` (unshared rows move, published ones never do), the
+card's `SEED READY` correction was **dropped rather than kept** because upstream had already
+replaced it with *the seed is published on your word*, and upstream's two CLOSED rows folded onto a
+second shelf of mine, `REDS-where-you-happen-to-be-standing-rows-425-426.md`, so the pin could hold
+mine. **That shelf was dropped too**, on the same word, and those rows read at
+[`archive/REDS-what-a-script-assumes-rows-423-426.md`](archive/REDS-what-a-script-assumes-rows-423-426.md). **What waits there:** upstream's `%425` account of the wet leg
+(`1,298s at zero CPU`, found by the pheromone seat) and `%426`'s `git init -b main` repair, both
+whole on that shelf, and the card's own retelling of them in `ac5cdd539`. **An eleventh and twelfth
+came with the SECOND rebase**, when `xy` published `%427`, `%428` and `%429` six commits deep while
+this round re-verified: mine moved again to **`%430`** and **`%431`**, and **both of my fold shelves
+were dropped for the peer's single one** -- upstream had folded `%423`-`%426` onto
+[`archive/REDS-what-a-script-assumes-rows-423-426.md`](archive/REDS-what-a-script-assumes-rows-423-426.md)
+at `20260905.150005`, and two archives of one fold is worse than either. `%427`-`%429` then folded to
+[`archive/REDS-the-room-the-instrument-stood-in-rows-427-429.md`](archive/REDS-the-room-the-instrument-stood-in-rows-427-429.md)
+so the pin could hold the two OPEN rows. **What waits at this walk-back:** the two shelf headers I
+wrote and dropped -- *the proxy that stopped standing for the thing* over `%423`/`%424` and *where
+you happen to be standing* over `%425`/`%426` -- each a reading of those rows the adopted shelf
+words differently, and neither of them wrong.
+**What waits there, worth recalling:** the card's own retellings rather than the facts -- `%424`'s
+*36 of 38 held*, `%423`'s `SOW_WITNESS_GREEN` leg and its *two public repos, irreversibly* clause,
+and the collision paragraph's plain census of the hour: **three laps booked `%423`**, `124031`
+landing, `124857` renumbering to `%424`, `122517` waiting in stash. That census is the sharpest
+standing argument for the card's own open question -- whether an OPEN row should carry a claim at
+start rather than at landing -- so it is written here rather than merely dropped. Every number
+stands in [`REDS.md`](REDS.md) and on the `20260905` day shelf.
+
 ## `20260905.125109` -- the card condenses the %422 seat account to its shelf (walk-back `27f7587fdf`)
 
 **Walk-back nib:** `27f7587fdf`. **Swept:** the four-line `%422` account in the Petrichor block of

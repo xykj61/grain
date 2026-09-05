@@ -12,12 +12,14 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | Stamp | Log | What it recorded |
 |---|---|---|
 | `20260905.151659` | [the letter that meant two things](20260905/20260905-151659_the-letter-that-meant-two-things.kyri) | `N` meant gpg failed, not unsigned; the fleet cross-verifies now. |
-| `20260905.151254` | [the guard that could be fooled by a symlink](20260905/20260905-151254_the-guard-that-could-be-fooled-by-a-symlink.kyri) | both new guards seated on the roster; a disguise closed before it fired. |
-| `20260905.150536` | [both custody doors -- the jail binds one tree](20260905/20260905-150536_both-custody-doors-the-jail-binds-one-tree.kyri) | pheromone's keys come home; the round-open stops reporting a clean tree over a rebase. |
-| `20260905.143057` | [the seed publishes, and a default names itself](20260905/20260905-143057_the-seed-publishes-and-a-default-names-itself.kyri) | grain-os and grain-ww both at `5a54c2f`; the init now names its branch. |
+| `20260905.151254` | [the guard that could be fooled by a symlink](20260905/20260905-151254_the-guard-that-could-be-fooled-by-a-symlink.kyri) | a disguise closed before it fired. |
+| `20260905.150536` | [both custody doors -- the jail binds one tree](20260905/20260905-150536_both-custody-doors-the-jail-binds-one-tree.kyri) | pheromone's keys come home. |
+| `20260905.143057` | [the seed publishes, and a default names itself](20260905/20260905-143057_the-seed-publishes-and-a-default-names-itself.kyri) | both doors at `5a54c2f`. |
+| `20260905.134026` | [The floor that voted on a silence](20260905/20260905-134026_the-floor-that-voted.kyri) | a blank Register voted 100 on 560 of 870 pages |
 | `20260905.125304` | [The interpreter is not a reference](20260905/20260905-125304_the-interpreter-is-not-a-reference.kyri) | 1,770 witnesses for a room of two modules |
 | `20260905.130819` | [A wet leg in a dry file](20260905/20260905-130819_a-wet-leg-in-a-dry-file.kyri) | safe on the tree that wrote it, hanging on the tree it was for |
 | `20260905.124031` | [The seed is ready, and the gate came off](20260905/20260905-124031_the-seed-is-ready.kyri) | a gate made a missing file look like a custody decision |
+| `20260905.122517` | [A floor that refuses to score must also refuse to vote](20260905/20260905-122517_a-floor-that-refuses-to-vote.kyri) | 560 of 870 pages graded on a blank voting 100 |
 | `20260905.112846` | [The prices differ because the promises do](20260905/20260905-112846_the-prices-differ.kyri) | cat: 52 lines here, 796 in uutils, and neither is waste |
 | `20260905.110633` | [The name a veteran still likes](20260905/20260905-110633_the-name-a-veteran-still-likes.kyri) | 241 authored names, not one a coinage |
 | `20260905.104613` | [toybox answers dawk's question](20260905/20260905-104613_toybox-answers-dawks-question.kyri) | the byte-view flag, in the next project we read |
