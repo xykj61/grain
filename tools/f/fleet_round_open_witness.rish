@@ -1,0 +1,36 @@
+# fleet_round_open_witness.rish -- the round-open tells its states apart, and clears a rebase first.
+#
+#   rishi/bin/rishi run tools/f/fleet_round_open_witness.rish
+#
+# `tools/f/fleet_round_open.sh` runs `git reset --hard xy/main` on every live fleet tree at every
+# round-open, roughly every twenty minutes, on three ships. It had no control at all until
+# REDS %428, which is a great deal of destructive authority resting on careful reading.
+#
+# The fault that earned this witness: the script modeled no interrupted rebase, and all three of
+# its later steps misread one -- the conflicted worktree reads dirty and gets stashed, HEAD is
+# detached at a half-replayed commit and gets classified, and the reset abandons the rebase and
+# leaves the real branch behind. Against the elder script the control fails 5 of its 14 legs, and
+# the elder prints `already on the anointed order` over a standing corpse.
+
+say "fleet-round-open: Language EN -- each tree state told apart by name, and a rebase cleared before anything reads it."
+say "fleet-round-open: Style Gauge, Meter -- every leg run on real repositories in a throwaway pen, never described."
+say "fleet-round-open: Lens TAME -- safety first: this script's one verb is `reset --hard`, on trees that are not its own."
+
+# invariant: run from the repo root, where the script and its control both live.
+let root = run ["test" "-f" "construction/ITINERARY.md"]
+assert root.ok else "run from the repo root (construction/ITINERARY.md not found)"
+
+# invariant: the script under test must stand before any reading of it is believed.
+let present = run ["test" "-f" "tools/f/fleet_round_open.sh"]
+assert present.ok else "tools/f/fleet_round_open.sh is missing -- the fleet has no round-open"
+
+let control = run ["sh" "tools/fixtures/f/fleet_round_open_control.sh"]
+say control.out
+assert control.ok else "fleet-round-open: a planted case read wrong -- see the control's own lines"
+assert control.out contains "fail=0" else "fleet-round-open: the control closed with a failing leg"
+
+# invariant: the rebase clause is in the script rather than only in the control's expectations.
+let clause = run ["grep" "-q" "rebase --abort" "tools/f/fleet_round_open.sh"]
+assert clause.ok else "fleet-round-open: the script no longer clears an interrupted rebase"
+
+say "fleet-round-open: GREEN -- behind, level, ahead, diverged, dirty, and mid-rebase each answered by name."
