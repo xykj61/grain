@@ -437,13 +437,45 @@ MAP_ARGS=(
 # the opposite shape and are correct -- each is mkdir -p'd and then mounted unconditionally --
 # so the rule was already written and applied to three of the four things it governs.
 #
-# The file is SEEDED rather than the mount skipped. Empty JSON on purpose: a hand-written
-# hasCompletedOnboarding would be a guess at another program's config schema, which is a claim no
-# witness in this tree can hold. Claude writes its own record on the first jailed run, and it
-# persists from then on -- login and onboarding once per pier, exactly as CODEX_STATE promises
-# for codex above.
+# The file is SEEDED rather than the mount skipped, and the onboarding markers are CARRIED ACROSS
+# from the host's own file rather than written by hand.
+#
+# The elder form seeded `{}` and argued the point well: a hand-written `hasCompletedOnboarding`
+# would be a guess at another program's config schema, and Claude would write its own record on the
+# first jailed run. Measured `20260905`, that second half is false. The jailed file had grown to 28
+# top-level keys -- every one of them a cache -- and carried no onboarding marker at all, while the
+# host's file held 50 keys including `hasCompletedOnboarding` and `lastOnboardingVersion`. So every
+# jailed launch re-ran onboarding, which is where the unreadable dark-mode text lives (REDS %408 was
+# the mount; this is the content).
+#
+# COPYING IS NOT GUESSING. The values come from `$HOME/.claude.json`, which Claude itself wrote on
+# this pier, so the schema is observed rather than invented -- and only the two onboarding keys are
+# carried, leaving theme, auth, and every cache to the jailed session's own record. When the host
+# file is absent or unreadable the elder behaviour stands and `{}` is written, since a pier with no
+# host record has nothing to copy and nothing is lost by asking once.
 if [ ! -f "${CLAUDE_STATE}/dot-claude.json" ]; then
   printf '%s\n' '{}' >"${CLAUDE_STATE}/dot-claude.json"
+fi
+if command -v python3 >/dev/null 2>&1; then
+  python3 - "${HOST_HOME}/.claude.json" "${CLAUDE_STATE}/dot-claude.json" <<'SEED_PY' || true
+import json, sys
+host, jail = sys.argv[1], sys.argv[2]
+try:
+    h = json.load(open(host))
+except Exception:
+    sys.exit(0)
+try:
+    j = json.load(open(jail))
+except Exception:
+    j = {}
+carried = False
+for k in ("hasCompletedOnboarding", "lastOnboardingVersion"):
+    if k in h and k not in j:
+        j[k] = h[k]; carried = True
+if carried:
+    json.dump(j, open(jail, "w"))
+    print("agent-jail: carried the host's onboarding markers into the jailed state", file=sys.stderr)
+SEED_PY
 fi
 MAP_ARGS+=(--rw-map "${CLAUDE_STATE}/dot-claude.json:${HOST_HOME}/.claude.json")
 
