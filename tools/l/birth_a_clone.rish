@@ -62,13 +62,36 @@ assert hk.ok else "birth-a-clone: could not seat the tracked hooks"
 # and key id copy from the field, and gpg.program keeps the field's absolute wrapper -- host-
 # shared custody material behind per-clone config, so every newborn signs as the one keeper.
 fn field-conf name: trim (run ["git" "-C" field "config" "--local" name]).out
-let sg1 = run ["git" "-C" dest "config" "user.signingkey" (field-conf "user.signingkey")]
+
+# AN EMPTY INHERITED VALUE PASSES EVERY ASSERT (REDS %418). `git config user.name ""` SUCCEEDS, so
+# copying a field that carries nothing seats nothing and the check below reads ok -- which is how
+# grain-pheromone came to hold an empty user.name and user.email, and only found out on the first
+# lap that tried to close a round. The values are read and refused BEFORE they are seated.
+let f_key = field-conf "user.signingkey"
+let f_name = field-conf "user.name"
+let f_mail = field-conf "user.email"
+let f_gpg = field-conf "gpg.program"
+assert f_key != "" else "birth-a-clone: the field carries no user.signingkey -- a newborn that cannot sign cannot close a round"
+assert f_name != "" else "birth-a-clone: the field carries no user.name"
+assert f_mail != "" else "birth-a-clone: the field carries no user.email"
+assert f_gpg != "" else "birth-a-clone: the field carries no gpg.program"
+
+# AND THE WRAPPER IT NAMES MUST BE THERE. `gpg.program` is an ABSOLUTE path into the field's own
+# tree, deliberately -- one keeper, custody material behind per-clone config. An absolute path is
+# also the one thing a rename breaks silently: grain-harvest became grain-petrichor on `20260904`
+# and pheromone's config went on naming a directory that no longer existed, through a fetch, a
+# sign, and a commit, each refusing for its own reason. `tracked_link_scan` cannot reach an
+# untracked `.git/config`, so nothing in the tree could have said so.
+let gpg_here = run ["test" "-x" f_gpg]
+assert gpg_here.ok else "birth-a-clone: gpg.program names ${f_gpg}, which is not an executable file -- a rename of the field leaves this stale and every commit here would refuse"
+
+let sg1 = run ["git" "-C" dest "config" "user.signingkey" f_key]
 assert sg1.ok else "birth-a-clone: could not seat user.signingkey"
-let sg2 = run ["git" "-C" dest "config" "user.name" (field-conf "user.name")]
+let sg2 = run ["git" "-C" dest "config" "user.name" f_name]
 assert sg2.ok else "birth-a-clone: could not seat user.name"
-let sg3 = run ["git" "-C" dest "config" "user.email" (field-conf "user.email")]
+let sg3 = run ["git" "-C" dest "config" "user.email" f_mail]
 assert sg3.ok else "birth-a-clone: could not seat user.email"
-let sg4 = run ["git" "-C" dest "config" "gpg.program" (field-conf "gpg.program")]
+let sg4 = run ["git" "-C" dest "config" "gpg.program" f_gpg]
 assert sg4.ok else "birth-a-clone: could not seat gpg.program"
 let sg5 = run ["git" "-C" dest "config" "commit.gpgsign" "true"]
 assert sg5.ok else "birth-a-clone: could not seat commit.gpgsign"

@@ -57,3 +57,6 @@
 [submodule "gratitude/grain-sketchbook"]
 	path = gratitude/grain-sketchbook
 	url = https://github.com/xwb122m/grain-sketchbook
+[submodule "gratitude/dawk"]
+	path = gratitude/dawk
+	url = https://codeberg.org/triallax/dawk.git

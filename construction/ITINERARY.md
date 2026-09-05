@@ -79,37 +79,44 @@ the fresh checkout's own: hooks unarmed, `vendor/` empty, and `.gnupg-rye/gpg.sh
 ELDER tree's `GNUPGHOME`, so a tree holding its own key could not sign. The shim reads `$0` now.
 **Still open:** `glow/rune_shape.rye` keeps width custody; `%281`/`%291`. **Named (%347):**
 `pond/enclosure_policy.kyri` 8,120/8,192; the wall is yours.
-**`%374` GRANTED and BUILT.** The roster grows **`gate %N`** beside `tier`/`host`/`capability`,
-for **what a maintainer has parked**. A gated red books apart, so `red` means *this guard broke*
-again, and a pass whose reds are all gated writes its receipt disclosing what it chained past.
-**The gate vocabulary is this card's own custody list, read at scan time**; an unreadable card
-refuses every gate. Live: **106 green, 1 red, 4 gated**.
+**`%374` BUILT.** The roster grows **`gate %N`** beside `tier`/`host`/`capability`, for **what a
+maintainer has parked**. A gated red books apart; a pass whose reds are all gated writes its
+receipt naming them. **The gate vocabulary is this card's own custody list, read at scan time.**
 **Shelved:** eleven rows -- [`the recital`](archive/REDS-fold-recital.md).
-**`%414`-`%416` CLOSED** -- three launcher and guard faults of one family, each row carrying its
-own account. **`%414`:** ai-jail and claude both own `--verbose`; the flags moved inside
-`tools/l/fleet_lap.sh` and the loop now stops after three laps dying under ten seconds.
-**A wrapper inherits its wrapper's namespace.** **`%415`:** `claude login` writes to the HOST's
-home and `--private-home` replaces it, so a pier login reached no tree; the launcher seeds and
-refreshes per tree -- **one login per pier**. **`%416`:** `unheard_guard` swallowed both awk passes,
-one reading `choirs=0` against a ceiling of 37 -- **a gate at zero fails safe when its instrument
-dies; a ceiling fails UNSAFE**, and this tree holds far more ceilings. `instrument_refusal` gates
-that shape at **zero from birth** over 676 scans; a deliberate toleration says so at the site.
-**The difference between a decision and a swallow is whether anyone wrote it down.**
-**The utility yonder, filed `20260905.064341`, AMENDED `20260905.073903` on Keaton's word.**
-**POSIX is not this project's floor -- it is the dependency the project exists to leave.** Caravan
-is a root task on **seL4's userlevel side**: a syscall interface and **no shell, no awk, no grep**.
-The first draft wrote *granted = POSIX* and quietly made POSIX bedrock; it is the BENCH's floor,
-not the target's. That makes the count a **re-grow estimate** -- 1,958 `grep`, 645 `sed`, 434
-`awk` are Rye somebody must write -- and joins it to the elder
-[`useful-utilities`](../external-research/yonder/20260617-201612_useful-utilities.md), which
-ordered the same list from the far end. **Permissive generations added:** uutils/coreutils (Rust,
-MIT), ripgrep (MIT), **zig-coreutils / zig-utils / dawk (Zig, MIT)** -- the Zig row changes the
-order, since Rye compiles through Zig and a Zig awk is readable without a second toolchain.
-**Fetch itinerary proposed, nothing fetched:** dawk (crux) - uutils - toybox - sbase/ubase -
-ripgrep, each landing in `gratitude/` with a written thanks, `gratitude/utilities/` once there is
-more than one. A clone is a hand's act; the word is yours. Study:
-[`what-a-harness-promises`](../external-research/yonder/20260905-064341_what-a-harness-promises-about-its-tools.md).
-Design: [`the-tools-a-guard-may-assume`](../active-designing/yonder/20260905-064341_the-tools-a-guard-may-assume.md).
+**`%414`-`%416` CLOSED**, each row carrying its account. **`%414`:** ai-jail and claude both own
+`--verbose`; the flags moved inside `tools/l/fleet_lap.sh`, and the loop stops after three laps
+dying under ten seconds. **A wrapper inherits its wrapper's namespace.** **`%415`:** `claude login`
+writes to the HOST's home and `--private-home` replaces it -- the launcher seeds and refreshes per
+tree, **one login per pier**. **`%416`:** `unheard_guard` swallowed both awk passes, one reading
+`choirs=0` against a ceiling of 37 -- **a gate at zero fails safe when its instrument dies; a
+ceiling fails UNSAFE**, and this tree holds far more ceilings. `instrument_refusal` gates that at
+**zero from birth**; a deliberate toleration says so at the site. **The difference between a
+decision and a swallow is whether anyone wrote it down.**
+**The utility yonder** (amended) -- **POSIX is not this project's floor, it is the dependency the
+project exists to leave.** Caravan is a root task on **seL4's userlevel side**: syscalls, no shell,
+no awk. The count is a **re-grow estimate** -- 1,958 `grep`, 645 `sed`, 434 `awk` of Rye somebody
+must write -- joined to the elder
+[`useful-utilities`](../external-research/yonder/20260617-201612_useful-utilities.md), the same
+list from the far end.
+**dawk FETCHED `20260905.080810`** -- `gratitude/dawk`, submodule, **MIT** from its own text; pin
+and vendored licenses in the catalogue, thanks at
+[`triallax-dawk`](../gratitude/triallax-dawk.md). **Built with our own vendored Zig 0.16.0**, one
+command -- 8,293 lines of Zig over 42 files (the "83% C++" a summary reported is vendored
+`simdutf`). **The crux answered NO, the cheap answer we came for:** run our own `utf8_valid.awk`
+and it says *encountered invalid UTF-8*, exit 1. It is **Unicode-native**; POSIX awk in the C
+locale is byte-oriented. **The spec is not "a POSIX awk" but "one that keeps the C-locale byte
+view"** -- never written down here until an honest program refused it. Next: uutils - toybox -
+sbase/ubase - ripgrep; each clone is your hand.
+**`%418` CLOSED -- an inherited value is not a checked value.** `birth_a_clone` copied four signing
+values and asserted each `git config` call; **`git config user.name ""` succeeds**, so pheromone was
+born unable to name its author. Its `gpg.program` names `grain-harvest`, renamed `20260904` -- and
+`tracked_link_scan` cannot reach an untracked `.git/config`. All four refuse empty now, and
+`gpg.program` is `test -x`'d before it is seated.
+**GATE 3, NOT TAKEN:** `.gnupg-rye/` holds `private-keys-v1.d/`. Letting pheromone sign means
+placing **secret key material** in a third directory -- yours alone. **The one-field design assumes
+every clone reads one directory; the enclosure gives each tree only itself**, so per-tree GNUPGHOME
+is the only shape that works jailed. Pheromone: **11 files staged, green, message at
+`.git/GRAIN_PREPARED_MSG`**; its unshared rows renumber above `%418`.
 **52 external utilities across 2,969 tool scripts. `rg`: 992 sites, ONE probe. `mktemp`: 353
 sites, none -- and not POSIX since 2008.** The tree already wrote the cure,
 `tools/fixtures/s/shell_portable.sh`, and **38 files source it, 1.3%.** The design names three
@@ -137,11 +144,9 @@ expensive ON PURPOSE and moved to `tier cadence`, honest because its act is gate
 **1,510s -> 990s, measured** (1,003 projected). **Before you make an expensive thing rare, find out
 whether it is expensive on purpose** -- a cadence tier on those two would have hidden 277s of pure
 waste behind a slower clock and left the waste.
-**Six ships, one baton.** `tools/l/fleet_baton.txt` holds the shared opening ONCE and
-`fleet-loop.sh` prepends it; a seat prompt is its **lane stanza** alone. **berthed** (`20260904`):
-**bakery** (core infrastructure, Lindy/crux, fleet friction), **diffuser** (moonshots and
-whitepapers, every projection with its falsifier), **grass** (four auditing passes). Birth is
-`birth_a_clone.rish` plus a `claude login` -- both a hand.
+**Six ships, one baton** (`tools/l/fleet_baton.txt`, prepended; a seat prompt is its lane stanza).
+**berthed** `20260904`: **bakery** (core infra, Lindy/crux), **diffuser** (moonshots, each with its
+falsifier), **grass** (four audits). Birth plus `claude login` -- both a hand.
 **`%411` CLOSED -- four behaviors every ship performed, and not one was a rule.** Measured across
 the 49 rules: `%291` appeared once in passing, **claim-as-override, the council rota, and
 GATES-ONLY appeared zero times**. All four are seated in
@@ -181,21 +186,18 @@ invisible text. Seeded and bound. **NixOS is not at fault** -- the jail drops `T
 **Fleet:** three Earth trees, six aether seats **parked**. Charter
 [`seat-table-written-once`](../active-designing/20260904-175200_the-seat-table-written-once.md)
 **steps 1-4 LANDED**: one table, one reader, one launcher. **The molt breach is enforced** -- a
-living launcher filename carrying `planet`/`fixed`/`cardinal`/`dual` without the elder banner reds
-at zero, so the guard catches the NEXT one. Elders keep every byte, Class H, cut RED; ship names
-untouched. Captain prompt molted to
+living launcher filename carrying a modality word without the elder banner reds at zero, so the
+guard catches the NEXT one. Elders keep every byte, Class H. Captain prompt molted to
 [`20260904-193221`](../expanding-prompts/20260904-193221_incense-the-field-captain-two-doors.md):
 the pier's tree is `~/grain-incense`, and there is no `~/grain` on Dallas.
-**Yours, two (%417).** Prose side of the same door: a **guided map** fits neither shape offered.
-`MAP.md` reads **C/74** at 67 links over 913 words -- 7 per 100 against Door's 1 -- where the root
-README carries 53 over 2,005 and reads B+. The index door frees the rate only under 100 words,
-which is a link list rather than a walk. Padding and pruning both make the page worse.
-**Next doors.** Caravan keeps a 5-second seam. Hush: `spool_cloth` eight `ClothError` paths.
-**Yours, one.** Door's ceiling is **9** against module heads that run 12-17. Of 163 sampled
+**Yours, two (%417).** A **guided map** fits neither shape offered: `MAP.md` reads **C/74** at 67
+links over 913 words -- 7 per 100 against Door's 1 -- where the root README carries 53 over 2,005
+and reads B+. The index door frees the rate only under 100 words, a link list rather than a walk.
+**Yours, one.** Door's ceiling is **9** against module heads running 12-17. Of 163 sampled
 programs 115 read below B -- yet **51 sat under the register floor** with nothing measurable,
-leaving **64** truly scored at grades 9-23. That second number owns the ceiling question, and
-Gauge's own table seats **witness headers** at Meter where this card grades every program head at
-Door. Gate %7: quality-assurance additive carried `20260904.103121`.
+leaving **64** truly scored at 9-23. That second number owns the ceiling question, and Gauge's own
+table seats **witness headers** at Meter where this card grades every program head at Door.
+Gate %7: quality-assurance additive carried `20260904.103121`.
 ---
 ## Landed arcs
 
@@ -309,6 +311,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260905.073903` | POSIX is the floor we are leaving | [log](../session-logs/date/20260905/20260905-073903_posix-is-the-floor-we-are-leaving.kyri) |
+| `20260905.081211` | dawk answers the crux, and it answers no | [log](../session-logs/date/20260905/20260905-081211_dawk-answers-the-crux.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)
