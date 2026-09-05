@@ -63,3 +63,6 @@
 [submodule "gratitude/uutils-coreutils"]
 	path = gratitude/uutils-coreutils
 	url = https://github.com/uutils/coreutils.git
+[submodule "gratitude/toybox"]
+	path = gratitude/toybox
+	url = https://github.com/landley/toybox.git
