@@ -12,6 +12,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | Stamp | Log | What it recorded |
 |---|---|---|
 | `20260905.125304` | [The interpreter is not a reference](20260905/20260905-125304_the-interpreter-is-not-a-reference.kyri) | 1,770 witnesses for a room of two modules |
+| `20260905.130819` | [A wet leg in a dry file](20260905/20260905-130819_a-wet-leg-in-a-dry-file.kyri) | safe on the tree that wrote it, hanging on the tree it was for |
 | `20260905.124031` | [The seed is ready, and the gate came off](20260905/20260905-124031_the-seed-is-ready.kyri) | a gate made a missing file look like a custody decision |
 | `20260905.112846` | [The prices differ because the promises do](20260905/20260905-112846_the-prices-differ.kyri) | cat: 52 lines here, 796 in uutils, and neither is waste |
 | `20260905.110633` | [The name a veteran still likes](20260905/20260905-110633_the-name-a-veteran-still-likes.kyri) | 241 authored names, not one a coinage |

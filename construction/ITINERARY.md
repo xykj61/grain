@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `122eab1aac` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `7a025005de` -- HEAD's parent, resolvable everywhere (%401).
 
 **Now.** **A control that names a machine cannot be run on the fleet it guards.**
 
@@ -74,63 +74,35 @@ reads one of `max_name`'s two call sites (`parse_manifest` reads it too, over th
 `xy/pier/diverged-20260831-{064342,115245}`, neither landed, neither mine. **CION:** `drey`'s rung marks are the retired form (%329). **Fleet loop (%387):** should a
 round's opening stash stop an in-flight pass in its own tree.
 
-**Petrichor: `%424` CLOSED -- the library index credited a room for the interpreter its witnesses
-run under.** The index published **1,770** witnesses for `rishi/` and **1,313** for `rye/` against
-a tree of **1,801**; each opens `rishi/bin/rishi`. Honest: **6** and **89**, 36 of 38 held.
-**Fleet:** `grep` in the Claude Code Bash tool is a **shell function shimming to ugrep 7.8.4**
-while scripts run **GNU grep 3.12**; under ugrep `%240`'s portability ERE `(^|[^A-Za-z0-9_])`
-anchors to line start, so a probe read `rye/` at **27**, the tree 1,313. **Name the binary when
-the number matters.**
-**Three laps booked `%423` in one hour** -- `124031` landed, mine `124857` renumbered to `%424`,
-and `122517` **is unsent in `stash@{0}`** with the QA floor row and a
-`docs-geode/tutorials/README.md` B->B+ repair. Restore it as **`%425`**; its fold is moot,
-upstream shelved `%419`-`%422`. **`git stash list` is the open** -- read late here. `agent_jail`
-reds `bwrap not permitted`: environment, no receipt, `--scoped` refuses.
+**Petrichor's `%424`** (library index credited a room for the interpreter) and the `grep`-shim
+finding are on the [landed-accounts shelf](archive/20260905-131102_itinerary-landed-accounts.md).
+**Three laps booked `%423` in one hour**: `124031` landed, `124857` renumbered to `%424`, and
+`122517` **is unsent in `stash@{0}`** -- restore it as **`%426`**, since incense landed `%425`
+(`130819`) first. **`git stash list` is the open.**
 **Still open:** `glow/rune_shape.rye` width custody; `%281`/`%291`. **(%347):**
 `pond/enclosure_policy.kyri` 8,120/8,192; yours.
-**`%374` BUILT.** The roster grows **`gate %N`** beside `tier`/`host`/`capability`, for **what a
-maintainer has parked**. A gated red books apart; a pass whose reds are all gated writes its
-receipt naming them. **The gate vocabulary is this card's own custody list, read at scan time.**
-**Shelved:** eleven rows -- [`the recital`](archive/REDS-fold-recital.md).
-**`%414`-`%416` CLOSED**, whole on the
-[wrapper-and-sandbox shelf](archive/REDS-what-a-wrapper-and-a-sandbox-inherit-rows-414-416.md):
-a flag namespace shared with the sandbox, a home the sandbox replaces, and an instrument whose
-silence a ratchet read as good news. **A gate at zero fails safe when its instrument dies; a
-ceiling fails UNSAFE**, and this tree holds far more ceilings.
-**The utility yonder** (amended): **POSIX is not this project's floor, it is the dependency the
-project exists to leave** -- Caravan is a root task on **seL4's userlevel side**, so the count is a
-**re-grow estimate**.
-**Five fetched `20260905`**, thanked and catalogued in `gratitude/README.md`, every license read
-from its own file: **dawk** (Zig, MIT), **uutils** (Rust, MIT), **toybox** (**0BSD**), **sbase +
-ubase** (MIT, MIT/X). **The re-grow is two undertakings:** uutils answers the coreutils family
-(**5,380** sites), leaving `grep`/`sed`/`awk`/`find` (**3,129**) to their own projects; toybox
-holds all four, **10,854 of 11,971**. **The crux answered:** dawk refuses our `utf8_valid.awk` as
-**Unicode-native**, naming a requirement we never wrote -- *keep the C-locale byte view* -- and
-toybox's awk carries it as **`-b`**. **The prices differ because the promises do:** `cat` is 52
-lines/1 flag in sbase (median **91**), 68/4 in toybox, **796/11 plus a Windows port** in uutils.
-Next: ripgrep, last since we have it.
-**SEED READY FOR YOUR HAND** (`20260905.124031`): **`sh publish-seed.sh --push`**.
-**`%423` CLOSED** -- `publish-seed.sh` was **absent** here, which is why `commit_message_guard` sat
-red behind gate %1 at `SEED_PUBLISHER_ARMS 0`: *a fresh seed/.git would publish unguarded.*
-Reconstructed from the rule and the guard's greps; guard **GREEN**, **gated 4 -> 3**, and **the
-gate field came off in the same lap** -- a gate over a green guard would excuse the NEXT red.
-Proven twice: **7,472 copied, 1,215 scrubbed, 135 withheld**, `IDENT_CLEAN`, `NO_PERSONAL`,
-`SOW_WITNESS_GREEN`; one parentless commit, **7,706 files**, `grain-ww`, unsigned by design.
-**Its bare form cannot publish** -- two public repos, irreversibly, so `--push` is its own word.
-**The naming study**
-([`a-veteran-still-likes`](../external-research/yonder/20260905-110633_the-name-a-veteran-still-likes.md)):
-**241 of 241 authored files are common English -- not one a coinage**, so the choice is **familiar
-used honestly versus familiar used misleadingly**. Rule: **wear the common name when you keep its
-promise; take a new name the moment you do not**. **Aliases stay rare** -- two names for one tool is
-a coin flip an agent makes every call with no feedback. **It names nothing**, by its own argument.
-**`%419`-`%422` CLOSED**, whole on the
-[a-claim-goes-stale shelf](archive/REDS-a-claim-goes-stale-rows-419-422.md) -- a credential newer by
-mtime and dead by contents, a guard reading a room it was no longer pointed at, a machine named by
-a check that could not see it, a stash holding a finished lap. **Freshness is not fitness**, and a
-replication clause spreads a wrong reading rather than keeping it.
-**`%417`/`%418` CLOSED**, on the [what-a-copy-carries shelf](archive/REDS-what-a-copy-carries-rows-417-418.md):
-**copying is the most invisible way to be wrong -- every step reports success and the error is in
-the payload.** `birth_a_clone` refuses an empty inherited value now, and `test -x`'s the wrapper.
+**Landed this chapter** -- `%374`'s gate build, six utility fetches with their thanks, the naming
+study, the seed publisher, and rows `%408`, `%414`-`%424`: whole on the
+[landed-accounts shelf](archive/20260905-131102_itinerary-landed-accounts.md). **The seed stands ready for
+your hand: `sh publish-seed.sh --push`.** **Pheromone's two custody finds are yours:** gate 3
+(per-tree `GNUPGHOME`) and the rebase-open repair in `fleet_round_open.sh`.
+**ripgrep FETCHED `20260905.130819` closes the order** -- **Unlicense OR MIT**, the freest of the six
+([thanks](../gratitude/burntsushi-ripgrep.md)). **The measurement is about us:** rg stands at
+**1,376 sites**, more than any borrowed tool, and **1,286 are `-q`/`-qi` -- exit code only**. So
+**93% of our use is a predicate**, and a re-grow owes not a grep but a bounded existence test over
+the tracked set, which `git grep -q` already is. **Met the same day:** `grep` here is **ugrep
+7.8.4** and refused a regex GNU grep accepts -- **a familiar name is not a familiar behaviour.**
+**`%425` CLOSED -- a control leg safe on the tree that wrote it, hanging on the tree it was for.**
+`fleet_roster_control.sh` ran `sh $loop furrow` **without `FLEET_DRY=1`**, and `furrow` resolves to
+a REAL seat -- so on `grain-pheromone` it sailed past the want-tree refusal into round-open and
+blocked on a fetch the jail cannot make: **1,298s at zero CPU**. On this tree the refusal hid it.
+**Found by the pheromone seat**, not a guard. Every leg dry: 37 legs, **2s**. **A leg whose safety
+depends on the checkout's basename is dangerous on some other tree**, and the tree that wrote it
+cannot feel it. Its correction stands: `%G?` reads `N` there because **gpg fails to exec**.
+**THE LIVE FRONT NOW FOLDS** (`20260905.130819`), the fix named three times today and taken on the
+fourth: landed accounts shelve like REDS rows, so the card holds what is OPEN and what waits on
+your word. The raise to 32,768 was spent inside one day -- 1 byte free, then 5, then 11, then 836
+over -- and **condensing had begun removing meaning rather than words**.
 **All three ships sail** (`20260905`). **Gate 3 stands:** `.gnupg-rye/` holds
 `private-keys-v1.d/`, and **per-tree GNUPGHOME is the only shape that works jailed** -- yours.
 **52 external utilities across 2,969 tool scripts. `rg`: 992 sites, ONE probe. `mktemp`: 353
@@ -311,6 +283,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260905.124031` | The seed is ready, and the gate came off | [log](../session-logs/date/20260905/20260905-124031_the-seed-is-ready.kyri) |
+| `20260905.130819` | A wet leg in a dry file, and the front folds | [log](../session-logs/date/20260905/20260905-130819_a-wet-leg-in-a-dry-file.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)
