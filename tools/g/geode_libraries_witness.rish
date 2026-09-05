@@ -9,9 +9,13 @@
 #   The page on disk equals a fresh render. A module added without regenerating reds here.
 #   The page says it is generated, so a reader knows not to spend effort editing it.
 #   Every room it names has the README it claims, so no row points at a door that is not there.
-#   The witness count is taken by REFERENCE, not by filename glob -- the glob reported zero for
-#   `image` and `lotus`, 463 modules between them, because their proofs are named for what they
-#   prove rather than where it lives. A confident wrong zero is worse than no number.
+#   The witness count is taken by REFERENCE, and a reference is neither a filename nor an entry
+#   path. Globbing `tools/*<room>*_witness.rish` reported zero for `image` and `lotus`, 463 modules
+#   between them, because their proofs are named for what they prove. Testing for the room's path
+#   instead reported 1,770 for `rishi` -- 98 percent of every witness in this tree, against a room
+#   of two modules -- because each one opens `rishi/bin/rishi`, and 1,313 for `rye`. Both entry
+#   paths are stripped from a line before the room test reads it, proven both ways in the pen
+#   (REDS %169, REDS %423). A confident wrong number is worse than no number in either direction.
 #   The module count asks git what the tree keeps, proven on real repositories in a temporary pen
 #   by tools/fixtures/g/geode_libraries_control.sh. The `glow` room keeps a `.cache` of 108 generated
 #   modules the repository ignores, and a plain `find` published 238 where the tree keeps 130 -- a
@@ -25,7 +29,7 @@
 
 say "geode-libraries: Language EN -- an index is trusted rather than checked, which is exactly why it must be generated and compared."
 say "geode-libraries: Style Radiant -- three claims. The page equals a fresh render. It says it is generated. And every room it names has the door it claims."
-say "geode-libraries: Lens TAME -- the witness count is taken by reference rather than by filename, because a glob reported a confident zero for two rooms holding 463 modules; the module count asks git what the tree keeps, because a find counted 108 ignored build artifacts as modules of the `glow` room."
+say "geode-libraries: Lens TAME -- the witness count is taken by reference, and neither a filename nor an entry path is one: a glob read a confident zero for two rooms holding 463 modules, and the path test that replaced it read 1,770 for a room of two, because every witness in the tree opens rishi/bin/rishi."
 
 # The counting rule is proven before the page is trusted, and it is proven on real git repositories
 # rather than described. A rule proven only where it passes cannot be told from a rule that counts
@@ -38,6 +42,12 @@ assert control.out contains "an ignored cache module stays out of the count -- r
 assert control.out contains "the same three modules count when nothing ignores them -- read 3" else "geode-libraries: the rule must read the ignore list rather than the path"
 assert control.out contains "an untracked, unignored module counts -- read 2" else "geode-libraries: a module written this minute is real and counts"
 assert control.out contains "a room holding only ignored modules leaves the index -- read 0" else "geode-libraries: a room the tree keeps no module in leaves the index"
+assert control.out contains "a witness that only invokes the interpreter does not count for its room -- read 0" else "geode-libraries: the interpreter a witness runs under is not a reference to its room"
+assert control.out contains "a witness that names a path inside the room counts -- read 1" else "geode-libraries: a real reference must still count, or the rule merely deleted a room"
+assert control.out contains "a witness that only invokes the compiler does not count for its room -- read 0" else "geode-libraries: the compiler a witness builds with is not a reference to its room"
+assert control.out contains "a witness naming a path inside the compiler room counts -- read 1" else "geode-libraries: a real reference into the compiler room must still count"
+assert control.out contains "an ordinary room still counts its witness -- read 1" else "geode-libraries: the entry-path strip must reach two paths, not every path with a slash"
+assert control.out contains "a hyphen before the room name still opens a reference -- read 1" else "geode-libraries: the word boundary must survive the change of matching mechanism"
 assert control.out contains "control_fail=0" else "geode-libraries: every planted reading must hold"
 
 let fresh = run ["sh" "-c" "sh tools/fixtures/g/geode_libraries_scan.sh render | cksum"]

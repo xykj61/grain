@@ -24,6 +24,27 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ---
 
+## `20260905.125109` -- the card condenses the %422 seat account to its shelf (walk-back `27f7587fdf`)
+
+**Walk-back nib:** `27f7587fdf`. **Swept:** the four-line `%422` account in the Petrichor block of
+[`ITINERARY.md`](ITINERARY.md) -- how `fleet_roster` named one machine and so read the law WORKING
+as three failures off `grain-incense`, and the `agent_jail` `bwrap ... not permitted` reading that
+is an environment fact rather than a receipt.
+
+**What waits there, worth recalling:** the `--scoped` refusal clause -- a guard whose instrument
+cannot run writes no receipt, so a scoped re-verify has nothing to chain from. That sentence is the
+general shape of `%422`, and it is kept whole in the ledger, on the shelf upstream folded it to;
+only the card's copy is condensed to a pointer, to make room for this lap's own row.
+
+**Also swept:** the eleven-line `%413`/`%412` account of the roster's clock -- which five guards
+forked which processes, and each repair's byte-identical output. Kept as a pointer carrying its two
+sharpest lines; the whole account stands in the ledger's shelves under `archive/`.
+
+**Why:** the card stood at 32,744 of its 32,768 bytes -- 24 bytes of headroom -- and this lap's
+finding is one the fleet needs today. A closed row whose full account already stands in the ledger
+is exactly the finished section the PINS law says folds to a shelf. The card lands at 32,765, the
+rebase onto `122eab1aac` having brought upstream's own additions with it.
+
 ## `20260905.070821` -- the card condenses one closed account to its shelf (walk-back `78ea9e22d9`)
 
 **Walk-back nib:** `78ea9e22d9`. **Swept:** 645 bytes of the live front of
