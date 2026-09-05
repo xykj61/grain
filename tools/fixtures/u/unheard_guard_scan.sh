@@ -126,7 +126,19 @@ while [ "$hops" -lt "$max_hops" ]; do
     [ -n "$g" ] || continue
     [ -f "$g" ] && printf '%s\n' "$g" >> "$work/present.txt"
   done < "$work/heard.txt"
-  xargs_lines_batched 200 "$work/present.txt" awk -f "$work/names.awk" > "$work/named.txt" 2>/dev/null || true
+  # A GUARD THAT CANNOT RUN ITS INSTRUMENT REFUSES, AND NAMES IT (REDS %416). This pass used to
+  # end `2>/dev/null || true`, discarding both awk's words and its exit. Of the two swallowed
+  # passes in this file that one fails LOUDLY -- an empty result stops the transitive closure
+  # early, so `unheard` reads high and the ceiling reds -- while its sibling below fails silently.
+  # Neither is acceptable and only one would ever have been noticed.
+  if ! xargs_lines_batched 200 "$work/present.txt" awk -f "$work/names.awk" \
+       > "$work/named.txt" 2>"$work/names.err"; then
+    echo "instrument=failed"
+    echo "detail=name_pass_refused"
+    sed -n '1,5p' "$work/names.err" | sed 's/^/detail_awk=/'
+    echo "verdict=misread"
+    exit 1
+  fi
   cut -f2 "$work/named.txt" | sort -u > "$work/found.txt"
   sort -u "$work/heard.txt" "$work/found.txt" > "$work/heard2.txt"
   mv "$work/heard2.txt" "$work/heard.txt"
@@ -143,7 +155,17 @@ unheard=$(grep -c . "$work/unheard.txt" || true)
 # THE SHARPER READING: an unheard guard that itself names three or more others is a CHOIR, and a
 # silent choir takes its whole family down with it -- which is REDS %219 exactly. Three is the
 # floor because two named siblings is a witness borrowing a helper; three is a roster.
-xargs_lines_batched 200 "$work/unheard.txt" awk -f "$work/names.awk" > "$work/unamed.txt" 2>/dev/null || true
+# AND THIS IS THE ONE THAT WOULD NEVER HAVE BEEN NOTICED. An empty result here reads `choirs=0`
+# against a ceiling of 37 -- a ratchet passes on a low number, so a broken instrument and a tree
+# with no silent choirs at all report the same green (REDS %416).
+if ! xargs_lines_batched 200 "$work/unheard.txt" awk -f "$work/names.awk" \
+     > "$work/unamed.txt" 2>"$work/unamed.err"; then
+  echo "instrument=failed"
+  echo "detail=choir_pass_refused"
+  sed -n '1,5p' "$work/unamed.err" | sed 's/^/detail_awk=/'
+  echo "verdict=misread"
+  exit 1
+fi
 sort -u "$work/unamed.txt" | cut -f1 | uniq -c \
   | awk -v floor=3 '$1 >= floor { print $2 " sings " $1 }' | sort > "$work/choirs.txt"
 choirs=$(grep -c . "$work/choirs.txt" || true)

@@ -981,6 +981,16 @@ seated 20260830.204814
 # measured a 46% red rate in lanes this seat does not hold, and rostering another lane's red guard
 # would red every body's cold pass.
 
+# instrument_refusal -- a guard that cannot run its instrument refuses, and names it. Three scans in
+# two days reached for a helper they did not write, could not run it, and reported a clean tree --
+# and one of those readings was a ratchet, which passes on a low number, so a broken instrument and
+# a healthy tree printed the same green (REDS %416). Gated at ZERO from birth rather than ratcheted
+# down, because the two known faults were repaired on the lap this was written.
+guard instrument_refusal
+path tools/i/instrument_refusal_witness.rish
+tier lap
+seated 20260905.072118
+
 # fleet_roster -- the fleet's one seat table, and the readers that must not disagree with it. The
 # binding seat -> tree -> engine stood in six independent places across two executables and two had
 # already drifted: fleet-loop.sh admitted six seat names while fleet_rearm.sh reported nine, and the

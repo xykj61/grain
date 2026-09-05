@@ -1,0 +1,41 @@
+# instrument_refusal_witness.rish -- a guard that cannot run its instrument refuses, and names it.
+#
+#   rishi/bin/rishi run tools/i/instrument_refusal_witness.rish
+#
+# Three times in two days a scan reached for an instrument it did not write, could not run it, and
+# reported a clean tree: two helpers resolved from the working directory inside a control's pen, and
+# both of unheard_guard's awk passes swallowed, one of which reads choirs=0 against a ceiling of 37
+# -- a ratchet passes on a low number (REDS %413, %416).
+#
+# The meter is narrow ON PURPOSE. The broad signature matched 20 sites and 2 were faults; a reading
+# with 90% false positives is one somebody turns off. This reads only the shape that cannot be
+# innocent: an output-producing pass, redirected to a file, whose failure is discarded, not led by
+# grep -- whose exit 1 is an answer -- and not marked as a deliberate toleration at the site.
+
+say "instrument-refusal: Language EN -- a guard that cannot run its instrument refuses, and says which."
+say "instrument-refusal: Style Gauge, Meter -- one reading, gated at zero, every leg shown from both sides."
+say "instrument-refusal: Lens TAME -- safety first: an empty answer from a broken instrument reads exactly like a clean tree."
+
+# invariant: run from the repo root, where the scans this reads actually live.
+let root = run ["test" "-f" "construction/ITINERARY.md"]
+assert root.ok else "run from the repo root (construction/ITINERARY.md not found)"
+
+# invariant: the meter must stand before any reading of it is believed.
+let present = run ["test" "-f" "tools/fixtures/i/instrument_refusal_scan.sh"]
+assert present.ok else "tools/fixtures/i/instrument_refusal_scan.sh is missing -- the meter cannot be read"
+
+let control = run ["sh" "tools/fixtures/i/instrument_refusal_control.sh"]
+say control.out
+assert control.ok else "instrument-refusal: a planted case read wrong -- see the control's own lines"
+assert control.out contains "control_verdict=ok" else "instrument-refusal: the control did not close ok"
+assert control.out contains "swallowed_awk_bitten=yes" else "instrument-refusal: a swallowed output pass was not bitten"
+assert control.out contains "grep_exit_one_free=yes" else "instrument-refusal: grep's found-nothing exit was read as a fault"
+assert control.out contains "marker_exempts_one_line_only=yes" else "instrument-refusal: the toleration marker leaked past its own line"
+assert control.out contains "meter_refuses_when_blind=yes" else "instrument-refusal: the meter does not obey the law it enforces"
+
+let live = run ["sh" "tools/fixtures/i/instrument_refusal_scan.sh"]
+say live.out
+assert live.ok else "instrument-refusal: a scan in this tree discards an instrument's failure -- read the swallowed lines"
+assert live.out contains "under_ceiling=yes" else "instrument-refusal: swallowed instrument passes rose above the ceiling, and a ceiling only falls"
+
+say "GREEN: instrument-refusal -- no scan reports a tree it could not read."
