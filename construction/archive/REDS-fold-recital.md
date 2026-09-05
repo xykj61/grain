@@ -269,3 +269,5 @@ at a closed fold.*
 *Rows %419-%422 folded to [`REDS-a-claim-goes-stale-rows-419-422.md`](REDS-a-claim-goes-stale-rows-419-422.md) on `20260905.124043`, **BOOKED** and **CLOSED** -- A claim that stayed on the page after it stopped being true: a credential newer by mtime and dead by contents, a guard reading a room it was no longer pointed at, a machine named by a check that could not see it, a stash holding a finished lap.*
 
 *Rows %423-%426 folded to [`REDS-what-a-script-assumes-rows-423-426.md`](REDS-what-a-script-assumes-rows-423-426.md) on `20260905.150005`, each **CLOSED** -- each was right about everything it looked at, and wrong about the ground it never looked at.*
+
+*Rows %427-%429 folded to [`REDS-the-room-the-instrument-stood-in-rows-427-429.md`](REDS-the-room-the-instrument-stood-in-rows-427-429.md) on `20260905.152212`, each **CLOSED** -- An answer true of the room the instrument could reach and false of the room anyone was asking about: a jail binding one tree while the keys sat in a sibling, a round-open reporting clean over a standing rebase, and a %G? reading N for a gpg that failed to exec.*
