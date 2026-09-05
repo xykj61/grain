@@ -46,37 +46,84 @@ The load average says the same thing more plainly. **1.71 with two ships running
 active ship.** Six comes to about 4.1 on four cores, which is exactly saturation at rest, before
 any roster, build, or witness spike.
 
+## The contention curve, measured rather than derived
+
+The first draft of this page reasoned from load averages. On Keaton's word the experiment was run
+instead: **the same four guards, timed under synthetic CPU load**, so the shape of the slowdown
+comes from the machine itself.
+
+| Competing busy cores | Wall time | Against baseline | Stands for |
+|---|---|---|---|
+| 0 | 7,980 ms | 1.00x | one ship |
+| +2 | 11,240 ms | **1.41x** | about three ships |
+| +5 | 22,451 ms | **2.81x** | about six ships |
+
+**Six ships make every ship 2.81 times slower.** The 904-second roster becomes about **2,540
+seconds -- 42 minutes of guards per lap**, which exceeds the 22 minutes the first draft derived,
+and which now stands as a reading rather than a projection.
+
+**And CPU steal is 0.059% over 46 hours of uptime.** This is a shared-vCPU instance whose
+neighbours are quiet, so the four cores it advertises are four cores it actually gets. That single
+number decides one of the three roads below.
+
+## The stagger, and the honest limit of it
+
+Staggering the ships' launch is seated as `FLEET_STAGGER` in `tools/l/fleet-loop.sh`: a seat reads
+its slot from the live roster and holds `(slot - 1) x FLEET_STAGGER` seconds before its first lap,
+so adding a ship re-spaces the whole fleet from one table.
+
+**An offset rather than a lock, because a lock is impossible here.** The roster is the expensive
+phase, it is single-threaded, and it runs *inside* the jail -- and each jail binds exactly one tree
+with its own tmpfs `/tmp`, so no writable path is shared between ships. The host chooses when a loop
+starts, and that choice is the whole of the control available.
+
+**An offset helps only while the expensive phase is under one Nth of a lap.** With a roster near a
+quarter of each lap, six ships come to roughly 140% duty on a 100% window: overlap becomes
+arithmetic rather than luck, and no offset avoids it. So the stagger is real relief at three or four
+ships, and six needs a different lever. It is worth having, and it is worth knowing its reach.
+
+**The lever is the roster's own size**, which has already moved once today -- 1,510s to 904s, by
+removing fork loops and moving one guard to its right tier. The `cadence` tier already exists and
+already runs on the fifth round; roughly half the 113 lap guards would answer the same on it.
+
 ## Three roads, and what each actually buys
 
-**Optimize here.** The roster is the whole cost, and it has already been cut once today's chapter --
-1,510s to 904s by removing fork loops and moving one guard to its right tier. Two further moves are
-available and neither is speculative: **stagger the ships' laps** so their rosters never overlap
-(a rota over six seats rather than six independent clocks), and **widen the cadence tier**, which
-already exists and already runs on the fifth round. Roughly half of the 113 lap guards would answer
-the same on a fifth-round clock. That buys perhaps 3 to 4 ships on this hardware, and 6 stays out of reach.
+**Double this machine -- 4 to 8 cores.** The curve answers this directly: five competing cores on
+*eight* is the same crowding as two on four, which measured **1.41x**. So eight cores carry six
+ships at roughly the per-ship speed three ships get today. One machine, one bootstrap, one set of
+keys, one bill, and on most providers a resize is a reboot rather than a rebuild.
 
-**Rent a second pier.** Three ships per pier is a measured fit rather than a guess -- it is what
-this pier runs today at load 1.7 of 4. A second identical machine carries bakery, diffuser, and
-grass with the same headroom, and the fleet already supports it: `construction/fleet-roster.kyri`
-names a `tree` per seat and nothing in the loop assumes one host. The cost is a second machine and
-a second bootstrap, and the bootstrap is already a script (`tools/l/birth_a_clone.rish`, repaired
-today to make a newborn self-contained).
+**Rebootstrap a dedicated server.** Dedicated CPU buys freedom from noisy neighbours, and **the
+steal reading says there are none** -- 0.059% over 46 hours. This road buys quiet that the pier already
+has, and adds a migration for it. It earns its place the day steal rises, which is one number to
+re-read rather than a thing to settle now.
 
-**Rent one larger machine and move everything.** Eight cores would carry six ships by the same
-arithmetic. This costs a migration and concentrates the fleet in one failure domain, where two piers survive
-losing one machine. In its favour, one machine means one bootstrap, one set of keys, and one thing
-to pay for.
+**Two piers, talking over the network.** Worth naming precisely, because the interesting part is
+the machinery it already has: **git is the channel, and it is running.** The ships coordinate
+through the anointed remote today -- `fleet_round_open.sh` adopts `xy` at every open and a lap's
+send is a proposal against it. `construction/fleet-roster.kyri` names a `tree` per seat, which leaves the
+loop free of any assumption about hosts. A second pier clones, and it is in the fleet.
 
-## The recommendation, and its falsifier
+That makes distribution nearly free in machinery and honest in cost: two bills, two bootstraps, two
+sets of keys to rotate, and two hosts to keep patched. What it buys over one bigger machine is a
+**failure domain** -- losing a machine costs three ships rather than six.
 
-**Two piers of three, rather than six here or one larger machine.** Three per pier is the only
-figure in this document that was measured rather than derived, the fleet already reads its seat
-table from a file that names a tree per seat, and two hosts is the shape that survives losing one.
+**A fourth road, and it is the cheapest.** Cut the roster before buying anything. Half the 113 lap
+guards would answer the same on the fifth-round `cadence` clock, and the tier already exists and is
+already honored. A roster near 450s makes the expensive phase small enough that the stagger starts
+working, which is the one road that improves every other road.
 
-**The falsifier:** stagger the laps and widen the cadence tier here first, then measure the load
-average with all six berthed. A reading that holds under 3.0 on this hardware overturns this
-recommendation and makes one pier enough. That experiment costs an afternoon and nothing else, so
-it belongs ahead of any rental.
+## The recommendation, revised on the measurement
+
+**Cut the roster, then double this machine if six ships are still wanted.** This revises the first
+draft, which recommended two piers before the contention curve and the steal reading existed. Two
+piers remains the right answer for *resilience*; it is the wrong answer for *capacity*, because one
+8-core host reaches the same throughput for one bill and one bootstrap, and the steal reading shows
+the shared instance is honest about its cores.
+
+**The falsifier:** move the cadence-eligible guards and re-run the same four-guard timing under +5
+synthetic cores. A reading at or under 1.5x means four cores carry six ships, and the
+renting question closes itself. That experiment costs an afternoon.
 
 ## What this leaves for a hand
 
