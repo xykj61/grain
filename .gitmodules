@@ -72,3 +72,6 @@
 [submodule "gratitude/ubase"]
 	path = gratitude/ubase
 	url = https://git.suckless.org/ubase
+[submodule "gratitude/ripgrep"]
+	path = gratitude/ripgrep
+	url = https://github.com/BurntSushi/ripgrep.git

@@ -88,7 +88,7 @@ case "$out" in *"engine=$home_engine"*) say "banner_names_the_engine=yes" ;; *) 
 
 # A seat the roster does not hold is refused, and the refusal names the seats that exist rather
 # than reciting a list this file would then have to keep in step.
-out=$(sh "$loop" nosuchseat 2>&1 || true)
+out=$(FLEET_DRY=1 sh "$loop" nosuchseat 2>&1 || true)
 case "$out" in *"usage:"*) say "unknown_seat_refused_by_loop=yes" ;; *) say "unknown_seat_refused_by_loop=no" ;; esac
 case "$out" in *"incense"*) say "refusal_names_real_seats=yes" ;; *) say "refusal_names_real_seats=no" ;; esac
 
@@ -99,7 +99,14 @@ case "$out" in *"refusing"*) say "wrong_tree_refused=yes" ;; *) say "wrong_tree_
 
 # An elder name reaches the loop and is corrected there, which is the half that never reached
 # fleet_rearm.sh while the remap lived in a case arm.
-out=$(sh "$loop" furrow 2>&1 || true)
+#
+# FLEET_DRY=1 IS LOAD-BEARING HERE, not tidiness (REDS %425, found by the pheromone seat). `furrow`
+# resolves to a REAL seat, so without it this leg runs a real lap. On a checkout whose basename does
+# not match, the want-tree refusal stops it and the leg looks harmless; on `grain-pheromone` it
+# matches, sails past that refusal into round-open, and blocks on a fetch the jail cannot make --
+# 1298 seconds of a rostered guard sitting at zero CPU. The resolve line is printed before either
+# check, so the dry run proves exactly what the wet one did.
+out=$(FLEET_DRY=1 sh "$loop" furrow 2>&1 || true)
 case "$out" in *"is now pheromone"*) say "loop_resolves_elder_name=yes" ;; *) say "loop_resolves_elder_name=no" ;; esac
 
 # --- the plant: a roster the loop cannot read refuses rather than guessing --------------------

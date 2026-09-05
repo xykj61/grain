@@ -44,6 +44,24 @@ sharpest lines; the whole account stands in the ledger's shelves under `archive/
 finding is one the fleet needs today. A closed row whose full account already stands in the ledger
 is exactly the finished section the PINS law says folds to a shelf. The card lands at 32,765, the
 rebase onto `122eab1aac` having brought upstream's own additions with it.
+## `20260905.131102` -- the live front folds to a shelf (walk-back `122eab1aac`)
+
+**Walk-back nib:** `122eab1aac` -- HEAD before this lap's commit. **Swept:** the living
+[`ITINERARY.md`](ITINERARY.md) live front, whose **landed** accounts move whole to
+[the landed-accounts shelf](archive/20260905-131102_itinerary-landed-accounts.md).
+Nothing is lost: every account is on the shelf byte for byte, and each row's own detail was already
+in `construction/REDS.md` and the `gratitude/` pages before this.
+
+**What waits there, worth recalling:** the six fetch studies' full accounts, the naming study's
+argument, and the closed-row summaries for `%408`, `%414`-`%424`.
+
+**Why:** this is the fix I recommended three times today and did not take, choosing to shave
+instead. The card was raised to 32,768 on `20260905.011715` and **spent that raise inside one day**;
+it has since closed at 1 byte free, then 5, then 11, and this lap ran 836 over. **Condensing had
+started removing meaning rather than words** -- and which meaning went was decided by whoever was
+typing. A shelf is what `REDS.md` uses for exactly this, and the live front is the same shape: a
+page whose landed half only grows. The card keeps what is OPEN, what is NEXT, and what waits on
+Keaton's word; the account of what closed lives one `git show` and one link away.
 
 ## `20260905.070821` -- the card condenses one closed account to its shelf (walk-back `78ea9e22d9`)
 
