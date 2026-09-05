@@ -30,7 +30,15 @@ living=$(git ls-files '*.md' '*.kyri' '*.bron' 2>/dev/null \
 short=0; over=0; checked=0
 for f in $living; do
   # A range announced from zero, both ends sharing a letter prefix of two or more.
-  LC_ALL=C grep -oE '\b([A-Za-z]{2,})0-\1[0-9]+\b' "$f" 2>/dev/null | sort -u | while read -r ann; do
+  #
+  # A LEDGER ROW IS A RECORD, NOT AN ANNOUNCEMENT. A page that tabulates announced-against-reached
+  # -- `| BUHR0-BUHR63 | BUHR6 |` -- is documenting a forecast rather than making one, and the
+  # foundation written to teach this law was the first page the meter accused. The exclusion is
+  # structural rather than a filename: a two-cell table row whose second cell is a rung of the same
+  # prefix. To earn it, a page must state the true reach beside the announcement, which is the
+  # honest act; a page merely announcing a length cannot qualify.
+  LC_ALL=C grep -vE '\| *([A-Za-z]{2,})0-\1[0-9]+ *\| *\1[0-9]+ *\|' "$f" 2>/dev/null \
+    | LC_ALL=C grep -oE '\b([A-Za-z]{2,})0-\1[0-9]+\b' | sort -u | while read -r ann; do
     prefix=${ann%%0-*}
     top=${ann##*"$prefix"}
     echo "$f|$prefix|$top"
