@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260905.073903` | [POSIX is the floor we are leaving](20260905/20260905-073903_posix-is-the-floor-we-are-leaving.kyri) | the target has no shell; the count is a re-grow estimate |
 | `20260905.072118` | [A ratchet passes on a low number](20260905/20260905-072118_a-ratchet-passes-on-a-low-number.kyri) | a dead instrument reads as the healthiest tree ever measured |
 | `20260905.064341` | [The tools a guard may assume](20260905/20260905-064341_the-tools-a-guard-may-assume.kyri) | 52 utilities, rg at 992 sites and one probe, the cure at 1.3% |
 | `20260905.014249` | [The login that never reached a tree](20260905/20260905-014249_the-login-that-never-reached-a-tree.kyri) | private-home replaces the home a login was written to |

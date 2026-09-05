@@ -159,6 +159,85 @@ three berthed), it keeps spanning at least two operating systems, and guard coun
 measured; **moderate** that a typed layer is the right answer, since its cost has not been measured
 and its benefit is inferred from three faults in one day rather than a trend.
 
+## The correction that reframes the whole study (amended `20260905.073903`, Keaton's word)
+
+**POSIX is not this project's floor. It is the dependency the project exists to leave.**
+
+This study's first draft treated POSIX as bedrock -- *granted; every bench has it*. That is true of
+the **bench** and false of the **destination**, and the destination is the point. Caravan is a root
+task on **seL4's userlevel side**, which this tree's own license read settles: the kernel is GPL-2.0
+and study-only, `libsel4` and the libraries are BSD-2-Clause, and seL4's own `LICENSE.md` says the
+GPL *"does not cover user-level code that uses kernel services by normal system calls."*
+
+On that target **there is no shell, no `awk`, no `grep`, and no POSIX utility layer at all** --
+there is a syscall interface and whatever we write above it. Every utility this study counted is a
+thing that **cannot exist** on the machine Grain is being built toward.
+
+So the honest frame is **two horizons with different floors**:
+
+| | The bench, today | Caravan on seL4, the target |
+|---|---|---|
+| What is granted | POSIX utilities under a shell | `libsel4` syscalls and nothing else |
+| What a guard may assume | a great deal, mostly correctly | nothing it did not write |
+| What `awk` is | a tool that is there | a function somebody must author in Rye |
+
+**This makes the measurement more useful, not less.** A count of 434 `awk` sites is not only a
+portability figure; it is **a work estimate for the re-grow**, and the same for `grep` at 1,958 and
+`sed` at 645. The dependency map and the re-grow list are one list read from two ends.
+
+**And the tree already knew this.** [`20260617-201612_useful-utilities.md`](20260617-201612_useful-utilities.md)
+opens with *"what we lean on, we eventually re-grow in our own hand"* and orders its tiers by
+**how readily each becomes a TAME Rye module** -- which is this study's tier question asked from
+the far end. That page is the elder inventory and this one does not replace it; it adds the
+measured surface, the two harnesses, and the generations below.
+
+## The permissive generations, and why they matter more than a reference does
+
+The June inventory names the C lineage: **toybox** (0BSD, one static binary answering as a hundred
+commands), **sbase** and **ubase** (suckless, MIT/ISC, "short enough to hold in the eye"), and
+**musl** (MIT) as the reference for a lean system interface. Every one permissive, deliberately --
+**busybox** is named there too and held at arm's length for being GPLv2.
+
+Two generations have arrived since, and both are closer to this tree's own hand:
+
+| Project | Language | License | Why it earns a place |
+|---|---|---|---|
+| **uutils/coreutils** | Rust | **MIT** | 100+ utilities, cross-platform to Linux, macOS, BSD, Windows and **WASI**; tested against the GNU, toybox and busybox suites, so its *behavioural* answers are checkable rather than asserted |
+| **ripgrep** | Rust | **MIT / Unlicense** | already on this pier, and already 992 of our sites; the one borrowed tool we lean on hardest |
+| **zig-coreutils**, **zig-utils** | **Zig** | **MIT** | the nearest neighbours to Rye, which *is* Zig; a Zig implementation is readable by this tree's own compiler without a second toolchain |
+| **dawk** | **Zig** | permissive | a POSIX-compliant awk **in Zig** -- the single highest-value read, since `awk` is 434 sites here and the whole re-grow question in one program |
+
+**The Zig row is the one that changes the order.** A C reference must be read and re-expressed; a
+Zig implementation can be read *in the language Rye compiles through*, which shortens the distance
+between studying a thing and having written it. That is a Lindy argument, not a taste one: the
+shorter that distance, the more likely the re-grow actually happens.
+
+**The clean room does not move.** These are read with attribution here and re-grown in our own hand
+there; `gratitude/` holds what we study, and nothing crosses into `rye/` as code
+([`../../.claude/rules/gratitude-licenses.md`](../../.claude/rules/gratitude-licenses.md)).
+
+## The fetch itinerary -- Lindy-first, crux-first
+
+**Nothing is fetched by this page.** A clone is a hand's act and each one lands in `gratitude/`
+with its source and license recorded, which is the June study's own rule. The order below is the
+proposal; the word is Keaton's.
+
+1. **`dawk`** (Zig, awk) -- *crux.* 434 sites, and the hardest of the re-grows. If awk is
+   tractable in Zig, the whole base suite is; if it is not, that is the most valuable early no.
+2. **`uutils/coreutils`** (Rust, MIT) -- *most Lindy.* The behavioural answer for a hundred
+   utilities, testable against three suites. Read for **what each command must do**, not for how.
+3. **`toybox`** (0BSD) -- already first in the June order, and it stays: one static binary is the
+   dependable floor, and 0BSD is the friendliest license in the study.
+4. **`sbase` / `ubase`** (MIT/ISC) -- the legible C seeds the June study already chose as the model.
+5. **`ripgrep`** (MIT) -- last of the five, because we *have* it; the study it deserves is about
+   what makes a search fast, not about whether we can run one.
+
+**Each fetch carries a gratitude writing**, and the shape follows what `gratitude/` already does
+across its 75 entries: one page per teacher, named plainly, saying what it gave and what we owe.
+A `gratitude/utilities/` subfolder is the right home once there are more than two -- the room says
+what it holds, which is this tree's own filing rule -- and until then a single
+`gratitude/small-sharp-tools.md` naming the family is honest and cheaper.
+
 ## Attribution
 
 **DeepSeek Harness** -- concepts read from its public documentation and repository, and from InfoQ's

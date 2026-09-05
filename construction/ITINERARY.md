@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `78ea9e22d9` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `fafdfa9664` -- HEAD's parent, resolvable everywhere (%401).
 
 **Now.** **A rule written six times is a rule six files may quietly come to disagree about.**
 
@@ -82,27 +82,30 @@ for **what a maintainer has parked**. A gated red books apart, so `red` means *t
 again, and a pass whose reds are all gated writes its receipt disclosing what it chained past.
 **The gate vocabulary is this card's own custody list, read at scan time**; an unreadable card
 refuses every gate. Live: **106 green, 1 red, 4 gated**.
-**Shelved:** eleven rows -- see [`the fold recital`](archive/REDS-fold-recital.md).
-**`%414` CLOSED -- ai-jail and claude both own `--verbose`**, and ai-jail refuses it after the
-command even when `--` was passed. The flags moved inside: `tools/l/fleet_lap.sh` runs in the
-enclosure, `agent-jail.sh lap <seat>` puts **no flag** in the jail's argv. The loop stops after
-three laps dying under ten seconds. **A wrapper inherits its wrapper's namespace.**
-**`%415` CLOSED -- `claude login` writes to the HOST's home; `--private-home` replaces it.** A pier
-login reached **no tree**. The launcher seeds a tree with none and refreshes when the host's is
-newer -- **one login per pier, not one per tree**. Nothing tracked, nothing off the machine.
-**A sandbox that replaces a directory replaces everything anyone put there.**
-**`%416` CLOSED -- a ratchet passes on a LOW number.** `unheard_guard` ran both awk passes as
-`> FILE 2>/dev/null || true`. One fails loud (the closure stops, `unheard` reads high, the ceiling
-reds); the other reads `unheard_choirs=0` against a ceiling of 37 -- **the greenest number on the
-page.** A guard whose instrument had died would report the healthiest tree it ever measured.
-**A gate at zero fails safe when its instrument dies; a ceiling fails UNSAFE**, and this tree holds
-far more ceilings. The broad signature matched **20 sites, 2 faults** -- grep's exit 1 is an answer
-and a predicate awk answers by exiting -- so `instrument_refusal` reads only an output-producing
-pass whose failure is discarded, **gated at zero from birth**, 676 scans, 11 pen legs. A deliberate
-toleration says so at the site: `# instrument-tolerated: <why>` exempts the next line and nothing
-else. **The difference between a decision and a swallow is whether anyone wrote it down.**
-**LAUNCH:** `cd ~/grain-<seat> && git pull --ff-only xy main && sh tools/l/fleet-loop.sh <seat>`.
-**The utility yonder, filed `20260905.064341`** -- a measured pair, nothing built. Study:
+**Shelved:** eleven rows -- [`the recital`](archive/REDS-fold-recital.md).
+**`%414`-`%416` CLOSED** -- three launcher and guard faults of one family, each row carrying its
+own account. **`%414`:** ai-jail and claude both own `--verbose`; the flags moved inside
+`tools/l/fleet_lap.sh` and the loop now stops after three laps dying under ten seconds.
+**A wrapper inherits its wrapper's namespace.** **`%415`:** `claude login` writes to the HOST's
+home and `--private-home` replaces it, so a pier login reached no tree; the launcher seeds and
+refreshes per tree -- **one login per pier**. **`%416`:** `unheard_guard` swallowed both awk passes,
+one reading `choirs=0` against a ceiling of 37 -- **a gate at zero fails safe when its instrument
+dies; a ceiling fails UNSAFE**, and this tree holds far more ceilings. `instrument_refusal` gates
+that shape at **zero from birth** over 676 scans; a deliberate toleration says so at the site.
+**The difference between a decision and a swallow is whether anyone wrote it down.**
+**The utility yonder, filed `20260905.064341`, AMENDED `20260905.073903` on Keaton's word.**
+**POSIX is not this project's floor -- it is the dependency the project exists to leave.** Caravan
+is a root task on **seL4's userlevel side**: a syscall interface and **no shell, no awk, no grep**.
+The first draft wrote *granted = POSIX* and quietly made POSIX bedrock; it is the BENCH's floor,
+not the target's. That makes the count a **re-grow estimate** -- 1,958 `grep`, 645 `sed`, 434
+`awk` are Rye somebody must write -- and joins it to the elder
+[`useful-utilities`](../external-research/yonder/20260617-201612_useful-utilities.md), which
+ordered the same list from the far end. **Permissive generations added:** uutils/coreutils (Rust,
+MIT), ripgrep (MIT), **zig-coreutils / zig-utils / dawk (Zig, MIT)** -- the Zig row changes the
+order, since Rye compiles through Zig and a Zig awk is readable without a second toolchain.
+**Fetch itinerary proposed, nothing fetched:** dawk (crux) - uutils - toybox - sbase/ubase -
+ripgrep, each landing in `gratitude/` with a written thanks, `gratitude/utilities/` once there is
+more than one. A clone is a hand's act; the word is yours. Study:
 [`what-a-harness-promises`](../external-research/yonder/20260905-064341_what-a-harness-promises-about-its-tools.md).
 Design: [`the-tools-a-guard-may-assume`](../active-designing/yonder/20260905-064341_the-tools-a-guard-may-assume.md).
 **52 external utilities across 2,969 tool scripts. `rg`: 992 sites, ONE probe. `mktemp`: 353
@@ -132,13 +135,11 @@ expensive ON PURPOSE and moved to `tier cadence`, honest because its act is gate
 **1,510s -> 990s, measured** (1,003 projected). **Before you make an expensive thing rare, find out
 whether it is expensive on purpose** -- a cadence tier on those two would have hidden 277s of pure
 waste behind a slower clock and left the waste.
-**The fleet is six ships and one baton.** `tools/l/fleet_baton.txt` holds the shared opening ONCE
-and `fleet-loop.sh` prepends it, so a seat prompt is its **lane stanza** alone. Three ships seated
-`20260904.214754`, status **berthed** -- a lane, a prompt, a name, no tree yet: **bakery** (core
-infrastructure, Lindy-first crux-first, and the fleet's own friction), **diffuser** (moonshots and
-whitepapers -- toroidal, energy-saving, radial-polar -- in tandem with bakery, every projection
-carrying its falsifier), **grass** (four auditing passes: New Gauge, Civic Style, foundations,
-TAME). Birth is `birth_a_clone.rish` plus a `claude login`, and both are a hand.
+**Six ships, one baton.** `tools/l/fleet_baton.txt` holds the shared opening ONCE and
+`fleet-loop.sh` prepends it; a seat prompt is its **lane stanza** alone. **berthed** (`20260904`):
+**bakery** (core infrastructure, Lindy/crux, fleet friction), **diffuser** (moonshots and
+whitepapers, every projection with its falsifier), **grass** (four auditing passes). Birth is
+`birth_a_clone.rish` plus a `claude login` -- both a hand.
 **`%411` CLOSED -- four behaviors every ship performed, and not one was a rule.** Measured across
 the 49 rules: `%291` appeared once in passing, **claim-as-override, the council rota, and
 GATES-ONLY appeared zero times**. All four are seated in
@@ -307,6 +308,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260905.072118` | A ratchet passes on a low number | [log](../session-logs/date/20260905/20260905-072118_a-ratchet-passes-on-a-low-number.kyri) |
+| `20260905.073903` | POSIX is the floor we are leaving | [log](../session-logs/date/20260905/20260905-073903_posix-is-the-floor-we-are-leaving.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)
