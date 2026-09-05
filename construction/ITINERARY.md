@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `3239ca9798` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `f81276c117` -- HEAD's parent, resolvable everywhere (%401).
 
 **Now.** **A guard can check what a line says and never how many times the page says it.**
 
@@ -91,25 +91,27 @@ ceiling fails UNSAFE**, and this tree holds far more ceilings.
 **The utility yonder** (amended) -- **POSIX is not this project's floor, it is the dependency the
 project exists to leave.** Caravan is a root task on **seL4's userlevel side**: syscalls, no shell,
 no awk. The count is a **re-grow estimate**.
-**Three fetched, each thanked and catalogued in `gratitude/README.md`** -- **dawk** (Zig, MIT,
-`20260905.080810`), **uutils** (Rust, MIT, `.100012`), **toybox** (**0BSD**, `.104613`), every
-license read from its own file. **The re-grow is two undertakings:** uutils answers the coreutils
-family (**5,380** of our sites) and correctly leaves `grep`/`sed`/`awk`/`find` (**3,129**) to the
-projects that own them; toybox holds all four and answers **10,854 of 11,971** in one binary.
-**And the crux answered:** dawk refuses our own `utf8_valid.awk` because it is **Unicode-native**,
-which named a requirement we had never written -- *keep the C-locale byte view* -- and toybox's awk
-carries exactly that as **`-b : count bytes, not characters`**. Next: sbase/ubase - ripgrep; each
-clone is your hand.
-**The naming study** (`20260905.110633`) --
-[`the-name-a-veteran-still-likes`](../external-research/yonder/20260905-110633_the-name-a-veteran-still-likes.md):
-should Grain's utilities wear the shorthand devs know, or their own names? **The premise is mostly
-answered by practice -- 241 of 241 authored files in Caravan/Comlink/Mantra/Tally are common English
-or plain compounds, not one a coinage.** So the choice is **familiar used honestly versus familiar
-used misleadingly**. The rule: **wear the common name when you keep its promise; take a new name the
-moment you do not**, tested by *would a dev assuming the familiar meaning write a correct program?*
-The awk finding is exactly a NO -- codepoints where POSIX counts bytes -- so it does not get to be
-called `awk`. **Aliases stay rare:** `alias-sameness`'s conditions fail when behaviours differ, and
-two names for one tool is a coin flip an agent makes every call with no feedback.
+**Five fetched `20260905`**, thanked and catalogued in `gratitude/README.md`, every license read
+from its own file: **dawk** (Zig, MIT), **uutils** (Rust, MIT), **toybox** (**0BSD**), **sbase +
+ubase** (MIT, MIT/X). **The re-grow is two undertakings:** uutils answers the coreutils family
+(**5,380** sites), leaving `grep`/`sed`/`awk`/`find` (**3,129**) to their own projects; toybox
+holds all four, **10,854 of 11,971** in one binary. **The crux answered:** dawk refuses our
+`utf8_valid.awk` as **Unicode-native**, naming a requirement we had never written -- *keep the
+C-locale byte view* -- and toybox's awk carries it as **`-b : count bytes, not characters`**.
+**sbase's finding is the comparison** ([thanks](../gratitude/suckless-sbase-ubase.md)): 98 commands,
+median **91 lines** -- the elder claim *short enough to hold in the eye*, now a number. `cat` is
+**52 lines/1 flag** here, 68/4 in toybox, **796/11 plus a Windows port** in uutils. **The prices
+differ because the promises do** -- portability by subtraction, a whole userland in one binary,
+exact GNU compatibility on five OSes -- and only three side by side make each legible.
+**No `awk` in sbase**: agreement, not absence. Next: ripgrep, last since we have it.
+**The naming study**
+([`a-veteran-still-likes`](../external-research/yonder/20260905-110633_the-name-a-veteran-still-likes.md)):
+**241 of 241 authored files in Caravan/Comlink/Mantra/Tally are common English -- not one a
+coinage**, so the choice is **familiar used honestly versus familiar used misleadingly**. Rule:
+**wear the common name when you keep its promise; take a new name the moment you do not**, tested
+by *would a dev assuming the familiar meaning write a correct program?* The awk finding is exactly
+a NO. **Aliases stay rare** -- `alias-sameness`'s conditions fail when behaviours differ, and two
+names for one tool is a coin flip an agent makes every call with no feedback.
 **Single-stranded refuses the shortlist.** **It names nothing**, by its own argument.
 **`%421` CLOSED -- a newer file is not a better credential.** `%415`'s clause read `-nt` alone, and
 **signing out REWRITES the credential** with empty tokens -- so a logged-out file is the NEWEST on
@@ -306,6 +308,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260905.110633` | The name a veteran still likes | [log](../session-logs/date/20260905/20260905-110633_the-name-a-veteran-still-likes.kyri) |
+| `20260905.112846` | The prices differ because the promises do | [log](../session-logs/date/20260905/20260905-112846_the-prices-differ.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)

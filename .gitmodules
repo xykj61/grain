@@ -66,3 +66,9 @@
 [submodule "gratitude/toybox"]
 	path = gratitude/toybox
 	url = https://github.com/landley/toybox.git
+[submodule "gratitude/sbase"]
+	path = gratitude/sbase
+	url = https://git.suckless.org/sbase
+[submodule "gratitude/ubase"]
+	path = gratitude/ubase
+	url = https://git.suckless.org/ubase
