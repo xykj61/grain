@@ -111,6 +111,8 @@ hours=${LOOP_HOURS:-18}
 max_laps=${LOOP_LAPS:-0}
 deadline=$(( $(date +%s) + hours * 3600 ))
 laps=0
+quickfail=0
+lap_open=0
 mkdir -p session-output
 
 echo "fleet-loop: seat=$seat engine=$engine root=$root hours=$hours laps=${max_laps:-unbounded}"
@@ -119,7 +121,7 @@ echo "fleet-loop: seat=$seat engine=$engine root=$root hours=$hours laps=${max_l
 # The prompt stays a file -- never inlined here.
 earth_claude_cmd() {
   if [ "$(uname -s)" = Linux ] && [ "${FLEET_BARE:-0}" != 1 ]; then
-    printf '%s\n' "./tools/ag/agent-jail.sh --dangerously-skip-permissions claude --effort max --output-format stream-json --verbose -p <${prompt_file}>"
+    printf '%s\n' "./tools/ag/agent-jail.sh lap ${seat}   # flags live in tools/l/fleet_lap.sh (%414)"
   else
     printf '%s\n' "claude --dangerously-skip-permissions --effort max --output-format stream-json --verbose -p <${prompt_file}>"
   fi
@@ -190,10 +192,11 @@ run_earth_claude() {
       echo "fleet-loop: then pin AIJAIL_BIN in tools/e/enclosure.conf, or FLEET_BARE=1 LOOP_LAPS=1 for Darwin-style claude"
       return 4
     fi
-    ./tools/ag/agent-jail.sh --dangerously-skip-permissions claude \
-      --effort max --output-format stream-json --verbose \
-      -p "$_prompt" \
-      | stream_claude
+    # THE FLAGS LIVE INSIDE THE JAIL (REDS %414). ai-jail owns `-v, --verbose` and refuses it after
+    # the command even when `--` was passed, while Claude Code requires it beside
+    # `--output-format stream-json`. `lap` runs tools/l/fleet_lap.sh with no flag in the jail's own
+    # argv, and every flag claude needs is spelled in there.
+    ./tools/ag/agent-jail.sh lap "$seat" | stream_claude
   else
     claude --dangerously-skip-permissions --effort max --output-format stream-json --verbose \
       -p "$_prompt" \
@@ -223,6 +226,7 @@ run_lap() {
 
 while [ "$(date +%s)" -lt "$deadline" ]; do
   rm -f .loop-gates-only
+  lap_open=$(date +%s)
   echo "fleet-loop: lap $((laps + 1)) opens at $(TZ=America/New_York date +%H:%M:%S)"
   if ! sh tools/f/fleet_round_open.sh; then
     echo 'ROUND-OPEN: fetch refused; retrying in 60s'
@@ -237,6 +241,22 @@ while [ "$(date +%s)" -lt "$deadline" ]; do
   fi
   if [ "$rc" -ne 0 ]; then
     echo "fleet-loop: lap exited $rc; the next round-open pull resumes the thread"
+  fi
+  # A LAP THAT DIES IN UNDER TEN SECONDS NEVER REACHED THE AGENT (REDS %414). Eight pheromone and
+  # petrichor laps failed on an ai-jail flag refusal inside a second each, and the loop counted
+  # every one and slept twenty seconds between them -- an eighteen-hour deadline of nothing at all.
+  # Three consecutive instant failures stop the loop and say why, because the fault is upstream of
+  # the agent and no number of retries will reach past it.
+  if [ "$rc" -ne 0 ] && [ $(( $(date +%s) - lap_open )) -lt 10 ]; then
+    quickfail=$((quickfail + 1))
+    if [ "$quickfail" -ge 3 ]; then
+      echo "fleet-loop: three laps died in under ten seconds each -- the agent was never reached."
+      echo "fleet-loop: read the lines above; this is an invocation fault, not a lap that failed."
+      echo "fleet-loop: try  ./tools/ag/agent-jail.sh lap $seat  by hand, or FLEET_BARE=1 to skip the jail."
+      break
+    fi
+  else
+    quickfail=0
   fi
   laps=$((laps + 1))
   if [ -f .loop-gates-only ]; then

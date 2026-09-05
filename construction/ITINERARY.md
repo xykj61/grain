@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `14bdbd180d` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `edd2d10818` -- HEAD's parent, resolvable everywhere (%401).
 
 **Now.** **A rule written six times is a rule six files may quietly come to disagree about.**
 
@@ -82,7 +82,18 @@ for **what a maintainer has parked**. A gated red books apart, so `red` means *t
 again, and a pass whose reds are all gated writes its receipt disclosing what it chained past.
 **The gate vocabulary is this card's own custody list, read at scan time**; an unreadable card
 refuses every gate. Live: **106 green, 1 red, 4 gated**.
-**Shelved:** eight rows -- see [`the fold recital`](archive/REDS-fold-recital.md).
+**Shelved:** eleven rows -- see [`the fold recital`](archive/REDS-fold-recital.md).
+**`%414` CLOSED -- the sandbox and the agent both own `--verbose`.** Claude Code refuses
+`--output-format stream-json` without it; **ai-jail owns `-v, --verbose`** and refuses it after the
+command **even when `--` was passed** -- advising the thing already done. Every jailed lap died
+instantly, and the loop counted eight refusals as eight laps across two trees. **The flags moved
+inside:** `tools/l/fleet_lap.sh` runs in the enclosure and spells them where only claude reads
+them; `agent-jail.sh lap <seat>` puts **not one flag** in the jail's argv, which also retires the
+giant `-p` argument riding through two shells. **The loop stops now** after three laps dying in
+under ten seconds each, naming it an invocation fault. **A wrapper inherits its wrapper's
+namespace** -- any flag shared between a sandbox and what it sandboxes waits for the lap that
+first needs it.
+**LAUNCH:** `cd ~/grain-<seat> && git pull --ff-only xy main && sh tools/l/fleet-loop.sh <seat>`.
 **`%413` CLOSED (pass now **856s**, from 1,510 this morning) -- three more guards forking per item, and one repair that twice taught a guard to
 report a tree it never read.** `tracked_link` forked an awk AND a grep **per link** (~47,700
 processes) -> **5s**; `phantom_path` an awk per source and a grep per literal (8,793) -> **6s**;
@@ -278,6 +289,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260905.001835` | The instrument that could not say it had failed | [log](../session-logs/date/20260905/20260905-001835_the-instrument-that-could-not-say-so.kyri) |
+| `20260905.011715` | Both sides owned the same flag | [log](../session-logs/date/20260905/20260905-011715_both-sides-owned-the-flag.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)
