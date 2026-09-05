@@ -64,20 +64,33 @@ ck "foreign IdentityFile bites" "verdict=foreign_path" "$out"
 ck "ssh half counted"           "foreign_paths=1"      "$out"
 sed -i "s|IdentityFile .*|IdentityFile $pen/grain-alpha/.ssh/id_jail|" "$pen/grain-alpha/.git/ssh_config_jail"
 
-# 9-10. A seat whose tree is absent is reported, never counted -- a fresh clone holds one tree.
+# 9-10. A SYMLINK IS THE SAME FAULT IN DISGUISE. The config names a local path; the path lands in
+# the sibling. A guard comparing the written string calls this local and the ship still refuses.
+rm -rf "$pen/grain-alpha/.gnupg-rye"
+ln -s "$pen/grain-beta/.gnupg-rye" "$pen/grain-alpha/.gnupg-rye"
+out=$(sh "$scan" 2>&1)
+ck "symlinked keyring bites"  "verdict=foreign_path" "$out"
+ck "resolution is named"      "resolves to"          "$out"
+rm -f "$pen/grain-alpha/.gnupg-rye"
+mkdir -p "$pen/grain-alpha/.gnupg-rye"
+printf '#!/bin/sh\nexec gpg "$@"\n' > "$pen/grain-alpha/.gnupg-rye/gpg.sh"
+chmod +x "$pen/grain-alpha/.gnupg-rye/gpg.sh"
+ck "symlink removed, green again" "verdict=every_path_is_local" "$(sh "$scan" 2>&1)"
+
+# 11-12. A seat whose tree is absent is reported, never counted -- a fresh clone holds one tree.
 roster "alpha beta gone"
 out=$(sh "$scan" 2>&1)
 ck "absent tree reported"   "absent: gone"                "$out"
 ck "absent tree stays green" "verdict=every_path_is_local" "$out"
 
-# 11-12. The instrument must be proven present, not assumed (REDS %413).
+# 13-14. The instrument must be proven present, not assumed (REDS %413).
 mv "$pen/grain-alpha/tools/fixtures/f/fleet_roster_scan.sh" "$pen/roster.away"
 out=$(sh "$scan" 2>&1); rc=$?
 ck "absent roster refuses loudly" "REFUSED" "$out"
 [ "$rc" = 2 ] && pass=$((pass+1)) || { fail=$((fail+1)); echo "  FAIL absent roster exit: got $rc wanted 2"; }
 mv "$pen/roster.away" "$pen/grain-alpha/tools/fixtures/f/fleet_roster_scan.sh"
 
-# 13. A roster that lists nothing refuses too -- an empty sweep is not a clean sweep.
+# 15. A roster that lists nothing refuses too -- an empty sweep is not a clean sweep.
 roster ""
 out=$(sh "$scan" 2>&1)
 ck "empty roster refuses" "REFUSED" "$out"
