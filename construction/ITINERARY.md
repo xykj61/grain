@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `9b9d74c9f5` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `540d75a5b5` -- HEAD's parent, resolvable everywhere (%401).
 
 **Now.** **A control that names a machine cannot be run on the fleet it guards.**
 
@@ -76,9 +76,32 @@ round's opening stash stop an in-flight pass in its own tree.
 
 **Petrichor's `%424`** (library index credited a room for the interpreter) and the `grep`-shim
 finding are on the [landed-accounts shelf](archive/20260905-131102_itinerary-landed-accounts.md).
-**Three laps booked `%423` in one hour**: `124031` landed, `124857` renumbered to `%424`, and
-`122517` **is unsent in `stash@{0}`** -- it takes its number from the anointed spine on restore
-(`--next`), never from the one written in it. **`git stash list` is the open.**
+**The stash is restored, and it renumbered three times getting here.** `122517` booked `%423`,
+derived `%425`, then `%427`, and lands as **`%430`** -- each time because a peer reached the
+anointed spine first while this round verified. The card's own correction held every time: take the
+number from `--next`, never from the one written in the row. **Three collisions in one round is the
+sharpest evidence yet for your open question** -- should an OPEN row carry a claim, a seat and a
+stamp, at start rather than at landing.
+**`%427`-`%429` folded** to the
+[instrument-room shelf](archive/REDS-the-room-the-instrument-stood-in-rows-427-429.md) so the pin
+could hold the two new OPEN rows: an answer true of the room the instrument could reach and false
+of the room anyone asked about.
+**`%430` OPEN -- a floor that refuses to score must also refuse to vote.** The report card frees
+Register under 8 sentences, prints `reported, not scored`, and divides by four anyway: **560 of
+870** pages carry a blank voting **100**, **206** above Door's ceiling, **176** at B or better.
+`libraries/README.md` reads **A/94** on one 100%-negative sentence of 13 words. In lane:
+`tutorials/README.md` is **scored** now, B/84-on-a-silence to an earned **B+/89**. The general fix
+is **derivable** -- free only where one sentence could cross the ceiling, `|share-20| < 100/n`; 88
+become scored, 472 stay freed -- yet it edits a seated assertion: **your word.** Restored from
+`stash@{0}` exactly as this card derived it; the stamp `122517` never moved.
+**`%431` OPEN -- `commit_message_guard` is RED here, and the gate that explained it is gone.**
+`%423` reconstructed `publish-seed.sh` on Incense and lifted `gate %1` in the same lap, on exactly
+the right reasoning. Only one of the two could travel: the publisher is **untracked at the root by
+design** (`.gitignore` `/*`), the roster is tracked. Here `20260905.135216`: **25 planted cases
+pass, 0 fail**, `GUARD_OK`, **ten of eleven readings green** -- `SEED_PUBLISHER_ARMS 0` alone reds
+it. So two of three trees pay a **full cold pass every lap**. **A repair proven on one tree and a
+claim published to all of them must not ride in one commit; the tell is that the repair is
+untracked.** The durable shape is `birth_a_clone` reconstructing it -- **yours, gate %1.**
 **Still open:** `glow/rune_shape.rye` width custody; `%281`/`%291`. **(%347):**
 `pond/enclosure_policy.kyri` 8,120/8,192; yours.
 **Landed this chapter** -- `%374`'s gate build, six utility fetches with their thanks, the naming
@@ -93,13 +116,12 @@ round-open clears an interrupted rebase before anything reads the tree, with its
 **93% of our use is a predicate**, and a re-grow owes not a grep but a bounded existence test over
 the tracked set, which `git grep -q` already is. **Met the same day:** `grep` here is **ugrep
 7.8.4** and refused a regex GNU grep accepts -- **a familiar name is not a familiar behaviour.**
-**`%425` CLOSED -- a control leg safe on the tree that wrote it, hanging on the tree it was for.**
-`fleet_roster_control.sh` ran `sh $loop furrow` **without `FLEET_DRY=1`**, and `furrow` resolves to
-a REAL seat -- so on `grain-pheromone` it sailed past the want-tree refusal into round-open and
-blocked on a fetch the jail cannot make: **1,298s at zero CPU**. On this tree the refusal hid it.
-**Found by the pheromone seat**, not a guard. Every leg dry: 37 legs, **2s**. **A leg whose safety
-depends on the checkout's basename is dangerous on some other tree**, and the tree that wrote it
-cannot feel it. Its correction stands: `%G?` reads `N` there because **gpg fails to exec**.
+**`%423`-`%426` CLOSED**, whole on the
+[what-a-script-assumes shelf](archive/REDS-what-a-script-assumes-rows-423-426.md) -- among them a
+control leg whose safety rested on the checkout's basename (**1,298s at zero CPU** on pheromone,
+found by that seat rather than by a guard), and a `git init` that took its branch name from the
+host. **A script is quiet about the one thing that changes when it moves.** Correction kept: `%G?`
+reads `N` on that pier because **gpg fails to exec**.
 **THE LIVE FRONT NOW FOLDS** (`20260905.130819`), the fix named three times today and taken on the
 fourth: landed accounts shelve like REDS rows, so the card holds what is OPEN and what waits on
 your word. The raise to 32,768 was spent inside one day -- 1 byte free, then 5, then 11, then 836
@@ -117,18 +139,7 @@ and says which instrument.**
 across five guards. Whole in the ledger, with the two lines worth carrying: **an empty answer from
 a failed instrument is byte-identical to one from a clean collection**, and **before you make an
 expensive thing rare, find out whether it is expensive on purpose**.
-**`%419` CLOSED (booked `%418`, renumbered on the rebase -- the stamp is the key) -- a guard
-watched a room the law had emptied and read the emptiness as health.** `log_has_a_row` gated *every
-log has a row* against the FLAT room, which BORN ON ITS DAY'S SHELF emptied `20260827.171500`:
-**nine days** of `verdict=ok`, four logs reachable from no front door. It reads the shelves and the
-pin now -- one `find`, one `awk`, 4,056 logs, **0.17s**, five readings at zero, **36 behaviors**.
-Recovered from a dead lap's stash and **verified rather than trusted**: its *"no index reaches"*
-held for DAY shelves alone, the gathering `through-20260721` carrying **162 of 373**. **Third firing
-in one day:** the pin graded **A/93** at `truth_counted=100` while its top row named yesterday --
-**derivable**, so gated, where `%117`'s and `%417`'s are not.
-**`%420` BOOKED -- the census line stood TWICE**, identical, since `60776bcad`, and
-`reds_ledger_monotone` reads GREEN over it: `duplicate_headlines` counts **row** headlines, and the
-census check reads the FIRST match. Removed, census **420**/**400**; the assert is named, not built.
+**`%420`'s named-not-built assert** -- a cardinality reading over the census headline, still owed on the lap that next opens `reds_ledger_monotone`.
 **Six ships, one baton** (`tools/l/fleet_baton.txt`, prepended; a seat prompt is its lane stanza).
 **berthed** `20260904`: **bakery** (core infra, Lindy/crux), **diffuser** (moonshots, each with its
 falsifier), **grass** (four audits). Birth plus `claude login` -- both a hand.
@@ -284,6 +295,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260905.130819` | A wet leg in a dry file, and the front folds | [log](../session-logs/date/20260905/20260905-130819_a-wet-leg-in-a-dry-file.kyri) |
+| `20260905.134026` | The floor that voted on a silence | [log](../session-logs/date/20260905/20260905-134026_the-floor-that-voted.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)
