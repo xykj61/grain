@@ -42,10 +42,27 @@ let ag = run ["git" "-C" dest "remote" "add" "debrided" "git@github.com:debrided
 assert ag.ok else "birth-a-clone: could not seat remote debrided"
 
 # The transport: .git contents are never cloned, so the newborn takes its own copy of the
-# field's repo-local ssh config (the key paths inside stay absolute to the host's shared
-# deploy keys) and points core.sshCommand at its own copy -- grain-mind's own precedent.
+# field's repo-local ssh config and points core.sshCommand at that copy.
+#
+# THE KEY FILES COME WITH IT, and the copied config is rewritten to name them. The elder form
+# copied the config and left every `IdentityFile` absolute into the FIELD's `.ssh` -- which
+# reads as thrift (one set of deploy keys, one keeper) and is incompatible with the enclosure:
+# `agent-jail.sh` binds ONE tree, so a path into a sibling is a path the newborn cannot see from
+# inside its own jail. grain-pheromone was born that way and could neither sign nor push from
+# its enclosure, while every check outside the jail passed, because outside the jail the sibling
+# is right there. Self-contained is not tidiness here -- it is the only shape the jail can run.
 let sc = run ["cp" (field + "/.git/ssh_config_jail") (dest + "/.git/ssh_config_jail")]
 assert sc.ok else "birth-a-clone: the ssh config copy refused"
+let sk = run ["cp" "-a" (field + "/.ssh") (dest + "/.ssh")]
+assert sk.ok else "birth-a-clone: the jail-local ssh keys did not copy -- ${sk.err}"
+let skm = run ["chmod" "700" (dest + "/.ssh")]
+assert skm.ok else "birth-a-clone: could not close the newborn's .ssh to its owner"
+# Every path inside the copied config moves from the field to the newborn. `|` delimits the
+# expression because the values being substituted are absolute paths full of `/`.
+let sre = run ["sed" "-i" ("s|" + field + "/|" + dest + "/|g") (dest + "/.git/ssh_config_jail")]
+assert sre.ok else "birth-a-clone: could not repoint the copied ssh config at the newborn"
+let sleft = run ["grep" "-c" field (dest + "/.git/ssh_config_jail")]
+assert sleft.ok == false else "birth-a-clone: the copied ssh config still names the field -- a path the newborn's jail cannot see"
 let scfg = run ["git" "-C" dest "config" "core.sshCommand" ("ssh -F " + dest + "/.git/ssh_config_jail")]
 assert scfg.ok else "birth-a-clone: could not seat core.sshCommand"
 
@@ -91,7 +108,19 @@ let sg2 = run ["git" "-C" dest "config" "user.name" f_name]
 assert sg2.ok else "birth-a-clone: could not seat user.name"
 let sg3 = run ["git" "-C" dest "config" "user.email" f_mail]
 assert sg3.ok else "birth-a-clone: could not seat user.email"
-let sg4 = run ["git" "-C" dest "config" "gpg.program" f_gpg]
+# THE KEYRING TRAVELS TOO, for the reason the ssh block above gives: `gpg.program` naming the
+# field's wrapper is a path into a tree the newborn's jail does not bind, so the newborn signs
+# fine at a host prompt and refuses every commit inside its own enclosure. The copied `gpg.sh`
+# resolves GNUPGHOME from its own `$0`, so it is correct in whatever tree it lands in, and the
+# newborn's `gpg.program` names the newborn's own copy rather than the field's.
+let kr = run ["cp" "-a" (field + "/.gnupg-rye") (dest + "/.gnupg-rye")]
+assert kr.ok else "birth-a-clone: the jail-local keyring did not copy -- ${kr.err}"
+let krm = run ["chmod" "700" (dest + "/.gnupg-rye")]
+assert krm.ok else "birth-a-clone: could not close the newborn's keyring to its owner"
+let d_gpg = dest + "/.gnupg-rye/gpg.sh"
+let d_here = run ["test" "-x" d_gpg]
+assert d_here.ok else "birth-a-clone: the copied keyring carries no executable gpg.sh at ${d_gpg}"
+let sg4 = run ["git" "-C" dest "config" "gpg.program" d_gpg]
 assert sg4.ok else "birth-a-clone: could not seat gpg.program"
 let sg5 = run ["git" "-C" dest "config" "commit.gpgsign" "true"]
 assert sg5.ok else "birth-a-clone: could not seat commit.gpgsign"

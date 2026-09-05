@@ -267,3 +267,5 @@ at a closed fold.*
 *Rows %417 and %418 folded to [`REDS-what-a-copy-carries-rows-417-418.md`](REDS-what-a-copy-carries-rows-417-418.md) on `20260905.100435`, **BOOKED** and **CLOSED** -- Copying is the most invisible way to be wrong: every step reports success and the error is in the payload -- an empty inherited value that every assert welcomed, and a reading that proved a door exists rather than that it was sound.*
 
 *Rows %419-%422 folded to [`REDS-a-claim-goes-stale-rows-419-422.md`](REDS-a-claim-goes-stale-rows-419-422.md) on `20260905.124043`, **BOOKED** and **CLOSED** -- A claim that stayed on the page after it stopped being true: a credential newer by mtime and dead by contents, a guard reading a room it was no longer pointed at, a machine named by a check that could not see it, a stash holding a finished lap.*
+
+*Rows %423-%426 folded to [`REDS-what-a-script-assumes-rows-423-426.md`](REDS-what-a-script-assumes-rows-423-426.md) on `20260905.150005`, each **CLOSED** -- each was right about everything it looked at, and wrong about the ground it never looked at.*

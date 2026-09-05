@@ -47,14 +47,49 @@ if ! git fetch xy main 2>&1; then
   exit 2
 fi
 
-# 2) a dead lap's leavings go to the dead-letter box, named, wall-free
+# 2) AN INTERRUPTED REBASE IS A CORPSE, AND IT MUST BE CLEARED BEFORE ANYTHING ELSE READS THE
+# TREE. Every step below misreads it. The worktree of a conflicted rebase looks dirty, so the
+# stash in step 3 would stash a half-replayed commit; HEAD is detached at whatever was replayed
+# last, so step 4's `merge-base --is-ancestor HEAD xy/main` answers about a commit nobody asked
+# about; and the `reset --hard` that follows abandons the rebase mid-flight, leaving the real
+# branch behind and unnamed. Three steps each behaving correctly on a state none of them models.
+#
+# `git rebase --abort` restores the exact pre-rebase branch and HEAD -- that is git's own
+# guarantee -- so aborting loses no committed work. The pre-rebase tip is parked by name first
+# anyway, out of `orig-head`, because a park costs one ref and makes the state recoverable even
+# if the abort itself misbehaves.
+#
+# THE HONEST LIMIT: conflict resolution staged but not yet committed inside the rebase is NOT
+# preserved, and no script can preserve it. That is acceptable here because the fleet law is one
+# writer per checkout -- if this loop is running, it is the writer, and a hand mid-rebase in a
+# loop's tree has already crossed a different rule. A hand that was genuinely at work gets the
+# park, the stamp, and a line saying exactly what happened.
+if [ -d .git/rebase-merge ] || [ -d .git/rebase-apply ]; then
+  RDIR=.git/rebase-merge
+  [ -d "$RDIR" ] || RDIR=.git/rebase-apply
+  ORIG=$(cat "$RDIR/orig-head" 2>/dev/null || true)
+  RPARK="pier/rebase-$STAMP"
+  if [ -n "$ORIG" ] && git branch "$RPARK" "$ORIG" >/dev/null 2>&1; then
+    PARKED="the pre-rebase line is parked on $RPARK"
+  else
+    PARKED="no pre-rebase head could be parked"
+  fi
+  if git rebase --abort >/dev/null 2>&1; then
+    say "an interrupted rebase stood at the open -- aborted; $PARKED"
+  else
+    say "an interrupted rebase stood and would not abort -- refusing; a hand is needed here"
+    exit 2
+  fi
+fi
+
+# 3) a dead lap's leavings go to the dead-letter box, named, wall-free
 if ! git diff --quiet || ! git diff --cached --quiet || [ -n "$(git ls-files --others --exclude-standard 2>/dev/null | head -1)" ]; then
   git stash push -u -m "fleet-round-open $STAMP: a lap's unsent work, stashed at the open" >/dev/null 2>&1 \
     && say "dirty tree stashed as 'fleet-round-open $STAMP' -- $(git stash list | grep -c 'fleet-round-open') in the dead-letter box" \
     || say "stash refused; continuing on the tree as it stands"
 fi
 
-# 3) classify against the anointed order -- each state by name, never one message for three
+# 4) classify against the anointed order -- each state by name, never one message for three
 if [ "$(git rev-parse HEAD)" = "$(git rev-parse xy/main)" ]; then
   say "already on the anointed order"
 elif git merge-base --is-ancestor HEAD xy/main 2>/dev/null; then
