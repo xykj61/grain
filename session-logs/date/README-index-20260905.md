@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260905.160800` | [the curve that changed the answer](20260905/20260905-160800_the-curve-that-changed-the-answer.kyri) | 2.81x at six ships; steal 0.059%. |
 | `20260905.155840` | [two ships, and what a restart must not lose](20260905/20260905-155840_two-ships-and-what-a-restart-must-not-lose.kyri) | both launch commands. |
 | `20260905.155209` | [the looking was the limit](20260905/20260905-155209_the-looking-was-the-limit.kyri) | five live forecasts found by a meter; four cores answer the six-ship question. |
 | `20260905.154019` | [the factory and the friendly skip](20260905/20260905-154019_the-factory-and-the-friendly-skip.kyri) | Mantra gets guards; the generator stops lying. |
