@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `e8e62349f4` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `52d911c288` -- HEAD's parent, resolvable everywhere (%401).
 
 **Now.** **A guard can check what a line says and never how many times the page says it.**
 
@@ -83,40 +83,43 @@ ELDER tree's `GNUPGHOME`, so a tree holding its own key could not sign. The shim
 maintainer has parked**. A gated red books apart; a pass whose reds are all gated writes its
 receipt naming them. **The gate vocabulary is this card's own custody list, read at scan time.**
 **Shelved:** eleven rows -- [`the recital`](archive/REDS-fold-recital.md).
-**`%414`-`%416` CLOSED**, each row carrying its account. **`%414`:** ai-jail and claude both own
-`--verbose`; the flags moved inside `tools/l/fleet_lap.sh`, and the loop stops after three laps
-dying under ten seconds. **A wrapper inherits its wrapper's namespace.** **`%415`:** `claude login`
-writes to the HOST's home and `--private-home` replaces it -- the launcher seeds and refreshes per
-tree, **one login per pier**. **`%416`:** `unheard_guard` swallowed both awk passes, one reading
-`choirs=0` against a ceiling of 37 -- **a gate at zero fails safe when its instrument dies; a
-ceiling fails UNSAFE**, and this tree holds far more ceilings. `instrument_refusal` gates that at
-**zero from birth**; a deliberate toleration says so at the site. **The difference between a
-decision and a swallow is whether anyone wrote it down.**
+**`%414`-`%416` CLOSED**, whole on the
+[wrapper-and-sandbox shelf](archive/REDS-what-a-wrapper-and-a-sandbox-inherit-rows-414-416.md):
+a flag namespace shared with the sandbox, a home the sandbox replaces, and an instrument whose
+silence a ratchet read as good news. **A gate at zero fails safe when its instrument dies; a
+ceiling fails UNSAFE**, and this tree holds far more ceilings.
 **The utility yonder** (amended) -- **POSIX is not this project's floor, it is the dependency the
 project exists to leave.** Caravan is a root task on **seL4's userlevel side**: syscalls, no shell,
-no awk. The count is a **re-grow estimate** -- 1,958 `grep`, 645 `sed`, 434 `awk` of Rye somebody
-must write -- joined to the elder
-[`useful-utilities`](../external-research/yonder/20260617-201612_useful-utilities.md), the same
-list from the far end.
-**dawk FETCHED `20260905.080810`** -- `gratitude/dawk`, submodule, **MIT** from its own text; pin
-and vendored licenses in the catalogue, thanks at
+no awk. The count is a **re-grow estimate**, joined to the elder
+[`useful-utilities`](../external-research/yonder/20260617-201612_useful-utilities.md).
+**dawk FETCHED `20260905.080810`** -- `gratitude/dawk`, submodule, **MIT**; thanks at
 [`triallax-dawk`](../gratitude/triallax-dawk.md). **Built with our own vendored Zig 0.16.0**, one
-command -- 8,293 lines of Zig over 42 files (the "83% C++" a summary reported is vendored
-`simdutf`). **The crux answered NO, the cheap answer we came for:** run our own `utf8_valid.awk`
-and it says *encountered invalid UTF-8*, exit 1. It is **Unicode-native**; POSIX awk in the C
-locale is byte-oriented. **The spec is not "a POSIX awk" but "one that keeps the C-locale byte
-view"** -- never written down here until an honest program refused it. Next: uutils - toybox -
-sbase/ubase - ripgrep; each clone is your hand.
-**`%418` CLOSED -- an inherited value is not a checked value.** `birth_a_clone` copied four signing
-values and asserted each `git config` call; **`git config user.name ""` succeeds**, so pheromone was
-born unable to name its author. Its `gpg.program` names `grain-harvest`, renamed `20260904` -- and
-`tracked_link_scan` cannot reach an untracked `.git/config`. All four refuse empty now, and
-`gpg.program` is `test -x`'d before it is seated.
-**GATE 3, NOT TAKEN:** `.gnupg-rye/` holds `private-keys-v1.d/`. Letting pheromone sign means
-placing **secret key material** in a third directory -- yours alone. **The one-field design assumes
-every clone reads one directory; the enclosure gives each tree only itself**, so per-tree GNUPGHOME
-is the only shape that works jailed. Pheromone: **11 files staged, green, message at
-`.git/GRAIN_PREPARED_MSG`**; its unshared rows renumber above `%418`.
+command, 8,293 lines of Zig (the "83% C++" a summary reported is vendored `simdutf`). **The crux
+answered NO:** our own `utf8_valid.awk` gets *encountered invalid UTF-8*, exit 1. It is
+**Unicode-native**; POSIX awk in the C locale is byte-oriented. **The spec is not "a POSIX awk" but
+"one that keeps the C-locale byte view."**
+**uutils FETCHED `20260905.100012`** -- `gratitude/uutils-coreutils`, submodule, **MIT** from its own
+text; thanks at [`uutils-coreutils`](../gratitude/uutils-coreutils.md). **109 utilities**, held to
+*matching GNU's output exactly*, differences treated as bugs, passing count published. **All 17 our
+guards lean on hardest**, including `mktemp`/`readlink`/`stat`, outside POSIX and hardest to answer
+portably. **The boundary is the finding:** `grep`/`sed`/`awk`/`find` are elsewhere by design
+(findutils, own projects), so the re-grow is **two undertakings** -- **5,380** of our sites covered
+here, **3,129** in the tools carrying whole languages. Next: toybox - sbase/ubase - ripgrep.
+**`%421` CLOSED -- a newer file is not a better credential.** `%415`'s clause read `-nt` and nothing
+else. **Signing out REWRITES the credential** -- seven fields, valid JSON, **empty tokens**,
+`expiresAt` at the epoch -- so a logged-out file is the NEWEST on disk and outranks a working one.
+Measured: host **509 bytes**/108-char tokens/valid; petrichor **281 bytes**/**zero-length**
+tokens/**12 min newer**, which is why it answered *OAuth session expired* five laps until `%414`'s
+brake stopped it. **Usability now reads before freshness**; a logged-out host says so once rather
+than copying emptiness onward. Petrichor went 281-and-dead to **509-and-live**. **Freshness is not
+fitness**, and a replication clause spreads a wrong reading rather than keeping it.
+**`%417`/`%418` CLOSED**, on the [what-a-copy-carries shelf](archive/REDS-what-a-copy-carries-rows-417-418.md):
+**copying is the most invisible way to be wrong -- every step reports success and the error is in
+the payload.** `birth_a_clone` refuses an empty inherited value now, and `test -x`'s the wrapper.
+**Pheromone CAN SIGN now** -- your two config commands did it (wrapper tested, 119-byte signature).
+Its block is only that `git pull` refuses over an 11-file staged index: **commit first, then
+`--rebase`** (its rows renumber). **Gate 3 stands:** `.gnupg-rye/` holds `private-keys-v1.d/`, and
+**per-tree GNUPGHOME is the only shape that works jailed** -- a custody call, yours.
 **52 external utilities across 2,969 tool scripts. `rg`: 992 sites, ONE probe. `mktemp`: 353
 sites, none -- and not POSIX since 2008.** The tree already wrote the cure,
 `tools/fixtures/s/shell_portable.sh`, and **38 files source it, 1.3%.** The design names three
@@ -172,19 +175,15 @@ spent one morning on the same line. **Should an OPEN row carry a claim -- a seat
 start rather than at landing?**
 **`%409` CLOSED** -- one seat table, six copies, two drifted; whole on the
 [rows 408-410 shelf](archive/REDS-what-nothing-misbehaved-over-rows-408-410.md).
-**`%408` CLOSED -- the mount that could only happen once it had already happened.**
-`agent-jail.sh` bound `~/.claude.json` only when `loops/claude/dot-claude.json` existed, and the
-one process that writes it is the jailed Claude, into the tmpfs `--private-home` discards. So
-onboarding ran on **every** jailed launch, its picker previewing a light scheme that reads as
-invisible text. Seeded and bound. **NixOS is not at fault** -- the jail drops `TERMINFO_DIRS` and
-`LOCALE_ARCHIVE`, both harmless, measured. `agent_jail` was red and unrostered; now rostered.
+**`%408` CLOSED** -- `agent-jail.sh` bound `~/.claude.json` only when a file **only the jailed
+Claude could write** already existed, into a tmpfs the exit discards, so onboarding ran on every
+launch and its picker previewed a light scheme reading as invisible text. Seeded and bound.
+**NixOS was not at fault**, measured.
 **Fleet:** three Earth trees, six aether seats **parked**. Charter
 [`seat-table-written-once`](../active-designing/20260904-175200_the-seat-table-written-once.md)
-**steps 1-4 LANDED**: one table, one reader, one launcher. **The molt breach is enforced** -- a
-living launcher filename carrying a modality word without the elder banner reds at zero, so the
-guard catches the NEXT one. Elders keep every byte, Class H. Captain prompt molted to
-[`20260904-193221`](../expanding-prompts/20260904-193221_incense-the-field-captain-two-doors.md):
-the pier's tree is `~/grain-incense`, and there is no `~/grain` on Dallas.
+**steps 1-4 LANDED**. **The molt breach is enforced** -- a living launcher filename carrying a
+modality word without the elder banner reds at zero, so the guard catches the NEXT one. Captain
+prompt molted `20260904-193221`: the pier's tree is `~/grain-incense`, no `~/grain` on Dallas.
 **Yours, two (%417).** A **guided map** fits neither shape offered: `MAP.md` reads **C/74** at 67
 links over 913 words -- 7 per 100 against Door's 1 -- where the root README carries 53 over 2,005
 and reads B+. The index door frees the rate only under 100 words, a link list rather than a walk.
@@ -306,6 +305,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260905.090338` | The stash that held a finished lap | [log](../session-logs/date/20260905/20260905-090338_the-stash-that-held-a-finished-lap.kyri) |
+| `20260905.100421` | uutils, and a newer file that was worse | [log](../session-logs/date/20260905/20260905-100421_uutils-and-a-newer-file-that-was-worse.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)

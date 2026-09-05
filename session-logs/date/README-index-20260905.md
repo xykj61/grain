@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260905.100421` | [uutils, and a newer file that was worse](20260905/20260905-100421_uutils-and-a-newer-file-that-was-worse.kyri) | a logged-out credential outranked a live one |
 | `20260905.090338` | [The stash that held a finished lap](20260905/20260905-090338_the-stash-that-held-a-finished-lap.kyri) | verified, renumbered off a collision, landed |
 | `20260905.083758` | [The guard that watched an emptied room](20260905/20260905-083758_the-guard-that-watched-an-emptied-room.kyri) | flat_logs=0 read green for nine days |
 | `20260905.081211` | [dawk answers the crux, and it answers no](20260905/20260905-081211_dawk-answers-the-crux.kyri) | a byte tool cannot stand on a reader that insists on text |
