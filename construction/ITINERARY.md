@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Status:** Living pin -- operator carry card
-**Bound:** under `living_pin_max_bytes` (24576)
+**Bound:** under `living_pin_max_bytes[construction/ITINERARY.md]` (32768, derived and seated `20260904.204611` on Keaton's word -- 16 standing directives x 512, plus 8,192 for the live front, plus 16,384 for the durable spine; the general bound stays 24,576)
 **Voice:** Kyri
 
 ## INNER LOOP -- live directives the running loop applies each lap (seated `20260816.214652`, condensed `20260824.060012`)
@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `5bd1a43e71` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `1565a388bd` -- HEAD's parent, resolvable everywhere (%401).
 
 **Now.** **A rule written six times is a rule six files may quietly come to disagree about.**
 
@@ -83,6 +83,21 @@ again, and a pass whose reds are all gated writes its receipt disclosing what it
 **The gate vocabulary is this card's own custody list, read at scan time**; an unreadable card
 refuses every gate. Live: **106 green, 1 red, 4 gated**.
 **Shelved:** five rows -- see [`the fold recital`](archive/REDS-fold-recital.md).
+**The card's bound is raised to 32,768 on Keaton's word** (`20260904.204812`), derived rather than granted:
+16 standing directives x 512, plus 8,192 for the live front, plus 16,384 for the durable spine --
+measured at 7,008 / 5,161 / 12,406 on the day. **The general bound stays 24,576.** The card is read
+WHOLE every lap, so this costs ~2k tokens per lap per body and the law names that cost; the
+measured alternative was seventeen condensations in one session to fit three rows and a launcher.
+`SHRED_PREP` is NOT raised -- it folded a completed shed instead, because a finished section
+belongs on a shelf and only a page whose living parts outgrew the number earns a new one.
+**`%410` CLOSED -- an exception no guard had ever been asked to honor.** `equinox_e123`'s scan read
+the bound fixture **bare**, once, and measured every pin against that one answer. It stood eleven
+days because the only excepted page, `session-logs/README.md`, is 7,817 bytes and passed under the
+general bound anyway. **A conditional only one input reaches has been tested by nothing.**
+**Worth your word, still unanswered** (condensed out under the old ceiling `20260904`, carried
+back now that there is room): nothing in the ledger shows a red is *being worked*, so two hands
+spent one morning on the same line. **Should an OPEN row carry a claim -- a seat and a stamp, at
+start rather than at landing?**
 **`%409` CLOSED -- the fleet's only real datum, written six times, two already drifted.**
 `seat -> tree -> engine` stood in six places across two files: the loop admitted **six** seat names
 where the re-arm reported **nine**, and the elder remap seated that morning lived in one and never
@@ -223,6 +238,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260904.193221` | Nine printers become one, and the breach gets a guard | [log](../session-logs/date/20260904/20260904-193221_nine-printers-become-one.kyri) |
+| `20260904.204812` | The card earns its own bound, and an untested exception | [log](../session-logs/date/20260904/20260904-204812_the-card-earns-its-bound.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)
