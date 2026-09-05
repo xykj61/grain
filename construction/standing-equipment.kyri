@@ -1012,6 +1012,16 @@ path tools/f/fleet_key_locality_witness.rish
 tier lap
 seated 20260905.152000
 
+# fleet_round_open -- the script whose one verb is `reset --hard`, run on three live trees roughly
+# every twenty minutes, and which had no control at all until REDS %428. It modeled no interrupted
+# rebase, so a conflicted worktree read dirty and got stashed, a detached HEAD got classified, and
+# the reset abandoned the rebase leaving the real branch behind. Against the elder script the
+# control fails 5 of its 14 legs. Destructive authority earns a standing guard, not on-touch care.
+guard fleet_round_open
+path tools/f/fleet_round_open_witness.rish
+tier lap
+seated 20260905.153500
+
 # agent_jail -- the launcher every unattended Linux lap runs through, and the guard that proves it.
 # It stood UNROSTERED and RED at its first leg while the launcher worked perfectly: it grepped the
 # dry-run plan for `.claude-state` and `.cursor-agent-state`, the directories the `20260827`
