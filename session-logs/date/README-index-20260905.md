@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260905.110633` | [The name a veteran still likes](20260905/20260905-110633_the-name-a-veteran-still-likes.kyri) | 241 authored names, not one a coinage |
 | `20260905.104613` | [toybox answers dawk's question](20260905/20260905-104613_toybox-answers-dawks-question.kyri) | the byte-view flag, in the next project we read |
 | `20260905.100421` | [uutils, and a newer file that was worse](20260905/20260905-100421_uutils-and-a-newer-file-that-was-worse.kyri) | a logged-out credential outranked a live one |
 | `20260905.090338` | [The stash that held a finished lap](20260905/20260905-090338_the-stash-that-held-a-finished-lap.kyri) | verified, renumbered off a collision, landed |
