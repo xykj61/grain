@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `80047535fd` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `3239ca9798` -- HEAD's parent, resolvable everywhere (%401).
 
 **Now.** **A guard can check what a line says and never how many times the page says it.**
 
@@ -90,27 +90,27 @@ silence a ratchet read as good news. **A gate at zero fails safe when its instru
 ceiling fails UNSAFE**, and this tree holds far more ceilings.
 **The utility yonder** (amended) -- **POSIX is not this project's floor, it is the dependency the
 project exists to leave.** Caravan is a root task on **seL4's userlevel side**: syscalls, no shell,
-no awk. The count is a **re-grow estimate**, joined to the elder
-[`useful-utilities`](../external-research/yonder/20260617-201612_useful-utilities.md).
-**dawk FETCHED `20260905.080810`** -- `gratitude/dawk`, submodule, **MIT**; thanks at
-[`triallax-dawk`](../gratitude/triallax-dawk.md). **Built with our own vendored Zig 0.16.0**, one
-command, 8,293 lines of Zig. **The crux answered NO:** our own `utf8_valid.awk` gets *encountered
-invalid UTF-8*. It is **Unicode-native**. **The spec is not "a POSIX awk" but "one that keeps the
-C-locale byte view."**
-**uutils FETCHED `20260905.100012`** -- `gratitude/uutils-coreutils`, submodule, **MIT**; thanks at
-[`uutils-coreutils`](../gratitude/uutils-coreutils.md). **109 utilities**, held to *matching GNU's
-output exactly*, differences treated as bugs. **All 17 our guards lean on hardest**, including
-`mktemp`/`readlink`/`stat`, outside POSIX. **The boundary is the finding:** `grep`/`sed`/`awk`/`find`
-are elsewhere by design, so the re-grow is **two undertakings** -- **5,380** sites here, **3,129** in
-the tools carrying whole languages.
-**toybox FETCHED `20260905.104613`** -- `gratitude/toybox`, submodule, **0BSD** read from its own
-LICENSE (no attribution clause at all; the website's "BSD-licensed" is loose). Thanks at
-[`toybox`](../gratitude/toybox.md). **257 commands in one binary**, sorted by maturity --
-`pending/` is *awaiting review*, default off, which is honesty worth as much as the code. It
-answers **10,854 of our 11,971 sites** and **holds all four uutils leaves**: `grep`/`sed`/`find` in
-`posix/`, `awk` in `pending/`. **And it answers dawk's question:** its awk counts codepoints like
-dawk's -- then carries **`-b : count bytes, not characters`**. The requirement dawk taught us to
-name is a flag in the next project we read. Next: sbase/ubase - ripgrep.
+no awk. The count is a **re-grow estimate**.
+**Three fetched, each thanked and catalogued in `gratitude/README.md`** -- **dawk** (Zig, MIT,
+`20260905.080810`), **uutils** (Rust, MIT, `.100012`), **toybox** (**0BSD**, `.104613`), every
+license read from its own file. **The re-grow is two undertakings:** uutils answers the coreutils
+family (**5,380** of our sites) and correctly leaves `grep`/`sed`/`awk`/`find` (**3,129**) to the
+projects that own them; toybox holds all four and answers **10,854 of 11,971** in one binary.
+**And the crux answered:** dawk refuses our own `utf8_valid.awk` because it is **Unicode-native**,
+which named a requirement we had never written -- *keep the C-locale byte view* -- and toybox's awk
+carries exactly that as **`-b : count bytes, not characters`**. Next: sbase/ubase - ripgrep; each
+clone is your hand.
+**The naming study** (`20260905.110633`) --
+[`the-name-a-veteran-still-likes`](../external-research/yonder/20260905-110633_the-name-a-veteran-still-likes.md):
+should Grain's utilities wear the shorthand devs know, or their own names? **The premise is mostly
+answered by practice -- 241 of 241 authored files in Caravan/Comlink/Mantra/Tally are common English
+or plain compounds, not one a coinage.** So the choice is **familiar used honestly versus familiar
+used misleadingly**. The rule: **wear the common name when you keep its promise; take a new name the
+moment you do not**, tested by *would a dev assuming the familiar meaning write a correct program?*
+The awk finding is exactly a NO -- codepoints where POSIX counts bytes -- so it does not get to be
+called `awk`. **Aliases stay rare:** `alias-sameness`'s conditions fail when behaviours differ, and
+two names for one tool is a coin flip an agent makes every call with no feedback.
+**Single-stranded refuses the shortlist.** **It names nothing**, by its own argument.
 **`%421` CLOSED -- a newer file is not a better credential.** `%415`'s clause read `-nt` alone, and
 **signing out REWRITES the credential** with empty tokens -- so a logged-out file is the NEWEST on
 disk and outranks a working one (host 509 bytes/valid; petrichor 281/**zero-length**/12 min newer).
@@ -119,10 +119,8 @@ spreads a wrong reading rather than keeping it.
 **`%417`/`%418` CLOSED**, on the [what-a-copy-carries shelf](archive/REDS-what-a-copy-carries-rows-417-418.md):
 **copying is the most invisible way to be wrong -- every step reports success and the error is in
 the payload.** `birth_a_clone` refuses an empty inherited value now, and `test -x`'s the wrapper.
-**Pheromone CAN SIGN now** -- your two config commands did it (wrapper tested, 119-byte signature).
-Its block is only that `git pull` refuses over an 11-file staged index: **commit first, then
-`--rebase`** (its rows renumber). **Gate 3 stands:** `.gnupg-rye/` holds `private-keys-v1.d/`, and
-**per-tree GNUPGHOME is the only shape that works jailed** -- a custody call, yours.
+**All three ships sail** (`20260905`). **Gate 3 stands:** `.gnupg-rye/` holds
+`private-keys-v1.d/`, and **per-tree GNUPGHOME is the only shape that works jailed** -- yours.
 **52 external utilities across 2,969 tool scripts. `rg`: 992 sites, ONE probe. `mktemp`: 353
 sites, none -- and not POSIX since 2008.** The tree already wrote the cure,
 `tools/fixtures/s/shell_portable.sh`, and **38 files source it, 1.3%.** The design names three
@@ -308,6 +306,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260905.104613` | toybox answers dawk's question | [log](../session-logs/date/20260905/20260905-104613_toybox-answers-dawks-question.kyri) |
+| `20260905.110633` | The name a veteran still likes | [log](../session-logs/date/20260905/20260905-110633_the-name-a-veteran-still-likes.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)
