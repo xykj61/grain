@@ -1,5 +1,7 @@
 # Checkpoints -- the walk-back markers before every debride
 
+**Checkpoint `20260905.093342` -- walk-back nib `e8e62349f4`.** *Swept:* `construction/ITINERARY.md`, which stood at its 32,768 ceiling as `%419` and `%420` landed. Two CLOSED card accounts folded to one pointer line, and the `%412`/`%413` pair condensed into one paragraph holding every number. About 1,550 bytes. *What waits there, worth recalling:* `%411`'s reading that a gap nothing misbehaves over is a gap no meter finds -- four behaviors every ship performed with no rule behind them, measured across the 49 rules; and `%410`'s that a conditional only one input reaches has been tested by nothing, which stood eleven days because the one excepted page passed under the general bound anyway. Both rows stand whole in [`archive/REDS-what-nothing-misbehaved-over-rows-408-410.md`](archive/REDS-what-nothing-misbehaved-over-rows-408-410.md) and [`archive/REDS-what-a-wrapper-inherits-rows-411-413.md`](archive/REDS-what-a-wrapper-inherits-rows-411-413.md); only the card's retelling was folded.*
+
 **Language:** EN
 **Status:** Living ledger -- append-only
 **Voice:** Kyri

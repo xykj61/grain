@@ -11,6 +11,8 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260905.090338` | [The stash that held a finished lap](20260905/20260905-090338_the-stash-that-held-a-finished-lap.kyri) | verified, renumbered off a collision, landed |
+| `20260905.083758` | [The guard that watched an emptied room](20260905/20260905-083758_the-guard-that-watched-an-emptied-room.kyri) | flat_logs=0 read green for nine days |
 | `20260905.081211` | [dawk answers the crux, and it answers no](20260905/20260905-081211_dawk-answers-the-crux.kyri) | a byte tool cannot stand on a reader that insists on text |
 | `20260905.073903` | [POSIX is the floor we are leaving](20260905/20260905-073903_posix-is-the-floor-we-are-leaving.kyri) | the target has no shell; the count is a re-grow estimate |
 | `20260905.072118` | [A ratchet passes on a low number](20260905/20260905-072118_a-ratchet-passes-on-a-low-number.kyri) | a dead instrument reads as the healthiest tree ever measured |

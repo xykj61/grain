@@ -1,26 +1,44 @@
-# tools/l/log_has_a_row_witness.rish -- every flat log has a way in.
+# tools/l/log_has_a_row_witness.rish -- every log has a way in, wherever the law puts it.
 #
-# WHY THIS RUNG. The session-logs law says a log gets a row in `session-logs/README.md`, so the room
-# and its index describe one set. On `20260824` the new 192-byte row bound refused a row three
-# times, correctly, and **twice the commit shipped anyway** -- the row-writing step and the commit
-# were separate commands, so a refusal in the first did not stop the second. A log with no row is a
-# record nobody reaches from the front door, and nothing in this tree could see one.
+# WHY THIS RUNG. The session-logs law says a log gets a row in the index that promises to hold it,
+# so the room and its index describe one set. On `20260824` the 192-byte row bound refused a row
+# three times, correctly, and **twice the commit shipped anyway** -- the row-writing step and the
+# commit were separate commands, so a refusal in the first did not stop the second. A log with no
+# row is a record nobody reaches from the front door, and nothing in this tree could see one.
 #
-# The row bound was doing its job every time. This rung is the other half: a refusal has to stop the
-# lap rather than merely decline to write. A lantern that fires twice becomes a loom, and this one
-# fired three times in four commits.
+# WHY IT WAS REPOINTED, `20260905`. This rung watched `session-logs/*.kyri` -- the FLAT room -- and
+# its control proved a folded log free "because its row is on the day's shelf." That exemption was
+# correct and its destination was never checked. Then `20260827.171500` seated BORN ON ITS DAY'S
+# SHELF: a log is written straight to `date/YYYYMMDD/`, so the flat room is empty by design. The
+# exemption grew to cover every log in the tree, the scan measured `flat_logs=0`, and it reported
+# `verdict=ok` for nine days while four logs stood unreachable from any front door --
+# `20260828.114450`, `20260829.095622`, `20260903.234946`, `20260904.095307`.
 #
-# WHAT IS PROVEN, on metal. Every `.kyri` and `.bron` log sitting flat in `session-logs/` is named by
-# a link in the pin -- 41 of 41 at seating, zero missing. Twelve behaviors on planted rooms in a
-# throwaway pen: a row present passing free, a row absent bitten and named and counted, one missing
-# among three found rather than a majority carrying the room, a `.bron` counted beside a `.kyri`, a
-# FOLDED log free and uncounted because its row is on its day's immutable shelf, a substring refused
-# so `_one.kyri` cannot answer for `_one-more.kyri`, an empty room read as honest rather than as an
-# error, and an absent pin refused rather than read as zero logs and called clean.
+# This is the shape REDS %381 found in this rung's own sibling: `index_row_bound` read the pin
+# alone, measured `rows=0`, and passed for four days while the open shelf carried 87 rows for 64
+# logs. One law moved both guards' subject; one guard was repointed and one was not.
 #
-# WHAT PASSES FREE, by named rule. A folded log. Its row moved to `date/README-index-YYYYMMDD.md`
-# when its file moved, and `tools/i/index_fold_witness.rish` holds that pairing. This watches the
-# flat room, which is the one a lap appends to.
+# AN EMPTY POPULATION IS THE TELL, and it is the same lesson %416 booked yesterday one room over: a
+# gate held at zero cannot tell a clean collection from a dead instrument, because both answer zero,
+# and zero is the answer everyone wants to hear. So this rung floors its own reach -- a tree with no
+# logs at all refuses, and a scan whose awk died without printing refuses rather than letting every
+# empty reading be read as a zero. The second refusal fired on its first run, on an unexpanded glob.
+#
+# WHAT IS PROVEN, on metal. Every log under `session-logs/date/YYYYMMDD/` stamped on or after the
+# born-on-shelf law is named by a link in an index; every flat log is named by a link in the pin;
+# and the living pin describes the shelves it points at -- every day shelf carries a pin row, the
+# newest shelf is the day marked open, and a closed day's count equals its shelf's rows. 4,056 logs
+# across 44 shelves in 0.17s, one find and one awk rather than a grep per log.
+#
+# WHY NO CLOSED-SHELF EXEMPTION, where the sibling has one. `index_row_bound` passes a closed shelf
+# free because its faults -- a row over its bound, a duplicate stamp -- are repaired only by
+# rewriting bytes a closed shelf has promised to keep. A MISSING row is repaired by adding one, and
+# accretion is what accrete-never-break asks for rather than what it forbids.
+#
+# WHAT IS RATCHETED, never gated. Logs on days BEFORE the law, whose shelves were written by bulk
+# folds that moved files without carrying every row. **216** stand at seating, 211 of them in the
+# `20260712`-`20260717` block, which is reached in PART: no DAY-named index covers it, while the
+# aggregate shelf `README-index-through-20260721.md` carries 162 of its 373 logs. A falling ceiling.
 #
 # WHAT IS NOT PROVEN. That a row says anything useful about its log. Presence is the check, and the
 # 192-byte row bound is what keeps the presence from becoming a paragraph.
@@ -31,32 +49,61 @@
 #   rishi/bin/rishi run tools/l/log_has_a_row_witness.rish
 
 say "log-has-a-row: Language EN -- a record nobody can reach from the front door is a record nobody has."
-say "log-has-a-row: Style Gauge -- the room and its index describe one set, and this counts the halves."
-say "log-has-a-row: Lens TAME -- a refusal must stop the lap, rather than quietly decline to write."
+say "log-has-a-row: Style Gauge -- the room, the shelf, and the pin describe one set, and this counts all three."
+say "log-has-a-row: Lens TAME -- an empty population is the tell, so the scan floors its own reach."
 
 let scan = run ["sh" "tools/fixtures/l/log_has_a_row_scan.sh"]
-assert scan.ok else "log-has-a-row: a log sits flat in the room with no row in the index that promises to hold it"
+assert scan.ok else "log-has-a-row: a log stands with no row in the index that promises to hold it, or the pin has drifted from the shelves it describes"
 say scan.out
-assert scan.out contains "logs_without_a_row=0" else "log-has-a-row: every flat log must be named by the pin"
+assert scan.out contains "post_law_logs_without_a_row=0" else "log-has-a-row: every log born on a shelf must carry a row on it"
+assert scan.out contains "flat_logs_without_a_row=0" else "log-has-a-row: every flat log must be named by the pin"
+assert scan.out contains "pin_shelves_missing=0" else "log-has-a-row: every day shelf must carry a row in the living pin"
+assert scan.out contains "pin_count_drift=0" else "log-has-a-row: a closed day's pin count must equal its shelf's rows"
 assert scan.out contains "verdict=ok" else "log-has-a-row: the scan must balance before it is believed"
-say "field GREEN -- every flat log is reachable from the front door"
+say "field GREEN -- every log has a way in, and the pin describes the shelves it points at"
 
 let control = run ["sh" "tools/fixtures/l/log_has_a_row_control.sh"]
 assert control.ok else "log-has-a-row: the control must complete"
 say control.out
-assert control.out contains "row_present_free=yes" else "log-has-a-row: a log with its row must pass free"
+assert control.out contains "row_present_free=yes" else "log-has-a-row: a flat log with its row must pass free"
 assert control.out contains "log_counted=yes" else "log-has-a-row: a flat log must be counted"
-assert control.out contains "no_row_bitten=yes" else "log-has-a-row: a log with no row must red"
+assert control.out contains "no_row_bitten=yes" else "log-has-a-row: a flat log with no row must red"
 assert control.out contains "no_row_counted=yes" else "log-has-a-row: the count must name how many logs stand unreachable"
 assert control.out contains "no_row_named=yes" else "log-has-a-row: an unreachable log must be named, so its row can be written"
 assert control.out contains "one_of_three_found=yes" else "log-has-a-row: one missing among three must be found, never carried by a majority"
 assert control.out contains "bron_counted=yes" else "log-has-a-row: a .bron log counts beside a .kyri one"
-assert control.out contains "folded_free=yes" else "log-has-a-row: a folded log keeps its row on its day's shelf and needs none here"
+assert control.out contains "folded_free=yes" else "log-has-a-row: a folded log needs no row in the flat pin"
 assert control.out contains "folded_uncounted=yes" else "log-has-a-row: a folded log must not be counted against the flat room"
 assert control.out contains "substring_refused=yes" else "log-has-a-row: a substring must never answer for a filename"
-assert control.out contains "empty_room_free=yes" else "log-has-a-row: an empty room is honest rather than an error"
 assert control.out contains "absent_pin_refused=yes" else "log-has-a-row: an absent pin must refuse rather than read zero logs and call it clean"
-assert control.out contains "control_verdict=ok" else "log-has-a-row: the control must agree with itself"
-say "twelve behaviors proven on planted rooms, both sides of every refusal"
+say "twelve elder behaviors hold, one of them inverted by the law that moved"
 
-say "GREEN: log-has-a-row -- every flat log has a way in."
+assert control.out contains "shelved_row_free=yes" else "log-has-a-row: a shelved log with its row must pass free"
+assert control.out contains "shelved_counted=yes" else "log-has-a-row: a shelved log must be counted"
+assert control.out contains "shelf_gap_bitten=yes" else "log-has-a-row: a post-law log with no row must red"
+assert control.out contains "shelf_gap_counted=yes" else "log-has-a-row: the post-law gap must be counted"
+assert control.out contains "shelf_gap_named=yes" else "log-has-a-row: a post-law gap must be named by its day and file"
+assert control.out contains "shelf_one_of_three=yes" else "log-has-a-row: one gap among three on a shelf must be found"
+assert control.out contains "elder_counted=yes" else "log-has-a-row: a pre-law gap must be counted as elder"
+assert control.out contains "elder_not_post=yes" else "log-has-a-row: a pre-law gap must never be charged to the post-law gate"
+assert control.out contains "elder_free_under_ceiling=yes" else "log-has-a-row: elder gaps under the ceiling must pass free"
+assert control.out contains "elder_ceiling_free=yes" else "log-has-a-row: the elder ceiling must be free at its own number"
+assert control.out contains "elder_ceiling_bitten=yes" else "log-has-a-row: the elder ceiling must bite one past it, so no override exists"
+assert control.out contains "empty_room_refused=yes" else "log-has-a-row: an empty room must refuse, where the elder control let it pass"
+assert control.out contains "empty_tree_refused=yes" else "log-has-a-row: a tree with no logs must refuse rather than read as spotless"
+assert control.out contains "flat_only_tree_free=yes" else "log-has-a-row: a tree keeping its logs flat must pass free -- one floor, not two"
+assert control.out contains "no_logs_refused=yes" else "log-has-a-row: a shelf holding no logs must refuse"
+assert control.out contains "pin_gap_bitten=yes" else "log-has-a-row: a day shelf the pin never names must red"
+assert control.out contains "pin_gap_named=yes" else "log-has-a-row: an unnamed shelf must be named, so its pin row can be written"
+assert control.out contains "pin_drift_bitten=yes" else "log-has-a-row: a closed day whose count disagrees with its shelf must red"
+assert control.out contains "pin_drift_named=yes" else "log-has-a-row: a drifted count must print both numbers"
+assert control.out contains "pin_drift_repaired=yes" else "log-has-a-row: the repair must free the drift, so the gate is not a wall"
+assert control.out contains "open_day_count_exempt=yes" else "log-has-a-row: the open day gains a row every lap and must not be count-checked"
+assert control.out contains "pin_open_stale_bitten=yes" else "log-has-a-row: a pin marking yesterday open while today stands must red"
+assert control.out contains "pin_open_repaired=yes" else "log-has-a-row: naming today open must free the reading"
+assert control.out contains "gathering_read_free=yes" else "log-has-a-row: a through- gathering must be read for its links"
+assert control.out contains "gathering_links_counted=yes" else "log-has-a-row: a gathering's links must answer for the logs they name"
+assert control.out contains "control_verdict=ok" else "log-has-a-row: the control must agree with itself"
+say "thirty-six behaviors proven on planted rooms, shelves and pins, both sides of every refusal"
+
+say "GREEN: log-has-a-row -- every log has a way in, and the pin describes the shelves."
