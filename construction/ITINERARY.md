@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `3aad0c2020` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `60776bcad5` -- HEAD's parent, resolvable everywhere (%401).
 
 **Now.** **A rule written six times is a rule six files may quietly come to disagree about.**
 
