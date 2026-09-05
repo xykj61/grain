@@ -57,21 +57,21 @@ seat bakery
 tree grain-bakery
 engine claude
 lane core infrastructure, Lindy-first and crux-first -- and the fleet's own friction
-status berthed
+status live
 seated 20260904.214754
 
 seat diffuser
 tree grain-diffuser
 engine claude
 lane moonshots and whitepaper research -- toroidal, energy-saving, radial-polar; in tandem with bakery
-status berthed
+status live
 seated 20260904.214754
 
 seat grass
 tree grain-grass
 engine claude
 lane the four auditing passes -- New Gauge, Civic Style, foundations, TAME Guidance
-status berthed
+status live
 seated 20260904.214754
 
 # -- COPAL and PATCHOULI, seated 20260905.164639 on Keaton's word. Two more Earth aromas, and
@@ -84,6 +84,13 @@ seated 20260904.214754
 # The lanes are drawn by TERRITORY rather than by topic, because two ships wanting the same files
 # serialize however many cores the pier has. Copal takes the vessels, patchouli takes the core.
 #
+# ALL EIGHT EARTH SEATS READ `live` FROM `20260905.175234`, when the pier grew to 8 vCPU and 16 GB and
+# Keaton asked for eight ships. `status` says whether the fleet sails a seat today, and these five
+# are about to be. It also earns each of them a STAGGER SLOT: `fleet-loop.sh` reads its offset from
+# the LIVE roster, so a berthed ship would have taken slot 1 alongside incense and never staggered
+# at all -- five ships opening their laps in the same second is the one shape the offset exists to
+# prevent. The loop itself never read `status`; it checks only that the seat's tree is this tree.
+#
 # GRASS WAS NOT NARROWED, though a narrowing was proposed in the same breath as these two seats and
 # briefly written here. The proposal read grass's one-line lane -- *the four auditing passes* -- and
 # called it a collision with every other room. Its stanza governs that already, in two places: it
@@ -95,14 +102,14 @@ seat copal
 tree grain-copal
 engine claude
 lane amphora and the resins -- vessels, sealing, and what a record keeps when it is put away
-status berthed
+status live
 seated 20260905.164639
 
 seat patchouli
 tree grain-patchouli
 engine claude
 lane mantra and tally -- the weave and the bounded core; the base note the rest is built over
-status berthed
+status live
 seated 20260905.164639
 
 # -- the aether seats, parked. Their charter stays testimony at
