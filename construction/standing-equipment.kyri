@@ -161,8 +161,18 @@ guard tame_style_check
 path tools/t/tame_style_check.rish
 seated 20260707.164612
 
+# sow -- the projected seat is clean before it is ever public. MOVED TO `tier cadence`
+# `20260904` (REDS %412): at 230s it was the single most expensive guard on the roster, and unlike
+# the two repaired beside it that cost is INHERENT -- it projects the whole public seed and scrubs
+# every name from it, which is real work rather than a fork loop. What makes the slower clock
+# honest is what it guards: the publish is custody gate %1, a manual act at Keaton's hand, and
+# `publish-seed.sh` runs this witness in its own flow. So no lap can take the act this protects,
+# and running it on every lap spent 15% of the pass proving a gate that already stops everyone.
+# A tier is a cadence rather than an exemption: it still runs, on the fifth round, and the run card
+# records the clock that heard it.
 guard sow
 path tools/s/sow_witness.rish
+tier cadence
 seated 20260823.134057
 
 guard tool_path

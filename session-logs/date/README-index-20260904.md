@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260904.225911` | [The loop around the reading](20260904/20260904-225911_the-loop-around-the-reading.kyri) | 44,000 forks for a cheap reading; 1,510s to 1,003s |
 | `20260904.215903` | [Six ships, one baton](20260904/20260904-215903_six-ships-one-baton.kyri) | four behaviors every ship performed, and not one of them was a rule |
 | `20260904.204812` | [The card earns its own bound](20260904/20260904-204812_the-card-earns-its-bound.kyri) | an exception nothing had tested, since its one page never needed it |
 | `20260904.193221` | [Nine printers become one](20260904/20260904-193221_nine-printers-become-one.kyri) | the breach gets a guard that catches the next one, not the six already written |

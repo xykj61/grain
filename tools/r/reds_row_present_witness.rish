@@ -35,7 +35,19 @@ assert spine.out contains "gaps_or_dupes=0" else "reds-row-present: want a gaple
 # 3 -- agreement, row by row. Every row the spine counts is a row this reading finds. A single
 # missed row here means the two extraction rules have drifted, which is the whole failure this
 # guard exists to catch before a caller inherits it.
-let agree = run ["sh" "-c" "n=$(sh tools/fixtures/r/reds_ledger_monotone_scan.sh construction/archive/REDS-*rows-*.md construction/REDS.md | sed -n 's/^rows=//p'); i=1; miss=0; while [ $i -le $n ]; do sh tools/fixtures/r/reds_row_present.sh $i >/dev/null 2>&1 || miss=$((miss+1)); i=$((i+1)); done; echo rows=$n missing=$miss; test $miss -eq 0"]
+# COMPLETENESS IN ONE PASS (REDS %412). This leg asked the script for row 1, then row 2, to the
+# end of the ledger -- 411 invocations, each re-reading the whole spine, 177 of the roster's
+# 1,510 seconds. `--all` answers from the same sed expressions over the same spine file set, so
+# the authority is unchanged and the loop is gone.
+let agree = run ["sh" "-c" "n=$(sh tools/fixtures/r/reds_ledger_monotone_scan.sh construction/archive/REDS-*rows-*.md construction/REDS.md | sed -n 's/^rows=//p'); miss=$(sh tools/fixtures/r/reds_row_present.sh --all | awk -v n=\"$n\" '{seen[$1]=1} END{m=0; for(i=1;i<=n;i++) if(!(i in seen)) m++; print m}'); echo rows=$n missing=$miss; test $miss -eq 0"]
+
+# ...AND THE SINGLE-ROW PATH STAYS PROVEN, because that is the path seventeen scans call. A
+# completeness leg that only ever runs `--all` would leave the contract those scans depend on
+# tested by nothing -- the shape REDS %410 booked one room over. Four rows: the first, the last,
+# one in the middle, and one the spine does not hold.
+let single = run ["sh" "-c" "n=$(sh tools/fixtures/r/reds_row_present.sh --all | tail -1); mid=$((n/2)); ok=0; for r in 1 $mid $n; do sh tools/fixtures/r/reds_row_present.sh $r >/dev/null 2>&1 && ok=$((ok+1)); done; sh tools/fixtures/r/reds_row_present.sh $((n+1)) >/dev/null 2>&1 || ok=$((ok+1)); echo single_path_ok=$ok; test $ok -eq 4"]
+say single.out
+assert single.ok else "reds-row-present: the single-row path a scan calls no longer answers for first, middle, last, or past-the-end"
 say agree.out
 assert agree.ok else "reds-row-present: every counted row must be found by the spine reading"
 assert agree.out contains "missing=0" else "reds-row-present: want no row the two readings disagree on"
