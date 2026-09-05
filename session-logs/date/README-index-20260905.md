@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260905.183603` | [the wrap that hid a citation](20260905/20260905-183603_the-wrap-that-hid-a-citation.kyri) | a line break defeated rule four. |
 | `20260905.183107` | [the handoff](20260905/20260905-183107_the-handoff.kyri) | the carry card for the next incense session. |
 | `20260905.182306` | [a rule not applied is a window](20260905/20260905-182306_a-rule-not-applied-is-a-window.kyri) | the loops room is made at birth. |
 | `20260905.181517` | [the captain's view](20260905/20260905-181517_the-captains-view.kyri) | peers read-only, credentials denied. |
