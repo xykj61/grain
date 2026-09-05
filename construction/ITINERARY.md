@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `52d911c288` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `80047535fd` -- HEAD's parent, resolvable everywhere (%401).
 
 **Now.** **A guard can check what a line says and never how many times the page says it.**
 
@@ -94,25 +94,28 @@ no awk. The count is a **re-grow estimate**, joined to the elder
 [`useful-utilities`](../external-research/yonder/20260617-201612_useful-utilities.md).
 **dawk FETCHED `20260905.080810`** -- `gratitude/dawk`, submodule, **MIT**; thanks at
 [`triallax-dawk`](../gratitude/triallax-dawk.md). **Built with our own vendored Zig 0.16.0**, one
-command, 8,293 lines of Zig (the "83% C++" a summary reported is vendored `simdutf`). **The crux
-answered NO:** our own `utf8_valid.awk` gets *encountered invalid UTF-8*, exit 1. It is
-**Unicode-native**; POSIX awk in the C locale is byte-oriented. **The spec is not "a POSIX awk" but
-"one that keeps the C-locale byte view."**
-**uutils FETCHED `20260905.100012`** -- `gratitude/uutils-coreutils`, submodule, **MIT** from its own
-text; thanks at [`uutils-coreutils`](../gratitude/uutils-coreutils.md). **109 utilities**, held to
-*matching GNU's output exactly*, differences treated as bugs, passing count published. **All 17 our
-guards lean on hardest**, including `mktemp`/`readlink`/`stat`, outside POSIX and hardest to answer
-portably. **The boundary is the finding:** `grep`/`sed`/`awk`/`find` are elsewhere by design
-(findutils, own projects), so the re-grow is **two undertakings** -- **5,380** of our sites covered
-here, **3,129** in the tools carrying whole languages. Next: toybox - sbase/ubase - ripgrep.
-**`%421` CLOSED -- a newer file is not a better credential.** `%415`'s clause read `-nt` and nothing
-else. **Signing out REWRITES the credential** -- seven fields, valid JSON, **empty tokens**,
-`expiresAt` at the epoch -- so a logged-out file is the NEWEST on disk and outranks a working one.
-Measured: host **509 bytes**/108-char tokens/valid; petrichor **281 bytes**/**zero-length**
-tokens/**12 min newer**, which is why it answered *OAuth session expired* five laps until `%414`'s
-brake stopped it. **Usability now reads before freshness**; a logged-out host says so once rather
-than copying emptiness onward. Petrichor went 281-and-dead to **509-and-live**. **Freshness is not
-fitness**, and a replication clause spreads a wrong reading rather than keeping it.
+command, 8,293 lines of Zig. **The crux answered NO:** our own `utf8_valid.awk` gets *encountered
+invalid UTF-8*. It is **Unicode-native**. **The spec is not "a POSIX awk" but "one that keeps the
+C-locale byte view."**
+**uutils FETCHED `20260905.100012`** -- `gratitude/uutils-coreutils`, submodule, **MIT**; thanks at
+[`uutils-coreutils`](../gratitude/uutils-coreutils.md). **109 utilities**, held to *matching GNU's
+output exactly*, differences treated as bugs. **All 17 our guards lean on hardest**, including
+`mktemp`/`readlink`/`stat`, outside POSIX. **The boundary is the finding:** `grep`/`sed`/`awk`/`find`
+are elsewhere by design, so the re-grow is **two undertakings** -- **5,380** sites here, **3,129** in
+the tools carrying whole languages.
+**toybox FETCHED `20260905.104613`** -- `gratitude/toybox`, submodule, **0BSD** read from its own
+LICENSE (no attribution clause at all; the website's "BSD-licensed" is loose). Thanks at
+[`toybox`](../gratitude/toybox.md). **257 commands in one binary**, sorted by maturity --
+`pending/` is *awaiting review*, default off, which is honesty worth as much as the code. It
+answers **10,854 of our 11,971 sites** and **holds all four uutils leaves**: `grep`/`sed`/`find` in
+`posix/`, `awk` in `pending/`. **And it answers dawk's question:** its awk counts codepoints like
+dawk's -- then carries **`-b : count bytes, not characters`**. The requirement dawk taught us to
+name is a flag in the next project we read. Next: sbase/ubase - ripgrep.
+**`%421` CLOSED -- a newer file is not a better credential.** `%415`'s clause read `-nt` alone, and
+**signing out REWRITES the credential** with empty tokens -- so a logged-out file is the NEWEST on
+disk and outranks a working one (host 509 bytes/valid; petrichor 281/**zero-length**/12 min newer).
+**Usability now reads before freshness.** **Freshness is not fitness**, and a replication clause
+spreads a wrong reading rather than keeping it.
 **`%417`/`%418` CLOSED**, on the [what-a-copy-carries shelf](archive/REDS-what-a-copy-carries-rows-417-418.md):
 **copying is the most invisible way to be wrong -- every step reports success and the error is in
 the payload.** `birth_a_clone` refuses an empty inherited value now, and `test -x`'s the wrapper.
@@ -305,6 +308,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260905.100421` | uutils, and a newer file that was worse | [log](../session-logs/date/20260905/20260905-100421_uutils-and-a-newer-file-that-was-worse.kyri) |
+| `20260905.104613` | toybox answers dawk's question | [log](../session-logs/date/20260905/20260905-104613_toybox-answers-dawks-question.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)
