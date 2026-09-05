@@ -109,6 +109,86 @@ out=$(FLEET_ROSTER=$pen/roster.kyri sh "$pen/scan.sh" --tree alpha 2>/dev/null |
 if [ -z "$out" ]; then say "pen_lifted_seat_refuses=yes"; else say "pen_lifted_seat_refuses=no"; fi
 rm -rf "$pen"
 
+# --- the recipe, and the one launcher that prints it -------------------------------------------
+# The per-seat lines live in the reader rather than in the launcher, because Rishi's for-each takes
+# one statement over a list literal and has no string split -- a launcher looping over seats would
+# have to spell the seat list again, which is the seventh copy this table exists to prevent.
+out=$(sh "$scan" --recipe 2>&1 || true)
+case "$out" in *"fleet-loop.sh incense"*) say "recipe_names_the_loop=yes" ;; *) say "recipe_names_the_loop=no" ;; esac
+# Every live seat gets a block, and no parked one does -- a recipe for a tree no host holds is a
+# command that fails on the machine reading it.
+live_n=$(sh "$scan" --live | grep -c .)
+block_n=$(printf '%s\n' "$out" | grep -c '^-- ')
+if [ "$live_n" = "$block_n" ]; then say "recipe_covers_every_live_seat=yes"; else say "recipe_covers_every_live_seat=no"; fi
+case "$out" in *"(parked)"*) say "recipe_skips_parked=no" ;; *) say "recipe_skips_parked=yes" ;; esac
+# A named seat prints alone, so a hand asking about one ship does not read the whole card.
+case "$(sh "$scan" --recipe petrichor 2>&1 | grep -c '^-- ')" in
+  1) say "named_seat_prints_alone=yes" ;; *) say "named_seat_prints_alone=no" ;;
+esac
+# ...and a seat the table does not hold refuses rather than printing an empty recipe, which would
+# read to a hand exactly like a seat with nothing to do.
+if sh "$scan" --recipe nosuchseat >/dev/null 2>&1; then say "recipe_unknown_seat_refuses=no"; else say "recipe_unknown_seat_refuses=yes"; fi
+# --recipe is the one branch that calls ITSELF, so a pen pointing FLEET_ROSTER at its own table has
+# to reach the recursion too -- otherwise a pen would silently read the tree's roster, which is the
+# quietest kind of wrong answer because it looks exactly like a right one.
+rpen=$(mktemp -d)
+cat > "$rpen/alt.kyri" <<'EOF'
+format fleet-roster-v1
+seat zeta
+tree grain-zeta
+engine claude
+lane a pen seat
+status live
+EOF
+case "$(FLEET_ROSTER=$rpen/alt.kyri sh "$scan" --recipe 2>&1)" in
+  *grain-zeta*) say "pen_roster_drives_the_recipe=yes" ;; *) say "pen_roster_drives_the_recipe=no" ;;
+esac
+rm -rf "$rpen"
+
+launcher=tools/l/launch-fleet-chapter.rish
+if [ -f "$launcher" ]; then
+  out=$(rishi/bin/rishi run "$launcher" 2>&1 || true)
+  case "$out" in *"GREEN: fleet recipe printed"*) say "launcher_runs=yes" ;; *) say "launcher_runs=no" ;; esac
+  case "$out" in *"grain-pheromone"*) say "launcher_reads_the_table=yes" ;; *) say "launcher_reads_the_table=no" ;; esac
+else
+  say "launcher_runs=no"
+fi
+
+# --- THE BREACH, ENFORCED RATHER THAN DECLARED ------------------------------------------------
+# A launcher is named for its seat, never for its modality. `planet`, `fixed`, `cardinal` and
+# `dual` named which body orbits which star; the arrangement changed and six filenames did not.
+# The six elders keep every byte and are bannered as testimony, so the reading that matters is the
+# one that catches the NEXT one being born: a living launcher filename carrying a modality word
+# and NOT carrying the elder banner. Zero, enforced -- a declaration nothing measures is a habit.
+unbannered=0
+for f in tools/l/launch-*-chapter.rish; do
+  [ -f "$f" ] || continue
+  case "$f" in
+    *-planet-*|*-fixed-*|*-cardinal-*|*-dual-*) ;;
+    *) continue ;;
+  esac
+  grep -q 'STATUS -- elder printer' "$f" || unbannered=$((unbannered + 1))
+done
+case "$unbannered" in 0) say "no_unbannered_modality_launcher=yes" ;; *) say "no_unbannered_modality_launcher=no" ;; esac
+# THE BITING DIRECTION, in a pen: an unbannered modality filename is found, and the same file
+# bannered walks free. A refusal proven only in the passing direction cannot be told from a bypass.
+bpen=$(mktemp -d); mkdir -p "$bpen/tools/l"
+: > "$bpen/tools/l/launch-acme-planet-chapter.rish"
+found=0
+for f in "$bpen"/tools/l/launch-*-chapter.rish; do
+  case "$f" in *-planet-*|*-fixed-*|*-cardinal-*|*-dual-*) ;; *) continue ;; esac
+  grep -q 'STATUS -- elder printer' "$f" || found=$((found + 1))
+done
+case "$found" in 1) say "pen_unbannered_modality_bitten=yes" ;; *) say "pen_unbannered_modality_bitten=no" ;; esac
+echo '# STATUS -- elder printer, kept as testimony.' > "$bpen/tools/l/launch-acme-planet-chapter.rish"
+found=0
+for f in "$bpen"/tools/l/launch-*-chapter.rish; do
+  case "$f" in *-planet-*|*-fixed-*|*-cardinal-*|*-dual-*) ;; *) continue ;; esac
+  grep -q 'STATUS -- elder printer' "$f" || found=$((found + 1))
+done
+case "$found" in 0) say "pen_bannered_modality_walks_free=yes" ;; *) say "pen_bannered_modality_walks_free=no" ;; esac
+rm -rf "$bpen"
+
 echo "control_checks=$checks"
 echo "control_failures=$failures"
 if [ "$failures" -eq 0 ]; then echo "control_verdict=ok"; exit 0; fi

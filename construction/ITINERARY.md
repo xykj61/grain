@@ -46,26 +46,25 @@
 
 ### Now -- the live front
 
-**Git nib:** `528fd63395` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `5bd1a43e71` -- HEAD's parent, resolvable everywhere (%401).
 
 **Now.** **A rule written six times is a rule six files may quietly come to disagree about.**
 
 **The live front** (condensed `20260831.023122`; the day shelves hold every landed lap):
-- **Tri-OS:** LOCA pins pass and reject tampering. Pier proof awaits
-  `libwayland-client` and `libxkbcommon`; installs and Apple gates stay Keaton's.
+- **Tri-OS:** LOCA pins pass and reject tampering. Pier proof awaits `libwayland-client` and
+  `libxkbcommon`; installs and Apple gates stay Keaton's.
 - **CION Tier C** RULED quality-first (`20260830.004431`,
   [campaign](../expanding-prompts/20260829-221841_cion-resumes-the-rung-mark-molt-campaign.md)).
 - **DirtySet** RULED `20260830.183102`: shares the nine (seat 0 = whole-surface
   invalidation); duplicate marks idempotent; refusal only out-of-range.
-- **Pond live:** `duties_undeclared` **1** -- `env` seated `20260830` at `env_disagreements`
-  **zero, enforced**. Only `entry` is left, and it IS the switchover: a gate, not a lap.
+- **Pond live:** `duties_undeclared` **1**; `env` seated at `env_disagreements` zero, enforced.
+  Only `entry` is left, and it IS the switchover: a gate, not a lap.
 - **Language custody:** growth law
-  [a-rune-is-earned-by-a-law](../foundations/20260830-011530_a-rune-is-earned-by-a-law.md);
-  **the first core LANDED `20260830.224500`** -- `|%` (`gate-lantern-face-core`, GREEN);
-  nesting OPENED `20260830.221500`.
+  [a-rune-is-earned-by-a-law](../foundations/20260830-011530_a-rune-is-earned-by-a-law.md); the
+  first core LANDED `20260830.224500` -- `|%`, GREEN; nesting OPENED `20260830.221500`.
 
 **MANY HANDS** (`20260828`): custody MANUAL, one writer per checkout. Root `SKILL.md`; every
-clone seats `ww` (`grain-ww/grain`, gate %1) and `.git/ssh_config_jail`.
+clone seats `ww` (gate %1) and `.git/ssh_config_jail`.
 
 **Sibling finds:** Mystery's module-label guard fails open on BSD grep; portable, it finds elder
 labels in `tools/gen/chapter/fascia_metric_v0.rish`. **Tablecloth, two, cross-lane:** its name desk
@@ -76,40 +75,41 @@ reads one of `max_name`'s two call sites (`parse_manifest` reads it too, over th
 round's opening stash stop an in-flight pass in its own tree.
 **MAP QA:** C+/75 this sitting; 0 of 70 unresolved; index door wants under 100 prose words.
 
-**Still open:** `glow/rune_shape.rye` keeps width custody; `%281`/`%291`, two `enclosure.conf`
-pins. **Named (%347):** `pond/enclosure_policy.kyri` 8,120/8,192; the wall is yours.
-**`%374` GRANTED and BUILT `20260904`.** The roster grows **`gate %N`** beside `tier` (time),
-`host` (place), `capability` (can-do) -- for **what a maintainer has parked**. A gated red books
-apart, so `red` means *this guard broke* again; a pass whose reds are all gated closes ok and
-writes the receipt, disclosing what it chained past. **The gate vocabulary is this card's own
-custody list, read at scan time**, and an unreadable card refuses every gate. Five rows carry it.
-An ungated red still refuses; an **absent path is never gated**. 15 legs, both ways.
-**Shelved:** `%403`/`%404`/`%407`, and `%374`/`%400` -- see
-[`the fold recital`](archive/REDS-fold-recital.md).
+**Still open:** `glow/rune_shape.rye` keeps width custody; `%281`/`%291`. **Named (%347):**
+`pond/enclosure_policy.kyri` 8,120/8,192; the wall is yours.
+**`%374` GRANTED and BUILT.** The roster grows **`gate %N`** beside `tier`/`host`/`capability`,
+for **what a maintainer has parked**. A gated red books apart, so `red` means *this guard broke*
+again, and a pass whose reds are all gated writes its receipt disclosing what it chained past.
+**The gate vocabulary is this card's own custody list, read at scan time**; an unreadable card
+refuses every gate. Live: **106 green, 1 red, 4 gated**.
+**Shelved:** five rows -- see [`the fold recital`](archive/REDS-fold-recital.md).
 **`%409` CLOSED -- the fleet's only real datum, written six times, two already drifted.**
 `seat -> tree -> engine` stood in six places across two files: the loop admitted **six** seat names
-where the re-arm reported **nine**, and the elder remap seated that same day lived in one and never
-reached the other. `construction/fleet-roster.kyri` holds it once now, read by
-`tools/fixtures/f/fleet_roster_scan.sh`; all six spellings are lookups. `status parked` keeps the
-six aether seats readable without pretending they run; `engine field` refuses an unattended lap by
-name. 17 legs, both sides -- including that a seat name in a loop case arm is a **seventh** copy.
+where the re-arm reported **nine**, and the elder remap seated that morning lived in one and never
+reached the other. `construction/fleet-roster.kyri` holds it once, read by
+`tools/fixtures/f/fleet_roster_scan.sh`; all six are lookups. `status parked` keeps the aether
+seats readable without pretending they run; `engine field` refuses an unattended lap by name. 28
+legs, both sides -- including that a seat name in a loop case arm is a **seventh** copy.
 **`%408` CLOSED -- the mount that could only happen once it had already happened.**
-`agent-jail.sh` bound `~/.claude.json` only when `loops/claude/dot-claude.json` already existed,
-and the one process that writes it is the jailed Claude, into the tmpfs `--private-home` discards.
-So onboarding ran on **every** jailed launch, its picker previewing a light scheme that reads as
-invisible text. Seeded and bound, proven both ways. **NixOS is not at fault** -- the jail drops
-`TERMINFO_DIRS` and `LOCALE_ARCHIVE`, both harmless, measured. `agent_jail` stood red and
-unrostered; it is rostered, `unheard` 1117 -> **1116**.
-**Fleet `20260904`:** three Earth trees here, **six aether seats parked**. Charter
+`agent-jail.sh` bound `~/.claude.json` only when `loops/claude/dot-claude.json` existed, and the
+one process that writes it is the jailed Claude, into the tmpfs `--private-home` discards. So
+onboarding ran on **every** jailed launch, its picker previewing a light scheme that reads as
+invisible text. Seeded and bound. **NixOS is not at fault** -- the jail drops `TERMINFO_DIRS` and
+`LOCALE_ARCHIVE`, both harmless, measured. `agent_jail` was red and unrostered; now rostered.
+**Fleet:** three Earth trees, six aether seats **parked**. Charter
 [`seat-table-written-once`](../active-designing/20260904-175200_the-seat-table-written-once.md)
-step 1 LANDED; baton [`earth-trio-loop`](../recursion-prompts/versions/20260904-175200_earth-trio-loop.md).
-**Next doors.** Caravan keeps a 5-second seam. Hush: `spool_cloth`'s eight `ClothError`
-paths; 37 shape nibs unread.
+**steps 1-4 LANDED**: one table, one reader, one launcher. **The molt breach is enforced** -- a
+living launcher filename carrying `planet`/`fixed`/`cardinal`/`dual` without the elder banner reds
+at zero, so the guard catches the NEXT one. Elders keep every byte, Class H, cut RED; ship names
+untouched. Captain prompt molted to
+[`20260904-193221`](../expanding-prompts/20260904-193221_incense-the-field-captain-two-doors.md):
+the pier's tree is `~/grain-incense`, and there is no `~/grain` on Dallas.
+**Next doors.** Caravan keeps a 5-second seam. Hush: `spool_cloth` eight `ClothError` paths.
 **Yours, one.** Door's ceiling is **9** against module heads that run 12-17. Of 163 sampled
-programs, 115 read below B -- yet **51 of those sat under the register floor** with nothing
-measurable, leaving **64** truly scored at grades 9-23. The ceiling question is that second
-number's alone, and Gauge's own table seats **witness headers** at Meter where this card grades
-every program head at Door. Gate %7: quality-assurance additive carried `20260904.103121`.
+programs 115 read below B -- yet **51 sat under the register floor** with nothing measurable,
+leaving **64** truly scored at grades 9-23. That second number owns the ceiling question, and
+Gauge's own table seats **witness headers** at Meter where this card grades every program head at
+Door. Gate %7: quality-assurance additive carried `20260904.103121`.
 ---
 ## Landed arcs
 
@@ -223,6 +223,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260904.175200` | The jail's onboarding, and one seat table | [log](../session-logs/date/20260904/20260904-175200_the-seat-table-written-once.kyri) |
+| `20260904.193221` | Nine printers become one, and the breach gets a guard | [log](../session-logs/date/20260904/20260904-193221_nine-printers-become-one.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)
