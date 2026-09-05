@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260905.081211` | [dawk answers the crux, and it answers no](20260905/20260905-081211_dawk-answers-the-crux.kyri) | a byte tool cannot stand on a reader that insists on text |
 | `20260905.073903` | [POSIX is the floor we are leaving](20260905/20260905-073903_posix-is-the-floor-we-are-leaving.kyri) | the target has no shell; the count is a re-grow estimate |
 | `20260905.072118` | [A ratchet passes on a low number](20260905/20260905-072118_a-ratchet-passes-on-a-low-number.kyri) | a dead instrument reads as the healthiest tree ever measured |
 | `20260905.070821` | [The sign on the door](20260905/20260905-070821_the-sign-on-the-door.kyri) | a citation check proves the door exists, rather than the sign on it |
