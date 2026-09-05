@@ -24,6 +24,30 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ---
 
+## `20260905.192154` -- the live front folds its landed accounts rather than raising the bound again (walk-back `d6acba58dc`)
+
+**Walk-back nib:** `d6acba58dc`. **Live stamp:** `20260905.192154`.
+**Swept:** the *Now -- the live front* block of [`ITINERARY.md`](ITINERARY.md), which lost its
+landed accounts and kept every OPEN row, every BOOKED lap, and everything waiting on Keaton's word.
+The card read **32,676 of 32,768** -- 92 bytes of headroom -- and reads **27,172** after, with
+5,596 free. Nothing was removed: all of it stands whole at
+[`archive/20260905-192154_itinerary-landed-accounts.md`](archive/20260905-192154_itinerary-landed-accounts.md).
+
+**What waits there, worth recalling:** `%435`'s self-link finding, where a molt's provenance line
+was repointed at the mutant's own name so a page called itself its own reimagining and three
+instruments read it as correct -- the sharpest of the day, and the one whose lesson (*a self-link
+resolves, so a Truth reading that counts failures cannot see it*) has no guard of its own yet.
+Also `%413`/`%412`'s pair of carried lines about instruments and cost, the ripgrep measurement
+showing 93% of our rg use is a predicate rather than a grep, and the aroma breach's own reasoning.
+
+**Why a fold rather than a raise, since the bound was granted one day earlier:** the card's own
+paragraph on that grant says `SHRED_PREP` was not raised because it folded a completed shed
+instead -- *only a page whose living parts outgrew the number earns a new one*. Measured here, the
+living parts had not; the landed accounts had. That paragraph folded with the rest, which is the
+argument working on itself.
+
+---
+
 ## `20260905.160658` -- the card condenses one finished fold line to seat `%435` (walk-back `8cb601849a`)
 
 **Walk-back nib:** `8cb601849a`. **Swept, in two passes:** first one clause of the live front of

@@ -1,0 +1,32 @@
+format session-log-v1
+stamp 20260905.192825
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role incense -- law, review, captain
+modality text
+model claude-opus-5
+model_status configured default, runtime unverified
+configured_model claude-opus-5
+configured_status .claude/settings.json names the default; no runtime telemetry read this turn
+evidence .claude/settings.json
+voice Kyri
+host Vultr Dallas pier, America/New_York
+title The card folds rather than grows
+prompt approve grant all your recommendations -- taken Lindy-first, crux-first, one keystone at a time.
+think Took the card's headroom first because it breaks the next lap whatever that lap is about, which makes it the crux among work of equal weight.
+think Refused the obvious move. The bound was raised to 32,768 on Keaton's word one day earlier, and raising it again would have been the second raise in two days -- so I read the tree's own seated reasoning instead, in the very paragraph that recorded the grant: SHRED_PREP was not raised because it folded a completed shed, since only a page whose living parts outgrew the number earns a new one.
+think Measured which half had grown. The living parts -- OPEN rows, BOOKED laps, everything waiting on Keaton -- had not; the landed accounts had. So the fold is what the law already asked for, and the card had itself seated the pattern on 20260905.130819: landed accounts shelve like REDS rows.
+think Recorded a checkpoint before touching the card, naming the walk-back nib d6acba58dc, since this rewrites a living card and the checkpoint rule names ITINERARY by name.
+obs Card 32,676 -> 27,172 against a bound of 32,768. Headroom 92 -> 5,596. Nothing removed: every folded word stands at construction/archive/20260905-192154_itinerary-landed-accounts.md.
+obs THE LINK TRAP, and it is the fold law's own clause. Relative links inside the folded text were written from construction/ and now sit one directory deeper, so archive/X had to become X and ../Y had to become ../../Y -- one answer per shape, correct forever, exactly as the law describes a day-shelf row becoming ](YYYYMMDD/name). Eleven links, each checked to exist from the shelf's own directory rather than assumed.
+obs The header I wrote myself already pointed correctly from archive/, so the rewrite had to reach the folded body alone. Applying it to the whole file would have broken the three links that were already right, which is a repair breaking what it was not aimed at.
+obs tracked_link went RED and it was mine, though not in the way it looked: the guard reads the TRACKED tree, so a link to a shelf that existed on disk and not in the index reads as resolving here and breaking in a fresh clone. git add turned it green. That is the guard stating its whole purpose in one refusal.
+obs A RED FOUND, and it is NOT mine: tools/d/dated_path_witness.rish reads refs_lost=168 against lost_ceiling=165 at HEAD, proven by stashing my working tree and running it against the bare commit. It is unrostered -- only dated_path_repoint stands on the roster -- so nothing on any lap has been hearing it. That is REDS %360's family exactly, and it is booked rather than fixed in this lap.
+obs Checked whether each red was mine before repairing anything, by running the guard at HEAD with my tree stashed. Two guards, two different answers, and treating them the same way would have been wrong in one direction or the other.
+loom card_bytes_before=32676 card_bytes_after=27172 bound=32768 headroom_after=5596 links_repointed=11
+file construction/ITINERARY.md the live front keeps what is OPEN, BOOKED, or waiting on a word; the landed accounts leave
+file construction/archive/20260905-192154_itinerary-landed-accounts.md the landed accounts whole, with every relative link repointed one directory down
+file construction/CHECKPOINTS.md the walk-back row, naming what waits at d6acba58dc worth recalling
+file session-logs/date/20260905/20260905-192825_the-card-folds-rather-than-grows.kyri this record
+recommend keep-going -- book the dated_path red found at HEAD, then take %430, whose fix Keaton has now granted.
