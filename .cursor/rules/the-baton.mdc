@@ -71,7 +71,9 @@ config from field to newborn, and refuses if the field's name survives the rewri
 `tracked_link_scan`, the commit hook, and the link duty are each blind to them by construction.
 Gated by [`../../tools/f/fleet_key_locality_witness.rish`](../../tools/f/fleet_key_locality_witness.rish)
 over [`../../tools/fixtures/f/fleet_key_locality_scan.sh`](../../tools/fixtures/f/fleet_key_locality_scan.sh),
-foreign paths at zero, a seat whose tree is absent from this pier reported rather than counted.
+foreign paths at zero, a seat whose tree is absent from this pier reported rather than counted,
+and every path resolved with `cd`/`pwd -P` before it is compared -- a symlinked keyring reads local
+in the config and lands in the sibling on disk, which is the same fault wearing a disguise.
 
 ## A round-open clears a rebase before it reads the tree (REDS `%428`)
 

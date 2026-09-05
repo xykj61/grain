@@ -61,13 +61,25 @@ for seat in $seats; do
     paths="$paths $inner"
   fi
 
+  # THE PATH IS RESOLVED BEFORE IT IS COMPARED. A symlink is this exact fault wearing a disguise:
+  # `grain-pheromone/.gnupg-rye -> ../grain-petrichor/.gnupg-rye` reads as a local path in the
+  # config and lands in a sibling on disk, so a guard comparing the written string would call it
+  # local and the ship would still refuse inside its jail. `cd`/`pwd -P` rather than `readlink -f`,
+  # which is GNU-only -- the dialect guard has already caught this tree reaching for a GNU flag.
+  tphys=$(CDPATH= cd -- "$tree" 2>/dev/null && pwd -P) || tphys="$tree"
   for pth in $paths; do
     case "$pth" in /*) ;; *) continue ;; esac   # relative paths resolve inside the tree already
     checked=$((checked + 1))
-    case "$pth" in
-      "$tree"/*) ;;
+    pdir=$(CDPATH= cd -- "$(dirname -- "$pth")" 2>/dev/null && pwd -P)
+    if [ -n "$pdir" ]; then real="$pdir/$(basename -- "$pth")"; else real="$pth"; fi
+    case "$real" in
+      "$tphys"/*) ;;
       *) foreign=$((foreign + 1))
-         echo "foreign: $seat names $pth -- outside $tree, unreachable from its jail" ;;
+         if [ "$real" = "$pth" ]; then
+           echo "foreign: $seat names $pth -- outside $tree, unreachable from its jail"
+         else
+           echo "foreign: $seat names $pth, which resolves to $real -- outside $tree, unreachable from its jail"
+         fi ;;
     esac
   done
 done
