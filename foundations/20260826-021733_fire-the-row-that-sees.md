@@ -11,7 +11,7 @@ Fire is the row of Mars, and its question is the unflinching one: what must stop
 and what must be cut? Every tree that grows
 fast accumulates two kinds of trouble: the defect it is tempted to build over, and
 the dead tissue it is tempted to keep. Fire's lap exists for both. Where the other
-rows listen, feel, taste, and smell their way through the tree, this row looks --
+rows listen, feel, taste, and breathe their way through the tree, this row looks --
 hard, directly, at the thing most laps would rather route around -- and then it
 acts once, cleanly, at exactly the depth the truth requires. The three documents
 seated here are one discipline read at three moments: the stop, the allocation the

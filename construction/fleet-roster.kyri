@@ -46,6 +46,34 @@ elder harvest
 status live
 seated 20260904.013013
 
+# -- three ships seated `20260904.214754` on Keaton's word, awaiting their trees ---------------------
+# STATUS `berthed` is the third word, and it earns its place the way `parked` did: a berthed seat
+# has a lane, a prompt, and a name, and no tree yet. `live` would have the re-arm report an absent
+# directory as if a ship had gone missing, and `parked` would say it had sailed and stopped. Neither
+# is true of a ship being built. `--live` excludes it, so the loop and the recipe stay honest, and
+# the tree birth is `rishi/bin/rishi run tools/l/birth_a_clone.rish /home/keeper/grain-<seat>`
+# followed by a `claude login` on that host, which is a hand.
+seat bakery
+tree grain-bakery
+engine claude
+lane core infrastructure, Lindy-first and crux-first -- and the fleet's own friction
+status berthed
+seated 20260904.214754
+
+seat diffuser
+tree grain-diffuser
+engine claude
+lane moonshots and whitepaper research -- toroidal, energy-saving, radial-polar; in tandem with bakery
+status berthed
+seated 20260904.214754
+
+seat grass
+tree grain-grass
+engine claude
+lane the four auditing passes -- New Gauge, Civic Style, foundations, TAME Guidance
+status berthed
+seated 20260904.214754
+
 # -- the aether seats, parked. Their charter stays testimony at
 # active-designing/20260829-203718_the-six-bodies-and-the-always-fleet.md, and every law it earned
 # -- one tree per star, claim-as-override, the ruling seats -- the Earth trio inherits whole.

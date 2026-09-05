@@ -23,7 +23,7 @@ const seconds_per_day: u64 = 86400;
 
 const RettingError = error{ DaysOutOfBound, NameTooLong, LogFull, HomeUnavailable };
 
-// Parse 1-3 digit day counts; leading zero refused (truncation smell).
+// Parse 1-3 digit day counts; leading zero refused (truncation tell).
 // Routes to tally/parse_int at its second consumer (graduation rule).
 fn parse_days(text: []const u8) RettingError!u32 {
     assert(text.len != 0);

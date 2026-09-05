@@ -48,7 +48,7 @@ pub const RetentionError = error{
 pub const max_retention_window: u64 = 3_155_760_000;
 
 /// Max simultaneous holds on one record. Reason: legal holds are rare and
-/// named; a pile past eight is a process smell, not a custody need.
+/// named; a pile past eight is a process tell, not a custody need.
 pub const max_holds_per_record: u32 = 8;
 
 pub const max_class_name_len: u32 = 48;

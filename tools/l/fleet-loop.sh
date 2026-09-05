@@ -80,6 +80,24 @@ engine=$(sh "$roster_scan" --engine "$seat")
 prompt_file=tools/l/${seat}_seat_prompt.txt
 [ -f "$prompt_file" ] || { echo "fleet-loop: missing seat prompt $prompt_file"; exit 2; }
 
+# THE BATON IS PREPENDED, NOT COPIED INTO EVERY SEAT (REDS %409's lesson, one room over). Every
+# ship shares one opening -- voice, card, rota, thread, fleet, claim, send, log, pins, custody,
+# close -- and it used to be restated in each seat prompt, which is the same rule written six times
+# and the same drift waiting. tools/l/fleet_baton.txt holds it once; a seat prompt is now its LANE
+# STANZA alone. A directive seated on the baton reaches every ship on its next lap with no per-seat
+# edit, which is the token economy the split was always for.
+#
+# Read into a variable rather than concatenated to a temporary file, because the prompt reaches the
+# agent as one argv string and a file on disk would be a second thing to keep in step.
+baton_file=tools/l/fleet_baton.txt
+seat_prompt() {
+  if [ -f "$baton_file" ]; then
+    cat "$baton_file"
+    printf '\n'
+  fi
+  cat "$prompt_file"
+}
+
 # invariant: a seat runs only in its own tree (%291). The field ~/grain is the
 # captain's GUI sitting, not an unattended loop tree. Machines are doors.
 want_tree=$(sh "$roster_scan" --tree "$seat")
@@ -163,7 +181,7 @@ stream_claude() {
 
 # Earth ships: Linux jail wrap like launch-claude-chapter; Darwin/FLEET_BARE host claude.
 run_earth_claude() {
-  _prompt=$(cat "$prompt_file")
+  _prompt=$(seat_prompt)
   echo "fleet-loop: invoking claude --output-format stream-json --verbose -- tool lines render live; silence after this line is the API, not round-open"
   if [ "$(uname -s)" = Linux ] && [ "${FLEET_BARE:-0}" != 1 ]; then
     if ! linux_jail_present; then
@@ -193,7 +211,7 @@ run_lap() {
     run_earth_claude
     ;;
   codex)
-    ./tools/ag/agent-jail.sh codex exec --sandbox danger-full-access "$(cat "$prompt_file")" 2>&1 \
+    ./tools/ag/agent-jail.sh codex exec --sandbox danger-full-access "$(seat_prompt)" 2>&1 \
       | tee "session-output/${seat}.txt"
     ;;
   *)

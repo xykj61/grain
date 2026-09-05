@@ -50,7 +50,7 @@ its threshold page and voiced by its palette pair (light terra by day, dark euph
 | **air** | the row that feels | arc - touch - senses | spiral - presence - trance |
 | **fire** | the row that sees | rockstar - vision - risk | hermit - night - surrender |
 | **water** | the row that tastes | river - taste - love | tide - nectar - longing |
-| **earth** | the row that smells | grain - aroma - harvest | mist - incense - fallow |
+| **earth** | the row that breathes in | grain - aroma - harvest | mist - incense - fallow |
 
 Each encapsulation keeps the same shape law and motion law and varies only accent, stroke, and
 temperature -- five rooms of one house rather than five houses. The mapping from palette word

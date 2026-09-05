@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `1565a388bd` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `da914d5b96` -- HEAD's parent, resolvable everywhere (%401).
 
 **Now.** **A rule written six times is a rule six files may quietly come to disagree about.**
 
@@ -82,7 +82,27 @@ for **what a maintainer has parked**. A gated red books apart, so `red` means *t
 again, and a pass whose reds are all gated writes its receipt disclosing what it chained past.
 **The gate vocabulary is this card's own custody list, read at scan time**; an unreadable card
 refuses every gate. Live: **106 green, 1 red, 4 gated**.
-**Shelved:** five rows -- see [`the fold recital`](archive/REDS-fold-recital.md).
+**Shelved:** eight rows -- see [`the fold recital`](archive/REDS-fold-recital.md).
+**The fleet is six ships and one baton.** `tools/l/fleet_baton.txt` holds the shared opening ONCE
+and `fleet-loop.sh` prepends it, so a seat prompt is its **lane stanza** alone. Three ships seated
+`20260904.214754`, status **berthed** -- a lane, a prompt, a name, no tree yet: **bakery** (core
+infrastructure, Lindy-first crux-first, and the fleet's own friction), **diffuser** (moonshots and
+whitepapers -- toroidal, energy-saving, radial-polar -- in tandem with bakery, every projection
+carrying its falsifier), **grass** (four auditing passes: New Gauge, Civic Style, foundations,
+TAME). Birth is `birth_a_clone.rish` plus a `claude login`, and both are a hand.
+**`%411` CLOSED -- four behaviors every ship performed, and not one was a rule.** Measured across
+the 49 rules: `%291` appeared once in passing, **claim-as-override, the council rota, and
+GATES-ONLY appeared zero times**. All four are seated in
+[`the-baton`](../.claude/rules/the-baton.md), which maps every baton section to its governing rule.
+**A gap nothing misbehaves over is a gap no meter finds** -- every ship behaved correctly the whole
+time, because every ship was handed the behavior at launch.
+**The aroma breach (`20260904.214754`, Keaton's word).** *Smell* retires from living instruction, twice: the
+earth row **breathes in** (aroma, scent), and a code *smell* is a **tell**. The threshold page is
+`foundations/20260826-021735_earth-the-row-that-breathes-in.md`, its elder basename LISTED as a
+deliberate absence so the census reads intent. **Working-tree depth, not deep** -- history keeps
+what history is for. **New Gauge, Radiant and Twilight are G-friendly by default**; a higher rating
+is opt-in for one named round and buys precision, never coarseness. Rule:
+[`vocabulary-aroma`](../.claude/rules/vocabulary-aroma.md).
 **The card's bound is raised to 32,768 on Keaton's word** (`20260904.204812`), derived rather than granted:
 16 standing directives x 512, plus 8,192 for the live front, plus 16,384 for the durable spine --
 measured at 7,008 / 5,161 / 12,406 on the day. **The general bound stays 24,576.** The card is read
@@ -238,6 +258,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260904.204812` | The card earns its own bound, and an untested exception | [log](../session-logs/date/20260904/20260904-204812_the-card-earns-its-bound.kyri) |
+| `20260904.215903` | Six ships, one baton, and the aroma breach | [log](../session-logs/date/20260904/20260904-215903_six-ships-one-baton.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)
