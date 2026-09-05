@@ -32,6 +32,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260904.104012` | [Forty-one minutes silent, wc the tee](20260904/20260904-104012_forty-one-minutes-silent-wc-the-tee.kyri) | measure incense.txt before Ctrl-C |
 | `20260904.103121` | [Close incense-owned roster reds](20260904/20260904-103121_incense-owned-roster-reds.kyri) | sed_i 0; remember-git-nib 0.47; %400 BOOKED |
 | `20260904.095500` | [Jailed pong GREEN, loop next](20260904/20260904-095500_jailed-pong-green-loop-next.kyri) | --network holds a tiny prompt |
+| `20260904.095307` | [Incense pong GREEN](20260904/20260904-095307_incense-pong-green.kyri) | a second sitting, same tree, same HEAD |
 | `20260904.095132` | [Host pong GREEN, jail smoke next](20260904/20260904-095132_host-pong-green-jail-smoke-next.kyri) | 2026.08.04-aaa8809; Pong here and ready |
 | `20260904.095008` | [Incense pong GREEN](20260904/20260904-095008_incense-pong-green.kyri) | grain-incense Linux; xy/main clean |
 | `20260904.094540` | [Probes green, hang is the agent stream](20260904/20260904-094540_probes-green-hang-is-the-agent-stream.kyri) | auth and curl 200; pong next |

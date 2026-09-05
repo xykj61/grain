@@ -46,9 +46,9 @@
 
 ### Now -- the live front
 
-**Git nib:** `60776bcad5` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `e8e62349f4` -- HEAD's parent, resolvable everywhere (%401).
 
-**Now.** **A rule written six times is a rule six files may quietly come to disagree about.**
+**Now.** **A guard can check what a line says and never how many times the page says it.**
 
 **The live front** (condensed `20260831.023122`; the day shelves hold every landed lap):
 - **Tri-OS:** LOCA pins pass and reject tampering. Pier proof awaits `libwayland-client` and
@@ -124,35 +124,33 @@ tiers -- **granted** (POSIX), **carried** (we ship it), **borrowed** (probe, fal
 seated in Tally as a bounded grant, carried by Caravan as a capability, declared through Mantra.
 **The reflex that should not wait for the design: a guard that cannot run its instrument refuses,
 and says which instrument.**
-**`%413` CLOSED (pass now **856s**, from 1,510 this morning) -- three more guards forking per item, and one repair that twice taught a guard to
-report a tree it never read.** `tracked_link` forked an awk AND a grep **per link** (~47,700
-processes) -> **5s**; `phantom_path` an awk per source and a grep per literal (8,793) -> **6s**;
-`declared_model` walked all 14,709 files to find the 1,127 naming a model id -> **5s**. Each output
-byte-identical to its elder, every control leg unchanged. **The costly half:** the first rewrite
-found its awk helper from `$(pwd)` and sent awk's complaint to `/dev/null`, so in the control's pen
-it read **zero unresolved links and passed** -- and the SAME two mistakes sat in `%412`'s
-`living_card_ascii` repair from an hour earlier, where no control pens the scan. **An empty answer
-from a failed instrument is byte-identical to one from a clean collection**, and the second is the
-reading everyone wants to hear. All four now resolve from `$(dirname "$0")` and refuse loudly.
-**`%412` CLOSED -- a third of the roster's clock went to forking, not reading.** 111 guards, 1,510s,
-**median 2s against a mean of 13** -- five guards held 46%. Two were slow by ACCIDENT:
-`living_card_ascii` forked `mktemp`+`iconv`+`rm` per file across **14,709 files** (~44,000
-processes, 137s -> **25s** via one awk pass, NUL-delimited); `reds_row_present` asked its script for
-row 1, then row 2, to the end -- **411 invocations** each re-reading the whole spine (177s ->
-**12s** via `--all`, same sed, same file set, so the authority is unchanged). `sow` at 230s is
-expensive ON PURPOSE and moved to `tier cadence`, honest because its act is gate %1, manual.
-**1,510s -> 990s, measured** (1,003 projected). **Before you make an expensive thing rare, find out
-whether it is expensive on purpose** -- a cadence tier on those two would have hidden 277s of pure
-waste behind a slower clock and left the waste.
+**`%413` and `%412` CLOSED -- the roster's clock went to forking, not reading.** 1,510s -> **856s**
+measured, across five guards holding 46% of a 111-guard pass: `tracked_link` forked an awk AND a
+grep per link (~47,700 processes) -> 5s, `phantom_path` 8,793 -> 6s, `declared_model` walked all
+14,709 files to find 1,127 -> 5s, `living_card_ascii` forked `mktemp`+`iconv`+`rm` per file -> 25s,
+`reds_row_present` re-read the whole spine 411 times -> 12s. Each output byte-identical to its
+elder. **The costly half:** two repairs found their awk helper from `$(pwd)` and sent its complaint
+to `/dev/null`, so in a control pen they read zero and PASSED -- an empty answer from a failed
+instrument is byte-identical to one from a clean collection, and the second is the reading everyone
+wants to hear. All four resolve from `$(dirname "$0")` now. **Before you make an expensive thing
+rare, find out whether it is expensive on purpose** -- `sow` at 230s is expensive by design and
+moved to `tier cadence`; a cadence tier on the other two would have hidden 277s of pure waste.
+**`%419` CLOSED (booked `%418`, renumbered on the rebase -- the stamp is the key) -- a guard
+watched a room the law had emptied and read the emptiness as health.** `log_has_a_row` gated *every
+log has a row* against the FLAT room, which BORN ON ITS DAY'S SHELF emptied `20260827.171500`:
+**nine days** of `verdict=ok`, four logs reachable from no front door. It reads the shelves and the
+pin now -- one `find`, one `awk`, 4,056 logs, **0.17s**, five readings at zero, **36 behaviors**.
+Recovered from a dead lap's stash and **verified rather than trusted**: its *"no index reaches"*
+held for DAY shelves alone, the gathering `through-20260721` carrying **162 of 373**. **Third firing
+in one day:** the pin graded **A/93** at `truth_counted=100` while its top row named yesterday --
+**derivable**, so gated, where `%117`'s and `%417`'s are not.
+**`%420` BOOKED -- the census line stood TWICE**, identical, since `60776bcad`, and
+`reds_ledger_monotone` reads GREEN over it: `duplicate_headlines` counts **row** headlines, and the
+census check reads the FIRST match. Removed, census **420**/**400**; the assert is named, not built.
 **Six ships, one baton** (`tools/l/fleet_baton.txt`, prepended; a seat prompt is its lane stanza).
 **berthed** `20260904`: **bakery** (core infra, Lindy/crux), **diffuser** (moonshots, each with its
 falsifier), **grass** (four audits). Birth plus `claude login` -- both a hand.
-**`%411` CLOSED -- four behaviors every ship performed, and not one was a rule.** Measured across
-the 49 rules: `%291` appeared once in passing, **claim-as-override, the council rota, and
-GATES-ONLY appeared zero times**. All four are seated in
-[`the-baton`](../.claude/rules/the-baton.md), which maps every baton section to its governing rule.
-**A gap nothing misbehaves over is a gap no meter finds** -- every ship behaved correctly the whole
-time, because every ship was handed the behavior at launch.
+**`%411` and `%410` CLOSED** -- four behaviors every ship performed with no rule behind them (**a gap nothing misbehaves over is a gap no meter finds**), and a bound exception no guard had ever been asked to honor (**a conditional only one input reaches has been tested by nothing**); both whole on the [408-410](archive/REDS-what-nothing-misbehaved-over-rows-408-410.md) and [411-413](archive/REDS-what-a-wrapper-inherits-rows-411-413.md) shelves.
 **The aroma breach (`20260904.214754`, Keaton's word).** *Smell* retires from living instruction, twice: the
 earth row **breathes in** (aroma, scent), and a code *smell* is a **tell**. The threshold page is
 `foundations/20260826-021735_earth-the-row-that-breathes-in.md`, its elder basename LISTED as a
@@ -167,10 +165,7 @@ WHOLE every lap, so this costs ~2k tokens per lap per body and the law names tha
 measured alternative was seventeen condensations in one session to fit three rows and a launcher.
 `SHRED_PREP` is NOT raised -- it folded a completed shed instead, because a finished section
 belongs on a shelf and only a page whose living parts outgrew the number earns a new one.
-**`%410` CLOSED -- an exception no guard had ever been asked to honor.** `equinox_e123`'s scan read
-the bound fixture **bare**, once, and measured every pin against that one answer. It stood eleven
-days because the only excepted page, `session-logs/README.md`, is 7,817 bytes and passed under the
-general bound anyway. **A conditional only one input reaches has been tested by nothing.**
+
 **Worth your word, still unanswered** (condensed out under the old ceiling `20260904`, carried
 back now that there is room): nothing in the ledger shows a red is *being worked*, so two hands
 spent one morning on the same line. **Should an OPEN row carry a claim -- a seat and a stamp, at
@@ -311,6 +306,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260905.081211` | dawk answers the crux, and it answers no | [log](../session-logs/date/20260905/20260905-081211_dawk-answers-the-crux.kyri) |
+| `20260905.090338` | The stash that held a finished lap | [log](../session-logs/date/20260905/20260905-090338_the-stash-that-held-a-finished-lap.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)
