@@ -1356,3 +1356,18 @@ guard glow_core
 path tools/g/glow_core_witness.rish
 tier cadence
 seated 20260831.121153
+
+# provenance_self_reference -- a page may not be named as its own elder. A molt seats a page at a
+# fresh stamp, so the mutant's header carries a provenance line naming the elder it grew from; the
+# repoint pass that follows treats that line as a citation and rewrites it to the mutant's own
+# name, and the page becomes its own ancestor (REDS %435, twice on `20260826`). Nothing standing
+# could see it, because a self-link RESOLVES: `tracked_link_scan` and the broken-link duty test
+# with `[ -e ]`, and the report card scores Truth by counting cited paths that FAIL to resolve --
+# so `single-stranded` read `truth=100` and `A+/98` with its own first sentence false.
+#
+# Bounded to this tree's own provenance vocabulary rather than to self-links at large: of the 35
+# tracked documents carrying a self-link, the other 33 are honest sibling rosters and dated logs.
+guard provenance_self_reference
+path tools/p/provenance_self_reference_witness.rish
+tier lap
+seated 20260905.160212

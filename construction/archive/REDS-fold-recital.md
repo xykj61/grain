@@ -273,3 +273,4 @@ at a closed fold.*
 *Rows %427-%429 folded to [`REDS-the-room-the-instrument-stood-in-rows-427-429.md`](REDS-the-room-the-instrument-stood-in-rows-427-429.md) on `20260905.152212`, each **CLOSED** -- An answer true of the room the instrument could reach and false of the room anyone was asking about: a jail binding one tree while the keys sat in a sibling, a round-open reporting clean over a standing rebase, and a %G? reading N for a gpg that failed to exec.*
 
 *Rows %432-%434 folded to [`REDS-what-a-hand-already-looked-at-rows-432-434.md`](REDS-what-a-hand-already-looked-at-rows-432-434.md) on `20260905.155141`, each **CLOSED** -- the looking was careful, and the looking was the limit.*
+*Row %435 folded to [`REDS-the-page-that-became-its-own-ancestor-rows-435.md`](REDS-the-page-that-became-its-own-ancestor-rows-435.md) on `20260905.160554`, **CLOSED** -- a repoint that mends a citation can falsify a provenance claim, and every meter reads the result as a repair.*

@@ -1,0 +1,42 @@
+# provenance_self_reference_witness.rish -- a page may not name itself as its own elder.
+#
+#   rishi/bin/rishi run tools/p/provenance_self_reference_witness.rish
+#
+# A molt seats a page at a fresh stamp, so the mutant's header carries a provenance line naming the
+# elder it grew from. When the elder is shed, `tools/d/dated_path_repoint.rish` points every living
+# citer of that basename at the mutant -- right for a citation, wrong for a provenance claim, since
+# there the elder is the subject of a historical sentence rather than a page being pointed at. The
+# page becomes its own ancestor, and it happened twice on `20260826` (`0877e2b5a`).
+#
+# Nothing standing could see it, because a self-link RESOLVES: `tracked_link_scan.sh` and the
+# broken-link duty of `living_docs_lint.rish` test with `[ -e ]`, and `qa_report_card.sh` scores
+# Truth by counting cited paths that FAIL to resolve. `single-stranded` read `truth=100` and
+# `A+/98` with its own first sentence false. The lost-reference census counted the falsification as
+# a repair, since a broken link had become a working one.
+#
+# A sibling roster naming the page you stand on is ordinary and stays welcome -- measured over
+# 5,455 tracked documents, 35 carry a self-link and only two sat on a provenance line.
+
+say "provenance-self-reference: Language EN -- a page may not be named as its own elder."
+say "provenance-self-reference: Style Gauge, Meter -- one gated reading, both directions proven."
+say "provenance-self-reference: Lens TAME -- safety first: three instruments read a false sentence as true."
+
+# invariant: run from the repo root, where the meter and the documents both live.
+let root = run ["test" "-f" "construction/ITINERARY.md"]
+assert root.ok else "run from the repo root (construction/ITINERARY.md not found)"
+
+# invariant: the meter must stand before any reading of it is believed.
+let present = run ["test" "-f" "tools/fixtures/p/provenance_self_reference_scan.sh"]
+assert present.ok else "tools/fixtures/p/provenance_self_reference_scan.sh is missing -- the meter cannot be read"
+
+let control = run ["sh" "tools/fixtures/p/provenance_self_reference_control.sh"]
+say control.out
+assert control.ok else "provenance-self-reference: a planted case read wrong -- see the control's own lines"
+assert control.out contains "fail=0" else "provenance-self-reference: the control closed with a failing leg"
+
+let live = run ["sh" "tools/fixtures/p/provenance_self_reference_scan.sh"]
+say live.out
+assert live.ok else "provenance-self-reference: the scan refused -- its instrument or the tracked set is unreadable"
+assert live.out contains "verdict=no_page_is_its_own_elder" else "provenance-self-reference: a living page is named as its own elder -- the line names the file, and the elder it means is elsewhere"
+
+say "provenance-self-reference: GREEN -- no living page in this tree is named as its own elder."

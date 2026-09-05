@@ -3,7 +3,7 @@
 *A vision document, generalized and place-neutral: buildings grown rather than extracted, fertility raised from plants, waters left cleaner than we found them -- funded by public money pointed at the public good, and proven by receipts anyone can check without trusting whoever wrote them. The materials companion to the money that stays close to home.*
 
 **Language:** EN
-**Stamp:** `20260824.003828` -- a Gauge molt of [`20260824-003828_every-climate-has-a-fiber.md`](20260824-003828_every-climate-has-a-fiber.md), which stays whole as the fossil
+**Stamp:** `20260824.003828` -- a Gauge molt of the elder `20260821-035846_every-climate-has-a-fiber.md`, which the circled Class M cut shed from the live tree on `20260826` (`f758efdb2`). The elder is named rather than linked because the path is gone; its forwarding address stands in [`../tools/fixtures/d/dated_path_exclusions.sh`](../tools/fixtures/d/dated_path_exclusions.sh)
 **Voice:** Kyri
 **Style:** Gauge, Door setting -- see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md)
 **Registers:** Gauge - Civic - TAME
