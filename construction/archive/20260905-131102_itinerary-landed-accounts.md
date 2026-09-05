@@ -65,3 +65,12 @@ and `122517` **is unsent in `stash@{0}`** with the QA floor row and a
 `docs-geode/tutorials/README.md` B->B+ repair. Restore it as **`%426`** (incense landed `%425` first, `130819`); its fold is moot,
 upstream shelved `%419`-`%422`. **`git stash list` is the open** -- read late here. `agent_jail`
 reds `bwrap not permitted`: environment, no receipt, `--scoped` refuses.
+
+## Folded `20260905.155500` -- the seed publish and the two custody doors
+
+**The seed is published on your word** --
+`grain-os` and `grain-ww` both at `5a54c2f`, 7,706 files, `NO_PERSONAL` (%426).
+
+**Pheromone's two custody finds are CLOSED** (%427, %428): every live seat's keyring and
+transport now resolve inside its own tree, gated by `fleet_key_locality_witness`; and the
+round-open clears an interrupted rebase before anything reads the tree, with its first control.

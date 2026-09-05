@@ -1,0 +1,37 @@
+# announced_length_witness.rish -- a living page announcing a ladder's length is a forecast.
+#
+#   rishi/bin/rishi run tools/a/announced_length_witness.rish
+#
+# `.claude/rules/stamp-and-name.md` retires the counted rung for PLANNED work and gives four
+# ladders as evidence -- `f0-f63` reached f3, `u0-u127` paused at u91, `i0-i15` paused at i6, a
+# sixteen-round chapter filled two rooms of twelve. All four were found by a hand and typed into
+# the rule. Five more stood in `context/LEXICON.md` the whole time, and the Compass Chapter's four
+# equinoxes announced 256 rungs between them and had reached six. A lantern that fires nine times
+# is a loom.
+#
+# The meter reports the ladders that MET their announcement as loudly as the ones that fell short,
+# because a reading that only ever accuses is a reading nobody believes.
+
+say "announced-length: Language EN -- a plan may promise what it can keep, and count the rest."
+say "announced-length: Style Gauge, Meter -- announced against reached, both numbers printed."
+say "announced-length: Lens TAME -- bound everything: a length announced in a living pin is a bound nobody checked."
+
+# invariant: run from the repo root, where the scan and the tracked pages both live.
+let root = run ["test" "-f" "construction/ITINERARY.md"]
+assert root.ok else "run from the repo root (construction/ITINERARY.md not found)"
+
+# invariant: the meter must stand before any reading of it is believed.
+let present = run ["test" "-f" "tools/fixtures/a/announced_length_scan.sh"]
+assert present.ok else "tools/fixtures/a/announced_length_scan.sh is missing -- the meter cannot be read"
+
+let control = run ["sh" "tools/fixtures/a/announced_length_control.sh"]
+say control.out
+assert control.ok else "announced-length: a planted case read wrong -- see the control's own lines"
+assert control.out contains "fail=0" else "announced-length: the control closed with a failing leg"
+
+let live = run ["sh" "tools/fixtures/a/announced_length_scan.sh"]
+say live.out
+assert live.ok else "announced-length: the scan refused -- it could list no living tracked pages"
+assert live.out contains "verdict=no_living_forecast" else "announced-length: a living page announces a ladder length its work has not reached -- mark by stamp and name, and count the rungs with git log"
+
+say "announced-length: GREEN -- every living announcement is one its ladder has actually met."

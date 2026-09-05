@@ -126,7 +126,17 @@ and the front door speak one sensory grammar.
 | **Air - Saturn** *law and boundary* -- threshold [`foundations/20260826-021732_air-the-row-that-feels.md`](../../foundations/20260826-021732_air-the-row-that-feels.md) | `context/TAME_CORE.md` | `foundations/20260823-204456_single-stranded.md` | `context/GAUGE_STYLE.md` |
 | **Fire - Mars** *cut and stop* -- threshold [`foundations/20260826-021733_fire-the-row-that-sees.md`](../../foundations/20260826-021733_fire-the-row-that-sees.md) | `foundations/20260816-214652_standfast-the-stopped-line.md` | `foundations/20260729-224828_reds-first-and-the-allocation.md` | `foundations/20260818-081438_the-three-depths-of-removal.md` |
 | **Water - Venus** *care and flow* -- threshold [`foundations/20260826-021734_water-the-row-that-tastes.md`](../../foundations/20260826-021734_water-the-row-that-tastes.md) | `foundations/20260823-105651_the-shape-you-grew-and-the-shape-you-are.md` | `foundations/20260826-194850_the-happy-zone-and-the-thin-edge.md` | `foundations/20260618-184912_growing-a-language.md` |
-| **Earth - Mercury** *the concrete* -- threshold [`foundations/20260826-021735_earth-the-row-that-breathes-in.md`](../../foundations/20260826-021735_earth-the-row-that-breathes-in.md) | `context/specs/20260627-102012_one-clock-naming-law.md` | `context/TWO_ROOMS.md` | `foundations/20260703-202312_the-marked-value.md` |
+| **Earth - Mercury** *the concrete* -- threshold [`foundations/20260826-021735_earth-the-row-that-breathes-in.md`](../../foundations/20260826-021735_earth-the-row-that-breathes-in.md) | `foundations/20260905-154954_the-clock-and-the-mark.md` | `context/TWO_ROOMS.md` | `foundations/20260703-202312_the-marked-value.md` |
+
+**Earth-Cardinal changed hands `20260905` on Keaton's word.** The seat read
+`context/specs/20260627-102012_one-clock-naming-law.md`, which names how a FILE is marked. The mark
+law that extends it to how WORK is marked -- `.claude/rules/stamp-and-name.md` -- stood on no rota
+seat at all, and a meter built the same day found five living announcements it would have caught:
+four equinoxes announcing 256 rungs between them against six reached. The seat now reads
+`foundations/20260905-154954_the-clock-and-the-mark.md`, which carries both halves for a first-day reader -- the clock that
+orders and the mark that promises only what the work can keep. **The spec and the rule remain
+canonical**; the foundation is the door onto them, and both are one click from it. A rota reads
+foundations, and this concern had one half of itself in a spec and the other half nowhere.
 
 **What the grid retired, and why each was a real cut.** The d27 rota mixed a 4 KB essay with a
 164 KB dictionary and called both one lap's reading, which schedules a filename rather than
