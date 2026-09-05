@@ -62,10 +62,29 @@ if grep -qE '^(incense \| pheromone|incense\) want_tree)' "$loop"; then
   say "loop_spells_no_seat_table=no"; else say "loop_spells_no_seat_table=yes"; fi
 
 # --- the loop reads the table ----------------------------------------------------------------
-# FLEET_DRY prints a command and runs nothing, so the engine word can be proven without a lap.
-out=$(FLEET_DRY=1 sh "$loop" incense 2>&1 || true)
-case "$out" in *"claude"*) say "dry_run_names_the_engine=yes" ;; *) say "dry_run_names_the_engine=no" ;; esac
-case "$out" in *"engine=claude"*) say "banner_names_the_engine=yes" ;; *) say "banner_names_the_engine=no" ;; esac
+# WHICH SEAT IS AT HOME IS READ FROM THE TREE THIS CONTROL STANDS IN, never spelled (REDS %422).
+# The elder draft wrote `incense` for the free direction and `petrichor` for the bitten one, which
+# is exactly right in grain-incense and INVERTED in every other tree of the fleet. Measured on the
+# petrichor pier 20260905: the loop answered BOTH correctly -- `petrichor` walked free with its
+# banner, `incense` was refused by basename -- and this control read both right answers as three
+# failures, so the guard reported the law working as a violation. A control that names one machine
+# cannot be run on the fleet it guards, and the baton's own words are that a seat is a chair rather
+# than a computer.
+here=$(basename "$ROOT")
+home_seat=$(sh "$scan" | awk -v t="$here" '$2 == t && $4 == "live" { print $1; exit }')
+away_seat=$(sh "$scan" | awk -v t="$here" '$2 != t && $2 != "-" && $4 == "live" { print $1; exit }')
+# A checkout that is no live seat's tree can prove neither direction, so it names the instrument it
+# lacks rather than reading zero: an empty answer here would be byte-identical to a passing one.
+[ -n "$home_seat" ] && [ -n "$away_seat" ] \
+  || { echo "control_verdict=not_a_fleet_tree ($here holds no live seat)"; exit 1; }
+home_engine=$(sh "$scan" --engine "$home_seat")
+
+# FLEET_DRY prints a command and runs nothing, so the engine word can be proven without a lap. The
+# engine word is read from the table too, so this leg proves the loop's banner AGREES with the
+# roster rather than matching a literal this file would then have to keep in step.
+out=$(FLEET_DRY=1 sh "$loop" "$home_seat" 2>&1 || true)
+case "$out" in *"$home_engine"*) say "dry_run_names_the_engine=yes" ;; *) say "dry_run_names_the_engine=no" ;; esac
+case "$out" in *"engine=$home_engine"*) say "banner_names_the_engine=yes" ;; *) say "banner_names_the_engine=no" ;; esac
 
 # A seat the roster does not hold is refused, and the refusal names the seats that exist rather
 # than reciting a list this file would then have to keep in step.
@@ -73,9 +92,9 @@ out=$(sh "$loop" nosuchseat 2>&1 || true)
 case "$out" in *"usage:"*) say "unknown_seat_refused_by_loop=yes" ;; *) say "unknown_seat_refused_by_loop=no" ;; esac
 case "$out" in *"incense"*) say "refusal_names_real_seats=yes" ;; *) say "refusal_names_real_seats=no" ;; esac
 
-# THE BITING DIRECTION for the tree check: this tree is grain-incense, so the incense seat walks
-# free and every other live seat is refused by basename -- one writer per checkout (%291).
-out=$(FLEET_DRY=1 sh "$loop" petrichor 2>&1 || true)
+# THE BITING DIRECTION for the tree check: the seat whose tree is this one walks free above, and
+# any OTHER live seat is refused by basename -- one writer per checkout (%291).
+out=$(FLEET_DRY=1 sh "$loop" "$away_seat" 2>&1 || true)
 case "$out" in *"refusing"*) say "wrong_tree_refused=yes" ;; *) say "wrong_tree_refused=no" ;; esac
 
 # An elder name reaches the loop and is corrected there, which is the half that never reached

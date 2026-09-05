@@ -46,9 +46,9 @@
 
 ### Now -- the live front
 
-**Git nib:** `f81276c117` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `3ad02d8827` -- HEAD's parent, resolvable everywhere (%401).
 
-**Now.** **A guard can check what a line says and never how many times the page says it.**
+**Now.** **A control that names a machine cannot be run on the fleet it guards.**
 
 **The live front** (condensed `20260831.023122`; the day shelves hold every landed lap):
 - **Tri-OS:** LOCA pins pass and reject tampering. Pier proof awaits `libwayland-client` and
@@ -74,9 +74,9 @@ reads one of `max_name`'s two call sites (`parse_manifest` reads it too, over th
 `xy/pier/diverged-20260831-{064342,115245}`, neither landed, neither mine. **CION:** `drey`'s rung marks are the retired form (%329). **Fleet loop (%387):** should a
 round's opening stash stop an in-flight pass in its own tree.
 
-**Petrichor's pier: two lane reds** -- `fleet_roster` (3 legs) and `agent_jail`. Four faults were
-the fresh checkout's own: hooks unarmed, `vendor/` empty, and `.gnupg-rye/gpg.sh` exporting the
-ELDER tree's `GNUPGHOME`, so a tree holding its own key could not sign. The shim reads `$0` now.
+**Petrichor: `%422` CLOSED** -- `fleet_roster` named one machine, so off `grain-incense` it read
+the law WORKING as three failures; it takes its seat from its own tree now, proven on two.
+`agent_jail` reds `bwrap ... not permitted`: environment, so no receipt, `--scoped` refuses.
 **Still open:** `glow/rune_shape.rye` keeps width custody; `%281`/`%291`. **Named (%347):**
 `pond/enclosure_policy.kyri` 8,120/8,192; the wall is yours.
 **`%374` BUILT.** The roster grows **`gate %N`** beside `tier`/`host`/`capability`, for **what a
