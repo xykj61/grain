@@ -250,9 +250,35 @@ if [ -n "$b_line" ] && [ -n "$s_line" ] && [ "$b_line" -lt "$s_line" ]; then
 
 # A berthed seat has a lane and a name and no tree, so it is excluded from what would run it and
 # named by what merely lists it -- `live` would report a missing ship, `parked` a stopped one.
-if sh "$scan" --live | grep -qx bakery; then say "berthed_excluded_from_live=no"; else say "berthed_excluded_from_live=yes"; fi
-if sh "$scan" --seats | grep -qx bakery; then say "berthed_named_by_seats=yes"; else say "berthed_named_by_seats=no"; fi
-case "$(sh "$scan" --recipe 2>&1)" in *grain-bakery*) say "berthed_excluded_from_recipe=no" ;; *) say "berthed_excluded_from_recipe=yes" ;; esac
+#
+# PLANTED IN A PEN RATHER THAN READ OFF THE FLEET. These legs named `bakery` as their berthed
+# example and asserted against the real roster, so they measured the tree's current data instead of
+# the scan's behaviour -- and they broke the hour bakery was lawfully promoted to `live`
+# (`20260905`, when the pier grew to eight cores and eight ships were wanted). A control a lawful
+# edit can red is a control that gets edited back rather than believed.
+# The scan walks up for a tree root before it reads FLEET_ROSTER, so the pen needs the marker file
+# as well as the override -- the same shape the pen above uses.
+spen=$(mktemp -d); cp "$scan" "$spen/scan.sh"; mkdir -p "$spen/construction"
+cat > "$spen/roster.kyri" <<'ROSTER_EOF'
+format fleet-roster-v1
+seat sailing
+tree grain-sailing
+engine claude
+status live
+
+seat waiting
+tree grain-waiting
+engine claude
+status berthed
+ROSTER_EOF
+cp "$spen/roster.kyri" "$spen/construction/fleet-roster.kyri"
+sp() { FLEET_ROSTER="$spen/roster.kyri" sh "$spen/scan.sh" "$@" 2>&1; }
+if sp --live | grep -qx waiting; then say "berthed_excluded_from_live=no"; else say "berthed_excluded_from_live=yes"; fi
+if sp --seats | grep -qx waiting; then say "berthed_named_by_seats=yes"; else say "berthed_named_by_seats=no"; fi
+case "$(sp --recipe)" in *grain-waiting*) say "berthed_excluded_from_recipe=no" ;; *) say "berthed_excluded_from_recipe=yes" ;; esac
+# ...and the live seat beside it IS listed, so this proves an exclusion rather than an empty read.
+if sp --live | grep -qx sailing; then say "live_seat_is_listed=yes"; else say "live_seat_is_listed=no"; fi
+rm -rf "$spen"
 # And the loop refuses it by TREE rather than by status, which is the honest refusal: the seat is
 # real, the checkout is not here yet, and the message says which.
 case "$(FLEET_DRY=1 sh "$loop" bakery 2>&1)" in
