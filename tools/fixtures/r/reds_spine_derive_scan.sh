@@ -200,12 +200,18 @@ else
   next_free=$((local_max + 1))
 fi
 
-# `--next` REFUSES MID-REBASE, because the allocator above skips past numbers the LOCAL tree holds
-# and a replaying tree holds the very row being renumbered. The Petrichor seat read `--next` during
-# a rebase on `20260905`, was answered **436** while the anointed spine's highest was 434 and its own
-# unshared row was 435, and renumbered six citation sites the wrong way before
-# `reds_ledger_monotone` caught it. The skip is right when booking a second row and wrong when the
-# first one is in flight, and nothing in the reading could tell those apart. A rebase can, so it does.
+# `--next` REFUSES MID-REBASE. The allocator above starts at the anointed maximum and then SKIPS past
+# any number the LOCAL tree holds -- which is right when booking a second row, and wrong when the
+# first is still in flight, because a replaying tree holds the very row being renumbered. Nothing in
+# the reading can tell an in-flight row from a settled one. A rebase can, so it does.
+#
+# THIS IS A PRECAUTION RATHER THAN A REPAIR, and the difference is worth stating because an elder
+# draft of this comment got it backwards. It cited the Petrichor seat being answered 436 against an
+# anointed maximum of 434 -- taken from that seat's own report and never checked. Verified after:
+# `%435` stands on the anointed spine, folded to
+# `construction/archive/REDS-the-page-that-became-its-own-ancestor-rows-435.md`, so the maximum was
+# 435 and **436 was the correct answer**. The skip never fired. The hazard the refusal guards is
+# real and has simply not happened yet.
 gitdir=$(git rev-parse --git-dir 2>/dev/null || echo .git)
 if [ "$mode" = next ] && { [ -d "$gitdir/rebase-merge" ] || [ -d "$gitdir/rebase-apply" ]; }; then
   echo "reds_spine_derive: REFUSED -- a rebase is open, and the allocator counts this tree's own" >&2
