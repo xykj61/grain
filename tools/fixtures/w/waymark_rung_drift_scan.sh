@@ -67,7 +67,7 @@
 set -eu
 
 ROOT="${RUNG_ROOT:-.}"
-CEILING="${RUNG_CEILING:-17243}"
+CEILING="${RUNG_CEILING:-17212}"
 
 marks='HAWM|TUBE|ZETA|JABS|LULU|STOA|SETU|SUNN|POLE|SOON|JARL|BUHR|TACT|GISM|AYRE|DAHL|KOFF|CION|VOLS|LOWE|OFFY|GRAD|AHOY|WADE|HUNK|DREY|FORA|ALES|DISC|SEVA|MAND|MONA'
 
@@ -80,9 +80,17 @@ if [ -n "${RUNG_FILE_LIST:-}" ]; then
     && { echo "verdict=file_list_escapes"; exit 1; }
   cp "$RUNG_FILE_LIST" "$files"
 else
+  # A FOLDED LEDGER SHELF IS TESTIMONY THE STAMP TEST CANNOT SEE. The line above reads a file as
+  # testimony when its BASENAME carries a one-clock stamp, which is the tree's own rule -- and REDS
+  # fold shelves are named by row range instead, `REDS-<sprig>-rows-N-M.md`, so a shelf headed
+  # *Archived, complete, never edited* was being counted as living prose. A row citing five retired
+  # announcements as its evidence then read as sixteen fresh rung marks, and folding a shelf reddened
+  # this guard on the lap it landed. The glob is the same one the monotone witness uses to DISCOVER
+  # shelves, so both readers agree on what a shelf is.
   ( cd "$ROOT" && git ls-files 2>/dev/null ) \
     | grep -vE '(^|/)[0-9]{8}-[0-9]{6}[_.]' \
     | grep -vE '^(session-logs|counsel|waymarks|bron-resins|vendor|gratitude|seed)/' \
+    | grep -vE '^construction/archive/REDS-.*rows-.*\.md$' \
     > "$files" || : > "$files"
 fi
 
