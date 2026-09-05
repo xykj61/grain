@@ -123,6 +123,17 @@ let kr = run ["cp" "-a" (field + "/.gnupg-rye") (dest + "/.gnupg-rye")]
 assert kr.ok else "birth-a-clone: the jail-local keyring did not copy -- ${kr.err}"
 let krm = run ["chmod" "700" (dest + "/.gnupg-rye")]
 assert krm.ok else "birth-a-clone: could not close the newborn's keyring to its owner"
+
+# THE `loops/` ROOM IS MADE AT BIRTH, EMPTY, because a path that does not exist cannot be denied.
+# The captain's view mounts every peer read-only and denies three credential paths -- `.gnupg-rye`,
+# `.ssh`, and `loops/`, which holds that ship's agent auth. ai-jail answers a missing path with
+# `Deny: ... does not exist; rule not applied` and carries on, so a newborn whose loop had never run
+# left its auth room undefended the moment its first launch created one mid-session. Making it here
+# costs one empty directory and closes that window before it opens.
+let lp = run ["mkdir" "-p" (dest + "/loops")]
+assert lp.ok else "birth-a-clone: could not make the newborn's loops room"
+let lpm = run ["chmod" "700" (dest + "/loops")]
+assert lpm.ok else "birth-a-clone: could not close the newborn's loops room to its owner"
 let d_gpg = dest + "/.gnupg-rye/gpg.sh"
 let d_here = run ["test" "-x" d_gpg]
 assert d_here.ok else "birth-a-clone: the copied keyring carries no executable gpg.sh at ${d_gpg}"
