@@ -1,0 +1,28 @@
+format session-log-v1
+stamp 20260905.183854
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role incense -- law, review, captain
+modality text
+model claude-opus-5
+model_status configured default, runtime unverified
+configured_model claude-opus-5
+configured_status .claude/settings.json names the default; no runtime telemetry read this turn
+evidence .claude/settings.json
+voice Kyri
+host Vultr Dallas pier, America/New_York
+title The handoff read, and the doors that are not mine
+prompt Read the handoff card from the eight-core round, then construction/ITINERARY.md whole, then the newest day shelf.
+think Read expanding-prompts/20260905-183107_the-handoff-from-the-eight-core-round.md first, as the card itself instructs, so the ITINERARY was read with the round's own findings already in hand.
+think Read construction/ITINERARY.md whole -- 310 lines, 32,668 bytes against its seated bound of 32,768 -- rather than sampling it, since the card is the inner loop and a partial read is a partial lap.
+think Read session-logs/date/README-index-20260905.md, whose 40 rows are the day the handoff describes.
+think Measured the tree instead of trusting the card: git log, git status, git stash list, and ls-remote against both remotes.
+obs HEAD is 2179fa1d6 and both xy and gp405 refs/heads/main carry 2179fa1d689eb94b143198db6cbeaa9b434dcd26 -- three doors even. Working tree clean, no stash.
+obs The card's Git nib field reads 1163db2b81, which is HEAD's parent exactly as remember-git-nib.md requires; it needs no move this turn.
+obs Eight trees stand on the pier, matching the handoff's own count.
+obs Two REDS rows are OPEN and both are named in the card as wanting Keaton's word -- %430 (a freed Register voting its ceiling) and %431 (the untracked publisher whose repair cannot travel). %360's remainder lives in the Glow, STOA, SUNN and equinox lanes rather than this seat's.
+obs No agent-doable red stands open for this seat, so the honest close is a check-in rather than a claimed lap. Reporting that plainly is the rule collaboration.md asks for: report state, name gates, leave the rhythm to Keaton.
+file session-logs/date/20260905/20260905-183854_the-handoff-read.kyri the orientation record for the incense seat opening after the eight-core round
+file session-logs/date/README-index-20260905.md one row prepended below the delimiter, pointing at this log
+recommend check-in (Keaton) -- the five doors the handoff surfaces are all custody or word gates: the root partition, fresh keys per ship, %430, %431, and the three gated guards. Name which one opens, or name a lane to claim.
