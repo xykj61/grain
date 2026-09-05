@@ -1001,6 +1001,17 @@ path tools/f/fleet_roster_witness.rish
 tier lap
 seated 20260904.190000
 
+# fleet_key_locality -- one jail binds one tree, so every path a ship's git config names must live
+# inside that ship's own tree. grain-pheromone was born naming petrichor's keyring and petrichor's
+# deploy keys, and could neither sign nor push from inside its own enclosure while every check at a
+# host prompt passed (REDS %427). This reads UNTRACKED files -- `.git/config` and
+# `.git/ssh_config_jail` carry custody paths and are untracked by design -- which is why no tracked
+# scan, the commit hook, or the link duty could ever have reached it.
+guard fleet_key_locality
+path tools/f/fleet_key_locality_witness.rish
+tier lap
+seated 20260905.152000
+
 # agent_jail -- the launcher every unattended Linux lap runs through, and the guard that proves it.
 # It stood UNROSTERED and RED at its first leg while the launcher worked perfectly: it grepped the
 # dry-run plan for `.claude-state` and `.cursor-agent-state`, the directories the `20260827`
