@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260905.180807` | [five births, and the onboarding that never landed](20260905/20260905-180807_five-births-and-the-onboarding-that-never-landed.kyri) | 8 trees, 36 paths, zero foreign. |
 | `20260905.175532` | [eight cores, eight seats](20260905/20260905-175532_eight-cores-eight-seats.kyri) | the pier grew; the roster and its control caught up. |
 | `20260905.175015` | [the peer corrected the record](20260905/20260905-175015_the-peer-corrected-the-record.kyri) | %435 was on the spine; 436 was right. |
 | `20260905.174745` | [the default nobody chose](20260905/20260905-174745_the-default-nobody-chose.kyri) | 62 guards inherit their tier; now counted. |
