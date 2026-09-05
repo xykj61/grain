@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260905.151659` | [the letter that meant two things](20260905/20260905-151659_the-letter-that-meant-two-things.kyri) | `N` meant gpg failed, not unsigned; the fleet cross-verifies now. |
 | `20260905.151254` | [the guard that could be fooled by a symlink](20260905/20260905-151254_the-guard-that-could-be-fooled-by-a-symlink.kyri) | both new guards seated on the roster; a disguise closed before it fired. |
 | `20260905.150536` | [both custody doors -- the jail binds one tree](20260905/20260905-150536_both-custody-doors-the-jail-binds-one-tree.kyri) | pheromone's keys come home; the round-open stops reporting a clean tree over a rebase. |
 | `20260905.143057` | [the seed publishes, and a default names itself](20260905/20260905-143057_the-seed-publishes-and-a-default-names-itself.kyri) | grain-os and grain-ww both at `5a54c2f`; the init now names its branch. |
