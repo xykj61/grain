@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260905.164820` | [copal and patchouli take the unguarded](20260905/20260905-164820_copal-and-patchouli-take-the-unguarded.kyri) | two seats, 13,000 lines of Rye. |
 | `20260905.163155` | [the cut, the shelf, and what a lap costs](20260905/20260905-163155_the-cut-the-shelf-and-what-a-lap-costs.kyri) | 901s to 705s; an agent is not CPU-bound. |
 | `20260905.160800` | [the curve that changed the answer](20260905/20260905-160800_the-curve-that-changed-the-answer.kyri) | 2.81x at six ships; steal 0.059%. |
 | `20260905.155840` | [two ships, and what a restart must not lose](20260905/20260905-155840_two-ships-and-what-a-restart-must-not-lose.kyri) | both launch commands. |
