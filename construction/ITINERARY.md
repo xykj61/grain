@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `f676bd04e1` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `4af8a310a4` -- HEAD's parent, resolvable everywhere (%401).
 
 **Now.** **A control that names a machine cannot be run on the fleet it guards.**
 
