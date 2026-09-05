@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `3ac19316f6` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `78ea9e22d9` -- HEAD's parent, resolvable everywhere (%401).
 
 **Now.** **A rule written six times is a rule six files may quietly come to disagree about.**
 
@@ -83,25 +83,24 @@ again, and a pass whose reds are all gated writes its receipt disclosing what it
 **The gate vocabulary is this card's own custody list, read at scan time**; an unreadable card
 refuses every gate. Live: **106 green, 1 red, 4 gated**.
 **Shelved:** eleven rows -- see [`the fold recital`](archive/REDS-fold-recital.md).
-**`%414` CLOSED -- the sandbox and the agent both own `--verbose`.** Claude Code refuses
-`--output-format stream-json` without it; **ai-jail owns `-v, --verbose`** and refuses it after the
-command **even when `--` was passed** -- advising the thing already done. Every jailed lap died
-instantly, and the loop counted eight refusals as eight laps across two trees. **The flags moved
-inside:** `tools/l/fleet_lap.sh` runs in the enclosure and spells them where only claude reads
-them; `agent-jail.sh lap <seat>` puts **not one flag** in the jail's argv, which also retires the
-giant `-p` argument riding through two shells. **The loop stops now** after three laps dying in
-under ten seconds each, naming it an invocation fault. **A wrapper inherits its wrapper's
-namespace** -- any flag shared between a sandbox and what it sandboxes waits for the lap that
-first needs it.
-**`%415` CLOSED -- `claude login` writes to the HOST's home, and `--private-home` is the thing that
-replaces it.** A login typed at the pier shell reaches **no tree at all**, whichever directory it
-was typed in -- `cd` moves the working directory and the credential follows `$HOME`. Measured: host
-509 bytes, incense 509 (so incense worked), **pheromone and petrichor none**. The answer was already
-in the same file -- `agent-jail.sh` has seeded cursor's login from the host since it was written --
-and only one of the two agents ever got it. **One login per pier, not one per tree**: the launcher
-seeds when a tree has none and **refreshes when the host's is strictly newer**, so a jail-refreshed
-token is never clobbered and a fresh pier login reaches every ship. Nothing tracked, nothing off the
-machine, no custody key. **A sandbox that replaces a directory replaces everything anyone put there.**
+**`%414` CLOSED -- ai-jail and claude both own `--verbose`**, and ai-jail refuses it after the
+command even when `--` was passed. The flags moved inside: `tools/l/fleet_lap.sh` runs in the
+enclosure, `agent-jail.sh lap <seat>` puts **no flag** in the jail's argv. The loop stops after
+three laps dying under ten seconds. **A wrapper inherits its wrapper's namespace.**
+**`%415` CLOSED -- `claude login` writes to the HOST's home; `--private-home` replaces it.** A pier
+login reached **no tree**. The launcher seeds a tree with none and refreshes when the host's is
+newer -- **one login per pier, not one per tree**. Nothing tracked, nothing off the machine.
+**A sandbox that replaces a directory replaces everything anyone put there.**
+**`%416` CLOSED -- a ratchet passes on a LOW number.** `unheard_guard` ran both awk passes as
+`> FILE 2>/dev/null || true`. One fails loud (the closure stops, `unheard` reads high, the ceiling
+reds); the other reads `unheard_choirs=0` against a ceiling of 37 -- **the greenest number on the
+page.** A guard whose instrument had died would report the healthiest tree it ever measured.
+**A gate at zero fails safe when its instrument dies; a ceiling fails UNSAFE**, and this tree holds
+far more ceilings. The broad signature matched **20 sites, 2 faults** -- grep's exit 1 is an answer
+and a predicate awk answers by exiting -- so `instrument_refusal` reads only an output-producing
+pass whose failure is discarded, **gated at zero from birth**, 676 scans, 11 pen legs. A deliberate
+toleration says so at the site: `# instrument-tolerated: <why>` exempts the next line and nothing
+else. **The difference between a decision and a swallow is whether anyone wrote it down.**
 **LAUNCH:** `cd ~/grain-<seat> && git pull --ff-only xy main && sh tools/l/fleet-loop.sh <seat>`.
 **The utility yonder, filed `20260905.064341`** -- a measured pair, nothing built. Study:
 [`what-a-harness-promises`](../external-research/yonder/20260905-064341_what-a-harness-promises-about-its-tools.md).
@@ -308,6 +307,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260905.064341` | The tools a guard may assume | [log](../session-logs/date/20260905/20260905-064341_the-tools-a-guard-may-assume.kyri) |
+| `20260905.072118` | A ratchet passes on a low number | [log](../session-logs/date/20260905/20260905-072118_a-ratchet-passes-on-a-low-number.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)

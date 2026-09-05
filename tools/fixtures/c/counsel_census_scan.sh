@@ -33,6 +33,10 @@ pen=$(mktemp -d); trap 'rm -rf "$pen"' EXIT
 # `|| true`, never `|| : > file`: one dangling symlink among six thousand paths fails the cat,
 # and a truncating fallback then erases the fifty-six megabytes that DID read (%323's redirect
 # lesson, met again in this file's own first run).
+# instrument-tolerated: a partial read is the intended outcome here, per the note above -- one
+# dangling symlink among six thousand paths fails the cat, and the bytes that DID read are the
+# census. Read past by tools/fixtures/i/instrument_refusal_scan.sh, which otherwise reds on a
+# swallowed instrument pass (REDS %416).
 ( cd "$ROOT" && tr '\n' '\0' < "$pen/living" | xargs -0 cat 2>/dev/null ) > "$pen/haystack" || true
 
 pieces=0; cited=0; orphans=0
