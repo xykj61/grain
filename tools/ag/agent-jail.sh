@@ -386,14 +386,35 @@ fi
 # `loops/` is gitignored and a closed stack -- and nothing here creates, holds or moves a custody
 # key. It carries the maintainer's own already-granted session from one directory of his own pier
 # to another, which is exactly what the cursor line above has done since it was written.
-if [ -f "${HOST_HOME}/.claude/.credentials.json" ]; then
-  if [ ! -f "${CLAUDE_STATE}/.credentials.json" ]; then
+#
+# A NEWER FILE IS NOT A BETTER CREDENTIAL, and reading only the mtime cost a night of laps
+# (REDS %419). Signing out, or a session expiring, REWRITES the file with the same seven fields and
+# EMPTY token strings -- `accessToken` and `refreshToken` at length zero, `expiresAt` at the Unix
+# epoch. That file is valid JSON, correctly shaped, and the newest thing on disk, so the elder
+# refresh clause copied it OUT of the tree it was in and INTO the host, and then into every other
+# tree on their next launch. One logged-out checkout became three. Petrichor answered
+# `Failed to authenticate: OAuth session expired and could not be refreshed` five laps running.
+#
+# So freshness is read only after USABILITY: a credential is worth copying when its access token is
+# a non-empty string. That is the cheapest honest test -- it does not phone anywhere, and it
+# separates the two states this file can be in that an mtime cannot tell apart.
+claude_login_live() {
+  # invariant: a credential with an empty access token is a logged-out one, whatever its mtime.
+  [ -f "$1" ] || return 1
+  LC_ALL=C grep -q '"accessToken"[[:space:]]*:[[:space:]]*"[^"]\{16,\}"' "$1" 2>/dev/null
+}
+if claude_login_live "${HOST_HOME}/.claude/.credentials.json"; then
+  if ! claude_login_live "${CLAUDE_STATE}/.credentials.json"; then
     cp -p "${HOST_HOME}/.claude/.credentials.json" "${CLAUDE_STATE}/.credentials.json" \
       && echo "agent-jail: seeded this tree's claude login from the host (one login per pier)" >&2
   elif [ "${HOST_HOME}/.claude/.credentials.json" -nt "${CLAUDE_STATE}/.credentials.json" ]; then
     cp -p "${HOST_HOME}/.claude/.credentials.json" "${CLAUDE_STATE}/.credentials.json" \
       && echo "agent-jail: refreshed this tree's claude login from a newer host login" >&2
   fi
+elif [ -f "${HOST_HOME}/.claude/.credentials.json" ]; then
+  # The host is logged out. Say so once rather than copying emptiness onward: a tree holding a live
+  # credential keeps it, and a `claude login` at the pier shell repairs every tree on its next lap.
+  echo "agent-jail: the host's claude login is empty (signed out) -- leaving this tree's own credential alone" >&2
 fi
 
 MAP_ARGS=(

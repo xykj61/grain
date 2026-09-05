@@ -8,6 +8,15 @@
 **Room:** Vision, not checkable. Nothing here binds until a witness does (`context/TWO_ROOMS.md`).
 **Kin:** [`../../.claude/rules/gratitude-licenses.md`](../../.claude/rules/gratitude-licenses.md) - [`../../tools/fixtures/s/shell_portable.sh`](../../tools/fixtures/s/shell_portable.sh) - [`../../tools/fixtures/s/shell_dialect_scan.sh`](../../tools/fixtures/s/shell_dialect_scan.sh)
 
+> **Read this first (amended `20260905.102342`).** **POSIX is not this project's floor -- it is the
+> dependency the project exists to leave.** Caravan is a root task on **seL4's userlevel side**,
+> where there is a syscall interface and **no shell, no `awk`, no `grep`, and no POSIX utility layer
+> at all**. So every count below is **two readings at once**: a portability figure for the bench we
+> work on today, and a **work estimate for the Rye somebody must eventually write** for the machine
+> we are building toward. The full argument is at *The correction that reframes the whole study*;
+> it sits after the measurements because that is the order the work happened in, and this tree
+> keeps the order it learned things in.
+
 An agent harness and a witness suite are the same kind of thing wearing different clothes: both are
 programs that must reach a machine's tools and must survive not finding them. This study measures
 what this tree actually depends on, reads what two harnesses do about the same problem, and names
