@@ -76,7 +76,29 @@ trap 'rm -rf "$work"' EXIT INT TERM
 
 drift=0
 : > "$work/drift.txt"
+
+# ONE `git grep` FOR THE CANDIDATES (REDS %413). This walked all 14,709 tracked files and forked a
+# `basename` and one or two `grep`s for each -- roughly 35,000 processes to find the 1,127 files
+# that name a model id at all. `git grep -l` answers that in one pass over the same tracked set,
+# and the loop below then runs only over those, where the second grep is cheap and few.
+#
+# A MODEL ID, rather than any hyphenated claude-word: the first pattern written here read
+# `claude-[a-z0-9-]*` and returned 71 files -- claude-code, .claude-state, launch-claude-chapter.
+# A model id is always a family and a number, and that is what the tree means by one.
+if ! ( cd "$root" && git grep -lE 'claude-(opus|sonnet|haiku|fable)-[0-9]' ) > "$work/named.txt" 2>"$work/named.err"; then
+  # git grep exits 1 when nothing matches, which is a real and clean answer rather than a failure.
+  if [ -s "$work/named.err" ]; then
+    echo "instrument=failed"
+    echo "detail=model_id_pass_refused"
+    sed -n '1,5p' "$work/named.err" | sed 's/^/detail_git=/'
+    echo "verdict=misread"
+    exit 1
+  fi
+  : > "$work/named.txt"
+fi
+
 while IFS= read -r f; do
+  [ -n "$f" ] || continue
   case "$(basename "$f")" in
     [0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9][_.]*) continue ;;
   esac
@@ -84,14 +106,10 @@ while IFS= read -r f; do
     date/*|*/date/*) continue ;;
   esac
   [ -f "$root/$f" ] || continue
-  # A MODEL ID, rather than any hyphenated claude-word: the first pattern written here read
-  # `claude-[a-z0-9-]*` and returned 71 files -- claude-code, .claude-state, launch-claude-chapter.
-  # A model id is always a family and a number, and that is what the tree means by one.
-  grep -qE 'claude-(opus|sonnet|haiku|fable)-[0-9]' "$root/$f" 2>/dev/null || continue
   grep -q -- "$model" "$root/$f" 2>/dev/null && continue
   drift=$((drift + 1))
   printf 'drift: %s\n' "$f" >> "$work/drift.txt"
-done < "$work/tracked.txt"
+done < "$work/named.txt"
 
 [ -s "$work/drift.txt" ] && cat "$work/drift.txt"
 
