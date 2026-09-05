@@ -22,6 +22,23 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ---
 
+## `20260905.070821` -- the card condenses one closed account to its shelf (walk-back `78ea9e22d9`)
+
+**Walk-back nib:** `78ea9e22d9`. **Swept:** 645 bytes of the live front of
+[`ITINERARY.md`](ITINERARY.md) -- the seven-line `%409` account of the fleet's seat table written
+six times -- condensed to a one-line pointer, because the card's own law says a landed lap keeps
+one line with its detail left in the record that holds it, and this account already stands whole
+at [`archive/REDS-what-nothing-misbehaved-over-rows-408-410.md`](archive/REDS-what-nothing-misbehaved-over-rows-408-410.md).
+A third stranding of one account was the drift; the shelf is the record.
+
+**What waits there, worth recalling:** the measured shape of the drift -- the loop admitting six
+seat names where the re-arm reported nine, the elder remap living in one file and never reaching
+the other, and the reading that a seat name in a loop case arm is a **seventh** copy. The shelf
+row carries all of it; the walk-back holds the card as it read while eight closed accounts stood
+on one live front, which is the condition this cairn marks rather than the account it moved.
+
+---
+
 ## `20260904.193221` -- the shred-prep pin folds its completed shed (walk-back `5bd1a43e71`)
 
 **Walk-back nib:** `5bd1a43e71`. **Swept:** the living [`SHRED_PREP.md`](SHRED_PREP.md), whose
