@@ -1014,10 +1014,14 @@ tier lap
 host linux
 seated 20260904.182600
 
+# commit_message_guard -- GATE FIELD LIFTED `20260905.115500`. It carried `gate %1` because
+# publish-seed.sh was absent from this pier, so SEED_PUBLISHER_ARMS read 0 and the guard reported
+# that a fresh seed/.git would publish with the message wall unarmed. The publisher is reconstructed
+# and the guard is GREEN, so the gate comes off in the same lap -- a gate left standing over a green
+# guard would excuse the NEXT red, which is the one thing %374's field must never do.
 guard commit_message_guard
 path tools/co/commit_message_guard_witness.rish
 tier lap
-gate %1
 seated 20260830.154940
 
 guard waymark_derive

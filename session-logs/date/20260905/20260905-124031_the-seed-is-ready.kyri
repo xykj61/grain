@@ -1,0 +1,29 @@
+format session-log-v1
+stamp 20260905.124031
+editor Claude Code terminal on the Dallas pier, reached over SSH from a Daylight DC-1 tablet
+provider Anthropic
+product Claude Code
+role Incense -- field captain, law and review, tree grain-incense
+modality text
+model claude-opus-5
+model_status active -- the harness system prompt declares the running model by exact id
+voice Kyri
+host NixOS 6.18.49 x86_64 AMD pier (Vultr Dallas), one clock America/New_York
+coordination user coordinated separate sessions -- all three Earth ships sailing
+title The seed is ready, and the gate came off
+prompt let's do a ww os seed push when it's a good time for you -- then kg, reconstruct publish-seed.sh next
+think Read the boundary before touching anything, and it is drawn exactly: the card's custody section says seed projection (not push) is agent-doable, and the baton says never run publish-seed.sh. So the projection is mine and the force-push is his, with no interpretation needed.
+obs Projected and proved: SOW_OK copied 7472, scrubbed 1215, withheld 135, then IDENT_CLEAN, NO_PERSONAL, SOW_WITNESS_GREEN.
+obs Then scanned independently rather than only trusting the witness, because the act is irreversible and public. Five hits across two passes, every one checked by hand and none a leak: two truncated ssh-ed25519 stubs exactly as sow.rish promises, keeper@tablet and keeper@your.pier.address as tutorial placeholders, my own accessToken grep pattern from %421, a PEM label inside a comment in encoding/pem.rye, and a grep -F pattern checking for a signature in a test pen. On the staged bytes: Keaton 0, Dunsford 0, gmail 0, and the real ship and remote names 0.
+obs The scrub is visibly working -- agent-jail.sh ships saying on the maintainer's word where the field says his name, and the seed's copy still parses.
+think The reconstruction is what the rule tells a clone to do when it lacks the script, and this is the second time, after 20260827. Every arming lives in the script because the publisher wipes seed/.git on every run: the hooksPath the wall needs, the local gpgsign false, the anonymous keyless identity, both remotes, and the GIT_SSH_COMMAND transport as an environment variable rather than config, since a config value would write this host's absolute path and username into seed/.git/config.
+obs One thing I added that the rule does not require, and the reason is the law rather than caution: the bare invocation cannot publish. The force-push updates two public repositories irreversibly, and the card says an autonomous agent stops at a custody gate and never crosses. A script whose bare form cannot cross that gate is the shape the law asks for, and --push is a separate word typed when it is meant. Proven twice end to end, stopping both times.
+obs The finding worth the row is the gate itself. commit_message_guard had sat red behind gate %1 since this pier was born, and the gate made that red look parked rather than repairable -- when it was not a custody decision at all, only a missing file. %374 seated the gate field so a red parked at a maintainer's decision would stop costing the receipt; the mirror risk arrived first, and nothing re-reads a claim like that automatically.
+obs So the gate field came off in the same lap the guard went green, which is the half that matters more than the fix: a gate standing over a green guard would excuse the NEXT red, and a future SEED_PUBLISHER_ARMS 0 -- the publisher deleted again, or its one line edited away -- must red rather than read as parked. Gated guards 4 to 3.
+obs One self-inflicted detour: testing whether the script refuses when run from elsewhere started a full projection, because the script is location-anchored by design and resolves its own root. Correct behavior, not a fault -- but I killed it mid-projection and re-ran cleanly rather than hand Keaton a seed built from an interrupted pass.
+loom seed copied=7472 scrubbed=1215 withheld=135 files=7706 parents=0 signed=N author=grain-ww
+loom guard=commit_message_guard before=red_gated after=GREEN gated_total=4->3 arms=1
+file publish-seed.sh reconstructed, untracked at the root by design, and its bare form cannot cross gate %1
+file construction/standing-equipment.kyri the gate field lifted from a guard that is green again
+file construction/REDS.md %423 -- a gate is a claim about why a red cannot move, and a claim like that goes stale silently
+recommend check-in (Keaton) -- the seed is projected, proven and committed; sh publish-seed.sh --push is yours, and the dry-run form is printed by the bare run
