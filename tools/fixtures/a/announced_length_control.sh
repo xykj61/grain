@@ -54,7 +54,20 @@ commit
 ck "spaced-hyphen range does not vote" "reached ELLIP1" "$(run)"
 rm -f "$pen/tree/other.md"
 
-# 9-10. DATED TESTIMONY KEEPS EVERY NUMBER IT WROTE. An announcement under a dated shelf is read
+# 9-10. A LEDGER ROW IS A RECORD, NOT AN ANNOUNCEMENT. The foundation written to teach this law
+# tabulates announced-against-reached, and was the first page this meter accused. A two-cell row
+# whose second cell states the true reach is documentation; a bare announcement still bites.
+printf 'The RECD ladder (RECD0-RECD63).\nRECD1 landed.\n' > "$pen/tree/pin.md"
+printf '| Announced | Reached |\n|---|---|\n| RECD0-RECD63 | RECD1 |\n' > "$pen/tree/table.md"
+commit; out=$(run)
+ck "bare announcement still bites" "announces RECD0-RECD63 and the ladder reached RECD1" "$out"
+ck "and the table row is counted once" "announcements_checked=1" "$out"
+rm -f "$pen/tree/pin.md"
+commit
+ck "table alone reads clean" "verdict=no_living_forecast" "$(run)"
+rm -f "$pen/tree/table.md"
+
+# 11-12. DATED TESTIMONY KEEPS EVERY NUMBER IT WROTE. An announcement under a dated shelf is read
 # past entirely -- accrete-never-break -- so a folded log can never red this meter.
 printf 'A living page with no announcement at all.\n' > "$pen/tree/pin.md"
 mkdir -p "$pen/tree/date/20260101"
@@ -63,7 +76,7 @@ commit; out=$(run)
 ck "dated shelf read past"   "verdict=no_living_forecast" "$out"
 ck "and counted nowhere"     "announcements_checked=0"    "$out"
 
-# 11-12. A tree with nothing to read REFUSES rather than printing a clean zero (REDS %413).
+# 13-14. A tree with nothing to read REFUSES rather than printing a clean zero (REDS %413).
 ( cd "$pen/tree" && g rm -q -r --cached . >/dev/null 2>&1 )
 out=$(run); rc=$?
 ck "empty listing refuses" "REFUSED" "$out"
