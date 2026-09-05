@@ -1022,6 +1022,17 @@ path tools/f/fleet_round_open_witness.rish
 tier lap
 seated 20260905.153500
 
+# announced_length -- a living page announcing a ladder's length is a forecast, and this counts how
+# far each one actually got. The mark law names four such ladders, all found by hand and typed into
+# the rule; five more stood in `context/LEXICON.md` unnoticed, where the Compass Chapter's four
+# equinoxes announced 256 rungs between them and had reached six. It reports the ladders that MET
+# their announcement as loudly as the ones that fell short, because a reading that only accuses is
+# one nobody believes.
+guard announced_length
+path tools/a/announced_length_witness.rish
+tier lap
+seated 20260905.164500
+
 # THE MANTRA WITNESSES -- twenty proofs that ran only when a hand remembered. Measured `20260905`:
 # `mantra/` holds 32 Rye modules and 9,175 lines, **120 Rye files outside it reach into it** --
 # Brushstroke's photo library, Pond's apps, the editor's undo -- and NOT ONE of its ~26 witnesses
