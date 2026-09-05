@@ -14,6 +14,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260905.112846` | [The prices differ because the promises do](20260905/20260905-112846_the-prices-differ.kyri) | cat: 52 lines here, 796 in uutils, and neither is waste |
 | `20260905.110633` | [The name a veteran still likes](20260905/20260905-110633_the-name-a-veteran-still-likes.kyri) | 241 authored names, not one a coinage |
 | `20260905.104613` | [toybox answers dawk's question](20260905/20260905-104613_toybox-answers-dawks-question.kyri) | the byte-view flag, in the next project we read |
+| `20260905.111416` | [The guard that named a machine](20260905/20260905-111416_the-guard-that-named-a-machine.kyri) | a control that named one computer read the law working as a breach |
 | `20260905.100421` | [uutils, and a newer file that was worse](20260905/20260905-100421_uutils-and-a-newer-file-that-was-worse.kyri) | a logged-out credential outranked a live one |
 | `20260905.090338` | [The stash that held a finished lap](20260905/20260905-090338_the-stash-that-held-a-finished-lap.kyri) | verified, renumbered off a collision, landed |
 | `20260905.083758` | [The guard that watched an emptied room](20260905/20260905-083758_the-guard-that-watched-an-emptied-room.kyri) | flat_logs=0 read green for nine days |
