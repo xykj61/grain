@@ -78,7 +78,7 @@ pub const claims_floor: u32 = 15;
 // council rota -- five element rows by the three modalities, columns cardinal | fixed | dual.
 // A cardinal word initiates, a fixed word sustains, a dual word adapts and dissolves onward.
 // The FIXED column carries each element's own sense, the tanmatra mapping Keaton named: aether
-// hears (sound), air feels (touch), fire sees (vision), water tastes, earth smells (aroma).
+// hears (sound), air feels (touch), fire sees (vision), water tastes, earth breathes in (aroma).
 // The cardinal and dual seats draw from the landing copy the WADE journey holds. Fifteen on
 // purpose: the palette is exactly one orbit wide, the same grid an orbit reads whole.
 pub const grain_palette = [_][]const u8{

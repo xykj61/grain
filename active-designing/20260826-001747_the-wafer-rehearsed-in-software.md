@@ -59,7 +59,7 @@ function returned, invisible to every assert in the file. The repair is the less
 bounded design, a neighbor set is four values stored inline or recomputed on demand,
 never a pointer to a temporary. A rehearsal that ships with witnesses catches exactly
 this class of wound, which is the strongest argument for rehearsing at all. The sketch's
-redundant length-beside-slice fields carry the same smell, worth naming so the reborn
+redundant length-beside-slice fields carry the same tell, worth naming so the reborn
 module avoids them.
 
 ## Honest labels, current figures

@@ -14,7 +14,7 @@ These rest beneath the specifications. The specs say what to build and how; thes
 
 | Stamp | Note | Meaning |
 |-------|------|---------|
-| `20260826.021735` | [Earth, the row that smells](20260826-021735_earth-the-row-that-smells.md) | the row's threshold page: theme, sense, and both palette triads |
+| `20260826.021735` | [Earth, the row that breathes in](20260826-021735_earth-the-row-that-breathes-in.md) | the row's threshold page: theme, sense, and both palette triads |
 | `20260826.021734` | [Water, the row that tastes](20260826-021734_water-the-row-that-tastes.md) | the row's threshold page: theme, sense, and both palette triads |
 | `20260826.021733` | [Fire, the row that sees](20260826-021733_fire-the-row-that-sees.md) | the row's threshold page: theme, sense, and both palette triads |
 | `20260826.021732` | [Air, the row that feels](20260826-021732_air-the-row-that-feels.md) | the row's threshold page: theme, sense, and both palette triads |

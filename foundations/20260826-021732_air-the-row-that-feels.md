@@ -20,7 +20,7 @@ still stands.
 ## The sense: touch
 
 Each element row carries one sense, the tanmatra mapping seated `20260826` on Keaton's word
-in `kyri/receipt.rye`: aether hears, air feels, fire sees, water tastes, earth smells. Air's
+in `kyri/receipt.rye`: aether hears, air feels, fire sees, water tastes, earth breathes in. Air's
 sense is touch -- the lap feels for the boundary under the hand.
 
 Touch is the honest sense for law because touch only works at a surface. You cannot touch a

@@ -105,7 +105,7 @@ and longing names the languages still to come without rushing a single one.
 
 ## The handoff
 
-Water hands to earth, the row that smells. What water carried, earth settles: the flow
+Water hands to earth, the row that breathes in. What water carried, earth settles: the flow
 this row tasted and tended becomes sediment -- the grain seeds, aroma is its sense,
 harvest turns. A water lap closes by naming what it swallowed and how it sat: which seams
 tasted clean, which read bitter, what the tide brought back that the river had already

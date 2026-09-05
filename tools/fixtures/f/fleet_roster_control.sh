@@ -189,6 +189,50 @@ done
 case "$found" in 0) say "pen_bannered_modality_walks_free=yes" ;; *) say "pen_bannered_modality_walks_free=no" ;; esac
 rm -rf "$bpen"
 
+# --- the baton, and the third status word -----------------------------------------------------
+# Every ship shares one opening and it is written ONCE. A seat prompt restating it would be the
+# same rule written six times -- the fault this whole table exists to close, one room over.
+baton=tools/l/fleet_baton.txt
+if [ -f "$baton" ]; then say "baton_exists=yes"; else say "baton_exists=no"; fi
+# Every seat on the roster owns a lane stanza, berthed and parked ones included: a seat named with
+# no prompt is a ship the loop would refuse at the last moment instead of the first.
+# A `field` seat runs no unattended loop and needs no stanza, which is what that engine word MEANS
+# -- requiring one would ask the interactive bench for a prompt nothing would ever read.
+missing=0
+for s in $(sh "$scan" --seats); do
+  [ "$(sh "$scan" --engine "$s")" = field ] && continue
+  [ -f "tools/l/${s}_seat_prompt.txt" ] || missing=$((missing + 1))
+done
+case "$missing" in 0) say "every_looping_seat_has_a_stanza=yes" ;; *) say "every_looping_seat_has_a_stanza=no" ;; esac
+# ...and no stanza restates the baton. One distinctive line from it is enough to catch a copy.
+copied=0
+for f in tools/l/*_seat_prompt.txt; do
+  grep -q '^THE BATON --' "$f" && copied=$((copied + 1))
+done
+case "$copied" in 0) say "no_stanza_restates_the_baton=yes" ;; *) say "no_stanza_restates_the_baton=no" ;; esac
+# The loop prepends it rather than the stanza carrying it.
+# The reading that matters is what reaches the AGENT: no invocation may read the stanza directly,
+# since one that did would launch a lap with no baton and look identical to one that did not.
+if grep -q 'seat_prompt()' "$loop" && ! grep -qE '(-p |exec .*)"\$\(cat "\$prompt_file"\)"' "$loop"; then
+  say "loop_prepends_the_baton=yes"; else say "loop_prepends_the_baton=no"; fi
+# ...and the prepended text actually carries the baton, rather than the function existing empty.
+joined=$(cat tools/l/fleet_baton.txt; echo; cat tools/l/incense_seat_prompt.txt)
+b_line=$(printf '%s\n' "$joined" | grep -n '^THE BATON --' | head -1 | cut -d: -f1)
+s_line=$(printf '%s\n' "$joined" | grep -n '^YOU ARE INCENSE' | head -1 | cut -d: -f1)
+if [ -n "$b_line" ] && [ -n "$s_line" ] && [ "$b_line" -lt "$s_line" ]; then
+  say "baton_precedes_the_stanza=yes"; else say "baton_precedes_the_stanza=no"; fi
+
+# A berthed seat has a lane and a name and no tree, so it is excluded from what would run it and
+# named by what merely lists it -- `live` would report a missing ship, `parked` a stopped one.
+if sh "$scan" --live | grep -qx bakery; then say "berthed_excluded_from_live=no"; else say "berthed_excluded_from_live=yes"; fi
+if sh "$scan" --seats | grep -qx bakery; then say "berthed_named_by_seats=yes"; else say "berthed_named_by_seats=no"; fi
+case "$(sh "$scan" --recipe 2>&1)" in *grain-bakery*) say "berthed_excluded_from_recipe=no" ;; *) say "berthed_excluded_from_recipe=yes" ;; esac
+# And the loop refuses it by TREE rather than by status, which is the honest refusal: the seat is
+# real, the checkout is not here yet, and the message says which.
+case "$(FLEET_DRY=1 sh "$loop" bakery 2>&1)" in
+  *"belongs in grain-bakery"*) say "berthed_refuses_by_tree=yes" ;; *) say "berthed_refuses_by_tree=no" ;;
+esac
+
 echo "control_checks=$checks"
 echo "control_failures=$failures"
 if [ "$failures" -eq 0 ]; then echo "control_verdict=ok"; exit 0; fi

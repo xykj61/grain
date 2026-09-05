@@ -1,4 +1,4 @@
-# Earth -- the row that smells
+# Earth -- the row that breathes in
 
 **Stamp:** `20260826.021735`
 **Language:** EN
@@ -19,14 +19,14 @@ checkable -- the safest ground a lap can stand on.
 
 ## The sense: aroma
 
-Earth's sense is aroma -- the tanmatra of smell, seated on Keaton's word
+Earth's sense is aroma -- the tanmatra of aroma, seated on Keaton's word
 (kyri/receipt.rye, 20260826): aether hears, air feels, fire sees, water tastes,
-earth smells. Smell is the sense that arrives before argument: a reader smells that
-bread is baking before any reasoning about ovens begins, and a lap smells the
+earth breathes in. Aroma is the sense that arrives before argument: a reader takes in that
+bread is baking before any reasoning about ovens begins, and a lap takes in the
 ground of this row the same way. Reading here means taking the fact in whole,
 at the door, before interpretation -- the stamp is read off the filename, the
 room token is read off the status line, the mark is read off the value's face.
-When something smells wrong on this row -- a stamp that outruns the live clock,
+When something reads wrong on this row -- a stamp that outruns the live clock,
 a page whose status names no room, a value crossing a seam unmarked -- the lap
 trusts that first reading and checks it against the witness, because on earth
 the concrete fact outranks the plausible story every time.
@@ -52,7 +52,7 @@ under "dark euphoria, light terra"):
 
 A lap tags its receipts from these six. A reading that seats a new concrete
 fact uses grain; one that finds the ground still unresolved uses mist; a
-deliberate smell-test at a door uses incense; and a lap that leaves a field
+deliberate scent-check at a door uses incense; and a lap that leaves a field
 honestly resting tags it fallow rather than forcing a harvest from it.
 
 ## Cardinal: The One-Clock Naming Law
@@ -67,7 +67,7 @@ the zone by IANA name -- America/New_York on this bench -- and the witness
 holds four duties: shape, monotonicity, zone, and provenance within 900 seconds
 of the live clock. Aroma reads this document at the filename itself: the stamp
 is the grain of the whole system, the concrete fact a reader takes in before
-opening the file. A lap smells a malformed or fabricated stamp the way a nose
+opening the file. A lap takes in a malformed or fabricated stamp the way a nose
 catches smoke -- instantly, at the door, ahead of any argument the body makes.
 
 ## Fixed: The Two Rooms
@@ -80,7 +80,7 @@ earns a witness, and the crossing is recorded. From stamp 20260705.203144 the
 doorway witness binds the room tokens themselves: checkable, vision, mixed, or
 research for understanding, read from the status line by
 `tools/t/two_rooms_doorway.rish`. Aroma reads this document as a threshold
-sense in the most literal way: the room is smelled at the door, from the
+sense in the most literal way: the room is taken in at the door, from the
 status line, before a single body paragraph is trusted. The fixed seat holds
 the element's own sense because the two-rooms law is the row's steadiest habit
 -- every lap, every page, the same one-line reading before anything else.
@@ -95,7 +95,7 @@ in the weave, content-addressed like everything else, with exactly two
 hardcoded roots: the plain-bytes mark and the manifest mark. The vows extend
 the row's ground to every boundary: validation at both sides of the seam, an
 unknown mark refused whole, and marks that accrete without ever silently
-rewriting a published meaning. Aroma reads the mark as cargo is smelled before
+rewriting a published meaning. Aroma reads the mark as cargo is scented before
 a seal breaks -- the amphora's shoulder line says what rides inside, so the
 reader knows the kind at a glance and welcomes it rightly. This is the dual
 seat because the mark is the concrete fact in motion: the ground of the row
@@ -108,7 +108,7 @@ turns the grid back to aether. The motion is harvest into fallow into seed:
 what this lap gathered as concrete fact -- stamps proven, rooms named, marks
 worn -- rests as settled ground, and the next lap opens on the aether row,
 where mind initiates and sound is the sense. The hearing row listens well
-precisely because the smelling row left the facts firm: a stamp that is true,
+precisely because the breathing-in row left the facts firm: a stamp that is true,
 a status line that names its room, a mark that says its kind. Ground first,
 then the whole orbit again.
 

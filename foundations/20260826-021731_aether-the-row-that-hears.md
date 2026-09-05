@@ -19,7 +19,7 @@ from documents that have already survived being taught.
 ## The sense: sound
 
 Aether's sense is sound -- the tanmatra mapping seated on Keaton's word (kyri/receipt.rye,
-20260826): aether hears, air feels, fire sees, water tastes, earth smells. A lap on this
+20260826): aether hears, air feels, fire sees, water tastes, earth breathes in. A lap on this
 row *listens*. Listening is a distinct act from scanning: a scan asks whether the words
 are present, and a listen asks what the work is saying underneath them. Practically, the
 lap reads each seated document aloud in its head and attends to three things -- the claim

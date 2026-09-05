@@ -306,6 +306,15 @@ DP_EXCLUDE_PATHS="docs-geode/demos/README.md"
 #   and visible, exactly as REDS %245, %246 and %253 already record. Listed rather than paid for by
 #   a rising ceiling, because a ceiling only falls.
 #
+#   AND ONE NAME A BREACH RENAMED, `20260904.214754`. The aroma breach retired the word *smell* from
+#   living instruction on Keaton's word, and the earth row's threshold page went from
+#   `20260826-021735_earth-the-row-that-smells.md` to
+#   `foundations/20260826-021735_earth-the-row-that-breathes-in.md` -- same stamp, new sprig, so a
+#   FOLD resolver cannot recover it: the fold keeps a basename and only moves it, while this
+#   changed the basename itself. The two living citers were repointed in the same commit; the four
+#   that remain sit in dated testimony, which keeps every word it wrote. Listed rather than paid for
+#   by a rising ceiling, because a ceiling only falls.
+#
 DP_FIXTURE_BASENAMES="20260730-022147_keaton-livermore-resume-draft.md \
 20260730-022147_personal-ontology.md \
 20260730-022147_cover-letter-co-authored.md \
@@ -330,6 +339,7 @@ DP_FIXTURE_BASENAMES="20260730-022147_keaton-livermore-resume-draft.md \
 20260713-201910_old.bron \
 20260810-113354_a-log.kyri \
 20260816-205859_double-seat-expansion-eight-chapters.md \
+20260826-021735_earth-the-row-that-smells.md \
 20260702-165412_the-happy-zone-and-the-thin-edge.md \
 20260629-063512_realidream.md \
 20260629-063512_the-graph-beneath-the-surface.md \
