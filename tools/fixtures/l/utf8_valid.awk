@@ -1,6 +1,6 @@
 # tools/fixtures/l/utf8_valid.awk -- name every file whose bytes are not valid UTF-8.
 #
-# ONE PROCESS FOR THE WHOLE CORPUS. This replaced a per-file shell probe that forked `mktemp`,
+# ONE PROCESS FOR THE WHOLE COLLECTION. This replaced a per-file shell probe that forked `mktemp`,
 # `iconv` and `rm` for each of 14,709 tracked text files -- roughly 44,000 processes, and 137 of the
 # roster's 1,510 seconds, for a reading that is cheap. The bytes were never the cost; the forks
 # were. Measured on this pier: 137s -> 23s (REDS %412).
@@ -14,7 +14,7 @@
 #   a continuation byte with no lead         (0x80-0xBF standing alone)
 #   an overlong or out-of-range lead         (0xC0, 0xC1, and anything above 0xF4)
 #
-# It prints one path per invalid file and nothing at all for a clean corpus, so an empty output is
+# It prints one path per invalid file and nothing at all for a clean collection, so an empty output is
 # the green reading and the caller counts lines.
 BEGIN { for (j = 0; j < 256; j++) ord[sprintf("%c", j)] = j }
 function bad(f) { if (!(f in seen)) { seen[f] = 1; print f } }

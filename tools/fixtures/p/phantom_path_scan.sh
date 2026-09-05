@@ -99,9 +99,14 @@ done < "$work/tlinks"
 sources=$(wc -l < "$work/sources" | tr -d ' ')
 
 : > "$work/phantom"
-while IFS= read -r src; do
-  [ -f "$src" ] || continue
-  awk -v F="$src" '
+# ONE AWK OVER EVERY SOURCE (REDS %413). This forked an awk per file across 2,859 tool scripts,
+# for a pass that reads each of them once either way. `FILENAME` carries what `-v F=` used to, and
+# a NUL-delimited list keeps a path with a space in it whole -- the fault this rewrite hit twice
+# in its sibling scans before it was written down.
+# PIPED RATHER THAN `xargs -a`: the argument-file flag is a GNU extension and this fleet spans a
+# Mac, so the dialect guard refuses it -- and it caught this one on the lap it entered.
+if ! tr '\n' '\0' < "$work/sources" | LC_ALL=C xargs -0 awk '
+    FNR == 1 { F = FILENAME }
     /^[[:space:]]*#/ { next }
     {
       s = $0
@@ -109,22 +114,57 @@ while IFS= read -r src; do
         tok = substr(s, RSTART, RLENGTH); s = substr(s, RSTART + RLENGTH)
         if (tok ~ /\.(md|rye|rish|sh|bron|kyri|txt|tsv|brix|glow|zig|c|h)$/) print F "\t" tok
       }
-    }' "$src"
-done < "$work/sources" | sort -u > "$work/lits"
+    }' > "$work/lits.raw" 2>"$work/lits.err"; then
+  echo "instrument=failed"
+  echo "detail=literal_pass_refused"
+  sed -n '1,5p' "$work/lits.err" | sed 's/^/detail_awk=/'
+  echo "verdict=misread"
+  exit 1
+fi
+sort -u "$work/lits.raw" > "$work/lits"
 
+# ONE PASS OVER 8,793 LITERALS (REDS %413). This loop forked a `grep -qxF` for every literal, an
+# `awk` for every one that missed, and a `git check-ignore` beyond that -- for a membership test
+# that is a hash lookup. The awk below loads the known set and the symlink map once, applies the
+# same exclusions in the same order, and emits only what still misses; the shell then tests `-e`
+# and asks git about ignore rules over that residue alone, which is small because almost every
+# literal a tool writes names something the tree carries.
+if ! awk -F'\t' -v KF="$work/known" -v LF="$work/linkmap" '
+    BEGIN {
+      while ((getline k < KF) > 0) known[k] = 1
+      close(KF)
+      nl = 0
+      while ((getline l < LF) > 0) {
+        split(l, m, "\t")
+        nl++; from[nl] = m[1]; to[nl] = m[2]
+      }
+      close(LF)
+    }
+    {
+      src = $1; tok = $2
+      if (tok == "") next
+      # The same three exclusions the shell case carried, in the same order.
+      if (tok ~ /^(vendor|seed)\//) next
+      if (tok ~ /^\./ || tok ~ /\/\./) next
+      if (tok == "construction/standing-equipment-runs.kyri") next
+      if (tok in known) next
+      # Try again through the tracked symlinks before calling it a phantom.
+      for (i = 1; i <= nl; i++) {
+        if (index(tok, from[i] "/") == 1) {
+          through = to[i] "/" substr(tok, length(from[i]) + 2)
+          if (through in known) next
+        }
+      }
+      print src "\t" tok
+    }' "$work/lits" > "$work/residue" 2>"$work/lits.err2"; then
+  echo "instrument=failed"
+  echo "detail=membership_pass_refused"
+  sed -n '1,5p' "$work/lits.err2" | sed 's/^/detail_awk=/'
+  echo "verdict=misread"
+  exit 1
+fi
 while IFS="$(printf '\t')" read -r src tok; do
   [ -n "$tok" ] || continue
-  case "$tok" in
-    vendor/*|seed/*) continue ;;
-    .*|*/.*) continue ;;
-    construction/standing-equipment-runs.kyri) continue ;;
-  esac
-  grep -qxF -- "$tok" "$work/known" && continue
-  # Try again through the tracked symlinks before calling it a phantom.
-  through=$(awk -F'\t' -v t="$tok" '
-    index(t, $1 "/") == 1 { r = $2 "/" substr(t, length($1) + 2) }
-    END { print r }' "$work/linkmap")
-  if [ -n "$through" ] && grep -qxF -- "$through" "$work/known"; then continue; fi
   # Resolving nowhere is a plain dangling reference; the dated-path census owns that duty.
   [ -e "$tok" ] || continue
   # A path git is TOLD to ignore is a declared build artifact, so a reader who clones is
@@ -132,7 +172,7 @@ while IFS="$(printf '\t')" read -r src tok; do
   # `git check-ignore` consults .gitignore, the excludes file, and every nested rule at once.
   git check-ignore -q -- "$tok" 2>/dev/null && continue
   echo "$src -> $tok" >> "$work/phantom"
-done < "$work/lits"
+done < "$work/residue"
 
 phantom=$(wc -l < "$work/phantom" | tr -d ' ')
 

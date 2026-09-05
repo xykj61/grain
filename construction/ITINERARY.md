@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `c463fd88f9` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `14bdbd180d` -- HEAD's parent, resolvable everywhere (%401).
 
 **Now.** **A rule written six times is a rule six files may quietly come to disagree about.**
 
@@ -83,6 +83,16 @@ again, and a pass whose reds are all gated writes its receipt disclosing what it
 **The gate vocabulary is this card's own custody list, read at scan time**; an unreadable card
 refuses every gate. Live: **106 green, 1 red, 4 gated**.
 **Shelved:** eight rows -- see [`the fold recital`](archive/REDS-fold-recital.md).
+**`%413` CLOSED (pass now **856s**, from 1,510 this morning) -- three more guards forking per item, and one repair that twice taught a guard to
+report a tree it never read.** `tracked_link` forked an awk AND a grep **per link** (~47,700
+processes) -> **5s**; `phantom_path` an awk per source and a grep per literal (8,793) -> **6s**;
+`declared_model` walked all 14,709 files to find the 1,127 naming a model id -> **5s**. Each output
+byte-identical to its elder, every control leg unchanged. **The costly half:** the first rewrite
+found its awk helper from `$(pwd)` and sent awk's complaint to `/dev/null`, so in the control's pen
+it read **zero unresolved links and passed** -- and the SAME two mistakes sat in `%412`'s
+`living_card_ascii` repair from an hour earlier, where no control pens the scan. **An empty answer
+from a failed instrument is byte-identical to one from a clean collection**, and the second is the
+reading everyone wants to hear. All four now resolve from `$(dirname "$0")` and refuse loudly.
 **`%412` CLOSED -- a third of the roster's clock went to forking, not reading.** 111 guards, 1,510s,
 **median 2s against a mean of 13** -- five guards held 46%. Two were slow by ACCIDENT:
 `living_card_ascii` forked `mktemp`+`iconv`+`rm` per file across **14,709 files** (~44,000
@@ -268,6 +278,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260904.225911` | A third of the roster's clock went to forking | [log](../session-logs/date/20260904/20260904-225911_the-loop-around-the-reading.kyri) |
+| `20260905.001835` | The instrument that could not say it had failed | [log](../session-logs/date/20260905/20260905-001835_the-instrument-that-could-not-say-so.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)

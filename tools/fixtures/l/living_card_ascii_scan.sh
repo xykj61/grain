@@ -36,10 +36,20 @@ ENFORCE="construction/ITINERARY.md construction/REDS.md"
 ADVISORY="construction/ROADMAP.md construction/TASKS.md construction/EQUINOX_SEAT_MAP.md construction/SHRED_PREP.md construction/THREADS.md construction/CHECKPOINTS.md"
 CONTROL=tools/fixtures/living_card_ascii_control/mojibake_control.md
 TMPLIST=$(mktemp "${TMPDIR:-/tmp}/ascii-list.XXXXXX")
-# Absolute, because the UTF-8 self-proof runs inside a `cd` to its pen and a relative path
-# would resolve against the pen instead of the tree. This scan already assumes the repository
-# root as its working directory -- every roster path above it is relative.
-UTF8_AWK="$(pwd)/tools/fixtures/l/utf8_valid.awk"
+# FOUND FROM THIS SCRIPT, NOT FROM THE WORKING DIRECTORY. A `$(pwd)` here resolves wherever the
+# caller happens to stand, and the sibling scan repaired in the same hour proved what that costs:
+# run by absolute path from inside a throwaway pen, it could not find its helper, and because it
+# also discarded awk's complaint it reported a perfectly clean tree. This one is not penned today
+# and would have passed either way, which is exactly why it is worth fixing before it is.
+_lca_here=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+UTF8_AWK="$_lca_here/utf8_valid.awk"
+[ -f "$UTF8_AWK" ] || {
+  echo "instrument=failed"
+  echo "detail=utf8_helper_missing"
+  echo "detail_path=$UTF8_AWK"
+  echo "verdict=misread"
+  exit 1
+}
 trap 'rm -f "$TMPLIST"' EXIT INT TERM
 
 # THE BYTE RANGE IS SPELLED IN THE C LOCALE, not in PCRE. `grep -P` is a GNU extension and BSD
@@ -179,13 +189,25 @@ if test "$PEN_BAD" != "bare.md orphan.md overlong.md "; then
 fi
 echo "utf8_probe=proven_both_ways"
 
-# ONE AWK PROCESS FOR THE WHOLE CORPUS (REDS %412). The elder loop forked mktemp, iconv and rm per
+# ONE AWK PROCESS FOR THE WHOLE COLLECTION (REDS %412). The elder loop forked mktemp, iconv and rm per
 # file across 14,709 tracked text files -- about 44,000 processes for a reading the bytes make
 # cheap. NUL-delimited, because `git ls-files` will happily hand back a path with a space in it and
 # this tree holds several; a whitespace-split list drops them silently, which is the reading a
 # guard can least afford.
-INVALID_LIST=$(git ls-files -z -- '*.md' '*.rish' '*.rye' '*.sh' '*.kyri' '*.bron' '*.brix' '*.txt' \
-  | LC_ALL=C xargs -0 awk -f "$UTF8_AWK")
+# A GUARD THAT CANNOT RUN ITS INSTRUMENT MUST SAY SO. Captured to a file with the exit status
+# checked, because an empty answer from a failed awk is byte-identical to an empty answer from a
+# clean collection -- and the second is the reading everyone wants to hear.
+if ! git ls-files -z -- '*.md' '*.rish' '*.rye' '*.sh' '*.kyri' '*.bron' '*.brix' '*.txt' \
+  | LC_ALL=C xargs -0 awk -f "$UTF8_AWK" > "$TMPLIST.bad" 2>"$TMPLIST.err"; then
+  echo "instrument=failed"
+  echo "detail=utf8_pass_refused"
+  sed -n '1,5p' "$TMPLIST.err" | sed 's/^/detail_awk=/'
+  echo "verdict=misread"
+  rm -f "$TMPLIST.bad" "$TMPLIST.err"
+  exit 1
+fi
+INVALID_LIST=$(cat "$TMPLIST.bad")
+rm -f "$TMPLIST.bad" "$TMPLIST.err"
 SCANNED=$(git ls-files -- '*.md' '*.rish' '*.rye' '*.sh' '*.kyri' '*.bron' '*.brix' '*.txt' | grep -c .)
 INVALID=$(printf '%s' "$INVALID_LIST" | grep -c . || true)
 echo "text_files_scanned=$SCANNED"

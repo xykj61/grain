@@ -88,39 +88,48 @@ dangling=$(wc -l < "$work/dangling" | tr -d ' ')
 # --- duty 2: every relative link in a living document resolves in the tracked tree -----
 : > "$work/enforce"
 : > "$work/ratchet"
-grep '\.md$' "$work/files" | while IFS= read -r src; do
-  [ -f "$src" ] || continue
-  case "$src" in session-logs/*) continue ;; esac
-  base=${src##*/}
-  # A basename carrying a one-clock stamp is dated testimony, which keeps every word it wrote.
-  case "$base" in
-    [0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9][_.]*) continue ;;
+# ONE AWK PASS OVER EVERY DOCUMENT (REDS %413). The loop this replaced forked an `awk` and a
+# `grep` per LINK, plus three more per file -- roughly 47,700 processes across 4,289 candidate
+# documents and ~17,400 links, for 72 of the roster's seconds. Resolution is string work and
+# membership is a hash lookup; neither was ever the cost, and both now happen in one process.
+#
+# NUL-delimited, because `git ls-files` returns paths with spaces in them and a whitespace-split
+# list drops them in silence -- which is the reading a guard can least afford, and which this
+# rewrite hit on its first run.
+#
+# The awk prints only links that MISS the tracked set, so the shell tests `-e` over that residue
+# alone -- 636 of 17,400 here, and `[` is a builtin, so the loop costs nothing. Whether a link
+# resolving nowhere at all is broken stays `living_docs_lint`'s duty, unchanged.
+# THE HELPER IS FOUND FROM THIS SCRIPT, NOT FROM THE WORKING DIRECTORY. The control runs this
+# scan by absolute path after `cd`-ing into a throwaway repository, so a `$(pwd)` here resolves
+# into the pen -- where the helper does not exist. The first draft did exactly that, and because
+# it also sent awk's complaint to /dev/null it reported ZERO unresolved links and passed. A guard
+# that cannot find its own instrument must say so, never report a clean tree.
+_tl_here=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+DUTY2_AWK="$_tl_here/tracked_link_duty2.awk"
+[ -f "$DUTY2_AWK" ] || {
+  echo "instrument=failed"
+  echo "detail=duty2_helper_missing"
+  echo "detail_path=$DUTY2_AWK"
+  echo "verdict=misread"
+  exit 1
+}
+if ! git ls-files -z -- '*.md' \
+  | LC_ALL=C xargs -0 awk -f "$DUTY2_AWK" "$work/known" > "$work/candidates" 2>"$work/awkerr"; then
+  echo "instrument=failed"
+  echo "detail=duty2_pass_refused"
+  sed -n '1,5p' "$work/awkerr" | sed 's/^/detail_awk=/'
+  echo "verdict=misread"
+  exit 1
+fi
+while IFS=' ' read -r _tag lane src target resolved; do
+  [ -n "$resolved" ] || continue
+  [ -e "$resolved" ] || continue
+  case "$lane" in
+    ratchet) echo "$src -> $target" >> "$work/ratchet" ;;
+    *)       echo "$src -> $target" >> "$work/enforce" ;;
   esac
-  dir=$(dirname "$src")
-  grep -oE '\]\([^)]+\)' "$src" 2>/dev/null | sed 's/^](//; s/)$//; s/#.*$//' | while IFS= read -r target; do
-    [ -n "$target" ] || continue
-    case "$target" in http*|mailto:*|'<'*|'/'*) continue ;; esac
-    resolved=$(printf '%s/%s\n' "$dir" "$target" | awk '{
-      n=split($0,part,"/"); top=0
-      for (i=1;i<=n;i++) {
-        if (part[i]=="" || part[i]==".") continue
-        if (part[i]=="..") { if (top>0) top--; continue }
-        out[++top]=part[i]
-      }
-      s=""; for (i=1;i<=top;i++) s=(i==1)?out[i]:s "/" out[i]; print s
-    }')
-    [ -n "$resolved" ] || continue
-    grep -qxF "$resolved" "$work/known" && continue
-    # Resolving nowhere at all is a plain broken link; living_docs_lint owns that duty.
-    [ -e "$resolved" ] || continue
-    case "$src" in
-      external-research/yonder/*|expanding-prompts/yonder/*)
-        echo "$src -> $target" >> "$work/ratchet" ;;
-      *)
-        echo "$src -> $target" >> "$work/enforce" ;;
-    esac
-  done
-done
+done < "$work/candidates"
 enforce=$(wc -l < "$work/enforce" | tr -d ' ')
 ratchet=$(wc -l < "$work/ratchet" | tr -d ' ')
 
