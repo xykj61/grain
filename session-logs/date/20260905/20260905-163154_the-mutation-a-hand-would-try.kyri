@@ -1,0 +1,43 @@
+format session-log-v1
+stamp 20260905.163154
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role pheromone -- the molecular star, language lane
+modality text
+model claude-opus-5
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_reasoning max
+configured_status .claude/settings.json proves the clone default; no runtime telemetry read this lap
+evidence .claude/settings.json
+voice Kyri
+host Framework laptop, NixOS, America/New_York
+title the mutation a hand would try
+prompt the baton, unattended -- roster cold then hot, rota row N mod 5, reds first, read scope, grade what you touch
+think LAP 3964, so the rota row is 3964 mod 5 = 4 -- Earth, the row that breathes in. The last lap that recorded its row read 2 at lap 3947, so no advance by hand was needed. Earth's instruction is the concrete fact taken in at the door before any argument, and its Dual seat is the marked value -- my own lane's value model, so the lens and the lane were the same thing this lap.
+think ROSTER COLD FIRST, held still for nineteen minutes. guards_run=122, green 114, gated 4, red 4, tree_moved=no. I made no edit while it ran, which is the whole of %221's instruction and the reason its verdict is evidence about the tree rather than about me.
+think FOUR REDS, AND THREE ALREADY HAVE OWNERS. commit_message_guard is %431 at custody gate %1 -- SEED_PUBLISHER_ARMS 0 alone, ten of eleven readings green. agent_jail answers bwrap: Failed to make / slave: Operation not permitted, which is an environment fact rather than a tree red: a guard that must spawn a sandbox cannot run inside one. remember_git_nib was mine and this commit closes it. waymark_rung_drift was new and unattributed.
+think ATTRIBUTED THE RISE TO THE BYTE RATHER THAN GUESSING. Counting mark occurrences in each recent commit's own changed files, before and after, gave cb79491dc7 +19 and 924e861485 +3 against a -5 sweep. Sixteen of the nineteen sat in one folded REDS shelf, quoting the announced ranges the new announced_length meter was built to catch. I named the two candidate shapes and took neither, because the meter and the shelf are one lap of another lane.
+think THEN A SIBLING LANDED THE FIX WHILE I MEASURED, and the rebase is where the real red was. Their commit excludes folded REDS shelves from the living read and LOWERS the ceiling 17,243 to 17,212 -- one of the two shapes I had named. My tree then read 17,234 against 17,212, and I was one keystroke from booking a row saying their repair shipped with the tree still red.
+think THE ARITHMETIC REFUSED TO CLOSE, WHICH IS WHY I CHECKED. A per-file diff of my whole worktree against xy/main found +6, all six in a row I had just written, leaving 16 marks with no file to live in. A read-only git worktree of xy/main scanned with RUNG_ROOT read 17,212 against 17,212, verdict ok. Their repair is correct and the phantom was mine.
+think THE CAUSE IS THE INDEX, NOT THE TREE. git ls-files prints a conflicted path once per merge stage, so mid-rebase my two conflicted pins listed three times each: REDS.md carries 6 marks and ITINERARY 2, and doubled twice over that is exactly 12 plus 4 equals 16. 324 call sites across 141 tracked scripts enumerate with bare git ls-files and 17 of them dedupe. Booked as %436 rather than %435, which a peer had spent while I worked.
+think THEN MY OWN LANE'S CRUX, and it was the sibling find sitting on the card. Diffing the Tablecloth scan's 36 refusal verdicts against the control's planted cases gave exactly four with no case: desk, content, error and name _example_missing.
+think THE CRUX WAS THAT THE OBVIOUS MUTATION PROVES A DIFFERENT READING. Deleting a desk's example line takes a keyword out of the placard, so placard_wrong answers one reading earlier and the verdict under it never fires -- measured in a pen, name_placard_wrong. What reaches it is an example the pedestal cannot read as a number: example forty-eight leaves the placard whole and empties the reading. So a hand checking coverage would have planted the deletion, watched a refusal, and moved on.
+obs The witness header claimed every reading refuses from the other side. Four of thirty-six did not, and had not since the pedestals landed. The claim was a universal written beside a count, and the count was of the plantings rather than of the readings.
+obs Wrote the four cases as unreadable rather than absent, and said in the header why the deletion misses -- so the next hand meets the reasoning rather than rediscovering it. refusals 38 -> 42, welcomes 6, wrong 0, and the four desks still lower through Glow and build through Zig.
+obs The name desk's second half of the find is not a defect. max_name bounds two rooms, and name_is_one_field has one caller because parse_manifest gets the same guarantee from the grammar -- splitScalar on newline, then tokenizeScalar on space, so a parsed name can carry neither reserved byte before any check runs. Wrote that down on the desk rather than counting call sites.
+obs Rebased twice, and the second rebase renumbered my row 435 to 436 because a peer reached the anointed spine first -- the fourth such renumbering this tree has recorded today. Fetch-before-book held both times.
+obs Wrote %436 entirely in <N> placeholders. A row spelling the marks it discusses raises the reading it is about, which the rung scan's own header records paying twice; my first draft had spent six of them.
+obs Did not sweep the 307 bare sites. A guard is only bitten while a rebase is paused, which %428 already tells a round-open to clear, so the row carries the reach and the one-flag cure and leaves the lap unclaimed.
+obs Found two stashes holding unsent work on this tree, one of them a whole Glow lap in my own lane -- both named on the card so a lap restores them on purpose rather than discovering them.
+loom witness=tablecloth_glow_tend verdict=GREEN welcomes=6 refusals=42 wrong=0 cases=48 desks=4
+loom roster=cold guards_run=122 guards_seconds=1165 guards_green=114 guards_red=4 guards_gated=4 tree_moved=no
+loom rung_drift mine=17234 ceiling=17212 xy_main=17212 phantom=16 real_mine=6 conflicted_pins=2
+loom ls_files_stage sites=324 files=141 deduped=17 bare=307 stages_per_conflicted_path=3 git=2.54.0
+file tools/fixtures/t/tablecloth_glow_tend_control.sh four cases planting an unreadable example, the only mutation that reaches those verdicts
+file tools/t/tablecloth_glow_tend_witness.rish the pin moved to 42 and the header says which four readings its claim had missed
+file src/shape/shape-tablecloth-name-bound.glow why the wall has one caller, since max_name bounds two rooms
+file construction/REDS.md %436 booked -- an enumeration is a set, and git ls-files returns one only when the index is not mid-merge
+file construction/ITINERARY.md nib to HEAD's parent, the Tablecloth find closed, %436 and the two stashes routed
+recommend check-in Keaton -- %436's 307-site sweep wants a word on whether it is worth a lap, and stash@{1} holds a whole Glow lap of mine whose REDS numbers have moved under it

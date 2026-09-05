@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `dce4d7aab9` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `316b25d7b4` -- HEAD's parent, resolvable everywhere (%401).
 
 **Now.** **A control that names a machine cannot be run on the fleet it guards.**
 
@@ -67,10 +67,8 @@
 clone seats `ww` (gate %1) and `.git/ssh_config_jail`.
 
 **Sibling finds:** Mystery's module-label guard fails open on BSD grep; portable, it finds elder
-labels in `tools/gen/chapter/fascia_metric_v0.rish`. **Tablecloth, two, cross-lane:** its name desk
-reads one of `max_name`'s two call sites (`parse_manifest` reads it too, over the same fixed
-`[max_name]u8`), and four `*_example_missing` verdicts carry no control case -- deleting the
-`example` line lands on `placard_wrong` one reading earlier. **Dream's parked packages:**
+labels in `tools/gen/chapter/fascia_metric_v0.rish`. **Tablecloth CLOSED:** its four
+unplanted verdicts are planted (45-48, 38 -> 42). **Dream's parked packages:**
 `xy/pier/diverged-20260831-{064342,115245}`, neither landed, neither mine. **CION:** `drey`'s rung marks are the retired form (%329). **Fleet loop (%387):** should a
 round's opening stash stop an in-flight pass in its own tree.
 
@@ -111,6 +109,10 @@ pass, 0 fail**, `GUARD_OK`, **ten of eleven readings green** -- `SEED_PUBLISHER_
 it. So two of three trees pay a **full cold pass every lap**. **A repair proven on one tree and a
 claim published to all of them must not ride in one commit; the tell is that the repair is
 untracked.** The durable shape is `birth_a_clone` reconstructing it -- **yours, gate %1.**
+**`%436` OPEN -- `git ls-files` lists a conflicted path once per merge stage**, so 307 of 324
+bare sites triple-count during a paused rebase; `rung_drift` read 17,234 where
+`xy/main` reads 17,212 green. Cure `--deduplicate`. **And `stash@{1}` holds a whole
+unsent Glow lap here, `stash@{0}` one index row.**
 **Still open:** `glow/rune_shape.rye` width custody; `%281`/`%291`. **(%347):**
 `pond/enclosure_policy.kyri` 8,120/8,192; yours.
 **Landed this chapter** -- `%374`'s gate build, six utility fetches with their thanks, the naming

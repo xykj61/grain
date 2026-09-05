@@ -2,7 +2,7 @@
 # tools/fixtures/t/tablecloth_glow_tend_control.sh -- the Tablecloth drift scan, proven both ways.
 #
 # A refusal proven only in the passing direction cannot be told from a bypass, so every reading
-# here is shown from both sides: planted and refused, then removed and welcomed. Forty-one cases
+# here is shown from both sides: planted and refused, then removed and welcomed. Forty-eight cases
 # run in a throwaway pen holding just the six files the scan reads.
 #
 # The second case is the one this guard exists for. An elder Tend witness greps for the literal
@@ -30,7 +30,7 @@
 # no longer consulted, where the length and the alphabet both still agree over a store that accepts
 # anything.
 #
-# EXPECTED: control_verdict=ok, with welcomes=6 and refusals=38.
+# EXPECTED: control_verdict=ok, with welcomes=6 and refusals=42.
 #
 # Driven by tools/t/tablecloth_glow_tend_witness.rish. Run from the repository root.
 
@@ -356,11 +356,35 @@ pen
 edit "$namef" 's/, bound 48/, bound 64/'
 check "the name desk disagrees with its own shape line" name_desk_self_disagree refuse
 
+# 45 -- the catalog desk's example made UNREADABLE rather than absent, which is the only mutation
+# that reaches this verdict. Deleting the line takes a keyword out of the placard, so
+# `placard_wrong` answers one reading earlier and `desk_example_missing` never fires at all. That
+# is why these four readings stood unplanted from the day the pedestals landed while the witness
+# header claimed every reading refuses from its own side -- measured 20260905, four of thirty-six.
+pen
+edit "$deskf" 's/^::  example    32$/::  example    thirty-two/'
+check "the catalog example unreadable" desk_example_missing refuse
+
+# 46 -- the same on the derived desk, whose number is decided one room over.
+pen
+edit "$contentf" 's/^::  example    512$/::  example    five hundred twelve/'
+check "the content example unreadable" content_example_missing refuse
+
+# 47 -- and on the error desk, where the example is a count of the list standing beside it.
+pen
+edit "$errorf" 's/^::  example    9$/::  example    nine/'
+check "the error example unreadable" error_example_missing refuse
+
+# 48 -- and on the name desk, where it is a length with an alphabet beside it.
+pen
+edit "$namef" 's/^::  example    48$/::  example    forty-eight/'
+check "the name example unreadable" name_example_missing refuse
+
 echo "welcomes=$welcomes"
 echo "refusals=$refusals"
 echo "wrong=$wrong"
 
-if [ "$welcomes" -eq 6 ] && [ "$refusals" -eq 38 ] && [ "$wrong" -eq 0 ]; then
+if [ "$welcomes" -eq 6 ] && [ "$refusals" -eq 42 ] && [ "$wrong" -eq 0 ]; then
   echo "control_verdict=ok"
 else
   echo "control_verdict=wrong"

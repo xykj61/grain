@@ -14,6 +14,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260905.165317` | [the allocator that counted its own row](20260905/20260905-165317_the-allocator-that-counted-its-own-row.kyri) | `--next` refuses mid-rebase. |
 | `20260905.164820` | [copal and patchouli take the unguarded](20260905/20260905-164820_copal-and-patchouli-take-the-unguarded.kyri) | two seats, 13,000 lines of Rye. |
 | `20260905.163155` | [the cut, the shelf, and what a lap costs](20260905/20260905-163155_the-cut-the-shelf-and-what-a-lap-costs.kyri) | 901s to 705s; an agent is not CPU-bound. |
+| `20260905.163154` | [the mutation a hand would try](20260905/20260905-163154_the-mutation-a-hand-would-try.kyri) | four verdicts nothing planted; a phantom 16. |
 | `20260905.160800` | [the curve that changed the answer](20260905/20260905-160800_the-curve-that-changed-the-answer.kyri) | 2.81x at six ships; steal 0.059%. |
 | `20260905.155840` | [two ships, and what a restart must not lose](20260905/20260905-155840_two-ships-and-what-a-restart-must-not-lose.kyri) | both launch commands. |
 | `20260905.155209` | [the looking was the limit](20260905/20260905-155209_the-looking-was-the-limit.kyri) | five live forecasts found by a meter; four cores answer the six-ship question. |

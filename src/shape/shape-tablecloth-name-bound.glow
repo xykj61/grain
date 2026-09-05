@@ -34,6 +34,13 @@
 ::  the list is an alphabet -- two facts, neither derivable from the other, so each is read against
 ::  the Rye rather than against its neighbor.
 ::
+::  Why the wall has ONE caller, since max_name bounds two rooms. store_artifact takes a name from
+::  outside and must ask; parse_manifest reads one back out of a manifest line, and gets the same
+::  guarantee from the grammar instead -- the text is split on newline and then tokenized on space,
+::  so a parsed name can carry neither byte before any check runs. The wall is called where a name
+::  arrives unchecked and nowhere else, and the third reading below reads that one call on purpose
+::  rather than counting call sites.
+::
 ::  What this desk does not reach. Whether forty-eight is the right length, which is Tablecloth's
 ::  own design question. And pond/apps/spool_cloth.rye, whose store took the same wall in the same
 ::  shape on the same day; its bounds are Pond's to display.

@@ -71,7 +71,7 @@
 #   All four desks lower through Glow, build through the Zig toolchain, and run to EXIT:0.
 #   Each bound pedestal agrees with ITSELF: the number in its `shape` line equals the number under
 #   `example`, so a bound desk's two spellings cannot part inside one file.
-#   Every reading refuses from the other side: thirty-eight plantings in a throwaway pen, each
+#   Every reading refuses from the other side: forty-two plantings in a throwaway pen, each
 #   caught by the reading it was planted against, and six honest trees walking free -- among them a
 #   tenth refusal path added in all three rooms at once, and a third reserved byte added to the
 #   wall and to its desk together. Those walk free because the SCAN carries no roster of its own:
@@ -84,6 +84,14 @@
 # refusal vocabulary and the alphabet its store forbids are both published surfaces, and moving one
 # is worth a hand's eye. The cost is one line edited here on an honest change, and the reason is
 # written down so the next hand meets a review gate rather than a mystery.
+#
+# THE CLAIM ABOVE WAS FALSE FOR FOUR READINGS UNTIL 20260905, and how it stayed false is the part
+# worth keeping. The four `*_example_missing` verdicts -- one per pedestal -- had no planting, and
+# the obvious one does not reach them: deleting a desk's `example` line takes a keyword out of the
+# placard, so `placard_wrong` answers one reading earlier and the verdict under it never fires.
+# What reaches it is an example the pedestal cannot read as a number, `example    forty-eight`,
+# which keeps the placard whole and empties the reading. So the mutation a hand would try proved a
+# DIFFERENT reading and looked like coverage. Cases 45 through 48 plant the one that lands.
 #
 # WHAT IS NOT PROVEN. Whether thirty-two is the right capacity, five hundred twelve the right
 # budget, forty-eight the right name length, and nine the right number of ways to refuse -- those
@@ -128,10 +136,10 @@ let control = run ["sh" "tools/fixtures/t/tablecloth_glow_tend_control.sh"]
 assert control.ok else "tablecloth-tend: the control must complete"
 say control.out
 assert control.out contains "welcomes=6" else "tablecloth-tend: an honest tree, three honest raises, an honestly added refusal path, and an honestly widened wall must all walk free"
-assert control.out contains "refusals=38" else "tablecloth-tend: every reading must refuse from its own side"
+assert control.out contains "refusals=42" else "tablecloth-tend: every reading must refuse from its own side"
 assert control.out contains "wrong=0" else "tablecloth-tend: no case may land on the side it was not planted for"
 assert control.out contains "control_verdict=ok" else "tablecloth-tend: the control must agree with itself"
-say "RED and GREEN paths proven -- thirty-eight plantings refused, six honest trees welcomed"
+say "RED and GREEN paths proven -- forty-two plantings refused, six honest trees welcomed"
 
 let zig = "vendor/zig-toolchain/zig"
 let desk = "src/shape/shape-tablecloth-catalog-capacity.glow"
