@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `3acbe7ff07` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `3ac19316f6` -- HEAD's parent, resolvable everywhere (%401).
 
 **Now.** **A rule written six times is a rule six files may quietly come to disagree about.**
 
@@ -103,6 +103,16 @@ seeds when a tree has none and **refreshes when the host's is strictly newer**, 
 token is never clobbered and a fresh pier login reaches every ship. Nothing tracked, nothing off the
 machine, no custody key. **A sandbox that replaces a directory replaces everything anyone put there.**
 **LAUNCH:** `cd ~/grain-<seat> && git pull --ff-only xy main && sh tools/l/fleet-loop.sh <seat>`.
+**The utility yonder, filed `20260905.064341`** -- a measured pair, nothing built. Study:
+[`what-a-harness-promises`](../external-research/yonder/20260905-064341_what-a-harness-promises-about-its-tools.md).
+Design: [`the-tools-a-guard-may-assume`](../active-designing/yonder/20260905-064341_the-tools-a-guard-may-assume.md).
+**52 external utilities across 2,969 tool scripts. `rg`: 992 sites, ONE probe. `mktemp`: 353
+sites, none -- and not POSIX since 2008.** The tree already wrote the cure,
+`tools/fixtures/s/shell_portable.sh`, and **38 files source it, 1.3%.** The design names three
+tiers -- **granted** (POSIX), **carried** (we ship it), **borrowed** (probe, fall back, announce) --
+seated in Tally as a bounded grant, carried by Caravan as a capability, declared through Mantra.
+**The reflex that should not wait for the design: a guard that cannot run its instrument refuses,
+and says which instrument.**
 **`%413` CLOSED (pass now **856s**, from 1,510 this morning) -- three more guards forking per item, and one repair that twice taught a guard to
 report a tree it never read.** `tracked_link` forked an awk AND a grep **per link** (~47,700
 processes) -> **5s**; `phantom_path` an awk per source and a grep per literal (8,793) -> **6s**;
@@ -298,6 +308,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260905.014249` | The login that never reached a tree | [log](../session-logs/date/20260905/20260905-014249_the-login-that-never-reached-a-tree.kyri) |
+| `20260905.064341` | The tools a guard may assume | [log](../session-logs/date/20260905/20260905-064341_the-tools-a-guard-may-assume.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)
