@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `4af8a310a4` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `e831f252cb` -- HEAD's parent, resolvable everywhere (%401).
 
 **Now.** **A control that names a machine cannot be run on the fleet it guards.**
 
@@ -76,16 +76,25 @@ round's opening stash stop an in-flight pass in its own tree.
 
 **Petrichor's `%424`** (library index credited a room for the interpreter) and the `grep`-shim
 finding are on the [landed-accounts shelf](archive/20260905-131102_itinerary-landed-accounts.md).
-**The stash is restored, and it renumbered three times getting here.** `122517` booked `%423`,
-derived `%425`, then `%427`, and lands as **`%430`** -- each time because a peer reached the
-anointed spine first while this round verified. The card's own correction held every time: take the
-number from `--next`, never from the one written in the row. **Three collisions in one round is the
-sharpest evidence yet for your open question** -- should an OPEN row carry a claim, a seat and a
-stamp, at start rather than at landing.
+**The stash is restored.** Its row took four numbers and its stamp took none, and `%435` below
+made it five laps running -- **the standing evidence for your open question**: should an OPEN row
+carry a claim, a seat and a stamp, at start rather than at landing. Take the number from `--next`,
+never from the one written in the row.
+**`%435` CLOSED -- two foundations were rewritten into their own ancestors and three instruments
+read it as correct.** A molt leaves a provenance line naming the elder; `0877e2b5a`'s repoint read
+it as a citation and aimed it at the mutant's own name, so `single-stranded` (the rota's Air-fixed
+seat) called itself its own reimagining, and `f758efdb2` shed the elder hours later. **Nothing saw
+it because a self-link resolves:** the link scans test `[ -e ]` and the card scores Truth by
+counting paths that FAIL to resolve, so the page read **A+/98**, `truth=100`, on a false first
+sentence -- **`%430`'s shape one day apart, a Truth measuring the wrong thing where a Register
+measured nothing.** All three repaired pages grade exactly as before; that is the evidence. Loom
+`provenance_self_reference`, rostered at birth, gated at zero, replayed against HEAD; 35 of 5,455
+self-link, two were claims. **`--next` read mid-rebase answers from a contaminated tree** -- 436
+over my own unshared row where the spine's highest is 434, `%428` in the ledger's instrument.
+**Pheromone's:** `shell_dialect` reds on two `sed -i` in `fleet_key_locality_control.sh`:61,65.
 **`%427`-`%429` folded** to the
-[instrument-room shelf](archive/REDS-the-room-the-instrument-stood-in-rows-427-429.md) so the pin
-could hold the two new OPEN rows: an answer true of the room the instrument could reach and false
-of the room anyone asked about.
+[instrument-room shelf](archive/REDS-the-room-the-instrument-stood-in-rows-427-429.md), whose own
+header carries what runs through them.
 **`%430` OPEN -- a floor that refuses to score must also refuse to vote.** The report card frees
 Register under 8 sentences, prints `reported, not scored`, and divides by four anyway: **560 of
 870** pages carry a blank voting **100**, **206** above Door's ceiling, **176** at B or better.
@@ -122,15 +131,10 @@ had zero. The unbuilt half is charted in
 the tracked set, which `git grep -q` already is. **Met the same day:** `grep` here is **ugrep
 7.8.4** and refused a regex GNU grep accepts -- **a familiar name is not a familiar behaviour.**
 **`%423`-`%426` CLOSED**, whole on the
-[what-a-script-assumes shelf](archive/REDS-what-a-script-assumes-rows-423-426.md) -- among them a
-control leg whose safety rested on the checkout's basename (**1,298s at zero CPU** on pheromone,
-found by that seat rather than by a guard), and a `git init` that took its branch name from the
-host. **A script is quiet about the one thing that changes when it moves.** Correction kept: `%G?`
-reads `N` on that pier because **gpg fails to exec**.
-**THE LIVE FRONT NOW FOLDS** (`20260905.130819`), the fix named three times today and taken on the
-fourth: landed accounts shelve like REDS rows, so the card holds what is OPEN and what waits on
-your word. The raise to 32,768 was spent inside one day -- 1 byte free, then 5, then 11, then 836
-over -- and **condensing had begun removing meaning rather than words**.
+[what-a-script-assumes shelf](archive/REDS-what-a-script-assumes-rows-423-426.md): **a script is
+quiet about the one thing that changes when it moves.**
+**THE LIVE FRONT NOW FOLDS** (`20260905.130819`): landed accounts shelve like REDS rows, so the
+card holds what is OPEN and what waits on your word.
 **All three ships sail** (`20260905`). **Gate 3 stands:** `.gnupg-rye/` holds
 `private-keys-v1.d/`, and **per-tree GNUPGHOME is the only shape that works jailed** -- yours.
 **52 external utilities across 2,969 tool scripts. `rg`: 992 sites, ONE probe. `mktemp`: 353

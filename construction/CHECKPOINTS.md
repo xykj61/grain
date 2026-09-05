@@ -24,6 +24,33 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ---
 
+## `20260905.160658` -- the card condenses one finished fold line to seat `%435` (walk-back `8cb601849a`)
+
+**Walk-back nib:** `8cb601849a`. **Swept, in two passes:** first one clause of the live front of
+[`ITINERARY.md`](ITINERARY.md), on a card at **32,838 of 32,768** with the new row seated. The
+`%427`-`%429` fold line lost *"an answer true of the room the instrument could reach and false of
+the room anyone asked about"* and now points at the shelf instead. **What waits there, worth
+recalling:** nothing that is not already there -- that sentence stands verbatim in
+[`archive/REDS-the-room-the-instrument-stood-in-rows-427-429.md`](archive/REDS-the-room-the-instrument-stood-in-rows-427-429.md)'s
+own header, which is why this clause was the one chosen over any that stands only on the card. The
+cairn is recorded even so, because the rule asks for it before a condensation rather than after,
+and a judgment that a sentence is safely duplicated is exactly the judgment worth leaving a
+walk-back for.
+
+**Then, after the rebase**, upstream's own live front landed on top of this round's and the card
+stood at **33,165 of 32,768**. Two further condensations, both of landed accounts rather than open
+rows: the `%423`-`%426` line lost its three examples -- the control leg resting on the checkout's
+basename at *1,298s at zero CPU*, the `git init` taking its branch name from the host, and the
+`%G?`-reads-`N` correction -- all three of which stand on
+[`archive/REDS-what-a-script-assumes-rows-423-426.md`](archive/REDS-what-a-script-assumes-rows-423-426.md),
+checked before the cut. And **THE LIVE FRONT NOW FOLDS** lost its byte census, *"1 byte free, then
+5, then 11, then 836 over -- condensing had begun removing meaning rather than words"*. **That one
+is worth recalling:** it is the evidence for a policy now seated and running, and it is the only
+place the day's four readings stand together. It is a peer's sentence, written on
+`20260905.130819`, and their own session log holds the measurement.
+
+---
+
 ## `20260905.134026` -- the card condenses two landed accounts to seat a restored row (walk-back `7a025005de`)
 
 **Walk-back nib:** `7a025005de`. **Swept:** roughly 850 bytes of the live front of
