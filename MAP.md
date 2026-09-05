@@ -4,7 +4,7 @@
 **Style:** Gauge (see `context/GAUGE_STYLE.md`)
 **Voice:** Kyri
 **Status:** Living -- the human map; models take [`llms.txt`](llms.txt), keepers take [`ORGANIZING.md`](ORGANIZING.md), and *you* take this
-**Last updated:** `20260827.155213` (the two floors seated -- open shelves and closed stacks; seven rooms unchanged)
+**Last updated:** `20260905.070821` (the fused pins read true again; the standing rules named in Room 2 -- seven rooms unchanged)
 
 *The root gathering of sources lives at [`bibliography.md`](bibliography.md). The boundary between the private field and the public seed lives at [`template-manifest.bron`](template-manifest.bron).*
 
@@ -23,7 +23,7 @@ Welcome, traveler. Something over a hundred doors face you at this root -- `ls -
 | Room | What lives there | The doors |
 |------|------------------|-----------|
 | **1 - The Front Door** | What orients a newcomer before they dive | `README` - `MAP` - `SOURCE` - `CLAUDE` - `CONTRIBUTING` - `ORGANIZING` - licenses - `.template` files - `llms.txt` - `template-manifest.bron` |
-| **2 - The Law** | The disciplines we keep on purpose | `context/` |
+| **2 - The Law** | The disciplines we keep on purpose | `context/` - `.claude/rules/` |
 | **3 - The Why** | The reasons beneath the work | `foundations/` - `saga/` |
 | **4 - The Language & the Machines** | Glow and the module ring | `glow/` (with `glow/nock/`) - `src/` - the ring |
 | **5 - The Teaching** | Pages that teach only what runs | `docs/` - `docs-geode/` - `manual/` - `edu/` - `nixos-guide/` |
@@ -47,7 +47,7 @@ replaces the root `ls`.
 
 ### 2 - The Law
 
-Everything in [`context/`](context/README.md) is a promise we keep on purpose. [`RADIANT_STYLE.md`](context/RADIANT_STYLE.md) is how we speak. [`TAME_GUIDANCE.md`](context/TAME_GUIDANCE.md) is how the code stays safe -- safety first, performance second, joy third. [`SIMPLE_LOVABLE_COMPLETE.md`](context/SIMPLE_LOVABLE_COMPLETE.md) is how we scope a thing worth loving. [`TWO_ROOMS.md`](context/TWO_ROOMS.md) is why every page tells you whether it is proven or proposed. [`BREACH.md`](context/BREACH.md) is how the tree is allowed to move all at once. [`LEXICON.md`](context/LEXICON.md) is every word we ever seated, with receipts. [`KYRI.md`](context/KYRI.md) is who is writing to you (the standing voice, molted from Riyo `20260810`); the living coauthor is **Keaton Dunsford**. [`QUIN.md`](context/QUIN.md) keeps the fifth OS variant and the inference Q-vane.
+Everything in [`context/`](context/README.md) is a promise we keep on purpose. [`RADIANT_STYLE.md`](context/RADIANT_STYLE.md) is how we speak. [`TAME_GUIDANCE.md`](context/TAME_GUIDANCE.md) is how the code stays safe -- safety first, performance second, joy third. [`SIMPLE_LOVABLE_COMPLETE.md`](context/SIMPLE_LOVABLE_COMPLETE.md) is how we scope a thing worth loving. [`TWO_ROOMS.md`](context/TWO_ROOMS.md) is why every page tells you whether it is proven or proposed. [`BREACH.md`](context/BREACH.md) is how the tree is allowed to move all at once. [`LEXICON.md`](context/LEXICON.md) is every word we ever seated, with receipts. [`KYRI.md`](context/KYRI.md) is who is writing to you (the standing voice, molted from Riyo `20260810`); the living coauthor is **Keaton Dunsford**. [`QUIN.md`](context/QUIN.md) keeps the fifth OS variant and the inference Q-vane. Beside them, [`.claude/rules/`](.claude/rules/) holds the same disciplines in the form a working hand applies them -- one file per rule, each naming the law it carries and why.
 
 ### 3 - The Why
 
@@ -63,7 +63,7 @@ Everything in [`context/`](context/README.md) is a promise we keep on purpose. [
 
 ### 6 - The Workrooms (Mind the Sawdust)
 
-[`active-designing/`](active-designing/README.md) is the hot bench -- briefs being shaped now, the horizon in its `yonder/`; [`active-reviving/`](active-reviving/README.md) is its sibling, re-growing elders into Glow beside them. [`waymarks/`](waymarks/) is the claim shelf and [`expanding-prompts/`](expanding-prompts/) the runnable plans. [`construction/`](construction/ITINERARY.md) holds the living instruments: **ITINERARY** is what is true right now, TASKS and ROADMAP are what is next, REDS is what we got wrong and what caught it. [`counsel/`](counsel/README.md) is the advice ledger; [`session-logs/`](session-logs/README.md) and [`bron-resins/`](bron-resins/) are the diary and its compressions. [`tools/`](tools/) is where the witnesses live -- the little judges that make every GREEN in this tree mean something.
+[`active-designing/`](active-designing/README.md) is the hot bench -- briefs being shaped now, the horizon in its `yonder/`; [`active-reviving/`](active-reviving/README.md) is its sibling, re-growing elders into Glow beside them. [`waymarks/`](waymarks/) is the claim shelf and [`expanding-prompts/`](expanding-prompts/) the runnable plans. [`construction/`](construction/ITINERARY.md) holds the living instruments: **ITINERARY** is what is true right now and what comes next -- `TASKS.md` and `ROADMAP.md` fused into it on `20260823.103804` and stand as pointers now -- and **REDS** is what we got wrong and what caught it. [`counsel/`](counsel/README.md) is the advice ledger; [`session-logs/`](session-logs/README.md) and [`bron-resins/`](bron-resins/) are the diary and its compressions. [`tools/`](tools/) is where the witnesses live -- the little judges that make every GREEN in this tree mean something.
 
 ### 7 - The Reading Room
 

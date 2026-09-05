@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `fafdfa9664` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `3aad0c2020` -- HEAD's parent, resolvable everywhere (%401).
 
 **Now.** **A rule written six times is a rule six files may quietly come to disagree about.**
 
@@ -73,8 +73,10 @@ reads one of `max_name`'s two call sites (`parse_manifest` reads it too, over th
 `example` line lands on `placard_wrong` one reading earlier. **Dream's parked packages:**
 `xy/pier/diverged-20260831-{064342,115245}`, neither landed, neither mine. **CION:** `drey`'s rung marks are the retired form (%329). **Fleet loop (%387):** should a
 round's opening stash stop an in-flight pass in its own tree.
-**MAP QA:** C+/75 this sitting; 0 of 70 unresolved; index door wants under 100 prose words.
 
+**Petrichor's pier: two lane reds** -- `fleet_roster` (3 legs) and `agent_jail`. Four faults were
+the fresh checkout's own: hooks unarmed, `vendor/` empty, and `.gnupg-rye/gpg.sh` exporting the
+ELDER tree's `GNUPGHOME`, so a tree holding its own key could not sign. The shim reads `$0` now.
 **Still open:** `glow/rune_shape.rye` keeps width custody; `%281`/`%291`. **Named (%347):**
 `pond/enclosure_policy.kyri` 8,120/8,192; the wall is yours.
 **`%374` GRANTED and BUILT.** The roster grows **`gate %N`** beside `tier`/`host`/`capability`,
@@ -168,13 +170,8 @@ general bound anyway. **A conditional only one input reaches has been tested by 
 back now that there is room): nothing in the ledger shows a red is *being worked*, so two hands
 spent one morning on the same line. **Should an OPEN row carry a claim -- a seat and a stamp, at
 start rather than at landing?**
-**`%409` CLOSED -- the fleet's only real datum, written six times, two already drifted.**
-`seat -> tree -> engine` stood in six places across two files: the loop admitted **six** seat names
-where the re-arm reported **nine**, and the elder remap seated that morning lived in one and never
-reached the other. `construction/fleet-roster.kyri` holds it once, read by
-`tools/fixtures/f/fleet_roster_scan.sh`; all six are lookups. `status parked` keeps the aether
-seats readable without pretending they run; `engine field` refuses an unattended lap by name. 28
-legs, both sides -- including that a seat name in a loop case arm is a **seventh** copy.
+**`%409` CLOSED** -- one seat table, six copies, two drifted; whole on the
+[rows 408-410 shelf](archive/REDS-what-nothing-misbehaved-over-rows-408-410.md).
 **`%408` CLOSED -- the mount that could only happen once it had already happened.**
 `agent-jail.sh` bound `~/.claude.json` only when `loops/claude/dot-claude.json` existed, and the
 one process that writes it is the jailed Claude, into the tmpfs `--private-home` discards. So
@@ -189,6 +186,10 @@ at zero, so the guard catches the NEXT one. Elders keep every byte, Class H, cut
 untouched. Captain prompt molted to
 [`20260904-193221`](../expanding-prompts/20260904-193221_incense-the-field-captain-two-doors.md):
 the pier's tree is `~/grain-incense`, and there is no `~/grain` on Dallas.
+**Yours, two (%417).** Prose side of the same door: a **guided map** fits neither shape offered.
+`MAP.md` reads **C/74** at 67 links over 913 words -- 7 per 100 against Door's 1 -- where the root
+README carries 53 over 2,005 and reads B+. The index door frees the rate only under 100 words,
+which is a link list rather than a walk. Padding and pruning both make the page worse.
 **Next doors.** Caravan keeps a 5-second seam. Hush: `spool_cloth` eight `ClothError` paths.
 **Yours, one.** Door's ceiling is **9** against module heads that run 12-17. Of 163 sampled
 programs 115 read below B -- yet **51 sat under the register floor** with nothing measurable,
