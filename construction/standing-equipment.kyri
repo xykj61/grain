@@ -60,10 +60,12 @@ card construction/standing-equipment-runs.kyri
 guard banner_room
 path tools/b/banner_room_witness.rish
 seated 20260822.231949
+tier cadence   # banners across every room; moves when a room opens or a fossil is bannered
 
 guard dated_path
 path tools/d/dated_path_witness.rish
 seated 20260821.203103
+tier cadence   # a census of dated references across ~19,787 tracked files; its answer moves when a room folds
 
 guard dated_path_repoint
 path tools/d/dated_path_repoint_witness.rish
@@ -104,10 +106,12 @@ seated 20260821.203103
 guard living_card_ascii
 path tools/l/living_card_ascii_witness.rish
 seated 20260817.000000
+tier lap       # the card and the ledger, which every lap writes
 
 guard living_docs_lint
 path tools/l/living_docs_lint.rish
 seated 20260821.203103
+tier cadence   # ADVISE-only -- it prints advisories and never fails, so its reading is a trend
 
 guard nib_honesty
 path tools/n/nib_honesty_witness.rish
@@ -120,6 +124,7 @@ seated 20260821.211943
 guard readme_metrics
 path tools/r/readme_metrics_witness.rish
 seated 20260821.203103
+tier lap       # pages the pre-commit hook regenerates at every commit
 
 guard reds_ledger_monotone
 path tools/gen/chapter/reds_ledger_monotone_witness.rish
@@ -160,6 +165,7 @@ seated 20260821.203103
 guard tame_style_check
 path tools/t/tame_style_check.rish
 seated 20260707.164612
+tier lap       # authored Rye style, named on touch by the same
 
 # sow -- the projected seat is clean before it is ever public. MOVED TO `tier cadence`
 # `20260904` (REDS %412): at 230s it was the single most expensive guard on the roster, and unlike
@@ -182,6 +188,7 @@ seated 20260823.131241
 guard tool_path_repoint
 path tools/t/tool_path_repoint_witness.rish
 seated 20260823.144100
+tier cadence   # tool-path references tree-wide; moves when a tool moves, which is a deliberate act
 
 guard tracked_link
 path tools/t/tracked_link_witness.rish
@@ -214,6 +221,7 @@ seated 20260824.025704
 guard dated_spelling
 path tools/d/dated_spelling_witness.rish
 seated 20260824.035758
+tier cadence   # the dated-stamp spelling census across 4,705 living sources
 
 guard dated_pattern
 path tools/gen/chapter/dated_pattern_witness.rish
@@ -267,10 +275,12 @@ seated 20260824.112806
 guard width_check
 path tools/w/width-check.rish
 seated 20260620.210812
+tier lap       # authored Rye contracts, named on touch by the TAME Definition of Done
 
 guard declared_ceiling
 path tools/d/declared_ceiling_witness.rish
 seated 20260824.121445
+tier lap       # the gate that stops a ratchet being loosened -- a lap can raise one
 
 guard declared_model
 path tools/m/declared_model_witness.rish
@@ -299,14 +309,17 @@ seated 20260825.004500
 guard ascii_comment
 path tools/as/ascii_comment_witness.rish
 seated 20260825.011000
+tier cadence   # non-ASCII in every comment, held as a ratchet that only falls
 
 guard comment_citation
 path tools/co/comment_citation_witness.rish
 seated 20260825.052000
+tier cadence   # citations inside every tracked comment; a lap touches a handful of files, this reads thousands
 
 guard witness_reach
 path tools/w/witness_reach_witness.rish
 seated 20260825.092953
+tier cadence   # which witnesses reach what, tree-wide; moves when a witness is written or retired
 
 guard caravan_suite
 path tools/ca/caravan_suite_witness.rish
@@ -347,6 +360,7 @@ seated 20260825.183336
 guard reds_row_present
 path tools/r/reds_row_present_witness.rish
 seated 20260825.213128
+tier lap       # the ledger a lap books rows into
 
 guard shell_dialect
 path tools/s/shell_dialect_witness.rish
@@ -359,10 +373,12 @@ seated 20260826.075023
 guard upstream_shape
 path tools/u/upstream_shape_witness.rish
 seated 20260826.010645
+tier cadence   # the shape of upstream refs; moves on a remote change rather than on a lap
 
 guard ryekey
 path tools/r/ryekey_witness.rish
 seated 20260826.092732
+tier lap       # authored Rye keys, same clause
 
 guard skate_macos_choice
 path tools/s/skate_macos_choice_witness.rish
