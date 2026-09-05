@@ -1,4 +1,14 @@
 # launch-sound-fixed-chapter.rish -- print the seat of SOUND, the aether row's fixed star.
+# STATUS -- elder printer, kept as testimony. The living recipe is
+#   rishi/bin/rishi run tools/l/launch-fleet-chapter.rish sound
+# which reads construction/fleet-roster.kyri, so a ship joins, retires, or is renamed in one row
+# rather than in a printer of its own (REDS %409). This file keeps every byte it wrote -- it
+# carries living and dated references both -- and it names sound in its filename beside an
+# astrological MODALITY, `fixed`, which named which body orbits which star. That arrangement
+# changed and the filename did not, so the breach is one line: a launcher is named for its seat,
+# never for its modality. Prepped Class H in construction/SHRED_PREP.md; the cut stays RED until
+# Keaton circles it, and the ship name itself is not touched.
+#
 #
 # Sound (night twin Silence) is THE CLAUDE DESKTOP SESSION ON MACOS -- the interactive
 # conversation itself, aether at the fixed seat: the star that holds the middle and listens.

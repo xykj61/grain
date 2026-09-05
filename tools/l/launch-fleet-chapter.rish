@@ -1,0 +1,93 @@
+# launch-fleet-chapter.rish -- print the fleet's loop recipe, read from the fleet's own table.
+#
+# NINE PRINTERS BECOME ONE. tools/l/launch-*-chapter.rish were nine files and 67 KB of recipe
+# prose, six of them naming seats no host holds, and six carrying an astrological MODALITY in the
+# filename -- launch-hush-PLANET-chapter, launch-sound-FIXED-chapter, launch-mind-CARDINAL-chapter,
+# launch-dream-DUAL-chapter. Those words named a relationship: which body orbits which star. The
+# mark law's own test asks whether a label could turn out to be wrong, and this one did -- the
+# six-body fleet ran six days, three of its seats are parked, three are absent, and `sound`, the
+# fixed star at the centre of the arrangement, is a directory this pier does not have. A modality
+# is a forecast about a fleet's shape wearing a name's clothes.
+#
+# SO A LAUNCHER IS NAMED FOR ITS SEAT, and this one is named for none: it reads
+# construction/fleet-roster.kyri and prints whichever seat you ask for. The elder printers keep
+# every byte they wrote -- they carry living and dated references both, and renaming a fossil to
+# tidy it spends a whole-tree reference sweep on nothing. Each is bannered and enters
+# construction/SHRED_PREP.md under Class H, where the cut stays RED until Keaton circles it.
+#
+# THE SHIP NAMES ARE NOT TOUCHED. Sound, Mind, Mystery, Silence, Hush and Dream are good names by
+# the Comlink tendency's own three tests, they collide with nothing, and three of them may sail
+# again. What retires is the modality word in a LIVING FILENAME, never the ship that wore it.
+#
+# THE PER-SEAT LINES COME FROM THE READER, not from a loop here: Rishi's for-each takes one
+# statement over a list literal and has no string split, so a launcher looping over seats would
+# have to spell the seat list again -- the seventh copy this whole table exists to prevent.
+#
+#   rishi/bin/rishi run tools/l/launch-fleet-chapter.rish            # every live seat
+#   rishi/bin/rishi run tools/l/launch-fleet-chapter.rish incense    # one seat
+#
+# The one-time PIER BIRTH walk -- clone, remotes, toolchain, rye and rishi on metal -- is a
+# different kind of recipe and keeps its own page at tools/l/launch-earth-ships-chapter.rish.
+
+# invariant: run from the repo root, where the durable memory and the seat table live.
+let root = run ["test" "-f" "construction/ITINERARY.md"]
+assert root.ok else "run from the repo root (construction/ITINERARY.md not found)"
+
+# invariant: the table and its one reader both stand before a recipe claims to describe them.
+let table = run ["test" "-f" "construction/fleet-roster.kyri"]
+assert table.ok else "construction/fleet-roster.kyri is missing -- the seat table IS the recipe"
+let reader = run ["test" "-f" "tools/fixtures/f/fleet_roster_scan.sh"]
+assert reader.ok else "tools/fixtures/f/fleet_roster_scan.sh is missing -- nothing can read the table"
+
+# invariant: the loop this recipe tells a hand to run exists before the recipe prints it.
+let loop = run ["test" "-f" "tools/l/fleet-loop.sh"]
+assert loop.ok else "tools/l/fleet-loop.sh is missing -- the recipe would name a loop that is gone"
+
+say "THE FLEET -- one loop, one seat table, one recipe"
+say "================================================"
+say ""
+say "Machines are doors. One writer per checkout (REDS %291): two loops on one tree refuse, and"
+say "two loops on two trees is a token spend. Run each loop from the tree that holds it."
+say ""
+say "0) PRECONDITIONS, once per machine:"
+say "   - this repo cloned with the xy remote; git submodule update --init <path>, naming paths"
+say "   - claude on PATH and signed in on that host (login is a hand, once per pier)"
+say "   - jq for the readable stream (Darwin: brew install jq; NixOS: sudo sh tools/p/pier_jq_install.sh)"
+say "   - Linux also needs ai-jail; agent-jail.sh is Linux-only, since it resolves paths the GNU way"
+say "   Claude refuses --dangerously-skip-permissions as root -- run as a plain user."
+say "   The repo is the durable memory, so a lost node costs one lap's uncommitted work."
+say ""
+say "1) SMOKE, before any lap:"
+say ""
+say "claude --dangerously-skip-permissions --effort max -p 'reply with exactly: pong'"
+say "./tools/ag/agent-jail.sh --dangerously-skip-permissions claude --effort max -p 'reply with exactly: pong'"
+say ""
+say "   -p without --verbose prints nothing until the lap finishes, so silence after the jail"
+say "   banner is the lap working. The loop passes --output-format stream-json --verbose so tool"
+say "   lines render live. A missing ai-jail is a host install, never a counted lap; the named"
+say "   bare fallback is FLEET_BARE=1, and a lap that takes it says so in its log."
+say ""
+say "2) THE RECIPE, per seat. The prompt is a FILE, tools/l/<seat>_seat_prompt.txt, never an"
+say "   inline shell string -- one apostrophe inside a single-quoted one-liner strands the shell"
+say "   at its continuation prompt, which is how Silence's loop broke on 20260829."
+say ""
+
+# The seat lines, read off the table. A named seat prints alone; no argument prints every live one.
+if length args == 0 then let recipe = run ["sh" "tools/fixtures/f/fleet_roster_scan.sh" "--recipe"]
+if length args != 0 then let recipe = run ["sh" "tools/fixtures/f/fleet_roster_scan.sh" "--recipe" args[0]]
+assert recipe.ok else "the seat table would not answer --recipe -- read its own refusal"
+say recipe.out
+
+say "3) STREAMING: the loop tees raw NDJSON to session-output/<seat>.jsonl and rendered turns to"
+say "   session-output/<seat>.txt -- the read-scope law's shared window, so any agent reads a"
+say "   peer's full output by named path rather than a hand pasting it."
+say ""
+say "4) CUSTODY: the gates in construction/ITINERARY.md stay MANUAL -- funds and keys,"
+say "   provisioning and paying, the maintainer's own identity, and the public seed. A lap whose"
+say "   remaining work is all gates writes .loop-gates-only, prints GATES-ONLY, and stops."
+say ""
+say "5) TO ADD, RETIRE, OR RENAME A SHIP: edit one row in construction/fleet-roster.kyri. The"
+say "   loop, the re-arm, and this page all read it, so none can disagree with the others"
+say "   (REDS %409). An elder seat name goes in that row's `elder` field and is corrected on use."
+say ""
+say "GREEN: fleet recipe printed from the table."

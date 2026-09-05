@@ -22,6 +22,45 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ---
 
+## `20260904.193221` -- the shred-prep pin folds its completed shed (walk-back `5bd1a43e71`)
+
+**Walk-back nib:** `5bd1a43e71`. **Swept:** the living [`SHRED_PREP.md`](SHRED_PREP.md), whose
+`Class H -- SHED COMPLETE 20260827.162143` record -- ten rows naming every fossil the second
+mitra shed cut and where each mutant's references went -- moved whole to
+[`archive/SHRED_PREP-second-mitra-shed-record.md`](archive/SHRED_PREP-second-mitra-shed-record.md),
+leaving a pointer. **Nothing was lost**: the section is byte-for-byte on the shelf with its
+relative links re-anchored one directory deeper.
+
+**Why:** the pin stood at **24,366 of 24,576 bytes** before this lap touched it -- 210 bytes of
+headroom -- and seven honest Class H rows need more than that. A completed shed is
+finished-and-historical, which is `ORGANIZING.md`'s own definition of archive, so the fold is the
+filing rule rather than a convenience.
+
+**The third pin at its ceiling in one session**, after the operator card twice. That is the
+finding: `tools/l/living_pin_near_bound_witness.rish` advises each page against its own bound, and
+three living pins are now close enough that ordinary work has to choose what to delete. The doors
+are Keaton's -- **raise a bound**, **fold a section**, or **let the near-bound reading gate rather
+than advise**, so a pin arrives at its ceiling with a lap's warning instead of a refusal.
+
+## `20260904.193221` -- the card condensed a second time, one byte under (walk-back `5bd1a43e71`)
+
+**Walk-back nib:** `5bd1a43e71` -- HEAD before this lap's commit. **Swept:** the living
+[`ITINERARY.md`](ITINERARY.md) live front again, eleven more condensations to seat the fleet
+launcher and the molt breach. The page closed at **24,575 of 24,576 bytes**.
+
+**What waits there, worth recalling:** the longer `%374` and `%408` accounts, which named the
+gate vocabulary's derivation and the two harmless environment variables by name; the Tri-OS,
+Pond and language-custody lines at their full length; and the `37 shape nibs unread` half of
+Hush's next door.
+
+**Why:** the same reason as the row above, one lap later and sharper. **One byte of headroom is
+not a margin, it is a coincidence** -- the next lap cannot record anything at all without first
+deciding what to delete, and nothing in the mechanism makes that decision a considered one. The
+door is named on the card and is Keaton's: **raise this one pin's bound**, as
+`session-logs/README.md` earned its own at `256 x 192` plus prose, **or fold the live front to a
+shelf** the way the REDS pin folds. Two cairns in one session is the measurement, not the
+complaint.
+
 ## `20260904.190000` -- the card condensed to fit two new rows (walk-back `528fd63395`)
 
 **Walk-back nib:** `528fd63395` -- HEAD before this lap's commit. **Swept:** the living

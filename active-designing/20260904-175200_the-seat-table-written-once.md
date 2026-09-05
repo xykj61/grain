@@ -125,7 +125,7 @@ every word they wrote.
 ## The order of the work
 
 Lindy-first, crux-first. Each step lands with its own witness GREEN and its own send. **Steps 1
-through 3 landed together on `20260904`**, because they are one mechanism: a table nobody reads is
+through 4 landed on `20260904`**, because they are one mechanism: a table nobody reads is
 not yet a table. Seventeen behaviors GREEN in a throwaway pen, every refusal shown from both sides,
 under [`tools/f/fleet_roster_witness.rish`](../tools/f/fleet_roster_witness.rish).
 
@@ -137,8 +137,16 @@ under [`tools/f/fleet_roster_witness.rish`](../tools/f/fleet_roster_witness.rish
    the elder-name remap is the roster's own `elder` rows.
 3. **`fleet_rearm.sh` reads the roster** -- **LANDED**. The nine `report_seat` rows are one loop
    over the reader, and the 6-vs-9 disagreement closed by construction.
-4. **`launch-fleet-chapter.rish`** prints one seat's recipe from the roster; the six modality
-   printers are bannered and Class H'd.
+4. **`launch-fleet-chapter.rish`** -- **LANDED `20260904.193221`**. It prints the recipe from the roster
+   and names no seat in its own filename. The per-seat lines come from the reader's `--recipe`
+   mode rather than a loop in the launcher, because Rishi's `for-each` takes one statement over a
+   list literal and has no string split -- a launcher looping over seats would have to spell the
+   seat list again, the seventh copy this table exists to prevent. The six modality printers are
+   bannered, keep every byte, and carry Class M-shaped rows under Class H in
+   [`../construction/SHRED_PREP.md`](../construction/SHRED_PREP.md).
+   **The breach is enforced rather than declared:** a living launcher filename carrying
+   `planet`, `fixed`, `cardinal` or `dual` and *not* carrying the elder banner reds at zero,
+   proven from both sides in a pen -- so what the guard catches is the *next* one being born.
 5. **The molt to Rishi.** The card's standing clause -- *an operational shell script molts to
    Rishi on substantial touch* -- reaches `fleet-loop.sh` and `fleet_rearm.sh`. It is listed
    last on purpose: a language port on top of an unproven refactor is two changes wearing one

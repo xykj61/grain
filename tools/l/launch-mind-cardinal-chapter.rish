@@ -1,4 +1,14 @@
 # tools/l/launch-mind-cardinal-chapter.rish -- MIND's seat card, printed in the house order.
+# STATUS -- elder printer, kept as testimony. The living recipe is
+#   rishi/bin/rishi run tools/l/launch-fleet-chapter.rish mind
+# which reads construction/fleet-roster.kyri, so a ship joins, retires, or is renamed in one row
+# rather than in a printer of its own (REDS %409). This file keeps every byte it wrote -- it
+# carries living and dated references both -- and it names mind in its filename beside an
+# astrological MODALITY, `cardinal`, which named which body orbits which star. That arrangement
+# changed and the filename did not, so the breach is one line: a launcher is named for its seat,
+# never for its modality. Prepped Class H in construction/SHRED_PREP.md; the cut stays RED until
+# Keaton circles it, and the ship name itself is not touched.
+#
 #
 #   rishi/bin/rishi run tools/l/launch-mind-cardinal-chapter.rish
 #

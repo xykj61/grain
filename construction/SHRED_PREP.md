@@ -58,29 +58,35 @@ Prior pin (counsel e184): orphans **895** · health_now **41** — delta **+26**
 
 ---
 
-## Class H -- SHED COMPLETE `20260827.162143`, and the record of what was cut
+## Class H -- SHED COMPLETE `20260827.162143`
 
-*The second mitra shed, circled `20260827`: ten fossils cut, every mutant standing, every living
-citer repointed first. The rows stay as the record; the word stays **shred RED** until the next circle.*
-
-| Elder cut | Living mutant | Where its references went |
-| --- | --- | --- |
-| `foundations/20260702-165412_the-happy-zone-and-the-thin-edge.md` | `foundations/20260826-194850_the-happy-zone-and-the-thin-edge.md` | the council rota's own read list in `docs/compass_card.bron` repointed |
-| `foundations/20260629-063512_realidream.md` | `foundations/20260825-233310_realidream.md` | LEXICON, `foundations/README.md`, `gratitude/noah-b-realidream.md` |
-| `foundations/20260629-063512_the-graph-beneath-the-surface.md` | `foundations/20260826-024939_the-graph-beneath-the-surface.md` | `foundations/README.md` |
-| `foundations/20260629-063512_lantern-lattice-anvil.md` | `foundations/20260827-025117_lantern-lattice-kiln.md` | `foundations/README.md` |
-| `foundations/20260728-221253_lantern-lattice-anvil.md` | `foundations/20260827-025117_lantern-lattice-kiln.md` | `foundations/README.md` |
-| `foundations/20260826-024944_lantern-lattice-oven.md` | `foundations/20260827-025117_lantern-lattice-kiln.md` | `foundations/README.md`, and four chapter witnesses |
-| `foundations/20260629-063512_the-wafer-and-the-sovereign-coin.md` | `foundations/20260728-225239_the-wafer-and-the-sovereign-coin.md` | `foundations/README.md`; a dead manifest exclusion retired |
-| `counsel/date/20260728/20260728-232415_anvil-forge-to-oven-name-lean.md` | the LEXICON **Ember** row | none -- zero living citers at the cut |
-| `active-designing/20260826-001746_the-swarm-that-feeds-the-oven.md` | `active-designing/20260827-025118_the-swarm-that-feeds-the-kiln.md` | the room index row in `active-designing/README.md` |
-| `active-designing/date/20260813/20260813-020035_double-seat-expansion-six-seasons.md` | `active-designing/date/20260816/20260816-205859_double-seat-expansion-eight-seasons.md` | the HUNK row, four front doors, two designs, four headers |
+*The second mitra shed's full record -- ten fossils cut, every mutant standing -- folded to
+[`archive/SHRED_PREP-second-mitra-shed-record.md`](archive/SHRED_PREP-second-mitra-shed-record.md)
+on `20260904.193221`, because a completed shed is finished-and-historical and this pin sat 210 bytes under
+its bound. The word stays **shred RED** until the next circle.*
 
 ### Class H -- prepped for the THIRD mitra shed (opened `20260828`, cut stays RED until circled)
 
 | Elder | Living mutant | What the cut asks |
 | --- | --- | --- |
 | `tools/fixtures/d/dated_classify.py` | `tools/fixtures/d/dated_classify.rish`, gated by `tools/d/dated_classify_witness.rish` | **CUT `20260830.190407`** on the circled word: elder and its parity seam removed, zero operational citers re-verified, the successor's witness GREEN on the lap of the cut. |
+| `tools/l/launch-hush-planet-chapter.rish` | `launch-fleet-chapter.rish hush` | see the note below |
+| `tools/l/launch-mystery-planet-chapter.rish` | `launch-fleet-chapter.rish mystery` | same |
+| `tools/l/launch-silence-planet-chapter.rish` | `launch-fleet-chapter.rish silence` | same |
+| `tools/l/launch-sound-fixed-chapter.rish` | `launch-fleet-chapter.rish sound` | same; `sound` carries `engine field`, so the living recipe refuses it an unattended lap by name |
+| `tools/l/launch-mind-cardinal-chapter.rish` | `launch-fleet-chapter.rish mind` | same; the Codex supervisor law at `tools/l/chatgpt-mind.rish` is untouched |
+| `tools/l/launch-dream-dual-chapter.rish` | `launch-fleet-chapter.rish dream` | same |
+| `expanding-prompts/20260904-171306_incense-the-field-captain-two-doors.md` | `expanding-prompts/20260904-193221_incense-the-field-captain-two-doors.md` | the elder named the pier's clone `~/grain`; there is no `~/grain` on Dallas |
+
+**The six launcher rows, in one note** (`20260904.193221`, REDS %409). Each names a seat beside an
+astrological **modality** -- planet, fixed, cardinal, dual -- which named which body orbits which
+star. That arrangement changed and the filenames did not, so the breach is one line: **a launcher
+is named for its seat, never for its modality.** The living recipe reads
+`construction/fleet-roster.kyri`, so a ship joins, retires, or is renamed in one row. Each elder is
+bannered and keeps every byte, and every living citer still resolves because nothing moved. **The
+ship names are not touched** -- Hush, Mystery, Silence, Sound, Mind and Dream are good names and
+three may sail again. The breach is enforced rather than declared: a living launcher filename
+carrying a modality word and lacking the elder banner reds at zero.
 
 **Every cut basename is seated as a LISTED deliberate absence** in
 [`../tools/fixtures/d/dated_path_exclusions.sh`](../tools/fixtures/d/dated_path_exclusions.sh), so the
