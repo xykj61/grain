@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `da914d5b96` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `c463fd88f9` -- HEAD's parent, resolvable everywhere (%401).
 
 **Now.** **A rule written six times is a rule six files may quietly come to disagree about.**
 
@@ -83,6 +83,16 @@ again, and a pass whose reds are all gated writes its receipt disclosing what it
 **The gate vocabulary is this card's own custody list, read at scan time**; an unreadable card
 refuses every gate. Live: **106 green, 1 red, 4 gated**.
 **Shelved:** eight rows -- see [`the fold recital`](archive/REDS-fold-recital.md).
+**`%412` CLOSED -- a third of the roster's clock went to forking, not reading.** 111 guards, 1,510s,
+**median 2s against a mean of 13** -- five guards held 46%. Two were slow by ACCIDENT:
+`living_card_ascii` forked `mktemp`+`iconv`+`rm` per file across **14,709 files** (~44,000
+processes, 137s -> **25s** via one awk pass, NUL-delimited); `reds_row_present` asked its script for
+row 1, then row 2, to the end -- **411 invocations** each re-reading the whole spine (177s ->
+**12s** via `--all`, same sed, same file set, so the authority is unchanged). `sow` at 230s is
+expensive ON PURPOSE and moved to `tier cadence`, honest because its act is gate %1, manual.
+**1,510s -> 990s, measured** (1,003 projected). **Before you make an expensive thing rare, find out
+whether it is expensive on purpose** -- a cadence tier on those two would have hidden 277s of pure
+waste behind a slower clock and left the waste.
 **The fleet is six ships and one baton.** `tools/l/fleet_baton.txt` holds the shared opening ONCE
 and `fleet-loop.sh` prepends it, so a seat prompt is its **lane stanza** alone. Three ships seated
 `20260904.214754`, status **berthed** -- a lane, a prompt, a name, no tree yet: **bakery** (core
@@ -258,6 +268,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260904.215903` | Six ships, one baton, and the aroma breach | [log](../session-logs/date/20260904/20260904-215903_six-ships-one-baton.kyri) |
+| `20260904.225911` | A third of the roster's clock went to forking | [log](../session-logs/date/20260904/20260904-225911_the-loop-around-the-reading.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)

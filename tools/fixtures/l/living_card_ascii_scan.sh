@@ -36,6 +36,10 @@ ENFORCE="construction/ITINERARY.md construction/REDS.md"
 ADVISORY="construction/ROADMAP.md construction/TASKS.md construction/EQUINOX_SEAT_MAP.md construction/SHRED_PREP.md construction/THREADS.md construction/CHECKPOINTS.md"
 CONTROL=tools/fixtures/living_card_ascii_control/mojibake_control.md
 TMPLIST=$(mktemp "${TMPDIR:-/tmp}/ascii-list.XXXXXX")
+# Absolute, because the UTF-8 self-proof runs inside a `cd` to its pen and a relative path
+# would resolve against the pen instead of the tree. This scan already assumes the repository
+# root as its working directory -- every roster path above it is relative.
+UTF8_AWK="$(pwd)/tools/fixtures/l/utf8_valid.awk"
 trap 'rm -f "$TMPLIST"' EXIT INT TERM
 
 # THE BYTE RANGE IS SPELLED IN THE C LOCALE, not in PCRE. `grep -P` is a GNU extension and BSD
@@ -153,44 +157,42 @@ echo "control_non_ascii_lines=$CHITS"
 # byte sequence rather than on any one tool's verdict about it.
 #
 # The instrument proves itself both ways first, on files planted in a throwaway pen, because a
-# probe that can only pass cannot be told apart from a probe that reads nothing.
+# probe that can only pass cannot be told apart from a probe that reads nothing. Five shapes now
+# rather than two: the clean file and the orphan lead byte the elder probe planted, plus a valid
+# multibyte file (which a too-eager validator would refuse), a bare continuation byte, and an
+# overlong lead. A validator proven only against ASCII would pass every one of the last three.
 PEN=$(mktemp -d "${TMPDIR:-/tmp}/ascii-utf8.XXXXXX")
 printf 'a clean line\n' > "$PEN/clean.md"
-printf 'a line with an orphan lead byte \302- here\n' > "$PEN/orphan.md"
-if ! utf8_valid "$PEN/clean.md"; then
-  rm -rf "$PEN"
-  echo "instrument=failed"
-  echo "detail=probe_refuses_a_clean_file"
-  echo "verdict=misread"
-  exit 1
-fi
-if utf8_valid "$PEN/orphan.md"; then
-  rm -rf "$PEN"
-  echo "instrument=failed"
-  echo "detail=probe_accepts_an_orphan_lead_byte"
-  echo "verdict=misread"
-  exit 1
-fi
+printf 'an orphan lead byte \302- here\n' > "$PEN/orphan.md"
+printf 'valid multibyte \303\251 and \344\270\255 here\n' > "$PEN/multibyte.md"
+printf 'a bare continuation \277 here\n' > "$PEN/bare.md"
+printf 'an overlong lead \300\257 here\n' > "$PEN/overlong.md"
+PEN_BAD=$(cd "$PEN" && LC_ALL=C awk -f "$UTF8_AWK" \
+  clean.md orphan.md multibyte.md bare.md overlong.md | sort | tr '\n' ' ')
 rm -rf "$PEN"
+if test "$PEN_BAD" != "bare.md orphan.md overlong.md "; then
+  echo "instrument=failed"
+  echo "detail=utf8_probe_read_the_pen_wrong"
+  echo "detail_pen_verdict=$PEN_BAD"
+  echo "verdict=misread"
+  exit 1
+fi
 echo "utf8_probe=proven_both_ways"
 
-INVALID=0
-SCANNED=0
-INVALID_LIST=""
-git ls-files -- '*.md' '*.rish' '*.rye' '*.sh' '*.kyri' '*.bron' '*.brix' '*.txt' > "$TMPLIST"
-while IFS= read -r f; do
-  test -f "$f" || continue
-  SCANNED=$((SCANNED + 1))
-  if ! utf8_valid "$f"; then
-    INVALID=$((INVALID + 1))
-    INVALID_LIST="$INVALID_LIST $f"
-  fi
-done < "$TMPLIST"
-rm -f "$TMPLIST"
+# ONE AWK PROCESS FOR THE WHOLE CORPUS (REDS %412). The elder loop forked mktemp, iconv and rm per
+# file across 14,709 tracked text files -- about 44,000 processes for a reading the bytes make
+# cheap. NUL-delimited, because `git ls-files` will happily hand back a path with a space in it and
+# this tree holds several; a whitespace-split list drops them silently, which is the reading a
+# guard can least afford.
+INVALID_LIST=$(git ls-files -z -- '*.md' '*.rish' '*.rye' '*.sh' '*.kyri' '*.bron' '*.brix' '*.txt' \
+  | LC_ALL=C xargs -0 awk -f "$UTF8_AWK")
+SCANNED=$(git ls-files -- '*.md' '*.rish' '*.rye' '*.sh' '*.kyri' '*.bron' '*.brix' '*.txt' | grep -c .)
+INVALID=$(printf '%s' "$INVALID_LIST" | grep -c . || true)
 echo "text_files_scanned=$SCANNED"
 echo "text_files_invalid_utf8=$INVALID"
 if test "$INVALID" -ne 0; then
-  for u in $INVALID_LIST; do
+  printf '%s\n' "$INVALID_LIST" | while IFS= read -r u; do
+    test -n "$u" || continue
     echo "detail=invalid_utf8_byte_sequence"
     echo "detail_path=$u"
   done

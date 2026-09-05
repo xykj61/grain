@@ -32,6 +32,25 @@ set -eu
 N=${1:-}
 SAY=${2:-}
 
+# --all -- every row the spine holds, one number per line, in ONE pass (REDS %412).
+#
+# The completeness leg of tools/r/reds_row_present_witness.rish asked this script for row 1, then
+# row 2, and so on to the end of the ledger -- 411 invocations, each re-reading the whole spine, and
+# 177 of the roster's 1,510 seconds. The reading was never expensive; the loop around it was. This
+# mode answers the same question from the same sed expressions and the same spine file set, so the
+# witness keeps THIS script as its authority rather than growing a second reader beside it, and
+# calls it once.
+if [ "$N" = "--all" ]; then
+  SPINE=$(sh tools/fixtures/r/reds_spine_files.sh) || {
+    echo "verdict=misuse detail=no_spine_files" >&2
+    exit 2
+  }
+  for f in $SPINE; do
+    sed -n 's/^| *\([0-9][0-9]*\) *|.*/\1/p; s/^\*\*REDS [%#]\([0-9][0-9]*\).*/\1/p' "$f"
+  done | sort -n -u
+  exit 0
+fi
+
 case "$N" in
   '' ) echo "verdict=misuse detail=want_row_number"; exit 2 ;;
   *[!0-9]* ) echo "verdict=misuse detail=not_a_number row=${N}"; exit 2 ;;
