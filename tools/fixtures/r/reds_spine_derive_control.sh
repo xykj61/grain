@@ -139,6 +139,36 @@ else
   fail=$((fail + 1))
 fi
 
+# `--next` PROMISES ONE NUMBER, and a fresh caller writes `N=$(... --next)` rather than piping to
+# tail. The mode printed forty-one lines before this leg existed: every stamp_duplicate note ahead
+# of the answer, on stdout.
+lines=$(cd "$(git rev-parse --show-toplevel 2>/dev/null || echo .)" && sh "$SCAN" --next 2>/dev/null | wc -l)
+if [ "$lines" -eq 1 ]; then
+  echo "PASS: --next prints exactly one line"
+  pass=$((pass + 1))
+else
+  echo "FAIL: --next printed $lines lines (wanted 1)"
+  fail=$((fail + 1))
+fi
+
+# AND IT REFUSES MID-REBASE. The allocator skips past numbers the LOCAL tree holds, and a replaying
+# tree holds the very row being renumbered -- the Petrichor seat was answered one too high and
+# renumbered six citation sites the wrong way. Proven from both sides, planted and then removed.
+root=$(git rev-parse --show-toplevel 2>/dev/null || echo .)
+gd=$(cd "$root" && git rev-parse --git-dir 2>/dev/null || echo .git)
+case "$gd" in /*) ;; *) gd="$root/$gd" ;; esac
+mkdir -p "$gd/rebase-merge"
+set +e; ( cd "$root" && sh "$SCAN" --next >/dev/null 2>&1 ); rc_reb=$?; set -e
+rmdir "$gd/rebase-merge" 2>/dev/null
+set +e; ( cd "$root" && sh "$SCAN" --next >/dev/null 2>&1 ); rc_clean=$?; set -e
+if [ "$rc_reb" -eq 2 ] && [ "$rc_clean" -eq 0 ]; then
+  echo "PASS: --next refuses mid-rebase and welcomes a settled tree"
+  pass=$((pass + 1))
+else
+  echo "FAIL: --next mid-rebase:$rc_reb settled:$rc_clean (wanted 2 and 0)"
+  fail=$((fail + 1))
+fi
+
 echo
 echo "cases_ok=$pass cases_red=$fail"
 if [ "$fail" -ne 0 ]; then echo "control_verdict=red"; exit 1; fi

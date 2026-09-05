@@ -64,6 +64,13 @@ trap 'rm -rf "$work"' EXIT INT TERM
 # repeated -- the same discipline reds_spine_grep.sh keeps (REDS %231).
 # Located beside this script rather than by a path from the repo root, so a control can run
 # this scan from inside its own pen with the pen's git repository as the one git answers for.
+# A DETAIL LINE IS DIAGNOSIS, AND `--next` PROMISES ONE NUMBER. The header documents `--next` as
+# *print the number to book next*, and it printed forty-one lines: every `stamp_duplicate` note
+# ahead of the answer, on stdout. Every caller in this tree therefore ends in `| tail -1`, which
+# works and hides the shape -- a fresh caller writing `N=$(... --next)` gets a paragraph where it
+# expects an integer. Details route through one emitter now, and it stays quiet in `next` mode.
+detail() { [ "$mode" = next ] || echo "$1"; }
+
 spine_files="$(dirname "$0")/reds_spine_files.sh"
 if ! sh "$spine_files" > "$work/files.txt" 2>/dev/null; then
   echo "verdict=missing_ledger"
@@ -90,7 +97,7 @@ sort -u -o "$work/local.txt" "$work/local.txt"
 
 local_rows=$(grep -c '[0-9]' "$work/local.txt" || true)
 if [ "$local_rows" -gt "$MAX_ROWS" ]; then
-  echo "detail: $local_rows rows exceeds the declared maximum of $MAX_ROWS"
+  detail "detail: $local_rows rows exceeds the declared maximum of $MAX_ROWS"
   echo "verdict=too_many_rows"
   exit 2
 fi
@@ -142,10 +149,10 @@ if [ "$anointed_ok" = yes ]; then
     rebindings=$((rebindings + 1))
     if awk -v s="$stamp" '$2 == s {found=1} END {exit !found}' "$work/shared.txt"; then
       elsewhere=$(awk -v s="$stamp" '$2 == s {print $1; exit}' "$work/shared.txt")
-      echo "detail: rebinding %$n -- the anointed spine binds it to $up, and binds $stamp to %$elsewhere"
+      detail "detail: rebinding %$n -- the anointed spine binds it to $up, and binds $stamp to %$elsewhere"
     else
       squatters=$((squatters + 1))
-      echo "detail: squatting %$n -- the anointed spine spent it on $up; this row ($stamp) is unshared and derives above %$shared_max"
+      detail "detail: squatting %$n -- the anointed spine spent it on $up; this row ($stamp) is unshared and derives above %$shared_max"
     fi
   done < "$work/local.txt"
 fi
@@ -166,7 +173,7 @@ fi
 # and it is reported so a hand knows the order was not chosen by stamp alone.
 stamp_duplicates=$(awk '{print $2}' "$work/local.txt" | sort | uniq -d | grep -c . || true)
 awk '{print $2}' "$work/local.txt" | sort | uniq -d | while IFS= read -r s; do
-  [ -n "$s" ] && echo "detail: stamp_duplicate $s -- the commit-hash tiebreak decides this pair"
+  [ -n "$s" ] && detail "detail: stamp_duplicate $s -- the commit-hash tiebreak decides this pair"
 done
 
 # READING 4 (%369) -- one number carrying two stamps in THIS tree's own ledger. The gated
@@ -178,7 +185,7 @@ pair_count=$(sort -u "$work/local.txt" | grep -c . || true)
 number_count=$(awk '{print $1}' "$work/local.txt" | sort -u | grep -c . || true)
 double_booked=$((pair_count - number_count))
 awk '{print $1}' "$work/local.txt" | sort | uniq -d | while IFS= read -r n; do
-  [ -n "$n" ] && echo "detail: double_booked %$n -- this tree binds one number to two stamps"
+  [ -n "$n" ] && detail "detail: double_booked %$n -- this tree binds one number to two stamps"
 done
 
 # The allocator. A new row takes one above the ANOINTED maximum, never one above the local
@@ -191,6 +198,19 @@ if [ "$anointed_ok" = yes ]; then
   done
 else
   next_free=$((local_max + 1))
+fi
+
+# `--next` REFUSES MID-REBASE, because the allocator above skips past numbers the LOCAL tree holds
+# and a replaying tree holds the very row being renumbered. The Petrichor seat read `--next` during
+# a rebase on `20260905`, was answered **436** while the anointed spine's highest was 434 and its own
+# unshared row was 435, and renumbered six citation sites the wrong way before
+# `reds_ledger_monotone` caught it. The skip is right when booking a second row and wrong when the
+# first one is in flight, and nothing in the reading could tell those apart. A rebase can, so it does.
+gitdir=$(git rev-parse --git-dir 2>/dev/null || echo .git)
+if [ "$mode" = next ] && { [ -d "$gitdir/rebase-merge" ] || [ -d "$gitdir/rebase-apply" ]; }; then
+  echo "reds_spine_derive: REFUSED -- a rebase is open, and the allocator counts this tree's own" >&2
+  echo "  in-flight row as already taken. Finish or abort the rebase, then read --next." >&2
+  exit 2
 fi
 
 if [ "$mode" = next ]; then
