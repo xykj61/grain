@@ -84,6 +84,19 @@ for seat in $seats; do
   done
 done
 
+# REPORTED, NEVER GATED: how many of the fleet's own signing keys this tree can verify with. A ship
+# missing a peer's PUBLIC key still signs and pushes perfectly -- it just reads that peer's commits
+# as `E` (cannot check), which is indistinguishable at a glance from `N` (unsigned). That ambiguity
+# is what hid REDS %427 for a day: pheromone's `%G?` read `N` on five commits and the tree was read
+# as unsigned, when the objects carried `gpgsig` all along and gpg was simply failing to exec.
+for seat in $seats; do
+  name=$(sh "$roster" --tree "$seat" 2>/dev/null) || continue
+  [ -n "$name" ] || continue
+  [ -d "$pier/$name/.gnupg-rye" ] || continue
+  n=$(GNUPGHOME="$pier/$name/.gnupg-rye" gpg --list-keys 2>/dev/null | grep -c '^pub')
+  echo "verifies_with: $seat holds $n fleet public key(s)"
+done
+
 echo "trees=$trees"
 echo "absent_trees=$absent"
 echo "paths_checked=$checked"
