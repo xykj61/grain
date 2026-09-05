@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `27f7587fdf` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `122eab1aac` -- HEAD's parent, resolvable everywhere (%401).
 
 **Now.** **A control that names a machine cannot be run on the fleet it guards.**
 
@@ -74,11 +74,20 @@ reads one of `max_name`'s two call sites (`parse_manifest` reads it too, over th
 `xy/pier/diverged-20260831-{064342,115245}`, neither landed, neither mine. **CION:** `drey`'s rung marks are the retired form (%329). **Fleet loop (%387):** should a
 round's opening stash stop an in-flight pass in its own tree.
 
-**Petrichor: `%422` CLOSED** -- `fleet_roster` named one machine, so off `grain-incense` it read
-the law WORKING as three failures; it takes its seat from its own tree now, proven on two.
-`agent_jail` reds `bwrap ... not permitted`: environment, so no receipt, `--scoped` refuses.
-**Still open:** `glow/rune_shape.rye` keeps width custody; `%281`/`%291`. **Named (%347):**
-`pond/enclosure_policy.kyri` 8,120/8,192; the wall is yours.
+**Petrichor: `%424` CLOSED -- the library index credited a room for the interpreter its witnesses
+run under.** The index published **1,770** witnesses for `rishi/` and **1,313** for `rye/` against
+a tree of **1,801**; each opens `rishi/bin/rishi`. Honest: **6** and **89**, 36 of 38 held.
+**Fleet:** `grep` in the Claude Code Bash tool is a **shell function shimming to ugrep 7.8.4**
+while scripts run **GNU grep 3.12**; under ugrep `%240`'s portability ERE `(^|[^A-Za-z0-9_])`
+anchors to line start, so a probe read `rye/` at **27**, the tree 1,313. **Name the binary when
+the number matters.**
+**Three laps booked `%423` in one hour** -- `124031` landed, mine `124857` renumbered to `%424`,
+and `122517` **is unsent in `stash@{0}`** with the QA floor row and a
+`docs-geode/tutorials/README.md` B->B+ repair. Restore it as **`%425`**; its fold is moot,
+upstream shelved `%419`-`%422`. **`git stash list` is the open** -- read late here. `agent_jail`
+reds `bwrap not permitted`: environment, no receipt, `--scoped` refuses.
+**Still open:** `glow/rune_shape.rye` width custody; `%281`/`%291`. **(%347):**
+`pond/enclosure_policy.kyri` 8,120/8,192; yours.
 **`%374` BUILT.** The roster grows **`gate %N`** beside `tier`/`host`/`capability`, for **what a
 maintainer has parked**. A gated red books apart; a pass whose reds are all gated writes its
 receipt naming them. **The gate vocabulary is this card's own custody list, read at scan time.**
@@ -131,17 +140,10 @@ tiers -- **granted** (POSIX), **carried** (we ship it), **borrowed** (probe, fal
 seated in Tally as a bounded grant, carried by Caravan as a capability, declared through Mantra.
 **The reflex that should not wait for the design: a guard that cannot run its instrument refuses,
 and says which instrument.**
-**`%413` and `%412` CLOSED -- the roster's clock went to forking, not reading.** 1,510s -> **856s**
-measured, across five guards holding 46% of a 111-guard pass: `tracked_link` forked an awk AND a
-grep per link (~47,700 processes) -> 5s, `phantom_path` 8,793 -> 6s, `declared_model` walked all
-14,709 files to find 1,127 -> 5s, `living_card_ascii` forked `mktemp`+`iconv`+`rm` per file -> 25s,
-`reds_row_present` re-read the whole spine 411 times -> 12s. Each output byte-identical to its
-elder. **The costly half:** two repairs found their awk helper from `$(pwd)` and sent its complaint
-to `/dev/null`, so in a control pen they read zero and PASSED -- an empty answer from a failed
-instrument is byte-identical to one from a clean collection, and the second is the reading everyone
-wants to hear. All four resolve from `$(dirname "$0")` now. **Before you make an expensive thing
-rare, find out whether it is expensive on purpose** -- `sow` at 230s is expensive by design and
-moved to `tier cadence`; a cadence tier on the other two would have hidden 277s of pure waste.
+**`%413`/`%412` CLOSED** -- the roster's clock went to forking, not reading: **1,510s -> 856s**
+across five guards. Whole in the ledger, with the two lines worth carrying: **an empty answer from
+a failed instrument is byte-identical to one from a clean collection**, and **before you make an
+expensive thing rare, find out whether it is expensive on purpose**.
 **`%419` CLOSED (booked `%418`, renumbered on the rebase -- the stamp is the key) -- a guard
 watched a room the law had emptied and read the emptiness as health.** `log_has_a_row` gated *every
 log has a row* against the FLAT room, which BORN ON ITS DAY'S SHELF emptied `20260827.171500`:

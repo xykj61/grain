@@ -14,7 +14,7 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 
 **What counts as a library here:** a top-level room holding at least one `.rye` module *and* its own `README.md`. Both halves matter -- code with no README has no door a reader can open, and a README with no code is a room rather than a library.
 
-**How the witness count is taken:** a witness belongs to a room when it *references* that room, not when its filename happens to contain the room name. The obvious way -- globbing `tools/*<room>*_witness.rish` -- reported **zero** witnesses for `image` and for `lotus`, which between them hold 463 modules and 485 witnesses, because their proofs are named for what they prove rather than for where it lives. A confident wrong zero is worse than no number at all.
+**How the witness count is taken:** a witness belongs to a room when it *references* that room -- not when its filename happens to contain the room name, and not when it merely invokes the toolchain that lives there. Globbing `tools/*<room>*_witness.rish` reported **zero** for `image` and `lotus`, which hold 463 modules between them, because their proofs are named for what they prove rather than for where it lives. Testing for the room's path instead then reported **1,770** witnesses for `rishi` -- 98 percent of every witness in the tree, against a room of two modules -- because each one runs under `rishi/bin/rishi`, and **1,313** for `rye`, because each one builds with `rye/bin/rye`. So both entry paths are removed from a line before the room test reads it, and what remains was written to name a room rather than to run a program. A confident wrong number is worse than no number in either direction.
 
 | Room | Rye modules | Witnesses that reference it |
 |---|---:|---:|
@@ -48,8 +48,8 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 | [`mycelium/`](../../mycelium/README.md) | 97 | 85 |
 | [`pleac/`](../../pleac/README.md) | 3 | 6 |
 | [`pond/`](../../pond/README.md) | 156 | 165 |
-| [`rishi/`](../../rishi/README.md) | 2 | 1770 |
-| [`rye/`](../../rye/README.md) | 117 | 1313 |
+| [`rishi/`](../../rishi/README.md) | 2 | 6 |
+| [`rye/`](../../rye/README.md) | 117 | 89 |
 | [`scribble/`](../../scribble/README.md) | 2 | 2 |
 | [`scribe/`](../../scribe/README.md) | 2 | 4 |
 | [`settlement/`](../../settlement/README.md) | 2 | 3 |
