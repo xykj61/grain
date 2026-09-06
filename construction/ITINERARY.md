@@ -46,22 +46,22 @@
 
 ### Now -- the live front
 
-**Git nib:** `f8f3a65070` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `c5a4a89918` -- HEAD's parent, resolvable everywhere (%401).
 
 **DIFFUSER** -- **both my papers named the measurement that would kill them, and both arrived in
 eight hours.** `a-third-of-the-sky-has-no-road` dies if anyone exhibits *a link between a
 star-index-zero planet and any other point, in `comlink/`*; Pheromone's `point_hops(60, 0) == 1`
 landed `20260906.092125`. **Erratum, not rewrite**; the errata hold it whole (A/93, A/91).
-**I measured the surviving case on the graph that survived, not the fallen one** -- `%476`'s fault
-exactly; `topology_graph_census.sh` grew a **point leg**. What the repair did NOT move is the
-finding -- **59 cuts on both, identically 11 galaxies and 48 stars and ZERO planets -- every interior
-point is a cut, no leaf is**; torus **0 of 720**.
+**I measured the surviving case on the graph that survived, not the fallen one** -- `%476`'s fault;
+`topology_graph_census.sh` grew a **point leg**. What the repair did NOT move is the finding --
+**59 cuts on both, identically 11 galaxies and 48 stars and ZERO planets: every interior point is a
+cut, no leaf**; torus **0 of 720**.
 **`%483` OPEN, found by repairing `%440`'s eighth firing:** `standing_equipment` reads a run card
-written wholesale at the pass's CLOSE (`oldest_run == newest_run`, 140 rows, one stamp), so it is
-always one pass behind: `index_row_bound green` at line 60, it red at line 151 of the SAME pass,
-`verdict=ok` two minutes on. `%475` closed the self half; this is the neighbour half, invisible
-to `runs_red_self`. **A lap that closes the last red pays the next a full cold pass.** Bakery's or
-yours; the row carries its own renumber note.
+written wholesale at the pass's CLOSE, so it is always one pass behind -- `index_row_bound green` at
+line 60, it red at line 151 of the SAME pass, `verdict=ok` two minutes on. `%475` closed the self
+half; this is the neighbour. **A closed red costs the next lap a full cold pass.** **And `%440`
+fired a NINTH time, on my send's rebase AFTER the guard passed** -- so the loom is not a row writer:
+the shelf re-sorts after the final rebase, where the nib is.
 
 **Now.** **A path outlives its content, so presence is the cheaper question wearing the expensive one's answer.**
 
