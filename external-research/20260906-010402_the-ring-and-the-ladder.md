@@ -83,3 +83,116 @@ The narrower falsifier, for the measured half: **exhibit a hierarchy of depth th
 ## Gratitude
 
 To C. Y. Lee, whose 1958 distance over the integers modulo `q` is still the cleanest way to say *the shorter way around*; to William Dally and Charles Seitz, whose virtual channels made ring routing safe to build; and to Charles Leiserson, whose fat-tree showed that a hierarchy's bottleneck is a bandwidth question with an engineering answer rather than a fate. We borrow the understanding and write our own code.
+
+---
+
+## Errata -- the narrower falsifier fired, `20260906.105235`
+
+**This section corrects a fact; the body above keeps every word it wrote.** Dated testimony is
+corrected by erratum rather than rewritten, so a reader can see both what was claimed and what
+the measurement did to it.
+
+### What fell
+
+This paper offered a narrower falsifier for its measured half: *exhibit a hierarchy of depth three
+or more, with fan-out above one at every level, whose unit-distance graph is connected.* Within
+eight hours a sibling ship exhibited one, and it is our own module. `Sky.point_hops` in
+`comlink/topology.rye` walks the same sponsor chain in **number** space rather than address space,
+where a star of index zero and its galaxy are one point rather than two. Measured
+`20260906.105235` by `sh tools/fixtures/t/topology_graph_census.sh`, over the same 720-point
+compass sky and all 518,400 ordered pairs:
+
+| Reading | `route_hops` (address space) | `point_hops` (number space) |
+|---|---|---|
+| Isolated points | 132 | **0** |
+| Components | 133 | **1** |
+| Ordered pairs the metric claims and no walk realizes | 172,524 (33.28%) | **0 (0.00%)** |
+
+**The isolation this paper treated as structural was an artifact of one module's address
+arithmetic.** `Address.parent` sent a star-index-zero planet to a star that `encode` places on its
+galaxy's own number, and `decode` read that number back as a galaxy, so the step existed in the
+tree and not in the formula. The paper's central sentence -- *a distance that no walk realizes is
+a hint dressed as a fact* -- stands as written; what it does not do is convict hierarchy in
+general, and this page read it as though it did.
+
+**The general claim that survives is narrower and worth stating exactly.** A ladder's distance is
+a formula about roles, and a formula about roles is realized by a walk only when every role in it
+names a point you can stand on. That remains true. What the measurement shows is that the
+condition is **satisfiable** -- a hierarchy can meet it, and ours now does -- rather than
+structurally out of reach.
+
+### What stands, measured on the graph that survived
+
+Citing the fallen reading's numbers against the torus would repeat the fault this fleet booked the
+same morning as `%476`: naming a cause by proximity. So the census grew a **point leg**, and the
+three surviving arms are measured on the graph the module actually publishes. Compass sky, 720
+points, `20260906.105235`, same script:
+
+| | ladder (`point_hops`) | torus (Lee, three rings) |
+|---|---|---|
+| Degree, min / max / mean | 1 / 26 / 2.15 | **6 / 6 / 6.00** |
+| Cut points, excluding the walk's start | **59** | **0** |
+| Worst single failure strands | 59 points (8.19%) | 0 |
+| Entropy against its own ceiling | 1.5511 / 2.5850 = 60.01% | 3.4271 / 3.9069 = **87.72%** |
+| Diameter | 5 | 14 |
+
+**The cut-point number is a structure rather than a count, and the census now names it.** The 59
+break down as **11 galaxies and 48 stars, and zero planets** -- against a sky holding 12 galaxies,
+48 stars distinct from their galaxies, and 660 planets. Every interior point of the ladder is an
+articulation vertex; the twelfth galaxy is absent from the count only because the walk starts
+there. **Every leaf is safe and every interior node is a single point of failure**, which is what
+a ladder *is* rather than a flaw in this one. The torus reads zero of 720, because a
+three-dimensional torus has vertex connectivity six and every node is interior.
+
+The council sky reads the same shape at its own scale: 44 cut points, 14 galaxies and 30 stars and
+zero planets, worst case stranding 26 of 405.
+
+### What got sharper on both sides
+
+**The repair improved the ladder on every axis except the two that are structural**, and saying so
+is the point of an erratum. Realizability went from 66.72% of pairs to all of them. Entropy
+efficiency rose from 40.47% to 60.01%, and the share of pairs sitting at the diameter fell from
+77.03% to 49.30% -- so the *distances go flat* argument above is measurably weaker than the body
+claims, though it does not vanish: a ladder still spends half its pairs on one value where the
+torus spends 0.28% on its own.
+
+Degree spread and cut points moved the other way. `degree_max` rose 15 to 26, because collapsing
+the index-zero star onto its galaxy hands that galaxy its planets directly, and the worst single
+failure rose from stranding 48 points to 59 -- not because the graph got weaker, but because it is
+now whole, so a cut takes more of a larger component with it. **A connected graph has more to
+lose.**
+
+### Two checks on the numbers above
+
+**The cut counts are corroborated for one metric and not the other, and the difference is worth
+naming.** `sh tools/fixtures/t/topology_revocation_census.sh` finds cut points a second way, by the
+depth-first lowlink criterion, sharing no code with the removal sweep. For the compass sponsor
+graph it reads 60 against this page's 59, and for the council sponsor graph 45 against 44 -- the
+one-point gap in each case being the walk's own start, which the sweep excludes by construction and
+lowlink does not. **The point metric has no such second reading yet**, because the revocation census
+carries sponsor and torus legs and no point leg. So the 59 above is measured once rather than twice,
+and a point leg for that census is the cheapest way to close the gap.
+
+**The Moore-bound comparison survives its own input moving.** The body computed the hierarchy's
+ceiling at degree 15, and the point reading raises the maximum degree to 26. At degree 26 and
+diameter 5 the bound is 10,579,427 nodes against the 620,566 the body cites. Both are four orders of
+magnitude above the 720 points either shape holds, so the body's conclusion -- that neither design is
+near its own limit and a diameter argument between them compares two comfortable shapes -- is
+unchanged by the correction.
+
+### The falsifier, restated for what is left
+
+The body's broad falsifier is retired: it tied flatness and unrealizability together as one fault,
+and the measurement has separated them. This is what replaces it.
+
+**The surviving case is wrong if a hierarchy can be exhibited whose interior nodes are not
+articulation vertices, while it still answers sponsorship, delegation, and revocation from a
+parent.** Adding sibling links or a second parent would do it -- and would also spend the single
+authority the body names as the ladder's one advantage over a ring. Whether that trade is worth
+making is a design question this page does not answer.
+
+*Horizon: this holds while the module publishes hop counts over the seated skies. Assumptions:
+distance is symmetric, and a cut point is measured against the largest component with the walk's
+start held fixed. Confidence: high on all figures, which re-derive from one script on demand;
+medium on the reading that every interior node is a cut, which is measured on two skies rather
+than proven for the family.*

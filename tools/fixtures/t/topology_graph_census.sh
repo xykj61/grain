@@ -16,18 +16,36 @@
 #   agreement   -- the five pairs the module asserts, plus the elder census`s published
 #                  compass readings (diameter 5, entropy 1.0461, diameter share 0.7703).
 #                  A disagreement refuses before any new number is reported.
-#   sponsor     -- the tree metric read as a graph: edges, degree spread, isolated points,
-#                  components, and the three ways a metric can meet its own graph --
-#                  agree, differ, or unreachable.
+#   sponsor     -- `route_hops`, the ADDRESS-space metric, read as a graph: edges, degree
+#                  spread, isolated points, components, and the three ways a metric can meet
+#                  its own graph -- agree, differ, or unreachable.
+#   point       -- `point_hops`, the NUMBER-space metric that landed `20260906.092125`, read
+#                  the same way. THE MODULE PUBLISHES BOTH, and this leg exists because for
+#                  eight hours this script measured one of two shipping readings while a
+#                  paper cited its numbers as the hierarchy`s. Its own five asserted pairs
+#                  are bound here, so the module and this script cannot drift apart.
 #   torus       -- the SAME three coordinates read as three rings rather than three rungs.
 #                  Distance is the Lee distance, min(|d|, N-|d|) summed over the rings. The
 #                  same graph check runs on it, and it must agree on every pair or this
 #                  script is wrong about one of the two metrics.
 #
-# WHAT IS MEASURED AND WHAT IS PROPOSED. The sponsor leg measures code that ships. The torus
+# WHAT IS MEASURED AND WHAT IS PROPOSED. The sponsor and point legs both measure code that
+# ships; they are two readings of one hierarchy and neither supersedes the other. The torus
 # leg measures a metric NOTHING IN THE TREE IMPLEMENTS -- it is arithmetic over the module`s
 # own coordinates, reported so a design argument can cite a number rather than an adjective.
-# Two Rooms: the sponsor readings are checkable, the torus readings are proposed.
+# Two Rooms: the sponsor and point readings are checkable, the torus readings are proposed.
+#
+# WHICH LEG A COMPARISON SHOULD CITE. The point leg, whenever the question is about hierarchy
+# as a shape. `route_hops` answers a question about outfits and leaves 132 points with nothing
+# one hop away (REDS %454); `point_hops` walks the same chain where a star of index zero and
+# its galaxy are one point, and answers connected. A design argument that cites the sponsor
+# leg against the torus is comparing a torus to a graph nobody routes on.
+#
+# WHAT THE CUT LEG NAMES. A count says how brittle a shape is; the tier says where. Both
+# hierarchy legs read 59 cut points on the compass sky and both decompose the same way --
+# 11 galaxies and 48 stars and zero planets, against 12 and 48 and 660 standing. Every
+# interior point is an articulation vertex and no leaf is; the twelfth galaxy is missing only
+# because the walk starts there. The torus reads zero of 720.
 #
 # EFFICIENCY, AND WHY THE COMPARISON IS NORMALIZED. A metric with more distinct values carries
 # more entropy for free, so raw bits would flatter whichever metric has the wider range. Every
@@ -41,6 +59,14 @@
 # gap counting each step twice left no pair at unit distance, so the graph held zero edges and
 # 517,680 ordered pairs went unreachable.
 #
+# THE POINT LEG CAN RED, proven three ways in a pen `20260906.105235`, each from a different
+# angle, with an unbroken copy proving the pen innocent at exit 0. A search starting at one
+# rather than zero stopped a point being zero hops from itself and disagreed with its own
+# graph on all 720. A sponsor that sends an index-zero planet up to a star rather than its
+# galaxy -- the `%454` fault, planted back -- missed on the chain, the depth and the sponsor
+# pair at once. A chain read one rung short answered 4 for cousins and disagreed on 33,264
+# pairs. Run a pen copy with `TOPOLOGY_SRC` set, since the root walk starts from `$0`.
+#
 # A FOURTH PLANT TAUGHT MORE BY PASSING. A ring gap that forgot to wrap -- the plain absolute
 # difference -- sails through the self-check, because it is still a graph metric: it is the
 # Manhattan distance on a MESH, and a mesh realizes it exactly, at diameter 26 against the
@@ -48,13 +74,16 @@
 # expecting that plant to red, and it was right not to.
 #
 # A CENSUS GATES NOTHING ELSE. It reports; a paper cites it; a witness may later bind one of
-# its readings. `verdict=ok` unless an agreement leg fails or the torus disagrees with its
-# own graph -- the sponsor leg`s disagreements are the finding and are reported, never a fault
-# of this script.
+# its readings. `verdict=ok` unless an agreement leg fails, or the torus or point leg
+# disagrees with its own graph -- the sponsor leg`s disagreements are the finding and are
+# reported, never a fault of this script. The point leg self-checks like the torus one
+# because it, unlike the sponsor metric, claims to be realizable everywhere.
 #
 # Instrument: `awk` alone (POSIX-granted). No temporary files, no `mktemp`.
 #
-# Read against: active-designing/20260906-010402_a-third-of-the-sky-has-no-road.md
+# Read against: active-designing/20260906-010402_a-third-of-the-sky-has-no-road.md and the
+# errata of external-research/20260906-010402_the-ring-and-the-ladder.md, whose narrower
+# falsifier the point leg`s connected reading is.
 set -eu
 
 if [ -n "${TOPOLOGY_SRC:-}" ]; then
@@ -134,7 +163,51 @@ function lee(a, b) {
   return ring_gap(gal[a], gal[b], RG) + ring_gap(st[a], st[b], RS) + ring_gap(pl[a], pl[b], RP)
 }
 
-function metric(kind, a, b) { return (kind == "sponsor") ? hops(a, b) : lee(a, b) }
+# point_hops, as the module computes it: the walk up the sponsor chain in NUMBER space to
+# the nearest shared ancestor and down the other side, or one bridge between galaxy admins.
+# sponsor_num is Address.parent then Sky.encode, resolved to arithmetic: a galaxy sponsors
+# itself, a star drops to its galaxy, and a planet drops to its own star -- which for star
+# index zero IS the galaxy number, because encode puts that star on it. That collapse is the
+# whole difference between this metric and the one above.
+function sponsor_num(n,   SC) {
+  SC = RG * RS
+  if (n < RG) return n
+  if (n < SC) return n % RG
+  return n % SC
+}
+
+# The chains and depths, computed once per load rather than once per metric call, since the
+# graph build asks for every ordered pair.
+function chains(PC,   n, h, steps) {
+  delete a1; delete a2; delete pdep
+  for (n = 0; n < PC; n++) {
+    a1[n] = sponsor_num(n)
+    a2[n] = sponsor_num(a1[n])
+    h = n; steps = 0
+    while (h >= RG) { h = sponsor_num(h); steps++ }
+    pdep[n] = steps
+  }
+}
+
+# The rising-sum search the module runs, unrolled over max_tier_depth = 2. Rising by i + j
+# reaches the FIRST occurrence first, which is the nearest shared ancestor.
+function anc(n, i) { return (i == 0) ? n : ((i == 1) ? a1[n] : a2[n]) }
+
+function phops(a, b,   sum, i, j) {
+  for (sum = 0; sum <= 4; sum++)
+    for (i = 0; i <= sum; i++) {
+      j = sum - i
+      if (i > 2 || j > 2) continue
+      if (anc(a, i) == anc(b, j)) return sum
+    }
+  return pdep[a] + pdep[b] + 1
+}
+
+function metric(kind, a, b) {
+  if (kind == "sponsor") return hops(a, b)
+  if (kind == "point") return phops(a, b)
+  return lee(a, b)
+}
 
 # decode, as the module computes it: a point number to three coordinates and a depth. The
 # coordinate extraction is shared by both metrics on purpose -- only the distance differs.
@@ -148,6 +221,7 @@ function load(G, S, P,   SC, PC, n) {
     pl[n]  = int(n / SC)
     d[n]   = (n < G) ? 0 : ((n < SC) ? 1 : 2)
   }
+  chains(PC)
   return PC
 }
 
@@ -188,6 +262,31 @@ function agree(G, S, P,   bad, pt, sp, sib, cou, far) {
   bad += check("siblings", pt, sib, 2)
   bad += check("cousins", pt, cou, 4)
   bad += check("across_galaxies", pt, far, 5)
+  return bad
+}
+
+# The six pairs comlink/topology.rye asserts of point_hops, checked here in the same numbers
+# the module writes. A change to either side that moves one of them is caught by the other
+# rather than by a reader, which is the same binding the elder() function does for the
+# sponsor readings.
+function pcheck(name, a, b, want,   got) {
+  got = phops(a, b)
+  if (got == want) { printf "  point_pair %s hops=%d ok\n", name, got; return 0 }
+  printf "  point_pair %s hops=%d wanted=%d MISMATCH\n", name, got, want
+  return 1
+}
+
+function pointagree(PC,   bad) {
+  bad = 0
+  if (sponsor_num(60) == 0) printf "  point_chain sponsor_of_60=0 ok\n"
+  else { printf "  point_chain sponsor_of_60=%d wanted=0 MISMATCH\n", sponsor_num(60); bad++ }
+  if (pdep[60] == 1) printf "  point_chain depth_of_60=1 ok\n"
+  else { printf "  point_chain depth_of_60=%d wanted=1 MISMATCH\n", pdep[60]; bad++ }
+  bad += pcheck("self", 0, 0, 0)
+  bad += pcheck("outfit_is_one_point", 8, 8, 0)
+  bad += pcheck("planet_to_its_sponsor", 60, 0, 1)
+  bad += pcheck("cousins", 60, 72, 3)
+  bad += pcheck("bridge", 60, 61, 3)
   return bad
 }
 
@@ -247,7 +346,7 @@ function bfs_minus(src, PC, banned,   head, tail, i, u, v, seen) {
 
 # How much of the reachable graph one failed point takes with it. The start point is held
 # fixed inside the largest component, so every reading is against one baseline.
-function cutpoints(kind, name, PC,   a, src, base, seen, stranded, cuts, worst) {
+function cutpoints(kind, name, PC,   a, src, base, seen, stranded, cuts, worst, cg, cs, cp) {
   src = -1
   for (a = 0; a < PC; a++) if (deg[a] > 0) { src = a; break }
   if (src < 0) { printf "  %s_cuts no_edges\n", name; return }
@@ -257,10 +356,18 @@ function cutpoints(kind, name, PC,   a, src, base, seen, stranded, cuts, worst) 
     if (a == src || deg[a] == 0) continue
     seen = bfs_minus(src, PC, a)
     stranded = base - seen - 1
-    if (stranded > 0) { cuts++; if (stranded > worst) worst = stranded }
+    if (stranded > 0) {
+      cuts++
+      if (stranded > worst) worst = stranded
+      # A count says how brittle; the tier says WHERE the brittleness sits, which is the
+      # half a reader can act on. d[] is the address tier the point was loaded with.
+      if (d[a] == 0) cg++; else if (d[a] == 1) cs++; else cp++
+    }
   }
   printf "  %s_cuts component_size=%d cut_points_excluding_start=%d worst_case_stranded=%d worst_share_of_component=%.4f\n",
     name, base, cuts, worst, worst / base
+  printf "  %s_cuts_by_tier galaxies=%d stars=%d planets=%d of_that_tier=%d/%d/%d\n",
+    name, cg, cs, cp, RG, RG * RS - RG, RG * RS * RP - RG * RS
 }
 
 function walk(kind, name, PC,   a, b, edges, iso, mx, mn, agreeing, differ, unreach, comps, seen, gdiam) {
@@ -382,6 +489,14 @@ BEGIN {
   isolatedleg("sponsor_compass", PC)
   cutpoints("sponsor", "sponsor_compass", PC)
 
+  printf "leg point compass\n"
+  faults += pointagree(PC)
+  spread("point", "point_compass", PC)
+  point_bad = walk("point", "point_compass", PC)
+  cutpoints("point", "point_compass", PC)
+  if (point_bad != 0) { printf "  point_self_check disagreeing_pairs=%d MISMATCH\n", point_bad; faults++ }
+  else printf "  point_self_check disagreeing_pairs=0 ok\n"
+
   printf "leg torus compass\n"
   spread("torus", "torus_compass", PC)
   torus_bad = walk("torus", "torus_compass", PC)
@@ -396,6 +511,13 @@ BEGIN {
   sponsorleg("sponsor_council", PC)
   isolatedleg("sponsor_council", PC)
   cutpoints("sponsor", "sponsor_council", PC)
+  printf "leg point council\n"
+  spread("point", "point_council", PC)
+  point_bad = walk("point", "point_council", PC)
+  cutpoints("point", "point_council", PC)
+  if (point_bad != 0) { printf "  point_self_check disagreeing_pairs=%d MISMATCH\n", point_bad; faults++ }
+  else printf "  point_self_check disagreeing_pairs=0 ok\n"
+
   printf "leg torus council\n"
   spread("torus", "torus_council", PC)
   torus_bad = walk("torus", "torus_council", PC)
