@@ -18,7 +18,7 @@ Print one of these forms, with a short why:
 | Form | When |
 |------|------|
 | `Recommend: kg — …` | Next item is mechanical, single-module, policy already written |
-| `Recommend: check in (Cursor) — …` | Stay on this Cursor/Grok bench for the next gate or ruling |
+| `Recommend: check in (Cursor) — …` | Stay on this Cursor bench for the next gate or ruling |
 | `Recommend: check in (Claude) — …` | Pause for Claude counsel (seam, design, value model, unruled question) |
 | `Recommend: check in (checkpoint) — …` | A named checkpoint Cursor and/or Claude already pointed out — stop and confirm before crossing |
 | `Recommend: check in (either) — …` | Cursor or Claude both fine; Keaton picks the hand |

@@ -1,5 +1,9 @@
 # ChatGPT MIND -- the shell elder and its Rishi peers
 
+> **FOSSIL -- Class M**, prepped `20260906.114734` for the mitra shed; the cut stays RED
+> until circled. **Living mutant:** `tools/l/fleet-loop.sh` reading `construction/fleet-roster.kyri`, with `tools/l/fleet_watch.sh` above it. The Codex supervisor family; its elder shell stays byte-for-byte on purpose.
+> Row and reasons: [`../../construction/SHRED_PREP.md`](../../construction/SHRED_PREP.md).
+
 **Status:** Living compatibility receipt
 
 ## Provenance held
