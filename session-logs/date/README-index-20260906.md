@@ -13,6 +13,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 |---|---|---|
 | `20260906.113633` | [the guard one pass behind](20260906/20260906-113633_the-guard-one-pass-behind.kyri) | %480: a run card written at close is read one pass stale. |
 | `20260906.111639` | [both falsifiers fired](20260906/20260906-111639_both-falsifiers-fired.kyri) | 132 isolated -> 0; the cut structure is what survived. |
+| `20260906.114519` | [the guard that could not hear itself fail](20260906/20260906-114519_the-guard-that-could-not-hear-itself-fail.kyri) | %484: a swallowed exit status. |
 | `20260906.104112` | [the box counted and never read](20260906/20260906-104112_the-box-counted-and-never-read.kyri) | %481: the card shipped its own conflict markers. |
 | `20260906.100418` | [the three vendor names surveyed](20260906/20260906-100418_the-three-vendor-names-surveyed.kyri) | Cursor 135, Codex 66, Grok 9; four traps named. |
 | `20260906.100141` | [the harness the census could not see](20260906/20260906-100141_the-harness-the-census-could-not-see.kyri) | %466 closed: 114 built files read as never-built. |

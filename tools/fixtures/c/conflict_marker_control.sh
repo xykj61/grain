@@ -159,4 +159,50 @@ out=$(run_scan unmerged)
 case "$out" in *"marked_files=1"*) echo "unmerged_counted_once=yes" ;; *) echo "unmerged_counted_once=no" ;; esac
 case "$out" in *"verdict=conflict_marker"*) echo "unmerged_bitten=yes" ;; *) echo "unmerged_bitten=no" ;; esac
 
+# --- index_only_bitten ------------------------------------------------------------------
+# The state the real fault passed through, and the one a worktree-only reading cannot see: the
+# block is STAGED and the working copy has already been repaired. This is what a commit would
+# ship, so it must bite -- and it must say the worktree alone reads clean, which is why both
+# sides are read rather than one.
+new_repo index_only
+( cd "$pen/index_only" \
+  && plant_marker > staged.md && git add staged.md \
+  && printf 'repaired\n' > staged.md )
+out=$(run_scan index_only); code=$(run_code index_only)
+case "$out" in *"verdict=conflict_marker"*) echo "index_only_bitten=yes" ;; *) echo "index_only_bitten=no" ;; esac
+case "$out" in *"marked_files=1"*) echo "index_only_counted=yes" ;; *) echo "index_only_counted=no" ;; esac
+[ "$code" = 1 ] && echo "index_only_exit=1" || echo "index_only_exit=$code"
+# and the same tree read with only the worktree side is genuinely clean, so the reading is
+# earning its second pass rather than duplicating the first.
+wt=$( set +e; cd "$pen/index_only" || exit 0
+      git grep -nE '^(<<<<<<< |>>>>>>> )' -- . >/dev/null 2>&1; echo $?; exit 0 )
+[ "$wt" = 1 ] && echo "index_only_worktree_clean=yes" || echo "index_only_worktree_clean=no"
+
+# --- diff3_base_bitten ------------------------------------------------------------------
+# merge.conflictStyle=diff3 and zdiff3 write a third labelled marker naming the merge base. It is
+# as unambiguous as the other two, and a tree configured that way was half-read before.
+new_repo diff3
+( cd "$pen/diff3" \
+  && printf '%s\n' 'before' '<<<<<<< HEAD' 'ours' '||||||| base' 'base' '=======' 'theirs' '>>>>>>> other' > d.md \
+  && git add -A && git commit -q -m "pen: a diff3 block" )
+out=$(run_scan diff3)
+case "$out" in *"verdict=conflict_marker"*) echo "diff3_bitten=yes" ;; *) echo "diff3_bitten=no" ;; esac
+case "$out" in *"marked: d.md:4"*) echo "diff3_base_line_named=yes" ;; *) echo "diff3_base_line_named=no" ;; esac
+
+# --- instrument_refusal -----------------------------------------------------------------
+# REDS %473's fault, planted rather than asserted. `git grep` exits 1 for "no match" and 2 or more
+# when it could not run, and a truthy fallback reads those two opposite answers the same way. The
+# plant is one unterminated bracket in the pattern; git grep exits 128 and the scan must refuse by
+# name rather than report a clean tree. This bit for real while the two-sided reading was being
+# written -- `--cached` placed after the pattern is read by git grep as a REVISION.
+new_repo instrument
+( cd "$pen/instrument" \
+  && sed "s/'\^(<<<<<<< /'^(<<<<<<< [/" tools/fixtures/c/conflict_marker_scan.sh > bad_scan.sh )
+out=$( set +e; cd "$pen/instrument" || exit 0; sh bad_scan.sh 2>/dev/null; exit 0 )
+case "$out" in *"verdict=instrument_refusal"*) echo "instrument_refusal_bitten=yes" ;; *) echo "instrument_refusal_bitten=no" ;; esac
+case "$out" in *"verdict=ok"*) echo "instrument_never_reads_ok=no" ;; *) echo "instrument_never_reads_ok=yes" ;; esac
+# the same pen, unmutated, still reads clean -- so the refusal belongs to the plant.
+out=$(run_scan instrument)
+case "$out" in *"verdict=ok"*) echo "instrument_pen_innocent=yes" ;; *) echo "instrument_pen_innocent=no" ;; esac
+
 echo "control_verdict=ok"
