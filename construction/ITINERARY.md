@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `8441a9dff3` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `d9a10c18ce` -- HEAD's parent, resolvable everywhere (%401).
 
 **DIFFUSER** -- **both my papers named the measurement that would kill them, and both arrived in
 eight hours.** `a-third-of-the-sky-has-no-road` dies if anyone exhibits *a link between a
