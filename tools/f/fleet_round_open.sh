@@ -2,14 +2,13 @@
 # tools/f/fleet_round_open.sh -- the fleet's self-healing round-open: adopt the anointed
 # order, stash what a dead lap left, park what diverged, and report each state by its own name.
 #
-# WHY THIS EXISTS. On 20260828 two loops died in the same minute-shape. A lap finished its
-# work and stopped before the send; the next iteration's `git pull --rebase xy main` refused on
-# the dirty index; and the loop's `||` handler printed `PULL DIVERGED: upstream history was
-# rewritten` -- for a tree that stood exactly level with xy/main. One handler, one message,
-# three different faults: a dirty tree, a network failure, and a real rewrite all died the same
-# death with the same wrong instruction. The refusal's first line named the true fault both
-# times; the handler read only its own assumption (the tail-reading class, REDS %-family of
-# 20260827-28).
+# WHY THIS EXISTS. On 20260828 two loops died in the same minute-shape. A lap finished its work
+# and stopped before the send. The next iteration's `git pull --rebase xy main` refused on the
+# dirty index. The loop's `||` handler then printed `PULL DIVERGED: upstream history was
+# rewritten`, for a tree standing exactly level with xy/main. One handler carried one message for
+# three faults: a dirty tree, a network failure, and a real rewrite. Each died the same death with
+# the same wrong instruction. The refusal's own first line named the true fault both times, and the
+# handler read its own assumption instead (the tail-reading class, REDS %-family of 20260827-28).
 #
 # THE CONSENSUS MAPPING, so the loops speak Mycelium's grammar through git itself:
 #   - `xy` is the ANOINTED ORDER -- the sequencer every proposal is ordered by, the same
@@ -18,15 +17,15 @@
 #     refusal is an ordinary lost race, answered by re-deriving on the new head -- never
 #     by force (the twice-pulled rota, seated 20260825.210819).
 #   - at round-open the local tree ADOPTS the anointed order: RESET, NEVER MERGE (the
-#     divergence word the loops learned at REDS %290). A local line that genuinely
-#     diverged -- an upstream rewrite, a lost race across a rewrite -- is PARKED on a
-#     branch under refs/heads/pier/, the rota's own deferral shelf, and main resets. Every
-#     byte is kept and every push stays fast-forward; the park is a proposal awaiting its
-#     next derivation, exactly like an unshared ledger row awaiting its number.
-#   - what a dead lap left uncommitted is STASHED under a stamped name, wall-free (a
-#     park-commit would face the commit-msg wall, and a round-open must never be able to
-#     fail on prose). Stashes are the fleet's dead-letter box; a hand or the lap itself
-#     re-derives them.
+#     divergence word the loops learned at REDS %290). A local line the re-derivation
+#     refuses is PARKED on a branch under refs/heads/pier/, the rota's own deferral shelf,
+#     and main resets. Every byte is kept and every push stays fast-forward. The park is a
+#     proposal awaiting its next derivation, much like an unshared ledger row awaiting its
+#     number.
+#   - what a dead lap left uncommitted is STASHED under a stamped name, wall-free. A
+#     park-commit would meet the commit-msg wall, and a round-open stays able to open on
+#     any prose at all. Stashes are the fleet's dead-letter box, and a hand or the lap
+#     itself re-derives them.
 #
 # EXIT CODES, and the loop line that reads them:
 #   0  round is open on the anointed order -- proceed
@@ -98,11 +97,41 @@ elif git merge-base --is-ancestor HEAD xy/main 2>/dev/null; then
 elif git merge-base --is-ancestor xy/main HEAD 2>/dev/null; then
   say "ahead by $(git rev-list --count xy/main..HEAD) -- local sends pending; the lap's close will propose them"
 else
+  # TWO STATES FAIL BOTH ANCESTRY TESTS, AND NO REF-TOPOLOGY TEST TELLS THEM APART.
+  # One is a genuine upstream rewrite, where the ground the line was built on is gone and
+  # parking is right. The other is this fleet's ordinary outcome: a lap commits on base B, a
+  # peer pushes on top of B, and the line re-derives whole. REDS %499 booked a discriminator
+  # for this -- merge-base equals the parent of the oldest commit in xy/main..HEAD -- and it
+  # is a TAUTOLOGY, measured on real repositories: everything in xy/main..HEAD is local-only,
+  # so the parent of its oldest member IS the newest common ancestor, in both states. A test
+  # that cannot fail told the fleet nothing, and the park it defaulted to cost ten commits
+  # that never reached main between 20260828 and 20260906.
+  #
+  # So the re-derivation IS the discriminator, and it is git's own -- it knows patch-ids and
+  # can drop a local commit whose rewritten twin already stands upstream, which no shell test
+  # can see. Attempt it; park only when git itself refuses.
+  #
+  # THE PARK IS CUT BEFORE THE ATTEMPT, for step 2's reason one branch down: a ref costs
+  # nothing and makes the pre-rebase tip recoverable even if the rebase dies mid-flight. It is
+  # released only on a clean re-derivation that dropped nothing, so no byte leaves without a
+  # name on it.
   PARK="pier/diverged-$STAMP"
   git branch "$PARK" >/dev/null 2>&1
-  git push xy "$PARK" >/dev/null 2>&1 && PUSHED=" and pushed" || PUSHED=" (push deferred; the branch is local)"
-  git reset --hard xy/main >/dev/null 2>&1
-  say "true divergence -- local line parked on $PARK$PUSHED; adopted the anointed order"
+  WAS=$(git rev-list --count xy/main..HEAD 2>/dev/null || echo 0)
+  if git rebase xy/main >/dev/null 2>&1; then
+    NOW=$(git rev-list --count xy/main..HEAD 2>/dev/null || echo 0)
+    if [ "$NOW" = "$WAS" ]; then
+      git branch -D "$PARK" >/dev/null 2>&1
+      say "lost race -- re-derived $NOW commit(s) onto the anointed order; the lap's close will propose them"
+    else
+      say "lost race across a rewrite -- re-derived $NOW of $WAS; the rest already stood upstream, and the pre-rebase line is kept on $PARK"
+    fi
+  else
+    git rebase --abort >/dev/null 2>&1
+    git push xy "$PARK" >/dev/null 2>&1 && PUSHED=" and pushed" || PUSHED=" (push deferred; the branch is local)"
+    git reset --hard xy/main >/dev/null 2>&1
+    say "true divergence -- the re-derivation refused; local line parked on $PARK$PUSHED; adopted the anointed order"
+  fi
 fi
 
 # 5) READ THE DEAD-LETTER BOX BACK OUT. Step 3 fills it; nothing ever emptied it (REDS %464).

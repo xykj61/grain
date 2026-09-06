@@ -1,0 +1,40 @@
+format session-log-v1
+stamp 20260906.152758
+editor Claude Code CLI, unattended fleet loop
+provider Anthropic
+product Claude Code
+role BAKERY -- core infrastructure and fleet friction
+modality text
+model claude-opus-5
+model_status configured claude-opus-5 at max in .claude/settings.json; no runtime telemetry read this lap
+configured_model claude-opus-5
+configured_reasoning max
+configured_status tracked settings file, not runtime evidence
+evidence .claude/settings.json
+voice Kyri
+host Linux pier, NixOS, America/New_York
+title The test that cannot fail -- correcting my own booked discriminator, and planting the branch no leg reached
+prompt Autonomous lap. Card open, rota row 0 (aether, the row that hears), reds first.
+think Lap N = git rev-list --count HEAD = 4080, so rota row 0: aether, the row that hears. Its threshold page carries the sentence this lap turned on -- a guard that cannot red guards nothing, a witness must be proven able to make a sound before its silence means anything.
+think Reds first pointed at my own %499, OPEN since 20260906.140206: the fleet round-open collapses two states into one park, ten commits lost. My lane by both duties -- core infrastructure, and the fleet's own friction.
+think Before writing the booked repair I read it against git's definition of merge-base. Everything in xy/main..HEAD is by construction unreachable from xy/main, so the parent of its oldest member IS the newest common ancestor. The discriminator I booked holds in both states, always. A tautology.
+think Proved it rather than argued it: /tmp pen, two real repositories, an ordinary lost race and an upstream amend. Both answer merge-base == parent-of-oldest. Booked as %503.
+think Then asked what does discriminate, and measured three states under git rebase: lost race replays clean; a colliding rewrite refuses and aborts clean; a reworded upstream replays clean AND drops the duplicate by patch-id. So the re-derivation is the discriminator, and it is git's rather than a shell test's.
+think Checked the one thing that would have made the fix a no-op here -- whether a rebase signs under this tree's gpg shim. It does, G on the replayed commit, measured in a pen borrowing the tree's own gpg.program.
+think Found the root of why the elder fault stood: of the control's seventeen legs, none planted the diverged state. The single branch holding git branch, git push xy and reset --hard was the branch no leg reached. A leg count says nothing about which branches its legs reach.
+think The park is cut BEFORE the rebase attempt, borrowing step 2's own reasoning: a ref costs nothing and survives a rebase dying mid-flight. Released only on a clean replay that dropped nothing; kept on one that dropped, and the line says so.
+obs The fix needs no discriminator at all, which is the honest shape -- I could not repair the classifier because the state it needed to name is not knowable from ref topology. Attempting the re-derivation answers it, and git knows patch-ids.
+obs Both frames the QA reading pushed were worked down. The witness I had LOWERED myself, 85 to 71, by adding prose that crossed the 8-sentence floor and scored a register I wrote; rewritten it reads 91. The script read 75 before and after my change, so its C+ was pre-existing -- shortening its head's sentences carried it to 83 without touching a claim.
+obs A stale claim fell out of the same pass: the witness header said the round-open runs on three ships. The roster reads eight live seats and four parked, so the header now cites construction/fleet-roster.kyri rather than a number written when the fleet was three.
+obs Not taken, and named instead: the elder card said six ships run this file, so a peer might have wanted the seat. I took it because it is a booked red in my own lane, and answered the risk with proof rather than avoidance -- worst case the new branch behaves exactly as the old one, since every refusal falls through to the same park.
+loom roster=cold_open guards=150 green=145 red=2 gated=3 wall_s=1019 tree_moved=no
+loom control=fleet_round_open legs=34 fail=0 elder_fail=8
+loom qa=fleet_round_open.sh before=75 after=83 qa=fleet_round_open_witness.rish before=85 mid=71 after=91
+file tools/f/fleet_round_open.sh step 4's else branch attempts git rebase xy/main and parks only on refusal; head sentences shortened, no claim moved
+file tools/fixtures/f/fleet_round_open_control.sh legs A, B and C plant the diverged state three ways -- lost race, colliding rewrite, dropped duplicate; 17 -> 34 legs
+file tools/f/fleet_round_open_witness.rish two new invariants read the re-derivation clause and the planted state from the files themselves; header cites the roster instead of a stale count
+file construction/REDS.md %503 booked, %499 closed by it, headline re-derived to 502 rows
+file construction/archive/REDS-the-test-that-cannot-fail-rows-499-503.md both rows folded, one story told twice
+file construction/archive/20260906-152240_itinerary-landed-accounts.md the elder BAKERY account, held word for word
+file construction/ITINERARY.md live front carries this round; roster contention sized for Keaton
+recommend check in (Keaton) -- eight ships each run a tier-lap roster of 150 guards on one 4-core pier, and mine cost 1,019s against 789s unloaded. Guard cost now scales ships x guards with nothing staggering it. Whether the roster stays tier lap on every seat, or the fleet staggers, is a fleet-shape call rather than a lap's.

@@ -46,26 +46,26 @@
 
 ### Now -- the live front
 
-**Git nib:** `ff122a42f8` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `b3307a57e9` -- HEAD's parent, resolvable everywhere (%401).
 
-**BAKERY -- THE GUARD THAT COUNTS REDS READ A CARD ITS OWN PASS WRITES AT THE CLOSE.** `%483` CLOSED,
-[shelf](archive/REDS-a-record-its-own-pass-writes-at-the-close-rows-483.md). **Both shapes, since
-neither is whole alone:** the elder second names a position that does not exist -- *nothing runs
-after the write* -- so the runner hands each guard a **pen-local live view** through `STANDING_CARD`,
-rewritten as every guard answers, and defers **its own guard by name** to the todo list's end. In the
-pen, never the tree: writing into the tree mid-pass moves the runner's own `tree_moved` reading. The
-first half alone left a residue of **seven**. **9 readings, the pen proven innocent** -- stripped of
-the hand-off it reads the stale card and refuses, and that copy is proven to have STARTED, since one
-that cannot run answers `no` for its own reason. Full pass GREEN on the shipped tree, 147 guards,
-`standing_equipment` printing LAST.
-**AND I BOOKED A PEER'S DEFECT TWICE IN ONE LAP, AND WITHDREW BOTH.** `%492` into `%493` (nine
-minutes the earlier), measurements moved in: **3m49s** of `sow.rish`, **6 of 8 fleet trees carry no
-`seed/`**; projection is agent-doable where gate `%1` is the **push**, so I projected and it is GREEN.
-Then a whole row on the card's two dead links -- into `%495`, which holds the truer root: the sweep
-was **anchored to a bare number** and repointed a peer's line. **Twelve firings, now two in one lap:
-an OPEN row wants a claim, a seat and a stamp, at START.**
-**Sized:** a lap teeing to `session-output/<seat>.txt` is a second writer on its own transcript
-(`fleet-loop.sh:213`), read from `/proc`. Next lap's red.
+**BAKERY -- THE DISCRIMINATOR I BOOKED FOR THE FLEET'S ROUND-OPEN WAS A TEST THAT CANNOT FAIL.**
+`%499` and `%503` CLOSED, folded to one [shelf](archive/REDS-the-test-that-cannot-fail-rows-499-503.md);
+the elder account rests on the [`152240` shelf](archive/20260906-152240_itinerary-landed-accounts.md).
+`%499` read the collapse right -- one classifier for two states, **ten commits parked
+`20260828`-`20260906` that never reached main** -- then booked a **tautology**: merge-base IS the
+parent of the oldest commit in `xy/main..HEAD` in **both** states, since everything in that range is
+by construction unreachable from upstream. In a pen, a lost race and an upstream amend both answer
+*lost race*. **Checked only where it answers correctly.** *Landed:* the re-derivation IS the
+discriminator, and it is **git's** -- reading patch-ids, it drops a local commit whose rewritten twin
+already stands upstream, which no shell test sees. The park is cut **before** the attempt, released
+only on a clean replay that dropped nothing, **kept** on one that dropped. Control **17 -> 34**, the
+elder failing 8 of the new 17. **And of seventeen legs not one planted the diverged state** -- the
+branch running `git branch`, `git push xy` and `reset --hard` on eight trees every twenty minutes.
+**A leg count says nothing about which branches its legs reach.**
+**Sized, yours:** eight ships ran rosters at once on the 4-core pier -- mine **1,019s / 150 guards**
+against 789s unloaded. `tier lap` on every seat, so guard cost scales ships x guards, unstaggered.
+**Still sized:** a lap teeing to `session-output/<seat>.txt` is a second writer on its own transcript
+(`fleet-loop.sh:213`), read from `/proc`.
 
 **PATCHOULI -- FOUR GUARDS SAID "EXACTLY N FIELDS" AND CHECKED THAT N FIELDS WERE PRESENT.**
 `%500` BOOKED, [folded](archive/REDS-a-lock-with-no-bolt-in-it-rows-500.md). `limb1`-`limb4` stand
