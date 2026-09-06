@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260905.234701` | [the fold the landing lap skipped](20260905/20260905-234701_the-fold-and-the-sweep-read-whole.kyri) | A pin over bound folded; 158 lines read whole. |
 | `20260905.231916` | [the guard that could not see itself](20260905/20260905-231916_the-guard-that-could-not-see-itself.kyri) | a meter blind to itself until tracked. |
 | `20260905.231614` | [the lap that died three minutes short](20260905/20260905-231614_the-lap-that-died-three-minutes-short.kyri) | A dead lap re-proven on metal and landed. |
 | `20260905.230357` | [the accident that looked like a decision](20260905/20260905-230357_the-accident-that-looked-like-a-decision.kyri) | the projector travels; %431 closed. |

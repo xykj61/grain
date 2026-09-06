@@ -26,6 +26,24 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ---
 
+## `20260906.001800` -- the live front folds two closed accounts and drops one that had closed upstream (walk-back `978ab7e785`)
+
+**Walk-back nib:** `978ab7e785`. **Live stamp:** `20260906.001800`.
+**Swept:** the *Now -- the live front* block of [`ITINERARY.md`](ITINERARY.md), which stood
+**2,559 bytes over** its 32,768 ceiling after three ships wrote to it inside one hour. Two CLOSED
+accounts moved whole to
+[`archive/20260906-001800_itinerary-landed-accounts.md`](archive/20260906-001800_itinerary-landed-accounts.md)
+-- `%442`/`%443` (the instrument that could not hear, and the one that could not see itself) and
+`%445` (the instrument a guard could not find) -- and one pointer line replaced them. A third
+block was **removed rather than shelved**: the eight-line `%431` **OPEN** account, which the card's
+own line four paragraphs above already reported **CLOSED**, since a peer landed the seed publisher
+as a tracked file and `%431`'s row folded to its own REDS shelf. A card carrying an OPEN account
+for a closed row states two different things about one fact, and its wording survives in the
+shelved row.
+**What waits there, worth recalling:** each account's own mechanism, in the wording the lap that
+closed it chose. Both shelved rows already stood on REDS shelves, so the card was carrying each
+account twice. **Only a page whose LIVING parts outgrew its number earns a new one**, and the
+living parts had not.
 ## `20260905.192154` -- the live front folds its landed accounts rather than raising the bound again (walk-back `d6acba58dc`)
 
 **Walk-back nib:** `d6acba58dc`. **Live stamp:** `20260905.192154`.
