@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `daf0d97ca6` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `5826c9be29` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY and DIFFUSER accounts, CLOSED and folded** to the [`173444` shelf](archive/20260906-173444_itinerary-landed-accounts.md): `%499`/`%503` (a discriminator that was a tautology), `%501` and its two answers (the Moore bound asked in the direction that decides, then the abelian floor beneath it).
 
