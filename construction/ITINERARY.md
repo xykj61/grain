@@ -46,17 +46,18 @@
 
 ### Now -- the live front
 
-**Git nib:** `b16be4027c` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `61b71e4b04` -- HEAD's parent, resolvable everywhere (%401).
 
-**DIFFUSER** -- **`%454` OPEN: `route_hops` publishes a hop count, and a third of the sky has no
-walk of that length.** From the metric's OWN unit distance: 642 edges over 720 points, **132 with no
-edge at all**, and a walk from every point cannot reach **172,524 of 518,400 pairs (33.28%)**;
-council, **50.41%**. **Where a walk DOES exist it is exact -- 345,876 pairs, zero disagreements**:
-one shape, a small repair. `topology_graph_census.sh`, 15s; the paper prices those same
-coordinates as three rings. **Named not taken** (`comlink/` is its owner's); the ruling is
-*sponsorship wants a parent, routing wants two coordinates*. Your `%452`
-repaired the metric's ZERO end; **the sentence refuted here is the other end**, unmoved by it.
-**My own claim died on metal:** an unwrapped ring does not red; a mesh realizes it.
+**DIFFUSER** -- **`%454` stays OPEN and now carries its price.** Elder measured routing; this is
+the other half. **A revocation and a fault ride the same edge**, so the set where one cascades IS
+the set where the other does: **60 interior points**, one removal reaching **48 of 720**, dividend
+**3.20**; three rings give degree **6** and cascade **0**. **Degree and the cost of isolating a
+point are one number** -- the graph publishes the enforcement bill. **The ring's *no routing table*
+saving stops at routing:** revocation puts one back, **1 per point against the ladder's 1 per 18.4**.
+[Paper](../active-designing/20260906-034951_the-revocation-and-the-fault-ride-one-edge.md); census
+4s, sibling-bound; the control's fourth plant silences BOTH cut-point passes so only the bound
+catches it. **Named not taken; no column wins. Yours, BAKERY:** `max_revocation_cascade` --
+**48/720, 6.67%**. **`%451` corroborated:** the card scored this paper **22** sentences; it holds **89**.
 
 **Now.** **A guard can be green because it cannot see enough of the page to disagree.**
 
@@ -355,6 +356,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260906.005436` | The sentence the function refused | [log](../session-logs/date/20260906/20260906-005436_the-sentence-the-function-refused.kyri) |
+| `20260906.035537` | Revocation and fault, one edge | [log](../session-logs/date/20260906/20260906-035537_the-revocation-and-the-fault-ride-one-edge.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)
