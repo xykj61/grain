@@ -46,11 +46,11 @@
 
 ### Now -- the live front
 
-**Git nib:** `41998f8835` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `6dda4335e3` -- HEAD's parent, resolvable everywhere (%401).
 
 **DIFFUSER** -- 622 named bounds, none names a rate or a joule. `%447`, `20260905.233110`.
 
-**Now.** **The account of the work is part of the work, and it can be wrong while the work is right.**
+**Now.** **A repair that fixes a class by hand leaves whichever member the hand did not reach.**
 
 **`%445` FOLDED, after wearing two numbers in one hour** (`20260906.001800`) -- `declared_ceiling` and
 `equinox_e123_living_pin_guard` refused on one root, the pin over its bound. The anointed spine had
@@ -59,7 +59,7 @@ row's `20260905.224445`, and `reds_spine_derive_scan` named the squatter each ti
 moved. A published number never moves, so the view moved twice and the key did not. Pin **21,018**,
 four witnesses GREEN on metal. **`%440`'s own lantern fired three times inside one send** -- each
 clean auto-merge seated a day-shelf row out of newest-first order, no conflict, nothing to resolve.
-Sorted each time; the loom stays their booked lap.
+Sorted each time; the loom LANDED below.
 **The `%439` class, measured rather than assumed** --
 [the-number-a-comment-states](../active-development/20260905-234408_the-number-a-comment-states.md):
 four detectors over the 1,712 distinct Rye files behind 1,939 paths. A trailing `const` comment
@@ -68,14 +68,19 @@ genuine) -- the one seatable floor, declined here. Identifiers read 2,978, shape
 **first-segment stem** catches `%439` (`universe_points 720 saw 792`, line 113 pre-repair).
 **Its 158-line residue was read whole: every one correct.** One in 159: no gate, the right hour.
 
+**`%448` CLOSED, `%440`'s loom LANDED** (`20260906.003252`, bakery) -- a THIRD red stood on this
+tree alone: `fleet_roster`'s last leg asserted where bakery's CHECKOUT is rather than what the loop
+does, four lines under a comment naming it. Cut, not moved; its one reading is now
+`refusal_names_the_wanted_tree`. Shelf loom: `rows_misordered` gates document order, 31 -> **40**
+legs. Pin **18,912**.
+
 **DIFFUSER opens** (`20260905.224714`) -- moonshots and whitepaper research, `grain-diffuser`.
 Cold pass **114 guards, 108 green, 2 red, 4 gated, 814s**, and both reds reproduce owned faults.
-`commit_message_guard` is **`%431` on a fourth tree** -- 28 planted cases pass, 0 fail, `GUARD_OK`,
-`SEED_PUBLISHER_ARMS 0` alone reds it, so the card's 25 has grown to 28 and the shape is unchanged.
+`commit_message_guard` was **`%431` on a fourth tree**; it CLOSED upstream, publisher travelling.
 `agent_jail` reds on `bwrap: Failed to make / slave: Operation not permitted` -- **an environment
 fact rather than a tree red**: a control that builds a sandbox cannot run from inside one, `%422`'s
 shape in a fifth material, and BAKERY's lane. No receipt, so `--scoped` stays closed here.
-**`%440` CLOSED** -- `comlink/topology.rye`'s `decode` doc read *"past the universe's 792"* where
+**`%439` CLOSED** -- `comlink/topology.rye`'s `decode` doc read *"past the universe's 792"* where
 `universe_points` has read **720** since the inclusive breach, 792 being the count the three spaces
 hold **apart**. Say-why added, `comlink_topology_witness` GREEN. **The class has no meter:**
 `borrowed_number` reaches a stale figure inside an assert, and nothing reaches one in a comment.
@@ -157,11 +162,7 @@ over-claim in my own opening line** -- *every file wears two marks*, when not on
 room carries a stamp, so the sentence contradicted the page beneath it. Its BEFORE-only column is
 the loss reading, and across three files it holds one word, from a heading; every other delta is an
 addition, which is what an additive round should show.
-**`agent_jail` reds on an environment fact, never a tree red:** `bwrap --dev-bind / / true` and
-`unshare --user true` both answer *Operation not permitted*, so this host denies the process a
-namespace -- the `vendor/` class you already exempt. It buys no receipt either way while `%431`
-holds the receipt back, and **the guard says only *witness RED*, naming no instrument** -- your
-standing reflex, one room over.
+**`agent_jail`:** now `%446` below, booked by a peer; the same reflex, one room over.
 **THE LIVE FRONT NOW FOLDS** (`20260905.130819`): landed accounts shelve like REDS rows, so the
 card holds what is OPEN and what waits on your word.
 **All three ships sail** (`20260905`). **Gate 3 stands:** `.gnupg-rye/` holds
