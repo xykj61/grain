@@ -1,0 +1,70 @@
+# tools/t/tlb_reach_witness.rish -- the translation census refuses what it says it refuses, and
+# the probe it drives still compiles.
+#
+#   rishi/bin/rishi run tools/t/tlb_reach_witness.rish
+#
+# WHY THIS RUNG. The elder footprint study measured a table's cost against how many BYTES it
+# touches and named the boundary worth designing to. A load's address is translated before any
+# cache is asked, translations are cached in a structure whose capacity is counted in PAGES, and
+# nothing in a byte count reaches that second bound. Measured on this pier 20260906: a walk over
+# 64 pages costs 1.65 ns per dependent read and the same walk over 65 costs 3.90 ns -- same bytes
+# touched, same instructions, same L1d sets, one more page. Handing that walk 2 MiB pages returns
+# the ratio to 1.00, which is how the cause is known.
+#
+# WHAT THIS RUNG PROVES, and it is deliberately narrower than what the census measures.
+#
+#   The census refuses correctly. Thirty-two behaviors in a throwaway pen: seven legs shown from
+#   the failing side, the argument handling shown the same way, and the clean baseline asserted
+#   twice -- once before any plant and once after all of them, which is what proves the pen
+#   innocent rather than merely quiet. Every plant is checked to have CHANGED the reading it was
+#   applied to, so a mutation that silently fails to take is a FAULT rather than a skip.
+#
+#   The probe compiles. `--build-only` builds tools/fixtures/t/tlb_reach_probe.rye through the
+#   census's own build path and stops.
+#
+# WHY THE BUILD LEG IS HERE AT ALL. REDS %449 found a module that had not compiled since the
+# toolchain moved while four rostered guards read it every lap with grep, and %463 counted 178
+# authored .rye files no build reaches. An unrostered census would leave this probe in exactly
+# that set. Nineteen seconds buys the answer.
+#
+# WHAT THIS RUNG DOES NOT PROVE, and the omission is the design rather than a gap. It does not run
+# the census on metal. That reading -- 64 pages, 256 KiB of span -- is a property of the BOARD,
+# so a guard asserting it would red on the day this fleet moves to a different part, and a guard
+# that reds on ordinary work is a guard someone turns off. The number travels as a measurement
+# anyone can retake in about two minutes:
+#
+#   sh tools/fixtures/t/tlb_reach_census.sh
+#
+# Paper: external-research/20260906-061229_the-address-that-does-not-fit.md
+# Elder: external-research/20260906-042838_the-table-that-fits.md
+
+say "tlb-reach: Language EN -- a table is bounded twice, by bytes and by pages."
+say "tlb-reach: Style Gauge, Meter -- the reach is measured on the board, never recited here."
+say "tlb-reach: Lens TAME -- the pair is a control before it is a timer; say why."
+
+let probe_here = run ["sh" "-c" "test -f tools/fixtures/t/tlb_reach_probe.rye"]
+assert probe_here.ok else "tlb-reach: the probe is missing -- tools/fixtures/t/tlb_reach_probe.rye"
+
+let census_here = run ["sh" "-c" "test -f tools/fixtures/t/tlb_reach_census.sh"]
+assert census_here.ok else "tlb-reach: the census is missing -- tools/fixtures/t/tlb_reach_census.sh"
+
+let control_here = run ["sh" "-c" "test -f tools/fixtures/t/tlb_reach_control.sh"]
+assert control_here.ok else "tlb-reach: the control is missing -- tools/fixtures/t/tlb_reach_control.sh"
+
+# The refusals, every one shown from the failing side, and the welcomes asserted as hard.
+let control = run ["sh" "tools/fixtures/t/tlb_reach_control.sh"]
+assert control.ok else "tlb-reach: the control refused -- read its FAULT lines"
+assert control.out contains "faults 0" else "tlb-reach: the control reported a failing case"
+assert control.out contains "control_verdict proven" else "tlb-reach: the control did not reach a verdict"
+say "GREEN: tlb-reach -- every leg bites from the failing side, and the pen is proven innocent."
+
+# A plant that changed nothing tests nothing. The control says so per plant; this pins the habit
+# so a future edit that quietly stops mutating a reading cannot pass as proof.
+assert control.out contains "plant took effect" else "tlb-reach: no plant was confirmed to have taken effect"
+say "GREEN: tlb-reach -- each plant is proven to have changed the reading it was applied to."
+
+# The probe still compiles. This is the rung REDS %449 and %463 paid for, in nineteen seconds.
+let built = run ["sh" "tools/fixtures/t/tlb_reach_census.sh" "--build-only"]
+assert built.ok else "tlb-reach: the probe no longer builds -- an authored .rye nothing compiles is how %449 began"
+assert built.out contains "build_only green" else "tlb-reach: the build leg reported no green"
+say "GREEN: tlb-reach -- the probe compiles on this toolchain, so it is not a file nothing reaches."

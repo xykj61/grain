@@ -1,0 +1,533 @@
+//! tools/fixtures/t/tlb_reach_probe.rye -- what a lookup costs when the DATA is in cache and the
+//! ADDRESS is not, and how many pages a table may span before that second cost arrives.
+//!
+//! WHY. The elder study in this tree measured one axis of a table's cost and named it whole:
+//! external-research/20260906-042838_the-table-that-fits.md reads 1.65 ns for a dependent load
+//! from a working set inside L1d against 161.84 ns from 64 MiB, and concludes that the boundary
+//! worth designing to is "does it fit the first cache." That conclusion is true and incomplete.
+//! A load's address must be TRANSLATED before the cache can be asked, the translations are cached
+//! in a structure of their own, and that structure has its own capacity -- so a table can fit L1d
+//! perfectly and still pay a miss on every access, because it fits in bytes and does not fit in
+//! PAGES. This probe measures the second boundary.
+//!
+//! THE CONTROLLED PAIR, which is the whole instrument. Two walks touch exactly the same number of
+//! cache lines, in the same order, with the same dependent-load instruction stream:
+//!
+//!   packed  -- line i sits at byte i*64. n lines occupy n/64 pages.
+//!   spread  -- line i sits at byte i*4096 + (i*64 mod 4096). n lines occupy n pages: 64x more.
+//!
+//! Same bytes touched. Same instructions. Sixty-four times the translations. If they differ in
+//! time, translation is why, because it is the only thing that differs.
+//!
+//! AND THE CONTROL THAT MAKES THE PAIR FAIR, which the first draft of this design lacked. A cache
+//! set is chosen by address bits 6..11 -- the bits ABOVE the line offset and BELOW the 4 KiB page
+//! boundary. Put every spread line at offset 0 of its own page and all n lines collide in one set,
+//! and the pair would measure conflict misses while claiming to measure translation. The spread
+//! offset is therefore (i*64 mod 4096), which walks bits 6..11 through exactly the sequence the
+//! packed layout walks. `assert_set_parity` proves it holds for every node before any timing runs,
+//! so the claim is checked rather than argued.
+//!
+//! WHERE THE PAIR IS EXACT, AND WHERE IT IS ONLY SUGGESTIVE. L1d is indexed by bits below the page
+//! boundary, so the parity above makes the two layouts identical to L1d at every n. L2 and L3 index
+//! with bits from the page frame, which the layouts do not share -- so beyond n*64 = L1d capacity
+//! the pair carries a confound and the reading is reported rather than claimed. The strong claim
+//! lives at n <= 512 on this board, where all touched bytes are L1d-resident in both layouts.
+//!
+//! THE FALSIFIER, RUN RATHER THAN NAMED. If the spread cost is translation, then giving the same
+//! walk 2 MiB pages must collapse it -- 512 translations become one. Set TLB_HUGE=1 and the probe
+//! madvises the arena MADV_HUGEPAGE before its first touch, then reports what /proc/self/smaps_rollup
+//! says it actually got. A leg whose huge pages did not arrive proves nothing and says so: a plant
+//! that did not run is not evidence, which this tree learned the hard way one lap earlier.
+//!
+//! WHAT IT DOES NOT MEASURE. Not energy: this board exposes no RAPL counter, no MSR, and no perf
+//! event (checked 20260906). Not TLB misses directly: no counter is readable here, so the observable
+//! is time and the argument is the matched control rather than an event count.
+//!
+//! Read against: external-research/20260906-061229_the-address-that-does-not-fit.md
+//! Driven by:    tools/fixtures/t/tlb_reach_census.sh
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+// One node occupies one cache line, so every step of the walk touches a line of its own.
+// This board reports 64 (/sys/devices/system/cpu/cpu0/cache/index0/coherency_line_size); the
+// census asserts that reading against this constant rather than trusting either alone.
+const line_bytes: u32 = 64;
+const slots_per_node: u32 = line_bytes / @sizeOf(u32);
+
+// The page this board's kernel actually hands out (getconf PAGESIZE reads 4096); the census
+// asserts it. Every claim about "how many pages a table spans" is denominated in this number.
+const page_bytes: u32 = 4096;
+
+// The huge page this board offers (/proc/meminfo Hugepagesize reads 2048 kB). Used for the
+// arena's alignment, so a madvise has an aligned region to work on rather than a partial one.
+const huge_bytes: u32 = 2 * 1024 * 1024;
+
+// The arena is static, so this maximum is enforced by the linker rather than at three in the
+// morning. 64 MiB holds the widest spread leg (8192 nodes, one page apiece, 32 MiB) with room
+// for the alignment padding a 2 MiB boundary costs.
+const max_span_bytes: u32 = 64 * 1024 * 1024;
+const max_slots: u32 = max_span_bytes / @sizeOf(u32);
+
+// The widest node count either layout is asked for. Spread places node i at page i, so this
+// bound and `page_bytes` together are what keep the widest leg inside the arena.
+const max_nodes: u32 = 8192;
+
+// The most this probe ever reads from a /proc file in one call. Both readers ask for a command
+// line and a memory rollup, each of which the kernel keeps far below this; the bound is what lets
+// `read_whole_file` publish a u32 count rather than the kernel's own word width.
+const max_read_bytes: u32 = 8192;
+
+// Enough steps that a single timer reading spans milliseconds rather than microseconds, so
+// clock granularity contributes far less than the quantity being measured.
+const steps_per_rep: u64 = 2_000_000;
+
+// The reported latency is the MINIMUM across repetitions. On a shared host noise only ever adds,
+// so the minimum is the closest reading to the machine's own cost; the spread between best and
+// worst is reported beside it so a reader can judge how quiet the board was.
+const reps: u32 = 4;
+
+// Node counts. In the spread layout a node count IS a page count, so this array is the resolution
+// at which a translation boundary can be located: a doubling sweep can only ever say "between 64
+// and 128", so the interval where the first sweep found a knee is walked one page at a time and
+// the second is walked in eighths.
+// 512 is the last count whose touched bytes (32 KiB) fit this board's L1d in BOTH layouts, which
+// is where the exact claim stops -- every larger count is reported and not claimed.
+const sweep_nodes = [_]u32{
+    8,    16,   32,   48,   64,   65,   66,   67,   68,   69,   70,   71,
+    72,   80,   88,   96,   104,  112,  120,  128,  160,  192,  256,  384,
+    512,  768,  1024, 1152, 1216, 1280, 1408, 1536, 1664, 1792, 1920, 2048,
+    3072, 4096, 6144, 8192,
+};
+
+// The last node count at which the pair is exact rather than merely suggestive: n*64 <= 32 KiB.
+const exact_pair_max_nodes: u32 = 512;
+
+// THE ELDER LEG. The paired sweep above varies the LAYOUT and holds the byte count; this leg holds
+// the layout -- the elder study's own packed one -- and lets the census vary the PAGE SIZE around
+// it. That is the one arm neither paper had, and it is what tests the elder sentence rather than
+// standing beside it.
+//
+// The elder study (`20260906-042838_the-table-that-fits.md`) published: "Crossing the L3 boundary,
+// from 4 MiB to 32 MiB, costs 7.87x." Those two sizes are its endpoints, and 8 MiB is where its
+// curve made its largest single jump -- which is also 2,048 four-kibibyte pages, well past the
+// second translation boundary the paired sweep locates for itself between 1,280 and 1,408 pages on
+// this board. Two mechanisms predict a step in the same place, and the elder
+// sweep moved both knobs at once, so it could not say which one it read. Running exactly these
+// three sizes under 4 KiB and 2 MiB pages separates them, because the page size is the only thing
+// that changes and every byte stays where it was.
+//
+// Packed only: the spread layout at these counts would want 524,288 pages, which is 2 GiB of span
+// against a 64 MiB arena. The elder layout is the subject here in any case.
+const elder_kib = [_]u32{ 4096, 8192, 32768 };
+
+// 32 MiB of packed lines. The arena already reserves 64 MiB, so only the permutation grows.
+const max_elder_nodes: u32 = 32768 * 1024 / line_bytes;
+
+const Layout = enum { packed_lines, spread_pages };
+
+var arena: [max_slots]u32 align(huge_bytes) = undefined;
+// Sized for the elder leg, which walks far more nodes than the paired sweep.
+var perm: [max_elder_nodes]u32 = undefined;
+
+/// Byte offset of node `i` under `layout`. This one function is the whole experimental variable;
+/// everything else in the probe is held identical between the two legs.
+fn byte_of(layout: Layout, i: u32) u32 {
+    // invariant: the node is one this build reserved room to permute.
+    assert(i < max_elder_nodes);
+    const at: u32 = switch (layout) {
+        .packed_lines => i * line_bytes,
+        // The within-page offset walks bits 6..11 exactly as the packed layout does, so the two
+        // legs present L1d with the same set for the same node. Proven by `assert_set_parity`.
+        .spread_pages => i * page_bytes + ((i * line_bytes) % page_bytes),
+    };
+    // invariant: the node's whole line lies inside the static arena.
+    assert(at + line_bytes <= max_span_bytes);
+    return at;
+}
+
+/// Slot index of a node, in units of u32. Values stored in the arena are already slot indices, so
+/// the walk itself performs no arithmetic -- one dependent load and nothing else.
+fn slot_of(layout: Layout, i: u32) u32 {
+    const at = byte_of(layout, i);
+    // invariant: a node begins on a line boundary, so one node never straddles two lines.
+    assert(at % line_bytes == 0);
+    const slot = at / @sizeOf(u32);
+    // invariant: the slot addresses a real u32 in the static arena.
+    assert(slot < max_slots);
+    return slot;
+}
+
+/// The two layouts must present L1d with the same set for the same node, or the pair measures
+/// conflict misses under translation's name. Checked for every node before any timing runs.
+fn assert_set_parity(n: u32) void {
+    // invariant: a pair of one node is not a pair.
+    assert(n >= 2);
+    // invariant: the count is one this build reserved room for.
+    assert(n <= max_nodes);
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        const packed_set = (byte_of(.packed_lines, i) / line_bytes) % 64;
+        const spread_set = (byte_of(.spread_pages, i) / line_bytes) % 64;
+        // invariant: node i lands in the same L1d set under both layouts.
+        assert(packed_set == spread_set);
+    }
+}
+
+/// Deterministic 64-bit LCG. Deterministic on purpose: a reader re-running this probe gets the
+/// same permutation, so a disagreement between two runs is the machine rather than the dice.
+fn lcg_next(state: *u64) u32 {
+    // invariant: the multiplier is the odd constant that gives this LCG its full period.
+    assert(6364136223846793005 % 2 == 1);
+    state.* = state.* *% 6364136223846793005 +% 1442695040888963407;
+    // The high bits are the well-mixed ones in an LCG; the low bits cycle short.
+    const drawn: u32 = @truncate(state.* >> 33);
+    // invariant: a u32 was produced, which the caller reduces into its own range.
+    assert(drawn <= std.math.maxInt(u32));
+    return drawn;
+}
+
+/// Fisher-Yates over the first `n` entries, leaving a permutation of 0..n-1. The modulo introduces
+/// a slight bias toward low indices, which is harmless here: what the walk needs from this
+/// permutation is unpredictability to a hardware prefetcher rather than uniformity.
+fn fill_permutation(n: u32, seed: u64) void {
+    // invariant: the permutation fits the space reserved for it.
+    assert(n <= max_elder_nodes);
+    // invariant: a permutation of nothing is not a walk; the caller always asks for two or more.
+    assert(n >= 2);
+    var i: u32 = 0;
+    while (i < n) : (i += 1) perm[i] = i;
+    var state: u64 = seed;
+    var k: u32 = n - 1;
+    while (k >= 1) : (k -= 1) {
+        const j: u32 = lcg_next(&state) % (k + 1);
+        const tmp = perm[k];
+        perm[k] = perm[j];
+        perm[j] = tmp;
+        if (k == 1) break;
+    }
+}
+
+/// Link the permutation into a single cycle under `layout`: the node at position i points at the
+/// node at position i+1, and the last points back at the first. One cycle over all n nodes by
+/// construction -- which `cycle_length` then checks, because construction is not proof.
+fn build_chase(layout: Layout, n: u32) void {
+    // invariant: every node written is inside the permutation this build reserved.
+    assert(n <= max_elder_nodes);
+    // invariant: a cycle needs at least two distinct nodes to be a walk at all.
+    assert(n >= 2);
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        const here = perm[i];
+        const next = perm[(i + 1) % n];
+        const at: usize = @intCast(slot_of(layout, here)); // seam: Zig indexes by usize
+        arena[at] = slot_of(layout, next);
+    }
+}
+
+/// Walk from `start` until it returns, counting steps. Bounded by n + 1 so a broken chase refuses
+/// rather than spinning.
+fn cycle_length(start: u32, n: u32) u32 {
+    // invariant: the starting slot is inside the arena.
+    assert(start < max_slots);
+    // invariant: the bound is a real bound -- a cycle over n nodes cannot exceed n steps.
+    assert(n >= 2);
+    // invariant: the count is one this build reserved room for.
+    assert(n <= max_elder_nodes);
+    var cur: u32 = start;
+    var steps: u32 = 0;
+    while (steps <= n) {
+        const at: usize = @intCast(cur); // seam: Zig indexes by usize
+        cur = arena[at];
+        steps += 1;
+        if (cur == start) return steps;
+    }
+    return 0; // did not return to start within its own bound: the caller refuses.
+}
+
+/// How many distinct `page_bytes` pages the n nodes of `layout` occupy. Counted by walking the
+/// nodes in address order, where a page changes only when the page index does -- so no set is
+/// needed and the count is exact rather than estimated.
+fn pages_touched(layout: Layout, n: u32) u32 {
+    // invariant: a walk of one node is not a walk.
+    assert(n >= 2);
+    // invariant: the count is one this build reserved room for.
+    assert(n <= max_elder_nodes);
+    var count: u32 = 0;
+    var last_page: u32 = std.math.maxInt(u32);
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        const page = byte_of(layout, i) / page_bytes;
+        if (page != last_page) {
+            count += 1;
+            last_page = page;
+        }
+    }
+    // invariant: n nodes cannot occupy more pages than there are nodes.
+    assert(count <= n);
+    return count;
+}
+
+/// The measurement itself: `steps` dependent loads. Every address comes from the previous load's
+/// result, so nothing here can be reordered, batched, or predicted away.
+fn walk(start: u32, steps: u64) struct { ns: u64, checksum: u64 } {
+    // invariant: the walk starts inside the arena.
+    assert(start < max_slots);
+    // invariant: a zero-step walk would divide by zero downstream.
+    assert(steps >= 1);
+    const began = now_ns();
+    var cur: u32 = start;
+    var checksum: u64 = 0;
+    var s: u64 = 0;
+    while (s < steps) : (s += 1) {
+        const at: usize = @intCast(cur); // seam: Zig indexes by usize
+        cur = arena[at];
+        checksum +%= cur;
+    }
+    const ended = now_ns();
+    // invariant: the monotonic clock did not run backwards.
+    assert(ended >= began);
+    return .{ .ns = ended - began, .checksum = checksum };
+}
+
+fn now_ns() u64 {
+    var ts: std.os.linux.timespec = undefined;
+    const rc = std.os.linux.clock_gettime(.MONOTONIC, &ts);
+    // invariant: the monotonic clock answered; a probe that cannot read a clock measures nothing.
+    assert(rc == 0);
+    const secs: u64 = @intCast(ts.sec);
+    const nanos: u64 = @intCast(ts.nsec);
+    // invariant: the nanosecond field is a fraction of a second, as POSIX defines it.
+    assert(nanos < 1_000_000_000);
+    return secs * 1_000_000_000 + nanos;
+}
+
+/// Ask the kernel to back the arena with huge pages, BEFORE its first touch. Order matters and is
+/// the whole reason this is called from the top of main: MADV_HUGEPAGE steers the page fault, and
+/// a region already faulted in 4 KiB pages is not promoted by asking afterwards.
+fn arena_madvise_huge() bool {
+    const madv_hugepage: u32 = 14; // asm-generic/mman-common.h; stable since Linux 2.6.38.
+    // invariant: the arena begins on a huge-page boundary, so the whole region is advisable.
+    assert(@intFromPtr(&arena) % huge_bytes == 0);
+    const base: [*]u8 = @ptrCast(&arena); // seam: madvise takes a byte pointer, not a slice
+    const len: usize = @intCast(max_span_bytes); // seam: madvise takes a usize length
+    const rc = std.os.linux.madvise(base, len, madv_hugepage);
+    // invariant: the length advised is the whole arena, so no page of it is left at 4 KiB.
+    assert(len == max_span_bytes);
+    return rc == 0;
+}
+
+/// Read a whole file into `buf`, answering the byte count, or zero on any refusal. This std ships
+/// no `std.fs.cwd`, so the three syscalls are named directly. Zero on failure is deliberate and is
+/// the direction to be wrong in: both callers read zero as "no huge pages" and "no flag", each of
+/// which weakens this probe's own falsifier rather than manufacturing one.
+fn read_whole_file(path: [*:0]const u8, buf: []u8) u32 {
+    // invariant: a read into no room is not a read.
+    assert(buf.len >= 1);
+    // invariant: the room is inside the bound this file publishes, so a u32 count is honest.
+    assert(buf.len <= max_read_bytes);
+    const opened = std.os.linux.open(path, .{}, 0);
+    // A syscall answers a negative errno in the bits of an unsigned word, so the sign is read
+    // by reinterpreting rather than by comparing against a wall constant.
+    if (@as(isize, @bitCast(opened)) < 0) return 0;
+    const fd: i32 = @intCast(opened); // seam: the kernel answers a word, the read takes an i32
+    const got = std.os.linux.read(fd, buf.ptr, buf.len);
+    _ = std.os.linux.close(fd);
+    if (@as(isize, @bitCast(got)) < 0) return 0;
+    // invariant: a successful read returned no more than the room it was given.
+    assert(got <= buf.len);
+    return @intCast(got); // seam: the count is bounded by max_read_bytes, so it fits a u32
+}
+
+/// What the kernel says it actually gave, in kibibytes, read from this process's own rollup.
+/// The advice above is a REQUEST; a leg that reports the request rather than the grant would be
+/// the shape of claim this tree keeps booking -- an instrument reporting its own intention.
+/// Answers 0 when the file is absent or unparsable, which reads as "no huge pages" and is the
+/// direction to be wrong in: it can only weaken this probe's own falsifier, never fake it.
+fn anon_huge_kib(buf: []u8) u64 {
+    // invariant: the caller supplied room for a rollup, which runs well under a kibibyte.
+    assert(buf.len >= 1024);
+    const got = read_whole_file("/proc/self/smaps_rollup", buf);
+    if (got == 0) return 0;
+    const text = buf[0..got];
+    const key = "AnonHugePages:";
+    const at = std.mem.indexOf(u8, text, key) orelse return 0;
+    // Walked as a slice rather than by index, so the parse names no width of its own: the field
+    // is spaces, then digits, then whatever follows, and the first non-digit ends it.
+    var value: u64 = 0;
+    var seen_digit = false;
+    for (text[at + key.len ..]) |c| {
+        if (c == ' ') {
+            if (seen_digit) break;
+            continue;
+        }
+        if (c < '0' or c > '9') break;
+        seen_digit = true;
+        value = value * 10 + (c - '0');
+    }
+    // invariant: a kibibyte count of huge pages cannot exceed the arena this build reserved.
+    assert(value <= max_span_bytes / 1024);
+    return value;
+}
+
+/// One leg: build the chase for `layout` at `n`, prove it is one cycle over all n nodes, and time
+/// it. Prints its own reading and returns the checksum so no walk can be optimized away.
+fn measure(layout: Layout, n: u32, label: []const u8) u64 {
+    // Checked at the edge rather than asserted, for the reason `measure_elder` gives: this file is
+    // built -OReleaseFast, where an assert is stripped to `unreachable`. The paired sweep needs the
+    // TIGHTER bound, since its spread layout costs a whole page per node.
+    if (n < 2 or n > max_nodes) {
+        print("refused layout={s} nodes={d} bound={d}\n", .{ label, n, max_nodes });
+        return 0;
+    }
+
+    const seed: u64 = 0x9E3779B97F4A7C15 +% @as(u64, n);
+    fill_permutation(n, seed);
+    build_chase(layout, n);
+
+    const start = slot_of(layout, perm[0]);
+    const cyc = cycle_length(start, n);
+    if (cyc != n) {
+        print("refused layout={s} n={d} cycle_length={d} wanted={d}\n", .{ label, n, cyc, n });
+        return 0;
+    }
+
+    var best_ns: u64 = std.math.maxInt(u64);
+    var worst_ns: u64 = 0;
+    var checksum: u64 = 0;
+    var r: u32 = 0;
+    while (r < reps) : (r += 1) {
+        const got = walk(start, steps_per_rep);
+        checksum +%= got.checksum;
+        if (got.ns < best_ns) best_ns = got.ns;
+        if (got.ns > worst_ns) worst_ns = got.ns;
+    }
+    // invariant: the best reading is no slower than the worst.
+    assert(best_ns <= worst_ns);
+    // invariant: a measurable span elapsed, so the clock's granularity is not the reading.
+    assert(best_ns > 0);
+
+    const ns_hundredths: u64 = (best_ns * 100) / steps_per_rep;
+    const spread_pct: u64 = ((worst_ns - best_ns) * 100) / best_ns;
+    const pages = pages_touched(layout, n);
+    const touched: u64 = @as(u64, n) * line_bytes;
+    print("reading layout={s} n={d} pages={d} touched_bytes={d} ns_hundredths={d} spread_pct={d}\n", .{ label, n, pages, touched, ns_hundredths, spread_pct });
+    return checksum;
+}
+
+/// One elder-size reading, printed under its own key. A separate line rather than a `reading`
+/// with a new label, so a census that has never heard of this leg cannot silently fold it into
+/// the paired sweep and compare a 32 MiB walk against a 4 KiB one.
+fn measure_elder(kib: u32, n: u32) u64 {
+    // CHECKED AT THE EDGE, rather than asserted. Every assert in this file compiles to
+    // `unreachable` under -OReleaseFast, which is how the probe is built, so a violated bound is
+    // undefined behavior rather than a refusal -- the optimizer may assume it and emit code that
+    // runs off the end. This leg found that out by doing: `build_chase` still declared the paired
+    // sweep bound of 8,192 while the elder sizes pass up to 524,288, and the third size printed a
+    // control character into the middle of its own reading (REDS %472). A bound a build strips is
+    // not a bound, so the two that gate this leg are read at run time and refuse by name.
+    if (n < 2 or n > max_elder_nodes) {
+        print("refused elder_kib={d} nodes={d} bound={d}\n", .{ kib, n, max_elder_nodes });
+        return 0;
+    }
+    if (@as(u64, n) * line_bytes > max_span_bytes) {
+        print("refused elder_kib={d} span_bytes={d} arena={d}\n", .{ kib, @as(u64, n) * line_bytes, max_span_bytes });
+        return 0;
+    }
+
+    const seed: u64 = 0x9E3779B97F4A7C15 +% @as(u64, kib);
+    fill_permutation(n, seed);
+    build_chase(.packed_lines, n);
+
+    const start = slot_of(.packed_lines, perm[0]);
+    const cyc = cycle_length(start, n);
+    if (cyc != n) {
+        print("refused elder_kib={d} cycle_length={d} wanted={d}\n", .{ kib, cyc, n });
+        return 0;
+    }
+
+    var best_ns: u64 = std.math.maxInt(u64);
+    var worst_ns: u64 = 0;
+    var checksum: u64 = 0;
+    var r: u32 = 0;
+    while (r < reps) : (r += 1) {
+        const got = walk(start, steps_per_rep);
+        checksum +%= got.checksum;
+        if (got.ns < best_ns) best_ns = got.ns;
+        if (got.ns > worst_ns) worst_ns = got.ns;
+    }
+    // invariant: the best reading is no slower than the worst.
+    assert(best_ns <= worst_ns);
+    // invariant: a measurable span elapsed, so the clock's granularity is not the reading.
+    assert(best_ns > 0);
+
+    const ns_hundredths: u64 = (best_ns * 100) / steps_per_rep;
+    const spread_pct: u64 = ((worst_ns - best_ns) * 100) / best_ns;
+    print("elder kib={d} nodes={d} pages={d} ns_hundredths={d} spread_pct={d}\n", .{ kib, n, pages_touched(.packed_lines, n), ns_hundredths, spread_pct });
+    return checksum;
+}
+
+/// Whether this run was asked for huge pages, read from its own command line. This std carries
+/// no `getenv` and no `argv`, so the flag is read where the kernel already published it. Reading
+/// /proc/self/cmdline rather than an environment variable also makes the two legs distinguishable
+/// in a process list, which is worth more than the convenience of an export.
+fn wants_huge(buf: []u8) bool {
+    // invariant: the caller supplied room for a command line, which the kernel caps far below this.
+    assert(buf.len >= 1024);
+    const got = read_whole_file("/proc/self/cmdline", buf);
+    // A command line that read as empty names no flag, so the answer is no.
+    if (got == 0) return false;
+    // invariant: the read stayed inside the buffer it was given.
+    assert(got <= buf.len);
+    return std.mem.indexOf(u8, buf[0..got], "--huge") != null;
+}
+
+pub fn main() void {
+    var scratch: [max_read_bytes]u8 = undefined;
+    const want_huge = wants_huge(&scratch);
+
+    // Before the first touch, or not at all. See `arena_madvise_huge`.
+    var advised = false;
+    if (want_huge) advised = arena_madvise_huge();
+
+    print("probe_version 1\n", .{});
+    print("line_bytes {d}\n", .{line_bytes});
+    print("page_bytes {d}\n", .{page_bytes});
+    print("huge_bytes {d}\n", .{huge_bytes});
+    print("steps_per_rep {d}\n", .{steps_per_rep});
+    print("reps {d}\n", .{reps});
+    print("max_span_bytes {d}\n", .{max_span_bytes});
+    print("exact_pair_max_nodes {d}\n", .{exact_pair_max_nodes});
+    print("huge_requested {s}\n", .{if (want_huge) "yes" else "no"});
+    print("huge_advised {s}\n", .{if (advised) "yes" else "no"});
+
+    var total_checksum: u64 = 0;
+    for (sweep_nodes) |n| {
+        // invariant: every sweep count is inside the arena this build reserved.
+        assert(n <= max_nodes);
+        // invariant: every sweep count holds at least two nodes, so the chase is a walk.
+        assert(n >= 2);
+        assert_set_parity(n);
+        total_checksum +%= measure(.packed_lines, n, "packed");
+        total_checksum +%= measure(.spread_pages, n, "spread");
+    }
+
+    // The elder leg: the elder study's own layout at the elder study's own sizes, so the census
+    // can read the same three points under both page sizes and say what share of the elder
+    // sentence was translation rather than cache.
+    for (elder_kib) |kib| {
+        const nodes: u32 = kib * 1024 / line_bytes;
+        // invariant: the elder size fits the permutation this build reserved.
+        assert(nodes <= max_elder_nodes);
+        // invariant: the elder size holds at least two nodes, so the chase is a walk.
+        assert(nodes >= 2);
+        total_checksum +%= measure_elder(kib, nodes);
+    }
+
+    // Read AFTER the walks, so what is reported is what the arena actually holds rather than what
+    // was asked for before a single page was faulted.
+    print("anon_huge_kib {d}\n", .{anon_huge_kib(&scratch)});
+    print("checksum {d}\n", .{total_checksum});
+    print("probe_done\n", .{});
+}

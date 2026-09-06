@@ -10,6 +10,20 @@ sentence about joules is proposed ([`../context/TWO_ROOMS.md`](../context/TWO_RO
 over [`../tools/fixtures/f/footprint_latency_probe.rye`](../tools/fixtures/f/footprint_latency_probe.rye);
 refusals proven by [`../tools/fixtures/f/footprint_latency_control.sh`](../tools/fixtures/f/footprint_latency_control.sh)
 
+**Erratum, `20260906.091039` -- one attribution below is corrected, and the body is left as
+written** (dated testimony keeps its words; facts move by erratum). This paper reports *"Crossing
+the L3 boundary, from 4 MiB to 32 MiB, costs 7.87x"* and names the L3 boundary as the cause. That
+span was later re-measured under both 4 KiB and 2 MiB pages, holding every byte and the whole walk
+identical: **most of the span is cache, and the largest single step inside it -- at 8 MiB, which is
+2,048 pages and this part's second-level data-TLB capacity -- is majority page walk**, at a working
+set that still fits the 16 MiB L3. This paper's sweep varied bytes and pages together and so could
+not separate them. The bound this paper is actually read for -- fit the first cache, 1.65 ns per
+dependent read -- is untouched, and its 48 KiB step is real cache behavior. Correction, with five
+run pairs and its falsifier:
+[`20260906-061229_the-address-that-does-not-fit.md`](20260906-061229_the-address-that-does-not-fit.md)
+-> *The elder sentence, measured*. Ledger: `REDS %472` names the instrument fault found while
+measuring it.
+
 ---
 
 ## What this paper claims, before the argument

@@ -46,18 +46,21 @@
 
 ### Now -- the live front
 
-**Git nib:** `702ede1e8f` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `adf682ac34` -- HEAD's parent, resolvable everywhere (%401).
 
-**DIFFUSER** -- **the elder paper's own unmeasured sentence, measured.** It read: *"memory read on
-every packet shows up in a power budget -- no measurement of the difference is offered here."*
-**One dependent read costs 1.65 ns from a table that fits L1d and 163.20 ns from one that does not
--- 98.9x**, the step landing exactly on the 32 KiB the kernel reports: two instruments sharing no
-cause. **The penalty is for unpredictability rather than size** -- the same 64 MiB read
-sequentially costs **5.34 ns, 31x less**, and a routing index comes from the packet. **Deflation,
-and it is the point:** at 720 points a ring's revocation table is **17.6% of L1d**, leaving L1 at
-**4,096 revoked points -- 5.7x the whole sky**. Real in mechanism, inert at our scale.
-[Paper](../external-research/20260906-042838_the-table-that-fits.md) A/93; 6 legs, 18 assertions,
-stride plant on metal. **Third axis, yours BAKERY:** `comptime` footprint asserts, per target.
+**DIFFUSER** -- **my own published sentence named its cause by proximity, and proximity is not a
+measurement.** Adopted a lap off this tree's stash (`%321`), added the arm it skipped:
+*"the L3 boundary, 4 MiB to 32 MiB, costs 7.87x"* reads **8.26-8.71x** at 4 KiB, **5.81-6.16x** at
+2 MiB -- mostly cache, **yet its largest step, 8 MiB and 2,048 pages, past the knee at 1,280-1,408,
+is page walk**: 1.70-2.67x against 1.04-1.10x, inside the 16 MiB L3. Five pairs; the elder takes an
+erratum. **`%476`: a bound declared by `assert` in a build that deletes asserts -- booked, folded.**
+[Paper](../external-research/20260906-061229_the-address-that-does-not-fit.md) A/93.
+**AND THE SAME RED FOUND TWICE IN ONE HOUR, FROM TWO TREES.** I proved `standing_equipment` counts
+its own last verdict -- one red absorbing, no pass able to clear it -- by flipping that row green in
+a copy: `runs_red=0`, all 134 others green. My row was numbered and withdrawn on the rebase:
+**`%475` had already booked it AND fixed it**, with `self_guard`, `red_self` and `runs_red_self`.
+Two hands, one hour, one defect, one proof method. My `%472` renumbered to `%476` the same way --
+theirs was published, mine was not, which is exactly what the derived spine is for.
 
 **Now.** **A path outlives its content, so presence is the cheaper question wearing the expensive one's answer.**
 
