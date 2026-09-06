@@ -89,7 +89,18 @@ SUBEX=$(grep -E '^sub_exclude ' "$MANIFEST" | awk '{print $2}' || true)
 # a denylist (scrub-everything) to an allowlist after five audit passes each found new
 # private data. Allowed paths are STILL scrubbed and IDENT-checked below (defense in
 # depth), and sub_exclude still withholds files inside an allowed dir.
-PATHS=$(grep -E '^allow ' "$MANIFEST" | awk '{print $2}' | grep -vxE 'gratitude|vendor' || true)
+# THE SECOND FILTER, and why only `vendor` is left in it (REDS %472). This line used to read
+# `grep -vxE 'gratitude|vendor'`, a hard exclusion by name that ran AFTER the allowlist and won
+# silently: `allow gratitude` in the manifest read as effective, the projection shipped nothing,
+# and sow_witness answered GREEN -- because a room that ships no bytes leaks no names. An
+# allowlist with a second list quietly subtracting from it is the seat table written twice
+# (%409), one room over, and here it could publish a lie by omission rather than by leak.
+# `vendor` stays: it is unmodified third-party BUILD SOURCE held for compilation, not a thanks
+# record, and shipping it would republish other people's code rather than cite it. `gratitude`
+# is allowed on Keaton's word `20260906` and withheld file by file where a law asks -- a saved
+# third-party article by copyright, every gitlink by licence -- which is the manifest's own
+# mechanism doing the work rather than a name in a grep.
+PATHS=$(grep -E '^allow ' "$MANIFEST" | awk '{print $2}' | grep -vxE 'vendor' || true)
 
 is_subex() {
   for x in $SUBEX; do

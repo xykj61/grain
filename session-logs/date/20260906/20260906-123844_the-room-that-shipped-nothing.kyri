@@ -1,0 +1,31 @@
+format session-log-v1
+stamp 20260906.123844
+editor Claude Code, Zed-class CLI on the pier
+provider Anthropic
+product Claude Code
+role incense seat -- law, active-designing, iterative review, the captain's hat
+modality text
+model claude-opus-5
+model_status active runtime reported by the harness environment block
+voice Kyri
+host Linux pier, 8 vCPU / 16 GB, TZ America/New_York
+title The room that shipped nothing
+prompt Keaton: adapt our publish seed scrub script to allow the gratitude folder in the os and ww seeds, just without my personal information.
+think Lap B of eight. The manifest already gave gratitude a template verdict, so the first read said this was one line. It was not: gratitude is not on the ALLOWLIST, and the allowlist is the ship driver.
+think Reading the room decided the verdict rather than the ask did. Twenty of its 132 tracked files name the maintainer, a handle or a pier path, so the verdict is scrub rather than template -- a thanks record ships depersonalized rather than not at all. Two classes are withheld and neither is about privacy: the saved third-party article is COPYRIGHT, and all twenty gitlinks are LICENCE, since the whole point of a gitlink is that our history never carries their source.
+think The gitlink safety was INCIDENTAL and I made it structural. sow.rish copies files and knows nothing of gitlinks; the submodules are unchecked-out on this pier, so today it ships empty directories. A hand who checks one out for a read would turn that into a leak, so each is named by path.
+obs THE ALLOWLIST HAD A SECOND LIST QUIETLY SUBTRACTING FROM IT, AND EVERY GUARD SAID GREEN. sow_project.sh filtered the allowlist through grep -vxE gratitude|vendor -- a hard exclusion by NAME, running after it. allow gratitude read as effective, the projection answered copied=7603, sow_witness answered GREEN, and ls seed/gratitude read 0. A room that ships no bytes leaks no names, so IDENT_CLEAN was a true statement about the wrong corpus. Booked %489 -- first written as %485 and renumbered when a rebase found three peer rows published in the same hour.
+obs I ONLY CAUGHT IT BY COUNTING THE SHIPPED DIRECTORY. Every instrument I had said the change worked. The one thing that disagreed was ls. That is the same habit %409 was booked for and the reason the fix is a guard rather than an edit: sow_witness asks did anything private get out, seed_link asks does a shipped link land, and neither can ask did the room we allowed arrive.
+obs THE NEW GUARD FOUND A SECOND CASE ON ITS FIRST RUN, AND THE SECOND CASE TAUGHT IT THE RIGHT SHAPE. context/LEXICON.md is allowed and never ships: an identity string survives the scrub and defence in depth drops the copy. That is the fail-safe working, and counting it would make the gate red on correct behaviour. So the gate turns on absent AND UNLOGGED, and a logged absence is reported as withheld_by_design. The seed's readers have no Lexicon and nothing said so -- a lap of its own.
+obs THE PIN NEEDED THE LOOM. REDS stood at 39,840 of 40,960 and the row wanted 1,365. Rows %470 and %471 both read BOOKED while every other row reads OPEN, so the fold loom moved them to a shelf under one clause they genuinely share -- an instrument asking a cheaper question than its name claims. Pin now 37,502.
+loom seed copied_before=7603 copied_after=7726 gratitude_entries=0_then_77 withheld=135
+loom seed personal_markers_in_shipped_gratitude=0 ident=CLEAN no_personal=yes
+loom scan=sow_allow_reach allows=107 shipped=106 withheld_by_design=1 empty=0 elder_filter_empty=1
+file template-manifest.bron gratitude allowed and scrubbed; the article withheld by copyright, twenty gitlinks by licence
+file tools/fixtures/s/sow_project.sh the second filter keeps vendor alone, with the reason written beside it
+file tools/fixtures/s/sow_allow_reach_scan.sh the reading no seed guard had -- did the allowed room arrive
+file tools/s/sow_allow_reach_witness.rish the gate, rostered tier lap, proven both ways on real projections
+file construction/REDS.md %489 booked (was %485, renumbered on a rebase); %470 and %471 folded to their shelf to make the room
+scope lap B of eight -- gratitude ships depersonalized, and the silence that hid its absence is now a rostered guard
+status GREEN -- SOW_WITNESS_GREEN with IDENT_CLEAN and NO_PERSONAL, sow_allow_reach empty=0, seed_link ok, reds monotone and fold green
+recommend keep-going -- lap C is the scrub-script template with fillable stubs, which the personalize template already half-answers.
