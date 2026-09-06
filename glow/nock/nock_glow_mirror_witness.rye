@@ -1,7 +1,7 @@
-//! nock/nock_glow_mirror_witness.rye -- the first crossing: a Glow gate and a
+//! glow/nock/nock_glow_mirror_witness.rye -- the first crossing: a Glow gate and a
 //! Nock formula answer as one (STOA337 firstborn - seed 32).
 //!
-//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run nock/nock_glow_mirror_witness.rye
+//!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run glow/nock/nock_glow_mirror_witness.rye
 //!
 //! Trust flows from the Glow floor outward: the second backend earns its keep
 //! by agreeing loudly. The hand-built fixture [6 [5 [0 1] [1 32]] [1 1] [1 0]]
@@ -14,6 +14,14 @@ const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 const nock = @import("nock_core.rye");
+
+// invariant: every declaration of the module goes through semantic analysis, so a type
+// error in a body this witness never calls reds the build (REDS %463, %470).
+comptime {
+    for (@typeInfo(nock).@"struct".decls) |decl| {
+        _ = &@field(nock, decl.name);
+    }
+}
 
 const desk = "src/gate/gate-aurora-seed-length-eq-u32.glow";
 const exact: u64 = 32; // the arc's firstborn — Ed25519 seed length

@@ -31,6 +31,14 @@ const print = std.debug.print;
 const nock = @import("nock_core.rye");
 const jet = @import("nock_jet_dec.rye");
 
+// invariant: every declaration of the module goes through semantic analysis, so a type
+// error in a body this witness never calls reds the build (REDS %463, %470).
+comptime {
+    for (@typeInfo(jet).@"struct".decls) |decl| {
+        _ = &@field(jet, decl.name);
+    }
+}
+
 const witness_version = "20260716.080000";
 
 fn run_selftest() !u8 {

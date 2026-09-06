@@ -8,6 +8,14 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const tokens = @import("tokens.rye");
 
+// invariant: every declaration of the module goes through semantic analysis, so a type
+// error in a body this witness never calls reds the build (REDS %463, %470).
+comptime {
+    for (@typeInfo(tokens).@"struct".decls) |decl| {
+        _ = &@field(tokens, decl.name);
+    }
+}
+
 const witness_version = "20260719.225100";
 
 /// Same shape as glow/gen/c/cast-named-xact.glow (comments stripped by lexer).

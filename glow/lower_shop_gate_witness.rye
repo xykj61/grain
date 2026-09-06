@@ -9,6 +9,14 @@ const print = std.debug.print;
 const lower = @import("lower_shop_gate.rye");
 const rb = @import("rune_shop_gate.rye");
 
+// invariant: every declaration of the module goes through semantic analysis, so a type
+// error in a body this witness never calls reds the build (REDS %463, %470).
+comptime {
+    for (@typeInfo(lower).@"struct".decls) |decl| {
+        _ = &@field(lower, decl.name);
+    }
+}
+
 const witness_version = "20260720.192038";
 
 fn run_selftest(init: std.process.Init) !u8 {

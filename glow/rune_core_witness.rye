@@ -8,6 +8,14 @@ const print = std.debug.print;
 const rk = @import("rune_core.rye");
 const expr = @import("expr.rye");
 
+// invariant: every declaration of the module goes through semantic analysis, so a type
+// error in a body this witness never calls reds the build (REDS %463, %470).
+comptime {
+    for (@typeInfo(rk).@"struct".decls) |decl| {
+        _ = &@field(rk, decl.name);
+    }
+}
+
 const witness_version = "20260718.235700";
 
 const one_src =
