@@ -1,10 +1,10 @@
-# tools/l/birth_a_clone.rish -- give a fleet body its own tree, whole and proven.
+# tools/b/birth_a_clone.rish -- give a fleet body its own tree, whole and proven.
 #
 # One tree per star (seated 20260829 on Keaton's word, after REDS %291 bit four times in one
 # day through a shared checkout): every loop body works its own clone. This tool is the birth,
 # run FROM the field where rishi already lives:
 #
-#   rishi/bin/rishi run tools/l/birth_a_clone.rish /Users/<user>/grain-<body>
+#   rishi/bin/rishi run tools/b/birth_a_clone.rish /Users/<user>/grain-<body>
 #
 # What a birth does, in order: clone from the field's own objects with the anointed remotes
 # seated (xy, then gp405); point core.hooksPath at the tracked hooks so the walls travel;

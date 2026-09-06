@@ -16,7 +16,7 @@ A public summary described the repository as 83% C++. Its own bytes say otherwis
 
 ## And what it taught us by refusing
 
-We ran our own `tools/fixtures/l/utf8_valid.awk` through it -- a validator whose entire job is to find bytes that are *not* valid UTF-8 -- and dawk answered:
+We ran our own `tools/fixtures/u/utf8_valid.awk` through it -- a validator whose entire job is to find bytes that are *not* valid UTF-8 -- and dawk answered:
 
 ```
 dawk: encountered invalid UTF-8

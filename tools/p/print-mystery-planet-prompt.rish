@@ -1,16 +1,16 @@
 # FOSSIL -- Class M, prepped 20260906.114734 for the mitra shed; the cut stays RED until circled.
-# Living mutant: tools/l/fleet-loop.sh reading construction/fleet-roster.kyri, with
-# tools/l/fleet_watch.sh above it. Row and reasons: construction/SHRED_PREP.md.
+# Living mutant: tools/f/fleet-loop.sh reading construction/fleet-roster.kyri, with
+# tools/f/fleet_watch.sh above it. Row and reasons: construction/SHRED_PREP.md.
 # print-mystery-planet-prompt.rish -- pure canonical MYSTERY prompt printer.
 #
 # One authority, exactly as the cardinal printer keeps it: read the two seated prompt
 # sources and emit their canonical composition. No process, service, authentication,
 # jail, Git, state, lock, loop, write, environment, or network authority. The shared
-# supervisor `tools/l/chatgpt-mind.rish` invokes this printer at MIND_SEAT=mystery;
+# supervisor `tools/c/chatgpt-mind.rish` invokes this printer at MIND_SEAT=mystery;
 # neither file duplicates the Arbor voice or the seat's operating law.
 #
 # Run from the repository root:
-#   rishi/bin/rishi run tools/l/print-mystery-planet-prompt.rish
+#   rishi/bin/rishi run tools/p/print-mystery-planet-prompt.rish
 
 let arbor = read-file "arbor/launch-mystery-chapter.arbor"
 let mystery = read-file "recursion-prompts/versions/20260829-222718_codex-mystery-macos-loop-cion.md"

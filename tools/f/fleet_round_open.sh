@@ -143,7 +143,7 @@ fi
 #
 # NEVER ALLOWED TO FAIL THE OPEN. The whole point of this script is that it cannot die at the
 # open, so the reading is guarded by its own presence and its refusal is only ever a printed line.
-SCAN=tools/fixtures/f/stash_record_scan.sh
+SCAN=tools/fixtures/s/stash_record_scan.sh
 if [ -r "$SCAN" ]; then
   UNLANDED=$(sh "$SCAN" 2>/dev/null | grep '^unlanded=' | cut -d= -f2)
   case "${UNLANDED:-0}" in

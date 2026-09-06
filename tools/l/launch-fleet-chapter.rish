@@ -40,8 +40,8 @@ let reader = run ["test" "-f" "tools/fixtures/f/fleet_roster_scan.sh"]
 assert reader.ok else "tools/fixtures/f/fleet_roster_scan.sh is missing -- nothing can read the table"
 
 # invariant: the loop this recipe tells a hand to run exists before the recipe prints it.
-let loop = run ["test" "-f" "tools/l/fleet-loop.sh"]
-assert loop.ok else "tools/l/fleet-loop.sh is missing -- the recipe would name a loop that is gone"
+let loop = run ["test" "-f" "tools/f/fleet-loop.sh"]
+assert loop.ok else "tools/f/fleet-loop.sh is missing -- the recipe would name a loop that is gone"
 
 say "THE FLEET -- one loop, one seat table, one recipe"
 say "================================================"

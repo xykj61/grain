@@ -1,4 +1,4 @@
-# tools/fixtures/q/reference_block.awk -- tell a reference table apart from a paragraph.
+# tools/fixtures/r/reference_block.awk -- tell a reference table apart from a paragraph.
 #
 # WHY THIS FILE EXISTS. A report card reads a page by counting sentences, and a reference table has
 # none. This tree writes its key lists without terminal punctuation, so a run of them merges into

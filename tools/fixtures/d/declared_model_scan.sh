@@ -34,7 +34,7 @@
 # USAGE
 #   sh tools/fixtures/d/declared_model_scan.sh
 #
-# Driven by tools/m/declared_model_witness.rish. Run from the repository root.
+# Driven by tools/d/declared_model_witness.rish. Run from the repository root.
 
 set -u
 

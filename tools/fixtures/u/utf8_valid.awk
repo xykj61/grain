@@ -1,4 +1,4 @@
-# tools/fixtures/l/utf8_valid.awk -- name every file whose bytes are not valid UTF-8.
+# tools/fixtures/u/utf8_valid.awk -- name every file whose bytes are not valid UTF-8.
 #
 # ONE PROCESS FOR THE WHOLE COLLECTION. This replaced a per-file shell probe that forked `mktemp`,
 # `iconv` and `rm` for each of 14,709 tracked text files -- roughly 44,000 processes, and 137 of the

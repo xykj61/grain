@@ -43,7 +43,7 @@ what it holds -- `loops/claude`, `loops/cursor`, `loops/codex`, `loops/editor-cu
 dotted directories at the tree root, six of the 97 doors a lap faces when it opens the root.
 `tools/ag/agent-jail.sh` and `tools/cu/cursor_jail_macos.rish` **adopt** an elder directory on the
 next launch rather than abandoning it, because these hold auth a hand typed once.
-**`.mind-state/` stays where it is**: the byte-pinned `tools/l/chatgpt-mind.sh` names it, and its
+**`.mind-state/` stays where it is**: the byte-pinned `tools/c/chatgpt-mind.sh` names it, and its
 SHA-256 is the MIND adaptation receipt. Charter:
 [`../../active-designing/20260827-174816_the-glow-tree-and-the-rooms-that-say-what-they-hold.md`](../../active-designing/20260827-174816_the-glow-tree-and-the-rooms-that-say-what-they-hold.md).
 A lap reads **its own body's** files there by named path, and leaves every other body's alone. This

@@ -200,7 +200,7 @@ done
 # `tier cadence`, `host macos`, beside skate_native_core. The `macos` family left the census.
 #
 # The ceiling STANDS at 1108 rather than falling, and the reason is one file rather than slack.
-# tools/m/ios_app_shell_witness.rish landed at 20260829.095045 and opened a second singleton
+# tools/i/ios_app_shell_witness.rish landed at 20260829.095045 and opened a second singleton
 # family, so the reading was 1109 against 1108 and 221 against 220 -- both exactly one over, which
 # is the gate doing what it was rewritten to do, meeting a birth on the lap it arrives. Paying the
 # macOS debt returns both readings to their ceilings and no further, so the fall the repair earned

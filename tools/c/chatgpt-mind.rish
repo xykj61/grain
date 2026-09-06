@@ -1,6 +1,6 @@
 # FOSSIL -- Class M, prepped 20260906.114734 for the mitra shed; the cut stays RED until circled.
-# Living mutant: tools/l/fleet-loop.sh reading construction/fleet-roster.kyri, with
-# tools/l/fleet_watch.sh above it. Row and reasons: construction/SHRED_PREP.md.
+# Living mutant: tools/f/fleet-loop.sh reading construction/fleet-roster.kyri, with
+# tools/f/fleet_watch.sh above it. Row and reasons: construction/SHRED_PREP.md.
 # chatgpt-mind.rish -- Rishi-owned supervised Codex laps for MIND on macOS.
 #
 # The elder `chatgpt-mind.sh` stays byte-for-byte as the compatibility and
@@ -43,12 +43,12 @@ let sketchbook_pin = "99b87f20f1fdbd2fc216cb13c07bdd0531916d27"
 let mode = ""
 if args.len > 0 then let mode = args[0]
 let help = ?| [(args contains "-h") (args contains "--help")]
-if help then say "Usage: rishi/bin/rishi run tools/l/chatgpt-mind.rish COMMAND [options]"
+if help then say "Usage: rishi/bin/rishi run tools/c/chatgpt-mind.rish COMMAND [options]"
 if help then say "Commands: print, check, once --dry-run|--arm-once, loop --dry-run|--arm-loop, stop"
 if help then say "Loop options: --max-laps 1..24, --failure-ceiling 1..5, --backoff-seconds 0..300"
 if help then say "Armed work uses Codex danger-full-access only inside the proven outer ai-jail; it never pushes or selects a model."
 if help then exit 0
-if mode == "" then say "Usage: rishi/bin/rishi run tools/l/chatgpt-mind.rish COMMAND [options]"
+if mode == "" then say "Usage: rishi/bin/rishi run tools/c/chatgpt-mind.rish COMMAND [options]"
 if mode == "" then say "Commands: print, check, once --dry-run|--arm-once, loop --dry-run|--arm-loop, stop"
 if mode == "" then exit 2
 
@@ -204,8 +204,8 @@ assert git_intl_link_check.ok == false else "REFUSE chatgpt-mind: canonical Home
 let git_dyld_arg = "DYLD_LIBRARY_PATH=/opt/homebrew/Cellar/pcre2/10.47_1/lib:/opt/homebrew/Cellar/gettext/1.0/lib"
 let git_no_system_arg = "GIT_CONFIG_NOSYSTEM=1"
 let git_no_global_arg = "GIT_CONFIG_GLOBAL=/dev/null"
-let git_wrapper_abs = repo_root + "/tools/l/mind-bin/git"
-let git_shell_abs = repo_root + "/tools/l/mind-shell"
+let git_wrapper_abs = repo_root + "/tools/m/mind-bin/git"
+let git_shell_abs = repo_root + "/tools/m/mind-shell"
 let git_zshenv_abs = git_shell_abs + "/.zshenv"
 let git_zprofile_abs = git_shell_abs + "/.zprofile"
 let git_wrapper_file = run ["test" "-f" git_wrapper_abs]
@@ -222,7 +222,7 @@ assert git_zshenv_file.ok else "REFUSE chatgpt-mind: tracked zsh environment doo
 assert git_zprofile_file.ok else "REFUSE chatgpt-mind: tracked zsh profile doorway is absent"
 assert git_zshenv_link.ok == false else "REFUSE chatgpt-mind: tracked zsh environment doorway cannot be a symlink"
 assert git_zprofile_link.ok == false else "REFUSE chatgpt-mind: tracked zsh profile doorway cannot be a symlink"
-let git_path_arg = "PATH=${repo_root}/tools/l/mind-bin:/opt/homebrew/Cellar/git/2.53.0_1/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+let git_path_arg = "PATH=${repo_root}/tools/m/mind-bin:/opt/homebrew/Cellar/git/2.53.0_1/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 let git_exec_arg = "GRAIN_MIND_GIT=${git_wrapper_abs}"
 let git_raw_arg = "GRAIN_MIND_GIT_RAW=${git_exec}"
 let git_root_arg = "GRAIN_MIND_ROOT=${repo_root}"
@@ -365,7 +365,7 @@ if mode == "stop" then say "chatgpt-mind: stop requested at ${stop_abs}"
 if mode == "stop" then exit 0
 
 let printer_err = preflight_rel + "/printer.err"
-let prompt_printer = ?: (seat == "mystery") ("tools/l/print-mystery-planet-prompt.rish") ("tools/l/print-mind-cardinal-prompt.rish")
+let prompt_printer = ?: (seat == "mystery") ("tools/p/print-mystery-planet-prompt.rish") ("tools/p/print-mind-cardinal-prompt.rish")
 let printer = run-bounded { argv: [rishi_bin "run" prompt_printer], stdin: "", stdin-max: 0, stdout-path: prompt_rel, stdout-max: max_prompt_bytes, stderr-path: printer_err, stderr-max: 4096 }
 assert printer.ok else "REFUSE chatgpt-mind: canonical Rishi prompt printer failed"
 assert printer.stdout-bytes >= 1 else "REFUSE chatgpt-mind: canonical prompt is empty"
@@ -679,7 +679,7 @@ if ?& [(mode == "loop") (system_sleep != "0")] then say "chatgpt-mind: system sl
 if ?& [(mode == "loop") (battery_sleep != "0")] then say "chatgpt-mind: battery sleep is observed, not changed or used as an execution gate"
 if internal_lap == false then acquire-lock lock_rel
 
-let launcher_abs = repo_root + "/tools/l/chatgpt-mind.rish"
+let launcher_abs = repo_root + "/tools/c/chatgpt-mind.rish"
 let internal_out = log_rel + "/supervisor.out"
 let internal_err = log_rel + "/supervisor.err"
 let phase_values = ["supervisor reason=starting" "supervisor reason=unclassified" "lap-preflight reason=dirty-tree" "lap-preflight reason=xy-advanced" "lap-preflight reason=stop" "lap-preflight reason=custody" "lap-preflight reason=transaction" "lap-preflight reason=head" "last-message reason=initialization" "codex-exec reason=running" "codex-output reason=byte-wall" "codex-exec reason=nonzero" "custody reason=recorded" "custody reason=all-cruxes-parked" "parked reason=design-question" "git-postcondition reason=parked-ledger" "git-postcondition reason=inner-commit" "git-postcondition reason=no-candidate" "git-postcondition reason=unstaged" "git-postcondition reason=untracked" "git-postcondition reason=path-wall" "git-postcondition reason=path-ceiling" "git-postcondition reason=lane" "git-postcondition reason=forbidden-path" "git-postcondition reason=diff-wall" "git-postcondition reason=commit-message" "git-postcondition reason=config-drift" "git-postcondition reason=hook-failed" "git-postcondition reason=xy-advanced" "git-postcondition reason=transaction" "git-postcondition reason=signing-failed" "git-postcondition reason=signature" "git-postcondition reason=commit-ceiling" "git-postcondition reason=ref-update" "git-postcondition reason=post-cas" "complete reason=signed-commit"]
@@ -872,7 +872,7 @@ assert candidate_count >= 1 else "REFUSE chatgpt-mind: candidate path count is e
 assert candidate_count <= max_candidate_paths else "REFUSE chatgpt-mind: candidate crossed sixty-four paths"
 let phase_forbidden_path = write-phase "git-postcondition reason=forbidden-path"
 assert phase_forbidden_path.ok else "REFUSE chatgpt-mind: internal lap could not seat its forbidden-path phase"
-let forbidden_path_probe = run ["/usr/bin/grep" "-E" "-q" "^([.]mind-state|[.]git|tools/hooks|tools/l/mind-bin|tools/l/mind-shell)(/|$)|^(tools/l/chatgpt-mind[.]rish|rishi/bin/rishi)$" candidate_paths]
+let forbidden_path_probe = run ["/usr/bin/grep" "-E" "-q" "^([.]mind-state|[.]git|tools/hooks|tools/m/mind-bin|tools/m/mind-shell)(/|$)|^(tools/l/chatgpt-mind[.]rish|rishi/bin/rishi)$" candidate_paths]
 assert forbidden_path_probe.code == 1 else "REFUSE chatgpt-mind: staged candidate entered supervisor or Git administration state"
 assert gitlink-held repo_root else "REFUSE chatgpt-mind: staged candidate moved the pinned sketchbook gitlink"
 
@@ -974,7 +974,7 @@ assert hook_count_run.ok else "REFUSE chatgpt-mind: post-hook candidate path cou
 let hook_count = parse (trim (read-file candidate_count_out))
 assert hook_count >= 1 else "REFUSE chatgpt-mind: jailed hooks emptied the staged candidate"
 assert hook_count <= max_candidate_paths else "REFUSE chatgpt-mind: jailed hooks crossed sixty-four candidate paths"
-let hook_forbidden_probe = run ["/usr/bin/grep" "-E" "-q" "^([.]mind-state|[.]git|tools/hooks|tools/l/mind-bin|tools/l/mind-shell)(/|$)|^(tools/l/chatgpt-mind[.]rish|rishi/bin/rishi)$" candidate_paths]
+let hook_forbidden_probe = run ["/usr/bin/grep" "-E" "-q" "^([.]mind-state|[.]git|tools/hooks|tools/m/mind-bin|tools/m/mind-shell)(/|$)|^(tools/l/chatgpt-mind[.]rish|rishi/bin/rishi)$" candidate_paths]
 assert hook_forbidden_probe.code == 1 else "REFUSE chatgpt-mind: jailed hooks entered supervisor or Git administration state"
 assert gitlink-held repo_root else "REFUSE chatgpt-mind: jailed hooks moved the pinned sketchbook gitlink"
 let hook_raw_run = run-bounded { argv: (git_argv + ["-C" repo_root "diff" "--cached" "--raw" "--no-abbrev" "--no-renames" "--no-ext-diff"]), stdin: "", stdin-max: 0, stdout-path: candidate_raw, stdout-max: 65536, stderr-path: candidate_raw_err, stderr-max: 16384 }

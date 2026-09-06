@@ -2,7 +2,7 @@
 #
 #   rishi/bin/rishi run tools/f/fleet_lap_verdict_witness.rish
 #
-# tools/l/fleet-loop.sh stops itself after three laps that each died inside ten seconds, because an
+# tools/f/fleet-loop.sh stops itself after three laps that each died inside ten seconds, because an
 # ai-jail flag refusal is upstream of the agent and no retry reaches past it (REDS %414). A spent
 # session limit is upstream of the agent too, returns just as instantly, and CLEARS ON A CLOCK. On
 # `20260906` six ships met the limit between 07:21 and 07:28, burned three instant laps each, and
@@ -30,7 +30,7 @@ assert jail.ok else "fleet-lap-verdict: the classifier refused on the jail trans
 assert jail.out contains "verdict=quickfail" else "fleet-lap-verdict: the elder invocation fault stopped being caught"
 
 say "fleet-lap-verdict: and the loop asks BEFORE it counts..."
-let wired = run ["sh" "-c" "grep -q 'verdict=$(sh tools/fixtures/f/fleet_lap_verdict.sh' tools/l/fleet-loop.sh && echo WIRED_CALL || echo WIRED_NONE"]
+let wired = run ["sh" "-c" "grep -q 'verdict=$(sh tools/fixtures/f/fleet_lap_verdict.sh' tools/f/fleet-loop.sh && echo WIRED_CALL || echo WIRED_NONE"]
 assert wired.ok else "fleet-lap-verdict: the wiring could not be read"
 # invariant: the loop CALLS the classifier -- a mention in a comment is not a call, so the grep
 # matches the assignment itself rather than the filename.

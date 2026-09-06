@@ -1,7 +1,7 @@
 # ChatGPT MIND -- the shell elder and its Rishi peers
 
 > **FOSSIL -- Class M**, prepped `20260906.114734` for the mitra shed; the cut stays RED
-> until circled. **Living mutant:** `tools/l/fleet-loop.sh` reading `construction/fleet-roster.kyri`, with `tools/l/fleet_watch.sh` above it. The Codex supervisor family; its elder shell stays byte-for-byte on purpose.
+> until circled. **Living mutant:** `tools/f/fleet-loop.sh` reading `construction/fleet-roster.kyri`, with `tools/f/fleet_watch.sh` above it. The Codex supervisor family; its elder shell stays byte-for-byte on purpose.
 > Row and reasons: [`../../construction/SHRED_PREP.md`](../../construction/SHRED_PREP.md).
 
 **Status:** Living compatibility receipt
@@ -9,7 +9,12 @@
 ## Provenance held
 
 The booked source is [`chatgpt-mind.sh`](chatgpt-mind.sh), authored in this
-repository and retained byte for byte. Its SHA-256 is
+repository and retained byte for byte. **It moved rooms on `20260906` and its bytes did not**:
+the letter fold carried it from `tools/l/` to `tools/c/`, where its own basename says it
+belongs, and a reference sweep that rewrote its internal usage line was **reverted** so the
+hash below stays true. A path is a place; a provenance witness is its bytes. One consequence a
+reader should expect: its `Usage:` line still prints the elder path, which is the honest cost
+of a byte pin and cheaper than a false hash. Its SHA-256 is
 `ee508804d2e441884cc55706da401eaadbf19d06542da0bb7c7f5652a576a234`.
 Git seats it in signed commit `ad155d022da8db5f59ce40ded2e7d4802249567c`.
 Repository code is offered under Apache-2.0 or MIT at the recipient's choice,

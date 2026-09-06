@@ -22,7 +22,7 @@ of the day it saved.
   tracked and lives inside `~/grain`, which matters: ai-jail resets host `$HOME` on exit, so a
   setting written to `~/.claude/settings.json` leaves with the jail. **It is the reading**: the file
   that actually drives the model is what every other site agrees with, held by
-  [`../../tools/m/declared_model_witness.rish`](../../tools/m/declared_model_witness.rish).
+  [`../../tools/d/declared_model_witness.rish`](../../tools/d/declared_model_witness.rish).
 - `GLOW_PROFILE.kyri` and its template -- `effort max` beside `model`, so the clone records how its
   work was actually produced and a session log can say so honestly.
 - Every `claude` invocation in `tools/l/launch-claude-chapter.rish` carries `--effort max` explicitly,

@@ -13,7 +13,7 @@
 #   rishi/bin/rishi run tools/l/launch-mind-cardinal-chapter.rish
 #
 # These lines only print. Copy one whole line at a time from anywhere inside the
-# grain-mind checkout. Every live step stays in tools/l/chatgpt-mind.rish; the shell
+# grain-mind checkout. Every live step stays in tools/c/chatgpt-mind.rish; the shell
 # elder is a byte-pinned witness. Recast 20260828 on Keaton's word to the same card
 # shape the other five launchers print -- banner, host and lane, then every option in
 # running order -- after the elder card's order had grown apart from its siblings.
@@ -22,7 +22,7 @@ say "MIND -- the cardinal star of the aether row (night twin Mystery)"
 say "================================================================"
 say ""
 say "Host: CODEX VIA CHATGPT on macOS, in ITS OWN CLONE ~/grain-mind -- the one"
-say "body with a whole tree to itself, supervised by tools/l/chatgpt-mind.rish"
+say "body with a whole tree to itself, supervised by tools/c/chatgpt-mind.rish"
 say "with Codex held inside the proven outer ai-jail. Its lane since the role"
 say "swap (20260827.155213): BRUSHSTROKE and SURF/SKATE DESIGN, with the"
 say "pure-Swift SkateCore bounded core as the booked crux; DJINN's design lead"
@@ -46,23 +46,23 @@ say 'GRAIN_ROOT=$(/opt/homebrew/Cellar/git/2.53.0_1/bin/git rev-parse --show-top
 say ""
 say "CHECK -- repository, products, configuration, credential presence, and the"
 say "outer jail, without a model or network call:"
-say 'GRAIN_ROOT=$(/opt/homebrew/Cellar/git/2.53.0_1/bin/git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && "$GRAIN_ROOT/rishi/bin/rishi" run "$GRAIN_ROOT/tools/l/chatgpt-mind.rish" check)'
+say 'GRAIN_ROOT=$(/opt/homebrew/Cellar/git/2.53.0_1/bin/git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && "$GRAIN_ROOT/rishi/bin/rishi" run "$GRAIN_ROOT/tools/c/chatgpt-mind.rish" check)'
 say ""
 say "ONE SUPERVISED LAP -- after check is green (append --dry-run to rehearse"
 say "without invoking Codex):"
-say 'GRAIN_ROOT=$(/opt/homebrew/Cellar/git/2.53.0_1/bin/git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && "$GRAIN_ROOT/rishi/bin/rishi" run "$GRAIN_ROOT/tools/l/chatgpt-mind.rish" once --arm-once)'
+say 'GRAIN_ROOT=$(/opt/homebrew/Cellar/git/2.53.0_1/bin/git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && "$GRAIN_ROOT/rishi/bin/rishi" run "$GRAIN_ROOT/tools/c/chatgpt-mind.rish" once --arm-once)'
 say ""
 say "THE BOUNDED LOOP -- after the supervised lap is green. Options: --max-laps"
 say "1..24, --failure-ceiling 1..5, --backoff-seconds 0..300; --dry-run"
 say "rehearses. Codex's unbounded connection retries are disabled, so a dead"
 say "session returns to this circuit instead of spinning:"
-say 'GRAIN_ROOT=$(/opt/homebrew/Cellar/git/2.53.0_1/bin/git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && "$GRAIN_ROOT/rishi/bin/rishi" run "$GRAIN_ROOT/tools/l/chatgpt-mind.rish" loop --arm-loop --max-laps 3 --failure-ceiling 2 --backoff-seconds 15)'
+say 'GRAIN_ROOT=$(/opt/homebrew/Cellar/git/2.53.0_1/bin/git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && "$GRAIN_ROOT/rishi/bin/rishi" run "$GRAIN_ROOT/tools/c/chatgpt-mind.rish" loop --arm-loop --max-laps 3 --failure-ceiling 2 --backoff-seconds 15)'
 say ""
 say "STOP -- from another Terminal, honored between laps:"
-say 'GRAIN_ROOT=$(/opt/homebrew/Cellar/git/2.53.0_1/bin/git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && "$GRAIN_ROOT/rishi/bin/rishi" run "$GRAIN_ROOT/tools/l/chatgpt-mind.rish" stop)'
+say 'GRAIN_ROOT=$(/opt/homebrew/Cellar/git/2.53.0_1/bin/git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && "$GRAIN_ROOT/rishi/bin/rishi" run "$GRAIN_ROOT/tools/c/chatgpt-mind.rish" stop)'
 say ""
 say "PRINT THE PROMPT -- the canonical Arbor plus MIND prompt, no Codex call:"
-say 'GRAIN_ROOT=$(/opt/homebrew/Cellar/git/2.53.0_1/bin/git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && "$GRAIN_ROOT/rishi/bin/rishi" run "$GRAIN_ROOT/tools/l/chatgpt-mind.rish" print)'
+say 'GRAIN_ROOT=$(/opt/homebrew/Cellar/git/2.53.0_1/bin/git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && "$GRAIN_ROOT/rishi/bin/rishi" run "$GRAIN_ROOT/tools/c/chatgpt-mind.rish" print)'
 say ""
 say "Every lap runs in Mind's own clone, so the shared-checkout law asks only"
 say "the twice-pulled send: the round opens with sh tools/f/fleet_round_open.sh,"
@@ -81,7 +81,7 @@ say "ONE staged candidate for the outer supervisor to sign."
 say ""
 say "THE LOOP (24/7 shape, the same day rhythm as Silence and Dream -- one paste):"
 say ""
-say "cd ~/grain-mind && git stash list && git pull xy main && caffeinate -i rishi/bin/rishi run tools/l/chatgpt-mind.rish loop --arm-loop --max-laps 24"
+say "cd ~/grain-mind && git stash list && git pull xy main && caffeinate -i rishi/bin/rishi run tools/c/chatgpt-mind.rish loop --arm-loop --max-laps 24"
 say ""
 say "   - loop --dry-run first prints the plan without invoking Codex"
 say "   - caffeinate -i keeps a battery Mac awake; on AC this bench never sleeps"
@@ -89,7 +89,7 @@ say "   - an armed lap that is merely behind the fleet fast-forwards itself; a"
 say "     true divergence still stops at the xy-integrated wall for a hand"
 say "   - a lap that fails after Codex wrote PARKS its leavings as a mind-park"
 say "     stash and the retry opens clean -- git stash list shows every parked lap"
-say "   - stop: rishi/bin/rishi run tools/l/chatgpt-mind.rish stop"
+say "   - stop: rishi/bin/rishi run tools/c/chatgpt-mind.rish stop"
 say "   - logs: .mind-state/logs/ ; twenty-four laps is the hard day bound, so"
 say "     relaunch tomorrow exactly like the day loops beside it"
 say ""

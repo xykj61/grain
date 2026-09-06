@@ -1,4 +1,4 @@
-# tools/m/ios_app_shell_witness.rish -- a real iOS app, installed and launched by the platform,
+# tools/i/ios_app_shell_witness.rish -- a real iOS app, installed and launched by the platform,
 # proven from both sides.
 #
 # LOCA -- the app the platform launches (20260829.095045). This witness builds the shell probe
@@ -14,7 +14,7 @@
 # Requires a booted simulator (open -a Simulator wakes the service; simctl boot a device).
 #
 # Run from the repository root:
-#   rishi/bin/rishi run tools/m/ios_app_shell_witness.rish
+#   rishi/bin/rishi run tools/i/ios_app_shell_witness.rish
 
 let pen = "/tmp/grain_ios_shell_pen"
 let app = "/tmp/grain_ios_shell_pen/Grain.app"
@@ -36,7 +36,7 @@ let wipe = run ["rm" "-rf" pen]
 assert wipe.ok else "ios-app-shell: pen wipe"
 let mk = run ["mkdir" "-p" app]
 assert mk.ok else "ios-app-shell: bundle mkdir"
-let plist = run ["cp" "tools/fixtures/m/grain_ios_shell_info.plist" "/tmp/grain_ios_shell_pen/Grain.app/Info.plist"]
+let plist = run ["cp" "tools/fixtures/g/grain_ios_shell_info.plist" "/tmp/grain_ios_shell_pen/Grain.app/Info.plist"]
 assert plist.ok else "ios-app-shell: plist copy"
 let bin = run ["cp" "tools/.build/ios_app_shell" "/tmp/grain_ios_shell_pen/Grain.app/ios_app_shell"]
 assert bin.ok else "ios-app-shell: binary into the bundle"

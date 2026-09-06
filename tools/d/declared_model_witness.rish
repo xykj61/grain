@@ -1,4 +1,4 @@
-# tools/m/declared_model_witness.rish -- one model, named once, agreed everywhere.
+# tools/d/declared_model_witness.rish -- one model, named once, agreed everywhere.
 #
 # WHY THIS RUNG. On 20260824 Keaton asked to return this clone to Opus 5 and found the tree already
 # disagreed with itself about which model it ran. `.claude/settings.json` and
@@ -33,7 +33,7 @@
 # Style: context/GAUGE_STYLE.md - Rule: .claude/rules/session-logs.md
 #
 # Run from the repository root:
-#   rishi/bin/rishi run tools/m/declared_model_witness.rish
+#   rishi/bin/rishi run tools/d/declared_model_witness.rish
 
 say "declared-model: Language EN -- a constant spelled four ways is a constant that can disagree with itself."
 say "declared-model: Style Gauge -- the driver is the reading, and every description agrees with it."

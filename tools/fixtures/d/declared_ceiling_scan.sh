@@ -325,12 +325,12 @@ fi
 # THE ONE NAMED EXEMPTION (REDS %295, seated on Keaton's word 20260828). The Mind launcher pair
 # bounds its PROMPT at 24,576 bytes -- MAX_PROMPT_BYTES in the shell elder, max_prompt_bytes in
 # its Rishi peer -- a number that equals the pin law's only because 24 KiB is a round number.
-# The elder is byte-pinned by SHA-256 in tools/l/chatgpt-mind-rishi-adaptation.md, so the repair
+# The elder is byte-pinned by SHA-256 in tools/c/chatgpt-mind-rishi-adaptation.md, so the repair
 # this guard normally asks -- decide by reading living_pin_max_bytes.sh -- is a door the MIND
 # adaptation receipt closes by design. The exemption is by PATH AND VARIABLE NAME both: a new
 # copy of the number anywhere else still bites, and a different variable in these same files
 # still bites. Never a bypass -- no flag, no environment word, turns this off.
-grep -vE '^tools/l/chatgpt-mind\.(sh|rish):[0-9]+:.*[Mm][Aa][Xx]_[Pp][Rr][Oo][Mm][Pp][Tt]_[Bb][Yy][Tt][Ee][Ss]' "$LAW_TMP/recite" > "$LAW_TMP/recite.kept" 2>/dev/null || : > "$LAW_TMP/recite.kept"
+grep -vE '^tools/c/chatgpt-mind\.(sh|rish):[0-9]+:.*[Mm][Aa][Xx]_[Pp][Rr][Oo][Mm][Pp][Tt]_[Bb][Yy][Tt][Ee][Ss]' "$LAW_TMP/recite" > "$LAW_TMP/recite.kept" 2>/dev/null || : > "$LAW_TMP/recite.kept"
 mv "$LAW_TMP/recite.kept" "$LAW_TMP/recite"
 law_recite=$(wc -l < "$LAW_TMP/recite" | tr -d ' ')
 

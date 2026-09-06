@@ -302,7 +302,7 @@ launch-zed.sh
 # stack. The elder names stay ignored: a clone adopts its elder directory on the next
 # launch (agent-jail.sh, cursor_jail_macos.rish), and an un-adopted one must never be
 # committed in the meantime. `.mind-state/` is NOT adopted -- the byte-pinned
-# `tools/l/chatgpt-mind.sh` names it and its SHA-256 is the MIND adaptation receipt.
+# `tools/c/chatgpt-mind.sh` names it and its SHA-256 is the MIND adaptation receipt.
 /loops/
 /.cursor-state/
 /.zed-state/

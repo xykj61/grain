@@ -51,7 +51,7 @@ seated 20260904.013013
 # has a lane, a prompt, and a name, and no tree yet. `live` would have the re-arm report an absent
 # directory as if a ship had gone missing, and `parked` would say it had sailed and stopped. Neither
 # is true of a ship being built. `--live` excludes it, so the loop and the recipe stay honest, and
-# the tree birth is `rishi/bin/rishi run tools/l/birth_a_clone.rish /home/keeper/grain-<seat>`
+# the tree birth is `rishi/bin/rishi run tools/b/birth_a_clone.rish /home/keeper/grain-<seat>`
 # followed by a `claude login` on that host, which is a hand.
 seat bakery
 tree grain-bakery

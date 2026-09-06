@@ -1,6 +1,6 @@
 # stash_record_witness.rish -- a record parked in the dead-letter box and never read back out.
 #
-#   rishi/bin/rishi run tools/f/stash_record_witness.rish
+#   rishi/bin/rishi run tools/s/stash_record_witness.rish
 #
 # REDS %464. `tools/f/fleet_round_open.sh` stashes a dead lap's unsent work at the round open --
 # correct, and the only reason those bytes survive (%321). What was missing is the read back, so
@@ -34,27 +34,27 @@ let root = run ["test" "-f" "construction/ITINERARY.md"]
 assert root.ok else "run from the repo root (construction/ITINERARY.md not found)"
 
 # invariant: the scan under test must stand before any reading of it is believed.
-let present = run ["test" "-f" "tools/fixtures/f/stash_record_scan.sh"]
-assert present.ok else "tools/fixtures/f/stash_record_scan.sh is missing -- the box has no reader"
+let present = run ["test" "-f" "tools/fixtures/s/stash_record_scan.sh"]
+assert present.ok else "tools/fixtures/s/stash_record_scan.sh is missing -- the box has no reader"
 
 # invariant: every planted case reads as planted, refusals and welcomes alike.
-let control = run ["sh" "tools/fixtures/f/stash_record_control.sh"]
+let control = run ["sh" "tools/fixtures/s/stash_record_control.sh"]
 say control.out
 assert control.ok else "stash-record: a planted case read wrong -- see the control's own lines"
 assert control.out contains "fail=0" else "stash-record: the control closed with a failing leg"
 
 # invariant: the reading on THIS tree, which is the one the fleet lives in.
-let here = run ["sh" "tools/fixtures/f/stash_record_scan.sh"]
+let here = run ["sh" "tools/fixtures/s/stash_record_scan.sh"]
 assert here.ok else "stash-record: the scan refused on this tree"
 say here.out
-assert here.out contains "unlanded=0" else "stash-record: a session log stands in a round-open stash and nothing else carries it -- run `sh tools/fixtures/f/stash_record_scan.sh list` and read it back"
-assert here.out contains "parked=0" else "stash-record: a record is carried only by a pier/ park branch, which is the second drawer of the same box rather than the channel -- run `sh tools/fixtures/f/stash_record_scan.sh list`"
+assert here.out contains "unlanded=0" else "stash-record: a session log stands in a round-open stash and nothing else carries it -- run `sh tools/fixtures/s/stash_record_scan.sh list` and read it back"
+assert here.out contains "parked=0" else "stash-record: a record is carried only by a pier/ park branch, which is the second drawer of the same box rather than the channel -- run `sh tools/fixtures/s/stash_record_scan.sh list`"
 assert here.out contains "verdict=ok" else "stash-record: the box holds a record the channel does not"
 
 # invariant: the scan reads the park namespace at all. A reading that silently lost its exclusion
 # would answer `parked=0` on every tree forever, which is the one number indistinguishable from a
 # healthy field (REDS %463) -- so the presence of the exclusion is asserted rather than assumed.
-let excludes = run ["grep" "-F" "-q" "^refs/heads/pier/|^refs/remotes/" "tools/fixtures/f/stash_record_scan.sh"]
+let excludes = run ["grep" "-F" "-q" "^refs/heads/pier/|^refs/remotes/" "tools/fixtures/s/stash_record_scan.sh"]
 assert excludes.ok else "stash-record: the scan no longer excludes the pier/ park namespace, so a park would read as a landing again"
 
 # invariant: the round open actually calls the reading, or the report exists and nobody hears it.

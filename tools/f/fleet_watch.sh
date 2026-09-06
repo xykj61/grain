@@ -18,9 +18,9 @@
 # keyboard. The seat table already binds seat -> tree; tmux already binds name -> index; this file
 # adds no third copy of either (REDS %409's law, one room over).
 #
-#   sh tools/l/fleet_watch.sh                 # watch until stopped
-#   sh tools/l/fleet_watch.sh --once          # one pass, then exit
-#   sh tools/l/fleet_watch.sh --dry-run       # decide and print; send no keystroke
+#   sh tools/f/fleet_watch.sh                 # watch until stopped
+#   sh tools/f/fleet_watch.sh --once          # one pass, then exit
+#   sh tools/f/fleet_watch.sh --dry-run       # decide and print; send no keystroke
 #
 # ENV, all bounded:
 #   WATCH_SESSION   tmux session to read (default: this pane's session, else `pier`)
@@ -194,7 +194,7 @@ while :; do
     # enclosure one ship at a time, which is the worst shape a disagreement can take: nobody typed
     # it and nothing announced it. So the watch passes its OWN `FLEET_BARE` through, and a hand
     # launching the watch chooses for every re-arm it will ever make.
-    line="cd $tree && ${bare_prefix}sh tools/l/fleet-loop.sh $seat"
+    line="cd $tree && ${bare_prefix}sh tools/f/fleet-loop.sh $seat"
     if [ "$dry" = 1 ]; then
       say "$seat -- WOULD ARM: $line"
     else

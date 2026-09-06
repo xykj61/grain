@@ -116,9 +116,9 @@ case "${1:-}" in
       _status=$(sh "$0" --status "$_s")
       _lane=$(sh "$0" --lane "$_s")
       printf -- '-- %s (%s) -- %s\n' "$_s" "$_status" "$_lane"
-      printf 'cd ~/%s && FLEET_DRY=1 sh tools/l/fleet-loop.sh %s   # print the command, run nothing\n' "$_tree" "$_s"
-      printf 'cd ~/%s && LOOP_LAPS=1 sh tools/l/fleet-loop.sh %s   # one lap\n' "$_tree" "$_s"
-      printf 'cd ~/%s && sh tools/l/fleet-loop.sh %s               # the loop; LOOP_HOURS bounds it\n' "$_tree" "$_s"
+      printf 'cd ~/%s && FLEET_DRY=1 sh tools/f/fleet-loop.sh %s   # print the command, run nothing\n' "$_tree" "$_s"
+      printf 'cd ~/%s && LOOP_LAPS=1 sh tools/f/fleet-loop.sh %s   # one lap\n' "$_tree" "$_s"
+      printf 'cd ~/%s && sh tools/f/fleet-loop.sh %s               # the loop; LOOP_HOURS bounds it\n' "$_tree" "$_s"
       printf '\n'
     done
     ;;

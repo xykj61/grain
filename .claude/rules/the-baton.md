@@ -1,10 +1,10 @@
 # The Baton -- the opening every ship reads, written once
 
 **Seated:** `20260904.214754` on Keaton's word -- **Status:** Living
-**The file:** [`../../tools/l/fleet_baton.txt`](../../tools/l/fleet_baton.txt) -- **The roster:** [`../../construction/fleet-roster.kyri`](../../construction/fleet-roster.kyri) -- **The guard:** [`../../tools/f/fleet_roster_witness.rish`](../../tools/f/fleet_roster_witness.rish)
+**The file:** [`../../tools/f/fleet_baton.txt`](../../tools/f/fleet_baton.txt) -- **The roster:** [`../../construction/fleet-roster.kyri`](../../construction/fleet-roster.kyri) -- **The guard:** [`../../tools/f/fleet_roster_witness.rish`](../../tools/f/fleet_roster_witness.rish)
 
 **Every ship in the fleet opens the same way, and that opening is written once.**
-`tools/l/fleet_baton.txt` holds it; `tools/l/fleet-loop.sh` prepends it to whichever seat is
+`tools/f/fleet_baton.txt` holds it; `tools/f/fleet-loop.sh` prepends it to whichever seat is
 launching; a seat prompt is its **lane stanza** alone. A directive seated on the baton reaches every
 ship on its next lap with no per-seat edit.
 
@@ -95,7 +95,7 @@ Two mechanisms answer that, at two levels:
   returns instantly and the elder rule classified it by elapsed time alone. `fleet-loop.sh` holds
   `LOOP_LIMIT_WAIT` (300s) up to `LOOP_LIMIT_WAIT_MAX` (72) times without counting a lap, so an
   overnight window that clears at 07:30 is worked at 07:30.
-- **Above the loop**, [`../../tools/l/fleet_watch.sh`](../../tools/l/fleet_watch.sh) runs beside the
+- **Above the loop**, [`../../tools/f/fleet_watch.sh`](../../tools/f/fleet_watch.sh) runs beside the
   ships in the same tmux session and re-arms any live seat whose `fleet-loop.sh` process is gone.
 
 **Nothing is numbered.** The watch reads `tmux list-windows` for window **names** on every pass and
@@ -121,7 +121,7 @@ into the enclosure one ship at a time, unannounced -- the worst shape a disagree
 watch passes its **own** `FLEET_BARE` through, so a hand launching it chooses for every re-arm it
 will ever make.
 
-Proven by [`../../tools/fixtures/l/fleet_watch_control.sh`](../../tools/fixtures/l/fleet_watch_control.sh)
+Proven by [`../../tools/fixtures/f/fleet_watch_control.sh`](../../tools/fixtures/f/fleet_watch_control.sh)
 -- sixteen behaviors on a **real tmux session** in a throwaway pen, every refusal planted and then
 lifted -- under [`../../tools/f/fleet_watch_witness.rish`](../../tools/f/fleet_watch_witness.rish).
 
@@ -157,6 +157,6 @@ stream would false-stop the loop the moment it began.
 
 The captain prints the baton as a raw code block in the round's reply, so a hand at any door can
 paste it without opening a file. That printing is a courtesy; **this file and
-`tools/l/fleet_baton.txt` are the record**, and the guard reads the file.
+`tools/f/fleet_baton.txt` are the record**, and the guard reads the file.
 
 Canonical Cursor twin: `.cursor/rules/the-baton.mdc`.

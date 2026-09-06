@@ -1,5 +1,5 @@
 #!/bin/sh
-# Proves tools/fixtures/f/stash_record_scan.sh on real git repositories in a throwaway pen --
+# Proves tools/fixtures/s/stash_record_scan.sh on real git repositories in a throwaway pen --
 # every refusal planted and then removed, and every welcome asserted as hard as every refusal,
 # since a refusal proven only in the passing direction cannot be told from a bypass.
 #

@@ -1,7 +1,7 @@
 #!/bin/sh
 # FOSSIL -- Class M, prepped 20260906.114734 for the mitra shed; the cut stays RED until circled.
-# Living mutant: tools/l/fleet-loop.sh reading construction/fleet-roster.kyri, with
-# tools/l/fleet_watch.sh above it. Row and reasons: construction/SHRED_PREP.md.
+# Living mutant: tools/f/fleet-loop.sh reading construction/fleet-roster.kyri, with
+# tools/f/fleet_watch.sh above it. Row and reasons: construction/SHRED_PREP.md.
 # chatgpt_mind_full_clone_control.sh -- local, no-network MIND clone proof.
 
 set -eu
@@ -26,12 +26,12 @@ GPG_LINK=/opt/homebrew/bin/gpg
 GPG=/opt/homebrew/Cellar/gnupg/2.5.18/bin/gpg
 PIN=99b87f20f1fdbd2fc216cb13c07bdd0531916d27
 XY_URL=ssh://git@github.com/xykj61/grain.git
-MIND_GIT="$ROOT/tools/l/mind-bin/git"
-MIND_SHELL="$ROOT/tools/l/mind-shell"
+MIND_GIT="$ROOT/tools/m/mind-bin/git"
+MIND_SHELL="$ROOT/tools/m/mind-shell"
 MIND_ZSHENV="$MIND_SHELL/.zshenv"
 MIND_ZPROFILE="$MIND_SHELL/.zprofile"
-MIND_PATH="$ROOT/tools/l/mind-bin:/opt/homebrew/Cellar/git/2.53.0_1/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin"
-LAUNCHER="$ROOT/tools/l/chatgpt-mind.rish"
+MIND_PATH="$ROOT/tools/m/mind-bin:/opt/homebrew/Cellar/git/2.53.0_1/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+LAUNCHER="$ROOT/tools/c/chatgpt-mind.rish"
 RISHI="$ROOT/rishi/bin/rishi"
 PRE_COMMIT="$ROOT/tools/hooks/pre-commit"
 COMMIT_MSG="$ROOT/tools/hooks/commit-msg"
@@ -68,8 +68,8 @@ for shell_doorway in "$MIND_ZSHENV" "$MIND_ZPROFILE"; do
     exit 1
   }
 done
-[ "$("$GIT" -C "$ROOT" ls-files -s -- tools/l/mind-bin/git | awk '{print $1 " " $4}')" \
-  = '100755 tools/l/mind-bin/git' ] || {
+[ "$("$GIT" -C "$ROOT" ls-files -s -- tools/m/mind-bin/git | awk '{print $1 " " $4}')" \
+  = '100755 tools/m/mind-bin/git' ] || {
   echo "FAIL chatgpt-mind-full-clone: Git doorway is not tracked executable content" >&2
   exit 1
 }
@@ -81,13 +81,13 @@ grep -F '"$git_exec" -c diff.ignoreSubmodules=all "$@"' "$MIND_GIT" >/dev/null |
   echo "FAIL chatgpt-mind-full-clone: tracked Git doorway lost its inner submodule boundary" >&2
   exit 1
 }
-[ "$("$GIT" -C "$ROOT" ls-files -s -- tools/l/mind-shell/.zshenv | awk '{print $1 " " $4}')" \
-  = '100644 tools/l/mind-shell/.zshenv' ] || {
+[ "$("$GIT" -C "$ROOT" ls-files -s -- tools/m/mind-shell/.zshenv | awk '{print $1 " " $4}')" \
+  = '100644 tools/m/mind-shell/.zshenv' ] || {
   echo "FAIL chatgpt-mind-full-clone: zsh environment doorway is not tracked mode-0644 content" >&2
   exit 1
 }
-[ "$("$GIT" -C "$ROOT" ls-files -s -- tools/l/mind-shell/.zprofile | awk '{print $1 " " $4}')" \
-  = '100644 tools/l/mind-shell/.zprofile' ] || {
+[ "$("$GIT" -C "$ROOT" ls-files -s -- tools/m/mind-shell/.zprofile | awk '{print $1 " " $4}')" \
+  = '100644 tools/m/mind-shell/.zprofile' ] || {
   echo "FAIL chatgpt-mind-full-clone: zsh profile doorway is not tracked mode-0644 content" >&2
   exit 1
 }
@@ -260,8 +260,8 @@ require_launcher() {
 }
 
 require_launcher 'let git_expected = "/opt/homebrew/Cellar/git/2.53.0_1/bin/git"' 'canonical Homebrew Git'
-require_launcher 'let git_wrapper_abs = repo_root + "/tools/l/mind-bin/git"' 'tracked Git doorway'
-require_launcher 'let git_path_arg = "PATH=${repo_root}/tools/l/mind-bin:/opt/homebrew/Cellar/git/2.53.0_1/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin"' 'wrapper-first PATH'
+require_launcher 'let git_wrapper_abs = repo_root + "/tools/m/mind-bin/git"' 'tracked Git doorway'
+require_launcher 'let git_path_arg = "PATH=${repo_root}/tools/m/mind-bin:/opt/homebrew/Cellar/git/2.53.0_1/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin"' 'wrapper-first PATH'
 require_launcher 'let git_exec_arg = "GRAIN_MIND_GIT=${git_wrapper_abs}"' 'child Git doorway identity'
 require_launcher 'let git_raw_arg = "GRAIN_MIND_GIT_RAW=${git_exec}"' 'raw Homebrew Git identity'
 require_launcher 'let git_root_arg = "GRAIN_MIND_ROOT=${repo_root}"' 'child repository root'

@@ -27,7 +27,7 @@
 //! (exit 2, REFUSED on the console), and PROBE_PROVE_RED keeps the seam's gate at exit 134.
 //!
 //! Build (the iOS recipe), pack per the shell witness's bundle shape, install, launch, tap:
-//!   rishi/bin/rishi run tools/m/ios_app_shell_witness.rish   # the recipe's reference
+//!   rishi/bin/rishi run tools/i/ios_app_shell_witness.rish   # the recipe's reference
 //!   xcrun simctl launch --console booted ww.grain.touch.ios
 
 const std = @import("std");
