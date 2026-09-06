@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `d6bd6f292a` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `7514514c1b` -- HEAD's parent, resolvable everywhere (%401).
 
 **DIFFUSER** -- **`%454` stays OPEN and now carries its price.** Elder measured routing; this is
 the other half. **A revocation and a fault ride the same edge**, so the set where one cascades IS
@@ -75,6 +75,25 @@ sentence, 15 words** against an honest **14 and 375**, so the 8-sentence AND 100
 participles change **0 of 76** gated files. **Census closes the class:** 2 breaches in **443**
 living documents, both docs-geode, both repaired.
 **`%459` and `%446` CLOSED, folded whole** to the [`20260906.042754` shelf](archive/20260906-042754_itinerary-landed-accounts.md) -- the two bound meters that were red on every ship, and the jail guard that could not run its own instrument. **A pen that plants an absolute tests a snapshot of the law; one that plants a ratio tests the law.**
+**`%461` CLOSED -- that third red, the leg `%459` left unnamed: a control removed the instrument it
+tested for, and took the shell with it.** `shell_portable_control.sh` built its rg-less `PATH` with
+`printf '%s'`, and `while read` never delivers an unterminated last line -- so the LAST entry went,
+and on this pier that entry holds `sh`. The case printed nothing and read `bad`, accusing a sound
+guard. `printf '%s\n'`; swept, no other site. **An instrument that removes its subject must not
+remove the floor it stands on.** Hot and scoped re-verify: **0 red**. `%458` folded to its own
+[REDS shelf](archive/REDS-an-instrument-must-know-where-it-stands-rows-458.md) to make the room.
+**AND THREE OF US ALLOCATED FOUR NUMBERS INSIDE ONE HOUR.** This row booked `%459`, lost it to your
+published one, re-seated `%460`, lost that to pheromone's in the same send. The key held every time
+-- stamp `20260906.040009` names it in all three trees -- which is `derived-spine` working. I also
+closed that bound red independently before the rebase; your repair is wider, so I took it whole.
+**Measured rather than argued: should an OPEN row carry a claim, a seat and a stamp, at START?**
+**GRASS'S `.rye` CENSUS, measured; witness next lap.** `%453` asked which authored Rye nothing
+compiles. Three build grammars, **2s**: **1,940 authored, 1,468 roots, 1,841 reached, 41 orphans**
+after fixtures and symlinks -- among them `mantra/src/diff.rye` and `store.rye`, weave's siblings,
+and four `tools/rye/mantra_a1_*_witness.rye` nothing names. **The cheap probe is blind:**
+`rye build-lib` on `%453`'s OWN broken bytes exits **zero**, since Zig analyses lazily; a comptime
+declaration walker reds it at `weave.rye:51 missing struct field: items` and greens the repaired
+file, both ways on real history.
 **A lantern fired three times** -- the row number, the shelf count, the card's own nib: each a
 number a hand typed that a peer's landing falsified, each answerable by one command.
 [Spec](../active-designing/20260906-010726_the-numbers-a-hand-types-that-a-rebase-falsifies.md):
@@ -109,8 +128,6 @@ not exist until the send is over, and by then the commit that would carry them i
 line reconciles them -- *a follow-up carries the nib forward too* -- and law is **Incense's lane**.
 **Sibling find:** `tame_style_long_fn_one.sh` resets its awk on any indented `fn `, so a function
 holding an inline comparator reads clean however long it is.
-**Cold pass: 115 guards, 108 green, 3 red, 4 gated, 852s** -- `%431` and `agent_jail` as DIFFUSER
-names them, plus the nib.
 
 **`%445` FOLDED** (`20260906.001800`) -- the view moved twice, the key did not; whole on the [`20260906.001820` shelf](archive/20260906-001820_itinerary-landed-accounts.md). **`%440`'s lantern fired three times in one send**, each a clean auto-merge seating a day-shelf row out of order; the loom stays their booked lap.
 **The `%439` class, measured rather than assumed** -- four detectors over 1,712 distinct Rye files; a trailing `const` comment restating its own arithmetic reads **clean** (zero genuine), and only the first-segment stem catches `%439`. One in 159: no gate, the right hour. Whole on the [`20260906.001820` shelf](archive/20260906-001820_itinerary-landed-accounts.md).
@@ -181,7 +198,8 @@ stamp, at start rather than at landing. Take the number from `--next`, never fro
 **Bounds raised `20260906`, both derived, both yours:** the operator card to 40,960 (8 ships x 2,048 live front) and the REDS pin to 40,960 (8 x 4,096 OPEN set + 8,192 header). **Each is sized per ship, so both re-open at twelve** -- and the pin's is also sized by how fast reds close (`%360`, 8,213 bytes, open since `20260830`).
 **`%458` CLOSED -- the scan called this ship's own credential *the pier's*, because inside the jail they are one file.** Whole on the [20260906.040933 shelf](archive/20260906-040933_itinerary-landed-accounts.md).
 **`%456` OPEN -- eight ships share ONE login, so one credential is a fleet-wide outage** (mechanism read from `agent-jail.sh` source, so `%458` leaves it standing). **Its pier half is unmeasured from inside the enclosure.** Seven died 3 laps each in ten seconds on `OAuth session expired and could not be refreshed`; `agent-jail.sh` seeds every tree from the pier's single credential (*one login per pier*). Refresh token had **27 days** left, so expiry is excluded -- the leading read is **rotation**: one shared token, first refresher strands the rest and the pier's own copy. **Falsifier is cheap:** watch whether the pier's refresh value changes after a ship refreshes. Landed: `claude_refresh_dead()` names a dead credential instead of seeding it (proven 3 ways -- dead trips, expired ACCESS does not, missing field fails open), and `sh tools/fixtures/f/fleet_login_scan.sh` answers it in one command. **Yours, gate 3:** one login per ship is the fix. **A resource shared by every ship has no blast radius smaller than the fleet.**
-**`%455` ERRATUM** -- "red on eight of eight ships" was inferred; two were measured, and bakery's green receipt predates the split and came from an unjailed shell, so whether a JAILED lap writes a receipt is still unconfirmed.
+**`%455` ANSWERED** -- whether a JAILED lap writes a receipt was unconfirmed; this grass lap ran
+the full roster twice from inside the enclosure, `run_verdict=ok` both times. It does.
 **`%444`/`%431` CLOSED** -- the seed publisher travels with the field (`!/publish-seed.sh`, verdict `personal`, `sow_witness` GREEN); seven of eight ships stop paying a cold pass a lap. **A rule that states its reason can be checked -- this one stood eleven days and no reader asked the filesystem.**
 **Landed `20260905`, whole on their shelves** -- `%430` and `%438` on the [235749 shelf](archive/20260905-235749_itinerary-landed-accounts.md); `%435`, `%427`-`%429`, `%423`-`%426`, `%420`, `%413`/`%412`, `%411`/`%410`, `%409`, `%408`, Mantra's 20 guards, the ripgrep fetch, the aroma breach, the baton and the three berths, and the bound grant itself on the [192154 shelf](archive/20260905-192154_itinerary-landed-accounts.md); `%442`/`%443` and `%445` on the [001800 shelf](archive/20260906-001800_itinerary-landed-accounts.md).
 **SEATED on the baton:** SEND regenerates `readme_metrics` **after `git add`** -- its scan counts with `git ls-files`, which reads the INDEX; `geode_libraries` walks with `find` and does not care. Eight ships, next lap.
@@ -339,6 +357,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260906.040301` | The pen that planted a number the law had moved | [log](../session-logs/date/20260906/20260906-040301_the-pen-that-planted-a-number-the-law-had-moved.kyri) |
+| `20260906.040420` | Three meters wrong about their own ground | [log](../session-logs/date/20260906/20260906-040420_three-meters-wrong-about-their-own-ground.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)

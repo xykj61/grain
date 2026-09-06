@@ -189,7 +189,12 @@ if [ -f "$root/$e122" ] && have_tool rg; then
   # name. The first draft matched `/ripgrep-*/bin` and skipped on this pier, where the Nix store
   # prefixes that with a hash -- a skip is what a vacuous pass looks like from the outside, which is
   # the fault this whole file was written to refuse.
-  norg=$(printf '%s' "$PATH" | tr ':' '\n' | while IFS= read -r d; do
+  # `printf '%s\n'` rather than `%s`: `while read` does not deliver a final line with no newline
+  # after it, so `%s` silently dropped the LAST PATH entry. On this pier that entry is
+  # /run/current-system/sw/bin, which holds `sh` -- so the reduced PATH could not start a shell, the
+  # scan printed nothing, and this case read `bad` while the guard it tests was sound. An instrument
+  # that removes its subject must not remove the floor it stands on.
+  norg=$(printf '%s\n' "$PATH" | tr ':' '\n' | while IFS= read -r d; do
     [ -n "$d" ] || continue
     [ -x "$d/rg" ] || printf '%s\n' "$d"
   done | paste -sd: -)
