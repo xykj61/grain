@@ -40,6 +40,36 @@ done
 PEN=$(mktemp -d)
 trap 'rm -rf "$PEN"' EXIT INT TERM
 
+# THE PLANTS ARE SIZED FROM THE LAW, never spelled. Every case below plants a page that is NEAR its
+# bound, or OVER it, or comfortably UNDER it -- and each of those words names a RATIO rather than a
+# number. Spelled as absolutes, they were true of the law as it stood the day they were written and
+# false the morning it moved: on 20260906 the pin law seated
+# living_pin_max_bytes[construction/REDS.md] at 40,960, and three of this pen's nine checks failed
+# at once, because 24,000 bytes had been 97.6% of that page's bound and became 58.6% of it. Nothing
+# was wrong with the scan; the pen was testing a snapshot of the law rather than the law. A pen that
+# plants a ratio keeps testing the relationship it names, whatever the law says next.
+#
+# Read through the same fixture every meter reads -- tools/fixtures/l/living_pin_max_bytes.sh, one
+# reading and one home since REDS %199 -- and asked per page, since a page carrying its own seated
+# exception is weighed against ITS number by the duty under test.
+GENERAL_BOUND=$(sh "$BOUND_SRC")
+REDS_BOUND=$(sh "$BOUND_SRC" construction/REDS.md)
+LOGS_BOUND=$(sh "$BOUND_SRC" session-logs/README.md)
+
+# near_of <bound> -- a size the duty reads as NEAR: at or over 90% of the bound, and under it.
+# 95% sits clear of both edges, so neither a rounding step nor a small future change to the near
+# line turns a plant into the case beside it.
+near_of() { echo $(( $1 * 95 / 100 )); }
+
+# over_of <bound> -- a size past the bound by the 1,040 bytes construction/REDS.md actually shipped
+# over on 20260831 (REDS %395), which is the instance case 4 is built from.
+over_of() { echo $(( $1 + 1040 )); }
+
+REDS_NEAR=$(near_of "$REDS_BOUND")
+REDS_OVER=$(over_of "$REDS_BOUND")
+GENERAL_NEAR=$(near_of "$GENERAL_BOUND")
+LOGS_NEAR=$(near_of "$LOGS_BOUND")
+
 fail=0
 n=0
 
@@ -105,6 +135,25 @@ said() {
   esac
 }
 
+# --- 0. the plants agree with the law they were sized from ------------------------------------
+# THE READING THIS PEN OWES ITSELF. Every case below depends on three sizes landing in the right
+# band, and until this check existed that dependence was silent: when the law moved on 20260906 the
+# pen answered with three failed cases naming symptoms -- `seated_pin_named=no`, `over_bound_named=no`,
+# `near_silent_when_hung_off_over=yes` -- and none of them said the plants had gone stale. A pen that
+# states its own preconditions fails at the precondition and names the cause in one line.
+plants_agree=yes
+[ "$REDS_NEAR" -ge $((REDS_BOUND * 90 / 100)) ] || plants_agree=no
+[ "$REDS_NEAR" -le "$REDS_BOUND" ] || plants_agree=no
+[ "$REDS_OVER" -gt "$REDS_BOUND" ] || plants_agree=no
+[ "$GENERAL_NEAR" -ge $((GENERAL_BOUND * 90 / 100)) ] || plants_agree=no
+[ "$GENERAL_NEAR" -le "$GENERAL_BOUND" ] || plants_agree=no
+[ "$LOGS_NEAR" -ge $((LOGS_BOUND * 90 / 100)) ] || plants_agree=no
+[ "$LOGS_NEAR" -le "$LOGS_BOUND" ] || plants_agree=no
+# Case 7 wants one page in two bands at once: near by the general reading, nowhere near its own.
+[ "$GENERAL_NEAR" -ge $((GENERAL_BOUND * 90 / 100)) ] || plants_agree=no
+[ "$GENERAL_NEAR" -lt $((LOGS_BOUND * 90 / 100)) ] || plants_agree=no
+check plants_agree_with_law yes "$plants_agree"
+
 # --- 1. a seated pin the docs roster lacks is named -----------------------------------------
 # The whole of REDS %396 in miniature: construction/REDS.md stood at 99.9% of its bound, on the
 # roster the law names and absent from the roster this duty walked.
@@ -112,7 +161,7 @@ pen a
 docs_roster a docs/front.md
 seated a construction/REDS.md
 page a docs/front.md 100
-page a construction/REDS.md 24000
+page a construction/REDS.md "$REDS_NEAR"
 o=$(run a)
 check seated_pin_named yes "$(said "$o" 'living-pin-near construction/REDS.md')"
 
@@ -122,7 +171,7 @@ pen b
 docs_roster b docs/front.md
 seated b construction/REDS.md
 page b docs/front.md 100
-page b construction/REDS.md 24000
+page b construction/REDS.md "$REDS_NEAR"
 sed 's|done <"$TMP/d6roster"|done <"$ROSTER"|' \
   "$PEN/b/tools/fixtures/l/living_docs_lint_scan.sh" >"$PEN/b/plant" \
   && cat "$PEN/b/plant" >"$PEN/b/tools/fixtures/l/living_docs_lint_scan.sh"
@@ -134,7 +183,7 @@ check seated_pin_silent_without_union no "$(said "$o" 'living-pin-near construct
 # without taking away.
 pen c
 docs_roster c glow/README.md
-page c glow/README.md 24100
+page c glow/README.md "$GENERAL_NEAR"
 o=$(run c)
 check docs_page_still_named yes "$(said "$o" 'living-pin-near glow/README.md')"
 
@@ -144,8 +193,8 @@ docs_roster d docs/front.md
 seated d construction/REDS.md
 seated d construction/SHRED_PREP.md
 page d docs/front.md 100
-page d construction/REDS.md 25616
-page d construction/SHRED_PREP.md 24000
+page d construction/REDS.md "$REDS_OVER"
+page d construction/SHRED_PREP.md "$GENERAL_NEAR"
 o=$(run d)
 check over_bound_named yes "$(said "$o" 'living-pin-bytes construction/REDS.md')"
 check near_printed_beside_over yes "$(said "$o" 'living-pin-near construction/SHRED_PREP.md')"
@@ -156,8 +205,8 @@ docs_roster e docs/front.md
 seated e construction/REDS.md
 seated e construction/SHRED_PREP.md
 page e docs/front.md 100
-page e construction/REDS.md 25616
-page e construction/SHRED_PREP.md 24000
+page e construction/REDS.md "$REDS_OVER"
+page e construction/SHRED_PREP.md "$GENERAL_NEAR"
 sed 's|^if \[ -s "$TMP/d6near" \]; then$|if [ ! -s "$TMP/d6" ] \&\& [ -s "$TMP/d6near" ]; then|' \
   "$PEN/e/tools/fixtures/l/living_docs_lint_scan.sh" >"$PEN/e/plant" \
   && cat "$PEN/e/plant" >"$PEN/e/tools/fixtures/l/living_docs_lint_scan.sh"
@@ -165,20 +214,22 @@ o=$(run e)
 check near_silent_when_hung_off_over no "$(said "$o" 'living-pin-near construction/SHRED_PREP.md')"
 
 # --- 6. a page carrying its own bound is advised against ITS number ---------------------------
-# session-logs/README.md is bounded at 57,344 by the law's own exception line. At 52,000 it is past
-# 90% of that and well past the general bound, and the advisory must name 57344.
+# session-logs/README.md carries a seated exception, so the law answers a larger number for it than
+# for any other page. Planted at 95% of THAT number it is near its own bound and far past the
+# general one, and the advisory must name the page's own bound rather than the general one.
 pen f
 docs_roster f session-logs/README.md
-page f session-logs/README.md 52000
+page f session-logs/README.md "$LOGS_NEAR"
 o=$(run f)
-check own_bound_in_message yes "$(said "$o" '52000 of 57344')"
+check own_bound_in_message yes "$(said "$o" "$LOGS_NEAR of $LOGS_BOUND")"
 
 # --- 7. the same page, comfortably under ITS bound, says nothing -------------------------------
-# 24,000 is 97% of the general bound and 41% of this page's own, so a duty reading the general
-# number here would advise about a page with 33,344 bytes to spare.
+# The same page at 95% of the GENERAL bound is near by the general reading and nowhere near its own,
+# so a duty reading the general number here would advise about a page with room to spare. This is
+# case 6 read from the other side: one page, two bounds, and only the page's own is correct.
 pen g
 docs_roster g session-logs/README.md
-page g session-logs/README.md 24000
+page g session-logs/README.md "$GENERAL_NEAR"
 o=$(run g)
 check own_bound_page_silent no "$(said "$o" 'living-pin-near session-logs/README.md')"
 

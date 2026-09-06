@@ -48,6 +48,19 @@ FAIL=0
 PEN=$(mktemp -d)
 trap 'rm -rf "$PEN"' EXIT INT TERM
 
+# CASE 15's PIN IS SIZED FROM THE LAW rather than spelled. It plants a pin OVER the seated byte
+# bound, and "over" names a relationship; the elder form spelled 30,000, which was over the bound as
+# it stood and would stop being over the day the bound rose past it -- leaving a case labelled
+# `a pin over its bound` planting one under it, and passing. The sibling pen at
+# tools/fixtures/l/living_pin_near_bound_control.sh failed exactly that way on 20260906.
+#
+# Read through tools/fixtures/l/living_pin_max_bytes.sh, the one reading (REDS %199). Case 22 below
+# deliberately does NOT use this variable: it proves the scan reports the number the law states, so
+# it greps the law itself and keeps a reading independent of the one under test. A pen that PLANTS
+# reads through the fixture; a pen that VERIFIES the fixture reads the law.
+PIN_LAW_BOUND=$(sh "$(pwd)/tools/fixtures/l/living_pin_max_bytes.sh")
+PIN_OVER_BOUND=$((PIN_LAW_BOUND + 5424))
+
 check() {
   if [ "$2" = "$3" ]; then PASS=$((PASS + 1)); echo "$1 -- ok"
   else FAIL=$((FAIL + 1)); echo "$1 -- FAIL (wanted $2, got $3)"; fi
@@ -178,7 +191,7 @@ check "14 free: a pin under its declared byte bound passes" "ok" "$(verdict "$ou
 check "14 free: it is counted as holding" "1" "$(field bounds_holding "$out")"
 
 fresh
-pin "$D/fat.md" 30000
+pin "$D/fat.md" "$PIN_OVER_BOUND"
 out=$(run_scan)
 check "15 free: a pin over its bound is counted rather than ignored" "1" "$(field bounds_over "$out")"
 check "15 free: it passes while the ceiling admits it" "ok" "$(verdict "$out")"
@@ -186,7 +199,7 @@ out=$(run_scan 1 0)
 check "15 bitten: the same pin refuses once the ceiling falls to zero" "over_declared_bound" "$(verdict "$out")"
 named=$(printf '%s\n' "$out" | grep -c 'fat.md stands above the byte bound it declares' || true)
 check "16 free: the refusal names the pin" "1" "$named"
-both=$(printf '%s\n' "$out" | grep -c 'against_24576' || true)
+both=$(printf '%s\n' "$out" | grep -c "against_${PIN_LAW_BOUND}" || true)
 check "16 free: the refusal carries both numbers" "1" "$both"
 
 # ---- 17..18: a bound written in words is honest, and may not spread ---------------------

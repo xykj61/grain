@@ -24,7 +24,15 @@
 # near pin prints beside a past-bound one, the same pen with the near list hung back off the over
 # list goes silent, a page carrying its own bound is advised against ITS number, that same page
 # comfortably under its own bound says nothing, and a path standing on both rosters is weighed once.
-# Five of the nine bite against the departing scan, which is what tells a repair from a rewording.
+# Five of the ten bite against the departing scan, which is what tells a repair from a rewording.
+#
+# AND THE PEN STATES ITS OWN PRECONDITION. Case 0 asserts that the three planted sizes still land in
+# the bands their case labels claim -- near, over, comfortably under -- each computed from the law
+# through the same fixture the duty reads. The sizes were spelled as absolutes until 20260906, when
+# the law seated living_pin_max_bytes[construction/REDS.md] at 40,960 and a 24,000-byte plant went
+# from 97.6% of that page's bound to 58.6% of it. Three cases failed and none of them said why: a
+# pen that plants an absolute is testing a snapshot of the law, and a pen that plants a ratio is
+# testing the law.
 #
 # WHAT IT DOES NOT REACH. The live tree's own reading, which tools/l/living_docs_lint.rish already
 # prints on every roster pass at a cost of 55 seconds -- paying for it twice would buy nothing. And
@@ -35,7 +43,7 @@
 # advisory that never fails by design, so a check placed there could not red -- and a guard that
 # cannot red guards nothing.
 #
-# Pen: tools/fixtures/l/living_pin_near_bound_control.sh -- nine behaviors, both faults shown from
+# Pen: tools/fixtures/l/living_pin_near_bound_control.sh -- ten behaviors, both faults shown from
 # the side where the reading goes silent. Run from the repository root.
 
 say "living-pin-near-bound: Language EN -- a pin advisory is worth exactly the set of pins it weighs."
@@ -45,10 +53,11 @@ say "living-pin-near-bound: Lens TAME -- say why: the union is the law's own ros
 let control = run ["sh" "tools/fixtures/l/living_pin_near_bound_control.sh"]
 say control.out
 assert control.ok else "living-pin-near-bound: the control must complete"
-assert control.out contains "control_checks=9" else "living-pin-near-bound: all nine behaviors must be read"
+assert control.out contains "control_checks=10" else "living-pin-near-bound: all ten behaviors must be read"
 assert control.out contains "control_failures=0" else "living-pin-near-bound: every planted behavior must read as written"
 assert control.out contains "control_verdict=ok" else "living-pin-near-bound: the control must agree with itself"
 
+assert control.out contains "plants_agree_with_law=yes" else "living-pin-near-bound: the planted sizes must still land in the bands their cases name, read from the law rather than spelled"
 assert control.out contains "seated_pin_named=yes" else "living-pin-near-bound: a pin the law seats must be weighed even when the docs roster lacks it"
 assert control.out contains "seated_pin_silent_without_union=no" else "living-pin-near-bound: reverting the union must silence that reading, or the union carries nothing"
 assert control.out contains "docs_page_still_named=yes" else "living-pin-near-bound: the union must add without taking away"
@@ -60,4 +69,4 @@ assert control.out contains "own_bound_page_silent=no" else "living-pin-near-bou
 assert control.out contains "union_dedupes=yes" else "living-pin-near-bound: a path on both rosters must be weighed once"
 
 say ""
-say "GREEN: living-pin-near-bound -- duty 6 weighs the docs roster joined to the seated pin roster, advises each page against its own bound with its headroom named, and prints the near list beside the past-bound one; nine behaviors proven in a throwaway pen, both faults shown from the silent side."
+say "GREEN: living-pin-near-bound -- duty 6 weighs the docs roster joined to the seated pin roster, advises each page against its own bound with its headroom named, and prints the near list beside the past-bound one; ten behaviors proven in a throwaway pen, its plants sized from the law rather than spelled, both faults shown from the silent side."
