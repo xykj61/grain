@@ -4,7 +4,7 @@ set -eu
 ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 cd "$ROOT"
 verb="${1:-}"
-PAGE=edu/funds/trya-opening.md
+PAGE=docs-geode/edu/yonder/funds/trya-opening.md
 
 case "$verb" in
   deploy|mainnet|wallet|gas|multisig-live|aurora-deploy|claim-domain|shred|breach)
@@ -38,7 +38,7 @@ printf '%s' "$name" | grep -Eq '^[A-Za-z]{4}$'
 echo "seat: fund=Trya order=6 sign_index=5 (Virgo) vane=%trya dns_prep=trya.fund"
 echo "dedication: Ariana Grande (honor)"
 echo "voice: Trya sixth OS variant · nested craft voice (Quin stands)"
-echo "page: edu/funds/trya-opening.md (prep grow · page one)"
+echo "page: docs-geode/edu/yonder/funds/trya-opening.md (prep grow · page one)"
 echo "witness:trya-open GREEN — seat · dedication · hard lines"
 echo "refuse: deploy · wallet · gas · claim-domain · shred · breach"
 echo "trya_fund=prep"

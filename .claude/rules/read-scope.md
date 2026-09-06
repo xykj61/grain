@@ -30,7 +30,7 @@ for the tools letter rooms.
 **By name:** `counsel/` - `waymarks/` - `bron-resins/` - `external-research/` - `gratitude/` -
 `vendor/` - `seed/` - `research-silo/` - `classical-vedic-astrology/` -
 `cubist-bhakti-astrology/` - `rye-learning-process/` - `nixos/` - `nixos-guide/` - `manual/` -
-`edu/` - `docs-geode/` - `press/` - `saga/` - `journey/` - `biochemistry/` - `spellbook/` -
+`docs-geode/` - `press/` - `saga/` - `journey/` - `biochemistry/` - `spellbook/` -
 `assets/` - `keys/` - `recursion-prompts/` - `expanding-prompts/`.
 
 **Closed governs the walk, never the write.** A lap may write a new dated study into a closed

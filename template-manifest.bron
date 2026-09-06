@@ -84,7 +84,6 @@ allow pleac
 allow manual
 allow docs
 allow docs-geode
-allow edu
 allow nixos-guide
 allow foundations   # the doctrine "why"; bio/dedications sub_excluded, residuals withheld
 # -- the disciplines (context, granular -- identity/specs/keys withheld) --
@@ -257,7 +256,6 @@ scrub     linengrow                       # civic-app pattern (template) -- yet 
 # ---- teaching and study ----
 template  docs                            # compressor pages; cite witnesses
 template  docs-geode                      # teaching
-scrub     edu                             # the learning floor
 template  manual                          # the four teaching rooms
 scrub     nixos-guide                     # host setup guide
 scrub     external-research               # study of the world; name-bearing memos -- scrub identity
@@ -393,8 +391,8 @@ sub_exclude expanding-prompts/yonder/20260728-030310_keeh-season-q0-recursion-pr
 sub_exclude waymarks/date/20260730/20260730-154230_sunn11-xykj61-onboarding.md
 sub_exclude tools/gen/chapter/sunn11_xykj61_onboarding_witness.rish
 sub_exclude expanding-prompts/date/20260730/20260730-154230_sunn11-xykj61-onboarding-charter.md
-sub_exclude edu/company
-sub_exclude edu/funds
+sub_exclude docs-geode/edu/yonder/company
+sub_exclude docs-geode/edu/yonder/funds
 sub_exclude context/keys
 
 # convergence audit (20260810 . wgn0745jf) -- family-history, dedication, and key-script files withheld whole

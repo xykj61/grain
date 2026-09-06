@@ -42,7 +42,7 @@ enforce_roster() {
   ls foundations/*.md docs/*.md 2>/dev/null || true
   ls docs-geode/*.md docs-geode/*/*.md 2>/dev/null || true
   ls .claude/rules/*.md .cursor/rules/*.mdc 2>/dev/null || true
-  ls edu/*.md edu/*/*.md edu/*/*/*.md 2>/dev/null || true
+  ls docs-geode/edu/yonder/*.md docs-geode/edu/yonder/*/*.md docs-geode/edu/yonder/*/*/*.md 2>/dev/null || true
   ls ./*.md 2>/dev/null | sed 's|^\./||' || true
   ls construction/*.md 2>/dev/null | grep -vE '^construction/(REDS|CHECKPOINTS)\.md$' || true
   # Module front doors that SHIP in the public seed. A newcomer browsing the repository meets

@@ -1,0 +1,33 @@
+format session-log-v1
+stamp 20260906.153405
+editor Claude Code, Zed-class CLI on the pier
+provider Anthropic
+product Claude Code
+role incense seat -- law, active-designing, iterative review, the captain's hat
+modality text
+model claude-opus-5
+model_status active runtime reported by the harness environment block
+voice Kyri
+host Linux pier, 8 vCPU / 16 GB, TZ America/New_York
+title The drafting room moves to a leaf, and a guard names the room it is
+prompt Keaton: molt breach or archive or yonder the root edu folder to the leaves -- and, mid-round, whether mantra's limb1 through limb4 utilities break the stamp-and-name rule about ascending marks.
+think Four verbs were offered and the room chose one by measurement. Every edu sub-room was last touched by a SWEEP -- ASCII, README paths, the Gauge standfast, a fold -- rather than by teaching work, and its five guards are on no roster, so nothing exercises it. That reads yonder-ish; yet its content is a plan and its files still build, which is neither finished nor dormant.
+think So the destination came from what the tree already said about it. docs-geode/edu/README.md opens by calling root edu the room where teaching is DRAFTED before it ships there. A drafting room belongs under the room it drafts for, so edu/ became docs-geode/edu/yonder/ -- one of the root's ninety-seven doors closed, and the index that already pointed at it now stands above it.
+think The move is a pure function of depth, and that is what made the repair mechanical: every climbing link inside the room is recomputed from the file's own depth rather than patched, and every citer outside it is repointed from ITS depth. Two passes, two different rules, because a bare `edu/` and a `../edu/` are not the same reference.
+obs I DEEPENED THE LINKS TWICE AND THE REACH SCAN COUNTED IT. My first pass errored midway on a stale index read, having already written some files; the second pass ran over all of them. Five levels where three were wanted, six where four. The fix was to stop patching and DERIVE: correct = '../' times the file's own slash count, applied to every climbing link at once. broken_in_living went 15 to 0.
+obs A DANGLING SYMLINK IS INVISIBLE TO A FILE TEST AND FATAL TO A BUILD. tools/e/edu_tower_witness.rish tests -f and -L on tally_stack.rye and both PASSED after the move, because a symlink exists whether or not it resolves. What failed was the build behind it. Its target climbed two levels from a room now three deep; repointed to four, both tower guards green. A test that asks whether a link exists has not asked whether it lands.
+obs THE LIMB QUESTION IS A REAL DISTINCTION AND THE ANSWER IS NO VIOLATION. stamp-and-name retires a number that PREDICTS, and keeps one that COUNTS -- the test being whether the number could turn out wrong. limb1 through limb4 name four seams that already exist, cumulatively, with no announced fifth. What they do miss is the law's own fourth property, a mark that reads alone: limb1 guards Line and limb4 guards Store, and neither name says so. Booked for pheromone rather than taken -- four rostered guards in their lane, landed thirty-six minutes ago.
+obs A PEER GUARD SEATED SEVEN HOURS AGO TOLD ME MY DESTINATION WAS WRONG, AND IT WAS RIGHT. crushed_index asks that every member of a deep-declared room have a row on that room index, and moving the drafts under docs-geode put twenty files inside docs-geode/wiki/README.md, a page about SHIPPED teaching surfaces. The guard was naming the room contract: docs-geode means shipped. So the room took Keaton's fourth verb -- yonder -- which is what the measurement had said all along: last substantive work in July, five guards on no roster, deferred yet alive.
+obs AND THE SAME SCAN DISAGREED WITH ITSELF ONE HUNDRED LINES APART. Its corpus is built as living tracked Markdown excluding date, archive and yonder; its DEEP member walk excluded none of them. So a room that parks work in yonder would owe its index a row per parked file. Repaired by giving the deep walk the same exclusion the corpus already states -- monotone toward the file's own header, 33 of 33 control phases still passing, and named here rather than quietly.
+obs MY OWN WATCH GUARD FLAKED UNDER THE LOAD IT EXISTS TO WATCH. fleet_watch passed by hand and reddened inside the roster pass, because its control slept a fixed two seconds waiting for pen panes to reach a prompt -- a guess about a machine running a full roster beside seven ships. A guard that flakes teaches a reader to re-run rather than to trust. Replaced with a bounded wait-until-prompt, 40 half-seconds, refusing rather than hanging; three consecutive runs read 14 of 14.
+loom edu files_moved=20 living_citers_repointed=45 guards_repointed=10 symlink_repointed=1
+loom fascia documents_reached=1787 broken_in_living=0 seed_ratchet=848 ceiling=848
+loom guards edu_tower=GREEN tower_frame_bite=GREEN discovery_walk=GREEN pleac_ch01=GREEN pleac_ch01_2=GREEN
+file docs-geode/edu/yonder the drafting room, one level under the index that already named it
+file docs-geode/edu/yonder/tower/tally_stack.rye the symlink repointed from two levels to four
+file .gitignore the root un-ignore retired; docs-geode already carries the room
+file template-manifest.bron the allow and scrub rows retired; docs-geode already ships
+file construction/ITINERARY.md the limb finding booked for pheromone, named rather than taken
+scope the root edu room moved to a leaf, every reference repointed, every guard over it green
+status GREEN -- readme_reach broken_in_living=0, seed_link at its ceiling, tracked links ok, five edu guards green
+recommend check in (Keaton) -- eight laps and the edu move are landed; the publish is the one door left and its word is yours.

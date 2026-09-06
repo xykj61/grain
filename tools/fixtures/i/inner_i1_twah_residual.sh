@@ -27,17 +27,17 @@ require_instrument rg
 # Retired name may appear as rename-forward history; broken paths must not.
 test ! -e tools/gen_twah_fund_prep.rish
 test ! -e tools/fixtures/gen_twah_fund_prep.sh
-test ! -e edu/funds/twah-creating-one-of-twelve.md
+test ! -e docs-geode/edu/yonder/funds/twah-creating-one-of-twelve.md
 test -f tools/g/gen_gren_fund_prep.rish
 test -f tools/fixtures/g/gen_gren_fund_prep.sh
-test -f edu/funds/gren-creating-one-of-twelve.md
+test -f docs-geode/edu/yonder/funds/gren-creating-one-of-twelve.md
 grep -q 'Gren (fund)' context/LEXICON.md
 grep -q 'Twah (fund) (retired name)' context/LEXICON.md
 grep -q 'Djin (fund) (retired name)' context/LEXICON.md
 grep -q '%gren' context/LEXICON.md
 grep -q 'gren.fund' context/LEXICON.md
 
-# Living tools/ + edu/ must not advertise deleted Twah generator paths.
+# Living tools/ + docs-geode/edu/yonder/ must not advertise deleted Twah generator paths.
 # Exclude this sweep fixture (it names the deleted paths in negative tests).
 hits="$(rg -n 'gen_twah_fund_prep|twah-creating-one-of-twelve|%twah|twah\.fund' tools edu \
   --glob '!**/quin-workshop/**' \

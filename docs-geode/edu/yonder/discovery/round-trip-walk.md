@@ -3,7 +3,7 @@
 **Stamp:** `20260730.104053` - door 13 **GREEN** under j4 h4 Accrete-never-break  
 **Language:** EN - **Voice:** Kyri - **Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 **Lane:** edu discovery walk - `edu/` law - witness `tools/e/edu_discovery_walk_witness.rish`  
-**Companion pattern:** [`../../docs-geode/sangha/01-descriptor-exchange.md`](../../docs-geode/sangha/01-descriptor-exchange.md)
+**Companion pattern:** [`../../docs-geode/sangha/01-descriptor-exchange.md`](../../../../docs-geode/sangha/01-descriptor-exchange.md)
 
 *Written together by Keaton and Riyo.*
 

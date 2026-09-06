@@ -30,7 +30,7 @@ tools *"came with the copy"* while a fresh clone builds both from source (REDS %
 one sentence asked a reader to do the very thing the page existed to make possible. So the bar
 stays a running one: type the line, watch it answer, write down what it answered.
 
-Drafts live in [`../../edu/`](../../edu/README.md) until they meet that bar. A page moves here on
+Drafts live in [`../../docs-geode/edu/yonder/`](../../docs-geode/edu/yonder/README.md) until they meet that bar. A page moves here on
 the day its commands run clean from a fresh clone, and it keeps its place by staying true as the
 tree grows around it.
 

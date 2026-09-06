@@ -4,7 +4,7 @@ set -eu
 ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 cd "$ROOT"
 verb="${1:-}"
-PAGE=edu/funds/bozo-opening.md
+PAGE=docs-geode/edu/yonder/funds/bozo-opening.md
 
 case "$verb" in
   deploy|mainnet|wallet|gas|multisig-live|aurora-deploy|claim-domain|shred|breach|yes|now)
@@ -45,7 +45,7 @@ echo "was: Linn / %linn / linn.fund (rename-forward 20260730.150702)"
 echo "dedication: Helen Atthowe (honor · The Ecological Farm · kept)"
 echo "executive: DJINN (from Murr · POLE)"
 echo "hats: sponsor held (blank)"
-echo "page: edu/funds/bozo-opening.md (prep grow · page one)"
+echo "page: docs-geode/edu/yonder/funds/bozo-opening.md (prep grow · page one)"
 echo "witness:bozo-open GREEN — seat · Helen dedication · DJINN executive · vane · hard lines"
 echo "refuse: deploy · wallet · gas · claim-domain · shred · breach"
 echo "bozo_fund=prep"

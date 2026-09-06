@@ -4,7 +4,7 @@ set -eu
 ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 cd "$ROOT"
 verb="${1:-}"
-PAGE=edu/funds/shyu-opening.md
+PAGE=docs-geode/edu/yonder/funds/shyu-opening.md
 
 case "$verb" in
   deploy|mainnet|wallet|gas|multisig-live|aurora-deploy|claim-domain|shred|breach|yes|now)
@@ -49,7 +49,7 @@ echo "dedication: Wayne Hsiung (honor · held)"
 echo "sponsor: Hyundai (South Korea) honor · design seat · not a paid buy"
 echo "recommend: used 4-cyl hatch/SUV · non-CVT auto · light grey/beige cloth · Craigslist/FB Marketplace"
 echo "sibling: Keeh→Kia same filters · distinct chairs"
-echo "page: edu/funds/shyu-opening.md"
+echo "page: docs-geode/edu/yonder/funds/shyu-opening.md"
 echo "witness:shyu-open GREEN — seat · Wayne · Hyundai sponsor · used-mobility lean · hard lines"
 echo "refuse: deploy · wallet · gas · shred · breach"
 echo "shyu_fund=prep"

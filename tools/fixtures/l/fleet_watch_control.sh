@@ -79,8 +79,47 @@ ROSTER
 tmux new-session -d -s "$sess" -n rishi 2>/dev/null
 for w in penone pentwo penthree penskip; do tmux new-window -d -t "$sess" -n "$w" 2>/dev/null; done
 # let each pane reach its prompt
-tmux send-keys -t "$sess:penone" '' C-m 2>/dev/null || true
-sleep 2
+
+# WAIT FOR A PANE TO REACH ITS PROMPT, rather than sleeping a number and hoping. A fixed sleep is a
+# guess about the machine's load, and this pen runs beside a full roster pass and seven ships: on
+# `20260906` the control passed by hand and reddened inside that pass, which is the shape a flaky
+# guard takes -- it teaches a reader to re-run rather than to trust. Bounded at 40 half-seconds, so
+# a pane that never arrives refuses instead of hanging.
+wait_prompt() {
+  _w=$1
+  _i=0
+  while [ "$_i" -lt 40 ]; do
+    case "$(tmux capture-pane -p -t "$sess:$_w" 2>/dev/null | grep -v '^[[:space:]]*$' | tail -1)" in
+      *'$'|*'$ '|*'#'|*'# ') return 0 ;;
+    esac
+    sleep 0.5
+    _i=$((_i + 1))
+  done
+  return 1
+}
+
+# The same shape for a pane that must NOT be at a prompt -- case 12 sends `cat` and needs the pane
+# to have actually taken it before the watcher reads.
+wait_busy() {
+  _w=$1
+  _i=0
+  while [ "$_i" -lt 40 ]; do
+    case "$(tmux capture-pane -p -t "$sess:$_w" 2>/dev/null | grep -v '^[[:space:]]*$' | tail -1)" in
+      *'$'|*'$ '|*'#'|*'# ') : ;;
+      *) return 0 ;;
+    esac
+    sleep 0.5
+    _i=$((_i + 1))
+  done
+  return 1
+}
+
+for w in penone pentwo penthree penskip; do
+  tmux send-keys -t "$sess:$w" '' C-m 2>/dev/null || true
+done
+for w in penone pentwo penthree penskip; do
+  wait_prompt "$w" || { echo "refused: pen pane $w never reached a prompt" >&2; exit 2; }
+done
 
 run_watch() {
   env WATCH_SESSION="$sess" WATCH_HOME="$pen" FLEET_ROSTER="$pen/roster.kyri" \
@@ -136,14 +175,14 @@ check "and its death returns the arm"    yes "$(has "$out_dead" 'penone -- WOULD
 
 # 12) a pane that is not at a prompt is never typed into
 tmux send-keys -t "$sess:pentwo" 'cat' C-m 2>/dev/null || true
-sleep 2
+wait_busy pentwo || { echo "refused: pen pane pentwo never left its prompt" >&2; exit 2; }
 out_busy=$(run_watch)
 check "a busy pane refuses the keystroke" yes "$(has "$out_busy" 'pentwo -- loop absent yet the pane is not at a prompt')"
 tmux send-keys -t "$sess:pentwo" C-c 2>/dev/null || true
 
 # 13) two windows wearing one name is ambiguous, and the watcher refuses to choose
 tmux new-window -d -t "$sess" -n penone 2>/dev/null
-sleep 1
+wait_prompt penone || true
 out_dup=$(run_watch)
 check "a duplicated window name refuses" yes "$(has "$out_dup" 'penone -- 2 windows wear that name')"
 

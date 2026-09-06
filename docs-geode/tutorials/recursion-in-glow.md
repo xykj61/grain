@@ -5,7 +5,7 @@
 **Language:** EN
 **Last updated:** 2026-07-30 (Equinox e15 - frame-bound bite `20260730.120824`)
 **Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
-**Status:** Living tutorial - **metal GREEN** at `edu/tower/bounded_tower.rye` - frame bite `edu/tower/frame_bound_overpush.rye` - witnesses `tools/e/edu_tower_witness.rish` - `tools/e/edu_tower_frame_bite_witness.rish`
+**Status:** Living tutorial - **metal GREEN** at `docs-geode/edu/yonder/tower/bounded_tower.rye` - frame bite `docs-geode/edu/yonder/tower/frame_bound_overpush.rye` - witnesses `tools/e/edu_tower_witness.rish` - `tools/e/edu_tower_frame_bite_witness.rish`
 **Home:** `docs-geode/tutorials/` -- the prod crystal for shipping docs
 **Naming note:** written for **Glow** and the **rune shell** surface; the rune shell's proper name awaits Keaton's word (`context/specs/reserved-vocabulary.md`)
 
@@ -88,10 +88,10 @@ The recursive insight survives whole -- three tasks where three calls were -- an
 
 ## What the witness asserts (e13 metal)
 
-The welcome side: `solve(3)` prints exactly seven moves and the postcondition holds. The negative space: a seventeenth ring is **refused** as `TooManyRings`, and a capacity-one stack **bites** on the second push -- observed every run from the fixture `edu/tower/frame_bound_overpush.rye` (non-zero exit - assertion failure), never by shrinking the welcome tower by hand. Run:
+The welcome side: `solve(3)` prints exactly seven moves and the postcondition holds. The negative space: a seventeenth ring is **refused** as `TooManyRings`, and a capacity-one stack **bites** on the second push -- observed every run from the fixture `docs-geode/edu/yonder/tower/frame_bound_overpush.rye` (non-zero exit - assertion failure), never by shrinking the welcome tower by hand. Run:
 
 ```
-env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run edu/tower/bounded_tower.rye
+env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run docs-geode/edu/yonder/tower/bounded_tower.rye
 rishi/bin/rishi run tools/e/edu_tower_witness.rish
 rishi/bin/rishi run tools/e/edu_tower_frame_bite_witness.rish
 ```
@@ -101,7 +101,7 @@ rishi/bin/rishi run tools/e/edu_tower_frame_bite_witness.rish
 
 Writing this against the current tree: **Tally already thinks this way.** `Region.divide` (Equinox e5) carves memory the way this stack carves work -- bounded by the parent, disjoint by construction, refusing rather than truncating.
 
-**`tally/stack.rye` graduated** as the second consumer (TAME worked example - this tutorial). The tower imports it via `edu/tower/tally_stack.rye` -> `../../tally/stack.rye`. The sketch's local `Stack` type is the teaching picture; the metal uses the graduated fold.
+**`tally/stack.rye` graduated** as the second consumer (TAME worked example - this tutorial). The tower imports it via `docs-geode/edu/yonder/tower/tally_stack.rye` -> `../../tally/stack.rye`. The sketch's local `Stack` type is the teaching picture; the metal uses the graduated fold.
 
 ---
 
