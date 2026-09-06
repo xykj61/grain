@@ -22,7 +22,10 @@ let elder = run ["sh" "-c" "grep -q 'tally/parse_int.rye' src/shape/shape-tally-
 assert elder.ok else "tally-tend-4: parse_int.rye citation missing"
 
 say "tally-tend-4: rye still states refuse paths..."
-let rye = run ["sh" "-c" "test -f tally/parse_int.rye && rg -q 'LeadingZero' tally/parse_int.rye && rg -q 'InvalidCharacter' tally/parse_int.rye"]
+# grep rather than `rg`: the two lines above and below this one already spell it that way, and on a
+# bench without ripgrep this line alone failed -- reporting "parse_int.rye missing
+# LeadingZero/InvalidCharacter" about a file that carries both names twice (20260905.224445).
+let rye = run ["sh" "-c" "test -f tally/parse_int.rye && grep -q 'LeadingZero' tally/parse_int.rye && grep -q 'InvalidCharacter' tally/parse_int.rye"]
 assert rye.ok else "tally-tend-4: parse_int.rye missing LeadingZero/InvalidCharacter"
 let placard_laws = run ["sh" "-c" "grep -q 'leading zero' src/shape/shape-tally-parse-int-laws.glow && grep -q 'invalid character' src/shape/shape-tally-parse-int-laws.glow"]
 assert placard_laws.ok else "tally-tend-4: placard must name both refuse paths"

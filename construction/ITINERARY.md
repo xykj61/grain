@@ -160,8 +160,17 @@ sites, none -- and not POSIX since 2008.** The tree already wrote the cure,
 `tools/fixtures/s/shell_portable.sh`, and **38 files source it, 1.3%.** The design names three
 tiers -- **granted** (POSIX), **carried** (we ship it), **borrowed** (probe, fall back, announce) --
 seated in Tally as a bounded grant, carried by Caravan as a capability, declared through Mantra.
-**The reflex that should not wait for the design: a guard that cannot run its instrument refuses,
-and says which instrument.**
+**The reflex LANDED `20260905.224445` (`%445` CLOSED)** -- `have_tool` and `require_tool` in
+`shell_portable.sh`: `instrument=<name>`, `instrument_for=`, `verdict=instrument_absent` on
+**stdout** where a witness reads, returning **127**. **All three guards the roster reaches through
+`rg` refused correctly with the tool removed, and every one accused an innocent file** -- e122
+blamed a control that had printed `verdict=ok` a line above; both Tally limbs blamed files carrying
+exactly what they were said to lack. The true line went to stderr, which `run` output does not keep.
+Both limbs take exact `grep`/`find` and are GREEN either way; e122 takes ONE `require_tool` at its
+door rather than 23 hand fallbacks. `pass=32 -> 47`, both sides planted, `shell_dialect` GREEN.
+**REDS %240 stood on its head: that was a wrong zero reading as health, this a correct refusal
+reading as a defect elsewhere. A tree taught to distrust silence had not been taught to distrust
+noise.** The three tiers and the roster stay yonder, yours.
 
 **Worth your word, still unanswered** (condensed out under the old ceiling `20260904`, carried
 back now that there is room): nothing in the ledger shows a red is *being worked*, so two hands

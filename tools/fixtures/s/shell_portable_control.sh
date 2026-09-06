@@ -126,8 +126,10 @@ rm -rf "$lk"
 lock_release "$pen/never-held.d" && ok "releasing an unheld lock is harmless" || bad "releasing an unheld lock is harmless"
 
 # --- search_text -------------------------------------------------------------------------------
-# Proven on this pier, which ships no ripgrep: the helper is grep, so a green here is the
-# reading the two roster reds (dated_pattern, equinox_e123) were waiting on.
+# The helper is grep, so a green here is the reading the two roster reds (dated_pattern,
+# equinox_e123) were waiting on. Written when this pier carried no ripgrep; ripgrep arrived on
+# `20260905` and the legs are unchanged by that, which is the point -- a helper that only reads
+# right on the bench that happens to lack a tool is not a portable helper.
 printf 'alpha\nbeta\n' > "$pen/hay.txt"
 search_text -q alpha "$pen/hay.txt" && ok "search_text finds a match" || bad "search_text finds a match"
 search_text -q missing "$pen/hay.txt" && bad "search_text misses a missing needle" || ok "search_text misses a missing needle"
@@ -138,6 +140,72 @@ search_text -q 'al|zz' "$pen/hay.txt" && ok "search_text alternation matches wit
 printf 'hello\n' | search_text -q hello && ok "search_text reads stdin when no file is given" || bad "search_text reads stdin when no file is given"
 search_text -z alpha "$pen/hay.txt" >/dev/null 2>&1 && bad "search_text refuses an unknown flag" || ok "search_text refuses an unknown flag"
 
+
+# --- have_tool and require_tool ------------------------------------------------------------------
+# The reflex: a guard that cannot run its instrument refuses, and says which instrument. Proven from
+# both sides, because a refusal shown only in the passing direction cannot be told from a bypass.
+# The absent name is one no bench carries and no PATH shim can accidentally supply.
+absent=grain-no-such-instrument-20260905
+
+have_tool grep && ok "have_tool finds a tool this bench carries" || bad "have_tool finds a tool this bench carries"
+have_tool "$absent" && bad "have_tool refuses a tool no bench carries" || ok "have_tool refuses a tool no bench carries"
+# A silent predicate must stay silent, or a caller branching on it pollutes the reading it prints.
+[ -z "$(have_tool "$absent" 2>&1)" ] && ok "have_tool says nothing either way" || bad "have_tool says nothing either way"
+ht_rc=0; ( have_tool ) >/dev/null 2>&1 || ht_rc=$?
+[ "$ht_rc" -eq 2 ] && ok "have_tool with no name is misuse, not absence" || bad "have_tool with no name is misuse, not absence"
+
+require_tool grep >/dev/null 2>&1 && ok "require_tool passes a tool that is present" || bad "require_tool passes a tool that is present"
+[ -z "$(require_tool grep 2>&1)" ] && ok "require_tool prints nothing when the tool is there" || bad "require_tool prints nothing when the tool is there"
+
+rt_out=$(require_tool "$absent" 2>/dev/null || true)
+rt_rc=0; require_tool "$absent" >/dev/null 2>&1 || rt_rc=$?
+[ "$rt_rc" -eq 127 ] && ok "require_tool refuses with the shell's own not-found status" \
+  || bad "require_tool refuses with the shell's own not-found status (rc=$rt_rc)"
+printf '%s\n' "$rt_out" | grep -q "^instrument=$absent\$" && ok "the refusal NAMES the instrument" \
+  || bad "the refusal NAMES the instrument"
+printf '%s\n' "$rt_out" | grep -q '^verdict=instrument_absent$' && ok "the refusal carries its own verdict" \
+  || bad "the refusal carries its own verdict"
+# On stdout rather than stderr: the reading that sent a lap to the wrong file was on stderr, which a
+# witness reading `run` output does not keep. This leg reads stdout ALONE, so a helper that printed
+# to stderr would miss it.
+[ -n "$(require_tool "$absent" 2>/dev/null || true)" ] && ok "the refusal reaches stdout, where a witness reads" \
+  || bad "the refusal reaches stdout, where a witness reads"
+
+rt_use=$(require_tool "$absent" 'the roots row read' 2>/dev/null || true)
+printf '%s\n' "$rt_use" | grep -q '^instrument_for=the roots row read$' && ok "an optional purpose is carried through" \
+  || bad "an optional purpose is carried through"
+printf '%s\n' "$rt_out" | grep -q '^instrument_for=' && bad "no purpose means no purpose line" \
+  || ok "no purpose means no purpose line"
+rq_rc=0; ( require_tool ) >/dev/null 2>&1 || rq_rc=$?
+[ "$rq_rc" -eq 2 ] && ok "require_tool with no name is misuse, not absence" \
+  || bad "require_tool with no name is misuse, not absence"
+
+# THE REPAIR ITSELF, on the guard that taught the lesson. Run the e122 scan with the ripgrep
+# directory taken off PATH and nothing else changed: before this lap it answered
+# `verdict=misread / control_gate=failed`, accusing a control that had just printed verdict=ok.
+e122=tools/fixtures/e/equinox_e122_roots_bench_kinds_scan.sh
+if [ -f "$root/$e122" ] && have_tool rg; then
+  # Drop whichever PATH entries actually hold an executable rg, rather than guessing at a directory
+  # name. The first draft matched `/ripgrep-*/bin` and skipped on this pier, where the Nix store
+  # prefixes that with a hash -- a skip is what a vacuous pass looks like from the outside, which is
+  # the fault this whole file was written to refuse.
+  norg=$(printf '%s' "$PATH" | tr ':' '\n' | while IFS= read -r d; do
+    [ -n "$d" ] || continue
+    [ -x "$d/rg" ] || printf '%s\n' "$d"
+  done | paste -sd: -)
+  if [ -n "$norg" ] && ! ( PATH=$norg; export PATH; command -v rg >/dev/null 2>&1 ); then
+    e122_out=$( cd "$root" && PATH=$norg sh "$e122" 2>/dev/null || true )
+    printf '%s\n' "$e122_out" | grep -q '^instrument=rg$' \
+      && ok "a real guard without its instrument names rg rather than a file" \
+      || bad "a real guard without its instrument names rg rather than a file"
+    printf '%s\n' "$e122_out" | grep -q '^verdict=misread$' \
+      && bad "the elder misread verdict is gone" || ok "the elder misread verdict is gone"
+  else
+    note "e122 without rg (no PATH entry to remove)"
+  fi
+else
+  note "e122 without rg (scan absent, or this bench carries no rg to remove)"
+fi
 echo "have_readlink_f=$have_rl"
 echo "pass=$pass"
 echo "skip=$skip"

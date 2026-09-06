@@ -4,7 +4,7 @@
 **Language:** EN
 **Style:** New Gauge, Field setting
 **Voice:** Kyri
-**Status:** Yonder design -- deferred yet alive. **Nothing here is built.** A shape for the lap that takes it.
+**Status:** Yonder design -- deferred yet alive. The three tiers, the roster, and the meter are **still unbuilt**; a shape for the lap that takes them. **The reflex alone landed `20260905.224445`** -- `have_tool` and `require_tool` in [`../../tools/fixtures/s/shell_portable.sh`](../../tools/fixtures/s/shell_portable.sh), with the three roster-reachable `rg` guards repaired and REDS `%445` closed on [`../../tools/s/shell_dialect_witness.rish`](../../tools/s/shell_dialect_witness.rish). This page's own sentence, *the reflex that should not wait for the design*, is what that lap took.
 **Room:** Vision. No claim below is checkable until a witness binds it (`context/TWO_ROOMS.md`).
 **Kin:** [`../../external-research/yonder/20260905-064341_what-a-harness-promises-about-its-tools.md`](../../external-research/yonder/20260905-064341_what-a-harness-promises-about-its-tools.md) (the measured world, with attribution) - [`../../tools/fixtures/s/shell_portable.sh`](../../tools/fixtures/s/shell_portable.sh) - [`../../.claude/rules/tame-guidance.md`](../../.claude/rules/tame-guidance.md)
 

@@ -27,6 +27,30 @@ if test "$MODE" = "prove-red"; then
   exit 1
 fi
 
+# THE INSTRUMENT, NAMED BEFORE IT IS MISSED. This scan asks its twenty-three questions through `rg`,
+# which is borrowed rather than granted -- present on this pier, absent on a bench that has not
+# fetched it. Without it the first question failed and this scan answered `control_gate=failed /
+# verdict=misread`, accusing a control that had printed `verdict=ok` one line above; the real cause,
+# `rg: command not found`, went to stderr where the witness reading this output does not keep it
+# (20260905.224445). One refusal at the door covers all twenty-three sites and names the instrument,
+# which is cheaper and truer than twenty-three fallbacks written by hand.
+#
+# The root walk is the depth-proof block every fixtures guard carries: the first ancestor holding
+# rishi/bin and tools/fixtures, git-free so a pen copy outside a repository still resolves, bounded
+# at 8 steps and loud past the bound.
+_fd_root=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
+_fd_steps=0
+while [ ! -d "$_fd_root/rishi/bin" ] || [ ! -d "$_fd_root/tools/fixtures" ]; do
+  _fd_steps=$((_fd_steps + 1))
+  if [ "$_fd_steps" -gt 8 ] || [ "$_fd_root" = "/" ] || [ -z "$_fd_root" ]; then
+    echo "$0: no tree root within 8 steps (needs rishi/bin and tools/fixtures)" >&2
+    exit 2
+  fi
+  _fd_root=$(dirname "$_fd_root")
+done
+. "$_fd_root/tools/fixtures/s/shell_portable.sh"
+require_tool rg 'the twenty-three roots and Bench row reads below' || exit 127
+
 if ! test -f "$CONTROL_SCAN"; then
   echo "CONTROL=ABSENT"
   echo "verdict=absent"
