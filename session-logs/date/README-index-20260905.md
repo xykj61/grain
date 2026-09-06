@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260905.225236` | [the scope that changed between rows](20260905/20260905-225236_the-scope-that-changed-between-rows.kyri) | %441: a table changed glob mid-row. |
 | `20260905.224930` | [the shelf that spoke in marks it never taught](20260905/20260905-224930_the-shelf-that-spoke-in-marks-it-never-taught.kyri) | 20 stamped names, 0 pages teaching one. |
 | `20260905.224714` | [the angle the sky never subtracts](20260905/20260905-224714_the-angle-the-sky-never-subtracts.kyri) | 682,425 pairs; one hop value between them. |
 | `20260905.213047` | [the floor that votes only where one sentence could](20260905/20260905-213047_the-floor-that-votes-only-where-one-sentence-could.kyri) | 52 pages lose a blank 100. |
