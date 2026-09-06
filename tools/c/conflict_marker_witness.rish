@@ -21,6 +21,30 @@
 # and a guard that reds on ordinary work is a guard someone turns off. So only the two LABELLED
 # markers gate, and a divider is counted -- and reported -- solely between a labelled pair.
 #
+# ACCRETED 20260906 (REDS %484), three readings and one repair, each proven in the control:
+#
+#   BOTH SIDES ARE READ. `git grep` without `--cached` reads the working tree; with it, the index --
+#   which is what a commit ships and what a clone gets. Repairing a conflicted file in the editor
+#   leaves the worktree clean while the index still carries the block, so a worktree-only reading
+#   answers `ok` at the exact moment a marker is about to be committed. The operator card sat in
+#   that state on metal for the whole window between its repair and its `git add`. The control
+#   proves the second pass sees what the first cannot, rather than asserting it.
+#
+#   THE DIFF3 BASE MARKER counts. `merge.conflictStyle=diff3` and `zdiff3` write a third labelled
+#   marker, seven pipes and a space, and a tree configured that way was half-read before.
+#
+#   THE STATUS IS CLASSIFIED, NEVER SWALLOWED -- REDS %473 exactly. `git grep` exits 1 for "no
+#   match" and 2 or more when it could not run, and `|| : > raw` reads those two opposite answers
+#   the same way. Proven on metal before it was changed: one unterminated bracket, git grep exiting
+#   128 with `fatal: Unmatched [`, and this scan answering `verdict=ok` at exit 0. It then bit for
+#   real within the hour -- `--cached` placed AFTER the pattern is read by git grep as a REVISION,
+#   failing at exit 128, and the elder fallback would have shipped that as a guard reading nothing
+#   and reporting `ok` forever.
+#
+# NAMED, NOT TAKEN. The three teaching files are excluded BY NAME, so a page that shows a marker
+# must be added to that list or it reds the fleet; anchoring at column zero would make one space of
+# indentation the escape and need no list. That is the peer's design choice and it stays theirs.
+#
 # Run from the repository root:
 #   rishi/bin/rishi run tools/c/conflict_marker_witness.rish
 
@@ -58,6 +82,14 @@ assert control.out contains "untracked_free=yes" else "conflict-marker: an untra
 assert control.out contains "vendor_free=yes" else "conflict-marker: vendored source is held unmodified, so a marker there is upstream's to resolve"
 assert control.out contains "unmerged_counted_once=yes" else "conflict-marker: a genuinely unmerged path lists once per stage and must be counted ONCE"
 assert control.out contains "unmerged_bitten=yes" else "conflict-marker: a genuine merge conflict must refuse -- it is the tree this reading exists for"
+assert control.out contains "index_only_bitten=yes" else "conflict-marker: a block staged while the worktree reads repaired is what a commit SHIPS, and must refuse"
+assert control.out contains "index_only_counted=yes" else "conflict-marker: the index-side refusal must name a count, never only a verdict"
+assert control.out contains "index_only_worktree_clean=yes" else "conflict-marker: the second pass must be proven to see what the first cannot, rather than assumed to"
+assert control.out contains "diff3_bitten=yes" else "conflict-marker: the diff3 base marker is as labelled as the other two and must refuse"
+assert control.out contains "diff3_base_line_named=yes" else "conflict-marker: the base marker must be named where it stands"
+assert control.out contains "instrument_refusal_bitten=yes" else "conflict-marker: a git grep that could not run must refuse by name -- REDS %473"
+assert control.out contains "instrument_never_reads_ok=yes" else "conflict-marker: a broken instrument must never read as a clean tree"
+assert control.out contains "instrument_pen_innocent=yes" else "conflict-marker: the same pen unmutated must read clean, so the refusal belongs to its plant"
 
-say "RED and GREEN paths proven -- 23 readings over 10 planted states in 9 real repositories, every refusal lifted in its own pen"
+say "RED and GREEN paths proven -- 31 readings over 12 planted states in 12 real repositories, every refusal lifted in its own pen"
 say "GREEN: conflict-marker -- no tracked file carries the punctuation of an unfinished merge."
