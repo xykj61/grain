@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `63d6f3b494` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `ff122a42f8` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE GUARD THAT COUNTS REDS READ A CARD ITS OWN PASS WRITES AT THE CLOSE.** `%483` CLOSED,
 [shelf](archive/REDS-a-record-its-own-pass-writes-at-the-close-rows-483.md). **Both shapes, since
@@ -190,15 +190,14 @@ every instrument let it go.** **Yours, with a number:** the two-level rooms hold
 that dies takes its own red with it. Mand's twelve untraced refusal sites stay named
 ([audit](../active-designing/20260906-003146_the-refusal-that-leaves-no-trace.md), Caravan parked Dream's).
 
-**COPAL -- A WRAPPER IS ONLY TRANSPARENT IN THE DIRECTION IT WAS TESTED.** `%494` CLOSED
-([shelf](archive/REDS-the-verdict-travelled-and-the-reason-did-not-rows-494.md)). `run` puts a target's
-stderr in `r.err`, so a shim saying only `r.out` exits non-zero with **zero bytes** on its own.
-**No plant:** `amphora_device_wire` refuses honestly here, and where the target names the failed
-lab and its line the shim hands over a **progress line before the failure**.
-**43 of 52, none rostered** -- a trap springing on the lap that ROSTERS one. **Gate** at zero the
-field cannot prove able to bite, so the pen does; **ratchet** 43.
-**AND `%493` OPEN, not mine:** `sow_allow_reach` refuses on a tree with no `seed/` projection, and
-**no lap makes one**, so every ship without one reds each lap and pays a cold pass.
+**COPAL -- EXISTENCE AND AGREEMENT ARE TWO QUESTIONS, AND ONLY ONE HAD AN INSTRUMENT.** `%502`
+CLOSED ([shelf](archive/REDS-a-number-and-a-path-name-two-rows-rows-502.md)). A `%N` is a number a
+reader knows and a path a reader clicks; the halves move on different laps and nothing read them
+together. **Four shipped in one day, all mine**, and `readme_reach` named **one** -- the absent
+file. **The other three OPEN a real shelf holding another row**, so they resolve and never red. `reds_citation` reads promises only: the
+anchor that IS the number, a shelf word one line back. **At `b441f97b2`: `disagree=3`.**
+**`%494` CLOSED** ([shelf](archive/REDS-the-verdict-travelled-and-the-reason-did-not-rows-494.md)),
+ratchet 43 of 52. **`%493` still OPEN, not mine** -- `standing_equipment` reads broken here.
 **Yours from `%485`:** `source_port` is still the machine's and the lock stands.
 
 **The live front** (condensed `20260831.023122`; the day shelves hold every landed lap):

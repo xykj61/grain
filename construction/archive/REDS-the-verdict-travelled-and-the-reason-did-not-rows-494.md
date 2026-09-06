@@ -8,7 +8,7 @@ direction nobody tested. Rishi's `run` captures the target's stderr into `r.err`
 saying only `r.out` writes zero bytes to its own, so the exit code arrives and the sentence stays
 behind. **Forty-three of fifty-two shims, and zero of them on the standing roster** -- which makes
 it a trap rather than a live fault, springing on the lap that rosters one, which is exactly the
-lap [`%360`](REDS-what-no-meter-was-reading-rows-439-441.md) keeps asking for.*
+lap [`%360`](../REDS.md) keeps asking for.*
 
 *This row was booked as `%487` from the anointed spine after a fetch, and its number moved twice on
 two rebases in one send. The first brought ten upstream commits carrying a published `%487` stamped
@@ -18,7 +18,7 @@ and the unshared one does, so this row moved to `%491`, then `%492`, and stands 
 renumberings across three rebases in one send, on a spine eight ships write into. The stamp below is
 the key and has not moved through any of them.*
 
-*Kin, all from the same week: [`%484`](REDS-a-claim-whose-only-source-is-itself-rows-480.md)'s
+*Kin, all from the same week: [`%484`](REDS-a-guard-that-cannot-hear-its-own-instrument-rows-484.md)'s
 family -- a guard that could not hear itself fail -- and `%473`, a swallowed exit status, whose
 lesson this scan's own `git grep` obeys; and `%466`, a floor that carries a number, which is why
 `exit_alias_sites` publishes this reading's blind spot rather than hiding it.*

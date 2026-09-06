@@ -1,0 +1,47 @@
+# tools/r/reds_citation_witness.rish -- a number used as a link is a promise about where the link
+# goes, and this is where that promise is checked.
+#
+#   rishi/bin/rishi run tools/r/reds_citation_witness.rish
+#
+# WHAT THIS GUARDS. A REDS row is cited as a number a reader recognises and as a path a reader
+# clicks, and those two halves move at different moments -- the number when the derived spine
+# renumbers an unshared row, the path when a row folds onto a shelf. Nothing read them together
+# until `20260906`, when one ship published four citations in one day whose number and path named
+# different rows.
+#
+# WHAT NO STANDING GUARD COULD SEE, MEASURED RATHER THAN ARGUED. On the tree as it stood that
+# morning, `readme_reach` named exactly ONE of the four -- the citation whose file was absent --
+# and read green over the rest, because they open a real shelf holding somebody else's row.
+# `tracked_link` asks existence the same way; `reds_row_present` asks whether the ledger holds a
+# row and never looks at who cites it. Existence and agreement are two questions, and only one of
+# them had an instrument.
+#
+# WHY `tier lap`. One `git grep` over tracked markdown, then awk over the two dozen documents that
+# cite a shelf -- about a second, measured `20260906`. The fault it catches is written by ordinary
+# work: every fold moves a path, and every renumbering moves a number, so a lap that does either
+# can leave a citation half-repaired. A cadence clock would let one ride four laps.
+#
+# Purely local -- no key, no network, no funds, no device. It reads tracked markdown and a pen.
+
+say "reds-citation: Language EN -- a reader clicking a number lands on the row that number names."
+say "reds-citation: Style Gauge, Meter -- two forms are promises, and the rest of a sentence is not."
+say "reds-citation: Lens TAME -- safety first: the refusal is proven in a pen, since the field reads zero."
+
+# 1 -- the pen, which builds real repositories and shows every refusal from the failing side.
+let control = run ["sh" "tools/fixtures/r/reds_citation_control.sh"]
+say control.out
+say control.err
+assert control.ok else "reds-citation: a control case read the wrong way"
+assert control.out contains "control_verdict=ok" else "reds-citation: the pen must balance before the field is believed"
+
+# 2 -- the field. Both gates at zero; the unnumbered count is reported and never gated, because a
+# shelf link with no number beside it makes no numeric promise to check.
+let field = run ["sh" "tools/fixtures/r/reds_citation_scan.sh"]
+say field.out
+say field.err
+assert field.ok else "reds-citation: a living citation names one row and links another -- read the scan's own lines"
+assert field.out contains "numbered_disagree=0" else "reds-citation: a numbered citation must land on the row it names"
+assert field.out contains "shelf_disagree=0" else "reds-citation: a shelf link must land on the row its sentence just named"
+assert field.out contains "verdict=ok" else "reds-citation: the field reading must close ok"
+
+say "GREEN: reds-citation -- every number that carries a link lands on the row it names."

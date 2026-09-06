@@ -244,6 +244,15 @@ re-derived. Three reasons, each checkable:
 - **The citations reach further than any migration could.** Measured `20260823.173634`: **2,519** across
   the tree, of which **532** sit in commit messages and **208** in dated testimony -- both beyond reach, so
   a conversion would leave the majority pointing at a retired scheme.
+- **A citation that carries a link is checked against the row it names** (`20260906.143706`). A `%N`
+  is a number a reader recognises and a path a reader clicks, and the two halves are edited at
+  different moments -- the number when the derived spine renumbers an unshared row, the path when a
+  row folds onto a shelf. Four citations shipped in one day naming one row and linking another, and
+  the only guard that reads links caught the one whose file was absent: the rest OPEN a real shelf
+  holding somebody else's row, so they resolve and never red.
+  [`../../tools/r/reds_citation_witness.rish`](../../tools/r/reds_citation_witness.rish) reads the
+  two shapes that are promises rather than mentions -- an anchor text that IS the number, and a
+  shelf word whose sentence just named a row -- and holds both at zero.
 
 **The test, for the next sequence somebody wants to number:** *could this number turn out to be wrong?*
 Planned work, yes -- stamp and name it. Work already done, no, and a gap in it would mean a record has
