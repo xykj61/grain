@@ -83,4 +83,4 @@ Kyri session logs prefer `product_nib` - `suite_nib` - `git_nib` (or `nib <hash>
 
 ## Spirit
 
-Write it plainly and honestly, at Gauge's **Meter** setting (`.claude/rules/gauge-style.md`), so a future self or another agent can follow the work home. **Commit the log in the same commit as the work it records** whenever possible; a log-only follow-up commit is a last resort.
+Write it plainly and honestly, at Gauge's **Meter** setting (`.claude/rules/gauge-style.md`), so a future self or another agent can follow the work home. **Commit the log in the same commit as the work it records** whenever possible; a log-only follow-up commit is a last resort, **and it carries `construction/ITINERARY.md`'s Git nib forward in the same commit** -- rewritten to `git rev-parse --short=10 HEAD` read before that commit is made, since a follow-up moves HEAD past the nib the work commit pinned and `tools/r/remember_git_nib_witness.rish` then reds on the next lap. That is [`remember-git-nib.md`](remember-git-nib.md) rule 5, and the two rules met at REDS %450: this one permitted the follow-up, that one forbade only a *pin*-only commit, and neither reached the other.
