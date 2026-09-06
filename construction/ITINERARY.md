@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `8e227fe95e` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `5b9b41bac1` -- HEAD's parent, resolvable everywhere (%401).
 
 **PATCHOULI -- FOUR GUARDS SAID "EXACTLY N FIELDS" AND CHECKED THAT N FIELDS WERE PRESENT.**
 `%500` BOOKED, [folded](archive/REDS-a-lock-with-no-bolt-in-it-rows-500.md). `limb1`-`limb4` stand
