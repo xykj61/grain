@@ -4,7 +4,7 @@ set -eu
 ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 cd "$ROOT"
 verb="${1:-}"
-PAGE=edu/funds/murr-opening.md
+PAGE=docs-geode/edu/yonder/funds/murr-opening.md
 
 case "$verb" in
   deploy|mainnet|wallet|gas|multisig-live|aurora-deploy|claim-domain|shred|breach|yes|now)
@@ -48,7 +48,7 @@ echo "dedication: Kyler Murray (honor) · Minnesota Vikings QB as of 2026 public
 echo "executive: Keaton Sealy Livermore (from DJINN · POLE 20260730.150702)"
 echo "season: MUR Chapter innermost u0-u127 · massive rename approved as waves"
 echo "wov: unify into MUR · retire WOV roadmap last"
-echo "page: edu/funds/murr-opening.md"
+echo "page: docs-geode/edu/yonder/funds/murr-opening.md"
 echo "witness:murr-open GREEN — seat · dedication · hard lines · rename spine"
 echo "refuse: deploy · wallet · gas · shred · breach"
 echo "murr_fund=prep"

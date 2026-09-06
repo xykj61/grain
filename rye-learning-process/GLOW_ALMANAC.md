@@ -73,7 +73,7 @@ Expected correctness-first timing of fold · fold_persist · ship_sol · build_b
 Expected five sections (keypair · signed event · append-only log · pure fold · capability) citing GREEN myc only. Metal answered GREEN — five sections · six myc paths · README indexed. Companion myc re-runs this door: fold · fold_persist · ship_sol · refusal_storm · build_bounds · kumara all GREEN.
 
 ### 12. An edu walk re-runs discovery quartet plus myc fold; the wire pier is not claimed.
-**Ran:** `rishi/bin/rishi run tools/e/edu_discovery_walk_witness.rish` · **Stamp:** `20260730.104152` · **Witness:** `edu/discovery/round-trip-walk.md` · `tools/e/edu_discovery_walk_witness.rish`  
+**Ran:** `rishi/bin/rishi run tools/e/edu_discovery_walk_witness.rish` · **Stamp:** `20260730.104152` · **Witness:** `docs-geode/edu/yonder/discovery/round-trip-walk.md` · `tools/e/edu_discovery_walk_witness.rish`  
 Expected five GREEN steps (descriptor · table · gossip · introduce · fold) and an honesty line that wire both-sides stays queued. Metal answered GREEN — five steps · quartet + fold · no wire pier claimed.
 
 ### 13. Two discovery lanes converge tables across a spawn/wait-for wire; fold supply matches both sides.
@@ -105,7 +105,7 @@ Expected East utilities and harden limbs GREEN in one re-touch. Metal answered G
 Expected 16 slots · 12 base once each · 4 doubles with min gap 6. Metal answered GREEN. The mod-clock priority fold enters chapter two.
 
 ### 19. The classic tower solves with an explicit bounded stack; seventeen rings refuse whole.
-**Ran:** `rishi/bin/rishi run tools/e/edu_tower_witness.rish` · **Stamp:** `20260730.120531` · **Witness:** `tools/e/edu_tower_witness.rish` · `edu/tower/bounded_tower.rye`
+**Ran:** `rishi/bin/rishi run tools/e/edu_tower_witness.rish` · **Stamp:** `20260730.120531` · **Witness:** `tools/e/edu_tower_witness.rish` · `docs-geode/edu/yonder/tower/bounded_tower.rye`
 Expected solve(3)=7 moves · TooManyRings at 17 · tally/stack beneath · tutorial pinned. Metal answered GREEN. Recursion stays out; the depth is named.
 
 ### 20. Houseplant names a Kumara ship owner's whole grain repository project tree.
@@ -113,7 +113,7 @@ Expected solve(3)=7 moves · TooManyRings at 17 · tally/stack beneath · tutori
 Expected Lexicon row with ship · repository · project tree · pier/verse distinct · ladder accretion. Metal answered GREEN. The plant is the tree, not the keypair.
 
 ### 21. A capacity-one stack refuses a second push; the tower's frame bound bites from a fixture.
-**Ran:** `rishi/bin/rishi run tools/e/edu_tower_frame_bite_witness.rish` · **Stamp:** `20260730.120858` · **Witness:** `tools/e/edu_tower_frame_bite_witness.rish` · `edu/tower/frame_bound_overpush.rye`
+**Ran:** `rishi/bin/rishi run tools/e/edu_tower_frame_bite_witness.rish` · **Stamp:** `20260730.120858` · **Witness:** `tools/e/edu_tower_frame_bite_witness.rish` · `docs-geode/edu/yonder/tower/frame_bound_overpush.rye`
 Expected overpush EXIT=1 with assertion failure · welcome tower still GREEN. Metal answered GREEN. Negative space as loud as welcome.
 
 ### 22. Fourteen symlinks and one real file keep tally/copy.rye sameness; a drifted fixture is refused.

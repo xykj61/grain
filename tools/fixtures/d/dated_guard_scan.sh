@@ -50,7 +50,7 @@ is_amendable_roof() {
   case "$path" in
     counsel/*|active-designing/*|expanding-prompts/*|session-logs/*| \
     foundations/*|waymarks/*|active-reviving/*|external-research/*| \
-    edu/*|press/*|saga/*|classical-vedic-astrology/*|work-in-progress/*| \
+    docs-geode/edu/yonder/*|press/*|saga/*|classical-vedic-astrology/*|work-in-progress/*| \
     rye-learning-process/*|context/specs/*)
       return 0
       ;;

@@ -28,7 +28,6 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 | [`construction/`](../../construction/README.md) | 1 | 47 |
 | [`crypto/`](../../crypto/README.md) | 82 | 118 |
 | [`dimeroll/`](../../dimeroll/README.md) | 2 | 3 |
-| [`edu/`](../../edu/README.md) | 2 | 6 |
 | [`ember/`](../../ember/README.md) | 2 | 5 |
 | [`encoding/`](../../encoding/README.md) | 8 | 16 |
 | [`glow/`](../../glow/README.md) | 132 | 114 |

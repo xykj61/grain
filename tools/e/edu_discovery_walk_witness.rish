@@ -6,7 +6,7 @@
 #   rishi/bin/rishi run tools/e/edu_discovery_walk_witness.rish
 
 let zig = "vendor/zig-toolchain/zig"
-let page = run ["test" "-f" "edu/discovery/round-trip-walk.md"]
+let page = run ["test" "-f" "docs-geode/edu/yonder/discovery/round-trip-walk.md"]
 assert page.ok else "edu walk page missing"
 
 # Avoid $N inside sh -c (rish expands $digits). Use env + rye args as a list.
@@ -31,7 +31,7 @@ let f = run ["sh" "-c" "env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run myc
 assert f.ok else "fold step failed"
 assert f.out contains "GREEN: myc fold" else "fold missing GREEN"
 
-let honesty = run ["sh" "-c" "grep -c 'wire both-sides' edu/discovery/round-trip-walk.md"]
+let honesty = run ["sh" "-c" "grep -c 'wire both-sides' docs-geode/edu/yonder/discovery/round-trip-walk.md"]
 assert honesty.ok else "honesty grep failed"
 assert trim honesty.out != "0" else "page must name that wire both-sides is not claimed"
 

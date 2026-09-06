@@ -18,7 +18,7 @@
 | Vane | `%keeh` (was `%ketu`) |
 | Domain | **keeh.fund** — claim Keaton's hand alone |
 | Executive | **Keaton Sealy Livermore** (unchanged) |
-| Honor sponsor | **Kia** (South Korea) — design seat · [`../../gratitude/kia.md`](../../gratitude/kia.md) |
+| Honor sponsor | **Kia** (South Korea) — design seat · [`../../gratitude/kia.md`](../../../../gratitude/kia.md) |
 
 ## Recommendation lean
 

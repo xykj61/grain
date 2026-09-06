@@ -4,7 +4,7 @@ set -eu
 ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 cd "$ROOT"
 verb="${1:-}"
-PAGE=edu/funds/keeh-opening.md
+PAGE=docs-geode/edu/yonder/funds/keeh-opening.md
 
 case "$verb" in
   deploy|mainnet|wallet|gas|multisig-live|aurora-deploy|claim-domain|shred|breach|yes|now)
@@ -51,7 +51,7 @@ echo "executive: Keaton Sealy Livermore (unchanged from Ketu seat)"
 echo "sponsor: Kia (South Korea) honor · design seat · not a paid buy"
 echo "recommend: used 4-cyl hatch/SUV · non-CVT auto · light grey/beige cloth · Craigslist/FB Marketplace"
 echo "season: Keeh Chapter quint · Kia sponsor seated 20260728.032134"
-echo "page: edu/funds/keeh-opening.md"
+echo "page: docs-geode/edu/yonder/funds/keeh-opening.md"
 echo "witness:keeh-open GREEN — seat · executive · Kia sponsor · used-mobility lean · hard lines · rename spine"
 echo "refuse: deploy · wallet · gas · shred · breach"
 echo "keeh_fund=prep"

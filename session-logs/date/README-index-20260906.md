@@ -18,6 +18,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260906.153431` | [a proof two pages cite](20260906/20260906-153431_a-proof-two-pages-cite.kyri) | %504: cited as proof, compiled by nothing. |
 | `20260906.153324` | [two ships, one guard](20260906/20260906-153324_two-ships-one-guard.kyri) | %505: it could read 19 of 274. |
 | `20260906.152758` | [the test that cannot fail](20260906/20260906-152758_the-test-that-cannot-fail.kyri) | %503: my own discriminator held in both states. |
+| `20260906.153405` | [the drafting room moves to a leaf](20260906/20260906-153405_the-drafting-room-moves-to-a-leaf.kyri) | edu to docs-geode/edu/yonder; 45 citers repointed. |
 | `20260906.144500` | [a bound has a direction](20260906/20260906-144500_a-bound-has-a-direction.kyri) | %501: the Moore bound, asked the way that decides. |
 | `20260906.144208` | [A number and a path naming two different rows](20260906/20260906-144208_a-number-and-a-path-naming-two-rows.kyri) | the citation loom |
 | `20260906.143614` | [the grammar and three readings](20260906/20260906-143614_the-grammar-and-three-readings.kyri) | laps E-H: PR classes; silo 29/33; move declined. |

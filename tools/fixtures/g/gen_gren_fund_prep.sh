@@ -4,7 +4,7 @@ set -eu
 ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 cd "$ROOT"
 verb="${1:-}"
-PAGE=edu/funds/gren-creating-one-of-twelve.md
+PAGE=docs-geode/edu/yonder/funds/gren-creating-one-of-twelve.md
 SPEC=mycelium/constellation/SPEC.md
 MOVE=mycelium/constellation/sui/sources/constellation.move
 
@@ -75,7 +75,7 @@ grep -q 'claim-domain' "$PAGE"
 
 echo "seat: fund=Gren order=2 sign_index=1 (Taurus) vane=%gren dns_prep=gren.fund"
 echo "gift: edu-series tutorial for creating one of the twelve — under the fund seat"
-echo "page: edu/funds/gren-creating-one-of-twelve.md (steps 1–6 taught · m8 close)"
+echo "page: docs-geode/edu/yonder/funds/gren-creating-one-of-twelve.md (steps 1–6 taught · m8 close)"
 echo "witness:step1 GREEN — four-letter Gren + Civic Style"
 echo "witness:step2 GREEN — .fund anchor · claim Keaton's hand alone"
 echo "witness:step3 GREEN — Taurus · fund-order 2 · sign_index 1"

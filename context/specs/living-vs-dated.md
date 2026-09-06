@@ -67,7 +67,7 @@ Plain spoken names (`README.md`, `ROADMAP.md`, `ready-to-ask-claude.md`, `seam-s
 
 - **Tier 1** roster paths -- always red when staged as modifications.
 - **Freeze-class dated paths** (witness - golden - receipt - `keys/`) already on `main` -- red unless living ledger, freeze pointer, or Radiant pass.
-- **Amendable-roof dated paths** (`counsel/` - `active-designing/` - `expanding-prompts/` - `session-logs/` - `foundations/` - `waymarks/` - `active-reviving/` - `external-research/` - `edu/` - `press/` - `saga/` - `classical-vedic-astrology/` - `construction/` - `rye-learning-process/` - dated `context/specs/`) -- OK; amendable until superseded.
+- **Amendable-roof dated paths** (`counsel/` - `active-designing/` - `expanding-prompts/` - `session-logs/` - `foundations/` - `waymarks/` - `active-reviving/` - `external-research/` - `docs-geode/edu/yonder/` - `press/` - `saga/` - `classical-vedic-astrology/` - `construction/` - `rye-learning-process/` - dated `context/specs/`) -- OK; amendable until superseded.
 - Vacuous green when the index has no staged freeze/Tier-1 mods.
 
 `tools/cl/claim_preserve_witness.rish` -- before/after token sets on every file a Radiant pass touches; STOP on mismatch.

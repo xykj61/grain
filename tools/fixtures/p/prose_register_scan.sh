@@ -17,7 +17,7 @@
 # enforced tier by accident and red on work it never agreed to cover.
 #
 # WHAT IS REPORTED, as a ratchet under a ceiling that only ever falls. The teaching tier --
-# docs-geode/, manual/, edu/, and the root guides a newcomer opens -- counted as documents sitting
+# docs-geode/, manual/, docs-geode/edu/yonder/, and the root guides a newcomer opens -- counted as documents sitting
 # above the Field target of 30%. Repair is a rewrite per document rather than a substitution, so
 # these fall on touch. Measured at seating, the beginner tutorial itself read 59%.
 #
@@ -64,7 +64,7 @@ REGISTER_MIN_SENTENCES=8
 #   document                                   elder        now
 #   docs-geode/wiki/README.md                  57% of 7     50% of 10   (under the 8-sentence floor, so unread)
 #   manual/guides/macos-ai-jail-setup.md       22% of 49    37% of 70
-#   edu/funds/gren-creating-one-of-twelve.md   22% of 18    35% of 28
+#   docs-geode/edu/yonder/funds/gren-creating-one-of-twelve.md   22% of 18    35% of 28
 #   manual/guides/self-hosted-vpn-setup.md     26% of 15    33% of 18
 #   manual/guides/walking-the-rounds.md        30% of 53    31% of 66
 #
@@ -169,7 +169,7 @@ for f in $DOOR; do
 done
 
 # The teaching tier: what a newcomer opens after the front door.
-git ls-files 'docs-geode/*.md' 'manual/*.md' 'edu/*.md' CONTRIBUTING.md SOURCE.md ORGANIZING.md MAP.md 2>/dev/null \
+git ls-files 'docs-geode/*.md' 'manual/*.md' 'docs-geode/edu/yonder/*.md' CONTRIBUTING.md SOURCE.md ORGANIZING.md MAP.md 2>/dev/null \
   | grep -vE '(^|/)[0-9]{8}-[0-9]{6}[_.]' > "$work/teaching.txt"
 
 teaching_over=0

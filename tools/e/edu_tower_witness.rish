@@ -6,25 +6,25 @@ say "edu-tower: Language EN — the tower teaches with nothing hidden."
 say "edu-tower: Style Radiant — depth is a number someone wrote down."
 say "edu-tower: Lens TAME — e13 · Glow=code · explicit stack · no recursion."
 
-let metal = run ["test" "-f" "edu/tower/bounded_tower.rye"]
+let metal = run ["test" "-f" "docs-geode/edu/yonder/tower/bounded_tower.rye"]
 assert metal.ok else "edu-tower: bounded_tower.rye missing"
-let link = run ["test" "-L" "edu/tower/tally_stack.rye"]
+let link = run ["test" "-L" "docs-geode/edu/yonder/tower/tally_stack.rye"]
 assert link.ok else "edu-tower: tally_stack.rye symlink missing"
 let page = run ["test" "-f" "docs-geode/tutorials/recursion-in-glow.md"]
 assert page.ok else "edu-tower: tutorial missing"
 
-let run_tower = run ["sh" "-c" "env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run edu/tower/bounded_tower.rye 2>&1"]
+let run_tower = run ["sh" "-c" "env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run docs-geode/edu/yonder/tower/bounded_tower.rye 2>&1"]
 say run_tower.out
 assert run_tower.ok else "edu-tower: metal RED"
 assert run_tower.out contains "GREEN: bounded tower" else "edu-tower: missing GREEN line"
 assert run_tower.out contains "move ring from A to C" else "edu-tower: missing move print"
 
 # seven move lines for solve(3)
-let moves = run ["sh" "-c" "env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run edu/tower/bounded_tower.rye 2>&1 | grep -c '^move ring'"]
+let moves = run ["sh" "-c" "env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run docs-geode/edu/yonder/tower/bounded_tower.rye 2>&1 | grep -c '^move ring'"]
 assert moves.ok else "edu-tower: move count failed"
 assert trim moves.out == "7" else "edu-tower: want exactly seven moves"
 
-let pin = run ["sh" "-c" "grep -q 'edu/tower/bounded_tower.rye' docs-geode/tutorials/recursion-in-glow.md && grep -q 'metal GREEN' docs-geode/tutorials/recursion-in-glow.md && echo PIN_OK"]
+let pin = run ["sh" "-c" "grep -q 'docs-geode/edu/yonder/tower/bounded_tower.rye' docs-geode/tutorials/recursion-in-glow.md && grep -q 'metal GREEN' docs-geode/tutorials/recursion-in-glow.md && echo PIN_OK"]
 assert pin.ok else "edu-tower: tutorial pin scan failed"
 assert pin.out contains "PIN_OK" else "edu-tower: tutorial not pinned to metal GREEN"
 

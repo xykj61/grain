@@ -28,7 +28,7 @@ The two first-hour pages are a **welcome** and a **path**, and they point at eac
 
 ## The drafting room
 
-[`../../edu/`](../../edu/README.md) is where teaching is **drafted** before it ships here -- the example-app series plan, the PLEAC exercises the standard library is dogfooded against, and the company, discovery, funds, and tower threads. Drafts live there; what has been crushed and proven lives in this room and in [`../tutorials/`](../tutorials/the-first-hour.md).
+[`../../docs-geode/edu/yonder/`](../../docs-geode/edu/yonder/README.md) is where teaching is **drafted** before it ships here -- the example-app series plan, the PLEAC exercises the standard library is dogfooded against, and the company, discovery, funds, and tower threads. Drafts live there; what has been crushed and proven lives in this room and in [`../tutorials/`](../tutorials/the-first-hour.md).
 
 ## What this room is not
 

@@ -69,7 +69,7 @@ Read the sections below whenever you wonder where a new file belongs. When a cha
 
 **`src/`** -- the Glow **userland**: code written in Glow, five rooms -- `til/` tilaks (the type-marks), `sur/` structures (the data-shape museum), `app/` Pool agents, `gen/` generators, `lib/` shared gates. The Glow *implementation* (tokenizer, runes, lowerers -- Rye) stays at `glow/`; the desks stay at `glow/gen/` until the O2-O3 breach is declared and witnessed (design in counsel; law in `context/BREACH.md`). Opened as O1 skeleton `20260727.064038`.
 
-**`edu/`** -- the learning floor: the PLEAC puzzle lane, the beginner's first steps with Grain and Glow, and clean-room worked examples in the spirit of the elder collections (studied whole in gratitude). The manual teaches what runs; edu teaches the reader.
+**`docs-geode/edu/yonder/`** -- the learning floor: the PLEAC puzzle lane, the beginner's first steps with Grain and Glow, and clean-room worked examples in the spirit of the elder collections (studied whole in gratitude). The manual teaches what runs; edu teaches the reader.
 
 **`GLOW_HOST.kyri`** -- Grain's own root host-and-toolchain config, the sibling in Bron to `.claude/rules`/`.cursor/rules` (those configure agent behavior; this configures the host). Copy [`GLOW_HOST.template.kyri`](GLOW_HOST.template.kyri) to `GLOW_HOST.kyri` (gitignored, personal) and fill in this host's own `os`/`arch`/`rye_zig`/`rye_lib`. [`tools/g/glow_host_run.sh`](tools/g/glow_host_run.sh) reads it and refuses to run rather than silently reach for a mismatched toolchain on `PATH` -- see [`context/specs/20260714-011504_glow-host-config-and-vpn-reification.md`](context/specs/20260714-011504_glow-host-config-and-vpn-reification.md).
 
@@ -98,7 +98,7 @@ Read the piece aloud. Ask what it is *doing*:
 - **Tracking what is open or next** -> `construction/`.
 - **Recording what a session settled** -> `session-logs/`.
 - **Implementing** -> the module the code belongs to; **code written in Glow** -> `src/` (its five rooms), with `glow/` reserved for the language's own implementation.
-- **Teaching a beginner or solving the shared puzzle book** -> `edu/`.
+- **Teaching a beginner or solving the shared puzzle book** -> `docs-geode/edu/yonder/`.
 
 If two folders seem right, choose the one whose README you would update first. If still unsure, write a one-line note in `construction/ITINERARY.md` open questions and place the file where a future reader will look first.
 

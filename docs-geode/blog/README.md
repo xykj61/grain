@@ -13,7 +13,7 @@ This room stands open with its first page still ahead of it, and the wait is a s
 
 **What would enter:** a piece written *to be read for its own sake* -- an argument, a story from a round, a change of mind explained -- addressed to someone outside this tree who has yet to find a reason to care. Documentation teaches, a foundation grounds, and a session log records; a blog post earns the attention those three assume. Earning it is the one thing a page here has to do.
 
-**Where the writing has gone so far:** each piece worth saying has so far found a better home. The reasoning went to [`foundations/`](../../foundations/README.md), the record to [`session-logs/`](../../session-logs/README.md), the announcements to [`../press/README.md`](../press/README.md), and the teaching to [`../edu/README.md`](../edu/README.md). Each one belonged where it landed, which is why the shelf is still bare.
+**Where the writing has gone so far:** each piece worth saying has so far found a better home. The reasoning went to [`foundations/`](../../foundations/README.md), the record to [`session-logs/`](../../session-logs/README.md), the announcements to [`../press/README.md`](../press/README.md), and the teaching to [`../../docs-geode/edu/yonder/README.md`](../../docs-geode/edu/yonder/README.md). Each one belonged where it landed, which is why the shelf is still bare.
 
 **Why the room stays open anyway:** the day a round produces something that is genuinely an essay for strangers -- and this tree has come close, more than once, in a red worth telling -- it should have a shelf already waiting rather than a decision to make.
 

@@ -220,7 +220,7 @@ one reason: **thinking and building are filed separately, so each has space to b
   [generated index of every library](docs-geode/libraries/README.md),
   [demos you can run in a minute](docs-geode/demos/README.md), and
   [how to read this tree](docs-geode/study/README.md).
-- **[`manual/`](manual/)** and **[`edu/`](edu/)** -- the onboarding rooms and the teaching material.
+- **[`manual/`](manual/)** and **[`docs-geode/edu/yonder/`](docs-geode/edu/yonder/)** -- the onboarding rooms and the teaching material.
 - **[`context/`](context/README.md)** -- the disciplines themselves, listed below.
 - **[`tools/`](tools/)** -- every witness. The proof, rather than the prose.
 - **[`waymarks/`](waymarks/)** and **[`context/specs/`](context/specs/)** -- the named plans and
