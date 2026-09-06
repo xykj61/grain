@@ -32,6 +32,29 @@ now_ms=$(( $(date +%s) * 1000 ))
 field() { LC_ALL=C sed -n "s/.*\"$2\"[[:space:]]*:[[:space:]]*\([0-9]\{10,\}\).*/\1/p" "$1" 2>/dev/null | head -1; }
 tok()   { LC_ALL=C sed -n "s/.*\"refreshToken\"[[:space:]]*:[[:space:]]*\"\([^\"]*\)\".*/\1/p" "$1" 2>/dev/null | head -1; }
 
+# THE READING THIS SCAN CANNOT TAKE FROM INSIDE A JAIL (REDS %458). `agent-jail.sh` binds the
+# ship's own `loops/claude` over `$HOME/.claude`, so inside the enclosure `$HOME/.claude/` IS the
+# ship's copy -- same device, same inode -- and calling it *the pier's* names one file twice. The
+# first version of this scan did exactly that, reported `trees_sharing_token=1` from comparing a
+# file with itself, and every conclusion drawn about the pier's credential was drawn about this
+# tree's. An agent runs this from inside the jail, which is precisely where the reading is wrong.
+#
+# So the seam is DETECTED rather than assumed, by asking the filesystem whether the two paths are
+# one file, and a scan that cannot see the pier says so and refuses that half. The tree readings
+# below stand either way -- peer trees are bound in read-only and their `loops/` rooms are real.
+own_copy="$ROOT/loops/claude/.credentials.json"
+jailed=no
+if [ -e "$PIER_CRED" ] && [ -e "$own_copy" ] && [ "$PIER_CRED" -ef "$own_copy" ]; then
+  jailed=yes
+fi
+echo "pier_visible=$( [ "$jailed" = yes ] && echo no || echo yes )"
+
+if [ "$jailed" = yes ]; then
+  echo "detail: \$HOME/.claude is this ship's own loops/claude, bind-mounted -- the pier's credential"
+  echo "detail: is not reachable from inside the enclosure, so no pier reading is taken here"
+  echo "detail: run this from an unjailed host shell for the pier half"
+fi
+
 if [ ! -f "$PIER_CRED" ]; then
   echo "pier_credential=absent"
   echo "detail: no credential at \$HOME/.claude/.credentials.json -- run claude and /login on the host"
@@ -44,8 +67,13 @@ acc=$(field "$PIER_CRED" expiresAt)
 ref=$(field "$PIER_CRED" refreshTokenExpiresAt)
 pier_tok=$(tok "$PIER_CRED")
 
-[ -n "${acc:-}" ] && { [ "$acc" -gt "$now_ms" ] && echo "pier_access_valid=yes" || echo "pier_access_valid=no"; } || echo "pier_access_valid=unknown"
-[ -n "${ref:-}" ] && { [ "$ref" -gt "$now_ms" ] && echo "pier_refresh_valid=yes" || echo "pier_refresh_valid=no"; } || echo "pier_refresh_valid=unknown"
+if [ "$jailed" = yes ]; then
+  echo "pier_access_valid=unreadable"
+  echo "pier_refresh_valid=unreadable"
+else
+  [ -n "${acc:-}" ] && { [ "$acc" -gt "$now_ms" ] && echo "pier_access_valid=yes" || echo "pier_access_valid=no"; } || echo "pier_access_valid=unknown"
+  [ -n "${ref:-}" ] && { [ "$ref" -gt "$now_ms" ] && echo "pier_refresh_valid=yes" || echo "pier_refresh_valid=no"; } || echo "pier_refresh_valid=unknown"
+fi
 
 # NAMED, NEVER ONLY COUNTED. A count answers "did it work?" with a number that looks the same
 # whether the right ship or the wrong one changed, and the whole point of a per-ship login is that
@@ -60,7 +88,11 @@ for d in "$(dirname "$ROOT")"/grain-*; do
     continue
   fi
   seeded=$((seeded + 1))
-  if [ "$(tok "$c")" = "$pier_tok" ]; then
+  if [ "$jailed" = yes ] && [ "$c" -ef "$PIER_CRED" ]; then
+    # This ship's own copy, reached through the bind. Comparing it to itself can only ever say
+    # equal, which is a tautology rather than a reading.
+    echo "tree $t own_copy_self -- this ship; no comparison possible from inside its own jail"
+  elif [ "$(tok "$c")" = "$pier_tok" ]; then
     sharing=$((sharing + 1)); echo "tree $t shares_pier_token"
   else
     own=$((own + 1)); echo "tree $t own_session"
@@ -70,6 +102,10 @@ echo "trees_seeded=$seeded"
 echo "trees_sharing_token=$sharing"
 echo "trees_own_session=$own"
 
+if [ "$jailed" = yes ]; then
+  echo "verdict=pier_unreadable_from_jail"
+  exit 0
+fi
 if [ "${ref:-0}" -le "$now_ms" ] 2>/dev/null; then
   echo "detail: the pier's refresh token has expired -- every ship seeds from it, so every ship is out"
   echo "detail: run claude on the HOST and /login; the ships heal on their next round-open"
