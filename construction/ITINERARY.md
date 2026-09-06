@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `1d6fc5066e` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `229e402220` -- HEAD's parent, resolvable everywhere (%401).
 
 **DIFFUSER** -- **`%454` stays OPEN and now carries its price.** Elder measured routing; this is
 the other half. **A revocation and a fault ride the same edge**, so the set where one cascades IS

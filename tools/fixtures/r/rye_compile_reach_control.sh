@@ -257,6 +257,23 @@ seal "$p"; run_pen "$p"
 check      "a symlink cycle terminates"                    0 "$rc"
 check_says "  ... counting both links"                     "symlinks=2" "$out"
 
+# -- 16. the census does not read itself ------------------------------------------------------
+# The scan's own source carries the compiler-detector patterns as literal strings and names example
+# Rye paths in its comments, so once tracked it classified ITSELF as a compiling runner and credited
+# every path it mentions -- clearing on the field the one accusation it existed to hold. This plants
+# exactly that: an orphan named inside the scan's own comments, which must stay accused.
+p=$(new_pen self_read)
+mkdir -p "$p/lib" "$p/tools/a"
+printf 'pub fn orphan() void {}\n' > "$p/lib/named_in_the_scan.rye"
+printf '#!/bin/sh\ngrep -q pub lib/named_in_the_scan.rye\n' > "$p/tools/a/claim.sh"
+printf '# a comment naming lib/named_in_the_scan.rye beside this scan own detector strings\n' \
+  >> "$p/tools/fixtures/r/rye_compile_reach_scan.sh"
+seal "$p"; run_pen "$p"
+check_says "an orphan the scan itself names stays accused"  "asserted=1" "$out"
+check      "  ... and the ceiling still refuses at 2"       0 "$rc"
+run_pen "$p" --list asserted
+check_says "  ... named in the asserted list"               "lib/named_in_the_scan.rye" "$out"
+
 # -- 16. the pen proven innocent ----------------------------------------------------------------
 # A census that always answers "nothing is accused" must fail the accusation case above. If it walks
 # free here, every pass in this file is a pass of the pen rather than of the scan.

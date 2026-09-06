@@ -144,7 +144,18 @@ cut -f2 "$work/resolved.txt" | sort -u > "$work/distinct.txt"
 distinct=$(wc -l < "$work/distinct.txt" | tr -d ' ')
 
 # ---- the runners, split by whether they ever drive the Rye compiler ---------------------------
-git ls-files -- '*.rish' '*.sh' | sort -u > "$work/runners.txt"
+# THE CENSUS MUST NOT READ ITSELF. This scan's own source carries the compiler-detector patterns
+# as literal strings AND names example Rye paths in its comments, so the moment it became tracked it
+# classified itself as a compiling runner and credited every path it mentions -- silently clearing
+# the one accusation it had been built to hold. Measured `20260906`: `asserted` fell 1 -> 0 on the
+# commit that added this file, with nothing in the tree changed about the accused module. The gate
+# disarmed itself by being committed, which is the sharpest form of the fault this whole census is
+# about: an instrument reading its own reflection and reporting the room is empty. Its control is
+# excluded for the same reason and by the same rule -- these two files, by name, and nothing else.
+git ls-files -- '*.rish' '*.sh' \
+  | grep -v -e '^tools/fixtures/r/rye_compile_reach_scan\.sh$' \
+            -e '^tools/fixtures/r/rye_compile_reach_control\.sh$' \
+  | sort -u > "$work/runners.txt"
 runners=$(wc -l < "$work/runners.txt" | tr -d ' ')
 [ "$runners" -le "$max_runners" ] || {
   echo "detail: runners $runners over max_runners $max_runners -- raise the bound deliberately"
