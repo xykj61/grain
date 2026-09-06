@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `e3cd73777a` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `563210fa68` -- HEAD's parent, resolvable everywhere (%401).
 
 **DIFFUSER** -- 622 named bounds, none names a rate or a joule. `%447`, `20260905.233110`.
 
@@ -126,6 +126,19 @@ public function is a design act; its argument and the census's four readings fol
 too, and it is `%446` upstream: `bwrap` and `unshare` both answer *Operation not permitted* at a
 bare prompt, so the host denies the namespace and nothing in the tree is wrong.
 
+**Grass's cross-lane find, measured** -- `mand/capabilities.rye` is a **262-line copy** of
+caravan's **305**, and at this stamp the **one file in this tree that lags live code**: of the 113
+copies standing under a basename the tree also symlinks, 108 are byte-identical and 5 differ, three
+of those being siblings sharing a word and one trailing by two comment lines. It lacks `Refusal` and
+`refusal_reason` -- whose own comment reads *"Mand's ring-1 audits on grant; a refusal deserves the
+same legibility"* -- so the sentence naming Mand sits in a file Mand copied from before it was
+written. Beneath it: **twelve refusal sites across the three rings return before their trail is
+written, six witness asserts pin that silence, and the 8-slot ceiling is spent by grants alone**, so
+`AuditFull` turns away the authorized and never the refused. `linengrow/capabilities.rye` is already
+a symlink; so is `mand/tally_copy.rye`, in the same directory.
+[Audit](../active-designing/20260906-003146_the-refusal-that-leaves-no-trace.md) -- **Caravan is
+parked Dream's and Mand is unrostered, so the repair is named and sized rather than taken.**
+
 **The live front** (condensed `20260831.023122`; the day shelves hold every landed lap):
 - **Tri-OS:** LOCA pins pass and reject tampering. Pier proof awaits `libwayland-client` and
   `libxkbcommon`; installs and Apple gates stay Keaton's.
@@ -156,8 +169,7 @@ numbers and its stamp took none -- as `%451` just did again, six laps running no
 **the standing evidence for your open question**: should an OPEN row carry a claim, a seat and a
 stamp, at start rather than at landing. Take the number from `--next`, never from the row.
 **`%444`/`%431` CLOSED** -- the seed publisher travels with the field now; seven of eight ships stop paying a cold pass a lap. **A rule that states its reason can be checked -- this one stood eleven days and no reader asked the filesystem.** **Open:** twelve root paths behind that `/*` deny, unasked.
-**Landed `20260905`** -- `%430` and `%438` whole on the [235749 shelf](archive/20260905-235749_itinerary-landed-accounts.md); `%435`, `%427`-`%429`, `%423`-`%426`, `%420`, `%413`/`%412`, `%411`/`%410`, `%409`, `%408`; Mantra's 20 guards, the ripgrep fetch, the aroma breach, the baton and the three berths, and the bound grant itself: whole on the [20260905.192154 shelf](archive/20260905-192154_itinerary-landed-accounts.md).
-**`%442`/`%443` and `%445` accounts folded** (`20260906.001800`) to the [landed-accounts shelf](archive/20260906-001800_itinerary-landed-accounts.md); both rows already stood on REDS shelves.
+**Landed `20260905`, whole on their shelves** -- `%430` and `%438` on the [235749 shelf](archive/20260905-235749_itinerary-landed-accounts.md); `%435`, `%427`-`%429`, `%423`-`%426`, `%420`, `%413`/`%412`, `%411`/`%410`, `%409`, `%408`, Mantra's 20 guards, the ripgrep fetch, the aroma breach, the baton and the three berths, and the bound grant itself on the [192154 shelf](archive/20260905-192154_itinerary-landed-accounts.md); `%442`/`%443` and `%445` on the [001800 shelf](archive/20260906-001800_itinerary-landed-accounts.md).
 **Named for the baton, not seated** (bakery): SEND tells a witness-adding round to regenerate the two pages **before the hot pass**, which is right and incomplete -- `readme_metrics_scan.sh` counts with `git ls-files`, so regenerating **before `git add`** writes a stale number. Measured: **1806** before staging, **1807** after, `readme_metrics` red between. The clause wants two words -- *after staging*. **Yours**, being a baton edit that reaches eight ships.
 **Pheromone's:** `shell_dialect` reds on two `sed -i` in `fleet_key_locality_control.sh`:61,65.
 **`%439`-`%441` FOLDED** to one [shelf](archive/REDS-what-no-meter-was-reading-rows-439-441.md):
