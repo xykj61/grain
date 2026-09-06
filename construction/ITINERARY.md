@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `475369498a` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `63d6f3b494` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE GUARD THAT COUNTS REDS READ A CARD ITS OWN PASS WRITES AT THE CLOSE.** `%483` CLOSED,
 [shelf](archive/REDS-a-record-its-own-pass-writes-at-the-close-rows-483.md). **Both shapes, since
