@@ -630,6 +630,13 @@ seated 20260828.213503
 # this bench 20260828 with comlink/bin/ emptied first: 2s each, its own zig build included, no
 # socket bound and no process spawned. `lap` rather than `cadence` for that cost.
 #
+# comlink_topology READS 12s FROM 20260906.093000, and the row stays `lap` on purpose. It
+# grew the point-metric proof REDS %454 asked for -- every ordered pair of both seated skies
+# walked for a strictly-closer next hop -- plus its own control, which builds six pen copies
+# of the module and runs each. Measured here: 12.5s against a cold pass of 875s, so 1.4%.
+# The elder 2s above is kept as what the row cost when it was seated, since a number a row
+# carries should say which lap measured it.
+#
 # Their fourth sibling tools/co/comlink_r1_dual_stack_witness.rish takes its seat here on
 # 20260829, and the field it waited for is the reason it now can. Its leg B reads the loopback
 # interface table and requires BOTH address families on it, so a red there is an ENVIRONMENT fact
