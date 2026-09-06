@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `265996bf78` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `b60295dce7` -- HEAD's parent, resolvable everywhere (%401).
 
 **DIFFUSER -- THE ONLY RED ON MY TREE WAS `stash_record`, AND IT WAS NAMING THE REPAIR.** `%487`
 BOOKED: a trap handler that cleans up without `exit` does not stop the script -- POSIX RESUMES where
@@ -347,6 +347,8 @@ so the armed-wall promise rides on the publisher.
 
 ## Next -- the ranked remainder
 
+**BOOKED `20260906` -- vendor+seed laps C-H, then gate `%1`:** [shapes and traps](../active-development/20260906-125757_the-remaining-laps-of-the-vendor-and-seed-program.md). Claimable.
+
 Ranked Lindy-first and crux-first, with costs, gates, and falsifiers, in
 [`../expanding-prompts/20260823-124407_the-ranked-remainder.md`](../expanding-prompts/20260823-124407_the-ranked-remainder.md);
 the measurement class behind it is
@@ -360,12 +362,11 @@ functions. Third mitra shed prepped (`SHRED_PREP.md` Class H), cut RED until cir
 
 ## Prior laps -- landed, with the detail in the log that recorded it
 
-The logs keep the account. Earlier rows are shelved at
-[`archive/20260824-130807_itinerary-settled-decisions.md`](archive/20260824-130807_itinerary-settled-decisions.md)
-and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210_itinerary-landed-laps.md).
+The logs keep the account; earlier rows are shelved in
+[`archive/`](archive/) under `itinerary-settled-decisions` and `itinerary-landed-laps`.
 
 | Landed | Round | Log |
 |---|---|---|
 | `20260906.122329` | The fold that hid the link it broke | [log](../session-logs/date/20260906/20260906-122329_the-fold-that-hid-the-link-it-broke.kyri) |
 
-**One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)
+**One row, on purpose** -- a landed lap keeps one line until the next replaces it; the log carries the detail.
