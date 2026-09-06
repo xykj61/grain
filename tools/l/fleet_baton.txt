@@ -27,6 +27,16 @@ rename a ship, edit one row. Machines are doors; a seat is a chair, not a comput
 CHECKOUT (REDS %291): two loops on one tree refuse, two loops on two trees is a token spend. Name
 any peer before a file moves.
 
+WATCH. The fleet is watched, so a loop that dies comes back. tools/l/fleet_watch.sh runs beside the
+ships in the same tmux session, discovers each window BY NAME every pass -- never by index -- and
+re-arms any live seat whose fleet-loop.sh process is gone. It refuses a running loop (%291), a pane
+not at a shell prompt, a duplicated window name, a gated tree, and a seat that has burned three
+arms without taking hold. TWO THINGS FOLLOW FOR YOU. First, a spent session limit is a HOLD, not a
+fault: the loop holds 300s at a time through the reset rather than stopping, so an overnight window
+that clears at 07:30 is worked at 07:30 and not at breakfast (%471). Second, EXITING NO LONGER
+STOPS YOU -- the watch will bring you back. When a custody gate is the only work left, the sentinel
+file is what makes the stop stick: run  touch .loop-gates-only , print GATES-ONLY, and stop.
+
 CLAIM-AS-OVERRIDE. When your lane's agent-doable queue is empty, take the oldest unclaimed booked
 lap from any lane rather than stopping. Claim it by naming it in your session log and its day-shelf
 row; the lane's owner reviews at their next sitting; custody gates still stop you; a claim never

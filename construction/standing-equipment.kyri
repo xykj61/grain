@@ -1056,6 +1056,16 @@ path tools/f/fleet_lap_verdict_witness.rish
 tier lap
 seated 20260906.082415
 
+# fleet_watch -- a loop that has exited cannot hold, so something above it has to notice. The watch
+# reads tmux window NAMES every pass and re-arms any live seat whose loop process is gone; the two
+# things it must never do are type into a keyboard somebody else is using and start a second writer
+# on one checkout (%291). Both are proven on a real tmux session in a pen, every refusal planted and
+# then lifted (REDS %471, the level above the lap classifier).
+guard fleet_watch
+path tools/f/fleet_watch_witness.rish
+tier lap
+seated 20260906.090000
+
 # fleet_key_locality -- one jail binds one tree, so every path a ship's git config names must live
 # inside that ship's own tree. grain-pheromone was born naming petrichor's keyring and petrichor's
 # deploy keys, and could neither sign nor push from inside its own enclosure while every check at a

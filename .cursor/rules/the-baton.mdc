@@ -29,6 +29,7 @@ that reaches the agent without the baton are each counted at zero.
 | **ROTA** | **this rule** -- it had none |
 | **THREAD** | [`session-logs`](session-logs.md) |
 | **FLEET** | **this rule** -- one writer per checkout had none |
+| **WATCH** | **this rule** -- the watch is new on `20260906` and had none |
 | **CLAIM-AS-OVERRIDE** | **this rule** -- it had none |
 | **SEND** | [`send-word`](send-word.md) - [`commit-messages`](commit-messages.md) - [`mechanism-sentence`](mechanism-sentence.md) - [`remember-git-nib`](remember-git-nib.md) - [`git-signing`](git-signing.md) |
 | **LOG** | [`session-logs`](session-logs.md) - [`session-log-provenance`](session-log-provenance.md) |
@@ -84,6 +85,44 @@ resetting. Every later step misreads a standing rebase -- the worktree reads dir
 detached at a half-replayed commit, and the `reset --hard` abandons the rebase and leaves the real
 branch behind. **Do not run `git rebase --continue` on a tree that opens mid-rebase**; the open
 has already parked what was there.
+
+## The watch -- a loop that dies comes back (REDS `%471`)
+
+**A fleet loop can die four ways, and a loop that has exited cannot hold.** Three instant laps
+against an unreachable agent, a spent `LOOP_HOURS` deadline, an interrupt, a closed terminal. On
+`20260906` six ships stopped themselves between 07:21 and 07:28 against a session limit that reset
+at **07:30**, and the fleet sat dark until a hand woke and read the panes.
+
+Two mechanisms answer that, at two levels:
+
+- **Inside a lap**, `tools/fixtures/f/fleet_lap_verdict.sh` classifies a finished lap
+  `ok | limit | quickfail | fault`, asking the **limit question first** because a limit refusal
+  returns instantly and the elder rule classified it by elapsed time alone. `fleet-loop.sh` holds
+  `LOOP_LIMIT_WAIT` (300s) up to `LOOP_LIMIT_WAIT_MAX` (72) times without counting a lap, so an
+  overnight window that clears at 07:30 is worked at 07:30.
+- **Above the loop**, [`../../tools/l/fleet_watch.sh`](../../tools/l/fleet_watch.sh) runs beside the
+  ships in the same tmux session and re-arms any live seat whose `fleet-loop.sh` process is gone.
+
+**Nothing is numbered.** The watch reads `tmux list-windows` for window **names** on every pass and
+matches them against the live seats in `construction/fleet-roster.kyri`. A layout written into a
+script is a layout that stays true until somebody moves a window -- and then the watcher types a
+ship's relaunch into a stranger's keyboard. Seat to tree is the roster's binding; name to index is
+tmux's; the watch adds no third copy of either.
+
+**What it refuses, each in the safe direction:** a seat whose loop is already running (`%291` --
+read from the process table, never guessed from a pane's words); a pane not ending at a shell
+prompt; a seat name worn by two windows; a tree carrying `.loop-gates-only`, `.mind-state/CUSTODY`
+or `.mind-state/TRANSACTION`; and a seat that has burned `WATCH_ARM_MAX` arms without surviving
+`WATCH_SETTLE` -- the loop's own quickfail law one level up, so a watcher can never become the
+thing it was built to prevent.
+
+**One consequence every ship must hold: exiting no longer stops you.** The watch brings a stopped
+loop back, so `touch .loop-gates-only` is what makes a custody stop stick. Printing GATES-ONLY
+without the sentinel now reads as a loop that merely died.
+
+Proven by [`../../tools/fixtures/l/fleet_watch_control.sh`](../../tools/fixtures/l/fleet_watch_control.sh)
+-- fourteen behaviors on a **real tmux session** in a throwaway pen, every refusal planted and then
+lifted -- under [`../../tools/f/fleet_watch_witness.rish`](../../tools/f/fleet_watch_witness.rish).
 
 ## Claim-as-override
 
