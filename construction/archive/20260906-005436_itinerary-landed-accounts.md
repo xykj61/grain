@@ -28,8 +28,8 @@ shape in a fifth material, and BAKERY's lane. No receipt, so `--scoped` stays cl
 hold **apart**. Say-why added, `comlink_topology_witness` GREEN. **The class has no meter:**
 `borrowed_number` reaches a stale figure inside an assert, and nothing reaches one in a comment.
 **The lane's first pair, its measurement re-derivable in one command** --
-[`what-a-coordinate-frame-makes-free`](../external-research/20260905-224730_what-a-coordinate-frame-makes-free.md)
-crossing to [`the-angle-the-sky-computes-and-never-subtracts`](../active-designing/20260905-224714_the-angle-the-sky-computes-and-never-subtracts.md),
+[`what-a-coordinate-frame-makes-free`](../../external-research/20260905-224730_what-a-coordinate-frame-makes-free.md)
+crossing to [`the-angle-the-sky-computes-and-never-subtracts`](../../active-designing/20260905-224714_the-angle-the-sky-computes-and-never-subtracts.md),
 over `sh tools/fixtures/t/topology_metric_census.sh`. All 682,425 ordered pairs of both seated
 skies: the metric is **angle-blind** (29,040 same-galaxy cross-star planet pairs, one hop value
 between them; 5,760 in the council sky, likewise), **nearly constant** (compass 77.03% at the

@@ -312,3 +312,9 @@ at a closed fold.*
 *Rows %451 and %469 folded to [`REDS-blind-to-half-its-subject-rows-451-469.md`](REDS-blind-to-half-its-subject-rows-451-469.md) on `20260906.064632`, **BOOKED** and **CLOSED** -- one finding a room apart -- a meter reading half of every page, and thirteen scope-map rows naming less than their guards gate.*
 
 *Row %454 folded to [`REDS-a-published-distance-and-the-road-it-promises-rows-454.md`](REDS-a-published-distance-and-the-road-it-promises-rows-454.md) on `20260906.090525`, **CLOSED** -- a metric that reads a role rather than a point answers confidently about pairs it cannot walk; the cure was two functions, not a corrected one.*
+
+*Rows %472 and %473 folded to [`REDS-the-copy-that-was-counted-against-itself-rows-472-473.md`](REDS-the-copy-that-was-counted-against-itself-rows-472-473.md) on `20260906.090312`, both **CLOSED** -- a ratio whose denominator holds the thing being measured against is a ratio of the population to itself, and the meter that read it swallowed its own instrument.*
+
+*Row %474 folded to [`REDS-a-fold-done-by-hand-loses-its-depth-rows-474.md`](REDS-a-fold-done-by-hand-loses-its-depth-rows-474.md) on `20260906.090928`, **BOOKED** -- a fold a program performs keeps a link depth the identical fold performed by a hand loses, and no standing guard reads that room.*
+
+*Row %475 folded to [`REDS-a-guard-that-reads-its-own-verdict-rows-475.md`](REDS-a-guard-that-reads-its-own-verdict-rows-475.md) on `20260906.093338`, **CLOSED** -- a guard's own verdict is its output, never its evidence, and counting it makes one red absorbing.*

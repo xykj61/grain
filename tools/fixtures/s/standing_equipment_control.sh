@@ -10,7 +10,8 @@
 #   A roster naming a path that is absent from disk is refused.
 #   A guard record with no path line, or with two, is refused as half-written.
 #   A run card naming a guard the roster never seated is refused.
-#   A run card recording a red verdict is refused.
+#   A run card recording a red verdict is refused -- unless the red is this scan's OWN row, which
+#     is its output rather than its evidence, and is reported instead (REDS %475).
 #   A tier the runner does not know is refused, and counted.
 #   A whole roster whose paths exist, with a card of greens, passes free -- with or without tiers.
 #   A card carrying the sixth field totals it and names its slowest guard; a card written before
@@ -113,6 +114,44 @@ ran alpha 20260822.100000 red
 EOF
 out=$(run_scan good.kyri red-card.kyri)
 case "$out" in *"verdict=roster_broken"*) echo "recorded_red_refused=yes" ;; *) echo "recorded_red_refused=no" ;; esac
+
+# --- this scan's OWN red is its output, never its evidence (REDS %475) ------------------
+# A guard rostered under its own name writes its verdict into the card it then reads, so counting
+# that row would make one red absorbing: the reading that produced it reproduces it forever. Both
+# sides are shown -- the self row reported and free, and a PEER's red in the same card still
+# biting, so the exemption is one name wide rather than a hole in the gate.
+cat > "$pen/self.kyri" <<'EOF'
+format standing-equipment-v1
+guard standing_equipment
+path tools/real_witness.rish
+seated 20260822.000000
+EOF
+cat > "$pen/self-red-card.kyri" <<'EOF'
+format standing-equipment-runs-v1
+ran standing_equipment 20260822.100000 red
+EOF
+out=$(run_scan self.kyri self-red-card.kyri)
+case "$out" in *"verdict=ok"*) echo "own_red_free=yes" ;; *) echo "own_red_free=no" ;; esac
+case "$out" in *"runs_red_self=1"*) echo "own_red_reported=yes" ;; *) echo "own_red_reported=no" ;; esac
+case "$out" in *"runs_red=0"*) echo "own_red_uncounted=yes" ;; *) echo "own_red_uncounted=no" ;; esac
+
+cat > "$pen/self-peer.kyri" <<'EOF'
+format standing-equipment-v1
+guard standing_equipment
+path tools/real_witness.rish
+seated 20260822.000000
+guard alpha
+path tools/real_witness.rish
+seated 20260822.000000
+EOF
+cat > "$pen/self-peer-card.kyri" <<'EOF'
+format standing-equipment-runs-v1
+ran standing_equipment 20260822.100000 red
+ran alpha 20260822.100000 red
+EOF
+out=$(run_scan self-peer.kyri self-peer-card.kyri)
+case "$out" in *"verdict=roster_broken"*) echo "peer_red_still_bites=yes" ;; *) echo "peer_red_still_bites=no" ;; esac
+case "$out" in *"runs_red=1"*) echo "peer_red_counted_alone=yes" ;; *) echo "peer_red_counted_alone=no" ;; esac
 
 # --- a roster with no card at all reads as never-run, and stays free ---------------------
 out=$(run_scan good.kyri absent-card.kyri)

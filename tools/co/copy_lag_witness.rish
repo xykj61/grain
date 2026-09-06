@@ -1,0 +1,96 @@
+# tools/co/copy_lag_witness.rish -- a copy standing where its siblings link is a copy that can fall behind.
+#
+# WHY THIS RUNG. Zig admits an import only from the root file's own directory, so one implementation
+# reaches two rooms here by SYMLINK. Where a room keeps a REGULAR FILE under a basename its siblings
+# link, that file is the one path that can drift from the implementation without a diff anyone reads.
+# The tree already guards exactly one such name -- `copy_sameness_scan.sh` compares every
+# `tally_copy.rye` against `tally/copy.rye`, with the canon spelled in the script -- and 107 other
+# basenames stand held both ways with nothing reading them.
+#
+# WHAT IS PROVEN, on metal, measured `20260906`:
+#   1,941 tracked `.rye` paths; 108 basenames held BOTH as a symlink and as a regular file; 5 real
+#   copies once each basename's own canon is set aside; and of those 5, none agree. Two are
+#   BEHIND -- `mand/capabilities.rye` lacks the four items `caravan/capabilities.rye` publishes,
+#   including the `Refusal` and `refusal_reason` whose own comment names Mand; `caravan/parse_int.rye`
+#   publishes the same surface as `tally/parse_int.rye` with different bytes. Three are SIBLINGS,
+#   each publishing something its namesake lacks: `lotus/fold.rye` folds a waveform where
+#   `mycelium/fold.rye` folds a ledger, `lotus/stack.rye` is a program where `tally/stack.rye` is a
+#   generic, and `mikrophone/verify.rye` publishes one `verify` where `crypto/verify.rye` publishes
+#   a constant-time family.
+#
+# THE CORRECTION THAT BUILT THIS RUNG. The audit at
+# `active-designing/20260906-003146_the-refusal-that-leaves-no-trace.md` published *108
+# byte-identical, 5 differing* over 113 regular files. Every count stands and the headline misleads:
+# 108 of the 113 ARE the canon, compared with themselves. The copy population is 5 and not one of
+# them agrees. A reading that counts an original as a copy of itself reports 96 percent agreement
+# over a set with none, which is why the instrument came before the sentence rather than after it.
+#
+# WHAT IS GATED. `behind` under a ceiling of 2 that only ever falls, and `split_canon` at zero --
+# a basename whose symlinks name two different files has no one canon, and choosing one silently is
+# the fault this reading exists to refuse.
+#
+# WHAT REFUSES BEFORE ANY OF THAT. A root `git ls-files` will not read, an `awk` pass that cannot
+# run, and a corpus with no Rye in it -- each exits non-zero and names itself. The first draft
+# piped the index listing into `awk` under `|| true` and let a refused checkout land on the same
+# answer an honest empty tree gives, which `instrument_refusal` gates at zero and caught the hour
+# it was written (REDS %473). A guard whose own instrument can fail in silence measures nothing.
+#
+# WHAT IS REPORTED. `sibling`, `identical`, `differ`, and the population, because a sibling is two
+# modules sharing a word rather than one drifting, and a sweep of those would be a rename campaign.
+#
+# WHAT IS NOT PROVEN. That a canon is correct, that a sibling deserves its name, or that a lag has
+# ever mattered in practice -- only that a copy has fallen behind the file its own siblings link,
+# and by how many published items.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/co/copy_lag_witness.rish
+
+say "copy-lag: Language EN -- a room that keeps a file where its siblings keep a link keeps the one thing that can drift."
+say "copy-lag: Style Gauge, Meter -- a count, its canon, and the price in published items."
+say "copy-lag: Lens TAME -- safety first: sameness held by the filesystem is sameness nobody has to remember."
+
+let scan = run ["sh" "tools/fixtures/c/copy_lag_scan.sh"]
+assert scan.ok else "copy-lag: a copy has fallen behind the file its siblings link -- read the scan's own detail lines"
+say scan.out
+assert scan.out contains "split_canon=0" else "copy-lag: a basename whose symlinks name two files has no one canon"
+assert scan.out contains "verdict=ok" else "copy-lag: the scan must balance before it is believed"
+say "field GREEN -- every copy is either its own module or a named, priced lag under the ceiling"
+
+let control = run ["sh" "tools/fixtures/c/copy_lag_control.sh"]
+assert control.ok else "copy-lag: the control must complete"
+say control.out
+assert control.out contains "clean_free=yes" else "copy-lag: a canon and its symlinks must pass free"
+assert control.out contains "canon_not_a_copy=yes" else "copy-lag: a canon is never a copy of itself"
+assert control.out contains "population_seen=yes" else "copy-lag: the reading must find the basename it is meant to find"
+assert control.out contains "identical_counted=yes" else "copy-lag: an agreeing copy is still a copy"
+assert control.out contains "identical_agrees=yes" else "copy-lag: an agreeing copy must read identical"
+assert control.out contains "identical_free=yes" else "copy-lag: an agreeing copy must pass free"
+assert control.out contains "behind_counted=yes" else "copy-lag: a copy lacking a published item must be counted"
+assert control.out contains "behind_named=yes" else "copy-lag: the lag must name its file, so the repair is one line away"
+assert control.out contains "behind_priced=yes" else "copy-lag: the lag must say how many published items it lacks"
+assert control.out contains "behind_under_ceiling_free=yes" else "copy-lag: a ratchet under its ceiling reports rather than refuses"
+assert control.out contains "sibling_counted=yes" else "copy-lag: a copy publishing its own must be counted a sibling"
+assert control.out contains "sibling_not_behind=yes" else "copy-lag: a sibling is never a lag"
+assert control.out contains "sibling_free=yes" else "copy-lag: two modules sharing a word must pass free"
+assert control.out contains "byte_only_differs=yes" else "copy-lag: one published surface with different bytes still differs"
+assert control.out contains "byte_only_is_behind=yes" else "copy-lag: a copy with nothing of its own is behind, whatever the diff is made of"
+assert control.out contains "chain_resolved=yes" else "copy-lag: a symlink naming a symlink resolves to the one canon"
+assert control.out contains "chain_free=yes" else "copy-lag: a resolved chain must pass free"
+assert control.out contains "split_counted=yes" else "copy-lag: two symlinks naming two files must be counted"
+assert control.out contains "split_refused=yes" else "copy-lag: a basename with no one canon must refuse"
+assert control.out contains "ceiling_read=yes" else "copy-lag: the pen must ask the law for its ceiling rather than spell one"
+assert control.out contains "at_ceiling_counted=yes" else "copy-lag: a ratchet at its ceiling must count, never saturate"
+assert control.out contains "at_ceiling_free=yes" else "copy-lag: a ratchet at its ceiling must pass free"
+assert control.out contains "over_ceiling_counted=yes" else "copy-lag: a ratchet past its ceiling must count past it"
+assert control.out contains "over_ceiling_refused=yes" else "copy-lag: a ratchet past its ceiling must refuse"
+assert control.out contains "empty_says_so=yes" else "copy-lag: a tree with no Rye must say so rather than answer nothing-is-wrong over nothing"
+assert control.out contains "untracked_unread=yes" else "copy-lag: the population is what git tracks"
+assert control.out contains "untracked_free=yes" else "copy-lag: an untracked file must leave the verdict alone"
+assert control.out contains "empty_refuses=yes" else "copy-lag: a tree with no Rye must refuse, since a verdict at exit 0 reads as a pass"
+assert control.out contains "no_checkout_says_so=yes" else "copy-lag: a root that is not a checkout must say so rather than read clean"
+assert control.out contains "no_checkout_named=yes" else "copy-lag: the refusal must name which instrument could not run"
+assert control.out contains "no_checkout_refuses=yes" else "copy-lag: an instrument that could not run must exit non-zero"
+assert control.out contains "control_verdict=ok" else "copy-lag: the control must agree with itself"
+say "RED and GREEN paths proven -- 31 behaviors on real repositories, the ceiling shown from both sides"
+
+say "GREEN: copy-lag -- no copy has quietly outlived the file its siblings link."

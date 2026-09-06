@@ -21,12 +21,12 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 | [`amphora/`](../../amphora/README.md) | 7 | 15 |
 | [`aurora/`](../../aurora/README.md) | 7 | 6 |
 | [`brix/`](../../brix/README.md) | 1 | 2 |
-| [`caravan/`](../../caravan/README.md) | 112 | 125 |
+| [`caravan/`](../../caravan/README.md) | 112 | 126 |
 | [`classical-vedic-astrology/`](../../classical-vedic-astrology/README.md) | 1 | 0 |
 | [`comlink/`](../../comlink/README.md) | 73 | 12 |
 | [`constel/`](../../constel/README.md) | 32 | 39 |
 | [`construction/`](../../construction/README.md) | 1 | 43 |
-| [`crypto/`](../../crypto/README.md) | 82 | 117 |
+| [`crypto/`](../../crypto/README.md) | 82 | 118 |
 | [`dimeroll/`](../../dimeroll/README.md) | 2 | 3 |
 | [`edu/`](../../edu/README.md) | 2 | 6 |
 | [`ember/`](../../ember/README.md) | 2 | 5 |
@@ -38,14 +38,14 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 | [`lantern/`](../../lantern/README.md) | 2 | 2 |
 | [`lattice/`](../../lattice/README.md) | 3 | 42 |
 | [`linengrow/`](../../linengrow/README.md) | 155 | 81 |
-| [`lotus/`](../../lotus/README.md) | 238 | 246 |
-| [`mand/`](../../mand/README.md) | 7 | 5 |
+| [`lotus/`](../../lotus/README.md) | 238 | 247 |
+| [`mand/`](../../mand/README.md) | 7 | 6 |
 | [`mandate/`](../../mandate/README.md) | 7 | 10 |
 | [`mandi/`](../../mandi/README.md) | 5 | 1 |
 | [`mantra/`](../../mantra/README.md) | 29 | 25 |
 | [`manual/`](../../manual/README.md) | 1 | 10 |
-| [`mikrophone/`](../../mikrophone/README.md) | 16 | 18 |
-| [`mycelium/`](../../mycelium/README.md) | 97 | 85 |
+| [`mikrophone/`](../../mikrophone/README.md) | 16 | 19 |
+| [`mycelium/`](../../mycelium/README.md) | 97 | 86 |
 | [`pleac/`](../../pleac/README.md) | 3 | 6 |
 | [`pond/`](../../pond/README.md) | 156 | 165 |
 | [`rishi/`](../../rishi/README.md) | 2 | 6 |
@@ -54,7 +54,7 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 | [`scribe/`](../../scribe/README.md) | 2 | 4 |
 | [`settlement/`](../../settlement/README.md) | 2 | 3 |
 | [`sundial/`](../../sundial/README.md) | 1 | 1 |
-| [`tally/`](../../tally/README.md) | 14 | 27 |
+| [`tally/`](../../tally/README.md) | 14 | 28 |
 | [`vault/`](../../vault/README.md) | 1 | 2 |
 
 ---

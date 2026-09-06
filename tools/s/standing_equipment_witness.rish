@@ -296,6 +296,11 @@ assert control.out contains "dead_owner_reaped=yes" else "standing-equipment: a 
 assert control.out contains "no_lock_room_says_so=yes" else "standing-equipment: a pen with no room to lock in must say so rather than skip in silence"
 assert control.out contains "no_lock_room_still_runs=yes" else "standing-equipment: a skipped lock must not stop the pass"
 
+assert control.out contains "own_red_free=yes" else "standing-equipment: this scan's own red is its output, not its evidence -- counting it makes one red absorbing (REDS %475)"
+assert control.out contains "own_red_reported=yes" else "standing-equipment: an uncounted self red must still be printed, or the exemption hides a fault"
+assert control.out contains "own_red_uncounted=yes" else "standing-equipment: this scan's own row must leave runs_red alone"
+assert control.out contains "peer_red_still_bites=yes" else "standing-equipment: the exemption is one name wide -- every other guard's red keeps its teeth"
+assert control.out contains "peer_red_counted_alone=yes" else "standing-equipment: a peer's red must be counted exactly once beside an uncounted self row"
 assert control.out contains "control_verdict=ok" else "standing-equipment: the control must agree with itself"
 # No total is spelled here. This line read `sixty-two behaviors` while the control ran more, the
 # same drift the header above just shed: a recited count is the one part of a green line that goes

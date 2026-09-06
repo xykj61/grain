@@ -118,11 +118,14 @@ known_gates=$(
 # is the one state where a gate claim has nothing behind it at all.
 
 names=$(mktemp); paths_missing=$(mktemp); halfrows=$(mktemp)
-unrostered=$(mktemp); reds=$(mktemp); ranlist=$(mktemp)
+unrostered=$(mktemp); reds=$(mktemp); ranlist=$(mktemp); reds_self=$(mktemp)
 badtiers=$(mktemp); cadence_names=$(mktemp); badhosts=$(mktemp); badcaps=$(mktemp); badgates=$(mktemp)
-trap 'rm -f "$names" "$paths_missing" "$halfrows" "$unrostered" "$reds" "$ranlist" "$badtiers" "$cadence_names" "$badhosts" "$badcaps" "$badgates"' EXIT
+trap 'rm -f "$names" "$paths_missing" "$halfrows" "$unrostered" "$reds" "$reds_self" "$ranlist" "$badtiers" "$cadence_names" "$badhosts" "$badcaps" "$badgates"' EXIT
 
 rostered=0
+red_self=0
+# The one name this scan may not use as evidence about itself.
+self_guard=standing_equipment
 missing=0
 half=0
 unknown_tier=0
@@ -270,9 +273,23 @@ if [ -f "$card" ]; then
         # says the runner ran the guard, it answered red, and its roster row parks that red at a
         # card-named custody gate -- which is the state this instrument was itself unrunnable in,
         # since the guard that proves the roster honest refused on exactly the trees carrying a gate.
+        # A GUARD'S OWN RECORD IS ITS OUTPUT, NEVER ITS EVIDENCE (REDS %475). This scan is itself
+        # rostered, so the runner writes `ran standing_equipment <stamp> <verdict>` after it
+        # answers -- and if that row were counted here, one red would be absorbing: the reading
+        # that produced it becomes the reading that reproduces it, forever, with no state left
+        # anywhere else to clear it. Proven on metal `20260906.091058`: with the row present the
+        # scan reads `runs_red=1 verdict=roster_broken`, and removing that one row -- changing
+        # nothing else -- reads `runs_red=0 verdict=ok`. So the row is REPORTED and never counted;
+        # a hand still sees it, and every other guard's red keeps its full teeth. Same family as
+        # `%458` one room over, where a scan read its own header as tree evidence.
         if [ "$rverdict" != "green" ] && [ "$rverdict" != "gated" ]; then
-          red=$((red + 1))
-          echo "$rname $rverdict" >> "$reds"
+          if [ "$rname" = "$self_guard" ]; then
+            red_self=$((red_self + 1))
+            echo "$rname $rverdict" >> "$reds_self"
+          else
+            red=$((red + 1))
+            echo "$rname $rverdict" >> "$reds"
+          fi
         fi
         if [ -z "$newest" ] || [ "$rstamp" \> "$newest" ]; then newest="$rstamp"; fi
         if [ -z "$oldest" ] || [ "$rstamp" \< "$oldest" ]; then oldest="$rstamp"; fi
@@ -313,6 +330,7 @@ echo "tier_cadence=$tier_cadence"
 echo "runs_recorded=$recorded"
 echo "runs_unrostered=$stray"
 echo "runs_red=$red"
+echo "runs_red_self=$red_self"
 echo "runs_seconds_total=$seconds_total"
 echo "runs_seconds_absent=$seconds_absent"
 echo "runs_slowest=$slowest_name:$slowest_sec"
@@ -329,6 +347,7 @@ echo "newest_run=${newest:-none}"
 [ "$unknown_gate" -eq 0 ] || sed 's/^/unknown_gate: /' "$badgates"
 [ "$stray" -eq 0 ] || sed 's/^/unrostered: /' "$unrostered"
 [ "$red" -eq 0 ] || sed 's/^/red: /' "$reds"
+[ "$red_self" -eq 0 ] || sed 's/^/red_self: /' "$reds_self"
 
 if [ "$missing" -eq 0 ] && [ "$half" -eq 0 ] && [ "$unknown_tier" -eq 0 ] && [ "$unknown_host" -eq 0 ] \
    && [ "$unknown_capability" -eq 0 ] && [ "$unknown_gate" -eq 0 ] \
