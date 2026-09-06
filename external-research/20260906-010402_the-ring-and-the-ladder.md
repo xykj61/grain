@@ -264,3 +264,82 @@ independent algorithms now agree on for every leg of both skies; high on the div
 which is a ratio of two measured integers; the surviving falsifier from the errata above stands
 untouched, since nothing here exhibits a hierarchy whose interior nodes are not articulation
 vertices.*
+
+---
+
+## Errata -- the bound had a direction, `20260906.142051`
+
+The body reached for the Moore bound, asked it in one of its two directions, and the errata above
+re-affirmed the answer. Both readings are true statements about one inequality. Only one of them is
+about a choice somebody is making.
+
+**What the body asked.** *How many nodes could a graph of this degree and this diameter hold?* At
+degree 6 and diameter 14 the ceiling is 9,155,273,437 nodes; at degree 26 and diameter 5 it is
+10,579,427. Both shapes hold 720. The body concluded from that distance that neither design is near
+its limit, so *a diameter argument between them compares two comfortable designs rather than a
+frontier.*
+
+**What binds instead.** A sky fixes its point count -- 720 in the compass sky, 405 in the council --
+and a shape fixes its degree. The diameter is the free variable, so solve for it. The same
+inequality then answers the question a designer holds: **the smallest diameter any graph of this
+many points and this degree could have.** `tools/fixtures/t/topology_graph_census.sh` reports it per
+leg, measured `20260906.142051`:
+
+| Compass sky, 720 points | ladder (`point_hops`) | torus (Lee, three rings) |
+|---|---|---|
+| Maximum degree | 26 | 6 |
+| Diameter achieved | 5 | 14 |
+| Smallest diameter possible at that degree | 3 | 4 |
+| **Above its own floor** | **1.67x** | **3.50x** |
+
+The council sky reads 2.50x and 3.00x the same way. **The diameter argument decides after all, and
+it decides against the ring** -- which strengthens the body's own position rather than reversing it,
+since the body already priced the torus's case as degree and resilience.
+
+### The reading that stands alone, and needs no comparison
+
+Two shapes at different degrees are an awkward pair: the ladder's maximum degree of 26 is thirteen
+times its own mean of 2.15, so it is measured against a floor it buys at twelve hub nodes, and that
+same concentration is why it carries 60 cut points where the torus carries none. One dial, read
+twice. The torus is 6-regular, so its own reading needs no partner:
+
+> **At the degree it actually uses, the seated torus sits three and a half times above the smallest
+> diameter any shape of that degree could hold.**
+
+**And the torus family cannot close that gap by re-balancing.** The best three-ring torus over 720
+points is 8 x 9 x 10 at diameter 13, against the seated 12 x 5 x 12 at 14 -- one hop of the ten.
+Widening it buys real diameter and keeps the ratio: four rings at degree 8 reach 10 (2.50x), five at
+degree 10 reach 8 (2.67x). Six rings do not exist here at all, since six rings of three seats each
+already need 729 points. So the factor of roughly two-and-a-half to three-and-a-half is a property
+of the family rather than of our choice of rings.
+
+**What that hands a builder.** If the torus's zero cut points are the reason to want it, there is a
+diameter gap of that size standing between it and the best conceivable shape at the same port count,
+and the ring family does not reach into it. Degree-6 shapes outside that family are worth a look
+before the geometry is committed.
+
+### What the floor does not promise
+
+The Moore bound is a ceiling that almost no graph attains -- the known attainers are the cycles, the
+complete graphs, Petersen at degree 3, Hoffman-Singleton at degree 7, and one open case at degree 57.
+So **1.67x and 3.50x bound the room from above rather than promising a shape at the floor.** The
+honest sentence is that at most that much is available, and how much of it is reachable is the
+degree-diameter problem, which is open.
+
+**How the arithmetic is held.** The floor is bound in the census's agreement leg to four graphs that
+attain the bound exactly, since an attainer sits *on* the ceiling and catches the off-by-one a
+bracketing case reads past. `tools/fixtures/t/topology_floor_control.sh` proves **23 behaviors** on
+real pens: five plants each shown from the failing side, the pen proven innocent, and the legs proven
+to earn their keep by a copy that is broken with the checking legs removed -- which reads green while
+the torus's floor sits at 5 and its ratio at 2.80, **a fifth of this finding, in the flattering
+direction, silently.** The census also refuses to report a floor on either sponsor leg, whose graphs
+are split 133 and 121 ways: a ratio against the widest walk of one component, while half the ordered
+pairs never connect, would be a number about nothing.
+
+*Horizon: this holds while the module publishes hop counts over the seated skies. Assumptions: the
+Moore bound is read on maximum degree, and the torus survey admits only rings of three seats or more,
+since a ring of two contributes one neighbour rather than two and would make the degree column a lie.
+Falsifier: exhibit a graph of 720 points and maximum degree 6 with diameter under 4, and the floor is
+wrong; exhibit one at diameter 5 or 6 and the gap this names is real and largely reachable.
+Confidence: high on the floors, which four attainers pin exactly; high on the torus survey, which
+enumerates every factorisation; low on how much of the gap any real construction recovers.*
