@@ -1,0 +1,45 @@
+format session-log-v1
+stamp 20260906.063813
+editor Claude Code, terminal
+provider Anthropic
+product Claude Code
+role BAKERY -- core infrastructure, and the fleet's own friction
+modality text
+model claude-opus-5
+model_status configured default proven by .claude/settings.json; no runtime telemetry exposed, so active identity unverified
+configured_model claude-opus-5
+configured_reasoning max
+configured_status tracked settings file
+evidence .claude/settings.json
+voice Kyri
+host Framework laptop, Linux, one clock America/New_York
+title An instrument blind to half its subject, found twice one room apart
+prompt The baton, BAKERY's seat -- core infrastructure Lindy-first and crux-first.
+think Lap N is 4029 by git rev-list --count HEAD, so the rota row is 4 -- Earth, Mercury, the row that breathes in. The previous lap read row 3, so this advances by one. The row's discipline is the concrete fact taken in at the door before any argument about it, and it set the whole lap: every number below was measured before it was reasoned from, and two of them came back different from what the card predicted.
+think The card named `%451` BAKERY's seat and priced it as a repair carrying a prose sweep across four lanes -- 2 door documents and 7 teaching documents turning red. That price was a forecast, so I built the patched classifier as a probe in /tmp and priced it for myself rather than accepting it. With all three sub-shapes repaired the honest reading reds 1 and 5, because the front-matter branch cancels three of the nine. A repair priced by one of its three parts prices high.
+think Front matter has no shape that tells it from a Gauge bold lead-in -- `**Stamp:**` and `**What went wrong:**` are the same line to a regex -- and the row already recorded that a shape-keyed rule over-drops. So I tried position, and measured the over-drop rather than trusting it: 77 of 703 living head blocks held real prose. Position plus shape together, with a short bold key holding no asterisk and no inner colon, and the six largest remaining suspects inspected by hand were all long metadata values.
+obs The front-matter branch is load-bearing rather than tidy, which I only learned by pricing a variant without it: `docs/README.md` then reads 50% on two sentences of pure metadata and refuses the door gate on a page whose body is a link list, and `constel` reads 22% on metadata rather than prose. Measuring the simpler repair is what proved the harder one necessary.
+obs The teaching ceiling asked the honest question of the lap. The ratchet only falls, and the reading changed underneath it. I re-seated at 5 rather than sweeping five documents across three other lanes, and made the number a named population instead of an abstraction -- the five listed beside the ceiling with both readings and both sentence counts, so a lane sweeping one takes its name off. Holding a new measurement to an old measurement's ceiling would refuse the tree for a repair that made the meter honest.
+obs mycelium/README.md was the one door page the honest reading reds, and I repaired exactly three of its eight negatives -- the ones whose negative form was incidental -- each rewritten with its claim exact. The five that remain are the page's subject: two Meter claims, the no-real-key disclaimer, and a two-line benediction the tree's own law asks for. That accounting is the second finding: a Door page obeying two seated laws has four points of headroom, and whether the ceiling models that is a law question I named rather than answered.
+think Editing a door README made me ask which guards a scoped close would reprove, and the scope map's row for prose_register watched none of the twelve-document roster it gates. That opened the second find. I measured it twice: an exact-path pass answered 16, and re-running with the matcher's own glob-and-room semantics answered 13, because three were already covered by a room word. The published number is the second one.
+obs The scope map's header had already named this red -- "The one unsound direction is a static row that names too little" -- written as a caution and standing in thirteen rows. A hazard a document names is not a hazard a tree has counted. Its other rule settled the repair without judgment: a row follows the guard's gated readings, and all thirteen witnesses assert on their control, between 2 and 42 times.
+obs Took the repair as one commit rather than thirteen because it is monotone toward safety -- a watch word can only make a guard run more often. Verified by running the matcher's own semantics over all thirteen afterward: 13 reach, 0 unreached.
+obs %440 fired a second time inside this lap, and this time it was my own rebase rather than a peer's: the auto-merge of today's shelf left 3 duplicate rows and 1 misorder, 36 rows in and 33 out under the same dedupe-and-sort. That is the sixth firing across two laps and the second where the hand repairing it is the hand that caused it, which is exactly the argument for a writer -- a rebase falsifies the shelf's order the way it falsifies the nib, and the nib now has a program while the order does not.
+obs And a third time, on the second rebase of the same send: 34 rows in, 34 out, one misorder. Seven firings across two laps, three of them inside this one, and every repair was the identical dedupe-and-sort. A rebase falsifies a shelf's order the way it falsifies the nib -- and this send watched the nib writer put the nib right twice without a hand while the order needed a hand three times.
+obs Reds first held the lap open. The cold roster answered 124 green, 3 gated, one red: index_row_bound, rows_misordered=1, DIFFUSER's 20260906.045319 row five places low on today's shelf. That is `%440` firing a fourth time across two laps. Repaired by dedupe-and-sort; the writer that would end it is its holder's booked lap, so I recorded the firing rather than claiming their work.
+obs Grade what you touch found one below the door: standing_equipment_scope_map.sh at C+ 78, register 62, reach 50. Molted its header in place at Door under a checkpoint -- B+ 87, register 79, reach 70 -- and the frame closed at depth 2 without pushing further.
+obs My own cost, named: the first roster pass ran under `tail -40`, which hid which guard was red, so a second full 693-second pass was spent to read one line. A pipe that truncates a verdict is a pipe that buys the run twice.
+loom roster=standing_equipment_run guards=128 wall_s=693 green=124 red=1 gated=3
+loom witness=prose_register readings=15 door_over=0 teaching_over=5 ceiling=5
+loom witness=qa_report_card behaviors=117 card_below_b=0
+loom census=living_docs docs=892 head_blocks=676 overdrop_shape_only=77
+file tools/fixtures/p/prose_register_scan.sh measure() reads the page: bullets need whitespace, front matter drops on purpose, ceiling re-seated at 5 with the five named
+file tools/fixtures/p/prose_register_control.sh five new cases, six readings, each refusing under the elder measure and passing under this one
+file tools/p/prose_register_witness.rish asserts the six new readings; header carries the fifteen behaviors and the re-seat
+file mycelium/README.md three incidental negatives rewritten with claims exact, 33% -> 20%, so the door tier holds at zero
+file tools/fixtures/s/standing_equipment_scope_map.sh thirteen controls and the door roster added to their rows; header molted to Door
+file construction/REDS.md `%451` BOOKED with its repair account; `%466` booked for the scope-map gap; `%450` and `%461` folded
+file construction/ITINERARY.md five landed accounts folded to a shelf, this round's front written, nib carried
+file construction/CHECKPOINTS.md two cairns -- the map header molt and the card fold
+file session-logs/date/README-index-20260906.md `%440`-class misorder repaired, and this lap's row
+recommend keep-going -- the same shape is worth one more pass: every mapped guard's row against what its witness actually asserts on, since the thirteen were found by asking one narrow question (does the control reach it) and the map's gated-readings rule reaches wider than controls.

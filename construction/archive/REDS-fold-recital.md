@@ -308,3 +308,5 @@ at a closed fold.*
 *Row %462 folded to [`REDS-what-the-instrument-was-looking-at-rows-462.md`](REDS-what-the-instrument-was-looking-at-rows-462.md) on `20260906.061311`, **CLOSED** -- A process list shows command strings, not process identity: two ps rows are one loop and the sub-shell a pipeline forks for its right side.*
 
 *Rows %467 and %468 folded to [`REDS-presence-where-the-claim-was-content-rows-467-468.md`](REDS-presence-where-the-claim-was-content-rows-467-468.md) on `20260906.065515`, both **CLOSED** -- presence is the cheaper question wearing the expensive one's answer: a link that works and points at nothing, and a list restated away from the list that owns it.*
+
+*Rows %451 and %469 folded to [`REDS-blind-to-half-its-subject-rows-451-469.md`](REDS-blind-to-half-its-subject-rows-451-469.md) on `20260906.064632`, **BOOKED** and **CLOSED** -- one finding a room apart -- a meter reading half of every page, and thirteen scope-map rows naming less than their guards gate.*
