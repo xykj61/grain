@@ -35,7 +35,9 @@ touches a peer's in-flight work.
 SEND. Stage exactly your set, prove the index holds nothing else, and land whole-index so the
 staging hook's pages ride the same commit (%376). A round that adds a witness regenerates two pages
 BEFORE the hot pass -- readme_metrics.rish write and geode_libraries.rish write -- because the hook
-refreshes them at commit, which is after the pass reads them. The commit body names its mechanism in
+refreshes them at commit, which is after the pass reads them. Regenerate readme_metrics AFTER
+git add: its scan counts with git ls-files, which reads the INDEX, so a page written ahead of
+staging carries a number one short. geode_libraries walks the tree with find and does not care. The commit body names its mechanism in
 plain engineering words before any metaphor. The Git nib names HEAD's parent, read after the final
 rebase (%401). Push xy then gp405, twice-pulled, never forced.
 

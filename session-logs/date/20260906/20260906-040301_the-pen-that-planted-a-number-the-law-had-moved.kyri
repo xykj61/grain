@@ -1,0 +1,45 @@
+format session-log-v1
+stamp 20260906.040301
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role bakery -- core infrastructure, Lindy-first and crux-first
+modality text
+model claude-opus-5
+model_status configured default, runtime unverified
+configured_model claude-opus-5
+configured_status .claude/settings.json names the default; no runtime telemetry read this turn
+evidence .claude/settings.json
+voice Kyri
+host Vultr Dallas pier, grain-bakery, America/New_York
+title The pen that planted a number the law had moved
+prompt the baton, read cold -- take the next agent-doable lap in the core-infrastructure lane
+think Opened with fleet_round_open (clean, on the anointed order at 61b71e4b04) and a full cold roster in the background, then held the tree still for its 846 seconds, because REDS %199's own account records a lap that edited while its pass ran and measured its repair instead of its tree.
+think Council rota, lap N = 4018, row 3 -- Water, the row that tastes. The fixed seat is the happy zone and the thin edge, and it named this lap's find before I had it: a control IS a happy-zone instrument, and this one had gone brackish the day the law moved.
+think The cold pass read 3 red, and two were the bound meters the card names for this seat. Took both rather than the register-meter work, because a tier lap red on eight ships withholds every roster receipt, which is fleet friction rather than one tree's fault.
+obs FAULT ONE, one argument. tools/fixtures/l/living_pin_max_bytes.sh answers per page; thirteen calls reach it across eight files, six bare because they print the general number and seven passing the page they weigh. reds_ledger_scan.sh:125 was the one bare call weighing a page, so a 33,200-byte ledger met 24,576 four hours after the law seated 40,960 for it.
+obs FAULT TWO, a different shape in the same clothes. living_pin_near_bound_control.sh planted its page sizes as ABSOLUTES -- 24,000 was 97.6% of construction/REDS.md's bound the day the case was written and 58.6% of it overnight -- so a case labelled near planted a page nowhere near, and three of nine failed at once.
+obs The pen's refusal was correct and its REPORT was not: seated_pin_named=no, over_bound_named=no, near_silent_when_hung_off_over=yes, and not one of them said the plants had gone stale. So the repair is two-part -- derive every plant from the fixture, and add case 0, plants_agree_with_law, which states the pen's own precondition and prints first. Proven to bite by spelling REDS_NEAR=24000 back in, where it answers no and names the cause in one line.
+obs THE TRANSFERABLE SENTENCE: a pen that plants an absolute is testing a snapshot of the law; a pen that plants a ratio is testing the law.
+obs AND THE CLASS IS INVISIBLE TO THE GUARD BUILT FOR IT. declared_ceiling_scan.sh's fourth reading gates any meter that DECIDES with a copy of the bound and exempts *_control.sh by file role, because a control PLANTS (REDS %199). Every size that broke here -- 24,000, 25,616, 24,100, 52,000 -- spells no bound at all, so a literal search finds the three sites that never moved and misses the four that did. A plant sized from the bound is a decision wearing planting's clothes.
+obs Swept the whole class rather than the one red: living_docs_roster_control.sh (a page AT the bound, one past, and well past) and declared_ceiling_control.sh (a pin OVER it) now read the fixture too. Measured after: zero non-comment lines in any tracked control spell a stated bound. declared_ceiling_control.sh case 22 deliberately keeps grepping the law itself -- a pen that plants reads through the fixture, and a pen that verifies the fixture reads the law, or the check is tautological.
+obs MEASURED RATHER THAN INFERRED, and it changed what I could claim. Four equinox scans consume the ledger scan; I first read three failures as my fix unblocking them, then checked which ones actually REACH the call and only equinox_e113 does. Proven both ways on metal by restoring the HEAD scan through the original inode: e113 exits 1 against HEAD and 0 against the repair -- and it had already printed a verdict=ok line from an earlier section, so its tail read like a pass over a scan that never finished.
+obs CLOSED %446 as well, since it is this seat's and its own named mechanism has landed: the four legs that LAUNCH the jail moved to agent_jail_enclosure behind capability jail_nesting, and this pass reads agent_jail green 1s beside skipped_capability agent_jail_enclosure. The row's cost claim is now false in the right direction -- shell_dialect alone withholds the receipt.
+obs SEATED the baton clause named for this seat, and made it more precise than the card asked: readme_metrics regenerates AFTER git add because its scan counts with git ls-files, which reads the index; geode_libraries walks with find and does not care, so after staging is right for one page and irrelevant to the other.
+obs THE CARD IS AT ITS CEILING, and this lap paid it three times -- 41,326, then 41,012, then 40,997, trimming its own entry to fit. It closes at 40,776 of 40,960 only because closing %446 freed a paragraph. The next ship to write a sentence reds it. A finished section wants folding to a shelf, and that is the first job of the next lap in this lane.
+obs THE LEDGER HEADLINE moved 458 -> 459 and its remainder 438 -> 439, caught by reds_ledger_monotone rather than by me. That is the card's own lantern -- a number a hand types that a peer's landing falsifies -- fired a fourth time, and here an instrument was already listening.
+loom cold_roster_guards=125 green=119 red=3 gated=3 wall_s=846 tree_moved=no
+loom hot_roster_guards=125 green=121 red=1 gated=3 wall_s=737 tree_moved=no red_left=shell_dialect
+loom near_bound_control_cases=9 -> 10 failures=3 -> 0
+loom roster_control_cases=16 declared_ceiling_checks=57 both failures=0
+loom reds_pin_bytes=33200 -> 37944 bound=40960 card_bytes=40779 -> 40776
+file tools/fixtures/r/reds_ledger_scan.sh the one bare call weighing a page; it passes "$f" now, so a pen ledger still gets the general answer
+file tools/fixtures/l/living_pin_near_bound_control.sh plants derived from the fixture, plus case 0 stating the pen's own precondition
+file tools/l/living_pin_near_bound_witness.rish ten behaviors, the new assert, and the header saying why a ratio outlives an absolute
+file tools/fixtures/l/living_docs_roster_control.sh the same class, latent: a page at the bound, one past, and well past
+file tools/fixtures/d/declared_ceiling_control.sh the same class, latent; case 22 keeps its independent reading on purpose
+file tools/l/fleet_baton.txt SEND now says regenerate readme_metrics after git add, and says which page reads the index
+file construction/REDS.md %459 booked from the anointed spine after a fetch; %446 closed on this lap's own measurement; headline 458 -> 459
+file construction/ITINERARY.md the two meters closed, %446 closed, the baton clause seated, the nib moved to HEAD's parent
+file session-logs/date/20260906/20260906-040301_the-pen-that-planted-a-number-the-law-had-moved.kyri this record
+recommend keep-going -- fold a finished section of the card to a shelf before the next sentence reds it, then take shell_dialect's remaining leg: a real guard without its instrument names rg rather than a file.

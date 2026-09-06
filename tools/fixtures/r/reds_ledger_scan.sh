@@ -122,7 +122,17 @@ while [ ! -d "$_fd_root/rishi/bin" ] || [ ! -d "$_fd_root/tools/fixtures" ]; do
   _fd_root=$(dirname "$_fd_root")
 done
 # The seated bound, read from the law rather than spelled here. One reading, one home (REDS %199).
-max_bytes=$(sh "$_fd_root/tools/fixtures/l/living_pin_max_bytes.sh")
+#
+# AND READ FOR THE PAGE THIS SCAN IS ACTUALLY MEASURING, which is the second half of that same
+# reading. The fixture takes an optional path and answers that page's own bound; called bare it
+# answers the general one. This call was bare while the scan measures exactly one page, so on
+# 20260906 -- the morning the law seated living_pin_max_bytes[construction/REDS.md] at 40,960 --
+# this guard weighed a 33,200-byte ledger against 24,576 and refused it for doing exactly what
+# the law permits. Thirteen calls reach the fixture across eight files: six are deliberately bare
+# because they print the GENERAL number, six pass the page they weigh, and this one was bare while
+# weighing a page. Passing "$f" also keeps the pen honest -- a control ledger at a temporary path
+# carries no exception, so it is answered with the general bound, which is what it wants.
+max_bytes=$(sh "$_fd_root/tools/fixtures/l/living_pin_max_bytes.sh" "$f")
 echo "living_pin_max_bytes=$max_bytes"
 if [ "$bytes" -gt "$max_bytes" ]; then
   echo "detail: ledger past the living-pin bound; fold closed seasons to archive"

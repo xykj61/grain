@@ -23,6 +23,17 @@ SCAN=$(pwd)/tools/fixtures/l/living_docs_roster_scan.sh
 PEN=$(mktemp -d)
 trap 'rm -rf "$PEN"' EXIT INT TERM
 
+# THE BOUND IS READ, never spelled -- through tools/fixtures/l/living_pin_max_bytes.sh, the one
+# reading and one home since REDS %199. Cases 11 to 14 plant pages AT, ONE PAST, and WELL PAST the
+# bound, and each of those three words names a relationship rather than a number: spelled as
+# absolutes they were true of the law as it stood the day they were written and would go quietly
+# wrong the day it moved, which is exactly what happened to the sibling pen at
+# tools/fixtures/l/living_pin_near_bound_control.sh on 20260906. None of these pen paths carries a
+# seated exception, so the general answer is the right one for all four.
+BOUND=$(sh "$(pwd)/tools/fixtures/l/living_pin_max_bytes.sh")
+BOUND_OVER_1=$((BOUND + 1))
+BOUND_OVER_NAMED=$((BOUND + 5424))
+
 fail=0
 n=0
 
@@ -119,7 +130,7 @@ pen j; : >"$PEN/j/roster.sh"; stage j
 check "an empty tree publishes front_doors=0 rather than hiding it" j ok "front_doors=0"
 
 # 11 -- a rostered page under the bound is ordinary work.
-pen k; door k mod1 24576; stage k
+pen k; door k mod1 "$BOUND"; stage k
 roster_add k mod1/README.md
 check "a page exactly at the bound is under it, and passes free" k ok "over_bound=0"
 
@@ -127,7 +138,7 @@ check "a page exactly at the bound is under it, and passes free" k ok "over_boun
 pen l; door l mod1 100; stage l; roster_add l mod1/README.md
 i=1
 while [ "$i" -le 6 ]; do
-  mkdir -p "$PEN/l/big$i"; head -c 24577 /dev/zero | tr '\0' 'x' >"$PEN/l/big$i/README.md"
+  mkdir -p "$PEN/l/big$i"; head -c "$BOUND_OVER_1" /dev/zero | tr '\0' 'x' >"$PEN/l/big$i/README.md"
   roster_add l "big$i/README.md"; i=$((i + 1))
 done
 stage l
@@ -137,7 +148,7 @@ check "six over-bound pages sit at the ceiling and pass free" l ok "over_bound=6
 pen m; door m mod1 100; stage m; roster_add m mod1/README.md
 i=1
 while [ "$i" -le 7 ]; do
-  mkdir -p "$PEN/m/big$i"; head -c 24577 /dev/zero | tr '\0' 'x' >"$PEN/m/big$i/README.md"
+  mkdir -p "$PEN/m/big$i"; head -c "$BOUND_OVER_1" /dev/zero | tr '\0' 'x' >"$PEN/m/big$i/README.md"
   roster_add m "big$i/README.md"; i=$((i + 1))
 done
 stage m
@@ -145,9 +156,9 @@ check "seven over-bound pages cross the ceiling and are bitten" m red "over_boun
 
 # 14 -- an over-bound page is named, never merely counted.
 pen o; door o mod1 100; stage o; roster_add o mod1/README.md
-mkdir -p "$PEN/o/huge"; head -c 30000 /dev/zero | tr '\0' 'x' >"$PEN/o/huge/README.md"
+mkdir -p "$PEN/o/huge"; head -c "$BOUND_OVER_NAMED" /dev/zero | tr '\0' 'x' >"$PEN/o/huge/README.md"
 roster_add o huge/README.md; stage o
-check "an over-bound page is named with its byte count" o ok "page_over_bound=huge/README.md bytes=30000"
+check "an over-bound page is named with its byte count" o ok "page_over_bound=huge/README.md bytes=$BOUND_OVER_NAMED"
 
 # 15 -- a roster regressed to a short hand list reds, which is the whole point of the guard.
 pen p
