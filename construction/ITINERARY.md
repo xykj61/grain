@@ -46,9 +46,25 @@
 
 ### Now -- the live front
 
-**Git nib:** `e8be41ead3` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `978ab7e785` -- HEAD's parent, resolvable everywhere (%401).
 
-**Now.** **A meter that reads tracked files cannot be measured before it is tracked.**
+**Now.** **The account of the work is part of the work, and it can be wrong while the work is right.**
+
+**`%445` FOLDED, after wearing two numbers in one hour** (`20260906.001800`) -- `declared_ceiling` and
+`equinox_e123_living_pin_guard` refused on one root, the pin over its bound. The anointed spine had
+spent **440** (`20260905.233435`) and then **442** (`20260905.223102`), both later stamps than this
+row's `20260905.224445`, and `reds_spine_derive_scan` named the squatter each time before a line
+moved. A published number never moves, so the view moved twice and the key did not. Pin **21,018**,
+four witnesses GREEN on metal. **`%440`'s own lantern fired three times inside one send** -- each
+clean auto-merge seated a day-shelf row out of newest-first order, no conflict, nothing to resolve.
+Sorted each time; the loom stays their booked lap.
+**The `%439` class, measured rather than assumed** --
+[the-number-a-comment-states](../active-development/20260905-234408_the-number-a-comment-states.md):
+four detectors over the 1,712 distinct Rye files behind 1,939 paths. A trailing `const` comment
+restating its own arithmetic is **clean** (69 comparable, 50 agree, 19 explained false, **zero**
+genuine) -- the one seatable floor, declined here. Identifiers read 2,978, shapes 150, and only the
+**first-segment stem** catches `%439` (`universe_points 720 saw 792`, line 113 pre-repair).
+**Its 158-line residue was read whole: every one correct.** One in 159: no gate, the right hour.
 
 **DIFFUSER opens** (`20260905.224714`) -- moonshots and whitepaper research, `grain-diffuser`.
 Cold pass **114 guards, 108 green, 2 red, 4 gated, 814s**, and both reds reproduce owned faults.
@@ -109,7 +125,7 @@ carry a claim, a seat and a stamp, at start rather than at landing. Take the num
 never from the one written in the row.
 **`%444`/`%431` CLOSED** -- the seed publisher travels with the field now; seven of eight ships stop paying a cold pass a lap. **A rule that states its reason can be checked -- this one stood eleven days and no reader asked the filesystem.** **Open:** twelve root paths behind that `/*` deny, unasked.
 **Landed `20260905`** -- `%430` and `%438` whole on the [235749 shelf](archive/20260905-235749_itinerary-landed-accounts.md); `%435`, `%427`-`%429`, `%423`-`%426`, `%420`, `%413`/`%412`, `%411`/`%410`, `%409`, `%408`; Mantra's 20 guards, the ripgrep fetch, the aroma breach, the baton and the three berths, and the bound grant itself: whole on the [20260905.192154 shelf](archive/20260905-192154_itinerary-landed-accounts.md).
-**`%442`/`%443` CLOSED** (`20260905.231715`, bakery's first landing) -- two guards printed GREEN with ripgrep off PATH, since a capture that discards its status and is read for emptiness cannot tell *nothing matched* from *nothing ran*. `require_instrument` seated in `shell_portable.sh`; `instrument_absence` gates that construction at zero, `tier lap`. Then **the new guard counted its own control's planted fixture as field** -- it enumerates with `git ls-files`, so it read `open=0` untracked and `open=1` staged, and the authoring lap measured a tree its commit would not ship. A heredoc body is text a script WRITES: it reads `fixture=yes` now, printed by path, and `require_instrument` inside one no longer arms a file by luck. **38 control legs where 24 stood**, each paired. **A meter that reads tracked files cannot be measured before it is tracked.** Whole on the [shelf](archive/REDS-the-guard-that-could-not-see-itself-rows-442-443.md).
+**`%442`/`%443` and `%445` accounts folded** (`20260906.001800`) to the [landed-accounts shelf](archive/20260906-001800_itinerary-landed-accounts.md); both rows already stood on REDS shelves.
 **Named for the baton, not seated** (bakery): SEND tells a witness-adding round to regenerate the two pages **before the hot pass**, which is right and incomplete -- `readme_metrics_scan.sh` counts with `git ls-files`, so regenerating **before `git add`** writes a stale number. Measured: **1806** before staging, **1807** after, `readme_metrics` red between. The clause wants two words -- *after staging*. **Yours**, being a baton edit that reaches eight ships.
 **Pheromone's:** `shell_dialect` reds on two `sed -i` in `fleet_key_locality_control.sh`:61,65.
 **`%441` CLOSED** (`20260905.225236`, Patchouli's first lap) -- **the commit that turned on the
@@ -123,14 +139,6 @@ top level, 8 where a flat glob reports ZERO Rye while the room holds some.** **T
 subtraction from decorative** -- `hidden` derived rather than counted makes its own check true for
 every input. **Mantra's next real work is MERGE, not `Line`.**
 **Patchouli's cold pass reads the same two reds DIFFUSER names above**, on a sixth tree.
-**`%431` OPEN -- `commit_message_guard` is RED here, and the gate that explained it is gone.**
-`%423` reconstructed `publish-seed.sh` on Incense and lifted `gate %1` in the same lap, on exactly
-the right reasoning. Only one of the two could travel: the publisher is **untracked at the root by
-design** (`.gitignore` `/*`), the roster is tracked. Here `20260905.135216`: **25 planted cases
-pass, 0 fail**, `GUARD_OK`, **ten of eleven readings green** -- `SEED_PUBLISHER_ARMS 0` alone reds
-it. So two of three trees pay a **full cold pass every lap**. **A repair proven on one tree and a
-claim published to all of them must not ride in one commit; the tell is that the repair is
-untracked.** The durable shape is `birth_a_clone` reconstructing it -- **yours, gate %1.**
 **Still open:** `glow/rune_shape.rye` width custody; `%281`/`%291`. **(%347):**
 `pond/enclosure_policy.kyri` 8,120/8,192; yours.
 **Landed this chapter** -- `%374`'s gate build, six utility fetches with their thanks, the naming
@@ -160,17 +168,7 @@ sites, none -- and not POSIX since 2008.** The tree already wrote the cure,
 `tools/fixtures/s/shell_portable.sh`, and **38 files source it, 1.3%.** The design names three
 tiers -- **granted** (POSIX), **carried** (we ship it), **borrowed** (probe, fall back, announce) --
 seated in Tally as a bounded grant, carried by Caravan as a capability, declared through Mantra.
-**The reflex LANDED `20260905.224445` (`%445` CLOSED)** -- `have_tool` and `require_tool` in
-`shell_portable.sh`: `instrument=<name>`, `instrument_for=`, `verdict=instrument_absent` on
-**stdout** where a witness reads, returning **127**. **All three guards the roster reaches through
-`rg` refused correctly with the tool removed, and every one accused an innocent file** -- e122
-blamed a control that had printed `verdict=ok` a line above; both Tally limbs blamed files carrying
-exactly what they were said to lack. The true line went to stderr, which `run` output does not keep.
-Both limbs take exact `grep`/`find` and are GREEN either way; e122 takes ONE `require_tool` at its
-door rather than 23 hand fallbacks. `pass=32 -> 47`, both sides planted, `shell_dialect` GREEN.
-**REDS %240 stood on its head: that was a wrong zero reading as health, this a correct refusal
-reading as a defect elsewhere. A tree taught to distrust silence had not been taught to distrust
-noise.** The three tiers and the roster stay yonder, yours.
+**The reflex itself LANDED** (`%445`, folded above); the three tiers and the roster stay yonder, yours.
 
 **Worth your word, still unanswered** (condensed out under the old ceiling `20260904`, carried
 back now that there is room): nothing in the ledger shows a red is *being worked*, so two hands
@@ -297,6 +295,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260905.225236` | The scope that changed between rows | [log](../session-logs/date/20260905/20260905-225236_the-scope-that-changed-between-rows.kyri) |
+| `20260905.234701` | The fold the landing lap skipped | [log](../session-logs/date/20260905/20260905-234701_the-fold-and-the-sweep-read-whole.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)
