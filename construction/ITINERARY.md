@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `2389e419df` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `a4768cc4cf` -- HEAD's parent, resolvable everywhere (%401).
 
 **Now.** **A control that names a machine cannot be run on the fleet it guards.**
 
@@ -83,14 +83,7 @@ never from the one written in the row.
 **`%438` CLOSED** -- `%437`'s own planted fabrication pushed `dated_path`'s no-slack ratchet three over (168/165); both spellings LISTED, `refs_lost=165`, GREEN. **A class of red cannot be written down without raising a meter, and the record of an instrument is still instrument.** Twice in that lap I published a checkable claim before measuring it -- `%436`'s shape, one day old, and **your own finding reads as something you already know, so nothing in the sentence asks to be checked.**
 **Landed `20260905`** -- `%435`, `%427`-`%429`, `%423`-`%426`, `%420`, `%413`/`%412`, `%411`/`%410`, `%409`, `%408`; Mantra's 20 guards, the ripgrep fetch, the aroma breach, the baton and the three berths, and the bound grant itself: whole on the [20260905.192154 shelf](archive/20260905-192154_itinerary-landed-accounts.md).
 **Pheromone's:** `shell_dialect` reds on two `sed -i` in `fleet_key_locality_control.sh`:61,65.
-**`%430` OPEN -- a floor that refuses to score must also refuse to vote.** The report card frees
-Register under 8 sentences, prints `reported, not scored`, and divides by four anyway: **560 of
-870** pages carry a blank voting **100**, **206** above Door's ceiling, **176** at B or better.
-`libraries/README.md` reads **A/94** on one 100%-negative sentence of 13 words. In lane:
-`tutorials/README.md` is **scored** now, B/84-on-a-silence to an earned **B+/89**. The general fix
-is **derivable** -- free only where one sentence could cross the ceiling, `|share-20| < 100/n`; 88
-become scored, 472 stay freed -- yet it edits a seated assertion: **your word.** Restored from
-`stash@{0}` exactly as this card derived it; the stamp `122517` never moved.
+**`%430` CLOSED** (`20260905.213047`, your granted door) -- the report card frees a Register under the 8-sentence floor **only where one sentence could still cross the ceiling**, `gap * sentences < 100`, gap measured from the setting's OWN ceiling (Door 20, Field 30, both lifted from `prose_register_scan.sh`). `mean_of_four_reads` untouched -- the repair reaches the input; the seated `n=1` case frees exactly as before. **On the 442 living pages: 122 stay freed, 52 become scored, mean fall 12.8, largest 25, and 25 of the 52 leave the B door they were passing on a blank vote.** The control's elder-card leg then caught the repair itself -- the new distance was computed inside the branch that used it, under `set -u`. **A leg built to prove the elder wrong also reads the new code on a path it does not take.** Whole on the [%430 shelf](archive/REDS-a-floor-that-voted-rows-430.md).
 **`%431` OPEN -- `commit_message_guard` is RED here, and the gate that explained it is gone.**
 `%423` reconstructed `publish-seed.sh` on Incense and lifted `gate %1` in the same lap, on exactly
 the right reasoning. Only one of the two could travel: the publisher is **untracked at the root by

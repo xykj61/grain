@@ -231,8 +231,19 @@ assert control.out contains "hhmmss_placeholder_free=yes" else "qa-report-card: 
 assert control.out contains "fabricated_stamp_still_counted=yes" else "qa-report-card: a real-looking stamp naming no file is still a broken citation -- this is the half that keeps the reading from being an escape"
 assert control.out contains "fabricated_stamp_named=yes" else "qa-report-card: and it must still be named, so it can be repaired"
 assert control.out contains "floor_is_cited=yes" else "qa-report-card: the register floor is read out of prose_register_scan.sh, never spelled beside it"
-assert control.out contains "under_floor_reported=yes" else "qa-report-card: a page under the sentence floor has its share reported rather than scored"
-assert control.out contains "under_floor_not_scored=yes" else "qa-report-card: and it must cost nothing -- one negative sentence out of one is a rounding error, not a register"
+# TWO CONDITIONS, NEVER ONE (REDS %430). Under the floor is where the argument starts. A reading is
+# freed only where one sentence could still have carried the share across the ceiling -- and where
+# it could not, the page pays. The elder single condition let 560 of 870 pages vote their ceiling
+# from a reading that measured nothing, 206 of them printing a share above the ceiling they were
+# being graded against.
+assert control.out contains "under_floor_seen=yes" else "qa-report-card: the floor finding is published on its own, so both scored readings still answer the denominator question the same way"
+assert control.out contains "under_floor_far_share_scored=yes" else "qa-report-card: under the floor and seventy points from the ceiling, no single sentence put it there -- it is scored"
+assert control.out contains "under_floor_far_share_costs=yes" else "qa-report-card: and being scored must cost, or the amendment is a label rather than a repair"
+assert control.out contains "under_floor_scored_explains=yes" else "qa-report-card: a page scored under the floor must say why, since the elder card told it the opposite"
+assert control.out contains "one_sentence_under_floor=yes" else "qa-report-card: the seated case is still under the floor -- the amendment narrows the door rather than moving this case through it"
+assert control.out contains "one_sentence_still_free=yes" else "qa-report-card: one negative sentence out of one is a rounding error, not a register -- the seated reasoning is kept whole"
+assert control.out contains "one_sentence_not_scored=yes" else "qa-report-card: and at n=1 it must still cost nothing"
+assert control.out contains "near_ceiling_still_free=yes" else "qa-report-card: under the floor and NEAR the ceiling still frees, or the rule is merely score-everything-past-one-sentence"
 assert control.out contains "under_floor_named=yes" else "qa-report-card: the card must say the share was reported, so a reader still sees it"
 assert control.out contains "under_floor_share_still_shown=yes" else "qa-report-card: the denominator stays visible even where the share is unscored"
 assert control.out contains "at_floor_scored=yes" else "qa-report-card: a page AT the floor is scored -- the boundary is read from both sides"

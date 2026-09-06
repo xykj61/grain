@@ -333,19 +333,73 @@ register=$((100 - neg_pct))
 # by its own witness. Below the floor the share is REPORTED rather than scored, and named on the
 # card, so a reader still sees it.
 #
-# One condition here rather than two, and the difference is worth saying: the index reading needs a
-# second condition because a page DECLARES itself an index, and a self-declared exemption is a door.
-# A sentence count is measured rather than declared, so no page can assert its way under this floor.
+# TWO CONDITIONS, NEVER ONE -- amended REDS %430. This comment argued for one condition and was
+# wrong, and the argument it made against a second is the one that convicts it: the index reading
+# needs two conditions because a page DECLARES itself an index and a self-declared exemption is a
+# door. That is true and it is not the whole test. The floor's own reasoning is stated at n=1 --
+# "one negative sentence out of one is a rounding error, not a register" -- and it was asserted for
+# every n up to seven, where a share is no rounding error at all. A freed reading does not abstain:
+# the composite divides by four regardless, so a Register that measured nothing votes 100.
+#
+# Measured over the 870 living tracked Markdown pages outside gratitude/, vendor/ and seed/: 560
+# carried a freed Register contributing its ceiling, 206 of them printing a negative share ABOVE
+# Door's own 20%, and 176 of those reading B or better. One read A/94 on thirteen words.
+#
+# THE SECOND CONDITION IS DERIVED RATHER THAN GRANTED, which is why it can be checked. One sentence
+# moves a share by 100/n points, so the floor's argument holds exactly while a single sentence could
+# still carry the reading across the ceiling, and stops holding the moment it cannot:
+#
+#     free  <=>  |share - DOOR_MAX| * sentences < 100
+#
+# At n=1 that is |share-20| < 100, which frees a share of 100, so the seated reasoning is kept whole
+# rather than overridden. At n=0 it frees by construction, which is right: a page with no sentence
+# has no register to read. From n=6 up a share far from the ceiling is scored, because no one
+# sentence could have put it there. The arithmetic repairs the INPUT rather than the mean, which is
+# the same move the Meter branch below already made, and mean_of_four_reads is untouched.
 #
 # The wall is untouched. tools/p/prose_register_witness.rish still gates the twelve door documents at
 # 20% with no floor, and nothing here reaches it. A gate that grows an exemption stops being a gate.
 register_floor=$(sed -n 's/^REGISTER_MIN_SENTENCES=\([0-9]*\)$/\1/p' "$reg_scan" | head -1)
 [ -n "$register_floor" ] || { echo "qa: prose_register_scan.sh no longer publishes REGISTER_MIN_SENTENCES" >&2; exit 1; }
+# Lifted from the same file as the floor and the measure(), so the ceiling this door reasons about
+# and the ceiling the wall enforces are one number that cannot drift apart. BOTH ceilings are read,
+# because Gauge gives Door 20% and Field 30% and the question "could one sentence have crossed it"
+# has a different answer at each -- reasoning about a Field page against Door's ceiling would score
+# pages the law never put over one. Meter is uncapped by Gauge's own table, so it frees here and is
+# named as Meter by the branch below rather than being reasoned about as prose.
+register_door_max=$(sed -n 's/^DOOR_MAX=\([0-9]*\)$/\1/p' "$reg_scan" | head -1)
+[ -n "$register_door_max" ] || { echo "qa: prose_register_scan.sh no longer publishes DOOR_MAX" >&2; exit 1; }
+register_field_max=$(sed -n 's/^FIELD_MAX=\([0-9]*\)$/\1/p' "$reg_scan" | head -1)
+[ -n "$register_field_max" ] || { echo "qa: prose_register_scan.sh no longer publishes FIELD_MAX" >&2; exit 1; }
+case "$setting" in
+  door)  register_ceiling=$register_door_max ;;
+  field) register_ceiling=$register_field_max ;;
+  *)     register_ceiling=$neg_pct ;;
+esac
+
+# Whether there was enough prose to measure is ONE question, answered once, and both scored
+# readings must answer it the same way -- that agreement is what an earlier round already had to
+# repair. Whether a thin denominator MATTERED is a second question, and only the register asks it,
+# so the floor finding is published separately from the mode it leads to.
+register_floor_met=yes
+[ "$sentences" -lt "$register_floor" ] && register_floor_met=no
+
+# The distance from the ceiling is a pure function of two numbers already in hand, so it is computed
+# unconditionally rather than inside the branch that uses it. Written inside, it is undefined on
+# every path that does not take the branch -- which the control's own elder-card leg found at once,
+# by rewriting the condition to `if false` and reading a detail line that referenced it.
+if [ "$neg_pct" -ge "$register_ceiling" ]; then
+  register_gap=$((neg_pct - register_ceiling))
+else
+  register_gap=$((register_ceiling - neg_pct))
+fi
 
 register_mode=scored
 if [ "$sentences" -lt "$register_floor" ]; then
-  register_mode=reported
-  register=100
+  if [ "$((register_gap * sentences))" -lt 100 ]; then
+    register_mode=reported
+    register=100
+  fi
 fi
 
 # --- Reach: can the intended reader follow it ----------------------------------------------------
@@ -640,6 +694,10 @@ else
   echo "register=$register (negative $neg_pct% of $sentences sentences reported, not scored)"
 fi
 echo "register_mode=$register_mode (floor $register_floor sentences, cited from prose_register_scan.sh)"
+echo "register_floor_met=$register_floor_met (at or above the $register_floor-sentence floor)"
+if [ "$register_floor_met" = no ] && [ "$register_mode" = scored ]; then
+  echo "detail: under the floor and scored anyway -- ${register_gap} points from the ${register_ceiling}% ceiling over $sentences sentences, so no single sentence could have carried this reading across it (REDS %430)"
+fi
 if [ "$grade_mode" = reported ]; then
   grade_note="grade $grade against $grade_ceiling reported, not scored"
 else
