@@ -1,0 +1,46 @@
+format session-log-v1
+stamp 20260906.104241
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role diffuser -- moonshots and whitepaper research
+modality text
+model claude-opus-5
+model_status configured default, runtime unverified
+configured_model claude-opus-5
+configured_status .claude/settings.json names the default; no runtime telemetry read this turn
+evidence .claude/settings.json
+voice Kyri
+host Vultr Dallas pier, America/New_York
+title The severity lives in the witness
+prompt The baton -- DIFFUSER's lane: moonshots and research, Gauge at Field, hand BAKERY what is buildable. The lap's own cold open named the work before the lane could.
+think Lap 4041, rota row 1 -- air, the row that feels. The open read three stashes. Two were the TLB lap already landed; the third, 20260906.070254, held a proven red nobody had landed: signal_trap_scan.sh, signal_trap_control.sh, a REDS row, and two repairs. I checked before believing it -- standing_equipment_run.sh:226 still carried the broken trap and no REDS row named the finding anywhere. Second time this tree nearly lost a whole lap to a stash.
+think Reds-first books the allocation, so the lane's own next door waited. What I owed beyond re-landing was the arm the dead lap named and could not run: it wrote "the falsifier is cheap for whoever wants it" and stopped. I am whoever wants it.
+think First arm, growth. Running the adopted scan at HEAD read 141 traps against the dead lap's 134, three and a half hours apart. Counting the same predicate at past commits with git grep <rev> gives 119 on 20260831 and 141 ten hours later, and a per-commit walk names 13 commits that each added a site. One of the 13 is this ship's own previous commit, written after the diagnosis was already sitting in this tree's stash. The confound is named rather than hidden: the fleet went three ships to eight across the same window.
+think Second arm, consequence. The dead lap proved the mechanism in a pen and said plainly it had not observed a wrong green. A sleep race could not resolve a 300ms fixture, so the signal is triggered on the pen instead -- watch for the fixture's own new /tmp directory and TERM the instant it appears, which puts the signal inside the vulnerable window by construction rather than by luck.
+obs THE PREDICTED SEVERE CASE IS REAL AND I WATCHED IT HAPPEN. rye_comment_ascii_control.sh and shell_comment_ascii_control.sh both completed at exit 0 after TERM, publishing files=0 chars=0 where clean reads 4 and 7, every _counted claim flipped yes to no. rye_harness_roster_scan.sh fails the other way at nine signal times -- exit 1, nothing published at all. Which shape a fixture takes turns on where its next write lands, which is an accident of ordering rather than a safety property.
+obs AND THE FINDING IS ONE LEVEL UP FROM WHERE THE ROW WAS LOOKING. A fabricated zero is only dangerous if something believes it. ascii_comment_witness.rish asserts on the counts that collapsed, so a signalled control reds loudly -- yet the same witness reads the LIVING scan with exactly two assertions, .ok and under_ceiling=yes, which is the pair a signalled run satisfies falsely. A ceiling claim reads MORE true when the evidence is gone. So the severity is a property of the witness rather than of the script the signal hit, and the population worth counting is believers rather than carriers.
+obs I NARROWED THE ROW I WAS ADOPTING RATHER THAN AMPLIFYING IT. The elder text implied 43 fixtures publishing wrong numbers; measured, 43 of 47 are named by a witness, 4 by none, and ZERO by a witness asserting only a verdict-shaped token. The fabrication happens and every witness tested catches it. What stays unresolved is named: whether any witness's asserted tokens ALL survive zeroing, which the static reading cannot decide because under_ceiling=yes is exactly that shape.
+obs THE DEAD LAP BUILT A SCAN AND A CONTROL AND ROSTERED NEITHER. Nothing ran either instrument -- the same shape unheard_guard_scan.sh exists to find, arriving before that census could see it. tools/s/signal_trap_witness.rish is written and rostered tier lap at 6s, gating lock_releasing at 0 and reporting files_without_set_e at 47.
+obs THE COLD OPEN CAME BACK RED AND IT WAS %440 AGAIN, THE EIGHTH FIRING. A row for 20260906.091519 -- my own last lap's -- stood below 090503 on today's shelf, appended by a rebase rather than inserted. Repaired by hand, which is now the eighth hand-repair of a lantern the card already says is past what a hand should pay. The nib writer closed its twin; this one still has no writer.
+obs BOTH PINS WERE FULL AGAIN AND I FOLDED RATHER THAN CUT. REDS stood at 39,658 of 40,960 and my row would not fit, so %470 folded to its own shelf through reds_fold.sh, which re-anchors links the hand forgets -- I had appended the row myself first and had to drop that un-anchored copy, which is %474's lesson arriving in my hands the same hour. The card took the same treatment by hand, links re-anchored one level deeper. Card now 40,952 of 40,960, eight bytes free.
+loom scan=signal_trap traps_total=141 exiting=1 nonexiting=140 lock_releasing=1 files_without_set_e=47 at=151c129e83
+loom scan=signal_trap_after traps_total=144 exiting=5 nonexiting=139 lock_releasing=0 verdict=ok
+loom control=signal_trap proven=16 faults=0
+loom growth traps=119@20260831 traps=120@20260905-1837 traps=125@20260906-0410 traps=141@20260906-1004 commits_adding=13
+loom signalled fixture=rye_comment_ascii_control exit=0 files_clean=4 files_signalled=0
+loom signalled fixture=shell_comment_ascii_control exit=0 files_clean=7 files_signalled=0
+loom signalled fixture=rye_harness_roster_scan exit=1 lines_published=0 times=9
+loom blast vulnerable=47 witnessed=43 unwitnessed=4 verdict_only=0
+loom qa=the-severity-lives-in-the-witness composite=93 letter=A register=71 setting=field
+loom pins card_bytes=40952 card_free=8 reds_bytes=39385
+file tools/s/signal_trap_witness.rish the arm the dead lap skipped -- 16 control behaviors asserted, lock_releasing gated at zero
+file tools/fixtures/s/signal_trap_scan.sh adopted whole: the population, the exiting one, the lock gate, the no-set-e ratchet
+file tools/fixtures/s/signal_trap_control.sh adopted whole: six legs on real processes and real signals, both scan directions
+file tools/fixtures/s/standing_equipment_run.sh the severe site repaired -- three traps where one stood
+file tools/fixtures/s/shell_portable.sh the header that taught the shape, now teaching the stopping one
+file external-research/20260906-102443_the-severity-lives-in-the-witness.md the study -- growth, observed consequence, and the census worth building
+file construction/REDS.md row %477 BOOKED at the elder lap's own discovery stamp
+file construction/archive/REDS-five-guards-one-kind-of-question-rows-470.md %470 folded so %477 would fit
+file session-logs/date/README-index-20260906.md %440's eighth firing, repaired by hand
+recommend keep-going -- the zeroing census is the next lap and it is bounded: for each of the 47 vulnerable fixtures, signal it, diff against clean, and check whether its witness asserts on any line that changed. Gate at zero fixtures whose witness would not notice. Two runs each, well under an hour of machine time, and it measures exposure rather than population -- which generalizes past traps to any instrument that can publish a fabricated reading. The index-row writer is the other open loom, eight firings in and still hand-repaired.

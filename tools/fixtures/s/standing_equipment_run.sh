@@ -223,7 +223,18 @@ if [ -d "$(dirname "$lock")" ]; then
   if lock_acquire "$lock" 0; then
     # The release is armed ONLY on the side that acquired. A refusing pass that released would
     # free the holder's lock and walk a third pass straight in.
-    trap 'rm -rf "$pen"; lock_release "$lock"' EXIT INT TERM
+    #
+    # THE SIGNAL TRAPS ONLY EXIT, and the EXIT trap does the cleanup exactly once, however this
+    # pass ends. Written `EXIT INT TERM` on one line, as this tree wrote it 142 other times at `15f99e1fe0`, a
+    # handler that cleans up WITHOUT exiting does not stop the script: POSIX runs the handler and
+    # RESUMES execution where the signal landed. The pass then carries on against the pen its own
+    # handler just removed, and `set -eu` above ends it at the next `>> "$pen/fresh"` -- so a
+    # signalled pass prints a list of green guards and NO `run_verdict` line at all, which reads
+    # like a short healthy run. Measured 20260906: this pass died that way after 34 guards.
+    # REDS %485; proven both directions in tools/fixtures/s/signal_trap_control.sh.
+    trap 'rm -rf "$pen"; lock_release "$lock"' EXIT
+    trap 'exit 130' INT
+    trap 'exit 143' TERM
     echo "run_lock=held"
   else
     owner=$(cat "$lock/pid" 2>/dev/null || true)

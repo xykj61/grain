@@ -1,0 +1,72 @@
+# tools/s/signal_trap_witness.rish -- a handler that does not exit is not a stop.
+#
+# WHY THIS RUNG. `trap 'rm -rf "$pen"' EXIT INT TERM` reads like "clean up and stop." POSIX runs
+# the handler and then RESUMES the script where the signal landed, so the script carries on with
+# the scratch directory its own handler just deleted -- and if the handler also released a lock,
+# it carries on holding nothing. The correct shape gives the signals their own trap that exits,
+# letting the EXIT trap clean up exactly once:
+#
+#   trap 'rm -rf "$pen"' EXIT      # cleanup, once, however the script ends
+#   trap 'exit 130' INT            # 128 + SIGINT
+#   trap 'exit 143' TERM           # 128 + SIGTERM
+#
+# WHAT IS PROVEN, on metal. Sixteen behaviors on real processes and real signals in a throwaway
+# pen: the documented idiom continuing past its own cleanup, the count it then understates, the
+# `set -e` variant dying late instead, a lock taken and freed under signal, the corrected idiom
+# stopping at exit 143 with cleanup run exactly once, the pen proven innocent three ways, and the
+# scan's own two directions -- silent on a clean tree, biting a planted trap, biting a planted
+# lock release, and returning to zero when the plant is removed.
+#
+# WHAT IS GATED. `lock_releasing` at zero: no handler may free a checkout's mutual exclusion and
+# let the script run on. That is the severe subset, because the window is brief and the damage is
+# another writer entering a tree that believes it is alone.
+#
+# WHAT IS REPORTED RATHER THAN GATED. `files_without_set_e`, a ratchet whose ceiling only falls.
+# In these the script does not merely lose its verdict; it runs to completion and publishes counts
+# computed from a directory that is gone. Measured on real instruments `20260906.101412`, that is
+# observed rather than inferred: two of this tree's fixtures completed after a TERM at exit 0 with
+# every count collapsed to zero. Both were caught, because the witness above them asserts on the
+# counts that collapsed. A witness asserting only a ceiling would not have been -- a ceiling claim
+# reads MORE true when the evidence is gone. The study is
+# external-research/20260906-102443_the-severity-lives-in-the-witness.md.
+#
+# WHAT IS NOT PROVEN. That a wrong GREEN has ever shipped from this defect. Answering it would
+# mean replaying past roster runs against signals nothing recorded.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/s/signal_trap_witness.rish
+
+say "signal-trap: Language EN -- a handler that cleans up and does not exit lets the script carry on."
+say "signal-trap: Style Radiant -- the correct shape is three traps, and it was already in this tree once."
+say "signal-trap: Lens TAME -- safety first: a lock released while its holder runs on is the severe case."
+
+let scan = run ["sh" "tools/fixtures/s/signal_trap_scan.sh"]
+say scan.out
+assert scan.ok else "signal-trap: a handler frees a lock and does not exit -- read the scan's lock_site lines"
+assert scan.out contains "lock_releasing 0" else "signal-trap: no handler may release a lock and let the script run on"
+assert scan.out contains "verdict ok" else "signal-trap: the scan must reach its own verdict before it is believed"
+say "field GREEN -- no trapped signal in this tree frees a lock and carries on"
+
+let control = run ["sh" "tools/fixtures/s/signal_trap_control.sh"]
+say control.out
+assert control.ok else "signal-trap: the control must complete"
+assert control.out contains "ok documented_idiom_continues = 30" else "signal-trap: the documented idiom must be shown continuing past its own cleanup"
+assert control.out contains "ok count_understated = 0" else "signal-trap: a script that runs on must be shown publishing a count from a deleted directory"
+assert control.out contains "ok set_e_dies_late = absent" else "signal-trap: under set -e the signalled script must die at its next scratch write"
+assert control.out contains "ok lock_taken_before_signal = taken" else "signal-trap: the pen must actually hold the lock before the signal, or the leg proves nothing"
+assert control.out contains "ok lock_freed_on_signal = freed" else "signal-trap: the handler must be shown freeing the lock"
+assert control.out contains "ok lock_window_not_exploitable = gone" else "signal-trap: the measured window is adjacent to death -- keep the refusal, never the scarier claim"
+assert control.out contains "ok corrected_idiom_stops = absent" else "signal-trap: the corrected shape must stop the script"
+assert control.out contains "ok corrected_exit_code = 143" else "signal-trap: a TERM must leave 128 + 15, or the exit code lies about the cause"
+assert control.out contains "ok corrected_cleanup_ran_once = 1" else "signal-trap: splitting the traps must not clean up twice"
+assert control.out contains "ok pen_innocent_documented_counts = 5" else "signal-trap: unsignalled, the documented pen script must count correctly"
+assert control.out contains "ok pen_innocent_set_e_finishes = 5" else "signal-trap: unsignalled, the set -e pen script must finish"
+assert control.out contains "ok pen_innocent_corrected_finishes = 5" else "signal-trap: unsignalled, the corrected pen script must finish"
+assert control.out contains "ok scan_clean_reads_zero = 0" else "signal-trap: a clean pen must read zero rather than merely pass"
+assert control.out contains "ok scan_bites_planted = 2" else "signal-trap: the scan must count a planted nonexiting trap"
+assert control.out contains "ok scan_bites_lock_release = 1" else "signal-trap: the scan must count a planted lock release"
+assert control.out contains "ok scan_returns_after_removal = 0" else "signal-trap: removing the plant must return the reading to zero, or the refusal is a latch"
+assert control.out contains "faults 0" else "signal-trap: the control must agree with itself"
+say "RED and GREEN paths proven -- sixteen behaviors on real processes and real signals"
+
+say "GREEN: signal-trap -- a handler that does not exit is not a stop, and none of ours frees a lock."

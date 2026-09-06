@@ -1891,3 +1891,21 @@ guard amphora_asker_reply
 path tools/am/amphora_asker_reply.rish
 tier cadence
 seated 20260906.113014
+# signal_trap -- a POSIX trap handler runs and then RESUMES the script, so
+# `trap 'rm -rf "$pen"' EXIT INT TERM` reads as "clean up and stop" and behaves as "clean up and
+# carry on". Measured at `15f99e1fe0` before this round's repair: 143 command-position traps
+# naming INT or TERM across tracked shell sources, and exactly ONE called exit -- because
+# `shell_portable.sh`'s own header taught the broken form beside `lock_acquire`, so the shape had
+# one source and spread from it. GATED at `lock_releasing 0`: no handler may free a checkout's
+# mutual exclusion and let the script run on, which is the severe subset because another writer
+# then enters a tree that believes it is alone. `files_without_set_e` (48) is REPORTED rather than
+# gated -- those run to completion and publish counts computed from a deleted directory, observed
+# on two of this tree's own fixtures at exit 0 with every count collapsed to zero. Both were
+# caught, because the witness above them asserts on the counts that collapsed; a witness asserting
+# only a ceiling would not be, since a ceiling claim reads MORE true when the evidence is gone.
+# Study: external-research/20260906-102443_the-severity-lives-in-the-witness.md. `tier lap`: 6s.
+
+guard signal_trap
+path tools/s/signal_trap_witness.rish
+tier lap
+seated 20260906.120137
