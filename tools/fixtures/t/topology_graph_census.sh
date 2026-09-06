@@ -344,6 +344,75 @@ function bfs_minus(src, PC, banned,   head, tail, i, u, v, seen) {
   return seen
 }
 
+# The Moore bound: the most nodes a graph of maximum degree `d` and diameter `k` can hold.
+# Every node reaches at most `d` others in one step, at most `d*(d-1)` in two, and the sum of
+# that geometric series is the ceiling. Two shapes sit below the general form because it
+# divides by `d-2`: a graph of maximum degree one is a matching and holds two nodes, and one
+# of maximum degree two is a path or a cycle, whose best is the cycle at `2k+1`.
+function moore_cap(d, k) {
+  if (d < 1) return 1
+  if (d == 1) return 2
+  if (d == 2) return 2 * k + 1
+  return 1 + d * (((d - 1) ^ k) - 1) / (d - 2)
+}
+
+# The same bound asked in the direction a designer`s constraint actually binds: the point
+# count is fixed by the sky and the degree is fixed by the shape, so solve for the DIAMETER.
+# The answer is the smallest diameter any graph of `PC` points and maximum degree `d` could
+# possibly have -- a floor no wiring beats, rather than a target any wiring reaches.
+#
+# SAY WHY THE DIRECTION IS THE WHOLE POINT. The elder reading asked how many NODES a graph of
+# the achieved degree and the achieved diameter could hold, answered nine billion against our
+# 720, and concluded that a diameter argument compares two comfortable designs. Both readings
+# are true statements about one inequality. The one that decides is the one whose free
+# variable is the thing being chosen, and nobody is choosing how many points a sky has.
+#
+# Bounded: the search stops at `moore_k_max` and returns a named refusal rather than spinning.
+function moore_floor(PC, d,   k) {
+  for (k = 1; k <= moore_k_max; k++)
+    if (moore_cap(d, k) >= PC) return k
+  return -1
+}
+
+# The floor beside the achieved diameter, for one leg. Refused on a split graph on purpose:
+# `gdiam` there is the widest walk the largest component happens to hold while half the pairs
+# never connect at all, so a ratio against it would be a number about nothing.
+function floorleg(name, PC, mx, gdiam, comps, iso,   fl) {
+  if (comps != 1 || iso != 0) {
+    printf "  %s_floor not_connected components=%d isolated=%d -- a diameter floor reads nothing here\n",
+      name, comps, iso
+    return
+  }
+  fl = moore_floor(PC, mx)
+  if (fl < 0) {
+    printf "  %s_floor degree_max=%d moore_floor=none_within_%d\n", name, mx, moore_k_max
+    return
+  }
+  printf "  %s_floor degree_max=%d moore_floor=%d walk_diameter=%d over_floor=%.2f\n",
+    name, mx, fl, gdiam, gdiam / fl
+}
+
+# The floor arithmetic, bound to the graphs known to ATTAIN the Moore bound. A formula off by
+# one anywhere fails at least one of them, which is why an attainer is the test worth having:
+# it pins the ceiling exactly rather than bracketing it. K_10 is the complete graph on ten
+# nodes; Petersen and Hoffman-Singleton are the two famous Moore graphs at diameter two; a
+# fifteen-cycle pins the degree-two branch that skips the general form.
+function mooreagree(   bad) {
+  bad = 0
+  bad += mcheck("complete_K10", 10, 9, 1)
+  bad += mcheck("petersen", 10, 3, 2)
+  bad += mcheck("hoffman_singleton", 50, 7, 2)
+  bad += mcheck("cycle_C15", 15, 2, 7)
+  return bad
+}
+
+function mcheck(name, PC, d, want,   got) {
+  got = moore_floor(PC, d)
+  if (got == want) { printf "  moore_attainer %s floor=%d ok\n", name, got; return 0 }
+  printf "  moore_attainer %s floor=%d wanted=%d MISMATCH\n", name, got, want
+  return 1
+}
+
 # How much of the reachable graph one failed point takes with it. The start point is held
 # fixed inside the largest component, so every reading is against one baseline.
 function cutpoints(kind, name, PC,   a, src, base, seen, stranded, cuts, worst, cg, cs, cp) {
@@ -396,6 +465,7 @@ function walk(kind, name, PC,   a, b, edges, iso, mx, mn, agreeing, differ, unre
     name, edges, mn, mx, 2 * edges / PC, iso, comps
   printf "  %s_graph walk_diameter=%d metric_agrees=%d metric_differs=%d metric_unreachable=%d share_unreachable=%.4f\n",
     name, gdiam, agreeing, differ, unreach, unreach / (PC * PC)
+  floorleg(name, PC, mx, gdiam, comps, iso)
   return differ + unreach
 }
 
@@ -474,8 +544,11 @@ function isolatedleg(name, PC,   n, iso, pred, both) {
 
 BEGIN {
   faults = 0
+  moore_k_max = 64 # a diameter no sky in this tree approaches; the search names its own bound
+
   printf "model_agreement compass\n"
   faults += agree(g1, s1, p1)
+  faults += mooreagree()
 
   PC = load(g1, s1, p1)
   printf "leg sponsor compass\n"
