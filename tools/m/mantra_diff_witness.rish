@@ -1,0 +1,77 @@
+# tools/m/mantra_diff_witness.rish -- the diff compiles, and the compiling is the point.
+#
+# mantra/src/diff.rye is a pure LCS over line text equality. Until 20260906 nothing in this
+# tree compiled it. Five guards read the file -- width-check, width_check_th3,
+# tame_check_scan, tame_check_mantra, opening_lines_scan -- and every one of them reads it
+# with grep, so when the Zig 0.16 toolchain move retired the ArrayListUnmanaged(T){} form the
+# module stopped compiling and all five stayed green. Three sites carried the elder form.
+# That is REDS %449's fault one file over, found by the census %449 booked.
+#
+# This guard builds the module for real and then breaks it seven ways in a pen, because a
+# guard that cannot red guards nothing.
+#
+# THE COMPTIME WALKER, and why an import is not enough. Zig analyses lazily: a probe that
+# merely imports a module and reads a signature walks straight past a type error in a
+# function body -- measured 20260906 by planting one and watching the build exit 0. The
+# witness therefore references every declaration of the module at comptime, which forces each
+# body through semantic analysis. The control proves that leg from both sides: an uncalled
+# public function carrying a type error reds with the walker present and PASSES with it
+# removed. The tree-wide instrument for this question is a peer's lap; this is one module's
+# own witness using the same mechanism.
+#
+# The Rye witness lives beside the module it proves, at mantra/src/diff_witness.rye, because
+# Zig refuses an import that escapes the root file's directory. A test one room away would
+# have to copy the module, and a copy proves the copy -- which is how weave.rye went a
+# toolchain move without compiling.
+#
+# Module: mantra/src/diff.rye. Sibling guard: tools/m/mantra_weave_merge_witness.rish.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/mantra_diff_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mantra/bin/diff-witness"
+
+say "mantra-diff: Language EN -- the diff proven by compiling it and running it, rather than by reading it."
+say "mantra-diff: Style Gauge, Meter -- every claim is a run, and the sharpest phase is a pass."
+say "mantra-diff: Lens TAME -- one named max, an invariant on every function, bounds read at the edge."
+
+say "mantra-diff: the module still declares the surface this witness proves..."
+let surface = run ["sh" "-c" "grep -q 'pub fn diff' mantra/src/diff.rye && grep -q 'pub fn split_lines' mantra/src/diff.rye"]
+assert surface.ok else "mantra-diff: diff or split_lines left diff.rye"
+
+say "mantra-diff: no site carries the elder ArrayListUnmanaged form the toolchain retired..."
+# A count would be the weak spelling here: `contains "0"` is satisfied by 10 as well as by 0,
+# which is this guard's own subject turned back on it. The answer is a word, not a number.
+let elder = run ["sh" "-c" "grep -q 'ArrayListUnmanaged([^)]*){}' mantra/src/diff.rye && echo ELDER_PRESENT || echo ELDER_ABSENT"]
+assert elder.out contains "ELDER_ABSENT" else "mantra-diff: the Zig 0.15 ArrayListUnmanaged(T){} form is back in diff.rye"
+
+say "mantra-diff: the witness still carries the comptime walker that makes this a compile proof..."
+let walker = run ["sh" "-c" "grep -q 'decls' mantra/src/diff_witness.rye && grep -q 'comptime {' mantra/src/diff_witness.rye"]
+assert walker.ok else "mantra-diff: the comptime declaration walker left diff_witness.rye"
+
+say "mantra-diff: building the witness against the real module..."
+let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/src/diff_witness.rye -femit-bin=${bin}"]
+assert build.ok else "mantra-diff: the diff witness build failed -- the module under test does not compile"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "mantra-diff: the diff witness exited non-zero"
+assert selftest.out contains "GREEN" else "mantra-diff: the diff witness is not GREEN"
+assert selftest.out contains "identical documents give an empty diff" else "mantra-diff: the unchanged-document claim is missing"
+assert selftest.out contains "an append inserts one line and deletes none" else "mantra-diff: the append-shape claim is missing"
+assert selftest.out contains "a tail delete deletes one line and inserts none" else "mantra-diff: the delete-shape claim is missing"
+assert selftest.out contains "the same inputs give the same diff twice" else "mantra-diff: the purity claim is missing"
+assert selftest.out contains "moves one line, not five" else "mantra-diff: the LCS claim is missing"
+assert selftest.out contains "an append round-trips exactly" else "mantra-diff: the exact round-trip claim is missing"
+assert selftest.out contains "a middle insert lands at the end" else "mantra-diff: the reorder claim is missing -- the seam this witness pins"
+assert selftest.out contains "split_lines drops the trailing token" else "mantra-diff: the split_lines claim is missing"
+
+say "mantra-diff: breaking the module seven ways in a pen, so the witness is proven able to red..."
+let control = run ["sh" "tools/fixtures/m/mantra_diff_control.sh"]
+assert control.ok else "mantra-diff: the control must complete -- a witness nobody has watched fail is a witness nobody has tested"
+assert control.out contains "control_verdict=ok" else "mantra-diff: the control must reach its own verdict"
+assert control.out contains "clean_exit=0" else "mantra-diff: the unmutated copy must reach GREEN, or every other phase fails for a reason the pen invented"
+assert control.out contains "walker_removed_exit=0" else "mantra-diff: dropping the walker must let the planted error through, or the walker is not what catches it"
+assert control.out contains "elder_arraylist_exit=1" else "mantra-diff: the elder ArrayListUnmanaged form must red -- it is the fault this guard exists for"
+
+say "GREEN: the diff compiles under the walker, keeps the common subsequence, and appends a middle insert by name."

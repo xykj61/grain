@@ -270,7 +270,13 @@ printf '# a comment naming lib/named_in_the_scan.rye beside this scan own detect
   >> "$p/tools/fixtures/r/rye_compile_reach_scan.sh"
 seal "$p"; run_pen "$p"
 check_says "an orphan the scan itself names stays accused"  "asserted=1" "$out"
-check      "  ... and the ceiling still refuses at 2"       0 "$rc"
+# The rc this plant earns is DERIVED from the ceiling, never spelled: one accused file walks free
+# while the ceiling is 1 or more and refuses once it falls to 0. Spelling it cost this case a
+# failure the day the ceiling fell to zero (REDS %467), which is the same lesson the header states
+# -- a control that reads the law keeps testing the law, and one that reads a snapshot tests the
+# snapshot.
+if [ "$ceiling" -ge 1 ]; then want_self_read=0; else want_self_read=1; fi
+check      "  ... and the ceiling answers for it"          "$want_self_read" "$rc"
 run_pen "$p" --list asserted
 check_says "  ... named in the asserted list"               "lib/named_in_the_scan.rye" "$out"
 

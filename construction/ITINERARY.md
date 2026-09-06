@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `de5fe7068b` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `2616a3cfc4` -- HEAD's parent, resolvable everywhere (%401).
 
 **DIFFUSER** -- **the elder paper's own unmeasured sentence, measured.** It read: *"memory read on
 every packet shows up in a power budget -- no measurement of the difference is offered here."*
@@ -150,23 +150,23 @@ holding an inline comparator reads clean at any length.
 
 **Four accounts CLOSED, whole on the [`20260906.040933` shelf](archive/20260906-040933_itinerary-landed-accounts.md)** -- `%453` twice (the doc line measuring between outfits, and the floor that stopped biting, [REDS shelf](archive/REDS-the-floor-that-stopped-biting-rows-453-453.md)), `%458` the scan that called this ship's credential the pier's, and `%444`/`%431` the seed publisher that travels with the field. **A rule that states its reason can be checked.**
 
-**PHEROMONE -- `%449`'S BOOKED CENSUS LANDED, and `%462` is what building it cost.** *Which
-authored Rye does anything ever compile?* Of **1,940** tracked `.rye`, **227** are symlinks and
-**1,713** distinct files remain; **1,535** are reached by a build root or an `@import` from one.
-**178** are not -- **41** planted specimens under `fixtures/`, **114** tests in `rye/tests/` no
-runner names, and **exactly one** carrying a runner's claim while nothing compiles it:
-`mantra/src/diff.rye`, read by five guards -- GRASS's `diff.rye` and `store.rye`, measured twice
-tonight. **My own claim retracted before it shipped:** I called it type-checked off an importing
-probe, and **that probe is blind** -- Zig analyses lazily, so it walks past a planted type error,
-which I proved by planting one. GRASS measured the same blindness from the other side. The
-declaration walker is theirs; this census answers only the **graph** question.
-Gated at **ceiling 1**; the rest reported. **Every count is a floor** -- a runner touching the
-compiler credits every path it names, since a root arrives by literal, variable, and function
-parameter. **`%463` is the near-miss:** awk's `NR==FNR` in five places answered `distinct=0` and
-`verdict=ok` on any tree with no symlinks; 227 here hid it, and the pens failed 19 of 50 at once.
-**Resolution before accusation** -- without it, 17 symlinks read never-compiled and **16 pointed at
-a file that IS compiled**. 50 pen behaviors, ceiling both ways, pen innocent. `tier lap` **5s**.
-**Two ships measured this in one night**, GRASS and me -- your question, again.
+**PHEROMONE -- THE ACCUSED FILE COMPILES NOW, AND IT DID NOT WHEN I OPENED IT.** `%463`'s census
+named `mantra/src/diff.rye` as the one authored Rye carrying a runner's claim while nothing builds
+it; the probe that row asked for found it **broken** -- three sites of the Zig 0.15
+`ArrayListUnmanaged(T){}` form 0.16 retired, **`%449`'s exact fault one file over**, the tree's
+last three. **Five guards read that file every lap and all five read it with `grep`**, so five
+green readings stood over bytes no compiler had accepted for weeks: *pattern guards do not compose
+into a compile proof however many stand.* **The cheap probe is confidently wrong**
+-- an importing probe builds at **exit 0** over a planted type error; a four-line **comptime
+declaration walker** reds at `diff.zig:82:46` and greens on the repair.
+**A second fault, another kind:** the head promised the round trip reproduces `new_text`, **false
+for any insert not at the end** -- `Diff.inserts` carries no anchor, so `apply` appends and `a c`
+against `a b c` reads back **`a c b`**. Head rewritten to what it delivers. `diff_witness.rye`
+proves **seven claims by doing**; the control breaks it seven ways and **its sharpest phase is a
+pass** -- the planted error rides free once the walker goes. `tier lap` **9s**; `asserted` **1 ->
+0**, ceiling with it. **Yours, the seam:** an anchor per insert
+widens `Diff`, and `mantra_glow_tend_limb1` pins `Line` against a Glow shape -- named, not taken.
+`%467`; the census's own numbers rest on the `20260906.062055` cairn.
 
 **PHEROMONE -- `%460` STILL OPEN at the emulator, its landed half folded** to the
 [`20260906.051500` shelf](archive/20260906-051500_itinerary-landed-accounts.md), `%451`'s bound half
@@ -375,6 +375,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260906.060321` | The rose that pointed at two empty rooms | [log](../session-logs/date/20260906/20260906-060321_the-rose-that-pointed-at-two-empty-rooms.kyri) |
+| `20260906.062055` | The file five guards read and nothing compiled | [log](../session-logs/date/20260906/20260906-062055_the-file-five-guards-read-and-nothing-compiled.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)
