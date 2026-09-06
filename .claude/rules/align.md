@@ -4,8 +4,8 @@ When Keaton says **"align"** or **"align our direction,"** walk the compass rose
 
 ## What "align" does, in order
 
-1. **Walk the compass rose** (per `foundations/20260826-024943_follow-our-compass.md`): Foundations (`foundations/README.md`) → Grain (`foundations/20260826-024942_the-grain-and-the-crossing.md`) → Two Rooms (`context/TWO_ROOMS.md`) → Active-designing (`active-designing/README.md`) → Now (`construction/TASKS.md`) → Order (`construction/ROADMAP.md`).
-2. **Check the current work against ROADMAP and TASKS** — is it on the plan, ahead of a gate, or superseded by a green witness the plan hasn't caught up to?
+1. **Walk the compass rose** (per `foundations/20260826-024943_follow-our-compass.md`): Foundations (`foundations/README.md`) → Grain (`foundations/20260826-024942_the-grain-and-the-crossing.md`) → Two Rooms (`context/TWO_ROOMS.md`) → Active-designing (`active-designing/README.md`) → Now and Order (`construction/ITINERARY.md` -- *Now, the live front* and *Next, the ranked remainder*; `TASKS.md` and `ROADMAP.md` fused into it `20260823.103804` and are pointer stubs kept for the fixtures that read them).
+2. **Check the current work against the card's *Now* and *Next*** — is it on the plan, ahead of a gate, or superseded by a green witness the plan hasn't caught up to?
 3. **Reconcile, brief and green witnesses winning** — fix the plan to match reality (mark landed laps, update now/next, reposition stale ordering per accrete-never-break; never delete dated records).
 4. **Name the one aligned next step plainly** — honoring the finishing edge (ship one real thing before naming the next; `counsel/date/20260715/20260715-190000_the-design-over-build-ratio-and-finishing.md`).
 

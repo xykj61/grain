@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260906.060321` | [The rose that pointed at two empty rooms](20260906/20260906-060321_the-rose-that-pointed-at-two-empty-rooms.kyri) | a stub resolves, so no link check saw it. |
 | `20260906.052104` | [the tree that assembles its own paths](20260906/20260906-052104_the-tree-that-assembles-its-own-paths.kyri) | %464: 116 paths built, none written. |
 | `20260906.051514` | [the fix that landed twice](20260906/20260906-051514_the-fix-that-landed-twice.kyri) | a peer landed it better; the half that was mine stands. |
 | `20260906.051012` | [the writer recovered from a dead lap](20260906/20260906-051012_the-writer-recovered-from-a-dead-lap.kyri) | %450's typing half closed; a %440-class red repaired. |

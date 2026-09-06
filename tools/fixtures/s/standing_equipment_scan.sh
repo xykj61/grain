@@ -56,7 +56,45 @@ known_hosts="macos linux"
 # asked for exactly this word and declined to guess at it. A capability outside this list is refused
 # the same way an unknown tier is: a guard gated on a capability no runner probes would run nowhere,
 # in silence, which is REDS %219's shape wearing a third field.
-known_capabilities="ipv6"
+# DERIVED FROM THE RUNNER, never restated here (REDS %468). This read `known_capabilities="ipv6"`
+# by hand until 20260906, and on 20260906 a peer taught the runner a second probe, `jail_nesting`,
+# so `agent_jail_enclosure` could name what a nested jail cannot do. The runner honored the word and
+# skipped that guard by name -- `run_verdict=ok skipped_capability=1` -- while this scan, holding the
+# elder one-word list, refused the whole roster as `roster_broken`, and `standing_equipment_witness`
+# went red and stayed red, because the roster's own guard stands on no roster and nothing read it.
+# The runner's own comment beside `capability_state()` names the trap it then fell into: *"Two copies
+# of one list is the drift this tree keeps paying for."* It covered one direction -- a word the
+# runner does not know reads `unknown` and runs -- and this was the other. So the list is read off
+# the runner's own probe arms: the outer `case` labels inside `capability_state()`, four-space
+# indented bare words, which excludes the `*)` default and the nested arms of the ipv6 probe.
+# Resolved BESIDE THIS SCRIPT rather than from the working directory. The control `cd`s into a pen
+# holding a roster and no tools/ at all, so a cwd-relative path reads `runner_missing` there and
+# every one of the control's cases dies at once -- which is what the first draft of this block did,
+# and what the control caught within a minute of it being written. The runner is this scan's own
+# sibling; the pair ships together, so the pair is read together.
+runner_path="${STANDING_RUNNER:-$(CDPATH= cd -- "$(dirname "$0")" && pwd)/standing_equipment_run.sh}"
+if [ ! -f "$runner_path" ]; then
+  echo "verdict=runner_missing"
+  echo "refused: the capability list is read off $runner_path, which is not there" >&2
+  exit 1
+fi
+known_capabilities=$(awk '
+  /^capability_state\(\) \{/ { inside = 1; next }
+  inside && /^\}/             { inside = 0 }
+  inside && /^    [a-z_][a-z0-9_]*\)$/ {
+    word = $0
+    sub(/^    /, "", word); sub(/\)$/, "", word)
+    print word
+  }
+' "$runner_path" | tr '\n' ' ')
+known_capabilities=$(echo "$known_capabilities" | sed 's/[[:space:]]*$//')
+# A derivation that reads nothing accepts everything, which is the silence this whole field exists
+# to prevent. Refuse rather than pass, the way an empty rose refuses rather than reading as a walk.
+if [ -z "$known_capabilities" ]; then
+  echo "verdict=capability_list_empty"
+  echo "refused: no probe arm read out of $runner_path -- the derivation found nothing" >&2
+  exit 1
+fi
 # The gates the runner honors (REDS %374, Keaton's word `20260904`): a row carrying `gate %5` says
 # this guard's red is a reading PARKED at a custody gate the living card names, rather than a broken
 # one, so a full pass carrying only such reds still earns its receipt. `host` is a tier for PLACE,
