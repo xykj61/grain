@@ -42,7 +42,7 @@
 #
 # Usage:  sh tools/fixtures/s/signal_trap_scan.sh
 #
-# Read against: construction/REDS.md row %485
+# Read against: construction/REDS.md row %487
 # Refusals proven by: tools/fixtures/s/signal_trap_control.sh
 set -u
 

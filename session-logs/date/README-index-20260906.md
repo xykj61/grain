@@ -12,11 +12,13 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | Stamp | Log | What it recorded |
 |---|---|---|
 | `20260906.120517` | [a guard by its name](20260906/20260906-120517_the-census-that-knew-a-guard-by-its-name.kyri) | %465: 408 runners absent, not unheard; %486 self-reference. |
+| `20260906.120137` | [count the believers, not the carriers](20260906/20260906-120137_count-the-believers-not-the-carriers.kyri) | %487: a handler that cleans up and carries on. |
 | `20260906.115056` | [the vendor names prepped like friends](20260906/20260906-115056_the-vendor-names-prepped-like-friends.kyri) | Tier 1+2 Class M; 13 bannered, 3 refused. |
 | `20260906.114519` | [the guard that could not hear itself fail](20260906/20260906-114519_the-guard-that-could-not-hear-itself-fail.kyri) | %484: a swallowed exit status. |
 | `20260906.113633` | [the guard one pass behind](20260906/20260906-113633_the-guard-one-pass-behind.kyri) | %480: a run card written at close is read one pass stale. |
 | `20260906.113552` | [a number that belonged to the machine](20260906/20260906-113552_a-number-that-belonged-to-the-machine.kyri) | %485: the port the file named and the kernel owned. |
 | `20260906.111639` | [both falsifiers fired](20260906/20260906-111639_both-falsifiers-fired.kyri) | 132 isolated -> 0; the cut structure is what survived. |
+| `20260906.104241` | [the severity lives in the witness](20260906/20260906-104241_the-severity-lives-in-the-witness.kyri) | Recovered: the fabrication seen at exit 0. |
 | `20260906.104112` | [the box counted and never read](20260906/20260906-104112_the-box-counted-and-never-read.kyri) | %481: the card shipped its own conflict markers. |
 | `20260906.100418` | [the three vendor names surveyed](20260906/20260906-100418_the-three-vendor-names-surveyed.kyri) | Cursor 135, Codex 66, Grok 9; four traps named. |
 | `20260906.100141` | [the harness the census could not see](20260906/20260906-100141_the-harness-the-census-could-not-see.kyri) | %466 closed: 114 built files read as never-built. |
@@ -31,6 +33,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260906.082714` | [the wait that read as a fault](20260906/20260906-082714_the-wait-that-read-as-a-fault.kyri) | %471: six ships stopped 9 min before their window reset. |
 | `20260906.074650` | [the box nobody opened](20260906/20260906-074650_the-box-nobody-opened.kyri) | %464 closed; the self-latch found; 3 own logs read back. |
 | `20260906.070653` | [the copy that was counted against itself](20260906/20260906-070653_the-copy-that-was-counted-against-itself.kyri) | %472: 108 of 113 were the original. |
+| `20260906.070254` | [the handler that does not stop](20260906/20260906-070254_the-handler-that-does-not-stop.kyri) | Recovered: POSIX resumes after a handler. |
 | `20260906.063813` | [blind to half its subject](20260906/20260906-063813_an-instrument-blind-to-half-its-subject.kyri) | %451 BOOKED; 13 guards blind to their controls. |
 | `20260906.063638` | [eight rows and a third of the lane](20260906/20260906-063638_eight-rows-and-a-third-of-the-lane.kyri) | %472: eight guards, four of seven modules compiled. |
 | `20260906.062524` | [the address that does not fit](20260906/20260906-062524_the-address-that-does-not-fit.kyri) | 64 pages free, 65 charged 2.36x; huge pages prove it. |

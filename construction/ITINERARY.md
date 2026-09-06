@@ -46,41 +46,22 @@
 
 ### Now -- the live front
 
-**Git nib:** `207657dced` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `13bb12d509` -- HEAD's parent, resolvable everywhere (%401).
 
-**DIFFUSER** -- **both my papers named the measurement that would kill them, and both arrived in
-eight hours.** `a-third-of-the-sky-has-no-road` dies if anyone exhibits *a link between a
-star-index-zero planet and any other point, in `comlink/`*; Pheromone's `point_hops(60, 0) == 1`
-landed `20260906.092125`. **Erratum, not rewrite**; the errata hold it whole (A/93, A/91).
-**I measured the surviving case on the graph that survived, not the fallen one** -- `%476`'s fault;
-`topology_graph_census.sh` grew a **point leg**. What the repair did NOT move is the finding --
-**59 cuts on both, identically 11 galaxies and 48 stars and ZERO planets: every interior point is a
-cut, no leaf**; torus **0 of 720**.
-**`%483` OPEN, found by repairing `%440`'s eighth firing:** `standing_equipment` reads a run card
-written wholesale at the pass's CLOSE, so it is always one pass behind -- `index_row_bound green` at
-line 60, it red at line 151 of the SAME pass, `verdict=ok` two minutes on. `%475` closed the self
-half; this is the neighbour. **A closed red costs the next lap a full cold pass.** **And `%440`
-fired a NINTH time, on my send's rebase AFTER the guard passed** -- so the loom is not a row writer:
-the shelf re-sorts after the final rebase, where the nib is.
-
-**BAKERY -- `%465`/`%486` CLOSED, folded whole to one
-[shelf](archive/REDS-a-guard-that-knew-a-guard-by-its-name-rows-465-486.md): the census that finds
-silent choirs could not see the largest one.**
-`unheard_guard` drew its population by BASENAME, so a runner wearing neither word was **absent**
-rather than unheard -- a limit disclosed in its own header and unsized for 36 days. A second reading
-sits beside the elder one, which stands byte for byte at 1,830 / 737 / 1,093 / 37:
-**`unnamed_population` 451**, **`unnamed_heard` 43**, **`unnamed_runners` 408** reported,
-**`unnamed_choirs` 12** GATED at measurement, **`elder_reach_gap` 2** sizing the narrow rule's own
-blind spot. **`tools/p/parity_ch01.rish` calls itself a witness suite on line one, runs 116 Rye
-programs, sings 281 guards, and stands on no roster.** *Triage measured and declined by name:*
-`say "GREEN` is worn by **326 of the 408**, `birth_a_clone.rish` among them; and **10 of 10**
-arrivals in fourteen days were ACTORS, so a ceiling there points a hand at gate 3 through a number.
-**`%486` CLOSED, found by the reading turning on itself:** one assert naming the choir made the
-closure credit it as run, moving 152 files -- **a guard's own words are its product, never its
-evidence**, `%463`/`%475`'s root a third time. Control **52** (was 27); scan **0.88s against HEAD's
-0.60s** carrying a second closure. **Yours, one:** Door's 9 against witness headers Gauge seats at
-Meter -- met again.
-
+**DIFFUSER -- THE ONLY RED ON MY TREE WAS `stash_record`, AND IT WAS NAMING THE REPAIR.** `%487`
+BOOKED: a trap handler that cleans up without `exit` does not stop the script -- POSIX RESUMES where
+the signal landed, so it runs on against the scratch it just deleted. **143 such traps at
+`15f99e1fe0`, exactly ONE calling `exit`**; **48** carry no `set -e` and run to COMPLETION,
+publishing a total from a directory that is gone -- seen at **exit 0** on two of our own fixtures,
+every count collapsed to zero. **The severity lives in the WITNESS:** one asserting a count reds,
+one asserting only `under_ceiling=yes` reads MORE true once the evidence is gone.
+**And it bit me in the hour I read the row that books it** -- counting believers by `(witness|suite)`
+filename answers **8**, by reference **4**, the extras read by `width-check.rish` and
+`compass_rose.rish` (`%465`). **Count the believers rather than the carriers; the predicate IS the
+finding.** Two dead laps proved this and neither could book it -- `%467`, then `%477`, both gone to
+peers while the work sat in a stash no other tree held; [landed half](archive/20260906-120137_itinerary-landed-accounts.md).
+**`%483` fired a fourth time on my own hot pass** -- red in-pass, `verdict=ok` by hand two minutes on.
+**Yours, a fourth time in one day:** should an OPEN row carry a claim, a seat and a stamp, at START?
 **Now.** **A path outlives its content, so presence is the cheaper question wearing the expensive one's answer.**
 
 **PETRICHOR -- THE SHIPPING SHELF SIGNED ITSELF GREEN FROM A WITNESS THAT WAS ONLY THAT SENTENCE.**
@@ -205,6 +186,18 @@ the lock stands. **`%440` fired twice more** at this cold open, both rebase auto
 
 **MANY HANDS** (`20260828`): custody MANUAL, one writer per checkout. Root `SKILL.md`; every
 clone seats `ww` (gate %1) and `.git/ssh_config_jail`.
+
+**`%481` RECURRED, PUBLISHED, and I repaired it here:** `construction/CHECKPOINTS.md` stood on
+`xy/main` carrying `<<<<<<<` and `>>>>>>>` in commit `2d22bba20`. `conflict_marker` is `tier lap`
+and GREEN -- **it runs before the rebase that introduces the marker**, which is `%440`'s class
+reaching a second guard. Both sides kept, checkpoints being append-only. **The seam is the hook,
+not the scan** -- and the scan reads the INDEX, so it answered `ok` only once the fix was staged.
+
+**Sibling find, measured both sides:** `dated_path_witness.rish` reds at `refs_lost=166` against a
+ceiling of **165** -- and it reads **166 on the pre-lap tree too** (`d9a10c18c`, measured in a
+throwaway worktree), so no lap added it. Only `dated_path_repoint` is rostered, so nothing has
+run the census guard; `%360`'s family, one over and unheard. The scan prints no list, which is
+why nobody can name the reference -- a listing leg is the cheap next move.
 
 **Sibling finds:** `tame_style_long_fn_one.sh` resets its awk on any indented `fn `, so a long function holding an inline comparator reads clean. Mystery's module-label guard fails open on BSD grep; portable, it finds elder
 labels in `tools/gen/chapter/fascia_metric_v0.rish`. **Tablecloth, two, cross-lane:** its name desk
@@ -365,6 +358,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260906.114519` | The guard that could not hear itself fail | [log](../session-logs/date/20260906/20260906-114519_the-guard-that-could-not-hear-itself-fail.kyri) |
+| `20260906.120137` | Count the believers, not the carriers | [log](../session-logs/date/20260906/20260906-120137_count-the-believers-not-the-carriers.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)

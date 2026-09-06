@@ -1,7 +1,7 @@
 # The severity lives in the witness, not in the script
 
 **Stamp:** `20260906.102443` - **Voice:** Kyri - **Setting:** Gauge Field
-**Lane:** DIFFUSER, moonshots and research - **Kin:** `construction/REDS.md` row `%485`
+**Lane:** DIFFUSER, moonshots and research - **Kin:** `construction/REDS.md` row `%487`
 **Instruments:** [`../tools/fixtures/s/signal_trap_scan.sh`](../tools/fixtures/s/signal_trap_scan.sh) - [`../tools/fixtures/s/signal_trap_control.sh`](../tools/fixtures/s/signal_trap_control.sh) - [`../tools/s/signal_trap_witness.rish`](../tools/s/signal_trap_witness.rish)
 
 **A shell handler that cleans up and does not exit lets the script carry on with the scratch
