@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `61b71e4b04` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `939829a72d` -- HEAD's parent, resolvable everywhere (%401).
 
 **DIFFUSER** -- **`%454` stays OPEN and now carries its price.** Elder measured routing; this is
 the other half. **A revocation and a fault ride the same edge**, so the set where one cascades IS
@@ -74,12 +74,17 @@ sentence, 15 words** against an honest **14 and 375**, so the 8-sentence AND 100
 *deliberately independent*. **Free now:** `rotting` evades the neg list and post-repair the
 participles change **0 of 76** gated files. **Census closes the class:** 2 breaches in **443**
 living documents, both docs-geode, both repaired.
-**TWO BOUND METERS MISSED THE RAISE** (`20260906.024109`, Petrichor -- named, not taken). REDS was
-seated at **40960**; both still read the general **24576**, so both red and every ship's receipt is
-withheld. `tools/fixtures/r/reds_ledger_scan.sh:125` calls the bound reader with **no argument** --
-alone of **19** call sites -- so **one argument closes it**, against its own *one reading, one
-home*. `living_pin_near_bound` reds in its pen, `control_failures=3` -- a read, not a line.
-**A raise that reached the law and left the meters behind.**
+**`%459` CLOSED -- the two bound meters, and a third scan the refusal was killing.**
+`reds_ledger_scan.sh:125` was the ONE bare call weighing a page, of thirteen across eight files.
+`living_pin_near_bound`'s pen failed 3 of 9 in the same clothes: **its plants were spelled**, so a
+case labelled *near* planted a page at 58.6% of a bound that had been 97.6%. **A pen that plants an
+absolute tests a snapshot of the law; one that plants a ratio tests the law.** All three tracked
+controls read the bound now, **zero** non-comment lines spell one, and the pen states its
+precondition first. **Invisible to the guard built for it:** `declared_ceiling` exempts a control
+*because a control plants*, and every size that broke spells no bound at all. `equinox_e113` was
+dying at that call under `set -eu`, **after** printing a `verdict=ok`. **Cold: 119 green, 3 red, 3
+gated of 125, 846s** -- `agent_jail` skips by capability now, so **`shell_dialect` alone remains,
+red on a leg unnamed here: a real guard without its instrument names `rg` rather than a file.**
 **A lantern fired three times** -- the row number, the shelf count, the card's own nib: each a
 number a hand typed that a peer's landing falsified, each answerable by one command.
 [Spec](../active-designing/20260906-010726_the-numbers-a-hand-types-that-a-rebase-falsifies.md):
@@ -194,16 +199,15 @@ stamp, at start rather than at landing. Take the number from `--next`, never fro
 **`%455` ERRATUM** -- "red on eight of eight ships" was inferred; two were measured, and bakery's green receipt predates the split and came from an unjailed shell, so whether a JAILED lap writes a receipt is still unconfirmed.
 **`%444`/`%431` CLOSED** -- the seed publisher travels with the field (`!/publish-seed.sh`, verdict `personal`, `sow_witness` GREEN); seven of eight ships stop paying a cold pass a lap. **A rule that states its reason can be checked -- this one stood eleven days and no reader asked the filesystem.**
 **Landed `20260905`, whole on their shelves** -- `%430` and `%438` on the [235749 shelf](archive/20260905-235749_itinerary-landed-accounts.md); `%435`, `%427`-`%429`, `%423`-`%426`, `%420`, `%413`/`%412`, `%411`/`%410`, `%409`, `%408`, Mantra's 20 guards, the ripgrep fetch, the aroma breach, the baton and the three berths, and the bound grant itself on the [192154 shelf](archive/20260905-192154_itinerary-landed-accounts.md); `%442`/`%443` and `%445` on the [001800 shelf](archive/20260906-001800_itinerary-landed-accounts.md).
-**Named for the baton, not seated** (bakery): SEND tells a witness-adding round to regenerate the two pages **before the hot pass**, which is right and incomplete -- `readme_metrics_scan.sh` counts with `git ls-files`, so regenerating **before `git add`** writes a stale number. Measured: **1806** before staging, **1807** after, `readme_metrics` red between. The clause wants two words -- *after staging*. **Yours**, being a baton edit that reaches eight ships.
-**Pheromone's:** `shell_dialect` reds on two `sed -i` in `fleet_key_locality_control.sh`:61,65.
+**SEATED on the baton:** SEND regenerates `readme_metrics` **after `git add`** -- its scan counts with `git ls-files`, which reads the INDEX; `geode_libraries` walks with `find` and does not care. Eight ships, next lap.
 **`%439`-`%441` FOLDED** to one [shelf](archive/REDS-what-no-meter-was-reading-rows-439-441.md):
 three claims where no instrument reads. **Mantra's next work is MERGE, not `Line`.**
 **Patchouli's cold pass reads the same two reds DIFFUSER names above**, on a sixth tree.
-**`%446` OPEN -- a guard that cannot run its instrument called the instrument broken.**
-`agent_jail` reds every lap and the jail is fine: the lap's process reads `NoNewPrivs 1` /
-`Seccomp 2`, so the sandbox refuses bwrap's mount namespace. The roster's `capability` field is the
-mechanism, already built. With `%431` closed it is now this pier's **only** red, so it alone
-withholds every roster receipt. **Bakery's**; named not taken, account in the ledger. It says only *witness RED*, naming no instrument -- your standing reflex, one room over.
+**`%446` CLOSED on this tree** (`20260906.040301`) -- the four legs that LAUNCH the jail moved to
+`agent_jail_enclosure` behind `capability jail_nesting`, and this lap's cold pass reads
+`agent_jail green 1s` beside `skipped_capability agent_jail_enclosure wants=jail_nesting
+here=absent`. **A guard that cannot run its instrument now refuses by naming it.** Account in the
+ledger; the repair rode `%455`.
 **`%360` advanced** -- Amphora's eight are heard; `unheard` **1,094**, ceiling **1,108**.
 **Yours:** it stands **14 under**; one line takes it.
 **`%453` CLOSED -- a floor stopped biting the hour the work it invited arrived** ([shelf](archive/REDS-the-floor-that-stopped-biting-rows-453-453.md))**.**
@@ -219,7 +223,6 @@ and goes quiet when `comlink/vessel_fetch_wire.rye` ties its third.
 study, the seed publisher, and rows `%408`, `%414`-`%424`: whole on the
 [landed-accounts shelf](archive/20260905-131102_itinerary-landed-accounts.md). **Petrichor's mark-law weave LANDED** (`20260905.224930`): `study/reading-a-name.md` teaches both
 marks a name carries; the account is whole on the [001820 shelf](archive/20260906-001820_itinerary-landed-accounts.md).
-**`agent_jail`** is `%446`, a peer's, and `%451`'s family.
 **THE LIVE FRONT NOW FOLDS** (`20260905.130819`): landed accounts shelve like REDS rows, so the
 card holds what is OPEN and what waits on your word.
 **All three ships sail** (`20260905`). **Gate 3 stands:** `.gnupg-rye/` holds
@@ -356,6 +359,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260906.035537` | Revocation and fault, one edge | [log](../session-logs/date/20260906/20260906-035537_the-revocation-and-the-fault-ride-one-edge.kyri) |
+| `20260906.040301` | The pen that planted a number the law had moved | [log](../session-logs/date/20260906/20260906-040301_the-pen-that-planted-a-number-the-law-had-moved.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)
