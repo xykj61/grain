@@ -21,6 +21,7 @@ Named bound (TAME-style):
 living_pin_max_bytes = 24576  // ~6k tokens: a pin an agent reads in one breath beside its lap
 living_pin_max_bytes[session-logs/README.md] = 57344  // an index is read from the top, not whole
 living_pin_max_bytes[construction/ITINERARY.md] = 40960  // the live front holds one open state per ship, and the fleet is eight
+living_pin_max_bytes[construction/REDS.md] = 40960  // the pin holds only OPEN rows, and a red is booked per ship
 ```
 
 ## The one exception, and why it is one (accretion `20260824.190000`, Keaton's word)
@@ -67,6 +68,44 @@ two leaves room for two more without a rewrite; **8,192 for the live front**, th
 allowance the index earned; and **16,384 for the durable spine**, which measures 12,406 and is the
 only part with genuine slack. `8,192 + 8,192 + 16,384 = 32,768`, a power of two and about **8k
 tokens** against the general bound's ~6k -- still a page an agent reads in one breath.
+
+### `construction/REDS.md` carries 40,960 too, raised `20260906.022428` on Keaton's word
+
+**A ledger pin is not a page that grows; it is a page whose CLOSED rows leave.** Every closed row
+folds to a shelf, so what stands on the pin is the open set -- and an open set is a per-ship
+quantity for the same reason the operator card's live front is: each ship books its own reds and
+each red stays until a hand or a witness closes it.
+
+Measured on the pin the night of the raise, at 24,569 of 24,576:
+
+| Part | Bytes | What forces its size |
+|---|---|---|
+| **Header and census** | 3,531 | fixed: the bound, the census line, the fold recital pointer |
+| **Six OPEN rows** | 21,038 | one per open red; mean **3,506**, largest `%360` at 8,213 |
+
+**Why a raise rather than another fold.** There was nothing left to fold. Every CLOSED row had
+already gone to a shelf, and `tools/fixtures/r/reds_fold.sh` refuses an open row by name --
+`verdict=row_open` -- which is correct and is the whole reason the pin is trustworthy. The night's
+last commit came under bound only by shaving a single row across **eight** passes, which is the
+same treadmill the operator card was on one file over, and a page kept under bound by attrition is
+a page whose rows get shorter than the truth.
+
+**The number, derived from what the pin holds.** Eight ships at **one open red each** is the shape
+the fleet takes when every seat has something booked, and the mean open row measures 3,506 -- so
+**8 x 4,096 = 32,768** for the open set, where 4,096 leaves a row room to state three fields
+honestly without a hand trimming it. Plus **8,192** for the header and census, which measures 3,531
+and needs slack only for the census line's own growth. `32,768 + 8,192 = **40,960**` -- the same
+ceiling the operator card carries, for a different reason arrived at separately, which is a
+coincidence worth naming rather than a shared constant.
+
+**The cost, and it is smaller than the card's.** REDS is read by a lap that is *looking for a red*
+rather than whole every lap, so this does not add ~2k tokens to every ship's every lap the way the
+card's raise did. What it buys is a row that may state its three fields at length.
+
+**The limit, named as the card's was.** The open set scales with the fleet AND with how long a red
+stays open, and the second is the one that actually moved tonight: `%360` alone is 8,213 bytes and
+has been open since `20260830`. A pin sized for open rows is a pin sized for how fast reds close,
+so the durable answer is closing them rather than raising this again.
 
 ### Raised to 40,960 on Keaton's word, `20260906.001901` -- and only one of the three parts moved
 

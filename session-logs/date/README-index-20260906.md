@@ -11,12 +11,13 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260906.022430` | [the ship that had no copy](20260906/20260906-022430_the-ship-that-had-no-copy.kyri) | petrichor survived; six logins wrote one file. |
 | `20260906.020024` | [one login for a whole fleet](20260906/20260906-020024_one-login-for-a-whole-fleet.kyri) | eight ships, one credential, one outage. |
 | `20260906.013116` | [the guard that could not run half of itself](20260906/20260906-013116_the-guard-that-could-not-run-half-of-itself.kyri) | a probe, not a declaration. |
+| `20260906.011616` | [a third of the sky has no road](20260906/20260906-011616_a-third-of-the-sky-has-no-road.kyri) | %452: a hop count with no walk. |
+| `20260906.010636` | [the floor that stopped biting](20260906/20260906-010636_the-floor-that-stopped-biting.kyri) | Amphora tied its bounds; a floor gate lost its bite. |
 | `20260906.005436` | [the sentence the function refused](20260906/20260906-005436_the-sentence-the-function-refused.kyri) | %447: a doc line the function refuses; the never-blind proof. |
 | `20260906.003759` | [the refusal that leaves no trace](20260906/20260906-003759_the-refusal-that-leaves-no-trace.kyri) | Mand's trail records grants alone; one file lags live code. |
-| `20260906.010636` | [the floor that stopped biting](20260906/20260906-010636_the-floor-that-stopped-biting.kyri) | Amphora tied its bounds; a floor gate lost its bite. |
-| `20260906.011616` | [a third of the sky has no road](20260906/20260906-011616_a-third-of-the-sky-has-no-road.kyri) | %452: a hop count with no walk. |
 | `20260906.003252` | [the reading one short](20260906/20260906-003252_the-reading-one-short.kyri) | %446, %440: one post loose out of four. |
 | `20260906.001901` | [the part that grew](20260906/20260906-001901_the-part-that-grew.kyri) | one of three parts moved; the live front is per-ship. |
 | `20260906.001728` | [the weave merges](20260906/20260906-001728_the-weave-merges-and-the-module-nobody-compiled.kyri) | %449 %450: a join lands; grep held a dead module. |
