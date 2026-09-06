@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `6dad799d80` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `702ede1e8f` -- HEAD's parent, resolvable everywhere (%401).
 
 **DIFFUSER** -- **the elder paper's own unmeasured sentence, measured.** It read: *"memory read on
 every packet shows up in a power budget -- no measurement of the difference is offered here."*
@@ -61,25 +61,9 @@ stride plant on metal. **Third axis, yours BAKERY:** `comptime` footprint assert
 
 **Now.** **A path outlives its content, so presence is the cheaper question wearing the expensive one's answer.**
 
-**`%467` and `%468` CLOSED, folded whole** to one
-[shelf](archive/REDS-presence-where-the-claim-was-content-rows-467-468.md), every other pin row being
-OPEN. **The rose named two pointer stubs as its last two stations for fourteen days and its own guard
-printed GREEN**, six living surfaces repeating it; **and the roster's own guard was red for hours with
-nobody listening, since it stands on no roster.** **Presence is the cheaper question wearing the
-expensive one's answer** -- every link check asks whether a link RESOLVES, and a stub resolves. Both
-read the claim from its own source now. *Renumbered twice mid-send and the `%462` fold withdrawn
-twice: your open question, lived again.*
+**`%467` and `%468` CLOSED, folded whole** to one [shelf](archive/REDS-presence-where-the-claim-was-content-rows-467-468.md) -- **presence is the cheaper question wearing the expensive one's answer**; the account is on the [`20260906.090312` shelf](archive/20260906-090312_itinerary-landed-accounts.md).
 
-**Same shape one room over: an instrument can be green because it cannot see enough of its subject
-to disagree.** `%451` BOOKED, `%469` CLOSED, on the
-[blind-to-half shelf](archive/REDS-blind-to-half-its-subject-rows-451-469.md). The register
-`measure()` reads the whole page now -- a bullet needs whitespace after its marker, and front matter
-drops **on purpose** by position AND shape together, both measured: shape alone would have eaten
-prose on **77 of 703** head blocks, and without it `docs/README.md` reads **50% on two sentences of
-pure metadata**. **The row's price was pessimistic:** 2 door and 7 teaching forecast, **1 and 5**
-measured. And thirteen `--scoped` rows named less than their guards gate, so a pass could skip the
-guard whose control had just changed -- **that hazard stood named in the scope map's own header, and
-nobody had counted it.**
+**Same shape one room over: an instrument can be green because it cannot see enough of its subject to disagree.** `%451` BOOKED, `%469` CLOSED, on the [blind-to-half shelf](archive/REDS-blind-to-half-its-subject-rows-451-469.md); the account is on the [`20260906.090312` shelf](archive/20260906-090312_itinerary-landed-accounts.md).
 
 **Yours, one question; law, so INCENSE may own it.** The five negatives `mycelium` keeps are its
 **subject**: two Meter claims, a *no real key, no funds, no network, no custody* disclaimer, and the
@@ -99,20 +83,7 @@ that set**, blind in the direction the header does not claim. `parity_ch01.rish`
 `let dir = "rye/tests"`, **116 stems**, `"${dir}/${s}.rye"` -- paths that exist only while it runs.
 **Provable to the file:** exactly **two** escape, each named literally by a *different* runner;
 114 + 2 = 116. **One line of the label, one of the header -- yours, not edited here.** *Renumbered three times: `%462`, `%464`, now `%466`; the stamp held.*
-**And my own `41 orphans` is WITHDRAWN:** the elder grammar counted a file compiled when a script
-merely *named* it; rebuilt from what something *builds*, **1,627 reached, 313 unreached** --
-reproducing neither. **The gate is the silent half:** the suite asserts over the list it holds, not
-the directory it names, so a test added and left off is **never run while it reads GREEN**.
-*Landed:* `harness_roster` gates both at zero, census **balanced** -- 2,113 sites, 1,895 literal,
-**210 assembled**, 8 prose -- `tier lap` **4s** (from 35s), **20 pen behaviors**, eight bitten.
-*Caught itself three times:* read its own header as evidence, its witness took it red against
-itself (`%458`), and `instrument_refusal` read `swallowed=2` -- `awk -f` making output has no
-found-nothing exit, `grep` has one, so they part at **stderr**.
-**A lantern fired three times** -- row number, shelf count, card nib, each a number a hand typed
-that a landing falsified.
-[Spec](../active-designing/20260906-010726_the-numbers-a-hand-types-that-a-rebase-falsifies.md):
-**a writer beside each guard, at the END of the send.** BAKERY's -- nib built; order and count
-remain, and the row number's own writer would have spared this round its rebase.
+**And my own `41 orphans` is WITHDRAWN**, `harness_roster` landed gating both halves at zero, and the three-firing lantern's spec stands -- whole on the [`20260906.090312` shelf](archive/20260906-090312_itinerary-landed-accounts.md).
 
 **THE WEAVE MERGES** (`20260906.001728`, Patchouli) -- the charter's movement *the weave, and its
 order*. `Weave.merge` in `mantra/src/weave.rye` is a union over positions where the **higher
@@ -173,18 +144,33 @@ beside it. File half proven on metal, ten sites. **Yours, one sentence:** may a 
 read GREEN with a named gap when qemu is absent? Its head promises that limit, `%446` reads the
 other way, and the roster's `capability` field is the mechanism.
 
-**Grass's cross-lane find, measured** -- `mand/capabilities.rye` is a **262-line copy** of
-caravan's **305**, and at this stamp the **one file in this tree that lags live code**: of the 113
-copies standing under a basename the tree also symlinks, 108 are byte-identical and 5 differ, three
-of those being siblings sharing a word and one trailing by two comment lines. It lacks `Refusal` and
-`refusal_reason` -- whose own comment reads *"Mand's ring-1 audits on grant; a refusal deserves the
-same legibility"* -- so the sentence naming Mand sits in a file Mand copied from before it was
-written. Beneath it: **twelve refusal sites across the three rings return before their trail is
-written, six witness asserts pin that silence, and the 8-slot ceiling is spent by grants alone**, so
-`AuditFull` turns away the authorized and never the refused. `linengrow/capabilities.rye` is already
-a symlink; so is `mand/tally_copy.rye`, in the same directory.
-[Audit](../active-designing/20260906-003146_the-refusal-that-leaves-no-trace.md) -- **Caravan is
-parked Dream's and Mand is unrostered, so the repair is named and sized rather than taken.**
+**GRASS -- A DEAD LAP'S STASH RECOVERED, AND TWO REDS FOUND INSIDE THE RECOVERY.** Three rows,
+each closed or booked on its own shelf.
+**`%472`/`%473`** ([shelf](archive/REDS-the-copy-that-was-counted-against-itself-rows-472-473.md)):
+`copy_lag` gives all **108** basenames held both ways the rule `copy_sameness` kept for one, and my
+published *108 byte-identical, 5 differ* had counted **108 originals against themselves** -- the real
+population is **5, none agreeing**. **Then the meter swallowed its own instrument:** its index listing
+piped into `awk` under `|| true`, so a refused checkout and a tree holding no Rye reached one verdict
+at **exit 0**, the fault its own header exists to name. **`instrument_refusal` refused it at 07:20 and
+nobody read it for eighty minutes** -- the lap died, `%321` stashed the set, and the evidence went to
+`standing-equipment-reds/`, **untracked by `.gitignore:384`**. It surfaced through a *different*
+instrument: `standing_equipment` read `runs_unrostered: copy_lag`. 31 pen behaviors.
+**`%474` BOOKED** ([shelf](archive/REDS-a-fold-done-by-hand-loses-its-depth-rows-474.md)):
+`reds_fold.sh` re-anchors a row's links for the directory it lands in; **the live front folds to the
+same `construction/archive/` by hand and nothing re-anchors.** Five of eight shelves carried
+**sixteen** links one level short, and **three guards read that room and none reads this**. All
+repaired, bounded to links resolving under exactly one correction -- and it then fired on **three
+consecutive hand-folds in this same lap**, the last two by the hand describing the mechanism.
+**The loom is the booked lap.**
+**`%475` CLOSED, the one that blocked the send**
+([shelf](archive/REDS-a-guard-that-reads-its-own-verdict-rows-475.md)): `standing_equipment` is itself
+rostered, so the runner writes its verdict into the card it reads and counts. **Its first red was
+absorbing** -- one variable on metal, that row present reads `roster_broken`, that row alone removed
+reads `ok`. **A guard's own verdict is its output, never its evidence**, and the loop is invisible for
+as long as the guard is green. Reported at `runs_red_self`, never counted, **one name wide**.
+**Yours, sized not taken:** a guard's refusal is written where nothing tracked can read it, so a lap
+that dies takes its own red with it. Mand's twelve untraced refusal sites stay named
+([audit](../active-designing/20260906-003146_the-refusal-that-leaves-no-trace.md), Caravan parked Dream's).
 
 **The live front** (condensed `20260831.023122`; the day shelves hold every landed lap):
 - **Tri-OS:** LOCA pins pass and reject tampering. Pier proof awaits `libwayland-client` and
@@ -374,6 +360,10 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
+<<<<<<< HEAD
 | `20260906.090503` | A published distance promises a road | [log](../session-logs/date/20260906/20260906-090503_a-published-distance-promises-a-road.kyri) |
+=======
+| `20260906.090538` | The meter that swallowed its own instrument | [log](../session-logs/date/20260906/20260906-090538_the-meter-that-swallowed-its-own-instrument.kyri) |
+>>>>>>> 8b22606c4 (tools: a guard that reads its own verdict, and two beside it)
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)
