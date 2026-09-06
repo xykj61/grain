@@ -1,0 +1,100 @@
+# tools/cr/crushed_index_witness.rish -- a crushed index tells the truth about the room it names.
+#
+# WHY THIS RUNG. A crushed index is the page a reader trusts INSTEAD of walking the room. That is
+# what an index is for, and it is also what makes a wrong one expensive: nobody checks a page whose
+# whole job is to spare them the checking. The tree already rendered one index off disk and compared
+# it byte for byte (tools/g/geode_libraries_witness.rish), and that one -- 38 rooms -- reads true.
+# Every other index on the shipping shelf was typed, and on `20260906` three were wrong at once:
+#
+#   docs-geode/README.md said "ten rooms filled" while its own table, six inches below, listed
+#   TWELVE. The number was wrong the minute it was typed -- the commit that wrote it, subject
+#   "fill the ten crush-empty rooms", added the twelfth room in the same commit -- and it stood for
+#   sixteen days on the front door of the shelf a newcomer opens first.
+#
+#   docs-geode/press/README.md said "Three announcements stand", and argued the point at length in
+#   a section named "The scope, stated plainly", over a room holding four.
+#
+#   docs-geode/wiki/README.md promised "every shipped page" and had no row for
+#   docs-geode/tutorials/SHOPPING.md, which its own "what is missing" section left unnamed too.
+#
+# Not one was reachable by a link check, and that is the whole shape: every link on all three pages
+# RESOLVES. A page can be perfectly connected and still miscount the room it stands in front of --
+# presence is the cheaper question wearing the expensive one's answer (REDS %467), met here in a
+# second disguise.
+#
+# WHAT IS PROVEN, on metal.
+#   Every member of a declared room has a row on that room's index. A page opts in by naming its
+#   room in its own header: `**Kind:** crushed index of` and then a link to the room. So a shelf
+#   that grows a new index arrives guarded the day it declares itself, and no list here has to be
+#   remembered.
+#   Every declared room is on disk, and every link on a declared index opens on something.
+#   A table row's Stamp cell agrees with the stamp in the file it links. Measured across all 526
+#   living non-testimony Markdown pages: exactly ONE disagreed, and it was on this shelf. A molt
+#   had moved press/'s Siya announcement and the repoint followed the LINK; the Stamp cell stayed
+#   at the fossil, a month behind. A repoint sweep follows links, and a stamp in a table is not a
+#   link -- which is why no standing meter could see it.
+#   A page signing `witness:<name> GREEN` names an instrument that exists. Seven living pages sign
+#   themselves; six are backed by a fixture that reads their claims and aborts on the first that
+#   fails. The seventh was the shipping shelf's own front door, signing GREEN from a witness that
+#   existed exactly once in this tree -- inside that sentence.
+#
+# WHAT IS NOT PROVEN, said plainly. Whether a row says anything TRUE about the member it names:
+# this proves every member has a row and every row opens, not that the sentence beside it is
+# honest. And `backed` means an instrument by that name exists and either stands on the standing
+# roster or is named by a tracked file under tools/. It does not prove that instrument reads the
+# claims the signature covers. The weaker claim is the one this code can carry, so it is the one
+# the head makes (REDS %446).
+#
+# WHY THIS GUARD STAYS OFF THE SCOPE MAP. Two of its five readings are whole-tree censuses: the
+# stamp reading and the signature reading walk every living non-testimony Markdown page in the
+# repository, so no watch-word list could name what they cover. `standing_equipment_scope_map.sh`
+# holds that absence RUNS -- an unmapped guard runs on every pass -- and reserves the map for static
+# guards. A row naming less than a guard gates is the one direction that skips real work, and
+# thirteen rows stood in exactly that state on 20260906 (REDS %451). So this one is unmapped on
+# purpose, and pays a few seconds a lap for it.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/cr/crushed_index_witness.rish
+
+say "crushed-index: Language EN -- an index is trusted instead of checked, which is exactly why the room behind it must be read."
+say "crushed-index: Style Radiant -- four claims. Every member has a row, every row opens, every stamp agrees with the file it points at, and every GREEN signature names something that exists."
+say "crushed-index: Lens TAME -- safety first: three indexes on one shelf miscounted their own rooms while every link on all three resolved, so a link check could never have found any of them."
+
+# The counting rule is proven on real git repositories before any page is trusted to it. A rule
+# proven only where it passes cannot be told from a rule that answers zero to everything, which is
+# precisely the fault these readings exist to catch.
+let control = run ["sh" "tools/fixtures/c/crushed_index_control.sh"]
+assert control.ok else "crushed-index: the control must complete"
+say control.out
+assert control.out contains "control_verdict=ok" else "crushed-index: the control must reach its own verdict"
+assert control.out contains "a pen with nothing planted reads ok" else "crushed-index: the pen must be proven innocent, or every refusal below is scaffolding"
+assert control.out contains "a member with no row is counted -- read 1" else "crushed-index: a member with no row must be counted"
+assert control.out contains "adding its row clears the count -- read 0" else "crushed-index: adding the row must clear it, or the count is not reading rows"
+assert control.out contains "a declared room absent from disk is counted -- read 1" else "crushed-index: a declaration naming a room that is not there must be counted"
+assert control.out contains "creating the room clears it -- read 0" else "crushed-index: creating the room must clear it"
+assert control.out contains "a row naming an absent file is counted -- read 1" else "crushed-index: a row whose door does not open must be counted"
+assert control.out contains "creating the file clears it -- read 0" else "crushed-index: creating the file must clear it"
+assert control.out contains "a stamp cell disagreeing with its link is counted -- read 1" else "crushed-index: a stamp cell disagreeing with its own link must be counted"
+assert control.out contains "making them agree clears it -- read 0" else "crushed-index: making the two agree must clear it"
+assert control.out contains "the same disagreement inside dated testimony counts zero" else "crushed-index: dated testimony keeps every word it wrote, and a guard may not demand otherwise"
+assert control.out contains "a signature naming no instrument is counted -- read 1" else "crushed-index: a GREEN signature naming nothing must be counted"
+assert control.out contains "a standing-roster row backs it -- read 0" else "crushed-index: a roster row must back a signature -- the stronger door, since a rostered guard runs"
+assert control.out contains "a tracked tools file naming it backs it too -- read 0" else "crushed-index: a tracked instrument naming it must back a signature too"
+assert control.out contains "a page declaring nothing is not read as an index" else "crushed-index: the guard must reach only pages that opted in"
+assert control.out contains "a bare mention in prose is not a row -- read 1" else "crushed-index: a mention in prose must not be credited as a row -- that is the fault itself, wearing a friendlier face"
+assert control.out contains "a link carrying a fragment still names its file -- read 0" else "crushed-index: a fragment names a place inside a page, not a different page"
+assert control.out contains "an empty corpus refuses rather than reading clean" else "crushed-index: an empty corpus must refuse, since every gate would answer zero at once"
+assert control.out contains "control_fail=0" else "crushed-index: every planted reading must hold"
+
+# The tree itself, after the pen.
+let scan = run ["sh" "tools/fixtures/c/crushed_index_scan.sh"]
+say scan.out
+assert scan.ok else "crushed-index: a crushed index disagrees with the room it names -- read the scan's own lines"
+assert scan.out contains "index_unlisted=0" else "crushed-index: every member of a declared room must have a row"
+assert scan.out contains "index_rooms_missing=0" else "crushed-index: every declared room must be on disk"
+assert scan.out contains "index_doors_missing=0" else "crushed-index: every row on a declared index must open on something"
+assert scan.out contains "row_stamp_disagrees=0" else "crushed-index: a row's stamp must agree with the file it links -- the link resolves either way, so nothing else reads this"
+assert scan.out contains "signature_unbacked=0" else "crushed-index: a GREEN signature must name an instrument that exists"
+assert scan.out contains "verdict=ok" else "crushed-index: the scan must reach its own verdict"
+
+say "GREEN: crushed-index -- every declared index matches its room, every door opens, every stamp agrees with what it points at, and every GREEN signature names something real."

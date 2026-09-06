@@ -15,7 +15,16 @@
 #     tier no runner honors would run on no lap at all, silently, which is REDS %219 wearing a
 #     field name. Absent means `lap`, so the roster's own history needs no editing.
 #   Every `ran` line in the run card names a guard the roster actually seats.
-#   No run-card line records a red or an absent guard.
+#   No run-card line records a red or an absent guard -- EXCEPT this guard's own row, which is
+#     REPORTED at `runs_red_self` and never counted. The reasoning is written at the count itself;
+#     it is named here so this list and the code beneath it say the same thing.
+#   A PEER'S ROW IS ONE PASS BEHIND, and that is a reading rather than a fault. The runner writes
+#     the card at the close of a pass, so a guard running mid-pass reads the PREVIOUS pass's
+#     verdicts for every peer that has yet to re-run -- including reds this same pass has already
+#     repaired. One clean pass after a red is therefore expected to refuse here, and the pass after
+#     that goes green with nothing changed. Left alone on purpose: a peer's last recorded red is
+#     true information, and the only way to stop reading it would be to stop reading peers at all.
+#     The self row is the case that had to move, because it never cleared.
 #
 # WHAT THE PASS COST, reported rather than gated. `runs_seconds_total` sums the run card's sixth
 # field, `runs_seconds_absent` counts the rows written before that field existed, and
