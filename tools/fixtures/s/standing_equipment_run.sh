@@ -435,6 +435,17 @@ capability_state() {
         *)       echo absent ;;
       esac
       ;;
+    jail_nesting)
+      # Can a jail be launched from where this pass is standing? `bwrap` refuses to nest, so a ship
+      # that is itself jailed cannot run the enclosure legs of `agent_jail` -- not because the
+      # launcher is broken but because the kernel says no to the second wrapper. ATTEMPTED rather
+      # than inferred: no flag, no /proc reading, no "am I in a container" heuristic, just the
+      # cheapest real bwrap this tree can spell, whose failure is the same failure the guard's own
+      # legs would hit. A probe that performs the act cannot be wrong about the bench it stands on,
+      # which is the difference between this and the `host` field REDS %422 declined.
+      command -v bwrap >/dev/null 2>&1 || { echo unknown; return 0; }
+      if bwrap --ro-bind / / --dev /dev /bin/true >/dev/null 2>&1; then echo present; else echo absent; fi
+      ;;
     *) echo unknown ;;
   esac
 }

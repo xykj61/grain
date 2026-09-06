@@ -13,7 +13,31 @@
 # not carry, and cursor-agent is an agent this fleet no longer runs by default; a guard that reds
 # on a machine that simply lacks an optional thing is a guard someone turns off, so each is
 # skipped by name and the skip is announced.
+#
+# TWO PARTS, BECAUSE HALF THESE LEGS NEED A JAIL AND HALF DO NOT. Everything above the enclosure
+# marker reads plans, paths and seeded files, and runs anywhere. Everything below LAUNCHES the jail,
+# and `bwrap` refuses to nest -- so on every ship that is itself jailed those legs answer
+# `Failed to make / slave: Operation not permitted`, which is an environment fact rather than a
+# fault in the launcher. Read as a failure it turned this guard red on eight of eight ships, and a
+# red guard withholds the roster receipt, which makes `--scoped` refuse, which costs every ship a
+# full cold pass every lap for a leg that could never have run there.
+#
+#   AGENT_JAIL_PART=base       the legs that run anywhere -- rostered as `agent_jail`
+#   AGENT_JAIL_PART=enclosure  those, then the legs that launch the jail -- rostered as
+#                              `agent_jail_enclosure` behind `capability jail_nesting`
+#   AGENT_JAIL_PART=all        the default, and what a hand at a host prompt gets
+#
+# The capability is PROBED rather than declared, which is the whole reason this is not the `host`
+# field REDS %422 refused: a declaration can say a tree cannot do what it can, while a probe that
+# attempts a trivial `bwrap` and reads the refusal cannot be wrong about the bench it is standing
+# on. Absence is positively read; unknown runs.
 set -euo pipefail
+
+AGENT_JAIL_PART="${AGENT_JAIL_PART:-all}"
+case "$AGENT_JAIL_PART" in
+  base|enclosure|all) ;;
+  *) echo "agent_jail_witness: unknown AGENT_JAIL_PART '$AGENT_JAIL_PART' -- base, enclosure, or all" >&2; exit 2 ;;
+esac
 
 REPO_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 cd "$REPO_ROOT"
@@ -62,6 +86,12 @@ test -d "$LOOPS/claude"
 test -d "$LOOPS/cursor"
 test -d "$REPO_ROOT/.gh"
 echo "PASS: state dirs present"
+
+# ---- the enclosure legs begin here: everything below LAUNCHES the jail ----
+if [ "$AGENT_JAIL_PART" = base ]; then
+  echo "PASS: base legs -- the enclosure legs are rostered separately as agent_jail_enclosure"
+  exit 0
+fi
 
 echo "== permit: write inside repo =="
 INSIDE="$REPO_ROOT/.agent-jail-witness-inside"

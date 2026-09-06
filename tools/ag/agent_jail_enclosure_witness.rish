@@ -1,0 +1,20 @@
+# agent_jail_enclosure_witness.rish -- the agent-jail legs that LAUNCH the jail.
+#
+#   rishi/bin/rishi run tools/ag/agent_jail_enclosure_witness.rish
+#
+# Split from agent_jail_witness.rish on 20260906.010500 (REDS %455). These four legs each start a
+# real jail -- write inside the repo, host home invisible under --private-home, /etc refused, and
+# claude starting under the launcher -- and `bwrap` refuses to nest, so they can only run on a
+# bench that is not itself jailed. The roster gates this row behind `capability jail_nesting`,
+# which the runner answers by ATTEMPTING a trivial bwrap rather than by declaring anything, so a
+# bench where the legs would work always runs them.
+#
+# WHAT THE SPLIT DOES NOT BUY. On a jailed ship these four legs run nowhere, so a regression in the
+# launcher's actual enclosure behaviour is caught on the unjailed bench alone. That is strictly
+# more coverage than before -- the whole guard was red everywhere, and a red nobody can clear is a
+# red nobody reads -- and it is less than proving it on every ship, which no ship can do.
+
+let result = run ["sh" "-c" "AGENT_JAIL_PART=enclosure bash tools/ag/agent_jail_witness.sh"]
+say "agent_jail_enclosure_witness: ok=${result.ok}"
+assert result.ok else "agent-jail enclosure witness RED -- see tools/ag/agent_jail_witness.sh output"
+say "GREEN: agent-jail enclosure witness -- the jail launches, and refuses what it must"

@@ -7,7 +7,12 @@
 #
 # Run from an ordinary host shell at the repository root.
 
-let result = run ["bash" "tools/ag/agent_jail_witness.sh"]
+# BASE ONLY, since 20260906.010500 (REDS %455). The four legs that LAUNCH the jail live in
+# tools/ag/agent_jail_enclosure_witness.rish, behind `capability jail_nesting`, because bwrap
+# refuses to nest and a ship inside the enclosure could never run them -- which turned this whole
+# guard red on eight of eight ships, withholding every roster receipt and costing each a full cold
+# pass every lap. Everything here reads plans, paths and seeded files and runs anywhere.
+let result = run ["sh" "-c" "AGENT_JAIL_PART=base bash tools/ag/agent_jail_witness.sh"]
 say "agent_jail_witness: ok=${result.ok}"
-assert result.ok else "agent-jail witness RED — see tools/ag/agent_jail_witness.sh output"
-say "GREEN: agent-jail witness"
+assert result.ok else "agent-jail witness RED -- see tools/ag/agent_jail_witness.sh output"
+say "GREEN: agent-jail witness -- the plans, paths and seeded files the launcher promises"

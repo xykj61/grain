@@ -936,7 +936,7 @@ seated 20260830.164837
 # ties_wired to 3 of 3. That landing turned the gate over: a FLOOR of two had been single-drop
 # detection only while two rooms were tied, so the gate now asks each room for its OWN tie and
 # wants all three, and the control's case 19 is Amphora dropping its tie rather than adding it
-# (REDS %453). Twenty control cases on real files in a throwaway pen, seventeen
+# (REDS %455). Twenty control cases on real files in a throwaway pen, seventeen
 # refusals and three welcomes, and a probe that asks the compiler seven times -- four inverted ties
 # and the three plausible real edits that were measured to produce a wrong answer. Measured here
 # `20260830.200925`: 12s whole, of which the pure scan and control are under a second. At tier cadence
@@ -1212,11 +1212,27 @@ seated 20260905.161500
 # days and the launcher's real fault -- a `~/.claude.json` mount conditional on a file only the
 # jailed Claude could write -- rode in beside them (REDS %408, %360's unheard-guard class). Rostered
 # the lap it was repaired, since a guard proved green once and heard by nothing guards nothing.
+# agent_jail -- SPLIT `20260906.010500` (REDS %455). The whole guard read RED on eight of eight
+# ships because four of its legs launch the jail and `bwrap` will not nest, so a ship inside the
+# enclosure answered `Failed to make / slave: Operation not permitted` at a leg that could never
+# have run there. A red guard withholds the roster receipt, `--scoped` refuses without a full green
+# receipt, and every ship therefore paid a full cold pass every lap for an environment fact. The
+# legs that read plans, paths and seeded files run everywhere and stay here; the legs that launch
+# the jail moved to the row below, behind a capability the runner PROBES by attempting a trivial
+# bwrap. Not the `host` field %422 declined -- a declaration can be wrong about a bench, and an
+# attempt cannot.
 guard agent_jail
 path tools/ag/agent_jail_witness.rish
 tier lap
 host linux
 seated 20260904.182600
+
+guard agent_jail_enclosure
+path tools/ag/agent_jail_enclosure_witness.rish
+tier lap
+host linux
+capability jail_nesting
+seated 20260906.010500
 
 # commit_message_guard -- GATE FIELD LIFTED `20260905.115500`. It carried `gate %1` because
 # publish-seed.sh was absent from this pier, so SEED_PUBLISHER_ARMS read 0 and the guard reported
