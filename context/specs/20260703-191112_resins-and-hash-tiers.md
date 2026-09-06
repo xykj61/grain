@@ -41,6 +41,35 @@ When both tiers appear in one log or on one wire, every digest carries an **algo
 
 ---
 
+### Amendment `20260906.192644` -- and where SHA-256 is the right answer
+
+The two tiers above govern **what this tree seals for itself**, and they are obeyed: the waymark
+registry is SHA3-512, and `crypto/sha3_digest.rye` computes both tiers over authored Keccak so no
+external binary is needed -- written after `openssl` was pinned and found absent, and after
+`sha256sum` was nearly substituted for it. That substitution would have silently rewritten every
+content address in the tree, since SHA-2 is a different algorithm rather than a second spelling of
+SHA3.
+
+**SHA-256 stays wherever an outside party fixes the choice**, and three named classes carry that,
+each for its own reason:
+
+| Class | Why the algorithm is not ours to pick | Standing example |
+|---|---|---|
+| **Protocol** | an external specification names SHA-256 in its own definition | Bitcoin addresses, BIP39, base58check |
+| **Vendor checksum** | a publisher's number must be verified in the publisher's algorithm | toolchain fetches |
+| **Coreutils-verifiable record** | a keeper holding only coreutils can still check it -- *two tools, one answer* | `mycelium/warrant_true.rye`, the GISM provenance receipts |
+
+Reaching for SHA3 in any of those would make a record **less** checkable, and a seal exists to make
+a record more so.
+
+**The open question was always the other one:** whether a recorded digest is ever compared against
+the bytes it claims to describe. A seal nothing reads is prose, and prose goes false in silence. `tools/s/sealed_digest_witness.rish` over `tools/fixtures/s/sealed_digest_scan.sh` holds
+that at **zero unread**, reading past dated testimony, a bare fingerprint, and an outside
+publisher's quoted value. That last exclusion is earned: a guard demanding a checker for someone
+else's number would be asking for a physical device inside a witness, which is exactly what the
+GrapheneOS boot hash in `two-dev-environments-and-mobile-emulation.md` is. Measured at seating: **4 seals, 0
+unread**, proven on nine planted cases in a throwaway repository.
+
 ## Refusal and availability
 
 A store may decline to hold a resin. The **resin-refusal fact** (today recorded as resin-refusal in TASKS) gives the no its receipt without describing the refused. Availability remains a fold-choice: peers serve resins; receivers verify the digest; the home rack is root of authorship, never sole servant of popularity.

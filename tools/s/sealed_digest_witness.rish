@@ -1,0 +1,41 @@
+# tools/s/sealed_digest_witness.rish -- a digest this tree records about its own bytes is read.
+#
+#   rishi/bin/rishi run tools/s/sealed_digest_witness.rish
+#
+# THE ALGORITHM QUESTION IS ALREADY ANSWERED, and the answer is a split rather than a winner. SHA3
+# is this tree's OWN hash: the waymark registry is sealed SHA3-512 over authored Keccak, computed
+# by `crypto/sha3_digest.rye` through `tools/fixtures/s/sha3.sh`, so checking it needs no external
+# binary -- which is exactly why that module exists (REDS %112, %116: `openssl` was pinned and
+# absent, and `sha256sum` would have silently rewritten every content address, SHA-2 being a
+# different algorithm rather than a second spelling). SHA-256 stays wherever an OUTSIDE party fixes
+# the choice: a protocol that specifies it, a vendor's published checksum, or a record deliberately
+# checkable with the `sha256sum` in coreutils -- the *two tools, one answer* property
+# `mycelium/warrant_true.rye` names for a keeper who holds no Grain binary.
+#
+# So the open question was never WHICH hash. It is whether a recorded digest is ever compared
+# against the bytes it claims to describe, and this guard holds that at zero.
+
+say "sealed-digest: Language EN -- a seal nothing reads is prose."
+say "sealed-digest: Style Gauge, Meter -- one gate, and the three things it reads past."
+say "sealed-digest: Lens TAME -- every refusal planted in a pen and then lifted."
+
+say "sealed-digest: the control -- nine behaviors on planted documents in a throwaway repository..."
+let ctl = run ["sh" "tools/fixtures/s/sealed_digest_control.sh"]
+assert ctl.ok else "sealed-digest: the control refused --\n${ctl.out}"
+assert ctl.out contains "pass=9 fail=0" else "sealed-digest: the control did not prove nine behaviors --\n${ctl.out}"
+
+say "sealed-digest: every seal of this tree's own bytes is read by a guard..."
+let scan = run ["sh" "tools/fixtures/s/sealed_digest_scan.sh"]
+assert scan.ok else "sealed-digest: the scan refused --\n${scan.out}"
+# invariant: a digest recorded about our own bytes, with no guard comparing it to those bytes, is a
+# claim that can go false in silence -- which is the one thing a seal exists to prevent.
+assert scan.out contains "unread=0" else "sealed-digest: a seal is recorded and nothing reads it --\n${scan.out}"
+
+say "sealed-digest: and the tree's own SHA3 needs no binary it does not ship..."
+let sha3 = run ["sh" "-c" "sh tools/fixtures/s/sha3.sh 512 SECURITY.md 2>/dev/null | grep -cE '^[0-9a-f]{128}$'"]
+assert sha3.ok else "sealed-digest: the tree's own SHA3 front door refused"
+# invariant: 128 hex characters is a SHA3-512 digest, computed here over authored Keccak rather
+# than by an external binary this pier may not carry.
+assert (trim sha3.out) == "1" else "sealed-digest: the tree's own SHA3-512 did not answer one line of 128 hex characters -- read tools/fixtures/s/sha3.sh"
+
+say "GREEN: sealed-digest -- the tree seals its own bytes with its own hash, quotes an outsider's number as a quote, and every seal it records is read."

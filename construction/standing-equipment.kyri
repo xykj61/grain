@@ -170,6 +170,16 @@ path tools/s/sow_allow_reach_witness.rish
 tier lap
 capability seed_projection
 seated 20260906.122632
+
+# sealed_digest -- a digest this tree records about its own bytes, compared to nothing, is prose. The
+# algorithm split is already right and principled -- SHA3 where the choice is ours, SHA-256 where an
+# outside protocol, vendor, or coreutils-only verifier fixes it -- so the open question was never
+# WHICH hash but whether any seal is read. Holds unread at zero, reads past dated testimony, a bare
+# fingerprint, and an outsider's quoted published value.
+guard sealed_digest
+path tools/s/sealed_digest_witness.rish
+tier lap
+seated 20260906.192644
 # capability seated 20260906.140000 (REDS %493). The guard reads the SHIPPED side, so it needs a
 # projection at `seed/` -- which is gitignored, built by `tools/s/sow.rish`, and therefore absent
 # from every fresh clone. Rostered `tier lap` with no capability it went red on this tree's first

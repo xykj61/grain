@@ -26,7 +26,7 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 | [`comlink/`](../../comlink/README.md) | 73 | 12 |
 | [`constel/`](../../constel/README.md) | 32 | 39 |
 | [`construction/`](../../construction/README.md) | 1 | 47 |
-| [`crypto/`](../../crypto/README.md) | 82 | 118 |
+| [`crypto/`](../../crypto/README.md) | 82 | 119 |
 | [`dimeroll/`](../../dimeroll/README.md) | 2 | 3 |
 | [`ember/`](../../ember/README.md) | 2 | 5 |
 | [`encoding/`](../../encoding/README.md) | 8 | 16 |
@@ -44,7 +44,7 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 | [`mantra/`](../../mantra/README.md) | 30 | 29 |
 | [`manual/`](../../manual/README.md) | 1 | 10 |
 | [`mikrophone/`](../../mikrophone/README.md) | 16 | 19 |
-| [`mycelium/`](../../mycelium/README.md) | 97 | 86 |
+| [`mycelium/`](../../mycelium/README.md) | 97 | 87 |
 | [`pleac/`](../../pleac/README.md) | 3 | 6 |
 | [`pond/`](../../pond/README.md) | 156 | 165 |
 | [`rishi/`](../../rishi/README.md) | 2 | 6 |
