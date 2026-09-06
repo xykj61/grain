@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `fd62ad0a11` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `1d6fc5066e` -- HEAD's parent, resolvable everywhere (%401).
 
 **DIFFUSER** -- **`%454` stays OPEN and now carries its price.** Elder measured routing; this is
 the other half. **A revocation and a fault ride the same edge**, so the set where one cascades IS
@@ -96,7 +96,7 @@ delete-wins, an interleaving union, both refusals by name -- and its control bre
 ways in a pen**, catching each, with `clean` and `bound_shrunk` proving the pen innocent. Rostered
 `tier lap`, **10s**. First named max in a module 120 files reach toward: `max_weave_lines`, read at
 the edge by `apply` and `merge` alike.
-**`%453` BOOKED -- the module those four `tier lap` guards read had not compiled since the toolchain
+**`%449` BOOKED -- the module those four `tier lap` guards read had not compiled since the toolchain
 moved, because all four read it with `grep`.** `Weave.empty()` returned the elder `.{}` ArrayList
 form where Zig 0.16 wants `.empty`; proven by building the HEAD blob in a pen, *missing struct
 field: items*. Nothing anywhere builds `weave.rye` -- `main.rye` and the test each **inline their
@@ -145,25 +145,30 @@ writer just closed. **Yours.**
 **`%445` and the `%439` class, whole on the [`20260906.001820` shelf](archive/20260906-001820_itinerary-landed-accounts.md)** -- the view moved twice and the key did not; four detectors over 1,712 Rye files found one genuine site in 159, so no gate. **`%440`'s lantern fired three times in one send**, each a clean auto-merge seating a day-shelf row out of order -- and it fired again this lap, on a peer's row that I reseated; the loom stays their booked lap.
 
 **Four accounts CLOSED, whole on the [`20260906.040933` shelf](archive/20260906-040933_itinerary-landed-accounts.md)** -- `%453` the doc line that measured between outfits, `%453` the floor that stopped biting ([REDS shelf](archive/REDS-the-floor-that-stopped-biting-rows-453-453.md)), `%458` the scan that called this ship's credential the pier's, and `%444`/`%431` the seed publisher that travels with the field. **A rule that states its reason can be checked.**
-**PHEROMONE -- `%460` OPEN: two Glow witnesses read `file`'s prose for an architecture, never read
-`.ok`, and on a pier with no `file(1)` called ten correct binaries the wrong architecture.** `sh -c`
-exits **127** empty, and an empty string satisfies no substring, so the failure is a *confident*
-false claim -- of a binary built that minute carrying `e_machine=183`. **Found in `%360`'s Glow remainder** -- the seven
-`witness_reach_scan.sh --list` calls **unheard**; five GREEN, these two red, neither ever run. *Landed:* `elf_machine_scan.sh` reads magic, `EI_CLASS`, `EI_DATA`, `e_machine` with `od`
-(POSIX; `file` is borrowed); **29 pen behaviors**, the pen proven innocent -- a scan patched to
-always answer `AArch64` fails six ways. **All ten proven on metal**, nine RISC-V, one AArch64. Rostered `tier lap` **1s**, census one awk pass over ~2,900 runners, not two
-processes per file (17 of an elder 18). **Left standing, not for lane:** three sites behind Android/APK
-toolchains this pier cannot run -- *editing a guard I cannot run is the fault the row closes*;
-ceiling 13 -> 3, both ways. **Still red at the emulator:** both qemu binaries
-absent, so the run-it half is unproven and says so. Their own head promises an honest limit their
-code never had; the roster's `capability` field is the seated answer -- **changing what GREEN means
-is a design act, named not taken.**
-**`%451`'s bound half -- I claimed it and a peer landed the same line first.** We both passed `"$f"`
-to the bound reader in `reds_ledger_scan.sh`; theirs is upstream and I took it whole, including the
-count that **corrects mine**: 13 calls across 8 files, six bare on purpose, six naming their page,
-this one bare while weighing one -- not *one of nineteen*. Mine measured `equinox_e123` **red ->
-green** from it. **This is the standing evidence for your open question**, lived twice in one night:
-nothing in the ledger showed the row was being worked, so two hands spent one hour on one argument.
+
+**PHEROMONE -- `%449`'S BOOKED CENSUS LANDED, and `%462` is what building it cost.** *Which
+authored Rye does anything ever compile?* Of **1,940** tracked `.rye`, **227** are symlinks and
+**1,713** distinct files remain; **1,535** are reached by a build root or an `@import` from one.
+**178** are not -- **41** planted specimens under `fixtures/`, **114** tests in `rye/tests/` no
+runner names, and **exactly one** carrying a runner's claim while nothing compiles it:
+`mantra/src/diff.rye`, read by five guards -- GRASS's `diff.rye` and `store.rye`, measured twice
+tonight. **My own claim retracted before it shipped:** I called it type-checked off an importing
+probe, and **that probe is blind** -- Zig analyses lazily, so it walks past a planted type error,
+which I proved by planting one. GRASS measured the same blindness from the other side. The
+declaration walker is theirs; this census answers only the **graph** question.
+Gated at **ceiling 1**; the rest reported. **Every count is a floor** -- a runner touching the
+compiler credits every path it names, since a root arrives by literal, variable, and function
+parameter. **`%463` is the near-miss:** awk's `NR==FNR` in five places answered `distinct=0` and
+`verdict=ok` on any tree with no symlinks; 227 here hid it, and the pens failed 19 of 50 at once.
+**Resolution before accusation** -- without it, 17 symlinks read never-compiled and **16 pointed at
+a file that IS compiled**. 50 pen behaviors, ceiling both ways, pen innocent. `tier lap` **5s**.
+**Two ships measured this in one night**, GRASS and me -- your question, again.
+
+**PHEROMONE -- `%460` STILL OPEN at the emulator, its landed half folded** to the
+[`20260906.051500` shelf](archive/20260906-051500_itinerary-landed-accounts.md), `%451`'s bound half
+beside it. File half proven on metal, ten sites. **Yours, one sentence:** may a cross-target witness
+read GREEN with a named gap when qemu is absent? Its head promises that limit, `%446` reads the
+other way, and the roster's `capability` field is the mechanism.
 
 **Grass's cross-lane find, measured** -- `mand/capabilities.rye` is a **262-line copy** of
 caravan's **305**, and at this stamp the **one file in this tree that lags live code**: of the 113

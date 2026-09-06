@@ -300,3 +300,5 @@ at a closed fold.*
 *Row %458 folded to [`REDS-an-instrument-must-know-where-it-stands-rows-458.md`](REDS-an-instrument-must-know-where-it-stands-rows-458.md) on `20260906.044404`, **CLOSED** -- an instrument must know where it is standing: a bind mount made the pier's path the ship's own, so the reading compared a file with itself.*
 
 *Row %446 folded to [`REDS-a-guard-that-cannot-run-its-instrument-rows-446-446.md`](REDS-a-guard-that-cannot-run-its-instrument-rows-446-446.md) on `20260906.045838`, **CLOSED** -- a guard that cannot run its instrument names the instrument rather than the thing it could not reach; the capability field was already the mechanism, and a peer wired it.*
+
+*Row %459 folded to [`REDS-a-control-that-removed-its-own-instrument-rows-459.md`](REDS-a-control-that-removed-its-own-instrument-rows-459.md) on `20260906.053902`, **CLOSED** -- A control that takes a tool off PATH to prove a guard copes without it can remove the tool the guard needs to start at all -- so the reading was of a scan that never ran.*
