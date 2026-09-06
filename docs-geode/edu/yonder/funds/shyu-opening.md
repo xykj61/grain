@@ -18,7 +18,7 @@
 | Vane | `%shyu` |
 | Domain | **shyu.fund** — claim Keaton's hand alone |
 | Honor dedication | **Wayne Hsiung** |
-| Honor sponsor | **Hyundai** (South Korea) — design seat · [`../../gratitude/hyundai.md`](../../gratitude/hyundai.md) |
+| Honor sponsor | **Hyundai** (South Korea) — design seat · [`../../gratitude/hyundai.md`](../../../../gratitude/hyundai.md) |
 
 ## Recommendation lean (same as Keeh→Kia)
 

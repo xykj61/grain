@@ -16,13 +16,13 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 
 | Page | Leads to | Reached from |
 |---|---|---|
-| [tutorials / **The First Hour**](../tutorials/the-first-hour.md) | the api reference, the libraries index, the manual's welcome, SOURCE.md | the root README, `edu/`, `demos/`, `study/` |
-| [api / **Rishi language reference**](../api/rishi-language-reference.md) | the first hour, `rishi/README.md`, the libraries index | `study/`, `edu/`, `tutorials/` |
+| [tutorials / **The First Hour**](../tutorials/the-first-hour.md) | the api reference, the libraries index, the manual's welcome, SOURCE.md | the root README, `docs-geode/edu/yonder/`, `demos/`, `study/` |
+| [api / **Rishi language reference**](../api/rishi-language-reference.md) | the first hour, `rishi/README.md`, the libraries index | `study/`, `docs-geode/edu/yonder/`, `tutorials/` |
 | [libraries / **The Libraries**](../libraries/README.md) | 38 module READMEs | `study/`, `api/`, `tutorials/` |
 | [study / **How to read this tree**](../study/README.md) | reading a name, foundations, active-designing, session-logs, REDS, gratitude, the compass | this page |
 | [study / **Reading a name**](../study/reading-a-name.md) | the clock-and-mark foundation, the stamp-and-name law, `demos/` | `study/`, this page |
 | [demos / **Four things you can run**](../demos/README.md) | the first hour, the resolver, the sha3 witness, the room bound, the fascia meter | `study/`, this page |
-| [edu / **The teaching surfaces**](../edu/README.md) | the manual, `edu/` drafts, SOURCE.md, the api reference | this page |
+| [edu / **The teaching surfaces**](../../docs-geode/edu/yonder/README.md) | the manual, `docs-geode/edu/yonder/` drafts, SOURCE.md, the api reference | this page |
 | [press / **What has been said publicly**](../press/README.md) | the four announcements in `press/` | this page |
 | [sangha / **the patterns**](../sangha/README.md) | descriptor exchange, fact fold, five primitives | this page |
 | [sangha / **Pattern one -- the descriptor exchange**](../sangha/01-descriptor-exchange.md) | the four `comlink/discovery/` modules, the bounds brix, the pattern book | `sangha/`, pattern three |

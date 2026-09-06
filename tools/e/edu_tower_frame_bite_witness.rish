@@ -6,15 +6,15 @@ say "tower-frame-bite: Language EN — the bound bites where it must."
 say "tower-frame-bite: Style Radiant — a fixture holds the violation."
 say "tower-frame-bite: Lens TAME — e15 · negative space beside the welcome tower."
 
-let fixture = run ["test" "-f" "edu/tower/frame_bound_overpush.rye"]
+let fixture = run ["test" "-f" "docs-geode/edu/yonder/tower/frame_bound_overpush.rye"]
 assert fixture.ok else "tower-frame-bite: overpush fixture missing"
 
-let bite = run ["sh" "-c" "env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run edu/tower/frame_bound_overpush.rye 2>&1; echo EXIT=$?"]
+let bite = run ["sh" "-c" "env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run docs-geode/edu/yonder/tower/frame_bound_overpush.rye 2>&1; echo EXIT=$?"]
 say bite.out
 assert bite.out contains "EXIT=1" else "tower-frame-bite: overpush must exit 1"
 assert bite.out contains "assertion failure" else "tower-frame-bite: want assert panic text"
 
-let welcome = run ["sh" "-c" "env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run edu/tower/bounded_tower.rye 2>&1"]
+let welcome = run ["sh" "-c" "env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run docs-geode/edu/yonder/tower/bounded_tower.rye 2>&1"]
 assert welcome.ok else "tower-frame-bite: welcome tower went RED"
 assert welcome.out contains "GREEN: bounded tower" else "tower-frame-bite: welcome missing GREEN"
 

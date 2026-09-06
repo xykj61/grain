@@ -10,10 +10,10 @@ rishi/bin/rishi run tools/i/inner_i2_djin_prose.rish >/dev/null
 
 # Living Gren door present; retired Twah generator gone.
 test -f tools/g/gen_gren_fund_prep.rish
-test -f edu/funds/gren-creating-one-of-twelve.md
+test -f docs-geode/edu/yonder/funds/gren-creating-one-of-twelve.md
 test ! -e tools/gen_twah_fund_prep.rish
 test ! -e tools/fixtures/gen_twah_fund_prep.sh
-test ! -e edu/funds/twah-creating-one-of-twelve.md
+test ! -e docs-geode/edu/yonder/funds/twah-creating-one-of-twelve.md
 
 grep -q 'Gren (fund)' context/LEXICON.md
 grep -q 'Djin (fund) (retired name)' context/LEXICON.md

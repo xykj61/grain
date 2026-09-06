@@ -26,7 +26,7 @@ Fascial **waves** -- Grain **years** -- feed this shelf. **MUR**, **Tally**, and
 | [`wiki/`](wiki/README.md) | Bidirectional relative-link Markdown wiki | **living, guarded** -- the shelf's own crosslink map: every page, what it leads to, what leads back. It declares itself a crushed index of *every page under* this shelf, so [`../tools/cr/crushed_index_witness.rish`](../tools/cr/crushed_index_witness.rish) walks the whole subtree against it rather than one room deep |
 | [`study/`](study/README.md) | Study guides | **living** -- [how to read this tree](study/README.md): four questions, four rooms, and two habits worth borrowing first; and [reading a name](study/reading-a-name.md), the two marks a name here carries |
 | [`libraries/`](libraries/README.md) | Library docs | **living, generated** -- 38 rooms holding Rye modules, counted off the tree by `tools/g/geode_libraries.rish` and held true by its witness |
-| [`edu/`](edu/README.md) | Tutorials (shipped; `../edu/` may draft) | **living** -- the index of teaching surfaces and which door leads where |
+| [`edu/`](edu/README.md) | Tutorials (shipped; `edu/drafts/` may draft) | **living** -- the index of teaching surfaces and which door leads where |
 | [`demos/`](demos/README.md) | Demos | **living** -- four things you can run in a minute, output included |
 | [`templates/`](templates/README.md) | Templates | **pointer crush** -- Acme personalize and Bron |
 | [`blog/`](blog/README.md) | Blog posts | **open, empty on purpose** -- the entry criterion is named, and it waits for a first piece that meets it |
@@ -53,7 +53,7 @@ Fascial **waves** -- Grain **years** -- feed this shelf. **MUR**, **Tally**, and
 | Path | Role |
 |------|------|
 | [`../docs/`](../docs/README.md) | Compression shelf (distinct) |
-| [`../edu/`](../edu/README.md) | Living edu drafts |
+| [`../docs-geode/edu/yonder/`](../docs-geode/edu/yonder/README.md) | Living edu drafts |
 | Lexicon | **docs-geode**, **wave**, **year**, **crush**, **The Geode Chapter**, **baton** |
 | Baton museum | [`../context/baton-museum/`](../context/baton-museum/) -- thirteen halls, counsel close living baton, cell hall |
 | Design shapes | [`../context/design-shapes/`](../context/design-shapes/) -- sibling wing (bounds, tend, relay resin, fact fold) |

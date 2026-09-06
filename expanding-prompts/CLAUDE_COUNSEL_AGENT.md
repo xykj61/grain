@@ -91,7 +91,7 @@ Every law below was paid for by a red in a real round. They are listed so the ne
 
 One clock: `TZ=America/New_York date '+%Y%m%d.%H%M%S'` into a variable **first**, then interpolate -- never typed from memory, and **never carried across a `cd`**, which drops it in a subshell. Read a shipped stamp back from its manifest.
 
-Rishi has no `and`/`or`, and **backslash escapes nothing** -- a `\"` inside an sh-double context reaches `sh` as a literal quote and makes the guard vacuous. Use single-quoted grep patterns. Capture `$?` before any pipe, because a pipeline masks the status you care about. `edu/` needs `git add -f`.
+Rishi has no `and`/`or`, and **backslash escapes nothing** -- a `\"` inside an sh-double context reaches `sh` as a literal quote and makes the guard vacuous. Use single-quoted grep patterns. Capture `$?` before any pipe, because a pipeline masks the status you care about. `docs-geode/edu/yonder/` needs `git add -f`.
 
 Anchored edits only: assert the anchor exists and is unique **before** writing, and read the anchor from the file rather than from memory. A naive line-copy across switch arms will mangle block-form arms; repair them one at a time from the file's own text.
 

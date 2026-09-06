@@ -6,7 +6,7 @@
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Status:** Plan -- the edu flagship series, ten lessons, each Simple-Lovable-Complete with its own green line; **Linengrow rests on pause by Keaton's word this round, honored whole**; the app name below is a commissioned working title with its slate, seated only by Keaton; no purchase, key, or custody step lives anywhere in this plan
 **Ground:** Twin Chapter, round r31 - **grain.energy is real** -- the domain purchased this morning by Keaton's own hand, exactly as the custody law wants it, and the handle beside it names the project's public face
-**Companions:** [`../foundations/20260727-113304_the-merit-ledger.md`](../foundations/20260727-113304_the-merit-ledger.md) - [`../active-designing/20260727-101510_the-acme-onboarding-walk.md`](../active-designing/20260727-101510_the-acme-onboarding-walk.md) - [`README.md`](README.md)
+**Companions:** [`../foundations/20260727-113304_the-merit-ledger.md`](../../../foundations/20260727-113304_the-merit-ledger.md) - [`../active-designing/20260727-101510_the-acme-onboarding-walk.md`](../../../active-designing/20260727-101510_the-acme-onboarding-walk.md) - [`README.md`](README.md)
 
 *Written together by Keaton and Quin.*
 

@@ -219,7 +219,14 @@ while read -r page room depth; do
   # whole subtree: every tracked file at any depth, with `README.md` dropped wherever it stands,
   # since a door is a door on every floor.
   if [ "$depth" = deep ]; then
-    git ls-files "$room" | sed "s|^$room||" | grep -vE '(^|/)README\.md$' | sort -u > "$work/members.txt" || true
+    # DEFERRED AND DATED ROOMS ARE NOT MEMBERS, and this line was the one place in this file that
+    # disagreed with it. The corpus above is built as living tracked Markdown with
+    # `grep -vE '(^|/)(date|archive|yonder)/'`, on the tree's own law that those rooms hold
+    # testimony and deferred work -- yet the deep walk read them as pages an index must name. A
+    # room that folds a day shelf, or parks work in `yonder/`, would then owe its index a row for
+    # every parked file. Found `20260906` when a drafting room moved under a deep-declared shelf
+    # and the guard asked for twenty rows on a page about shipped teaching surfaces.
+    git ls-files "$room" | sed "s|^$room||" | grep -vE '(^|/)(date|archive|yonder)/' | grep -vE '(^|/)README\.md$' | sort -u > "$work/members.txt" || true
     # THE BOUND, checked at the edge before the walk rather than after it. A refusal that arrives
     # once the work is done is a report rather than a bound.
     if [ "$(wc -l < "$work/members.txt" | tr -d ' ')" -gt "$max_deep_members" ]; then

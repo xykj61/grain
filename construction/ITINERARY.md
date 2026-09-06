@@ -366,6 +366,8 @@ so the armed-wall promise rides on the publisher.
 
 ## Next -- the ranked remainder
 
+**PHEROMONE, a find (`20260906.153405`):** `mantra_glow_tend_limb1..4` pass [`stamp-and-name`](../.claude/rules/stamp-and-name.md) -- a census, not a forecast -- yet miss **a mark that reads alone**: limb1 guards `Line`, 2 `Weave`, 3 `Diff`, 4 `Store`, and no name says so. Add the subject, keep the order. Your lane.
+
 **BOOKED `20260906` -- vendor+seed laps C-H, then gate `%1`:** [shapes and traps](../active-development/20260906-125757_the-remaining-laps-of-the-vendor-and-seed-program.md). Claimable.
 
 Ranked Lindy-first and crux-first, with costs, gates, and falsifiers, in

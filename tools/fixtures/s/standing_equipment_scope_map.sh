@@ -71,7 +71,7 @@ pond_enclosure_policy tools/p/pond_enclosure_policy_witness.rish tools/fixtures/
 pond_policy_launcher tools/p/pond_policy_launcher_witness.rish tools/fixtures/p/ pond/enclosure_policy.kyri tools/ag/agent-jail.sh
 pond_enclosure_built tools/p/pond_enclosure_built_witness.rish tools/fixtures/p/ pond/ tools/ag/agent-jail.sh
 pond_enclosure_state tools/p/pond_enclosure_state_witness.rish tools/fixtures/p/pond_enclosure_state_scan.sh tools/ag/agent-jail.sh tools/e/enclosure.conf* tools/fixtures/p/pond_enclosure_state_control.sh
-prose_register tools/p/prose_register_witness.rish tools/fixtures/p/prose_register_scan.sh docs-geode/ manual/ edu/ CONTRIBUTING.md SOURCE.md ORGANIZING.md MAP.md tools/fixtures/p/prose_register_control.sh README.md docs/README.md foundations/README.md caravan/README.md mycelium/README.md image/README.md lotus/README.md crypto/README.md constel/README.md
+prose_register tools/p/prose_register_witness.rish tools/fixtures/p/prose_register_scan.sh docs-geode/ manual/ docs-geode/edu/yonder/ CONTRIBUTING.md SOURCE.md ORGANIZING.md MAP.md tools/fixtures/p/prose_register_control.sh README.md docs/README.md foundations/README.md caravan/README.md mycelium/README.md image/README.md lotus/README.md crypto/README.md constel/README.md
 radiant_negation tools/r/radiant_negation_witness.rish tools/fixtures/r/radiant_negation_scan.sh foundations/ context/RADIANT_STYLE.md context/TWILIGHT_STYLE.md context/KYRI.md
 reds_fold tools/r/reds_fold_witness.rish tools/fixtures/r/reds_fold.sh tools/fixtures/r/reds_fold_control.sh tools/fixtures/r/reds_fold_reanchor.sh construction/
 reds_ledger_headline tools/r/reds_ledger_headline_witness.rish construction/REDS.md construction/archive/REDS-* tools/fixtures/r/reds_ledger_headline_control.sh
