@@ -22,7 +22,7 @@ path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 |------|------|----------------|
 | [`api/`](api/rishi-language-reference.md) | Professional API surface | **living** -- [the Rishi language reference](api/rishi-language-reference.md): every form the shell understands, each line run before it was written, and the edges |
 | [`wiki/`](wiki/README.md) | Bidirectional relative-link Markdown wiki | **living** -- the shelf's own crosslink map: every page, what it leads to, what leads back |
-| [`study/`](study/README.md) | Study guides | **living** -- [how to read this tree](study/README.md): four questions, four rooms, and two habits worth borrowing first |
+| [`study/`](study/README.md) | Study guides | **living** -- [how to read this tree](study/README.md): four questions, four rooms, and two habits worth borrowing first; and [reading a name](study/reading-a-name.md), the two marks a name here carries |
 | [`libraries/`](libraries/README.md) | Library docs | **living, generated** -- 38 rooms holding Rye modules, counted off the tree by `tools/g/geode_libraries.rish` and held true by its witness |
 | [`edu/`](edu/README.md) | Tutorials (shipped; `../edu/` may draft) | **living** -- the index of teaching surfaces and which door leads where |
 | [`demos/`](demos/README.md) | Demos | **living** -- four things you can run in a minute, output included |
@@ -56,8 +56,8 @@ path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 | Acme personalize (source) | [`../manual/guides/first-season-personalize.md`](../manual/guides/first-season-personalize.md) · [`../tools/gen/chapter/personalize.template.brix`](../tools/gen/chapter/personalize.template.brix) |
 | Charter | [`../counsel/date/20260728/20260728-031722_the-geode-season-charter.md`](../counsel/date/20260728/20260728-031722_the-geode-season-charter.md) |
 
-## Not crushed here (yet)
+## Still in their own rooms, awaiting a crush round
 
-Cellar / Amphora CLI wave metal and counsel stay under `cellar/` · `amphora/` · `counsel/` until a Geode crush round seats shipping pages. Class W wire strings (`amber-ring1-season` as AEAD shoulder) are format, not product vocabulary — see Amphora seal and e149 park.
+Cellar / Amphora CLI wave metal and counsel stay under `cellar/` - `amphora/` - `counsel/` until a Geode crush round seats shipping pages. Class W wire strings (`amber-ring1-season` as AEAD shoulder) are format vocabulary rather than product vocabulary -- see Amphora seal and e149 park.
 
 witness:docs-geode-seat GREEN — root crystal · rooms named · crush = compile · wave = year · halls 13 cited

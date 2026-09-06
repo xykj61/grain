@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260905.224930` | [the shelf that spoke in marks it never taught](20260905/20260905-224930_the-shelf-that-spoke-in-marks-it-never-taught.kyri) | 20 stamped names, 0 pages teaching one. |
 | `20260905.224714` | [the angle the sky never subtracts](20260905/20260905-224714_the-angle-the-sky-never-subtracts.kyri) | 682,425 pairs; one hop value between them. |
 | `20260905.213047` | [the floor that votes only where one sentence could](20260905/20260905-213047_the-floor-that-votes-only-where-one-sentence-could.kyri) | 52 pages lose a blank 100. |
 | `20260905.195223` | [the red that broke a meter by closing](20260905/20260905-195223_the-red-that-broke-a-meter-by-closing.kyri) | %437's plant crossed %438's ceiling. |
@@ -30,23 +31,23 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260905.164820` | [copal and patchouli take the unguarded](20260905/20260905-164820_copal-and-patchouli-take-the-unguarded.kyri) | two seats, 13,000 lines of Rye. |
 | `20260905.163155` | [the cut, the shelf, and what a lap costs](20260905/20260905-163155_the-cut-the-shelf-and-what-a-lap-costs.kyri) | 901s to 705s; an agent is not CPU-bound. |
 | `20260905.160800` | [the curve that changed the answer](20260905/20260905-160800_the-curve-that-changed-the-answer.kyri) | 2.81x at six ships; steal 0.059%. |
+| `20260905.160658` | [The page that became its own ancestor](20260905/20260905-160658_the-page-that-became-its-own-ancestor.kyri) | a self-link resolves, so three meters read it true. |
 | `20260905.155840` | [two ships, and what a restart must not lose](20260905/20260905-155840_two-ships-and-what-a-restart-must-not-lose.kyri) | both launch commands. |
 | `20260905.155209` | [the looking was the limit](20260905/20260905-155209_the-looking-was-the-limit.kyri) | five live forecasts found by a meter; four cores answer the six-ship question. |
 | `20260905.154019` | [the factory and the friendly skip](20260905/20260905-154019_the-factory-and-the-friendly-skip.kyri) | Mantra gets guards; the generator stops lying. |
-| `20260905.160658` | [The page that became its own ancestor](20260905/20260905-160658_the-page-that-became-its-own-ancestor.kyri) | a self-link resolves, so three meters read it true. |
 | `20260905.151659` | [the letter that meant two things](20260905/20260905-151659_the-letter-that-meant-two-things.kyri) | `N` meant gpg failed, not unsigned; the fleet cross-verifies now. |
 | `20260905.151254` | [the guard that could be fooled by a symlink](20260905/20260905-151254_the-guard-that-could-be-fooled-by-a-symlink.kyri) | a disguise closed before it fired. |
 | `20260905.150536` | [both custody doors -- the jail binds one tree](20260905/20260905-150536_both-custody-doors-the-jail-binds-one-tree.kyri) | pheromone's keys come home. |
 | `20260905.143057` | [the seed publishes, and a default names itself](20260905/20260905-143057_the-seed-publishes-and-a-default-names-itself.kyri) | both doors at `5a54c2f`. |
 | `20260905.134026` | [The floor that voted on a silence](20260905/20260905-134026_the-floor-that-voted.kyri) | a blank Register voted 100 on 560 of 870 pages |
-| `20260905.125304` | [The interpreter is not a reference](20260905/20260905-125304_the-interpreter-is-not-a-reference.kyri) | 1,770 witnesses for a room of two modules |
 | `20260905.130819` | [A wet leg in a dry file](20260905/20260905-130819_a-wet-leg-in-a-dry-file.kyri) | safe on the tree that wrote it, hanging on the tree it was for |
+| `20260905.125304` | [The interpreter is not a reference](20260905/20260905-125304_the-interpreter-is-not-a-reference.kyri) | 1,770 witnesses for a room of two modules |
 | `20260905.124031` | [The seed is ready, and the gate came off](20260905/20260905-124031_the-seed-is-ready.kyri) | a gate made a missing file look like a custody decision |
 | `20260905.122517` | [A floor that refuses to score must also refuse to vote](20260905/20260905-122517_a-floor-that-refuses-to-vote.kyri) | 560 of 870 pages graded on a blank voting 100 |
 | `20260905.112846` | [The prices differ because the promises do](20260905/20260905-112846_the-prices-differ.kyri) | cat: 52 lines here, 796 in uutils, and neither is waste |
+| `20260905.111416` | [The guard that named a machine](20260905/20260905-111416_the-guard-that-named-a-machine.kyri) | a control that named one computer read the law working as a breach |
 | `20260905.110633` | [The name a veteran still likes](20260905/20260905-110633_the-name-a-veteran-still-likes.kyri) | 241 authored names, not one a coinage |
 | `20260905.104613` | [toybox answers dawk's question](20260905/20260905-104613_toybox-answers-dawks-question.kyri) | the byte-view flag, in the next project we read |
-| `20260905.111416` | [The guard that named a machine](20260905/20260905-111416_the-guard-that-named-a-machine.kyri) | a control that named one computer read the law working as a breach |
 | `20260905.100421` | [uutils, and a newer file that was worse](20260905/20260905-100421_uutils-and-a-newer-file-that-was-worse.kyri) | a logged-out credential outranked a live one |
 | `20260905.090338` | [The stash that held a finished lap](20260905/20260905-090338_the-stash-that-held-a-finished-lap.kyri) | verified, renumbered off a collision, landed |
 | `20260905.083758` | [The guard that watched an emptied room](20260905/20260905-083758_the-guard-that-watched-an-emptied-room.kyri) | flat_logs=0 read green for nine days |

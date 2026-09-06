@@ -18,7 +18,8 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 | [tutorials / **The First Hour**](../tutorials/the-first-hour.md) | the api reference, the libraries index, the manual's welcome, SOURCE.md | the root README, `edu/`, `demos/`, `study/` |
 | [api / **Rishi language reference**](../api/rishi-language-reference.md) | the first hour, `rishi/README.md`, the libraries index | `study/`, `edu/`, `tutorials/` |
 | [libraries / **The Libraries**](../libraries/README.md) | 38 module READMEs | `study/`, `api/`, `tutorials/` |
-| [study / **How to read this tree**](../study/README.md) | foundations, active-designing, session-logs, REDS, gratitude, the compass | this page |
+| [study / **How to read this tree**](../study/README.md) | reading a name, foundations, active-designing, session-logs, REDS, gratitude, the compass | this page |
+| [study / **Reading a name**](../study/reading-a-name.md) | the clock-and-mark foundation, the stamp-and-name law, `demos/` | `study/`, this page |
 | [demos / **Four things you can run**](../demos/README.md) | the first hour, the resolver, the sha3 witness, the room bound, the fascia meter | `study/`, this page |
 | [edu / **The teaching surfaces**](../edu/README.md) | the manual, `edu/` drafts, SOURCE.md, the api reference | this page |
 | [press / **What has been said publicly**](../press/README.md) | the three announcements | this page |
