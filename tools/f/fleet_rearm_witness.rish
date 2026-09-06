@@ -42,6 +42,29 @@ assert open.ok else "fleet-rearm: the printer refused after the lift"
 assert open.out contains "MIND_SEAT=cardinal" else "fleet-rearm: the lifted seat still withheld its paste"
 assert (open.out contains "GATED") == false else "fleet-rearm: a gate reported with no sentinel on disk"
 
+say "fleet-rearm: a LIVE seat outside the elder name list still earns its paste..."
+# THE LEG THIS WITNESS DID NOT HAVE, and the drift it let stand. The relaunch arm used to spell six
+# seat names; the roster grew to eight live ships and five of them -- bakery, diffuser, grass, copal,
+# patchouli -- printed the word RELAUNCH followed by nothing at all. Every assertion above passed the
+# whole time, because every one named a seat the elder list happened to carry. So the leg is planted
+# with `copal`, a live roster seat that list never knew, and the sweep beneath it counts EMPTY pastes
+# across the whole card rather than trusting the one name.
+let newer = run ["sh" "-c" "mkdir -p /tmp/fleet-rearm-pen/grain-copal/session-output && git init -q /tmp/fleet-rearm-pen/grain-copal && printf 'lap 2 closed clean\\n' > /tmp/fleet-rearm-pen/grain-copal/session-output/copal.txt"]
+assert newer.ok else "fleet-rearm: the pen could not seat a newer roster ship"
+let armed = run ["env" "FLEET_HOME=${pen}" "sh" "tools/f/fleet_rearm.sh"]
+assert armed.ok else "fleet-rearm: the printer refused with a newer seat in the pen"
+assert armed.out contains "fleet-loop.sh copal" else "fleet-rearm: a live roster seat outside the elder name list printed RELAUNCH and then nothing"
+
+say "fleet-rearm: and NO seat anywhere on the card prints an empty paste..."
+# The reading is shape-based, over tools/fixtures/f/fleet_rearm_paste_scan.sh: it asks whether the
+# line beneath each RELAUNCH heading starts a command. A name-based check here would be the seventh
+# copy of the seat table, which is the fault this leg exists to catch. Proven from both sides on
+# metal `20260906`: the elder hand-spelled case reads empty_pastes=1 in this pen and 5 against the
+# real fleet home; the roster-driven form reads 0.
+let sweep_empty = run ["env" "FLEET_HOME=${pen}" "sh" "tools/fixtures/f/fleet_rearm_paste_scan.sh"]
+assert sweep_empty.ok else "fleet-rearm: the empty-paste scan could not run"
+assert sweep_empty.out contains "empty_pastes=0" else "fleet-rearm: a seat printed RELAUNCH with no command beneath it -- the hand is handed a blank"
+
 say "fleet-rearm: the field seat never earns a paste..."
 assert (open.out contains "no loop to re-arm") == true else "fleet-rearm: the field seat's non-loop nature went unspoken"
 

@@ -1,0 +1,45 @@
+# tools/f/fleet_lap_verdict_witness.rish -- a spent session limit is a WAIT, proven both ways.
+#
+#   rishi/bin/rishi run tools/f/fleet_lap_verdict_witness.rish
+#
+# tools/l/fleet-loop.sh stops itself after three laps that each died inside ten seconds, because an
+# ai-jail flag refusal is upstream of the agent and no retry reaches past it (REDS %414). A spent
+# session limit is upstream of the agent too, returns just as instantly, and CLEARS ON A CLOCK. On
+# `20260906` six ships met the limit between 07:21 and 07:28, burned three instant laps each, and
+# stopped; the window reset at 07:30 and the fleet sat dark. This guard holds the distinction.
+
+say "fleet-lap-verdict: Language EN -- one lap classified, four verdicts, the limit asked first."
+say "fleet-lap-verdict: Style Gauge, Meter -- each leg names what it plants and what must refuse."
+say "fleet-lap-verdict: Lens TAME -- every welcome asserted as hard as every refusal."
+
+say "fleet-lap-verdict: the control -- twelve behaviors on planted transcripts in a pen..."
+let ctl = run ["sh" "tools/fixtures/f/fleet_lap_verdict_control.sh"]
+assert ctl.ok else "fleet-lap-verdict: the control refused --\n${ctl.out}"
+assert ctl.out contains "pass=12 fail=0" else "fleet-lap-verdict: the control did not prove twelve behaviors --\n${ctl.out}"
+
+say "fleet-lap-verdict: the classifier answers the four verdicts by name..."
+let limit = run ["sh" "-c" "printf 'You have hit your session limit - resets 7:30am\\n' > /tmp/flv-limit.txt && sh tools/fixtures/f/fleet_lap_verdict.sh /tmp/flv-limit.txt 1 2"]
+assert limit.ok else "fleet-lap-verdict: the classifier refused to run"
+# invariant: an instant lap carrying the limit words reads `limit` -- this is the whole repair, and
+# the elder rule read exactly this shape as an invocation fault.
+assert limit.out contains "verdict=limit" else "fleet-lap-verdict: an instant limit refusal still reads as a quickfail -- the fleet would stop itself again"
+
+let jail = run ["sh" "-c" "printf 'ai-jail: unrecognized option --verbose\\n' > /tmp/flv-jail.txt && sh tools/fixtures/f/fleet_lap_verdict.sh /tmp/flv-jail.txt 1 2"]
+assert jail.ok else "fleet-lap-verdict: the classifier refused on the jail transcript"
+# invariant: %414's own wound still reads `quickfail` -- the repair widened nothing it should not.
+assert jail.out contains "verdict=quickfail" else "fleet-lap-verdict: the elder invocation fault stopped being caught"
+
+say "fleet-lap-verdict: and the loop asks BEFORE it counts..."
+let wired = run ["sh" "-c" "grep -q 'verdict=$(sh tools/fixtures/f/fleet_lap_verdict.sh' tools/l/fleet-loop.sh && echo WIRED_CALL || echo WIRED_NONE"]
+assert wired.ok else "fleet-lap-verdict: the wiring could not be read"
+# invariant: the loop CALLS the classifier -- a mention in a comment is not a call, so the grep
+# matches the assignment itself rather than the filename.
+assert wired.out contains "WIRED_CALL" else "fleet-lap-verdict: the loop's call to the classifier went missing"
+# The ORDER inside the loop needs no separate reading: the four verdicts are `case` arms over one
+# word, so a lap classified `limit` cannot also reach the quickfail arm. Order is proven where it
+# actually lives -- inside the classifier -- by the control's first case.
+
+let sweep = run ["sh" "-c" "rm -f /tmp/flv-limit.txt /tmp/flv-jail.txt"]
+assert sweep.ok else "fleet-lap-verdict: the pen files were left standing"
+
+say "GREEN: fleet-lap-verdict -- a spent window is a hold, an unreachable agent is a stop, and the loop can tell them apart."
