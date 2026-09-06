@@ -1,0 +1,330 @@
+//! mantra/src/weave_merge_witness.rye -- proves that merging two weaves is a join.
+//!
+//!   rye build mantra/src/weave_merge_witness.rye -femit-bin=mantra/bin/weave-merge-witness
+//!   mantra/bin/weave-merge-witness
+//!
+//! The claim under test is `Weave.merge` in `mantra/src/weave.rye`: a union over
+//! positions where the higher generation wins. Union and max are each
+//! commutative, associative, and idempotent, so the merge should be all three --
+//! and a witness proves that by DOING rather than by argument, merging the same
+//! three states in all six orders and asserting one answer comes back.
+//!
+//! Eight claims, each shown from the side that matters:
+//!   1. Both orders agree field for field -- a.merge(b) equals b.merge(a).
+//!   2. All six orders of three states give one weave.
+//!   3. Associativity holds on its own: a.(b.c) equals (a.b).c.
+//!   4. Merging a weave with itself changes nothing.
+//!   5. A delete survives a merge with a side that still holds the line, and
+//!      the merged document reads correctly for a human.
+//!   6. Two weaves that disagree on one position's text are REFUSED by name.
+//!      That refusal is this movement's real finding: a per-weave counter
+//!      cannot name a line across two branches, so two branches that both
+//!      insert collide at the same small integer. The merge law is sound; the
+//!      identity a merge needs is the next movement's work.
+//!   7. A union past `max_weave_lines` is refused at the edge, before the
+//!      merge allocates anything.
+//!   8. A union whose positions interleave comes out in position order -- the
+//!      leg that makes the sort inside merge reachable at all.
+//!
+//! Part of Mantra -- TAME-first from line one.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const weave = @import("weave.rye");
+
+const witness_version = "20260906.000542";
+
+/// The largest number of texts a hand-written plant holds here. Named because
+/// every plant below is meant to be read: a proof whose input outgrows a reader
+/// stops proving anything that reader can check.
+const max_planted_lines: u32 = 8;
+
+/// A fresh weave holding exactly these lines, at positions 0..texts.len.
+fn planted(garden: std.mem.Allocator, texts: []const []const u8) !weave.Weave {
+    // invariant: a plant stays small enough to read, since this witness argues
+    // a law by showing every line it merges
+    assert(texts.len <= max_planted_lines);
+    var w = weave.Weave.empty();
+    try w.apply(garden, .{ .inserts = texts, .deletes = &[_]u32{} });
+    // invariant: the plant holds exactly the lines it was handed, so every
+    // later claim about a merge is a claim about known input
+    assert(w.lines.items.len == texts.len);
+    return w;
+}
+
+/// An independent copy, so a branch can be advanced without moving its base.
+fn copy_of(garden: std.mem.Allocator, source: *const weave.Weave) !weave.Weave {
+    // invariant: the source stands inside the module's own bound, so the copy
+    // does too and a later merge refuses for the union rather than the input
+    assert(source.lines.items.len <= weave.max_weave_lines);
+    var out: std.ArrayListUnmanaged(weave.Line) = .empty;
+    errdefer out.deinit(garden);
+    try out.ensureTotalCapacity(garden, source.lines.items.len);
+    for (source.lines.items) |line| {
+        out.appendAssumeCapacity(line);
+    }
+    // invariant: a copy holds the same count as its source, since a branch that
+    // silently lost a line would make every claim below meaningless
+    assert(out.items.len == source.lines.items.len);
+    return .{ .lines = out, .next_pos = source.next_pos };
+}
+
+/// Field-for-field equality: same counter, same lines, same order.
+fn same(a: *const weave.Weave, b: *const weave.Weave) bool {
+    // invariant: both sides stand inside the module's bound, so a false answer
+    // here names the merge rather than the input
+    assert(a.lines.items.len <= weave.max_weave_lines);
+    assert(b.lines.items.len <= weave.max_weave_lines);
+    if (a.next_pos != b.next_pos) return false;
+    if (a.lines.items.len != b.lines.items.len) return false;
+    for (a.lines.items, b.lines.items) |x, y| {
+        if (x.pos != y.pos) return false;
+        if (x.gen != y.gen) return false;
+        if (!std.mem.eql(u8, x.text, y.text)) return false;
+    }
+    return true;
+}
+
+/// Claim 1 and claim 4: both orders agree, and a weave merged with itself
+/// stands unchanged.
+fn prove_order_and_idempotence(
+    garden: std.mem.Allocator,
+    a: *const weave.Weave,
+    b: *const weave.Weave,
+) !void {
+    const forward = try a.merge(garden, b);
+    const backward = try b.merge(garden, a);
+    // invariant: the two orders agree field for field, which is what sorting
+    // the union by position buys over agreeing merely as a document
+    assert(same(&forward, &backward));
+    print("mantra-merge: both orders agree field for field -- GREEN welcome path\n", .{});
+
+    const doubled = try a.merge(garden, a);
+    // invariant: merging a weave with itself is the identity, since union and
+    // max are both idempotent
+    assert(same(&doubled, a));
+    print("mantra-merge: a weave merged with itself is unchanged -- GREEN welcome path\n", .{});
+}
+
+/// Claim 2 and claim 3: three states, all six orders, one answer -- and the
+/// associativity that underwrites it, shown on its own.
+fn prove_six_orders(
+    garden: std.mem.Allocator,
+    a: *const weave.Weave,
+    b: *const weave.Weave,
+    c: *const weave.Weave,
+) !weave.Weave {
+    const orders = [6][3]*const weave.Weave{
+        .{ a, b, c },
+        .{ a, c, b },
+        .{ b, a, c },
+        .{ b, c, a },
+        .{ c, a, b },
+        .{ c, b, a },
+    };
+    // invariant: six is the number of ways three states can be ordered, so the
+    // table below is exhaustive rather than a sample
+    assert(orders.len == 6);
+
+    var answer: ?weave.Weave = null;
+    for (orders) |order| {
+        const first = try order[0].merge(garden, order[1]);
+        const whole = try first.merge(garden, order[2]);
+        if (answer) |*settled| {
+            // invariant: every order lands on the one answer, which is the
+            // property the whole movement exists to establish
+            assert(same(&whole, settled));
+        } else {
+            answer = whole;
+        }
+    }
+    print("mantra-merge: three states merged in all six orders give one weave -- GREEN welcome path\n", .{});
+
+    const ab = try a.merge(garden, b);
+    const left = try ab.merge(garden, c);
+    const bc = try b.merge(garden, c);
+    const right = try a.merge(garden, &bc);
+    // invariant: association moves without moving the answer, stated on its
+    // own so a failure names which law broke
+    assert(same(&left, &right));
+    print("mantra-merge: (a.b).c equals a.(b.c) -- GREEN welcome path\n", .{});
+
+    return answer.?;
+}
+
+/// Claim 5: a delete on one side wins over a side that still holds the line,
+/// and the merged document reads the way a human would expect.
+fn prove_delete_wins(
+    garden: std.mem.Allocator,
+    whole: *const weave.Weave,
+    gone_pos: u32,
+) !void {
+    var found_gone = false;
+    for (whole.lines.items) |line| {
+        if (line.pos != gone_pos) continue;
+        // invariant: the deleted line is present in the HISTORY and even in
+        // parity -- a weave forgets nothing, it only stops surfacing it
+        assert(line.gen % 2 == 0);
+        found_gone = true;
+    }
+    // invariant: the merged weave still carries the deleted line's position,
+    // since dropping it would make the merge lossy
+    assert(found_gone);
+
+    const document = try whole.current(garden);
+    // invariant: two of the four positions survive the merge -- alpha and
+    // delta -- so the document a reader sees is shorter than the history
+    assert(document.len == 2);
+    assert(std.mem.eql(u8, document[0].text, "alpha"));
+    assert(std.mem.eql(u8, document[1].text, "delta"));
+    print("mantra-merge: a delete survives the merge, history keeps it, document reads alpha delta -- GREEN welcome path\n", .{});
+}
+
+/// Claim 6: two branches that both insert collide at the same position and are
+/// refused by name. This is the identity gap, and it is a finding rather than
+/// a fault: `pos` is assigned by a per-weave counter, so it names a line inside
+/// one weave and cannot name one across two.
+fn prove_colliding_inserts_refused(
+    garden: std.mem.Allocator,
+    base: *const weave.Weave,
+) !void {
+    var branch_x = try copy_of(garden, base);
+    try branch_x.apply(garden, .{ .inserts = &[_][]const u8{"x"}, .deletes = &[_]u32{} });
+    var branch_z = try copy_of(garden, base);
+    try branch_z.apply(garden, .{ .inserts = &[_][]const u8{"z"}, .deletes = &[_]u32{} });
+    // invariant: the two branches genuinely collide -- each handed its new line
+    // the same position, which is exactly what makes the refusal necessary
+    assert(branch_x.next_pos == branch_z.next_pos);
+
+    if (branch_x.merge(garden, &branch_z)) |_| {
+        return error.CollidingInsertsNotRefused;
+    } else |err| {
+        // invariant: the refusal arrives by its own name, so a caller can tell
+        // this apart from running out of room
+        assert(err == weave.WeaveError.PositionTextDisagrees);
+    }
+    print("mantra-merge: two branches inserting at one position refused PositionTextDisagrees -- GREEN unwelcome path\n", .{});
+}
+
+/// Claim 7: the union bound is checked at the edge, before anything is copied.
+/// Built by hand rather than grown through apply, because what is under test is
+/// the ceiling rather than the growing.
+fn prove_bound_refused(garden: std.mem.Allocator) !void {
+    const half: u32 = weave.max_weave_lines / 2 + 1;
+    const wide_a = try wide_weave(garden, half);
+    const wide_b = try wide_weave(garden, half);
+    // invariant: the two sides together stand one line past the ceiling, so the
+    // refusal below is the bound speaking rather than an accident of size
+    assert(wide_a.lines.items.len + wide_b.lines.items.len > weave.max_weave_lines);
+
+    if (wide_a.merge(garden, &wide_b)) |_| {
+        return error.OversizeUnionNotRefused;
+    } else |err| {
+        // invariant: the ceiling refuses by its own name, so a caller can tell
+        // it apart from a disagreement about a line
+        assert(err == weave.WeaveError.TooManyLines);
+    }
+    print("mantra-merge: a union past max_weave_lines refused TooManyLines at the edge -- GREEN unwelcome path\n", .{});
+}
+
+/// A weave of `count` lines carrying one shared text, positions 0..count.
+fn wide_weave(garden: std.mem.Allocator, count: u32) !weave.Weave {
+    // invariant: a plant stays inside the module's own bound, since a weave
+    // over the ceiling would refuse for being an input rather than a union
+    assert(count <= weave.max_weave_lines);
+    var out: std.ArrayListUnmanaged(weave.Line) = .empty;
+    errdefer out.deinit(garden);
+    try out.ensureTotalCapacity(garden, count);
+    var pos: u32 = 0;
+    while (pos < count) : (pos += 1) {
+        out.appendAssumeCapacity(.{ .text = "wide", .gen = 1, .pos = pos });
+    }
+    // invariant: the plant holds exactly what was asked for, so the sum the
+    // bound reads is the sum this function promised
+    assert(out.items.len == count);
+    return .{ .lines = out, .next_pos = count };
+}
+
+/// A weave seeded line by line, reaching a state `apply` cannot build on its
+/// own. Used by claim 8 alone, and named rather than hidden: a per-weave
+/// counter hands out a contiguous run, so a weave holding position 2 without
+/// position 1 can only come from an identity scheme this module does not have
+/// yet. The sort inside merge is written for exactly that day.
+fn seeded(garden: std.mem.Allocator, lines: []const weave.Line, next_pos: u32) !weave.Weave {
+    // invariant: a seed stays small enough to read, since claim 8 argues from
+    // every line it plants
+    assert(lines.len <= max_planted_lines);
+    var out: std.ArrayListUnmanaged(weave.Line) = .empty;
+    errdefer out.deinit(garden);
+    try out.ensureTotalCapacity(garden, lines.len);
+    for (lines) |line| {
+        // invariant: every seeded position stands under the counter it is given,
+        // so the weave satisfies the same law apply would have given it
+        assert(line.pos < next_pos);
+        out.appendAssumeCapacity(line);
+    }
+    return .{ .lines = out, .next_pos = next_pos };
+}
+
+/// Claim 8: a union whose positions interleave comes out in position order.
+///
+/// This is the leg that makes the sort inside merge reachable. Every other
+/// claim here merges weaves whose union is already position-ordered, because a
+/// per-weave counter only ever hands out a contiguous run -- so a merge with
+/// the sort deleted would pass all seven of them. That is the same identity gap
+/// claim 6 names, read from the other side.
+fn prove_interleaved_order(garden: std.mem.Allocator) !void {
+    const left = try seeded(garden, &[_]weave.Line{
+        .{ .text = "one", .gen = 1, .pos = 0 },
+        .{ .text = "three", .gen = 1, .pos = 2 },
+    }, 3);
+    const right = try seeded(garden, &[_]weave.Line{
+        .{ .text = "one", .gen = 1, .pos = 0 },
+        .{ .text = "two", .gen = 1, .pos = 1 },
+    }, 3);
+
+    const forward = try left.merge(garden, &right);
+    const backward = try right.merge(garden, &left);
+    // invariant: the two orders agree even when the union interleaves, which is
+    // the case that separates a sorted merge from a merely appended one
+    assert(same(&forward, &backward));
+    // invariant: the union holds all three lines -- one shared, one from each
+    // side -- so nothing was dropped on the way
+    assert(forward.lines.items.len == 3);
+    assert(forward.lines.items[0].pos == 0);
+    assert(forward.lines.items[1].pos == 1);
+    assert(forward.lines.items[2].pos == 2);
+    print("mantra-merge: an interleaving union comes out in position order -- GREEN welcome path\n", .{});
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // One base, three branches of it. State_c inserts while a and b only
+    // delete, so the three genuinely differ and none of them collide.
+    const base = try planted(garden, &[_][]const u8{ "alpha", "beta", "gamma" });
+
+    var state_a = try copy_of(garden, &base);
+    try state_a.apply(garden, .{ .inserts = &[_][]const u8{}, .deletes = &[_]u32{1} });
+
+    var state_b = try copy_of(garden, &base);
+    try state_b.apply(garden, .{ .inserts = &[_][]const u8{}, .deletes = &[_]u32{2} });
+
+    var state_c = try copy_of(garden, &base);
+    try state_c.apply(garden, .{ .inserts = &[_][]const u8{"delta"}, .deletes = &[_]u32{} });
+
+    try prove_order_and_idempotence(garden, &state_a, &state_b);
+    const whole = try prove_six_orders(garden, &state_a, &state_b, &state_c);
+    try prove_delete_wins(garden, &whole, 1);
+    try prove_colliding_inserts_refused(garden, &base);
+    try prove_bound_refused(garden);
+    try prove_interleaved_order(garden);
+
+    print("mantra-merge: version {s}\n", .{witness_version});
+    print("GREEN: merging two weaves is a join -- commutative, associative, idempotent, and refusing by name.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    return run_selftest(garden);
+}
