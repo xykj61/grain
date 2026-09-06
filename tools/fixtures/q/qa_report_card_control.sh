@@ -246,11 +246,41 @@ worse than a missing one. Nothing grows until something breaks. No roster is
 trusted while it cannot refuse a wrong entry. A number nobody measured is worse
 than no number at all.
 EOF
+# TWO CONDITIONS, NEVER ONE (REDS %430). Under the floor is where the argument STARTS, not where it
+# ends: the reading is freed only where one sentence could still have carried the share across the
+# ceiling, |share - ceiling| * n < 100. These seven sentences are 100% refusal-led against a 30%
+# Field ceiling, seventy points away over seven sentences, so no single sentence put it there and it
+# is scored. This leg read `reported` and `register=100` before the amendment -- an A-grade vote
+# from a reading that measured nothing.
 o=$(run under_floor.md --setting field)
-[ "$(val "$o" register_mode)" = "reported" ] && echo "under_floor_reported=yes" || echo "under_floor_reported=no ($(val "$o" register_mode))"
-[ "$(val "$o" register)" -eq 100 ] && echo "under_floor_not_scored=yes" || echo "under_floor_not_scored=no ($(val "$o" register))"
-echo "$o" | grep -q 'reported, not scored' && echo "under_floor_named=yes" || echo "under_floor_named=no"
+[ "$(val "$o" register_floor_met)" = "no" ] && echo "under_floor_seen=yes" || echo "under_floor_seen=no ($(val "$o" register_floor_met))"
+[ "$(val "$o" register_mode)" = "scored" ] && echo "under_floor_far_share_scored=yes" || echo "under_floor_far_share_scored=no ($(val "$o" register_mode))"
+[ "$(val "$o" register)" -eq 0 ] && echo "under_floor_far_share_costs=yes" || echo "under_floor_far_share_costs=no ($(val "$o" register))"
+echo "$o" | grep -q 'no single sentence could have carried this reading' && echo "under_floor_scored_explains=yes" || echo "under_floor_scored_explains=no"
 echo "$o" | grep -q 'of 7 sentences' && echo "under_floor_share_still_shown=yes" || echo "under_floor_share_still_shown=no"
+
+# THE SEATED REASONING, KEPT WHOLE. "One negative sentence out of one is a rounding error, not a
+# register" -- at n=1 a share of 100 is still 80 points from the ceiling times one sentence, which
+# is under 100, so it frees exactly as it always did. The amendment narrows the door; it does not
+# move this case through it.
+printf 'A guard that cannot fail guards nothing.\n' > "$pen/one_sentence.md"
+o=$(run one_sentence.md --setting field)
+[ "$(val "$o" register_floor_met)" = "no" ] && echo "one_sentence_under_floor=yes" || echo "one_sentence_under_floor=no"
+[ "$(val "$o" register_mode)" = "reported" ] && echo "one_sentence_still_free=yes" || echo "one_sentence_still_free=no ($(val "$o" register_mode))"
+[ "$(val "$o" register)" -eq 100 ] && echo "one_sentence_not_scored=yes" || echo "one_sentence_not_scored=no ($(val "$o" register))"
+echo "$o" | grep -q 'reported, not scored' && echo "under_floor_named=yes" || echo "under_floor_named=no"
+
+# AND THE MIDDLE, which is what makes this a rule rather than a headcount: under the floor, with a
+# share NEAR the ceiling, still frees -- because there one sentence genuinely could have crossed it.
+# Without this leg the amendment would be indistinguishable from "score everything past n=1".
+cat > "$pen/near_ceiling.md" <<'EOF'
+A witness binds a claim to a measurement. Every bound names its own maximum.
+The roster reads what it can reach. A stamp orders and a name means.
+No number is trusted without its unit.
+EOF
+o=$(run near_ceiling.md --setting field)
+[ "$(val "$o" register_floor_met)" = "no" ] && echo "near_ceiling_under_floor=yes" || echo "near_ceiling_under_floor=no"
+[ "$(val "$o" register_mode)" = "reported" ] && echo "near_ceiling_still_free=yes" || echo "near_ceiling_still_free=no ($(val "$o" register_mode))"
 
 # The same prose with one more sentence, AT the floor: scored, and scored low. The boundary is read
 # from both sides, so no page can sit at the floor and be treated as if it were under it.
@@ -731,8 +761,13 @@ empty=$(run empty_prose.kyri --setting field --service 100)
 # The two scored readings now answer the same denominator question the same way, which is the whole
 # of the fault: one card, one prose_path, two readings disagreeing about whether there was enough
 # prose to measure.
-[ "$(val "$empty" register_mode)" = "$(val "$empty" grade_mode)" ] \
-  && [ "$(val "$hex" register_mode)" = "$(val "$hex" grade_mode)" ] \
+# Read on the FLOOR FINDING rather than on the mode, since REDS %430 gave the register a second
+# question the grade reading does not ask. The fault this leg was written for is untouched: one
+# card, one prose_path, and both readings must still agree about whether there was prose to measure.
+[ "$(val "$empty" register_floor_met)" = "no" ] \
+  && [ "$(val "$empty" grade_mode)" = "reported" ] \
+  && [ "$(val "$hex" register_floor_met)" = "no" ] \
+  && [ "$(val "$hex" grade_mode)" = "reported" ] \
   && echo "floors_agree_across_readings=yes" || echo "floors_agree_across_readings=no"
 
 # THE PRESERVATION LEG, and the one that keeps the floor from becoming an exemption. Prose that
