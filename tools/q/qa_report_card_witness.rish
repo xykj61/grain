@@ -234,6 +234,19 @@ assert control.out contains "placeholder_not_cited=yes" else "qa-report-card: an
 assert control.out contains "hhmmss_placeholder_free=yes" else "qa-report-card: both runs the naming law spells inside a path shape are illustrations"
 assert control.out contains "fabricated_stamp_still_counted=yes" else "qa-report-card: a real-looking stamp naming no file is still a broken citation -- this is the half that keeps the reading from being an escape"
 assert control.out contains "fabricated_stamp_named=yes" else "qa-report-card: and it must still be named, so it can be repaired"
+
+# A link inside a backtick span or a fenced block is not a link (seated 20260906.133800). The
+# comments branch has masked code spans since it was written; prose did not, and the cost fell on
+# exactly the pages that follow the mark law most carefully -- every page teaching the fold rule
+# quotes `](X)` inside backticks, and each quotation cost 20 points of Truth. Measured that day: 30
+# such shapes across 12 tracked pages. The mask can only REMOVE candidates, so a grade can only rise.
+assert control.out contains "code_span_link_costs_nothing=yes" else "qa-report-card: a link shape quoted inside code marks is literal text, so it cites nothing and cannot be broken"
+assert control.out contains "code_span_link_not_cited=yes" else "qa-report-card: a quoted shape must not even be counted as a citation, or the denominator lies"
+assert control.out contains "fenced_link_costs_nothing=yes" else "qa-report-card: a link inside a fenced block is literal text too, exactly as a renderer reads it"
+assert control.out contains "plain_broken_still_counted=yes" else "qa-report-card: a genuinely broken link in plain prose must still cost, or the mask is a way to stop being checked"
+assert control.out contains "plain_broken_named=yes" else "qa-report-card: and it must still be named"
+assert control.out contains "mixed_line_keeps_the_real_link=yes" else "qa-report-card: one line may carry a real link and a quoted shape, and the real one must survive the mask"
+assert control.out contains "mixed_line_cites_once=yes" else "qa-report-card: that line cites once, so the denominator must read one"
 assert control.out contains "floor_is_cited=yes" else "qa-report-card: the register floor is read out of prose_register_scan.sh, never spelled beside it"
 # TWO CONDITIONS, NEVER ONE (REDS %430). Under the floor is where the argument starts. A reading is
 # freed only where one sentence could still have carried the share across the ceiling -- and where

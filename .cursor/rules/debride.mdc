@@ -1,36 +1,36 @@
 ---
-description: The Glow word "debride" — the sanctioned break of accrete-never-break; redact and shred named dead history (session logs included) so fascia reattaches
+description: The Glow word "debride" -- the sanctioned break of accrete-never-break; redact and shred named dead history (session logs included) so fascia reattaches
 alwaysApply: true
 ---
 
-# debride — the sanctioned break of accrete-never-break
+# debride -- the sanctioned break of accrete-never-break
 
-When Keaton says **debride**, deliberately **break accrete-never-break**: redact and shred named dead history — from living docs *and* from session logs, counsel, and dated testimony alike — so the **fascia heals and reattaches**. The one word that overrides "keep every byte." (Medicine: debridement removes dead/foreign tissue so the living heals.)
+When Keaton says **debride**, deliberately **break accrete-never-break**: redact and shred named dead history -- from living docs *and* from session logs, counsel, and dated testimony alike -- so the **fascia heals and reattaches**. The one word that overrides "keep every byte." (Medicine: debridement removes dead/foreign tissue so the living heals.)
 
 Seated `20260809.012200` on Keaton's word. Zed twin: `.claude/rules/debride.md`.
 
-## Accrete-sometimes-breach — debride is mutable on purpose
+## Accrete-sometimes-breach -- debride is mutable on purpose
 
-Accrete-never-break is the **default**, not an absolute. The fuller law is **accrete-sometimes-breach**: accrete by default, **breach or debride on Keaton's explicit word** (breach renames and keeps the elder in history; debride removes the dead tissue outright). So **no artifact's immutability makes a debride "self-defeating"** — a debride is licensed to remake anything:
+Accrete-never-break is the **default**, not an absolute. The fuller law is **accrete-sometimes-breach**: accrete by default, **breach or debride on Keaton's explicit word** (breach renames and keeps the elder in history; debride removes the dead tissue outright). So **no artifact's immutability makes a debride "self-defeating"** -- a debride is licensed to remake anything:
 
-- A **SHA3-sealed** file (`construction/waymark-registry.bron`) → remove the dead rows and **re-seal**.
-- The **REDS ledger** ("rows never edited") and **append-only CHECKPOINTS** → their no-edit law is the accrete *default*, overridden by a circled debride.
-- **One-clock dated logs** → shed/rewrite on a named debride.
+- A **SHA3-sealed** file (`construction/waymark-registry.bron`) -> remove the dead rows and **re-seal**.
+- The **REDS ledger** ("rows never edited") and **append-only CHECKPOINTS** -> their no-edit law is the accrete *default*, overridden by a circled debride.
+- **One-clock dated logs** -> shed/rewrite on a named debride.
 
-Never "it's immutable, so we can't debride it" — always "it's default-immutable, so it takes a circled debride, which then **re-seals / re-makes** what it touched." Immutability is a lock; debride is the key. **Re-signing is not lost:** a deep debride can re-sign every rewritten commit (`filter-branch --commit-filter 'git commit-tree -S'`, proven `20260817` — 2,901 commits re-signed), so the only unavoidable cost is the re-clone.
+Never "it's immutable, so we can't debride it" -- always "it's default-immutable, so it takes a circled debride, which then **re-seals / re-makes** what it touched." Immutability is a lock; debride is the key. **Re-signing is not lost:** a deep debride can re-sign every rewritten commit (`filter-branch --commit-filter 'git commit-tree -S'`, proven `20260817` -- 2,901 commits re-signed), so the only unavoidable cost is the re-clone.
 
 ## Against neighbors
 
-- **molt** preps a fossil, no cut. **shred** cuts files that have a living mutant, keeping the record. **debride** is stronger: *dead tissue — remove it, do not archive it.*
+- **molt** preps a fossil, no cut. **shred** cuts files that have a living mutant, keeping the record. **debride** is stronger: *dead tissue -- remove it, do not archive it.*
 
 ## Two depths
 
-1. **Working-tree debride** — remove/redact from the tree, commit. Immediate; remains in history until deep.
-2. **Deep debride** — `git filter-repo` rewrites the whole history, then **force-push** both remotes. Truly gone. **Named cost:** a rewrite changes every hash, so clones must re-clone -- the one unavoidable cost; re-signing is *not* lost (see above).
+1. **Working-tree debride** -- remove/redact from the tree, commit. Immediate; remains in history until deep.
+2. **Deep debride** -- `git filter-repo` rewrites the whole history, then **force-push** both remotes. Truly gone. **Named cost:** a rewrite changes every hash, so clones must re-clone -- the one unavoidable cost; re-signing is *not* lost (see above).
 
 ## Discipline
 
-- **Leave a checkpoint first** — record the walk-back nib + stamp in `construction/CHECKPOINTS.md` before the debride rewrites a living card. Mandatory before a deep debride. Rule: `.cursor/rules/checkpoint.mdc`.
+- **Leave a checkpoint first** -- record the walk-back nib + stamp in `construction/CHECKPOINTS.md` before the debride rewrites a living card. Mandatory before a deep debride. Rule: `.cursor/rules/checkpoint.mdc`.
 - Runs only on Keaton's word naming the target; never a sweep beyond it.
 - Deep debride force-pushes; refresh the ITINERARY git nib after.
-- The point is **fascia health** — reattach the fascia once dead tissue is gone.
+- The point is **fascia health** -- reattach the fascia once dead tissue is gone.

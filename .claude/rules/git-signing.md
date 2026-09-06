@@ -4,15 +4,15 @@ All commits MUST be GPG-signed. The global config already sets `commit.gpgsign=t
 
 - Never use `--no-gpg-sign` or `-c commit.gpgsign=false`
 - Never skip hooks with `--no-verify`
-- If a commit fails due to GPG, investigate and fix — do not disable signing
+- If a commit fails due to GPG, investigate and fix -- do not disable signing
 
 After pushing, remind the user to upload their public GPG key to GitHub if commits show as "Unverified".
 
-## The one exception — the depersonalized public seed (`seed/` → `grain-os/grain`)
+## The one exception -- the depersonalized public seed (`seed/` -> `grain-os/grain`)
 
 The private field's commits are always signed, above. The **public seed is the deliberate exception**: `seed/` is its own gitignored repo that projects the depersonalized public seed (custody gate %1, force-pushed to `grain-os/grain`), committed as the anonymous **`grain-ww <grain-ww@users.noreply.github.com>`** identity (was `Grain OS`; renamed with the crashed-meteor bump, `20260828` on Keaton's word -- the name now matches the living domain `grain-ww.com`) with a **single Option-B commit**.
 
-That identity **has no secret key on purpose.** Signing the public seed with the maintainer's own GPG key would cryptographically **link the anonymous seed back to the maintainer** — defeating the whole point of depersonalization (`tools/s/sow_witness.rish` proves `IDENT_CLEAN`/`NO_PERSONAL`; a signature would undo it). So the seed commit is **unsigned**, by design, on Keaton's word (`20260817`).
+That identity **has no secret key on purpose.** Signing the public seed with the maintainer's own GPG key would cryptographically **link the anonymous seed back to the maintainer** -- defeating the whole point of depersonalization (`tools/s/sow_witness.rish` proves `IDENT_CLEAN`/`NO_PERSONAL`; a signature would undo it). So the seed commit is **unsigned**, by design, on Keaton's word (`20260817`).
 
 Concretely, the seed repo sets `commit.gpgsign false` in its **own** `seed/.git/config` (never the private field's), and the projection commits + force-pushes unsigned:
 
@@ -51,7 +51,7 @@ own projector; the seed is its OUTPUT, never its carrier* -- so every ship in th
 carries it and the public seed carries it no more than before. `sow_witness` is GREEN with the
 verdict in place, which is how a privacy boundary is moved: proven, not asserted.
 
-**Living remotes** (`20260730.030553` — Keaton's word): always push **both** `gp405` (GitHub `groupproject405/grain`) and `xy` (GitHub `xykj61/grain`). Codeberg stays retired from living push. Canonical count: `context/REMOTE_ROSTER.md`.
+**Living remotes** (`20260730.030553` -- Keaton's word): always push **both** `gp405` (GitHub `groupproject405/grain`) and `xy` (GitHub `xykj61/grain`). Codeberg stays retired from living push. Canonical count: `context/REMOTE_ROSTER.md`.
 
 ## Our own record numbers wear `%`, never `#` -- seated `20260820.005250`
 
@@ -67,10 +67,10 @@ GitHub's commit-message renderer turns any `#<number>` into a link to the issue 
 
 **Accrete-never-break.** Dated testimony -- session logs, counsel, waymarks, dated design notes -- keeps every `#` it ever wrote. This governs living surfaces and everything written from here forward.
 
-## Commit message hygiene — no bare `@name` in subject or body
+## Commit message hygiene -- no bare `@name` in subject or body
 
-GitHub's commit-message renderer linkifies any `@word` that happens to match a real username or org, regardless of backticks — this is different from file content, issue bodies, and comments, where full Markdown correctly treats a backtick-wrapped `@word` as code. Zig builtins are the live risk here: `@memcpy`, `@import`, `@intCast`, `@sizeOf`, `@typeInfo`, `@bitSizeOf`, `@offsetOf`, `@field`, `@This`, and any other `@`-prefixed builtin can coincidentally match a real GitHub account, as `@memcpy` confirmed on this repo.
+GitHub's commit-message renderer linkifies any `@word` that happens to match a real username or org, regardless of backticks -- this is different from file content, issue bodies, and comments, where full Markdown correctly treats a backtick-wrapped `@word` as code. Zig builtins are the live risk here: `@memcpy`, `@import`, `@intCast`, `@sizeOf`, `@typeInfo`, `@bitSizeOf`, `@offsetOf`, `@field`, `@This`, and any other `@`-prefixed builtin can coincidentally match a real GitHub account, as `@memcpy` confirmed on this repo.
 
-**In commit subject and body text specifically:** write the builtin's name without the leading `@` — "the memcpy builtin," "migrate memcpy sites," "import sites" — never a bare `@memcpy`. **In file content, counsel, and documentation:** keep the `@` and the backticks exactly as TAME's own style already does (`` `@memcpy` ``); this is correct there and needs no change, since GitHub's file-content and Markdown rendering already handles it properly.
+**In commit subject and body text specifically:** write the builtin's name without the leading `@` -- "the memcpy builtin," "migrate memcpy sites," "import sites" -- never a bare `@memcpy`. **In file content, counsel, and documentation:** keep the `@` and the backticks exactly as TAME's own style already does (`` `@memcpy` ``); this is correct there and needs no change, since GitHub's file-content and Markdown rendering already handles it properly.
 
-GitHub removed the *notification* side-effect of commit-message mentions in November 2025 — no one is actually being pinged — so this is a clarity fix, not an urgent one, and it applies going forward. Existing commit messages are dated artifacts and are not rewritten to fix this; the one-clock law already protects them.
+GitHub removed the *notification* side-effect of commit-message mentions in November 2025 -- no one is actually being pinged -- so this is a clarity fix, not an urgent one, and it applies going forward. Existing commit messages are dated artifacts and are not rewritten to fix this; the one-clock law already protects them.

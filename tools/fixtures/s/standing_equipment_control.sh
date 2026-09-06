@@ -718,6 +718,80 @@ out=$(run_scan capable.kyri good-card.kyri)
 case "$out" in *"guards_capability_gated=1"*) echo "capability_gated_counted=yes" ;; *) echo "capability_gated_counted=no" ;; esac
 case "$out" in *"guards_unknown_capability=0"*) echo "known_capability_free=yes" ;; *) echo "known_capability_free=no" ;; esac
 
+# --- the seed_projection probe, planted in both of its answers (REDS %492) ----------------------
+# The second capability arm this tree probes, and the first that asks a CHECKOUT question rather
+# than a host one: does a seed projection stand where `sow_allow_reach` reads the shipped side.
+# Planted by making and removing the directory, since the probe performs the same `test -d` the
+# guard's own scan performs -- a probe that asks a different question than its guard is how a
+# capability becomes an exemption. There is no unknown answer to plant: `test -d` has no tool that
+# can go missing, which is written into the arm rather than faked here.
+cat > "$pen/seedcap.kyri" <<'EOF'
+format standing-equipment-v1
+guard alpha
+path tools/real_witness.rish
+tier lap
+seated 20260822.000000
+
+guard needs_seed
+path tools/real_witness.rish
+tier lap
+capability seed_projection
+seated 20260906.140000
+EOF
+
+run_seed_capability() {
+  rm -f "$pen/seed-card.kyri"
+  ( cd "$pen" && STANDING_ROSTER=seedcap.kyri STANDING_CARD=seed-card.kyri \
+      sh "$runner" 2>/dev/null ) || true
+}
+
+# present -- a projection stands, so the guard runs like any other row
+mkdir -p "$pen/seed"
+out=$(run_seed_capability)
+case "$out" in *"guards_run=2"*) echo "seed_present_runs=yes" ;; *) echo "seed_present_runs=no" ;; esac
+case "$out" in *"skipped_capability=0"*) echo "seed_present_skips_none=yes" ;; *) echo "seed_present_skips_none=no" ;; esac
+
+# absent -- skipped, named, counted, and the pass still passes. All four, because the whole point is
+# that a fresh clone with no projection stops paying a full cold pass for an environment fact.
+rmdir "$pen/seed"
+out=$(run_seed_capability)
+case "$out" in *"guards_run=1"*) echo "seed_absent_skips=yes" ;; *) echo "seed_absent_skips=no" ;; esac
+case "$out" in *"skipped_capability=1"*) echo "seed_absent_counted=yes" ;; *) echo "seed_absent_counted=no" ;; esac
+case "$out" in *"skipped_capability needs_seed wants=seed_projection"*) echo "seed_absent_named=yes" ;; *) echo "seed_absent_named=no" ;; esac
+case "$out" in *"run_verdict=ok"*) echo "seed_absent_still_passes=yes" ;; *) echo "seed_absent_still_passes=no" ;; esac
+
+# the probe reads SOW_SEED exactly as the guard's own scan does, so the two cannot disagree about
+# where the projection is. Planted somewhere else entirely, with nothing at the default path.
+mkdir -p "$pen/elsewhere"
+out=$( ( cd "$pen" && SOW_SEED=elsewhere STANDING_ROSTER=seedcap.kyri STANDING_CARD=seed-card2.kyri \
+        sh "$runner" 2>/dev/null ) || true )
+case "$out" in *"guards_run=2"*) echo "seed_env_followed=yes" ;; *) echo "seed_env_followed=no" ;; esac
+rmdir "$pen/elsewhere"
+
+# A GUARD THIS HOST CANNOT RUN LOSES ITS ELDER CARD ROW (REDS %492, second half). The carry-forward
+# keeps a `tier cadence` guard's history between its runs, which is right; it is wrong for a guard
+# that cannot run here at all, whose last verdict was recorded in a different world and which nothing
+# will ever overwrite. `sow_allow_reach` taught it inside one lap: red on the cold pass for a missing
+# `seed/`, given its capability in the same lap, and its red then stood on the card permanently.
+# Planted as a stale RED, because that is the direction that costs -- the roster's own guard counts
+# card reds, so an immortal one reds the fleet forever.
+printf 'format standing-equipment-runs-v1\nran alpha 20260101.000000 green lap 1\nran needs_seed 20260101.000000 red lap 1\n' > "$pen/stale-card.kyri"
+( cd "$pen" && STANDING_ROSTER=seedcap.kyri STANDING_CARD=stale-card.kyri sh "$runner" >/dev/null 2>&1 ) || true
+if grep -q '^ran needs_seed ' "$pen/stale-card.kyri"; then
+  echo "unrunnable_card_row_dropped=no"
+else
+  echo "unrunnable_card_row_dropped=yes"
+fi
+if grep -q '^ran alpha ' "$pen/stale-card.kyri"; then
+  echo "runnable_card_row_kept=yes"
+else
+  echo "runnable_card_row_kept=no"
+fi
+
+# and the scan counts the row as gated rather than refusing it, since the runner knows the word
+out=$(run_scan seedcap.kyri good-card.kyri)
+case "$out" in *"guards_unknown_capability=0"*) echo "seed_capability_known_to_scan=yes" ;; *) echo "seed_capability_known_to_scan=no" ;; esac
+
 # --- the host tier, which arrived at REDS %295 with no case of its own --------------------------
 # Found while seating the capability field beside it: `host` was proven by neither this control nor
 # the witness, so the axis it copies had no green side and no red one. Its two answers are planted

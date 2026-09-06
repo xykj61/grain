@@ -1,23 +1,23 @@
 ---
-description: After each counsel fusion zip lands, rm the zip and extract folder — attach on fuse kg / resin paste
+description: After each counsel fusion zip lands, rm the zip and extract folder -- attach on fuse kg / resin paste
 alwaysApply: false
 ---
 
-# Fuse resin cleanup (seated `20260802.150731` · canon e213 `20260802.150850` — Keaton's word)
+# Fuse resin cleanup (seated `20260802.150731` - canon e213 `20260802.150850` -- Keaton's word)
 
-Counsel fusion zips land under `~/grain/*.zip` (or a stamped path Keaton pastes). After a fuse round **proves green and dual-pushes**, clean the resin — do not leave a growing pile of elder zips on the pier root.
+Counsel fusion zips land under `~/grain/*.zip` (or a stamped path Keaton pastes). After a fuse round **proves green and dual-pushes**, clean the resin -- do not leave a growing pile of elder zips on the pier root.
 
 Canon: [`foundations/20260826-024942_the-grain-and-the-crossing.md`](../../foundations/20260826-024942_the-grain-and-the-crossing.md) (**Resin hygiene**). Ignore wall: root `/*.zip` in `.gitignore` (prove with `git check-ignore`).
 
-## Pattern — `rm` after dual-push
+## Pattern -- `rm` after dual-push
 
-1. Extract to `/tmp/…` (or another ephemeral path). Verify beads (SHA3-256).
+1. Extract to `/tmp/...` (or another ephemeral path). Verify beads (SHA3-256).
 2. Apply / hand-union metal. Prove witnesses GREEN.
-3. Commit · dual-push (`xy` + `gp405`).
-4. **`rm` the consumed zip and its extracted folder** — and any elder counsel zips still sitting in `~/grain` that the prompt names as superseded.
+3. Commit - dual-push (`xy` + `gp405`).
+4. **`rm` the consumed zip and its extracted folder** -- and any elder counsel zips still sitting in `~/grain` that the prompt names as superseded.
 5. Never re-home private resin trees into the repo.
 
-Prefer plain `rm` over a `to-be-shredded/` folder. The word **shred** is a hard-gated chapter verb; resin cleanup is ordinary delete, not shred. Removal is strictly **after** the push proves the content alive — never before.
+Prefer plain `rm` over a `to-be-shredded/` folder. The word **shred** is a hard-gated chapter verb; resin cleanup is ordinary delete, not shred. Removal is strictly **after** the push proves the content alive -- never before.
 
 ## Refuse
 
@@ -27,4 +27,4 @@ Prefer plain `rm` over a `to-be-shredded/` folder. The word **shred** is a hard-
 
 ## Habit line for batons
 
-Every fresh fusion baton carries: *resin hygiene — rm zip + extract after dual-push*.
+Every fresh fusion baton carries: *resin hygiene -- rm zip + extract after dual-push*.

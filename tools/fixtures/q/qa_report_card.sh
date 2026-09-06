@@ -608,17 +608,38 @@ illustrations=0
 # A BROKEN link in a comment still counts. That is the half that keeps this a reading rather than a
 # way for a program to stop being checked, and the control plants it.
 #
-# Prose files are untouched, deliberately. A Markdown heading begins with `#` and would read as a
-# comment under this rule, so applying it there would count only the headings -- and the separate
-# question of a link inside a fenced block or a backtick span reaches 20+ documents and wants its
-# own round with its own measurement, rather than riding along on this one.
+# Prose files keep every line, deliberately: a Markdown heading begins with `#` and would read as a
+# comment under the rule above, so applying it there would count only the headings.
+#
+# WHAT A PROSE FILE DOES DROP, seated `20260906.133800` -- the round this file's elder note asked
+# for by name and declined to guess at. A link inside a backtick span or a fenced block is not a
+# link: Markdown renders it as literal text, so it cites nothing and cannot be broken. The comments
+# branch below has masked code spans since it was written; prose did not, and the cost fell on
+# exactly the pages that follow the mark law most carefully. `.claude/rules/stamp-and-name.md` asks
+# that an example path be built from PLACEHOLDERS -- `](X)`, `](../../Y)` -- and every page teaching
+# the fold rule quotes that shape inside backticks, where this reading counted each one an
+# unresolved citation and took 20 points of Truth for it. Measured `20260906.133800`: **30 wholly
+# code-spanned link shapes across 12 tracked pages**, every one of them in a rule page, a design
+# essay, or a REDS shelf explaining how a fold re-anchors.
+#
+# The elder note also feared the reach. It is bounded and it runs one way: masking can only REMOVE
+# candidate targets, so `unresolved` can only fall and a grade can only rise or hold. Nothing that
+# resolves today stops resolving.
+#
+# A fence toggles on a line whose first non-blank run is three or more backticks or tildes, which is
+# the CommonMark rule as far as this needs it; an unclosed fence swallows the rest of the file,
+# which is what a renderer does too.
 case "$path" in
   *.md|*.mdc|*.markdown|*.bron|*.kyri) truth_source=prose ;;
   *)                                       truth_source=comments ;;
 esac
 
 if [ "$truth_source" = prose ]; then
-  cat "$root/$path" 2>/dev/null
+  awk '
+    /^[ \t]*(```|~~~)/ { fence = !fence; next }
+    fence { next }
+    { line = $0; gsub(/`[^`]*`/, " code ", line); print line }
+  ' "$root/$path" 2>/dev/null
 else
   awk '/^[ \t]*(\/\/|#)/ { line = $0; gsub(/`[^`]*`/, " code ", line); print line }' "$root/$path" 2>/dev/null
 fi | grep -o '](\([^)]*\))' | sed 's/^](//; s/)$//' | sed 's/#.*$//' > "$work/links.txt" || :

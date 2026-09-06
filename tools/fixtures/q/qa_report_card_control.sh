@@ -305,6 +305,31 @@ o=$(run fabricated.md)
 [ "$(val "$o" truth_counted)" -eq 80 ] && echo "fabricated_stamp_still_counted=yes" || echo "fabricated_stamp_still_counted=no ($(val "$o" truth_counted))"
 echo "$o" | grep -q 'unresolved: session-logs/20260101-090000_nothing.kyri' && echo "fabricated_stamp_named=yes" || echo "fabricated_stamp_named=no"
 
+# 14b -- a link inside a backtick span or a fenced block is not a link (seated 20260906.133800, the
+# round the card's own elder note asked for by name). Markdown renders it as literal text, so it
+# cites nothing and cannot be broken -- and every page that teaches the fold rule quotes the shape
+# `](X)` inside backticks, where the elder reading took 20 points of Truth per quotation. Both
+# halves are planted, because a mask that also hid a REAL link would be a way to stop being checked.
+printf 'A page quoting the shape `](X)` and `](../../Y)` inside code marks and nothing else at all.\n' > "$pen/spanned.md"
+o=$(run spanned.md)
+[ "$(val "$o" truth_counted)" -eq 100 ] && echo "code_span_link_costs_nothing=yes" || echo "code_span_link_costs_nothing=no ($(val "$o" truth_counted))"
+echo "$o" | grep -q '0 of 0 cited paths' && echo "code_span_link_not_cited=yes" || echo "code_span_link_not_cited=no"
+
+printf 'A page fencing a link.\n\n```\nsee [a thing](nowhere-at-all.md)\n```\n\nAnd nothing else at all.\n' > "$pen/fenced_link.md"
+o=$(run fenced_link.md)
+[ "$(val "$o" truth_counted)" -eq 100 ] && echo "fenced_link_costs_nothing=yes" || echo "fenced_link_costs_nothing=no ($(val "$o" truth_counted))"
+
+printf 'A page citing [a real absence](gone-for-good.md) in plain prose and nothing else at all.\n' > "$pen/plain_broken.md"
+o=$(run plain_broken.md)
+[ "$(val "$o" truth_counted)" -eq 80 ] && echo "plain_broken_still_counted=yes" || echo "plain_broken_still_counted=no ($(val "$o" truth_counted))"
+echo "$o" | grep -q 'unresolved: gone-for-good.md' && echo "plain_broken_named=yes" || echo "plain_broken_named=no"
+
+printf 'A page citing [the pin](REDS.md) beside a quoted `](X)` shape, and nothing else at all.\n' > "$pen/REDS.md"
+printf 'A page citing [the pin](REDS.md) beside a quoted `](X)` shape, and nothing else at all.\n' > "$pen/mixed.md"
+o=$(run mixed.md)
+[ "$(val "$o" truth_counted)" -eq 100 ] && echo "mixed_line_keeps_the_real_link=yes" || echo "mixed_line_keeps_the_real_link=no ($(val "$o" truth_counted))"
+echo "$o" | grep -q '0 of 1 cited paths' && echo "mixed_line_cites_once=yes" || echo "mixed_line_cites_once=no"
+
 # 15 -- the register floor, read from both sides at its own boundary. A share needs a denominator
 # big enough to mean something, and the number is CITED from prose_register_scan.sh rather than
 # spelled here, so one floor governs both readings and neither can drift.

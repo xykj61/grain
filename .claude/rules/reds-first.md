@@ -1,12 +1,12 @@
 # Reds first
 
-**Seated:** `20260729.224828` · **Status:** Living · **Cites, never restates**
+**Seated:** `20260729.224828` - **Status:** Living - **Cites, never restates**
 
 Canonical home: `foundations/20260729-224828_reds-first-and-the-allocation.md`
-Ledger: `construction/REDS.md` · Gratitude: `gratitude/toyota-production-system.md`
+Ledger: `construction/REDS.md` - Gratitude: `gratitude/toyota-production-system.md`
 
 When a red is found: name it, record it in the ledger with all three fields
-(what went wrong · what caught it · what it taught), and **book the remainder of
+(what went wrong - what caught it - what it taught), and **book the remainder of
 the journey to reds before opening new work.** Cascade across journey, equinox,
 and chapter boundaries, naming each crossing in the waymark.
 

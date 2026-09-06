@@ -180,14 +180,14 @@ sentence:** may a cross-target witness read GREEN with a named gap when qemu is 
 promises that limit, `%446` reads the other way, and the roster's `capability` field is the
 mechanism.
 
-**GRASS -- `%474`'s LOOM LANDED** (`%494` CLOSED): 345 depth-lost links over 276 shelves, repointed
-by program, proven to move no prose. **Four link guards miss it, three for ONE reason** -- a fold
-shelf's basename carries a stamp, stamped means testimony, and testimony is where `tracked_link`
-reads past and `readme_reach` stops gating: **a fold's own output wears the property that makes
-every instrument let it go.** **Yours, with a number:** the two-level rooms hold **890** more.
-**Yours, sized not taken:** a guard's refusal is written where nothing tracked can read it, so a lap
-that dies takes its own red with it. Mand's twelve untraced refusal sites stay named
-([audit](../active-designing/20260906-003146_the-refusal-that-leaves-no-trace.md), Caravan parked Dream's).
+**GRASS -- three findings, all CLOSED**, whole on the
+[`133344` shelf](archive/20260906-133344_itinerary-landed-accounts.md). **A guard's precondition
+belongs in its roster row** (`%493`): `sow_allow_reach` needs a `seed/` no clone carries, so at
+`tier lap` with no `capability` it red every tree and each ship paid a full cold pass a lap. **A law
+is not kept by the room that writes it:** 63 of 104 rule pages held 859 non-ASCII characters, every
+one on the rule's own table; `ascii_document` enforces both rooms at zero and ratchets **347** pages
+at **3,956**. **A link quoted in backticks cites nothing** -- 30 shapes over 12 pages, all
+teaching the fold rule. **Carried:** **890** depth-lost links, a refusal nothing tracked can read.
 
 **COPAL -- EXISTENCE AND AGREEMENT ARE TWO QUESTIONS, AND ONLY ONE HAD AN INSTRUMENT.** `%502`
 CLOSED ([shelf](archive/REDS-a-number-and-a-path-name-two-rows-rows-502.md)). A `%N` is a number a

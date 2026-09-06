@@ -1,6 +1,6 @@
 # Nib (landed-edge sense)
 
-**Canonical:** `context/LEXICON.md` — **Nib** seated `20260712.121719` · residue polish `20260712.122600`.
+**Canonical:** `context/LEXICON.md` -- **Nib** seated `20260712.121719` - residue polish `20260712.122600`.
 
 In new prose, rules, session logs, living ledger *Now* lines, and Bron fields, use **nib** for the **landed-edge** sense of the work:
 
@@ -12,17 +12,17 @@ In new prose, rules, session logs, living ledger *Now* lines, and Bron fields, u
 
 ## What this does not retire
 
-- **Pen / metaphor** — *nib* is the source image; keep it.
-- **Tooltip** (UI hover-help) — compound teacher-word; free if Skate grows it.
-- **Git's "tip of the branch"** when quoting or teaching git — teacher-keeps; our HEAD word remains **git nib**.
-- **Giving-lane tipping** as a future gratuity feature — name it in the giving family when that day comes; do not reopen landed-edge *tip* by a side door.
+- **Pen / metaphor** -- *nib* is the source image; keep it.
+- **Tooltip** (UI hover-help) -- compound teacher-word; free if Skate grows it.
+- **Git's "tip of the branch"** when quoting or teaching git -- teacher-keeps; our HEAD word remains **git nib**.
+- **Giving-lane tipping** as a future gratuity feature -- name it in the giving family when that day comes; do not reopen landed-edge *tip* by a side door.
 
 ## Accrete-never-break (by tier)
 
-Historical *tip* stays readable in dated logs, counsel titles, frozen witnesses, **and landed rows inside living ledgers** (checked TASKS lines, filed RTAC tables, inference-arc history). Living *Now* lines are Tier 3 and may sweep. Dated testimony is Tier 2 — style via a recorded Radiant pass; facts via errata. Proof-sealed bytes are Tier 1.
+Historical *tip* stays readable in dated logs, counsel titles, frozen witnesses, **and landed rows inside living ledgers** (checked TASKS lines, filed RTAC tables, inference-arc history). Living *Now* lines are Tier 3 and may sweep. Dated testimony is Tier 2 -- style via a recorded Radiant pass; facts via errata. Proof-sealed bytes are Tier 1.
 
 ## Witnesses
 
-Any future nib vocabulary witness must match `\bnib\b` — the tree holds one authored *nibble* (`granary/granary.rye` tamper probe) that must not false-positive.
+Any future nib vocabulary witness must match `\bnib\b` -- the tree holds one authored *nibble* (`granary/granary.rye` tamper probe) that must not false-positive.
 
-Bron session logs prefer `product_nib` · `suite_nib` · `git_nib` (or `nib <hash>`) over `tip` / `product_tip`.
+Bron session logs prefer `product_nib` - `suite_nib` - `git_nib` (or `nib <hash>`) over `tip` / `product_tip`.

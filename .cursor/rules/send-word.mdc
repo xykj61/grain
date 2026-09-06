@@ -1,19 +1,19 @@
 ---
-description: The Glow word "send" — commit, push, and merge from the client to the GitHub pier — attach when Keaton says send
+description: The Glow word "send" -- commit, push, and merge from the client to the GitHub pier -- attach when Keaton says send
 alwaysApply: false
 ---
 
-# "send" — the Glow word for commit · push · merge
+# "send" -- the Glow word for commit - push - merge
 
-When Keaton says **"send"** (from a client terminal — the Cursor iOS app, a desktop, any machine talking to the agent), it is Glow's one word for **ship the current work to the personal server**: commit, push, and merge to `main`. The client is the hand; GitHub holds the project — our pier, our own `urbit` clone — in the cloud for now; "send" carries the work from hand to pier.
+When Keaton says **"send"** (from a client terminal -- the Cursor iOS app, a desktop, any machine talking to the agent), it is Glow's one word for **ship the current work to the personal server**: commit, push, and merge to `main`. The client is the hand; GitHub holds the project -- our pier, our own `urbit` clone -- in the cloud for now; "send" carries the work from hand to pier.
 
 ## What "send" does, in order
 
-0. **ls-remote guard** (seated `20260730.032153` · red 31). For each living remote (`xy`, `gp405`), run `git ls-remote <remote> HEAD` and capture `$?` **before any pipe**. If the remote is missing, empty, or refuses — name **repo-absent** (or the exact failure) out loud and **stop**. Do not push. Pin both tips and assert the two waters agree (same SHA on the branch you mean to ship) before step 2. Canonical count: `context/REMOTE_ROSTER.md`. Existence is not authorization.
-1. **Commit** the staged work in CONTRIBUTING style — component-prefixed subject under 50 characters, a Gauge **Meter** body naming what changed and why, a `Related` section. One commit per logical change; more than one commit when the work spans logical changes.
+0. **ls-remote guard** (seated `20260730.032153` - red 31). For each living remote (`xy`, `gp405`), run `git ls-remote <remote> HEAD` and capture `$?` **before any pipe**. If the remote is missing, empty, or refuses -- name **repo-absent** (or the exact failure) out loud and **stop**. Do not push. Pin both tips and assert the two waters agree (same SHA on the branch you mean to ship) before step 2. Canonical count: `context/REMOTE_ROSTER.md`. Existence is not authorization.
+1. **Commit** the staged work in CONTRIBUTING style -- component-prefixed subject under 50 characters, a Gauge **Meter** body naming what changed and why, a `Related` section. One commit per logical change; more than one commit when the work spans logical changes.
 2. **Push** the working branch to **both** living remotes (`20260730.030553`): `git push -u xy <branch>` and then `git push -u gp405 <branch>` (retry on network error, exponential backoff). Only after step 0 answered on both waters. Capture each push's exit status **before any pipe**.
-3. **auth-refused** (seated `20260730.033648` · red 32 · Option 2 seated `20260730.034136`). If a push returns HTTP 403, `Permission … denied`, or `denied to`, name **auth-refused** for that remote out loud — distinct from **repo-absent**. Do not claim dual-send succeeded. **Option 2 (SEATED):** Cloud pier pushes `xy` branch + PR only; `gp405`/`main` syncs by Keaton's merge → home-pier pull → GPG-signed push — keys stay home. Never spread a home credential onto Cloud to clear a 403.
-4. **Merge to `main`**: fast-forward when clean. On Cloud under Option 2 (**merge-here approved** `20260730.034520`): Cloud FF-merges itself (`git checkout main` · `git merge --ff-only <branch>` · `git push xy main`) without waiting for a GitHub merge click; name auth-refused if `origin` refuses; home pier then pulls and GPG-pushes `origin main` so the waters agree. Never a force-push, never an amend, unless Keaton says so explicitly. Re-run the ls-remote guard before each push of `main`; treat auth-refused as in step 3.
+3. **auth-refused** (seated `20260730.033648` - red 32 - Option 2 seated `20260730.034136`). If a push returns HTTP 403, `Permission ... denied`, or `denied to`, name **auth-refused** for that remote out loud -- distinct from **repo-absent**. Do not claim dual-send succeeded. **Option 2 (SEATED):** Cloud pier pushes `xy` branch + PR only; `gp405`/`main` syncs by Keaton's merge -> home-pier pull -> GPG-signed push -- keys stay home. Never spread a home credential onto Cloud to clear a 403.
+4. **Merge to `main`**: fast-forward when clean. On Cloud under Option 2 (**merge-here approved** `20260730.034520`): Cloud FF-merges itself (`git checkout main` - `git merge --ff-only <branch>` - `git push xy main`) without waiting for a GitHub merge click; name auth-refused if `origin` refuses; home pier then pulls and GPG-pushes `origin main` so the waters agree. Never a force-push, never an amend, unless Keaton says so explicitly. Re-run the ls-remote guard before each push of `main`; treat auth-refused as in step 3.
 
 ## Discipline "send" always keeps
 
@@ -24,4 +24,4 @@ When Keaton says **"send"** (from a client terminal — the Cursor iOS app, a de
 
 ## Why the word exists
 
-A client talking to an agent talking to the pier is the shape of Glow's own network — a hand, a companion, a personal server holding the whole faithful history. "Send" names that gesture in one syllable, so shipping from a phone feels like handing a letter to your own ship rather than reciting three git verbs. It is the client-to-pier verb; when Glow's own Comlink carries this someday, "send" keeps its meaning.
+A client talking to an agent talking to the pier is the shape of Glow's own network -- a hand, a companion, a personal server holding the whole faithful history. "Send" names that gesture in one syllable, so shipping from a phone feels like handing a letter to your own ship rather than reciting three git verbs. It is the client-to-pier verb; when Glow's own Comlink carries this someday, "send" keeps its meaning.

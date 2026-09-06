@@ -472,6 +472,26 @@ capability_state() {
       command -v bwrap >/dev/null 2>&1 || { echo unknown; return 0; }
       if bwrap --ro-bind / / --dev /dev /bin/true >/dev/null 2>&1; then echo present; else echo absent; fi
       ;;
+    seed_projection)
+      # Does a seed projection stand in this checkout? `seed/` is gitignored and built by
+      # `tools/s/sow.rish`, so a fresh clone has none -- and `sow_allow_reach`, which reads the
+      # shipped side, cannot run without one. Its scan refuses rather than reporting clean, which is
+      # correct (REDS %170) and made the guard red on every tree in the fleet that had not projected
+      # (REDS %492). This is the same reading the operator card already gives an empty `vendor/`: an
+      # ENVIRONMENT fact rather than a tree red.
+      #
+      # THE PROBE ASKS THE GUARD'S OWN QUESTION, reading `SOW_SEED` exactly as the scan does, so the
+      # two can never disagree about where the projection is. Answering a different question than
+      # the guard would is how a capability becomes an exemption.
+      #
+      # THERE IS NO UNKNOWN HERE, and that is honest rather than a gap: `test -d` has no tool to go
+      # missing, so the question is always answerable. The one thing absence could hide is a
+      # projection deleted where it should stand -- and `sow.rish` rebuilds it from the field every
+      # publish, so a missing `seed/` names no fault. The skip is announced by name on every pass
+      # (`skipped_capability sow_allow_reach wants=seed_projection here=absent`), which is what keeps
+      # it a cadence rather than a quiet hole.
+      if [ -d "${SOW_SEED:-seed}" ]; then echo present; else echo absent; fi
+      ;;
     *) echo unknown ;;
   esac
 }
@@ -609,6 +629,20 @@ fi
 
 awk '{print $1}' "$pen/todo" | sort -u > "$pen/running"
 
+# A GUARD THIS HOST CANNOT RUN LOSES ITS ELDER CARD ROW (REDS %493, second half). The carry-forward
+# below exists so a `tier cadence` guard keeps its own history between its runs, and that is right.
+# It is NOT right for a guard skipped by `host` or `capability`: that guard is not merely waiting its
+# turn, it cannot run here at all, so its last verdict was recorded in a different world and nothing
+# will ever overwrite it. `sow_allow_reach` is the case that taught it -- red on the cold pass for a
+# missing `seed/`, given `capability seed_projection` in the same lap, and its red then stood on the
+# card permanently while `standing_equipment` counted it every pass. The skip is announced by name on
+# every pass (`skipped_capability <name> wants=<cap> here=absent`), so dropping the row loses no
+# reading; keeping it would be inheriting a verdict from a machine this one is not.
+#
+# `skipped_scope` is deliberately NOT here: a `--scoped` pass skips a guard that DOES apply to this
+# host and whose receipt is the whole point of the mechanism.
+cat "$pen/skiphost" "$pen/skipcap" 2>/dev/null | awk '{print $2}' | sort -u > "$pen/unrunnable"
+
 # THE RECORD A GUARD READS MUST DESCRIBE THIS PASS, NOT THE LAST ONE (REDS %483). The card in the
 # working tree is written once, at the close far below, so every guard reading it mid-pass read the
 # PREVIOUS pass's verdict for every peer -- including reds this same pass had already repaired.
@@ -629,7 +663,16 @@ awk '{print $1}' "$pen/todo" | sort -u > "$pen/running"
 # that has not -- which is exactly what a peer that has not re-run honestly has.
 : > "$pen/live.rows"
 if [ -f "$card" ]; then
-  grep '^ran ' "$card" > "$pen/live.rows" || :
+  # The live view drops an unrunnable guard's elder row for the same reason the close does
+  # (REDS %493, second half): a guard skipped by `host` or `capability` cannot run here, so its last
+  # recorded verdict came from a different machine and no pass will ever replace it. Filtering only
+  # at the close would leave every guard reading this view mid-pass the very phantom red the two
+  # repairs exist to end.
+  grep '^ran ' "$card" \
+    | while IFS= read -r _row; do
+        _rname=$(printf '%s' "$_row" | awk '{print $2}')
+        grep -qx "$_rname" "$pen/unrunnable" || printf '%s\n' "$_row"
+      done > "$pen/live.rows" || :
 fi
 live_card="$pen/card.live"
 live_write() {
@@ -650,7 +693,9 @@ if [ -f "$card" ]; then
     case "$line" in
       ran\ *)
         name=$(printf '%s' "$line" | awk '{print $2}')
-        grep -qx "$name" "$pen/running" || printf '%s\n' "$line" >> "$pen/fresh"
+        if ! grep -qx "$name" "$pen/running" && ! grep -qx "$name" "$pen/unrunnable"; then
+          printf '%s\n' "$line" >> "$pen/fresh"
+        fi
         ;;
       *) ;;
     esac
