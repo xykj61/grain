@@ -274,3 +274,5 @@ at a closed fold.*
 
 *Rows %432-%434 folded to [`REDS-what-a-hand-already-looked-at-rows-432-434.md`](REDS-what-a-hand-already-looked-at-rows-432-434.md) on `20260905.155141`, each **CLOSED** -- the looking was careful, and the looking was the limit.*
 *Row %435 folded to [`REDS-the-page-that-became-its-own-ancestor-rows-435.md`](REDS-the-page-that-became-its-own-ancestor-rows-435.md) on `20260905.160554`, **CLOSED** -- a repoint that mends a citation can falsify a provenance claim, and every meter reads the result as a repair.*
+
+*Rows %436 and %437 folded to [`REDS-a-claim-that-escaped-checking-rows-436-437.md`](REDS-a-claim-that-escaped-checking-rows-436-437.md) on `20260905.200430`, both **CLOSED** -- One fault in two materials: a claim that reads true and is never asked to prove it. A peer's finding published as history because its mechanism sounded right, and a fabricated citation that walked past the guard written for it because a hard wrap split the path into two tokens. One escaped a reader, one escaped a machine, both were checkable in one command.*
