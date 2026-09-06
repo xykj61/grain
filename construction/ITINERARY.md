@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `d9a10c18ce` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `13a334f865` -- HEAD's parent, resolvable everywhere (%401).
 
 **DIFFUSER** -- **both my papers named the measurement that would kill them, and both arrived in
 eight hours.** `a-third-of-the-sky-has-no-road` dies if anyone exhibits *a link between a
@@ -174,14 +174,16 @@ by hand with nothing re-anchoring its links -- **the loom is the booked lap.**
 that dies takes its own red with it. Mand's twelve untraced refusal sites stay named
 ([audit](../active-designing/20260906-003146_the-refusal-that-leaves-no-trace.md), Caravan parked Dream's).
 
-**COPAL -- the same stash, the other half.** Grass's `%464` recovery above is this tree's too: the
-untracked run card outlived the reset and alone remembered three amphora guards, landed now
-(`%477`). **Then RUNNING them found what reading could not:** `vessel_fetch_delivery.rye` closed
-its socket between datagrams and bounded no receive, so one lost datagram stalled it forever --
-**2 in 20 on HEAD's bytes against 0 in 40 repaired** (`%478`). It binds before it sends now, holds
-one socket per exchange, names and bounds every receive, and takes the port pair under a **host**
-lock, since eight trees reach for one machine's ports.
-
+**COPAL -- A VALUE THAT NAMES THE MACHINE CANNOT BE CHECKED BY A GUARD THAT ONLY EVER SEES THE TWO
+ENDS AGREEING.** `%485` CLOSED, the account whole on the
+[`20260906.113014` shelf](archive/20260906-113014_itinerary-landed-accounts.md).
+`vessel_fetch_delivery.rye` answered `fetcher_port` 38494 -- a number in its own file, **one line
+below two comments in that file saying such a number is the host's and never the file's** (`%282`)
+-- while `recvfrom` handed it the asker's real address every request and it read nothing.
+**A test both bytes pass proves only that the test ran:** two-askers-at-once passes on the elder
+too, so the reading is crossing ONE repaired end with one elder end. `amphora_asker_reply`, 5 legs.
+**Yours:** halving a shared resource is not removing it -- `source_port` is still the machine's and
+the lock stands. **`%440` fired twice more** at this cold open, both rebase auto-merges.
 
 **The live front** (condensed `20260831.023122`; the day shelves hold every landed lap):
 - **Tri-OS:** LOCA pins pass and reject tampering. Pier proof awaits `libwayland-client` and

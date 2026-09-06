@@ -1,0 +1,66 @@
+# tools/gen/amphora/amphora_asker_reply.rish -- Amphora: a source answers the asker, not a number.
+#
+# WHAT THIS GUARDS. amphora/vessel_fetch_delivery.rye carried two UDP port numbers in its own source
+# until `20260906`: the source sent every answer to `fetcher_port`, and every asker bound that same
+# number. Two facts about the machine, written in a file that runs on any machine -- one line under
+# two comments in the same file saying the host numbers these, never this file. The asker's port is
+# the kernel's now, read back with `getsockname`, and the source answers the address that arrived
+# with the request. REDS %485.
+#
+# WHAT IT PROVES, AND HOW EACH READING IS EARNED.
+#   1. The kernel chooses. Two askers in one demo print two different ports, and neither is 38494.
+#      A printed number a hand can watch change beats a sentence in a comment.
+#   2. One source answers one asker, and two at once. The welcome, on the repaired bytes.
+#   3. The plants bite. The control reconstructs both elder faults and crosses them against the
+#      repair, five legs, every refusal shown from the failing side and every welcome asserted as
+#      hard.
+#
+# WHY `tier cadence` RATHER THAN `tier lap`. Two crossed legs each spend the module's own bound --
+# three attempts of ten seconds -- because what they establish is that nothing arrives, and nothing
+# takes exactly as long to prove as the bound says. Measured `20260906`: the whole guard runs about
+# 80 seconds against a full lap pass of 840, so a lap clock would spend a tenth of the pass proving
+# a property that changes only when this module does. The lap-tier amphora guards already build and
+# run this module every lap; this one asks the question they cannot.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/gen/amphora/amphora_asker_reply.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let delivery_bin = "amphora/bin/vessel-fetch-delivery"
+
+say "amphora-asker-reply: build vessel fetch delivery..."
+let build = run ["sh" "-c" "mkdir -p amphora/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_fetch_delivery.rye -lc -femit-bin=${delivery_bin}"]
+assert build.ok else "amphora vessel_fetch_delivery build failed"
+
+say "amphora-asker-reply: the kernel chooses the asker's port..."
+# The demo fetches two resins, so it binds twice and prints twice. Distinct ports, neither the
+# retired 38494, is the whole reading -- counted by the scan, since rishi reads `$name` as its own
+# interpolation and cannot hold shell arithmetic inline.
+let ports = run ["sh" "tools/fixtures/a/amphora_asker_port_scan.sh"]
+assert ports.ok else "amphora asker-reply: the demo would not run under the port lock"
+say ports.out
+assert ports.out contains "asker_port=kernel_chosen" else "amphora asker-reply: the asker's port must be the kernel's, printed and distinct"
+assert ports.out contains "distinct=2" else "amphora asker-reply: two binds handed one port means the kernel was not asked"
+assert ports.out contains "retired_port_used=0" else "amphora asker-reply: 38494 is retired and must not be bound by name"
+
+say "amphora-asker-reply: one asker, answered..."
+let one = run ["sh" "tools/fixtures/a/amphora_vessel_port_lock.sh" "sh" "tools/fixtures/a/amphora_asker_reply.sh" "amphora/bin/vessel-fetch-delivery" "amphora/bin/vessel-fetch-delivery"]
+assert one.ok else "amphora asker-reply: one asker went unanswered"
+assert one.out contains "asker_reply=every_asker_answered" else "amphora asker-reply: the single-asker verdict must name every asker answered"
+
+say "amphora-asker-reply: two askers at once, both answered..."
+let two = run ["sh" "tools/fixtures/a/amphora_vessel_port_lock.sh" "sh" "tools/fixtures/a/amphora_asker_reply.sh" "amphora/bin/vessel-fetch-delivery" "amphora/bin/vessel-fetch-delivery" "2"]
+assert two.ok else "amphora asker-reply: two askers at once left one unanswered"
+assert two.out contains "answered=2" else "amphora asker-reply: both askers must be answered"
+
+say "amphora-asker-reply: the plants, and the crossings..."
+let control = run ["sh" "tools/fixtures/a/amphora_asker_reply_control.sh"]
+assert control.ok else "amphora asker-reply: a control leg read the wrong way"
+say control.out
+assert control.out contains "control_verdict=ok" else "amphora asker-reply: the control must balance before it is believed"
+assert control.out contains "legs=5 failed=0" else "amphora asker-reply: all five legs must read as they must"
+assert control.out contains "leg port_source_repaired_asker: an_asker_went_unanswered" else "amphora asker-reply: a source answering a number must fail an asker it was not told about"
+assert control.out contains "leg repaired_source_split_asker: an_asker_went_unanswered" else "amphora asker-reply: an asker speaking through a second socket must go unanswered"
+assert control.out contains "leg port_plant_pair_innocent: every_asker_answered" else "amphora asker-reply: the planted pair must agree with itself, or the pen is the fault"
+
+say "GREEN: Amphora — the source answers the asker, and the kernel names the asker's port."

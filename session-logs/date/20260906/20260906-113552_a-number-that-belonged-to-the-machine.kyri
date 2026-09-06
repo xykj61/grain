@@ -1,0 +1,51 @@
+format session-log-v1
+stamp 20260906.113552
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role repository agent -- COPAL seat, amphora and bron-resins lane
+modality text
+model claude-opus-5
+model_status configured default proven by .claude/settings.json; runtime identity unverified
+voice Kyri
+host Linux pier, America/New_York one clock
+title A number that belonged to the machine, written in a file that runs on any machine
+prompt the baton -- COPAL seat, my lane amphora/ and bron-resins/, the prior lap's own recommend naming the fixed port pair as the next work
+think Round open first: fleet_round_open.sh read already on the anointed order at 05c87d3d04, so the card I read is the tree I stand on.
+think Cold roster pass 135 green, 1 red, 4 gated, 908s. The red was index_row_bound -- rows_misordered=2 on today's shelf, both my own rows sitting under older peer rows after two rebase auto-merges. That is %440's known class, caught by the loom %440 itself booked and built. Swapped both pairs by hand, scan back to verdict=ok. Eighth and ninth firings; the writer that would close it still does not exist and is not my lane.
+think Council rota row 3 of 5 (lap 4043, 4043 mod 5 = 3): Water, the row that tastes -- the happy zone and the thin edge, the shape you grew and the shape you are. The happy zone reading landed directly on this lap: a hardcoded port is the unruly world's own number sitting in the pure center, where the module can never press on it.
+think My prior recommend named the crux: the fixed port pair wants a module change rather than a lock. Reading the module found the sharper version. amphora/vessel_fetch_delivery.rye says THE HOST NUMBERS THESE, NEVER THIS FILE over SOL_SOCKET and THE KERNEL LAYS THIS OUT, NEVER THIS FILE over sockaddr_in -- both reclaimed after %282 -- and then compiles in two port numbers on the very next line. A file stating its own principle twice and breaking it immediately is a red rather than a preference.
+think The evidence was already arriving and being discarded: recv_on declared var from: sockaddr_in = undefined, recvfrom filled it with the asker's address on every request, and the frame ended without reading it.
+think Repair one: recv_on hands the address to a caller-owned slot, send_resin_response answers it, fetch_one binds ephemeral_port zero and the kernel returns a free port atomically -- which no probe-then-bind can do, since a probe releases before the bind.
+think That repair refused immediately with Incomplete, and the refusal named a second fault I had not seen. send_wire opened a fresh socket per send, so a request's return address named an ephemeral port the asker was not listening on and closed a moment later. The source answered honestly and answered nobody. A datagram carries a return address whether its sender meant it to or not, so which socket a request leaves by is part of the message. send_from takes the caller's fd now and one exchange speaks and listens through one socket.
+think Four functions became uncalled and were removed rather than left: fetcher_port, send_wire, send_to, recv_wire. An uncalled function is dead tissue.
+obs My first control was wrong and measuring it is what said so. I predicted two concurrent askers would break the elder binary; built HEAD's bytes into a pen and ran it, and the elder passed in half a second. Two short exchanges stagger by milliseconds and never overlap. A test both bytes pass discriminates nothing, and publishing it as a control would have been a guard green for the wrong reason.
+obs The reading that does discriminate is crossing one repaired end against one elder end, which nothing in this tree had ever done. Five legs, two plants built by transform rather than by git ref so the control survives a history rewrite.
+obs The second correction came from the plants themselves. I expected a repaired source to refuse a fixed-port asker and measured the opposite: such an asker still speaks and listens through one socket, so it is answerable. That leg stands as a welcome asserted as hard as the refusals, and it says the repair is a superset of the elder rather than merely different from it. Two wrong expectations in one lap, both corrected by running rather than by reading.
+obs The number moved under me. reds_spine_derive --next read 479 at 11:19 and 480 at 11:28, so a peer published %479 in between and my row is %485. The derived spine doing exactly its job, with no hand repair.
+obs %479 is upstream and not yet in this tree, so reds_ledger_monotone reads a gap locally. It resolves on the rebase before the send rather than by editing the row.
+obs And the rebase itself renumbered me again. Booked %480 at 11:28; the fetch before the send brought ten upstream commits, one of which had already published %480 for an unrelated row. The published number never moves and the unshared one does, so mine is %485 -- second renumbering of one lap, no hand repair, the stamp held throughout.
+obs The hot pass caught my own new fixture: shell_dialect refused four sed -i sites at a ceiling of zero. GNU sed -i takes no argument and BSD requires a backup suffix, so the tree writes neither -- sed_inplace from shell_portable.sh copies back through the original inode and keeps the mode. I had also written a newline into a sed replacement, which is a GNU extension; the planted const is appended now, since a file-scope const is legal wherever it stands. The control still reads five legs, zero failed.
+obs The card went 1,378 bytes over its 40,960 -- almost exactly what my own account weighed. Folded it whole to its own shelf rather than condensing anyone else's live front, and left a five-line pointer. The fold is the first move; the trim is what a card reaches for when its finished sections have not been shelved.
+obs What I did not do, and it is the honest boundary: halving a shared resource is not removing it. source_port is still one number the machine owns and eight trees reach for, so the port lock stands. Its discovery wants a rendezvous the fixtures do not have.
+loom guard=amphora_asker_reply wall_s=68 tier=cadence legs=5 plants=2
+loom control=amphora_asker_reply_control wall_s=65 legs=5 failed=0 crossed_leg_s=31
+loom demo=asker_ports printed=2 distinct=2 retired_port_used=0 ports=39625,34413
+loom guard=amphora_lap3 wall_s=2 guard=amphora_resin_chunk wall_s=3 guard=amphora_purchase_delivery wall_s=1 verdict=green
+loom pass=cold guards=140 green=135 red=1 gated=4 wall_s=908
+file amphora/vessel_fetch_delivery.rye the asker's address read rather than discarded, the kernel asked for the port, one fd per exchange, four functions removed
+file tools/fixtures/a/amphora_asker_reply.sh one source and one or two askers, taking both binaries so a crossed pair can be read
+file tools/fixtures/a/amphora_asker_reply_control.sh both elder faults planted by transform, five legs, every refusal bitten and every welcome asserted
+file tools/fixtures/a/amphora_asker_port_scan.sh the kernel's choice counted, since rishi reads a dollar sign as its own interpolation
+file tools/gen/amphora/amphora_asker_reply.rish the witness, and why cadence rather than lap
+file tools/am/amphora_asker_reply.rish the accrete shim, forwarding the refusal reason on stderr
+file construction/standing-equipment.kyri the twelfth amphora row, what was tried and discarded, and what the guard does not reach
+file construction/REDS.md %485 written whole with its three fields
+file construction/archive/20260906-113014_itinerary-landed-accounts.md the account folded off the live front, every word kept
+file construction/CHECKPOINTS.md the cairn naming the fold and refusing the trim
+file construction/ITINERARY.md the live front pointer, the sentence, and the boundary that wants Keaton's word
+file amphora/README.md the retired port, the twelfth witness, and the crossed reading
+file session-logs/date/README-index-20260906.md two misordered pairs swapped at the cold open, then a dedupe-and-sort after the rebase re-applied a whole block -- %440's eighth through eleventh firings, 61 rows to 59
+scope one red closed at its root in my own lane; a guard seated that asks a question eleven others could not; two wrong expectations corrected by measurement
+status GREEN -- amphora_asker_reply, amphora_lap3, amphora_resin_chunk, amphora_purchase_delivery, amphora_bounds_agree, standing_equipment, index_row_bound, tame_style_check, width_check, living_pin_near_bound all green on metal; every artifact touched grades B or better, five of seven at A or A+
+recommend kg -- the lane's red is closed on metal and the guard is on a clock; the next amphora lap is the source's own port discovery, which needs a rendezvous the fixtures lack and is a fixture-orchestration round rather than a module one.

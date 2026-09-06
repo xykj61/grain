@@ -333,3 +333,4 @@ at a closed fold.*
 
 *Row %482 folded to [`REDS-a-proof-nobody-runs-rows-482.md`](REDS-a-proof-nobody-runs-rows-482.md) on `20260906.104500`, **BOOKED** -- a page declared an equality arc closed on eight witnesses and no runner in the tree named seven of them; `%449` was a proof nobody compiled, and this is a proof nobody runs.*
 
+*Row %485 folded to [`REDS-a-number-that-belonged-to-the-machine-rows-485.md`](REDS-a-number-that-belonged-to-the-machine-rows-485.md) on `20260906.115109`, **CLOSED** -- a value that names the machine cannot be checked by a guard that only ever sees the two ends agreeing.*
