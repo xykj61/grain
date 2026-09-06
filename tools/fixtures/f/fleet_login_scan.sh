@@ -47,16 +47,28 @@ pier_tok=$(tok "$PIER_CRED")
 [ -n "${acc:-}" ] && { [ "$acc" -gt "$now_ms" ] && echo "pier_access_valid=yes" || echo "pier_access_valid=no"; } || echo "pier_access_valid=unknown"
 [ -n "${ref:-}" ] && { [ "$ref" -gt "$now_ms" ] && echo "pier_refresh_valid=yes" || echo "pier_refresh_valid=no"; } || echo "pier_refresh_valid=unknown"
 
-seeded=0; sharing=0
+# NAMED, NEVER ONLY COUNTED. A count answers "did it work?" with a number that looks the same
+# whether the right ship or the wrong one changed, and the whole point of a per-ship login is that
+# ONE named tree got its own session. So each tree prints its own line and the counts follow.
+seeded=0; sharing=0; own=0
 for d in "$(dirname "$ROOT")"/grain-*; do
   [ -d "$d" ] || continue
+  t=${d##*/grain-}
   c="$d/loops/claude/.credentials.json"
-  [ -f "$c" ] || continue
+  if [ ! -f "$c" ]; then
+    echo "tree $t no_copy -- seeds from the pier at launch"
+    continue
+  fi
   seeded=$((seeded + 1))
-  [ "$(tok "$c")" = "$pier_tok" ] && sharing=$((sharing + 1))
+  if [ "$(tok "$c")" = "$pier_tok" ]; then
+    sharing=$((sharing + 1)); echo "tree $t shares_pier_token"
+  else
+    own=$((own + 1)); echo "tree $t own_session"
+  fi
 done
 echo "trees_seeded=$seeded"
 echo "trees_sharing_token=$sharing"
+echo "trees_own_session=$own"
 
 if [ "${ref:-0}" -le "$now_ms" ] 2>/dev/null; then
   echo "detail: the pier's refresh token has expired -- every ship seeds from it, so every ship is out"

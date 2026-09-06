@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260906.024142` | [the recipe I could not test](20260906/20260906-024142_the-recipe-i-could-not-test.kyri) | /logout could have logged out the fleet. |
 | `20260906.022430` | [the ship that had no copy](20260906/20260906-022430_the-ship-that-had-no-copy.kyri) | petrichor survived; six logins wrote one file. |
 | `20260906.020024` | [one login for a whole fleet](20260906/20260906-020024_one-login-for-a-whole-fleet.kyri) | eight ships, one credential, one outage. |
 | `20260906.013116` | [the guard that could not run half of itself](20260906/20260906-013116_the-guard-that-could-not-run-half-of-itself.kyri) | a probe, not a declaration. |
