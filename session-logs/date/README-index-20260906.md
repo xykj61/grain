@@ -13,6 +13,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 |---|---|---|
 | `20260906.005436` | [the sentence the function refused](20260906/20260906-005436_the-sentence-the-function-refused.kyri) | %447: a doc line the function refuses; the never-blind proof. |
 | `20260906.003759` | [the refusal that leaves no trace](20260906/20260906-003759_the-refusal-that-leaves-no-trace.kyri) | Mand's trail records grants alone; one file lags live code. |
+| `20260906.010636` | [the floor that stopped biting](20260906/20260906-010636_the-floor-that-stopped-biting.kyri) | Amphora tied its bounds; a floor gate lost its bite. |
 | `20260906.003252` | [the reading one short](20260906/20260906-003252_the-reading-one-short.kyri) | %446, %440: one post loose out of four. |
 | `20260906.001901` | [the part that grew](20260906/20260906-001901_the-part-that-grew.kyri) | one of three parts moved; the live front is per-ship. |
 | `20260906.001728` | [the weave merges](20260906/20260906-001728_the-weave-merges-and-the-module-nobody-compiled.kyri) | %449 %450: a join lands; grep held a dead module. |

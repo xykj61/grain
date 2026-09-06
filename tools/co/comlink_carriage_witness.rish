@@ -69,8 +69,8 @@ let control = run ["sh" "tools/fixtures/c/comlink_carriage_control.sh"]
 assert control.ok else "comlink-carriage: the control must complete"
 say control.out
 assert control.out contains "cases=20" else "comlink-carriage: twenty plantings, each on a real file in a throwaway pen"
-assert control.out contains "refusals=16" else "comlink-carriage: every reading must refuse from its own side"
-assert control.out contains "welcomes=4" else "comlink-carriage: an honest raise, real headroom, a third room tying its own half, and a clean tree must all walk free"
+assert control.out contains "refusals=17" else "comlink-carriage: every reading must refuse from its own side"
+assert control.out contains "welcomes=3" else "comlink-carriage: an honest raise, real headroom, and a clean tree must all walk free -- the third room now ties in the tree, so dropping its tie is a refusal rather than a welcome"
 assert control.out contains "wrong=0" else "comlink-carriage: no case may land on the side it was not planted for"
 assert control.out contains "verdict=proven" else "comlink-carriage: the control must agree with itself"
 say "RED and GREEN paths proven -- sixteen plantings refused, four honest trees welcomed"

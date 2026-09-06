@@ -932,9 +932,12 @@ seated 20260830.164837
 # `max_resin_bytes` 512 -> 576 and changing nothing else refuses 9 of 3,999 pseudorandom wholes with
 # TooManyBeads -- a legal input refused by the module that accepted it two lines earlier, on 1 in 444
 # contents, which is why a single-fixture test would ship it. The two mantra/ rooms now carry the
-# relation at comptime; amphora/vessel_fetch_wire.rye carries the third family and is Amphora's to
-# tie, so the tie count is a FLOOR. Twenty control cases on real files in a throwaway pen, sixteen
-# refusals and four welcomes, and a probe that asks the compiler seven times -- four inverted ties
+# relation at comptime, and amphora/vessel_fetch_wire.rye tied the third on `20260906`, taking
+# ties_wired to 3 of 3. That landing turned the gate over: a FLOOR of two had been single-drop
+# detection only while two rooms were tied, so the gate now asks each room for its OWN tie and
+# wants all three, and the control's case 19 is Amphora dropping its tie rather than adding it
+# (REDS %453). Twenty control cases on real files in a throwaway pen, seventeen
+# refusals and three welcomes, and a probe that asks the compiler seven times -- four inverted ties
 # and the three plausible real edits that were measured to produce a wrong answer. Measured here
 # `20260830.200925`: 12s whole, of which the pure scan and control are under a second. At tier cadence
 # because it builds two Rye modules eight times over and lowers a desk through Glow, the same clock

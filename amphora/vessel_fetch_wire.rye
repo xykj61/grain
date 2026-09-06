@@ -30,6 +30,27 @@ pub const max_single_body: u32 = max_wire_payload - response_header_len;
 pub const chunk_header_len: u32 = 1 + digest_hex_len + 2 + 2 + 4;
 pub const max_chunk_body: u32 = max_wire_payload - chunk_header_len;
 pub const max_resin_chunks: u16 = 8;
+/// The assembler dedupes chunks with one bit per index in a value of this width.
+const ChunkMask = u16;
+
+comptime {
+    // invariant: a resin this module admits at its door always divides into the chunks it
+    // allows. encode_response_chunk cuts at most max_chunk_body per frame and resin_chunk_count
+    // refuses past max_resin_chunks, so max_resin_chunks * max_chunk_body is the largest whole
+    // the chunked path can carry, where max_resin_bytes is the largest one the door takes in.
+    // Let the door outrun the carriage and this module refuses a resin it accepted two checks
+    // earlier. Measured 20260906 in a throwaway pen: raising max_resin_bytes 1024 -> 2200 and
+    // changing nothing else refuses 64 of the 2,200 legal lengths with Overflow -- and the
+    // module's own selftest still reads GREEN, because its chunk fixture is 400 bytes.
+    assert(max_resin_bytes <= @as(u32, max_resin_chunks) * max_chunk_body);
+    // invariant: every chunk index the assembler can meet fits the dedupe mask. feed_chunk
+    // refuses a count past max_resin_chunks and an index past count, so an index stays under
+    // max_resin_chunks, and the mask holding one bit per index is ChunkMask wide. Measured
+    // 20260906 with the carriage tie above still holding: max_resin_chunks 8 -> 20 and
+    // max_resin_bytes 1024 -> 4608 panics at chunk index 16 on a well-formed resin, because
+    // the shift amount stops fitting the mask's own log2 type -- a crash, rather than a refusal.
+    assert(max_resin_chunks <= @bitSizeOf(ChunkMask));
+}
 
 pub const WireError = error{
     BadKind,
@@ -157,7 +178,7 @@ pub const ResinAssembler = struct {
     total: u32 = 0,
     count: u16 = 0,
     received: u16 = 0,
-    mask: u16 = 0,
+    mask: ChunkMask = 0,
     digest_set: bool = false,
 
     pub fn reset(self: *ResinAssembler) void {
@@ -209,7 +230,7 @@ pub const ResinAssembler = struct {
         const remain = total - off_body;
         const take = @min(remain, max_chunk_body);
         if (body.len != take) return error.Truncated;
-        const bit: u16 = @as(u16, 1) << @intCast(index);
+        const bit: ChunkMask = @as(ChunkMask, 1) << @intCast(index);
         if ((self.mask & bit) != 0) return error.BadChunk;
         tally_copy.copy_disjoint(u8, self.buf[off_body..][0..take], body);
         self.mask |= bit;
