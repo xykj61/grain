@@ -124,15 +124,15 @@ check "prose after the driver name is not a literal site" "$p" ok "sites_literal
 check "and the residue is published rather than dropped" "$p" ok  "sites_unparsed=1"
 
 # --- the unresolved ratchet, proven from both sides --------------------------------------------
+# Each plant BUILDS the path it assembles, because a script that assembles one and builds nothing
+# is no longer this reading's subject -- proven in its own pen further down. The ceiling stands at
+# one, so one sits free and two refuse.
 p=$(pen ceiling); programs "$p" rye/tests a_test; harness "$p" rye/tests a_test
 mkdir -p "$p/tools/u"
-i=1; while [ "$i" -le 10 ]; do
-  printf '#!/bin/sh\n# builds "$UD%s/$um%s.rye" from parts bound at runtime\n' "$i" "$i" > "$p/tools/u/u$i.sh"
-  i=$((i + 1))
-done
-check "ten unreadable shapes sit at the ceiling, free"   "$p" ok  "unresolved=10"
-printf '#!/bin/sh\n# builds "$UD11/$um11.rye" from parts bound at runtime\n' > "$p/tools/u/u11.sh"
-check "eleven refuses, so the ceiling only ever falls"   "$p" red "verdict=unresolved_over_ceiling"
+printf '#!/bin/sh\nrye/bin/rye build "$UD1/$um1.rye"\n' > "$p/tools/u/u1.sh"
+check "one unreadable shape sits at the ceiling, free"   "$p" ok  "unresolved=1"
+printf '#!/bin/sh\nrye/bin/rye build "$UD2/$um2.rye"\n' > "$p/tools/u/u2.sh"
+check "two refuses, so the ceiling only ever falls"      "$p" red "verdict=unresolved_over_ceiling"
 
 
 # The residue NAMED, not merely counted. The consumer's credit is conditional on the assembling
@@ -174,6 +174,46 @@ check "  ... yet still marks its answer"                 "$p" red "paths_mode=1"
 # An unknown flag refuses rather than falling back to count mode, since a flag read past is a
 # question read as answered -- the exact silence the marker above exists to prevent.
 check "an unknown flag refuses by name"                  "$p" red "verdict=bad_argument" --nope
+
+# --- A HARNESS BUILDS: the narrowing, proven by changing ONE line and nothing else -------------
+# The two pens below hold the same script under the same name in the same place, differing only in
+# whether the assembled path is handed to the rye driver. Anything else varying between them would
+# leave the reading attributable to the difference rather than to the rule.
+p=$(pen builds_nothing); programs "$p" rye/tests a_test; harness "$p" rye/tests a_test
+mkdir -p "$p/tools/u"
+printf '#!/bin/sh\n# a census: subject=$(resolve "$d/$m.rye")\nprintf %%s "$d/$m.rye"\n' > "$p/tools/u/census.sh"
+check "a script that assembles and builds nothing is not unresolved" "$p" ok "unresolved=0"
+check "  ... it is counted in the open instead"          "$p" ok  "assemblers_not_harnesses=1"
+check "  ... and named, so the decline can be questioned" "$p" ok \
+      "not_a_harness: tools/u/census.sh assembles a .rye path and hands none to the rye driver" --list
+
+p=$(pen builds_it); programs "$p" rye/tests a_test; harness "$p" rye/tests a_test
+mkdir -p "$p/tools/u"
+printf '#!/bin/sh\nrye/bin/rye build "$d/$m.rye"\n' > "$p/tools/u/census.sh"
+check "the same shape handed to the driver IS unresolved" "$p" ok  "unresolved=1"
+check "  ... and is no longer counted as a non-harness"  "$p" ok  "assemblers_not_harnesses=0"
+
+# --- both spellings: a Rishi build is a build --------------------------------------------------
+# Shell writes `rye/bin/rye build x.rye`; Rishi writes `run ["env" rye "build" "x.rye"]`. The elder
+# program stripped quotes from the driver token and not from the verb, so it read the first and
+# walked past the second -- and the pen harness above is spelled the Rishi way, which is how the
+# blind spot surfaced at all.
+p=$(pen rishi_build); programs "$p" rye/tests a_test; harness "$p" rye/tests a_test
+mkdir -p "$p/tools/u"
+printf 'let rye = "rye/bin/rye"\nlet r = run ["env" rye "build" "rye/tests/a_test.rye"]\n' > "$p/tools/u/pen_rishi.rish"
+check "a Rishi-spelled build is read as a build site"    "$p" ok  "sites_literal=1"
+
+# --- the three site classes are disjoint -------------------------------------------------------
+# One build site whose target is BOTH assembled and .rye-suffixed. Counted independently it lands in
+# two classes and the leftover goes negative; counted in order it lands in one and the three add up.
+p=$(pen disjoint); programs "$p" rye/tests a_test; harness "$p" rye/tests a_test
+mkdir -p "$p/tools/u"
+printf '#!/bin/sh\nrye/bin/rye build "$d/$m.rye"\n' > "$p/tools/u/one.sh"
+# Two assembled sites, since the pen harness itself assembles one -- named here so the number is
+# read rather than guessed at.
+check "an assembled .rye target is counted as assembled" "$p" ok  "sites_assembled=2"
+check "  ... and not a second time as literal"           "$p" ok  "sites_literal=0"
+check "  ... so the residue stands at zero, never below" "$p" ok  "sites_unparsed=0"
 
 echo "cases=$n"
 echo "control_failures=$fail"

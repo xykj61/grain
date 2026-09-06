@@ -80,8 +80,13 @@ assert control.out contains "a tree holding no harness exits 0" else "rye-compil
 
 # The residue weighed by the same condition the credit is. Two pens differing by one word, so a
 # residue that had quietly gone unconditional again passes the first of these and fails the second.
+# The condition moved UPSTREAM on `20260906`: the producing scan declines a non-building assembler
+# itself, so the reading pen now leaves BOTH numbers at zero rather than only the weighed one. Both
+# legs are still pinned, because the pens still differ by one word and the claim is unchanged --
+# a site that could credit nothing must reach nothing.
 assert control.out contains "and weighed, because this one compiles" else "rye-compile-reach: an unreadable site in a compiling script must be weighed"
-assert control.out contains "yet weighs zero, since it could credit nothing" else "rye-compile-reach: the residue is not proven conditional -- an unconditional one passes the welcome and fails nothing"
+assert control.out contains "a reading script's site leaves the harness residue" else "rye-compile-reach: a non-building assembler must leave the residue at its source"
+assert control.out contains "and weighs zero, since it could credit nothing" else "rye-compile-reach: the residue is not proven conditional -- an unconditional one passes the welcome and fails nothing"
 assert control.out contains "ceiling+1 unreadable sites in compiling scripts exit 1" else "rye-compile-reach: the residue ceiling is not proven from its failing side"
 assert control.out contains "a resolver counting a residue it does not name refuses" else "rye-compile-reach: a counted residue nobody named must refuse, never read as harmless"
 
