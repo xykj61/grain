@@ -205,6 +205,22 @@ assert control.out contains "unknown_capability_counted=yes" else "standing-equi
 assert control.out contains "capability_gated_counted=yes" else "standing-equipment: a capability-gated row must be counted on its own line"
 assert control.out contains "known_capability_free=yes" else "standing-equipment: a roster naming a capability the runner probes must pass free"
 
+# The seed_projection arm (REDS %492) -- the first capability that asks a CHECKOUT question rather
+# than a host one. `sow_allow_reach` reads the shipped side and needs a projection at `seed/`, which
+# is gitignored and absent from every fresh clone, so rostered `tier lap` with no capability it went
+# red on every tree that had not projected -- and a red guard withholds the roster receipt, which
+# costs each ship a full cold pass every lap.
+assert control.out contains "seed_present_runs=yes" else "standing-equipment: a checkout holding a projection must run the guard that reads it"
+assert control.out contains "seed_present_skips_none=yes" else "standing-equipment: a present projection must skip nothing"
+assert control.out contains "seed_absent_skips=yes" else "standing-equipment: a checkout with no projection must skip the guard rather than red on an environment fact"
+assert control.out contains "seed_absent_counted=yes" else "standing-equipment: that skip must be counted"
+assert control.out contains "seed_absent_named=yes" else "standing-equipment: that skip must name the guard and the capability, or it is a quiet hole"
+assert control.out contains "seed_absent_still_passes=yes" else "standing-equipment: an absent projection is a cadence rather than a fault"
+assert control.out contains "seed_env_followed=yes" else "standing-equipment: the probe must read SOW_SEED exactly as the guard's own scan does, or the two can disagree about where the projection is"
+assert control.out contains "seed_capability_known_to_scan=yes" else "standing-equipment: the scan derives its capability list off the runner, so a new arm must be known the moment it lands"
+assert control.out contains "unrunnable_card_row_dropped=yes" else "standing-equipment: a guard this host cannot run must lose its elder card row -- its last verdict was recorded in a different world and nothing will ever overwrite it"
+assert control.out contains "runnable_card_row_kept=yes" else "standing-equipment: a guard that merely did not run this pass keeps its history, which is what the carry-forward is for"
+
 # The host tier arrived at REDS %295 with no case in this control and no assertion here, so the
 # axis the capability field copies had neither a green side nor a red one. Both are proven now,
 # against the host the pass actually stands on.

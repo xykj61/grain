@@ -1,19 +1,19 @@
 ---
-description: New numbered ladders must draw a waymark before the first rung is named — attach when opening a ladder
+description: New numbered ladders must draw a waymark before the first rung is named -- attach when opening a ladder
 alwaysApply: false
 ---
 
-# Waymark Ladders — Draw Before You Number
+# Waymark Ladders -- Draw Before You Number
 
-**Canon:** `context/specs/20260716-115927_waymark-ladder-naming-and-g0-collision-fix.md` · witness `tools/w/waymark_derive.rish` · Lexicon **Waymark**.
+**Canon:** `context/specs/20260716-115927_waymark-ladder-naming-and-g0-collision-fix.md` - witness `tools/w/waymark_derive.rish` - Lexicon **Waymark**.
 
 ## When a ladder opens
 
-Before the first rung is written as `X0` / `X1` / … in TASKS, ROADMAP, compressors, module titles, or session logs that speak as *now*:
+Before the first rung is written as `X0` / `X1` / ... in TASKS, ROADMAP, compressors, module titles, or session logs that speak as *now*:
 
 1. Choose a **canonical hyphenated input name** for the ladder (stable, descriptive, lowercase).
 2. Set `input_name` in `tools/w/waymark_derive.rish` and run `rishi/bin/rishi run tools/w/waymark_derive.rish`.
-3. Seat the printed four-letter **waymark** in Lexicon + the script’s seated-draws comment + exclude list.
+3. Seat the printed four-letter **waymark** in Lexicon + the script's seated-draws comment + exclude list.
 4. **Mark each step by stamp and name, never by an ascending number** -- amended `20260821.160050` by
    the mark law ([`stamp-and-name.md`](stamp-and-name.mdc)). A waymark is a **name** drawn for a
    ladder and it keeps its place; what retires is the numbered rung after it. Write `HAWM -- the
@@ -28,25 +28,25 @@ Before the first rung is written as `X0` / `X1` / … in TASKS, ROADMAP, compres
 | **HAWM** | `grapheneos-pixel-mobile-emulation` | Pixel / GrapheneOS SLC |
 | **TUBE** | `glow-application-framework-and-publishing` | App framework / packaging |
 | **ZETA** | `glow-english-qwerty-glass-keyboard-3` | Glass English QWERTY keyboard |
-| **JABS** | `sala-broadcast-live-session-fold` | Seva broadcast session fold (was bare B0–B3) |
-| **LULU** | `glow-glass-hearth-display-and-wired-sync` | Hearth display presets · short home · Wired Glass |
-| **STOA** | `glow-language-rune-heads-nest-and-lowering-2` | Glow language SLC · rune heads · nest · composition |
-| **SETU** | *(hand-seated; not a word-list draw — absent from flw)* | USB hearth carry Glass↔Desk |
-| **SUNN** | `source-pier-papers-identity-refresh` | SOURCE.md identity · remotes · apps · onboarding refresh |
-| **POLE** | *(input debrided `20260825` -- it carried a name; hand-seated)* | DJINN → Bozo exec · Keaton → Murr exec · Linn→Bozo Capricorn 10 |
-| **SOON** | `glow-language-runes-stdlib-and-pipeline` | Compass Chapter Equinox 1 — The Language |
-| **JARL** | `kumara-identity-comlink-and-fractal-network` | Compass Chapter Equinox 2 — Identity & Network |
-| **BUHR** | `realidream-surface-and-quin-inference-and-mcp-2` | Compass Chapter Equinox 3 — Surface & Intelligence |
-| **TACT** | `ship-pilot-publishing-grainphone-and-commerce` | Compass Chapter Equinox 4 — The World |
-| **HUNK** | `season-a-open-image-decode-and-photos-surface` | Six-Chapter expansion Chapter A — Hardware & Right-to-Repair; open image module (QOI decode → bounded RGBA grid) beneath the parts marketplace and Photos app |
-| **DREY** | `season-a-mikrophone-firmware-forgetful-session-capture` | Chapter A second journey — the Mikrophone firmware (the Mantrapod's near-term surface): the *memory that forgets* session buffer, pure in Rye before metal — held only while powered, persisted only on a deliberate commit, provably dissolved on power-down |
-| **FORA** | `constel-test-network-fake-pier-local-constellations` | **Constel** test-network naming — self-invented, siloed names for sandbox/testnet/localhost Comlink p2p constellations (fake ships, fake piers) from inside the jailed pier, elder Urbit fake-galaxy dev nets as ancestor; consonant-only, structurally never a live-valid `@p` (segment lengths never 3), under the placeholder-ship-names law |
+| **JABS** | `sala-broadcast-live-session-fold` | Seva broadcast session fold (was bare B0-B3) |
+| **LULU** | `glow-glass-hearth-display-and-wired-sync` | Hearth display presets - short home - Wired Glass |
+| **STOA** | `glow-language-rune-heads-nest-and-lowering-2` | Glow language SLC - rune heads - nest - composition |
+| **SETU** | *(hand-seated; not a word-list draw -- absent from flw)* | USB hearth carry Glass<->Desk |
+| **SUNN** | `source-pier-papers-identity-refresh` | SOURCE.md identity - remotes - apps - onboarding refresh |
+| **POLE** | *(input debrided `20260825` -- it carried a name; hand-seated)* | DJINN -> Bozo exec - Keaton -> Murr exec - Linn->Bozo Capricorn 10 |
+| **SOON** | `glow-language-runes-stdlib-and-pipeline` | Compass Chapter Equinox 1 -- The Language |
+| **JARL** | `kumara-identity-comlink-and-fractal-network` | Compass Chapter Equinox 2 -- Identity & Network |
+| **BUHR** | `realidream-surface-and-quin-inference-and-mcp-2` | Compass Chapter Equinox 3 -- Surface & Intelligence |
+| **TACT** | `ship-pilot-publishing-grainphone-and-commerce` | Compass Chapter Equinox 4 -- The World |
+| **HUNK** | `season-a-open-image-decode-and-photos-surface` | Six-Chapter expansion Chapter A -- Hardware & Right-to-Repair; open image module (QOI decode -> bounded RGBA grid) beneath the parts marketplace and Photos app |
+| **DREY** | `season-a-mikrophone-firmware-forgetful-session-capture` | Chapter A second journey -- the Mikrophone firmware (the Mantrapod's near-term surface): the *memory that forgets* session buffer, pure in Rye before metal -- held only while powered, persisted only on a deliberate commit, provably dissolved on power-down |
+| **FORA** | `constel-test-network-fake-pier-local-constellations` | **Constel** test-network naming -- self-invented, siloed names for sandbox/testnet/localhost Comlink p2p constellations (fake ships, fake piers) from inside the jailed pier, elder Urbit fake-galaxy dev nets as ancestor; consonant-only, structurally never a live-valid `@p` (segment lengths never 3), under the placeholder-ship-names law |
 
-*(This Cursor twin lags the canonical `.claude/rules/waymark-ladders.md` between TACT and HUNK — the seated draws GISM · AYRE · DAHL · KOFF · CION · VOLS · LOWE · OFFY · GRAD · AHOY · WADE live in the canonical table; reconciling the twin is its own round.)*
+*(This Cursor twin lags the canonical `.claude/rules/waymark-ladders.md` between TACT and HUNK -- the seated draws GISM - AYRE - DAHL - KOFF - CION - VOLS - LOWE - OFFY - GRAD - AHOY - WADE live in the canonical table; reconciling the twin is its own round.)*
 
-**Hand-seated names on the exclude roster** (not waymark draws): **SEVA** (viewer; absent from flw), **MAND** (M vane; in flw), **MONA** (prior name of Mand — one chapter). **SALA** retired from exclude with the Sala→Seva alias close.
+**Hand-seated names on the exclude roster** (not waymark draws): **SEVA** (viewer; absent from flw), **MAND** (M vane; in flw), **MONA** (prior name of Mand -- one chapter). **SALA** retired from exclude with the Sala->Seva alias close.
 
-Word-list pin: `tools/fixtures/f/flw-four-letter.txt` · witness `tools/w/waymark_derive_witness.rish`.
+Word-list pin: `tools/fixtures/f/flw-four-letter.txt` - witness `tools/w/waymark_derive_witness.rish`.
 
 ## Accrete-never-break
 
@@ -54,4 +54,4 @@ Dated logs and research that already say `B0` / `B1` / `B2` stay readable. Livin
 
 ## Collision
 
-If the derive assert goes RED (word hits a seated module or waymark name), append `-2` to `input_name` and redraw — same method as the spec.
+If the derive assert goes RED (word hits a seated module or waymark name), append `-2` to `input_name` and redraw -- same method as the spec.

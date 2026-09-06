@@ -168,7 +168,15 @@ seated 20260823.034321
 guard sow_allow_reach
 path tools/s/sow_allow_reach_witness.rish
 tier lap
+capability seed_projection
 seated 20260906.122632
+# capability seated 20260906.140000 (REDS %493). The guard reads the SHIPPED side, so it needs a
+# projection at `seed/` -- which is gitignored, built by `tools/s/sow.rish`, and therefore absent
+# from every fresh clone. Rostered `tier lap` with no capability it went red on this tree's first
+# cold pass after landing, and a red guard withholds the roster receipt, so `--scoped` refuses and
+# every ship pays a FULL cold pass every lap: 778s measured here. The scan's own refusal is right
+# (REDS %170) and the roster is where the environment fact belongs -- the same reading the operator
+# card already gives an empty `vendor/`. Absence is announced by name rather than made silent.
 
 # publish_template -- the one file this tree ships that a stranger RUNS against their own forge.
 # publish-seed.sh is personal by law, so a newcomer inherits every room except a publisher;
@@ -297,6 +305,20 @@ guard rule_twin
 path tools/r/rule_twin_witness.rish
 gate %7
 seated 20260824.112806
+
+# ascii_document -- the ASCII-first law names THREE subjects and only two were measured over their
+# whole subject. Comments have two meters over every tracked source; commit messages have none and
+# want none (0 of the last 400 bodies carry a byte above 0x7F, measured 20260906.131411); documents,
+# the subject the law names FIRST, had `living_card_ascii_scan.sh` -- two pins read hard and six as
+# advisory, EIGHT files of 5,529. The gap sat where it cost most: 63 of the 104 rule pages an editor
+# reads as law, the pages carrying the ASCII-first law itself, held 859 non-ASCII characters, every
+# one a form the rule's own substitution table spells. Swept to zero on the lap this row was
+# written, the sweep proven to have moved no prose by re-deriving each page from its committed
+# bytes. `tier lap`: 2s for the control's pens and 4s for the tree.
+guard ascii_document
+path tools/a/ascii_document_witness.rish
+tier lap
+seated 20260906.133344
 
 guard width_check
 path tools/w/width-check.rish

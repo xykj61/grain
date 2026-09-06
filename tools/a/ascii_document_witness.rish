@@ -1,0 +1,93 @@
+# ascii_document_witness.rish -- the ASCII-first law reaches DOCUMENTS, and now a meter reads them.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/a/ascii_document_witness.rish
+#
+# `.claude/rules/ascii-first.md` names three subjects: "every new document, code comment, and
+# commit message". Two of the three were measured over their whole subject and one was not.
+# Comments have two meters over every tracked source. Commit messages have none and want none --
+# measured `20260906.131411`, zero of the last 400 commit bodies carry a byte above 0x7F, so the
+# habit holds there without a wall. Documents, the subject the law names FIRST, had
+# `living_card_ascii_scan.sh`: two pins read hard, six read as advisory, eight files of 5,529.
+#
+# The gap sat where it cost most. On the lap this witness was seated, 63 of the 104 rule pages an
+# editor reads as law -- the pages that carry the ASCII-first law itself -- held 859 non-ASCII
+# characters, every one of them a form the rule's own substitution table spells.
+
+say "ascii-document: Language EN -- a law is kept by the room that writes it, or it is a wish with a witness beside it."
+say "ascii-document: Style Gauge, Meter -- every count below is the scan's own output, read from the tree rather than recited here."
+say "ascii-document: Lens TAME -- safety first: the converter applies ONLY the forms the rule names and leaves every other character where a reader put it. Purely local -- no key, no network, no funds, no device."
+
+say "ascii-document: reading one of two -- the control, on real repositories in a throwaway pen."
+
+let control = run ["sh" "tools/fixtures/a/ascii_document_control.sh"]
+assert control.ok else "ascii-document: the control must complete"
+say control.out
+assert control.out contains "control_verdict=ok" else "ascii-document: the control must reach its own verdict"
+
+# The enforce roster, from both sides. A refusal proven only in the failing direction cannot be
+# told from a guard that refuses everything.
+assert control.out contains "enforce_clean_free=yes" else "ascii-document: a plainly written rule room must walk free"
+assert control.out contains "enforce_clean_zero=yes" else "ascii-document: a clean rule room must read zero characters, not merely pass"
+assert control.out contains "enforce_claude_refuses=yes" else "ascii-document: a named character in a Claude rule page must refuse"
+assert control.out contains "enforce_claude_named=yes" else "ascii-document: a refusal must name the page, or nobody can repair it"
+assert control.out contains "enforce_lift_returns_green=yes" else "ascii-document: lifting the plant must return the reading to green, or the refusal is a latch"
+assert control.out contains "enforce_reaches_cursor=yes" else "ascii-document: the Cursor twin is read as law too, so it is measured too"
+assert control.out contains "enforce_is_a_glob_not_a_list=yes" else "ascii-document: a rule page born tomorrow must be governed the day it lands"
+
+# The ratchet ceiling, from both sides.
+assert control.out contains "ceiling_at_bound_free=yes" else "ascii-document: a reading exactly at the ceiling must pass"
+assert control.out contains "ceiling_over_refuses=yes" else "ascii-document: one character past the ceiling must refuse, or the ceiling is decoration"
+assert control.out contains "ceiling_removed_returns_green=yes" else "ascii-document: removing the plant must return the reading to green"
+
+# What the ratchet reads past, each for its own written reason.
+assert control.out contains "stamped_basename_read_past=yes" else "ascii-document: a one-clock stamp marks testimony, and testimony is never rewritten to retrofit a later law"
+assert control.out contains "sprigless_stamp_read_past=yes" else "ascii-document: the sprig is optional -- a stamp alone marks testimony (%175)"
+assert control.out contains "date_room_read_past=yes" else "ascii-document: a day shelf is immutable once its day closes"
+assert control.out contains "archive_room_read_past=yes" else "ascii-document: an archive is finished-and-historical"
+assert control.out contains "yonder_room_read_past=yes" else "ascii-document: yonder is deferred-yet-alive, and a closed stack"
+assert control.out contains "fixtures_room_read_past=yes" else "ascii-document: a planted control must stay dirty or it stops proving anything"
+assert control.out contains "vendor_read_past=yes" else "ascii-document: vendored sources are not ours to convert"
+assert control.out contains "gratitude_read_past=yes" else "ascii-document: the reading library is held unmodified"
+assert control.out contains "seed_read_past=yes" else "ascii-document: the seed is the projection of this tree rather than the tree"
+assert control.out contains "living_document_counted=yes" else "ascii-document: a living document in an ordinary room MUST be counted, or every skip above proves nothing"
+
+# The split and the unit.
+assert control.out contains "named_counted=yes" else "ascii-document: a form the rule's table spells is named debt a program can clear"
+assert control.out contains "unnamed_counted=yes" else "ascii-document: notation the table does not name is a reader's choice, counted apart"
+assert control.out contains "one_char_is_one=yes" else "ascii-document: one em dash is one character, never the three bytes it is stored in"
+
+# The instrument says so when it cannot read. This meter's own first draft answered a clean zero
+# for every document in the tree because awk refused its program and the scan discarded the
+# complaint -- an empty answer from a failed read is byte-identical to an empty answer from a
+# clean tree, and the second is the reading everyone hopes for.
+assert control.out contains "unreadable_file_refuses=yes" else "ascii-document: a file the instrument cannot read must refuse, never count zero"
+assert control.out contains "unreadable_file_named=yes" else "ascii-document: an instrument failure must name the path it choked on"
+assert control.out contains "outside_a_repo_refuses=yes" else "ascii-document: with no index to read, silence must not read as cleanliness"
+assert control.out contains "absent_path_skipped=yes" else "ascii-document: a path in the index and gone from the tree is skipped and counted"
+assert control.out contains "absent_path_not_fatal=yes" else "ascii-document: a tree in motion is exactly when a reading is worth having"
+assert control.out contains "spaced_path_read_whole=yes" else "ascii-document: a tracked path carrying a space is one path, and this tree holds one"
+assert control.out contains "spaced_path_counted=yes" else "ascii-document: a spaced path must be counted rather than merely not miscounted"
+assert control.out contains "untracked_not_counted=yes" else "ascii-document: the scan reads the index, so an untracked draft is not yet the tree's to measure"
+
+# The converter: the table it applies, the remainder it refuses to guess at, the mode it keeps,
+# and the re-derivation that proves a sweep moved no prose.
+assert control.out contains "convert_applies_em_dash=yes" else "ascii-document: an em dash has one ASCII spelling and the rule names it"
+assert control.out contains "convert_applies_middle_dot=yes" else "ascii-document: a middle dot separator has one too, and it is two bytes rather than three"
+assert control.out contains "convert_leaves_unnamed=yes" else "ascii-document: a section sign carries a meaning a reader must choose the ASCII form for"
+assert control.out contains "convert_leaves_the_star=yes" else "ascii-document: notation off the table survives the converter, whatever it is"
+assert control.out contains "convert_reaches_zero_named=yes" else "ascii-document: after conversion the named debt must be gone, or the table is incomplete"
+assert control.out contains "convert_verify_proves=yes" else "ascii-document: the working tree must be the committed bytes put through the table, byte for byte"
+assert control.out contains "convert_verify_catches_a_hand=yes" else "ascii-document: an edit beside the transform must break the proof, or the proof proves nothing"
+assert control.out contains "convert_keeps_the_mode=yes" else "ascii-document: a mode is tracked content, and a rewrite preserves it"
+assert control.out contains "convert_is_idempotent=yes" else "ascii-document: a second pass over a plain file must change nothing"
+
+say "ascii-document: reading two of two -- the living tree."
+
+let living = run ["sh" "tools/fixtures/a/ascii_document_scan.sh"]
+assert living.ok else "ascii-document: the living scan must complete"
+say living.out
+assert living.out contains "enforce=honored" else "ascii-document: a rule page carrying non-ASCII is a law arguing with itself -- convert it, and run tools/fixtures/a/ascii_document_convert.sh"
+assert living.out contains "under_ceiling=yes" else "ascii-document: non-ASCII in living documents rose above the ceiling -- convert on touch rather than raising it"
+
+say "GREEN: ascii-document -- the rule rooms both editors read as law stand at zero characters above 0x7F, every living document in the actively-written rooms stands under a ceiling that only falls, and testimony, closed stacks, vendored sources and planted controls are read past each for its own written reason. Forty readings proven on real repositories in a throwaway pen, every refusal lifted in its own pen, both ceilings proven from both sides, and the sweep that seated the roster proven to have moved no prose by re-deriving each converted page from its committed bytes."
