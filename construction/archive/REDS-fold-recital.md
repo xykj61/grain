@@ -347,3 +347,5 @@ at a closed fold.*
 
 *Row %492 folded to [`REDS-two-algorithms-agreeing-rows-492.md`](REDS-two-algorithms-agreeing-rows-492.md) on `20260906.131127`, **CLOSED** -- two independent algorithms agreeing proves the algorithms and never the input: three size binds and both cut-point passes held unchanged over a graph missing an entire tier, so the bind has to name the shape.*
 *Row %494 folded to [`REDS-the-verdict-travelled-and-the-reason-did-not-rows-494.md`](REDS-the-verdict-travelled-and-the-reason-did-not-rows-494.md) on `20260906.130755`, **CLOSED** -- a wrapper is only transparent in the direction it was tested -- the exit code was forwarded on purpose and the stderr was forgotten, and nothing tells those halves apart until something fails.*
+
+*Row %495 folded to [`REDS-a-rename-anchored-to-a-bare-number-rows-495.md`](REDS-a-rename-anchored-to-a-bare-number-rows-495.md) on `20260906.140817`, **CLOSED** -- a rename anchored to a bare number matches any row that shares it, and on a spine eight ships write into, sharing a number is the ordinary case.*
