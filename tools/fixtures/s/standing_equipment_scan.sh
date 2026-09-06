@@ -18,13 +18,15 @@
 #   No run-card line records a red or an absent guard -- EXCEPT this guard's own row, which is
 #     REPORTED at `runs_red_self` and never counted. The reasoning is written at the count itself;
 #     it is named here so this list and the code beneath it say the same thing.
-#   A PEER'S ROW IS ONE PASS BEHIND, and that is a reading rather than a fault. The runner writes
-#     the card at the close of a pass, so a guard running mid-pass reads the PREVIOUS pass's
-#     verdicts for every peer that has yet to re-run -- including reds this same pass has already
-#     repaired. One clean pass after a red is therefore expected to refuse here, and the pass after
-#     that goes green with nothing changed. Left alone on purpose: a peer's last recorded red is
-#     true information, and the only way to stop reading it would be to stop reading peers at all.
-#     The self row is the case that had to move, because it never cleared.
+#   A PEER'S ROW DESCRIBES THIS PASS, not the last one (REDS %483, repaired `20260906`). This scan
+#     reads whatever `STANDING_CARD` names, and the runner hands it a PEN-LOCAL live view rather
+#     than the working-tree card -- rewritten after each guard answers -- so a red repaired earlier
+#     in the pass reads green here. The elder reading counted that stale red, the phantom cost the
+#     receipt, and the next lap paid a full pass for a fault nobody had. A peer that has NOT yet run
+#     still shows its last recorded verdict, which is what such a peer honestly has; the runner
+#     defers its own guard to the end of the todo list, so that set is empty when this scan reads.
+#     The self row stays REPORTED and never counted (REDS %475) -- a different fault, and this
+#     scan's own output can never become its own evidence whatever the card says.
 #
 # WHAT THE PASS COST, reported rather than gated. `runs_seconds_total` sums the run card's sixth
 # field, `runs_seconds_absent` counts the rows written before that field existed, and

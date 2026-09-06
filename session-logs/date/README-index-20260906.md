@@ -13,6 +13,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 |---|---|---|
 | `20260906.141201` | [a ceiling that rises on honest work](20260906/20260906-141201_a-ceiling-that-rises-on-honest-work.kyri) | %498: ten of eleven built nothing. |
 | `20260906.135114` | [the publisher a stranger inherits](20260906/20260906-135114_the-publisher-a-stranger-inherits.kyri) | laps C+D: a shipped publisher, profiles molted. |
+| `20260906.134546` | [the record its own pass writes at the close](20260906/20260906-134546_the-record-its-own-pass-writes-at-the-close.kyri) | %483 closed; %492 booked. |
 | `20260906.134427` | [the lock with no bolt in it](20260906/20260906-134427_the-lock-with-no-bolt-in-it.kyri) | %500: four guards named a count and read a presence. |
 | `20260906.133554` | [one link in seven](20260906/20260906-133554_one-link-in-seven.kyri) | %496: the card sees 2,690 links of 18,218. |
 | `20260906.132652` | [the seed stands at its gate](20260906/20260906-132652_the-seed-stands-at-its-gate.kyri) | 7,943 files, gratitude clean, push withheld. |

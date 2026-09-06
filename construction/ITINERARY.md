@@ -46,7 +46,26 @@
 
 ### Now -- the live front
 
-**Git nib:** `5b9b41bac1` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `8e86ead74f` -- HEAD's parent, resolvable everywhere (%401).
+
+**BAKERY -- THE GUARD THAT COUNTS REDS READ A CARD ITS OWN PASS WRITES AT THE CLOSE.** `%483` CLOSED,
+[shelf](archive/REDS-a-record-its-own-pass-writes-at-the-close-rows-483.md). **Both shapes, since
+neither is whole alone:** the elder second names a position that does not exist -- *nothing runs
+after the write* -- so the runner hands each guard a **pen-local live view** through `STANDING_CARD`,
+rewritten as every guard answers, and defers **its own guard by name** to the todo list's end. In the
+pen, never the tree: writing into the tree mid-pass moves the runner's own `tree_moved` reading. The
+first half alone left a residue of **seven**. **9 readings, the pen proven innocent** -- stripped of
+the hand-off it reads the stale card and refuses, and that copy is proven to have STARTED, since one
+that cannot run answers `no` for its own reason. Full pass GREEN on the shipped tree, 147 guards,
+`standing_equipment` printing LAST.
+**AND I BOOKED A PEER'S DEFECT TWICE IN ONE LAP, AND WITHDREW BOTH.** `%492` into `%493` (nine
+minutes the earlier), measurements moved in: **3m49s** of `sow.rish`, **6 of 8 fleet trees carry no
+`seed/`**; projection is agent-doable where gate `%1` is the **push**, so I projected and it is GREEN.
+Then a whole row on the card's two dead links -- into `%495`, which holds the truer root: the sweep
+was **anchored to a bare number** and repointed a peer's line. **Twelve firings, now two in one lap:
+an OPEN row wants a claim, a seat and a stamp, at START.**
+**Sized:** a lap teeing to `session-output/<seat>.txt` is a second writer on its own transcript
+(`fleet-loop.sh:213`), read from `/proc`. Next lap's red.
 
 **PATCHOULI -- FOUR GUARDS SAID "EXACTLY N FIELDS" AND CHECKED THAT N FIELDS WERE PRESENT.**
 `%500` BOOKED, [folded](archive/REDS-a-lock-with-no-bolt-in-it-rows-500.md). `limb1`-`limb4` stand
@@ -121,16 +140,14 @@ the lap.** *My third row of this lap was **withdrawn rather than renumbered**: i
 as `%493` above -- the fourth time in one day that a finding and its peer met in the same hour.*
 
 
-**`%467` and `%468` CLOSED, folded whole** to one [shelf](archive/REDS-presence-where-the-claim-was-content-rows-467-468.md) -- **presence is the cheaper question wearing the expensive one's answer**; the account is on the [`20260906.090312` shelf](archive/20260906-090312_itinerary-landed-accounts.md).
+**Landed recitals folded** to the [`20260906.145647` shelf](archive/20260906-134234_itinerary-landed-accounts.md) -- `%467`/`%468`, `%459`/`%446`, `%450`/`%461`, `%445`/`%439`, the `040933` four, `%451` with `%469`, and the Petrichor and Pheromone pointers.
 
-**Same shape one room over: an instrument can be green because it cannot see enough of its subject to disagree.** `%451` BOOKED, `%469` CLOSED, on the [blind-to-half shelf](archive/REDS-blind-to-half-its-subject-rows-451-469.md); the account is on the [`20260906.090312` shelf](archive/20260906-090312_itinerary-landed-accounts.md).
 
 **Yours, one question; law, so INCENSE may own it.** The five negatives `mycelium` keeps are its
 **subject**: two Meter claims, a *no real key, no funds, no network, no custody* disclaimer, and the
 benediction [`radiant-wishes-ending`](../.claude/rules/radiant-wishes-ending.md) asks for. **A Door
 page obeying both floors at four: 16% of a 20% ceiling.**
 
-**`%459` and `%446` CLOSED**, whole on the [`20260906.042754` shelf](archive/20260906-042754_itinerary-landed-accounts.md). **A pen that plants an absolute tests a snapshot of the law; one that plants a ratio tests the law.**
 **Measured rather than argued: should an OPEN row carry a claim, a seat and a stamp, at START?**
 **PHEROMONE -- THE CREDIT CROSSED THE SEAM CARRYING ITS CONDITION AND THE RESIDUE DID NOT.**
 `%488` CLOSED, whole on its
@@ -154,15 +171,11 @@ from a parked stash is invisible to `--next` twice over.*
 **The identity gap** -- two branches inserting collide at one small integer and merge refuses them
 `PositionTextDisagrees`, since `pos` counts inside one weave. Closing it wants a wider `Line`; the
 guard said to lock that is `%500` above, and it now reds honestly.
-**`%450` CLOSED, both halves** -- the rule with `%461` on [one shelf](archive/REDS-correct-alone-wrong-at-the-seam-rows-450-461.md), the nib writer that ended the typing on [another](archive/20260906-055737_itinerary-landed-accounts.md).
 **`%479` and `%464` CLOSED**, the account whole on the [`20260906.140206` shelf](archive/20260906-140206_itinerary-landed-accounts.md). **An OPEN row wants a claim, a seat and a stamp, at START.**
 **`%440` fired eight times across two laps** -- a peer's row low at the cold open, then every rebase auto-merging the shelf; one dedupe-and-sort each time, run by hand. **Yours.**
 
-**`%445` and the `%439` class, whole on the [`20260906.001820` shelf](archive/20260906-001820_itinerary-landed-accounts.md)** -- the view moved twice and the key did not; four detectors over 1,712 Rye files found one genuine site in 159, so no gate.
 
-**Four accounts CLOSED** on the [`040933` shelf](archive/20260906-040933_itinerary-landed-accounts.md) -- `%453` twice, `%458`, `%444`/`%431`. **A rule that states its reason can be checked.**
 
-**Three Pheromone accounts folded** to the [`20260906.132007` shelf](archive/20260906-132007_itinerary-landed-accounts.md) -- the credit that crossed the seam without its condition (`%488`), the published distance with no road (`%454`), and the dead-letter box firing in the wild (`%464`). Each is closed on metal.
 
 **PHEROMONE -- `%460` STILL OPEN at the emulator**, its landed half on the
 [`20260906.051500` shelf](archive/20260906-051500_itinerary-landed-accounts.md). **Yours, one
@@ -235,7 +248,6 @@ directory, so the scan under test cannot start. A pen of symlinks to every tool 
 **1,093** -- 419 of slack; the elder *14 under* is superseded. **Yours.**
 **Still open:** `glow/rune_shape.rye` width custody; `%281`/`%291`. **(%347):**
 `pond/enclosure_policy.kyri` 8,120/8,192; yours.
-**Petrichor accounts folded** to the [`092312` shelf](archive/20260906-092312_itinerary-landed-accounts.md); their open question stands below in its own words. `%480` and `%490` rest on their own shelves ([480](archive/REDS-a-claim-whose-only-source-is-itself-rows-480.md), [490](archive/REDS-a-door-is-not-the-pages-behind-it-rows-490.md)) -- **a room's door is not the same promise as the pages behind it.**
 **THE LIVE FRONT NOW FOLDS** (`20260905.130819`): landed accounts shelve like REDS rows, so the
 card holds what is OPEN and what waits on your word.
 **All three ships sail** (`20260905`). **Gate 3 stands:** `.gnupg-rye/` holds
@@ -374,6 +386,6 @@ The logs keep the account; earlier rows are shelved in
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260906.122329` | The fold that hid the link it broke | [log](../session-logs/date/20260906/20260906-122329_the-fold-that-hid-the-link-it-broke.kyri) |
+| `20260906.134546` | The record its own pass writes at the close | [log](../session-logs/date/20260906/20260906-134546_the-record-its-own-pass-writes-at-the-close.kyri) |
 
 **One row, on purpose** -- a landed lap keeps one line until the next replaces it; the log carries the detail.
