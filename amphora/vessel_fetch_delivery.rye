@@ -28,9 +28,23 @@ const SOCK_DGRAM: c_uint = 2;
 // tools/fixtures/s/socket_dialect_scan.sh.
 const SOL_SOCKET: c_int = c.SOL.SOCKET;
 const SO_REUSEADDR: c_int = c.SO.REUSEADDR;
+const SO_RCVTIMEO: c_int = c.SO.RCVTIMEO;
 
 const fetcher_port: u16 = 38494;
 const source_port: u16 = 38495;
+
+// A RECEIVE MUST BE BOUNDED, and until `20260906` this one was not. `recvfrom` on a UDP socket
+// carrying no `SO_RCVTIMEO` waits forever, so a datagram the kernel discarded -- because nothing
+// was bound to the port at the instant it arrived -- stalled the run rather than failing it.
+// Measured that day on a quiet pier, alone: one run in six to eight of the chunk witness stalled
+// past a sixty-second bound with no output at all. Ten seconds is thirty times the whole
+// witness's own wall time, so an expiry here says a datagram is genuinely gone rather than that
+// the pier was busy.
+const recv_timeout_seconds: isize = 10;
+// A request the source never heard is re-sent rather than waited on. Three attempts against a
+// source that binds once and stays bound is generous; the only way to spend all three is a source
+// that is not listening at all, which is what the named error then says.
+const max_request_attempts: u32 = 3;
 
 // THE KERNEL LAYS THIS OUT, NEVER THIS FILE. A hand-rolled `sockaddr_in` stood here in the
 // Linux layout -- a two-byte family and no length byte -- and BSD kernels open the same
@@ -70,16 +84,48 @@ fn send_wire(port: u16, wire: []const u8) !void {
     if (sent < 0 or @as(usize, @intCast(sent)) != wire.len) return error.SendFailed;
 }
 
-fn recv_wire(port: u16, wire: []u8) !u64 {
+// A RECEIVER BINDS ONCE AND KEEPS THE SOCKET, which is the whole repair. The elder shape opened,
+// bound, received and closed a socket per datagram, so this end was unbound in every gap between
+// datagrams -- and a UDP datagram arriving at an unbound port is discarded by the kernel with no
+// trace on either side. Two races followed from that one habit, and both stalled a run forever:
+// a response overtaking the fetcher's next bind, and chunk two of five arriving while the fetcher
+// reopened its socket. Binding before anything is sent, and holding the socket across every
+// datagram of one exchange, closes both.
+fn bind_recv_socket(port: u16) !c.fd_t {
     const fd = try open_socket();
-    defer _ = c.close(fd);
+    errdefer _ = c.close(fd);
     var bind_addr = localhost_addr(port);
+    // invariant: the port is held from here until the caller closes it, so no datagram of this
+    // exchange can arrive at an unbound port.
     if (c.bind(fd, @ptrCast(&bind_addr), @sizeOf(sockaddr_in)) < 0) return error.BindFailed;
+    var window = c.timeval{ .sec = recv_timeout_seconds, .usec = 0 };
+    // invariant: every receive on this socket is bounded, so a lost datagram fails by name rather
+    // than stopping the program -- a stall has no bound and a named error has one.
+    if (c.setsockopt(fd, SOL_SOCKET, SO_RCVTIMEO, &window, @sizeOf(c.timeval)) < 0) {
+        return error.SetSockOptFailed;
+    }
+    return fd;
+}
+
+// ONE NAME FOR BOTH WAYS A RECEIVE CAN COME BACK EMPTY. A negative `recvfrom` here is either the
+// bound above expiring or a genuine socket error, and telling them apart would take an errno read
+// this file needs for nothing: the caller's answer is the same either way -- no datagram arrived
+// inside the window, so re-ask or refuse by name. Naming it for what was observed rather than for
+// the mechanism keeps the error honest about what it actually knows.
+fn recv_on(fd: c.fd_t, wire: []u8) !u64 {
     var from: sockaddr_in = undefined;
     var from_len: c.socklen_t = @sizeOf(sockaddr_in);
     const n = c.recvfrom(fd, wire.ptr, @intCast(wire.len), 0, @ptrCast(&from), &from_len);
-    if (n < 0) return error.RecvFailed;
+    // invariant: a bounded receive that brings nothing back says so by name.
+    if (n < 0) return error.RecvNoDatagram;
     return @intCast(n);
+}
+
+// The one-shot spelling, for an exchange that receives exactly one datagram.
+fn recv_wire(port: u16, wire: []u8) !u64 {
+    const fd = try bind_recv_socket(port);
+    defer _ = c.close(fd);
+    return try recv_on(fd, wire);
 }
 
 fn seal_payload(payload: []const u8, wire: *[@intCast(wf.wire_capacity)]u8) !u64 {
@@ -209,9 +255,9 @@ fn read_file_limited(io: std.Io, path: []const u8, buf: []u8) ![]const u8 {
     return try cwd.readFile(io, path, buf);
 }
 
-fn serve_one_from_bundle(io: std.Io, bundle_dir: []const u8) !void {
+fn serve_one_from_bundle(io: std.Io, fd: c.fd_t, bundle_dir: []const u8) !void {
     var wire_in: [@intCast(wf.wire_capacity)]u8 = undefined;
-    const n = try recv_wire(source_port, &wire_in);
+    const n = try recv_on(fd, &wire_in);
     var opened: [@intCast(wf.max_message)]u8 = undefined;
     const opened_len = try open_wire(wire_in[0..n], &opened);
     var req: vfw.FetchRequest = undefined;
@@ -228,8 +274,12 @@ fn serve_one_from_bundle(io: std.Io, bundle_dir: []const u8) !void {
 }
 
 fn run_source(io: std.Io, bundle_dir: []const u8) !u8 {
-    try serve_one_from_bundle(io, bundle_dir);
-    try serve_one_from_bundle(io, bundle_dir);
+    // invariant: one bind serves both resins, so the second request cannot arrive while this end
+    // is between sockets -- the same race the fetcher side carries, from the other direction.
+    const fd = try bind_recv_socket(source_port);
+    defer _ = c.close(fd);
+    try serve_one_from_bundle(io, fd, bundle_dir);
+    try serve_one_from_bundle(io, fd, bundle_dir);
     print("vfd: source served two resins from {s}\n", .{bundle_dir});
     return 0;
 }
@@ -269,17 +319,40 @@ fn fetch_one(digest_hex: []const u8, out_bytes: *[vfw.max_resin_bytes]u8) !u32 {
     const payload_len = try vfw.encode_request(req, &payload);
     var wire_out: [@intCast(wf.wire_capacity)]u8 = undefined;
     const sealed_len = try seal_payload(payload[0..payload_len], &wire_out);
-    try send_wire(source_port, wire_out[0..@intCast(sealed_len)]);
+
+    // invariant: this end is bound before the request goes out, so the response cannot reach an
+    // unbound port; and the socket is held to the end of the exchange, so a later chunk cannot be
+    // lost in a gap between receives. The elder order -- send, then bind per datagram -- is what
+    // stalled one run in six.
+    const fd = try bind_recv_socket(fetcher_port);
+    defer _ = c.close(fd);
 
     var asm_resin: vfw.ResinAssembler = .{};
     var hops: u16 = 0;
-    while (hops < vfw.max_resin_chunks) : (hops += 1) {
-        var wire_in: [@intCast(wf.wire_capacity)]u8 = undefined;
-        const n = try recv_wire(fetcher_port, &wire_in);
-        var opened: [@intCast(wf.max_message)]u8 = undefined;
-        const opened_len = try open_wire(wire_in[0..n], &opened);
-        const state = try asm_resin.feed(opened[0..@intCast(opened_len)]);
-        if (state == .ready) break;
+    var attempts: u32 = 0;
+    // invariant: attempts are bounded, so a source that never answers refuses by name instead of
+    // asking forever.
+    while (attempts < max_request_attempts) : (attempts += 1) {
+        try send_wire(source_port, wire_out[0..@intCast(sealed_len)]);
+        var ready = false;
+        // invariant: a resin rides at most max_resin_chunks datagrams, so this loop terminates.
+        while (hops < vfw.max_resin_chunks) : (hops += 1) {
+            var wire_in: [@intCast(wf.wire_capacity)]u8 = undefined;
+            // `recv_on` has exactly one error to give, so this reads it by name rather than
+            // switching: an empty window ends this attempt and the loop decides whether to re-ask.
+            const n = recv_on(fd, &wire_in) catch break;
+            var opened: [@intCast(wf.max_message)]u8 = undefined;
+            const opened_len = try open_wire(wire_in[0..n], &opened);
+            const state = try asm_resin.feed(opened[0..@intCast(opened_len)]);
+            if (state == .ready) {
+                ready = true;
+                break;
+            }
+        }
+        if (ready) break;
+        // invariant: a re-ask happens only when nothing at all arrived. Re-asking part way through
+        // a resin would have the source send a second copy into a half-filled assembler.
+        if (asm_resin.received != 0) break;
     }
     if (asm_resin.received == 0 or asm_resin.received < asm_resin.count) return error.Incomplete;
     if (!std.mem.eql(u8, asm_resin.digest(), digest_hex[0..64])) return error.DigestMismatch;
@@ -317,10 +390,14 @@ fn run_fetcher(io: std.Io, bundle_dir: []const u8) !u8 {
 fn run_demo_source(_: std.Io) !u8 {
     var resins: [2]FixtureResin = undefined;
     fixture_resins(&resins);
+    // invariant: one bind serves both fixture resins, so the second request cannot be discarded
+    // while this end reopens its socket.
+    const fd = try bind_recv_socket(source_port);
+    defer _ = c.close(fd);
     var served: u32 = 0;
     while (served < 2) : (served += 1) {
         var wire_in: [@intCast(wf.wire_capacity)]u8 = undefined;
-        const n = try recv_wire(source_port, &wire_in);
+        const n = try recv_on(fd, &wire_in);
         var opened: [@intCast(wf.max_message)]u8 = undefined;
         const opened_len = try open_wire(wire_in[0..n], &opened);
         var req: vfw.FetchRequest = undefined;
