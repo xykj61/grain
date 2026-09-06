@@ -1821,3 +1821,59 @@ guard amphora_purchase_delivery
 path tools/am/amphora_purchase_delivery.rish
 tier lap
 seated 20260906.063124
+
+# amphora_asker_reply -- a source answers the asker, and the kernel names the asker's port.
+#
+# WHAT WAS WRONG. `amphora/vessel_fetch_delivery.rye` held two UDP port numbers in its own source:
+# `fetcher_port` 38494 and `source_port` 38495. The source sent every answer to the first, and every
+# asker bound that same number, so the pair agreed with itself and nothing it did alone could tell
+# *answers the asker* from *answers 38494*. Eight lines above the constants the same file says THE
+# HOST NUMBERS THESE, NEVER THIS FILE about `SOL_SOCKET`, and eight lines above that THE KERNEL LAYS
+# THIS OUT, NEVER THIS FILE about `sockaddr_in` -- both taken back from the source and handed to the
+# host after REDS %282. The port stood between them, unread. REDS %485 (`20260906.113014`).
+#
+# WHAT IS TRUE NOW. `recv_on` hands the caller the address `recvfrom` already filled in and the
+# elder code discarded; `send_resin_response` answers that address; `fetch_one` binds
+# `ephemeral_port` -- zero, the ask rather than the port -- and the kernel returns a free one
+# atomically, which no probe-then-bind can do. `bound_port` reads it back with `getsockname` and the
+# asker prints it. `fetcher_port` is gone. `source_port` stays, because a service answers on a
+# number its askers can name.
+#
+# THE SECOND FAULT, FOUND BY THE FIRST REPAIR REFUSING. Aiming the answer at the asker made the demo
+# fail at once: `send_wire` opened a fresh socket per send, so a request's return address named an
+# ephemeral port the asker was not listening on and closed a moment later. The source answered
+# honestly and answered nobody. An exchange speaks and listens through ONE fd now -- `send_from`
+# takes the caller's socket, and `send_wire`, `send_to` and `recv_wire` are gone rather than left
+# uncalled.
+#
+# WHAT THE FIVE LEGS PROVE, and the leg that corrected the round's own expectation. The control
+# plants both elder faults into a pen copy by transform rather than by git ref, so it survives a
+# history rewrite. PORT plants the written reply number on both ends; SPLIT plants the two-socket
+# asker. Crossed against the repair: a PORT source cannot answer a repaired asker, and a repaired
+# source cannot answer a SPLIT asker -- both refusals bitten. A repaired source DOES answer a PORT
+# asker, which the first draft expected to refuse and measured otherwise: a fixed-port asker that
+# speaks and listens through one socket is still answerable, so the repair is a superset of the
+# elder rather than merely different. Each planted pair talking to itself is answered, which is what
+# proves the pen, the pour, and the fixture innocent.
+#
+# WHAT WAS TRIED AND DISCARDED. Two askers at once against one source was the obvious control and it
+# discriminates nothing -- both binaries passed it in half a second, because two short exchanges
+# stagger by milliseconds and never overlap. It stands as a claim on the repaired bytes, where it
+# can still red, and never as the control. A test both bytes pass proves only that the test ran.
+#
+# `tier cadence`, and the reason is the bound rather than the cost. Two crossed legs each spend the
+# module's own three attempts of ten seconds, because what they establish is that nothing arrives,
+# and nothing takes exactly as long to prove as the bound says it does. Measured `20260906.113014`
+# on this pier: 68s for the whole guard, of which 62 are those two legs and two plant builds, against
+# a full lap pass of 840s. The three lap-tier amphora rows already build and run this module every
+# lap; this one asks the question they cannot, and it changes only when the module does.
+#
+# WHAT THIS DOES NOT REACH. The port lock stands. `source_port` is still one number the machine owns
+# and eight trees reach for, so `tools/fixtures/a/amphora_vessel_port_lock.sh` still keeps two lawful
+# runs from meeting. Halving the shared resource is not removing it; the source's own port discovery
+# is the booked lap after this one.
+
+guard amphora_asker_reply
+path tools/am/amphora_asker_reply.rish
+tier cadence
+seated 20260906.113014
