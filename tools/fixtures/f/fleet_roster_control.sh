@@ -300,6 +300,18 @@ rm -rf "$spen"
 # uniquely carried, that the message says WHICH tree, now stands beside its sibling above, derived
 # from the roster and biting on every tree in the fleet.
 
+# A LANE-LESS LAP IS REFUSED (`20260906`). `seat_prompt` let `cat` fail into an empty answer, so
+# a missing prompt sent the agent the baton alone -- no lane, no seat, no peers -- and seven ships
+# ran that way for one lap when a relaunch crossed the commit that moved the prompts into their
+# letter rooms. Both reads are guarded now, and the caller refuses rather than invoking.
+if grep -q 'cat "$prompt_file" ||' tools/f/fleet-loop.sh \
+   && grep -q 'cat "$baton_file" ||' tools/f/fleet-loop.sh \
+   && grep -q '_prompt=$(seat_prompt) ||' tools/f/fleet-loop.sh; then
+  say "a_lane_less_lap_is_refused=yes"
+else
+  say "a_lane_less_lap_is_refused=no"
+fi
+
 echo "control_checks=$checks"
 echo "control_failures=$failures"
 if [ "$failures" -eq 0 ]; then echo "control_verdict=ok"; exit 0; fi
