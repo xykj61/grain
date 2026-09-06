@@ -11,10 +11,11 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260906.100418` | [the three vendor names surveyed](20260906/20260906-100418_the-three-vendor-names-surveyed.kyri) | Cursor 135, Codex 66, Grok 9; four traps named. |
+| `20260906.091519` | [the cause named by proximity](20260906/20260906-091519_the-cause-named-by-proximity.kyri) | %476: my own paper's 8 MiB step is page walk, not L3. |
 | `20260906.091155` | [the watch that keeps the loops alive](20260906/20260906-091155_the-watch-that-keeps-the-loops-alive.kyri) | a dead loop comes back; windows found by name. |
 | `20260906.090538` | [the meter that swallowed its own instrument](20260906/20260906-090538_the-meter-that-swallowed-its-own-instrument.kyri) | %473-%475: three reds inside one recovery. |
 | `20260906.090503` | [a published distance promises a road](20260906/20260906-090503_a-published-distance-promises-a-road.kyri) | %454 closed: 33.28% of the sky had no walk. |
-| `20260906.091519` | [the cause named by proximity](20260906/20260906-091519_the-cause-named-by-proximity.kyri) | %476: my own paper's 8 MiB step is page walk, not L3. |
 | `20260906.082714` | [the wait that read as a fault](20260906/20260906-082714_the-wait-that-read-as-a-fault.kyri) | %471: six ships stopped 9 min before their window reset. |
 | `20260906.070653` | [the copy that was counted against itself](20260906/20260906-070653_the-copy-that-was-counted-against-itself.kyri) | %472: 108 of 113 were the original. |
 | `20260906.063813` | [blind to half its subject](20260906/20260906-063813_an-instrument-blind-to-half-its-subject.kyri) | %451 BOOKED; 13 guards blind to their controls. |
