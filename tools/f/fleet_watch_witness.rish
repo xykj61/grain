@@ -3,7 +3,7 @@
 #   rishi/bin/rishi run tools/f/fleet_watch_witness.rish
 #
 # A fleet loop can die four ways -- three instant laps, a spent deadline, an interrupt, a closed
-# terminal -- and a loop that has exited cannot hold. tools/l/fleet_watch.sh re-arms a dead loop by
+# terminal -- and a loop that has exited cannot hold. tools/f/fleet_watch.sh re-arms a dead loop by
 # sending that seat's own relaunch line into that seat's own tmux window. The two things it must
 # never do are type into a keyboard somebody else is using, and start a second writer on one
 # checkout (%291). Both are proven here from both sides.
@@ -13,24 +13,24 @@ say "fleet-watch: Style Gauge, Meter -- each leg names what it plants and what m
 say "fleet-watch: Lens TAME -- every refusal planted and then lifted, so a wall is not a habit."
 
 say "fleet-watch: the control -- sixteen behaviors on a real tmux session in a throwaway pen..."
-let ctl = run ["sh" "tools/fixtures/l/fleet_watch_control.sh"]
+let ctl = run ["sh" "tools/fixtures/f/fleet_watch_control.sh"]
 assert ctl.ok else "fleet-watch: the control refused --\n${ctl.out}"
 assert ctl.out contains "pass=16 fail=0" else "fleet-watch: the control did not prove sixteen behaviors --\n${ctl.out}"
 
 say "fleet-watch: no window index is written down anywhere in the watcher..."
 # invariant: the layout is DISCOVERED every pass. A number spelled here would be true until somebody
 # moves a window, and then the watcher types a ship's relaunch into a stranger's keyboard.
-let numbered = run ["sh" "-c" "grep -n ':[0-9]' tools/l/fleet_watch.sh | grep -vc '^[0-9]*: *#' || true"]
+let numbered = run ["sh" "-c" "grep -n ':[0-9]' tools/f/fleet_watch.sh | grep -vc '^[0-9]*: *#' || true"]
 assert numbered.ok else "fleet-watch: the numbering read could not run"
 assert (trim numbered.out) == "0" else "fleet-watch: a window INDEX is written into the watcher -- discover it instead"
 
 say "fleet-watch: and the seat table is read rather than restated..."
-let reads_roster = run ["sh" "-c" "grep -q 'fleet_roster_scan.sh' tools/l/fleet_watch.sh && echo READS_ROSTER || echo SPELLS_SEATS"]
+let reads_roster = run ["sh" "-c" "grep -q 'fleet_roster_scan.sh' tools/f/fleet_watch.sh && echo READS_ROSTER || echo SPELLS_SEATS"]
 assert reads_roster.ok else "fleet-watch: the roster read could not be checked"
 assert reads_roster.out contains "READS_ROSTER" else "fleet-watch: the watcher spells its own seat list -- the seventh copy of the seat table"
 
 say "fleet-watch: a dry run decides and sends nothing..."
-let dry = run ["sh" "-c" "sh tools/l/fleet_watch.sh --dry-run --once 2>&1 | grep -c 'armed (arm' || true"]
+let dry = run ["sh" "-c" "sh tools/f/fleet_watch.sh --dry-run --once 2>&1 | grep -c 'armed (arm' || true"]
 assert dry.ok else "fleet-watch: the dry run could not be read"
 assert (trim dry.out) == "0" else "fleet-watch: a dry run sent a keystroke"
 

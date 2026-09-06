@@ -1,6 +1,6 @@
-# tools/l/birth_a_clone_witness.rish -- the birth pins RYE_ZIG to the newborn.
+# tools/b/birth_a_clone_witness.rish -- the birth pins RYE_ZIG to the newborn.
 #
-#   rishi/bin/rishi run tools/l/birth_a_clone_witness.rish
+#   rishi/bin/rishi run tools/b/birth_a_clone_witness.rish
 #
 # WHY. rye/bootstrap.sh honors a pre-set RYE_ZIG. On 20260904 the Host pier birth
 # of grain-incense and grain-pheromone inherited RYE_ZIG from the elder harvest
@@ -12,22 +12,22 @@ say "birth-a-clone: Language EN -- a birth builds rye against the newborn's own 
 say "birth-a-clone: Style Gauge, Meter -- the pin is a path in the recipe, checkable."
 say "birth-a-clone: Lens TAME -- a leftover environment variable is still an input."
 
-let src = "tools/l/birth_a_clone.rish"
+let src = "tools/b/birth_a_clone.rish"
 let present = run ["test" "-f" src]
-assert present.ok else "birth-a-clone: missing tools/l/birth_a_clone.rish"
+assert present.ok else "birth-a-clone: missing tools/b/birth_a_clone.rish"
 
 # invariant: the rye bootstrap is spawned with RYE_ZIG set to the destination zig,
 # not with a bare sh of bootstrap.sh that inherits the parent shell.
-let pin = run ["sh" "-c" "grep -n 'env RYE_ZIG=' tools/l/birth_a_clone.rish | grep -q bootstrap.sh"]
+let pin = run ["sh" "-c" "grep -n 'env RYE_ZIG=' tools/b/birth_a_clone.rish | grep -q bootstrap.sh"]
 assert pin.ok else "birth-a-clone: rye bootstrap must pin RYE_ZIG to the destination zig"
 
-let dest_zig = run ["sh" "-c" "grep -q zig_dest tools/l/birth_a_clone.rish && grep -q vendor/zig-toolchain/zig tools/l/birth_a_clone.rish"]
+let dest_zig = run ["sh" "-c" "grep -q zig_dest tools/b/birth_a_clone.rish && grep -q vendor/zig-toolchain/zig tools/b/birth_a_clone.rish"]
 assert dest_zig.ok else "birth-a-clone: zig_dest must be the destination toolchain path"
 
-let executable = run ["sh" "-c" "grep -q 'copied toolchain is not executable' tools/l/birth_a_clone.rish"]
+let executable = run ["sh" "-c" "grep -q 'copied toolchain is not executable' tools/b/birth_a_clone.rish"]
 assert executable.ok else "birth-a-clone: the copied zig must be proven executable before bootstrap"
 
-let bare = run ["sh" "-c" "grep -n 'sh rye/bootstrap.sh' tools/l/birth_a_clone.rish | grep -v RYE_ZIG"]
+let bare = run ["sh" "-c" "grep -n 'sh rye/bootstrap.sh' tools/b/birth_a_clone.rish | grep -v RYE_ZIG"]
 assert (bare.ok == false) else "birth-a-clone: a bootstrap line without RYE_ZIG would inherit a stale shell"
 
 # invariant: Linux glibc needs -lc for getpid; Darwin accepts it (proven 20260904).

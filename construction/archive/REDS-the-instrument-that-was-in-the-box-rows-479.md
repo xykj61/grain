@@ -12,7 +12,7 @@ before the next lap read the tree, and the lap it stashed carried `stash_record`
 working tree at every open, which is `%321` working and the only reason those bytes survive at all.
 The read-back was still missing, and the lap that built the read-back was the one it swallowed:
 `stash@{0}`, made `20260906.084116`, held 21 files -- four session logs, a REDS shelf,
-`tools/f/stash_record_witness.rish` with its scan and control, and the roster row that would have
+`tools/s/stash_record_witness.rish` with its scan and control, and the roster row that would have
 put the guard on a clock. Nothing of it stood in any branch; `git log --all` found only the stash's
 own index commit, which is the false-safe reading `%464` already names. *What caught it:* the cold
 roster pass, indirectly and by luck. It refused, and beside the refusal stood `runs_unrostered=1`

@@ -2,7 +2,7 @@
 # fleet_rearm.sh -- after a loop stops, one run prints per seat: where its git
 # stands, why it stopped, and the exact relaunch paste. It REFUSES to print a
 # relaunch over a CUSTODY or TRANSACTION sentinel, because that choice belongs
-# to the hand -- the supervisor's own law (tools/l/chatgpt-mind.rish), spoken
+# to the hand -- the supervisor's own law (tools/c/chatgpt-mind.rish), spoken
 # here before the paste instead of after it.
 #
 #   sh tools/f/fleet_rearm.sh                    # every seat found under $HOME
@@ -125,12 +125,12 @@ report_seat() {
   case $name in
   mind)
     cat <<'PASTE'
-   cd ~/grain-mind && git pull --ff-only xy main && GRAIN_ROOT=$(git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && env MIND_SEAT=cardinal "$GRAIN_ROOT/rishi/bin/rishi" run "$GRAIN_ROOT/tools/l/chatgpt-mind.rish" loop --arm-loop --max-laps 3 --failure-ceiling 2 --backoff-seconds 15)
+   cd ~/grain-mind && git pull --ff-only xy main && GRAIN_ROOT=$(git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && env MIND_SEAT=cardinal "$GRAIN_ROOT/rishi/bin/rishi" run "$GRAIN_ROOT/tools/c/chatgpt-mind.rish" loop --arm-loop --max-laps 3 --failure-ceiling 2 --backoff-seconds 15)
 PASTE
     ;;
   mystery)
     cat <<'PASTE'
-   cd ~/grain-mystery && git pull --ff-only xy main && GRAIN_ROOT=$(git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && env MIND_SEAT=mystery "$GRAIN_ROOT/rishi/bin/rishi" run "$GRAIN_ROOT/tools/l/chatgpt-mind.rish" loop --arm-loop --max-laps 3 --failure-ceiling 2 --backoff-seconds 15)
+   cd ~/grain-mystery && git pull --ff-only xy main && GRAIN_ROOT=$(git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && env MIND_SEAT=mystery "$GRAIN_ROOT/rishi/bin/rishi" run "$GRAIN_ROOT/tools/c/chatgpt-mind.rish" loop --arm-loop --max-laps 3 --failure-ceiling 2 --backoff-seconds 15)
 PASTE
     ;;
   # EVERY OTHER SEAT IS A FLEET-LOOP SEAT, AND THE LINE IS DERIVED RATHER THAN LISTED (REDS %409's
@@ -142,7 +142,7 @@ PASTE
   # roster row arrives here armed. `field` returned above and mind/mystery are matched by name, so
   # anything reaching this line is a loop seat by construction.
   *)
-    echo "   cd $tree && git pull --ff-only xy main && sh tools/l/fleet-loop.sh $name"
+    echo "   cd $tree && git pull --ff-only xy main && sh tools/f/fleet-loop.sh $name"
     ;;
   esac
 }

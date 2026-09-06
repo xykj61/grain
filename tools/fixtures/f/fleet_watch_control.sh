@@ -5,7 +5,7 @@
 # be told from a watcher that refuses everything. The pen builds its own tmux session, its own seat
 # table, and its own trees, so nothing here reads or touches the living fleet.
 #
-#   sh tools/fixtures/l/fleet_watch_control.sh
+#   sh tools/fixtures/f/fleet_watch_control.sh
 #
 # Prints `pass=N fail=N` and exits non-zero on any failure. Bounded: 14 cases, one session, one pen.
 set -eu
@@ -13,7 +13,7 @@ set -eu
 root=$(CDPATH= cd -- "$(dirname -- "$0")/../../.." && pwd)
 cd "$root"
 
-watch=tools/l/fleet_watch.sh
+watch=tools/f/fleet_watch.sh
 pen=${TMPDIR:-/tmp}/fleet-watch-pen-$$
 sess=fleet-watch-pen-$$
 
@@ -195,7 +195,7 @@ check "a duplicated window name refuses" yes "$(has "$out_dup" 'penone -- 2 wind
 # a time, unannounced -- so FLEET_BARE is passed through, and its absence is proven too.
 out_bare=$(env WATCH_SESSION="$sess" WATCH_HOME="$pen" FLEET_ROSTER="$pen/roster.kyri" \
     WATCH_PASSES=1 WATCH_SKIP=penskip FLEET_BARE=1 sh "$watch" --dry-run 2>&1)
-check "FLEET_BARE travels into the arm line" yes "$(has "$out_bare" 'FLEET_BARE=1 sh tools/l/fleet-loop.sh')"
+check "FLEET_BARE travels into the arm line" yes "$(has "$out_bare" 'FLEET_BARE=1 sh tools/f/fleet-loop.sh')"
 check "and its absence leaves the line bare" no  "$(has "$(run_watch)" 'FLEET_BARE=1')"
 
 # 16) an unknown option refuses rather than guessing

@@ -85,7 +85,14 @@ ck "unreachable remote refuses" "fetch refused" "$out"
 # absence wearing a passing test.
 g -C "$pen/work" remote set-url xy "$pen/anointed"
 mkdir -p "$pen/work/tools/fixtures/f" "$pen/work/session-logs/date/20260101"
-cp "$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)/stash_record_scan.sh" "$pen/work/tools/fixtures/f/"
+# THE SCAN LIVES IN ITS OWN LETTER ROOM (`20260906`), so the pen copies it from there into the
+# same room the open reads. A sibling `dirname $0` lookup found it while both sat under `f/`,
+# and the letter fold moved it to `s/` where its basename says it belongs -- at which point the
+# pen silently held no scan, the open printed nothing, and two cases failed on an absence
+# rather than on a fault.
+_fro_root=$(CDPATH= cd -- "$(dirname -- "$0")/../../.." && pwd)
+mkdir -p "$pen/work/tools/fixtures/s"
+cp "$_fro_root/tools/fixtures/s/stash_record_scan.sh" "$pen/work/tools/fixtures/s/"
 ( cd "$pen/work" && g add -A && g commit -qm "carry the scan" >/dev/null 2>&1 )
 printf 'format session-log-v1\nstamp 20260101.010101\n' > "$pen/work/session-logs/date/20260101/20260101-010101_parked.kyri"
 ( cd "$pen/work" && g stash push -u -m "fleet-round-open 20260101-010102: a lap's unsent work, stashed at the open" >/dev/null 2>&1 )

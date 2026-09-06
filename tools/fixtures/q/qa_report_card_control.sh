@@ -14,7 +14,7 @@
 set -u
 
 card=tools/fixtures/q/qa_report_card.sh
-refblock=tools/fixtures/q/reference_block.awk
+refblock=tools/fixtures/r/reference_block.awk
 reg=tools/fixtures/p/prose_register_scan.sh
 [ -f "$card" ] || { echo "control_verdict=card_missing" >&2; exit 1; }
 [ -f "$reg" ] || { echo "control_verdict=register_missing" >&2; exit 1; }
@@ -736,12 +736,12 @@ echo "$tabled" | grep -q '^reference_lines=8 ' && echo "table_named=yes" || echo
 # read before this repair -- and the SAME two files then disagree by ten register and thirty reach.
 # A pass proven only in the passing direction cannot be told from a reading that does nothing.
 sed 's/if (entries >= 2)/if (entries >= 99999)/' \
-  "$pen/tools/fixtures/q/reference_block.awk" > "$pen/blind.awk"
-mv "$pen/tools/fixtures/q/reference_block.awk" "$pen/keep.awk"
-cp "$pen/blind.awk" "$pen/tools/fixtures/q/reference_block.awk"
+  "$pen/tools/fixtures/r/reference_block.awk" > "$pen/blind.awk"
+mv "$pen/tools/fixtures/r/reference_block.awk" "$pen/keep.awk"
+cp "$pen/blind.awk" "$pen/tools/fixtures/r/reference_block.awk"
 bp=$(run plain.rye --service 100)
 bt=$(run tabled.rye --service 100)
-mv "$pen/keep.awk" "$pen/tools/fixtures/q/reference_block.awk"
+mv "$pen/keep.awk" "$pen/tools/fixtures/r/reference_block.awk"
 [ "$(val "$bp" reach)" -gt "$(val "$bt" reach)" ] \
   && [ "$(val "$bp" register)" -gt "$(val "$bt" register)" ] \
   && echo "hold_out_load_bearing=yes" \
@@ -790,9 +790,9 @@ o=$(run fenced.md --setting field --service 100)
 
 # And the reading is CITED rather than spelled beside the card, the same discipline measure() and
 # the register floor already keep: losing the classifier refuses rather than guessing a zero.
-mv "$pen/tools/fixtures/q/reference_block.awk" "$pen/reference_block.away"
+mv "$pen/tools/fixtures/r/reference_block.awk" "$pen/reference_block.away"
 o=$(run tabled.rye --service 100)
-mv "$pen/reference_block.away" "$pen/tools/fixtures/q/reference_block.awk"
+mv "$pen/reference_block.away" "$pen/tools/fixtures/r/reference_block.awk"
 echo "$o" | grep -q 'reference reading is missing' && echo "reference_source_load_bearing=yes" || echo "reference_source_load_bearing=no"
 
 # 21 -- the card names what it reads, and the naming is proven by building a pen from nothing else.

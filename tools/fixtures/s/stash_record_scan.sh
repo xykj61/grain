@@ -1,5 +1,5 @@
 #!/bin/sh
-# tools/fixtures/f/stash_record_scan.sh -- a record parked in the dead-letter box and never read
+# tools/fixtures/s/stash_record_scan.sh -- a record parked in the dead-letter box and never read
 # back out.
 #
 # WHY THIS EXISTS. REDS %464. `tools/f/fleet_round_open.sh` stashes an unsent working tree at the
@@ -80,12 +80,12 @@
 #   verdict=ok | records_unlanded
 #
 # USE
-#   sh tools/fixtures/f/stash_record_scan.sh          # report on this repository
-#   sh tools/fixtures/f/stash_record_scan.sh list     # one unlanded record per line: stash, path
-#   sh tools/fixtures/f/stash_record_scan.sh all      # every record, landed or not, with its state
+#   sh tools/fixtures/s/stash_record_scan.sh          # report on this repository
+#   sh tools/fixtures/s/stash_record_scan.sh list     # one unlanded record per line: stash, path
+#   sh tools/fixtures/s/stash_record_scan.sh all      # every record, landed or not, with its state
 #
-# Driven by tools/f/stash_record_witness.rish; proven in a pen by
-# tools/fixtures/f/stash_record_control.sh. Called at the open by tools/f/fleet_round_open.sh, which
+# Driven by tools/s/stash_record_witness.rish; proven in a pen by
+# tools/fixtures/s/stash_record_control.sh. Called at the open by tools/f/fleet_round_open.sh, which
 # must never be able to fail on it. Run from the repository root.
 set -u
 

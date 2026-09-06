@@ -1,16 +1,16 @@
 # FOSSIL -- Class M, prepped 20260906.114734 for the mitra shed; the cut stays RED until circled.
-# Living mutant: tools/l/fleet-loop.sh reading construction/fleet-roster.kyri, with
-# tools/l/fleet_watch.sh above it. Row and reasons: construction/SHRED_PREP.md.
+# Living mutant: tools/f/fleet-loop.sh reading construction/fleet-roster.kyri, with
+# tools/f/fleet_watch.sh above it. Row and reasons: construction/SHRED_PREP.md.
 # print-mind-cardinal-prompt.rish -- pure canonical MIND prompt printer.
 #
 # This surface has one authority: read the two seated prompt sources and emit
 # their canonical composition. It has no process, service, authentication,
 # jail, Git, state, lock, loop, write, environment, or network authority.
-# `tools/l/chatgpt-mind.rish` invokes this printer; neither file duplicates the
+# `tools/c/chatgpt-mind.rish` invokes this printer; neither file duplicates the
 # Arbor voice or expanded MIND law.
 #
 # Run from the repository root:
-#   rishi/bin/rishi run tools/l/print-mind-cardinal-prompt.rish
+#   rishi/bin/rishi run tools/p/print-mind-cardinal-prompt.rish
 
 let arbor = read-file "arbor/launch-chatgpt-chapter.arbor"
 let mind = read-file "recursion-prompts/versions/20260826-180017_chatgpt-mind-macos-loop.md"

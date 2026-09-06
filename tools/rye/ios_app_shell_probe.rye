@@ -28,7 +28,7 @@
 //! refuses to install), and PROBE_PROVE_RED keeps the seam's gate: a false declaration against
 //! the loaded UIKit dies at exit 134 before any registration.
 //!
-//! Build and run: rishi/bin/rishi run tools/m/ios_app_shell_witness.rish
+//! Build and run: rishi/bin/rishi run tools/i/ios_app_shell_witness.rish
 
 const std = @import("std");
 const assert = std.debug.assert;

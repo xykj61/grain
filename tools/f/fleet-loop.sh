@@ -22,11 +22,11 @@
 # pier. LOOP_LAPS bounds the lap count when set (0, the default, means unbounded); the
 # one-round-once recipe is LOOP_LAPS=1.
 #
-#   sh tools/l/fleet-loop.sh incense
-#   LOOP_LAPS=1 sh tools/l/fleet-loop.sh pheromone
-#   LOOP_HOURS=6 sh tools/l/fleet-loop.sh petrichor
-#   FLEET_DRY=1 sh tools/l/fleet-loop.sh incense   # print the command; run nothing
-#   FLEET_BARE=1 LOOP_LAPS=1 sh tools/l/fleet-loop.sh incense  # Linux, no ai-jail
+#   sh tools/f/fleet-loop.sh incense
+#   LOOP_LAPS=1 sh tools/f/fleet-loop.sh pheromone
+#   LOOP_HOURS=6 sh tools/f/fleet-loop.sh petrichor
+#   FLEET_DRY=1 sh tools/f/fleet-loop.sh incense   # print the command; run nothing
+#   FLEET_BARE=1 LOOP_LAPS=1 sh tools/f/fleet-loop.sh incense  # Linux, no ai-jail
 #
 # Transcripts land INSIDE the tree (session-output/<seat>.txt rendered, <seat>.jsonl raw
 # for Claude seats), per the read-scope law's shared window -- /tmp is not durable in
@@ -71,25 +71,32 @@ if [ -n "$resolved" ] && [ "$resolved" != "$seat" ]; then
   seat=$resolved
 fi
 if ! sh "$roster_scan" --seats | grep -qx "$seat"; then
-  echo "usage: sh tools/l/fleet-loop.sh <seat>   [LOOP_HOURS=18] [LOOP_LAPS=0] [FLEET_DRY=1] [FLEET_BARE=1]"
+  echo "usage: sh tools/f/fleet-loop.sh <seat>   [LOOP_HOURS=18] [LOOP_LAPS=0] [FLEET_DRY=1] [FLEET_BARE=1]"
   echo "seats: $(sh "$roster_scan" --live | tr '\n' ' ')(live)  $(sh "$roster_scan" --seats | tr '\n' ' ')(all)"
   exit 2
 fi
 engine=$(sh "$roster_scan" --engine "$seat")
 
-prompt_file=tools/l/${seat}_seat_prompt.txt
+# THE ROOM IS THE SEAT'S OWN FIRST LETTER (`20260906`). `tools/` folds by first sprig letter
+# and `tool_path_resolve.rish` computes a room from a basename, so a prompt named
+# `bakery_seat_prompt.txt` lives in `tools/b/` -- eleven seats, eleven rooms. A literal
+# `tools/l/` was invisible to the reference sweep that moved them, because a path built at
+# runtime is not a path any grep can see. Derived here, so a seat added tomorrow arrives
+# with its prompt findable by the same one rule.
+prompt_room=$(printf '%s' "$seat" | cut -c1)
+prompt_file=tools/${prompt_room}/${seat}_seat_prompt.txt
 [ -f "$prompt_file" ] || { echo "fleet-loop: missing seat prompt $prompt_file"; exit 2; }
 
 # THE BATON IS PREPENDED, NOT COPIED INTO EVERY SEAT (REDS %409's lesson, one room over). Every
 # ship shares one opening -- voice, card, rota, thread, fleet, claim, send, log, pins, custody,
 # close -- and it used to be restated in each seat prompt, which is the same rule written six times
-# and the same drift waiting. tools/l/fleet_baton.txt holds it once; a seat prompt is now its LANE
+# and the same drift waiting. tools/f/fleet_baton.txt holds it once; a seat prompt is now its LANE
 # STANZA alone. A directive seated on the baton reaches every ship on its next lap with no per-seat
 # edit, which is the token economy the split was always for.
 #
 # Read into a variable rather than concatenated to a temporary file, because the prompt reaches the
 # agent as one argv string and a file on disk would be a second thing to keep in step.
-baton_file=tools/l/fleet_baton.txt
+baton_file=tools/f/fleet_baton.txt
 seat_prompt() {
   if [ -f "$baton_file" ]; then
     cat "$baton_file"
@@ -129,7 +136,7 @@ echo "fleet-loop: seat=$seat engine=$engine root=$root hours=$hours laps=${max_l
 # The prompt stays a file -- never inlined here.
 earth_claude_cmd() {
   if [ "$(uname -s)" = Linux ] && [ "${FLEET_BARE:-0}" != 1 ]; then
-    printf '%s\n' "./tools/ag/agent-jail.sh lap ${seat}   # flags live in tools/l/fleet_lap.sh (%414)"
+    printf '%s\n' "./tools/ag/agent-jail.sh lap ${seat}   # flags live in tools/f/fleet_lap.sh (%414)"
   else
     printf '%s\n' "claude --dangerously-skip-permissions --effort max --output-format stream-json --verbose -p <${prompt_file}>"
   fi
@@ -231,7 +238,7 @@ run_earth_claude() {
     fi
     # THE FLAGS LIVE INSIDE THE JAIL (REDS %414). ai-jail owns `-v, --verbose` and refuses it after
     # the command even when `--` was passed, while Claude Code requires it beside
-    # `--output-format stream-json`. `lap` runs tools/l/fleet_lap.sh with no flag in the jail's own
+    # `--output-format stream-json`. `lap` runs tools/f/fleet_lap.sh with no flag in the jail's own
     # argv, and every flag claude needs is spelled in there.
     ./tools/ag/agent-jail.sh lap "$seat" | stream_claude
   else

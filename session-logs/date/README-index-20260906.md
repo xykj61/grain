@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260906.182719` | [every tool in the room its name says](20260906/20260906-182719_every-tool-in-the-room-its-name-says.kyri) | 34 moved; 4 computed paths derived. |
 | `20260906.173444` | [the pattern that matched a prompt](20260906/20260906-173444_the-pattern-that-matched-a-prompt.kyri) | %508: pkill matched three baton prompts. |
 | `20260906.160323` | [a floor nobody reaches](20260906/20260906-160323_a-floor-nobody-reaches.kyri) | the Moore floor is a wish; the abelian one is 8. |
 | `20260906.153640` | [a park is not a landing](20260906/20260906-153640_a-park-is-not-a-landing.kyri) | %507: a park certified the box; %506 recovered. |

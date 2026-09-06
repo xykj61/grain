@@ -34,7 +34,7 @@ assert mk.ok else "app-bundle: bundle skeleton mkdir"
 
 # The plist rides as a tracked fixture -- four keys LaunchServices needs, nothing
 # identity-bearing -- copied whole, so no quoting crosses the shell at all.
-let p1 = run ["cp" "tools/fixtures/m/grain_app_shell_info.plist" plist]
+let p1 = run ["cp" "tools/fixtures/g/grain_app_shell_info.plist" plist]
 assert p1.ok else "app-bundle: plist copy"
 
 let put = run ["cp" "tools/.build/macos_app_shell_probe" macos_dir]
