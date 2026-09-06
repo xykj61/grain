@@ -1,0 +1,80 @@
+# tools/m/mantra_weave_annotate_witness.rish -- the merge, told rather than taken.
+#
+# Mantra was named for a weave whose merges succeed by construction and whose conflicts
+# are SHOWN rather than thrown. The merge landed first and is proven beside this one. This
+# guard proves the second half: `Weave.annotate` reads two weaves side by side and hands
+# back one Note per position in the union, carrying both sides' generation counts and a
+# single word naming what each side did there -- agreed, one side only, or one side moved.
+#
+# The load-bearing claim is the fourth, and it is why this guard exists rather than a
+# comment: annotate and merge are held to each other, position for position and count for
+# count. A story that may drift from the state it describes is worse than no story, so the
+# witness runs both and compares them line by line.
+#
+# The Rye witness lives beside the module it proves, at mantra/src/weave_annotate_witness.rye,
+# because Zig refuses an import that escapes the root file's directory. A test one room away
+# would have to copy the module, and a copy proves the copy.
+#
+# It also carries the head reading REDS %506 booked: mantra/src/weave.rye opens with a `//!`
+# head that ENUMERATES its operations, and nothing read that list, so `merge` landed and the
+# head went on saying "Three operations" over four for half a day. The scan holds the head to
+# the module's own `pub fn` declarations in both directions, and the lines it prints are said
+# here BEFORE anything asserts on them, since a refusal that sends a reader to lines it never
+# printed is half a refusal.
+#
+# Charter: active-designing/20260905-153729_mantra-was-named-for-the-weave.md, the cascade
+# item "A conflict is shown". Module: mantra/src/weave.rye. Sibling: the merge guard at
+# tools/m/mantra_weave_merge_witness.rish.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/mantra_weave_annotate_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mantra/bin/weave_annotate_witness"
+
+say "mantra-annotate: Language EN -- the story a merge tells, proven by doing rather than argued."
+say "mantra-annotate: Style Gauge, Meter -- every claim is a run, and every refusal is named."
+say "mantra-annotate: Lens TAME -- one named max, two named errors, both read at the edge."
+
+say "mantra-annotate: the module still declares its bound and its named refusals..."
+let law = run ["sh" "-c" "grep -q 'pub const max_weave_lines' mantra/src/weave.rye && grep -q 'PositionTextDisagrees' mantra/src/weave.rye && grep -q 'TooManyLines' mantra/src/weave.rye"]
+assert law.ok else "mantra-annotate: max_weave_lines or a named refusal left weave.rye"
+
+let seat = run ["sh" "-c" "grep -q 'pub fn annotate' mantra/src/weave.rye && grep -q 'pub const Note' mantra/src/weave.rye && grep -q 'pub const Reading' mantra/src/weave.rye"]
+assert seat.ok else "mantra-annotate: annotate, Note, or Reading left weave.rye"
+
+say "mantra-annotate: the module head still names every operation the module publishes..."
+let head = run ["sh" "tools/fixtures/m/mantra_weave_head_scan.sh" "mantra/src/weave.rye"]
+say head.out
+assert head.ok else "mantra-annotate: the module head and the module disagree -- read the head_missing and head_stale lines above"
+assert head.out contains "container_seen=1" else "mantra-annotate: the Weave container was not found, so the operation count is a reading of nothing"
+assert head.out contains "head_missing=0" else "mantra-annotate: an operation of Weave stands unnamed in the module head"
+assert head.out contains "head_stale=0" else "mantra-annotate: the module head names an operation the module no longer publishes"
+assert head.out contains "verdict=ok" else "mantra-annotate: the head scan must reach its own verdict"
+
+say "mantra-annotate: building the witness against the real module..."
+let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/src/weave_annotate_witness.rye -femit-bin=${bin}"]
+assert build.ok else "mantra-annotate: weave annotate witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "mantra-annotate: weave annotate witness exited non-zero"
+assert selftest.out contains "GREEN" else "mantra-annotate: weave annotate witness not GREEN"
+assert selftest.out contains "neither side touched reads agreed" else "mantra-annotate: the agreed claim is missing"
+assert selftest.out contains "reads left_moved" else "mantra-annotate: the one-side-moved claim is missing"
+assert selftest.out contains "reads right_only" else "mantra-annotate: the right-only claim is missing"
+assert selftest.out contains "reads left_only" else "mantra-annotate: the left-only claim is missing"
+assert selftest.out contains "the generation merge lands on" else "mantra-annotate: the claim holding the story to the merge is missing"
+assert selftest.out contains "mirrors every note" else "mantra-annotate: the side-swap claim is missing"
+assert selftest.out contains "interleaving union comes out in position order" else "mantra-annotate: the leg that reaches the sort is missing"
+assert selftest.out contains "refused PositionTextDisagrees" else "mantra-annotate: the colliding-insert refusal is missing"
+assert selftest.out contains "refused TooManyLines" else "mantra-annotate: the bound refusal is missing"
+assert selftest.out contains "deleting one line read agreed and gone both ways" else "mantra-annotate: the both-deleted claim is missing"
+
+say "mantra-annotate: breaking the reading ten ways in a pen, so both guards are proven able to red..."
+let control = run ["sh" "tools/fixtures/m/mantra_weave_annotate_control.sh"]
+assert control.ok else "mantra-annotate: the control must complete -- a witness nobody has watched fail is a witness nobody has tested"
+assert control.out contains "control_verdict=ok" else "mantra-annotate: the control must reach its own verdict"
+assert control.out contains "clean_exit=0" else "mantra-annotate: the unmutated copy must reach GREEN, or every other phase fails for a reason the pen invented"
+assert control.out contains "bound_shrunk_exit=0" else "mantra-annotate: shrinking the bound alone must stay GREEN, or the two bound breaks below are failing for the shrink"
+
+say "GREEN: the merge told rather than taken -- five readings, a mirror, the story held to the merge itself, and ten breaks caught over thirteen phases."

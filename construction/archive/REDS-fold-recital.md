@@ -358,3 +358,7 @@ at a closed fold.*
 *Row %502 folded to [`REDS-a-number-and-a-path-name-two-rows-rows-502.md`](REDS-a-number-and-a-path-name-two-rows-rows-502.md) on `20260906.143706`, **CLOSED** -- the citation loom -- a number and a path naming two different rows, and the three of four that resolve, so no link guard could ever red on them.*
 *Rows %499 and %503 folded to [`REDS-the-test-that-cannot-fail-rows-499-503.md`](REDS-the-test-that-cannot-fail-rows-499-503.md) on `20260906.152240`, both **CLOSED** -- a discriminator believed on the side where it answers correctly, and the destructive branch no leg ever planted.*
 *Row %463 folded to [`REDS-the-tree-a-census-is-easiest-to-test-on-rows-463.md`](REDS-the-tree-a-census-is-easiest-to-test-on-rows-463.md) on `20260906.151317`, **CLOSED** -- a census answering zero of everything is indistinguishable from a healthy tree.*
+
+*Row %506 folded to [`REDS-the-property-nobody-named-rows-506.md`](REDS-the-property-nobody-named-rows-506.md) on `20260906.153148`, **CLOSED** -- a guard that proves a function exists proves nothing about the head that enumerates them. Booked as `%485` on a parked lap; the number went to a peer before the row could publish.*
+
+*Row %507 folded to [`REDS-a-park-is-not-a-landing-rows-507.md`](REDS-a-park-is-not-a-landing-rows-507.md) on `20260906.153148`, **CLOSED** -- the round open fills two dead-letter boxes, and the guard built for the first counted the second as proof it was empty.*

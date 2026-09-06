@@ -1,0 +1,390 @@
+//! mantra/src/weave_annotate_witness.rye -- the merge, told rather than taken.
+//!
+//!   rye build mantra/src/weave_annotate_witness.rye -femit-bin=mantra/bin/weave_annotate_witness
+//!   mantra/bin/weave_annotate_witness
+//!
+//! The claim under test is `Weave.annotate` in `mantra/src/weave.rye`. `merge`
+//! answers *what is the one state*; `annotate` answers *what did each side do
+//! to reach it*, one Note per position in the union, carrying both sides'
+//! generation counts and reading them into a single word.
+//!
+//! The load-bearing claim is the fourth: annotate and merge agree, position for
+//! position and count for count. Without it the story is a second opinion that
+//! may drift from the merge it describes, and a story that can disagree with
+//! its subject is worse than none. With it, the reading is the merge's own
+//! arithmetic printed instead of applied.
+//!
+//! The claims, listed rather than counted, each shown from the side that
+//! matters:
+//!   1. A position both sides hold at one count reads `agreed`, and parity
+//!      says it is present on both sides.
+//!   2. A position only one side has seen reads `left_only` or `right_only`,
+//!      each shown in its own direction.
+//!   3. A delete on one side against a side still holding the line reads
+//!      `left_moved`: gone on the left, present on the right.
+//!   4. Annotate and merge agree -- same positions, same order, and each
+//!      note's `gen()` is the generation merge lands on there.
+//!   5. Swapping the sides mirrors the reading exactly: same positions in the
+//!      same order, left and right exchanged, each word its own mirror.
+//!   6. Two branches disagreeing on one position's text are REFUSED by name,
+//!      the same precondition merge holds and for the same reason -- a
+//!      per-weave counter cannot name a line across two branches.
+//!   7. A union past `max_weave_lines` is refused at the edge, before a single
+//!      note is written.
+//!   8. Notes come out in position order when the union interleaves -- the leg
+//!      that makes the sort inside annotate reachable at all.
+//!   9. Two branches that delete the same line read `agreed`, and gone on both
+//!      sides. The most ordinary shape a real merge takes, and the one where a
+//!      reading tempted to credit a side would: both counts moved, to one
+//!      number, so neither side acted last.
+//!
+//! Part of Mantra -- TAME-first from line one.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const weave = @import("weave.rye");
+
+const witness_version = "20260906.115458";
+
+// Every declaration of the module under test, forced through semantic analysis
+// at comptime. Zig analyses lazily, so without this leg a `pub fn` carrying a
+// flat type error in a function no claim below calls would ride through the
+// build untouched and this witness would print GREEN over it -- measured on
+// this very module (REDS %470, the census %463 asked for). Four lines turn a
+// GREEN that covers what the witness CALLS into one that covers what the module
+// PUBLISHES.
+comptime {
+    for (@typeInfo(weave).@"struct".decls) |decl| {
+        _ = &@field(weave, decl.name);
+    }
+}
+
+/// The largest number of texts a hand-written plant holds here. Named because
+/// every plant below is meant to be read: a proof whose input outgrows a reader
+/// stops proving anything that reader can check.
+const max_planted_lines: u32 = 8;
+
+/// A fresh weave holding exactly these lines, at positions 0..texts.len.
+fn planted(garden: std.mem.Allocator, texts: []const []const u8) !weave.Weave {
+    // invariant: a plant stays small enough to read, since this witness argues
+    // a law by showing every line it annotates
+    assert(texts.len <= max_planted_lines);
+    var w = weave.Weave.empty();
+    try w.apply(garden, .{ .inserts = texts, .deletes = &[_]u32{} });
+    // invariant: the plant holds exactly the lines it was handed, so every
+    // later claim about a reading is a claim about known input
+    assert(w.lines.items.len == texts.len);
+    return w;
+}
+
+/// An independent copy, so a branch can be advanced without moving its base.
+fn copy_of(garden: std.mem.Allocator, source: *const weave.Weave) !weave.Weave {
+    // invariant: the source stands inside the module's own bound, so the copy
+    // does too and a later reading refuses for the union rather than the input
+    assert(source.lines.items.len <= weave.max_weave_lines);
+    var out: std.ArrayListUnmanaged(weave.Line) = .empty;
+    errdefer out.deinit(garden);
+    try out.ensureTotalCapacity(garden, source.lines.items.len);
+    for (source.lines.items) |line| {
+        out.appendAssumeCapacity(line);
+    }
+    // invariant: a copy holds the same count as its source, since a branch that
+    // silently lost a line would make every claim below meaningless
+    assert(out.items.len == source.lines.items.len);
+    return .{ .lines = out, .next_pos = source.next_pos };
+}
+
+/// A weave seeded line by line, reaching a state `apply` cannot build on its
+/// own -- a per-weave counter hands out a contiguous run, so a weave holding
+/// position 2 without position 1 can only come from an identity scheme this
+/// module does not have yet. Claim 8 is written for exactly that day.
+fn seeded(garden: std.mem.Allocator, lines: []const weave.Line, next_pos: u32) !weave.Weave {
+    // invariant: a seed stays small enough to read, since claim 8 argues from
+    // every line it plants
+    assert(lines.len <= max_planted_lines);
+    var out: std.ArrayListUnmanaged(weave.Line) = .empty;
+    errdefer out.deinit(garden);
+    try out.ensureTotalCapacity(garden, lines.len);
+    for (lines) |line| {
+        // invariant: every seeded position stands under the counter it is given,
+        // so the weave satisfies the same law apply would have given it
+        assert(line.pos < next_pos);
+        out.appendAssumeCapacity(line);
+    }
+    return .{ .lines = out, .next_pos = next_pos };
+}
+
+/// A weave of `count` lines carrying one shared text, positions 0..count.
+fn wide_weave(garden: std.mem.Allocator, count: u32) !weave.Weave {
+    // invariant: a plant stays inside the module's own bound, since a weave
+    // over the ceiling would refuse for being an input rather than a union
+    assert(count <= weave.max_weave_lines);
+    var out: std.ArrayListUnmanaged(weave.Line) = .empty;
+    errdefer out.deinit(garden);
+    try out.ensureTotalCapacity(garden, count);
+    var pos: u32 = 0;
+    while (pos < count) : (pos += 1) {
+        out.appendAssumeCapacity(.{ .text = "wide", .gen = 1, .pos = pos });
+    }
+    // invariant: the plant holds exactly what was asked for, so the sum the
+    // bound reads is the sum this function promised
+    assert(out.items.len == count);
+    return .{ .lines = out, .next_pos = count };
+}
+
+/// The note standing at one position, or null when no side has seen it.
+fn note_at(notes: []const weave.Note, pos: u32) ?weave.Note {
+    for (notes) |note| {
+        if (note.pos == pos) return note;
+    }
+    return null;
+}
+
+/// The reading a side-swap turns each word into. Named as its own function so
+/// claim 5 states the mirror once rather than spelling it per case.
+fn mirror_of(reading: weave.Reading) weave.Reading {
+    return switch (reading) {
+        .left_only => .right_only,
+        .right_only => .left_only,
+        .agreed => .agreed,
+        .left_moved => .right_moved,
+        .right_moved => .left_moved,
+    };
+}
+
+/// Claims 1, 2 and 3: the three shapes a position can take, each read from the
+/// direction that shows it.
+fn prove_the_three_shapes(
+    garden: std.mem.Allocator,
+    base: *const weave.Weave,
+    deleted_left: *const weave.Weave,
+    grown_right: *const weave.Weave,
+) !void {
+    const notes = try deleted_left.annotate(garden, grown_right);
+    // invariant: the union holds every position either side has seen -- three
+    // from the base and one the right added, so nothing was dropped
+    assert(notes.len == 4);
+
+    const untouched = note_at(notes, 0) orelse return error.NoteMissing;
+    // invariant: neither side moved position 0, so the counts match and the
+    // word is `agreed` rather than one side being credited with an act
+    assert(untouched.reading() == .agreed);
+    assert(untouched.present_left());
+    assert(untouched.present_right());
+    print("mantra-annotate: a position neither side touched reads agreed, present both ways -- GREEN welcome path\n", .{});
+
+    const moved = note_at(notes, 1) orelse return error.NoteMissing;
+    // invariant: the left deleted this line and the right still holds it, so
+    // the reading names the left as the side that acted
+    assert(moved.reading() == .left_moved);
+    // invariant: parity says which way the act went -- gone on the left, still
+    // present on the right, which is the whole story at this position
+    assert(!moved.present_left());
+    assert(moved.present_right());
+    print("mantra-annotate: a delete on one side reads left_moved -- gone left, present right -- GREEN welcome path\n", .{});
+
+    const added = note_at(notes, 3) orelse return error.NoteMissing;
+    // invariant: the left has never seen this position, so its count is the
+    // reserved zero and the word names the right alone
+    assert(added.reading() == .right_only);
+    assert(added.left_gen == 0);
+    assert(added.present_right());
+    print("mantra-annotate: a line only one side has seen reads right_only -- GREEN welcome path\n", .{});
+
+    const other_way = try grown_right.annotate(garden, base);
+    const from_the_left = note_at(other_way, 3) orelse return error.NoteMissing;
+    // invariant: the same line read from the other side names the left, so the
+    // two directions are shown rather than one being assumed from the other
+    assert(from_the_left.reading() == .left_only);
+    assert(from_the_left.right_gen == 0);
+    print("mantra-annotate: the same line read the other way round reads left_only -- GREEN welcome path\n", .{});
+}
+
+/// Claim 4, the load-bearing one: the story and the merge agree, position for
+/// position and count for count.
+fn prove_agrees_with_merge(
+    garden: std.mem.Allocator,
+    left: *const weave.Weave,
+    right: *const weave.Weave,
+) !void {
+    const notes = try left.annotate(garden, right);
+    const merged = try left.merge(garden, right);
+    // invariant: one note per merged line -- the two readings cover the same
+    // union rather than two different ones
+    assert(notes.len == merged.lines.items.len);
+
+    for (notes, merged.lines.items) |note, line| {
+        // invariant: the two agree on which position they are talking about,
+        // in the same order, since both sort the union by position
+        assert(note.pos == line.pos);
+        // invariant: the generation the note derives is the one merge lands
+        // on, so the story cannot drift from the state it describes
+        assert(note.gen() == line.gen);
+        // invariant: presence in the merged weave is presence on the side that
+        // acted last, which is what `gen()` already named
+        assert((line.gen % 2 == 1) == (note.gen() % 2 == 1));
+    }
+    print("mantra-annotate: every note's gen is the generation merge lands on, in the same order -- GREEN welcome path\n", .{});
+}
+
+/// Claim 5: swapping the sides mirrors the reading and moves nothing else.
+fn prove_swap_mirrors(
+    garden: std.mem.Allocator,
+    left: *const weave.Weave,
+    right: *const weave.Weave,
+) !void {
+    const forward = try left.annotate(garden, right);
+    const backward = try right.annotate(garden, left);
+    // invariant: both directions cover the same union, since the union of two
+    // sets does not depend on which was named first
+    assert(forward.len == backward.len);
+
+    for (forward, backward) |a, b| {
+        // invariant: the two come out in the same order, so a reader comparing
+        // them line by line is comparing the same positions
+        assert(a.pos == b.pos);
+        // invariant: the counts exchange sides exactly, which is what makes
+        // this a mirror rather than merely a second reading
+        assert(a.left_gen == b.right_gen);
+        assert(a.right_gen == b.left_gen);
+        // invariant: the word exchanges with them, so no reading is a special
+        // case that survives the swap unchanged when it should not
+        assert(a.reading() == mirror_of(b.reading()));
+    }
+    print("mantra-annotate: swapping the sides mirrors every note, word for word -- GREEN welcome path\n", .{});
+}
+
+/// Claim 6: the identity gap, refused by name. Two branches that both insert
+/// hand their new lines the same small integer, because `pos` comes from a
+/// per-weave counter. Annotate holds the same precondition merge does, since a
+/// story about a merge that cannot happen is a story about nothing.
+fn prove_colliding_inserts_refused(
+    garden: std.mem.Allocator,
+    base: *const weave.Weave,
+) !void {
+    var branch_x = try copy_of(garden, base);
+    try branch_x.apply(garden, .{ .inserts = &[_][]const u8{"x"}, .deletes = &[_]u32{} });
+    var branch_z = try copy_of(garden, base);
+    try branch_z.apply(garden, .{ .inserts = &[_][]const u8{"z"}, .deletes = &[_]u32{} });
+    // invariant: the two branches genuinely collide -- each handed its new line
+    // the same position, which is exactly what makes the refusal necessary
+    assert(branch_x.next_pos == branch_z.next_pos);
+
+    if (branch_x.annotate(garden, &branch_z)) |_| {
+        return error.CollidingInsertsNotRefused;
+    } else |err| {
+        // invariant: the refusal arrives by its own name, so a caller can tell
+        // this apart from running out of room
+        assert(err == weave.WeaveError.PositionTextDisagrees);
+    }
+    print("mantra-annotate: two branches inserting at one position refused PositionTextDisagrees -- GREEN unwelcome path\n", .{});
+}
+
+/// Claim 7: the union bound is checked at the edge, before a note is written.
+fn prove_bound_refused(garden: std.mem.Allocator) !void {
+    const half: u32 = weave.max_weave_lines / 2 + 1;
+    const wide_a = try wide_weave(garden, half);
+    const wide_b = try wide_weave(garden, half);
+    // invariant: the two sides together stand one line past the ceiling, so the
+    // refusal below is the bound speaking rather than an accident of size
+    assert(wide_a.lines.items.len + wide_b.lines.items.len > weave.max_weave_lines);
+
+    if (wide_a.annotate(garden, &wide_b)) |_| {
+        return error.OversizeUnionNotRefused;
+    } else |err| {
+        // invariant: the ceiling refuses by its own name, so a caller can tell
+        // it apart from a disagreement about a line
+        assert(err == weave.WeaveError.TooManyLines);
+    }
+    print("mantra-annotate: a union past max_weave_lines refused TooManyLines at the edge -- GREEN unwelcome path\n", .{});
+}
+
+/// Claim 8: an interleaving union comes out in position order. Every other
+/// claim here reads weaves whose union is already ordered, because a per-weave
+/// counter only ever hands out a contiguous run -- so a reading with the sort
+/// deleted would pass all seven of them.
+fn prove_interleaved_order(garden: std.mem.Allocator) !void {
+    const left = try seeded(garden, &[_]weave.Line{
+        .{ .text = "one", .gen = 1, .pos = 0 },
+        .{ .text = "three", .gen = 1, .pos = 2 },
+    }, 3);
+    const right = try seeded(garden, &[_]weave.Line{
+        .{ .text = "one", .gen = 1, .pos = 0 },
+        .{ .text = "two", .gen = 1, .pos = 1 },
+    }, 3);
+
+    const notes = try left.annotate(garden, &right);
+    // invariant: the union holds all three positions -- one shared, one from
+    // each side -- so nothing was dropped on the way
+    assert(notes.len == 3);
+    assert(notes[0].pos == 0);
+    assert(notes[1].pos == 1);
+    assert(notes[2].pos == 2);
+    // invariant: the shared position reads agreed, and each side's own reads
+    // as that side alone, which is the interleave told correctly
+    assert(notes[0].reading() == .agreed);
+    assert(notes[1].reading() == .right_only);
+    assert(notes[2].reading() == .left_only);
+    print("mantra-annotate: an interleaving union comes out in position order -- GREEN welcome path\n", .{});
+}
+
+/// Claim 9: two branches that delete the same line agree. This is the most
+/// ordinary shape a real merge takes, and it is the one that separates the two
+/// halves of a reading: the WORD says whether the counts match, and PARITY says
+/// what they match on. Here both sides moved, to one number, so neither acted
+/// last -- and what they agree about is that the line is gone.
+fn prove_both_deleted(garden: std.mem.Allocator, base: *const weave.Weave) !void {
+    var branch_x = try copy_of(garden, base);
+    try branch_x.apply(garden, .{ .inserts = &[_][]const u8{}, .deletes = &[_]u32{2} });
+    var branch_y = try copy_of(garden, base);
+    try branch_y.apply(garden, .{ .inserts = &[_][]const u8{}, .deletes = &[_]u32{2} });
+
+    const notes = try branch_x.annotate(garden, &branch_y);
+    // invariant: the union is the base's three positions -- neither branch
+    // added one, so a fourth note here would mean a delete invented a position
+    assert(notes.len == 3);
+
+    const shared = note_at(notes, 2) orelse return error.NoteMissing;
+    // invariant: both sides deleted it and their counts landed on one number,
+    // so neither acted last and the word is `agreed` rather than a side
+    assert(shared.reading() == .agreed);
+    // invariant: agreed says the counts match; parity says what they match ON,
+    // and gone is the half that reading the word alone would miss
+    assert(!shared.present_left());
+    assert(!shared.present_right());
+    // invariant: the merged generation is that shared count, so a third branch
+    // merging later meets the delete rather than a line back at generation 1
+    assert(shared.gen() == 2);
+    print("mantra-annotate: two branches deleting one line read agreed and gone both ways -- GREEN welcome path\n", .{});
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    // One base and two branches of it: the left deletes a line, the right adds
+    // one. Between them they show every reading a position can take without an
+    // identity scheme the module does not have yet.
+    const base = try planted(garden, &[_][]const u8{ "alpha", "beta", "gamma" });
+
+    var deleted_left = try copy_of(garden, &base);
+    try deleted_left.apply(garden, .{ .inserts = &[_][]const u8{}, .deletes = &[_]u32{1} });
+
+    var grown_right = try copy_of(garden, &base);
+    try grown_right.apply(garden, .{ .inserts = &[_][]const u8{"delta"}, .deletes = &[_]u32{} });
+
+    try prove_the_three_shapes(garden, &base, &deleted_left, &grown_right);
+    try prove_agrees_with_merge(garden, &deleted_left, &grown_right);
+    try prove_swap_mirrors(garden, &deleted_left, &grown_right);
+    try prove_colliding_inserts_refused(garden, &base);
+    try prove_bound_refused(garden);
+    try prove_interleaved_order(garden);
+    try prove_both_deleted(garden, &base);
+
+    print("mantra-annotate: version {s}\n", .{witness_version});
+    print("GREEN: the merge told rather than taken -- five readings, a mirror, and the story held to the merge itself.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    return run_selftest(garden);
+}

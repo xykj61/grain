@@ -11,8 +11,9 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
-| `20260906.153431` | [a proof two pages cite](20260906/20260906-153431_a-proof-two-pages-cite.kyri) | %504: cited as proof, compiled by nothing. |
-| `20260906.153324` | [two ships, one guard](20260906/20260906-153324_two-ships-one-guard.kyri) | %505: it could read 19 of 274. |
+| `20260906.153640` | [a park is not a landing](20260906/20260906-153640_a-park-is-not-a-landing.kyri) | %507: a park certified the box; %506 recovered. |
+| `20260906.153431` | [a proof two pages cite](20260906/20260906-153431_a-proof-two-pages-cite.kyri) | %506: cited as proof, compiled by nothing. |
+| `20260906.153324` | [two ships, one guard](20260906/20260906-153324_two-ships-one-guard.kyri) | %507: it could read 19 of 274. |
 | `20260906.152758` | [the test that cannot fail](20260906/20260906-152758_the-test-that-cannot-fail.kyri) | %503: my own discriminator held in both states. |
 | `20260906.144500` | [a bound has a direction](20260906/20260906-144500_a-bound-has-a-direction.kyri) | %501: the Moore bound, asked the way that decides. |
 | `20260906.144208` | [A number and a path naming two different rows](20260906/20260906-144208_a-number-and-a-path-naming-two-rows.kyri) | the citation loom |
@@ -33,6 +34,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260906.122329` | [the fold that hid the link it broke](20260906/20260906-122329_the-fold-that-hid-the-link-it-broke.kyri) | %491: a stamp is why four guards look away. |
 | `20260906.121331` | [a door is not the pages behind it](20260906/20260906-121331_a-door-is-not-the-pages-behind-it.kyri) | %490: the map was wrong about three more pages. |
 | `20260906.120517` | [a guard by its name](20260906/20260906-120517_the-census-that-knew-a-guard-by-its-name.kyri) | %465: 408 runners absent, not unheard; %486 self-reference. |
+| `20260906.120418` | [the head that enumerates](20260906/20260906-120418_the-head-that-enumerates.kyri) | %506: the weave head said three over four; annotate lands. |
 | `20260906.120137` | [count the believers, not the carriers](20260906/20260906-120137_count-the-believers-not-the-carriers.kyri) | %487: a handler that cleans up and carries on. |
 | `20260906.115056` | [the vendor names prepped like friends](20260906/20260906-115056_the-vendor-names-prepped-like-friends.kyri) | Tier 1+2 Class M; 13 bannered, 3 refused. |
 | `20260906.114519` | [the guard that could not hear itself fail](20260906/20260906-114519_the-guard-that-could-not-hear-itself-fail.kyri) | %484: a swallowed exit status. |
