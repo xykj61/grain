@@ -218,7 +218,7 @@ sed_inplace() {
 # the script where it was stopped. 130 and 143 are 128 plus SIGINT and SIGTERM.
 #
 # This header taught the one-line form until 20260906, which is why the tree wrote it 142 times
-# against the correct form's once (REDS %485). Proven both directions on metal in
+# against the correct form's once (REDS %487). Proven both directions on metal in
 # tools/fixtures/s/signal_trap_control.sh; the population is counted by
 # tools/fixtures/s/signal_trap_scan.sh.
 lock_acquire() {

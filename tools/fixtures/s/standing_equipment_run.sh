@@ -231,7 +231,7 @@ if [ -d "$(dirname "$lock")" ]; then
     # handler just removed, and `set -eu` above ends it at the next `>> "$pen/fresh"` -- so a
     # signalled pass prints a list of green guards and NO `run_verdict` line at all, which reads
     # like a short healthy run. Measured 20260906: this pass died that way after 34 guards.
-    # REDS %485; proven both directions in tools/fixtures/s/signal_trap_control.sh.
+    # REDS %487; proven both directions in tools/fixtures/s/signal_trap_control.sh.
     trap 'rm -rf "$pen"; lock_release "$lock"' EXIT
     trap 'exit 130' INT
     trap 'exit 143' TERM
