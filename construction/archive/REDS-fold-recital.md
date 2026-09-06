@@ -296,3 +296,5 @@ at a closed fold.*
 *Row %455 folded to [`REDS-the-guard-that-could-not-run-half-of-itself-rows-455.md`](REDS-the-guard-that-could-not-run-half-of-itself-rows-455.md) on `20260906.013116`, **CLOSED** -- %422 was right to refuse a host or capability FIELD for this guard, because a declaration can be wrong about a bench; a probe that attempts the same act the legs attempt cannot be. Every ship was paying a full cold pass a lap for that difference.*
 
 *Row %452 folded to [`REDS-a-doc-line-and-the-function-beneath-it-rows-452.md`](REDS-a-doc-line-and-the-function-beneath-it-rows-452.md) on `20260906.020238`, **CLOSED** -- A doc line promised a distance between points while the function beneath it measured between outfits -- prose and code each internally correct, and only their meeting wrong.*
+
+*Row %458 folded to [`REDS-an-instrument-must-know-where-it-stands-rows-458.md`](REDS-an-instrument-must-know-where-it-stands-rows-458.md) on `20260906.044404`, **CLOSED** -- an instrument must know where it is standing: a bind mount made the pier's path the ship's own, so the reading compared a file with itself.*
