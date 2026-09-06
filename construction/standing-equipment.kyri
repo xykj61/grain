@@ -1557,9 +1557,14 @@ seated 20260906.040355
 # `grep` and stayed green, and booked this census. It walks the corpus, resolves the 227 symlinks
 # through `git ls-files -s` and `git cat-file` rather than a non-POSIX `readlink`, gathers every
 # build root, and closes the `@import` graph. The GATED reading is %449's own shape: a tracked Rye
-# file a runner makes a claim about while no build reaches it, ceiling 1. Files nothing compiles and
-# nobody claims are reported rather than gated -- 178 today, 114 of them tests in `rye/tests` that no
-# runner names. `tier lap`: 5s, most of it the control's sixteen pens.
+# file a runner makes a claim about while no build reaches it, ceiling 0. Files nothing compiles and
+# nobody claims are reported rather than gated. That reading read 178 when the row was seated, and
+# 114 of the 178 were programs `tools/p/parity_ch01.rish` compiles every parity pass -- it assembles
+# their paths from a directory and a bare stem, so none is written anywhere and a census reading for
+# filenames called them all unbuilt (%466). The census asks `rye_harness_roster_scan.sh --paths` for
+# those now, crediting them only when the assembling script compiles anything at all: `never` reads
+# **64** at `20260906.113000`, and `harness_unresolved` publishes what the asking still cannot reach.
+# `tier lap`: seated at 5s over sixteen pens; **13s** measured `20260906.113000` over twenty-one.
 
 guard rye_compile_reach
 path tools/r/rye_compile_reach_witness.rish
@@ -1613,9 +1618,13 @@ seated 20260906.034025
 # as a fact. And a program added to rye/tests/ and left out of the list is never run while the suite
 # still reports GREEN, because the suite asserts over the list it holds rather than over the
 # directory it names. The tree already keeps this rule for crypto/ and for module rosters; this
-# carries it to the largest assembled site it has. `tier lap`: 4s over 3,073 scripts -- one awk over
-# batched files and a candidate grep before the per-file work, the cure %460 applied to the runner
-# census, which took this from 35s.
+# carries it to the largest assembled site it has. It also ANSWERS that census now: `--paths` prints
+# each harness path with the script that assembles it, so the two share one resolver rather than
+# each learning to read a harness. That mode skips the build-site awk, which is very nearly the
+# whole of the scan's wall time -- 3.8s against 0.5s, measured `20260906.113000`. `tier lap`: seated
+# at 4s over 3,073 scripts; **11s** measured `20260906.113000` over twenty-seven control cases --
+# one awk over batched files and a candidate grep before the per-file work, the cure %460 applied to
+# the runner census, which took this from 35s.
 
 guard harness_roster
 path tools/r/rye_harness_roster_witness.rish

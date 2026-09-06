@@ -29,8 +29,10 @@ set -eu
 HERE="$(cd "$(dirname "$0")" && pwd)"
 SCAN="$HERE/rye_compile_reach_scan.sh"
 PORTABLE="$HERE/../s/shell_portable.sh"
+ROSTER="$HERE/rye_harness_roster_scan.sh"
 [ -f "$SCAN" ] || { echo "control: scan missing at $SCAN"; exit 1; }
 [ -f "$PORTABLE" ] || { echo "control: shell_portable.sh missing at $PORTABLE"; exit 1; }
+[ -f "$ROSTER" ] || { echo "control: rye_harness_roster_scan.sh missing at $ROSTER"; exit 1; }
 
 pen="$(mktemp -d)"
 trap 'rm -rf "$pen"' EXIT INT TERM
@@ -62,6 +64,10 @@ new_pen() { # name  -> echoes the pen root
   mkdir -p "$_p/rishi/bin" "$_p/tools/fixtures/s" "$_p/tools/fixtures/r"
   cp "$PORTABLE" "$_p/tools/fixtures/s/shell_portable.sh"
   cp "$SCAN" "$_p/tools/fixtures/r/rye_compile_reach_scan.sh"
+  # The resolver the scan asks for its assembled paths. Copied into every pen rather than into the
+  # two that plant a harness, because a pen without it is a pen where the scan REFUSES, and then
+  # every other case in this file would be measuring that refusal instead of what it planted.
+  cp "$ROSTER" "$_p/tools/fixtures/r/rye_harness_roster_scan.sh"
   ( cd "$_p" && git init -q . && git config user.email pen@example.invalid && git config user.name pen )
   echo "$_p"
 }
@@ -279,6 +285,78 @@ if [ "$ceiling" -ge 1 ]; then want_self_read=0; else want_self_read=1; fi
 check      "  ... and the ceiling answers for it"          "$want_self_read" "$rc"
 run_pen "$p" --list asserted
 check_says "  ... named in the asserted list"               "lib/named_in_the_scan.rye" "$out"
+
+# -- 17. a harness's assembled stems are credited ----------------------------------------------
+# The field shape, in miniature: a script that compiles its programs by joining a directory held in
+# one variable to a bare stem held in another, so no path it builds is written down anywhere. Before
+# the resolver was asked, all three of these read as never-compiled -- 114 of them did on the field,
+# under a label reading *a file no build reaches* (REDS %466).
+harness_pen() { # pen-name  verb  -> builds a pen whose harness compiles (or merely reads) 3 stems
+  _hp=$(new_pen "$1")
+  mkdir -p "$_hp/suite" "$_hp/tools/a"
+  for m in alpha beta gamma; do printf 'pub fn t() void {}\n' > "$_hp/suite/$m.rye"; done
+  # Written with printf so the assembled shape is spelled ONCE, here, where it is the plant.
+  { printf '#!/bin/sh\nd=suite\nfor s in alpha beta gamma; do\n'
+    printf '  %s "$d/$s.rye"\ndone\n' "$2"
+  } > "$_hp/tools/a/suite.sh"
+  seal "$_hp"
+  echo "$_hp"
+}
+p=$(harness_pen harness_credited 'rye/bin/rye run')
+run_pen "$p"
+check      "a harness that compiles its assembled stems exits 0"  0 "$rc"
+check_says "  ... all three credited"                       "harness_paths=3" "$out"
+check_says "  ... and none is never-compiled"               "never=0" "$out"
+
+# -- 18. and a harness that never compiles credits nothing -------------------------------------
+# The refusal side of the same claim, and the reason the credit is conditional rather than blanket.
+# Identical pen, identical stems, one word changed: the script reads its programs instead of
+# building them. If the credit were unconditional these three would walk free here too, and phase 17
+# would be proving that the scan can find a list rather than that it can find a BUILD.
+p=$(harness_pen harness_not_compiling 'grep -q pub')
+run_pen "$p"
+check_says "a harness that only reads credits nothing"      "harness_paths=0" "$out"
+check_says "  ... so its three stems are never-compiled"    "never=3" "$out"
+# And they are never-compiled WITHOUT being accused, which is the bound on the gate rather than a
+# gap in this pen. `asserted` is the intersection of the never set with the paths a reading runner
+# spells LITERALLY, and a harness spells none -- that is what made it invisible in the first place.
+# So a program only a harness ever names can never enter the gated reading, built or not, and the
+# gate that catches it is the roster's own `files_unlisted` one file over. Written as a check so
+# the boundary is asserted rather than assumed.
+check_says "  ... yet none of them accused, since a harness names no literal" "asserted=0" "$out"
+check      "  ... so the ceiling has nothing to refuse"     0 "$rc"
+
+# -- 19. the resolver absent is a refusal, never a silent accusation ---------------------------
+# Without it every assembled path reads as never-compiled, which on the field is a confident false
+# claim about 114 files. A missing instrument must say so rather than answer.
+p=$(harness_pen harness_no_resolver 'rye/bin/rye run')
+rm -f "$p/tools/fixtures/r/rye_harness_roster_scan.sh"
+run_pen "$p"
+check      "the resolver missing refuses"                   2 "$rc"
+check_says "  ... by name"                                  "verdict=roster_scan_absent" "$out"
+
+# -- 20. a resolver too old to know the flag also refuses --------------------------------------
+# The seam's contract check. An older copy answers --paths with an ordinary count-mode reading,
+# which carries no paths and no marker -- indistinguishable, in the paths alone, from a tree that
+# honestly holds no harness. Only one of those two is a fault, so the marker is what is read.
+p=$(harness_pen harness_stale_resolver 'rye/bin/rye run')
+printf '#!/bin/sh\necho harnesses=1\necho verdict=ok\n' > "$p/tools/fixtures/r/rye_harness_roster_scan.sh"
+run_pen "$p"
+check      "a resolver with no marker refuses"              2 "$rc"
+check_says "  ... by name"                                  "verdict=roster_scan_unusable" "$out"
+
+# -- 21. a tree with no harness at all is not a fault ------------------------------------------
+# The welcome the four refusals above must not swallow: the resolver answering "none here" is a
+# lawful reading, and phase 1's clean tree already holds no harness. Asserted here so a future
+# tightening of the marker check cannot quietly turn an empty tree into a refusal.
+p=$(new_pen no_harness)
+mkdir -p "$p/app" "$p/tools/a"
+printf 'pub fn main() void {}\n' > "$p/app/main.rye"
+printf '#!/bin/sh\nrye/bin/rye build app/main.rye\n' > "$p/tools/a/build.sh"
+seal "$p"; run_pen "$p"
+check      "a tree holding no harness exits 0"              0 "$rc"
+check_says "  ... crediting nothing"                        "harness_paths=0" "$out"
+check_says "  ... and still reading its one root"           "roots=1" "$out"
 
 # -- 16. the pen proven innocent ----------------------------------------------------------------
 # A census that always answers "nothing is accused" must fail the accusation case above. If it walks

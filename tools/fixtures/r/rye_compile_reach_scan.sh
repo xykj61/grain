@@ -9,19 +9,20 @@
 # module every lap and all four stayed green, because all four read it with `grep`. Its own test
 # inlines a copy of it, and the copy reads `.empty` -- because the test is compiled and the module is
 # not. A test that inlines its subject migrates with the toolchain while the subject rots, and every
-# guard stays green (REDS %453, which booked this census).
+# guard stays green (REDS %449, which booked this census).
 #
 # WHAT IT MEASURES. Every tracked `.rye` file, and whether anything in this tree ever hands it to the
 # Rye compiler -- directly as a build root, or transitively through an `@import`. Four readings come
 # out of that, and they are deliberately different weights:
 #
-#   never      a file no build reaches. Some of these are honest: a test a hand runs, a probe kept
-#              for a day that has not come. Reported.
+#   never      a file no build reaches -- not as a literal path in a runner, not as a stem some
+#              harness assembles, and not through an `@import` from either. Some of these are
+#              honest: a test a hand runs, a probe kept for a day that has not come. Reported.
 #   specimen   of those, the ones under a `fixtures/` path -- a planted violation a style guard reads
 #              is SUPPOSED not to compile clean, so accusing it would be accusing the plant of being
 #              planted. Named as its own class rather than counted against the tree.
 #   asserted   of the rest, the ones a runner nonetheless makes a claim about while never compiling
-#              them. This is %453's exact shape, and it is the reading held under a ceiling.
+#              them. This is %449's exact shape, and it is the reading held under a ceiling.
 #   dangling   an `@import` naming a path this tree neither tracks nor holds.
 #
 # WHY A RUNNER IS CREDITED GENEROUSLY. A build root reaches the compiler by three routes here: a
@@ -31,7 +32,35 @@
 # 1,500 runners, and a mis-tuned chase produces a CONFIDENT false claim -- exactly the failure %460
 # just closed one lane over. So the rule is per-file and conservative: a runner that invokes the Rye
 # compiler AT ALL credits every `.rye` path it names. That over-credits on purpose. Every count below
-# is therefore a FLOOR: what it names is genuinely uncompiled, and there is more it cannot see.
+# is therefore a FLOOR for the shapes it can read, and the residue it cannot read is published as a
+# number rather than left to a reader's trust in the word "floor" -- see `harness_unresolved`.
+#
+# WHY A HARNESS IS ASKED RATHER THAN PARSED. A runner can name its target without writing it down.
+# `tools/p/parity_ch01.rish` compiles 116 Rye programs whose paths it assembles from a directory in
+# one variable and a bare stem in another, so not one of those 116 paths is written anywhere in this
+# tree. Reading for filenames therefore called all 116 unbuilt, and 114 of them landed in `never`
+# under a label reading *a file no build reaches* -- false for 64% of what that set named, in the one
+# direction the label does not claim (REDS %466). The resolver already stood one file over:
+# `rye_harness_roster_scan.sh` reads a harness's own directory and stem list so it can hold the two
+# against each other, and this census asks it that same question through `--paths` rather than
+# learning to read a harness a second time. One resolver, two readers -- a rule written twice is a
+# rule two files may quietly come to disagree about.
+#
+# The credit is CONDITIONAL, and the condition is the seam. That scan answers what a harness
+# assembles; this one answers whether that harness compiles anything at all. A harness whose script
+# never invokes the Rye compiler credits nothing, so asking widens what can be SEEN without widening
+# what is BELIEVED. Measured `20260906`: `never` 178 -> 64, all 116 standing on disk. What the
+# asking still cannot reach is `harness_unresolved` -- assembled sites whose directory or stem list
+# that scan could not resolve, ten of them that day. A residue nobody can see is a residue nobody
+# can question. If that scan is missing or cannot answer, this one REFUSES: without it every
+# assembled path reads as never-compiled, which is a confident false accusation of 114 files.
+#
+# WHAT THE GATE STILL CANNOT REACH, proven in the pen rather than assumed. `asserted` is the never
+# set intersected with the paths a READING runner spells literally, and a harness spells none of its
+# targets -- that is what made them invisible here to begin with. So a program only a harness ever
+# names can never enter the gated reading, built or unbuilt. The guard for that case is the roster
+# scan's own `files_unlisted`, which compares the harness's stem list against the directory it
+# names; the two instruments divide the ground rather than overlapping on it.
 #
 # WHY SYMLINKS ARE RESOLVED FIRST. 227 of the corpus are symlinks -- a second name for one file, not a
 # second file. Measured before resolution, 17 of them read as never-compiled and 16 of those point at
@@ -179,6 +208,31 @@ rye_literal='[A-Za-z0-9_][A-Za-z0-9_./-]*\.rye'
 xargs_lines "$work/compiling.txt" grep -hoE "$rye_literal" 2>/dev/null | sort -u > "$work/named_compiling.txt" || true
 xargs_lines "$work/reading.txt"   grep -hoE "$rye_literal" 2>/dev/null | sort -u > "$work/named_reading.txt" || true
 
+# ---- the paths a harness assembles, which no literal spells ------------------------------------
+# Asked of the resolver rather than parsed a second time here; the header says why. The credit is
+# conditional on the assembling script being one of the compiling runners above, so a harness that
+# reads its programs without ever building them credits nothing. Two questions, one owner each.
+roster_scan=tools/fixtures/r/rye_harness_roster_scan.sh
+[ -f "$roster_scan" ] || {
+  echo "detail: $roster_scan is absent, so no assembled path can be read and this census would"
+  echo "detail: accuse every one of them of never compiling -- refusing rather than guessing"
+  echo "verdict=roster_scan_absent"; exit 2; }
+sh "$roster_scan" --paths > "$work/harness_raw.txt" 2>/dev/null || true
+# The marker, not the paths. An empty answer is lawful -- a tree may hold no harness -- so the
+# reading that separates "none here" from "this copy cannot answer" has to be the marker itself.
+grep -q '^paths_mode=1$' "$work/harness_raw.txt" || {
+  echo "detail: $roster_scan answered with no paths_mode marker -- it refused, or it is a copy"
+  echo "detail: too old to know --paths, and either way its silence is not an empty tree"
+  echo "verdict=roster_scan_unusable"; exit 2; }
+harness_unresolved=$(sed -n 's/^unresolved=\([0-9][0-9]*\)$/\1/p' "$work/harness_raw.txt" | head -1)
+[ -n "$harness_unresolved" ] || harness_unresolved=0
+awk -v cf="$work/compiling.txt" '
+  FILENAME == cf { compiling[$0] = 1; next }
+  $1 == "harness_path" && ($2 in compiling) { print $3 }
+' "$work/compiling.txt" "$work/harness_raw.txt" | sort -u > "$work/harness_named.txt"
+harness_paths=$(wc -l < "$work/harness_named.txt" | tr -d ' ')
+sort -u "$work/named_compiling.txt" "$work/harness_named.txt" -o "$work/named_compiling.txt"
+
 # A named literal is credited against the file it really is, so a runner naming the symlink credits
 # the target -- the same resolution the corpus took.
 resolve_names() { # namefile -> real paths on stdout
@@ -282,6 +336,8 @@ echo "runners=$runners"
 echo "compiling_runners=$compiling_runners"
 echo "reading_runners=$reading_runners"
 echo "roots=$roots"
+echo "harness_paths=$harness_paths"
+echo "harness_unresolved=$harness_unresolved"
 echo "edges=$edges"
 echo "built=$built"
 echo "never=$never"

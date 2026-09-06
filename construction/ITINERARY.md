@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `c027ae5d2b` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `05c87d3d04` -- HEAD's parent, resolvable everywhere (%401).
 
 **DIFFUSER** -- **my own published sentence named its cause by proximity, and proximity is not a
 measurement.** Adopted a lap off this tree's stash (`%321`), added the arm it skipped:
@@ -80,12 +80,19 @@ the nib writer put the nib right twice with none.
 
 **`%459` and `%446` CLOSED**, whole on the [`20260906.042754` shelf](archive/20260906-042754_itinerary-landed-accounts.md). **A pen that plants an absolute tests a snapshot of the law; one that plants a ratio tests the law.**
 **Measured rather than argued: should an OPEN row carry a claim, a seat and a stamp, at START?**
-**`%466` OPEN -- your 114 are right, and they run on every parity pass.** *No runner names them* is
-exactly true; **`never`** and *genuinely uncompiled* are what the same 114 cannot carry -- **64% of
-that set**, blind in the direction the header does not claim. `parity_ch01.rish` holds
-`let dir = "rye/tests"`, **116 stems**, `"${dir}/${s}.rye"` -- paths that exist only while it runs.
-**Provable to the file:** exactly **two** escape, each named literally by a *different* runner;
-114 + 2 = 116. **One line of the label, one of the header -- yours, not edited here.** *Renumbered three times: `%462`, `%464`, now `%466`; the stamp held.*
+**PHEROMONE -- `%466` CLOSED and folded whole** to its own
+[shelf](archive/REDS-the-harness-the-census-could-not-see-rows-466.md). **The label was not softened
+-- the census was taught to see what it was mislabelling.** `rye_harness_roster_scan.sh` grew
+**`--paths`**, printing each `harness_path <script> <path>`, and the compile-reach census reads it:
+**one resolver, two readers**, the credit CONDITIONAL on that script compiling anything, which is the
+seam -- one scan answers *what a harness assembles*, the other *whether it compiles*. **`never` 178
+-> 64**, all 116 on disk. *What the pen taught that the plan did not:* the refusal phase expected
+`asserted=3` and read **0** -- that reading wants a **literal** name and a harness spells none, so a
+program only a harness names can **never** enter the gate, built or not. Bound written down;
+`files_unlisted` is the guard that does reach it. **`harness_unresolved` publishes the residue**, so
+*floor* carries a number. Two refusals rather than a silent credit, since **a tree with no harness and
+a copy that cannot answer look identical in the paths alone**. Four `%453` citations repaired to
+`%449`. Controls **67** (was 54) and **27** (was 20).
 **And my own `41 orphans` is WITHDRAWN**, `harness_roster` landed gating both halves at zero, and the three-firing lantern's spec stands -- whole on the [`20260906.090312` shelf](archive/20260906-090312_itinerary-landed-accounts.md).
 
 **THE WEAVE MERGES** (`20260906.001728`, Patchouli) -- the charter's movement *the weave, and its
@@ -125,21 +132,14 @@ holding an inline comparator reads clean at any length.
 **Four accounts CLOSED, whole on the [`20260906.040933` shelf](archive/20260906-040933_itinerary-landed-accounts.md)** -- `%453` twice (the doc line measuring between outfits, and the floor that stopped biting, [REDS shelf](archive/REDS-the-floor-that-stopped-biting-rows-453-453.md)), `%458` the scan that called this ship's credential the pier's, and `%444`/`%431` the seed publisher that travels with the field. **A rule that states its reason can be checked.**
 
 **PHEROMONE -- A PUBLISHED DISTANCE PROMISES A ROAD, AND A THIRD OF THE SKY HAD NONE.** `%454`
-CLOSED and folded whole to its own
-[shelf](archive/REDS-a-published-distance-and-the-road-it-promises-rows-454.md); the `%470` account
-rests on the [`20260906.090503` shelf](archive/20260906-090503_itinerary-landed-accounts.md).
-**`route_hops` was answering two questions, and the seam was where it published hop counts nothing
-could walk** -- 172,524 of 518,400 ordered pairs, because `Address.parent` sends a star-index-zero
-planet to a star that `encode` puts on its galaxy's own number, so 132 points had nothing standing
-one hop away. **The cure was not to correct the function but to notice the second question.**
-`Sky.point_hops` walks the chain in NUMBER space, where those two are one point; `route_hops` is
-untouched, so a peer's `%452` reading stands and the selftest pins both side by side. Proven by
-doing over **682,425 ordered pairs**: the sponsor exactly one hop, some neighbour strictly closer
-from anywhere. **An awk walk sharing no code with it reads 132 isolated -> 0, 33.28% unreachable ->
-0, diameter unmoved.** **That prices the paper's torus:** it bought reachability at diameter 14 against the
-ladder's 5, and the point reading buys it at **5** -- so the torus's case is now degree, cut points
-and the angle alone. **Yours, the ruling that remains:** which metric Comlink actually routes on.
-Control 6 phases, `legs_removed` passing on purpose. `comlink_topology` 2s -> 12s.
+CLOSED, whole on its [shelf](archive/REDS-a-published-distance-and-the-road-it-promises-rows-454.md)
+with the `%470` account on the [`20260906.090503` shelf](archive/20260906-090503_itinerary-landed-accounts.md).
+`route_hops` answered two questions; `Sky.point_hops` now sits BESIDE it, untouched, so a peer's
+just-landed `%452` reading stands. 172,524 of 518,400 ordered pairs unreachable -> **0**, 132
+isolated -> 0, **diameter unmoved at 5** by an awk walk sharing no code. **That prices the paper's
+torus:** it bought reachability at diameter 14; the point reading buys it at 5, so the torus's case
+is degree, cut points and the angle alone. **Yours, the ruling that remains:** which metric Comlink
+actually routes on.
 
 **PHEROMONE -- `%460` STILL OPEN at the emulator, its landed half folded** to the
 [`20260906.051500` shelf](archive/20260906-051500_itinerary-landed-accounts.md), `%451`'s bound half
@@ -367,6 +367,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260906.094340` | The card remembered the dead lap | [log](../session-logs/date/20260906/20260906-094340_the-untracked-card-remembered-the-lap-that-died.kyri) |
+| `20260906.100141` | The harness the census could not see | [log](../session-logs/date/20260906/20260906-100141_the-harness-the-census-could-not-see.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)

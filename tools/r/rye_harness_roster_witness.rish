@@ -20,11 +20,15 @@
 # WHAT IS PROVEN, on metal.
 #   Every stem a harness names resolves to a .rye file in that harness's own directory.
 #   Every .rye file in that directory is named by a stem, so nothing stands there unrun.
-#   Twenty behaviors on real pen trees: the agreeing harness free and reading zero, a stem naming
-#   nothing counted and refused and named, a program nobody lists counted and refused and named, a
-#   seam symlink read as a program from both sides, an empty corpus refused rather than read clean,
-#   the build-site census reading a literal target, a continuation line, and prose apart, and the
-#   unresolved ratchet proven at its ceiling and one over.
+#   These behaviors on real pen trees, each pinned by its own assert below and counted by the
+#   control itself in `cases=` rather than totalled here -- a total carried inside a sentence is a
+#   number a later landing falsifies, and this one already was. The agreeing harness free and
+#   reading zero; a stem naming nothing counted and refused and named; a program nobody lists
+#   counted and refused and named; a seam symlink read as a program from both sides; an empty
+#   corpus refused rather than read clean; the build-site census reading a literal target, a
+#   continuation line, and prose apart; the unresolved ratchet proven at its ceiling and one over;
+#   and `--paths` spelling every stem's real path, marking its answer, refusing an empty tree while
+#   still marking it, and refusing a flag it does not know.
 #
 # WHAT IS REPORTED RATHER THAN GATED. The build-site census -- how many rye build/run/test sites
 # name a literal path and how many assemble one -- and `unresolved`, the assembled shapes this scan
@@ -73,8 +77,19 @@ assert control.out contains "17 free" else "harness-roster: prose after the driv
 assert control.out contains "18 free" else "harness-roster: the residue must be published rather than dropped"
 assert control.out contains "19 free" else "harness-roster: the unresolved ratchet must pass free at its ceiling"
 assert control.out contains "20 bitten" else "harness-roster: the unresolved ratchet must refuse one over its ceiling"
+
+# --paths, the answer the compile-reach census reads. Pinned by ordinal like every case above, so a
+# phase that is dropped or reordered reds here rather than going quiet.
+assert control.out contains "21 free" else "harness-roster: --paths must spell the path a stem stands for"
+assert control.out contains "22 free" else "harness-roster: --paths must answer for every stem, not the first"
+assert control.out contains "23 free" else "harness-roster: --paths must count what it printed"
+assert control.out contains "24 free" else "harness-roster: --paths must mark its answer, or a silent one reads as an empty tree"
+assert control.out contains "25 bitten" else "harness-roster: --paths on a harnessless tree must refuse"
+assert control.out contains "26 bitten" else "harness-roster: an empty answer must still carry its marker ahead of the refusal"
+assert control.out contains "27 bitten" else "harness-roster: an unknown flag must refuse rather than fall back to counting"
+
 assert control.out contains "control_failures=0" else "harness-roster: every planted case must read the way its label says"
 assert control.out contains "control_verdict=ok" else "harness-roster: the control must agree with itself"
-say "RED and GREEN paths proven -- eight refusals bitten, twelve honest readings left free"
+say "RED and GREEN paths proven -- every planted refusal bitten and every honest reading left free, counted by the control in cases="
 
 say "GREEN: harness-roster -- a harness that assembles its paths rosters the directory it assembles them from."
