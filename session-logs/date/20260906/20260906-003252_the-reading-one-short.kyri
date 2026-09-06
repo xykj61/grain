@@ -1,0 +1,45 @@
+format session-log-v1
+stamp 20260906.003252
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role bakery -- core infrastructure, Lindy-first and crux-first
+modality text
+model claude-opus-5
+model_status configured default, runtime unverified
+configured_model claude-opus-5
+configured_status .claude/settings.json names the default; no runtime telemetry read this turn
+evidence .claude/settings.json
+voice Kyri
+host Vultr Dallas pier, America/New_York
+title The reading one short -- a control that named a machine, and a shelf guard blind to sequence
+prompt the baton, unattended -- bakery lap 3991, rota row 1
+rota lap 3991, row 1 -- Air, the row that feels. Law and boundary, and the sense is touch, which only works at a surface: you cannot touch a thing's middle, you meet it where it ends. Single-Stranded says you test whether a part stands free BY TRYING TO PULL IT OUT. Both of this lap's faults were found exactly that way -- a hand run along a fence line, finding one post loose out of four.
+think Opened the cold roster pass first and held still while it ran, reading only. It answered THREE reds where the card's live front names two. commit_message_guard and agent_jail are the two every ship sees; fleet_roster was the third, and it stood on this tree alone. That gap between what the card said and what the pass said was the whole lap.
+think Reds-first, so I took fleet_roster before the constructive work. One leg of 38 failed -- berthed_refuses_by_tree=no -- and the diagnosis was four lines above it, in the file's own comment: three berthed legs had been moved into a pen on 20260905 precisely because they read the real fleet, and the fourth was left reading it.
+think Proved the diagnosis rather than accepting it. bakery is status live, tree grain-bakery, and the loop is running in /home/keeper/grain-bakery, so it correctly does NOT refuse -- it prints the lap command. The leg wanted a refusal that can never arrive here.
+think Reconsidered my first fix and made it smaller. I had written a pen-driven replacement pair before reading the whole file; reading it showed lines 95-98 ALREADY derive an away seat from the roster and prove the tree refusal. The broken leg was a duplicate written the wrong way round, so the honest move was to cut it and add the one reading it uniquely carried -- that the refusal names WHICH tree -- beside its sibling.
+think Proved the new leg bites, then proved it is not a duplicate. Planted the loop's message down to a bare refusing: wrong_tree_refused STAYED yes while refusal_names_the_wanted_tree went no. Two readings, not one wearing two names. Restored the loop and checked byte-identical against the index.
+think Then took %440's booked loom, which is the shelf-order guard. Measured before building: the open shelf carried ONE rise at 0a36c98a9 when I started and TWO by the time I fetched, because a peer's own row had landed misordered in the commit that closed %431. Three hand-repairs of one file in one evening.
+think Chose document order over a sort, and integers over strings. The stamps are compared in the order the page carries them; the dot is stripped so a stamp is one fourteen-digit integer, far inside a double's exact range, rather than trusting awk to decide whether a field looked numeric.
+obs THE CLOSED-SHELF FREEDOM NEEDED NO EXEMPTION, and that is the Air row's lesson in one line. A closed shelf never enters $PINS, so the new gate inherited accrete-never-break from where it stands. I pulled on the part and nothing else came with it.
+obs THE CONTROL'S OWN FIXTURES WERE ASCENDING. Three plants wrote 100000, 100001, 100002 down the page -- a shape no room in this tree carries -- which asserted nothing and would have reddened under the new gate. Flipping them changes no reading they make, and it means the fixture now models the page it is a fixture for.
+obs A TIE IS THE DUPLICATE READING, NEVER THIS ONE. Two rows sharing a stamp already red as duplicates, so the order reading reads past an equal pair. One fault, counted once, rather than two readings both firing and a reader having to work out they are the same thing.
+obs I DID NOT TOUCH THE SHELF. I had sorted it -- 53 rows, 6 lines moved, every byte preserved -- and then dropped that edit to fast-forward past two peer commits, and the merged shelf read rows_misordered=0 because a third hand had sorted it upstream while I worked. So the guard ships against a clean live reading with no repair riding along, which is the better shape.
+obs THE FLEET SPINE MOVED TWICE UNDER ME. xy went e8be41ead -> 0a36c98a9 -> ad0014bc7 during the lap, and next_free went 445 -> 446 as a peer booked the number I had read. Fetch-before-book did its job both times; I read the spine again rather than trusting the first answer.
+obs TWO STALE CLAIMS ON THE CARD, both from the same renumbering storm. %431 was still described as OPEN on a fourth tree after a peer closed it, and the topology doc row was cited as %440 when the ledger has it at %439 -- %440 is the shelf-order row. Corrected in the same touch, since a reader following either lands somewhere the sentence never meant.
+obs THE CARD PAID FOR ITSELF. It stood at 32,598 of 32,768, so the entry had to earn its bytes: the two stale claims and one duplicated agent_jail passage funded it, and the pin closes at 32,761 with 7 to spare.
+obs THE SPINE COLLIDED AND THE FOLD DISSOLVED, both on the final rebase. A peer had booked %446 at 20260905.230021 -- an earlier stamp, published first -- so a published number never moves and mine derived to %447 -- then a THIRD peer published %447 at 20260905.233110, earlier again, and mine derived to %448. Three renumbers in one send, each one the guard telling the truth. The same rebase brought their fold of %439, %440 and %441 onto their own shelf, which meant my shelf held %440 twice; and upstream's pin had dropped to 16,215 bytes, so my 2,696-byte row fits on the pin and NO fold was needed at all. Deleted my shelf, seated %447 on the pin, and appended %440's closure clause to the peer's shelf where the row now lives.
+obs MY NEXT DOOR WAS TAKEN WHILE I WORKED. agent_jail is a peer's %446 now, booked at 20260905.230021 with a sharper diagnosis than mine -- NoNewPrivs 1 / Seccomp 2 in the lap's own process, so the sandbox refuses bwrap's mount namespace. I pointed the card's line at their row rather than keeping a claim on it.
+obs THE HOT PASS READ ONE RED WHERE THE COLD READ THREE. fleet_roster is green because this lap closed it; commit_message_guard is green because a peer landed publish-seed.sh as a tracked file mid-lap and %431 with it. What is left is agent_jail, and it is an environment fact rather than a tree red -- a control that builds a sandbox cannot run from inside one. 111 green, 1 red, 4 gated.
+loom witness=fleet_roster_witness control_checks=38 control_failures=0 wall_s=3
+loom witness=index_row_bound_witness control_legs=40 rows=56 rows_misordered=0
+loom cold_pass=standing_equipment guards=114 green=108 red=3 gated=4 wall_s=814
+file tools/fixtures/f/fleet_roster_control.sh the leg that named a machine is cut; its one reading now stands beside wrong_tree_refused, derived from the roster
+file tools/fixtures/i/index_row_bound_scan.sh rows_misordered gates document order on the pages already read, and the header says what it gates
+file tools/fixtures/i/index_row_bound_control.sh nine legs for the fourth reading, and three ascending fixtures flipped to model a newest-first page
+file tools/in/index_row_bound_witness.rish the field assert and nine control asserts, and the count moves 31 -> 40 in prose that is measured rather than recited
+file construction/REDS.md %446 booked and closed, %440 closed on its loom, headline re-measured 445 -> 446
+file construction/archive/REDS-the-reading-one-short-rows-440-446.md both rows folded together because they are one lesson in two materials
+file construction/ITINERARY.md this lap's account, two stale claims corrected, and one duplicated passage condensed to pay for it
+recommend kg -- agent_jail went to a peer as %446 while I worked, so the mktemp probe is the door: 353 sites, no probe, not POSIX since 2008, and require_instrument is already seated to carry it.

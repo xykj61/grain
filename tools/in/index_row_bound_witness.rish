@@ -24,18 +24,30 @@
 # 116 rows and a meaning gets ~69 characters, which is a clause that points rather than a paragraph
 # that restates.
 #
-# WHAT IS PROVEN, on metal. Three readings over the living pin AND the open shelf:
+# WHAT IS PROVEN, on metal. Four readings over the living pin AND the open shelf:
 #   every row at or under 192 bytes; every row's link resolving against the page's own directory;
-#   and no two rows sharing a stamp, since a duplicate is one log wearing two rows.
-#   Thirty-one behaviors on planted pins and planted shelves in a throwaway pen: the bound free at
+#   no two rows sharing a stamp, since a duplicate is one log wearing two rows; and the rows
+#   descending, since a page titled newest-first keeps that promise in its own document order.
+#   Forty behaviors on planted pins and planted shelves in a throwaway pen: the bound free at
 #   exactly 192 and bitten at exactly 193, short rows free, one long row among three found and
 #   named, the longest reported, a header row and a delimiter row and prose carrying pipes all read
 #   past, a hyphen-form stamp read past because that shape is a filename rather than a row's first
 #   cell, a CLOSED shelf carrying all three faults left free and uncounted, the OPEN shelf bitten by
 #   each of the three readings and freed by each of their repairs, a `through-` gathering never
 #   mistaken for the open day, a room with no shelf yet reading `none` rather than refusing, an
-#   absent pin refused rather than read as zero rows and called clean, and the bound itself readable
-#   so a control can plant against it.
+#   absent pin refused rather than read as zero rows and called clean, the bound itself readable
+#   so a control can plant against it, a descending shelf free and counted at zero, a single rise
+#   bitten and counted and its seam named from both sides, a tie left to the duplicate reading so
+#   one fault is never counted twice, and a CLOSED shelf out of order left free and uncounted.
+#
+# THE FOURTH READING, and why it took a third firing to be built (REDS %440, then %445's lap). A
+# rebase auto-merged two shelf rows landing four minutes apart -- cleanly, no marker, nothing to
+# resolve -- and seated the OLDER above the newer. Every reading here stayed green through it,
+# because a merge that reports no conflict has still made a decision. Measured on the 20260905
+# shelf before the repair: 53 rows, TWO rises, three firings in one evening on one file. The
+# closed-shelf freedom needed no new exemption -- a closed shelf never enters the read set, so the
+# new gate inherited accrete-never-break from where it stands, which is what a part standing free
+# buys.
 #
 # WHAT PASSES FREE, by named rule. A CLOSED shelf -- any `README-index-<day>` that is not the newest
 # -- is immutable once its day closes and keeps every byte it wrote (accrete-never-break).
@@ -62,6 +74,7 @@ say scan.out
 assert scan.out contains "rows_over=0" else "index-row-bound: every living index row must point rather than restate"
 assert scan.out contains "rows_unresolved=0" else "index-row-bound: a row that points nowhere is a way in that is not one"
 assert scan.out contains "rows_duplicate=0" else "index-row-bound: two rows carrying one stamp are one log wearing two rows"
+assert scan.out contains "rows_misordered=0" else "index-row-bound: a page promising newest first must descend in its own document order"
 assert scan.out contains "verdict=ok" else "index-row-bound: the scan must balance before it is believed"
 say "field GREEN -- the pin holds one day of pointers and the open shelf holds rows that point"
 
@@ -98,8 +111,17 @@ assert control.out contains "no_shelf_none=yes" else "index-row-bound: a room wi
 assert control.out contains "no_shelf_free=yes" else "index-row-bound: a room with no shelf yet must pass rather than refuse"
 assert control.out contains "absent_pin_refused=yes" else "index-row-bound: an absent pin must refuse rather than read zero rows and call it clean"
 assert control.out contains "bound_readable=yes" else "index-row-bound: the bound must be readable, so a control can plant against it"
+assert control.out contains "descending_free=yes" else "index-row-bound: a shelf whose stamps descend must pass free"
+assert control.out contains "descending_counted_zero=yes" else "index-row-bound: a descending shelf must count zero rises rather than merely pass"
+assert control.out contains "misordered_bitten=yes" else "index-row-bound: an older row seated above a newer one must red, so no override exists"
+assert control.out contains "misordered_counted=yes" else "index-row-bound: the count must name how many seams stand out of order"
+assert control.out contains "misordered_named=yes" else "index-row-bound: the seam must be named from both sides, so a hand knows which pair to swap"
+assert control.out contains "tie_is_not_misorder=yes" else "index-row-bound: two rows sharing a stamp are the duplicate reading, never this one"
+assert control.out contains "tie_stays_duplicate=yes" else "index-row-bound: one fault must be counted once rather than reported by two readings"
+assert control.out contains "closed_shelf_order_free=yes" else "index-row-bound: a closed shelf out of order keeps every byte it wrote"
+assert control.out contains "closed_shelf_order_uncounted=yes" else "index-row-bound: a closed shelf's order must not be counted against the living gate"
 assert control.out contains "bound_applies=yes" else "index-row-bound: the bound read must be the bound applied"
 assert control.out contains "control_verdict=ok" else "index-row-bound: the control must agree with itself"
-say "thirty-one behaviors proven on planted pins and shelves, each reading shown from both sides"
+say "forty behaviors proven on planted pins and shelves, each reading shown from both sides"
 
 say "GREEN: index-row-bound -- an index row points; it does not summarise."

@@ -40,6 +40,10 @@
 #   No two rows share a stamp. A duplicate is one log wearing two rows, and a rebase that re-applies
 #     an updated row without lifting the stale one leaves both -- which is how two rows came to name
 #     REDS %364-368 after the ledger had moved to %365-369.
+#   The rows descend. A page that promises NEWEST FIRST keeps that promise in its own document
+#     order, and a rebase that auto-merges two rows cleanly can still seat the older above the
+#     newer (REDS %440, %445's sibling). This is the same rebase, one fault over: the duplicate
+#     reading catches two rows where one belongs, and this one catches two rows in the wrong order.
 #
 # WHAT PASSES FREE, by named rule. A CLOSED shelf -- any `README-index-<day>` that is not the newest
 # -- is immutable once its day closes and keeps every byte it wrote (accrete-never-break).
@@ -132,6 +136,35 @@ unresolved=$(wc -l < "$work/unresolved.txt" | tr -d ' ')
 sort "$work/stamps.txt" | uniq -d > "$work/dupes.txt" || :
 dupes=$(wc -l < "$work/dupes.txt" | tr -d ' ')
 
+# A shelf reads NEWEST FIRST, and a merge that reports no conflict has still made a decision. Two
+# rows landing minutes apart auto-merge cleanly -- no marker, nothing to resolve -- and seat the
+# older above the newer, so the page descends everywhere except across the seam the merge just
+# made (REDS %440). Measured on the 20260905 shelf: 53 rows, two rises, three firings in one
+# evening on one file, and every existing reading here green through all three.
+#
+# DOCUMENT ORDER IS THE READING, so the stamps are compared in the order the page carries them
+# rather than sorted first. A stamp is one integer once its dot is removed -- `20260905.231916`
+# reads 20260905231916 -- and fourteen digits sit far inside a double's exact range, so the
+# comparison is the one-clock order itself rather than a string sort whose answer would depend on
+# whether awk decided the field looked numeric.
+#
+# NO NEW EXEMPTION WAS NEEDED for a closed shelf. A closed shelf never enters $PINS, so it already
+# stands outside every reading on this page, and the order gate inherits that by standing where its
+# three siblings stand. That is what a part standing free buys: the law was already expressed in
+# WHICH pages are read, so the new reading needed no copy of it.
+: > "$work/misordered.txt"
+awk -F'\t' '
+  $1 != page { page = $1; prev = 0 }
+  {
+    n = $2; gsub(/\./, "", n); n = n + 0
+    # An equal pair is the DUPLICATE reading above, never this one, so a tie is read past here and
+    # counted once rather than reported twice by two readings for one fault.
+    if (prev != 0 && n > prev) { printf "%s\t%s\t%s\n", $1, prevs, $2 }
+    prev = n; prevs = $2
+  }
+' "$work/stamps.txt" > "$work/misordered.txt"
+misordered=$(wc -l < "$work/misordered.txt" | tr -d ' ')
+
 if [ "$verb" = list ]; then
   cat "$work/over.txt"
   exit 0
@@ -146,6 +179,11 @@ done
 head -5 "$work/dupes.txt" | while IFS="$(printf '\t')" read -r p s; do
   printf 'duplicate: %s carries %s twice\n' "$p" "$s"
 done
+# The seam is named from both sides, so a hand knows which pair to swap rather than which page to
+# re-read.
+head -5 "$work/misordered.txt" | while IFS="$(printf '\t')" read -r p a b; do
+  printf 'misordered: %s -- %s stands above %s\n' "$p" "$a" "$b"
+done
 
 echo "pins=$(echo $PINS | wc -w | tr -d ' ')"
 echo "open_shelf=${open_shelf:-none}"
@@ -153,6 +191,7 @@ echo "rows=$total"
 echo "rows_over=$over"
 echo "rows_unresolved=$unresolved"
 echo "rows_duplicate=$dupes"
+echo "rows_misordered=$misordered"
 echo "row_max=$ROW_MAX"
 echo "longest_row=$longest"
 
@@ -164,5 +203,7 @@ elif [ "$unresolved" -ne 0 ]; then
   echo "verdict=rows_unresolved"; exit 1
 elif [ "$dupes" -ne 0 ]; then
   echo "verdict=rows_duplicate"; exit 1
+elif [ "$misordered" -ne 0 ]; then
+  echo "verdict=rows_misordered"; exit 1
 fi
 echo "verdict=ok"
