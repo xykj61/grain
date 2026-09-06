@@ -31,6 +31,26 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ---
 
+## `20260906.042754` -- two closed accounts fold off a card standing 23 bytes from its ceiling (walk-back `66ca49af9a`)
+
+**Walk-back nib:** `66ca49af9a`. **Live stamp:** `20260906.042754`.
+**Swept:** the `%459` and `%446` CLOSED accounts of [`ITINERARY.md`](ITINERARY.md) -- 1,461 bytes
+across two paragraphs -- to
+[`archive/20260906-042754_itinerary-landed-accounts.md`](archive/20260906-042754_itinerary-landed-accounts.md)
+with every word kept, leaving one pointer line in their place. The card went 40,937 to 39,819.
+**Why now:** this round landed at 40,776 of 40,960, then a peer's clean auto-merge carried it to
+40,937, which leaves **23 bytes** -- the next ship to write a sentence would have crossed a ceiling
+raised only that morning. Both accounts are this seat's own and both are CLOSED, so nothing
+in-flight and nothing of a peer's was touched.
+**What waits there, worth recalling:** the two bound meters read whole -- thirteen calls to the
+bound fixture across eight files, six bare and seven per page; the four plant sizes that broke
+(24,000, 25,616, 24,100, 52,000) and the fact that not one of them spells a bound, which is why a
+literal search cannot find this class; and `%446`'s own account of a guard refusing by naming the
+instrument it could not reach. The transferable sentence stays on the card: **a pen that plants an
+absolute is testing a snapshot of the law; one that plants a ratio is testing the law.**
+
+---
+
 ## `20260906.005436` -- the census account folds once two of the three things it named were built (walk-back `41998f8835`)
 
 **Walk-back nib:** `41998f8835`. **Live stamp:** `20260906.005436`.

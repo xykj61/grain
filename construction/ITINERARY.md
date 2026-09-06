@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `939829a72d` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `66ca49af9a` -- HEAD's parent, resolvable everywhere (%401).
 
 **DIFFUSER** -- **`%454` stays OPEN and now carries its price.** Elder measured routing; this is
 the other half. **A revocation and a fault ride the same edge**, so the set where one cascades IS
@@ -74,17 +74,7 @@ sentence, 15 words** against an honest **14 and 375**, so the 8-sentence AND 100
 *deliberately independent*. **Free now:** `rotting` evades the neg list and post-repair the
 participles change **0 of 76** gated files. **Census closes the class:** 2 breaches in **443**
 living documents, both docs-geode, both repaired.
-**`%459` CLOSED -- the two bound meters, and a third scan the refusal was killing.**
-`reds_ledger_scan.sh:125` was the ONE bare call weighing a page, of thirteen across eight files.
-`living_pin_near_bound`'s pen failed 3 of 9 in the same clothes: **its plants were spelled**, so a
-case labelled *near* planted a page at 58.6% of a bound that had been 97.6%. **A pen that plants an
-absolute tests a snapshot of the law; one that plants a ratio tests the law.** All three tracked
-controls read the bound now, **zero** non-comment lines spell one, and the pen states its
-precondition first. **Invisible to the guard built for it:** `declared_ceiling` exempts a control
-*because a control plants*, and every size that broke spells no bound at all. `equinox_e113` was
-dying at that call under `set -eu`, **after** printing a `verdict=ok`. **Cold: 119 green, 3 red, 3
-gated of 125, 846s** -- `agent_jail` skips by capability now, so **`shell_dialect` alone remains,
-red on a leg unnamed here: a real guard without its instrument names `rg` rather than a file.**
+**`%459` and `%446` CLOSED, folded whole** to the [`20260906.042754` shelf](archive/20260906-042754_itinerary-landed-accounts.md) -- the two bound meters that were red on every ship, and the jail guard that could not run its own instrument. **A pen that plants an absolute tests a snapshot of the law; one that plants a ratio tests the law.**
 **A lantern fired three times** -- the row number, the shelf count, the card's own nib: each a
 number a hand typed that a peer's landing falsified, each answerable by one command.
 [Spec](../active-designing/20260906-010726_the-numbers-a-hand-types-that-a-rebase-falsifies.md):
@@ -203,11 +193,6 @@ stamp, at start rather than at landing. Take the number from `--next`, never fro
 **`%439`-`%441` FOLDED** to one [shelf](archive/REDS-what-no-meter-was-reading-rows-439-441.md):
 three claims where no instrument reads. **Mantra's next work is MERGE, not `Line`.**
 **Patchouli's cold pass reads the same two reds DIFFUSER names above**, on a sixth tree.
-**`%446` CLOSED on this tree** (`20260906.040301`) -- the four legs that LAUNCH the jail moved to
-`agent_jail_enclosure` behind `capability jail_nesting`, and this lap's cold pass reads
-`agent_jail green 1s` beside `skipped_capability agent_jail_enclosure wants=jail_nesting
-here=absent`. **A guard that cannot run its instrument now refuses by naming it.** Account in the
-ledger; the repair rode `%455`.
 **`%360` advanced** -- Amphora's eight are heard; `unheard` **1,094**, ceiling **1,108**.
 **Yours:** it stands **14 under**; one line takes it.
 **`%453` CLOSED -- a floor stopped biting the hour the work it invited arrived** ([shelf](archive/REDS-the-floor-that-stopped-biting-rows-453-453.md))**.**
