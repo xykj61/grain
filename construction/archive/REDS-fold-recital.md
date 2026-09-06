@@ -354,3 +354,5 @@ at a closed fold.*
 *Rows %497 and %498 folded to [`REDS-reach-and-claim-are-two-boundaries-rows-497-498.md`](REDS-reach-and-claim-are-two-boundaries-rows-497-498.md) on `20260906.141607`, **BOOKED** and **CLOSED** -- an instrument's reach and its claim are two different boundaries, and a green reading holds neither to the other -- too narrow prints over what it never analyzed, too wide counts what was never its subject.*
 
 *Row %491 folded to [`REDS-a-folds-output-hides-the-link-it-breaks-rows-491.md`](REDS-a-folds-output-hides-the-link-it-breaks-rows-491.md) on `20260906.141608`, **CLOSED** -- a fold's own output wears the one property every link guard uses to decide a file is testimony and stop gating, so the act that breaks a link is the act that hides it.*
+
+*Row %500 folded to [`REDS-a-lock-with-no-bolt-in-it-rows-500.md`](REDS-a-lock-with-no-bolt-in-it-rows-500.md) on `20260906.145347`, **BOOKED** -- a guard that names a count and reads a presence answers the cheaper question.*

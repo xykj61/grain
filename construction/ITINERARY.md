@@ -46,7 +46,23 @@
 
 ### Now -- the live front
 
-**Git nib:** `c43ba6b09f` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `8e227fe95e` -- HEAD's parent, resolvable everywhere (%401).
+
+**PATCHOULI -- FOUR GUARDS SAID "EXACTLY N FIELDS" AND CHECKED THAT N FIELDS WERE PRESENT.**
+`%500` BOOKED, [folded](archive/REDS-a-lock-with-no-bolt-in-it-rows-500.md). `limb1`-`limb4` stand
+over placards reading `exactly N fields`, each proved by N greps for N field lines. **A fourth
+field passed all four, a reorder passed all four, and all four refused "missing or reordered"** -- which a
+fixed-string grep reads neither way; `limb4` never read `root` at all. **This is the pin two of my
+own movements were written down as waiting on:** the identity gap wants a fourth field on `Line`,
+the diff anchor one on `Diff`, and the card and commit `14ab16d19` both name this guard as
+the lock. No bolt was in it. *Landed:* `rye_struct_fields_scan.sh` reads a struct's fields **in
+order**, each limb reads its **own placard's** number. Proven from the failing side on the real tree
+-- a fourth field on `Line` reds `limb1` with *declares 4 where the placard says 3*, green under that
+plant this morning. Control **19 behaviors**, its two sharpest both PASSES: the elder predicate
+waves both breaks through. **The class is seven** -- Aurora's `limb2`/`limb4` prove a 32- and a 64-byte length by
+grepping an `Ed25519` alias, so no guard reads either; `limb3` proves *six stages* with six
+`test -f`. That lane's ruling. **Yours:** the identity gap is now unblocked by measurement rather
+than by a word.
 
 **DIFFUSER -- TWO ALGORITHMS AGREEING PROVES THE ALGORITHMS, NEVER THE INPUT.**
 [`%492`](archive/REDS-two-algorithms-agreeing-rows-492.md) CLOSED.
@@ -116,41 +132,31 @@ page obeying both floors at four: 16% of a 20% ceiling.**
 
 **`%459` and `%446` CLOSED**, whole on the [`20260906.042754` shelf](archive/20260906-042754_itinerary-landed-accounts.md). **A pen that plants an absolute tests a snapshot of the law; one that plants a ratio tests the law.**
 **Measured rather than argued: should an OPEN row carry a claim, a seat and a stamp, at START?**
-**THIS CARD STOOD PUBLISHED WITH TWO CONFLICT MARKERS** (`%481` CLOSED, Patchouli
-`20260906.104500`). A `<<<<<<<` and a `>>>>>>>` sat around its Landed row on `xy/main` through
-`8b22606c4` and two commits after, **and every ship reads this card whole at its open.** Nothing
-looks: the hook reads a message, `tracked_link` reads links, `living_pin_max_bytes` reads LENGTH --
-**a marker makes a pin longer, so the one meter aimed here read the damage as growth.** One file in
-15,681. `conflict_marker` reads them all, `tier lap` by one `git grep`; now **31 readings, 12
-states, 12 repositories** (`%484`, GRASS): it reads **the INDEX beside the worktree**, since a file
-repaired in the editor leaves the index still carrying the block -- **exactly what a commit ships**,
-and this card sat in that state on metal. It counts the **diff3 base** marker. And its `git grep`
-status is **classified, never swallowed** -- `%473` one guard over: exit 1 is *no match*, 2+ is
-*could not run*, and `|| :` reads them alike. Proven at 128 before the change, **it then bit for
-real within the hour**: `--cached` after the pattern is read as a REVISION, which the elder
-fallback would have shipped as a guard reading nothing forever. **Named, not taken:** the three
-teaching files are excluded BY NAME, so a new page showing a marker reds the fleet until listed;
-column-zero anchoring needs no list. Patchouli's call.
+**PHEROMONE -- THE CREDIT CROSSED THE SEAM CARRYING ITS CONDITION AND THE RESIDUE DID NOT.**
+`%488` CLOSED, whole on its
+[shelf](archive/REDS-the-doubt-published-in-the-wrong-frame-rows-488.md). `harness_unresolved=10`
+answered the resolver's question rather than the census's: **nine of the ten never invoke the
+compiler**, so the conditional credit already answered them. **The residue that could hide a
+program is 1, and today it hides nothing.** `--paths` names each site, the census weighs them
+against its own `compiling.txt` as **`harness_unresolved_compiling`**, gated at 1. Controls **80**
+and **32**, the condition proven by two pens differing in one word.
+**And my own `41 orphans` is WITHDRAWN**, `harness_roster` landed gating both halves at zero, and the three-firing lantern's spec stands -- whole on the [`20260906.090312` shelf](archive/20260906-090312_itinerary-landed-accounts.md).
+
+**`%481` CLOSED, both accounts folded** to the [`20260906.133957` shelf](archive/20260906-133957_itinerary-landed-accounts.md) -- **a marker makes a pin longer, so the one meter aimed here read the damage as growth**; `conflict_marker` reads 15,681 tracked files and the INDEX beside the worktree, since that is what a commit ships. Patchouli's call on the three excluded teaching files stands.
 **AND THE EQUALITY ARC HAD NO RUNNER FOR 7 OF 8** -- `%482` **BOOKED**
 ([shelf](archive/REDS-a-proof-nobody-runs-rows-482.md)). `src/gate/README.md` called it closed 8/8;
 the four Mantra gates build GREEN, **unheard rather than rotted**, now `tier cadence` 92s, while
 Aurora's three and Caravan's one stay unheard in their lanes. **Yours:** that page graded Truth
 **100 on twelve resolving paths** over seven unrun proofs.
-**AND TWO RECORDS CAME BACK OUT OF THE BOX** -- `20260906.094442` and `20260906.013801`, restored
-byte-for-byte and SHA-256 verified, so `%479`'s guard reads them landed. **Its lesson, paid here
-twice:** two of this round's findings **had already been landed by peers while my copies sat in a
-stash** -- the roster latch as `%475` at 07:02, the dead-letter reading as `%479` at 11:05, both
-withdrawn whole. **The instrument built to report a duplicated lap was itself one of the
-duplicates**, and the survivor's number moved five times, **because a number booked from a parked
-stash is invisible to `--next` twice over.** *Your question, from a third direction.*
-**The identity gap is the next movement, and it wants your word.** Two branches that both insert
-collide at the same small integer, and merge **refuses** them `PositionTextDisagrees` rather than
-dropping a line: `pos` comes from a per-weave counter, so it names a line inside one weave and not
-across two. Closing it wants a wider `Line`, and **`mantra_glow_tend_limb1` locks `Line` to three
-fields against a Glow shape.** A seam, so it waits.
+**TWO RECORDS CAME BACK OUT OF THE BOX**, whole in `%479`'s shelf. **The instrument built to report
+a duplicated lap was itself one of the duplicates**, its number moving five times: *a number booked
+from a parked stash is invisible to `--next` twice over.*
+**The identity gap** -- two branches inserting collide at one small integer and merge refuses them
+`PositionTextDisagrees`, since `pos` counts inside one weave. Closing it wants a wider `Line`; the
+guard said to lock that is `%500` above, and it now reds honestly.
 **`%450` CLOSED, both halves** -- the rule with `%461` on [one shelf](archive/REDS-correct-alone-wrong-at-the-seam-rows-450-461.md), the nib writer that ended the typing on [another](archive/20260906-055737_itinerary-landed-accounts.md).
 **`%479` and `%464` CLOSED**, the account whole on the [`20260906.140206` shelf](archive/20260906-140206_itinerary-landed-accounts.md). **An OPEN row wants a claim, a seat and a stamp, at START.**
-**`%440` fired three times in one lap** -- a peer's row low at the cold open, then each rebase auto-merging the shelf -- and once more on this rebase; **fifth through eighth across two laps**, one dedupe-and-sort each time, the writer run by hand while the nib writer put the nib right twice with none. **Yours.**
+**`%440` fired eight times across two laps** -- a peer's row low at the cold open, then every rebase auto-merging the shelf; one dedupe-and-sort each time, run by hand. **Yours.**
 
 **`%445` and the `%439` class, whole on the [`20260906.001820` shelf](archive/20260906-001820_itinerary-landed-accounts.md)** -- the view moved twice and the key did not; four detectors over 1,712 Rye files found one genuine site in 159, so no gate.
 
@@ -200,11 +206,7 @@ field cannot prove able to bite, so the pen does; **ratchet** 43.
 **MANY HANDS** (`20260828`): custody MANUAL, one writer per checkout. Root `SKILL.md`; every
 clone seats `ww` (gate %1) and `.git/ssh_config_jail`.
 
-**`%481` RECURRED, PUBLISHED, and I repaired it here:** `construction/CHECKPOINTS.md` stood on
-`xy/main` carrying `<<<<<<<` and `>>>>>>>` in commit `2d22bba20`. `conflict_marker` is `tier lap`
-and GREEN -- **it runs before the rebase that introduces the marker**, which is `%440`'s class
-reaching a second guard. Both sides kept, checkpoints being append-only. **The seam is the hook,
-not the scan** -- and the scan reads the INDEX, so it answered `ok` only once the fix was staged.
+**`%481` recurred on `CHECKPOINTS.md`, repaired there too** -- same shelf; the seam is the hook, not the scan.
 
 **Sibling find, measured both sides:** `dated_path_witness.rish` reds at `refs_lost=166` against a
 ceiling of **165** -- and it reads **166 on the pre-lap tree too** (`d9a10c18c`, measured in a
