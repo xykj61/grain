@@ -125,10 +125,70 @@ plant "20260101-050505_landed-upstream.kyri" "20260101.050505"
 ( cd "$pen/work" && g stash push -u -m "fleet-round-open 20260101-050506: a lap's unsent work, stashed at the open" >/dev/null 2>&1 )
 out=$(run all)
 ck "a remote-tracking record is landed" "landed:refs/remotes/xy/side" "$out"
-nk "and is not called unlanded"         "050505	unlanded"            "$out"
+# The needle is anchored on the BASENAME rather than the stamp: a line reads
+# `<stash>\t<path>\t<state>`, and the stamp sits inside the path, so `050505<TAB>unlanded` matches
+# nothing in any state -- a negative assertion that could never fire, passing for the wrong reason
+# from the day it was written (found `20260906` while adding legs 23-35 the same way, REDS %507).
+nk "and is not called unlanded"         "landed-upstream.kyri	unlanded" "$out"
 
 # 22. Outside a repository the scan says so rather than guessing.
 ck "not a repository is named" "verdict=not_a_repository" "$( cd "$pen" && sh "$src" 2>&1 )"
+
+# 23-29. A `pier/` PARK IS NOT A LANDING (REDS %507), and this is the leg that pays for the whole
+# widening. The round open has two drawers: it stashes an unsent tree, and it parks a diverged
+# line on `refs/heads/pier/diverged-<stamp>`. Until this reading was widened the second drawer
+# certified the first empty -- a record carried only by a park read `landed:refs/heads/pier/...`,
+# `unlanded=0`, `verdict=ok`, while nothing a reader reaches held it. Built the only way that
+# proves anything: the record is in the box AND on a park ref AND nowhere else -- no worktree
+# copy, no `main`.
+( cd "$pen/work" && g checkout -q -b pier/diverged-20260101-060606 )
+plant "20260101-060606_parked-on-a-pier-branch.kyri" "20260101.060606"
+( cd "$pen/work" && g add -A && g commit -qm parked-record >/dev/null && g checkout -q main )
+plant "20260101-060606_parked-on-a-pier-branch.kyri" "20260101.060606"
+( cd "$pen/work" && g stash push -u -m "fleet-round-open 20260101-060607: a lap's unsent work, stashed at the open" >/dev/null 2>&1 )
+out=$(run all)
+ck "a park-only record is unlanded"       "parked-on-a-pier-branch.kyri	unlanded:parked:refs/heads/pier/diverged-20260101-060606" "$out"
+ck "and the park is counted"              "parked=1"                 "$out"
+ck "and the single gate fires"            "verdict=records_unlanded" "$out"
+nk "and it is never called landed"        "parked-on-a-pier-branch.kyri	landed"           "$out"
+ck "and list shows it"                    "060606"                   "$(run list)"
+
+# `pier/rebase-<stamp>` is a park too: the round open writes both, and the exclusion follows the
+# NAMESPACE rather than one prefix, so a park named differently tomorrow is still a park.
+( cd "$pen/work" && g branch -q -m pier/diverged-20260101-060606 pier/rebase-20260101-060606 )
+ck "a rebase park is a park as well" "parked-on-a-pier-branch.kyri	unlanded:parked:refs/heads/pier/rebase-20260101-060606" "$(run all)"
+
+# 30-32. THE SAME RECORD OFF THE PARK IS LANDED. Shown by RENAMING the branch rather than by
+# building a second pen, so the one thing that differs between the refusal above and the welcome
+# here is which namespace carries the record -- which is the claim itself, and nothing else moved.
+#
+# The assertion is the record's own line and the park count, rather than `verdict=ok`: leg 19
+# deliberately left `20260101-040404.kyri` unlanded in this same box, so the whole-repository
+# verdict cannot return to ok from here without undoing a leg that is proving something else. A
+# welcome asserted on a number the pen cannot reach is a welcome that proves the pen.
+( cd "$pen/work" && g branch -q -m pier/rebase-20260101-060606 arrived && g merge -q --ff-only arrived >/dev/null 2>&1 )
+out=$(run all)
+ck "the same record off the park is landed" "parked-on-a-pier-branch.kyri	landed" "$out"
+ck "the park count falls back to zero"      "parked=0"                    "$out"
+nk "and list no longer names it"            "parked-on-a-pier-branch"     "$(run list)"
+( cd "$pen/work" && g checkout -q main && rm -f "$pen/work/session-logs/date/20260101/20260101-060606_parked-on-a-pier-branch.kyri" )
+
+# 33-35. A REMOTE park is a park. Legs 20-21 proved a remote-tracking ref counts as landed, which
+# is right for `xy/main` and exactly wrong for `xy/pier/diverged-*` -- `%499` measured ten of those
+# on the anointed remote that no hand ever brought home. Pushing a park upstream moves no record
+# into the channel, so the exclusion has to reach `refs/remotes/*/pier/*` or legs 20-21 would let
+# every parked record back in through the remote door.
+( cd "$pen/work" && g checkout -q -b pier/diverged-20260101-070707 )
+plant "20260101-070707_parked-upstream.kyri" "20260101.070707"
+( cd "$pen/work" && g add -A && g commit -qm parked-upstream >/dev/null
+  g push -q xy pier/diverged-20260101-070707:refs/heads/pier/diverged-20260101-070707 2>/dev/null
+  g checkout -q main && g branch -q -D pier/diverged-20260101-070707 && g fetch -q xy 2>/dev/null )
+plant "20260101-070707_parked-upstream.kyri" "20260101.070707"
+( cd "$pen/work" && g stash push -u -m "fleet-round-open 20260101-070708: a lap's unsent work, stashed at the open" >/dev/null 2>&1 )
+out=$(run all)
+ck "a record parked on the REMOTE is unlanded" "parked-upstream.kyri	unlanded:parked:refs/remotes/xy/pier/diverged-20260101-070707" "$out"
+nk "and is not called landed"                  "parked-upstream.kyri	landed"     "$out"
+ck "and the gate fires"                        "verdict=records_unlanded" "$out"
 
 echo "pass=$pass fail=$fail"
 [ "$fail" -eq 0 ] || exit 1

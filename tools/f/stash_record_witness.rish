@@ -3,13 +3,23 @@
 #   rishi/bin/rishi run tools/f/stash_record_witness.rish
 #
 # REDS %464. `tools/f/fleet_round_open.sh` stashes a dead lap's unsent work at the round open --
-# correct, and the only reason those bytes survive (%321). The read back was missing, so the bytes
-# lived and the record did not: three stashes on this field held 32 files, 455 insertions, and
-# three complete session logs no branch carried. One of them recorded a lap whose CODE had landed,
+# correct, and the only reason those bytes survive (%321). What was missing is the read back, so
+# the bytes lived on while the record stayed lost: three stashes on this field held 32 files, 455
+# insertions, and three complete session logs that stood in the box alone. One of them recorded a lap whose CODE had landed,
 # so the work shipped and its reasoning did not, and the next lap paid to rediscover it.
 #
 # WHAT IS GATED, hard: `unlanded=0`. A session log inside a round-open stash stands in the
-# worktree, or on a local branch, or on a remote-tracking branch -- somewhere a reader can find it.
+# worktree, or on a branch A READER WILL ACTUALLY REACH -- local or remote-tracking, outside the
+# `pier/` namespace.
+#
+# THE PARK IS NOT A LANDING (REDS %507). The round open fills two drawers, and until `20260906`
+# one certified the other empty: it stashes an unsent tree, and it parks a diverged line on
+# `refs/heads/pier/diverged-<stamp>`. `%499` measured where those go -- 11 park branches on `xy`,
+# 33 distinct subjects since `20260828`, ten of them standing there still. So the elder reading,
+# which walked `refs/heads` and `refs/remotes` whole, answered `landed:refs/heads/pier/...` for a
+# record standing where every reader walks past, and this guard read `unlanded=0 verdict=ok` over a
+# complete unlanded feature. `parked` is reported beside the gate rather than gated on its own,
+# since two readings that always fire together are one reading wearing two names.
 #
 # WHAT THE GATE DELIBERATELY DOES NOT REACH: the stash itself. A record reads landed whether or not
 # its stash still stands, so the only way to turn this green is to put the record back in the
@@ -38,10 +48,17 @@ let here = run ["sh" "tools/fixtures/f/stash_record_scan.sh"]
 assert here.ok else "stash-record: the scan refused on this tree"
 say here.out
 assert here.out contains "unlanded=0" else "stash-record: a session log stands in a round-open stash and nothing else carries it -- run `sh tools/fixtures/f/stash_record_scan.sh list` and read it back"
+assert here.out contains "parked=0" else "stash-record: a record is carried only by a pier/ park branch, which is the second drawer of the same box rather than the channel -- run `sh tools/fixtures/f/stash_record_scan.sh list`"
 assert here.out contains "verdict=ok" else "stash-record: the box holds a record the channel does not"
+
+# invariant: the scan reads the park namespace at all. A reading that silently lost its exclusion
+# would answer `parked=0` on every tree forever, which is the one number indistinguishable from a
+# healthy field (REDS %463) -- so the presence of the exclusion is asserted rather than assumed.
+let excludes = run ["grep" "-F" "-q" "^refs/heads/pier/|^refs/remotes/" "tools/fixtures/f/stash_record_scan.sh"]
+assert excludes.ok else "stash-record: the scan no longer excludes the pier/ park namespace, so a park would read as a landing again"
 
 # invariant: the round open actually calls the reading, or the report exists and nobody hears it.
 let wired = run ["grep" "-q" "stash_record_scan.sh" "tools/f/fleet_round_open.sh"]
 assert wired.ok else "stash-record: the round open no longer reads the box it fills"
 
-say "stash-record: GREEN -- every record the dead-letter box holds is carried by the channel too."
+say "stash-record: GREEN -- every record the dead-letter box holds is carried by the channel too, and a pier/ park is not the channel."

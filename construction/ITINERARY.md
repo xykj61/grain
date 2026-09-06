@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `5f9da33021` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `0032391cfe` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE DISCRIMINATOR I BOOKED FOR THE FLEET'S ROUND-OPEN WAS A TEST THAT CANNOT FAIL.**
 `%499` and `%503` CLOSED, folded to one [shelf](archive/REDS-the-test-that-cannot-fail-rows-499-503.md);
@@ -67,21 +67,25 @@ against 789s unloaded. `tier lap` on every seat, so guard cost scales ships x gu
 **Still sized:** a lap teeing to `session-output/<seat>.txt` is a second writer on its own transcript
 (`fleet-loop.sh:213`), read from `/proc`.
 
-**PATCHOULI -- FOUR GUARDS SAID "EXACTLY N FIELDS" AND CHECKED THAT N FIELDS WERE PRESENT.**
-`%500` BOOKED, [folded](archive/REDS-a-lock-with-no-bolt-in-it-rows-500.md). `limb1`-`limb4` stand
-over placards reading `exactly N fields`, each proved by N greps for N field lines. **A fourth
-field passed all four, a reorder passed all four, and all four refused "missing or reordered"** -- which a
-fixed-string grep reads neither way; `limb4` never read `root` at all. **This is the pin two of my
-own movements were written down as waiting on:** the identity gap wants a fourth field on `Line`,
-the diff anchor one on `Diff`, and the card and commit `14ab16d19` both name this guard as
-the lock. No bolt was in it. *Landed:* `rye_struct_fields_scan.sh` reads a struct's fields **in
-order**, each limb reads its **own placard's** number. Proven from the failing side on the real tree
--- a fourth field on `Line` reds `limb1` with *declares 4 where the placard says 3*, green under that
-plant this morning. Control **19 behaviors**, its two sharpest both PASSES: the elder predicate
-waves both breaks through. **The class is seven** -- Aurora's `limb2`/`limb4` prove a 32- and a 64-byte length by
-grepping an `Ed25519` alias, so no guard reads either; `limb3` proves *six stages* with six
-`test -f`. That lane's ruling. **Yours:** the identity gap is now unblocked by measurement rather
-than by a word.
+**PATCHOULI -- A PARK IS NOT A LANDING, AND THE GUARD BUILT FOR THE FIRST DEAD-LETTER BOX ACCEPTED
+THE SECOND AS PROOF THE FIRST WAS EMPTY.** `%507` CLOSED,
+[folded](archive/REDS-a-park-is-not-a-landing-rows-507.md). `stash_record_scan.sh` read `refs/heads`
+and `refs/remotes` **whole** -- where the round open parks -- so a record on
+`pier/diverged-20260906-131810` alone read `landed:refs/heads/pier/...`, **`unlanded=0 verdict=ok`**,
+while `stash@{0}` held a **complete unlanded feature**: `annotate`, its witness, a scan, a control,
+a runner, a roster line, **1,107 insertions already GREEN**, on no reader ref at all. **Repaired
+here:** `unlanded=1 parked=1 verdict=records_unlanded`; **23** park refs stand. `reader_refs` excludes
+the `pier/` namespace; `parked` reports **beside** the gate, so `fleet_round_open.sh` is untouched. Control **22 -> 34**, **8 new legs bitten** against the elder scan.
+
+**AND THE PARKED WORK LANDED: `%506` CLOSED**,
+[folded](archive/REDS-the-property-nobody-named-rows-506.md). `Weave.annotate` -- one `Note` per
+position, both counts, five `Reading` words -- and `mantra_weave_head_scan.sh`, holding the head to
+its own `pub fn` both ways. **Ten claims GREEN**, the fourth holding annotate to merge count for count. Roster `runs_unrostered` **1 -> 0**; a four-line comptime walker took `rye_witness_walker`
+back under its ceiling rather than raising it. **Yours:** the identity gap stays unblocked, and
+closing it wants a fourth field on `Line`.
+**Yours, no longer rhetorical:** mine went `%485` -> `%501` -> `%503` -> `%504` -> `%506` in one day,
+beaten FOUR times while the work sat parked -- should an OPEN row carry a claim, a seat and a stamp,
+at START?
 
 **DIFFUSER -- A BOUND HAS A DIRECTION, AND I ASKED THE ONE THAT DECIDES NOTHING.** `%501` CLOSED.
 The ring-and-ladder paper asked the Moore bound *how many nodes fit at this degree and diameter* --
@@ -100,7 +104,7 @@ cannot run its instrument** (`%460`), gate **%1**. Its seat's.
 (**13,698** of 16,384; spine plus standing **27,806**). **Thirteenth firing:** should an OPEN row
 carry a claim, seat and stamp, at START?
 
-**PETRICHOR -- TWO SHIPS BUILT ONE GUARD IN THREE MINUTES, AND IT COULD READ 19 OF 274.** `%505`
+**PETRICHOR -- TWO SHIPS BUILT ONE GUARD IN THREE MINUTES, AND IT COULD READ 19 OF 274.** `%507`
 CLOSED. Two trees found `%495`'s remainder eight minutes apart and each built one; mine committed at
 14:56:19, the peer's at 14:59:07, and **theirs published first**, so mine is withdrawn whole --
 `%484`'s rule, one defect to one record -- parked at `pier/petrichor-20260906-145718`. **A full scan, a twenty-case pen and a witness, written twice
@@ -117,7 +121,7 @@ refuses rather than clamps (`%498`). Reach **19 -> 66 of 274**; the 208 still un
 that leads nowhere at **100**, and of **607** living pages a newcomer reaches from the front door
 **82 lead nowhere** -- 76 with no link at all, one of them a tutorial on my own shelf. Measuring it
 moved no grade; a floor would re-grade the room, so it waits on your word.
-**PHEROMONE -- A PROOF TWO LIVING PAGES CITE, AND NOTHING EVER COMPILED IT.** `%504` BOOKED, `%463`
+**PHEROMONE -- A PROOF TWO LIVING PAGES CITE, AND NOTHING EVER COMPILED IT.** `%506` BOOKED, `%463`
 CLOSED.
 **63 Glow witnesses took the comptime declaration walker in one pass** -- `walked` **2 -> 65**,
 `unwalked` **119 -> 56** with no slack -- and **all 63 built**, so this lane hid no body-level type
@@ -155,7 +159,7 @@ page obeying both floors at four: 16% of a 20% ceiling.**
 **Measured rather than argued: should an OPEN row carry a claim, a seat and a stamp, at START?**
 **PHEROMONE -- my own `41 orphans` is WITHDRAWN**, `harness_roster` landed gating both halves at zero, and the three-firing lantern's spec stands -- whole on the [`20260906.090312` shelf](archive/20260906-090312_itinerary-landed-accounts.md).
 
-**`%481` CLOSED, both accounts folded** to the [`20260906.133957` shelf](archive/20260906-133957_itinerary-landed-accounts.md) -- **a marker makes a pin longer, so the one meter aimed here read the damage as growth**; `conflict_marker` reads 15,681 tracked files and the INDEX beside the worktree, since that is what a commit ships. Patchouli's call on the three excluded teaching files stands.
+**`%481` CLOSED, both accounts folded** to the [`20260906.133957` shelf](archive/20260906-133957_itinerary-landed-accounts.md) -- **a marker makes a pin longer, so the one meter aimed here read the damage as growth.** It fired a third time on this lap's own rebase, in this very file; the guard caught it before the push.
 **AND THE EQUALITY ARC HAD NO RUNNER FOR 7 OF 8** -- `%482` **BOOKED**
 ([shelf](archive/REDS-a-proof-nobody-runs-rows-482.md)). `src/gate/README.md` called it closed 8/8;
 the four Mantra gates build GREEN, **unheard rather than rotted**, now `tier cadence` 92s, while
@@ -167,7 +171,7 @@ from a parked stash is invisible to `--next` twice over.*
 **The identity gap** -- two branches inserting collide at one small integer and merge refuses them
 `PositionTextDisagrees`, since `pos` counts inside one weave. Closing it wants a wider `Line`; the
 guard said to lock that is `%500` above, and it now reds honestly.
-**`%479` and `%464` CLOSED**, the account whole on the [`20260906.140206` shelf](archive/20260906-140206_itinerary-landed-accounts.md). **An OPEN row wants a claim, a seat and a stamp, at START.**
+**`%479`/`%464` CLOSED**, whole on the [`140206` shelf](archive/20260906-140206_itinerary-landed-accounts.md).
 **`%440` fired eight times across two laps** -- a peer's row low at the cold open, then every rebase auto-merging the shelf; one dedupe-and-sort each time, run by hand. **Yours.**
 
 
@@ -215,7 +219,7 @@ ratchet 43 of 52. **`%493` still OPEN, not mine** -- `standing_equipment` reads 
 **MANY HANDS** (`20260828`): custody MANUAL, one writer per checkout. Root `SKILL.md`; every
 clone seats `ww` (gate %1) and `.git/ssh_config_jail`.
 
-**`%481` recurred on `CHECKPOINTS.md`, repaired there too** -- same shelf; the seam is the hook, not the scan.
+**`%481` recurred on `CHECKPOINTS.md`** -- same shelf; the seam is the hook, not the scan.
 
 **Sibling find, measured both sides:** `dated_path_witness.rish` reds at `refs_lost=166` against a
 ceiling of **165** -- and it reads **166 on the pre-lap tree too** (`d9a10c18c`, measured in a
