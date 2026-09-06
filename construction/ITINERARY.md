@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `f1498bd7fc` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `24233b338a` -- HEAD's parent, resolvable everywhere (%401).
 
 **DIFFUSER** -- 622 named bounds, none names a rate or a joule. `%447`, `20260905.233110`.
 
@@ -54,16 +54,17 @@
 
 **`%451` OPEN -- the register meter skips bullets, and this tree writes none.** `measure()` in
 `prose_register_scan.sh` drops `/^[ \t]*[-*>#]/` as *bullets*; a real bullet takes whitespace after
-the mark and **docs-geode holds zero**, so the branch eats every bold-led paragraph Gauge writes --
-**239 of 537 prose lines, 85 across the twelve gated door documents**.
-Reach divides links by that count too, so **two of four readings ride one classifier**. A patched measure
-reds **2 of 12** door and **7** teaching documents. **BAKERY's seat** -- priced in the row, not
-crossed. *Landed:* `blog/README.md` **71% -> 9%**, C+/76 to B+/85; four more
-stand named in the row, `libraries` among them -- **generated**, and calling an index
-*"the fastest-rotting page"* against Gauge's **compare by what keeps**.
-**A lantern fired twice:** `log_has_a_row` caught the 0905 shelf count stale after each
-rebase (51 -> 56 -> 58). That **Rows** column is *derived*, so **the loom prints it from the
-shelf**. Named, not built.
+it and **docs-geode holds zero**, so the branch eats every bold-led paragraph Gauge writes --
+**239 of 537 prose lines, 85 across the twelve gated doors**.
+Reach divides links by that count too, so **two of four readings ride one classifier**. A patched measure reds
+**2 of 12** door and **7** teaching documents. **BAKERY's seat**, priced in the row. *Landed:*
+`blog/README.md` **71% -> 9%**, C+/76 to B+/85; four more stand named there, `libraries` among them
+-- **generated**, and calling an index *"the fastest-rotting page"* against Gauge's
+**compare by what keeps**.
+**A lantern fired three times** -- the row number, the shelf count, the card's own nib: each a
+number a hand typed that a peer's landing falsified, each answerable by one command.
+[Spec](../active-designing/20260906-010726_the-numbers-a-hand-types-that-a-rebase-falsifies.md):
+**a writer beside each guard, run at the END of the send.** BAKERY's lane.
 
 **THE WEAVE MERGES** (`20260906.001728`, Patchouli) -- the charter's movement *the weave, and its
 order*. `Weave.merge` in `mantra/src/weave.rye` is a union over positions where the **higher
@@ -157,8 +158,7 @@ these rows moved. **One deliberate line takes it.**
 **Landed this chapter** -- `%374`'s gate build, six utility fetches with their thanks, the naming
 study, the seed publisher, and rows `%408`, `%414`-`%424`: whole on the
 [landed-accounts shelf](archive/20260905-131102_itinerary-landed-accounts.md). **Petrichor's mark-law weave LANDED** (`20260905.224930`): `study/reading-a-name.md` teaches both
-marks a name carries, on a shelf that showed 20 and taught none. **`agent_jail`** is `%446`, a
-peer's, and `%451`'s family.
+marks a name carries. **`agent_jail`** is `%446`, a peer's, and `%451`'s family.
 **THE LIVE FRONT NOW FOLDS** (`20260905.130819`): landed accounts shelve like REDS rows, so the
 card holds what is OPEN and what waits on your word.
 **All three ships sail** (`20260905`). **Gate 3 stands:** `.gnupg-rye/` holds
