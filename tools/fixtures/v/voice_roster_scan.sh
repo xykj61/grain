@@ -25,7 +25,7 @@ check() {
 }
 
 check "CLAUDE.md"                              "You are \*\*$want\*\*"  "agent instruction"
-check "GLOW_PROFILE.template.bron"             "^voice $want"           "profile default"
+check "GLOW_PROFILE.template.kyri"             "^voice $want"           "profile default"
 check "tools/gen/chapter/recursion_block.brix"  "^voice $want"           "recursion data"
 check "context/README.md"                      "^\*\*Voice:\*\* $want"  "context home header"
 upper=$(echo "$want" | tr 'a-z' 'A-Z')

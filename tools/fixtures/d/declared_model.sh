@@ -2,7 +2,7 @@
 # tools/fixtures/d/declared_model.sh -- the one reading of which model this clone runs.
 #
 # WHY THIS FILE EXISTS. The model id was written down four ways and two of them disagreed. On
-# 20260824 `.claude/settings.json` and `GLOW_PROFILE.template.bron` read `claude-opus-5` while
+# 20260824 `.claude/settings.json` and `GLOW_PROFILE.template.kyri` read `claude-opus-5` while
 # `recursion-prompts/seed/autonomous-loop.seed.md` read `claude-opus-4-6`, and the personal
 # `GLOW_PROFILE.bron` carried `claude-opus-4-6` in its field beneath a comment of its own saying
 # `Model is Opus 5`. A file disagreeing with itself is the clearest form the fault takes.

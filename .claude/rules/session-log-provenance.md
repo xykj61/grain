@@ -10,7 +10,7 @@ The required `model` field names a verified active model identity. When the runt
 
 ## Configuration stays separate
 
-Use `configured_model`, `configured_reasoning`, `configured_service_tier`, and `configured_service_name` only for settings supported by named evidence. Add `configured_status` and `evidence` so a reader can tell a configured default from runtime telemetry. A clone's `GLOW_PROFILE.bron`, a tracked product settings file, or a user-confirmed host config may prove configuration; each remains weaker than active-runtime evidence.
+Use `configured_model`, `configured_reasoning`, `configured_service_tier`, and `configured_service_name` only for settings supported by named evidence. Add `configured_status` and `evidence` so a reader can tell a configured default from runtime telemetry. A clone's `GLOW_PROFILE.kyri`, a tracked product settings file, or a user-confirmed host config may prove configuration; each remains weaker than active-runtime evidence.
 
 Keep identifiers in their own fields. For OpenAI Codex, `gpt-5.6-sol` is a model slug, `ultra` is a Codex reasoning setting, and `priority` is the service-tier id whose user-facing name is Fast. For Claude Code, `.claude/settings.json` currently proves the configured default `claude-opus-5` at `max`; it does not prove a running session used either value.
 

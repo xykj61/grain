@@ -169,6 +169,16 @@ guard sow_allow_reach
 path tools/s/sow_allow_reach_witness.rish
 tier lap
 seated 20260906.122632
+
+# publish_template -- the one file this tree ships that a stranger RUNS against their own forge.
+# publish-seed.sh is personal by law, so a newcomer inherits every room except a publisher;
+# publish-seed.template.sh is that room. Two gates: no literal this field owns survives in it, and
+# no stub lacks the GLOW_PROFILE field that answers it. Both fail QUIETLY otherwise -- a leftover
+# remote reads as a working default until somebody pushes to a repository that is not theirs.
+guard publish_template
+path tools/p/publish_template_witness.rish
+tier lap
+seated 20260906.133118
 guard shipped_binary_claim
 path tools/s/shipped_binary_claim_witness.rish
 seated 20260821.203103

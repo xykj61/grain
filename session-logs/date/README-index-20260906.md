@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260906.135114` | [the publisher a stranger inherits](20260906/20260906-135114_the-publisher-a-stranger-inherits.kyri) | laps C+D: a shipped publisher, profiles molted. |
 | `20260906.133554` | [one link in seven](20260906/20260906-133554_one-link-in-seven.kyri) | %496: the card sees 2,690 links of 18,218. |
 | `20260906.132652` | [the seed stands at its gate](20260906/20260906-132652_the-seed-stands-at-its-gate.kyri) | 7,943 files, gratitude clean, push withheld. |
 | `20260906.130924` | [algorithms agreeing](20260906/20260906-130924_two-algorithms-agreeing-prove-the-algorithms.kyri) | %496: a deleted tier passed 3 size binds and both cut algorithms. |

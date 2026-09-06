@@ -84,6 +84,24 @@ configuration_evidence .claude/settings.json
 # headers stay testimony, never rewritten.
 voice Kyri
 
+# --- Your own public seed, if you publish one -------------------------------
+# These five fill the five stubs at the head of publish-seed.template.sh, one
+# for one, so an agent asked to write your publisher from your profile reads
+# here and writes there. Leave them blank if you publish no seed.
+#
+# The identity is KEYLESS AND ANONYMOUS on purpose: signing a depersonalized
+# projection with your own key links it back to you and undoes the projection.
+# A forge noreply address is the ordinary shape.
+#
+# seed_root_subject is one word, and if you run a commit-message wall it is the
+# word that wall must exempt -- a root commit describes a repository rather than
+# a change, so a wall asking every body to name a mechanism refuses it forever.
+seed_remote_primary
+seed_remote_second
+seed_identity_name
+seed_identity_email
+seed_root_subject
+
 # --- Placeholder identities for examples ------------------------------------
 # Structurally-invalid @p placeholders for docs and commands (never a real
 # point). See .cursor/rules/placeholder-ship-names.mdc for the full table.
