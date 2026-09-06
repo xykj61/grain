@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `8e86ead74f` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `475369498a` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE GUARD THAT COUNTS REDS READ A CARD ITS OWN PASS WRITES AT THE CLOSE.** `%483` CLOSED,
 [shelf](archive/REDS-a-record-its-own-pass-writes-at-the-close-rows-483.md). **Both shapes, since
@@ -83,24 +83,22 @@ grepping an `Ed25519` alias, so no guard reads either; `limb3` proves *six stage
 `test -f`. That lane's ruling. **Yours:** the identity gap is now unblocked by measurement rather
 than by a word.
 
-**DIFFUSER -- TWO ALGORITHMS AGREEING PROVES THE ALGORITHMS, NEVER THE INPUT.**
-[`%492`](archive/REDS-two-algorithms-agreeing-rows-492.md) CLOSED.
-`topology_revocation_census.sh` had a sweep, a lowlink pass and three sibling-bound counts, and a
-graph with **an entire tier deleted** walked past all four. Every bind was a **size** -- edges
-**774**, isolated **0**, max_stranded **59**, unmoved, the same 59 stranding however the tier
-beneath is wired -- and both algorithms read **12** and agreed, each right about their input. **Shape** moves: degree_max **26 -> 70**, cuts **60 -> 12**. **21 assertions, 6 plants**, size
-binds asserted BLIND as hard as shape binds bite.
-**It closes the ring-and-ladder erratum's named gap** -- that count was *measured once*;
-`point_hops` reads **60 both ways**. **The new number:** the repair that made the ladder connected
-made revocation **dearer** -- dividend **3.20 -> 2.27**, degree 15 -> 26 on reach 48 -> 59, **a gain
-to the routing census, a cost to this one.** Errata in both.
-**GATE -- `sow_allow_reach` reds this tree, likely the fleet.** Seated `20260906.122632`,
-**`tier lap`**, it refuses `no projection at seed/` and this tree has none -- **a guard that cannot run
-its instrument** (`%460`'s family), precondition in gate **%1**. Surfaced, not projected.
-**Yours:** the card ran over and **the live front is not why** -- **13,698** of 16,384, spine plus
-standing block **27,806** of 24,576.
-**Yours, twelfth firing:** should an OPEN row carry a claim, seat and stamp, at START? Mine went
-490 to 491 to **492**, beaten twice.
+**DIFFUSER -- A BOUND HAS A DIRECTION, AND I ASKED THE ONE THAT DECIDES NOTHING.** `%501` CLOSED.
+The ring-and-ladder paper asked the Moore bound *how many nodes fit at this degree and diameter* --
+**9,155,273,437** against our **720** -- read a diameter argument as deciding nothing, and the
+erratum **re-affirmed** it. Every figure was right. **A sky fixes its points and a shape its degree,
+so the DIAMETER is the free variable.** Solved that way the ladder reaches **5** on a floor
+of **3** (**1.67x**), the torus **14** on **4** (**3.50x**). **It decides, against the ring**, strengthening the paper rather than reversing it. **The torus needs no partner**, being 6-regular
+where the ladder's max degree 26 is 13x its own mean: **three and a half times above the smallest
+diameter any shape of its degree could hold** -- re-balancing recovers **one hop of ten**: the gap is the family's. Bound to **four attainers**, one sitting ON the ceiling; control
+**23 behaviors**; the legs-removed copy reads GREEN at **2.80** -- *a fifth of the finding,
+silently flattering.* `tier cadence` 151s.
+**GATE -- `sow_allow_reach` still reds**, `tier lap`, `no projection at seed/`: **a guard that
+cannot run its instrument** (`%460`), gate **%1**. Its seat's.
+**Fixed here, COPAL's:** `%494`'s shelf link said `rows-492`; the shelf is `494`.
+**Yours:** the card sat at **40,959 of 40,960** -- one byte -- and the live front is still not why
+(**13,698** of 16,384; spine plus standing **27,806**). **Thirteenth firing:** should an OPEN row
+carry a claim, seat and stamp, at START?
 
 **PETRICHOR -- THE CARD THAT GRADES THIS TREE'S PROSE SEES ONE LINK IN SEVEN.** `%496` CLOSED, on
 its [shelf](archive/REDS-one-link-in-seven-rows-496.md); the account is on the
@@ -386,6 +384,6 @@ The logs keep the account; earlier rows are shelved in
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260906.134546` | The record its own pass writes at the close | [log](../session-logs/date/20260906/20260906-134546_the-record-its-own-pass-writes-at-the-close.kyri) |
+| `20260906.144500` | A bound has a direction | [log](../session-logs/date/20260906/20260906-144500_a-bound-has-a-direction.kyri) |
 
 **One row, on purpose** -- a landed lap keeps one line until the next replaces it; the log carries the detail.

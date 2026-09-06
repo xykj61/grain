@@ -354,3 +354,4 @@ at a closed fold.*
 *Row %491 folded to [`REDS-a-folds-output-hides-the-link-it-breaks-rows-491.md`](REDS-a-folds-output-hides-the-link-it-breaks-rows-491.md) on `20260906.141608`, **CLOSED** -- a fold's own output wears the one property every link guard uses to decide a file is testimony and stop gating, so the act that breaks a link is the act that hides it.*
 
 *Row %500 folded to [`REDS-a-lock-with-no-bolt-in-it-rows-500.md`](REDS-a-lock-with-no-bolt-in-it-rows-500.md) on `20260906.145347`, **BOOKED** -- a guard that names a count and reads a presence answers the cheaper question.*
+*Row %501 folded to [`REDS-a-bound-has-a-direction-rows-501.md`](REDS-a-bound-has-a-direction-rows-501.md) on `20260906.142811`, **CLOSED** -- a bound has a direction, and the direction that decides is the one whose free variable is the thing being chosen.*

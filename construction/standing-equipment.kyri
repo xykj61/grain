@@ -2033,3 +2033,19 @@ guard rye_struct_fields
 path tools/r/rye_struct_fields_witness.rish
 tier lap
 seated 20260906.140000
+# The diameter floor, seated 20260906.143000. `comlink/topology.rye` publishes hop counts, and
+# `topology_graph_census.sh` now reports the smallest diameter any graph of that many points and
+# that maximum degree could hold -- the Moore bound solved for the DIAMETER rather than for the
+# node count, which is the direction a designer's constraint actually binds. The reading exists
+# because a paper asked the same bound the other way, answered nine billion nodes against our 720,
+# and concluded a diameter argument decided nothing.
+#
+# WHY `cadence` RATHER THAN `lap`. The control runs the census seven times over 682,425 ordered
+# pairs -- 151s measured, against 26s for one census pass. Its answer moves only when the census
+# or the module moves, both deliberate acts, so a fifth-round reading is honest where a per-lap
+# one would spend 151s a lap on eight ships watching a number that did not change.
+
+guard topology_floor
+path tools/t/topology_floor_witness.rish
+tier cadence
+seated 20260906.143000

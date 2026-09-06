@@ -1,0 +1,52 @@
+# tools/t/topology_floor_witness.rish -- the diameter floor reads, and can be made to red.
+#
+#   rishi/bin/rishi run tools/t/topology_floor_witness.rish
+#
+# WHAT IT BINDS. `tools/fixtures/t/topology_graph_census.sh` reports, per connected leg, the
+# smallest diameter any graph of that many points and that maximum degree could hold -- the
+# Moore bound solved for the diameter rather than for the node count. This proves the
+# arithmetic against four graphs known to ATTAIN that bound, and proves the reading can be
+# broken, through `tools/fixtures/t/topology_floor_control.sh` and its five plants.
+#
+# WHY IT IS `tier cadence`. The control runs the census seven times over 682,425 ordered
+# pairs -- 151s measured `20260906.143000`, against the 26s one census pass costs. Its answer
+# moves only when the census or the module moves, both deliberate acts, so a fifth-round
+# reading is honest where a per-lap one would spend 151s a lap on eight ships to watch a
+# number that did not change.
+
+say "topology-floor: Language EN -- a bound asked in the direction that decides."
+say "topology-floor: Style Gauge, Meter -- the floor, and the five ways it can go wrong."
+say "topology-floor: Lens TAME -- every refusal planted, then lifted."
+
+say "topology-floor: the census reports a floor for every connected leg..."
+let census = run ["sh" "tools/fixtures/t/topology_graph_census.sh"]
+# invariant: the census stands green before any reading of it is trusted.
+assert census.ok else "topology-floor: the census refused --\n${census.out}"
+# invariant: four legs are connected and each names its own floor beside its own diameter.
+assert census.out contains "point_compass_floor degree_max=26 moore_floor=3 walk_diameter=5 over_floor=1.67" else "topology-floor: the compass ladder's floor moved --\n${census.out}"
+assert census.out contains "torus_compass_floor degree_max=6 moore_floor=4 walk_diameter=14 over_floor=3.50" else "topology-floor: the compass torus's floor moved --\n${census.out}"
+
+say "topology-floor: and a split graph is refused rather than given a ratio..."
+# invariant: both sponsor legs are disconnected, so neither is handed a floor it cannot earn.
+assert census.out contains "sponsor_compass_floor not_connected" else "topology-floor: a split graph was given a diameter floor --\n${census.out}"
+assert census.out contains "sponsor_council_floor not_connected" else "topology-floor: a split graph was given a diameter floor --\n${census.out}"
+
+say "topology-floor: the arithmetic holds against four graphs that attain the bound..."
+# invariant: an attainer sits exactly ON the bound, so it catches the off-by-one a bracketing
+# case cannot see. All four report, or the formula has moved.
+assert census.out contains "moore_attainer complete_K10 floor=1 ok" else "topology-floor: the complete-graph attainer moved --\n${census.out}"
+assert census.out contains "moore_attainer petersen floor=2 ok" else "topology-floor: the Petersen attainer moved --\n${census.out}"
+assert census.out contains "moore_attainer hoffman_singleton floor=2 ok" else "topology-floor: the Hoffman-Singleton attainer moved --\n${census.out}"
+assert census.out contains "moore_attainer cycle_C15 floor=7 ok" else "topology-floor: the degree-two branch moved --\n${census.out}"
+
+say "topology-floor: and the reading can be broken, five ways, each lifted after..."
+let control = run ["sh" "tools/fixtures/t/topology_floor_control.sh"]
+# invariant: a refusal proven only in the passing direction cannot be told from a bypass.
+assert control.ok else "topology-floor: the control refused --\n${control.out}"
+assert control.out contains "verdict=ok" else "topology-floor: the control did not reach its own green --\n${control.out}"
+# invariant: the pen is innocent, so every plant below reads as the break speaking.
+assert control.out contains "clean_verdict ok ok" else "topology-floor: the unbroken pen did not pass --\n${control.out}"
+# invariant: the legs earn their keep -- broken with the legs gone, the census reads green.
+assert control.out contains "legless_verdict ok ok" else "topology-floor: the attainer legs are not what catches the break --\n${control.out}"
+
+say "topology-floor: GREEN -- the floor reads, the split graph is refused, and five plants bite."
