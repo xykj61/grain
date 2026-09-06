@@ -11,9 +11,11 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260906.042632` | [The lap that survived its own death](20260906/20260906-042632_the-lap-that-survived-its-own-death.kyri) | rule 5 seated; two booked rows withdrawn to peers. |
 | `20260906.041131` | [the guard that blamed the binary](20260906/20260906-041131_the-guard-that-blamed-the-binary.kyri) | %460: no file(1), so ten right binaries read wrong. |
-| `20260906.040301` | [the pen that planted a moved number](20260906/20260906-040301_the-pen-that-planted-a-number-the-law-had-moved.kyri) | two bound meters closed. |
 | `20260906.040420` | [three meters wrong about their own ground](20260906/20260906-040420_three-meters-wrong-about-their-own-ground.kyri) | %461 closed; two numbers lost mid-send. |
+| `20260906.040301` | [the pen that planted a moved number](20260906/20260906-040301_the-pen-that-planted-a-number-the-law-had-moved.kyri) | two bound meters closed. |
+| `20260906.035833` | [The number the law moved](20260906/20260906-035833_the-number-the-law-moved.kyri) | recovered from a stash; both its rows withdrawn. |
 | `20260906.035537` | [the revocation and the fault ride one edge](20260906/20260906-035537_the-revocation-and-the-fault-ride-one-edge.kyri) | one edge carries both; 48 of 720. |
 | `20260906.031132` | [the window closes and the loop takes over](20260906/20260906-031132_the-window-closes-and-the-loop-takes-over.kyri) | one live seat; the tree is clean. |
 | `20260906.030420` | [an instrument must know where it stands](20260906/20260906-030420_an-instrument-must-know-where-it-stands.kyri) | one file, two paths, three retractions. |

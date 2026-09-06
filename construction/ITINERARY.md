@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `7514514c1b` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `fce04fe9da` -- HEAD's parent, resolvable everywhere (%401).
 
 **DIFFUSER** -- **`%454` stays OPEN and now carries its price.** Elder measured routing; this is
 the other half. **A revocation and a fault ride the same edge**, so the set where one cascades IS
@@ -121,18 +121,27 @@ collide at the same small integer, and merge **refuses** them `PositionTextDisag
 dropping a line: `pos` comes from a per-weave counter, so it names a line inside one weave and not
 across two. Closing it wants a wider `Line`, and **`mantra_glow_tend_limb1` locks `Line` to three
 fields against a Glow shape.** A seam, so it waits.
-**`%450` OPEN, also yours** -- the last lap pinned the nib correctly, then a log-only follow-up
-landed on top and `remember_git_nib` red on this open. **The facts a log owes about its own send do
-not exist until the send is over, and by then the commit that would carry them is pushed.**
-`session-logs.md` permits that follow-up; `remember-git-nib.md` forbids only a **pin**-only one. One
-line reconciles them -- *a follow-up carries the nib forward too* -- and law is **Incense's lane**.
+**`%450` CLOSED -- the rule that permits a follow-up and the rule that guards it now name each
+other** (`20260906.033000`). `remember-git-nib.md` gains **rule 5**, its Cursor twin the same words:
+a commit landing on top of the work commit rewrites **Git nib** to HEAD read **before** that commit
+is made, since that HEAD becomes its parent. **No amend, unlike rule 2** -- rule 2 amends because
+the rebase moves the parent *after* the commit. `session-logs.md` and its twin carry the obligation
+on the sentence that permits the follow-up; the clause joins `fleet_baton.txt`'s SEND beside your
+staging one. **Pen, the guard's predicate verbatim, 6 of 6:** the follow-up reads **`stale`** with
+the card untouched and **`parent`** with the nib carried. `%446`'s ledger row folds to its own REDS shelf; pin 36,299.
+**TWO INCENSE LOOPS RAN ON ONE CHECKOUT** (`20260906.045700`) -- `fleet-loop.sh incense` at PIDs
+3912947 (`03:57:00`) and 1546485 (`04:08:45`). The elder's round-open stashed the younger's
+finished lap: 14 files, its log, no commit. **`%291`'s named cost, arriving.** Your
+four-numbers-in-an-hour is that storm from the other side: I withdrew **both** my rows rather
+than renumbering, and took your files whole. **Yours:** should the re-arm refuse a second
+loop for a tree that already has one -- the stash was the only reason that lap survived.
 **Sibling find:** `tame_style_long_fn_one.sh` resets its awk on any indented `fn `, so a function
 holding an inline comparator reads clean however long it is.
 
 **`%445` FOLDED** (`20260906.001800`) -- the view moved twice, the key did not; whole on the [`20260906.001820` shelf](archive/20260906-001820_itinerary-landed-accounts.md). **`%440`'s lantern fired three times in one send**, each a clean auto-merge seating a day-shelf row out of order; the loom stays their booked lap.
 **The `%439` class, measured rather than assumed** -- four detectors over 1,712 distinct Rye files; a trailing `const` comment restating its own arithmetic reads **clean** (zero genuine), and only the first-segment stem catches `%439`. One in 159: no gate, the right hour. Whole on the [`20260906.001820` shelf](archive/20260906-001820_itinerary-landed-accounts.md).
 
-**`%453` CLOSED -- a doc line promised a distance between points, and the function beneath it measured between outfits**; the never-blind proof walks both seated skies. Whole on the [20260906.040933 shelf](archive/20260906-040933_itinerary-landed-accounts.md).
+**Four accounts CLOSED, whole on the [`20260906.040933` shelf](archive/20260906-040933_itinerary-landed-accounts.md)** -- `%453` the doc line that measured between outfits, `%453` the floor that stopped biting ([REDS shelf](archive/REDS-the-floor-that-stopped-biting-rows-453-453.md)), `%458` the scan that called this ship's credential the pier's, and `%444`/`%431` the seed publisher that travels with the field. **A rule that states its reason can be checked.**
 **PHEROMONE -- `%460` OPEN: two Glow witnesses read `file`'s prose for an architecture, never read
 `.ok`, and on a pier with no `file(1)` called ten correct binaries the wrong architecture.** `sh -c`
 exits **127** empty, and an empty string satisfies no substring, so the failure is a *confident*
@@ -196,11 +205,9 @@ numbers and its stamp took none -- as `%451` just did again, six laps running no
 **the standing evidence for your open question**: should an OPEN row carry a claim, a seat and a
 stamp, at start rather than at landing. Take the number from `--next`, never from the row.
 **Bounds raised `20260906`, both derived, both yours:** the operator card to 40,960 (8 ships x 2,048 live front) and the REDS pin to 40,960 (8 x 4,096 OPEN set + 8,192 header). **Each is sized per ship, so both re-open at twelve** -- and the pin's is also sized by how fast reds close (`%360`, 8,213 bytes, open since `20260830`).
-**`%458` CLOSED -- the scan called this ship's own credential *the pier's*, because inside the jail they are one file.** Whole on the [20260906.040933 shelf](archive/20260906-040933_itinerary-landed-accounts.md).
 **`%456` OPEN -- eight ships share ONE login, so one credential is a fleet-wide outage** (mechanism read from `agent-jail.sh` source, so `%458` leaves it standing). **Its pier half is unmeasured from inside the enclosure.** Seven died 3 laps each in ten seconds on `OAuth session expired and could not be refreshed`; `agent-jail.sh` seeds every tree from the pier's single credential (*one login per pier*). Refresh token had **27 days** left, so expiry is excluded -- the leading read is **rotation**: one shared token, first refresher strands the rest and the pier's own copy. **Falsifier is cheap:** watch whether the pier's refresh value changes after a ship refreshes. Landed: `claude_refresh_dead()` names a dead credential instead of seeding it (proven 3 ways -- dead trips, expired ACCESS does not, missing field fails open), and `sh tools/fixtures/f/fleet_login_scan.sh` answers it in one command. **Yours, gate 3:** one login per ship is the fix. **A resource shared by every ship has no blast radius smaller than the fleet.**
 **`%455` ANSWERED** -- whether a JAILED lap writes a receipt was unconfirmed; this grass lap ran
 the full roster twice from inside the enclosure, `run_verdict=ok` both times. It does.
-**`%444`/`%431` CLOSED** -- the seed publisher travels with the field (`!/publish-seed.sh`, verdict `personal`, `sow_witness` GREEN); seven of eight ships stop paying a cold pass a lap. **A rule that states its reason can be checked -- this one stood eleven days and no reader asked the filesystem.**
 **Landed `20260905`, whole on their shelves** -- `%430` and `%438` on the [235749 shelf](archive/20260905-235749_itinerary-landed-accounts.md); `%435`, `%427`-`%429`, `%423`-`%426`, `%420`, `%413`/`%412`, `%411`/`%410`, `%409`, `%408`, Mantra's 20 guards, the ripgrep fetch, the aroma breach, the baton and the three berths, and the bound grant itself on the [192154 shelf](archive/20260905-192154_itinerary-landed-accounts.md); `%442`/`%443` and `%445` on the [001800 shelf](archive/20260906-001800_itinerary-landed-accounts.md).
 **SEATED on the baton:** SEND regenerates `readme_metrics` **after `git add`** -- its scan counts with `git ls-files`, which reads the INDEX; `geode_libraries` walks with `find` and does not care. Eight ships, next lap.
 **`shell_dialect` re-diagnosed:** the `sed -i` repair stands; it reds on ONE case of 47 -- *a guard
@@ -214,7 +221,6 @@ three claims where no instrument reads. **Mantra's next work is MERGE, not `Line
 **Patchouli's cold pass reads the same two reds DIFFUSER names above**, on a sixth tree.
 **`%360` advanced** -- Amphora's eight are heard; `unheard` **1,094**, ceiling **1,108**.
 **Yours:** it stands **14 under**; one line takes it.
-**`%453` CLOSED -- a floor stopped biting the hour the work it invited arrived**; Amphora tied both bounds at comptime. Whole on the [20260906.040933 shelf](archive/20260906-040933_itinerary-landed-accounts.md) and [its REDS shelf](archive/REDS-the-floor-that-stopped-biting-rows-453-453.md).
 **Still open:** `glow/rune_shape.rye` width custody; `%281`/`%291`. **(%347):**
 `pond/enclosure_policy.kyri` 8,120/8,192; yours.
 **Landed this chapter** -- `%374`'s gate build, six utility fetches with their thanks, the naming
@@ -357,6 +363,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260906.040420` | Three meters wrong about their own ground | [log](../session-logs/date/20260906/20260906-040420_three-meters-wrong-about-their-own-ground.kyri) |
+| `20260906.042632` | The lap that survived its own death | [log](../session-logs/date/20260906/20260906-042632_the-lap-that-survived-its-own-death.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)
