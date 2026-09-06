@@ -1,45 +1,45 @@
-// tools/fixtures/f/footprint_latency_probe.rye -- what one dependent memory read costs,
-// as a function of how much state you are reading it from.
-//
-// WHY. Two papers in this tree name this cost and neither measures it. The ring-and-ladder
-// study says of a routing table: "memory that is read on every packet is the kind that shows
-// up in a power budget -- Confidence: high that the state costs differ; no measurement of the
-// difference is offered here." The joule study proposes bounds on wake and rate, and both of
-// those bound TIME. Neither bounds WHERE the data lives, and where it lives is what this
-// probe reads off the metal.
-//
-// WHAT IT MEASURES, and what it does not. It measures the latency of a load that cannot begin
-// until the previous load has landed -- the shape a routing-table lookup actually has, since
-// you cannot fetch the next hop until you know the index. It does NOT measure energy: this
-// board exposes no RAPL counter, no MSR, and no perf event (checked 20260906). Time is the
-// observable available here, and the paper that reads this output says plainly what time can
-// and cannot stand in for.
-//
-// HOW IT DEFEATS THE THREE WAYS SUCH A PROBE LIES.
-//
-//   the compiler   -- a loop whose result is unused is deleted. Measured on this toolchain: a
-//                     one-million-iteration accumulate returned in 90 ns, which is not a
-//                     measurement of anything. Here every step's address comes from the
-//                     previous step's loaded value, out of a buffer filled at runtime, so no
-//                     comptime evaluation can reach it; the checksum is printed besides.
-//   the prefetcher -- a constant stride is predicted and the miss is hidden. The walk is a
-//                     random single cycle over all nodes, so the next address is unknowable
-//                     until the current load retires.
-//   the cache line -- entries packed densely share lines, so most accesses hit a line the
-//                     previous access already pulled in. One node occupies a whole line, so
-//                     every step touches a distinct line and the working set is what it says.
-//
-// THE INVARIANT THAT MAKES "WORKING SET" MEAN WHAT IT SAYS. The chase must be ONE cycle over
-// ALL n nodes. Built from a permutation it is, by construction -- and construction is not
-// proof, so `cycle_length` walks it and the caller asserts the count equals n. A chase that
-// closed early would touch a fraction of the buffer and report a small set's latency under a
-// large set's name, which is the one wrong answer this probe could give convincingly.
-//
-// Bounds are named at compile time and cannot be exceeded: the buffer is static, so a working
-// set larger than `max_working_set_bytes` fails to build rather than failing at 3 a.m.
-//
-// Read against: external-research/20260906-042838_the-table-that-fits.md
-// Driven by:    tools/fixtures/f/footprint_latency_census.sh
+//! tools/fixtures/f/footprint_latency_probe.rye -- what one dependent memory read costs,
+//! as a function of how much state you are reading it from.
+//!
+//! WHY. Two papers in this tree name this cost and neither measures it. The ring-and-ladder
+//! study says of a routing table: "memory that is read on every packet is the kind that shows
+//! up in a power budget -- Confidence: high that the state costs differ; no measurement of the
+//! difference is offered here." The joule study proposes bounds on wake and rate, and both of
+//! those bound TIME. Neither bounds WHERE the data lives, and where it lives is what this
+//! probe reads off the metal.
+//!
+//! WHAT IT MEASURES, and what it does not. It measures the latency of a load that cannot begin
+//! until the previous load has landed -- the shape a routing-table lookup actually has, since
+//! you cannot fetch the next hop until you know the index. It does NOT measure energy: this
+//! board exposes no RAPL counter, no MSR, and no perf event (checked 20260906). Time is the
+//! observable available here, and the paper that reads this output says plainly what time can
+//! and cannot stand in for.
+//!
+//! HOW IT DEFEATS THE THREE WAYS SUCH A PROBE LIES.
+//!
+//!   the compiler   -- a loop whose result is unused is deleted. Measured on this toolchain: a
+//!                     one-million-iteration accumulate returned in 90 ns, which is not a
+//!                     measurement of anything. Here every step's address comes from the
+//!                     previous step's loaded value, out of a buffer filled at runtime, so no
+//!                     comptime evaluation can reach it; the checksum is printed besides.
+//!   the prefetcher -- a constant stride is predicted and the miss is hidden. The walk is a
+//!                     random single cycle over all nodes, so the next address is unknowable
+//!                     until the current load retires.
+//!   the cache line -- entries packed densely share lines, so most accesses hit a line the
+//!                     previous access already pulled in. One node occupies a whole line, so
+//!                     every step touches a distinct line and the working set is what it says.
+//!
+//! THE INVARIANT THAT MAKES "WORKING SET" MEAN WHAT IT SAYS. The chase must be ONE cycle over
+//! ALL n nodes. Built from a permutation it is, by construction -- and construction is not
+//! proof, so `cycle_length` walks it and the caller asserts the count equals n. A chase that
+//! closed early would touch a fraction of the buffer and report a small set's latency under a
+//! large set's name, which is the one wrong answer this probe could give convincingly.
+//!
+//! Bounds are named at compile time and cannot be exceeded: the buffer is static, so a working
+//! set larger than `max_working_set_bytes` fails to build rather than failing at 3 a.m.
+//!
+//! Read against: external-research/20260906-042838_the-table-that-fits.md
+//! Driven by:    tools/fixtures/f/footprint_latency_census.sh
 
 const std = @import("std");
 const assert = std.debug.assert;
