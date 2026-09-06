@@ -406,6 +406,24 @@ fi
 # Flesch-Kincaid over the same prose the register reading sees, plus link density. Syllables are
 # counted by vowel groups with a silent trailing `e` removed and a floor of one, which is the
 # ordinary heuristic and honest to about half a grade.
+# WHICH LINES THIS READING CAN SEE, stated because for a long time it was not. Flesch-Kincaid is
+# arithmetic over sentences, and a table row, a list item, a heading and a bold-key header line hold
+# none -- so all four are held out, the same call `reference_block.awk` makes for Register one
+# reading up. That part is right. What was NOT stated is that the link count rides in the same awk,
+# so a citation on any of those lines is held out with the words, and the density below is computed
+# over running prose alone.
+#
+# MEASURED 20260906 over 5,409 tracked Markdown files outside gratitude/ and vendor/: this reading
+# sees 2,690 links and holds out 15,528 -- 9,809 on list, heading or bold-key lines and 5,719 in
+# tables -- so it sees 14.8% of them, and 1,766 files carry links while reading zero. `docs/README.md`,
+# the worked example in the index-relief comment below, carries 28 links on the page and 5 here;
+# `docs-geode/wiki/README.md`, whose whole body is a 14-row table of links, carries about 50 and
+# reads 2 (REDS %492).
+#
+# SO THE COUNT IS REPORTED BOTH WAYS BELOW and the density stays exactly as it was. Widening the
+# numerator would re-grade the tree in one unmeasured step, and this file already refuses that shape
+# once -- a separate open question is not settled quietly inside a different repair. What a reader
+# can no longer do is quote `links` as the page's link count, which is what it had been read as.
 reach_raw=$(awk -v gc="$grade_ceiling" -v xc="$xref_ceiling" '
   BEGIN { infence = 0 }
   /^```/ { infence = 1 - infence; next }
@@ -453,6 +471,14 @@ reach_raw=$(awk -v gc="$grade_ceiling" -v xc="$xref_ceiling" '
     printf "%d %d %d %d %d %d\n", int(go + 0.5), int(xo + 0.5), int(grade + 0.5), int(per100 + 0.5), words, links
   }
 ' "$prose_path")
+# The whole-page count, extracted the way Truth extracts its citations, so the two readings of one
+# file can never disagree about how many links it holds.
+# Read from the file on disk rather than from `$prose_path`, which by here is the reference-block
+# filtered copy the two scored readings share -- counting the page's links off a filtered copy would
+# reproduce the very blindness this number exists to report.
+links_all=$(awk '{ n += gsub(/\]\(/, "&") } END { print n + 0 }' "$root/$path" 2>/dev/null)
+[ -n "$links_all" ] || links_all=0
+
 set -- $reach_raw
 grade_over=$1
 xref_over=$2
@@ -709,6 +735,9 @@ else
   xref_note="xrefs $xrefs per 100w against $xref_ceiling"
 fi
 echo "reach=$reach ($grade_note; $xref_note; $words words, $links links)"
+links_held=$(( links_all - links ))
+[ "$links_held" -lt 0 ] && links_held=0
+echo "reach_links=$links of $links_all on the page ($links_held held out with the lines that carry no sentence -- tables, lists, headings, bold-key header lines; reported, never scored)"
 echo "reach_mode=$reach_mode (declares_index=$declares_index; index floor $index_floor words)"
 echo "grade_mode=$grade_mode (floor $register_floor sentences, cited from prose_register_scan.sh)"
 echo "truth_counted=$truth_counted ($unresolved of $cited cited paths unresolved; $illustrations placeholder shapes read as illustrations)"

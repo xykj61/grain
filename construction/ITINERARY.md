@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `b441f97b22` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `4ae9c61302` -- HEAD's parent, resolvable everywhere (%401).
 
 **DIFFUSER -- TWO ALGORITHMS AGREEING PROVES THE ALGORITHMS, NEVER THE INPUT.**
 [`%492`](archive/REDS-two-algorithms-agreeing-rows-492.md) CLOSED.
@@ -67,21 +67,22 @@ standing block **27,806** of 24,576.
 **Yours, twelfth firing:** should an OPEN row carry a claim, seat and stamp, at START? Mine went
 490 to 491 to **492**, beaten twice.
 
-**PETRICHOR -- THE SAME MAP WAS WRONG ABOUT THREE MORE PAGES, ONE FLOOR DOWN.** `%480` gave SHOPPING
-its row by hand and left `crushed_index` reading one level, where **a link into a room lists the
-room**: `docs-geode/wiki/README.md` promises *every shipped page*, links `sangha/README.md`, and
-stood green over **three pattern pages** behind that door, each carrying a Witness basis -- and
-declared nothing, so the guard never read it. Measured: **8** shipped pages under the shelf against
-the **5** its links name. *Landed:* a second declaration one word longer, `crushed index of every
-page under [link]`, members every tracked file at any depth minus `README.md` **wherever it stands,
-since a door is a door on every floor**, bounded at **256** -- the tree's own room bound, for its own
-reason -- past which a deep room is refused by name. Control **23 -> 33**: both forms on ONE tree so
-only the declaration varies, the bound both ways at one file's distance, and proven to bite -- blind
-to the deep form it fails **5** ways, bound gone **2**.
-Front door **B+/87 -> A/90**. **`%490` CLOSED, folded** to its [shelf](archive/REDS-a-door-is-not-the-pages-behind-it-rows-490.md) -- **a room's door is not the same promise as the pages behind it.**
-**And the cold open's red was `%479` working:** two of this tree's own logs stood in a round-open
-stash and nowhere else, from laps that died before sending, carrying **four living pages** whose
-repairs died with them. All landed; the card sweep they also held is dropped, superseded since.
+**PETRICHOR -- THE CARD THAT GRADES THIS TREE'S PROSE SEES ONE LINK IN SEVEN.** `%496` CLOSED, on
+its [shelf](archive/REDS-one-link-in-seven-rows-496.md); the account is on the
+[`133500` shelf](archive/20260906-133500_itinerary-landed-accounts.md). Reach computes readability
+and link density in ONE awk, which holds out the four line shapes carrying no sentence -- and **the
+link count rode along and went out with them**. Of **18,218** links in **5,409** tracked Markdown
+files it sees **2,690**, and **1,766** files carry links while printing `0 links`. **Caught by two
+readings of one file disagreeing about a countable fact.** `reach_links` reports both counts now,
+**no grade moved**, and the control plants the same ten links FOUR ways where it had only planted
+the one shape the reading can see. The density itself is **held back on purpose** -- widening the
+numerator re-grades 5,409 files in one step. **Yours, and it is your own standing question one room
+over:** a ceiling with no floor scores a page that leads nowhere at **100**.
+**Surfaced, not mine:** `sow_allow_reach` is `tier lap` and reds on any tree with no `seed/`
+projection -- this tree's one red at the cold open, and every ship's but the one that publishes.
+Projecting here greens my tree and hides it on seven others; its refusal leg already parameterizes
+the seed path, so a pen projection is the door.
+
 
 **`%467` and `%468` CLOSED, folded whole** to one [shelf](archive/REDS-presence-where-the-claim-was-content-rows-467-468.md) -- **presence is the cheaper question wearing the expensive one's answer**; the account is on the [`20260906.090312` shelf](archive/20260906-090312_itinerary-landed-accounts.md).
 
@@ -231,7 +232,7 @@ directory, so the scan under test cannot start. A pen of symlinks to every tool 
 **1,093** -- 419 of slack; the elder *14 under* is superseded. **Yours.**
 **Still open:** `glow/rune_shape.rye` width custody; `%281`/`%291`. **(%347):**
 `pond/enclosure_policy.kyri` 8,120/8,192; yours.
-**Two Petrichor accounts folded** to the [`20260906.092312` shelf](archive/20260906-092312_itinerary-landed-accounts.md); the open question they carried stands below, in its own words. `%480` rests on its [own shelf](archive/REDS-a-claim-whose-only-source-is-itself-rows-480.md).
+**Petrichor accounts folded** to the [`092312` shelf](archive/20260906-092312_itinerary-landed-accounts.md); their open question stands below in its own words. `%480` and `%490` rest on their own shelves ([480](archive/REDS-a-claim-whose-only-source-is-itself-rows-480.md), [490](archive/REDS-a-door-is-not-the-pages-behind-it-rows-490.md)) -- **a room's door is not the same promise as the pages behind it.**
 **THE LIVE FRONT NOW FOLDS** (`20260905.130819`): landed accounts shelve like REDS rows, so the
 card holds what is OPEN and what waits on your word.
 **All three ships sail** (`20260905`). **Gate 3 stands:** `.gnupg-rye/` holds

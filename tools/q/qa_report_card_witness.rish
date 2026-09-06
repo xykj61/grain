@@ -196,6 +196,10 @@ assert control.out contains "register_is_the_flip=yes" else "qa-report-card: reg
 assert control.out contains "register_source_load_bearing=yes" else "qa-report-card: the register reading is cited, so losing its source must refuse rather than guess"
 assert control.out contains "reach_falls_on_links=yes" else "qa-report-card: a page reaching past its reader must lose reach"
 assert control.out contains "reach_under_full=yes" else "qa-report-card: reach over budget must read under 100"
+assert control.out contains "links_off_prose_unseen=yes" else "qa-report-card: the same ten links on a list, a table, or a bold-key header line read zero to the density budget -- the card must say so"
+assert control.out contains "off_prose_links_never_cost_reach=yes" else "qa-report-card: and none of the three can cost reach, which is the consequence a reader must be able to see"
+assert control.out contains "reach_links_adds_up=yes" else "qa-report-card: the whole-page count is the seen count plus the held-out one, never a third measurement"
+assert control.out contains "filtered_count_reproduces_the_blindness=yes" else "qa-report-card: a whole-page count carrying the density reading own line filters reads 0 of 0 -- the elder state this report ended"
 assert control.out contains "meter_register_free=yes" else "qa-report-card: Meter carries no register budget -- refusal is its subject"
 assert control.out contains "meter_reach_free=yes" else "qa-report-card: Meter carries no reach budget either"
 assert control.out contains "resolving_link_free=yes" else "qa-report-card: a link that lands must cost nothing"
@@ -329,7 +333,13 @@ assert control.out contains "link_penalty_survives_the_floor=yes" else "qa-repor
 assert control.out contains "elder_grade_scored_the_unmeasurable=yes" else "qa-report-card: the elder card must be shown scoring a grade it had no denominator for, and an empty file at zero"
 assert control.out contains "grade_floor_repair_bites=yes" else "qa-report-card: the repaired card must read the corpus and the empty file differently than the elder one, or it is a rewording"
 assert control.out contains "control_verdict=ok" else "qa-report-card: the control must agree with itself"
-say "one hundred and seventeen behaviors proven in a throwaway pen, the scale read at every boundary from both sides"
+# COUNTED FROM THE RUN, NEVER TYPED HERE. This line recited "one hundred and seventeen" while the
+# control printed a hundred and twenty, and it had been wrong by three before this round added
+# five more. A total carried inside a sentence stays at whatever it was on the day somebody typed
+# it; this one is read off the pen every time (REDS %492, and the same law the crypto count guard
+# holds one room over).
+let proven = where (lines control.out) as l: l contains "=yes"
+say "${length proven} behaviors proven in a throwaway pen, the scale read at every boundary from both sides"
 
 # THE JUDGED READING NAMES ITS OWN SCALE (REDS %361). The composite is the mean of four readings on
 # one 0-100 scale, so `--service` is 0-100 -- and that clause lived in exactly one place, the loop's
