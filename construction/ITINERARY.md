@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `8c5d541661` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `34342eec86` -- HEAD's parent, resolvable everywhere (%401).
 
 **DIFFUSER** -- **`%454` OPEN: `route_hops` publishes a hop count, and a third of the sky has no
 walk of that length.** From the metric's OWN unit distance: 642 edges over 720 points, **132 with no
@@ -66,9 +66,19 @@ it and **docs-geode holds zero**, so the branch eats every bold-led paragraph Ga
 **239 of 537 prose lines, 85 across the twelve gated doors**.
 Reach divides links by that count too, so **two of four readings ride one classifier**. A patched measure reds
 **2 of 12** door and **7** teaching documents. **BAKERY's seat**, priced in the row. *Landed:*
-`blog/README.md` **71% -> 9%**, C+/76 to B+/85; four more stand named there, `libraries` among them
--- **generated**, and calling an index *"the fastest-rotting page"* against Gauge's
-**compare by what keeps**.
+`blog/README.md` **71% -> 9%**; **`libraries` LANDED** at its generator: **50% -> 14%**, register
+50 -> 86, witness GREEN. **Its grade never moved -- A+/100 before and after**, reading **1
+sentence, 15 words** against an honest **14 and 375**, so the 8-sentence AND 100-word index floors
+**both** opened -- two readings **unscored, not mismeasured**, on doors the card calls
+*deliberately independent*. **Free now:** `rotting` evades the neg list and post-repair the
+participles change **0 of 76** gated files. **Census closes the class:** 2 breaches in **443**
+living documents, both docs-geode, both repaired.
+**TWO BOUND METERS MISSED THE RAISE** (`20260906.024109`, Petrichor -- named, not taken). REDS was
+seated at **40960**; both still read the general **24576**, so both red and every ship's receipt is
+withheld. `tools/fixtures/r/reds_ledger_scan.sh:125` calls the bound reader with **no argument** --
+alone of **19** call sites -- so **one argument closes it**, against its own *one reading, one
+home*. `living_pin_near_bound` reds in its pen, `control_failures=3` -- a read, not a line.
+**A raise that reached the law and left the meters behind.**
 **A lantern fired three times** -- the row number, the shelf count, the card's own nib: each a
 number a hand typed that a peer's landing falsified, each answerable by one command.
 [Spec](../active-designing/20260906-010726_the-numbers-a-hand-types-that-a-rebase-falsifies.md):
