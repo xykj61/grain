@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260906.130032` | [the guard that read the last pass](20260906/20260906-130032_the-guard-that-read-the-last-pass.kyri) | %483: a card written at close; %488: no pre-push. |
 | `20260906.120517` | [a guard by its name](20260906/20260906-120517_the-census-that-knew-a-guard-by-its-name.kyri) | %465: 408 runners absent, not unheard; %486 self-reference. |
 | `20260906.120137` | [count the believers, not the carriers](20260906/20260906-120137_count-the-believers-not-the-carriers.kyri) | %487: a handler that cleans up and carries on. |
 | `20260906.115056` | [the vendor names prepped like friends](20260906/20260906-115056_the-vendor-names-prepped-like-friends.kyri) | Tier 1+2 Class M; 13 bannered, 3 refused. |

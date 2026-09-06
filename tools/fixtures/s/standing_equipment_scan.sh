@@ -18,13 +18,14 @@
 #   No run-card line records a red or an absent guard -- EXCEPT this guard's own row, which is
 #     REPORTED at `runs_red_self` and never counted. The reasoning is written at the count itself;
 #     it is named here so this list and the code beneath it say the same thing.
-#   A PEER'S ROW IS ONE PASS BEHIND, and that is a reading rather than a fault. The runner writes
-#     the card at the close of a pass, so a guard running mid-pass reads the PREVIOUS pass's
-#     verdicts for every peer that has yet to re-run -- including reds this same pass has already
-#     repaired. One clean pass after a red is therefore expected to refuse here, and the pass after
-#     that goes green with nothing changed. Left alone on purpose: a peer's last recorded red is
-#     true information, and the only way to stop reading it would be to stop reading peers at all.
-#     The self row is the case that had to move, because it never cleared.
+#   A PEER'S FRESHEST VERDICT IS THE ONE THAT COUNTS, and until `20260906` it was not the one
+#     read. The runner writes the card WHOLESALE at the close of a pass, so this guard -- itself
+#     rostered, and therefore run from inside the pass -- read the PREVIOUS pass's verdict for
+#     every peer, including reds this same pass had already repaired. The runner hands its live
+#     record over now (`STANDING_CARD_LIVE`, REDS %483): a row there overrides the card's row for
+#     the same guard, and a guard absent from it keeps its card row, which is genuinely its
+#     freshest reading. Nothing stopped reading peers; a stale reading stopped outranking a fresh
+#     one. `runs_live` says how many rows came from the pass in flight, and reads 0 by hand.
 #
 # WHAT THE PASS COST, reported rather than gated. `runs_seconds_total` sums the run card's sixth
 # field, `runs_seconds_absent` counts the rows written before that field existed, and
@@ -129,7 +130,8 @@ known_gates=$(
 names=$(mktemp); paths_missing=$(mktemp); halfrows=$(mktemp)
 unrostered=$(mktemp); reds=$(mktemp); ranlist=$(mktemp); reds_self=$(mktemp)
 badtiers=$(mktemp); cadence_names=$(mktemp); badhosts=$(mktemp); badcaps=$(mktemp); badgates=$(mktemp)
-trap 'rm -f "$names" "$paths_missing" "$halfrows" "$unrostered" "$reds" "$reds_self" "$ranlist" "$badtiers" "$cadence_names" "$badhosts" "$badcaps" "$badgates"' EXIT
+effective=$(mktemp)
+trap 'rm -f "$names" "$paths_missing" "$halfrows" "$unrostered" "$reds" "$reds_self" "$ranlist" "$badtiers" "$cadence_names" "$badhosts" "$badcaps" "$badgates" "$effective"' EXIT
 
 rostered=0
 red_self=0
@@ -252,7 +254,51 @@ seconds_absent=0
 slowest_sec=0
 slowest_name="-"
 
-if [ -f "$card" ]; then
+# THE CARD IS THE LAST COMPLETED PASS; THIS SCAN ASKS ABOUT NOW (REDS %483). The runner writes the
+# run card wholesale at the close of a pass, so this guard -- itself rostered, and therefore run
+# from inside the pass -- read the PREVIOUS pass's verdict for every peer. The expensive direction
+# is a peer already repaired: red last pass, re-run GREEN earlier in this one, and this scan
+# refused over the stale row anyway. A red here sets `roster_receipt_write=withheld_guard_red` and
+# `--scoped` refuses without a full green receipt, so the lap that closed the last red paid the
+# NEXT lap a full cold pass -- 900s and 687s measured. Reproduced on metal in a two-guard pen:
+# alpha green at position 1, `standing_equipment` red at position 2, and the same pen green on the
+# following pass with nothing changed at all.
+#
+# SO THE RUNNER HANDS ITS LIVE RECORD OVER, and a guard's freshest known verdict wins. The runner
+# already keeps that record -- the pen file it appends a line to as each guard answers, seeded with
+# the card rows of the guards this pass leaves alone -- and it names the path in
+# `STANDING_CARD_LIVE`. A row there overrides the card's row for the same guard; a guard absent
+# from it, scheduled this pass and not yet run, keeps its card row, which is genuinely the freshest
+# reading anyone has of it. The gate keeps every tooth: a peer that reds inside this pass is read
+# here on the lap it happens rather than the one after.
+#
+# WHY A HANDED PATH RATHER THAN A FILE BESIDE THE CARD. Writing the card incrementally, or a live
+# sibling next to it, puts a working-tree write between the runner's two digests -- which is the
+# very thing `tree_moved` exists to catch, and it would turn every red into a `tree_moved` refusal
+# wherever the card is not gitignored: a pen this scan's control drives, or a clone before
+# `.gitignore` names it. The runner's pen sits under `mktemp -d`, outside the tree, so the digest
+# never sees it. A repair standing only where one .gitignore line happens to stand is a repair
+# resting on something no guard reads.
+#
+# NO RACE, and it is structural rather than lucky: the runner runs guards one at a time and waits
+# for each, so for as long as this scan reads that file its only writer is blocked on this scan.
+# Read by a hand with the variable unset or empty, this reads the card exactly as it always did.
+live_card="${STANDING_CARD_LIVE:-}"
+live_rows=0
+if [ -n "$live_card" ] && [ -f "$live_card" ]; then
+  # Two awks rather than a `grep` per card row: a per-item shell-out inside a loop over a corpus is
+  # the whole cost, every time, and this loop runs inside every pass.
+  if [ -f "$card" ]; then
+    awk 'NR == FNR { if ($1 == "ran") fresh[$2] = 1; next }
+         $1 == "ran" && !($2 in fresh)' "$live_card" "$card" > "$effective"
+  fi
+  awk '$1 == "ran"' "$live_card" >> "$effective"
+  live_rows=$(awk '$1 == "ran"' "$live_card" | wc -l | tr -d ' ')
+elif [ -f "$card" ]; then
+  cat "$card" > "$effective"
+fi
+
+if [ -s "$effective" ]; then
   while IFS= read -r line; do
     case "$line" in
       ran\ *)
@@ -305,7 +351,7 @@ if [ -f "$card" ]; then
         ;;
       *) ;;
     esac
-  done < "$card"
+  done < "$effective"
 fi
 
 never=0
@@ -337,6 +383,7 @@ echo "guards_unknown_gate=$unknown_gate"
 echo "tier_lap=$tier_lap"
 echo "tier_cadence=$tier_cadence"
 echo "runs_recorded=$recorded"
+echo "runs_live=$live_rows"
 echo "runs_unrostered=$stray"
 echo "runs_red=$red"
 echo "runs_red_self=$red_self"

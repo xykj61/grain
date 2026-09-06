@@ -595,6 +595,25 @@ if [ -f "$card" ]; then
   done < "$card"
 fi
 
+# THE LIVE RECORD, HANDED TO THE ONE GUARD THAT READS IT (REDS %483). `standing_equipment` is
+# itself rostered, so it runs from inside the loop below and used to read the run card -- which
+# this runner writes WHOLESALE at the close, further down. That left it one pass behind for every
+# peer, and the expensive direction is a peer this pass has already repaired and re-run green: the
+# roster guard refused over the stale row, the pass closed `guard_red`, the receipt was withheld,
+# and the next lap paid a full cold pass. `$pen/fresh` is this pass's record as it stands -- the
+# card rows of the guards this pass leaves alone, seeded just above, plus one line per guard that
+# has already answered -- so a reader of it sees the freshest verdict the pass knows.
+#
+# NAMED HERE RATHER THAN WRITTEN INTO THE TREE, for the same reason the card and the evidence room
+# land after the close digest: a working-tree write between the two digests moves the tree under
+# this runner's own `tree_moved` reading. The pen is under `mktemp -d`, so nothing the digest reads
+# ever sees it.
+#
+# EXPORTED INTO EVERY GUARD'S ENVIRONMENT, which is one variable and one reader. The hazard is a
+# guard that shells out to the scan over a roster of its own -- this runner's control does exactly
+# that -- and it clears the variable by name for that reason.
+export STANDING_CARD_LIVE="$pen/fresh"
+
 ran=0
 green=0
 red=0

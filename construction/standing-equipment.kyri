@@ -1701,6 +1701,22 @@ seated 20260906.055500
 # makes the next one audible. `tier lap`: 16s, most of it the control's pens over real repositories.
 # GREEN on metal before the row was written, since rostering a red guard reds every cold pass in the
 # fleet.
+#
+# AND THE ROW MADE THE NEXT ONE AUDIBLE WITHIN THE DAY (REDS %483, `20260906`). This guard runs
+# from INSIDE the pass, and the runner writes the run card wholesale at the pass's CLOSE, so every
+# peer's row it read was one pass old. The expensive direction is a peer already repaired: red last
+# pass, re-run green earlier in this one, and this guard refused over the stale row -- which
+# withholds `roster_receipt_write` and leaves the next lap's `--scoped` without a basis, so every
+# lap that closed the last red paid the following one a full cold pass (900s and 687s measured).
+# The runner hands its live record over now, in `STANDING_CARD_LIVE`, and a live row outranks the
+# card's row for the same guard; a guard scheduled this pass and not yet run keeps its card row,
+# which is genuinely its freshest reading. The gate lost no tooth and gained one: a peer that reds
+# INSIDE the pass was invisible here before, since the card still carried its previous green, and
+# is now read on the lap it happens. Handed by environment rather than written into the tree,
+# because a working-tree write between the runner's two digests is exactly what `tree_moved`
+# catches. `tier lap`: the control runs 182 readings in 13s (was 161 in 16s), most of it pens over
+# real repositories, and the 21 new ones include the end-to-end case -- a two-guard pen whose
+# second guard IS this scan, closing `run_verdict=ok` where the elder runner closes `guard_red`.
 
 guard standing_equipment
 path tools/s/standing_equipment_witness.rish

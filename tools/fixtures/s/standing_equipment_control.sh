@@ -46,8 +46,17 @@ trap 'rm -rf "$pen"' EXIT
 mkdir -p "$pen/tools"
 echo "# a standing guard, for the control only" > "$pen/tools/real_witness.rish"
 
+# STANDING_CARD_LIVE IS CLEARED ON PURPOSE (REDS %483). Whenever this control runs under the
+# roster runner -- which is every lap -- that runner exports its own pen's live record into every
+# guard's environment, and a case here inheriting it would read the REAL pass's rows on top of the
+# ones it planted. Every case below would measure the wrong tree, in silence. The live-record cases
+# name their own file, through `run_live_scan`.
 run_scan() {
-  ( cd "$pen" && STANDING_ROSTER="$1" STANDING_CARD="$2" sh "$scan" 2>/dev/null ) || true
+  ( cd "$pen" && STANDING_ROSTER="$1" STANDING_CARD="$2" STANDING_CARD_LIVE= sh "$scan" 2>/dev/null ) || true
+}
+
+run_live_scan() {
+  ( cd "$pen" && STANDING_ROSTER="$1" STANDING_CARD="$2" STANDING_CARD_LIVE="$3" sh "$scan" 2>/dev/null ) || true
 }
 
 # --- the agreeing roster, so the gate is proven to have a green side -------------------
@@ -152,6 +161,95 @@ EOF
 out=$(run_scan self-peer.kyri self-peer-card.kyri)
 case "$out" in *"verdict=roster_broken"*) echo "peer_red_still_bites=yes" ;; *) echo "peer_red_still_bites=no" ;; esac
 case "$out" in *"runs_red=1"*) echo "peer_red_counted_alone=yes" ;; *) echo "peer_red_counted_alone=no" ;; esac
+
+# --- the live record: a guard's freshest verdict outranks the card's (REDS %483) ---------
+# The card is what the LAST COMPLETED pass left; this scan runs from inside the NEXT one, so every
+# peer's row was one pass old. Both directions of that lag are proven here, and only one of them
+# had a name before today. The elder reading is taken first in each pair, so the repair is known
+# to have changed something rather than merely to have passed.
+cat > "$pen/live-roster.kyri" <<'EOF'
+format standing-equipment-v1
+guard alpha
+path tools/real_witness.rish
+seated 20260906.000000
+
+guard bravo
+path tools/real_witness.rish
+seated 20260906.000000
+EOF
+# the card, as the last completed pass left it: alpha red, since repaired
+cat > "$pen/live-card.kyri" <<'EOF'
+format standing-equipment-runs-v1
+ran alpha 20260906.100000 red lap 1
+ran bravo 20260906.100000 green lap 1
+EOF
+# the pass in flight: alpha has re-run and answered green
+cat > "$pen/live-fresh.kyri" <<'EOF'
+ran bravo 20260906.100000 green lap 1
+ran alpha 20260906.110000 green lap 1
+EOF
+
+out=$(run_scan live-roster.kyri live-card.kyri)
+case "$out" in *"runs_red=1"*) echo "stale_card_reds_alone=yes" ;; *) echo "stale_card_reds_alone=no" ;; esac
+case "$out" in *"runs_live=0"*) echo "no_live_reads_zero=yes" ;; *) echo "no_live_reads_zero=no" ;; esac
+case "$out" in *"verdict=roster_broken"*) echo "stale_card_refuses_alone=yes" ;; *) echo "stale_card_refuses_alone=no" ;; esac
+
+out=$(run_live_scan live-roster.kyri live-card.kyri live-fresh.kyri)
+case "$out" in *"runs_red=0"*) echo "live_green_clears_stale_red=yes" ;; *) echo "live_green_clears_stale_red=no" ;; esac
+case "$out" in *"verdict=ok"*) echo "live_repaired_pass_free=yes" ;; *) echo "live_repaired_pass_free=no" ;; esac
+case "$out" in *"runs_live=2"*) echo "live_rows_counted=yes" ;; *) echo "live_rows_counted=no" ;; esac
+# An override REPLACES a card row rather than joining it, or every recorded-run count doubles.
+case "$out" in *"runs_recorded=2"*) echo "live_overrides_never_doubles=yes" ;; *) echo "live_overrides_never_doubles=no" ;; esac
+
+# THE OTHER DIRECTION, which had no name until this row: a peer that reds INSIDE the pass was
+# invisible here, because the card still carried its previous green. The runner refuses over that
+# peer's own red either way, so nothing was lost at the pass level -- yet the one gate that reads
+# *no run-card line records a red* answered yes while a red stood in the same output.
+cat > "$pen/live-card-green.kyri" <<'EOF'
+format standing-equipment-runs-v1
+ran alpha 20260906.100000 green lap 1
+ran bravo 20260906.100000 green lap 1
+EOF
+cat > "$pen/live-fresh-red.kyri" <<'EOF'
+ran alpha 20260906.110000 red lap 1
+EOF
+out=$(run_scan live-roster.kyri live-card-green.kyri)
+case "$out" in *"runs_red=0"*) echo "card_alone_misses_live_red=yes" ;; *) echo "card_alone_misses_live_red=no" ;; esac
+out=$(run_live_scan live-roster.kyri live-card-green.kyri live-fresh-red.kyri)
+case "$out" in *"runs_red=1"*) echo "live_red_bites=yes" ;; *) echo "live_red_bites=no" ;; esac
+case "$out" in *"verdict=roster_broken"*) echo "live_red_refuses=yes" ;; *) echo "live_red_refuses=no" ;; esac
+# bravo is scheduled this pass and has not answered yet, so its CARD row is still its freshest.
+case "$out" in *"runs_recorded=2"*) echo "unrun_guard_keeps_card_row=yes" ;; *) echo "unrun_guard_keeps_card_row=no" ;; esac
+
+# A live record naming a file that is not there falls back to the card rather than reading nothing.
+out=$(run_live_scan live-roster.kyri live-card.kyri no-such-live.kyri)
+case "$out" in *"runs_red=1"*) echo "absent_live_falls_back=yes" ;; *) echo "absent_live_falls_back=no" ;; esac
+case "$out" in *"runs_live=0"*) echo "absent_live_counts_zero=yes" ;; *) echo "absent_live_counts_zero=no" ;; esac
+
+# The self exemption is a property of the NAME, so it holds whichever record the row came from.
+cat > "$pen/live-self-roster.kyri" <<'EOF'
+format standing-equipment-v1
+guard standing_equipment
+path tools/real_witness.rish
+seated 20260906.000000
+EOF
+cat > "$pen/live-self-card.kyri" <<'EOF'
+format standing-equipment-runs-v1
+ran standing_equipment 20260906.100000 green lap 1
+EOF
+cat > "$pen/live-self-fresh.kyri" <<'EOF'
+ran standing_equipment 20260906.110000 red lap 1
+EOF
+out=$(run_live_scan live-self-roster.kyri live-self-card.kyri live-self-fresh.kyri)
+case "$out" in *"runs_red=0"*) echo "live_self_red_uncounted=yes" ;; *) echo "live_self_red_uncounted=no" ;; esac
+case "$out" in *"runs_red_self=1"*) echo "live_self_red_reported=yes" ;; *) echo "live_self_red_reported=no" ;; esac
+
+# A guard the roster never seated is a stray wherever its row was written.
+cat > "$pen/live-ghost-fresh.kyri" <<'EOF'
+ran ghost 20260906.110000 green lap 1
+EOF
+out=$(run_live_scan live-roster.kyri live-card-green.kyri live-ghost-fresh.kyri)
+case "$out" in *"runs_unrostered=1"*) echo "live_stray_refused=yes" ;; *) echo "live_stray_refused=no" ;; esac
 
 # --- a roster with no card at all reads as never-run, and stays free ---------------------
 out=$(run_scan good.kyri absent-card.kyri)
@@ -299,6 +397,66 @@ EOF
 out=$( ( cd "$pen" && STANDING_ROSTER=gonepath.kyri STANDING_CARD=absent-run.kyri \
         sh "$runner" 2>/dev/null ) || true )
 case "$out" in *"run_verdict=guard_red"*) echo "absent_path_reds_runner=yes" ;; *) echo "absent_path_reds_runner=no" ;; esac
+
+
+# --- END TO END: the runner hands the record over, and the guard reads THIS pass ----------
+# The scan cases above prove the READING; this proves the WIRING -- that the runner exports the
+# record at all, and that a rostered guard running from inside a real pass sees this pass rather
+# than the last one. A two-guard roster whose second guard IS the real scan, over a card whose
+# alpha row is a red this pass has already repaired. Under the elder runner this same pen closes
+# `run_verdict=guard_red`: measured on metal `20260906.123532`, alpha green at position 1 and
+# `standing_equipment` red at position 2 (REDS %483).
+e2e="$pen/e2e"
+mkdir -p "$e2e/tools" "$e2e/rishi/bin"
+# A stub that RUNS the guard, unlike the exit-0 stub the tier cases use: this one needs the real
+# scan to execute from inside a real pass, since the wiring is the whole subject.
+cat > "$e2e/rishi/bin/rishi" <<'EOF'
+#!/bin/sh
+[ "${1:-}" = run ] && shift
+exec sh "$@"
+EOF
+chmod +x "$e2e/rishi/bin/rishi"
+echo 'exit 0' > "$e2e/tools/alpha.rish"
+cat > "$e2e/tools/se.rish" <<EOF
+out=\$(sh "$scan" 2>/dev/null) || true
+echo "\$out"
+rr=\$(printf '%s\n' "\$out" | sed -n 's/^runs_red=//p')
+[ "\${rr:-0}" = 0 ]
+EOF
+cat > "$e2e/roster.kyri" <<'EOF'
+format standing-equipment-v1
+guard alpha
+path tools/alpha.rish
+tier lap
+seated 20260906.000000
+
+guard standing_equipment
+path tools/se.rish
+tier lap
+seated 20260906.000000
+EOF
+cat > "$e2e/card.kyri" <<'EOF'
+format standing-equipment-runs-v1
+ran alpha 20260906.100000 red lap 1
+ran standing_equipment 20260906.100000 green lap 1
+EOF
+out=$( ( cd "$e2e" && STANDING_ROSTER=roster.kyri STANDING_CARD=card.kyri \
+         sh "$runner" 2>/dev/null ) || true )
+case "$out" in *"standing_equipment green"*) echo "e2e_roster_guard_green=yes" ;; *) echo "e2e_roster_guard_green=no" ;; esac
+case "$out" in *"guards_red=0"*) echo "e2e_repaired_pass_clean=yes" ;; *) echo "e2e_repaired_pass_clean=no" ;; esac
+case "$out" in *"run_verdict=ok"*) echo "e2e_repaired_pass_ok=yes" ;; *) echo "e2e_repaired_pass_ok=no" ;; esac
+
+# And the pass keeps every tooth: a peer that reds inside it is read on the lap it happens.
+echo 'exit 1' > "$e2e/tools/alpha.rish"
+cat > "$e2e/card.kyri" <<'EOF'
+format standing-equipment-runs-v1
+ran alpha 20260906.100000 green lap 1
+ran standing_equipment 20260906.100000 green lap 1
+EOF
+out=$( ( cd "$e2e" && STANDING_ROSTER=roster.kyri STANDING_CARD=card.kyri \
+         sh "$runner" 2>/dev/null ) || true )
+case "$out" in *"standing_equipment red"*) echo "e2e_live_red_reaches_guard=yes" ;; *) echo "e2e_live_red_reaches_guard=no" ;; esac
+case "$out" in *"run_verdict=guard_red"*) echo "e2e_live_red_refuses=yes" ;; *) echo "e2e_live_red_refuses=no" ;; esac
 
 # --- the tree digest, proven from both sides on a REAL git repository ---------------------
 # The runner takes twelve characters of `git rev-parse HEAD` plus `git status --porcelain` before

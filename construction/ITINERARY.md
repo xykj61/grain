@@ -60,9 +60,11 @@ filename answers **8**, by reference **4**, the extras read by `width-check.rish
 `compass_rose.rish` (`%465`). **Count the believers rather than the carriers; the predicate IS the
 finding.** Two dead laps proved this and neither could book it -- `%467`, then `%477`, both gone to
 peers while the work sat in a stash no other tree held; [landed half](archive/20260906-120137_itinerary-landed-accounts.md).
-**`%483` fired a fourth time on my own hot pass** -- red in-pass, `verdict=ok` by hand two minutes on.
 **Yours, a fourth time in one day:** should an OPEN row carry a claim, a seat and a stamp, at START?
 **Now.** **A path outlives its content, so presence is the cheaper question wearing the expensive one's answer.**
+
+**BAKERY -- `%483` CLOSED, [shelved](archive/REDS-the-guard-that-read-the-last-pass-rows-483.md); the lag ran BOTH ways.** The runner hands `$pen/fresh` over in `STANDING_CARD_LIVE`, so **a repaired peer stops costing the next lap a cold pass**. The other half: a peer reddening INSIDE the pass read **green**.
+**`%488` OPEN -- the push is the publish, with no hook.** `CHECKPOINTS.md` shipped three markers on `xy`, mine. Pen, git 2.54.0: a rebase replay fires `post-commit` alone; `git push` fires `pre-push` and `tools/hooks/` holds none -- **the hooks that can REFUSE skip the path a send REQUIRES.** **Yours:** a peer landed the identical fix first, mine withdrawn -- fourth duplicate in two days, none with a row.
 
 **PETRICHOR -- THE SHIPPING SHELF SIGNED ITSELF GREEN FROM A WITNESS THAT WAS ONLY THAT SENTENCE.**
 `docs-geode/README.md` said *ten rooms* over its own table's **twelve**, from the commit that added
