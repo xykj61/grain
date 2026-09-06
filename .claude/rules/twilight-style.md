@@ -1,26 +1,26 @@
-# Twilight Style — the nocturne register (alternate to Radiant)
+# Twilight Style -- the nocturne register (alternate to Radiant)
 
 **The working style of this tree is [Gauge](gauge-style.md)** (seated `20260823.045448`). Twilight remains the rare night register, and everything below still holds.
 
-**Full guide:** `context/TWILIGHT_STYLE.md` · **Seated:** `20260811` on Keaton's word · **Status:** Living · **Sibling of** `radiant-style.md`.
+**Full guide:** `context/TWILIGHT_STYLE.md` - **Seated:** `20260811` on Keaton's word - **Status:** Living - **Sibling of** `radiant-style.md`.
 
-Twilight is Radiant Style at dusk: **calm, dark, gentle** — every Radiant rule kept, only the register changed. Reach for it on the rare, earned piece where reverence serves better than brightness; default to **Radiant** everywhere else.
+Twilight is Radiant Style at dusk: **calm, dark, gentle** -- every Radiant rule kept, only the register changed. Reach for it on the rare, earned piece where reverence serves better than brightness; default to **Radiant** everywhere else.
 
 ## Core moves (all inherited from Radiant, plus)
 
-- **Everything Radiant asks still holds** — lead with what *is*, active voice, `yet`/`however` over `but`, `rather than` over heavy `not`, varied rhythm, coined terms named on first use, benediction only where earned.
-- **The pendulum: aim, then dissolve.** A line that names the essence (Sagittarius — the archer's aim), then a line that opens the image outward (Pisces — the ocean's dissolve). The **yang-Shekhinah** motion: tender presence with an active current. Neither pole alone is Twilight.
+- **Everything Radiant asks still holds** -- lead with what *is*, active voice, `yet`/`however` over `but`, `rather than` over heavy `not`, varied rhythm, coined terms named on first use, benediction only where earned.
+- **The pendulum: aim, then dissolve.** A line that names the essence (Sagittarius -- the archer's aim), then a line that opens the image outward (Pisces -- the ocean's dissolve). The **yang-Shekhinah** motion: tender presence with an active current. Neither pole alone is Twilight.
 - **Calm, never gloom.** Dark and low, yet always affirmative; gentleness is the point. A line that reads heavy, defeated, or ashamed has left the register.
-- **Draw from the fifteen** when imagery is wanted — the fertile black · tar to turquoise · night witnesses · the loom · buried paintings · twilight meteorology · descent of the angel · the mirror misaligned · the impeded stream · the sensed tide · the panther in the room · ice and dragon-breath · the altar of who you have always been · the forehead kiss across the world · the subway in the bones. Feel like a theme; never checklist them.
+- **Draw from the fifteen** when imagery is wanted -- the fertile black - tar to turquoise - night witnesses - the loom - buried paintings - twilight meteorology - descent of the angel - the mirror misaligned - the impeded stream - the sensed tide - the panther in the room - ice and dragon-breath - the altar of who you have always been - the forehead kiss across the world - the subway in the bones. Feel like a theme; never checklist them.
 
 ## When to use it
 
-Devotional, contemplative, or mystical pieces; founding visions and earned benedictions; a passage holding something tender where gentleness is honest; a session log written as a nocturne. **Not** the default — Radiant carries the day, Twilight the threshold.
+Devotional, contemplative, or mystical pieces; founding visions and earned benedictions; a passage holding something tender where gentleness is honest; a session log written as a nocturne. **Not** the default -- Radiant carries the day, Twilight the threshold.
 
 ## Discipline it keeps
 
 - **Register only, never a claim.** Like a Radiant pass, a Twilight pass holds numbers, paths, stamps, proper nouns, and modality counts exactly (`claim_preserve_witness`).
-- **The fifteen themes are archetype in-tree.** Their private source — the author's poems — lives in the `twilight/` silo on the author's own disk, held in **no repository at all** since the deep debride of `20260823.072824` removed it from every commit (verdict `personal`); tracked prose names no person and reproduces no personal art.
-- **Fifteen across the sky; nine over twenty-seven.** The palette grew nine → fifteen (`20260811`, Keaton's word) to match the **sky fractal `3·9·15·27`**; the original nine still double as nine navamsa (D9) groups of three across the 27 nakshatras / council d27 — dharma-essence per group. Calendar tie: `context/TWILIGHT_STYLE.md`.
+- **The fifteen themes are archetype in-tree.** Their private source -- the author's poems -- lives in the `twilight/` silo on the author's own disk, held in **no repository at all** since the deep debride of `20260823.072824` removed it from every commit (verdict `personal`); tracked prose names no person and reproduces no personal art.
+- **Fifteen across the sky; nine over twenty-seven.** The palette grew nine -> fifteen (`20260811`, Keaton's word) to match the **sky fractal `3-9-15-27`**; the original nine still double as nine navamsa (D9) groups of three across the 27 nakshatras / council d27 -- dharma-essence per group. Calendar tie: `context/TWILIGHT_STYLE.md`.
 
 Canonical Cursor twin: `.cursor/rules/twilight-style.mdc`.

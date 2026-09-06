@@ -1,30 +1,30 @@
 ---
-description: Before any seated debride that rewrites a living card, record a walk-back checkpoint (git nib + stamp) so old cards stay recoverable — attach when debriding
+description: Before any seated debride that rewrites a living card, record a walk-back checkpoint (git nib + stamp) so old cards stay recoverable -- attach when debriding
 alwaysApply: false
 ---
 
-# Checkpoint — mark the way back before you debride
+# Checkpoint -- mark the way back before you debride
 
-**Seated:** `20260809.024851` on Keaton's word · **Status:** Living
+**Seated:** `20260809.024851` on Keaton's word - **Status:** Living
 **Ledger:** `construction/CHECKPOINTS.md` (a maintainer-only room; named here rather than linked, since this law ships in the seed and that room does not)
-**Kin:** [`debride.mdc`](debride.mdc) — debride removes; a checkpoint marks the way back first.
+**Kin:** [`debride.mdc`](debride.mdc) -- debride removes; a checkpoint marks the way back first.
 **Claude twin:** [`../../.claude/rules/checkpoint.md`](../../.claude/rules/checkpoint.md)
 
-A **checkpoint** is a stacked-stone trail marker. Before any **seated debride** that rewrites a living card — ITINERARY, THREADS, TASKS, ROADMAP, or any work-in-progress file whose old body may hold ideas worth recalling — record one row in `construction/CHECKPOINTS.md` so the departing card stays one `git show` away.
+A **checkpoint** is a stacked-stone trail marker. Before any **seated debride** that rewrites a living card -- ITINERARY, THREADS, TASKS, ROADMAP, or any work-in-progress file whose old body may hold ideas worth recalling -- record one row in `construction/CHECKPOINTS.md` so the departing card stays one `git show` away.
 
 ## What a checkpoint always records
 
-1. **Walk-back nib** — `git rev-parse --short=10 HEAD` **before** the debride's own commit. The old files live at that nib and every commit before it.
-2. **Live stamp** — `TZ=America/New_York date +%Y%m%d.%H%M%S`. One clock; never fabricated.
-3. **Swept** — which living cards the debride rewrites, and roughly how much fell away.
-4. **What waits there, worth recalling** — one honest line naming the good ideas or detail folded into the old body.
+1. **Walk-back nib** -- `git rev-parse --short=10 HEAD` **before** the debride's own commit. The old files live at that nib and every commit before it.
+2. **Live stamp** -- `TZ=America/New_York date +%Y%m%d.%H%M%S`. One clock; never fabricated.
+3. **Swept** -- which living cards the debride rewrites, and roughly how much fell away.
+4. **What waits there, worth recalling** -- one honest line naming the good ideas or detail folded into the old body.
 
 ## Discipline
 
-- **A checkpoint precedes the debride, never trails it.** For a *deep* debride (history rewrite + force-push), the checkpoint is mandatory and must land first — after the rewrite the walk-back commit is unreachable on the shared remotes.
+- **A checkpoint precedes the debride, never trails it.** For a *deep* debride (history rewrite + force-push), the checkpoint is mandatory and must land first -- after the rewrite the walk-back commit is unreachable on the shared remotes.
 - **Append-only.** Checkpoints are never edited or removed. Newest first in the ledger.
 - **A checkpoint is not a session log and not a remember.** `remember` reprints the *current* card; a checkpoint pins the *departing* one.
 
 ## Why the word exists
 
-Debride is a clean, sanctioned break of accrete-never-break — yet a card that reads well often carried a stray good idea in a row we swept. A checkpoint costs one line and keeps every old card recoverable at a named commit.
+Debride is a clean, sanctioned break of accrete-never-break -- yet a card that reads well often carried a stray good idea in a row we swept. A checkpoint costs one line and keeps every old card recoverable at a named commit.
