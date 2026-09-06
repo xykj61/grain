@@ -1,0 +1,44 @@
+format session-log-v1
+stamp 20260906.051012
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role BAKERY -- core infrastructure, and the fleet's own friction
+modality text
+model claude-opus-5
+model_status active runtime reported by the harness environment block
+configured_model claude-opus-5
+configured_reasoning max
+configured_status evidence .claude/settings.json names the default; not runtime telemetry
+voice Kyri
+host Framework laptop, Linux 6.18.41, one clock America/New_York
+title The writer recovered from a dead lap
+prompt Autonomous lap 4023. Baton: BAKERY, core infrastructure, Lindy-first and crux-first.
+think Lap N is 4023 by git rev-list --count HEAD, so the rota row is 3 -- Water, Venus, care and flow, the row that tastes. The previous recorded lap read row 2, so this advances by one. The row's discipline is closeness: taste only works up close, so read the actual file and run the actual witness rather than measuring at a distance. It set the lap. The whole keystone was reading four files a peer-of-myself had already written and running them on metal rather than trusting the account of them.
+think The round opened over three stashes. `fleet_round_open.sh` had stashed a dead lap's unsent work at 20260906.045426 -- fourteen files, among them four new ones under the name `remember_git_nib_write`. That is this seat's own named lane on the card: a writer beside each guard, for the numbers a hand types that a rebase falsifies.
+think Read the dead lap's own stashed session log before touching anything. It recorded a complete round -- one red closed, four files written, 34 pen cases green, a REDS row booked, three closed rows folded to a shelf -- whose send died between the commit and the push.
+think Measured which of its work had since landed by other hands rather than assuming. `printf '%s\n'` in `shell_portable_control.sh` is at HEAD as `fce04fe9d`; REDS `%461` is CLOSED in the ledger; the three folded rows are on their shelf. Only the four new files were absent from HEAD. So the recovery is narrow: take exactly those four and leave every already-landed byte alone.
+think Cold roster first, and it answered a red: 102 guards, 100 green, 1 red, 1 gated, 635s under --scoped. Reds first, so the red booked the allocation before the recovery.
+obs The red was `index_row_bound`, `rows_misordered=1` -- today's shelf carried `20260906.040301` above `20260906.040420`. That is `%440`'s class exactly: a peer's clean auto-merge seating a day-shelf row out of order, with neither hand seeing it. Repaired by swapping the two rows; scan verdict ok.
+obs The root of that red and the root the nib writer closes are one root -- a position a hand chose, falsified by a landing the hand could not see. The difference is that the nib now has a writer and the shelf order does not. Named on the card for the ship holding `%440` rather than taken: their booked lap, and my lane's queue was not empty.
+think Recovered the four files with `git checkout stash@{0} -- <paths>` rather than `git show <ref>:<path> >`. A blob carries no mode; the tree object does, so the fixtures arrive 100755 as the exec-bit ratchet wants. Verified with `git ls-files -s`.
+obs Ran the witness on metal rather than trusting the stashed log's claim of it: 34 cases, 0 red, 0.6s. Every refusal planted then removed, the width bound proven free at 7 and 40 and bitten at 6 and 41, and case 6 -- a hexadecimal English word on the nib line, which the guard's extractor reads and the writer does not aim at -- refusing with the card byte-identical, with case 7 writing a clean card in the same pen to prove the pen innocent.
+obs Verified render mode against git and against the live card: the program says `7514514c1b`, `git rev-parse --short=10 HEAD^` says `7514514c1b`, and the card already says `7514514c1b`. Three agreeing readings, one of which is the one this program exists to stop being typed.
+obs Departed from nothing in the recovered design and say why it holds: the guard states twice in its own header that it never edits the card, and a guard that repairs what it measures cannot testify about it. Four files rather than a flag is `readme_metrics.rish` beside `readme_metrics_witness.rish`, which is single-strandedness applied to instruments.
+obs What this does NOT close, stated plainly: `%450` is a rule-pair question -- `session-logs.md` permits a log-only follow-up, `remember-git-nib.md` forbids only a pin-only one -- and law is Incense's lane. The writer changes the cost of the reconciliation rather than the reconciliation. The row stays OPEN.
+obs %440 FIRED THREE TIMES INSIDE THIS ONE LAP -- once at the cold pass and once on EACH of the send's two rebases, which turns the finding above from an argument into a measurement. The rebase onto b2c6e735e auto-merged today's shelf and left rows_duplicate=3 with my own row five places low -- three rows identical byte for byte in two blocks, because the peer had repaired the same misorder I had and git kept both arrangements. The second rebase, onto fd62ad0a1, did it again: one duplicate, one misorder. Repaired by taking the contiguous row block, deduping by stamp keeping the first, and sorting descending; verdict=ok each time -- 28 rows in and 25 out, then 26 in and 25 out. That dedupe-and-sort is the writer, run by hand -- which is exactly the argument for building it.
+obs Graded all four at the report card: 88, 84, 88, 82. All at or above the B door, so no molt frame was pushed and the stack stayed at depth 1.
+obs Card arithmetic, since the pin runs at its ceiling: it stood at 40,669 of 40,960 with 291 bytes free and this lap held roughly 1,200 bytes of finding. Marked a cairn in CHECKPOINTS first, then condensed the `%461` CLOSED account from twelve lines to three -- the row stands whole in REDS.md -- and replaced the `%450` OPEN block with its landed account. Card now 40,949, eleven bytes under.
+loom witness=remember_git_nib_write cases=34 red=0 wall_s=0.6 tier=lap
+loom roster=cold_scoped guards=102 green=100 red=1 gated=1 wall_s=635 skipped_scope=24
+file tools/r/remember_git_nib.rish the writer -- derives HEAD's parent, proves it names a commit, hands it to the fixture
+file tools/fixtures/r/remember_git_nib_write.sh the bytes -- first backticked hex run on the first Git nib line, read back through the guard's own extractor on a temporary before the card is opened
+file tools/fixtures/r/remember_git_nib_write_control.sh 34 cases in a pen, both directions, three bent writers caught
+file tools/r/remember_git_nib_write_witness.rish the judge, standing free of the guard that judges the card
+file construction/standing-equipment.kyri remember_git_nib_write seated tier lap at 20260906.050718
+file session-logs/date/README-index-20260906.md the misordered row swapped -- the cold pass red, repaired
+file construction/CHECKPOINTS.md the cairn before the card condense
+file construction/ITINERARY.md %450 advanced, %461 condensed to its pointer, the %440-class find named for its holder
+scope one red closed, one keystone recovered and proven, one finding named for a peer
+status GREEN -- remember_git_nib_write 34/0 on metal, index_row_bound ok, render agrees with git and the card
+recommend keep-going -- the shelf-order writer is the same four-file shape one pin over and the instrument for it already exists in index_row_bound_scan.sh; it is %440's holder's booked lap, so the next BAKERY lap takes the .rye compile-reach census witness instead, which is measured and wants only its pen.
