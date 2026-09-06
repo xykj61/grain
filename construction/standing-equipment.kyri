@@ -1105,6 +1105,20 @@ path tools/t/tube5_mantra_revision_witness.rish
 tier lap
 seated 20260905.161500
 
+# THE CENSUS THAT READS A ROOM AS DEEP AS THE ROOM GOES (REDS %441). The lap that rostered the
+# twenty guards above also published, in the same commit, that Mantra's weave "still waits to be
+# built" -- while four of those twenty read `mantra/src/weave.rye` every lap and assert the exact
+# fields the essay booked three rounds to write. Every number in that essay's table is correct; the
+# conclusion crossed two scopes, because `mantra/*.rye` cannot see `mantra/src/`. This publishes the
+# trap for every room rather than that one: 44 rooms, 14 carrying a hidden shelf, 513 files below a
+# top level, 8 rooms where a flat glob reports zero Rye while the room holds some. It gates the
+# INSTRUMENT rather than the tree's shape -- a subdirectory is good structure -- so it refuses only
+# when it read nothing or when its three counting patterns disagree. Measured here: 3s.
+guard module_room_reach
+path tools/m/module_room_reach_witness.rish
+tier lap
+seated 20260905.225236
+
 # The Realidream surface built ON Mantra, at `cadence` -- the fifth round. These prove an editor
 # and a browser rather than the module's own contracts, so they answer on the slower clock. A
 # cadence is a clock, never an exemption. Surface cost, measured: 23s.

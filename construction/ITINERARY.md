@@ -46,9 +46,9 @@
 
 ### Now -- the live front
 
-**Git nib:** `82fe0b4cb7` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `0c2d294629` -- HEAD's parent, resolvable everywhere (%401).
 
-**Now.** **A coordinate a program computes and never subtracts is a decision it cannot make.**
+**Now.** **A table that changes its glob between rows must change its subject word too.**
 
 **DIFFUSER opens** (`20260905.224714`) -- moonshots and whitepaper research, `grain-diffuser`.
 Cold pass **114 guards, 108 green, 2 red, 4 gated, 814s**, and both reds reproduce owned faults.
@@ -111,6 +111,17 @@ never from the one written in the row.
 **Landed `20260905`** -- `%435`, `%427`-`%429`, `%423`-`%426`, `%420`, `%413`/`%412`, `%411`/`%410`, `%409`, `%408`; Mantra's 20 guards, the ripgrep fetch, the aroma breach, the baton and the three berths, and the bound grant itself: whole on the [20260905.192154 shelf](archive/20260905-192154_itinerary-landed-accounts.md).
 **Pheromone's:** `shell_dialect` reds on two `sed -i` in `fleet_key_locality_control.sh`:61,65.
 **`%430` CLOSED** (`20260905.213047`, your granted door) -- the report card frees a Register under the 8-sentence floor **only where one sentence could still cross the ceiling**, `gap * sentences < 100`, gap measured from the setting's OWN ceiling (Door 20, Field 30, both lifted from `prose_register_scan.sh`). `mean_of_four_reads` untouched -- the repair reaches the input; the seated `n=1` case frees exactly as before. **On the 442 living pages: 122 stay freed, 52 become scored, mean fall 12.8, largest 25, and 25 of the 52 leave the B door they were passing on a blank vote.** The control's elder-card leg then caught the repair itself -- the new distance was computed inside the branch that used it, under `set -u`. **A leg built to prove the elder wrong also reads the new code on a path it does not take.** Whole on the [%430 shelf](archive/REDS-a-floor-that-voted-rows-430.md).
+**`%441` CLOSED** (`20260905.225236`, Patchouli's first lap) -- **the commit that turned on the
+proofs of a thing it declared unbuilt.** `b4a647f68` rostered four `tier lap` guards reading
+`mantra/src/weave.rye` and, in the same commit, an essay booking three rounds to write what they
+assert. Every number in its table is correct; the **conclusion crossed two scopes**, and the
+1,199-line difference between them is exactly `mantra/src/`. Erratum on the essay, seat prompt
+corrected in place -- it is **tracked**, so it carried the claim into every launch. The loom,
+`tools/fixtures/m/module_room_reach_scan.sh`: **44 rooms, 14 with a hidden shelf, 513 files below a
+top level, 8 where a flat glob reports ZERO Rye while the room holds some.** **The gate was one
+subtraction from decorative** -- `hidden` derived rather than counted makes its own check true for
+every input. **Mantra's next real work is MERGE, not `Line`.**
+**Patchouli's cold pass reads the same two reds DIFFUSER names above**, on a sixth tree.
 **`%431` OPEN -- `commit_message_guard` is RED here, and the gate that explained it is gone.**
 `%423` reconstructed `publish-seed.sh` on Incense and lifted `gate %1` in the same lap, on exactly
 the right reasoning. Only one of the two could travel: the publisher is **untracked at the root by
@@ -276,6 +287,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260905.224930` | The shelf that spoke in marks it never taught | [log](../session-logs/date/20260905/20260905-224930_the-shelf-that-spoke-in-marks-it-never-taught.kyri) |
+| `20260905.225236` | The scope that changed between rows | [log](../session-logs/date/20260905/20260905-225236_the-scope-that-changed-between-rows.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)

@@ -4,6 +4,11 @@
 **Kin:** [`what-mantra-is`](../foundations/20260825-211056_what-mantra-is.md) - [`the pen, the gossip, and the derived spine`](20260825-205011_the-pen-the-gossip-and-the-derived-spine.md) - [`derived-spine`](../.claude/rules/derived-spine.md) - [`lindy-first-crux`](../.claude/rules/lindy-first-crux.md)
 **Provenance:** the weave's ancestry is studied and thanked in [`gratitude/README.md`](../gratitude/README.md) and [`external-research/yonder/20260617-195312_mantra.md`](../external-research/yonder/20260617-195312_mantra.md). This room names our own shapes only.
 
+*Erratum `20260905.225236` -- the table below changes scope between its rows, and the arc's second
+movement stands already built at `mantra/src/weave.rye`. The essay's crux is unchanged. Read
+[the erratum at the foot](#erratum-20260905225236----the-scope-that-changed-between-rows) before
+taking the arc. REDS `%441`.*
+
 ## The measurement, before the argument
 
 Measured `20260905` on this pier, by `find`, `grep -c`, and `git ls-files`:
@@ -134,3 +139,69 @@ the first movement running long.
 **Merges are quiet today**, and the fleet's reset-never-merge discipline is why -- this round hit
 zero conflicts. The argument is that the discipline is a wall standing where a door was designed,
 and the door is still worth hanging.
+
+---
+
+## Erratum `20260905.225236` -- the scope that changed between rows
+
+*Appended, never rewritten: this is dated testimony, and the accretion law takes facts by erratum.
+Every word above stands as written. Booked as REDS `%441`.*
+
+**Every number in the measurement table is correct, and the conclusion is drawn across two of
+them.** Rows one and two read `mantra/` at every depth. The row the conclusion rests on reads it
+flat, and says so honestly in its own label:
+
+| Reading | As published | Flat `mantra/*.rye` | Recursive `mantra/` |
+|---|---|---|---|
+| Rye modules | **32** | 27 | **32** |
+| lines of authored Rye | **9,175** | 7,976 | **9,175** |
+| files mentioning conflict, merge, three-way, or diff3 | **0** | **0** | **1** |
+
+The 1,199 lines the two scopes differ by are exactly `mantra/src/`, and the one file the recursive
+grep finds is `mantra/src/weave.rye`. This essay never writes the string `src/`; `mantra/README.md`
+line 36 does, naming *"Mantra's own seed: `main.rye`, `diff.rye`, and the Weave aspect
+(`weave.rye`) beneath the namespace."*
+
+**What stands there, measured `20260905.225236`.** `mantra/src/weave.rye` holds `Line { text: []const u8,
+gen: u32, pos: u32 }`, a `Weave` whose `next_pos` assigns a position that never changes once given,
+and `apply()` advancing a line's `gen` from odd to even to mark it gone -- parity as the tombstone,
+generations never decreasing. Its sibling `mantra/src/main.rye` opens: *"Mantra is the
+version-control layer of the Rye family. It holds the full history of a text file as a weave -- a
+list of lines each carrying a stable position and a generation count that names whether the line is
+present or gone."* It has stood since the tree's root commit `7d991702f`, and commit `b4a647f68` --
+**the commit that added this essay** -- rostered four guards at `tier lap` whose only job is to read
+it: `mantra_gen_floor_a1_gate`, `mantra_glow_tend_limb1`, `limb2`, and `limb3`. All four ran GREEN
+on metal in the cold pass that opened this lap.
+
+**The arc, re-cut.** The essay's central argument is unchanged and correct: Mantra was named for the
+weave, the merge shape is worth building, and the fleet's reset-never-merge discipline is a wall
+standing where a door was designed. What moves is where the arc *starts*.
+
+| Movement | As published | Measured |
+|---|---|---|
+| The proofs run | landed | landed |
+| The line, and its count | three rounds | **already built** -- `Line`, parity presence, monotone generations, four rostered guards, plus `rye/tests/mantra_weave_test.rye` |
+| The weave, and its order | three rounds | **half built** -- permanent positions and `current()` in position order stand; the merge of two weaves and its commutativity-and-associativity proof do not exist |
+| The showing | three rounds | stands as written -- no annotation of what each side did |
+| The seam | three rounds | stands as written |
+| The reading | two rounds | stands as written |
+
+**The next real work is merge**, not `Line`. The word *merge* appears in `mantra/src/weave.rye`
+exactly once, in a comment on `current()` anticipating it: *"a merge may interleave positions from
+two weave branches."* The anticipation is there; the operation is not.
+
+**What it taught.** A table that changes its glob between rows must change its subject word too.
+No number here was wrong and no row was mislabeled -- row six says `mantra/*.rye` and means it.
+What crossed the two scopes was the **conclusion**, which read six rows under one heading as one
+measurement, and no reader can catch that without re-running both globs.
+
+The trap is now one command away, for every room rather than this one:
+
+```
+sh tools/fixtures/m/module_room_reach_scan.sh list
+```
+
+Measured on the lap this erratum was written: **44 rooms, 14 carrying a hidden shelf, 513 files
+below a top level, and 8 rooms where a flat glob reports zero Rye while the room holds some** --
+`rye/` with 117 and `tools/` with 131 among them. Held by
+[`tools/m/module_room_reach_witness.rish`](../tools/m/module_room_reach_witness.rish).

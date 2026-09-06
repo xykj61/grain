@@ -1,0 +1,73 @@
+# tools/m/module_room_reach_witness.rish -- a flat glob of a room is not a reading of the room.
+#
+# WHY THIS RUNG. A design essay measured `mantra/` six ways in one table on `20260905`, every
+# number correct, and drew its conclusion across two scopes: rows one and two read the room at
+# every depth, and the row the conclusion rested on read `mantra/*.rye`. The flat glob cannot see
+# `mantra/src/`, where `mantra/src/weave.rye` has stood since the root commit holding the exact
+# shape the essay concluded was unbuilt -- and the same commit rostered four guards whose only job
+# is to read that file. Three rounds were booked to write it again (REDS %441).
+#
+# WHAT IS PROVEN HERE.
+#
+#   The census reads this tree and answers `verdict=ok`, having discovered rooms rather than been
+#   handed a list, so a room made tomorrow is measured like every other.
+#
+#   It can actually see a hidden shelf. A census whose reading is structurally always zero would
+#   pass every assertion about refusals while telling a reader nothing, so the instrument is asked
+#   to name at least one room whose flat glob understates it -- and `mantra` by name, since that is
+#   the room this red was booked against and the room an erratum now cites.
+#
+#   The arithmetic holds. Three independent patterns count a room -- whole, top level, below top
+#   level -- and the first two must sum to the third. `hidden` was one subtraction away from being
+#   derived, which would have made that check true for every input and therefore worth nothing.
+#
+#   Six behaviours on real git repositories in a throwaway pen, each refusal shown from both sides.
+#   One planted file flips a room from `flat_reaches_all` to `hidden_shelf` and removing it flips
+#   the room back; a room holding Rye only below its top level reads `flat_reads_zero`; a planted
+#   `vendor/` room is never counted; a repository with no tracked Rye refuses `verdict=blind`
+#   rather than reporting a clean zero; and a COPY of the scan with one counting pattern broken is
+#   caught by the arithmetic gate.
+#
+# WHAT IS NOT PROVEN. Whether any published count actually used the wrong glob -- that is a claim
+# inside prose, and reading it would mean parsing an essay's intent. This publishes the trap and
+# proves the publishing works; a hand reads it before measuring a room. Nor does it judge a room's
+# shape: a subdirectory is good structure, and `rye/` and `tools/` keep their Rye below the top
+# level on purpose.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/module_room_reach_witness.rish
+
+let census = run ["sh" "tools/fixtures/m/module_room_reach_scan.sh"]
+
+assert census.ok else "module-room-reach: the census refused on this tree -- read its own verdict line"
+assert census.out contains "verdict=ok" else "module-room-reach: census did not answer verdict=ok"
+assert census.out contains "inconsistent=0" else "module-room-reach: a room's three readings do not sum -- a counting pattern is wrong"
+
+# The instrument must be able to SEE what it exists to publish. A census reporting no hidden shelf
+# anywhere would satisfy every refusal test above and still be blind in the one direction that
+# matters.
+let shelves = run ["sh" "-c" "sh tools/fixtures/m/module_room_reach_scan.sh list | grep -c 'reading=hidden_shelf'"]
+assert shelves.ok else "module-room-reach: could not count hidden shelves"
+assert (trim shelves.out) != "0" else "module-room-reach: the census names no hidden shelf at all -- it is reading nothing"
+
+# `mantra` by name, because a roster checked only in aggregate can lose the one room a standing
+# erratum cites. The COUNT is deliberately not pinned here: a number typed into an assertion is a
+# copy of a tree that stays free to move (REDS %341, %357), so this asks for the reading rather
+# than the figure.
+let mantra = run ["sh" "-c" "sh tools/fixtures/m/module_room_reach_scan.sh list | grep '^room=mantra '"]
+assert mantra.ok else "module-room-reach: mantra absent from the census"
+assert mantra.out contains "reading=hidden_shelf" else "module-room-reach: mantra no longer reads as a hidden shelf -- the erratum at active-designing/20260905-153729 cites this reading"
+
+let control = run ["sh" "tools/fixtures/m/module_room_reach_control.sh"]
+
+assert control.ok else "module-room-reach: the control refused to run"
+assert control.out contains "room=alpha flat=2 recursive=2 hidden=0 reading=flat_reaches_all" else "module-room-reach: a room with no shelf did not read flat_reaches_all"
+assert control.out contains "room=alpha flat=2 recursive=3 hidden=1 reading=hidden_shelf" else "module-room-reach: one planted file below top level did not flip the room to hidden_shelf"
+assert control.out contains "room=beta flat=0 recursive=1 hidden=1 reading=flat_reads_zero" else "module-room-reach: a room holding Rye only below its top level did not read flat_reads_zero"
+assert control.out contains "vendor_counted=0" else "module-room-reach: a planted vendor/ room was counted -- third-party structure is not ours to measure"
+assert control.out contains "verdict=blind" else "module-room-reach: a repository with no tracked Rye did not refuse blind"
+assert control.out contains "vacuum_exit=1" else "module-room-reach: the vacuum leg did not exit non-zero"
+assert control.out contains "verdict=inconsistent" else "module-room-reach: a broken counting pattern was not caught by the arithmetic gate"
+assert control.out contains "pattern_exit=1" else "module-room-reach: the broken-pattern leg did not exit non-zero"
+
+say "GREEN: module room reach -- the census names every room a flat glob understates, and refuses when it cannot read."
