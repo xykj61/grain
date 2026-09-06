@@ -52,47 +52,40 @@
 
 **Now.** **A repair that fixes a class by hand leaves whichever member the hand did not reach.**
 
-**`%445` FOLDED, after wearing two numbers in one hour** (`20260906.001800`) -- `declared_ceiling` and
-`equinox_e123_living_pin_guard` refused on one root, the pin over its bound. The anointed spine had
-spent **440** (`20260905.233435`) and then **442** (`20260905.223102`), both later stamps than this
-row's `20260905.224445`, and `reds_spine_derive_scan` named the squatter each time before a line
-moved. A published number never moves, so the view moved twice and the key did not. Pin **21,018**,
-four witnesses GREEN on metal. **`%440`'s own lantern fired three times inside one send** -- each
-clean auto-merge seated a day-shelf row out of newest-first order, no conflict, nothing to resolve.
-Sorted each time; the loom LANDED below.
-**The `%439` class, measured rather than assumed** --
-[the-number-a-comment-states](../active-development/20260905-234408_the-number-a-comment-states.md):
-four detectors over the 1,712 distinct Rye files behind 1,939 paths. A trailing `const` comment
-restating its own arithmetic is **clean** (69 comparable, 50 agree, 19 explained false, **zero**
-genuine) -- the one seatable floor, declined here. Identifiers read 2,978, shapes 150, and only the
-**first-segment stem** catches `%439` (`universe_points 720 saw 792`, line 113 pre-repair).
-**Its 158-line residue was read whole: every one correct.** One in 159: no gate, the right hour.
+**THE WEAVE MERGES** (`20260906.001728`, Patchouli) -- the charter's movement *the weave, and its
+order*. `Weave.merge` in `mantra/src/weave.rye` is a union over positions where the **higher
+generation wins**: union, max on `gen`, max on `next_pos`, each commutative-associative-idempotent,
+so the merge is too by construction, and sorting the union makes `a.merge(b)` and `b.merge(a)` equal
+**field for field** rather than merely as documents. `weave_merge_witness.rye` proves **eight claims
+by doing** -- three states in all six orders giving one weave, associativity alone, idempotence,
+delete-wins, an interleaving union, both refusals by name -- and its control breaks the law **five
+ways in a pen**, catching each, with `clean` and `bound_shrunk` proving the pen innocent. Rostered
+`tier lap`, **10s**. First named max in a module 120 files reach toward: `max_weave_lines`, read at
+the edge by `apply` and `merge` alike.
+**`%449` BOOKED -- the module those four `tier lap` guards read had not compiled since the toolchain
+moved, because all four read it with `grep`.** `Weave.empty()` returned the elder `.{}` ArrayList
+form where Zig 0.16 wants `.empty`; proven by building the HEAD blob in a pen, *missing struct
+field: items*. Nothing anywhere builds `weave.rye` -- `main.rye` and the test each **inline their
+own copy**, and the test's copy reads `.empty` because the test is compiled and the module is not. **A test that inlines its subject migrates with the toolchain while the subject
+rots, and every guard stays green.** The new guard builds it. Booked: a census of authored `.rye`
+nothing ever compiles.
+**The identity gap is the next movement, and it wants your word.** Two branches that both insert
+collide at the same small integer, and merge **refuses** them `PositionTextDisagrees` rather than
+dropping a line: `pos` comes from a per-weave counter, so it names a line inside one weave and not
+across two. Closing it wants a wider `Line`, and **`mantra_glow_tend_limb1` locks `Line` to three
+fields against a Glow shape.** A seam, so it waits.
+**`%450` OPEN, also yours** -- the last lap pinned the nib correctly, then a log-only follow-up
+landed on top and `remember_git_nib` red on this open. **The facts a log owes about its own send do
+not exist until the send is over, and by then the commit that would carry them is pushed.**
+`session-logs.md` permits that follow-up; `remember-git-nib.md` forbids only a **pin**-only one. One
+line reconciles them -- *a follow-up carries the nib forward too* -- and law is **Incense's lane**.
+**Sibling find:** `tame_style_long_fn_one.sh` resets its awk on any indented `fn `, so a function
+holding an inline comparator reads clean however long it is.
+**Cold pass: 115 guards, 108 green, 3 red, 4 gated, 852s** -- `%431` and `agent_jail` as DIFFUSER
+names them, plus the nib.
 
-**`%448` CLOSED, `%440`'s loom LANDED** (`20260906.003252`, bakery) -- a THIRD red stood on this
-tree alone: `fleet_roster`'s last leg asserted where bakery's CHECKOUT is rather than what the loop
-does, four lines under a comment naming it. Cut, not moved; its one reading is now
-`refusal_names_the_wanted_tree`. Shelf loom: `rows_misordered` gates document order, 31 -> **40**
-legs. Pin **18,912**.
-
-**DIFFUSER opens** (`20260905.224714`) -- moonshots and whitepaper research, `grain-diffuser`.
-Cold pass **114 guards, 108 green, 2 red, 4 gated, 814s**, and both reds reproduce owned faults.
-`commit_message_guard` was **`%431` on a fourth tree**; it CLOSED upstream, publisher travelling.
-`agent_jail` reds on `bwrap: Failed to make / slave: Operation not permitted` -- **an environment
-fact rather than a tree red**: a control that builds a sandbox cannot run from inside one, `%422`'s
-shape in a fifth material, and BAKERY's lane. No receipt, so `--scoped` stays closed here.
-**`%439` CLOSED** -- `comlink/topology.rye`'s `decode` doc read *"past the universe's 792"* where
-`universe_points` has read **720** since the inclusive breach, 792 being the count the three spaces
-hold **apart**. Say-why added, `comlink_topology_witness` GREEN. **The class has no meter:**
-`borrowed_number` reaches a stale figure inside an assert, and nothing reaches one in a comment.
-**The lane's first pair, its measurement re-derivable in one command** --
-[`what-a-coordinate-frame-makes-free`](../external-research/20260905-224730_what-a-coordinate-frame-makes-free.md)
-crossing to [`the-angle-the-sky-computes-and-never-subtracts`](../active-designing/20260905-224714_the-angle-the-sky-computes-and-never-subtracts.md),
-over `sh tools/fixtures/t/topology_metric_census.sh`. All 682,425 ordered pairs of both seated
-skies: the metric is **angle-blind** (29,040 same-galaxy cross-star planet pairs, one hop value
-between them; 5,760 in the council sky, likewise), **nearly constant** (compass 77.03% at the
-diameter and **1.0461 bits** against a **2.5850** ceiling; council 73.74% and 1.2092), and
-**anti-aligned with number order** (compass 659 of 719 consecutive numbers sit at the
-diameter). It never aliases, and **that one real invariant has no guard.**
+**`%445` FOLDED** (`20260906.001800`) -- the view moved twice, the key did not; whole on the [`20260906.001820` shelf](archive/20260906-001820_itinerary-landed-accounts.md). **`%440`'s lantern fired three times in one send**, each a clean auto-merge seating a day-shelf row out of order; the loom stays their booked lap.
+**The `%439` class, measured rather than assumed** -- four detectors over 1,712 distinct Rye files; a trailing `const` comment restating its own arithmetic reads **clean** (zero genuine), and only the first-segment stem catches `%439`. One in 159: no gate, the right hour. Whole on the [`20260906.001820` shelf](archive/20260906-001820_itinerary-landed-accounts.md).
 **Three small things BAKERY can build:** `seat_arc` on the galaxy's own circle (20 lines,
 two asserts, refusing across galaxies); the zero-hop witness; one doc line on `route_hops`.
 **The instrument's own finding, sharpest of the lap:** `Address.of_planet(8,0,0)` encodes to 8 and
@@ -299,6 +292,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260905.234701` | The fold the landing lap skipped | [log](../session-logs/date/20260905/20260905-234701_the-fold-and-the-sweep-read-whole.kyri) |
+| `20260906.001728` | The weave merges, and the module nobody compiled | [log](../session-logs/date/20260906/20260906-001728_the-weave-merges-and-the-module-nobody-compiled.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)

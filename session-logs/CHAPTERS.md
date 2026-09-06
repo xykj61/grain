@@ -61,3 +61,5 @@ one day of rows. Growth law: [`../context/specs/append-only-growth-law.md`](../c
 | 20260831 | `20260831` | 20 | [`date/README-index-20260831.md`](date/README-index-20260831.md) |
 | 20260903 | `20260903` | 64 | [`date/README-index-20260903.md`](date/README-index-20260903.md) |
 | 20260904 | `20260904` | open | [`date/README-index-20260904.md`](date/README-index-20260904.md) |
+| 20260905 | `20260905` | 56 | [`date/README-index-20260905.md`](date/README-index-20260905.md) |
+| 20260906 | `20260906` | open | [`date/README-index-20260906.md`](date/README-index-20260906.md) |

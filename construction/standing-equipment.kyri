@@ -1094,6 +1094,11 @@ path tools/m/mantra_gen_floor_a1_gate_witness.rish
 tier lap
 seated 20260905.161500
 
+guard mantra_weave_merge
+path tools/m/mantra_weave_merge_witness.rish
+tier lap
+seated 20260906.001728
+
 guard mantra_glow_tend_limb1
 path tools/m/mantra_glow_tend_limb1_witness.rish
 tier lap

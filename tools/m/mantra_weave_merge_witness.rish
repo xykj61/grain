@@ -1,0 +1,56 @@
+# tools/m/mantra_weave_merge_witness.rish -- merging two weaves is a join.
+#
+# Mantra was named for the weave, and half the weave already stood: Line, parity as
+# the tombstone, positions permanent once given. What was missing is the MERGE of two
+# weaves. This guard proves the merge law by DOING -- it builds three states of one
+# document, merges them in all six orders, asserts one answer comes back, and presses
+# both refusals -- then runs the control, which breaks the law five ways in a pen and
+# proves the witness answers each break.
+#
+# The Rye witness lives beside the module it proves, at mantra/src/weave_merge_witness.rye,
+# because Zig refuses an import that escapes the root file's directory. A test one room
+# away would have to copy the module, and a copy proves the copy -- which is what
+# rye/tests/mantra_weave_test.rye does today, and why it could not see this.
+#
+# Charter: active-designing/20260905-153729_mantra-was-named-for-the-weave.md, the
+# movement "The weave, and its order". Module: mantra/src/weave.rye.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/mantra_weave_merge_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mantra/bin/weave_merge_witness"
+
+say "mantra-merge: Language EN -- the merge of two weaves, proven by doing rather than argued."
+say "mantra-merge: Style Gauge, Meter -- every claim is a run, and every refusal is named."
+say "mantra-merge: Lens TAME -- one named max, two named errors, both read at the edge."
+
+say "mantra-merge: the module still declares its bound and its named refusals..."
+let law = run ["sh" "-c" "grep -q 'pub const max_weave_lines' mantra/src/weave.rye && grep -q 'PositionTextDisagrees' mantra/src/weave.rye && grep -q 'TooManyLines' mantra/src/weave.rye"]
+assert law.ok else "mantra-merge: max_weave_lines or a named refusal left weave.rye"
+
+let seat = run ["sh" "-c" "grep -q 'pub fn merge' mantra/src/weave.rye"]
+assert seat.ok else "mantra-merge: merge left weave.rye"
+
+say "mantra-merge: building the witness against the real module..."
+let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/src/weave_merge_witness.rye -femit-bin=${bin}"]
+assert build.ok else "mantra-merge: weave merge witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "mantra-merge: weave merge witness exited non-zero"
+assert selftest.out contains "GREEN" else "mantra-merge: weave merge witness not GREEN"
+assert selftest.out contains "all six orders give one weave" else "mantra-merge: the six-order claim is missing"
+assert selftest.out contains "equals a.(b.c)" else "mantra-merge: the associativity claim is missing"
+assert selftest.out contains "merged with itself is unchanged" else "mantra-merge: the idempotence claim is missing"
+assert selftest.out contains "interleaving union comes out in position order" else "mantra-merge: the leg that reaches the sort is missing"
+assert selftest.out contains "refused PositionTextDisagrees" else "mantra-merge: the colliding-insert refusal is missing"
+assert selftest.out contains "refused TooManyLines" else "mantra-merge: the bound refusal is missing"
+
+say "mantra-merge: breaking the law five ways in a pen, so the witness is proven able to red..."
+let control = run ["sh" "tools/fixtures/m/mantra_weave_merge_control.sh"]
+assert control.ok else "mantra-merge: the control must complete -- a witness nobody has watched fail is a witness nobody has tested"
+assert control.out contains "control_verdict=ok" else "mantra-merge: the control must reach its own verdict"
+assert control.out contains "clean_exit=0" else "mantra-merge: the unmutated copy must reach GREEN, or every other phase fails for a reason the pen invented"
+assert control.out contains "bound_shrunk_exit=0" else "mantra-merge: shrinking the bound alone must stay GREEN, or the two bound breaks below are failing for the shrink"
+
+say "GREEN: merging two weaves is a join -- one answer in all six orders, both refusals by name, five breaks caught."
