@@ -28,7 +28,7 @@ Grain keeps why-briefs in `foundations/` and living law in `context/`. Those she
 | 6 | [`TWO_ROOMS.md`](../context/TWO_ROOMS.md) | Checkable vs visionary |
 | 7 | [`GAUGE_STYLE.md`](../context/GAUGE_STYLE.md) | **Voice** — how every page speaks (Gauge; Radiant is its warmth) |
 | 8 | [`TAME_GUIDANCE.md`](../context/TAME_GUIDANCE.md) | Code discipline (open when coding) |
-| 9 | [`TASKS.md`](../construction/TASKS.md) · [`ROADMAP.md`](../construction/ROADMAP.md) | Now and season |
+| 9 | [`ITINERARY.md`](../construction/ITINERARY.md) | Now and season (`TASKS`/`ROADMAP` fused in `20260823.103804`) |
 | 10 | Run one witness | Proof before narrative |
 
 Acme face for happy-zone testing: **witness habitat** — [`LEXICON`](../context/LEXICON.md) · study [`20260717-173427`](../external-research/20260717-173427_witness-habitat-foundations-fit-and-onboarding-gaps.md).

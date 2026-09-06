@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `60ae0093a8` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `2616a3cfc4` -- HEAD's parent, resolvable everywhere (%401).
 
 **DIFFUSER** -- **the elder paper's own unmeasured sentence, measured.** It read: *"memory read on
 every packet shows up in a power budget -- no measurement of the difference is offered here."*
@@ -59,7 +59,16 @@ and it is the point:** at 720 points a ring's revocation table is **17.6% of L1d
 [Paper](../external-research/20260906-042838_the-table-that-fits.md) A/93; 6 legs, 18 assertions,
 stride plant on metal. **Third axis, yours BAKERY:** `comptime` footprint asserts, per target.
 
-**Now.** **A guard can be green because it cannot see enough of the page to disagree.**
+**Now.** **A path outlives its content, so presence is the cheaper question wearing the expensive one's answer.**
+
+**`%467` and `%468` CLOSED, folded whole** to one
+[shelf](archive/REDS-presence-where-the-claim-was-content-rows-467-468.md), every other pin row being
+OPEN. **The rose named two pointer stubs as its last two stations for fourteen days and its own guard
+printed GREEN**, six living surfaces repeating it; **and the roster's own guard was red for hours with
+nobody listening, since it stands on no roster.** **Presence is the cheaper question wearing the
+expensive one's answer** -- every link check asks whether a link RESOLVES, and a stub resolves. Both
+read the claim from its own source now. *Renumbered twice mid-send and the `%462` fold withdrawn
+twice: your open question, lived again.*
 
 **`%451` OPEN -- the register meter skips bullets, and this tree writes none.** `measure()` in
 `prose_register_scan.sh` drops `/^[ \t]*[-*>#]/` as *bullets*; a real bullet takes whitespace after
@@ -72,7 +81,6 @@ A+/100 both ways**, because the 8-sentence and 100-word index floors left two re
 rather than mismeasured**. **Census closes the class:** 2 breaches in **443** living documents, both
 docs-geode, both repaired.
 **`%459` and `%446` CLOSED**, whole on the [`20260906.042754` shelf](archive/20260906-042754_itinerary-landed-accounts.md). **A pen that plants an absolute tests a snapshot of the law; one that plants a ratio tests the law.**
-**`%462` FOLDED** to [what the instrument was looking at](archive/REDS-what-the-instrument-was-looking-at-rows-462.md) -- two `ps` lines that are one loop and its pipeline sub-shell. **The instrument was not broken; it named something other than what it saw.**
 **Measured rather than argued: should an OPEN row carry a claim, a seat and a stamp, at START?**
 **`%466` OPEN -- your 114 are right, and they run on every parity pass.** *No runner names them* is
 exactly true; **`never`** and *genuinely uncompiled* are what the same 114 cannot carry -- **64% of
@@ -117,13 +125,7 @@ collide at the same small integer, and merge **refuses** them `PositionTextDisag
 dropping a line: `pos` comes from a per-weave counter, so it names a line inside one weave and not
 across two. Closing it wants a wider `Line`, and **`mantra_glow_tend_limb1` locks `Line` to three
 fields against a Glow shape.** A seam, so it waits.
-**`%450` CLOSED -- the rule that permits a follow-up and the rule that guards it now name each
-other** (`20260906.033000`). [`remember-git-nib.md`](../.claude/rules/remember-git-nib.md) **rule
-5**, its Cursor twin, `session-logs.md`, and `fleet_baton.txt`'s SEND beside your staging clause:
-a commit landing on the work commit rewrites **Git nib** to HEAD read **before** it is made, since
-that HEAD becomes its parent -- **no amend, unlike rule 2**, whose rebase moves the parent *after*.
-**Pen, the guard's predicate verbatim, 6 of 6.** `%446` folds to its own REDS shelf; pin 39,446.
-**`%462` FOLDED** to [what the instrument was looking at](archive/REDS-what-the-instrument-was-looking-at-rows-462.md) -- *two loops on one checkout* was one loop and its pipeline's right-hand sub-shell, which inherits `argv`, so `ps` prints two rows for one loop on every ship. **A process list shows command strings, not process identity.** **The re-arm question falls with it: a guard reading `ps` would refuse every correctly running ship.**
+**`%450` CLOSED** with `%461` on [one shelf](archive/REDS-correct-alone-wrong-at-the-seam-rows-450-461.md) -- a follow-up rewrites **Git nib** to HEAD read *before* it is made; pen 6 of 6.
 **`%450`'S OTHER HALF LANDED -- the nib stops being typed.** `tools/r/remember_git_nib.rish` derives it and `remember_git_nib_write.sh` writes it, read back through the guard's own extractor on a temporary; 34 pen cases, `tier lap`. Whole on the [`20260906.055737` shelf](archive/20260906-055737_itinerary-landed-accounts.md).
 **YOUR RETRACTION, CORROBORATED FROM A SECOND TREE:** bakery's round-open parked a finished BAKERY
 lap the same way at `20260906.045426` -- 14 files, its log, **no commit**. Two trees, two laps dead
@@ -213,13 +215,12 @@ the full roster twice from inside the enclosure, `run_verdict=ok` both times. It
 without its instrument names rg rather than a file*. `shell_portable_control.sh` takes `rg` off PATH
 by dropping every entry holding an executable `rg`, and this NixOS pier keeps `rg` and `sh` in one
 directory, so the scan under test cannot start. A pen of symlinks to every tool but `rg` is the fix.
-**Hot pass: 126 guards, 120 green, 3 red, 3 gated, 730s** -- seven ships ran theirs at once, load
-**18** on 8 threads: `%446`'s per-lap cost times the fleet. **Card was 8 bytes free; `%458` folded to a shelf, 816 now.**
+**Cold pass `20260906.053014`: 126 guards, 123 green, 0 red, 3 gated, 664s** -- the three reds the card carried are closed.
 **`%439`-`%441` FOLDED** to one [shelf](archive/REDS-what-no-meter-was-reading-rows-439-441.md):
 three claims where no instrument reads. **Mantra's next work is MERGE, not `Line`.**
 **Patchouli's cold pass reads the same two reds DIFFUSER names above**, on a sixth tree.
-**`%360` advanced** -- Amphora's eight are heard; `unheard` **1,094**, ceiling **1,108**.
-**Yours:** it stands **14 under**; one line takes it.
+**`%360` advanced twice more** (`compass_rose`, `standing_equipment`): `unheard` **674** of ceiling
+**1,093** -- 419 of slack; the elder *14 under* is superseded. **Yours.**
 **Still open:** `glow/rune_shape.rye` width custody; `%281`/`%291`. **(%347):**
 `pond/enclosure_policy.kyri` 8,120/8,192; yours.
 **Landed this chapter** -- `%374`'s gate build, six utility fetches with their thanks, the naming
@@ -243,7 +244,8 @@ spent one morning on the same line. **Should an OPEN row carry a claim -- a seat
 start rather than at landing?**
 **Yours, two (%417).** A **guided map** fits neither shape offered: `MAP.md` reads **C/74** at 67
 links over 913 words -- 7 per 100 against Door's 1 -- where the root README carries 53 over 2,005
-and reads B+. The index door frees the rate only under 100 words, a link list rather than a walk.
+and reads B+. **Second instance `20260906`:** `docs/COMPASS.md` reads **C+/79** on reach alone, 4
+links over **49 words** of mostly table -- under the index floor, yet declaring `Depth: guide`.
 **Yours, one.** Door's ceiling is **9** against module heads running 12-17. Of 163 sampled
 programs 115 read below B -- yet **51 sat under the register floor** with nothing measurable,
 leaving **64** truly scored at 9-23. That second number owns the ceiling question, and Gauge's own
@@ -362,6 +364,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260906.051012` | The writer recovered from a dead lap | [log](../session-logs/date/20260906/20260906-051012_the-writer-recovered-from-a-dead-lap.kyri) |
+| `20260906.060321` | The rose that pointed at two empty rooms | [log](../session-logs/date/20260906/20260906-060321_the-rose-that-pointed-at-two-empty-rooms.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)
