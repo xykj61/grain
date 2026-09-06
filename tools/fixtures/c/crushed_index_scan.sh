@@ -9,7 +9,8 @@
 # WHAT A DECLARATION IS, and why the guard reads one rather than a list kept here. A page opts in
 # by naming its room in its own header:
 #
-#   **Kind:** crushed index of [`../../press/`](../../press/)
+#   **Kind:** crushed index of [`../../press/`](../../press/)      -- as docs-geode/press/README.md
+#                                                              writes it, one level
 #
 # The declaration is the page's own promise, so a shelf that grows a new index arrives guarded on
 # the day it declares itself, and this file never becomes a roster somebody has to remember to
@@ -24,9 +25,33 @@
 # target ends at it. Matching the bare word anywhere on the page would credit a mention in prose as
 # a row, which is the failure this guard exists to catch wearing a friendlier face.
 #
+# THE SECOND DECLARATION, and the fault that earned it. A page may instead promise the WHOLE
+# subtree, one word longer:
+#
+#   **Kind:** crushed index of every page under [`../`](../)      -- as docs-geode/wiki/README.md
+#                                                              writes it, the whole subtree
+#
+# Its members are every tracked file at any depth under the room, minus `README.md` wherever it
+# stands, since a door is a door on every floor. The two forms answer two different promises and
+# neither substitutes for the other: `docs-geode/README.md` lists ROOMS and says so, while
+# `docs-geode/wiki/README.md` promises "every shipped page" across the shelf. Read one room deep,
+# that wiki was green while THREE sangha pattern pages stood off the map -- `01-descriptor-exchange`,
+# `02-fact-fold` and `03-five-primitives`, each carrying its own Witness basis. The one-level rule
+# credited them all, because the page links `sangha/README.md` and a target entering a directory
+# lists the directory. That is the SHOPPING fault of `20260906` a second time, one floor down, and
+# a lantern that fires twice becomes a loom.
+#
+# THE DEEP WALK IS BOUNDED, at `max_deep_members` = 256 entries per declared room, and the number is
+# the tree's own: a room folds past 256 flat files because a listing longer than that is no longer
+# one a reader holds (`.claude/rules/stamp-and-name.md`). An index is the page a reader trusts
+# INSTEAD of walking the room, so the same ceiling is the honest one here. A deep room past it is
+# REFUSED by name -- `index_rooms_oversize` -- rather than walked in silence, and the answer is to
+# split the index or raise the bound with a reason. Measured 20260906: docs-geode/ holds 8.
+#
 # WHAT IS GATED, hard, all at zero.
 #   index_unlisted        -- a member of a declared room with no row on its index
 #   index_rooms_missing   -- a declaration naming a room that is not on disk
+#   index_rooms_oversize  -- a deep declaration over a room holding more than `max_deep_members`
 #   index_doors_missing   -- a link target on a declared index that does not resolve
 #   row_stamp_disagrees   -- a table row whose Stamp cell disagrees with the stamp in the file it
 #                            links. Measured over all 526 living non-testimony Markdown pages on
@@ -41,8 +66,9 @@
 #                            this tree, inside that sentence.
 #
 # WHAT IS REPORTED, never gated. The declared-index roster and its member totals, so a reader can
-# see how far the guard reaches; and `signed_pages`, so a signature added tomorrow is visible here
-# before anyone asks whether it is backed.
+# see how far the guard reaches; `declared_deep`, the count of declarations promising a whole
+# subtree, so the two forms can be told apart from the outside; and `signed_pages`, so a signature
+# added tomorrow is visible here before anyone asks whether it is backed.
 #
 # WHAT THIS DOES NOT REACH, said plainly. Whether a row SAYS anything true about the member it
 # names -- this proves every member has a row and every row opens on something, not that the
@@ -133,22 +159,38 @@ while IFS= read -r page; do
   dir=$(dirname "$page")
   room=$(resolve_path "$dir/$target")
   case "$room" in */) ;; *) room="$room/" ;; esac
-  printf '%s %s\n' "$page" "$room" >> "$work/declared.txt"
+  # WHICH PROMISE the page made, read from the declaration's own words. `every page under` reaches
+  # the whole subtree; anything else reaches one level, which is what every declaration written
+  # before 20260906 meant and still means. The depth rides in the record so the members loop below
+  # never has to re-read the page.
+  case "$decl" in
+    *"crushed index of every page under"*) depth=deep ;;
+    *) depth=room ;;
+  esac
+  printf '%s %s %s\n' "$page" "$room" "$depth" >> "$work/declared.txt"
 done < "$work/living.txt"
 
 declared=$(wc -l < "$work/declared.txt" | tr -d ' ')
 echo "declared_indexes=$declared"
+# COUNTED WITH `awk` RATHER THAN `grep -c`, for the reason this file already gives at the stamp
+# pass: `grep` exits 1 on finding nothing, which is an answer, and the `|| true` that tolerates it
+# tolerates an unreadable file just as quietly. An `awk` program producing output has no
+# found-nothing exit, so `set -e` still carries a real failure here.
+echo "declared_deep=$(awk '$3 == "deep" { n++ } END { print n + 0 }' "$work/declared.txt")"
 
 # --- every member of a declared room has a row ----------------------------------------------------
 unlisted=0
 rooms_missing=0
+rooms_oversize=0
 doors_missing=0
 members_total=0
+max_deep_members=256
 : > "$work/unlisted.txt"
 : > "$work/rooms_missing.txt"
+: > "$work/rooms_oversize.txt"
 : > "$work/doors_missing.txt"
 
-while read -r page room; do
+while read -r page room depth; do
   if [ ! -d "$room" ]; then
     rooms_missing=$((rooms_missing + 1))
     printf '%s declares %s\n' "$page" "$room" >> "$work/rooms_missing.txt"
@@ -172,12 +214,33 @@ while read -r page room; do
     fi
   done < "$work/targets.txt"
 
-  # The room's members: tracked entries directly inside it, minus the room's own door.
-  git ls-files "$room" | sed "s|^$room||" | cut -d/ -f1 | sort -u | grep -v '^README\.md$' > "$work/members.txt" || true
+  # The room's members. A `room` declaration reads one level: the first path component of each
+  # tracked path, so a directory is one member however much it holds. A `deep` declaration reads the
+  # whole subtree: every tracked file at any depth, with `README.md` dropped wherever it stands,
+  # since a door is a door on every floor.
+  if [ "$depth" = deep ]; then
+    git ls-files "$room" | sed "s|^$room||" | grep -vE '(^|/)README\.md$' | sort -u > "$work/members.txt" || true
+    # THE BOUND, checked at the edge before the walk rather than after it. A refusal that arrives
+    # once the work is done is a report rather than a bound.
+    if [ "$(wc -l < "$work/members.txt" | tr -d ' ')" -gt "$max_deep_members" ]; then
+      rooms_oversize=$((rooms_oversize + 1))
+      printf '%s declares every page under %s -- %s members, over max_deep_members=%s\n' \
+        "$page" "$room" "$(wc -l < "$work/members.txt" | tr -d ' ')" "$max_deep_members" \
+        >> "$work/rooms_oversize.txt"
+      continue
+    fi
+  else
+    git ls-files "$room" | sed "s|^$room||" | cut -d/ -f1 | sort -u | grep -v '^README\.md$' > "$work/members.txt" || true
+  fi
   while IFS= read -r m; do
     [ -n "$m" ] || continue
     members_total=$((members_total + 1))
-    esc=$(printf '%s' "$m" | sed 's|[].[^$*\\/]|\\&|g')
+    # `/` IS NOT ESCAPED, and this matters only once a member can hold one. In an ERE a slash is an
+    # ordinary character, while `\/` is a backslash before an ordinary character -- undefined by
+    # POSIX, accepted by GNU grep, and exactly the kind of line that reads fine here and dies on the
+    # macOS bench. A one-level member never held a slash, so the escape was harmless and untested;
+    # a deep member is a path, so it holds one on every row.
+    esc=$(printf '%s' "$m" | sed 's|[].[^$*\\]|\\&|g')
     if [ -d "$room$m" ]; then pat="(^|/)$esc/"; else pat="(^|/)$esc\$"; fi
     if grep -qE "$pat" "$work/targets.txt"; then continue; fi
     unlisted=$((unlisted + 1))
@@ -188,6 +251,7 @@ done < "$work/declared.txt"
 echo "index_members=$members_total"
 echo "index_unlisted=$unlisted"
 echo "index_rooms_missing=$rooms_missing"
+echo "index_rooms_oversize=$rooms_oversize"
 echo "index_doors_missing=$doors_missing"
 
 # --- a row's stamp against the stamp in the file it links -----------------------------------------
@@ -259,11 +323,13 @@ echo "signature_unbacked=$unbacked"
 
 [ "$unlisted" -eq 0 ] || sed 's/^/unlisted: /' "$work/unlisted.txt"
 [ "$rooms_missing" -eq 0 ] || sed 's/^/room_missing: /' "$work/rooms_missing.txt"
+[ "$rooms_oversize" -eq 0 ] || sed 's/^/room_oversize: /' "$work/rooms_oversize.txt"
 [ "$doors_missing" -eq 0 ] || sed 's/^/door_missing: /' "$work/doors_missing.txt"
 [ "$stamp_disagrees" -eq 0 ] || sed 's/^/stamp: /' "$work/stamps.txt"
 [ "$unbacked" -eq 0 ] || sed 's/^/unbacked: /' "$work/unbacked.txt"
 
-if [ "$unlisted" -eq 0 ] && [ "$rooms_missing" -eq 0 ] && [ "$doors_missing" -eq 0 ] \
+if [ "$unlisted" -eq 0 ] && [ "$rooms_missing" -eq 0 ] && [ "$rooms_oversize" -eq 0 ] \
+   && [ "$doors_missing" -eq 0 ] \
    && [ "$stamp_disagrees" -eq 0 ] && [ "$unbacked" -eq 0 ]; then
   echo "verdict=ok"
 else

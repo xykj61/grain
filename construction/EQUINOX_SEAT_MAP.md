@@ -1,7 +1,7 @@
 # Equinox Seat Map — close path · Chapter Seven and Eight
 
 **Language:** EN  
-**Status:** **Rested history** (re-marked `20260810` · CION meta-season) — the elder **Equinox Chapter**'s seat map, kept whole (accrete-never-break). That chapter is **RESTED**; the living calendar is the **Compass Chapter** (`ROADMAP.md`). Its count-up records below — **e208 · Tend T1–T6/C1–C4/A1–A4/M1–M4 · Q58 · Ashvini a0 · J4 · seat 128 · geode GATED** — are **testimony**, not living now-lines, so they keep the ordinals they recorded per the chronological-semantic labeling law (`context/specs/20260810-222755_chronological-semantic-labeling-and-the-cion-meta-season.md`).  
+**Status:** **Rested history** (re-marked `20260810` · CION meta-season) — the elder **Equinox Chapter**'s seat map, kept whole (accrete-never-break). That chapter is **RESTED**; the living calendar is the **Compass Chapter**, carried on [`ITINERARY.md`](ITINERARY.md) since the `20260823.103804` fusion left `ROADMAP.md` a pointer. Its count-up records below — **e208 · Tend T1–T6/C1–C4/A1–A4/M1–M4 · Q58 · Ashvini a0 · J4 · seat 128 · geode GATED** — are **testimony**, not living now-lines, so they keep the ordinals they recorded per the chronological-semantic labeling law (`context/specs/20260810-222755_chronological-semantic-labeling-and-the-cion-meta-season.md`).  
 **Voice:** Kyri  
 **Stamp:** living ledger (born `20260731.141857`) · refreshed `20260802.142508` (e208 A4 · ontology pair · bar4 GREEN · SEA only)  
 **Seat:** Equinox e123 · almanac **127** · Chapter Eight **(15 of 16)** · nested wave **e208/64 — J4 Aurora A4**  

@@ -23,7 +23,7 @@ Fascial **waves** -- Grain **years** -- feed this shelf. **MUR**, **Tally**, and
 | Room | Role | Living content |
 |------|------|----------------|
 | [`api/`](api/rishi-language-reference.md) | Professional API surface | **living** -- [the Rishi language reference](api/rishi-language-reference.md): every form the shell understands, each line run before it was written, and the edges |
-| [`wiki/`](wiki/README.md) | Bidirectional relative-link Markdown wiki | **living** -- the shelf's own crosslink map: every page, what it leads to, what leads back |
+| [`wiki/`](wiki/README.md) | Bidirectional relative-link Markdown wiki | **living, guarded** -- the shelf's own crosslink map: every page, what it leads to, what leads back. It declares itself a crushed index of *every page under* this shelf, so [`../tools/cr/crushed_index_witness.rish`](../tools/cr/crushed_index_witness.rish) walks the whole subtree against it rather than one room deep |
 | [`study/`](study/README.md) | Study guides | **living** -- [how to read this tree](study/README.md): four questions, four rooms, and two habits worth borrowing first; and [reading a name](study/reading-a-name.md), the two marks a name here carries |
 | [`libraries/`](libraries/README.md) | Library docs | **living, generated** -- 38 rooms holding Rye modules, counted off the tree by `tools/g/geode_libraries.rish` and held true by its witness |
 | [`edu/`](edu/README.md) | Tutorials (shipped; `../edu/` may draft) | **living** -- the index of teaching surfaces and which door leads where |

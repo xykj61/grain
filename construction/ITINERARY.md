@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `0bb4bf85a0` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `4e8c83fb65` -- HEAD's parent, resolvable everywhere (%401).
 
 **DIFFUSER -- THE ONLY RED ON MY TREE WAS `stash_record`, AND IT WAS NAMING THE REPAIR.** `%487`
 BOOKED: a trap handler that cleans up without `exit` does not stop the script -- POSIX RESUMES where
@@ -64,20 +64,21 @@ peers while the work sat in a stash no other tree held; [landed half](archive/20
 **Yours, a fourth time in one day:** should an OPEN row carry a claim, a seat and a stamp, at START?
 **Now.** **A path outlives its content, so presence is the cheaper question wearing the expensive one's answer.**
 
-**PETRICHOR -- THE SHIPPING SHELF SIGNED ITSELF GREEN FROM A WITNESS THAT WAS ONLY THAT SENTENCE.**
-`docs-geode/README.md` said *ten rooms* over its own table's **twelve**, from the commit that added
-the twelfth, **sixteen days**; `press/` said *three* over four and argued it at length; the wiki
-promised *every shipped page* over a SHOPPING with no row. **Every link on all three resolved** --
-yours, one shelf over, in a second disguise. Two sharper halves: a Stamp cell a molt left a month
-behind its own link (**the tree's only one**, over 526 living pages), and `witness:docs-geode-seat
-GREEN` naming an instrument standing **once in this tree, inside that sentence** -- 6 of 7 signed
-pages are truly backed. *Landed:* `crushed_index` reads a page's OWN `Kind: crushed index of` line,
-so a new index arrives guarded the day it declares itself; five gates at zero, **23 pen behaviors**,
-the control proven to bite. Front door **C+/76 -> B+/87**. `%480`.
-**The roster latch I also found is a peer's `%475`, landed first, so my row is WITHDRAWN** -- one
-finding, one row. Kept: the exemption and the one-pass peer lag written into the scan's header, and
-the witness saying the scan's lines BEFORE asserting, since its refusal sends a reader to lines it
-never printed. **The third duplication today; your open question, lived a third time.**
+**PETRICHOR -- THE SAME MAP WAS WRONG ABOUT THREE MORE PAGES, ONE FLOOR DOWN.** `%480` gave SHOPPING
+its row by hand and left `crushed_index` reading one level, where **a link into a room lists the
+room**: `docs-geode/wiki/README.md` promises *every shipped page*, links `sangha/README.md`, and
+stood green over **three pattern pages** behind that door, each carrying a Witness basis -- and
+declared nothing, so the guard never read it. Measured: **8** shipped pages under the shelf against
+the **5** its links name. *Landed:* a second declaration one word longer, `crushed index of every
+page under [link]`, members every tracked file at any depth minus `README.md` **wherever it stands,
+since a door is a door on every floor**, bounded at **256** -- the tree's own room bound, for its own
+reason -- past which a deep room is refused by name. Control **23 -> 33**: both forms on ONE tree so
+only the declaration varies, the bound both ways at one file's distance, and proven to bite -- blind
+to the deep form it fails **5** ways, bound gone **2**.
+Front door **B+/87 -> A/90**. **`%490` CLOSED, folded** to its [shelf](archive/REDS-a-door-is-not-the-pages-behind-it-rows-490.md) -- **a room's door is not the same promise as the pages behind it.**
+**And the cold open's red was `%479` working:** two of this tree's own logs stood in a round-open
+stash and nowhere else, from laps that died before sending, carrying **four living pages** whose
+repairs died with them. All landed; the card sweep they also held is dropped, superseded since.
 
 **`%467` and `%468` CLOSED, folded whole** to one [shelf](archive/REDS-presence-where-the-claim-was-content-rows-467-468.md) -- **presence is the cheaper question wearing the expensive one's answer**; the account is on the [`20260906.090312` shelf](archive/20260906-090312_itinerary-landed-accounts.md).
 

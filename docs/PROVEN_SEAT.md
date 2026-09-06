@@ -137,7 +137,7 @@ Separate from the ladder rungs — Wasm receipt-verify under Env ceiling:
 rishi/bin/rishi run tools/p/parity.rish
 ```
 
-Host re-pin landed `20260712.193958`. See `work-in-progress/TASKS.md` for suite nib and chapter claims.
+Host re-pin landed `20260712.193958`. See [`construction/ITINERARY.md`](../construction/ITINERARY.md) for suite nib and chapter claims -- `TASKS.md` fused into it on `20260823.103804` and stands as a pointer, and the room it named was renamed to `construction/`.
 
 ---
 
