@@ -23,6 +23,13 @@ A tree this size is unreadable front to back and perfectly readable by question.
 
 **"What actually *happened*?"** -> [`session-logs/`](../../session-logs/README.md). Every round since the tree began, with its reasoning and its mistakes. It is long because it is complete.
 
+## The names themselves
+
+Before any of those rooms answers you, its filenames will. A log here is called
+`20260905-154954_the-clock-and-the-mark.md`, and a ledger row is called `%438`, and both forms say
+something exact. [**Reading a name**](reading-a-name.md) teaches the two marks in about five
+minutes, and it is the shortest way to feel at home on this shelf.
+
 ## Two habits worth borrowing before you read anything
 
 **Read the witness, not the claim.** Nothing here is called working because a document says so. `tools/*_witness.rish` holds more than sixteen hundred proofs that run on real hardware, and a green line is a fact a computer spoke first. When a page and a witness disagree, the witness is right and the page is a bug.
