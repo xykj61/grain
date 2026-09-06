@@ -83,6 +83,8 @@ ceiling=$(sed -n 's/^ceiling=\([0-9][0-9]*\)$/\1/p' "$SCAN" | head -1)
 max_corpus=$(sed -n 's/^max_corpus=\([0-9][0-9]*\)$/\1/p' "$SCAN" | head -1)
 [ -n "$ceiling" ] || { echo "control: could not read the ceiling out of the scan"; exit 1; }
 [ -n "$max_corpus" ] || { echo "control: could not read max_corpus out of the scan"; exit 1; }
+uc_ceiling=$(sed -n 's/^max_unresolved_compiling=\([0-9][0-9]*\)$/\1/p' "$SCAN" | head -1)
+[ -n "$uc_ceiling" ] || { echo "control: could not read max_unresolved_compiling out of the scan"; exit 1; }
 echo "rye-compile-reach-control: ceiling=$ceiling max_corpus=$max_corpus"
 
 # -- 1. a clean tree: one built root, one module it imports ------------------------------------
@@ -357,6 +359,72 @@ seal "$p"; run_pen "$p"
 check      "a tree holding no harness exits 0"              0 "$rc"
 check_says "  ... crediting nothing"                        "harness_paths=0" "$out"
 check_says "  ... and still reading its one root"           "roots=1" "$out"
+
+# -- 22. the residue is weighed by the same condition the credit is ----------------------------
+# The credit above is conditional on the assembling script compiling anything. The residue beside it
+# was published unconditionally, so a reader weighing this census's floor met a doubt ten times the
+# size of the one that could reach it -- nine of the field's ten unresolved sites sit in scripts
+# that never invoke the compiler (the residue row `20260906.113130`). These two pens differ by one word, exactly as 17 and
+# 18 do, and the two numbers must disagree across them or the condition has not carried through.
+residue_pen() { # pen-name  verb  -> a pen holding one assembled site this resolver cannot read
+  _rp=$(new_pen "$1")
+  mkdir -p "$_rp/app" "$_rp/tools/u"
+  printf 'pub fn main() void {}\n' > "$_rp/app/main.rye"
+  printf '#!/bin/sh\nrye/bin/rye build app/main.rye\n' > "$_rp/tools/a_build.sh"
+  mkdir -p "$_rp/tools/a"; mv "$_rp/tools/a_build.sh" "$_rp/tools/a/build.sh"
+  printf '#!/bin/sh\n%s "$UD/$um.rye"\n' "$2" > "$_rp/tools/u/site.sh"
+  seal "$_rp"
+  echo "$_rp"
+}
+p=$(residue_pen residue_compiling 'rye/bin/rye build')
+run_pen "$p"
+check_says "an unreadable site is counted whatever it is in"  "harness_unresolved=1" "$out"
+check_says "  ... and weighed, because this one compiles"     "harness_unresolved_compiling=1" "$out"
+check      "  ... free at the ceiling"                        0 "$rc"
+
+# -- 23. and the same shape in a reading script weighs nothing ----------------------------------
+# One word changed. The site is still unreadable and still counted; it can credit nothing either
+# way, so it is not part of the doubt that touches this census's floor.
+p=$(residue_pen residue_reading 'grep -q pub')
+run_pen "$p"
+check_says "a reading script's unreadable site is still counted" "harness_unresolved=1" "$out"
+check_says "  ... yet weighs zero, since it could credit nothing" "harness_unresolved_compiling=0" "$out"
+check      "  ... so it refuses nothing"                      0 "$rc"
+
+# -- 24. one over the ceiling refuses, and names the site --------------------------------------
+# Read from the scan rather than spelled here, so this case keeps testing the law after the number
+# moves. A pen that plants an absolute tests a snapshot of the law; one that plants the ceiling+1
+# tests the law.
+p=$(new_pen residue_over)
+mkdir -p "$p/app" "$p/tools/a" "$p/tools/u"
+printf 'pub fn main() void {}\n' > "$p/app/main.rye"
+printf '#!/bin/sh\nrye/bin/rye build app/main.rye\n' > "$p/tools/a/build.sh"
+i=0
+while [ "$i" -le "$uc_ceiling" ]; do
+  printf '#!/bin/sh\nrye/bin/rye build "$UD%s/$um%s.rye"\n' "$i" "$i" > "$p/tools/u/site$i.sh"
+  i=$((i + 1))
+done
+seal "$p"; run_pen "$p"
+check      "ceiling+1 unreadable sites in compiling scripts exit 1" 1 "$rc"
+check_says "  ... by name"                                    "verdict=unresolved_compiling_over_ceiling" "$out"
+check_says "  ... counting them"                              "harness_unresolved_compiling=$((uc_ceiling + 1))" "$out"
+check_says "  ... and naming one, so the repair is one read away" "unresolved in a compiling runner -- tools/u/site0.sh" "$out"
+
+# -- 25. a resolver that counts a residue and names none is refused ------------------------------
+# The seam's second contract check. A copy knowing --paths but not the naming prints zero named
+# sites beside a positive count, which reads exactly like a residue that is entirely harmless --
+# the most convincing wrong answer this seam can give. Printing 0 there would be a claim this
+# census cannot make, so it says so instead.
+p=$(new_pen residue_unnamed)
+mkdir -p "$p/app" "$p/tools/a"
+printf 'pub fn main() void {}\n' > "$p/app/main.rye"
+printf '#!/bin/sh\nrye/bin/rye build app/main.rye\n' > "$p/tools/a/build.sh"
+printf '#!/bin/sh\necho paths_mode=1\necho harnesses=1\necho unresolved=4\necho verdict=ok\n' \
+  > "$p/tools/fixtures/r/rye_harness_roster_scan.sh"
+seal "$p"; run_pen "$p"
+check      "a resolver counting a residue it does not name refuses" 1 "$rc"
+check_says "  ... by name"                                    "verdict=residue_unweighed" "$out"
+check_says "  ... rather than printing a comforting zero"     "harness_unresolved_compiling=unknown" "$out"
 
 # -- 16. the pen proven innocent ----------------------------------------------------------------
 # A census that always answers "nothing is accused" must fail the accusation case above. If it walks

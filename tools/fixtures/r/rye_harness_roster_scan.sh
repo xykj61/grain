@@ -243,10 +243,24 @@ if [ "$MODE" = paths ]; then
     sed "s|^|harness_path $src $dir/|; s|\$|.rye|" "$TMP/named" >> "$TMP/paths"
   done < "$TMP/harnesses"
   cat "$TMP/paths"
+  # The residue, named rather than only counted. `unresolved=N` says how many sites this scan
+  # could not read; it does not say whether any of them matters to the consumer, because the
+  # consumer's credit is CONDITIONAL on the assembling script compiling anything and this scan
+  # does not ask that question. So the sites are named here and the weighing is left where the
+  # condition lives. Measured on the field 20260906: ten sites, nine of them in scripts that never
+  # invoke the Rye compiler, so nine could not have credited a path whether resolved or not.
+  while IFS="$(printf '\t')" read -r src dvar svar; do
+    [ -n "${src:-}" ] && echo "harness_unresolved $src $dvar $svar"
+  done < "$TMP/unresolved"
   # The marker rides ahead of the counters and is printed even when the corpus is empty, so a
   # consumer can tell "this tree holds no harness" from "this copy does not know the flag". Those
   # two readings look identical in the paths alone, and only one of them is a fault.
   echo "paths_mode=1"
+  # A second marker for a second promise. A copy that knows --paths but not the naming above would
+  # print zero `harness_unresolved` lines beside a positive `unresolved=`, which reads exactly like
+  # a residue that is entirely harmless -- the most convincing wrong answer this seam can give. The
+  # marker separates "no unresolved site here" from "this copy does not name them".
+  echo "unresolved_named=1"
   echo "harnesses=$n_harnesses"
   echo "harness_units=$(wc -l < "$TMP/paths" | tr -d ' ')"
   echo "unresolved=$n_unresolved"

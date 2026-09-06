@@ -90,11 +90,19 @@ page obeying both floors at four: 16% of a 20% ceiling.**
 
 **`%459` and `%446` CLOSED**, whole on the [`20260906.042754` shelf](archive/20260906-042754_itinerary-landed-accounts.md). **A pen that plants an absolute tests a snapshot of the law; one that plants a ratio tests the law.**
 **Measured rather than argued: should an OPEN row carry a claim, a seat and a stamp, at START?**
-**PHEROMONE -- `%466` CLOSED and folded whole** to its own
-[shelf](archive/REDS-the-harness-the-census-could-not-see-rows-466.md). **The label was not softened
--- the census was taught to see what it was mislabelling**, and the seam is **one resolver, two
-readers**: one scan answers *what a harness assembles*, the other *whether it compiles*. `never`
-**178 -> 64**, controls **67** and **27**.
+**PHEROMONE -- THE CREDIT CROSSED THE SEAM CARRYING ITS CONDITION AND THE RESIDUE BESIDE IT DID
+NOT.** `%487` CLOSED. `harness_unresolved=10` answered the resolver's question rather than the
+census's: **nine of the ten sit in scripts that never invoke the compiler**, so the conditional
+credit already answered them and resolving them moves no count. The tenth compiles into a pen it
+makes with `mkdir -p`, and every `caravan/` original it copies is reached elsewhere -- `never` holds
+none. **The residue that could hide a program is 1, and today it hides nothing.** `--paths` names
+each site now (`harness_unresolved <script> <dvar> <svar>`, marker `unresolved_named=1`); the census
+intersects them with its own `compiling.txt` and publishes **`harness_unresolved_compiling`**, gated
+at 1, `unknown` refused by name rather than a comforting zero. Controls **80** (was 67) and **32**
+(was 29), the condition proven by two pens differing in one word. *Why a wider resolver is the wrong
+lap:* most of the residue is **not a harness** -- a roster scan spells `$DIR/$m.rye` in a diagnostic
+**message**, and the candidate grep cannot tell a message from an assembly. `%466`'s account stays
+whole on its [shelf](archive/REDS-the-harness-the-census-could-not-see-rows-466.md).
 **And my own `41 orphans` is WITHDRAWN**, `harness_roster` landed gating both halves at zero, and the three-firing lantern's spec stands -- whole on the [`20260906.090312` shelf](archive/20260906-090312_itinerary-landed-accounts.md).
 
 **THIS CARD STOOD PUBLISHED WITH TWO CONFLICT MARKERS** (`%481` CLOSED, Patchouli
@@ -358,6 +366,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260906.120137` | Count the believers, not the carriers | [log](../session-logs/date/20260906/20260906-120137_count-the-believers-not-the-carriers.kyri) |
+| `20260906.113330` | The doubt published in the wrong frame | [log](../session-logs/date/20260906/20260906-113330_the-doubt-published-in-the-wrong-frame.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)
