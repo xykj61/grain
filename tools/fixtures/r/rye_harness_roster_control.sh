@@ -134,6 +134,25 @@ check "ten unreadable shapes sit at the ceiling, free"   "$p" ok  "unresolved=10
 printf '#!/bin/sh\n# builds "$UD11/$um11.rye" from parts bound at runtime\n' > "$p/tools/u/u11.sh"
 check "eleven refuses, so the ceiling only ever falls"   "$p" red "verdict=unresolved_over_ceiling"
 
+
+# The residue NAMED, not merely counted. The consumer's credit is conditional on the assembling
+# script compiling anything, and until this landed the residue beside that credit was a bare number,
+# so the consumer could not tell a doubt that reaches it from one that cannot (the residue row `20260906.113130`). Three
+# claims: the site is named, the two variable names ride with it so a reader can find the shape, and
+# the marker says this copy names them at all.
+p=$(pen residue); programs "$p" rye/tests a_test; harness "$p" rye/tests a_test
+mkdir -p "$p/tools/u"
+printf '#!/bin/sh\nrye/bin/rye build "$UD/$um.rye"\n' > "$p/tools/u/compiles.sh"
+check "--paths names the site it could not read"         "$p" ok  "harness_unresolved tools/u/compiles.sh UD um" --paths
+check "  ... and counts it too"                          "$p" ok  "unresolved=1" --paths
+check "  ... and marks that this copy names them"        "$p" ok  "unresolved_named=1" --paths
+
+# The marker rides even when there is nothing to name, which is the whole of its job: zero named
+# sites beside zero counted is a tree with no residue, and zero named beside ten counted is a copy
+# too old to name them. Without the marker those two read identically, and only one is a fault.
+p=$(pen residue_none); programs "$p" rye/tests a_test; harness "$p" rye/tests a_test
+check "the marker rides on a tree with no residue at all" "$p" ok "unresolved_named=1" --paths
+check "  ... beside a residue of zero"                   "$p" ok "unresolved=0" --paths
 # --- --paths, the answer a consumer reads ------------------------------------------------------
 # The compile-reach census asks this scan for the paths a harness assembles, because those paths are
 # written nowhere and a census reading for filenames called all of them unbuilt (REDS %466). Two

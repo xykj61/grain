@@ -21,6 +21,14 @@
 # closed one lane over. Every count is a floor for the shapes the census can read, and the residue
 # it cannot read rides beside them as `harness_unresolved` rather than as a reader's trust.
 #
+# AND THAT RESIDUE IS WEIGHED, because the raw count answers the resolver's question rather than
+# this census's. The credit is conditional on the assembling script compiling anything; the residue
+# was published unconditionally, so a reader weighing the floor met a doubt ten times the size of
+# the one that could reach it. Nine of the field's ten unresolved sites sit in scripts that only
+# read their directories, so the credit rule already answers them. `harness_unresolved_compiling`
+# is the part that could, gated at 1 and falling only; the raw count rides beside it ungated, since
+# a gate on the harmless is a gate someone turns off (the residue row `20260906.113130`).
+#
 # WHY IT ASKS ANOTHER SCAN. A runner can name its target without writing it down. One harness here
 # compiles 116 Rye programs whose paths it joins from a directory in one variable and a bare stem in
 # another, so none of the 116 is written anywhere in this tree -- and reading for filenames called
@@ -48,6 +56,7 @@ assert census.out contains "roots=" else "rye-compile-reach: the build-root coun
 assert census.out contains "asserted=" else "rye-compile-reach: the gated reading is missing"
 assert census.out contains "harness_paths=" else "rye-compile-reach: the assembled-path credit is missing -- without it 114 built files read as never-compiled"
 assert census.out contains "harness_unresolved=" else "rye-compile-reach: the residue count is missing -- a floor that does not name what it cannot see is a claim"
+assert census.out contains "harness_unresolved_compiling=" else "rye-compile-reach: the residue is unweighed -- a raw count answers the resolver's question, not this census's"
 
 say "rye-compile-reach: proving the census on real repositories in a throwaway pen..."
 let control = run ["sh" "tools/fixtures/r/rye_compile_reach_control.sh"]
@@ -68,5 +77,12 @@ assert control.out contains "a harness that only reads credits nothing" else "ry
 assert control.out contains "the resolver missing refuses" else "rye-compile-reach: a missing resolver must refuse, never accuse every assembled path in silence"
 assert control.out contains "a resolver with no marker refuses" else "rye-compile-reach: a resolver too old to know the flag reads exactly like an empty tree without the marker check"
 assert control.out contains "a tree holding no harness exits 0" else "rye-compile-reach: an empty tree must stay lawful -- the refusals above must not swallow it"
+
+# The residue weighed by the same condition the credit is. Two pens differing by one word, so a
+# residue that had quietly gone unconditional again passes the first of these and fails the second.
+assert control.out contains "and weighed, because this one compiles" else "rye-compile-reach: an unreadable site in a compiling script must be weighed"
+assert control.out contains "yet weighs zero, since it could credit nothing" else "rye-compile-reach: the residue is not proven conditional -- an unconditional one passes the welcome and fails nothing"
+assert control.out contains "ceiling+1 unreadable sites in compiling scripts exit 1" else "rye-compile-reach: the residue ceiling is not proven from its failing side"
+assert control.out contains "a resolver counting a residue it does not name refuses" else "rye-compile-reach: a counted residue nobody named must refuse, never read as harmless"
 
 say "GREEN: every distinct Rye file is compiled by something, is a planted specimen, or carries no claim."
