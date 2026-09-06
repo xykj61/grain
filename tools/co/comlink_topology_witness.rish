@@ -31,6 +31,12 @@ assert (st.err contains "sponsor by mod") else "sponsorship is by modulus"
 assert (st.err contains "inclusion is the outfit") else "a galaxy wears lower roles as outfits of itself"
 assert (st.err contains "plays asks which a number may wear") else "plays is the outfit test"
 assert (st.err contains "routing by number") else "two places share a route by number"
+# The metric reads `tier` through `depth()`, so it measures between ADDRESSES rather than
+# between points. Both halves are asserted because the doc line above `route_hops` claimed
+# only the false one until `20260906.002658`, and the five named routing legs
+# in the selftest all compare addresses at the same tier, so none of them could see it.
+assert (st.err contains "one point in two outfits") else "the metric reads the outfit, so one point at two tiers is not zero hops from itself"
+assert (st.err contains "two distinct points are never zero hops apart") else "the one property routing cannot survive losing must be proven pairwise, not argued"
 assert (st.err contains "the geometry is a loadable sky") else "the geometry is a loadable sky, not a hardcoded law"
 assert (st.err contains "compass_sky") else "the seated d12-d60 is the compass sky"
 assert (st.err contains "council_sky (15 - 3 - 9") else "a second sky of a different shape round-trips inclusively by the same law"
