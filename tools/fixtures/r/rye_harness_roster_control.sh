@@ -134,6 +134,28 @@ check "ten unreadable shapes sit at the ceiling, free"   "$p" ok  "unresolved=10
 printf '#!/bin/sh\n# builds "$UD11/$um11.rye" from parts bound at runtime\n' > "$p/tools/u/u11.sh"
 check "eleven refuses, so the ceiling only ever falls"   "$p" red "verdict=unresolved_over_ceiling"
 
+# --- --paths, the answer a consumer reads ------------------------------------------------------
+# The compile-reach census asks this scan for the paths a harness assembles, because those paths are
+# written nowhere and a census reading for filenames called all of them unbuilt (REDS %466). Two
+# claims are proven here: that the answer names the real path a stem stands for, and that it carries
+# the marker a consumer separates "no harness here" from "this copy cannot answer" by.
+p=$(pen paths); programs "$p" rye/tests a_test b_test; harness "$p" rye/tests a_test b_test
+check "--paths spells the path a stem stands for"        "$p" ok  "harness_path tools/p/pen_harness.rish rye/tests/a_test.rye" --paths
+check "  ... every stem, not the first"                  "$p" ok  "harness_path tools/p/pen_harness.rish rye/tests/b_test.rye" --paths
+check "  ... counted"                                    "$p" ok  "harness_units=2" --paths
+check "  ... and marked, so a silent answer is not read as an empty tree" "$p" ok "paths_mode=1" --paths
+
+# An empty tree still carries the marker before it refuses, so a consumer reads "none here" as the
+# lawful answer it is rather than as a broken instrument. Both halves are asserted: the refusal, and
+# the marker riding ahead of it.
+p=$(pen paths_empty); programs "$p" rye/tests a_test
+check "--paths on a harnessless tree refuses"            "$p" red "verdict=empty_corpus" --paths
+check "  ... yet still marks its answer"                 "$p" red "paths_mode=1" --paths
+
+# An unknown flag refuses rather than falling back to count mode, since a flag read past is a
+# question read as answered -- the exact silence the marker above exists to prevent.
+check "an unknown flag refuses by name"                  "$p" red "verdict=bad_argument" --nope
+
 echo "cases=$n"
 echo "control_failures=$fail"
 if [ "$fail" -eq 0 ]; then echo "control_verdict=ok"; exit 0; fi
