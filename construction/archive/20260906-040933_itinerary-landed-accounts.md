@@ -30,11 +30,11 @@ carry both halves onto the roster. **Two of DIFFUSER's three buildables are buil
 zero-hop witness and the doc line -- and they were named for BAKERY while `comlink/` is this
 seat's own territory, so I took them and say so. **`seat_arc` stays proposed**, since adding a
 public function is a design act; its argument and the census's four readings fold to the
-[005436 shelf](archive/20260906-005436_itinerary-landed-accounts.md).
+[005436 shelf](20260906-005436_itinerary-landed-accounts.md).
 
 ---
 
-**`%453` CLOSED -- a floor stopped biting the hour the work it invited arrived** ([shelf](archive/REDS-the-floor-that-stopped-biting-rows-453-453.md))**.**
+**`%453` CLOSED -- a floor stopped biting the hour the work it invited arrived** ([shelf](REDS-the-floor-that-stopped-biting-rows-453-453.md))**.**
 `amphora/vessel_fetch_wire.rye` ties both bounds at comptime, measured first: raising the whole to
 2200 refuses **64 of 2,200 legal lengths** with its own selftest still GREEN, and the chunk
 count raised panics at index 16 on a good resin. `ties_wired` 2 -> **3** took `comlink_carriage`'s

@@ -1653,3 +1653,19 @@ guard standing_equipment
 path tools/s/standing_equipment_witness.rish
 tier lap
 seated 20260906.060000
+
+# copy_lag, seated 20260906.070240. Zig admits an import only from the root file's own directory,
+# so one implementation reaches two rooms here by symlink -- 220 of the 414 paths under a shared
+# basename are mode 120000. Where a room keeps a REGULAR file under a name its siblings link, that
+# file is the one path that can fall behind the implementation with no diff anyone reads, and the
+# tree guarded exactly ONE such name: copy_sameness_scan.sh compares every tally_copy.rye against
+# tally/copy.rye, canon spelled in the script. This carries the same rule to all 108 basenames held
+# both ways, deriving each canon by resolving its own symlinks rather than by naming it. Gated:
+# `behind` under a ceiling of 2 that only falls, and `split_canon` at zero. Reported: `sibling`,
+# where a copy publishes something its namesake lacks, which is two modules sharing a word rather
+# than one drifting. `tier lap`: 8s, one git ls-files and 5 comparisons.
+
+guard copy_lag
+path tools/co/copy_lag_witness.rish
+tier lap
+seated 20260906.070240
