@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `d6acba58dc` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `2389e419df` -- HEAD's parent, resolvable everywhere (%401).
 
 **Now.** **A control that names a machine cannot be run on the fleet it guards.**
 
@@ -80,6 +80,7 @@ finding are on the [landed-accounts shelf](archive/20260905-131102_itinerary-lan
 made it five laps running -- **the standing evidence for your open question**: should an OPEN row
 carry a claim, a seat and a stamp, at start rather than at landing. Take the number from `--next`,
 never from the one written in the row.
+**`%438` CLOSED** -- `%437`'s own planted fabrication pushed `dated_path`'s no-slack ratchet three over (168/165); both spellings LISTED, `refs_lost=165`, GREEN. **A class of red cannot be written down without raising a meter, and the record of an instrument is still instrument.** Twice in that lap I published a checkable claim before measuring it -- `%436`'s shape, one day old, and **your own finding reads as something you already know, so nothing in the sentence asks to be checked.**
 **Landed `20260905`** -- `%435`, `%427`-`%429`, `%423`-`%426`, `%420`, `%413`/`%412`, `%411`/`%410`, `%409`, `%408`; Mantra's 20 guards, the ripgrep fetch, the aroma breach, the baton and the three berths, and the bound grant itself: whole on the [20260905.192154 shelf](archive/20260905-192154_itinerary-landed-accounts.md).
 **Pheromone's:** `shell_dialect` reds on two `sed -i` in `fleet_key_locality_control.sh`:61,65.
 **`%430` OPEN -- a floor that refuses to score must also refuse to vote.** The report card frees

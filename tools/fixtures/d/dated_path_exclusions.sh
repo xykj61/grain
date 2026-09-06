@@ -208,6 +208,29 @@ DP_EXCLUDE_PATHS="docs-geode/demos/README.md"
 #   20260101-010101 names no lap this tree ever ran, so the name matches nothing by construction --
 #   the same reasoning as the first entry, one control later.
 #
+#   The SEVENTH is the sixth's own shape, one year of stamps later and one control after it.
+#   `commit_message_guard_scan.sh` planted `20260905-183418_the-handoff-from-the-eight-core-round.md`
+#   on 20260905.183603 to prove the hook now resolves a bare one-clock basename, after a hard wrap
+#   walked a fabricated citation past the path check (REDS %437). The stamp 183418 names no lap this
+#   tree ever ran -- the real handoff is 183107 -- so the name matches nothing by construction, which
+#   is the same reasoning as the first entry and the sixth.
+#
+#   AND ITS ELIDED SPELLING IS THE SAME PLANTING. Both the control and the ledger row shorten the
+#   fabricated name to `20260905-183418_...md` when quoting it a second time, and an ellipsis is
+#   still a one-clock stamp followed by a sprig, so the census reads it as a reference like any
+#   other. A name that was fabricated on purpose stays fabricated when it is abbreviated, so both
+#   spellings are LISTED rather than one -- otherwise the subtraction depends on how a sentence
+#   happened to be typed.
+#
+#   ITS OTHER TWO REFERENCES ARE THE LEDGER ROW EXPLAINING IT, and they are LISTED by the fifth
+#   entry's reasoning rather than by a new one: a ledger row that quotes a fabricated path in order
+#   to record how it escaped is a path asserted absent, not a reference gone stale. This is the
+#   class where a red cannot be written down without raising a meter -- the ledger's account of a
+#   fabricated citation is, to a path census, two more fabricated citations -- and the honest answer
+#   is the one this file already gives: the instrument and the record of the instrument are both
+#   instrument. Counting them makes a meter rise as its proof gets stronger, which is exactly what
+#   this file exists to prevent (REDS %438).
+#
 #   The fifth LISTED name is DEBRIDED like the three above it, and it is here because the
 #   subtraction was happening anyway by accident. The deep debride of 20260825 removed
 #   `counsel/date/20260730/...pole-bozo-djinn-murr-keaton.md` from the tree and from every commit on
@@ -315,7 +338,9 @@ DP_EXCLUDE_PATHS="docs-geode/demos/README.md"
 #   that remain sit in dated testimony, which keeps every word it wrote. Listed rather than paid for
 #   by a rising ceiling, because a ceiling only falls.
 #
-DP_FIXTURE_BASENAMES="20260730-022147_keaton-livermore-resume-draft.md \
+DP_FIXTURE_BASENAMES="20260905-183418_the-handoff-from-the-eight-core-round.md \
+20260905-183418_...md \
+20260730-022147_keaton-livermore-resume-draft.md \
 20260730-022147_personal-ontology.md \
 20260730-022147_cover-letter-co-authored.md \
 20260821-211423_conways-law-and-the-organization-that-forgets.md \
