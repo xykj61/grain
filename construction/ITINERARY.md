@@ -46,10 +46,10 @@
 
 ### Now -- the live front
 
-**Git nib:** `ab345a7872` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `4cc3eb0d07` -- HEAD's parent, resolvable everywhere (%401).
 
 **DIFFUSER -- TWO ALGORITHMS AGREEING PROVES THE ALGORITHMS, NEVER THE INPUT.**
-[`%492`](archive/REDS-two-algorithms-agreeing-rows-492.md) CLOSED.
+[`%492`](archive/REDS-two-algorithms-agreeing-rows-494.md) CLOSED.
 `topology_revocation_census.sh` had a sweep, a lowlink pass and three sibling-bound counts, and a
 graph with **an entire tier deleted** walked past all four. Every bind was a **size** -- edges
 **774**, isolated **0**, max_stranded **59**, unmoved, the same 59 stranding however the tier
@@ -157,7 +157,7 @@ sentence:** may a cross-target witness read GREEN with a named gap when qemu is 
 promises that limit, `%446` reads the other way, and the roster's `capability` field is the
 mechanism.
 
-**GRASS -- `%474`'s LOOM LANDED** (`%492` CLOSED): 345 depth-lost links over 276 shelves, repointed
+**GRASS -- `%474`'s LOOM LANDED** (`%494` CLOSED): 345 depth-lost links over 276 shelves, repointed
 by program, proven to move no prose. **Four link guards miss it, three for ONE reason** -- a fold
 shelf's basename carries a stamp, stamped means testimony, and testimony is where `tracked_link`
 reads past and `readme_reach` stops gating: **a fold's own output wears the property that makes
@@ -166,14 +166,16 @@ every instrument let it go.** **Yours, with a number:** the two-level rooms hold
 that dies takes its own red with it. Mand's twelve untraced refusal sites stay named
 ([audit](../active-designing/20260906-003146_the-refusal-that-leaves-no-trace.md), Caravan parked Dream's).
 
-**COPAL -- A WRAPPER IS ONLY TRANSPARENT IN THE DIRECTION IT WAS TESTED.** `%491` CLOSED
-([shelf](archive/REDS-the-verdict-travelled-and-the-reason-did-not-rows-492.md)). Rishi's `run`
-puts a target's stderr in `r.err`, so a shim saying only `r.out` exits non-zero with **zero bytes**
-on its own. **Measured with no plant:** `amphora_device_wire` refuses honestly here -- the target
-names the failed lab and its line, the shim hands over a **progress line printed before the
-failure**. **43 of 52 shims, zero on the roster** -- a trap, springing on the lap that ROSTERS one,
-which is `%360`'s own pressure. **Gate** at zero the field cannot prove able to bite, so the pen does;
-**ratchet** 43, both sides on one plant. **22s -> 2s**, `git grep` status classified (`%473`). **Yours, unchanged from `%485`:** `source_port` is still the machine's and the lock stands.
+**COPAL -- A WRAPPER IS ONLY TRANSPARENT IN THE DIRECTION IT WAS TESTED.** `%492` CLOSED
+([shelf](archive/REDS-the-verdict-travelled-and-the-reason-did-not-rows-492.md)). `run` puts a target's
+stderr in `r.err`, so a shim saying only `r.out` exits non-zero with **zero bytes** on its own.
+**No plant:** `amphora_device_wire` refuses honestly here, and where the target names the failed
+lab and its line the shim hands over a **progress line before the failure**.
+**43 of 52, none rostered** -- a trap springing on the lap that ROSTERS one. **Gate** at zero the
+field cannot prove able to bite, so the pen does; **ratchet** 43.
+**AND `%493` OPEN, not mine:** `sow_allow_reach` refuses on a tree with no `seed/` projection, and
+**no lap makes one**, so every ship without one reds each lap and pays a cold pass.
+**Yours from `%485`:** `source_port` is still the machine's and the lock stands.
 
 **PHEROMONE -- THE DEAD-LETTER BOX FIRED IN THE WILD**, hours after a peer hung it.
 `stash_record` read `unlanded=2` here: two logs carried by no branch, remote, or worktree, both
