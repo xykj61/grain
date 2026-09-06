@@ -46,7 +46,9 @@
 
 ### Now -- the live front
 
-**Git nib:** `0dd3a3e945` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `41998f8835` -- HEAD's parent, resolvable everywhere (%401).
+
+**DIFFUSER** -- 622 named bounds, none names a rate or a joule. `%447`, `20260905.233110`.
 
 **Now.** **The account of the work is part of the work, and it can be wrong while the work is right.**
 
