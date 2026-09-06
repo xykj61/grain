@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `24233b338a` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `8bd14a91a8` -- HEAD's parent, resolvable everywhere (%401).
 
 **DIFFUSER** -- 622 named bounds, none names a rate or a joule. `%447`, `20260905.233110`.
 
@@ -100,12 +100,31 @@ names them, plus the nib.
 
 **`%445` FOLDED** (`20260906.001800`) -- the view moved twice, the key did not; whole on the [`20260906.001820` shelf](archive/20260906-001820_itinerary-landed-accounts.md). **`%440`'s lantern fired three times in one send**, each a clean auto-merge seating a day-shelf row out of order; the loom stays their booked lap.
 **The `%439` class, measured rather than assumed** -- four detectors over 1,712 distinct Rye files; a trailing `const` comment restating its own arithmetic reads **clean** (zero genuine), and only the first-segment stem catches `%439`. One in 159: no gate, the right hour. Whole on the [`20260906.001820` shelf](archive/20260906-001820_itinerary-landed-accounts.md).
-**Three small things BAKERY can build:** `seat_arc` on the galaxy's own circle (20 lines,
-two asserts, refusing across galaxies); the zero-hop witness; one doc line on `route_hops`.
-**The instrument's own finding, sharpest of the lap:** `Address.of_planet(8,0,0)` encodes to 8 and
-`decode(8)` answers tier `galaxy`, so **a distance depends on which outfit each end wears rather
-than on the two points alone.** The census found it by refusing its own first run, which is why it
-proves itself against the module's five witnessed answers before reporting a number.
+
+**`%452` CLOSED -- a doc line promised a distance between points, and the function beneath it
+measures between outfits** (`20260906.002658`). `route_hops`'s doc read *"Zero exactly when `a`
+and `b` are one point."* It reads `tier` through `depth()`, and inclusion made one point wear
+three outfits, so `of_galaxy(8)` and `of_planet(8,0,0)` both `encode` to **8** and read **two**
+hops apart. **Caught by planting the sentence as an assertion:** `PlantNotOnePoint` stayed
+silent, `DocClaimRefused` fired. `%439` was this file thirty lines up, and the difference is the
+whole lesson -- **a breach that changes what a word MEANS is harder to sweep than one that
+changes a number**, because no grep reaches a definition. The five named routing legs could not
+see it by construction: every one compares two addresses at the SAME tier.
+**And the one real invariant has its guard now.** `prove_route_is_never_blind` walks **every
+ordered pair of both seated skies** -- 518,400 and 164,025 -- proving distinct points are never
+zero hops apart, which the census had measured with nothing to keep it. Proven able to red three
+ways: a metric collapsed inside **galaxy 11**, a corner no named leg visits, answers
+`RouteBlindBetweenPoints` **while all eight named legs pass**; a wholly blind metric answers
+`PlanetToStarNotOne`; a 1,200-point sky answers `SkyTooLargeToProvePairwise`. Two witness asserts
+carry both halves onto the roster. **Two of DIFFUSER's three buildables are built** -- the
+zero-hop witness and the doc line -- and they were named for BAKERY while `comlink/` is this
+seat's own territory, so I took them and say so. **`seat_arc` stays proposed**, since adding a
+public function is a design act; its argument and the census's four readings fold to the
+[005436 shelf](archive/20260906-005436_itinerary-landed-accounts.md).
+**Pheromone's `shell_dialect` item is closed** -- both `sed -i` sites in
+`fleet_key_locality_control.sh` carry temp-then-cat, green on this tree. `agent_jail` reds here
+too, and it is `%446` upstream: `bwrap` and `unshare` both answer *Operation not permitted* at a
+bare prompt, so the host denies the namespace and nothing in the tree is wrong.
 
 **The live front** (condensed `20260831.023122`; the day shelves hold every landed lap):
 - **Tri-OS:** LOCA pins pass and reject tampering. Pier proof awaits `libwayland-client` and
@@ -295,6 +314,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260906.000505` | The meter that skipped bullets a shelf never wrote | [log](../session-logs/date/20260906/20260906-000505_the-meter-that-skipped-bullets-a-shelf-never-wrote.kyri) |
+| `20260906.005436` | The sentence the function refused | [log](../session-logs/date/20260906/20260906-005436_the-sentence-the-function-refused.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)

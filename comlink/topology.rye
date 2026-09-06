@@ -136,7 +136,17 @@ pub fn same_galaxy(a: Address, b: Address) bool {
 
 /// The hop count from `a` to `b`: within one galaxy, the walk up to their nearest
 /// shared ancestor and down the other side; across galaxies, up to each galaxy and
-/// one honest bridge hop between admins. Zero exactly when `a` and `b` are one point.
+/// one honest bridge hop between admins. Zero exactly when `a` and `b` are the same
+/// **address** -- indices and outfit alike.
+///
+/// SAY WHY THAT LAST SENTENCE MOVED. It read "one point", and inclusion made that half
+/// false. `route_hops` reads `tier` through `depth()`, so it measures between two
+/// ADDRESSES rather than between two points: `of_galaxy(8)` and `of_planet(8, 0, 0)`
+/// both `encode` to 8 -- one point wearing two outfits -- and read two hops apart. The
+/// half that holds is the one routing cannot survive losing, since a metric calling two
+/// points the same cannot deliver to either, and `prove_route_is_never_blind` proves it
+/// over every ordered pair of both seated skies: two DISTINCT points are never zero
+/// hops apart.
 pub fn route_hops(a: Address, b: Address) u32 {
     if (a.galaxy != b.galaxy) {
         // Up to each galaxy root, then one bridge between admins.
@@ -321,6 +331,26 @@ fn run_selftest() !u8 {
     if (route_hops(planet, far) != planet.depth() + far.depth() + 1) return error.BridgeMiscounted;
     if (route_hops(planet, far) != 5) return error.BridgeNotFive; // 2 + 2 + 1
 
+    // Inclusion is a degree of freedom the metric reads. Number 8 is one point wearing
+    // three outfits -- galaxy, star and planet all encode to 8 -- and `route_hops` reads
+    // the outfit through `depth()`, so the point is not zero hops from itself in another
+    // tier. Pinned here because the doc line above `route_hops` claimed the opposite
+    // until `20260906.002658`, and only a leg comparing two outfits of ONE point catches
+    // it: every routing case above compares two addresses at the same tier.
+    const as_galaxy = Address.of_galaxy(8);
+    const as_star = Address.of_star(8, 0);
+    const as_planet = Address.of_planet(8, 0, 0);
+    if (encode(as_galaxy) != 8) return error.OutfitGalaxyNotEight;
+    if (encode(as_star) != encode(as_galaxy)) return error.OutfitStarNotSamePoint;
+    if (encode(as_planet) != encode(as_galaxy)) return error.OutfitPlanetNotSamePoint;
+    if (route_hops(as_galaxy, as_galaxy) != 0) return error.SameOutfitSelfNotZero;
+    if (route_hops(as_galaxy, as_star) != 1) return error.GalaxyToOwnStarOutfitNotOne;
+    if (route_hops(as_galaxy, as_planet) != 2) return error.GalaxyToOwnPlanetOutfitNotTwo;
+    if (route_hops(as_star, as_planet) != 1) return error.StarToOwnPlanetOutfitNotOne;
+
+    // The half that holds, and the one property routing cannot do without.
+    try prove_route_is_never_blind();
+
     // The geometry is data: two skies, one law.
     try prove_skies();
 
@@ -328,9 +358,50 @@ fn run_selftest() !u8 {
     print("comlink topology: inclusion is the outfit -- a galaxy wears star and planet roles as d60 aspects of itself; decode gives the primary role, plays asks which a number may wear.\n", .{});
     print("comlink topology: the geometry is a loadable sky -- the seated d12 - d60 is compass_sky, and a second council_sky (15 - 3 - 9, a d27 of 27, 405/universe inclusive) round-trips on its own universe by the same law.\n", .{});
     print("comlink topology: a point wears an outfit seat in its galaxy's circle -- the council d27's twenty-seven seats, each worn by exactly one point per galaxy; a private roster names them (the nakshatra outfit).\n", .{});
+    print("comlink topology: routing measures between addresses rather than between points -- one point in two outfits is not zero hops from itself -- and two distinct points are never zero hops apart, proven over every ordered pair of both skies.\n", .{});
     print("comlink topology: version {s}\n", .{topology_version});
     print("GREEN: comlink topology -- an inclusive fractal address space: a number names a place and wears every lower role, a sponsor a place has by mod, a route two places share, and a shape a community may load like a sky.\n", .{});
     return 0;
+}
+
+/// The largest universe this proof walks pairwise. A sky's own bounds allow 255 at each
+/// tier, which is over sixteen million points and more than two hundred trillion ordered
+/// pairs, so the ceiling is named rather than discovered. 1024 clears both seated skies
+/// -- the compass sky's 720 and the council sky's 405 -- with room for a third, and its
+/// worst case is roughly a million pairs, which a selftest can afford every lap.
+const max_proved_points: u32 = 1024;
+
+// A metric that calls two distinct points the same cannot deliver to either, so "distinct
+// points are never zero hops apart" is the one property routing genuinely cannot do
+// without. It was measured true over every ordered pair of both seated skies by
+// `tools/fixtures/t/topology_metric_census.sh` and had no guard until `20260906.002658`;
+// this walks the same pairs against the module itself rather than against a model of it.
+// Enumeration is by NUMBER, which is the primary-role reading a network routes between,
+// so each point wears the outfit `decode` gives it.
+fn prove_route_is_never_blind() !void {
+    for ([_]Sky{ compass_sky, council_sky }) |sky| {
+        // The edge check: a sky past the ceiling refuses by name rather than walking.
+        if (sky.universe_points() > max_proved_points) return error.SkyTooLargeToProvePairwise;
+        try prove_sky_never_blind(sky);
+    }
+}
+
+fn prove_sky_never_blind(sky: Sky) !void {
+    const points = sky.universe_points();
+    // invariant: a sky holds at least one point, so the walk below has something to walk.
+    assert(points >= 1);
+    // invariant: the pairwise walk stays inside the named ceiling its caller checked.
+    assert(points <= max_proved_points);
+    var a: u32 = 0;
+    while (a < points) : (a += 1) {
+        const from = sky.decode(a) orelse return error.BlindProofDecodeRefused;
+        var b: u32 = 0;
+        while (b < points) : (b += 1) {
+            if (a == b) continue; // one point against itself in its own outfit is zero, and should be
+            const to = sky.decode(b) orelse return error.BlindProofDecodeRefused;
+            if (route_hops(from, to) == 0) return error.RouteBlindBetweenPoints;
+        }
+    }
 }
 
 // The sky machinery: the compass sky reproduces the seated topology's counts, and a
