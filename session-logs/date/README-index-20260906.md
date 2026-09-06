@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260906.013116` | [the guard that could not run half of itself](20260906/20260906-013116_the-guard-that-could-not-run-half-of-itself.kyri) | a probe, not a declaration. |
 | `20260906.005436` | [the sentence the function refused](20260906/20260906-005436_the-sentence-the-function-refused.kyri) | %447: a doc line the function refuses; the never-blind proof. |
 | `20260906.003759` | [the refusal that leaves no trace](20260906/20260906-003759_the-refusal-that-leaves-no-trace.kyri) | Mand's trail records grants alone; one file lags live code. |
 | `20260906.010636` | [the floor that stopped biting](20260906/20260906-010636_the-floor-that-stopped-biting.kyri) | Amphora tied its bounds; a floor gate lost its bite. |
