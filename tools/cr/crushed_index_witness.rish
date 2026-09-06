@@ -17,6 +17,24 @@
 #   docs-geode/wiki/README.md promised "every shipped page" and had no row for
 #   docs-geode/tutorials/SHOPPING.md, which its own "what is missing" section left unnamed too.
 #
+# THE SAME PAGE FIRED AGAIN THE SAME DAY, one floor down, which is what turned a lantern into a
+# loom. The first repair gave SHOPPING its row and left the reading one level deep, and one level
+# deep is blind by construction: the wiki links `sangha/README.md`, a link entering a directory
+# LISTS the directory, and the three sangha pattern pages behind that door -- 01-descriptor-exchange,
+# 02-fact-fold, 03-five-primitives, each carrying its own Witness basis -- had never had a row. So a
+# map promising every shipped page read green over four pages rather than one. A ROOM'S DOOR IS NOT
+# THE SAME PROMISE AS THE PAGES BEHIND IT, and a guard reading one floor cannot tell the two apart.
+#
+# So a page may make the wider promise in its own words, one word longer:
+#
+#   **Kind:** crushed index of every page under [`../`](../)
+#
+# whose members are every tracked file at any depth under the room, minus `README.md` wherever it
+# stands, since a door is a door on every floor. The walk is BOUNDED at `max_deep_members` = 256,
+# the tree's own room bound, because an index is the page a reader trusts INSTEAD of walking the
+# room and a listing past 256 is no longer one a reader holds. A deep room over the bound is refused
+# by name rather than walked in silence.
+#
 # Not one was reachable by a link check, and that is the whole shape: every link on all three pages
 # RESOLVES. A page can be perfectly connected and still miscount the room it stands in front of --
 # presence is the cheaper question wearing the expensive one's answer (REDS %467), met here in a
@@ -24,10 +42,12 @@
 #
 # WHAT IS PROVEN, on metal.
 #   Every member of a declared room has a row on that room's index. A page opts in by naming its
-#   room in its own header: `**Kind:** crushed index of` and then a link to the room. So a shelf
-#   that grows a new index arrives guarded the day it declares itself, and no list here has to be
-#   remembered.
-#   Every declared room is on disk, and every link on a declared index opens on something.
+#   room in its own header: `**Kind:** crushed index of` and then a link to the room, reaching one
+#   level; or `crushed index of every page under` and the link, reaching the whole subtree. So a
+#   shelf that grows a new index arrives guarded the day it declares itself, and no list here has to
+#   be remembered.
+#   Every declared room is on disk, no deep room stands over `max_deep_members`, and every link on
+#   a declared index opens on something.
 #   A table row's Stamp cell agrees with the stamp in the file it links. Measured across all 526
 #   living non-testimony Markdown pages: exactly ONE disagreed, and it was on this shelf. A molt
 #   had moved press/'s Siya announcement and the repoint followed the LINK; the Stamp cell stayed
@@ -83,6 +103,13 @@ assert control.out contains "a tracked tools file naming it backs it too -- read
 assert control.out contains "a page declaring nothing is not read as an index" else "crushed-index: the guard must reach only pages that opted in"
 assert control.out contains "a bare mention in prose is not a row -- read 1" else "crushed-index: a mention in prose must not be credited as a row -- that is the fault itself, wearing a friendlier face"
 assert control.out contains "a link carrying a fragment still names its file -- read 0" else "crushed-index: a fragment names a place inside a page, not a different page"
+assert control.out contains "the one-level reading counts the directory as listed -- read 0" else "crushed-index: a link entering a room must list the room, which is why one level is blind to what stands behind the door"
+assert control.out contains "the deep declaration is read as deep -- read 1" else "crushed-index: a page promising every page under a room must be read as promising it"
+assert control.out contains "and the unlisted page one floor down is counted -- read 1" else "crushed-index: the deep reading must reach a page the one-level reading cannot see -- the two forms are two promises"
+assert control.out contains "adding the deep row clears the count -- read 0" else "crushed-index: adding the deep row must clear it, or the count is reading depth rather than rows"
+assert control.out contains "a nested README is a door rather than a member -- read 0" else "crushed-index: a door is a door on every floor, or every nested room becomes a false red"
+assert control.out contains "a deep room at the bound walks free -- read 0" else "crushed-index: a room standing exactly at max_deep_members must pass, or the bound refuses ordinary work"
+assert control.out contains "one page past the bound is refused by name -- read 1" else "crushed-index: a deep room over the bound must be refused by name rather than walked in silence"
 assert control.out contains "an empty corpus refuses rather than reading clean" else "crushed-index: an empty corpus must refuse, since every gate would answer zero at once"
 assert control.out contains "control_fail=0" else "crushed-index: every planted reading must hold"
 
@@ -92,6 +119,7 @@ say scan.out
 assert scan.ok else "crushed-index: a crushed index disagrees with the room it names -- read the scan's own lines"
 assert scan.out contains "index_unlisted=0" else "crushed-index: every member of a declared room must have a row"
 assert scan.out contains "index_rooms_missing=0" else "crushed-index: every declared room must be on disk"
+assert scan.out contains "index_rooms_oversize=0" else "crushed-index: a deep declaration over a room past max_deep_members must split its index or raise the bound with a reason"
 assert scan.out contains "index_doors_missing=0" else "crushed-index: every row on a declared index must open on something"
 assert scan.out contains "row_stamp_disagrees=0" else "crushed-index: a row's stamp must agree with the file it links -- the link resolves either way, so nothing else reads this"
 assert scan.out contains "signature_unbacked=0" else "crushed-index: a GREEN signature must name an instrument that exists"
