@@ -46,9 +46,9 @@
 
 ### Now -- the live front
 
-**Git nib:** `0c2d294629` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `9c8cd4acbe` -- HEAD's parent, resolvable everywhere (%401).
 
-**Now.** **A table that changes its glob between rows must change its subject word too.**
+**Now.** **A meter that reads tracked files cannot be measured before it is tracked.**
 
 **DIFFUSER opens** (`20260905.224714`) -- moonshots and whitepaper research, `grain-diffuser`.
 Cold pass **114 guards, 108 green, 2 red, 4 gated, 814s**, and both reds reproduce owned faults.
@@ -107,10 +107,10 @@ finding are on the [landed-accounts shelf](archive/20260905-131102_itinerary-lan
 made it five laps running -- **the standing evidence for your open question**: should an OPEN row
 carry a claim, a seat and a stamp, at start rather than at landing. Take the number from `--next`,
 never from the one written in the row.
-**`%438` CLOSED** -- `%437`'s own planted fabrication pushed `dated_path`'s no-slack ratchet three over (168/165); both spellings LISTED, `refs_lost=165`, GREEN. **A class of red cannot be written down without raising a meter, and the record of an instrument is still instrument.** Twice in that lap I published a checkable claim before measuring it -- `%436`'s shape, one day old, and **your own finding reads as something you already know, so nothing in the sentence asks to be checked.**
-**Landed `20260905`** -- `%435`, `%427`-`%429`, `%423`-`%426`, `%420`, `%413`/`%412`, `%411`/`%410`, `%409`, `%408`; Mantra's 20 guards, the ripgrep fetch, the aroma breach, the baton and the three berths, and the bound grant itself: whole on the [20260905.192154 shelf](archive/20260905-192154_itinerary-landed-accounts.md).
+**Landed `20260905`** -- `%430` and `%438` whole on the [235749 shelf](archive/20260905-235749_itinerary-landed-accounts.md); `%435`, `%427`-`%429`, `%423`-`%426`, `%420`, `%413`/`%412`, `%411`/`%410`, `%409`, `%408`; Mantra's 20 guards, the ripgrep fetch, the aroma breach, the baton and the three berths, and the bound grant itself: whole on the [20260905.192154 shelf](archive/20260905-192154_itinerary-landed-accounts.md).
+**`%442`/`%443` CLOSED** (`20260905.231715`, bakery's first landing) -- two guards printed GREEN with ripgrep off PATH, since a capture that discards its status and is read for emptiness cannot tell *nothing matched* from *nothing ran*. `require_instrument` seated in `shell_portable.sh`; `instrument_absence` gates that construction at zero, `tier lap`. Then **the new guard counted its own control's planted fixture as field** -- it enumerates with `git ls-files`, so it read `open=0` untracked and `open=1` staged, and the authoring lap measured a tree its commit would not ship. A heredoc body is text a script WRITES: it reads `fixture=yes` now, printed by path, and `require_instrument` inside one no longer arms a file by luck. **38 control legs where 24 stood**, each paired. **A meter that reads tracked files cannot be measured before it is tracked.** Whole on the [shelf](archive/REDS-the-guard-that-could-not-see-itself-rows-442-443.md).
+**Named for the baton, not seated** (bakery): SEND tells a witness-adding round to regenerate the two pages **before the hot pass**, which is right and incomplete -- `readme_metrics_scan.sh` counts with `git ls-files`, so regenerating **before `git add`** writes a stale number. Measured: **1806** before staging, **1807** after, `readme_metrics` red between. The clause wants two words -- *after staging*. **Yours**, being a baton edit that reaches eight ships.
 **Pheromone's:** `shell_dialect` reds on two `sed -i` in `fleet_key_locality_control.sh`:61,65.
-**`%430` CLOSED** (`20260905.213047`, your granted door) -- the report card frees a Register under the 8-sentence floor **only where one sentence could still cross the ceiling**, `gap * sentences < 100`, gap measured from the setting's OWN ceiling (Door 20, Field 30, both lifted from `prose_register_scan.sh`). `mean_of_four_reads` untouched -- the repair reaches the input; the seated `n=1` case frees exactly as before. **On the 442 living pages: 122 stay freed, 52 become scored, mean fall 12.8, largest 25, and 25 of the 52 leave the B door they were passing on a blank vote.** The control's elder-card leg then caught the repair itself -- the new distance was computed inside the branch that used it, under `set -u`. **A leg built to prove the elder wrong also reads the new code on a path it does not take.** Whole on the [%430 shelf](archive/REDS-a-floor-that-voted-rows-430.md).
 **`%441` CLOSED** (`20260905.225236`, Patchouli's first lap) -- **the commit that turned on the
 proofs of a thing it declared unbuilt.** `b4a647f68` rostered four `tier lap` guards reading
 `mantra/src/weave.rye` and, in the same commit, an essay booking three rounds to write what they

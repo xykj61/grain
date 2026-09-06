@@ -280,3 +280,5 @@ at a closed fold.*
 *Row %430 folded to [`REDS-a-floor-that-voted-rows-430.md`](REDS-a-floor-that-voted-rows-430.md) on `20260905.213115`, **CLOSED** -- An exemption sound at one sentence was asserted for up to seven, and a Register that measured nothing voted its ceiling into a mean of four. The repair is the second condition the row derived: free the share only where one sentence could have carried it across the ceiling.*
 
 *Row %438 folded to [`REDS-a-repair-that-raised-a-meter-rows-438.md`](REDS-a-repair-that-raised-a-meter-rows-438.md) on `20260905.231841`, **CLOSED** -- a repair that raised the ratchet beside it, and two claims published before measurement.*
+
+*Rows %442 and %443 folded to [`REDS-the-guard-that-could-not-see-itself-rows-442-443.md`](REDS-the-guard-that-could-not-see-itself-rows-442-443.md) on `20260905.233327`, both **CLOSED** -- an instrument that cannot hear, and one that cannot see itself until it is tracked.*
