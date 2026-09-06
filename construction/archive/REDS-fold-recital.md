@@ -310,3 +310,5 @@ at a closed fold.*
 *Rows %467 and %468 folded to [`REDS-presence-where-the-claim-was-content-rows-467-468.md`](REDS-presence-where-the-claim-was-content-rows-467-468.md) on `20260906.065515`, both **CLOSED** -- presence is the cheaper question wearing the expensive one's answer: a link that works and points at nothing, and a list restated away from the list that owns it.*
 
 *Rows %451 and %469 folded to [`REDS-blind-to-half-its-subject-rows-451-469.md`](REDS-blind-to-half-its-subject-rows-451-469.md) on `20260906.064632`, **BOOKED** and **CLOSED** -- one finding a room apart -- a meter reading half of every page, and thirteen scope-map rows naming less than their guards gate.*
+
+*Row %454 folded to [`REDS-a-published-distance-and-the-road-it-promises-rows-454.md`](REDS-a-published-distance-and-the-road-it-promises-rows-454.md) on `20260906.090525`, **CLOSED** -- a metric that reads a role rather than a point answers confidently about pairs it cannot walk; the cure was two functions, not a corrected one.*

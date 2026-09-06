@@ -42,4 +42,24 @@ assert (st.err contains "compass_sky") else "the seated d12-d60 is the compass s
 assert (st.err contains "council_sky (15 - 3 - 9") else "a second sky of a different shape round-trips inclusively by the same law"
 assert (st.err contains "load like a sky") else "a community may load a shape like a sky"
 
-say "GREEN: comlink topology — an inclusive fractal address space (720/universe, sponsor by mod, a galaxy wears every lower role as an outfit); the geometry is a loadable Sky, the seated compass_sky beside a different council_sky (405) that round-trips by the same law."
+# The router's own question, answered on numbers rather than on outfits. REDS %454 measured
+# `route_hops` publishing a hop count for 172,524 of the compass sky's 518,400 ordered pairs
+# that no walk realizes, because every planet whose star index is zero has nothing standing
+# one hop from it. `point_hops` walks the sponsor chain in NUMBER space, where such a planet
+# and the galaxy its star sits on are one point, so the step exists and the sky is whole.
+assert (st.err contains "point_hops measures between NUMBERS") else "the second metric must measure between point numbers, not between addresses wearing tiers"
+assert (st.err contains "a star of index zero is the galaxy it sits on") else "the collapse that makes the metric a function of points must be named"
+assert (st.err contains "every published distance is a road") else "a published distance promises a walk of that length, and the promise must be proven rather than asserted"
+assert (st.err contains "the sponsor is one hop") else "the census's own failing predicate must read true here"
+assert (st.err contains "one step gets strictly closer") else "greedy progress from anywhere is what makes the number a road somebody can take"
+
+# A proof shown only in the passing direction cannot be told from a bypass. The control
+# breaks the metric five ways in a pen and watches each answer non-zero, proves the pen
+# innocent with an unbroken copy, and -- its sharpest phase -- proves a broken copy sails
+# through once the legs are cut, while the binary still prints the claim.
+let control = run ["sh" "tools/fixtures/t/topology_point_metric_control.sh"]
+assert control.ok else "topology point-metric control must prove all six phases -- ${control.out}"
+assert (control.out contains "verdict=proven") else "the control must print its own verdict"
+assert (control.out contains "legs_removed_exit 0 ok") else "the phase that proves the legs earn their keep must pass, or the proof is decoration"
+
+say "GREEN: comlink topology -- an inclusive fractal address space (720/universe, sponsor by mod, a galaxy wears every lower role as an outfit); the geometry is a loadable Sky, the seated compass_sky beside a different council_sky (405) that round-trips by the same law; and point_hops answers the router question on numbers, every published distance a road, proven both ways."

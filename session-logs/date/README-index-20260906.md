@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260906.090503` | [a published distance promises a road](20260906/20260906-090503_a-published-distance-promises-a-road.kyri) | %454 closed: 33.28% of the sky had no walk. |
 | `20260906.082714` | [the wait that read as a fault](20260906/20260906-082714_the-wait-that-read-as-a-fault.kyri) | %471: six ships stopped 9 min before their window reset. |
 | `20260906.063813` | [blind to half its subject](20260906/20260906-063813_an-instrument-blind-to-half-its-subject.kyri) | %451 BOOKED; 13 guards blind to their controls. |
 | `20260906.062055` | [the file five guards read](20260906/20260906-062055_the-file-five-guards-read-and-nothing-compiled.kyri) | %470: diff.rye had not compiled in weeks. |
