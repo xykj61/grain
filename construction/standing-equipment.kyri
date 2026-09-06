@@ -1499,3 +1499,16 @@ guard amphora_first_resident
 path tools/am/amphora_first_resident_witness.rish
 tier lap
 seated 20260905.225551
+
+# elf_machine -- a binary's architecture read from its own ELF header rather than from `file`'s
+# prose. Glow's two cross-target witnesses asked `file` for a substring and never checked that the
+# call had run; this pier has no `file(1)`, so the call exited 127 with empty output and the assert
+# fired saying the binary was not AArch64 -- of a binary that carried e_machine=183. Ten sites
+# repaired, three left in the Android and APK ladders whose toolchains this pier cannot run.
+# `tier lap`: 1s, after the census became one awk pass over ~2,900 runners rather than two
+# processes per file, which had cost 17 of an elder 18.
+
+guard elf_machine
+path tools/e/elf_machine_witness.rish
+tier lap
+seated 20260906.040355

@@ -22,8 +22,13 @@ let bin = "linengrow/bin/seva_session_core_witness_aarch64"
 let build = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build ${src} -target aarch64-linux-musl -femit-bin=${bin}"]
 assert build.ok else "Glow mobile-target cross-build for aarch64 failed"
 
-let shape = run ["sh" "-c" "file ${bin}"]
-assert shape.out contains "aarch64" else "cross-built binary is not aarch64"
+# The architecture comes from the binary's own ELF header rather than from `file`, which this
+# pier does not have: the elder spelling asked `file` for prose, never checked that the call had
+# run, and its substring assert then fired as a claim about the binary. See
+# tools/fixtures/e/elf_machine_scan.sh and its rung tools/e/elf_machine_witness.rish.
+let shape = run ["sh" "tools/fixtures/e/elf_machine_scan.sh" "${bin}"]
+assert shape.ok else "the ELF header reader refused the cross-built binary -- read its detail line"
+assert shape.out contains "machine=AArch64" else "cross-built binary is not AArch64"
 say "GREEN: Glow witness cross-built for aarch64 (the Glowphone's architecture)."
 
 # qemu-user-static is a prerequisite of this witness, exactly like the zig
