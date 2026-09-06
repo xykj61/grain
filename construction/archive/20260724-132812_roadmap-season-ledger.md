@@ -7,10 +7,10 @@
 **Last updated:** 2026-07-20 (**STOA0–129** GREEN — xfer flip call-body; xact flip; kind flip)
 **Style:** Radiant (see `../context/RADIANT_STYLE.md`)
 **Voice:** Quin
-**Lens:** TAME — safety, performance, joy; the Seed Law; [SLC](../context/SIMPLE_LOVABLE_COMPLETE.md)
+**Lens:** TAME — safety, performance, joy; the Seed Law; [SLC](../../context/SIMPLE_LOVABLE_COMPLETE.md)
 **Status:** Living roadmap
 
-**Direction:** [`active-designing/20260628-043542_thin-frontend-slc-direction.md`](../active-designing/20260628-043542_thin-frontend-slc-direction.md) · **Seam season hammock (living):** [`active-designing/seam-season-hammock.md`](../active-designing/seam-season-hammock.md) · **Counsel:** [`counsel/20260712-052806_claude-counsel-three-doors-and-teacher.md`](../counsel/20260712-052806_claude-counsel-three-doors-and-teacher.md)
+**Direction:** [`active-designing/20260628-043542_thin-frontend-slc-direction.md`](../active-designing/20260628-043542_thin-frontend-slc-direction.md) · **Seam season hammock (living):** [`active-designing/seam-season-hammock.md`](../../active-designing/seam-season-hammock.md) · **Counsel:** [`counsel/20260712-052806_claude-counsel-three-doors-and-teacher.md`](../counsel/20260712-052806_claude-counsel-three-doors-and-teacher.md)
 
 Radiant pass `20260727.224156` — path re-point only; claims unchanged
 
@@ -32,15 +32,15 @@ The full design lives in [`active-designing/yonder/20260619-225712_the-whole-sys
 
 Rye OS is the system. **Linengrow** is the first whole built upon it — a transparent civic and social-commerce platform for vegan musicians and activist creators. The two share one architectural spine: state as a pure fold over an append-only log of immutable signed facts, and five foundations beneath everything — keypair, signed event, log, projection, capability.
 
-Correctness by construction in the kernel becomes trust by construction in the platform. The same capability that isolates a process in Caravan names ownership in Linengrow; the same Mantra log that versions a file records a verifiable receipt; the same Comlink that seals a datagram delivers a signed transaction identity to identity. Rye OS grows the infrastructure laps; Linengrow grows its application laps on the same modules. The full Linengrow vision lives in [`../linengrow/`](../linengrow/); this roadmap grows it the SLC way, smallest lovable complete first. The granular plan for both tracks lives in [`TASKS.md`](TASKS.md).
+Correctness by construction in the kernel becomes trust by construction in the platform. The same capability that isolates a process in Caravan names ownership in Linengrow; the same Mantra log that versions a file records a verifiable receipt; the same Comlink that seals a datagram delivers a signed transaction identity to identity. Rye OS grows the infrastructure laps; Linengrow grows its application laps on the same modules. The full Linengrow vision lives in [`../linengrow/`](../../linengrow/); this roadmap grows it the SLC way, smallest lovable complete first. The granular plan for both tracks lives in [`TASKS.md`](TASKS.md).
 
 ---
 
 ## Local macOS proposal-to-Urbit thread (`20260713.201910`)
 
-*A parallel thread to the product roadmap below: this `~/urbit` clone lives on Keaton's Mac under a fresh `keatondun@gmail.com` / `xykj61` identity, layered over `urbit/urbit` and `urbit/vere` histories, and developed in the open as a **collaborative pull-request proposal to Urbit** — an infinite game played with the project, not a competitive fork against it (spirit named in [`../gratitude/TechnoOptimistManifesto.md`](../gratitude/TechnoOptimistManifesto.md)). **Landed:** Pass 1 repo mechanics + keys + Pacific-time convention; both forges pushed and signature-verified; the macOS enclosure equivalent (`sandbox-exec` launcher, witnessed green) + setup guide; the design thread — **Glow** named as the fused Rye-Hoon language, four variants (Riyo/Reya/Trey/Triz) proposed, Nock interpreter and Glow TAME supplement scoped, the grain lineage held whole and siloed; a root README + `GLOW_PROFILE.bron` + root rule 9 (docs↔implementation sync); the **warm-aura date atom** naming the whole tree's one clock ([`../context/specs/20260714-024800_warm-aura-date-atom-naming.md`](../context/specs/20260714-024800_warm-aura-date-atom-naming.md)); the `.peal` audio easter egg + Glow audio-Tilak lane. **Confirmed since (`20260714`):** the fork→proposal reframe (committed + re-signed + force-pushed); all four OS-variant names (Reya·Riyo·Trey·Triz) as two diverse-redundant pairs; the Ojjo O-vane name; and the Pool P-vane proposed (Gall-expanded content-creation computational data market, zero kernel collision). **Open (Keaton's word):** Pool confirm; the diverse-redundancy build shape; Ojjo/Pool build timing; Azimuth/Comlink integration; vere issue migration; seating the Glow supplement; host FileVault. Granular boxes in [`TASKS.md`](TASKS.md).*
+*A parallel thread to the product roadmap below: this `~/urbit` clone lives on Keaton's Mac under a fresh `keatondun@gmail.com` / `xykj61` identity, layered over `urbit/urbit` and `urbit/vere` histories, and developed in the open as a **collaborative pull-request proposal to Urbit** — an infinite game played with the project, not a competitive fork against it (spirit named in [`../gratitude/TechnoOptimistManifesto.md`](../../gratitude/TechnoOptimistManifesto.md)). **Landed:** Pass 1 repo mechanics + keys + Pacific-time convention; both forges pushed and signature-verified; the macOS enclosure equivalent (`sandbox-exec` launcher, witnessed green) + setup guide; the design thread — **Glow** named as the fused Rye-Hoon language, four variants (Riyo/Reya/Trey/Triz) proposed, Nock interpreter and Glow TAME supplement scoped, the grain lineage held whole and siloed; a root README + `GLOW_PROFILE.bron` + root rule 9 (docs↔implementation sync); the **warm-aura date atom** naming the whole tree's one clock ([`../context/specs/20260714-024800_warm-aura-date-atom-naming.md`](../../context/specs/20260714-024800_warm-aura-date-atom-naming.md)); the `.peal` audio easter egg + Glow audio-Tilak lane. **Confirmed since (`20260714`):** the fork→proposal reframe (committed + re-signed + force-pushed); all four OS-variant names (Reya·Riyo·Trey·Triz) as two diverse-redundant pairs; the Ojjo O-vane name; and the Pool P-vane proposed (Gall-expanded content-creation computational data market, zero kernel collision). **Open (Keaton's word):** Pool confirm; the diverse-redundancy build shape; Ojjo/Pool build timing; Azimuth/Comlink integration; vere issue migration; seating the Glow supplement; host FileVault. Granular boxes in [`TASKS.md`](TASKS.md).*
 
-**The archiving/reviving sweep is a naming-alignment, not a file-move** — settled `20260714.000100` (no bulk flatten) and aligned `20260714.024800` to the warm-aura date atom: every dated folder is bare `YYYYMMDD` (the `session-logs/archive/` pattern), every version/filename stamp is the one atom, and every future fold has one rule to follow. Prompt: [`../expanding-prompts/yonder/20260714-024800_archiving-reviving-sweep-warm-aura-alignment.md`](../expanding-prompts/yonder/20260714-024800_archiving-reviving-sweep-warm-aura-alignment.md).
+**The archiving/reviving sweep is a naming-alignment, not a file-move** — settled `20260714.000100` (no bulk flatten) and aligned `20260714.024800` to the warm-aura date atom: every dated folder is bare `YYYYMMDD` (the `session-logs/archive/` pattern), every version/filename stamp is the one atom, and every future fold has one rule to follow. Prompt: [`../expanding-prompts/yonder/20260714-024800_archiving-reviving-sweep-warm-aura-alignment.md`](../../expanding-prompts/yonder/20260714-024800_archiving-reviving-sweep-warm-aura-alignment.md).
 
 ## Now — Fresh sitting (`20260713`)
 
@@ -48,10 +48,10 @@ Correctness by construction in the kernel becomes trust by construction in the p
 
 | Order | Lap | Status | Anchor |
 |-------|-----|--------|--------|
-| — | **Docs compression** + `living_docs_lint` keeper | **Complete** `223300` · five duties GREEN | [`docs/`](../docs/README.md) · design [`221600`](../active-designing/20260712-221600_docs-compression-layer-design.md) · ER [`223300`](../external-research/20260712-223300_living-docs-lint-and-karpathy-wiki-pattern.md) |
+| — | **Docs compression** + `living_docs_lint` keeper | **Complete** `223300` · five duties GREEN | [`docs/`](../../docs/README.md) · design [`221600`](../active-designing/20260712-221600_docs-compression-layer-design.md) · ER [`223300`](../../external-research/20260712-223300_living-docs-lint-and-karpathy-wiki-pattern.md) |
 | — | **Parity word** — living_docs_lint advisory ch.1 · signed-Kumara append ch.2 | **Landed** `20260713` · suite nib **433** | [`220400`](../active-designing/20260712-220400_proven-seat-seam-c-and-rye-body.md) · `proven_seat_signed_kumara_parity.rish` |
 | **1** | **Forge courtesy** | Open · ~two minutes | Inference track lap 1 closed tip **418** |
-| **2** | **G2 naming** — the word today never named | **Open** · weigh seL4-kernel-swap · hw-kernel · Sculpt-integration | ER [`054342`](../external-research/20260712-054342_proven-seat-guest-genode-sel4.md) · hammock [`proven-seat-guest-hammock`](../active-designing/proven-seat-guest-hammock.md) |
+| **2** | **G2 naming** — the word today never named | **Open** · weigh seL4-kernel-swap · hw-kernel · Sculpt-integration | ER [`054342`](../../external-research/20260712-054342_proven-seat-guest-genode-sel4.md) · hammock [`proven-seat-guest-hammock`](../../active-designing/proven-seat-guest-hammock.md) |
 | — | **Named supersede build word** | Parked · frozen criteria ready | [`210800`](../active-designing/20260712-210800_pond-supersede-exit-criteria.md) · latch [`214200`](../active-designing/20260712-214200_proven-seat-signed-kumara-monocypher.md) |
 | — | Route two · Rye-body C-shim · libsodium | Parked on triggers | [`220400`](../active-designing/20260712-220400_proven-seat-seam-c-and-rye-body.md) |
 
@@ -70,14 +70,14 @@ Correctness by construction in the kernel becomes trust by construction in the p
 | **Brix** | `.brix` descriptor, 10 tracked bricks | Read by Mantra |
 | **Bron** | Data notation (`.bron`) | Used by `.brix` |
 | **Tablecloth** | Application database + Brix artifact store (horizon); **Tablecloth query** = namespace filter at parity **175** | Store designed (future); query landed |
-| **Mantra** | Weave + referential namespace + reference spec `20260707-011412` | parity **159–175**; [`mantra/README.md`](../mantra/README.md) |
+| **Mantra** | Weave + referential namespace + reference spec `20260707-011412` | parity **159–175**; [`mantra/README.md`](../../mantra/README.md) |
 | **Rishi** | Shell: typed values, file I/O, string builtins; **`repl`** — type, run, version, recall (SLC-1 **done**) | Gate trio + four SLC-1 witnesses incl. `slc1_accept.rish` |
 | **Brushstroke** | Hosted seed + Wayland seed (Skate grid on xdg toplevel) | Frame from values; seed + grid raster in parity |
 | **Skate** | Text grid: 8×8 monospace → ARGB8888 buffer | Headless selftest GREEN; feeds Wayland seed |
 | **Comlink** | Sealed datagram: shared-memory + localhost UDP | Full crypto stack; hosted wire in parity (suite at **144**) |
-| **Pond** | First app: [`pond/apps/drawn_terminal.rye`](../pond/apps/drawn_terminal.rye) (Skate viewer + Dexter keyboard) | **SLC-2b** — keyboard witness at parity **145**; RW-1 at **147**; chrono sweep at **148**; Lap 3 at **140** |
+| **Pond** | First app: [`pond/apps/drawn_terminal.rye`](../../pond/apps/drawn_terminal.rye) (Skate viewer + Dexter keyboard) | **SLC-2b** — keyboard witness at parity **145**; RW-1 at **147**; chrono sweep at **148**; Lap 3 at **140** |
 
-**Strengthening arc:** complete — chronicle + lexicon at `external-research/yonder/strengthening-compiler/0000_STRENGTHENING_LEXICON.md`; call-site harvest at [`archive/20260628-044200_call-site-harvest.md`](archive/20260628-044200_call-site-harvest.md).
+**Strengthening arc:** complete — chronicle + lexicon at `external-research/yonder/strengthening-compiler/0000_STRENGTHENING_LEXICON.md`; call-site harvest at [`archive/20260628-044200_call-site-harvest.md`](20260628-044200_call-site-harvest.md).
 
 **The trio:** `parity.rish` (**nib 432** living suite — regression suite + SLC-1 + SLC-2a + SLC-2b + RW-1 + RW-2 + Caravan + Comlink + Tally/Brushstroke seeds + hosted `width-check` + RW-3 + RW-4 + Edit 5 + Amber lap 1 + **Amber manifest Tilak (I6)** + chrono version sweep + crossing manifest seed + **SLC-L1 receipt** + **MALA M1** + **MALA M2** + **SLC-L4 Sigma** + **SLC-L2 sealed delivery** + **OA-L1 closed ask loop** + **OA-L2 cross-party delivery** + **OA-L3 escrow** + **OA-L4 reputation-as-fold** + **OA-L5 accept/complete/consent wire** + **NS-L1 recall** + **NS-L2 write revision** + **NS-L3 bolt sync** + **NS-L3 wire lap 1 hosted sync** + **NS-L3 resin-batch frame** + **NS-L3 beading** + **NS-L3 recall_beaded** + **marks-on-read** + **two-way sync (in-process)** + **two-way sync wire (hosted + device)** + **catch-up-to-latest (in-process)** + **catch-up-to-latest wire (hosted + device)** + **outer subscribe poll (in-process)** + **outer subscribe poll wire (hosted + device)** + **Tablecloth query (in-process)** + **I2 snapshot replay** + **I2 snapshot horizon** + **I2 snapshot wire lap 3** + **Caravan witness-stop footgun** + **Caravan source-crash recovery** + **NS-L3 batch wire (hosted + device + chunking)** + **two-rooms doorway** + **identity check** + **Comlink device wire** + **Realidream thin view** + **compass rose** + **Dimeroll lap 1** + **Dimeroll books view** + **Dimeroll lap 2** + **Linengrow sight view** + **Lattice lap 0** + **Scribble lap 0** + **Lantern lap 0** + **Lantern lap 1** + **Lantern lap 2** + **Lantern lap 3** + **Anvil corpus lap 0** + **Inference assist view** + **Inference assist view lap 2** + **Inference assist sight** + **Inference assist view lap 4** + **Inference assist sight lap 2** + **Anvil corpus lap 1** + **Lattice lap 1** + **Lattice lap 2** + **Lattice lap 3** + **Lattice lap 4** + **Scribble lap 1** + **Scribble lap 2** + **Scribble lap 3** + **Tablecloth query wire** + **Tablecloth query device wire** + **Realidream query view** + **Realidream query device view** + **Realidream query unified view** + **Realidream forge view** + **Realidream forge device view** + **Realidream forge unified view** + **Amphora lap 1** + **Amphora lap 2** + **Amphora lap 3** + **Amphora device wire** + **Amphora vessel stamp** + **Amphora vessel seal** + **Amphora resin chunk** + **Pond customs** + **Amphora purchase delivery** + **Granary lap 1** + **Granary weave view** + **Granary lap 2 write gate** + **Granary lap 3 Sharing** + **Granary lap 4 resin wire** + **Granary lap 5 Exchange** + **Mandi lap 1** + **Granary lap 4b device wire** + **Mandi floor view** + **Granary Exchange view** + **Mandi listing settle** + **Granary weave settle** + **Mandi settle view** + **Granary settle view** + **Realidream forge query view** + **Realidream forge query device view** + **Realidream forge query unified view** + **Anvil corpus view** + **Scribble outline view** + **Anvil corpus prefix view** + **Dimeroll exception view** + **Lattice lap 5** + **Anvil corpus rish view** + **Scribble lap 4** + **Dimeroll P&L view** + **Lattice lap 6** + **Scribble paragraphs view** + **Dimeroll BS view** + **Lantern lap 4** + **Lattice lap 7** + **Dimeroll TB view** + **Scribble fence kinds view** + **Lantern lap 5** + **Lattice lap 8** + **Anvil corpus rye prefix view** + **Scribble lap 6** + **Lantern lap 6** + **Lattice lap 9** + **Dimeroll journal view** + **Scribble plain snippets view** + **Lantern lap 7** + **Inference assist view lap 5** + **Inference assist sight lap 3** + **Linengrow sight view lap 2** + **Lattice lap 10** + **Dimeroll chart view** + **Anvil corpus tools prefix view** + **Lantern lap 8** + **Door 3 consumer-edge pass** + **receipt-verify Wasmtime**), `parity-selftest.rish` (std symlink guard), `additive-gate.rish` (structural std diff — applies when `rye/lib/` changes in HEAD). All in Rishi. **Status:** parity + selftest green on metal; SLC-L3 settlement stanza **removed** `152612` (MALA path).
 
@@ -103,7 +103,7 @@ Grown from the same modules Rye OS is already building, smallest lovable complet
 
 | Lap | What | Grows from |
 |------|------|-----------|
-| **SLC-L1** | A verifiable receipt — sign a transaction fact, append it to the log, produce a receipt anyone can verify; **landed** `20260704.021800` — [`linengrow/receipt.rye`](../linengrow/receipt.rye) + witness at parity **152** | keypair + Mantra log + projection |
+| **SLC-L1** | A verifiable receipt — sign a transaction fact, append it to the log, produce a receipt anyone can verify; **landed** `20260704.021800` — [`linengrow/receipt.rye`](../../linengrow/receipt.rye) + witness at parity **152** | keypair + Mantra log + projection |
 | **SLC-L2** | Sealed delivery — signed receipt identity to identity under Comlink seal; **landed** `20260706.000812` — parity **155** | Comlink |
 | **OA-L1** | Closed ask loop — post, apply, accept, complete, verify; **landed** `20260706.010912` — parity **156** | Linengrow + SLC-L1 receipt |
 | **OA-L2** | Cross-party delivery — request + application under Comlink seal; **landed** `20260706.011512` — parity **157** | SLC-L2 + OA-L1 |
@@ -111,10 +111,10 @@ Grown from the same modules Rye OS is already building, smallest lovable complet
 | **OA-L4** | Reputation-as-fold — applicant consent facts; witness bolt; **landed** `20260706.232812` — parity **167** | OA-L1 + escrow |
 | **OA-L5** | Accept, complete, consent wire — hosted + device; **landed** `20260707` — parity **184** | OA-L3 + wire |
 | **SLC-L3** | Settlement rail — landed `20260708.182500`, **removed from tree** `152612` (Sui/Monad path superseded by MALA); hammock + counsel remain as record | ~~Sui / Monad testnet seams~~ |
-| **SLC-L4** | Fixed-tier Sigma (donor-amount privacy) — Zig-native Pedersen + proof of opening; **landed** `20260709.194437` — [`disclosure_core.rye`](../linengrow/disclosure_core.rye) + [`pedersen.rye`](../tally/pedersen.rye) at parity **200** | prompt [`031612`](../expanding-prompts/yonder/20260709-031612_slcl4-lap1-fixed-tier-sigma-protocol.md) · hammock [`194500`](../active-designing/20260708-194500_slcl4-selective-disclosure.md) |
-| **MALA M1** | One issuer, one holder — mint, send, receipt, balance-as-fold on one node; **landed** `20260709.184051` — [`linengrow/mala.rye`](../linengrow/mala.rye) + witness at parity **198** | design [`031312`](../active-designing/20260702-031312_modules-aspects-and-mailable-money.md) · prompt [`182354`](../expanding-prompts/yonder/20260709-182354_mala-m1-one-issuer-one-holder.md) |
-| **MALA M2** | Mailable — mint crosses Comlink hosted UDP; receipt crosses back; **landed** `20260709.191634` — [`mala_delivery.rye`](../linengrow/mala_delivery.rye) + witness at parity **199** (device wire = M2b) | prompt [`191634`](../expanding-prompts/yonder/20260709-191634_mala-m2-mailable-comlink.md) |
-| **Dimeroll** | Centralized books — chart, journal, fold, P&L/BS, exception queue, sight view, lap-4 filters; **own root** `dimeroll/`; **landed** laps 1–4 `20260710.230433` — parity **207**–**210** · **387**–**394** | hammock [`125953`](../active-designing/20260710-125953_dimeroll-hammock.md) · lap 4 [`230433`](../../active-designing/yonder/20260710-230433_dimeroll-lap4-filters.md) · sight [`132548`](../active-designing/20260710-132548_dimeroll-lap3-sight-view.md) · horizon [`131956`](../external-research/20260710-131956_seen-books-living-desktop-horizon.md) |
+| **SLC-L4** | Fixed-tier Sigma (donor-amount privacy) — Zig-native Pedersen + proof of opening; **landed** `20260709.194437` — [`disclosure_core.rye`](../../linengrow/disclosure_core.rye) + [`pedersen.rye`](../../tally/pedersen.rye) at parity **200** | prompt [`031612`](../../expanding-prompts/yonder/20260709-031612_slcl4-lap1-fixed-tier-sigma-protocol.md) · hammock [`194500`](../active-designing/20260708-194500_slcl4-selective-disclosure.md) |
+| **MALA M1** | One issuer, one holder — mint, send, receipt, balance-as-fold on one node; **landed** `20260709.184051` — [`linengrow/mala.rye`](../linengrow/mala.rye) + witness at parity **198** | design [`031312`](../active-designing/20260702-031312_modules-aspects-and-mailable-money.md) · prompt [`182354`](../../expanding-prompts/yonder/20260709-182354_mala-m1-one-issuer-one-holder.md) |
+| **MALA M2** | Mailable — mint crosses Comlink hosted UDP; receipt crosses back; **landed** `20260709.191634` — [`mala_delivery.rye`](../linengrow/mala_delivery.rye) + witness at parity **199** (device wire = M2b) | prompt [`191634`](../../expanding-prompts/yonder/20260709-191634_mala-m2-mailable-comlink.md) |
+| **Dimeroll** | Centralized books — chart, journal, fold, P&L/BS, exception queue, sight view, lap-4 filters; **own root** `dimeroll/`; **landed** laps 1–4 `20260710.230433` — parity **207**–**210** · **387**–**394** | hammock [`125953`](../active-designing/20260710-125953_dimeroll-hammock.md) · lap 4 [`230433`](../../active-designing/yonder/20260710-230433_dimeroll-lap4-filters.md) · sight [`132548`](../active-designing/20260710-132548_dimeroll-lap3-sight-view.md) · horizon [`131956`](../../external-research/20260710-131956_seen-books-living-desktop-horizon.md) |
 | **Horizon** | The data market, premium tiers, state-currency circulation, the PBC and its rounds | the business model in `../linengrow/` |
 
 The first lap needs no ledger and no currency — only the foundations Rye OS already grows.
@@ -123,7 +123,7 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 ## The Keystone Revival — Pool (Gall's role), with Realidream as its Landscape (prioritized `20260715.172000`)
 
-*The single most load-bearing Urbit-vane revival for Glow, prioritized this stamp: **Gall — the userspace application host — revived as Pool**, with **Realidream** as its Landscape-parallel viewer. Ames and Clay already live as Comlink and Mantra (green); identity half-lives as Kumara. What Glow lacks is the host that turns that green spine into a system a person can inhabit — and everything at the product layer (Linengrow, Open Asks, the sanctuary care log, the content market, Dimeroll) is Gall-shaped. Pool composes Caravan's supervision + capability table (arguably ahead of Gall's current model) rather than starting cold; Realidream renders what Pool hosts as a pure fold from Weave to the frame — the alternative to Urbit's Landscape, grown on a capability-secured, witnessed spine. Full brief: [`../external-research/20260715-172000_pool-keystone-revival-realidream-landscape.md`](../external-research/20260715-172000_pool-keystone-revival-realidream-landscape.md). **Ladder fully closed `20260715.205500`** — checkable register: all four rungs below are green witnesses, not a pending design.*
+*The single most load-bearing Urbit-vane revival for Glow, prioritized this stamp: **Gall — the userspace application host — revived as Pool**, with **Realidream** as its Landscape-parallel viewer. Ames and Clay already live as Comlink and Mantra (green); identity half-lives as Kumara. What Glow lacks is the host that turns that green spine into a system a person can inhabit — and everything at the product layer (Linengrow, Open Asks, the sanctuary care log, the content market, Dimeroll) is Gall-shaped. Pool composes Caravan's supervision + capability table (arguably ahead of Gall's current model) rather than starting cold; Realidream renders what Pool hosts as a pure fold from Weave to the frame — the alternative to Urbit's Landscape, grown on a capability-secured, witnessed spine. Full brief: [`../external-research/20260715-172000_pool-keystone-revival-realidream-landscape.md`](../../external-research/20260715-172000_pool-keystone-revival-realidream-landscape.md). **Ladder fully closed `20260715.205500`** — checkable register: all four rungs below are green witnesses, not a pending design.*
 
 | Rung | Name | What it is | Gate |
 |------|------|------------|------|
@@ -180,25 +180,25 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **Skate on Android glass, `20260717.125858`** — NativeActivity presents a Brushstroke Skate grid (same `skate_grid.rye` as the desktop viewer) onto the ANativeWindow. Keaton confirmed the look on the GrapheneOS Pixel. Thin-view / richer frames stay later; debug keystore stays host-local.
 
-**TUBE glass path through TUBE7, `20260717.145547`** — after Skate/R1/R2, the Pixel presents TUBE1 admit, TUBE5 tip, TUBE2 publish, TUBE3 sealed fetch, and TUBE4 market acquire as Skate lines under the Sala panels (device-free TUBE2–5 witnesses already GREEN). Install proof still binds `sala_root.txt`; Keaton confirmed each glass line. **TUBE7 (packaging + rail present on physical Pixel) is GREEN** for this demo stack. **TUBE6** (whole stack on a real GrapheneOS *build*) stays horizon behind **HAWM2**. Compressor: [`docs/TUBE.md`](../docs/TUBE.md). Batch still local until Keaton says send.
+**TUBE glass path through TUBE7, `20260717.145547`** — after Skate/R1/R2, the Pixel presents TUBE1 admit, TUBE5 tip, TUBE2 publish, TUBE3 sealed fetch, and TUBE4 market acquire as Skate lines under the Sala panels (device-free TUBE2–5 witnesses already GREEN). Install proof still binds `sala_root.txt`; Keaton confirmed each glass line. **TUBE7 (packaging + rail present on physical Pixel) is GREEN** for this demo stack. **TUBE6** (whole stack on a real GrapheneOS *build*) stays horizon behind **HAWM2**. Compressor: [`docs/TUBE.md`](../../docs/TUBE.md). Batch still local until Keaton says send.
 
-**Third rune category — `?:`, `20260717.145912`** — after the glass ladder closed, the named keep-going on the language path: [`glow/rune_conditional.rye`](../glow/rune_conditional.rye) parses the if/then/else **test** child (parenthesized or bare ident), same head-only discipline as `|-` and `^-`. Witness GREEN; `parity_ch01` wired.
+**Third rune category — `?:`, `20260717.145912`** — after the glass ladder closed, the named keep-going on the language path: [`glow/rune_conditional.rye`](../../glow/rune_conditional.rye) parses the if/then/else **test** child (parenthesized or bare ident), same head-only discipline as `|-` and `^-`. Witness GREEN; `parity_ch01` wired.
 
-**Fourth rune head — `?-`, `20260717.150005`** — [`glow/rune_switch.rye`](../glow/rune_switch.rye) parses the exhaustive-switch **subject** (`kind.cur-record`). Witness GREEN; `parity_ch01` wired.
+**Fourth rune head — `?-`, `20260717.150005`** — [`glow/rune_switch.rye`](../../glow/rune_switch.rye) parses the exhaustive-switch **subject** (`kind.cur-record`). Witness GREEN; `parity_ch01` wired.
 
-**Fifth rune head — `=/`, `20260717.150053`** — [`glow/rune_face.rye`](../glow/rune_face.rye) opens the `=` bindings category: face + optional mold. Witness GREEN; `parity_ch01` wired.
+**Fifth rune head — `=/`, `20260717.150053`** — [`glow/rune_face.rye`](../../glow/rune_face.rye) opens the `=` bindings category: face + optional mold. Witness GREEN; `parity_ch01` wired.
 
-**Sixth rune head — `?~`, `20260717.150219`** — [`glow/rune_null.rye`](../glow/rune_null.rye) deepens the `?` category with the null-test subject. Witness GREEN; `parity_ch01` wired. The brief's composition heads (`|-` · `?~` · `=/` · `?-` · `?:`) each have a front half; general lowering stays later.
+**Sixth rune head — `?~`, `20260717.150219`** — [`glow/rune_null.rye`](../../glow/rune_null.rye) deepens the `?` category with the null-test subject. Witness GREEN; `parity_ch01` wired. The brief's composition heads (`|-` · `?~` · `=/` · `?-` · `?:`) each have a front half; general lowering stays later.
 
-**Seventh rune head — `=.`, `20260717.150409`** — [`glow/rune_mutate.rye`](../glow/rune_mutate.rye) deepens the `=` category (mutate one leg). Witness GREEN; `parity_ch01` wired.
+**Seventh rune head — `=.`, `20260717.150409`** — [`glow/rune_mutate.rye`](../../glow/rune_mutate.rye) deepens the `=` category (mutate one leg). Witness GREEN; `parity_ch01` wired.
 
-**Eighth rune head — `=*`, `20260717.150453`** — [`glow/rune_alias.rye`](../glow/rune_alias.rye) completes the `=` trio. Witness GREEN; `parity_ch01` wired.
+**Eighth rune head — `=*`, `20260717.150453`** — [`glow/rune_alias.rye`](../../glow/rune_alias.rye) completes the `=` trio. Witness GREEN; `parity_ch01` wired.
 
 **Glow generator hop** (sent through `dbf19e2880`) · **nested `@u64` `20260717.163004`** · **shared nest expr `20260717.164350`** · **`(lent …)` paren `20260717.164748`** · **lent-as-arm `20260717.165715`** · **`(mix …)` under `=/` `20260717.171524`** · **mix-as-arm `20260717.171840`** — Hoon `+mix` XOR under face and on `?:` · `?-` · `?~`; desks `face-mix` · `if-mix` · `switch-mix` · `null-mix`; `(jam …)` still refuses. Foundations stay unmoved; `glow/README.md` is the working surface pin. Hold: GrapheneOS-facing code stays Glow/Rye → native. Glow emits Rye that keeps **TAME root**; a Glow-specific TAME supplement waits until distinct checkable Glow idioms exist beyond the lower.
 
 **Sala B1 welcome carriage on glass, `20260717.170315` · Pixel `20260717.171015`** — HAWM2/TUBE6 remain horizon (full GrapheneOS build). In-process B1 welcome paints `SALA B1 carriage · 3 ev` on NativeActivity Skate row 11; pack GREEN; install proof GREEN; Keaton confirmed on Pixel. UDP live hop stays in `sala_broadcast_delivery.rye`.
 
-**Align pass — Dexter · Dill · glass input, `20260717.172832`** — compass rose walked. **Seated:** Dexter is an aspect of the **Brushstroke / Sala** stack, not Dill; Dill stays an honest vane gap. World study [`../external-research/20260717-172832_dexter-dill-glow-grapheneos-input.md`](../external-research/20260717-172832_dexter-dill-glow-grapheneos-input.md); reviving silo [`../active-reviving/20260717-172832_dexter-beside-brushstroke-dill-stays-gap.md`](../active-reviving/20260717-172832_dexter-beside-brushstroke-dill-stays-gap.md).
+**Align pass — Dexter · Dill · glass input, `20260717.172832`** — compass rose walked. **Seated:** Dexter is an aspect of the **Brushstroke / Sala** stack, not Dill; Dill stays an honest vane gap. World study [`../external-research/20260717-172832_dexter-dill-glow-grapheneos-input.md`](../../external-research/20260717-172832_dexter-dill-glow-grapheneos-input.md); reviving silo [`../active-reviving/20260717-172832_dexter-beside-brushstroke-dill-stays-gap.md`](../../active-reviving/20260717-172832_dexter-beside-brushstroke-dill-stays-gap.md).
 
 **Dexter D0+D1 on glass, `20260717.173133`** — pure LineEditor (`pond/apps/window_input.rye`, symlinked) fed Android-shaped demo actions; Skate paints `DEXTER line · glow` on row 12; title `SALA B0+B1+DX+R2+T1 GREEN`. Witness GREEN; pack GREEN; parity wired. Soft-keyboard live drain stays later.
 
@@ -208,7 +208,7 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **Dexter D3 Pixel look + glass keyboard decision, `20260717.175220`** — Keaton: GREEN for install + Dexter line; **no** system keyboard visible; **no** blinking caret. Align: Graphene/AOSP IME will not own glass typing on bare NativeActivity. **Seat** Glow-owned English QWERTY on Skate (iOS-inspired public layout notes; clean-room).
 
-**Waymark ZETA + ZETA0, `20260717.180025`** — keyboard ladder waymark **ZETA** from `glow-english-qwerty-glass-keyboard-3`; English layout tables GREEN; compressor [`../docs/ZETA.md`](../docs/ZETA.md).
+**Waymark ZETA + ZETA0, `20260717.180025`** — keyboard ladder waymark **ZETA** from `glow-english-qwerty-glass-keyboard-3`; English layout tables GREEN; compressor [`../docs/ZETA.md`](../../docs/ZETA.md).
 
 **ZETA1 letters paint + hit boxes, `20260717.180558`** — Skate rows 14–17 paint QWERTY; `HitMap` in window coords; taps on keyboard stay on glass. Witness + pack GREEN. Pixel look GREEN `20260717.180933` (Keaton).
 
@@ -268,7 +268,7 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **LULU5 Pixel GREEN · preference ladder closed, `20260718.132503`** — Keaton: cell toggle GREEN. LULU0–5 Settings prefs closed on Pixel. Next: **SETU0** adb Bron pull — check-in thin face in `docs/LULU.md`; or **send** LULU3–5.
 
-**SETU0 affirmed + GREEN, `20260718.132731`** — Keaton affirmed adb pull thin face. Device-free parse GREEN; host pull on Pixel 10a GREEN (`home_id kd` agrees). Compressor [`docs/SETU.md`](../docs/SETU.md). Next: **send** LULU3–5 + SETU0; or **SETU1** CDC-NCM check-in.
+**SETU0 affirmed + GREEN, `20260718.132731`** — Keaton affirmed adb pull thin face. Device-free parse GREEN; host pull on Pixel 10a GREEN (`home_id kd` agrees). Compressor [`docs/SETU.md`](../../docs/SETU.md). Next: **send** LULU3–5 + SETU0; or **SETU1** CDC-NCM check-in.
 
 **SETU0.5 GREEN · compose-not-fuse seated, `20260718.133328`–`133455`** — Desk applies pulled Hearth → station card; host path chains after SETU0. ER + siloed revival: do not fuse LULU/SETU into Amber/Amphora; compose later via Tilak→resin→Amphora. Next: **send** SETU0.5 + briefs; or **SETU1** thin lane check-in.
 
@@ -372,7 +372,7 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **Send STOA24, `20260718.234632`** — face→payload compose on the pier. Next language: **STOA25** check-in.
 
-**STOA25–68 GREEN, `20260719.175024`** — accrete-never-break catch-up: open `++` · `/+` library · cue/jam nest ladders · face→payload · `/+` payload nest-left/right/both cue-of-jam all GREEN (compressor [`../docs/STOA.md`](../docs/STOA.md)). Pier seat `f0526b6b18`. Nest polarity ladders closed. Next language: **STOA69** lean A product desk.
+**STOA25–68 GREEN, `20260719.175024`** — accrete-never-break catch-up: open `++` · `/+` library · cue/jam nest ladders · face→payload · `/+` payload nest-left/right/both cue-of-jam all GREEN (compressor [`../docs/STOA.md`](../../docs/STOA.md)). Pier seat `f0526b6b18`. Nest polarity ladders closed. Next language: **STOA69** lean A product desk.
 
 **STOA69 next-root product desk GREEN, `20260719.180837`** — aligned lean A: `lib-next-root-cue-jam` · `use-lib-next-root-cue-jam` (payload `root` + `/+` + cue-of-jam `next-root`). Expect **5**. Hold: molds · token stream · NativeActivity import · rewriting Sala B0 in Glow. Next language: **STOA70** check-in.
 
@@ -935,9 +935,9 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 **Framework next (host resume), `20260720.231857`** — lean A: live SETU6.5 **sent** eyes on real `usb0`/`ncm`. Lab TX gate already GREEN; Sala B0 Glow rewrite · JABS3 stay thicker check-ins. Same freeze brief.
 
-**Framework host resumes on UDT, `20260720.232932`** — Keaton set this host's system clock to **UDT (UTC)** for stamps (iOS/cloud season alignment). Spec [`context/specs/20260720-232932_udt-framework-host-convention.md`](../context/specs/20260720-232932_udt-framework-host-convention.md). Language nib then STOA0–147 + capacity freeze; **STOA148** amount-shape later same day.
+**Framework host resumes on UDT, `20260720.232932`** — Keaton set this host's system clock to **UDT (UTC)** for stamps (iOS/cloud season alignment). Spec [`context/specs/20260720-232932_udt-framework-host-convention.md`](../../context/specs/20260720-232932_udt-framework-host-convention.md). Language nib then STOA0–147 + capacity freeze; **STOA148** amount-shape later same day.
 
-**Framework host returns to Eastern / EDT, `20260722.125845`** — after a rest, Keaton asked stamps back to `America/New_York`. Spec [`context/specs/20260722-125845_edt-framework-host-convention.md`](../context/specs/20260722-125845_edt-framework-host-convention.md). UDT-era stamps stay readable.
+**Framework host returns to Eastern / EDT, `20260722.125845`** — after a rest, Keaton asked stamps back to `America/New_York`. Spec [`context/specs/20260722-125845_edt-framework-host-convention.md`](../../context/specs/20260722-125845_edt-framework-host-convention.md). UDT-era stamps stay readable.
 
 **SETU6.5 live-sent attempt, `20260720.233109`–`233220`** — lean A: stand-in SKIP GREEN; Pixel 10a on adb without NCM iface; Graphene expects `ncm\d` for USB tether. Awaiting replug + USB tethering on. Brief [`active-designing/20260720-233109_setu65-live-sent-attempt-stand-in.md`](../../active-designing/yonder/20260720-233109_setu65-live-sent-attempt-stand-in.md).
 
@@ -964,7 +964,7 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 
 ## The Visual Track — Realidream (horizon lane, ladder already named)
 
-*Where Linengrow's SLC product gets designed and **seen** — every surface a pure fold from Weave to the frame, per the three living essays. Opened `20260708.021912` from the grain-sketchbook mining ([study](../external-research/20260708-021912_grain-sketchbook-realidream-mining.md) · [counsel](../counsel/20260708-021912_claude-counsel-realidream-zig016-brix.md)); the sketchbook's unified DAG UI backend (Aurora + Skate + Realidream) is this lane's direct ancestor, its event DAG the unsigned ancestor of Weave itself. **This lane now sits under the Pool keystone revival above** — Realidream's rungs are the R-rungs there, rendered over what Pool hosts.*
+*Where Linengrow's SLC product gets designed and **seen** — every surface a pure fold from Weave to the frame, per the three living essays. Opened `20260708.021912` from the grain-sketchbook mining ([study](../../external-research/20260708-021912_grain-sketchbook-realidream-mining.md) · [counsel](../counsel/20260708-021912_claude-counsel-realidream-zig016-brix.md)); the sketchbook's unified DAG UI backend (Aurora + Skate + Realidream) is this lane's direct ancestor, its event DAG the unsigned ancestor of Weave itself. **This lane now sits under the Pool keystone revival above** — Realidream's rungs are the R-rungs there, rendered over what Pool hosts.*
 
 | Rung | Name | State | Gate |
 |------|------|-------|------|
@@ -974,16 +974,16 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 | 3 | **Dexter graduation** | **graduated `20260715.205500`** — Sala R2 (the unified viewer) is the second thin-view consumer the rule waited for | ~~second consumer arrives~~ — arrived |
 | 4 | **Realidream** | horizon — ask, receipt, reputation, sanctuary page rendered as views over Weave; thin-view exception proves local facts → frame without Pond/Dexter | rungs 1–3 |
 
-**Gratitude shelf for the lane:** Hyperfiddle (Dustin Getz — UIs as streaming DAGs) · Matklad (project-wide semantic graph) · the Nostr protocol (signed-event, relay-subscribed shape — [`nips/`](../gratitude/nips/)) · TigerBeetle (already kept) · grain-sketchbook (Kaeden's archived prototype — [`grain-sketchbook.md`](../gratitude/grain-sketchbook.md)) · Noah B. (name's artistic source — [`noah-b-realidream.md`](../gratitude/noah-b-realidream.md)). **Affirmed `174500`.** **Departures the lane keeps:** immutable facts re-folded, never nodes patched; meaning per-entry via Tilak, never one shared enum across consumers; values cross seams as Bron, never JSON-in-a-payload.
+**Gratitude shelf for the lane:** Hyperfiddle (Dustin Getz — UIs as streaming DAGs) · Matklad (project-wide semantic graph) · the Nostr protocol (signed-event, relay-subscribed shape — [`nips/`](../gratitude/nips/)) · TigerBeetle (already kept) · grain-sketchbook (Kaeden's archived prototype — [`grain-sketchbook.md`](../../gratitude/grain-sketchbook.md)) · Noah B. (name's artistic source — [`noah-b-realidream.md`](../../gratitude/noah-b-realidream.md)). **Affirmed `174500`.** **Departures the lane keeps:** immutable facts re-folded, never nodes patched; meaning per-entry via Tilak, never one shared enum across consumers; values cross seams as Bron, never JSON-in-a-payload.
 
 ### The Audio Tilak lane — `.peal`, and Glow over sound (horizon, opened `20260714.023700`)
 
-*Opened from the `anvil/anvil.peal` easter egg — the first audio bytes in the tree (Opus-in-Ogg under a four-letter Glow-compatible mark; gratitude [`../gratitude/OpusOggXiph.md`](../gratitude/OpusOggXiph.md)). A struck anvil should ring, so the forge module carries the first peal.* The lane grows a real capability, smallest-first, so Glow code can process audio as an ordinary value the system already knows how to fold:
+*Opened from the `anvil/anvil.peal` easter egg — the first audio bytes in the tree (Opus-in-Ogg under a four-letter Glow-compatible mark; gratitude [`../gratitude/OpusOggXiph.md`](../../gratitude/OpusOggXiph.md)). A struck anvil should ring, so the forge module carries the first peal.* The lane grows a real capability, smallest-first, so Glow code can process audio as an ordinary value the system already knows how to fold:
 
 | Rung | Name | What it is | Gate |
 |------|------|------------|------|
 | **A0** | **`.peal` mark exists** | **landed** — a servable Opus-in-Ogg stream at `anvil/anvil.peal`, tracked (not gitignored), decode-verified | done `023700` |
-| **A1** | **Peal Tilak** | a Glow type-mark for a `.peal` value: `absorb` (bytes → peal), `express` (peal → duration/channels/bitrate summary, waveform frame), `tend` (peal history in its own grain) — the same three Tilak duties every marked value keeps ([`../context/LEXICON.md`](../context/LEXICON.md)) | Tilak family stable; a real audio consumer asks |
+| **A1** | **Peal Tilak** | a Glow type-mark for a `.peal` value: `absorb` (bytes → peal), `express` (peal → duration/channels/bitrate summary, waveform frame), `tend` (peal history in its own grain) — the same three Tilak duties every marked value keeps ([`../context/LEXICON.md`](../../context/LEXICON.md)) | Tilak family stable; a real audio consumer asks |
 | **A2** | **Peal over Weave** | a peal enters Weave as a content-addressed resin (SHA3 name), so Glow code folds over it exactly as it folds over text and receipts — audio as a first-class value, not a blob beside the system | A1 · Weave resin tiers |
 | **A3** | **Brushstroke peal view** | a Brushstroke component that renders a peal's waveform/metadata as an immediate-mode frame — Landscape/Realidream-compatible, drawn from the value every frame, per the three living essays | A2 · Brushstroke frame seam · Realidream rung 1 |
 | **A4** | **Maitreya time seam** | playback/decode as a bounded host seam under **Maitreya** (the media driver already named in `LEXICON.md` for audio/video time), so Realidream can play a peal through the same seam Lotus and Linengrow will | A3 · Maitreya first lap |
@@ -1044,7 +1044,7 @@ The first lap needs no ledger and no currency — only the foundations Rye OS al
 | **4** | **Anvil LoRA + eval** | horizon | Tablecloth checkpoints |
 | **5** | **Live editor assist** | horizon | Wayland metal + rung 3 |
 
-Essay: [`external-research/20260710-133500_local-forge-minisforum-inference.md`](../external-research/20260710-133500_local-forge-minisforum-inference.md) · hammock: [`active-designing/20260710-133500_inference-stack-lap0-hammock.md`](../active-designing/20260710-133500_inference-stack-lap0-hammock.md) · progress: [`20260710-220706_slc-and-inference-progress.md`](20260710-220706_slc-and-inference-progress.md)
+Essay: [`external-research/20260710-133500_local-forge-minisforum-inference.md`](../../external-research/20260710-133500_local-forge-minisforum-inference.md) · hammock: [`active-designing/20260710-133500_inference-stack-lap0-hammock.md`](../active-designing/20260710-133500_inference-stack-lap0-hammock.md) · progress: [`20260710-220706_slc-and-inference-progress.md`](20260710-220706_slc-and-inference-progress.md)
 
 **Lap 1 close (`224805`):** the fixture-served contract family is whole — activations through ELU/min/max, sampling pins through `n`/`presence_penalty`, Scribble combos, and exception folds on glass. **Anvil corpus lap 2** (`225320`) deepens catalog filters through tip **386**. **Dimeroll lap 4** (`230433`) deepens journal filters and cash flow through tip **394**. Further Inference Track work opens at rung **2** (ROCm) or another named lap on Kaeden's word.
 
@@ -1118,7 +1118,7 @@ Still on the prior horizon, after vocabulary ground: **Comlink device wire** —
 
 ### Ground (thin frontend)
 
-7. **Std re-fork** — **done** (`20260628`) — pristine symlink; see [`archive/20260628-044300_std-refork-plan.md`](archive/20260628-044300_std-refork-plan.md).
+7. **Std re-fork** — **done** (`20260628`) — pristine symlink; see [`archive/20260628-044300_std-refork-plan.md`](20260628-044300_std-refork-plan.md).
 
 ### Study
 
@@ -1135,24 +1135,24 @@ Still on the prior horizon, after vocabulary ground: **Comlink device wire** —
 
 | Study | What | Status |
 |-------|------|--------|
-| **1** | Capability-protocol idiom (OCapN) beside Comlink’s sealed datagram | **Landed** [`053324`](../external-research/20260712-053324_ocapn-beside-comlink.md) |
-| **2** | One existing seed through a component-model / Wasm target | **Landed** [`054135`](../external-research/20260712-054135_component-model-one-seed.md) — **`receipt_core`** |
-| **3** | Proven-seat guest (Genode / seL4) for Rye userland — Caravan stays horizon | **Landed** [`054342`](../external-research/20260712-054342_proven-seat-guest-genode-sel4.md) |
-| **4** | Giving-asymmetric money (GNU Taler) for Linengrow’s giving lane | **Landed** [`054521`](../external-research/20260712-054521_taler-giving-lane-asymmetry.md) |
+| **1** | Capability-protocol idiom (OCapN) beside Comlink’s sealed datagram | **Landed** [`053324`](../../external-research/20260712-053324_ocapn-beside-comlink.md) |
+| **2** | One existing seed through a component-model / Wasm target | **Landed** [`054135`](../../external-research/20260712-054135_component-model-one-seed.md) — **`receipt_core`** |
+| **3** | Proven-seat guest (Genode / seL4) for Rye userland — Caravan stays horizon | **Landed** [`054342`](../../external-research/20260712-054342_proven-seat-guest-genode-sel4.md) |
+| **4** | Giving-asymmetric money (GNU Taler) for Linengrow’s giving lane | **Landed** [`054521`](../../external-research/20260712-054521_taler-giving-lane-asymmetry.md) |
 
-**Four Seam studies complete.** **Seated:** CapTP-as-fold **declined** [`054650`](../context/specs/20260712-054650_captp-as-fold-carriage-declined.md) · giving-lane T0 in money-close-to-home · **T1 gap map** [`054942`](../active-designing/20260712-054942_giving-lane-t1-open-asks-field-map.md). **Parked:** Spritely ally · Door 3 · component compile · proven-seat G0–G3 · giving T2.
+**Four Seam studies complete.** **Seated:** CapTP-as-fold **declined** [`054650`](../../context/specs/20260712-054650_captp-as-fold-carriage-declined.md) · giving-lane T0 in money-close-to-home · **T1 gap map** [`054942`](../active-designing/20260712-054942_giving-lane-t1-open-asks-field-map.md). **Parked:** Spritely ally · Door 3 · component compile · proven-seat G0–G3 · giving T2.
 
 ## Horizon 1.6 — Proposed destinations (`20260712.093812`)
 
-*Additions-only from the Fable study bundle. Studies and rows — nothing opened as a lap. Infusion map [`093812`](../external-research/20260712-093812_infusion-map.md).*
+*Additions-only from the Fable study bundle. Studies and rows — nothing opened as a lap. Infusion map [`093812`](../../external-research/20260712-093812_infusion-map.md).*
 
 | Destination | Status | Depends |
 |-------------|--------|---------|
-| **Mesh inference (TAME-guided)** | Horizon study [`093812`](../external-research/20260712-093812_mesh-inference-study.md) — Kumara-admitted · MALA-metered; not a lap. **Sobriety anchor:** IronBeetle ep004 COST [`../gratitude/ironbeetle/20260712-092212_ironbeetle-ep004-refuses-to-be-sharded.md`](../gratitude/ironbeetle/20260712-092212_ironbeetle-ep004-refuses-to-be-sharded.md) — beat one honest thread before scaling counts | Comlink · Mycelium M4 · seL4 seat · model-runtime seam |
+| **Mesh inference (TAME-guided)** | Horizon study [`093812`](../../external-research/20260712-093812_mesh-inference-study.md) — Kumara-admitted · MALA-metered; not a lap. **Sobriety anchor:** IronBeetle ep004 COST [`../gratitude/ironbeetle/20260712-092212_ironbeetle-ep004-refuses-to-be-sharded.md`](../../gratitude/ironbeetle/20260712-092212_ironbeetle-ep004-refuses-to-be-sharded.md) — beat one honest thread before scaling counts | Comlink · Mycelium M4 · seL4 seat · model-runtime seam |
 | **Proven-seat G1–G3 children** | **G1 closed digest-grade** `204549` · **signed-Kumara GREEN resting** `220400` · **G2 naming open** (seL4-kernel-swap · hw-kernel · Sculpt-integration) — counsel [`092212`](../counsel/20260712-092212_claude-counsel-hoon-azimuth-ames-verdicts.md) · seam-C [`220400`](../active-designing/20260712-220400_proven-seat-seam-c-and-rye-body.md) | **`lane_kvm` on-path GREEN** `140403` · G2 word before G3 lap |
 | **Comlink maturation** | Key-addressing · `%fade` from birth · content-address dedupe — shared prerequisite for Genode transport + mesh | RTAC seat |
 
-**Dependency ladder:** [`093812`](../external-research/20260712-093812_dependency-ladder.md) · **Matklad distilled:** [`093812`](../external-research/20260712-093812_matklad-teachings-distilled.md).
+**Dependency ladder:** [`093812`](../../external-research/20260712-093812_dependency-ladder.md) · **Matklad distilled:** [`093812`](../../external-research/20260712-093812_matklad-teachings-distilled.md).
 
 ## Horizon 2 — Compose the Simples
 

@@ -1,0 +1,120 @@
+# tools/f/fold_shelf_link_witness.rish -- no shelf link still carries the depth it was folded out of.
+#
+# WHAT THIS GUARDS. `construction/ITINERARY.md` sits in `construction/`, so a link it writes as
+# `](archive/X)` or `](../Y)` is correct from there. Folding that text down onto
+# `construction/archive/` moves it one directory without touching the link, and both forms break at
+# once: `archive/X` wants the bare `X`, and `../Y` wants `../../Y`. REDS %474 measured sixteen such
+# links across five shelves, repaired them, and then watched the fault fire twice more in the same
+# lap under the hand that had just written the mechanism down. Eighteen instances, three consecutive
+# hand-folds, the last two by an author actively thinking about the defect. A property a hand cannot
+# hold while looking straight at it is a property that wants a program.
+#
+# WHY NOTHING CAUGHT IT, and the reason is one sentence rather than four. Four instruments read
+# links here: `tracked_link_scan.sh` reads only "resolves here, breaks in a fresh clone" and reads
+# past any stamped basename; `readme_reach_scan.sh` gates `broken_in_living` and deliberately only
+# REPORTS `broken_in_testimony`, calling a file living when its basename carries no one-clock stamp;
+# `living_docs_lint.rish` reads a roster of living pages with zero rows in this room; and
+# `reds_fold.sh` re-anchors perfectly, for the shelves its own loom writes.
+#
+# THE ONE PROPERTY THAT MAKES A FILE A FOLD SHELF IS THE SAME PROPERTY EVERY LINK GUARD USES TO
+# DECIDE IT IS TESTIMONY AND STOP GATING. The fold's own output is stamped; stamped means testimony;
+# testimony is where the guards agree to stop. Measured `20260906.120905` over 276 tracked shelves:
+# all 345 instances stood in four stamped files, and zero in the unstamped `REDS-*` shelves the loom
+# already writes.
+#
+# WHY GATING TESTIMONY IS LAWFUL HERE AND NOT ELSEWHERE. Those guards leave testimony alone for a
+# good reason. A STALE reference was correct when it was written and broke because its target moved,
+# and accrete-never-break asks that it be resolved rather than rewritten. A DEPTH-LOST link was
+# never correct in the file it sits in: the fold that created the file broke it in the same act.
+# Nothing moved -- the text moved. Repairing it restores what the text already meant, which is the
+# erratum REDS %474 made by hand, and the two classes are told apart mechanically rather than by
+# judgment: a depth-lost link resolves under exactly one card-to-shelf correction, and a stale
+# reference resolves under neither.
+#
+# AMBIGUITY IS IMPOSSIBLE BY CONSTRUCTION, not merely absent. One correction wants a target
+# beginning `archive/`, the other one beginning `../`, and those prefixes are disjoint -- so a
+# target matches at most one and no repair ever guesses. This scan therefore carries no ambiguity
+# counter, because a counter that can never fire teaches a reader something false about the risk.
+#
+# WHAT IT REFUSES TO MISREAD. A `](...)` form inside backticks is prose ABOUT a link -- Markdown
+# renders a code span literally -- and `REDS-a-citation-in-a-comment-rows-218.md` quotes two broken
+# links as its own subject, so reading those as links would repair away the testimony. A
+# `](date/YYYYMMDD/name)` is an illustration built from placeholders exactly as stamp-and-name asks,
+# and counting one is the fabrication that law warns about.
+#
+# WHAT IT DOES NOT REACH, with a number rather than a shrug. The five rooms that fold two levels
+# deep carry the same class needing `../../../`. Sampled at most 400 files per room on
+# `20260906.120905`: active-designing 730, counsel 99, expanding-prompts 34, waymarks 27 -- at least
+# 890 instances. Named here as its own campaign rather than swept in the lap that built the guard.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/f/fold_shelf_link_witness.rish
+
+say "fold-shelf-link: Language EN -- a shelf is read from where it now stands, never from where its text came."
+say "fold-shelf-link: Style Gauge, Meter -- one gated reading, one reported, the repair named in the refusal."
+say "fold-shelf-link: Lens TAME -- safety first: a link that points at nothing is a promise the tree already broke."
+
+let scan = run ["sh" "tools/fixtures/f/fold_shelf_link_scan.sh"]
+say scan.out
+assert scan.ok else "fold-shelf-link: a shelf link kept the depth of the file it was folded out of -- run the scan with `list` to see each one and its single correction"
+assert scan.out contains "fold_depth_lost=0" else "fold-shelf-link: no shelf link may resolve only under a card-to-shelf correction"
+assert scan.out contains "verdict=ok" else "fold-shelf-link: the scan must balance before it is believed"
+say "field GREEN -- every shelf link reads from the directory it actually sits in"
+
+let control = run ["sh" "tools/fixtures/f/fold_shelf_link_control.sh"]
+say control.out
+assert control.ok else "fold-shelf-link: the control must complete"
+assert control.out contains "control_verdict=ok" else "fold-shelf-link: the control must reach its own close"
+assert control.out contains "clean_free=yes" else "fold-shelf-link: a shelf whose links resolve must pass free, or every refusal below is the pen speaking"
+assert control.out contains "clean_exit_zero=yes" else "fold-shelf-link: a clean pen must exit zero"
+assert control.out contains "clean_counts_links=yes" else "fold-shelf-link: the scan must name how many links it weighed, or a reading of nothing looks like a healthy room (REDS %463)"
+assert control.out contains "clean_no_loss=yes" else "fold-shelf-link: a clean pen must read zero rather than merely pass"
+assert control.out contains "archive_form_bitten=yes" else "fold-shelf-link: `](archive/X)` on a shelf points at archive/archive/X and must refuse"
+assert control.out contains "archive_form_counted=yes" else "fold-shelf-link: the refusal must carry a count"
+assert control.out contains "archive_form_repair_named=yes" else "fold-shelf-link: the refusal must name the single correction, since a count is not something a hand can apply"
+assert control.out contains "archive_form_exit_one=yes" else "fold-shelf-link: a planted depth loss must exit non-zero"
+assert control.out contains "parent_form_bitten=yes" else "fold-shelf-link: `](../Y)` on a shelf wants `../../Y` and must refuse"
+assert control.out contains "parent_form_repair_named=yes" else "fold-shelf-link: the parent-form repair must be named too"
+assert control.out contains "plant_lifted_free=yes" else "fold-shelf-link: the refusal must be proven from both sides, or it cannot be told from a scan that reds on everything"
+assert control.out contains "plant_lifted_zero=yes" else "fold-shelf-link: the repaired pen must read zero, not merely pass"
+assert control.out contains "two_forms_counted=yes" else "fold-shelf-link: two forms in one shelf are two losses"
+assert control.out contains "two_shelves_counted=yes" else "fold-shelf-link: a loss on each of two shelves is two losses"
+assert control.out contains "two_shelves_first_named=yes" else "fold-shelf-link: each losing shelf must be named"
+assert control.out contains "two_shelves_second_named=yes" else "fold-shelf-link: a second losing shelf must be named as plainly as the first"
+assert control.out contains "pin_self_free=yes" else "fold-shelf-link: `](../REDS.md)` resolves from a shelf and must pass with no exception list -- the re-anchor filter masks it, and this reading needs no mask"
+assert control.out contains "code_span_free=yes" else "fold-shelf-link: a link quoted inside backticks is prose about a link, and repairing it would destroy the testimony that quotes it"
+assert control.out contains "code_span_not_read=yes" else "fold-shelf-link: a code span must not even be weighed, or the count reports prose as citation"
+assert control.out contains "placeholder_free=yes" else "fold-shelf-link: an illustration built from placeholders is a shape rather than a citation (stamp-and-name)"
+assert control.out contains "url_free=yes" else "fold-shelf-link: an absolute URL is nobody's relative path"
+assert control.out contains "fragment_free=yes" else "fold-shelf-link: a fragment names a place inside a target, and the target is what must exist"
+assert control.out contains "fragment_counted=yes" else "fold-shelf-link: a fragment link is still a link and must be weighed"
+assert control.out contains "dead_reported_free=yes" else "fold-shelf-link: a link resolving under neither correction must NOT be gated -- that is the stale reference every other guard leaves to dated_path_resolve"
+assert control.out contains "dead_counted=yes" else "fold-shelf-link: the dead class must carry a number, or a disclosed limit cannot be weighed (REDS %465)"
+assert control.out contains "dead_not_gated=yes" else "fold-shelf-link: the dead class must leave the gate at zero"
+assert control.out contains "outside_room_free=yes" else "fold-shelf-link: this reading has one subject and must say so -- the card itself is correct as written"
+assert control.out contains "untracked_free=yes" else "fold-shelf-link: an untracked draft is a hand mid-fold and is nobody's promise yet"
+assert control.out contains "absent_listed_survived=yes" else "fold-shelf-link: a shelf listed in the index and absent from disk must not kill the reading -- a tree mid-rebase is when this guard matters most"
+assert control.out contains "absent_listed_counted=yes" else "fold-shelf-link: an absent listed path must be counted, since a reading that quietly got smaller is the fault %463 booked"
+assert control.out contains "absent_listed_no_fatal=yes" else "fold-shelf-link: the reading must produce no fatal from its own extractor"
+assert control.out contains "no_repo_refused=yes" else "fold-shelf-link: outside a repository the scan must refuse rather than read the filesystem"
+assert control.out contains "no_room_refused=yes" else "fold-shelf-link: an absent room must refuse"
+assert control.out contains "no_room_exit_two=yes" else "fold-shelf-link: an instrument refusal exits 2, never 1 -- a reading that could not run is not a reading that passed"
+assert control.out contains "no_shelves_refused=yes" else "fold-shelf-link: a room holding no tracked shelf must refuse, since a reading of nothing is not a reading (REDS %463)"
+assert control.out contains "no_shelves_never_ok=yes" else "fold-shelf-link: an empty room must never read as a clean one"
+assert control.out contains "no_shelves_exit_two=yes" else "fold-shelf-link: the empty-room refusal exits 2"
+assert control.out contains "blind_scan_reads_ok=yes" else "fold-shelf-link: a scan mutated to answer zero must read ok, or this phase proves nothing about the instrument"
+assert control.out contains "blind_scan_never_bites=yes" else "fold-shelf-link: the mutated scan must be genuinely blind, never merely quieter"
+assert control.out contains "pen_innocent=yes" else "fold-shelf-link: the same pen unmutated must still refuse, so the green above belongs to the mutation rather than the pen"
+assert control.out contains "repoint_dry_names=yes" else "fold-shelf-link: the repointer must be able to name its work without doing it"
+assert control.out contains "repoint_dry_counts=yes" else "fold-shelf-link: a dry run must carry the count it would apply"
+assert control.out contains "repoint_dry_writes_nothing=yes" else "fold-shelf-link: a dry run must leave every byte where it found it"
+assert control.out contains "repoint_applied=yes" else "fold-shelf-link: the repointer must apply the correction the scan approved"
+assert control.out contains "repoint_repairs_link=yes" else "fold-shelf-link: the depth-lost link must actually be repaired, not merely reported"
+assert control.out contains "repoint_spares_code_span=yes" else "fold-shelf-link: the SAME target quoted in backticks must survive byte for byte -- a row quoting a broken link is testimony about it"
+assert control.out contains "repoint_spares_stale=yes" else "fold-shelf-link: a stale reference resolving under neither correction must be left exactly alone, since moving it would be guessing"
+assert control.out contains "repoint_leaves_green=yes" else "fold-shelf-link: the scan must read zero after the repointer runs"
+assert control.out contains "repoint_stale_still_counted=yes" else "fold-shelf-link: the stale class must still be reported after a repoint, or the repair looks like a repair of everything"
+assert control.out contains "repoint_idempotent=yes" else "fold-shelf-link: a second pass must find nothing to do -- a repointer that rewrites its own repair walks a file deeper every run"
+
+say "RED and GREEN paths proven -- 50 readings over 18 planted states, 17 of them real repositories and one deliberately not a repository at all, every refusal lifted in its own pen"
+say "GREEN: fold-shelf-link -- every shelf link reads from where the shelf stands."
