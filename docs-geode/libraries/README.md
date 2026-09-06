@@ -31,7 +31,7 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 | [`edu/`](../../edu/README.md) | 2 | 6 |
 | [`ember/`](../../ember/README.md) | 2 | 5 |
 | [`encoding/`](../../encoding/README.md) | 8 | 16 |
-| [`glow/`](../../glow/README.md) | 132 | 113 |
+| [`glow/`](../../glow/README.md) | 132 | 114 |
 | [`granary/`](../../granary/README.md) | 7 | 2 |
 | [`image/`](../../image/README.md) | 225 | 252 |
 | [`kumara/`](../../kumara/README.md) | 2 | 3 |

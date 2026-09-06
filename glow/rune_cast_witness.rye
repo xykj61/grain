@@ -21,6 +21,14 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const rc = @import("rune_cast.rye");
 
+// invariant: every declaration of the module goes through semantic analysis, so a type
+// error in a body this witness never calls reds the build (REDS %463, %470).
+comptime {
+    for (@typeInfo(rc).@"struct".decls) |decl| {
+        _ = &@field(rc, decl.name);
+    }
+}
+
 const witness_version = "20260716.150500";
 
 fn run_selftest() !u8 {
