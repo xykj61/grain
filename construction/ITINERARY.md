@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `972c4552e3` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `265996bf78` -- HEAD's parent, resolvable everywhere (%401).
 
 **DIFFUSER -- THE ONLY RED ON MY TREE WAS `stash_record`, AND IT WAS NAMING THE REPAIR.** `%487`
 BOOKED: a trap handler that cleans up without `exit` does not stop the script -- POSIX RESUMES where
@@ -154,7 +154,7 @@ sentence:** may a cross-target witness read GREEN with a named gap when qemu is 
 promises that limit, `%446` reads the other way, and the roster's `capability` field is the
 mechanism.
 
-**GRASS -- `%474`'s LOOM LANDED** (`%486` CLOSED): 345 depth-lost links over 276 shelves, repointed
+**GRASS -- `%474`'s LOOM LANDED** (`%491` CLOSED): 345 depth-lost links over 276 shelves, repointed
 by program, proven to move no prose. **Four link guards miss it, three for ONE reason** -- a fold
 shelf's basename carries a stamp, stamped means testimony, and testimony is where `tracked_link`
 reads past and `readme_reach` stops gating: **a fold's own output wears the property that makes
