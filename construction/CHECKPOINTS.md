@@ -27,6 +27,29 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ---
 
+## `20260906.005436` -- the census account folds once two of the three things it named were built (walk-back `41998f8835`)
+
+**Walk-back nib:** `41998f8835`. **Live stamp:** `20260906.005436`.
+**Swept:** the DIFFUSER routing-census block of [`ITINERARY.md`](ITINERARY.md) -- 25 lines
+carrying the `%440` CLOSED account, the 682,425-pair metric census, its three named
+buildables, and the `agent_jail` environment fact that a peer has since booked as `%446`.
+The whole block moved to
+[`archive/20260906-005436_itinerary-landed-accounts.md`](archive/20260906-005436_itinerary-landed-accounts.md)
+with every word kept. **What waits there, worth recalling:** the four measured readings of
+the metric -- angle-blind, 1.0461 bits against a 2.5850 ceiling, 659 of 719 consecutive
+numbers at the diameter, and never aliasing -- which the essay and the census script both
+hold and re-derive in one command; and the third buildable, `seat_arc`, which stays proposed.
+
+**What the rebase then changed, recorded rather than smoothed over.** This cairn was written
+against a card standing 105 bytes from a 32,768 ceiling, where folding was the only move. By
+the time the round reached the anointed spine, eight peer commits had landed: the bound was
+raised to 40,960 and the live front was condensed by another hand, which had already carried
+most of that block away. Two lines of it still stood -- the three buildables and the
+instrument's own finding -- and those left on the merge, because two of the three are now
+built and this round's own account states the finding. So the fold was right and its stated
+*reason* was overtaken, which is worth a reader knowing: the shelf holds the block whole
+either way, and the walk-back nib below reaches the card as it stood before any of it.
+
 ## `20260906.001800` -- the live front folds two closed accounts and drops one that had closed upstream (walk-back `978ab7e785`)
 
 **Walk-back nib:** `978ab7e785`. **Live stamp:** `20260906.001800`.
