@@ -19,6 +19,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260905.225401` | [a guard that refuses and blames the wrong file](20260905/20260905-225401_a-guard-that-refuses-and-blames-the-wrong-file.kyri) | Three refuse; all blame a clean file. |
 | `20260905.225236` | [the scope that changed between rows](20260905/20260905-225236_the-scope-that-changed-between-rows.kyri) | %441: a table changed glob mid-row. |
 | `20260905.224930` | [the shelf that spoke in marks it never taught](20260905/20260905-224930_the-shelf-that-spoke-in-marks-it-never-taught.kyri) | 20 stamped names, 0 pages teaching one. |
+| `20260905.233110` | [the fence with no post on the time side](20260905/20260905-233110_the-fence-with-no-post-on-the-time-side.kyri) | 622 bounds, 0 name a rate; 24% vs 91% checked. |
 | `20260905.224714` | [the angle the sky never subtracts](20260905/20260905-224714_the-angle-the-sky-never-subtracts.kyri) | 682,425 pairs; one hop value between them. |
 | `20260905.224117` | [the rule that stated a reason nobody checked](20260905/20260905-224117_the-rule-that-stated-a-reason-nobody-checked.kyri) | 7 of 8 ships pay for an accident. |
 | `20260905.230526` | [the vessels get a listener](20260905/20260905-230526_the-vessels-get-a-listener.kyri) | Amphora's eight guards take a clock. |
