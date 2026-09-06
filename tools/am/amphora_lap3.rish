@@ -2,4 +2,10 @@
 if length args == 0 then let r = run ["rishi/bin/rishi" "run" "tools/gen/amphora/amphora_lap3.rish"]
 if length args != 0 then let r = run ["rishi/bin/rishi" "run" "tools/gen/amphora/amphora_lap3.rish" args[0]]
 if r.out != "" then say r.out
+# The refusal reason rides too. A shim that forwards only `r.out` drops the assert message a
+# failing witness writes to stderr, so the roster runner files an evidence page naming the
+# guard and nothing else -- measured `20260906` with a planted break, where the direct run said
+# *no longer compiles* and this path said nothing at all. The exit code always travelled; only
+# the sentence a reader needs did not.
+if r.err != "" then say r.err
 exit r.code

@@ -13,6 +13,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 |---|---|---|
 | `20260906.100418` | [the three vendor names surveyed](20260906/20260906-100418_the-three-vendor-names-surveyed.kyri) | Cursor 135, Codex 66, Grok 9; four traps named. |
 | `20260906.091519` | [the cause named by proximity](20260906/20260906-091519_the-cause-named-by-proximity.kyri) | %476: my own paper's 8 MiB step is page walk, not L3. |
+| `20260906.094340` | [the card remembered the dead lap](20260906/20260906-094340_the-untracked-card-remembered-the-lap-that-died.kyri) | %477-%478: a stall found by running it. |
 | `20260906.091155` | [the watch that keeps the loops alive](20260906/20260906-091155_the-watch-that-keeps-the-loops-alive.kyri) | a dead loop comes back; windows found by name. |
 | `20260906.090538` | [the meter that swallowed its own instrument](20260906/20260906-090538_the-meter-that-swallowed-its-own-instrument.kyri) | %473-%475: three reds inside one recovery. |
 | `20260906.090503` | [a published distance promises a road](20260906/20260906-090503_a-published-distance-promises-a-road.kyri) | %454 closed: 33.28% of the sky had no walk. |
@@ -20,6 +21,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260906.070653` | [the copy that was counted against itself](20260906/20260906-070653_the-copy-that-was-counted-against-itself.kyri) | %472: 108 of 113 were the original. |
 | `20260906.063813` | [blind to half its subject](20260906/20260906-063813_an-instrument-blind-to-half-its-subject.kyri) | %451 BOOKED; 13 guards blind to their controls. |
 | `20260906.062524` | [the address that does not fit](20260906/20260906-062524_the-address-that-does-not-fit.kyri) | 64 pages free, 65 charged 2.36x; huge pages prove it. |
+| `20260906.063638` | [eight rows and a third of the lane](20260906/20260906-063638_eight-rows-and-a-third-of-the-lane.kyri) | %472: eight guards, four of seven modules compiled. |
 | `20260906.062055` | [the file five guards read](20260906/20260906-062055_the-file-five-guards-read-and-nothing-compiled.kyri) | %470: diff.rye had not compiled in weeks. |
 | `20260906.060321` | [The rose that pointed at two empty rooms](20260906/20260906-060321_the-rose-that-pointed-at-two-empty-rooms.kyri) | a stub resolves, so no link check saw it. |
 | `20260906.052104` | [the tree that assembles its own paths](20260906/20260906-052104_the-tree-that-assembles-its-own-paths.kyri) | %464: 116 paths built, none written. |

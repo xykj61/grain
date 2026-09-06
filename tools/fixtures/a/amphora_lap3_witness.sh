@@ -21,6 +21,24 @@ BIN="$ROOT/amphora/bin/vessel-fetch-delivery"
 
 test -x "$BIN" || { echo "FAIL missing $BIN — build amphora lap 3 first"; exit 1; }
 
+. "$ROOT/tools/fixtures/s/shell_portable.sh"
+
+# THE TWO LONG-LIVED PROCESSES ARE BOUNDED, because an unbounded one stalls a roster pass rather
+# than failing it. The source and the fetcher each speak UDP on a fixed port pair, and until
+# `20260906` a lost datagram left this fixture waiting forever -- measured that day at one run in
+# six to eight, alone on a quiet pier. The module carries the real repair now (it binds before it
+# sends, holds one socket across an exchange, and bounds every receive by name), and this bound is
+# the floor beneath it: whatever slips past, the fixture reds in a minute instead of stopping.
+#
+# THE PORT LOCK IS NOT TAKEN HERE. It belongs at every port-using step of the witness, and the
+# witness holds it around this whole script -- `tools/fixtures/a/amphora_vessel_port_lock.sh`. A
+# second acquire inside the first would deadlock against itself.
+#
+# `timeout` IS USED WHERE IT EXISTS AND NAMED WHERE IT DOES NOT. It is coreutils, so this pier has
+# it and a BSD bench may not. A host without it is a host running one tree, where the collision
+# this bounds cannot arise -- a reasoned exemption rather than a fallback that forgives a failure.
+if have_tool timeout; then bound="timeout 60"; else bound=""; echo "note: no timeout(1) here -- the port lock stands alone"; fi
+
 source=$(mktemp -d)
 far=$(mktemp -d)
 trap 'rm -rf "$source" "$far"' EXIT
@@ -41,10 +59,10 @@ test ! -f "$far/resins/"* 2>/dev/null || {
 }
 
 # Hosted UDP: source serves, fetcher fills far/resins.
-"$BIN" source "$source" &
+$bound "$BIN" source "$source" &
 src_pid=$!
 sleep 0.05
-if ! "$BIN" fetcher "$far"; then
+if ! $bound "$BIN" fetcher "$far"; then
   kill "$src_pid" 2>/dev/null || true
   wait "$src_pid" 2>/dev/null || true
   echo "FAIL fetcher"

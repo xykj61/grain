@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `151c129e83` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `c027ae5d2b` -- HEAD's parent, resolvable everywhere (%401).
 
 **DIFFUSER** -- **my own published sentence named its cause by proximity, and proximity is not a
 measurement.** Adopted a lap off this tree's stash (`%321`), added the arm it skipped:
@@ -175,6 +175,15 @@ as long as the guard is green. Reported at `runs_red_self`, never counted, **one
 that dies takes its own red with it. Mand's twelve untraced refusal sites stay named
 ([audit](../active-designing/20260906-003146_the-refusal-that-leaves-no-trace.md), Caravan parked Dream's).
 
+**COPAL -- the same stash, the other half.** Grass's `%464` recovery above is this tree's too: the
+untracked run card outlived the reset and alone remembered three amphora guards, landed now
+(`%477`). **Then RUNNING them found what reading could not:** `vessel_fetch_delivery.rye` closed
+its socket between datagrams and bounded no receive, so one lost datagram stalled it forever --
+**2 in 20 on HEAD's bytes against 0 in 40 repaired** (`%478`). It binds before it sends now, holds
+one socket per exchange, names and bounds every receive, and takes the port pair under a **host**
+lock, since eight trees reach for one machine's ports.
+
+
 **The live front** (condensed `20260831.023122`; the day shelves hold every landed lap):
 - **Tri-OS:** LOCA pins pass and reject tampering. Pier proof awaits `libwayland-client` and
   `libxkbcommon`; installs and Apple gates stay Keaton's.
@@ -206,18 +215,13 @@ numbers and its stamp took none -- as `%451` just did again, six laps running no
 stamp, at start rather than at landing. Take the number from `--next`, never from the row.
 **Bounds raised `20260906`, both derived, both yours:** the operator card to 40,960 (8 ships x 2,048 live front) and the REDS pin to 40,960 (8 x 4,096 OPEN set + 8,192 header). **Each is sized per ship, so both re-open at twelve** -- and the pin's is also sized by how fast reds close (`%360`, 8,213 bytes, open since `20260830`).
 **`%456` OPEN -- eight ships share ONE login, so one credential is a fleet-wide outage** (mechanism read from `agent-jail.sh` source, so `%458` leaves it standing). **Its pier half is unmeasured from inside the enclosure.** Seven died 3 laps each in ten seconds on `OAuth session expired and could not be refreshed`; `agent-jail.sh` seeds every tree from the pier's single credential (*one login per pier*). Refresh token had **27 days** left, so expiry is excluded -- the leading read is **rotation**: one shared token, first refresher strands the rest and the pier's own copy. **Falsifier is cheap:** watch whether the pier's refresh value changes after a ship refreshes. Landed: `claude_refresh_dead()` names a dead credential instead of seeding it (proven 3 ways -- dead trips, expired ACCESS does not, missing field fails open), and `sh tools/fixtures/f/fleet_login_scan.sh` answers it in one command. **Yours, gate 3:** one login per ship is the fix. **A resource shared by every ship has no blast radius smaller than the fleet.**
-**`%455` ANSWERED** -- whether a JAILED lap writes a receipt was unconfirmed; this grass lap ran
-the full roster twice from inside the enclosure, `run_verdict=ok` both times. It does.
 **Landed `20260905`, whole on their shelves** -- `%430` and `%438` on the [235749 shelf](archive/20260905-235749_itinerary-landed-accounts.md); `%435`, `%427`-`%429`, `%423`-`%426`, `%420`, `%413`/`%412`, `%411`/`%410`, `%409`, `%408`, Mantra's 20 guards, the ripgrep fetch, the aroma breach, the baton and the three berths, and the bound grant itself on the [192154 shelf](archive/20260905-192154_itinerary-landed-accounts.md); `%442`/`%443` and `%445` on the [001800 shelf](archive/20260906-001800_itinerary-landed-accounts.md).
-**SEATED on the baton:** SEND regenerates `readme_metrics` **after `git add`** -- its scan counts with `git ls-files`, which reads the INDEX; `geode_libraries` walks with `find` and does not care. Eight ships, next lap.
 **`shell_dialect` re-diagnosed:** the `sed -i` repair stands; it reds on ONE case of 47 -- *a guard
 without its instrument names rg rather than a file*. `shell_portable_control.sh` takes `rg` off PATH
 by dropping every entry holding an executable `rg`, and this NixOS pier keeps `rg` and `sh` in one
 directory, so the scan under test cannot start. A pen of symlinks to every tool but `rg` is the fix.
-**Cold pass `20260906.053014`: 126 guards, 123 green, 0 red, 3 gated, 664s** -- the three reds the card carried are closed.
-**`%439`-`%441` FOLDED** to one [shelf](archive/REDS-what-no-meter-was-reading-rows-439-441.md):
-three claims where no instrument reads. **Mantra's next work is MERGE, not `Line`.**
-**Patchouli's cold pass reads the same two reds DIFFUSER names above**, on a sixth tree.
+**Cold pass `20260906.084208`: 134 guards, 129 green, 1 red, 4 gated, 840s** -- the red was `standing_equipment`, closed below.
+**`%439`-`%441` FOLDED** to one [shelf](archive/REDS-what-no-meter-was-reading-rows-439-441.md): three claims where no instrument reads.
 **`%360` advanced twice more** (`compass_rose`, `standing_equipment`): `unheard` **674** of ceiling
 **1,093** -- 419 of slack; the elder *14 under* is superseded. **Yours.**
 **Still open:** `glow/rune_shape.rye` width custody; `%281`/`%291`. **(%347):**
@@ -363,10 +367,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-<<<<<<< HEAD
-| `20260906.090503` | A published distance promises a road | [log](../session-logs/date/20260906/20260906-090503_a-published-distance-promises-a-road.kyri) |
-=======
-| `20260906.090538` | The meter that swallowed its own instrument | [log](../session-logs/date/20260906/20260906-090538_the-meter-that-swallowed-its-own-instrument.kyri) |
->>>>>>> 8b22606c4 (tools: a guard that reads its own verdict, and two beside it)
+| `20260906.094340` | The card remembered the dead lap | [log](../session-logs/date/20260906/20260906-094340_the-untracked-card-remembered-the-lap-that-died.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)

@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Stamp:** `20260710.161358`
-**Last updated:** `20260801.035204` (e148 -- couples - Cellar supersede)
+**Last updated:** `20260906.093709` (three more guards on the clock; the fetch path's stall bounded and named)
 **Status:** Landed -- laps 1-3 + stamp + seal + chunk + purchase delivery; Pond customs gates scrub; forge view folds a live sealed pour - **CLI wave e150** Q6 pour parse - Class W parked - couples held (carry/restore wait)
 **Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
 [`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
@@ -24,7 +24,7 @@ the parent it left.
 What makes a vessel worth trusting is that every wall names itself. Amphora checks the manifest
 line, the season's identity, the seal, the vessel's full length, and each chunk of a large resin,
 and it answers by name the moment one of them disagrees -- while the vessel already on disk keeps
-every byte it had. Eight standing witnesses run every lap, and four of them plant exactly those
+every byte it had. Eleven standing witnesses run every lap, and four of them plant exactly those
 faults and prove each wall answers by name.
 
 ## CLI surface
@@ -54,9 +54,11 @@ Canonical roof: [`src/main.rye`](src/main.rye) -- `//!` header + Q3 metal. HTML 
 
 **Ground:** silo [`foundations/20260703-201612_the-sealed-crossing.md`](../foundations/20260703-201612_the-sealed-crossing.md) - study [`external-research/20260703-201612_the-amphora-and-the-crossing.md`](../external-research/20260703-201612_the-amphora-and-the-crossing.md) - sealed crossing plainly [`external-research/20260710-002952_sealed-crossing-plainly.md`](../external-research/20260710-002952_sealed-crossing-plainly.md) - crossing metal plainly [`external-research/20260710-145313_amphora-crossing-plainly.md`](../external-research/20260710-145313_amphora-crossing-plainly.md)
 
-**Standing witnesses** (on the roster at `tier lap` from `20260905.225551`, 11s together): [`amphora_pour`](../tools/am/amphora_pour_witness.rish) - [`amphora_pour_negative`](../tools/am/amphora_pour_negative_witness.rish) - [`amphora_carry`](../tools/am/amphora_carry_witness.rish) - [`amphora_carry_negative`](../tools/am/amphora_carry_negative_witness.rish) - [`amphora_restore`](../tools/am/amphora_restore_witness.rish) - [`amphora_restore_negative`](../tools/am/amphora_restore_negative_witness.rish) - [`amphora_grand_round`](../tools/am/amphora_grand_round_witness.rish) - [`amphora_first_resident`](../tools/am/amphora_first_resident_witness.rish). Each negative twin plants at the wall it names and asserts the refusal by its own error, so the family is proven able to red rather than only to pass. They stand on the field's standing-equipment roster, which is a maintainer room the seed withholds -- named here rather than linked, so this page reads whole in both repositories.
+**Standing witnesses** (on the roster at `tier lap`; eight seated `20260905.225551` and three more `20260906.093709`, about 16s together): [`amphora_pour`](../tools/am/amphora_pour_witness.rish) - [`amphora_pour_negative`](../tools/am/amphora_pour_negative_witness.rish) - [`amphora_carry`](../tools/am/amphora_carry_witness.rish) - [`amphora_carry_negative`](../tools/am/amphora_carry_negative_witness.rish) - [`amphora_restore`](../tools/am/amphora_restore_witness.rish) - [`amphora_restore_negative`](../tools/am/amphora_restore_negative_witness.rish) - [`amphora_grand_round`](../tools/am/amphora_grand_round_witness.rish) - [`amphora_first_resident`](../tools/am/amphora_first_resident_witness.rish) - [`amphora_lap3`](../tools/am/amphora_lap3.rish) - [`amphora_resin_chunk`](../tools/am/amphora_resin_chunk.rish) - [`amphora_purchase_delivery`](../tools/am/amphora_purchase_delivery.rish). Each negative twin plants at the wall it names and asserts the refusal by its own error, so the family is proven able to red rather than only to pass. They stand on the field's standing-equipment roster, which is a maintainer room the seed withholds -- named here rather than linked, so this page reads whole in both repositories.
 
-**Hand witnesses** (run by name, on no clock): `tools/am/amphora_lap1.rish` - `tools/am/amphora_lap2.rish` - `tools/am/amphora_lap3.rish` - `tools/am/amphora_device_wire.rish` - `tools/am/amphora_vessel_stamp.rish` - `tools/am/amphora_vessel_seal.rish` - `tools/am/amphora_resin_chunk.rish` - `tools/am/amphora_purchase_delivery.rish` - `tools/p/pond_customs.rish` - `tools/r/realidream_forge_view.rish` - elder path `tools/cr/crossing_manifest_seed.rish`
+**The last three closed a gap the first eight could not see.** Those eight build three modules -- `src/main.rye`, `vessel_core.rye`, `vessel_seal.rye` -- and reach `manifest_entry.rye` by import. `purchase_delivery.rye`, `vessel_fetch_wire.rye` and `vessel_fetch_delivery.rye` are 1,160 lines, a third of what this room owns, and until `20260906` nothing on any clock compiled them. Running the three that do then found the fetch path stalling one time in six to eight: it closed its socket between datagrams and set no receive timeout, so a datagram lost to an unbound port waited forever. It binds before it sends now and holds one socket per exchange, every receive bounded and named, and the UDP port pair is taken under a host-wide lock (`tools/fixtures/a/amphora_vessel_port_lock.sh`) because eight trees on one pier reach for one machine's ports.
+
+**Hand witnesses** (run by name, on no clock): `tools/am/amphora_lap1.rish` - `tools/am/amphora_lap2.rish` - `tools/am/amphora_device_wire.rish` - `tools/am/amphora_vessel_stamp.rish` - `tools/am/amphora_vessel_seal.rish` - `tools/p/pond_customs.rish` - `tools/r/realidream_forge_view.rish` - elder path `tools/cr/crossing_manifest_seed.rish`. Four of them build only modules the standing eleven already compile, so they add claims rather than reach; `amphora_device_wire` drives a virtio lab this pier has no qemu for, and refuses honestly at exit 1 rather than pretending.
 
 **Tensegral Arc I r3** (`20260728.000659`): the `amphora_lap1/2/3` witnesses - vessel seal - resin chunk all **GREEN** this sitting -- Arc I (Brix - Cellar - Amphora) exits.
 
