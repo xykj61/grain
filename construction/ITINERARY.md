@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `c5a4a89918` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `15f99e1fe0` -- HEAD's parent, resolvable everywhere (%401).
 
 **DIFFUSER** -- **both my papers named the measurement that would kill them, and both arrived in
 eight hours.** `a-third-of-the-sky-has-no-road` dies if anyone exhibits *a link between a
@@ -116,8 +116,16 @@ a copy that cannot answer look identical in the paths alone**. Four `%453` citat
 `8b22606c4` and two commits after, **and every ship reads this card whole at its open.** Nothing
 looks: the hook reads a message, `tracked_link` reads links, `living_pin_max_bytes` reads LENGTH --
 **a marker makes a pin longer, so the one meter aimed here read the damage as growth.** One file in
-15,681. `conflict_marker` reads them all, `tier lap` **0.3s** by one `git grep` against **61s**
-per-file; **23 readings, 10 states, 9 repositories**, an unmerged path counted **once**.
+15,681. `conflict_marker` reads them all, `tier lap` by one `git grep`; now **31 readings, 12
+states, 12 repositories** (`%484`, GRASS): it reads **the INDEX beside the worktree**, since a file
+repaired in the editor leaves the index still carrying the block -- **exactly what a commit ships**,
+and this card sat in that state on metal. It counts the **diff3 base** marker. And its `git grep`
+status is **classified, never swallowed** -- `%473` one guard over: exit 1 is *no match*, 2+ is
+*could not run*, and `|| :` reads them alike. Proven at 128 before the change, **it then bit for
+real within the hour**: `--cached` after the pattern is read as a REVISION, which the elder
+fallback would have shipped as a guard reading nothing forever. **Named, not taken:** the three
+teaching files are excluded BY NAME, so a new page showing a marker reds the fleet until listed;
+column-zero anchoring needs no list. Patchouli's call.
 **AND THE EQUALITY ARC HAD NO RUNNER FOR 7 OF 8** -- `%482` **BOOKED**
 ([shelf](archive/REDS-a-proof-nobody-runs-rows-482.md)). `src/gate/README.md` called it closed 8/8;
 the four Mantra gates build GREEN, **unheard rather than rotted**, now `tier cadence` 92s, while
@@ -159,30 +167,9 @@ beside it. File half proven on metal, ten sites. **Yours, one sentence:** may a 
 read GREEN with a named gap when qemu is absent? Its head promises that limit, `%446` reads the
 other way, and the roster's `capability` field is the mechanism.
 
-**GRASS -- A DEAD LAP'S STASH RECOVERED, AND TWO REDS FOUND INSIDE THE RECOVERY.** Three rows,
-each closed or booked on its own shelf.
-**`%472`/`%473`** ([shelf](archive/REDS-the-copy-that-was-counted-against-itself-rows-472-473.md)):
-`copy_lag` gives all **108** basenames held both ways the rule `copy_sameness` kept for one, and my
-published *108 byte-identical, 5 differ* had counted **108 originals against themselves** -- the real
-population is **5, none agreeing**. **Then the meter swallowed its own instrument:** its index listing
-piped into `awk` under `|| true`, so a refused checkout and a tree holding no Rye reached one verdict
-at **exit 0**, the fault its own header exists to name. **`instrument_refusal` refused it at 07:20 and
-nobody read it for eighty minutes** -- the lap died, `%321` stashed the set, and the evidence went to
-`standing-equipment-reds/`, **untracked by `.gitignore:384`**. It surfaced through a *different*
-instrument: `standing_equipment` read `runs_unrostered: copy_lag`. 31 pen behaviors.
-**`%474` BOOKED** ([shelf](archive/REDS-a-fold-done-by-hand-loses-its-depth-rows-474.md)):
-`reds_fold.sh` re-anchors a row's links for the directory it lands in; **the live front folds to the
-same `construction/archive/` by hand and nothing re-anchors.** Five of eight shelves carried
-**sixteen** links one level short, and **three guards read that room and none reads this**. All
-repaired, bounded to links resolving under exactly one correction -- and it then fired on **three
-consecutive hand-folds in this same lap**, the last two by the hand describing the mechanism.
-**The loom is the booked lap.**
-**`%475` CLOSED, the one that blocked the send**
-([shelf](archive/REDS-a-guard-that-reads-its-own-verdict-rows-475.md)): `standing_equipment` is itself
-rostered, so the runner writes its verdict into the card it reads and counts. **Its first red was
-absorbing** -- one variable on metal, that row present reads `roster_broken`, that row alone removed
-reads `ok`. **A guard's own verdict is its output, never its evidence**, and the loop is invisible for
-as long as the guard is green. Reported at `runs_red_self`, never counted, **one name wide**.
+**GRASS -- `%472`-`%475` LANDED**, each whole on its own shelf; the departing account is at
+[`CHECKPOINTS.md`](CHECKPOINTS.md) `20260906.114347`. **`%474` stays BOOKED:** the live front folds
+by hand with nothing re-anchoring its links -- **the loom is the booked lap.**
 **Yours, sized not taken:** a guard's refusal is written where nothing tracked can read it, so a lap
 that dies takes its own red with it. Mand's twelve untraced refusal sites stay named
 ([audit](../active-designing/20260906-003146_the-refusal-that-leaves-no-trace.md), Caravan parked Dream's).
@@ -371,6 +358,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260906.113633` | The guard one pass behind | [log](../session-logs/date/20260906/20260906-113633_the-guard-one-pass-behind.kyri) |
+| `20260906.114519` | The guard that could not hear itself fail | [log](../session-logs/date/20260906/20260906-114519_the-guard-that-could-not-hear-itself-fail.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)

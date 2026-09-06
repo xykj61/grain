@@ -71,14 +71,56 @@ files_scanned=$(grep -c . "$work/files" || true)
 # Pathspec exclusions rather than an argument list: handing `git grep` all 15,681 paths worked on
 # this pier and is one large tree away from ARG_MAX, which would fail as *fewer hits* rather than as
 # an error -- the worst way for a guard to break.
+# THE BASE MARKER RIDES WITH THE OTHER TWO. `merge.conflictStyle=diff3` and `zdiff3` write a third
+# labelled marker, seven pipes and a space, naming the merge base between the two sides. It is as
+# unambiguous as the other two and no Markdown writes it, so a tree configured that way is read
+# here rather than half-read.
+#
+# BOTH SIDES ARE READ, because they fail differently and the fault this guard was built for passed
+# straight through the state where they disagree. `git grep` without `--cached` reads the WORKING
+# TREE; with it, the INDEX -- which is what a commit ships and what a clone gets. Repairing a
+# conflicted file in the editor leaves the worktree clean while the index still carries the block,
+# so a worktree-only reading answers `ok` at the exact moment a marker is about to be committed.
+# Measured on metal 20260906: the operator card read clean in the worktree and dirty in the index
+# for the whole window between the repair and the `git add`.
+#
+# THE STATUS IS CLASSIFIED, NEVER SWALLOWED. `git grep` exits 1 for "no match" -- the answer this
+# guard hopes for -- and 2 or more when it could not run at all. Those two mean opposite things and
+# `|| : > raw` reads them the same way, which is REDS %473 exactly: a listing piped under a truthy
+# fallback let a refused checkout and a genuinely empty result reach one verdict at exit 0, in the
+# meter whose own header existed to name that fault. Proven here on metal before it was changed --
+# one unterminated bracket in the pattern, `git grep` exiting 128 with `fatal: Unmatched [`, and
+# this scan answering `verdict=ok` at exit 0.
 : > "$work/hits"
-set -- -nE '^(<<<<<<< |>>>>>>> )' -- ':(exclude)vendor/*'
-while IFS= read -r x; do
-  [ -n "$x" ] || continue
-  set -- "$@" ":(exclude)$x"
-done < "$work/excluded"
-git grep "$@" > "$work/raw" 2>/dev/null || : > "$work/raw"
-sort -u "$work/raw" > "$work/hits"
+grep_side() {
+  _cached=$1
+  # `--cached` comes BEFORE the pattern, and this is not style. git grep reads the first
+  # non-option argument as the pattern and the NEXT one as a REVISION, so the same flag placed
+  # after it fails with `unable to resolve revision: --cached` at exit 128. The status check
+  # below caught exactly that while this function was being written; under the elder truthy
+  # fallback it would have shipped as a guard reading nothing and reporting `ok` forever.
+  set --
+  [ -z "$_cached" ] || set -- "$_cached"
+  set -- "$@" -nE '^(<<<<<<< |\|\|\|\|\|\|\| |>>>>>>> )' -- ':(exclude)vendor/*'
+  while IFS= read -r x; do
+    [ -n "$x" ] || continue
+    set -- "$@" ":(exclude)$x"
+  done < "$work/excluded"
+  # `set -e` is on, and a bare call would kill the script on git grep's exit 1 -- the very answer
+  # this guard hopes for. An `if` condition is the one place `set -e` stands down, so the status
+  # is both survived and read.
+  if git grep "$@" > "$work/raw" 2>/dev/null; then _st=0; else _st=$?; fi
+  if [ "$_st" -gt 1 ]; then
+    echo "verdict=instrument_refusal"
+    echo "refused: git grep exited $_st, so its silence about markers means nothing" >&2
+    exit 2
+  fi
+  cat "$work/raw" >> "$work/hits.raw"
+}
+: > "$work/hits.raw"
+grep_side ""
+grep_side "--cached"
+sort -u "$work/hits.raw" > "$work/hits"
 
 marked_files=$(cut -d: -f1 "$work/hits" 2>/dev/null | sort -u | grep -c . || true)
 hits=$(grep -c . "$work/hits" || true)

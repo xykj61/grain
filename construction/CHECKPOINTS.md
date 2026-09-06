@@ -723,6 +723,24 @@ walk-back nib, and the collision's own rows are shelved at
 
 ## The ledger (newest first)
 
+### `20260906.114347` -- the GRASS live front condensed to hold the `%484` accretion
+
+**Walk-back nib:** `553f9e1bb` -- read the whole departing card with
+`git show 553f9e1bb:construction/ITINERARY.md`.
+
+**Swept:** `construction/ITINERARY.md` stood at **40,957 bytes** against the 40,960 it declares --
+three bytes free, with eight ships writing it. The GRASS block for `%472`-`%475` (2,476 bytes) went
+to a pointer; every row it held is CLOSED or BOOKED with its own shelf.
+
+**What waits there, worth recalling:** the `copy_lag` arithmetic -- 108 basenames held both ways,
+and the published *108 byte-identical, 5 differ* had counted 108 originals against themselves, so
+the real population is 5 and none agree. The `instrument_refusal` that fired at 07:20 and went
+unread for eighty minutes, because the evidence landed in `standing-equipment-reds/`, untracked by
+`.gitignore:384`, and surfaced only when `standing_equipment` reported `runs_unrostered: copy_lag`.
+`%475`'s one-variable proof on metal that a rostered guard writes its verdict into the very card it
+reads and counts. And the sized-not-taken find that a guard's refusal is written where nothing
+tracked can read it, so a lap that dies takes its own red with it.
+
 ### `20260825.183336` -- the five-red card condensed and the ledger folded
 
 **Walk-back nib:** `5b94dd2d69` -- read the whole departing card with
