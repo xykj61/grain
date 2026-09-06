@@ -1,8 +1,16 @@
 # tools/gen/amphora/amphora_resin_chunk.rish -- Amphora large-resin chunking beyond one datagram.
 #
-# TAME on-touch `20260728.003735` (Tensegral r8): cold rye-build under rishi
-# can hang; bound rebuilds with timeout and accept a warm binary that still
-# selftests GREEN rather than waiting forever.
+# TAME on-touch `20260728.003735` (Tensegral r8): a cold rye-build under rishi can hang, so each
+# rebuild is bounded by `timeout`.
+#
+# A BUILD FAILURE AND A BUILD TIMEOUT ARE DIFFERENT ANSWERS, and until `20260906` this script gave
+# both the same one: it printed a line and carried on with whatever binary the last lap left in the
+# gitignored `amphora/bin/`. A module that stopped compiling therefore read GREEN on any pier that
+# had ever built it once -- REDS %449's fault with a path around it. `timeout` exits 124 when it
+# kills the command and passes the command's own status through otherwise, so the two are told
+# apart rather than merged: a bound that expired says nothing about the module and may fall back to
+# a warm binary, while any other non-zero exit means the module no longer compiles and reds here.
+# The word is asserted rather than the count, because `contains "0"` is satisfied by 10 as well.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/gen/amphora/amphora_resin_chunk.rish
@@ -12,8 +20,9 @@ let wire_bin = "amphora/bin/vessel-fetch-wire"
 let delivery_bin = "amphora/bin/vessel-fetch-delivery"
 
 say "amphora-chunk: ensure vessel fetch wire..."
-let build_wire = run ["sh" "-c" "mkdir -p amphora/bin && timeout 45 env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_fetch_wire.rye -femit-bin=${wire_bin}"]
-if build_wire.ok == false then say "amphora-chunk: wire rebuild timed out or failed — preferring warm binary"
+let build_wire = run ["sh" "-c" "mkdir -p amphora/bin && timeout 45 env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_fetch_wire.rye -femit-bin=${wire_bin} 2>&1; c=$?; if [ $c -eq 0 ]; then echo BUILD_OK; elif [ $c -eq 124 ]; then echo BUILD_OK_TIMED_OUT; else echo BUILD_BROKEN; fi"]
+assert build_wire.out contains "BUILD_OK" else "amphora vessel_fetch_wire no longer compiles -- ${build_wire.out}"
+if build_wire.out contains "BUILD_OK_TIMED_OUT" then say "amphora-chunk: wire rebuild hit the 45s bound -- preferring the warm binary"
 let wire_ready = run ["sh" "-c" "test -x ${wire_bin}"]
 assert wire_ready.ok else "amphora vessel-fetch-wire missing (build failed and no warm binary)"
 
@@ -23,18 +32,19 @@ assert wire.out contains "GREEN" else "amphora vessel_fetch_wire not GREEN"
 assert wire.out contains "chunk" else "amphora vessel_fetch_wire missing chunk claim"
 
 say "amphora-chunk: ensure vessel fetch delivery..."
-let build_delivery = run ["sh" "-c" "timeout 45 env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_fetch_delivery.rye -lc -femit-bin=${delivery_bin}"]
-if build_delivery.ok == false then say "amphora-chunk: delivery rebuild timed out or failed — preferring warm binary"
+let build_delivery = run ["sh" "-c" "timeout 45 env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_fetch_delivery.rye -lc -femit-bin=${delivery_bin} 2>&1; c=$?; if [ $c -eq 0 ]; then echo BUILD_OK; elif [ $c -eq 124 ]; then echo BUILD_OK_TIMED_OUT; else echo BUILD_BROKEN; fi"]
+assert build_delivery.out contains "BUILD_OK" else "amphora vessel_fetch_delivery no longer compiles -- ${build_delivery.out}"
+if build_delivery.out contains "BUILD_OK_TIMED_OUT" then say "amphora-chunk: delivery rebuild hit the 45s bound -- preferring the warm binary"
 let delivery_ready = run ["sh" "-c" "test -x ${delivery_bin}"]
 assert delivery_ready.ok else "amphora vessel-fetch-delivery missing (build failed and no warm binary)"
 
-let chunkdemo = run ["sh" "-c" "${delivery_bin} chunkdemo 2>&1"]
+let chunkdemo = run ["sh" "-c" "sh tools/fixtures/a/amphora_vessel_port_lock.sh ${delivery_bin} chunkdemo 2>&1"]
 assert chunkdemo.ok else "amphora chunkdemo exited non-zero"
 assert chunkdemo.out contains "GREEN" else "amphora chunkdemo not GREEN"
 assert chunkdemo.out contains "400" else "amphora chunkdemo missing 400 B claim"
 
 say "amphora-chunk: pour → chunked fetch → scrub..."
-let witness = run ["sh" "tools/fixtures/a/amphora_chunk_witness.sh"]
+let witness = run ["sh" "tools/fixtures/a/amphora_vessel_port_lock.sh" "sh" "tools/fixtures/a/amphora_chunk_witness.sh"]
 assert witness.ok else "Amphora resin chunk witness failed"
 assert witness.out contains "GREEN" else "Amphora resin chunk did not report GREEN"
 assert witness.out contains "SCRUB ok" else "Amphora resin chunk missing cold scrub"

@@ -1,5 +1,11 @@
 # tools/gen/amphora/amphora_lap3.rish -- Amphora lap 3: Comlink fetch-by-digest for vessel cargo.
 #
+# THE PORT PAIR IS HELD AROUND EVERY STEP THAT SPEAKS IT. `demo` and the fixture both bind UDP
+# 38494/38495, and those numbers are compiled into the module, so two runs anywhere on this pier
+# reach for one resource. `tools/fixtures/a/amphora_vessel_port_lock.sh` takes a host-path lock and
+# releases it whatever the command does. The selftests above touch no socket and stay outside it,
+# so the lock is held for as little time as the work actually needs.
+#
 # Run from the repository root:
 #   rishi/bin/rishi run tools/gen/amphora/amphora_lap3.rish
 
@@ -24,12 +30,12 @@ assert selftest.ok else "amphora vessel_fetch_delivery selftest exited non-zero"
 assert selftest.out contains "GREEN" else "amphora vessel_fetch_delivery selftest not GREEN"
 
 say "amphora-lap3: hosted UDP demo..."
-let demo = run ["sh" "-c" "${delivery_bin} demo 2>&1"]
+let demo = run ["sh" "-c" "sh tools/fixtures/a/amphora_vessel_port_lock.sh ${delivery_bin} demo 2>&1"]
 assert demo.ok else "amphora vessel_fetch_delivery demo exited non-zero"
 assert demo.out contains "GREEN" else "amphora vessel_fetch_delivery demo not GREEN"
 
 say "amphora-lap3: pour → fetch → scrub witness..."
-let witness = run ["sh" "tools/fixtures/a/amphora_lap3_witness.sh"]
+let witness = run ["sh" "tools/fixtures/a/amphora_vessel_port_lock.sh" "sh" "tools/fixtures/a/amphora_lap3_witness.sh"]
 assert witness.ok else "Amphora lap 3 witness failed"
 assert witness.out contains "GREEN" else "Amphora lap 3 did not report GREEN"
 assert witness.out contains "fetch-by-digest" else "Amphora lap 3 missing fetch claim"

@@ -320,3 +320,5 @@ at a closed fold.*
 *Row %475 folded to [`REDS-a-guard-that-reads-its-own-verdict-rows-475.md`](REDS-a-guard-that-reads-its-own-verdict-rows-475.md) on `20260906.093338`, **CLOSED** -- a guard's own verdict is its output, never its evidence, and counting it makes one red absorbing.*
 
 *Row %476 folded to [`REDS-a-bound-the-build-deletes-rows-476.md`](REDS-a-bound-the-build-deletes-rows-476.md) on `20260906.094538`, **BOOKED** -- an assert states an invariant; only a check at the edge is a bound, and a release build tells them apart.*
+
+*Rows %477 and %478 folded to [`REDS-a-third-of-the-lane-and-the-stall-it-hid-rows-477-478.md`](REDS-a-third-of-the-lane-and-the-stall-it-hid-rows-477-478.md) on `20260906.103050`, both **CLOSED** -- a third of a lane stood on no clock, and running it found a stall no reading could have.*

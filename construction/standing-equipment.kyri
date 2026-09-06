@@ -1471,9 +1471,11 @@ tier lap
 seated 20260905.160212
 
 # amphora -- the vessel family's eight witnesses, and not one of them stood on a clock. `amphora/`
-# holds 10 tracked Rye modules and 3,861 lines (`git ls-files 'amphora/*.rye' 'amphora/src/*.rye'`,
-# measured 20260905), and this roster named no guard over any of them. A lap that broke a seal, a
-# stamp, or the chunk assembler would have shipped green, because nothing was listening. That is
+# holds 7 tracked Rye modules of its own and 3,603 lines (corrected `20260906.063124`; the elder
+# reading of 10 and 3,861 counted three symlinks into `tally/` and `comlink/` -- see *amphora, the
+# crossing* at the foot of this file), and this roster named no guard over any of them. A lap that
+# broke a seal, a stamp, or the chunk assembler would have shipped green, because nothing was
+# listening -- and the chunk assembler stayed that way until the crossing rows landed. That is
 # REDS %360's population exactly -- a guard that is never run guards nothing -- one family at a time.
 #
 # WHAT THE EIGHT PROVE, in the pairs they were written as. `pour` fills a vessel from the Cellar
@@ -1690,3 +1692,95 @@ guard tlb_reach
 path tools/t/tlb_reach_witness.rish
 tier lap
 seated 20260906.061229
+# amphora, the crossing -- the three modules the nine guards above never compile.
+#
+# WHAT WAS MEASURED (`20260906.063124`), and how. Every one of the 177 rostered paths standing that
+# hour was read together with its own
+# fixtures two levels deep (`awk '/^path /{print $2}'` over this file, then each guard's
+# `tools/fixtures/...` references, then theirs). The eight amphora witnesses build exactly three
+# modules -- `amphora/src/main.rye`, `vessel_core.rye`, `vessel_seal.rye` -- whose `@import`
+# closure adds `manifest_entry.rye` and the two symlinked bounds files. `purchase_delivery.rye`,
+# `vessel_fetch_wire.rye` and `vessel_fetch_delivery.rye` were compiled by NOTHING a lap runs:
+# 1,160 lines, 32% of the 3,603 this lane owns.
+#
+# THE BLOCK ABOVE NAMED THIS GAP IN ITS OWN WORDS AND DID NOT CLOSE IT. It reads *a lap that
+# broke a seal, a stamp, or the chunk assembler would have shipped green, because nothing was
+# listening*, offering that as the state its eight rows cured -- and the chunk assembler is
+# exactly these two wire modules, which `grep -l chunk amphora/*.rye` answers and no rostered
+# guard compiled. Three comlink guards READ `vessel_fetch_wire.rye` as text for a bound tie
+# (`tools/fixtures/c/comlink_carriage_scan.sh:68` binds it to `vessel=`) and none of the three
+# builds it. That is REDS %449's shape one room over -- grep-reach standing in for compile-reach
+# -- and in `mantra/` it had already bitten. Here it had not: all three build today, measured
+# before these rows were written, so this is a coverage repair rather than a repair of rot.
+# Booked as REDS %477 (`20260906.063124`). That row read `%466` while it sat unsent in a stash and
+# `%472` while it sat in an unpushed commit; `xy` spent both in the meantime, and an unshared row
+# renumbers -- the derived spine's own law, twice in one lap.
+#
+# `rye_compile_reach` READS ALL THREE AS `built`, and is right to. It asks whether ANY runner in
+# the tree compiles a module; this roster asks whether a RUN one does. Its `built=1535` therefore
+# counts runners nobody runs -- REDS %360's population seen from the other side -- so a green
+# reading there settles the compile question and leaves the coverage question open. Two meters,
+# two questions, and the second is the one that decides whether a lap would catch a break.
+#
+# THE HEADLINE ABOVE IS CORRECTED IN PLACE. *10 tracked Rye modules and 3,861 lines* counts three
+# paths this lane does not own: `kumara.rye` and `tally_copy.rye` are symlinks into `tally/`, and
+# `wire_format.rye` into `comlink/`. Seven modules and 3,603 lines is the lane's own figure. REDS
+# %463's *resolution before accusation*, arriving in a roster comment rather than in a census.
+#
+# THE OTHER FIVE RUNNERS ARE MEASURED AND DECLINED, each by name rather than by omission.
+# `amphora_lap1`, `amphora_lap2`, `amphora_vessel_seal` and `amphora_vessel_stamp` build only
+# modules the nine above already compile, so they would add claims rather than reach, and the
+# family already proves pour, carry, restore and three tamper refusals. `amphora_device_wire`
+# drives `comlink/run_vessel_fetch_wire_lab.sh` under virtio and this pier holds no qemu. It
+# REFUSES HONESTLY -- exit 1, and the one GREEN in its output is the substring an assert was
+# looking for rather than a claim it made -- which is the good half of REDS %460, whose open
+# question is whether such a witness may read GREEN with a named gap. Rostering it here would put
+# an environment fact on a lap clock.
+#
+# `tier lap`, with the pier's state beside the number. GREEN at 3s, 3s and 2s -- 8 seconds
+# together -- at load average 8.3 with the emitted binaries deleted first, so each rebuilt from
+# source against a warm Zig cache (`20260906.063124`), against a full lap pass of 704 seconds
+# measured the same hour. Re-measured warm at 2s, 2s and 1s three times each (`20260906.093709`)
+# against a pass of 840. All twelve amphora rows together now cost roughly 16 of those 840.
+#
+# AND THE RUNNING FOUND WHAT THE READING COULD NOT. These three were rostered on a measurement of
+# COVERAGE -- which modules a lap compiles -- and the first lap to actually run them repeatedly
+# found `amphora/vessel_fetch_delivery.rye` stalling forever, one run in six to eight, alone on a
+# quiet pier. Both halves of the module's socket habit were races: it opened, bound, received and
+# closed a socket per datagram, so the receiver was unbound in every gap, and a UDP datagram
+# arriving at an unbound port is discarded with no trace on either side; and `recvfrom` carried no
+# `SO_RCVTIMEO`, so the receive that followed waited forever. The elder form did red -- at the
+# selftest, naming a selftest that was fine -- because a failed `rye build` overwrites the emitted
+# binary with a 5,547-byte artifact, which the warm-binary fallback beside it could never have
+# survived. Measured, elder against repaired, same pier and same hour at load 8.5: 2 stalls in 20
+# against 0 in 40. REDS %478 (`20260906.093709`).
+#
+# THREE THINGS STAND BEHIND THESE ROWS NOW, and they are different instruments. The module binds
+# before it sends and holds one socket across an exchange, with every receive bounded and named --
+# that is the repair. `tools/fixtures/a/amphora_vessel_port_lock.sh` holds UDP 38494/38495 at a
+# HOST path around every step that speaks them, because a port belongs to the machine and eight
+# trees reach for one pair -- that is what keeps two lawful runs from meeting. And the fixtures
+# bound their two long-lived processes with `timeout`, so whatever slips past both reds in a minute
+# rather than stopping the pass. Proven from both sides: two concurrent `chunkdemo` runs abort at
+# 134 in 31 seconds unlocked, and pass in 1 to 2 seconds through the lock, three trials each.
+#
+# THE REFUSAL REACHES THE READER THROUGH THE SHIM. `tools/am/amphora_*.rish` are accrete shims onto
+# `tools/gen/amphora/`, and they forwarded `r.out` alone -- so a planted break made the direct run
+# say *no longer compiles* and the roster's own path say nothing at all, filing an evidence page
+# naming the guard and no reason. The exit code always travelled; the sentence did not. These three
+# forward `r.err` now; the other five amphora shims are a ratchet, on touch.
+
+guard amphora_lap3
+path tools/am/amphora_lap3.rish
+tier lap
+seated 20260906.063124
+
+guard amphora_resin_chunk
+path tools/am/amphora_resin_chunk.rish
+tier lap
+seated 20260906.063124
+
+guard amphora_purchase_delivery
+path tools/am/amphora_purchase_delivery.rish
+tier lap
+seated 20260906.063124
