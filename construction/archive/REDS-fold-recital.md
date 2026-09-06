@@ -286,5 +286,8 @@ at a closed fold.*
 
 *Row %444 folded to [`REDS-the-accident-that-looked-like-a-decision-rows-444.md`](REDS-the-accident-that-looked-like-a-decision-rows-444.md) on `20260905.235828`, **CLOSED** -- %431 weighed three ways to live with a file that could not travel, and every one rested on a property the tree did not have: .gitignore never named publish-seed.sh, the root wildcard caught it as it catches every unlisted root path. Measuring that turned a workaround into a one-line allow-back and a manifest verdict.*
 
+
 *Row %445 folded to [`REDS-the-sentence-a-right-machine-produced-rows-445.md`](REDS-the-sentence-a-right-machine-produced-rows-445.md) on `20260906.001800`, **CLOSED** -- three standing guards refused correctly for a missing instrument and every one named a file that carried exactly what it was said to lack -- the machine was right and the sentence it produced was wrong.*
 *Rows %439-%441 folded to [`REDS-what-no-meter-was-reading-rows-439-441.md`](REDS-what-no-meter-was-reading-rows-439-441.md) on `20260905.235819`, **BOOKED** and **CLOSED** -- each landed a true claim in a place no instrument reads -- a doc comment, a shelf's row order, an essay's scope -- so a statement correct where it stood was invisible to every guard.*
+
+*Rows %447-%449 folded to [`REDS-three-guards-that-read-a-proxy-rows-447-449.md`](REDS-three-guards-that-read-a-proxy-rows-447-449.md) on `20260906.010238`, **BOOKED** and **CLOSED** -- each guard read a proxy for its subject -- an instrument blind to itself, a leg asserting a location rather than a behavior, and four guards reading a compiler's subject with grep.*
