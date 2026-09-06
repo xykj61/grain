@@ -60,8 +60,22 @@ while [ ! -d "$_fd_root/rishi/bin" ] || [ ! -d "$_fd_root/tools/fixtures" ]; do
 done
 . "$_fd_root/tools/fixtures/s/shell_portable.sh"
 
+# --paths answers a different question than the gate does, so it computes only what that question
+# needs. A consumer wants the paths a harness assembles; it does not want the build-site census,
+# which is one awk over three thousand scripts and very nearly the whole of this scan's wall time --
+# 3.8s against 0.08s for the candidate grep, measured 20260906. So paths mode short-circuits before
+# that census and prints `paths_mode=1` as its own marker. Without the marker, a consumer calling
+# --paths on a copy too old to know the flag would read an ordinary count-mode reading, find no
+# paths in it, and credit nothing -- silence that looks exactly like an honest empty answer.
+# An unknown argument refuses for the same reason: a flag read past is a question read as answered.
 MODE=count
-[ "${1:-}" = "--list" ] && MODE=list
+case "${1:-}" in
+  '')      ;;
+  --list)  MODE=list ;;
+  --paths) MODE=paths ;;
+  *) echo "detail: unknown argument $1 -- this scan takes --list or --paths"
+     echo "verdict=bad_argument"; exit 2 ;;
+esac
 
 # Bounds, both named here and checked at the edge below.
 # A harness is a whole test suite, and this tree holds one; sixty-four leaves room for a
@@ -91,9 +105,17 @@ trap 'rm -rf "$TMP"' EXIT INT TERM
 # own family counts its documentation as tree evidence. Four false unresolved shapes stood on the
 # lap it was written, and the eleventh took the guard red against itself. An instrument must know
 # where it stands (REDS %458).
+#
+# `rye_compile_reach_control.sh` joins that list on 20260906 for the same reason and by the same
+# rule: it is the control of the census that CONSUMES --paths below, so it plants a working harness
+# into a pen, and a plant is written by spelling the assembled shape into a printf. Read as tree
+# evidence it is an unresolvable site; read honestly it is this flag's own test. Its scan is NOT
+# excluded and must never be -- that file consumes the answer without spelling the shape, so it
+# stays out of this corpus on its own merit, and the day somebody writes the shape into it the
+# count rises and says so. An exclusion is a claim about one file, never about a family.
 find . -name '*.rish' -o -name '*.sh' 2>/dev/null \
   | sed 's|^\./||' | grep -vE '^(vendor|gratitude|seed)/' \
-  | grep -v 'rye_harness_roster' | sort > "$TMP/scripts"
+  | grep -vE 'rye_harness_roster|rye_compile_reach_control' | sort > "$TMP/scripts"
 
 # A build site is the token in argument position after a rye verb, with the verb bound to the rye
 # driver itself -- so the prose `rye build failed for RW-2` is read past rather than counted. A
@@ -106,6 +128,8 @@ find . -name '*.rish' -o -name '*.sh' 2>/dev/null \
 # processes in the shape this started as, and it measured 35s under load where the batched form
 # takes about one -- the same cure REDS %460 applied to the runner census, for the same reason.
 : > "$TMP/targets"
+sites_total=0; sites_literal=0; sites_assembled=0; sites_unparsed=0
+if [ "$MODE" != paths ]; then
 cat > "$TMP/sites.awk" <<'AWK'
 { line = $0; f0 = FILENAME
   while (line ~ /\\$/) {
@@ -136,6 +160,7 @@ sites_assembled=$(grep -cE '[$*]' "$TMP/targets" || true)
 # happened to follow the driver's name -- `rye build failed for RW-2` -- and a residue nobody can
 # see is a residue nobody can question.
 sites_unparsed=$((sites_total - sites_literal - sites_assembled))
+fi
 
 # The assembled shape this scan can read: a directory held in one variable, a stem held in
 # another, joined into a path. Everything else is counted as unresolved and named.
@@ -199,6 +224,35 @@ if [ "$n_harnesses" -gt "$max_harnesses" ]; then
   echo "harnesses=$n_harnesses"
   echo "verdict=harness_bound_exceeded"
   exit 1
+fi
+
+# --paths: the paths, one per line, each carrying the script that assembles it. The consumer needs
+# the script because the credit it grants is conditional on that script compiling anything -- this
+# scan answers WHAT a harness assembles and says nothing about whether it builds, which is the
+# other half and somebody else's question. Every stem bound is enforced above this line, so a
+# runaway list refuses here as it does in count mode.
+if [ "$MODE" = paths ]; then
+  : > "$TMP/paths"
+  while IFS="$(printf '\t')" read -r src dir stems; do
+    echo "$stems" | tr ',' '\n' | grep -v '^$' | sort -u > "$TMP/named"
+    c=$(wc -l < "$TMP/named" | tr -d ' ')
+    if [ "$c" -gt "$max_stems" ]; then
+      echo "paths_mode=1"; echo "harnesses=$n_harnesses"
+      echo "verdict=stem_bound_exceeded"; exit 1
+    fi
+    sed "s|^|harness_path $src $dir/|; s|\$|.rye|" "$TMP/named" >> "$TMP/paths"
+  done < "$TMP/harnesses"
+  cat "$TMP/paths"
+  # The marker rides ahead of the counters and is printed even when the corpus is empty, so a
+  # consumer can tell "this tree holds no harness" from "this copy does not know the flag". Those
+  # two readings look identical in the paths alone, and only one of them is a fault.
+  echo "paths_mode=1"
+  echo "harnesses=$n_harnesses"
+  echo "harness_units=$(wc -l < "$TMP/paths" | tr -d ' ')"
+  echo "unresolved=$n_unresolved"
+  if [ "$n_harnesses" -eq 0 ]; then echo "verdict=empty_corpus"; exit 1; fi
+  echo "verdict=ok"
+  exit 0
 fi
 
 n_stems=0
