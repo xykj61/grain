@@ -149,7 +149,7 @@ fi
 CMD_NAME="$1"
 shift
 case "$CMD_NAME" in
-  # `lap` runs tools/l/fleet_lap.sh inside the enclosure with NO flags in the jail's own argv.
+  # `lap` runs tools/f/fleet_lap.sh inside the enclosure with NO flags in the jail's own argv.
   # ai-jail owns `-v, --verbose` and refuses it after the command even when `--` was passed, while
   # Claude Code requires it alongside `--output-format stream-json` -- so the flags move inside,
   # where only claude reads them (REDS %414).
@@ -311,7 +311,7 @@ case "$AGENT_KIND" in
       echo "agent-jail: claude not on PATH -- the lap script needs it inside" >&2
       exit 1
     fi
-    AGENT_FORWARD=("$REPO_ROOT/tools/l/fleet_lap.sh")
+    AGENT_FORWARD=("$REPO_ROOT/tools/f/fleet_lap.sh")
     ;;
   claude)
     if ! AGENT_BIN="$(command -v claude 2>/dev/null)"; then

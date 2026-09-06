@@ -1,7 +1,7 @@
 #!/bin/sh
 # fleet_lap_verdict.sh -- classify one finished lap, so the loop can tell a WAIT from a FAULT.
 #
-# WHY THIS EXISTS. tools/l/fleet-loop.sh stops itself after three laps that each died in under ten
+# WHY THIS EXISTS. tools/f/fleet-loop.sh stops itself after three laps that each died in under ten
 # seconds, on the reasoning that "the fault is upstream of the agent and no number of retries will
 # reach past it." That reasoning is exactly right for an ai-jail flag refusal (REDS %414, the wound
 # it was written for) and exactly wrong for a spent session limit, which is upstream of the agent

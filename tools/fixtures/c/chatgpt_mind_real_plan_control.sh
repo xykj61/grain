@@ -1,7 +1,7 @@
 #!/bin/sh
 # FOSSIL -- Class M, prepped 20260906.114734 for the mitra shed; the cut stays RED until circled.
-# Living mutant: tools/l/fleet-loop.sh reading construction/fleet-roster.kyri, with
-# tools/l/fleet_watch.sh above it. Row and reasons: construction/SHRED_PREP.md.
+# Living mutant: tools/f/fleet-loop.sh reading construction/fleet-roster.kyri, with
+# tools/f/fleet_watch.sh above it. Row and reasons: construction/SHRED_PREP.md.
 
 set -eu
 
@@ -40,8 +40,8 @@ while [ ! -d "$ROOT/rishi/bin" ] || [ ! -d "$ROOT/tools/fixtures" ]; do
 done
 GIT=$(/bin/realpath "$GIT_LINK")
 GPG=$(/bin/realpath "$GPG_LINK")
-GIT_WRAPPER="$ROOT/tools/l/mind-bin/git"
-GIT_SHELL="$ROOT/tools/l/mind-shell"
+GIT_WRAPPER="$ROOT/tools/m/mind-bin/git"
+GIT_SHELL="$ROOT/tools/m/mind-shell"
 GIT_ZSHENV="$GIT_SHELL/.zshenv"
 GIT_ZPROFILE="$GIT_SHELL/.zprofile"
 RISHI_LINK="$ROOT/rishi/bin/rishi"
@@ -282,7 +282,7 @@ do
   fi
 done
 
-GIT_PATH=PATH=$ROOT/tools/l/mind-bin:/opt/homebrew/Cellar/git/2.53.0_1/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin
+GIT_PATH=PATH=$ROOT/tools/m/mind-bin:/opt/homebrew/Cellar/git/2.53.0_1/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin
 GIT_ID=GRAIN_MIND_GIT=$GIT_WRAPPER
 GIT_RAW=GRAIN_MIND_GIT_RAW=$GIT
 GIT_ROOT=GRAIN_MIND_ROOT=$ROOT
@@ -377,7 +377,7 @@ case "$(cat "$PEN/ahead")" in
   ''|*[!0-9]*) echo "FAIL chatgpt-mind-real-plan: enclosed one-commit arithmetic was not numeric" >&2; exit 1 ;;
 esac
 
-LAUNCHER="$ROOT/tools/l/chatgpt-mind.rish"
+LAUNCHER="$ROOT/tools/c/chatgpt-mind.rish"
 grep -F 'let pre_commit_run = run-bounded { argv: ([ai_jail] + jail_maps' "$LAUNCHER" \
   | grep -F '"hook" "run" "pre-commit"' >/dev/null || {
     echo "FAIL chatgpt-mind-real-plan: pre-commit hook no longer executes inside the outer jail" >&2

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # FOSSIL -- Class M, prepped 20260906.114734 for the mitra shed; the cut stays RED until circled.
-# Living mutant: tools/l/fleet-loop.sh reading construction/fleet-roster.kyri, with
-# tools/l/fleet_watch.sh above it. Row and reasons: construction/SHRED_PREP.md.
+# Living mutant: tools/f/fleet-loop.sh reading construction/fleet-roster.kyri, with
+# tools/f/fleet_watch.sh above it. Row and reasons: construction/SHRED_PREP.md.
 # chatgpt_mind_loop_control.sh -- two-sided local proof for the MIND launcher peers.
 # No Codex or network service is contacted; a planted CLI records arguments.
 
@@ -21,10 +21,10 @@ while [ ! -d "$ROOT/rishi/bin" ] || [ ! -d "$ROOT/tools/fixtures" ]; do
   fi
   ROOT=$(dirname "$ROOT")
 done
-SOURCE="$ROOT/tools/l/chatgpt-mind.sh"
-RISHI_SOURCE="$ROOT/tools/l/chatgpt-mind.rish"
+SOURCE="$ROOT/tools/c/chatgpt-mind.sh"
+RISHI_SOURCE="$ROOT/tools/c/chatgpt-mind.rish"
 HANDOFF_SOURCE="$ROOT/tools/l/launch-mind-cardinal-chapter.rish"
-PRINTER_SOURCE="$ROOT/tools/l/print-mind-cardinal-prompt.rish"
+PRINTER_SOURCE="$ROOT/tools/p/print-mind-cardinal-prompt.rish"
 RISHI_BIN="$ROOT/rishi/bin/rishi"
 ELDER="$ROOT/tools/l/launch-claude-chapter.rish"
 EXPECTED_SOURCE_SHA256=ee508804d2e441884cc55706da401eaadbf19d06542da0bb7c7f5652a576a234
@@ -98,25 +98,25 @@ HOMEBREW_GPG_AGENT=/opt/homebrew/Cellar/gnupg/2.5.18/bin/gpg-agent
   echo "FAIL: canonical Homebrew GPG agent is not a regular executable" >&2
   exit 1
 }
-mkdir -p "$REPO/tools/l/mind-bin" "$REPO/tools/l/mind-shell" "$REPO/tools/fixtures/c" "$REPO/tools/fixtures/d" "$REPO/tools/hooks" "$REPO/rishi/bin" "$REPO/arbor" "$REPO/recursion-prompts/versions" \
+mkdir -p "$REPO/tools/m/mind-bin" "$REPO/tools/m/mind-shell" "$REPO/tools/fixtures/c" "$REPO/tools/fixtures/d" "$REPO/tools/hooks" "$REPO/rishi/bin" "$REPO/arbor" "$REPO/recursion-prompts/versions" \
   "$REPO/construction" "$REPO/gratitude" "$REPO/scribble" "$REPO/lattice" \
   "$REPO/lantern" "$REPO/ember" "$REPO/brushstroke" "$HOME_PEN/.codex" "$BIN" "$RELEASE_ROOT/bin"
 REPO_CANONICAL=$(/bin/realpath "$REPO")
-MIND_GIT_WRAPPER="$REPO_CANONICAL/tools/l/mind-bin/git"
-MIND_SHELL_ROOT="$REPO_CANONICAL/tools/l/mind-shell"
-MIND_GIT_PATH="$REPO_CANONICAL/tools/l/mind-bin:/opt/homebrew/Cellar/git/2.53.0_1/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+MIND_GIT_WRAPPER="$REPO_CANONICAL/tools/m/mind-bin/git"
+MIND_SHELL_ROOT="$REPO_CANONICAL/tools/m/mind-shell"
+MIND_GIT_PATH="$REPO_CANONICAL/tools/m/mind-bin:/opt/homebrew/Cellar/git/2.53.0_1/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 
-cp "$SOURCE" "$REPO/tools/l/chatgpt-mind.sh"
-cp "$RISHI_SOURCE" "$REPO/tools/l/chatgpt-mind.rish"
-cp "$ROOT/tools/l/mind-bin/git" "$REPO/tools/l/mind-bin/git"
-cp "$ROOT/tools/l/mind-shell/.zshenv" "$REPO/tools/l/mind-shell/.zshenv"
-cp "$ROOT/tools/l/mind-shell/.zprofile" "$REPO/tools/l/mind-shell/.zprofile"
+cp "$SOURCE" "$REPO/tools/c/chatgpt-mind.sh"
+cp "$RISHI_SOURCE" "$REPO/tools/c/chatgpt-mind.rish"
+cp "$ROOT/tools/m/mind-bin/git" "$REPO/tools/m/mind-bin/git"
+cp "$ROOT/tools/m/mind-shell/.zshenv" "$REPO/tools/m/mind-shell/.zshenv"
+cp "$ROOT/tools/m/mind-shell/.zprofile" "$REPO/tools/m/mind-shell/.zprofile"
 cp "$ROOT/tools/hooks/pre-commit" "$REPO/tools/hooks/pre-commit"
 cp "$ROOT/tools/hooks/commit-msg" "$REPO/tools/hooks/commit-msg"
 cp "$ROOT/tools/fixtures/c/chatgpt_mind_lane.awk" "$REPO/tools/fixtures/c/chatgpt_mind_lane.awk"
 cp "$RISHI_BIN" "$REPO/rishi/bin/rishi"
 cp "$HANDOFF_SOURCE" "$REPO/tools/l/launch-mind-cardinal-chapter.rish"
-cp "$PRINTER_SOURCE" "$REPO/tools/l/print-mind-cardinal-prompt.rish"
+cp "$PRINTER_SOURCE" "$REPO/tools/p/print-mind-cardinal-prompt.rish"
 cp "$ROOT/tools/fixtures/d/dquote.txt" "$REPO/tools/fixtures/d/dquote.txt"
 cp "$ROOT/arbor/author.sh" "$REPO/arbor/author.sh"
 cp "$ROOT/arbor/launch-chatgpt-chapter.brix" "$REPO/arbor/launch-chatgpt-chapter.brix"
@@ -322,21 +322,21 @@ if [ "${1:-}" = /usr/bin/env ]; then
       [ "$arg" != "$mapped" ] || command_seen=true
     done
     [ "$arg" != "/opt/homebrew/Cellar/git/2.53.0_1/bin/git" ] || git_command_seen=true
-    [ "$arg" != "$REPO_CANONICAL/tools/l/mind-bin/git" ] || git_command_seen=true
+    [ "$arg" != "$REPO_CANONICAL/tools/m/mind-bin/git" ] || git_command_seen=true
     case "$arg" in
       CODEX_HOME=/*) exit 75 ;;
       CODEX_HOME=.mind-state/codex-home) home_seen=true ;;
       TMPDIR=/private/tmp) tmpdir_seen=true ;;
       TMPDIR=*) exit 76 ;;
-      PATH="$REPO_CANONICAL/tools/l/mind-bin:/opt/homebrew/Cellar/git/2.53.0_1/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin") git_path_seen=true ;;
+      PATH="$REPO_CANONICAL/tools/m/mind-bin:/opt/homebrew/Cellar/git/2.53.0_1/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin") git_path_seen=true ;;
       PATH=*) exit 77 ;;
-      GRAIN_MIND_GIT="$REPO_CANONICAL/tools/l/mind-bin/git") git_exec_seen=true ;;
+      GRAIN_MIND_GIT="$REPO_CANONICAL/tools/m/mind-bin/git") git_exec_seen=true ;;
       GRAIN_MIND_GIT=*) exit 78 ;;
       GRAIN_MIND_GIT_RAW=/opt/homebrew/Cellar/git/2.53.0_1/bin/git) git_raw_seen=true ;;
       GRAIN_MIND_GIT_RAW=*) exit 82 ;;
       GRAIN_MIND_ROOT="$REPO_CANONICAL") git_root_seen=true ;;
       GRAIN_MIND_ROOT=*) exit 83 ;;
-      ZDOTDIR="$REPO_CANONICAL/tools/l/mind-shell") git_zdotdir_seen=true ;;
+      ZDOTDIR="$REPO_CANONICAL/tools/m/mind-shell") git_zdotdir_seen=true ;;
       ZDOTDIR=*) exit 84 ;;
       DYLD_LIBRARY_PATH=/opt/homebrew/Cellar/pcre2/10.47_1/lib:/opt/homebrew/Cellar/gettext/1.0/lib) git_dyld_seen=true ;;
       DYLD_LIBRARY_PATH=*) exit 79 ;;
@@ -442,15 +442,15 @@ export FAKE_LOG FAKE_STATUS_LOG FAKE_JAIL_LOG FAKE_NESTED_GIT_LOG FAKE_PARK_COUN
 export MIND_GIT_WRAPPER MIND_SHELL_ROOT MIND_GIT_PATH
 
 run_launcher() {
-  (cd "$REPO" && tools/l/chatgpt-mind.sh "$@")
+  (cd "$REPO" && tools/c/chatgpt-mind.sh "$@")
 }
 
 run_rishi_launcher() {
-  (cd "$REPO" && rishi/bin/rishi run tools/l/chatgpt-mind.rish "$@")
+  (cd "$REPO" && rishi/bin/rishi run tools/c/chatgpt-mind.rish "$@")
 }
 
 run_rishi_printer() {
-  (cd "$REPO" && "$RISHI_BIN" run tools/l/print-mind-cardinal-prompt.rish)
+  (cd "$REPO" && "$RISHI_BIN" run tools/p/print-mind-cardinal-prompt.rish)
 }
 
 run_rishi_handoff() {
@@ -621,7 +621,7 @@ if grep -Ev '^[[:space:]]*(say[[:space:]]|$)' "$handoff_program" >/dev/null; the
   echo "FAIL: handoff carries authority beyond printing literal lines" >&2
   exit 1
 fi
-grep -F 'tools/l/print-mind-cardinal-prompt.rish' "$RISHI_SOURCE" >/dev/null
+grep -F 'tools/p/print-mind-cardinal-prompt.rish' "$RISHI_SOURCE" >/dev/null
 if grep -F 'tools/l/launch-mind-cardinal-chapter.rish' "$RISHI_SOURCE" >/dev/null; then
   echo "FAIL: operational launcher consumes the public handoff instead of the pure prompt" >&2
   exit 1
@@ -651,7 +651,7 @@ handoff_verdict() {
   [ "$(grep -c 'GRAIN_ROOT=$(/opt/homebrew/Cellar/git/2.53.0_1/bin/git rev-parse --show-toplevel)' "$candidate")" -eq 9 ] || return 1
   [ "$(grep -c 'cd "\$GRAIN_ROOT"' "$candidate")" -eq 9 ] || return 1
   grep -F 'env CODEX_HOME="$GRAIN_ROOT/.mind-state/codex-home" codex login)' "$candidate" >/dev/null || return 1
-  [ "$(grep -c '"\$GRAIN_ROOT/tools/l/chatgpt-mind.rish"' "$candidate")" -eq 5 ] || return 1
+  [ "$(grep -c '"\$GRAIN_ROOT/tools/c/chatgpt-mind.rish"' "$candidate")" -eq 5 ] || return 1
   [ "$(grep -c '"\$GRAIN_ROOT/rishi/bin/rishi" run ' "$candidate")" -eq 5 ] || return 1
   grep -F 'chatgpt-mind.rish" check)' "$candidate" >/dev/null || return 1
   grep -F 'chatgpt-mind.rish" once --arm-once)' "$candidate" >/dev/null || return 1
@@ -738,7 +738,7 @@ grep -F "rye <build> <$SPACE_ROOT/rishi/src/main.rye> <-femit-bin=$SPACE_ROOT/ri
 grep -F "codex <login> {CODEX_HOME=$SPACE_ROOT/.mind-state/codex-home}" "$SPACE_LOG" >/dev/null \
   || { echo "FAIL: spaced handoff login receipt missing or home wrong" >&2; exit 1; }
 for command_name in check once loop stop print; do
-  grep -F "rishi <run> <$SPACE_ROOT/tools/l/chatgpt-mind.rish> <$command_name>" "$SPACE_LOG" >/dev/null
+  grep -F "rishi <run> <$SPACE_ROOT/tools/c/chatgpt-mind.rish> <$command_name>" "$SPACE_LOG" >/dev/null
 done
 grep -F '<once> <--arm-once>' "$SPACE_LOG" >/dev/null
 grep -F '<loop> <--arm-loop> <--max-laps> <3> <--failure-ceiling> <2> <--backoff-seconds> <15>' "$SPACE_LOG" >/dev/null
@@ -1009,7 +1009,7 @@ LINKED_REPO="$PEN/linked-worktree"
 "$HOMEBREW_GIT" -C "$REPO" worktree add -q --detach "$LINKED_REPO" HEAD
 mkdir -p "$LINKED_REPO/rishi/bin"
 cp "$RISHI_BIN" "$LINKED_REPO/rishi/bin/rishi"
-if (cd "$LINKED_REPO" && rishi/bin/rishi run tools/l/chatgpt-mind.rish check) \
+if (cd "$LINKED_REPO" && rishi/bin/rishi run tools/c/chatgpt-mind.rish check) \
   >"$PEN/linked.out" 2>"$PEN/linked.err"
 then
   echo "FAIL: Rishi launcher accepted external linked-worktree Git administration" >&2
@@ -1071,7 +1071,7 @@ cat > "$phase_corrupt_rishi" <<'EOF'
 #!/bin/sh
 set -u
 case " $* " in
-  *'/tools/l/chatgpt-mind.rish lap '*)
+  *'/tools/c/chatgpt-mind.rish lap '*)
     MIND_RISHI_BIN="$MIND_PHASE_REAL_RISHI" "$MIND_PHASE_REAL_RISHI" "$@"
     child_status=$?
     case "$MIND_PHASE_CORRUPTION" in
@@ -1285,7 +1285,7 @@ ln -s "$PEN/outside-state" "$REPO/state-link"
 if (
   cd "$REPO"
   exec env MIND_STATE_DIR="$REPO/state-link" \
-    rishi/bin/rishi run tools/l/chatgpt-mind.rish print
+    rishi/bin/rishi run tools/c/chatgpt-mind.rish print
 ) >/dev/null 2>&1; then
   echo "FAIL: Rishi launcher accepted a symlink state directory" >&2
   exit 1
@@ -1587,7 +1587,7 @@ FAKE_CODEX_PID="$PEN/fake-codex.pid"
 export FAKE_CODEX_PID FAKE_CODEX_SLEEP=30
 (
   cd "$REPO"
-  exec rishi/bin/rishi run tools/l/chatgpt-mind.rish once --arm-once
+  exec rishi/bin/rishi run tools/c/chatgpt-mind.rish once --arm-once
 ) >"$PEN/signal.out" 2>"$PEN/signal.err" &
 rishi_pid=$!
 signal_wait=0

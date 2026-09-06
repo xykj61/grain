@@ -31,7 +31,7 @@
 #
 # A REFERENCE TABLE IS HELD OUT OF BOTH COUNTED READINGS and reported beside them, because both are
 # computed over sentences and a table has none. The shape is read off the line's own face and is
-# argued in tools/fixtures/q/reference_block.awk (REDS %397).
+# argued in tools/fixtures/r/reference_block.awk (REDS %397).
 #
 # ALL THREE OF THOSE READINGS ARGUED IN FULL beside the code that carries them, further down.
 # The short of it: a meter that instructs a repair which would make the artifact worse is the thing
@@ -98,7 +98,7 @@ letter_for() {
 # added without a line here fails on the lap that adds it rather than in whichever guard runs next.
 if [ "${1:-}" = "--deps" ]; then
   echo "tools/fixtures/p/prose_register_scan.sh"
-  echo "tools/fixtures/q/reference_block.awk"
+  echo "tools/fixtures/r/reference_block.awk"
   exit 0
 fi
 
@@ -292,7 +292,7 @@ fi
 #
 # So a reference block is held out of both readings and REPORTED beside them, the way declaration
 # docs already are. What counts as one is read off the line's own face, and the shape with its two
-# thresholds is argued in tools/fixtures/q/reference_block.awk -- CITED rather than spelled here,
+# thresholds is argued in tools/fixtures/r/reference_block.awk -- CITED rather than spelled here,
 # the same discipline measure() and the register floor already keep, so one reading serves the card
 # and its control rather than two that can come to disagree.
 #
@@ -309,7 +309,7 @@ fi
 # every 37th, exactly one carries a block and the below-B count stands at 64 either way -- so the
 # standing question about Door's ceiling of 9 against module heads is untouched by this, which is
 # worth knowing before anyone answers it.
-ref_awk="$root/tools/fixtures/q/reference_block.awk"
+ref_awk="$root/tools/fixtures/r/reference_block.awk"
 [ -f "$ref_awk" ] || { echo "qa: the reference reading is missing at $ref_awk" >&2; exit 1; }
 awk -v MODE=prose -f "$ref_awk" "$prose_path" > "$work/prose.txt"
 reference_lines=$(awk -v MODE=count -f "$ref_awk" "$prose_path")

@@ -16,7 +16,7 @@ set -eu
 ROOT=$(CDPATH= cd -- "$(dirname "$0")/../../.." && pwd)
 cd "$ROOT"
 scan=tools/fixtures/f/fleet_roster_scan.sh
-loop=tools/l/fleet-loop.sh
+loop=tools/f/fleet-loop.sh
 checks=0
 failures=0
 say() { checks=$((checks + 1)); printf '%s\n' "$1"; case "$1" in *=no) failures=$((failures + 1)) ;; esac; }
@@ -52,7 +52,7 @@ if sh "$scan" --tree nosuchseat >/dev/null 2>&1; then say "unknown_seat_refuses=
 # lap the tree cannot run is the drift this table exists to end.
 missing=0
 for s in $(sh "$scan" --live); do
-  [ -f "tools/l/${s}_seat_prompt.txt" ] || missing=$((missing + 1))
+  [ -f "tools/$(printf '%s' "$s" | cut -c1)/${s}_seat_prompt.txt" ] || missing=$((missing + 1))
 done
 case "$missing" in 0) say "every_live_seat_has_a_prompt=yes" ;; *) say "every_live_seat_has_a_prompt=no" ;; esac
 
@@ -228,7 +228,7 @@ rm -rf "$bpen"
 # --- the baton, and the third status word -----------------------------------------------------
 # Every ship shares one opening and it is written ONCE. A seat prompt restating it would be the
 # same rule written six times -- the fault this whole table exists to close, one room over.
-baton=tools/l/fleet_baton.txt
+baton=tools/f/fleet_baton.txt
 if [ -f "$baton" ]; then say "baton_exists=yes"; else say "baton_exists=no"; fi
 # Every seat on the roster owns a lane stanza, berthed and parked ones included: a seat named with
 # no prompt is a ship the loop would refuse at the last moment instead of the first.
@@ -237,12 +237,14 @@ if [ -f "$baton" ]; then say "baton_exists=yes"; else say "baton_exists=no"; fi
 missing=0
 for s in $(sh "$scan" --seats); do
   [ "$(sh "$scan" --engine "$s")" = field ] && continue
-  [ -f "tools/l/${s}_seat_prompt.txt" ] || missing=$((missing + 1))
+  [ -f "tools/$(printf '%s' "$s" | cut -c1)/${s}_seat_prompt.txt" ] || missing=$((missing + 1))
 done
 case "$missing" in 0) say "every_looping_seat_has_a_stanza=yes" ;; *) say "every_looping_seat_has_a_stanza=no" ;; esac
 # ...and no stanza restates the baton. One distinctive line from it is enough to catch a copy.
 copied=0
-for f in tools/l/*_seat_prompt.txt; do
+# The prompts live in eleven letter rooms now, one per seat initial, so the walk is a glob over
+# every single-letter room rather than over one. Same set, found by the fold rule.
+for f in tools/?/*_seat_prompt.txt; do
   grep -q '^THE BATON --' "$f" && copied=$((copied + 1))
 done
 case "$copied" in 0) say "no_stanza_restates_the_baton=yes" ;; *) say "no_stanza_restates_the_baton=no" ;; esac
@@ -252,7 +254,7 @@ case "$copied" in 0) say "no_stanza_restates_the_baton=yes" ;; *) say "no_stanza
 if grep -q 'seat_prompt()' "$loop" && ! grep -qE '(-p |exec .*)"\$\(cat "\$prompt_file"\)"' "$loop"; then
   say "loop_prepends_the_baton=yes"; else say "loop_prepends_the_baton=no"; fi
 # ...and the prepended text actually carries the baton, rather than the function existing empty.
-joined=$(cat tools/l/fleet_baton.txt; echo; cat tools/l/incense_seat_prompt.txt)
+joined=$(cat tools/f/fleet_baton.txt; echo; cat tools/i/incense_seat_prompt.txt)
 b_line=$(printf '%s\n' "$joined" | grep -n '^THE BATON --' | head -1 | cut -d: -f1)
 s_line=$(printf '%s\n' "$joined" | grep -n '^YOU ARE INCENSE' | head -1 | cut -d: -f1)
 if [ -n "$b_line" ] && [ -n "$s_line" ] && [ "$b_line" -lt "$s_line" ]; then

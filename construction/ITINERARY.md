@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `2909fcec4e` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `d720176514` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY and DIFFUSER accounts, CLOSED and folded** to the [`173444` shelf](archive/20260906-173444_itinerary-landed-accounts.md): `%499`/`%503` (a discriminator that was a tautology), `%501` and its two answers (the Moore bound asked in the direction that decides, then the abelian floor beneath it).
 
@@ -351,7 +351,7 @@ so the armed-wall promise rides on the publisher.
 
 ## Next -- the ranked remainder
 
-**BOOKED `20260906.173141` -- the tools letter rooms, 26 of 2,030 misfiled.** `tool_path_resolve` computes a room from the basename, so `tools/l/fleet_watch.sh` is unreachable by the resolver's own rule. **Seven move any time** (`stash_record`, the `chatgpt-mind` trio, `declared_model_witness`, `ios_app_shell_witness`, `mind-bin/git`). **Nineteen need the fleet DOWN** -- `fleet-loop.sh`, `fleet_lap.sh`, `fleet_watch.sh` and the seat prompts are read by every running loop on its next lap.
+**BOOKED `20260906.173141` -- the tools letter rooms, 26 of 2,030 misfiled.** `tool_path_resolve` computes a room from the basename, so `tools/f/fleet_watch.sh` is unreachable by the resolver's own rule. **Seven move any time** (`stash_record`, the `chatgpt-mind` trio, `declared_model_witness`, `ios_app_shell_witness`, `mind-bin/git`). **Nineteen need the fleet DOWN** -- `fleet-loop.sh`, `fleet_lap.sh`, `fleet_watch.sh` and the seat prompts are read by every running loop on its next lap.
 
 **PHEROMONE, a find (`20260906.153405`):** `mantra_glow_tend_limb1..4` are a census, not a forecast, so [`stamp-and-name`](../.claude/rules/stamp-and-name.md) welcomes them -- yet they miss **a mark that reads alone**: 1 guards `Line`, 2 `Weave`, 3 `Diff`, 4 `Store`. Add the subject, keep the order.
 

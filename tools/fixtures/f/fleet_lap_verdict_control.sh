@@ -14,7 +14,7 @@ root=$(CDPATH= cd -- "$(dirname -- "$0")/../../.." && pwd)
 cd "$root"
 
 verdict_sh=tools/fixtures/f/fleet_lap_verdict.sh
-loop_sh=tools/l/fleet-loop.sh
+loop_sh=tools/f/fleet-loop.sh
 pen=${TMPDIR:-/tmp}/fleet-lap-verdict-pen
 rm -rf "$pen"
 mkdir -p "$pen"

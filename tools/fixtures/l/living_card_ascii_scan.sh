@@ -41,8 +41,15 @@ TMPLIST=$(mktemp "${TMPDIR:-/tmp}/ascii-list.XXXXXX")
 # run by absolute path from inside a throwaway pen, it could not find its helper, and because it
 # also discarded awk's complaint it reported a perfectly clean tree. This one is not penned today
 # and would have passed either way, which is exactly why it is worth fixing before it is.
+# THE HELPER LIVES IN ITS OWN LETTER ROOM, so it is resolved through the tree root rather than
+# as a sibling (`20260906`). `tools/` folds by first sprig letter, and `utf8_valid.awk` moved to
+# `tools/fixtures/u/` where its basename says it belongs -- at which point a `dirname $0` sibling
+# lookup could no longer find it, and this scan reported `utf8_helper_missing`. Resolving from
+# the root keeps both laws: the helper sits in its named room, and the caller finds it from
+# wherever it is run.
 _lca_here=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
-UTF8_AWK="$_lca_here/utf8_valid.awk"
+_lca_root=$(CDPATH= cd -- "$_lca_here/../../.." && pwd)
+UTF8_AWK="$_lca_root/tools/fixtures/u/utf8_valid.awk"
 [ -f "$UTF8_AWK" ] || {
   echo "instrument=failed"
   echo "detail=utf8_helper_missing"
