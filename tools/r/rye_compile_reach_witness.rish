@@ -1,0 +1,52 @@
+# tools/r/rye_compile_reach_witness.rish -- does anything in this tree ever compile that module?
+#
+# WHY THIS RUNG EXISTS. `mantra/src/weave.rye` had not compiled since the toolchain moved --
+# `Weave.empty()` still returned the elder `.{}` ArrayList form where Zig 0.16 wants `.empty`, and
+# building the HEAD blob in a pen answers *missing struct field: items*. Four guards stood at
+# `tier lap` reading that module every lap and all four stayed green, because all four read it with
+# `grep`. Its own test inlines a copy of it, and the copy reads `.empty` -- because the test is
+# compiled and the module is not. A test that inlines its subject migrates with the toolchain while
+# the subject rots, and every guard stays green (REDS %453, which booked this census).
+#
+# WHAT IT HOLDS. One reading is gated: a tracked Rye file that a runner makes a claim about while no
+# build anywhere ever reaches it. That is %453's exact shape, and its ceiling only falls. The other
+# readings -- files nothing compiles and nobody claims, planted specimens under `fixtures/`, imports
+# naming a path that is not there -- are reported, because a test a hand runs and a probe kept for a
+# day that has not come are honest, and a gate that reds on the honest is a gate someone turns off.
+#
+# WHY THE COUNTS ARE A FLOOR. A build root reaches the compiler three ways here -- a literal, a
+# variable, and a function parameter -- so the census credits a runner generously: one that invokes
+# the Rye compiler at all credits every Rye path it names. It over-credits on purpose, because a
+# mis-tuned chase across 1,500 runners produces a confident false claim, which is the failure %460
+# closed one lane over. What it names is genuinely uncompiled; there is more it cannot see.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/r/rye_compile_reach_witness.rish
+
+say "rye-compile-reach: Language EN -- which authored Rye does anything ever compile?"
+say "rye-compile-reach: Style Gauge, Meter -- one gated reading, three reported, every count a floor."
+say "rye-compile-reach: Lens TAME -- three named bounds, and a refusal by name at each."
+
+say "rye-compile-reach: reading the corpus, the runners, and the import graph..."
+let census = run ["sh" "tools/fixtures/r/rye_compile_reach_scan.sh"]
+assert census.ok else "rye-compile-reach: the census refused -- ${census.out}"
+assert census.out contains "verdict=ok" else "rye-compile-reach: a tracked Rye file carries a claim no build ever checks -- ${census.out}"
+
+assert census.out contains "corpus=" else "rye-compile-reach: the corpus count is missing"
+assert census.out contains "distinct=" else "rye-compile-reach: the distinct-file count is missing"
+assert census.out contains "roots=" else "rye-compile-reach: the build-root count is missing"
+assert census.out contains "asserted=" else "rye-compile-reach: the gated reading is missing"
+
+say "rye-compile-reach: proving the census on real repositories in a throwaway pen..."
+let control = run ["sh" "tools/fixtures/r/rye_compile_reach_control.sh"]
+assert control.ok else "rye-compile-reach: the control must complete -- a census nobody has watched fail is a census nobody has tested"
+assert control.out contains "control_verdict=ok" else "rye-compile-reach: the control must reach its own verdict -- ${control.out}"
+assert control.out contains "fail=0" else "rye-compile-reach: a planted case behaved wrongly -- ${control.out}"
+
+# The two cases the whole census rests on, named here so a reader of this rung knows they ran.
+assert control.out contains "a link to a built module is innocent" else "rye-compile-reach: the symlink-innocence case is missing -- sixteen false accusations rode on it"
+assert control.out contains "the pen is innocent" else "rye-compile-reach: the innocence phase is missing -- every pass above would be a pass of the pen"
+assert control.out contains "ceiling+1 asserted files exit 1" else "rye-compile-reach: the ceiling is not proven from its failing side"
+assert control.out contains "exactly at the ceiling exits 0" else "rye-compile-reach: the ceiling is not proven from its passing side"
+
+say "GREEN: every distinct Rye file is compiled by something, is a planted specimen, or carries no claim."

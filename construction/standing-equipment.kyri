@@ -1517,3 +1517,17 @@ guard elf_machine
 path tools/e/elf_machine_witness.rish
 tier lap
 seated 20260906.040355
+
+# rye_compile_reach -- which authored Rye does anything ever compile? %449 found `mantra/src/weave.rye`
+# had not compiled since the toolchain moved, while four rostered guards read it every lap with
+# `grep` and stayed green, and booked this census. It walks the corpus, resolves the 227 symlinks
+# through `git ls-files -s` and `git cat-file` rather than a non-POSIX `readlink`, gathers every
+# build root, and closes the `@import` graph. The GATED reading is %449's own shape: a tracked Rye
+# file a runner makes a claim about while no build reaches it, ceiling 1. Files nothing compiles and
+# nobody claims are reported rather than gated -- 178 today, 114 of them tests in `rye/tests` that no
+# runner names. `tier lap`: 5s, most of it the control's sixteen pens.
+
+guard rye_compile_reach
+path tools/r/rye_compile_reach_witness.rish
+tier lap
+seated 20260906.045200
