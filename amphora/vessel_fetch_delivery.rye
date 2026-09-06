@@ -1,6 +1,6 @@
 //! amphora/vessel_fetch_delivery.rye -- Amphora -- vessel cargo fetch: hosted Comlink fetch-by-digest for vessel cargo - 20260713.
 //!
-//! Ports: fetcher 38494 - source 38495.
+//! Ports: source 38495 - a fetcher's own port is the kernel's, read off the request it sent.
 //! Scope: [`foundations/20260703-201612_the-sealed-crossing.md`](../foundations/20260703-201612_the-sealed-crossing.md)
 //!
 //!   rye build amphora/vessel_fetch_delivery.rye -lc -femit-bin=amphora/bin/vessel-fetch-delivery
@@ -30,8 +30,17 @@ const SOL_SOCKET: c_int = c.SOL.SOCKET;
 const SO_REUSEADDR: c_int = c.SO.REUSEADDR;
 const SO_RCVTIMEO: c_int = c.SO.RCVTIMEO;
 
-const fetcher_port: u16 = 38494;
+// A PORT BELONGS TO THE MACHINE, NEVER TO THIS FILE -- the third time this file says that about a
+// number, and the first two are eight lines up. `SOL_SOCKET` and `sockaddr_in` were both taken back
+// from the source and handed to the host, and a compiled-in reply port stood one line below them
+// until `20260906`. `source_port` stays, because a service answers on a number its askers can name.
+// `fetcher_port` is gone: the fetcher asks for `ephemeral_port` and the kernel hands back a free one
+// atomically, which no probe-then-bind can do, and the source reads the asker's address off the
+// request rather than assuming it. REDS %485.
 const source_port: u16 = 38495;
+// 0 IS THE ASK, NOT THE PORT. `bind` to port zero means *choose one for me*; `getsockname` then says
+// which. Naming the zero is what keeps the call site from reading like a forgotten value.
+const ephemeral_port: u16 = 0;
 
 // A RECEIVE MUST BE BOUNDED, and until `20260906` this one was not. `recvfrom` on a UDP socket
 // carrying no `SO_RCVTIMEO` waits forever, so a datagram the kernel discarded -- because nothing
@@ -76,11 +85,20 @@ fn open_socket() !c.fd_t {
     return fd;
 }
 
-fn send_wire(port: u16, wire: []const u8) !void {
-    const fd = try open_socket();
-    defer _ = c.close(fd);
-    const dest = localhost_addr(port);
-    const sent = c.sendto(fd, wire.ptr, @intCast(wire.len), 0, @ptrCast(&dest), @sizeOf(sockaddr_in));
+// THE SEND CARRIES A RETURN ADDRESS WHETHER THE SENDER MEANT IT TO OR NOT, so which socket it
+// leaves by is part of the message. An unbound socket leaves by a fresh kernel-chosen port, so a
+// request sent that way asks the answer to arrive somewhere the asker is not listening -- which is
+// exactly what happened the first time the reply was aimed at the asker rather than at a compiled-in
+// number: the source answered honestly, and answered a socket already closed. An exchange therefore
+// speaks and listens through ONE fd.
+fn send_from(fd: c.fd_t, dest: *const sockaddr_in, wire: []const u8) !void {
+    // invariant: a datagram this file sends is never empty, so a zero-length send is a caller fault
+    // rather than a wire that happens to carry nothing.
+    assert(wire.len > 0);
+    // invariant: a sealed message never exceeds the wire capacity every buffer here is sized by, so
+    // a longer one is a build fault rather than a truncated send.
+    assert(wire.len <= @as(usize, @intCast(wf.wire_capacity)));
+    const sent = c.sendto(fd, wire.ptr, @intCast(wire.len), 0, @ptrCast(dest), @sizeOf(sockaddr_in));
     if (sent < 0 or @as(usize, @intCast(sent)) != wire.len) return error.SendFailed;
 }
 
@@ -107,27 +125,47 @@ fn bind_recv_socket(port: u16) !c.fd_t {
     return fd;
 }
 
+// THE KERNEL SAYS WHICH PORT IT CHOSE, AND SAYING SO OUT LOUD IS THE PROOF. A bind to
+// `ephemeral_port` asks for any free port; `getsockname` reads back the one that was given. Printing
+// it turns *the asker's port is the kernel's* from a sentence in a comment into a number a witness
+// can read and a hand can watch change between runs.
+fn bound_port(fd: c.fd_t) !u16 {
+    var addr: sockaddr_in = undefined;
+    var addr_len: c.socklen_t = @sizeOf(sockaddr_in);
+    if (c.getsockname(fd, @ptrCast(&addr), &addr_len) < 0) return error.GetSockNameFailed;
+    // invariant: the kernel filled the whole address, so a short write would mean the port read
+    // below comes from bytes nobody wrote.
+    assert(addr_len == @sizeOf(sockaddr_in));
+    const port = std.mem.bigToNative(u16, addr.port);
+    // invariant: a bound socket carries a real port, so zero here would mean the bind never took.
+    assert(port != 0);
+    return port;
+}
+
 // ONE NAME FOR BOTH WAYS A RECEIVE CAN COME BACK EMPTY. A negative `recvfrom` here is either the
 // bound above expiring or a genuine socket error, and telling them apart would take an errno read
 // this file needs for nothing: the caller's answer is the same either way -- no datagram arrived
 // inside the window, so re-ask or refuse by name. Naming it for what was observed rather than for
 // the mechanism keeps the error honest about what it actually knows.
-fn recv_on(fd: c.fd_t, wire: []u8) !u64 {
-    var from: sockaddr_in = undefined;
+// THE ASKER'S ADDRESS ARRIVES WITH EVERY REQUEST, and until `20260906` this function filled it in
+// and dropped it on the floor -- `recvfrom` wrote the sender into `from`, the frame ended, and the
+// answer went to a number compiled in above. The address is a caller-owned slot now, so a server
+// answers whoever actually asked.
+fn recv_on(fd: c.fd_t, wire: []u8, from: *sockaddr_in) !u64 {
+    // invariant: a receive buffer holds at least one byte, so a zero-length slice is a caller fault
+    // rather than a datagram silently read as empty.
+    assert(wire.len > 0);
     var from_len: c.socklen_t = @sizeOf(sockaddr_in);
-    const n = c.recvfrom(fd, wire.ptr, @intCast(wire.len), 0, @ptrCast(&from), &from_len);
+    const n = c.recvfrom(fd, wire.ptr, @intCast(wire.len), 0, @ptrCast(from), &from_len);
     // invariant: a bounded receive that brings nothing back says so by name.
     if (n < 0) return error.RecvNoDatagram;
+    // invariant: the kernel filled the whole address it was given, so a short write here would mean
+    // the reply is aimed at a half-built address.
+    assert(from_len == @sizeOf(sockaddr_in));
     return @intCast(n);
 }
 
 // The one-shot spelling, for an exchange that receives exactly one datagram.
-fn recv_wire(port: u16, wire: []u8) !u64 {
-    const fd = try bind_recv_socket(port);
-    defer _ = c.close(fd);
-    return try recv_on(fd, wire);
-}
-
 fn seal_payload(payload: []const u8, wire: *[@intCast(wf.wire_capacity)]u8) !u64 {
     return try wf.seal_message(payload, wire);
 }
@@ -177,13 +215,21 @@ fn build_response_bytes(digest_hex: []const u8, bytes: []const u8, out: *vfw.Fet
     try vfw.verify_resin(out.digest_hex[0..], out.bytes[0..out.bytes_len]);
 }
 
-fn send_resin_response(resp: *const vfw.FetchResponse) !void {
+// THE ANSWER GOES BACK WHERE THE QUESTION CAME FROM. Every chunk of one resin rides to the same
+// asker, so the address is taken once by the caller and handed down rather than re-derived per chunk.
+fn send_resin_response(fd: c.fd_t, resp: *const vfw.FetchResponse, to: *const sockaddr_in) !void {
+    // invariant: a response carries no more than one resin's worth of bytes, so a longer one is a
+    // build fault rather than a wire that quietly truncates.
+    assert(resp.bytes_len <= vfw.max_resin_bytes);
+    // invariant: the asker's address names a port it actually bound, so port zero here would be an
+    // address the sender never held.
+    assert(to.port != 0);
     if (!vfw.resin_needs_chunking(resp.bytes_len)) {
         var payload: [vfw.max_wire_payload]u8 = undefined;
         const payload_len = try vfw.encode_response(resp, &payload);
         var wire_out: [@intCast(wf.wire_capacity)]u8 = undefined;
         const sealed_len = try seal_payload(payload[0..payload_len], &wire_out);
-        try send_wire(fetcher_port, wire_out[0..@intCast(sealed_len)]);
+        try send_from(fd, to, wire_out[0..@intCast(sealed_len)]);
         return;
     }
     const count = try vfw.resin_chunk_count(resp.bytes_len);
@@ -193,7 +239,7 @@ fn send_resin_response(resp: *const vfw.FetchResponse) !void {
         const payload_len = try vfw.encode_response_chunk(resp, chunk_i, &payload);
         var wire_out: [@intCast(wf.wire_capacity)]u8 = undefined;
         const sealed_len = try seal_payload(payload[0..payload_len], &wire_out);
-        try send_wire(fetcher_port, wire_out[0..@intCast(sealed_len)]);
+        try send_from(fd, to, wire_out[0..@intCast(sealed_len)]);
     }
 }
 
@@ -257,7 +303,8 @@ fn read_file_limited(io: std.Io, path: []const u8, buf: []u8) ![]const u8 {
 
 fn serve_one_from_bundle(io: std.Io, fd: c.fd_t, bundle_dir: []const u8) !void {
     var wire_in: [@intCast(wf.wire_capacity)]u8 = undefined;
-    const n = try recv_on(fd, &wire_in);
+    var asker: sockaddr_in = undefined;
+    const n = try recv_on(fd, &wire_in, &asker);
     var opened: [@intCast(wf.max_message)]u8 = undefined;
     const opened_len = try open_wire(wire_in[0..n], &opened);
     var req: vfw.FetchRequest = undefined;
@@ -270,7 +317,7 @@ fn serve_one_from_bundle(io: std.Io, fd: c.fd_t, bundle_dir: []const u8) !void {
     const bytes = try read_file_limited(io, resins_path, &file_buf);
     var resp: vfw.FetchResponse = undefined;
     try build_response_bytes(req.digest_hex[0..], bytes, &resp);
-    try send_resin_response(&resp);
+    try send_resin_response(fd, &resp, &asker);
 }
 
 fn run_source(io: std.Io, bundle_dir: []const u8) !u8 {
@@ -324,23 +371,28 @@ fn fetch_one(digest_hex: []const u8, out_bytes: *[vfw.max_resin_bytes]u8) !u32 {
     // unbound port; and the socket is held to the end of the exchange, so a later chunk cannot be
     // lost in a gap between receives. The elder order -- send, then bind per datagram -- is what
     // stalled one run in six.
-    const fd = try bind_recv_socket(fetcher_port);
+    const fd = try bind_recv_socket(ephemeral_port);
     defer _ = c.close(fd);
+    print("vfd: asker bound port {d}\n", .{try bound_port(fd)});
 
     var asm_resin: vfw.ResinAssembler = .{};
     var hops: u16 = 0;
     var attempts: u32 = 0;
     // invariant: attempts are bounded, so a source that never answers refuses by name instead of
     // asking forever.
+    const service = localhost_addr(source_port);
     while (attempts < max_request_attempts) : (attempts += 1) {
-        try send_wire(source_port, wire_out[0..@intCast(sealed_len)]);
+        // invariant: the request leaves by the socket the answer will arrive on, so the return
+        // address the source reads names a port this end is bound to and still holding.
+        try send_from(fd, &service, wire_out[0..@intCast(sealed_len)]);
         var ready = false;
         // invariant: a resin rides at most max_resin_chunks datagrams, so this loop terminates.
         while (hops < vfw.max_resin_chunks) : (hops += 1) {
             var wire_in: [@intCast(wf.wire_capacity)]u8 = undefined;
             // `recv_on` has exactly one error to give, so this reads it by name rather than
             // switching: an empty window ends this attempt and the loop decides whether to re-ask.
-            const n = recv_on(fd, &wire_in) catch break;
+            var answered_by: sockaddr_in = undefined;
+            const n = recv_on(fd, &wire_in, &answered_by) catch break;
             var opened: [@intCast(wf.max_message)]u8 = undefined;
             const opened_len = try open_wire(wire_in[0..n], &opened);
             const state = try asm_resin.feed(opened[0..@intCast(opened_len)]);
@@ -397,7 +449,8 @@ fn run_demo_source(_: std.Io) !u8 {
     var served: u32 = 0;
     while (served < 2) : (served += 1) {
         var wire_in: [@intCast(wf.wire_capacity)]u8 = undefined;
-        const n = try recv_on(fd, &wire_in);
+        var asker: sockaddr_in = undefined;
+        const n = try recv_on(fd, &wire_in, &asker);
         var opened: [@intCast(wf.max_message)]u8 = undefined;
         const opened_len = try open_wire(wire_in[0..n], &opened);
         var req: vfw.FetchRequest = undefined;
@@ -405,7 +458,7 @@ fn run_demo_source(_: std.Io) !u8 {
         const bytes = find_fixture(&resins, req.digest_hex[0..]) orelse return error.MissingResin;
         var resp: vfw.FetchResponse = undefined;
         try build_response_bytes(req.digest_hex[0..], bytes, &resp);
-        try send_resin_response(&resp);
+        try send_resin_response(fd, &resp, &asker);
     }
     print("vfd: demo source served fixture resins\n", .{});
     return 0;
@@ -475,7 +528,12 @@ fn run_chunkdemo_source(_: std.Io) !u8 {
     chunk_fixture(&bytes, &digest_hex);
 
     var wire_in: [@intCast(wf.wire_capacity)]u8 = undefined;
-    const n = try recv_wire(source_port, &wire_in);
+    var asker: sockaddr_in = undefined;
+    // invariant: this end binds before it answers and holds the socket to the end of the exchange,
+    // so every chunk leaves by the port the asker addressed and none is sent from a closed fd.
+    const fd = try bind_recv_socket(source_port);
+    defer _ = c.close(fd);
+    const n = try recv_on(fd, &wire_in, &asker);
     var opened: [@intCast(wf.max_message)]u8 = undefined;
     const opened_len = try open_wire(wire_in[0..n], &opened);
     var req: vfw.FetchRequest = undefined;
@@ -485,7 +543,7 @@ fn run_chunkdemo_source(_: std.Io) !u8 {
     var resp: vfw.FetchResponse = undefined;
     try build_response_bytes(digest_hex[0..], bytes[0..], &resp);
     assert(vfw.resin_needs_chunking(resp.bytes_len));
-    try send_resin_response(&resp);
+    try send_resin_response(fd, &resp, &asker);
     print("vfd: chunkdemo source sent {d}-byte resin in chunks\n", .{resp.bytes_len});
     return 0;
 }
