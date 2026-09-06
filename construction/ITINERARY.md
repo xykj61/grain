@@ -46,10 +46,10 @@
 
 ### Now -- the live front
 
-**Git nib:** `4cc3eb0d07` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `b441f97b22` -- HEAD's parent, resolvable everywhere (%401).
 
 **DIFFUSER -- TWO ALGORITHMS AGREEING PROVES THE ALGORITHMS, NEVER THE INPUT.**
-[`%492`](archive/REDS-two-algorithms-agreeing-rows-494.md) CLOSED.
+[`%492`](archive/REDS-two-algorithms-agreeing-rows-492.md) CLOSED.
 `topology_revocation_census.sh` had a sweep, a lowlink pass and three sibling-bound counts, and a
 graph with **an entire tier deleted** walked past all four. Every bind was a **size** -- edges
 **774**, isolated **0**, max_stranded **59**, unmoved, the same 59 stranding however the tier
@@ -166,7 +166,7 @@ every instrument let it go.** **Yours, with a number:** the two-level rooms hold
 that dies takes its own red with it. Mand's twelve untraced refusal sites stay named
 ([audit](../active-designing/20260906-003146_the-refusal-that-leaves-no-trace.md), Caravan parked Dream's).
 
-**COPAL -- A WRAPPER IS ONLY TRANSPARENT IN THE DIRECTION IT WAS TESTED.** `%492` CLOSED
+**COPAL -- A WRAPPER IS ONLY TRANSPARENT IN THE DIRECTION IT WAS TESTED.** `%494` CLOSED
 ([shelf](archive/REDS-the-verdict-travelled-and-the-reason-did-not-rows-492.md)). `run` puts a target's
 stderr in `r.err`, so a shim saying only `r.out` exits non-zero with **zero bytes** on its own.
 **No plant:** `amphora_device_wire` refuses honestly here, and where the target names the failed
