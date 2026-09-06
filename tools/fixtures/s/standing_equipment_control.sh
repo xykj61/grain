@@ -1121,4 +1121,102 @@ out=$(scan_gate no-such-card.md)
 case "$out" in *"guards_unknown_gate=1"*) echo "unreadable_card_fails_closed=yes" ;; *) echo "unreadable_card_fails_closed=no" ;; esac
 rm -rf "$gatepen"
 
+# --- a guard running mid-pass reads THIS pass's verdicts, not the last pass's (REDS %483) -------
+# The run card in the working tree is written once, at the close, so every guard reading it mid-pass
+# read the PREVIOUS pass's verdict for its peers -- including reds that same pass had already
+# repaired. The repair has two halves and this pen proves both: each guard is handed a pen-local
+# live view through `STANDING_CARD`, and the runner's own guard is deferred to the end of the todo
+# list, so the record describes the pass that is running AND is complete by the time the guard that
+# reads it runs.
+#
+# The planted card records `alpha` RED. `alpha` runs green this pass, and `beta` -- running after it
+# -- reads the card it was handed and refuses unless alpha reads green there. So `beta green` proves
+# the live view reached the guard and `beta red` proves it did not. `standing_equipment` is listed
+# FIRST in the roster and must print LAST, which is the only reading that can tell a deferred guard
+# from a roster that happened to be in a lucky order.
+livepen="$pen/livepen"
+mkdir -p "$livepen/rishi/bin"
+( cd "$livepen" && git init -q . && git config user.email a@b.c && git config user.name t \
+  && git config commit.gpgsign false && echo seed > kept.txt && git add kept.txt \
+  && git commit -qm "seed" ) >/dev/null 2>&1
+
+cat > "$livepen/roster.kyri" <<'EOF'
+format standing-equipment-v1
+guard standing_equipment
+path se.sh
+tier lap
+seated 20260825.000000
+guard alpha
+path alpha.sh
+tier lap
+seated 20260825.000000
+guard beta
+path beta.sh
+tier lap
+seated 20260825.000000
+EOF
+: > "$livepen/se.sh"
+: > "$livepen/alpha.sh"
+: > "$livepen/beta.sh"
+plant_live_card() {
+  cat > "$livepen/run-card.kyri" <<'EOF'
+format standing-equipment-runs-v1
+ran standing_equipment 20260101.000000 green lap 1
+ran alpha 20260101.000000 red lap 1
+ran beta 20260101.000000 green lap 1
+EOF
+}
+plant_live_card
+
+# The stub reads the card it was handed only when it stands in for beta, so every other guard's run
+# is an ordinary green and the single reading under test is what beta could see when its turn came.
+cat > "$livepen/rishi/bin/rishi" <<'EOF'
+#!/bin/sh
+case "${2:-}" in
+  *beta.sh)
+    [ -n "${STANDING_CARD:-}" ] || exit 1
+    grep -q '^ran alpha [0-9.]* green ' "$STANDING_CARD" || exit 1
+    ;;
+esac
+exit 0
+EOF
+chmod +x "$livepen/rishi/bin/rishi"
+
+out=$( ( cd "$livepen" && STANDING_ROSTER=roster.kyri STANDING_CARD=run-card.kyri \
+        sh "$runner" 2>/dev/null ) || true )
+case "$out" in *"beta green"*) echo "live_card_reaches_guard=yes" ;; *) echo "live_card_reaches_guard=no" ;; esac
+case "$out" in *"guards_red=0"*) echo "live_card_clears_stale_red=yes" ;; *) echo "live_card_clears_stale_red=no" ;; esac
+case "$out" in *"run_verdict=ok"*) echo "live_card_pass_ok=yes" ;; *) echo "live_card_pass_ok=no" ;; esac
+# The self guard is listed first and runs last, so the live view it reads is complete.
+se_line=$(printf '%s\n' "$out" | grep -n '^standing_equipment ' | head -1 | cut -d: -f1)
+beta_line=$(printf '%s\n' "$out" | grep -n '^beta ' | head -1 | cut -d: -f1)
+if [ -n "$se_line" ] && [ -n "$beta_line" ] && [ "$se_line" -gt "$beta_line" ]; then
+  echo "self_guard_runs_last=yes"; else echo "self_guard_runs_last=no"; fi
+# The working-tree card is still written once, at the close, and now carries this pass's verdicts.
+if grep -q '^ran alpha [0-9.]* green ' "$livepen/run-card.kyri"; then
+  echo "live_card_close_writes_tree=yes"; else echo "live_card_close_writes_tree=no"; fi
+
+# THE PEN PROVEN INNOCENT. A runner with the hand-off stripped leaves every guard reading the
+# working-tree card, which records alpha RED at the moment beta runs -- so beta refuses and the pass
+# carries a red nothing in it caused. Same pen, same roster, same stub; one line removed, the card
+# re-planted so the elder reading is the only difference, and the removal asserted rather than
+# assumed -- a grep that matched nothing would prove a repair by testing the repaired runner twice.
+# The runner sources `shell_portable.sh` from its OWN directory rather than from the root, so a copy
+# that stands anywhere else cannot start at all -- which is a refusal that looks exactly like the
+# repair working. The sibling travels with the copy, and the run below is read for a GUARD line
+# rather than only for the absence of one.
+grep -v '^export STANDING_CARD=' "$runner" > "$pen/run-blind.sh"
+cp "$(dirname "$runner")/shell_portable.sh" "$pen/shell_portable.sh"
+if [ "$(wc -l < "$runner")" -gt "$(wc -l < "$pen/run-blind.sh")" ]; then
+  echo "blind_runner_built=yes"; else echo "blind_runner_built=no"; fi
+plant_live_card
+out=$( ( cd "$livepen" && STANDING_ROSTER=roster.kyri STANDING_CARD=run-card.kyri \
+        sh "$pen/run-blind.sh" 2>/dev/null ) || true )
+case "$out" in *"beta red"*) echo "blind_runner_reads_stale=yes" ;; *) echo "blind_runner_reads_stale=no" ;; esac
+case "$out" in *"run_verdict=guard_red"*) echo "blind_runner_refuses=yes" ;; *) echo "blind_runner_refuses=no" ;; esac
+# THE BLIND RUNNER MUST ACTUALLY RUN. A copy that cannot start prints no guard line at all, and
+# every reading above would then answer `no` for a reason that has nothing to do with the hand-off.
+case "$out" in *"alpha green"*) echo "blind_runner_ran=yes" ;; *) echo "blind_runner_ran=no" ;; esac
+rm -rf "$livepen"
+
 echo "control_verdict=ok"

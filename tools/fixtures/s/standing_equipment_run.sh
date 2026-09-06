@@ -30,6 +30,17 @@
 # cadence tier's own history rather than erasing it. The card is untracked by design -- it measures
 # THIS pier's history, and a fresh clone that has run nothing should say so.
 #
+# WHAT EACH GUARD READS, and why it is not the file above (REDS %483). A guard running mid-pass used
+# to read the working-tree card, which this runner writes ONCE, at the close -- so it read the
+# PREVIOUS pass's verdict for every peer, including reds the same pass had already repaired. The
+# guard that counts recorded reds is itself rostered, so that phantom set `withheld_guard_red`, and
+# `--scoped` refuses without a receipt, and the next lap paid a full pass for a fault nobody had.
+# Each guard is handed a PEN-LOCAL live view through `STANDING_CARD` instead, rewritten after every
+# guard answers, and this runner's own guard is deferred to the end of the todo list so that view is
+# complete when it reads. The working-tree card is still written once, at the close, for the reason
+# the evidence room is: a file written into the tree DURING the run moves the tree under this
+# runner's own `tree_moved` reading.
+#
 # WHAT IT REFUSES BEFORE IT RUNS. `staged_uncommitted`, the count of paths staged and not yet
 # committed, and a full-roster pass that opens on a dirty index REFUSES under
 # `run_verdict=lap_unclosed` before a single guard starts. That is the signature of REDS %188: a lap
@@ -94,6 +105,10 @@ _run_here=$(CDPATH= cd "$(dirname "$0")" && pwd)
 
 roster="${STANDING_ROSTER:-construction/standing-equipment.kyri}"
 card="${STANDING_CARD:-construction/standing-equipment-runs.kyri}"
+# THIS RUNNER'S OWN GUARD, NAMED HERE because two things below turn on it: it is deferred to the
+# end of the todo list, and it is the one guard whose reading of the card is a reading of this
+# pass. The scan spells the same name at its own `self_guard`, for the sibling reason (REDS %475).
+self_guard=standing_equipment
 # The hit-rate meter's two untracked shelves (the fusion build, design 20260825-173153): the
 # receipt is the last fully green close's digest, the ledger is every open's match-or-miss row.
 # Measurement only -- nothing consults these to skip a guard; that ruling stays Keaton's.
@@ -579,7 +594,54 @@ if [ "$scoped" = yes ]; then
 fi
 echo "skipped_scope=$skipped_scope"
 
+# THE GUARD THAT READS THE CARD RUNS WHEN THE CARD IS COMPLETE (REDS %483, second half). This
+# runner's own guard, `standing_equipment`, stands at roster position 188 of 196 -- so eight guards
+# stood after it, and their rows in the live view below could only be last pass's. Deferring it to
+# the end of the todo list by NAME rather than by roster position closes that residue and keeps it
+# closed: a hand adding a guard alphabetically after it cannot silently reopen the gap. It changes
+# no verdict, since guards are independent of one another and nothing in this pass reads another
+# guard's result.
+if grep -q "^$self_guard " "$pen/todo"; then
+  awk -v n="$self_guard" '$1 != n' "$pen/todo" > "$pen/todo.deferred"
+  awk -v n="$self_guard" '$1 == n' "$pen/todo" >> "$pen/todo.deferred"
+  cat "$pen/todo.deferred" > "$pen/todo"
+fi
+
 awk '{print $1}' "$pen/todo" | sort -u > "$pen/running"
+
+# THE RECORD A GUARD READS MUST DESCRIBE THIS PASS, NOT THE LAST ONE (REDS %483). The card in the
+# working tree is written once, at the close far below, so every guard reading it mid-pass read the
+# PREVIOUS pass's verdict for every peer -- including reds this same pass had already repaired.
+# Measured `20260906.113000`: a cold pass read `index_row_bound red`, the shelf was repaired, and
+# the hot pass read `index_row_bound green` at line 60 and `standing_equipment red` at line 151 --
+# the same scan run by hand two minutes later read `runs_red=0 verdict=ok`. That phantom red is
+# counted, so it costs the receipt at `withheld_guard_red` below, `--scoped` refuses without one,
+# and the NEXT lap pays a full cold pass. On this pier that is 798 seconds of guard time alone, and
+# six ships share eight cores, so the bill is a full pass under whatever contention the pier carries.
+#
+# THE REPAIR KEEPS THE CARD OUT OF THE WORKING TREE. Writing the tree's card incrementally would
+# move the tree under this runner's own `tree_moved` reading in any clone where the card is not yet
+# gitignored, and in every control pen -- the same reason the evidence room lands after the close
+# digest. So the live view is written inside the PEN and handed to each guard through
+# `STANDING_CARD`, which `rishi run` passes on to the scan (proven on metal `20260906`). Nothing
+# enters the working tree before the close, and a guard reads the truest record available: this
+# pass's verdict for every peer that has already answered, and the last recorded one for every peer
+# that has not -- which is exactly what a peer that has not re-run honestly has.
+: > "$pen/live.rows"
+if [ -f "$card" ]; then
+  grep '^ran ' "$card" > "$pen/live.rows" || :
+fi
+live_card="$pen/card.live"
+live_write() {
+  {
+    echo "# Pen-local live view of the run card, handed to each guard through STANDING_CARD."
+    echo "# Written by tools/fixtures/s/standing_equipment_run.sh; it never enters the working tree."
+    echo "format standing-equipment-runs-v1"
+    sort "$pen/live.rows"
+  } > "$live_card"
+}
+live_write
+export STANDING_CARD="$live_card"
 
 # Keep every card line whose guard this pass leaves alone, so a slower tier keeps its own history.
 : > "$pen/fresh"
@@ -669,6 +731,12 @@ while read -r name path tier gate; do
   guard_seconds=$(( $(date +%s) - guard_open ))
   seconds=$((seconds + guard_seconds))
   echo "ran $name $stamp $verdict $tier $guard_seconds" >> "$pen/fresh"
+  # The live view moves with the pass: this guard's elder row leaves and the one it just earned
+  # lands, so every guard after it reads what actually happened rather than what happened last time.
+  awk -v n="$name" '!($1 == "ran" && $2 == n)' "$pen/live.rows" > "$pen/live.next"
+  echo "ran $name $stamp $verdict $tier $guard_seconds" >> "$pen/live.next"
+  cat "$pen/live.next" > "$pen/live.rows"
+  live_write
   echo "$name $verdict ${guard_seconds}s"
   ran=$((ran + 1))
 done < "$pen/todo"
