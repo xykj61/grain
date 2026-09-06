@@ -21,7 +21,7 @@
 # row and never looks at who cites it. The question here is neither existence nor holding: it is
 # whether the two halves of one citation agree.
 #
-# THE TWO FORMS IT READS, AND WHY ONLY THESE TWO. A window around a link picks up every `%N` in
+# THE THREE FORMS IT READS, AND WHY ONLY THESE THREE. A window around a link picks up every `%N` in
 # the neighbouring prose, and a sentence may lawfully name one row while linking another -- row
 # %220's own shelf cites %218's, and a fold recital names a row's lesson beside a different row's
 # number. Measured `20260906`, a nearest-preceding-%N reading over 1,001 living documents called 32
@@ -30,6 +30,12 @@
 #
 #   NUMBERED  the anchor text IS the number -- [`%492`](path). A reader clicks a number, so the
 #             number claims the destination. No judgment: the claim is in the anchor.
+#   FOLD      the recital line the loom writes -- `Row 172 folded to [text](path)`. The words
+#             `Row <n> folded to ` stand immediately before the link, which anchors the number as
+#             tightly as an anchor text does, and the number is bare rather than sigilled. 47 of
+#             this tree's 274 living shelf links wear this shape and neither form beside it could
+#             see one: the anchor is a path, so NUMBERED skips it, and it holds no shelf word.
+#             A range is checked at both endpoints.
 #   SHELF     the anchor text is a shelf word -- [shelf](path), [own shelf](path). The sentence
 #             says *the shelf of the row just named*, so the claim is the nearest `%N` before the
 #             link, on its own line or the one above -- one line of lookback, because this tree
@@ -53,6 +59,14 @@
 #   shelf_disagree        -- of those, the nearest preceding claim is not among them. HELD AT ZERO.
 #   shelf_unnumbered      -- shelf-word links with no `%N` in the window. Reported, never gated:
 #                            such a link makes no numeric promise to check.
+#   fold_links            -- `Row N folded to [text](shelf)` citations found
+#   fold_disagree         -- of those, the row folded is not among the rows the path names. ZERO.
+#   all_links             -- every link into a shelf, in any form
+#   unread_links          -- of those, the ones no form above can check. Reported, never gated --
+#                            and the reason it is printed at all is that a guard reporting only what
+#                            it gates reads as though it covered the room (REDS %451, %469). On this
+#                            tree the three forms reach 66 of 274, and saying so is the difference
+#                            between a green that means checked and a green that means unlooked-at.
 #
 # USAGE
 #   sh tools/fixtures/r/reds_citation_scan.sh           # census -- key=value lines
@@ -175,6 +189,38 @@ FNR == 1 { prev = "" }
     }
   }
 
+  # FOLD -- the recital line the loom writes: the words `Row 172 folded to ` stand immediately
+  # before the link, so the number is anchored exactly the way the SHELF shape is anchored, rather
+  # than found in a window. The number is bare here (`Row 172`, no sigil), and a range names both
+  # its endpoints. 47 citations wear this shape and no reading above can see one: the anchor text
+  # is a path, so NUMBERED skips it, and it holds no shelf word, so SHELF skips it too.
+  s = line
+  while (match(s, /Rows?[ ]+[0-9]+(-[0-9]+)?[ ]+folded to[ ]+\[[^]]*\]\([^)]*REDS-[A-Za-z0-9-]*rows-[0-9][0-9-]*\.md\)/)) {
+    m = substr(s, RSTART, RLENGTH)
+    s = substr(s, RSTART + RLENGTH)
+    match(m, /rows-[0-9][0-9-]*\.md/)
+    rows = substr(m, RSTART + 5, RLENGTH - 8)
+    nums = m
+    sub(/^Rows?[ ]+/, "", nums)
+    sub(/[ ]+folded to.*$/, "", nums)
+    fold_n = split(nums, fold_span, "-")
+    fold_lo = fold_span[1] + 0
+    fold_hi = (fold_n > 1 ? fold_span[2] + 0 : fold_lo)
+    fold++
+    if (!holds(rows, fold_lo) || !holds(rows, fold_hi)) {
+      fold_bad++
+      printf "disagree fold %s:%d claim=%%%d path=rows-%s\n", FILENAME, FNR, fold_lo, rows
+    }
+  }
+
+  # EVERY shelf link on the line, so this reading measures its own reach rather than implying it.
+  # A guard reporting only what it gates reads as though it covered the room (REDS %451, %469).
+  s = line
+  while (match(s, /\[[^]]*\]\([^)]*REDS-[A-Za-z0-9-]*rows-[0-9][0-9-]*\.md\)/)) {
+    s = substr(s, RSTART + RLENGTH)
+    all_links++
+  }
+
   prev = line
 }
 function holds(rows, claim,   n, part, i) {
@@ -188,6 +234,9 @@ END {
   printf "shelf_links=%d\n", shelf + 0
   printf "shelf_disagree=%d\n", shelf_bad + 0
   printf "shelf_unnumbered=%d\n", shelf_none + 0
+  printf "fold_links=%d\n", fold + 0
+  printf "fold_disagree=%d\n", fold_bad + 0
+  printf "all_links=%d\n", all_links + 0
 }
 '
 
@@ -205,12 +254,26 @@ numbered_disagree=$(sed -n 's/^numbered_disagree=//p' "$pen/out")
 shelf_links=$(sed -n 's/^shelf_links=//p' "$pen/out")
 shelf_disagree=$(sed -n 's/^shelf_disagree=//p' "$pen/out")
 shelf_unnumbered=$(sed -n 's/^shelf_unnumbered=//p' "$pen/out")
+fold_links=$(sed -n 's/^fold_links=//p' "$pen/out")
+fold_disagree=$(sed -n 's/^fold_disagree=//p' "$pen/out")
+all_links=$(sed -n 's/^all_links=//p' "$pen/out")
 
 if [ "$mode" = list ]; then
   grep '^disagree ' "$pen/out" || echo "no citation disagrees with its own path"
 fi
 
-total_links=$((numbered_links + shelf_links))
+total_links=$((numbered_links + shelf_links + fold_links))
+
+# A link matched by two shapes at once would be counted twice and drive this below zero. A count
+# that cannot go below zero cannot tell you it is wrong (REDS %498), so the subtraction is kept
+# signed and a negative refuses by name rather than clamping to a comfortable figure.
+unread_links=$((all_links - total_links))
+if [ "$unread_links" -lt 0 ]; then
+  echo "refused: $total_links citations read out of $all_links shelf links -- a link matched two shapes at once" >&2
+  echo "verdict=refused_shapes_overlap"
+  exit 1
+fi
+
 if [ "$total_links" -eq 0 ]; then
   echo "refused: $files_read documents name a shelf and not one citation took a readable form"
   echo "verdict=refused_no_citation"
@@ -223,8 +286,12 @@ echo "numbered_disagree=$numbered_disagree"
 echo "shelf_links=$shelf_links"
 echo "shelf_disagree=$shelf_disagree"
 echo "shelf_unnumbered=$shelf_unnumbered"
+echo "fold_links=$fold_links"
+echo "fold_disagree=$fold_disagree"
+echo "all_links=$all_links"
+echo "unread_links=$unread_links"
 
-disagree=$((numbered_disagree + shelf_disagree))
+disagree=$((numbered_disagree + shelf_disagree + fold_disagree))
 if [ "$disagree" -ne 0 ]; then
   grep '^disagree ' "$pen/out" | sed 's/^/  /'
   echo "verdict=citation_disagrees"

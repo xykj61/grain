@@ -2,6 +2,11 @@
 # tools/fixtures/r/reds_citation_control.sh -- plant a citation whose number and path name different
 # rows, and watch the scan bite.
 #
+# Three promise forms are proven here, each from both sides: NUMBERED, SHELF, and FOLD -- the
+# recital line the loom writes, whose anchor is a path and whose number is bare, which 47 of this
+# tree's 274 living shelf links wear and neither elder form could see. The reach itself is proven
+# too: every shelf link is read by one form or counted unread, and the parts sum to the whole.
+#
 # WHY A PEN AND NOT THE FIELD. The gate reads zero on this tree and is meant to, so nothing here
 # could ever show it able to refuse -- and a refusal proven only in the passing direction cannot be
 # told from a bypass. The pen supplies the cases the field does not hold, in real git repositories,
@@ -68,7 +73,7 @@ shelves() {
   : > "$R/construction/archive/REDS-a-pen-pair-rows-110-111.md"
 }
 
-echo "reds-citation control: the two forms, from both sides."
+echo "reds-citation control: the three forms, from both sides, and the reach counted."
 
 # 1 -- NUMBERED, agreeing.
 new_repo; shelves
@@ -178,6 +183,54 @@ new_repo; shelves
 printf 'See construction/archive/REDS-a-pen-row-rows-100.md for the row, unlinked.\n' > "$R/pin.md"
 commit_all
 want unreadable_form_refuses "$(read_verdict)" refused_no_citation
+
+# 18 -- FOLD, agreeing: the recital line the loom writes, where the anchor text is a path and the
+# number is bare. Neither reading above can see this shape, and 47 of this tree's 274 living shelf
+# links wear it.
+new_repo; shelves
+printf 'Row 100 folded to [`REDS-a-pen-row-rows-100.md`](construction/archive/REDS-a-pen-row-rows-100.md) on a day.\n' > "$R/pin.md"
+commit_all
+want fold_agree_welcomed "$(read_verdict)" ok
+want fold_agree_counted "$(read_key fold_links)" 1
+
+# 19 -- FOLD, disagreeing: the recital names one row and folds it onto another row's shelf, which
+# OPENS, so nothing that reads existence can see it.
+printf 'Row 100 folded to [`REDS-a-pen-row-rows-101.md`](construction/archive/REDS-a-pen-row-rows-101.md) on a day.\n' > "$R/pin.md"
+commit_all
+want fold_disagree_bitten "$(read_verdict)" citation_disagrees
+want fold_disagree_counted "$(read_key fold_disagree)" 1
+
+# 20 -- the plant lifted: the same file, the path corrected, reads ok. Same bytes both ways.
+printf 'Row 101 folded to [`REDS-a-pen-row-rows-101.md`](construction/archive/REDS-a-pen-row-rows-101.md) on a day.\n' > "$R/pin.md"
+commit_all
+want fold_disagree_lifted "$(read_verdict)" ok
+
+# 21 -- a fold naming a RANGE is checked at both endpoints, since a name promising 110-111 promises
+# nothing about 112.
+new_repo; shelves
+printf 'Rows 110-111 folded to [`x`](construction/archive/REDS-a-pen-pair-rows-110-111.md) on a day.\n' > "$R/pin.md"
+commit_all
+want fold_range_welcomed "$(read_verdict)" ok
+printf 'Rows 110-112 folded to [`x`](construction/archive/REDS-a-pen-pair-rows-110-111.md) on a day.\n' > "$R/pin.md"
+commit_all
+want fold_range_endpoint_bitten "$(read_verdict)" citation_disagrees
+
+# 22 -- a word anchor that is not a shelf word makes no numeric promise this reading can check, and
+# it is COUNTED rather than passed over in silence. A guard reporting only what it gates reads as
+# though it covered the room (REDS %451, %469).
+new_repo; shelves
+{ printf 'The row [`%%100`](construction/archive/REDS-a-pen-row-rows-100.md) closed.\n'
+  printf 'And see [the record](construction/archive/REDS-a-pen-row-rows-101.md) beside it.\n'
+} > "$R/pin.md"
+commit_all
+want unread_link_welcomed "$(read_verdict)" ok
+want unread_link_counted "$(read_key unread_links)" 1
+
+# 23 -- the reach adds up: every shelf link is read by one of the three forms or counted as unread,
+# never both and never neither. An identity a reader checks without trusting the reading.
+all=$(read_key all_links); n=$(read_key numbered_links); h=$(read_key shelf_links)
+f=$(read_key fold_links); u=$(read_key unread_links)
+want reach_adds_up "$((n + h + f + u))" "$all"
 
 # 16 -- an unknown mode refuses at exit 2, which is a misuse rather than a finding.
 ROOT_DIR="$R" sh "$scan" fetch >/dev/null 2>&1
