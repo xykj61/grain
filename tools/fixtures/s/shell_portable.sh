@@ -17,6 +17,8 @@
 #   file_mtime "$BIN"                                          # a file's mtime, fractional seconds
 #   lock_acquire glow/.cache/.build.lock 1800                  # one writer at a time, bounded wait
 #   search_text -q -i pattern file                             # grep; a pier without rg still measures
+#   have_tool rg                                               # is the instrument here? silent, for branching
+#   require_tool rg 'the roots row read' || exit 127            # ... refuse and NAME it, where no fallback exists
 #
 # WHY IT EXISTS. `xargs -a FILE` and `xargs -d '\n'` are GNU extensions. BSD xargs, which is what
 # macOS ships, has neither, so on that bench the whole pipeline fails and the count taken from its
@@ -272,6 +274,70 @@ search_text() {
   grep ${_st_q} ${_st_i} ${_st_F} ${_st_E} -- "$_st_pat" "$@"
 }
 
+
+# THE FOURTH DIALECT QUESTION, AND THE ONLY ONE WITH NO PORTABLE ANSWER: is the instrument here at
+# all. The three questions above each have a spelling that works on both piers. This one does not --
+# when a guard reaches for a tool the bench does not carry, no spelling saves it, and the only
+# honest move is to refuse and SAY WHICH TOOL.
+#
+# WHAT IT COSTS WHEN IT IS MISSED. Measured `20260905.224445` on the three guards the standing
+# roster reaches that call `rg` in command position, run with the ripgrep directory taken off PATH
+# and nothing else changed:
+#
+#   tools/fixtures/e/equinox_e122_roots_bench_kinds_scan.sh  ->  control_gate=failed / verdict=misread
+#   tools/t/tally_glow_tend_limb1_witness.rish               ->  "tally glow limb missing"
+#   tools/t/tally_glow_tend_limb4_witness.rish               ->  "parse_int.rye missing LeadingZero/InvalidCharacter"
+#
+# All three refuse, which is right. All three name an innocent file, which is not: the control had
+# printed `verdict=ok` one line above its own gate, `tally/parse_int.rye` carries both of those
+# names twice over, and the Glow file is present and matches. A hand reading any of the three goes
+# to repair a file that is already correct, and the one line naming the real cause -- `rg: command
+# not found` -- went to stderr, which a witness reading `run` output does not keep. Refusing is half
+# the reflex; naming the instrument is the half that saves the hour.
+#
+#   have_tool rg && ... || ...              # branch silently, where a fallback exists
+#   require_tool rg || exit 127             # refuse in the scan's own key=value voice, where none does
+#   require_tool rg 'the roots row read' || exit 127     # ... and say what it was wanted for
+#
+# WHY 127 RATHER THAN 1. That is the shell's own status for a command it could not find, so a caller
+# tells "this bench is missing something" from "this tree measured badly" without parsing prose.
+# A misuse -- no name at all -- returns 2, the same way `search_text` above separates misuse from
+# absence, because a caller must never read its own empty argument as a missing tool.
+
+# have_tool <name> -- true when this bench carries it. Silent, so a caller may branch on it.
+have_tool() {
+  # invariant: exactly one non-empty name, because `command -v` with no operand answers about the
+  # shell rather than about a tool, and would report every bench as fully equipped.
+  [ $# -eq 1 ] || return 2
+  [ -n "${1:-}" ] || return 2
+  command -v "$1" >/dev/null 2>&1
+}
+
+# require_tool <name> [<what it was wanted for>] -- refuse, naming the instrument, on stdout.
+require_tool() {
+  _rt_name=${1:-}
+  _rt_use=${2:-}
+  if [ -z "$_rt_name" ]; then
+    printf 'require_tool: instrument name required\n' >&2
+    unset _rt_use
+    return 2
+  fi
+  if have_tool "$_rt_name"; then
+    unset _rt_name _rt_use
+    return 0
+  fi
+  # STDOUT, not stderr. A scan is read by a witness that captures `run` output, and the reading that
+  # sent a lap looking at the wrong file was on stderr the whole time. The shape is the tree's own
+  # key=value line so an existing reader needs no new grammar.
+  printf 'instrument=%s\n' "$_rt_name"
+  if [ -n "$_rt_use" ]; then
+    printf 'instrument_for=%s\n' "$_rt_use"
+  fi
+  printf 'detail=instrument_absent\n'
+  printf 'verdict=instrument_absent\n'
+  unset _rt_name _rt_use
+  return 127
+}
 # THE MECHANISM PROVES ITSELF ON THE HOST THAT RUNS IT, once per sourcing script, for three
 # processes. The probe asks the one question that matters -- does a newline-delimited list survive
 # the round trip whole -- and a path carrying a space is the sharpest way to ask it: `tr` must emit

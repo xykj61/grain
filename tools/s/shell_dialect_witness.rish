@@ -209,6 +209,11 @@ let portable = run ["sh" "tools/fixtures/s/shell_portable_control.sh"]
 say portable.out
 assert portable.ok else "shell-dialect: the portable-helper control must exit 0"
 assert portable.out contains "fail=0" else "shell-dialect: no helper behaviour may miss"
-assert portable.out contains "pass=32" else "shell-dialect: want thirty-two helper behaviours proven"
+# 32 -> 47 on `20260905.224445`: fifteen legs for `have_tool` and `require_tool`, the reflex that a
+# guard which cannot run its instrument refuses and NAMES it. Fourteen prove the two helpers
+# themselves from both sides; the fifteenth runs the real e122 scan with the PATH entry holding `rg`
+# removed and reads `instrument=rg` where the elder answered `verdict=misread` about an innocent
+# control. The number is pinned rather than counted so a leg cannot quietly disappear (REDS %439).
+assert portable.out contains "pass=47" else "shell-dialect: want forty-seven helper behaviours proven"
 
 say "GREEN: shell-dialect -- five gated families stand at zero and a sixth at a ratchet of seven, three real guards read the same on both dialects while planted elder copies still break, the elder stat order is reproduced on this host and its repair proven under a stat that refuses the GNU flag, and every one of the six ceilings is proven from both sides on a planted tree"
