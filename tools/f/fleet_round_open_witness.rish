@@ -2,15 +2,27 @@
 #
 #   rishi/bin/rishi run tools/f/fleet_round_open_witness.rish
 #
-# `tools/f/fleet_round_open.sh` runs `git reset --hard xy/main` on every live fleet tree at every
-# round-open, roughly every twenty minutes, on three ships. It had no control at all until
-# REDS %428, which is a great deal of destructive authority resting on careful reading.
+# `tools/f/fleet_round_open.sh` runs `git reset --hard xy/main` at every round-open, roughly every
+# twenty minutes, on each of the eight live seats in `construction/fleet-roster.kyri`. It ran that
+# way with no control at all until REDS %428. Destructive authority on that many trees earns a
+# standing guard.
 #
 # The fault that earned this witness: the script modeled no interrupted rebase, and all three of
 # its later steps misread one -- the conflicted worktree reads dirty and gets stashed, HEAD is
 # detached at a half-replayed commit and gets classified, and the reset abandons the rebase and
 # leaves the real branch behind. Against the elder script the control fails 5 of its 14 legs, and
 # the elder prints `already on the anointed order` over a standing corpse.
+#
+# THE SECOND FAULT, REDS %503: this witness guarded six states and planted five. Seventeen legs
+# proved behind, level, dirty, mid-rebase, an unreachable remote, and the dead-letter box. The
+# `else` that runs `git branch`, `git push xy` and `reset --hard` together stood outside all of
+# them. Behind it one classifier answered for three states. Ten commits parked between 20260828
+# and 20260906 stayed on their branches while main moved on. The script now attempts the
+# re-derivation its own header already prescribes, and reaches for the park only where git refuses.
+# So the park keeps every case it was right about, and hands back the laps it was taking. The
+# whole account rests at `construction/archive/REDS-the-test-that-cannot-fail-rows-499-503.md`,
+# and the legs that plant those three states are A, B and C of
+# `tools/fixtures/f/fleet_round_open_control.sh`.
 
 say "fleet-round-open: Language EN -- each tree state told apart by name, and a rebase cleared before anything reads it."
 say "fleet-round-open: Style Gauge, Meter -- every leg run on real repositories in a throwaway pen, never described."
@@ -33,4 +45,15 @@ assert control.out contains "fail=0" else "fleet-round-open: the control closed 
 let clause = run ["grep" "-q" "rebase --abort" "tools/f/fleet_round_open.sh"]
 assert clause.ok else "fleet-round-open: the script no longer clears an interrupted rebase"
 
-say "fleet-round-open: GREEN -- behind, level, ahead, diverged, dirty, and mid-rebase each answered by name."
+# invariant: the diverged branch attempts the re-derivation before it reaches for the park, so a
+# lost race lands as a lost race (REDS %503). Read from the script itself rather than inferred from
+# the control, since a control stays green on a shape the script has since let go.
+let rederive = run ["grep" "-q" "git rebase xy/main" "tools/f/fleet_round_open.sh"]
+assert rederive.ok else "fleet-round-open: the diverged branch no longer attempts the re-derivation"
+
+# invariant: the control reaches that branch. A leg count reads weakly here; the state's own name
+# in the control holds exactly while a leg plants it.
+let planted = run ["grep" "-q" "ORDINARY LOST RACE" "tools/fixtures/f/fleet_round_open_control.sh"]
+assert planted.ok else "fleet-round-open: no control leg plants the diverged state"
+
+say "fleet-round-open: GREEN -- behind, level, ahead, dirty, mid-rebase, and all three divergences each answered by name."

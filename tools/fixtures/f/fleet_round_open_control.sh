@@ -5,6 +5,14 @@
 # This script runs `git reset --hard` on live fleet trees every twenty minutes and had no control
 # at all. The rebase leg is why it now does: mid-rebase, the tree reads dirty, HEAD is detached at
 # a half-replayed commit, and the reset abandons the rebase and leaves the branch behind.
+#
+# AND FOR ITS FIRST DAY THIS CONTROL NEVER PLANTED THE DIVERGED STATE (REDS %503). Seventeen legs
+# proved behind, level, dirty, mid-rebase, an unreachable remote and the dead-letter box -- and the
+# one branch holding `git branch`, `git push xy` and `reset --hard` together was the one branch no
+# leg reached. Legs A, B and C below plant it three ways, because it is three states rather than
+# one: an ordinary lost race that re-derives, a rewrite whose replay collides and must park, and a
+# rewrite whose replay drops a patch already standing upstream. Against the elder script these
+# fail 8 of their 17.
 set -u
 src=$(CDPATH= cd -- "$(dirname -- "$0")/../../f" && pwd)/fleet_round_open.sh
 [ -f "$src" ] || { echo "control: REFUSED -- $src is absent" >&2; exit 2; }
@@ -90,6 +98,57 @@ mkdir -p "$pen/work/session-logs/date/20260101"
 printf 'format session-log-v1\nstamp 20260101.010101\n' > "$pen/work/session-logs/date/20260101/20260101-010101_parked.kyri"
 ( cd "$pen/work" && g add -A && g commit -qm "read the record back" >/dev/null 2>&1 )
 nk "a landed record is not reported" "dead-letter box and nowhere" "$(run_open)"
+
+
+# a fresh work tree pointed at a fresh anointed remote, both one commit deep
+fresh() {
+  rm -rf "$pen/anointed" "$pen/work"
+  g init -q -b main "$pen/anointed"
+  ( cd "$pen/anointed" && echo one > f.txt && g add -A && g commit -qm one )
+  g clone -q "$pen/anointed" "$pen/work" 2>/dev/null
+  g -C "$pen/work" remote rename origin xy
+}
+open_it() { ( cd "$pen/work" && sh "$src" 2>&1 ); }
+corpse() { [ -d "$pen/work/.git/rebase-merge" ] || [ -d "$pen/work/.git/rebase-apply" ]; }
+
+# ---- A. ORDINARY LOST RACE: peer pushed on the base this line was built on.
+fresh
+( cd "$pen/work" && echo mine > mine.txt && g add -A && g commit -qm "the lap's own work" )
+( cd "$pen/anointed" && echo peer > peer.txt && g add -A && g commit -qm "a peer's round" )
+out=$(open_it)
+ck "A1 lost race re-derives"      "re-derived"                  "$out"
+nk "A2 and is not called divergence" "true divergence"          "$out"
+ck "A3 the lap's commit survives" "the lap's own work" "$(g -C "$pen/work" log --format=%s xy/main..HEAD)"
+ck "A4 it stands on the new head" "a peer's round" "$(g -C "$pen/work" log --format=%s -3)"
+nk "A5 no park litters the refs"  "pier/diverged" "$(g -C "$pen/work" for-each-ref --format='%(refname:short)' 'refs/heads/pier/*')"
+if corpse; then fail=$((fail+1)); echo "  FAIL A6 a rebase stands after a lost race"; else pass=$((pass+1)); fi
+
+# ---- B. TRUE REWRITE that collides: the park is still exactly right.
+fresh
+( cd "$pen/work" && echo mine > f.txt && g add -A && g commit -qm "the lap's own work" )
+( cd "$pen/anointed" && echo rewritten > f.txt && g add -A && g commit -q --amend -m "one, rewritten" )
+tip=$(g -C "$pen/work" rev-parse HEAD)
+out=$(open_it)
+ck "B1 a real rewrite is named"   "true divergence"    "$out"
+ck "B2 and says the rebase refused" "re-derivation refused" "$out"
+park=$(g -C "$pen/work" for-each-ref --format='%(refname:short)' 'refs/heads/pier/diverged-*' | head -1)
+ck "B3 the park ref exists" "pier/diverged-" "$park"
+[ -n "$park" ] && [ "$(g -C "$pen/work" rev-parse "$park")" = "$tip" ] \
+  && pass=$((pass+1)) || { fail=$((fail+1)); echo "  FAIL B4 park holds the pre-open tip"; }
+[ "$(g -C "$pen/work" rev-parse HEAD)" = "$(g -C "$pen/work" rev-parse xy/main)" ] \
+  && pass=$((pass+1)) || { fail=$((fail+1)); echo "  FAIL B5 main did not adopt the anointed order"; }
+if corpse; then fail=$((fail+1)); echo "  FAIL B6 a rebase stands after a refused re-derivation"; else pass=$((pass+1)); fi
+
+# ---- C. REWRITE with no collision: git drops the already-upstream patch, and the park is KEPT.
+fresh
+( cd "$pen/work" && echo mine > mine.txt && g add -A && g commit -qm "the lap's own work" )
+( cd "$pen/anointed" && g commit -q --amend -m "one, reworded" )
+out=$(open_it)
+ck "C1 the drop is named"       "already stood upstream" "$out"
+ck "C2 and counted honestly"    "re-derived 1 of 2"      "$out"
+ck "C3 the park is kept"        "pier/diverged" "$(g -C "$pen/work" for-each-ref --format='%(refname:short)' 'refs/heads/pier/*')"
+ck "C4 the lap's commit survives" "the lap's own work" "$(g -C "$pen/work" log --format=%s xy/main..HEAD)"
+if corpse; then fail=$((fail+1)); echo "  FAIL C5 a rebase stands after a drop"; else pass=$((pass+1)); fi
 
 echo "pass=$pass fail=$fail"
 [ "$fail" -eq 0 ] || exit 1
