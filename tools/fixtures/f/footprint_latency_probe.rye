@@ -1,0 +1,248 @@
+// tools/fixtures/f/footprint_latency_probe.rye -- what one dependent memory read costs,
+// as a function of how much state you are reading it from.
+//
+// WHY. Two papers in this tree name this cost and neither measures it. The ring-and-ladder
+// study says of a routing table: "memory that is read on every packet is the kind that shows
+// up in a power budget -- Confidence: high that the state costs differ; no measurement of the
+// difference is offered here." The joule study proposes bounds on wake and rate, and both of
+// those bound TIME. Neither bounds WHERE the data lives, and where it lives is what this
+// probe reads off the metal.
+//
+// WHAT IT MEASURES, and what it does not. It measures the latency of a load that cannot begin
+// until the previous load has landed -- the shape a routing-table lookup actually has, since
+// you cannot fetch the next hop until you know the index. It does NOT measure energy: this
+// board exposes no RAPL counter, no MSR, and no perf event (checked 20260906). Time is the
+// observable available here, and the paper that reads this output says plainly what time can
+// and cannot stand in for.
+//
+// HOW IT DEFEATS THE THREE WAYS SUCH A PROBE LIES.
+//
+//   the compiler   -- a loop whose result is unused is deleted. Measured on this toolchain: a
+//                     one-million-iteration accumulate returned in 90 ns, which is not a
+//                     measurement of anything. Here every step's address comes from the
+//                     previous step's loaded value, out of a buffer filled at runtime, so no
+//                     comptime evaluation can reach it; the checksum is printed besides.
+//   the prefetcher -- a constant stride is predicted and the miss is hidden. The walk is a
+//                     random single cycle over all nodes, so the next address is unknowable
+//                     until the current load retires.
+//   the cache line -- entries packed densely share lines, so most accesses hit a line the
+//                     previous access already pulled in. One node occupies a whole line, so
+//                     every step touches a distinct line and the working set is what it says.
+//
+// THE INVARIANT THAT MAKES "WORKING SET" MEAN WHAT IT SAYS. The chase must be ONE cycle over
+// ALL n nodes. Built from a permutation it is, by construction -- and construction is not
+// proof, so `cycle_length` walks it and the caller asserts the count equals n. A chase that
+// closed early would touch a fraction of the buffer and report a small set's latency under a
+// large set's name, which is the one wrong answer this probe could give convincingly.
+//
+// Bounds are named at compile time and cannot be exceeded: the buffer is static, so a working
+// set larger than `max_working_set_bytes` fails to build rather than failing at 3 a.m.
+//
+// Read against: external-research/20260906-042838_the-table-that-fits.md
+// Driven by:    tools/fixtures/f/footprint_latency_census.sh
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+// One node occupies one cache line, so every step of the walk touches a line of its own.
+// This board reports 64 (/sys/devices/system/cpu/cpu0/cache/index0/coherency_line_size); the
+// census asserts that reading against this constant rather than trusting either alone.
+const line_bytes: u32 = 64;
+const slots_per_node: u32 = line_bytes / @sizeOf(u32);
+
+// 64 MiB is four times this board's 16 MiB L3, which is enough to reach the plateau past the
+// last cache and no more. The buffer is static, so this maximum is enforced by the linker.
+const max_working_set_bytes: u32 = 64 * 1024 * 1024;
+const max_nodes: u32 = max_working_set_bytes / line_bytes;
+
+// Enough steps that a single timer reading spans milliseconds rather than microseconds, so
+// clock granularity contributes far less than the quantity being measured.
+const steps_per_rep: u64 = 2_000_000;
+
+// The reported latency is the MINIMUM across repetitions. On a shared host noise only ever
+// adds, so the minimum is the closest reading to the machine's own cost; the spread is
+// reported beside it so a reader can judge how quiet the board was.
+const reps: u32 = 4;
+
+// Working-set sizes in KiB, chosen to sit either side of this board's three reported cache
+// sizes (32 KiB L1d, 512 KiB L2, 16384 KiB L3) rather than on round numbers alone.
+//
+// The point between L3 and twice L3 is 20480 rather than the value a doubling would suggest,
+// and the reason is a collision worth naming: `declared_ceiling` counts every bare occurrence
+// under `tools/` of the byte figure that `living_pin_max_bytes` holds for a general living pin,
+// and twenty-four mebibytes written in kibibytes is exactly that figure. Here it would have
+// meant working set and nothing to do with that law, yet a reader meeting the bare number in a
+// tool cannot tell the two apart -- which is the guard's whole point. This sweep needs only
+// *a* point in that interval, so it yields the number rather than asking for an exemption.
+const sweep_kib = [_]u32{
+    4, 8, 16, 24, 32, 48, 64, 128, 256, 384, 512, 768,
+    1024, 2048, 4096, 8192, 12288, 16384, 20480, 32768, 49152, 65536,
+};
+
+var chase: [max_nodes * slots_per_node]u32 = undefined;
+var perm: [max_nodes]u32 = undefined;
+
+/// Slot index of a node, in units of u32. Values stored in the chase buffer are already slot
+/// indices, so the walk itself performs no arithmetic -- one dependent load and nothing else.
+fn slot_of(node: u32) u32 {
+    // invariant: the node is inside the buffer this build reserved.
+    assert(node < max_nodes);
+    const slot = node * slots_per_node;
+    // invariant: the slot addresses a real u32 in the static buffer.
+    assert(slot < max_nodes * slots_per_node);
+    return slot;
+}
+
+/// Deterministic 64-bit LCG. Deterministic on purpose: a reader re-running this probe gets the
+/// same permutation, so a disagreement between two runs is the machine rather than the dice.
+fn lcg_next(state: *u64) u32 {
+    // invariant: the multiplier is the odd constant that gives this LCG its full period.
+    assert(6364136223846793005 % 2 == 1);
+    state.* = state.* *% 6364136223846793005 +% 1442695040888963407;
+    // The high bits are the well-mixed ones in an LCG; the low bits cycle short.
+    const drawn: u32 = @truncate(state.* >> 33);
+    // invariant: a u32 was produced, which the caller reduces into its own range.
+    assert(drawn <= std.math.maxInt(u32));
+    return drawn;
+}
+
+/// Fisher-Yates over the first `n` entries, leaving a permutation of 0..n-1.
+/// The modulo introduces a slight bias toward low indices; that is harmless here, because what
+/// the walk needs from this permutation is unpredictability to a hardware prefetcher rather
+/// than uniformity, and a biased shuffle is no more predictable than an unbiased one.
+fn fill_permutation(n: u32, seed: u64) void {
+    // invariant: the permutation fits the space reserved for it.
+    assert(n <= max_nodes);
+    // invariant: a permutation of nothing is not a walk; the caller always asks for two or more.
+    assert(n >= 2);
+    var i: u32 = 0;
+    while (i < n) : (i += 1) perm[i] = i;
+    var state: u64 = seed;
+    var k: u32 = n - 1;
+    while (k >= 1) : (k -= 1) {
+        const j: u32 = lcg_next(&state) % (k + 1);
+        const tmp = perm[k];
+        perm[k] = perm[j];
+        perm[j] = tmp;
+        if (k == 1) break;
+    }
+}
+
+/// Link the permutation into a single cycle: the node at position i points at the node at
+/// position i+1, and the last points back at the first. One cycle over all n nodes, by
+/// construction -- which `cycle_length` then checks, because construction is not proof.
+fn build_chase(n: u32) void {
+    // invariant: every node written is inside the reserved buffer.
+    assert(n <= max_nodes);
+    // invariant: a cycle needs at least two distinct nodes to be a walk at all.
+    assert(n >= 2);
+    var i: u32 = 0;
+    while (i < n) : (i += 1) {
+        const here = perm[i];
+        const next = perm[(i + 1) % n];
+        const at: usize = @intCast(slot_of(here)); // seam: Zig indexes by usize
+        chase[at] = slot_of(next);
+    }
+}
+
+/// Walk from `start` until it returns, counting steps. Bounded by n + 1 so a broken chase
+/// refuses rather than spinning.
+fn cycle_length(start: u32, n: u32) u32 {
+    // invariant: the starting slot is inside the buffer.
+    assert(start < max_nodes * slots_per_node);
+    // invariant: the bound is a real bound -- a cycle over n nodes cannot exceed n steps.
+    assert(n >= 2 and n <= max_nodes);
+    var cur: u32 = start;
+    var steps: u32 = 0;
+    while (steps <= n) {
+        const at: usize = @intCast(cur); // seam: Zig indexes by usize
+        cur = chase[at];
+        steps += 1;
+        if (cur == start) return steps;
+    }
+    return 0; // did not return to start within its own bound: the caller refuses.
+}
+
+/// The measurement itself: `steps` dependent loads. Every address comes from the previous
+/// load's result, so nothing here can be reordered, batched, or predicted away.
+fn walk(start: u32, steps: u64) struct { ns: u64, checksum: u64 } {
+    // invariant: the walk starts inside the buffer.
+    assert(start < max_nodes * slots_per_node);
+    // invariant: a zero-step walk would divide by zero downstream.
+    assert(steps >= 1);
+    const began = now_ns();
+    var cur: u32 = start;
+    var checksum: u64 = 0;
+    var s: u64 = 0;
+    while (s < steps) : (s += 1) {
+        const at: usize = @intCast(cur); // seam: Zig indexes by usize
+        cur = chase[at];
+        checksum +%= cur;
+    }
+    const ended = now_ns();
+    // invariant: the monotonic clock did not run backwards.
+    assert(ended >= began);
+    return .{ .ns = ended - began, .checksum = checksum };
+}
+
+fn now_ns() u64 {
+    var ts: std.os.linux.timespec = undefined;
+    const rc = std.os.linux.clock_gettime(.MONOTONIC, &ts);
+    // invariant: the monotonic clock answered; a probe that cannot read a clock measures nothing.
+    assert(rc == 0);
+    const secs: u64 = @intCast(ts.sec);
+    const nanos: u64 = @intCast(ts.nsec);
+    // invariant: the nanosecond field is a fraction of a second, as POSIX defines it.
+    assert(nanos < 1_000_000_000);
+    return secs * 1_000_000_000 + nanos;
+}
+
+pub fn main() void {
+    print("probe_version 1\n", .{});
+    print("line_bytes {d}\n", .{line_bytes});
+    print("steps_per_rep {d}\n", .{steps_per_rep});
+    print("reps {d}\n", .{reps});
+    print("max_working_set_bytes {d}\n", .{max_working_set_bytes});
+
+    var total_checksum: u64 = 0;
+    for (sweep_kib) |kib| {
+        const bytes: u32 = kib * 1024;
+        // invariant: the sweep never asks for more than the static buffer holds.
+        assert(bytes <= max_working_set_bytes);
+        const nodes: u32 = bytes / line_bytes;
+        // invariant: every sweep size holds at least two nodes, so the chase is a walk.
+        assert(nodes >= 2);
+
+        const seed: u64 = 0x9E3779B97F4A7C15 +% @as(u64, kib);
+        fill_permutation(nodes, seed);
+        build_chase(nodes);
+
+        const start = slot_of(perm[0]);
+        const cyc = cycle_length(start, nodes);
+        if (cyc != nodes) {
+            print("refused kib={d} cycle_length={d} wanted={d}\n", .{ kib, cyc, nodes });
+            return;
+        }
+
+        var best_ns: u64 = std.math.maxInt(u64);
+        var worst_ns: u64 = 0;
+        var r: u32 = 0;
+        while (r < reps) : (r += 1) {
+            const got = walk(start, steps_per_rep);
+            total_checksum +%= got.checksum;
+            if (got.ns < best_ns) best_ns = got.ns;
+            if (got.ns > worst_ns) worst_ns = got.ns;
+        }
+        // invariant: the best reading is no slower than the worst.
+        assert(best_ns <= worst_ns);
+        // invariant: a measurable span elapsed, so the clock's granularity is not the reading.
+        assert(best_ns > 0);
+
+        const ns_hundredths: u64 = (best_ns * 100) / steps_per_rep;
+        const spread_pct: u64 = ((worst_ns - best_ns) * 100) / best_ns;
+        print("reading kib={d} nodes={d} ns_hundredths={d} spread_pct={d}\n", .{ kib, nodes, ns_hundredths, spread_pct });
+    }
+    print("checksum {d}\n", .{total_checksum});
+    print("probe_done\n", .{});
+}

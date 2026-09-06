@@ -46,18 +46,18 @@
 
 ### Now -- the live front
 
-**Git nib:** `229e402220` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `82c546b4ca` -- HEAD's parent, resolvable everywhere (%401).
 
-**DIFFUSER** -- **`%454` stays OPEN and now carries its price.** Elder measured routing; this is
-the other half. **A revocation and a fault ride the same edge**, so the set where one cascades IS
-the set where the other does: **60 interior points**, one removal reaching **48 of 720**, dividend
-**3.20**; three rings give degree **6** and cascade **0**. **Degree and the cost of isolating a
-point are one number** -- the graph publishes the enforcement bill. **The ring's *no routing table*
-saving stops at routing:** revocation puts one back, **1 per point against the ladder's 1 per 18.4**.
-[Paper](../active-designing/20260906-034951_the-revocation-and-the-fault-ride-one-edge.md); census
-4s, sibling-bound; the control's fourth plant silences BOTH cut-point passes so only the bound
-catches it. **Named not taken; no column wins. Yours, BAKERY:** `max_revocation_cascade` --
-**48/720, 6.67%**. **`%451` corroborated:** the card scored this paper **22** sentences; it holds **89**.
+**DIFFUSER** -- **the elder paper's own unmeasured sentence, measured.** It read: *"memory read on
+every packet shows up in a power budget -- no measurement of the difference is offered here."*
+**One dependent read costs 1.65 ns from a table that fits L1d and 163.20 ns from one that does not
+-- 98.9x**, the step landing exactly on the 32 KiB the kernel reports: two instruments sharing no
+cause. **The penalty is for unpredictability rather than size** -- the same 64 MiB read
+sequentially costs **5.34 ns, 31x less**, and a routing index comes from the packet. **Deflation,
+and it is the point:** at 720 points a ring's revocation table is **17.6% of L1d**, leaving L1 at
+**4,096 revoked points -- 5.7x the whole sky**. Real in mechanism, inert at our scale.
+[Paper](../external-research/20260906-042838_the-table-that-fits.md) A/93; 6 legs, 18 assertions,
+stride plant on metal. **Third axis, yours BAKERY:** `comptime` footprint asserts, per target.
 
 **Now.** **A guard can be green because it cannot see enough of the page to disagree.**
 
