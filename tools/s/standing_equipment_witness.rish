@@ -306,6 +306,23 @@ assert control.out contains "own_red_reported=yes" else "standing-equipment: an 
 assert control.out contains "own_red_uncounted=yes" else "standing-equipment: this scan's own row must leave runs_red alone"
 assert control.out contains "peer_red_still_bites=yes" else "standing-equipment: the exemption is one name wide -- every other guard's red keeps its teeth"
 assert control.out contains "peer_red_counted_alone=yes" else "standing-equipment: a peer's red must be counted exactly once beside an uncounted self row"
+# A GUARD READS THIS PASS'S VERDICTS, never the last pass's (REDS %483). The card in the working
+# tree is written once, at the close, so a red repaired early in a pass stayed red to the guard that
+# counts recorded reds -- and the phantom cost the receipt, which made the NEXT lap pay a full pass.
+# Two halves, and neither is whole alone: the runner hands each guard a pen-local live view through
+# `STANDING_CARD`, and defers its own guard to the end of the todo list so that view is complete
+# when this scan reads it. The blind runner proves the pen innocent, and the removal that makes it
+# blind is asserted -- a grep matching nothing would prove a repair by running the repaired one twice.
+assert control.out contains "live_card_reaches_guard=yes" else "standing-equipment: a guard must read this pass's verdicts, never the last pass's"
+assert control.out contains "live_card_clears_stale_red=yes" else "standing-equipment: a red repaired earlier in the pass must not be counted again"
+assert control.out contains "live_card_pass_ok=yes" else "standing-equipment: a pass whose guards all answer green must close ok"
+assert control.out contains "self_guard_runs_last=yes" else "standing-equipment: the guard that reads the card must run after every peer has written its row"
+assert control.out contains "live_card_close_writes_tree=yes" else "standing-equipment: the working-tree card must still carry this pass's verdicts at the close"
+assert control.out contains "blind_runner_built=yes" else "standing-equipment: the blind runner must actually lose the hand-off, or the failing side proves nothing"
+assert control.out contains "blind_runner_ran=yes" else "standing-equipment: the blind runner must start and reach its guards -- a copy that cannot run proves nothing about the hand-off"
+assert control.out contains "blind_runner_reads_stale=yes" else "standing-equipment: without the hand-off a guard must read the last pass's card and refuse"
+assert control.out contains "blind_runner_refuses=yes" else "standing-equipment: without the hand-off the pass must carry a red nothing in it caused"
+
 assert control.out contains "control_verdict=ok" else "standing-equipment: the control must agree with itself"
 # No total is spelled here. This line read `sixty-two behaviors` while the control ran more, the
 # same drift the header above just shed: a recited count is the one part of a green line that goes
