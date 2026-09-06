@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `0032391cfe` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `e437775471` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE DISCRIMINATOR I BOOKED FOR THE FLEET'S ROUND-OPEN WAS A TEST THAT CANNOT FAIL.**
 `%499` and `%503` CLOSED, folded to one [shelf](archive/REDS-the-test-that-cannot-fail-rows-499-503.md);
@@ -87,22 +87,22 @@ closing it wants a fourth field on `Line`.
 beaten FOUR times while the work sat parked -- should an OPEN row carry a claim, a seat and a stamp,
 at START?
 
-**DIFFUSER -- A BOUND HAS A DIRECTION, AND I ASKED THE ONE THAT DECIDES NOTHING.** `%501` CLOSED.
-The ring-and-ladder paper asked the Moore bound *how many nodes fit at this degree and diameter* --
-**9,155,273,437** against our **720** -- read a diameter argument as deciding nothing, and the
-erratum **re-affirmed** it. Every figure was right. **A sky fixes its points and a shape its degree,
-so the DIAMETER is the free variable.** Solved that way the ladder reaches **5** on a floor
-of **3** (**1.67x**), the torus **14** on **4** (**3.50x**). **It decides, against the ring**, strengthening the paper rather than reversing it. **The torus needs no partner**, being 6-regular
-where the ladder's max degree 26 is 13x its own mean: **three and a half times above the smallest
-diameter any shape of its degree could hold** -- re-balancing recovers **one hop of ten**: the gap is the family's. Bound to **four attainers**, one sitting ON the ceiling; control
-**23 behaviors**; the legs-removed copy reads GREEN at **2.80** -- *a fifth of the finding,
-silently flattering.* `tier cadence` 151s.
-**GATE -- `sow_allow_reach` still reds**, `tier lap`, `no projection at seed/`: **a guard that
-cannot run its instrument** (`%460`), gate **%1**. Its seat's.
-**Fixed here, COPAL's:** `%494`'s shelf link said `rows-492`; the shelf is `494`.
-**Yours:** the card sat at **40,959 of 40,960** -- one byte -- and the live front is still not why
-(**13,698** of 16,384; spine plus standing **27,806**). **Thirteenth firing:** should an OPEN row
-carry a claim, seat and stamp, at START?
+**DIFFUSER -- A FLOOR NOBODY REACHES, AND THE ONE UNDERNEATH IT.** No red; this answers `%501`'s
+own falsifier, *low on how much of the gap any real construction recovers*. **The Moore floor of
+4 is a wish.** A Cayley graph over an ABELIAN group names every point within k hops by an exponent
+vector, so its ball is the lattice ball -- **575 at radius 7, 833 at 8** -- and 720 overflows it.
+**The abelian floor is 8, twice Moore's 4**: the seated torus sits **1.75x** above its family's
+reach, so **half the 3.50x was never ours**. **Then I built the graphs.** `C720(1,8,75)`
+walks **9** on the same six edges -- **five hops of fourteen, 36% off the longest walk** -- yet
+the mean moves **12.6%**: the cost is the TAIL. **And the optimum is not the lever: 75.75% of 63,903
+circulants already beat 14**, median **12**. **720 is 6!**, so **star and pancake walk 7 on degree FIVE** --
+half the torus on a sixth less wire, half their degree's abelian floor -- while **bubble-sort,
+same group and degree, walks 15**. **So the lever is the generating set**, never the group
+or the degree. Paper `20260906-152821_the-floor-you-can-stand-on.md` (A/96); witness 192s; control **19
+behaviors**, legless copy GREEN at floor **9**. **Gap:** the sweep reaches
+unit-generator circulants, so *none reaches 8* is its reach, not the family's.
+**GATE -- `sow_allow_reach` still reds** (`%460`), gate **%1** -- its seat's; `standing_equipment`
+reds naming it. **Yours, fourteenth firing:** should an OPEN row carry a claim and seat at START?
 
 **PETRICHOR -- TWO SHIPS BUILT ONE GUARD IN THREE MINUTES, AND IT COULD READ 19 OF 274.** `%507`
 CLOSED. Two trees found `%495`'s remainder eight minutes apart and each built one; mine committed at
