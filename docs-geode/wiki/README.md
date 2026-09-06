@@ -7,7 +7,8 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 *A wiki is not a pile of pages; it is the links between them. This is the geode's own crosslink map -- every shipped page, what it leads to, and what leads back.*
 
 **Language:** EN - **Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
-**Written:** `20260821.190149` - **Status:** Living - **Kind:** the shelf's connective tissue
+**Written:** `20260821.190149` - **Status:** Living
+**Kind:** the shelf's connective tissue -- a crushed index of every page under [`../`](../)
 
 ---
 
@@ -22,8 +23,11 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 | [study / **Reading a name**](../study/reading-a-name.md) | the clock-and-mark foundation, the stamp-and-name law, `demos/` | `study/`, this page |
 | [demos / **Four things you can run**](../demos/README.md) | the first hour, the resolver, the sha3 witness, the room bound, the fascia meter | `study/`, this page |
 | [edu / **The teaching surfaces**](../edu/README.md) | the manual, `edu/` drafts, SOURCE.md, the api reference | this page |
-| [press / **What has been said publicly**](../press/README.md) | the three announcements | this page |
+| [press / **What has been said publicly**](../press/README.md) | the four announcements in `press/` | this page |
 | [sangha / **the patterns**](../sangha/README.md) | descriptor exchange, fact fold, five primitives | this page |
+| [sangha / **Pattern one -- the descriptor exchange**](../sangha/01-descriptor-exchange.md) | nothing yet -- it cites `comlink/discovery/` as backticked paths rather than links | `sangha/`, pattern three |
+| [sangha / **Pattern two -- the fact fold**](../sangha/02-fact-fold.md) | nothing yet -- it cites `mycelium/fold.rye` and names its elder sibling as a path | `sangha/`, pattern three |
+| [sangha / **Pattern three -- the five primitives**](../sangha/03-five-primitives.md) | patterns one and two | `sangha/` |
 | [tutorials / **recursion in Glow**](../tutorials/recursion-in-glow.md) | the Glow desk | `tutorials/` |
 | [tutorials / **Shopping**](../tutorials/SHOPPING.md) | the first hour, Gauge Style, TAME Guidance | the root README, `tutorials/`, the first hour |
 
@@ -39,7 +43,9 @@ That is the whole discipline of a wiki here. Not a search box; a promise that fo
 
 **The room doors are ways in rather than shipped pages.** `api/README.md`, `tutorials/README.md`, and the shelf's own [front door](../README.md) each stand behind the row that names their room, so this table lists what the shelf ships.
 
-**[Shopping](../tutorials/SHOPPING.md) joined the table on `20260906`.** It had stood in `tutorials/` since `20260823`, linked from four other pages and one hop from the first hour -- present everywhere except on the map that promises every shipped page. A reading that walks the whole shelf catches the next one; [`../../tools/cr/crushed_index_witness.rish`](../../tools/cr/crushed_index_witness.rish) reads a room one level deep today, and this page waits its turn.
+**[Shopping](../tutorials/SHOPPING.md) joined the table on `20260906`, and three sangha pattern pages joined it the same day.** Shopping had stood in `tutorials/` since `20260823`, linked from four other pages and one hop from the first hour -- present everywhere except on the map that promises every shipped page. The reading that catches the next one now exists: this page declares itself a **crushed index of every page under [`../`](../)** in its own header, and [`../../tools/cr/crushed_index_witness.rish`](../../tools/cr/crushed_index_witness.rish) walks the whole shelf against it each lap.
+
+**What the deeper walk found on its first run.** Three pattern pages -- [one](../sangha/01-descriptor-exchange.md), [two](../sangha/02-fact-fold.md), [three](../sangha/03-five-primitives.md) -- had never had a row here, and the one-level reading could not see them: this page links `sangha/README.md`, and a link entering a room counts the room as listed. So a map promising every shipped page was green over three pages it had never named, for the same reason it had been green over Shopping. **A room's door is not the same promise as the pages behind it**, and a guard reading one floor cannot tell the two apart.
 
 ---
 

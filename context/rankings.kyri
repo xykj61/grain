@@ -41,10 +41,13 @@ rank 18 active-designing search          Mandate — the bounded zero-copy vecto
 rank 19 active-designing shuttle         the io_uring horizon — Caravan · Tally · Loom
 rank 20 active-designing calendar        the 3/4 time signature and this rankings rota
 
-# --- work-in-progress/ — the workbench (6) ---
-rank 21 work-in-progress ROADMAP.md      the order
-rank 22 work-in-progress TASKS.md        the now
-rank 23 work-in-progress REDS.md         the ledger of what we got wrong
-rank 24 work-in-progress THREADS.md      open threads
-rank 25 work-in-progress SHRED_PREP.md   the shred-prep list
-rank 26 work-in-progress CHECKPOINTS.md       the walk-back markers before every debride
+# --- construction/ -- the workbench (6). The room was named work-in-progress until it was
+# renamed, and ranks 21 and 22 named TASKS.md and ROADMAP.md, which have been pointer stubs since
+# the 20260823.103804 fusion -- so two rounds in every 27 tended a signpost. Both now read the card
+# that holds them, each naming its own section, the way the compass rose's stations 5 and 6 do.
+rank 21 construction ITINERARY.md        the order -- the card's season and ranked remainder
+rank 22 construction ITINERARY.md        the now -- the card's live front
+rank 23 construction REDS.md             the ledger of what we got wrong
+rank 24 construction THREADS.md          open threads
+rank 25 construction SHRED_PREP.md       the shred-prep list
+rank 26 construction CHECKPOINTS.md      the walk-back markers before every debride

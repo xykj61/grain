@@ -1,25 +1,41 @@
 # The Work-in-Progress Stack
 
 **Language:** EN
-**Last updated:** `20260802.142508` (EDT) - Equinox J4 - A1-A4 - M1-M4 COMPLETE - standing voice Riyo
+**Last updated:** `20260906.060947` -- the `20260823.103804` fusion carried into this door, so what
+the room says about itself matches what its files hold. Elder sitting `20260802.142508` (EDT) -- Equinox
+J4 - A1-A4 - M1-M4 COMPLETE - standing voice Riyo.
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
-**Status:** Foundation -- living workbench; prefer **git nib** - see [`ITINERARY.md`](ITINERARY.md) - [`ROADMAP.md`](ROADMAP.md) - [`TASKS.md`](TASKS.md)
+**Status:** Foundation -- living workbench; prefer **git nib**. The live card is
+[`ITINERARY.md`](ITINERARY.md); [`ROADMAP.md`](ROADMAP.md) and [`TASKS.md`](TASKS.md) fused into it on
+`20260823.103804` and stand as pointers, kept because guards read them by name.
 **Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
 [`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
 path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 
-**Finishing edge now:** Tend T1-T6 - C1-C4 - A1-A4 - M1-M4 GREEN - a1 gated on Keaton's kg - Q58 parked - Cursor-sole.
+**Finishing edge, elder sitting `20260802`:** Tend T1-T6 - C1-C4 - A1-A4 - M1-M4 GREEN - a1 gated on
+Keaton's kg - Q58 parked. **The bench is a fleet now** -- `construction/fleet-roster.kyri` seats twelve,
+eight of them live, ten on the `claude` engine, one on `codex`, one on the field bench (measured
+`20260906.070005`).
 **Habit:** full fusion baton each round -> `expanding-prompts/`.
 **Ontology:** accrete-never-break along with accrete-sometimes-breach.
 
-**Health (this sitting):** `ROADMAP`/`TASKS` current. `ITINERARY.md` ~56 KiB **over** `living_pin_max_bytes` (24576) -- fold debt. `ready-to-ask-claude.md` ~57 KiB Claude-era -- archive on word. Collection-twin `.tsv` + dated baselines cold -> `yonder/` on word. Hammock index below is **July-stale** -- truth is ITINERARY + ROADMAP + TASKS + need queue.
+**Health, measured `20260906.114500`:** `ITINERARY.md` stands **under its own bound**, which is
+`living_pin_max_bytes[construction/ITINERARY.md]` and is answered by
+[`../tools/fixtures/l/living_pin_max_bytes.sh`](../tools/fixtures/l/living_pin_max_bytes.sh) rather than
+spelled here -- a byte count typed beside a card that changes every lap is true for one lap (the general
+pin bound stays 24,576; this one was raised `20260906.001901`). `ROADMAP.md` and `TASKS.md` are
+**pointers**, so they carry no plan to be current or stale about. `ready-to-ask-claude.md` holds 57,070
+bytes of Claude-era strategy -- archive on Keaton's word. Collection-twin `.tsv` and the dated baselines
+sit cold, bound for `yonder/` on the word. The hammock index below is a **July shelf**, kept as the record
+of what stood then; **the truth of now is [`ITINERARY.md`](ITINERARY.md) alone.**
 
 ---
 
 This is the **workbench** -- the live edges of the work. Where the external-research stack studies the world and the active-designing stack decides our design, this folder holds the threads still in motion: the questions waiting on a decision, the tasks chosen yet not yet done or offered yet not yet taken, the housekeeping left ajar. We keep them here, in writing, so nothing slips between sessions, and so anyone returning to the work -- a future us, or an agent picking it back up -- sees at a glance exactly where we stand and what comes next.
 
-The granular task list lives in [`TASKS.md`](TASKS.md) (filename stays stable; **workbench** is the warmer conversational name for the same file).
+The live lap edge lives in [`ITINERARY.md`](ITINERARY.md), which holds the granular plan and the season
+order together on one card. **Workbench** stays the warmer conversational name for this room.
 
 It is a kindness to our future selves: memory for the *work*, the way Mantra is memory for the *code*.
 
@@ -29,9 +45,12 @@ It is a kindness to our future selves: memory for the *work*, the way Mantra is 
 
 Dated artifacts carry `YYYYMMDD-HHMMSS_short-sprig.md`; this README is the living foundation. The reverse-chronological index below reads newest first. Full naming law: [`../context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
 
-Each stock-taking once wrote a new **open-threads** snapshot stamped at the time of writing. Older snapshots graduate to [`archive/`](archive/) -- out of the live folder, yet kept whole as an honest record of what was open, and when. The accreted `20260623-033012` snapshot archived `2026-06-29`, and a redirect stub at the old path points to the archive. **Going forward:** open questions live in [`TASKS.md`](TASKS.md); history accretes in [`../session-logs/`](../session-logs/).
+Each stock-taking once wrote a new **open-threads** snapshot stamped at the time of writing. Older snapshots graduate to [`archive/`](archive/) -- out of the live folder, yet kept whole as an honest record of what was open, and when. The accreted `20260623-033012` snapshot archived `2026-06-29`, and a redirect stub at the old path points to the archive. **Going forward:** open questions live in [`ITINERARY.md`](ITINERARY.md); history accretes in
+[`../session-logs/`](../session-logs/).
 
-The standing roadmap lives in [`ROADMAP.md`](ROADMAP.md) -- living, unstamped. The granular task list lives in [`TASKS.md`](TASKS.md) -- edited in place; history accretes in `../session-logs/`.
+The standing roadmap and the granular task list both live in [`ITINERARY.md`](ITINERARY.md) -- living,
+unstamped, edited in place, with history accreting in `../session-logs/`. Reading the plan and reading
+what is happening now wanted one card rather than two, which is what `20260823.103804` settled.
 
 A snapshot is a faithful gathering rather than a contract. An item leaves the next snapshot when it is **done**, **decided**, or **set down on purpose** -- and that next snapshot says which, so even closure is remembered rather than merely vanishing.
 
@@ -66,8 +85,8 @@ The discipline is simple: if reading a line aloud would make a newcomer ask "so 
 | `20260702.200109` | [RW-1 mirrored-pair contract](archive/20260702-200109_rw1-mirrored-pair-contract.md) | Happy-zone prep -- shell<->Mantra seam; build after SLC-2b |
 | `20260702.195426` | [SLC-L1 scope note](../active-designing/date/20260702/20260702-195426_slcl1-verifiable-receipt.md) | Linengrow hammock -- verifiable receipt; Open Asks gated |
 | `20260702.194512` | [Ready to ask Claude](ready-to-ask-claude.md) | Strategy checkpoint -- doors, parity arithmetic, Amber pre-counsel |
-| -- | [`TASKS.md`](TASKS.md) | Living granular plan -- what-now (~88 commit-sized boxes) |
-| -- | [`ROADMAP.md`](ROADMAP.md) | Living roadmap -- current position table |
+| -- | [`TASKS.md`](TASKS.md) | Pointer since `20260823.103804` -- the plan is on [`ITINERARY.md`](ITINERARY.md) |
+| -- | [`ROADMAP.md`](ROADMAP.md) | Pointer since `20260823.103804` -- the order is on [`ITINERARY.md`](ITINERARY.md) |
 | `20260623-033012` | [Open threads -- redirect](archive/20260623-033012_open-threads.md) | Archived -- full snapshot in [`archive/`](archive/) |
 | `20260621-032327` | [Strengthening width crosswalk](yonder/20260621-032327_strengthening-width-crosswalk.md) | Completed crosswalk -- in `yonder/` beside strengthening kin |
 | `20260620-212126` | [usize width baseline](20260620-212126_usize-width-baseline.md) | Tiger/TAME explicit-width charter |

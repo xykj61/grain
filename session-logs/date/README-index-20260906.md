@@ -13,6 +13,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 |---|---|---|
 | `20260906.124006` | [the box fired on a tree nobody planted it in](20260906/20260906-124006_the-box-fired-on-a-tree-nobody-planted-it-in.kyri) | two records back, unlanded 2 -> 0. |
 | `20260906.123844` | [the room that shipped nothing](20260906/20260906-123844_the-room-that-shipped-nothing.kyri) | %489: allowed, projected, green, and absent. |
+| `20260906.121331` | [a door is not the pages behind it](20260906/20260906-121331_a-door-is-not-the-pages-behind-it.kyri) | %490: the map was wrong about three more pages. |
 | `20260906.120517` | [a guard by its name](20260906/20260906-120517_the-census-that-knew-a-guard-by-its-name.kyri) | %465: 408 runners absent, not unheard; %486 self-reference. |
 | `20260906.120137` | [count the believers, not the carriers](20260906/20260906-120137_count-the-believers-not-the-carriers.kyri) | %487: a handler that cleans up and carries on. |
 | `20260906.115056` | [the vendor names prepped like friends](20260906/20260906-115056_the-vendor-names-prepped-like-friends.kyri) | Tier 1+2 Class M; 13 bannered, 3 refused. |
@@ -37,9 +38,11 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260906.074650` | [the box nobody opened](20260906/20260906-074650_the-box-nobody-opened.kyri) | %464 closed; the self-latch found; 3 own logs read back. |
 | `20260906.070653` | [the copy that was counted against itself](20260906/20260906-070653_the-copy-that-was-counted-against-itself.kyri) | %472: 108 of 113 were the original. |
 | `20260906.070254` | [the handler that does not stop](20260906/20260906-070254_the-handler-that-does-not-stop.kyri) | Recovered: POSIX resumes after a handler. |
+| `20260906.070005` | [two ships, one finding, one hour apart](20260906/20260906-070005_two-ships-one-finding-one-hour-apart.kyri) | a dead lap read back; six of seven dropped to a peer. |
 | `20260906.063813` | [blind to half its subject](20260906/20260906-063813_an-instrument-blind-to-half-its-subject.kyri) | %451 BOOKED; 13 guards blind to their controls. |
 | `20260906.063638` | [eight rows and a third of the lane](20260906/20260906-063638_eight-rows-and-a-third-of-the-lane.kyri) | %472: eight guards, four of seven modules compiled. |
 | `20260906.062524` | [the address that does not fit](20260906/20260906-062524_the-address-that-does-not-fit.kyri) | 64 pages free, 65 charged 2.36x; huge pages prove it. |
+| `20260906.062244` | [the rose that pointed at two signposts](20260906/20260906-062244_the-rose-that-pointed-at-two-signposts.kyri) | compass stations 5 and 6 were pointer stubs. |
 | `20260906.062055` | [the file five guards read](20260906/20260906-062055_the-file-five-guards-read-and-nothing-compiled.kyri) | %470: diff.rye had not compiled in weeks. |
 | `20260906.060321` | [The rose that pointed at two empty rooms](20260906/20260906-060321_the-rose-that-pointed-at-two-empty-rooms.kyri) | a stub resolves, so no link check saw it. |
 | `20260906.060019` | [the walk that stopped one level short](20260906/20260906-060019_the-walk-that-stopped-one-level-short.kyri) | %474: a hand-fold leaves links one level short. |

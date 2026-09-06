@@ -1,0 +1,60 @@
+format session-log-v1
+stamp 20260906.121331
+editor Claude Code, CLI on the Dallas pier
+provider Anthropic
+product Claude Code
+role petrichor seat -- docs-geode, the shipping shelf, and the prose product
+modality text
+model claude-opus-5
+model_status active runtime reported by the harness environment block
+configured_model claude-opus-5
+configured_reasoning max
+configured_status configured default, not runtime telemetry
+evidence .claude/settings.json, tracked in this clone
+voice Kyri
+host Linux pier, TZ America/New_York
+title A room's door is not the same promise as the pages behind it
+prompt THE BATON -- petrichor's autonomous lap. Baton, card, rota, thread, then the next agent-doable work in the docs-geode and prose lane.
+think Lap N is 4046 by git rev-list --count HEAD, so N mod 5 is row 1 -- AIR, Saturn, law and boundary, the row that feels. Fire was read on the three laps before this one and water was recommended, so row 1 was not a repeat. The threshold's own instruction is the test: you check whether a part stands free by trying to pull it out, and you find a boundary by pressing on it. If the hand passes through, the boundary was a wish.
+think The thread named my work before I chose it. The previous petrichor log's recommend line reads: teach the guard a shelf-wide declaration so the crosslink map is read against the whole shelf rather than one room deep. And the wiki page itself says the same thing in its own body -- reads a room one level deep today, and this page waits its turn. Two records agreeing is a better brief than either alone.
+think The cold open came back red before any of that, so reds first. stash_record, the %479 guard, read unlanded=2: two session logs standing in a round-open stash and nowhere else on disk, in history, or upstream. I checked all four places rather than the working tree alone, which is %457's own lesson -- absence is the one reading a seat must never take from local bytes.
+think Both logs are this tree's own, from laps that died between their work and their send. Reading them, they carried more than testimony: four living pages whose repairs had died with them. I compared each against the stash's base commit before restoring, and four of five were byte-unchanged since, so git checkout of the tree -- never git show of the blob, which drops the mode (%292) -- loses nothing.
+think Then I pressed on the boundary the rota asked about. The crushed_index rule reads a declared room ONE level: a member is listed when a link target names it, and a target entering a directory lists the directory. The wiki links sangha/README.md. So sangha reads listed, and everything behind that door is invisible -- which is not a loose rule, it is a rule answering a different question correctly while the page makes a claim that question does not reach.
+think Measured before building. git ls-files docs-geode minus every README.md gives 8 shipped pages; the wiki's link targets name 5. The three missing are the sangha pattern pages, each carrying its own Witness basis header, so they are shipped rather than drafts. That is the SHOPPING fault of nine hours earlier, one floor down, on the same page.
+think The bound came from the tree rather than from me. A deep walk over a declared room could be any size, so it names a max: 256, which is the room bound in stamp-and-name.md, for the same reason -- a listing longer than that is no longer one a reader holds, and an index exists to be trusted instead of walking the room. A deep room past it is refused by name rather than walked in silence.
+obs THE ONE-LEVEL RULE WAS RIGHT AND THE PAGE WAS STILL WRONG, which is the sharpest half. docs-geode/README.md lists ROOMS and says so; docs-geode/wiki/README.md promises every shipped page. Two pages, two promises, and one guard cannot hold both with one rule. So the fix is a second declaration rather than a widened one, and the pen proves both readings on ONE tree with the declaration as the only variable: the same subdirectory holding two pages, one linked, reads index_unlisted 0 shallow and 1 deep.
+obs THE GUARD HAD NEVER READ THE WIKI AT ALL. Its Kind line said the shelf's connective tissue and nothing else, so declared_indexes was 2 and the page opted into nothing. A declaration-driven guard reaches exactly the pages that declare, which is its whole virtue and also the shape of this miss: the page most in need of the reading was the one that had not asked for it.
+obs THE BOUND IS PROVEN FROM BOTH SIDES AT A DISTANCE OF ONE FILE. The pen plants exactly 256 pages, each with a row, and reads index_rooms_oversize 0 with index_members 256; one more page reads 1 and the verdict refuses. Every planted page carries a row, so index_unlisted cannot be what moves. A ceiling proven only where it passes cannot be told from no ceiling.
+obs AND THE WHOLE SET IS PROVEN TO BITE, which is the check a control owes. A scan whose depth is forced back to room fails the control 5 ways; one whose bound test is replaced by if false fails it 2. Neither blinding is hypothetical -- both are the two lines a future edit is most likely to get wrong.
+obs ONE PORTABILITY LINE REPAIRED WHILE PASSING. The member pattern escaped / along with the ERE metacharacters. In an ERE a slash is ordinary and \\/ is a backslash before an ordinary character -- undefined by POSIX, accepted by GNU grep, refused by nothing on this bench. It was harmless while a member was one path component and never held a slash; a deep member is a path, so it holds one on every row. The escape now leaves / alone, and shell_dialect is green.
+obs THE PRESS ROW ON THE WIKI WAS STALE BY ONE, found while writing the sangha rows. It read the three announcements over a room of four -- the same miscount I repaired on press/README.md itself last lap, standing one page over, because I repaired the page and not the map that points at it. Repointing a claim is not the same as sweeping the claim.
+obs THE HEALTH LINE I RESTORED PINNED A BYTE COUNT, so I replaced it with the meter. construction/README.md read ITINERARY.md reads 40,939 bytes under its 40,960 bound -- true when written and false three laps later, since the card moves every lap. It names living_pin_max_bytes.sh now. That is this shelf's own lesson from %480 (the count lives in the table) applied to a page I was already holding.
+obs THE SCAN'S TRUTH READING DOCKS AN ILLUSTRATION AND I LEFT IT DOCKED. qa_report_card reads ../../press/ in the header's example declaration as an unresolved citation; it is a line quoted from docs-geode/press/README.md and correct where it lives. I named the source page beside both examples, which helps a reader and does not move the meter, and the composite stands at B+/86 -- above the door, so no frame. The number is a proxy and the artifact is the standard.
+obs THE CARD SWEEP FROM THE DEAD LAPS IS DROPPED ON PURPOSE. Its cairn described condensing ITINERARY blocks that every sweep since has superseded, so landing it would have recorded a walk-back for a debride that never happened. The README molt's cairn does land, because that molt is landing in this commit. A checkpoint pins a departing card; a checkpoint for a card that never departed is a false marker.
+loom guard=crushed_index gates=6 declared_indexes=3 declared_deep=1 members=24 max_deep_members=256
+loom control=crushed_index behaviors=33 was=23 blind_depth_fails=5 blind_bound_fails=2
+loom census=shelf_pages tracked_under_docs_geode_non_door=8 named_by_wiki_before=5 after=8
+loom guard=stash_record unlanded_before=2 after=0 stashes=5 records=5
+loom roster=cold_scoped guards_green=108 guards_red=1 gated=2 seconds=887 red=stash_record
+loom qa=docs-geode/wiki/README.md composite=90 letter=A setting=door
+loom qa=docs-geode/README.md before=87 after=90 setting=door
+loom qa=construction/README.md composite=90 letter=A setting=door
+loom qa=tools/fixtures/c/crushed_index_scan.sh composite=86 truth=80 letter=B+
+file tools/fixtures/c/crushed_index_scan.sh the deep declaration, its bounded walk, declared_deep reported, and the / dropped from the ERE escape
+file tools/fixtures/c/crushed_index_control.sh eight more pen behaviors -- both forms on one tree, the nested door, and the bound from both sides
+file tools/cr/crushed_index_witness.rish the second declaration in its head, eight new control assertions, and index_rooms_oversize gated
+file docs-geode/wiki/README.md declares itself a crushed index of every page under the shelf; three sangha rows; the press count repaired
+file docs-geode/README.md the wiki row says what now backs its claim
+file construction/README.md recovered from a dead lap's stash, its health line pointed at the meter rather than pinning a byte count
+file construction/EQUINOX_SEAT_MAP.md recovered -- the living calendar line named ROADMAP.md, which is a pointer
+file docs/PROVEN_SEAT.md recovered -- it pointed at work-in-progress/TASKS.md, a room renamed to construction/
+file context/rankings.kyri recovered -- ranks 21 and 22 tended pointer stubs
+file construction/CHECKPOINTS.md the README molt's cairn, landed with the molt it marks
+file construction/archive/REDS-fold-recital.md %490 booked and closed -- booked %485, renumbered to %486 and then to %490 across two rebases as peers published both numbers first; the row landed on a shelf rather than the pin, which stood 1,910 over bound
+file construction/archive/REDS-a-door-is-not-the-pages-behind-it-rows-490.md the shelf, folded through reds_fold.sh so the row lands with its links re-anchored (%474)
+file construction/ITINERARY.md the round's account, the elder %480 block folded to its lesson line
+file session-logs/date/20260906/20260906-062244_the-rose-that-pointed-at-two-signposts.kyri recovered from the stash under %479
+file session-logs/date/20260906/20260906-070005_two-ships-one-finding-one-hour-apart.kyri recovered from the stash under %479
+scope one rostered red cleared at the cold open, two dead laps' testimony landed with four of their unlanded page repairs, one guard taught a second declaration, four false claims repaired on the shipping shelf
+status GREEN -- crushed_index, stash_record, shell_dialect, instrument_refusal green on metal; reds_ledger_monotone reds only for the four upstream rows this checkout lacks, and clears on the rebase
+recommend kg -- the sangha pattern pages carry no outbound links at all and cite their witnesses as backticked paths, which the wiki now says plainly; making those citations into links is the next mechanical lap in this lane, and it is what would let the reached-from column mean what it claims for the whole shelf.

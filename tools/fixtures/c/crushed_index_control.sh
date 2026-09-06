@@ -31,6 +31,18 @@
 #           least able to notice about itself, since every gate answers zero at once.
 #   17.     THE PEN IS INNOCENT: a repository with nothing planted reads `verdict=ok`, so every
 #           refusal above is the plant rather than the scaffolding.
+#   18-21.  The two declarations are two promises, proven on ONE tree so the declaration is the only
+#           variable. A room holding a subdirectory with two pages, one of them linked: the
+#           one-level reading counts the directory as LISTED and reads zero, and the deep reading
+#           counts the unlinked page. That is the fault exactly -- a link entering a room lists the
+#           room, so a map promising every page can stand green over pages it never named.
+#   22.     Adding the deep row clears it, so the count is reading rows rather than depth.
+#   23.     A nested `README.md` is a door rather than a member, since a deep walk meets one on
+#           every floor and demanding a row for each would make every door a false red.
+#   24, 25. THE DEEP WALK IS BOUNDED at `max_deep_members`, proven from both sides at a distance of
+#           one file: a room standing exactly at 256 walks free with all 256 counted, and one page
+#           past it is refused by name. Every planted page carries a row, so `index_unlisted` cannot
+#           be what moves.
 #
 # WHAT IS NOT PROVEN. Whether a row says anything TRUE about the member it names. This proves the
 # counting, not the prose.
@@ -198,6 +210,57 @@ d=$(build fragment)
   && printf '| [three](../room/three.md#a-section) | the third |\n' >> shelf/README.md \
   && git add -A && git commit -qm 'pen: a row whose link carries a fragment' ) >/dev/null 2>&1
 check "a link carrying a fragment still names its file" "$(read_of "$d" index_unlisted)" "0"
+
+# --- 18-21. THE TWO DECLARATIONS ARE TWO PROMISES, and neither substitutes for the other ----------
+# The pen plants a room one floor down holding TWO pages, and the shelf links only the first. Under
+# the one-level rule `sub` is a listed member, because a link entering a directory lists it -- so
+# `sub/other.md` is invisible and the index reads green. That is the real fault this reading exists
+# for: docs-geode/wiki/README.md promised "every shipped page" and stood green over three sangha
+# pattern pages, for exactly this reason. Both readings are taken on ONE tree, so the difference is
+# the declaration and nothing else.
+d=$(build depth)
+( cd "$d" && mkdir -p room/sub \
+  && printf '# deep\n' > room/sub/deep.md \
+  && printf '# other\n' > room/sub/other.md \
+  && printf '| [deep](../room/sub/deep.md) | one floor down |\n' >> shelf/README.md \
+  && git add -A && git commit -qm 'pen: two pages one floor down, one of them listed' ) >/dev/null 2>&1
+check "the one-level reading counts the directory as listed" "$(read_of "$d" index_unlisted)" "0"
+check "and reads no declaration as deep" "$(read_of "$d" declared_deep)" "0"
+( cd "$d" && sed_inplace 's|crushed index of \[`../room/`\](../room/)|crushed index of every page under [`../room/`](../room/)|' shelf/README.md \
+  && git add -A && git commit -qm 'pen: promise every page under the room' ) >/dev/null 2>&1
+check "the deep declaration is read as deep" "$(read_of "$d" declared_deep)" "1"
+check "and the unlisted page one floor down is counted" "$(read_of "$d" index_unlisted)" "1"
+
+# --- 22. ADDING ITS ROW CLEARS IT -----------------------------------------------------------------
+( cd "$d" && printf '| [other](../room/sub/other.md) | the other one |\n' >> shelf/README.md \
+  && git add -A && git commit -qm 'pen: the deep row that was missing' ) >/dev/null 2>&1
+check "adding the deep row clears the count" "$(read_of "$d" index_unlisted)" "0"
+
+# --- 23. A DOOR IS A DOOR ON EVERY FLOOR ----------------------------------------------------------
+# `README.md` is the room's own door rather than a thing the room holds, and a deep walk meets one
+# in every subdirectory. Demanding a row for each would turn every nested door into a false red.
+( cd "$d" && printf '# the sub door\n' > room/sub/README.md \
+  && git add -A && git commit -qm 'pen: a door one floor down' ) >/dev/null 2>&1
+check "a nested README is a door rather than a member" "$(read_of "$d" index_unlisted)" "0"
+
+# --- 24, 25. THE DEEP WALK IS BOUNDED, proven from both sides -------------------------------------
+# A bound proven only where it passes cannot be told from no bound at all. The pen plants exactly
+# `max_deep_members` pages and then one more, so the ceiling is shown biting and walking free at a
+# distance of one file. Every planted page carries a row, so `index_unlisted` cannot be what moves.
+d=$(build bound)
+( cd "$d" && sed_inplace 's|crushed index of \[`../room/`\](../room/)|crushed index of every page under [`../room/`](../room/)|' shelf/README.md \
+  && mkdir -p room/many \
+  && i=3; while [ "$i" -le 256 ]; do printf '# page %s\n' "$i" > "room/many/p$i.md"; \
+       printf '| [p%s](../room/many/p%s.md) | one of many |\n' "$i" "$i" >> shelf/README.md; \
+       i=$((i + 1)); done \
+  && git add -A && git commit -qm 'pen: a deep room standing exactly at the bound' ) >/dev/null 2>&1
+check "a deep room at the bound walks free" "$(read_of "$d" index_rooms_oversize)" "0"
+check "and every one of its pages is counted" "$(read_of "$d" index_members)" "256"
+( cd "$d" && printf '# one past\n' > room/many/p257.md \
+  && printf '| [p257](../room/many/p257.md) | one past the bound |\n' >> shelf/README.md \
+  && git add -A && git commit -qm 'pen: one page past the bound' ) >/dev/null 2>&1
+check "one page past the bound is refused by name" "$(read_of "$d" index_rooms_oversize)" "1"
+check "and the verdict refuses" "$(read_of "$d" verdict)" "index_disagrees"
 
 # --- 16. AN EMPTY CORPUS REFUSES ------------------------------------------------------------------
 d=$pen/empty

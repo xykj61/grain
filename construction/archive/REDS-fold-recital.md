@@ -341,3 +341,5 @@ at a closed fold.*
 *Row %488 folded to [`REDS-the-doubt-published-in-the-wrong-frame-rows-488.md`](REDS-the-doubt-published-in-the-wrong-frame-rows-488.md) on `20260906.115627`, **CLOSED** -- a number published in the resolver's frame is read in the consumer's.*
 
 *Rows %470 and %471 folded to [`REDS-the-cheaper-question-an-instrument-asked-rows-470-471.md`](REDS-the-cheaper-question-an-instrument-asked-rows-470-471.md) on `20260906.125608`, both **BOOKED** -- One instrument asking a cheaper question than it claimed: five guards read a file with grep while no compiler had accepted it, and a loop read a spent window by elapsed time and stopped six ships nine minutes early.*
+
+*Row %490 folded to [`REDS-a-door-is-not-the-pages-behind-it-rows-490.md`](REDS-a-door-is-not-the-pages-behind-it-rows-490.md) on `20260906.123531`, **BOOKED** -- an index reading one level of a room is blind to the pages behind its door, and the two promises want two declarations.*
