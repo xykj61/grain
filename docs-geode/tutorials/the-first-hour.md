@@ -185,9 +185,9 @@ than reciting.
 This one line has already been corrected twice, and the story is worth your first day. It promised
 **78** until a reader's walk on a clean clone found **71** -- a count measured in one tree and
 promised to every other. An hour later, shipping a room that walk had found still to be written
-made it **72**. A number typed into prose starts rotting the moment it is typed, which is exactly
-why the front-door [README](../../README.md) generates its four numbers, and why this page tells
-you what the output *means* rather than what it will say.
+made it **72**. A generated number stays true as the tree moves, where a typed one holds only
+until the next commit -- which is exactly why the front-door [README](../../README.md) generates
+its four numbers, and why this page tells you what the output *means* rather than what it will say.
 
 Five lines, and **two of them are assertions**. That ratio is the whole discipline in miniature:
 the program confirms the listing succeeded *before* it trusts the number, and confirms the number
