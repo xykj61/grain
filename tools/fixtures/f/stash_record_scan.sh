@@ -42,11 +42,41 @@
 # `tools/fixtures/d/dated_spelling_scan.sh` accepts. A shelf index is NOT a record: it is a living
 # page every ship appends to, so it is present by construction and would only dilute the count.
 #
+# WHY A `pier/` BRANCH IS NOT A LANDING (REDS %507). The round open fills TWO drawers, and until
+# this reading was widened one of them certified the other empty. Step 4 of
+# `tools/f/fleet_round_open.sh` parks a diverged local line on `refs/heads/pier/diverged-<stamp>`,
+# and `%499` measured where those go: 11 park branches on `xy`, 33 distinct subjects since
+# `20260828`, and **ten of them still stand there today**. So a record carried only by a `pier/`
+# ref sits in the second drawer of the same box, which is the exact state this guard exists to
+# find.
+#
+# Measured on this field `20260906.153148`, before the widening: three stashes, `unlanded=0`,
+# `verdict=ok` -- while `stash@{0}` held a complete unlanded feature (a module operation, its Rye
+# witness, a scan, a control, a roster line) whose session log stood on
+# `refs/heads/pier/diverged-20260906-131810` **and nowhere a reader reaches** -- `main` and
+# `xy/main` alike went past it. The guard called the box clean because a park is a ref and
+# `refs/heads` was read whole.
+#
+# The whole `pier/` namespace is excluded rather than the `diverged-` prefix alone: the round
+# open's own header calls `refs/heads/pier/` "the rota's own deferral shelf", and it writes
+# `pier/rebase-<stamp>` there too. Excluding by the namespace follows the namespace's declared
+# meaning; one prefix would hold only until a park is named something else. Remote park refs go
+# the same way -- `refs/remotes/*/pier/*` -- since a park pushed to the anointed remote leaves the
+# record exactly where it already was. A remote `main` still counts, which is legs 20-21.
+#
+# ONE GATE, AND A DIAGNOSIS BESIDE IT. `unlanded` stays the single gate and keeps its meaning:
+# a record carried by no ref a reader will reach. `parked` is the SUBSET of those a `pier/` ref
+# does carry, and it is reported beside the gate rather than gated, because two readings that
+# always fire together are one reading wearing two names (`.claude/rules/derived-spine.md`). That
+# also leaves `tools/f/fleet_round_open.sh` untouched -- it greps `^unlanded=` and starts printing
+# correctly on its own, so the change stays inside one seat (%291).
+#
 # READINGS
 #   stashes=N    round-open stashes standing in this repository
 #   records=N    distinct session-log records across them
-#   landed=N     of those, the ones a ref or the worktree carries
-#   unlanded=N   of those, the ones nothing carries -- THE GATE, held at zero
+#   landed=N     of those, the ones the worktree or a ref A READER REACHES carries
+#   unlanded=N   of those, the ones no such ref carries -- THE GATE, held at zero
+#   parked=N     of the unlanded, the ones a `pier/` park ref carries -- the diagnosis
 #   verdict=ok | records_unlanded
 #
 # USE
@@ -69,14 +99,29 @@ max_records=512
 test -d .git || { echo "verdict=not_a_repository"; exit 0; }
 
 # The refs a record may honestly have landed on: every local branch and every remote-tracking
-# branch, by name. NEVER `--all`, which reaches refs/stash -- see the header.
-refs=$(git for-each-ref --format='%(refname)' refs/heads refs/remotes 2>/dev/null)
+# branch, by name. NEVER `--all`, which reaches refs/stash -- see the header. And never the
+# `pier/` namespace, local or remote: that is the round open's own deferral shelf, where a park
+# keeps every byte and still costs the tree the lap (REDS %499, %507).
+all_refs=$(git for-each-ref --format='%(refname)' refs/heads refs/remotes 2>/dev/null)
+reader_refs=$(printf '%s\n' "$all_refs" | grep -v -E '^refs/heads/pier/|^refs/remotes/[^/]+/pier/')
+park_refs=$(printf '%s\n' "$all_refs" | grep    -E '^refs/heads/pier/|^refs/remotes/[^/]+/pier/')
 
-# Does any ref, or the worktree, carry this path?
+# Does the worktree, or a ref a reader will actually reach, carry this path?
 carried_by() {
   p=$1
   [ -f "$p" ] && { echo "worktree"; return 0; }
-  for r in $refs; do
+  for r in $reader_refs; do
+    if git cat-file -e "$r:$p" 2>/dev/null; then echo "$r"; return 0; fi
+  done
+  echo ""
+  return 1
+}
+
+# Does a park ref carry it? Asked only of records `carried_by` has already placed outside the
+# channel, so this names WHY a record is unlanded rather than deciding whether it is.
+parked_on() {
+  p=$1
+  for r in $park_refs; do
     if git cat-file -e "$r:$p" 2>/dev/null; then echo "$r"; return 0; fi
   done
   echo ""
@@ -92,6 +137,7 @@ stashes=0
 records=0
 landed=0
 unlanded=0
+parked=0
 seen=""
 lines=""
 
@@ -112,15 +158,24 @@ for sref in $(git stash list --format='%gd' 2>/dev/null); do
 "
     else
       unlanded=$((unlanded + 1))
-      lines="$lines$sref	$p	unlanded
+      park=$(parked_on "$p") || true
+      if [ -n "$park" ]; then
+        parked=$((parked + 1))
+        lines="$lines$sref	$p	unlanded:parked:$park
 "
+      else
+        lines="$lines$sref	$p	unlanded
+"
+      fi
     fi
   done
 done
 
 case "$mode" in
   list)
-    printf '%s' "$lines" | grep '	unlanded$' || true
+    # Both gate states, since a parked record is unlanded with a reason attached rather than a
+    # third kind of safe. Anchored on the tab, so the match reads the state column alone.
+    printf '%s' "$lines" | grep '	unlanded' || true
     ;;
   all)
     printf '%s' "$lines"
@@ -131,6 +186,7 @@ echo "stashes=$stashes"
 echo "records=$records"
 echo "landed=$landed"
 echo "unlanded=$unlanded"
+echo "parked=$parked"
 if [ "$unlanded" -gt 0 ]; then
   echo "verdict=records_unlanded"
 else
