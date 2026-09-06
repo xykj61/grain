@@ -27,7 +27,9 @@ rename a ship, edit one row. Machines are doors; a seat is a chair, not a comput
 CHECKOUT (REDS %291): two loops on one tree refuse, two loops on two trees is a token spend. Name
 any peer before a file moves.
 
-WATCH. The fleet is watched, so a loop that dies comes back. tools/l/fleet_watch.sh runs beside the
+WATCH. The fleet is watched, so a loop that dies comes back. THIS PIER RUNS WITHOUT JAILS
+(Keaton's word 20260906): every loop is launched FLEET_BARE=1, and the watch passes its own
+FLEET_BARE through so a re-arm never quietly puts a ship back in the enclosure. tools/l/fleet_watch.sh runs beside the
 ships in the same tmux session, discovers each window BY NAME every pass -- never by index -- and
 re-arms any live seat whose fleet-loop.sh process is gone. It refuses a running loop (%291), a pane
 not at a shell prompt, a duplicated window name, a gated tree, and a seat that has burned three
