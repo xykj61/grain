@@ -1531,3 +1531,44 @@ guard rye_compile_reach
 path tools/r/rye_compile_reach_witness.rish
 tier lap
 seated 20260906.045200
+
+# amphora_bounds_agree -- the ninth, and the meter that finds unheard guards could not see it.
+#
+# WHAT IT PROVES. Amphora names the same bound in more than one roof, and this guard proves those
+# copies agree. Three readings: same-name declarations across module roofs; value groups aliased
+# under three names and two widths; and twelve declared `/// couples:` markers, where a bound in
+# one file must equal a named partner in another -- `max_vessel_len` against `vessel_seal` and
+# `vessel_core` at u32=8192, `max_resin_bytes` against `vessel_seal.max_seal_plain` at u32=1024,
+# and `max_wire_payload` against main's chunk datagram at u32=340 beside u16=340, the width
+# difference carried in a note rather than swallowed. Coupling is DECLARED rather than inferred,
+# so a partner is named by a hand and never guessed from a matching number.
+#
+# Nothing else in this tree checks that a bound raised in one roof was raised in the other, and
+# REDS %453 (`20260906.010047`) is what that costs: two Amphora bounds tied by hand at comptime,
+# a lap after a raise to one of them refused 64 of 2,200 legal lengths with its own selftest
+# still GREEN. This guard is the standing form of that repair.
+#
+# IT ALREADY CARRIES THE HALF A GREEN READING CANNOT SHOW. Six plants run before any total is
+# believed -- same-name, alias and couples -- each proven to FAIL on a divergent plant and PASS
+# on an agreeing one, so the refusal is proven from the failing side rather than assumed.
+#
+# `tier lap`, and the reading carries the pier's state rather than a bare number. Exit 0 on three
+# consecutive runs at 1.755s, 1.782s and 1.780s on a quiet pier (`20260906.034025`), and at
+# 3.153s, 2.869s and 2.687s at load average 10.2 with all eight ships opening a lap at once
+# (`20260906.034409`) -- against full lap passes of 658 and 808 seconds measured the same two
+# ways. A wall-clock figure on a shared pier is a reading of the pier as much as of the guard, so
+# a lap that meets the slower number has met the expected one. Under two seconds quiet and under
+# four loaded, this stays lap-tier under either sky. The affordable witness is the one that keeps
+# being run.
+#
+# WHY IT STOOD HEARD BY NOTHING FOR 36 DAYS, booked as REDS (`20260906.034025`). It has been
+# GREEN and cited in counsel since `20260801`, and `tools/fixtures/u/unheard_guard_scan.sh` never
+# named it -- not because it was heard, but because that census draws its population by basename,
+# `(witness|suite)`. This guard wears neither word, so it was never unheard there; it was ABSENT.
+# 77 asserting runners stand in that blind spot, and the census's own header names the shape
+# without ever measuring its size.
+
+guard amphora_bounds_agree
+path tools/am/amphora_bounds_agree.rish
+tier lap
+seated 20260906.034025

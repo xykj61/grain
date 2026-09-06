@@ -21,6 +21,11 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260906.040301` | [the pen that planted a moved number](20260906/20260906-040301_the-pen-that-planted-a-number-the-law-had-moved.kyri) | two bound meters closed. |
 | `20260906.040055` | [the raise that outran its meters](20260906/20260906-040055_the-raise-that-outran-its-meters.kyri) | %459 closed, %460 booked. |
 | `20260906.035833` | [The number the law moved](20260906/20260906-035833_the-number-the-law-moved.kyri) | recovered from a stash; both its rows withdrawn. |
+| `20260906.045319` | [The table that fits](20260906/20260906-045319_the-table-that-fits.kyri) | 1.65 ns in L1d against 161.84 in DRAM -- 98x, and inert at 720 points |
+| `20260906.051514` | [the fix that landed twice](20260906/20260906-051514_the-fix-that-landed-twice.kyri) | a peer landed it better; the half that was mine stands. |
+| `20260906.041131` | [the guard that blamed the binary](20260906/20260906-041131_the-guard-that-blamed-the-binary.kyri) | %460: no file(1), so ten right binaries read wrong. |
+| `20260906.040420` | [three meters wrong about their own ground](20260906/20260906-040420_three-meters-wrong-about-their-own-ground.kyri) | %461 closed; two numbers lost mid-send. |
+| `20260906.040301` | [the pen that planted a moved number](20260906/20260906-040301_the-pen-that-planted-a-number-the-law-had-moved.kyri) | two bound meters closed. |
 | `20260906.035537` | [the revocation and the fault ride one edge](20260906/20260906-035537_the-revocation-and-the-fault-ride-one-edge.kyri) | one edge carries both; 48 of 720. |
 | `20260906.031132` | [the window closes and the loop takes over](20260906/20260906-031132_the-window-closes-and-the-loop-takes-over.kyri) | one live seat; the tree is clean. |
 | `20260906.030420` | [an instrument must know where it stands](20260906/20260906-030420_an-instrument-must-know-where-it-stands.kyri) | one file, two paths, three retractions. |

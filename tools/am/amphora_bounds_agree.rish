@@ -62,4 +62,4 @@ assert living.out contains "alias_cargo_ceiling_status=agree" else "living cargo
 assert living.out contains "alias_datagram_status=agree" else "living datagram alias"
 assert living.out contains "couples_status=agree" else "living couples must agree"
 say living.out
-say "GREEN: amphora_bounds_agree — same-name · alias · couples · planted pairs · no rename."
+say "GREEN: amphora_bounds_agree -- same-name - alias - couples - planted pairs - no rename."
