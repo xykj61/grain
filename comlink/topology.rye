@@ -54,6 +54,12 @@ pub const universe_points: u32 = planet_count; // 720 -- every point is a planet
 
 pub const Tier = enum { galaxy, star, planet };
 
+/// The deepest a point stands from its galaxy along the sponsor chain: a galaxy 0, a star
+/// 1, a planet 2. Named because every walk of that chain is bounded by it -- a walk longer
+/// than this would mean the chain had stopped rising, which is the one way `sponsor_of`
+/// could loop.
+pub const max_tier_depth: u32 = 2;
+
 /// A place in the fractal: a galaxy, a star within it, a planet within that. The
 /// `star` and `planet` fields are meaningful only at or below their tier.
 pub const Address = struct {
@@ -163,6 +169,26 @@ pub fn route_hops(a: Address, b: Address) u32 {
     return (a.depth() - shared) + (b.depth() - shared);
 }
 
+/// The hop count between two **points**, by number, in the seated sky -- the reading a
+/// router has, since what arrives off the wire is a number rather than an address wearing a
+/// tier. Zero exactly when the two numbers are the same point. Null past the universe.
+///
+/// SAY WHY THIS SITS BESIDE `route_hops`. The two answer different questions, and REDS %454
+/// measured what it cost to ask one function both. Built from the sponsor chain in NUMBER
+/// space, so a star of index zero and the galaxy it sits on are one point rather than two:
+/// `point_hops(60, 0)` is 1, where `route_hops(decode(60).?, decode(0).?)` is 2. That one
+/// step is the difference between a metric with 132 points nothing stands one hop from and
+/// a metric every one of whose numbers is a road somebody can walk.
+pub fn point_hops(a: u32, b: u32) ?u32 {
+    return compass_sky.point_hops(a, b);
+}
+
+/// The sponsor of a point number in the seated sky -- the point one step up the chain, or
+/// the point itself when it is a galaxy. Null past the universe.
+pub fn sponsor_of(number: u32) ?u32 {
+    return compass_sky.sponsor_of(number);
+}
+
 // --- loadable skies -----------------------------------------------------
 
 /// A **sky** is a loadable topology profile -- a community's chosen shape of its own
@@ -265,6 +291,103 @@ pub const Sky = struct {
         assert(seat < self.prosperity());
         return seat;
     }
+
+    // --- the metric on points ------------------------------------------------
+    //
+    // WHY A SECOND METRIC RATHER THAN A REPAIR OF THE FIRST. `route_hops` measures between
+    // two ADDRESSES, outfits and all, and its selftest pins that reading: a caller holding
+    // an explicit tier means it. A router holds neither address nor tier -- it holds a
+    // NUMBER off the wire, whose outfit is whatever `decode` gives it. One function was
+    // answering both questions, and the seam is where the ladder began publishing distances
+    // it could not walk (REDS %454). Two questions, two functions.
+
+    /// The sponsor of a **point number** -- one step up the chain, or the point itself when
+    /// it is a galaxy, which roots its own tree. Null past the universe.
+    ///
+    /// SAY WHY THIS DIFFERS FROM `Address.parent`. `parent` answers in address space, where
+    /// a star of index zero is a distinct value from the galaxy it sits on; `encode` then
+    /// sends both to one number. So in number space the chain is one step shorter at every
+    /// star-index-zero point, and that single step is the whole of the fault above.
+    pub fn sponsor_of(self: Sky, number: u32) ?u32 {
+        self.assert_bounds();
+        const addr = self.decode(number) orelse return null;
+        const up = self.encode(addr.parent());
+        // invariant: a sponsor sits inside the universe, being an ancestor of a point that does.
+        assert(up < self.planet_count());
+        // invariant: the chain only rises -- a sponsor's number is at or below its point's,
+        // which is what bounds every walk of it below.
+        assert(up <= number);
+        return up;
+    }
+
+    /// How many sponsor steps a **point** stands from its galaxy: 0 for a galaxy, and one
+    /// less than its address depth at every star-index-zero point. Null past the universe.
+    pub fn point_depth(self: Sky, number: u32) ?u32 {
+        self.assert_bounds();
+        if (number >= self.planet_count()) return null;
+        var here = number;
+        var steps: u32 = 0;
+        while (here >= self.galaxies) : (steps += 1) {
+            // invariant: the walk stays inside the tiers the address space holds, so a chain
+            // that stopped rising is caught here rather than by running forever.
+            assert(steps < max_tier_depth);
+            here = self.sponsor_of(here).?;
+        }
+        // invariant: the walk ends on a galaxy, the root of its own tree.
+        assert(here < self.galaxies);
+        // invariant: a point stands no deeper than the address space has tiers.
+        assert(steps <= max_tier_depth);
+        return steps;
+    }
+
+    /// A point's ancestors, nearest first: itself, its sponsor, its sponsor's sponsor. The
+    /// walk repeats once it reaches the galaxy, so the array is always full and
+    /// `point_depth` says how much of it is new.
+    pub fn ancestors(self: Sky, number: u32) ?[max_tier_depth + 1]u32 {
+        self.assert_bounds();
+        if (number >= self.planet_count()) return null;
+        var chain: [max_tier_depth + 1]u32 = undefined;
+        chain[0] = number;
+        var k: u32 = 1;
+        while (k <= max_tier_depth) : (k += 1) {
+            chain[k] = self.sponsor_of(chain[k - 1]).?;
+            // invariant: each step rises or holds, never descends.
+            assert(chain[k] <= chain[k - 1]);
+        }
+        // invariant: the last entry is the galaxy that roots the point's own tree.
+        assert(chain[max_tier_depth] < self.galaxies);
+        return chain;
+    }
+
+    /// The hop count between two **points**, by number: within one galaxy the walk up the
+    /// sponsor chain to the nearest shared ancestor and down the other side; across
+    /// galaxies, up to each galaxy root and one bridge hop between admins. Null when either
+    /// number is past the universe.
+    ///
+    /// SAY WHY THE SEARCH RISES BY SUM. The chains repeat once they reach the galaxy, so a
+    /// meeting found at a higher index names the same point by a longer road. Rising by
+    /// `i + j` reaches the FIRST occurrence first, which is the nearest shared ancestor.
+    pub fn point_hops(self: Sky, a: u32, b: u32) ?u32 {
+        self.assert_bounds();
+        const up_a = self.ancestors(a) orelse return null;
+        const up_b = self.ancestors(b) orelse return null;
+        var sum: u32 = 0;
+        while (sum <= max_tier_depth * 2) : (sum += 1) {
+            var i: u32 = 0;
+            while (i <= sum) : (i += 1) {
+                const j = sum - i;
+                if (i > max_tier_depth or j > max_tier_depth) continue;
+                if (up_a[i] == up_b[j]) return sum;
+            }
+        }
+        // No shared ancestor means two different galaxies, since every point's chain ends on
+        // its own. Up to each root, then the one bridge between admins.
+        const bridged = self.point_depth(a).? + self.point_depth(b).? + 1;
+        // invariant: the bridge stays inside the ladder's own diameter -- deepest to
+        // deepest, plus the hop between the two galaxies.
+        assert(bridged <= max_tier_depth * 2 + 1);
+        return bridged;
+    }
 };
 
 /// The seated d12 - d60 shape as a sky -- twelve galaxies, five stars each, twelve
@@ -348,6 +471,29 @@ fn run_selftest() !u8 {
     if (route_hops(as_galaxy, as_planet) != 2) return error.GalaxyToOwnPlanetOutfitNotTwo;
     if (route_hops(as_star, as_planet) != 1) return error.StarToOwnPlanetOutfitNotOne;
 
+    // POINT METRIC LEGS BEGIN -- tools/fixtures/t/topology_point_metric_control.sh cuts here.
+    // The router's own question, asked of numbers. Point 60 is the first planet of galaxy 0,
+    // and its sponsor IS point 0 -- the star of index zero and the galaxy sit on one number.
+    // `route_hops` reads the outfit and answers two; the chain walks it in one. The census
+    // priced that single step at 132 isolated points and 33.28% of ordered pairs.
+    if (sponsor_of(60).? != 0) return error.PointSponsorWrong;
+    if (compass_sky.point_depth(60).? != 1) return error.PointDepthWrong;
+    if (decode(60).?.depth() != 2) return error.AddressDepthMoved; // the two readings differ, and both are pinned
+    if (point_hops(60, 0).? != 1) return error.PointToSponsorNotOne;
+    if (route_hops(decode(60).?, decode(0).?) != 2) return error.AddressReadingMoved;
+    if (point_hops(0, 0).? != 0) return error.PointSelfNotZero;
+    if (point_hops(60, 72).? != 3) return error.PointCousinWrong; // up to galaxy 0, down through star 1
+    if (point_hops(60, 61).? != 3) return error.PointBridgeWrong; // one up each side, one bridge
+    if (point_hops(universe_points, 0) != null) return error.PointPastUniverseAccepted;
+    if (point_hops(0, universe_points) != null) return error.PointPastUniverseAcceptedRight;
+    // One point in two outfits is ONE point here, where the address reading calls it two.
+    if (point_hops(8, 8).? != 0) return error.PointOutfitNotSelf;
+    if (route_hops(Address.of_galaxy(8), Address.of_star(8, 0)) != 1) return error.OutfitReadingMoved;
+
+    // The promise a published distance makes: there is a road of that length.
+    try prove_point_metric_is_a_walk();
+    // POINT METRIC LEGS END -- tools/fixtures/t/topology_point_metric_control.sh cuts here.
+
     // The half that holds, and the one property routing cannot do without.
     try prove_route_is_never_blind();
 
@@ -359,6 +505,7 @@ fn run_selftest() !u8 {
     print("comlink topology: the geometry is a loadable sky -- the seated d12 - d60 is compass_sky, and a second council_sky (15 - 3 - 9, a d27 of 27, 405/universe inclusive) round-trips on its own universe by the same law.\n", .{});
     print("comlink topology: a point wears an outfit seat in its galaxy's circle -- the council d27's twenty-seven seats, each worn by exactly one point per galaxy; a private roster names them (the nakshatra outfit).\n", .{});
     print("comlink topology: routing measures between addresses rather than between points -- one point in two outfits is not zero hops from itself -- and two distinct points are never zero hops apart, proven over every ordered pair of both skies.\n", .{});
+    print("comlink topology: a second metric answers the router's question -- point_hops measures between NUMBERS along the sponsor chain, so a star of index zero is the galaxy it sits on, and every published distance is a road: the sponsor is one hop, and from anywhere one step gets strictly closer, proven over every ordered pair of both skies.\n", .{});
     print("comlink topology: version {s}\n", .{topology_version});
     print("GREEN: comlink topology -- an inclusive fractal address space: a number names a place and wears every lower role, a sponsor a place has by mod, a route two places share, and a shape a community may load like a sky.\n", .{});
     return 0;
@@ -401,6 +548,93 @@ fn prove_sky_never_blind(sky: Sky) !void {
             const to = sky.decode(b) orelse return error.BlindProofDecodeRefused;
             if (route_hops(from, to) == 0) return error.RouteBlindBetweenPoints;
         }
+    }
+}
+
+// A published distance is a promise that a walk of that length exists. `route_hops` broke
+// that promise for a third of the compass sky: at every star-index-zero planet NOTHING at
+// all stands one hop away, so 172,524 of 518,400 ordered pairs carried a number and no road
+// (REDS %454, measured by tools/fixtures/t/topology_graph_census.sh). The two proofs below
+// hold `point_hops` to the promise instead of asserting it, and they do it locally rather
+// than by walking every pair: a sponsor exactly one hop away, plus a strictly-closer step
+// available from anywhere, compose into a whole walk by induction.
+
+/// Every point's sponsor stands exactly one hop from it, and a galaxy stands zero from
+/// itself. This is the census's own predicate, which reads 132 failures against `route_hops`
+/// and must read none here.
+fn prove_the_sponsor_is_one_hop(sky: Sky) !void {
+    const points = sky.universe_points();
+    // invariant: a sky holds at least one point, so the walk has something to walk.
+    assert(points >= 1);
+    // invariant: the sweep stays inside the ceiling its caller checked.
+    assert(points <= max_proved_points);
+    var n: u32 = 0;
+    while (n < points) : (n += 1) {
+        const up = sky.sponsor_of(n) orelse return error.SponsorRefusedInsideUniverse;
+        const hops = sky.point_hops(n, up) orelse return error.PointHopsRefusedInsideUniverse;
+        if (up == n) {
+            // Only a galaxy roots its own tree; anything else rising to itself is a chain
+            // that stopped rising, which would make every walk below unbounded.
+            if (n >= sky.galaxies) return error.NonGalaxyIsItsOwnSponsor;
+            if (hops != 0) return error.GalaxySelfSponsorNotZero;
+            continue;
+        }
+        if (hops != 1) return error.SponsorNotOneHop;
+    }
+}
+
+/// From any point toward any other, one real step always gets strictly closer -- so the
+/// number the metric publishes is a road somebody can take. Symmetry and the ladder's own
+/// diameter ride in the same sweep, since they read the same pair.
+///
+/// SAY WHY FOUR CANDIDATES SUFFICE. A step is either up (the sponsor) or down toward `b`,
+/// and every point on the way down is one of `b`'s own ancestors -- which covers the bridge
+/// too, since `b`'s galaxy is the last of them.
+fn prove_every_pair_has_a_next_hop(sky: Sky) !void {
+    const points = sky.universe_points();
+    // invariant: the sweep stays inside the ceiling its caller checked.
+    assert(points <= max_proved_points);
+    var a: u32 = 0;
+    while (a < points) : (a += 1) {
+        var b: u32 = 0;
+        while (b < points) : (b += 1) {
+            const here = sky.point_hops(a, b) orelse return error.PointHopsRefusedInsideUniverse;
+            if (here > max_tier_depth * 2 + 1) return error.PointHopsPastDiameter;
+            if (sky.point_hops(b, a).? != here) return error.PointMetricAsymmetric;
+            if (a == b) {
+                if (here != 0) return error.PointNotZeroFromItself;
+                continue;
+            }
+            if (here == 0) return error.PointMetricBlindBetweenPoints;
+            if (!try step_gets_closer(sky, a, b, here)) return error.PointPairHasNoNextHop;
+        }
+    }
+}
+
+/// True when some point one hop from `a` stands `here - 1` from `b`. Split out so the sweep
+/// above stays one screen and this stays one idea.
+fn step_gets_closer(sky: Sky, a: u32, b: u32, here: u32) !bool {
+    // invariant: a step only ever shortens a distance that has somewhere to go.
+    assert(here >= 1);
+    var candidates: [max_tier_depth + 2]u32 = undefined;
+    candidates[0] = sky.sponsor_of(a) orelse return error.SponsorRefusedInsideUniverse;
+    const up_b = sky.ancestors(b) orelse return error.AncestorsRefusedInsideUniverse;
+    for (up_b, 0..) |anc, k| candidates[k + 1] = anc;
+    for (candidates) |c| {
+        if (c == a) continue;
+        if (sky.point_hops(a, c).? != 1) continue;
+        if (sky.point_hops(c, b).? + 1 == here) return true;
+    }
+    return false;
+}
+
+/// Both seated skies, held to the promise a published distance makes.
+fn prove_point_metric_is_a_walk() !void {
+    for ([_]Sky{ compass_sky, council_sky }) |sky| {
+        // The edge check: a sky past the ceiling refuses by name rather than walking.
+        if (sky.universe_points() > max_proved_points) return error.SkyTooLargeToProvePairwise;
+        try prove_the_sponsor_is_one_hop(sky);
+        try prove_every_pair_has_a_next_hop(sky);
     }
 }
 

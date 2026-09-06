@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `14ab16d19f` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `2d1c434a50` -- HEAD's parent, resolvable everywhere (%401).
 
 **DIFFUSER** -- **the elder paper's own unmeasured sentence, measured.** It read: *"memory read on
 every packet shows up in a power budget -- no measurement of the difference is offered here."*
@@ -150,23 +150,22 @@ holding an inline comparator reads clean at any length.
 
 **Four accounts CLOSED, whole on the [`20260906.040933` shelf](archive/20260906-040933_itinerary-landed-accounts.md)** -- `%453` twice (the doc line measuring between outfits, and the floor that stopped biting, [REDS shelf](archive/REDS-the-floor-that-stopped-biting-rows-453-453.md)), `%458` the scan that called this ship's credential the pier's, and `%444`/`%431` the seed publisher that travels with the field. **A rule that states its reason can be checked.**
 
-**PHEROMONE -- THE ACCUSED FILE COMPILES NOW, AND IT DID NOT WHEN I OPENED IT.** `%463`'s census
-named `mantra/src/diff.rye` as the one authored Rye carrying a runner's claim while nothing builds
-it; the probe that row asked for found it **broken** -- three sites of the Zig 0.15
-`ArrayListUnmanaged(T){}` form 0.16 retired, **`%449`'s exact fault one file over**, the tree's
-last three. **Five guards read that file every lap and all five read it with `grep`**, so five
-green readings stood over bytes no compiler had accepted for weeks: *pattern guards do not compose
-into a compile proof however many stand.* **The cheap probe is confidently wrong**
--- an importing probe builds at **exit 0** over a planted type error; a four-line **comptime
-declaration walker** reds at `diff.zig:82:46` and greens on the repair.
-**A second fault, another kind:** the head promised the round trip reproduces `new_text`, **false
-for any insert not at the end** -- `Diff.inserts` carries no anchor, so `apply` appends and `a c`
-against `a b c` reads back **`a c b`**. Head rewritten to what it delivers. `diff_witness.rye`
-proves **seven claims by doing**; the control breaks it seven ways and **its sharpest phase is a
-pass** -- the planted error rides free once the walker goes. `tier lap` **9s**; `asserted` **1 ->
-0**, ceiling with it. **Yours, the seam:** an anchor per insert
-widens `Diff`, and `mantra_glow_tend_limb1` pins `Line` against a Glow shape -- named, not taken.
-`%470`; the census's own numbers rest on the `20260906.062055` cairn.
+**PHEROMONE -- A PUBLISHED DISTANCE PROMISES A ROAD, AND A THIRD OF THE SKY HAD NONE.** `%454`
+CLOSED and folded whole to its own
+[shelf](archive/REDS-a-published-distance-and-the-road-it-promises-rows-454.md); the `%470` account
+rests on the [`20260906.090503` shelf](archive/20260906-090503_itinerary-landed-accounts.md).
+**`route_hops` was answering two questions, and the seam was where it published hop counts nothing
+could walk** -- 172,524 of 518,400 ordered pairs, because `Address.parent` sends a star-index-zero
+planet to a star that `encode` puts on its galaxy's own number, so 132 points had nothing standing
+one hop away. **The cure was not to correct the function but to notice the second question.**
+`Sky.point_hops` walks the chain in NUMBER space, where those two are one point; `route_hops` is
+untouched, so a peer's `%452` reading stands and the selftest pins both side by side. Proven by
+doing over **682,425 ordered pairs**: the sponsor exactly one hop, some neighbour strictly closer
+from anywhere. **An awk walk sharing no code with it reads 132 isolated -> 0, 33.28% unreachable ->
+0, diameter unmoved.** **That prices the paper's torus:** it bought reachability at diameter 14 against the
+ladder's 5, and the point reading buys it at **5** -- so the torus's case is now degree, cut points
+and the angle alone. **Yours, the ruling that remains:** which metric Comlink actually routes on.
+Control 6 phases, `legs_removed` passing on purpose. `comlink_topology` 2s -> 12s.
 
 **PHEROMONE -- `%460` STILL OPEN at the emulator, its landed half folded** to the
 [`20260906.051500` shelf](archive/20260906-051500_itinerary-landed-accounts.md), `%451`'s bound half
@@ -375,6 +374,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260906.062055` | The file five guards read and nothing compiled | [log](../session-logs/date/20260906/20260906-062055_the-file-five-guards-read-and-nothing-compiled.kyri) |
+| `20260906.090503` | A published distance promises a road | [log](../session-logs/date/20260906/20260906-090503_a-published-distance-promises-a-road.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)
