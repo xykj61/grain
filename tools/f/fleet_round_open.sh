@@ -1,15 +1,15 @@
 #!/bin/sh
 # tools/f/fleet_round_open.sh -- the fleet's self-healing round-open: adopt the anointed
-# order, stash what a dead lap left, park what diverged, and never misreport.
+# order, stash what a dead lap left, park what diverged, and report each state by its own name.
 #
 # WHY THIS EXISTS. On 20260828 two loops died in the same minute-shape. A lap finished its
-# work and never sent; the next iteration's `git pull --rebase xy main` refused on the dirty
-# index; and the loop's `||` handler printed `PULL DIVERGED: upstream history was rewritten`
-# -- for a tree that was NOT diverged (HEAD equaled xy/main exactly). One handler, one
-# message, three different faults: a dirty tree, a network failure, and a real rewrite all
-# died the same death with the same wrong instruction. The refusal's first line named the
-# true fault both times; the handler read only its own assumption (the tail-reading class,
-# REDS %-family of 20260827-28).
+# work and stopped before the send; the next iteration's `git pull --rebase xy main` refused on
+# the dirty index; and the loop's `||` handler printed `PULL DIVERGED: upstream history was
+# rewritten` -- for a tree that stood exactly level with xy/main. One handler, one message,
+# three different faults: a dirty tree, a network failure, and a real rewrite all died the same
+# death with the same wrong instruction. The refusal's first line named the true fault both
+# times; the handler read only its own assumption (the tail-reading class, REDS %-family of
+# 20260827-28).
 #
 # THE CONSENSUS MAPPING, so the loops speak Mycelium's grammar through git itself:
 #   - `xy` is the ANOINTED ORDER -- the sequencer every proposal is ordered by, the same
@@ -20,9 +20,9 @@
 #   - at round-open the local tree ADOPTS the anointed order: RESET, NEVER MERGE (the
 #     divergence word the loops learned at REDS %290). A local line that genuinely
 #     diverged -- an upstream rewrite, a lost race across a rewrite -- is PARKED on a
-#     branch under refs/heads/pier/, the rota's own deferral shelf, and main resets. No
-#     bytes are lost and no force is pushed; the park is a proposal awaiting its next
-#     derivation, exactly like an unshared ledger row awaiting its number.
+#     branch under refs/heads/pier/, the rota's own deferral shelf, and main resets. Every
+#     byte is kept and every push stays fast-forward; the park is a proposal awaiting its
+#     next derivation, exactly like an unshared ledger row awaiting its number.
 #   - what a dead lap left uncommitted is STASHED under a stamped name, wall-free (a
 #     park-commit would face the commit-msg wall, and a round-open must never be able to
 #     fail on prose). Stashes are the fleet's dead-letter box; a hand or the lap itself
@@ -32,7 +32,7 @@
 #   0  round is open on the anointed order -- proceed
 #   2  the network refused the fetch -- retry later; the loop sleeps and continues
 # A loop line: sh tools/f/fleet_round_open.sh || { sleep 60; continue; }
-# It can no longer die at the open, and it can no longer lie about why it would have.
+# It opens the round in every state it can meet, and names which one it met.
 set -u
 
 say() { printf 'round-open: %s\n' "$1"; }
@@ -103,6 +103,24 @@ else
   git push xy "$PARK" >/dev/null 2>&1 && PUSHED=" and pushed" || PUSHED=" (push deferred; the branch is local)"
   git reset --hard xy/main >/dev/null 2>&1
   say "true divergence -- local line parked on $PARK$PUSHED; adopted the anointed order"
+fi
+
+# 5) READ THE DEAD-LETTER BOX BACK OUT. Step 3 fills it; nothing ever emptied it (REDS %464).
+# A stash holds bytes, and a record only exists once something a reader can reach carries it, so
+# three of this ship's own laps had their reasoning parked here while their code shipped -- and the
+# next lap paid to rediscover work already done. The report is one line and the read-back is a
+# hand's, deliberately: applying a stash automatically would drop a dead lap's half-finished edits
+# on top of a tree that has since moved.
+#
+# NEVER ALLOWED TO FAIL THE OPEN. The whole point of this script is that it cannot die at the
+# open, so the reading is guarded by its own presence and its refusal is only ever a printed line.
+SCAN=tools/fixtures/f/stash_record_scan.sh
+if [ -r "$SCAN" ]; then
+  UNLANDED=$(sh "$SCAN" 2>/dev/null | grep '^unlanded=' | cut -d= -f2)
+  case "${UNLANDED:-0}" in
+    ''|0) : ;;
+    *) say "$UNLANDED session log(s) stand in the dead-letter box and nowhere else -- sh $SCAN list" ;;
+  esac
 fi
 
 say "open on $(git rev-parse --short=10 HEAD)"

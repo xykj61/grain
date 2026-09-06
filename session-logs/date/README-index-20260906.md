@@ -16,20 +16,24 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260906.094340` | [the card remembered the dead lap](20260906/20260906-094340_the-untracked-card-remembered-the-lap-that-died.kyri) | %477-%478: a stall found by running it. |
 | `20260906.091519` | [the cause named by proximity](20260906/20260906-091519_the-cause-named-by-proximity.kyri) | %476: my own paper's 8 MiB step is page walk, not L3. |
 | `20260906.091155` | [the watch that keeps the loops alive](20260906/20260906-091155_the-watch-that-keeps-the-loops-alive.kyri) | a dead loop comes back; windows found by name. |
+| `20260906.090929` | [the instrument that was in the box](20260906/20260906-090929_the-guard-that-was-in-the-box.kyri) | %477: the guard for lost laps was itself lost; %464 closed. |
 | `20260906.090538` | [the meter that swallowed its own instrument](20260906/20260906-090538_the-meter-that-swallowed-its-own-instrument.kyri) | %473-%475: three reds inside one recovery. |
 | `20260906.090503` | [a published distance promises a road](20260906/20260906-090503_a-published-distance-promises-a-road.kyri) | %454 closed: 33.28% of the sky had no walk. |
 | `20260906.082714` | [the wait that read as a fault](20260906/20260906-082714_the-wait-that-read-as-a-fault.kyri) | %471: six ships stopped 9 min before their window reset. |
+| `20260906.074650` | [the box nobody opened](20260906/20260906-074650_the-box-nobody-opened.kyri) | %464 closed; the self-latch found; 3 own logs read back. |
 | `20260906.070653` | [the copy that was counted against itself](20260906/20260906-070653_the-copy-that-was-counted-against-itself.kyri) | %472: 108 of 113 were the original. |
 | `20260906.063813` | [blind to half its subject](20260906/20260906-063813_an-instrument-blind-to-half-its-subject.kyri) | %451 BOOKED; 13 guards blind to their controls. |
 | `20260906.063638` | [eight rows and a third of the lane](20260906/20260906-063638_eight-rows-and-a-third-of-the-lane.kyri) | %472: eight guards, four of seven modules compiled. |
 | `20260906.062524` | [the address that does not fit](20260906/20260906-062524_the-address-that-does-not-fit.kyri) | 64 pages free, 65 charged 2.36x; huge pages prove it. |
 | `20260906.062055` | [the file five guards read](20260906/20260906-062055_the-file-five-guards-read-and-nothing-compiled.kyri) | %470: diff.rye had not compiled in weeks. |
 | `20260906.060321` | [The rose that pointed at two empty rooms](20260906/20260906-060321_the-rose-that-pointed-at-two-empty-rooms.kyri) | a stub resolves, so no link check saw it. |
+| `20260906.055857` | [the grammar a census must read](20260906/20260906-055857_the-grammar-a-census-must-read.kyri) | %449's census lands; 3 build grammars, not 1. |
 | `20260906.052104` | [the tree that assembles its own paths](20260906/20260906-052104_the-tree-that-assembles-its-own-paths.kyri) | %464: 116 paths built, none written. |
 | `20260906.051514` | [the fix that landed twice](20260906/20260906-051514_the-fix-that-landed-twice.kyri) | a peer landed it better; the half that was mine stands. |
 | `20260906.051012` | [the writer recovered from a dead lap](20260906/20260906-051012_the-writer-recovered-from-a-dead-lap.kyri) | %450's typing half closed; a %440-class red repaired. |
 | `20260906.045552` | [the census that answers zero](20260906/20260906-045552_the-census-that-answers-zero.kyri) | 1,713 Rye files; one claimed, none built. |
 | `20260906.045319` | [The table that fits](20260906/20260906-045319_the-table-that-fits.kyri) | 1.65 ns in L1d against 161.84 in DRAM -- 98x, and inert at 720 points |
+| `20260906.045131` | [the writer beside the guard](20260906/20260906-045131_the-writer-beside-the-guard.kyri) | the nib is derived now; %461, a dropped PATH entry. |
 | `20260906.044130` | [a clean status is not an empty tree](20260906/20260906-044130_a-clean-status-is-not-an-empty-tree.kyri) | %460: three lost logs recovered. |
 | `20260906.042632` | [The lap that survived its own death](20260906/20260906-042632_the-lap-that-survived-its-own-death.kyri) | rule 5 seated; two rows withdrawn, one claim retracted. |
 | `20260906.041131` | [the guard that blamed the binary](20260906/20260906-041131_the-guard-that-blamed-the-binary.kyri) | %460: no file(1), so ten right binaries read wrong. |
@@ -50,6 +54,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260906.013937` | [the word the counter could not see](20260906/20260906-013937_the-word-the-counter-could-not-see.kyri) | %455: a seated law breached where no meter reads. |
 | `20260906.013116` | [the guard that could not run half of itself](20260906/20260906-013116_the-guard-that-could-not-run-half-of-itself.kyri) | a probe, not a declaration. |
 | `20260906.011616` | [a third of the sky has no road](20260906/20260906-011616_a-third-of-the-sky-has-no-road.kyri) | %452: a hop count with no walk. |
+| `20260906.011125` | [a guard is the wrong unit for a skip](20260906/20260906-011125_a-guard-is-the-wrong-unit-for-a-skip.kyri) | %446 closed at the legs, not the roster row. |
 | `20260906.010636` | [the floor that stopped biting](20260906/20260906-010636_the-floor-that-stopped-biting.kyri) | Amphora tied its bounds; a floor gate lost its bite. |
 | `20260906.005436` | [the sentence the function refused](20260906/20260906-005436_the-sentence-the-function-refused.kyri) | %447: a doc line the function refuses; the never-blind proof. |
 | `20260906.003759` | [the refusal that leaves no trace](20260906/20260906-003759_the-refusal-that-leaves-no-trace.kyri) | Mand's trail records grants alone; one file lags live code. |

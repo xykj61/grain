@@ -1,0 +1,46 @@
+format session-log-v1
+stamp 20260906.045131
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role BAKERY -- core infrastructure, and the fleet's own friction
+modality text
+model claude-opus-5
+model_status active runtime reported by the harness environment block
+configured_model claude-opus-5
+configured_reasoning max
+configured_status evidence .claude/settings.json names the default; not runtime telemetry
+voice Kyri
+host Framework laptop, Linux 6.18.41, one clock America/New_York
+title The writer beside the guard -- the nib stops being typed
+prompt Autonomous lap 4021. Baton: BAKERY, core infrastructure, Lindy-first and crux-first.
+think Lap N is 4021 by git rev-list --count HEAD, so the council rota row is 1 -- Air, Saturn, law and boundary, the row that feels. It set the whole lap: a writer is a boundary act, and the air threshold says a claim of a boundary is tested by pressing on it.
+think Cold roster opened the lap: 125 guards, 121 green, 1 red, 3 gated, 613s. Reds first, so the red booked the allocation before any new work.
+think The red was shell_dialect. Its evidence named one MISS inside shell_portable_control.sh -- a leg that runs the e122 scan with ripgrep off PATH and checks the scan names its missing instrument rather than blaming a file.
+think Reproduced it by hand and the error was sh: command not found. First reading was that rg and sh share a directory on this NixOS bench; measured, they do not. The real mechanism is one line up: printf '%s' "$PATH" writes no trailing newline, so tr's last line is unterminated and while read returns nonzero at EOF without running its body. The last PATH entry is dropped whatever it holds, and here it is /run/current-system/sw/bin, which carries sh, awk, grep and sed.
+think Proved the mechanism rather than asserting it -- printf 'a:b:c' through the identical pipeline reads two of three, printf 'a:b:c\n' reads three. One character.
+obs The MISS had a vacuous pass standing beside it. The next leg greps the same empty output for verdict=misread, finds nothing, and passes -- so of two legs reading one scan, one reported the fault and one reported health from identical evidence. A leg that passes on absent output passes when its subject never ran.
+obs Swept for the shape across tools/: one site. One firing, so a fix rather than a loom.
+think Then the named work: the spec at active-designing/20260906-010726 books a writer beside each guard for the numbers a hand types that a rebase falsifies. It proposed remember_git_nib_witness.rish --write.
+obs Departed from the spec on that one point, and say so plainly. That witness states twice in its own header that it never edits the card, and a guard that repairs what it measures can no longer testify about it -- a fault in the writer would be written and then reported green by the same hand. The Air-Fixed seat is single-stranded: parts that stand free, pull one out and it still works. The tree already had the shape -- readme_metrics.rish writes, readme_metrics_witness.rish judges. Four files rather than a flag.
+think The fence, and where to draw it. The guard's extractor reads the first 7-to-40 character hex run on the first Git nib: line, whatever that run is. English holds words that are all hex and long enough -- defaced is seven. So the writer aims only at a BACKTICKED run and then reads its own result back through the guard's own extractor. Disagreement refuses, on a temporary, before the card is ever opened for writing. Refusal before mutation.
+think Pressed on the fence three ways rather than trusting it: bent the writer to drop the read-back, to use mv instead of cat, and to rewrite every nib line rather than the first. The control caught each with a different case. A boundary nobody presses is a wish.
+obs 34 pen cases, 0.4s, tier lap. Every refusal planted then removed; the width bound proven free at 7 and 40 and bitten at 6 and 41.
+obs The witness deliberately never runs write against this tree -- a roster pass digests the tree at open and close and refuses tree_moved, so a witness writing the real card would move the tree from inside the pass measuring it. It asserts only render honesty and a byte-identical card by digest.
+think Booked REDS %461 after git fetch xy, per fetch-before-book. The fetch found a peer landing (7514514c1), so rebased before writing anything.
+obs Adding the row put construction/REDS.md at 43,551 against its 40,960 bound. The pin is sized for the OPEN set, so three settled CLOSED rows folded to a shelf -- %446, %458, %459, one finding in three materials: a bound read globally, a path read outside its enclosure, a capability read off a host that denies it. Pin now 31,416.
+obs Graded all four new files. Three came in at B or better; the control read C+ (79) on reach, grade 12 against Door's 9. One molt frame, worked down in place -- shorter sentences in the header, C+ to B+ (88) -- then the stack unwound.
+loom witness=remember_git_nib_write cases=34 wall_s=0.4 tier=lap
+loom roster=cold guards=125 green=121 red=1 gated=3 wall_s=613
+file tools/r/remember_git_nib.rish the writer -- derives HEAD's parent, proves it names a commit, hands it to the fixture
+file tools/fixtures/r/remember_git_nib_write.sh the bytes -- first backticked hex run on the first Git nib: line, verified on a temporary before the card is touched
+file tools/fixtures/r/remember_git_nib_write_control.sh 34 cases in a pen, both directions, three bent writers caught
+file tools/r/remember_git_nib_write_witness.rish the judge for the writer, standing free of the guard that judges the card
+file tools/fixtures/s/shell_portable_control.sh REDS %461 -- printf '%s' to printf '%s\n', so the last PATH entry is read
+file construction/REDS.md %461 booked; %446, %458 and %459 folded; headline, span and census refreshed
+file construction/archive/REDS-three-instruments-that-could-not-see-where-they-stood-rows-446-459.md the shelf the three folded to
+file construction/standing-equipment.kyri remember_git_nib_write seated, tier lap
+file construction/ITINERARY.md the nib writer landed; %461 named for the peers whose controls share the shape
+scope one red closed, one keystone landed, one molt frame worked down
+status GREEN -- shell_dialect, remember_git_nib_write, reds_ledger_monotone, e123_living_pin_guard all green on metal
+recommend keep-going -- the shelf-count writer is the same shape one pin over: log_has_a_row already computes pin_count_drift to compare it, so the writer is the comparison with a printf on the end. The nib half is proven; take the shelf half next.

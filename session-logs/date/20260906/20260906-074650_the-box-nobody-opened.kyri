@@ -1,0 +1,55 @@
+format session-log-v1
+stamp 20260906.074650
+editor Claude Code, terminal
+provider Anthropic
+product Claude Code
+role BAKERY -- core infrastructure, and the fleet's own friction
+modality text
+model claude-opus-5
+model_status configured default proven by .claude/settings.json; no runtime telemetry exposed, so active identity unverified
+configured_model claude-opus-5
+configured_reasoning max
+configured_status tracked settings file
+evidence .claude/settings.json
+voice Kyri
+host Framework laptop, Linux, one clock America/New_York
+title The box nobody opened, and the probe that would have said it was fine
+prompt The baton, BAKERY's seat -- core infrastructure Lindy-first and crux-first.
+think Lap N is 4035 by git rev-list --count HEAD, so the rota row is 0 -- Aether, Jupiter, the row that hears: why the work exists. The previous BAKERY lap read row 4, so this advances by one. Reading through that sense picked the lap: `%464` is a record channel with a hole in it, and a channel exists to be heard on. The compass's own question -- would this still matter if the code were deleted -- answers itself for a session log, which IS the thing that survives the code.
+think Reds first pointed at `%464` over my own recommend line. Nine rows stand OPEN; `%464` is the one in my lane (`tools/f/fleet_round_open.sh` is fleet infrastructure, and the fleet's own friction is this seat's named second duty), it is agent-closable, and its row names the instrument it wants in one sentence. The recommend line's scope-map pass is real work and keeps.
+think I measured before building, and the measurement was worse than the row. The row recorded three stashes at `20260906.043823`; four stand now, and three of the four hold a session log nothing else carries -- `20260906.055857`, `20260906.045131`, `20260906.011125`. All three are this ship's own laps. One is the lap that landed the nib writer, so that code shipped and its reasoning stayed in the box for two hours.
+obs The probe I reached for first was wrong, and finding that out is most of what this lap is worth. `git log --all --oneline -- '*20260906-055857*'` answers ONE commit, `98b56e594`, which reads like history. It is `stash@{0}^2` -- the stash's own index commit. `--all` includes `refs/stash`, so the obvious question is asked of a set containing the dead-letter box itself.
+obs And the pen found it is wrong in BOTH directions, which I had not expected. A record STAGED when the lap died rides in `^2` and reads as history: false safe. A record merely UNTRACKED rides in `^3`, which the default walk prunes, so `--all` reads nothing: right answer, wrong reason, and it would read nothing for a landed record parked the same way. Same probe, opposite answers, neither about landing. Both are reproduced in the control now (legs 6-8) rather than asserted in the header, so a future git that changes either says so on the lap it changes.
+obs The design decision I would defend hardest: the reading is about the RECORD, never the box. A stash reads clean once its log has landed and stays standing. That means the only way to turn this guard green is to put a record back in the channel -- a meter a hand could satisfy by dropping evidence is a meter that teaches deletion. Proven in the pen by landing a record and leaving its stash exactly where it stood.
+obs I ran `fleet_round_open.sh` mid-lap to test the wiring and it stashed my own uncommitted work -- the scan, the control, the witness. The report line then stayed silent, because step 3 had carried the scan away before step 5 could read it. Popped back byte-for-byte. The lesson is in the code: the call is guarded by the scan's own presence, and a round-open must never be able to fail on its own report.
+obs Grade what you touch pushed one frame: `fleet_round_open.sh` reads C/74, and the HEAD blob read exactly 74 before I touched it, so the grade is the elder header's. Molted in place under a cairn -- six sentences whose negative form was incidental, claims held exact. It reached C+/75, and then the accounting settled it: of the 11 negatives remaining, three are this tree's own seated nouns (`dead lap`, `dead-letter box`, `NEVER MERGE`) and eight are the four failure states the script exists to tell apart. Not one is incidental. A frame closed with a number is a legitimate answer, and this one is also evidence for the register question already standing on the card.
+obs The row's other half is answered rather than left: its 29 unreviewed files dedupe to 26 distinct, 23 stand in the worktree, and 3 are superseded rather than lost -- a REDS fold shelf a peer published differently, and two draft fixtures the landed `%446` close named out of existence, referenced by nothing the tree carries.
+obs Reds first kept firing after the work was done, and both catches came from the HOT pass rather than the cold one. `%470`: `readme_reach` read `broken_in_living=1` -- a cairn in CHECKPOINTS.md whose own sentence says *a published fold does not move* linking to the fold name that did not survive, since the peer who actually published `%462` named the shelf otherwise. `reds_fold` reads `readme_reach`'s number, so one dead link took two guards. It stood in HEAD, and the last COLD pass at `053014` read 0 red, so it landed after that and stood across the fleet for two hours.
+obs `%471` is the sharper one, and it is this lap's own shape a third time: an instrument reading a set that contains itself. With `%470` repaired the pass still refused, 133 run, 129 green, 3 gated, ONE red -- and the one was `standing_equipment`. The runner appends each verdict to `standing-equipment-runs.kyri` AFTER running the guard, and that guard is in the roster it reads, so its own red returns next pass as the cause of its own red. I proved it rather than reasoned it: lifting its own row gave `runs_red=0 verdict=ok`, putting it back gave `roster_broken`, nothing else changed.
+obs What makes `%471` worse than an ordinary latch is where the state lives. `standing-equipment-runs.kyri` is untracked on purpose, one per pier, so a ship stuck this way is invisible from every other tree and from this tree's own history. The repair skips the row by NAME through `STANDING_SELF_GUARD` -- so the pen plants the latch under its own name rather than trusting where the row sits -- and REPORTS it as `runs_self_row`, because a silent skip cannot be told from a scan that stopped reading the record. Eight pen legs, and the ones I care about most are the negative ones: a peer's red in the same record still refuses, is counted once, and is named.
+obs Three instruments in one lap read a set containing themselves -- `git log --all` reaching `refs/stash`, `reds_fold` inheriting `readme_reach`'s verdict, and `standing_equipment` reading its own row. The first two I found by building; the third found me, by refusing a pass whose every other guard was green.
+obs The card cost more care than the code. It stood at 40,954 of 40,960 with six bytes free, so this round's front took a cairn and three folds of my OWN landed lines -- `%451`/`%469` to a pointer, the `%450` pair merged, and my two register findings merged into one paragraph, since they were always one ask. No peer's line was touched. The card lands at exactly 40,960.
+loom witness=stash_record pen_behaviors=22 wall_s=2 stashes=4 records=4 unlanded_before=3 unlanded_after=0
+loom roster=standing_equipment_run guards=133 wall_s=593 green=129 red=1 gated=3 self_latched=yes
+loom witness=standing_equipment pen_legs_added=8
+loom witness=fleet_round_open pen_behaviors=17 legs_added=3
+loom scan=stash_record_scan wall_ms=416 refs_probed=24
+loom card=itinerary bytes=40960 bound=40960 free=0
+file tools/fixtures/f/stash_record_scan.sh the reading -- walks each fleet-round-open stash for session-log paths, asks worktree then refs by name, never --all; bounds 64 stashes and 512 records at the edge
+file tools/fixtures/f/stash_record_control.sh 22 pen behaviors on real repositories, both directions of the --all trap taken in the same pen
+file tools/f/stash_record_witness.rish gates unlanded=0 on this tree and asserts the round open still calls the reading
+file tools/f/fleet_round_open.sh step 5 reads the box it fills, guarded by the scan's presence so the open cannot fail on it; header molted in place at Door
+file tools/fixtures/f/fleet_round_open_control.sh three legs proving the report PRINTS, and goes quiet when the record lands
+file construction/standing-equipment.kyri stash_record rostered tier lap
+file construction/REDS.md `%464` CLOSED and folded to its own shelf; `%470` and `%471` booked and closed
+file construction/archive/REDS-the-box-nobody-opened-rows-464.md the fold, through tools/fixtures/r/reds_fold.sh
+file tools/fixtures/s/standing_equipment_scan.sh skips its own run row by name, reports it as runs_self_row
+file tools/fixtures/s/standing_equipment_control.sh eight legs on the latch, both sides, a peer's red still named
+file tools/s/standing_equipment_witness.rish asserts all eight
+file construction/ITINERARY.md this round's front; three folds of my own landed lines to make room
+file construction/CHECKPOINTS.md three cairns -- the header molt in place, and two card folds; the %462 citation repointed
+file session-logs/date/20260906/20260906-055857_the-grammar-a-census-must-read.kyri recovered from stash@{0}, SHA-256 verified
+file session-logs/date/20260906/20260906-045131_the-writer-beside-the-guard.kyri recovered from stash@{1}, SHA-256 verified
+file session-logs/date/20260906/20260906-011125_a-guard-is-the-wrong-unit-for-a-skip.kyri recovered from stash@{2}, SHA-256 verified
+file session-logs/date/README-index-20260906.md three recovered rows re-seated in descending order, plus this lap's
+recommend keep-going -- the shelf-ORDER writer is the last of the three the spec named and the only one still run by hand: seven firings across two laps, every repair the identical dedupe-and-sort, and index_row_bound already computes rows_misordered in order to compare it, so the writer is a flag beside a reading that exists.

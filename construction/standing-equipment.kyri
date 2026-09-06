@@ -1087,6 +1087,19 @@ path tools/f/fleet_round_open_witness.rish
 tier lap
 seated 20260905.153500
 
+# stash_record -- the round open FILLS a dead-letter box and, until REDS %464, nothing ever looked
+# inside it. Measured on this tree: five stashes, and three of them held a complete session log no
+# branch carried -- one recording a lap whose CODE had landed, so the work shipped and its
+# reasoning did not, and the next lap paid to rediscover it. The gate is `unlanded=0`: a session
+# log parked at an open is carried by the worktree, a branch, or a remote-tracking branch. It reads
+# the RECORD rather than the box, so it goes green by reading a log back and never by dropping a
+# stash. The obvious probe would have been `git log --all`, which reaches refs/stash and reports a
+# staged record's own stash index commit as history.
+guard stash_record
+path tools/f/stash_record_witness.rish
+tier lap
+seated 20260906.073939
+
 # announced_length -- a living page announcing a ladder's length is a forecast, and this counts how
 # far each one actually got. The mark law names four such ladders, all found by hand and typed into
 # the rule; five more stood in `context/LEXICON.md` unnoticed, where the Compass Chapter's four
