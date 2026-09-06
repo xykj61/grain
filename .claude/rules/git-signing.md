@@ -35,10 +35,21 @@ seed config **on purpose** (corrected `20260828`, when the leak scan refused a p
 value writes the field's absolute path -- host username included -- into `seed/.git/config`, and
 nothing identity-bearing touches `seed/` at all. The publisher also wipes `seed/.git` **before**
 the witness runs, so the scan reads exactly the bytes that ship and nothing beside them. The pushing account is transport only; the
-commit identity stays the anonymous, keyless **Grain OS**. And the script itself is **untracked at
-the root by design** (`.gitignore` names it): when a clone lacks it, it is reconstructed from this
-rule and the guard's own greps -- which happened on `20260827`, and the guard witness proved the
-reconstruction before it shipped.
+commit identity stays the anonymous, keyless **Grain OS**. And the script itself is **untracked**, though
+not for the reason this rule gave until `20260905.224117`: `.gitignore` does **not** name it.
+`git check-ignore -v publish-seed.sh` answers `.gitignore:8:/*` -- the root wildcard that this tree
+points at every unlisted root path, because the repository sits inside a sandboxed home holding the
+editor, credentials, and personal files, and denies by default. So the file is untracked
+**incidentally**, by a blanket deny nobody aimed at it, rather than by a decision about its
+contents. Measured the same day, it carries no secret and no baked host path: `$ROOT` is resolved at
+runtime, the only literals are the two public GitHub remotes and the anonymous noreply address, and
+a grep for a name, a home directory, key material, or a personal address finds nothing. When a
+clone lacks it, it is reconstructed from this rule and the guard's own greps -- which happened on
+`20260827`, and the guard witness proved the reconstruction before it shipped. **It is tracked from `20260905.230357`, on Keaton's word** (REDS `%444`): `.gitignore` carries the
+allow-back `!/publish-seed.sh` and `template-manifest.bron` the verdict `personal` -- *the field's
+own projector; the seed is its OUTPUT, never its carrier* -- so every ship in the private field
+carries it and the public seed carries it no more than before. `sow_witness` is GREEN with the
+verdict in place, which is how a privacy boundary is moved: proven, not asserted.
 
 **Living remotes** (`20260730.030553` — Keaton's word): always push **both** `gp405` (GitHub `groupproject405/grain`) and `xy` (GitHub `xykj61/grain`). Codeberg stays retired from living push. Canonical count: `context/REMOTE_ROSTER.md`.
 

@@ -128,6 +128,14 @@
 !/ORGANIZING.md
 !/STEWARDS.md
 !/llms.txt
+# The seed publisher travels with the field (REDS %444, Keaton's word 20260905). It was untracked
+# only because the /* deny above catches every unlisted root path -- never by a decision about its
+# contents, which carry no name, no home path, no key, and no personal address: $ROOT is resolved
+# at runtime and the only literals are two public GitHub remotes and the anonymous noreply address.
+# Untracked, it was absent from seven of eight ships, reddening commit_message_guard on each and
+# costing every one of them a full cold roster pass every lap. It stays OUT of the public seed by
+# the `personal` verdict in template-manifest.bron, which is a decision rather than an accident.
+!/publish-seed.sh
 !/.claude/
 # STOA elder trees vere/ · old/ — untracked `20260725` (Framework ritual).
 # Root /* already ignores them; do not re-allow. Files stay on disk + in history.

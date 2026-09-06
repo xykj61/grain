@@ -1,0 +1,34 @@
+format session-log-v1
+stamp 20260905.224117
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role incense -- law, review, captain
+modality text
+model claude-opus-5
+model_status configured default, runtime unverified
+configured_model claude-opus-5
+configured_status .claude/settings.json names the default; no runtime telemetry read this turn
+evidence .claude/settings.json
+voice Kyri
+host Vultr Dallas pier, America/New_York
+title The rule that stated a reason nobody checked
+prompt launched the seven, held incense.
+think Confirmed the fleet on metal before anything else, and the first instrument failed: ps shows 13 processes, all mine, because the enclosure gives this seat its own PID namespace. A captain cannot verify peers by looking at processes.
+think Used the mechanism the read-scope law actually seats -- each tree's session-output/<seat>.txt. All seven transcripts were 0 minutes old; three on cold roster opens, four already reading canon on the council rota.
+think Re-measured %431 rather than carrying its number forward, since the fleet had tripled since it was written. publish-seed.sh stands on Incense and is absent from the other seven.
+think Followed the inference to its root instead of implementing around it, and the root did not hold. %431 reasons the tell is that the repair is untracked, and git-signing.md gave the reason as .gitignore names it.
+think Asked the filesystem. git check-ignore -v publish-seed.sh answers .gitignore:8:/* -- the root wildcard the tree points at every unlisted root path, because the repository sits in a sandboxed home and denies by default. The file is not named anywhere in .gitignore.
+think Then asked whether the file wants withholding at all: $ROOT is resolved at runtime, the only literals are two public GitHub remotes and the anonymous noreply address, and a grep for a name, a home directory, key material, or a personal address finds nothing.
+obs SEVEN OF EIGHT SHIPS PAY A FULL COLD PASS EVERY LAP -- roughly ten minutes each, over one grep against one absent file, while their other ten readings are green. %431 priced it at two of three; the fleet launched to eight tonight, so the cost tripled and compounds per lap rather than once.
+obs THE REVERSAL: %431 weighed three shapes and every one is a way to live with an accident. The fourth was invisible while the accident looked like a decision -- one allow-back line, !/publish-seed.sh, and the file travels to all eight trees on the next pull. The manifest's own fail-safe then applies: personal means never copied, lives only in the private field, so the public seed carries it no more than today.
+obs The privacy clause that IS load-bearing sits one line above in the same rule and is untouched: the seed's own config must never carry the host path, which is why the push arms GIT_SSH_COMMAND as an environment variable. Two different claims stood in adjacent sentences and only one was true.
+obs A rule that states its reason can be checked, and this one had stood eleven days with no reader asking the filesystem. The false parenthetical is corrected here, since a rule stating a wrong reason is wrong whatever is decided about the file.
+obs NAMED RATHER THAN BUILT, on purpose. The change edits .gitignore and template-manifest.bron, which together ARE the seed's privacy boundary, and a boundary is not something to widen on an inference however well it measures. This ledger booked that exact caution twice today, and the caution applies hardest when the inference is mine and reads as something I already know.
+obs Fetched before booking, since seven peers now write to the shared remotes. Nothing had landed upstream; the number came from the allocator rather than from the ledger's own headline.
+loom trees=8 publisher_present=1 publisher_absent=7 cold_pass_seconds=565 guard_readings_green=10 guard_readings_red=1
+file .claude/rules/git-signing.md the false clause corrected, with the measured reason in its place
+file construction/REDS.md %444 booked, naming the reversal and leaving the boundary edit to Keaton
+file construction/ITINERARY.md the live front carries %444 above %431, which stays as the elder reading
+file session-logs/date/20260905/20260905-224117_the-rule-that-stated-a-reason-nobody-checked.kyri this record
+recommend check-in (Keaton) -- one line and one verdict, and seven ships stop paying ten minutes a lap. It edits the privacy boundary, so it is yours; say the word and it lands in one commit.

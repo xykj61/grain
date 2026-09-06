@@ -177,6 +177,7 @@ scrub     LICENSE-CC-BY                   # copyright holder is a real name
 template  GLOW_HOST.template.bron          # the withheld-fill-in template itself
 template  GLOW_PROFILE.template.bron       # the withheld-fill-in template itself
 template  PUBKEYS.template.md              # the withheld-fill-in template itself
+personal  publish-seed.sh                  # the field's own projector -- the seed is its OUTPUT, never its carrier (REDS %444)
 personal  PUBKEYS.md                       # real SSH + OpenPGP fingerprints
 personal  SAFE.md                          # custody by real name
 personal  STEWARDS.md                      # steward mapping by real name

@@ -40,9 +40,16 @@ seed config **on purpose** (corrected `20260828`, when the leak scan refused a p
 value writes the field's absolute path -- host username included -- into `seed/.git/config`, and
 nothing identity-bearing touches `seed/` at all. The publisher also wipes `seed/.git` **before**
 the witness runs, so the scan reads exactly the bytes that ship and nothing beside them. The pushing account is transport only; the
-commit identity stays the anonymous, keyless **Grain OS**. And the script itself is **untracked at
-the root by design** (`.gitignore` names it): when a clone lacks it, it is reconstructed from this
-rule and the guard's own greps -- which happened on `20260827`, and the guard witness proved the
+commit identity stays the anonymous, keyless **Grain OS**. And the script was **untracked** -- not
+by design, though this rule said so until `20260905.224117`: `git check-ignore -v publish-seed.sh`
+answered `.gitignore:8:/*`, the sandboxed-home blanket deny this tree points at every unlisted root
+path, so the file was untracked incidentally rather than by a decision about its contents, and it
+carries no secret and no baked host path. **Tracked from `20260905.230357` on Keaton's word** (REDS
+`%444`): allow-back `!/publish-seed.sh` in `.gitignore`, verdict `personal` in
+`template-manifest.bron` -- *the field's own projector; the seed is its OUTPUT, never its carrier*
+-- with `sow_witness` GREEN, so the boundary was moved by proof rather than by assertion. When a
+clone lacked it, it was
+reconstructed from this rule and the guard's own greps -- which happened on `20260827`, and the guard witness proved the
 reconstruction before it shipped.
 
 **Living remotes** (`20260730.030553` — Keaton's word): always push **both** `gp405` (GitHub `groupproject405/grain`) and `xy` (GitHub `xykj61/grain`) from Cursor. Codeberg stays retired from living push (Terms July 2026). Canonical count: `context/REMOTE_ROSTER.md`. **Pier write Option 2** (`20260730.034136` — Keaton's word): Cloud may meet **auth-refused** on `origin`; name it, finish the `xykj61` path, and leave `origin`/`main` sync to the home pier — never spread a home credential onto Cloud.
