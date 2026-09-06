@@ -13,6 +13,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 |---|---|---|
 | `20260906.124006` | [the box fired on a tree nobody planted it in](20260906/20260906-124006_the-box-fired-on-a-tree-nobody-planted-it-in.kyri) | two records back, unlanded 2 -> 0. |
 | `20260906.123844` | [the room that shipped nothing](20260906/20260906-123844_the-room-that-shipped-nothing.kyri) | %489: allowed, projected, green, and absent. |
+| `20260906.122329` | [the fold that hid the link it broke](20260906/20260906-122329_the-fold-that-hid-the-link-it-broke.kyri) | %486: a stamp is why four guards look away. |
 | `20260906.121331` | [a door is not the pages behind it](20260906/20260906-121331_a-door-is-not-the-pages-behind-it.kyri) | %490: the map was wrong about three more pages. |
 | `20260906.120517` | [a guard by its name](20260906/20260906-120517_the-census-that-knew-a-guard-by-its-name.kyri) | %465: 408 runners absent, not unheard; %486 self-reference. |
 | `20260906.120137` | [count the believers, not the carriers](20260906/20260906-120137_count-the-believers-not-the-carriers.kyri) | %487: a handler that cleans up and carries on. |

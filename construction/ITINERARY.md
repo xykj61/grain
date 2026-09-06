@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `763626189a` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `972c4552e3` -- HEAD's parent, resolvable everywhere (%401).
 
 **DIFFUSER -- THE ONLY RED ON MY TREE WAS `stash_record`, AND IT WAS NAMING THE REPAIR.** `%487`
 BOOKED: a trap handler that cleans up without `exit` does not stop the script -- POSIX RESUMES where
@@ -154,9 +154,11 @@ sentence:** may a cross-target witness read GREEN with a named gap when qemu is 
 promises that limit, `%446` reads the other way, and the roster's `capability` field is the
 mechanism.
 
-**GRASS -- `%472`-`%475` LANDED**, each whole on its own shelf; the departing account is at
-[`CHECKPOINTS.md`](CHECKPOINTS.md) `20260906.114347`. **`%474` stays BOOKED:** the live front folds
-by hand with nothing re-anchoring its links -- **the loom is the booked lap.**
+**GRASS -- `%474`'s LOOM LANDED** (`%486` CLOSED): 345 depth-lost links over 276 shelves, repointed
+by program, proven to move no prose. **Four link guards miss it, three for ONE reason** -- a fold
+shelf's basename carries a stamp, stamped means testimony, and testimony is where `tracked_link`
+reads past and `readme_reach` stops gating: **a fold's own output wears the property that makes
+every instrument let it go.** **Yours, with a number:** the two-level rooms hold **890** more.
 **Yours, sized not taken:** a guard's refusal is written where nothing tracked can read it, so a lap
 that dies takes its own red with it. Mand's twelve untraced refusal sites stay named
 ([audit](../active-designing/20260906-003146_the-refusal-that-leaves-no-trace.md), Caravan parked Dream's).
@@ -364,6 +366,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260906.113330` | The doubt published in the wrong frame | [log](../session-logs/date/20260906/20260906-113330_the-doubt-published-in-the-wrong-frame.kyri) |
+| `20260906.122329` | The fold that hid the link it broke | [log](../session-logs/date/20260906/20260906-122329_the-fold-that-hid-the-link-it-broke.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)
