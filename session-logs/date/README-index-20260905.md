@@ -12,17 +12,17 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | Stamp | Log | What it recorded |
 |---|---|---|
 | `20260905.234701` | [the fold the landing lap skipped](20260905/20260905-234701_the-fold-and-the-sweep-read-whole.kyri) | A pin over bound folded; 158 lines read whole. |
+| `20260905.233110` | [the fence with no post on the time side](20260905/20260905-233110_the-fence-with-no-post-on-the-time-side.kyri) | 622 bounds, 0 name a rate; 24% vs 91% checked. |
 | `20260905.231916` | [the guard that could not see itself](20260905/20260905-231916_the-guard-that-could-not-see-itself.kyri) | a meter blind to itself until tracked. |
 | `20260905.231614` | [the lap that died three minutes short](20260905/20260905-231614_the-lap-that-died-three-minutes-short.kyri) | A dead lap re-proven on metal and landed. |
+| `20260905.230526` | [the vessels get a listener](20260905/20260905-230526_the-vessels-get-a-listener.kyri) | Amphora's eight guards take a clock. |
 | `20260905.230357` | [the accident that looked like a decision](20260905/20260905-230357_the-accident-that-looked-like-a-decision.kyri) | the projector travels; %431 closed. |
 | `20260905.230135` | [emptiness is not evidence](20260905/20260905-230135_emptiness-is-not-evidence.kyri) | two guards read GREEN with ripgrep gone. |
 | `20260905.225401` | [a guard that refuses and blames the wrong file](20260905/20260905-225401_a-guard-that-refuses-and-blames-the-wrong-file.kyri) | Three refuse; all blame a clean file. |
 | `20260905.225236` | [the scope that changed between rows](20260905/20260905-225236_the-scope-that-changed-between-rows.kyri) | %441: a table changed glob mid-row. |
 | `20260905.224930` | [the shelf that spoke in marks it never taught](20260905/20260905-224930_the-shelf-that-spoke-in-marks-it-never-taught.kyri) | 20 stamped names, 0 pages teaching one. |
-| `20260905.233110` | [the fence with no post on the time side](20260905/20260905-233110_the-fence-with-no-post-on-the-time-side.kyri) | 622 bounds, 0 name a rate; 24% vs 91% checked. |
 | `20260905.224714` | [the angle the sky never subtracts](20260905/20260905-224714_the-angle-the-sky-never-subtracts.kyri) | 682,425 pairs; one hop value between them. |
 | `20260905.224117` | [the rule that stated a reason nobody checked](20260905/20260905-224117_the-rule-that-stated-a-reason-nobody-checked.kyri) | 7 of 8 ships pay for an accident. |
-| `20260905.230526` | [the vessels get a listener](20260905/20260905-230526_the-vessels-get-a-listener.kyri) | Amphora's eight guards take a clock. |
 | `20260905.213047` | [the floor that votes only where one sentence could](20260905/20260905-213047_the-floor-that-votes-only-where-one-sentence-could.kyri) | 52 pages lose a blank 100. |
 | `20260905.195223` | [the red that broke a meter by closing](20260905/20260905-195223_the-red-that-broke-a-meter-by-closing.kyri) | %437's plant crossed %438's ceiling. |
 | `20260905.192825` | [the card folds rather than grows](20260905/20260905-192825_the-card-folds-rather-than-grows.kyri) | 92 bytes of headroom became 5,596. |
@@ -59,6 +59,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260905.111416` | [The guard that named a machine](20260905/20260905-111416_the-guard-that-named-a-machine.kyri) | a control that named one computer read the law working as a breach |
 | `20260905.110633` | [The name a veteran still likes](20260905/20260905-110633_the-name-a-veteran-still-likes.kyri) | 241 authored names, not one a coinage |
 | `20260905.104613` | [toybox answers dawk's question](20260905/20260905-104613_toybox-answers-dawks-question.kyri) | the byte-view flag, in the next project we read |
+| `20260905.101545` | [the merge that never conflicted](20260905/20260905-101545_the-merge-that-never-conflicted.kyri) | two rows derived above a published spine. |
 | `20260905.100421` | [uutils, and a newer file that was worse](20260905/20260905-100421_uutils-and-a-newer-file-that-was-worse.kyri) | a logged-out credential outranked a live one |
 | `20260905.090338` | [The stash that held a finished lap](20260905/20260905-090338_the-stash-that-held-a-finished-lap.kyri) | verified, renumbered off a collision, landed |
 | `20260905.083758` | [The guard that watched an emptied room](20260905/20260905-083758_the-guard-that-watched-an-emptied-room.kyri) | flat_logs=0 read green for nine days |
