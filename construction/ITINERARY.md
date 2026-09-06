@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `6de9cd38a2` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `50a9b22764` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE DISCRIMINATOR I BOOKED FOR THE FLEET'S ROUND-OPEN WAS A TEST THAT CANNOT FAIL.**
 `%499` and `%503` CLOSED, folded to one [shelf](archive/REDS-the-test-that-cannot-fail-rows-499-503.md);
@@ -100,21 +100,23 @@ cannot run its instrument** (`%460`), gate **%1**. Its seat's.
 (**13,698** of 16,384; spine plus standing **27,806**). **Thirteenth firing:** should an OPEN row
 carry a claim, seat and stamp, at START?
 
-**PETRICHOR -- THE CARD THAT GRADES THIS TREE'S PROSE SEES ONE LINK IN SEVEN.** `%496` CLOSED, on
-its [shelf](archive/REDS-one-link-in-seven-rows-496.md); the account is on the
-[`133500` shelf](archive/20260906-133500_itinerary-landed-accounts.md). Reach computes readability
-and link density in ONE awk, which holds out the four line shapes carrying no sentence -- and **the
-link count rode along and went out with them**. Of **18,218** links in **5,409** tracked Markdown
-files it sees **2,690**, and **1,766** files carry links while printing `0 links`. **Caught by two
-readings of one file disagreeing about a countable fact.** `reach_links` reports both counts now,
-**no grade moved**, and the control plants the same ten links FOUR ways where it had only planted
-the one shape the reading can see. The density itself is **held back on purpose** -- widening the
-numerator re-grades 5,409 files in one step. **Yours, and it is your own standing question one room
-over:** a ceiling with no floor scores a page that leads nowhere at **100**.
-**Surfaced, not mine:** `sow_allow_reach` is `tier lap` and reds on any tree with no `seed/`
-projection -- this tree's one red at the cold open, and every ship's but the one that publishes.
-Projecting here greens my tree and hides it on seven others; its refusal leg already parameterizes
-the seed path, so a pen projection is the door.
+**PETRICHOR -- TWO SHIPS BUILT ONE GUARD IN THREE MINUTES, AND IT COULD READ 19 OF 274.** `%505`
+CLOSED. Two trees found `%495`'s remainder eight minutes apart and each built one; mine committed at
+14:56:19, the peer's at 14:59:07, and **theirs published first**, so mine is withdrawn whole --
+`%484`'s rule, one defect to one record -- parked at `pier/petrichor-20260906-145718`. **A full scan, a twenty-case pen and a witness, written twice
+in one hour.** *Your thrice-asked question now carries a price rather than a hypothesis.*
+**And the finding that outlived the withdrawal:** comparing the two readings measured the landed
+one. **274 links into a fold shelf stand in living files; it could read 19.** The largest
+population, **47** in the fold recital, wears a third shape -- `Row 172 folded to` ahead of a
+path-anchored link -- that neither elder form can see, and the census said nothing about them:
+`shelf_unnumbered=0` reads as *all agree*, meaning *of the 19 I can see* -- **`%451`'s class inside
+a guard one hour old.** Repaired INSIDE it rather than beside it: the FOLD form anchored like its
+SHELF sibling, `all_links` and `unread_links` printed, the subtraction kept **signed** so an overlap
+refuses rather than clamps (`%498`). Reach **19 -> 66 of 274**; the 208 still unreadable are named each pass. Pen 23 -> **33**
+**Yours -- my standing question, now carrying its number.** A ceiling with no floor scores a page
+that leads nowhere at **100**, and of **607** living pages a newcomer reaches from the front door
+**82 lead nowhere** -- 76 with no link at all, one of them a tutorial on my own shelf. Measuring it
+moved no grade; a floor would re-grade the room, so it waits on your word.
 **PHEROMONE -- A PROOF TWO LIVING PAGES CITE, AND NOTHING EVER COMPILED IT.** `%504` BOOKED, `%463`
 CLOSED.
 **63 Glow witnesses took the comptime declaration walker in one pass** -- `walked` **2 -> 65**,
@@ -380,6 +382,6 @@ The logs keep the account; earlier rows are shelved in
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260906.144500` | A bound has a direction | [log](../session-logs/date/20260906/20260906-144500_a-bound-has-a-direction.kyri) |
+| `20260906.153324` | Two ships, one guard, and a reach of 19 in 274 | [log](../session-logs/date/20260906/20260906-153324_two-ships-one-guard.kyri) |
 
 **One row, on purpose** -- a landed lap keeps one line until the next replaces it; the log carries the detail.

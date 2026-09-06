@@ -24,7 +24,7 @@
 # Purely local -- no key, no network, no funds, no device. It reads tracked markdown and a pen.
 
 say "reds-citation: Language EN -- a reader clicking a number lands on the row that number names."
-say "reds-citation: Style Gauge, Meter -- two forms are promises, and the rest of a sentence is not."
+say "reds-citation: Style Gauge, Meter -- three forms are promises, the rest of a sentence is not, and the reach is counted rather than implied."
 say "reds-citation: Lens TAME -- safety first: the refusal is proven in a pen, since the field reads zero."
 
 # 1 -- the pen, which builds real repositories and shows every refusal from the failing side.
@@ -42,6 +42,15 @@ say field.err
 assert field.ok else "reds-citation: a living citation names one row and links another -- read the scan's own lines"
 assert field.out contains "numbered_disagree=0" else "reds-citation: a numbered citation must land on the row it names"
 assert field.out contains "shelf_disagree=0" else "reds-citation: a shelf link must land on the row its sentence just named"
+assert field.out contains "fold_disagree=0" else "reds-citation: a recital line must fold its row onto the shelf it names"
 assert field.out contains "verdict=ok" else "reds-citation: the field reading must close ok"
 
-say "GREEN: reds-citation -- every number that carries a link lands on the row it names."
+# 3 -- the reach, asserted rather than assumed. A reading of nothing is indistinguishable from a
+# healthy tree (REDS %463), and a reading of a SLIVER is indistinguishable from a healthy tree too
+# unless the sliver is named. `unread_links` is the shelf links no form can check; it is reported,
+# never gated, and its presence is what keeps this guard's green from implying coverage it does not
+# have -- 66 of 274 living shelf links carry a checkable promise on this tree.
+assert (field.out contains "all_links=0") == false else "reds-citation: the reading found no shelf link at all, so its silence means nothing"
+assert field.out contains "unread_links=" else "reds-citation: the reading must name the links it cannot check, or its green implies a reach it lacks"
+
+say "GREEN: reds-citation -- every number that carries a link lands on the row it names, across all three promise forms, with the unreadable remainder counted."
