@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Status:** Living pin -- operator carry card
-**Bound:** under `living_pin_max_bytes[construction/ITINERARY.md]` (32768, derived and seated `20260904.204611` on Keaton's word -- 16 standing directives x 512, plus 8,192 for the live front, plus 16,384 for the durable spine; the general bound stays 24,576)
+**Bound:** under `living_pin_max_bytes[construction/ITINERARY.md]` (40960, raised `20260906.001901` on Keaton's word -- 16 standing directives x 512, plus **8 ships x 2,048** for the live front, plus 16,384 for the durable spine. Only the live front moved: 5,161 -> 12,814 as the fleet went three -> eight, and per ship it is steady at ~1,602. Six checkpoints record a sweep forced by the elder ceiling. The general bound stays 24,576.)
 **Voice:** Kyri
 
 ## INNER LOOP -- live directives the running loop applies each lap (seated `20260816.214652`, condensed `20260824.060012`)
@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `988a0ceaf8` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `f1498bd7fc` -- HEAD's parent, resolvable everywhere (%401).
 
 **DIFFUSER** -- 622 named bounds, none names a rate or a joule. `%447`, `20260905.233110`.
 
