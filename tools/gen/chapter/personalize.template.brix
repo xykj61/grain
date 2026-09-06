@@ -6,7 +6,7 @@
 #   cp tools/gen/chapter/personalize.template.brix PERSONALIZE.brix
 #
 # PERSONALIZE.brix is gitignored (root deny-all). This template is tracked.
-# Pair with GLOW_PROFILE.bron · GLOW_HOST.bron · tools/key-card.conf.
+# Pair with GLOW_PROFILE.kyri · GLOW_HOST.kyri · tools/key-card.conf.
 #
 # Purpose: let an Acme Corporation employee (or any new Grain steward)
 # de-associate the source pier's personal names, handles, and paths, then
@@ -98,8 +98,8 @@ answers_template_path tools/gen/chapter/first_season_answers.template.brix
 answers_instance_path first_season_answers.brix
 recursion_template expanding-prompts/date/20260730/20260730-144833_first-season-256-recursion-template.md
 guide_path manual/guides/first-season-personalize.md
-profile_template GLOW_PROFILE.template.bron
-host_template GLOW_HOST.template.bron
+profile_template GLOW_PROFILE.template.kyri
+host_template GLOW_HOST.template.kyri
 source_guide SOURCE.md
 personalize_guide manual/guides/first-season-personalize.md
 templates_index docs-geode/templates/README.md

@@ -2,7 +2,7 @@
 #
 # WHY THIS RUNG. On 20260824 Keaton asked to return this clone to Opus 5 and found the tree already
 # disagreed with itself about which model it ran. `.claude/settings.json` and
-# GLOW_PROFILE.template.bron read claude-opus-5; recursion-prompts/seed/autonomous-loop.seed.md read
+# GLOW_PROFILE.template.kyri read claude-opus-5; recursion-prompts/seed/autonomous-loop.seed.md read
 # claude-opus-4-6; and the personal GLOW_PROFILE.bron carried claude-opus-4-6 in its field directly
 # beneath a comment of its own that said `Model is Opus 5`. A file disagreeing with itself is the
 # clearest form the fault takes, and nothing in the tree could see any of it. REDS %201.

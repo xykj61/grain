@@ -146,8 +146,9 @@ allow .cursorignore
 allow .vscode
 allow .claude
 allow .cursor
-allow GLOW_HOST.template.bron
-allow GLOW_PROFILE.template.bron
+allow GLOW_HOST.template.kyri
+allow GLOW_PROFILE.template.kyri
+allow publish-seed.template.sh   # the publisher a seed user inherits; the field's own stays personal
 allow PUBKEYS.template.md
 # ---- dotfiles and root config ----
 template  .brix                          # root Brix descriptor
@@ -176,10 +177,12 @@ scrub     LICENSE                         # top-level index; copyright holder is
 scrub     LICENSE-APACHE                  # copyright holder is a real name
 scrub     LICENSE-MIT                     # copyright holder is a real name
 scrub     LICENSE-CC-BY                   # copyright holder is a real name
-template  GLOW_HOST.template.bron          # the withheld-fill-in template itself
-template  GLOW_PROFILE.template.bron       # the withheld-fill-in template itself
+template  GLOW_HOST.template.kyri          # the withheld-fill-in template itself
+template  GLOW_PROFILE.template.kyri       # the withheld-fill-in template itself
 template  PUBKEYS.template.md              # the withheld-fill-in template itself
 personal  publish-seed.sh                  # the field's own projector -- the seed is its OUTPUT, never its carrier (REDS %444)
+template  publish-seed.template.sh        # the same five steps with the five literals as stubs;
+                                        # verbatim, since it names nobody and no host by construction
 personal  PUBKEYS.md                       # real SSH + OpenPGP fingerprints
 personal  SAFE.md                          # custody by real name
 personal  STEWARDS.md                      # steward mapping by real name

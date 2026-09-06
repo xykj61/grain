@@ -4,7 +4,7 @@
 **Version:** `20260715.054500` (Pacific)
 **Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 **Status:** Living guide
-**Builds on:** `../../rye/README.md`, `../../rye/bootstrap.sh`, `../../GLOW_HOST.template.bron`
+**Builds on:** `../../rye/README.md`, `../../rye/bootstrap.sh`, `../../GLOW_HOST.template.kyri`
 **Companion:** `../../context/specs/enclosure-editors.md` covers the persistent-host, ai-jail-enclosed path (Ubuntu/NixOS/macOS, an editor you keep open for days). This guide covers the opposite case -- an ephemeral **Cursor Cloud Agent** or **Cursor for iOS** session, ai-jail-free by construction, that needs `rye`/`rishi` for the length of one sitting.
 
 ---
@@ -53,7 +53,7 @@ All three ran **GREEN** on this cloud host at `20260715.054500` -- the first tim
 
 ## The One Honest Trade-Off Named
 
-`rye/README.md`'s own building section fetches the official Zig 0.16.0 release tarball and verifies it against its published checksum before it trusts a single byte -- the discipline this whole tree holds everywhere else ("verify a toolchain before you trust it," `GLOW_HOST.template.bron`'s own header comment). The `pip install ziglang` path rests instead on PyPI's own package signing and the `ziglang` maintainer's re-packaging of the official release -- a real and genuinely different trust chain, chosen over the same one by a shortcut.
+`rye/README.md`'s own building section fetches the official Zig 0.16.0 release tarball and verifies it against its published checksum before it trusts a single byte -- the discipline this whole tree holds everywhere else ("verify a toolchain before you trust it," `GLOW_HOST.template.kyri`'s own header comment). The `pip install ziglang` path rests instead on PyPI's own package signing and the `ziglang` maintainer's re-packaging of the official release -- a real and genuinely different trust chain, chosen over the same one by a shortcut.
 
 This holds for a same-sitting cloud agent for the reasons named above (an ephemeral host, a credential store elsewhere, and the whole VM discarded at session end), rather than standing in for the checksum-verified fetch on a persistent host that a session's own tooling and identity will live on for weeks. `GLOW_HOST.bron` stays the source of truth for a *persistent* host's pinned, verified toolchain path; this pip recipe is this guide's own, narrower thing -- a same-sitting convenience for an environment that is disposable by design.
 

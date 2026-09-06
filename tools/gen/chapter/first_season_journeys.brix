@@ -22,12 +22,12 @@ journey_0_id j0
 journey_0_name personalize-grain
 journey_0_rounds 16
 journey_0_doors j0d0-j0d15
-journey_0_purpose Copy templates, fill PERSONALIZE.brix and GLOW_PROFILE.bron, run find/replace map, set remotes and voice, prove a signed hello commit inside the enclosure.
+journey_0_purpose Copy templates, fill PERSONALIZE.brix and GLOW_PROFILE.kyri, run find/replace map, set remotes and voice, prove a signed hello commit inside the enclosure.
 journey_0_opens_with copy personalize.template.brix to PERSONALIZE.brix
 journey_0_closes_with signed Verified commit under your name
 journey_0_inherits personalize.template.brix
-journey_0_also GLOW_PROFILE.template.bron
-journey_0_also GLOW_HOST.template.bron
+journey_0_also GLOW_PROFILE.template.kyri
+journey_0_also GLOW_HOST.template.kyri
 journey_0_also SOURCE.md
 journey_0_topic identity
 journey_0_topic remotes
@@ -40,8 +40,8 @@ journey_0_topic remember-card
 journey_0_door_0 copy personalize.template.brix to PERSONALIZE.brix
 journey_0_door_1 fill your_* identity fields
 journey_0_door_2 fill replace_*_to map for your pier
-journey_0_door_3 copy GLOW_PROFILE.template.bron and fill
-journey_0_door_4 copy GLOW_HOST.template.bron and fill
+journey_0_door_3 copy GLOW_PROFILE.template.kyri and fill
+journey_0_door_4 copy GLOW_HOST.template.kyri and fill
 journey_0_door_5 copy first_season_answers.template.brix to first_season_answers.brix
 journey_0_door_6 affirm PERSONALIZE.brix and answers instance stay gitignored
 journey_0_door_7 walk SOURCE.md Part One on your host

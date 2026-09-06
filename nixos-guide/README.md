@@ -27,7 +27,7 @@ path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 | **Living machine config** | `/etc/nixos/` | No -- what `nixos-rebuild switch --flake /etc/nixos#pier` reads |
 | **Optional private mirror** | separate `pier-flake` repo | No -- rebuild-from-nothing off-machine without mixing pier identity into public grain |
 
-Copy from `templates/` (see [`templates/README.md`](templates/README.md)), fill keys, and keep the living files outside this tree. Same house law as `GLOW_HOST.template.bron` -> gitignored `GLOW_HOST.bron`.
+Copy from `templates/` (see [`templates/README.md`](templates/README.md)), fill keys, and keep the living files outside this tree. Same house law as `GLOW_HOST.template.kyri` -> gitignored `GLOW_HOST.kyri`.
 
 ## Virt horizon on the cloud pier
 
