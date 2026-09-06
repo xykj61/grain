@@ -2049,3 +2049,41 @@ guard topology_floor
 path tools/t/topology_floor_witness.rish
 tier cadence
 seated 20260906.143000
+
+# reds_citation -- a number used as a link is a promise about where the link goes (REDS row of
+# `20260906.143706`). A row is cited two ways at once, as a number a reader recognises and as a path
+# a reader clicks, and the two halves move at different moments: the number when the derived spine
+# renumbers an unshared row, the path when a row folds onto a shelf. Nothing read them together.
+# Four citations went out in one day naming one row and linking another, and each repair fixed the
+# half the eye was on -- the number moved and the path stayed, then the path moved and the number
+# stayed.
+#
+# EXISTENCE AND AGREEMENT ARE TWO QUESTIONS, and only one had an instrument. Measured on the tree
+# that morning, `readme_reach` named ONE of the four -- the citation whose file was absent -- and
+# read green over the other three, which open a real shelf holding somebody else's row. That is a
+# misdirection with no expiry: it resolves, so it never reds, and a reader following it lands
+# somewhere the sentence never meant. `tracked_link` asks existence the same way; `reds_row_present`
+# asks whether the ledger HOLDS a row and never asks who cites it.
+#
+# TWO FORMS, AND THE THIRTY-TWO THAT TAUGHT THE NARROWING. A window around a link picks up every
+# `%N` in the neighbouring prose, and a sentence may lawfully name one row while linking another --
+# %220's own shelf cites %218's. A nearest-preceding-%N reading over 1,001 living documents called
+# 32 honest sentences wrong, so the scan reads only the two shapes that are promises to a reader:
+# the anchor text that IS the number, and the shelf word whose sentence just named a row. One line
+# of lookback, never past the link, because this tree hard-wraps its pins and the break that shipped
+# fell exactly across that wrap.
+#
+# PROVEN ON HISTORY AS WELL AS IN A PEN. Run against `b441f97b2`, this tree as it stood when the
+# defect was published, the scan reads `numbered_disagree=3` and names all three sites. The pen adds
+# 23 cases over 12 real repositories, every refusal planted and then lifted, and it caught a defect
+# in the scan's own counting before it shipped -- `grep -c ''` prints 0 and exits 1 on an empty file,
+# so the fallback beside it yielded two lines and the emptiness branch was skipped entirely.
+#
+# `tier lap`: one `git grep` over tracked markdown then awk over the two dozen documents that cite a
+# shelf, about a second. Every fold moves a path and every renumbering moves a number, so ordinary
+# work is what writes this fault, and a cadence clock would let one ride four laps.
+
+guard reds_citation
+path tools/r/reds_citation_witness.rish
+tier lap
+seated 20260906.143706
