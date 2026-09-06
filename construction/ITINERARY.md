@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `dfcb4303eb` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `fb58822647` -- HEAD's parent, resolvable everywhere (%401).
 
 **DIFFUSER** -- **the elder paper's own unmeasured sentence, measured.** It read: *"memory read on
 every packet shows up in a power budget -- no measurement of the difference is offered here."*
