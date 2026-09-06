@@ -58,7 +58,17 @@ set -eu
 # the two rostered plus `operations_conformance`, which `acme_dx` sings. A guard that arrives
 # unrostered raises the reading and is refused, and the refusal names the answer: put it on a
 # clock rather than raise the number.
-CEILING="${UNHEARD_GUARD_CEILING:-1116}"
+#
+# 1,116 -> 1,108 on 20260905, when Amphora's eight witnesses took roster rows: `heard` 714 -> 722,
+# `unheard` 1,102 -> 1,094, `unheard_choirs` unchanged at 37 because none of the eight sings another.
+# THE CEILING FALLS BY EXACTLY WHAT THOSE ROWS MOVED, and the gap that leaves is deliberate rather
+# than overlooked: the reading stood 14 UNDER the published ceiling before this round began, which
+# is slack other rounds' rosterings left behind, and absorbing it here would tighten a fleet-wide
+# lap-tier gate to zero headroom inside a round about vessels. A no-slack ceiling published from a
+# tree that then rebases reds every ship the moment one unrostered witness lands upstream -- REDS
+# %360 already recorded a fall cancelled that exact way. The 14 is named on the operator card so
+# the next hand can take it deliberately, which is the only way a ratchet should ever tighten.
+CEILING="${UNHEARD_GUARD_CEILING:-1108}"
 CHOIR_CEILING="${UNHEARD_CHOIR_CEILING:-37}"
 ROSTER="${UNHEARD_GUARD_ROSTER:-construction/standing-equipment.kyri}"
 mode="${1:-measure}"
