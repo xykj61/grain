@@ -1,0 +1,39 @@
+format session-log-v1
+stamp 20260906.131827
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role unattended fleet ship -- Pheromone, the language lane
+modality text
+model claude-opus-5
+model_status configured default proven by .claude/settings.json; runtime identity unverified
+configured_model claude-opus-5
+configured_reasoning max
+configured_status tracked settings file
+evidence .claude/settings.json
+voice Kyri
+host Linux pier, America/New_York
+title A witness proves what it calls -- the census for the module it claims
+prompt The baton, unattended lap 4061 on grain-pheromone. Rota row 1 by count, advanced by hand to row 2 (Fire) since rows 1, 3, 4 and 0 were all read today and 2 was not.
+think Reds first. Of ten rows in the pin, three read OPEN: %463, %457, %360. %457's own remainder says a guard on the habit costs more than it returns while the habit is one lap old, which is a deliberate hold rather than work. %360 is a ratchet two peers already advanced today. %463 is mine, and my own last two recommend lines both named the same remainder: the compile-reach census answers WHICH files no build reaches and nothing about whether the reached ones compile, and the comptime declaration walker that answers the second question exists for one module rather than for the tree.
+think Fire's sense is vision -- look straight at the thing most laps route around. So I measured before designing. One file in 1,943 tracked .rye carries a declaration walker: mantra/src/diff_witness.rye, %470's repair. 134 witnesses stand in the tree. That is the gap in one line.
+think Then I proved the gap by doing rather than arguing, in a pen built from git archive HEAD so this tree held still while the cold roster ran. Appended a public fn to mantra/src/weave.rye assigning a u32 to a []const u8 and returning it -- a flat type error, in a declaration the witness never calls. tools/m/mantra_weave_merge_witness.rish read GREEN, its own five-break control included. That is %470's fault in the file directly next door, guarded by the sibling of the witness whose header names this exact gap.
+think Checked the other half before concluding: does weave.rye actually analyze clean today? Inserted the walker with no plant and built -- exit 0. So the module is sound and the defect is the blind guard, which is the honest reading rather than the alarming one.
+think Before building the instrument I applied %457: absence is the one reading a seat must never take from local bytes alone. path_absence_scan answered fetched=xy, commits_behind=0, absent both here and upstream, and a sweep for any other name found nothing. The instrument was genuinely unbuilt.
+think The tempting census is every tracked .rye against every walker, reading one covered and seventeen hundred uncovered. I declined it: a walker forces analysis transitively, and most modules never claimed to be proven by anything, so a big number would be confidently wrong in the direction a big number is never questioned. The subject is instead the files that make the promise -- a *_witness.rye and the module its own name names. That is %487's rule one room over, count the believers rather than the carriers.
+obs The control found three faults in my own census, and each was a lesson this tree had already paid for. The @typeInfo(m).@"struct".decls pattern read the tree's ONLY real walker as absent, because the quoted field name's own letters defeat a character class trying to skip it. The stem rule read weave_merge_witness.rye as claiming nothing, so the very file the census was built from fell outside its own instrument -- fixed by crediting a witness that imports exactly one tracked sibling. And two refusals exited before printing what they read, which is %480 one guard over.
+obs The residue is published rather than dropped, twice. Nine witnesses whose stem names nothing and which import several siblings do not say which module they prove; they read as ambiguous and are listed, never guessed at. And the credit carries its condition: a walker in a file no build compiles forces nothing, so unreached counts walkers the compile-reach census places in never, gated at zero, reading -1 where that resolver cannot answer. An unknown published as unknown is %488's lesson, and this census is its neighbor.
+obs The ceiling has no slack at 119, and the control proves it from both sides by planting 120 pairs rather than by an override -- the scan offers none, because a ceiling with a door beside it is a habit again.
+obs The cold roster's one red was standing_equipment reading a stale run card naming stash_record; running that witness directly answered unlanded=0, verdict=ok. That is %483's booked one-pass lag rather than anything this lap touched.
+obs A pen fault worth writing down: I restored a file with git show HEAD:path > path inside a directory that was not yet a repository, and the redirection truncated the target before the failing command ever ran. The pen then carried an empty witness and its first reading was one subject short. Rebuilt from git archive rather than patched.
+loom scan=rye_witness_walker corpus=1943 symlinks=227 witnesses=134 pairs=284 subjects=121 ambiguous=9 walked=2 unwalked=119 unreached=0 wall_s=24
+loom control=rye_witness_walker_control behaviors=37 ceiling_over=120 ceiling_at=119
+loom qa scan=81 witness=84 control=85
+file tools/fixtures/r/rye_witness_walker_scan.sh the census -- which witnesses walk the module they claim, and the two residues it will not guess at
+file tools/fixtures/r/rye_witness_walker_control.sh 37 behaviors on real repositories in a pen, every refusal planted and then lifted
+file tools/r/rye_witness_walker_witness.rish the rung, printing the scan's lines before any assert
+file mantra/src/weave_merge_witness.rye the second walker in the tree, landed where the hole was proven on metal
+file construction/standing-equipment.kyri rye_witness_walker rostered tier lap at 24s
+file construction/REDS.md %492 booked, with the three faults the control found in the census itself
+file construction/archive/REDS-the-question-every-guard-asked-rows-470.md %470 folded, the elder of this family, to bring the pin back under its bound
+recommend keep-going -- the language lane's finding is closed on metal and the remainder is a ratchet that falls on touch: 119 witnesses claim a module they only partly analyze, and each is four lines from proving it. The next honest lap in this lane is the one %463 still leaves standing beside its own accused file, now narrower than it was this morning: the census answers which files no build reaches, this one answers which witnesses fully analyze what they claim, and neither answers whether a module nothing claims still compiles. Keaton's rulings open from this seat are unchanged -- which metric Comlink actually routes on, and whether a cross-target witness may read GREEN with a named gap when qemu is absent.
