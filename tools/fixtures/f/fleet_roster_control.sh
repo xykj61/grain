@@ -94,8 +94,18 @@ case "$out" in *"incense"*) say "refusal_names_real_seats=yes" ;; *) say "refusa
 
 # THE BITING DIRECTION for the tree check: the seat whose tree is this one walks free above, and
 # any OTHER live seat is refused by basename -- one writer per checkout (%291).
+#
+# The refusal must also NAME the tree it wants, which is the reading that makes it useful at a
+# prompt: a hand told only "refusing" has to go read the table, where a hand told "belongs in
+# grain-incense" already knows which checkout to open. The wanted tree is read from the roster
+# rather than spelled, for the reason the block above carries (REDS %422).
+away_tree=$(sh "$scan" --tree "$away_seat")
 out=$(FLEET_DRY=1 sh "$loop" "$away_seat" 2>&1 || true)
 case "$out" in *"refusing"*) say "wrong_tree_refused=yes" ;; *) say "wrong_tree_refused=no" ;; esac
+case "$out" in
+  *"belongs in $away_tree"*) say "refusal_names_the_wanted_tree=yes" ;;
+  *) say "refusal_names_the_wanted_tree=no" ;;
+esac
 
 # An elder name reaches the loop and is corrected there, which is the half that never reached
 # fleet_rearm.sh while the remap lived in a case arm.
@@ -279,11 +289,14 @@ case "$(sp --recipe)" in *grain-waiting*) say "berthed_excluded_from_recipe=no" 
 # ...and the live seat beside it IS listed, so this proves an exclusion rather than an empty read.
 if sp --live | grep -qx sailing; then say "live_seat_is_listed=yes"; else say "live_seat_is_listed=no"; fi
 rm -rf "$spen"
-# And the loop refuses it by TREE rather than by status, which is the honest refusal: the seat is
-# real, the checkout is not here yet, and the message says which.
-case "$(FLEET_DRY=1 sh "$loop" bakery 2>&1)" in
-  *"belongs in grain-bakery"*) say "berthed_refuses_by_tree=yes" ;; *) say "berthed_refuses_by_tree=no" ;;
-esac
+# The fourth berthed leg is GONE rather than moved into the pen, because it was a duplicate of
+# `wrong_tree_refused` above written the wrong way round (REDS %445). It ran the real fleet --
+# `FLEET_DRY=1 sh fleet-loop.sh bakery`, wanting *belongs in grain-bakery* -- which asserts where
+# bakery's CHECKOUT is rather than what the loop DOES, so it read green on every tree except the
+# one it names and went red the first lap that ran inside `grain-bakery`. Seven ships saw a green
+# control and the eighth saw a broken one, over a behaviour correct on all eight. The reading it
+# uniquely carried, that the message says WHICH tree, now stands beside its sibling above, derived
+# from the roster and biting on every tree in the fleet.
 
 echo "control_checks=$checks"
 echo "control_failures=$failures"
