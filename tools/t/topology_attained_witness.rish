@@ -1,0 +1,82 @@
+# tools/t/topology_attained_witness.rish -- the floor a hand can reach, and it can be made to red.
+#
+#   rishi/bin/rishi run tools/t/topology_attained_witness.rish
+#
+# WHAT IT BINDS. `tools/fixtures/t/topology_attained_scan.sh` builds six graphs on 720 points and
+# walks every one of their 517,680 ordered pairs, derives the smallest diameter any ABELIAN Cayley
+# graph of a given degree could hold, and sweeps 63,903 circulants. This proves the derivation
+# against an enumeration, binds every measured diameter and mean, and proves the reading can be
+# broken through `tools/fixtures/t/topology_attained_control.sh`.
+#
+# WHY THIS SITS BESIDE `topology_floor` RATHER THAN INSIDE IT. That witness binds the MOORE floor,
+# a lower bound over all graphs which almost nothing attains. This one binds what is REACHABLE.
+# They answer different questions and a design argument needs both: the Moore floor says how much
+# room could exist, and this says how much of it a builder can stand on.
+#
+# WHY IT IS `tier cadence`. The scan walks 3,106,080 ordered pairs and 63,903 graphs -- 81s
+# measured `20260906.152821`. Its answer moves only when the scan moves, which is a deliberate act,
+# so a per-lap row would spend 81s a lap on eight ships to watch a number that did not change.
+
+say "topology-attained: Language EN -- what diameter a builder can actually stand on."
+say "topology-attained: Style Gauge, Meter -- every figure built and walked, never recalled."
+say "topology-attained: Lens TAME -- the derivation checked against a count, the plants lifted."
+
+say "topology-attained: the scan builds the shapes and walks them..."
+let scan = run ["sh" "tools/fixtures/t/topology_attained_scan.sh"]
+# invariant: the scan stands green before any reading of it is trusted.
+assert scan.ok else "topology-attained: the scan refused --\n${scan.out}"
+assert scan.out contains "verdict=ok" else "topology-attained: the scan did not reach its own green --\n${scan.out}"
+
+say "topology-attained: the closed form agrees with a count at every radius, not just the one it needs..."
+# invariant: k=7 is the radius a draft got wrong by dividing before multiplying, so it is bound by name.
+assert scan.out contains "l1ball3 k=7 closed=575 enumerated=575 agree" else "topology-attained: the L1 ball closed form moved at the radius that decides --\n${scan.out}"
+assert scan.out contains "l1ball3 k=8 closed=833 enumerated=833 agree" else "topology-attained: the L1 ball closed form moved at the floor's own radius --\n${scan.out}"
+# invariant: every radius agrees, counted positively -- an absent line and a passing check read alike.
+assert scan.out contains "l1ball3_disagreements=0 radii=11" else "topology-attained: a radius disagreed with its own count --\n${scan.out}"
+
+say "topology-attained: the abelian floor is derived, and its widest split is shown rather than assumed..."
+# invariant: 720 points do not fit in the radius-7 ball and do fit in the radius-8 one, so the floor is 8.
+assert scan.out contains "floor abelian n=720 degree=6 floor=8 ball_at_floor=833 ball_below=575 widest_split=involutions:0,pairs:3" else "topology-attained: the degree-6 abelian floor moved --\n${scan.out}"
+# invariant: at degree 5 the abelian floor is 14, which is what makes the star graph's 7 a halving.
+assert scan.out contains "floor abelian n=720 degree=5 floor=14 ball_at_floor=786 ball_below=678 widest_split=involutions:1,pairs:2" else "topology-attained: the degree-5 abelian floor moved --\n${scan.out}"
+# invariant: three inverse-pairs is the widest split, so a shape spending degree on involutions loses.
+assert scan.out contains "abelian_split degree=6 k=8 involutions=0 pairs=3 ball=833" else "topology-attained: the widest degree-6 split moved --\n${scan.out}"
+assert scan.out contains "abelian_split degree=6 k=8 involutions=6 pairs=0 ball=64" else "topology-attained: the all-involution split moved --\n${scan.out}"
+# invariant: the Moore floors stand beside the abelian ones, so the two bounds are read together.
+assert scan.out contains "floor moore n=720 degree=6 floor=4 cap_at_floor=937 cap_below=187" else "topology-attained: the degree-6 Moore floor moved --\n${scan.out}"
+
+say "topology-attained: six shapes, each built here and walked from every vertex..."
+# invariant: the seated torus reproduces the elder census's 14 exactly, or these two scripts disagree.
+assert scan.out contains "shape torus_12x5x12 degree=6 diameter=14 mean_hops=7.2100 pairs=517680 over_moore=3.50 over_abelian=1.75" else "topology-attained: the seated torus moved --\n${scan.out}"
+assert scan.out contains "shape torus_8x9x10 degree=6 diameter=13 mean_hops=6.7316" else "topology-attained: the best three-ring torus moved --\n${scan.out}"
+# invariant: the exhibited circulant reaches 9 at the same degree and the same point count.
+assert scan.out contains "shape circulant_1_8_75 degree=6 diameter=9 mean_hops=6.3004 pairs=517680 over_moore=2.25 over_abelian=1.12" else "topology-attained: the exhibited circulant moved --\n${scan.out}"
+# invariant: 720 is the order of the symmetric group on six symbols, which is why S_6 sits here at all.
+assert scan.out contains "symmetric_group order=720 expected=720 agree" else "topology-attained: the permutation enumeration moved --\n${scan.out}"
+# invariant: the star graph reaches half the abelian floor for its own degree, on less wire.
+assert scan.out contains "shape star_S6 degree=5 diameter=7 mean_hops=4.7900 pairs=517680 over_moore=1.40 over_abelian=0.50" else "topology-attained: the star graph moved --\n${scan.out}"
+assert scan.out contains "shape pancake_P6 degree=5 diameter=7 mean_hops=4.5828" else "topology-attained: the pancake graph moved --\n${scan.out}"
+# invariant: the bubble-sort graph is the counterexample -- same group, same degree, WORSE than the torus.
+assert scan.out contains "shape bubble_B6 degree=5 diameter=15 mean_hops=7.5104" else "topology-attained: the bubble-sort counterexample moved --\n${scan.out}"
+
+say "topology-attained: and the sweep says how generic that reach is..."
+# invariant: every one of the 63,903 graphs closed, so the median and the share are over the whole family.
+assert scan.out contains "sweep family=circulant_unit_generator swept=63903 best=9 attainers=1240 median=12 worst=120" else "topology-attained: the sweep moved --\n${scan.out}"
+# invariant: three draws in four already beat the seated shape, which is the design number.
+assert scan.out contains "sweep_against_seated seated_diameter=14 beat=48405 tie=3950 beat_share=0.7575" else "topology-attained: the share beating the seated torus moved --\n${scan.out}"
+# invariant: not one circulant in the sweep reaches the abelian floor, so 8 stands underived by exhibit.
+assert scan.out contains "sweep_reaches_abelian_floor floor=8 reached=no" else "topology-attained: a circulant reached the abelian floor --\n${scan.out}"
+# invariant: the one-walk shortcut and the all-pairs walk agree, so the sweep's method is held to the shape leg's.
+assert scan.out contains "transitivity_crosscheck graph=C720(1,8,75) one_walk=9 all_pairs=9 agree" else "topology-attained: the two walk methods disagree --\n${scan.out}"
+
+say "topology-attained: and the reading can be broken, each plant lifted after..."
+let control = run ["sh" "tools/fixtures/t/topology_attained_control.sh"]
+# invariant: a refusal proven only in the passing direction cannot be told from a bypass.
+assert control.ok else "topology-attained: the control refused --\n${control.out}"
+assert control.out contains "verdict=ok" else "topology-attained: the control did not reach its own green --\n${control.out}"
+# invariant: the pen is innocent, so every plant reads as the break speaking rather than the pen.
+assert control.out contains "clean_verdict ok ok" else "topology-attained: the unbroken pen did not pass --\n${control.out}"
+# invariant: the checking legs earn their keep -- broken with them gone, the scan reads green.
+assert control.out contains "legless_verdict ok ok" else "topology-attained: the checking legs are not what catches the break --\n${control.out}"
+
+say "topology-attained: GREEN -- the floor is derived, six shapes are walked, and the plants bite."

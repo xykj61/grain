@@ -2114,3 +2114,15 @@ guard reds_citation
 path tools/r/reds_citation_witness.rish
 tier lap
 seated 20260906.143706
+# topology_attained -- what diameter a builder can actually STAND on, at 720 points.
+# Its sibling `topology_floor` binds the MOORE floor, a lower bound over all graphs that almost
+# nothing attains. This one binds what is REACHABLE: a second floor for abelian Cayley graphs
+# derived from the lattice ball and checked against enumeration at every radius, six graphs built
+# here and walked from all 720 vertices, and a sweep of 63,903 circulants. `tier cadence` because
+# the scan walks 3,106,080 ordered pairs and the control runs eight plants -- 192s measured
+# `20260906.152821` -- and its answer moves only when the scan moves, a deliberate act.
+
+guard topology_attained
+path tools/t/topology_attained_witness.rish
+tier cadence
+seated 20260906.152821
