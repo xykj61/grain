@@ -1,0 +1,107 @@
+# tools/s/shim_reason_witness.rish -- a pass-through shim carries the reason, not only the verdict.
+#
+# WHAT THIS GUARDS. An accrete shim runs a target under `tools/gen/` and exits that target's code,
+# so a caller may name either path and get the same answer. Rishi's `run` captures the target's
+# stderr into `r.err`; a shim that says only `r.out` writes nothing at all to its own stderr. The
+# exit code travels. The sentence does not.
+#
+# MEASURED ON A REAL FILE, `20260906`, WITH NO PLANT. `tools/am/amphora_device_wire.rish` drives a
+# virtio lab and this pier holds no qemu, so it refuses honestly every time it runs. Its target,
+# run directly, hands a reader `rishi: assertion failed -- Amphora vessel fetch device wire lab
+# failed` with the line number beside it. The shim, run the same second, exits 1 with ZERO bytes on
+# stderr, and the whole of what a reader receives is `amphora-device-wire: virtio fetch-by-digest
+# lab...` -- a progress line printed before the failure, which reads like success.
+# `tools/fixtures/s/standing_equipment_run.sh` captures a guard with `> out 2>&1`, so the merge is
+# already there and catches nothing: the shim emitted nothing to merge.
+#
+# WHY A GATE AND A RATCHET. No swallowing shim stands on the standing roster today, so this is a
+# trap rather than a live fault: it springs on the lap that ROSTERS one, and `%360`'s standing
+# pressure is to roster more guards. The amphora lane walked into it on `20260906.063124` -- three
+# shims went onto a lap clock, and the swallow had to be found by planting a break and repaired in
+# the same breath. The gate spares the next lane that discovery. The ratchet is the residue, 43 off
+# the roster, falling on touch.
+#
+# THE GATE IS PROVEN ABLE TO BITE, which matters here more than usual: `swallow_rostered` reads
+# ZERO on this field and always has, so nothing in the tree could ever show it working. The control
+# supplies the case the field does not hold -- one swallowing shim named by a `path` row, refused;
+# the same shim with one line added, freed.
+#
+# THE ANCHOR. A seat is a `path` row standing alone at column zero, never a path mentioned inside a
+# roster comment. Unanchored, a guard could be counted rostered because somebody wrote about it,
+# and the control plants exactly that sentence.
+#
+# THE CORPUS ARRIVES THROUGH ONE `git grep`, and its status is classified rather than swallowed --
+# exit 1 is *no match*, 2 or more is *could not run*, and reading them alike would report an empty
+# answer as a clean tree (REDS %473, %484). Three greps over every tracked `.rish` cost 22 seconds
+# on this pier; the pre-filter reads the same counts in 2, and the control proves a broken pattern
+# refuses by name.
+#
+# WHAT IT DOES NOT REACH, named rather than left to be rediscovered. The reading knows a shim by
+# three marks together -- the `run ["rishi/bin/rishi" "run" ...]` call, the `say r.out` forward, and
+# the `exit r.code` tail -- because each alone is ordinary. Two tracked files exit a captured run's
+# code under a different variable name and are invisible to it; neither is a shim, and both are
+# named every pass as `exit_alias_sites` so the floor carries a number (REDS %466).
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/s/shim_reason_witness.rish
+
+say "shim-reason: Language EN -- a shim is read for whether its target's refusal reaches a reader."
+say "shim-reason: Style Gauge, Meter -- one gate at zero, one ratchet that only falls, the repair named in the refusal."
+say "shim-reason: Lens TAME -- safety first: a guard that refuses without saying why costs the next reader the whole diagnosis."
+
+let scan = run ["sh" "tools/fixtures/s/shim_reason_scan.sh"]
+say scan.out
+say scan.err
+assert scan.ok else "shim-reason: the field reading refused -- read the scan's own lines above, which name every swallowing shim by path"
+assert scan.out contains "swallow_rostered=0" else "shim-reason: a shim the standing roster names must forward `r.err`, since the fleet runs it and files its output as evidence"
+assert scan.out contains "verdict=ok" else "shim-reason: the scan must balance before it is believed"
+say "field GREEN -- every rostered pass-through shim carries its target's reason"
+
+let control = run ["sh" "tools/fixtures/s/shim_reason_control.sh"]
+say control.out
+say control.err
+assert control.ok else "shim-reason: the control must complete"
+assert control.out contains "control_verdict=ok" else "shim-reason: the control must reach its own close"
+assert control.out contains "clean_exit=0" else "shim-reason: a forwarding rostered shim must pass free, or every refusal below is the pen speaking"
+assert control.out contains "clean_free=yes" else "shim-reason: a forwarding rostered shim must read verdict=ok"
+assert control.out contains "clean_shim_counted=yes" else "shim-reason: the scan must name how many shims it found, or a reading of nothing looks like a healthy tree (REDS %463)"
+assert control.out contains "clean_forward_counted=yes" else "shim-reason: a forwarding shim must be counted as forwarding, not merely left uncounted"
+assert control.out contains "clean_gate_zero=yes" else "shim-reason: the gate must read zero on a clean pen, or its zero on the field means nothing"
+assert control.out contains "rostered_exit=1" else "shim-reason: a rostered swallowing shim must exit non-zero"
+assert control.out contains "rostered_bitten=yes" else "shim-reason: a rostered shim that drops the reason must refuse -- this is the gate the field cannot supply"
+assert control.out contains "rostered_counted=yes" else "shim-reason: the gate's refusal must carry a count, never only a verdict"
+assert control.out contains "rostered_named=yes" else "shim-reason: the refusal must name the shim by path, since a count is not something a hand can open"
+assert control.out contains "rostered_lifted=yes" else "shim-reason: adding the one forwarding line must free the same pen, or the refusal cannot be told from a scan that reds on everything"
+assert control.out contains "ceiling_free_exit=0" else "shim-reason: the residue standing AT its ceiling must pass"
+assert control.out contains "ceiling_free=yes" else "shim-reason: two unrostered swallowers at a ceiling of two must read ok"
+assert control.out contains "ceiling_counted=yes" else "shim-reason: the ratchet must name its own count beside the ceiling"
+assert control.out contains "ceiling_bitten_exit=1" else "shim-reason: the same plant one ceiling lower must exit non-zero"
+assert control.out contains "ceiling_bitten=yes" else "shim-reason: a ceiling proven only in the passing direction cannot be told from a bypass"
+assert control.out contains "three_marks_needed=yes" else "shim-reason: a file carrying only two of the three marks is not a shim -- each mark alone is ordinary"
+assert control.out contains "three_marks_corpus_read=yes" else "shim-reason: the near-misses must be read and rejected, rather than never reached"
+assert control.out contains "three_marks_free=yes" else "shim-reason: a pen holding one forwarding shim and three near-misses must pass free"
+assert control.out contains "untracked_unseen=yes" else "shim-reason: an untracked shim must not be counted -- the claim is about what the repository carries"
+assert control.out contains "tracked_then_seen=yes" else "shim-reason: the same file once tracked must be counted, or the untracked reading is blindness rather than scope"
+assert control.out contains "tracked_then_counted=yes" else "shim-reason: a newly tracked swallowing shim must land in the ratchet"
+assert control.out contains "mention_not_a_seat=yes" else "shim-reason: a path named inside a roster comment is prose, not a seat"
+assert control.out contains "mention_falls_to_ratchet=yes" else "shim-reason: a mentioned-but-unrostered swallower belongs to the ratchet, never the gate"
+assert control.out contains "real_row_is_a_seat=yes" else "shim-reason: a genuine `path` row at column zero must be read as a seat, or the anchor has gone blind"
+assert control.out contains "roster_refusal_exit=2" else "shim-reason: an unreadable roster must refuse at the instrument level"
+assert control.out contains "roster_refusal=yes" else "shim-reason: without a roster every shim reads unrostered and the gate reports zero while measuring nothing"
+assert control.out contains "roster_never_reads_ok=yes" else "shim-reason: a reading that could not tell rostered from unrostered must never answer ok"
+assert control.out contains "roster_restored=yes" else "shim-reason: restoring the roster must return the pen's own refusal, so the refusal belongs to the roster's absence"
+assert control.out contains "empty_corpus_exit=2" else "shim-reason: a corpus of nothing must refuse rather than answer clean"
+assert control.out contains "empty_corpus_refused=yes" else "shim-reason: no tracked .rish means the corpus never arrived, which is not the same as no fault (REDS %463)"
+assert control.out contains "no_shims_exit=2" else "shim-reason: .rish files with no shim among them must refuse"
+assert control.out contains "no_shims_refused=yes" else "shim-reason: a reading that matched no shim proves nothing about shims"
+assert control.out contains "no_shims_corpus_named=yes" else "shim-reason: that refusal must still name how many files it read"
+assert control.out contains "no_repo_refused=yes" else "shim-reason: outside a git repository the reading has no corpus and must say so"
+assert control.out contains "alias_counted=yes" else "shim-reason: a file exiting a run's code under another name is the reading's blind spot and must be counted"
+assert control.out contains "alias_named=yes" else "shim-reason: the blind spot must be named by path, so a later reader can check it rather than rediscover it"
+assert control.out contains "alias_excludes_r=yes" else "shim-reason: a file exiting `r.code` is inside the reading and must not be counted as its edge"
+assert control.out contains "instrument_refusal_bitten=yes" else "shim-reason: a git grep that could not run must refuse by name -- REDS %473, one guard over"
+assert control.out contains "instrument_never_reads_ok=yes" else "shim-reason: a broken instrument must never read as a tree with no blind spot in it"
+assert control.out contains "instrument_pen_innocent=yes" else "shim-reason: the same pen unmutated must read clean, so the refusal belongs to its plant"
+
+say "RED and GREEN paths proven -- the control's own `cases=` and `repos=` lines above carry the totals, and every refusal is lifted in its own pen"
+say "GREEN: shim-reason -- a shim on the clock hands on its target's reason, and the residue is counted."
