@@ -2017,3 +2017,19 @@ guard shim_reason
 path tools/s/shim_reason_witness.rish
 tier lap
 seated 20260906.124500
+# rye_struct_fields -- the reader four guards needed and none of them had (REDS %500). The four
+# Mantra Glow Tend limbs each carry a placard declaring that a structure "carries exactly N
+# fields", and each proved it with N `grep -Fq` calls for N field lines. Presence is not a count.
+# A fourth field passed all four; a reorder passed all four; and all four refused in the words
+# "missing or reordered". Two named movements of the Mantra arc -- the identity gap, wanting a
+# fourth field on `Line`, and the diff anchor, wanting one on `Diff` -- were recorded on the
+# operator card and in a commit body as waiting on that pin, which had no bolt in it. This rung
+# proves the reader that replaced it: a count and an order out of the Rye source, three refusals
+# by name, and TWO phases that run the elder predicate verbatim on the same mutated pen and watch
+# it wave a fourth field and a reorder through. Those two passes are the finding itself. 19
+# behaviors; `tier lap` at 1s, because the four consumers it feeds all run every lap.
+
+guard rye_struct_fields
+path tools/r/rye_struct_fields_witness.rish
+tier lap
+seated 20260906.140000
