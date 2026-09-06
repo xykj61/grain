@@ -57,7 +57,7 @@ done
 # The ceiling only ever falls, and it fell to zero on 20260906. It stood at 1 for one night: exactly
 # one distinct Rye file carried a runner's claim while no build ever reached it -- `mantra/src/diff.rye`,
 # five guards reading it and nothing compiling it. `tools/m/mantra_diff_witness.rish` compiles it now
-# (REDS %467), and the module did NOT compile when the probe was built, carrying three sites of the
+# (REDS %470), and the module did NOT compile when the probe was built, carrying three sites of the
 # Zig 0.15 `ArrayListUnmanaged(T){}` form the 0.16 toolchain retired -- `%449`'s fault one file over.
 # Whether a reached file still COMPILES stays a different question this census does not answer, and
 # the cheap answer is a trap: Zig analyses lazily, so a build that merely imports a module passes

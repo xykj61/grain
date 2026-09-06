@@ -113,6 +113,13 @@ deadline=$(( $(date +%s) + hours * 3600 ))
 laps=0
 quickfail=0
 lap_open=0
+# A SPENT SESSION LIMIT IS A WAIT, NOT A FAULT, and it needs its own bounded counter (REDS %471).
+# LOOP_LIMIT_WAIT is how long to hold between checks; LOOP_LIMIT_WAIT_MAX is how many holds before
+# the loop stops and asks for a hand. 300s x 72 is six hours -- longer than any window this fleet
+# has met, and short of an overnight spin nobody is watching. The deadline still bounds it.
+limit_waits=0
+limit_wait_seconds=${LOOP_LIMIT_WAIT:-300}
+limit_wait_max=${LOOP_LIMIT_WAIT_MAX:-72}
 mkdir -p session-output
 
 echo "fleet-loop: seat=$seat engine=$engine root=$root hours=$hours laps=${max_laps:-unbounded}"
@@ -269,15 +276,42 @@ while [ "$(date +%s)" -lt "$deadline" ]; do
     echo "fleet-loop: interrupted or invoke refused (exit $rc) -- this attempt is not a counted lap"
     break
   fi
-  if [ "$rc" -ne 0 ]; then
-    echo "fleet-loop: lap exited $rc; the next round-open pull resumes the thread"
-  fi
   # A LAP THAT DIES IN UNDER TEN SECONDS NEVER REACHED THE AGENT (REDS %414). Eight pheromone and
   # petrichor laps failed on an ai-jail flag refusal inside a second each, and the loop counted
   # every one and slept twenty seconds between them -- an eighteen-hour deadline of nothing at all.
   # Three consecutive instant failures stop the loop and say why, because the fault is upstream of
   # the agent and no number of retries will reach past it.
-  if [ "$rc" -ne 0 ] && [ $(( $(date +%s) - lap_open )) -lt 10 ]; then
+  #
+  # AND THAT REASONING HAS ONE EXCEPTION, WHICH COST THE FLEET A MORNING (REDS %471). A spent
+  # session limit is also upstream of the agent, returns just as instantly, and clears ON A CLOCK.
+  # On `20260906` six ships met the limit between 07:21 and 07:28, burned three instant laps each,
+  # and stopped themselves; the window reset at 07:30 and they sat dark until a hand read the panes.
+  # So the lap is CLASSIFIED before it is counted, and the classifier asks about the limit first --
+  # tools/fixtures/f/fleet_lap_verdict.sh, which a control proves on planted transcripts.
+  elapsed=$(( $(date +%s) - lap_open ))
+  verdict=$(sh tools/fixtures/f/fleet_lap_verdict.sh "session-output/${seat}.txt" "$rc" "$elapsed" 2>/dev/null || echo verdict=fault)
+  verdict=${verdict#verdict=}
+  case "$verdict" in
+  ok)
+    quickfail=0
+    limit_waits=0
+    ;;
+  limit)
+    # invariant: a wait is not a lap -- `laps` is untouched and `quickfail` is cleared, because the
+    # agent answered. What it answered was "not yet".
+    quickfail=0
+    limit_waits=$((limit_waits + 1))
+    if [ "$limit_waits" -ge "$limit_wait_max" ]; then
+      echo "fleet-loop: the session limit has stood for $limit_waits holds -- stopping rather than circling; a hand is needed."
+      break
+    fi
+    echo "fleet-loop: the session limit is spent -- a WAIT, not a fault; holding ${limit_wait_seconds}s (hold $limit_waits of $limit_wait_max) at $(TZ=America/New_York date +%H:%M:%S)"
+    sleep "$limit_wait_seconds"
+    continue
+    ;;
+  quickfail)
+    limit_waits=0
+    echo "fleet-loop: lap exited $rc in ${elapsed}s; the next round-open pull resumes the thread"
     quickfail=$((quickfail + 1))
     if [ "$quickfail" -ge 3 ]; then
       echo "fleet-loop: three laps died in under ten seconds each -- the agent was never reached."
@@ -285,9 +319,13 @@ while [ "$(date +%s)" -lt "$deadline" ]; do
       echo "fleet-loop: try  ./tools/ag/agent-jail.sh lap $seat  by hand, or FLEET_BARE=1 to skip the jail."
       break
     fi
-  else
+    ;;
+  *)
     quickfail=0
-  fi
+    limit_waits=0
+    echo "fleet-loop: lap exited $rc; the next round-open pull resumes the thread"
+    ;;
+  esac
   laps=$((laps + 1))
   if [ -f .loop-gates-only ]; then
     echo 'GATES-ONLY: loop paused'

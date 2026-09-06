@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `2616a3cfc4` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `14ab16d19f` -- HEAD's parent, resolvable everywhere (%401).
 
 **DIFFUSER** -- **the elder paper's own unmeasured sentence, measured.** It read: *"memory read on
 every packet shows up in a power budget -- no measurement of the difference is offered here."*
@@ -166,7 +166,7 @@ proves **seven claims by doing**; the control breaks it seven ways and **its sha
 pass** -- the planted error rides free once the walker goes. `tier lap` **9s**; `asserted` **1 ->
 0**, ceiling with it. **Yours, the seam:** an anchor per insert
 widens `Diff`, and `mantra_glow_tend_limb1` pins `Line` against a Glow shape -- named, not taken.
-`%467`; the census's own numbers rest on the `20260906.062055` cairn.
+`%470`; the census's own numbers rest on the `20260906.062055` cairn.
 
 **PHEROMONE -- `%460` STILL OPEN at the emulator, its landed half folded** to the
 [`20260906.051500` shelf](archive/20260906-051500_itinerary-landed-accounts.md), `%451`'s bound half

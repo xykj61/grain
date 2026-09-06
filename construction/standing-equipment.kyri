@@ -1039,6 +1039,16 @@ path tools/f/fleet_roster_witness.rish
 tier lap
 seated 20260904.190000
 
+# fleet_lap_verdict -- a lap that dies instantly is either an agent the loop could not reach or a
+# window the account has spent, and the two answers are opposite: stop and fetch a person, against
+# hold and try again. On `20260906` the loop knew only the first, so six ships stopped themselves
+# between 07:21 and 07:28 against a limit that reset at 07:30 (REDS %471). This guard holds the
+# distinction, and holds `%414`'s own wound still stopping the loop at three.
+guard fleet_lap_verdict
+path tools/f/fleet_lap_verdict_witness.rish
+tier lap
+seated 20260906.082415
+
 # fleet_key_locality -- one jail binds one tree, so every path a ship's git config names must live
 # inside that ship's own tree. grain-pheromone was born naming petrichor's keyring and petrichor's
 # deploy keys, and could neither sign nor push from inside its own enclosure while every check at a
