@@ -4,6 +4,26 @@ set -eu
 ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 cd "$ROOT"
 
+# THE TREE ROOT, resolved without git so a pen copy outside a repository still works: walk up to
+# the first ancestor holding rishi/bin and tools/fixtures, bounded at 8 steps, loud past the bound.
+_fd_root=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
+_fd_steps=0
+while [ ! -d "$_fd_root/rishi/bin" ] || [ ! -d "$_fd_root/tools/fixtures" ]; do
+  _fd_steps=$((_fd_steps + 1))
+  if [ "$_fd_steps" -gt 8 ] || [ "$_fd_root" = "/" ] || [ -z "$_fd_root" ]; then
+    echo "$0: no tree root within 8 steps (needs rishi/bin and tools/fixtures)" >&2
+    exit 2
+  fi
+  _fd_root=$(dirname "$_fd_root")
+done
+. "$_fd_root/tools/fixtures/s/shell_portable.sh"
+
+# THE INSTRUMENT, PROVEN PRESENT BEFORE IT IS TRUSTED. Every reading below is a ripgrep capture
+# whose emptiness is the pass branch, so a host without ripgrep would print this sweep's GREEN
+# line byte for byte while measuring nothing at all -- proven on metal `20260905.223102` and
+# booked as REDS %442. `rg` is borrowed rather than granted, so it is asked for by name.
+require_instrument rg
+
 # Living replies must not advertise deleted Twah operational doors.
 # Chapter create filenames may keep Twah stamps; this sweep reads reply bodies.
 hits="$(rg -n 'gen_twah|gen-twah|twah-creating-one-of-twelve|%twah|twah\.fund' counsel/replies \

@@ -1007,6 +1007,20 @@ path tools/i/instrument_refusal_witness.rish
 tier lap
 seated 20260905.072118
 
+# instrument_absence -- an absent tool must not wear that tool's answer. The sibling above gates an
+# output pass redirected into a FILE; this gates the capture into a VARIABLE whose emptiness is the
+# pass branch, which that reading is blind to by construction. Measured with ripgrep genuinely off
+# PATH -- not a shim answering 127, which `command -v` still finds -- two of 117 tracked scans
+# naming `rg` printed their GREEN line byte for byte and exited 0, and a Rishi witness over one of
+# them read GREEN with no ripgrep on the host (REDS %442). Gated at ZERO from birth: both sites were
+# repaired on the lap this was written, and there is no honest reason to author a new one. It makes
+# no claim about tiers -- the tool-grant roster stays the yonder design's, and rightly comes first
+# there.
+guard instrument_absence
+path tools/i/instrument_absence_witness.rish
+tier lap
+seated 20260905.223102
+
 # fleet_roster -- the fleet's one seat table, and the readers that must not disagree with it. The
 # binding seat -> tree -> engine stood in six independent places across two executables and two had
 # already drifted: fleet-loop.sh admitted six seat names while fleet_rearm.sh reported nine, and the
