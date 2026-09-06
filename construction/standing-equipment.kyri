@@ -1572,3 +1572,18 @@ guard amphora_bounds_agree
 path tools/am/amphora_bounds_agree.rish
 tier lap
 seated 20260906.034025
+# harness_roster, seated 20260906.051706. tools/p/parity_ch01.rish builds and runs 116 Rye programs
+# whose paths are written nowhere in this tree: it holds `let dir = "rye/tests"` and a list of 116
+# bare stems, and reaches each as `${dir}/${s}.rye`. Two quiet consequences. A census that reads for
+# filenames calls all 116 unbuilt -- one did this morning, and its count reached the operator card
+# as a fact. And a program added to rye/tests/ and left out of the list is never run while the suite
+# still reports GREEN, because the suite asserts over the list it holds rather than over the
+# directory it names. The tree already keeps this rule for crypto/ and for module rosters; this
+# carries it to the largest assembled site it has. `tier lap`: 4s over 3,073 scripts -- one awk over
+# batched files and a candidate grep before the per-file work, the cure %460 applied to the runner
+# census, which took this from 35s.
+
+guard harness_roster
+path tools/r/rye_harness_roster_witness.rish
+tier lap
+seated 20260906.051706

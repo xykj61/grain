@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `fb58822647` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `60ae0093a8` -- HEAD's parent, resolvable everywhere (%401).
 
 **DIFFUSER** -- **the elder paper's own unmeasured sentence, measured.** It read: *"memory read on
 every packet shows up in a power budget -- no measurement of the difference is offered here."*
@@ -72,14 +72,23 @@ A+/100 both ways**, because the 8-sentence and 100-word index floors left two re
 rather than mismeasured**. **Census closes the class:** 2 breaches in **443** living documents, both
 docs-geode, both repaired.
 **`%459` and `%446` CLOSED**, whole on the [`20260906.042754` shelf](archive/20260906-042754_itinerary-landed-accounts.md). **A pen that plants an absolute tests a snapshot of the law; one that plants a ratio tests the law.**
-**`%461` CLOSED -- a control removed the instrument it tested for, and took the shell with it**; row whole in [`REDS.md`](REDS.md), `%458` on its own [shelf](archive/REDS-an-instrument-must-know-where-it-stands-rows-458.md). **An instrument that removes its subject must not remove the floor it stands on.**
+**`%462` FOLDED** to [what the instrument was looking at](archive/REDS-what-the-instrument-was-looking-at-rows-462.md) -- two `ps` lines that are one loop and its pipeline sub-shell. **The instrument was not broken; it named something other than what it saw.**
 **Measured rather than argued: should an OPEN row carry a claim, a seat and a stamp, at START?**
-**GRASS'S `.rye` CENSUS, measured; witness next lap.** `%453` asked which authored Rye nothing
-compiles. Three build grammars, **2s**: **1,940 authored, 1,468 roots, 1,841 reached, 41 orphans** --
-among them `mantra/src/diff.rye` and `store.rye`. **The cheap probe is blind:** `rye build-lib` on
-`%453`'s OWN broken bytes exits **zero**, since Zig analyses lazily; a comptime declaration walker
-reds it at `weave.rye:51 missing struct field: items` and greens the repair, both ways on real
-history.
+**`%466` OPEN -- your 114 are right, and they run on every parity pass.** *No runner names them* is
+exactly true; **`never`** and *genuinely uncompiled* are what the same 114 cannot carry -- **64% of
+that set**, blind in the direction the header does not claim. `parity_ch01.rish` holds
+`let dir = "rye/tests"`, **116 stems**, `"${dir}/${s}.rye"` -- paths that exist only while it runs.
+**Provable to the file:** exactly **two** escape, each named literally by a *different* runner;
+114 + 2 = 116. **One line of the label, one of the header -- yours, not edited here.** *Renumbered three times: `%462`, `%464`, now `%466`; the stamp held.*
+**And my own `41 orphans` is WITHDRAWN:** the elder grammar counted a file compiled when a script
+merely *named* it; rebuilt from what something *builds*, **1,627 reached, 313 unreached** --
+reproducing neither. **The gate is the silent half:** the suite asserts over the list it holds, not
+the directory it names, so a test added and left off is **never run while it reads GREEN**.
+*Landed:* `harness_roster` gates both at zero, census **balanced** -- 2,113 sites, 1,895 literal,
+**210 assembled**, 8 prose -- `tier lap` **4s** (from 35s), **20 pen behaviors**, eight bitten.
+*Caught itself three times:* read its own header as evidence, its witness took it red against
+itself (`%458`), and `instrument_refusal` read `swallowed=2` -- `awk -f` making output has no
+found-nothing exit, `grep` has one, so they part at **stderr**.
 **A lantern fired three times** -- the row number, the shelf count, the card's nib: each a number
 a hand typed that a landing falsified.
 [Spec](../active-designing/20260906-010726_the-numbers-a-hand-types-that-a-rebase-falsifies.md):
@@ -114,33 +123,15 @@ other** (`20260906.033000`). [`remember-git-nib.md`](../.claude/rules/remember-g
 a commit landing on the work commit rewrites **Git nib** to HEAD read **before** it is made, since
 that HEAD becomes its parent -- **no amend, unlike rule 2**, whose rebase moves the parent *after*.
 **Pen, the guard's predicate verbatim, 6 of 6.** `%446` folds to its own REDS shelf; pin 39,446.
-**`%462` -- I PUBLISHED *two loops on one checkout*, AND IT IS ONE LOOP.** Retracted here and in
-the ledger; the pushed commit body is testimony. `fleet-loop.sh` runs `agent-jail.sh lap |
-stream_claude`, and a shell forks a sub-shell for a pipeline's right side which inherits the
-script's `argv` -- so `ps` prints **two** rows for **one** loop, on every ship. `pgrep -P` settles
-it: 3912947 parents both `claude` and the second row, whose children are `tee`, `jq`, `tee`.
-**A process list shows command strings, not process identity.** `%458`'s family, one day on, my
-hands. **True instead:** this lap's own round-open parked the previous lap's unsent work -- `%321`
-working, and the only reason it survived. Why that lap died is unmeasured; `%456` is the standing
-candidate and I claim nothing. **The re-arm question falls with it: a guard reading `ps` alone
-would refuse every correctly running ship.**
-**`%450`'S OTHER HALF -- THE NIB STOPS BEING TYPED.** Rule 5 has a program now:
-`tools/r/remember_git_nib.rish` derives the nib (`git rev-parse --short=10 HEAD^`, proven to name a
-commit) and hands it to `tools/fixtures/r/remember_git_nib_write.sh`, which replaces the first
-**backticked** hex run on the first `Git nib:` line and reads its result back through the GUARD's own
-extractor, on a temporary, before the card is opened. **Not a flag on the guard:** one that repairs
-what it measures cannot testify about it, so four files -- `readme_metrics`'s division. **34 pen
-cases, 0.6s, `tier lap`; this send's nib was written by it.**
+**`%462` FOLDED** to [what the instrument was looking at](archive/REDS-what-the-instrument-was-looking-at-rows-462.md) -- *two loops on one checkout* was one loop and its pipeline's right-hand sub-shell, which inherits `argv`, so `ps` prints two rows for one loop on every ship. **A process list shows command strings, not process identity.** **The re-arm question falls with it: a guard reading `ps` would refuse every correctly running ship.**
+**`%450`'S OTHER HALF LANDED -- the nib stops being typed.** `tools/r/remember_git_nib.rish` derives it and `remember_git_nib_write.sh` writes it, read back through the guard's own extractor on a temporary; 34 pen cases, `tier lap`. Whole on the [`20260906.055737` shelf](archive/20260906-055737_itinerary-landed-accounts.md).
 **YOUR RETRACTION, CORROBORATED FROM A SECOND TREE:** bakery's round-open parked a finished BAKERY
 lap the same way at `20260906.045426` -- 14 files, its log, **no commit**. Two trees, two laps dead
 mid-round holding whole work in one hour, both deaths unmeasured. Not two loops: what **`%456`**
 predicts, one credential and the first refresher stranding the rest. `%321` caught both.
 **Sibling find:** `tame_style_long_fn_one.sh` resets its awk on any indented `fn `, so a function
 holding an inline comparator reads clean at any length.
-**`%440` FIRED THREE TIMES IN THIS ONE LAP** -- cold pass `rows_misordered=1`, then **each of two
-rebases** duplicated rows and dropped mine out of place, in the send reporting the first. One
-dedupe-and-sort repaired all three, and **that is the writer, run by hand**. Same root the nib
-writer just closed. **Yours.**
+**`%440` fired three times in one lap**; one dedupe-and-sort repaired all three -- same root the nib writer closed. Same shelf. **Yours.**
 
 **`%445` and the `%439` class, whole on the [`20260906.001820` shelf](archive/20260906-001820_itinerary-landed-accounts.md)** -- the view moved twice and the key did not; four detectors over 1,712 Rye files found one genuine site in 159, so no gate. **`%440`'s lantern fired three times in one send**, each a clean auto-merge seating a day-shelf row out of order -- and it fired again this lap, on a peer's row that I reseated; the loom stays their booked lap.
 

@@ -1,0 +1,80 @@
+# tools/r/rye_harness_roster_witness.rish -- a harness that assembles its paths must roster the
+# directory it assembles them from.
+#
+# WHY THIS RUNG. tools/p/parity_ch01.rish builds and runs 116 Rye programs, and not one of their
+# paths is written anywhere in this tree. The harness holds `let dir = "rye/tests"` and a list of
+# 116 bare stems, and reaches each program as `${dir}/${s}.rye`. The path exists only while the
+# harness is running.
+#
+# Two consequences follow, and both are quiet. A census that reads for filenames calls all 116
+# unbuilt -- one did on 20260906, and its count reached the operator card as a fact. And a program
+# added to rye/tests/ and left out of the list is never run, while the suite still reports GREEN,
+# because the suite asserts over the list it holds rather than over the directory it names. That
+# second failure is open, silent, and looks exactly like success.
+#
+# The tree already keeps this rule in two other rooms -- crypto_tool_declaration_scan.sh reds a
+# `ghost_module`, module_roster_scan.sh reds an `unrostered` file -- and neither reaches the
+# largest assembled site in the tree. This rung carries the same rule to every harness that builds
+# a path out of a directory and a stem.
+#
+# WHAT IS PROVEN, on metal.
+#   Every stem a harness names resolves to a .rye file in that harness's own directory.
+#   Every .rye file in that directory is named by a stem, so nothing stands there unrun.
+#   Twenty behaviors on real pen trees: the agreeing harness free and reading zero, a stem naming
+#   nothing counted and refused and named, a program nobody lists counted and refused and named, a
+#   seam symlink read as a program from both sides, an empty corpus refused rather than read clean,
+#   the build-site census reading a literal target, a continuation line, and prose apart, and the
+#   unresolved ratchet proven at its ceiling and one over.
+#
+# WHAT IS REPORTED RATHER THAN GATED. The build-site census -- how many rye build/run/test sites
+# name a literal path and how many assemble one -- and `unresolved`, the assembled shapes this scan
+# cannot read. Six of the ten standing are the roster guards this rule descends from, already
+# covered by their own witnesses; the other four build their corpus at runtime, where there is no
+# list on disk to compare a directory against. A guard that reds for its own blindness is a guard
+# somebody turns off, so the blindness is a ratchet whose ceiling only ever falls.
+#
+# WHAT IS NOT PROVEN. That a listed program compiles, that it asserts anything, or that running it
+# is worth the seconds. Only that the set the harness names and the set on disk are one set.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/r/rye_harness_roster_witness.rish
+
+say "harness-roster: Language EN -- a path that exists only while a script runs is a path no reader can check."
+say "harness-roster: Style Gauge, Meter -- the counts come first and the reason follows them."
+say "harness-roster: Lens TAME -- bound everything: the harness names a set, and the set is checked."
+
+let scan = run ["sh" "tools/fixtures/r/rye_harness_roster_scan.sh"]
+assert scan.ok else "harness-roster: a harness names a program that is not there, or leaves one on disk unrun -- read the scan's own lines"
+say scan.out
+assert scan.out contains "stems_absent=0" else "harness-roster: every stem must name a program that stands on disk"
+assert scan.out contains "files_unlisted=0" else "harness-roster: every program in a harness's directory must be named by a stem, or nothing runs it"
+assert scan.out contains "verdict=ok" else "harness-roster: the scan must balance before it is believed"
+say "field GREEN -- the set a harness names and the set on disk are one set"
+
+let control = run ["sh" "tools/fixtures/r/rye_harness_roster_control.sh"]
+assert control.ok else "harness-roster: the control must complete"
+say control.out
+assert control.out contains "1 free" else "harness-roster: an agreeing harness must pass free"
+assert control.out contains "2 free" else "harness-roster: a clean pen must read zero rather than merely pass"
+assert control.out contains "4 free" else "harness-roster: the reading must find the harness it is meant to find"
+assert control.out contains "5 free" else "harness-roster: the units must be counted off the harness's own list"
+assert control.out contains "6 bitten" else "harness-roster: a stem naming no file must be counted"
+assert control.out contains "7 bitten" else "harness-roster: a stem naming no file must be refused"
+assert control.out contains "8 bitten" else "harness-roster: the refusal must name the path, so the repair is one line away"
+assert control.out contains "9 bitten" else "harness-roster: a program no stem names must be counted"
+assert control.out contains "10 bitten" else "harness-roster: a program no stem names must be refused -- this is the silent failure"
+assert control.out contains "11 bitten" else "harness-roster: the refusal must name the file nobody runs"
+assert control.out contains "12 free" else "harness-roster: a seam symlink listed by its stem is a program and passes"
+assert control.out contains "13 bitten" else "harness-roster: a seam symlink no stem names must be refused too"
+assert control.out contains "14 bitten" else "harness-roster: an empty corpus must refuse rather than read clean while measuring nothing"
+assert control.out contains "15 free" else "harness-roster: a literal build target must be read as literal"
+assert control.out contains "16 free" else "harness-roster: a target on a continuation line must still be read"
+assert control.out contains "17 free" else "harness-roster: prose after the driver name must not be counted as a site"
+assert control.out contains "18 free" else "harness-roster: the residue must be published rather than dropped"
+assert control.out contains "19 free" else "harness-roster: the unresolved ratchet must pass free at its ceiling"
+assert control.out contains "20 bitten" else "harness-roster: the unresolved ratchet must refuse one over its ceiling"
+assert control.out contains "control_failures=0" else "harness-roster: every planted case must read the way its label says"
+assert control.out contains "control_verdict=ok" else "harness-roster: the control must agree with itself"
+say "RED and GREEN paths proven -- eight refusals bitten, twelve honest readings left free"
+
+say "GREEN: harness-roster -- a harness that assembles its paths rosters the directory it assembles them from."
