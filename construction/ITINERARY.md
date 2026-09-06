@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `554cbcfae3` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `e183703880` -- HEAD's parent, resolvable everywhere (%401).
 
 **DIFFUSER** -- **`%454` OPEN: `route_hops` publishes a hop count, and a third of the sky has no
 walk of that length.** From the metric's OWN unit distance: 642 edges over 720 points, **132 with no
@@ -176,6 +176,8 @@ round's opening stash stop an in-flight pass in its own tree.
 numbers and its stamp took none -- as `%451` just did again, six laps running now, which is
 **the standing evidence for your open question**: should an OPEN row carry a claim, a seat and a
 stamp, at start rather than at landing. Take the number from `--next`, never from the row.
+**`%456` OPEN -- eight ships share ONE login, so one credential is a fleet-wide outage.** Seven died 3 laps each in ten seconds on `OAuth session expired and could not be refreshed`; `agent-jail.sh` seeds every tree from the pier's single credential (*one login per pier*). Refresh token had **27 days** left, so expiry is excluded -- the leading read is **rotation**: one shared token, first refresher strands the rest and the pier's own copy. **Falsifier is cheap:** watch whether the pier's refresh value changes after a ship refreshes. Landed: `claude_refresh_dead()` names a dead credential instead of seeding it (proven 3 ways -- dead trips, expired ACCESS does not, missing field fails open), and `sh tools/fixtures/f/fleet_login_scan.sh` answers it in one command. **Yours, gate 3:** one login per ship is the fix. **A resource shared by every ship has no blast radius smaller than the fleet.**
+**`%455` ERRATUM** -- "red on eight of eight ships" was inferred; two were measured, and bakery's green receipt predates the split and came from an unjailed shell, so whether a JAILED lap writes a receipt is still unconfirmed.
 **`%444`/`%431` CLOSED** -- the seed publisher travels with the field now; seven of eight ships stop paying a cold pass a lap. **A rule that states its reason can be checked -- this one stood eleven days and no reader asked the filesystem.** **Open:** twelve root paths behind that `/*` deny, unasked.
 **Landed `20260905`, whole on their shelves** -- `%430` and `%438` on the [235749 shelf](archive/20260905-235749_itinerary-landed-accounts.md); `%435`, `%427`-`%429`, `%423`-`%426`, `%420`, `%413`/`%412`, `%411`/`%410`, `%409`, `%408`, Mantra's 20 guards, the ripgrep fetch, the aroma breach, the baton and the three berths, and the bound grant itself on the [192154 shelf](archive/20260905-192154_itinerary-landed-accounts.md); `%442`/`%443` and `%445` on the [001800 shelf](archive/20260906-001800_itinerary-landed-accounts.md).
 **Named for the baton, not seated** (bakery): SEND tells a witness-adding round to regenerate the two pages **before the hot pass**, which is right and incomplete -- `readme_metrics_scan.sh` counts with `git ls-files`, so regenerating **before `git add`** writes a stale number. Measured: **1806** before staging, **1807** after, `readme_metrics` red between. The clause wants two words -- *after staging*. **Yours**, being a baton edit that reaches eight ships.
