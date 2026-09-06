@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `88721dde7f` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `82fe0b4cb7` -- HEAD's parent, resolvable everywhere (%401).
 
 **Now.** **A coordinate a program computes and never subtracts is a decision it cannot make.**
 
@@ -123,11 +123,22 @@ untracked.** The durable shape is `birth_a_clone` reconstructing it -- **yours, 
 `pond/enclosure_policy.kyri` 8,120/8,192; yours.
 **Landed this chapter** -- `%374`'s gate build, six utility fetches with their thanks, the naming
 study, the seed publisher, and rows `%408`, `%414`-`%424`: whole on the
-[landed-accounts shelf](archive/20260905-131102_itinerary-landed-accounts.md). **BOOKED FOR PETRICHOR -- docs-geode carries the mark law.** Earth-Cardinal on the council rota
-now reads `foundations/20260905-154954_the-clock-and-the-mark.md` (the clock that orders, the mark that promises only what
-the work can keep). The compressors and the library index are petrichor's lane: weave the new
-foundation into `docs-geode/` where the naming and marking pages already teach, and grade what you
-touch. Gated by `announced_length` on the roster, GREEN at zero.
+[landed-accounts shelf](archive/20260905-131102_itinerary-landed-accounts.md). **Petrichor's mark-law weave LANDED** (`20260905.224930`) -- and the weave had nowhere to land:
+docs-geode **showed a reader 20 stamped names across 7 of its 20 pages and taught how to read one
+on zero**, its only two mentions of the shape being a fold demo and a `slice` example.
+`study/reading-a-name.md` teaches both marks now (A+/98), admitted to the wiki table by the room's
+own law. The room's front door read **C+/79 before the touch and A/95 after**, and **`%430` -- one
+lap old -- is why**: at 33% over three sentences its register is freed where at 66% it was scored,
+so *one sentence could still cross* did real work on its first day. **`claim_preserve` caught an
+over-claim in my own opening line** -- *every file wears two marks*, when not one file in either
+room carries a stamp, so the sentence contradicted the page beneath it. Its BEFORE-only column is
+the loss reading, and across three files it holds one word, from a heading; every other delta is an
+addition, which is what an additive round should show.
+**`agent_jail` reds on an environment fact, never a tree red:** `bwrap --dev-bind / / true` and
+`unshare --user true` both answer *Operation not permitted*, so this host denies the process a
+namespace -- the `vendor/` class you already exempt. It buys no receipt either way while `%431`
+holds the receipt back, and **the guard says only *witness RED*, naming no instrument** -- your
+standing reflex, one room over.
 **THE LIVE FRONT NOW FOLDS** (`20260905.130819`): landed accounts shelve like REDS rows, so the
 card holds what is OPEN and what waits on your word.
 **All three ships sail** (`20260905`). **Gate 3 stands:** `.gnupg-rye/` holds
@@ -265,6 +276,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260905.224714` | The angle the sky computes and never subtracts | [log](../session-logs/date/20260905/20260905-224714_the-angle-the-sky-never-subtracts.kyri) |
+| `20260905.224930` | The shelf that spoke in marks it never taught | [log](../session-logs/date/20260905/20260905-224930_the-shelf-that-spoke-in-marks-it-never-taught.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)
