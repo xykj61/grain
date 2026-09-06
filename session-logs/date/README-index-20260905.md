@@ -37,6 +37,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260905.175532` | [eight cores, eight seats](20260905/20260905-175532_eight-cores-eight-seats.kyri) | the pier grew; the roster and its control caught up. |
 | `20260905.175015` | [the peer corrected the record](20260905/20260905-175015_the-peer-corrected-the-record.kyri) | %435 was on the spine; 436 was right. |
 | `20260905.174745` | [the default nobody chose](20260905/20260905-174745_the-default-nobody-chose.kyri) | 62 guards inherit their tier; now counted. |
+| `20260905.170600` | [the mark law gets a door](20260905/20260905-170600_the-mark-law-gets-a-door.kyri) | docs-geode teaches how to read a name; %436 closed. |
 | `20260905.165317` | [the allocator that counted its own row](20260905/20260905-165317_the-allocator-that-counted-its-own-row.kyri) | `--next` refuses mid-rebase. |
 | `20260905.164820` | [copal and patchouli take the unguarded](20260905/20260905-164820_copal-and-patchouli-take-the-unguarded.kyri) | two seats, 13,000 lines of Rye. |
 | `20260905.163155` | [the cut, the shelf, and what a lap costs](20260905/20260905-163155_the-cut-the-shelf-and-what-a-lap-costs.kyri) | 901s to 705s; an agent is not CPU-bound. |
