@@ -1,0 +1,48 @@
+format session-log-v1
+stamp 20260906.124340
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role autonomous fleet ship COPAL, lane amphora and bron-resins
+modality text
+model claude-opus-5
+model_status configured claude-opus-5 at max in .claude/settings.json; no runtime telemetry exposed, so this names the configured default rather than a verified active identity
+configured_model claude-opus-5
+configured_reasoning max
+configured_status proven by tracked .claude/settings.json
+evidence .claude/settings.json
+voice Kyri
+host Linux pier, one clock America/New_York
+title The verdict arrived and the reason stayed behind
+prompt Autonomous lap under the fleet baton -- take the next agent-doable work Lindy-first, crux-first, in the amphora lane.
+think Round-open adopted the anointed order at 207657dced with nothing to stash. Council rota row 0 of 5 (lap 4055, 4055 mod 5 = 0): Aether, the row that hears -- follow-our-compass, the Lindy effect, the grain and the crossing. The strand that landed on this lap is the grain's own: a guard that cannot red guards nothing, and a witness must be proven able to make a sound before its silence means anything.
+think Cold roster pass GREEN before any edit -- 114 guards, 111 green, 0 red, 3 gated, 729s, tree_moved=no, run_verdict=ok.
+think My lane's opening assignment was to put its sixteen witnesses on the standing roster and read what they say. Thirteen stand there now, and the five declines are named in the roster comment rather than omitted. What that comment also left was a ratchet, one sentence long: the other five amphora shims forward r.out alone. I asked how far that shape reached and it reaches 43 of 52.
+think The mechanism, plainly. tools/am/*.rish are accrete shims: each runs a target under tools/gen/ and exits that target's code. Rishi's run captures the target's stderr into r.err, so a shim saying only r.out writes nothing at all to its own stderr. standing_equipment_run.sh captures a guard with > out 2>&1, and that merge catches nothing because there is nothing to merge.
+think I measured it on a real file with no plant, because one shim refuses honestly on this pier -- amphora_device_wire drives a virtio lab and there is no qemu here. Target run directly: exit 1, stderr carries `rishi: assertion failed -- Amphora vessel fetch device wire lab failed` with its line number. Shim run the same second: exit 1, stderr ZERO bytes, and all a reader receives is `amphora-device-wire: virtio fetch-by-digest lab...` -- a progress line printed before the failure.
+think The five shims took two lines each and I re-ran device_wire: the assert sentence now arrives. Then tools/fixtures/s/shim_reason_scan.sh, tools/fixtures/s/shim_reason_control.sh and tools/s/shim_reason_witness.rish, rostered tier lap.
+obs A WRAPPER IS ONLY TRANSPARENT IN THE DIRECTION IT WAS TESTED. The exit code was forwarded on purpose and the stderr was forgotten, and nothing tells those two halves apart until something fails -- which is to say, never on a passing run, which is every run a lap sees. That is why the shape survived 52 files.
+obs IT IS A TRAP RATHER THAN A LIVE FAULT, AND THAT DECIDED THE INSTRUMENT'S SHAPE. Zero swallowing shims stand on the standing roster, so nothing is lost today; it springs on the lap that ROSTERS one, and %360's standing pressure is to roster more. This lane walked into it on 20260906.063124 -- three shims onto a lap clock, the swallow found by planting a break and repaired in the same breath. So the gate is swallow_rostered at zero and the ratchet is the residue off the roster at 43.
+obs THE GATE READS ZERO ON THE FIELD AND ALWAYS HAS, so nothing in this tree could ever show it able to bite -- which is the exact fault the aether rota named this morning. The pen supplies the case the field does not hold: one swallowing shim named by a path row refuses, and the same shim with one line added passes. The ceiling is proven from both sides on ONE plant, two unrostered swallowers read at a ceiling of two and then of one.
+obs A SEAT IS A ROW, NOT A MENTION. My first draft matched `path <file>` unanchored, which would have read a path named inside a roster comment as a seat -- a guard counted rostered because somebody wrote about it. Anchored to column zero now, with the pen planting exactly that sentence and proving it falls to the ratchet.
+obs MY THREE HAND-TYPED TOTALS WERE ALL WRONG, and the fix was to stop typing them. I closed the witness with `32 readings over 13 planted states in 9 real repositories`; making the control count itself printed cases=40 and repos=8. Third instance of the card's own lantern in two laps -- a number a hand types is a number a landing falsifies. Count, never number.
+obs THE FIRST DRAFT COST 22 SECONDS AND THE SECOND COSTS 2, WITH IDENTICAL COUNTS. Three greps over 2,362 tracked .rish files is roughly seven thousand processes; one git grep -l for the rarest mark cuts it to the handful that could match. Its status is classified rather than swallowed -- exit 1 is no match, 2 or more is could not run -- and the control proves that by planting an unterminated bracket. My first plant failed to break anything: `[a-z_[]` is a VALID class, since a bracket inside a class is literal. The plant that works is an unterminated one.
+obs THE SCAN REFUSES RATHER THAN CREDITS IN FOUR PLACES, each because a confident zero would be worse than a refusal: no tracked .rish at all, no shim among them, an unreadable roster, and a git grep that could not run. Without the roster every shim reads unrostered and the gate reports zero while measuring nothing.
+obs WHAT I DID NOT DO, and it is the honest boundary. Forty-three swallowing shims stand in eight other lanes' rooms. Editing them is one writer reaching into seven peers' in-flight work for a two-line change nobody is currently blocked by, so the ratchet reports them by path every pass and they fall on touch. The instrument crosses lanes; the edits did not.
+obs THE NUMBER MOVED UNDER ME AGAIN, and the derived spine did it with no hand repair. I read --next as 487 after a fetch; the rebase before the send brought ten upstream commits, one publishing %487 for a POSIX trap handler stamped 20260906.120137 -- two hours earlier than mine. Published never moves, unshared does, so the row moved to %491 -- and the SECOND rebase, three commits later, found a peer had repaired their own %486 double booking by taking %491, so it is %492. Two renumberings in one send, three in two laps, no hand repair either time; the stamp was the key throughout.
+obs THE PIN WENT 2,271 BYTES OVER ITS 40,960 and the fix was a fold rather than a raise. My row was the only CLOSED one in the pin belonging to this seat, so it went to its own shelf and no peer's paragraph moved. The fold tool refuses a shelf whose header nobody wrote, which is right: the header is the part a person owes the row.
+loom witness=shim_reason wall_s=5 field_scan_s=2 pen_cases=40 pen_repos=8 shims=52 forwards=9 swallow_unrostered=43
+loom witness=shim_reason_first_draft field_scan_s=22 note=three greps over 2362 tracked .rish, same counts
+loom pass=standing_equipment_cold scoped=yes guards_run=114 green=111 red=0 gated=3 wall_s=729
+file tools/fixtures/s/shim_reason_scan.sh the reading -- three marks together, gate at zero, ratchet at 43, blind spot published
+file tools/fixtures/s/shim_reason_control.sh 40 readings over 8 real repositories, every refusal planted and then lifted
+file tools/s/shim_reason_witness.rish the guard, rostered tier lap, 5s
+file construction/standing-equipment.kyri the row and its why; the elder five-shim ratchet sentence is now the repair
+file tools/am/amphora_device_wire.rish the shim that measured the fault without a plant, repaired
+file tools/am/amphora_lap1.rish the same two lines
+file tools/am/amphora_lap2.rish the same two lines
+file tools/am/amphora_vessel_seal.rish the same two lines
+file tools/am/amphora_vessel_stamp.rish the same two lines
+file amphora/README.md the hand-witness sentence syncs with the repair it describes; A/90 at Door
+file construction/REDS.md %492 booked and closed
+recommend keep-going -- the honest next lap in this lane is the source's own port discovery, which my last lap named and this one did not touch: halving a shared resource is not removing it, so tools/fixtures/a/amphora_vessel_port_lock.sh still keeps two lawful runs from meeting. The ruling that stays Keaton's is unchanged from two laps back -- whether an OPEN row should carry a claim, a seat and a stamp at start, since a third pair of hands duplicated a peer's finding today.

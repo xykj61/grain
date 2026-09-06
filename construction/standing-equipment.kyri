@@ -1830,7 +1830,8 @@ seated 20260906.061229
 # `tools/gen/amphora/`, and they forwarded `r.out` alone -- so a planted break made the direct run
 # say *no longer compiles* and the roster's own path say nothing at all, filing an evidence page
 # naming the guard and no reason. The exit code always travelled; the sentence did not. These three
-# forward `r.err` now; the other five amphora shims are a ratchet, on touch.
+# forward `r.err` now, and the other five took the same two lines on `20260906.124500` -- all nine
+# amphora shims carry their target's reason, and `shim_reason` below holds the habit for the tree.
 
 guard amphora_lap3
 path tools/am/amphora_lap3.rish
@@ -1939,3 +1940,49 @@ guard fold_shelf_link
 path tools/f/fold_shelf_link_witness.rish
 tier lap
 seated 20260906.120905
+
+# shim_reason -- a pass-through shim hands on its target's reason, not only its verdict.
+#
+# WHAT WAS WRONG, measured on a real file with no plant. `tools/am/*.rish` and their kin are accrete
+# shims: each runs a target under `tools/gen/` and exits that target's code, so either path may be
+# named and the answer is the same. Rishi's `run` captures the target's stderr into `r.err`, and a
+# shim that says only `r.out` writes nothing to its own stderr. `amphora_device_wire` refuses
+# honestly on this pier -- it drives a virtio lab and there is no qemu here -- so the two readings
+# stand side by side without breaking anything: the target run directly says `rishi: assertion
+# failed -- Amphora vessel fetch device wire lab failed`, with the line number; the shim run the same
+# second exits 1 with ZERO bytes on stderr, and all a reader receives is `amphora-device-wire:
+# virtio fetch-by-digest lab...`, a progress line printed BEFORE the failure, which reads like
+# success. This runner captures a guard with `> out 2>&1`, so the merge was already there and caught
+# nothing: the shim emitted nothing to merge.
+#
+# A GATE AND A RATCHET, because this is a trap rather than a live fault. Zero swallowing shims stand
+# on this roster, so nothing is lost today; it springs on the lap that ROSTERS one, and %360's
+# standing pressure is to roster more. The amphora lane walked into it on `20260906.063124` -- three
+# shims onto a lap clock, the swallow found by planting a break and repaired in the same breath. The
+# gate is what spares the next lane that discovery. The ratchet is the residue off the roster, and it
+# only falls; the scan's own `unrostered_ceiling` line carries the number so no page can drift from
+# it. Nine of 52 shims forward the reason today, and five of those nine were repaired in this lap.
+#
+# THE GATE IS PROVEN ABLE TO BITE, which matters more than usual here: `swallow_rostered` reads zero
+# on this field and always has, so nothing in the tree could show it working. The pen supplies the
+# case -- one swallowing shim named by a `path` row, refused; the same shim with one line added,
+# freed. The ceiling is proven from both sides on ONE plant, two unrostered swallowers read at a
+# ceiling of two and then of one.
+#
+# THREE MARKS, TOGETHER. A shim is the `run ["rishi/bin/rishi" "run" ...]` call, the `say r.out`
+# forward, and the `exit r.code` tail, all three -- each alone is ordinary, since witnesses run
+# witnesses and plenty of scripts say a captured stdout. A seat is a `path` row at column zero,
+# never a path mentioned in a roster comment; unanchored, a guard could count as rostered because
+# somebody wrote about it, and the pen plants that sentence. Two tracked files exit a captured run's
+# code under another variable name and are invisible to the reading; neither is a shim, and both are
+# named every pass as `exit_alias_sites`, so the floor carries a number (%466).
+#
+# `tier lap`, and cheap because the corpus arrives through one `git grep` whose status is classified
+# rather than swallowed (%473, %484). Three greps over 2,362 tracked `.rish` files cost 22 seconds
+# measured on this pier at load 10.1; the pre-filter reads the identical counts in 2, and the whole
+# guard including its 40-case pen runs in 5 against a full lap pass of 729.
+
+guard shim_reason
+path tools/s/shim_reason_witness.rish
+tier lap
+seated 20260906.124500

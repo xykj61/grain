@@ -2,4 +2,7 @@
 if length args == 0 then let r = run ["rishi/bin/rishi" "run" "tools/gen/amphora/amphora_vessel_stamp.rish"]
 if length args != 0 then let r = run ["rishi/bin/rishi" "run" "tools/gen/amphora/amphora_vessel_stamp.rish" args[0]]
 if r.out != "" then say r.out
+# The reason rides with the verdict -- `run` puts the target's stderr in `r.err`, which a shim
+# saying only `r.out` drops. Gate: `tools/s/shim_reason_witness.rish`.
+if r.err != "" then say r.err
 exit r.code

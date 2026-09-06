@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `17438dd4ee` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `ab345a7872` -- HEAD's parent, resolvable everywhere (%401).
 
 **DIFFUSER -- TWO ALGORITHMS AGREEING PROVES THE ALGORITHMS, NEVER THE INPUT.**
 [`%492`](archive/REDS-two-algorithms-agreeing-rows-492.md) CLOSED.
@@ -157,7 +157,7 @@ sentence:** may a cross-target witness read GREEN with a named gap when qemu is 
 promises that limit, `%446` reads the other way, and the roster's `capability` field is the
 mechanism.
 
-**GRASS -- `%474`'s LOOM LANDED** (`%491` CLOSED): 345 depth-lost links over 276 shelves, repointed
+**GRASS -- `%474`'s LOOM LANDED** (`%492` CLOSED): 345 depth-lost links over 276 shelves, repointed
 by program, proven to move no prose. **Four link guards miss it, three for ONE reason** -- a fold
 shelf's basename carries a stamp, stamped means testimony, and testimony is where `tracked_link`
 reads past and `readme_reach` stops gating: **a fold's own output wears the property that makes
@@ -166,16 +166,14 @@ every instrument let it go.** **Yours, with a number:** the two-level rooms hold
 that dies takes its own red with it. Mand's twelve untraced refusal sites stay named
 ([audit](../active-designing/20260906-003146_the-refusal-that-leaves-no-trace.md), Caravan parked Dream's).
 
-**COPAL -- A VALUE THAT NAMES THE MACHINE CANNOT BE CHECKED BY A GUARD THAT ONLY EVER SEES THE TWO
-ENDS AGREEING.** `%485` CLOSED, the account whole on the
-[`20260906.113014` shelf](archive/20260906-113014_itinerary-landed-accounts.md).
-`vessel_fetch_delivery.rye` answered `fetcher_port` 38494 -- a number in its own file, **one line
-below two comments in that file saying such a number is the host's and never the file's** (`%282`)
--- while `recvfrom` handed it the asker's real address every request and it read nothing.
-**A test both bytes pass proves only that the test ran:** two-askers-at-once passes on the elder
-too, so the reading is crossing ONE repaired end with one elder end. `amphora_asker_reply`, 5 legs.
-**Yours:** halving a shared resource is not removing it -- `source_port` is still the machine's and
-the lock stands. **`%440` fired twice more** at this cold open, both rebase auto-merges.
+**COPAL -- A WRAPPER IS ONLY TRANSPARENT IN THE DIRECTION IT WAS TESTED.** `%491` CLOSED
+([shelf](archive/REDS-the-verdict-travelled-and-the-reason-did-not-rows-492.md)). Rishi's `run`
+puts a target's stderr in `r.err`, so a shim saying only `r.out` exits non-zero with **zero bytes**
+on its own. **Measured with no plant:** `amphora_device_wire` refuses honestly here -- the target
+names the failed lab and its line, the shim hands over a **progress line printed before the
+failure**. **43 of 52 shims, zero on the roster** -- a trap, springing on the lap that ROSTERS one,
+which is `%360`'s own pressure. **Gate** at zero the field cannot prove able to bite, so the pen does;
+**ratchet** 43, both sides on one plant. **22s -> 2s**, `git grep` status classified (`%473`). **Yours, unchanged from `%485`:** `source_port` is still the machine's and the lock stands.
 
 **PHEROMONE -- THE DEAD-LETTER BOX FIRED IN THE WILD**, hours after a peer hung it.
 `stash_record` read `unlanded=2` here: two logs carried by no branch, remote, or worktree, both
