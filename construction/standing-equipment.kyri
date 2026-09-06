@@ -1634,6 +1634,27 @@ path tools/r/rye_compile_reach_witness.rish
 tier lap
 seated 20260906.045200
 
+# rye_witness_walker -- a witness proves what it CALLS, and claims the module. Zig analyses lazily,
+# so a witness importing a module and calling two of its functions forces exactly those two bodies
+# through analysis and walks past every other declaration. Proven on metal `20260906`: a `pub fn`
+# assigning a `u32` to a `[]const u8` was appended to `mantra/src/weave.rye` and
+# `tools/m/mantra_weave_merge_witness.rish` read GREEN, its own five-break control included. That is
+# %470's fault in the file next door and the instrument %463 asked for. A four-line comptime loop
+# over `@typeInfo(mod).@"struct".decls` reading each back with `@field` forces every body through;
+# the same plant reds once it is present. The GATED reading is a `*_witness.rye` naming its subject
+# and not walking it -- 121 subjects, `walked` **2**, ceiling **119**, no slack. `pairs` (284) and
+# `ambiguous` (9, a witness whose stem names nothing and which imports several siblings) are
+# reported rather than gated, since guessing accuses a file of a promise nobody can show it made.
+# The credit carries its condition: `unreached` counts walkers the compile-reach census places in
+# `never`, gated at zero, and reads **-1** where that resolver cannot answer -- unknown published as
+# unknown (%488's lesson one census over). Control: **37 behaviors**, the ceiling both ways by
+# planting 120 pairs rather than by an override the scan does not offer. `tier lap`: **24s**.
+
+guard rye_witness_walker
+path tools/r/rye_witness_walker_witness.rish
+tier lap
+seated 20260906.131501
+
 # amphora_bounds_agree -- the ninth, and the meter that finds unheard guards could not see it.
 #
 # WHAT IT PROVES. Amphora names the same bound in more than one roof, and this guard proves those
