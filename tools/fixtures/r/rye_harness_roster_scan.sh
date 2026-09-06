@@ -32,6 +32,13 @@
 # rather than a fault in the tree, and an instrument that reds for its own blindness gets turned
 # off. The ceiling only ever falls.
 #
+# And `assemblers_not_harnesses` -- scripts that spell the shape and hand it to no builder. They are
+# not this scan's subject and never were: a census resolving a module path in order to READ it
+# assembles exactly the shape a harness does. Ten stood inside `unresolved` until `20260906`, so the
+# ceiling that was meant to bound this instrument's blindness was mostly bounding the tree's
+# ordinary censuses instead, and it rose whenever anybody wrote one. They are counted in the open
+# and named by --list, because a reading declined in silence is a reading nobody can question.
+#
 # WHAT IS NOT PROVEN. That a listed program compiles, that it asserts anything, or that running
 # it is worth the seconds. Only that the set the harness names and the set on disk are one set.
 #
@@ -84,14 +91,14 @@ max_harnesses=64
 # The largest list standing today is 116 stems. A thousand and twenty-four is three orders over
 # that, and small enough that a pathological file cannot turn the scan into a sort of the tree.
 max_stems=1024
-# The ceiling only ever falls. Measured 20260906: 10 assembled shapes whose directory or stem
-# list this scan cannot read, because each binds its stems from a `while read` over a find rather
-# than from a literal list. Six of the ten are the roster guards this rule descends from --
-# crypto_tool_declaration, module_roster, mycelium_map_roster, and their controls -- which already
-# compare their own directory against their own page, so their shape is covered by their own
-# witness rather than by this one. The other four are pen and probe scripts that build a corpus at
-# runtime, where there is no list on disk to compare a directory against.
-unresolved_ceiling=10
+# The ceiling only ever falls, and it fell 10 -> 1 on 20260906 when the reading was narrowed to
+# its own subject. The elder ten were scripts that spell `${A}/${B}.rye` and hand it to nothing --
+# six roster guards comparing a directory against a page, three pens planting a corpus, and one
+# witness census resolving a subject's path to read it. None is a harness, so none was ever a gap
+# in this instrument; they are counted in the open as `assemblers_not_harnesses` and named by
+# --list. What remains at 1 is the honest residue: caravan_reply_control.sh assembles
+# $build_dir/$neighbour.rye AND builds it, so its stems are a list this scan genuinely cannot read.
+unresolved_ceiling=1
 
 TMP=$(mktemp -d)
 trap 'rm -rf "$TMP"' EXIT INT TERM
@@ -118,7 +125,13 @@ find . -name '*.rish' -o -name '*.sh' 2>/dev/null \
   | grep -vE 'rye_harness_roster|rye_compile_reach_control' | sort > "$TMP/scripts"
 
 # A build site is the token in argument position after a rye verb, with the verb bound to the rye
-# driver itself -- so the prose `rye build failed for RW-2` is read past rather than counted. A
+# driver itself -- so the prose `rye build failed for RW-2` is read past rather than counted.
+# BOTH SPELLINGS. Shell writes `rye/bin/rye build x.rye`; Rishi writes the same call as a quoted
+# list, `run ["env" rye "build" "x.rye"]`. The elder program stripped quotes from the driver
+# token and from the target and not from the VERB, so every Rishi-spelled build was invisible to
+# it -- 47 of them, measured 20260906 over 3,127 tracked scripts (2,120 -> 2,167). That blind
+# spot grows with the tree, since operational shell molts to Rishi by standing law, and it is
+# load-bearing twice over now that this same program decides below what counts as a harness. A
 # backslash continuation is joined first, since a multi-line invocation carries its target on the
 # next line, and the join stops at a file boundary: awk's getline reads on into the NEXT file, so a
 # script whose last line ends in a backslash would otherwise swallow the first line of its
@@ -129,7 +142,10 @@ find . -name '*.rish' -o -name '*.sh' 2>/dev/null \
 # takes about one -- the same cure REDS %460 applied to the runner census, for the same reason.
 : > "$TMP/targets"
 sites_total=0; sites_literal=0; sites_assembled=0; sites_unparsed=0
-if [ "$MODE" != paths ]; then
+# The build-site program is written in EVERY mode, because it answers two questions rather than
+# one. Below it drives the census; further down it is the predicate that decides whether an
+# assembled `${A}/${B}.rye` shape belongs to a harness at all. One program, asked twice -- rather
+# than a second spelling of "what counts as a build" that could drift from this one.
 cat > "$TMP/sites.awk" <<'AWK'
 { line = $0; f0 = FILENAME
   while (line ~ /\\$/) {
@@ -138,12 +154,13 @@ cat > "$TMP/sites.awk" <<'AWK'
   }
   n = split(line, w, /[ \t]+/)
   for (i = 1; i < n; i++) {
-    v = w[i]; sub(/^.*\//, "", v)
+    v = w[i]; gsub(/^["'\''\[(]+|["'\'']+$/, "", v); sub(/^.*\//, "", v)
     if (v == "build" || v == "build-lib" || v == "build-exe" || v == "run" || v == "test") {
-      p = w[i-1]; gsub(/^["'\''(]+/, "", p)
-      if (p ~ /(^|\/)rye$/) { t = w[i+1]; gsub(/^["'\'']+|["'\'']+$/, "", t); print t }
+      p = w[i-1]; gsub(/^["'\''\[(]+|["'\'']+$/, "", p)
+      if (p ~ /(^|\/)rye$/) { t = w[i+1]; gsub(/^["'\''\[(]+|["'\'']*[\])]*["'\'']*$/, "", t); print t }
     } } }
 AWK
+if [ "$MODE" != paths ]; then
 # An `awk -f` that produces OUTPUT has no found-nothing exit, so any non-zero is a failure and
 # discarding it would let a broken instrument and an empty tree report the same green (REDS %413,
 # %416). The error text is kept and named rather than sent to /dev/null.
@@ -154,11 +171,17 @@ if ! xargs_lines_batched 400 "$TMP/scripts" awk -f "$TMP/sites.awk" >> "$TMP/tar
 fi
 
 sites_total=$(wc -l < "$TMP/targets" | tr -d ' ')
-sites_literal=$(grep -cE '\.rye$' "$TMP/targets" || true)
+# THE THREE CLASSES ARE DISJOINT, and they are read in this order because a target carrying a
+# variable is assembled whether or not it also ends in `.rye`. Counted independently they overlap:
+# `${dir}/${s}.rye` matches both patterns, so it was added twice and the leftover absorbed the
+# difference as if it were prose. The elder spelling could only ever understate `sites_unparsed`,
+# never overstate it, so the fault looked like a small honest residue -- until this program learned
+# the Rishi spelling above and the residue went NEGATIVE, which is the instrument declaring its own
+# arithmetic broken. A count that cannot go below zero cannot tell you it is wrong.
 sites_assembled=$(grep -cE '[$*]' "$TMP/targets" || true)
-# The three must add to the total, so nothing is quietly dropped. What is left over is prose that
-# happened to follow the driver's name -- `rye build failed for RW-2` -- and a residue nobody can
-# see is a residue nobody can question.
+sites_literal=$(grep -vE '[$*]' "$TMP/targets" | grep -cE '\.rye$' || true)
+# What is left over is prose that happened to follow the driver's name -- `rye build failed for
+# RW-2` -- and a residue nobody can see is a residue nobody can question.
 sites_unparsed=$((sites_total - sites_literal - sites_assembled))
 fi
 
@@ -183,7 +206,31 @@ if ! xargs_lines_batched 400 "$TMP/scripts" \
     exit 2
   fi
 fi
-sort -u "$TMP/candidates_raw" > "$TMP/candidates"
+sort -u "$TMP/candidates_raw" > "$TMP/candidates_all"
+
+# A HARNESS BUILDS. Spelling `${dir}/${stem}.rye` is not what makes a script a harness -- handing
+# that path to the rye driver is. A census that resolves a module path to READ it assembles the
+# same shape and builds nothing, so counting it here asks a question about a file that file never
+# claimed to answer. Measured 20260906: of eleven scripts carrying the shape and unreadable stems,
+# ten invoke no build at all -- six roster guards that compare a directory against a page, three
+# pens that plant a corpus, and one witness census. The reading was named for harnesses and had
+# grown into a count of everything that mentions a Rye path.
+#
+# The predicate is the census program above, run over the candidate rather than over the tree, so
+# a build is whatever this scan already says a build is. `sites.awk` prints one line per build
+# target, so a candidate with no output builds nothing.
+: > "$TMP/candidates"
+: > "$TMP/nonharness"
+while IFS= read -r c; do
+  [ -f "$c" ] || continue
+  if [ -n "$(awk -f "$TMP/sites.awk" "$c" 2>/dev/null | head -1)" ]; then
+    echo "$c" >> "$TMP/candidates"
+  else
+    echo "$c" >> "$TMP/nonharness"
+  fi
+done < "$TMP/candidates_all"
+n_nonharness=$(wc -l < "$TMP/nonharness" | tr -d ' ')
+
 while IFS= read -r s; do
   [ -f "$s" ] || continue
   grep -oE '\$\{?[A-Za-z_][A-Za-z0-9_]*\}?/\$\{?[A-Za-z_][A-Za-z0-9_]*\}?\.rye' "$s" 2>/dev/null \
@@ -261,6 +308,7 @@ if [ "$MODE" = paths ]; then
   # a residue that is entirely harmless -- the most convincing wrong answer this seam can give. The
   # marker separates "no unresolved site here" from "this copy does not name them".
   echo "unresolved_named=1"
+  echo "assemblers_not_harnesses=$n_nonharness"
   echo "harnesses=$n_harnesses"
   echo "harness_units=$(wc -l < "$TMP/paths" | tr -d ' ')"
   echo "unresolved=$n_unresolved"
@@ -300,6 +348,11 @@ if [ "$MODE" = list ]; then
   while IFS="$(printf '\t')" read -r src dvar svar; do
     echo "unresolved: $src assembles \$$dvar/\$$svar.rye and this scan cannot read one of the two"
   done < "$TMP/unresolved"
+  # Named, never merely counted. A script dropped for building nothing is a reading this scan
+  # deliberately declines to make, and a decline nobody can see is a decline nobody can question.
+  while IFS= read -r c; do
+    [ -n "${c:-}" ] && echo "not_a_harness: $c assembles a .rye path and hands none to the rye driver"
+  done < "$TMP/nonharness"
 fi
 
 echo "scripts=$(wc -l < "$TMP/scripts" | tr -d ' ')"
@@ -311,6 +364,7 @@ echo "harnesses=$n_harnesses"
 echo "harness_units=$n_stems"
 echo "stems_absent=$n_absent"
 echo "files_unlisted=$n_unlisted"
+echo "assemblers_not_harnesses=$n_nonharness"
 echo "unresolved=$n_unresolved"
 echo "unresolved_ceiling=$unresolved_ceiling"
 

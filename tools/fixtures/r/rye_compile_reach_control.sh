@@ -363,9 +363,12 @@ check_says "  ... and still reading its one root"           "roots=1" "$out"
 # -- 22. the residue is weighed by the same condition the credit is ----------------------------
 # The credit above is conditional on the assembling script compiling anything. The residue beside it
 # was published unconditionally, so a reader weighing this census's floor met a doubt ten times the
-# size of the one that could reach it -- nine of the field's ten unresolved sites sit in scripts
-# that never invoke the compiler (the residue row `20260906.113130`). These two pens differ by one word, exactly as 17 and
-# 18 do, and the two numbers must disagree across them or the condition has not carried through.
+# size of the one that could reach it -- nine of the field's ten unresolved sites sat in scripts
+# that never invoke the compiler (the residue row `20260906.113130`). That condition moved UPSTREAM
+# on `20260906`: the producer now declines a non-building assembler itself, so the two numbers agree
+# rather than differing, and case 23 below reads zero where it once read one. These two pens still
+# differ by one word, exactly as 17 and 18 do, and what they prove is that the condition survives
+# the seam -- a site that can credit nothing reaches neither number.
 residue_pen() { # pen-name  verb  -> a pen holding one assembled site this resolver cannot read
   _rp=$(new_pen "$1")
   mkdir -p "$_rp/app" "$_rp/tools/u"
@@ -383,12 +386,16 @@ check_says "  ... and weighed, because this one compiles"     "harness_unresolve
 check      "  ... free at the ceiling"                        0 "$rc"
 
 # -- 23. and the same shape in a reading script weighs nothing ----------------------------------
-# One word changed. The site is still unreadable and still counted; it can credit nothing either
-# way, so it is not part of the doubt that touches this census's floor.
+# One word changed, and now BOTH numbers move rather than one. Until `20260906` the producer
+# published every assembled shape as unresolved and this case read 1 here against 0 below -- the
+# condition carried in the consumer alone. The producer asks it at the source now: a script that
+# hands its assembled path to no builder is not a harness, so it leaves this residue entirely and
+# is counted in the open as `assemblers_not_harnesses` over there. The claim this case makes is
+# unchanged and sharper: the reading script contributes nothing a floor could rest on.
 p=$(residue_pen residue_reading 'grep -q pub')
 run_pen "$p"
-check_says "a reading script's unreadable site is still counted" "harness_unresolved=1" "$out"
-check_says "  ... yet weighs zero, since it could credit nothing" "harness_unresolved_compiling=0" "$out"
+check_says "a reading script's site leaves the harness residue" "harness_unresolved=0" "$out"
+check_says "  ... and weighs zero, since it could credit nothing" "harness_unresolved_compiling=0" "$out"
 check      "  ... so it refuses nothing"                      0 "$rc"
 
 # -- 24. one over the ceiling refuses, and names the site --------------------------------------

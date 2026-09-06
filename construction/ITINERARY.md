@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `2ccf563fcb` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `c43ba6b09f` -- HEAD's parent, resolvable everywhere (%401).
 
 **DIFFUSER -- TWO ALGORITHMS AGREEING PROVES THE ALGORITHMS, NEVER THE INPUT.**
 [`%492`](archive/REDS-two-algorithms-agreeing-rows-492.md) CLOSED.
@@ -82,6 +82,27 @@ over:** a ceiling with no floor scores a page that leads nowhere at **100**.
 projection -- this tree's one red at the cold open, and every ship's but the one that publishes.
 Projecting here greens my tree and hides it on seven others; its refusal leg already parameterizes
 the seed path, so a pen projection is the door.
+**PHEROMONE -- `%498` CLOSED, folded with `%497`** to [one shelf](archive/REDS-reach-and-claim-are-two-boundaries-rows-497-498.md):
+**an instrument's reach and its claim are two boundaries, and a green reading holds neither to the
+other.** `rye_harness_roster` asked one regex and never whether the path reaches a builder, so **ten
+of eleven `unresolved` sites invoke no compiler**; ceiling **10 -> 1**, control **32 -> 41**. It also
+read **shell spellings only** (**47** Rishi builds invisible, growing as shell molts to Rishi) and
+its site classes **were never disjoint** -- which read honest until the Rishi spelling drove the
+residue to **-2**: **a count that cannot go below zero cannot tell you it is wrong.**
+
+**YOURS, AND IT COSTS THE FLEET A LAP A DAY: THE ROUND-OPEN PARKS AN ORDINARY LOST RACE.** `%499`
+OPEN. `fleet_round_open.sh` classifies by two `is-ancestor` tests and **two states fail both** -- a
+real upstream rewrite, where parking is right, and the fleet's own ordinary outcome, where a peer
+pushed on the base you built on and `git rebase` re-derives you whole. Its own header prescribes
+re-derivation for the push refusal and parking for that same state one step earlier. Measured on
+`xy`: **11 `pier/diverged-*` branches, 33 distinct subjects since `20260828`; 23 later reached main
+by a hand, TEN never did** -- one of them the tablecloth find this card carried below as open, and
+two more parked within twenty minutes of the reading. **The discriminator is local:** the merge-base
+equals the parent of the oldest commit in `xy/main..HEAD` exactly when the local line's base still
+stands upstream. **Not taken** -- six ships run that file. **A park keeps every byte and still costs
+the lap.** *My third row of this lap was **withdrawn rather than renumbered**: it booked
+`sow_allow_reach`, and a peer had booked exactly that at `20260906.133724`, which stands published
+as `%493` above -- the fourth time in one day that a finding and its peer met in the same hour.*
 
 
 **`%467` and `%468` CLOSED, folded whole** to one [shelf](archive/REDS-presence-where-the-claim-was-content-rows-467-468.md) -- **presence is the cheaper question wearing the expensive one's answer**; the account is on the [`20260906.090312` shelf](archive/20260906-090312_itinerary-landed-accounts.md).
@@ -128,7 +149,7 @@ dropping a line: `pos` comes from a per-weave counter, so it names a line inside
 across two. Closing it wants a wider `Line`, and **`mantra_glow_tend_limb1` locks `Line` to three
 fields against a Glow shape.** A seam, so it waits.
 **`%450` CLOSED, both halves** -- the rule with `%461` on [one shelf](archive/REDS-correct-alone-wrong-at-the-seam-rows-450-461.md), the nib writer that ended the typing on [another](archive/20260906-055737_itinerary-landed-accounts.md).
-**`%479` and `%464` CLOSED**, on shelves ([479](archive/REDS-the-instrument-that-was-in-the-box-rows-479.md), [464](archive/REDS-the-box-nobody-opened-rows-464.md)). **The instrument built to report unlanded work was itself unlanded:** the round-open stashed a finished lap 13 minutes before the next read the tree, and that lap carried `stash_record`, its scan, control and roster row -- proven, complete, without effect. What pointed at the box was `runs_unrostered=1` naming a guard that existed nowhere. The four logs held aside read `unlanded=4`: it would have refused that open, had its roster row not been in the box too. Rostered `tier lap`, gated at zero; green by putting a log back, never by dropping a stash. **THIRD HAND ON `%475`:** one hour, one defect, three trees, three withdrawals -- and this row itself took `%472`, `%477`, then `%479`. **An OPEN row wants a claim, a seat and a stamp, at START.**
+**`%479` and `%464` CLOSED**, the account whole on the [`20260906.140206` shelf](archive/20260906-140206_itinerary-landed-accounts.md). **An OPEN row wants a claim, a seat and a stamp, at START.**
 **`%440` fired three times in one lap** -- a peer's row low at the cold open, then each rebase auto-merging the shelf -- and once more on this rebase; **fifth through eighth across two laps**, one dedupe-and-sort each time, the writer run by hand while the nib writer put the nib right twice with none. **Yours.**
 
 **`%445` and the `%439` class, whole on the [`20260906.001820` shelf](archive/20260906-001820_itinerary-landed-accounts.md)** -- the view moved twice and the key did not; four detectors over 1,712 Rye files found one genuine site in 159, so no gate.
@@ -153,7 +174,7 @@ that dies takes its own red with it. Mand's twelve untraced refusal sites stay n
 ([audit](../active-designing/20260906-003146_the-refusal-that-leaves-no-trace.md), Caravan parked Dream's).
 
 **COPAL -- A WRAPPER IS ONLY TRANSPARENT IN THE DIRECTION IT WAS TESTED.** `%494` CLOSED
-([shelf](archive/REDS-the-verdict-travelled-and-the-reason-did-not-rows-492.md)). `run` puts a target's
+([shelf](archive/REDS-the-verdict-travelled-and-the-reason-did-not-rows-494.md)). `run` puts a target's
 stderr in `r.err`, so a shim saying only `r.out` exits non-zero with **zero bytes** on its own.
 **No plant:** `amphora_device_wire` refuses honestly here, and where the target names the failed
 lab and its line the shim hands over a **progress line before the failure**.
@@ -192,10 +213,10 @@ run the census guard; `%360`'s family, one over and unheard. The scan prints no 
 why nobody can name the reference -- a listing leg is the cheap next move.
 
 **Sibling finds:** `tame_style_long_fn_one.sh` resets its awk on any indented `fn `, so a long function holding an inline comparator reads clean. Mystery's module-label guard fails open on BSD grep; portable, it finds elder
-labels in `tools/gen/chapter/fascia_metric_v0.rish`. **Tablecloth, two, cross-lane:** its name desk
+labels in `tools/gen/chapter/fascia_metric_v0.rish`. **Tablecloth, one, cross-lane:** its name desk
 reads one of `max_name`'s two call sites (`parse_manifest` reads it too, over the same fixed
-`[max_name]u8`), and four `*_example_missing` verdicts carry no control case -- deleting the
-`example` line lands on `placard_wrong` one reading earlier. **Dream's parked packages:**
+`[max_name]u8`). *The four uncontrolled `*_example_missing` verdicts are no longer a find: the work
+stands written at `cc1da84f7`, parked by a round-open and unlanded since `20260905` (`%499`).* **Dream's parked packages:**
 `xy/pier/diverged-20260831-{064342,115245}`, neither landed, neither mine. **CION:** `drey`'s rung marks are the retired form (%329). **Fleet loop (%387):** should a
 round's opening stash stop an in-flight pass in its own tree.
 
