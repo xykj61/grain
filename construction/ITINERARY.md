@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `2a3313c06b` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `74ba1e12aa` -- HEAD's parent, resolvable everywhere (%401).
 
 **DIFFUSER** -- **my own published sentence named its cause by proximity, and proximity is not a
 measurement.** Adopted a lap off this tree's stash (`%321`), added the arm it skipped:
@@ -110,23 +110,25 @@ a copy that cannot answer look identical in the paths alone**. Four `%453` citat
 `%449`. Controls **67** (was 54) and **27** (was 20).
 **And my own `41 orphans` is WITHDRAWN**, `harness_roster` landed gating both halves at zero, and the three-firing lantern's spec stands -- whole on the [`20260906.090312` shelf](archive/20260906-090312_itinerary-landed-accounts.md).
 
-**THE WEAVE MERGES** (`20260906.001728`, Patchouli) -- the charter's movement *the weave, and its
-order*. `Weave.merge` in `mantra/src/weave.rye` is a union over positions where the **higher
-generation wins**: union, max on `gen`, max on `next_pos`, each commutative-associative-idempotent,
-so the merge is too by construction, and sorting the union makes `a.merge(b)` and `b.merge(a)` equal
-**field for field** rather than merely as documents. `weave_merge_witness.rye` proves **eight claims
-by doing** -- three states in all six orders giving one weave, associativity alone, idempotence,
-delete-wins, an interleaving union, both refusals by name -- and its control breaks the law **five
-ways in a pen**, catching each, with `clean` and `bound_shrunk` proving the pen innocent. Rostered
-`tier lap`, **10s**. First named max in a module 120 files reach toward: `max_weave_lines`, read at
-the edge by `apply` and `merge` alike.
-**`%449` BOOKED -- the module those four `tier lap` guards read had not compiled since the toolchain
-moved, because all four read it with `grep`.** `Weave.empty()` returned the elder `.{}` ArrayList
-form where Zig 0.16 wants `.empty`; proven by building the HEAD blob in a pen, *missing struct
-field: items*. Nothing anywhere builds `weave.rye` -- `main.rye` and the test each **inline their
-own copy**, and the test's copy reads `.empty` because the test is compiled and the module is not. **A test that inlines its subject migrates with the toolchain while the subject
-rots, and every guard stays green.** The new guard builds it. Booked: a census of authored `.rye`
-nothing ever compiles.
+**THIS CARD STOOD PUBLISHED WITH TWO CONFLICT MARKERS** (`%481` CLOSED, Patchouli
+`20260906.104500`). A `<<<<<<<` and a `>>>>>>>` sat around its Landed row on `xy/main` through
+`8b22606c4` and two commits after, **and every ship reads this card whole at its open.** Nothing
+looks: the hook reads a message, `tracked_link` reads links, `living_pin_max_bytes` reads LENGTH --
+**a marker makes a pin longer, so the one meter aimed here read the damage as growth.** One file in
+15,681. `conflict_marker` reads them all, `tier lap` **0.3s** by one `git grep` against **61s**
+per-file; **23 readings, 10 states, 9 repositories**, an unmerged path counted **once**.
+**AND THE EQUALITY ARC HAD NO RUNNER FOR 7 OF 8** -- `%482` **BOOKED**
+([shelf](archive/REDS-a-proof-nobody-runs-rows-482.md)). `src/gate/README.md` called it closed 8/8;
+the four Mantra gates build GREEN, **unheard rather than rotted**, now `tier cadence` 92s, while
+Aurora's three and Caravan's one stay unheard in their lanes. **Yours:** that page graded Truth
+**100 on twelve resolving paths** over seven unrun proofs.
+**AND TWO RECORDS CAME BACK OUT OF THE BOX** -- `20260906.094442` and `20260906.013801`, restored
+byte-for-byte and SHA-256 verified, so `%479`'s guard reads them landed. **Its lesson, paid here
+twice:** two of this round's findings **had already been landed by peers while my copies sat in a
+stash** -- the roster latch as `%475` at 07:02, the dead-letter reading as `%479` at 11:05, both
+withdrawn whole. **The instrument built to report a duplicated lap was itself one of the
+duplicates**, and the survivor's number moved five times, **because a number booked from a parked
+stash is invisible to `--next` twice over.** *Your question, from a third direction.*
 **The identity gap is the next movement, and it wants your word.** Two branches that both insert
 collide at the same small integer, and merge **refuses** them `PositionTextDisagrees` rather than
 dropping a line: `pos` comes from a per-weave counter, so it names a line inside one weave and not
@@ -368,6 +370,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260906.092502` | A claim whose only source is itself | [log](../session-logs/date/20260906/20260906-092502_a-claim-whose-only-source-is-itself.kyri) |
+| `20260906.104112` | The instrument built twice in one morning | [log](../session-logs/date/20260906/20260906-104112_the-box-counted-and-never-read.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)

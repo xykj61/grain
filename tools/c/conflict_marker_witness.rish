@@ -1,0 +1,63 @@
+# tools/c/conflict_marker_witness.rish -- no tracked file carries an unresolved conflict marker.
+#
+# WHAT THIS GUARDS. On `20260906` the living operator card `construction/ITINERARY.md` stood on the
+# anointed remote holding `<<<<<<< HEAD` and `>>>>>>> 8b22606c4` around its Landed row, published
+# and unnoticed across three commits. Every ship in the fleet reads that card WHOLE at the open of
+# every lap, and the standing block inside it is what steers an unattended round.
+#
+# WHY NOTHING CAUGHT IT. Every instrument this tree owns reads a file for something else. The
+# commit hook reads the message rather than the diff; `tracked_link_scan.sh` reads links;
+# `standing_equipment_scan.sh` reads the roster; `living_pin_max_bytes.sh` reads length -- and a
+# conflict marker makes a pin LONGER, so the one meter aimed at that very file read the damage as
+# ordinary growth. A marker is not a broken link, a stale claim, or an unmet bound. It is bytes git
+# wrote and a hand never came back for, and it wanted a reading of its own.
+#
+# WHAT IT COSTS TO MISS. A marker is the one defect that is simultaneously invisible to every
+# content guard and fatal to a reader: the card's own Landed table read as two rows plus three lines
+# of git punctuation, and an agent reading it whole at the open reads that punctuation as content.
+#
+# THE ONE FALSE POSITIVE IT REFUSES TO HAVE. A bare `=======` line is also the Markdown setext
+# underline for a heading, which this tree writes in prose. Gating it would red on ordinary work,
+# and a guard that reds on ordinary work is a guard someone turns off. So only the two LABELLED
+# markers gate, and a divider is counted -- and reported -- solely between a labelled pair.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/c/conflict_marker_witness.rish
+
+say "conflict-marker: Language EN -- the tree is read for the punctuation git leaves behind."
+say "conflict-marker: Style Gauge, Meter -- one reading, held at zero, the repair named in the refusal."
+say "conflict-marker: Lens TAME -- safety first: a file a reader cannot trust is worse than a file that is missing."
+
+let scan = run ["sh" "tools/fixtures/c/conflict_marker_scan.sh"]
+say scan.out
+assert scan.ok else "conflict-marker: a tracked file carries an unresolved conflict marker -- open the file at the line named and resolve it"
+assert scan.out contains "marked_files=0" else "conflict-marker: no tracked file may carry a labelled conflict marker"
+assert scan.out contains "verdict=ok" else "conflict-marker: the scan must balance before it is believed"
+say "field GREEN -- every tracked file reads as itself"
+
+let control = run ["sh" "tools/fixtures/c/conflict_marker_control.sh"]
+say control.out
+assert control.ok else "conflict-marker: the control must complete"
+assert control.out contains "control_verdict=ok" else "conflict-marker: the control must reach its own close"
+assert control.out contains "clean_exit=0" else "conflict-marker: a clean repository must pass free, or every refusal below is the pen speaking"
+assert control.out contains "clean_free=yes" else "conflict-marker: a clean repository must read verdict=ok"
+assert control.out contains "clean_count_named=yes" else "conflict-marker: the scan must name how many files it read, or a reading of nothing looks like a healthy tree (REDS %463)"
+assert control.out contains "marked_exit=1" else "conflict-marker: a planted marker must exit non-zero"
+assert control.out contains "marker_bitten=yes" else "conflict-marker: a labelled marker in a tracked file must refuse"
+assert control.out contains "marker_named=yes" else "conflict-marker: the marker must be named by file and line, since a count is not something a hand can open"
+assert control.out contains "divider_counted_inside=yes" else "conflict-marker: a divider standing between a labelled pair must be counted"
+assert control.out contains "lifted_exit=0" else "conflict-marker: removing the planted marker must free the same pen"
+assert control.out contains "plant_lifted_free=yes" else "conflict-marker: the refusal must be proven from both sides, or it cannot be told from a scan that reds on everything"
+assert control.out contains "head_alone_bitten=yes" else "conflict-marker: an opening marker with no closing one must still refuse -- a half-resolved file is the likelier accident"
+assert control.out contains "tail_alone_bitten=yes" else "conflict-marker: a closing marker alone must still refuse"
+assert control.out contains "divider_alone_free=yes" else "conflict-marker: a bare ======= is a setext heading underline and must pass free, or this guard reds on ordinary prose"
+assert control.out contains "fenced_marker_bitten=yes" else "conflict-marker: a marker inside a fenced block must still refuse -- there is no shape door, only the named roster"
+assert control.out contains "excluded_file_free=yes" else "conflict-marker: a file on the excluded roster must pass free"
+assert control.out contains "peer_still_bitten=yes" else "conflict-marker: a byte-identical peer of an excluded file must still refuse, or the exclusion is by content rather than by name"
+assert control.out contains "untracked_free=yes" else "conflict-marker: an untracked file must not be counted -- the claim is about what the repository carries"
+assert control.out contains "vendor_free=yes" else "conflict-marker: vendored source is held unmodified, so a marker there is upstream's to resolve"
+assert control.out contains "unmerged_counted_once=yes" else "conflict-marker: a genuinely unmerged path lists once per stage and must be counted ONCE"
+assert control.out contains "unmerged_bitten=yes" else "conflict-marker: a genuine merge conflict must refuse -- it is the tree this reading exists for"
+
+say "RED and GREEN paths proven -- 23 readings over 10 planted states in 9 real repositories, every refusal lifted in its own pen"
+say "GREEN: conflict-marker -- no tracked file carries the punctuation of an unfinished merge."
