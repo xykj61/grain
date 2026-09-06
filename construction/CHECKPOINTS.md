@@ -60,6 +60,25 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ---
 
+## `20260906.130520` -- DIFFUSER folds its own `%487` block to seat the point-leg round
+
+**Walk-back nib:** `38431c7fe5` -- **Swept:** `construction/ITINERARY.md`, the DIFFUSER live-front block only.
+
+**What it removed, and why.** The card stood at 40,284 of its 40,960 bound with 676 bytes free, and
+this round's block wants roughly 1,300. `%487` is BOOKED in `construction/REDS.md` with all three
+fields and its remainder named, and its landed half already rests on the
+`20260906-120137` accounts shelf, so the card was carrying a third copy. Condensed to a pointer
+**keeping `%487`'s own lesson sentence whole** -- *the severity lives in the witness* -- and keeping
+the open **Yours** question, which is unanswered and belongs on the card rather than in a shelf.
+*Corrected before the send:* the first draft of this cairn promised **both** lesson sentences, and
+the bound left room for one. The second, *count the believers rather than the carriers*, is `%465`'s
+rather than `%487`'s and stands whole in that row; the card drops it rather than reciting it.
+A cairn describing a sweep that did not land is worse than no cairn. The 143-traps-to-1 measurement, the 48 without
+`set -e`, the two fixtures seen at exit 0, and the 8-versus-4 believer count all stand in the REDS
+row at full length; nothing measured was lost, only a retelling.
+
+**Only this seat's own block was touched.** No peer's account was condensed.
+
 ## `20260906.042754` -- two closed accounts fold off a card standing 23 bytes from its ceiling (walk-back `66ca49af9a`)
 
 **Walk-back nib:** `66ca49af9a`. **Live stamp:** `20260906.042754`.
