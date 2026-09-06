@@ -22,8 +22,19 @@ const Diff  = @import("weave.rye").Diff;
 /// `new_text` (the desired lines of the file as it is now).
 ///
 /// Precondition:  old_lines is sorted by position (guaranteed by Weave.current).
-/// Postcondition: applying the returned Diff to a weave whose current() equals
-///   old_lines will produce a weave whose current() equals new_text.
+/// Postcondition: the returned Diff names exactly the lines that changed --
+///   every old line absent from the LCS by its stable position, and every new
+///   line absent from it in new-text order.
+///
+/// What this deliberately does NOT promise, because it cannot: that applying
+/// the Diff reproduces `new_text` in order. `Diff.inserts` is `[]const []const u8`
+/// -- text and nothing else -- so an insert carries WHAT was added and never
+/// WHERE, and `Weave.apply` appends every insert at the end. The round trip is
+/// therefore exact for an append-shaped edit and reorders for a middle one:
+/// old `a c` against new `a b c` inserts `b` and reads back `a c b`. Proven
+/// both ways in `diff_witness.rye`. Closing it wants an anchor per insert,
+/// which widens a structure Glow's shape is pinned against -- a seam, and so
+/// Keaton's word rather than a lap's.
 ///
 /// The returned Diff borrows its insert strings from `new_text` -- the caller
 /// must ensure `new_text` outlives the Diff, or copy as needed.
@@ -79,7 +90,7 @@ pub fn diff(
     }
 
     // Collect deletes: old lines not in the LCS, by their stable position.
-    var deletes = std.ArrayListUnmanaged(u32){};
+    var deletes: std.ArrayListUnmanaged(u32) = .empty;
     for (old_lines, 0..) |line, idx| {
         if (!kept_old[idx]) {
             try deletes.append(allocator, line.pos);
@@ -87,7 +98,7 @@ pub fn diff(
     }
 
     // Collect inserts: new lines not in the LCS, in new-text order.
-    var inserts = std.ArrayListUnmanaged([]const u8){};
+    var inserts: std.ArrayListUnmanaged([]const u8) = .empty;
     for (new_text, 0..) |text, idx| {
         if (!kept_new[idx]) {
             try inserts.append(allocator, text);
@@ -114,7 +125,7 @@ pub fn diff(
 /// for text files.
 pub fn split_lines(allocator: std.mem.Allocator, text: []const u8) ![]const []const u8 {
     maybe(text.len == 0); // empty text is valid; yields zero lines
-    var lines = std.ArrayListUnmanaged([]const u8){};
+    var lines: std.ArrayListUnmanaged([]const u8) = .empty;
     var it = std.mem.splitScalar(u8, text, '\n');
     while (it.next()) |line| {
         // Skip the trailing empty token produced by a file that ends in \n.

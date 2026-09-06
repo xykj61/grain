@@ -54,15 +54,19 @@ while [ ! -d "$_fd_root/rishi/bin" ] || [ ! -d "$_fd_root/tools/fixtures" ]; do
 done
 . "$_fd_root/tools/fixtures/s/shell_portable.sh"
 
-# The ceiling only ever falls. Measured 20260906: exactly one distinct Rye file carries a runner's
-# claim while no build ever reaches it -- `mantra/src/diff.rye`, five guards reading it and nothing
-# compiling it. Whether it still COMPILES is a different question this census does not answer, and
+# The ceiling only ever falls, and it fell to zero on 20260906. It stood at 1 for one night: exactly
+# one distinct Rye file carried a runner's claim while no build ever reached it -- `mantra/src/diff.rye`,
+# five guards reading it and nothing compiling it. `tools/m/mantra_diff_witness.rish` compiles it now
+# (REDS %467), and the module did NOT compile when the probe was built, carrying three sites of the
+# Zig 0.15 `ArrayListUnmanaged(T){}` form the 0.16 toolchain retired -- `%449`'s fault one file over.
+# Whether a reached file still COMPILES stays a different question this census does not answer, and
 # the cheap answer is a trap: Zig analyses lazily, so a build that merely imports a module passes
-# over a planted type error in it (measured `20260906`, and independently by a peer against
-# `%449`'s own broken bytes). Reaching that answer wants a comptime declaration walker, which is a
-# peer's landing lap. This census answers only WHICH files no build ever reaches -- a graph
-# question, which lazy analysis does not touch.
-ceiling=1
+# over a planted type error in it (measured `20260906` from both sides, and independently by a peer
+# against `%449`'s own broken bytes). What answers is a comptime declaration walker; the tree-wide
+# instrument is a peer's landing lap, and `mantra/src/diff_witness.rye` carries one module's own.
+# This census answers only WHICH files no build ever reaches -- a graph question, which lazy
+# analysis does not touch.
+ceiling=0
 
 # Bounds, each named because a census over a growing tree needs one. The corpus stood at 1,940 and
 # the runners at 3,072 on 20260906; both ceilings are the next power of two above, so ordinary growth

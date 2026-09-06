@@ -1,0 +1,250 @@
+//! mantra/src/diff_witness.rye -- proves the diff, and proves it by compiling it.
+//!
+//!   rye build mantra/src/diff_witness.rye -femit-bin=mantra/bin/diff-witness
+//!   mantra/bin/diff-witness
+//!
+//! The module under test is `mantra/src/diff.rye`: a pure LCS over line text
+//! equality, turning a weave's current view plus a new text into a Diff. Until
+//! this file was written, five guards read that module and every one read it
+//! with `grep` -- so it had stopped compiling under the Zig 0.16 toolchain move
+//! and all five stayed green. A guard that cannot red guards nothing.
+//!
+//! Two instruments here, and they answer different questions.
+//!
+//! The COMPTIME WALKER below reaches every declaration of the module, which is
+//! what makes this a compile proof rather than an import. Zig analyses lazily:
+//! a file that merely says `@import("diff.rye")` and reads a signature passes
+//! straight over a type error in a function body -- measured `20260906` by
+//! planting one and watching the build exit 0. Referencing each declaration
+//! forces its body through semantic analysis, so a planted error reds.
+//!
+//! The CLAIMS below prove behavior by doing, on inputs small enough to read:
+//!   1. Identical documents yield an empty diff -- no inserts, no deletes.
+//!   2. An append yields inserts only; a tail delete yields deletes only.
+//!   3. The diff is pure -- the same inputs give the same answer twice.
+//!   4. The LCS keeps what is common: a one-line edit inside a document moves
+//!      one line rather than replacing the document.
+//!   5. The round trip is exact for an append-shaped edit -- diff then apply
+//!      reads back the new text, line for line.
+//!   6. The round trip REORDERS for a middle insert, and this witness asserts
+//!      that by name rather than wishing otherwise. `Diff.inserts` carries text
+//!      and no anchor, so `Weave.apply` appends; old `a c` against new `a b c`
+//!      reads back `a c b`. The module's own head said the opposite until this
+//!      witness measured it. Pinning the true behavior is what makes a later
+//!      widening of `Diff` a visible change rather than a silent one.
+//!   7. split_lines drops the empty token a trailing newline leaves, keeps an
+//!      interior blank line, and answers zero lines for empty text.
+//!
+//! Part of Mantra -- TAME-first from line one.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const weave = @import("weave.rye");
+const diff_mod = @import("diff.rye");
+
+const witness_version = "20260906.062000";
+
+// Every declaration of the module under test, forced through semantic analysis
+// at comptime. This is the leg that makes the witness a compile proof: without
+// it, a planted type error in a function this witness never calls would ride
+// through the build untouched, because Zig analyses only what is reached.
+comptime {
+    for (@typeInfo(diff_mod).@"struct".decls) |decl| {
+        _ = &@field(diff_mod, decl.name);
+    }
+}
+
+/// The largest number of lines any plant below holds. Named because every plant
+/// here is meant to be read by a person checking the claim: a proof whose input
+/// outgrows its reader has stopped proving anything that reader can check.
+const max_planted_lines: u32 = 8;
+
+/// A fresh weave holding exactly these lines, at positions 0..texts.len.
+fn planted(garden: std.mem.Allocator, texts: []const []const u8) !weave.Weave {
+    // invariant: a plant stays small enough to read, since this witness argues
+    // its claims by showing every line it moves
+    assert(texts.len <= max_planted_lines);
+    var w = weave.Weave.empty();
+    try w.apply(garden, .{ .inserts = texts, .deletes = &[_]u32{} });
+    // invariant: the plant holds exactly the lines it was handed, so every later
+    // claim about a diff is a claim about known input
+    assert(w.lines.items.len == texts.len);
+    return w;
+}
+
+/// The texts a weave presently shows, in weave order -- what a reader would see.
+fn view(garden: std.mem.Allocator, w: *const weave.Weave) ![]const []const u8 {
+    const present = try w.current(garden);
+    // invariant: the view stands inside the module's own ceiling, so a caller
+    // comparing against it is comparing against a bounded document
+    assert(present.len <= weave.max_weave_lines);
+    const out = try garden.alloc([]const u8, present.len);
+    for (present, 0..) |line, idx| out[idx] = line.text;
+    return out;
+}
+
+/// True when two documents read the same, line for line and in order.
+fn same_document(left: []const []const u8, right: []const []const u8) bool {
+    if (left.len != right.len) return false;
+    for (left, right) |a, b| {
+        if (!std.mem.eql(u8, a, b)) return false;
+    }
+    return true;
+}
+
+/// Diff `old` against `new` through a real weave, returning both the diff and
+/// the document the weave reads back after applying it.
+const Trip = struct {
+    inserts: u32,
+    deletes: u32,
+    after: []const []const u8,
+};
+
+fn round_trip(
+    garden: std.mem.Allocator,
+    old: []const []const u8,
+    new: []const []const u8,
+) !Trip {
+    // invariant: both documents are readable plants, so a surprise in the result
+    // belongs to the diff rather than to an input nobody checked
+    assert(old.len <= max_planted_lines);
+    assert(new.len <= max_planted_lines);
+    var w = try planted(garden, old);
+    const before = try w.current(garden);
+    const d = try diff_mod.diff(garden, before, new);
+    try w.apply(garden, d);
+    return .{
+        .inserts = @intCast(d.inserts.len),
+        .deletes = @intCast(d.deletes.len),
+        .after = try view(garden, &w),
+    };
+}
+
+/// Claim 1 and 2: an unchanged document moves nothing; an append inserts only;
+/// a tail delete deletes only.
+fn prove_shapes(garden: std.mem.Allocator) !void {
+    const same = try round_trip(garden, &[_][]const u8{ "a", "b", "c" }, &[_][]const u8{ "a", "b", "c" });
+    // invariant: a document that did not change produces no work, which is what
+    // makes a diff cheap to apply on an idle file
+    assert(same.inserts == 0);
+    assert(same.deletes == 0);
+    print("diff: identical documents give an empty diff\n", .{});
+
+    const grew = try round_trip(garden, &[_][]const u8{ "a", "b" }, &[_][]const u8{ "a", "b", "c" });
+    // invariant: appending one line inserts exactly that line and deletes none
+    assert(grew.inserts == 1);
+    assert(grew.deletes == 0);
+    print("diff: an append inserts one line and deletes none\n", .{});
+
+    const shrank = try round_trip(garden, &[_][]const u8{ "a", "b", "c" }, &[_][]const u8{ "a", "b" });
+    // invariant: removing the last line deletes exactly it and inserts nothing
+    assert(shrank.deletes == 1);
+    assert(shrank.inserts == 0);
+    print("diff: a tail delete deletes one line and inserts none\n", .{});
+}
+
+/// Claim 3: the diff is pure -- the module's head says so, and a claim in a
+/// head is worth exactly what a run says it is.
+fn prove_pure(garden: std.mem.Allocator) !void {
+    const old = [_][]const u8{ "alpha", "beta", "gamma" };
+    const new = [_][]const u8{ "alpha", "delta", "gamma" };
+    var w = try planted(garden, &old);
+    const before = try w.current(garden);
+
+    const first = try diff_mod.diff(garden, before, &new);
+    const second = try diff_mod.diff(garden, before, &new);
+    // invariant: same inputs, same answer -- a pure function's whole promise,
+    // and the one a weave leans on when two hands diff the same file
+    assert(first.inserts.len == second.inserts.len);
+    assert(first.deletes.len == second.deletes.len);
+    assert(same_document(first.inserts, second.inserts));
+    for (first.deletes, second.deletes) |a, b| assert(a == b);
+    print("diff: the same inputs give the same diff twice\n", .{});
+}
+
+/// Claim 4: the LCS earns its name. A one-line change inside a document moves
+/// exactly one line, rather than replacing every line that follows it.
+fn prove_lcs_keeps_the_common(garden: std.mem.Allocator) !void {
+    const old = [_][]const u8{ "one", "two", "three", "four", "five" };
+    const new = [_][]const u8{ "one", "two", "CHANGED", "four", "five" };
+    const trip = try round_trip(garden, &old, &new);
+    // invariant: four of five lines are common, so an LCS moves one line each
+    // way -- a naive replace would move five, and this is the whole difference
+    assert(trip.inserts == 1);
+    assert(trip.deletes == 1);
+    print("diff: a one-line edit inside five lines moves one line, not five\n", .{});
+}
+
+/// Claim 5: the round trip is exact when every insert belongs at the end.
+fn prove_append_round_trip(garden: std.mem.Allocator) !void {
+    const new = [_][]const u8{ "a", "b", "c", "d" };
+    const trip = try round_trip(garden, &[_][]const u8{ "a", "b" }, &new);
+    // invariant: for an append-shaped edit the weave reads back the new text
+    // exactly, which is the case the module was written for
+    assert(same_document(trip.after, &new));
+    print("diff: an append round-trips exactly -- the weave reads back the new text\n", .{});
+}
+
+/// Claim 6: the round trip REORDERS for a middle insert, and the reorder is
+/// asserted by name. `Diff.inserts` is text without an anchor, so `Weave.apply`
+/// appends; the module's own head promised otherwise until this measured it.
+fn prove_middle_insert_lands_at_the_end(garden: std.mem.Allocator) !void {
+    const old = [_][]const u8{ "a", "c" };
+    const new = [_][]const u8{ "a", "b", "c" };
+    const trip = try round_trip(garden, &old, &new);
+    // invariant: the diff itself is right -- one line was genuinely added
+    assert(trip.inserts == 1);
+    assert(trip.deletes == 0);
+    // invariant: and the weave reads back a c b rather than a b c, because an
+    // insert carries what was added and never where. Asserting the true shape
+    // is what turns a later widening of Diff into a visible change.
+    const expected = [_][]const u8{ "a", "c", "b" };
+    assert(same_document(trip.after, &expected));
+    assert(!same_document(trip.after, &new));
+    print("diff: a middle insert lands at the end -- a c + b reads back a c b\n", .{});
+}
+
+/// Claim 7: split_lines drops the token a trailing newline leaves, keeps an
+/// interior blank line, and answers nothing for empty text.
+fn prove_split_lines(garden: std.mem.Allocator) !void {
+    const trailing = try diff_mod.split_lines(garden, "one\ntwo\n");
+    // invariant: a file ending in a newline holds two lines rather than three,
+    // since the empty token after the last newline is not a line anyone wrote
+    assert(trailing.len == 2);
+    assert(std.mem.eql(u8, trailing[1], "two"));
+
+    const unterminated = try diff_mod.split_lines(garden, "one\ntwo");
+    // invariant: a file with no final newline holds the same two lines, so the
+    // trailing newline changes the bytes and never the document
+    assert(unterminated.len == 2);
+
+    const interior = try diff_mod.split_lines(garden, "one\n\nthree\n");
+    // invariant: a blank line between two lines is a line -- only the trailing
+    // token is dropped, and dropping interior blanks would lose real content
+    assert(interior.len == 3);
+    assert(interior[1].len == 0);
+
+    const empty = try diff_mod.split_lines(garden, "");
+    // invariant: empty text holds no lines, so a new file diffs as pure insert
+    assert(empty.len == 0);
+    print("diff: split_lines drops the trailing token, keeps interior blanks, answers zero for empty\n", .{});
+}
+
+fn run_selftest(garden: std.mem.Allocator) !u8 {
+    try prove_shapes(garden);
+    try prove_pure(garden);
+    try prove_lcs_keeps_the_common(garden);
+    try prove_append_round_trip(garden);
+    try prove_middle_insert_lands_at_the_end(garden);
+    try prove_split_lines(garden);
+
+    print("diff: version {s}\n", .{witness_version});
+    print("GREEN: the diff compiles, keeps the common subsequence, round-trips an append, and appends a middle insert.\n", .{});
+    return 0;
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    return run_selftest(garden);
+}

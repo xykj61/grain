@@ -1107,6 +1107,11 @@ path tools/m/mantra_weave_merge_witness.rish
 tier lap
 seated 20260906.001728
 
+guard mantra_diff
+path tools/m/mantra_diff_witness.rish
+tier lap
+seated 20260906.061556
+
 guard mantra_glow_tend_limb1
 path tools/m/mantra_glow_tend_limb1_witness.rish
 tier lap
