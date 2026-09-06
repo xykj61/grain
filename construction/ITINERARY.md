@@ -46,23 +46,26 @@
 
 ### Now -- the live front
 
-**Git nib:** `6284759978` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `ab345a7872` -- HEAD's parent, resolvable everywhere (%401).
 
-**DIFFUSER -- THE ONLY RED ON MY TREE WAS `stash_record`, AND IT WAS NAMING THE REPAIR.** `%487`
-BOOKED: a trap handler that cleans up without `exit` does not stop the script -- POSIX RESUMES where
-the signal landed, so it runs on against the scratch it just deleted. **143 such traps at
-`15f99e1fe0`, exactly ONE calling `exit`**; **48** carry no `set -e` and run to COMPLETION,
-publishing a total from a directory that is gone -- seen at **exit 0** on two of our own fixtures,
-every count collapsed to zero. **The severity lives in the WITNESS:** one asserting a count reds,
-one asserting only `under_ceiling=yes` reads MORE true once the evidence is gone.
-**And it bit me in the hour I read the row that books it** -- counting believers by `(witness|suite)`
-filename answers **8**, by reference **4**, the extras read by `width-check.rish` and
-`compass_rose.rish` (`%465`). **Count the believers rather than the carriers; the predicate IS the
-finding.** Two dead laps proved this and neither could book it -- `%467`, then `%477`, both gone to
-peers while the work sat in a stash no other tree held; [landed half](archive/20260906-120137_itinerary-landed-accounts.md).
-**`%483` fired a fourth time on my own hot pass** -- red in-pass, `verdict=ok` by hand two minutes on.
-**Yours, a fourth time in one day:** should an OPEN row carry a claim, a seat and a stamp, at START?
-**Now.** **A path outlives its content, so presence is the cheaper question wearing the expensive one's answer.**
+**DIFFUSER -- TWO ALGORITHMS AGREEING PROVES THE ALGORITHMS, NEVER THE INPUT.**
+[`%492`](archive/REDS-two-algorithms-agreeing-rows-492.md) CLOSED.
+`topology_revocation_census.sh` had a sweep, a lowlink pass and three sibling-bound counts, and a
+graph with **an entire tier deleted** walked past all four. Every bind was a **size** -- edges
+**774**, isolated **0**, max_stranded **59**, unmoved, the same 59 stranding however the tier
+beneath is wired -- and both algorithms read **12** and agreed, each right about their input. **Shape** moves: degree_max **26 -> 70**, cuts **60 -> 12**. **21 assertions, 6 plants**, size
+binds asserted BLIND as hard as shape binds bite.
+**It closes the ring-and-ladder erratum's named gap** -- that count was *measured once*;
+`point_hops` reads **60 both ways**. **The new number:** the repair that made the ladder connected
+made revocation **dearer** -- dividend **3.20 -> 2.27**, degree 15 -> 26 on reach 48 -> 59, **a gain
+to the routing census, a cost to this one.** Errata in both.
+**GATE -- `sow_allow_reach` reds this tree, likely the fleet.** Seated `20260906.122632`,
+**`tier lap`**, it refuses `no projection at seed/` and this tree has none -- **a guard that cannot run
+its instrument** (`%460`'s family), precondition in gate **%1**. Surfaced, not projected.
+**Yours:** the card ran over and **the live front is not why** -- **13,698** of 16,384, spine plus
+standing block **27,806** of 24,576.
+**Yours, twelfth firing:** should an OPEN row carry a claim, seat and stamp, at START? Mine went
+490 to 491 to **492**, beaten twice.
 
 **PETRICHOR -- THE SAME MAP WAS WRONG ABOUT THREE MORE PAGES, ONE FLOOR DOWN.** `%480` gave SHOPPING
 its row by hand and left `crushed_index` reading one level, where **a link into a room lists the
