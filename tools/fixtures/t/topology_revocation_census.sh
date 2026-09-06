@@ -17,6 +17,19 @@
 #                         whatever routed only through `p` goes with it. Cost is the same
 #                         `deg(p)` teardowns; what it REACHES is the question this measures.
 #
+# THE THIRD LEG, and what it closes. `point_hops` is the metric the module publishes beside
+# `route_hops`, walking the sponsor chain in NUMBER space where a star of index zero and its
+# galaxy are one point. Its sibling published that graphs cut points as 59 and said plainly
+# that the figure was measured ONCE, because this census carried no point leg. It carries one
+# now, and the two independent algorithms here agree at 60 -- the same 59 plus the walks own
+# start, which the siblings sweep excludes by construction and this one does not.
+#
+# WHAT THE THIRD LEG MEASURED THAT NOBODY HAD. The repair that made the ladder connected
+# also made revocation dearer per refusal spent: the best dividend falls 3.20 to 2.27 on the
+# compass sky and 1.12 to 1.08 on the council sky, because collapsing the index-zero star
+# hands a galaxy its planets directly and its degree rises 15 to 26 while its reach rises
+# only 48 to 59. One repair, read as a gain by the routing census and as a cost by this one.
+#
 # WHAT IT PRINTS, per sky, per metric:
 #
 #   degree      -- min, mean, max: the price of one revocation in enforcement points.
@@ -33,10 +46,18 @@
 # algorithm measuring itself proves nothing; two disagreeing means this script is wrong, and
 # it refuses rather than reporting.
 #
-# IT ALSO BINDS TO ITS SIBLING. `topology_graph_census.sh` published, for the compass sponsor
-# graph, 642 edges, 132 isolated points and a worst cascade of 48. Those three are asserted
-# here before any new number prints, so a change that moves either script is caught by the
-# other rather than by a reader.
+# IT ALSO BINDS TO ITS SIBLING, IN SIZE AND IN SHAPE. `topology_graph_census.sh` published,
+# for the compass sponsor graph, 642 edges, 132 isolated points and a worst cascade of 48, and
+# for the point graph 774 edges, 0 isolated and a worst cascade of 59. Those are asserted here
+# before any new number prints, so a change that moves either script is caught by the other
+# rather than by a reader.
+#
+# SIZE ALONE IS NOT ENOUGH, and the control proves it rather than this comment asserting it.
+# Delete the star tier from the point metric -- every planet sponsored by its galaxy directly
+# -- and edges stay 774, isolated stays 0, max_stranded stays 59, and BOTH cut-point
+# algorithms agree on the wrong answer. Three size binds and the agreement leg, all silent,
+# over a graph missing an entire tier. So degree_max and the cut count are bound as well, and
+# they are what bites: 26 to 70, and 60 to 12.
 #
 # WHAT IS MEASURED AND WHAT IS PROPOSED. The sponsor leg measures the metric that ships. The
 # torus leg measures a metric NOTHING IN THE TREE IMPLEMENTS -- arithmetic over the modules
@@ -45,6 +66,17 @@
 #
 # WHAT IT DOES NOT MEASURE. Whether a revocation SHOULD cascade. That is a policy question
 # and the answer differs by what is being revoked; this prints the price of each choice.
+#
+# AND WHAT IT CANNOT SEE, WITH THE READING THAT COVERS IT. This census builds its graph from
+# the metrics UNIT distance alone, so an error that moves no distance-one pair is invisible
+# here. Measured `20260906.130000`: spelling the cross-galaxy bridge with the ADDRESS depth
+# instead of the point depth -- the natural slip, since `hops` two functions up does exactly
+# that -- leaves every number on every leg identical and `verdict=ok`, because the only
+# cross-galaxy pairs at distance one are root-to-root, where the two depths agree at zero.
+# The same plant in `topology_graph_census.sh` bites four ways at once, `point_pair bridge
+# hops=5 wanted=3` and `metric_differs=158268` among them, because that census compares the
+# metric against a walk over ALL 518,400 ordered pairs. Two censuses, two questions: this one
+# asks what one removal costs, that one asks whether the published distance is a road.
 #
 # A CENSUS GATES NOTHING. It reports; a paper cites it; a witness may later bind one reading.
 # `verdict=ok` unless an agreement leg fails or the two cut-point algorithms disagree.
@@ -128,7 +160,51 @@ function lee(a, b) {
   return ring_gap(gal[a], gal[b], RG) + ring_gap(st[a], st[b], RS) + ring_gap(pl[a], pl[b], RP)
 }
 
-function metric(kind, a, b) { return (kind == "sponsor") ? hops(a, b) : lee(a, b) }
+# --- the third metric: point_hops, in NUMBER space ---------------------------
+
+# sponsor_of, as the module computes it: decode, take the parent, encode. A star of index
+# zero encodes onto its own galaxys own number, so the sponsor of such a planet IS the
+# galaxy. That collapse is what makes this metric connected where route_hops is not.
+function point_sponsor(n) {
+  if (d[n] == 2) return gal[n] + st[n] * RG
+  return gal[n]
+}
+
+# point_depth, walked in number space rather than read off the address. The two disagree
+# exactly where the collapse bites: a planet under a star of index zero stands at address
+# depth 2 and at point depth 1, and the bridge below wants the second.
+function point_depth_of(n,   here, steps) {
+  here = n; steps = 0
+  while (here >= RG) { steps++; here = point_sponsor(here) }
+  return steps
+}
+
+# point_hops, as Sky.point_hops computes it: the walk up the sponsor chain to the nearest
+# shared ancestor, rising by the SUM of the two indices so the first meeting found is the
+# nearest one; across galaxies, up to each root and one bridge hop between them. The module
+# pins max_tier_depth at 2, so a chain is three entries and the last is always a galaxy.
+function point_hops(a, b,   i, j, sum, ca, cb) {
+  ca[0] = a; ca[1] = point_sponsor(a); ca[2] = point_sponsor(ca[1])
+  cb[0] = b; cb[1] = point_sponsor(b); cb[2] = point_sponsor(cb[1])
+  for (sum = 0; sum <= 4; sum++)
+    for (i = 0; i <= sum; i++) {
+      j = sum - i
+      if (i > 2 || j > 2) continue
+      if (ca[i] == cb[j]) return sum
+    }
+  return point_depth_of(a) + point_depth_of(b) + 1
+}
+
+# An unknown kind REFUSES rather than falling through. The elder form spelled this as a
+# ternary whose else-branch was the torus, so any name but sponsor measured the torus and
+# wore the name it was given -- a census mislabelling its own subject in silence.
+function metric(kind, a, b) {
+  if (kind == "sponsor") return hops(a, b)
+  if (kind == "point")   return point_hops(a, b)
+  if (kind == "torus")   return lee(a, b)
+  printf "topology_revocation_census: unknown metric kind %s -- refusing rather than measuring a shape nobody named\n", kind > "/dev/stderr"
+  exit 2
+}
 
 # decode, as the module computes it: a point number to three coordinates and a depth.
 function load(G, S, P,   SC, PC, n) {
@@ -312,7 +388,7 @@ function survey(sky, kind, PC,   a, e, nc, dmin, dmax, dsum, cuts, worst, tot,
   printf "%s %s cut_agreement sweep=%d lowlink=%d in_both=%d sweep_only=%d lowlink_only=%d same_set=%s\n",
     sky, kind, cuts, alg2, both, only1, only2, (only1 == 0 && only2 == 0) ? "yes" : "NO"
 
-  LAST_EDGES = e; LAST_WORST = worst
+  LAST_EDGES = e; LAST_WORST = worst; LAST_DEGMAX = dmax; LAST_CUTS = cuts
   return (only1 == 0 && only2 == 0) ? 0 : 1
 }
 
@@ -327,14 +403,35 @@ BEGIN {
   for (a = 0; a < PC; a++) if (deg[a] == 0) isolated++
   faults += bind("compass_sponsor_edges", edges, 642)
   faults += bind("compass_sponsor_isolated", isolated, 132)
+  pedges = build("point", PC)
+  pisolated = 0
+  for (a = 0; a < PC; a++) if (deg[a] == 0) pisolated++
+  faults += bind("compass_point_edges", pedges, 774)
+  faults += bind("compass_point_isolated", pisolated, 0)
 
   faults += survey("compass", "sponsor", PC)
   faults += bind("compass_sponsor_max_stranded", LAST_WORST, 48)
+  faults += bind("compass_sponsor_degree_max", LAST_DEGMAX, 15)
+  faults += bind("compass_sponsor_cut_points", LAST_CUTS, 60)
+  faults += survey("compass", "point", PC)
+  faults += bind("compass_point_max_stranded", LAST_WORST, 59)
+  # THE TWO SHAPE BINDS, and why they are here rather than only the size ones. A plant that
+  # deletes the star tier outright -- every planet sponsored by its galaxy directly -- leaves
+  # edges at 774, isolated at 0 and max_stranded at 59, all three unmoved, because the same
+  # 59 points are stranded however the tier beneath them is wired. What it moves is degree_max
+  # 26 to 70 and the cut count 60 to 12, and both cut-point algorithms agree on the wrong
+  # answer, so the agreement leg stays quiet too. The control plants exactly that.
+  #
+  # THE CUT COUNT IS 60 HERE AND 59 IN THE SIBLING, and the gap is the whole of it: the sibling
+  # sweep excludes the walk it starts from and this one does not. One reading, one named offset.
+  faults += bind("compass_point_degree_max", LAST_DEGMAX, 26)
+  faults += bind("compass_point_cut_points", LAST_CUTS, 60)
   faults += survey("compass", "torus", PC)
 
   # --- council, the second seated sky ---
   PC = load(g2, s2, p2)
   faults += survey("council", "sponsor", PC)
+  faults += survey("council", "point", PC)
   faults += survey("council", "torus", PC)
 
   printf "faults=%d\n", faults

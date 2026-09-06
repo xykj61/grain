@@ -344,3 +344,5 @@ at a closed fold.*
 
 *Row %490 folded to [`REDS-a-door-is-not-the-pages-behind-it-rows-490.md`](REDS-a-door-is-not-the-pages-behind-it-rows-490.md) on `20260906.123531`, **BOOKED** -- an index reading one level of a room is blind to the pages behind its door, and the two promises want two declarations.*
 *Row %484 folded to [`REDS-a-guard-that-cannot-hear-its-own-instrument-rows-484.md`](REDS-a-guard-that-cannot-hear-its-own-instrument-rows-484.md) on `20260906.122110`, **CLOSED** -- a guard must be able to hear its own instrument fail before its silence means anything. Written to carry `%481` beside it; a peer folded that row onto its own shelf while this lap ran, and it was given back.*
+
+*Row %492 folded to [`REDS-two-algorithms-agreeing-rows-492.md`](REDS-two-algorithms-agreeing-rows-492.md) on `20260906.131127`, **CLOSED** -- two independent algorithms agreeing proves the algorithms and never the input: three size binds and both cut-point passes held unchanged over a graph missing an entire tier, so the bind has to name the shape.*

@@ -196,3 +196,71 @@ distance is symmetric, and a cut point is measured against the largest component
 start held fixed. Confidence: high on all figures, which re-derive from one script on demand;
 medium on the reading that every interior node is a cut, which is measured on two skies rather
 than proven for the family.*
+
+---
+
+## Errata -- the second reading landed, `20260906.130223`
+
+**The gap the errata above named is closed, and it named it exactly:** *"The point metric has no
+such second reading yet, because the revocation census carries sponsor and torus legs and no point
+leg. So the 59 above is measured once rather than twice, and a point leg for that census is the
+cheapest way to close the gap."*
+
+`tools/fixtures/t/topology_revocation_census.sh` carries a point leg now. It reproduces
+`Sky.point_hops` in `awk` from the module's own three fan-outs, builds the graph from the metric's
+unit distance, and finds cut points **two independent ways** -- a removal sweep and a depth-first
+lowlink pass sharing no code. Compass sky, `20260906.130223`:
+
+```
+compass point cut_agreement sweep=60 lowlink=60 in_both=60 sweep_only=0 lowlink_only=0 same_set=yes
+```
+
+**Sixty, both ways, agreeing point for point rather than only in count.** The 59 published above
+plus the walk's own start, which the sibling's sweep excludes by construction and this one does
+not -- the same one-point offset the errata above already derived for the sponsor graph, now
+confirmed on the point graph rather than assumed to carry over. The council sky reads 45 both ways
+against the 44 published. **So the torus's cut-point arm is measured twice, and the reading holds.**
+
+### The arm that got a number it did not have
+
+The card summarized this paper's position after the first erratum as *the torus's case is degree,
+cut points and the angle alone.* Two of those three now carry a price the paper never quoted,
+because the revocation census measures what a cut **costs** rather than only where cuts are:
+
+| Compass sky, `20260906.130223` | ladder (`point_hops`) | torus (Lee, three rings) |
+|---|---|---|
+| Cut points, both algorithms agreeing | **60** | **0** |
+| Most points stranded by one removal | 59 of 720 | **0** |
+| Points stranded, summed over every removal | 1,236 | **0** |
+| Best dividend -- points stranded per link torn down | **2.27** | **0.00** |
+
+**The dividend is the honest way to read this, and it cuts both ways at once.** A high dividend is
+cheap transitive revocation *and* a wide blast radius; they are one number wearing two names. So the
+torus's zero is not simply a win: it says no revocation on a torus reaches past the point revoked,
+which is exactly the *authority* this paper's body names as the ladder's one advantage over a ring.
+The measurement prices that advantage rather than settling it.
+
+### And a finding about the ladder that this paper did not predict
+
+The repair that made the ladder connected made revocation **dearer**: the best dividend falls
+**3.20 to 2.27** between the two ladder readings, because collapsing the index-zero star hands a
+galaxy its planets directly, raising its degree 15 to 26 while its reach rises only 48 to 59.
+One line of the module, read as a gain by the routing census and as a cost by the revocation
+census. Neither instrument is wrong, and the tree held only the first reading until this lap.
+
+### The instrument's own limit, measured rather than described
+
+The revocation census builds its graph from the metric's **unit** distance alone, so an error that
+moves no distance-one pair is invisible to it. Measured: spelling the cross-galaxy bridge with the
+address depth instead of the point depth leaves every number on every leg identical and
+`verdict=ok`, because the only cross-galaxy pairs at distance one are root-to-root, where the two
+depths agree at zero. The same plant in `topology_graph_census.sh` bites four ways at once, with
+`metric_differs=158268`. **Two censuses, two questions**: this one asks what one removal costs, that
+one asks whether a published distance is a road. Neither substitutes for the other, and the point
+leg's numbers above are safe only because both were run.
+
+*Horizon: unchanged. Assumptions: unchanged. Confidence: high on the cut counts, which two
+independent algorithms now agree on for every leg of both skies; high on the dividend arithmetic,
+which is a ratio of two measured integers; the surviving falsifier from the errata above stands
+untouched, since nothing here exhibits a hierarchy whose interior nodes are not articulation
+vertices.*

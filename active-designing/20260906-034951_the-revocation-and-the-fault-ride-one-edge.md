@@ -6,7 +6,7 @@
 **Voice:** Kyri
 **Status:** **Mixed** -- the ladder readings are measured and re-derive in four seconds; the ring readings describe a metric this tree has yet to implement ([`../context/TWO_ROOMS.md`](../context/TWO_ROOMS.md))
 **Instrument:** `sh tools/fixtures/t/topology_revocation_census.sh` -- 4 seconds, argument-free
-**Its refusals:** `sh tools/fixtures/t/topology_revocation_control.sh` -- four plants, twelve assertions
+**Its refusals:** `sh tools/fixtures/t/topology_revocation_control.sh` -- six plants, twenty-one assertions (four and twelve at this page's stamp; the point leg's two plants, added `20260906.130223`, are the difference)
 **Elder:** [`a-third-of-the-sky-has-no-road`](20260906-010402_a-third-of-the-sky-has-no-road.md), which measured the routing half and left this half in one sentence
 **Reads:** `comlink/topology.rye`
 
@@ -100,3 +100,76 @@ The honest counter runs the other way with equal force: the hierarchy's compress
 The narrower one, for the compression claim: **exhibit a revocation scheme on the ring reading whose state grows more slowly than one entry per revoked point** -- a range, a coordinate mask, an interval on one axis. That would show the hierarchy's compression is a property of naming rather than of topology, and the third cost above would fall.
 
 *Horizon: both readings hold while `comlink/topology.rye` computes `decode` and `route_hops` as it does today; the census reads the three fan-outs out of the source, so a sky change is measured rather than assumed. Assumptions: adjacency is each metric's own unit distance, distance is symmetric, and a removal is total rather than partial. Confidence: high on the ladder numbers, which re-derive in four seconds and agree with a sibling instrument on three published readings; high on the identity, which is definitional; medium on the compression arithmetic, which is derived from the table rather than separately measured.*
+
+---
+
+## Erratum -- the ladder column was the fallen ladder, `20260906.130223`
+
+**This section corrects a measurement; the body above keeps every word it wrote.** Dated testimony
+is corrected by erratum rather than rewritten, so a reader sees both the claim and what the later
+measurement did to it.
+
+### What was measured, and what it was measured on
+
+Every *ladder* figure in the body reads `route_hops`, the address-space metric. Its sibling paper
+found the same morning that `route_hops` leaves 132 of 720 points with no edge at all and claims a
+distance for 172,524 ordered pairs no walk realizes -- and that this was an artifact of
+`Address.parent` sending a star-index-zero planet onto its galaxy's own number. `Sky.point_hops`
+walks the same chain in **number** space, where that star and its galaxy are one point, and it is
+connected. **So the body priced revocation on the broken ladder rather than on the whole one.**
+
+The revocation census carried no point leg when the body was written; it carries one now, and this
+is the same table read over the metric the module actually publishes. Measured `20260906.130223` by
+`sh tools/fixtures/t/topology_revocation_census.sh`:
+
+| Reading | Compass ladder, as published (`route_hops`) | Compass ladder, whole (`point_hops`) | Compass rings |
+|---|---|---|---|
+| Edges | 642 | **774** | 2,160 |
+| Components | 133 | **1** | 1 |
+| Degree, min / mean / max | 0 / 1.78 / 15 | **1 / 2.15 / 26** | 6 / 6.00 / 6 |
+| Points whose removal strands another | 60 | **60** | 0 |
+| Most points stranded by one removal | 48 | **59** | 0 |
+| Points stranded, summed over every removal | 1,104 | **1,236** | 0 |
+| Best dividend | 3.20 | **2.27** | 0 |
+
+The council sky moves the same way: 45 cut points either way, most stranded 18 to **26**, dividend
+1.12 to **1.08**.
+
+### What stands, and it is the paper's whole argument
+
+**The identity is untouched, and the correction strengthens the evidence for it.** The body argues
+that the set of points where a revocation cascades and the set where a fault cascades are one set
+named twice, and that this is definitional rather than measured. Both readings find **60** such
+points on the compass sky and **45** on the council sky -- the same eleven galaxies, forty-eight
+stars, zero planets, plus the walk's own start. Repairing the metric moved the graph's edges, its
+degrees and its prices, and moved the cut set not at all. An argument that survives its input
+changing underneath it is better evidenced than one measured once.
+
+### What falls, and it is the headline number
+
+**"One removal reaches as many as 48 of 720 points" reads 59 of 720 on the whole ladder** -- 6.67%
+becoming 8.19%. The blast radius is larger, because a connected graph has more to lose.
+
+**And the dividend falls, which is the reading worth arguing about.** 3.20 becomes 2.27, a fall of
+29%. The cheapest lever in the sky is still galaxy 0, and pulling it now costs **26** refusals
+rather than 15 while reaching **59** points rather than 48: the reach grew by 23% and the price by
+73%. The cause is one line of the module -- collapsing the index-zero star hands a galaxy its
+planets directly -- and it is the same line that bought the connectivity.
+
+**So one repair reads as a gain to one census and a cost to the other, and the tree held only the
+first reading.** The routing census scores it an improvement on every axis it watches: realizability
+66.72% to 100%, entropy efficiency 40.47% to 60.01%. This census scores it dearer transitive
+revocation. Neither is wrong. They are the two halves of the sentence the body already wrote --
+*a revocation and a fault travel the same edges* -- met in a single change to a single line.
+
+### What this does not touch
+
+The **ring** column is unchanged, being arithmetic over coordinates rather than a reading of the
+sponsor chain. The compression argument is unchanged, being derived from degree and the cut set,
+one of which moved and the other of which did not; its own falsifier stands as written.
+
+*Horizon: this holds while `comlink/topology.rye` publishes both metrics. Assumptions: unchanged
+from the body. Confidence: high on every figure, each re-deriving from one argument-free script,
+and the point leg's cut count now carried by two independent algorithms agreeing at 60 where the
+body's ladder had the same pair agreeing at 60 -- so both columns are measured twice rather than
+once.*
