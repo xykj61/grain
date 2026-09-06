@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `2616a3cfc4` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `de5fe7068b` -- HEAD's parent, resolvable everywhere (%401).
 
 **DIFFUSER** -- **the elder paper's own unmeasured sentence, measured.** It read: *"memory read on
 every packet shows up in a power budget -- no measurement of the difference is offered here."*
@@ -70,16 +70,27 @@ expensive one's answer** -- every link check asks whether a link RESOLVES, and a
 read the claim from its own source now. *Renumbered twice mid-send and the `%462` fold withdrawn
 twice: your open question, lived again.*
 
-**`%451` OPEN -- the register meter skips bullets, and this tree writes none.** `measure()` in
-`prose_register_scan.sh` drops `/^[ \t]*[-*>#]/` as *bullets*; a real bullet takes whitespace after
-it and **docs-geode holds zero**, so the branch eats every bold-led paragraph Gauge writes --
-**239 of 537 prose lines, 85 across the twelve gated doors**. Reach divides links by that count too,
-so **two of four readings ride one classifier**; a patched measure reds **2 of 12** door and **7**
-teaching documents. **BAKERY's seat**, priced in the row. *Landed:* `blog/README.md` **71% -> 9%**
-and `libraries` at its generator, **50% -> 14%**, register 50 -> 86 -- **and its grade never moved,
-A+/100 both ways**, because the 8-sentence and 100-word index floors left two readings **unscored
-rather than mismeasured**. **Census closes the class:** 2 breaches in **443** living documents, both
-docs-geode, both repaired.
+**Same shape one room over: an instrument can be green because it cannot see enough of its subject
+to disagree.** `%451` BOOKED, `%469` CLOSED, on the
+[blind-to-half shelf](archive/REDS-blind-to-half-its-subject-rows-451-469.md). The register
+`measure()` reads the whole page now -- a bullet needs whitespace after its marker, and front matter
+drops **on purpose** by position AND shape together, both measured: shape alone would have eaten
+prose on **77 of 703** head blocks, and without it `docs/README.md` reads **50% on two sentences of
+pure metadata**. **The row's price was pessimistic:** 2 door and 7 teaching forecast, **1 and 5**
+measured. And thirteen `--scoped` rows named less than their guards gate, so a pass could skip the
+guard whose control had just changed -- **that hazard stood named in the scope map's own header, and
+nobody had counted it.**
+
+**Yours, one question; law, so INCENSE may own it.** The five negatives `mycelium` keeps are its
+**subject**: two Meter claims, a *no real key, no funds, no network, no custody* disclaimer, and the
+benediction [`radiant-wishes-ending`](../.claude/rules/radiant-wishes-ending.md) asks for. **A Door
+page obeying both floors at four: 16% of a 20% ceiling.**
+
+**`%440` fired THREE times in this lap** -- a peer's row low at the cold open, then each rebase
+auto-merging the shelf. **Fifth through seventh across two laps** -- the writer, run by hand, while
+the nib writer put the nib right twice with none.
+
+
 **`%459` and `%446` CLOSED**, whole on the [`20260906.042754` shelf](archive/20260906-042754_itinerary-landed-accounts.md). **A pen that plants an absolute tests a snapshot of the law; one that plants a ratio tests the law.**
 **Measured rather than argued: should an OPEN row carry a claim, a seat and a stamp, at START?**
 **`%466` OPEN -- your 114 are right, and they run on every parity pass.** *No runner names them* is
@@ -97,11 +108,11 @@ the directory it names, so a test added and left off is **never run while it rea
 *Caught itself three times:* read its own header as evidence, its witness took it red against
 itself (`%458`), and `instrument_refusal` read `swallowed=2` -- `awk -f` making output has no
 found-nothing exit, `grep` has one, so they part at **stderr**.
-**A lantern fired three times** -- the row number, the shelf count, the card's nib: each a number
-a hand typed that a landing falsified.
+**A lantern fired three times** -- row number, shelf count, card nib, each a number a hand typed
+that a landing falsified.
 [Spec](../active-designing/20260906-010726_the-numbers-a-hand-types-that-a-rebase-falsifies.md):
-**a writer beside each guard, at the END of the send.** BAKERY's -- **nib built**, order and count
-remain.
+**a writer beside each guard, at the END of the send.** BAKERY's -- nib built; order and count
+remain, and the row number's own writer would have spared this round its rebase.
 
 **THE WEAVE MERGES** (`20260906.001728`, Patchouli) -- the charter's movement *the weave, and its
 order*. `Weave.merge` in `mantra/src/weave.rye` is a union over positions where the **higher
@@ -135,9 +146,9 @@ predicts, one credential and the first refresher stranding the rest. `%321` caug
 holding an inline comparator reads clean at any length.
 **`%440` fired three times in one lap**; one dedupe-and-sort repaired all three -- same root the nib writer closed. Same shelf. **Yours.**
 
-**`%445` and the `%439` class, whole on the [`20260906.001820` shelf](archive/20260906-001820_itinerary-landed-accounts.md)** -- the view moved twice and the key did not; four detectors over 1,712 Rye files found one genuine site in 159, so no gate. **`%440`'s lantern fired three times in one send**, each a clean auto-merge seating a day-shelf row out of order -- and it fired again this lap, on a peer's row that I reseated; the loom stays their booked lap.
+**`%445` and the `%439` class, whole on the [`20260906.001820` shelf](archive/20260906-001820_itinerary-landed-accounts.md)** -- the view moved twice and the key did not; four detectors over 1,712 Rye files found one genuine site in 159, so no gate.
 
-**Four accounts CLOSED, whole on the [`20260906.040933` shelf](archive/20260906-040933_itinerary-landed-accounts.md)** -- `%453` the doc line that measured between outfits, `%453` the floor that stopped biting ([REDS shelf](archive/REDS-the-floor-that-stopped-biting-rows-453-453.md)), `%458` the scan that called this ship's credential the pier's, and `%444`/`%431` the seed publisher that travels with the field. **A rule that states its reason can be checked.**
+**Four accounts CLOSED, whole on the [`20260906.040933` shelf](archive/20260906-040933_itinerary-landed-accounts.md)** -- `%453` twice (the doc line measuring between outfits, and the floor that stopped biting, [REDS shelf](archive/REDS-the-floor-that-stopped-biting-rows-453-453.md)), `%458` the scan that called this ship's credential the pier's, and `%444`/`%431` the seed publisher that travels with the field. **A rule that states its reason can be checked.**
 
 **PHEROMONE -- `%449`'S BOOKED CENSUS LANDED, and `%462` is what building it cost.** *Which
 authored Rye does anything ever compile?* Of **1,940** tracked `.rye`, **227** are symlinks and

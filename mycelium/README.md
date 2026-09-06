@@ -8,7 +8,7 @@ path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 **Voice:** Kyri
 **Kin:** the *why* beneath this directory -- [`../foundations/20260825-211055_mycelium-the-consensus-protocol.md`](../foundations/20260825-211055_mycelium-the-consensus-protocol.md) - the road that opened it -- [`../active-designing/date/20260816/20260816-205859_double-seat-expansion-eight-seasons.md`](../active-designing/date/20260816/20260816-205859_double-seat-expansion-eight-seasons.md) (Chapter D)
 
-**Mycelium** is Grain's own consensus protocol -- the way many nodes that do not trust one another arrive at one shared history of who holds what, with no leader to elect and no central book to guard. The name is the picture: underground, a fungal mycelium binds many separate threads into one living network that feeds a whole forest floor without any thread being in charge. A **Cord** bundles many validators' signed blocks the same way -- many threads, one strand, one agreed order.
+**Mycelium** is Grain's own consensus protocol -- the way many mutually distrusting nodes arrive at one shared history of who holds what, each checking every fact for itself rather than electing a leader or guarding a central book. The name is the picture: underground, a fungal mycelium binds many separate threads into one living network that feeds a whole forest floor while every thread stays an equal peer. A **Cord** bundles many validators' signed blocks the same way -- many threads, one strand, one agreed order.
 
 This directory is the code. The [foundation](../foundations/20260825-211055_mycelium-the-consensus-protocol.md) holds the *why* and the lineage; this README is the *map* -- so a reader meeting Mycelium for the first time can find any part from one page.
 
@@ -91,7 +91,7 @@ The one law applied where two moves reach for the same thing.
 - [`testament.rye`](testament.rye) -- a named constellation's verdict travels as an **offline certificate**, verifiable holding only the roster *names*: a keeper a world away boots the exact roster, derives the threshold, and confirms the sealed voices are the constellation's own -- no Dag needed. A stranger's valid voice refuses `NotMember`.
 - [`testament_fault.rye`](testament_fault.rye) -- a Testament sealed with `f` ships down still names the whole roster, so the verifier measures survivors against the full threshold.
 
-**The intelligence reading the ledger** lives one directory over, in [`../pond/apps/`](../pond/apps/) -- `ledger_query.rye` and its companions carry the same Lantern-shaped Q-vane voice every other Grain module speaks, reading the resolved ledger a person could not otherwise read by hand. Its witnesses count among the eighty below.
+**The intelligence reading the ledger** lives one directory over, in [`../pond/apps/`](../pond/apps/) -- `ledger_query.rye` and its companions carry the same Lantern-shaped Q-vane voice every other Grain module speaks, reading the resolved ledger back in a form a hand can follow. Its witnesses count among the eighty below.
 
 **Borrowed from Tally by symlink**, so one implementation serves both rooms: [`parse_int.rye`](parse_int.rye) (strict-by-default integer parsing, a leading zero refused) and [`tally_copy.rye`](tally_copy.rye) (the disjoint copy with both preconditions asserted), beside `kumara.rye` above, which family 1 names.
 

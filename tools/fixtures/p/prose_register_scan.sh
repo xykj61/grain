@@ -48,13 +48,57 @@ FIELD_MAX=30
 # what lets tools/fixtures/q/qa_report_card.sh CITE the number instead of copying it, the same way it
 # already cites measure(). One floor, two readings, and no way for them to drift apart.
 REGISTER_MIN_SENTENCES=8
-# The ratchet's ceiling only ever falls. Measured 20260823 across the teaching tier.
-ceiling=0    # 16 at seating; the whole teaching tier swept 20260823.070754 -- it only falls
+# THE CEILING ONLY EVER FALLS FOR A GIVEN READING, and on 20260906 the reading changed: measure()
+# began reading the body paragraphs the `*` branch had been dropping (REDS %451), which is roughly
+# twice the page on a Gauge document. A number the new reading produces and a number the old one
+# produced are different measurements, so holding the first to the second's ceiling would refuse
+# the tree for a repair that made the meter honest -- and a guard that reds on a correctness fix is
+# a guard somebody turns off.
+#
+# So the ceiling is RE-SEATED at what the honest reading finds, with every number kept: 16 when the
+# meter was seated 20260823, swept to 0 that day under the elder reading, and 5 under the reading
+# from 20260906. The five are NAMED rather than counted, the way the DOOR roster already is, so the
+# ceiling carries a population rather than an abstraction -- a lane sweeping one takes its name off
+# and the number falls by one.
+#
+#   document                                   elder        now
+#   docs-geode/wiki/README.md                  57% of 7     50% of 10   (under the 8-sentence floor, so unread)
+#   manual/guides/macos-ai-jail-setup.md       22% of 49    37% of 70
+#   edu/funds/gren-creating-one-of-twelve.md   22% of 18    35% of 28
+#   manual/guides/self-hosted-vpn-setup.md     26% of 15    33% of 18
+#   manual/guides/walking-the-rounds.md        30% of 53    31% of 66
+#
+# None of the five got worse. Each page has read over the Field target the whole time; the elder
+# meter was reading a part of it, and the sentence counts beside each are how much of a part.
+ceiling=5
 
 work=$(mktemp -d)
 trap 'rm -rf "$work"' EXIT INT TERM
 
 # One awk, so the reading of a Door file and a teaching file is the same reading by construction.
+#
+# WHAT IS READ PAST, each named separately rather than folded into one character class. The elder
+# form was `/^[ \t]*[-*>#]/` under the comment "bullets, headings, quotes", and the `*` in it was
+# reading the wrong half of this tree's prose (REDS %451). A CommonMark bullet is `-`, `*`, or `+`
+# FOLLOWED BY WHITESPACE; `**What went wrong:**` is a bold span, and Gauge writes its paragraphs
+# that way constantly. Not one asterisk bullet exists anywhere in docs-geode/, so that branch kept
+# nothing it was aimed at and dropped body paragraphs instead: of docs-geode's 537 readable lines,
+# 239 fell to it and none was a bullet, 85 of them body paragraphs on the twelve gated doors.
+#
+# FRONT MATTER IS DROPPED ON PURPOSE, where it used to fall to the same accident. Position and
+# shape are required together, because neither alone is enough: `**Stamp:** ...` and
+# `**What went wrong:** ...` are the same shape, and a body paragraph can open a page -- a rule
+# keyed on shape alone ate real prose on 77 of 703 living documents when it was tried. So the block
+# must be the FIRST one after the title, AND its opening line must carry a short bold key holding
+# no `*` and no inner `:`. A wrapped value rides with it to the blank line that ends the block,
+# which is what finally drops the shared `**Where this sits:**` navigation line -- twelve words
+# carrying one negation, counted as prose on 111 front doors.
+#
+# WHY THE BLOCK EARNS ITS PLACE, measured 20260906. Without it `docs/README.md` reads 50% on two
+# sentences of pure front matter and refuses the door gate on a page whose body is a link list,
+# and `constel/README.md` reads 22% against a 20% ceiling on metadata alone rather than on prose.
+# With it they read 0% and 18%. Of 892 living documents 676 carry such a block, and the six
+# largest a prose-shaped audit flagged are all metadata with long values.
 measure() {
   awk '
     BEGIN {
@@ -62,11 +106,31 @@ measure() {
       # (the control leg caught the zero-read on the first macOS run, 20260825)
       neg = "(^|[^a-z0-9_])(not|no|never|none|nothing|nobody|cannot|without|fails?|failed|failure|broken|breaks?|broke|wrong|lost|lose|loses|losing|stale|rot|rots|rented|dead|blind|refuses?|refused|refusal|error|bug|stopped|worse|worst|difficult|disappoint|pessimis|problem|risk|danger|threat|lying|lies|merely|nor|neither|hollow|empty|missing|absent|useless|wasted|corrupt)($|[^a-z0-9_])"
       infence = 0
+      head = 1        # the title, then the metadata block, then the body begins
+      inmeta = 0
     }
-    /^```/ { infence = 1 - infence; next }
+    # A front-matter key: `**Stamp:**`, `**Where this sits:**`. No interval quantifier anywhere in
+    # this file -- BSD awk read nothing from \< once already, and an interval is the same risk --
+    # so the length bound is taken from RLENGTH rather than spelled in the pattern. Forty holds the
+    # longest key this tree writes and refuses a sentence that happens to carry a colon.
+    function frontmatter_key(l) {
+      if (l !~ /^[ \t]*\*\*[^*:]*:\*\*/) return 0
+      match(l, /^[ \t]*\*\*[^*:]*:\*\*/)
+      return (RLENGTH <= 40)
+    }
+    /^```/ { infence = 1 - infence; head = 0; next }
     infence { next }
-    /^[ \t]*\|/ { next }                 # tables
-    /^[ \t]*[-*>#]/ { next }             # bullets, headings, quotes
+    head {
+      if ($0 ~ /^[ \t]*$/) { if (inmeta) { inmeta = 0; head = 0 } ; next }
+      if (!inmeta && $0 ~ /^[ \t]*#/) next                       # the title
+      if (!inmeta && frontmatter_key($0)) { inmeta = 1; next }   # the block opens
+      if (inmeta) next                                           # a wrapped value rides with it
+      head = 0                                                   # the body begins
+    }
+    /^[ \t]*\|/ { next }                       # tables
+    /^[ \t]*[-*_][-*_ \t]*$/ { next }          # a rule line, or a marker with nothing after it
+    /^[ \t]*[-*+][ \t]/ { next }               # a bullet: the marker THEN whitespace
+    /^[ \t]*[>#]/ { next }                     # quotes, headings
     /^[ \t]*$/ { next }
     {
       line = tolower($0)

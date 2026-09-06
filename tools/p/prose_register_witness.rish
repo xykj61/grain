@@ -20,16 +20,29 @@
 #   statement, and -- swept onto it that day -- the beginner tutorial and the demos page, a
 #   newcomer's second and third click. The roster is named rather than discovered, so a new file
 #   joins the enforced tier by a hand rather than by accident.
-#   Nine behaviors on planted prose, using the scan's own measure function lifted verbatim so the
-#   control reads exactly what the guard reads: warm prose low, refusal-led prose high, the two
+#   Fifteen behaviors on planted prose, using the scan's own measure function lifted verbatim so
+#   the control reads exactly what the guard reads: warm prose low, refusal-led prose high, the two
 #   discriminated, fenced code excluded, tables and headings read past, fragments under four words
 #   skipped, an empty page safe, and the live door roster clean.
+#   Six of the fifteen arrived with REDS %451, and each refuses under the elder reading and passes
+#   under this one -- a case green both ways proves nothing. A paragraph opening with a bold span is
+#   read, where `/^[ \t]*[-*>#]/` dropped every one of them; a real bullet is still read past, the
+#   marker THEN whitespace, which also catches the `+` bullet that class never held at all; front
+#   matter is dropped ON PURPOSE, its wrapped value riding to the blank line, which is what finally
+#   drops the shared `**Where this sits:**` navigation block; and the two refusal legs prove the
+#   head rule stops there -- a bold lead-in AFTER the front matter is prose, and a bold opening that
+#   carries no short key is prose too. Shape alone ate real text on 77 of 703 living documents when
+#   it was tried, so position and shape are both required.
 #
-# WHAT IS REPORTED, as a ratchet under a ceiling that only ever falls. The teaching tier --
-# docs-geode/, manual/, edu/, and the root guides -- counted as documents above the Field target of
-# 30%. Sixteen at seating, the beginner tutorial itself at 51% and the demos page at 62%. Repair is
-# a rewrite per document, so these fall on touch. Sixteen at seating; **fourteen** after the first
-# sweep lap carried the tutorial from 51% to 0% and the demos page from 62% to 15%.
+# WHAT IS REPORTED, as a ratchet under a ceiling that only ever falls FOR A GIVEN READING. The
+# teaching tier -- docs-geode/, manual/, edu/, and the root guides -- counted as documents above the
+# Field target of 30%. Sixteen at seating, the beginner tutorial itself at 51% and the demos page at
+# 62%; fourteen after the first sweep lap carried those two to 0% and 15%; zero by 20260823.070754.
+# RE-SEATED at 5 on 20260906, when measure() began reading the body paragraphs the elder `*` branch
+# dropped. The five are named in the scan beside the ceiling, with both readings and both sentence
+# counts, so a lane sweeping one takes its name off and the number falls. None of the five got
+# worse -- each has read over the Field target the whole time, on the half of itself the meter could
+# not see.
 #
 # WHAT IS NOT PROVEN. That the prose is GOOD. This counts negation density, one honest proxy among
 # several. A page can pass this meter and still fail a reader, so the second number to read is
@@ -61,6 +74,12 @@ assert control.out contains "fence_excluded=yes" else "prose-register: a fenced 
 assert control.out contains "table_excluded=yes" else "prose-register: tables and headings carry labels rather than sentences"
 assert control.out contains "fragments_skipped=yes" else "prose-register: a fragment under four words is no sentence"
 assert control.out contains "empty_safe=yes" else "prose-register: an empty page must read zero rather than divide by zero"
+assert control.out contains "bold_lead_is_read=yes" else "prose-register: a paragraph opening with a bold span is prose, and must be read"
+assert control.out contains "bold_lead_reads_high=yes" else "prose-register: reading a bold-led paragraph must change the share it measures"
+assert control.out contains "bullets_excluded=yes" else "prose-register: a real bullet -- the marker then whitespace -- must still be read past"
+assert control.out contains "front_matter_excluded=yes" else "prose-register: front matter and its wrapped value must be dropped on purpose"
+assert control.out contains "body_after_front_matter_is_read=yes" else "prose-register: the head rule must stop at the blank line, or it eats Gauge's own lead-ins"
+assert control.out contains "bold_opening_without_key_is_read=yes" else "prose-register: a bold opening carrying no short key is a sentence"
 assert control.out contains "live_door_clean=yes" else "prose-register: the live door roster must agree with the control's reading"
 assert control.out contains "live_verdict_ok=yes" else "prose-register: the scan must agree with itself"
 assert control.out contains "control_verdict=ok" else "prose-register: the control must agree with itself"
