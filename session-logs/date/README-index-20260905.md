@@ -16,6 +16,8 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260905.231916` | [the guard that could not see itself](20260905/20260905-231916_the-guard-that-could-not-see-itself.kyri) | a meter blind to itself until tracked. |
 | `20260905.230135` | [emptiness is not evidence](20260905/20260905-230135_emptiness-is-not-evidence.kyri) | two guards read GREEN with ripgrep gone. |
 | `20260905.224714` | [the angle the sky never subtracts](20260905/20260905-224714_the-angle-the-sky-never-subtracts.kyri) | 682,425 pairs; one hop value between them. |
+| `20260905.230357` | [the accident that looked like a decision](20260905/20260905-230357_the-accident-that-looked-like-a-decision.kyri) | the projector travels; %431 closed. |
+| `20260905.224117` | [the rule that stated a reason nobody checked](20260905/20260905-224117_the-rule-that-stated-a-reason-nobody-checked.kyri) | 7 of 8 ships pay for an accident. |
 | `20260905.213047` | [the floor that votes only where one sentence could](20260905/20260905-213047_the-floor-that-votes-only-where-one-sentence-could.kyri) | 52 pages lose a blank 100. |
 | `20260905.195223` | [the red that broke a meter by closing](20260905/20260905-195223_the-red-that-broke-a-meter-by-closing.kyri) | %437's plant crossed %438's ceiling. |
 | `20260905.192825` | [the card folds rather than grows](20260905/20260905-192825_the-card-folds-rather-than-grows.kyri) | 92 bytes of headroom became 5,596. |
