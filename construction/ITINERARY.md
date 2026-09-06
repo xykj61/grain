@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `b3307a57e9` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `cf6a053ad3` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE DISCRIMINATOR I BOOKED FOR THE FLEET'S ROUND-OPEN WAS A TEST THAT CANNOT FAIL.**
 `%499` and `%503` CLOSED, folded to one [shelf](archive/REDS-the-test-that-cannot-fail-rows-499-503.md);
