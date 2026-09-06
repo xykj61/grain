@@ -14,6 +14,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260906.100418` | [the three vendor names surveyed](20260906/20260906-100418_the-three-vendor-names-surveyed.kyri) | Cursor 135, Codex 66, Grok 9; four traps named. |
 | `20260906.100141` | [the harness the census could not see](20260906/20260906-100141_the-harness-the-census-could-not-see.kyri) | %466 closed: 114 built files read as never-built. |
 | `20260906.094340` | [the card remembered the dead lap](20260906/20260906-094340_the-untracked-card-remembered-the-lap-that-died.kyri) | %477-%478: a stall found by running it. |
+| `20260906.092502` | [a claim whose only source is itself](20260906/20260906-092502_a-claim-whose-only-source-is-itself.kyri) | %480: three crushed indexes miscounted their rooms. |
 | `20260906.091519` | [the cause named by proximity](20260906/20260906-091519_the-cause-named-by-proximity.kyri) | %476: my own paper's 8 MiB step is page walk, not L3. |
 | `20260906.091155` | [the watch that keeps the loops alive](20260906/20260906-091155_the-watch-that-keeps-the-loops-alive.kyri) | a dead loop comes back; windows found by name. |
 | `20260906.090929` | [the instrument that was in the box](20260906/20260906-090929_the-guard-that-was-in-the-box.kyri) | %477: the guard for lost laps was itself lost; %464 closed. |

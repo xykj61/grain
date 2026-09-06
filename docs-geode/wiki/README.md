@@ -25,6 +25,7 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 | [press / **What has been said publicly**](../press/README.md) | the three announcements | this page |
 | [sangha / **the patterns**](../sangha/README.md) | descriptor exchange, fact fold, five primitives | this page |
 | [tutorials / **recursion in Glow**](../tutorials/recursion-in-glow.md) | the Glow desk | `tutorials/` |
+| [tutorials / **Shopping**](../tutorials/SHOPPING.md) | the first hour, Gauge Style, TAME Guidance | the root README, `tutorials/`, the first hour |
 
 ## Why the "reached from" column matters
 
@@ -35,6 +36,10 @@ That is the whole discipline of a wiki here. Not a search box; a promise that fo
 ## What is missing, named plainly
 
 `blog/` and `etc/` hold no pages, and their own READMEs say why rather than pretending. `templates/` carries a pointer crush. When a page enters any of them, it earns a row above -- **a page that is not in this table is a page the shelf has not finished admitting.**
+
+**The room doors are ways in rather than shipped pages.** `api/README.md`, `tutorials/README.md`, and the shelf's own [front door](../README.md) each stand behind the row that names their room, so this table lists what the shelf ships.
+
+**[Shopping](../tutorials/SHOPPING.md) joined the table on `20260906`.** It had stood in `tutorials/` since `20260823`, linked from four other pages and one hop from the first hour -- present everywhere except on the map that promises every shipped page. A reading that walks the whole shelf catches the next one; [`../../tools/cr/crushed_index_witness.rish`](../../tools/cr/crushed_index_witness.rish) reads a room one level deep today, and this page waits its turn.
 
 ---
 

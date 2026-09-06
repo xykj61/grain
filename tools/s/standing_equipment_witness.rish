@@ -79,8 +79,13 @@ say "standing-equipment: Style Radiant -- the roster is a file now, every path i
 say "standing-equipment: Lens TAME -- safety first: a guard that cannot red guards nothing, and a guard that is never run guards nothing either."
 
 let scan = run ["sh" "tools/fixtures/s/standing_equipment_scan.sh"]
-assert scan.ok else "standing-equipment: the roster names something the tree cannot honor -- read the scan's own lines"
+# SAID BEFORE ASSERTED, because the refusal below tells a reader to read the scan's own lines and
+# the elder order never printed them. A red under the runner keeps the guard's stdout in
+# construction/standing-equipment-reds/, so on a refusal that file held the three header lines and
+# the assertion -- and nothing about WHICH reading refused. A message that names evidence must put
+# the evidence where the message sends the reader (20260906).
 say scan.out
+assert scan.ok else "standing-equipment: the roster names something the tree cannot honor -- read the scan's own lines"
 assert scan.out contains "guards_path_missing=0" else "standing-equipment: every rostered path must name a file that exists"
 assert scan.out contains "guards_half_written=0" else "standing-equipment: every guard record must carry exactly one path"
 assert scan.out contains "guards_unknown_tier=0" else "standing-equipment: every tier must name a cadence the runner honors"

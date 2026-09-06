@@ -327,3 +327,5 @@ at a closed fold.*
 *Row %464 folded to [`REDS-the-box-nobody-opened-rows-464.md`](REDS-the-box-nobody-opened-rows-464.md) on `20260906.080922`, **CLOSED** -- a channel with a hole in it costs one duplicated lap per hole.*
 
 *Row %479 folded to [`REDS-the-instrument-that-was-in-the-box-rows-479.md`](REDS-the-instrument-that-was-in-the-box-rows-479.md) on `20260906.110500`, **CLOSED** -- an instrument is not standing until its roster row is standing beside it.*
+
+*Row %480 folded to [`REDS-a-claim-whose-only-source-is-itself-rows-480.md`](REDS-a-claim-whose-only-source-is-itself-rows-480.md) on `20260906.092312`, **CLOSED** -- a claim whose only source is a previous statement of itself: three crushed indexes counting their rooms from memory.*

@@ -251,6 +251,11 @@ guard lotus_module_roster
 path tools/l/lotus_module_roster_witness.rish
 seated 20260824.091754
 
+guard crushed_index
+path tools/cr/crushed_index_witness.rish
+seated 20260906.091330
+tier lap   # the shipping shelf's indexes, which every prose lap can move
+
 guard crypto_count_guard
 path tools/cr/crypto_count_guard_witness.rish
 seated 20260824.095920

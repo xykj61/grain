@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `c99395f831` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `2a3313c06b` -- HEAD's parent, resolvable everywhere (%401).
 
 **DIFFUSER** -- **my own published sentence named its cause by proximity, and proximity is not a
 measurement.** Adopted a lap off this tree's stash (`%321`), added the arm it skipped:
@@ -63,6 +63,21 @@ Two hands, one hour, one defect, one proof method. My `%472` renumbered to `%476
 theirs was published, mine was not, which is exactly what the derived spine is for.
 
 **Now.** **A path outlives its content, so presence is the cheaper question wearing the expensive one's answer.**
+
+**PETRICHOR -- THE SHIPPING SHELF SIGNED ITSELF GREEN FROM A WITNESS THAT WAS ONLY THAT SENTENCE.**
+`docs-geode/README.md` said *ten rooms* over its own table's **twelve**, from the commit that added
+the twelfth, **sixteen days**; `press/` said *three* over four and argued it at length; the wiki
+promised *every shipped page* over a SHOPPING with no row. **Every link on all three resolved** --
+yours, one shelf over, in a second disguise. Two sharper halves: a Stamp cell a molt left a month
+behind its own link (**the tree's only one**, over 526 living pages), and `witness:docs-geode-seat
+GREEN` naming an instrument standing **once in this tree, inside that sentence** -- 6 of 7 signed
+pages are truly backed. *Landed:* `crushed_index` reads a page's OWN `Kind: crushed index of` line,
+so a new index arrives guarded the day it declares itself; five gates at zero, **23 pen behaviors**,
+the control proven to bite. Front door **C+/76 -> B+/87**. `%480`.
+**The roster latch I also found is a peer's `%475`, landed first, so my row is WITHDRAWN** -- one
+finding, one row. Kept: the exemption and the one-pass peer lag written into the scan's header, and
+the witness saying the scan's lines BEFORE asserting, since its refusal sends a reader to lines it
+never printed. **The third duplication today; your open question, lived a third time.**
 
 **`%467` and `%468` CLOSED, folded whole** to one [shelf](archive/REDS-presence-where-the-claim-was-content-rows-467-468.md) -- **presence is the cheaper question wearing the expensive one's answer**; the account is on the [`20260906.090312` shelf](archive/20260906-090312_itinerary-landed-accounts.md).
 
@@ -123,7 +138,7 @@ fields against a Glow shape.** A seam, so it waits.
 
 **`%445` and the `%439` class, whole on the [`20260906.001820` shelf](archive/20260906-001820_itinerary-landed-accounts.md)** -- the view moved twice and the key did not; four detectors over 1,712 Rye files found one genuine site in 159, so no gate.
 
-**Four accounts CLOSED, whole on the [`20260906.040933` shelf](archive/20260906-040933_itinerary-landed-accounts.md)** -- `%453` twice (the doc line measuring between outfits, and the floor that stopped biting, [REDS shelf](archive/REDS-the-floor-that-stopped-biting-rows-453-453.md)), `%458` the scan that called this ship's credential the pier's, and `%444`/`%431` the seed publisher that travels with the field. **A rule that states its reason can be checked.**
+**Four accounts CLOSED** on the [`040933` shelf](archive/20260906-040933_itinerary-landed-accounts.md) -- `%453` twice, `%458`, `%444`/`%431`. **A rule that states its reason can be checked.**
 
 **PHEROMONE -- A PUBLISHED DISTANCE PROMISES A ROAD, AND A THIRD OF THE SKY HAD NONE.** `%454`
 CLOSED, whole on its [shelf](archive/REDS-a-published-distance-and-the-road-it-promises-rows-454.md)
@@ -202,14 +217,9 @@ reads one of `max_name`'s two call sites (`parse_manifest` reads it too, over th
 `xy/pier/diverged-20260831-{064342,115245}`, neither landed, neither mine. **CION:** `drey`'s rung marks are the retired form (%329). **Fleet loop (%387):** should a
 round's opening stash stop an in-flight pass in its own tree.
 
-**Petrichor's `%424`**, the `grep`-shim finding, and the restored stash are on the
-[landed-accounts shelf](archive/20260905-131102_itinerary-landed-accounts.md). That row took four
-numbers and its stamp took none -- as `%451` just did again, six laps running now, which is
-**the standing evidence for your open question**: should an OPEN row carry a claim, a seat and a
-stamp, at start rather than at landing. Take the number from `--next`, never from the row.
 **Bounds raised `20260906`, both derived, both yours:** the operator card to 40,960 (8 ships x 2,048 live front) and the REDS pin to 40,960 (8 x 4,096 OPEN set + 8,192 header). **Each is sized per ship, so both re-open at twelve** -- and the pin's is also sized by how fast reds close (`%360`, 8,213 bytes, open since `20260830`).
 **`%456` OPEN -- eight ships share ONE login, so one credential is a fleet-wide outage** (mechanism read from `agent-jail.sh` source, so `%458` leaves it standing). **Its pier half is unmeasured from inside the enclosure.** Seven died 3 laps each in ten seconds on `OAuth session expired and could not be refreshed`; `agent-jail.sh` seeds every tree from the pier's single credential (*one login per pier*). Refresh token had **27 days** left, so expiry is excluded -- the leading read is **rotation**: one shared token, first refresher strands the rest and the pier's own copy. **Falsifier is cheap:** watch whether the pier's refresh value changes after a ship refreshes. Landed: `claude_refresh_dead()` names a dead credential instead of seeding it (proven 3 ways -- dead trips, expired ACCESS does not, missing field fails open), and `sh tools/fixtures/f/fleet_login_scan.sh` answers it in one command. **Yours, gate 3:** one login per ship is the fix. **A resource shared by every ship has no blast radius smaller than the fleet.**
-**Landed `20260905`, whole on their shelves** -- `%430` and `%438` on the [235749 shelf](archive/20260905-235749_itinerary-landed-accounts.md); `%435`, `%427`-`%429`, `%423`-`%426`, `%420`, `%413`/`%412`, `%411`/`%410`, `%409`, `%408`, Mantra's 20 guards, the ripgrep fetch, the aroma breach, the baton and the three berths, and the bound grant itself on the [192154 shelf](archive/20260905-192154_itinerary-landed-accounts.md); `%442`/`%443` and `%445` on the [001800 shelf](archive/20260906-001800_itinerary-landed-accounts.md).
+**`20260905`'s landed rows** rest on their three shelves, recited on the [`092312` shelf](archive/20260906-092312_itinerary-landed-accounts.md).
 **`shell_dialect` re-diagnosed:** the `sed -i` repair stands; it reds on ONE case of 47 -- *a guard
 without its instrument names rg rather than a file*. `shell_portable_control.sh` takes `rg` off PATH
 by dropping every entry holding an executable `rg`, and this NixOS pier keeps `rg` and `sh` in one
@@ -220,10 +230,7 @@ directory, so the scan under test cannot start. A pen of symlinks to every tool 
 **1,093** -- 419 of slack; the elder *14 under* is superseded. **Yours.**
 **Still open:** `glow/rune_shape.rye` width custody; `%281`/`%291`. **(%347):**
 `pond/enclosure_policy.kyri` 8,120/8,192; yours.
-**Landed this chapter** -- `%374`'s gate build, six utility fetches with their thanks, the naming
-study, the seed publisher, and rows `%408`, `%414`-`%424`: whole on the
-[landed-accounts shelf](archive/20260905-131102_itinerary-landed-accounts.md). **Petrichor's mark-law weave LANDED** (`20260905.224930`): `study/reading-a-name.md` teaches both
-marks a name carries; the account is whole on the [001820 shelf](archive/20260906-001820_itinerary-landed-accounts.md).
+**Two Petrichor accounts folded** to the [`20260906.092312` shelf](archive/20260906-092312_itinerary-landed-accounts.md); the open question they carried stands below, in its own words. `%480` rests on its [own shelf](archive/REDS-a-claim-whose-only-source-is-itself-rows-480.md).
 **THE LIVE FRONT NOW FOLDS** (`20260905.130819`): landed accounts shelve like REDS rows, so the
 card holds what is OPEN and what waits on your word.
 **All three ships sail** (`20260905`). **Gate 3 stands:** `.gnupg-rye/` holds
@@ -361,6 +368,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260906.100141` | The harness the census could not see | [log](../session-logs/date/20260906/20260906-100141_the-harness-the-census-could-not-see.kyri) |
+| `20260906.092502` | A claim whose only source is itself | [log](../session-logs/date/20260906/20260906-092502_a-claim-whose-only-source-is-itself.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)
