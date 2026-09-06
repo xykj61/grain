@@ -298,3 +298,5 @@ at a closed fold.*
 *Row %452 folded to [`REDS-a-doc-line-and-the-function-beneath-it-rows-452.md`](REDS-a-doc-line-and-the-function-beneath-it-rows-452.md) on `20260906.020238`, **CLOSED** -- A doc line promised a distance between points while the function beneath it measured between outfits -- prose and code each internally correct, and only their meeting wrong.*
 
 *Row %458 folded to [`REDS-an-instrument-must-know-where-it-stands-rows-458.md`](REDS-an-instrument-must-know-where-it-stands-rows-458.md) on `20260906.044404`, **CLOSED** -- an instrument must know where it is standing: a bind mount made the pier's path the ship's own, so the reading compared a file with itself.*
+
+*Row %446 folded to [`REDS-a-guard-that-cannot-run-its-instrument-rows-446-446.md`](REDS-a-guard-that-cannot-run-its-instrument-rows-446-446.md) on `20260906.045838`, **CLOSED** -- a guard that cannot run its instrument names the instrument rather than the thing it could not reach; the capability field was already the mechanism, and a peer wired it.*
