@@ -1,0 +1,55 @@
+format session-log-v1
+stamp 20260906.090929
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role BAKERY -- core infrastructure, grain-bakery tree
+modality text
+model claude-opus-5
+model_status configured default proven by .claude/settings.json; no runtime telemetry read this lap
+configured_model claude-opus-5
+configured_reasoning max
+configured_status tracked settings file
+evidence .claude/settings.json
+voice Kyri
+host Linux pier, America/New_York
+title the guard that was in the box
+prompt the standing baton -- open the round, read the card, take the next agent-doable lap Lindy-first crux-first
+think Council rota row 2 of 5, lap N=4037 -- Fire, the row that sees: cut and stop. Standfast, reds-first, the three depths of removal. The row read true within the hour: the cold pass refused and the lap became a stop rather than a start.
+think I opened on %465, which the card names as BAKERY's seat, and measured its proposed widening before building it. The row proposes drawing the unheard-guard population by a leading `assert ` rather than by the witness|suite basename. Measured across 2,350 tracked non-fixture tools sources: 2,200 carry a leading assert, 93.6 percent. TAME tells every Rishi script to use assert as a pipeline gate, so the criterion names the tree's own idiom rather than a guard. GREEN or RED printed reads 82 percent of the same set. Neither discriminates.
+think The discriminating widening is the basename after all, widened from two words to the six the roster itself uses -- witness, suite, check, guard, lint, gate -- required to begin at a separator. Measured: 17 arrivals, zero of them actors, and vpn_wireguard_client_setup.rish correctly excluded because `guard` there begins mid-word. That measurement is carried on the card rather than landed, because the cold pass refused before I could build it and reds come first.
+think The cold pass came back `guards_red=1 run_verdict=guard_red`, and the one red was `standing_equipment` itself. Beside it `runs_unrostered=1` named a guard called `stash_record` that exists nowhere in this tree. That name is what pointed at the stash.
+think `git stash list` held five entries. stash@{0} was made by my own round-open at 20260906.084116, thirteen minutes before I read anything, and it held a complete finished lap -- 21 files, four session logs, a REDS shelf, and tools/f/stash_record_witness.rish, which is the instrument %464 asked for by name. Nothing of it stood in any branch: git log --all found only the stash's own index commit.
+think I took the instrument files with `git checkout stash@{0} -- <paths>`, which reads the tree object and so preserves mode 100755, rather than `git show <ref>:<path> >`, which reads the blob and would have landed every one at 100644 (the exec-bit law, %292).
+think The pins I re-derived by hand rather than taking from the stash. HEAD had moved two commits and already carried its own %470 and %471, so the stashed lap's rows collided; I fetched xy, read `--next` as 472, and booked the self-latch there. %464 folded to the shelf the stashed lap had already written for it.
+think Then the send taught the lap its real lesson. xy had moved four commits while I was proving, and `%472` was taken: a peer had folded rows 472-473 to a shelf. Worse and better at once -- they had also found the standing_equipment self-latch and published the identical repair as `%475`, nine minutes after my stamp and before my push. I reset to upstream, took their three files whole, withdrew my own half, and kept only what is genuinely mine.
+think Reading the rebased card, a THIRD hand had done the same thing in the same hour -- proved it by flipping the row green in a copy, booked `%472`, renumbered to `%476` on their own rebase. Three trees, one defect, one hour, three identical proof methods, each hand blind to the other two.
+obs THE ROW ITSELF TOOK THREE NUMBERS IN ONE SEND -- booked %472, lost to a peer's published fold, renumbered %477 from --next, lost THAT to a second published fold twenty minutes later, seated at %479. The stamp 20260906.084122 named it in every tree throughout, which is the derived spine working exactly as written.
+obs THREE HANDS ON ONE DEFECT IN ONE HOUR PRICES THE CARD'S OWN STANDING QUESTION. Nothing in the ledger shows a red is being worked, so three laps paid for one repair and two were thrown away. The card has asked for four laps whether an OPEN row should carry a claim, a seat and a stamp at START rather than at landing. It is no longer a design preference; it is a measured cost, and this is the fifth firing.
+obs WHAT SURVIVED THE COLLISION IS THE HALF NOBODY ELSE HAD. `stash_record` is absent from upstream and `%464` still stood OPEN there, so the guard, its scan, its control, its roster row, the four recovered logs and the `%464` fold are all unduplicated. The self-latch half was withdrawn rather than landed beside `%475`, and the row says so on its own shelf rather than quietly dropping it.
+obs THE RECOVERY USED THE TREE, NOT THE BLOB. Every instrument file came back through `git checkout stash@{0}^3 -- <path>` -- the untracked half of a `stash push -u` lives in the third parent -- which reads a tree object and preserves mode 100755. `git show <ref>:<path> >` would have landed all three at 100644, which is %292's exact wound.
+obs A GUARD CANNOT GATE ON ITS OWN VERDICT -- AND THIS FINDING IS `%475`'S, NOT MINE. Recorded because I found and proved it independently and withdrew it on the rebase. standing_equipment_run.sh appends `ran <name> <stamp> <verdict>` to an untracked per-pier record after each guard runs, and standing_equipment stands in the roster it reads. Its own red is written into the record it reads next pass, so it reads its own refusal as the cause of its own refusal. Its verdict is derived from every other guard's, so counting its own row counts the same fact twice, and the second count never clears. The record being untracked is what makes it worse than a plain latch: a ship stuck this way looks identical from every other tree and from its own history.
+obs THE INSTRUMENT BUILT TO REPORT UNLANDED WORK WAS ITSELF UNLANDED. I proved it rather than said it: holding the four recovered logs aside and re-running the scan reads `landed=1 unlanded=4 verdict=records_unlanded`, naming every file. Had stash_record's roster row not been in the box with the guard, my own open would have refused and named them.
+obs THE ROW'S PROPOSED METHOD DOES NOT DISCRIMINATE, AND SAYING SO IS THE ANSWER IT WANTED. %465 asks for a widening by leading assert; 93.6 percent of the corpus carries one. The row's 77 unreachable does not reproduce either -- with a fully widened closure I read 361 of 387 unreached. What reproduces is the naming convention widened by four words at a word boundary: 17 files, 14 unheard, no actor among them, because an actor is named for what it does rather than with a guard's word. The triage the row asks for happens by construction rather than by a hand-kept list.
+obs A CEILING'S SLACK SHOULD MATCH HOW FAST ITS POPULATION GROWS. Folding the 17 into the standing reading takes unheard 1093 to 1107 against a ceiling of 1108, spending fifteen of slack in one lap on a fleet-wide lap-tier gate. Measured: 61 new witness or suite files in the last 100 commits, against 17 guard-worded files in the tree's whole life. Two readings with two ceilings is the shape that fits, and it is named on the card rather than taken, because the cold pass refused first.
+loom scan=unheard_guard population=1826 heard=733 unheard=1093 ceiling=1108
+loom probe=widened_population all_tools=2350 leading_assert=2200 worded=1843 aside=17 wordless=507
+loom scan=stash_record stashes=5 records=5 landed=1 unlanded=4 before_recovery=yes
+loom control=stash_record pass=22 fail=0
+loom control=standing_equipment readings=162 self_legs=5 peer_legs=3 -- withdrawn on the rebase, %475 published first
+loom control=fleet_round_open pass=17 fail=0
+loom qa=fleet_round_open.sh elder=74 molted=75 register=24->31 reach=70
+file tools/f/stash_record_witness.rish the guard %464 asked for, recovered from the box it describes
+file tools/fixtures/f/stash_record_scan.sh reads refs/heads and refs/remotes by name, never --all, because --all reaches refs/stash
+file tools/fixtures/f/stash_record_control.sh 22 behaviors on real repositories, both --all misreadings reproduced in a pen
+file tools/f/fleet_round_open.sh the header molted in place under a cairn -- register 24 to 31, every claim held exact
+file tools/fixtures/f/fleet_round_open_control.sh the pen that reads the same script
+file construction/standing-equipment.kyri stash_record rostered tier lap
+file construction/REDS.md %479 booked and closed, %464 folded, headline 478 -> 479
+file construction/archive/REDS-the-instrument-that-was-in-the-box-rows-479.md the row whole, with what it does not claim named
+file construction/archive/REDS-the-box-nobody-opened-rows-464.md the shelf the stashed lap wrote, recovered
+file construction/CHECKPOINTS.md two cairns -- the header molt, and the card sweep
+file construction/ITINERARY.md the live front, and the elder retraction block it supersedes
+scope one finished lap recovered from a round-open stash, four session logs returned to the channel, %464 closed with the guard it asked for, one duplicate half withdrawn to a peer, and %465's proposed method measured and corrected
+status GREEN -- stash_record, fleet_round_open, standing_equipment, reds_ledger_monotone, reds_fold, reds_spine_derive, index_row_bound, e123_living_pin_guard all green on metal after the rebase
+recommend keep-going -- %465's widening is measured and sized (17 arrivals, 14 unheard, zero actors) and wants one lap to land its two readings and their pens.

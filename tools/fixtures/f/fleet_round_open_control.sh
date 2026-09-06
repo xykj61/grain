@@ -13,6 +13,9 @@ trap 'rm -rf "$pen"' EXIT
 pass=0; fail=0
 ck() { if printf '%s' "$3" | grep -q -- "$2"; then pass=$((pass+1)); else
   fail=$((fail+1)); echo "  FAIL $1: wanted '$2'"; printf '%s\n' "$3" | sed 's/^/        /'; fi; }
+nk() { if printf '%s' "$3" | grep -q -- "$2"; then
+  fail=$((fail+1)); echo "  FAIL $1: did NOT want '$2'"; printf '%s\n' "$3" | sed 's/^/        /';
+  else pass=$((pass+1)); fi; }
 
 export GIT_AUTHOR_NAME=pen GIT_AUTHOR_EMAIL=pen@pen GIT_COMMITTER_NAME=pen GIT_COMMITTER_EMAIL=pen@pen
 g() { git -c commit.gpgsign=false -c core.hooksPath=/dev/null "$@"; }
@@ -67,6 +70,26 @@ g -C "$pen/work" remote set-url xy "$pen/nowhere"
 out=$(run_open); rc=$?
 ck "unreachable remote refuses" "fetch refused" "$out"
 [ "$rc" = 2 ] && pass=$((pass+1)) || { fail=$((fail+1)); echo "  FAIL fetch refusal exit: got $rc wanted 2"; }
+
+# 15-16. THE DEAD-LETTER BOX IS READ BACK OUT (REDS %464). Step 3 fills it and, until this leg,
+# nothing ever looked inside. The report is proven by running the open over a planted record rather
+# than by grepping the script for a string, since a line that exists and never prints is the same
+# absence wearing a passing test.
+g -C "$pen/work" remote set-url xy "$pen/anointed"
+mkdir -p "$pen/work/tools/fixtures/f" "$pen/work/session-logs/date/20260101"
+cp "$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)/stash_record_scan.sh" "$pen/work/tools/fixtures/f/"
+( cd "$pen/work" && g add -A && g commit -qm "carry the scan" >/dev/null 2>&1 )
+printf 'format session-log-v1\nstamp 20260101.010101\n' > "$pen/work/session-logs/date/20260101/20260101-010101_parked.kyri"
+( cd "$pen/work" && g stash push -u -m "fleet-round-open 20260101-010102: a lap's unsent work, stashed at the open" >/dev/null 2>&1 )
+out=$(run_open)
+ck "the open reports the parked record" "stand in the dead-letter box" "$out"
+ck "and names how to read it"           "stash_record_scan.sh list"    "$out"
+
+# 17. Land the record and the line goes quiet, with the stash left exactly where it stands.
+mkdir -p "$pen/work/session-logs/date/20260101"
+printf 'format session-log-v1\nstamp 20260101.010101\n' > "$pen/work/session-logs/date/20260101/20260101-010101_parked.kyri"
+( cd "$pen/work" && g add -A && g commit -qm "read the record back" >/dev/null 2>&1 )
+nk "a landed record is not reported" "dead-letter box and nowhere" "$(run_open)"
 
 echo "pass=$pass fail=$fail"
 [ "$fail" -eq 0 ] || exit 1

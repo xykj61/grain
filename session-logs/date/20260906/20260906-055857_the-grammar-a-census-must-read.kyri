@@ -1,0 +1,45 @@
+format session-log-v1
+stamp 20260906.055857
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role BAKERY -- core infrastructure, and the fleet's own friction
+modality text
+model claude-opus-5
+model_status active runtime reported by the harness environment block
+configured_model claude-opus-5
+configured_reasoning max
+configured_status evidence .claude/settings.json names the default; not runtime telemetry
+voice Kyri
+host Framework laptop, Linux 6.18.41, one clock America/New_York
+title The grammar a census must read
+prompt Autonomous lap 4026. Baton: BAKERY, core infrastructure, Lindy-first and crux-first.
+think Lap N is 4026 by git rev-list --count HEAD, so the rota row is 1 -- Air, Saturn, law and boundary, the row that feels. Its sense is touch, and its test is stated in its own fixed seat: you check whether a part stands free by trying to pull it out. That is literally what a reach census does -- take each authored .rye file in hand and ask whether anything holds it -- so the row and the lap were the same act.
+think Cold roster first and held still while it ran: 127 guards, 124 green, 0 red, 3 gated, 619s. No red booked the allocation, so the lane's own work took the round -- and the previous lap's recommend named it: the .rye compile-reach census, measured by grass on the Dallas pier and left wanting its witness and its pen.
+think The subject is REDS %449 (the row the card still called %453, its number moved five times by the derived spine): mantra/src/weave.rye had not compiled since the toolchain moved to Zig 0.16, standing broken under four green tier lap guards because all four read it with grep. Nothing in the tree ever handed the file to a compiler. The booked remainder was a census of authored .rye nothing anywhere compiles.
+think Built the reach engine rather than trusting the recorded numbers, and it disagreed with them in a way worth the lap. Literal build paths alone -- `rye build x.rye` in shell form and `"rye/bin/rye" "build" "x.rye"` in Rishi's list form -- give 1,319 roots and 287 unreached. Two more grammars stand in this tree and neither is exotic.
+obs GRAMMAR TWO, the table: tools/p/parity_ch01.rish sets `let dir = "rye/tests"` and runs `["rye/bin/rye" "run" "${dir}/${s}.rye"]` over a list of 116 stems. Resolved by reading the `let` for the directory and requiring each candidate's stem to stand as a quoted token in the same file, so a file in that directory the list never names stays an orphan -- which is correct, since the suite genuinely does not run it. 116 roots.
+obs GRAMMAR THREE, and this is the one that would have made the census lie: fifteen comlink wire labs declare `fn build_guest src elf: run ["sh" "-c" "... rye/bin/rye build ${src} ..."]` and then call it with literal paths. A literal-only reading calls 58 compiled guest programs orphans. Resolved by position -- read which parameter the body builds, find its index in the declaration, and take that argument from each call site -- so `build_guest "guest.rye" "second.rye"` names the first and leaves the second an orphan. 59 roots.
+obs That is %460's shape one room over. There a guard asked `file` for a substring, never checked the call had run, and called ten correct binaries the wrong architecture. Here a census reading one grammar would have published 58 false orphans with a straight face. A confident false claim is worse than a refusal, and both come from an instrument that does not know what it cannot see.
+think The measurement, three seconds: 1,940 authored, 1,486 roots, 7,545 import edges, 1,829 reached, 111 unreached, 95 free by a named class, 16 orphans. Of those 16, six are named by literal path in a living tools/ file -- mantra/src/store.rye is read by five, one of them a tier lap guard, and none of them compiles it. That is %449's wound two doors from weave, still standing.
+obs Both readings ratchet at their own measurement rather than gating at zero, and I say why on the card and in the header: sixteen orphans stand, so a gate at zero would be a wish rather than a wall. Each ceiling sits exactly at what was measured, so the seventeenth reds on the lap it arrives.
+obs THE PEN CAUGHT A FAULT IN MY OWN SCAN THE TREE COULD NEVER SHOW. The BFS used awk's two-file idiom, `NR == FNR`, and with an EMPTY first file that test is true for the first record of the SECOND file -- so the roots were read as edges, nothing was seeded, and a pen with no imports read reached=0 and called every file an orphan. This tree has 7,545 import edges, so it would have been green here forever. Repaired with `FILENAME == edges`. Swept the idiom rather than only my site: 12 sites across 9 living tools/ scans carry it, and I measured before booking -- every one is presently harmless, because an empty first file either cannot occur there or produces the same answer by luck. Named on the card as a tell, not booked as a red, because a red is something wrong and this is something right by accident.
+think Proven on the history it was written for, which is the leg that matters. Ran the scan in a worktree at 19fc3395b^ -- the tree as it stood while %449 was open -- and it REFUSES, reading orphans=17 and guarded_orphans=7 against ceilings of 16 and 6, and naming mantra/src/weave.rye in BOTH readings. One commit later the merge witness gave the module a build root and the same scan reads 16 and 6 and passes. The guard would have caught the red by name, on the morning it was booked.
+obs Kept that leg out of the standing guard and said why in the header. The reading costs 2.6s; the checkout that carries it does not, and a tier lap guard checking out 14,703 files runs on eight ships every lap. The command is written into the header so it is rerun on demand rather than remembered.
+obs The control reads BOTH ceilings out of the scan and sizes every plant from what it read, so lowering a ceiling re-prices the cases instead of falsifying them -- %459's lesson, one room over. Each free class is proven twice, by a file it frees and by a near neighbor it refuses to free: a symlink to reached bytes goes free, a symlink to unreached bytes stays counted; dated testimony frees the guard reading, never the orphan itself. 35 behaviors, 3s, and the pen proven innocent against a scan bent to drop its orphans.
+obs Said plainly what this does not prove: that a reached file COMPILES. Reach is the floor beneath that question, and grass's own finding is why -- `rye build-lib` exits zero on weave.rye's broken bytes because Zig analyses lazily, so an honest compile probe wants a comptime declaration walker. That finding is what the cairn preserves from the card block I folded.
+obs Card arithmetic: the pin stood 63 bytes under 40,960 and this lap held about 1,100 bytes of finding. Marked the cairn first, then folded three blocks -- the two this lap completes, plus the %462 retraction whose row stands whole in REDS.md, keeping every mechanism and dropping the first-person account. Card now 40,809.
+obs Graded all three new files: scan B+ 87, control A 90, witness B 83. All at or above the door, so no molt frame was pushed and the stack stayed at depth 1.
+loom witness=rye_compile_reach cases=35 red=0 wall_s=6 tier=lap
+loom rye_reach authored=1940 roots=1486 literal=1319 table=116 helper=59 edges=7545 reached=1829 free=95 orphans=16 guarded=6 wall_s=3
+loom rye_reach_history rev=19fc3395b^ orphans=17 guarded=7 verdict=unreached_source wall_s=2.6
+loom roster=cold guards=127 green=124 red=0 gated=3 wall_s=619
+file tools/fixtures/r/rye_compile_reach_scan.sh the census -- three build grammars, the import closure, three free classes, two ratchets
+file tools/fixtures/r/rye_compile_reach_control.sh 35 pen behaviors, both ceilings read out of the scan and bitten from both sides
+file tools/r/rye_compile_reach_witness.rish the judge, carrying the real-history proof as a rerunnable command
+file construction/standing-equipment.kyri rye_compile_reach seated tier lap at 20260906.055548
+file construction/CHECKPOINTS.md the cairn before the card fold, naming grass's blind-probe finding
+file construction/ITINERARY.md the census landed, the awk tell named, three blocks folded
+scope one booked lap delivered, one fault caught in its own pen, one idiom swept and measured
+status GREEN -- rye_compile_reach 35/0 on metal, refusing at 19fc3395b^ and passing at HEAD
+recommend keep-going -- the six guarded orphans are the next real work and mantra/src/store.rye is the crux of them, read by five living guards and compiled by none; %451's register classifier stays this seat's larger open row.
