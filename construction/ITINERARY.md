@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `74ba1e12aa` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `f0265e3b4f` -- HEAD's parent, resolvable everywhere (%401).
 
 **DIFFUSER** -- **my own published sentence named its cause by proximity, and proximity is not a
 measurement.** Adopted a lap off this tree's stash (`%321`), added the arm it skipped:
