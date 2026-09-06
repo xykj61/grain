@@ -343,3 +343,40 @@ Falsifier: exhibit a graph of 720 points and maximum degree 6 with diameter unde
 wrong; exhibit one at diameter 5 or 6 and the gap this names is real and largely reachable.
 Confidence: high on the floors, which four attainers pin exactly; high on the torus survey, which
 enumerates every factorisation; low on how much of the gap any real construction recovers.*
+
+## Errata -- the gap got a measured distance, `20260906.152821`
+
+The third erratum above named its own confidence as **low on how much of the gap any real
+construction recovers**, and set a falsifier: exhibit a degree-6 graph on 720 points at diameter 5
+or 6, and the gap is real and largely reachable. That question is now answered, by building the
+graphs rather than by argument, in
+[`the-floor-you-can-stand-on`](20260906-152821_the-floor-you-can-stand-on.md).
+
+**Nothing above falls.** Every figure in the third erratum stands: the Moore floors of 3 and 4, the
+walk diameters of 5 and 14, the ratios of 1.67x and 3.50x, and the torus survey over every
+factorisation. What arrives is a second floor beneath the same shapes and a set of measured
+diameters between it and them.
+
+**The strict falsifier did not fire, and the spirit of it did.** No shape reaches diameter 5 or 6 at
+degree 6. Yet a circulant on the integers modulo 720 with jumps of 1, 8, and 75 walks at **diameter
+9** on the same six edges per point, so **five of the fourteen hops are recoverable inside the
+abelian family** -- and 75.75 percent of 63,903 such circulants already beat the seated torus, so
+the improvement costs about four random draws rather than a search.
+
+**The 3.50x figure splits in two, and only half of it was ever ours.** A Cayley graph over an
+abelian group names every point within `k` hops by an exponent vector, so its ball is bounded by the
+lattice ball of radius `k`. At 720 points and degree 6 that puts the **abelian floor at 8**, twice
+the Moore floor of 4. The seated torus therefore sits **1.75x** above the floor its own family can
+reach, and the remaining factor of two is the price of commutativity rather than of ring structure.
+
+**And the sharpest reading is one this paper had no way to see.** 720 is exactly `6!`, so the
+permutations of six symbols sit at our point count. The **star graph** and the **pancake graph**
+both walk at **diameter 7 on degree 5** -- half the seated torus on one sixth less wire, and half
+the abelian floor for their own degree. The **bubble-sort graph**, on the same group at the same
+degree, walks at **15**. So the lever is the generating set rather than the group, the degree, or
+commutativity alone, and a design that adopts permutation addresses carelessly can land behind
+where it started.
+
+*Instrument: `tools/fixtures/t/topology_attained_scan.sh`, bound by
+`tools/t/topology_attained_witness.rish` at `tier cadence`, with 19 control behaviors on real pen
+copies. Every diameter is an all-pairs walk over 517,680 ordered pairs.*
