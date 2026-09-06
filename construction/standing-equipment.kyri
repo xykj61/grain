@@ -1669,3 +1669,24 @@ guard copy_lag
 path tools/co/copy_lag_witness.rish
 tier lap
 seated 20260906.070240
+
+# tlb_reach -- a table is bounded twice, and only one bound appears in `@sizeOf`. The elder
+# footprint study measured cost against bytes touched; a load's address is translated first, and
+# that structure's capacity is counted in PAGES. Measured on this pier 20260906: 64 pages of span
+# cost 1.65 ns per dependent read and 65 pages cost 3.90 -- same bytes, same instructions, same
+# L1d sets, one more page -- and 2 MiB pages return the ratio to 1.00, which is how the cause is
+# known. This rung proves the CENSUS rather than the reading: 38 planted behaviors, eight legs
+# from the failing side, the clean baseline asserted before and after every plant, and each plant
+# checked to have changed the reading it touched. The eighth leg, `elder_arm_ran`, gates the arm
+# that reads the elder study's own three sizes under both page sizes -- gated for PRESENCE, since
+# an arm that quietly did not run prints no attribution and reads exactly like one that ran and
+# found nothing. The census itself stays UNROSTERED on purpose --
+# 64 pages is a property of the board, so a guard asserting it would red the day the fleet moves
+# part, and a guard that reds on ordinary work is one somebody turns off. The build leg is here
+# because %449 and %463 measured what an uncompiled authored `.rye` costs. `tier lap`: 22s, of
+# which 19 is that build.
+
+guard tlb_reach
+path tools/t/tlb_reach_witness.rish
+tier lap
+seated 20260906.061229
