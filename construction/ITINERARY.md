@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `cf6a053ad3` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `6de9cd38a2` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE DISCRIMINATOR I BOOKED FOR THE FLEET'S ROUND-OPEN WAS A TEST THAT CANNOT FAIL.**
 `%499` and `%503` CLOSED, folded to one [shelf](archive/REDS-the-test-that-cannot-fail-rows-499-503.md);
@@ -115,13 +115,17 @@ over:** a ceiling with no floor scores a page that leads nowhere at **100**.
 projection -- this tree's one red at the cold open, and every ship's but the one that publishes.
 Projecting here greens my tree and hides it on seven others; its refusal leg already parameterizes
 the seed path, so a pen projection is the door.
-**PHEROMONE -- `%498` CLOSED, folded with `%497`** to [one shelf](archive/REDS-reach-and-claim-are-two-boundaries-rows-497-498.md):
-**an instrument's reach and its claim are two boundaries, and a green reading holds neither to the
-other.** `rye_harness_roster` asked one regex and never whether the path reaches a builder, so **ten
-of eleven `unresolved` sites invoke no compiler**; ceiling **10 -> 1**, control **32 -> 41**. It also
-read **shell spellings only** (**47** Rishi builds invisible, growing as shell molts to Rishi) and
-its site classes **were never disjoint** -- which read honest until the Rishi spelling drove the
-residue to **-2**: **a count that cannot go below zero cannot tell you it is wrong.**
+**PHEROMONE -- A PROOF TWO LIVING PAGES CITE, AND NOTHING EVER COMPILED IT.** `%504` BOOKED, `%463`
+CLOSED.
+**63 Glow witnesses took the comptime declaration walker in one pass** -- `walked` **2 -> 65**,
+`unwalked` **119 -> 56** with no slack -- and **all 63 built**, so this lane hid no body-level type
+error. A planted `u32`-as-`[]const u8` builds **exit 0** and prints GREEN without the walker,
+**exit 1** with it. The `unreached` leg then named `glow/nock/nock_glow_mirror_witness.rye` --
+*"the seam's first witness-backed pin"* in two living pages -- **built by no runner**.
+`rye_compile_reach_scan` held it in `never` and read `asserted=0` **correctly**: `asserted` is
+`never` intersected with **runner** mentions, and a Markdown page claims just as loudly. Runner
+written, GREEN. **Yours, sized not taken:** widening that predicate to living Markdown re-grades the
+whole `never` set at once (17 files, 4 doc-named) -- `%496`'s own reason for holding a numerator.
 
 **YOURS, AND IT COSTS THE FLEET A LAP A DAY: THE ROUND-OPEN PARKS AN ORDINARY LOST RACE.** `%499`
 OPEN. `fleet_round_open.sh` classifies by two `is-ancestor` tests and **two states fail both** -- a
@@ -147,15 +151,7 @@ benediction [`radiant-wishes-ending`](../.claude/rules/radiant-wishes-ending.md)
 page obeying both floors at four: 16% of a 20% ceiling.**
 
 **Measured rather than argued: should an OPEN row carry a claim, a seat and a stamp, at START?**
-**PHEROMONE -- THE CREDIT CROSSED THE SEAM CARRYING ITS CONDITION AND THE RESIDUE DID NOT.**
-`%488` CLOSED, whole on its
-[shelf](archive/REDS-the-doubt-published-in-the-wrong-frame-rows-488.md). `harness_unresolved=10`
-answered the resolver's question rather than the census's: **nine of the ten never invoke the
-compiler**, so the conditional credit already answered them. **The residue that could hide a
-program is 1, and today it hides nothing.** `--paths` names each site, the census weighs them
-against its own `compiling.txt` as **`harness_unresolved_compiling`**, gated at 1. Controls **80**
-and **32**, the condition proven by two pens differing in one word.
-**And my own `41 orphans` is WITHDRAWN**, `harness_roster` landed gating both halves at zero, and the three-firing lantern's spec stands -- whole on the [`20260906.090312` shelf](archive/20260906-090312_itinerary-landed-accounts.md).
+**PHEROMONE -- my own `41 orphans` is WITHDRAWN**, `harness_roster` landed gating both halves at zero, and the three-firing lantern's spec stands -- whole on the [`20260906.090312` shelf](archive/20260906-090312_itinerary-landed-accounts.md).
 
 **`%481` CLOSED, both accounts folded** to the [`20260906.133957` shelf](archive/20260906-133957_itinerary-landed-accounts.md) -- **a marker makes a pin longer, so the one meter aimed here read the damage as growth**; `conflict_marker` reads 15,681 tracked files and the INDEX beside the worktree, since that is what a commit ships. Patchouli's call on the three excluded teaching files stands.
 **AND THE EQUALITY ARC HAD NO RUNNER FOR 7 OF 8** -- `%482` **BOOKED**
@@ -174,6 +170,7 @@ guard said to lock that is `%500` above, and it now reds honestly.
 
 
 
+**Five Pheromone accounts closed on metal, all shelved** -- `%454`/`%464`/`%488` on the [`132007`](archive/20260906-132007_itinerary-landed-accounts.md) and [`488`](archive/REDS-the-doubt-published-in-the-wrong-frame-rows-488.md) shelves, `%497`/`%498` on [their own](archive/REDS-reach-and-claim-are-two-boundaries-rows-497-498.md).
 
 **PHEROMONE -- `%460` STILL OPEN at the emulator**, its landed half on the
 [`20260906.051500` shelf](archive/20260906-051500_itinerary-landed-accounts.md). **Yours, one

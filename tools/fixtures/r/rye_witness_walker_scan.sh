@@ -101,7 +101,13 @@ done
 # evening: `mantra/src/diff_witness.rye`, which was the tree's first walker, and
 # `mantra/src/weave_merge_witness.rye`, which is the file whose blindness was proven on metal and
 # is the reason this census exists. The ceiling only ever falls; lower it when a walker lands.
-ceiling=119
+#
+# Lowered 119 -> 56 on `20260906.144217`, when the Glow lane took its 63 subjects at once: every
+# `glow/` and `glow/nock/` witness that named a subject now walks it. All 63 built GREEN with the
+# walker in place, so the Glow modules carry no body-level type error the lazy analysis was
+# hiding -- a reading, rather than an assumption. The remaining 56 are `linengrow/` (51),
+# `mand/` (3), `mantra/` (1), and `tools/rye/` (1).
+ceiling=56
 
 # Bounds, each named. Witnesses stood at 134 and tracked Rye at 1,943 on `20260906`; both ceilings
 # are the next power of two above, so ordinary growth passes and a tenfold jump refuses rather than

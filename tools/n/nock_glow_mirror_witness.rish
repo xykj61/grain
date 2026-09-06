@@ -1,0 +1,32 @@
+# nock_glow_mirror_witness.rish -- the first Glow-Nock crossing, run rather than cited.
+#
+# Per glow/nock/README.md and active-designing/docs/glow/nock-interop-seam.md, this
+# witness is the seam's first witness-backed pin: the firstborn desk
+# `gate-aurora-seed-length-eq-u32` walks the Glow floor while the hand-built fixture
+# [6 [5 [0 1] [1 32]] [1 1] [1 0]] walks this interpreter, and the two answer as one
+# on 32, 31, and 33. The raw opcode-5 loobean is read beside each product, so the
+# polarity inversion the seam page bans is witnessed rather than argued.
+#
+# WHY THIS RUNNER EXISTS. Two living pages cited this witness as proof and no runner
+# built it, so nothing in the tree ever compiled the file the citations rest on. It was
+# found by tools/fixtures/r/rye_witness_walker_scan.sh, whose `unreached` leg reads a
+# walker-carrying witness that no build reaches -- a walker forces analysis only when
+# the compiler is handed the file holding it. REDS %482's class: a proof nobody runs.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/n/nock_glow_mirror_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "glow/nock/bin/nock_glow_mirror_witness"
+
+let build = run ["sh" "-c" "mkdir -p glow/nock/bin && env RYE_ZIG=${zig} rye/bin/rye build glow/nock/nock_glow_mirror_witness.rye -femit-bin=${bin}"]
+assert build.ok else "Nock-Glow mirror witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "Nock-Glow mirror witness exited non-zero"
+assert selftest.out contains "GREEN" else "Nock-Glow mirror witness not GREEN"
+assert selftest.out contains "raw loobean" else "Nock-Glow mirror witness missing the raw-loobean reading"
+assert selftest.out contains "one answer" else "Nock-Glow mirror witness missing the agreement claim"
+assert selftest.out contains "seven specimens wait" else "Nock-Glow mirror witness missing the closing claim"
+
+say "GREEN: the first Glow-Nock crossing -- desk and formula answer as one on 32, 31, 33."

@@ -8,6 +8,14 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const face_lit = @import("face_lit.rye");
 
+// invariant: every declaration of the module goes through semantic analysis, so a type
+// error in a body this witness never calls reds the build (REDS %463, %470).
+comptime {
+    for (@typeInfo(face_lit).@"struct".decls) |decl| {
+        _ = &@field(face_lit, decl.name);
+    }
+}
+
 const witness_version = "20260722.130604";
 
 const root_digits = "99b3ae967c5a230acfc598a7e949b3c2c638ce996be47a51a7c9f8cb12e4c5fe";

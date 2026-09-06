@@ -7,6 +7,14 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const lower = @import("lower_compose_core.rye");
 
+// invariant: every declaration of the module goes through semantic analysis, so a type
+// error in a body this witness never calls reds the build (REDS %463, %470).
+comptime {
+    for (@typeInfo(lower).@"struct".decls) |decl| {
+        _ = &@field(lower, decl.name);
+    }
+}
+
 const witness_version = "20260719.165724";
 
 const one_src =
