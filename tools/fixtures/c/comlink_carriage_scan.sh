@@ -29,9 +29,15 @@
 # counts the comptime blocks by their text, which proves they are WRITTEN; the sibling probe
 # hands the same question to the language, which is the only reader that can prove they HOLD.
 #
-# THE TIE COUNT IS A FLOOR RATHER THAN AN EQUALITY. Two families live in mantra/ and hold the
-# tie; amphora/vessel_fetch_wire.rye carries the third in the same shape and is Amphora's room to
-# tie. A gate spelled `= 2` would red on their honest work the day they take it.
+# EVERY CARRIAGE ROOM CARRIES ITS OWN TIE, and the gate wants all three. Two families live in
+# mantra/ and a third in amphora/vessel_fetch_wire.rye, which tied its own room 20260906. The
+# elder gate was a floor of two, written while only the mantra pair was tied, and it read every
+# room for ANY of the three patterns rather than for its own. That was single-drop detection by
+# accident of the population: with two rooms tied, one dropping its tie read 1 and refused. The
+# third tie took the count to 3, a single drop left 2, and the floor stopped biting -- control
+# cases 16 and 17 went quiet the same hour, which is how this was found. Three of three is what
+# the sentence meant, it is the same shape as capacity_holds below, and a fourth family joins
+# the list and the count in the commit that creates it.
 #
 # WHAT IT READS
 #   placard_order    the desk's six placard keywords, in seated order
@@ -43,7 +49,7 @@
 #   desk_capacity_agrees  whether the capacity and slack the desk displays match that arithmetic
 #   capacity_holds   how many trios satisfy whole <= pieces * piece, by arithmetic here
 #   tightest         the family with the least room, and how much room it has
-#   ties_wired       how many rooms carry the carriage relation at comptime (a floor, >= 2)
+#   ties_wired       how many rooms carry the carriage relation at comptime (wanted: all 3)
 #   verdict          ok, or the first disagreement found
 #
 # USAGE
@@ -187,16 +193,20 @@ echo "tightest=$tightest_family:$tightest_slack"
 
 # -- the ties the compiler evaluates --------------------------------------------------------
 # Counted by their text, which proves they are written. The probe proves they hold.
+# Each room is asked for ITS OWN tie, so one room dropping its tie is visible whatever the
+# other rooms carry -- the elder form asked every room for any of the three patterns.
 ties_wired=0
-for f in "$beading" "$batch_wire" "$vessel"; do
-  if grep -q 'max_resin_bytes <= max_beads \* cdc_min_bead' "$f" \
-    || grep -q 'max_batch_bytes <= @as(u32, max_batch_chunks) \* max_chunk_body' "$f" \
-    || grep -q 'max_resin_bytes <= @as(u32, max_resin_chunks) \* max_chunk_body' "$f"; then
-    ties_wired=$((ties_wired + 1))
-  fi
-done
+if grep -q 'max_resin_bytes <= max_beads \* cdc_min_bead' "$beading"; then
+  ties_wired=$((ties_wired + 1))
+fi
+if grep -q 'max_batch_bytes <= @as(u32, max_batch_chunks) \* max_chunk_body' "$batch_wire"; then
+  ties_wired=$((ties_wired + 1))
+fi
+if grep -q 'max_resin_bytes <= @as(u32, max_resin_chunks) \* max_chunk_body' "$vessel"; then
+  ties_wired=$((ties_wired + 1))
+fi
 echo "ties_wired=$ties_wired"
-[ "$ties_wired" -ge 2 ] || fail ties_missing "$ties_wired rooms carry the carriage tie at comptime, wanted at least 2"
+[ "$ties_wired" -eq 3 ] || fail ties_missing "only $ties_wired of 3 rooms carry the carriage tie at comptime"
 
 echo "verdict=$verdict"
 [ "$verdict" = ok ] || exit 1
