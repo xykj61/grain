@@ -3,7 +3,8 @@
 **Language:** EN
 **Style:** Gauge (see `context/GAUGE_STYLE.md`)
 **Voice:** Kyri  
-**Last updated:** `20260810` - voice molted Riyo -> Kyri (SUNN12 `20260730.154600` seated Riyo before)
+**Last updated:** `20260906` - pull-request title classes, three reusable body shapes, and the eight lanes
+(voice molted Riyo -> Kyri `20260810`; SUNN12 `20260730.154600` seated Riyo before)
 
 ---
 
@@ -36,6 +37,103 @@ Reference any related issues, links, papers, etc. here.
 ```
 
 Where the work stands on its own, which is common in this proposal's exploratory passes, say so plainly rather than inventing a number: `No tracking issue; see the linked session log for context.`
+
+## Pull Request Titles -- one bracket, then the ordinary subject
+
+A pull request title opens with a **classification in brackets**, then the ordinary
+component-prefixed subject:
+
+```
+[guard] seed: prove an allowed room actually ships
+[red] caravan: a spent window read as a fault
+[foundations] name the ten words a round uses
+```
+
+The bracket rides **outside** the fifty-character budget the commit subject keeps, so the
+inherited rule is untouched and the class is free. One class per title: work spanning two is
+usually two pull requests.
+
+| Class | The work it names | The law it answers to |
+|---|---|---|
+| `[red]` | a fault found, booked with its three fields | [`reds-first`](.claude/rules/reds-first.md) |
+| `[guard]` | a witness, scan, or control -- a claim made checkable | [`quality-assurance`](.claude/rules/quality-assurance.md) |
+| `[foundations]` | harmony with what the foundations already say | [`foundations/README.md`](foundations/README.md) |
+| `[rota]` | adherence to the council rota a lap reads | [`the-baton`](.claude/rules/the-baton.md) |
+| `[designing]` | a design that outlives the code it describes | [`design-rooms`](.claude/rules/design-rooms.md) |
+| `[molt]` | a rename or supersede that keeps the elder readable | [`molt`](.claude/rules/molt.md) |
+| `[seed]` | the public projection and what it carries | [`git-signing`](.claude/rules/git-signing.md) |
+| `[fleet]` | the ships, their loops, and the seams between lanes | [`the-baton`](.claude/rules/the-baton.md) |
+| `[doc]` | teaching prose, a front door, a tutorial | [`gauge-style`](.claude/rules/gauge-style.md) |
+
+## Pull Request Bodies -- three shapes you can reuse
+
+Every body is New Gauge at its **Meter** setting: the mechanism in plain engineering words first,
+the reason after, and a `Related` section that stays present even when there is nothing to relate.
+Three classes come up often enough to be worth writing out.
+
+**`[foundations]` -- harmony.** A foundation is read thousands of times over years, so a change to
+one earns a sentence naming what a reader gains and what stays exactly as it was.
+
+```
+### Description
+
+<what the page now says that it did not, in plain words>.
+
+It agrees with <the foundation it must not contradict> on <the shared claim>, and
+leaves <what it deliberately does not touch> unchanged.
+
+### Related
+
+<the foundation, the round, or "no tracking issue; this stands on its own">.
+```
+
+**`[rota]` -- adherence.** The council rota is a meter rather than a ritual: each lap deep-reads one
+row of the grid, and a rota pull request says which row, what it surfaced, and what changed because
+of it.
+
+```
+### Description
+
+Row <N> of the council grid, read through <its sense>. It surfaced
+<what the reading found that a summary would not have>.
+
+Changed: <the file and the line>. Left standing: <what the reading
+found and deliberately did not repair, with the reason>.
+
+### Related
+
+The rota's grid: recursion-prompts/seed/autonomous-loop.seed.md, section 1.
+```
+
+**`[designing]` -- progression.** Design writing earns its room by outliving the code, so the body
+says which question moved and which stayed open.
+
+```
+### Description
+
+<the question this piece answers>, and how: <the mechanism, plainly>.
+
+Still open: <the question it leaves, sized honestly>. Superseded:
+<the earlier piece, which keeps every word it wrote>.
+
+### Related
+
+<the earlier design, and the module the design describes>.
+```
+
+## The Eight Lanes
+
+Work in this tree arrives through eight lanes, and a pull request names the lane rather than a
+person. The lanes and their subjects live in one seat table, `construction/fleet-roster.kyri` --
+read that file rather than this paragraph, since a lane is added or retired by editing one row
+there. **It is named here rather than linked**, because the maintainer's own field carries it and
+the public projection does not; a link would open onto nothing for most readers of this page.
+
+Naming the lane tells a reviewer which laws your change answers to and which peer's files it must
+not move without a word. It also keeps a pull request **depersonalized by construction**: the
+description says what changed, the lane says where it belongs, and neither needs a name. That is
+the same discipline the reader-facing documentation already keeps -- it addresses whoever is
+reading rather than whoever wrote it.
 
 ## Pitching Beyond This Fork
 

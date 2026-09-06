@@ -12,6 +12,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | Stamp | Log | What it recorded |
 |---|---|---|
 | `20260906.144500` | [a bound has a direction](20260906/20260906-144500_a-bound-has-a-direction.kyri) | %501: the Moore bound, asked the way that decides. |
+| `20260906.143614` | [the grammar and three readings](20260906/20260906-143614_the-grammar-and-three-readings.kyri) | laps E-H: PR classes; silo 29/33; move declined. |
 | `20260906.141201` | [a ceiling that rises on honest work](20260906/20260906-141201_a-ceiling-that-rises-on-honest-work.kyri) | %498: ten of eleven built nothing. |
 | `20260906.135114` | [the publisher a stranger inherits](20260906/20260906-135114_the-publisher-a-stranger-inherits.kyri) | laps C+D: a shipped publisher, profiles molted. |
 | `20260906.134546` | [the record its own pass writes at the close](20260906/20260906-134546_the-record-its-own-pass-writes-at-the-close.kyri) | %483 closed; %492 booked. |

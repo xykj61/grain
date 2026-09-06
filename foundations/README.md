@@ -10,6 +10,15 @@ This folder holds the why beneath the work -- the reasons the building means som
 
 These rest beneath the specifications. The specs say what to build and how; these say what it is for.
 
+**Two names here carry no stamp, and that is a seated exception rather than an oversight.**
+[`the-aspiring-radiance-universal.md`](the-aspiring-radiance-universal.md) and
+[`the-regenerative-experiment-universal.md`](the-regenerative-experiment-universal.md) are
+civic-horizon vision documents, and each records the decision in its own Status line -- *reviewed
+and kept; name and path unchanged*. Every other brief in this room wears a one-clock stamp, which
+is what tells a foundation apart from the durable guidance in [`../context/`](../context/README.md):
+a stamped brief says why the work means something, and a living-named constant says how the work is
+done. Measured `20260906.143614` -- 81 of 84 stamped here, and 0 of 28 stamped there.
+
 **Newest foundation briefs**
 
 | Stamp | Note | Meaning |
