@@ -324,3 +324,6 @@ at a closed fold.*
 *Row %466 folded to [`REDS-the-harness-the-census-could-not-see-rows-466.md`](REDS-the-harness-the-census-could-not-see-rows-466.md) on `20260906.100010`, **CLOSED** -- a label wrong because the instrument could not see is cured by widening the sight, never by softening the word.*
 
 *Rows %477 and %478 folded to [`REDS-a-third-of-the-lane-and-the-stall-it-hid-rows-477-478.md`](REDS-a-third-of-the-lane-and-the-stall-it-hid-rows-477-478.md) on `20260906.103050`, both **CLOSED** -- a third of a lane stood on no clock, and running it found a stall no reading could have.*
+*Row %464 folded to [`REDS-the-box-nobody-opened-rows-464.md`](REDS-the-box-nobody-opened-rows-464.md) on `20260906.080922`, **CLOSED** -- a channel with a hole in it costs one duplicated lap per hole.*
+
+*Row %479 folded to [`REDS-the-instrument-that-was-in-the-box-rows-479.md`](REDS-the-instrument-that-was-in-the-box-rows-479.md) on `20260906.110500`, **CLOSED** -- an instrument is not standing until its roster row is standing beside it.*

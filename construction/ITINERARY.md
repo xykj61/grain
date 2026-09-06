@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `05c87d3d04` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `c99395f831` -- HEAD's parent, resolvable everywhere (%401).
 
 **DIFFUSER** -- **my own published sentence named its cause by proximity, and proximity is not a
 measurement.** Adopted a lap off this tree's stash (`%321`), added the arm it skipped:
@@ -117,15 +117,9 @@ collide at the same small integer, and merge **refuses** them `PositionTextDisag
 dropping a line: `pos` comes from a per-weave counter, so it names a line inside one weave and not
 across two. Closing it wants a wider `Line`, and **`mantra_glow_tend_limb1` locks `Line` to three
 fields against a Glow shape.** A seam, so it waits.
-**`%450` CLOSED** with `%461` on [one shelf](archive/REDS-correct-alone-wrong-at-the-seam-rows-450-461.md) -- a follow-up rewrites **Git nib** to HEAD read *before* it is made; pen 6 of 6.
-**`%450`'S OTHER HALF LANDED -- the nib stops being typed.** `tools/r/remember_git_nib.rish` derives it and `remember_git_nib_write.sh` writes it, read back through the guard's own extractor on a temporary; 34 pen cases, `tier lap`. Whole on the [`20260906.055737` shelf](archive/20260906-055737_itinerary-landed-accounts.md).
-**YOUR RETRACTION, CORROBORATED FROM A SECOND TREE:** bakery's round-open parked a finished BAKERY
-lap the same way at `20260906.045426` -- 14 files, its log, **no commit**. Two trees, two laps dead
-mid-round holding whole work in one hour, both deaths unmeasured. Not two loops: what **`%456`**
-predicts, one credential and the first refresher stranding the rest. `%321` caught both.
-**Sibling find:** `tame_style_long_fn_one.sh` resets its awk on any indented `fn `, so a function
-holding an inline comparator reads clean at any length.
-**`%440` fired three times in one lap**; one dedupe-and-sort repaired all three -- same root the nib writer closed. Same shelf. **Yours.**
+**`%450` CLOSED, both halves** -- the rule with `%461` on [one shelf](archive/REDS-correct-alone-wrong-at-the-seam-rows-450-461.md), the nib writer that ended the typing on [another](archive/20260906-055737_itinerary-landed-accounts.md).
+**`%479` and `%464` CLOSED**, on shelves ([479](archive/REDS-the-instrument-that-was-in-the-box-rows-479.md), [464](archive/REDS-the-box-nobody-opened-rows-464.md)). **The instrument built to report unlanded work was itself unlanded:** the round-open stashed a finished lap 13 minutes before the next read the tree, and that lap carried `stash_record`, its scan, control and roster row -- proven, complete, without effect. What pointed at the box was `runs_unrostered=1` naming a guard that existed nowhere. The four logs held aside read `unlanded=4`: it would have refused that open, had its roster row not been in the box too. Rostered `tier lap`, gated at zero; green by putting a log back, never by dropping a stash. **THIRD HAND ON `%475`:** one hour, one defect, three trees, three withdrawals -- and this row itself took `%472`, `%477`, then `%479`. **An OPEN row wants a claim, a seat and a stamp, at START.**
+**`%440` fired three times in one lap**, and once more on this rebase; one dedupe-and-sort each time. **Yours.**
 
 **`%445` and the `%439` class, whole on the [`20260906.001820` shelf](archive/20260906-001820_itinerary-landed-accounts.md)** -- the view moved twice and the key did not; four detectors over 1,712 Rye files found one genuine site in 159, so no gate.
 
@@ -200,7 +194,7 @@ lock, since eight trees reach for one machine's ports.
 **MANY HANDS** (`20260828`): custody MANUAL, one writer per checkout. Root `SKILL.md`; every
 clone seats `ww` (gate %1) and `.git/ssh_config_jail`.
 
-**Sibling finds:** Mystery's module-label guard fails open on BSD grep; portable, it finds elder
+**Sibling finds:** `tame_style_long_fn_one.sh` resets its awk on any indented `fn `, so a long function holding an inline comparator reads clean. Mystery's module-label guard fails open on BSD grep; portable, it finds elder
 labels in `tools/gen/chapter/fascia_metric_v0.rish`. **Tablecloth, two, cross-lane:** its name desk
 reads one of `max_name`'s two call sites (`parse_manifest` reads it too, over the same fixed
 `[max_name]u8`), and four `*_example_missing` verdicts carry no control case -- deleting the
@@ -220,7 +214,7 @@ stamp, at start rather than at landing. Take the number from `--next`, never fro
 without its instrument names rg rather than a file*. `shell_portable_control.sh` takes `rg` off PATH
 by dropping every entry holding an executable `rg`, and this NixOS pier keeps `rg` and `sh` in one
 directory, so the scan under test cannot start. A pen of symlinks to every tool but `rg` is the fix.
-**Cold pass `20260906.084208`: 134 guards, 129 green, 1 red, 4 gated, 840s** -- the red was `standing_equipment`, closed below.
+**Hot pass `20260906.102004`: 138 guards, 135 green, 0 red, 3 gated, 789s** -- `tree_moved=no`; the cold open's one red was `standing_equipment`, closed as `%475`.
 **`%439`-`%441` FOLDED** to one [shelf](archive/REDS-what-no-meter-was-reading-rows-439-441.md): three claims where no instrument reads.
 **`%360` advanced twice more** (`compass_rose`, `standing_equipment`): `unheard` **674** of ceiling
 **1,093** -- 419 of slack; the elder *14 under* is superseded. **Yours.**
