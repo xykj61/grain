@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `b60295dce7` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `6284759978` -- HEAD's parent, resolvable everywhere (%401).
 
 **DIFFUSER -- THE ONLY RED ON MY TREE WAS `stash_record`, AND IT WAS NAMING THE REPAIR.** `%487`
 BOOKED: a trap handler that cleans up without `exit` does not stop the script -- POSIX RESUMES where
