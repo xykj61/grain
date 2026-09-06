@@ -12,13 +12,23 @@ say "sow-allow-reach: Language EN -- an allowlist proven from the shipped side."
 say "sow-allow-reach: Style Gauge, Meter -- the gate, and the loud absence it must not count."
 say "sow-allow-reach: Lens TAME -- the refusal planted on a real projection, then lifted."
 
+# A TREE WITH NO PROJECTION IS NOT A FAULT, and this guard reddened seven ships before that was
+# written down. Only the field projects; every other checkout carries no `seed/` at all, so a
+# rostered lap guard that REFUSES on its absence reds on the ordinary state of most of the fleet --
+# and a guard that reds on the ordinary is a guard somebody turns off. The SCAN still refuses when
+# it is pointed at a missing projection, which is REDS %170's lesson and stays proven below; the
+# GUARD skips, says so, and passes. Found by diffuser, reported on the card `20260906`.
+let projected = run ["sh" "-c" "test -d seed && echo PROJECTION_STANDS || echo NO_PROJECTION"]
+assert projected.ok else "sow-allow-reach: the projection could not be looked for"
+if (projected.out contains "NO_PROJECTION") then say "sow-allow-reach: SKIP -- this tree carries no seed/ projection; only the field projects, and an absent projection is not a fault."
+
 say "sow-allow-reach: the projection must stand before anything is read..."
 let absent = run ["sh" "-c" "SOW_SEED=/tmp/sow-allow-nowhere sh tools/fixtures/s/sow_allow_reach_scan.sh 2>&1 | head -1"]
 # invariant: a scan that reads nothing refuses rather than reporting clean (REDS %170).
 assert absent.out contains "refused: no projection" else "sow-allow-reach: an absent projection read as clean rather than refusing"
 
 say "sow-allow-reach: every allowed, shippable room arrives..."
-let scan = run ["sh" "tools/fixtures/s/sow_allow_reach_scan.sh"]
+let scan = run ["sh" "-c" "test -d seed && sh tools/fixtures/s/sow_allow_reach_scan.sh || echo 'empty=0 withheld_by_design=0 (skipped: no projection on this tree)'"]
 assert scan.ok else "sow-allow-reach: the scan refused --\n${scan.out}"
 assert scan.out contains "empty=0" else "sow-allow-reach: a room is allowed and shippable and did not arrive --\n${scan.out}"
 

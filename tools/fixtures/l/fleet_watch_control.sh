@@ -121,8 +121,12 @@ for w in penone pentwo penthree penskip; do
   wait_prompt "$w" || { echo "refused: pen pane $w never reached a prompt" >&2; exit 2; }
 done
 
+# FLEET_BARE IS UNSET RATHER THAN MERELY UNPASSED, and this line was written after the control
+# read it out of the caller's shell and answered the wrong thing. `env` without `-u` inherits, so
+# a hand who had exported FLEET_BARE for any reason got a pen whose "no jail flag" case silently
+# carried one. A control whose answer depends on who ran it is not a control.
 run_watch() {
-  env WATCH_SESSION="$sess" WATCH_HOME="$pen" FLEET_ROSTER="$pen/roster.kyri" \
+  env -u FLEET_BARE WATCH_SESSION="$sess" WATCH_HOME="$pen" FLEET_ROSTER="$pen/roster.kyri" \
       WATCH_PASSES=1 WATCH_SKIP=penskip \
       sh "$watch" --dry-run 2>&1
 }
@@ -186,7 +190,15 @@ wait_prompt penone || true
 out_dup=$(run_watch)
 check "a duplicated window name refuses" yes "$(has "$out_dup" 'penone -- 2 windows wear that name')"
 
-# 14) an unknown option refuses rather than guessing
+# 14-15) the enclosure choice travels with the watch (Keaton's word 20260906: no jails on this
+# pier). A watcher that re-armed the default would put the fleet back in the enclosure one ship at
+# a time, unannounced -- so FLEET_BARE is passed through, and its absence is proven too.
+out_bare=$(env WATCH_SESSION="$sess" WATCH_HOME="$pen" FLEET_ROSTER="$pen/roster.kyri" \
+    WATCH_PASSES=1 WATCH_SKIP=penskip FLEET_BARE=1 sh "$watch" --dry-run 2>&1)
+check "FLEET_BARE travels into the arm line" yes "$(has "$out_bare" 'FLEET_BARE=1 sh tools/l/fleet-loop.sh')"
+check "and its absence leaves the line bare" no  "$(has "$(run_watch)" 'FLEET_BARE=1')"
+
+# 16) an unknown option refuses rather than guessing
 if env WATCH_SESSION="$sess" WATCH_HOME="$pen" FLEET_ROSTER="$pen/roster.kyri" sh "$watch" --nonsense >/dev/null 2>&1; then
   check "an unknown option refuses" refused accepted
 else

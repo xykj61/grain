@@ -120,8 +120,14 @@ thing it was built to prevent.
 loop back, so `touch .loop-gates-only` is what makes a custody stop stick. Printing GATES-ONLY
 without the sentinel now reads as a loop that merely died.
 
+**The enclosure choice travels with the watch.** `fleet-loop.sh` wraps a Linux lap in `agent-jail`
+unless `FLEET_BARE=1`, and a watcher that re-armed the default would put a bare-launched fleet back
+into the enclosure one ship at a time, unannounced -- the worst shape a disagreement can take. The
+watch passes its **own** `FLEET_BARE` through, so a hand launching it chooses for every re-arm it
+will ever make.
+
 Proven by [`../../tools/fixtures/l/fleet_watch_control.sh`](../../tools/fixtures/l/fleet_watch_control.sh)
--- fourteen behaviors on a **real tmux session** in a throwaway pen, every refusal planted and then
+-- sixteen behaviors on a **real tmux session** in a throwaway pen, every refusal planted and then
 lifted -- under [`../../tools/f/fleet_watch_witness.rish`](../../tools/f/fleet_watch_witness.rish).
 
 ## Claim-as-override

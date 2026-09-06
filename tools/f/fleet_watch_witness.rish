@@ -12,10 +12,10 @@ say "fleet-watch: Language EN -- a watcher that discovers its windows and refuse
 say "fleet-watch: Style Gauge, Meter -- each leg names what it plants and what must refuse."
 say "fleet-watch: Lens TAME -- every refusal planted and then lifted, so a wall is not a habit."
 
-say "fleet-watch: the control -- fourteen behaviors on a real tmux session in a throwaway pen..."
+say "fleet-watch: the control -- sixteen behaviors on a real tmux session in a throwaway pen..."
 let ctl = run ["sh" "tools/fixtures/l/fleet_watch_control.sh"]
 assert ctl.ok else "fleet-watch: the control refused --\n${ctl.out}"
-assert ctl.out contains "pass=14 fail=0" else "fleet-watch: the control did not prove fourteen behaviors --\n${ctl.out}"
+assert ctl.out contains "pass=16 fail=0" else "fleet-watch: the control did not prove sixteen behaviors --\n${ctl.out}"
 
 say "fleet-watch: no window index is written down anywhere in the watcher..."
 # invariant: the layout is DISCOVERED every pass. A number spelled here would be true until somebody
