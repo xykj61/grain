@@ -909,6 +909,20 @@ seated 20260830.072125
 # rule-named rows below landed: 614 heard, 1,144 unheard, 40 choirs. The git hooks were checked as
 # a second standing runner and name no guard at all, so this roster is the whole seed.
 # `lap` on 5s measured here -- one batched awk pass over the tree, plus a six-pen control.
+# WIDENED `20260906` (REDS %465): the population above is drawn by BASENAME, so a runner wearing
+# neither `witness` nor `suite` was not counted unheard -- it was absent, and absence looks like
+# health. Four readings join the elder two: `unnamed_population` 451 asserting runners wearing
+# neither word, `unnamed_heard` 43, `unnamed_runners` 408 REPORTED and never gated, and
+# `unnamed_choirs` 12 GATED at what was measured. `elder_reach_gap` 2 gives the narrow rule's own
+# blind spot a number. The largest silent choir in this tree is `tools/p/parity_ch01.rish`, which
+# calls itself a witness suite on its own first line, builds and runs 116 Rye programs, sings 281
+# guards, and which this census could not see at all. `unnamed_runners` is reported rather than
+# gated from measurement: all ten arrivals into that set over the fourteen days to `20260906` were
+# ACTORS -- seven `launch-*-chapter.rish`, `birth_a_clone.rish` which copies a tree's `.ssh` -- so a
+# ceiling there would red on ordinary growth and point a hand at custody gate 3 through a number.
+# Still `lap`, measured 21s on metal here against the elder 5s: the control grew 6 pens to 11 and 27
+# behaviours to 52, and the scan itself runs FASTER than HEAD's despite carrying a second closure
+# (0.88s against 0.60s), because both closures now read each source once.
 
 guard unheard_guard
 path tools/u/unheard_guard_witness.rish

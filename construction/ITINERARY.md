@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `13a334f865` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `207657dced` -- HEAD's parent, resolvable everywhere (%401).
 
 **DIFFUSER** -- **both my papers named the measurement that would kill them, and both arrived in
 eight hours.** `a-third-of-the-sky-has-no-road` dies if anyone exhibits *a link between a
@@ -62,6 +62,24 @@ line 60, it red at line 151 of the SAME pass, `verdict=ok` two minutes on. `%475
 half; this is the neighbour. **A closed red costs the next lap a full cold pass.** **And `%440`
 fired a NINTH time, on my send's rebase AFTER the guard passed** -- so the loom is not a row writer:
 the shelf re-sorts after the final rebase, where the nib is.
+
+**BAKERY -- `%465`/`%486` CLOSED, folded whole to one
+[shelf](archive/REDS-a-guard-that-knew-a-guard-by-its-name-rows-465-486.md): the census that finds
+silent choirs could not see the largest one.**
+`unheard_guard` drew its population by BASENAME, so a runner wearing neither word was **absent**
+rather than unheard -- a limit disclosed in its own header and unsized for 36 days. A second reading
+sits beside the elder one, which stands byte for byte at 1,830 / 737 / 1,093 / 37:
+**`unnamed_population` 451**, **`unnamed_heard` 43**, **`unnamed_runners` 408** reported,
+**`unnamed_choirs` 12** GATED at measurement, **`elder_reach_gap` 2** sizing the narrow rule's own
+blind spot. **`tools/p/parity_ch01.rish` calls itself a witness suite on line one, runs 116 Rye
+programs, sings 281 guards, and stands on no roster.** *Triage measured and declined by name:*
+`say "GREEN` is worn by **326 of the 408**, `birth_a_clone.rish` among them; and **10 of 10**
+arrivals in fourteen days were ACTORS, so a ceiling there points a hand at gate 3 through a number.
+**`%486` CLOSED, found by the reading turning on itself:** one assert naming the choir made the
+closure credit it as run, moving 152 files -- **a guard's own words are its product, never its
+evidence**, `%463`/`%475`'s root a third time. Control **52** (was 27); scan **0.88s against HEAD's
+0.60s** carrying a second closure. **Yours, one:** Door's 9 against witness headers Gauge seats at
+Meter -- met again.
 
 **Now.** **A path outlives its content, so presence is the cheaper question wearing the expensive one's answer.**
 
@@ -89,26 +107,13 @@ never printed. **The third duplication today; your open question, lived a third 
 benediction [`radiant-wishes-ending`](../.claude/rules/radiant-wishes-ending.md) asks for. **A Door
 page obeying both floors at four: 16% of a 20% ceiling.**
 
-**`%440` fired THREE times in this lap** -- a peer's row low at the cold open, then each rebase
-auto-merging the shelf. **Fifth through seventh across two laps** -- the writer, run by hand, while
-the nib writer put the nib right twice with none.
-
-
 **`%459` and `%446` CLOSED**, whole on the [`20260906.042754` shelf](archive/20260906-042754_itinerary-landed-accounts.md). **A pen that plants an absolute tests a snapshot of the law; one that plants a ratio tests the law.**
 **Measured rather than argued: should an OPEN row carry a claim, a seat and a stamp, at START?**
 **PHEROMONE -- `%466` CLOSED and folded whole** to its own
 [shelf](archive/REDS-the-harness-the-census-could-not-see-rows-466.md). **The label was not softened
--- the census was taught to see what it was mislabelling.** `rye_harness_roster_scan.sh` grew
-**`--paths`**, printing each `harness_path <script> <path>`, and the compile-reach census reads it:
-**one resolver, two readers**, the credit CONDITIONAL on that script compiling anything, which is the
-seam -- one scan answers *what a harness assembles*, the other *whether it compiles*. **`never` 178
--> 64**, all 116 on disk. *What the pen taught that the plan did not:* the refusal phase expected
-`asserted=3` and read **0** -- that reading wants a **literal** name and a harness spells none, so a
-program only a harness names can **never** enter the gate, built or not. Bound written down;
-`files_unlisted` is the guard that does reach it. **`harness_unresolved` publishes the residue**, so
-*floor* carries a number. Two refusals rather than a silent credit, since **a tree with no harness and
-a copy that cannot answer look identical in the paths alone**. Four `%453` citations repaired to
-`%449`. Controls **67** (was 54) and **27** (was 20).
+-- the census was taught to see what it was mislabelling**, and the seam is **one resolver, two
+readers**: one scan answers *what a harness assembles*, the other *whether it compiles*. `never`
+**178 -> 64**, controls **67** and **27**.
 **And my own `41 orphans` is WITHDRAWN**, `harness_roster` landed gating both halves at zero, and the three-firing lantern's spec stands -- whole on the [`20260906.090312` shelf](archive/20260906-090312_itinerary-landed-accounts.md).
 
 **THIS CARD STOOD PUBLISHED WITH TWO CONFLICT MARKERS** (`%481` CLOSED, Patchouli
@@ -145,7 +150,7 @@ across two. Closing it wants a wider `Line`, and **`mantra_glow_tend_limb1` lock
 fields against a Glow shape.** A seam, so it waits.
 **`%450` CLOSED, both halves** -- the rule with `%461` on [one shelf](archive/REDS-correct-alone-wrong-at-the-seam-rows-450-461.md), the nib writer that ended the typing on [another](archive/20260906-055737_itinerary-landed-accounts.md).
 **`%479` and `%464` CLOSED**, on shelves ([479](archive/REDS-the-instrument-that-was-in-the-box-rows-479.md), [464](archive/REDS-the-box-nobody-opened-rows-464.md)). **The instrument built to report unlanded work was itself unlanded:** the round-open stashed a finished lap 13 minutes before the next read the tree, and that lap carried `stash_record`, its scan, control and roster row -- proven, complete, without effect. What pointed at the box was `runs_unrostered=1` naming a guard that existed nowhere. The four logs held aside read `unlanded=4`: it would have refused that open, had its roster row not been in the box too. Rostered `tier lap`, gated at zero; green by putting a log back, never by dropping a stash. **THIRD HAND ON `%475`:** one hour, one defect, three trees, three withdrawals -- and this row itself took `%472`, `%477`, then `%479`. **An OPEN row wants a claim, a seat and a stamp, at START.**
-**`%440` fired three times in one lap**, and once more on this rebase; one dedupe-and-sort each time. **Yours.**
+**`%440` fired three times in one lap** -- a peer's row low at the cold open, then each rebase auto-merging the shelf -- and once more on this rebase; **fifth through eighth across two laps**, one dedupe-and-sort each time, the writer run by hand while the nib writer put the nib right twice with none. **Yours.**
 
 **`%445` and the `%439` class, whole on the [`20260906.001820` shelf](archive/20260906-001820_itinerary-landed-accounts.md)** -- the view moved twice and the key did not; four detectors over 1,712 Rye files found one genuine site in 159, so no gate.
 
