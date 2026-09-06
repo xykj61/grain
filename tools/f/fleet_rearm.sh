@@ -133,7 +133,15 @@ PASTE
    cd ~/grain-mystery && git pull --ff-only xy main && GRAIN_ROOT=$(git rev-parse --show-toplevel) && (cd "$GRAIN_ROOT" && env MIND_SEAT=mystery "$GRAIN_ROOT/rishi/bin/rishi" run "$GRAIN_ROOT/tools/l/chatgpt-mind.rish" loop --arm-loop --max-laps 3 --failure-ceiling 2 --backoff-seconds 15)
 PASTE
     ;;
-  silence | hush | dream | incense | pheromone | petrichor)
+  # EVERY OTHER SEAT IS A FLEET-LOOP SEAT, AND THE LINE IS DERIVED RATHER THAN LISTED (REDS %409's
+  # lesson, one branch over). This arm used to spell six seat names -- silence, hush, dream,
+  # incense, pheromone, petrichor -- and the roster grew five more without it: bakery, diffuser,
+  # grass, copal, patchouli each fell through the case and printed the word RELAUNCH followed by
+  # nothing. Five of eight LIVE ships could not be re-armed from the printer whose whole job is the
+  # paste. The seat table drives the report already; it drives the paste now, so a ship added by one
+  # roster row arrives here armed. `field` returned above and mind/mystery are matched by name, so
+  # anything reaching this line is a loop seat by construction.
+  *)
     echo "   cd $tree && git pull --ff-only xy main && sh tools/l/fleet-loop.sh $name"
     ;;
   esac
