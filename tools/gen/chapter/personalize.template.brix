@@ -29,8 +29,8 @@ your_email you@example.com
 your_timezone America/New_York
 your_timezone_label Eastern
 your_voice Riyo
-your_editor Cursor
-your_model Cursor Grok 4.5 300k High Fast
+your_editor your-editor-name
+your_model your-model-name-and-context-window
 your_clone_url https://github.com/your-github-handle/grain.git
 your_repo_dir ~/grain
 

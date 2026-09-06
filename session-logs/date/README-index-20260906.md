@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260906.115056` | [the vendor names prepped like friends](20260906/20260906-115056_the-vendor-names-prepped-like-friends.kyri) | Tier 1+2 Class M; 13 bannered, 3 refused. |
 | `20260906.114519` | [the guard that could not hear itself fail](20260906/20260906-114519_the-guard-that-could-not-hear-itself-fail.kyri) | %484: a swallowed exit status. |
 | `20260906.113633` | [the guard one pass behind](20260906/20260906-113633_the-guard-one-pass-behind.kyri) | %480: a run card written at close is read one pass stale. |
 | `20260906.111639` | [both falsifiers fired](20260906/20260906-111639_both-falsifiers-fired.kyri) | 132 isolated -> 0; the cut structure is what survived. |

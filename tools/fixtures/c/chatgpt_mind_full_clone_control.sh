@@ -1,4 +1,7 @@
 #!/bin/sh
+# FOSSIL -- Class M, prepped 20260906.114734 for the mitra shed; the cut stays RED until circled.
+# Living mutant: tools/l/fleet-loop.sh reading construction/fleet-roster.kyri, with
+# tools/l/fleet_watch.sh above it. Row and reasons: construction/SHRED_PREP.md.
 # chatgpt_mind_full_clone_control.sh -- local, no-network MIND clone proof.
 
 set -eu
