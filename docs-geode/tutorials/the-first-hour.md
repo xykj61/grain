@@ -212,6 +212,9 @@ each other, so either one leads to the other.
   deal more than five lines suggest.
 - **[`../../ORGANIZING.md`](../../ORGANIZING.md)** -- where each kind of work lives, once you want
   to add some.
+- **[`../../CONTRIBUTING.md`](../../CONTRIBUTING.md)** -- how a change arrives: the bracket class a
+  pull request title opens with, three body shapes you can reuse, and the eight lanes a change
+  belongs to. A pull request here names the lane rather than a person.
 - **[`../../foundations/20260821-175723_the-words-a-round-uses.md`](../../foundations/20260821-175723_the-words-a-round-uses.md)**
   -- the ten words you will meet on your first day here, defined plainly.
 - **[`../../foundations/README.md`](../../foundations/README.md)** -- the why beneath all of it,

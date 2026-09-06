@@ -594,6 +594,29 @@ Open the commit on each forge. When the green **Verified** appears, every piece 
 
 ---
 
+## Step 10 -- Offering a Change Back
+
+Your first day ends with a signed commit on your own pier. The day you want a change to reach the
+shared tree, [`CONTRIBUTING.md`](CONTRIBUTING.md) is the whole grammar in one page: a pull request
+title opens with a **bracket class** naming what kind of work it is, the body is New Gauge at its
+Meter setting with the mechanism first, and three body shapes are written out ready to fill --
+`[foundations]` for harmony, `[rota]` for the council reading, `[designing]` for a design that
+moved.
+
+**A change names its lane rather than a person.** The eight lanes and their subjects live in one
+table, `construction/fleet-roster.kyri` -- named rather than linked, since the maintainer's field
+carries that room and the public projection does not. Naming your lane tells a reviewer which laws
+your change answers to. That keeps a contribution depersonalized by
+construction: the description says what changed, the lane says where it belongs, and neither needs
+a name.
+
+Publishing your own public projection has its own page: copy
+[`publish-seed.template.sh`](publish-seed.template.sh), fill its five stubs from your
+[`GLOW_PROFILE.template.kyri`](GLOW_PROFILE.template.kyri), and read what each one is for before
+you fill it -- the identity stub is keyless on purpose.
+
+---
+
 ## Why It Is Shaped This Way
 
 - **SSH proves you may push; GPG proves you wrote it.** Two jobs, two keys, two uploads.
