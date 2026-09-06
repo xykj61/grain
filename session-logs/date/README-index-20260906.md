@@ -17,6 +17,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260906.114519` | [the guard that could not hear itself fail](20260906/20260906-114519_the-guard-that-could-not-hear-itself-fail.kyri) | %484: a swallowed exit status. |
 | `20260906.113633` | [the guard one pass behind](20260906/20260906-113633_the-guard-one-pass-behind.kyri) | %480: a run card written at close is read one pass stale. |
 | `20260906.113552` | [a number that belonged to the machine](20260906/20260906-113552_a-number-that-belonged-to-the-machine.kyri) | %485: the port the file named and the kernel owned. |
+| `20260906.113330` | [the doubt published in the wrong frame](20260906/20260906-113330_the-doubt-published-in-the-wrong-frame.kyri) | %487: 9 of 10 unresolved sites never compile. |
 | `20260906.111639` | [both falsifiers fired](20260906/20260906-111639_both-falsifiers-fired.kyri) | 132 isolated -> 0; the cut structure is what survived. |
 | `20260906.104241` | [the severity lives in the witness](20260906/20260906-104241_the-severity-lives-in-the-witness.kyri) | Recovered: the fabrication seen at exit 0. |
 | `20260906.104112` | [the box counted and never read](20260906/20260906-104112_the-box-counted-and-never-read.kyri) | %481: the card shipped its own conflict markers. |

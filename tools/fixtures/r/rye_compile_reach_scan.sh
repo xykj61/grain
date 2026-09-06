@@ -55,6 +55,16 @@
 # can question. If that scan is missing or cannot answer, this one REFUSES: without it every
 # assembled path reads as never-compiled, which is a confident false accusation of 114 files.
 #
+# AND THAT RESIDUE IS PUBLISHED IN TWO SIZES, because the raw one is the resolver's answer to the
+# resolver's question. The credit above is conditional on the assembling script compiling anything;
+# the residue beside it was published unconditionally, so a reader weighing this floor met a doubt
+# ten times the size of the one that could reach it. Nine of the ten sit in scripts that never
+# invoke the Rye compiler -- `caravan_ladder_roster_scan.sh`, `module_roster_scan.sh` and their
+# kin read their directories rather than building them -- so the credit rule already answers them
+# and resolving them would move no count here. `harness_unresolved_compiling` is the part that
+# could, gated at 1; the raw count rides beside it, ungated, since a gate on the harmless is a
+# gate someone turns off (the residue row `20260906.113130`).
+#
 # WHAT THE GATE STILL CANNOT REACH, proven in the pen rather than assumed. `asserted` is the never
 # set intersected with the paths a READING runner spells literally, and a harness spells none of its
 # targets -- that is what made them invisible here to begin with. So a program only a harness ever
@@ -226,6 +236,34 @@ grep -q '^paths_mode=1$' "$work/harness_raw.txt" || {
   echo "verdict=roster_scan_unusable"; exit 2; }
 harness_unresolved=$(sed -n 's/^unresolved=\([0-9][0-9]*\)$/\1/p' "$work/harness_raw.txt" | head -1)
 [ -n "$harness_unresolved" ] || harness_unresolved=0
+# The residue, weighed rather than only counted. The credit above is CONDITIONAL on the assembling
+# script compiling anything; the residue beside it was published UNCONDITIONALLY, so one half of the
+# seam carried its condition through and the other did not. A reader weighing this census's floor
+# therefore met a doubt ten times the size of the one that could reach it. Measured 20260906: of the
+# ten unresolved sites, NINE sit in scripts that never invoke the Rye compiler, so resolving them
+# would change no count here -- the credit rule already answers them. The tenth compiles, and it
+# assembles into a pen it creates with `mkdir -p`, copying tracked `caravan/` programs in; all seven
+# of those originals are reached by other builds, so `never` holds no `caravan/` file at all.
+#
+# So the number a reader needs beside the floor is the residue inside a COMPILING runner, and it is
+# published here. Its ceiling is 1 and only falls: each such site is a place where a real program
+# could read as never-compiled, which is exactly the wound that mislabelled 114 files (REDS %466),
+# and each new one wants a hand's reading rather than a silent pass.
+max_unresolved_compiling=1
+if grep -q '^unresolved_named=1$' "$work/harness_raw.txt"; then
+  harness_unresolved_compiling=$(awk -v cf="$work/compiling.txt" '
+    FILENAME == cf { compiling[$0] = 1; next }
+    $1 == "harness_unresolved" && ($2 in compiling) { n++ }
+    END { print n + 0 }
+  ' "$work/compiling.txt" "$work/harness_raw.txt")
+elif [ "$harness_unresolved" -eq 0 ]; then
+  # Nothing to weigh, and nothing hidden by the older copy's silence: the two agree here.
+  harness_unresolved_compiling=0
+else
+  # A copy that knows --paths and not the naming. Printing 0 would say the residue is harmless,
+  # which is a claim this copy cannot make -- so it says the word it can stand behind instead.
+  harness_unresolved_compiling=unknown
+fi
 awk -v cf="$work/compiling.txt" '
   FILENAME == cf { compiling[$0] = 1; next }
   $1 == "harness_path" && ($2 in compiling) { print $3 }
@@ -338,6 +376,8 @@ echo "reading_runners=$reading_runners"
 echo "roots=$roots"
 echo "harness_paths=$harness_paths"
 echo "harness_unresolved=$harness_unresolved"
+echo "harness_unresolved_compiling=$harness_unresolved_compiling"
+echo "unresolved_compiling_ceiling=$max_unresolved_compiling"
 echo "edges=$edges"
 echo "built=$built"
 echo "never=$never"
@@ -354,6 +394,26 @@ if [ "$asserted" -gt "$ceiling" ]; then
   exit 1
 fi
 
+
+# The residue that could reach this census's own floor, held under a ceiling that only falls. An
+# unresolved site in a READING script credits nothing either way and is reported above without a
+# gate, because a gate that reds on the harmless is a gate someone turns off.
+if [ "$harness_unresolved_compiling" = unknown ]; then
+  echo "detail: the resolver named no unresolved sites while counting $harness_unresolved of them,"
+  echo "detail: so this copy cannot say whether any of them hides a program -- name them or read them by hand"
+  echo "verdict=residue_unweighed"
+  exit 1
+fi
+if [ "$harness_unresolved_compiling" -gt "$max_unresolved_compiling" ]; then
+  echo "detail: $harness_unresolved_compiling assembled sites this scan cannot read sit in scripts that DO compile,"
+  echo "detail: over a ceiling of $max_unresolved_compiling -- each one can hide a program that reads as never-compiled"
+  awk -v cf="$work/compiling.txt" '
+    FILENAME == cf { compiling[$0] = 1; next }
+    $1 == "harness_unresolved" && ($2 in compiling) { print "detail: unresolved in a compiling runner -- " $2 " assembles $" $3 "/$" $4 ".rye" }
+  ' "$work/compiling.txt" "$work/harness_raw.txt"
+  echo "verdict=unresolved_compiling_over_ceiling"
+  exit 1
+fi
 echo "detail: every one of $distinct distinct Rye files is compiled by something, or is a specimen, or carries no claim"
 echo "verdict=ok"
 exit 0

@@ -78,15 +78,24 @@ assert control.out contains "18 free" else "harness-roster: the residue must be 
 assert control.out contains "19 free" else "harness-roster: the unresolved ratchet must pass free at its ceiling"
 assert control.out contains "20 bitten" else "harness-roster: the unresolved ratchet must refuse one over its ceiling"
 
+# The residue NAMED beside its count. The census that consumes --paths grants its credit only when
+# the assembling script compiles something, and until this landed the residue rode as a bare number
+# -- so a reader could not tell a doubt that reaches that census from one that cannot (the residue row `20260906.113130`).
+assert control.out contains "21 free" else "harness-roster: --paths must name the site it could not read"
+assert control.out contains "22 free" else "harness-roster: the named site must be counted too, so the two readings agree"
+assert control.out contains "23 free" else "harness-roster: --paths must mark that this copy names its residue"
+assert control.out contains "24 free" else "harness-roster: the naming marker must ride even where there is nothing to name"
+assert control.out contains "25 free" else "harness-roster: a tree with no residue must read zero rather than merely stay quiet"
+
 # --paths, the answer the compile-reach census reads. Pinned by ordinal like every case above, so a
 # phase that is dropped or reordered reds here rather than going quiet.
-assert control.out contains "21 free" else "harness-roster: --paths must spell the path a stem stands for"
-assert control.out contains "22 free" else "harness-roster: --paths must answer for every stem, not the first"
-assert control.out contains "23 free" else "harness-roster: --paths must count what it printed"
-assert control.out contains "24 free" else "harness-roster: --paths must mark its answer, or a silent one reads as an empty tree"
-assert control.out contains "25 bitten" else "harness-roster: --paths on a harnessless tree must refuse"
-assert control.out contains "26 bitten" else "harness-roster: an empty answer must still carry its marker ahead of the refusal"
-assert control.out contains "27 bitten" else "harness-roster: an unknown flag must refuse rather than fall back to counting"
+assert control.out contains "26 free" else "harness-roster: --paths must spell the path a stem stands for"
+assert control.out contains "27 free" else "harness-roster: --paths must answer for every stem, not the first"
+assert control.out contains "28 free" else "harness-roster: --paths must count what it printed"
+assert control.out contains "29 free" else "harness-roster: --paths must mark its answer, or a silent one reads as an empty tree"
+assert control.out contains "30 bitten" else "harness-roster: --paths on a harnessless tree must refuse"
+assert control.out contains "31 bitten" else "harness-roster: an empty answer must still carry its marker ahead of the refusal"
+assert control.out contains "32 bitten" else "harness-roster: an unknown flag must refuse rather than fall back to counting"
 
 assert control.out contains "control_failures=0" else "harness-roster: every planted case must read the way its label says"
 assert control.out contains "control_verdict=ok" else "harness-roster: the control must agree with itself"
