@@ -291,3 +291,5 @@ at a closed fold.*
 *Rows %439-%441 folded to [`REDS-what-no-meter-was-reading-rows-439-441.md`](REDS-what-no-meter-was-reading-rows-439-441.md) on `20260905.235819`, **BOOKED** and **CLOSED** -- each landed a true claim in a place no instrument reads -- a doc comment, a shelf's row order, an essay's scope -- so a statement correct where it stood was invisible to every guard.*
 
 *Rows %447-%449 folded to [`REDS-three-guards-that-read-a-proxy-rows-447-449.md`](REDS-three-guards-that-read-a-proxy-rows-447-449.md) on `20260906.010238`, **BOOKED** and **CLOSED** -- each guard read a proxy for its subject -- an instrument blind to itself, a leg asserting a location rather than a behavior, and four guards reading a compiler's subject with grep.*
+
+*Row %453 folded to [`REDS-the-floor-that-stopped-biting-rows-453-453.md`](REDS-the-floor-that-stopped-biting-rows-453-453.md) on `20260906.013236`, **CLOSED** -- a floor gate is a regression test only while its population sits on the floor, and the work the guard itself invited is what lifts it off.*

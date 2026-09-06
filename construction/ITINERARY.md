@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `563210fa68` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `fdbcc4ab65` -- HEAD's parent, resolvable everywhere (%401).
 
 **DIFFUSER** -- 622 named bounds, none names a rate or a joule. `%447`, `20260905.233110`.
 
@@ -76,7 +76,7 @@ delete-wins, an interleaving union, both refusals by name -- and its control bre
 ways in a pen**, catching each, with `clean` and `bound_shrunk` proving the pen innocent. Rostered
 `tier lap`, **10s**. First named max in a module 120 files reach toward: `max_weave_lines`, read at
 the edge by `apply` and `merge` alike.
-**`%449` BOOKED -- the module those four `tier lap` guards read had not compiled since the toolchain
+**`%453` BOOKED -- the module those four `tier lap` guards read had not compiled since the toolchain
 moved, because all four read it with `grep`.** `Weave.empty()` returned the elder `.{}` ArrayList
 form where Zig 0.16 wants `.empty`; proven by building the HEAD blob in a pen, *missing struct
 field: items*. Nothing anywhere builds `weave.rye` -- `main.rye` and the test each **inline their
@@ -101,7 +101,7 @@ names them, plus the nib.
 **`%445` FOLDED** (`20260906.001800`) -- the view moved twice, the key did not; whole on the [`20260906.001820` shelf](archive/20260906-001820_itinerary-landed-accounts.md). **`%440`'s lantern fired three times in one send**, each a clean auto-merge seating a day-shelf row out of order; the loom stays their booked lap.
 **The `%439` class, measured rather than assumed** -- four detectors over 1,712 distinct Rye files; a trailing `const` comment restating its own arithmetic reads **clean** (zero genuine), and only the first-segment stem catches `%439`. One in 159: no gate, the right hour. Whole on the [`20260906.001820` shelf](archive/20260906-001820_itinerary-landed-accounts.md).
 
-**`%452` CLOSED -- a doc line promised a distance between points, and the function beneath it
+**`%453` CLOSED -- a doc line promised a distance between points, and the function beneath it
 measures between outfits** (`20260906.002658`). `route_hops`'s doc read *"Zero exactly when `a`
 and `b` are one point."* It reads `tier` through `depth()`, and inclusion made one point wear
 three outfits, so `of_galaxy(8)` and `of_planet(8,0,0)` both `encode` to **8** and read **two**
@@ -179,17 +179,23 @@ three claims where no instrument reads. **Mantra's next work is MERGE, not `Line
 `agent_jail` reds every lap and the jail is fine: the lap's process reads `NoNewPrivs 1` /
 `Seccomp 2`, so the sandbox refuses bwrap's mount namespace. The roster's `capability` field is the
 mechanism, already built. With `%431` closed it is now this pier's **only** red, so it alone
-withholds every roster receipt. **Bakery's**; named not taken, account in the ledger.
-**`%360` advanced -- Amphora's eight witnesses stand on a clock**, each GREEN first, 11s over 3,861
-lines nothing heard. `unheard` 1,102 -> **1,094**, ceiling 1,116 -> **1,108**. **Yours:** the reading
-stands **14 under** that ceiling, slack earlier rosterings left; the fall here was exactly the 8
-these rows moved. **One deliberate line takes it.**
+withholds every roster receipt. **Bakery's**; named not taken, account in the ledger. It says only *witness RED*, naming no instrument -- your standing reflex, one room over.
+**`%360` advanced** -- Amphora's eight are heard; `unheard` **1,094**, ceiling **1,108**.
+**Yours:** it stands **14 under**; one line takes it.
+**`%453` CLOSED -- a floor stopped biting the hour the work it invited arrived** ([shelf](archive/REDS-the-floor-that-stopped-biting-rows-453-453.md))**.**
+`amphora/vessel_fetch_wire.rye` ties both bounds at comptime, measured first: raising the whole to
+2200 refuses **64 of 2,200 legal lengths** with its own selftest still GREEN, and the chunk
+count raised panics at index 16 on a good resin. `ties_wired` 2 -> **3** took `comlink_carriage`'s
+`-ge 2` gate below single-drop detection -- it asks each room for its OWN tie and wants all three,
+control 20/17/3 `proven`. **Named, not taken:** `comlink_glow_tend` holds the same floor at 2 of 3
+and goes quiet when `comlink/vessel_fetch_wire.rye` ties its third.
 **Still open:** `glow/rune_shape.rye` width custody; `%281`/`%291`. **(%347):**
 `pond/enclosure_policy.kyri` 8,120/8,192; yours.
 **Landed this chapter** -- `%374`'s gate build, six utility fetches with their thanks, the naming
 study, the seed publisher, and rows `%408`, `%414`-`%424`: whole on the
 [landed-accounts shelf](archive/20260905-131102_itinerary-landed-accounts.md). **Petrichor's mark-law weave LANDED** (`20260905.224930`): `study/reading-a-name.md` teaches both
-marks a name carries. **`agent_jail`** is `%446`, a peer's, and `%451`'s family.
+marks a name carries; the account is whole on the [001820 shelf](archive/20260906-001820_itinerary-landed-accounts.md).
+**`agent_jail`** is `%446`, a peer's, and `%451`'s family.
 **THE LIVE FRONT NOW FOLDS** (`20260905.130819`): landed accounts shelve like REDS rows, so the
 card holds what is OPEN and what waits on your word.
 **All three ships sail** (`20260905`). **Gate 3 stands:** `.gnupg-rye/` holds

@@ -141,9 +141,12 @@ fresh
 edit mantra/beading.rye '/max_resin_bytes <= max_beads \* cdc_min_bead/d'
 edit mantra/recall_batch_wire.rye '/max_batch_bytes <= @as(u32, max_batch_chunks) \* max_chunk_body/d'
 check "18 both rooms drop the tie" ties_missing
-fresh
-edit amphora/vessel_fetch_wire.rye 's|^pub const max_resin_chunks: u16 = 8;|pub const max_resin_chunks: u16 = 8;\ncomptime { assert(max_resin_bytes <= @as(u32, max_resin_chunks) * max_chunk_body); }|'
-check "19 Amphora ties its own room too" ok
+# Amphora tied its own room on 20260906, so this case turned over: planting the tie proved
+# nothing once the real file carried it, and the gate that welcomed the third tie stopped
+# catching the first two rooms dropping theirs. Dropping Amphora's own tie is the case that
+# earns its place now, and 16-19 are the three single drops plus the pair.
+fresh; edit amphora/vessel_fetch_wire.rye '/max_resin_bytes <= @as(u32, max_resin_chunks) \* max_chunk_body/d'
+check "19 Amphora drops its own carriage tie" ties_missing
 
 echo "-- a bound that stops being a readable literal --"
 fresh; edit mantra/beading.rye 's/^pub const max_resin_bytes: u32 = 512;/pub const max_resin_bytes: u32 = 8 * 64;/'
@@ -154,7 +157,7 @@ echo "cases=$cases"
 echo "refusals=$refusals"
 echo "welcomes=$welcomes"
 echo "wrong=$wrong"
-if [ "$wrong" -eq 0 ] && [ "$cases" -eq 20 ] && [ "$refusals" -eq 16 ] && [ "$welcomes" -eq 4 ]; then
+if [ "$wrong" -eq 0 ] && [ "$cases" -eq 20 ] && [ "$refusals" -eq 17 ] && [ "$welcomes" -eq 3 ]; then
   echo "verdict=proven"
 else
   echo "verdict=control_disagrees"
