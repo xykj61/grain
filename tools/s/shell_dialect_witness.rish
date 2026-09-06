@@ -205,10 +205,16 @@ assert date_admits.ok else "shell-dialect: the same planted date site must pass 
 # host's own `readlink -f` on six real paths including a symlink and a name carrying a space, and
 # `sed_inplace` is read back for its bytes AND its mode -- the mode being the half `mv` would lose
 # and the exec-bit law would then book (REDS %159).
+#
+# Thirty-two behaviours became thirty-seven on `20260905` when `lock_acquire` learned to reap a
+# lock whose pid file is empty PAST a bounded grace (REDS %445). The seated pair -- an empty and a
+# non-numeric pid waited on rather than reaped -- keeps both its bounds and both its meanings,
+# since each is shorter than the grace; the five new legs prove the other half of that same
+# reading, and each was run against the elder function first, where all five miss.
 let portable = run ["sh" "tools/fixtures/s/shell_portable_control.sh"]
 say portable.out
 assert portable.ok else "shell-dialect: the portable-helper control must exit 0"
 assert portable.out contains "fail=0" else "shell-dialect: no helper behaviour may miss"
-assert portable.out contains "pass=32" else "shell-dialect: want thirty-two helper behaviours proven"
+assert portable.out contains "pass=37" else "shell-dialect: want thirty-seven helper behaviours proven"
 
 say "GREEN: shell-dialect -- five gated families stand at zero and a sixth at a ratchet of seven, three real guards read the same on both dialects while planted elder copies still break, the elder stat order is reproduced on this host and its repair proven under a stat that refuses the GNU flag, and every one of the six ceilings is proven from both sides on a planted tree"

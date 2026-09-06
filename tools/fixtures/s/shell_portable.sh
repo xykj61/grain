@@ -201,22 +201,63 @@ sed_inplace() {
 # The wait is bounded and refuses by name, exactly as `flock -w` did: a deadlock reports itself
 # rather than hanging forever.
 #
+# THE HOLE THAT PROPERTY LEFT, and the grace that closes it (REDS %445). The pid is written
+# AFTER the directory exists, because `mkdir` is the atomic step and nothing can be written into
+# a directory before it is made. So there is a window -- microseconds wide -- in which the lock
+# stands and `pid` is empty or absent. A waiter reading that window must NOT reap, or two holders
+# get one lock. A waiter reading a lock whose owner DIED inside that window must reap, or the
+# lock stands forever: nobody will ever write that pid, and nobody will ever release it.
+#
+# Both readings look identical in a single glance, and they are told apart by TIME. An empty or
+# unreadable pid file earns a bounded grace of `grace` consecutive observations, one second
+# apart; still empty after it, and the owner never lived to write it. The counter resets the
+# moment a pid appears, so a lock released and retaken under the waiter's nose is not reaped for
+# its predecessor's silence.
+#
+# Measured on this pier `20260905`: a lock left at 17:16 with a zero-byte `pid` blocked every
+# Glow build for five hours and forty-five minutes, and the roster guard behind it read
+# `lantern_face green 1454s` against the 9.5s its own row declares -- 67% of a 36-minute cold
+# pass spent waiting on a dead owner. The grace costs `grace` seconds once, and only on a lock
+# that is already broken.
+#
+# THE TRADE, NAMED. The grace opens a window of its own: a lock released and retaken by a new
+# holder at the exact instant the waiter's grace expires could be reaped from a live owner. That
+# window is microseconds wide and must land on the waiter's one-second tick; the alternative it
+# replaces is a CERTAIN permanent hang. Safety before speed is TAME's order, and a guaranteed
+# deadlock is the larger safety failure -- the more so because every caller of this lock already
+# emits to a private path and installs with an atomic rename, so a rare double-build leaves a
+# whole binary either way.
+#
 #   lock_acquire glow/.cache/.build.lock 1800 || { echo "FAIL: ..."; exit 3; }
 #   trap 'lock_release glow/.cache/.build.lock' EXIT INT TERM
 lock_acquire() {
   _sp_lock=$1
   _sp_wait=${2:-1800}
+  # Five seconds is five million times the window it has to cover, and it is paid only on a lock
+  # already broken. A caller that knows its own timing may pass its own.
+  _sp_grace=${3:-5}
   _sp_waited=0
+  _sp_empty=0
   while ! mkdir "$_sp_lock" 2>/dev/null; do
     # A lock whose owner has gone is a lock nobody will ever release, so it is reaped rather than
-    # waited out. An unreadable or empty pid file means a lock caught mid-creation: wait, never reap.
+    # waited out. An unreadable or empty pid file means a lock caught mid-creation: waited on
+    # inside the grace, reaped past it, since an owner that never wrote its pid never lived.
+    _sp_owner=
     if [ -s "$_sp_lock/pid" ]; then
       _sp_owner=$(cat "$_sp_lock/pid" 2>/dev/null || printf '')
-      case "$_sp_owner" in
-        ''|*[!0-9]*) : ;;
-        *) kill -0 "$_sp_owner" 2>/dev/null || { rm -rf "$_sp_lock"; continue; } ;;
-      esac
     fi
+    case "$_sp_owner" in
+      ''|*[!0-9]*)
+        _sp_empty=$((_sp_empty + 1))
+        [ "$_sp_empty" -ge "$_sp_grace" ] && { rm -rf "$_sp_lock"; _sp_empty=0; continue; }
+        ;;
+      *)
+        # A pid names a live owner: wait, however long the bound allows. The counter resets, so a
+        # lock retaken mid-wait is judged on its own silence rather than its predecessor's.
+        _sp_empty=0
+        kill -0 "$_sp_owner" 2>/dev/null || { rm -rf "$_sp_lock"; continue; }
+        ;;
+    esac
     [ "$_sp_waited" -ge "$_sp_wait" ] && return 1
     sleep 1
     _sp_waited=$((_sp_waited + 1))

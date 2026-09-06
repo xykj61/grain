@@ -114,12 +114,48 @@ printf '%s\n' "$dead" > "$lk/pid"
 lock_acquire "$lk" 2 && ok "a lock whose owner has died is reaped" || bad "a lock whose owner has died is reaped"
 lock_release "$lk"
 
-# An empty or non-numeric pid file is a lock caught mid-creation, so it is waited on rather than
-# reaped -- reaping there would hand two holders the same lock.
+# An empty or non-numeric pid file is a lock caught mid-creation, so INSIDE the grace it is waited
+# on rather than reaped -- reaping there would hand two holders the same lock. Both bounds below
+# are shorter than the default grace, so both still refuse exactly as they did when this pair was
+# seated.
 mkdir -p "$lk"; : > "$lk/pid"
 ( lock_acquire "$lk" 1 ) && bad "an empty pid file is waited on rather than reaped" || ok "an empty pid file is waited on rather than reaped"
 mkdir -p "$lk"; printf 'not-a-pid\n' > "$lk/pid"
 ( lock_acquire "$lk" 1 ) && bad "a non-numeric pid file is waited on rather than reaped" || ok "a non-numeric pid file is waited on rather than reaped"
+
+# PAST the grace the same lock is reaped, because an owner that never wrote its pid never lived to
+# release it. This is the half the seated pair could not reach, and the cost of not reaching it was
+# measured rather than imagined: a lock left at 17:16 with a zero-byte pid blocked every Glow build
+# on this pier for five hours and forty-five minutes, and the roster guard waiting behind it read
+# `lantern_face green 1454s` against the 9.5s its own row declares (REDS %445).
+mkdir -p "$lk"; : > "$lk/pid"
+reap_start=$(date +%s)
+lock_acquire "$lk" 30 3 && ok "an empty pid file past the grace is reaped" || bad "an empty pid file past the grace is reaped"
+reap_end=$(date +%s)
+[ "$((reap_end - reap_start))" -ge 2 ] && [ "$((reap_end - reap_start))" -lt 10 ] \
+  && ok "the reap waited the grace out, and the grace rather than the bound" \
+  || bad "the reap waited the grace out, and the grace rather than the bound"
+lock_release "$lk"
+
+mkdir -p "$lk"; printf 'not-a-pid\n' > "$lk/pid"
+lock_acquire "$lk" 30 3 && ok "a non-numeric pid file past the grace is reaped" || bad "a non-numeric pid file past the grace is reaped"
+lock_release "$lk"
+
+# The DEFAULT grace is the one the Glow build lock actually gets -- glow_run_worker.sh passes a
+# wait and no grace at all -- so it is proven by running rather than read off the assignment.
+# BOTH timing legs carry an upper bound as well as a lower one, and that is what makes them bites
+# rather than votes: against the elder function the acquire simply failed after its whole 30-second
+# bound, so `elapsed >= 2` and `elapsed >= 4` were both trivially true and neither leg could tell
+# the repair from the defect. The upper bound is what says the wait was the GRACE.
+mkdir -p "$lk"; : > "$lk/pid"
+def_start=$(date +%s)
+lock_acquire "$lk" 30 && ok "the default grace reaps too, which is the grace the Glow build lock is given" \
+  || bad "the default grace reaps too, which is the grace the Glow build lock is given"
+def_end=$(date +%s)
+[ "$((def_end - def_start))" -ge 4 ] && [ "$((def_end - def_start))" -lt 15 ] \
+  && ok "the default grace is five observations -- longer than none, far shorter than the bound" \
+  || bad "the default grace is five observations -- longer than none, far shorter than the bound"
+lock_release "$lk"
 rm -rf "$lk"
 
 # Releasing a lock nobody holds costs nothing, so a caller may release on every exit path.

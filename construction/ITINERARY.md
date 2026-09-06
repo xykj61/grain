@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `e8be41ead3` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `0a36c98a91` -- HEAD's parent, resolvable everywhere (%401).
 
 **Now.** **A meter that reads tracked files cannot be measured before it is tracked.**
 
@@ -111,7 +111,7 @@ never from the one written in the row.
 **Landed `20260905`** -- `%430` and `%438` whole on the [235749 shelf](archive/20260905-235749_itinerary-landed-accounts.md); `%435`, `%427`-`%429`, `%423`-`%426`, `%420`, `%413`/`%412`, `%411`/`%410`, `%409`, `%408`; Mantra's 20 guards, the ripgrep fetch, the aroma breach, the baton and the three berths, and the bound grant itself: whole on the [20260905.192154 shelf](archive/20260905-192154_itinerary-landed-accounts.md).
 **`%442`/`%443` CLOSED** (`20260905.231715`, bakery's first landing) -- two guards printed GREEN with ripgrep off PATH, since a capture that discards its status and is read for emptiness cannot tell *nothing matched* from *nothing ran*. `require_instrument` seated in `shell_portable.sh`; `instrument_absence` gates that construction at zero, `tier lap`. Then **the new guard counted its own control's planted fixture as field** -- it enumerates with `git ls-files`, so it read `open=0` untracked and `open=1` staged, and the authoring lap measured a tree its commit would not ship. A heredoc body is text a script WRITES: it reads `fixture=yes` now, printed by path, and `require_instrument` inside one no longer arms a file by luck. **38 control legs where 24 stood**, each paired. **A meter that reads tracked files cannot be measured before it is tracked.** Whole on the [shelf](archive/REDS-the-guard-that-could-not-see-itself-rows-442-443.md).
 **Named for the baton, not seated** (bakery): SEND tells a witness-adding round to regenerate the two pages **before the hot pass**, which is right and incomplete -- `readme_metrics_scan.sh` counts with `git ls-files`, so regenerating **before `git add`** writes a stale number. Measured: **1806** before staging, **1807** after, `readme_metrics` red between. The clause wants two words -- *after staging*. **Yours**, being a baton edit that reaches eight ships.
-**Pheromone's:** `shell_dialect` reds on two `sed -i` in `fleet_key_locality_control.sh`:61,65.
+**`%445` CLOSED** -- a death read as a birth. [Shelf](archive/REDS-the-lock-that-outlived-its-owner-rows-445.md).
 **`%441` CLOSED** (`20260905.225236`, Patchouli's first lap) -- **the commit that turned on the
 proofs of a thing it declared unbuilt.** `b4a647f68` rostered four `tier lap` guards reading
 `mantra/src/weave.rye` and, in the same commit, an essay booking three rounds to write what they

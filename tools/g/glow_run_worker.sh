@@ -159,6 +159,15 @@ mkdir -p glow/bin glow/.cache
 # zero-byte FILE at `.build.lock`, and `mkdir` over a plain file fails forever -- so a run on a
 # clone that had used the elder worker would wait out its whole bound and refuse. A new
 # mechanism under a new name makes that residue simply irrelevant, with no reaping special case.
+#
+# THE SAME SHAPE CAME BACK INSIDE THE NEW MECHANISM, one layer down (REDS %445). A builder killed
+# between `mkdir` and the write of its pid leaves the lock standing with a ZERO-BYTE `pid`, and
+# `lock_acquire` read that as a lock caught mid-creation and waited on it rather than reaping it --
+# forever, since nobody was ever going to write that pid. Measured here `20260905`: a lock left at
+# 17:16 blocked every Glow build for five hours and forty-five minutes, and the cold roster read
+# `lantern_face green 1454s` against the 9.5s its own row declares. `lock_acquire` now reaps an
+# empty pid past a bounded grace, so this worker's `BUILD_LOCK_WAIT` is again the bound it reads
+# like -- the longest a LIVE builder may hold the lock, rather than the price of one dead one.
 BUILD_LOCK=glow/.cache/.build.lock.d
 BUILD_LOCK_WAIT=${GLOW_BUILD_LOCK_WAIT:-1800}
 lock_acquire "$BUILD_LOCK" "$BUILD_LOCK_WAIT" || {
