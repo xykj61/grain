@@ -1408,3 +1408,70 @@ guard provenance_self_reference
 path tools/p/provenance_self_reference_witness.rish
 tier lap
 seated 20260905.160212
+
+# amphora -- the vessel family's eight witnesses, and not one of them stood on a clock. `amphora/`
+# holds 10 tracked Rye modules and 3,861 lines (`git ls-files 'amphora/*.rye' 'amphora/src/*.rye'`,
+# measured 20260905), and this roster named no guard over any of them. A lap that broke a seal, a
+# stamp, or the chunk assembler would have shipped green, because nothing was listening. That is
+# REDS %360's population exactly -- a guard that is never run guards nothing -- one family at a time.
+#
+# WHAT THE EIGHT PROVE, in the pairs they were written as. `pour` fills a vessel from the Cellar
+# ring-1 season, seals the cargo, then stamps the canonical body; `carry` moves it to a far dock and
+# proves the far bytes equal the near ones; `restore` scrubs cold and lands four files at the same
+# parent; `grand_round` runs pour, carry and restore end to end and re-restores; `first_resident`
+# pours a real counsel season and proves the out-home byte-equal. Each of the first three carries a
+# NEGATIVE twin that plants at the wall it names -- a forged manifest line, a forked-season re-pour,
+# an absent season, a tampered `seal_cargo`, a truncated vessel, a forged resin body, a torn chunk --
+# and asserts the refusal by its own error name, with the standing vessel proven untouched after
+# each. So the family already carries the half of the law a green reading can never show on its own:
+# every one of these guards is proven able to red.
+#
+# `lap` rather than `cadence`: all eight GREEN on this pier 20260905, 11 seconds together against a
+# lap pass of 838. They build the three binaries they drive rather than assuming a previous lap left
+# them behind -- `amphora/bin/` is gitignored, which killed them on a missing file once already
+# (REDS %334, and %337 for the absent -femit-bin directory) -- so a fresh clone pays that build and
+# the reading stays a fact about Amphora rather than about the last hand.
+#
+# The two `tools/k/kumara_*` witnesses read UNHEARD beside these and are NOT seated here: both are
+# green on this pier, and both drive `kumara/` over `tally/kumara.rye` rather than `amphora/`, so
+# they belong to the lane that owns Tally. Named rather than taken.
+
+guard amphora_pour
+path tools/am/amphora_pour_witness.rish
+tier lap
+seated 20260905.225551
+
+guard amphora_pour_negative
+path tools/am/amphora_pour_negative_witness.rish
+tier lap
+seated 20260905.225551
+
+guard amphora_carry
+path tools/am/amphora_carry_witness.rish
+tier lap
+seated 20260905.225551
+
+guard amphora_carry_negative
+path tools/am/amphora_carry_negative_witness.rish
+tier lap
+seated 20260905.225551
+
+guard amphora_restore
+path tools/am/amphora_restore_witness.rish
+tier lap
+seated 20260905.225551
+
+guard amphora_restore_negative
+path tools/am/amphora_restore_negative_witness.rish
+tier lap
+seated 20260905.225551
+
+guard amphora_grand_round
+path tools/am/amphora_grand_round_witness.rish
+tier lap
+seated 20260905.225551
+
+guard amphora_first_resident
+path tools/am/amphora_first_resident_witness.rish
+tier lap
+seated 20260905.225551
