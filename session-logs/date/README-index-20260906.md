@@ -13,12 +13,14 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 |---|---|---|
 | `20260906.051012` | [the writer recovered from a dead lap](20260906/20260906-051012_the-writer-recovered-from-a-dead-lap.kyri) | %450's typing half closed; a %440-class red repaired. |
 | `20260906.045552` | [the census that answers zero](20260906/20260906-045552_the-census-that-answers-zero.kyri) | 1,713 Rye files; one claimed, none built. |
+| `20260906.045319` | [The table that fits](20260906/20260906-045319_the-table-that-fits.kyri) | 1.65 ns in L1d against 161.84 in DRAM -- 98x, and inert at 720 points |
+| `20260906.044130` | [a clean status is not an empty tree](20260906/20260906-044130_a-clean-status-is-not-an-empty-tree.kyri) | %460: three lost logs recovered. |
 | `20260906.042632` | [The lap that survived its own death](20260906/20260906-042632_the-lap-that-survived-its-own-death.kyri) | rule 5 seated; two rows withdrawn, one claim retracted. |
 | `20260906.041131` | [the guard that blamed the binary](20260906/20260906-041131_the-guard-that-blamed-the-binary.kyri) | %460: no file(1), so ten right binaries read wrong. |
 | `20260906.040420` | [three meters wrong about their own ground](20260906/20260906-040420_three-meters-wrong-about-their-own-ground.kyri) | %461 closed; two numbers lost mid-send. |
 | `20260906.040301` | [the pen that planted a moved number](20260906/20260906-040301_the-pen-that-planted-a-number-the-law-had-moved.kyri) | two bound meters closed. |
+| `20260906.040055` | [the raise that outran its meters](20260906/20260906-040055_the-raise-that-outran-its-meters.kyri) | %459 closed, %460 booked. |
 | `20260906.035833` | [The number the law moved](20260906/20260906-035833_the-number-the-law-moved.kyri) | recovered from a stash; both its rows withdrawn. |
-| `20260906.045319` | [The table that fits](20260906/20260906-045319_the-table-that-fits.kyri) | 1.65 ns in L1d against 161.84 in DRAM -- 98x, and inert at 720 points |
 | `20260906.035537` | [the revocation and the fault ride one edge](20260906/20260906-035537_the-revocation-and-the-fault-ride-one-edge.kyri) | one edge carries both; 48 of 720. |
 | `20260906.031132` | [the window closes and the loop takes over](20260906/20260906-031132_the-window-closes-and-the-loop-takes-over.kyri) | one live seat; the tree is clean. |
 | `20260906.030420` | [an instrument must know where it stands](20260906/20260906-030420_an-instrument-must-know-where-it-stands.kyri) | one file, two paths, three retractions. |
@@ -29,6 +31,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260906.024109` | [the page that scored perfect while it was wrong](20260906/20260906-024109_the-page-that-scored-perfect-while-it-was-wrong.kyri) | repaired at its generator. |
 | `20260906.022430` | [the ship that had no copy](20260906/20260906-022430_the-ship-that-had-no-copy.kyri) | petrichor survived; six logins wrote one file. |
 | `20260906.020024` | [one login for a whole fleet](20260906/20260906-020024_one-login-for-a-whole-fleet.kyri) | eight ships, one credential, one outage. |
+| `20260906.013937` | [the word the counter could not see](20260906/20260906-013937_the-word-the-counter-could-not-see.kyri) | %455: a seated law breached where no meter reads. |
 | `20260906.013116` | [the guard that could not run half of itself](20260906/20260906-013116_the-guard-that-could-not-run-half-of-itself.kyri) | a probe, not a declaration. |
 | `20260906.011616` | [a third of the sky has no road](20260906/20260906-011616_a-third-of-the-sky-has-no-road.kyri) | %452: a hop count with no walk. |
 | `20260906.010636` | [the floor that stopped biting](20260906/20260906-010636_the-floor-that-stopped-biting.kyri) | Amphora tied its bounds; a floor gate lost its bite. |
