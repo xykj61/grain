@@ -110,7 +110,12 @@ pub const Address = struct {
 };
 
 /// A point number to its place in the fractal, or null when it is past the
-/// universe's 792. The range tags the tier; the remainder names the indices.
+/// universe's 720. The range tags the tier; the remainder names the indices.
+///
+/// SAY WHY THIS NUMBER MOVED. This line read 792 -- the count the three spaces have when
+/// they are held apart, 12 + 60 + 720. The inclusive breach made every galaxy also a star
+/// and a planet, so the universe IS the planet count, and `universe_points` has read 720
+/// since. The constant moved and the prose did not.
 pub fn decode(number: u32) ?Address {
     // The seated topology is one sky; decode reads it from `compass_sky`, so the free
     // function and the loadable sky can never drift apart.
