@@ -33,6 +33,17 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const weave = @import("weave.rye");
 
+// Every declaration of `weave.rye`, referenced at comptime so each body is forced through
+// semantic analysis. Without it Zig analyses only what this witness happens to CALL, and a
+// public function carrying a type error rides through the build while the witness prints GREEN
+// -- measured on this very module, by appending one and watching every claim below still pass.
+// The control proves the leg from both sides: the plant reds with the walker and sails without.
+comptime {
+    for (@typeInfo(weave).@"struct".decls) |decl| {
+        _ = &@field(weave, decl.name);
+    }
+}
+
 const witness_version = "20260906.000542";
 
 /// The largest number of texts a hand-written plant holds here. Named because

@@ -1,0 +1,89 @@
+# tools/r/rye_witness_walker_witness.rish -- a witness proves what it CALLS, and claims the module.
+#
+# WHY THIS RUNG EXISTS. Zig analyses lazily, so a witness that imports a module and calls two of its
+# functions forces exactly those two bodies through semantic analysis and walks past every other
+# declaration. A public function carrying a flat type error therefore rides through the build while
+# the witness prints GREEN. Measured `20260906` on metal rather than argued: a `pub fn` assigning a
+# `u32` to a `[]const u8` was appended to `mantra/src/weave.rye`, nothing else was touched, and
+# `tools/m/mantra_weave_merge_witness.rish` read GREEN -- its own five-break control included. That
+# is REDS %470's fault in the file next door, and the instrument REDS %463 asked for.
+#
+# WHAT ANSWERS IT is four lines: a comptime loop over `@typeInfo(module).@"struct".decls` that reads
+# each declaration back with `@field`, which forces every body through analysis. The same plant reds
+# the build once that block is present, and the honest module still reads GREEN -- both directions
+# run before this rung was written.
+#
+# WHAT IT HOLDS. One reading is gated: a `*_witness.rye` importing the module its own name promises
+# and not walking it. That set is the tree's believers, and its ceiling only falls. Two more are
+# reported rather than gated -- `pairs`, since a witness imports dependencies as well as its
+# subject, and `ambiguous`, a witness whose stem names nothing and which imports several siblings,
+# so it does not say which it proves. Guessing at those would accuse files of breaking a promise
+# nobody can show they made.
+#
+# WHY THE CREDIT CARRIES ITS CONDITION. A walker sitting in a file no build compiles forces nothing
+# at all, so `unreached` counts walker-carrying witnesses the compile-reach census places in its
+# `never` set, and the gate is zero. Where that resolver cannot answer, `unreached` reads `-1` and
+# says so -- an unknown published as unknown, never as zero, which is REDS %488's lesson one census
+# over: the credit crossed the seam carrying its condition and the residue did not.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/r/rye_witness_walker_witness.rish
+
+say "rye-witness-walker: Language EN -- does a witness prove its module, or only the parts it calls?"
+say "rye-witness-walker: Style Gauge, Meter -- one gated reading, two reported, the credit conditional."
+say "rye-witness-walker: Lens TAME -- three named bounds, a refusal by name at each, no override anywhere."
+
+say "rye-witness-walker: reading every witness, its imports, and which of them it walks..."
+let census = run ["sh" "tools/fixtures/r/rye_witness_walker_scan.sh"]
+
+# The scan's own lines come out BEFORE any assert. A refusal that names no lines sends its reader to
+# output nobody printed, which is the fault this tree booked as %480 one guard over.
+say census.out
+
+assert census.ok else "rye-witness-walker: the census refused -- read its lines above"
+assert census.out contains "verdict=ok" else "rye-witness-walker: a witness claims a module it does not fully analyze, or a walker sits where no build reaches it"
+
+assert census.out contains "witnesses=" else "rye-witness-walker: the witness count is missing"
+assert census.out contains "pairs=" else "rye-witness-walker: the pair count is missing"
+assert census.out contains "subjects=" else "rye-witness-walker: the gated set is missing"
+assert census.out contains "ambiguous=" else "rye-witness-walker: the ambiguous residue is missing -- a set that names what it cannot decide is the only honest one"
+assert census.out contains "walked=" else "rye-witness-walker: the walked count is missing"
+assert census.out contains "unwalked=" else "rye-witness-walker: the gated reading is missing"
+assert census.out contains "unreached=" else "rye-witness-walker: the walker's own condition is unread -- a walker no build compiles forces nothing"
+
+say "rye-witness-walker: proving the census on real repositories in a throwaway pen..."
+let control = run ["sh" "tools/fixtures/r/rye_witness_walker_control.sh"]
+assert control.ok else "rye-witness-walker: the control must complete -- a census nobody has watched fail is a census nobody has tested"
+assert control.out contains "control_verdict=ok" else "rye-witness-walker: the control must reach its own verdict -- ${control.out}"
+
+# The census's whole subject, shown from both sides in one pen. A scan that had stopped reading the
+# walker at all would pass the second of these and fail the first.
+assert control.out contains "clean_walked=1" else "rye-witness-walker: a witness that walks its subject must be credited, or every reading below is a reading of nothing"
+assert control.out contains "no_walker_unwalked=1" else "rye-witness-walker: the same pen without its walker must be accused"
+
+# The ceiling from both sides, by planting rather than by an override the scan does not offer.
+assert control.out contains "ceiling_over_exit=1" else "rye-witness-walker: the ceiling is not proven from its failing side"
+assert control.out contains "ceiling_at_exit=0" else "rye-witness-walker: the ceiling is not proven from its passing side -- a refusal that never welcomes cannot be told from a bypass"
+
+# The three ways a walker can be claimed without being one. Each is a green this census must refuse.
+assert control.out contains "comment_walker_walked=0" else "rye-witness-walker: a commented-out walker must not be credited -- a teaching header is where the shape most often appears"
+assert control.out contains "loop_no_field_walked=0" else "rye-witness-walker: a decls loop whose body forces nothing is a walker in shape only"
+assert control.out contains "field_no_loop_walked=0" else "rye-witness-walker: one declaration read is not every declaration read"
+
+# Which module a witness is actually about, decided two ways and refused when it cannot be.
+assert control.out contains "stem_subject_subjects=1" else "rye-witness-walker: a dependency import must not be counted as a second claim"
+assert control.out contains "single_fallback_subjects=1" else "rye-witness-walker: a witness importing exactly one sibling names its subject whatever its stem says"
+assert control.out contains "ambiguous_pair_ambiguous=1" else "rye-witness-walker: a witness that does not say which module it proves must be published as ambiguous, never guessed at"
+
+# A second name for one file is not a second claim, and a name for no file is not a claim at all.
+assert control.out contains "symlink_pairs=1" else "rye-witness-walker: a subject reached through a symlink must count once"
+assert control.out contains "dangling_pairs=0" else "rye-witness-walker: an import naming nothing tracked is not a claim about anything"
+
+# A census that reads nothing must refuse rather than answer *nothing is wrong* -- %463's own first
+# defect, and the one this family exists to never repeat.
+assert control.out contains "empty_corpus_verdict=empty_corpus" else "rye-witness-walker: a tree with no Rye must refuse"
+assert control.out contains "no_witnesses_verdict=no_witnesses" else "rye-witness-walker: a tree with no witness must refuse"
+assert control.out contains "no_checkout_verdict=no_checkout" else "rye-witness-walker: a directory that is not a checkout must refuse"
+assert control.out contains "unreached_unknown=-1" else "rye-witness-walker: an unanswerable condition must publish as unknown, never as zero"
+
+say "GREEN: every witness naming its subject either walks that module's declarations or is counted, and no walker sits where nothing compiles it."
