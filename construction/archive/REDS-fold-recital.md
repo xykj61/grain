@@ -349,3 +349,5 @@ at a closed fold.*
 *Row %494 folded to [`REDS-the-verdict-travelled-and-the-reason-did-not-rows-494.md`](REDS-the-verdict-travelled-and-the-reason-did-not-rows-494.md) on `20260906.130755`, **CLOSED** -- a wrapper is only transparent in the direction it was tested -- the exit code was forwarded on purpose and the stderr was forgotten, and nothing tells those halves apart until something fails.*
 
 *Row %495 folded to [`REDS-a-rename-anchored-to-a-bare-number-rows-495.md`](REDS-a-rename-anchored-to-a-bare-number-rows-495.md) on `20260906.140817`, **CLOSED** -- a rename anchored to a bare number matches any row that shares it, and on a spine eight ships write into, sharing a number is the ordinary case.*
+
+*Row %496 folded to [`REDS-one-link-in-seven-rows-496.md`](REDS-one-link-in-seven-rows-496.md) on `20260906.133252`, **CLOSED** -- a reading that holds a line out of one question holds it out of every question computed in the same pass; booked %492, renumbered to %496 on the rebase that found a peer had published that number against an earlier stamp.*
