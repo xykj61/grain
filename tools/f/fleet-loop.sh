@@ -99,10 +99,15 @@ prompt_file=tools/${prompt_room}/${seat}_seat_prompt.txt
 baton_file=tools/f/fleet_baton.txt
 seat_prompt() {
   if [ -f "$baton_file" ]; then
-    cat "$baton_file"
+    cat "$baton_file" || { echo "fleet-loop: the baton could not be read -- refusing to run a lap without it" >&2; return 3; }
     printf '\n'
   fi
-  cat "$prompt_file"
+  # A LAP WITHOUT ITS LANE IS WORSE THAN NO LAP. `cat` failing here used to print to stderr and
+  # return nothing, so the agent received the baton alone and worked with no lane, no seat, and no
+  # peers named -- which is exactly what happened on `20260906` when every loop was relaunched
+  # across the commit that moved the prompts into their letter rooms: `prompt_file` was assigned
+  # from the elder script before round-open pulled the newer one, and seven ships ran a generic lap.
+  cat "$prompt_file" || { echo "fleet-loop: seat prompt $prompt_file could not be read -- refusing a lane-less lap" >&2; return 3; }
 }
 
 # invariant: a seat runs only in its own tree (%291). The field ~/grain is the
@@ -227,7 +232,7 @@ stream_claude() {
 
 # Earth ships: Linux jail wrap like launch-claude-chapter; Darwin/FLEET_BARE host claude.
 run_earth_claude() {
-  _prompt=$(seat_prompt)
+  _prompt=$(seat_prompt) || { echo "fleet-loop: the prompt could not be assembled -- this attempt is not a counted lap"; return 4; }
   echo "fleet-loop: invoking claude --output-format stream-json --verbose -- tool lines render live; silence after this line is the API, not round-open"
   if [ "$(uname -s)" = Linux ] && [ "${FLEET_BARE:-0}" != 1 ]; then
     if ! linux_jail_present; then
