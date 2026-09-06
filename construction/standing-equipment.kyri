@@ -158,6 +158,17 @@ guard seed_link
 path tools/s/seed_link_witness.rish
 seated 20260823.034321
 
+
+# sow_allow_reach -- the seed's allowlist proven from the SHIPPED side. sow_witness asks did
+# anything private get out; seed_link asks does a shipped link land; neither can ask did the room we
+# allowed actually arrive. On `20260906` a second filter by name inside sow_project.sh discarded an
+# allowed room, the projection ran, and sow_witness answered GREEN -- because a room that ships no
+# bytes leaks no names (REDS %485). A publish is as wrong when a room is missing as when a name
+# leaks, and quieter.
+guard sow_allow_reach
+path tools/s/sow_allow_reach_witness.rish
+tier lap
+seated 20260906.122632
 guard shipped_binary_claim
 path tools/s/shipped_binary_claim_witness.rish
 seated 20260821.203103

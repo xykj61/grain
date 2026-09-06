@@ -116,6 +116,8 @@ allow context/THREATS.md
 allow context/equinox_map.brix
 allow context/equinox_foundations.brix
 allow context/specs   # the project's own technical specs; identity/provenance sub_excluded
+allow gratitude    # the thanks room, SCRUBBED -- Keaton's word 20260906; see the two sub-exclude
+                   # classes below (a saved third-party article, and every gitlink submodule)
 allow external-research
 allow active-designing
 allow active-development   # the round-scoping sibling, opened 20260821; no personal reference by construction
@@ -256,7 +258,11 @@ scrub     edu                             # the learning floor
 template  manual                          # the four teaching rooms
 scrub     nixos-guide                     # host setup guide
 scrub     external-research               # study of the world; name-bearing memos -- scrub identity
-template  gratitude                       # third-party, held whole and unmodified
+scrub     gratitude                       # the thanks room. SCRUB rather than template (20260906):
+                                        # 20 of its 132 tracked files name the maintainer, a handle,
+                                        # or a pier path, so the name->role transform has to run over
+                                        # them. A thanks record outlives the tool it thanks, and it
+                                        # ships depersonalized rather than not at all.
 template  vendor                          # third-party build source, unmodified
 
 # ---- personal record (never copied) ----
@@ -297,6 +303,39 @@ personal  research-silo                   # research trails, name-bearing -- wit
 # a filled GLOW_*.bron) are already untracked, so git ls-files never offers them.
 
 # whole-path:
+# ---- gratitude: two classes withheld, and each for a different law ----------------------
+#
+# COPYRIGHT, not privacy. A saved third-party article is somebody else's writing held for study
+# (gratitude-licenses.md: a reading library, never a dependency). Shipping the field's own copy to
+# a public repository would republish it, which is a different act from thanking its author.
+sub_exclude gratitude/Your customers hate MVPs. Make a SLC instead..html
+#
+# LICENCE, not privacy. Every project below is held as a GITLINK precisely so our history never
+# contains its source (gratitude-licenses.md, the GPL-3.0 and LGPL-2.1 tables). tools/s/sow.rish
+# copies files and knows nothing of gitlinks, so today it ships empty directories -- these are
+# unchecked-out on this pier, measured 20260906. That safety is INCIDENTAL, and a hand who checks
+# one out for a read would turn it structural-into-a-leak. Named by path so it cannot.
+sub_exclude gratitude/ai-jail
+sub_exclude gratitude/damus
+sub_exclude gratitude/dawk
+sub_exclude gratitude/dvui
+sub_exclude gratitude/grain-sketchbook
+sub_exclude gratitude/infuse.nix
+sub_exclude gratitude/libqrencode
+sub_exclude gratitude/manyana
+sub_exclude gratitude/nips
+sub_exclude gratitude/primal
+sub_exclude gratitude/ripgrep
+sub_exclude gratitude/sbase
+sub_exclude gratitude/sixos
+sub_exclude gratitude/sui
+sub_exclude gratitude/tigerbeetle
+sub_exclude gratitude/toybox
+sub_exclude gratitude/ubase
+sub_exclude gratitude/urbit
+sub_exclude gratitude/uutils-coreutils
+sub_exclude gratitude/zig
+
 sub_exclude linengrow     # civic-app venture/treasury specifics tied to one person
 
 # foundations biography (file-granular) -- the doctrine beside these ships:
