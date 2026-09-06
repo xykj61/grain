@@ -2,7 +2,7 @@
 
 **Language:** EN  
 **Last updated:** `20260802.223739` (Equinox e259 — equality arc closes 8/8 · Rye tend)
-**Status:** Living — room open; a1 ×9 · a2 whole · equality 8/8 closed · Comlink R1
+**Status:** Living -- room open; a1 x9 - a2 whole - equality 8/8 seated, 4/8 heard - Comlink R1
 **Where this sits:** home is [`../../README.md`](../../README.md) - a first hour in your hands is
 [`../../docs-geode/tutorials/the-first-hour.md`](../../docs-geode/tutorials/the-first-hour.md) - the whole
 path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURCE.md)
@@ -45,7 +45,9 @@ Witness: `rishi/bin/rishi run tools/r/rishi_a1_gate_walls_witness.rish` (also er
 | `gate-mantra-diff-fields-eq-u32` | diff fields = 2 | 2→1 · 1→0 · 3→0 |
 | `gate-mantra-store-dirs-eq-u32` | store dirs = 3 | 3→1 · 2→0 · 4→0 |
 
-Witnesses: `tools/au/aurora_a1_seed_length_eq_witness.rish` · `tools/au/aurora_a1_signature_length_eq_witness.rish` · `tools/au/aurora_a1_living_stages_eq_witness.rish` · `tools/ca/caravan_c4_exit_meanings_eq_witness.rish` · `tools/rye/mantra_a1_line_fields_eq_witness.rye` · `tools/rye/mantra_a1_weave_fields_eq_witness.rye` · `tools/rye/mantra_a1_diff_fields_eq_witness.rye` · `tools/rye/mantra_a1_store_dirs_eq_witness.rye` · the equality arc stands closed (8/8).
+Witnesses: `tools/au/aurora_a1_seed_length_eq_witness.rish` - `tools/au/aurora_a1_signature_length_eq_witness.rish` - `tools/au/aurora_a1_living_stages_eq_witness.rish` - `tools/ca/caravan_c4_exit_meanings_eq_witness.rish` - `tools/rye/mantra_a1_line_fields_eq_witness.rye` - `tools/rye/mantra_a1_weave_fields_eq_witness.rye` - `tools/rye/mantra_a1_diff_fields_eq_witness.rye` - `tools/rye/mantra_a1_store_dirs_eq_witness.rye` -- eight gates, each proven at its seating.
+
+**Four of the eight are heard, and four await a runner** (measured `20260906`). The Mantra four run every cadence lap under [`tools/m/mantra_a1_equality_witness.rish`](../../tools/m/mantra_a1_equality_witness.rish), which builds each witness against the desk it reads and asserts both its claim and its just-over side. The Aurora three and the Caravan one stand on no roster, and a grep across `tools/` and `construction/` returns their names only here -- so a lane that rosters them turns four silent proofs into four heard ones, and each is a short lap in its own room. All eight stood that way until this line was written. The sentence this replaced read *the equality arc stands closed (8/8)*, true of the seating and by now a claim about the present that something measures (REDS %482).
 
 ## The a1 Deciding Gates (STOA331)
 

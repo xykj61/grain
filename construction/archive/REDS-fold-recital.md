@@ -329,3 +329,7 @@ at a closed fold.*
 *Row %479 folded to [`REDS-the-instrument-that-was-in-the-box-rows-479.md`](REDS-the-instrument-that-was-in-the-box-rows-479.md) on `20260906.110500`, **CLOSED** -- an instrument is not standing until its roster row is standing beside it.*
 
 *Row %480 folded to [`REDS-a-claim-whose-only-source-is-itself-rows-480.md`](REDS-a-claim-whose-only-source-is-itself-rows-480.md) on `20260906.092312`, **CLOSED** -- a claim whose only source is a previous statement of itself: three crushed indexes counting their rooms from memory.*
+
+
+*Row %482 folded to [`REDS-a-proof-nobody-runs-rows-482.md`](REDS-a-proof-nobody-runs-rows-482.md) on `20260906.104500`, **BOOKED** -- a page declared an equality arc closed on eight witnesses and no runner in the tree named seven of them; `%449` was a proof nobody compiled, and this is a proof nobody runs.*
+

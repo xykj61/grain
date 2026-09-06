@@ -1,0 +1,111 @@
+# tools/m/mantra_a1_equality_witness.rish -- the equality arc, finally heard.
+#
+# WHAT THIS GUARDS. Four Glow desks under src/gate/ pin the field counts of Mantra's four
+# shapes: a Line has 3 fields, a Weave has 2, a Diff has 2, and a Store has 3 directories.
+# Each desk decides EXACTLY -- `eq` rather than `gth` -- so it answers 1 on the count and 0
+# on either neighbor, which a ceiling rune cannot do. Four Rye witnesses under tools/rye/
+# ask each desk all three questions and print a named claim. This guard builds all four and
+# runs them.
+#
+# WHY IT EXISTS. Nothing ran them. Measured 20260906: of the eight witnesses src/gate/README.md
+# names when it declares the equality arc closed, seven had zero callers anywhere in the tree
+# and NONE of the eight stood on construction/standing-equipment.kyri. Their only mention was
+# that README sentence, and a sentence is not a runner. The four Mantra ones build and print
+# GREEN on metal today -- so this is not a rotted proof, it is an unheard one, which is the
+# state a proof is in just before it rots without anyone learning of it.
+#
+# THE CLASS THIS CLOSES. REDS %449 found mantra/src/weave.rye uncompiled through a toolchain
+# move while four rostered guards read it with grep, and %470 found the same fault in
+# mantra/src/diff.rye one file over, with five. Both were a PROOF NOBODY COMPILED. These four
+# are a PROOF NOBODY RUNS -- the same substitution wearing its second face, which is when a
+# lantern is owed a loom (.claude/rules/reds-first.md).
+#
+# WHY NO COMPTIME WALKER HERE, unlike tools/m/mantra_diff_witness.rish. That guard imports a
+# Rye module and needs the walker, because Zig analyses lazily and an import alone walks past
+# a type error in an uncalled body. These four witnesses import no local module: their subject
+# is a Glow desk read from disk at run time, and each witness IS the root file, so its own
+# `main` and everything it reaches are analysed by any build at all. A walker here would force
+# nothing the build does not already force, and copying one in for symmetry would be a rite
+# rather than a reading.
+#
+# WHAT THIS DOES NOT REACH. The other half of the same README sentence: three Aurora witnesses
+# (tools/au/aurora_a1_*_eq_witness.rish) and one Caravan witness
+# (tools/ca/caravan_c4_exit_meanings_eq_witness.rish), all four also unrostered and uncalled.
+# They are other lanes' rooms -- Caravan is a parked seat's -- so they are named and sized
+# here rather than taken.
+#
+# COST, MEASURED. The four run in 20s, 19s, 16s and 14s on this pier (20260906), 69s together,
+# plus about 5s of builds; the control adds six pen runs. That is why the roster row reads
+# `tier cadence` rather than `tier lap`: eight ships reading it twice a lap would spend the
+# saving it makes. The family is stable -- a field count moves only on a seam that wants
+# Keaton's word -- which is the roster header's own test for the slower clock.
+#
+# Desks: src/gate/gate-mantra-{line-fields,weave-fields,diff-fields,store-dirs}-eq-u32.glow
+# Neighbor: src/gate/gate-mantra-gen-floor-u32.glow -- the gth gate each witness re-checks.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/mantra_a1_equality_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+
+say "mantra-eq: Language EN -- four exact gates, proven by running them rather than by citing them."
+say "mantra-eq: Style Gauge, Meter -- every claim is a run, and the arc's own word is exactly."
+say "mantra-eq: Lens TAME -- each desk decides both sides, and the gth neighbor still stands."
+
+say "mantra-eq: all four desks and the gth neighbor are on disk..."
+let desks = run ["sh" "-c" "test -f src/gate/gate-mantra-line-fields-eq-u32.glow && test -f src/gate/gate-mantra-weave-fields-eq-u32.glow && test -f src/gate/gate-mantra-diff-fields-eq-u32.glow && test -f src/gate/gate-mantra-store-dirs-eq-u32.glow && test -f src/gate/gate-mantra-gen-floor-u32.glow"]
+assert desks.ok else "mantra-eq: a Mantra equality desk or the gth neighbor left src/gate/"
+
+say "mantra-eq: every desk still decides with eq, since a ceiling cannot answer the just-over side..."
+let exact = run ["sh" "-c" "grep -lE '\\(gth ' src/gate/gate-mantra-line-fields-eq-u32.glow src/gate/gate-mantra-weave-fields-eq-u32.glow src/gate/gate-mantra-diff-fields-eq-u32.glow src/gate/gate-mantra-store-dirs-eq-u32.glow | wc -l"]
+assert exact.ok else "mantra-eq: could not read the four equality desks"
+assert exact.out contains "0" else "mantra-eq: an equality desk reaches for gth, and a ceiling cannot decide exactly"
+
+say "mantra-eq: building and running the fifth gate -- a Line carries exactly three fields..."
+let line_build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build tools/rye/mantra_a1_line_fields_eq_witness.rye -femit-bin=mantra/bin/a1-line-fields"]
+assert line_build.ok else "mantra-eq: the line-fields witness does not compile"
+let line_run = run ["sh" "-c" "mantra/bin/a1-line-fields 2>&1"]
+assert line_run.ok else "mantra-eq: the line-fields witness exited non-zero"
+assert line_run.out contains "GREEN" else "mantra-eq: the line-fields witness is not GREEN"
+assert line_run.out contains "line fields=3 decide exactly" else "mantra-eq: the line-fields claim is missing"
+assert line_run.out contains "just over (4) answers 0" else "mantra-eq: the line-fields just-over side is missing -- the side a ceiling cannot answer"
+
+say "mantra-eq: building and running the sixth gate -- a Weave carries exactly two fields..."
+let weave_build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build tools/rye/mantra_a1_weave_fields_eq_witness.rye -femit-bin=mantra/bin/a1-weave-fields"]
+assert weave_build.ok else "mantra-eq: the weave-fields witness does not compile"
+let weave_run = run ["sh" "-c" "mantra/bin/a1-weave-fields 2>&1"]
+assert weave_run.ok else "mantra-eq: the weave-fields witness exited non-zero"
+assert weave_run.out contains "GREEN" else "mantra-eq: the weave-fields witness is not GREEN"
+assert weave_run.out contains "weave fields=2 decide exactly" else "mantra-eq: the weave-fields claim is missing"
+assert weave_run.out contains "just over (3) answers 0" else "mantra-eq: the weave-fields just-over side is missing"
+
+say "mantra-eq: building and running the seventh gate -- a Diff carries exactly two fields..."
+let diff_build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build tools/rye/mantra_a1_diff_fields_eq_witness.rye -femit-bin=mantra/bin/a1-diff-fields"]
+assert diff_build.ok else "mantra-eq: the diff-fields witness does not compile"
+let diff_run = run ["sh" "-c" "mantra/bin/a1-diff-fields 2>&1"]
+assert diff_run.ok else "mantra-eq: the diff-fields witness exited non-zero"
+assert diff_run.out contains "GREEN" else "mantra-eq: the diff-fields witness is not GREEN"
+assert diff_run.out contains "diff fields=2 decide exactly" else "mantra-eq: the diff-fields claim is missing"
+assert diff_run.out contains "just over (3) answers 0" else "mantra-eq: the diff-fields just-over side is missing"
+
+say "mantra-eq: building and running the eighth gate -- a Store carries exactly three directories..."
+let store_build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build tools/rye/mantra_a1_store_dirs_eq_witness.rye -femit-bin=mantra/bin/a1-store-dirs"]
+assert store_build.ok else "mantra-eq: the store-dirs witness does not compile"
+let store_run = run ["sh" "-c" "mantra/bin/a1-store-dirs 2>&1"]
+assert store_run.ok else "mantra-eq: the store-dirs witness exited non-zero"
+assert store_run.out contains "GREEN" else "mantra-eq: the store-dirs witness is not GREEN"
+assert store_run.out contains "store dirs=3 decide exactly" else "mantra-eq: the store-dirs claim is missing"
+assert store_run.out contains "just over (4) answers 0" else "mantra-eq: the store-dirs just-over side is missing"
+
+say "mantra-eq: breaking the arc six ways in a pen, so this guard is proven able to red..."
+let control = run ["sh" "tools/fixtures/m/mantra_a1_equality_control.sh"]
+assert control.ok else "mantra-eq: the control must complete -- a guard nobody has watched fail is a guard nobody has tested"
+assert control.out contains "control_verdict=ok" else "mantra-eq: the control must reach its own verdict"
+assert control.out contains "clean_exit=0" else "mantra-eq: the unmutated pen must reach GREEN, or every other phase fails for a reason the pen invented"
+assert control.out contains "eq_to_gth_exit=134" else "mantra-eq: swapping eq for gth must red -- a ceiling answering where an exact answer is owed is this arc's whole subject"
+assert control.out contains "constant_moved_exit=134" else "mantra-eq: moving the decided constant must red -- that is a field count drifting out from under its lock"
+assert control.out contains "desk_missing_exit=134" else "mantra-eq: an absent desk must red rather than read as agreement"
+assert control.out contains "neighbor_broken_exit=134" else "mantra-eq: breaking the gth neighbor must red -- each witness re-checks it by name"
+assert control.out contains "witness_uncompilable_exit=1" else "mantra-eq: a witness that stops compiling must red -- that is the %449 fault this arc was standing over"
+
+say "GREEN: the equality arc is heard -- four Mantra gates decide exactly, both sides, and the gth neighbor stands."

@@ -11,8 +11,10 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260906.104112` | [the box counted and never read](20260906/20260906-104112_the-box-counted-and-never-read.kyri) | %481: the card shipped its own conflict markers. |
 | `20260906.100418` | [the three vendor names surveyed](20260906/20260906-100418_the-three-vendor-names-surveyed.kyri) | Cursor 135, Codex 66, Grok 9; four traps named. |
 | `20260906.100141` | [the harness the census could not see](20260906/20260906-100141_the-harness-the-census-could-not-see.kyri) | %466 closed: 114 built files read as never-built. |
+| `20260906.094442` | [the guard that could not clear its own red](20260906/20260906-094442_the-guard-that-could-not-clear-its-own-red.kyri) | its own red latched. |
 | `20260906.094340` | [the card remembered the dead lap](20260906/20260906-094340_the-untracked-card-remembered-the-lap-that-died.kyri) | %477-%478: a stall found by running it. |
 | `20260906.092502` | [a claim whose only source is itself](20260906/20260906-092502_a-claim-whose-only-source-is-itself.kyri) | %480: three crushed indexes miscounted their rooms. |
 | `20260906.091519` | [the cause named by proximity](20260906/20260906-091519_the-cause-named-by-proximity.kyri) | %476: my own paper's 8 MiB step is page walk, not L3. |
@@ -53,6 +55,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260906.022430` | [the ship that had no copy](20260906/20260906-022430_the-ship-that-had-no-copy.kyri) | petrichor survived; six logins wrote one file. |
 | `20260906.020024` | [one login for a whole fleet](20260906/20260906-020024_one-login-for-a-whole-fleet.kyri) | eight ships, one credential, one outage. |
 | `20260906.013937` | [the word the counter could not see](20260906/20260906-013937_the-word-the-counter-could-not-see.kyri) | %455: a seated law breached where no meter reads. |
+| `20260906.013801` | [the census of what no compiler reads](20260906/20260906-013801_the-census-of-what-no-compiler-reads.kyri) | record restored; its code superseded by %463. |
 | `20260906.013116` | [the guard that could not run half of itself](20260906/20260906-013116_the-guard-that-could-not-run-half-of-itself.kyri) | a probe, not a declaration. |
 | `20260906.011616` | [a third of the sky has no road](20260906/20260906-011616_a-third-of-the-sky-has-no-road.kyri) | %452: a hop count with no walk. |
 | `20260906.011125` | [a guard is the wrong unit for a skip](20260906/20260906-011125_a-guard-is-the-wrong-unit-for-a-skip.kyri) | %446 closed at the legs, not the roster row. |
