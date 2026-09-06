@@ -11,6 +11,22 @@ path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 
 **Amphora** is **vessel software** -- preservation **in motion**. It carries sealed resins across a crossing (wire, dock, or pocket) under the same resins law and Kumara stamp as the cellar.
 
+A **vessel** is one file. You hand Amphora a season -- a directory of work you want to keep -- and it
+writes that whole season into a single readable `.bron` file you can put in a pocket, hand across a
+wire, or set on a shelf for a decade. Three verbs carry it, and the order inside the first one is
+the whole design. **Pour** fills the vessel, encrypts the cargo, and only then signs the canonical
+body, so the signature covers the sealed bytes rather than the clear ones, and a change to either
+half shows up in the other. **Carry** moves the vessel to a far dock, cutting it into chunks
+when it outgrows one datagram and proving the far bytes equal the near ones on arrival. **Restore**
+opens it cold at the other end, verifies before it trusts anything, and lands every file back at
+the parent it left.
+
+What makes a vessel worth trusting is that every wall names itself. Amphora checks the manifest
+line, the season's identity, the seal, the vessel's full length, and each chunk of a large resin,
+and it answers by name the moment one of them disagrees -- while the vessel already on disk keeps
+every byte it had. Eight standing witnesses run every lap, and four of them plant exactly those
+faults and prove each wall answers by name.
+
 ## CLI surface
 
 Canonical roof: [`src/main.rye`](src/main.rye) -- `//!` header + Q3 metal. HTML comment twin retired by accretion (e144). This table is the README surface roof.
@@ -38,7 +54,9 @@ Canonical roof: [`src/main.rye`](src/main.rye) -- `//!` header + Q3 metal. HTML 
 
 **Ground:** silo [`foundations/20260703-201612_the-sealed-crossing.md`](../foundations/20260703-201612_the-sealed-crossing.md) - study [`external-research/20260703-201612_the-amphora-and-the-crossing.md`](../external-research/20260703-201612_the-amphora-and-the-crossing.md) - sealed crossing plainly [`external-research/20260710-002952_sealed-crossing-plainly.md`](../external-research/20260710-002952_sealed-crossing-plainly.md) - crossing metal plainly [`external-research/20260710-145313_amphora-crossing-plainly.md`](../external-research/20260710-145313_amphora-crossing-plainly.md)
 
-**Witnesses:** `tools/am/amphora_lap1.rish` - `tools/am/amphora_lap2.rish` - `tools/am/amphora_lap3.rish` - `tools/am/amphora_device_wire.rish` - `tools/am/amphora_vessel_stamp.rish` - `tools/am/amphora_vessel_seal.rish` - `tools/am/amphora_resin_chunk.rish` - `tools/am/amphora_purchase_delivery.rish` - `tools/p/pond_customs.rish` - `tools/r/realidream_forge_view.rish` - elder path `tools/cr/crossing_manifest_seed.rish`
+**Standing witnesses** (on the roster at `tier lap` from `20260905.225551`, 11s together): [`amphora_pour`](../tools/am/amphora_pour_witness.rish) - [`amphora_pour_negative`](../tools/am/amphora_pour_negative_witness.rish) - [`amphora_carry`](../tools/am/amphora_carry_witness.rish) - [`amphora_carry_negative`](../tools/am/amphora_carry_negative_witness.rish) - [`amphora_restore`](../tools/am/amphora_restore_witness.rish) - [`amphora_restore_negative`](../tools/am/amphora_restore_negative_witness.rish) - [`amphora_grand_round`](../tools/am/amphora_grand_round_witness.rish) - [`amphora_first_resident`](../tools/am/amphora_first_resident_witness.rish). Each negative twin plants at the wall it names and asserts the refusal by its own error, so the family is proven able to red rather than only to pass. They stand on the field's standing-equipment roster, which is a maintainer room the seed withholds -- named here rather than linked, so this page reads whole in both repositories.
+
+**Hand witnesses** (run by name, on no clock): `tools/am/amphora_lap1.rish` - `tools/am/amphora_lap2.rish` - `tools/am/amphora_lap3.rish` - `tools/am/amphora_device_wire.rish` - `tools/am/amphora_vessel_stamp.rish` - `tools/am/amphora_vessel_seal.rish` - `tools/am/amphora_resin_chunk.rish` - `tools/am/amphora_purchase_delivery.rish` - `tools/p/pond_customs.rish` - `tools/r/realidream_forge_view.rish` - elder path `tools/cr/crossing_manifest_seed.rish`
 
 **Tensegral Arc I r3** (`20260728.000659`): the `amphora_lap1/2/3` witnesses - vessel seal - resin chunk all **GREEN** this sitting -- Arc I (Brix - Cellar - Amphora) exits.
 
