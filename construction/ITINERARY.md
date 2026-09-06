@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `13bb12d509` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `354be20159` -- HEAD's parent, resolvable everywhere (%401).
 
 **DIFFUSER -- THE ONLY RED ON MY TREE WAS `stash_record`, AND IT WAS NAMING THE REPAIR.** `%487`
 BOOKED: a trap handler that cleans up without `exit` does not stop the script -- POSIX RESUMES where
@@ -90,19 +90,14 @@ page obeying both floors at four: 16% of a 20% ceiling.**
 
 **`%459` and `%446` CLOSED**, whole on the [`20260906.042754` shelf](archive/20260906-042754_itinerary-landed-accounts.md). **A pen that plants an absolute tests a snapshot of the law; one that plants a ratio tests the law.**
 **Measured rather than argued: should an OPEN row carry a claim, a seat and a stamp, at START?**
-**PHEROMONE -- THE CREDIT CROSSED THE SEAM CARRYING ITS CONDITION AND THE RESIDUE BESIDE IT DID
-NOT.** `%487` CLOSED. `harness_unresolved=10` answered the resolver's question rather than the
-census's: **nine of the ten sit in scripts that never invoke the compiler**, so the conditional
-credit already answered them and resolving them moves no count. The tenth compiles into a pen it
-makes with `mkdir -p`, and every `caravan/` original it copies is reached elsewhere -- `never` holds
-none. **The residue that could hide a program is 1, and today it hides nothing.** `--paths` names
-each site now (`harness_unresolved <script> <dvar> <svar>`, marker `unresolved_named=1`); the census
-intersects them with its own `compiling.txt` and publishes **`harness_unresolved_compiling`**, gated
-at 1, `unknown` refused by name rather than a comforting zero. Controls **80** (was 67) and **32**
-(was 29), the condition proven by two pens differing in one word. *Why a wider resolver is the wrong
-lap:* most of the residue is **not a harness** -- a roster scan spells `$DIR/$m.rye` in a diagnostic
-**message**, and the candidate grep cannot tell a message from an assembly. `%466`'s account stays
-whole on its [shelf](archive/REDS-the-harness-the-census-could-not-see-rows-466.md).
+**PHEROMONE -- THE CREDIT CROSSED THE SEAM CARRYING ITS CONDITION AND THE RESIDUE DID NOT.**
+`%488` CLOSED, whole on its
+[shelf](archive/REDS-the-doubt-published-in-the-wrong-frame-rows-488.md). `harness_unresolved=10`
+answered the resolver's question rather than the census's: **nine of the ten never invoke the
+compiler**, so the conditional credit already answered them. **The residue that could hide a
+program is 1, and today it hides nothing.** `--paths` names each site, the census weighs them
+against its own `compiling.txt` as **`harness_unresolved_compiling`**, gated at 1. Controls **80**
+and **32**, the condition proven by two pens differing in one word.
 **And my own `41 orphans` is WITHDRAWN**, `harness_roster` landed gating both halves at zero, and the three-firing lantern's spec stands -- whole on the [`20260906.090312` shelf](archive/20260906-090312_itinerary-landed-accounts.md).
 
 **THIS CARD STOOD PUBLISHED WITH TWO CONFLICT MARKERS** (`%481` CLOSED, Patchouli
@@ -146,20 +141,17 @@ fields against a Glow shape.** A seam, so it waits.
 **Four accounts CLOSED** on the [`040933` shelf](archive/20260906-040933_itinerary-landed-accounts.md) -- `%453` twice, `%458`, `%444`/`%431`. **A rule that states its reason can be checked.**
 
 **PHEROMONE -- A PUBLISHED DISTANCE PROMISES A ROAD, AND A THIRD OF THE SKY HAD NONE.** `%454`
-CLOSED, whole on its [shelf](archive/REDS-a-published-distance-and-the-road-it-promises-rows-454.md)
-with the `%470` account on the [`20260906.090503` shelf](archive/20260906-090503_itinerary-landed-accounts.md).
-`route_hops` answered two questions; `Sky.point_hops` now sits BESIDE it, untouched, so a peer's
-just-landed `%452` reading stands. 172,524 of 518,400 ordered pairs unreachable -> **0**, 132
-isolated -> 0, **diameter unmoved at 5** by an awk walk sharing no code. **That prices the paper's
-torus:** it bought reachability at diameter 14; the point reading buys it at 5, so the torus's case
-is degree, cut points and the angle alone. **Yours, the ruling that remains:** which metric Comlink
-actually routes on.
+CLOSED, whole on its [shelf](archive/REDS-a-published-distance-and-the-road-it-promises-rows-454.md),
+the `%470` account on the [`20260906.090503` shelf](archive/20260906-090503_itinerary-landed-accounts.md).
+`Sky.point_hops` sits BESIDE `route_hops`: unreachable pairs **172,524 -> 0**, diameter unmoved at
+**5**, which prices the paper's torus at degree and cut points alone. **Yours, the ruling that
+remains:** which metric Comlink actually routes on.
 
-**PHEROMONE -- `%460` STILL OPEN at the emulator, its landed half folded** to the
-[`20260906.051500` shelf](archive/20260906-051500_itinerary-landed-accounts.md), `%451`'s bound half
-beside it. File half proven on metal, ten sites. **Yours, one sentence:** may a cross-target witness
-read GREEN with a named gap when qemu is absent? Its head promises that limit, `%446` reads the
-other way, and the roster's `capability` field is the mechanism.
+**PHEROMONE -- `%460` STILL OPEN at the emulator**, its landed half on the
+[`20260906.051500` shelf](archive/20260906-051500_itinerary-landed-accounts.md). **Yours, one
+sentence:** may a cross-target witness read GREEN with a named gap when qemu is absent? Its head
+promises that limit, `%446` reads the other way, and the roster's `capability` field is the
+mechanism.
 
 **GRASS -- `%472`-`%475` LANDED**, each whole on its own shelf; the departing account is at
 [`CHECKPOINTS.md`](CHECKPOINTS.md) `20260906.114347`. **`%474` stays BOOKED:** the live front folds
@@ -178,6 +170,11 @@ below two comments in that file saying such a number is the host's and never the
 too, so the reading is crossing ONE repaired end with one elder end. `amphora_asker_reply`, 5 legs.
 **Yours:** halving a shared resource is not removing it -- `source_port` is still the machine's and
 the lock stands. **`%440` fired twice more** at this cold open, both rebase auto-merges.
+
+**PHEROMONE -- THE DEAD-LETTER BOX FIRED IN THE WILD**, hours after a peer hung it.
+`stash_record` read `unlanded=2` here: two logs carried by no branch, remote, or worktree, both
+restored byte-for-byte and SHA-256 verified, each given the row it never got. **2 -> 0.** `%464`
+owns the defect and names the 27 files still unreviewed.
 
 **The live front** (condensed `20260831.023122`; the day shelves hold every landed lap):
 - **Tri-OS:** LOCA pins pass and reject tampering. Pier proof awaits `libwayland-client` and
