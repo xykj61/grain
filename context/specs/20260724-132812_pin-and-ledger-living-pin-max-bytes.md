@@ -20,7 +20,7 @@ Named bound (TAME-style):
 ```
 living_pin_max_bytes = 24576  // ~6k tokens: a pin an agent reads in one breath beside its lap
 living_pin_max_bytes[session-logs/README.md] = 57344  // an index is read from the top, not whole
-living_pin_max_bytes[construction/ITINERARY.md] = 32768  // the operator card carries the fleet's operating law
+living_pin_max_bytes[construction/ITINERARY.md] = 40960  // the live front holds one open state per ship, and the fleet is eight
 ```
 
 ## The one exception, and why it is one (accretion `20260824.190000`, Keaton's word)
@@ -67,6 +67,47 @@ two leaves room for two more without a rewrite; **8,192 for the live front**, th
 allowance the index earned; and **16,384 for the durable spine**, which measures 12,406 and is the
 only part with genuine slack. `8,192 + 8,192 + 16,384 = 32,768`, a power of two and about **8k
 tokens** against the general bound's ~6k -- still a page an agent reads in one breath.
+
+### Raised to 40,960 on Keaton's word, `20260906.001901` -- and only one of the three parts moved
+
+**The live front is a per-ship quantity, and the fleet went from three ships to eight.** Measured on
+the card the night of the raise, beside the same three parts as above:
+
+| Part | `20260904` | `20260906` | What moved |
+|---|---|---|---|
+| **Standing block** | 7,008 | **7,008** | nothing -- still fourteen directives, byte for byte |
+| **The live front** | 5,161 | **12,814** | 2.5x, and it is the only part that grew |
+| **The durable spine** | 12,406 | **12,927** | 521 bytes, ordinary drift |
+
+**Per ship, the live front is steady:** 5,161 over three ships is 1,720 each; 12,814 over eight is
+**1,602 each**. Two independent measurements of the same unit, five ships apart, so the live front
+is not swelling -- it is being multiplied. That is what makes this derivable rather than granted.
+
+So the live front is allocated the way the standing block already was, by counting what it holds and
+rounding to a power of two above the measurement: **8 ships at 2,048 bytes each is 16,384**, where
+2,048 leaves each ship room to say more than 1,602 bytes without forcing a rewrite. The other two
+parts keep exactly the allowances they were given, because neither moved.
+
+`8,192 + 16,384 + 16,384 = **40,960**` -- ten kibibytes, about **10k tokens**. It is deliberately
+**not** a power of two: 32,768 was one only because the three parts happened to sum to it, and
+inflating to 65,536 to keep the shape would be granting a number rather than deriving one.
+
+**What forced it, counted rather than felt.** `construction/CHECKPOINTS.md` records **six** sweeps
+whose stated reason is the card standing at or over 32,768 -- at 32,744, 32,765, 32,838, 33,165,
+34,086 -- and **eight checkpoints were written on `20260905` alone**, by more than one ship, several
+within the same hour. A bound that forces a condensation once is a bound doing its work; one that
+forces six, and twice in one evening on two different ships, is a bound sized for a smaller fleet.
+
+**The cost is named, since the card is read WHOLE every lap by every body.** At eight ships this is
+roughly 10k tokens per lap per ship rather than 8k -- about 16k more per lap across the fleet. The
+measured alternative is what the evening actually cost: four condensations of a single entry by one
+hand, plus a peer's fold of two closed accounts one hour earlier, all to fit one round's work.
+
+**The honest limit, and it is not solved here.** The live front scales with the fleet, so a
+twelve-ship fleet re-opens this arithmetic at 8,192 + 24,576 + 16,384 = 49,152. Raising the ceiling
+each time the fleet grows is a treadmill, and the exit is not a bigger number -- it is a live front
+that does not hold one region per ship, which is a design question rather than a bound. Named here
+so the next raise is met with that question rather than with more arithmetic.
 
 **The cost is named rather than waved past.** A page read whole by six bodies every lap costs its
 bytes every lap: this raise is roughly **+2k tokens per lap per body**, and nothing recovers them.
