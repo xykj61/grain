@@ -5,7 +5,7 @@
 **Style:** Gauge, Field setting (see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md))
 **Voice:** Kyri
 **Status:** **Mixed** -- the sponsor readings are measured and re-derive in one command; the torus readings describe a metric nothing in this tree implements (`context/TWO_ROOMS.md`)
-**Instrument:** `sh tools/fixtures/t/topology_graph_census.sh` -- 15 seconds, no arguments
+**Instrument:** `sh tools/fixtures/t/topology_graph_census.sh` -- 25 seconds, no arguments (15 at this page's stamp; the point leg added `20260906.105235` is the difference)
 **Room one:** [`the-ring-and-the-ladder`](../external-research/20260906-010402_the-ring-and-the-ladder.md)
 **Reads:** `comlink/topology.rye`
 
@@ -126,3 +126,54 @@ This is a design finding rather than a booked change. `comlink/` is not this sea
 The narrower one, for the ruling: **exhibit a routing decision that genuinely needs the sponsor chain** -- a next hop that cannot be computed from two coordinate triples without knowing who sponsors whom. That would show the two questions are one question after all, and the single-stranded argument above would fail.
 
 *Horizon: both readings hold while `comlink/topology.rye` computes `decode` and `route_hops` as it does today; the census reads the fan-outs from the source, so a sky change is measured rather than assumed. Assumptions: adjacency is the metric's own unit distance, and distance is symmetric. Confidence: high -- every number re-derives in fifteen seconds, and both refusal paths were proven on metal.*
+
+---
+
+## Errata -- the primary falsifier fired, `20260906.105235`
+
+**The body above keeps every word.** A dated page is corrected by erratum, so a reader sees the
+claim and what the measurement did to it.
+
+This page named one thing that would kill it: *a link between any star-index-zero planet and any
+other point, in `comlink/`.* That link landed at `20260906.092125`, eight hours after this page
+was written, in the commit *"comlink: the router's question, asked of numbers."* `Sky.point_hops`
+walks the sponsor chain in **number** space, where a star of index zero and its galaxy are one
+point rather than two, and `comlink/topology.rye` now asserts `point_hops(60, 0) == 1` in its own
+selftest. Point 60 is a star-index-zero planet. **That is the exhibit, and this page dies as
+written.**
+
+**What it was right about.** The address-space reading is unchanged and still measures what this
+page measured: `route_hops` publishes a distance for 172,524 of 518,400 ordered pairs that no walk
+on its own unit-distance graph realizes, and the 132 isolated points are exactly the
+star-index-zero planets, checked point by point. Every number above re-derives. The repair
+happened *because* the reading was correct.
+
+**What it was wrong about.** This page treated that isolation as a property of the metric rather
+than of one of two questions the metric was being asked, and its closing section -- *what this
+does not claim* -- did not include the possibility that the module could answer both. The cure
+was not to correct `route_hops` but to notice the second question, and `route_hops` is untouched
+today.
+
+**What is measured now.** The census grew a **point leg** on `20260906.105235`, so both shipping
+readings are walked rather than one. Compass sky, 720 points, all 518,400 ordered pairs:
+
+| | `route_hops` | `point_hops` |
+|---|---|---|
+| Isolated points | 132 | **0** |
+| Components | 133 | **1** |
+| Pairs claimed and unrealized | 172,524 (33.28%) | **0** |
+| Entropy against ceiling | 40.47% | 60.01% |
+| Cut points, and their tiers | 59: 11 galaxies, 48 stars, 0 planets | 59: 11 galaxies, 48 stars, 0 planets |
+
+**The one reading the repair did not move is the cut structure**, and it is the same on both sides
+because it is a fact about hierarchy rather than about addressing: every interior point is an
+articulation vertex, no leaf is, and the twelfth galaxy is absent from the count only because the
+walk starts there. **A hierarchy's shape survived the repair; its addressing did not.**
+
+The point leg's own five asserted pairs are bound to the module's, and the leg was proven able to
+red three ways in a pen -- including the `%454` fault planted back, which it catches at the chain,
+the depth and the sponsor pair at once.
+
+*Horizon: this correction holds while `comlink/topology.rye` publishes both metrics. Assumptions
+unchanged. Confidence: high -- the exhibit is a line in the module's own selftest, and every figure
+re-derives in twenty-five seconds.*
