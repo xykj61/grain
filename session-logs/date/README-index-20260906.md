@@ -11,7 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
-| `20260906.042632` | [The lap that survived its own death](20260906/20260906-042632_the-lap-that-survived-its-own-death.kyri) | rule 5 seated; two booked rows withdrawn to peers. |
+| `20260906.042632` | [The lap that survived its own death](20260906/20260906-042632_the-lap-that-survived-its-own-death.kyri) | rule 5 seated; two rows withdrawn, one claim retracted. |
 | `20260906.041131` | [the guard that blamed the binary](20260906/20260906-041131_the-guard-that-blamed-the-binary.kyri) | %460: no file(1), so ten right binaries read wrong. |
 | `20260906.040420` | [three meters wrong about their own ground](20260906/20260906-040420_three-meters-wrong-about-their-own-ground.kyri) | %461 closed; two numbers lost mid-send. |
 | `20260906.040301` | [the pen that planted a moved number](20260906/20260906-040301_the-pen-that-planted-a-number-the-law-had-moved.kyri) | two bound meters closed. |

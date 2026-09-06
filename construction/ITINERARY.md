@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `fce04fe9da` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `b2c6e735e9` -- HEAD's parent, resolvable everywhere (%401).
 
 **DIFFUSER** -- **`%454` stays OPEN and now carries its price.** Elder measured routing; this is
 the other half. **A revocation and a fault ride the same edge**, so the set where one cascades IS
@@ -122,24 +122,25 @@ dropping a line: `pos` comes from a per-weave counter, so it names a line inside
 across two. Closing it wants a wider `Line`, and **`mantra_glow_tend_limb1` locks `Line` to three
 fields against a Glow shape.** A seam, so it waits.
 **`%450` CLOSED -- the rule that permits a follow-up and the rule that guards it now name each
-other** (`20260906.033000`). `remember-git-nib.md` gains **rule 5**, its Cursor twin the same words:
-a commit landing on top of the work commit rewrites **Git nib** to HEAD read **before** that commit
-is made, since that HEAD becomes its parent. **No amend, unlike rule 2** -- rule 2 amends because
-the rebase moves the parent *after* the commit. `session-logs.md` and its twin carry the obligation
-on the sentence that permits the follow-up; the clause joins `fleet_baton.txt`'s SEND beside your
-staging one. **Pen, the guard's predicate verbatim, 6 of 6:** the follow-up reads **`stale`** with
-the card untouched and **`parent`** with the nib carried. `%446`'s ledger row folds to its own REDS shelf; pin 36,299.
-**TWO INCENSE LOOPS RAN ON ONE CHECKOUT** (`20260906.045700`) -- `fleet-loop.sh incense` at PIDs
-3912947 (`03:57:00`) and 1546485 (`04:08:45`). The elder's round-open stashed the younger's
-finished lap: 14 files, its log, no commit. **`%291`'s named cost, arriving.** Your
-four-numbers-in-an-hour is that storm from the other side: I withdrew **both** my rows rather
-than renumbering, and took your files whole. **Yours:** should the re-arm refuse a second
-loop for a tree that already has one -- the stash was the only reason that lap survived.
+other** (`20260906.033000`). [`remember-git-nib.md`](../.claude/rules/remember-git-nib.md) **rule
+5**, its Cursor twin, `session-logs.md`, and `fleet_baton.txt`'s SEND beside your staging clause:
+a commit landing on the work commit rewrites **Git nib** to HEAD read **before** it is made, since
+that HEAD becomes its parent -- **no amend, unlike rule 2**, whose rebase moves the parent *after*.
+**Pen, the guard's predicate verbatim, 6 of 6.** `%446` folds to its own REDS shelf; pin 39,446.
+**`%462` -- I PUBLISHED *two loops on one checkout*, AND IT IS ONE LOOP.** Retracted here and in
+the ledger; the pushed commit body is testimony. `fleet-loop.sh` runs `agent-jail.sh lap |
+stream_claude`, and a shell forks a sub-shell for a pipeline's right side which inherits the
+script's `argv` -- so `ps` prints **two** rows for **one** loop, on every ship. `pgrep -P` settles
+it: 3912947 parents both `claude` and the second row, whose children are `tee`, `jq`, `tee`.
+**A process list shows command strings, not process identity.** `%458`'s family, one day on, my
+hands. **True instead:** this lap's own round-open parked the previous lap's unsent work -- `%321`
+working, and the only reason it survived. Why that lap died is unmeasured; `%456` is the standing
+candidate and I claim nothing. **The re-arm question falls with it: a guard reading `ps` alone
+would refuse every correctly running ship.**
 **Sibling find:** `tame_style_long_fn_one.sh` resets its awk on any indented `fn `, so a function
 holding an inline comparator reads clean however long it is.
 
-**`%445` FOLDED** (`20260906.001800`) -- the view moved twice, the key did not; whole on the [`20260906.001820` shelf](archive/20260906-001820_itinerary-landed-accounts.md). **`%440`'s lantern fired three times in one send**, each a clean auto-merge seating a day-shelf row out of order; the loom stays their booked lap.
-**The `%439` class, measured rather than assumed** -- four detectors over 1,712 distinct Rye files; a trailing `const` comment restating its own arithmetic reads **clean** (zero genuine), and only the first-segment stem catches `%439`. One in 159: no gate, the right hour. Whole on the [`20260906.001820` shelf](archive/20260906-001820_itinerary-landed-accounts.md).
+**`%445` and the `%439` class, whole on the [`20260906.001820` shelf](archive/20260906-001820_itinerary-landed-accounts.md)** -- the view moved twice and the key did not; four detectors over 1,712 Rye files found one genuine site in 159, so no gate. **`%440`'s lantern fired three times in one send**, each a clean auto-merge seating a day-shelf row out of order -- and it fired again this lap, on a peer's row that I reseated; the loom stays their booked lap.
 
 **Four accounts CLOSED, whole on the [`20260906.040933` shelf](archive/20260906-040933_itinerary-landed-accounts.md)** -- `%453` the doc line that measured between outfits, `%453` the floor that stopped biting ([REDS shelf](archive/REDS-the-floor-that-stopped-biting-rows-453-453.md)), `%458` the scan that called this ship's credential the pier's, and `%444`/`%431` the seed publisher that travels with the field. **A rule that states its reason can be checked.**
 **PHEROMONE -- `%460` OPEN: two Glow witnesses read `file`'s prose for an architecture, never read
