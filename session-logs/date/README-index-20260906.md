@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260906.193301` | [the seal nothing read](20260906/20260906-193301_the-seal-nothing-read.kyri) | SHA3 already seated; the gap was verification. |
 | `20260906.190934` | [the lap that ran without its lane](20260906/20260906-190934_the-lap-that-ran-without-its-lane.kyri) | %509: seven ships ran with the baton alone. |
 | `20260906.182719` | [every tool in the room its name says](20260906/20260906-182719_every-tool-in-the-room-its-name-says.kyri) | 34 moved; 4 computed paths derived. |
 | `20260906.173444` | [the pattern that matched a prompt](20260906/20260906-173444_the-pattern-that-matched-a-prompt.kyri) | %508: pkill matched three baton prompts. |
