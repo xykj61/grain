@@ -1,0 +1,42 @@
+format session-log-v1
+stamp 20260906.025440
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role incense -- law, review, captain
+modality text
+model claude-opus-5
+model_status configured default, runtime unverified
+configured_model claude-opus-5
+configured_status .claude/settings.json names the default; no runtime telemetry read this turn
+evidence .claude/settings.json
+voice Kyri
+host Vultr Dallas pier, America/New_York
+coordination user coordinated separate sessions
+collaborator_provider Anthropic
+collaborator_product Claude Code
+collaborator_role copal seat, amphora and the resins
+collaborator_modality text
+collaborator_model unverified
+collaborator_evidence its own pushed session logs and commits on xy/main
+collaborator_scope ran the login scan on request; found it absent, corrected itself, rewrote its log
+collaborator_status active
+title Absent, or behind
+prompt copal command instructions followed. kg
+think Measured the fleet's login state before reporting on it, because the last three claims about logins in this session were each wrong in a different way.
+think Found copal still holds no credential copy, its loops/ untouched since 20260905 18:24, and trees_own_session reading 0. So the per-ship session has not landed.
+think Then checked the peer's own account against the filesystem rather than accepting it: copal's log records that Keaton cleared the auth store and signed back in at 02:47. The pier's .credentials.json is untouched since 01:53:39, while other files under ~/.claude carry stamps after 02:30. So the login went somewhere neither a ship nor the pier reads.
+obs Nothing is failing right now -- pier access valid to 09:53, refresh for 27 days -- so this is an unlanded intention rather than an outage. Saying which of those it is costs a sentence and changes what anyone does next.
+obs THE PEER'S OWN FAULT IS THE BETTER FINDING, and it is structural rather than careless. Copal was handed a scan to run, could not find it, and reported no file, no reference to that name anywhere in the tree, tracked or untracked. Every word was true of the bytes it could see. The file had landed three commits earlier and that checkout had not fetched.
+obs A grep across tracked AND untracked files is the strongest evidence a lap can gather about a path, and at a stale HEAD it is strong evidence about a tree nobody else is standing in. The evidence was gathered correctly; the corpus was wrong.
+obs ON A FLEET THIS IS THE ORDINARY CASE. Eight ships push to one remote, the round-open pulls at lap START, and a grep happens mid-lap -- so a checkout is behind within minutes of opening. My own tree was one commit behind while writing this row.
+obs Copal caught itself, rebased, ran the scan GREEN, and rewrote its log rather than leaving the wrong conclusion standing. That is the half worth keeping, and it is why this row credits the seat rather than only the fault.
+obs Built path_absence_scan.sh, which fetches first -- an upstream reading from a stale remote-tracking ref is the same fault one layer down -- and requires BOTH here and upstream to say no before it will answer absent. Proven on all three legs against REAL state rather than a pen: a path present both ways, a name that never existed, and, against the live one-commit divergence, a peer's session log that upstream held and this checkout did not.
+obs Left the row OPEN and said why: nothing yet makes a lap consult the scan before concluding a file is gone, and a guard on agent habit costs more than it returns while the habit is one lap old.
+obs The card hit 95 bytes of headroom immediately after its bound was raised tonight. I condensed my OWN two landed accounts rather than shaving the new rows, which is the distinction the raise was argued on.
+loom trees_own_session=0 pier_cred_mtime=015339 copal_loops_mtime=20260905.1824 commits_behind_at_write=1 absence_legs_proven=3
+file tools/fixtures/p/path_absence_scan.sh absent, or behind -- fetched first, both sides required
+file construction/REDS.md %457 booked OPEN; %456 carries the login measurement
+file construction/ITINERARY.md both findings, and the landed accounts condensed
+file session-logs/date/20260906/20260906-025440_absent-or-behind.kyri this record
+recommend check-in (Keaton) -- the per-ship login still has not landed anywhere a ship reads, so the in-jail form is worth one trial with the scan run straight after.
