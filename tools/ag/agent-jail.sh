@@ -403,7 +403,35 @@ claude_login_live() {
   [ -f "$1" ] || return 1
   LC_ALL=C grep -q '"accessToken"[[:space:]]*:[[:space:]]*"[^"]\{16,\}"' "$1" 2>/dev/null
 }
-if claude_login_live "${HOST_HOME}/.claude/.credentials.json"; then
+
+# claude_refresh_dead <credential> -- is this credential beyond any automatic repair?
+#
+# A PRESENT TOKEN IS NOT A WORKING ONE, and the difference is what a fleet-wide outage looks like
+# from here (REDS %456). The access token above expires roughly every eight hours BY DESIGN and is
+# renewed without a hand, so its expiry says nothing. The REFRESH token is the one that cannot be
+# renewed: when it is spent or past its own date, no lap can recover, and copying such a credential
+# into a tree guarantees `Failed to authenticate: OAuth session expired and could not be refreshed`
+# at the next invocation -- which is exactly how seven ships each died three laps inside ten seconds
+# on 20260906 while every transcript said only that the session had expired.
+#
+# READ, NEVER PHONED. This compares a timestamp already in the file against the clock. It cannot
+# tell a spent-by-rotation token from a live one -- nothing local can -- so it is the cheap half of
+# an honest answer and says so rather than implying it covers both.
+claude_refresh_dead() {
+  [ -f "$1" ] || return 1
+  _rexp=$(LC_ALL=C sed -n 's/.*"refreshTokenExpiresAt"[[:space:]]*:[[:space:]]*\([0-9]\{10,\}\).*/\1/p' "$1" 2>/dev/null | head -1)
+  [ -n "${_rexp:-}" ] || return 1          # no field to read is not a death sentence
+  [ "$_rexp" -le "$(( $(date +%s) * 1000 ))" ]
+}
+if claude_refresh_dead "${HOST_HOME}/.claude/.credentials.json"; then
+  # NAMED RATHER THAN COPIED. The pier's refresh token is past its date, so every ship seeding from
+  # it would fail at its first API call and the loop would read as three dead laps rather than as
+  # one logged-out pier. One line at the top of the lap costs nothing and answers the question the
+  # transcripts could not (REDS %456).
+  echo "agent-jail: the pier's claude REFRESH token has expired -- every ship seeds from this one" >&2
+  echo "agent-jail: credential, so every ship is out. Run claude on the HOST and /login; the ships" >&2
+  echo "agent-jail: heal on their next round-open. Reading: sh tools/fixtures/f/fleet_login_scan.sh" >&2
+elif claude_login_live "${HOST_HOME}/.claude/.credentials.json"; then
   if ! claude_login_live "${CLAUDE_STATE}/.credentials.json"; then
     cp -p "${HOST_HOME}/.claude/.credentials.json" "${CLAUDE_STATE}/.credentials.json" \
       && echo "agent-jail: seeded this tree's claude login from the host (one login per pier)" >&2

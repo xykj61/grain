@@ -294,3 +294,5 @@ at a closed fold.*
 
 *Row %453 folded to [`REDS-the-floor-that-stopped-biting-rows-453-453.md`](REDS-the-floor-that-stopped-biting-rows-453-453.md) on `20260906.013236`, **CLOSED** -- a floor gate is a regression test only while its population sits on the floor, and the work the guard itself invited is what lifts it off.*
 *Row %455 folded to [`REDS-the-guard-that-could-not-run-half-of-itself-rows-455.md`](REDS-the-guard-that-could-not-run-half-of-itself-rows-455.md) on `20260906.013116`, **CLOSED** -- %422 was right to refuse a host or capability FIELD for this guard, because a declaration can be wrong about a bench; a probe that attempts the same act the legs attempt cannot be. Every ship was paying a full cold pass a lap for that difference.*
+
+*Row %452 folded to [`REDS-a-doc-line-and-the-function-beneath-it-rows-452.md`](REDS-a-doc-line-and-the-function-beneath-it-rows-452.md) on `20260906.020238`, **CLOSED** -- A doc line promised a distance between points while the function beneath it measured between outfits -- prose and code each internally correct, and only their meeting wrong.*
