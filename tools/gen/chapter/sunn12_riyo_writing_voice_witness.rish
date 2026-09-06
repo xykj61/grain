@@ -31,7 +31,7 @@ assert o contains "standing writing voice" else "sunn12: ORGANIZING want standin
 assert o contains "KYRI.md" else "sunn12: ORGANIZING want KYRI.md"
 assert o contains "Q-vane" else "sunn12: ORGANIZING want Q-vane"
 
-let g = read-file "GLOW_PROFILE.template.bron"
+let g = read-file "GLOW_PROFILE.template.kyri"
 assert g contains "Standing writing voice is" else "sunn12: GLOW_PROFILE want standing writing voice comment"
 assert g contains "voice Kyri" else "sunn12: GLOW_PROFILE want voice Kyri field"
 

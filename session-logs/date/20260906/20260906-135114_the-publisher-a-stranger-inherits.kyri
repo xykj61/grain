@@ -1,0 +1,36 @@
+format session-log-v1
+stamp 20260906.135114
+editor Claude Code, Zed-class CLI on the pier
+provider Anthropic
+product Claude Code
+role incense seat -- law, active-designing, iterative review, the captain's hat
+modality text
+model claude-opus-5
+model_status active runtime reported by the harness environment block
+voice Kyri
+host Linux pier, 8 vCPU / 16 GB, TZ America/New_York
+title The publisher a stranger inherits
+prompt Keaton: kg on laps C through H.
+think Laps C and D land together because they answer one question from two sides -- what does a newcomer inherit, and what do they fill in. C gives them a publisher; D gives both fill-in templates the notation's living name.
+think Lap C's shape came from reading publish-seed.sh rather than from the ask. Five literals differ between one publisher and the next: two remote URLs, an identity name and email, and the root-commit subject. Each becomes a stub, each gets a GLOW_PROFILE field of the same name lowercased, so an agent asked to write a publisher from a profile reads one and writes the other.
+think The identity stub carries its own reasoning rather than a value: keyless and anonymous ON PURPOSE, because signing a depersonalized projection with your own key links it back to you. A template that only supplied a blank would have taught nothing.
+think Lap D is a molt rather than a break. The two tracked templates take .kyri; every reader takes .kyri first and the elder .bron after; .gitignore un-ignores both spellings so a clone carrying an elder file is never silently untracked. That is how the session-log tools already read both, and this pier proves it matters -- GLOW_PROFILE.bron stands on it right now.
+obs THE TEMPLATE'S FIRST RUN CAUGHT ITS OWN FAILURE MODE. An unfilled copy refuses before it projects, because a half-filled publisher reaching the push is the one thing this file exists to prevent. Proven by running it: it stops at the first FILL_ME.
+obs THE ROOT WILDCARD ATE THE NEW FILE AND THE SEED WITNESS FOUND IT. .gitignore blanket-ignores /* and un-ignores by name, so publish-seed.template.sh sat untracked while the manifest classified it -- sow_witness answered `shipping rows naming a path the tree does not have`. This is the same blanket deny that made publish-seed.sh incidentally untracked (%444), and the manifest coverage check is what turned an invisible omission into a named one.
+obs TWO PAIRS I TOUCHED READ AS DRIFTED AND NEITHER DRIFT IS MINE. rule_twin reads 39 against a ceiling of 36 -- and a throwaway worktree at HEAD reads the same 39, so the rise predates this lap. Of the pairs I edited, the-baton and session-log-provenance differ by a single BLANK LINE the normalizer does not eat after stripping frontmatter. Measured rather than assumed, which is why I am not repairing a ceiling I did not move; rule_twin sits at gate %7.
+obs MY EDITS WERE SYMMETRIC AND I CHECKED THAT BY COUNTING. Each twin pair took the same insertions and deletions on both sides -- 2/2 and 1/1 -- which is the cheap check that a sed run over two files did the same thing to each.
+obs THE GUARD I WROTE THIS LAP CAUGHT MY OWN SWEEP MISSING ITS OWN FILES. The lap-D census was taken BEFORE lap C created publish-seed.template.sh and its two fixtures, so three new files still named GLOW_PROFILE.template.bron and the control died at cp on the hot pass. A census is a photograph of the tree at the moment it was taken, and a round that creates files after taking one has to look again.
+loom lapC stubs=5 profile_fields=5 leaked=0 orphan=0 control=11of11
+loom lapD templates_moved=2 living_citers=33 template_refs_repointed=17 readers_taught_both=4
+loom seed allows=108 shipped=107 empty=0 ident=CLEAN no_personal=yes
+loom fascia documents_reached=1773 broken_in_living=0 seed_front_door=0
+file publish-seed.template.sh the publisher a seed user inherits, five stubs and a refusal before the projection
+file GLOW_PROFILE.template.kyri molted from .bron, and carrying the five fields that fill the publisher
+file GLOW_HOST.template.kyri molted from .bron
+file tools/fixtures/p/publish_template_scan.sh two gates -- no literal this field owns, no stub the profile cannot answer
+file tools/p/publish_template_witness.rish the guard, rostered tier lap, eleven behaviors in a pen
+file tools/g/glow_host_run.sh and three other readers: .kyri first, the elder .bron after
+file .gitignore both spellings un-ignored, and the new template un-ignored by name
+scope laps C and D of eight -- a publisher that ships, and the two profiles molted with every reader taught both
+status GREEN -- publish_template, declared_model, voice_roster_negative, sow_witness, sow_allow_reach, tracked_link, readme_reach, seed_link
+recommend keep-going -- lap E is the contributing and onboarding grammar, and its crux is SOURCE.md, which this lap has already touched once.

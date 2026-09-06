@@ -31,9 +31,10 @@
 #                                        GPG key, no passphrase (matches
 #                                        SOURCE.md Step 8c's own pattern)
 #
-# Identity (name, forge handle, email) comes from GLOW_PROFILE.bron -- the
+# Identity (name, forge handle, email) comes from GLOW_PROFILE.kyri, or the elder
+# GLOW_PROFILE.bron -- the notation molted `20260810` and both are read. The
 # one gitignored source of truth this tree already keeps (see
-# GLOW_PROFILE.template.bron). The GPG key's email is what lets a forge
+# GLOW_PROFILE.template.kyri). The GPG key's email is what lets a forge
 # show the signature as Verified, so it must match a verified address on
 # GitHub; the SSH comment carries the same identity so a glance at the
 # forge's key list names its owner. No identity is hardcoded here.
@@ -55,24 +56,24 @@ let repo = trim pwd_run.out
 let already_sandboxed = run ["sh" "-c" "sandbox-exec -p '(version 1)(allow default)' -- true 2>&1"]
 if (already_sandboxed.ok == false) then say "WARNING: sandbox_apply just failed for a no-op profile -- this terminal may already be inside a jail. Re-run from a plain, unsandboxed terminal for this script's own promise to hold."
 
-# Identity from GLOW_PROFILE.bron, the tree's one gitignored source of
+# Identity from GLOW_PROFILE.kyri or the elder .bron, the tree's one gitignored source of
 # truth for name/handle/email. Bron is key-then-value per line, so a
 # grep-and-cut lifts each field; assert each one so a missing profile
 # fails loudly here rather than minting a key with an empty identity.
-let name_run = run ["sh" "-c" "grep '^name ' GLOW_PROFILE.bron | head -1 | cut -d' ' -f2-"]
+let name_run = run ["sh" "-c" "cat GLOW_PROFILE.kyri GLOW_PROFILE.bron 2>/dev/null | grep '^name ' | head -1 | cut -d' ' -f2-"]
 let profile_name = trim name_run.out
-assert (profile_name != "") else "GLOW_PROFILE.bron has no 'name' -- copy GLOW_PROFILE.template.bron and fill it in first."
+assert (profile_name != "") else "GLOW_PROFILE has no 'name' -- copy GLOW_PROFILE.template.kyri and fill it in first."
 
-let email_run = run ["sh" "-c" "grep '^email ' GLOW_PROFILE.bron | head -1 | cut -d' ' -f2-"]
+let email_run = run ["sh" "-c" "cat GLOW_PROFILE.kyri GLOW_PROFILE.bron 2>/dev/null | grep '^email ' | head -1 | cut -d' ' -f2-"]
 let profile_email = trim email_run.out
-assert (profile_email != "") else "GLOW_PROFILE.bron has no 'email' -- fill it in first (the GPG email is what makes a forge show Verified)."
+assert (profile_email != "") else "GLOW_PROFILE has no 'email' -- fill it in first (the GPG email is what makes a forge show Verified)."
 
-let gh_handle_run = run ["sh" "-c" "grep '^handle_github ' GLOW_PROFILE.bron | head -1 | cut -d' ' -f2-"]
+let gh_handle_run = run ["sh" "-c" "cat GLOW_PROFILE.kyri GLOW_PROFILE.bron 2>/dev/null | grep '^handle_github ' | head -1 | cut -d' ' -f2-"]
 let gh_handle = trim gh_handle_run.out
 
 let gh_comment = join [profile_email " " gh_handle " jail-only github (macOS Seatbelt, no master identity)"] ""
 let gpg_uid = join [profile_name " (" gh_handle ", jail-only macOS Seatbelt) <" profile_email ">"] ""
-say "Identity from GLOW_PROFILE.bron: ${gpg_uid}"
+say "Identity from GLOW_PROFILE: ${gpg_uid}"
 
 let ssh_mk = run ["mkdir" "-p" "${repo}/.ssh"]
 assert ssh_mk.ok else "could not create .ssh/ at the repo root"

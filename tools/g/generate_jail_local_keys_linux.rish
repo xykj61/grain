@@ -52,9 +52,10 @@
 #                                        GPG key, no passphrase (matches
 #                                        SOURCE.md Step 8c's own pattern)
 #
-# Identity (name, forge handle, email) comes from GLOW_PROFILE.bron -- the
+# Identity (name, forge handle, email) comes from GLOW_PROFILE.kyri, or the elder
+# GLOW_PROFILE.bron -- the notation molted `20260810` and both are read. The
 # one gitignored source of truth this tree already keeps (see
-# GLOW_PROFILE.template.bron). The GPG key's email is what lets a forge
+# GLOW_PROFILE.template.kyri). The GPG key's email is what lets a forge
 # show the signature as Verified, so it must match a verified address on
 # GitHub; the SSH comment carries the same identity so a glance at the
 # forge's key list names its owner. No identity is hardcoded here.
@@ -71,20 +72,20 @@
 let pwd_run = run ["pwd"]
 let repo = trim pwd_run.out
 
-let name_run = run ["sh" "-c" "grep '^name ' GLOW_PROFILE.bron | head -1 | cut -d' ' -f2-"]
+let name_run = run ["sh" "-c" "cat GLOW_PROFILE.kyri GLOW_PROFILE.bron 2>/dev/null | grep '^name ' | head -1 | cut -d' ' -f2-"]
 let profile_name = trim name_run.out
-assert (profile_name != "") else "GLOW_PROFILE.bron has no 'name' -- copy GLOW_PROFILE.template.bron and fill it in first."
+assert (profile_name != "") else "GLOW_PROFILE has no 'name' -- copy GLOW_PROFILE.template.kyri and fill it in first."
 
-let email_run = run ["sh" "-c" "grep '^email ' GLOW_PROFILE.bron | head -1 | cut -d' ' -f2-"]
+let email_run = run ["sh" "-c" "cat GLOW_PROFILE.kyri GLOW_PROFILE.bron 2>/dev/null | grep '^email ' | head -1 | cut -d' ' -f2-"]
 let profile_email = trim email_run.out
-assert (profile_email != "") else "GLOW_PROFILE.bron has no 'email' -- fill it in first (the GPG email is what makes a forge show Verified)."
+assert (profile_email != "") else "GLOW_PROFILE has no 'email' -- fill it in first (the GPG email is what makes a forge show Verified)."
 
-let gh_handle_run = run ["sh" "-c" "grep '^handle_github ' GLOW_PROFILE.bron | head -1 | cut -d' ' -f2-"]
+let gh_handle_run = run ["sh" "-c" "cat GLOW_PROFILE.kyri GLOW_PROFILE.bron 2>/dev/null | grep '^handle_github ' | head -1 | cut -d' ' -f2-"]
 let gh_handle = trim gh_handle_run.out
 
 let gh_comment = join [profile_email " " gh_handle " jail-only github (Linux ai-jail, no master identity)"] ""
 let gpg_uid = join [profile_name " (" gh_handle ", jail-only Linux ai-jail) <" profile_email ">"] ""
-say "Identity from GLOW_PROFILE.bron: ${gpg_uid}"
+say "Identity from GLOW_PROFILE: ${gpg_uid}"
 
 # ROTATION IS NAMED, NEVER SILENT. Both halves below SKIP when key material already stands -- the
 # ssh half recomments an existing key and the gpg half leaves the keyring alone -- and each says so

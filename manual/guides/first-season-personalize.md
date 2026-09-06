@@ -27,8 +27,8 @@ Grain’s shared tree still carries the source pier’s living face in places �
    ```bash
    cp tools/gen/chapter/personalize.template.brix PERSONALIZE.brix
    cp tools/gen/chapter/first_season_answers.template.brix first_season_answers.brix
-   cp GLOW_PROFILE.template.bron GLOW_PROFILE.bron
-   cp GLOW_HOST.template.bron GLOW_HOST.bron
+   cp GLOW_PROFILE.template.kyri GLOW_PROFILE.kyri
+   cp GLOW_HOST.template.kyri GLOW_HOST.kyri
    ```
 3. Edit `PERSONALIZE.brix`: set every `your_*` field and every `replace_N_to` value.  
 4. Ask Cursor (Agent mode) to apply the replace map to **your living pier papers only** — not to rewrite upstream dated counsel.  
@@ -48,8 +48,8 @@ Root [`.gitignore`](../../.gitignore) is deny-all with an allow-list: filled ide
 | --- | --- |
 | `PERSONALIZE.brix` | Your find/replace map and season inheritance |
 | `first_season_answers.brix` | Open-question answers |
-| `GLOW_PROFILE.bron` | Model · voice · timezone |
-| `GLOW_HOST.bron` | Host seam facts |
+| `GLOW_PROFILE.kyri` | Model · voice · timezone |
+| `GLOW_HOST.kyri` | Host seam facts |
 | `PUBKEYS.md` | When you keep a local pubkeys sheet |
 | `tools/key-card.conf` | When present — treat as secret-adjacent |
 

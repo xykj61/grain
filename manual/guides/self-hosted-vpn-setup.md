@@ -20,7 +20,7 @@ This reifies [`external-research/20260713-212900_self-hosted-vpn-cto-credential-
 rishi/bin/rishi run tools/v/vpn_wireguard_client_setup.rish
 ```
 
-(Prefix with `./tools/g/glow_host_run.sh --` if `RYE_ZIG`/`RYE_LIB` still want setting in your shell -- see [`../../GLOW_HOST.template.bron`](../../GLOW_HOST.template.bron).)
+(Prefix with `./tools/g/glow_host_run.sh --` if `RYE_ZIG`/`RYE_LIB` still want setting in your shell -- see [`../../GLOW_HOST.template.kyri`](../../GLOW_HOST.template.kyri).)
 
 On first run, if `wg` isn't installed, the script pauses and hands you the exact command (`brew install wireguard-tools`) rather than installing networking software for you -- installing it stays a deliberate act, never a silent one. Run it again once installed, and it will:
 

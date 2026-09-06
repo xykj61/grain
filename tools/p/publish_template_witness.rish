@@ -1,0 +1,38 @@
+# tools/p/publish_template_witness.rish -- the publisher a seed user inherits, proven clean.
+#
+#   rishi/bin/rishi run tools/p/publish_template_witness.rish
+#
+# publish-seed.sh is `personal` by law: the field is the seed's projector, never its carrier, so a
+# newcomer inherits every room except the one that would let them publish. publish-seed.template.sh
+# is that room. Its whole value is that the five things which differ between one publisher and the
+# next stand as STUBS rather than as this field's answers -- and a leftover literal fails quietly,
+# reading as a working default until somebody pushes to a repository that is not theirs.
+
+say "publish-template: Language EN -- a shipped publisher that names nobody."
+say "publish-template: Style Gauge, Meter -- two gates, each a different fault."
+say "publish-template: Lens TAME -- every refusal planted and then lifted."
+
+say "publish-template: the control -- eleven behaviors on copies in a pen..."
+let ctl = run ["sh" "tools/fixtures/p/publish_template_control.sh"]
+assert ctl.ok else "publish-template: the control refused --\n${ctl.out}"
+assert ctl.out contains "pass=11 fail=0" else "publish-template: the control did not prove eleven behaviors --\n${ctl.out}"
+
+say "publish-template: the living template leaks no literal this field owns..."
+let scan = run ["sh" "tools/fixtures/p/publish_template_scan.sh"]
+assert scan.ok else "publish-template: the scan refused --\n${scan.out}"
+# invariant: not one of this field's remotes, identities, host paths or the maintainer's name
+# survives in a file a stranger will run against their own forge.
+assert scan.out contains "leaked=0" else "publish-template: a literal this field owns shipped in the template --\n${scan.out}"
+
+say "publish-template: and every stub has a profile field that answers it..."
+# invariant: the template's promise is that an agent can fill it FROM GLOW_PROFILE. A stub the
+# profile cannot answer breaks that promise silently, which is worse than breaking it loudly.
+assert scan.out contains "orphan=0" else "publish-template: a stub has no matching profile field --\n${scan.out}"
+assert scan.out contains "stubs=5" else "publish-template: the stub count moved without its guard moving"
+
+say "publish-template: the bare form stops before the push, like its sibling..."
+let bare = run ["sh" "-c" "grep -c 'STOPPING BEFORE THE PUSH' publish-seed.template.sh || true"]
+assert bare.ok else "publish-template: the stop could not be read"
+assert (trim bare.out) != "0" else "publish-template: the template's bare form would push -- a publisher whose bare invocation crosses a custody gate is the shape this law refuses"
+
+say "GREEN: publish-template -- a newcomer inherits a publisher that names nobody, refuses unfilled, and stops before the push."

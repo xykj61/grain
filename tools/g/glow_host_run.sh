@@ -5,7 +5,7 @@
 #   ./tools/g/glow_host_run.sh -- rye/bin/rye build rishi/src/main.rye -femit-bin=rishi/bin/rishi
 #   ./tools/g/glow_host_run.sh -- rishi/bin/rishi run tools/p/parity.rish
 #
-# Reads GLOW_HOST.bron (copy from GLOW_HOST.template.bron and fill in your
+# Reads GLOW_HOST.kyri, or the elder GLOW_HOST.bron (copy from GLOW_HOST.template.kyri and fill in your
 # own paths), sets RYE_ZIG and RYE_LIB from it, refuses to run if the file's
 # declared os/arch does not match this actual host (`uname -s`/`uname -m`),
 # and only then execs the given command.
@@ -21,7 +21,17 @@ set -euo pipefail
 REPO_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 cd "$REPO_ROOT"
 
-CONF="${GLOW_HOST_CONF:-$REPO_ROOT/GLOW_HOST.bron}"
+# THE NOTATION MOLTED AND THE FILES ON DISK DID NOT (`20260810`). Bron became Kyri -- the same
+# immutable key-value format under a warmer name -- and this reader takes `.kyri` first, `.bron`
+# after, exactly as the session-log tools read both. A clone carrying the elder spelling keeps
+# working, which is what makes this a molt rather than a break; GLOW_HOST_CONF still wins over both.
+if [ -n "${GLOW_HOST_CONF:-}" ]; then
+  CONF="$GLOW_HOST_CONF"
+elif [ -f "$REPO_ROOT/GLOW_HOST.kyri" ]; then
+  CONF="$REPO_ROOT/GLOW_HOST.kyri"
+else
+  CONF="$REPO_ROOT/GLOW_HOST.bron"
+fi
 
 if [ "${1:-}" = "--" ]; then
   shift
@@ -36,7 +46,7 @@ if [ ! -f "$CONF" ]; then
 glow_host_run: $CONF not found.
 
 Copy the template and fill in your own paths:
-  cp GLOW_HOST.template.bron GLOW_HOST.bron
+  cp GLOW_HOST.template.kyri GLOW_HOST.kyri
 EOF
   exit 1
 fi
@@ -62,10 +72,10 @@ esac
 
 if [ "$declared_os" != "$actual_os" ] || [ "$declared_arch" != "$actual_arch" ]; then
   cat <<EOF >&2
-glow_host_run: REFUSE — GLOW_HOST.bron declares os=$declared_os arch=$declared_arch,
+glow_host_run: REFUSE — $CONF declares os=$declared_os arch=$declared_arch,
 but this host is actually os=$actual_os arch=$actual_arch.
 
-GLOW_HOST.bron is personal and machine-specific. Re-copy the template on
+GLOW_HOST.kyri is personal and machine-specific. Re-copy the template on
 this host and fill in this host's own toolchain paths, rather than reusing
 a config written for a different machine.
 EOF

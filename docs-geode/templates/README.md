@@ -14,8 +14,8 @@ Shipping genre: **templates**. Bidirectional relative links - Radiant lint - Geo
 | --- | --- | --- |
 | [`../../tools/gen/chapter/personalize.template.brix`](../../tools/gen/chapter/personalize.template.brix) | `PERSONALIZE.brix` (repo root) | [`../../manual/guides/first-season-personalize.md`](../../manual/guides/first-season-personalize.md) |
 | [`../../tools/gen/chapter/first_season_answers.template.brix`](../../tools/gen/chapter/first_season_answers.template.brix) | `first_season_answers.brix` | same guide |
-| [`../../GLOW_PROFILE.template.bron`](../../GLOW_PROFILE.template.bron) | `GLOW_PROFILE.bron` | [`../../SOURCE.md`](../../SOURCE.md) - [`../../context/specs/20260714-015200_glow-profile-and-acme-generic-voice.md`](../../context/specs/20260714-015200_glow-profile-and-acme-generic-voice.md) |
-| [`../../GLOW_HOST.template.bron`](../../GLOW_HOST.template.bron) | `GLOW_HOST.bron` | host seam (`uname` - paths) |
+| [`../../GLOW_PROFILE.template.kyri`](../../GLOW_PROFILE.template.kyri) | `GLOW_PROFILE.kyri` | [`../../SOURCE.md`](../../SOURCE.md) - [`../../context/specs/20260714-015200_glow-profile-and-acme-generic-voice.md`](../../context/specs/20260714-015200_glow-profile-and-acme-generic-voice.md) |
+| [`../../GLOW_HOST.template.kyri`](../../GLOW_HOST.template.kyri) | `GLOW_HOST.kyri` | host seam (`uname` - paths) |
 | [`../../PUBKEYS.template.md`](../../PUBKEYS.template.md) | `PUBKEYS.md` when used | Part Two keys |
 
 **Root `.gitignore`** denies everything at the pier root, then allow-lists project trees. Personal identity files stay **out of git** by design -- copy from the tracked templates, and never commit the filled instances.

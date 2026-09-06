@@ -23,7 +23,7 @@ of the day it saved.
   setting written to `~/.claude/settings.json` leaves with the jail. **It is the reading**: the file
   that actually drives the model is what every other site agrees with, held by
   [`../../tools/m/declared_model_witness.rish`](../../tools/m/declared_model_witness.rish).
-- `GLOW_PROFILE.bron` and its template -- `effort max` beside `model`, so the clone records how its
+- `GLOW_PROFILE.kyri` and its template -- `effort max` beside `model`, so the clone records how its
   work was actually produced and a session log can say so honestly.
 - Every `claude` invocation in `tools/l/launch-claude-chapter.rish` carries `--effort max` explicitly,
   so the recipe is correct even where a settings file has drifted.

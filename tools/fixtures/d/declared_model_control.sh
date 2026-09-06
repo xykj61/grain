@@ -33,7 +33,7 @@ build() {
   cp "$scan_abs" "$d/tools/fixtures/d/declared_model_scan.sh"
   cp "$read_abs" "$d/tools/fixtures/d/declared_model.sh"
   printf '{ "model": "%s", "effortLevel": "max" }\n' "$want" > "$d/.claude/settings.json"
-  printf 'model %s\neffort max\n' "$want" > "$d/GLOW_PROFILE.template.bron"
+  printf 'model %s\neffort max\n' "$want" > "$d/GLOW_PROFILE.template.kyri"
   printf 'The loop runs `"model": "%s"` at max effort.\n' "$want" > "$d/recursion-prompts/seed/autonomous-loop.seed.md"
   printf 'Record `model %s` on new logs.\n' "$want" > "$d/.claude/rules/session-logs.md"
   ( cd "$d" && git init -q . && git add -A && git -c user.email=pen@pen -c user.name=pen commit -qm pen ) >/dev/null 2>&1
@@ -60,7 +60,7 @@ echo "$out" | grep -q 'declaring_over=1' && echo "stale_site_counted=yes" || ech
 
 # 3 -- an absent declaring site is bitten, rather than silently skipped.
 build "$pen/absent" claude-opus-5
-rm -f "$pen/absent/GLOW_PROFILE.template.bron"
+rm -f "$pen/absent/GLOW_PROFILE.template.kyri"
 ( cd "$pen/absent" && git add -A && git -c user.email=pen@pen -c user.name=pen commit -qm rm ) >/dev/null 2>&1
 out=$(runscan "$pen/absent")
 echo "$out" | grep -q 'is named on the declaring roster and absent' && echo "absent_site_bitten=yes" || echo "absent_site_bitten=no"

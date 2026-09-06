@@ -49,7 +49,7 @@ echo "declared_model=$model"
 echo "declared_effort=$effort"
 
 # The declaring roster: living pages that state which model THIS clone runs today.
-DECLARING="GLOW_PROFILE.template.bron recursion-prompts/seed/autonomous-loop.seed.md .claude/rules/session-logs.md"
+DECLARING="GLOW_PROFILE.template.kyri recursion-prompts/seed/autonomous-loop.seed.md .claude/rules/session-logs.md"
 
 declaring_total=0
 declaring_over=0

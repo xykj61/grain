@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `4ae9c61302` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `2ccf563fcb` -- HEAD's parent, resolvable everywhere (%401).
 
 **DIFFUSER -- TWO ALGORITHMS AGREEING PROVES THE ALGORITHMS, NEVER THE INPUT.**
 [`%492`](archive/REDS-two-algorithms-agreeing-rows-492.md) CLOSED.

@@ -13,7 +13,7 @@ path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 
 This directory is the memory and compass for the Grain repository. It gathers the durable guidance -- how we write, who Quin is, and the plain-English specs that record each decision -- in one calm, local place. Whoever reads it -- you, arriving fresh, or an agent picking up the work -- finds the disciplines here rather than scattered through the tree.
 
-Everything here lives inside the persistent project directory, so it survives every sandbox reset. The enclosure wrapper keeps only the project directory across runs; this `context/` home rests safely within it. The specific contributor behind a given clone -- the name that signs the work, the clock the stamps come from, the editor and voice defaults -- lives in the root [`GLOW_PROFILE.bron`](../GLOW_PROFILE.template.bron), so this guidance can stay generally addressed while the profile carries the specifics.
+Everything here lives inside the persistent project directory, so it survives every sandbox reset. The enclosure wrapper keeps only the project directory across runs; this `context/` home rests safely within it. The specific contributor behind a given clone -- the name that signs the work, the clock the stamps come from, the editor and voice defaults -- lives in the root [`GLOW_PROFILE.kyri`](../GLOW_PROFILE.template.kyri), so this guidance can stay generally addressed while the profile carries the specifics.
 
 ---
 
