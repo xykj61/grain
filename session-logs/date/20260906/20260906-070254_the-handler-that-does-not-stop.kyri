@@ -1,0 +1,42 @@
+format session-log-v1
+stamp 20260906.070254
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role diffuser -- moonshots and whitepaper research
+modality text
+model claude-opus-5
+model_status configured default, runtime unverified
+configured_model claude-opus-5
+configured_status .claude/settings.json names the default; no runtime telemetry read this turn
+evidence .claude/settings.json
+voice Kyri
+host Vultr Dallas pier, America/New_York
+title The handler that does not stop
+prompt The baton -- DIFFUSER's lane: moonshots and research, Gauge at Field, hand BAKERY what is buildable. The lane's own recommend named the TLB axis next; the lap's own cold roster named something else first.
+think Lap 4033, rota row 3 -- Water, the row that tastes, whose discipline is that taste only works up close: read the actual file, run the actual witness, sip the actual code. The lap turned on exactly that. The cold roster died at guard 34 with one line about a missing temporary, which a lap in a hurry reads as weather. Reading it up close instead is the whole finding.
+think The line was `line 660: /tmp/tmp.0hUc7RqY4f/fresh: No such file or directory` -- the runner writing a guard's row into a pen that had gone. Nothing in the tree removes another run's pen; I grepped for a sweeper and found none, and 106 stale pens stand in /tmp, so no cleaner runs at all. That left the runner's own trap as the only hand that could have removed it.
+think The mechanism is POSIX, not this tree: a trap handler runs and then execution RESUMES where the signal landed. `trap 'rm -rf "$pen"; lock_release "$lock"' EXIT INT TERM` therefore means clean up and carry on. I proved it in a throwaway script before believing it, and the error it printed was the same shape, character for character.
+think Then I measured the population rather than assuming one site. 134 command-position traps naming INT or TERM across 3,084 tracked shell sources; exactly ONE calls exit. And `shell_portable.sh`'s own header teaches the broken form beside `lock_acquire`, which is why the ratio is 133 to 1 rather than scattered -- the shape has a source, and repairing the source is what stops the next hundred.
+think Water's fixed seat is the happy zone and the thin edge, and it decided the instrument's shape. A signal's effect on a shell is a thing only the world can tell, so this belongs at the thin edge: a pen, real processes, real signals. The contract checks are the scan's own two directions -- planted and removed -- so the guard is proven to bite rather than believed to.
+obs THE PEN REFUSED MY STRONGEST CLAIM AND I KEPT THE REFUSAL AS A LEG. I wrote `lock_freed_while_alive` expecting to show a checkout's mutual exclusion standing free while its pass ran on -- the frightening version, and the one that would have justified the loudest row. It came back `freed gone`. A trap runs after the CURRENT command completes, and the runner's next command is the write that kills it under `set -e`, so the release and the death are adjacent. The leg is now two claims that say the true thing, and the negative result is written into the control's header so the next reader inherits the measured version rather than re-deriving the scary one.
+obs TWO SEVERITIES, AND THE FLAG THAT SORTS THEM WAS NEVER SET FOR THIS. Under `set -e` (86 files) a signalled script dies at the next scratch write, so the roster prints green guards and no `run_verdict` line -- which reads exactly like a short healthy run. Without `set -e` (43 files) the script RUNS TO COMPLETION and prints a total counted from a directory that is gone: measured in the pen, 30 findings reached and `rows=0` printed. That second number is the one a ratchet welcomes, and 43 of the 129 files carrying this shape are in that state.
+obs WHAT I DID NOT MEASURE, NAMED PLAINLY. Whether a wrong-green has actually shipped from this is unmeasured, and I will not claim it. The exposure is real rather than theoretical -- a signal arrived at my own pass an hour into this lap -- yet mechanism-proven is a different thing from consequence-observed. The falsifier is cheap for whoever wants it: re-run a `set -e`-less scan under TERM and compare its published count against a clean run's, which is what `count_understated` already does in a pen.
+obs REPAIRED AT THE SITE AND AT THE SOURCE. `standing_equipment_run.sh:226` and `shell_portable.sh`'s header now split their traps -- EXIT cleans exactly once, INT and TERM call `exit 130` and `exit 143`. The correct shape was already in this tree once, at `tools/l/chatgpt-mind.sh:361`, so nothing here is invented. The scan reads `lock_releasing 0` and `verdict ok` where it read `lock_released_without_exit` before.
+obs THE GRADE MOVED THE PROSE AND HELD EVERY CLAIM. The control read C+/79 on a register of 36 -- 64% negative sentences, because its whole subject is a defect. Rewritten to lead with what is, it reads B+/88 at register 70, with every number, path and stamp identical. Gauge's own tension, met honestly: a module head grades at Door even when refusal is what it describes. And I typed the scan's register as 76 into a loom line without measuring it; it reads 60. Caught by running the card before the send, which is the same lantern the operator card names three times over.
+obs BOTH LIVING PINS ARE AT THEIR CEILINGS ON THE DAY THEY WERE RAISED. REDS was raised to 40,960 at `20260906.022430` and stands at 40,937 -- 23 bytes free -- after this row, which I cut from 2,147 bytes to 1,512 across five drafts to make it fit. The operator card was raised at `20260906.001901` and stands at 40,954. Seven hours from raise to full, on both. That is a fact about the fleet's write rate rather than about either page, and it is Keaton's to weigh.
+obs PEER NAMED BEFORE A FILE MOVED, per %291. One `standing_equipment_run.sh` was live at open, from grain-bakery's tree writing to /tmp/p451. The lock is per-checkout, so bakery's pass holds bakery's lock and my repair touches no file it is executing. Six other fleet loops are up; two `ps` rows for diffuser are one loop and its pipeline sub-shell, which %462 already ruled.
+obs THE LANE'S OWN NEXT DOOR STAYED SHUT THIS LAP, ON PURPOSE. Reds first books the allocation, and this red arrived in my hands by running. The TLB study is designed and unbuilt: the kernel reports `TLB size: 1024 4K pages` on this part, which is a second instrument sharing no cause with a timer, and THP is `[madvise]` so 2 MiB backing is reachable from userspace with no privilege.
+loom scan=signal_trap traps_total=134 exiting=1 nonexiting=133 lock_releasing=1 files_without_set_e=43
+loom scan=signal_trap_after traps_total=135 exiting=3 nonexiting=132 lock_releasing=0 verdict=ok
+loom control=signal_trap claims=16 faults=0 ticks_reached=30 rows_reported=0 corrected_exit=143
+loom qa=signal_trap_scan composite=88 letter=B+ register=60
+loom qa=signal_trap_control composite=88 letter=B+ register=70 register_before=36
+loom pins reds_bytes=40937 reds_free=23 card_bytes=40954 card_free=6 bound=40960
+file tools/fixtures/s/signal_trap_control.sh the proof -- six legs on real processes and real signals, plus the scan's two directions and the pen's own innocence
+file tools/fixtures/s/signal_trap_scan.sh the population -- command-position traps, the exiting one, the lock-releasing gate, the no-set-e ratchet
+file tools/fixtures/s/standing_equipment_run.sh the severe site repaired: three traps where one stood
+file tools/fixtures/s/shell_portable.sh the header that taught the shape, now teaching the stopping one
+file construction/REDS.md row %467 BOOKED, cut five times to fit 23 bytes of headroom
+file construction/ITINERARY.md the DIFFUSER block carries the finding and hands Keaton the two full pins
+recommend keep-going -- the TLB axis is designed and wants only a lap: this part reports `TLB size: 1024 4K pages`, so a sparse walk touching one cache line per 4 KiB page crosses the reach at 1,024 nodes while its DATA stays inside L2, and a dense walk over the same nodes and the same lines touches 16 pages. Same bytes, same misses, 64x the translations -- with `madvise(MADV_HUGEPAGE)` as the second knob and `smaps` confirming the pages actually turned. The confound I already found on paper is the congruence class: one line per page at a fixed offset lands every node on one L1 set, so the intra-page offset must be mixed, and the probe must assert its own set coverage. BAKERY's hand-off from the elder paper still stands -- comptime footprint asserts, per target.

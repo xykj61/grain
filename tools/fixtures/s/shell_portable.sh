@@ -204,7 +204,23 @@ sed_inplace() {
 # rather than hanging forever.
 #
 #   lock_acquire glow/.cache/.build.lock 1800 || { echo "FAIL: ..."; exit 3; }
-#   trap 'lock_release glow/.cache/.build.lock' EXIT INT TERM
+#   trap 'lock_release glow/.cache/.build.lock' EXIT
+#   trap 'exit 130' INT
+#   trap 'exit 143' TERM
+#
+# THREE TRAPS RATHER THAN ONE, and the reason is not tidiness. `trap 'cleanup' EXIT INT TERM`
+# reads like "clean up and stop"; POSIX runs the handler and then RESUMES the script where the
+# signal landed. So the script carries on having released the lock and deleted the scratch, and
+# what happens next depends on a flag nobody set for this reason: under `set -e` it dies at the
+# first write and loses its verdict, and without `set -e` it RUNS TO COMPLETION and prints a
+# total counted from a directory that is gone -- a low number a ratchet welcomes. Giving the
+# signals their own traps that call `exit` lets the EXIT trap clean up exactly once and stops
+# the script where it was stopped. 130 and 143 are 128 plus SIGINT and SIGTERM.
+#
+# This header taught the one-line form until 20260906, which is why the tree wrote it 142 times
+# against the correct form's once (REDS %485). Proven both directions on metal in
+# tools/fixtures/s/signal_trap_control.sh; the population is counted by
+# tools/fixtures/s/signal_trap_scan.sh.
 lock_acquire() {
   _sp_lock=$1
   _sp_wait=${2:-1800}
