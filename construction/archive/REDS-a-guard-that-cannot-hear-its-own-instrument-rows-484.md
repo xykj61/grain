@@ -1,7 +1,7 @@
 # REDS %484 -- a guard that cannot hear its own instrument
 
 *Folded from the living pin [`../REDS.md`](../REDS.md) on `20260906.121500`. The row is **CLOSED**
-and the pin needed the room for `%486`. A closed row keeps every word it wrote; only its address
+and the pin needed the room for `%491`. A closed row keeps every word it wrote; only its address
 changes.*
 
 *This shelf was written to carry `%481` beside `%484`, since the two are one sentence read twice.

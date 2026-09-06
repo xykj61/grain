@@ -1921,7 +1921,7 @@ path tools/s/signal_trap_witness.rish
 tier lap
 seated 20260906.120137
 
-# fold_shelf_link -- a link that kept the depth of the file it was folded out of (REDS %486, closing
+# fold_shelf_link -- a link that kept the depth of the file it was folded out of (REDS %491, closing
 # %474's booked loom). The card sits in `construction/`, so a link it writes as `](archive/X)` or
 # `](../Y)` is correct there and broken the moment that text is folded onto `construction/archive/`.
 # FOUR link guards read this tree and none reaches it, three of them for one shared reason: a fold
