@@ -1,0 +1,20 @@
+# REDS %500 -- a lock with no bolt in it
+
+*Folded from the living pin [`../REDS.md`](../REDS.md) on `20260906.144500`, in the round that
+booked it -- the pin stood over its bound and this row was the largest BOOKED one, so folding my
+own kept every OPEN row where a reader looks.*
+
+*The sentence worth carrying forward: **a guard that names a count and reads a presence is
+answering the cheaper question wearing the expensive one's answer.** Four rostered guards said
+"exactly N fields" and proved it with N fixed-string greps, so a fourth field passed all four and
+a reorder passed all four -- while all four refused in the words "missing or reordered", which the
+predicate could read neither way. Two named movements of the Mantra arc were written down, on the
+operator card and in a commit body, as waiting on that lock.*
+
+*And the finding's proof is a **pass** rather than a refusal. The control runs the elder predicate
+verbatim beside the new reader on the same mutated file and asserts that the elder is satisfied.
+Every other phase shows the new reader biting; only that one shows what the replaced form let
+through, which is the half a repair cannot claim for itself.*
+
+
+**REDS %500 (`20260906.133957`) -- four guards declared "exactly N fields" and proved it with N presence greps, so the two Mantra movements recorded as waiting on that pin were waiting on a lock with no bolt in it.** *What went wrong:* `mantra_glow_tend_limb1` through `limb4` each stand `tier lap` over a Glow placard reading `invariant  a weave Line carries exactly three fields` and `example    3`, and each proved that claim in the Rye with N `grep -Fq` calls for N field lines. **Presence is not a count.** A fourth field passes all four, a reorder passes all four, and all four refused in the words **"missing or reordered"**, which a fixed-string grep can read neither way. `limb4` never read `root` at all: its placard names three directory handles and its Rye leg greps two. *What caught it:* the operator card and commit `14ab16d19`'s body BOTH naming this guard as the thing that locks the shape -- the identity gap wants a fourth field on `Line`, the diff anchor wants one on `Diff`, and both were written down as seams waiting on it -- so the lap read the lock before proposing to open it. *What it taught:* **a guard that names a count and reads a presence is answering the cheaper question wearing the expensive one's answer**, which is `%467`'s family in a fourth room; and **a refusal message is a claim like any other** -- "missing or reordered" stood in four files for a check that could see neither. *Repaired:* `tools/fixtures/r/rye_struct_fields_scan.sh` reads a named struct's declared fields out of a named Rye file, in order, with three refusals by name -- `no_file`, `no_struct`, `no_fields` -- each exiting 1 so a caller never reads a zero as an answer. Each limb now reads its **own placard's** `example N`, the number spelled once in the declaration, and compares it against both the count and the ordered names. **Proven on metal from the failing side:** a fourth field planted on the real `Line` in `mantra/src/weave.rye` reds `limb1` with *Line declares 4 fields where the placard says 3*, where the same plant left it green before this round. `rye_struct_fields_control.sh` proves **19 behaviors** in a throwaway pen under `tools/r/rye_struct_fields_witness.rish`, and its two sharpest phases are PASSES: the elder predicate, copied verbatim, waves both the fourth field and the reorder through on the same mutated file the new reader sees them in. *The class is seven, not four, and three are another seat's:* of eight `src/shape/*.glow` placards claiming *exactly*, `aurora_glow_tend_limb2` and `limb4` prove a 32-byte and a 64-byte length by grepping `pub const seed_length` and `pub const signature_length` for **presence** -- both are `= Ed25519...` aliases, so no guard reads either number -- and `limb3` proves *exactly six living stages* with six `test -f` calls, which a seventh stage passes. Named rather than taken: Aurora is another lane, and whether a std alias is checkable at all is that seat's ruling. **BOOKED.**

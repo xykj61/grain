@@ -23,9 +23,25 @@ assert names.ok else "mantra-tend-2: placard must name lines · next_pos"
 let elder = run ["sh" "-c" "grep -q 'mantra/src/weave.rye' src/shape/shape-mantra-weave-field-count.glow"]
 assert elder.ok else "mantra-tend-2: weave.rye citation missing"
 
-say "mantra-tend-2: rye still seats Weave with two fields..."
-let rye = run ["sh" "-c" "grep -q 'pub const Weave = struct' mantra/src/weave.rye && grep -Fq 'lines: std.ArrayListUnmanaged(Line),' mantra/src/weave.rye && grep -Fq 'next_pos: u32,' mantra/src/weave.rye"]
-assert rye.ok else "mantra-tend-2: Weave fields missing or reordered in weave.rye"
+# The claim is the placard's, so the number is read from the placard rather than spelled a
+# second time here -- a guard that carries its own copy of the number can only ever agree with
+# itself. Until 20260906 this leg was N `grep -Fq` calls for N field lines, which is presence
+# rather than a count: a fourth field passed it, a reorder passed it, and it refused in the
+# words "missing or reordered" (REDS %500). The reader is proven in a pen by
+# tools/r/rye_struct_fields_witness.rish, two of whose phases run the elder predicate verbatim
+# and watch it wave both breaks through.
+say "mantra-tend-2: the placard's own number, read against Weave in the rye..."
+let declared = run ["sh" "-c" "grep -E '^::  example' src/shape/shape-mantra-weave-field-count.glow | sed -E 's/^.*example[[:space:]]+//'"]
+assert declared.ok else "mantra-tend-2: the placard's example line is unreadable"
+let want_count = trim declared.out
+let counted = run ["sh" "tools/fixtures/r/rye_struct_fields_scan.sh" "--count" "mantra/src/weave.rye" "Weave"]
+assert counted.ok else "mantra-tend-2: the field reader refused on Weave -- ${counted.out}"
+let got_count = trim counted.out
+assert got_count == want_count else "mantra-tend-2: Weave declares ${got_count} fields where the placard says ${want_count}"
+let named = run ["sh" "tools/fixtures/r/rye_struct_fields_scan.sh" "--fields" "mantra/src/weave.rye" "Weave"]
+assert named.ok else "mantra-tend-2: the field reader refused on Weave -- ${named.out}"
+let got_fields = trim named.out
+assert got_fields == "lines next_pos" else "mantra-tend-2: Weave fields missing or reordered in the rye -- ${got_fields}"
 
 say "mantra-tend-2: lower and run..."
 let gate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" desk]

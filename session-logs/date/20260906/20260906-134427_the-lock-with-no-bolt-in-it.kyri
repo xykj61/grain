@@ -1,0 +1,48 @@
+format session-log-v1
+stamp 20260906.134427
+editor Claude Code, Zed-class CLI on the pier
+provider Anthropic
+product Claude Code
+role patchouli seat -- mantra/ and tally/, the version store and the bounded allocator
+modality text
+model claude-opus-5
+model_status active runtime reported by the harness environment block
+voice Kyri
+host Linux pier, 8 vCPU / 16 GB, TZ America/New_York
+title The lock with no bolt in it
+prompt The baton, unattended -- patchouli lap 4067, rota row 2, fire: what must stop and what must be cut.
+think Council rota row 2 of 5 (lap 4067, 4067 mod 5 = 2): Fire, Mars, cut and stop, and its sense is vision. Every row on today's shelf had already been read, so I took the computed row rather than advancing by hand. Fire's threshold gave the lap its method before it began -- look straight at the bright uncomfortable point most laps route around, and read the ledger before reading anything new.
+think Reds first, so I read the open set: %483 is another seat's runner, %457 is a habit deliberately left unguarded, %460 and %456 wait on Keaton, %360 is a ratchet. %463 named my lane -- mantra/src/diff.rye wanting a probe -- and the census now reads asserted=0 with the probe landed at 14ab16d19 six hours ago. Nothing of mine left open.
+think So the fire question turned on what the card says my lane is WAITING on. Two movements are written down as blocked by one guard's pin: the identity gap wants a fourth field on Line, and the diff anchor wants one on Diff, and both the operator card and commit 14ab16d19's body name mantra_glow_tend_limb1 as the lock. Before proposing to open a lock, read it.
+think THE LOCK HAD NO BOLT IN IT. limb1 proves "a weave Line carries exactly three fields" with three grep -Fq calls for three field lines. Presence is not a count. A fourth field passes it; a reorder passes it; and it refuses in the words "missing or reordered", which a fixed-string grep can read neither way. All four limbs carry the same fault, and limb4 never reads root at all -- its placard names three directory handles and its Rye leg greps two.
+think A lantern that fires twice becomes a loom, so I measured the class rather than the instance. Eight src/shape placards claim "exactly". Four are Mantra's. Three more are Aurora's: limb2 and limb4 prove a 32- and a 64-byte length by grepping pub const seed_length and signature_length for presence, and both are = Ed25519... aliases, so no guard in the tree reads either number; limb3 proves "exactly six living stages" with six test -f calls. Seven, not four.
+think The repair had to be a real reader rather than a wider grep. rye_struct_fields_scan.sh walks from the struct opener and reads contiguous field lines, printing the count and the ordered names, with three refusals by name -- no_file, no_struct, no_fields -- each exiting 1 so a caller never reads a zero as an answer. Each limb reads its OWN placard's example N rather than a second copy of the number, so the guard finally compares the claim against the code.
+obs THE PROOF THAT MATTERS IS A PASS, NOT A REFUSAL. The control's two sharpest phases run the elder predicate copied verbatim beside the new reader on the same mutated pen, and watch it wave a fourth field and a reorder through. Every other phase proves the new reader bites; only those two prove what the form it replaced did not. That is the tree's own shape from mantra_diff_control's walker_removed leg, and I reached for it deliberately.
+obs AND I PROVED IT ON THE REAL TREE, NOT ONLY IN THE PEN. I planted anchor: u32 on the actual Line in mantra/src/weave.rye, ran limb1, and read "Line declares 4 fields where the placard says 3" -- then reverted. The same plant left limb1 green this morning. A predicate proven in a pen is a predicate; a guard proven on its own subject is a guard.
+obs THE CAIRN CAUGHT ME. The card had twelve bytes free, so I folded both my own %481 paragraphs whole to a shelf, was still 400 short, and condensed Pheromone's landed %488 recital to a pointer. Then I read the 20260906.113014 cairn: "condensing a peer's live front to make room for one's own is the move this cairn exists to refuse." I put every word back and took the room out of my own card entry. The cairn worked exactly as written, on a hand that had not yet read it.
+obs NAMED RATHER THAN TAKEN. The Aurora three are the same defect in another lane, and whether a std alias is checkable at all is that seat's ruling rather than mine. Claim-as-override is for an empty queue, and mine was not empty; a cross-lane sweep here would widen the round past one keystone and hand another seat a guard it did not design.
+loom control behaviors=19 passed=19 failed=0
+loom limbs limb1=green limb2=green limb3=green limb4=green
+loom cold_pass guards=146 seconds=932 green=140 red=2 gated=4 tree_moved=no
+loom hot_pass guards=147 seconds=839 green=139 red=4 gated=4 tree_moved=no rye_struct_fields=green
+loom census asserted=0 ceiling=0 distinct=1716
+loom qa scan=87 witness=86 control=86 setting=comments
+loom reverify guards=148 seconds=887 green=139 red=5 gated=4 tree_moved=no
+file tools/fixtures/r/rye_struct_fields_scan.sh the reader four guards needed -- count and order out of the Rye, three refusals by name
+file tools/fixtures/r/rye_struct_fields_control.sh nineteen behaviors, two of them the elder predicate waving the break through
+file tools/r/rye_struct_fields_witness.rish the rung that drives the control and reads the four structures the limbs stand over
+file tools/m/mantra_glow_tend_limb1_witness.rish the presence leg replaced by a count-and-order leg reading the placard's own number
+file tools/m/mantra_glow_tend_limb2_witness.rish the same replacement for Weave
+file tools/m/mantra_glow_tend_limb3_witness.rish the same replacement for Diff
+file tools/m/mantra_glow_tend_limb4_witness.rish the same replacement for Store, which now reads root at last
+file construction/standing-equipment.kyri rye_struct_fields rostered tier lap at 1s
+file construction/REDS.md %500 booked; %491 folded to its shelf to make room
+file construction/ITINERARY.md the round's entry, and both %481 accounts folded whole
+obs THE RENUMBER SWEPT A PEER'S LABEL, AND readme_reach CAUGHT IT. A peer published %492 while I worked, so my row renumbered to %500 by the derived spine -- the stamp is the key and did not move. I did that with a blanket s/%492/%500/g across my own files, and the operator card was one of them: it carried a peer's own pointer, [%492](archive/REDS-two-algorithms-agreeing-rows-492.md), and my sweep changed the LABEL while leaving the path. A renumber is a sweep over MY citations, and a card holds everyone's. Reverted; the guard that found it reads links rather than numbers, which is why it could see what a number-aware sweep could not.
+obs AND IT UNCOVERED AN UPSTREAM BREAK BESIDE MINE. The same readme_reach red named a second card link, to REDS-the-verdict-travelled-and-the-reason-did-not-rows-492.md, where the file on disk is rows-494.md. My diff shows I never touched that line, so it arrived with the rebase. Repaired in passing -- one character pair, and the guard reds every tree in the fleet until someone does it. reds_fold reds only because it asks readme_reach to run, so the two were one fault.
+obs THE DAY SHELF WENT MISORDERED WITHOUT ANYONE WRITING A WRONG ROW. My row was prepended under the delimiter, then the rebase merged four peers' newer-stamped rows in ABOVE it, and index_row_bound reads newest-first as a law. Sorted the shelf's rows by stamp rather than hand-placing mine, so the fix holds for the next rebase too.
+file construction/CHECKPOINTS.md the walk-back cairn, and the condensation I withdrew
+scope one keystone -- the four Mantra field-count guards taught to count; the Aurora three named
+obs THE HOT PASS COST ME A LAP THE WAY %483 SAYS IT WILL. Two reds arrived from my own round -- reds_ledger_headline and reds_ledger_monotone both read the ledger's headline SPAN, which my hand-edited Rows line left at 491 while the spine measured 492. The guard names its own repair, reds_ledger_headline_write.sh write, and both are green after it. The lesson is the tree's own: a number a hand types beside a number a program measures is a number that will disagree, and the writer exists because it already had.
+status GREEN for this round -- four limbs green, the new rung green at 0s, limb1 proven red on a real fourth field, and the ledger headline repaired by its own writer. The hot pass closes guard_red on two rows that are not this round's: sow_allow_reach, which reds on any tree with no seed/ projection (an environment fact, and projecting is another lane's), and standing_equipment, which is %483 reading the previous pass's card -- the lap that closes a red still closing guard_red, exactly as that row predicts.
+recommend check in (Keaton) -- the identity gap is unblocked by measurement rather than by a word: widening Line now reds limb1 honestly, so the placard moves with the code and the seam is a decision you can make rather than a wall.
