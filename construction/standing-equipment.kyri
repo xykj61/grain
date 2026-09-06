@@ -353,6 +353,11 @@ guard remember_git_nib
 path tools/r/remember_git_nib_witness.rish
 seated 20260825.183336
 
+guard remember_git_nib_write
+path tools/r/remember_git_nib_write_witness.rish
+seated 20260906.050718
+tier lap       # 34 pen cases in 0.6s; the writer beside the guard above, standing free of it
+
 guard reds_ledger_headline
 path tools/r/reds_ledger_headline_witness.rish
 seated 20260825.183336
