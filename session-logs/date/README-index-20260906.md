@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260906.031132` | [the window closes and the loop takes over](20260906/20260906-031132_the-window-closes-and-the-loop-takes-over.kyri) | one live seat; the tree is clean. |
 | `20260906.030420` | [an instrument must know where it stands](20260906/20260906-030420_an-instrument-must-know-where-it-stands.kyri) | one file, two paths, three retractions. |
 | `20260906.025440` | [absent, or behind](20260906/20260906-025440_absent-or-behind.kyri) | a stale HEAD makes a grep convincingly wrong. |
 | `20260906.025034` | [the scan that named nothing, until the fetch](20260906/20260906-025034_the-scan-that-names-nothing.kyri) | a stale checkout read an absent file; fleet_login GREEN. |

@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `34342eec86` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `b16be4027c` -- HEAD's parent, resolvable everywhere (%401).
 
 **DIFFUSER** -- **`%454` OPEN: `route_hops` publishes a hop count, and a third of the sky has no
 walk of that length.** From the metric's OWN unit distance: 642 edges over 720 points, **132 with no
