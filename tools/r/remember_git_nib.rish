@@ -1,0 +1,70 @@
+# tools/r/remember_git_nib.rish -- derive the operator card's Git nib from git, and write it on request.
+#
+# WHY. `.claude/rules/remember-git-nib.md` asks a hand to copy ten hexadecimal characters into
+# `construction/ITINERARY.md` at the end of every send. A round on `20260906.010726` measured what
+# that costs across a fleet: the nib was falsified four times in ninety minutes -- three by peers
+# landing while the round packaged, and once by a hand typing `f1498bd7f5` where git answers
+# `f1498bd7fc`, one wrong character in the last position, inside the very note arguing for this
+# program. A hand copying hex under time pressure has a per-character failure rate. `git rev-parse`
+# has none. The spec is `active-designing/20260906-010726_the-numbers-a-hand-types-that-a-rebase-falsifies.md`.
+#
+# WHICH COMMIT, and why HEAD's parent rather than HEAD. A commit cannot contain its own hash, so the
+# nib is always written in the same breath as the commit it names. The seated send order pins, then
+# amends -- which leaves the card naming the PRE-AMEND sibling, an object no other clone holds, and
+# that stood as a double-red on five bodies out of six every lap (REDS %401). HEAD's parent is a
+# commit the round was built on, so every clone already has it. That is the state this writes.
+#
+# WHEN TO RUN IT. At the END of the send, after the final rebase and before the commit that carries
+# the card. Every number in this class is correct when written and falsified by an event the writer
+# cannot see, so writing it at packaging time is writing it too early.
+#
+# WHY THIS IS NOT A FLAG ON THE GUARD, which is what the spec proposed. `remember_git_nib_witness.rish`
+# says twice in its own header that it never edits the card, and a guard that repairs what it
+# measures can no longer testify about it: a fault in the writer would be written, and then reported
+# green by the same hand. So the two stand free -- this writes, that judges, and neither imports the
+# other (`foundations/20260823-204456_single-stranded.md`). The precedent is already in the tree:
+# `readme_metrics.rish` writes and `readme_metrics_witness.rish` judges.
+#
+# USAGE
+#   rishi/bin/rishi run tools/r/remember_git_nib.rish          # print the derived nib, touch nothing
+#   rishi/bin/rishi run tools/r/remember_git_nib.rish write    # write it onto the card
+#
+# Idempotent: a second write reports `card_changed=no` and does not open the file. Proven by
+# tools/r/remember_git_nib_write_witness.rish. Run from the repository root.
+
+let mode = "render"
+if length args != 0 then let mode = args[0]
+
+let card = "construction/ITINERARY.md"
+let have = run ["test" "-f" card]
+assert have.ok else "remember-git-nib: construction/ITINERARY.md not found -- run from the repository root"
+
+# The nib is derived, never recited. `--verify --quiet` makes a root commit answer nonzero here
+# rather than producing an empty string that would later be written as a nib.
+let parent = run ["sh" "-c" "git rev-parse --verify --quiet HEAD^ >/dev/null 2>&1 && git rev-parse --short=10 HEAD^"]
+assert parent.ok else "remember-git-nib: HEAD has no parent -- a root commit names no nib, and this writes nothing"
+let nib = trim parent.out
+assert nib != "" else "remember-git-nib: git named no parent commit"
+
+# invariant: it resolves to a commit HERE before it is written ANYWHERE. This is the exact check
+# that caught the spec's fourth firing, where the card named an object the repository did not hold.
+let kind = run ["sh" "-c" "git cat-file -t ${nib} 2>/dev/null | tr -d ' \n'"]
+assert (trim kind.out) == "commit" else "remember-git-nib: the derived nib does not name a commit in this repository -- ${nib}"
+
+if mode != "write" then say "remember-git-nib: HEAD's parent is ${nib} -- write it with: rishi/bin/rishi run tools/r/remember_git_nib.rish write"
+if mode != "write" then exit exit-ok
+
+# The bytes move in the fixture, the claim stays here: the language that checks the fact owns the
+# fact, and the tool that moves bytes moves bytes (readme_metrics_splice.sh's own division).
+let wrote = run ["sh" "tools/fixtures/r/remember_git_nib_write.sh" card nib]
+assert wrote.ok else "remember-git-nib: the write REFUSED -- see stderr; the card is untouched"
+assert wrote.out contains "nib_written=${nib}" else "remember-git-nib: the write must name the nib it wrote"
+say wrote.out
+
+# invariant: the card reads back through the GUARD's own extractor as the nib just derived, so this
+# program never reports success over a card the guard would still refuse.
+let back = run ["sh" "-c" "awk '/Git nib:/{ if (match($0, /[0-9a-f]{7,40}/)) { print substr($0, RSTART, RLENGTH); exit } }' construction/ITINERARY.md"]
+assert back.ok else "remember-git-nib: the card could not be read back after the write"
+assert (trim back.out) == nib else "remember-git-nib: the card reads back as ${back.out} rather than ${nib} -- the guard would still refuse"
+
+say "remember-git-nib: the card names ${nib} -- HEAD's parent, resolvable in every clone."

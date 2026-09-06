@@ -1,0 +1,95 @@
+# tools/r/remember_git_nib_write_witness.rish -- prove the nib writer, without letting it near this tree.
+#
+# WHAT IT PROVES. `tools/r/remember_git_nib.rish` derives the operator card's Git nib from git and
+# writes it. Two claims carry the program: it writes the value the GUARD will read back, and it
+# refuses rather than mutating whenever those two would disagree. Both are proven on planted cards
+# in a throwaway pen by `tools/fixtures/r/remember_git_nib_write_control.sh`, 34 cases, every refusal
+# shown from both sides and every welcome asserted as hard as every refusal.
+#
+# WHY THE WRITE IS NEVER RUN AGAINST THIS TREE. A roster pass reads the tree cold at the open and hot
+# after `git add`, and refuses `tree_moved` when the two digests differ. A witness that wrote the
+# real card would move the tree from inside the pass that is measuring it. So the write is proven in
+# the pen, and against the live tree this witness asserts only the two things it can assert without
+# touching anything: that render mode names exactly what `git rev-parse --short=10 HEAD^` names, and
+# that render mode leaves the card byte-identical. The live WRITE has its own judge already --
+# `tools/r/remember_git_nib_witness.rish`, which reads the card after the send and says whether the
+# nib is one of the three honest states.
+#
+# WHY TWO PROGRAMS RATHER THAN A FLAG. The spec that booked this work proposed
+# `remember_git_nib_witness.rish --write`. The guard's own header says twice that it never edits the
+# card, and a guard that repairs what it measures cannot testify about it: a fault in the writer
+# would be written and then reported green by the same hand. Two parts that stand free -- one writes,
+# one judges -- is `foundations/20260823-204456_single-stranded.md` applied to instruments, and the
+# tree already had the shape in `readme_metrics.rish` beside `readme_metrics_witness.rish`.
+#
+# WHAT IS NOT PROVEN. That anyone runs the writer at the right moment. The number goes stale between
+# packaging and pushing, so the send's last act is the one moment all of it is true; a program cannot
+# enforce when a hand invokes it, and the guard catches a card that missed the moment.
+#
+# Style: context/GAUGE_STYLE.md - Rule: .claude/rules/remember-git-nib.md - Spec:
+# active-designing/20260906-010726_the-numbers-a-hand-types-that-a-rebase-falsifies.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/r/remember_git_nib_write_witness.rish
+
+say "remember-git-nib-write: Language EN -- a number a hand types is falsified by an event the hand cannot see; a number a command derives is not."
+say "remember-git-nib-write: Style Gauge -- the writer writes what the guard reads, or it refuses and leaves the card exactly as it found it."
+say "remember-git-nib-write: Lens TAME -- refusal before mutation: every check runs against a temporary, and the card is opened only after the result is proven."
+
+# 1. Render mode names what git names, and the two are compared rather than recited.
+let rendered = run ["sh" "-c" "rishi/bin/rishi run tools/r/remember_git_nib.rish"]
+assert rendered.ok else "remember-git-nib-write: render mode must succeed on a tree whose HEAD has a parent"
+let truth = run ["sh" "-c" "git rev-parse --short=10 HEAD^"]
+assert truth.ok else "remember-git-nib-write: HEAD must have a parent for this witness to have a subject"
+let want = trim truth.out
+assert rendered.out contains "HEAD's parent is ${want}" else "remember-git-nib-write: render must name HEAD's parent exactly as git spells it -- wanted ${want}"
+say "render names ${want}, which is what git rev-parse --short=10 HEAD^ answers"
+
+# 2. Render mode touches nothing. Proven by digest rather than by the program's own word.
+let before = run ["sh" "-c" "git hash-object construction/ITINERARY.md"]
+assert before.ok else "remember-git-nib-write: the card must be hashable before render"
+let again = run ["sh" "-c" "rishi/bin/rishi run tools/r/remember_git_nib.rish >/dev/null && git hash-object construction/ITINERARY.md"]
+assert again.ok else "remember-git-nib-write: render mode must succeed a second time"
+assert (trim again.out) == (trim before.out) else "remember-git-nib-write: render mode CHANGED the card -- it must touch nothing"
+say "render leaves the card byte-identical, proven by digest"
+
+# 3. The whole program, on planted cards in a pen: welcomes and refusals both.
+let control = run ["sh" "tools/fixtures/r/remember_git_nib_write_control.sh"]
+assert control.ok else "remember-git-nib-write: the control must complete"
+say control.out
+
+assert control.out contains "PASS: the write succeeds" else "remember-git-nib-write: a stale nib must take the write"
+assert control.out contains "PASS: it names what it wrote" else "remember-git-nib-write: the write must name the nib it wrote"
+assert control.out contains "PASS: the guard's own extractor reads the new nib back" else "remember-git-nib-write: the guard must read back what the writer wrote"
+assert control.out contains "PASS: it reports the card unchanged" else "remember-git-nib-write: a second write must report the card unchanged"
+assert control.out contains "PASS: the bytes are identical" else "remember-git-nib-write: a second write must be a no-op on disk"
+assert control.out contains "PASS: the prose after the nib is byte-identical" else "remember-git-nib-write: everything on the line except the hash must survive"
+assert control.out contains "PASS: the backticks are still a pair" else "remember-git-nib-write: the delimiters must survive the substitution"
+assert control.out contains "PASS: the file is still five lines" else "remember-git-nib-write: a write must add and remove no lines"
+assert control.out contains "PASS: the first line took the write" else "remember-git-nib-write: the FIRST nib line is the one the guard reads and the one the writer writes"
+assert control.out contains "PASS: the second line is untouched" else "remember-git-nib-write: a second nib line must be left where it stands"
+assert control.out contains "PASS: an executable card is still executable" else "remember-git-nib-write: the mode the repository tracks must survive the rewrite (.claude/rules/exec-bit.md)"
+
+assert control.out contains "PASS: the guard would read the word, not the hash" else "remember-git-nib-write: the decoy case must actually decoy the guard, or it proves nothing"
+assert control.out contains "PASS: the write is REFUSED" else "remember-git-nib-write: a card the guard reads differently must refuse rather than be mangled"
+assert control.out contains "PASS: the refusal names both readings" else "remember-git-nib-write: a refusal must name what it read and what it wanted"
+assert control.out contains "PASS: the card is byte-identical -- refusal before mutation" else "remember-git-nib-write: a refused write must leave the card exactly as it found it"
+assert control.out contains "PASS: the clean card writes" else "remember-git-nib-write: the pen must be proven innocent, or the refusal is about the pen"
+
+assert control.out contains "PASS: the refusal says it invents nothing" else "remember-git-nib-write: a card with no nib line must gain none"
+assert control.out contains "PASS: refused: [empty]" else "remember-git-nib-write: an empty nib must refuse"
+assert control.out contains "PASS: refused: [zzzzzzzzzz]" else "remember-git-nib-write: a non-hexadecimal nib must refuse"
+assert control.out contains "PASS: refused: [ABCDEF1234]" else "remember-git-nib-write: an uppercase nib must refuse -- git prints lowercase"
+assert control.out contains "PASS: the card is byte-identical after five refusals" else "remember-git-nib-write: the nib is checked before the card is opened"
+
+assert control.out contains "PASS: seven characters -- the floor -- is welcomed" else "remember-git-nib-write: the width floor must be free at its own number"
+assert control.out contains "PASS: forty characters -- the ceiling -- is welcomed" else "remember-git-nib-write: the width ceiling must be free at its own number"
+assert control.out contains "PASS: six -- one under the floor -- is bitten" else "remember-git-nib-write: one under the floor must bite, so no override exists"
+assert control.out contains "PASS: forty-one -- one over the ceiling -- is bitten" else "remember-git-nib-write: one over the ceiling must bite, so no override exists"
+assert control.out contains "PASS: an absent card refuses" else "remember-git-nib-write: an absent card must refuse"
+assert control.out contains "PASS: no arguments at all refuses" else "remember-git-nib-write: a call naming nothing must refuse"
+
+assert control.out contains "cases_red=0" else "remember-git-nib-write: every planted case must behave"
+assert control.out contains "control_verdict=ok" else "remember-git-nib-write: the control must agree with itself"
+
+say "GREEN: remember-git-nib-write -- the writer names HEAD's parent, writes what the guard reads back, and refuses rather than mutating when the two would disagree. Thirty-four cases on planted cards in a pen, every refusal shown from both sides and every welcome asserted as hard: the substitution keeps the line's prose, its backticks and its line count; a second nib line is left where it stands; the tracked mode survives the rewrite; a hexadecimal English word on the nib line refuses with the card byte-identical, and a clean card one line later proves the pen innocent; the width bound bites one past each end and is free at its own number. Against this tree it asserts only what it can assert without touching anything -- render names exactly what git rev-parse answers, and leaves the card byte-identical by digest -- because a witness that wrote the real card would move the tree from inside the roster pass measuring it. The live card has its own judge in tools/r/remember_git_nib_witness.rish, which never edits and never pushes."
