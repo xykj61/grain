@@ -1,0 +1,66 @@
+# tools/e/elf_machine_witness.rish -- a binary's architecture, read from its own bytes.
+#
+#   rishi/bin/rishi run tools/e/elf_machine_witness.rish
+#
+# WHY THIS RUNG. Glow's two cross-target witnesses proved what they had built by reading `file`'s
+# prose and asserting on a substring, and neither checked whether the call had succeeded. This
+# pier has no `file(1)`. So the call exited 127 with empty output, and the substring assert fired
+# saying *cross-built binary is not aarch64* -- a claim about the binary. Measured the same
+# minute: the binary was 4,719,664 bytes, freshly built, and carried e_machine=183 in its own
+# header. The guard could not run its instrument and reported its subject as broken.
+#
+# WHAT IS PROVEN, all of it on metal.
+#
+#   Twenty-nine behaviors on planted ELF headers in a throwaway pen, by the control: four
+#   architectures read back distinctly, both byte orders decoded from EI_DATA, and five refusals
+#   shown from the failing side -- an unnamed machine, an undecodable byte order, a file whose
+#   magic is not ELF, a file too short to carry the field, and a path that is not there. The
+#   welcomes are asserted as hard as the refusals, because a refusal proven only in the passing
+#   direction cannot be told from a bypass.
+#
+#   The tree holds the shape. A census over every tracked runner counts the sites that still prove
+#   an architecture by reading `file`'s prose, under a ceiling that only falls.
+#
+# WHY A CEILING RATHER THAN A GATE AT ZERO. Three sites remain, in tools/h/hawm1_seva_witness.rish,
+# tools/h/hawm3_seva_device_witness.rish, and tools/t/tube05_apk_pack_worker.sh. Each builds for
+# Android or packs an APK, and neither toolchain runs on this pier -- so repairing them here would
+# mean editing a guard I cannot run, which is the exact fault this rung exists to close. They fall
+# on touch, from whichever bench holds the NDK.
+#
+# WHAT THIS DOES NOT PROVE. That a cross-built binary RUNS. That is the emulator's word, and the
+# emulator is a thin-edge instrument this pier also lacks -- qemu-aarch64-static and
+# qemu-riscv64-static are both absent, so both Glow cross-target witnesses still stop there,
+# naming the emulator. The roster's `capability` field is the seated answer for a host that cannot
+# do a thing; wiring it is a separate lap and is named on the card.
+
+say "elf-machine: Language EN -- an architecture read from the header, not from a utility's prose."
+say "elf-machine: Style Gauge, Meter -- every refusal names what it could not read."
+say "elf-machine: Lens TAME -- the ELF header's first twenty bytes are the bound; od is POSIX."
+
+let scan_here = run ["sh" "-c" "test -f tools/fixtures/e/elf_machine_scan.sh"]
+assert scan_here.ok else "elf-machine: the scan is missing -- tools/fixtures/e/elf_machine_scan.sh"
+
+let control_here = run ["sh" "-c" "test -f tools/fixtures/e/elf_machine_control.sh"]
+assert control_here.ok else "elf-machine: the control is missing -- tools/fixtures/e/elf_machine_control.sh"
+
+let control = run ["sh" "tools/fixtures/e/elf_machine_control.sh"]
+assert control.ok else "elf-machine: the control refused -- read its FAIL lines"
+assert control.out contains "fail=0" else "elf-machine: the control reported a failing case"
+say "GREEN: elf-machine -- the pen's planted headers read back, and every refusal bites."
+
+# The reader meets a real multi-megabyte binary rather than only a twenty-four byte plant. Rishi's
+# own interpreter is the one ELF this tree can always point at from inside a Rishi witness, since
+# it is the process running this line.
+let native = run ["sh" "tools/fixtures/e/elf_machine_scan.sh" "rishi/bin/rishi"]
+assert native.ok else "elf-machine: the reader refused Rishi's own interpreter"
+assert native.out contains "elf=yes" else "elf-machine: Rishi's interpreter did not read as an ELF"
+say "GREEN: elf-machine -- a real binary on disk reads by the same twenty bytes."
+
+# THE CENSUS, and its ceiling, live in tools/fixtures/e/elf_machine_census_scan.sh -- one
+# reading, one home, so a ceiling that falls falls in one place. It counts `file` calls in command
+# position inside tracked runners, comments stripped first, and refuses above its ceiling.
+let census = run ["sh" "tools/fixtures/e/elf_machine_census_scan.sh"]
+assert census.ok else "elf-machine: a guard proves an architecture by reading file's prose -- read the ELF header instead, tools/fixtures/e/elf_machine_scan.sh"
+assert census.out contains "ceiling=3" else "elf-machine: the census ceiling moved -- a raise is a deliberate hand, and this one is meant only to fall"
+assert census.out contains "verdict=under_ceiling" else "elf-machine: the census refused"
+say "GREEN: elf-machine -- the reader is proven, and the tree holds under its ceiling."

@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `66ca49af9a` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `d6bd6f292a` -- HEAD's parent, resolvable everywhere (%401).
 
 **DIFFUSER** -- **`%454` stays OPEN and now carries its price.** Elder measured routing; this is
 the other half. **A revocation and a fault ride the same edge**, so the set where one cascades IS
@@ -115,30 +115,26 @@ names them, plus the nib.
 **`%445` FOLDED** (`20260906.001800`) -- the view moved twice, the key did not; whole on the [`20260906.001820` shelf](archive/20260906-001820_itinerary-landed-accounts.md). **`%440`'s lantern fired three times in one send**, each a clean auto-merge seating a day-shelf row out of order; the loom stays their booked lap.
 **The `%439` class, measured rather than assumed** -- four detectors over 1,712 distinct Rye files; a trailing `const` comment restating its own arithmetic reads **clean** (zero genuine), and only the first-segment stem catches `%439`. One in 159: no gate, the right hour. Whole on the [`20260906.001820` shelf](archive/20260906-001820_itinerary-landed-accounts.md).
 
-**`%453` CLOSED -- a doc line promised a distance between points, and the function beneath it
-measures between outfits** (`20260906.002658`). `route_hops`'s doc read *"Zero exactly when `a`
-and `b` are one point."* It reads `tier` through `depth()`, and inclusion made one point wear
-three outfits, so `of_galaxy(8)` and `of_planet(8,0,0)` both `encode` to **8** and read **two**
-hops apart. **Caught by planting the sentence as an assertion:** `PlantNotOnePoint` stayed
-silent, `DocClaimRefused` fired. `%439` was this file thirty lines up, and the difference is the
-whole lesson -- **a breach that changes what a word MEANS is harder to sweep than one that
-changes a number**, because no grep reaches a definition. The five named routing legs could not
-see it by construction: every one compares two addresses at the SAME tier.
-**And the one real invariant has its guard now.** `prove_route_is_never_blind` walks **every
-ordered pair of both seated skies** -- 518,400 and 164,025 -- proving distinct points are never
-zero hops apart, which the census had measured with nothing to keep it. Proven able to red three
-ways: a metric collapsed inside **galaxy 11**, a corner no named leg visits, answers
-`RouteBlindBetweenPoints` **while all eight named legs pass**; a wholly blind metric answers
-`PlanetToStarNotOne`; a 1,200-point sky answers `SkyTooLargeToProvePairwise`. Two witness asserts
-carry both halves onto the roster. **Two of DIFFUSER's three buildables are built** -- the
-zero-hop witness and the doc line -- and they were named for BAKERY while `comlink/` is this
-seat's own territory, so I took them and say so. **`seat_arc` stays proposed**, since adding a
-public function is a design act; its argument and the census's four readings fold to the
-[005436 shelf](archive/20260906-005436_itinerary-landed-accounts.md).
-**Pheromone's `shell_dialect` item is closed** -- both `sed -i` sites in
-`fleet_key_locality_control.sh` carry temp-then-cat, green on this tree. `agent_jail` reds here
-too, and it is `%446` upstream: `bwrap` and `unshare` both answer *Operation not permitted* at a
-bare prompt, so the host denies the namespace and nothing in the tree is wrong.
+**`%453` CLOSED -- a doc line promised a distance between points, and the function beneath it measured between outfits**; the never-blind proof walks both seated skies. Whole on the [20260906.040933 shelf](archive/20260906-040933_itinerary-landed-accounts.md).
+**PHEROMONE -- `%460` OPEN: two Glow witnesses read `file`'s prose for an architecture, never read
+`.ok`, and on a pier with no `file(1)` called ten correct binaries the wrong architecture.** `sh -c`
+exits **127** empty, and an empty string satisfies no substring, so the failure is a *confident*
+false claim -- of a binary built that minute carrying `e_machine=183`. **Found in `%360`'s Glow remainder** -- the seven
+`witness_reach_scan.sh --list` calls **unheard**; five GREEN, these two red, neither ever run. *Landed:* `elf_machine_scan.sh` reads magic, `EI_CLASS`, `EI_DATA`, `e_machine` with `od`
+(POSIX; `file` is borrowed); **29 pen behaviors**, the pen proven innocent -- a scan patched to
+always answer `AArch64` fails six ways. **All ten proven on metal**, nine RISC-V, one AArch64. Rostered `tier lap` **1s**, census one awk pass over ~2,900 runners, not two
+processes per file (17 of an elder 18). **Left standing, not for lane:** three sites behind Android/APK
+toolchains this pier cannot run -- *editing a guard I cannot run is the fault the row closes*;
+ceiling 13 -> 3, both ways. **Still red at the emulator:** both qemu binaries
+absent, so the run-it half is unproven and says so. Their own head promises an honest limit their
+code never had; the roster's `capability` field is the seated answer -- **changing what GREEN means
+is a design act, named not taken.**
+**`%451`'s bound half -- I claimed it and a peer landed the same line first.** We both passed `"$f"`
+to the bound reader in `reds_ledger_scan.sh`; theirs is upstream and I took it whole, including the
+count that **corrects mine**: 13 calls across 8 files, six bare on purpose, six naming their page,
+this one bare while weighing one -- not *one of nineteen*. Mine measured `equinox_e123` **red ->
+green** from it. **This is the standing evidence for your open question**, lived twice in one night:
+nothing in the ledger showed the row was being worked, so two hands spent one hour on one argument.
 
 **Grass's cross-lane find, measured** -- `mand/capabilities.rye` is a **262-line copy** of
 caravan's **305**, and at this stamp the **one file in this tree that lags live code**: of the 113
@@ -183,25 +179,24 @@ numbers and its stamp took none -- as `%451` just did again, six laps running no
 **the standing evidence for your open question**: should an OPEN row carry a claim, a seat and a
 stamp, at start rather than at landing. Take the number from `--next`, never from the row.
 **Bounds raised `20260906`, both derived, both yours:** the operator card to 40,960 (8 ships x 2,048 live front) and the REDS pin to 40,960 (8 x 4,096 OPEN set + 8,192 header). **Each is sized per ship, so both re-open at twelve** -- and the pin's is also sized by how fast reds close (`%360`, 8,213 bytes, open since `20260830`).
-**`%458` CLOSED -- the scan called this ship's own credential *the pier's*.** Inside the jail `$HOME/.claude` **is** `loops/claude` -- `stat` gives both device:inode `64771:3313373` -- so `trees_sharing_token=1` came from comparing a file with itself, and every sentence I wrote about *the pier's* credential was about incense's. **Caught by Keaton in four words: *aren't you in an incense jail?*** Nothing in the tree asked. **Retracted:** *two credential files* (one file, two paths); *pier untouched since 01:53* (that is incense's copy); *the 02:47 login went nowhere a ship reads* -- **unfounded**, the pier was never examined and that login may have landed exactly as reported. **Stands:** copal `no_copy`, `loops/` untouched since `20260905 18:24`, `trees_own_session=0` -- peer trees are bound read-only and real. **An instrument must know where it is standing.** The scan prints `pier_visible=no` and `verdict=pier_unreadable_from_jail` now; **the pier half wants an unjailed shell.**
-**The captain's view, measured `20260906.030420`:** seven peer trees bound **read-only** (a write is refused), peer `.gnupg-rye/private-keys-v1.d` **denied**, `$HOME` a **tmpfs**. Peers' work yes, peers' keys no -- and **the pier's own home, no.**
+**`%458` CLOSED -- the scan called this ship's own credential *the pier's*, because inside the jail they are one file.** Whole on the [20260906.040933 shelf](archive/20260906-040933_itinerary-landed-accounts.md).
 **`%456` OPEN -- eight ships share ONE login, so one credential is a fleet-wide outage** (mechanism read from `agent-jail.sh` source, so `%458` leaves it standing). **Its pier half is unmeasured from inside the enclosure.** Seven died 3 laps each in ten seconds on `OAuth session expired and could not be refreshed`; `agent-jail.sh` seeds every tree from the pier's single credential (*one login per pier*). Refresh token had **27 days** left, so expiry is excluded -- the leading read is **rotation**: one shared token, first refresher strands the rest and the pier's own copy. **Falsifier is cheap:** watch whether the pier's refresh value changes after a ship refreshes. Landed: `claude_refresh_dead()` names a dead credential instead of seeding it (proven 3 ways -- dead trips, expired ACCESS does not, missing field fails open), and `sh tools/fixtures/f/fleet_login_scan.sh` answers it in one command. **Yours, gate 3:** one login per ship is the fix. **A resource shared by every ship has no blast radius smaller than the fleet.**
 **`%455` ERRATUM** -- "red on eight of eight ships" was inferred; two were measured, and bakery's green receipt predates the split and came from an unjailed shell, so whether a JAILED lap writes a receipt is still unconfirmed.
 **`%444`/`%431` CLOSED** -- the seed publisher travels with the field (`!/publish-seed.sh`, verdict `personal`, `sow_witness` GREEN); seven of eight ships stop paying a cold pass a lap. **A rule that states its reason can be checked -- this one stood eleven days and no reader asked the filesystem.**
 **Landed `20260905`, whole on their shelves** -- `%430` and `%438` on the [235749 shelf](archive/20260905-235749_itinerary-landed-accounts.md); `%435`, `%427`-`%429`, `%423`-`%426`, `%420`, `%413`/`%412`, `%411`/`%410`, `%409`, `%408`, Mantra's 20 guards, the ripgrep fetch, the aroma breach, the baton and the three berths, and the bound grant itself on the [192154 shelf](archive/20260905-192154_itinerary-landed-accounts.md); `%442`/`%443` and `%445` on the [001800 shelf](archive/20260906-001800_itinerary-landed-accounts.md).
 **SEATED on the baton:** SEND regenerates `readme_metrics` **after `git add`** -- its scan counts with `git ls-files`, which reads the INDEX; `geode_libraries` walks with `find` and does not care. Eight ships, next lap.
+**`shell_dialect` re-diagnosed:** the `sed -i` repair stands; it reds on ONE case of 47 -- *a guard
+without its instrument names rg rather than a file*. `shell_portable_control.sh` takes `rg` off PATH
+by dropping every entry holding an executable `rg`, and this NixOS pier keeps `rg` and `sh` in one
+directory, so the scan under test cannot start. A pen of symlinks to every tool but `rg` is the fix.
+**Hot pass: 126 guards, 120 green, 3 red, 3 gated, 730s** -- seven ships ran theirs at once, load
+**18** on 8 threads: `%446`'s per-lap cost times the fleet. **Card was 8 bytes free; `%458` folded to a shelf, 816 now.**
 **`%439`-`%441` FOLDED** to one [shelf](archive/REDS-what-no-meter-was-reading-rows-439-441.md):
 three claims where no instrument reads. **Mantra's next work is MERGE, not `Line`.**
 **Patchouli's cold pass reads the same two reds DIFFUSER names above**, on a sixth tree.
 **`%360` advanced** -- Amphora's eight are heard; `unheard` **1,094**, ceiling **1,108**.
 **Yours:** it stands **14 under**; one line takes it.
-**`%453` CLOSED -- a floor stopped biting the hour the work it invited arrived** ([shelf](archive/REDS-the-floor-that-stopped-biting-rows-453-453.md))**.**
-`amphora/vessel_fetch_wire.rye` ties both bounds at comptime, measured first: raising the whole to
-2200 refuses **64 of 2,200 legal lengths** with its own selftest still GREEN, and the chunk
-count raised panics at index 16 on a good resin. `ties_wired` 2 -> **3** took `comlink_carriage`'s
-`-ge 2` gate below single-drop detection -- it asks each room for its OWN tie and wants all three,
-control 20/17/3 `proven`. **Named, not taken:** `comlink_glow_tend` holds the same floor at 2 of 3
-and goes quiet when `comlink/vessel_fetch_wire.rye` ties its third.
+**`%453` CLOSED -- a floor stopped biting the hour the work it invited arrived**; Amphora tied both bounds at comptime. Whole on the [20260906.040933 shelf](archive/20260906-040933_itinerary-landed-accounts.md) and [its REDS shelf](archive/REDS-the-floor-that-stopped-biting-rows-453-453.md).
 **Still open:** `glow/rune_shape.rye` width custody; `%281`/`%291`. **(%347):**
 `pond/enclosure_policy.kyri` 8,120/8,192; yours.
 **Landed this chapter** -- `%374`'s gate build, six utility fetches with their thanks, the naming
