@@ -1,41 +1,48 @@
 # tools/r/rye_harness_roster_witness.rish -- a harness that assembles its paths must roster the
 # directory it assembles them from.
 #
-# WHY THIS RUNG. tools/p/parity_ch01.rish builds and runs 116 Rye programs, and not one of their
-# paths is written anywhere in this tree. The harness holds `let dir = "rye/tests"` and a list of
-# 116 bare stems, and reaches each program as `${dir}/${s}.rye`. The path exists only while the
-# harness is running.
+# WHY THIS RUNG. tools/p/parity_ch01.rish builds and runs 116 Rye programs, and every one of their
+# paths exists only while the harness runs. The harness holds `let dir = "rye/tests"` and a list of
+# 116 bare stems, and reaches each program as `${dir}/${s}.rye`, so the tree carries the directory
+# and the stems and leaves the join to the shell.
 #
-# Two consequences follow, and both are quiet. A census that reads for filenames calls all 116
-# unbuilt -- one did on 20260906, and its count reached the operator card as a fact. And a program
-# added to rye/tests/ and left out of the list is never run, while the suite still reports GREEN,
+# Two consequences follow, and both are quiet. A census reading for filenames calls all 116 unbuilt
+# -- one did on 20260906, and its count reached the operator card as a fact. And a program added to
+# rye/tests/ while the list stays as it was is run by nothing, while the suite still reports GREEN,
 # because the suite asserts over the list it holds rather than over the directory it names. That
 # second failure is open, silent, and looks exactly like success.
 #
 # The tree already keeps this rule in two other rooms -- crypto_tool_declaration_scan.sh reds a
-# `ghost_module`, module_roster_scan.sh reds an `unrostered` file -- and neither reaches the
+# `ghost_module`, module_roster_scan.sh reds an `unrostered` file -- and each stops short of the
 # largest assembled site in the tree. This rung carries the same rule to every harness that builds
 # a path out of a directory and a stem.
 #
 # WHAT IS PROVEN, on metal.
 #   Every stem a harness names resolves to a .rye file in that harness's own directory.
 #   Every .rye file in that directory is named by a stem, so nothing stands there unrun.
-#   These behaviors on real pen trees, each pinned by its own assert below and counted by the
-#   control itself in `cases=` rather than totalled here -- a total carried inside a sentence is a
-#   number a later landing falsifies, and this one already was. The agreeing harness free and
-#   reading zero; a stem naming nothing counted and refused and named; a program nobody lists
-#   counted and refused and named; a seam symlink read as a program from both sides; an empty
-#   corpus refused rather than read clean; the build-site census reading a literal target, a
-#   continuation line, and prose apart; the unresolved ratchet proven at its ceiling and one over;
-#   and `--paths` spelling every stem's real path, marking its answer, refusing an empty tree while
-#   still marking it, and refusing a flag it does not know.
+#   These behaviors on real pen trees. Each is pinned by its own assert below and counted by the
+#   control in `cases=` rather than totalled here, since a total carried inside a sentence is a
+#   number a later landing falsifies -- and this one already was.
 #
-# WHAT IS REPORTED RATHER THAN GATED. The build-site census -- how many rye build/run/test sites
-# name a literal path and how many assemble one -- and `unresolved`, the assembled shapes this scan
-# cannot read. Six of the ten standing are the roster guards this rule descends from, already
-# covered by their own witnesses; the other four build their corpus at runtime, where there is no
-# list on disk to compare a directory against. A guard that reds for its own blindness is a guard
-# somebody turns off, so the blindness is a ratchet whose ceiling only ever falls.
+#   The agreeing harness free and reading zero. A stem naming nothing, counted and refused and
+#   named. A program nobody lists, the same three ways. A seam symlink read as a program from both
+#   sides. An empty corpus refused rather than read clean. The build-site census telling a literal
+#   target, a continuation line, and prose apart. The unresolved ratchet proven at its ceiling and
+#   one over. A harness that builds and one that only reads, told apart by one line. Both spellings
+#   of a build, shell and Rishi. The three site classes proven disjoint. And `--paths` spelling
+#   every stem's real path, marking its answer, refusing an empty tree while still marking it, and
+#   refusing a flag it has never been taught.
+#
+# WHAT IS REPORTED RATHER THAN GATED. Three readings. The build-site census, telling a literal
+# target from an assembled one. `unresolved`, the assembled shapes this scan reads past. And
+# `assemblers_not_harnesses`, the scripts that spell a `.rye` path and hand it to nothing.
+#
+# A guard that reds for its own blindness is a guard somebody turns off, so the blindness rides as a
+# ratchet whose ceiling only ever falls. It fell 10 -> 1 on `20260906`, when the reading was narrowed
+# to its own subject. Ten of the eleven shapes under the elder ceiling build nothing at all: six
+# roster guards comparing a directory against a page, three pens planting a corpus, one witness
+# census resolving a subject's path in order to read it. Each is honest work, so each is counted in
+# the open.
 #
 # WHAT IS NOT PROVEN. That a listed program compiles, that it asserts anything, or that running it
 # is worth the seconds. Only that the set the harness names and the set on disk are one set.
@@ -96,6 +103,26 @@ assert control.out contains "29 free" else "harness-roster: --paths must mark it
 assert control.out contains "30 bitten" else "harness-roster: --paths on a harnessless tree must refuse"
 assert control.out contains "31 bitten" else "harness-roster: an empty answer must still carry its marker ahead of the refusal"
 assert control.out contains "32 bitten" else "harness-roster: an unknown flag must refuse rather than fall back to counting"
+
+# A HARNESS BUILDS. Spelling a `.rye` path is not what makes a script a harness -- handing that path
+# to the rye driver is. The two pens hold the same script under the same name and differ in one
+# line, so the reading is attributable to the rule rather than to anything else that moved.
+assert control.out contains "33 free" else "harness-roster: a script that assembles a path and builds nothing must not be counted unresolved"
+assert control.out contains "34 free" else "harness-roster: it must be counted in the open instead, never silently dropped"
+assert control.out contains "35 free" else "harness-roster: and named, so a decline a reader cannot see is a decline nobody can question"
+assert control.out contains "36 free" else "harness-roster: the same shape handed to the driver must be counted unresolved"
+assert control.out contains "37 free" else "harness-roster: and must leave the non-harness count, since one script is one class"
+
+# Both spellings. Shell writes `rye/bin/rye build x.rye`; Rishi writes the same call as a quoted
+# list. The elder program stripped quotes from the driver token and not from the verb, so it read
+# the first and walked past the second -- 47 sites, and the count grows as shell molts to Rishi.
+assert control.out contains "38 free" else "harness-roster: a Rishi-spelled build must be read as a build site"
+
+# The three site classes are disjoint. An assembled target ending in `.rye` matched both patterns
+# and was counted twice, and the leftover absorbed the difference as if it were prose.
+assert control.out contains "39 free" else "harness-roster: an assembled target must be counted as assembled"
+assert control.out contains "40 free" else "harness-roster: and not a second time as literal"
+assert control.out contains "41 free" else "harness-roster: so the residue stands at zero rather than going below it"
 
 assert control.out contains "control_failures=0" else "harness-roster: every planted case must read the way its label says"
 assert control.out contains "control_verdict=ok" else "harness-roster: the control must agree with itself"
