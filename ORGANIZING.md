@@ -100,7 +100,7 @@ Read the piece aloud. Ask what it is *doing*:
 - **Implementing** -> the module the code belongs to; **code written in Glow** -> `src/` (its five rooms), with `glow/` reserved for the language's own implementation.
 - **Teaching a beginner or solving the shared puzzle book** -> `edu/`.
 
-If two folders seem right, choose the one whose README you would update first. If still unsure, write a one-line note in `construction/TASKS.md` open questions and place the file where a future reader will look first.
+If two folders seem right, choose the one whose README you would update first. If still unsure, write a one-line note in `construction/ITINERARY.md` open questions and place the file where a future reader will look first.
 
 ---
 

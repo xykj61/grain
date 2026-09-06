@@ -1587,3 +1587,37 @@ guard harness_roster
 path tools/r/rye_harness_roster_witness.rish
 tier lap
 seated 20260906.051706
+
+
+# compass_rose -- the return habit, walked. This guard has stood in the tree since the compass was
+# seated and stood on NO roster, so nothing ever read its green. Meanwhile its now/order check asked
+# `test -f construction/TASKS.md && test -f construction/ROADMAP.md`, and both had been pointer stubs
+# since 20260823.103804, when three cards fused into `construction/ITINERARY.md`. Presence resolved,
+# the guard printed GREEN, and for fourteen days the rose sent readers to a redirect to learn the now
+# (REDS %467). It reads the stations out of the rose document itself now and refuses a station that
+# forwards, and `tools/fixtures/c/compass_station_control.sh` proves eighteen behaviors in a pen --
+# both refusals and, as hard, the welcomes. `tier lap`: 4s, and it is the walk every ship is told to
+# take when direction frays.
+
+guard compass_rose
+path tools/co/compass_rose.rish
+tier lap
+seated 20260906.055500
+
+# standing_equipment -- THE ROSTER'S OWN GUARD, which stood on no roster (REDS %468). This file's
+# header says how it is kept honest: `tools/s/standing_equipment_witness.rish` proves every path
+# exists, refuses a run card naming a guard never seated, and refuses any recorded RED. No row ran
+# it, so on 20260906 it went red and STAYED red -- the scan held `known_capabilities="ipv6"` by hand
+# while a peer taught the runner a second probe, `jail_nesting`, and a whole-roster refusal sat
+# unread through a cold pass that reported `run_verdict=ok`. The note under `comlink_nesting`
+# already wrote the lesson: a rule that names a check and a roster that never runs it are one
+# sentence disagreeing with itself. That sentence was at this roster's own front door. The scan
+# derives the capability list off the runner now, so the drift cannot recur, and this row is what
+# makes the next one audible. `tier lap`: 16s, most of it the control's pens over real repositories.
+# GREEN on metal before the row was written, since rostering a red guard reds every cold pass in the
+# fleet.
+
+guard standing_equipment
+path tools/s/standing_equipment_witness.rish
+tier lap
+seated 20260906.060000

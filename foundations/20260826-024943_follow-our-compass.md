@@ -21,7 +21,7 @@ AHOY1 weave `20260811.214423` -- kin block added; the return read now orders by 
 | Word | Job |
 |------|-----|
 | **Grain** | The **standing strands** -- primitives, TAME order, bounds, silo, witnesses, sameness, and the rest indexed in the grain brief. A pattern *fits the grain* when every sentence leans on a named strand. |
-| **Compass** | The **return habit** -- when direction frays, read foundations -> grain index -> active-designing newest-first -> `construction/TASKS.md` now -> run the witness before claiming green. |
+| **Compass** | The **return habit** -- when direction frays, read foundations -> grain index -> active-designing newest-first -> `construction/ITINERARY.md` now -> run the witness before claiming green. |
 
 **Grain** answers *does this cut clean?* **Compass** answers *where do I look to remember what we already decided?*
 
@@ -35,10 +35,18 @@ When refreshing before a lap or a roadmap edit, walk this rose **oldest convicti
 2. **Grain index** -- [`foundations/20260826-024942_the-grain-and-the-crossing.md`](20260826-024942_the-grain-and-the-crossing.md): ten strands + crossing test.
 3. **Two rooms** -- [`context/TWO_ROOMS.md`](../context/TWO_ROOMS.md): external-research vs active-designing; doorway witness.
 4. **Active-designing ladder** -- [`active-designing/README.md`](../active-designing/README.md): newest briefs first; only our names.
-5. **Now** -- [`construction/TASKS.md`](../construction/TASKS.md): checked when landed; horizon explicit.
-6. **Order** -- [`construction/ROADMAP.md`](../construction/ROADMAP.md): why and season; parity count as ground truth.
+5. **Now** -- [`construction/ITINERARY.md`](../construction/ITINERARY.md) *Now -- the live front*: what is open, what waits on a word.
+6. **Order** -- [`construction/ITINERARY.md`](../construction/ITINERARY.md) *The Compass Chapter* and *Next -- the ranked remainder*: why and season, Lindy-first and crux-first.
 
-If TASKS and ROADMAP disagree with a seated brief, **the brief and green witnesses win**; hygiene fixes the plan.
+**Stations five and six are one card, and the fusion is why.** `construction/TASKS.md` and
+`construction/ROADMAP.md` carried the now and the order until `20260823.103804`, when three cards
+fused into [`construction/ITINERARY.md`](../construction/ITINERARY.md) (commit `98a8ee481`). Both
+paths remain on disk as **pointer stubs**, each declaring `Status: Pointer` on its own face, because
+roughly thirty `equinox_e*` fixtures and this document's own guard read them and a guard reading a
+file that is gone reports green while measuring nothing. So the *paths* are alive and the *stations*
+moved, and a reader sent to them arrives at a redirect rather than at the now.
+
+If the card disagrees with a seated brief, **the brief and green witnesses win**; hygiene fixes the plan.
 
 ## When the compass disagrees with enthusiasm
 
