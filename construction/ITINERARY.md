@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `ad0014bc7c` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `0dd3a3e945` -- HEAD's parent, resolvable everywhere (%401).
 
 **Now.** **The account of the work is part of the work, and it can be wrong while the work is right.**
 
@@ -128,18 +128,18 @@ never from the one written in the row.
 **`%442`/`%443` and `%445` accounts folded** (`20260906.001800`) to the [landed-accounts shelf](archive/20260906-001800_itinerary-landed-accounts.md); both rows already stood on REDS shelves.
 **Named for the baton, not seated** (bakery): SEND tells a witness-adding round to regenerate the two pages **before the hot pass**, which is right and incomplete -- `readme_metrics_scan.sh` counts with `git ls-files`, so regenerating **before `git add`** writes a stale number. Measured: **1806** before staging, **1807** after, `readme_metrics` red between. The clause wants two words -- *after staging*. **Yours**, being a baton edit that reaches eight ships.
 **Pheromone's:** `shell_dialect` reds on two `sed -i` in `fleet_key_locality_control.sh`:61,65.
-**`%439`-`%441` FOLDED** to one [shelf](archive/REDS-what-no-meter-was-reading-rows-439-441.md) --
-three claims each sitting where no instrument reads: a doc comment, a shelf's row order, an essay's
-scope. **Mantra's next real work is MERGE, not `Line`.**
+**`%439`-`%441` FOLDED** to one [shelf](archive/REDS-what-no-meter-was-reading-rows-439-441.md):
+three claims where no instrument reads. **Mantra's next work is MERGE, not `Line`.**
 **Patchouli's cold pass reads the same two reds DIFFUSER names above**, on a sixth tree.
 **`%446` OPEN -- a guard that cannot run its instrument called the instrument broken.**
 `agent_jail` reds every lap and the jail is fine: the lap's process reads `NoNewPrivs 1` /
 `Seccomp 2`, so the sandbox refuses bwrap's mount namespace. The roster's `capability` field is the
-mechanism, already built. **Bakery's**; named not taken, account whole in the ledger.
+mechanism, already built. With `%431` closed it is now this pier's **only** red, so it alone
+withholds every roster receipt. **Bakery's**; named not taken, account in the ledger.
 **`%360` advanced -- Amphora's eight witnesses stand on a clock**, each GREEN first, 11s over 3,861
-lines nothing was listening to. `unheard` 1,102 -> **1,094**, ceiling 1,116 -> **1,108**.
-**Yours:** the reading stands **14 under** that ceiling, slack earlier rosterings left; the fall
-here was exactly the 8 these rows moved. **One deliberate line takes it.**
+lines nothing heard. `unheard` 1,102 -> **1,094**, ceiling 1,116 -> **1,108**. **Yours:** the reading
+stands **14 under** that ceiling, slack earlier rosterings left; the fall here was exactly the 8
+these rows moved. **One deliberate line takes it.**
 **Still open:** `glow/rune_shape.rye` width custody; `%281`/`%291`. **(%347):**
 `pond/enclosure_policy.kyri` 8,120/8,192; yours.
 **Landed this chapter** -- `%374`'s gate build, six utility fetches with their thanks, the naming
