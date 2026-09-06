@@ -30,6 +30,7 @@
 #   WATCH_SETTLE    seconds an armed loop must survive to count as taking hold (default 180)
 #   WATCH_PASSES    stop after this many passes (default 0, unbounded; --once sets 1)
 #   WATCH_HOME      the directory a seat's tree sits under (default $HOME) -- the control's pen door
+#   FLEET_BARE      1 to re-arm every seat WITHOUT the jail, matching how the fleet was launched
 #   FLEET_ROSTER    the seat table to read (honored by fleet_roster_scan.sh) -- the control's roster
 #
 # WHAT IT REFUSES, and why each refusal is the safe direction:
@@ -58,6 +59,9 @@ arm_max=${WATCH_ARM_MAX:-3}
 settle=${WATCH_SETTLE:-180}
 passes_max=${WATCH_PASSES:-0}
 watch_home=${WATCH_HOME:-$HOME}
+# Passed through to every re-armed loop; empty unless this watcher was launched with FLEET_BARE=1.
+bare_prefix=""
+[ "${FLEET_BARE:-0}" = 1 ] && bare_prefix="FLEET_BARE=1 "
 dry=0
 
 for arg in "$@"; do
@@ -184,7 +188,13 @@ while :; do
     # dirty tree would never reach the loop at all. fleet_round_open.sh is the loop's first act and
     # already fetches, clears an interrupted rebase, stashes a dead lap's leavings, and adopts the
     # anointed order -- strictly more than the pull, and it cannot refuse the launch.
-    line="cd $tree && sh tools/l/fleet-loop.sh $seat"
+    # THE ENCLOSURE CHOICE TRAVELS WITH THE WATCH. `fleet-loop.sh` wraps a Linux lap in
+    # agent-jail unless `FLEET_BARE=1`, and Keaton's word `20260906` is that this pier runs
+    # WITHOUT jails. A watcher that re-armed the default would quietly put the fleet back in the
+    # enclosure one ship at a time, which is the worst shape a disagreement can take: nobody typed
+    # it and nothing announced it. So the watch passes its OWN `FLEET_BARE` through, and a hand
+    # launching the watch chooses for every re-arm it will ever make.
+    line="cd $tree && ${bare_prefix}sh tools/l/fleet-loop.sh $seat"
     if [ "$dry" = 1 ]; then
       say "$seat -- WOULD ARM: $line"
     else
