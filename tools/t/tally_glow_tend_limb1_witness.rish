@@ -39,7 +39,10 @@ let aurora = run ["sh" "-c" "test -f src/shape/shape-aurora-wire-capacity.glow"]
 assert aurora.ok else "tend-ladder: Aurora A1 pedestal missing after e197"
 
 say "tally-tend-1: tally glow path present..."
-let has = run ["sh" "-c" "test -f src/gate/shape-tally-max-gardens.glow && rg -l 'tally' src --glob '*.glow' | grep -q shape-tally-max-gardens && echo TALLY_OK"]
+# find plus grep rather than `rg --glob`: same question -- which .glow files under src name tally --
+# in a spelling both piers carry. On a bench without ripgrep this line reported "tally glow limb
+# missing" about a file that is present and matches (20260905.224445).
+let has = run ["sh" "-c" "test -f src/gate/shape-tally-max-gardens.glow && find src -name '*.glow' -exec grep -l tally {} + | grep -q shape-tally-max-gardens && echo TALLY_OK"]
 assert has.ok else "tally-tend-1: tally glow limb missing"
 assert has.out contains "TALLY_OK" else "tally-tend-1: tally glow limb not indexed"
 
