@@ -2,7 +2,7 @@
 
 **Language:** EN - **Voice:** Kyri - **Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 **Stamp:** `20260730.034319` - Build Journey - equinox A - journey 2 (h2 Aparigraha) - quest Do  
-**Home:** `docs-geode/sangha/01-descriptor-exchange.md`  
+**Home:** `docs-geode/sangha/01-descriptor-exchange.md` - **Shelf:** [the pattern book](README.md)  
 **Witness basis:** discovery quartet GREEN on Cloud bench at stamp (descriptor - table - gossip - introduce)
 
 ---
@@ -22,12 +22,12 @@ A peer that wants neighbors says exactly who it is, and stops there. The **descr
 
 Four compositions, one exchange:
 
-1. **Descriptor** (`comlink/discovery/descriptor.rye`) -- length-prefixed bytes inside `discovery_descriptor_max_bytes` **512**. Key, transport hints, freshness, lineage -- nothing more.
-2. **Table** (`comlink/discovery/table.rye`) -- peer slots over Tally stack + Region. Ceiling `discovery_max_peers` **256**. Age-out `discovery_staleness_max_seconds` **4096**. Free-list is LIFO; claim<->reach both ways.
-3. **Gossip** (`comlink/discovery/gossip.rye`) -- exchange fold at `discovery_gossip_fanout` **8**. A malformed arrival turns away whole, kept intact rather than trimmed.
-4. **Introduce** (`comlink/discovery/introduce.rye`) -- star-as-introducer seam. `discovery_introduce_hops_max` **2**. Identity sealed through kumara; wrong shape turned away.
+1. **Descriptor** ([`comlink/discovery/descriptor.rye`](../../comlink/discovery/descriptor.rye)) -- length-prefixed bytes inside `discovery_descriptor_max_bytes` **512**. Key, transport hints, freshness, lineage -- nothing more.
+2. **Table** ([`comlink/discovery/table.rye`](../../comlink/discovery/table.rye)) -- peer slots over Tally stack + Region. Ceiling `discovery_max_peers` **256**. Age-out `discovery_staleness_max_seconds` **4096**. Free-list is LIFO; claim<->reach both ways.
+3. **Gossip** ([`comlink/discovery/gossip.rye`](../../comlink/discovery/gossip.rye)) -- exchange fold at `discovery_gossip_fanout` **8**. A malformed arrival turns away whole, kept intact rather than trimmed.
+4. **Introduce** ([`comlink/discovery/introduce.rye`](../../comlink/discovery/introduce.rye)) -- star-as-introducer seam. `discovery_introduce_hops_max` **2**. Identity sealed through kumara; wrong shape turned away.
 
-Bounds live in `tools/gen/chapter/recursion_block.brix` (v27 - explicit_bounds). Builds inherit them; they do not invent ceilings.
+Bounds live in [`tools/gen/chapter/recursion_block.brix`](../../tools/gen/chapter/recursion_block.brix) (v27 - explicit_bounds). Builds inherit them; they do not invent ceilings.
 
 ## The witness
 

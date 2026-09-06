@@ -25,9 +25,9 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 | [edu / **The teaching surfaces**](../edu/README.md) | the manual, `edu/` drafts, SOURCE.md, the api reference | this page |
 | [press / **What has been said publicly**](../press/README.md) | the four announcements in `press/` | this page |
 | [sangha / **the patterns**](../sangha/README.md) | descriptor exchange, fact fold, five primitives | this page |
-| [sangha / **Pattern one -- the descriptor exchange**](../sangha/01-descriptor-exchange.md) | nothing yet -- it cites `comlink/discovery/` as backticked paths rather than links | `sangha/`, pattern three |
-| [sangha / **Pattern two -- the fact fold**](../sangha/02-fact-fold.md) | nothing yet -- it cites `mycelium/fold.rye` and names its elder sibling as a path | `sangha/`, pattern three |
-| [sangha / **Pattern three -- the five primitives**](../sangha/03-five-primitives.md) | patterns one and two | `sangha/` |
+| [sangha / **Pattern one -- the descriptor exchange**](../sangha/01-descriptor-exchange.md) | the four `comlink/discovery/` modules, the bounds brix, the pattern book | `sangha/`, pattern three |
+| [sangha / **Pattern two -- the fact fold**](../sangha/02-fact-fold.md) | `mycelium/` fold, build_bounds, kumara and copy; the fact-fold brix; patterns one and three | `sangha/`, pattern three |
+| [sangha / **Pattern three -- the five primitives**](../sangha/03-five-primitives.md) | patterns one and two, the six `mycelium/` modules it was written from, the bounds brix | `sangha/` |
 | [tutorials / **recursion in Glow**](../tutorials/recursion-in-glow.md) | the Glow desk | `tutorials/` |
 | [tutorials / **Shopping**](../tutorials/SHOPPING.md) | the first hour, Gauge Style, TAME Guidance | the root README, `tutorials/`, the first hour |
 
@@ -44,6 +44,14 @@ That is the whole discipline of a wiki here. Not a search box; a promise that fo
 **The room doors are ways in rather than shipped pages.** `api/README.md`, `tutorials/README.md`, and the shelf's own [front door](../README.md) each stand behind the row that names their room, so this table lists what the shelf ships.
 
 **[Shopping](../tutorials/SHOPPING.md) joined the table on `20260906`, and three sangha pattern pages joined it the same day.** Shopping had stood in `tutorials/` since `20260823`, linked from four other pages and one hop from the first hour -- present everywhere except on the map that promises every shipped page. The reading that catches the next one now exists: this page declares itself a **crushed index of every page under [`../`](../)** in its own header, and [`../../tools/cr/crushed_index_witness.rish`](../../tools/cr/crushed_index_witness.rish) walks the whole shelf against it each lap.
+
+**And the three pattern pages lead somewhere now.** Each one cites the code that proved it, and on
+`20260906` those citations became links -- clickable for a reader, and readable by
+[`../../tools/fixtures/t/tracked_link_scan.sh`](../../tools/fixtures/t/tracked_link_scan.sh), which
+follows links and reads past a backtick. Every page also carries a **Shelf** line home to the
+pattern book, whose row stands three lines above. The column above kept an honest *nothing yet* until
+the day it could say what each page leads to, and today it says it: the pattern book is a place you
+can arrive at, read from, and leave by the same thread you came in on.
 
 **What the deeper walk found on its first run.** Three pattern pages -- [one](../sangha/01-descriptor-exchange.md), [two](../sangha/02-fact-fold.md), [three](../sangha/03-five-primitives.md) -- had never had a row here, and the one-level reading could not see them: this page links `sangha/README.md`, and a link entering a room counts the room as listed. So a map promising every shipped page was green over three pages it had never named, for the same reason it had been green over Shopping. **A room's door is not the same promise as the pages behind it**, and a guard reading one floor cannot tell the two apart.
 

@@ -94,6 +94,79 @@ pr=$(val "$(run warm.md --setting door)" reach)
 [ "$lr" -lt "$pr" ] && echo "reach_falls_on_links=yes" || echo "reach_falls_on_links=no ($lr vs $pr)"
 [ "$lr" -lt 100 ] && echo "reach_under_full=yes" || echo "reach_under_full=no"
 
+# 4b -- AND THE SAME TEN LINKS, MOVED OFF RUNNING PROSE, ARE INVISIBLE TO THAT BUDGET. Case 4 plants
+# its links in two plain sentences, which is the one shape the density reading can see; it would pass
+# unchanged if the reading counted nothing else. So the same ten are planted three more ways -- a
+# list, a table, and a bold-key header line, which is how this tree writes nearly all of its
+# citations -- and each is asserted to read zero, with `reach_links` naming what was held out.
+# A blindness proven is a blindness a reader can act on; an unproven one reads exactly like reach
+# (REDS %492).
+cat > "$pen/listy.md" <<'EOF'
+This page carries its citations the way a room index does, one to a line.
+
+- [one](a.md) and [two](b.md)
+- [three](c.md) and [four](d.md)
+- [five](e.md) and [six](f.md)
+- [seven](g.md) and [eight](h.md)
+- [nine](i.md) and [ten](j.md)
+EOF
+cat > "$pen/tably.md" <<'EOF'
+This page carries its citations in a table, the way a crushed index does.
+
+| Page | Leads to |
+|---|---|
+| [one](a.md) | [two](b.md) |
+| [three](c.md) | [four](d.md) |
+| [five](e.md) | [six](f.md) |
+| [seven](g.md) | [eight](h.md) |
+| [nine](i.md) | [ten](j.md) |
+EOF
+cat > "$pen/heady.md" <<'EOF'
+**Written from:** [one](a.md) - [two](b.md) - [three](c.md) - [four](d.md) - [five](e.md)
+**Kin:** [six](f.md) - [seven](g.md) - [eight](h.md) - [nine](i.md) - [ten](j.md)
+
+This page carries its citations in its header block, which is where this tree puts them.
+EOF
+blind_ok=yes
+for plant in listy tably heady; do
+  o=$(run "$plant.md" --setting door)
+  seen=$(val "$o" reach_links)
+  [ "$seen" = 0 ] || { blind_ok=no; echo "blind: $plant read $seen links in prose, wanted 0"; }
+  echo "$o" | grep -q "reach_links=0 of 10 " \
+    || { blind_ok=no; echo "blind: $plant did not report 10 links on the page"; }
+done
+[ "$blind_ok" = yes ] && echo "links_off_prose_unseen=yes" || echo "links_off_prose_unseen=no"
+
+# The ceiling that case 4 proves bites cannot bite ANY of the three, which is the consequence.
+lb=yes
+for plant in listy tably heady; do
+  [ "$(val "$(run "$plant.md" --setting door)" reach)" -eq 100 ] || lb=no
+done
+[ "$lb" = yes ] && echo "off_prose_links_never_cost_reach=yes" || echo "off_prose_links_never_cost_reach=no"
+
+# And the report is arithmetic on the two counts rather than a third measurement of its own.
+o=$(run linky.md --setting door)
+rl_seen=$(val "$o" reach_links)
+rl_all=$(echo "$o" | sed -n 's/^reach_links=[0-9]* of \([0-9]*\) .*/\1/p')
+rl_held=$(echo "$o" | sed -n 's/^reach_links=.* (\([0-9]*\) held out.*/\1/p')
+[ "$rl_all" = 10 ] && [ $((rl_seen + rl_held)) -eq "$rl_all" ] \
+  && echo "reach_links_adds_up=yes" || echo "reach_links_adds_up=no ($rl_seen + $rl_held vs $rl_all)"
+
+# THE LEG THAT TELLS THE REPORT FROM A DECORATION. The elder is the state this repair ended: the
+# only link number a reader had was the one the density reading could see. It is built by giving the
+# whole-page count the reach awk's own two line filters, so the card counts exactly what it could
+# already count -- and `listy.md`, whose ten citations all sit on list lines, reads `0 of 0`. That
+# reading is the fault in one line: no links seen, and none reported to have been held out.
+mkdir -p "$pen/elderlinks/tools/fixtures/q" "$pen/elderlinks/tools/fixtures/p"
+sed 's%{ n += gsub%/^[ \t]*[-*>#]/ { next } /^[ \t]*[|]/ { next } { n += gsub%' \
+  "$pen/tools/fixtures/q/qa_report_card.sh" > "$pen/elderlinks/tools/fixtures/q/qa_report_card.sh"
+for d in $deps; do mkdir -p "$pen/elderlinks/$(dirname "$d")" && cp "$d" "$pen/elderlinks/$d"; done
+cp "$pen/listy.md" "$pen/elderlinks/"
+el=$( ( cd "$pen/elderlinks" && QA_CARD_ROOT=. sh tools/fixtures/q/qa_report_card.sh listy.md --setting door ) 2>&1 )
+echo "$el" | grep -q "reach_links=0 of 0 " \
+  && echo "filtered_count_reproduces_the_blindness=yes" \
+  || echo "filtered_count_reproduces_the_blindness=no ($(echo "$el" | sed -n 's/^\(reach_links=[^(]*\).*/\1/p'))"
+
 # 5 -- Meter carries no register or reach budget: refusal-first prose is the subject there.
 m=$(run cold.md --setting meter)
 [ "$(val "$m" register)" -eq 100 ] && echo "meter_register_free=yes" || echo "meter_register_free=no"

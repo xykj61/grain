@@ -21,7 +21,7 @@ Our root law reads differently: **control flow stays simple and explicit; recurs
 
 ## The bound, named before the machine runs
 
-Every tower of `n` rings takes exactly `2ⁿ - 1` moves -- powers of two, the same arithmetic our seasons breathe. And the explicit stack never holds more than `2n - 1` frames. Both bounds are constants a reader meets at the top of the file:
+Every tower of `n` rings takes exactly `2^n - 1` moves -- powers of two, the same arithmetic our seasons breathe. And the explicit stack never holds more than `2n - 1` frames. Both bounds are constants a reader meets at the top of the file:
 
 ```zig
 const max_rings: u32 = 16;                 // a 16-ring tower is 65,535 moves -- plenty

@@ -4,8 +4,9 @@
 **Voice:** Kyri - nested documentary voice: Trey - **Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 **Coords:** equinox A - journey 4 (h4 Accrete-never-break) - door 8 **CLOSED** - round 13/256
 **Destination:** `docs-geode/sangha/02-fact-fold.md` -- living page, plain spoken name
-**Elder sibling:** `docs-geode/sangha/01-descriptor-exchange.md` -- the bench conforms this page's headings to pattern one where they differ
-**Written from:** `mycelium/fold.rye`, green on metal - design shape `context/design-shapes/fact_fold.brix`
+**Elder sibling:** [`01-descriptor-exchange.md`](01-descriptor-exchange.md) -- the bench conforms this page's headings to pattern one where they differ
+**Written from:** [`mycelium/fold.rye`](../../mycelium/fold.rye), green on metal - design shape `context/design-shapes/fact_fold.brix` (named rather than linked -- `context/` is not a room the seed carries)  
+**Shelf:** [the pattern book](README.md) - **Younger sibling:** [`03-five-primitives.md`](03-five-primitives.md)
 
 *Written together by Keaton and Riyo.*
 
@@ -62,7 +63,7 @@ Pairing the assertion on two paths follows the discipline the whole tree keeps: 
 
 Log length carries a named ceiling, because a fold states how long it might walk before its design is finished. Fact size carries a named ceiling, because a fact arriving larger than the reader's budget is a fault rather than a surprise. Arithmetic at persistence boundaries runs in `u64`, so a quantity means the same thing on every target that ever reads the log.
 
-Metal bounds from `mycelium/fold.rye` (checked equal in `mycelium/build_bounds.rye`):
+Metal bounds from [`mycelium/fold.rye`](../../mycelium/fold.rye) (checked equal in [`mycelium/build_bounds.rye`](../../mycelium/build_bounds.rye)):
 
 | Bound | Value | Why (from source) |
 | --- | --- | --- |
@@ -70,7 +71,7 @@ Metal bounds from `mycelium/fold.rye` (checked equal in `mycelium/build_bounds.r
 | `star_name_max_bytes` | **32** | star name ceiling -- seated v27 - `%term`-compatible |
 | `myc_log_max_facts` | **1024** | append-only log length -- power of two; holds a journey of journeys of facts |
 
-`build_bounds.rye` also pins discovery seats (descriptor 512 - peers 256 - staleness 4096 - fanout 8 - hops 2) and myc policy numbers (genesis 12288 - star price 64 - ceiling 4096) as data the fold does not invent.
+[`build_bounds.rye`](../../mycelium/build_bounds.rye) also pins discovery seats (descriptor 512 - peers 256 - staleness 4096 - fanout 8 - hops 2) and myc policy numbers (genesis 12288 - star price 64 - ceiling 4096) as data the fold does not invent.
 
 ## The Witness
 
@@ -84,7 +85,7 @@ Metal witness: `mycelium/fold.rye` itself (`rye/bin/rye run mycelium/fold.rye`).
 
 The fold sits beneath the patterns that carry facts and above the modules that keep them. Pattern one's descriptor exchange brings peers into contact; facts then travel between them; and each peer folds independently to the same number. Because the fold consults nothing outside the log, two peers who hold the same prefix agree without negotiating, and a peer who holds a shorter prefix knows precisely how much of the story it is missing.
 
-Metal imports in `mycelium/fold.rye`: **Kumara** (`kumara.rye` -- sign/verify) and **Tally** (`tally_copy.rye` -- disjoint copy). The fold file imports those two and stops there. Composition the tree already names in prose: Sangha pattern one (Comlink discovery) brings peers into contact; this pattern folds facts once they arrive. Pond surface is not named in the fold source.
+Metal imports in `mycelium/fold.rye`: **Kumara** ([`kumara.rye`](../../mycelium/kumara.rye) -- sign/verify) and **Tally** ([`tally_copy.rye`](../../mycelium/tally_copy.rye) -- disjoint copy). The fold file imports those two and stops there. Composition the tree already names in prose: Sangha pattern one (Comlink discovery) brings peers into contact; this pattern folds facts once they arrive. Pond surface is not named in the fold source.
 
 ## What This Page Never Decides
 

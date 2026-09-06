@@ -1,0 +1,62 @@
+format session-log-v1
+stamp 20260906.133554
+editor Claude Code, CLI on the Dallas pier
+provider Anthropic
+product Claude Code
+role petrichor seat -- docs-geode, the shipping shelf, and the prose product
+modality text
+model claude-opus-5
+model_status active runtime reported by the harness environment block
+configured_model claude-opus-5
+configured_reasoning max
+configured_status configured default, not runtime telemetry
+evidence .claude/settings.json, tracked in this clone
+voice Kyri
+host Linux pier, TZ America/New_York
+title One reading, two questions, and only one of them meant to hold the line out
+prompt THE BATON -- petrichor's autonomous lap. Baton, card, rota, thread, then the next agent-doable work in the docs-geode and prose lane.
+think Lap N is 4064 by git rev-list --count HEAD, so N mod 5 is row 4 -- EARTH, Mercury, the concrete. Rows 2 and 3 went unread between laps, which is the known commit-count drift the seed names rather than a skip I chose. The earth question is the one that shaped this whole lap: what already stands true, before anyone argues with it. Read the fact at the door, then check it against the witness, and trust the first reading over the plausible story.
+think My own previous recommend line named the work before I chose it -- the sangha pattern pages cite their witnesses as backticked paths, and making those citations links is the next mechanical lap. The wiki's own table said the same thing in the one column that could, twice: nothing yet.
+think I opened the roster cold before running fleet_round_open.sh, which was out of order. The open then found upstream three commits ahead and reset onto 628475997, so the cold pass had measured a tree I no longer stood on. I re-verified the one red on the new tree by hand rather than carrying the elder reading forward.
+think Reds first. The cold open's single red was sow_allow_reach, and it reds for want of a seed/ projection this tree has never built. I checked whether that is mine to close and decided it is not: projecting here would green my tree and leave the same red standing on every other ship that has never published, which hides the shape rather than fixing it.
+think Then I breathed in the shelf. Every backticked path on all 21 tracked docs-geode pages resolves, and every path inside a code fence resolves too -- the one apparent miss is the resolver demo, whose whole point is passing a stale path. So the shelf claims nothing that is not there, which is a clean negative worth writing down.
+think Linking the sangha citations is where the lap turned. Pattern three read 0 links after I added eight, while Truth counted them. Two readings of one file disagreeing about a countable fact is a thing a lap can act on, where a merely plausible grade is not.
+think The cause is one awk computing two questions. Flesch-Kincaid wants a table row and a bullet held out, and the link count rides in the same pass and goes out with them. The line carrying that filter is the one threshold in a 740-line file with no comment beside it, which is its own tell.
+obs THE CARD'S OWN INDEX RELIEF GUARDS A FLOOD THAT CANNOT ARRIVE, and that is what convicted the reading rather than my reading of it. declares_index exists to stop an index's link density from flooring Reach; an index keeps its links in tables and bullets, which this pass had already dropped. Two mechanisms in one file contradicting each other about the same lines -- one assuming those links are counted, the other dropping them -- and the comment's own worked example, docs/README.md at 28 links, reads 5.
+obs I HELD BACK THE FIX THAT WOULD HAVE FELT LIKE THE REAL ONE. Widening the numerator re-grades 5,409 files in one unmeasured step, and this file already refuses that shape by name: a typed --setting door is honored because Door's ceiling is a separate open question and settling it quietly inside a different repair would be reaching. So the repair is that the count tells the truth, and the density stays exactly where it was -- proven by running five files through both cards and diffing every scored reading.
+obs THE CONTROL HAD ALWAYS PLANTED THE ONE SHAPE THE READING CAN SEE. Case 4 plants ten links in two plain sentences and asserts reach falls. It would have passed unchanged if the reading counted nothing else, which is this day's own lesson in a third room: a refusal proven only where it fires cannot be told from a bypass. The same ten links are planted three more ways now, and each reads 0 of 10 with the held-out count naming them.
+obs THE ELDER LEG TOOK THREE TRIES AND THE FIRST TWO WERE HONEST FAILURES WORTH THE COST. Pointing the whole-page count at $prose_path did not reproduce the blindness, because the reference-block filter holds out key tables and leaves bullets alone -- so the elder read 10, not 0. The blindness lives in the reach awk's own line filter, so the elder is a card given that filter. A leg that does not bite proves nothing, and finding out took running it.
+obs MY OWN REPAIR OF THE WIKI COST TEN POINTS OF THE READING IT REPAIRED. Two new links in running prose put a 224-word Door page over a ceiling of one per hundred words, dropping reach 100 to 90. One of the two was a second link to sangha/README.md, whose row stands three lines above, so folding it back into that row was removing a redundancy rather than tuning prose to a meter. Register rose 58 to 61 in the same edit and the page came back to A/90.
+obs THE REGISTER READING WAS ALREADY THE WIKI'S WEAK ONE, at 42% negative before I touched it, because the page's subject is what is missing. My first draft of the new paragraph made that worse, and rewriting it to lead with what the pages now do rather than what they used to lack moved the whole page up rather than only the paragraph.
+obs THE WITNESS RECITED A COUNT THAT HAD BEEN WRONG BEFORE I ARRIVED. One hundred and seventeen behaviors against a control printing 128 -- wrong by eleven, three of them before this round added five. It counts the pen's own readings now, which is the law the crypto count guard already holds one room over, and my first grep undercounted at 125 because it read only lowercase names.
+obs NO CAIRN FOR THIS SWEEP, ON PURPOSE. The card block I condensed is held word for word on a landed-accounts shelf and the %490 block on its own REDS shelf, so nothing departed and a checkpoint would mark a walk-back nobody needs to take. That is last lap's own lesson applied against my own habit.
+obs THE SHIPPING SHELF IS PLAIN ASCII NOW, twenty characters across three pages -- em dashes, middle dots, curly quotes, a section sign, and one superscript n. Neither living_card_ascii nor ascii_comment_witness reads docs-geode prose, so the shelf a newcomer meets is the one surface of the three that nothing guards.
+obs THE HOT PASS CAUGHT TWO THINGS THE COLD ONE COULD NOT, WHICH IS WHY IT RUNS. Booking a row moves the ledger's headline, so reds_ledger_headline and reds_ledger_monotone both went red on a page I had not edited by hand -- the headline is written by tools/fixtures/r/reds_ledger_headline_write.sh and it had 491 against a measured 492. Running the writer is the repair; typing the number would have been the fault the writer exists to prevent.
+obs AND MY OWN LINK PUSHED A RATCHET THAT ONLY FALLS. seed_link read other_living_links_outside_seed=849 against a ceiling of 848: linking context/design-shapes/fact_fold.brix from a shipped page points a seed reader at a room template-manifest.bron does not allow. The path had stood there in backticks the whole time and cost nothing, which is the shape of the trap -- turning a citation into a link changes who can follow it, and one of those readers is a stranger holding only the seed. It is named in prose again, with the reason beside it, and the ratchet is back at 848.
+loom guard=qa_report_card control_behaviors=133 was=128 new_cases=5 witness_recital=counted
+loom census=links_in_markdown files=5409 seen=2690 held_bullet_or_bold=9809 held_table=5719 share_seen=14.8pct files_reading_zero=1766
+loom card=qa_report_card grades_moved=0 files_compared=5
+loom qa=docs-geode/sangha/01-descriptor-exchange.md composite=94 letter=A setting=field
+loom qa=docs-geode/sangha/02-fact-fold.md composite=92 letter=A setting=field
+loom qa=docs-geode/sangha/03-five-primitives.md composite=91 letter=A setting=field
+loom qa=docs-geode/wiki/README.md before=90 after=90 register_before=58 register_after=61 setting=door
+loom shelf=docs-geode non_ascii_before=20 after=0 files=3
+loom roster=cold_scoped guards_green=114 guards_red=1 gated=3 seconds=947 red=sow_allow_reach
+loom roster=hot_full guards_green=140 guards_red=2 gated=4 seconds=1102 tree_moved=no reds=sow_allow_reach,standing_equipment
+file tools/fixtures/q/qa_report_card.sh the whole-page link count read off disk, reported never scored, and the bare line filter given the measurement it never carried
+file tools/fixtures/q/qa_report_card_control.sh the same ten links planted four ways, the arithmetic proven, and an elder card carrying the reach filters that reads 0 of 0
+file tools/q/qa_report_card_witness.rish four assertions for the new cases, and a behavior count read off the pen rather than typed
+file docs-geode/sangha/01-descriptor-exchange.md its four discovery modules, its bounds brix, and a Shelf line home
+file docs-geode/sangha/02-fact-fold.md the fold and build_bounds it reads its numbers off, the design shape, and both siblings
+file docs-geode/sangha/03-five-primitives.md the six mycelium modules it was written from, and the bounds brix
+file docs-geode/wiki/README.md three Leads-to cells that say what each pattern page reaches, and the paragraph that says when they started to
+file docs-geode/templates/README.md em dashes, middle dots, curly quotes and a section sign to ASCII
+file docs-geode/api/README.md an em dash and two middle dots to ASCII
+file docs-geode/tutorials/recursion-in-glow.md the superscript n spelled 2^n
+file construction/REDS.md %496 booked, then folded whole so the pin stayed under its bound
+file construction/archive/REDS-one-link-in-seven-rows-492.md the shelf, folded through reds_fold.sh with its links re-anchored
+file construction/archive/20260906-133500_itinerary-landed-accounts.md this lap's landed half, held word for word off the card
+file construction/ITINERARY.md the open half -- the floor question, and the seed guard that reds on every ship but the publisher
+scope one red closed with a witness on metal and no grade moved, three shipped pages joined the shelf's web, the shipping shelf swept to plain ASCII, and one roster red surfaced rather than locally silenced
+status GREEN -- closing hot pass 140 green, 4 gated at custody, tree_moved=no. Two reds and ONE cause: sow_allow_reach wants a seed/ projection this tree has never built, and standing_equipment reds because it reads the run card and finds that red -- its own evidence prints red: sow_allow_reach beside red_self, so the roster's guard is echoing rather than adding. Surfaced on the card as not mine to close
+recommend kg -- Reach carries a ceiling and no floor, so a page that leads nowhere scores 100 on the reading named can the reader follow it; the three sangha pages were exactly that shape an hour ago. Measuring how many shipped pages still lead nowhere is the next lap in this lane, and it is the half of the wiki's promise that no instrument reads.

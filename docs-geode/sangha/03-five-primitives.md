@@ -5,7 +5,8 @@
 **Coords:** equinox A - journey 4 - quest Do  
 **Destination:** `docs-geode/sangha/03-five-primitives.md` -- living reference page  
 **Elder siblings:** [`01-descriptor-exchange.md`](01-descriptor-exchange.md) - [`02-fact-fold.md`](02-fact-fold.md)  
-**Written from:** GREEN myc metal only -- kumara - fold - fold_persist - ship_sol - refusal_storm - build_bounds
+**Written from:** GREEN myc metal only -- [kumara](../../mycelium/kumara.rye) - [fold](../../mycelium/fold.rye) - [fold_persist](../../mycelium/fold_persist.rye) - [ship_sol](../../mycelium/ship_sol.rye) - [refusal_storm](../../mycelium/refusal_storm.rye) - [build_bounds](../../mycelium/build_bounds.rye)  
+**Shelf:** [the pattern book](README.md)
 
 *Written together by Keaton and Riyo.*
 
@@ -45,7 +46,7 @@ Metal (this door): `GREEN: tally kumara -- deterministic keypair, sign, verify.`
 
 **Invariant.** A fact is immutable, typed by kind, and sealed by a keypair before it counts. Verify precedes fold -- never the reverse.
 
-**Bounds.** `myc_fact_max_bytes` **256** - `star_name_max_bytes` **32** -- seated in `tools/gen/chapter/recursion_block.brix`, published by `mycelium/fold.rye`, checked equal in `mycelium/build_bounds.rye`.
+**Bounds.** `myc_fact_max_bytes` **256** - `star_name_max_bytes` **32** -- seated in [`tools/gen/chapter/recursion_block.brix`](../../tools/gen/chapter/recursion_block.brix), published by `mycelium/fold.rye`, checked equal in `mycelium/build_bounds.rye`.
 
 **Refuse.** Bad seal -> `IdentityRefused`. Unknown kind -> `UnknownKind` (never skip silent).
 
