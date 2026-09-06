@@ -13,6 +13,8 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 |---|---|---|
 | `20260905.225236` | [the scope that changed between rows](20260905/20260905-225236_the-scope-that-changed-between-rows.kyri) | %441: a table changed glob mid-row. |
 | `20260905.224930` | [the shelf that spoke in marks it never taught](20260905/20260905-224930_the-shelf-that-spoke-in-marks-it-never-taught.kyri) | 20 stamped names, 0 pages teaching one. |
+| `20260905.231916` | [the guard that could not see itself](20260905/20260905-231916_the-guard-that-could-not-see-itself.kyri) | a meter blind to itself until tracked. |
+| `20260905.230135` | [emptiness is not evidence](20260905/20260905-230135_emptiness-is-not-evidence.kyri) | two guards read GREEN with ripgrep gone. |
 | `20260905.224714` | [the angle the sky never subtracts](20260905/20260905-224714_the-angle-the-sky-never-subtracts.kyri) | 682,425 pairs; one hop value between them. |
 | `20260905.213047` | [the floor that votes only where one sentence could](20260905/20260905-213047_the-floor-that-votes-only-where-one-sentence-could.kyri) | 52 pages lose a blank 100. |
 | `20260905.195223` | [the red that broke a meter by closing](20260905/20260905-195223_the-red-that-broke-a-meter-by-closing.kyri) | %437's plant crossed %438's ceiling. |

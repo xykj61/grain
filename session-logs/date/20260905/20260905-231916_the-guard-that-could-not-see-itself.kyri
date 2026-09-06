@@ -1,0 +1,44 @@
+format session-log-v1
+stamp 20260905.231916
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role bakery -- core infrastructure, Lindy-first and crux-first
+modality text
+model claude-opus-5
+model_status configured default, runtime unverified
+configured_model claude-opus-5
+configured_status .claude/settings.json names the default; no runtime telemetry read this turn
+evidence .claude/settings.json
+voice Kyri
+host Vultr Dallas pier, America/New_York
+title The guard that could not see itself until it was tracked
+prompt the baton, unattended -- bakery lap 3985, rota row 0
+rota lap 3985, row 0 -- Aether, the row that hears. The threshold asks what the work is saying. What this tree was saying, through a stash nobody had landed, was that a lap which ends at git add has not ended. I listened to that rather than opening new work.
+think Opened on a stash rather than a clean tree. The round-open had parked a dead lap's whole set -- a witness, a meter, a control, two repaired scans and a booked REDS row -- seven seconds before I read the clock. That is %321's shape working exactly as designed, and the first honest question was whether the parked work was sound, not whether to start something of my own.
+think Refused to trust the parked log's own GREEN claim. It said the guard gated at zero from birth; I ran it. It refused -- blind_captures_open=1, against a ceiling of zero, naming the guard's own control at line 45.
+think Proved the mechanism both ways before writing a word about it, because the cause was a guess until it was measured. Unstaged the control: scans_read=687, open=0, verdict=ok. Restaged it: 688, open=1, over_ceiling. The meter enumerates with git ls-files, so it cannot see its own control until the control is added -- and the authoring lap measured before it added.
+think Chose the heredoc distinction over a path exclusion. A path exclusion repairs this control and leaves the next one to trip the same wire; the heredoc rule says WHY, and the tree had already drawn exactly this line for its ASCII comment meters, which skip a shell heredoc body because it is what a program feeds onward rather than what it runs.
+think Measured the blast radius before changing the awk rather than after. Eight hits tree-wide, one unarmed, and that one the control's own fixture -- zero unarmed captures outside a heredoc anywhere in 688 tracked scans. So the field was already clean and only the instrument was tripping the gate, which is what made a gate at zero the right shape to keep.
+obs A SECOND FAULT RODE ALONG AND WAS QUIETER. require_instrument at the control's line 64 sits inside the ARMED heredoc, and the meter's file-level armed flag is set by any line matching that name -- so four later plants in the same file were exempted by fixture text rather than by reasoning. The reading fell 7 to 3 when that accident left, and 3 is the true count: inner_i1 once, inner_i2 twice.
+obs The three counts partition the total now -- armed 3, fixture 9, open 0, twelve hits -- so a reader can check the arithmetic instead of trusting the gate. A cap nobody can see is a cap nobody can check, so every fixture is printed by path rather than dropped.
+obs THE SPINE COLLIDED WHILE I WORKED. A peer published %439 at 224714 on comlink's topology comment; the parked row was stamped 223102 and unshared. Earlier stamp, later number: the law allocates from the anointed remote, so the parked row renumbered to %440 and mine took %441. Seven citations moved with it, and I renumbered mine to %441 first so the two sweeps could not collide. Then it collided a SECOND time on the final rebase: xy had published its own %440 and %441, different reds entirely, so mine derived again to %442 and %443 and every citation moved a second time. Two renumbers in one lap, and each was the guard telling the truth rather than a cost.
+obs The reset to the anointed order was done file by file rather than by conflict resolution. Three files upstream had also touched -- REDS, ITINERARY, the day shelf -- and hand-merging three known additions is a smaller risk than resolving a stash pop across a 575-line commit.
+obs The headline count was measured rather than typed. reds_ledger_monotone_witness read 441 and derived remainder 421, and I wrote back exactly those two numbers.
+obs What makes this row worth its ink is not the awk. It is that the guard and its subject were the same file, so the act of shipping it changed its answer -- %438's sentence about the record of an instrument, in its tightest material yet.
+loom scans_read=688 blind_captures_open_before=1 blind_captures_open_after=0 blind_captures_armed_before=7 blind_captures_armed_after=3 blind_captures_in_fixture=9 control_behaviors_before=24 control_behaviors_after=38 control_fail=0 unarmed_outside_heredoc=0
+file tools/fixtures/i/instrument_absence_scan.sh heredoc bodies tracked; a capture inside one reads fixture, and require_instrument inside one no longer arms
+file tools/fixtures/i/instrument_absence_control.sh fourteen new legs, each paired -- freed inside a heredoc, bitten outside one
+file tools/i/instrument_absence_witness.rish asserts the new legs and that the fixture count is published
+file construction/REDS.md the pin keeps the peers rows; mine stand as %442 and %443 on their own shelf
+file construction/ITINERARY.md the live front carries both rows; the Now line carries the lesson
+file session-logs/date/20260905/20260905-230135_emptiness-is-not-evidence.kyri the parked lap's own account, kept whole, its row number corrected
+obs The two rows then carried the pin to 28,755 against the 24,576 its own header declares, and declared_ceiling caught it on the hot pass rather than after the send. Both rows are CLOSED, so they folded to their own shelf in the round that closed them -- the %430 precedent -- which left the peer's fresh %439 and the two OPEN rows, %431 and %360, standing on the pin where a reader looks for live work. Pin reads 20,789.
+file construction/archive/REDS-the-guard-that-could-not-see-itself-rows-442-443.md both rows whole, one argument in two movements
+file construction/archive/REDS-fold-recital.md the fold's own trail line
+obs THE SAME LESSON THEN CAUGHT ME A THIRD TIME, on the hot pass. readme_metrics went red because I had regenerated README's block BEFORE staging the new witness, and tools/fixtures/r/readme_metrics_scan.sh counts with git ls-files 'tools/*_witness.rish'. It wrote 1806; the true count once the witness was tracked is 1807. The baton's SEND stanza says to regenerate before the hot pass, which is right and incomplete -- the missing two words are after staging.
+obs I named that on the card rather than editing tools/l/fleet_baton.txt, because a baton edit reaches all eight ships and my seat's instruction is to propose the shape rather than impose it. The measurement is in the line so Keaton can check it in one command.
+obs Ten scan/control pairs in this tree share %443's structural shape -- the scan enumerates with git ls-files and the sibling control plants with a heredoc. One was measured and it fired. The other nine are UNMEASURED, and I am writing that word rather than a number, because %438's second half is exactly the habit of publishing a plausible count before running it.
+file construction/ITINERARY.md the live front carries both rows, the shelf pointer, and the baton clause named for Keaton's word
+file README.md the metrics block regenerated after staging -- 1807 witnesses, the number the commit actually ships
+recommend kg -- the same experiment against mktemp, jq and flock is mechanical and mine, and 353 mktemp sites carry no probe at all.

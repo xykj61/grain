@@ -285,3 +285,43 @@ if [ "$_sp_probe" != '[a b][c]' ]; then
   exit 1
 fi
 unset _sp_probe
+
+# THE EIGHTH: the instrument itself. Every function above answers "how is this spelled on that
+# host". This one answers the question underneath them -- is the tool there at all -- and it is
+# the only one whose wrong answer is silent. A missing `sed` reports itself the moment a line
+# fails to change. A missing `rg` reports nothing, because the shape a guard reaches for is
+#
+#   hits="$(rg PATTERN paths 2>/dev/null || true)"; [ -n "$hits" ] && refuse
+#
+# and three separate constructions in that one line each discard the evidence: `2>/dev/null` hides
+# `rg: command not found`, `|| true` discards exit 127, and the emptiness test reads "nothing
+# matched" out of "nothing ran". The healthy reading and the dead reading are the same bytes.
+#
+# MEASURED ON THIS PIER `20260905.223102`, with a shim on PATH answering exit 127 exactly as a
+# missing binary does. Of 117 tracked scans naming `rg` in command position, 115 said nothing about
+# the cause on their own stdout, and two -- `tools/fixtures/i/inner_i1_twah_residual.sh` and
+# `tools/fixtures/i/inner_i2_djin_prose.sh` -- printed their GREEN line byte for byte and exited 0.
+# `rishi/bin/rishi run tools/i/inner_i1_twah_residual.rish` read GREEN with no ripgrep on the host
+# at all (REDS %442). The other 115 refused for reasons of their own, loudly and by accident,
+# which is luck rather than design: none of them named the instrument.
+#
+# WHAT THIS IS NOT. It is not the tool-grant roster, which is designed and waiting in
+# `active-designing/yonder/20260905-064341_the-tools-a-guard-may-assume.md` and rightly begins with
+# a roster rather than a meter. This is the one reflex that reads true with no roster behind it,
+# because it makes no claim about tiers: it only refuses to let a tool's absence wear a tool's
+# answer.
+#
+#   require_instrument rg                       # refuse, naming rg, if it is not on PATH
+#   require_instrument rg jq                    # ... or if any of several is missing
+#
+# Exit 2 rather than 1, so a caller can tell "the tree is wrong" from "the bench is wrong".
+require_instrument() {
+  _ri_missing=
+  for _ri_tool in "$@"; do
+    command -v "$_ri_tool" >/dev/null 2>&1 || _ri_missing="${_ri_missing:+$_ri_missing }$_ri_tool"
+  done
+  [ -z "$_ri_missing" ] && return 0
+  printf 'refused: %s needs an instrument this host does not have: %s\n' "${0##*/}" "$_ri_missing" >&2
+  printf 'refused: without it an empty reading is indistinguishable from a healthy one.\n' >&2
+  exit 2
+}

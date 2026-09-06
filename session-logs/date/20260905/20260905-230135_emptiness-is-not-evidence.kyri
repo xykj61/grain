@@ -1,0 +1,39 @@
+format session-log-v1
+stamp 20260905.230135
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role bakery -- core infrastructure, Lindy-first and crux-first
+modality text
+model claude-opus-5
+model_status configured default, runtime unverified
+configured_model claude-opus-5
+configured_status .claude/settings.json names the default; no runtime telemetry read this turn
+evidence .claude/settings.json
+voice Kyri
+host Vultr Dallas pier, America/New_York
+title Emptiness is not evidence -- the guards that read GREEN with their instrument gone
+prompt the baton, unattended -- BAKERY's first lap, lap 3985, rota row 0
+rota lap 3985, row 0 -- Aether, the row that hears. Every row of it says one sentence: a guard must be proven able to make a sound before its silence means anything. I turned that on the instruments rather than on the guards, since a guard with no instrument cannot make a sound at all.
+think This is bakery's first lap in a fresh tree, so the lane's queue was not mine yet and the card had to name the work. It did, in one sentence held out of the yonder design as the reflex that should not wait: a guard that cannot run its instrument refuses, and says which instrument.
+think Took it as an experiment rather than a plan. Shim the instrument away, run every scan that names it, and read which ones stay quiet. That is a control's move -- the plant is the absence of the tool -- and it needs no roster to be honest.
+think Built a second, independent reading before trusting the first: a static detector for a borrowed capture whose emptiness is the pass branch. It named the same two files the behavioral run named, and nothing else. Two instruments agreeing on one answer is worth more than either alone.
+think Chose a gate at zero rather than the design's ratchet, and the distinction is the whole argument. The ratchet counts borrowed sites with no probe, which is an opinion until a tool-grant roster says which tier each tool is in -- so the design is right to put the roster first. A gate on this construction makes no claim about tiers: it counts one shape that turns a missing tool into a clean bill of health.
+think Wrote the meter's awk in POSIX awk after the first draft used gawk's three-argument match. A guard about borrowed instruments that reaches for a borrowed instrument has refuted itself before it runs.
+obs THE MEASUREMENT LIED TO ME TWICE, both times in the direction of thinking the work was done. A shim answering exit 127 is not absence, because command -v still finds it -- so the repair read as no repair at all until I built a PATH pen holding symlinks to every binary except ripgrep. Then inner_i2 came back exit 1 and looked innocent, only because my own already-repaired inner_i1, which it calls, refused underneath it. A measurement contaminated by the fix being measured is %422's shape in a third material.
+obs The pen needed its own control leg. A refusal in a PATH pen proves nothing about ripgrep unless the pen is complete but for ripgrep, so one leg asserts rg is gone while git and awk remain, and ten equinox scans give identical exit codes with rg symlinked back.
+obs %416's meter reads 686 scans and finds zero, and it is not wrong. It gates an output pass redirected into a FILE; this pass lands in a VARIABLE. That is the edge-not-defect distinction its own design essay draws, and the dimension nobody had modelled is that the instrument may not exist.
+obs The general form is the part worth keeping: the failure of an instrument is silent exactly when its healthy answer is an absence. Every zero-is-good reading in this tree is one missing binary away from its best number, and this tree holds far more ceilings than gates.
+obs Graded the witness at C/73 -- register 23, because a page about refusal writes in negatives. Rewrote the head to lead with what is, holding every number, path and stamp exactly. 73 to 94, and the guard still greens.
+obs On this pier ripgrep reaches the shell only through a nix-store PATH entry and a bash alias. A subshell with a trimmed PATH loses it, which is exactly the condition the two scans could not survive.
+loom scans_naming_rg=117 falsely_green_before=2 falsely_green_after=0 scans_read_by_meter=686 blind_captures_open=0 control_behaviors=24 control_fail=0 witness_grade_before=73 witness_grade_after=94
+file tools/fixtures/s/shell_portable.sh require_instrument, the eighth dialect answer -- the only one whose wrong answer is silent
+file tools/fixtures/i/inner_i1_twah_residual.sh asks for rg by name; refused without it, GREEN with it
+file tools/fixtures/i/inner_i2_djin_prose.sh the same repair, the same proof both ways
+file tools/fixtures/i/instrument_absence_scan.sh the meter, POSIX awk, gated at zero from birth
+file tools/fixtures/i/instrument_absence_control.sh 24 behaviors, every refusal from both sides, including a PATH pen proven complete but for ripgrep
+file tools/i/instrument_absence_witness.rish the witness, head rewritten to lead with what is
+file construction/standing-equipment.kyri the row, tier lap
+file construction/REDS.md %442 booked and CLOSED with its measurement
+file construction/ITINERARY.md the live front closes the reflex it named
+recommend kg -- the tool-grant roster is the yonder design's next movement and wants Keaton's word to leave yonder; meanwhile the same experiment run against mktemp, jq and flock is mechanical and mine.

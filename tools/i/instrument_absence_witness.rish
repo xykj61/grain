@@ -1,0 +1,67 @@
+# instrument_absence_witness.rish -- a guard asks for its instrument by name.
+#
+#   rishi/bin/rishi run tools/i/instrument_absence_witness.rish
+#
+# WHAT THIS GATES. A scan proves a room clean by capturing a search and refusing when the capture
+# holds lines. That capture is evidence only while the search actually ran. Here the guard asks
+# for its tool by name first, so a green line always means a reading happened.
+#
+#   hits="$(rg PATTERN paths 2>/dev/null || true)"; [ -n "$hits" ] && refuse
+#
+# Three constructions in that one line each drop the evidence. `2>/dev/null` takes the shell's own
+# `rg: command not found`. `|| true` takes exit 127. The emptiness test reads "nothing matched"
+# out of "nothing ran". So the healthy answer and the dead answer are the same bytes.
+#
+# MEASURED `20260905.223102` with ripgrep genuinely off PATH. A shim answering 127 is a weaker
+# test, since `command -v` still finds it. Of 117 tracked scans naming `rg` in command position,
+# two printed their GREEN line byte for byte and exited 0. A Rishi witness over one of them read
+# GREEN on a host holding no ripgrep at all. Both sites are repaired in the commit that seats this
+# guard, so the gate opens at zero (REDS %442).
+#
+# THE SIBLING READS A NARROWER SUBJECT, and reads it honestly. instrument_refusal (REDS %416)
+# gates an output pass redirected into a FILE. This pass lands in a VARIABLE, so that meter is
+# blind to it by construction -- an edge rather than a defect, and the dimension it leaves out is
+# whether the instrument exists.
+#
+# TIERS BELONG TO THE ROSTER. The design at
+# active-designing/yonder/20260905-064341_the-tools-a-guard-may-assume.md keeps 992 unprobed `rg`
+# sites as a ratchet behind a tool-grant roster, and keeps that order. This reading counts one
+# construction instead, which is a fault whoever owns the tool.
+
+say "instrument-absence: Language EN -- an absent tool must not wear that tool's answer."
+say "instrument-absence: Style Gauge, Meter -- one reading, gated at zero, every leg shown from both sides."
+say "instrument-absence: Lens TAME -- safety first: emptiness is not evidence."
+
+# invariant: run from the repo root, where the scans this reads actually live.
+let root = run ["test" "-f" "construction/ITINERARY.md"]
+assert root.ok else "run from the repo root (construction/ITINERARY.md not found)"
+
+# invariant: the meter must stand before any reading of it is believed.
+let present = run ["test" "-f" "tools/fixtures/i/instrument_absence_scan.sh"]
+assert present.ok else "tools/fixtures/i/instrument_absence_scan.sh is missing -- the meter cannot be read"
+
+# invariant: the door the repair reaches for must exist, or every armed file is armed with nothing.
+let door = run ["grep" "-q" "^require_instrument()" "tools/fixtures/s/shell_portable.sh"]
+assert door.ok else "instrument-absence: require_instrument is missing from shell_portable.sh"
+
+let control = run ["sh" "tools/fixtures/i/instrument_absence_control.sh"]
+say control.out
+assert control.ok else "instrument-absence: a planted case read wrong -- see the control's own lines"
+assert control.out contains "control_fail=0" else "instrument-absence: the control did not close clean"
+assert control.out contains "ok    planted blind capture refuses" else "instrument-absence: the planted fault was not bitten"
+assert control.out contains "ok    plant removed returns to green" else "instrument-absence: the refusal was proven only one way"
+assert control.out contains "ok    granted instrument uncounted" else "instrument-absence: a granted instrument was counted, and the reading is a sweep"
+assert control.out contains "ok    multi-line capture refuses" else "instrument-absence: the real multi-line shape slipped past"
+assert control.out contains "ok    absent root refuses" else "instrument-absence: the meter does not obey the law it enforces"
+assert control.out contains "ok    capture inside a heredoc does not refuse" else "instrument-absence: a control's own plant is counted as field, and the guard reds the moment it is tracked"
+assert control.out contains "ok    the same capture outside a heredoc refuses" else "instrument-absence: the fixture exemption was proven only in the freeing direction, which cannot be told from a hole"
+assert control.out contains "ok    require_instrument in a heredoc does not arm the file" else "instrument-absence: a file armed by text it merely writes is armed by luck"
+assert control.out contains "ok    require_instrument in own code still arms the file" else "instrument-absence: the arming half was proven only one way"
+
+let live = run ["sh" "tools/fixtures/i/instrument_absence_scan.sh"]
+say live.out
+assert live.ok else "instrument-absence: a capture of a borrowed instrument reads its own emptiness as health"
+assert live.out contains "blind_captures_open=0" else "instrument-absence: an unarmed blind capture stands, and this gate is zero"
+assert live.out contains "blind_captures_in_fixture=" else "instrument-absence: the fixture count is not published, and a cap nobody can see is a cap nobody can check"
+
+say "GREEN: instrument-absence -- no guard in this tree mistakes a missing tool for a clean tree."
