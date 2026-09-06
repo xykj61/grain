@@ -46,9 +46,17 @@
 
 ### Now -- the live front
 
-**Git nib:** `fdbcc4ab65` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `0ee5c8171c` -- HEAD's parent, resolvable everywhere (%401).
 
-**DIFFUSER** -- 622 named bounds, none names a rate or a joule. `%447`, `20260905.233110`.
+**DIFFUSER** -- **`%454` OPEN: `route_hops` publishes a hop count, and a third of the sky has no
+walk of that length.** From the metric's OWN unit distance: 642 edges over 720 points, **132 with no
+edge at all**, and a walk from every point cannot reach **172,524 of 518,400 pairs (33.28%)**;
+council, **50.41%**. **Where a walk DOES exist it is exact -- 345,876 pairs, zero disagreements**:
+one shape, a small repair. `topology_graph_census.sh`, 15s; the paper prices those same
+coordinates as three rings. **Named not taken** (`comlink/` is its owner's); the ruling is
+*sponsorship wants a parent, routing wants two coordinates*. Your `%452`
+repaired the metric's ZERO end; **the sentence refuted here is the other end**, unmoved by it.
+**My own claim died on metal:** an unwrapped ring does not red; a mesh realizes it.
 
 **Now.** **A guard can be green because it cannot see enough of the page to disagree.**
 
