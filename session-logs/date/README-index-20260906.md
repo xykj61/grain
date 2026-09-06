@@ -12,3 +12,4 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | Stamp | Log | What it recorded |
 |---|---|---|
 | `20260906.003252` | [the reading one short](20260906/20260906-003252_the-reading-one-short.kyri) | %446, %440: one post loose out of four. |
+| `20260906.001728` | [the weave merges](20260906/20260906-001728_the-weave-merges-and-the-module-nobody-compiled.kyri) | %449 %450: a join lands; grep held a dead module. |

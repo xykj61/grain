@@ -17,11 +17,33 @@ const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 
+/// The largest number of lines one weave holds, and the ceiling both `apply`
+/// and `merge` read before they allocate anything. A weave keeps every line a
+/// file has ever held, so its natural size is the whole history rather than the
+/// current length; a million lines stands far above any history this tree has
+/// written, and is small enough that the refusal arrives long before the
+/// machine is in trouble.
+pub const max_weave_lines: u32 = 1 << 20;
+
+/// What a weave refuses, by name. Each refusal is read at the edge -- before an
+/// allocation is made, rather than after one has grown.
+pub const WeaveError = error{
+    /// Two weaves hold one position with different text. A position names a
+    /// line for all time, so this says the two positions came from counters
+    /// that never met -- and merging them would keep one line while silently
+    /// dropping the other, which is the single outcome a weave exists to
+    /// prevent. Refusing here is what keeps the history whole.
+    PositionTextDisagrees,
+    /// The weave would pass max_weave_lines -- by a diff's inserts in `apply`,
+    /// or by the union of two weaves in `merge`.
+    TooManyLines,
+};
+
 /// A single line in the weave. Once added, its position is permanent.
 ///
 /// Invariants:
 ///   gen >= 1         -- zero is reserved; every line starts at generation 1
-///   gen is odd       ⟺  line is currently present
+///   gen is odd       <->  line is currently present
 pub const Line = struct {
     text: []const u8,
     gen: u32,
@@ -48,7 +70,7 @@ pub const Weave = struct {
 
     /// An empty weave -- no history yet.
     pub fn empty() Weave {
-        return .{ .lines = .{}, .next_pos = 0 };
+        return .{ .lines = .empty, .next_pos = 0 };
     }
 
     /// Advance the weave by one diff. Deletes remove lines by toggling their
@@ -61,6 +83,17 @@ pub const Weave = struct {
     /// Postcondition: all inserted lines carry gen == 1 and odd (present);
     ///   all deleted lines carry gen % 2 == 0 (gone).
     pub fn apply(self: *Weave, allocator: std.mem.Allocator, diff: Diff) !void {
+        // invariant: the weave already stands inside its own ceiling, so the
+        // refusal just below names the diff rather than covering for a weave
+        // that was over the ceiling before this call arrived
+        assert(self.lines.items.len <= max_weave_lines);
+
+        // The weave grows by exactly the diff's inserts, so the sum is what the
+        // ceiling reads -- at the edge, before a single line is appended.
+        if (self.lines.items.len + diff.inserts.len > max_weave_lines) {
+            return WeaveError.TooManyLines;
+        }
+
         // Process deletes first: find each position and bump its gen to even.
         for (diff.deletes) |target_pos| {
             var found = false;
@@ -70,7 +103,7 @@ pub const Weave = struct {
                     // tombstone, so an even one reaching here would be a deleted line treated
                     // as live
                     assert(line.gen % 2 == 1);
-                    line.gen += 1;                       // odd → even: mark gone
+                    line.gen += 1;                       // odd -> even: mark gone
                     found = true;
                     break;
                 }
@@ -107,7 +140,10 @@ pub const Weave = struct {
     /// Return the lines currently present (odd generation), in position order.
     /// The caller owns the returned slice; it is allocated from `allocator`.
     pub fn current(self: *const Weave, allocator: std.mem.Allocator) ![]const Line {
-        var out = std.ArrayListUnmanaged(Line){};
+        // invariant: the weave stands inside its own ceiling, so the slice this
+        // returns is bounded by max_weave_lines rather than by whoever calls it
+        assert(self.lines.items.len <= max_weave_lines);
+        var out: std.ArrayListUnmanaged(Line) = .empty;
         for (self.lines.items) |line| {
             if (line.gen % 2 == 1) { // odd = present
                 try out.append(allocator, line);
@@ -138,5 +174,130 @@ pub const Weave = struct {
         }
 
         return result;
+    }
+
+    /// Fold one weave's lines into a list already holding the other's: a line
+    /// whose position is already held joins by the higher generation, and one
+    /// whose position is new is appended.
+    ///
+    /// The caller has already ensured capacity for the whole union, so nothing
+    /// here allocates and the only way out is the refusal.
+    ///
+    /// Precondition:  `out` has room for every line of `incoming`.
+    /// Postcondition: every position of `incoming` is held by `out` exactly once.
+    fn union_into(out: *std.ArrayListUnmanaged(Line), incoming: []const Line) WeaveError!void {
+        // invariant: the list can take the whole union without growing, which is
+        // what lets this fold run with no allocator and no error but the refusal
+        assert(out.capacity >= out.items.len + incoming.len);
+        // invariant: the union stays inside the weave's own ceiling, so the
+        // append below can never carry the list past what merge already checked
+        assert(out.items.len + incoming.len <= max_weave_lines);
+
+        for (incoming) |line| {
+            var joined = false;
+            for (out.items) |*held| {
+                if (held.pos != line.pos) continue;
+                if (!std.mem.eql(u8, held.text, line.text)) {
+                    return WeaveError.PositionTextDisagrees;
+                }
+                // The join itself. Max carries parity with it, so a delete on
+                // either side survives a merge with a side still holding the
+                // line -- gone is a larger count than present, and larger wins.
+                held.gen = @max(held.gen, line.gen);
+                joined = true;
+                break;
+            }
+            if (!joined) {
+                out.appendAssumeCapacity(line);
+            }
+        }
+    }
+
+    /// Merge another weave into this one, returning a new weave and leaving
+    /// both arguments exactly as they were.
+    ///
+    /// A position names a line for all time. So a position both weaves hold is
+    /// one line seen twice, and a position only one of them holds is a line the
+    /// other has not seen yet. The rule is therefore a union over positions
+    /// where the HIGHER GENERATION wins -- no commit identifier is consulted,
+    /// only the counts in front of it, which is what keeps the merge structural.
+    ///
+    /// Three operations sit underneath: union of the positions, max on the
+    /// generation, max on next_pos. Each of the three is commutative,
+    /// associative, and idempotent, so the merge is all three as well -- by
+    /// construction rather than by care. Sorting the result by position makes
+    /// that structural rather than merely visible: `a.merge(alloc, b)` and
+    /// `b.merge(alloc, a)` come out equal field for field, rather than only
+    /// equal once they are read as a document.
+    ///
+    /// Cost is |self| x |other| text comparisons, since a weave carries no index
+    /// from position to line. That is deliberate at this size: the bound above
+    /// names the ceiling, and a map earns its place when a measurement asks for
+    /// one rather than before.
+    ///
+    /// Refusal keeps that order-independence. Weaves that pairwise agree on
+    /// their shared positions are closed under merge -- the merged text at a
+    /// position comes from one of the two sides, and both already agreed with
+    /// the third -- so no grouping can hide a disagreement from a later one.
+    ///
+    /// Precondition:  a position held by both weaves carries the same text --
+    ///   refused by name, because two counters that never met hand the same
+    ///   small integers to different lines.
+    /// Postcondition: positions strictly increase, every line keeps a real
+    ///   generation, and next_pos stands above every position in the result.
+    pub fn merge(self: *const Weave, allocator: std.mem.Allocator, other: *const Weave) !Weave {
+        // invariant: each weave already stands inside the named bound, so a
+        // refusal below names the union rather than covering for an input that
+        // was over the ceiling before a merge was ever asked for
+        assert(self.lines.items.len <= max_weave_lines);
+        assert(other.lines.items.len <= max_weave_lines);
+
+        // The union holds at most the sum, so checking the sum checks the union
+        // -- at the edge, before a single line is copied.
+        if (self.lines.items.len + other.lines.items.len > max_weave_lines) {
+            return WeaveError.TooManyLines;
+        }
+
+        // usize lives at the inherited-std seam alone: ArrayListUnmanaged counts
+        // in usize, and the bound just checked is what makes the cast safe.
+        const self_len: u32 = @intCast(self.lines.items.len);
+        const other_len: u32 = @intCast(other.lines.items.len);
+
+        var out: std.ArrayListUnmanaged(Line) = .empty;
+        errdefer out.deinit(allocator);
+        try out.ensureTotalCapacity(allocator, self_len + other_len);
+        for (self.lines.items) |line| {
+            out.appendAssumeCapacity(line);
+        }
+
+        try union_into(&out, other.lines.items);
+
+        std.mem.sort(Line, out.items, {}, struct {
+            fn less_than(_: void, a: Line, b: Line) bool {
+                return a.pos < b.pos;
+            }
+        }.less_than);
+
+        const merged = Weave{
+            .lines = out,
+            .next_pos = @max(self.next_pos, other.next_pos),
+        };
+
+        for (merged.lines.items, 0..) |line, i| {
+            // invariant: a line carries a real generation, since zero is
+            // reserved and a merge must never invent one
+            assert(line.gen >= 1);
+            // invariant: every position stays under the merged counter, so the
+            // next insert is handed one neither side has ever used
+            assert(line.pos < merged.next_pos);
+            if (i + 1 < merged.lines.items.len) {
+                // invariant: positions strictly increase, which both orders the
+                // document and proves the union kept exactly one line per
+                // position
+                assert(merged.lines.items[i].pos < merged.lines.items[i + 1].pos);
+            }
+        }
+
+        return merged;
     }
 };
