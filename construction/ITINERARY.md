@@ -50,7 +50,20 @@
 
 **DIFFUSER** -- 622 named bounds, none names a rate or a joule. `%447`, `20260905.233110`.
 
-**Now.** **A repair that fixes a class by hand leaves whichever member the hand did not reach.**
+**Now.** **A guard can be green because it cannot see enough of the page to disagree.**
+
+**`%451` OPEN -- the register meter skips bullets, and this tree writes none.** `measure()` in
+`prose_register_scan.sh` drops `/^[ \t]*[-*>#]/` as *bullets*; a real bullet takes whitespace after
+the mark and **docs-geode holds zero**, so the branch eats every bold-led paragraph Gauge writes --
+**239 of 537 prose lines, 85 across the twelve gated door documents**.
+Reach divides links by that count too, so **two of four readings ride one classifier**. A patched measure
+reds **2 of 12** door and **7** teaching documents. **BAKERY's seat** -- priced in the row, not
+crossed. *Landed:* `blog/README.md` **71% -> 9%**, C+/76 to B+/85; four more
+stand named in the row, `libraries` among them -- **generated**, and calling an index
+*"the fastest-rotting page"* against Gauge's **compare by what keeps**.
+**A lantern fired twice:** `log_has_a_row` caught the 0905 shelf count stale after each
+rebase (51 -> 56 -> 58). That **Rows** column is *derived*, so **the loom prints it from the
+shelf**. Named, not built.
 
 **THE WEAVE MERGES** (`20260906.001728`, Patchouli) -- the charter's movement *the weave, and its
 order*. `Weave.merge` in `mantra/src/weave.rye` is a union over positions where the **higher
@@ -117,12 +130,11 @@ reads one of `max_name`'s two call sites (`parse_manifest` reads it too, over th
 `xy/pier/diverged-20260831-{064342,115245}`, neither landed, neither mine. **CION:** `drey`'s rung marks are the retired form (%329). **Fleet loop (%387):** should a
 round's opening stash stop an in-flight pass in its own tree.
 
-**Petrichor's `%424`** (library index credited a room for the interpreter) and the `grep`-shim
-finding are on the [landed-accounts shelf](archive/20260905-131102_itinerary-landed-accounts.md).
-**The stash is restored.** Its row took four numbers and its stamp took none, and `%435` below
-made it five laps running -- **the standing evidence for your open question**: should an OPEN row
-carry a claim, a seat and a stamp, at start rather than at landing. Take the number from `--next`,
-never from the one written in the row.
+**Petrichor's `%424`**, the `grep`-shim finding, and the restored stash are on the
+[landed-accounts shelf](archive/20260905-131102_itinerary-landed-accounts.md). That row took four
+numbers and its stamp took none -- as `%451` just did again, six laps running now, which is
+**the standing evidence for your open question**: should an OPEN row carry a claim, a seat and a
+stamp, at start rather than at landing. Take the number from `--next`, never from the row.
 **`%444`/`%431` CLOSED** -- the seed publisher travels with the field now; seven of eight ships stop paying a cold pass a lap. **A rule that states its reason can be checked -- this one stood eleven days and no reader asked the filesystem.** **Open:** twelve root paths behind that `/*` deny, unasked.
 **Landed `20260905`** -- `%430` and `%438` whole on the [235749 shelf](archive/20260905-235749_itinerary-landed-accounts.md); `%435`, `%427`-`%429`, `%423`-`%426`, `%420`, `%413`/`%412`, `%411`/`%410`, `%409`, `%408`; Mantra's 20 guards, the ripgrep fetch, the aroma breach, the baton and the three berths, and the bound grant itself: whole on the [20260905.192154 shelf](archive/20260905-192154_itinerary-landed-accounts.md).
 **`%442`/`%443` and `%445` accounts folded** (`20260906.001800`) to the [landed-accounts shelf](archive/20260906-001800_itinerary-landed-accounts.md); both rows already stood on REDS shelves.
@@ -144,18 +156,9 @@ these rows moved. **One deliberate line takes it.**
 `pond/enclosure_policy.kyri` 8,120/8,192; yours.
 **Landed this chapter** -- `%374`'s gate build, six utility fetches with their thanks, the naming
 study, the seed publisher, and rows `%408`, `%414`-`%424`: whole on the
-[landed-accounts shelf](archive/20260905-131102_itinerary-landed-accounts.md). **Petrichor's mark-law weave LANDED** (`20260905.224930`) -- and the weave had nowhere to land:
-docs-geode **showed a reader 20 stamped names across 7 of its 20 pages and taught how to read one
-on zero**, its only two mentions of the shape being a fold demo and a `slice` example.
-`study/reading-a-name.md` teaches both marks now (A+/98), admitted to the wiki table by the room's
-own law. The room's front door read **C+/79 before the touch and A/95 after**, and **`%430` -- one
-lap old -- is why**: at 33% over three sentences its register is freed where at 66% it was scored,
-so *one sentence could still cross* did real work on its first day. **`claim_preserve` caught an
-over-claim in my own opening line** -- *every file wears two marks*, when not one file in either
-room carries a stamp, so the sentence contradicted the page beneath it. Its BEFORE-only column is
-the loss reading, and across three files it holds one word, from a heading; every other delta is an
-addition, which is what an additive round should show.
-**`agent_jail`:** now `%446` below, booked by a peer; the same reflex, one room over.
+[landed-accounts shelf](archive/20260905-131102_itinerary-landed-accounts.md). **Petrichor's mark-law weave LANDED** (`20260905.224930`): `study/reading-a-name.md` teaches both
+marks a name carries, on a shelf that showed 20 and taught none. **`agent_jail`** is `%446`, a
+peer's, and `%451`'s family.
 **THE LIVE FRONT NOW FOLDS** (`20260905.130819`): landed accounts shelve like REDS rows, so the
 card holds what is OPEN and what waits on your word.
 **All three ships sail** (`20260905`). **Gate 3 stands:** `.gnupg-rye/` holds
@@ -292,6 +295,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260906.001728` | The weave merges, and the module nobody compiled | [log](../session-logs/date/20260906/20260906-001728_the-weave-merges-and-the-module-nobody-compiled.kyri) |
+| `20260906.000505` | The meter that skipped bullets a shelf never wrote | [log](../session-logs/date/20260906/20260906-000505_the-meter-that-skipped-bullets-a-shelf-never-wrote.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)
