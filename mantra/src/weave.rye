@@ -6,10 +6,16 @@
 //! These two facts together mean the weave remembers every line ever seen --
 //! its full history -- while current() surfaces only what is present now.
 //!
-//! Three operations:
-//!   Weave.empty()          -- an empty weave, no lines yet
-//!   weave.apply(alloc, d)  -- advance the weave by one Diff
-//!   weave.current(alloc)   -- the lines present now, in position order
+//! The operations, listed rather than counted. This list is read against the
+//! module's own `pub fn` declarations by
+//! tools/fixtures/m/mantra_weave_head_scan.sh, in both directions, so an
+//! operation that lands without a line here reds on the lap it arrives --
+//! which is what `merge` did for half a day (REDS %491):
+//!   Weave.empty()            -- an empty weave, no lines yet
+//!   weave.apply(alloc, d)    -- advance the weave by one Diff
+//!   weave.current(alloc)     -- the lines present now, in position order
+//!   weave.merge(alloc, w)    -- one weave from two, by union and max
+//!   weave.annotate(alloc, w) -- what each side did, one Note per position
 //!
 //! Part of Mantra -- TAME-first from line one.
 
@@ -56,6 +62,82 @@ pub const Line = struct {
 pub const Diff = struct {
     inserts: []const []const u8, // text of new lines, in order
     deletes: []const u32,        // positions of lines to remove
+};
+
+/// What the two sides did at one position, in a single word.
+///
+/// The five readings are exhaustive over two generation counts, which is why
+/// `Note.reading` needs no default arm: either exactly one side has seen the
+/// position, or both have and their counts are equal, or both have and one
+/// stands higher.
+pub const Reading = enum {
+    /// Only the left weave has ever seen this position, so the left is the
+    /// side that added the line and the right has not met it yet.
+    left_only,
+    /// The mirror: only the right weave has seen it.
+    right_only,
+    /// Both hold the position at the same count, so neither side has touched
+    /// it since they parted. Parity says whether that shared state is present
+    /// or gone.
+    agreed,
+    /// Both have seen it and the left's count stands higher, so the left is
+    /// the side that acted last. `present_left` says whether the act left the
+    /// line present or gone.
+    left_moved,
+    /// The mirror: the right acted last.
+    right_moved,
+};
+
+/// One position, read from both sides: what each weave holds there, and what a
+/// merge of the two lands on.
+///
+/// A generation of **zero** means that side has never seen this position. Zero
+/// is already reserved by the module -- every line starts at generation 1 --
+/// and zero is also even, so an unseen position reads as not-present through
+/// the same parity test every other reading uses, with no special case
+/// anywhere.
+///
+/// The merged generation is derived rather than stored. Holding a third count
+/// beside the two it comes from would let the story and the merge drift into
+/// two answers, and a story that can disagree with the thing it describes is
+/// worse than no story.
+pub const Note = struct {
+    pos: u32,
+    left_gen: u32,
+    right_gen: u32,
+
+    /// The generation a merge of the two sides lands on at this position --
+    /// the same `@max` the merge itself takes, read from the same two counts.
+    pub fn gen(self: Note) u32 {
+        return @max(self.left_gen, self.right_gen);
+    }
+
+    /// Whether the left side holds this line present. Parity is the tombstone,
+    /// and zero is even, so a side that never saw the position answers false.
+    pub fn present_left(self: Note) bool {
+        return self.left_gen % 2 == 1;
+    }
+
+    /// The mirror, for the right side.
+    pub fn present_right(self: Note) bool {
+        return self.right_gen % 2 == 1;
+    }
+
+    /// The story at this position in one word.
+    pub fn reading(self: Note) Reading {
+        // invariant: a note names a position at least one side has seen, since
+        // a position neither weave holds never enters the union at all
+        assert(self.left_gen != 0 or self.right_gen != 0);
+        if (self.right_gen == 0) return .left_only;
+        if (self.left_gen == 0) return .right_only;
+        if (self.left_gen == self.right_gen) return .agreed;
+        // invariant: both counts are real and they differ, so exactly one side
+        // stands higher and the two arms below name it rather than falling
+        // through to a default that would hide a fourth case
+        assert(self.left_gen != self.right_gen);
+        if (self.left_gen > self.right_gen) return .left_moved;
+        return .right_moved;
+    }
 };
 
 /// A Weave: the living history of a text stream.
@@ -299,5 +381,165 @@ pub const Weave = struct {
         }
 
         return merged;
+    }
+
+    /// Append one note per position the LEFT holds, carrying the right's count
+    /// beside it -- zero when the right has never seen it. The text comparison
+    /// lives here, so the fold below reads positions alone.
+    ///
+    /// The caller has already ensured capacity for the whole union, so nothing
+    /// here allocates and the only way out is the refusal. This is the same
+    /// shape `union_into` takes for `merge`, on purpose: two folds over one
+    /// union, and the reading differs only in what it writes down.
+    ///
+    /// Precondition:  `out` has room for every line of `left`.
+    /// Postcondition: `out` holds one note per position of `left`.
+    fn notes_from_left(
+        out: *std.ArrayListUnmanaged(Note),
+        left: []const Line,
+        right: []const Line,
+    ) WeaveError!void {
+        // invariant: the list can take the whole fold without growing, which is
+        // what lets this run with no allocator and no error but the refusal
+        assert(out.capacity >= out.items.len + left.len);
+        // invariant: the fold stays inside the weave's own ceiling, so the
+        // append below can never carry the list past what annotate checked
+        assert(out.items.len + left.len <= max_weave_lines);
+
+        for (left) |line| {
+            var right_gen: u32 = 0;
+            for (right) |held| {
+                if (held.pos != line.pos) continue;
+                if (!std.mem.eql(u8, held.text, line.text)) {
+                    return WeaveError.PositionTextDisagrees;
+                }
+                right_gen = held.gen;
+                break;
+            }
+            out.appendAssumeCapacity(.{
+                .pos = line.pos,
+                .left_gen = line.gen,
+                .right_gen = right_gen,
+            });
+        }
+    }
+
+    /// Append a note for each position only the RIGHT has seen. Every shared
+    /// position already had its text compared by the fold above, so this one
+    /// reads positions alone and cannot refuse.
+    ///
+    /// Precondition:  `out` has room for every line of `right`.
+    /// Postcondition: every position of `right` is held by `out` exactly once.
+    fn notes_from_right(
+        out: *std.ArrayListUnmanaged(Note),
+        left: []const Line,
+        right: []const Line,
+    ) void {
+        // invariant: the list can take the whole fold without growing, which is
+        // what lets this run with no allocator at all
+        assert(out.capacity >= out.items.len + right.len);
+        // invariant: the fold stays inside the weave's own ceiling, so the
+        // append below can never carry the list past what annotate checked
+        assert(out.items.len + right.len <= max_weave_lines);
+
+        for (right) |line| {
+            var shared = false;
+            for (left) |held| {
+                if (held.pos == line.pos) {
+                    shared = true;
+                    break;
+                }
+            }
+            if (!shared) {
+                out.appendAssumeCapacity(.{
+                    .pos = line.pos,
+                    .left_gen = 0,
+                    .right_gen = line.gen,
+                });
+            }
+        }
+    }
+
+    /// Read two weaves side by side: for every position either one holds, what
+    /// each side did there, in position order.
+    ///
+    /// `merge` answers *what is the one state*. This answers *what did each
+    /// side do to reach it* -- the story the weave was named to be able to
+    /// tell, where two branches that touched one line are SHOWN doing so
+    /// rather than handed back as two opaque blobs.
+    ///
+    /// It reads exactly the inputs `merge` accepts and refuses exactly what
+    /// `merge` refuses, by the same names and at the same edge, because a
+    /// story about a merge that cannot happen is a story about nothing. That
+    /// shared precondition is the whole seam between the two: the reading is
+    /// the merge's own arithmetic printed instead of applied, so
+    /// `note.gen()` is the generation `merge` lands on at that position and a
+    /// witness holds the two to each other line for line.
+    ///
+    /// What this cannot yet tell, said here so the head promises no more than
+    /// the code does: `apply` hands every insert a position from the end of
+    /// the counter, so document order is arrival order and a line cannot land
+    /// *between* two existing ones. The reading therefore names what each side
+    /// did to each line, and not yet where a new line sits relative to the
+    /// other side's delete. That second story wants an anchor per insert,
+    /// which widens `Diff` -- a seam rather than a lap.
+    ///
+    /// Cost is |self| x |other| text comparisons, the same as `merge` and for
+    /// the same reason: a weave carries no index from position to line, and a
+    /// map earns its place when a measurement asks for one.
+    ///
+    /// The caller owns the returned slice; it is allocated from `allocator`.
+    ///
+    /// Precondition:  a position held by both weaves carries the same text --
+    ///   refused by name, since two counters that never met hand the same
+    ///   small integers to different lines.
+    /// Postcondition: positions strictly increase, and every note names a
+    ///   position at least one side has seen.
+    pub fn annotate(self: *const Weave, allocator: std.mem.Allocator, other: *const Weave) ![]const Note {
+        // invariant: each weave already stands inside the named bound, so the
+        // refusal below names the union rather than covering for an input that
+        // was over the ceiling before a reading was ever asked for
+        assert(self.lines.items.len <= max_weave_lines);
+        assert(other.lines.items.len <= max_weave_lines);
+
+        // One note per position in the union, and the union holds at most the
+        // sum -- so checking the sum checks the notes, at the edge, before a
+        // single one is written.
+        if (self.lines.items.len + other.lines.items.len > max_weave_lines) {
+            return WeaveError.TooManyLines;
+        }
+
+        // usize lives at the inherited-std seam alone: ArrayListUnmanaged counts
+        // in usize, and the bound just checked is what makes the cast safe.
+        const self_len: u32 = @intCast(self.lines.items.len);
+        const other_len: u32 = @intCast(other.lines.items.len);
+
+        var out: std.ArrayListUnmanaged(Note) = .empty;
+        errdefer out.deinit(allocator);
+        try out.ensureTotalCapacity(allocator, self_len + other_len);
+
+        try notes_from_left(&out, self.lines.items, other.lines.items);
+        notes_from_right(&out, self.lines.items, other.lines.items);
+
+        const result = try out.toOwnedSlice(allocator);
+        std.mem.sort(Note, result, {}, struct {
+            fn less_than(_: void, a: Note, b: Note) bool {
+                return a.pos < b.pos;
+            }
+        }.less_than);
+
+        for (result, 0..) |note, i| {
+            // invariant: a note names a position at least one side has seen,
+            // since a position neither weave holds never enters the union
+            assert(note.left_gen != 0 or note.right_gen != 0);
+            if (i + 1 < result.len) {
+                // invariant: positions strictly increase, which orders the
+                // reading as a document and proves the union kept exactly one
+                // note per position
+                assert(result[i].pos < result[i + 1].pos);
+            }
+        }
+
+        return result;
     }
 };

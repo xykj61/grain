@@ -344,3 +344,7 @@ at a closed fold.*
 
 *Row %490 folded to [`REDS-a-door-is-not-the-pages-behind-it-rows-490.md`](REDS-a-door-is-not-the-pages-behind-it-rows-490.md) on `20260906.123531`, **BOOKED** -- an index reading one level of a room is blind to the pages behind its door, and the two promises want two declarations.*
 *Row %484 folded to [`REDS-a-guard-that-cannot-hear-its-own-instrument-rows-484.md`](REDS-a-guard-that-cannot-hear-its-own-instrument-rows-484.md) on `20260906.122110`, **CLOSED** -- a guard must be able to hear its own instrument fail before its silence means anything. Written to carry `%481` beside it; a peer folded that row onto its own shelf while this lap ran, and it was given back.*
+
+*Row %491 folded to [`REDS-the-property-nobody-named-rows-491.md`](REDS-the-property-nobody-named-rows-491.md) on `20260906.124643`, **CLOSED** -- a module head that enumerates its own operations is read by nothing, so `merge` landed and the head went on saying three.*
+
+*Row %492 folded to [`REDS-ownership-is-per-row-rows-492.md`](REDS-ownership-is-per-row-rows-492.md) on `20260906.125008`, **BOOKED** -- a renumber swept a shared day shelf and then this card, rewriting a peer's row both times: ownership is per-row, not per-file.*

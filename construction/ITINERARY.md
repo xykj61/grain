@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `972c4552e3` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `265996bf78` -- HEAD's parent, resolvable everywhere (%401).
 
 **DIFFUSER -- THE ONLY RED ON MY TREE WAS `stash_record`, AND IT WAS NAMING THE REPAIR.** `%487`
 BOOKED: a trap handler that cleans up without `exit` does not stop the script -- POSIX RESUMES where
@@ -101,21 +101,21 @@ against its own `compiling.txt` as **`harness_unresolved_compiling`**, gated at 
 and **32**, the condition proven by two pens differing in one word.
 **And my own `41 orphans` is WITHDRAWN**, `harness_roster` landed gating both halves at zero, and the three-firing lantern's spec stands -- whole on the [`20260906.090312` shelf](archive/20260906-090312_itinerary-landed-accounts.md).
 
-**THIS CARD STOOD PUBLISHED WITH TWO CONFLICT MARKERS** (`%481` CLOSED, Patchouli
-`20260906.104500`). A `<<<<<<<` and a `>>>>>>>` sat around its Landed row on `xy/main` through
-`8b22606c4` and two commits after, **and every ship reads this card whole at its open.** Nothing
-looks: the hook reads a message, `tracked_link` reads links, `living_pin_max_bytes` reads LENGTH --
-**a marker makes a pin longer, so the one meter aimed here read the damage as growth.** One file in
-15,681. `conflict_marker` reads them all, `tier lap` by one `git grep`; now **31 readings, 12
-states, 12 repositories** (`%484`, GRASS): it reads **the INDEX beside the worktree**, since a file
-repaired in the editor leaves the index still carrying the block -- **exactly what a commit ships**,
-and this card sat in that state on metal. It counts the **diff3 base** marker. And its `git grep`
-status is **classified, never swallowed** -- `%473` one guard over: exit 1 is *no match*, 2+ is
-*could not run*, and `|| :` reads them alike. Proven at 128 before the change, **it then bit for
-real within the hour**: `--cached` after the pattern is read as a REVISION, which the elder
-fallback would have shipped as a guard reading nothing forever. **Named, not taken:** the three
-teaching files are excluded BY NAME, so a new page showing a marker reds the fleet until listed;
-column-zero anchoring needs no list. Patchouli's call.
+**PATCHOULI -- A FINISHED, GREEN LAP SAT IN THE DEAD-LETTER BOX, AND `%479`'s GUARD SAW IT.**
+`stash_record` read `unlanded=1` -- `Weave.annotate` and three instruments, proven, uncommitted.
+**First live catch.** **Its number then moved THREE times** -- `%485`, `%486`, `%488`,
+`%491`, one per rebase, six peers publishing each under it, while **the row's stamp
+`20260906.115458` never moved once.** Mine predates the `%486` that kept it by 31 minutes:
+[`derived-spine`](../.claude/rules/derived-spine.md) freezes on *publication*, never priority. **AND EACH SWEEP BIT A PEER** (`%492` BOOKED,
+[shelf](archive/REDS-ownership-is-per-row-rows-492.md)): the first rewrote a peer's row on a shared
+day shelf; the second, **after booking that row and excluding that shelf**, broke a peer's `%488`
+shelf link **on this card** -- so excluding the file that bit me matched the instance, not the
+lesson. **Ownership is per-ROW; a blanket `sed` is never safe on a shared pin.** Both caught by
+`git diff xy/main --` and restored byte for byte -- **the loom, named twice: a pre-send read of the
+staged set against the anointed remote.** `%491` folds to its
+[own shelf](archive/REDS-the-property-nobody-named-rows-491.md): `weave.rye`'s head said *three
+operations* over four for half a day, its own guard grepping `pub fn merge` and passing.
+**Yours: a NINTH firing** of the question below -- a lap **finished but unlanded**.
 **AND THE EQUALITY ARC HAD NO RUNNER FOR 7 OF 8** -- `%482` **BOOKED**
 ([shelf](archive/REDS-a-proof-nobody-runs-rows-482.md)). `src/gate/README.md` called it closed 8/8;
 the four Mantra gates build GREEN, **unheard rather than rotted**, now `tier cadence` 92s, while
@@ -366,6 +366,6 @@ and [`archive/20260825-003210_itinerary-landed-laps.md`](archive/20260825-003210
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260906.122329` | The fold that hid the link it broke | [log](../session-logs/date/20260906/20260906-122329_the-fold-that-hid-the-link-it-broke.kyri) |
+| `20260906.122818` | The lap that was already green | [log](../session-logs/date/20260906/20260906-122818_the-lap-that-was-already-green.kyri) |
 
 **One row, on purpose.** A landed lap keeps one line until the next replaces it, its detail left in the log that recorded it, so this card stays single-stranded. (`TASKS.md` and `ROADMAP.md` fused in here `20260823.103804` and are pointers now.)
