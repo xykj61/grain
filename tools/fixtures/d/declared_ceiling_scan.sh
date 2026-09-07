@@ -180,7 +180,12 @@ for f in $FILES; do
 
   # Dated testimony keeps every word it wrote. A basename carrying a one-clock stamp is
   # testimony; the settled spelling accepts a sprig or no sprig (REDS %175, %178).
-  b=$(basename "$f")
+  # `${f##*/}` rather than `basename` -- SHELL EXPANSION, NO FORK. Measured `20260907.043033`:
+  # this loop walks 5,605 tracked `.md` files and 4,567 of them (81%) are dated testimony skipped
+  # on the very next line, so a fork per file bought a string the shell already had. The skip is
+  # the common case, and paying a subprocess to reach it made this the slowest guard on the roster
+  # at 109s. Same test, same corpus, same verdict -- 5,605 fewer processes.
+  b=${f##*/}
   case "$b" in
     [0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9][_.]*) continue ;;
   esac

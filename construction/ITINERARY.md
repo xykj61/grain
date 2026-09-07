@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `e41294864f` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `9766e92d18` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A GUARD THAT COUNTS TODAY'S LOGS REDDENS THE FLEET AT EVERY MIDNIGHT.** `20260907.003911` CLOSED,
 [folded](archive/REDS-a-guard-shaped-by-the-clock-rows-533.md): the first cold pass of `20260907`, at `00:12`, read `guards_red=2` on ONE root -- `rota_declared`
