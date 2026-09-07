@@ -11,6 +11,8 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260907.055545` | [the fleet drops to medium](20260907/20260907-055545_the-fleet-drops-to-medium.kyri) | effort medium, live on all seven. |
+| `20260907.053708` | [six processes where one would do](20260907/20260907-053708_six-processes-where-one-would-do.kyri) | width_check 75s to 17s. |
 | `20260907.043033` | [the fork before the skip](20260907/20260907-043033_the-fork-before-the-skip.kyri) | the slowest guard, 25% faster. |
 | `20260907.023053` | [the cores, the rooms, and the serial pass](20260907/20260907-023053_the-cores-the-rooms-and-the-serial-pass.kyri) | 161 guards serial; the deadlock named. |
 | `20260907.050258` | [the room that said it was the corpus](20260907/20260907-050258_the-room-that-said-it-was-the-corpus.kyri) | a parked lap landed; a room was not the corpus. |
