@@ -612,6 +612,31 @@ path tools/g/glow_desk_reach_witness.rish
 tier lap
 seated 20260907.005950
 
+# The desk corpus actually RUN, seated 20260907.110022. The reach guard above measures how far the
+# hand-written witness reaches; this one runs the room. tools/fixtures/g/glow_desk_run_scan.sh
+# derives the bare-runnable set on every pass -- every .glow under glow/gen/ minus those declaring
+# they must not run by EITHER marker, minus those the worker will only take with a sample -- and
+# lowers, builds and runs all 301 of them. The elder tools/g/glow_run_desk_witness.rish names 218
+# in 1,133 hand-written lines and is on no roster, because rostering it would publish a 218-desk
+# green as coverage of a 352-desk corpus (REDS %532).
+#
+# Why a batch is cheaper than the blocks it replaces: tools/g/glow_run_worker.sh rebuilds
+# glow/bin/glow_run from glow/glow_run.rye on EVERY invocation, which is correct for a hand running
+# one desk and wasteful 301 times over. Measured on this pier 20260907 -- 3.80s per desk through the
+# worker, 2.42s of it that rebuild, 1.38s the desk's own lower-build-run. The batch builds the
+# compiler once, behind the same directory lock the worker takes.
+#
+# The failure ceiling stands at 3 rather than 0: three files under glow/gen/ are data fixtures
+# rather than desks and carry no marker in either name or head, and giving them one is a language
+# custody ruling (REDS %532). Run on metal they refuse in two distinct ways, not one.
+#
+# `cadence` rather than `lap`: 325s of Zig builds measured under a load of 14 is choir money, and
+# the desk room grows by a few files a round.
+guard glow_desk_run
+path tools/g/glow_desk_run_witness.rish
+tier cadence
+seated 20260907.110022
+
 # The constellation rehearsal's wire pen, seated 20260828.011621. comlink/rehearsal_wire.rye
 # crosses three real processes over localhost UDP and was reached by no runner, roster, or suite
 # until this guard -- it ran when a hand typed its name and at no other time. It is the pen FORA31,
