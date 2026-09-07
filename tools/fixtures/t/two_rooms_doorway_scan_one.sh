@@ -6,7 +6,7 @@ seating="$2"
 base=$(basename "$f")
 file_stamp=$(echo "$base" | sed -n 's/^\([0-9]\{8\}-[0-9]\{6\}\).*/\1/p')
 if [ -z "$file_stamp" ]; then
-  echo "OK   $f (no one-clock stamp — grandfathered)"
+  echo "OK   $f (no one-clock stamp -- grandfathered)"
   exit 0
 fi
 if [ "$file_stamp" \< "$seating" ]; then

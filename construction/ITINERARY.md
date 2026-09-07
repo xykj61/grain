@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `a935d08716` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `0ca4620a55` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A GUARD THAT READS A PROXY ANSWERS ABOUT THE PROXY, AND THE PARAGRAPH SAYING SO SAT IN
 THE BOX IT COULD NOT READ.** `%510` CLOSED. `stash_record_scan.sh` asked every session log in a
@@ -172,14 +172,15 @@ sentence:** may a cross-target witness read GREEN with a named gap when qemu is 
 promises that limit, `%446` reads the other way, and the roster's `capability` field is the
 mechanism.
 
-**GRASS -- three findings, all CLOSED**, whole on the
-[`133344` shelf](archive/20260906-133344_itinerary-landed-accounts.md). **A guard's precondition
-belongs in its roster row** (`%493`): `sow_allow_reach` needs a `seed/` no clone carries, so at
-`tier lap` with no `capability` it red every tree and each ship paid a full cold pass a lap. **A law
-is not kept by the room that writes it:** 63 of 104 rule pages held 859 non-ASCII characters, every
-one on the rule's own table; `ascii_document` enforces both rooms at zero and ratchets **347** pages
-at **3,956**. **A link quoted in backticks cites nothing** -- 30 shapes over 12 pages, all
-teaching the fold rule. **Carried:** **890** depth-lost links, a refusal nothing tracked can read.
+**GRASS -- A BLIND LEDGER WAS PUBLISHING FASCIA ON THE FRONT DOOR.** `%511` BOOKED, `%512` CLOSED,
+[folded](archive/REDS-two-instruments-that-could-not-see-their-subject-rows-511-512.md); the account
+[shelved](archive/20260906-204500_itinerary-landed-accounts.md). `fascia_metric_v0.sh` spends the
+70-line count straight into clutter, and that ledger ended every function at its first `if` block --
+so `README.md` published **fascia 68** where the tree stood at **58**. It reads 58 here, the tree
+unchanged. **Yours, two:** that penalty caps at 25, so the grade cannot tell 26 long functions from
+321 and the ratchet is invisible to the front door until it falls under 25; and two of the 46 read
+`Status: Proposed`, which TWO_ROOMS' gloss table does not name and its prose does. **Carried:**
+**890** depth-lost links.
 
 **COPAL -- EXISTENCE AND AGREEMENT ARE TWO QUESTIONS, AND ONLY ONE HAD AN INSTRUMENT.** `%502`
 CLOSED ([shelf](archive/REDS-a-number-and-a-path-name-two-rows-rows-502.md)). A `%N` is a number a
@@ -215,7 +216,7 @@ throwaway worktree), so no lap added it. Only `dated_path_repoint` is rostered, 
 run the census guard; `%360`'s family, one over and unheard. The scan prints no list, which is
 why nobody can name the reference -- a listing leg is the cheap next move.
 
-**Sibling finds:** `tame_style_long_fn_one.sh` resets its awk on any indented `fn `, so a long function holding an inline comparator reads clean. Mystery's module-label guard fails open on BSD grep; portable, it finds elder
+**Sibling finds:** Mystery's module-label guard fails open on BSD grep; portable, it finds elder
 labels in `tools/gen/chapter/fascia_metric_v0.rish`. **Tablecloth, one, cross-lane:** its name desk
 reads one of `max_name`'s two call sites (`parse_manifest` reads it too, over the same fixed
 `[max_name]u8`). *The four uncontrolled `*_example_missing` verdicts are no longer a find: the work
@@ -368,7 +369,7 @@ the measurement class behind it is
 **Named and waiting on their own lap:** the **fascia weave** (39 browsed `active-designing/`
 documents); ten pages wanting a
 Status line; the **`constels/`** room and the **kres/kresfa chapter** (seated
-`20260823.122619`). Two i10 ratchets, migrate-on-touch: 26 `parseInt(` sites, 14 over-70
+`20260823.122619`). Two i10 ratchets, migrate-on-touch: 26 `parseInt(` sites, 321 over-70
 functions. Third mitra shed prepped (`SHRED_PREP.md` Class H), cut RED until circled.
 
 ## Prior laps -- landed, with the detail in the log that recorded it
@@ -378,6 +379,6 @@ The logs keep the account; earlier rows are shelved in
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260906.153324` | Two ships, one guard, and a reach of 19 in 274 | [log](../session-logs/date/20260906/20260906-153324_two-ships-one-guard.kyri) |
+| `20260906.194921` | Two records out of the box, and a ledger that read 15 where 321 stand | [log](../session-logs/date/20260906/20260906-194921_two-records-out-of-the-box.kyri) |
 
 **One row, on purpose** -- a landed lap keeps one line until the next replaces it; the log carries the detail.

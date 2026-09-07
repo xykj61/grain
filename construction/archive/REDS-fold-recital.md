@@ -366,3 +366,5 @@ at a closed fold.*
 *Row %493 folded to [`REDS-a-precondition-is-part-of-a-claim-rows-493.md`](REDS-a-precondition-is-part-of-a-claim-rows-493.md) on `20260906.195229`, **CLOSED** -- a precondition is part of a claim -- the roster capability field carries it.*
 
 *Row %505 folded to [`REDS-two-ships-one-guard-rows-505.md`](REDS-two-ships-one-guard-rows-505.md) on `20260906.195321`, **CLOSED** -- two ships built one guard in three minutes, and the landed one could read 19 of 274.*
+
+*Rows %511 and %512 folded to [`REDS-two-instruments-that-could-not-see-their-subject-rows-511-512.md`](REDS-two-instruments-that-could-not-see-their-subject-rows-511-512.md) on `20260906.194921`, **BOOKED** and **CLOSED** -- two guards read green because neither could see its subject: a shell glob stops at a slash where a git pathspec crosses it, and a free function's first if block closes at the same four spaces a struct method's body does.*
