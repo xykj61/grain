@@ -3,6 +3,7 @@
 **Stamp:** `20260905.154954` -- **Setting:** Gauge, Door -- **Voice:** Kyri
 **Register:** foundations -- siloed; names only our own shapes.
 **Seat:** the council rota's Earth-Cardinal reading, where the concrete opens.
+**Status:** Living -- **checkable room**: both halves are law, each bound by a witness the pages below name.
 
 Two habits carry every piece of work this tree makes, and they answer two different questions.
 **The clock says when.** **The mark says what, and promises only what the work can keep.**

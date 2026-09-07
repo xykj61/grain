@@ -13,6 +13,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 |---|---|---|
 | `20260907.123841` | [The meter that read one of two instruments](20260907/20260907-123841_the-meter-that-read-one-of-two-instruments.kyri) | covered is a union; bare gate 83 -> 0. |
 | `20260907.120346` | [The day that had not started](20260907/20260907-120346_the-day-that-had-not-started.kyri) | %567: a census whose day was "today" refused every midnight. |
+| `20260907.114608` | [The canon that taught the door](20260907/20260907-114608_the-canon-that-taught-the-door-it-never-opened.kyri) | the rota's 20 pages: 14 named no room. |
 | `20260907.114054` | [a cadence nothing counts](20260907/20260907-114054_a-tier-is-only-a-cadence-if-something-counts-the-beats.kyri) | 58 guards, 0 receipts, 5 red on the first sing. |
 | `20260907.111550` | [the ratchet whose only repair was the defect](20260907/20260907-111550_the-ratchet-whose-only-repair-was-the-defect.kyri) | 301 desks derived and run; %565. |
 | `20260907.105712` | [A declared absence is not breakage](20260907/20260907-105712_a-declared-absence-is-not-breakage.kyri) | %562: 88 of 173 lost were honest rows. |

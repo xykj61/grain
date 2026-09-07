@@ -4,7 +4,7 @@
 **Language:** EN
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
-**Status:** Living foundation -- the *why* beneath how we write for the long haul
+**Status:** Living foundation -- the *why* beneath how we write for the long haul -- **mixed room**: the long-return test is checkable, the effect it borrows orients rather than binds
 **Front door:** the root [`../README.md`](../README.md) leans on this foundation in its opening; this foundation links back.
 **Chapter:** AHOY (`.claude/rules/waymark-ladders.md`) -- the front-door weave.
 

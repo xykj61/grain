@@ -8,6 +8,7 @@
 **Language:** EN
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Status:** Landed -- Kaeden `20260706.185512 UDT`; companion to grain index and `context/README.md` compass home. **Reviewed and kept** `20260710.171707` -- commerce season Granary/Mandi through Mandi listing settle (parity **242**) rests on the rose; next commerce gates parked until brief.
+**Room:** checkable -- a read order over named files, each of which resolves.
 
 *Written by Rio 3 for Kaeden.*
 Radiant pass `20260725.035453`

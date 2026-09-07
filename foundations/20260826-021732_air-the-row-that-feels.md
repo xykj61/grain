@@ -4,7 +4,7 @@
 **Language:** EN
 **Style:** Gauge, Field setting (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
-**Status:** Living -- the air row's threshold page, read first on its rota lap; seated 20260826 on Keaton's word
+**Status:** Living -- the air row's threshold page, read first on its rota lap; seated 20260826 on Keaton's word -- **mixed room**: the rota mechanics and the seated palette are checkable, the planetary frame is vision
 **Kin:** [`20260826-014901_the-panchanga.md`](20260826-014901_the-panchanga.md) -- `kyri/receipt.rye` (the two palettes) -- [`../context/TAME_CORE.md`](../context/TAME_CORE.md) -- [`20260823-204456_single-stranded.md`](20260823-204456_single-stranded.md) -- [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md)
 
 Air is the Saturn row -- law and boundary -- and its question is the second question:

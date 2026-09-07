@@ -5,7 +5,7 @@ The other governs form: what you build takes the shape of how you communicate. T
 explain this tree more exactly than either does alone.*
 
 **Stamp:** `20260823.105651`
-**Language:** EN - **Status:** Living - **Style:** Gauge, Field setting
+**Language:** EN - **Status:** Living, **mixed room**: the reading against this tree is checkable, the two borrowed laws orient - **Style:** Gauge, Field setting
 **Fuses:** `20260821-211423_galls-law-and-the-grown-system.md` and
 `20260821-211423_conways-law-and-the-organization-that-forgets.md`, both written `20260821.211423`
 **Gratitude:** John Gall, *Systemantics* (1975) - Melvin E. Conway, *How Do Committees Invent?* (1968)

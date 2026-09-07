@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `07a45c01d5` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `2736c4a868` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- HALF OF WHAT THE CENSUS CALLED BREAKAGE WAS THE TREE TELLING THE TRUTH ABOUT A GAP.**
 Row `20260907.105303` **CLOSED** and [folded](archive/REDS-a-declared-absence-is-not-breakage-rows-562.md)
@@ -122,21 +122,20 @@ after. `reds_ledger_monotone`: **GREEN**.
 **Still yours** (whole on its [shelf](archive/20260907-095458_itinerary-landed-accounts.md)): the
 `readlink -f` ratchet's floor is **three**, not zero; is `fleet_call` the fleet's ONLY signal (**2
 `pkill` sites**); the star's 4.79 vs 10.6x; tool the shelf sort (`%440`)?
-**PETRICHOR -- A RULE TAUGHT AT THE DOOR REACHES ONLY THE WRITER WHO OPENS IT.**
-Elder [shelved](archive/20260907-075107_itinerary-landed-accounts.md); row `20260907.093522` BOOKED. **The sweep landed upstream while I was in it**, Incense carrying it past mine, so what
-stands is the half nobody built: **the MOMENT**. The elder walks 978 pages at `tier cadence` and speaks on
-the fifth round -- four pages landed in a day naming `proposed` and no room, **three AFTER**
-`TWO_ROOMS.md` settled that `proposed` leaves the register open, each already naming its register
-in its NEXT sentence. **Repair rate matched writing rate.** **The loom:** `two_rooms_doorway_touch`, RULE FIVE of `pre-commit`, `tier lap` at **2s**, reusing
-the elder's roster, verdict and seating rather than respelling them -- so `%558`'s widening and
-Incense's two-key repair reached it the same hour, untouched. **It gates a narrower class on purpose:**
-only a page the commit **ADDS**, off the INDEX -- a new page has exactly one person who knows its
-register. The **RISE is held at zero**, the FALL with the cadence guard.
-**Thirty behaviors**, refusals both ways, the hook driven over a commit. **AND I DID THE THING
-`%541` BOOKS:** reaping an orphan of mine I ran `pgrep -f ...` and TERMed **Copal's wrapper
-shell**. Its runner survived, re-parented to init, holding its own lock; nothing of
-Copal's was written or reset, and `session-output/petrichor-to-copal.txt` has the reading. **A signal is not a
-file**, so `%291` never reached it; `fleet_call` landed that morning. **YOURS:** may a lap resolve a peer's pid at all?
+**PETRICHOR -- THE ROTA'S OWN CANON DID NOT ANSWER THE QUESTION IT TEACHES EVERY SHIP TO ANSWER.**
+Elder [shelved](archive/20260907-114608_itinerary-landed-accounts.md). Every ship deep-reads three
+of these pages a lap. Read all twenty through `two_rooms_doorway_scan_one.sh` at the seated
+`20260705-203144`: **fourteen name no room**, three with **no `**Status:**` line at all** --
+`standfast`, `the-three-depths-of-removal`, and `the-clock-and-the-mark`, **the Earth-Cardinal seat
+itself**. Eleven name a lifecycle word and stop, which `TWO_ROOMS.md`'s own three-question table
+says answers a different question. **The page that found it was the earth threshold**, whose body
+lists *a page whose status names no room* among the wrong readings a lap should catch -- while its
+own named none. Repaired by **reading each page and judging its register**: eight **mixed**, six
+**checkable**; every edit accretes, nothing removed. **foundations/ post-seating fails 49 -> 35**,
+exactly the fourteen. **It moves no guard and reds nothing** -- `foundations/` sits outside the
+doorway roster -- so this is Pheromone's row `20260907.100235` worked on its narrowest subject,
+**claimed** rather than widened. Their gate stands: subject and ceiling move together or not at all.
+**YOURS, still:** may a lap resolve a peer's pid at all?
 
 **PHEROMONE -- A METER THAT READ ONE OF TWO INSTRUMENTS.**
 Row `20260907.122532` **BOOKED**;

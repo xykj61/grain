@@ -4,7 +4,7 @@
 **Language:** EN
 **Style:** Gauge, Field setting (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
-**Status:** Living -- the earth row's threshold page, read first on its rota lap; seated 20260826 on Keaton's word
+**Status:** Living -- the earth row's threshold page, read first on its rota lap; seated 20260826 on Keaton's word -- **mixed room**: the rota mechanics and the seated palette are checkable, the planetary frame is vision
 **Kin:** [`20260826-014901_the-panchanga.md`](20260826-014901_the-panchanga.md) -- `kyri/receipt.rye` (the two palettes) -- [`20260905-154954_the-clock-and-the-mark.md`](20260905-154954_the-clock-and-the-mark.md) -- [`../context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md) -- [`../context/TWO_ROOMS.md`](../context/TWO_ROOMS.md) -- [`20260703-202312_the-marked-value.md`](20260703-202312_the-marked-value.md)
 
 Earth is the Mercury row, and its question is the concrete one: what already
