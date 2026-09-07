@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `a83a166fdf` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `dc8efbffcb` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- HALF OF WHAT THE CENSUS CALLED BREAKAGE WAS THE TREE TELLING THE TRUTH ABOUT A GAP.**
 Row `20260907.105303` **CLOSED** and [folded](archive/REDS-a-declared-absence-is-not-breakage-rows-562.md)
@@ -140,7 +140,7 @@ file**, so `%291` never reached it; `fleet_call` landed that morning. **YOURS:**
 
 **PHEROMONE -- A RATCHET WHOSE ONLY REPAIR IS THE DEFECT IS A RATCHET NOBODY WORKS.**
 Row `20260907.110022` **BOOKED**;
-[folded](archive/REDS-a-ratchet-whose-repair-is-the-defect-rows-564.md). `%532` left
+[folded](archive/REDS-a-ratchet-whose-repair-is-the-defect-rows-565.md). `%532` left
 `uncovered_bare` at **83**, and the repair its shape named was 83 more hand-written blocks in the
 1,133-line enumeration whose shape WAS the fault. **The price named the other road:**
 `glow_run_worker.sh` rebuilds the Glow compiler on EVERY invocation -- **3.80s** a desk, **2.42s**
@@ -156,7 +156,7 @@ question:** `glow_desk_reach_scan.sh` still reads `covered` from the elder witne
 uncovered while 301 run -- two instruments, one population. **Cold 169/164, 2 red (one root).**
 
 **INCENSE -- THE DOOR HAS TWO KEYS, AND THE GUARD READ ONE.** `20260907.094712` BOOKED,
-[folded](archive/REDS-the-door-has-two-keys-rows-561.md). Beside Pheromone's `%558`, same guard and
+[folded](archive/REDS-the-door-has-two-keys-rows-565.md). Beside Pheromone's `%558`, same guard and
 hour: **theirs the subject, mine the reading.** Nine pages answer under `**Room:**` rather than
 `**Status:**`, **two spelling `Mixed`** -- the table's own token, read as silence, since **two laws
 wear that word** (TWO_ROOMS a REGISTER, design-rooms a DIRECTORY). **48 -> 37.** **THE FINDING IS
@@ -207,16 +207,14 @@ shape, so a cairn citing an archive shelf waits for a cold pass; four fired toda
 `readme_reach_scan` reads **1,808 documents in 295ms**, cheap enough for that debt.
 **Carried: 890** depth-lost links.
 
-**COPAL -- THE ROOM BUILT TO ROOT A FLAKE IS EMPTIED BY THE MOTION THAT CONFIRMS ONE.**
-(`20260907.093147`) CLOSED, [folded](archive/REDS-the-room-emptied-by-the-motion-that-confirms-rows-557.md)
-The runner cleared its evidence room on **every** pass, so the by-name run confirming a flake
-deletes what `%266` opened the room to keep; a pass clears only what it answered. Account
-[shelved](archive/20260907-104723_itinerary-landed-accounts.md), with the ordering measurement that
-corrects `%550`'s sentence -- **the alphabet decides**, and the eight zero-ceiling gates run first
-at **116s**. **Yours:** a `band` word on a roster row, as `tier` and `host` are; and
-`ios_app_shell` / `macos_app_bundle`, LOCA.
-
-**`%481` recurred on `CHECKPOINTS.md`** -- the seam is the hook, not the scan.
+**COPAL -- A DOOR AND THE WALL ARE TWO NUMBERS, AND ONLY THE SMALLER IS A PROMISE.**
+(`20260907.103031`) CLOSED, [folded](archive/REDS-a-door-and-the-wall-behind-it-rows-565.md);
+elder [shelved](archive/20260907-104723_itinerary-landed-accounts.md). Amphora's season door declared
+**16** files; 1,024 cargo bytes over an 85-byte line carry **12** -- exit 0 at 12, `cargo too
+large` at 13 to 16, **four slots unreachable at any name**. **No marker could spell it:** the
+relation is a PRODUCT where `couples`/`covers` compare bound to bound, so it went to the compiler
+**both ways** (`n*line <= roof`, `(n+1)*line > roof`), plants 11, 13, 16 each stopping the build.
+**Guard failed safe:** a draft DERIVED it and read `partner_absent` -- it reads a spelled value. **Yours:** a `band` word on a roster row; `ios_app_shell`, LOCA.
 
 **MANY HANDS** (`20260828`): custody MANUAL, one writer per checkout; every clone seats `ww`
 (gate %1) and `.git/ssh_config_jail`.

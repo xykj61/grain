@@ -108,9 +108,31 @@ const max_cargo_bytes: u32 = 1024;
 /// couples: vessel_fetch_wire.max_wire_payload
 const max_chunk_datagram: u16 = 340;
 
-/// How many files one season may pour -- matches vessel cargo slots.
+/// Vessel cargo slots this side of the seam -- the seal module's own count,
+/// mirrored because main drives vessel_seal as a subprocess rather than
+/// importing it (the max_seal_plain_mirror idiom, Q47).
 /// couples: vessel_seal.max_cargo
-const max_season_files: u32 = 16;
+/// covers: main.max_season_files
+const max_cargo_mirror: u32 = 16;
+
+/// The shortest cargo line one file can write: `cargo `, the type mark, the
+/// digest, a one-character name, and the newline, with a single space between
+/// each of the four fields. No season file can cost the roof less than this.
+const min_cargo_line_len: u32 = 6 + mark_plain_bytes.len + 1 + digest_hex_len + 1 + 1 + 1;
+
+/// How many files one season may pour -- the largest season the cargo byte
+/// roof can carry. The comptime block below proves it from both sides.
+/// It read `= 16` until `20260907`, matching vessel_seal.max_cargo. Yet 1,024
+/// cargo bytes hold twelve of the shortest lines and no more. So thirteen
+/// one-character names passed this door and died at CargoTooLarge, against a
+/// roof nothing here declared. Four of the sixteen slots could never be
+/// filled, at any name length (REDS `20260907.103031`).
+/// A literal, rather than a quotient: the roster guard reads a bound's
+/// spelled value and evaluates no expression. So the compiler holds the
+/// relation and the literal stays readable, and a wrong literal stops the
+/// build. The vessel's slot count COVERS this door now -- see
+/// max_cargo_mirror above.
+const max_season_files: u32 = 12;
 
 /// SHA3-256 hex length for one resin name.
 /// couples: vessel_fetch_wire.digest_hex_len
@@ -167,6 +189,30 @@ const max_manifest_name_len: u32 = 200;
 /// Most chunks one crossing may cut -- the vessel roof over the datagram
 /// ceiling, rounded up. 8192 / 340 rounds to 25; the bound is exact.
 const max_carry_chunks: u32 = (max_vessel_len + max_chunk_datagram - 1) / max_chunk_datagram;
+
+comptime {
+    // invariant: every file this season door admits has room for its cargo line
+    // under the byte roof. build_cargo_plain refuses past max_cargo_bytes, and a
+    // file cannot write fewer than min_cargo_line_len bytes, so the largest season
+    // the roof can carry is max_cargo_bytes / min_cargo_line_len. Let the door
+    // outrun the roof and this program refuses at CargoTooLarge a season it
+    // welcomed one step earlier, naming a roof the operator never asked about.
+    // Measured on metal 20260907.103031 with the elder `= 16`: 12 one-character names
+    // poured (1,020 cargo bytes of 1,024) and 13 refused, so four declared slots
+    // were unreachable at every name length.
+    assert(max_season_files * min_cargo_line_len <= max_cargo_bytes);
+    // invariant: and it is the LARGEST such season, so a later raise to
+    // max_cargo_bytes cannot leave this door quietly narrower than the roof it
+    // was sized against. One assert answers only the direction it was written
+    // for; two answer both, and a bound proven from one side alone cannot be
+    // told from a bound nobody checked.
+    assert((max_season_files + 1) * min_cargo_line_len > max_cargo_bytes);
+    // invariant: the vessel has at least one cargo slot for every file the door
+    // takes in, so a season that pours fits the vessel that carries it. The two
+    // stood equal at 16 while the roof carried 12; the honest relation is an
+    // order, and vessel_seal.max_cargo declares it with a `covers:` marker.
+    assert(max_cargo_mirror >= max_season_files);
+}
 
 /// Opened-cargo ceiling this side of the seam -- the seal module's own roof.
 /// couples: vessel_seal.max_seal_plain
