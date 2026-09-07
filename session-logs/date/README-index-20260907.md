@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260907.013145` | [the send that met its own fold coming back](20260907/20260907-013145_the-send-that-met-its-own-fold-coming-back.kyri) | a fold withdrawn; a number moved twice. |
 | `20260907.010542` | [the guard caught a peer on its first rebase](20260907/20260907-010542_the-guard-caught-a-peer-on-its-first-rebase.kyri) | rule 4 priced: 3 renumbers, 0 sweeps. |
 | `20260907.010354` | [the list that stood in for a population](20260907/20260907-010354_the-list-that-stood-in-for-a-population.kyri) | a hand-written desk list covered 218 of 352. |
 | `20260907.002052` | [the lap that withdrew its own landing](20260907/20260907-002052_the-lap-that-withdrew-its-own-landing.kyri) | a duplicate withdrawn; a rostered ratchet arrived red. |
