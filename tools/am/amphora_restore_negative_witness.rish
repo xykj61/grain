@@ -8,14 +8,18 @@
 #   rishi/bin/rishi run tools/am/amphora_restore_negative_witness.rish
 
 let season = "tools/fixtures/cellar_ring1_tree"
-let home = "/tmp/amphora_rneg_home"
-let vessel = "/tmp/amphora_rneg_home/v.bron"
 let tamp_sh = "tools/fixtures/a/amphora_tamper_seal_cargo.sh"
 
-let wipe = run ["rm" "-rf" home]
-assert wipe.ok else "rneg: home wipe"
-let mk = run ["mkdir" "-p" home]
-assert mk.ok else "rneg: home mkdir"
+# THE PEN CARRIES A UNIQUE NAME, because eight ships run this roster and two of them running this
+# witness at once would share one home: the first line below is `rm -rf`, so a peer mid-plant loses
+# its vessel and reds on a fact about the pen rather than about Amphora. It reddened the cold open
+# of `20260906.222342` exactly that way -- green alone, red in company (REDS %512's class, in the
+# spelling that sweep never read: a Rishi `let` string rather than a shell `TMPDIR=`).
+# `mktemp -d` names it, so the kernel picks the suffix and no two runs can agree by accident.
+let pen = run ["sh" "-c" "mktemp -d /tmp/amphora_rneg.XXXXXX"]
+assert pen.ok else "rneg: pen must open"
+let home = trim pen.out
+let vessel = "${home}/v.bron"
 
 # The witness builds the binaries it runs, rather than assuming a previous lap left them
 # behind. amphora/bin/ is gitignored (.gitignore:336), so a clone carries none of them and
@@ -35,37 +39,37 @@ let pour = run ["amphora/bin/amphora" "pour" season vessel]
 assert pour.ok else "rneg: seed pour must pass"
 
 # --- plant 1: tamper seal_cargo, then re-stamp so the seal wall is the one that speaks ---
-let bak = run ["sh" "-c" "cp /tmp/amphora_rneg_home/v.bron /tmp/amphora_rneg_home/v.bron.bak"]
+let bak = run ["sh" "-c" "cp ${home}/v.bron ${home}/v.bron.bak"]
 assert bak.ok else "rneg: bak must land"
-let tamp_prep = run ["sh" tamp_sh "/tmp/amphora_rneg_home/v.bron"]
+let tamp_prep = run ["sh" tamp_sh "${home}/v.bron"]
 assert tamp_prep.ok else "rneg: tamper plant must prepare"
-let restamp = run ["amphora/bin/vessel-core" "sign" "/tmp/amphora_rneg_home/v.bron"]
+let restamp = run ["amphora/bin/vessel-core" "sign" "${home}/v.bron"]
 assert restamp.ok else "rneg: re-stamp after tamper must pass (isolates seal wall)"
 let tamp = run ["amphora/bin/amphora" "restore" vessel]
 assert (tamp.ok == false) else "rneg: tampered seal_cargo must refuse"
 assert tamp.err contains "seal unopened" else "rneg: tamper names seal unopened"
-let tamp_out = run ["sh" "-c" "test ! -e /tmp/amphora_rneg_home/v.bron.season"]
+let tamp_out = run ["sh" "-c" "test ! -e ${home}/v.bron.season"]
 assert tamp_out.ok else "rneg: tamper refusal must leave no out-home"
 say "plant_tamper_seal=refused"
 
-let heal1 = run ["sh" "-c" "cp /tmp/amphora_rneg_home/v.bron.bak /tmp/amphora_rneg_home/v.bron"]
+let heal1 = run ["sh" "-c" "cp ${home}/v.bron.bak ${home}/v.bron"]
 assert heal1.ok else "rneg: heal vessel after tamper"
 
 # --- plant 2: truncate vessel ---
-let trunc_prep = run ["sh" "-c" "cp /tmp/amphora_rneg_home/v.bron /tmp/amphora_rneg_home/v.bron.full; n=$(wc -c < /tmp/amphora_rneg_home/v.bron); head -c $((n/2)) /tmp/amphora_rneg_home/v.bron.full > /tmp/amphora_rneg_home/v.bron"]
+let trunc_prep = run ["sh" "-c" "cp ${home}/v.bron ${home}/v.bron.full; n=$(wc -c < ${home}/v.bron); head -c $((n/2)) ${home}/v.bron.full > ${home}/v.bron"]
 assert trunc_prep.ok else "rneg: truncate plant must prepare"
 let trunc = run ["amphora/bin/amphora" "restore" vessel]
 assert (trunc.ok == false) else "rneg: truncated vessel must refuse"
 assert trunc.err contains "stamp unverified" else "rneg: truncate names stamp unverified"
-let trunc_out = run ["sh" "-c" "test ! -e /tmp/amphora_rneg_home/v.bron.season"]
+let trunc_out = run ["sh" "-c" "test ! -e ${home}/v.bron.season"]
 assert trunc_out.ok else "rneg: truncate refusal must leave no out-home"
 say "plant_truncated=refused"
 
-let heal2 = run ["sh" "-c" "cp /tmp/amphora_rneg_home/v.bron.full /tmp/amphora_rneg_home/v.bron"]
+let heal2 = run ["sh" "-c" "cp ${home}/v.bron.full ${home}/v.bron"]
 assert heal2.ok else "rneg: heal vessel after truncate"
 
 # --- plant 3: forge one resin body ---
-let forge_prep = run ["sh" "-c" "f=$(ls /tmp/amphora_rneg_home/resins | head -1); test x$f != x; printf 'FORGED-BYTES-NOT-THE-SEASON\n' > /tmp/amphora_rneg_home/resins/$f"]
+let forge_prep = run ["sh" "-c" "f=$(ls ${home}/resins | head -1); test x$f != x; printf 'FORGED-BYTES-NOT-THE-SEASON\n' > ${home}/resins/$f"]
 assert forge_prep.ok else "rneg: forge resin plant must prepare"
 let forge = run ["amphora/bin/amphora" "restore" vessel]
 assert (forge.ok == false) else "rneg: forged resin must refuse"
@@ -73,12 +77,17 @@ assert forge.err contains "cargo unproven" else "rneg: forge names cargo unprove
 say "plant_forged_digest=refused"
 
 # Clear any partial out-home the forge plant may have left mid-write.
-let clear = run ["sh" "-c" "rm -rf /tmp/amphora_rneg_home/v.bron.season"]
+let clear = run ["sh" "-c" "rm -rf ${home}/v.bron.season"]
 assert clear.ok else "rneg: clear partial out-home"
 let heal3 = run ["amphora/bin/amphora" "pour" season vessel]
 assert heal3.ok else "rneg: re-pour heal must pass"
 let ok = run ["amphora/bin/amphora" "restore" vessel]
 assert ok.ok else "rneg: healed restore must pass"
 assert ok.err contains "restore complete" else "rneg: healed restore completes"
+
+# The pen belongs to this run alone, so this run takes it down. A shared literal could never be
+# swept at the end without racing a peer; a unique one always can.
+let sweep = run ["rm" "-rf" home]
+assert sweep.ok else "rneg: pen must sweep"
 
 say "GREEN: amphora_restore_negative — tamper · truncate · forged digest, each refused at its wall."

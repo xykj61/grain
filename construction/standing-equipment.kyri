@@ -2276,12 +2276,10 @@ seated 20260906.195719
 # `tier cadence`: 972 pages, one subprocess each, 28s on this pier -- and eight ships read the
 # roster twice a lap on four cores, so a lap clock would spend 448 contended seconds a round on a
 # reading that moves when a room folds. That is `dated_path`'s reasoning verbatim, one room over.
-
 guard two_rooms_doorway
 path tools/t/two_rooms_doorway.rish
 tier cadence
 seated 20260906.161500
-
 # TAME'S 70-LINE LEDGER -- the instrument behind the tidy ratchet could not see its own subject.
 #
 # `tools/fixtures/t/tame_style_long_fn_one.sh` ended a function at the first line matching `^}$`
@@ -2299,8 +2297,24 @@ seated 20260906.161500
 #
 # `tier cadence`: 611 files, one awk each, 19s under fleet load -- and the number it reads moves
 # when a hand splits a function, which is a deliberate act rather than a per-lap event.
-
 guard tame_style_long_fn
 path tools/t/tame_style_long_fn_witness.rish
 tier cadence
 seated 20260906.173013
+
+# shared_pen -- a scratch path named by a constant is a path eight ships share.
+# FOUR witnesses have reddened a cold pass across three laps while each was GREEN run alone --
+# signal_trap, tlb_reach, amphora_restore_negative, and tlb_reach a SECOND time -- because a peer's
+# `rm -rf /tmp/<a chosen name>` reached their fixture mid-run. Each sweep that repaired one counted
+# the class by the spellings it could read: the first read a shell `TMPDIR=` assignment and missed a
+# Rishi `let home = "/tmp/name"`; the second read four spellings and missed `${TMPDIR:-/tmp}/<name>`,
+# whose text holds no literal `/tmp/` at all -- which is the one tlb_reach was written in, and why
+# it came back. This reads all five. `tier lap`: one awk over 3,102 sources, under two seconds, and
+# ordinary work is exactly what writes the fault -- a new witness reaches for a pen name on the lap
+# it is born, so a cadence clock would let four laps of them through. The scan alone is under
+# two seconds; the witness runs 14s measured 20260907.000549, since its control builds real
+# git repositories for all 27 behaviors.
+guard shared_pen
+path tools/s/shared_pen_witness.rish
+tier lap
+seated 20260906.225150

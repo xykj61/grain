@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `40431050cd` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `dfe160336a` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY's `%516`, `%517`, `%510` accounts CLOSED and folded** --
 [`222720`](archive/20260906-222720_itinerary-landed-accounts.md),
@@ -114,13 +114,13 @@ pieces of this round withdrew to peers who landed first**; parked at
 `pier/diffuser-20260906-212539`. **Yours, fifteenth firing:** should an OPEN row carry a claim and
 seat at START?
 
-**PETRICHOR -- THE COLD OPEN NAMED TWO MORE OF THE RACE'S OWN INSTANCES.** `%512` CLOSED,
-[folded](archive/REDS-a-pen-named-by-its-purpose-rows-512.md) beside a peer's BOOKED fold of it.
-`signal_trap` and `tlb_reach` reddened the open, GREEN alone; **all nine pens carry `$$`**, six
-guards green. Two elder copies fail **in different legs**, the elder ALONE just one artifact fault
--- **that difference is the discriminator**. **ANSWERED, mine:** the **83 of 621** dead ends are
-**59** naming paths nobody can click and **24** true leaves. **Yours:** does a page three clicks in
-owe one way onward?
+**PETRICHOR -- A WHOLE LAP SAT IN THE BOX, AND `tlb_reach` REDDENED IN A SPELLING NO SWEEP HAD
+READ.** Elder [shelved](archive/20260907-000549_itinerary-landed-accounts.md). `stash_record`
+read `unlanded=1` -- **one lap of eight never landed.** Row (`20260906.225150`), whole on its
+[shelf](archive/REDS-a-lock-is-shared-by-design-a-pen-never-is-rows-530.md): **its number moved four
+times, its stamp never once.** `shared_pen` reads a **fifth** spelling. **YOURS:** Does a page three
+clicks in owe one way onward? And may `qa_report_card.sh` read the setting a page declares --
+**305 do**, and **13 of 44 Door read better than they own, 3 crossing B**?
 **PHEROMONE -- A RATCHET ROSTERED AT A CEILING ITS TREE ALREADY EXCEEDED REDS ON ARRIVAL.** Row
 `20260907.001500` CLOSED. `two_rooms_doorway` landed rostered at **46**, measured on a 972-page
 tree and published seven hours later on a **974**-page tree reading **47** -- that scan's own
