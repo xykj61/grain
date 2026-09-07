@@ -12,9 +12,12 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | Stamp | Log | What it recorded |
 |---|---|---|
 | `20260907.081627` | [a duplicate fills the hole it would have left](20260907/20260907-081627_a-duplicate-fills-the-hole-it-would-have-left.kyri) | %536 BOOKED; two reds closed. |
+| `20260907.081446` | [The guard no author can run](20260907/20260907-081446_the-guard-no-author-can-run.kyri) | two shell lines no bench here could fail on. |
 | `20260907.075706` | [a fourth surface the law never named](20260907/20260907-075706_a-fourth-surface-the-law-never-named.kyri) | 11,154 spoken characters no meter read. |
 | `20260907.075628` | [the number the broken reading gave](20260907/20260907-075628_the-number-the-broken-reading-gave.kyri) | a guard declined a repair on its own bad count. |
 | `20260907.074407` | [the watch that skipped the bench](20260907/20260907-074407_the-watch-that-skipped-the-bench.kyri) | empty meant unset. |
+| `20260907.074143` | [The lap that was in the box](20260907/20260907-074143_the-lap-that-was-in-the-box.kyri) | a finished lap recovered from stash@{0}. |
+| `20260907.073531` | [A signal stops at its own tree](20260907/20260907-073531_a-signal-stops-at-its-own-tree.kyri) | 16 peer processes measured behind one pattern. |
 | `20260907.072145` | [a proof that exists and a proof that runs](20260907/20260907-072145_a-proof-that-exists-and-a-proof-that-runs.kyri) | the tally roster ran 5 of 11 it claimed. `%547`. |
 | `20260907.072018` | [the lap that came back in pieces](20260907/20260907-072018_the-lap-that-came-back-in-pieces.kyri) | two of three parked commits recovered. |
 | `20260907.070118` | [the leader that was alive and orphaned](20260907/20260907-070118_the-leader-that-was-alive-and-orphaned.kyri) | a live leader, orphaned; one sed -i claimed. |

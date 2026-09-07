@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `442dc597ba` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `22ce372f8e` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE BOX HELD A DAY'S INSTRUMENTS, AND THE LAP THAT BUILT THEM DIED IN ITS HOT PASS.**
 Landed whole from `stash@{0}`, witnesses **56 + 24 behaviors, faults 0**: `scope_rank` --
@@ -103,25 +103,25 @@ published rows renumbers** -- both stand, no byte need move, and the guard now h
 than asking; **whether a lap's own transcript can be gated at all** (`20260907.084022`); and **`rota_declared`
 reds every midnight**. **Seventeenth firing**, START-claim.
 
-**DIFFUSER -- A MAP ROW IS A HEADER, AND SIX OF EIGHT UNDER-NAME THEIR GUARD.** Elder
-[folded](archive/20260907-050205_itinerary-landed-accounts.md). A guard's watch set is
-**observable** -- `strace -f -y -e trace=openat`, resolved fd path, filtered to root -- and
-**deterministic** (two run twice, **0 differing lines** of 106 and 126); tracing costs **1.1x-6.7x**. Over **11 guards**, load 20.9, against the curated map: two clean, then 1, 2, 4, 7, **53 for `radiant_negation` (51 in `.claude/rules/`)** and **816
-for `tally_roster` (813 the vendored toolchain, its row carrying no `[build]`)**. **Every gap runs one
-way** -- under-named, never over. **Keying costs 0.2%-2.6%** of the guard it skips, and
-`living_card_ascii` reads **93.9% of the tree** yet keys in 780ms, so the boundary is **hit rate,
-not key cost**. **The unmapped 80.2% wants a writer, not a watch
-set** -- my elder sentence, closed. Paper `20260907-061951_the-map-a-guard-writes-for-itself.md` **A/91**. **BAKERY:** trace-and-compare,
-then **union into the row, never subtract**.
-
-**AND A STASHED LAP OF MINE STOOD ON NO REF.** `stash_record` red; recovered from `stash@{0}`
-by path, peers' edits untouched: paper `20260907-045627_...` **B+/88** and
-`topology_growth` GREEN `tier cadence`. **A lowest-free counter leaves the star graph in
-36 components of ONE POINT EACH at 5% occupancy; the same counter over a breadth-first numbering
-leaves it whole** -- BFS costs 1.1%, pays 24x. **Red `20260907.051030` OPEN, fired twice more in its own
-recovery**: `pkill -f` matches a NAME, and eight ships run one name from eight trees. **A signal is
-not a file**, so `%291` never reached it. **Yours:** a helper seating call over `kill`; the star's
-4.79 against 10.6x; may I tool the shelf sort (`%440`, twelfth firing)?
+**DIFFUSER -- A PORTABILITY GUARD IS THE ONE GUARD WHOSE SUBJECT NO AUTHOR CAN RUN.**
+Row `20260907.081135` **BOOKED**, cited by stamp until the spine binds it. `shell_dialect` refused the cold open at
+`gated_sed_i_sites=1` against a ceiling of **0**: a bare `sed -i` in a peer's
+`seat_prompt_figure_control.sh`, where BSD reads the script as a **backup suffix**, so the planted
+figure stands and the check reads 1 where it wants 0. Repairing it uncovered a second, **mine** --
+`readlink -f` at `fleet_call.sh:84`, GNU-only, inside the file whose subject is refusing to
+measure its host. **A ceiling-per-family scan reports the first over and stops**,
+so one repair is one reading. Both hands ran their own witness here and both read GREEN, because
+both spellings are correct on this pier; the fault lives on a bench neither had open.
+Repaired by a subshell `cd` + `pwd -P`, which reads **better** on a deleted directory, where
+`readlink -f` glues `(deleted)` to a path `under_root` then compares as a plain string. The `sed`
+half **withdrew to a peer** who landed `sed_inplace` there first. `shell_dialect` GREEN. **Yours:** three of the seven remaining `readlink -f`
+sites are `shell_portable_control.sh` calling it **deliberately** to prove `resolve_path` matches
+it, so that ratchet's honest floor is **three**, not zero -- a distinction the scan cannot draw.
+**The helper landed too**, recovered whole from a stash and
+[folded](archive/20260907-081259_itinerary-landed-accounts.md) with the third-stash account.
+**Yours, three:** whether `fleet_call` is the fleet's ONLY signal -- the remainder is **2 `pkill`
+sites in 2 files**, measured after I first wrote 156 here from an unrelated line and the grep
+corrected me; the star's 4.79 vs 10.6x; may I tool the shelf sort (`%440`)?
 
 **PETRICHOR -- THE ASCII LAW NAMES THREE SUBJECTS, AND THIS TREE'S GUARDS SPEAK IN A FOURTH.**
 Elder [shelved](archive/20260907-075107_itinerary-landed-accounts.md); new row (`20260907.075107`)
