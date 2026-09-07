@@ -2785,3 +2785,29 @@ guard topology_stretch
 path tools/t/topology_stretch_witness.rish
 tier lap
 seated 20260907.095458
+
+# topology_relaxed -- what the two families that RELAX the star graph's factorial keep, and what
+# they give back. Its sibling `topology_stretch` found the one shape that reaches a low diameter and
+# routes optimally with no table, and named that shape's wall in the same breath: a star graph has
+# n! vertices, so between 720 and 5,040 points the family offers no size at all while a supervision
+# tree takes its member count from its membership. This walks the two doors that paper left open.
+# Thirteen (n,k)-star graphs from 120 to 6,720 vertices and four arrangement graphs, each built,
+# walked breadth-first, and routed from EVERY vertex by named rules. Eight relaxed sizes stand in
+# the window the star family leaves empty, two of them at degree 6, and S(7,4) walks 7 on degree 6
+# at 840 points where the best three-ring torus of that size walks 14 and every degree-6 commutative
+# shape walks 9 or more. The finding is the RULE: the star's rule read literally is exact at k = n-1
+# and short at all eleven sizes below it, a one-step correction reaches the true diameter and leaves
+# a residue at two sizes, and a rule choosing by where a symbol's CHAIN ends -- in junk, which is a
+# free eviction, or at symbol 1, which wastes a move -- routes every vertex of every size by a
+# shortest path. Its two anchors are the sibling's own readings at 720 and 5,040, so a builder that
+# had drifted would stop reproducing them rather than print confident numbers about the wrong graph.
+# It reads its OWN source too, refusing when a routing function mentions the breadth-first distance
+# array -- the one fault no hop count can report. `tier lap`: scan 10s, control 30s, witness 43s
+# measured `20260907.111058`, because vertex-transitivity is CHECKED from five spread sources rather
+# than paid for, and the control reads its plants at one small size through the scan's `SCAN_SIZES`
+# knob rather than at all thirteen.
+
+guard topology_relaxed
+path tools/t/topology_relaxed_witness.rish
+tier lap
+seated 20260907.111058

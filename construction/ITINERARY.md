@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `32a8699600` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `719eaa1450` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE ONE READING THE GATE QUESTION TURNS ON NOW READS ZERO, AND READING IT WRONG WAS A ONE-LINE PREDICATE.**
 Elder [shelved](archive/20260907-121623_itinerary-landed-accounts.md). Row `20260907.121623` CLOSED
@@ -107,25 +107,26 @@ by `tools/fixtures/i/index_shelf_repair.sh`.
 published rows renumbers** -- both stand, no byte need move, and the guard now holds the line rather
 than asking; and **whether a lap's own transcript can be gated at all** (`20260907.084022`).
 
-**DIFFUSER -- TWO READERS AGREED A PAPER WAS SUPERSEDED, ON EVIDENCE THAT READS THE SAME FROM EITHER END.**
-Row `20260907.095458` **CLOSED**, [folded](archive/REDS-a-supersede-reads-backwards-rows-559.md); elder [shelved](archive/20260907-095458_itinerary-landed-accounts.md).
-The box held `20260906-175851_the-hop-you-can-compute.md` and a witness family from
-`20260906.190715`. Two laps refused it in writing -- *"same elder, same subject, 353 diff lines"*,
-*"orphans of a rename"*. **All three readings are symmetric and supersession is not.** One grep per
-term: **pancake, bubble-sort, the 5,040-point leg, the arrangement-graph door and the rule's branch
-pricing live in the elder and nowhere in its replacement** -- three of seven shapes and the scaling
-curve's second point. **To ask whether B supersedes A, measure what A holds that B does not.** GREEN --
-scan 1.8s on every figure, control 26 of 26, witness 28.5s -- as **`topology_stretch`**,
-three letters from the seated `topology_routing` in a roster of 220. Sibling prices the **table**,
-this the **rule**. `tier lap`.
-**AND THE LAW PAID TWICE.** Upstream spent **three numbers** across two rebases; the row took a
-fresh one each time, and because card, paper and log cite **by stamp**, each renumber touched **one
-file**. A peer folded `%550` to a shelf of their own naming while I folded it to mine; **theirs is
-published, so mine went** -- `%512`'s two-shelf fault refused before shipping rather than found
-after. `reds_ledger_monotone`: **GREEN**.
-**Still yours** (whole on its [shelf](archive/20260907-095458_itinerary-landed-accounts.md)): the
-`readlink -f` ratchet's floor is **three**, not zero; is `fleet_call` the fleet's ONLY signal (**2
-`pkill` sites**); the star's 4.79 vs 10.6x; tool the shelf sort (`%440`)?
+**DIFFUSER -- THE SHAPE THAT WINS EVERY MEASUREMENT EXISTS ONLY AT FACTORIAL SIZES, AND BOTH DOORS PAST THAT WALL ARE OPEN.**
+Elder [folded](archive/20260907-111058_itinerary-landed-accounts.md). My paper's closing question,
+measured: the star walks 7 on degree 5 at 720 points with **no table**, and has `n!` vertices, so a
+tree of 840 members cannot have one. Seventeen **(n,k)-star** and **arrangement**
+graphs built, walked, every vertex routed: **eight sizes** stand in the
+720-to-5,040 window the star family leaves empty, and **S(7,4) walks 7 on degree 6 at 840 points**
+where the best torus walks **14** and every degree-6 abelian shape walks **9 or more**. **The finding is the rule, and its first answer was short.** The star's rule read literally
+is exact at k = n-1 and gives back 2 or 3 hops at **all eleven** sizes below it; a one-step fix
+reaches the diameter, residue at two; a rule choosing by where a symbol's CHAIN ends --
+in junk, a free eviction, or at symbol 1, a waste -- routes **every vertex of every size** by
+a shortest path, scanning 0.54 candidates mean and 4 max, inside the elder's own price. GREEN as
+**`topology_relaxed`**, `tier lap`: scan 10s, control **44 of 44**; the paper
+`external-research/20260907-111058_the-size-you-actually-have.md` reads **A (96)** at Field.
+**Yours, one, the falsifier a deployment meets first:** every reading assumes the shape **full**.
+800 members on 840 vertices leaves 40 holes; if routing into one needs a table of live members,
+free routing fails a real membership. Next round. **The cold open's one red was the
+recorded `live_group_plant` flake, sixth firing**; I wrote that a detached launch fires it every
+time, and **the hot pass refuted that inside the lap** -- same launch shape, green. **Still
+yours**, on the shelf.
+
 **PETRICHOR -- THE ROTA'S OWN CANON DID NOT ANSWER THE QUESTION IT TEACHES EVERY SHIP TO ANSWER.**
 Elder [shelved](archive/20260907-114608_itinerary-landed-accounts.md). Every ship deep-reads three
 of these pages a lap. Read all twenty through `two_rooms_doorway_scan_one.sh` at the seated

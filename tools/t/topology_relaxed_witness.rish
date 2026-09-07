@@ -1,0 +1,114 @@
+# tools/t/topology_relaxed_witness.rish -- the star graph wins every measurement and exists only
+# at factorial sizes. This binds what the two families that relax that factorial keep.
+#
+#   rishi/bin/rishi run tools/t/topology_relaxed_witness.rish
+#
+# WHAT IT BINDS. `tools/fixtures/t/topology_relaxed_scan.sh` builds thirteen (n,k)-star graphs and
+# four arrangement graphs, walks each one breadth-first, and then ROUTES every vertex to the
+# identity through named rules that read the arrangement and nothing else. This binds each
+# family's diameter, each rule's diameter, the count of vertices each rule reaches by a shortest
+# path, the density of sizes the relaxation offers where the star family offers none, and what the
+# winning rule costs per hop. It proves the readings can be broken, through
+# `tools/fixtures/t/topology_relaxed_control.sh`.
+#
+# WHY IT SITS BESIDE `topology_stretch` RATHER THAN INSIDE IT. That witness answers which shapes
+# publish a diameter a router can reach with no map, and its answer named a wall in the same
+# breath: the shape that wins is a star graph, whose vertex count is n!, so between 720 and 5,040
+# points the family offers no size at all. A supervision tree takes its member count from its
+# membership. This witness walks the two doors that paper left open and reports what each keeps.
+#
+# THE ANCHOR IS THE FIRST THING BOUND. At k = n-1 the (n,k)-star family IS the star graph, so
+# S(6,5) must reproduce 720 points at degree 5 and diameter 7, and S(7,6) must reproduce 5,040 at
+# degree 6 and diameter 9 -- the sibling's own two readings. A builder that had drifted would still
+# print confident numbers, and they would be measurements of the wrong graph.
+#
+# THE FINDING IS BOUND FROM BOTH SIDES. The star's rule read literally is exact at k = n-1 and
+# gives back two or three hops at every k below it, because unwanted symbols enter the arrangement
+# and the rule has no opinion about them. Binding only the correction would leave a reader unable
+# to tell a real repair from decoration, so the naive rule's failure is asserted as hard as the
+# chain rule's success.
+#
+# WHY IT IS `tier lap`. The scan is under ten seconds and the control under thirty, because
+# vertex-transitivity is CHECKED rather than paid for -- one walk stands for 6,720 vertices once
+# five sources spread by a coprime stride agree -- and because the control reads its plants at one
+# small size through the scan's own `SCAN_SIZES` knob.
+
+say "topology-relaxed: Language EN -- a family that only exists at factorial sizes is a family you may not be able to use."
+say "topology-relaxed: Style Gauge, Meter -- every hop walked, every rule named, nothing recalled."
+say "topology-relaxed: Lens TAME -- the rule read as well as run; bound the cap, say why."
+
+say "topology-relaxed: the scan builds both families, walks them, and routes every vertex..."
+let scan = run ["sh" "tools/fixtures/t/topology_relaxed_scan.sh"]
+# invariant: the scan stands green before any reading of it is trusted.
+assert scan.ok else "topology-relaxed: the scan refused --\n${scan.out}"
+assert scan.out contains "verdict=ok" else "topology-relaxed: the scan did not reach its own green --\n${scan.out}"
+assert scan.out contains "refusals=0" else "topology-relaxed: the scan named a refusal --\n${scan.out}"
+assert scan.out contains "legs=all" else "topology-relaxed: a reduced run must never be read as a full one"
+assert scan.out contains "sizes=default" else "topology-relaxed: a reduced size list must never be read as the full thirteen"
+
+say "topology-relaxed: table-free is read off the rule, never inferred from its answer..."
+# invariant: no routing function reads the breadth-first distance array, and six of them are read.
+assert scan.out contains "purity routing_functions=6 reads_distance_table=0" else "topology-relaxed: a routing rule reads the distance table, so table-free would be a claim about nothing"
+
+say "topology-relaxed: the anchor -- at k = n-1 the family is the star graph the sibling measured..."
+# invariant: S(6,5) reproduces the seated star reading at 720 points.
+assert scan.out contains "nkstar n=6 k=5 points=720 degree=5 diameter=7 rule=chain rule_diameter=7 stretch=0 optimal=720/720" else "topology-relaxed: S(6,5) no longer reproduces the star graph at 720 points"
+# invariant: S(7,6) reproduces the seated star reading at 5,040 points.
+assert scan.out contains "nkstar n=7 k=6 points=5040 degree=6 diameter=9 rule=chain rule_diameter=9 stretch=0 optimal=5040/5040" else "topology-relaxed: S(7,6) no longer reproduces the star graph at 5,040 points"
+
+say "topology-relaxed: the star's rule read literally, which is exact only where it was written..."
+# invariant: the naive rule is exact at k = n-1, so its failure below is about the relaxation.
+assert scan.out contains "nkstar n=6 k=5 points=720 degree=5 diameter=7 rule=naive rule_diameter=7 stretch=0 optimal=720/720" else "topology-relaxed: the naive rule is no longer exact where the family is the star graph"
+# invariant: the naive rule gives hops back the moment k falls below n-1.
+assert scan.out contains "nkstar n=7 k=4 points=840 degree=6 diameter=7 rule=naive rule_diameter=9 stretch=2 optimal=396/840" else "topology-relaxed: the naive rule's bill at 840 points moved"
+assert scan.out contains "nkstar n=10 k=4 points=5040 degree=9 diameter=7 rule=naive rule_diameter=10 stretch=3 optimal=1110/5040" else "topology-relaxed: the naive rule's bill at 5,040 points moved"
+
+say "topology-relaxed: the one-step correction, and the residue that shows it is not enough..."
+# invariant: the door rule closes most of the gap and still leaves a measured residue at two sizes.
+assert scan.out contains "nkstar n=8 k=5 points=6720 degree=7 diameter=8 rule=door rule_diameter=8 stretch=0 optimal=6648/6720" else "topology-relaxed: the door rule's residue at 6,720 points moved, so the chain step may be unmotivated"
+assert scan.out contains "nkstar n=7 k=5 points=2520 degree=6 diameter=8 rule=door rule_diameter=8 stretch=0 optimal=2496/2520" else "topology-relaxed: the door rule's residue at 2,520 points moved"
+
+say "topology-relaxed: the chain rule, which routes every vertex of every size by a shortest path..."
+# invariant: the size that answers the sibling's wall -- 840 points on degree 6, walked at 7.
+assert scan.out contains "nkstar n=7 k=4 points=840 degree=6 diameter=7 rule=chain rule_diameter=7 stretch=0 optimal=840/840" else "topology-relaxed: S(7,4) at 840 points no longer routes optimally with no table"
+# invariant: the largest walk, where the one-step rule still failed.
+assert scan.out contains "nkstar n=8 k=5 points=6720 degree=7 diameter=8 rule=chain rule_diameter=8 stretch=0 optimal=6720/6720" else "topology-relaxed: S(8,5) at 6,720 points no longer routes optimally with no table"
+# invariant: the same vertex count as the star at 5,040, reached in seven hops rather than nine.
+assert scan.out contains "nkstar n=10 k=4 points=5040 degree=9 diameter=7 rule=chain rule_diameter=7 stretch=0 optimal=5040/5040" else "topology-relaxed: S(10,4) at 5,040 points moved"
+# invariant: the whole finding in one line -- and the three absences printed as counted zeros,
+# since a witness can bind a line that says zero and cannot bind a line that is missing.
+assert scan.out contains "summary star_readings=39 arrangement_readings=4 unrouted_total=0 transit_checked=13 transit_disagreements=0 suboptimal_sizes naive=11 door=2 chain=0 hole=0" else "topology-relaxed: the summary of thirteen sizes by three rules moved --\n${scan.out}"
+
+say "topology-relaxed: the density the relaxation buys where the factorial offers nothing..."
+# invariant: the star family offers no size in the window, and the relaxed family offers eight.
+assert scan.out contains "window between=720_and_5040 star_family_sizes=0 nkstar_sizes=8 bound_n=14" else "topology-relaxed: the size density in the star family's empty window moved"
+
+say "topology-relaxed: the honest side-by-side against the shapes already seated..."
+# invariant: at 840 points the best three-ring torus walks 14 on the same degree the star family walks 7.
+assert scan.out contains "compare points=840 torus=7x8x15 torus_degree=6 torus_diameter=14 abelian_floor_degree6=9" else "topology-relaxed: the 840-point comparison moved"
+# invariant: at 5,040 points the abelian floor alone is 16, more than twice what S(10,4) walks.
+assert scan.out contains "compare points=5040 torus=15x16x21 torus_degree=6 torus_diameter=25 abelian_floor_degree6=16" else "topology-relaxed: the 5,040-point comparison moved"
+
+say "topology-relaxed: one walk stands for the whole graph only because spread sources agree..."
+# invariant: every shape is measured vertex-transitive rather than assumed to be.
+assert scan.out contains "transit family=nkstar n=7 k=4 points=840 stride=271 sources=5 agree=5 eccentricity=7" else "topology-relaxed: S(7,4) was not checked from more than one source"
+assert scan.out contains "transit family=nkstar n=8 k=5 points=6720 stride=271 sources=5 agree=5 eccentricity=8" else "topology-relaxed: S(8,5) was not checked from more than one source"
+
+say "topology-relaxed: table-free is priced rather than asserted..."
+# invariant: the chain rule's candidate scan is bounded by the address length, and measured under it.
+assert scan.out contains "branch n=8 k=5 hops=38584 swap_home=0.610 door=0.064 fill=0.327 mean_candidates=0.540 max_candidates=4 bound=k=5" else "topology-relaxed: the chain rule's per-hop cost at 6,720 points moved"
+assert scan.out contains "branch n=10 k=4 hops=26582 swap_home=0.512 door=0.033 fill=0.455 mean_candidates=0.607 max_candidates=3 bound=k=4" else "topology-relaxed: the chain rule's per-hop cost at 5,040 points moved"
+
+say "topology-relaxed: the second door, which costs wire and needs no correction at all..."
+# invariant: the arrangement graph routes optimally under its natural rule, at a degree that grows.
+assert scan.out contains "arrange n=7 k=4 points=840 degree=12 diameter=6 rule=hole rule_diameter=6 stretch=0 optimal=840/840" else "topology-relaxed: the arrangement graph at 840 points moved"
+assert scan.out contains "arrange n=8 k=4 points=1680 degree=16 diameter=6 rule=hole rule_diameter=6 stretch=0 optimal=1680/1680" else "topology-relaxed: the arrangement graph at 1,680 points moved"
+say "GREEN: topology-relaxed -- both doors open, and the (n,k)-star keeps the free rule for the price of a chain walk."
+
+say "topology-relaxed: the control plants each fault and lifts it again..."
+let control = run ["sh" "tools/fixtures/t/topology_relaxed_control.sh"]
+# invariant: every refusal this witness rests on is shown from the failing side too.
+assert control.ok else "topology-relaxed: the control refused --\n${control.out}"
+assert control.out contains "behaviors=44 passed=44 failed=0" else "topology-relaxed: the control did not prove all 44 behaviors --\n${control.out}"
+assert control.out contains "pen copy reads exactly what the tree reads" else "topology-relaxed: the pen was not proven innocent"
+say "GREEN: topology-relaxed -- 44 behaviors, every refusal bitten and every plant proven to land and every reading asserted."
