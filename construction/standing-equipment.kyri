@@ -180,6 +180,17 @@ guard sealed_digest
 path tools/s/sealed_digest_witness.rish
 tier lap
 seated 20260906.192644
+
+# unshared_citation -- derived-spine rule 4 made a gate. A row's %N is a VIEW the anointed remote
+# allocates, so a lap cites its own row by STAMP until that number is bound upstream. The rule stood
+# ten days as a habit and the habit never formed: 28 recorded errata, six rows renumbered more than
+# once, one four times in an hour -- and each renumber sweeps 20 to 36 files that spelled a number
+# the stamp would have spared. Reads shared_max from the spine on every run; the ledger, testimony,
+# and a five-digit colour are each read past for their own reason.
+guard unshared_citation
+path tools/r/unshared_citation_witness.rish
+tier lap
+seated 20260906.210117
 # capability seated 20260906.140000 (REDS %493). The guard reads the SHIPPED side, so it needs a
 # projection at `seed/` -- which is gitignored, built by `tools/s/sow.rish`, and therefore absent
 # from every fresh clone. Rostered `tier lap` with no capability it went red on this tree's first
