@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `e567cbc128` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `0877a5f56a` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A GUARD THAT READS A PROXY ANSWERS ABOUT THE PROXY, AND THE PARAGRAPH SAYING SO SAT IN
 THE BOX IT COULD NOT READ.** `%510` CLOSED. `stash_record_scan.sh` asked every session log in a
@@ -139,7 +139,7 @@ the lap.** *My third row of this lap was **withdrawn rather than renumbered**: i
 as `%493` above -- the fourth time in one day that a finding and its peer met in the same hour.*
 
 
-**Landed recitals folded** to the [`20260906.145647` shelf](archive/20260906-134234_itinerary-landed-accounts.md) -- `%467`/`%468`, `%459`/`%446`, `%450`/`%461`, `%445`/`%439`, the `040933` four, `%451` with `%469`, and the Petrichor and Pheromone pointers.
+**Landed recitals, all shelved** -- each shelf names its own rows: [`145647`](archive/20260906-134234_itinerary-landed-accounts.md), [`140206`](archive/20260906-140206_itinerary-landed-accounts.md), [`092312`](archive/20260906-092312_itinerary-landed-accounts.md).
 
 
 **Yours, one question; law, so INCENSE may own it.** The five negatives `mycelium` keeps are its
@@ -162,7 +162,6 @@ from a parked stash is invisible to `--next` twice over.*
 **The identity gap** -- two branches inserting collide at one small integer and merge refuses them
 `PositionTextDisagrees`, since `pos` counts inside one weave. Closing it wants a wider `Line`; the
 guard said to lock that is `%500` above, and it now reds honestly.
-**`%479`/`%464` CLOSED**, whole on the [`140206` shelf](archive/20260906-140206_itinerary-landed-accounts.md).
 **`%440` fired eight times across two laps** -- a peer's row low at the cold open, then every rebase auto-merging the shelf; one dedupe-and-sort each time, run by hand. **Yours.**
 
 
@@ -175,14 +174,18 @@ sentence:** may a cross-target witness read GREEN with a named gap when qemu is 
 promises that limit, `%446` reads the other way, and the roster's `capability` field is the
 mechanism.
 
-**GRASS -- three findings, all CLOSED**, whole on the
-[`133344` shelf](archive/20260906-133344_itinerary-landed-accounts.md). **A guard's precondition
-belongs in its roster row** (`%493`): `sow_allow_reach` needs a `seed/` no clone carries, so at
-`tier lap` with no `capability` it red every tree and each ship paid a full cold pass a lap. **A law
-is not kept by the room that writes it:** 63 of 104 rule pages held 859 non-ASCII characters, every
-one on the rule's own table; `ascii_document` enforces both rooms at zero and ratchets **347** pages
-at **3,956**. **A link quoted in backticks cites nothing** -- 30 shapes over 12 pages, all
-teaching the fold rule. **Carried:** **890** depth-lost links, a refusal nothing tracked can read.
+**GRASS -- SILENCE AND CLEANLINESS READ ALIKE.** `20260906.211015` CLOSED
+([shelf](archive/REDS-silence-and-cleanliness-read-alike-rows-514.md)): two comment meters ran awk
+under `2>/dev/null` and read empty as zero, **both AT their ceilings**, where a silent zero reads
+as their largest sweep. Proven both ways on the pre-repair files. **10 of 244** scans still
+drop awk's stderr; not taken.
+**AND THE PIN ARRIVED PAST ITS BOUND WITH A WALL STANDING.** `20260906.211529` **OPEN.** `REDS.md`
+opened at **41,153** against **40,960** before I touched it, two guards refusing. Rule 3,
+`tools/hooks/pre-commit` fires at `git commit` and `--amend`; **rebase skips it and `post-commit`
+owes a debt for rule ONE only**, so the twice-pulled send walks around the wall. **Six of the last
+120 commits** shipped that pin over its declared bound. Instance repaired -- `%487` folded, pin
+**37,317**, both GREEN. **Class sized, NOT taken: eight ships run that file. Yours.**
+**Carried: 890** depth-lost links.
 
 **COPAL -- EXISTENCE AND AGREEMENT ARE TWO QUESTIONS, AND ONLY ONE HAD AN INSTRUMENT.** `%502`
 CLOSED ([shelf](archive/REDS-a-number-and-a-path-name-two-rows-rows-502.md)). A `%N` is a number a
@@ -228,7 +231,6 @@ round's opening stash stop an in-flight pass in its own tree.
 
 **Bounds raised `20260906`, both derived, both yours:** the operator card to 40,960 (8 ships x 2,048 live front) and the REDS pin to 40,960 (8 x 4,096 OPEN set + 8,192 header). **Each is sized per ship, so both re-open at twelve** -- and the pin's is also sized by how fast reds close (`%360`, 8,213 bytes, open since `20260830`).
 **`%456` OPEN -- eight ships share ONE login, so one credential is a fleet-wide outage** (mechanism read from `agent-jail.sh` source, so `%458` leaves it standing). **Its pier half is unmeasured from inside the enclosure.** Seven died 3 laps each in ten seconds on `OAuth session expired and could not be refreshed`; `agent-jail.sh` seeds every tree from the pier's single credential (*one login per pier*). Refresh token had **27 days** left, so expiry is excluded -- the leading read is **rotation**: one shared token, first refresher strands the rest and the pier's own copy. **Falsifier is cheap:** watch whether the pier's refresh value changes after a ship refreshes. Landed: `claude_refresh_dead()` names a dead credential instead of seeding it (proven 3 ways -- dead trips, expired ACCESS does not, missing field fails open), and `sh tools/fixtures/f/fleet_login_scan.sh` answers it in one command. **Yours, gate 3:** one login per ship is the fix. **A resource shared by every ship has no blast radius smaller than the fleet.**
-**`20260905`'s landed rows** rest on their three shelves, recited on the [`092312` shelf](archive/20260906-092312_itinerary-landed-accounts.md).
 **`shell_dialect` re-diagnosed:** the `sed -i` repair stands; it reds on ONE case of 47 -- *a guard
 without its instrument names rg rather than a file*. `shell_portable_control.sh` takes `rg` off PATH
 by dropping every entry holding an executable `rg`, and this NixOS pier keeps `rg` and `sh` in one

@@ -6,7 +6,7 @@
 # lesson at a string literal, by hand and the expensive way. So every reading is planted in a
 # throwaway git repository and proven from both sides before it is trusted on 2,823 real files.
 #
-# WHAT IS PROVEN -- fifteen behaviors, and each one is a claim the scan makes out loud:
+# WHAT IS PROVEN -- eighteen behaviors, and each one is a claim the scan makes out loud:
 #    1  a `#` comment with non-ASCII is counted in a `.rish` source
 #    2  a `#` comment with non-ASCII is counted in a `.sh` source
 #    3  an indented comment is counted, so leading whitespace does not hide prose
@@ -25,6 +25,12 @@
 #       and its target as two paths, and following both counts one set of bytes twice (REDS %340)
 #   15  and the target it points at is still counted on its own row, so the skip drops a duplicate
 #       rather than a file
+#   16  a BROKEN INSTRUMENT is named rather than counted as a clean zero -- with its awk program
+#       refused, the meter must say `instrument=failed` and must not answer `under_ceiling=yes`
+#   17  a present file the meter cannot OPEN is named by the same check and a different cause
+#   18  a path `git ls-files` lists and the working tree no longer holds is skipped and COUNTED,
+#       never fatal -- a rename staged mid-rebase is ordinary, and refusing there would trade one
+#       blindness for an outage
 #
 # AND THE CEILING, FROM BOTH SIDES. A refusal proven only in the passing direction cannot be told
 # from a bypass, so the pen is pushed over the ceiling and read again. There is no override.
@@ -109,5 +115,59 @@ rm -f room/over.sh
 git add -A >/dev/null 2>&1
 back=$(sh "$scan" 2>/dev/null)
 case "$back" in *"under_ceiling=yes"*) echo "removed_returns_green=yes";; *) echo "removed_returns_green=no";; esac
+
+
+# -- THE INSTRUMENT ITSELF, three readings (REDS %513) --------------------------------------------
+#
+# A GUARD THAT CANNOT RUN ITS INSTRUMENT MUST SAY SO. Every reading above asks what the meter
+# COUNTED; none asked whether it READ anything at all. The elder loop ran its awk under
+# `2>/dev/null` and then wrote `[ -z "$n" ] && n=0`, so awk's exit status was never examined and
+# its complaint was discarded -- and an empty answer from a refused read is byte-identical to an
+# empty answer from a clean file. The second is the one everyone hopes for.
+
+# 16  A BROKEN INSTRUMENT IS NAMED, never counted as a clean zero. The scan is copied into the pen
+#     with one unclosed `if (` inserted at the head of its awk program -- a syntax error in every
+#     awk dialect, so this leg leans on no one implementation. Measured before the repair: the
+#     meter answered `files=0 chars=0 under_ceiling=yes` over every tracked source it never
+#     opened, which on a meter sitting AT its ceiling reads as the largest sweep it ever recorded.
+awk 'BEGIN{d=0} {print} (d==0 && $0 ~ /^  LC_ALL=C awk/) {print "    if ("; d=1}' "$scan" > broken_scan.sh
+broke=$(sh ./broken_scan.sh 2>/dev/null)
+case "$broke" in *"instrument=failed"*) echo "broken_instrument_named=yes";; *) echo "broken_instrument_named=no";; esac
+case "$broke" in *"under_ceiling=yes"*) echo "broken_instrument_refuses=no";; *) echo "broken_instrument_refuses=yes";; esac
+rm -f broken_scan.sh
+
+# 17  AN UNREADABLE FILE IS NAMED, by the same check and a different cause. `chmod 000` is toothless
+#     for a privileged reader, so the block is PROBED rather than assumed: where it does not bite,
+#     the leg says so by name and passes, because a control that reds on an environment it cannot
+#     test is a control somebody turns off. The diagnostic key is printed either way.
+printf '# locked $em one\n' > room/locked.sh
+git add -A >/dev/null 2>&1
+chmod 000 room/locked.sh
+if cat room/locked.sh >/dev/null 2>&1; then
+  echo "unreadable_probe=readable_anyway"
+  echo "unreadable_verdict=ok_skipped_privileged"
+else
+  echo "unreadable_probe=blocked"
+  locked=$(sh "$scan" 2>/dev/null)
+  case "$locked" in
+    *"instrument=failed"*) echo "unreadable_verdict=ok";;
+    *) echo "unreadable_verdict=no -- counted a zero for a file it could not open";;
+  esac
+fi
+chmod 644 room/locked.sh
+rm -f room/locked.sh
+git add -A >/dev/null 2>&1
+
+# 18  AN ABSENT FILE IS SKIPPED AND COUNTED, never fatal. `git ls-files` reads the INDEX, so a
+#     rename staged mid-lap lists a path the working tree no longer holds -- and a rebase is
+#     exactly the moment a reading is worth having. Refusing there would trade one blindness for
+#     an outage.
+printf '# ghost $em one\n' > room/ghost.sh
+git add -A >/dev/null 2>&1
+rm -f room/ghost.sh
+ghost=$(sh "$scan" 2>/dev/null)
+case "$ghost" in *"absent=1"*) echo "absent_counted=yes";; *) echo "absent_counted=no";; esac
+case "$ghost" in *"instrument=failed"*) echo "absent_is_fatal=yes";; *) echo "absent_is_fatal=no";; esac
+git rm -q --cached room/ghost.sh >/dev/null 2>&1
 
 echo "control_verdict=ok"

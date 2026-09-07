@@ -46,9 +46,23 @@ assert control.out contains "clean_pen_under_ceiling=yes" else "ascii-comment: a
 assert control.out contains "over_ceiling_refuses=yes" else "ascii-comment: one character past the Rye ceiling must refuse, or the ceiling is decoration"
 assert control.out contains "removed_returns_green=yes" else "ascii-comment: removing the plant must return the Rye reading to green, or the refusal is a latch"
 
+# THE INSTRUMENT ITSELF, three readings per meter (REDS %513). Every assert above asks what the
+# meter COUNTED; none asked whether it READ anything. The elder loop ran its awk under `2>/dev/null`
+# and then wrote `[ -z "$n" ] && n=0`, so awk's exit status was never examined -- and an empty answer
+# from a refused read is byte-identical to an empty answer from a clean file. Both meters sat AT
+# their ceilings when this was found, so a silent zero would have read as the largest sweep either
+# had ever recorded. Each leg is proven from BOTH sides: run against the pre-repair scan every one
+# of them reads the failing answer.
+assert control.out contains "broken_instrument_named=yes" else "ascii-comment: a Rye meter whose awk refuses must say instrument=failed, never count a zero"
+assert control.out contains "broken_instrument_refuses=yes" else "ascii-comment: a broken Rye instrument must never answer under_ceiling=yes -- a green from a meter that read nothing is the worst shape a reading can take"
+assert control.out contains "unreadable_verdict=ok" else "ascii-comment: a present file the Rye meter cannot open must be named rather than counted as clean"
+assert control.out contains "absent_counted=yes" else "ascii-comment: git ls-files reads the INDEX, so a path staged and gone must be skipped and COUNTED"
+assert control.out contains "absent_is_fatal=no" else "ascii-comment: an absent path must never be fatal -- a rebase is exactly when a reading is worth having"
+
 let living = run ["sh" "tools/fixtures/r/rye_comment_ascii_scan.sh"]
 assert living.ok else "ascii-comment: the living Rye scan must complete"
 say living.out
+assert living.out contains "instrument=ok" else "ascii-comment: the living Rye reading must say its instrument ran -- a meter that opened nothing prints a clean ceiling too"
 assert living.out contains "under_ceiling=yes" else "ascii-comment: non-ASCII in Rye comments rose above the ceiling -- convert on touch rather than raising it"
 
 say "ascii-comment: reading two of two -- authored Rishi and shell comments."
@@ -91,9 +105,25 @@ assert shell_control.out contains "clean_pen_under_ceiling=yes" else "ascii-comm
 assert shell_control.out contains "over_ceiling_refuses=yes" else "ascii-comment: one character past the ceiling must refuse, or the ceiling is decoration"
 assert shell_control.out contains "removed_returns_green=yes" else "ascii-comment: removing the plant must return the reading to green, or the refusal is a latch"
 
+# The same three readings, one language over. The fault stood identically in both meters, so the
+# proof stands identically in both controls rather than in one wearing a flag.
+assert shell_control.out contains "broken_instrument_named=yes" else "ascii-comment: a shell meter whose awk refuses must say instrument=failed, never count a zero"
+assert shell_control.out contains "broken_instrument_refuses=yes" else "ascii-comment: a broken shell instrument must never answer under_ceiling=yes"
+assert shell_control.out contains "unreadable_verdict=ok" else "ascii-comment: a present file the shell meter cannot open must be named rather than counted as clean"
+assert shell_control.out contains "absent_counted=yes" else "ascii-comment: a path staged and gone must be skipped and COUNTED in the shell meter too"
+assert shell_control.out contains "absent_is_fatal=no" else "ascii-comment: an absent path must never be fatal"
+
+# THE LIVING READING MUST SAY ITS INSTRUMENT RAN. The gate above reads `under_ceiling=yes`, which a
+# meter that opened nothing also prints; this is the reading that tells the two apart.
+
 let shell_living = run ["sh" "tools/fixtures/s/shell_comment_ascii_scan.sh"]
 assert shell_living.ok else "ascii-comment: the living shell scan must complete"
 say shell_living.out
+assert shell_living.out contains "instrument=ok" else "ascii-comment: the living shell reading must say its instrument ran"
 assert shell_living.out contains "under_ceiling=yes" else "ascii-comment: non-ASCII in Rishi and shell comments rose above the ceiling -- convert on touch rather than raising it"
 
-say "GREEN: ascii-comment -- authored comments in all three of this tree's languages stand under ceilings that only fall, each printed above as its scan's own output rather than recited here, with twenty-four readings proven on planted repositories, both ceilings proven from both sides, and the symlink skip planted in both languages. Each meter counts comments and refuses to count program content, which is the one distinction that makes a sweep safe rather than a rewrite of what programs print."
+let rye_proven = where (lines control.out) as l: l contains "=yes"
+let shell_proven = where (lines shell_control.out) as l: l contains "=yes"
+say "ascii-comment: ${length rye_proven} Rye and ${length shell_proven} shell behaviors proven in throwaway repositories, counted off each pen rather than recited -- a total carried inside a sentence stays at whatever it was on the day somebody typed it (REDS %110)."
+
+say "GREEN: ascii-comment -- authored comments in all three of this tree's languages stand under ceilings that only fall, each printed above as its scan's own output rather than recited here, with every reading proven on planted repositories and counted off the pen above, both ceilings proven from both sides, the symlink skip planted in both languages, and -- since REDS %513 -- each meter proven to NAME a refused instrument rather than answer a clean zero over files it never opened. Each meter counts comments and refuses to count program content, which is the one distinction that makes a sweep safe rather than a rewrite of what programs print."
