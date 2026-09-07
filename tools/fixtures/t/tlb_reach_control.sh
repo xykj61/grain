@@ -37,7 +37,11 @@ done
 CENSUS="$ROOT/tools/fixtures/t/tlb_reach_census.sh"
 [ -f "$CENSUS" ] || { echo "refused: no census at $CENSUS" >&2; exit 2; }
 
-PEN="${TMPDIR:-/tmp}/tlb_reach_control_pen"
+# THE PEN CARRIES THIS PROCESS'S ID, load-bearing rather than tidy (REDS %512). Eight ships share
+# one pier and therefore one TMPDIR, each running this file on its own lap. With a constant name
+# two overlapping runs share one directory, and each one's `rm -rf` deletes the other's pen
+# mid-run -- so the reading that comes back is a fault nobody wrote, recorded as a flake.
+PEN="${TMPDIR:-/tmp}/tlb_reach_control_pen.$$"
 rm -rf "$PEN"; mkdir -p "$PEN"
 trap 'rm -rf "$PEN"' EXIT INT TERM
 
