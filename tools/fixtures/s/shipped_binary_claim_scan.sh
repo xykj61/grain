@@ -42,6 +42,19 @@ set -eu
 
 scope="${1:-.}"
 
+# THE SCRATCH FILES BELOW ARE PRIVATE, and that is load-bearing rather than tidy. Until
+# `20260907.163000` this scan wrote two constant names under the one `/tmp` eight ships share,
+# truncating each with `: >`, appending to it, counting it, and removing it. Two ships running this
+# scan in the same second interleave on ONE file, and every interleaving is wrong in a different
+# direction: a peer's truncation empties the file mid-append and the count reads zero, a peer's
+# removal deletes it before `wc -l` reads it, and a peer's hits are counted as this tree's. The
+# last is the worst, because it is the shape that reports a false claim against a page that never
+# made one. It fired on this pier's cold pass of `20260907.150519`, where this guard read red in
+# company and GREEN alone. `mktemp -d` asks the kernel for a name no two runs can agree on, and the
+# trap removes only what this process made.
+pen=$(mktemp -d)
+trap 'rm -rf "$pen"' EXIT INT TERM
+
 tracked=$(git ls-files rye/bin rishi/bin 2>/dev/null | wc -l | tr -d ' ')
 echo "tracked_binaries=$tracked"
 
@@ -57,7 +70,7 @@ ships with the clone
 comes with the clone'
 
 hits=0
-: > /tmp/sbc_hits.txt
+: > "$pen/hits.txt"
 printf '%s\n' "$PATTERNS" | while IFS= read -r pat; do
   [ -n "$pat" ] || continue
   grep -rIn --fixed-strings "$pat" \
@@ -68,15 +81,14 @@ printf '%s\n' "$PATTERNS" | while IFS= read -r pat; do
     | grep -vE '/[0-9]{8}-[0-9]{6}[_.][a-z]' \
     | grep -v 'shipped_binary_claim' \
     | grep -vF 'REDS %' \
-    | grep -v '\*"' >> /tmp/sbc_hits.txt || true
+    | grep -v '\*"' >> "$pen/hits.txt" || true
 done
-hits=$(wc -l < /tmp/sbc_hits.txt | tr -d ' ')
+hits=$(wc -l < "$pen/hits.txt" | tr -d ' ')
 
 echo "claims_found=$hits"
 if [ "$hits" -gt 0 ]; then
-  sed 's/^/claim: /' /tmp/sbc_hits.txt
+  sed 's/^/claim: /' "$pen/hits.txt"
 fi
-rm -f /tmp/sbc_hits.txt
 
 # SECOND CHECK, added `20260821.191504` (REDS %119). A page may also mislead by NAMING the tools
 # wrongly rather than by claiming they ship. The sandboxing guide invited a reader to run a bare
@@ -88,14 +100,25 @@ rm -f /tmp/sbc_hits.txt
 # version output sit in unlabeled fences. So only labeled fences are read. Archive rooms are
 # exempt for the same reason dated artifacts are -- they record what was true then.
 bare=0
-: > /tmp/sbc_bare.txt
-for f in $(git ls-files '*.md' 2>/dev/null | grep -vE '/[0-9]{8}-[0-9]{6}[_.]' | grep -vE '^(session-logs|counsel|gratitude|vendor|seed)/' | grep -v '/archive/'); do
-  awk '/^```(bash|sh)$/{n=1;next} /^```/{n=0} n && /^(rye|rishi) /{print FILENAME ":" FNR ": " $0}' "$f" 2>/dev/null >> /tmp/sbc_bare.txt || true
-done
-bare=$(wc -l < /tmp/sbc_bare.txt | tr -d ' ')
+: > "$pen/bare.txt"
+# `while read` over a newline list rather than `for f in $(...)`: one tracked page carries a space
+# in its name, and word-splitting silently dropped it from every run this scan ever made.
+git ls-files '*.md' | grep -vE '/[0-9]{8}-[0-9]{6}[_.]' | grep -vE '^(session-logs|counsel|gratitude|vendor|seed)/' | grep -v '/archive/' > "$pen/pages.txt"
+while IFS= read -r f; do
+  [ -n "$f" ] || continue
+  # The instrument answers or the scan refuses. `git ls-files` names tracked, existing paths, so an
+  # awk failure here means the reader broke rather than that a page held nothing -- and an empty
+  # `bare.txt` reads exactly like a clean tree, which is the one answer this scan must never guess.
+  if ! awk '/^```(bash|sh)$/{n=1;next} /^```/{n=0} n && /^(rye|rishi) /{print FILENAME ":" FNR ": " $0}' "$f" >> "$pen/bare.txt"; then
+    echo "instrument=failed"
+    echo "detail=awk_refused_on $f"
+    echo "verdict=misread"
+    exit 1
+  fi
+done < "$pen/pages.txt"
+bare=$(wc -l < "$pen/bare.txt" | tr -d ' ')
 echo "bare_invocations=$bare"
-if [ "$bare" -gt 0 ]; then sed 's/^/bare: /' /tmp/sbc_bare.txt; fi
-rm -f /tmp/sbc_bare.txt
+if [ "$bare" -gt 0 ]; then sed 's/^/bare: /' "$pen/bare.txt"; fi
 
 if [ "$tracked" -gt 0 ]; then
   echo "note=binaries are tracked now, so such a claim would be true; the guard stands down"

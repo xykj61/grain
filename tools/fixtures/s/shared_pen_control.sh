@@ -160,6 +160,47 @@ printf '#!/bin/sh\npen="/tmp/only_written_pen"\nmkdir -p "$pen"\nrm -rf "$scratc
 claim var_wipe_unheld_free 0 "$(readout varunheld wiping_files)"
 claim var_unheld_still_counted 1 "$(readout varunheld constant_pen_files)"
 
+# --- 12f-12k. the sixth spelling, and the two tightenings that shipped with it --------------------
+# A removal without an `r` flag is still a removal. `tools/fixtures/s/shipped_binary_claim_scan.sh`
+# truncated a constant name, appended to it, counted it and `rm -f`d it, and read RED in company
+# and GREEN alone on the cold pass of `20260907.150519`. Both spellings are planted here, the
+# literal and the held variable, because the elder predicate missed both.
+newtree plainwipe
+printf '#!/bin/sh\n: > /tmp/plain_hits.txt\nrm -f /tmp/plain_hits.txt\n' > "$pen/plainwipe/tools/f/p.sh"
+( cd "$pen/plainwipe" && git add -A >/dev/null 2>&1 && git commit -qm pw >/dev/null 2>&1 )
+claim nonrecursive_wipe_counted 1 "$(readout plainwipe wiping_files)"
+
+newtree plainvarwipe
+printf '#!/bin/sh\nscratch="/tmp/held_plain.txt"\n: > "$scratch"\nrm -f "$scratch"\n' > "$pen/plainvarwipe/tools/f/p.sh"
+( cd "$pen/plainvarwipe" && git add -A >/dev/null 2>&1 && git commit -qm pvw >/dev/null 2>&1 )
+claim nonrecursive_var_wipe_counted 1 "$(readout plainvarwipe wiping_files)"
+
+# A LOCK IS STILL RELEASED WITH `rm -f`, so the widening had to leave that rule standing. This is
+# the case the sixth spelling could most easily have broken, which is why it is planted rather than
+# argued: the exemption now asks whether the removal was RECURSIVE, and `lock_wiping_counted` above
+# proves the other side, that a pen wearing `.lock` is counted the moment it is destroyed like one.
+newtree lockreleased
+printf '#!/bin/sh\nrm -f "${TMPDIR:-/tmp}/grain-port-38494.lock"\n' > "$pen/lockreleased/tools/f/l.sh"
+( cd "$pen/lockreleased" && git add -A >/dev/null 2>&1 && git commit -qm lr >/dev/null 2>&1 )
+claim lock_release_free 0 "$(readout lockreleased constant_pen_files)"
+
+# A PATH BEGINS AT A BOUNDARY. `/data/local/tmp/<name>` is an Android device path this pier never
+# opens, and the token class alone matched its tail -- two HAWM witnesses were charged for it the
+# moment the wipe reading widened.
+newtree devicetmp
+printf '#!/bin/sh\nadb shell rm -f /data/local/tmp/device_pen\n' > "$pen/devicetmp/tools/f/d.sh"
+( cd "$pen/devicetmp" && git add -A >/dev/null 2>&1 && git commit -qm dt >/dev/null 2>&1 )
+claim device_tmp_free 0 "$(readout devicetmp constant_pen_files)"
+
+# A REMOVAL IS CHARGED TO THE PATH IT NAMES. One line of `tools/l/launch-claude-chapter.rish`
+# removes a sentinel and, several commands later on the same line, tees a constant pen; the pen is
+# a hold. Counted as a file and NOT as a wipe, so the tightening is proven to keep its teeth.
+newtree segment
+printf '#!/bin/sh\nrm -f .loop-gates-only && printf ok > /tmp/segment_pen\n' > "$pen/segment/tools/f/s.sh"
+( cd "$pen/segment" && git add -A >/dev/null 2>&1 && git commit -qm sg >/dev/null 2>&1 )
+claim separator_stops_the_wipe 0 "$(readout segment wiping_files)"
+claim separator_still_counted 1 "$(readout segment constant_pen_files)"
+
 # --- 13-14. the files ceiling, proven from both sides ---------------------------------------------
 C_FILES=1 runs_ok planted && claim files_at_ceiling_free yes yes || claim files_at_ceiling_free yes no
 C_FILES=0 runs_ok planted && claim files_over_ceiling_refused yes no || claim files_over_ceiling_refused yes yes

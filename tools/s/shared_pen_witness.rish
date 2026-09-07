@@ -28,17 +28,29 @@
 # WHAT IS PROVEN, on metal.
 #   The tree's constant-pen population, read across every spelling, under a ceiling that only falls.
 #   The WIPING subset read separately, because a file that only writes a shared pen may interleave
-#     and survive, while one that `rm -rf`s it takes a peer's in-flight state down. Six today, and
-#     six is what it reads only since `20260907`: the wipe reading was LINE-SCOPED, so a file that
+#     and survive, while one that REMOVES it takes a peer's in-flight state down. Sixteen today,
+#     and the number moved because the reading did: until `20260907.163000` the predicate demanded
+#     an `r` or `R` flag, so `rm -f /tmp/name.txt` on a plain FILE read as a hold -- and the hold
+#     class was defined by that survive-an-interleave claim, which was false of exactly those
+#     files. `tools/fixtures/s/shipped_binary_claim_scan.sh` truncated a constant name, appended,
+#     counted and removed it, and read RED in company and GREEN alone on the cold pass of
+#     `20260907.150519`, taking `standing_equipment` red behind it. Two files were repaired in that
+#     lap and the other sixteen are named by `--list` for their owners, five of them the Caravan
+#     poll family sharing ONE sentinel path. Two tightenings landed beside the widening so it could
+#     not buy its number with noise: a `/tmp` path must begin at a BOUNDARY, and a removal is
+#     charged to the path it NAMES within its own command segment. The elder reading was also
+#     LINE-SCOPED, so a file that
 #     assigned a pen on one line and `rm -rf`d it on another read as a hold, and two of the six
 #     were invisible (REDS `%544`). The scan takes two passes now -- collect the variables holding
 #     a constant pen, then read a wipe naming one of them as a wipe of that pen -- and it found
 #     exactly the two files a hand-count had named, which is the corroboration worth having. The
 #     paragraph that declined this repair declined it on a measurement taken by the reading it was
 #     defending, which is the shape to remember rather than the two files.
-#   Thirty-two behaviors on real git repositories in a throwaway pen -- both ceilings shown from
+#   Thirty-eight behaviors on real git repositories in a throwaway pen -- both ceilings shown from
 #     both sides, seven free rules each planted and read as zero, the quoting rule, the lock rule
-#     and the variable tracker each shown in BOTH directions so none can be used as a hole, and two
+#     and the variable tracker each shown in BOTH directions so none can be used as a hole, the
+#     sixth spelling planted literal and held-in-a-name, both tightenings planted with the reading
+#     they must not weaken, and two
 #     refusals for a root that cannot answer, so an unreadable tree never reports clean. The count
 #     is DERIVED by the control from its own claims rather than spelled, since it read 24 while 27
 #     ran.
@@ -90,7 +102,13 @@ assert control.out contains "rishi_var_wipe_counted=yes" else "shared-pen: a Ris
 assert control.out contains "var_mktemp_free=yes" else "shared-pen: a variable named by mktemp holds no constant pen"
 assert control.out contains "var_wipe_unheld_free=yes" else "shared-pen: the tracker must not read every wipe in a file that holds a pen as a wipe of it"
 assert control.out contains "var_unheld_still_counted=yes" else "shared-pen: freeing the wipe must not free the pen"
-assert control.out contains "behaviors=32" else "shared-pen: the control must run every behavior this witness names"
+assert control.out contains "behaviors=38" else "shared-pen: the control must run every behavior this witness names"
+assert control.out contains "nonrecursive_wipe_counted=yes" else "shared-pen: a removal without an r flag still removes -- the sixth spelling"
+assert control.out contains "nonrecursive_var_wipe_counted=yes" else "shared-pen: the sixth spelling must read through a held name too"
+assert control.out contains "lock_release_free=yes" else "shared-pen: a lock is released with rm -f, so the widening must leave that rule standing"
+assert control.out contains "device_tmp_free=yes" else "shared-pen: a path begins at a boundary -- /data/local/tmp is not this pier's /tmp"
+assert control.out contains "separator_stops_the_wipe=yes" else "shared-pen: a removal is charged to the path it names, within its own command segment"
+assert control.out contains "separator_still_counted=yes" else "shared-pen: freeing the wipe must not free the pen"
 assert control.out contains "dated_testimony_free=yes" else "shared-pen: dated testimony keeps every word it wrote"
 assert control.out contains "wiping_counted=yes" else "shared-pen: a wipe of a shared pen must be counted separately"
 assert control.out contains "holding_not_wiping=yes" else "shared-pen: a pen only written to is not a pen wiped"
