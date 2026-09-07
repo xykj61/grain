@@ -190,5 +190,61 @@ ck "a record parked on the REMOTE is unlanded" "parked-upstream.kyri	unlanded:pa
 nk "and is not called landed"                  "parked-upstream.kyri	landed"     "$out"
 ck "and the gate fires"                        "verdict=records_unlanded" "$out"
 
+# 36-48. A RECORD IS NOT THE WORK (REDS %510), proven in its OWN repository so every number here is
+# absolute. The pen above deliberately keeps an unlanded record standing from leg 19, so the whole
+# tree verdict cannot return to `ok` in it -- and the leg that pays for this widening is exactly a
+# verdict of `ok` over a box that still holds work, which needs a box holding nothing else.
+g init -q -b main "$pen/box"
+mkdir -p "$pen/box/tools"
+( cd "$pen/box" && echo seed > seed.txt && echo old > tools/kept.sh && g add -A && g commit -qm seed )
+box() { ( cd "$pen/box" && sh "$src" "$@" 2>&1 ); }
+
+# One stash holding all three shapes at once: a NEW file nothing else has, an EDIT to a tracked
+# file, and a record. Together in one stash on purpose -- the classification has to hold when the
+# three arrive mixed, which is how a real lap parks them.
+mkdir -p "$pen/box/session-logs/date/20260101"
+printf 'format session-log-v1\n' > "$pen/box/session-logs/date/20260101/20260101-080808_the-work.kyri"
+echo lost > "$pen/box/tools/lost.sh"
+echo new > "$pen/box/tools/kept.sh"
+( cd "$pen/box" && g stash push -u -m "fleet-round-open 20260101-080809: a lap's unsent work, stashed at the open" >/dev/null 2>&1 )
+out=$(box)
+ck "the non-record paths are counted"          "paths=2"    "$out"
+ck "a file nothing carries is an orphan"       "orphans=1"  "$out"
+ck "an EDIT to a carried file is unread"       "unread=1"   "$out"
+ck "and the record is still counted once"      "records=1"  "$out"
+outall=$(box all)
+ck "the orphan is named with its stash"        "tools/lost.sh	orphan"    "$outall"
+ck "the edited file is not called an orphan"   "tools/kept.sh"            "$outall"
+nk "-- it holds an edit this probe cannot read" "tools/kept.sh	orphan"   "$outall"
+nk "and a record is never also an orphan"      "20260101-080808_the-work.kyri	orphan" "$outall"
+ck "list names the orphan beside the record"   "tools/lost.sh"            "$(box list)"
+
+# THE LEG THAT PAYS FOR THE WIDENING. Land the RECORD alone -- exactly the state a lap reaches when
+# its log ships and its code does not -- and the elder reading calls the whole box clean while the
+# work is still inside it.
+mkdir -p "$pen/box/session-logs/date/20260101"
+printf 'format session-log-v1\n' > "$pen/box/session-logs/date/20260101/20260101-080808_the-work.kyri"
+( cd "$pen/box" && g add -A && g commit -qm "land the record, not the work" )
+out=$(box)
+ck "the record gate closes"                    "unlanded=0" "$out"
+ck "and the verdict reads ok"                  "verdict=ok" "$out"
+ck "over a box that still holds the work"      "orphans=1"  "$out"
+
+# And the orphan lifts the same way a record does: land the FILE, leave the stash exactly where it
+# stands, and the reading falls. It moves to `unread` rather than vanishing, since the path now
+# exists and its stashed edit is no longer readable here -- which is the partition, held.
+( cd "$pen/box" && echo lost > tools/lost.sh && g add -A && g commit -qm "land the work" )
+out=$(box)
+ck "a landed file is no longer an orphan"      "orphans=0"  "$out"
+ck "it counts as unread instead"               "unread=2"   "$out"
+ck "and paths is still their sum"              "paths=2"    "$out"
+ck "with the stash still standing"             "fleet-round-open" "$( g -C "$pen/box" stash list )"
+
+# A hand's own stash is not the fleet's box, and that exclusion has to reach paths as well as
+# records -- legs 13-14 proved it for the record alone, which would have let every file through.
+echo mine > "$pen/box/tools/mine.sh"
+( cd "$pen/box" && g stash push -u -m "wip: my own thing" >/dev/null 2>&1 )
+nk "a hand's own stash adds no path" "tools/mine.sh" "$(box all)"
+
 echo "pass=$pass fail=$fail"
 [ "$fail" -eq 0 ] || exit 1

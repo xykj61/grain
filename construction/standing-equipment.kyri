@@ -1167,6 +1167,13 @@ seated 20260905.153500
 # the RECORD rather than the box, so it goes green by reading a log back and never by dropping a
 # stash. The obvious probe would have been `git log --all`, which reaches refs/stash and reports a
 # staged record's own stash index commit as history.
+# Widened `20260906.194500` (REDS %510): a record is not the work. The session log is the proxy
+# because every lap writes one, and the proxy breaks when a lap's log lands while its code does not
+# -- `unlanded=0 verdict=ok` over a box still holding the files. Four stood here across three
+# stashes, 258 lines, none of them raising `records` by one. The scan now reads every NON-record
+# path too: `orphans` is what nothing outside the box carries, `unread` is what something carries
+# and whose stashed EDIT no path probe can judge. Reported rather than gated, because a COUNT does
+# not travel between checkouts the way `unlanded=0` does; the round open names both drawers.
 guard stash_record
 path tools/s/stash_record_witness.rish
 tier lap

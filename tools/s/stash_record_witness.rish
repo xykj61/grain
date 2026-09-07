@@ -24,10 +24,31 @@
 # WHAT THE GATE DELIBERATELY DOES NOT REACH: the stash itself. A record reads landed whether or not
 # its stash still stands, so the only way to turn this green is to put the record back in the
 # channel. A meter a hand could satisfy by dropping evidence is a meter that teaches deletion.
+#
+# A RECORD IS NOT THE WORK (REDS %510), and it is the second question this gate owes an answer to.
+# The session log serves as the proxy because every lap writes one, which is the one thing true of
+# every lap. The proxy parts from its subject in a single direction -- a lap whose log lands while
+# its code waits behind -- and `unlanded=0 verdict=ok` then stands over a box that still holds the
+# files. So the scan reads every NON-record path by the same probe: `orphans` names what stands on
+# no ref outside the box, `unread` names what a ref does carry and whose stashed EDIT a path probe
+# leaves open, and `paths` is their sum.
+#
+# ORPHANS REPORT RATHER THAN GATE, because a COUNT stays local where a record travels. `unlanded`
+# reads zero on every tree, since a record belongs in the channel everywhere; an orphan count is a
+# per-checkout fact, so a ceiling measured on one ship would red another for parking more work. A
+# file that landed under a different NAME reads as an orphan too, which lifts the live reading above
+# the count of files anybody still wants. Measured `20260906.194500` on this field:
+# `paths=48 orphans=9 unread=39`. SIX of the nine are REDS or ITINERARY fold shelves whose rows
+# stand elsewhere -- four under a shelf a peer named differently, `%508` and `%509` unfolded on the
+# living pin. THREE are work that stands on no ref: `sow_allow_reach_control.sh` (209 lines),
+# `agent_jail_control.sh` and `mount_namespace_probe.sh` -- the pen and the probe that authorize
+# `%446`'s skip, waiting in the box while the guard they were written for landed ahead of them.
+# That is the reading the record gate leaves open, and it is why the second drawer earns a name at
+# every open.
 
 say "stash-record: Language EN -- a session log parked at a round open is a record only once something carries it."
 say "stash-record: Style Gauge, Meter -- every leg run on real repositories in a throwaway pen, never described."
-say "stash-record: Lens TAME -- bound the walk (64 stashes, 512 records), and name the refs rather than sweeping --all."
+say "stash-record: Lens TAME -- bound the walk (64 stashes, 512 records, 2048 paths), and name the refs rather than sweeping --all."
 
 # invariant: run from the repo root, where the scan and its control both live.
 let root = run ["test" "-f" "construction/ITINERARY.md"]
@@ -57,8 +78,20 @@ assert here.out contains "verdict=ok" else "stash-record: the box holds a record
 let excludes = run ["grep" "-F" "-q" "^refs/heads/pier/|^refs/remotes/" "tools/fixtures/s/stash_record_scan.sh"]
 assert excludes.ok else "stash-record: the scan no longer excludes the pier/ park namespace, so a park would read as a landing again"
 
+# invariant: the path walk is present at all. It is reported rather than gated, so a walk that
+# silently vanished would answer `orphans=0` on every tree forever -- the one number a healthy
+# field and a blind instrument spell identically (%463). Its presence is asserted rather than
+# assumed, exactly as the park exclusion above is.
+assert here.out contains "orphans=" else "stash-record: the scan no longer reads the paths beside the records, so the work in the box would read as nothing at all"
+assert here.out contains "unread=" else "stash-record: the scan no longer names the paths it cannot judge, and an unprinted reach is claimed by implication"
+
 # invariant: the round open actually calls the reading, or the report exists and nobody hears it.
 let wired = run ["grep" "-q" "stash_record_scan.sh" "tools/f/fleet_round_open.sh"]
 assert wired.ok else "stash-record: the round open no longer reads the box it fills"
+
+# invariant: and it reads BOTH drawers. The record line was wired at %464; the orphan line is what
+# %510 added, and a reading nothing prints is a reading nobody acts on.
+let wired_orphans = run ["grep" "-q" "orphans=" "tools/f/fleet_round_open.sh"]
+assert wired_orphans.ok else "stash-record: the round open reads the records and not the work beside them"
 
 say "stash-record: GREEN -- every record the dead-letter box holds is carried by the channel too, and a pier/ park is not the channel."

@@ -35,6 +35,43 @@
 # the only way to turn this guard green is to put the record back in the channel, and never to drop
 # the stash. A meter that could be satisfied by deleting evidence is a meter that teaches deletion.
 #
+# WHY A RECORD IS NOT THE WORK (REDS %510). The reading above asks whether the lap's REASONING got
+# out of the box, and it uses the session log because every lap writes one, which no other file can
+# be relied on to be. The proxy breaks in exactly one direction, and it is the expensive one: a lap
+# whose log landed while its code did not reads `unlanded=0 verdict=ok` over a box that still holds
+# the work.
+#
+# Measured on this field `20260906.180000`, with the record gate about to close on its last unlanded
+# row: FOUR files stood in three round-open stashes that this reading counted at nothing at all --
+# 258 lines together, and not one of them raised `records` by one. `stash@{6}` alone held
+# `tools/fixtures/a/agent_jail_control.sh` (141 lines) and `tools/fixtures/m/mount_namespace_probe.sh`
+# (44) -- the pen and the probe that authorize `%446`'s skip -- while `tools/ag/agent_jail_witness.sh`,
+# the guard those two were written for, had already landed without them. That stash's own session log
+# read `landed:worktree`, so this scan said nothing about the stash at all.
+#
+# THE SECOND READING, AND ITS HONEST LIMIT. A path a stash ADDS can be asked the same question the
+# record is asked, by the same probe: does the worktree, or a ref a reader reaches, carry it? A path
+# nothing carries is an ORPHAN -- bytes standing in the box alone. A path something DOES carry cannot
+# be read this way at all, since the stash's change to it is an EDIT and the path exists everywhere
+# regardless; those are counted as `unread` and printed rather than left silent, because a reach
+# nobody prints is claimed by implication (%505).
+#
+# THE TWO READINGS ARE DISJOINT ON PURPOSE. A record is never also counted as an orphan, so
+# `records` and `paths` partition the box and no file is reported twice under two names. The
+# control proves the partition on real numbers rather than trusting the arithmetic here.
+#
+# ORPHANS REPORT, THEY DO NOT GATE, and there are three reasons rather than one.
+#   A count does not travel. `unlanded=0` reads zero on every tree because a record belongs in the
+#   channel everywhere, while an orphan COUNT is a per-checkout, per-hour fact -- so a ceiling
+#   measured here would red a ship that merely parked more work than this one.
+#   An orphan can be honest. A file landed under a different NAME reads as an orphan, and so does an
+#   experiment a hand deliberately abandoned. A gate that reds on ordinary work is a gate somebody
+#   turns off.
+#   And clearing the standing four is a lap rather than a flag flip. Landing a parked pen is work,
+#   so a gate seated the day this reading was written would red every open until that lap ran.
+# So `unlanded` stays the single gate, unmoved, and `tools/f/fleet_round_open.sh` keeps the meaning
+# it greps for. What changes is that the box's other drawer is now NAMED at every open.
+#
 # WHAT A RECORD IS. A session log: a path under `session-logs/` whose basename carries the one-clock
 # stamp `YYYYMMDD-HHMMSS` followed by a sprig or straight by the extension. The sprig is OPTIONAL
 # (REDS %175: 237 logs carry a stamp and no sprig, and a pattern requiring one reads every last of
@@ -77,12 +114,18 @@
 #   landed=N     of those, the ones the worktree or a ref A READER REACHES carries
 #   unlanded=N   of those, the ones no such ref carries -- THE GATE, held at zero
 #   parked=N     of the unlanded, the ones a `pier/` park ref carries -- the diagnosis
+#   paths=N      distinct NON-record paths across those stashes -- the work beside the reasoning
+#   orphans=N    of those, the ones nothing outside the box carries -- reported, never gated
+#   unread=N     of those, the ones something does carry, so whether the stash's EDIT to them
+#                landed cannot be read by a path probe; printed rather than left silent
 #   verdict=ok | records_unlanded
+#
+# `paths` = `orphans` + `unread`, always, since every path is asked exactly one question.
 #
 # USE
 #   sh tools/fixtures/s/stash_record_scan.sh          # report on this repository
-#   sh tools/fixtures/s/stash_record_scan.sh list     # one unlanded record per line: stash, path
-#   sh tools/fixtures/s/stash_record_scan.sh all      # every record, landed or not, with its state
+#   sh tools/fixtures/s/stash_record_scan.sh list     # one unlanded record and one orphan per line
+#   sh tools/fixtures/s/stash_record_scan.sh all      # every record and path, with its state
 #
 # Driven by tools/s/stash_record_witness.rish; proven in a pen by
 # tools/fixtures/s/stash_record_control.sh. Called at the open by tools/f/fleet_round_open.sh, which
@@ -95,6 +138,9 @@ mode=${1:-report}
 # reads the whole of an unbounded box at every round open is a cost every ship pays every lap.
 max_stashes=64
 max_records=512
+# A stash holds far more paths than records -- the field's largest carries fourteen files against
+# one log -- so the path walk gets its own, wider bound rather than borrowing the record one.
+max_paths=2048
 
 test -d .git || { echo "verdict=not_a_repository"; exit 0; }
 
@@ -138,7 +184,11 @@ records=0
 landed=0
 unlanded=0
 parked=0
+paths=0
+orphans=0
+unread=0
 seen=""
+seen_path=""
 lines=""
 
 for sref in $(git stash list --format='%gd' 2>/dev/null); do
@@ -146,7 +196,33 @@ for sref in $(git stash list --format='%gd' 2>/dev/null); do
   case "$subj" in *fleet-round-open*) : ;; *) continue ;; esac
   stashes=$((stashes + 1))
   [ "$stashes" -gt "$max_stashes" ] && break
-  for p in $(stash_paths "$sref" | grep -E '^session-logs/.*[0-9]{8}-[0-9]{6}[_.]'); do
+  held=$(stash_paths "$sref")
+
+  # THE WORK, beside the reasoning. Every path the stash holds that is NOT a record, asked the same
+  # question a record is asked. A path nothing outside the box carries is an orphan; a path
+  # something does carry holds an EDIT no path probe can judge, so it is counted as unread rather
+  # than quietly called safe. The two sets are disjoint, so nothing is reported twice.
+  for p in $(printf '%s\n' "$held" | grep -v -E '^session-logs/.*[0-9]{8}-[0-9]{6}[_.]'); do
+    case " $seen_path " in *" $p "*) continue ;; esac
+    seen_path="$seen_path $p"
+    paths=$((paths + 1))
+    [ "$paths" -gt "$max_paths" ] && break
+    holder=$(carried_by "$p") || true
+    if [ -n "$holder" ]; then
+      unread=$((unread + 1))
+      # An unread path gets a line too, so `all` shows every path the box holds rather than only
+      # the ones this probe can judge. A file the scan looked at and could not answer for is a
+      # different thing from a file it never saw, and a reader deserves to tell them apart.
+      lines="$lines$sref	$p	unread:$holder
+"
+    else
+      orphans=$((orphans + 1))
+      lines="$lines$sref	$p	orphan
+"
+    fi
+  done
+
+  for p in $(printf '%s\n' "$held" | grep -E '^session-logs/.*[0-9]{8}-[0-9]{6}[_.]'); do
     case " $seen " in *" $p "*) continue ;; esac
     seen="$seen $p"
     records=$((records + 1))
@@ -174,8 +250,10 @@ done
 case "$mode" in
   list)
     # Both gate states, since a parked record is unlanded with a reason attached rather than a
-    # third kind of safe. Anchored on the tab, so the match reads the state column alone.
-    printf '%s' "$lines" | grep '	unlanded' || true
+    # third kind of safe -- and every orphan beside them, since a hand reading this list wants
+    # what is IN the box rather than which drawer it is in. Anchored on the tab, so the match
+    # reads the state column alone.
+    printf '%s' "$lines" | grep -E '	unlanded|	orphan' || true
     ;;
   all)
     printf '%s' "$lines"
@@ -187,6 +265,9 @@ echo "records=$records"
 echo "landed=$landed"
 echo "unlanded=$unlanded"
 echo "parked=$parked"
+echo "paths=$paths"
+echo "orphans=$orphans"
+echo "unread=$unread"
 if [ "$unlanded" -gt 0 ]; then
   echo "verdict=records_unlanded"
 else
