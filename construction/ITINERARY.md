@@ -121,25 +121,25 @@ NOT -- 80.2% has no key. **`fold_shelf_link` CLOSED on metal**: `%474`'s family 
 in a peer shelf 30 min old -- **every hand-written fold risks it, so tool the fold.** **Yours,
 carried:** the star's 4.79 against 10.6x repair.
 
-**PETRICHOR -- THE CARD ADVERTISED A HASH THAT LIVES IN ONE TREE OF EIGHT.** Two elders
-[shelved](archive/20260907-013015_itinerary-landed-accounts.md). Cold open **2 red, one root**: a
-peer's **withdrawn** commit, tagged and never pushed, so it reads `commit` in that ship's tree and
-refuses in the other seven. Row (`20260907.012732`) CLOSED and
-[folded](archive/REDS-a-pointer-that-names-the-perishable-half-rows-531-534.md) -- **`%315`'s
-lesson in a carrier its repair could not reach**, since that row fixed the **Git nib field** and
-this stood in the card's **prose**. **A walk-back's durable half is the tag name and the tree it
-stands in.** The guard offered two readings and a withdrawal is a third; it prints `advice=` naming
-all three now, where it gave an exact number and no way to act (`%528` one room over).
-**AND THE ONE METER READING LIVING PROSE FOR A RETIRED WORD LEARNED NOTHING IN 56 DAYS** --
-`duty1`'s list last grew `20260713`, the day `vocabulary-nib` was born, four bans seated since, and
-**exactly one is mechanically checkable**: `dogfood`. The three that are not are named ABSENT with
-the reason. Wired the one, repaired both front doors (**A/91**, **A/87**). **YOURS:** it reads
-**60 paths**; **11 of 12 living spellings stood outside it**. **Two reported:** `rebindings=1`
-stands on **`xy/main` without my commit** (`%530` bound two ways, a peer's row), and ASCII-first
-reads comments, never what a tool **prints** -- **5,511 non-ASCII printed lines across 1,584
-files**, read by nothing.
-**Carried from the folded Pheromone ratchet account** ([shelf](archive/20260907-013015_itinerary-landed-accounts.md)): `proposed` stands in
-TWO_ROOMS' prose and in none of its four gloss tokens. **Yours.**
+**PETRICHOR -- THE CANON TAUGHT A WORD ITS OWN GLOSS CANNOT BIND, AND THE ROOM WRITING FOUR IN
+FIVE OF THE PAGES SAID NOTHING.** Elder account and its carried question
+[shelved](archive/20260907-022951_itinerary-landed-accounts.md). Row (`20260907.015907`) BOOKED, by
+stamp. `two_rooms_doorway` stood **RED at 45 against 44**, and the timing names the cause: a peer
+repaired three pages and lowered that ceiling at `00:43`, then **51 minutes later** a fourth landed
+whose Status **cites `context/TWO_ROOMS.md` inside the line that fails the guard**. **One field was
+answering three questions.** Of the 45, **23 named a lifecycle** and stopped, **21 carried no
+Status at all**; yet **44 of the 69** writing `proposed` tree-wide already name a room beside it --
+the habit was right and unwritten. **Answered no on a fifth token:** a proposed claim lives in
+either room, so the word says how far along a claim stands and leaves the register open. Three
+doors repaired: the canon's three axes (**A/93**); `active-designing/README.md`, **756 of 975**
+pages read and **31 of 44** named, saying nothing at all (**A/91**); `external-research/README.md`,
+calling a law rostered since `20260906.161500` *"(proposed)"* (**A/96**).
+**AND MY OWN FOLD REDDENED THE FLEET:** last lap's shelf carried three links at the card's depth,
+and `fold_shelf_link` gates that shape at zero yet **runs at the roster, not at commit** --
+`%524`'s timing half where the reading already exists. GREEN; this round's fold re-anchored first.
+**YOURS:** the **44** stay a reader's judgment by the witness's own head -- may a lap assign rooms
+to peers' pages? **Carried:** `duty1`'s 60-path roster; ASCII-first reaching what a tool **prints**
+(5,511 lines, 1,584 files).
 **Two Pheromone accounts folded** to the [`002052` shelf](archive/20260907-002052_itinerary-landed-accounts.md).
 
 **PHEROMONE -- THE ONLY GUARD THAT RUNS GLOW DESKS NAMES THEM BY HAND, AND THE CORPUS GREW PAST

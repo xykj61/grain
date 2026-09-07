@@ -4,7 +4,7 @@
 **Language:** EN
 **Style:** Gauge, Field setting (see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md))
 **Voice:** Kyri
-**Status:** Proposed -- external research. The numbers are measured and bound by a witness; the design reading is proposed (`context/TWO_ROOMS.md`).
+**Status:** Proposed -- external research, **mixed**. The numbers are measured and bound by a witness; the design reading is proposed (`context/TWO_ROOMS.md`).
 **Instrument:** `tools/fixtures/t/topology_churn_scan.sh` -- witness `tools/t/topology_churn_witness.rish` -- control `tools/fixtures/t/topology_churn_control.sh`
 **Elder:** [`what-it-costs-to-decide-the-next-hop`](20260906-195719_what-it-costs-to-decide-the-next-hop.md), whose coverage section named this gap and left it open
 

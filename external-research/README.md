@@ -1,7 +1,7 @@
 # The External-Research Stack
 
 **Language:** EN
-**Last updated:** `20260906.212046` (the two topology papers seated in the list, recovered from the dead-letter box)
+**Last updated:** `20260907.015907` (the register law named as seated and read on every cadence pass, where this door had called it proposed; the room token taught in the same status line -- elder refresh `20260906.212046`, the two topology papers seated in the list)
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Status:** Foundation
 **Molted:** `20260827.173952` -- in place, under checkpoint `3a606a8ac9`
@@ -24,7 +24,7 @@ This folder is allowed to be experimental, informal, and overgrown at times. It 
 
 This file is the foundation stone. It rests at the bottom of the stack and explains how the stack works, so that anyone who opens this folder for the first time understands the shape of it at a glance.
 
-**Research for understanding -- advice stays elsewhere.** Surveys and memos here frame understanding only -- they recommend no purchase, no treasury action, and no licensed professional course. Policy and money choices belong to Kaeden in their own chapter. Each dated exploration carries the boundary in its status line. Filing law: [`../ORGANIZING.md`](../ORGANIZING.md) - register law (proposed): [`../context/TWO_ROOMS.md`](../context/TWO_ROOMS.md).
+**Research for understanding -- advice stays elsewhere.** Surveys and memos here frame understanding only -- they recommend no purchase, no treasury action, and no licensed professional course. Policy and money choices belong to Kaeden in their own chapter. Each dated exploration carries the boundary in its status line. Filing law: [`../ORGANIZING.md`](../ORGANIZING.md) - register law, seated and read on every cadence pass by [`../tools/t/two_rooms_doorway.rish`](../tools/t/two_rooms_doorway.rish): [`../context/TWO_ROOMS.md`](../context/TWO_ROOMS.md). That same status line names the room -- `research for understanding` where a page binds no witness, `mixed` where its numbers are witness-bound and its reading is proposed.
 
 ---
 
