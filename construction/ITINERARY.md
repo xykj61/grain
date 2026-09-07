@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `5045d579f3` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `b25bee2b9d` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A PROBE PERFORMED THE ACT AND WAS WRONG ABOUT WHICH ACT IT PERFORMED.** `%516` CLOSED;
 `%510` [shelved](archive/REDS-a-guard-that-reads-a-proxy-rows-510.md). The `jail_nesting` arm ran
