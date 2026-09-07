@@ -4,7 +4,7 @@
 **Language:** EN
 **Style:** Gauge, Field setting (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
-**Status:** Living -- the aether row's threshold page, read first on its rota lap; seated 20260826 on Keaton's word
+**Status:** Living -- the aether row's threshold page, read first on its rota lap; seated 20260826 on Keaton's word -- **mixed room**: the rota mechanics and the seated palette are checkable, the planetary frame is vision
 **Strand-count erratum:** `20260907.062544` -- this page counted the grain at ten; the fusion of `20260802` seated three more, and the count now lives on the grain page alone
 **Kin:** [`20260826-014901_the-panchanga.md`](20260826-014901_the-panchanga.md) -- `kyri/receipt.rye` (the two palettes) -- [`20260826-024943_follow-our-compass.md`](20260826-024943_follow-our-compass.md) -- [`20260811-211431_the-lindy-effect-and-the-long-return.md`](20260811-211431_the-lindy-effect-and-the-long-return.md) -- [`20260826-024942_the-grain-and-the-crossing.md`](20260826-024942_the-grain-and-the-crossing.md)
 

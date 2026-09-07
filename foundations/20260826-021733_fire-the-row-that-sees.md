@@ -4,7 +4,7 @@
 **Language:** EN
 **Style:** Gauge, Field setting (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
-**Status:** Living -- the fire row's threshold page, read first on its rota lap; seated 20260826 on Keaton's word
+**Status:** Living -- the fire row's threshold page, read first on its rota lap; seated 20260826 on Keaton's word -- **mixed room**: the rota mechanics and the seated palette are checkable, the planetary frame is vision
 **Kin:** [`20260826-014901_the-panchanga.md`](20260826-014901_the-panchanga.md) -- `kyri/receipt.rye` (the two palettes) -- [`20260816-214652_standfast-the-stopped-line.md`](20260816-214652_standfast-the-stopped-line.md) -- [`20260729-224828_reds-first-and-the-allocation.md`](20260729-224828_reds-first-and-the-allocation.md) -- [`20260818-081438_the-three-depths-of-removal.md`](20260818-081438_the-three-depths-of-removal.md)
 
 Fire is the row of Mars, and its question is the unflinching one: what must stop,

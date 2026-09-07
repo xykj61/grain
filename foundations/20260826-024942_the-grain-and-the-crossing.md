@@ -9,7 +9,7 @@
 **Language:** EN
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Lens:** TAME -- safety, performance, joy
-**Status:** Canon -- vocabulary law beside the silo principle and the graduation rule - living accretion
+**Status:** Canon -- vocabulary law beside the silo principle and the graduation rule - living accretion -- **checkable room**: vocabulary law and seated strands, each citing a witness or a REDS row
 
 Strand-count erratum `20260907.062544` -- the count is stated here and derived by `tools/g/grain_strand_count_witness.rish`; ten living sentences had carried the elder total since the fusion seated three more.
 

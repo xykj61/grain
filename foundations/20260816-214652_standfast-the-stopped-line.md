@@ -6,6 +6,7 @@
 **Language:** EN
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
+**Status:** Living -- **checkable room**: the discipline is law, and `construction/REDS.md` records each stop it bought.
 **Kin:** [`reds-first`](20260729-224828_reds-first-and-the-allocation.md) -- reds-first names what the allocation does *after* a red; Standfast names the *stop itself*.
 **Gratitude:** [`../gratitude/toyota-production-system.md`](../gratitude/toyota-production-system.md) -- the manufacturing lineage that first stopped a line for a defect, studied clean-room and given our own word. The teachers and their terms are named there, and there alone.
 
