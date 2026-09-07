@@ -102,9 +102,11 @@ say adoption.out
 # A FLOOR THAT ONLY RISES, which is the mirror of this tree's usual ratchet. The population counted
 # here is the good one, so the number moves the other way: raise it whenever a lane adopts, and it
 # may never fall. Seated at 4 on 20260907 -- the three Mantra controls that met the fault, plus the
-# helper's own control. The remaining controls are named by
-# `sh tools/fixtures/p/plant_adoption_scan.sh --list`, and each falls on touch.
-assert adoption.out contains "sourcing=4" else "plant: adoption is a floor that only rises -- four controls source the plant law; raise this line when a lane adopts, never lower it"
+# helper's own control. RAISED TO 5 on 20260907 by the research lane, whose
+# `tools/fixtures/t/topology_growth_control.sh` was written against the law rather than repaired
+# into it: the first control to adopt at birth rather than on touch. The remaining controls are
+# named by `sh tools/fixtures/p/plant_adoption_scan.sh --list`, and each falls on touch.
+assert adoption.out contains "sourcing=5" else "plant: adoption is a floor that only rises -- five controls source the plant law; raise this line when a lane adopts, never lower it"
 assert adoption.out contains "verdict=ok" else "plant: the adoption arithmetic must sum before it is believed"
 
-say "plant: GREEN -- one implementation, imported by four controls, proven from both sides on metal"
+say "plant: GREEN -- one implementation, imported by five controls, proven from both sides on metal"
