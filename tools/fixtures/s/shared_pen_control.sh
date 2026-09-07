@@ -133,6 +133,33 @@ printf 'let sweep = run ["rm" "-rf" "/tmp/rish_pen"]\n' > "$pen/rishwipe/tools/f
 ( cd "$pen/rishwipe" && git add -A >/dev/null 2>&1 && git commit -qm rw >/dev/null 2>&1 )
 claim rishi_wipe_counted 1 "$(readout rishwipe wiping_files)"
 
+# --- 12b-12e. a pen held in a variable and wiped on another line ---------------------------------
+# The shape REDS `%544` found: the assignment and the `rm -rf` are separate lines, so a line-scoped
+# reading called the file a hold. Proven in both spellings this tree writes -- a shell `"$pen"` and
+# a Rishi bare word in a list -- and the tracker is proven NOT to be a hole from both sides: a
+# variable named by `mktemp` is not a pen, and a wipe of some other name in a file that also holds
+# one is not a wipe of the pen.
+newtree varwipe
+printf '#!/bin/sh\npen="/tmp/held_shell_pen"\nmkdir -p "$pen"\nrm -rf "$pen"\n' > "$pen/varwipe/tools/f/v.sh"
+( cd "$pen/varwipe" && git add -A >/dev/null 2>&1 && git commit -qm vw >/dev/null 2>&1 )
+claim var_wipe_counted 1 "$(readout varwipe wiping_files)"
+
+newtree rishvarwipe
+printf 'let home = "/tmp/held_rish_pen"\nlet sweep = run ["rm" "-rf" home]\n' > "$pen/rishvarwipe/tools/f/v.rish"
+( cd "$pen/rishvarwipe" && git add -A >/dev/null 2>&1 && git commit -qm rvw >/dev/null 2>&1 )
+claim rishi_var_wipe_counted 1 "$(readout rishvarwipe wiping_files)"
+
+newtree varmktemp
+printf '#!/bin/sh\npen=$(mktemp -d /tmp/case.XXXXXX)\nrm -rf "$pen"\n' > "$pen/varmktemp/tools/f/v.sh"
+( cd "$pen/varmktemp" && git add -A >/dev/null 2>&1 && git commit -qm vm >/dev/null 2>&1 )
+claim var_mktemp_free 0 "$(readout varmktemp wiping_files)"
+
+newtree varunheld
+printf '#!/bin/sh\npen="/tmp/only_written_pen"\nmkdir -p "$pen"\nrm -rf "$scratch"\n' > "$pen/varunheld/tools/f/v.sh"
+( cd "$pen/varunheld" && git add -A >/dev/null 2>&1 && git commit -qm vu >/dev/null 2>&1 )
+claim var_wipe_unheld_free 0 "$(readout varunheld wiping_files)"
+claim var_unheld_still_counted 1 "$(readout varunheld constant_pen_files)"
+
 # --- 13-14. the files ceiling, proven from both sides ---------------------------------------------
 C_FILES=1 runs_ok planted && claim files_at_ceiling_free yes yes || claim files_at_ceiling_free yes no
 C_FILES=0 runs_ok planted && claim files_over_ceiling_refused yes no || claim files_over_ceiling_refused yes yes

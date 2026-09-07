@@ -39,11 +39,21 @@
 # which guard at which second. This proves the shape that makes contention possible, which is the
 # only half a reading of the source can prove.
 #
-# AND THE WIPE READING IS LINE-SCOPED. A file that assigns a constant pen to a variable on one line
-# and `rm -rf`s that variable on another reads as a `hold` rather than a `wipe`, which under-reads
-# the lethal subset. `tlb_reach_census.sh` was written exactly that way. Measured `20260907.000549`
-# across the 54 files this scan counts as holding: ZERO carry that shape now, so it is named here
-# rather than gated -- a variable tracker for one live instance is a cost with nothing to buy.
+# THE WIPE READING WAS LINE-SCOPED, AND THAT HID A THIRD OF THE LETHAL SUBSET (REDS `%544`,
+# repaired `20260907`). A file assigning a constant pen on one line -- `let pen = "/tmp/name"` --
+# and wiping it sixteen lines on -- `run ["rm" "-rf" pen]` -- carries no `/tmp/` token on the
+# wiping line, so the site read `hold`. The paragraph that stood here declined the repair on a
+# measurement, *ZERO carry that shape now*, and the measurement was taken by the same line-scoped
+# reading it was defending: a limitation written down honestly still hides its own size, because
+# the sentence naming a blind spot is written from inside it. Read by hand across every `hold`
+# file, the honest population was **six** while this scan printed **four**.
+#
+# So the reading takes TWO PASSES over each file. The first collects every variable assigned a
+# constant pen, by the one shape all five spellings share -- a name, an `=`, an optional quote, the
+# token. The second counts a `rm -rf` line naming any of those variables as a wipe of that pen, in
+# the three spellings this tree writes: `$pen`, `${pen}`, and the bare word a Rishi list passes. It
+# errs toward counting, as every other rule here does. The repair found exactly the two files the
+# hand-count named, which is the corroboration worth having.
 #
 # USAGE
 #   sh tools/fixtures/s/shared_pen_scan.sh
@@ -77,8 +87,17 @@ root=${SHARED_PEN_ROOT:-.}
 # rather than rarely: all eight ships had a roster pass live at one instant, their starts spread
 # over 164 seconds against a pass of 1,422 seconds, so the passes overlap almost entirely and this
 # guard's own "not proven -- that any pen is ever actually contended" is answered for this pier.
+# RE-SEATED 20260907 to 6, and this is the one raise this ratchet has taken. The tree did not get
+# worse; the meter started reading what was already there. Four was published against a population
+# this scan could not fully see (`%544` above), so holding the elder number would gate on a
+# measurement known to be wrong -- and the two files it newly sees were verified by hand before the
+# number moved: `tools/i/ios_app_shell_witness.rish` and `tools/m/macos_app_bundle_witness.rish`,
+# both rostered, both wiping `/tmp/grain_ios_shell_pen` and `/tmp/grain_macos_bundle_pen` through a
+# `let`-held name. Both belong to the LOCA surface lane and both need a booted simulator to prove
+# GREEN, so they are named here for their owner rather than edited blind from a Linux pier. This
+# ceiling falls to 4 the moment they take `mktemp -d` pens, and to 0 when the other four do.
 files_ceiling=${SHARED_PEN_FILES_CEILING:-54}
-wipe_ceiling=${SHARED_PEN_WIPE_CEILING:-4}
+wipe_ceiling=${SHARED_PEN_WIPE_CEILING:-6}
 
 cd "$root" 2>/dev/null || { echo "verdict=no_root"; echo "refused: $root is not a directory" >&2; exit 1; }
 git rev-parse --git-dir >/dev/null 2>&1 || { echo "verdict=no_git"; echo "refused: this scan reads git ls-files" >&2; exit 1; }
@@ -118,15 +137,59 @@ hits=$(printf '%s\n' "$sources" | while read -r f; do
     # 20260906.233225 at "the probe no longer builds" while running GREEN alone one minute later.
     # Substituting a SAME-LENGTH stand-in keeps every column where it stood, so the quote rule and
     # the dollar lookahead below read true positions and there is one matcher rather than two.
-    { line = $0; gsub(/\$\{TMPDIR:-\/tmp\}/, "___________/tmp", line) }
+    function norm(l) { gsub(/\$\{TMPDIR:-\/tmp\}/, "___________/tmp", l); return l }
+    function wipes(l) { return (l ~ /rm[ \t]+-[a-zA-Z]*[rR]/ || l ~ /"rm"[ \t]+"-[a-zA-Z]*[rR]/) }
+    # PASS ONE READS THE ASSIGNMENTS, so a wipe one line below its pen is read as a wipe. See the
+    # header: the elder reading was line-scoped, and it hid two of the six wipers in this tree.
+    FNR == NR {
+      line = norm($0)
+      if (line ~ /^[ \t]*#/) next
+      if (line ~ /mktemp|XXXXXX/) next
+      s = line; off = 0
+      while (match(s, /\/tmp\/[A-Za-z0-9_.\-]+/)) {
+        rs = RSTART; rl = RLENGTH
+        tok = substr(s, rs, rl)
+        next_ch = substr(s, rs + rl, 1)
+        abs_pos = off + rs
+        off = off + rs + rl - 1
+        s = substr(s, rs + rl)
+        if (tok ~ /\$/) continue
+        if (next_ch == "$") continue
+        if (quoted(line, abs_pos)) continue
+        # The assignment is read from the text immediately BEFORE the token, which is the one shape
+        # every spelling shares: `pen=/tmp/x`, `pen="/tmp/x"`, `let pen = "/tmp/x"`, `local pen=`.
+        pre = substr(line, 1, abs_pos - 1)
+        if (match(pre, /[A-Za-z_][A-Za-z0-9_]*[ \t]*=[ \t]*"?[ \t]*$/)) {
+          name = substr(pre, RSTART, RLENGTH)
+          sub(/[ \t]*=.*$/, "", name)
+          held[name] = tok
+        }
+      }
+      next
+    }
+    {
+      line = norm($0)
+    }
     line ~ /^[ \t]*#/ { next }
     line ~ /mktemp|XXXXXX/ { next }
     {
+      # A WIPE OF A HELD PEN IS A WIPE. `rm -rf "$pen"` and `run ["rm" "-rf" pen]` carry no /tmp/
+      # token of their own, so the elder line-scoped reading called them holds and the lethal
+      # subset read low. The name is matched at word boundaries in any of its three spellings --
+      # $pen, ${pen}, and the bare word a Rishi list passes -- and the reading errs toward
+      # counting, as every other rule here does.
+      if (wipes(line)) {
+        for (name in held) {
+          if (line ~ ("(^|[^A-Za-z0-9_])[$]?[{]?" name "[}]?([^A-Za-z0-9_]|$)")) {
+            print F "\t" "wipe" "\t" held[name]
+          }
+        }
+      }
       s = line
       off = 0
       # A wipe is read off the WHOLE line rather than the token, since the `rm -rf` and its target
       # are separate words and Rishi spells it as a list: run ["rm" "-rf" home].
-      wipe = (line ~ /rm[ \t]+-[a-zA-Z]*[rR]/ || line ~ /"rm"[ \t]+"-[a-zA-Z]*[rR]/) ? "wipe" : "hold"
+      wipe = wipes(line) ? "wipe" : "hold"
       while (match(s, /\/tmp\/[A-Za-z0-9_.\-]+/)) {
         tok  = substr(s, RSTART, RLENGTH)
         # READ THE CHARACTER AFTER THE TOKEN, not only the token. The token class stops at `$`, so
@@ -150,9 +213,8 @@ hits=$(printf '%s\n' "$sources" | while read -r f; do
         print F "\t" wipe "\t" tok
       }
     }
-  ' "$f"
+  ' "$f" "$f"
 done)
-
 sites=$(printf '%s\n' "$hits" | grep -c . || true)
 files=$(printf '%s\n' "$hits" | grep . | cut -f1 | sort -u | grep -c . || true)
 wipe_files=$(printf '%s\n' "$hits" | grep . | awk -F'\t' '$2=="wipe"{print $1}' | sort -u | grep -c . || true)

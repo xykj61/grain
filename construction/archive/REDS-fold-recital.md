@@ -415,3 +415,5 @@ at a closed fold.*
 *Row %548 folded to [`REDS-a-leader-alive-and-orphaned-rows-548.md`](REDS-a-leader-alive-and-orphaned-rows-548.md) on `20260907.074209`, **BOOKED** -- a liveness reading is fixed at whatever generation its author could see, and the launcher keeps moving which process that is -- third firing after %387 and %528.*
 
 *Row %536 folded to [`REDS-a-number-is-a-view-and-the-stamp-is-the-key-rows-536.md`](REDS-a-number-is-a-view-and-the-stamp-is-the-key-rows-536.md) on `20260907.081454`, **BOOKED** -- coverage and uniqueness are two properties of one spine, and the ledger's own guard held only the first.*
+
+*Row %544 folded to [`REDS-the-guard-that-declined-its-own-repair-rows-544.md`](REDS-the-guard-that-declined-its-own-repair-rows-544.md) on `20260907.075812`, **BOOKED** -- a guard declined a repair on a number its own broken reading gave it.*
