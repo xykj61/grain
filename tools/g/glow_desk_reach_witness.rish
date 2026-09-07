@@ -68,6 +68,19 @@ assert scan.out contains "uncovered_sampled_ceiling=46" else "glow_desk_reach: t
 # invariant: the printed sum is its two parts added, never a third spelled number that could
 # drift from them.
 assert scan.out contains "uncovered_ceiling=46" else "glow_desk_reach: the sum ceiling must equal 0 + 46"
+# invariant: the fourth statement is read, and every promise it makes is kept. A sampled desk may
+# name in its own head the baked desk proving the same law; 35 desks carry that marker and every
+# one of them is uncovered, so the marker's population is exactly the set the coverage reading
+# calls empty. The three gates hold what the marker PROMISES -- the twin exists, something runs
+# it, and the two bodies still say the same thing -- while the split says only what kind of debt
+# each uncovered desk is. A twinned desk stays uncovered: its argv entry path is exercised by
+# nothing, and the total does not move.
+assert scan.out contains "twin_declared=35" else "glow_desk_reach: want 35 desks naming a twin -- ${scan.out}"
+assert scan.out contains "twin_absent=0" else "glow_desk_reach: a desk names a twin that stands nowhere -- ${scan.out}"
+assert scan.out contains "twin_uncovered=0" else "glow_desk_reach: a desk defers to a law nothing proves -- ${scan.out}"
+assert scan.out contains "twin_body_differs=0" else "glow_desk_reach: a twin's body drifted from the desk naming it -- ${scan.out}"
+assert scan.out contains "uncovered_twinned=35" else "glow_desk_reach: want the twinned half at 35 -- ${scan.out}"
+assert scan.out contains "uncovered_alone=11" else "glow_desk_reach: want the untwinned half at 11 -- ${scan.out}"
 assert scan.out contains "verdict=ok" else "glow_desk_reach: the scan refused -- ${scan.out}"
 
 # invariant: both refusal paths are reachable. A ceiling proven only in the passing direction
@@ -78,10 +91,12 @@ assert scan.out contains "verdict=ok" else "glow_desk_reach: the scan refused --
 # proven instead by taking the second instrument away: a runner selecting nothing leaves exactly
 # the 83 desks the elder witness never named run by nothing, on the live tree, and the gate fires.
 # This is the reading as it stood one lap ago, made reachable on purpose rather than remembered.
-let mute = run ["sh" "-c" "echo '#!/bin/sh' > /tmp/glow_desk_reach_mute.sh; echo 'exit 0' >> /tmp/glow_desk_reach_mute.sh"]
-assert mute.ok else "glow_desk_reach: could not write the silent runner -- ${mute.err}"
-
-let under_bare = run ["sh" "-c" "GLOW_DESK_RUNNER=/tmp/glow_desk_reach_mute.sh sh tools/fixtures/g/glow_desk_reach_scan.sh"]
+# The silent runner is written into a pen the kernel names, used, and swept inside ONE command, so
+# no two ships can choose the same path. A constant /tmp name is a name every ship chose, and one
+# ship's sweep would delete another ship's plant mid-read (REDS %549's class, one room over).
+# Folding the plant into the reading also strengthens it: covered_runner=0 below proves the mute
+# script was written AND honored, where a separate write only proved a file appeared.
+let under_bare = run ["sh" "-c" "d=$(mktemp -d); printf '#!/bin/sh\nexit 0\n' > $d/mute.sh; chmod +x $d/mute.sh; GLOW_DESK_RUNNER=$d/mute.sh sh tools/fixtures/g/glow_desk_reach_scan.sh; s=$?; rm -rf $d; exit $s"]
 assert (under_bare.ok == false) else "glow_desk_reach: with the derived runner silent, the desks it alone runs must refuse at a bare ceiling of zero"
 assert under_bare.out contains "verdict=over_bare_ceiling" else "glow_desk_reach: want the bare ceiling refusal named -- ${under_bare.out}"
 assert under_bare.out contains "covered_runner=0" else "glow_desk_reach: want the silent runner counted as covering nothing -- ${under_bare.out}"
@@ -89,12 +104,9 @@ assert under_bare.out contains "covered_runner=0" else "glow_desk_reach: want th
 # invariant: a runner that cannot answer refuses the whole reading. An empty selection and an
 # absent instrument look identical in the arithmetic and mean opposite things, so the scan names
 # the fault rather than letting a broken runner read as clean coverage of nothing.
-let no_runner = run ["sh" "-c" "GLOW_DESK_RUNNER=/tmp/glow_desk_reach_absent.sh sh tools/fixtures/g/glow_desk_reach_scan.sh"]
+let no_runner = run ["sh" "-c" "d=$(mktemp -d); GLOW_DESK_RUNNER=$d/absent.sh sh tools/fixtures/g/glow_desk_reach_scan.sh; s=$?; rmdir $d; exit $s"]
 assert (no_runner.ok == false) else "glow_desk_reach: an absent derived runner must refuse"
 assert no_runner.err contains "no derived runner" else "glow_desk_reach: want the absent runner named -- ${no_runner.err}"
-
-let sweep = run ["rm" "-f" "/tmp/glow_desk_reach_mute.sh"]
-assert sweep.ok else "glow_desk_reach: could not clear the silent runner -- ${sweep.err}"
 
 let under_sampled = run ["sh" "-c" "GLOW_DESK_UNCOVERED_SAMPLED_CEILING=45 sh tools/fixtures/g/glow_desk_reach_scan.sh"]
 assert (under_sampled.ok == false) else "glow_desk_reach: a sampled ceiling one under the live reading must refuse"
@@ -116,7 +128,7 @@ assert scan.out contains "stem_collision=" else "glow_desk_reach scan printed no
 
 # invariant: the reading itself is proven on real desk rooms rather than trusted. The control
 # builds miniature desk rooms in a throwaway pen and plants each refusal, then lifts it --
-# 81 behaviors, both sides of every gate and of both ceilings, and the two gates proven
+# 103 behaviors, both sides of every gate and of all four ceilings, and the gates proven
 # independent: a sample-taking desk refuses at its own ceiling while the bare ceiling stands at
 # zero, which is the reading the elder sum could not express. The last of them is the one that
 # earns the prune: a permission whose only file is a build-cache leftover reads phantom, where the
@@ -124,5 +136,6 @@ assert scan.out contains "stem_collision=" else "glow_desk_reach scan printed no
 let control = run ["sh" "tools/fixtures/g/glow_desk_reach_control.sh"]
 assert control.ok else "glow_desk_reach control failed: ${control.out}"
 assert control.out contains "fail=0" else "glow_desk_reach control reported failures: ${control.out}"
+assert control.out contains "pass=103" else "glow_desk_reach: want 103 control behaviors -- ${control.out}"
 
-say "GREEN: glow_desk_reach -- markers agree, no phantom, no contradiction, no dead permission, covered read from both instruments as a union, zero bare-runnable desks run by nothing and 46 sample-taking at their ceilings, the room named apart from the corpus, both refusals proven, 81 control behaviors green."
+say "GREEN: glow_desk_reach -- markers agree, no phantom, no contradiction, no dead permission, covered read from both instruments as a union, zero bare-runnable desks run by nothing and 46 sample-taking at their ceilings, the room named apart from the corpus, both refusals proven, the twin marker read and its three promises held at zero, 103 control behaviors green."

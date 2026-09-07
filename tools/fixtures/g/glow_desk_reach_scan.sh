@@ -43,7 +43,7 @@
 # one place a check cannot stand. This meter puts it somewhere a lap can feel it.
 #
 # WHAT IT READS. Every *.glow under glow/gen/, and the desk paths named by the desk witness.
-# Seven readings come out; four are gated at zero and one is the ratchet.
+# Readings come out named below; seven are gated at zero and four are ratchets.
 #
 #   desks           every *.glow under glow/gen/, this room's whole population
 #   norun_by_name   desks whose stem carries `refuse` -- the contract written in the name
@@ -62,6 +62,12 @@
 #   sample_permitted  desks in this room the worker will take a sample for
 #   uncovered_sampled uncovered desks the worker only runs WITH a sample  -- RATCHET
 #   uncovered_bare  bare-runnable desks NOTHING runs                 -- GATED AT ZERO
+#   twin_declared   uncovered desks naming a matching fixture desk in their own head
+#   twin_absent     of those, the named twin standing nowhere        -- GATED AT ZERO
+#   twin_uncovered  of those, the named twin that nothing runs       -- GATED AT ZERO
+#   twin_body_differs  the desk and its twin no longer one law       -- GATED AT ZERO
+#   uncovered_twinned  the twinned half of uncovered_sampled          -- RATCHET
+#   uncovered_alone    the untwinned half, the dearer debt            -- RATCHET
 #   corpus_glow     every *.glow in the tree, all rooms
 #   corpus_outside  those standing outside this room
 #   stem_collision  stems two or more *.glow files share
@@ -335,6 +341,64 @@ uncovered_sampled=$(wc -l < "$WORK/uncovered_sampled" | tr -d ' ')
 comm -23 "$WORK/uncovered" "$WORK/sample_permitted" > "$WORK/uncovered_bare"
 uncovered_bare=$(wc -l < "$WORK/uncovered_bare" | tr -d ' ')
 
+# THE FOURTH STATEMENT, WRITTEN IN THE DESKS AND READ BY NOTHING UNTIL 20260907.131350.
+#
+# A sampled desk's head can carry one more line: `Matching fixture desk: <stem>.glow (baked
+# welcome)`. It names the desk that proves the same law with the sample baked in rather than taken
+# from argv. Measured the day this reading landed, that marker stands on exactly 35 desks in a
+# corpus of 352 -- and all 35 of them are uncovered. Not one covered desk carries it. A marker
+# whose population is exactly the set the coverage meter calls empty is the hand answering the
+# meter's own question in the one place the meter never looked, which is REDS %532's braid with a
+# fourth strand in it.
+#
+# WHAT THE MARKER BUYS, stated no larger than it is. A twinned desk is still uncovered and still
+# counted so: its ARGV entry path is exercised by nothing. What the twin proves is the LAW, and
+# the proof is checkable rather than trusted -- twin_body_differs below compares the two files
+# with their `::` heads stripped, and all 35 pairs are byte-identical today. So the split says
+# what KIND of debt each uncovered desk is, and changes no total.
+#
+# RESOLVED BY STEM ACROSS THE ROOM, NEVER BY DIRECTORY. glow/gen/s/sample-u32.glow names
+# cast-u32.glow, which lives in glow/gen/c/. A first draft of this reading resolved the twin
+# beside its citer and produced one false twin_absent -- the same shape as the LC_ALL collation
+# error this scan caught before it shipped, and caught the same way, by running it.
+: > "$WORK/twin_absent"
+: > "$WORK/twin_uncovered"
+: > "$WORK/twin_body_differs"
+: > "$WORK/uncovered_twinned"
+while IFS= read -r desk; do
+  line=$(grep -m1 'Matching fixture desk:' "$desk" 2>/dev/null || true)
+  [ -n "$line" ] || continue
+  twin=$(printf '%s' "$line" | sed -n 's/.*Matching fixture desk: *\([A-Za-z0-9_-]*\)\.glow.*/\1/p')
+  if [ -z "$twin" ]; then
+    printf '%s\t(unreadable marker)\n' "$desk" >> "$WORK/twin_absent"
+    continue
+  fi
+  tp=$(grep -E "/${twin}[.]glow$" "$WORK/desks" | head -1)
+  if [ -z "$tp" ]; then
+    printf '%s\t%s.glow\n' "$desk" "$twin" >> "$WORK/twin_absent"
+    continue
+  fi
+  printf '%s\n' "$desk" >> "$WORK/uncovered_twinned"
+  grep -qxF "$tp" "$WORK/covered" || printf '%s\t%s\n' "$desk" "$tp" >> "$WORK/twin_uncovered"
+  # The bodies, with every `::` head line and blank line dropped. A twin's claim is that it
+  # expresses the same law, and this is that claim checked rather than believed -- the
+  # docs-implementation-sync duty applied to a marker inside a program.
+  a=$(grep -v '^::' "$desk" | sed '/^[[:space:]]*$/d')
+  b=$(grep -v '^::' "$tp" | sed '/^[[:space:]]*$/d')
+  [ "$a" = "$b" ] || printf '%s\t%s\n' "$desk" "$tp" >> "$WORK/twin_body_differs"
+done < "$WORK/uncovered_sampled"
+sort -o "$WORK/uncovered_twinned" "$WORK/uncovered_twinned"
+uncovered_twinned=$(wc -l < "$WORK/uncovered_twinned" | tr -d ' ')
+# twin_declared and uncovered_twinned are one count read two ways, and it is spelled ONCE. Every
+# desk carrying a readable, resolvable marker in this set is by construction uncovered, since the
+# set walked is uncovered_sampled. Deriving the second from the first keeps them from drifting.
+twin_declared=$uncovered_twinned
+twin_absent=$(wc -l < "$WORK/twin_absent" | tr -d ' ')
+twin_uncovered=$(wc -l < "$WORK/twin_uncovered" | tr -d ' ')
+twin_body_differs=$(wc -l < "$WORK/twin_body_differs" | tr -d ' ')
+comm -23 "$WORK/uncovered_sampled" "$WORK/uncovered_twinned" > "$WORK/uncovered_alone"
+uncovered_alone=$(wc -l < "$WORK/uncovered_alone" | tr -d ' ')
+
 # TWO CEILINGS, BECAUSE ONE NUMBER WAS HOLDING TWO COSTS. The ceilings live here rather than in
 # the witness, so a control can move them by name and prove the refusal from both sides, and a
 # ceiling only falls. What changed on 20260907.020441 is that there are two of them:
@@ -363,6 +427,18 @@ UNCOVERED_BARE_CEILING=${GLOW_DESK_UNCOVERED_BARE_CEILING:-0}
 UNCOVERED_SAMPLED_CEILING=${GLOW_DESK_UNCOVERED_SAMPLED_CEILING:-46}
 UNCOVERED_CEILING=$((UNCOVERED_BARE_CEILING + UNCOVERED_SAMPLED_CEILING))
 
+# The sampled debt splits again on 20260907.131350, by the marker the desks already carry. The two
+# halves cost different things, which is the same reason the elder single ceiling of 129 split:
+#   uncovered_twinned  35 -- the LAW is proven by a named, covered, body-identical twin; what
+#                            nothing exercises is the argv entry path. Closing one costs a run
+#                            line and a chosen sample.
+#   uncovered_alone    11 -- no twin named. Closing one costs the judgment AND the reading of
+#                            what law it should prove, which is the dearer half.
+# The sum stays printed and DERIVED, never spelled, so it cannot disagree with its parts, and the
+# elder uncovered_sampled ceiling stays exactly where it stood -- a split may not loosen a gate.
+UNCOVERED_TWINNED_CEILING=${GLOW_DESK_UNCOVERED_TWINNED_CEILING:-35}
+UNCOVERED_ALONE_CEILING=${GLOW_DESK_UNCOVERED_ALONE_CEILING:-11}
+
 verdict=ok
 if [ "$norun_disagree" -ne 0 ]; then
   verdict=marker_disagree
@@ -384,10 +460,47 @@ if [ "$sample_phantom" -ne 0 ]; then
   echo "detail: the worker permits a sample for stems that name no Glow file in the tree --"
   sed 's/^/  /' "$WORK/sample_phantom"
 fi
+# THE THREE TWIN GATES STAND WITH THE OTHER GATES, ahead of every ceiling, which is where this
+# scan has always put them: norun_disagree, phantom, contradicted and sample_phantom all sit
+# above the ceiling blocks. The placement is load-bearing because `verdict` is assigned by each
+# block in turn and the LAST one to fire is what prints -- so a ceiling reading, written after,
+# reports over a gate when both fire. That order is deliberate and unchanged here: a ratchet
+# firing means the backlog moved, which is the thing a lap must not walk past.
+#
+# Learned by running it rather than by reasoning about it. The witness proves the bare gate by
+# planting a silent runner, and with the runner muted every twin reads uncovered too -- so with
+# these three written BELOW the ceilings, twin_uncovered overwrote the very refusal the plant
+# existed to show. A control isolates each gate by lifting the ratchet ceilings out of its way,
+# so one plant proves one behavior.
+if [ "$twin_absent" -ne 0 ]; then
+  verdict=twin_absent
+  echo "detail: a desk names a matching fixture desk that stands nowhere in this room --"
+  sed 's/^/  /' "$WORK/twin_absent"
+fi
+if [ "$twin_uncovered" -ne 0 ]; then
+  verdict=twin_uncovered
+  echo "detail: a desk names a twin that nothing runs, so the law it defers to is proven nowhere --"
+  sed 's/^/  /' "$WORK/twin_uncovered"
+fi
+if [ "$twin_body_differs" -ne 0 ]; then
+  verdict=twin_body_differs
+  echo "detail: a desk and the twin it names no longer express the same law --"
+  sed 's/^/  /' "$WORK/twin_body_differs"
+fi
 if [ "$uncovered_bare" -gt "$UNCOVERED_BARE_CEILING" ]; then
   verdict=over_bare_ceiling
   echo "detail: $uncovered_bare bare-runnable desks are run by nothing, past the ceiling of $UNCOVERED_BARE_CEILING --"
   head -20 "$WORK/uncovered_bare" | sed 's/^/  /'
+fi
+if [ "$uncovered_twinned" -gt "$UNCOVERED_TWINNED_CEILING" ]; then
+  verdict=over_twinned_ceiling
+  echo "detail: $uncovered_twinned twinned desks stand unrun, past the ceiling of $UNCOVERED_TWINNED_CEILING --"
+  head -20 "$WORK/uncovered_twinned" | sed 's/^/  /'
+fi
+if [ "$uncovered_alone" -gt "$UNCOVERED_ALONE_CEILING" ]; then
+  verdict=over_alone_ceiling
+  echo "detail: $uncovered_alone untwinned sampled desks stand unrun, past the ceiling of $UNCOVERED_ALONE_CEILING --"
+  head -20 "$WORK/uncovered_alone" | sed 's/^/  /'
 fi
 if [ "$uncovered_sampled" -gt "$UNCOVERED_SAMPLED_CEILING" ]; then
   verdict=over_sampled_ceiling
@@ -413,6 +526,14 @@ echo "sample_phantom=$sample_phantom"
 echo "sample_permitted=$sample_permitted"
 echo "uncovered_sampled=$uncovered_sampled"
 echo "uncovered_sampled_ceiling=$UNCOVERED_SAMPLED_CEILING"
+echo "twin_declared=$twin_declared"
+echo "twin_absent=$twin_absent"
+echo "twin_uncovered=$twin_uncovered"
+echo "twin_body_differs=$twin_body_differs"
+echo "uncovered_twinned=$uncovered_twinned"
+echo "uncovered_twinned_ceiling=$UNCOVERED_TWINNED_CEILING"
+echo "uncovered_alone=$uncovered_alone"
+echo "uncovered_alone_ceiling=$UNCOVERED_ALONE_CEILING"
 echo "uncovered_bare=$uncovered_bare"
 echo "uncovered_bare_ceiling=$UNCOVERED_BARE_CEILING"
 echo "corpus_glow=$corpus_glow"

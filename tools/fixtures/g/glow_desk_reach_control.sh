@@ -375,5 +375,72 @@ rm -f "$d9/glow/gen/g/gate-half.glow"
 runscan "$d9" "$pen/o" GLOW_DESK_UNCOVERED_BARE_CEILING=0 GLOW_DESK_UNCOVERED_SAMPLED_CEILING=0
 check ok "$(field "$pen/o" verdict)" "removing it returns both readings to zero"
 
+
+# --- 10. the twin marker: the fourth statement, read at last -----------------------------------
+# A sampled desk may name, in its own head, the baked desk that proves the same law. Every gate
+# below is planted and then lifted, and both new ceilings are shown from both sides -- a refusal
+# proven only in the passing direction cannot be told from a bypass.
+d10=$(newpen twin)
+worker "$d10" "gate-argv"
+desk "$d10/glow/gen/g/gate-baked.glow"
+# the sampled twin: same body as gate-baked, its head naming that desk
+printf '::  A desk (pen); sample from argv.\n::  Matching fixture desk: gate-baked.glow (baked welcome).\n|^  sample\nsample\n' > "$d10/glow/gen/g/gate-argv.glow"
+cat > "$d10/tools/g/glow_run_desk_witness.rish" <<'PEN'
+let a = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/g/gate-baked.glow"]
+PEN
+runscan "$d10" "$pen/o" GLOW_DESK_UNCOVERED_BARE_CEILING=0 GLOW_DESK_UNCOVERED_SAMPLED_CEILING=1 GLOW_DESK_UNCOVERED_TWINNED_CEILING=1 GLOW_DESK_UNCOVERED_ALONE_CEILING=0
+check ok "$(field "$pen/o" verdict)" "a twinned sampled desk reads ok at its own ceiling"
+check 1 "$(field "$pen/o" uncovered_twinned)" "the twinned desk is counted as twinned"
+check 0 "$(field "$pen/o" uncovered_alone)" "and not as alone -- the split is exclusive"
+check 1 "$(field "$pen/o" twin_declared)" "the marker is read off the desk's own head"
+check 0 "$(field "$pen/o" twin_absent)" "its twin stands on disk"
+check 0 "$(field "$pen/o" twin_uncovered)" "and the twin is covered"
+check 0 "$(field "$pen/o" twin_body_differs)" "and the two bodies express one law"
+
+# the twinned ceiling, one under the live reading
+runscan "$d10" "$pen/o" GLOW_DESK_UNCOVERED_BARE_CEILING=0 GLOW_DESK_UNCOVERED_SAMPLED_CEILING=1 GLOW_DESK_UNCOVERED_TWINNED_CEILING=0 GLOW_DESK_UNCOVERED_ALONE_CEILING=0
+check over_twinned_ceiling "$(field "$pen/o" verdict)" "a twinned desk past its ceiling refuses"
+
+# the twin's body drifts: the marker's claim stops being true
+printf '::  A desk (pen).\n|^  sample\n%%-  inc  sample\n' > "$d10/glow/gen/g/gate-baked.glow"
+runscan "$d10" "$pen/o" GLOW_DESK_UNCOVERED_BARE_CEILING=0 GLOW_DESK_UNCOVERED_SAMPLED_CEILING=1 GLOW_DESK_UNCOVERED_TWINNED_CEILING=1 GLOW_DESK_UNCOVERED_ALONE_CEILING=0
+check twin_body_differs "$(field "$pen/o" verdict)" "a twin whose body drifted refuses -- the claim is checked, not believed"
+check 1 "$(field "$pen/o" twin_body_differs)" "the drift is counted"
+desk "$d10/glow/gen/g/gate-baked.glow"
+runscan "$d10" "$pen/o" GLOW_DESK_UNCOVERED_BARE_CEILING=0 GLOW_DESK_UNCOVERED_SAMPLED_CEILING=1 GLOW_DESK_UNCOVERED_TWINNED_CEILING=1 GLOW_DESK_UNCOVERED_ALONE_CEILING=0
+check ok "$(field "$pen/o" verdict)" "restoring the body lifts the drift refusal"
+
+# the twin stops being covered: the law it defers to is proven nowhere
+: > "$d10/tools/g/glow_run_desk_witness.rish"
+runscan "$d10" "$pen/o" GLOW_DESK_UNCOVERED_BARE_CEILING=1 GLOW_DESK_UNCOVERED_SAMPLED_CEILING=1 GLOW_DESK_UNCOVERED_TWINNED_CEILING=1 GLOW_DESK_UNCOVERED_ALONE_CEILING=0
+check twin_uncovered "$(field "$pen/o" verdict)" "a twin nothing runs refuses -- deferring to an unproven law"
+check 1 "$(field "$pen/o" twin_uncovered)" "the unproven twin is counted"
+cat > "$d10/tools/g/glow_run_desk_witness.rish" <<'PEN'
+let a = run ["rishi/bin/rishi" "run" "tools/g/glow_run.rish" "glow/gen/g/gate-baked.glow"]
+PEN
+runscan "$d10" "$pen/o" GLOW_DESK_UNCOVERED_BARE_CEILING=0 GLOW_DESK_UNCOVERED_SAMPLED_CEILING=1 GLOW_DESK_UNCOVERED_TWINNED_CEILING=1 GLOW_DESK_UNCOVERED_ALONE_CEILING=0
+check ok "$(field "$pen/o" verdict)" "covering the twin again lifts that refusal"
+
+# The twin leaves the room entirely: a marker naming nothing. The alone ceiling is raised to 1 for
+# this plant on purpose -- an unresolvable marker drops its desk OUT of twinned and INTO alone, so
+# leaving that ceiling at zero fires the ratchet too and its verdict, written last, would hide the
+# gate this case exists to prove. One plant, one behavior.
+rm -f "$d10/glow/gen/g/gate-baked.glow"
+: > "$d10/tools/g/glow_run_desk_witness.rish"
+runscan "$d10" "$pen/o" GLOW_DESK_UNCOVERED_BARE_CEILING=0 GLOW_DESK_UNCOVERED_SAMPLED_CEILING=1 GLOW_DESK_UNCOVERED_TWINNED_CEILING=1 GLOW_DESK_UNCOVERED_ALONE_CEILING=1
+check twin_absent "$(field "$pen/o" verdict)" "a marker naming a desk that stands nowhere refuses"
+check 1 "$(field "$pen/o" twin_absent)" "the absent twin is counted"
+check 0 "$(field "$pen/o" uncovered_twinned)" "and an unresolvable marker does not buy twinned standing"
+
+# the marker comes off: the desk falls to the dearer half of the split
+printf '::  A desk (pen); sample from argv.\n|^  sample\nsample\n' > "$d10/glow/gen/g/gate-argv.glow"
+runscan "$d10" "$pen/o" GLOW_DESK_UNCOVERED_BARE_CEILING=0 GLOW_DESK_UNCOVERED_SAMPLED_CEILING=1 GLOW_DESK_UNCOVERED_TWINNED_CEILING=0 GLOW_DESK_UNCOVERED_ALONE_CEILING=1
+check ok "$(field "$pen/o" verdict)" "an untwinned sampled desk reads ok at the alone ceiling"
+check 0 "$(field "$pen/o" uncovered_twinned)" "it is not twinned"
+check 1 "$(field "$pen/o" uncovered_alone)" "it is alone -- the costlier debt, counted apart"
+check 0 "$(field "$pen/o" twin_absent)" "and carrying no marker is silence rather than a broken promise"
+runscan "$d10" "$pen/o" GLOW_DESK_UNCOVERED_BARE_CEILING=0 GLOW_DESK_UNCOVERED_SAMPLED_CEILING=1 GLOW_DESK_UNCOVERED_TWINNED_CEILING=0 GLOW_DESK_UNCOVERED_ALONE_CEILING=0
+check over_alone_ceiling "$(field "$pen/o" verdict)" "an alone desk past its ceiling refuses -- the other ceiling, both sides"
+
 echo "glow_desk_reach control: pass=$pass fail=$fail"
 [ "$fail" -eq 0 ] || exit 1
