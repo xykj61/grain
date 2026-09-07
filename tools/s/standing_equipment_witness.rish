@@ -21,10 +21,14 @@
 #   which is REDS %219 wearing a field name.
 #   Every `ran` line in the run card names a guard the roster actually seats.
 #   No run-card line records a red or an absent guard.
-#   Every `capability` names one the runner probes -- `ipv6` today. A capability is a tier for what
-#   a host CAN DO, beside `host` for PLACE and `tier` for TIME, and its probe answers present,
+#   Every `capability` names one the runner probes -- `ipv6`, `jail_nesting`, `seed_projection`
+#   today; the count is read off the runner rather than spelled here. A capability is a tier for
+#   what a host CAN DO, beside `host` for PLACE and `tier` for TIME, and its probe answers present,
 #   absent, or UNKNOWN. An unknown RUNS the guard, because skipping on an unknown is how a
-#   capability tier stops being a cadence and becomes an exemption.
+#   capability tier stops being a cadence and becomes an exemption. EACH ARM IS PROVEN SEPARATELY
+#   from the machinery: proving the runner honors an answer says nothing about whether an arm asks
+#   the question its name claims, which is how `jail_nesting` came to read a missing `/bin/true` as
+#   a refused namespace (REDS %516).
 #   The behaviors are proven on throwaway rosters in a temporary pen and counted by the control's
 #   own `control_verdict` line rather than recited here -- this paragraph said `forty-three` while
 #   the control ran more, which is the drift a witness header can least afford. Refusals are
@@ -220,6 +224,27 @@ assert control.out contains "seed_env_followed=yes" else "standing-equipment: th
 assert control.out contains "seed_capability_known_to_scan=yes" else "standing-equipment: the scan derives its capability list off the runner, so a new arm must be known the moment it lands"
 assert control.out contains "unrunnable_card_row_dropped=yes" else "standing-equipment: a guard this host cannot run must lose its elder card row -- its last verdict was recorded in a different world and nothing will ever overwrite it"
 assert control.out contains "runnable_card_row_kept=yes" else "standing-equipment: a guard that merely did not run this pass keeps its history, which is what the carry-forward is for"
+
+# The jail_nesting arm (REDS %516) -- the first capability that asks a KERNEL question, and the one
+# that proved a probe can perform the act and still be wrong about WHICH act it performed. It handed
+# bwrap `/bin/true`, which NixOS does not ship, so bwrap built the namespace, failed to exec, and
+# exited non-zero; read as a refused namespace, that skipped `agent_jail_enclosure` on the one bench
+# where its four legs pass -- the bench the guard's own head promises will run them. The arm proves
+# its payload outside the wrapper first now, so only a DIFFERENCE between the two runs is evidence.
+assert control.out contains "jail_present_runs=yes" else "standing-equipment: a bench that can nest a jail must run the enclosure guard like any other row"
+assert control.out contains "jail_present_skips_none=yes" else "standing-equipment: a present nesting capability must skip nothing"
+assert control.out contains "jail_refused_skips=yes" else "standing-equipment: a kernel refusing the second wrapper must skip the guard rather than red on an environment fact"
+assert control.out contains "jail_refused_counted=yes" else "standing-equipment: that skip must be counted"
+assert control.out contains "jail_refused_named=yes" else "standing-equipment: that skip must name the guard and the capability, or it is a quiet hole"
+assert control.out contains "jail_refused_still_passes=yes" else "standing-equipment: a jailed ship is a cadence rather than a fault, so the pass still reads ok"
+assert control.out contains "jail_unrecognized_failure_skips=yes" else "standing-equipment: the residue must hold its value -- a bwrap failing for a reason the arm cannot read still skips, and a later wording table must move this reading on purpose"
+assert control.out contains "jail_missing_runs=yes" else "standing-equipment: a pier with no bwrap at all cannot run agent-jail.sh either, so the guard must RUN and red honestly rather than vanish"
+assert control.out contains "jail_missing_skips_none=yes" else "standing-equipment: an unreadable nesting probe must report no skip"
+assert control.out contains "jail_pen_hides_bwrap=yes" else "standing-equipment: the missing-tool plant must genuinely hold no bwrap, since command -v finds any executable anywhere on PATH"
+assert control.out contains "jail_pen_runner_ran=yes" else "standing-equipment: the pen must be proven innocent -- a PATH missing some other tool prints no guard line and both readings above would answer for the wrong reason"
+assert control.out contains "jail_payload_read=yes" else "standing-equipment: the control must find the payload in the runner's source, since a pattern matching nothing would prove a repair by reading no code at all"
+assert control.out contains "jail_payload_exists=yes" else "standing-equipment: the program the arm hands bwrap must exist on this bench, or every attempt exits non-zero for a reason that is not the namespace -- this is REDS %516 itself"
+assert control.out contains "jail_payload_proven_outside=yes" else "standing-equipment: the arm must run its payload outside the wrapper before blaming the wrapper, so a bench lacking it answers unknown rather than absent"
 
 # The host tier arrived at REDS %295 with no case in this control and no assertion here, so the
 # axis the capability field copies had neither a green side nor a red one. Both are proven now,

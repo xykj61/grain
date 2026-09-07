@@ -468,9 +468,28 @@ capability_state() {
       # than inferred: no flag, no /proc reading, no "am I in a container" heuristic, just the
       # cheapest real bwrap this tree can spell, whose failure is the same failure the guard's own
       # legs would hit. A probe that performs the act cannot be wrong about the bench it stands on,
-      # which is the difference between this and the `host` field REDS %422 declined.
+      # which is the difference between this and the `host` field REDS %422 declined -- yet it can
+      # still be wrong about WHICH act it performed, and that is the whole of REDS %516.
+      #
+      # THE PAYLOAD RUNS OUTSIDE THE WRAPPER FIRST, and the DIFFERENCE between the two runs is the
+      # reading. The elder spelling handed bwrap `/bin/true` and read any non-zero exit as a refused
+      # namespace. NixOS ships one entry in `/bin` -- `sh` -- so bwrap built the namespace perfectly
+      # and then failed to exec, printing `bwrap: execvp /bin/true: No such file or directory` and
+      # exiting 1. Read as absence, that skipped `agent_jail_enclosure` on the one bench where its
+      # four legs actually pass, which is the bench the guard's own head promises will run them. So
+      # the payload is `/bin/sh -c :`, which POSIX guarantees at that path, and it is proven outside
+      # the wrapper before the wrapper is blamed: a payload that cannot run here answers `unknown`,
+      # and unknown RUNS.
+      #
+      # THE RESIDUE, named rather than papered over: a bwrap failing for some third reason -- an
+      # unsupported flag, a broken install -- still reads `absent` and still skips. Telling that
+      # from a real refusal wants the stderr wording, and the two refusals this pier has actually
+      # printed differ (`setting up uid map: Read-only file system` nested here, `Failed to make /
+      # slave: Operation not permitted` in %446's record), so a wording table would red every jailed
+      # ship whose kernel phrases it a third way. Structure carries further than a table of words.
       command -v bwrap >/dev/null 2>&1 || { echo unknown; return 0; }
-      if bwrap --ro-bind / / --dev /dev /bin/true >/dev/null 2>&1; then echo present; else echo absent; fi
+      /bin/sh -c : >/dev/null 2>&1 || { echo unknown; return 0; }
+      if bwrap --ro-bind / / --dev /dev /bin/sh -c : >/dev/null 2>&1; then echo present; else echo absent; fi
       ;;
     seed_projection)
       # Does a seed projection stand in this checkout? `seed/` is gitignored and built by

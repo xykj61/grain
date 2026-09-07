@@ -46,18 +46,37 @@
 
 ### Now -- the live front
 
-**Git nib:** `6f46b5f1d4` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `5045d579f3` -- HEAD's parent, resolvable everywhere (%401).
 
-**BAKERY -- A GUARD THAT READS A PROXY ANSWERS ABOUT THE PROXY, AND THE PARAGRAPH SAYING SO SAT IN
-THE BOX IT COULD NOT READ.** `%510` CLOSED. `stash_record_scan.sh` asked every session log in a
-round-open stash whether a reader ref carried it; the log is the proxy because every lap writes one,
-so a lap whose log lands while its code waits reads `unlanded=0 verdict=ok` over a box still holding
-the files. **Widened to every NON-record path by the same probe:** `paths=48 orphans=9 unread=39`,
-`paths = orphans + unread` always, records and paths partitioning the box. Six of the nine are fold shelves
-whose rows stand elsewhere; **THREE are work nothing carries** -- `sow_allow_reach_control.sh` (209
-lines), and the pen and probe authorizing `%446`'s skip, waiting while their guard landed ahead. Reported never gated: a count stays
-local where a record travels. Control **34 -> 51**. **And the records came home** -- two logs stood in
-`stash@{0}` and on no ref, the very laps that found this: `unlanded` **2 -> 0**.
+**BAKERY -- A PROBE PERFORMED THE ACT AND WAS WRONG ABOUT WHICH ACT IT PERFORMED.** `%516` CLOSED;
+`%510` [shelved](archive/REDS-a-guard-that-reads-a-proxy-rows-510.md). The `jail_nesting` arm ran
+`bwrap ... /bin/true`, and this pier ships **one entry in `/bin`, `sh`** -- so bwrap built the
+namespace and then failed to EXEC, and exit 1 read as a refused namespace. `agent_jail_enclosure`
+was skipped here every pass since `013116`, while `%446`'s head promised *a bench where the legs
+would work always runs them* and named this bare bench as the one. Run by hand, the four legs
+pass GREEN: host home invisible, `/etc` denied. **The root is in the seating log** -- the probe was
+tested inside a jail, where both failures are true at once, so it was right for the wrong reason.
+Payload is `/bin/sh -c :` now and runs OUTSIDE first; only a DIFFERENCE is evidence. Control **+14
+legs**; the missing-tool answer plants a pen of 1,028 symlinks. **Residue pinned:** a
+third-reason failure still skips; the two refusal wordings this pier prints differ.
+
+**BAKERY -- THE SCAN TITLED *CAN THE LEDGER STILL ACCEPT A ROW?* PRINTED `rows_that_fit=0` AND
+ANSWERED `verdict=ok`.** `%517` CLOSED, and it is **GRASS's `%515` from the other side** -- that row
+asks why the wall did not run, this one why the instrument reading capacity said `ok` while it
+stood there. Capacity never reached its verdict; three shelf and recital conditions did. Caught by
+the cold pass answering `guards_red=4` with **two of them one page**, `equinox_e123` and
+`declared_ceiling`, neither naming a remedy. The pin's bound was derived that morning for the OPEN
+set, which stood at **58% of its allowance**: the overflow was **18,153 bytes of already-foldable
+rows**. The verdict now crosses headroom against foldability, gates the cell that is both with the
+fold command inside the refusal, and leaves the cell beside it reported -- only your word raises a
+bound. Control **31 -> 39**, every neighbouring cell shown free. **It fired on this lap's own
+rebase** and I obeyed it. **Residue:** a deadlocked pin still reads `ok`.
+**Recovered, not authored:** `%516` came whole out of `stash@{0}`, a signed lap a round open parked
+-- **`%499` in my own tree** -- and `skipped_capability` fell **1 -> 0** when it landed, four
+enclosure legs running here for the first time since `013116`. **Withdrawn on the rebase:** my
+`487-512` fold, since peers folded `%487`, `%508` and `%509` to their own shelves in the same hour.
+**Sibling:** `reds_citation` reads `git ls-files`, so it read GREEN over a wrong shelf link until
+the file was staged.
 
 **YOURS, MEASURED WHOLE AND NOT TAKEN: THE DATED-PATH CENSUS GATES A CLASS IT WAS NEVER BUILT FOR.**
 `dated_path_witness` reds at `refs_lost=169` against a ceiling of **165** only a debride may raise.
@@ -75,15 +94,9 @@ for, when the elder ceiling can only fall, is your word.
 
 **PATCHOULI -- a park is not a landing.** `%505`'s sibling, `%507` CLOSED and whole on its [shelf](archive/REDS-a-park-is-not-a-landing-rows-507.md): `reader_refs` excludes the `pier/` namespace, `parked` reports beside the gate, control **22 -> 34**. `%510` above is the drawer beneath it.
 
-**AND THE PARKED WORK LANDED: `%506` CLOSED**,
-[folded](archive/REDS-the-property-nobody-named-rows-506.md). `Weave.annotate` -- one `Note` per
-position, both counts, five `Reading` words -- and `mantra_weave_head_scan.sh`, holding the head to
-its own `pub fn` both ways. **Ten claims GREEN**, the fourth holding annotate to merge count for count. Roster `runs_unrostered` **1 -> 0**; a four-line comptime walker took `rye_witness_walker`
-back under its ceiling rather than raising it. **Yours:** the identity gap stays unblocked, and
-closing it wants a fourth field on `Line`.
-**Yours, no longer rhetorical:** mine went `%485` -> `%501` -> `%503` -> `%504` -> `%506` in one day,
-beaten FOUR times while the work sat parked -- should an OPEN row carry a claim, a seat and a stamp,
-at START?
+**`%506` CLOSED**, [folded](archive/REDS-the-property-nobody-named-rows-506.md): `Weave.annotate`
+and `mantra_weave_head_scan.sh`, ten claims GREEN, roster `runs_unrostered` **1 -> 0**. **Yours:**
+the identity gap stays unblocked, and closing it wants a fourth field on `Line`.
 
 **DIFFUSER -- A FLOOR NOBODY REACHES, AND THE ONE UNDERNEATH IT.** No red; this answers `%501`'s
 own falsifier, *low on how much of the gap any real construction recovers*. **The Moore floor of
@@ -102,27 +115,22 @@ unit-generator circulants, so *none reaches 8* is its reach, not the family's.
 **ANSWERED, its seat's (`20260906.172500`):** `sow_allow_reach` reddened every tree but the field,
 since only the field projects and it REFUSED on an absent `seed/`. **A guard that reds on the
 ordinary is one somebody turns off** -- it skips and says so now; the SCAN still refuses when
-pointed at a missing projection (`%170`). No gate. **Yours, fourteenth firing:** should an OPEN row carry a claim and seat at START?
+pointed at a missing projection (`%170`). No gate.
 
-**PETRICHOR -- EIGHT SHIPS SHARE ONE `TMPDIR`, SO A CONTROL NAMING ITS PEN WITH A CONSTANT LETS ONE
-SHIP DELETE ANOTHER'S PEN MID-BUILD.** `%512` BOOKED -- two concurrent copies of the elder file both
-failed, **in two different legs**; two of the repaired both pass. **`%291` reaches
-past the checkout. 9 collidable pens stand across five lanes, booked as flakes.**
-`%511` CLOSED, [folded](archive/REDS-a-guards-reach-is-a-claim-rows-511.md), out of a park: 151 of
-208 links called unreadable wore a shape the guard already read; reach **66 -> 219 of 284**. Its
-twin **withdraws** to your `%510` -- my second today.
+**PETRICHOR -- `%512` BOOKED,** [folded](archive/REDS-a-pen-one-path-wide-for-eight-ships-rows-512.md):
+eight ships share one `TMPDIR`, so a pen named by a constant lets one delete another's mid-build --
+**`%291` reaches past the checkout**, 9 collidable pens across five lanes, and the two-legs-two-
+failures reading is what tells a race from a flake. `%511` CLOSED,
+[folded](archive/REDS-a-guards-reach-is-a-claim-rows-511.md): reach **66 -> 219 of 284**.
 **Yours:** of **607** reachable pages **82 lead nowhere**, scored **100** by a ceiling with no floor.
-**PHEROMONE -- A PROOF TWO LIVING PAGES CITE, AND NOTHING EVER COMPILED IT.** `%506` BOOKED, `%463`
-CLOSED.
-**63 Glow witnesses took the comptime declaration walker in one pass** -- `walked` **2 -> 65**,
-`unwalked` **119 -> 56** with no slack -- and **all 63 built**, so this lane hid no body-level type
-error. A planted `u32`-as-`[]const u8` builds **exit 0** and prints GREEN without the walker,
-**exit 1** with it. The `unreached` leg then named `glow/nock/nock_glow_mirror_witness.rye` --
-*"the seam's first witness-backed pin"* in two living pages -- **built by no runner**.
-`rye_compile_reach_scan` held it in `never` and read `asserted=0` **correctly**: `asserted` is
-`never` intersected with **runner** mentions, and a Markdown page claims just as loudly. Runner
-written, GREEN. **Yours, sized not taken:** widening that predicate to living Markdown re-grades the
-whole `never` set at once (17 files, 4 doc-named) -- `%496`'s own reason for holding a numerator.
+**PHEROMONE -- A PROOF TWO LIVING PAGES CITE, AND NOTHING EVER COMPILED IT.** `%506` BOOKED,
+`%463` CLOSED. **63 Glow witnesses took the comptime declaration walker in one pass** -- `walked`
+**2 -> 65**, `unwalked` **119 -> 56** with no slack -- and **all 63 built**. The `unreached` leg
+then named `glow/nock/nock_glow_mirror_witness.rye`, *"the seam's first witness-backed pin"* in two
+living pages, **built by no runner**: `asserted` is `never` intersected with **runner** mentions,
+and a Markdown page claims just as loudly. Runner written, GREEN. **Yours, sized not taken:**
+widening that predicate to living Markdown re-grades the whole `never` set at once (17 files, 4
+doc-named) -- `%496`'s own reason for holding a numerator.
 
 **YOURS, AND IT COSTS THE FLEET A LAP A DAY: THE ROUND-OPEN PARKS AN ORDINARY LOST RACE.** `%499`
 OPEN. `fleet_round_open.sh` classifies by two `is-ancestor` tests and **two states fail both** -- a
@@ -147,7 +155,6 @@ as `%493` above -- the fourth time in one day that a finding and its peer met in
 benediction [`radiant-wishes-ending`](../.claude/rules/radiant-wishes-ending.md) asks for. **A Door
 page obeying both floors at four: 16% of a 20% ceiling.**
 
-**Measured rather than argued: should an OPEN row carry a claim, a seat and a stamp, at START?**
 **PHEROMONE -- my own `41 orphans` is WITHDRAWN**, `harness_roster` landed gating both halves at zero, and the three-firing lantern's spec stands -- whole on the [`20260906.090312` shelf](archive/20260906-090312_itinerary-landed-accounts.md).
 
 **`%481` CLOSED, both accounts folded** to the [`20260906.133957` shelf](archive/20260906-133957_itinerary-landed-accounts.md) -- **a marker makes a pin longer, so the one meter aimed here read the damage as growth.** It fired a third time on this lap's own rebase, in this very file; the guard caught it before the push.
@@ -187,15 +194,11 @@ owes a debt for rule ONE only**, so the twice-pulled send walks around the wall.
 **37,317**, both GREEN. **Class sized, NOT taken: eight ships run that file. Yours.**
 **Carried: 890** depth-lost links.
 
-**COPAL -- EXISTENCE AND AGREEMENT ARE TWO QUESTIONS, AND ONLY ONE HAD AN INSTRUMENT.** `%502`
-CLOSED ([shelf](archive/REDS-a-number-and-a-path-name-two-rows-rows-502.md)). A `%N` is a number a
-reader knows and a path a reader clicks; the halves move on different laps and nothing read them
-together. **Four shipped in one day, all mine**, and `readme_reach` named **one** -- the absent
-file. **The other three OPEN a real shelf holding another row**, so they resolve and never red. `reds_citation` reads promises only: the
-anchor that IS the number, a shelf word one line back. **At `b441f97b2`: `disagree=3`.**
-**`%494` CLOSED** ([shelf](archive/REDS-the-verdict-travelled-and-the-reason-did-not-rows-494.md)),
-ratchet 43 of 52. **`%493` still OPEN, not mine** -- `standing_equipment` reads broken here.
-**Yours from `%485`:** `source_port` is still the machine's and the lock stands.
+**COPAL -- `%502` CLOSED** ([shelf](archive/REDS-a-number-and-a-path-name-two-rows-rows-502.md)):
+existence and agreement are two questions, and a `%N` that OPENS a real shelf holding another row
+resolves and never reds -- four shipped in one day, `readme_reach` named one. `%494` CLOSED
+([shelf](archive/REDS-the-verdict-travelled-and-the-reason-did-not-rows-494.md)), ratchet 43 of 52.
+**`%493` still OPEN, not mine.** **Yours from `%485`:** `source_port` is still the machine's.
 
 **The live front** (condensed `20260831.023122`; the day shelves hold every landed lap):
 - **Tri-OS:** LOCA pins pass and reject tampering. Pier proof awaits `libwayland-client` and
@@ -230,12 +233,12 @@ stands written at `cc1da84f7`, parked by a round-open and unlanded since `202609
 round's opening stash stop an in-flight pass in its own tree.
 
 **Bounds raised `20260906`, both derived, both yours:** the operator card to 40,960 (8 ships x 2,048 live front) and the REDS pin to 40,960 (8 x 4,096 OPEN set + 8,192 header). **Each is sized per ship, so both re-open at twelve** -- and the pin's is also sized by how fast reds close (`%360`, 8,213 bytes, open since `20260830`).
-**`%456` OPEN -- eight ships share ONE login, so one credential is a fleet-wide outage** (mechanism read from `agent-jail.sh` source, so `%458` leaves it standing). **Its pier half is unmeasured from inside the enclosure.** Seven died 3 laps each in ten seconds on `OAuth session expired and could not be refreshed`; `agent-jail.sh` seeds every tree from the pier's single credential (*one login per pier*). Refresh token had **27 days** left, so expiry is excluded -- the leading read is **rotation**: one shared token, first refresher strands the rest and the pier's own copy. **Falsifier is cheap:** watch whether the pier's refresh value changes after a ship refreshes. Landed: `claude_refresh_dead()` names a dead credential instead of seeding it (proven 3 ways -- dead trips, expired ACCESS does not, missing field fails open), and `sh tools/fixtures/f/fleet_login_scan.sh` answers it in one command. **Yours, gate 3:** one login per ship is the fix. **A resource shared by every ship has no blast radius smaller than the fleet.**
+**`%456` OPEN -- eight ships share ONE login, so one credential is a fleet-wide outage** (mechanism read from `agent-jail.sh` source, so `%458` leaves it standing; the pier half is unmeasured from inside the enclosure). Seven died 3 laps each in ten seconds on `OAuth session expired and could not be refreshed`; `agent-jail.sh` seeds every tree from the pier's single credential. The refresh token had **27 days** left, so expiry is excluded -- the leading read is **rotation**: first refresher strands the rest and the pier's own copy. **Falsifier is cheap:** watch whether the pier's refresh value changes after a ship refreshes. Landed: `claude_refresh_dead()` names a dead credential instead of seeding it, proven 3 ways, and `sh tools/fixtures/f/fleet_login_scan.sh` answers it in one command. **Yours, gate 3:** one login per ship is the fix. **A resource shared by every ship has no blast radius smaller than the fleet.**
 **`shell_dialect` re-diagnosed:** the `sed -i` repair stands; it reds on ONE case of 47 -- *a guard
 without its instrument names rg rather than a file*. `shell_portable_control.sh` takes `rg` off PATH
 by dropping every entry holding an executable `rg`, and this NixOS pier keeps `rg` and `sh` in one
 directory, so the scan under test cannot start. A pen of symlinks to every tool but `rg` is the fix.
-**Hot pass `20260906.102004`: 138 guards, 135 green, 0 red, 3 gated, 789s** -- `tree_moved=no`; the cold open's one red was `standing_equipment`, closed as `%475`.
+**Hot pass `20260906.212721`: 155 guards, 152 green, 0 red, 3 gated, 1139s** -- `tree_moved=no`, `skipped_capability` **1 -> 0**.
 **`%439`-`%441` FOLDED** to one [shelf](archive/REDS-what-no-meter-was-reading-rows-439-441.md): three claims where no instrument reads.
 **`%360` advanced twice more** (`compass_rose`, `standing_equipment`): `unheard` **674** of ceiling
 **1,093** -- 419 of slack; the elder *14 under* is superseded. **Yours.**
@@ -243,19 +246,19 @@ directory, so the scan under test cannot start. A pen of symlinks to every tool 
 `pond/enclosure_policy.kyri` 8,120/8,192; yours.
 **THE LIVE FRONT NOW FOLDS** (`20260905.130819`): landed accounts shelve like REDS rows, so the
 card holds what is OPEN and what waits on your word.
-**All three ships sail** (`20260905`). **Gate 3 stands:** `.gnupg-rye/` holds
+**Gate 3 stands:** `.gnupg-rye/` holds
 `private-keys-v1.d/`, and **per-tree GNUPGHOME is the only shape that works jailed** -- yours.
 **52 external utilities across 2,969 tool scripts. `rg`: 992 sites, ONE probe. `mktemp`: 353
-sites, none -- and not POSIX since 2008.** The tree already wrote the cure,
-`tools/fixtures/s/shell_portable.sh`, and **38 files source it, 1.3%.** The design names three
-tiers -- **granted** (POSIX), **carried** (we ship it), **borrowed** (probe, fall back, announce) --
-seated in Tally as a bounded grant, carried by Caravan as a capability, declared through Mantra.
-**The reflex itself LANDED** (`%445`, folded above); the three tiers and the roster stay yonder, yours.
+sites, none -- and not POSIX since 2008.** The cure is written, `tools/fixtures/s/shell_portable.sh`,
+and **38 files source it, 1.3%.** Three tiers -- **granted** (POSIX), **carried** (we ship it),
+**borrowed** (probe, fall back, announce). **The reflex LANDED** (`%445`); the tiers stay yonder, yours.
 
-**Worth your word, still unanswered** (condensed out under the old ceiling `20260904`, carried
-back now that there is room): nothing in the ledger shows a red is *being worked*, so two hands
-spent one morning on the same line. **Should an OPEN row carry a claim -- a seat and a stamp, at
-start rather than at landing?**
+**Worth your word, still unanswered, and asked from FOUR blocks of this card until they were
+merged here `20260906.212057`:** nothing in the ledger shows a red is *being worked*, so two hands
+spend one morning on the same line. **Should an OPEN row carry a claim -- a seat and a stamp, at
+start rather than at landing?** **Fifteen firings.** Bakery's own chain ran `%485` -> `%501` ->
+`%503` -> `%504` -> `%506` in one day, beaten four times while the work sat parked. Asking it in
+four places made it read as four questions rather than one.
 **Yours, two (%417).** A **guided map** fits neither shape offered: `MAP.md` reads **C/74** at 67
 links over 913 words -- 7 per 100 against Door's 1 -- where the root README carries 53 over 2,005
 and reads B+. **Second instance `20260906`:** `docs/COMPASS.md` reads **C+/79** on reach alone, 4
@@ -383,6 +386,6 @@ The logs keep the account; earlier rows are shelved in
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260906.153324` | Two ships, one guard, and a reach of 19 in 274 | [log](../session-logs/date/20260906/20260906-153324_two-ships-one-guard.kyri) |
+| `20260906.212721` | One fold away from healthy is not healthy | [log](../session-logs/date/20260906/20260906-212721_one-fold-away-from-healthy.kyri) |
 
 **One row, on purpose** -- a landed lap keeps one line until the next replaces it; the log carries the detail.

@@ -63,6 +63,23 @@ let lawful = run ["sh" "-c" "d=$(mktemp -d); printf '# pen\n\n**REDS %%1 -- x.**
 assert lawful.ok else "reds-pin-capacity: a foldable row is an ordinary full pin, never a deadlock"
 assert lawful.out contains "pin_deadlocked=0" else "reds-pin-capacity: a lawful fold breaks the deadlock"
 
+# RED path three -- the one gated cell (REDS %517). OVER the bound with a foldable row is the state
+# this scan printed as `verdict=ok` while two other rostered guards red on the same page in the same
+# cold pass. A lap repairs it in one command, so the word and the exit move together and the refusal
+# names the remedy. Note the pen above sits exactly AT its bound, which is why it stays green: the
+# gate reads headroom BELOW zero rather than merely spent.
+let over = run ["sh" "-c" "d=$(mktemp -d); printf '# pen\n\n**REDS %%1 -- x.** This stands **OPEN**.\n**REDS %%2 -- y.** This reads **CLOSED**.\n' > $d/REDS.md; : > $d/recital.md; b=$(wc -c < $d/REDS.md | tr -d ' '); REDS_PIN=$d/REDS.md REDS_ARCHIVE_GLOB=$d/none-*.md REDS_RECITAL=$d/recital.md REDS_PIN_BOUND=$((b-10)) sh tools/fixtures/r/reds_pin_capacity_scan.sh; s=$?; rm -rf $d; exit $s"]
+assert (over.ok == false) else "reds-pin-capacity: a pin over its bound with a lawful fold must refuse"
+assert over.out contains "verdict=over_bound_foldable" else "reds-pin-capacity: want the gated cell refused by name"
+assert over.out contains "reds_fold.sh" else "reds-pin-capacity: a refusal a lap can repair must name the remedy"
+
+# GREEN path two -- the cell BESIDE it still walks free, and this is the header's own argument
+# proven rather than promised. Over the bound with nothing foldable is the state only Keaton can
+# resolve, since raising a bound is his word; a refusal there would red on ordinary work.
+let over_dead = run ["sh" "-c" "d=$(mktemp -d); printf '# pen\n\n**REDS %%1 -- x.** This stands **OPEN**.\n**REDS %%2 -- y.** This stands **OPEN** too.\n' > $d/REDS.md; : > $d/recital.md; b=$(wc -c < $d/REDS.md | tr -d ' '); REDS_PIN=$d/REDS.md REDS_ARCHIVE_GLOB=$d/none-*.md REDS_RECITAL=$d/recital.md REDS_PIN_BOUND=$((b-10)) sh tools/fixtures/r/reds_pin_capacity_scan.sh; s=$?; rm -rf $d; exit $s"]
+assert over_dead.ok else "reds-pin-capacity: a deadlocked pin is reported, never gated, however full"
+assert over_dead.out contains "pin_deadlocked=1" else "reds-pin-capacity: want the deadlock still named"
+
 # The control proves every case on real files in a throwaway pen -- refusals planted and removed,
 # welcomes asserted as hard as refusals, both ceilings shown from both sides.
 let control = run ["sh" "tools/fixtures/r/reds_pin_capacity_control.sh"]
