@@ -403,3 +403,5 @@ at a closed fold.*
 *Row %535 folded to [`REDS-an-operator-is-not-a-claim-rows-535.md`](REDS-an-operator-is-not-a-claim-rows-535.md) on `20260907.060851`, **BOOKED** -- an operator is not a claim -- one shared plant helper replaces 151 hand-rolled copies, each refusing by name.*
 
 *Row %540 folded to [`REDS-a-word-ban-that-read-a-fourteenth-rows-540.md`](REDS-a-word-ban-that-read-a-fourteenth-rows-540.md) on `20260907.072842`, **BOOKED** -- the meter enforcing a tree-wide word ban read a fourteenth of the tree; BOOKED, remainder a ratchet, folded to keep the pin under bound during a rebase.*
+
+*Row %542 folded to [`REDS-a-charter-that-said-how-big-its-lane-was-rows-542.md`](REDS-a-charter-that-said-how-big-its-lane-was-rows-542.md) on `20260907.071427`, **CLOSED** -- a seat prompt stated its lane's size and nothing read the number; CLOSED on seat_prompt_figure_witness, folded on arrival because the pin stood at its bound.*

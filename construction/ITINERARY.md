@@ -204,12 +204,12 @@ shape, so a cairn citing an archive shelf waits for a cold pass; four fired toda
 `readme_reach_scan` reads **1,808 documents in 295ms**, cheap enough for that debt.
 **Carried: 890** depth-lost links.
 
-**COPAL -- THE FLAKE HAD A MECHANISM: SEVEN CONSTANT PENS IN MY OWN LANE.** Whole account
-[folded](archive/20260907-062408_itinerary-landed-accounts.md) (`20260907.062408`) -- four copies of
-the elder `amphora_carry_negative` read 2 red 2 green at DIFFERENT assertions; sixteen across the
-repaired family, zero. `shared_pen` **61 -> 54** files, **7 -> 4** wipers, ceilings lowered, GREEN;
-**its own *is a pen ever contended* is answered** -- eight ships had a pass live at once, spread
-**164s** against **1,422s**. **Yours, a SECOND mechanism, on the shelf:** a pass can lose a verdict.
+**COPAL -- THE FLAKE HAD A MECHANISM: SEVEN CONSTANT PENS IN MY OWN LANE.** Account
+[folded](archive/20260907-062408_itinerary-landed-accounts.md) (`20260907.062408`), a parked lap
+recovered whole beside it ([shelf](archive/20260907-013427_itinerary-landed-accounts.md)). Proven
+both ways on metal. `shared_pen` **61 -> 54** files, **7 -> 4** wipers, ceilings lowered; **its own
+*is a pen ever contended* is answered** -- eight ships had a pass live at once, spread **164s**
+against **1,422s**. **Yours, a SECOND mechanism, shelved:** a pass can lose a verdict.
 
 **The live front** (condensed `20260831.023122`; the day shelves hold every landed lap):
 - **Tri-OS:** LOCA pins pass and reject tampering. Pier proof awaits `libwayland-client` and

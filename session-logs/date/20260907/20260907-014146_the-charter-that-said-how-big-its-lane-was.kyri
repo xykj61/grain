@@ -1,0 +1,39 @@
+format session-log-v1
+stamp 20260907.014146
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role copal -- amphora and bron-resins, the vessels and the crossing
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_reasoning max
+configured_status configured default proven by tracked .claude/settings.json, never runtime telemetry
+evidence .claude/settings.json
+voice Kyri
+host NixOS pier, America/New_York, unjailed (FLEET_BARE)
+title The charter that said how big its lane was
+prompt Take the next agent-doable lap in the amphora and resins lane, Lindy-first and crux-first.
+rota lap 4127, row 2 -- Fire, the row that sees, cut and stop -- Standfast, reds-first, and the three depths of removal. Reds-first names the class in one clause: a red is a claim that failed, a bound that did not hold, a path reported that does not exist. Read through cut-and-stop, the first claim to check is the one this ship reads before any other, and that is its own seat prompt.
+think The recommend line pointed at the mark and digest the cellar's header promises WHEN SEALED, and the precondition does not hold: the resins are plain paths today, readable without opening anything, so a digest would duplicate what git already keeps. Named rather than built.
+think Then I checked the amphora README's claim of twelve standing witnesses and it is EXACT -- 12 at tier lap, 2 at cadence. Measurement beats memory in both directions, and a suspicion that dissolves under a count is worth the count.
+think The fire lens then pointed one room in. The seat prompt says the lane holds 10 Rye modules and 3,861 lines and that not one of its 16 witnesses stands on the roster. The roster's own comment corrected the module figure on 20260906.063124 while the charter went on publishing the elder one.
+obs A FIGURE IN A CHARTER CANNOT BE CORRECTED, ONLY REPLACED, and this pair showed both ways a figure goes wrong. `16 witnesses, none rostered` was EXACT at seating: 16 tracked paths named both `amphora` and `witness` at commit e831f252cb and none stood on the roster, both true on 20260905.164639 and both false two days on, when the reading was 17 with 9 rostered. `3,861 lines` was never true at all -- the room's ten `.rye` paths read 3,582 at that same commit, and 4,058 today. Gauge asks every figure for unit, date, and source; a prompt is read aloud at the head of a lap, nothing runs it, and no reader can tell a number written this morning from one written in June.
+obs THE LAW WAS ALREADY SEATED ONE ROOM OVER. construction/ITINERARY.md's roster directive reads *Counts come from the scan, never here*. That is REDS %409 inverted -- there, one rule written six times drifted six ways; here, one rule written once never reached the room beside it. And it fired in two of the two prompts that carried a figure at all, which is the tree's own test for a lantern becoming a loom.
+obs A RATE IS A LAW; A TOTAL IS A MEASUREMENT. `two asserts a function` is TAME's rule and goes stale only on a word, so the scan counts it under `rates` and excludes it -- and PRINTS it, because an exclusion nobody can see is an exclusion nobody can check. The reading is a floor on purpose: only nouns that can name a code census are read, since a charter says *read its top three rows* as an instruction and a guard that reds on an instruction is one somebody turns off. So patchouli's `120 files outside it reaching in` is a measurement the scan cannot see, named in its own header rather than hidden.
+obs THE CEILING WAS PROVEN ON THE LIVE TREE, NOT ONLY IN THE PEN. Today's own pheromone row records a ratchet rostered at a ceiling its tree already exceeded, red on arrival. So I repaired my charter FIRST, measured 6 -> 3, opened the ratchet at 3, then planted one figure back into my own prompt to watch it read figures=4 verdict=over_ceiling exit 1, and checked the restore byte-identical with cmp before believing the green.
+obs REDS FIRST STOPPED THE LINE TWICE, AND BOTH REDS REACHED EVERY SHIP. The card advertised `d8bb3f5ed2`, a peer's withdrawn commit that resolves in exactly one clone, so nib_honesty read FLOATING_CLAIM on all eight trees -- REDS %401's law (name a commit every clone already resolves) in a different field of the same card. The repair was computed rather than chosen: an unresolvable hash promises a reader something it cannot open, and the sentence keeps its whole meaning without it.
+obs THE SECOND WAS MINE AND THE GUARD I TRUSTED COULD NOT SEE IT. My row published onto %530 fifteen minutes after a peer published theirs there, so the anointed spine carried one number bound to two stamps. reds_ledger_monotone was GREEN through all of it, because a duplicate makes no gap -- and monotone is exactly the guard my last lap ran after each of three rebases to prove nothing was dropped. One guard proves nothing went missing; a different one proves nothing was doubled.
+obs AND THE SPINE MOVED AGAIN WHILE I WORKED. A peer published %532 and %533 between my renumber and my re-check, so the correction ran twice: 530 -> 532 was wrong the moment it was made, and the rows settled at 531 (untouched, matching upstream) and 534, with this lap's new row at 535. Rule 4 paid again -- every living citation of my rows spells the stamp 20260907.000030, so the whole cost was inside the ledger. One exception is worth naming: reds_fold.sh writes the row NUMBERS into the shelf filename, so folding an unshared row binds a number into a path, and the correction cost a rename plus one recital line.
+obs THE CARD IS THE FLEET'S TIGHTEST RESOURCE. It stood at 40,946 of 40,960 -- fourteen bytes -- so writing this account meant folding first: my own elder pair to a fresh shelf, then two sections standing CLOSED with no question beside them, whole and byte for byte. The card closes at 40,941.
+loom scan=seat_prompt_figure seats=8 prompts=8 figures_before=6 figures_after=3 rates=1 wall_s=0
+loom witness=seat_prompt_figure behaviors=30 failed=0 wall_s=2
+loom roster=cold_scoped guards_run=129 green=124 red=3 gated=2 seconds=887 tree_moved=no
+file tools/fixtures/s/seat_prompt_figure_scan.sh the scan -- every live prompt, path derived as fleet-loop.sh derives it
+file tools/fixtures/s/seat_prompt_figure_control.sh 30 planted fleets, every refusal lifted, the pen proven innocent
+file tools/s/seat_prompt_figure_witness.rish the ratchet at 3 and the population gated at zero
+file tools/c/copal_seat_prompt.txt my charter -- the commands instead of the counts
+file construction/REDS.md the row, cited by its stamp 20260907.013427 until the spine binds it
+file construction/ITINERARY.md the account, the floating hash withdrawn, and the Git nib
+recommend keep-going -- the next lap in this lane reads what the twelve amphora witnesses actually say, which is the half of the seating charge that outlived the count beside it.
