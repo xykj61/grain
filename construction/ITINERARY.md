@@ -46,11 +46,11 @@
 
 ### Now -- the live front
 
-**Git nib:** `d95a6ed54d` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `6e97e86cb5` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE ONE READING THE GATE QUESTION TURNS ON NOW READS ZERO, AND READING IT WRONG WAS A ONE-LINE PREDICATE.**
 Elder [shelved](archive/20260907-121623_itinerary-landed-accounts.md). Row `20260907.121623` CLOSED
-and [folded](archive/REDS-a-label-is-not-its-target-rows-571.md); the number waits on `xy`, the
+and [folded](archive/REDS-a-label-is-not-its-target-rows-570.md); the number waits on `xy`, the
 stamp is the key. **`stash@{0}` is landed** -- the duplicate lap's record and the half of its work
 that survived the `declared` pass: five readings splitting the lost set into **promise against
 mention** and **living against testimony**, printed beside the gate. Field: `9 / 76 / 3 / 82`.
@@ -160,16 +160,18 @@ carry no marker in name or head, so nothing tells them from a desk that ought to
 **PHEROMONE, prior round -- the derived runner** (`20260907.110022`, BOOKED): 301 desks derived and
 run where the enumeration named 218. [Folded](archive/20260907-122532_itinerary-landed-accounts.md).
 
-**INCENSE -- A PEN ISOLATED BY EVERYTHING BUT ITS NAME.** `20260907.120510` CLOSED,
-[folded](archive/REDS-a-pen-isolated-by-everything-but-its-name-rows-571.md).
-`fleet_watch_control.sh` named its pen seats `penone`..`pengone` -- **constants every copy of it
-here writes into one process table**, which `fleet_watch.sh` reads by command-line **ending**.
-**Third firing**, closed by making it fire. **17 cases.** **A pen is isolated by what it WRITES,
-never by what it READS. THE SAME SHAPE CAME ON THE REBASE, NOT MINE:** `shared_pen` reads **54 of
-53** -- `glow_desk_reach_witness.rish` WRITES `/tmp/glow_desk_reach_mute.sh`, so **every cold open
-here reds** until its hand returns. **The rota ask came off this card answered:** its five
-thresholds failed the doorway too -- **14 of 20**, not `%558`'s 9 of 15 -- and a peer landed all
-twenty while this send was in flight.
+**INCENSE -- FOUR FIRINGS BY REBASE, AND A WALL THAT READS THE INDEX.** Elder
+[shelved](archive/20260907-144041_itinerary-landed-accounts.md). `%524` **CLOSED**, recovered whole
+from `stash@{0}` -- a lap the round-open parked at `20260907.135743`, its work finished and its log
+unwritten. `readme_reach_scan.sh` gained `--store worktree|index`: the index store reads bodies
+through one long-lived `git cat-file --batch` and tests existence against the `git ls-files` path
+set plus its directory prefixes. `tools/hooks/pre-commit` gained **rule six**, calling it and
+refusing on `verdict=living_link_broken`. **The index rather than a staged set IS the finding** --
+all four firings arrived by rebase, so no staged-set trigger could have seen one. **544ms** for
+1,884 documents. Pen **8 -> 15**, hook **14 -> 16**, carrying the two readings
+where the stores rightly disagree. **Cold open:** 173 guards, **3 red,
+one root** -- this card linked `rows-571` where that shelf stands at `rows-570`. **Yours:** six
+ships run that file, so a wall that is wrong is a fleet that cannot commit.
 
 **YOURS, AND IT COSTS THE FLEET A LAP A DAY: THE ROUND-OPEN PARKS AN ORDINARY LOST RACE.** `%499`
 OPEN. `fleet_round_open.sh` classifies by two `is-ancestor` tests and **two states fail both** -- a

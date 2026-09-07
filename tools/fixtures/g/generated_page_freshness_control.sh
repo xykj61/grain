@@ -20,6 +20,8 @@
 #   a rebased commit                                      -> pre-commit SKIPPED, post-commit records the debt
 #   a debt standing while a page carries author edits     -> REFUSED, and the debt STILL STANDS
 #   no rishi on disk, a cherry-pick                       -> post-commit rests, no debt recorded
+#   a living link naming a file the commit lacks          -> REFUSED by rule six, off the INDEX
+#   the same link once that file is staged                -> the wall waves the commit through
 #
 # Two pages rather than one, because the tree holds two: README.md and the crushed library index
 # docs-geode/libraries/README.md. Both count witnesses, and the roster caught the second one drifting
@@ -37,7 +39,7 @@
 # EXPECTED: docs_free=yes, clean_staged=yes, dirty_refused=yes, fresh_quiet=yes, ledger_free=yes,
 #           ledger_staged=yes, ledger_dirty_refused=yes, no_rishi_free=yes, pick_owed=yes,
 #           debt_paid=yes, quiet_no_debt=yes, rebase_owed=yes, debt_kept_on_refusal=yes,
-#           no_rishi_no_debt=yes.
+#           no_rishi_no_debt=yes, link_wall_bitten=yes, link_wall_free=yes.
 #
 # THE SIX SEQUENCER CASES, added 20260829 (REDS %337). Git runs pre-commit for `git commit` and
 # `git commit --amend` and for nothing else. The twice-pulled send this tree runs REQUIRES a rebase
@@ -250,6 +252,30 @@ git add -A
 git commit -qm "pay the debt as the hook asked" >/dev/null
 rm -f .generator-ran
 
+# 15/16 -- RULE SIX, the link wall (REDS %524), proven from both sides. The pen carries no
+#          readme_reach_scan.sh until now, so the rule has rested through every case above --
+#          which is itself the resting path, and why the fourteen readings before this are
+#          unchanged. Copying the real scan in arms the rule with the tree's own law rather than a
+#          stand-in, because what is under proof here is the scan's verdict reaching the refusal.
+mkdir -p tools/fixtures/r
+cp "$root/tools/fixtures/r/readme_reach_scan.sh" tools/fixtures/r/readme_reach_scan.sh
+chmod +x tools/fixtures/r/readme_reach_scan.sh
+printf '# a page\n[gone](a-file-nobody-wrote.md)\n' > page.md
+printf '\n[page](page.md)\n' >> README.md
+git add -A
+link_code=0
+git commit -qm "a link that opens nothing" >/dev/null 2>&1 || link_code=$?
+link_wall_bitten=$([ "$link_code" -ne 0 ] && echo yes || echo no)
+
+# And with the file it names actually carried by the commit, the same wall waves it through. A
+# refusal proven only in the failing direction cannot be told from a wall that refuses everything.
+printf 'here\n' > a-file-nobody-wrote.md
+git add -A
+link_free_code=0
+git commit -qm "the link now opens" >/dev/null 2>&1 || link_free_code=$?
+link_wall_free=$([ "$link_free_code" -eq 0 ] && echo yes || echo no)
+rm -f .generator-ran
+
 # 5 -- no rishi on disk: the hook rests and the commit proceeds, which is the seed's case.
 rm -rf rishi
 printf '# a third witness\n' > tools/third_witness.rish
@@ -284,13 +310,16 @@ echo "quiet_no_debt=$quiet_no_debt"
 echo "rebase_owed=$rebase_owed"
 echo "debt_kept_on_refusal=$debt_kept_on_refusal"
 echo "no_rishi_no_debt=$no_rishi_no_debt"
+echo "link_wall_bitten=$link_wall_bitten"
+echo "link_wall_free=$link_wall_free"
 
 if [ "$docs_free" = yes ] && [ "$clean_staged" = yes ] && [ "$dirty_refused" = yes ] \
   && [ "$fresh_quiet" = yes ] && [ "$ledger_free" = yes ] && [ "$ledger_staged" = yes ] \
   && [ "$ledger_dirty_refused" = yes ] && [ "$no_rishi_free" = yes ] \
   && [ "$pick_owed" = yes ] && [ "$debt_paid" = yes ] && [ "$quiet_no_debt" = yes ] \
   && [ "$rebase_owed" = yes ] && [ "$debt_kept_on_refusal" = yes ] \
-  && [ "$no_rishi_no_debt" = yes ]; then
+  && [ "$no_rishi_no_debt" = yes ] \
+  && [ "$link_wall_bitten" = yes ] && [ "$link_wall_free" = yes ]; then
   echo "control_verdict=ok"
 else
   echo "control_verdict=wrong"
