@@ -28,7 +28,6 @@ cd "$ROOT"
 # The seated bound, read from the law rather than spelled here. One reading, one home:
 # five meters each held their own copy until 20260824 (REDS %199).
 LIVING_PIN_MAX_BYTES=$(sh "$ROOT/tools/fixtures/l/living_pin_max_bytes.sh")
-KEEPS="tools/fixtures/l/living_docs_lint_keeps.txt"
 TMP=$(mktemp -d "${TMPDIR:-/tmp}/living-docs-scan.XXXXXX")
 trap 'rm -rf "$TMP"' EXIT
 
@@ -68,23 +67,8 @@ echo "living-docs lint: roster ${roster_n} paths"
 # on the roster. The representative case is docs-geode/edu/README.md, a room front door
 # holding a live prose use and absent from the roster entirely. Both were repaired by
 # hand on that lap; the reach itself is a booked question rather than a silent limit.
-RETIRED='corpus|footgun|dead-peer|sanity check|empty plate|ungated diet|thin ring|product tip|suite tip|git tip|product_tip|suite_tip|git_tip|dogfood|dogfooded|dogfooding'
-
-kept_line() {
-  rel=$1
-  line_body=$2
-  [ -f "$KEEPS" ] || return 1
-  while IFS= read -r kline; do
-    case "$kline" in ''|\#*) continue ;; esac
-    kpath=${kline%%	*}
-    kpat=${kline#*	}
-    [ "$kpath" = "$rel" ] || continue
-    if printf '%s\n' "$line_body" | grep -Eq "$kpat"; then
-      return 0
-    fi
-  done <"$KEEPS"
-  return 1
-}
+# kept_line and the keeps file moved with duty 1 into tools/fixtures/l/retired_word_scan.sh,
+# which is the only reading that ever consulted them.
 
 resolve_cand() {
   src=$1
@@ -107,26 +91,26 @@ resolve_cand() {
 }
 
 # --- duty 1 ---
+# THE RETIRED WORDS READ THEIR OWN ROOM NOW. This duty read $ROSTER for its whole life -- the
+# 60 pages the docs meter weighs for links, status rooms and byte bounds. A word ban is a
+# PROSE-level question and governs every living page, of which the tree holds 767; the meter
+# enforcing it heard a fourteenth of them. Two questions sharing one corpus is the braid
+# single-stranded names, so duty 1 takes its own roster (379 pages) and the reading itself is
+# factored out, where a control can feed it a planted tree and prove it still bites.
+#
+# The two dated hammocks that leave this duty are testimony by their own basenames and keep
+# every word they wrote; they stay on $ROSTER for duties 2 through 8.
 : >"$TMP/d1"
-while IFS= read -r rel; do
-  [ -n "$rel" ] && [ -f "$rel" ] || continue
-  awk '/^```/ { fence = !fence; next } !fence { print NR ":" $0 }' "$rel" \
-    | grep -Ei "\\b(${RETIRED})\\b" \
-    | while IFS= read -r hit; do
-        line_no=${hit%%:*}
-        line_body=${hit#*:}
-        if kept_line "$rel" "$line_body"; then
-          continue
-        fi
-        snippet=$(printf '%s' "$line_body" | cut -c1-100)
-        echo "ADVISE duty1 retired-word ${rel}:${line_no}: ${snippet}"
-      done >>"$TMP/d1" || true
-done <"$ROSTER"
+sh tools/fixtures/l/living_prose_roster.sh \
+  | sh tools/fixtures/l/retired_word_scan.sh > "$TMP/d1raw" 2>/dev/null || true
+grep '^RETIRED ' "$TMP/d1raw" 2>/dev/null \
+  | sed 's/^RETIRED /ADVISE duty1 retired-word /' >"$TMP/d1" || true
+d1_files=$(sed -n 's/^retired_word_files=//p' "$TMP/d1raw" 2>/dev/null | tail -1)
 if [ -s "$TMP/d1" ]; then
   cat "$TMP/d1"
-  echo "ADVISE duty1 count=$(wc -l <"$TMP/d1" | tr -d ' ')"
+  echo "ADVISE duty1 count=$(wc -l <"$TMP/d1" | tr -d ' ') of ${d1_files:-0} living prose pages"
 else
-  echo "OK   duty1 retired LEXICON words — none on roster"
+  echo "OK   duty1 retired LEXICON words -- none across ${d1_files:-0} living prose pages"
 fi
 
 # --- duty 2 ---
