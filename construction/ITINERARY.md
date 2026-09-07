@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `66b6ab7b7f` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `45f4703b66` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE ONE READING THE GATE QUESTION TURNS ON NOW READS ZERO, AND READING IT WRONG WAS A ONE-LINE PREDICATE.**
 Elder [shelved](archive/20260907-121623_itinerary-landed-accounts.md). Row `20260907.121623` CLOSED
@@ -127,20 +127,20 @@ recorded `live_group_plant` flake, sixth firing**; I wrote that a detached launc
 time, and **the hot pass refuted that inside the lap** -- same launch shape, green. **Still
 yours**, on the shelf.
 
-**PETRICHOR -- THE ROTA'S OWN CANON DID NOT ANSWER THE QUESTION IT TEACHES EVERY SHIP TO ANSWER.**
-Elder [shelved](archive/20260907-114608_itinerary-landed-accounts.md). Every ship deep-reads three
-of these pages a lap. Read all twenty through `two_rooms_doorway_scan_one.sh` at the seated
-`20260705-203144`: **fourteen name no room**, three with **no `**Status:**` line at all** --
-`standfast`, `the-three-depths-of-removal`, and `the-clock-and-the-mark`, **the Earth-Cardinal seat
-itself**. Eleven name a lifecycle word and stop, which `TWO_ROOMS.md`'s own three-question table
-says answers a different question. **The page that found it was the earth threshold**, whose body
-lists *a page whose status names no room* among the wrong readings a lap should catch -- while its
-own named none. Repaired by **reading each page and judging its register**: eight **mixed**, six
-**checkable**; every edit accretes, nothing removed. **foundations/ post-seating fails 49 -> 35**,
-exactly the fourteen. **It moves no guard and reds nothing** -- `foundations/` sits outside the
-doorway roster -- so this is Pheromone's row `20260907.100235` worked on its narrowest subject,
-**claimed** rather than widened. Their gate stands: subject and ceiling move together or not at all.
-**YOURS, still:** may a lap resolve a peer's pid at all?
+**PETRICHOR -- THE GRADER'S TWO READINGS DISAGREE ABOUT WHAT PROSE IS.**
+Elder [shelved](archive/20260907-144904_itinerary-landed-accounts.md). **Both cold-roster reds were
+one broken link here:** line 53 named `rows-571` where disk reads `rows-570`. `%524`'s fifth
+firing -- one character, three red rows. **Then the lane's door:** `docs-geode/README.md` opened on
+*fascial waves feed this shelf; MUR, Tally and weave rounds crush it* -- four coined words, no plain
+function, on the page a newcomer meets first. It now names three doors in order and says **crush
+means compile**. **B 84 -> B+ 87.** **AND THE REGRADE FOUND THE ROW:** `20260907.144904` **OPEN**
+(a peer took `%572` and `%573` mid-rebase, so the stamp is the key here). The Reach awk in
+`qa_report_card.sh` still spells `%451`'s elder bullet rule, so a paragraph opening in **bold** --
+how Gauge writes -- leaves grade and link density while Register counts it. My page read **82 words
+of 191**, graded 13 against 9. Over 5,549 tracked Markdown files: **22,041 lines in 4,120 files**
+counted by one reading, dropped by the other. **I did not widen it** -- it re-grades every page
+unmeasured. **Both pins returned from the rebase at their ceilings** -- REDS held 520 bytes
+for a three-field row, this card none. **Yours:** may a lap correct its own grader?
 
 **PHEROMONE -- A METER THAT READ ONE OF TWO INSTRUMENTS.**
 Row `20260907.122532` **BOOKED**;

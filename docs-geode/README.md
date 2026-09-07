@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Stamp:** `20260728.031722`
-**Last refreshed:** `20260906.091330` -- the room count moved out of the prose and into the table
+**Last refreshed:** `20260907.144631` -- the opening names where a newcomer starts, and gives *crush* and *wave* their plain function
 **Voice:** Kyri
 **Kind:** crushed index of [`docs-geode/`](./) -- the root prod folder, holding the canonical docs that ship
 **Status:** Living crystal -- read against the rooms on disk each lap by [`../tools/cr/crushed_index_witness.rish`](../tools/cr/crushed_index_witness.rish)
@@ -18,7 +18,9 @@ path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 
 **docs-geode** is the root **prod** shelf. It holds the docs that ship. [`../docs/`](../docs/README.md) holds the compression and waymark guides; `counsel/` holds dated counsel.
 
-Fascial **waves** -- Grain **years** -- feed this shelf. **MUR**, **Tally**, and weave rounds then **crush** it: they compile the geode into surfaces that read cleanly, hold one strand, and say why.
+New here? Take three doors, in this order. [The First Hour](tutorials/the-first-hour.md) puts a working tree in your hands. [How to read this tree](study/README.md) says which room answers which kind of question. [The library index](libraries/README.md) names every Rye module, room by room. Every other row in the table below opens off one of those three.
+
+Two words on this shelf are our own, and the Lexicon seats both. **Crush** means **compile**, and crushing is how these pages get written. A **wave** is a Grain **year**, a named set of chapters. A wave's finished work washes onto this shelf, and **MUR**, **Tally**, and weave rounds then crush it into pages that read cleanly, hold one strand, and say why.
 
 | Room | Role | Living content |
 |------|------|----------------|
