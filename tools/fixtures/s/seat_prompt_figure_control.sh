@@ -18,6 +18,7 @@ set -u
 
 ROOT=$(pwd)
 SCAN="$ROOT/tools/fixtures/s/seat_prompt_figure_scan.sh"
+. "$ROOT/tools/fixtures/s/shell_portable.sh"
 PEN=$(mktemp -d "${TMPDIR:-/tmp}/seat_prompt_figure_control.XXXXXX") || exit 2
 trap 'rm -rf "$PEN"' EXIT
 
@@ -88,7 +89,10 @@ check "clean fleet verdict"               "ok" "$(field_of verdict "$p")"
 p=$(mkfleet modules)
 printf 'It holds 10 Rye modules.\n' >> "$(prompt_of "$p" alpha)"
 check "a module count is read"            "1" "$(field_of figures "$p")"
-sed -i 's/It holds 10 Rye modules\.//' "$(prompt_of "$p" alpha)"
+# `sed -i` has no portable spelling -- GNU takes no argument and BSD requires a backup suffix -- so
+# the tree's own helper writes a temporary and copies back through the original inode, which also
+# keeps the mode the repository tracks (`.claude/rules/exec-bit.md`).
+sed_inplace 's/It holds 10 Rye modules\.//' "$(prompt_of "$p" alpha)"
 check "and removing it lifts the reading" "0" "$(field_of figures "$p")"
 
 # -- 3. a line count is a measurement, and a thousands comma is ONE figure ------------------------
