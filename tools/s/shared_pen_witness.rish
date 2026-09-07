@@ -28,12 +28,20 @@
 # WHAT IS PROVEN, on metal.
 #   The tree's constant-pen population, read across every spelling, under a ceiling that only falls.
 #   The WIPING subset read separately, because a file that only writes a shared pen may interleave
-#     and survive, while one that `rm -rf`s it takes a peer's in-flight state down. Seven today.
-#   Twenty-seven behaviors on real git repositories in a throwaway pen -- both ceilings shown from
-#     both sides, seven free rules each planted and read as zero, the quoting rule and the lock
-#     rule each shown in BOTH directions so neither can be used as a hole, and two refusals for a
-#     root that cannot answer, so an unreadable tree never reports clean. The count is DERIVED by
-#     the control from its own claims rather than spelled, since it read 24 while 27 ran.
+#     and survive, while one that `rm -rf`s it takes a peer's in-flight state down. Six today, and
+#     six is what it reads only since `20260907`: the wipe reading was LINE-SCOPED, so a file that
+#     assigned a pen on one line and `rm -rf`d it on another read as a hold, and two of the six
+#     were invisible (REDS `%544`). The scan takes two passes now -- collect the variables holding
+#     a constant pen, then read a wipe naming one of them as a wipe of that pen -- and it found
+#     exactly the two files a hand-count had named, which is the corroboration worth having. The
+#     paragraph that declined this repair declined it on a measurement taken by the reading it was
+#     defending, which is the shape to remember rather than the two files.
+#   Thirty-two behaviors on real git repositories in a throwaway pen -- both ceilings shown from
+#     both sides, seven free rules each planted and read as zero, the quoting rule, the lock rule
+#     and the variable tracker each shown in BOTH directions so none can be used as a hole, and two
+#     refusals for a root that cannot answer, so an unreadable tree never reports clean. The count
+#     is DERIVED by the control from its own claims rather than spelled, since it read 24 while 27
+#     ran.
 #
 # TWICE THE CONTROL CAUGHT THIS GUARD COUNTING SOMETHING THE TREE HAD NOT DONE WRONG, and both are
 # worth naming because both would have instructed a repair that was already made or never needed.
@@ -77,7 +85,12 @@ assert control.out contains "double_quoted_counted=yes" else "shared-pen: the qu
 assert control.out contains "tmpdir_default_counted=yes" else "shared-pen: a pen written ${TMPDIR:-/tmp}/<name> is a constant pen on a pier where TMPDIR is unset"
 assert control.out contains "lock_free=yes" else "shared-pen: a lock over a pier-wide resource is shared on purpose"
 assert control.out contains "lock_wiping_counted=yes" else "shared-pen: the lock rule must not become a hole -- a wiped .lock is a pen"
-assert control.out contains "behaviors=27" else "shared-pen: the control must run every behavior this witness names"
+assert control.out contains "var_wipe_counted=yes" else "shared-pen: a pen held in a variable and wiped a line later is a wipe"
+assert control.out contains "rishi_var_wipe_counted=yes" else "shared-pen: a Rishi list wiping a let-held pen is a wipe"
+assert control.out contains "var_mktemp_free=yes" else "shared-pen: a variable named by mktemp holds no constant pen"
+assert control.out contains "var_wipe_unheld_free=yes" else "shared-pen: the tracker must not read every wipe in a file that holds a pen as a wipe of it"
+assert control.out contains "var_unheld_still_counted=yes" else "shared-pen: freeing the wipe must not free the pen"
+assert control.out contains "behaviors=32" else "shared-pen: the control must run every behavior this witness names"
 assert control.out contains "dated_testimony_free=yes" else "shared-pen: dated testimony keeps every word it wrote"
 assert control.out contains "wiping_counted=yes" else "shared-pen: a wipe of a shared pen must be counted separately"
 assert control.out contains "holding_not_wiping=yes" else "shared-pen: a pen only written to is not a pen wiped"
