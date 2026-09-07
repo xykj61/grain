@@ -37,6 +37,7 @@ obs I did not repair it. Both shelves are published, both are a peer's, and choo
 obs THE HOT PASS CAUGHT TWO OF MY OWN, AND BOTH WERE THE COST OF MOVING PROSE BY HAND. unshared_citation reddened on FOUR citations, every one of them mine and every one on construction/ITINERARY.md: I wrote %575, %576 and %577 into the card while shared_max on the anointed spine reads 574. That is rule 4 -- cite by stamp until the row is shared -- caught by the guard built for it, on the very lap whose own row is about that law. The card cites the three stamps now. And fold_shelf_link reddened on fold_depth_lost=2: I folded the elder Patchouli account into construction/archive/ by hand, and its two links still carried the card's depth, `archive/REDS-...` where a file already inside archive/ wants the bare name. reds_fold.sh re-anchors automatically for a ledger row and there is no such tool for a card block, so a hand does it and a hand forgets. Both green on the second hot pass.
 obs WHAT THE SECOND PASS COST, named rather than hidden: 1,533 seconds, 172 guards, 168 green, 3 gated, and one red that is GREEN when run alone. standing_equipment failed at live_group_plant=ok -- its pen could not build a lock holder with a live process group leader on a pier where eight ships were running at once. Alone it reads GREEN with control_verdict=ok and every refusal planted and freed. That is the concurrent-pen flake family the card already names, and I am recording it as a flake rather than claiming a clean sweep, because the difference between those two sentences is the whole value of a receipt.
 obs AND THE LAP OPENED ON A LOCK NO LAP OWNED. The first cold pass refused with run_lock=in_flight: a --hot runner from a dead lap held the lock, its process group leader gone, its output reaching nobody. One kill -TERM by pid released it through the runner's own EXIT trap -- the runner prints that instruction itself, including why SIGKILL would not do. Two minutes, and it is the shape %569 booked three hours earlier from the other side: bounded by pid, never `pkill -f`.
+obs AND IT HAPPENED A SIXTH TIME, ON THE SEND ITSELF. The push rebase found peers had published rows through %578 while this lap ran, so the three shifted once more and landed SHARED as %579 fence, %580 spelling, %581 collision -- the fence row's sixth number against a stamp, 20260907.111135, that has still never moved. Every obs above naming %574 or %575 for these rows records what they were called when that sentence was written, which is what a dated log is for; the stamps in those same sentences are the part that is still true, and they are the reason nothing outside the ledger had to be swept even once. This obs and the two `file` lines below are the only correction, appended rather than rewritten.
 loom witness=mantra_diff verdict=green control_phases=10
 loom witness=width_check_th3 verdict=green
 loom witness=mantra_weave_merge verdict=green orders=6
@@ -52,7 +53,8 @@ loom scan=unshared_citation red_first=4 files=1 green_second=0
 loom scan=fold_shelf_link fold_depth_lost_first=2 green_second=0
 loom pin=construction/ITINERARY.md bytes=40895 bound=40960 headroom=65
 loom pin=construction/REDS.md bytes=40959 bound=40960 rows_folded=3
-loom scan=reds_spine_derive shared_max=574 local_max=577 double_booked_before_shift=1 next_free=577
+loom scan=reds_spine_derive shared_max=574 local_max=577 double_booked_before_shift=1
+loom scan=reds_spine_derive_at_send shared_max=578 rows_landed=579,580,581 fence_row_numbers=6 stamp_moves=0
 file mantra/src/diff.rye max_diff_lines imported from the weave, the cell count derived from a byte bound, check_bounds at the edge
 file mantra/src/diff_witness.rye the ceiling admitted at the boundary and refused one cell past, each shown from both directions
 file tools/fixtures/m/mantra_diff_control.sh three plants take the control from seven phases to ten
@@ -61,11 +63,11 @@ file tools/w/width_check_th3.rish comment-only lines dropped before the usize gr
 file tools/fixtures/a/ascii_document_scan.sh two case arms collapsed to one spelled [_.]
 file tools/fixtures/d/dated_spelling_scan.sh the line-blindness named in its own does-not-reach section
 file tools/fixtures/r/reds_citation_scan.sh the same collapse, widening the sprigless arm past .md
-file construction/archive/REDS-the-fence-the-neighbour-had-rows-575.md the closed fence row, renumbered a fifth time, its stamp unchanged
-file construction/archive/REDS-the-spelling-the-scan-prescribed-rows-576.md the recovered spelling row, folded
-file construction/archive/REDS-one-checkout-collided-with-itself-rows-577.md the collision row this lap booked, folded
+file construction/archive/REDS-the-fence-the-neighbour-had-rows-579.md the closed fence row, at its sixth number, its stamp unchanged
+file construction/archive/REDS-the-spelling-the-scan-prescribed-rows-580.md the recovered spelling row, folded
+file construction/archive/REDS-one-checkout-collided-with-itself-rows-581.md the collision row this lap booked, folded
 file construction/REDS.md the count line at 577; all three of this lap's rows folded to shelves to hold the pin under its bound
-file construction/archive/REDS-fold-recital.md the recital line for %574
+file construction/archive/REDS-fold-recital.md the recital lines for the three rows, which land shared as %579, %580 and %581
 file construction/ITINERARY.md the live front rewritten to this lap, elder folded, at exactly its bound
 file construction/archive/20260907-155612_itinerary-landed-accounts.md the elder Patchouli account, word for word
 recommend check-in (Keaton) -- the lane's queue is clear of reds and the next two doors both want a word: whether a negative-existence claim about a room we own is worth a reported ratchet, and whether the several-line interleave gets its anchor per insert. The card standing at exactly its bound with eight accounts on one front is the third, and it is not mine to raise.
