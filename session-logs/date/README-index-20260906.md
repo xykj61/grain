@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260906.204809` | [the fleet set down for a key change](20260906/20260906-204809_the-fleet-set-down-for-a-key-change.kyri) | 7 ships and the watch down; nothing lost. |
 | `20260906.203052` | [the seed crosses its gate](20260906/20260906-203052_the-seed-crosses-its-gate.kyri) | gate %1 crossed; 7,978 files to both doors. |
 | `20260906.200141` | [a guard that reads a proxy](20260906/20260906-200141_a-guard-that-reads-a-proxy.kyri) | %510: the box's second drawer, named at last. |
 | `20260906.195215` | [the lap that landed its own park](20260906/20260906-195215_the-lap-that-landed-its-own-park.kyri) | %511, %512: a park landed, a pen race closed. |
