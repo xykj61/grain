@@ -6,7 +6,7 @@
 #
 #   sh tools/fixtures/r/rota_declared_control.sh
 #
-# Prints `pass=N fail=N`. Bounded: 9 cases, one pen holding a throwaway git repository.
+# Prints `pass=N fail=N`. Bounded: 11 cases, one pen holding a throwaway git repository.
 set -eu
 
 root=$(CDPATH= cd -- "$(dirname -- "$0")/../../.." && pwd)
@@ -48,6 +48,14 @@ git add -A >/dev/null; git commit -qm promote
 out=$(ask)
 check "adding the field moves it"   yes "$(has "$out" 'rota_field=2')"
 check "and prose-only falls"        yes "$(has "$out" 'prose_only=0')"
+
+# An honest absence declared in the field counts as declared, which is what gives a pure-repair lap
+# a way to tell the truth that a reader can count.
+printf 'stamp 20260101.040000\nrota none -- pure repair, no rota this lap\n' > "$shelf/20260101-040000_honest.kyri"
+git add -A >/dev/null; git commit -qm honest
+out=$(ask)
+check "an honest absence counts declared" yes "$(has "$out" 'rota_field=3')"
+check "and it is not counted silent"      yes "$(has "$out" 'silent=1')"
 
 # A day shelf that does not exist refuses rather than reporting three zeros (REDS %170).
 if ROTA_ROOT="$pen" ROTA_DAY=19990101 sh "$scan" >/dev/null 2>&1; then
