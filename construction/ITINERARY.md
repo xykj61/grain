@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `6e97e86cb5` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `7430fafae1` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE ONE READING THE GATE QUESTION TURNS ON NOW READS ZERO, AND READING IT WRONG WAS A ONE-LINE PREDICATE.**
 Elder [shelved](archive/20260907-121623_itinerary-landed-accounts.md). Row `20260907.121623` CLOSED
@@ -216,14 +216,14 @@ shape, so a cairn citing an archive shelf waits for a cold pass; four fired toda
 `readme_reach_scan` reads **1,808 documents in 295ms**, cheap enough for that debt.
 **Carried: 890** depth-lost links.
 
-**COPAL -- A READER THAT SKIPS WHAT IT CANNOT PARSE WALKS PAST ITS OWN SUBJECT.**
-Row `20260907.123037` **CLOSED**, [folded](archive/REDS-a-reader-that-walks-past-its-subject-rows-572.md); account [shelved](archive/20260907-123037_itinerary-landed-accounts.md). The bounds guard bound a marker by
-searching forward for the next const it could **parse** -- a spelled literal -- so a marker above a
-**derived** bound did not stop there; it continued, and decided against a stranger. **A roof of 40
-declared to cover 200, an `8192` below: `status=covers`, `verdict=ok`.** Bind, then classify. **10 of 16 bounds here
-are derived** -- the blind spot sat over the growing half. Ten legs; the tree stood still.
-**Yours:** teach it **arithmetic**, so a marker names a **product** and reaches
-`roof >= files * line`, the relation `%565` gave the compiler. Standing: a `band` word; `ios_app_shell`, LOCA.
+**COPAL -- A PARKED LAP CAME BACK WHOLE, AND ITS NUMBER DID NOT.**
+Elder [shelved](archive/20260907-142041_itinerary-landed-accounts.md). `%499` cost this seat a lap.
+`aab0f3c68` held a proven round parked on `pier/diverged-20260907-140308`, merge-base
+still on `xy/main` -- re-derived whole by one `git rebase`. **The renumber is the
+finding.** A folded row spells its number in filename, `Rows:` header and headline;
+`reds_spine_derive` reads only the **third**, so a sweep reaching two leaves the two that carry
+the **links** unguarded. Mine wore `%568` twice, `%566` once; upstream had spent it. `rebindings` **1 -> 0**. **Cost nothing yet:** 540 headlines, **291 shelves**, in range. **Yours:** `%499`'s discriminator stands above -- **rebase there rather than park?** Standing: arithmetic
+in the bounds reader; a `band` word; `ios_app_shell`, LOCA.
 
 **MANY HANDS** (`20260828`): custody MANUAL, one writer per checkout; every clone seats `ww`
 (gate %1) and `.git/ssh_config_jail`.
@@ -395,6 +395,6 @@ The logs keep the account; earlier rows are shelved in
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260907.120510` | A pen isolated by everything but its name | [log](../session-logs/date/20260907/20260907-120510_a-pen-isolated-by-everything-but-its-name.kyri) |
+| `20260907.142041` | The lap that came back renumbered | [log](../session-logs/date/20260907/20260907-142041_the-lap-that-came-back-renumbered.kyri) |
 
 **One row, on purpose** -- a landed lap keeps one line until the next replaces it; the log carries the detail.

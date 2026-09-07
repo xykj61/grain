@@ -1,0 +1,40 @@
+format session-log-v1
+stamp 20260907.142041
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role Copal -- amphora and bron-resins, the vessels and the sealing
+modality text
+model claude-opus-5
+model_status configured default proven by .claude/settings.json; runtime identity unverified
+voice Kyri
+host NixOS pier, America/New_York
+title The lap that came back renumbered
+prompt Autonomous loop, Copal seat -- open the lap, work the lane, land whole.
+think The round opened on a clean tree and a stash list nine deep. stash@{0} carried this hour's stamp, so the previous lap had died before its commit -- the shape the card names at %321, and the first thing to read rather than the last.
+think Its base was aab0f3c68, a signed commit holding a whole proven round, and that commit sat on pier/diverged-20260907-140308 rather than on main. The round-open had parked it. That is %499 exactly: the merge-base was 122626044, which stands on xy/main, so the local line's base was never rewritten -- an ordinary lost race that git rebase re-derives whole.
+think Re-derived it on a scratch branch. Three conflicts, all in shared surfaces: README's metrics block, which the pre-commit hook regenerates, so HEAD wins; the REDS headline census; and the fold recital, which took both sides, since two hands folded different rows in the same hour and neither line is wrong.
+think Then the number. The parked row wore %568 in its filename and header and %566 in its own body -- a renumber sweep that reached two of three places. Upstream had since bound %568 to 20260907.113635, so the row was squatting. Read next_free from the anointed spine after fetching xy: 572. Renamed the shelf, rewrote all three spellings, and reds_spine_derive went rebindings=1 to 0, next_free 572 to 573.
+think The spine scan refused to answer --next while the rebase stood open, which is the right refusal and saved me from booking a number against a half-applied tree.
+think Two peer links on the shared card pointed at files that are not there -- rows-571 for a shelf that landed as rows-570, and rows-568 for one that landed as rows-566. The second was my own previous lap's blind sed, confessed in its log. Repaired by line number rather than by pattern, so no third passage moved.
+think Left the stash's other half unlanded: its mktemp pen for glow_desk_reach_witness.rish is superseded, a peer having closed the same constant-pen fault with a pwd-cksum suffix. Landing mine would have reopened a closed red.
+obs A renumber has three surfaces on a folded row -- the filename, the Rows header, and the row headline in the body -- and only the third is what reds_spine_derive reads. The guard caught the one that mattered and stayed silent on the two that carry the links.
+obs So I measured whether that silence has cost anything: 540 row headlines across 291 shelves, every one inside its filename's declared range. Zero drift. My first pass read 85 mismatches and every one was my own parser refusing to expand a range -- a loose test reporting a defect that was never there, which is the class this tree books when a guard does it.
+obs One shelf name my parser could not read at all: REDS-a-lock-the-stamp-already-was-rows-489-508-509.md, three number parts where the shape is one or two. Not a red -- a name worth a glance on a later lap.
+obs The rota row read as provenance for the wound. Conway says a system copies the communication structure of whoever builds it, and the parked lap is that law in git: eight ships, eight round-opens, each deciding alone whether its own line was lost, with no shared reading of the answer. The recovery tastes sweet; the flow that needed it is off.
+obs Honest against myself: no cold roster pass opened this lap. The tree was clean and the first real act was a rebase, which a cold pass would have had to precede by minutes and be discarded by. The hot pass after staging is what this commit stands on.
+rota lap 4188, row 3 -- Water, the row that tastes; Gall and Conway read the parked-lap race as an organizational shape rather than a git accident, and the happy-zone page named why the recovery cost so little: the amphora guard is an isolated witness, so re-proving the re-derived work took one run.
+loom witness=amphora_bounds_agree verdict=ok couples=12 covers=2 wall_s=2
+loom witness=reds_ledger_monotone rows=572 disagreements=0
+loom scan=reds_spine_derive rebindings=0 next_free=573 shared_max=571
+loom census=reds_shelf_row_numbers shelves=291 headlines=540 outside_range=0
+file construction/archive/REDS-a-reader-that-walks-past-its-subject-rows-572.md the parked row, renumbered off a squatted %568 onto the spine's own next free
+file construction/archive/REDS-fold-recital.md both hands' lines kept; mine renumbered to %572
+file construction/REDS.md the headline census refreshed to the measured spine, 572 rows
+file construction/ITINERARY.md my block's link repointed, and two peer links repaired by line number
+file session-logs/date/README-index-20260907.md a rebase duplicate lifted and the shelf sorted
+file tools/fixtures/a/amphora_bounds_agree_scan.sh recovered whole from the park -- next_const_sig binds a marker to the first const beneath it of any form
+loom pass=hot guards=172 green=168 red=1 gated=3 seconds=1353 tree_moved=no
+obs Two hot passes. The first read four reds and three were my own two card lines -- a nib hash I truncated to 3574544a7c where HEAD reads 3574544a73, and a %572 citation above the anointed spine's shared_max of 571, which derived-spine rule 4 forbids until the number is bound upstream. Repaired: the card cites the renumber without spelling it, and the fold archives keep the number because the ledger assigns rather than cites.
+obs The fourth red was standing_equipment itself, red because a rostered guard was red. The second pass left one: live_group_plant, the recorded concurrent-pen flake, seventh firing -- GREEN when the guard runs alone, which is the shape the card already carries for that family.
+recommend check-in (Keaton) -- %499 is the lap I paid for today and six ships run that file. The discriminator is local and cheap: the merge-base equals the parent of the oldest commit in xy/main..HEAD exactly when the local base still stands upstream, and in that state a rebase re-derives the line whole. May fleet_round_open.sh rebase in that case rather than park?
