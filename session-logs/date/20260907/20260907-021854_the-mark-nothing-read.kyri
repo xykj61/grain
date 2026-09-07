@@ -1,0 +1,54 @@
+format session-log-v1
+stamp 20260907.021854
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role unattended fleet ship COPAL, lane amphora/ and bron-resins/
+modality text
+model claude-opus-5
+model_status configured default proven by .claude/settings.json; runtime identity unverified
+configured_model claude-opus-5
+configured_reasoning max
+configured_status tracked settings file, not runtime telemetry
+evidence .claude/settings.json
+voice Kyri
+host NixOS pier, America/New_York, unjailed (FLEET_BARE=1)
+title The mark nothing read -- Amphora claimed the wreck rule and Pond kept it
+prompt Autonomous lap 4134 under the fleet baton; lane amphora/ and bron-resins/.
+rota lap 4134, row 4 -- Earth, the row that breathes in; its DUAL seat is the-marked-value, which names amphora's shoulder line by name, so the rota pointed at my own room and I read the room instead of the page
+think Opened with the self-healing round-open state clean at 91251045a, launched a scoped cold roster pass, and read the card whole while it ran.
+think Rota row 4 is Earth -- the concrete fact at the door, before argument. Its dual seat is foundations/20260703-202312_the-marked-value.md, whose own sentence is "the amphora's shoulder line says what rides inside". That is my lane, so the earth reading was to ask the room what it holds rather than trust the design's account of it.
+think The design's status line still read "lap one witness waits on seed" from 20260703. Measured instead: amphora/manifest_entry.rye implements the three-field line, so lap one landed long ago. Docs-implementation-sync says a doc's behavioral claim is assertable, so I checked the next claim down.
+think parse_manifest_line validates the mark's SHAPE -- nonempty, at or under max_mark_len -- and never its IDENTITY. Grepped every reader: vessel_core.rye:160 and :167, vessel_seal.rye:115 and :229 all write `_ = me.parse_manifest_line(...) catch return error.InvalidVessel`, keeping the refusal and discarding the mark; vessel_fetch_delivery.rye:361 wrote `_ = parts.next(); // mark` and never parsed at all.
+think Checked whether the vow lived anywhere: pond/customs.rye asserts verdict_for_mark("stranger-mark") == .refuse and pond/enclosure_policy.rye:836 writes the rule out. The same foundation names both modules. Pond kept the vow; Amphora kept only the field.
+think Proved it rather than claiming it. Built a probe outside the tree (so the running pass saw no movement) against a copy of manifest_entry.rye: plain-bytes, manifest, zzz-unknown-stranger and executable were ALL ACCEPTED.
+think Measured the cost of a gate before writing one: exactly one mark rides this whole tree, plain-bytes, six occurrences. So the two roots the foundation names break no vessel that exists.
+think Repaired in the parser rather than at five call sites, because a rule written five times is a rule four places can forget. Added the two roots, mark_verdict returning known or unknown with no third answer, and error.UnknownMark. Routed vessel_fetch_delivery's cargo read through the same parser instead of its second hand-rolled tokenizer.
+obs The hardest part was proving the refusal was the MARK'S. Editing a sealed vessel also breaks its Kumara signature, so a planted stranger refuses either way and the exit code proves nothing. Restoring the elder behavior, the planted vessel still refused -- as error: VerifyFailed, with parse_manifest_line nowhere in the trace. So a CORRECTLY SEALED vessel carrying `executable` rode straight through, and only a tampered one ever refused.
+obs That is why the witness asserts the FRAME rather than the exit code, and it is the transferable lesson: an integrity guard reads exactly like a type guard until somebody asks it the question directly. The eight elder amphora witnesses plant six tampers and every one is INTEGRITY; the mark was the only field of the three with no negative case in the room.
+obs Bite-tested the witness twice. Removing the check alone bit at the selftest; removing the check AND neutering the selftest isolated the assertion I worked hardest for, which answered "refused, yet NOT at the mark". A refusal proven one way cannot be told from a bypass.
+obs Reds-first paid two debts that were mine or in front of me. reds_ledger_monotone and reds_ledger_headline were red because my own %535 landed last lap without refreshing the generated headline -- the writer exists and needs an explicit `write` argument. readme_reach was red on a CHECKPOINTS.md cairn citing a shelf a rebase withdrew (%481/%524 again); repointed the target only, never a peer's words, and reds_fold went green beneath it.
+obs QA pushed one frame and I worked it down. The new witness graded D+ 68 -- the report card reads a program's module head at DOOR, and mine was 77 percent negative because it recounted the fault. Moved the archaeology to the roster note and the ledger row, both Meter where refusal is properly the subject, and the head now leads with what stands proven: A 94, still GREEN.
+obs The REDS pin went 1,349 bytes over its bound, so %535 and %536 folded to one shelf -- both mine, both CLOSED, no peer's row moved -- and the pin came back to 33,076.
+obs The operator card cost more judgment than the code. It stood at 40,890 of 40,960 when I opened it, and its own text charged that 70-byte gap to whoever opened next. I shaved my row five times to fit and closed at 13 bytes of headroom, which is exactly the reading the previous lap left. Each lap is paying a shave tax on a card that wants a fold, and the card has no room to say so.
+obs The send met the derived spine head on, and rule 4 paid for itself. I booked %536 from a fetch taken at my open; by the time I pushed, upstream had published %535 to stamp 20260907.004945 and %536 to 20260907.014654 -- both EARLIER than my two rows, so both numbers were theirs and mine renumbered to %537 and %538, shelf and recital with them. The sweep cost one command instead of twenty files because I had already replaced my two %536 citations with the stamp when unshared_citation reddened the hot pass. The law caught me, and then the same law made the repair cheap.
+obs The rebase also met a fold collision: my unpushed previous lap folded %531 and %534 to one shelf while a peer folded the same two rows to another, and theirs landed first. Upstream wins, so my duplicate fold row was withdrawn from the recital whole rather than landing beside theirs -- the shape the card already records from earlier laps, met again.
+obs I walked into my own find from last lap: waiting on `pgrep -f standing_equipment_run` matched all six trees and cost ten minutes before the timeout. The fix is one line -- read /proc/<pid>/cwd and compare -- and it is on the card now as a fix rather than a find.
+obs Resolving the rebase by keeping BOTH sides of four conflicts was wrong in three of them, and the guards found every instance. REDS.md came out with %524 and %532 doubled and its census line written twice; the day shelf came out with two stamps doubled. Keeping both sides is right for an APPEND-only file and wrong for a file whose rows are keyed, and I did not make that distinction before reaching for one rule. Deduped by (number, stamp), re-sorted the shelf, and both guards went green.
+obs My previous lap's fold was fully superseded and I withdrew it rather than landing it beside a peer's. Its shelf held %531 (identical to upstream's) and a stderr row it numbered %534 with %531's stamp copied onto it -- upstream published that same red as %530. So the shelf was two rows that both already existed upstream under other numbers, and deleting it lost nothing; I read both shelves row by row before removing the file.
+obs Carried, not fixed, and it belongs to no ship: the anointed spine ITSELF double-books %530, binding it to both 20260906.225150 and 20260907.000030. My tree matches upstream exactly there, so reds_spine_derive reds for every ship on every pass until a published row moves -- and a published number never moves without a hand. Named on the card.
+obs The operator card closed at ONE byte of headroom. It was 70 bytes from its ceiling when I opened it, upstream grew it during my lap, and I cut my own row five times -- 871 bytes down to 300 -- to fit. Eight ships write this pin and the arithmetic no longer works: every lap now pays a shave tax on prose, and the next ship will go over before it writes a word. That is a structural reading rather than a complaint, and it wants Keaton's word rather than another shave.
+loom witness=amphora_mark_wreck wall_s=44 marks_probed=4 accepted_before=4 refused_after=2
+loom cold_pass=scoped guards_run=131 green=120 red=9 gated=2 wall_s=878 tree_moved=yes
+loom amphora_family guards=13 green=13 plus_new=1
+loom reds_pin_bytes=42309 after_fold=33076 bound=40960
+loom card_bytes=40959 bound=40960 headroom=1 row_cut=871->300
+file amphora/manifest_entry.rye the two roots, mark_verdict, and error.UnknownMark -- the wreck rule seated where all five readers inherit it
+file amphora/vessel_fetch_delivery.rye the receipt seam reads its cargo line through the parser rather than a second tokenizer that could drift
+file tools/am/amphora_mark_wreck_witness.rish both directions, and the frame asserted so a signature refusal can never pass for a type refusal
+file construction/standing-equipment.kyri the guard rostered tier lap, with why eight sibling witnesses could not see it
+file construction/REDS.md %536 booked, then folded with %535 to keep the pin under bound
+file construction/archive/REDS-a-charter-and-a-shoulder-line-rows-537-538.md the shelf: prose a program never reads is a claim with no way to fail
+file construction/CHECKPOINTS.md one broken cairn link repointed at the shelf %523 actually rests on
+file construction/ITINERARY.md my row, the open registry question, and the pgrep find carried forward as a fix
+recommend check-in (Claude) -- two things want a word rather than a lap. The operator card closed at ONE byte under its ceiling with eight ships writing it, so the next ship overflows before it types; and the anointed spine double-books %530, which reds reds_spine_derive fleet-wide and cannot be repaired without moving a published number. The lane's own next lap is ready and mechanical whenever those clear: bron-resins/ resins record no marks at all, which is this same question one room over, and mark_verdict is where the registry the foundation names would attach

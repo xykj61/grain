@@ -1,0 +1,98 @@
+# tools/am/amphora_mark_wreck_witness.rish -- the wreck rule for marks, proven both ways.
+#
+# A vessel names its cargo in three fields: mark, digest, name. This witness holds the mark
+# honest. The engine knows two marks by heart, `plain-bytes` and `manifest`. That pair is
+# fixed in `foundations/20260703-202312_the-marked-value.md`, so the chain of who checks the
+# checker ends somewhere a reader can point at. Any other mark is cargo of an unnamed kind.
+# The vow for that case is one line: an unknown mark is refused whole.
+#
+# Four things stand proven, each on metal:
+#
+#   both roots parse, so ordinary cargo crosses freely
+#   a stranger refuses, and names error.UnknownMark
+#   an honest season pours and verifies end to end
+#   a planted stranger refuses AT parse_manifest_line, read from the frame itself
+#
+# The fourth line does the real work here. Sealed things make this subtle. Editing a sealed
+# vessel breaks its Kumara signature too, so a refusal alone says nothing about marks -- the
+# stamp turns away any edit at all. The reason is what tells a type check from an integrity
+# check. So this witness reads the frame. Restore the elder behavior and it says exactly
+# that: `refused, yet NOT at the mark`.
+#
+# What stood before, and why eight sibling witnesses missed it, is written in the roster note
+# beside this guard in `construction/standing-equipment.kyri` and in the ledger row stamped
+# `20260907.015042`. Both are
+# Meter, where a refusal is properly the subject.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/am/amphora_mark_wreck_witness.rish
+
+let season = "tools/fixtures/cellar_ring1_tree"
+
+# The pen is named by `mktemp -d`, so the kernel picks the suffix and no two runs can agree by
+# accident. Eight ships share this pier's `/tmp`, so a constant pen path is a name every ship
+# chose at write time -- and this witness WIPES its pen, which turns a collision into a peer's
+# run deleted mid-flight. `shared_pen` counts both hazards and caught this one at its ceiling.
+let pen_made = run ["sh" "-c" "mktemp -d /tmp/amphora_mark_wreck.XXXXXX"]
+assert pen_made.ok else "mark_wreck: the pen must be made"
+let pen = trim pen_made.out
+let vessel = "${pen}/vessel.bron"
+let planted = "${pen}/planted.bron"
+
+# amphora/bin/ is gitignored, so a clone carries no binaries and this witness builds what
+# it runs rather than trusting a previous lap (REDS %334); mkdir first, since rye build
+# refuses an absent -femit-bin directory (REDS %337).
+let zig = "vendor/zig-toolchain/zig"
+let build_entry = run ["sh" "-c" "mkdir -p amphora/bin && env RYE_ZIG=${zig} rye/bin/rye build amphora/manifest_entry.rye -femit-bin=amphora/bin/manifest-entry"]
+assert build_entry.ok else "mark_wreck: manifest_entry build failed -- ${build_entry.err}"
+let build_core = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_core.rye -femit-bin=amphora/bin/vessel-core"]
+assert build_core.ok else "mark_wreck: vessel-core build failed -- ${build_core.err}"
+let build_seal = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_seal.rye -femit-bin=amphora/bin/vessel-seal"]
+assert build_seal.ok else "mark_wreck: vessel-seal build failed -- ${build_seal.err}"
+let build_amphora = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/src/main.rye -femit-bin=amphora/bin/amphora"]
+assert build_amphora.ok else "mark_wreck: amphora build failed -- ${build_amphora.err}"
+
+# The receipt seam reads the mark through the same parser rather than a second hand-rolled
+# tokenizer, so it is built here too -- it needs libc for its sockets, as its own three
+# rostered witnesses already spell.
+let build_delivery = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build amphora/vessel_fetch_delivery.rye -lc -femit-bin=amphora/bin/vessel-fetch-delivery"]
+assert build_delivery.ok else "mark_wreck: vessel_fetch_delivery no longer compiles -- ${build_delivery.err}"
+
+# --- the module's own both-ways selftest, which carries the two roots and two strangers ---
+# `std.debug.print` writes to stderr, so the claim is read through a merging shell -- the
+# same spelling the three elder amphora witnesses already use.
+let selftest = run ["sh" "-c" "amphora/bin/manifest-entry selftest 2>&1"]
+assert selftest.ok else "mark_wreck: manifest_entry selftest exited non-zero -- ${selftest.out}"
+assert selftest.out contains "GREEN" else "mark_wreck: manifest_entry not GREEN -- ${selftest.out}"
+
+# --- welcome: an honest vessel pours and verifies ---
+let pour = run ["amphora/bin/amphora" "pour" season vessel]
+assert pour.ok else "mark_wreck: honest pour must pass -- ${pour.err}"
+let verify = run ["amphora/bin/vessel-core" "verify" vessel]
+assert verify.ok else "mark_wreck: honest vessel must verify -- ${verify.err}"
+
+# The poured vessel must actually carry the root this witness plants over, or the plant
+# below would be a no-op that passes for the wrong reason.
+let carried = run ["sh" "-c" "grep -c '^manifest plain-bytes ' ${vessel}"]
+assert carried.ok else "mark_wreck: poured vessel names no plain-bytes cargo"
+
+# --- refusal: a kind the engine cannot name ---
+let plant = run ["sh" "-c" "sed 's/^manifest plain-bytes /manifest zzz-unknown-stranger /' ${vessel} > ${planted}"]
+assert plant.ok else "mark_wreck: plant must write"
+let planted_ok = run ["sh" "-c" "grep -q 'zzz-unknown-stranger' ${planted}"]
+assert planted_ok.ok else "mark_wreck: plant did not take -- the vessel shape moved"
+
+let refused = run ["amphora/bin/vessel-core" "verify" planted]
+assert refused.code != 0 else "mark_wreck: a vessel carrying an unnamed kind was ACCEPTED"
+
+# The reason, not merely the refusal. A sealed vessel edited anywhere fails its Kumara
+# signature, so this names the frame: parse_manifest_line must be what turned it away.
+let reason = run ["sh" "-c" "amphora/bin/vessel-core verify ${planted} 2>&1 | head -3"]
+assert reason.out contains "parse_manifest_line" else "mark_wreck: refused, yet NOT at the mark -- ${reason.out}"
+
+# --- lifting the plant returns the reading to green, so the refusal is the mark's own ---
+let lifted = run ["amphora/bin/vessel-core" "verify" vessel]
+assert lifted.ok else "mark_wreck: the honest vessel must still verify after the plant"
+
+say "amphora_mark_wreck: honest vessel verifies; an unnamed kind refuses at parse_manifest_line"
+say "GREEN: Amphora keeps the wreck rule for marks -- two roots welcome, a stranger refuses whole."

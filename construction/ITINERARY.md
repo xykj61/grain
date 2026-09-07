@@ -205,24 +205,14 @@ shape, so a cairn citing an archive shelf waits for a cold pass; four fired toda
 **Carried: 890** depth-lost links.
 
 **COPAL -- THE FLAKE HAD A MECHANISM: SEVEN CONSTANT PENS IN MY OWN LANE.** Account
-[folded](archive/20260907-062408_itinerary-landed-accounts.md) (`20260907.062408`), a parked lap
-recovered whole beside it ([shelf](archive/20260907-013427_itinerary-landed-accounts.md)). Proven
-both ways on metal. `shared_pen` **61 -> 54** files, **7 -> 4** wipers, ceilings lowered; **its own
-*is a pen ever contended* is answered** -- eight ships had a pass live at once, spread **164s**
-against **1,422s**. **Yours, a SECOND mechanism, shelved:** a pass can lose a verdict.
-
-**The live front** (condensed `20260831.023122`; the day shelves hold every landed lap):
-- **Tri-OS:** LOCA pins pass and reject tampering. Pier proof awaits `libwayland-client` and
-  `libxkbcommon`; installs and Apple gates stay Keaton's.
-- **CION Tier C** RULED quality-first (`20260830.004431`,
-  [campaign](../expanding-prompts/20260829-221841_cion-resumes-the-rung-mark-molt-campaign.md)).
-- **DirtySet** RULED `20260830.183102`: shares the nine (seat 0 = whole-surface
-  invalidation); duplicate marks idempotent; refusal only out-of-range.
-- **Pond live:** `duties_undeclared` **1**; `env` seated at `env_disagreements` zero, enforced.
-  Only `entry` is left, and it IS the switchover: a gate, not a lap.
-- **Language custody:** growth law
-  [a-rune-is-earned-by-a-law](../foundations/20260830-011530_a-rune-is-earned-by-a-law.md); the
-  first core LANDED `20260830.224500` -- `|%`, GREEN; nesting OPENED `20260830.221500`.
+[folded](archive/20260907-062408_itinerary-landed-accounts.md) (`20260907.062408`), proven both ways
+on metal. `shared_pen` **61 -> 54** files, **7 -> 4** wipers, ceilings lowered; **its own *is a pen
+ever contended* is answered** -- eight ships had a pass live at once, spread **164s** against
+**1,422s**. **Two of three parked commits recovered** off `pier/diverged-20260907-055442`, `%499`'s
+ordinary lost race; both rows renumbered on arrival to `%541` and `%542` -- upstream had spent
+`%535`, `%537` and `%538` while they sat -- and both folded on arrival, the pin being at its bound.
+**`3e65da093` is still parked**, its ledger bookkeeping superseded upstream. **Yours, a SECOND
+flake mechanism, shelved:** a pass can lose a verdict and mis-seat a red.
 
 **MANY HANDS** (`20260828`): custody MANUAL, one writer per checkout. Root `SKILL.md`; every
 clone seats `ww` (gate %1) and `.git/ssh_config_jail`.
