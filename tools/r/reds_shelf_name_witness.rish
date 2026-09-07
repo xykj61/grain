@@ -1,0 +1,62 @@
+# tools/r/reds_shelf_name_witness.rish -- a fold shelf's own name is a promise about what it holds,
+# and this is where that promise is checked.
+#
+#   rishi/bin/rishi run tools/r/reds_shelf_name_witness.rish
+#
+# WHAT THIS GUARDS. A folded REDS row spells its number four times -- in the shelf's FILENAME, in
+# the H1 TITLE, in a `**Rows:**` header, and in the row HEADLINE. `reds_spine_derive_scan.sh` is
+# the only instrument in this tree that reads a row's number at all, and it reads the headline
+# alone. So a renumber sweep reaching three of the four leaves a shelf disagreeing with itself,
+# with every standing guard green -- and the two spellings it leaves behind are the FILENAME, which
+# 291 living citations open by path, and the TITLE, which is the first line a reader sees.
+#
+# WHAT NO STANDING GUARD COULD SEE. `readme_reach` and `tracked_link` ask whether a path OPENS, and
+# a shelf whose title names the wrong row opens perfectly. `reds_citation_scan` reads a citation's
+# number against the shelf it links, from OUTSIDE the shelf; nothing read the shelf against itself.
+# Measured `20260907.151832`: one shelf of 291 disagreed, and it was this ship's own row from the
+# lap before, renumbered `%568 -> %566 -> %572` on the anointed spine while its title kept %568.
+#
+# WHY `tier lap`. One `git ls-files` and a `sed` over 291 small files -- about four seconds,
+# measured `20260907`. The fault it catches is written by ordinary work: the derived spine renumbers
+# unshared rows as a matter of routine, and every renumber must reach all four spellings.
+#
+# Purely local -- no key, no network, no funds, no device. It reads tracked markdown and a pen.
+
+say "reds-shelf-name: Language EN -- a shelf's name, its title, its header and its rows say one number."
+say "reds-shelf-name: Style Gauge, Meter -- three declarations are promises, a subject named mid-sentence is not."
+say "reds-shelf-name: Lens TAME -- safety first: the refusal is proven in a pen, since the field reads zero."
+
+# 1 -- the pen, which builds real repositories and shows every refusal from the failing side, then
+# lifts the plant so the same shelf is proven to read both ways.
+let control = run ["sh" "tools/fixtures/r/reds_shelf_name_control.sh"]
+say control.out
+say control.err
+assert control.ok else "reds-shelf-name: a control case read the wrong way"
+assert control.out contains "control_verdict=ok" else "reds-shelf-name: the pen must balance before the field is believed"
+
+# 2 -- the three welcomes the reading's narrowness rests on. Each is a shape standing in this
+# tree's own archive that a looser reading would call wrong, so each is asserted by name rather
+# than left to the aggregate.
+assert control.out contains "title_subject_welcomed (ok)" else "reds-shelf-name: a title naming a row as its subject must pass"
+assert control.out contains "rows_narration_welcomed (ok)" else "reds-shelf-name: a Rows header reciting a renumber must pass"
+assert control.out contains "wide_span_welcomed (ok)" else "reds-shelf-name: a filename span wider than the rows held must pass"
+
+# 3 -- the field. All three gates at zero.
+let field = run ["sh" "tools/fixtures/r/reds_shelf_name_scan.sh"]
+say field.out
+say field.err
+assert field.ok else "reds-shelf-name: a shelf disagrees with its own name -- read the scan's own lines"
+assert field.out contains "held_outside_span=0" else "reds-shelf-name: a shelf holds only the rows its name declares"
+assert field.out contains "title_disagrees=0" else "reds-shelf-name: a title that declares a span declares the shelf's own"
+assert field.out contains "rows_header_disagrees=0" else "reds-shelf-name: a Rows header declares the shelf's own span"
+assert field.out contains "verdict=ok" else "reds-shelf-name: the field reading must close ok"
+
+# 4 -- the reach, asserted rather than assumed. A reading of nothing is indistinguishable from a
+# healthy archive (REDS %463), and the two declaring counts are what keep this green honest: it
+# means *the shelves that declare, agree* rather than *every shelf is right*.
+assert (field.out contains "shelves_read=0") == false else "reds-shelf-name: the reading found no shelf at all, so its silence means nothing"
+assert field.out contains "title_declaring=" else "reds-shelf-name: the reading must name how many titles make a checkable promise"
+assert field.out contains "rows_declaring=" else "reds-shelf-name: the reading must name how many headers make a checkable promise"
+assert field.out contains "unread_shelves=" else "reds-shelf-name: the reading must name the shelves it cannot check"
+
+say "GREEN: reds-shelf-name -- every fold shelf that declares a span declares its own, and holds only the rows its name names."

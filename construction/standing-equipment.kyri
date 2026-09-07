@@ -2370,6 +2370,34 @@ guard reds_citation
 path tools/r/reds_citation_witness.rish
 tier lap
 seated 20260906.143706
+# reds_shelf_name -- a fold shelf's own name is a promise about what it holds (REDS row of
+# `20260907.151832`). A folded row spells its number FOUR times: in the shelf's filename, in its H1
+# title, in a `**Rows:**` header, and in the row headline. `reds_spine_derive` is the only
+# instrument in this tree that reads a row's number at all, and it reads the headline alone -- so a
+# renumber sweep reaching three of the four leaves a shelf disagreeing with itself, and the two
+# spellings it leaves behind are the filename, which 291 living citations open by path, and the
+# title, which is the first line a reader sees.
+#
+# EXISTENCE IS NOT AGREEMENT, and this is that pair one room further in than `reds_citation`. That
+# guard reads a citation's number against the shelf it links, from OUTSIDE the shelf; `readme_reach`
+# and `tracked_link` ask whether a path opens, and a shelf whose title names the wrong row opens
+# perfectly. Nothing read a shelf against itself. Measured `20260907.151832`: one shelf of 291
+# disagreed, and it was this ship's own row from the lap before, renumbered `%568 -> %566 -> %572`
+# on the anointed spine while its title kept `%568`.
+#
+# THE READING IS NARROW ON PURPOSE, and its three welcomes are proven as hard as its refusals. A
+# title may name a row as its SUBJECT mid-sentence (*the %364 collision*); a `**Rows:**` header may
+# recite a renumber history after its declaration; a filename span may be WIDER than the rows held,
+# because a range is not a set and the endpoints folded elsewhere. All three stand in this archive
+# today, and a looser reading calls every one of them wrong.
+#
+# `tier lap` because the derived spine renumbers unshared rows as routine work, so the fault is
+# written by ordinary laps rather than by a deliberate act -- and the scan costs four seconds over
+# `git ls-files` and 291 small files.
+guard reds_shelf_name
+path tools/r/reds_shelf_name_witness.rish
+tier lap
+seated 20260907.151832
 # topology_attained -- what diameter a builder can actually STAND on, at 720 points.
 # Its sibling `topology_floor` binds the MOORE floor, a lower bound over all graphs that almost
 # nothing attains. This one binds what is REACHABLE: a second floor for abelian Cayley graphs

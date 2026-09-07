@@ -454,3 +454,4 @@ at a closed fold.*
 *Row %575 folded to [`REDS-the-third-comment-mark-rows-575.md`](REDS-the-third-comment-mark-rows-575.md) on `20260907.151835`, **BOOKED** -- a guard names its languages, so it covers only the ones somebody named.*
 
 *Row %524 folded to [`REDS-a-link-is-checked-only-if-its-shape-has-a-wall-rows-524.md`](REDS-a-link-is-checked-only-if-its-shape-has-a-wall-rows-524.md) on `20260907.154559`, **CLOSED** -- a link is checked at commit time only if its own row shape has a wall, and all four firings arrived by rebase where no staged-set trigger could see them.*
+*Row %577 folded to [`REDS-a-shelf-that-disagreed-with-its-own-name-rows-577.md`](REDS-a-shelf-that-disagreed-with-its-own-name-rows-577.md) on `20260907.155647`, **CLOSED** -- a folded row spells its number four times and one instrument reads one of them.*

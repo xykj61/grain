@@ -15,6 +15,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260907.145721` | [A page that calls itself living](20260907/20260907-145721_a-page-that-calls-itself-living.kyri) | roster 379 -> 520; the threshold page quoted a dropped word. |
 | `20260907.145202` | [Two readings that disagree about prose](20260907/20260907-145202_the-two-readings-that-disagree-about-prose.kyri) | Reach drops what Register counts: 22,041 lines. |
 | `20260907.144352` | [The third comment mark](20260907/20260907-144352_the-third-comment-mark.kyri) | Glow joins the ASCII law; 942 in comments, none in content. |
+| `20260907.155948` | [a-number-written-four-times](20260907/20260907-155948_a-number-written-four-times.kyri) | A fold shelf spells its number four times; one guard read one. |
 | `20260907.144140` | [A wall that reads the index](20260907/20260907-144140_a-wall-that-reads-the-index.kyri) | %524 closed: the link wall reads the index. |
 | `20260907.142041` | [The lap that came back renumbered](20260907/20260907-142041_the-lap-that-came-back-renumbered.kyri) | a parked lap re-derived; its row renumbered to %572. |
 | `20260907.134135` | [A ratchet at its ceiling is a wall one lap wide](20260907/20260907-134135_a-ratchet-at-its-ceiling-is-a-wall-one-lap-wide.kyri) | parked whole; landed as a record. |
