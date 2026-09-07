@@ -14,8 +14,8 @@ say "fleet-watch: Lens TAME -- every refusal planted and then lifted, so a wall 
 
 say "fleet-watch: the control -- sixteen behaviors on a real tmux session in a throwaway pen..."
 let ctl = run ["sh" "tools/fixtures/f/fleet_watch_control.sh"]
-assert ctl.ok else "fleet-watch: the control refused --\n${ctl.out}"
-assert ctl.out contains "pass=16 fail=0" else "fleet-watch: the control did not prove sixteen behaviors --\n${ctl.out}"
+assert ctl.ok else "fleet-watch: the control refused --\n${ctl.out}\n${ctl.err}"
+assert ctl.out contains "pass=16 fail=0" else "fleet-watch: the control did not prove sixteen behaviors --\n${ctl.out}\n${ctl.err}"
 
 say "fleet-watch: no window index is written down anywhere in the watcher..."
 # invariant: the layout is DISCOVERED every pass. A number spelled here would be true until somebody

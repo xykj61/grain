@@ -1,0 +1,38 @@
+# bron_resins_catalog_witness.rish -- the resin cellar's catalog names every resin it holds.
+#
+# TWO CLAIMS, in the order that makes the second worth believing. First the control proves the scan
+# can RED -- 34 planted behaviors on throwaway cellars, every refusal shown from the failing side
+# and then lifted, the reported reading proven NOT to gate, and the pen proven innocent against a
+# scan patched to always answer ok. Then the scan reads the real room. A guard that cannot red
+# guards nothing, so the order is not decoration.
+#
+# WHY IT EXISTS (`20260906.233111`). `bron-resins/manifest.bron` is the cellar's catalog and it
+# named 3 of the room's 17 resins -- the habit its own `note` line states, *commit with the resin*,
+# was kept for one morning and dropped. Nothing read it: three scans name `bron-resins/` only to
+# skip it as testimony, and no witness, runner, or roster row touched it. That is `%514`'s lesson
+# in a room where the silence had stood since `20260712` -- a catalog covering a fifth of its room
+# reads exactly like a whole one -- and `%360`'s family, a claim with no instrument listening.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/b/bron_resins_catalog_witness.rish
+
+let control = "tools/fixtures/b/bron_resins_catalog_control.sh"
+let scan = "tools/fixtures/b/bron_resins_catalog_scan.sh"
+
+say "bron-resins catalog: the control, so a green reading below can be believed..."
+let c = run ["sh" control]
+assert c.ok else "bron_resins_catalog: control FAILED -- the scan cannot be trusted to red"
+assert c.out contains "verdict=ok" else "bron_resins_catalog: control did not answer ok"
+assert c.out contains "behaviors=34" else "bron_resins_catalog: control ran a different number of behaviors"
+assert c.out contains "failed=0" else "bron_resins_catalog: control reported a failed behavior"
+assert c.out contains "innocence patch landed" else "bron_resins_catalog: the innocence patch planted nothing"
+
+say "bron-resins catalog: the real cellar..."
+let s = run ["sh" scan]
+assert s.ok else "bron_resins_catalog: the cellar and its catalog disagree"
+assert s.out contains "verdict=ok" else "bron_resins_catalog: scan did not answer ok"
+assert s.out contains "uncatalogued=0" else "bron_resins_catalog: a resin no entry names"
+assert s.out contains "orphan_entries=0" else "bron_resins_catalog: an entry naming a file the room lacks"
+assert s.out contains "duplicate_entries=0" else "bron_resins_catalog: two entries naming one resin"
+
+say "GREEN: bron-resins catalog -- 34 planted behaviors, and every resin in the room has its line."

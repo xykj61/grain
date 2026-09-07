@@ -1,9 +1,39 @@
-# bron-resins catalog — working-tier SHA3-256 names when sealed; plain paths today
+# bron-resins catalog -- working-tier SHA3-256 names when sealed; plain paths today
+#
+# THE PROMISE THIS FILE KEEPS. `foundations/20260703-202312_the-marked-value.md` states the
+# cellar's own clause: *every resin records the marks of what it seals, so a reader in another
+# decade knows what the cellar held without opening it.* One `entry` line per resin is how that
+# promise is kept at plain-path tier, and the `note` below is the habit that keeps it current.
+#
+# REFRESHED `20260906.233111`, after a measurement. The habit was kept for the first three files
+# of the first morning and dropped: the room held 17 resins and this catalog named 3, and nothing
+# in the tree read it -- three scans name `bron-resins/` only to skip it as testimony. A catalog
+# covering a fifth of its room reads exactly like a whole one. Fourteen entries were written from
+# each resin's OWN first header line rather than from a summary, and the catalog now has a reader:
+# `tools/b/bron_resins_catalog_witness.rish` holds uncatalogued, orphaned, and duplicated lines at
+# zero on every lap, so this file can never quietly go stale again.
 format bron-resins-v1
 stamp 20260712.115753
+refreshed 20260906.233111
 purpose chat-printout essay resins as Bron values at the seam
 law Bron carries immutable values; Brix composes wholes; this folder holds Bron only
+witness tools/b/bron_resins_catalog_witness.rish -- uncatalogued, orphan, and duplicate lines at zero
 entry 20260712-115753_morning-fold-thoughts.bron fuller morning summary and Rio essay as chat-printout-v1
 entry 20260712-120007_claude-combined-morning.bron Claude handoff combining essay plus session-log Bron migration
-entry 20260712-121719_claude-nib-seated.bron Claude handoff — tip renamed to nib
+entry 20260712-121719_claude-nib-seated.bron Claude handoff -- tip renamed to nib
+entry 20260712-123700_claude-guidance-onpath-kvm.bron Claude guidance -- nib residues closed, on-path blocked in jail, host recipe
+entry 20260712-143946_claude-afternoon-onpath-parity.bron Framework afternoon -- on-path GREEN, argv-direct pins, parity parked
+entry 20260712-200445_claude-evening-g1-toolchain.bron evening -- parity GREEN, G1 open, toolchain fetch GREEN
+entry 20260712-204010_claude-g1-serial-green.bron G1 serial GREEN
+entry 20260712-210000_claude-g1-close-pond-sixbar.bron G1 closed, vendor/genode read, Pond sixbar
+entry 20260712-211700_claude-exit-n-second-walk.bron exit card, N, and the second walk
+entry 20260712-212200_claude-scorecard-witness-walk.bron scorecard witness on the second walk
+entry 20260712-212900_claude-freeze-worthy-affirm.bron freeze-worthy affirmed; exit Bron measured absent
+entry 20260712-213800_claude-freeze-affirmed-master-seal.bron freeze affirmed, master-seal pinned
+entry 20260712-214500_claude-latch-monocypher.bron latch rests, Monocypher seated
+entry 20260712-215100_claude-monocypher-pin.bron Monocypher pin rests
+entry 20260712-220000_claude-signed-kumara-green.bron signed-Kumara GREEN
+entry 20260712-220600_claude-day-close-resting.bron day closed, signed-Kumara resting
+entry 20260725-224249_quin-handoff_fresh-session-bootstrap.md Quin fresh-session bootstrap -- Markdown in a Bron room, kept as it landed
 note folder born on Kaeden word for raw chat printout in .bron; commit with the resin
+note the one .md entry is named rather than swept -- the law line says Bron only, the room has held that file since 20260725, and a catalog states its exception instead of hiding it

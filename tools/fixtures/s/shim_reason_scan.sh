@@ -57,6 +57,13 @@ MODE="${1:-census}"
 # repair a shim and lower it in the same commit.
 CEILING="${CEILING:-43}"
 
+# The second shape's residue, measured `20260906.233111` after the five rostered witnesses took
+# their own line: eight controls print FAIL to stderr, five have a witness, and all five were
+# repaired in the same commit. Nothing remains off the roster, so the ceiling opens at zero and can
+# only fall further by staying there. It only falls -- repair a witness and lower it in the same
+# commit.
+REASON_CEILING="${REASON_CEILING:-0}"
+
 ROSTER="${SHIM_REASON_ROSTER:-construction/standing-equipment.kyri}"
 
 command -v git >/dev/null 2>&1 || { echo "verdict=no_git"; echo "refused: this reading walks the tracked tree, so it wants git" >&2; exit 2; }
@@ -159,8 +166,94 @@ done < "$work/exiters"
 sort -u "$work/alias" -o "$work/alias"
 alias_count=$(grep -c . "$work/alias" || true)
 
+# -- THE SECOND SHAPE OF THE SAME LOSS (`20260906.233111`) ----------------------------------------
+#
+# A witness is not a shim, and it drops its target's reason the same way. A control writes its
+# `FAIL <behavior> -- wanted X, got Y` line to STDERR so a passing run stays quiet; the witness
+# above it interpolates `${ctl.out}` into its assert message and never `${ctl.err}`. The exit code
+# travels, the count `pass=15 fail=1` travels, and the one clause naming WHICH behavior failed does
+# not. The evidence page reads: this guard is red, and nothing more.
+#
+# Found by a red rather than by a search. `fleet_watch` reddened a cold pass on `20260906.233111`,
+# filed seven lines that could not name a behavior, and then passed sixteen of sixteen on six
+# consecutive re-runs -- so the one reading that could have diagnosed a flake was the reading the
+# witness threw away. Measured the same hour: EIGHT controls print FAIL to stderr, five of them are
+# run by a witness, and all five of those witnesses were on the standing roster and all five
+# interpolated `.out` alone.
+#
+# THE THREE-MARK READING ABOVE CANNOT SEE THIS. It requires `say r.out` and `exit r.code`, which is
+# a pass-through shim; these are witnesses that assert. One law -- hand on your target's reason --
+# and two shapes, so the instrument grows a second reading rather than the tree growing a second
+# instrument.
+#
+#   stderr_controls        controls whose FAIL line goes to stderr. The population. Reported.
+#   reason_lost_rostered   a rostered witness over one of them, interpolating .out and never .err.
+#                          HELD AT ZERO.
+#   reason_lost_unrostered the same shape off the roster. RATCHET, ceiling only falls.
+
+set +e
+# A MENTION IS NOT AN INSTANCE, and this reading caught itself on `20260906.233111`. The pen helper
+# in this guard's own control WRITES a stderr-reporting control into a pen, so its source carries
+# the line `'printf "FAIL ..." >&2'` inside single quotes -- and a first pattern read 9 where the
+# tree holds 8, counting the instrument as one of its own subjects. That is the anchor lesson this
+# guard already teaches about roster seats, met one reading over.
+#
+# The discriminator is what stands immediately before the command: a real call is preceded by
+# start-of-line or whitespace (`fail=$((fail + 1)); printf 'FAIL ...' >&2`), and a quoted mention is
+# preceded by the quote that opens its string. Comment lines are dropped in the same pass, since a
+# control may perfectly well DESCRIBE the shape it uses.
+git grep -lE -- 'FAIL[^#]*>&2' -- 'tools/fixtures/*_control.sh' > "$work/ctl_maybe" 2>/dev/null
+_st=$?
+set -e
+if [ "$_st" -gt 1 ]; then
+  echo "rish_files=$rish_files"
+  echo "verdict=instrument_refusal"
+  echo "refused: git grep exited $_st reading the controls, so the reason-forward count is unknown" >&2
+  exit 2
+fi
+[ -f "$work/ctl_maybe" ] || : > "$work/ctl_maybe"
+: > "$work/stderr_ctl"
+while IFS= read -r c; do
+  [ -f "$c" ] || continue
+  awk '/^[[:space:]]*#/ { next }
+       /(^|[[:space:]])(printf|echo)[[:space:]].*FAIL.*>&2/ { found = 1 }
+       END { exit found ? 0 : 1 }' "$c" && echo "$c" >> "$work/stderr_ctl"
+done < "$work/ctl_maybe"
+sort -u "$work/stderr_ctl" -o "$work/stderr_ctl"
+stderr_controls=$(grep -c . "$work/stderr_ctl" || true)
+
+: > "$work/reason_rows"
+while IFS= read -r c; do
+  [ -f "$c" ] || continue
+  cb=$(basename "$c")
+  set +e
+  git grep -lF -- "$cb" -- '*.rish' > "$work/callers" 2>/dev/null
+  _st=$?
+  set -e
+  [ "$_st" -gt 1 ] && continue
+  [ -f "$work/callers" ] || : > "$work/callers"
+  while IFS= read -r w; do
+    [ -f "$w" ] || continue
+    # The variable the control's run is bound to. Only that variable's spellings are read, so a
+    # witness forwarding some OTHER run's stderr is never credited for this one.
+    var=$(awk -v cb="$cb" '
+      /^let [a-z_][a-z0-9_]* = run \[/ && index($0, cb) > 0 { print $2; exit }
+    ' "$w")
+    [ -n "$var" ] || continue
+    if grep -qF "\${${var}.err}" "$w"; then continue; fi
+    grep -qF "\${${var}.out}" "$w" || continue
+    if grep -qxF "path $w" "$ROSTER"; then seat=rostered; else seat=unrostered; fi
+    echo "$seat $w $cb" >> "$work/reason_rows"
+  done < "$work/callers"
+done < "$work/stderr_ctl"
+sort -u "$work/reason_rows" -o "$work/reason_rows"
+
+reason_lost_rostered=$(awk '$1 == "rostered"' "$work/reason_rows" | grep -c . || true)
+reason_lost_unrostered=$(awk '$1 == "unrostered"' "$work/reason_rows" | grep -c . || true)
+
 if [ "$MODE" = list ]; then
   sort "$work/rows"
+  awk '{ print "reason_lost " $1 " " $2 " (" $3 ")" }' "$work/reason_rows" | sort
   exit 0
 fi
 
@@ -171,7 +264,12 @@ echo "swallow_rostered=$swallow_rostered"
 echo "swallow_unrostered=$swallow_unrostered"
 echo "unrostered_ceiling=$CEILING"
 echo "exit_alias_sites=$alias_count"
+echo "stderr_controls=$stderr_controls"
+echo "reason_lost_rostered=$reason_lost_rostered"
+echo "reason_lost_unrostered=$reason_lost_unrostered"
+echo "reason_lost_ceiling=$REASON_CEILING"
 while IFS= read -r f; do echo "alias: $f"; done < "$work/alias"
+awk '{ print "reason_lost: " $1 " " $2 " (" $3 ")" }' "$work/reason_rows" | sort
 awk '$1 == "swallows" { print "swallows: " $2 " " $3 }' "$work/rows" | sort
 
 if [ "$swallow_rostered" -gt 0 ]; then
@@ -183,6 +281,20 @@ fi
 if [ "$swallow_unrostered" -gt "$CEILING" ]; then
   echo "verdict=unrostered_over_ceiling"
   echo "refused: $swallow_unrostered swallowing shims stand off the roster against a ceiling of $CEILING -- the ceiling only falls" >&2
+  exit 1
+fi
+
+# The second shape gates after the first, so a tree carrying both hears the shim answer first and
+# the two verdicts never race for one line.
+if [ "$reason_lost_rostered" -gt 0 ]; then
+  echo "verdict=rostered_reason_lost"
+  echo "refused: $reason_lost_rostered rostered witness(es) run a control that names its failing behavior on stderr and forward only stdout -- the evidence page reads pass=N fail=1 and nothing a hand can act on" >&2
+  exit 1
+fi
+
+if [ "$reason_lost_unrostered" -gt "$REASON_CEILING" ]; then
+  echo "verdict=reason_lost_over_ceiling"
+  echo "refused: $reason_lost_unrostered witnesses off the roster drop their control's reason against a ceiling of $REASON_CEILING -- the ceiling only falls" >&2
   exit 1
 fi
 
