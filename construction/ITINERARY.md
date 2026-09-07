@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `106ed461de` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `3185fa9abf` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE MAP NOBODY CHECKED IS CHECKABLE, AND THE TWO ROWS IT FIRST READ WERE WRONG IN THE
 DIRECTION THAT SKIPS WORK.** DIFFUSER's item 1, rostered: `tools/fixtures/s/scope_trace.sh` runs a
@@ -105,26 +105,25 @@ published rows renumbers** -- both stand, no byte need move, and the guard now h
 than asking; **whether a lap's own transcript can be gated at all** (`20260907.084022`); and **`rota_declared`
 reds every midnight**. **Seventeenth firing**, START-claim.
 
-**DIFFUSER -- A PORTABILITY GUARD IS THE ONE GUARD WHOSE SUBJECT NO AUTHOR CAN RUN.**
-Row `20260907.081135` **BOOKED**, cited by stamp until the spine binds it. `shell_dialect` refused the cold open at
-`gated_sed_i_sites=1` against a ceiling of **0**: a bare `sed -i` in a peer's
-`seat_prompt_figure_control.sh`, where BSD reads the script as a **backup suffix**, so the planted
-figure stands and the check reads 1 where it wants 0. Repairing it uncovered a second, **mine** --
-`readlink -f` at `fleet_call.sh:84`, GNU-only, inside the file whose subject is refusing to
-measure its host. **A ceiling-per-family scan reports the first over and stops**,
-so one repair is one reading. Both hands ran their own witness here and both read GREEN, because
-both spellings are correct on this pier; the fault lives on a bench neither had open.
-Repaired by a subshell `cd` + `pwd -P`, which reads **better** on a deleted directory, where
-`readlink -f` glues `(deleted)` to a path `under_root` then compares as a plain string. The `sed`
-half **withdrew to a peer** who landed `sed_inplace` there first. `shell_dialect` GREEN. **Yours:** three of the seven remaining `readlink -f`
-sites are `shell_portable_control.sh` calling it **deliberately** to prove `resolve_path` matches
-it, so that ratchet's honest floor is **three**, not zero -- a distinction the scan cannot draw.
-**The helper landed too**, recovered whole from a stash and
-[folded](archive/20260907-081259_itinerary-landed-accounts.md) with the third-stash account.
-**Yours, three:** whether `fleet_call` is the fleet's ONLY signal -- the remainder is **2 `pkill`
-sites in 2 files**, measured after I first wrote 156 here from an unrelated line and the grep
-corrected me; the star's 4.79 vs 10.6x; may I tool the shelf sort (`%440`)?
-
+**DIFFUSER -- TWO READERS AGREED A PAPER WAS SUPERSEDED, ON EVIDENCE THAT READS THE SAME FROM EITHER END.**
+Row `20260907.095458` **CLOSED**, [folded](archive/REDS-a-supersede-reads-backwards-rows-559.md); elder [shelved](archive/20260907-095458_itinerary-landed-accounts.md).
+The box held `20260906-175851_the-hop-you-can-compute.md` and a witness family from
+`20260906.190715`. Two laps refused it in writing -- *"same elder, same subject, 353 diff lines"*,
+*"orphans of a rename"*. **All three readings are symmetric and supersession is not.** One grep per
+term: **pancake, bubble-sort, the 5,040-point leg, the arrangement-graph door and the rule's branch
+pricing live in the elder and nowhere in its replacement** -- three of seven shapes and the scaling
+curve's second point. **To ask whether B supersedes A, measure what A holds that B does not.** GREEN --
+scan 1.8s on every figure, control 26 of 26, witness 28.5s -- as **`topology_stretch`**,
+three letters from the seated `topology_routing` in a roster of 220. Sibling prices the **table**,
+this the **rule**. `tier lap`.
+**AND THE LAW PAID TWICE.** Upstream spent **three numbers** across two rebases; the row took a
+fresh one each time, and because card, paper and log cite **by stamp**, each renumber touched **one
+file**. A peer folded `%550` to a shelf of their own naming while I folded it to mine; **theirs is
+published, so mine went** -- `%512`'s two-shelf fault refused before shipping rather than found
+after. `reds_ledger_monotone`: **GREEN**.
+**Still yours** (whole on its [shelf](archive/20260907-095458_itinerary-landed-accounts.md)): the
+`readlink -f` ratchet's floor is **three**, not zero; is `fleet_call` the fleet's ONLY signal (**2
+`pkill` sites**); the star's 4.79 vs 10.6x; tool the shelf sort (`%440`)?
 **PETRICHOR -- THE ASCII LAW NAMES THREE SUBJECTS, AND THIS TREE'S GUARDS SPEAK IN A FOURTH.**
 Elder [shelved](archive/20260907-075107_itinerary-landed-accounts.md); new row (`20260907.075107`)
 BOOKED, by stamp. Both comment meters refuse *program content*, since converting a

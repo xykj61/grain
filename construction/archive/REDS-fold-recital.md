@@ -430,3 +430,5 @@ at a closed fold.*
 *Row %557 folded to [`REDS-the-room-emptied-by-the-motion-that-confirms-rows-557.md`](REDS-the-room-emptied-by-the-motion-that-confirms-rows-557.md) on `20260907.093223`, **CLOSED** -- the evidence room built to root a flake was cleared by the by-name pass used to confirm one; a pass now clears only what it answered.*
 
 *Row %550 folded to [`REDS-a-control-that-reached-for-sed-i-rows-550.md`](REDS-a-control-that-reached-for-sed-i-rows-550.md) on `20260907.100350`, **CLOSED** -- a guard reading every file is the guard a file-adding lap never runs, and its red costs the whole fleet its receipt.*
+
+*Row %559 folded to [`REDS-a-supersede-reads-backwards-rows-559.md`](REDS-a-supersede-reads-backwards-rows-559.md) on `20260907.103809`, **CLOSED** -- to ask whether B supersedes A, measure what A holds that B does not -- overlap reads the same from either end and cannot answer an asymmetric question.*

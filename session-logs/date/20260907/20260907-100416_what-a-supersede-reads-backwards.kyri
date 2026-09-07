@@ -1,0 +1,46 @@
+format session-log-v1
+stamp 20260907.100416
+editor Claude Code, terminal, unattended fleet loop
+provider Anthropic
+product Claude Code
+role DIFFUSER -- moonshots and research
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_reasoning max
+configured_status .claude/settings.json, tracked
+evidence tracked settings file, not runtime telemetry
+voice Kyri
+host Framework laptop, Linux, America/New_York one clock
+title What a supersede reads backwards
+prompt the standing fleet baton -- take the next agent-doable lap, reds first, Lindy-first crux-first
+rota lap 4166, row 1 -- Air, the row that feels; law and boundary. Read through the sense of a boundary under the hand, and the boundary this lap found was a naming one: `topology_routed` sat three letters from a seated `topology_routing`, which the Comlink tendency's *safe* test refuses. The row's own single-stranded seat is what named the fault in the refusal too -- one reading was answering two questions.
+think ROUND-OPEN reported 8 files standing in the dead-letter box and on no ref. Four are construction/archive shelves named by the fold recital and re-folded upstream under other names; four are DIFFUSER-lane work -- external-research/20260906-175851_the-hop-you-can-compute.md plus tools/{t,fixtures/t}/topology_routed_{witness,scan,control}. All four measured ABSENT from the tree.
+think TWO PRIOR LAPS HAD ALREADY REFUSED THIS SET, in writing, and said so precisely so no lap would re-recover it -- 20260906.212539 (`the SAME paper two hours earlier -- same elder, same subject, 353 diff lines, rewritten at 195719`) and 20260907.002019 (`orphans of a rename, not a loss`). I read both before deciding, which is why I checked rather than took.
+think THE CHECK THAT DECIDES IT IS ASYMMETRIC AND THE REFUSALS WERE NOT. A shared elder, a shared subject and a diff line count all read the same from either text. One grep per term over both papers and both scans: pancake 7 vs 1, bubble-sort 3 vs 0, `5,040` 7 vs 0, arrangement-graph 2 vs 0, the 87.1% branch pricing 1 vs 0. The landed scan walks 4 shapes; the stranded one walks 7 across two sizes. The sibling holds 5 readings the elder lacks -- table bytes, lookahead depth, build-order asymmetry -- so they are complementary, not duplicates.
+think PROVEN ON METAL BEFORE ANY CLAIM. Scan verdict=ok in 1.8s reproducing every figure in the paper exactly; control 26 of 26 behaviors in 26s; witness GREEN in 28.5s. Then renamed and re-proven GREEN.
+obs THE NAME WAS THE OTHER HALF. `topology_routed` against the seated `topology_routing` is three letters in a roster of 220 -- a grep that cannot separate two guards is a collision whatever the filesystem thinks. Renamed to `topology_stretch` for the column it alone reports: the gap between the diameter a shape publishes and the diameter a table-free rule reaches. 52 references swept in three files, exec bits kept by the `cat tmp > file` shape.
+obs I MADE A CLAIM AND THE ARITHMETIC CORRECTED ME. I first wrote the two papers as `twenty-one minutes apart`; 17:58:51 to 19:57:19 is one hour fifty-eight. Fixed before the section left the buffer.
+obs I ALSO MOVED THE TREE UNDER MY OWN COLD PASS. The background roster run died with its parent shell after I copied three files into the tree mid-run, so this lap has no cold receipt -- the hot pass is the reading that counts, and saying so is cheaper than implying a green nobody watched.
+obs NOT MINE AND NAMED RATHER THAN ROUTED AROUND. `reds_ledger_monotone` reads not_monotone on `%530`'s two published stamps and on `%512` standing on two shelves. Both stand in HEAD, verified by `git grep` and `git ls-tree` against HEAD before this lap touched anything, and neither is repairable by any ship -- the published-double deadlock is Keaton's word.
+obs THE RUNNER'S OWN REPAIR LINE WORKED VERBATIM, A SECOND RECORDED TIME. My first cold pass was launched into a background shell that exited, leaving pid 1737819 holding standing-equipment-run.lock.d with its group leader gone. The hot pass refused run_in_flight and printed `kill -TERM 1737819`, naming why SIGKILL would leave the lock; TERM ran the EXIT trap and released it.
+obs THE HOT PASS FOUND FOUR REDS AND ONLY ONE WAS MINE. 169 guards, 1188s, 161 green. `unshared_citation` was mine -- I had written `%557` onto the card while the spine's shared_max stood at 556 -- and citing by stamp instead closed it. `reds_ledger_headline` and `reds_row_present` were a %556 shelf living in a commit one ahead of my HEAD; the rebase brought it. `standing_equipment` is the meta-guard reporting the other three.
+obs AND UPSTREAM SPENT 556 AND 557 WHILE THE LAP RAN, so my booked number moved to `%558` on the rebase. The stamp `20260907.095458` held, and because the card, the paper and the log all cite by stamp, the renumber touched exactly one file -- the ledger. That is the derived-spine law's own claim, paid in a measurement rather than argued.
+obs A CLAIM I WROTE WENT FALSE INSIDE THE SAME LAP. I recorded `reds_ledger_monotone` as red on `%530`'s two published stamps and `%512`'s two shelves, verified in HEAD before touching anything. The two commits I rebased onto closed both, so it reads GREEN here and the card's paragraph was rewritten before the send rather than shipped stale.
+obs THE SHELF ROW WAS AUTO-MERGED OUT OF ORDER ON BOTH REBASES -- `%440` fired twice more in this one lap, the card's count of eleven now short by at least two. `index_shelf_repair.sh` sorted it each time in one call, and the longest row on the shelf stands at exactly 192. The tool exists and the firing is mechanical, which is the shape of a thing that wants to run inside the round-open rather than after a red.
+obs AND THE SAME GATE BIT ME A SECOND TIME, ONE NUMBER LATER. Writing `%558` onto the card to describe the renumber was itself an unshared citation -- shared_max had moved to 557, not 558. The clause names the stamp and *the next free one* now. Two firings of one gate in one lap is the shape a lantern takes before it becomes a loom, and the loom already exists: the gate caught both.
+obs AND THE SECOND REBASE FOUND A PEER HAD FOLDED %550 TOO, to a shelf of their own naming. Two shelves for one row is exactly the `%512` fault I had just described on the card as unrepairable; here it was catchable, because mine was unshared. Theirs is published, so mine went and I adopted their recital line. The number moved a second time as well, so the row was booked three times in one lap and the stamp held all three.
+loom witness=topology_stretch wall_s=28.5 behaviors=26 shapes=7 sizes=2
+loom scan=topology_stretch wall_s=1.8 refusals=0 routing_functions=10 reads_distance_table=0
+loom control=topology_stretch wall_s=26 passed=26 failed=0
+file external-research/20260906-175851_the-hop-you-can-compute.md the recovered paper at its own stamp, plus a measured sibling table and the section recording why it sat a day; graded A+ (97) at Field
+file tools/t/topology_stretch_witness.rish the guard, renamed from topology_routed and re-proven GREEN
+file tools/fixtures/t/topology_stretch_scan.sh seven shapes walked and routed, reading its own source to refuse a rule that consults the distance table
+file tools/fixtures/t/topology_stretch_control.sh 26 planted behaviors, every refusal bitten
+file construction/standing-equipment.kyri rosters topology_stretch tier lap, with the rename's reason written where the row is
+file construction/REDS.md books the row `20260907.095458`, renumbered twice by upstream and folded to its own shelf -- to ask whether B supersedes A, measure what A holds that B does not
+file construction/archive/REDS-a-supersede-reads-backwards-rows-559.md the round's own closed row, folded so the pin keeps what is open
+file construction/archive/20260907-095458_itinerary-landed-accounts.md the elder DIFFUSER account, links re-anchored one directory deeper
+file construction/ITINERARY.md the new DIFFUSER block and the monotone question that is Keaton's alone
+recommend keep-going -- the arrangement-graph and (n,k)-star door the paper names is the next measurable moonshot, and it needs no gate: it asks whether the optimal table-free rule survives past the factorial wall, which is the one thing that would make the star family usable at a size a supervision tree actually is.
