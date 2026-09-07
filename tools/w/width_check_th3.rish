@@ -8,7 +8,13 @@
 
 let files = ["mantra/src/diff.rye" "mantra/src/main.rye" "mantra/src/store.rye" "mantra/src/weave.rye"]
 
-let results = map files as path: { file: path, scan: run ["sh" "-c" "grep 'usize' ${path} 2>/dev/null | grep -v '@intCast' | grep -v '@as(usize' | wc -l"] }
+# A comment-only line is prose ABOUT the seam, never a declaration at it. The three
+# Mantra modules that keep a `usize` seam say so in a `//` line beside every cast --
+# which the elder grep counted as the very thing those lines exist to explain, so the
+# witness reddened on its own modules being honest (found 20260907.144347, unrostered
+# and red at HEAD). Comment-only lines are dropped first; a declaration carrying a
+# trailing comment still reads, since only the leading `//` forms are cut.
+let results = map files as path: { file: path, scan: run ["sh" "-c" "grep -v '^[[:space:]]*//' ${path} 2>/dev/null | grep 'usize' | grep -v '@intCast' | grep -v '@as(usize' | wc -l"] }
 
 let violations = where results as r: trim r.scan.out != "0"
 assert length violations == 0 else "Mantra must carry zero authored usize after TH-3"

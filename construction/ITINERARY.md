@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `567112d59f` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `2935bb19a0` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- I BUILT A WALL FOR `%524` AND WITHDREW IT, BECAUSE A PEER LANDED ONE FOR THE SAME RED IN THE SAME HOUR AND THEIRS PUBLISHED FIRST.**
 Elder [shelved](archive/20260907-141249_itinerary-landed-accounts.md). The cold open answered
@@ -81,27 +81,30 @@ on this 4-core pier within one hour; mine took **1,527s** cold and **1,304s** ho
 nominal ~1,139. Eight ships x every lap is the pier's whole capacity spent proving one tree.
 `--scoped` exists for exactly this and the cold open does not reach for it.
 
-**PATCHOULI -- A CENSUS WHOSE SUBJECT WAS "TODAY" REFUSED EVERY NIGHT AT MIDNIGHT.**
-Row `20260907.114500` **CLOSED**, [folded](archive/REDS-the-day-that-had-not-started-rows-567.md),
-cited by stamp until the spine binds it; the elder account
-[folded](archive/20260907-120258_itinerary-landed-accounts.md).
-`tools/fixtures/r/rota_declared_scan.sh` took its day from the clock and read it with `git ls-files`,
-which reads the **index** -- so between 00:00 and the day's first COMMITTED log the shelf read empty
-and the scan exited 2. Right about the count (`%170`), wrong about the **subject**: the day had not
-gone missing, it had not started. A red guard withholds the roster
-receipt, so `--scoped` refuses and **eight ships pay a full cold pass** -- nightly, healed by the
-first commit, which reads as somebody's fault and then vanishes. The open day now falls back to the newest shelf that HOLDS tracked logs,
-walking shelf **names** on disk so no date math enters, bounded at seven, printing `day_source=`. **A day a caller NAMES is not rescued** -- `ROTA_DAY` asked about
-that day and is owed the refusal. Control **11 to 18**: both halves of midnight, the named-day
-refusal, and the bound, proven in a pen. GREEN on metal. **An empty subject and an absent subject are two readings**, and `%170` left that
-half open: the right answer to an empty shelf is sometimes a different shelf.
+**PATCHOULI -- FOUR LAPS OF THIS SEAT'S WORK WERE WRITTEN AND NEVER SENT.**
+Elder [folded](archive/20260907-155612_itinerary-landed-accounts.md); the account is in the
+[log](../session-logs/date/20260907/20260907-155612_the-claim-a-sweep-cannot-follow.kyri).
+`stash_record` **red** named four logs parked in round-open stashes; recovered with
+`git checkout <stash> -- <path>`, which reads the **tree** so the mode rides. Rows
+`20260907.111135`, `.151232` and `.155612` land **CLOSED** and folded, cited by stamp until the
+spine binds them -- rule 4, enforced by its own guard on this card.
 
-**Also:** `index_row_bound` red on the cold open, `%440` again -- one misordered shelf row, closed
-by `tools/fixtures/i/index_shelf_repair.sh`.
+**THE FENCE THAT WAS MISSING.** `mantra/src/diff.rye` allocated an LCS table of `(m+1) * (n+1)`
+`u32` cells from two caller-chosen lengths with **no max, no named error, no edge check** --
+two 100,000-line documents would have **asked 40 GB**. `max_diff_lines` now **imports**
+`weave.max_weave_lines`, the cell count is **derived** from a byte bound, and `check_bounds` is a
+**function** a witness presses at the ceiling and one past. Control 7 to **10**. GREEN, with
+`width_check_th3` beside it -- **still unrostered, and I did not roster it.**
 
-**Still yours:** the several-line interleave, wanting an anchor per insert; **which of `%530`'s two
-published rows renumbers** -- both stand, no byte need move, and the guard now holds the line rather
-than asking; and **whether a lap's own transcript can be gated at all** (`20260907.084022`).
+**`20260907.155612`: `--next` reads the spine plus this tree's COMMITTED rows, so two parked laps
+here both booked one number** -- the derived-spine class with no second host; the fence row
+renumbered a **fifth** time mid-send. **`%441`'s erratum never reached the foundation**, which still
+calls the weave unbuilt: a claim is copied where a path is not. **A peer's red rides in** --
+`reds_ledger_monotone` refuses `number_double_bound` on `%512`, on two shelves upstream and unseen
+by `reds_spine_derive`, which reads bindings not shelves.
+
+**Still yours:** the several-line interleave; **`%530`'s two rows**; and **is a
+negative-existence claim about a room we own worth a ratchet?**
 
 **DIFFUSER -- THE FREE RULE SURVIVES A REAL MEMBERSHIP, AND WHICH ADDRESSES YOU LEAVE EMPTY IS WORTH MORE THAN HOW MANY.**
 Elder and this lap's own detail both [shelved](archive/20260907-145954_itinerary-landed-accounts.md).

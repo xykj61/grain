@@ -13,16 +13,19 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 |---|---|---|
 | `20260907.164619` | [The lap that arrived a lap late](20260907/20260907-164619_the-lap-that-arrived-a-lap-late.kyri) | a finished round recovered from the stash. |
 | `20260907.155948` | [a-number-written-four-times](20260907/20260907-155948_a-number-written-four-times.kyri) | A fold shelf spells its number four times; one guard read one. |
+| `20260907.155612` | [The claim a sweep cannot follow](20260907/20260907-155612_the-claim-a-sweep-cannot-follow.kyri) | two laps in one tree booked one ledger number |
 | `20260907.155025` | [A reading of nothing is not clean](20260907/20260907-155025_a-reading-of-nothing-is-not-a-clean-tree.kyri) | a scan fed nothing printed a swept tree's bytes. |
 | `20260907.153124` | [A wall built for a red a peer had already walled](20260907/20260907-153124_a-wall-built-for-a-red-a-peer-had-already-walled.kyri) | withdrawn; %573 survived it. |
+| `20260907.151343` | [The repair the scan wrote down](20260907/20260907-151343_the-repair-the-scan-had-already-written-down.kyri) | two correct scans called wrong by a line-at-a-time guard |
+| `20260907.150308` | [The holes you choose](20260907/20260907-150308_the-holes-you-choose.kyri) | free routing survives holes; the geometry beats the count. |
 | `20260907.145721` | [A page that calls itself living](20260907/20260907-145721_a-page-that-calls-itself-living.kyri) | roster 379 -> 520; the threshold page quoted a dropped word. |
 | `20260907.145202` | [Two readings that disagree about prose](20260907/20260907-145202_the-two-readings-that-disagree-about-prose.kyri) | Reach drops what Register counts: 22,041 lines. |
 | `20260907.144352` | [The third comment mark](20260907/20260907-144352_the-third-comment-mark.kyri) | Glow joins the ASCII law; 942 in comments, none in content. |
-| `20260907.155948` | [a-number-written-four-times](20260907/20260907-155948_a-number-written-four-times.kyri) | A fold shelf spells its number four times; one guard read one. |
-| `20260907.150308` | [The holes you choose](20260907/20260907-150308_the-holes-you-choose.kyri) | free routing survives holes; the geometry beats the count. |
+| `20260907.144347` | [A recovery lap is an ordinary lap](20260907/20260907-144347_a-recovery-lap-is-an-ordinary-lap.kyri) | the round-open parks the lap that rescues parked work |
 | `20260907.144140` | [A wall that reads the index](20260907/20260907-144140_a-wall-that-reads-the-index.kyri) | %524 closed: the link wall reads the index. |
 | `20260907.142041` | [The lap that came back renumbered](20260907/20260907-142041_the-lap-that-came-back-renumbered.kyri) | a parked lap re-derived; its row renumbered to %572. |
 | `20260907.134135` | [A ratchet at its ceiling is a wall one lap wide](20260907/20260907-134135_a-ratchet-at-its-ceiling-is-a-wall-one-lap-wide.kyri) | parked whole; landed as a record. |
+| `20260907.132732` | [The gate was unlanded, not orphans](20260907/20260907-132732_the-gate-was-unlanded-not-orphans.kyri) | stash_record names paths; recovery is the lap |
 | `20260907.124006` | [a reader that walks past its own subject](20260907/20260907-124006_a-reader-that-walks-past-its-subject.kyri) | A marker bound to a stranger: 40 covering 200 read ok. |
 | `20260907.123841` | [The meter that read one of two instruments](20260907/20260907-123841_the-meter-that-read-one-of-two-instruments.kyri) | covered is a union; bare gate 83 -> 0. |
 | `20260907.122257` | [A label is not its target](20260907/20260907-122257_a-label-is-not-its-target.kyri) | the repairable cell reads zero; a promise test read exact. |
@@ -32,6 +35,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260907.114054` | [a cadence nothing counts](20260907/20260907-114054_a-tier-is-only-a-cadence-if-something-counts-the-beats.kyri) | 58 guards, 0 receipts, 5 red on the first sing. |
 | `20260907.111550` | [the ratchet whose only repair was the defect](20260907/20260907-111550_the-ratchet-whose-only-repair-was-the-defect.kyri) | 301 desks derived and run; %565. |
 | `20260907.111540` | [The size you actually have](20260907/20260907-111540_the-size-you-actually-have.kyri) | both doors past the factorial open; `topology_relaxed` GREEN. |
+| `20260907.111425` | [The fence the neighbour had](20260907/20260907-111425_the-fence-the-neighbour-had.kyri) | a quadratic table with no ceiling, beside a weave that names one |
 | `20260907.105712` | [A declared absence is not breakage](20260907/20260907-105712_a-declared-absence-is-not-breakage.kyri) | %562: 88 of 173 lost were honest rows. |
 | `20260907.103608` | [a door and the wall behind it](20260907/20260907-103608_a-door-and-the-wall-behind-it.kyri) | %565: a door of 16 over a roof of 12. |
 | `20260907.103237` | [the repair the meter could not see](20260907/20260907-103237_the-repair-the-meter-could-not-see.kyri) | landed from the stash; its marker pass was superseded. |

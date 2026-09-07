@@ -6,11 +6,43 @@
 //! line text equality -- small, correct, and determinable.
 //!
 //! Public surface:
-//!   diff(allocator, old_lines, new_text) !Diff
+//!   max_diff_lines           -- the per-side ceiling, read from the weave's own
+//!   max_diff_table_bytes     -- the largest table this module will allocate
+//!   max_diff_table_cells     -- derived from the two above, never spelled twice
+//!   DiffError                -- what this module refuses, by name
+//!   check_bounds(m, n)       -- the refusal, decided before anything allocates
+//!   diff(alloc, site, old, new) !Diff
+//!   split_lines(alloc, text) ![]const []const u8
+//!
+//! THE TABLE IS QUADRATIC, and until `20260907` nothing named its ceiling. The
+//! LCS table is `(m + 1) * (n + 1)` cells of `u32`, allocated in one call from
+//! two lengths the caller chooses, and this module held no named max, no named
+//! error, and no edge check -- while the `usize -> u32` seam casts below it ran
+//! with the bound that makes them safe unstated. `weave.rye` one seam over
+//! names `max_weave_lines` and reads it at the edge of both `apply` and
+//! `merge`; the module that feeds it did not. The fence is here now, and it is
+//! read at the edge, before a single cell is allocated.
+//!
+//! WHY THE CEILING IS WHERE IT IS. The per-side bound is the weave's own
+//! `max_weave_lines`, IMPORTED rather than restated: a diff's old side comes
+//! from `Weave.current`, so a side larger than a weave can hold is a side this
+//! module will never legitimately be handed, and two constants naming one
+//! quantity are two constants that will one day disagree. The table bound is
+//! stated in BYTES, because bytes are what the machine actually has, and the
+//! cell count is derived from it by `@sizeOf(u32)`. One gibibyte admits 16,384
+//! lines against 16,384 -- above this tree's own largest tracked `.rye` at
+//! 11,665 lines (measured `20260907`), and far below the point where the
+//! machine is in trouble.
+//!
+//! THE REFUSAL IS A FUNCTION, so it can be pressed by hand. `check_bounds`
+//! takes two lengths and decides, allocating nothing, which is what lets
+//! `diff_witness.rye` prove the boundary AT the ceiling and one cell past it
+//! without building a million-line document to do it. `diff` calls the same
+//! function at its own edge, so the proven decision and the applied decision
+//! are one decision rather than two that agree today.
 //!
 //! The resulting Diff may be applied to the weave with Weave.apply.
 //! Pure functions -- no file I/O, no side effects.
-
 const std   = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
@@ -18,6 +50,76 @@ const Weave = @import("weave.rye").Weave;
 const Line   = @import("weave.rye").Line;
 const Diff   = @import("weave.rye").Diff;
 const LineId = @import("weave.rye").LineId;
+
+/// The largest number of lines this module will diff on either side, read from
+/// the weave rather than restated here.
+///
+/// A diff's old side comes from `Weave.current`, so a side larger than a weave
+/// can hold is a side this module will never legitimately be handed -- and one
+/// quantity spelled in two files is one quantity two files will one day
+/// disagree about, which for a bound means the checked ceiling and the real
+/// ceiling parting company in silence.
+pub const max_diff_lines: u32 = @import("weave.rye").max_weave_lines;
+
+/// The largest transient allocation this module will make, in bytes.
+///
+/// Stated in bytes because bytes are what the machine actually has. One
+/// gibibyte admits 16,384 lines against 16,384, which stands above this tree's
+/// own largest tracked `.rye` at 11,665 lines (measured `20260907`) with room
+/// to spare, and far below the point where the machine is in trouble. A
+/// ceiling that refuses a file the tree itself writes is a ceiling somebody
+/// turns off.
+pub const max_diff_table_bytes: u64 = 1 << 30;
+
+/// The table ceiling in cells, derived from the byte ceiling rather than
+/// spelled beside it, so the two can never drift apart.
+pub const max_diff_table_cells: u64 = max_diff_table_bytes / @sizeOf(u32);
+
+/// What this module refuses, by name. Both are read at the edge -- before an
+/// allocation is made, rather than after one has grown.
+pub const DiffError = error{
+    /// One side names more lines than a weave can hold, so the `usize -> u32`
+    /// cast below it would be a cast whose bound nobody checked, and the diff
+    /// would name identities no weave could accept.
+    TooManyLines,
+    /// The two sides are each inside the per-side ceiling and their PRODUCT is
+    /// not: the LCS table grows as `(m + 1) * (n + 1)`, so two documents that
+    /// are individually ordinary can ask for an allocation that is not.
+    TableTooLarge,
+};
+
+/// Whether a diff of these two lengths may be attempted, decided before
+/// anything is allocated.
+///
+/// This is a function rather than a pair of `if`s inside `diff` so the boundary
+/// can be pressed by hand: `diff_witness.rye` proves the answer AT the ceiling
+/// and one cell past it without building a million-line document to do it, and
+/// `diff` reads the same function at its own edge -- so the decision that is
+/// proven and the decision that is applied are one decision.
+///
+/// The arithmetic runs in `u64` on purpose. The product of two `u32` lengths
+/// overflows a `u32`, and a bound check that overflows is a bound check that
+/// reports the wrong answer in the one direction that matters.
+///
+/// Precondition:  none -- any two lengths are a fair question to ask.
+/// Postcondition: returning means the table fits both ceilings, so every
+///   allocation and every seam cast below is already proven safe.
+pub fn check_bounds(old_len: u64, new_len: u64) DiffError!void {
+    // invariant: each side stands inside the weave's own ceiling, so the casts
+    // to u32 further down are casts whose bound has been read
+    if (old_len > max_diff_lines) return DiffError.TooManyLines;
+    if (new_len > max_diff_lines) return DiffError.TooManyLines;
+
+    // invariant: both sides are now inside a u32, so the product below is a u64
+    // product of two u32 quantities and cannot overflow
+    assert(old_len <= max_diff_lines);
+    assert(new_len <= max_diff_lines);
+
+    // The table is one cell per (old prefix, new prefix) pair, both counting the
+    // empty prefix -- so the sum is what the ceiling reads, at the edge.
+    const cells: u64 = (old_len + 1) * (new_len + 1);
+    if (cells > max_diff_table_cells) return DiffError.TableTooLarge;
+}
 
 /// Compute the diff between `old_lines` (the weave's current view) and
 /// `new_text` (the desired lines of the file as it is now), as an edit
@@ -28,6 +130,11 @@ const LineId = @import("weave.rye").LineId;
 /// across every weave the edit will ever reach. `Weave.apply` reads it off the
 /// Diff, so this is the one place a caller says who is editing.
 ///
+/// Refusal:       `DiffError.TooManyLines` when either side passes
+///   `max_diff_lines`, and `DiffError.TableTooLarge` when the two are each
+///   inside that ceiling and their product asks for a table past
+///   `max_diff_table_cells`. Both are read by `check_bounds` at the edge,
+///   before a single cell is allocated.
 /// Precondition:  old_lines is sorted by identity (guaranteed by Weave.current).
 /// Postcondition: the returned Diff names exactly the lines that changed --
 ///   every old line absent from the LCS by its stable identity, and every new
@@ -51,9 +158,21 @@ pub fn diff(
     old_lines: []const Line,
     new_text:  []const []const u8,
 ) !Diff {
+    // The refusal, at the edge, before a single cell is allocated. Both
+    // ceilings are read by the one function a witness presses directly, so the
+    // decision proven there is the decision taken here.
+    try check_bounds(old_lines.len, new_text.len);
+
     // LCS table over (old_lines, new_text) using line text equality.
     const m = old_lines.len;
     const n = new_text.len;
+
+    // invariant: the check above passed, so each side stands inside the weave's
+    // own ceiling and the casts to u32 further down are casts whose bound has
+    // been read rather than assumed -- usize lives at the inherited-std seam
+    // alone, and this is where that seam is proven
+    assert(m <= max_diff_lines);
+    assert(n <= max_diff_lines);
 
     // lcs[i][j] = length of LCS of old_lines[0..i] and new_text[0..j].
     // Allocate as a flat array: lcs[i * (n+1) + j].
@@ -134,16 +253,44 @@ pub fn diff(
 /// returned slice and all strings within it are allocated from `allocator`.
 /// A trailing newline produces no empty string at the end -- the common case
 /// for text files.
+///
+/// Refusal: `DiffError.TooManyLines` on the line that would carry the document
+/// past `max_diff_lines` -- `diff`'s own ceiling, since this slice is what a
+/// caller hands to `diff`.
 pub fn split_lines(allocator: std.mem.Allocator, text: []const u8) ![]const []const u8 {
     maybe(text.len == 0); // empty text is valid; yields zero lines
+
+    // THE CEILING IS READ IN THE LOOP RATHER THAN AT THE EDGE, and the reason is
+    // worth saying: a text's line count is not knowable from its byte length,
+    // and deriving it ahead of the split would mean spelling the
+    // drop-the-trailing-empty-token rule twice -- one rule in two places is one
+    // rule two places will come to disagree about. So the split refuses on the
+    // line that would pass the ceiling, before that line is appended. The
+    // ceiling itself is `diff`'s own, because this slice is what a caller hands
+    // to `diff`: refusing here refuses the document one call before a quadratic
+    // table has been asked for.
     var lines: std.ArrayListUnmanaged([]const u8) = .empty;
     var it = std.mem.splitScalar(u8, text, '\n');
     while (it.next()) |line| {
         // Skip the trailing empty token produced by a file that ends in \n.
         if (line.len == 0 and it.rest().len == 0) break;
+        // The refusal, taken before the append rather than after it, so the
+        // list never holds a line past the ceiling even transiently.
+        if (lines.items.len >= max_diff_lines) return DiffError.TooManyLines;
+        // invariant: the split stays inside the ceiling `diff` will read, so a
+        // document that survives this call is a document that may be diffed
+        assert(lines.items.len < max_diff_lines);
         try lines.append(allocator, line);
     }
-    return lines.toOwnedSlice(allocator);
+
+    const result = try lines.toOwnedSlice(allocator);
+    // invariant: no returned line carries the separator it was split on, which
+    // is what makes the result a document rather than a re-parseable blob
+    for (result) |line| assert(std.mem.indexOfScalar(u8, line, '\n') == null);
+    // invariant: the result stands inside the ceiling `diff` reads, so the two
+    // functions of this module agree about what a document is
+    assert(result.len <= max_diff_lines);
+    return result;
 }
 
 /// maybe: a named acknowledgement of legitimately variable input. Compiles to

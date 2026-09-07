@@ -44,6 +44,15 @@
 # and the honest answer is that this guard reads patterns and stops there. The resolver's own
 # reading is proven instead by tools/d/dated_path_witness.rish, on a real sprigless case.
 #
+# AND IT READS ONE LINE AT A TIME, which is the blindness pointing the other way. A shell `case`
+# may spell the option as two arms -- `..._*)` on one line and `....*)` on the next -- and answer
+# both spellings correctly while this grep sees only the first and calls it narrow. Two scans
+# stood that way and reddened this guard for a whole cadence sing, both already right
+# (20260907.145507). The repair was to spell the separator as the class `[_.]` in ONE arm, which
+# is what the paragraph above already prescribes: a single arm cannot drift from its sibling,
+# and a meter reading a line at a time can see all of it. Prefer the one-arm form when you write
+# a new test, rather than teaching this scan to parse shell.
+#
 # USAGE
 #   sh tools/fixtures/d/dated_spelling_scan.sh              # report on this tree
 #   sh tools/fixtures/d/dated_spelling_scan.sh list         # every narrow site, one per line

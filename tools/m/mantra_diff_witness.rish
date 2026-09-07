@@ -7,8 +7,17 @@
 # module stopped compiling and all five stayed green. Three sites carried the elder form.
 # That is REDS %449's fault one file over, found by the census %449 booked.
 #
-# This guard builds the module for real and then breaks it seven ways in a pen, because a
+# This guard builds the module for real and then breaks it ten ways in a pen, because a
 # guard that cannot red guards nothing.
+#
+# THE SECOND FAULT, found 20260907 by pressing the boundary with a hand. The module allocates
+# an LCS table of (m + 1) * (n + 1) u32 cells from two lengths a caller chooses, and it held
+# no named max, no named error and no edge check -- while its own `usize -> u32` seam casts
+# ran with the bound that makes them safe unstated, and while this guard's own opening line
+# announced the lens "one named max, an invariant on every function, bounds read at the edge."
+# `weave.rye` one seam over names `max_weave_lines` and reads it at the edge of both `apply`
+# and `merge`; the module feeding it did not. Three phases below plant the three ways that
+# fence can fail: widened, restated, and never called.
 #
 # THE COMPTIME WALKER, and why an import is not enough. Zig analyses lazily: a probe that
 # merely imports a module and reads a signature walks straight past a type error in a
@@ -65,13 +74,28 @@ assert selftest.out contains "moves one line, not five" else "mantra-diff: the L
 assert selftest.out contains "an append round-trips exactly" else "mantra-diff: the exact round-trip claim is missing"
 assert selftest.out contains "a middle insert lands at the end" else "mantra-diff: the reorder claim is missing -- the seam this witness pins"
 assert selftest.out contains "split_lines drops the trailing token" else "mantra-diff: the split_lines claim is missing"
+assert selftest.out contains "the bounds refuse by name at one cell past the ceiling" else "mantra-diff: the bound claim is missing -- the module allocated a quadratic table with no ceiling until 20260907"
+assert selftest.out contains "the per-side ceiling is the weave's own" else "mantra-diff: the derivation claim is missing -- a ceiling spelled twice drifts"
+assert selftest.out contains "diff refuses an oversized side at its own edge" else "mantra-diff: the call-site claim is missing -- a bound nobody calls is a bound"
 
-say "mantra-diff: breaking the module seven ways in a pen, so the witness is proven able to red..."
+say "mantra-diff: the module still names the ceiling it allocates against..."
+# A grep leg rather than a count, for this guard's own stated reason one assert above: the
+# answer to "is the fence there" is a word. The module allocated a quadratic LCS table with
+# no named max, no named error, and no edge check until 20260907, and the witness claims
+# above prove the ceiling behaves -- this proves it is still SPELLED, so a repair that
+# deleted the constant would red here rather than at a stranger's call site.
+let fence = run ["sh" "-c" "grep -q 'pub const max_diff_lines' mantra/src/diff.rye && grep -q 'DiffError' mantra/src/diff.rye && grep -q 'try check_bounds(' mantra/src/diff.rye && echo FENCE_PRESENT || echo FENCE_ABSENT"]
+assert fence.out contains "FENCE_PRESENT" else "mantra-diff: the named ceiling, the named error, or the edge call left diff.rye"
+
+say "mantra-diff: breaking the module ten ways in a pen, so the witness is proven able to red..."
 let control = run ["sh" "tools/fixtures/m/mantra_diff_control.sh"]
 assert control.ok else "mantra-diff: the control must complete -- a witness nobody has watched fail is a witness nobody has tested"
 assert control.out contains "control_verdict=ok" else "mantra-diff: the control must reach its own verdict"
 assert control.out contains "clean_exit=0" else "mantra-diff: the unmutated copy must reach GREEN, or every other phase fails for a reason the pen invented"
 assert control.out contains "walker_removed_exit=0" else "mantra-diff: dropping the walker must let the planted error through, or the walker is not what catches it"
 assert control.out contains "elder_arraylist_exit=1" else "mantra-diff: the elder ArrayListUnmanaged form must red -- it is the fault this guard exists for"
+assert control.out contains "bound_widened_exit=134" else "mantra-diff: a doubled per-side ceiling must red -- a bound proven only in the failing direction cannot be told from a wall"
+assert control.out contains "ceiling_restated_exit=134" else "mantra-diff: a hand-typed per-side ceiling must red -- the bound is the weave's own or it drifts"
+assert control.out contains "edge_check_removed_exit=134" else "mantra-diff: deleting the edge call must red -- a bound nobody calls is a bound"
 
-say "GREEN: the diff compiles under the walker, keeps the common subsequence, and appends a middle insert by name."
+say "GREEN: the diff compiles under the walker, keeps the common subsequence, appends a middle insert by name, and refuses past its own named ceiling."
