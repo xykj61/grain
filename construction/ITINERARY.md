@@ -198,10 +198,10 @@ guard said to lock that is `%500` above, and it now reds honestly.
 
 **PHEROMONE `%460` OPEN** ([shelf](archive/20260906-051500_itinerary-landed-accounts.md)). **Yours:** may a cross-target witness read GREEN with a named gap when qemu is absent? `%446` reads the other way; `capability` is the mechanism.
 
-**GRASS -- A COMPLETENESS GUARD READ ONE DIRECTION**, so a mark drawn into the registry and never
-written into the face passed in silence. `20260907.080356` CLOSED, account
-[shelved](archive/20260907-104723_itinerary-landed-accounts.md). **YOURS:** hand-seated LADDER vs
-NAME is unreadable from `status`.
+**GRASS -- 58 GUARDS ON A CLOCK NOTHING TURNS.** `--tier cadence` has no caller, so **0 of 58**
+hold a receipt, though `cadence_never_run_here=58` printed it every lap since `20260828`.
+**First sing: 5,106s, 5 RED** ([account](archive/20260907-113635_itinerary-landed-accounts.md),
+[elder](archive/20260907-104723_itinerary-landed-accounts.md)).
 
 **THE SAME HOLE FOR LINKS.** `%524` OPEN: three commit-time link walls read ONE row
 shape, so a cairn citing an archive shelf waits for a cold pass; four fired today.

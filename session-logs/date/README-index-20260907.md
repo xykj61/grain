@@ -24,6 +24,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260907.093227` | [the key held and the view moved](20260907/20260907-093227_the-key-held-and-the-view-moved.kyri) | a whole lap recovered from the round-open stash. |
 | `20260907.093147` | [the room emptied by the motion that confirms](20260907/20260907-093147_the-room-emptied-by-the-motion-that-confirms.kyri) | %557: a pass clears what it answered. |
 | `20260907.092303` | [existence is not coverage](20260907/20260907-092303_existence-is-not-coverage.kyri) | the Tally caller map read 19 of 68. |
+| `20260907.114054` | [a cadence nothing counts](20260907/20260907-114054_a-tier-is-only-a-cadence-if-something-counts-the-beats.kyri) | 58 guards, 0 receipts, 5 red on the first sing. |
 | `20260907.083428` | [the box works, what it cannot do is commit](20260907/20260907-083428_the-box-works-what-it-cannot-do-is-commit.kyri) | a lost lap landed, row `20260907.083054`. |
 | `20260907.081756` | [the map a guard writes for itself](20260907/20260907-081756_the-map-a-guard-writes-for-itself.kyri) | a row made checkable; two repaired by trace. |
 | `20260907.081627` | [a duplicate fills the hole it would have left](20260907/20260907-081627_a-duplicate-fills-the-hole-it-would-have-left.kyri) | %536 BOOKED; two reds closed. |
@@ -46,6 +47,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260907.061221` | [a fourteenth of the room](20260907/20260907-061221_the-meter-that-heard-a-fourteenth-of-the-room.kyri) | duty1 read 60 pages of 767; now 379, zero. `%540`. |
 | `20260907.055545` | [the fleet drops to medium](20260907/20260907-055545_the-fleet-drops-to-medium.kyri) | effort medium, live on all seven. |
 | `20260907.054701` | [the box held a day's instruments](20260907/20260907-054701_the-box-held-a-days-instruments.kyri) | two parked laps recovered; the red at zero. |
+| `20260907.054042` | [the field asked two questions](20260907/20260907-054042_the-field-asked-two-questions.kyri) | 35 Status words name a state, not a room. |
 | `20260907.053708` | [six processes where one would do](20260907/20260907-053708_six-processes-where-one-would-do.kyri) | width_check 75s to 17s. |
 | `20260907.050637` | [a pen two runs both claimed](20260907/20260907-050637_a-pen-two-runs-both-claimed.kyri) | a constant pen let one guard poison another. |
 | `20260907.050258` | [the room that said it was the corpus](20260907/20260907-050258_the-room-that-said-it-was-the-corpus.kyri) | a parked lap landed; a room was not the corpus. |

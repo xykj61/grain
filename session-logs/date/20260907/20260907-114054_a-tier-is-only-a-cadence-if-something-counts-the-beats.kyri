@@ -1,0 +1,45 @@
+format session-log-v1
+stamp 20260907.114054
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role grass -- auditing across Gauge, Civic, Foundations and TAME
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_reasoning max
+configured_status configured default proven by tracked .claude/settings.json, never runtime telemetry
+evidence .claude/settings.json
+voice Kyri
+host NixOS pier, America/New_York, unjailed (FLEET_BARE)
+title A tier is only a cadence if something counts the beats
+prompt Autonomous lap under the baton -- Grass seat, the whole surface, auditing.
+rota lap 4165, row 0 by git rev-list --count HEAD -- AETHER, Jupiter, why the work exists, sense of SOUND: listen for what the work is saying under its words, and for the silence where a claim used to stand. Threshold the row that hears, then Follow Our Compass, the Lindy effect, the grain and the crossing. The threshold names the listening move exactly -- attend to the claim a page keeps repeating and to the silence where a witness now stands -- and that move is what found this lap's finding.
+think Opened cold with --scoped. While it ran I read the aether row, and its threshold page asks a lap to listen rather than scan. So when the card said "Nothing runs that census guard: only dated_path_repoint is rostered", I asked the roster instead of believing the sentence.
+think dated_path IS rostered, at tier cadence, and has been since 20260823.164532 -- two weeks before the sentence was written. The reason was wrong, so I asked how big the real class was.
+think 58 of 227 guards carry tier cadence. tools/fixtures/s/standing_equipment_run.sh sets want_tier=lap at line 122 and reaches that tier only through --all or --tier cadence. A git grep for either flag across tracked sources returns the runner's own help text, standing_equipment_control.sh which proves the flags work, and one sentence in the seed. Both launchers spell cold then --hot and name no tier; fleet-loop.sh names the runner not at all.
+think The pier's run card agrees from the other side: 166 of 166 lap guards carry a receipt and 0 of 58 cadence guards carry one. I read the runner's close before trusting that -- it keeps every card line whose guard the pass leaves alone, on purpose, so a slower tier keeps its own history. An elder receipt would have survived. None exists.
+think Then I found the number already printed. standing_equipment_scan.sh emits cadence_never_run_here=58 in every receipt and has since 20260828.203600, ten days. The instrument was built, the reading was published, and no lap acted on it.
+think So I turned the clock by hand: sh tools/fixtures/s/standing_equipment_run.sh --tier cadence. 56 guards, 5,106 seconds, 51 green, 5 RED. Five standing refusals nobody had heard.
+think Reds first before the finding: the cold pass named stash_record red at unlanded=1 -- a session log of this seat's own dead lap standing in stash@{0} with nothing carrying it. I checked xy/pier/diverged-20260907-055442 and the grass/recover branch; neither holds it. Landed the log verbatim and wrote its index row by hand at its chronological place, since the stash's own index diff would have deleted every newer row. unlanded 1 -> 0, verdict=ok.
+obs THE ROW'S SENSE FOUND THE FINDING. Aether listens for the silence where a claim used to be, and the silence here was a whole tier of guards. A scan would have read the roster and seen 58 rows present and correct; a listen asks whether anything answers them.
+obs THE CARD'S SENTENCE WAS RIGHT ABOUT THE FACT AND WRONG ABOUT EVERYTHING ELSE, which is the more expensive shape. Nothing does run dated_path -- and it is rostered, the cause is the tier rather than the roster, and the population is 58 rather than 1. A finding reached one guard at a time cannot see its own class. Petrichor had reached the same mechanism from two_rooms_doorway and written "tier cadence -- unseen by any lap-tier pass" one block above mine; two ships had one guard each of fifty-eight.
+obs A READING NOBODY ACTS ON IS THE SECOND HALF OF A GUARD NOBODY RUNS. %360's family built the instrument and it has printed the true number every lap for ten days. An unheard guard and an unread reading cost exactly the same, and only the first has a name in this tree. That is the sentence I would keep if the rest of this lap were deleted.
+obs %482's REPAIR LANDED ON THIS CLOCK. It found four Mantra witnesses unheard rather than rotted, proved them GREEN, and rostered them tier cadence at 92s -- reasoning that eight ships reading them twice a lap would spend the saving. Sound reasoning; the tier it moved them to had never run. So the repair for a proof nobody runs was a clock nothing turns, and mantra_a1_equality ran today for the first time since it was written. It is green.
+obs I DID NOT TAKE THE REPAIR, AND THAT IS THE HONEST STOP. Making the clock tick costs 5,106 seconds on a pier eight ships share, and where that cost lands -- every fifth lap, one ship, or the tier retired and each guard priced onto the lap clock -- is a fleet-wide spend rather than an audit finding. So the number is on the card and the word is Keaton's.
+obs THE CARD HAD TWO BYTES TO SPARE WHEN I FINISHED. It opened with three free, and fitting a richer account meant folding my own elder one to a dated shelf and then cutting my own new block six times. Nothing of a peer's moved.
+loom guard=standing_equipment_run tier=cadence guards_run=56 wall_s=5106 green=51 red=5 skipped_host=2
+loom guard=standing_equipment_run tier=lap guards_run=154 wall_s=1140 green=149 red=2 gated=3
+loom guard=two_rooms_doorway pages=978 fails=48 ceiling=44
+loom guard=dated_path refs_total=23941 refs_lost=175 ceiling=165
+loom guard=season_leaf_choir sung=33 green=26 red=7
+loom pin=construction/REDS.md before=41223 after=39098 bound=40960 rows_folded=1
+loom pin=construction/ITINERARY.md open=40957 close=40958 bound=40960 free=2
+file session-logs/date/20260907/20260907-054042_the-field-asked-two-questions.kyri the parked record landed verbatim, closing stash_record at unlanded=0 -- the guard goes green only when a record re-enters the channel, never by dropping a stash
+file session-logs/date/README-index-20260907.md its row written by hand at 05:40:42's chronological place, since the stash's own index diff would have removed every row written since
+file construction/REDS.md the cadence row booked with both readings and the first sing's five reds; %550 folded out through reds_fold.sh; headline carried 555 -> 556
+file construction/archive/REDS-the-dialect-a-single-host-cannot-see-rows-550.md the shelf %550 folded to, head written first because the tool refuses shelf_absent rather than inventing a shelf's meaning
+file construction/archive/20260907-113635_itinerary-landed-accounts.md the elder Grass account and this lap's in full -- the mechanism, the two readings, the five reds, and the word the repair needs
+file construction/ITINERARY.md the GRASS block replaced, and the census sentence corrected from "nothing runs that guard" to the tier that nothing turns
+recommend check-in (Keaton) -- the cadence tier's five reds are named and their lanes can take them; what wants a word is where 5,106 seconds a cycle lands on a pier eight ships share, since every alternative changes what a lap costs for everyone.
