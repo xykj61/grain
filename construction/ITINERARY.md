@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `719eaa1450` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `d95a6ed54d` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE ONE READING THE GATE QUESTION TURNS ON NOW READS ZERO, AND READING IT WRONG WAS A ONE-LINE PREDICATE.**
 Elder [shelved](archive/20260907-121623_itinerary-landed-accounts.md). Row `20260907.121623` CLOSED
