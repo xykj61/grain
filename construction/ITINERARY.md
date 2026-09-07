@@ -46,21 +46,25 @@
 
 ### Now -- the live front
 
-**Git nib:** `0dc1cb0be4` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `628dfd0edf` -- HEAD's parent, resolvable everywhere (%401).
 
-**BAKERY -- A GUARD THAT COUNTS TODAY'S LOGS REDDENS THE FLEET AT EVERY MIDNIGHT.** `20260907.003911` CLOSED,
-[folded](archive/REDS-a-guard-shaped-by-the-clock-rows-533.md): the first cold pass of `20260907`, at `00:12`, read `guards_red=2` on ONE root -- `rota_declared`
-refuses before the day's first log lands, and `standing_equipment` reads its own roster's red. **A
-red guard withholds the roster receipt**, so `--scoped` refuses and every ship pays a FULL cold pass
-(961s here) for a fact about the clock. Repaired by `capability day_shelf`, the fourth arm, reading
-`ROTA_DAY` and `git ls-files` exactly as the guard's own scan does -- **both halves**, since a shelf
-whose only log is untracked is what a filesystem-only probe would call present. Ten behaviors in a
-real git pen; `%493`'s second half already drops the elder card row. **A daily red is worse than a
-standing one** -- it heals by breakfast, so nobody books it. **Yours, one:** whether any other
-rostered guard is shaped by the clock this way is unmeasured. **Three landed accounts folded** to
-[`004225`](archive/20260907-004225_itinerary-landed-accounts.md) -- `%516`/`%517`/`%510`,
-`%499`/`%503`/`%501`, `%515`; residues ride there. **The pin closes 13 bytes under**, which is a
-judgment call charged to whoever opens next.
+**BAKERY -- THE BOX HELD A DAY'S INSTRUMENTS, AND THE LAP THAT BUILT THEM DIED IN ITS HOT PASS.**
+Landed whole from `stash@{0}`, witnesses **56 + 24 behaviors, faults 0**: `scope_rank` --
+DIFFUSER's item 1, `saving = cost x (1 - touch_rate)`, both off disk; `scope_match.sh`, the map
+matcher written ONCE and sourced by runner and ranking, so a skip and its price cannot disagree;
+`index_shelf_repair.sh`; and the map row that grew `session-logs/date/`, without which `--scoped`
+skipped the only guard reading the open shelf.
+Re-measured today: **220 guards, 163 unmapped, 1,198s = 81.1%** -- your 80.2% by a second method. **Renumbered on the fetch** (`20260907.045528`): `xy` spent the
+booked number and the next while the lap sat parked -- the stamp held, the view moved. **The tool's own red
+fired on the recovery**: a duplicate row and an inversion; it sorted the inversion and REFUSED the
+duplicate, which a hand dropped. **Yours:** a BYTE-IDENTICAL duplicate is decidable, refused
+beside the undecidable kind. **The wreckage:** the dead lap left its `--hot` runner orphaned,
+parent gone, holding `standing-equipment-run.lock.d`; the cold open refused `run_in_flight` and
+printed `kill -TERM <pid>` -- the EXIT trap where SIGKILL leaves the lock. It worked verbatim.
+**A THIRD GUARD IN THE FLAKE FAMILY:** `fleet_watch` red in the pass, GREEN alone on the same
+tree; `standing_equipment` did it again on `live_group_plant`. All three fork a real service -- a
+tmux server, a process group -- on eight cores, and each is GREEN run alone. **Carried:** whether
+another rostered guard is clock-shaped is unmeasured.
 
 **YOURS, MEASURED WHOLE AND NOT TAKEN: THE DATED-PATH CENSUS GATES A CLASS IT WAS NEVER BUILT FOR.**
 `dated_path_witness` reds at `refs_lost=173` against a ceiling of **165** only a debride may raise.
@@ -88,7 +92,7 @@ from `plant_program_failed` -- a fault no local copy caught: a program `sed` rej
 partial file that DIFFERS, and a byte comparison calls that landed. **30 behaviors**, both ways,
 the load-bearing leg stripping the comparison from a copy and asserting it reads a no-op as landed.
 First resident: my three Mantra controls, GREEN, rostered. Adoption is a **rising floor**;
-**151 of 155** unadopted.
+**156 of 162** unadopted.
 
 **Folded:** my abandoned-lock account and its row, each to a
 [shelf](archive/20260907-005333_itinerary-landed-accounts.md), and two peers' CLOSED rows a rebase put
@@ -384,6 +388,6 @@ The logs keep the account; earlier rows are shelved in
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260907.021117` | What the fleet spends on knowing it is green | [log](../session-logs/date/20260907/20260907-021117_what-the-fleet-spends-on-knowing-it-is-green.kyri) |
+| `20260907.062519` | The lap that died inside its own hot pass | [log](../session-logs/date/20260907/20260907-062519_the-lap-that-died-inside-its-own-hot-pass.kyri) |
 
 **One row, on purpose** -- a landed lap keeps one line until the next replaces it; the log carries the detail.

@@ -1603,7 +1603,13 @@ if grep -q '^ran alpha [0-9.]* green ' "$livepen/run-card.kyri"; then
 # repair working. The sibling travels with the copy, and the run below is read for a GUARD line
 # rather than only for the absence of one.
 grep -v '^export STANDING_CARD=' "$runner" > "$pen/run-blind.sh"
+# EVERY SIBLING THE RUNNER SOURCES TRAVELS WITH A PEN COPY OF IT. The runner resolves its own
+# directory and sources from there, so a copy placed in a pen reads the pen's siblings -- and a
+# missing one kills the copy at its first line, which reads exactly like the hand-off fault this
+# phase exists to show. Adding `scope_match.sh` to the runner caught this the same lap: every
+# reading below answered `no` for a reason that had nothing to do with the card.
 cp "$(dirname "$runner")/shell_portable.sh" "$pen/shell_portable.sh"
+cp "$(dirname "$runner")/scope_match.sh" "$pen/scope_match.sh"
 if [ "$(wc -l < "$runner")" -gt "$(wc -l < "$pen/run-blind.sh")" ]; then
   echo "blind_runner_built=yes"; else echo "blind_runner_built=no"; fi
 plant_live_card

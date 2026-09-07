@@ -121,7 +121,41 @@ assert control.out contains "tie_stays_duplicate=yes" else "index-row-bound: one
 assert control.out contains "closed_shelf_order_free=yes" else "index-row-bound: a closed shelf out of order keeps every byte it wrote"
 assert control.out contains "closed_shelf_order_uncounted=yes" else "index-row-bound: a closed shelf's order must not be counted against the living gate"
 assert control.out contains "bound_applies=yes" else "index-row-bound: the bound read must be the bound applied"
+assert control.out contains "misordered_advises=yes" else "index-row-bound: a refusal must name the command that repairs it, never a number alone"
 assert control.out contains "control_verdict=ok" else "index-row-bound: the control must agree with itself"
-say "forty behaviors proven on planted pins and shelves, each reading shown from both sides"
+say "the scan's behaviors proven on planted pins and shelves, each reading shown from both sides"
 
-say "GREEN: index-row-bound -- an index row points; it does not summarise."
+# THE REPAIR, proven separately from the reading. A guard that sees a fault and offers no remedy
+# gets repaired by a hand every time it fires -- twelve firings across five laps for this one
+# (REDS %440), each an identical two-row swap. tools/fixtures/i/index_shelf_repair.sh is that
+# swap, done by a program that proves its own output is a PERMUTATION of the page it read before
+# it writes a byte. The load-bearing leg is that postcondition shown from both sides: a copy whose
+# sort drops a line refuses, and the same copy with the postcondition removed writes the loss.
+let repair = run ["sh" "tools/fixtures/i/index_shelf_repair_control.sh"]
+assert repair.ok else "index-row-bound: the repair control must complete"
+say repair.out
+assert repair.out contains "OK   sorted_a_misordered_shelf" else "index-row-bound: a misordered shelf must be sorted"
+assert repair.out contains "OK   newest_now_on_top" else "index-row-bound: the newest row must stand first after a repair"
+assert repair.out contains "OK   sort_is_a_permutation" else "index-row-bound: the repair must add, drop, and alter nothing"
+assert repair.out contains "OK   header_and_prose_stand" else "index-row-bound: everything above the delimiter must stay where it stands"
+assert repair.out contains "OK   idempotent_reports_none" else "index-row-bound: a second run must find nothing to do"
+assert repair.out contains "OK   idempotent_leaves_bytes" else "index-row-bound: a second run must leave the page byte-identical"
+assert repair.out contains "OK   check_names_misorder" else "index-row-bound: --check must say what it would do"
+assert repair.out contains "OK   check_changed_nothing" else "index-row-bound: --check must change nothing"
+assert repair.out contains "OK   duplicate_refused" else "index-row-bound: which of two rows to lift is a hand's judgment, so a duplicate must refuse"
+assert repair.out contains "OK   duplicate_left_untouched" else "index-row-bound: a refusal must leave the page untouched"
+assert repair.out contains "OK   unstamped_refused" else "index-row-bound: a row without a leading stamp cell would sort by its title"
+assert repair.out contains "OK   unstamped_left_untouched" else "index-row-bound: a refusal must leave the page untouched"
+assert repair.out contains "OK   no_delimiter_refused" else "index-row-bound: a page with no delimiter row holds no table to sort"
+assert repair.out contains "OK   open_shelf_is_the_newest_day" else "index-row-bound: the repair must aim at the page the guard reads"
+assert repair.out contains "OK   closed_shelf_untouched" else "index-row-bound: a closed shelf is immutable once its day closes"
+assert repair.out contains "OK   mode_kept_through_the_write" else "index-row-bound: a mode is tracked content, so the write goes through the inode"
+assert repair.out contains "OK   lossy_sort_refused" else "index-row-bound: a sort that drops a line must be caught before anything is written"
+assert repair.out contains "OK   lossy_sort_wrote_nothing" else "index-row-bound: a caught repair must write nothing at all"
+assert repair.out contains "OK   blind_copy_writes_the_loss" else "index-row-bound: the postcondition must be shown to be what stops the loss"
+assert repair.out contains "OK   blind_copy_lost_a_row" else "index-row-bound: without the postcondition the page must actually lose a row"
+assert repair.out contains "faults=0" else "index-row-bound: every repair behavior must be satisfied"
+assert repair.out contains "control_verdict=ok" else "index-row-bound: the repair control must agree with itself"
+say "the repair proven on real pages in a pen, the permutation postcondition shown from both sides"
+
+say "GREEN: index-row-bound -- an index row points, it does not summarise, and a refusal names its repair."

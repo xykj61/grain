@@ -15,15 +15,19 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260907.063213` | [green alone, red in company](20260907/20260907-063213_green-alone-red-in-company.kyri) | seven constant pens; the race proven both ways. |
 | `20260907.062845` | [the count that stopped being true](20260907/20260907-062845_the-count-that-stopped-being-true.kyri) | the grain held 13; ten sentences said 10. |
 | `20260907.062801` | [the map a guard writes for itself](20260907/20260907-062801_the-map-a-guard-writes-for-itself.kyri) | Six of eight map rows name less than their guard reads. |
+| `20260907.062519` | [the lap that died inside its own hot pass](20260907/20260907-062519_the-lap-that-died-inside-its-own-hot-pass.kyri) | a parked lap landed; its row renumbered. |
 | `20260907.061221` | [a fourteenth of the room](20260907/20260907-061221_the-meter-that-heard-a-fourteenth-of-the-room.kyri) | duty1 read 60 pages of 767; now 379, zero. `%540`. |
 | `20260907.055545` | [the fleet drops to medium](20260907/20260907-055545_the-fleet-drops-to-medium.kyri) | effort medium, live on all seven. |
+| `20260907.054701` | [the box held a day's instruments](20260907/20260907-054701_the-box-held-a-days-instruments.kyri) | two parked laps recovered; the red at zero. |
 | `20260907.053708` | [six processes where one would do](20260907/20260907-053708_six-processes-where-one-would-do.kyri) | width_check 75s to 17s. |
 | `20260907.050258` | [the room that said it was the corpus](20260907/20260907-050258_the-room-that-said-it-was-the-corpus.kyri) | a parked lap landed; a room was not the corpus. |
+| `20260907.050056` | [the guard that could not see its own shelf](20260907/20260907-050056_the-guard-that-could-not-see-its-own-shelf.kyri) | a scoped pass skipped the shelf's own guard. |
 | `20260907.050053` | [the numbering carries the graph](20260907/20260907-050053_the-numbering-carries-the-graph.kyri) | One counter, two numberings: 36 pieces or one. |
 | `20260907.043033` | [the fork before the skip](20260907/20260907-043033_the-fork-before-the-skip.kyri) | the slowest guard, 25% faster. |
 | `20260907.023053` | [the cores, the rooms, and the serial pass](20260907/20260907-023053_the-cores-the-rooms-and-the-serial-pass.kyri) | 161 guards serial; the deadlock named. |
 | `20260907.021854` | [The mark nothing read](20260907/20260907-021854_the-mark-nothing-read.kyri) | Amphora claimed the wreck rule; Pond kept it. |
 | `20260907.021435` | [one ratchet that held two debts](20260907/20260907-021435_one-ratchet-that-held-two-debts.kyri) | 129 uncovered desks were 83 and 46. |
+| `20260907.021428` | [the guard that named a fault nobody could act on](20260907/20260907-021428_the-guard-that-named-a-fault-nobody-could-act-on.kyri) | a published double, named. |
 | `20260907.021117` | [what the fleet spends on being green](20260907/20260907-021117_what-the-fleet-spends-on-knowing-it-is-green.kyri) | 80.2% of a pass never skips. |
 | `20260907.014146` | [the charter that said how big its lane was](20260907/20260907-014146_the-charter-that-said-how-big-its-lane-was.kyri) | a charter stating a count nothing reads. |
 | `20260907.013921` | [the half of a walk-back that travels](20260907/20260907-013921_the-half-of-a-walk-back-that-travels.kyri) | a floating hash closed; a word list 56 days stale. |

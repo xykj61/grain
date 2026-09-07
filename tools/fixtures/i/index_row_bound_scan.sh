@@ -204,6 +204,11 @@ elif [ "$unresolved" -ne 0 ]; then
 elif [ "$dupes" -ne 0 ]; then
   echo "verdict=rows_duplicate"; exit 1
 elif [ "$misordered" -ne 0 ]; then
+  # A NUMBER AND A WAY TO ACT. This reading has fired twelve times across five laps and every
+  # firing was repaired by the same hand-swap, because the refusal named the fault and no remedy
+  # (the `%528` lesson, one room over). The repair is a permutation of the rows and proves that
+  # about its own output before it writes, so it is safe to name here.
+  echo "advice=sh tools/fixtures/i/index_shelf_repair.sh"
   echo "verdict=rows_misordered"; exit 1
 fi
 echo "verdict=ok"
