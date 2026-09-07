@@ -61,3 +61,23 @@ any lap-tier pass"* -- and the population behind that sentence is 58.
 **The word this needs.** Eight ships share this pier and the sing costs 5,106 seconds. The honest
 alternatives are a periodic cadence pass, a single ship carrying it, or retiring the tier and
 pricing each guard onto the lap clock. That is a fleet-wide spend, so it is Keaton's.
+
+---
+
+## The fault this lap made while auditing
+
+To stop its own `--hot` runner before a rebase, this lap typed
+`pkill -TERM -f 'standing_equipment_run.sh --hot'`. `pkill -f` matches a command line rather than a
+directory, so its reach is the process table: **five PIDs on a pier eight ships share**, and the
+shell exited 144 because the pattern matched its own bash. Every peer's
+`standing-equipment-run.lock.d` holder was then read out of `/proc` and all five stand alive, so no
+peer's roster pass died; two terminated PIDs stay unattributable, since a process that is gone
+leaves no `cwd` to read. `tools/f/fleet_call.sh` is the bounded form the tree already owns. Booked
+as its own row, at `20260907.124500`.
+
+## Two folds, one withdrawn
+
+`%550` was folded here to a shelf of this lap's own naming, and a peer folded the same row upstream
+while the lap ran -- one row, two shelves, which is the shape a rebase is for. This lap's fold was
+withdrawn whole at the rebase and the peer's stands. `%558`, standing **BOOKED** at 3,246 bytes,
+folded instead, since a pin with no room is what the status word exists to answer.
