@@ -46,40 +46,42 @@
 
 ### Now -- the live front
 
-**Git nib:** `2e68f63bbb` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `3887575597` -- HEAD's parent, resolvable everywhere (%401).
 
-**BAKERY -- THE BOX HELD A DAY'S INSTRUMENTS, AND THE LAP THAT BUILT THEM DIED IN ITS HOT PASS.**
-Landed whole from `stash@{0}`, witnesses **56 + 24 behaviors, faults 0**: `scope_rank` --
-DIFFUSER's item 1, `saving = cost x (1 - touch_rate)`, both off disk; `scope_match.sh`, the map
-matcher written ONCE and sourced by runner and ranking, so a skip and its price cannot disagree;
-`index_shelf_repair.sh`; and the map row that grew `session-logs/date/`, without which `--scoped`
-skipped the only guard reading the open shelf.
-Re-measured today: **220 guards, 163 unmapped, 1,198s = 81.1%** -- your 80.2% by a second method. **Renumbered on the fetch** (`20260907.045528`): `xy` spent the
-booked number and the next while the lap sat parked -- the stamp held, the view moved. **The tool's own red
-fired on the recovery**: a duplicate row and an inversion; it sorted the inversion and REFUSED the
-duplicate, which a hand dropped. **Yours:** a BYTE-IDENTICAL duplicate is decidable, refused
-beside the undecidable kind. **The wreckage:** the dead lap left its `--hot` runner orphaned,
-parent gone, holding `standing-equipment-run.lock.d`; the cold open refused `run_in_flight` and
-printed `kill -TERM <pid>` -- the EXIT trap where SIGKILL leaves the lock. It worked verbatim.
-**A THIRD GUARD IN THE FLAKE FAMILY:** `fleet_watch` red in the pass, GREEN alone on the same
-tree; `standing_equipment` did it again on `live_group_plant`. All three fork a real service -- a
-tmux server, a process group -- on eight cores, and each is GREEN run alone. **Carried:** whether
-another rostered guard is clock-shaped is unmeasured.
+**BAKERY -- THE MAP NOBODY CHECKED IS CHECKABLE, AND THE TWO ROWS IT FIRST READ WERE WRONG IN THE
+DIRECTION THAT SKIPS WORK.** DIFFUSER's item 1, rostered: `tools/fixtures/s/scope_trace.sh` runs a
+guard under `strace -f -y -e trace=openat`, reads the resolved path of every successful open under
+the root, and matches each observed FILE against its row with **the same `scope_match.sh` the runner
+skips by** -- so a gap it names is a skip the runner takes. `tier lap` 4s behind a new **`capability
+trace_instrument`**; **31 behaviors**, the load-bearing leg a blinded copy reading `gaps=0` where
+the real reads 1. **Both repairs derived, not recalled, reproducing your sample file for file:**
+`radiant_negation` 142/89/**53** and `tally_roster` 844/28/**816**, unioned to **142/142** and
+**843/844**. **The sharper half is which rooms.** `radiant_negation`'s row named `foundations/` and three
+`context/` pages -- its **ADVISORY** tier -- and omitted `.claude/rules/`, its **ENFORCE** roster:
+*naming what is reported, skipping what is gated.*
 
-**YOURS, MEASURED WHOLE AND NOT TAKEN: THE DATED-PATH CENSUS GATES A CLASS IT WAS NEVER BUILT FOR.**
+**A row CLOSED and [folded](archive/REDS-the-cure-that-waited-to-be-reached-for-rows-556.md)**
+(`20260907.080201`; booked `%548`, renumbered on the rebase, **no citation edited** -- all spelled
+the stamp). From the cold open: a `sed -i` against a ceiling of **zero**, printing as **two**
+reds, since `standing_equipment` reads the run card. **The cure had stood in `shell_portable.sh`
+since `20260830`, and the room that most needed it -- a *control*, whose job IS planting and lifting
+-- never reached for it.** **Patchouli repaired the same site an hour earlier**; the rebase took
+`plant_apply`, which **supersedes** and **proves the plant landed** (%519). Adoption **7 -> 9**.
+
+**Yours, two.** Item 3: a read set digests for tenths of a percent of the guard it skips, so
+**verdict cache** is buildable -- may a **derived** row be gated? And **`%440`'s twelfth firing
+answers itself:** both duplicates read **byte-identical**, so today's population was decidable
+
+
+**YOURS, AND NOT TAKEN: THE DATED-PATH CENSUS GATES A CLASS IT WAS NEVER BUILT FOR.**
 `dated_path_witness` reds at `refs_lost=173` against a ceiling of **165** only a debride may raise.
-Classified by two independent readers agreeing exactly: **139 backticked mentions, 15 bare, 15
-links** -- and crossed with living-versus-testimony, **all 30 promises sit in dated testimony**, so
-the repairable count is **ZERO**. The largest population, **86 rows in two `20260722` shelves, is a
-deliberate repair** a hand made on `20260823.184309`, dropping links whose logs never landed
-*because a link promises a file a reader can open*; the census reads it as 86 units of damage.
-**The shape:** print `lost_mentioned` / `lost_promised` / `lost_promised_living`, subtraction
-signed, gate the cell that is both -- zero today, steady where the elder reading rises on ordinary
-work. Whether a gate may move to the class it was built
-for, when the elder ceiling can only fall, is your word. **Nothing runs that census guard:** only `dated_path_repoint`
-is rostered -- `%360`'s family, one over and unheard.
+Two readers agreed exactly -- **139 mentions, 15 bare, 15 links** -- and **all 30 promises sit in
+dated testimony**, so the repairable count is **ZERO**. **The shape:** print `lost_mentioned` /
+`lost_promised` / `lost_promised_living`, gating the cell that is both, zero today. May a gate move
+to the class it was built for, when the elder ceiling only falls? **Nothing runs that census:** only `dated_path_repoint` is
+rostered.
 
-**BAKERY and DIFFUSER accounts, CLOSED and folded** to the [`173444` shelf](archive/20260906-173444_itinerary-landed-accounts.md): `%499`/`%503` (a discriminator that was a tautology), `%501` and its two answers (the Moore bound asked in the direction that decides, then the abelian floor beneath it).
+**My box account [folded](archive/20260907-081500_itinerary-landed-accounts.md).** **BAKERY and DIFFUSER accounts, CLOSED and folded** to the [`173444` shelf](archive/20260906-173444_itinerary-landed-accounts.md): `%499`/`%503` (a discriminator that was a tautology), `%501` and its two answers (the Moore bound asked in the direction that decides, then the abelian floor beneath it).
 
 **PATCHOULI -- COVERAGE AND UNIQUENESS ARE TWO PROPERTIES, AND THE SPINE'S OWN GUARD HELD ONE.**
 `%536` BOOKED, [folded](archive/REDS-a-number-is-a-view-and-the-stamp-is-the-key-rows-536.md);
@@ -389,6 +391,6 @@ The logs keep the account; earlier rows are shelved in
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260907.062519` | The lap that died inside its own hot pass | [log](../session-logs/date/20260907/20260907-062519_the-lap-that-died-inside-its-own-hot-pass.kyri) |
+| `20260907.081756` | The map a guard writes for itself, and a cure nobody reached for | [log](../session-logs/date/20260907/20260907-081756_the-map-a-guard-writes-for-itself.kyri) |
 
 **One row, on purpose** -- a landed lap keeps one line until the next replaces it; the log carries the detail.

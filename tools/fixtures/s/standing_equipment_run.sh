@@ -582,6 +582,20 @@ capability_state() {
       /bin/sh -c : >/dev/null 2>&1 || { echo unknown; return 0; }
       if bwrap --ro-bind / / --dev /dev /bin/sh -c : >/dev/null 2>&1; then echo present; else echo absent; fi
       ;;
+    trace_instrument)
+      # Can this host observe a program's read set? tools/fixtures/s/scope_trace.sh runs a guard
+      # under `strace -f -y -e trace=openat`, which is Linux-only -- macOS ships `dtruss` behind
+      # System Integrity Protection and no `strace` at all. Without it the scan refuses by name
+      # (`verdict=no_instrument`), and an unconditional row would turn one bench's kernel into every
+      # body's red lap. This is CAPABILITY rather than PLACE: a Linux bench with strace keeps the
+      # promise a Linux bench without it breaks, so `host linux` would encode something untrue.
+      #
+      # THERE IS NO UNKNOWN HERE. `command -v` has no tool of its own to go missing, so the question
+      # is always answerable -- present or absent, never a third state. A probe that ran a real
+      # trace would be answering the guard's own question rather than the host's, which is how a
+      # capability stops being a cadence and becomes an exemption.
+      if command -v strace >/dev/null 2>&1; then echo present; else echo absent; fi
+      ;;
     seed_projection)
       # Does a seed projection stand in this checkout? `seed/` is gitignored and built by
       # `tools/s/sow.rish`, so a fresh clone has none -- and `sow_allow_reach`, which reads the

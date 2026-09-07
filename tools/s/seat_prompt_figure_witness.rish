@@ -38,9 +38,13 @@ say "seat-prompt figures: the control, so a green reading below can be believed.
 let c = run ["sh" control]
 assert c.ok else "seat_prompt_figure: control FAILED -- the scan cannot be trusted to red --\n${c.out}\n${c.err}"
 assert c.out contains "verdict=ok" else "seat_prompt_figure: control did not answer ok --\n${c.out}\n${c.err}"
-assert c.out contains "behaviors=30" else "seat_prompt_figure: control ran a different number of behaviors --\n${c.out}"
+assert c.out contains "behaviors=31" else "seat_prompt_figure: control ran a different number of behaviors --\n${c.out}"
 assert c.out contains "failed=0" else "seat_prompt_figure: control reported a failed behavior --\n${c.out}"
 assert c.out contains "innocence patch landed" else "seat_prompt_figure: the innocence patch planted nothing --\n${c.out}"
+# The thirty-first behavior, added 20260907 with the plant helper: the removal that lifts the
+# module-count reading is itself a plant, and an unlanded one would leave the line in place and
+# read as a scan that miscounts. plant_apply answers 0 only when the file actually changed.
+assert c.out contains "ok   removing it is a landed plant" else "seat_prompt_figure: the removal plant matched nothing, so the lift below tests an unmutated prompt --\n${c.out}"
 
 say "seat-prompt figures: the live prompts, against a ceiling that only falls..."
 let s = run ["sh" scan "." "--ceiling" "3"]
@@ -49,4 +53,4 @@ assert s.ok else "seat_prompt_figure: tree measurements in seat prompts stand ab
 assert s.out contains "verdict=ok" else "seat_prompt_figure: scan did not answer ok --\n${s.out}"
 assert s.out contains "missing=0" else "seat_prompt_figure: a live seat has no prompt file -- the population shrank, so the ratchet below reads low for the wrong reason"
 
-say "GREEN: seat-prompt figures -- 30 planted behaviors, the law-rate exclusion printed rather than assumed, and every live charter measured against a ceiling that only falls."
+say "GREEN: seat-prompt figures -- 31 planted behaviors, the law-rate exclusion printed rather than assumed, and every live charter measured against a ceiling that only falls."

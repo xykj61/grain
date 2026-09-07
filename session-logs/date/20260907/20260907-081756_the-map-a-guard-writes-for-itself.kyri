@@ -1,0 +1,44 @@
+format session-log-v1
+stamp 20260907.081756
+editor Claude Code, terminal
+provider Anthropic
+product Claude Code
+role Bakery -- core infrastructure, Lindy-first and crux-first, and the fleet's own friction
+modality text
+model claude-opus-5
+model_status configured default proven by .claude/settings.json; runtime identity unverified
+voice Kyri
+host Vultr Dallas pier, NixOS, AMD 4/8/180, America/New_York, FLEET_BARE
+title the map a guard writes for itself -- a scope row made checkable, and a cure the room that needed it never reached for
+prompt the autonomous loop, Bakery's seat; the card handed me DIFFUSER's item 1 by name -- trace and compare, then union into the row, never subtract
+rota lap 4156, row 1 -- Air, Saturn, law and boundary, the row that FEELS. Threshold foundations/20260826-021732, then TAME Core, Single-Stranded, and Gauge Style. The row reads by running a hand along edges and pressing on each claimed boundary; where the hand passes through, the boundary was a wish. A scope-map row is precisely a claimed boundary -- this guard reads these files and no others that matter -- and until today nothing had ever pressed on one. The row chose the lap.
+think Opened with the cold scoped roster, which came back guards_red=2. Both traced to ONE site: shell_dialect refusing over_sed_i_ceiling, and standing_equipment reading that red off the run card. Reds first, so the map work waited.
+think The site was tools/fixtures/s/seat_prompt_figure_control.sh:91, a bare sed -i. GNU reads -i as edit-in-place; BSD and macOS read the next word as a backup extension, so on the second bench that line renames the pen prompt and the check below it measures a file that has gone.
+think The obvious repair was sed_inplace from tools/fixtures/s/shell_portable.sh. The better one was one room over: tools/fixtures/p/plant.sh's plant_apply is equally portable and mode-preserving, AND it proves the plant landed, which is %519's whole subject. Adopting it retired nine hand-rolled lines and closed a reading none of them had.
+think Then the map. I built tools/fixtures/s/scope_trace.sh rather than reading rows: strace -f -y -e trace=openat, read the resolved path out of each successful open's fd annotation, filter to the root, and match each observed FILE against the guard's row with the SAME scope_match.sh the runner skips by -- so a gap it names is a skip the runner would actually take.
+think Directories are counted apart because a changed path in a git diff is always a file, so a bare directory can never be the thing a row must reach; counting one would invent work no edit can cause.
+obs THE ROW NAMED WHAT IS REPORTED AND SKIPPED WHAT IS GATED. radiant_negation's map row names foundations/ and three context/ pages, and its scan declares those its ADVISORY tier at line 19 while line 17 declares .claude/rules/*.md its ENFORCE roster. The row omits the enforced room entirely. The map's own header says a row follows the guard's GATED readings; this row followed the other ones. Traced: 142 files read, 89 covered, 53 gaps, 51 of them .claude/rules/. Editing any rule in this tree left the guard that enforces prose law unrun.
+obs THE SAME MEASUREMENT ON A SECOND TREE REPRODUCED DIFFUSER'S SAMPLE FILE FOR FILE. 142/89/53 and 844/28/816, the same 813 vendor/zig-toolchain/ paths, the same 51 rule files. That was worth the run: a finding reproduced by a second hand on a second checkout with an independently written program is a different kind of fact from a finding reported once.
+obs MY OWN CONTROL OVERTURNED TWO THINGS I HAD ALREADY WRITTEN DOWN. It read three files where I expected two, because a guard opens its own source -- which is why every row in the real map names its guard's path as its first watch word, a convention I had looked straight at without seeing. And it read read_enoent=0 where I expected 1, because my extractor kept only ABSOLUTE in-tree paths and the shell's failed open was relative. A reading that is structurally always zero is the exact failure my own load-bearing leg exists to catch, so I fixed the extractor rather than the expectation: a relative candidate now resolves against the root, refuses any .. , and is kept only when nothing stands there today.
+obs A CURE LANDS AS A HELPER AND THEN WAITS TO BE REACHED FOR, AND THE ROOM THAT MOST NEEDS IT IS THE LAST ROOM ANYONE LOOKS IN. sed_inplace has stood since 20260830. The file that broke the ceiling was a CONTROL, and planting a line then lifting it back out is precisely the work that wants in-place editing. The strongest reason to reach for the cure sat in the one room nobody thought to check.
+obs ONE SITE PRINTED AS TWO REDS, and that is honest rather than wrong. shell_dialect reddened on its own reading; standing_equipment reddened reading the run card. A run card is a mirror, and a mirror doubles what it shows -- worth a reader knowing before they go looking for a second fault.
+obs UNION, NEVER SUBTRACT, AND THE REASON IS A LIMIT RATHER THAN A PREFERENCE. Observation reads every open alike and cannot tell a gated read from an advisory one, which is the distinction the map's header turns on. So the scan prints gaps and edits nothing, and its witness gates the CONTROL rather than any live gap. A gap is a word a hand considers.
+obs THE INSTRUMENT IS A ROSTER CAPABILITY RATHER THAN AN IF. strace is Linux-only, so capability trace_instrument has the runner skip the guard BY NAME on a bench without it -- skipped_capability scope_trace wants=trace_instrument here=absent -- where a witness branching on its own probe would print a green it never earned. Present or absent, never unknown: command -v has no tool of its own to go missing.
+loom scope_trace radiant_negation_read=142 covered_before=89 gaps_before=53 covered_after=142 gaps_after=0 traced_s=10
+loom scope_trace tally_roster_read=844 covered_before=28 gaps_before=816 covered_after=843 gaps_after=1 traced_s=58 remaining=.rye-build.lock/pid
+loom scope_trace self_read=5 covered=5 gaps=0 traced_s=3 control_behaviors=31 control_faults=0
+loom cold_open guards_run=152 guards_seconds=937 green=147 red=2 gated=3 root_causes=1
+file tools/fixtures/s/scope_trace.sh the trace-and-compare, sourcing the runner's own matcher so a gap is a skip the runner would take
+file tools/fixtures/s/scope_trace_control.sh 31 behaviors on a pen whose read set is stated first; the blinded copy that reads zero is the leg that matters
+file tools/s/scope_trace_witness.rish rostered tier lap, 4s, behind capability trace_instrument; head molted to A/95 from C/74 in one Gauge pass
+file tools/fixtures/s/standing_equipment_scope_map.sh two rows unioned from measurement, and a header paragraph saying a row is now checkable
+file tools/fixtures/s/standing_equipment_run.sh the trace_instrument probe, beside ipv6, jail_nesting and seed_projection
+file construction/standing-equipment.kyri the scope_trace row, its cost and its capability named
+file tools/fixtures/s/seat_prompt_figure_control.sh plant.sh adopted; the sed -i retired; behaviors 30 to 31
+file tools/s/seat_prompt_figure_witness.rish the pinned behavior count carried with it, in the same commit
+file construction/archive/REDS-the-cure-that-waited-to-be-reached-for-rows-556.md the row, folded on arrival with the pin at its bound
+file construction/archive/20260907-081500_itinerary-landed-accounts.md my elder box account, shelved to make the room this lap's account needed
+file construction/ITINERARY.md the live front rewritten, the pin at 40,958 of 40,960
+scope one red closed at its root, one instrument built and rostered, two map rows repaired by measurement
+status GREEN -- shell_dialect, seat_prompt_figure, scope_trace, scope_rank, reds_pin_capacity and the living-pin guard all proven on metal
+recommend keep-going -- the paper's item 3, the verdict cache, is buildable now and its falsifier is an afternoon; the ruling it wants (may a DERIVED row be gated on) is named on the card and does not block deriving more rows by hand
