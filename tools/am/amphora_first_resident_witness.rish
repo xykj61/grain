@@ -7,15 +7,19 @@
 #   rishi/bin/rishi run tools/am/amphora_first_resident_witness.rish
 
 let season = "tools/fixtures/amphora_first_resident_counsel"
-let home = "/tmp/amphora_first_resident_witness"
-let vessel = "/tmp/amphora_first_resident_witness/counsel.bron"
-let out = "/tmp/amphora_first_resident_witness/counsel.bron.season"
 
-let wipe = run ["rm" "-rf" home]
-assert wipe.ok else "first_resident: home wipe"
-let mk = run ["mkdir" "-p" home]
-assert mk.ok else "first_resident: home mkdir"
-
+# THE PEN CARRIES A UNIQUE NAME (REDS %512's class, held by tools/s/shared_pen_witness.rish).
+# Eight ships run this roster from eight checkouts and share one /tmp, so a pen named by a
+# constant is ONE directory on all eight: a peer's `rm -rf` lands mid-run and the reading becomes
+# a fact about the pen wearing the costume of a fact about Amphora. `mktemp -d` lets the kernel
+# pick the suffix, so no two runs can agree by accident, and the fresh directory is already empty
+# -- which is why the wipe-then-mkdir this replaced is gone rather than moved.
+# Full argument and the seated exemplar: tools/am/amphora_restore_negative_witness.rish.
+let pen = run ["sh" "-c" "mktemp -d /tmp/amphora_first_resident.XXXXXX"]
+assert pen.ok else "first_resident: pen must open"
+let home = trim pen.out
+let vessel = "${home}/counsel.bron"
+let out = "${home}/counsel.bron.season"
 # The witness builds the binaries it runs (REDS %334: a build named in a comment builds
 # nothing). The directory is made first: rye build refuses an absent -femit-bin directory
 # with "unable to open output directory", so a clone died here even with the build line.

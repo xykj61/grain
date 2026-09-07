@@ -12,12 +12,21 @@
 #   rishi/bin/rishi run tools/am/amphora_carry_negative_witness.rish
 
 let season = "tools/fixtures/cellar_ring1_tree"
-let vessel = "/tmp/amphora_cneg_vessel.bron"
-let dock = "/tmp/amphora_cneg_dock"
-let far = "/tmp/amphora_cneg_dock/vessel.bron"
 
-let clean = run ["rm" "-rf" vessel dock]
-assert clean.ok else "carry_neg: clean must pass"
+# THE PEN CARRIES A UNIQUE NAME (REDS %512's class, held by tools/s/shared_pen_witness.rish).
+# Eight ships run this roster from eight checkouts and share one /tmp, so a pen named by a
+# constant is ONE directory on all eight: a peer's `rm -rf` lands mid-run and the reading becomes
+# a fact about the pen wearing the costume of a fact about Amphora. `mktemp -d` lets the kernel
+# pick the suffix, so no two runs can agree by accident, and the fresh directory is already empty
+# -- which is why the wipe-then-mkdir this replaced is gone rather than moved.
+# Full argument and the seated exemplar: tools/am/amphora_restore_negative_witness.rish.
+let pen = run ["sh" "-c" "mktemp -d /tmp/amphora_cneg.XXXXXX"]
+assert pen.ok else "carry_neg: pen must open"
+let home = trim pen.out
+let vessel = "${home}/v.bron"
+let dock = "${home}/dock"
+let far = "${home}/dock/vessel.bron"
+
 # The witness builds the binaries it runs, rather than assuming a previous lap left them
 # behind. amphora/bin/ is gitignored (.gitignore:336), so a clone carries none of them and
 # this witness died on a missing file rather than on an Amphora fact (REDS %334).

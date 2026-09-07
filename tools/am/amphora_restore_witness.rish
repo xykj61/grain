@@ -5,17 +5,22 @@
 #   rishi/bin/rishi run tools/am/amphora_restore_witness.rish
 
 let season = "tools/fixtures/cellar_ring1_tree"
-let home = "/tmp/amphora_restore_witness_home"
-let vessel = "/tmp/amphora_restore_witness_home/v.bron"
-let out_home = "/tmp/amphora_restore_witness_home/v.bron.season"
-let hello = "/tmp/amphora_restore_witness_home/v.bron.season/hello.txt"
-let nested = "/tmp/amphora_restore_witness_home/v.bron.season/nested/leaf.txt"
-let blob = "/tmp/amphora_restore_witness_home/v.bron.season/blob.bin"
 
-let wipe = run ["rm" "-rf" home]
-assert wipe.ok else "amphora_restore: home wipe"
-let mk = run ["mkdir" "-p" home]
-assert mk.ok else "amphora_restore: home mkdir"
+# THE PEN CARRIES A UNIQUE NAME (REDS %512's class, held by tools/s/shared_pen_witness.rish).
+# Eight ships run this roster from eight checkouts and share one /tmp, so a pen named by a
+# constant is ONE directory on all eight: a peer's `rm -rf` lands mid-run and the reading becomes
+# a fact about the pen wearing the costume of a fact about Amphora. `mktemp -d` lets the kernel
+# pick the suffix, so no two runs can agree by accident, and the fresh directory is already empty
+# -- which is why the wipe-then-mkdir this replaced is gone rather than moved.
+# Full argument and the seated exemplar: tools/am/amphora_restore_negative_witness.rish.
+let pen = run ["sh" "-c" "mktemp -d /tmp/amphora_restore.XXXXXX"]
+assert pen.ok else "amphora_restore: pen must open"
+let home = trim pen.out
+let vessel = "${home}/v.bron"
+let out_home = "${home}/v.bron.season"
+let hello = "${home}/v.bron.season/hello.txt"
+let nested = "${home}/v.bron.season/nested/leaf.txt"
+let blob = "${home}/v.bron.season/blob.bin"
 
 # The witness builds the binaries it runs, rather than assuming a previous lap left them
 # behind. amphora/bin/ is gitignored (.gitignore:336), so a clone carries none of them and
@@ -50,7 +55,7 @@ assert b.ok else "amphora_restore: blob.bin must land"
 let again = run ["amphora/bin/amphora" "restore" vessel]
 assert again.ok else "amphora_restore: same-parent re-restore must welcome"
 
-let plant = run ["sh" "-c" "rm -rf /tmp/amphora_restore_witness_home/v.bron.season && mkdir -p /tmp/amphora_restore_witness_home/v.bron.season && echo other > /tmp/amphora_restore_witness_home/v.bron.season/x.txt"]
+let plant = run ["sh" "-c" "rm -rf ${home}/v.bron.season && mkdir -p ${home}/v.bron.season && echo other > ${home}/v.bron.season/x.txt"]
 assert plant.ok else "amphora_restore: plant fork fixture"
 
 let fork = run ["amphora/bin/amphora" "restore" vessel]
