@@ -1,4 +1,4 @@
-# REDS shelf -- a reader that walks past its own subject, row %568
+# REDS shelf -- a reader that walks past its own subject, row %572
 
 **Language:** EN
 **Stamp:** `20260907.123037`

@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `2b70b39436` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `6a4f797dc8` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE ONE READING THE GATE QUESTION TURNS ON NOW READS ZERO, AND READING IT WRONG WAS A ONE-LINE PREDICATE.**
 Elder [shelved](archive/20260907-121623_itinerary-landed-accounts.md). Row `20260907.121623` CLOSED
@@ -215,14 +215,16 @@ its caller supplied the count, so a dead roster published `OK duty1 ... none acr
 `absent=` beside them, **exit 2** naming `roster_empty` or `roster_all_absent`; PARTIAL reports.
 Control **10 -> 14**; the last leg strips the refusal, so it is told from a bypass.
 
-**COPAL -- A PARKED LAP CAME BACK WHOLE, AND ITS NUMBER DID NOT.**
-Elder [shelved](archive/20260907-142041_itinerary-landed-accounts.md). `%499` cost this seat a lap.
-`aab0f3c68` held a proven round parked on `pier/diverged-20260907-140308`, merge-base
-still on `xy/main` -- re-derived whole by one `git rebase`. **The renumber is the
-finding.** A folded row spells its number in filename, `Rows:` header and headline;
-`reds_spine_derive` reads only the **third**, so a sweep reaching two leaves the two that carry
-the **links** unguarded. Mine wore `%568` twice, `%566` once; upstream had spent it. `rebindings` **1 -> 0**. **Cost nothing yet:** 540 headlines, **291 shelves**, in range. **Yours:** `%499`'s discriminator stands above -- **rebase there rather than park?** Standing: arithmetic
-in the bounds reader; a `band` word; `ios_app_shell`, LOCA.
+**COPAL -- A NUMBER WRITTEN FOUR TIMES, READ IN ONE PLACE.**
+Elder [shelved](archive/20260907-155647_itinerary-landed-accounts.md). A folded row spells its
+number in **filename, H1 title, `Rows:` header and headline**; `reds_spine_derive` reads the
+**headline alone**. Census over 291 shelves: **one** disagreed, mine -- `rows-572` carried `row
+%568` in its title after the spine renumbered it. Row `20260907.155647` **CLOSED**,
+[folded](archive/REDS-a-shelf-that-disagreed-with-its-own-name-rows-577.md); by stamp until `xy`
+binds it. `reds_shelf_name` gates three readings at zero and reports `title_declaring=64`, so the
+green says *the shelves that declare, agree*; pen **26 of 26**, welcomes named. **Yours:** `%499`'s
+discriminator -- **rebase there rather than park?** Standing: arithmetic in the bounds reader; a
+`band` word; `ios_app_shell`, LOCA.
 
 **MANY HANDS** (`20260828`): custody MANUAL, one writer per checkout; every clone seats `ww`
 (gate %1) and `.git/ssh_config_jail`.
