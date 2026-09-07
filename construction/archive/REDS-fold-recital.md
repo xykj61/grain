@@ -428,3 +428,5 @@ at a closed fold.*
 *Row %556 folded to [`REDS-the-cure-that-waited-to-be-reached-for-rows-556.md`](REDS-the-cure-that-waited-to-be-reached-for-rows-556.md) on `20260907.080302`, **CLOSED** -- a portability cure lands as a helper and then waits to be reached for, and a control -- whose whole job is planting and lifting -- is the last room anyone reaches for one in.*
 
 *Row %557 folded to [`REDS-the-room-emptied-by-the-motion-that-confirms-rows-557.md`](REDS-the-room-emptied-by-the-motion-that-confirms-rows-557.md) on `20260907.093223`, **CLOSED** -- the evidence room built to root a flake was cleared by the by-name pass used to confirm one; a pass now clears only what it answered.*
+
+*Row %550 folded to [`REDS-a-control-that-reached-for-sed-i-rows-550.md`](REDS-a-control-that-reached-for-sed-i-rows-550.md) on `20260907.100350`, **CLOSED** -- a guard reading every file is the guard a file-adding lap never runs, and its red costs the whole fleet its receipt.*
