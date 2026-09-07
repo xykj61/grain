@@ -1,0 +1,52 @@
+# seat_prompt_figure_witness.rish -- a charter says what a ship is FOR, never how big its lane is.
+#
+# TWO CLAIMS, in the order that makes the second worth believing. First the control proves the scan
+# can RED -- 30 planted behaviors on throwaway fleets, every refusal shown from the failing side and
+# then lifted, and the pen proven innocent against a scan patched to always answer zero. Then the
+# scan reads the live prompts. A guard that cannot red guards nothing, so the order is not decoration.
+#
+# WHY IT EXISTS (`20260907.011258`). A seat prompt is the first thing a ship reads on every lap it
+# will ever run, and two of the eight carried tree measurements: copal's `10 Rye modules and 3,861
+# lines` with `16 witnesses`, and patchouli's `32 Rye modules and 9,175 lines` with `four rostered
+# witnesses`. All six had parted from the tree. The witness figures were EXACT at their seating and
+# went stale on ordinary work -- copal's seat was written when 16 tracked paths named both `amphora`
+# and `witness` and none stood on the roster, which by `20260907` read 17 with 9 rostered. The line
+# figure never matched anything: `3,861` against the **3,582** the ten `.rye` paths read on the day
+# it was written. A figure nothing reads cannot be corrected, only replaced.
+#
+# THE LAW IS ALREADY SEATED ONE ROOM OVER. `construction/ITINERARY.md`'s roster directive reads
+# *Counts come from the scan, never here*, and Gauge asks every figure to carry unit, date, and
+# source. A charter can carry none of the three. This carries the same law to the room beside it.
+#
+# WHAT IT HOLDS. `figures` is a RATCHET under a ceiling that only falls -- it opens at **3**, which
+# is what stands after copal's own charter was repaired, so it lands green on the tree it publishes
+# to rather than on the tree it was built in. `missing` is GATED at zero for a reason of its own: a
+# live seat whose prompt file has gone would quietly shrink the population, and a ratchet measured
+# over a shrinking population reads as progress while nothing improved.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/s/seat_prompt_figure_witness.rish
+
+let control = "tools/fixtures/s/seat_prompt_figure_control.sh"
+let scan = "tools/fixtures/s/seat_prompt_figure_scan.sh"
+
+say "seat-prompt figures: Language EN -- a charter states a purpose; a scan states a count."
+say "seat-prompt figures: Style Gauge, Meter -- every reading is named, and the exclusion is printed rather than assumed."
+say "seat-prompt figures: Lens TAME -- measurement beats memory; the ceiling is proven from both sides on planted fleets."
+
+say "seat-prompt figures: the control, so a green reading below can be believed..."
+let c = run ["sh" control]
+assert c.ok else "seat_prompt_figure: control FAILED -- the scan cannot be trusted to red --\n${c.out}\n${c.err}"
+assert c.out contains "verdict=ok" else "seat_prompt_figure: control did not answer ok --\n${c.out}\n${c.err}"
+assert c.out contains "behaviors=30" else "seat_prompt_figure: control ran a different number of behaviors --\n${c.out}"
+assert c.out contains "failed=0" else "seat_prompt_figure: control reported a failed behavior --\n${c.out}"
+assert c.out contains "innocence patch landed" else "seat_prompt_figure: the innocence patch planted nothing --\n${c.out}"
+
+say "seat-prompt figures: the live prompts, against a ceiling that only falls..."
+let s = run ["sh" scan "." "--ceiling" "3"]
+say s.out
+assert s.ok else "seat_prompt_figure: tree measurements in seat prompts stand above the ceiling --\n${s.out}\n${s.err}"
+assert s.out contains "verdict=ok" else "seat_prompt_figure: scan did not answer ok --\n${s.out}"
+assert s.out contains "missing=0" else "seat_prompt_figure: a live seat has no prompt file -- the population shrank, so the ratchet below reads low for the wrong reason"
+
+say "GREEN: seat-prompt figures -- 30 planted behaviors, the law-rate exclusion printed rather than assumed, and every live charter measured against a ceiling that only falls."
