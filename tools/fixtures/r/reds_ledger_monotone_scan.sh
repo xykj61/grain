@@ -124,24 +124,137 @@ dup_file=$(mktemp)
 printf '%s\n' "$pairs" | cut -f2- | sort | uniq -d > "$dup_file"
 duplicate_headlines=$(wc -l < "$dup_file" | tr -d ' ')
 
+
+# THE NUMBER NAMES ONE ROW (REDS %536). Everything above proves the spine COVERS 1..N, and that
+# no one headline stands under two numbers. Neither reading can see the mirror fault: one NUMBER
+# standing over two rows. Coverage is answered by a duplicate exactly as well as by a unique row,
+# because the duplicate's twin fills the slot a missing number would otherwise leave -- so a tree
+# whose spine is internally doubled reads `gaps_or_dupes=0` and calls itself whole. That is what
+# %530 did on 20260907: two rows, two stamps, both published. The only instrument that saw it was
+# reds_spine_derive_scan.sh, which compares this tree against the REMOTE, so the doubling reddened
+# in the NEXT ship to fetch rather than in the tree that made it, eighty minutes after it landed.
+#
+# THE KEY IS THE STAMP (.claude/rules/derived-spine.md): a row's immutable identity is its
+# one-clock stamp, and the %N beside it is a view the anointed remote allocates. So the reading is
+# over (number, stamp, file), and it holds two properties that fail differently:
+#
+#   numbers_double_bound -- one number carrying more than one stamp. Two incidents wear one
+#                           number, and the repair is a word on which of them renumbers.
+#   rows_double_shelved  -- one (number, stamp) standing in more than one file. One incident is
+#                           written twice, and whether that is a FAULT is a reading rather than a
+#                           rule. %512's two shelves are deliberate and say so on their own faces:
+#                           two hands folded one row without knowing, and both pages were kept --
+#                           one carrying what the row taught, one how it ended. So this reading
+#                           counts and names; it does not prescribe.
+#
+# They are named apart rather than summed because a refusal that cannot say which repair is
+# wanted gives an exact number and no way to act (REDS %528). Each stands at exactly one instance
+# today: %530 is double-bound, which is a genuine collision, and %512 is double-shelved, which is
+# a pair somebody chose.
+#
+# WHAT COUNTS AS A ROW OPENING, and why the shape is this narrow. Measured 20260907 over the 447
+# openings on disk, three other line shapes carry the bold sigil and a number:
+#
+#   - a closure note -- `**REDS %112 CLOSED (`stamp`) -- ...` -- which lawfully re-states its own
+#     row's number under its own LATER stamp. Fourteen numbers do this, and reading them as second
+#     rows would refuse a ledger that is perfectly whole, which is the gate REDS %100 named;
+#   - a note wearing some other word -- `**REDS %83 prevention LANDED (`20260817`) -- ...`;
+#   - a prose mention that happens to open a line -- `**REDS %155**, which found ...` -- carrying
+#     no stamp at all.
+#
+# One fact written on the line itself tells all three from an opening: an opening puts the stamp
+# IMMEDIATELY after the number, with no word between. Requiring that parenthesised stamp does both
+# jobs at once -- it excludes the prose mention, and it hands the row its true key. Across 447
+# openings the reading finds exactly the two faults above and no others, so the discrimination is
+# measured rather than argued. The elder rows carry a date-only stamp, so both widths are read;
+# spelled out digit by digit rather than with an interval, since interval expressions are not
+# something every awk on a borrowed pier answers to.
+#
+# CEILINGS THAT ONLY FALL, rather than gates at zero, and for the same reason
+# duplicate_headlines_ceiling already carries above. Both instances stand on published dated
+# shelves, so touching either edits testimony -- Keaton's word under `debride` -- and one of them
+# is not a fault at all, merely a pair somebody kept. Holding the line where it stands is what
+# makes the NEXT doubling red inside the tree that made it.
+numbers_double_bound_ceiling=1
+rows_double_shelved_ceiling=1
+
+bindings=$(for f in "$@"; do
+  awk '
+    match($0, /^\*\*REDS [%#][0-9][0-9]* \(`[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9](\.[0-9][0-9][0-9][0-9][0-9][0-9])?`\)/) {
+      s = substr($0, RSTART, RLENGTH)
+      num = s; sub(/^\*\*REDS [%#]/, "", num); sub(/ .*/, "", num)
+      st = s; sub(/^.*\(`/, "", st); sub(/`\).*/, "", st)
+      printf "%s\t%s\t%s\n", num, st, FILENAME
+    }
+  ' "$f"
+done | sort -u)
+
+n_bindings=$(printf '%s\n' "$bindings" | grep -c '	' || true)
+
+# A number bound to more than one stamp. The (number, stamp) pairs are deduped first, so one row
+# copied onto two shelves counts here as the single binding it is, and lands in the reading below.
+bound_file=$(mktemp)
+printf '%s\n' "$bindings" | cut -f1,2 | sort -u | cut -f1 | sort -n | uniq -d > "$bound_file"
+numbers_double_bound=$(grep -c '[0-9]' "$bound_file" || true)
+
+# One (number, stamp) standing in more than one file. The triples are already deduped, so a row
+# mentioned twice within one shelf counts once and only a genuine second home is read.
+shelved_file=$(mktemp)
+printf '%s\n' "$bindings" | cut -f1,2 | sort | uniq -d > "$shelved_file"
+rows_double_shelved=$(grep -c '[0-9]' "$shelved_file" || true)
 echo "mentions=$n_mentions"
 echo "rows=$rows"
 echo "expect_next=$expect"
 echo "gaps_or_dupes=$fail"
 echo "duplicate_headlines=$duplicate_headlines"
 echo "duplicate_headlines_ceiling=$duplicate_headlines_ceiling"
+echo "bindings=$n_bindings"
+echo "numbers_double_bound=$numbers_double_bound"
+echo "numbers_double_bound_ceiling=$numbers_double_bound_ceiling"
+echo "rows_double_shelved=$rows_double_shelved"
+echo "rows_double_shelved_ceiling=$rows_double_shelved_ceiling"
 while IFS= read -r h; do
   [ -n "$h" ] || continue
   ns=$(printf '%s\n' "$pairs" | awk -F'\t' -v h="$h" '$2==h { printf "%%%s ", $1 }')
   echo "detail: one headline under ${ns}-- $(printf '%s' "$h" | cut -c1-72)"
 done < "$dup_file"
 rm -f "$dup_file"
+while IFS= read -r n; do
+  [ -n "$n" ] || continue
+  ss=$(printf '%s\n' "$bindings" | awk -F'\t' -v n="$n" '$1==n { printf "%s ", $2 }')
+  echo "detail: %$n is bound to ${ss}-- two incidents under one number; a word says which renumbers"
+done < "$bound_file"
+rm -f "$bound_file"
+while IFS= read -r line; do
+  [ -n "$line" ] || continue
+  n=$(printf '%s' "$line" | cut -f1)
+  s=$(printf '%s' "$line" | cut -f2)
+  fs=$(printf '%s\n' "$bindings" | awk -F'\t' -v n="$n" -v s="$s" '$1==n && $2==s { printf "%s ", $3 }')
+  echo "detail: %$n (\`$s\`) stands in ${fs}-- one incident on two shelves; open both before judging"
+done < "$shelved_file"
+rm -f "$shelved_file"
 if [ "$rows" -eq 0 ]; then echo "verdict=no_rows"; exit 1; fi
-if [ "$fail" -eq 0 ] && [ "$duplicate_headlines" -le "$duplicate_headlines_ceiling" ]; then
+if [ "$fail" -eq 0 ] &&
+   [ "$duplicate_headlines" -le "$duplicate_headlines_ceiling" ] &&
+   [ "$numbers_double_bound" -le "$numbers_double_bound_ceiling" ] &&
+   [ "$rows_double_shelved" -le "$rows_double_shelved_ceiling" ]; then
   echo "verdict=ok"
   exit 0
 fi
 if [ "$fail" -ne 0 ]; then echo "verdict=not_monotone"; exit 1; fi
-echo "verdict=duplicate_rows"
-echo "refused: one headline stands under two row numbers past the ceiling -- read the lines above" >&2
+if [ "$duplicate_headlines" -gt "$duplicate_headlines_ceiling" ]; then
+  echo "verdict=duplicate_rows"
+  echo "refused: one headline stands under two row numbers past the ceiling -- read the lines above" >&2
+  exit 1
+fi
+# The two verdicts below are named apart on purpose. One number over two incidents and one
+# incident in two files are repaired by different acts, so a single word for both would tell a
+# reader that something is doubled and leave them to find out what (REDS %528).
+if [ "$numbers_double_bound" -gt "$numbers_double_bound_ceiling" ]; then
+  echo "verdict=number_double_bound"
+  echo "refused: a row number stands over two incidents past the ceiling -- read the lines above" >&2
+  exit 1
+fi
+echo "verdict=row_double_shelved"
+echo "refused: one row stands in two files past the ceiling -- read the lines above" >&2
 exit 1

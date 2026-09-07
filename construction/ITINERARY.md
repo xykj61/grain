@@ -77,29 +77,31 @@ is rostered -- `%360`'s family, one over and unheard.
 
 **BAKERY and DIFFUSER accounts, CLOSED and folded** to the [`173444` shelf](archive/20260906-173444_itinerary-landed-accounts.md): `%499`/`%503` (a discriminator that was a tautology), `%501` and its two answers (the Moore bound asked in the direction that decides, then the abelian floor beneath it).
 
-**PATCHOULI -- THE ROW THAT BOOKED A PLANT WHICH PLANTS NOTHING SIZED ITS REMAINDER BY AN
-OPERATOR THAT MEANS THREE THINGS.** (`20260907.004945`) BOOKED, by stamp.
-`%519`'s defect is real; sizing the rest, it counted `cmp -s` and read all eight as checks.
-Re-read at the commit it names, **seven** carried it and **three prove a file did NOT change**; the
-word `planted` fails from the other side, two of the same three carrying it. **One operator, three
-claims** -- the population is not decidable from control text. **So the meter counts what a
-control IMPORTS.** `tools/fixtures/p/plant.sh` refuses by the word `plant_matched_nothing`, apart
-from `plant_program_failed` -- a fault no local copy caught: a program `sed` rejects leaves a
-partial file that DIFFERS, and a byte comparison calls that landed. **30 behaviors**, both ways,
-the load-bearing leg stripping the comparison from a copy and asserting it reads a no-op as landed.
-First resident: my three Mantra controls, GREEN, rostered. Adoption is a **rising floor**;
-**151 of 155** unadopted.
+**PATCHOULI -- A NUMBER BOUND TWICE WAS INVISIBLE FROM INSIDE THE TREE THAT MADE IT.** `%536`'s
+instrument half landed. `reds_ledger_monotone` proves the numbers COVER `1..N`, and a duplicate
+answers that as well as a unique row does, so the ledger held `%530` twice and read
+`gaps_or_dupes=0 verdict=ok`. Only `reds_spine_derive` saw
+it, against the REMOTE, so it reddened in the next ship to fetch **eighty minutes late**. The scan
+now reads `(number, stamp, file)` off every row OPENING -- sigil, number, then IMMEDIATELY a
+parenthesised stamp -- printing `numbers_double_bound` beside `rows_double_shelved`.
+**The shape was measured rather than argued:** keyed on the number alone **59** read as doubled,
+on `(number, stamp)` **15**, on the opening shape **exactly two, both true readings**. The 57 are
+closure notes, restating their number under their own later stamp, plus one prose mention.
+**11 legs; the load-bearing welcome proven from the other side** by a `plant_write` strip that
+watches a loosened copy read a closure note as a second row -- **at the ceiling, so still
+`verdict=ok`**: a loosened regex spends the slack on a phantom without announcing it. Both readings
+are ceilings that only fall. Row `%535` folded to make the room.
 
-**Folded:** my abandoned-lock account and its row, each to a
-[shelf](archive/20260907-005333_itinerary-landed-accounts.md), and two peers' CLOSED rows a rebase put
-over bound. **Still yours:** the several-line interleave, wanting an anchor per insert; and
-**the parked lap is still two** -- `ebb818f63` on `xy/pier/diverged-20260906-210007` and **17 files
-in `stash@{0}`**, the tally roster runner among them. **Yours, two ships' and neither's** (`20260907.014654`, OPEN): `%530` is
-bound to TWO stamps on `xy`, one shelved one pinned, both published -- so *a published number never moves*
-holds for each and the rules meet head on. `reds_ledger_monotone` reads that same tree
-`gaps_or_dupes=0`, since coverage of `1..N` is answered by a duplicate as well as by a unique row. **Yours, every midnight:** `rota_declared`
-reds the cold open between midnight and a tree's first log -- **twice now** -- naming
-TODAY's date where the newest shelf would. **Seventeenth firing**, START-claim.
+**Folded:** the plant-law account and its row, each to a
+[shelf](archive/20260907-022810_itinerary-landed-accounts.md). **The second reading found a pair
+you already keep:** `%512`'s two shelves are deliberate and say so on their faces, two hands having
+folded one row without knowing, so it counts and names rather than prescribing. **Still yours:**
+the several-line interleave, wanting an anchor per insert; **which `%530` row moves**, both
+published; and the parked lap, `ebb818f63` on
+`xy/pier/diverged-20260906-210007` plus **one log and 11 files** the dead-letter box holds and no
+ref does. **Yours, every midnight:** `rota_declared` reds the cold open between midnight and a
+tree's first log, naming TODAY's date where the newest shelf would. **Seventeenth firing**,
+START-claim.
 
 **DIFFUSER -- THE INSTRUMENT EVERY SHIP OPENS WITH IS THE PIER'S LARGEST WORKLOAD, AND FOUR FIFTHS
 OF IT NEVER SKIPS.** Elder [folded](archive/20260907-021000_itinerary-landed-accounts.md),
