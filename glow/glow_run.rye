@@ -93,7 +93,7 @@ pub fn main(init: std.process.Init) !u8 {
 
     const src = try cwd.readFileAlloc(io, glow_path, alloc, .limited(64 * 1024));
 
-    // STOA176: same-desk named-cast (≤9 `$:` faces -> ≤12 Glow lines) bypasses
+    // STOA176: same-desk named-cast (<=9 `$:` faces -> <=12 Glow lines) bypasses
     // the bare multi-line budget of six -- peek + lower share named_cast_parts.
     if (!sample_argv and lower_named_cast.looks_like_named_cast(src)) {
         var nc_buf: [4096]u8 = undefined;
@@ -111,7 +111,7 @@ pub fn main(init: std.process.Init) !u8 {
         return 0;
     }
 
-    // STOA168: mold-only desks (≤9 `$:` faces) bypass the bare multi-line budget.
+    // STOA168: mold-only desks (<=9 `$:` faces) bypass the bare multi-line budget.
     // Named-cast already returned above when its peek is true.
     if (!sample_argv and lower_shape.looks_like_shape_only(src) and
         !lower_named_cast.looks_like_cross_desk(src))
@@ -138,28 +138,38 @@ pub fn main(init: std.process.Init) !u8 {
     }
     // core (20260830.224500): a `|%` source lawfully carries up to core_max_lines
     // live lines, so the six-line gate ceiling steps aside for the form alone.
-    const is_core = lower_shop_core.looks_like_core(src);
-    if (line_count > lower_multi.max_lines and !is_core) {
+    //
+    // Read by looks_like_SHOP_core rather than looks_like_core (REDS `20260906.195208`). The
+    // looser question is answered yes by every `|%` source, including the fourteen
+    // THIN core desks under glow/gen/c/ whose arms carry no gate body and which
+    // glow/lower_core.rye has lowered down the welcome road since STOA14. Routing
+    // on it sent all fourteen into the argv branch below, which refuses a core
+    // with no sample by name -- so `glow_run` answered CoreWantsArgv for every one
+    // of them, and glow_run_desk_witness.rish stopped at the first.
+    const is_shop_core = lower_shop_core.looks_like_shop_core(src);
+    if (line_count > lower_multi.max_lines and !is_shop_core) {
         print("glow_run: too many Glow lines in {s}\n", .{glow_path});
         return 2;
     }
-    if (is_core and line_count > lower_shop_core.core_max_lines) {
+    if (is_shop_core and line_count > lower_shop_core.core_max_lines) {
         print("glow_run: too many core lines in {s}\n", .{glow_path});
         return 2;
     }
     // G3 cast is one line; STOA101/114 bartis/barket argv is two live lines.
-    if (sample_argv and line_count != 1 and line_count != 2 and !is_core) {
+    if (sample_argv and line_count != 1 and line_count != 2 and !is_shop_core) {
         print("glow_run: --sample-argv needs one cast line or a 2-line bartis/barket in {s}\n", .{glow_path});
         return 2;
     }
 
     var rye_buf: [4096]u8 = undefined;
     const rye_len: u32 = blk: {
-        // core (20260830.224500): a `|%` source lowers to one module whose argv
-        // main dispatches by arm ordinal. The core speaks argv only -- its
-        // answers live per arm, so the welcome road refuses by name -- and it
-        // routes ahead of the six-line collect its arm count would overflow.
-        if (is_core) {
+        // core (20260830.224500): a `|%` source whose arms carry gate bodies lowers
+        // to one module whose argv main dispatches by arm ordinal. That core speaks
+        // argv only -- its answers live per arm, so the welcome road refuses by
+        // name -- and it routes ahead of the six-line collect its arm count would
+        // overflow. A THIN core carries no arm body, wants no sample, and falls
+        // through to the `|%` welcome road below (REDS `20260906.195208`).
+        if (is_shop_core) {
             if (!sample_argv) {
                 print("glow_run: core lower failed (CoreWantsArgv)\n", .{});
                 return 1;

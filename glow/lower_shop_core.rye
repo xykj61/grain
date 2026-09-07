@@ -15,7 +15,17 @@ const print = std.debug.print;
 const rb = @import("rune_shop_gate.rye");
 const rc = @import("rune_shop_core.rye");
 
-pub const looks_like_core = rc.looks_like_core;
+/// The ONE predicate this module re-exports, and the looser sibling stays behind
+/// on purpose. `glow_run` picks a core's road through this module, and only this
+/// question answers what the shop can actually lower: does EVERY arm carry a gate
+/// body? Its sibling `rune_shop_core.looks_like_core` reads two characters and
+/// says yes to every `|%` source, which is how all fourteen thin desks under
+/// `glow/gen/c/` came to be refused CoreWantsArgv for seven days (REDS `20260906.195208`).
+/// Exporting one of the two makes the wrong choice unavailable here rather than
+/// merely discouraged; a caller who wants the looser reading reaches
+/// `rune_shop_core` directly, where the two stand side by side with the reason
+/// between them.
+pub const looks_like_shop_core = rc.looks_like_shop_core;
 pub const core_max_lines = rc.core_max_lines;
 
 pub const LowerError = error{

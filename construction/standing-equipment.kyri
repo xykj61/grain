@@ -663,6 +663,19 @@ path tools/g/glow_choir_witness.rish
 tier cadence
 seated 20260828.192755
 
+# glow_shop_core -- which road a `|%` source takes, decided before it lowers. The two modules
+# that pick it, glow/rune_shop_core.rye and glow/lower_shop_core.rye, landed 20260830.224500 and
+# were imported by glow/glow_run.rye alone: no runner on disk named either, so nothing ran them
+# for seven days while their dispatch refused all fourteen thin core desks under glow/gen/c/ and
+# the Glow step of manual/grain-os/get-started.md (REDS `20260906.195208`). `lap` rather than `cadence`: 2s
+# measured on this pier, and the predicate it holds decides a road for every `|%` source the
+# language will ever lower.
+
+guard glow_shop_core
+path tools/g/glow_rune_shop_core_witness.rish
+tier lap
+seated 20260906.195208
+
 guard skate_native_core
 path tools/s/skate_native_core_witness.rish
 tier cadence
