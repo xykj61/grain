@@ -410,7 +410,7 @@ at a closed fold.*
 
 *Row %543 recovered from `pier/diverged-20260907-055442` and written straight to [`REDS-a-shoulder-line-that-never-read-the-mark-rows-543.md`](REDS-a-shoulder-line-that-never-read-the-mark-rows-543.md) on `20260907.071427`, **CLOSED** -- booked as %538 while parked, renumbered on arrival because upstream published its own %538 first.*
 *Row %545 folded to [`REDS-a-pointer-that-carried-a-total-rows-545.md`](REDS-a-pointer-that-carried-a-total-rows-545.md) on `20260907.064347`, **CLOSED** -- a canonical page grew three strands and every pointer at it kept the elder total, because count-never-number had no meter over living prose.*
-
+*Row %541 folded to [`REDS-a-signal-is-not-a-file-rows-541.md`](REDS-a-signal-is-not-a-file-rows-541.md) on `20260907.073448`, **BOOKED** -- a signal is not a file, so one-writer-per-checkout never reached it.*
 *Row %546 folded to [`REDS-the-file-nobody-reads-is-the-file-that-drifts-rows-546.md`](REDS-the-file-nobody-reads-is-the-file-that-drifts-rows-546.md) on `20260907.073623`, **CLOSED** -- the map row that named less than its guard gates, and the reader that finally read the map.*
 *Row %548 folded to [`REDS-a-leader-alive-and-orphaned-rows-548.md`](REDS-a-leader-alive-and-orphaned-rows-548.md) on `20260907.074209`, **BOOKED** -- a liveness reading is fixed at whatever generation its author could see, and the launcher keeps moving which process that is -- third firing after %387 and %528.*
 
@@ -421,4 +421,4 @@ at a closed fold.*
 *Row %551 written straight to [`REDS-the-word-a-gloss-could-not-bind-rows-551.md`](REDS-the-word-a-gloss-could-not-bind-rows-551.md) on `20260907.075107`, **BOOKED** -- booked `20260907.015907` as `%537` and renumbered four times off the anointed spine while its lap sat unlanded in a stash; one Status field was answering three questions and the guard reads one of them.*
 
 *Row %552 written straight to [`REDS-a-fourth-surface-the-law-never-named-rows-552.md`](REDS-a-fourth-surface-the-law-never-named-rows-552.md) on `20260907.075107`, **BOOKED** -- born onto a shelf because the pin stood at its bound with every row OPEN; the ASCII law names three subjects and this tree's guards speak in a fourth.*
-
+*Row %553 folded to [`REDS-a-guard-no-author-can-run-rows-553.md`](REDS-a-guard-no-author-can-run-rows-553.md) on `20260907.083737`, **BOOKED** -- a portability fault is the one fault an author cannot reproduce, so the meter reads what no witness of theirs can.*

@@ -1235,6 +1235,19 @@ path tools/f/fleet_watch_witness.rish
 tier lap
 seated 20260906.090000
 
+# fleet_call -- a signal is not a file, so one-writer-per-checkout never reached it. Eight ships run
+# one program name from eight trees on one pier, and `pkill -f standing_equipment_run` therefore
+# reaches the fleet rather than the lap: measured live on this pier the same hour, sixteen peer
+# processes across four trees stood behind that one pattern, and the calling shell's own command
+# line carried it too (exit 144, three firings in two laps -- REDS %541). tools/f/fleet_call.sh
+# resolves each candidate's working directory and signals only what sits under this tree's own
+# root, refusing a peer and refusing the caller's ancestry OUT LOUD -- a kill that misses is silent
+# on both sides. Twenty-two behaviors on real processes in a pen, every refusal planted and lifted.
+guard fleet_call
+path tools/f/fleet_call_witness.rish
+tier lap
+seated 20260907.073406
+
 # fleet_key_locality -- one jail binds one tree, so every path a ship's git config names must live
 # inside that ship's own tree. grain-pheromone was born naming petrichor's keyring and petrichor's
 # deploy keys, and could neither sign nor push from inside its own enclosure while every check at a

@@ -1,0 +1,49 @@
+format session-log-v1
+stamp 20260907.081446
+editor Claude Code, terminal, unattended fleet loop
+provider Anthropic
+product Claude Code
+role diffuser -- moonshots and research
+modality text
+model claude-opus-5
+model_status configured default from .claude/settings.json; runtime identity unverified
+configured_model claude-opus-5
+configured_reasoning max
+configured_status evidence .claude/settings.json tracked in this clone
+voice Kyri
+host Framework-class Linux pier, America/New_York
+title The guard no author can run
+prompt The baton, unattended lap 4156 -- reds first, then the lane.
+rota lap 4156, row 1 -- Air, the row that feels; law and boundary, and its sense is touch. The threshold says a boundary is tested by pressing on it, and if the hand passes through, the boundary was a wish. That is exactly what this lap did to two shell lines: the tree's `sed_i` ceiling of zero and its `readlink_f` ratchet of seven are fences, and two hands had walked through both without feeling anything, because on this pier the fence is not there. The fixed seat, single-stranded, named the other half -- easy and simple are two measurements, and `sed -i` is the easy spelling on the host you happen to own.
+think Opened with the cold roster pass, --scoped, 137 guards in 857s: three red. stash_record was mine again -- stash@{0} held a whole lap, 488 insertions across 13 files, including tools/f/fleet_call.sh which exists in no commit. standing_equipment is the known forking flake, GREEN alone. shell_dialect was new and closable, so reds-first pointed at it after the recovery.
+think Recovered first, because a lap of mine standing on no ref outranks a fresh finding. git stash apply brought two conflicts and both were the union shape my own elder lap had already named: two hands folded two different REDS rows to two shelves in one hour, git saw rival edits to one region, and both shelves exist on disk -- checked with ls before deciding -- so both removals are right and both fold lines belong in the recital.
+think Then shell_dialect. It refused at gated_sed_i_sites=1 against a ceiling of 0. One site, tools/fixtures/s/seat_prompt_figure_control.sh:91, a peer's file landed in ffc82f50d: a bare sed -i. On BSD the -i flag takes the NEXT argument as a backup suffix, so that line would read the substitution script as the suffix and the file as the script, refuse, leave the planted figure in place, and the check on the line below would read 1 where it wants 0. The control fails on the macOS bench for a reason having nothing to do with the guard it proves.
+think Repaired by writing through a temporary -- the exec-bit law's own shape, and what shell_portable.sh's sed_inplace does internally -- rather than by sourcing the helper, since this control sources nothing and one dependency for one line is a braid.
+think Re-ran the witness and it refused AGAIN, at gated_readlink_f_sites=8 against a ceiling of 7. That eighth site was MINE: fleet_call.sh:84 resolving /proc/<pid>/cwd with readlink -f, GNU-only, inside the one file in this tree whose entire subject is refusing to measure its host. The scan reports the first family over and stops, so the second reading existed only because the first repair let it through.
+think Replaced it with a subshell cd into the cwd link plus pwd -P. That is the same physical resolution on every POSIX host, and it reads better on a deleted directory: readlink -f answers a path with (deleted) glued on, which under_root would then compare as an ordinary string, where cd simply fails and the lsof leg below gets its turn.
+think Proved both by running rather than by claiming: the control reads 30 behaviors 0 failed, fleet_call_witness is GREEN, and a live dry run over the fleet read 24 candidates with 18 refused foreign across five peer trees and 1 would send -- the resolver answering on real processes, which is the only place the /proc leg can be exercised.
+obs A portability guard is the one guard whose subject no author can run. Both hands ran their own witness on this pier and both were GREEN, because sed -i and readlink -f are both correct here. Neither was careless; the fault simply lives on a bench neither had open. That is the whole argument for a dialect meter existing, and it is also why one repair yields one reading -- a ceiling-per-family scan stops at the first family over, so a lap that fixes one family should re-run rather than assume.
+obs I wrote a fabricated number onto the living card and the grep caught it before the commit. The card briefly read 156 pkill sites, a figure I carried across from an unrelated PATCHOULI line about control adoption. Measured across the tracked shell roster it is 2 sites in 2 files. Gauge asks that every figure carry unit, date and source, and the reason that rule is worth its weight is that a number which SOUNDS like it came from somewhere reads exactly like one that did.
+obs The ratchet of seven has an honest floor of three, and no scan can see it. Three of the seven remaining readlink -f sites are in shell_portable_control.sh, which calls it deliberately to prove resolve_path matches it. A guard cannot tell a site under repair from a site that is the repair's own evidence, so a reader has to. Named on the pin rather than ratcheted toward a zero it must never reach.
+obs Third lap of mine in one day to die between its last edit and its commit. All three recovered whole, and the reason is structural rather than lucky: fleet_round_open.sh stashes rather than resets, so a dead lap leaves no dirty index and no lost bytes, only a box that stash_record_scan.sh reads at the next open.
+loom witness=shell_dialect sed_i_before=1 sed_i_after=0 readlink_f_before=8 readlink_f_after=7 ceiling_sed_i=0 ceiling_readlink_f=7
+loom control=seat_prompt_figure behaviors=30 failed=0
+loom witness=fleet_call_witness control_cases=22 fail=0
+loom helper=fleet_call dry_run candidates=24 refused_foreign=18 peer_trees=5 would_send=1 refused_self=4 refused_unknown=1
+loom roster=cold scoped guards_run=137 seconds=857 green=133 red=3 gated=1
+loom pin=construction/ITINERARY.md bytes_peak=41315 bound=40960 bytes_after_fold=40765
+file tools/fixtures/s/seat_prompt_figure_control.sh the bare sed -i replaced by a write through a temporary, with the BSD suffix behavior named in the comment
+file tools/f/fleet_call.sh recovered from the stash, and its readlink -f cwd resolver replaced by a subshell cd plus pwd -P
+file tools/f/fleet_call_witness.rish recovered whole, GREEN on 22 pen behaviors before anything was claimed
+file tools/fixtures/f/fleet_call_control.sh recovered whole, the pen that proves the helper on real processes
+file construction/REDS.md the portability row booked, cited by stamp until the anointed spine binds it
+file construction/archive/REDS-a-signal-is-not-a-file-rows-541.md the recovered lap's shelf, landed with the work it describes
+file construction/archive/REDS-fold-recital.md two hands' fold lines kept, the union of two removals rather than either side
+file construction/archive/20260907-081259_itinerary-landed-accounts.md the landed fleet-call account, folded whole to hold the pin under bound
+file construction/CHECKPOINTS.md the cairn for that fold, naming the fabricated figure it also corrected
+file construction/ITINERARY.md this lap's account, the fold pointer, and the three questions the account carried
+file construction/standing-equipment.kyri the fleet_call row, tier lap, recovered with its lap
+file session-logs/date/20260907/20260907-073531_a-signal-stops-at-its-own-tree.kyri the first stranded lap's own record
+file session-logs/date/20260907/20260907-074143_the-lap-that-was-in-the-box.kyri the second stranded lap's own record
+file session-logs/date/README-index-20260907.md three rows prepended, this lap's and the two it recovered
+recommend check-in (Keaton) -- three words wanted, all standing from the elder lap and none of them blocking: whether fleet_call is seated as the fleet's only signal, with 2 pkill sites left to adopt; the star's 4.79 against its 10.6x repair; and whether a lap may tool the shelf sort after twelve hand repairs of %440. The dialect repair needs no ruling -- it is landed and GREEN -- yet the readlink ratchet's honest floor of three is a reader's judgment a scan cannot make, and it is written on the pin so the next hand does not ratchet toward a zero that would delete a proof.
