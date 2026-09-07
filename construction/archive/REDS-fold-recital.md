@@ -368,3 +368,5 @@ at a closed fold.*
 *Row %505 folded to [`REDS-two-ships-one-guard-rows-505.md`](REDS-two-ships-one-guard-rows-505.md) on `20260906.195321`, **CLOSED** -- two ships built one guard in three minutes, and the landed one could read 19 of 274.*
 
 *Row %511 folded to [`REDS-a-guards-reach-is-a-claim-rows-511.md`](REDS-a-guards-reach-is-a-claim-rows-511.md) on `20260906.204500`, **CLOSED** -- a form fitted to the spelling of the one page in front of its author, so 151 of the 208 links it called unreadable wore a shape it already claimed to read.*
+
+*Rows %489, %508 and %509 folded to [`REDS-a-lock-the-stamp-already-was-rows-489-508-509.md`](REDS-a-lock-the-stamp-already-was-rows-489-508-509.md) on `20260906.210925`, each **BOOKED** -- Three cases of selecting a thing by a name something else also carries: a room name that a second filter also matched, a filename that three running prompts contained, and a row number the remote had yet to allocate.*

@@ -48,6 +48,27 @@ always the same algorithm executed manually: keep the earlier stamp, shift the l
    row is still local, and by `%N` only once it has landed upstream. Landing the allocator ahead of
    this habit would lock a stray number into testimony in the first week.
 
+**Rule 4 stood for ten days as a habit, and the habit stayed unformed.** Measured `20260906.210117`
+across that day's session logs: every one cited a number the spine had yet to bind, and none reached
+for the stamp. The bill stands in the ledger as **28 recorded errata**, six rows renumbered more
+than once, and one row renumbered **four times in an hour**.
+
+**The renumbering itself is free** -- the stamp held in all 28, which is the law working. The cost
+sits in every OTHER file that spelled the number: a `%N` reaches **20 to 36 files**
+within a day of being written, so citing an unshared number chooses a sweep the stamp would have
+spared. One such sweep "ran as a blind `sed` that rewrote a peer's row and two upstream passages."
+
+So rule 4 is now a **gate** rather than a habit:
+[`../../tools/r/unshared_citation_witness.rish`](../../tools/r/unshared_citation_witness.rish) over
+[`../../tools/fixtures/r/unshared_citation_scan.sh`](../../tools/fixtures/r/unshared_citation_scan.sh)
+reads `shared_max` from the anointed spine on every run and holds citations above it at **zero**
+across living surfaces. Three rooms are read past, each for its own reason. **The ledger assigns** a
+number rather than citing one, so `construction/REDS.md` and its fold archives are exempt by
+definition. **Testimony records** what the number was when it was written, so dated rooms and
+stamped basenames keep every word. And a **five-digit run is a colour** -- `%200000` in two image
+modules is what taught the pattern to take the whole run of digits before measuring its length. Ten behaviors stand proven against a stub spine in a throwaway repository, every refusal planted and
+then lifted, and a spine that cannot answer **refuses** rather than calling everything shared.
+
 ## What the guard reads
 
 [`../../tools/fixtures/r/reds_spine_derive_scan.sh`](../../tools/fixtures/r/reds_spine_derive_scan.sh)
