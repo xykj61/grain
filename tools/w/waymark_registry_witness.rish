@@ -28,14 +28,26 @@ assert (verify.out contains "DERIVE_OK") else "a corpus row did not re-derive fr
 assert (verify.out contains "REGISTRY_GREEN") else "registry verification did not reach GREEN"
 say "${verify.out}"
 
-# COMPLETENESS -- every mark the rule table seats must have a row here.
+# COMPLETENESS -- the rule table and this registry hold the same seated set, read BOTH ways.
 # The seal proves nothing was EDITED and the re-derive proves every row present is honest, and
 # neither can see a mark that is simply ABSENT: a missing row is well-formed. AHOY stood in the
 # rule table and in 24 living files with no row in this registry, and this witness was GREEN the
 # whole time (REDS %298's class -- the guard reads structure, and the absence is well-formed).
+# From 20260907 the scan reads the reverse direction too: a `status living` row absent from the
+# readable face sends a reader to a shorter roster than the authority holds, which is how a name
+# already drawn gets drawn again. Abandoned draws and hand-seated NAMES are excluded from that
+# reading on purpose -- the registry records them precisely because the table must not seat them.
 let whole = run ["sh" "tools/fixtures/w/waymark_table_registry_completeness.sh"]
 say whole.out
-assert whole.ok else "a waymark seated in the rule table has no row in the registry the rule calls the authority -- derive it and re-seal"
-assert (whole.out contains "verdict=ok") else "the completeness read must balance before it is believed"
+assert whole.ok else "the rule table and the registry disagree about the seated set -- read the verdict line"
+assert (whole.out contains "verdict=ok") else "the completeness read must balance both ways before it is believed"
 
-say "GREEN: waymark registry sealed, every corpus mark re-derived on metal, and every mark the rule table seats present here -- the canonical naming truth stands on its own."
+# THE CONTROL -- a refusal proven only in the passing direction cannot be told from a bypass.
+# Seventeen behaviors on throwaway pens: both directions planted and then lifted, and the two
+# exclusions asserted as hard as the refusals.
+let ctl = run ["sh" "tools/fixtures/w/waymark_table_registry_control.sh"]
+say ctl.out
+assert ctl.ok else "the completeness control failed -- the scan cannot be trusted until it refuses on demand"
+assert (ctl.out contains "fail=0") else "a planted case did not read as designed"
+
+say "GREEN: waymark registry sealed, every corpus mark re-derived on metal, and the readable face holding exactly the living set -- the canonical naming truth stands on its own."

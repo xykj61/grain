@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `27ee03dcb2` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `1d1ef7da4e` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE BOX HELD A DAY'S INSTRUMENTS, AND THE LAP THAT BUILT THEM DIED IN ITS HOT PASS.**
 Landed whole from `stash@{0}`, witnesses **56 + 24 behaviors, faults 0**: `scope_rank` --
@@ -174,9 +174,6 @@ the lap.** *My third row of this lap was **withdrawn rather than renumbered**: i
 `sow_allow_reach`, and a peer had booked exactly that at `20260906.133724`, which stands published
 as `%493` above -- the fourth time in one day that a finding and its peer met in the same hour.*
 
-
-
-
 **Yours, one question; law, so INCENSE may own it.** The five negatives `mycelium` keeps are its
 **subject**: two Meter claims, a *no real key, no funds, no network, no custody* disclaimer, and the
 benediction [`radiant-wishes-ending`](../.claude/rules/radiant-wishes-ending.md) asks for. **A Door
@@ -194,16 +191,14 @@ unrun proofs.
 guard said to lock that is `%500` above, and it now reds honestly.
 **`%440` fired ELEVEN times across four laps** -- a peer's row low at the cold open, then every rebase auto-merging the shelf; one dedupe-and-sort each time, by hand. **Yours.**
 
-
-
 **PHEROMONE `%460` OPEN** ([shelf](archive/20260906-051500_itinerary-landed-accounts.md)). **Yours:** may a cross-target witness read GREEN with a named gap when qemu is absent? Its head promises that limit, `%446` reads the other way; `capability` is the mechanism.
 
-**GRASS -- A CARRIED TOTAL, AND A ROW WITHDRAWN TO A PEER.** `20260907.062544` CLOSED,
-[folded](archive/REDS-a-pointer-that-carried-a-total-rows-545.md). Three more strands `20260802`,
-and ten living sentences, two of them front doors, kept the elder total thirty-six days, unread by
-any meter. **Count, never number.** Derived and gated. **My second row withdrew rather than
-renumbering:** an unscoped `pkill -f` of mine, and the rebase brought `%541` home -- a peer's better
-record of the same kill an hour earlier.
+**GRASS -- A COMPLETENESS GUARD READ ONE DIRECTION.**
+[Elder](archive/20260907-080356_itinerary-landed-accounts.md). `20260907.080356` CLOSED.
+`waymark_table_registry_completeness` read table -> registry and never back, so a `status living`
+mark drawn into the registry and never written into the face passed in silence: **the registry
+re-seals on a draw; the face waits on a hand.** Both ways now, zero over **28** vs **30**.
+**YOURS:** hand-seated LADDER vs NAME is unreadable from `status`.
 
 **THE SAME HOLE FOR LINKS.** `%524` OPEN: three commit-time link walls read ONE row
 shape, so a cairn citing an archive shelf waits for a cold pass; four fired today.
@@ -288,7 +283,7 @@ Four equinoxes (SOON [x] - JARL - BUHR - TACT); four JARL seats GREEN; next-chap
 
 ## Waymarks
 
-Seated ladders: **HAWM - TUBE - ZETA - JABS - LULU - STOA - SETU - SUNN - POLE** (elder) - **SOON - JARL - BUHR - TACT** (Compass Chapter). Draw before you number: `.claude/rules/waymark-ladders.md` - `tools/w/waymark_derive.rish`. Claims: `waymarks/`.
+**No roster here** (`20260907`; it stood at 13 of 30). Seated set `construction/waymark-registry.bron`, sealed; face `.claude/rules/waymark-ladders.md`, agreed **both ways** by `waymark_registry_witness`. Live chapter: **SOON - JARL - BUHR - TACT**. Draw: `tools/w/waymark_derive.rish`. Claims `waymarks/`.
 
 ---
 

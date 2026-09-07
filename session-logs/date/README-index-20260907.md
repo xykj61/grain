@@ -14,6 +14,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260907.083428` | [the box works, what it cannot do is commit](20260907/20260907-083428_the-box-works-what-it-cannot-do-is-commit.kyri) | a lost lap landed, row `20260907.083054`. |
 | `20260907.081627` | [a duplicate fills the hole it would have left](20260907/20260907-081627_a-duplicate-fills-the-hole-it-would-have-left.kyri) | %536 BOOKED; two reds closed. |
 | `20260907.081446` | [The guard no author can run](20260907/20260907-081446_the-guard-no-author-can-run.kyri) | two shell lines no bench here could fail on. |
+| `20260907.080925` | [an absence is well-formed on both sides](20260907/20260907-080925_an-absence-is-well-formed-on-both-sides.kyri) | a completeness guard read one direction. |
 | `20260907.075706` | [a fourth surface the law never named](20260907/20260907-075706_a-fourth-surface-the-law-never-named.kyri) | 11,154 spoken characters no meter read. |
 | `20260907.075628` | [the number the broken reading gave](20260907/20260907-075628_the-number-the-broken-reading-gave.kyri) | a guard declined a repair on its own bad count. |
 | `20260907.074407` | [the watch that skipped the bench](20260907/20260907-074407_the-watch-that-skipped-the-bench.kyri) | empty meant unset. |
