@@ -16,7 +16,7 @@ two **residue** clauses are carried forward onto the card as well, since residue
 ---
 
 **BAKERY -- A PROBE PERFORMED THE ACT AND WAS WRONG ABOUT WHICH ACT IT PERFORMED.** `%516` CLOSED;
-`%510` [shelved](archive/REDS-a-guard-that-reads-a-proxy-rows-510.md). The `jail_nesting` arm ran
+`%510` [shelved](REDS-a-guard-that-reads-a-proxy-rows-510.md). The `jail_nesting` arm ran
 `bwrap ... /bin/true`, and this pier ships **one entry in `/bin`, `sh`** -- so bwrap built the
 namespace and then failed to EXEC, and exit 1 read as a refused namespace. `agent_jail_enclosure`
 was skipped here every pass since `013116`, while `%446`'s head promised *a bench where the legs
