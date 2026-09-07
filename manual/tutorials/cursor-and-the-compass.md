@@ -21,7 +21,7 @@ Start with the compressor when context is short: [`../../docs/COMPASS.md`](../..
 
 | Idea | Where |
 |---|---|
-| Grain (ten strands) | [`../../foundations/20260826-024942_the-grain-and-the-crossing.md`](../../foundations/20260826-024942_the-grain-and-the-crossing.md) |
+| Grain (the strands) | [`../../foundations/20260826-024942_the-grain-and-the-crossing.md`](../../foundations/20260826-024942_the-grain-and-the-crossing.md) |
 | Sameness | [`../../foundations/20260703-182612_sameness-is-the-macro.md`](../../foundations/20260703-182612_sameness-is-the-macro.md) |
 | Two Rooms | [`../../context/TWO_ROOMS.md`](../../context/TWO_ROOMS.md) |
 | Single-stranded modules | [`../../foundations/20260823-204456_single-stranded.md`](../../foundations/20260823-204456_single-stranded.md) |

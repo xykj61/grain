@@ -2606,3 +2606,24 @@ guard seat_prompt_figure
 path tools/s/seat_prompt_figure_witness.rish
 tier lap
 seated 20260907.011258
+
+
+# grain_strand_count -- the grain's strand count, derived from the page that holds the strands.
+# `foundations/20260826-024942_the-grain-and-the-crossing.md` seated ten strands `20260702` and
+# three more `20260802` under *Strands Seated at the Fusion*, "beside the elders" in its own words.
+# It has held thirteen since; ten living sentences across six documents still said ten thirty-six
+# days later -- the foundations front door, the day-one compass rose, the compass brief in four
+# places, the aether threshold the rota opens with, the singularity history, and a manual tutorial.
+# Every one of them carried a total rather than deriving one, which `.claude/rules/stamp-and-name.md`
+# rule 3 already forbids: count, never number. Nothing read living prose for a carried total.
+#
+# The scan derives the count off the page's own structure and holds every disagreeing living
+# sentence at zero; the control grows the pen's page by one strand and watches a pointer that was
+# right a moment ago go stale, which is what proves the count is read rather than spelled.
+#
+# `tier lap`: one awk pass over 849 living documents, under two seconds.
+
+guard grain_strand_count
+path tools/g/grain_strand_count_witness.rish
+tier lap
+seated 20260907.062544

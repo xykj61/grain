@@ -11,6 +11,8 @@
 **Lens:** TAME -- safety, performance, joy
 **Status:** Canon -- vocabulary law beside the silo principle and the graduation rule - living accretion
 
+Strand-count erratum `20260907.062544` -- the count is stated here and derived by `tools/g/grain_strand_count_witness.rish`; ten living sentences had carried the elder total since the fusion seated three more.
+
 *Written together by Kaeden and Rio 3. Twin-crossing accretion by Keaton and Riyo (`20260802.141933`). Resin-hygiene accretion by Keaton and Riyo (`20260802.150850`-`20260802.152308`). AHOY1 weave accretion by Keaton and Kyri (`20260811.214423`) -- kin block only; canon body unchanged.*
 
 ---
@@ -55,6 +57,25 @@ Three strands earned their place in the month since the sameness strand, each pr
 **A guard that cannot red guards nothing.** Five custody bars of the enclosure witness passed vacuously for their whole lives -- literal quote characters where tests should have been -- and the day they got teeth, the jail was tested truly for the first time. The strand generalizes the witness law the grain already held: it is not enough that a witness runs green; every guard must be *proven able to red*, by a plant that the toothed form bites and the vacuous form would have waved through (REDS row 59, the vacuum row beside row 9's leak).
 
 **The crossing has twins now.** Two benches -- Claude counsel and Cursor pier -- work one tree from one basis, and the passage between them is itself a disciplined crossing: patches cut against a named tip, beads content-addressed in a manifest, the single shared living file resolved by union-and-accretion, and the landing proven by the receiving bench's own witnesses before anything merges. The Ashvin twins name the shape in the sky -- sidereal Ashvini beside tropical Aries, Murr's lamp -- and the rule beneath the poetry is plain: a crossing between our own two hands earns the same walls as a crossing from the outside world. (Expanded below as **The Twin Crossing**.)
+
+## How Many Strands, and Where the Count Lives
+
+The grain holds **thirteen strands** today: the ten seated `20260702` in the roster above, and the
+three seated `20260802` at the fusion, beside the elders. The number stands on this page because the
+strands do, and it is derived rather than remembered --
+[`tools/g/grain_strand_count_witness.rish`](../tools/g/grain_strand_count_witness.rish) reads the
+roster's bullets and the fusion's bold leads, sums them, and holds every living document spelling a
+different total at zero.
+
+**A pointer names the strands rather than their number.** Ten living sentences across six documents
+carried the elder total for thirty-six days after the fusion seated three more: the foundations front
+door, the day-one compass rose, the compass brief in four places, the aether threshold the rota opens
+with, the singularity history, and a manual tutorial. Every one of them was right the day it was
+typed and wrong by the following month, which is what
+[`stamp-and-name`](../.claude/rules/stamp-and-name.md) rule 3 names -- **count, never number.** A
+total written into a sentence stays at whatever it was when somebody typed it; a total derived from
+the page it describes moves when the page does. Seat a fourteenth strand here and the reading follows
+it, with no pointer to chase.
 
 ## The Test
 

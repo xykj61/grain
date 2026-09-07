@@ -5,6 +5,7 @@
 **Style:** Gauge, Field setting (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
 **Status:** Living -- the aether row's threshold page, read first on its rota lap; seated 20260826 on Keaton's word
+**Strand-count erratum:** `20260907.062544` -- this page counted the grain at ten; the fusion of `20260802` seated three more, and the count now lives on the grain page alone
 **Kin:** [`20260826-014901_the-panchanga.md`](20260826-014901_the-panchanga.md) -- `kyri/receipt.rye` (the two palettes) -- [`20260826-024943_follow-our-compass.md`](20260826-024943_follow-our-compass.md) -- [`20260811-211431_the-lindy-effect-and-the-long-return.md`](20260811-211431_the-lindy-effect-and-the-long-return.md) -- [`20260826-024942_the-grain-and-the-crossing.md`](20260826-024942_the-grain-and-the-crossing.md)
 
 Aether is the Jupiter row, and its question is the first question: why does the work
@@ -85,7 +86,7 @@ asserted one fades into the silence the lap is trained to notice.
 ## Dual: The Grain and the Crossing
 
 `foundations/20260826-024942_the-grain-and-the-crossing.md` (canon since 20260702, last
-updated 20260802) defines the grain -- ten named strands, from the five primitives and
+updated 20260802) defines the grain -- its named strands, from the five primitives and
 the TAME order through bounded everything, seam honesty, and sameness as compression --
 and the crossing: the two-room passage an outside idea makes from the named world of
 external-research, through the doorway of separation, into the clean room where it is
