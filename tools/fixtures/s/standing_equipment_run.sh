@@ -102,6 +102,10 @@ set -eu
 # own directory rather than by a path from the root, so a pen-driven run finds it wherever it stands.
 _run_here=$(CDPATH= cd "$(dirname "$0")" && pwd)
 . "$_run_here/shell_portable.sh"
+# The scope-map matcher, sourced for the same reason and from the same place. It used to stand
+# inline below; tools/fixtures/s/standing_equipment_scope_rank.sh now prices what each map row
+# saves, and a price computed by a second matcher is a price for a skip this runner never takes.
+. "$_run_here/scope_match.sh"
 
 roster="${STANDING_ROSTER:-construction/standing-equipment.kyri}"
 card="${STANDING_CARD:-construction/standing-equipment-runs.kyri}"
@@ -694,19 +698,11 @@ if [ "$scoped" = yes ]; then
       # Absence runs, exactly as the capability tier holds: a guard the map does not know is
       # never skipped, so a newborn guard is safe before anyone maps it.
       keep=yes
-    else
-      # Watch words are shell patterns; a word ending in / watches its whole room. The case
-      # matcher gives glob semantics natively, and changed sets are small on the passes this
-      # mode exists for.
-      while IFS= read -r cf; do
-        [ -n "$cf" ] || continue
-        for w in $maprow; do
-          case "$w" in */) w="$w*" ;; esac
-          # shellcheck disable=SC2254
-          case "$cf" in $w) keep=yes; break ;; esac
-        done
-        [ "$keep" = yes ] && break
-      done < "$pen/changed"
+    elif scope_match_any "$maprow" "$pen/changed"; then
+      # Watch words are shell patterns; a word ending in / watches its whole room, and `case` gives
+      # those glob semantics natively. The two rules are spelled once in scope_match.sh, which the
+      # ranking scan reads too, so a skip taken here and a saving priced there are one rule.
+      keep=yes
     fi
     if [ "$keep" = yes ]; then
       printf '%s %s %s %s\n' "$name" "$path" "$tier_word" "$gate_word" >> "$pen/todo.scoped"

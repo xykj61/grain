@@ -2627,3 +2627,18 @@ guard grain_strand_count
 path tools/g/grain_strand_count_witness.rish
 tier lap
 seated 20260907.062544
+# scope_rank, seated 20260907.045528. Nothing but the runner read
+# tools/fixtures/s/standing_equipment_scope_map.sh until this rung, so three faults in that file
+# had no reader at all, and each fails in the safe-LOOKING direction: an orphan row (a typo buys a
+# full run and reads like coverage), a second row under one name (the runner's lookup stops at the
+# first), and a row naming LESS than its guard gates (the one direction that SKIPS real work -- the
+# map's header records thirteen repaired by a hand on 20260906, and this rung found a fourteenth on
+# its first run). All three at zero, each planted and lifted in a real git pen. Beside them it
+# prices what each row saves -- cost from the run card, touch rate from git log -- which is the
+# ranking external-research/20260907-020817 named and left unbuilt. `tier lap`: 11s at the
+# witness's own `--window 40`, and the gates read no history at all.
+
+guard scope_rank
+path tools/s/standing_equipment_scope_rank_witness.rish
+tier lap
+seated 20260907.045528

@@ -1,0 +1,157 @@
+# tools/s/standing_equipment_scope_rank_witness.rish -- what each scope-map row saves, and which
+# row to write next.
+#
+# WHY THIS RUNG. The roster pass is the largest recurring workload on this pier -- 160 guards in
+# 1,074 seconds, measured 20260907 across eight ships, four fifths of which never skips
+# (external-research/20260907-020817_what-the-fleet-spends-on-knowing-it-is-green.md). Every second
+# a `--scoped` pass saves comes from one row of tools/fixtures/s/standing_equipment_scope_map.sh,
+# and until this rung nobody could say which rows earned their keep or which unwritten row would
+# earn the most. That paper named the arithmetic -- a row is worth its guard's cost multiplied by
+# one minus its touch rate -- and left it unbuilt. Both factors were already on disk.
+#
+# WHAT IS GATED, and why exactly these three. Nothing but the runner read the scope map until now,
+# so faults in that file had no reader at all, and each fails SILENTLY IN THE SAFE-LOOKING
+# DIRECTION. A row naming a guard the roster does not seat does nothing: the runner looks the guard
+# up, finds no row, and runs it -- so a typo reads exactly like coverage while buying a full run
+# every pass. A second row under one name is the same fault wearing the runner's first-match lookup
+# (`{ print; exit }`), where the second row is dead text. The third is the dangerous one: a row
+# naming LESS than its guard gates SKIPS REAL WORK, and the map's own header records thirteen rows
+# repaired by a hand on 20260906 for exactly that. Every witness asserts on its own
+# `<name>_control.sh`, so a row that cannot see that file is under-named by the map's own rule.
+# All three are held at ZERO. A guard with no control at that name is counted apart and gated on
+# nothing, since a naming convention is not a law.
+#
+# WHAT IS REPORTED RATHER THAN GATED: every cost, every touch rate, and every saving. None of them
+# is a defect. A guard that is slow is a guard doing work, and gating a cost would red the tree for
+# having a thorough check.
+#
+# THE BASIS, NAMED HONESTLY. A touch rate here is per COMMIT, where a real scoped pass diffs a
+# receipt head several commits back plus every uncommitted path. So the rate is a FLOOR on how
+# often a guard is really reached and the saving a CEILING on what its row really saves. That is
+# the right basis for ranking rows against each other, which is what this is for, and the wrong
+# basis for promising a wall-clock number. Merges are read past, since a merge's own diff is empty
+# and counting one would deflate every rate by the same wrong amount.
+#
+# WHAT IS PROVEN, on metal, by tools/fixtures/s/standing_equipment_scope_rank_control.sh -- fifty
+# behaviors, in a git repository the control builds and throws away.
+#   The MATCHER first, because it is the piece two programs share: this scan and
+#     `standing_equipment_run.sh --scoped`, which sources the same tools/fixtures/s/scope_match.sh.
+#     A room word reaches its room and stops at the room's own name; an exact path is not a prefix;
+#     a glob reaches, and its `*` crosses a slash, which is what `case` gives and therefore what
+#     the map has always meant. Two spellings of that question would let this scan price a skip the
+#     runner never takes.
+#   All three gates planted and then LIFTED, so a refusal cannot be mistaken for a guard stuck shut.
+#   A cost nobody measured reads UNKNOWN rather than zero, stays out of every sum, and stays out of
+#     the ranking. On this pier that is 56 guards -- the whole cadence tier, which has never
+#     recorded a run here -- so a zero printed there would read as "costs nothing" for the most
+#     expensive guards in the tree.
+#   THE LOAD-BEARING LEG is a NONZERO rate on planted history, shown beside a copy with the reach
+#     pass stripped out. The first draft of the touch pass used one awk name as both an array and a
+#     scalar; awk refused the row it reached AFTER every summary line had printed, so each rate
+#     read 0.000 against a table that looked perfectly healthy and each row appeared to save its
+#     whole cost. A meter that is quietly always zero passes every welcome leg ever written for it.
+#
+# WHAT IS NOT PROVEN. Whether a map row is the RIGHT row for its guard. The map's own header says
+# that judgment lives in a reader's head -- a row follows the guard's GATED readings, so an
+# advisory ratchet leaves the watch-set where it is -- and nothing here reads a witness to check it.
+# This rung proves the map agrees with the roster and prices what the map already does.
+#
+# Style: context/GAUGE_STYLE.md - Design: active-designing/20260825-173153_reprove-only-what-moved.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/s/standing_equipment_scope_rank_witness.rish
+
+say "scope-rank: Language EN -- a map row is worth its guard's cost times the passes it skips."
+say "scope-rank: Style Gauge, Meter -- every number carries its basis, and the basis is per commit."
+say "scope-rank: Lens TAME -- bound the window at the edge, and say where each number came from."
+
+# THE WINDOW HERE IS SMALL ON PURPOSE. All three gates are window-independent -- they compare the
+# map against the roster and against each guard's own control, and read no history at all. Only the
+# RANKING costs, and its cost is unique-paths times mapped-rows: 40 commits reads in about ten
+# seconds where 120 takes thirty, for a ranking that orders the same rows. A hand wanting a full
+# day's basis runs the scan directly with `--window 120 --list`.
+let scan = run ["sh" "tools/fixtures/s/standing_equipment_scope_rank.sh" "--window" "40"]
+assert scan.ok else "scope-rank: the scope map must agree with the roster it names"
+say scan.out
+assert scan.out contains "orphan_map_rows=0" else "scope-rank: a map row naming an unseated guard is dead text that reads like coverage"
+assert scan.out contains "duplicate_map_rows=0" else "scope-rank: the runner's lookup stops at the first row, so a second under one name is dead text"
+assert scan.out contains "rows_missing_control=0" else "scope-rank: a row blind to its own control names less than its guard gates, which skips real work"
+assert scan.out contains "verdict=ok" else "scope-rank: the scan must balance before it is believed"
+say "field GREEN -- every map row names a guard the roster seats, exactly once"
+
+let control = run ["sh" "tools/fixtures/s/standing_equipment_scope_rank_control.sh"]
+assert control.ok else "scope-rank: the control must complete -- read its own lines"
+say control.out
+
+# The matcher, which two programs share.
+assert control.out contains "OK   room_word_reaches_its_room" else "scope-rank: a word ending in / must reach its whole room"
+assert control.out contains "OK   room_word_stops_at_the_room" else "scope-rank: caravan/ must not reach caravanserai/"
+assert control.out contains "OK   room_word_is_not_the_room_itself" else "scope-rank: a room word reaches what is inside the room"
+assert control.out contains "OK   exact_path_reaches_itself" else "scope-rank: a bare path must reach exactly itself"
+assert control.out contains "OK   exact_path_is_not_a_prefix" else "scope-rank: a bare path must not reach a longer name beginning with it"
+assert control.out contains "OK   glob_word_reaches" else "scope-rank: a shell glob must reach what the shell says it reaches"
+assert control.out contains "OK   glob_star_crosses_a_slash" else "scope-rank: case gives * across a slash, which is what the map has always meant"
+assert control.out contains "OK   row_takes_the_second_word" else "scope-rank: a row reaches when ANY of its words does"
+assert control.out contains "OK   row_reaches_nothing_when_empty" else "scope-rank: a row with no words has no claim on any change"
+assert control.out contains "OK   row_refuses_an_unreached_path" else "scope-rank: a row must refuse a path none of its words reaches"
+assert control.out contains "OK   any_finds_a_hit_in_a_list" else "scope-rank: a row must reach a list holding one path it watches"
+assert control.out contains "OK   any_refuses_a_list_it_cannot_reach" else "scope-rank: a row must refuse a list holding nothing it watches"
+assert control.out contains "OK   any_refuses_an_empty_list" else "scope-rank: an empty changed set reaches nothing"
+assert control.out contains "OK   any_refuses_an_absent_list" else "scope-rank: an absent list must refuse rather than read as a hit"
+
+# The arithmetic, on a repository the control builds.
+assert control.out contains "OK   commits_read" else "scope-rank: the window must read the commits it says it read"
+assert control.out contains "OK   static_counted" else "scope-rank: a mapped guard must be counted as mapped"
+assert control.out contains "OK   unmapped_counted" else "scope-rank: a guard with no row must be counted as unmapped"
+assert control.out contains "OK   touch_rate_nonzero" else "scope-rank: a guard whose room moved must read a NONZERO rate -- the reading that was silently zero"
+assert control.out contains "OK   touch_rate_of_a_quieter_guard" else "scope-rank: two guards touched at different rates must read differently"
+assert control.out contains "OK   touch_rate_zero_when_unreached" else "scope-rank: a guard nothing reached must read zero"
+assert control.out contains "OK   saving_is_cost_times_one_minus_rate" else "scope-rank: the saving must be the product the paper named"
+assert control.out contains "OK   saving_of_the_quieter_guard" else "scope-rank: the product must hold at a second rate"
+assert control.out contains "OK   quiet_row_saves_its_whole_cost" else "scope-rank: a row nothing reaches saves its guard's whole cost"
+assert control.out contains "OK   ranked_by_saving_descending" else "scope-rank: the ranking must lead with the row that saves most"
+assert control.out contains "OK   static_saving_summed" else "scope-rank: the total must be the sum of the rows"
+assert control.out contains "OK   unmapped_ranked_by_cost" else "scope-rank: an unmapped guard runs every pass, so its cost is the prize for mapping it"
+assert control.out contains "OK   unmapped_cost_summed" else "scope-rank: the unmapped total must be the sum of unmapped costs"
+assert control.out contains "OK   mapped_guard_absent_from_unmapped" else "scope-rank: a guard must stand in one ranking, never both"
+
+# A cost nobody measured.
+assert control.out contains "OK   cost_unknown_counted" else "scope-rank: a guard with no run-card row must be counted unknown"
+assert control.out contains "OK   cost_known_counted" else "scope-rank: the known count must be the denominator a reader needs"
+assert control.out contains "OK   unknown_cost_left_out_of_the_sum" else "scope-rank: an unknown cost must not be summed as zero"
+assert control.out contains "OK   unknown_cost_absent_from_the_ranking" else "scope-rank: a guard of unknown cost cannot be ranked by cost"
+
+# Both gates, each planted and then lifted.
+assert control.out contains "OK   orphan_row_bitten" else "scope-rank: a map row naming no seated guard must red"
+assert control.out contains "OK   orphan_row_counted" else "scope-rank: the orphan count must name how many rows are dead"
+assert control.out contains "OK   orphan_row_named" else "scope-rank: an orphan must be named, so it can be fixed rather than hunted"
+assert control.out contains "OK   orphan_row_lifted" else "scope-rank: lifting the orphan must return the verdict to ok, so no bypass exists"
+assert control.out contains "OK   duplicate_row_bitten" else "scope-rank: a second row under one name must red"
+assert control.out contains "OK   duplicate_row_counted" else "scope-rank: the duplicate count must name how many names are doubled"
+assert control.out contains "OK   duplicate_row_named" else "scope-rank: a duplicate must be named"
+assert control.out contains "OK   duplicate_row_lifted" else "scope-rank: lifting the duplicate must return the verdict to ok"
+assert control.out contains "OK   unreached_control_bitten" else "scope-rank: a row that cannot see its own control must red"
+assert control.out contains "OK   unreached_control_counted" else "scope-rank: the count must name how many rows are blind to their controls"
+assert control.out contains "OK   unreached_control_named" else "scope-rank: the blind row must be named, so its watch word can be written"
+assert control.out contains "OK   reached_control_lifted" else "scope-rank: adding the watch word must return the verdict to ok, so no bypass exists"
+assert control.out contains "OK   reached_control_counted_zero" else "scope-rank: the count must fall to zero when the row is repaired"
+assert control.out contains "OK   guards_without_a_control_counted_apart" else "scope-rank: a naming convention is not a law, so a guard with no such file is counted apart"
+
+# The bounds and the print.
+assert control.out contains "OK   top_bounds_the_print" else "scope-rank: --top must bound the print"
+assert control.out contains "OK   top_names_the_remainder" else "scope-rank: a truncated table with no remainder line reads as a whole one"
+assert control.out contains "OK   list_prints_them_all" else "scope-rank: --list must print every row"
+assert control.out contains "OK   window_zero_refused" else "scope-rank: a window of zero commits measures nothing"
+assert control.out contains "OK   window_past_the_bound_refused" else "scope-rank: the reach pass is unique paths times rows, so the window is bounded at the edge"
+assert control.out contains "OK   window_not_a_number_refused" else "scope-rank: a window that is not a number must refuse rather than read as one"
+assert control.out contains "OK   unknown_argument_refused" else "scope-rank: an argument this scan does not know must refuse rather than be read past"
+
+# The load-bearing leg.
+assert control.out contains "OK   blind_copy_reads_every_rate_zero" else "scope-rank: a copy with the reach pass stripped must read every rate as zero"
+assert control.out contains "OK   blind_copy_saves_the_whole_cost" else "scope-rank: a quietly-zero meter must be shown, since it passes every welcome leg"
+
+assert control.out contains "faults=0" else "scope-rank: every behavior must be satisfied"
+assert control.out contains "control_verdict=ok" else "scope-rank: the control must balance before it is believed"
+say "the matcher and the arithmetic proven in a real repository, all three gates shown from both sides"
+
+say "GREEN: scope-rank -- the map agrees with the roster, and every row now carries a price."

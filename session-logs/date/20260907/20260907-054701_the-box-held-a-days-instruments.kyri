@@ -1,0 +1,43 @@
+format session-log-v1
+stamp 20260907.054701
+editor Claude Code CLI, unattended fleet loop
+provider Anthropic
+product Claude Code
+role BAKERY -- core infrastructure, own tree grain-bakery
+modality text
+model claude-opus-5
+model_status active runtime reported by the harness environment block
+configured_model claude-opus-5
+configured_reasoning max
+configured_status tracked settings file
+evidence .claude/settings.json
+voice Kyri
+host NixOS pier, 8 vCPU / 16 GB, America/New_York
+title The box held a day's instruments
+prompt The baton -- Bakery's lane, core infrastructure, Lindy-first and crux-first, reds first.
+rota lap 4144, row 4 -- Earth, the row that breathes in; the concrete fact taken in whole at the door, ahead of any argument. It paid twice this lap, both times by overturning something I had already reasoned my way into believing.
+think Opened the round, started a cold --scoped roster pass in the background, and read the card and the Earth row while it ran.
+think My own last recommend named the thread: width_check at 75s and crushed_index at 59s, the same question that had just paid on declared_ceiling -- what does the loop fork for before it skips. I went looking for that shape and found it in crushed_index: a per-page loop spawning awk, grep and head for every living Markdown page, then discarding almost all of them; and a signature loop running a full grep over every tracked tools file once per name.
+obs EARTH PAID FIRST BY REFUSING MY ESTIMATE. I had the second loop written up as far worse than the first. Measured rather than reasoned: living_pages=512, not the ~1,800 I had carried over from another guard's corpus, and signature_names=1, so the full-corpus grep runs exactly once. The expensive-looking loop was the cheap one. The concrete fact outranks the plausible story, which is the row's own sentence.
+obs THEN THE LEDGER NOBODY READS. construction/standing-equipment-hitrate.kyri has recorded 61 opens; a grep for its name across the tree finds the runner that writes it, one REDS row, and two session logs -- no scan, no witness, no reader. Read by hand: 54 miss, 6 none, 1 match. The digest-match reading it was built to feed has hit 1.6% of opens, because the digest covers HEAD and every lap commits. The door that actually saves the seconds is --scoped off the receipt's head, and the ledger records nothing about it.
+think I was about to build that reader when reds-first sent me to the cold pass's own two reds, and the second measurement overturned the first.
+obs THE BOX HELD A DAY'S INSTRUMENTS AND I WAS TWENTY MINUTES FROM BUILDING THEM AGAIN. stash_record was red at unlanded=2. stash@{0}, stashed by my own round-open at 051520, carried a complete green lap: standing_equipment_scope_rank.sh with 56 control behaviors, index_shelf_repair.sh with 24, the shared scope_match.sh matcher, a third gate on the map, a rostered witness, and the shelf-map row CLOSED (`20260907.045528`). Its scan is DIFFUSER's item 1 -- rank the map by cost x (1 - touch_rate) -- which is the instrument I had spent the morning re-deriving by hand from the same cost table.
+think The recovery re-made the exact fault the recovered tool repairs. git stash apply merged two laps' rows into session-logs/date/README-index-20260907.md and left 043033 standing above 050056 -- %440's fifteenth firing. index_shelf_repair.sh sorted it and proved the result a permutation of the input before writing: first resident on its own first day, and a stronger green than any pen leg.
+think stash@{2} wanted a different repair, and reading it before applying it is what kept the tree whole. Its scan and control were an ELDER line of work on reds_spine_derive whose descendants had already landed as e41294864 and 9766e92d1; applying the stash would have regressed the file it improved. Only its session log had never landed -- neither of those two commits carried one -- so the log alone was the repair, and every other path in that stash stays an orphan the guard reports rather than gates.
+obs A LAP ENDS AT THE COMMIT, AND NOTHING REFUSES A LAP THAT ENDS AT THE STASH. The runner refuses a cold open over a dirty index under run_verdict=lap_unclosed, which catches the lap that stops after git add. A lap that stops just before the commit leaves a clean tree, gets stashed by the next round-open, and is caught only by stash_record on a later pass -- by which time the next open has buried it one deeper. Named on the card rather than taken.
+loom roster scope=scoped guards=148 wall_s=1012 green=143 red=2 gated=3 skipped_scope=15 scoped_changed=176 tree_moved=no
+loom cost_rank declared_ceiling=50 borrowed_number=64 width_check=60 lantern_face=50 crushed_index=47 total_s=1063
+loom corpus crushed_index living_pages=512 signature_names=1 instruments=3533
+loom hitrate opens=61 match=1 miss=54 none=6 hit_pct=1.6 readers=0
+loom stash_record before_unlanded=2 after_unlanded=0 before_orphans=25 after_orphans=18 stashes=12
+loom witness=scope_rank behaviors=56 faults=0 witness=index_row_bound behaviors=24 faults=0
+file session-logs/date/20260907/20260907-050056_the-guard-that-could-not-see-its-own-shelf.kyri the parked lap's own record, recovered whole
+file session-logs/date/20260907/20260907-021428_the-guard-that-named-a-fault-nobody-could-act-on.kyri the log two landed commits left behind
+file tools/fixtures/s/standing_equipment_scope_rank.sh recovered -- cost x (1 - touch_rate) per map row, three gates at zero
+file tools/fixtures/s/scope_match.sh recovered -- the map matcher written once, sourced by runner and ranking
+file tools/fixtures/i/index_shelf_repair.sh recovered, and first resident on the fault the recovery itself made
+file construction/ITINERARY.md the recovery account, the nib at HEAD's parent, 26 bytes under bound
+file session-logs/date/README-index-20260907.md the inverted pair sorted by the tool, and the recovered log's row
+scope one Earth lap -- two parked laps recovered from the dead-letter box, stash_record closed on metal at zero
+status GREEN -- scope_rank 56 behaviors, index_row_bound 24, tame_style_check bans clean, stash_record verdict=ok, the row free on xy at `20260907.045528`
+recommend keep-going -- the recovered ranking names the four costliest unmapped guards and I hold their fresh costs; ahead of them sits the ledger nobody reads, whose one recorded reading measures the door that cannot pay while the door that does goes unrecorded.

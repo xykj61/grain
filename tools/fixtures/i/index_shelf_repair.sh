@@ -1,0 +1,168 @@
+#!/bin/sh
+# tools/fixtures/i/index_shelf_repair.sh -- put a day shelf's rows back into the order it promises.
+#
+# WHY THIS EXISTS. REDS %440 has fired twelve times across five laps and every firing was repaired
+# the same way: a hand read `rows_misordered=1`, found the two rows, and swapped them. The fault is
+# not a hand's carelessness -- it is what a shared prepend does under a rebase. Eight ships each
+# write a row at line 14 of one file, git merges two of them cleanly because they touch different
+# lines after the merge, and the page that promises NEWEST FIRST comes out with the older row on
+# top. Nobody wrote a wrong row; the order is an emergent property of the merge.
+#
+# `tools/fixtures/i/index_row_bound_scan.sh` already SEES this and names it exactly. What it gave a
+# reader was a number and no way to act (the `%528` lesson, one room over). This is the way to act.
+#
+# WHAT IT DOES, and nothing else. It sorts the contiguous run of table rows below the shelf's
+# delimiter into descending stamp order. That is a PERMUTATION: the same lines, the same bytes, a
+# different order -- and the tool proves that about its own output before it writes, by comparing
+# the sorted line multiset of the before and after. A repair that could add, drop, or alter a line
+# would be a repair nobody should run unattended on testimony.
+#
+# WHAT IT REFUSES, each because the safe answer is a hand rather than a guess.
+#   Duplicate stamps. Two rows carrying one stamp is one log wearing two rows, and choosing which
+#     to lift is a judgment about which log the row describes. Sorting past it would quietly seat
+#     one of the two on top and leave both. Reported, refused, file untouched.
+#   A row in the block that does not open with a stamp cell. The sort is lexical on the whole line
+#     and that is exact only while the stamp is fixed-width and first; a row shaped otherwise would
+#     sort by its title. Refused rather than sorted wrong.
+#   A page with no delimiter row. Nothing below it is a table, so there is no block to sort.
+#   A shelf the guard is not reading. The open shelf is taken from the scan's own `open_shelf=`
+#     line rather than derived a second time here, so this tool can never repair a page the guard
+#     is not measuring. A CLOSED shelf is immutable once its day closes and is never a target.
+#
+# WHY IT WRITES THROUGH THE ORIGINAL INODE. `cat "$tmp" > "$f"` keeps the mode the repository
+# tracks, where `mv` would carry the temporary's (.claude/rules/exec-bit.md, where a rewrite pass
+# dropped 100755 on thirty-nine files in one commit).
+#
+# WHY `sort -r` AND NOT A STAMP PARSER. A row opens `| \`YYYYMMDD.HHMMSS\` |`, fixed width, first
+# cell. Byte-descending order on the whole line IS chronological-descending order for rows of that
+# shape, so the tool needs no second reading of what a stamp is -- and the shape check above is
+# what keeps that true. `LC_ALL=C` because a locale's collation is not byte order, which this tree
+# has already paid for once in a `sort`/`comm` pair that reported ten phantoms.
+#
+# USAGE
+#   sh tools/fixtures/i/index_shelf_repair.sh --check   # say what is wrong, change nothing
+#   sh tools/fixtures/i/index_shelf_repair.sh           # sort the open shelf, in place
+#
+# Run from anywhere -- the root is found by upward walk.
+
+set -eu
+
+_fd_root=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
+_fd_steps=0
+while [ ! -d "$_fd_root/rishi/bin" ] || [ ! -d "$_fd_root/tools/fixtures" ]; do
+  _fd_steps=$((_fd_steps + 1))
+  if [ "$_fd_steps" -gt 8 ] || [ "$_fd_root" = "/" ] || [ -z "$_fd_root" ]; then
+    echo "$0: no tree root within 8 steps (needs rishi/bin and tools/fixtures)" >&2
+    exit 2
+  fi
+  _fd_root=$(dirname "$_fd_root")
+done
+
+check_only=no
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --check) check_only=yes; shift ;;
+    *) echo "refused: unknown argument '$1' -- takes --check" >&2; exit 2 ;;
+  esac
+done
+
+root=${INDEX_ROW_ROOT:-$_fd_root}
+SHELF_ROOM=${INDEX_ROW_SHELF_ROOM:-session-logs/date}
+cd "$root"
+
+# THE SCAN IS THE AUTHORITY on which shelf is open and on what is wrong with it. Asking it rather
+# than deriving the answer again is what keeps the repair aimed at the page the guard reads.
+scan_out=$(INDEX_ROW_ROOT=. INDEX_ROW_SHELF_ROOM="$SHELF_ROOM" \
+  sh "$_fd_root/tools/fixtures/i/index_row_bound_scan.sh" 2>&1 || true)
+open_shelf=$(printf '%s\n' "$scan_out" | sed -n 's/^open_shelf=//p' | tail -1)
+misordered=$(printf '%s\n' "$scan_out" | sed -n 's/^rows_misordered=//p' | tail -1)
+duplicate=$(printf '%s\n' "$scan_out" | sed -n 's/^rows_duplicate=//p' | tail -1)
+: "${misordered:=0}" "${duplicate:=0}"
+
+if [ -z "$open_shelf" ]; then
+  echo "shelf=none"
+  echo "repair=none"
+  echo "verdict=no_open_shelf"
+  exit 0
+fi
+shelf="$SHELF_ROOM/README-index-$open_shelf.md"
+echo "shelf=$shelf"
+[ -f "$shelf" ] || { echo "verdict=shelf_missing" >&2; exit 1; }
+
+if [ "$duplicate" -gt 0 ]; then
+  echo "rows_duplicate=$duplicate"
+  echo "repair=none"
+  echo "refused: $duplicate duplicate stamp(s) on the shelf -- which of two rows to lift is a hand's" >&2
+  echo "verdict=duplicate_stamps"
+  exit 1
+fi
+
+# The delimiter row is where the table starts, and the block is the contiguous run of `|` lines
+# after it. Everything above stays exactly where it stands; anything below the run stays too.
+delim=$(awk '/^\|[- |:]*\|[ \t]*$/ { print NR; exit }' "$shelf")
+if [ -z "$delim" ]; then
+  echo "repair=none"
+  echo "refused: no delimiter row -- nothing below it is a table" >&2
+  echo "verdict=no_delimiter"
+  exit 1
+fi
+last=$(awk -v d="$delim" 'NR > d { if (substr($0,1,1) == "|") last = NR; else exit } END { print last + 0 }' "$shelf")
+if [ "$last" -le "$delim" ]; then
+  echo "rows=0"
+  echo "repair=none"
+  echo "verdict=ok"
+  exit 0
+fi
+rows=$((last - delim))
+echo "rows=$rows"
+
+pen="$(mktemp -d)"
+trap 'rm -rf "$pen"' EXIT INT TERM
+sed -n "$((delim + 1)),${last}p" "$shelf" > "$pen/block"
+
+# EVERY ROW IN THE BLOCK OPENS WITH A STAMP CELL, or the lexical sort is sorting titles.
+badshape=$(grep -cv '^| `[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]\.[0-9][0-9][0-9][0-9][0-9][0-9]` |' "$pen/block" || true)
+if [ "$badshape" -gt 0 ]; then
+  echo "rows_unstamped=$badshape"
+  echo "repair=none"
+  echo "refused: $badshape row(s) do not open with a stamp cell -- a lexical sort would order them by title" >&2
+  echo "verdict=unstamped_row"
+  exit 1
+fi
+
+echo "rows_misordered=$misordered"
+if [ "$misordered" -eq 0 ]; then
+  echo "repair=none"
+  echo "verdict=ok"
+  exit 0
+fi
+if [ "$check_only" = yes ]; then
+  echo "repair=would_sort"
+  echo "verdict=misordered"
+  exit 1
+fi
+
+LC_ALL=C sort -r "$pen/block" > "$pen/block.sorted"
+
+# THE POSTCONDITION, checked before anything is written: the repair is a permutation. Same lines,
+# same count, different order. A tool that may rewrite testimony proves that about its own output
+# rather than being trusted to.
+LC_ALL=C sort "$pen/block" > "$pen/before.keyed"
+LC_ALL=C sort "$pen/block.sorted" > "$pen/after.keyed"
+if ! cmp -s "$pen/before.keyed" "$pen/after.keyed"; then
+  echo "repair=none"
+  echo "refused: the sort changed the line multiset -- writing nothing" >&2
+  echo "verdict=not_a_permutation"
+  exit 1
+fi
+
+{
+  sed -n "1,${delim}p" "$shelf"
+  cat "$pen/block.sorted"
+  awk -v n="$last" 'NR > n' "$shelf"
+} > "$pen/shelf.new"
+cat "$pen/shelf.new" > "$shelf"
+
+echo "repair=sorted"
+echo "verdict=repaired"
+exit 0

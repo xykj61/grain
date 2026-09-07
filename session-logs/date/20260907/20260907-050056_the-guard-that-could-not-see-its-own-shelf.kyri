@@ -1,0 +1,56 @@
+format session-log-v1
+stamp 20260907.050056
+editor Claude Code, terminal
+provider Anthropic
+product Claude Code
+role BAKERY -- core infrastructure seat, own tree grain-bakery
+modality text
+model claude-opus-5
+model_status configured default proven by .claude/settings.json; runtime identity unverified
+configured_model claude-opus-5
+configured_reasoning max
+configured_status tracked settings file
+evidence .claude/settings.json
+voice Kyri
+host Framework laptop, NixOS pier, America/New_York
+title The guard that could not see its own shelf
+prompt Baton lap -- core infrastructure, Lindy-first crux-first, reds first.
+rota lap 4143, row 3 -- Water, the row that tastes; the Fixed seat (the happy zone and the thin edge) named the shape this lap needed: a seam carries ONE contract, and two small families of checks mirror it from each side, which turns a multiplication of paths into an addition. The scope map is exactly such a seam, and its contract -- does this watch-set reach this path -- was about to be written twice.
+think Opened with the roster cold pass in the background and read the card whole while it ran.
+think The cold pass reddened at index_row_bound: rows_misordered=1 on today's shelf, 20260907.021117 seated above 20260907.023053. Standfast -- the red books the lap. Swapped the two rows by hand and the scan returned verdict=ok.
+think That is the TWELFTH firing of %440 across five laps, every one repaired by the same hand-swap. A lantern that fires twice becomes a loom, so the lap became: build the loom, then find why the fault reaches a cold open at all.
+think Wrote tools/fixtures/i/index_shelf_repair.sh. It asks tools/fixtures/i/index_row_bound_scan.sh which shelf is open and what is wrong with it -- rather than deriving the open shelf a second time -- so it can never repair a page the guard is not reading. It sorts the contiguous run of table rows below the delimiter with LC_ALL=C sort -r, which is chronological-descending for rows whose first cell is a fixed-width stamp, and refuses a row shaped otherwise.
+think The postcondition is what makes an unattended rewrite of testimony safe: the sorted line multiset must equal the original's, compared before a byte is written. Refuses on duplicate stamps (which of two rows to lift is a hand's judgment), on an unstamped row, and on a page with no delimiter -- each leaving the file byte-identical.
+think The scan's refusal now prints advice=sh tools/fixtures/i/index_shelf_repair.sh, so a number comes with a way to act.
+think Then the root. DIFFUSER's paper named a buildable item for this seat -- rank the scope map by cost x (1 - touch_rate), both factors on disk. Building it meant reading tools/fixtures/s/standing_equipment_scope_map.sh, and reading it meant answering the same question the runner answers: does this watch-set reach this path.
+think Rather than spell that twice, extracted it once into tools/fixtures/s/scope_match.sh -- scope_match_word, scope_match_row, scope_match_any -- and had tools/fixtures/s/standing_equipment_run.sh source it beside shell_portable.sh, replacing its inline case loop. The runner's own control proves every scoped leg still green.
+think With the matcher in hand, asked it whether index_row_bound's map row reaches session-logs/date/README-index-20260907.md. It answered no. The row named four paths and none was under session-logs/date/, so a --scoped pass SKIPPED the only guard that reads the open shelf -- which is why %440 keeps being found at a later ship's cold open rather than by the lap that wrote the row.
+think That is the map header's own named hazard, a static row naming less than its guard gates -- thirteen repaired by a hand on 20260906, and this is the fourteenth. Booked as REDS 20260907.045528, CLOSED, and made permanent as a third gate: rows_missing_control, which holds every static row to reaching its guard's own <name>_control.sh. Measured before adding: 26 rows with such a control, all reaching, 30 guards with no file at that name (counted apart, gated on nothing, since a naming convention is not a law).
+obs The load-bearing leg of the ranking control is a NONZERO touch rate. The first draft used one awk name as both an array and a scalar; awk refused the row it reached AFTER every summary line had printed, so every rate read 0.000 and every row appeared to save its whole cost, against a table that looked perfectly healthy. A quietly-zero meter passes every welcome leg ever written for it, so the control also runs a copy with the reach pass stripped and asserts it reads exactly that.
+obs A cost nobody measured reads unknown rather than zero, stays out of every sum and out of the ranking. On this pier that is 56 guards -- the entire cadence tier has never recorded a run here -- so a printed zero would have read as "costs nothing" for the most expensive guards in the tree.
+obs Two methods agree independently: this scan reads 80.1% of known cost unmapped where DIFFUSER's paper read 80.2% by a different route.
+obs My own fault, named: I edited standing_equipment_run.sh while its cold pass was reading it, and the running shell died with a syntax error at line 934 -- REDS %221 exactly, whose own header warns of it. The file is sound; the pass is not. The hot pass over the staged tree is the green that stands.
+obs A second fault of my own, caught by an existing control: adding the source line to the runner broke standing_equipment_control.sh's blind-runner pen, which copies the runner into a pen and had copied only shell_portable.sh beside it. Every reading there answered no for a reason that had nothing to do with the phase. Fixed by copying scope_match.sh too, and the reason is written where the copy happens.
+obs The map has a word for a guard deliberately left unmapped -- the runner honors DISCOVERY -- and no row uses it, so all 163 unmapped guards read absent and a hand cannot tell a census from a gap. Named on the card rather than taken: writing 163 rows is a survey, not a lap.
+loom witness=scope_rank wall_s=11 window_commits=40 guards=219 static=57
+loom scan=standing_equipment_scope_rank window_commits=120 wall_s=31 paths_unique=802 static_saving_s=193 static_cost_s=274 unmapped_cost_s=1106
+loom witness=index_row_bound wall_s=4 behaviors=24 control=index_shelf_repair
+loom control=standing_equipment_scope_rank behaviors=56 faults=0
+file tools/fixtures/s/scope_match.sh the map matcher, written once, sourced by the runner and by the ranking
+file tools/fixtures/s/standing_equipment_scope_rank.sh cost x (1 - touch_rate) per map row, three gates at zero
+file tools/fixtures/s/standing_equipment_scope_rank_control.sh 56 behaviors in a real git pen, every gate planted and lifted
+file tools/s/standing_equipment_scope_rank_witness.rish the rung, tier lap 11s
+file tools/fixtures/i/index_shelf_repair.sh %440's hand-swap as a command, permutation proven before it writes
+file tools/fixtures/i/index_shelf_repair_control.sh 24 behaviors, the postcondition shown from both sides
+file tools/fixtures/i/index_row_bound_scan.sh the refusal now names its repair
+file tools/fixtures/i/index_row_bound_control.sh proves the advice line stands
+file tools/in/index_row_bound_witness.rish drives the repair control beside the scan's
+file tools/fixtures/s/standing_equipment_run.sh sources the shared matcher rather than spelling it inline
+file tools/fixtures/s/standing_equipment_control.sh copies every sibling the runner sources into the blind pen
+file tools/fixtures/s/standing_equipment_scope_map.sh index_row_bound grew session-logs/date/; scope_rank mapped
+file construction/standing-equipment.kyri scope_rank rostered tier lap
+file construction/REDS.md the row, CLOSED, and the headline span re-measured
+file construction/ITINERARY.md the account, the elder folded, 14 bytes under
+file construction/archive/20260907-045528_itinerary-landed-accounts.md the elder account, whole
+file session-logs/date/README-index-20260907.md the misordered pair swapped, then this lap's row
+recommend keep-going -- the ranking names its own next lap: declared_ceiling 93s, borrowed_number 64s, width_check 60s and lantern_face 50s are the four costliest unmapped guards, and mapping any one of them is a bounded read of what that guard gates. Ahead of them sits the question the map cannot answer today -- which unmapped guards are DISCOVERY on purpose -- and that is a survey worth its own lap.

@@ -144,6 +144,10 @@ o=$(run)
 # re-read -- the reading that made the elder rebase repair take an eye rather than a command.
 echo "$o" | grep -q '^misordered: .* -- 20260830.100000 stands above 20260830.100001' \
   && echo "misordered_named=yes" || echo "misordered_named=no"
+# ... AND THE REMEDY IS NAMED BESIDE THE FAULT. Twelve firings were each repaired by the same
+# hand-swap because the refusal gave a number and no command (the `%528` lesson).
+echo "$o" | grep -q '^advice=sh tools/fixtures/i/index_shelf_repair.sh$' \
+  && echo "misordered_advises=yes" || echo "misordered_advises=no"
 # A tie belongs to the DUPLICATE reading, never this one, so one fault is never counted twice.
 shelf 20260830 "$(linkrow 20260830.100000 20260830/a.kyri)" "$(linkrow 20260830.100000 20260830/a.kyri)"
 o=$(run)

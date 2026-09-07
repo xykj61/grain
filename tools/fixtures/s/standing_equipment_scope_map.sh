@@ -60,7 +60,7 @@ glow_tally_pair_bound tools/g/glow_tally_pair_bound_witness.rish tools/g/glow_ru
 glow_vane_pair_mirrors tools/g/glow_vane_pair_mirrors_witness.rish tools/g/glow_run_worker.sh glow/ [build]
 image_module_roster tools/i/image_module_roster_witness.rish tools/fixtures/m/module_roster_scan.sh image/
 index_fold tools/i/index_fold_witness.rish tools/fixtures/i/index_fold_scan.sh tools/rye/session_logs_archive.rye session-logs/ counsel/ active-designing/ expanding-prompts/ waymarks/ active-development/ tools/fixtures/i/index_fold_control.sh
-index_row_bound tools/in/index_row_bound_witness.rish tools/fixtures/i/index_row_bound_scan.sh session-logs/README.md tools/fixtures/i/index_row_bound_control.sh
+index_row_bound tools/in/index_row_bound_witness.rish tools/fixtures/i/index_row_bound_scan.sh tools/fixtures/i/index_row_bound_control.sh tools/fixtures/i/index_shelf_repair.sh tools/fixtures/i/index_shelf_repair_control.sh session-logs/README.md session-logs/date/
 lattice_suite tools/l/lattice_suite_witness.rish lattice/ tools/l/lattice_*_witness.rish [build]
 log_has_a_row tools/l/log_has_a_row_witness.rish tools/fixtures/l/log_has_a_row_scan.sh session-logs/ tools/fixtures/l/log_has_a_row_control.sh
 loop_prompt_parse tools/l/loop_prompt_parse_witness.rish tools/fixtures/l/loop_prompt_parse_scan.sh recursion-prompts/ tools/l/launch-claude-chapter.rish tools/fixtures/l/loop_prompt_parse_control.sh
@@ -73,6 +73,7 @@ pond_enclosure_built tools/p/pond_enclosure_built_witness.rish tools/fixtures/p/
 pond_enclosure_state tools/p/pond_enclosure_state_witness.rish tools/fixtures/p/pond_enclosure_state_scan.sh tools/ag/agent-jail.sh tools/e/enclosure.conf* tools/fixtures/p/pond_enclosure_state_control.sh
 prose_register tools/p/prose_register_witness.rish tools/fixtures/p/prose_register_scan.sh docs-geode/ manual/ docs-geode/edu/yonder/ CONTRIBUTING.md SOURCE.md ORGANIZING.md MAP.md tools/fixtures/p/prose_register_control.sh README.md docs/README.md foundations/README.md caravan/README.md mycelium/README.md image/README.md lotus/README.md crypto/README.md constel/README.md
 radiant_negation tools/r/radiant_negation_witness.rish tools/fixtures/r/radiant_negation_scan.sh foundations/ context/RADIANT_STYLE.md context/TWILIGHT_STYLE.md context/KYRI.md
+scope_rank tools/s/standing_equipment_scope_rank_witness.rish tools/fixtures/s/standing_equipment_scope_rank.sh tools/fixtures/s/standing_equipment_scope_rank_control.sh tools/fixtures/s/scope_match.sh tools/fixtures/s/standing_equipment_scope_map.sh construction/standing-equipment.kyri
 reds_fold tools/r/reds_fold_witness.rish tools/fixtures/r/reds_fold.sh tools/fixtures/r/reds_fold_control.sh tools/fixtures/r/reds_fold_reanchor.sh construction/
 reds_ledger_headline tools/r/reds_ledger_headline_witness.rish construction/REDS.md construction/archive/REDS-* tools/fixtures/r/reds_ledger_headline_control.sh
 reds_ledger_monotone tools/gen/chapter/reds_ledger_monotone_witness.rish tools/fixtures/r/reds_ledger_monotone_scan.sh construction/REDS.md construction/archive/REDS-*

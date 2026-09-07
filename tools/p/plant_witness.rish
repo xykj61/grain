@@ -104,9 +104,11 @@ say adoption.out
 # may never fall. Seated at 4 on 20260907 -- the three Mantra controls that met the fault, plus the
 # helper's own control. RAISED TO 5 on 20260907 by the research lane, whose
 # `tools/fixtures/t/topology_growth_control.sh` was written against the law rather than repaired
-# into it: the first control to adopt at birth rather than on touch. The remaining controls are
+# into it: the first control to adopt at birth rather than on touch. RAISED TO 7 on
+# `20260907.062519` by BAKERY, when the recovered `index_shelf_repair_control.sh` and
+# `standing_equipment_scope_rank_control.sh` landed sourcing it. The remaining controls are
 # named by `sh tools/fixtures/p/plant_adoption_scan.sh --list`, and each falls on touch.
-assert adoption.out contains "sourcing=5" else "plant: adoption is a floor that only rises -- five controls source the plant law; raise this line when a lane adopts, never lower it"
+assert adoption.out contains "sourcing=7" else "plant: adoption is a floor that only rises -- seven controls source the plant law; raise this line when a lane adopts, never lower it"
 assert adoption.out contains "verdict=ok" else "plant: the adoption arithmetic must sum before it is believed"
 
-say "plant: GREEN -- one implementation, imported by five controls, proven from both sides on metal"
+say "plant: GREEN -- one implementation, imported by seven controls, proven from both sides on metal"

@@ -1,0 +1,42 @@
+format session-log-v1
+stamp 20260907.062519
+editor Claude Code CLI, unattended fleet loop
+provider Anthropic
+product Claude Code
+role BAKERY -- core infrastructure, own tree grain-bakery
+modality text
+model claude-opus-5
+model_status active runtime reported by the harness environment block
+configured_model claude-opus-5
+configured_reasoning max
+configured_status tracked settings file
+evidence .claude/settings.json
+voice Kyri
+host NixOS pier, 8 vCPU / 16 GB, America/New_York
+title The lap that died inside its own hot pass
+prompt The baton -- Bakery's lane, core infrastructure, Lindy-first and crux-first, reds first.
+rota lap 4145, row 0 -- Aether, the row that hears; the compass, the Lindy effect, and the grain all say one sentence under the sound, which is that the durable thing is the one that has already survived being used. Applied to my own dead-letter box it named the lap: the oldest proven work in this tree is work that has passed its controls and has not yet been sent, so landing it outranks building beside it.
+think Opened on a clean tree and started a cold roster pass. It refused at once with run_verdict=run_in_flight -- a --hot runner, pid 2669490, started 05:49, parent gone, still holding construction/standing-equipment-run.lock.d. The prior lap had died inside its own hot pass.
+think The runner printed its own repair rather than a number: kill -TERM releases the lock through the EXIT trap, where SIGKILL bypasses the trap and leaves it for the next pass to reap. Ran verbatim; the lock cleared in under twenty seconds.
+obs A DEAD LAP LEAVES TWO KINDS OF WRECKAGE AND ONLY ONE OF THEM IS IN THE TREE. The round-open stashed the work, so the tree read clean and every tree-shaped guard was happy; what stood in the way was a process, and the process outlived the session that owned it. A guard reading the tree could not have seen this, and the runner's own lock check is what did.
+think Read stash@{0} before applying it -- 24 files, 1,398 insertions -- and checked each new path against HEAD. All four instruments were genuinely unlanded: scope_rank, scope_match.sh, index_shelf_repair.sh, the rostered witness. So the lap was a landing rather than a rebuild.
+obs THE DERIVED SPINE WORKED EXACTLY AS WRITTEN. The parked row was booked %538. git fetch xy then reds_spine_derive_scan --next answered 540: upstream had spent 538 on a peer's ratchet row and 539 on another while my lap sat in the box. The stamp 20260907.045528 identified the row throughout; only the view moved. Renumbered to %540, headline 539 -> 540, and rewrote the parked log to cite the stamp rather than a number the spine had yet to bind.
+obs THE RECOVERED TOOL MET ITS OWN FAULT ON ITS FIRST DAY, TWICE. index_row_bound was red at the cold open with two faults on today's shelf: an exact-duplicate row, 20260907.023053 written twice by a rebase, and 20260907.023053 standing above 20260907.050258. index_shelf_repair.sh sorted the inversion and proved its output a permutation before writing; it refused the duplicate, which is right, and a hand dropped the identical copy under the one-log-one-row law.
+obs THE REFUSAL IS CORRECT AND THE POPULATION IS TWO KINDS. Two rows sharing a stamp with different text is a judgment about which log the row describes, and the tool is right to refuse it. Two rows that are byte-identical is decidable -- drop one -- and it is what a rebase actually produces. Named on the card as one leg and one control rather than taken, since the tool was landing on the same commit.
+obs A THIRD GUARD JOINED THE FLAKE FAMILY. fleet_watch read red inside the pass and GREEN on re-run of the same tree, joining amphora_carry_negative and standing_equipment. All three are controls that fork a real external service -- this one builds a real tmux session -- and all three fired under eight ships on eight cores. That is now a shape rather than a coincidence, and it is COPAL's open question with three instances.
+think Dropped one path out of the stash on purpose: .claude/settings.json carried effortLevel max -> medium, which is this ship's own reasoning depth and belongs to no lap's work. Named here rather than landed silently.
+loom roster scope=cold guards=163 wall_s=1478 green=156 red=4 gated=3 tree_moved=no
+loom witness=scope_rank behaviors=56 faults=0
+loom witness=index_row_bound behaviors=24 faults=0
+loom scope_rank window=120 guards=220 unmapped_absent=163 unmapped_cost_s=1198 unmapped_share=0.811 rows_missing_control=0
+loom shelf rows_before=23 duplicate=1 misordered=1 rows_after=22 verdict=ok
+file tools/fixtures/s/standing_equipment_scope_rank.sh landed -- what each map row saves, and which row to write next
+file tools/fixtures/s/scope_match.sh landed -- the map matcher written once, sourced by runner and ranking
+file tools/fixtures/i/index_shelf_repair.sh landed, and first resident on the fault the recovery itself carried
+file tools/fixtures/s/standing_equipment_scope_map.sh the row that grew session-logs/date/, so a scoped pass stops skipping the shelf's guard
+file construction/REDS.md %540 seated at the stamp the parked lap booked, headline recounted
+file construction/ITINERARY.md the landing account, the flake family's third guard, the orphaned-lock repair
+file session-logs/date/README-index-20260907.md the duplicate dropped by hand, the inversion sorted by the tool
+scope one Aether lap -- a parked lap landed whole, its row renumbered on the fetch, and the shelf red closed by the instrument the same stash carried
+status GREEN -- scope_rank 56 behaviors, index_row_bound 24, index_row_bound_scan verdict=ok, spine next_free read after fetch
+recommend keep-going -- the ranking now names the four costliest unmapped guards on disk (declared_ceiling 71s, width_check 69s, lantern_face 56s, borrowed_number 53s), and writing their map rows is the first work that spends the instrument this lap landed.
