@@ -142,7 +142,7 @@ pub fn main(init: std.process.Init) !u8 {
     // Read by looks_like_SHOP_core rather than looks_like_core (REDS `20260906.195208`). The
     // looser question is answered yes by every `|%` source, including the fourteen
     // THIN core desks under glow/gen/c/ whose arms carry no gate body and which
-    // glow/lower_core.rye has lowered down the welcome road since STOA14. Routing
+    // glow/lower_core.rye has lowered down the welcome road since it was seated. Routing
     // on it sent all fourteen into the argv branch below, which refuses a core
     // with no sample by name -- so `glow_run` answered CoreWantsArgv for every one
     // of them, and glow_run_desk_witness.rish stopped at the first.

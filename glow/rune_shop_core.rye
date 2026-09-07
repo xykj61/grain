@@ -85,7 +85,7 @@ pub fn looks_like_core(src: []const u8) bool {
 /// A `|%` source comes in two shapes and only one of them is the shop's. A THIN
 /// core names its arms and stops -- `++  double` followed straight by the next
 /// arm or by the closing `--` -- and glow/lower_core.rye has lowered that shape
-/// since STOA14. A SHOP core gives each arm the whole two-line gate this
+/// since the welcome road was seated. A SHOP core gives each arm the whole two-line gate this
 /// module's own header describes, which parse_core hands to the gate shop and
 /// lower_shop_core turns into one public function per arm.
 ///
