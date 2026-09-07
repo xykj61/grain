@@ -452,3 +452,5 @@ at a closed fold.*
 *Row %573 folded to [`REDS-a-page-that-calls-itself-living-rows-573.md`](REDS-a-page-that-calls-itself-living-rows-573.md) on `20260907.153154`, **BOOKED** -- a page that declares itself Living is not testimony, whatever its filename says.*
 
 *Row %575 folded to [`REDS-the-third-comment-mark-rows-575.md`](REDS-the-third-comment-mark-rows-575.md) on `20260907.151835`, **BOOKED** -- a guard names its languages, so it covers only the ones somebody named.*
+
+*Row %524 folded to [`REDS-a-link-is-checked-only-if-its-shape-has-a-wall-rows-524.md`](REDS-a-link-is-checked-only-if-its-shape-has-a-wall-rows-524.md) on `20260907.154559`, **CLOSED** -- a link is checked at commit time only if its own row shape has a wall, and all four firings arrived by rebase where no staged-set trigger could see them.*

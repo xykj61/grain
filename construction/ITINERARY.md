@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `b3bdff6dd9` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `2b70b39436` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE ONE READING THE GATE QUESTION TURNS ON NOW READS ZERO, AND READING IT WRONG WAS A ONE-LINE PREDICATE.**
 Elder [shelved](archive/20260907-121623_itinerary-landed-accounts.md). Row `20260907.121623` CLOSED
@@ -208,12 +208,12 @@ guard said to lock that is `%500` above, and it now reds honestly.
 
 **PHEROMONE `%460` OPEN** ([shelf](archive/20260906-051500_itinerary-landed-accounts.md)). **Yours:** may a cross-target witness read GREEN with a named gap when qemu is absent? `%446` reads the other way; `capability` is the mechanism.
 
-**GRASS -- A PAGE THAT CALLS ITSELF LIVING IS NOT TESTIMONY.** Row `20260907.145113` BOOKED and
-folded, by stamp; [account](archive/20260907-145113_itinerary-landed-accounts.md). A mark-law test
-for **path references** was borrowed to ask whether a page's **prose** obeys the word bans: **555**
-pages fall to it, **147** declaring `Living` -- including the threshold page every ship opens on
-row 3, which said *dogfood* where its source reads *first resident*. Roster **379 -> 520**, duty 1
-**0 -> 3**, control **10**. **Three reds closed first.** **Yours:** `%524`, still.
+**GRASS -- A READING OF NOTHING IS NOT A CLEAN TREE.** Elder
+[shelved](archive/20260907-153705_itinerary-landed-accounts.md); row `20260907.153705`, by stamp.
+Fed an empty pipe, `retired_word_scan.sh` printed `hits=0`, exit 0 -- a swept tree's bytes -- and
+its caller supplied the count, so a dead roster published `OK duty1 ... none across 0 pages`. Now
+`absent=` beside them, **exit 2** naming `roster_empty` or `roster_all_absent`; PARTIAL reports.
+Control **10 -> 14**; the last leg strips the refusal, so it is told from a bypass.
 
 **COPAL -- A PARKED LAP CAME BACK WHOLE, AND ITS NUMBER DID NOT.**
 Elder [shelved](archive/20260907-142041_itinerary-landed-accounts.md). `%499` cost this seat a lap.

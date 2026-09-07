@@ -34,6 +34,16 @@
 # Which pages hold the vocabulary itself is the caller's question. The roster answers it.
 #
 #   sh tools/fixtures/l/living_prose_roster.sh | sh tools/fixtures/l/retired_word_scan.sh
+#
+# THREE READINGS, AND ONE REFUSAL. It prints `retired_word_files`, `retired_word_hits`, and
+# `retired_word_absent` -- roster lines naming no readable file, which is ordinary during a move
+# and is reported rather than gated. When NO file was read it exits 2 and names the shape on
+# standard error: `roster_empty` when the roster held no line, `roster_all_absent` when every line
+# it held has moved. Before that, both gave `retired_word_hits=0` and exit 0, which is byte for
+# byte what a swept tree gives -- so a producer that died mid-pipe published a pass, and its one
+# caller printed `OK duty1 ... none across 0 living prose pages`. An empty subject and an absent
+# subject are two readings (REDS %170, %567), and a guard that cannot read its subject must not
+# describe it (REDS %460).
 set -eu
 
 ROOT=${ROOT:-$(pwd)}
@@ -63,8 +73,15 @@ trap 'rm -rf "$TMP"' EXIT
 
 hits=0
 files=0
+absent=0
+lines=0
 while IFS= read -r rel; do
-  [ -n "$rel" ] && [ -f "$rel" ] || continue
+  [ -n "$rel" ] || continue
+  lines=$((lines + 1))
+  if [ ! -f "$rel" ]; then
+    absent=$((absent + 1))
+    continue
+  fi
   files=$((files + 1))
   # Fence state toggles on a ``` line, which is itself skipped -- what a page shows is not
   # what a page says.
@@ -84,3 +101,20 @@ done
 
 echo "retired_word_files=$files"
 echo "retired_word_hits=$hits"
+echo "retired_word_absent=$absent"
+
+# A READING OF NOTHING IS NOT A CLEAN TREE. Reaching this line with no file read means the roster
+# named nothing, or named only paths that are gone -- and either way the scan has no subject.
+# Answering `retired_word_hits=0` there gives back the exact bytes a swept tree gives, so a
+# producer that dies mid-pipe publishes a pass. Refuse by name, and say WHICH of the two shapes it
+# was: an empty roster sends a reader to the producer, and a roster whose paths all moved sends
+# them to the tree. Exit 2 is this tree's word for a reading that could not run (REDS %567's
+# rota_declared_scan.sh), kept apart from 1 so a caller tells a refusal from a finding.
+if [ "$files" -eq 0 ]; then
+  if [ "$lines" -eq 0 ]; then
+    echo "roster_empty -- the roster named no page, so this reading has no subject" >&2
+  else
+    echo "roster_all_absent -- ${lines} roster lines, none of them a readable file" >&2
+  fi
+  exit 2
+fi

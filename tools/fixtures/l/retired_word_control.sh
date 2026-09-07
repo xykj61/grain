@@ -21,6 +21,11 @@
 #   9  a stamped basename declaring itself Living        CAUGHT -- the page's own word overrides
 #                                                        the mark law's test (20260907.144000)
 #  10  a stamped basename declaring another Status       free -- a lifecycle word is not Living
+#  11  an empty roster                                    REFUSED -- roster_empty, exit 2
+#  12  a roster whose every path has moved                REFUSED -- roster_all_absent, exit 2
+#  13  one page present, one moved                        read -- retired_word_absent=1, exit 0
+#  14  the refusal stripped out of the scan               exit 0 on an empty roster, so the
+#                                                         refusal is told apart from a bypass
 #
 #   sh tools/fixtures/l/retired_word_control.sh
 set -eu
@@ -76,6 +81,69 @@ for free in token.md fenced.md 20260101-010101_testimony.md 20260101-010101_decl
     verdict=MISSED
   fi
 done
+
+# A READING OF NOTHING IS NOT A CLEAN TREE (11-14). Every leg above feeds the scan a real roster,
+# so none of them could tell a swept tree from a scan that read no file at all -- and until
+# `20260907.153705` those two answers were the same bytes and the same exit code. The four legs
+# below are that distinction, each shown from both sides.
+
+expect_refusal() {
+  _er_label=$1
+  _er_want=$2
+  _er_input=$3
+  _er_rc=0
+  _er_err=$(printf '%s' "$_er_input" | KEEPS="$PEN/keeps.txt" ROOT="$PEN" sh "$SCAN" 2>&1 >/dev/null) || _er_rc=$?
+  if [ "$_er_rc" -ne 2 ]; then
+    echo "MISSED ${_er_label} answered exit ${_er_rc}, wanted 2 -- a reading with no subject reads as a pass"
+    verdict=MISSED
+  fi
+  case "$_er_err" in
+    *"$_er_want"*) ;;
+    *)
+      echo "MISSED ${_er_label} refused without naming ${_er_want} -- got: ${_er_err}"
+      verdict=MISSED
+      ;;
+  esac
+}
+
+# 11 -- an empty roster. The producer died, or matched nothing; either way there is no subject.
+expect_refusal empty roster_empty ''
+
+# 12 -- every path moved. A roster of real lines, none of them a readable file today.
+expect_refusal all_absent roster_all_absent 'gone/one.md
+gone/two.md
+'
+
+# 13 -- one present, one moved. Ordinary during a move, so it READS and reports the absence
+# beside the count rather than refusing; gating here would red on honest work.
+mixed_rc=0
+mixed=$(printf 'plain.md\ngone/two.md\n' | KEEPS="$PEN/keeps.txt" ROOT="$PEN" sh "$SCAN") || mixed_rc=$?
+if [ "$mixed_rc" -ne 0 ]; then
+  echo "MISSED a roster holding one readable page refused (exit ${mixed_rc}) -- a partial move is not a dead reading"
+  verdict=MISSED
+fi
+for want in 'retired_word_files=1' 'retired_word_absent=1'; do
+  if ! printf '%s\n' "$mixed" | grep -q "^${want}$"; then
+    echo "MISSED the mixed roster did not report ${want} -- got: $(printf '%s' "$mixed" | tr '\n' ' ')"
+    verdict=MISSED
+  fi
+done
+
+# 14 -- THE LOAD-BEARING LEG. A refusal proven only in the refusing direction cannot be told from a
+# bypass, so strip the guard out of a copy and watch the same empty roster walk free. This is the
+# exact reading the scan gave before this repair: exit 0, hits zero, indistinguishable from clean.
+sed '/^if \[ "$files" -eq 0 \]; then$/,/^fi$/d' "$SCAN" > "$PEN/scan_unguarded.sh"
+if cmp -s "$SCAN" "$PEN/scan_unguarded.sh"; then
+  echo "MISSED the refusal block was not found in the scan -- this leg tests nothing"
+  verdict=MISSED
+else
+  unguarded_rc=0
+  : | KEEPS="$PEN/keeps.txt" ROOT="$PEN" sh "$PEN/scan_unguarded.sh" >/dev/null 2>&1 || unguarded_rc=$?
+  if [ "$unguarded_rc" -ne 0 ]; then
+    echo "MISSED the unguarded scan refused anyway (exit ${unguarded_rc}) -- leg 11 may be passing for another reason"
+    verdict=MISSED
+  fi
+fi
 
 echo "control_verdict=$verdict"
 [ "$verdict" = ok ]

@@ -101,16 +101,30 @@ resolve_cand() {
 # The two dated hammocks that leave this duty are testimony by their own basenames and keep
 # every word they wrote; they stay on $ROSTER for duties 2 through 8.
 : >"$TMP/d1"
+# THE SCAN'S REFUSAL IS READ, RATHER THAN SWALLOWED. `2>/dev/null || true` was hiding both halves
+# of a subjectless reading: a dead roster gave an empty file, `${d1_files:-0}` supplied the zero,
+# and this printed `OK duty1 ... none across 0 living prose pages` -- the word OK over a reading
+# of nothing. The scan now exits 2 and names `roster_empty` or `roster_all_absent`; here that
+# becomes a loud ADVISE, since duty 1 is advisory and a lint that refuses the tree is a lint
+# someone turns off. Its stderr is kept so the reader gets the scan's own word for which shape it
+# was. Booked as REDS `20260907.153705`.
+d1_rc=0
 sh tools/fixtures/l/living_prose_roster.sh \
-  | sh tools/fixtures/l/retired_word_scan.sh > "$TMP/d1raw" 2>/dev/null || true
+  | sh tools/fixtures/l/retired_word_scan.sh > "$TMP/d1raw" 2>"$TMP/d1err" || d1_rc=$?
 grep '^RETIRED ' "$TMP/d1raw" 2>/dev/null \
   | sed 's/^RETIRED /ADVISE duty1 retired-word /' >"$TMP/d1" || true
 d1_files=$(sed -n 's/^retired_word_files=//p' "$TMP/d1raw" 2>/dev/null | tail -1)
-if [ -s "$TMP/d1" ]; then
+d1_absent=$(sed -n 's/^retired_word_absent=//p' "$TMP/d1raw" 2>/dev/null | tail -1)
+if [ "$d1_rc" -ne 0 ]; then
+  echo "ADVISE duty1 unread -- the retired-word scan refused (exit ${d1_rc}): $(tr '\n' ' ' <"$TMP/d1err" | cut -c1-160)"
+elif [ -s "$TMP/d1" ]; then
   cat "$TMP/d1"
   echo "ADVISE duty1 count=$(wc -l <"$TMP/d1" | tr -d ' ') of ${d1_files:-0} living prose pages"
 else
   echo "OK   duty1 retired LEXICON words -- none across ${d1_files:-0} living prose pages"
+fi
+if [ "${d1_absent:-0}" -gt 0 ] 2>/dev/null; then
+  echo "ADVISE duty1 absent=${d1_absent} roster paths named no readable file"
 fi
 
 # --- duty 2 ---
