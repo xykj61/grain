@@ -55,7 +55,7 @@ trap 'rm -rf "$pen"' EXIT
 new_repo() {
   repos=$((repos + 1))
   d="$pen/$1"
-  mkdir -p "$d/tools/fixtures/s" "$d/tools/x" "$d/construction"
+  mkdir -p "$d/tools/fixtures/s" "$d/tools/fixtures/p" "$d/tools/x" "$d/construction"
   cp "$scan" "$d/tools/fixtures/s/shim_reason_scan.sh"
   ( cd "$d" \
     && git init -q . \
@@ -81,6 +81,30 @@ forwarding_shim() {
     'exit r.code'
 }
 
+# The SECOND shape, written once so its plant and its repair also differ by one line: a control
+# that names its failing behavior on stderr, and a witness above it that either carries that
+# sentence to a reader or drops it.
+stderr_control() {
+  printf '%s\n' \
+    '#!/bin/sh' \
+    '# pen control' \
+    'printf "FAIL a behavior -- wanted x, got y\\n" >&2' \
+    'printf "pass=0 fail=1\\n"' \
+    'exit 1'
+}
+losing_witness() {
+  printf '%s\n' \
+    '# pen witness' \
+    'let ctl = run ["sh" "tools/fixtures/p/pen_control.sh"]' \
+    'assert ctl.ok else "pen: the control refused --\\n${ctl.out}"'
+}
+carrying_witness() {
+  printf '%s\n' \
+    '# pen witness' \
+    'let ctl = run ["sh" "tools/fixtures/p/pen_control.sh"]' \
+    'assert ctl.ok else "pen: the control refused --\\n${ctl.out}\\n${ctl.err}"'
+}
+
 seal() { ( cd "$pen/$1" && git add -A && git commit -q -m "pen: seed" ); }
 
 # Count, never number. A total typed into a header is falsified by the next phase somebody adds, so
@@ -92,8 +116,8 @@ r() { readings=$((readings + 1)); echo "$1"; }
 # `set +e` inside both: most phases run a scan that REFUSES, and under `set -e` a command
 # substitution assigned to a variable carries that exit outward and kills the script at its first
 # successful refusal -- which reads exactly like a control that ran out of phases.
-run_scan() { ( set +e; cd "$pen/$1" || exit 0; CEILING="${2:-99}" sh ./tools/fixtures/s/shim_reason_scan.sh 2>/dev/null; exit 0 ); }
-run_code() { ( set +e; cd "$pen/$1" || { echo 99; exit 0; }; CEILING="${2:-99}" sh ./tools/fixtures/s/shim_reason_scan.sh >/dev/null 2>&1; echo $?; exit 0 ); }
+run_scan() { ( set +e; cd "$pen/$1" || exit 0; CEILING="${2:-99}" REASON_CEILING="${3:-99}" sh ./tools/fixtures/s/shim_reason_scan.sh 2>/dev/null; exit 0 ); }
+run_code() { ( set +e; cd "$pen/$1" || { echo 99; exit 0; }; CEILING="${2:-99}" REASON_CEILING="${3:-99}" sh ./tools/fixtures/s/shim_reason_scan.sh >/dev/null 2>&1; echo $?; exit 0 ); }
 
 # --- clean_free ---------------------------------------------------------------------------
 new_repo clean
@@ -219,6 +243,116 @@ out=$(run_scan alias)
 case "$out" in *"exit_alias_sites=1"*) r "alias_counted=yes" ;; *) r "alias_counted=no" ;; esac
 case "$out" in *"alias: tools/x/other.rish"*) r "alias_named=yes" ;; *) r "alias_named=no" ;; esac
 case "$out" in *"alias: tools/x/e.rish"*) r "alias_excludes_r=no" ;; *) r "alias_excludes_r=yes" ;; esac
+
+# --- reason_lost, the second shape, both directions on one plant -----------------------------
+# A control that names its failing behavior on STDERR, and a rostered witness that interpolates
+# only `${ctl.out}`. This is the shape that reddened `fleet_watch` on `20260906.233111` and filed
+# seven lines naming no behavior. Every pen here also carries one forwarding shim, so the first
+# shape stays green and the refusal below can only belong to the second.
+new_repo reason
+forwarding_shim > "$pen/reason/tools/x/a.rish"
+stderr_control  > "$pen/reason/tools/fixtures/p/pen_control.sh"
+losing_witness  > "$pen/reason/tools/x/pen_witness.rish"
+printf 'guard a\npath tools/x/a.rish\ntier lap\nguard pen\npath tools/x/pen_witness.rish\ntier lap\n' > "$pen/reason/construction/standing-equipment.kyri"
+seal reason
+out=$(run_scan reason); code=$(run_code reason)
+r "reason_exit=$code"
+case "$out" in *"stderr_controls=1"*) r "reason_population_counted=yes" ;; *) r "reason_population_counted=no" ;; esac
+case "$out" in *"verdict=rostered_reason_lost"*) r "reason_bitten=yes" ;; *) r "reason_bitten=no" ;; esac
+case "$out" in *"reason_lost_rostered=1"*) r "reason_counted=yes" ;; *) r "reason_counted=no" ;; esac
+case "$out" in *"reason_lost: rostered tools/x/pen_witness.rish"*) r "reason_named=yes" ;; *) r "reason_named=no" ;; esac
+carrying_witness > "$pen/reason/tools/x/pen_witness.rish"
+out=$(run_scan reason)
+case "$out" in *"verdict=ok"*) r "reason_lifted=yes" ;; *) r "reason_lifted=no" ;; esac
+case "$out" in *"reason_lost_rostered=0"*) r "reason_lifted_counted=yes" ;; *) r "reason_lifted_counted=no" ;; esac
+
+# --- reason ceiling, both directions on one plant --------------------------------------------
+new_repo reason_ceiling
+forwarding_shim > "$pen/reason_ceiling/tools/x/a.rish"
+stderr_control  > "$pen/reason_ceiling/tools/fixtures/p/pen_control.sh"
+losing_witness  > "$pen/reason_ceiling/tools/x/pen_witness.rish"
+printf 'guard a\npath tools/x/a.rish\ntier lap\n' > "$pen/reason_ceiling/construction/standing-equipment.kyri"
+seal reason_ceiling
+out=$(run_scan reason_ceiling 99 1); code=$(run_code reason_ceiling 99 1)
+r "reason_ceiling_free_exit=$code"
+case "$out" in *"verdict=ok"*) r "reason_ceiling_free=yes" ;; *) r "reason_ceiling_free=no" ;; esac
+case "$out" in *"reason_lost_unrostered=1"*) r "reason_ceiling_counted=yes" ;; *) r "reason_ceiling_counted=no" ;; esac
+out=$(run_scan reason_ceiling 99 0); code=$(run_code reason_ceiling 99 0)
+r "reason_ceiling_bitten_exit=$code"
+case "$out" in *"verdict=reason_lost_over_ceiling"*) r "reason_ceiling_bitten=yes" ;; *) r "reason_ceiling_bitten=no" ;; esac
+
+# --- a control that keeps its FAIL line on stdout is not in the population --------------------
+# The reading is about a sentence that CANNOT be seen through `.out`. A control printing FAIL to
+# stdout hands its reason over whatever the witness interpolates, so counting it would red a
+# witness that is already correct -- and a guard that reds on the ordinary is one somebody turns off.
+new_repo reason_stdout
+forwarding_shim > "$pen/reason_stdout/tools/x/a.rish"
+printf '#!/bin/sh\nprintf "FAIL a behavior\\n"\nprintf "pass=0 fail=1\\n"\nexit 1\n' > "$pen/reason_stdout/tools/fixtures/p/pen_control.sh"
+losing_witness > "$pen/reason_stdout/tools/x/pen_witness.rish"
+printf 'guard a\npath tools/x/a.rish\ntier lap\nguard pen\npath tools/x/pen_witness.rish\ntier lap\n' > "$pen/reason_stdout/construction/standing-equipment.kyri"
+seal reason_stdout
+out=$(run_scan reason_stdout); code=$(run_code reason_stdout)
+r "reason_stdout_exit=$code"
+case "$out" in *"stderr_controls=0"*) r "reason_stdout_unpopulated=yes" ;; *) r "reason_stdout_unpopulated=no" ;; esac
+case "$out" in *"verdict=ok"*) r "reason_stdout_free=yes" ;; *) r "reason_stdout_free=no" ;; esac
+
+# --- a MENTION of the shape is not an instance of it ------------------------------------------
+# The reading caught itself on this: the pen helper above WRITES a stderr-reporting control, so its
+# own source carries that line inside single quotes, and a first pattern counted this instrument as
+# one of its own subjects. Both spellings of a mention are planted here -- quoted, and commented --
+# and a witness above either must pass free, since neither control ever writes to stderr at all.
+new_repo reason_mention
+forwarding_shim > "$pen/reason_mention/tools/x/a.rish"
+# The plant reproduces the REAL shape byte for byte: a `printf` argument list continued onto its
+# own line, where that line holds nothing but the quoted string. A first draft put a live `printf`
+# and the quoted mention on ONE line, which is genuinely ambiguous and is not the shape that was
+# fixed -- a plant must be the fault, rather than something near it.
+printf '%s\n' \
+  '#!/bin/sh' \
+  '# a control that only WRITES another control into a pen' \
+  'emit_one() {' \
+  "  printf '%s\\n' \\" \
+  "    'printf \"FAIL planted\\\\n\" >&2'" \
+  '}' \
+  'printf "pass=1 fail=0\\n"' > "$pen/reason_mention/tools/fixtures/p/pen_control.sh"
+losing_witness > "$pen/reason_mention/tools/x/pen_witness.rish"
+printf 'guard a\npath tools/x/a.rish\ntier lap\nguard pen\npath tools/x/pen_witness.rish\ntier lap\n' > "$pen/reason_mention/construction/standing-equipment.kyri"
+seal reason_mention
+out=$(run_scan reason_mention)
+case "$out" in *"stderr_controls=0"*) r "reason_quoted_mention_unseen=yes" ;; *) r "reason_quoted_mention_unseen=no" ;; esac
+case "$out" in *"verdict=ok"*) r "reason_quoted_mention_free=yes" ;; *) r "reason_quoted_mention_free=no" ;; esac
+
+new_repo reason_comment
+forwarding_shim > "$pen/reason_comment/tools/x/a.rish"
+printf '%s\n' \
+  '#!/bin/sh' \
+  "# this control could printf 'FAIL %s' >&2 and does not" \
+  'printf "pass=1 fail=0\\n"' > "$pen/reason_comment/tools/fixtures/p/pen_control.sh"
+losing_witness > "$pen/reason_comment/tools/x/pen_witness.rish"
+printf 'guard a\npath tools/x/a.rish\ntier lap\nguard pen\npath tools/x/pen_witness.rish\ntier lap\n' > "$pen/reason_comment/construction/standing-equipment.kyri"
+seal reason_comment
+out=$(run_scan reason_comment)
+case "$out" in *"stderr_controls=0"*) r "reason_comment_unseen=yes" ;; *) r "reason_comment_unseen=no" ;; esac
+case "$out" in *"verdict=ok"*) r "reason_comment_free=yes" ;; *) r "reason_comment_free=no" ;; esac
+
+# --- one variable's reason never credits another's --------------------------------------------
+# A witness forwarding SOME OTHER run's stderr must not be read as forwarding the control's. The
+# blindest possible version of this reading is `does the file mention .err anywhere`, and this is
+# the case that tells the two apart.
+new_repo reason_other_var
+forwarding_shim > "$pen/reason_other_var/tools/x/a.rish"
+stderr_control  > "$pen/reason_other_var/tools/fixtures/p/pen_control.sh"
+printf '%s\n' \
+  '# pen witness' \
+  'let other = run ["sh" "-c" "true"]' \
+  'say other.err' \
+  'let ctl = run ["sh" "tools/fixtures/p/pen_control.sh"]' \
+  'assert ctl.ok else "pen: refused --\\n${ctl.out}"' > "$pen/reason_other_var/tools/x/pen_witness.rish"
+printf 'guard a\npath tools/x/a.rish\ntier lap\nguard pen\npath tools/x/pen_witness.rish\ntier lap\n' > "$pen/reason_other_var/construction/standing-equipment.kyri"
+seal reason_other_var
+out=$(run_scan reason_other_var)
+case "$out" in *"verdict=rostered_reason_lost"*) r "reason_other_var_bitten=yes" ;; *) r "reason_other_var_bitten=no" ;; esac
+case "$out" in *"reason_lost_rostered=1"*) r "reason_other_var_counted=yes" ;; *) r "reason_other_var_counted=no" ;; esac
 
 # --- instrument_refusal ---------------------------------------------------------------------
 # REDS %473's fault, planted rather than asserted. `git grep` exits 1 for "no match" and 2 or more

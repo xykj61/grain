@@ -2110,6 +2110,47 @@ seated 20260906.120905
 # rather than swallowed (%473, %484). Three greps over 2,362 tracked `.rish` files cost 22 seconds
 # measured on this pier at load 10.1; the pre-filter reads the identical counts in 2, and the whole
 # guard including its 40-case pen runs in 5 against a full lap pass of 729.
+#
+# A SECOND SHAPE OF THE SAME LOSS, seated `20260906.233111` -- and found by a red rather than by a
+# search. `fleet_watch` reddened a cold pass, filed seven lines that could not name a behavior, then
+# passed 16 of 16 on six consecutive re-runs: the one reading that could have diagnosed the flake
+# was the reading its witness threw away. `tools/fixtures/f/fleet_watch_control.sh:24` prints
+# `FAIL <behavior> -- wanted X, got Y` to STDERR so a passing run stays quiet, and
+# `tools/f/fleet_watch_witness.rish:17` interpolated `${ctl.out}` and never `${ctl.err}`. The exit
+# code travelled, `pass=15 fail=1` travelled, and the clause naming WHICH behavior did not.
+#
+# Measured the same hour: EIGHT controls print FAIL to stderr, FIVE are run by a witness, and all
+# five of those witnesses stood on this roster interpolating `.out` alone -- `fleet_watch`,
+# `fleet_lap_verdict`, `publish_template`, `unshared_citation`, `sealed_digest`. All five carry
+# `${ctl.err}` now, and the repair was proven on metal by planting one wrong expected value in
+# `sealed_digest_control.sh`: the evidence went from `pass=8 fail=1` alone to that line plus
+# `FAIL an unread seal is counted -- wanted PLANTED_WRONG, got yes`.
+#
+# THE THREE-MARK READING ABOVE COULD NOT SEE IT. That reading requires `say r.out` and
+# `exit r.code`, which is a pass-through shim; these are witnesses that assert. One law -- hand on
+# your target's reason -- and two shapes, so the instrument grew a second reading rather than the
+# tree growing a second instrument. `reason_lost_rostered` is GATED at zero, `reason_lost_unrostered`
+# is a ratchet opening at zero, and `stderr_controls` names the population so a zero is visible
+# rather than assumed (%463).
+#
+# TWO REFUSALS IT DELIBERATELY DOES NOT MAKE, each proven in the pen. A control keeping its FAIL
+# line on STDOUT is not in the population at all -- its reason already travels through whatever the
+# witness interpolates, and counting it would red a witness that is already correct. And a witness
+# forwarding some OTHER run's stderr is not credited for the control's: the reading takes the
+# variable the control's `run` is bound to and reads only that variable's spellings, because the
+# blindest version of this check is *does the file mention `.err` anywhere*.
+#
+# AND THE READING CAUGHT ITSELF, which is the case worth keeping. The control's pen helper WRITES a
+# stderr-reporting control, so its own source carries that line inside single quotes -- and a first
+# pattern read 9 where the tree holds 8, counting the instrument as one of its own subjects. The
+# population is anchored now: a real call stands after start-of-line or whitespace, a quoted mention
+# stands after the quote that opens its string, and a comment is dropped in the same pass. Both
+# spellings of a mention are planted, and the quoted plant reproduces the real continuation-line
+# shape byte for byte rather than something near it.
+#
+# Twenty-one new pen readings, six new repositories, every refusal planted and then lifted: 61
+# cases over 14 repositories, and the guard runs in 8 seconds measured `20260907.000030` against a
+# full lap pass of 983.
 
 guard shim_reason
 path tools/s/shim_reason_witness.rish
@@ -2318,3 +2359,53 @@ guard shared_pen
 path tools/s/shared_pen_witness.rish
 tier lap
 seated 20260906.225150
+# bron_resins_catalog -- the cellar's catalog names every resin it holds, and now something reads it.
+#
+# WHAT WAS MEASURED (`20260907.000030`). `bron-resins/` is the resin cellar and
+# `bron-resins/manifest.bron` is its catalog, one `entry <basename> <note>` line per resin. It named
+# THREE of the room's SEVENTEEN. Its own `note` line states the habit that keeps it -- *commit with
+# the resin* -- and that habit was kept for the first three files of the first morning, `20260712`,
+# and dropped. Nothing in the tree read the catalog: three scans name `bron-resins/` only to skip it
+# as testimony (`counsel_census_scan.sh`, `waymark_rung_drift_scan.sh`, and `template-manifest.bron`'s
+# `personal` verdict), and no witness, runner, or roster row touched it. A catalog covering a fifth
+# of its room reads exactly like a whole one -- `%514`'s lesson standing in a room where the silence
+# had lasted eighty-seven days.
+#
+# THE LAW IT KEEPS is `foundations/20260703-202312_the-marked-value.md`, whose Amber clause reads
+# *every resin records the marks of what it seals, so a reader in another decade knows what the
+# cellar held without opening it.* The council rota's Earth-Dual seat is that document, which is how
+# this was found: the row that breathes in reads the concrete fact at the door, and the fact at this
+# door was a catalog four fifths short.
+#
+# A LANTERN RATHER THAN A LOOM, measured before the instrument was built. Every tracked file in a
+# living room whose name carries `manifest`, `catalog`, or `roster` was crossed with its readers:
+# the mycelium corpora each have a witness and a Rye reader, `forge_cellar_manifest.bron` is read by
+# `pond/apps/drawn_terminal.rye`, and the seat rosters are read by twenty, nine, and eight sites.
+# `bron-resins/manifest.bron` was the ONE enumeration of a room with no reader at all. So this is a
+# scan for one cellar rather than a general instrument, and the near-miss is named:
+# `cellar/ring1_manifest_shape.bron` is cited only by `cellar/README.md`, and it is a SHAPE rather
+# than an enumeration, in a lane this seat does not hold.
+#
+# THREE GATES AND ONE REPORTED READING, and they are separate because they fail in separate
+# directions: `uncatalogued` is a resin nobody named, `orphan_entries` is a line promising a file
+# the room lacks, and `duplicate_entries` is a catalog disagreeing with itself.
+# `noteless_entries` is REPORTED -- a bare name is a weak line and still a true one, and a gate that
+# reds on an honest half-measure is one somebody turns off. An absent room or catalog answers
+# `misread` and exits 2, never zero, since zero is the reading a healthy cellar gives.
+#
+# The fourteen notes were written from each resin's OWN first header line rather than from a
+# summary. The one `.md` file in a room whose `law` line says Bron only is named in the catalog
+# rather than swept, because a catalog states its exception instead of hiding it.
+#
+# `tier lap`, 4s measured `20260907.000030` against a full lap pass of 983. The control proves 34
+# behaviors on throwaway cellars: every refusal shown from the failing side and then LIFTED, the
+# reported reading proven not to gate, the detail listing's bound proven by planting 75 resins
+# against a ceiling of 64, and the pen proven innocent against a scan patched to always answer ok --
+# with that patch's own landing proven by `cmp -s` and by refusing an EMPTY copy, which the control
+# caught in itself (an unreadable source leaves a copy that differs from the original and reads as a
+# landed plant).
+
+guard bron_resins_catalog
+path tools/b/bron_resins_catalog_witness.rish
+tier lap
+seated 20260907.000030

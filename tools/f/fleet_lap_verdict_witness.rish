@@ -14,8 +14,8 @@ say "fleet-lap-verdict: Lens TAME -- every welcome asserted as hard as every ref
 
 say "fleet-lap-verdict: the control -- twelve behaviors on planted transcripts in a pen..."
 let ctl = run ["sh" "tools/fixtures/f/fleet_lap_verdict_control.sh"]
-assert ctl.ok else "fleet-lap-verdict: the control refused --\n${ctl.out}"
-assert ctl.out contains "pass=12 fail=0" else "fleet-lap-verdict: the control did not prove twelve behaviors --\n${ctl.out}"
+assert ctl.ok else "fleet-lap-verdict: the control refused --\n${ctl.out}\n${ctl.err}"
+assert ctl.out contains "pass=12 fail=0" else "fleet-lap-verdict: the control did not prove twelve behaviors --\n${ctl.out}\n${ctl.err}"
 
 say "fleet-lap-verdict: the classifier answers the four verdicts by name..."
 let limit = run ["sh" "-c" "printf 'You have hit your session limit - resets 7:30am\\n' > /tmp/flv-limit.txt && sh tools/fixtures/f/fleet_lap_verdict.sh /tmp/flv-limit.txt 1 2"]

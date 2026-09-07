@@ -14,8 +14,8 @@ say "publish-template: Lens TAME -- every refusal planted and then lifted."
 
 say "publish-template: the control -- eleven behaviors on copies in a pen..."
 let ctl = run ["sh" "tools/fixtures/p/publish_template_control.sh"]
-assert ctl.ok else "publish-template: the control refused --\n${ctl.out}"
-assert ctl.out contains "pass=11 fail=0" else "publish-template: the control did not prove eleven behaviors --\n${ctl.out}"
+assert ctl.ok else "publish-template: the control refused --\n${ctl.out}\n${ctl.err}"
+assert ctl.out contains "pass=11 fail=0" else "publish-template: the control did not prove eleven behaviors --\n${ctl.out}\n${ctl.err}"
 
 say "publish-template: the living template leaks no literal this field owns..."
 let scan = run ["sh" "tools/fixtures/p/publish_template_scan.sh"]

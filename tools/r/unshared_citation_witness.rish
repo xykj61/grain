@@ -19,8 +19,8 @@ say "unshared-citation: Lens TAME -- every refusal planted in a pen and then lif
 
 say "unshared-citation: the control -- ten behaviors against a stub spine in a throwaway repository..."
 let ctl = run ["sh" "tools/fixtures/r/unshared_citation_control.sh"]
-assert ctl.ok else "unshared-citation: the control refused --\n${ctl.out}"
-assert ctl.out contains "pass=10 fail=0" else "unshared-citation: the control did not prove ten behaviors --\n${ctl.out}"
+assert ctl.ok else "unshared-citation: the control refused --\n${ctl.out}\n${ctl.err}"
+assert ctl.out contains "pass=10 fail=0" else "unshared-citation: the control did not prove ten behaviors --\n${ctl.out}\n${ctl.err}"
 
 say "unshared-citation: no living surface cites a number the spine has not bound..."
 let scan = run ["sh" "tools/fixtures/r/unshared_citation_scan.sh"]
