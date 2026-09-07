@@ -49,7 +49,11 @@ assert field.out contains "verdict=ok" else "reds-citation: the field reading mu
 # healthy tree (REDS %463), and a reading of a SLIVER is indistinguishable from a healthy tree too
 # unless the sliver is named. `unread_links` is the shelf links no form can check; it is reported,
 # never gated, and its presence is what keeps this guard's green from implying coverage it does not
-# have -- 66 of 274 living shelf links carry a checkable promise on this tree.
+# have -- 218 of 282 living shelf links carry a checkable promise on this tree, and the 64 that do
+# not carry no number in their anchor at all (61 repeat the path, three read `folded` or `their
+# own`). It read 67 of these same 282 the lap before: the FOLD form wanted a BARE number while the
+# recital writes the `%` sigil its ledger law seats, so 145 citations of the very shape it was
+# built for stood outside it (REDS %511).
 assert (field.out contains "all_links=0") == false else "reds-citation: the reading found no shelf link at all, so its silence means nothing"
 assert field.out contains "unread_links=" else "reds-citation: the reading must name the links it cannot check, or its green implies a reach it lacks"
 

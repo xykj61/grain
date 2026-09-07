@@ -2,10 +2,11 @@
 # tools/fixtures/r/reds_citation_control.sh -- plant a citation whose number and path name different
 # rows, and watch the scan bite.
 #
-# Three promise forms are proven here, each from both sides: NUMBERED, SHELF, and FOLD -- the
-# recital line the loom writes, whose anchor is a path and whose number is bare, which 47 of this
-# tree's 274 living shelf links wear and neither elder form could see. The reach itself is proven
-# too: every shelf link is read by one form or counted unread, and the parts sum to the whole.
+# Three promise forms are proven here, each from both sides, in every spelling the tree
+# writes: NUMBERED, SHELF, and FOLD -- the recital line the loom writes, whose anchor is a
+# path and whose number stands in the words before it, which 192 of this tree's 282 living
+# shelf links wear and neither elder form could see. The reach itself is proven too: every
+# shelf link is read by one form or counted unread, and the parts sum to the whole.
 #
 # WHY A PEN AND NOT THE FIELD. The gate reads zero on this tree and is meant to, so nothing here
 # could ever show it able to refuse -- and a refusal proven only in the passing direction cannot be
@@ -71,6 +72,9 @@ shelves() {
   : > "$R/construction/archive/REDS-a-pen-row-rows-100.md"
   : > "$R/construction/archive/REDS-a-pen-row-rows-101.md"
   : > "$R/construction/archive/REDS-a-pen-pair-rows-110-111.md"
+  # A wide span, so the pen can show that a shelf named `rows-100-110` holds the rows BETWEEN its
+  # endpoints -- which the field proved on metal and the elder set-reading denied (REDS %511).
+  : > "$R/construction/archive/REDS-a-pen-span-rows-100-110.md"
 }
 
 echo "reds-citation control: the three forms, from both sides, and the reach counted."
@@ -185,9 +189,9 @@ commit_all
 want unreadable_form_refuses "$(read_verdict)" refused_no_citation
 
 # 18 -- FOLD, agreeing: the recital line the loom writes, where the anchor text is a path and the
-# number is bare. Neither reading above can see this shape, and 47 of this tree's 274 living shelf
-# links wear it.
-new_repo; shelves
+# number stands in the words before it. Neither reading above can see this shape, and 192 of
+# this tree's 282 living shelf links wear it -- 47 of them spelled with a bare number like
+# this case, and 145 with the `%` sigil the ledger's own law seats (cases 24-27).
 printf 'Row 100 folded to [`REDS-a-pen-row-rows-100.md`](construction/archive/REDS-a-pen-row-rows-100.md) on a day.\n' > "$R/pin.md"
 commit_all
 want fold_agree_welcomed "$(read_verdict)" ok
@@ -225,6 +229,97 @@ new_repo; shelves
 commit_all
 want unread_link_welcomed "$(read_verdict)" ok
 want unread_link_counted "$(read_key unread_links)" 1
+
+# 24 -- FOLD wearing the SIGIL, which is the spelling the recital actually writes and the elder
+# form could not see. `git-signing.md` seats `%` as the sigil for a number this tree assigns
+# itself, so `Row %100 folded to` is the canonical spelling and `Row 100 folded to` the exception
+# (REDS %511).
+new_repo; shelves
+printf 'Row %%100 folded to [`x`](construction/archive/REDS-a-pen-row-rows-100.md) on a day.\n' > "$R/pin.md"
+commit_all
+want fold_sigil_welcomed "$(read_verdict)" ok
+want fold_sigil_counted "$(read_key fold_links)" 1
+
+# 25 -- and the same sigilled spelling refuses when it disagrees, so case 24 is the form reading it
+# rather than a link nobody looked at.
+printf 'Row %%100 folded to [`x`](construction/archive/REDS-a-pen-row-rows-101.md) on a day.\n' > "$R/pin.md"
+commit_all
+want fold_sigil_disagree_bitten "$(read_verdict)" citation_disagrees
+
+# 26 -- a fold naming a LIST joined by `and`: 23 citations wear this shape, and every number in the
+# list is a claim.
+new_repo; shelves
+printf 'Rows %%110 and %%111 folded to [`x`](construction/archive/REDS-a-pen-pair-rows-110-111.md) on a day.\n' > "$R/pin.md"
+commit_all
+want fold_list_and_welcomed "$(read_verdict)" ok
+want fold_list_and_counted "$(read_key fold_links)" 1
+printf 'Rows %%110 and %%112 folded to [`x`](construction/archive/REDS-a-pen-pair-rows-110-111.md) on a day.\n' > "$R/pin.md"
+commit_all
+want fold_list_second_member_bitten "$(read_verdict)" citation_disagrees
+
+# 27 -- a list joined by commas AND `and`, backticked, which the recital writes once. The middle
+# member is the one a two-endpoint reading would step over.
+new_repo; shelves
+printf 'Rows `%%100`, `%%105` and `%%110` folded to [`x`](construction/archive/REDS-a-pen-span-rows-100-110.md) on a day.\n' > "$R/pin.md"
+commit_all
+want fold_list_comma_welcomed "$(read_verdict)" ok
+want fold_list_comma_counted "$(read_key fold_links)" 1
+printf 'Rows `%%100`, `%%111` and `%%110` folded to [`x`](construction/archive/REDS-a-pen-span-rows-100-110.md) on a day.\n' > "$R/pin.md"
+commit_all
+want fold_list_middle_member_bitten "$(read_verdict)" citation_disagrees
+
+# 28 -- NUMBERED carrying the ledger's own name in the anchor -- [`REDS %108`](path) -- which five
+# living citations write and the elder anchor pattern refused.
+new_repo; shelves
+printf 'See [`REDS %%100`](construction/archive/REDS-a-pen-row-rows-100.md) for the account.\n' > "$R/pin.md"
+commit_all
+want numbered_reds_word_welcomed "$(read_verdict)" ok
+want numbered_reds_word_counted "$(read_key numbered_links)" 1
+printf 'See [`REDS %%100`](construction/archive/REDS-a-pen-row-rows-101.md) for the account.\n' > "$R/pin.md"
+commit_all
+want numbered_reds_word_bitten "$(read_verdict)" citation_disagrees
+
+# 29 -- NUMBERED with no sigil at all -- [`488`](path) -- which the operator card writes once. A
+# reader clicks a number whether or not it wears the sigil, so the promise is the same.
+new_repo; shelves
+printf 'The account rests on the [`100`](construction/archive/REDS-a-pen-row-rows-100.md) shelf.\n' > "$R/pin.md"
+commit_all
+want numbered_sigilless_welcomed "$(read_verdict)" ok
+printf 'The account rests on the [`100`](construction/archive/REDS-a-pen-row-rows-101.md) shelf.\n' > "$R/pin.md"
+commit_all
+want numbered_sigilless_bitten "$(read_verdict)" citation_disagrees
+
+# 30 -- A SPAN HOLDS ITS INTERIOR, and this is a correctness fix rather than a widening. Read on
+# metal, REDS-the-integration-and-its-wake-rows-242-254.md carries rows 245, 246, 247, 248 and 251
+# beside its two endpoints, so a citation naming one of them is honest. The elder reading split the
+# path on `-` and took the two numbers as a SET, which called eighteen such citations wrong.
+new_repo; shelves
+printf 'The row [`%%105`](construction/archive/REDS-a-pen-span-rows-100-110.md) rests here.\n' > "$R/pin.md"
+commit_all
+want span_interior_welcomed "$(read_verdict)" ok
+
+# 31 -- and a claim OUTSIDE the span still refuses, so case 30 widened the reading without opening
+# a door. The endpoint-plus-one is the sharpest case: 111 is one past a shelf named 100-110.
+printf 'The row [`%%111`](construction/archive/REDS-a-pen-span-rows-100-110.md) rests here.\n' > "$R/pin.md"
+commit_all
+want span_outsider_bitten "$(read_verdict)" citation_disagrees
+
+# 32 -- `through` is DELIBERATELY not a fold spelling, and the absence is proven rather than
+# trusted. The recital writes `Rows %1 through %172 are folded`, never `folded to`, so a form
+# reading it would be this round's own fault inverted: a reading drawn from a spelling nobody
+# writes. The link is counted UNREAD and the verdict stays ok even though the numbers disagree.
+#
+# A READABLE CITATION STANDS BESIDE IT ON PURPOSE. A corpus whose every citation is unreadable
+# refuses at `refused_no_citation` (case 15), which would hide this reading behind that one -- the
+# pen said so on the first run rather than being reasoned about.
+new_repo; shelves
+{ printf 'Rows 100 through 110 folded to [`x`](construction/archive/REDS-a-pen-row-rows-101.md) on a day.\n'
+  printf 'The row [`%%100`](construction/archive/REDS-a-pen-row-rows-100.md) closed.\n'
+} > "$R/pin.md"
+commit_all
+want fold_through_not_read "$(read_verdict)" ok
+want fold_through_counted_unread "$(read_key unread_links)" 1
+want fold_through_not_counted_fold "$(read_key fold_links)" 0
 
 # 23 -- the reach adds up: every shelf link is read by one of the three forms or counted as unread,
 # never both and never neither. An identity a reader checks without trusting the reading.

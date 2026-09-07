@@ -366,3 +366,5 @@ at a closed fold.*
 *Row %493 folded to [`REDS-a-precondition-is-part-of-a-claim-rows-493.md`](REDS-a-precondition-is-part-of-a-claim-rows-493.md) on `20260906.195229`, **CLOSED** -- a precondition is part of a claim -- the roster capability field carries it.*
 
 *Row %505 folded to [`REDS-two-ships-one-guard-rows-505.md`](REDS-two-ships-one-guard-rows-505.md) on `20260906.195321`, **CLOSED** -- two ships built one guard in three minutes, and the landed one could read 19 of 274.*
+
+*Row %511 folded to [`REDS-a-guards-reach-is-a-claim-rows-511.md`](REDS-a-guards-reach-is-a-claim-rows-511.md) on `20260906.204500`, **CLOSED** -- a form fitted to the spelling of the one page in front of its author, so 151 of the 208 links it called unreadable wore a shape it already claimed to read.*

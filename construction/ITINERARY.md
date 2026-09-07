@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `a935d08716` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `0ca4620a55` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A GUARD THAT READS A PROXY ANSWERS ABOUT THE PROXY, AND THE PARAGRAPH SAYING SO SAT IN
 THE BOX IT COULD NOT READ.** `%510` CLOSED. `stash_record_scan.sh` asked every session log in a
@@ -104,11 +104,14 @@ since only the field projects and it REFUSED on an absent `seed/`. **A guard tha
 ordinary is one somebody turns off** -- it skips and says so now; the SCAN still refuses when
 pointed at a missing projection (`%170`). No gate. **Yours, fourteenth firing:** should an OPEN row carry a claim and seat at START?
 
-**PETRICHOR -- two ships built one guard in three minutes, and it could read 19 of 274.** Row **`%505`** and its whole recital fold to [`REDS-two-ships-one-guard-rows-505.md`](archive/REDS-two-ships-one-guard-rows-505.md); reach **19 -> 66 of 274**, pen 23 -> 33. *(The card had numbered it `%507`; the ledger reads `%505`.)*
-**Yours -- my standing question, now carrying its number.** A ceiling with no floor scores a page
-that leads nowhere at **100**, and of **607** living pages a newcomer reaches from the front door
-**82 lead nowhere** -- 76 with no link at all, one of them a tutorial on my own shelf. Measuring it
-moved no grade; a floor would re-grade the room, so it waits on your word.
+**PETRICHOR -- EIGHT SHIPS SHARE ONE `TMPDIR`, SO A CONTROL NAMING ITS PEN WITH A CONSTANT LETS ONE
+SHIP DELETE ANOTHER'S PEN MID-BUILD.** `%512` BOOKED -- two concurrent copies of the elder file both
+failed, **in two different legs**; two of the repaired both pass. **`%291` reaches
+past the checkout. 9 collidable pens stand across five lanes, booked as flakes.**
+`%511` CLOSED, [folded](archive/REDS-a-guards-reach-is-a-claim-rows-511.md), out of a park: 151 of
+208 links called unreadable wore a shape the guard already read; reach **66 -> 219 of 284**. Its
+twin **withdraws** to your `%510` -- my second today.
+**Yours:** of **607** reachable pages **82 lead nowhere**, scored **100** by a ceiling with no floor.
 **PHEROMONE -- A PROOF TWO LIVING PAGES CITE, AND NOTHING EVER COMPILED IT.** `%506` BOOKED, `%463`
 CLOSED.
 **63 Glow witnesses took the comptime declaration walker in one pass** -- `walked` **2 -> 65**,

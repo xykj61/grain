@@ -13,9 +13,11 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 |---|---|---|
 | `20260906.203052` | [the seed crosses its gate](20260906/20260906-203052_the-seed-crosses-its-gate.kyri) | gate %1 crossed; 7,978 files to both doors. |
 | `20260906.200141` | [a guard that reads a proxy](20260906/20260906-200141_a-guard-that-reads-a-proxy.kyri) | %510: the box's second drawer, named at last. |
+| `20260906.195215` | [the lap that landed its own park](20260906/20260906-195215_the-lap-that-landed-its-own-park.kyri) | %511, %512: a park landed, a pen race closed. |
 | `20260906.193301` | [the seal nothing read](20260906/20260906-193301_the-seal-nothing-read.kyri) | SHA3 already seated; the gap was verification. |
 | `20260906.190934` | [the lap that ran without its lane](20260906/20260906-190934_the-lap-that-ran-without-its-lane.kyri) | %509: seven ships ran with the baton alone. |
 | `20260906.182719` | [every tool in the room its name says](20260906/20260906-182719_every-tool-in-the-room-its-name-says.kyri) | 34 moved; 4 computed paths derived. |
+| `20260906.180617` | [the box that read its own handwriting](20260906/20260906-180617_the-box-that-read-only-its-own-handwriting.kyri) | a filter narrower than its box. |
 | `20260906.180419` | [a record is not the work](20260906/20260906-180419_a-record-is-not-the-work.kyri) | recovered: the path walk beside the record gate. |
 | `20260906.173444` | [the pattern that matched a prompt](20260906/20260906-173444_the-pattern-that-matched-a-prompt.kyri) | %508: pkill matched three baton prompts. |
 | `20260906.162710` | [present is not current](20260906/20260906-162710_present-is-not-current.kyri) | recovered: a projection with no provenance read fresh. |

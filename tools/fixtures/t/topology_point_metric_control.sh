@@ -65,7 +65,14 @@ ZIG="$ROOT/vendor/zig-toolchain/zig"
 [ -x "$RYE" ] || { echo "control: rye is missing at $RYE" >&2; exit 2; }
 [ -x "$ZIG" ] || { echo "control: the vendored zig is missing at $ZIG" >&2; exit 2; }
 
-PEN="${TMPDIR:-/tmp}/topology_point_metric_control_pen"
+# THE PEN CARRIES THIS PROCESS'S ID, and it is load-bearing rather than tidy (REDS %512).
+# Eight ships share one pier and therefore one TMPDIR, every one of them running this control
+# on its own lap. With a constant name, two overlapping runs share one directory: line 69 wipes
+# it and the EXIT trap wipes it again, so one ship deletes another ship's pen mid-build and the
+# reading that comes back is a fault nobody introduced. Proven by running this file twice at
+# once -- both copies failed, in two different legs -- where a single run reads verdict=proven.
+# The sibling topology_attained_control.sh already spells it this way.
+PEN="${TMPDIR:-/tmp}/topology_point_metric_control_pen.$$"
 rm -rf "$PEN"
 mkdir -p "$PEN"
 trap 'rm -rf "$PEN"' EXIT INT TERM
