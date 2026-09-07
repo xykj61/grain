@@ -16,6 +16,15 @@
 # under 20%. The roster is named below rather than discovered, so a new file cannot join the
 # enforced tier by accident and red on work it never agreed to cover.
 #
+# WHAT THE GATED TIER LEAVES OUT, measured 20260907 and printed here rather than assumed. The
+# roster names thirteen documents. Across the 80 tracked front doors carrying at least the
+# eight-sentence floor, 30 read above the 20% ceiling and stand outside it. So a green
+# door_over_ceiling=0 says THE DOORS THAT AGREED ARE INSIDE, rather than every door in the tree is
+# -- the same distinction a roster-shaped guard owes its reader anywhere. A room joins by paying
+# its way in: sweep the page under the ceiling, then add its path here in the same commit.
+# amphora/README.md did exactly that on 20260907, 29% of 41 sentences to 14%, six sentences
+# restated to lead with what is and every claim, number and path held.
+#
 # WHAT IS REPORTED, as a ratchet under a ceiling that only ever falls. The teaching tier --
 # docs-geode/, manual/, docs-geode/edu/yonder/, and the root guides a newcomer opens -- counted as documents sitting
 # above the Field target of 30%. Repair is a rewrite per document rather than a substitution, so
@@ -38,7 +47,7 @@
 
 set -u
 
-DOOR="README.md docs/README.md foundations/README.md foundations/20260823-034321_the-return-that-feeds-everyone.md docs-geode/tutorials/the-first-hour.md docs-geode/demos/README.md caravan/README.md mycelium/README.md image/README.md lotus/README.md crypto/README.md constel/README.md"
+DOOR="README.md docs/README.md foundations/README.md foundations/20260823-034321_the-return-that-feeds-everyone.md docs-geode/tutorials/the-first-hour.md docs-geode/demos/README.md caravan/README.md mycelium/README.md image/README.md lotus/README.md crypto/README.md constel/README.md amphora/README.md"
 DOOR_MAX=20
 FIELD_MAX=30
 # A share needs a denominator big enough to mean something. Below this many sentences the reading is

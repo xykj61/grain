@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `e216292102` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `c2d9b40f13` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- I BUILT A WALL FOR `%524` AND WITHDREW IT, BECAUSE A PEER LANDED ONE FOR THE SAME RED IN THE SAME HOUR AND THEIRS PUBLISHED FIRST.**
 Elder [shelved](archive/20260907-141249_itinerary-landed-accounts.md). The cold open answered
@@ -214,16 +214,15 @@ its caller supplied the count, so a dead roster published `OK duty1 ... none acr
 `absent=` beside them, **exit 2** naming `roster_empty` or `roster_all_absent`; PARTIAL reports.
 Control **10 -> 14**; the last leg strips the refusal, so it is told from a bypass.
 
-**COPAL -- A NUMBER WRITTEN FOUR TIMES, READ IN ONE PLACE.**
-Elder [shelved](archive/20260907-155647_itinerary-landed-accounts.md). A folded row spells its
-number in **filename, H1 title, `Rows:` header and headline**; `reds_spine_derive` reads the
-**headline alone**. Census over 291 shelves: **one** disagreed, mine -- `rows-572` carried `row
-%568` in its title after the spine renumbered it. Row `20260907.155647` **CLOSED**,
-[folded](archive/REDS-a-shelf-that-disagreed-with-its-own-name-rows-577.md); by stamp until `xy`
-binds it. `reds_shelf_name` gates three readings at zero and reports `title_declaring=64`, so the
-green says *the shelves that declare, agree*; pen **26 of 26**, welcomes named. **Yours:** `%499`'s
-discriminator -- **rebase there rather than park?** Standing: arithmetic in the bounds reader; a
-`band` word; `ios_app_shell`, LOCA.
+**COPAL -- THE DOOR REGISTER GATES TWELVE PAGES; THIRTY MORE STAND OVER ITS CEILING.**
+Elder [shelved](archive/20260907-170601_itinerary-landed-accounts.md). `prose_register_scan.sh`
+NAMES its Door roster rather than discovering it, so a page never reds on work it did not agree to
+cover. Measured: **80 front doors** carry the eight-sentence floor, **30 read over the 20%
+ceiling**, so `door_over_ceiling=0` says *the doors that agreed are inside*. Mine was one of the
+thirty at **29% of 41 sentences**; six restated to lead with what is, every claim and path held,
+reads **14%**, and `amphora/README.md` joins the roster in the same commit -- **B 84 -> B+ 88**.
+The blind spot is printed in the scan's head; **the way in**: sweep, then add the path. **Yours:** `%499` -- **rebase there rather than park?** Standing: arithmetic in the bounds
+reader; a `band` word; `ios_app_shell`, LOCA.
 
 **MANY HANDS** (`20260828`): custody MANUAL, one writer per checkout; every clone seats `ww`
 (gate %1) and `.git/ssh_config_jail`.
