@@ -11,11 +11,12 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260907.155948` | [a-number-written-four-times](20260907/20260907-155948_a-number-written-four-times.kyri) | A fold shelf spells its number four times; one guard read one. |
 | `20260907.155025` | [A reading of nothing is not clean](20260907/20260907-155025_a-reading-of-nothing-is-not-a-clean-tree.kyri) | a scan fed nothing printed a swept tree's bytes. |
+| `20260907.153124` | [A wall built for a red a peer had already walled](20260907/20260907-153124_a-wall-built-for-a-red-a-peer-had-already-walled.kyri) | withdrawn; %573 survived it. |
 | `20260907.145721` | [A page that calls itself living](20260907/20260907-145721_a-page-that-calls-itself-living.kyri) | roster 379 -> 520; the threshold page quoted a dropped word. |
 | `20260907.145202` | [Two readings that disagree about prose](20260907/20260907-145202_the-two-readings-that-disagree-about-prose.kyri) | Reach drops what Register counts: 22,041 lines. |
 | `20260907.144352` | [The third comment mark](20260907/20260907-144352_the-third-comment-mark.kyri) | Glow joins the ASCII law; 942 in comments, none in content. |
-| `20260907.155948` | [a-number-written-four-times](20260907/20260907-155948_a-number-written-four-times.kyri) | A fold shelf spells its number four times; one guard read one. |
 | `20260907.144140` | [A wall that reads the index](20260907/20260907-144140_a-wall-that-reads-the-index.kyri) | %524 closed: the link wall reads the index. |
 | `20260907.142041` | [The lap that came back renumbered](20260907/20260907-142041_the-lap-that-came-back-renumbered.kyri) | a parked lap re-derived; its row renumbered to %572. |
 | `20260907.134135` | [A ratchet at its ceiling is a wall one lap wide](20260907/20260907-134135_a-ratchet-at-its-ceiling-is-a-wall-one-lap-wide.kyri) | parked whole; landed as a record. |

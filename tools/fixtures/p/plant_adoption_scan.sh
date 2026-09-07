@@ -60,10 +60,19 @@ controls=$(wc -l < "$work/controls.txt" | tr -d ' ')
 while IFS= read -r f; do
   [ -n "$f" ] || continue
   [ -f "$f" ] || continue
-  # The dot-command spelling the tree uses, with the helper's own path named. A control that copies
-  # the functions rather than sourcing them reads as remainder on purpose -- a copy is what this
-  # law exists to stop multiplying.
-  if grep -q 'tools/fixtures/p/plant\.sh' "$f"; then
+  # The DOT-COMMAND spelling, not merely the path. A control that copies the functions rather than
+  # sourcing them reads as remainder on purpose -- a copy is what this law exists to stop
+  # multiplying.
+  #
+  # WHY THE LINE AND NOT THE PATH (`20260907.145907`). This read `grep -q tools/fixtures/p/plant.sh`
+  # and called that exact, in a header arguing that sourcing is exact where `cmp -s` is a proxy. A
+  # control landed whose header says in prose WHY it does not use the plant law -- its plants are
+  # files it authors, so there is no claim about somebody else's line to check -- and naming the
+  # helper in that sentence counted it as an adopter, raising `sourcing` 12 to 13 and reding the
+  # witness that holds the floor. A grep for a path reads every mention of it, including the ones
+  # that say the opposite. Every one of the twelve real adopters carries `. "<root>/tools/fixtures/
+  # p/plant.sh"`, so the dot command IS the import and the reading is exact again.
+  if grep -qE '^[[:space:]]*\.[[:space:]].*tools/fixtures/p/plant\.sh' "$f"; then
     echo "$f" >> "$work/sourcing.txt"
   else
     echo "$f" >> "$work/remainder.txt"

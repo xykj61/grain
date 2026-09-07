@@ -46,44 +46,40 @@
 
 ### Now -- the live front
 
-**Git nib:** `6a4f797dc8` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `cacfdaef61` -- HEAD's parent, resolvable everywhere (%401).
 
-**BAKERY -- THE ONE READING THE GATE QUESTION TURNS ON NOW READS ZERO, AND READING IT WRONG WAS A ONE-LINE PREDICATE.**
-Elder [shelved](archive/20260907-121623_itinerary-landed-accounts.md). Row `20260907.121623` CLOSED
-and [folded](archive/REDS-a-label-is-not-its-target-rows-570.md); the number waits on `xy`, the
-stamp is the key. **`stash@{0}` is landed** -- the duplicate lap's record and the half of its work
-that survived the `declared` pass: five readings splitting the lost set into **promise against
-mention** and **living against testimony**, printed beside the gate. Field: `9 / 76 / 3 / 82`.
+**BAKERY -- I BUILT A WALL FOR `%524` AND WITHDREW IT, BECAUSE A PEER LANDED ONE FOR THE SAME RED IN THE SAME HOUR AND THEIRS PUBLISHED FIRST.**
+Elder [shelved](archive/20260907-141249_itinerary-landed-accounts.md). The cold open answered
+`guards_red=3`, one root: this card linked `rows-571` where the shelf is `rows-570`. `%524`'s
+**fourth firing** -- and a peer repaired the link and landed **rule six** of
+`tools/hooks/pre-commit` while my own wall was in flight. Theirs stands; mine is withdrawn whole
+rather than roofing one question twice, which is the derived spine's rule applied to a repair
+instead of to a number. **Sixth time in two days** that a finding met its peer inside one hour.
 
-**YOUR GATE QUESTION HAS A NUMBER: `lost_promised_living=0`.** All nine promises stand in dated
-testimony, which accrete-never-break forbids repairing -- so moving the gate from `refs_lost` to
-that cell gates the class that matters at a cost of nothing today. **I did not move it**; a gate a
-lap moves for itself is a ceiling raised by a side door.
+**THE TWO WALLS DIFFER, AND THE DIFFERENCE IS YOURS.** Theirs reads the **whole index** (544ms),
+so it sees the rebase class that is three of `%524`'s four firings -- the half no staged-set
+reading can reach. Mine read `readme_reach`'s own findings and kept only the pages **this commit
+staged**, so it could never refuse a commit the roster would accept. **That is the property
+`%524` declined the lap for:** *eight ships run that file, and a mistake in it is a fleet that
+cannot commit.* Theirs refuses on any broken living link anywhere, so **one hand's break now stops
+every ship's commit until somebody repairs it.** I proved the split is buildable -- a pen holding
+two breaks at once where exactly one bites, 26 cases, real commits through the armed hook -- and
+did not land it. **Should the wall refuse for a peer's break, or only for your own?** The pen is
+on `stash@{0}` if the answer is the second.
 
-**AND THE FIRST READING SAID ONE, WHICH IS THE RED.** A day shelf names its log **twice** -- the
-basename in backticks as the link **label**, `<day>/<basename>` as the **target** -- and the
-basename-shaped test charged the target's kept promise to the label. One reference tree-wide, small
-enough to open, which is why it was caught rather than published. Loose and exact answer two real
-questions, and the shelf holds which; the pen now plants a label-and-target row so the loosening is
-bitten. Witness GREEN, scan 110s.
+**LANDED, AND ITS OWN FINDING** (`20260907.153124`, cited by stamp until `xy` binds it) -- booked one number, and a peer had spent it and the one before it by the time my rebase landed; the stamp is what made the re-seat one line. `plant_adoption_scan.sh` decided
+adoption by grepping the helper's **path**, in a header arguing that sourcing is exact where
+`cmp -s` is a proxy. My control's paragraph explaining **why it does not import the plant law**
+counted as an import, raising `sourcing` 12 to 13 and reding `plant`. **A grep for a path reads
+every mention of it, including the ones that say the opposite.** The reading is the dot command
+now, which all twelve real adopters carry and no comment does. **Still yours:** `remainder=164`
+counts every control that never plants at all, so it can never reach zero and nobody can act on
+it -- the adoption question its author left for your word.
 
-**FOUR REDS ARRIVED WITH THE REBASE, ALL REPAIRED HERE, THREE OF THEM A PEER'S.** The card linked
-`rows-565` where that shelf is `rows-561`, so `readme_reach` reds on the shared card for every ship.
-Today's shelf carried one stamp twice, the `%381` shape a rebase leaves -- lifted, then sorted by
-`index_shelf_repair.sh`. A peer's shelf landed with no recital line, `unrecorded_shelves` 63 over
-62. And `tools/g/glow_desk_reach_witness.rish` wrote then removed a constant `/tmp` pen, `%549`
-exactly: one ship's sweep deletes another's runner mid-read; a `$(pwd | cksum)` suffix returns
-`constant_pen_files` to 53. **`fleet_watch` red hot and GREEN alone** -- a fourth guard in the
-concurrent-pen flake family. **The pattern: a guard reds in MY tree for work landed in a PEER'S.**
-Worth your word: should a send run the roster against `xy/main` before it rebases, so a peer's red
-is named where it was made?
-
-**Still yours, three.** The gate move above; a **verdict cache** for the census -- may a
-**derived** row be gated? And the several-line interleave, wanting an anchor per insert.
-**A record can be unlandable as written, and `stash_record` cannot see that.** The parked log
-described a pass superseded 25 minutes later. It landed with two appended `obs` lines naming what
-survived -- lawful, since an unlanded log is still being written -- and one `file` line rewritten
-to **declare** the shelf that never landed: this family's own new mechanism used on itself.
+**AND THE PIER'S OWN CAPACITY, unasked.** Three ships ran full cold roster passes **concurrently**
+on this 4-core pier within one hour; mine took **1,527s** cold and **1,304s** hot against a
+nominal ~1,139. Eight ships x every lap is the pier's whole capacity spent proving one tree.
+`--scoped` exists for exactly this and the cold open does not reach for it.
 
 **PATCHOULI -- A CENSUS WHOSE SUBJECT WAS "TODAY" REFUSED EVERY NIGHT AT MIDNIGHT.**
 Row `20260907.114500` **CLOSED**, [folded](archive/REDS-the-day-that-had-not-started-rows-567.md),
@@ -396,6 +392,6 @@ The logs keep the account; earlier rows are shelved in
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260907.142041` | The lap that came back renumbered | [log](../session-logs/date/20260907/20260907-142041_the-lap-that-came-back-renumbered.kyri) |
+| `20260907.153124` | A wall built for a red a peer had already walled | [log](../session-logs/date/20260907/20260907-153124_a-wall-built-for-a-red-a-peer-had-already-walled.kyri) |
 
 **One row, on purpose** -- a landed lap keeps one line until the next replaces it; the log carries the detail.
