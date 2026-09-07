@@ -2519,3 +2519,51 @@ guard plant
 path tools/p/plant_witness.rish
 tier lap
 seated 20260907.004838
+# seat_prompt_figure -- a charter says what a ship is FOR, and a count in it can carry no date.
+#
+# WHAT WAS MEASURED (`20260907.011258`). A seat prompt is the first thing a ship reads on every lap
+# it will ever run -- `tools/f/fleet-loop.sh` prepends the baton to it and hands the pair to the
+# agent. Eight live seats, eight prompts, and TWO carried tree measurements: copal's `10 Rye modules
+# and 3,861 lines` with `16 witnesses`, and patchouli's `32 Rye modules and 9,175 lines` with `four
+# rostered witnesses`. All six had parted from the tree.
+#
+# THE TWO WAYS A FIGURE GOES WRONG, and this pair showed both. Copal's witness figures were EXACT at
+# their seating -- 16 tracked paths named both `amphora` and `witness` on `20260905.164639`, and not
+# one stood on this roster -- and went stale on ordinary work, reading 17 with 9 rostered by
+# `20260907`. The line figure was wrong the day it was written: `3,861` against the **3,582** the
+# room's ten `.rye` paths read at that same commit, and against **4,058** today. A figure nothing
+# reads cannot be corrected, only replaced.
+#
+# THE LAW IS ALREADY SEATED ONE ROOM OVER. This file's own directive on `construction/ITINERARY.md`
+# reads *Counts come from the scan, never here*, and Gauge asks every figure to carry unit, date,
+# and source. A charter carries none of the three: nothing runs it, and no reader can tell a figure
+# written this morning from one written in June. This carries that law to the room beside it.
+#
+# A RATE IS A LAW; A TOTAL IS A MEASUREMENT. `two asserts a function` is TAME's rule and can go
+# stale only on a word, so it is counted under `rates` and excluded -- and PRINTED, because an
+# exclusion nobody can see is an exclusion nobody can check. `10 Rye modules` claims what the tree
+# holds this morning. That one distinction is the whole discriminator.
+#
+# THE READING IS A FLOOR, DELIBERATELY. Only nouns that can name a code census are read -- module,
+# line, witness, guard, assert, function, scan, control. `files`, `rows`, and `pages` are left out
+# because a charter says `read its top three rows` as an INSTRUCTION, and a guard that reds on an
+# instruction is a guard somebody turns off. So patchouli's `120 files outside it reaching in` is a
+# measurement this scan cannot see, named here rather than hidden.
+#
+# `figures` is a RATCHET opening at **3** -- what stands after copal repaired its own charter, so it
+# lands green on the tree it publishes to rather than the tree it was built in. `missing` is GATED
+# at zero for a reason of its own: a live seat whose prompt file has gone shrinks the population, and
+# a ratchet over a shrinking population reads as progress while nothing improved.
+#
+# `tier lap`, 2s measured `20260907.011258`; the scan alone is under a second over eight small files.
+# The control proves 30 behaviors on planted fleets -- every refusal shown from the failing side and
+# then LIFTED, a stamp and a row number and a port proven NOT to count, a possessive and an
+# instruction quantity proven not to count, the parked seats proven unread, and the pen proven
+# innocent against a scan patched to always answer zero. The ceiling was also proven both ways on the
+# LIVE tree: one planted figure in copal's own prompt read `figures=4 verdict=over_ceiling` and
+# exit 1, and the restore was checked byte-identical with `cmp` before the green was believed.
+
+guard seat_prompt_figure
+path tools/s/seat_prompt_figure_witness.rish
+tier lap
+seated 20260907.011258
