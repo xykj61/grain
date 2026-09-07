@@ -36,7 +36,7 @@
 - **An operational shell script molts to Rishi on substantial touch** (`20260828`): launchers, loops, tools a hand runs -- the `.sh -> .rish` family the MIND adaptation mapped, generalized; scan and control fixtures STAY sh by the witness convention.
 
 - **The three Earth ships** (`20260904` names): unattended Claude Code; field GUI `~/grain` Cursor. **Incense** law/review/captain, `grain-incense`; **Pheromone** molecular, `grain-pheromone`; **Petrichor** docs-geode and prose-product, `grain-petrichor`. Machines are doors. Captain prompt (two doors, Mac or Dallas pier): `expanding-prompts/20260904-171306_incense-the-field-captain-two-doors.md`. Loop `fleet-loop.sh incense|pheromone|petrichor` from that tree (`tools/l/launch-earth-ships-chapter.rish`). One writer per tree (%291). Parked: `~/grain-mystery`, `~/grain-silence`. Elder charter `20260829.203718` stays testimony.
-- **Fleet re-arm helper**: `sh tools/f/fleet_rearm.sh` -- status, reason, paste.
+- **Fleet re-arm**: `sh tools/f/fleet_rearm.sh`.
 - **SEATED -- Pond completes the enclosure** (`20260826`): the quest retiring ai-jail; docs accrete-only until the replacement is audited; switchover and jail debride gated (%5). Plan: `expanding-prompts/20260826-033051_pond-completes-the-enclosure.md`.
 - **STANDFAST -- the Dexter orbit** (`20260826`): 15 rounds; door `dexter/README.md`.
 - **Seated `20260826`, each behind its own door:** the **cubist sweep** (`cubist-bhakti-astrology/README.md`); the **Linengrow Design Theme** (gate %6); the **WADE journey** double-seat (plan in `expanding-prompts/`).
@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `c9286f24ba` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `e75ed1ac55` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE MAP NOBODY CHECKED IS CHECKABLE, AND THE TWO ROWS IT FIRST READ WERE WRONG IN THE
 DIRECTION THAT SKIPS WORK.** DIFFUSER's item 1, rostered: `tools/fixtures/s/scope_trace.sh` runs a
@@ -139,9 +139,8 @@ none of the law's three subjects, so **extending that list is your word**. **Thr
 `reds_spine_derive`, and `stash_record`: **two of my own laps stood unlanded**, one holding an
 unlanded repair -- `foundations_link_scan.sh` wrote a **constant `/tmp` path every ship here owns at
 once**; `shared_pen` 54 to 53.
-**YOURS, THE ONE I COULD NOT CLOSE:** `two_rooms_doorway` reads **46 pages naming no room against a
-ceiling of 44**, `tier cadence` -- **unseen by any lap-tier pass**; the source repair lands
-here, the 46 stay its own declined judgment. **Still yours:** `%530`, three citations in `construction/archive/`.
+**The one Petrichor could not close, CLOSED here** -- `two_rooms_doorway` **48 -> 37**, ceiling
+re-seated there (INCENSE, below). **Still yours:** `%530`, three citations in `construction/archive/`.
 **PHEROMONE -- THE DOORWAY ASKS EVERY PAGE TO NAME ITS ROOM, AND HAS NEVER READ THE ROOM EVERY SHIP READS EVERY LAP.**
 Row `20260907.100235` **BOOKED**, by stamp; elder
 [folded](archive/20260907-100235_itinerary-landed-accounts.md).
@@ -154,10 +153,19 @@ takes off a page's face. **Validated first:** that same per-file script over the
 rostered rooms reproduces `fails=48` exactly. **Fourth firing of one shape** (%381, `log_has_a_row`,
 this guard's lost 607, %532) -- the first three *narrowed* a whole subject; this was **born**
 partial, so nothing inside the guard is wrong. **NOT TAKEN:** a peer's in-flight
-work -- `grain-petrichor` holds three `_touch_` files staged. **YOURS, two:** it stands
-**RED at 48 against 44**, risen from yesterday's 46, `tier cadence`, so the lap pass beside it saw neither; and widening the subject lands **112** failures on a fleet ratchet at once,
-so subject and ceiling move together or not at all. **Hot 139/137 green, 1128s**; its one red
+work -- `grain-petrichor` holds three `_touch_` files staged. **YOURS, one** -- the 48 is **37** now and GREEN (INCENSE, below), taken on the
+narrow subject: widening it lands **112** failures on a fleet ratchet at once, so subject and
+ceiling move together or not at all. **Hot 139/137 green, 1128s**; its one red
 `live_group_plant`, GREEN alone -- **seventh firing, three guards**.
+
+**INCENSE -- THE DOOR HAS TWO KEYS, AND THE GUARD READ ONE.** `20260907.094712` BOOKED,
+[folded](archive/REDS-the-door-has-two-keys-rows-561.md). Beside Pheromone's `%558`, same guard and
+hour: **theirs the subject, mine the reading.** Nine pages answer under `**Room:**` rather than
+`**Status:**`, **two spelling `Mixed`** -- the table's own token, read as silence, since **two laws
+wear that word** (TWO_ROOMS a REGISTER, design-rooms a DIRECTORY). **48 -> 37.** **THE FINDING IS
+THE ARITHMETIC:** repaired by hand **twice in two days, regrown both times**, all four new pages
+from hands that had READ the law -- so the clause is on `tools/f/fleet_baton.txt` as **DOOR**, where
+a habit is set. **Yours:** should `proposed` be a fifth token; six pages write it as one.
 
 **YOURS, AND IT COSTS THE FLEET A LAP A DAY: THE ROUND-OPEN PARKS AN ORDINARY LOST RACE.** `%499`
 OPEN. `fleet_round_open.sh` classifies by two `is-ancestor` tests and **two states fail both** -- a
@@ -190,14 +198,12 @@ unrun proofs.
 guard said to lock that is `%500` above, and it now reds honestly.
 **`%440` fired ELEVEN times across four laps** -- a peer's row low at the cold open, then every rebase auto-merging the shelf; one dedupe-and-sort each time, by hand. **Yours.**
 
-**PHEROMONE `%460` OPEN** ([shelf](archive/20260906-051500_itinerary-landed-accounts.md)). **Yours:** may a cross-target witness read GREEN with a named gap when qemu is absent? Its head promises that limit, `%446` reads the other way; `capability` is the mechanism.
+**PHEROMONE `%460` OPEN** ([shelf](archive/20260906-051500_itinerary-landed-accounts.md)). **Yours:** may a cross-target witness read GREEN with a named gap when qemu is absent? `%446` reads the other way; `capability` is the mechanism.
 
-**GRASS -- A COMPLETENESS GUARD READ ONE DIRECTION.**
-[Elder](archive/20260907-080356_itinerary-landed-accounts.md). `20260907.080356` CLOSED.
-`waymark_table_registry_completeness` read table -> registry and never back, so a `status living`
-mark drawn into the registry and never written into the face passed in silence: **the registry
-re-seals on a draw; the face waits on a hand.** Both ways now, zero over **28** vs **30**.
-**YOURS:** hand-seated LADDER vs NAME is unreadable from `status`.
+**GRASS -- A COMPLETENESS GUARD READ ONE DIRECTION**, so a mark drawn into the registry and never
+written into the face passed in silence. `20260907.080356` CLOSED, account
+[shelved](archive/20260907-104723_itinerary-landed-accounts.md). **YOURS:** hand-seated LADDER vs
+NAME is unreadable from `status`.
 
 **THE SAME HOLE FOR LINKS.** `%524` OPEN: three commit-time link walls read ONE row
 shape, so a cairn citing an archive shelf waits for a cold pass; four fired today.
@@ -206,31 +212,27 @@ shape, so a cairn citing an archive shelf waits for a cold pass; four fired toda
 
 **COPAL -- THE ROOM BUILT TO ROOT A FLAKE IS EMPTIED BY THE MOTION THAT CONFIRMS ONE.**
 (`20260907.093147`) CLOSED, [folded](archive/REDS-the-room-emptied-by-the-motion-that-confirms-rows-557.md)
-The runner cleared its evidence room on **every** pass, so the by-name run
-confirming a flake deletes what `%266` opened the room to keep. **Six firings unrooted.** A pass clears only what it answered;
-four behaviors, both ways.
-**MY `%550` SENTENCE IS WRONG.** Two orderings aimed at the whole-tree gates push them
-**later**: cheapest-first moves `living_card_ascii` **10s -> 749s**, discovery-first **577s**; 60
-guards cost 0s, **123 of 167 discovery**. **The alphabet decides** -- `exec_bit` answers at **1s**,
-`shared_pen` at **1020s** of 1062; the eight zero-ceiling gates first, **116s**.
-**Yours:** a `band` word on a roster row, as `tier` and `host` are; and `ios_app_shell` /
-`macos_app_bundle`, LOCA.
+The runner cleared its evidence room on **every** pass, so the by-name run confirming a flake
+deletes what `%266` opened the room to keep; a pass clears only what it answered. Account
+[shelved](archive/20260907-104723_itinerary-landed-accounts.md), with the ordering measurement that
+corrects `%550`'s sentence -- **the alphabet decides**, and the eight zero-ceiling gates run first
+at **116s**. **Yours:** a `band` word on a roster row, as `tier` and `host` are; and
+`ios_app_shell` / `macos_app_bundle`, LOCA.
 
-**MANY HANDS** (`20260828`): custody MANUAL, one writer per checkout. Root `SKILL.md`; every
-clone seats `ww` (gate %1) and `.git/ssh_config_jail`.
+**`%481` recurred on `CHECKPOINTS.md`** -- the seam is the hook, not the scan.
 
-**`%481` recurred on `CHECKPOINTS.md`** -- same shelf; the seam is the hook, not the scan.
+**MANY HANDS** (`20260828`): custody MANUAL, one writer per checkout; every clone seats `ww`
+(gate %1) and `.git/ssh_config_jail`.
 
-**Sibling finds:** Mystery's module-label guard fails open on BSD grep; portable, it finds elder
-labels in `tools/gen/chapter/fascia_metric_v0.rish`. **Tablecloth, one, cross-lane:** its name desk
+**Sibling finds:** Mystery's module-label guard fails open on BSD grep; portable, it names elder labels in `fascia_metric_v0.rish`. **Tablecloth, one, cross-lane:** its name desk
 reads one of `max_name`'s two call sites (`parse_manifest` reads it too, over the same fixed
 `[max_name]u8`). *The four uncontrolled `*_example_missing` verdicts are no longer a find: the work
 stands written at `cc1da84f7`, parked by a round-open and unlanded since `20260905` (`%499`).* **Dream's parked packages:**
 `xy/pier/diverged-20260831-{064342,115245}`, neither landed, neither mine. **CION:** `drey`'s rung marks are the retired form (%329). **Fleet loop (%387):** should a
 round's opening stash stop an in-flight pass in its own tree.
 
-**Bounds raised `20260906`, both derived, both yours:** the operator card to 40,960 (8 ships x 2,048 live front) and the REDS pin to 40,960 (8 x 4,096 OPEN set + 8,192 header). **Each is sized per ship, so both re-open at twelve** -- and the pin's is also sized by how fast reds close (`%360`, 8,213 bytes, open since `20260830`).
-**`%456` OPEN -- eight ships share ONE login, so one credential is a fleet-wide outage** (mechanism read from `agent-jail.sh` source, so `%458` leaves it standing; the pier half is unmeasured from inside the enclosure). Seven died 3 laps each in ten seconds on `OAuth session expired and could not be refreshed`; `agent-jail.sh` seeds every tree from the pier's single credential. The refresh token had **27 days** left, so expiry is excluded -- the leading read is **rotation**: first refresher strands the rest and the pier's own copy. **Falsifier is cheap:** watch whether the pier's refresh value changes after a ship refreshes. Landed: `claude_refresh_dead()` names a dead credential instead of seeding it, proven 3 ways, and `sh tools/fixtures/f/fleet_login_scan.sh` answers it in one command. **Yours, gate 3:** one login per ship is the fix. **A resource shared by every ship has no blast radius smaller than the fleet.**
+**Bounds raised `20260906`, both derived, both yours:** card and REDS pin to 40,960 (8 ships x 2,048 live front; 8 x 4,096 OPEN set + 8,192 header). **Each is sized per ship, so both re-open at twelve** -- and the pin's is also sized by how fast reds close (`%360`, 8,213 bytes, open since `20260830`).
+**`%456` OPEN -- eight ships share ONE login, so one credential is a fleet-wide outage** (read from `agent-jail.sh` source, so `%458` leaves it standing; the pier half is unmeasured from inside the enclosure). Seven died 3 laps each in ten seconds on `OAuth session expired and could not be refreshed`. The refresh token had **27 days** left, so expiry is excluded -- the leading read is **rotation**: first refresher strands the rest and the pier's own copy. **Falsifier is cheap:** watch whether the pier's refresh value changes after a ship refreshes. Landed: `claude_refresh_dead()` names a dead credential instead of seeding it, proven 3 ways, and `sh tools/fixtures/f/fleet_login_scan.sh` answers it in one command. **Yours, gate 3:** one login per ship is the fix. **A resource shared by every ship has no blast radius smaller than the fleet.**
 **`shell_dialect` re-diagnosed:** the `sed -i` repair stands; it reds on ONE case of 47 -- *a guard
 without its instrument names rg rather than a file*. `shell_portable_control.sh` takes `rg` off PATH
 by dropping every entry holding an executable `rg`, and this NixOS pier keeps `rg` and `sh` in one
@@ -246,13 +248,13 @@ card holds what is OPEN and what waits on your word.
 **Gate 3 stands:** `.gnupg-rye/` holds
 `private-keys-v1.d/`, and **per-tree GNUPGHOME is the only shape that works jailed** -- yours.
 **52 external utilities across 2,969 tool scripts. `rg`: 992 sites, ONE probe. `mktemp`: 353
-sites, none -- and not POSIX since 2008.** The cure is written, `tools/fixtures/s/shell_portable.sh`,
-and **38 files source it, 1.3%.** Three tiers -- **granted** (POSIX), **carried** (we ship it),
-**borrowed** (probe, fall back, announce). **The reflex LANDED** (`%445`); the tiers stay yonder, yours.
+sites, none -- not POSIX since 2008.** The cure, `tools/fixtures/s/shell_portable.sh`, is sourced by
+**38 files, 1.3%.** Three tiers -- **granted** (POSIX), **carried** (we ship it), **borrowed**
+(probe, fall back, announce). **The reflex LANDED** (`%445`); the tiers stay yonder, yours.
 
-**Worth your word, still unanswered, and asked from FOUR blocks of this card until they were
-merged here `20260906.212057`:** nothing in the ledger shows a red is *being worked*, so two hands
-spend one morning on the same line. **Should an OPEN row carry a claim -- a seat and a stamp, at
+**Worth your word, still unanswered, and asked from FOUR blocks of this card until merged here
+`20260906.212057`:** nothing in the ledger shows a red is *being worked*, so two hands spend one
+morning on the same line. **Should an OPEN row carry a claim -- a seat and a stamp, at
 start rather than at landing?** **Seventeen firings.** Bakery's own chain ran `%485` -> `%501` ->
 `%503` -> `%504` -> `%506` in one day, beaten four times while the work sat parked. Asking it in
 four places made it read as four questions rather than one.

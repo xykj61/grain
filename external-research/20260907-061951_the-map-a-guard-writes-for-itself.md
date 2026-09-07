@@ -4,7 +4,7 @@
 **Language:** EN
 **Style:** Gauge, Field setting (see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md))
 **Voice:** Kyri
-**Status:** Proposed -- a measurement of whether a guard's watch set can be observed rather than
+**Status:** Proposed -- **research for understanding**: a measurement of whether a guard's watch set can be observed rather than
 declared. Nothing here is bound by a witness yet; the proposed room is where it sits
 ([`../context/TWO_ROOMS.md`](../context/TWO_ROOMS.md)).
 **Kin:** [`20260907-020817_what-the-fleet-spends-on-knowing-it-is-green.md`](20260907-020817_what-the-fleet-spends-on-knowing-it-is-green.md) -

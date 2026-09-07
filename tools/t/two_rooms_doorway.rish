@@ -22,8 +22,16 @@
 #   The reading reaches all three rooms AND at least one folded `date/` shelf -- the floor that
 #   watches for this defect's own return, since a narrowed roster reports a smaller clean tree.
 #   Pages naming no room stand at or under a ceiling that only falls.
-#   Fourteen behaviors on throwaway trees. Ten of them flip to `no` when the elder roster is put
+#   Eighteen behaviors on throwaway trees. Ten of them flip to `no` when the elder roster is put
 #   back, which is how a control is proven load-bearing rather than merely green.
+#
+# WHAT THE DOOR IS, from 20260907. A page names its room "at the top" and this witness read one
+# key -- `**Status:**`. Nine pages under the roster answered under `**Room:**` instead, two of them
+# spelling `Mixed`, the gloss table's own token, and read here as pages that named no room at all.
+# Both keys are read now; the four tokens are unchanged. Three of the four new legs flip to `no`
+# when the single-key reading is put back, and the fourth is the one that must NOT move: a
+# `**Room:**` naming a DIRECTORY -- design-rooms' different question wearing the same word -- is
+# counted either way, and only its DIAGNOSIS changed.
 #
 # WHAT IS RATCHETED RATHER THAN GATED. Forty-five pages, three of them dated testimony on `date/`
 # shelves that accrete-never-break keeps exactly as written. A gate that can never close is one
@@ -75,7 +83,11 @@ assert control.out contains "yonder_excluded=yes" else "two-rooms doorway: yonde
 assert control.out contains "readme_excluded=yes" else "two-rooms doorway: a room's front door describes the room rather than speaking from one"
 assert control.out contains "flat_only_roster_refused=yes" else "two-rooms doorway: a roster narrowed to the flat room must refuse, never report a smaller clean tree"
 assert control.out contains "over_ceiling_refused=yes" else "two-rooms doorway: the ratchet must refuse one page over its ceiling"
+assert control.out contains "room_key_free=yes" else "two-rooms doorway: a page naming its room under **Room:** must pass free -- the door is the head, not one key"
+assert control.out contains "room_directory_counted=yes" else "two-rooms doorway: a **Room:** naming a DIRECTORY names no register and must still be counted"
+assert control.out contains "room_directory_named=yes" else "two-rooms doorway: a Room line naming no register must be named as one, never misreported as a missing Status"
+assert control.out contains "both_keys_free=yes" else "two-rooms doorway: a lifecycle Status beside a Room token must pass -- neither key alone decides"
 assert control.out contains "control_verdict=ok" else "two-rooms doorway: the control must agree with itself"
-say "RED and GREEN paths proven -- six refusals bitten, eight honest readings left free"
+say "RED and GREEN paths proven -- seven refusals bitten, eleven honest readings left free"
 
 say "GREEN: two-rooms doorway -- canon seated; every room read; forward pages name their room."

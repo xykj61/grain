@@ -4,7 +4,7 @@
 **Stamp:** `20260826.010645`
 **Style:** Gauge, Field setting -- see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md)
 **Voice:** Kyri
-**Status:** Living -- proven where it says proven, proposed where it says proposed
+**Status:** Living, **mixed** -- proven where it says proven, proposed where it says proposed
 **Kin:** [`20260825-210819_the-round-that-pulls-twice.md`](20260825-210819_the-round-that-pulls-twice.md) (the rota this extends) - [`../.claude/rules/debride.md`](../.claude/rules/debride.md) - [`../construction/REDS.md`](../construction/REDS.md) row %243
 
 ---

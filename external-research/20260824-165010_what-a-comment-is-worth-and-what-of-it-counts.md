@@ -4,7 +4,7 @@
 **Stamp:** `20260824.165010`
 **Style:** Gauge, **Field** setting
 **Voice:** Kyri
-**Room:** Design research -- an open question, opened rather than answered
+**Room:** Design research, **research for understanding** -- an open question, opened rather than answered
 **Kin:** [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md) -> *Code comments* and *Quality assurance* - [`../.claude/rules/quality-assurance.md`](../.claude/rules/quality-assurance.md)
 
 ## The question, plainly

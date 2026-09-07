@@ -4,7 +4,7 @@
 **Stamp:** `20260809.233940`
 **Voice:** Riyo
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
-**Status:** Study -- measured from the classical divisional tradition, adapted for the roles a loadable constellation will let a member wear. Nothing here signs, purchases, or renames; the buildable distillation lives in its own active-designing brief. Accrete-never-break: this paper adds.
+**Status:** Study, **research for understanding** -- measured from the classical divisional tradition, adapted for the roles a loadable constellation will let a member wear. Nothing here signs, purchases, or renames; the buildable distillation lives in its own active-designing brief. Accrete-never-break: this paper adds.
 **Ground:** Follows `20260809-232015_loadable-topologies-and-pond-the-application-module.md`. That paper asked for a topology whose members carry *roles*; this one reads the tradition for what those roles could be.
 
 ---

@@ -4,7 +4,7 @@
 **Language:** EN
 **Style:** Gauge, Field setting (see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md))
 **Voice:** Kyri
-**Status:** Proposed -- external research. Every number below is measured and bound by a witness; the design reading is proposed (`context/TWO_ROOMS.md`).
+**Status:** Proposed -- external research, **mixed**. Every number below is measured and bound by a witness; the design reading is proposed (`context/TWO_ROOMS.md`).
 **Instrument:** `tools/fixtures/t/topology_growth_scan.sh` -- witness `tools/t/topology_growth_witness.rish` -- control `tools/fixtures/t/topology_growth_control.sh`
 **Elder:** [`what-a-departure-costs-a-shared-table`](20260907-000309_what-a-departure-costs-a-shared-table.md), which priced a full space losing a point and left the filling regime outside
 **Kin:** [`the-shape-you-grew-and-the-shape-you-are`](../foundations/20260823-105651_the-shape-you-grew-and-the-shape-you-are.md) -- Gall's law is the allocator here, rather than a lens on one

@@ -11,11 +11,12 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260907.102349` | [the door has two keys](20260907/20260907-102349_the-door-has-two-keys.kyri) | doorway 48 -> 37; the DOOR clause. |
 | `20260907.100809` | [the room guard that never read the why-room](20260907/20260907-100809_the-room-guard-that-never-read-the-why-room.kyri) | 112 pages in 4 unread rooms; row by stamp. |
 | `20260907.100416` | [What a supersede reads backwards](20260907/20260907-100416_what-a-supersede-reads-backwards.kyri) | row `20260907.095458`; `topology_stretch` GREEN. |
-| `20260907.093147` | [the room emptied by the motion that confirms](20260907/20260907-093147_the-room-emptied-by-the-motion-that-confirms.kyri) | %557: a pass clears what it answered. |
 | `20260907.095822` | [a gate that agreed with its own copy](20260907/20260907-095822_a-gate-that-agreed-with-its-own-copy.kyri) | %560: two Mantra gates decided the wrong count, green. |
 | `20260907.093227` | [the key held and the view moved](20260907/20260907-093227_the-key-held-and-the-view-moved.kyri) | a whole lap recovered from the round-open stash. |
+| `20260907.093147` | [the room emptied by the motion that confirms](20260907/20260907-093147_the-room-emptied-by-the-motion-that-confirms.kyri) | %557: a pass clears what it answered. |
 | `20260907.092303` | [existence is not coverage](20260907/20260907-092303_existence-is-not-coverage.kyri) | the Tally caller map read 19 of 68. |
 | `20260907.083428` | [the box works, what it cannot do is commit](20260907/20260907-083428_the-box-works-what-it-cannot-do-is-commit.kyri) | a lost lap landed, row `20260907.083054`. |
 | `20260907.081756` | [the map a guard writes for itself](20260907/20260907-081756_the-map-a-guard-writes-for-itself.kyri) | a row made checkable; two repaired by trace. |

@@ -41,6 +41,15 @@ page() {
   printf '\nbody\n' >> "$1"
 }
 
+# A page whose door speaks under **Room:** instead: $1 path, $2 the Room body, $3 optional Status.
+page_room() {
+  mkdir -p "$(dirname "$1")"
+  printf '# pen page\n\n' > "$1"
+  [ -n "${3:-}" ] && printf '**Status:** %s\n' "$3" >> "$1"
+  printf '**Room:** %s\n' "$2" >> "$1"
+  printf '\nbody\n' >> "$1"
+}
+
 # A repository holding one page of each honest kind, plus whatever the caller plants.
 build() {
   d=$pen/$1
@@ -151,5 +160,30 @@ commit_all "$d"
 scan_at "$d" 2 | grep -q 'verdict=ok' && echo "under_ceiling_free=yes" || echo "under_ceiling_free=no"
 scan_at "$d" 1 | grep -q 'FAIL doorway ratchet: 2 pages name no room' \
   && echo "over_ceiling_refused=yes" || echo "over_ceiling_refused=no"
+
+# 10. THE SECOND KEY. A page naming its room under **Room:** is free -- the elder read only
+#     **Status:** and counted two pages spelling `Mixed` as pages that named no room.
+d=$(build room_key); honest "$d"
+page_room "$d/external-research/20260902-060601_room_key.md" 'Mixed. The curve is measured; the reading is proposed.'
+commit_all "$d"
+scan_at "$d" 0 | grep -q 'verdict=ok' && echo "room_key_free=yes" || echo "room_key_free=no"
+
+# 11. THE OTHER LAW WEARING THE SAME WORD. `.claude/rules/design-rooms.md` calls a DIRECTORY a
+#     room, so a **Room:** naming one names no register -- counted, and named as a Room line
+#     rather than misreported as a missing Status.
+d=$(build room_directory); honest "$d"
+page_room "$d/active-designing/20260902-060602_directory.md" 'Design essay -- worth reading with the code deleted'
+commit_all "$d"
+out=$(scan_at "$d" 0)
+echo "$out" | grep -q 'doorway fails=1 ' && echo "room_directory_counted=yes" || echo "room_directory_counted=no"
+echo "$out" | grep -q 'FAIL active-designing/20260902-060602_directory.md Room does not name a room' \
+  && echo "room_directory_named=yes" || echo "room_directory_named=no"
+
+# 12. BOTH KEYS ARE READ. A lifecycle Status beside a Room token is free; neither key alone
+#     decides, so a page is never counted for answering under the other one.
+d=$(build both_keys); honest "$d"
+page_room "$d/docs/20260902-060603_both.md" 'vision' 'Living'
+commit_all "$d"
+scan_at "$d" 0 | grep -q 'verdict=ok' && echo "both_keys_free=yes" || echo "both_keys_free=no"
 
 echo "control_verdict=ok"

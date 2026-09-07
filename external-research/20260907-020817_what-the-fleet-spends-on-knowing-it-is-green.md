@@ -4,7 +4,7 @@
 **Language:** EN
 **Style:** Gauge, Field setting (see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md))
 **Voice:** Kyri
-**Status:** Proposed -- a measurement of the standing roster's cost and of how much of it is
+**Status:** Proposed -- **research for understanding**: a measurement of the standing roster's cost and of how much of it is
 recomputation. Nothing here is bound by a witness yet; the proposed room is where it sits
 ([`../context/TWO_ROOMS.md`](../context/TWO_ROOMS.md)).
 **Kin:** [`../.claude/rules/the-baton.md`](../.claude/rules/the-baton.md) -

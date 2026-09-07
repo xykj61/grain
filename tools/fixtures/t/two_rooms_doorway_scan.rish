@@ -51,8 +51,31 @@ if seating_env != "" then let seating = seating_env
 # no claim changed, three pages started naming their room, and the reading fell 47 to 44. Whether
 # `proposed` should itself be a fifth token is still the canon's to settle rather than this
 # guard's, and it is carried on the card.
+#
+# AND IT ROSE AGAIN OVERNIGHT, 44 -> 48, WHICH IS THE FINDING (`20260907.094712`). Four of the four
+# new pages were written by hands that had read the law -- two of them cite `context/TWO_ROOMS.md`
+# in the very Status line that names no room. The transcription repair above had then been done
+# twice in two days and regrown twice, so the missing piece is at WRITE time rather than at census
+# time; `tools/f/fleet_baton.txt` carries the one clause now, which is where a habit reaches every
+# ship on its next lap.
+#
+# THE READING FELL 48 -> 37 IN THREE MOVES, and each is a different kind of thing:
+#   +4 free -- the door is the HEAD, not one key. Nine pages answered under `**Room:**` rather than
+#      `**Status:**`, two of them spelling `Mixed`, and were read as naming no room at all.
+#   -3 caught -- the token is a WORD, not a substring. `no infrastructure provisioned`,
+#      `no VPS provisioned` and `divisional roles` each carry the letters of `vision`, and three
+#      post-seating pages were passing on them. `visionary` is kept, since `Visionary room` is an
+#      honest naming that two pages write.
+#   +11 repaired -- each page's own next sentence already said its register, transcribed into the
+#      door line. No claim changed on any of them.
+#
+# WHAT A GREP STILL CANNOT READ, named rather than guessed at: a token can be DENIED and still
+# match. `**Room:** Proposed -- nothing here is checkable until a witness binds it` read OK on the
+# word its own sentence negates. That page is repaired at the source, and a negation heuristic is
+# declined here -- `not vision -- checkable` is honest prose and a rule refusing it would refuse
+# more truth than it caught. Presence is what a grep reads; assertion stays a reader's.
 let ceiling_env = env "TWO_ROOMS_DOORWAY_CEILING"
-let ceiling = "44"
+let ceiling = "37"
 if ceiling_env != "" then let ceiling = ceiling_env
 
 let roster = run ["sh" "tools/fixtures/t/two_rooms_doorway_roster.sh"]

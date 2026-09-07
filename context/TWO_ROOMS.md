@@ -1,7 +1,7 @@
 # Two Rooms -- The Checkable and the Visionary
 
 **Language:** EN
-**Last updated:** `20260907.015907` (the three questions a Status line answers, named; doorway vocabulary and living discipline unchanged -- elder refresh `20260717`, Quin voice)
+**Last updated:** `20260907.094712` (the door is the head and two keys open it -- `**Status:**` or `**Room:**`; the token is a word rather than a substring; the three questions a Status line answers seated `20260907.015907` -- elder refresh `20260717`, Quin voice)
 **Style:** Gauge (see `GAUGE_STYLE.md`)
 **Voice:** Quin
 **Status:** Seated -- checkable-room canon; reviewed and kept `20260705.203144 UDT`; doorway witness from that stamp forward (`tools/t/two_rooms_doorway.rish`)
@@ -81,6 +81,24 @@ name the room in words the witness can bind. Accepted room tokens (case-insensit
 
 The witness is [`../tools/t/two_rooms_doorway.rish`](../tools/t/two_rooms_doorway.rish). A Status that
 says "design" or "study" alone, without one of those tokens, does not yet name the room.
+
+**The door is the head, and two keys open it** (amended `20260907.094712`). A page may carry the
+token in its `**Status:**` line or in a `**Room:**` line, and the witness reads both. Nine pages
+under the doorway roster answered under `**Room:**`, two of them spelling `Mixed` -- this table's
+own token, at the door, in this page's own word -- and were counted as pages naming no room at all.
+
+**Two laws use the word room, so a `**Room:**` line may be answering the other one.** This page
+names a **register**; [`../.claude/rules/design-rooms.md`](../.claude/rules/design-rooms.md) names a
+**directory**, decided by *would this still be worth reading if the code were deleted?* So
+`**Room:** Design essay -- worth reading with the code deleted` is an honest answer to a different
+question, still names no register, and is still counted -- named now as a Room line rather than
+misreported as a missing Status.
+
+**The token is a word rather than a substring.** Measured `20260907`, three post-seating pages read
+as naming a room on the letters inside `provisioned` and `divisional`. `Visionary` is kept on
+purpose: `**Status:** Visionary room` is an honest naming of the vision room. And a grep reads
+presence rather than assertion -- one page read as checkable off the sentence *nothing here is
+checkable until a witness binds it* -- so the last reader of a door is still a reader.
 
 **The Status line answers more than one question, and the doorway reads one of them.** A page's
 `**Status:**` line gets asked for three different things at once, and the three come apart cleanly:

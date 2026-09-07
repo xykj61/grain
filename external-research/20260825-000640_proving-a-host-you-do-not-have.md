@@ -1,6 +1,6 @@
 # Proving a host you do not have
 
-**Stamp:** `20260825.000640` - **Status:** Open question, unresolved - **Style:** Gauge, Field setting
+**Stamp:** `20260825.000640` - **Status:** Open question, unresolved, **research for understanding** - **Style:** Gauge, Field setting
 **Voice:** Kyri - **Booked under:** the standing permission of `20260824` to book what a round surfaces
 **Occasioned by:** REDS %214 - `construction/REDS.md`
 
