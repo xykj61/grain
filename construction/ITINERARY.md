@@ -46,19 +46,34 @@
 
 ### Now -- the live front
 
-**Git nib:** `5826c9be29` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `9e4933f9bf` -- HEAD's parent, resolvable everywhere (%401).
+
+**BAKERY -- A GUARD THAT READS A PROXY ANSWERS ABOUT THE PROXY, AND THE PARAGRAPH SAYING SO SAT IN
+THE BOX IT COULD NOT READ.** `%510` CLOSED. `stash_record_scan.sh` asked every session log in a
+round-open stash whether a reader ref carried it; the log is the proxy because every lap writes one,
+so a lap whose log lands while its code waits reads `unlanded=0 verdict=ok` over a box still holding
+the files. **Widened to every NON-record path by the same probe:** `paths=48 orphans=9 unread=39`,
+`paths = orphans + unread` always, records and paths partitioning the box. Six of the nine are fold shelves
+whose rows stand elsewhere; **THREE are work nothing carries** -- `sow_allow_reach_control.sh` (209
+lines), and the pen and probe authorizing `%446`'s skip, waiting while their guard landed ahead. Reported never gated: a count stays
+local where a record travels. Control **34 -> 51**. **And the records came home** -- two logs stood in
+`stash@{0}` and on no ref, the very laps that found this: `unlanded` **2 -> 0**.
+
+**YOURS, MEASURED WHOLE AND NOT TAKEN: THE DATED-PATH CENSUS GATES A CLASS IT WAS NEVER BUILT FOR.**
+`dated_path_witness` reds at `refs_lost=169` against a ceiling of **165** only a debride may raise.
+Classified by two independent readers agreeing exactly: **139 backticked mentions, 15 bare, 15
+links** -- and crossed with living-versus-testimony, **all 30 promises sit in dated testimony**, so
+the repairable count is **ZERO**. The largest population, **86 rows in two `20260722` shelves, is a
+deliberate repair** a hand made on `20260823.184309`, dropping links whose logs never landed
+*because a link promises a file a reader can open*; the census reads it as 86 units of damage.
+**The shape:** print `lost_mentioned` / `lost_promised` / `lost_promised_living`, subtraction
+signed, gate the cell that is both -- zero today, steady where the elder reading rises on ordinary
+work. Whether a gate may move to the class it was built
+for, when the elder ceiling can only fall, is your word.
 
 **BAKERY and DIFFUSER accounts, CLOSED and folded** to the [`173444` shelf](archive/20260906-173444_itinerary-landed-accounts.md): `%499`/`%503` (a discriminator that was a tautology), `%501` and its two answers (the Moore bound asked in the direction that decides, then the abelian floor beneath it).
 
-**PATCHOULI -- A PARK IS NOT A LANDING, AND THE GUARD BUILT FOR THE FIRST DEAD-LETTER BOX ACCEPTED
-THE SECOND AS PROOF THE FIRST WAS EMPTY.** `%507` CLOSED,
-[folded](archive/REDS-a-park-is-not-a-landing-rows-507.md). `stash_record_scan.sh` read `refs/heads`
-and `refs/remotes` **whole** -- where the round open parks -- so a record on
-`pier/diverged-20260906-131810` alone read `landed:refs/heads/pier/...`, **`unlanded=0 verdict=ok`**,
-while `stash@{0}` held a **complete unlanded feature**: `annotate`, its witness, a scan, a control,
-a runner, a roster line, **1,107 insertions already GREEN**, on no reader ref at all. **Repaired
-here:** `unlanded=1 parked=1 verdict=records_unlanded`; **23** park refs stand. `reader_refs` excludes
-the `pier/` namespace; `parked` reports **beside** the gate, so `fleet_round_open.sh` is untouched. Control **22 -> 34**, **8 new legs bitten** against the elder scan.
+**PATCHOULI -- a park is not a landing.** `%505`'s sibling, `%507` CLOSED and whole on its [shelf](archive/REDS-a-park-is-not-a-landing-rows-507.md): `reader_refs` excludes the `pier/` namespace, `parked` reports beside the gate, control **22 -> 34**. `%510` above is the drawer beneath it.
 
 **AND THE PARKED WORK LANDED: `%506` CLOSED**,
 [folded](archive/REDS-the-property-nobody-named-rows-506.md). `Weave.annotate` -- one `Note` per
@@ -89,19 +104,7 @@ since only the field projects and it REFUSED on an absent `seed/`. **A guard tha
 ordinary is one somebody turns off** -- it skips and says so now; the SCAN still refuses when
 pointed at a missing projection (`%170`). No gate. **Yours, fourteenth firing:** should an OPEN row carry a claim and seat at START?
 
-**PETRICHOR -- TWO SHIPS BUILT ONE GUARD IN THREE MINUTES, AND IT COULD READ 19 OF 274.** `%507`
-CLOSED. Two trees found `%495`'s remainder eight minutes apart and each built one; mine committed at
-14:56:19, the peer's at 14:59:07, and **theirs published first**, so mine is withdrawn whole --
-`%484`'s rule, one defect to one record -- parked at `pier/petrichor-20260906-145718`. **A full scan, a twenty-case pen and a witness, written twice
-in one hour.** *Your thrice-asked question now carries a price rather than a hypothesis.*
-**And the finding that outlived the withdrawal:** comparing the two readings measured the landed
-one. **274 links into a fold shelf stand in living files; it could read 19.** The largest
-population, **47** in the fold recital, wears a third shape -- `Row 172 folded to` ahead of a
-path-anchored link -- that neither elder form can see, and the census said nothing about them:
-`shelf_unnumbered=0` reads as *all agree*, meaning *of the 19 I can see* -- **`%451`'s class inside
-a guard one hour old.** Repaired INSIDE it rather than beside it: the FOLD form anchored like its
-SHELF sibling, `all_links` and `unread_links` printed, the subtraction kept **signed** so an overlap
-refuses rather than clamps (`%498`). Reach **19 -> 66 of 274**; the 208 still unreadable are named each pass. Pen 23 -> **33**
+**PETRICHOR -- two ships built one guard in three minutes, and it could read 19 of 274.** Row **`%505`** and its whole recital fold to [`REDS-two-ships-one-guard-rows-505.md`](archive/REDS-two-ships-one-guard-rows-505.md); reach **19 -> 66 of 274**, pen 23 -> 33. *(The card had numbered it `%507`; the ledger reads `%505`.)*
 **Yours -- my standing question, now carrying its number.** A ceiling with no floor scores a page
 that leads nowhere at **100**, and of **607** living pages a newcomer reaches from the front door
 **82 lead nowhere** -- 76 with no link at all, one of them a tutorial on my own shelf. Measuring it

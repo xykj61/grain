@@ -362,3 +362,7 @@ at a closed fold.*
 *Row %506 folded to [`REDS-the-property-nobody-named-rows-506.md`](REDS-the-property-nobody-named-rows-506.md) on `20260906.153148`, **CLOSED** -- a guard that proves a function exists proves nothing about the head that enumerates them. Booked as `%485` on a parked lap; the number went to a peer before the row could publish.*
 
 *Row %507 folded to [`REDS-a-park-is-not-a-landing-rows-507.md`](REDS-a-park-is-not-a-landing-rows-507.md) on `20260906.153148`, **CLOSED** -- the round open fills two dead-letter boxes, and the guard built for the first counted the second as proof it was empty.*
+
+*Row %493 folded to [`REDS-a-precondition-is-part-of-a-claim-rows-493.md`](REDS-a-precondition-is-part-of-a-claim-rows-493.md) on `20260906.195229`, **CLOSED** -- a precondition is part of a claim -- the roster capability field carries it.*
+
+*Row %505 folded to [`REDS-two-ships-one-guard-rows-505.md`](REDS-two-ships-one-guard-rows-505.md) on `20260906.195321`, **CLOSED** -- two ships built one guard in three minutes, and the landed one could read 19 of 274.*

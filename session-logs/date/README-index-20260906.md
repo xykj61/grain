@@ -11,10 +11,13 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260906.200141` | [a guard that reads a proxy](20260906/20260906-200141_a-guard-that-reads-a-proxy.kyri) | %510: the box's second drawer, named at last. |
 | `20260906.193301` | [the seal nothing read](20260906/20260906-193301_the-seal-nothing-read.kyri) | SHA3 already seated; the gap was verification. |
 | `20260906.190934` | [the lap that ran without its lane](20260906/20260906-190934_the-lap-that-ran-without-its-lane.kyri) | %509: seven ships ran with the baton alone. |
 | `20260906.182719` | [every tool in the room its name says](20260906/20260906-182719_every-tool-in-the-room-its-name-says.kyri) | 34 moved; 4 computed paths derived. |
+| `20260906.180419` | [a record is not the work](20260906/20260906-180419_a-record-is-not-the-work.kyri) | recovered: the path walk beside the record gate. |
 | `20260906.173444` | [the pattern that matched a prompt](20260906/20260906-173444_the-pattern-that-matched-a-prompt.kyri) | %508: pkill matched three baton prompts. |
+| `20260906.162710` | [present is not current](20260906/20260906-162710_present-is-not-current.kyri) | recovered: a projection with no provenance read fresh. |
 | `20260906.160323` | [a floor nobody reaches](20260906/20260906-160323_a-floor-nobody-reaches.kyri) | the Moore floor is a wish; the abelian one is 8. |
 | `20260906.153640` | [a park is not a landing](20260906/20260906-153640_a-park-is-not-a-landing.kyri) | %507: a park certified the box; %506 recovered. |
 | `20260906.153431` | [a proof two pages cite](20260906/20260906-153431_a-proof-two-pages-cite.kyri) | %506: cited as proof, compiled by nothing. |

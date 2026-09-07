@@ -143,12 +143,23 @@ fi
 #
 # NEVER ALLOWED TO FAIL THE OPEN. The whole point of this script is that it cannot die at the
 # open, so the reading is guarded by its own presence and its refusal is only ever a printed line.
+#
+# TWO DRAWERS, TWO LINES, ONE SCAN RUN (REDS %510). The reading answers about the RECORD and about
+# the WORK, and they are different questions: a lap whose log landed while its code did not reads
+# `unlanded=0` over a box still holding the files. Both are read out of one invocation, so naming
+# the second drawer costs this open nothing.
 SCAN=tools/fixtures/s/stash_record_scan.sh
 if [ -r "$SCAN" ]; then
-  UNLANDED=$(sh "$SCAN" 2>/dev/null | grep '^unlanded=' | cut -d= -f2)
+  BOX=$(sh "$SCAN" 2>/dev/null)
+  UNLANDED=$(printf '%s\n' "$BOX" | grep '^unlanded=' | cut -d= -f2)
   case "${UNLANDED:-0}" in
     ''|0) : ;;
     *) say "$UNLANDED session log(s) stand in the dead-letter box and nowhere else -- sh $SCAN list" ;;
+  esac
+  ORPHANS=$(printf '%s\n' "$BOX" | grep '^orphans=' | cut -d= -f2)
+  case "${ORPHANS:-0}" in
+    ''|0) : ;;
+    *) say "$ORPHANS file(s) stand in the dead-letter box and on no ref -- sh $SCAN list" ;;
   esac
 fi
 
