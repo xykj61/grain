@@ -1,7 +1,43 @@
-# two_rooms_doorway.rish -- TWO_ROOMS seated; forward pages name their room.
+# two_rooms_doorway.rish -- a page names its room at the door, and the door is read.
+#
+# WHY THIS RUNG. `context/TWO_ROOMS.md` seats one line of discipline: a forward-facing page names
+# its register in its own Status line -- checkable, vision, mixed, or research for understanding --
+# so no reader has to guess which room they stand in. The Earth row of the council rota reads that
+# token the way a nose reads bread: at the door, whole, before any body paragraph is trusted.
+#
+# WHY IT WAS REPAIRED 20260906. This witness had three faults at once, and each hid the next.
+#
+#   BLIND. Its roster was a shell glob over three rooms. `active-designing/` folded to
+#   `date/YYYYMMDD/` under the mark law and a shell `*` stops at `/`, so 607 pages left the
+#   subject on the day their room was filed. A broken path reds; a narrowed glob goes green.
+#
+#   DEAF. The guard stood on no roster, so nothing ran it. It was RED the whole time.
+#
+#   MUTE. `assert result.ok` stood ahead of `say result.out`, so the one run that mattered -- the
+#   failing one -- printed "scan failed" and swallowed all forty-five page names behind it. A
+#   guard that cannot say what it found asks its reader to rediscover the finding.
+#
+# WHAT IS PROVEN, on metal.
+#   The canon is seated: TWO_ROOMS.md carries its Status and the gloss spec exists.
+#   The reading reaches all three rooms AND at least one folded `date/` shelf -- the floor that
+#   watches for this defect's own return, since a narrowed roster reports a smaller clean tree.
+#   Pages naming no room stand at or under a ceiling that only falls.
+#   Fourteen behaviors on throwaway trees. Ten of them flip to `no` when the elder roster is put
+#   back, which is how a control is proven load-bearing rather than merely green.
+#
+# WHAT IS RATCHETED RATHER THAN GATED. Forty-five pages, three of them dated testimony on `date/`
+# shelves that accrete-never-break keeps exactly as written. A gate that can never close is one
+# somebody turns off, so the ceiling falls as pages are repaired and never rises.
+#
+# WHAT IS NOT PROVEN. That a page naming `checkable` belongs in the checkable room. The token is
+# read; the judgment behind it stays a reader's.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/t/two_rooms_doorway.rish
+
+say "two-rooms doorway: Language EN -- a page says its room at the door."
+say "two-rooms doorway: Style Gauge, Meter -- the token is read, never inferred."
+say "two-rooms doorway: Lens TAME -- safety first: a reading that narrowed in silence read as clean."
 
 say "two-rooms doorway: asserting canon seated..."
 
@@ -11,16 +47,35 @@ assert seat_check.ok else "TWO_ROOMS or canonical gloss spec not seated"
 say "two-rooms doorway: scanning forward-facing pages..."
 
 let result = run ["rishi/bin/rishi" "run" "tools/fixtures/t/two_rooms_doorway_scan.rish"]
+
+# The output comes first, always. The failing run is the one whose names a reader needs.
+say result.out
 if result.ok == false then say "two-rooms doorway scan stderr:"
 if result.ok == false then say result.err
+
+assert result.out contains "doorway pages=" else "two-rooms doorway: the scan must report its own reach"
+assert result.out contains "verdict=ok" else "two-rooms doorway RED -- read the FAIL lines above; each names one page"
 assert result.ok else "two-rooms doorway scan failed"
 
-say result.out
+say "field GREEN -- every room read, every folded shelf reached, the ratchet under its ceiling"
 
-let lines = lines result.out
-let fails = where lines as l: l starts-with "FAIL"
+let control = run ["sh" "tools/fixtures/t/two_rooms_doorway_control.sh"]
+assert control.ok else "two-rooms doorway: the control must complete"
+say control.out
+assert control.out contains "named_room_free=yes" else "two-rooms doorway: a page naming its room must pass free"
+assert control.out contains "clean_reads_zero=yes" else "two-rooms doorway: a clean tree must read zero rather than merely pass"
+assert control.out contains "no_room_counted=yes" else "two-rooms doorway: a Status naming no room must be counted"
+assert control.out contains "no_room_named=yes" else "two-rooms doorway: the refusal must name the page, so the repair is one line away"
+assert control.out contains "no_status_counted=yes" else "two-rooms doorway: a page with no Status line must be counted"
+assert control.out contains "before_seating_free=yes" else "two-rooms doorway: a page stamped before seating is grandfathered"
+assert control.out contains "unstamped_free=yes" else "two-rooms doorway: a page carrying no one-clock stamp is grandfathered"
+assert control.out contains "folded_page_read=yes" else "two-rooms doorway: a page on a date/ shelf must be read"
+assert control.out contains "folded_fail_counted=yes" else "two-rooms doorway: a folded page naming no room must be counted, not filed away"
+assert control.out contains "yonder_excluded=yes" else "two-rooms doorway: yonder is deferred-yet-alive and stays outside the elder reach"
+assert control.out contains "readme_excluded=yes" else "two-rooms doorway: a room's front door describes the room rather than speaking from one"
+assert control.out contains "flat_only_roster_refused=yes" else "two-rooms doorway: a roster narrowed to the flat room must refuse, never report a smaller clean tree"
+assert control.out contains "over_ceiling_refused=yes" else "two-rooms doorway: the ratchet must refuse one page over its ceiling"
+assert control.out contains "control_verdict=ok" else "two-rooms doorway: the control must agree with itself"
+say "RED and GREEN paths proven -- six refusals bitten, eight honest readings left free"
 
-if length fails == 0 then say "TWO-ROOMS DOORWAY GREEN: canon seated; forward pages name their room."
-if length fails != 0 then say "TWO-ROOMS DOORWAY RED: ${length fails} page(s) forgot the door."
-
-assert length fails == 0 else "two-rooms doorway RED"
+say "GREEN: two-rooms doorway -- canon seated; every room read; forward pages name their room."

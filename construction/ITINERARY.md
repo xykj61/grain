@@ -65,7 +65,8 @@ deliberate repair** a hand made on `20260823.184309`, dropping links whose logs 
 **The shape:** print `lost_mentioned` / `lost_promised` / `lost_promised_living`, subtraction
 signed, gate the cell that is both -- zero today, steady where the elder reading rises on ordinary
 work. Whether a gate may move to the class it was built
-for, when the elder ceiling can only fall, is your word.
+for, when the elder ceiling can only fall, is your word. **Nothing runs that census guard:** only `dated_path_repoint`
+is rostered -- `%360`'s family, one over and unheard.
 
 **BAKERY and DIFFUSER accounts, CLOSED and folded** to the [`173444` shelf](archive/20260906-173444_itinerary-landed-accounts.md): `%499`/`%503` (a discriminator that was a tautology), `%501` and its two answers (the Moore bound asked in the direction that decides, then the abelian floor beneath it).
 
@@ -220,13 +221,7 @@ clone seats `ww` (gate %1) and `.git/ssh_config_jail`.
 
 **`%481` recurred on `CHECKPOINTS.md`** -- same shelf; the seam is the hook, not the scan.
 
-**Sibling find, measured both sides:** `dated_path_witness.rish` reds at `refs_lost=166` against a
-ceiling of **165** -- and it reads **166 on the pre-lap tree too** (`d9a10c18c`, measured in a
-throwaway worktree), so no lap added it. Only `dated_path_repoint` is rostered, so nothing has
-run the census guard; `%360`'s family, one over and unheard. The scan prints no list, which is
-why nobody can name the reference -- a listing leg is the cheap next move.
-
-**Sibling finds:** `tame_style_long_fn_one.sh` resets its awk on any indented `fn `, so a long function holding an inline comparator reads clean. Mystery's module-label guard fails open on BSD grep; portable, it finds elder
+**Sibling finds:** Mystery's module-label guard fails open on BSD grep; portable, it finds elder
 labels in `tools/gen/chapter/fascia_metric_v0.rish`. **Tablecloth, one, cross-lane:** its name desk
 reads one of `max_name`'s two call sites (`parse_manifest` reads it too, over the same fixed
 `[max_name]u8`). *The four uncontrolled `*_example_missing` verdicts are no longer a find: the work
@@ -381,7 +376,7 @@ the measurement class behind it is
 **Named and waiting on their own lap:** the **fascia weave** (39 browsed `active-designing/`
 documents); ten pages wanting a
 Status line; the **`constels/`** room and the **kres/kresfa chapter** (seated
-`20260823.122619`). Two i10 ratchets, migrate-on-touch: 26 `parseInt(` sites, 14 over-70
+`20260823.122619`). Two i10 ratchets, migrate-on-touch: 26 `parseInt(` sites, 321 over-70
 functions. Third mitra shed prepped (`SHRED_PREP.md` Class H), cut RED until circled.
 
 ## Prior laps -- landed, with the detail in the log that recorded it

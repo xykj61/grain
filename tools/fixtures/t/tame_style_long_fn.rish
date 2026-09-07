@@ -1,21 +1,17 @@
 # tame_style_long_fn.rish -- >70-line function ledger for tame_style_scan advise.
 #
-# Native orchestration -- per-file awk in tame_style_long_fn_one.sh; rank via sort.
+# Native orchestration -- the walk and the rank live in tame_style_long_fn_scan.sh, which calls
+# tame_style_long_fn_one.sh once per authored .rye file.
+#
 # Run from the repository root:
 #   rishi/bin/rishi run tools/fixtures/t/tame_style_long_fn.rish
+#
+# WHY THE WALK IS IN THE SCAN (REDS %519). This file used to spawn one subprocess per file here and
+# join every chunk into one string to rank it. With the counter repaired the ledger holds 321 rows
+# rather than 15, and interpolating that blob into a command refuses with `StringTooLong` -- a
+# bound doing its job. The scan walks once and prints a summary line ahead of the top ten, so the
+# reading stays small enough to hold and matches the scan-plus-witness shape used everywhere else.
 
-let roster = run ["sh" "tools/fixtures/t/tame_style_long_fn_roster.sh"]
-assert roster.ok else "tame_style_long_fn roster failed"
-
-let files = where (lines roster.out) as f: f != ""
-
-let results = map files as f: run ["sh" "tools/fixtures/t/tame_style_long_fn_one.sh" f]
-
-let chunks = map results as r: trim r.out
-
-let non_empty = where chunks as c: c != ""
-
-if length non_empty != 0 then let blob = join non_empty "\n"
-if length non_empty != 0 then let ranked = run ["sh" "-c" "printf '%s\\n' \"${blob}\" | sort -t= -k2 -rn | head -10"]
-if length non_empty != 0 then assert ranked.ok else "tame_style_long_fn rank failed"
-if length non_empty != 0 then say ranked.out
+let ledger = run ["sh" "tools/fixtures/t/tame_style_long_fn_scan.sh"]
+assert ledger.ok else "tame_style_long_fn scan failed"
+say ledger.out

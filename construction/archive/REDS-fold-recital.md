@@ -118,7 +118,6 @@ it here. The pin keeps the three most recent, which is the live edge a reader wa
 
 *Row %299 folded to [`REDS-the-alias-and-the-unheard-rows-299.md`](REDS-the-alias-and-the-unheard-rows-299.md) on `20260827.200419`, **CLOSED** -- the file-versus-directory symlink that broke every `gardens_lawful` plant for twenty-three days, and the roster gap that hid it. It moved to make room for `%301`, whose own finding is the same shape one level up: a meter that discovers rooms by a property only some rooms have never reports the room nobody named. The third fold of the day, on a pin that opened the morning with three bytes of headroom.*
 
-
 *Row %300 folded to [`REDS-light-kept-rows-300.md`](REDS-light-kept-rows-300.md) on `20260827.201258`, **CLOSED** -- the Lumen seating carried by nothing, and Keaton's ruling that named the vane **Ember** instead. The fourth fold of `20260827`, after %293, %294, %298 and %299, on a pin that opened the morning with three bytes of headroom. A fifth was attempted and **refused**: `reds_fold.sh` reads `%301` as OPEN and the pin keeps what is open, which is the tool declining a fold its operator had talked himself into.*
 
 *Row %302 folded to [`REDS-the-ratio-is-the-tell-rows-302.md`](REDS-the-ratio-is-the-tell-rows-302.md) on `20260827.205859`, **CLOSED** -- ten witnesses carrying an absolute path into one host's home where 1,391 siblings wrote a relative one. The fifth fold of `20260827`, making room for `%303`, whose finding is the same lesson in a different key: a guard over one set proves things about the members it has, and only a guard over two sets can prove the set is whole.*
@@ -169,7 +168,6 @@ at a closed fold.*
 *Row 182 folded to [`archive/REDS-the-index-that-grew-alone-rows-182.md`](REDS-the-index-that-grew-alone-rows-182.md) on `20260824.075409`, **CLOSED** -- the room that folded while its index grew alone, to 2,895,849 bytes against a declared 24,576, and the index fold that seated the 39th guard. Moved here as row %187 carried the living pin past its bound. **Living rows 183 onward below.***
 
 *Row 183 folded to [`archive/REDS-a-fold-moves-depth-rows-183.md`](REDS-a-fold-moves-depth-rows-183.md) on `20260824.075409`, **CLOSED** -- the shelf writer that moved a row's text without its depth, and the rule that repaired it: fix the tool and re-run from a clean base rather than patching its output. Moved here as row %187 carried the living pin past its bound.*
-
 
 *Row %308 folded to [`REDS-the-template-and-the-standing-copy-rows-308.md`](REDS-the-template-and-the-standing-copy-rows-308.md) on `20260828.103023`, **CLOSED** -- the cadence cut repaired in the template and still printed by the launcher. Folded the morning after it was booked, to make room for `%309`: the two loop crashes, the handler that named every fault the same, and the recovery of seventeen destroyed files from git's own object store.*
 
@@ -286,7 +284,6 @@ at a closed fold.*
 
 *Row %444 folded to [`REDS-the-accident-that-looked-like-a-decision-rows-444.md`](REDS-the-accident-that-looked-like-a-decision-rows-444.md) on `20260905.235828`, **CLOSED** -- %431 weighed three ways to live with a file that could not travel, and every one rested on a property the tree did not have: .gitignore never named publish-seed.sh, the root wildcard caught it as it catches every unlisted root path. Measuring that turned a workaround into a one-line allow-back and a manifest verdict.*
 
-
 *Row %445 folded to [`REDS-the-sentence-a-right-machine-produced-rows-445.md`](REDS-the-sentence-a-right-machine-produced-rows-445.md) on `20260906.001800`, **CLOSED** -- three standing guards refused correctly for a missing instrument and every one named a file that carried exactly what it was said to lack -- the machine was right and the sentence it produced was wrong.*
 *Rows %439-%441 folded to [`REDS-what-no-meter-was-reading-rows-439-441.md`](REDS-what-no-meter-was-reading-rows-439-441.md) on `20260905.235819`, **BOOKED** and **CLOSED** -- each landed a true claim in a place no instrument reads -- a doc comment, a shelf's row order, an essay's scope -- so a statement correct where it stood was invisible to every guard.*
 
@@ -329,7 +326,6 @@ at a closed fold.*
 *Row %479 folded to [`REDS-the-instrument-that-was-in-the-box-rows-479.md`](REDS-the-instrument-that-was-in-the-box-rows-479.md) on `20260906.110500`, **CLOSED** -- an instrument is not standing until its roster row is standing beside it.*
 
 *Row %480 folded to [`REDS-a-claim-whose-only-source-is-itself-rows-480.md`](REDS-a-claim-whose-only-source-is-itself-rows-480.md) on `20260906.092312`, **CLOSED** -- a claim whose only source is a previous statement of itself: three crushed indexes counting their rooms from memory.*
-
 
 *Row %482 folded to [`REDS-a-proof-nobody-runs-rows-482.md`](REDS-a-proof-nobody-runs-rows-482.md) on `20260906.104500`, **BOOKED** -- a page declared an equality arc closed on eight witnesses and no runner in the tree named seven of them; `%449` was a proof nobody compiled, and this is a proof nobody runs.*
 
