@@ -397,3 +397,5 @@ at a closed fold.*
 
 *Row %530 folded to [`REDS-a-channel-that-drops-its-cargo-rows-530.md`](REDS-a-channel-that-drops-its-cargo-rows-530.md) on `20260907.021038`, **CLOSED** -- a channel built to carry a claim forward drops the one thing it was built to carry.*
 *Row %537 written straight to [`REDS-the-door-that-opened-on-the-seat-it-replaced-rows-537.md`](REDS-the-door-that-opened-on-the-seat-it-replaced-rows-537.md) on `20260907.020000`, **CLOSED** -- the council rota moved a seat and the door onto it stayed where it was, invisible to every link wall because both paths resolve.*
+*Row %538 folded to [`REDS-one-ratchet-two-debts-rows-538.md`](REDS-one-ratchet-two-debts-rows-538.md) on `20260907.021143`, **CLOSED** -- a ratchet is a promise about one repair, so a number covering two repairs is two ratchets wearing one name.*
+*Row %539 written straight to [`REDS-the-room-that-said-it-was-the-corpus-rows-539.md`](REDS-the-room-that-said-it-was-the-corpus-rows-539.md) on `20260907.045834`, **CLOSED** -- a hand-named room is an enumeration with one element, and one element is the easiest length at which an enumeration passes for a population.*

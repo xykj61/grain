@@ -1,18 +1,32 @@
 #!/bin/sh
 # tools/fixtures/g/glow_desk_reach_scan.sh -- which Glow desks does the desk witness actually run?
 #
-# WHY THIS EXISTS. glow/gen/ holds the generated desk corpus for the language, and exactly one
+# WHY THIS EXISTS. glow/gen/ is the desk ROOM this meter reads, and exactly one
 # guard runs desks: tools/g/glow_run_desk_witness.rish, 1,133 lines of hand-written blocks that
 # name their desks one at a time. A hand-written enumeration standing in for a population drifts
 # the moment the population grows, and nothing in this tree could see the drift. Measured
-# 20260907.004636: the witness named 213 desks and glow/gen/ held 352.
+# 20260907.020441: the witness names 218 desks and glow/gen/ holds 352. (This door read 213 and
+# 134 for one lap -- the numbers a mis-collated `comm` produced before `LC_ALL=C` was exported
+# below, left standing in the prose when the fix landed in the code. A door that recites a
+# number its own body disproves is the drift this meter exists to catch, one room in.)
+#
+# THE ROOM IS NOT THE CORPUS, AND THIS DOOR ONCE SAID IT WAS. The sentence above read "glow/gen/
+# holds the generated desk corpus for the language" until 20260907.045422, and it was false when it
+# was written: the tree carries 451 tracked *.glow files in eighteen rooms, 99 of them outside
+# glow/gen/ -- 49 under src/gate/, 39 under src/shape/, 7 under tools/fixtures/g/, and four
+# elsewhere. `uncovered` stays scoped to the room on purpose, since those rooms have their own
+# runners (47 of 49 src/gate/ desks and all 39 src/shape/ desks are named by some tool), and
+# widening it would fold four questions into one and raise a ceiling that may only fall. What
+# changed is that the claim is now `corpus_glow` and `corpus_outside`, printed below, rather than a
+# sentence: a hand-named room is an enumeration with one element, and one element is the easiest
+# length at which an enumeration passes for a population.
 #
 # THE BRAID THIS UNTANGLES. A desk's run-contract -- may this file be handed to glow_run? -- was
 # declared in three places that no instrument could read together:
 #
 #   arity        tools/g/glow_run_worker.sh, a hand-written `case` over stem names
 #   runnability  a `::` prose comment inside the desk ("Parse-only; do not glow_run")
-#   coverage     the 213 hand-written blocks inside glow_run_desk_witness.rish
+#   coverage     the 218 hand-written blocks inside glow_run_desk_witness.rish
 #
 # Three enumerations of one corpus, none derived from any other. The agreement between them was
 # real and perfect -- the five desks that declare themselves unrunnable are exactly the five the
@@ -23,7 +37,7 @@
 # WHAT IT READS. Every *.glow under glow/gen/, and the desk paths named by the desk witness.
 # Seven readings come out; four are gated at zero and one is the ratchet.
 #
-#   desks           every *.glow under glow/gen/, the whole corpus
+#   desks           every *.glow under glow/gen/, this room's whole population
 #   norun_by_name   desks whose stem carries `refuse` -- the contract written in the name
 #   norun_by_head   desks whose leading `::` comments declare Refuse or `do not glow_run`
 #   norun_disagree  the symmetric difference of those two           -- GATED AT ZERO
@@ -32,7 +46,34 @@
 #   phantom         covered desks absent from disk                  -- GATED AT ZERO
 #   contradicted    declared_norun desks the witness runs anyway    -- GATED AT ZERO
 #   runnable        desks - declared_norun
-#   uncovered       runnable - covered                              -- THE RATCHET
+#   uncovered       runnable - covered                              -- derived from its two parts
+#   sample_list     stems the worker's `case` permits a sample argument
+#   sample_phantom  permitted stems naming no .glow in the tree     -- GATED AT ZERO
+#   sample_permitted  desks in this room the worker will take a sample for
+#   uncovered_sampled uncovered desks the worker only runs WITH a sample  -- RATCHET
+#   uncovered_bare  uncovered desks the witness could name today    -- RATCHET
+#   corpus_glow     every *.glow in the tree, all rooms
+#   corpus_outside  those standing outside this room
+#   stem_collision  stems two or more *.glow files share
+#
+# THE THIRD ENUMERATION, READ AT LAST, AND WHAT IT SPLIT. The braid above named three hand-written
+# statements about this corpus and this meter read two of them -- name marker against head marker,
+# and coverage against the room. The third, the worker's sample-permission `case`, went unread for
+# a lap, and reading it turns one number into two.
+#
+# The witness runs every desk it names with ZERO arguments: 218 run lines, every one ending
+# `.glow"]`, measured 20260907.020441. The worker refuses an argument for any stem absent from its
+# `case`, and permits one for 94 stems, of which 46 live in this room. **Every one of those 46 is
+# uncovered, and not one is covered.** That is not a coincidence and not an oversight -- it is the
+# boundary of the instrument's shape, drawn exactly.
+#
+# So `uncovered=129` was holding two debts that cost different things. Eighty-three are desks the
+# witness could name tomorrow in one three-line block. Forty-six need a sample value somebody must
+# choose -- what argument proves this gate? -- and then a fourth hand-written enumeration to hold
+# the answers, which is the shape %532 booked in the first place. A single ratchet also hides a
+# real fault: cover one bare desk while one sample-taking desk lands, and 129 stands unchanged.
+#
+# Two ceilings, each falling on its own repair, and the sum derived from them rather than spelled.
 #
 # WHY norun_disagree IS GATED AND NOT MERELY REPORTED. The two markers are independent statements
 # of one fact, and this tree has watched a single marker drift in silence all week. A desk renamed
@@ -45,13 +86,13 @@
 # contradicted asks whether the witness and the desk disagree about whether the desk may run. They
 # fire on different faults and a reader repairing one must not have to reason about the other.
 #
-# WHY uncovered IS A RATCHET RATHER THAN A GATE. It stands at 134 today. A ceiling that only falls
+# WHY uncovered IS A RATCHET RATHER THAN A GATE. It stands at 129 today, in two parts. A ceiling that only falls
 # means a desk landing tomorrow must be covered by the witness, declare itself unrunnable in both
 # markers, or turn this guard red on the lap it arrives -- which is the whole promise, and it costs
-# no repair of the standing 134 to make. Gating at zero would refuse the tree for a backlog nobody
+# no repair of the standing 129 to make. Gating at zero would refuse the tree for a backlog nobody
 # created today, and a guard that reds on ordinary work is a guard somebody turns off.
 #
-# A FOURTH KIND, FOUND ON METAL AND LEFT TO ITS OWNER. Running all 139 uncovered desks
+# A FOURTH KIND, FOUND ON METAL AND LEFT TO ITS OWNER. Running all 129 uncovered desks
 # 20260907 turned up three files under glow/gen/s/ that fail with `unsupported Glow head` --
 # sample-demo-fact-line-lits.glow, sample-demo-fixture-lits.glow and sample-digraph-table.glow.
 # They are data fixtures rather than desks (sample-digraph-table.glow names its own twin,
@@ -93,6 +134,7 @@ cd "$ROOT" || exit 2
 
 DESK_DIR=${GLOW_DESK_DIR:-glow/gen}
 WITNESS=${GLOW_DESK_WITNESS:-tools/g/glow_run_desk_witness.rish}
+WORKER=${GLOW_DESK_WORKER:-tools/g/glow_run_worker.sh}
 
 # Bound: the corpus stood at 352 on 20260907 and grows by hand, a few desks a round. 4096 is a
 # power of two an order of magnitude above that -- high enough never to refuse honest growth, low
@@ -105,6 +147,10 @@ if [ ! -d "$DESK_DIR" ]; then
 fi
 if [ ! -f "$WITNESS" ]; then
   echo "glow_desk_reach: no desk witness at $WITNESS" >&2
+  exit 2
+fi
+if [ ! -f "$WORKER" ]; then
+  echo "glow_desk_reach: no run worker at $WORKER" >&2
   exit 2
 fi
 
@@ -159,9 +205,109 @@ runnable=$(wc -l < "$WORK/runnable" | tr -d ' ')
 comm -23 "$WORK/runnable" "$WORK/covered" > "$WORK/uncovered"
 uncovered=$(wc -l < "$WORK/uncovered" | tr -d ' ')
 
-# The ceiling lives here rather than in the witness, so a control can move it by name and prove
-# the refusal from both sides. A ceiling only falls: lower it when a repair lands.
-UNCOVERED_CEILING=${GLOW_DESK_UNCOVERED_CEILING:-129}
+# THE THIRD ENUMERATION, AND THE SPLIT IT FORCES. tools/g/glow_run_worker.sh holds a `case` over
+# stem names deciding which desks may be handed a sample argument at all; a desk absent from it is
+# refused by the worker the moment an argument is passed. That list is the third hand-written
+# statement about this corpus, and it is the one the coverage reading above cannot see.
+#
+# Read it from the `case` PATTERN lines rather than by grepping the file for stem-shaped words, so
+# a stem named in a comment is never mistaken for a permission. Both readings were taken on
+# 20260907 and agreed exactly at 94, which is how the anchor was chosen.
+awk '
+  /^[[:space:]]*#/ { next }
+  /^[[:space:]]*[A-Za-z0-9_*|-]+\)[[:space:]]*$/ ||
+  /^[[:space:]]*[A-Za-z0-9_*|-]+\)[[:space:]]+/ {
+    line=$0
+    sub(/\).*$/, "", line)
+    gsub(/^[[:space:]]+/, "", line)
+    n=split(line, parts, "|")
+    for (i=1; i<=n; i++) if (parts[i] != "*" && parts[i] != "") print parts[i]
+  }
+' "$WORKER" | sort -u > "$WORK/sample_list"
+sample_list=$(wc -l < "$WORK/sample_list" | tr -d ' ')
+
+# A permitted stem naming no Glow file anywhere in the tree is a dead branch in the `case` -- the
+# same fault `phantom` reads one enumeration over, and gated for the same reason. Scoped to the
+# whole tree rather than to DESK_DIR on purpose: 48 of the 94 name desks under src/gate, src/shape
+# and tools/fixtures, and those are somebody else's room rather than a fault of this one.
+#
+# The tree-wide population is derived ONCE, here, and every reading below shares it. Dot
+# directories are machinery -- .git holds objects and glow/.cache holds a lowered REPL line -- and
+# vendor/, seed/ and node_modules/ are other people's trees or a projection of this one. Pruning
+# those four reads exactly the paths `git ls-files '*.glow'` reads, two methods and one answer,
+# while keeping this scan git-free so a pen outside a repository still resolves. The elder spelling
+# pruned .git alone and so counted a build-cache artifact as a desk, which is the shape that lets a
+# dead permission read as live: a stem whose only file is a leftover under glow/.cache/ would have
+# satisfied sample_phantom.
+find . -type d \( -name '.?*' -o -name vendor -o -name seed -o -name node_modules \) -prune \
+  -o -name '*.glow' -type f -print | sed 's|^\./||' | sort > "$WORK/corpus"
+corpus_glow=$(wc -l < "$WORK/corpus" | tr -d ' ')
+
+if [ "$corpus_glow" -gt "$MAX_DESKS" ]; then
+  echo "glow_desk_reach: $corpus_glow desks tree-wide, past the bound of $MAX_DESKS" >&2
+  exit 2
+fi
+
+sed -e 's|.*/||' -e 's|\.glow$||' "$WORK/corpus" | sort -u > "$WORK/tree_stems"
+comm -23 "$WORK/sample_list" "$WORK/tree_stems" > "$WORK/sample_phantom"
+sample_phantom=$(wc -l < "$WORK/sample_phantom" | tr -d ' ')
+
+# What stands outside the room this meter reads. Reported and gated nowhere: a desk landing in
+# src/gate/ is ordinary work in another lane, and a guard that reds on ordinary work is a guard
+# somebody turns off. Its whole job is to keep the door's claim checkable.
+grep -v "^$DESK_DIR/" "$WORK/corpus" > "$WORK/outside"
+outside_rc=$?
+if [ "$outside_rc" -gt 1 ]; then
+  echo "glow_desk_reach: grep failed splitting the corpus by room (exit $outside_rc)" >&2
+  exit 2
+fi
+corpus_outside=$(wc -l < "$WORK/outside" | tr -d ' ')
+
+# Two desks sharing one stem share one built binary, since tools/g/glow_run_worker.sh writes
+# glow/bin/<stem>, and one sample permission, since its `case` matches the stem alone. Reported
+# rather than gated: both of today's pairs predate the reading, and which file keeps the name is a
+# language custody question rather than a repair a lap takes.
+sed -e 's|.*/||' -e 's|\.glow$||' "$WORK/corpus" | sort | uniq -d > "$WORK/stem_collision"
+stem_collision=$(wc -l < "$WORK/stem_collision" | tr -d ' ')
+
+# The split, taken over PATHS rather than stems, so nothing here assumes a stem names one file.
+# A desk is `sampled` when the worker's list carries its stem: the witness runs every desk it names
+# with zero arguments (218 run lines, every one ending `.glow"]`, measured 20260907), so a desk the
+# worker will only accept WITH an argument cannot be covered by the witness in its present shape.
+: > "$WORK/sample_permitted"
+while IFS= read -r desk; do
+  stem=${desk##*/}
+  stem=${stem%.glow}
+  if grep -qxF "$stem" "$WORK/sample_list"; then
+    printf '%s\n' "$desk" >> "$WORK/sample_permitted"
+  fi
+done < "$WORK/desks"
+sort -o "$WORK/sample_permitted" "$WORK/sample_permitted"
+sample_permitted=$(wc -l < "$WORK/sample_permitted" | tr -d ' ')
+
+comm -12 "$WORK/uncovered" "$WORK/sample_permitted" > "$WORK/uncovered_sampled"
+uncovered_sampled=$(wc -l < "$WORK/uncovered_sampled" | tr -d ' ')
+comm -23 "$WORK/uncovered" "$WORK/sample_permitted" > "$WORK/uncovered_bare"
+uncovered_bare=$(wc -l < "$WORK/uncovered_bare" | tr -d ' ')
+
+# TWO CEILINGS, BECAUSE ONE NUMBER WAS HOLDING TWO COSTS. The ceilings live here rather than in
+# the witness, so a control can move them by name and prove the refusal from both sides, and a
+# ceiling only falls. What changed on 20260907.020441 is that there are two of them:
+#
+#   uncovered_bare     83 -- a desk the witness can name in one three-line block, run bare
+#   uncovered_sampled  46 -- a desk the worker will only run WITH a sample the witness must choose
+#
+# The elder single ceiling of 129 could not tell those apart, and they are not the same debt. A
+# bare desk costs a line. A sampled desk costs a judgment -- what value proves this gate? -- and
+# then a fourth hand-written enumeration to hold the answer, which is the very shape %532 booked.
+# Worse, the sum hides a real fault: a sampled desk landing while a bare one is covered leaves 129
+# standing, and the elder gate reads that as no change.
+#
+# The sum is printed and DERIVED from the two rather than spelled, so it can never disagree with
+# its parts; the gates are on the parts.
+UNCOVERED_BARE_CEILING=${GLOW_DESK_UNCOVERED_BARE_CEILING:-83}
+UNCOVERED_SAMPLED_CEILING=${GLOW_DESK_UNCOVERED_SAMPLED_CEILING:-46}
+UNCOVERED_CEILING=$((UNCOVERED_BARE_CEILING + UNCOVERED_SAMPLED_CEILING))
 
 verdict=ok
 if [ "$norun_disagree" -ne 0 ]; then
@@ -179,10 +325,20 @@ if [ "$contradicted" -ne 0 ]; then
   echo "detail: the witness runs desks that declare they must not run --"
   sed 's/^/  /' "$WORK/contradicted"
 fi
-if [ "$uncovered" -gt "$UNCOVERED_CEILING" ]; then
-  verdict=over_ceiling
-  echo "detail: $uncovered runnable desks are run by nothing, past the ceiling of $UNCOVERED_CEILING --"
-  comm -23 "$WORK/uncovered" "$WORK/covered" | head -20 | sed 's/^/  /'
+if [ "$sample_phantom" -ne 0 ]; then
+  verdict=sample_phantom
+  echo "detail: the worker permits a sample for stems that name no Glow file in the tree --"
+  sed 's/^/  /' "$WORK/sample_phantom"
+fi
+if [ "$uncovered_bare" -gt "$UNCOVERED_BARE_CEILING" ]; then
+  verdict=over_bare_ceiling
+  echo "detail: $uncovered_bare bare-runnable desks are run by nothing, past the ceiling of $UNCOVERED_BARE_CEILING --"
+  head -20 "$WORK/uncovered_bare" | sed 's/^/  /'
+fi
+if [ "$uncovered_sampled" -gt "$UNCOVERED_SAMPLED_CEILING" ]; then
+  verdict=over_sampled_ceiling
+  echo "detail: $uncovered_sampled sample-taking desks are run by nothing, past the ceiling of $UNCOVERED_SAMPLED_CEILING --"
+  head -20 "$WORK/uncovered_sampled" | sed 's/^/  /'
 fi
 
 echo "desks=$desks"
@@ -196,6 +352,16 @@ echo "contradicted=$contradicted"
 echo "runnable=$runnable"
 echo "uncovered=$uncovered"
 echo "uncovered_ceiling=$UNCOVERED_CEILING"
+echo "sample_list=$sample_list"
+echo "sample_phantom=$sample_phantom"
+echo "sample_permitted=$sample_permitted"
+echo "uncovered_sampled=$uncovered_sampled"
+echo "uncovered_sampled_ceiling=$UNCOVERED_SAMPLED_CEILING"
+echo "uncovered_bare=$uncovered_bare"
+echo "uncovered_bare_ceiling=$UNCOVERED_BARE_CEILING"
+echo "corpus_glow=$corpus_glow"
+echo "corpus_outside=$corpus_outside"
+echo "stem_collision=$stem_collision"
 echo "verdict=$verdict"
 
 [ "$verdict" = ok ] || exit 1
