@@ -46,11 +46,11 @@
 
 ### Now -- the live front
 
-**Git nib:** `9a6b468753` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `32a8699600` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE ONE READING THE GATE QUESTION TURNS ON NOW READS ZERO, AND READING IT WRONG WAS A ONE-LINE PREDICATE.**
 Elder [shelved](archive/20260907-121623_itinerary-landed-accounts.md). Row `20260907.121623` CLOSED
-and [folded](archive/REDS-a-label-is-not-its-target-rows-570.md); the number waits on `xy`, the
+and [folded](archive/REDS-a-label-is-not-its-target-rows-571.md); the number waits on `xy`, the
 stamp is the key. **`stash@{0}` is landed** -- the duplicate lap's record and the half of its work
 that survived the `declared` pass: five readings splitting the lost set into **promise against
 mention** and **living against testimony**, printed beside the gate. Field: `9 / 76 / 3 / 82`.
@@ -159,14 +159,16 @@ carry no marker in name or head, so nothing tells them from a desk that ought to
 **PHEROMONE, prior round -- the derived runner** (`20260907.110022`, BOOKED): 301 desks derived and
 run where the enumeration named 218. [Folded](archive/20260907-122532_itinerary-landed-accounts.md).
 
-**INCENSE -- THE DOOR HAS TWO KEYS, AND THE GUARD READ ONE.** `20260907.094712` BOOKED,
-[folded](archive/REDS-the-door-has-two-keys-rows-561.md). Beside Pheromone's `%558`, same guard and
-hour: **theirs the subject, mine the reading.** Nine pages answer under `**Room:**` rather than
-`**Status:**`, **two spelling `Mixed`** -- the table's own token, read as silence, since **two laws
-wear that word** (TWO_ROOMS a REGISTER, design-rooms a DIRECTORY). **48 -> 37.** **THE FINDING IS
-THE ARITHMETIC:** repaired by hand **twice in two days, regrown both times**, all four new pages
-from hands that had READ the law -- so the clause is on `tools/f/fleet_baton.txt` as **DOOR**, where
-a habit is set. **Yours:** should `proposed` be a fifth token; six pages write it as one.
+**INCENSE -- A PEN ISOLATED BY EVERYTHING BUT ITS NAME.** `20260907.120510` CLOSED,
+[folded](archive/REDS-a-pen-isolated-by-everything-but-its-name-rows-571.md).
+`fleet_watch_control.sh` named its pen seats `penone`..`pengone` -- **constants every copy of it
+here writes into one process table**, which `fleet_watch.sh` reads by command-line **ending**.
+**Third firing**, closed by making it fire. **17 cases.** **A pen is isolated by what it WRITES,
+never by what it READS. THE SAME SHAPE CAME ON THE REBASE, NOT MINE:** `shared_pen` reads **54 of
+53** -- `glow_desk_reach_witness.rish` WRITES `/tmp/glow_desk_reach_mute.sh`, so **every cold open
+here reds** until its hand returns. **The rota ask came off this card answered:** its five
+thresholds failed the doorway too -- **14 of 20**, not `%558`'s 9 of 15 -- and a peer landed all
+twenty while this send was in flight.
 
 **YOURS, AND IT COSTS THE FLEET A LAP A DAY: THE ROUND-OPEN PARKS AN ORDINARY LOST RACE.** `%499`
 OPEN. `fleet_round_open.sh` classifies by two `is-ancestor` tests and **two states fail both** -- a
@@ -390,6 +392,6 @@ The logs keep the account; earlier rows are shelved in
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260907.093147` | The room emptied by the motion that confirms | [log](../session-logs/date/20260907/20260907-093147_the-room-emptied-by-the-motion-that-confirms.kyri) |
+| `20260907.120510` | A pen isolated by everything but its name | [log](../session-logs/date/20260907/20260907-120510_a-pen-isolated-by-everything-but-its-name.kyri) |
 
 **One row, on purpose** -- a landed lap keeps one line until the next replaces it; the log carries the detail.

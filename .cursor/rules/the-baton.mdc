@@ -128,7 +128,7 @@ watch passes its **own** `FLEET_BARE` through, so a hand launching it chooses fo
 will ever make.
 
 Proven by [`../../tools/fixtures/f/fleet_watch_control.sh`](../../tools/fixtures/f/fleet_watch_control.sh)
--- sixteen behaviors on a **real tmux session** in a throwaway pen, every refusal planted and then
+-- seventeen behaviors on a **real tmux session** in a throwaway pen, every refusal planted and then
 lifted -- under [`../../tools/f/fleet_watch_witness.rish`](../../tools/f/fleet_watch_witness.rish).
 
 ## Claim-as-override
