@@ -12,6 +12,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | Stamp | Log | What it recorded |
 |---|---|---|
 | `20260907.170704` | [The doors that agreed are inside](20260907/20260907-170704_the-doors-that-agreed.kyri) | 30 of 80 front doors sit over the ceiling; this lane's joined. |
+| `20260907.173826` | [The address read from the other end](20260907/20260907-173826_the-address-read-from-the-other-end.kyri) | a nested-class hypothesis refuted; 164x across equal classes |
 | `20260907.164619` | [The lap that arrived a lap late](20260907/20260907-164619_the-lap-that-arrived-a-lap-late.kyri) | a finished round recovered from the stash. |
 | `20260907.155948` | [a-number-written-four-times](20260907/20260907-155948_a-number-written-four-times.kyri) | A fold shelf spells its number four times; one guard read one. |
 | `20260907.155612` | [The claim a sweep cannot follow](20260907/20260907-155612_the-claim-a-sweep-cannot-follow.kyri) | two laps in one tree booked one ledger number |

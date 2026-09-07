@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `c2d9b40f13` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `8c39f990cf` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- I BUILT A WALL FOR `%524` AND WITHDREW IT, BECAUSE A PEER LANDED ONE FOR THE SAME RED IN THE SAME HOUR AND THEIRS PUBLISHED FIRST.**
 Elder [shelved](archive/20260907-141249_itinerary-landed-accounts.md). The cold open answered

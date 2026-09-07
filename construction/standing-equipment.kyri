@@ -2870,3 +2870,35 @@ guard topology_occupied
 path tools/t/topology_occupied_witness.rish
 tier cadence
 seated 20260907.145954
+
+# topology_partial -- a membership never lands on a whole class either. Its sibling
+# `topology_occupied` found that a whole far-end symbol class of S(7,4) -- 120 of 840 vertices --
+# costs nothing measurable while the same 120 scattered cost a sixth of the traffic, and closed by
+# naming its own falsifier unfired: a membership landing between whole classes, 800 on 840, leaves
+# 40 holes with no class to hide them in. This fires it, and refutes the tidy hypothesis that rode
+# on it. The classes NEST -- 840 splits 120, 20, 4, 1, derived by the falling factorial and counted
+# by grouping the vertices that share each suffix -- yet the freedom does NOT descend the ladder:
+# 42 whole level-2 classes, every one 20 vertices and every one leaving the shape in one piece,
+# cost between 3 and 491 lost packets of 9,828. Which whole class is the choice that pays. Two
+# findings survive. The leftover addresses are nearly free: at 800 live on 840 an arrangement taken
+# in far-end-major order loses 429 of 9,588 against 1,156 scattered, and two holes more than a
+# whole class can hold cost 457 rather than 429 -- a rounding error rather than a cliff. And the
+# SAME contiguous run partitions or does not depending which end of the address is significant:
+# 20 holes of S(6,3) taken door-major leave three components and 600 unreachable pairs, where the
+# same 20 taken far-end-major leave one component and an unmoved diameter. The naive heuristic --
+# keep the holes inside one class, taken door-major -- reads WORST of the five arrangements, behind
+# scattering, so the finding is bound from that end too. One method correction is bound with them:
+# targets are sampled from the whole address space and held FIXED across arrangements, because
+# scored the sibling's way at three live-sampled targets `class_partial` ranked best of five and at
+# fifteen it ranked worst by a factor of fourteen. It reads its OWN source, refusing when a routing
+# function mentions the breadth-first distance array, and closes a function body at a column-zero
+# comment -- which it learned by refusing itself on its first run over a line of prose describing
+# that array while touching none of it.
+# `tier cadence`: scan 314s, control 102s, witness 416s measured 20260907.173400 on this pier,
+# because every live pair of 117 configurations is routed exhaustively rather than sampled and 42
+# whole classes are each emptied in turn, which is heavy for a lap and ordinary for a cadence.
+
+guard topology_partial
+path tools/t/topology_partial_witness.rish
+tier cadence
+seated 20260907.173400
