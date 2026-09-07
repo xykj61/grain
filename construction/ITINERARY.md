@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `900572d2fa` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `790a32de70` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY's `%516`, `%517`, `%510` accounts CLOSED and folded** --
 [`222720`](archive/20260906-222720_itinerary-landed-accounts.md),
@@ -179,11 +179,11 @@ guard said to lock that is `%500` above, and it now reds honestly.
 cross-target witness read GREEN with a named gap when qemu is absent? Its head promises that
 limit, `%446` reads the other way, `capability` is the mechanism.
 
-**GRASS -- SILENCE AND CLEANLINESS READ ALIKE.** `20260906.211015` CLOSED
-([shelf](archive/REDS-silence-and-cleanliness-read-alike-rows-514.md)): two comment meters ran awk
-under `2>/dev/null` and read empty as zero, **both AT their ceilings**, where a silent zero reads
-as their largest sweep. Proven both ways on the pre-repair files. **10 of 244** scans still
-drop awk's stderr; not taken.
+**GRASS -- MY OWN REMAINDER WAS A GREP.** `20260906.222830` CLOSED. The *10 of 244* counted
+spellings: **four false, two prose, four live, one that cannot be innocent** -- `radiant_negation`'s baseline lookup answered a failure with
+*admit*, so a mode-000 baseline read **51 of 51 admitted, risen=0, verdict=ok, exit 0**: green
+while comparing nothing. `instrument_refusal` reads that second spelling now -- a *fallback
+value*, where `|| true` leaves emptiness -- and joins continuations, six of its first seven hits a ternary. **1 in 764 scans; both walled at zero, control 11->20.**
 **BAKERY -- THE WALL AND THE PATH IT NEVER SAW.** `%515` CLOSED,
 [folded](archive/REDS-a-wall-on-a-path-the-work-does-not-take-rows-515.md): `post-commit` writes
 `living-pins-owed` beside the page debt; rule three answers with an `index` mode weighing every
@@ -194,6 +194,12 @@ with nothing between.
 **THE SAME HOLE FOR LINKS.** `20260906.223436` OPEN: three commit-time link walls read ONE row
 shape, so a cairn citing an archive shelf waits for a cold pass; four fired today.
 `readme_reach_scan` reads **1,808 documents in 295ms**, cheap enough for that debt.
+**AND A BLIND LEDGER WAS PUBLISHING FASCIA ON THE FRONT DOOR**, out of a `20260906.210007` park
+([rows](archive/REDS-two-instruments-that-could-not-see-their-subject-rows-525-526.md)): ending
+every function at its first `if` block read **15** past 70 where **321** stand, so `README.md`
+published **fascia 68** over a tree at **58**. **Yours, two:** that penalty caps at 25, so a grade
+cannot tell 26 long functions from 321; and two of 46 read `Status: Proposed`, which TWO_ROOMS'
+gloss omits.
 **Carried: 890** depth-lost links.
 
 **COPAL -- A ROW'S NUMBER MOVED TWELVE TIMES IN ONE DAY AND ITS STAMP NEVER MOVED ONCE.** Both
@@ -386,7 +392,6 @@ The logs keep the account; earlier rows are shelved in
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260906.212721` | One fold away from healthy is not healthy | [log](../session-logs/date/20260906/20260906-212721_one-fold-away-from-healthy.kyri) |
-| `20260906.200636` | A fence round fourteen desks, landed out of the stash | [log](../session-logs/date/20260906/20260906-200636_the-fence-drawn-round-fourteen-desks.kyri) |
+| `20260906.223228` | A fallback value reads as an answer | [log](../session-logs/date/20260906/20260906-223228_a-fallback-value-reads-as-an-answer.kyri) |
 
 **One row, on purpose** -- a landed lap keeps one line until the next replaces it; the log carries the detail.

@@ -64,6 +64,60 @@ case "$(read_verdict)" in *verdict=over_ceiling*) say "past_ceiling_refused=yes"
 case "$( ( cd "$pen" && sh "$scan" --root /nonexistent-root 2>&1 ) || true)" in
   *instrument=failed*|*no\ tree\ root*|*cannot*) say "meter_refuses_when_blind=yes" ;; *) say "meter_refuses_when_blind=no" ;; esac
 
+# ---- the fallback reading: a failure that substitutes a VALUE, added 20260906 --------------------
+# The same both-sides discipline. Emptiness at least looks like nothing; a fallback value reads as
+# an answer, so this shape is the worse of the two and its exclusions have to be exact.
+#
+# THE PLANTS SPELL `||` THROUGH `$D`, and that is a repair rather than a flourish. This control is
+# itself a tracked tool scan, so a plant written literally puts the very shape under test into the
+# meter's own corpus and the live tree reds on the control's fixtures. The elder `|| true` plants
+# above escape only because a plant's closing quote falls where the pattern wants end-of-line --
+# an accident, not a decision. `$D` makes it a decision: the pen holds the exact bytes, and this
+# file's source spells no discard at all.
+D='||'
+
+# 12 -- the bite: an output-producing pass whose failure puts a value back in its place.
+plant x "b=\$(awk -v p=\"\$1\" '\$1 == p { print \$2 }' \"\$BASE\" 2>/dev/null $D echo -)"
+case "$(read_verdict)" in *fallback_instrument_passes=1*) say "fallback_value_bitten=yes" ;; *) say "fallback_value_bitten=no" ;; esac
+
+# 13 -- the same lookup with its status left readable walks free.
+plant x "b=\$(awk -v p=\"\$1\" '\$1 == p { print \$2 }' \"\$BASE\")"
+case "$(read_verdict)" in *fallback_instrument_passes=0*) say "readable_status_free=yes" ;; *) say "readable_status_free=no" ;; esac
+
+# 14 -- a `test && echo yes || echo no` TERNARY discards nothing: its `||` is an else-branch. Six of
+# the first seven hits this reading ever produced were exactly this, so the exclusion is the meter.
+plant x "[ \"\$(wc -l < \"\$f\" | tr -d ' ')\" = 5 ] && echo five=yes $D echo five=no"
+case "$(read_verdict)" in *fallback_instrument_passes=0*) say "ternary_free=yes" ;; *) say "ternary_free=no" ;; esac
+
+# 15 -- THE JOINING CASE. The same ternary across continuation lines: a line-at-a-time reader sees
+# only the `|| echo` tail and calls it a swallow. This was the seventh of those seven hits, and it
+# stands today in `qa_report_card_control.sh`.
+plant x "sed -n 's/^r//p' \"\$el\" \\
+  && echo blindness=yes \\
+  $D echo blindness=no"
+case "$(read_verdict)" in *fallback_instrument_passes=0*) say "multiline_ternary_free=yes" ;; *) say "multiline_ternary_free=no" ;; esac
+
+# 16 -- grep leads, in this spelling too: exit 1 is no-match, and a placeholder for it is correct.
+plant x "v=\$(grep -E \"^\$k \" \"\$all\" | cut -d' ' -f2 $D echo -)"
+case "$(read_verdict)" in *fallback_instrument_passes=0*) say "grep_fallback_free=yes" ;; *) say "grep_fallback_free=no" ;; esac
+
+# 17 -- a comment is prose in this reading as well.
+plant x "# b=\$(awk '{ print }' \"\$f\" 2>/dev/null $D echo -)"
+case "$(read_verdict)" in *fallback_instrument_passes=0*) say "fallback_comment_free=yes" ;; *) say "fallback_comment_free=no" ;; esac
+
+# 18 and 19 -- the fallback ceiling from both sides, so no override exists and none is wanted.
+plant x "b=\$(awk '{ print }' \"\$f\" 2>/dev/null $D echo -)"
+case "$( ( cd "$pen" && INSTRUMENT_FALLBACK_CEILING=1 sh "$scan" --root "$pen" 2>/dev/null ) || true)" in
+  *verdict=ok*) say "fallback_at_ceiling_free=yes" ;; *) say "fallback_at_ceiling_free=no" ;; esac
+case "$(read_verdict)" in *verdict=over_ceiling*) say "fallback_past_ceiling_refused=yes" ;; *) say "fallback_past_ceiling_refused=no" ;; esac
+
+# 20 -- THE TWO READINGS STAY APART. One shape at its own raised ceiling must not free the other,
+# which is the whole reason they are counted separately rather than summed.
+plant x "awk -f prog.awk in.txt > \"\$work/out\" $D true
+b=\$(awk '{ print }' \"\$f\" 2>/dev/null $D echo -)"
+case "$( ( cd "$pen" && INSTRUMENT_FALLBACK_CEILING=9 sh "$scan" --root "$pen" 2>/dev/null ) || true)" in
+  *verdict=over_ceiling*) say "raised_fallback_ceiling_frees_only_itself=yes" ;; *) say "raised_fallback_ceiling_frees_only_itself=no" ;; esac
+
 echo "control_checks=$checks"
 echo "control_failures=$failures"
 if [ "$failures" -eq 0 ]; then echo "control_verdict=ok"; exit 0; fi

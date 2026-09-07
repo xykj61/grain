@@ -12,6 +12,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | Stamp | Log | What it recorded |
 |---|---|---|
 | `20260906.224152` | [a wall on a path the work does not take](20260906/20260906-224152_a-wall-on-a-path-the-work-does-not-take.kyri) | %515 closed; the rebase gap walled. |
+| `20260906.223228` | [a fallback value reads as an answer](20260906/20260906-223228_a-fallback-value-reads-as-an-answer.kyri) | %527; a park landed, its rows renumbered twice. |
 | `20260906.222120` | [the field that had no law](20260906/20260906-222120_the-field-that-had-no-law.kyri) | rota field seated; 20/53/36 measured. |
 | `20260906.220522` | [the lap that landed a parked lap](20260906/20260906-220522_the-lap-that-landed-a-parked-lap.kyri) | a park is not a landing, and %513 collided |
 | `20260906.214931` | [The lap that was already written](20260906/20260906-214931_the-lap-that-was-already-written.kyri) | a Glow lap out of a park; two guards green. |
@@ -42,10 +43,10 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260906.180419` | [a record is not the work](20260906/20260906-180419_a-record-is-not-the-work.kyri) | recovered: the path walk beside the record gate. |
 | `20260906.175820` | [the lock that was eight or one](20260906/20260906-175820_the-lock-that-was-eight-or-one.kyri) | %522 written; a lock's width is its launch. |
 | `20260906.173444` | [the pattern that matched a prompt](20260906/20260906-173444_the-pattern-that-matched-a-prompt.kyri) | %508: pkill matched three baton prompts. |
-| `20260906.164540` | [the record the box gave back](20260906/20260906-164540_the-record-the-box-gave-back.kyri) | a fold moved one line of a 19-line row. |
-| `20260906.162710` | [present is not current](20260906/20260906-162710_present-is-not-current.kyri) | recovered: a projection with no provenance read fresh. |
 | `20260906.173013` | [a record and a blind ledger](20260906/20260906-173013_the-record-and-the-ledger.kyri) | %512: a ledger ended each count at its first if block. |
+| `20260906.164540` | [the record the box gave back](20260906/20260906-164540_the-record-the-box-gave-back.kyri) | a fold moved one line of a 19-line row. |
 | `20260906.162759` | [a narrowed glob goes green](20260906/20260906-162759_a-narrowed-glob-goes-green.kyri) | %510: a shell star stops at a slash; 607 pages left a reach. |
+| `20260906.162710` | [present is not current](20260906/20260906-162710_present-is-not-current.kyri) | recovered: a projection with no provenance read fresh. |
 | `20260906.160323` | [a floor nobody reaches](20260906/20260906-160323_a-floor-nobody-reaches.kyri) | the Moore floor is a wish; the abelian one is 8. |
 | `20260906.160050` | [the hypothesis that declined the sweep](20260906/20260906-160050_the-hypothesis-that-declined-the-sweep.kyri) | 19 peers carry one copied option. |
 | `20260906.154353` | [the option that silenced the collision](20260906/20260906-154353_the-option-that-silenced-the-collision.kyri) | SO_REUSEADDR on UDP hides a bind. |

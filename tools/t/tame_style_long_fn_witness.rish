@@ -2,7 +2,7 @@
 #
 #   rishi/bin/rishi run tools/t/tame_style_long_fn_witness.rish
 #
-# REDS %519. TAME's tidy rules name "functions past 70 lines" as a migrate-on-touch ratchet, and
+# REDS `20260906.173013`. TAME's tidy rules name "functions past 70 lines" as a migrate-on-touch ratchet, and
 # `tools/fixtures/t/tame_style_long_fn_one.sh` is the instrument that counts them. It ended a
 # function at the first line matching `^}$` OR `^    }$`. The second alternative was written for a
 # struct method, whose own body closes at four spaces -- applied to a free function it matches the

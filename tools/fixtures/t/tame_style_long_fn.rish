@@ -6,7 +6,7 @@
 # Run from the repository root:
 #   rishi/bin/rishi run tools/fixtures/t/tame_style_long_fn.rish
 #
-# WHY THE WALK IS IN THE SCAN (REDS %519). This file used to spawn one subprocess per file here and
+# WHY THE WALK IS IN THE SCAN (REDS `20260906.173013`). This file used to spawn one subprocess per file here and
 # join every chunk into one string to rank it. With the counter repaired the ledger holds 321 rows
 # rather than 15, and interpolating that blob into a command refuses with `StringTooLong` -- a
 # bound doing its job. The scan walks once and prints a summary line ahead of the top ten, so the
