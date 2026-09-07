@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `98bb32105e` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `8259b8b7ca` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A GUARD THAT COUNTS TODAY'S LOGS REDDENS THE FLEET AT EVERY MIDNIGHT.** `20260907.003911` CLOSED,
 [folded](archive/REDS-a-guard-shaped-by-the-clock-rows-533.md): the first cold pass of `20260907`, at `00:12`, read `guards_red=2` on ONE root -- `rota_declared`
@@ -209,7 +209,8 @@ shape, so a cairn citing an archive shelf waits for a cold pass; four fired toda
 on metal. `shared_pen` **61 -> 54** files, **7 -> 4** wipers, ceilings lowered; **its own *is a pen
 ever contended* is answered** -- eight ships had a pass live at once, spread **164s** against
 **1,422s**. **Two of three parked commits recovered** off `pier/diverged-20260907-055442`, `%499`'s
-ordinary lost race; both rows renumbered on arrival to `%541` and `%542` -- upstream had spent
+ordinary lost race; both rows renumbered on arrival, by stamp `20260907.013427` and
+`20260907.015042` -- upstream had spent
 `%535`, `%537` and `%538` while they sat -- and both folded on arrival, the pin being at its bound.
 **`3e65da093` is still parked**, its ledger bookkeeping superseded upstream. **Yours, a SECOND
 flake mechanism, shelved:** a pass can lose a verdict and mis-seat a red.
