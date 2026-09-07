@@ -17,6 +17,9 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260907.023053` | [the cores, the rooms, and the serial pass](20260907/20260907-023053_the-cores-the-rooms-and-the-serial-pass.kyri) | 161 guards serial; the deadlock named. |
 | `20260907.061221` | [a fourteenth of the room](20260907/20260907-061221_the-meter-that-heard-a-fourteenth-of-the-room.kyri) | duty1 read 60 pages of 767; now 379, zero. `%540`. |
 | `20260907.050258` | [the room that said it was the corpus](20260907/20260907-050258_the-room-that-said-it-was-the-corpus.kyri) | a parked lap landed; a room was not the corpus. |
+| `20260907.062801` | [the map a guard writes for itself](20260907/20260907-062801_the-map-a-guard-writes-for-itself.kyri) | Six of eight map rows name less than their guard reads. |
+| `20260907.050258` | [the room that said it was the corpus](20260907/20260907-050258_the-room-that-said-it-was-the-corpus.kyri) | a parked lap landed; a room was not the corpus. |
+| `20260907.050053` | [the numbering carries the graph](20260907/20260907-050053_the-numbering-carries-the-graph.kyri) | One counter, two numberings: 36 pieces or one. |
 | `20260907.043033` | [the fork before the skip](20260907/20260907-043033_the-fork-before-the-skip.kyri) | the slowest guard, 25% faster. |
 | `20260907.023053` | [the cores, the rooms, and the serial pass](20260907/20260907-023053_the-cores-the-rooms-and-the-serial-pass.kyri) | 161 guards serial; the deadlock named. |
 | `20260907.021435` | [one ratchet that held two debts](20260907/20260907-021435_one-ratchet-that-held-two-debts.kyri) | 129 uncovered desks were 83 and 46. |

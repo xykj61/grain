@@ -1,0 +1,123 @@
+# tools/t/topology_growth_witness.rish -- what an address space costs while it is still filling,
+# and it can be made to red.
+#
+#   rishi/bin/rishi run tools/t/topology_growth_witness.rish
+#
+# WHAT IT BINDS. `tools/fixtures/t/topology_growth_scan.sh` fills the same four Cayley graphs its
+# siblings priced full, under five allocation policies at six occupancies, and measures what a
+# mostly-dark space costs: whether the live set is one network or several, what the stale global
+# table still delivers, and how far apart the survivors are. This binds every figure by name and
+# proves the reading can be broken through `tools/fixtures/t/topology_growth_control.sh`.
+#
+# WHY THIS SITS BESIDE `topology_churn` RATHER THAN INSIDE IT. That witness prices a FULL space
+# losing a few points, which is the failure regime. This one prices a space that is mostly dark and
+# filling, which is the GROWTH regime -- the one every network is in for its whole early life, and
+# the one the elder papers' central object was never measured against. They move for different
+# reasons: a new failure model moves the first, a new allocation policy moves the second.
+#
+# THE THEOREM IS BOUND AS A THEOREM. The star graph's generators swap position 1 with position j, so
+# a permutation whose first entry is 1 has no neighbour whose first entry is 1; the 120 permutations
+# with a1 = 1 are exactly lexicographic ranks 0 through 119, so that prefix is an independent set.
+# The scan measures the largest edgeless prefix rather than trusting the argument, and it is asserted
+# here at 120 -- the value the argument gives -- rather than at whatever the scan happened to print.
+# The three coordinate shapes are asserted at 1 in the same breath, since a leg that found the star
+# failing and never found a shape passing could not tell a real property from a broken measurement.
+#
+# WHY IT IS `tier cadence`. The full pass walks five policies at six occupancies over four shapes,
+# routing every live ordered pair two ways from 24 sampled destinations, at 21s measured
+# `20260907`. Its answer moves only when the scan moves, which is a deliberate act, so a per-lap row
+# would spend those seconds on eight ships to watch a number that did not change.
+
+say "topology-growth: Language EN -- what an address space costs while it is still filling."
+say "topology-growth: Style Gauge, Meter -- every figure walked here, never recalled."
+say "topology-growth: Lens TAME -- the theorem checked by counting edges, not by trusting the proof."
+
+say "topology-growth: the scan fills the shapes five ways and routes what is live..."
+let scan = run ["sh" "tools/fixtures/t/topology_growth_scan.sh" "all"]
+# invariant: the scan stands green before any reading of it is trusted.
+assert scan.ok else "topology-growth: the scan refused --\n${scan.out}"
+assert scan.out contains "verdict=ok legs=all faults=0" else "topology-growth: the scan did not reach its own green --\n${scan.out}"
+
+say "topology-growth: the four shapes are the ones the siblings priced, unchanged..."
+# invariant: same four Cayley graphs, same degrees, same diameters as `topology_churn` reads. A
+# drift here would mean the two instruments measure different graphs while appearing to measure one.
+assert scan.out contains "shape shape=circ degree=6 diameter=9 points=720" else "topology-growth: the circulant moved --\n${scan.out}"
+assert scan.out contains "shape shape=torus12 degree=6 diameter=14 points=720" else "topology-growth: the seated torus moved --\n${scan.out}"
+assert scan.out contains "shape shape=torus8 degree=6 diameter=13 points=720" else "topology-growth: the second torus moved --\n${scan.out}"
+assert scan.out contains "shape shape=star degree=5 diameter=7 points=720" else "topology-growth: the star graph moved --\n${scan.out}"
+
+say "topology-growth: the edgeless prefix, which is the whole mechanism, proven by counting..."
+# invariant: exactly one sixth of the star graph -- ranks 0..119, the permutations fixing 1 in the
+# first position -- carries no edge at all. This is the theorem, and 120 is the number the argument
+# gives rather than the number the scan chose.
+assert scan.out contains "indep shape=star prefix_edgeless_max=120 share_of_space=0.1667" else "topology-growth: the star graph's edgeless prefix moved off its own theorem --\n${scan.out}"
+# invariant: THE MIRROR. On all three coordinate shapes the numbering is built from a generator, so
+# index i and index i+1 are adjacent and the largest edgeless prefix is one. Without this the leg
+# could be finding edges nowhere and reading like a discovery.
+assert scan.out contains "indep shape=circ prefix_edgeless_max=1" else "topology-growth: the circulant grew an edgeless prefix, so the leg is not measuring edges --\n${scan.out}"
+assert scan.out contains "indep shape=torus12 prefix_edgeless_max=1" else "topology-growth: the seated torus grew an edgeless prefix --\n${scan.out}"
+assert scan.out contains "indep shape=torus8 prefix_edgeless_max=1" else "topology-growth: the second torus grew an edgeless prefix --\n${scan.out}"
+assert scan.out contains "indep star_prefix_edgeless_max=120 other_shapes_with_edgeless_prefix=0 rows=4" else "topology-growth: the independence summary parted from its rows --\n${scan.out}"
+
+say "topology-growth: a lowest-free counter leaves the star graph in pieces of one point each..."
+# invariant: 36 live addresses, 36 components, largest component ONE. Every early adopter of a star
+# graph addressed by a lowest-free counter is alone, and 840 ordered pairs have no path at all.
+assert scan.out contains "growth shape=star policy=lowfree live=36 occupancy=0.0500 components=36 largest=1 connected=no pairs=840 unreachable=840" else "topology-growth: the star graph's lowest-free disaster moved --\n${scan.out}"
+assert scan.out contains "growth shape=star policy=lowfree live=72 occupancy=0.1000 components=72 largest=1" else "topology-growth: the star graph's second lowest-free rung moved --\n${scan.out}"
+
+say "topology-growth: the SAME counter over a breadth-first numbering leaves it whole..."
+# invariant: one counter, one graph, one occupancy -- only the numbering differs, and the network
+# goes from 36 pieces to one. This pair is the paper's whole finding, bound as two lines.
+assert scan.out contains "growth shape=star policy=lowfree_bfs live=36 occupancy=0.0500 components=1 largest=36 connected=yes pairs=840 unreachable=0" else "topology-growth: the breadth-first numbering stopped rescuing the star graph --\n${scan.out}"
+assert scan.out contains "growth shape=star policy=lowfree_bfs live=216 occupancy=0.3000 components=1 largest=216 connected=yes pairs=5160 unreachable=0" else "topology-growth: the breadth-first numbering broke at a third full --\n${scan.out}"
+
+say "topology-growth: a coordinate numbering is accidentally graph-aware, which is why nobody notices..."
+# invariant: on the tori and the circulant the plain lowest-free counter stays whole at every
+# occupancy, because their numbering was ravelled from the generators. The policy is not what makes
+# it work there; the numbering is.
+assert scan.out contains "growth shape=torus8 policy=lowfree live=36 occupancy=0.0500 components=1 largest=36 connected=yes" else "topology-growth: the second torus stopped tolerating a plain counter --\n${scan.out}"
+assert scan.out contains "growth shape=circ policy=lowfree live=216 occupancy=0.3000 components=1 largest=216 connected=yes" else "topology-growth: the circulant stopped tolerating a plain counter --\n${scan.out}"
+
+say "topology-growth: a hashed address space is in pieces on every shape below half full..."
+# invariant: the random policy -- what deriving an address from a public key gives you -- reads more
+# than forty components at a third full on every shape. This is the price of needing no coordination.
+assert scan.out contains "growth shape=torus12 policy=random live=216 occupancy=0.3000 components=41 largest=76 connected=no pairs=5160 unreachable=4398" else "topology-growth: the seated torus's random shattering moved --\n${scan.out}"
+assert scan.out contains "growth shape=star policy=random live=216 occupancy=0.3000 components=53 largest=55 connected=no pairs=5160 unreachable=4484" else "topology-growth: the star graph's random shattering moved --\n${scan.out}"
+
+say "topology-growth: the random rows are a policy rather than a lucky draw, checked over eight seeds..."
+# invariant: eight independent draws at a third full, and the BEST of them still leaves the space in
+# tens of pieces. A single-seed row would be an anecdote; this is what bounds it.
+assert scan.out contains "seeds shape=star policy=random live=216 occupancy=0.3000 draws=8 components_min=46 components_max=58" else "topology-growth: the star graph's seed spread moved --\n${scan.out}"
+assert scan.out contains "seeds shape=torus8 policy=random live=216 occupancy=0.3000 draws=8 components_min=33 components_max=49" else "topology-growth: the second torus's seed spread moved --\n${scan.out}"
+# invariant: NO draw on ANY shape is whole below half full. 24 seed rows, and the four that reach a
+# connected draw are the four at three quarters full.
+assert scan.out contains "seed_rows=24 seed_rows_any_connected=4" else "topology-growth: the count of occupancies where a random draw can be whole moved --\n${scan.out}"
+
+say "topology-growth: the graceful rule walks a live geodesic or it stalls, never a detour..."
+# invariant: every generator step changes the full-space distance to the destination by at most one,
+# and the rule requires a strict decrease, so an arriving walk has length exactly the stale distance
+# -- which forces it to be a shortest path of the LIVE subgraph too. Zero rows of 120 arrive off a
+# geodesic. The consequence is the sharp one: this rule cannot route around a hole, so its arrival
+# share is precisely the share of pairs joined by a fully-live shortest path.
+assert scan.out contains "nongeodesic_rows=0" else "topology-growth: an arriving walk left a geodesic, so the strict-decrease argument is wrong --\n${scan.out}"
+
+say "topology-growth: graph-aware beats numbering-blind on every row, summarized..."
+# invariant: 48 blind rows, 21 of them whole; 72 aware rows, ALL of them whole. The aware bucket also
+# delivers nearly twice the stale table's arrivals on the mean. Connectivity under the two grow
+# policies is a tautology and is not the finding; the table arrival share is.
+assert scan.out contains "blind rows=48 connected=21 mean_table_arrival=0.378237" else "topology-growth: the numbering-blind summary moved --\n${scan.out}"
+assert scan.out contains "aware rows=72 connected=72 mean_table_arrival=0.699738" else "topology-growth: the graph-aware summary moved --\n${scan.out}"
+assert scan.out contains "growth rows=120 split_rows=27 nongeodesic_rows=0" else "topology-growth: the row census moved --\n${scan.out}"
+
+say "topology-growth: the reading can be broken -- eleven plants, and two that pass on purpose..."
+let control = run ["sh" "tools/fixtures/t/topology_growth_control.sh"]
+# invariant: the control proves the pen innocent, applies eleven plants, watches nine break a named
+# reading and two pass unnoticed under a leg that does not read them, and lifts every one. A refusal
+# proven only in the passing direction cannot be told from a bypass.
+assert control.ok else "topology-growth: the control did not survive its own plants --\n${control.out}"
+assert control.out contains "plants_applied=11" else "topology-growth: a plant matched nothing, so it broke an unmutated copy --\n${control.out}"
+assert control.out contains "faults=0 verdict=ok" else "topology-growth: a plant failed to show, so a break can pass unseen --\n${control.out}"
+assert control.out contains "grow-stalls-at-two" else "topology-growth: the degenerate-input plant is gone, and it is the one that proves connectivity is not a tell --\n${control.out}"
+assert control.out contains "grow-broken-indep-blind -- reads green" else "topology-growth: the silent-wrong-answer plant stopped passing, so the leg words no longer bound reach --\n${control.out}"
+
+say "topology-growth: GREEN -- the numbering carries the graph, and the counter only reads it."

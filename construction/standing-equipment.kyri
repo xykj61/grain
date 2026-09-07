@@ -2473,6 +2473,31 @@ path tools/t/topology_churn_witness.rish
 tier cadence
 seated 20260907.000309
 
+# topology_growth -- what an address space costs WHILE IT IS STILL FILLING, at the same 720 points.
+# Its two siblings price a FULL space: `topology_routing` binds the decision on a whole graph, and
+# `topology_churn` binds it on a graph that has lost a point. Both rest on a table computed for the
+# whole group, and a growing network holds that table while most of the group is still dark. This
+# binds the filling regime: five allocation policies at six occupancies over four shapes, with the
+# stale table routed over every live ordered pair two ways from 24 sampled destinations.
+#
+# The load-bearing pair is one counter over two numberings. A lowest-free allocator leaves the star
+# graph in 36 components of ONE POINT EACH at 5% occupancy, all 840 ordered pairs unreachable; the
+# same counter over a breadth-first numbering leaves it whole, with 85% of pairs arriving. The
+# mechanism is a theorem the scan checks by counting edges rather than trusting: the 120 lexicographic
+# ranks with a1 = 1 are an independent set, since every star generator swaps position 1 with some j.
+# The three coordinate shapes read prefix_edgeless_max=1 and that mirror is load-bearing -- a leg
+# that found the star failing and never found a shape passing could not be told from a broken one.
+#
+# WHY IT IS `tier cadence`. The full pass is 21s measured `20260907.045627` and its answer moves
+# only when the scan moves, which is a deliberate act; a per-lap row would spend those seconds on
+# eight ships to watch a number that did not change. The control runs eleven plants across four leg
+# words, nine breaking a named reading and two passing on purpose under a leg that cannot read them.
+
+guard topology_growth
+path tools/t/topology_growth_witness.rish
+tier cadence
+seated 20260907.045627
+
 
 # THE PLANT LAW -- a control's break is a claim about a file, and nothing was checking it.
 #
