@@ -74,14 +74,33 @@ fn localhost_addr(port: u16) sockaddr_in {
 fn open_socket() !c.fd_t {
     const fd = c.socket(AF_INET, SOCK_DGRAM, 0);
     if (fd < 0) return error.SocketFailed;
-    const yes: c_int = 1;
-    // invariant: SO_REUSEADDR is what lets a bounded run rebind its own port, so a setsockopt
-    // that fails says so rather than handing back a socket whose next bind will refuse for a
-    // reason nothing recorded -- a discarded return is how REDS %282's open leg hid for a lap.
-    if (c.setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &yes, @sizeOf(c_int)) < 0) {
+    // invariant: a socket the kernel hands back is a real descriptor, so a negative here would
+    // mean the guard above let a failure through.
+    assert(fd >= 0);
+    // THE OPTION THAT WAS HERE WAS TCP REASONING ON A UDP SOCKET, and it cost exactly the fault a
+    // lock was later built to prevent. `setsockopt(SO_REUSEADDR)` stood here until `20260906`
+    // under the invariant *SO_REUSEADDR is what lets a bounded run rebind its own port*. That
+    // sentence is true of TCP, whose closed sockets sit in TIME_WAIT holding the port; UDP has no
+    // TIME_WAIT, so a closed UDP port is free at once and the option buys nothing it was added
+    // for. What it does buy on UDP is a DUPLICATE BIND: two sockets that both set it may hold one
+    // address and port together, and the kernel then splits the arriving datagrams between them
+    // with no error on either side. Measured on this pier, four binds of one UDP port:
+    // close-then-rebind without the option SUCCEEDS (so the stated reason needed nothing);
+    // two concurrent binds without it refuse the second EADDRINUSE (so the collision is named);
+    // two concurrent binds with it on both SUCCEED (so the collision was silent); and one holder
+    // with it against a newcomer without it refuses the newcomer. Dropping it makes a second
+    // reacher fail at `bind` with `error.BindFailed` -- in the kernel, in the same namespace the
+    // port lives in, needing no lock to be right. REDS `20260906.154105`; proven by
+    // tools/fixtures/a/amphora_udp_reuseaddr_scan.sh.
+    var reuse: c_int = 0;
+    var reuse_len: c.socklen_t = @sizeOf(c_int);
+    if (c.getsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &reuse, &reuse_len) < 0) {
         _ = c.close(fd);
-        return error.SetSockOptFailed;
+        return error.GetSockOptFailed;
     }
+    // invariant: this socket carries no address reuse, so a second bind to a port this one holds
+    // refuses by name rather than quietly splitting one port's datagrams between two readers.
+    assert(reuse == 0);
     return fd;
 }
 

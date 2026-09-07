@@ -117,7 +117,13 @@ const max_season_files: u32 = 16;
 const digest_hex_len: u32 = 64;
 
 /// Relative path text ceiling inside a season tree (not argv PATH_MAX).
-const max_season_name_len: u16 = 512;
+/// Held AT the manifest entry contract rather than above it: every name this
+/// door welcomes must fit the head listing that describes it, and a listed
+/// name is bounded by manifest_entry.max_name_len. Stood at 512 until
+/// `20260906` -- the door admitted 312 characters the listing refused, so a
+/// 254-character name passed the season read and died at ManifestOverflow
+/// naming a listing the operator never asked for (REDS `20260906.193823`).
+const max_season_name_len: u16 = 200;
 
 /// One source file ceiling while reading a season (ring-1 fixture holds 64 KiB).
 /// Distinct from max_cargo_bytes -- that is assembled sealed cargo, not source size.
@@ -140,13 +146,22 @@ const default_seal_bin = "amphora/bin/vessel-seal";
 /// Cargo type-mark for season source files -- one mark, both listings.
 const mark_plain_bytes = "plain-bytes";
 
-/// Manifest listing ceiling -- same quantity as sealed cargo, joined by
-/// formula (Q45). Never a second home for 1024; the Return's plain-open
-/// buffer and the pour listing share one roof.
-const max_manifest_bytes: u32 = max_cargo_bytes;
+/// How much longer one manifest line runs than its cargo twin: the two are
+/// built from ONE catalog, differing only in prefix -- `"manifest "` against
+/// `"cargo "`, nine bytes against six.
+const manifest_line_extra: u32 = 3;
+
+/// Manifest listing ceiling -- the SAME CATALOG as sealed cargo, so it needs
+/// every cargo byte plus one prefix difference per line. Joined by formula
+/// (Q45), never a second home for a literal. It read `= max_cargo_bytes` until
+/// `20260906`: the same catalog under a fatter prefix does not fit the same
+/// roof, so twelve one-character names built 1,020 cargo bytes inside their
+/// 1,024 and refused at 1,056 manifest bytes (REDS `20260906.193823`).
+const max_manifest_bytes: u32 = max_cargo_bytes + manifest_line_extra * max_season_files;
 
 /// One manifest name ceiling -- a listed name must fit the entry contract.
 /// couples: manifest_entry.max_name_len
+/// covers: main.max_season_name_len
 const max_manifest_name_len: u32 = 200;
 
 /// Most chunks one crossing may cut -- the vessel roof over the datagram
@@ -1515,7 +1530,14 @@ pub fn main(init: std.process.Init) !u8 {
     assert(max_vessel_path_len > max_words);
     assert(max_season_files >= 1);
     assert(max_vessel_len >= max_cargo_bytes);
-    assert(max_manifest_bytes == max_cargo_bytes);
+    // invariant: the head listing holds every cargo line plus its fatter prefix,
+    // so the manifest roof covers the cargo roof rather than equalling it.
+    assert(max_manifest_bytes >= max_cargo_bytes + manifest_line_extra * max_season_files);
+    // invariant: a name the season door welcomes is a name the listing can carry,
+    // so the door never admits what the entry contract refuses.
+    assert(max_manifest_name_len >= max_season_name_len);
+    // invariant: the whole vessel still holds both listings side by side.
+    assert(max_vessel_len >= max_manifest_bytes + max_cargo_bytes);
     assert(max_seal_plain_mirror == max_cargo_bytes);
     assert(digest_hex_len == Sha3_256.digest_length * 2);
     assert(amphora_version.len == stamp_len);

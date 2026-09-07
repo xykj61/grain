@@ -1739,6 +1739,25 @@ seated 20260906.131501
 # a lap after a raise to one of them refused 64 of 2,200 legal lengths with its own selftest
 # still GREEN. This guard is the standing form of that repair.
 #
+# A FOURTH READING, and the class the first three could not state (REDS `20260906.193823`, `20260906.193823`).
+# Every relation above compares for EQUALITY -- same name, same value, same declared partner -- and
+# the relations that decide whether Amphora refuses a pour are ORDERS. Amphora carried two: its
+# season door welcomed a 512-character name into a listing contract holding 200, and its manifest
+# roof was declared `= max_cargo_bytes` while the manifest is the same catalog under a three-byte-
+# longer prefix. Both refused honestly and both refused LATE, at a wall nothing had declared, and
+# this guard read GREEN across the gap because no marker could express `>=`. `/// covers:
+# <module>.<name>` says it now -- this bound must be at least that one -- printing src, dst, and a
+# SIGNED slack so a reader sees the direction rather than a clamped zero (`%498`). One declaration
+# stands today, `max_manifest_name_len` covering `max_season_name_len` at `slack=0`: the wall
+# exactly at the door, which is the honest state and visible rather than assumed.
+#
+# PROVEN THREE WAYS, because a leg proven only in the passing direction cannot be told from a
+# bypass. Two plants carry the order both ways -- `covers_hold` walks free, `covers_short` is bitten
+# at `slack=-312`, which is Amphora's own elder gap rather than an invented number -- and the guard
+# was then pointed at the LIVING tree with the elder 512 restored, where it answered
+# `verdict=misread` and exit 1, and went green again when the repair returned. A plant proves the
+# grammar; the living tree proves the subject.
+#
 # IT ALREADY CARRIES THE HALF A GREEN READING CANNOT SHOW. Six plants run before any total is
 # believed -- same-name, alias and couples -- each proven to FAIL on a divergent plant and PASS
 # on an agreeing one, so the refusal is proven from the failing side rather than assumed.
@@ -2167,3 +2186,52 @@ guard topology_attained
 path tools/t/topology_attained_witness.rish
 tier cadence
 seated 20260906.152821
+
+# amphora_udp_reuseaddr -- the option one line above the port %485 took back, carried for a reason
+# UDP does not have.
+#
+# WHAT WAS WRONG. `amphora/vessel_fetch_delivery.rye` opened every UDP socket under
+# `setsockopt(SO_REUSEADDR)`, the invariant reading *SO_REUSEADDR is what lets a bounded run rebind
+# its own port*. That is TCP: a closed TCP socket holds its port in TIME_WAIT and the option binds
+# through it. UDP has no TIME_WAIT, so the option bought nothing it was added for -- and what it
+# bought instead was a DUPLICATE BIND, two sockets holding one port while the kernel splits the
+# datagrams between them with no error either side. The per-tree lock beside it was built to catch
+# the collision this option had made silent. REDS `20260906.154105`.
+#
+# WHY IT GATES SOURCE AND PROBES KERNEL. The source reading (`source_reuseaddr_sites`, zero) is the
+# regression guard: it is what keeps a plausible comment from walking the option back in. The
+# kernel probe is what makes the repair a measurement -- four binds of one port answering, in
+# order, that the stated reason needed nothing, that the collision is nameable without the option,
+# that the option is what silenced it, and that a mixed pair still refuses. The probe asks the
+# kernel for a FREE port rather than naming one, because a hardcoded probe port is this row's own
+# fault one level up, and it never touches Amphora's 38494/38495, so no peer's live exchange is
+# disturbed. Where `python3` is absent the probe reports itself absent by name and the source gate
+# stands alone -- a guard that cannot run its instrument must not describe its subject (%460).
+#
+# THE THIRD READING IS A CENSUS AND NEVER GATES. `open_socket` was copied module to module with its
+# comment intact, so 19 further modules carry the same call -- 1 comlink, 1 granary, 10 linengrow,
+# 7 mantra, every one of them SOCK_DGRAM and not one SOCK_STREAM, counted again on this tree at
+# `20260906.200000`. Those files belong to other seats, and a guard that reds Amphora over a module
+# in Mantra is a guard the fleet turns off, so the count is printed and the verdict ignores it.
+#
+# `tier cadence`, AND THE TIER IS THE ONE THING HERE NOBODY HAD MEASURED. This block read
+# `tier lap`: 1s, no build until `20260906.200000`, while the row it belongs to was parked. Timed
+# on this pier: the scan alone **16.8s**, the control **1m57s** over 32 pens, the witness **2m8s**
+# together. All three claims in that sentence were wrong -- it is not 1s, it does build (each pen
+# is a tree the scan is run against), and at `tier lap` across eight ships it would spend roughly
+# seventeen pier-minutes a fleet lap against a whole-roster average near 7s. So it takes the clock
+# `topology_attained` takes for the same reason at 192s. What the cadence costs is honest and
+# small: the gate catches a walk-back within five rounds rather than one, on a line no lane is
+# currently editing. **The elder claim is this row's own subject one level up** -- a number carried
+# for a plausible reason that nobody measured -- which is why it is corrected here with three
+# timings rather than quietly restated.
+#
+# ITS OWN NEXT LAP, named rather than taken: the scan's 16.8s is a whole-tree `find` over every
+# `.rye`, and the control pays it again on the legs that read the living tree. `git ls-files` and
+# one grep pass would cut it; that is a change to the instrument, and this lap's keystone was
+# getting the instrument out of the box at all.
+
+guard amphora_udp_reuseaddr
+path tools/am/amphora_udp_reuseaddr_witness.rish
+tier cadence
+seated 20260906.154105

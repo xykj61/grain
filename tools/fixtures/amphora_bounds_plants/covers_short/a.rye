@@ -1,0 +1,5 @@
+//! Plant -- a declared order that is SHORT (positive control).
+//! This is Amphora's own `20260906` shape: a door welcoming 512 into a
+//! listing that holds 200, with the wider one admitting (REDS `20260906.193823`).
+/// covers: b.max_partner
+const max_local: u32 = 200;

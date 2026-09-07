@@ -11,20 +11,19 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260906.220522` | [the lap that landed a parked lap](20260906/20260906-220522_the-lap-that-landed-a-parked-lap.kyri) | a park is not a landing, and %513 collided |
+| `20260906.214931` | [The lap that was already written](20260906/20260906-214931_the-lap-that-was-already-written.kyri) | a Glow lap out of a park; two guards green. |
 | `20260906.213507` | [the pen that had no owner](20260906/20260906-213507_the-pen-that-had-no-owner.kyri) | 9 pens got the pid; %510 and %512 folded. |
 | `20260906.213313` | [what the fleet fixed by accident](20260906/20260906-213313_what-the-fleet-fixed-by-accident.kyri) | rota coverage uniform at fleet scale. |
 | `20260906.212721` | [one fold away from healthy](20260906/20260906-212721_one-fold-away-from-healthy.kyri) | %517: a capacity scan that never gated on capacity. |
-| `20260906.212202` | [silence and cleanliness read alike](20260906/20260906-212202_silence-and-cleanliness-read-alike.kyri) | %513, %514: a meter reading nothing; a skipped wall. |
-| `20260906.220522` | [the lap that landed a parked lap](20260906/20260906-220522_the-lap-that-landed-a-parked-lap.kyri) | a park is not a landing, and %513 collided |
 | `20260906.212206` | [a line is named by a pair](20260906/20260906-212206_a-line-is-named-by-a-pair.kyri) | the weave merges two branches; %513 booked. |
-| `20260906.214931` | [The lap that was already written](20260906/20260906-214931_the-lap-that-was-already-written.kyri) | a Glow lap out of a park; two guards green. |
-| `20260906.213313` | [what the fleet fixed by accident](20260906/20260906-213313_what-the-fleet-fixed-by-accident.kyri) | rota coverage uniform at fleet scale. |
-| `20260906.212721` | [one fold away from healthy](20260906/20260906-212721_one-fold-away-from-healthy.kyri) | %517: a capacity scan that never gated on capacity. |
 | `20260906.212202` | [silence and cleanliness read alike](20260906/20260906-212202_silence-and-cleanliness-read-alike.kyri) | %513, %514: a meter reading nothing; a skipped wall. |
+| `20260906.211417` | [the relation that decides](20260906/20260906-211417_the-relation-that-decides.kyri) | %521: both stranded packages out of the box. |
 | `20260906.210117` | [the rule that was written and never formed](20260906/20260906-210117_the-rule-that-was-written-and-never-formed.kyri) | rule 4 made a gate; 28 errata priced. |
 | `20260906.204809` | [the fleet set down for a key change](20260906/20260906-204809_the-fleet-set-down-for-a-key-change.kyri) | 7 ships and the watch down; nothing lost. |
 | `20260906.204332` | [the act and the act performed](20260906/20260906-204332_the-act-and-the-act-performed.kyri) | %516: a probe wrong about which act it ran. |
 | `20260906.203052` | [the seed crosses its gate](20260906/20260906-203052_the-seed-crosses-its-gate.kyri) | gate %1 crossed; 7,978 files to both doors. |
+| `20260906.202036` | [the work that made no sound](20260906/20260906-202036_the-work-that-made-no-sound.kyri) | %522: four parked laps landed; two guards heard it. |
 | `20260906.200636` | [the fence drawn round fourteen desks](20260906/20260906-200636_the-fence-drawn-round-fourteen-desks.kyri) | 14 desks refused: two characters claimed every core. |
 | `20260906.200141` | [a guard that reads a proxy](20260906/20260906-200141_a-guard-that-reads-a-proxy.kyri) | %510: the box's second drawer, named at last. |
 | `20260906.195215` | [the lap that landed its own park](20260906/20260906-195215_the-lap-that-landed-its-own-park.kyri) | %511, %512: a park landed, a pen race closed. |
@@ -35,9 +34,13 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260906.180937` | [a name is not a clock](20260906/20260906-180937_a-name-is-not-a-clock.kyri) | covered counted names; six of eleven unrun. |
 | `20260906.180617` | [the box that read its own handwriting](20260906/20260906-180617_the-box-that-read-only-its-own-handwriting.kyri) | a filter narrower than its box. |
 | `20260906.180419` | [a record is not the work](20260906/20260906-180419_a-record-is-not-the-work.kyri) | recovered: the path walk beside the record gate. |
+| `20260906.175820` | [the lock that was eight or one](20260906/20260906-175820_the-lock-that-was-eight-or-one.kyri) | %522 written; a lock's width is its launch. |
 | `20260906.173444` | [the pattern that matched a prompt](20260906/20260906-173444_the-pattern-that-matched-a-prompt.kyri) | %508: pkill matched three baton prompts. |
+| `20260906.164540` | [the record the box gave back](20260906/20260906-164540_the-record-the-box-gave-back.kyri) | a fold moved one line of a 19-line row. |
 | `20260906.162710` | [present is not current](20260906/20260906-162710_present-is-not-current.kyri) | recovered: a projection with no provenance read fresh. |
 | `20260906.160323` | [a floor nobody reaches](20260906/20260906-160323_a-floor-nobody-reaches.kyri) | the Moore floor is a wish; the abelian one is 8. |
+| `20260906.160050` | [the hypothesis that declined the sweep](20260906/20260906-160050_the-hypothesis-that-declined-the-sweep.kyri) | 19 peers carry one copied option. |
+| `20260906.154353` | [the option that silenced the collision](20260906/20260906-154353_the-option-that-silenced-the-collision.kyri) | SO_REUSEADDR on UDP hides a bind. |
 | `20260906.153640` | [a park is not a landing](20260906/20260906-153640_a-park-is-not-a-landing.kyri) | %507: a park certified the box; %506 recovered. |
 | `20260906.153431` | [a proof two pages cite](20260906/20260906-153431_a-proof-two-pages-cite.kyri) | %506: cited as proof, compiled by nothing. |
 | `20260906.153405` | [the drafting room moves to a leaf](20260906/20260906-153405_the-drafting-room-moves-to-a-leaf.kyri) | edu to docs-geode/edu/yonder; 45 citers repointed. |

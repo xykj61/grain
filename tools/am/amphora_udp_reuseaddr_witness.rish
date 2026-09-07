@@ -1,0 +1,49 @@
+# tools/am/amphora_udp_reuseaddr_witness.rish -- Amphora's UDP sockets carry no address reuse.
+#
+# WHAT THIS HOLDS. `amphora/vessel_fetch_delivery.rye` bound UDP 38495 under
+# `setsockopt(SO_REUSEADDR)` whose invariant read *SO_REUSEADDR is what lets a bounded run rebind
+# its own port*. That sentence is TCP's: a closed TCP socket sits in TIME_WAIT holding its port and
+# the option is what lets a restart bind through it. UDP has no TIME_WAIT, so the option bought
+# nothing it was added for -- and what it did buy was a duplicate bind, two sockets holding one
+# port while the kernel splits the datagrams between them with no error on either side. REDS `20260906.154105`.
+#
+# THREE READINGS, one gate. The source reading is the regression guard, held at zero. The kernel
+# probe is what makes the repair a measurement rather than an argument, and it is gated only when
+# it actually ran -- a guard that cannot run its instrument must not describe its subject (%460).
+# The third is a census of the same shape in other lanes' modules, and it is REPORTED rather than
+# gated: `open_socket` was copied module to module carrying its comment intact, so the count is
+# real, and every file in it belongs to a seat that is not this one.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/am/amphora_udp_reuseaddr_witness.rish
+
+let scan = "tools/fixtures/a/amphora_udp_reuseaddr_scan.sh"
+let control = "tools/fixtures/a/amphora_udp_reuseaddr_control.sh"
+
+let living = run ["sh" scan]
+assert living.ok else "amphora_udp_reuseaddr: living amphora must carry no address reuse -- ${living.out} ${living.err}"
+assert living.out contains "source_reuseaddr_sites=0" else "amphora_udp_reuseaddr: a setsockopt site stands"
+assert living.out contains "verdict=ok" else "amphora_udp_reuseaddr: living scan not ok"
+say "living=clean"
+
+# THE FOUR ANSWERS THE REPAIR RESTS ON are gated by the scan itself, which names the one that
+# disagreed in its verdict -- `kernel_needs_reuse_to_rebind`, `kernel_allows_silent_duplicate_bind`,
+# `kernel_refuses_reuse_duplicate`, `kernel_mixed_pair_unexpected` -- and exits 1. Asserting them a
+# second time here would be one expectation written in two files, which is the shape this tree
+# keeps finding drifted. So the witness reports which way the probe went and lets the gate gate.
+if living.out contains "kernel_probe=ran" then say "kernel_probe=ran four_answers=gated_by_scan"
+if living.out contains "kernel_probe=absent" then say "kernel_probe=absent skipped=four_answers wants=python3"
+if living.out contains "kernel_probe=broken" then say "kernel_probe=broken -- the scan refuses on this, so a red here is honest"
+
+# THE CENSUS IS REPORTED, NEVER GATED. The scan prints `tree_dgram_reuseaddr_files` and names each
+# path; this witness deliberately asserts nothing about it, because a guard that reds Amphora over a
+# module in Mantra is a guard the fleet turns off. The control's own leg proves the reading arrives.
+say "peer_census=reported_by_scan gated=no"
+
+let pen = run ["sh" control]
+assert pen.ok else "amphora_udp_reuseaddr: control must pass -- ${pen.out} ${pen.err}"
+assert pen.out contains "control_verdict=ok" else "amphora_udp_reuseaddr: control not ok"
+assert pen.out contains "failed=0" else "amphora_udp_reuseaddr: a control behavior failed"
+say pen.out
+
+say "GREEN: amphora_udp_reuseaddr -- no address reuse in Amphora, four kernel answers held, peer census reported, pen innocent."
