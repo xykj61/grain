@@ -1,0 +1,96 @@
+# tools/s/shared_pen_witness.rish -- a scratch path named by a constant is a path two ships share.
+#
+# WHY THIS RUNG. Eight ships run one roster from eight checkouts. A guard that builds its fixture in
+# `/tmp/<a name somebody chose>` builds it in the same directory on every one of them, so two ships
+# arriving within one guard's runtime read each other's state as their own. The reading that follows
+# is always a fact about the pen wearing the costume of a fact about the subject.
+#
+# It has now fired three times in two laps, and each time the witness was GREEN when run alone:
+# `signal_trap` and `tlb_reach` on `20260906.213507`, and `amphora_restore_negative` on this pier's
+# cold pass at `20260906.222342`, whose assertion read `tamper refusal must leave no out-home` while
+# a peer's `rm -rf /tmp/amphora_rneg_home` was the only thing that had touched it. Green alone and
+# red in company is the signature. A lantern that fires twice becomes a loom.
+#
+# WHY THE ELDER SWEEP DID NOT CLOSE IT. The lap that repaired the first two counted the class by one
+# spelling -- a shell `TMPDIR=` assignment -- and repaired nine files. This tree writes a pen at
+# least FIVE ways: that assignment, a bare literal in a command, a Rishi `let home = "/tmp/name"`,
+# a redirection target, and `${TMPDIR:-/tmp}/<name>`, whose text holds no literal `/tmp/` at all.
+# `amphora_restore_negative` was the third spelling and `tlb_reach_census.sh` the fifth, so a sweep
+# passed over each in turn and the count of nine was a count of what one grep could see.
+#
+# THE FIFTH SPELLING IS WHY THIS GUARD REDDENED ITS FOURTH GUARD RATHER THAN CLOSING THE CLASS.
+# `tlb_reach` reddened the cold pass of `20260906.233225` at *the probe no longer builds*, GREEN
+# alone one minute later, and the cause was `${TMPDIR:-/tmp}/tlb_reach_build_pen` wiped with
+# `rm -rf` before a Zig build. Two concurrent copies of the elder file: one of two failed with
+# `compile_failed`. Two concurrent copies of the repaired file: both green. Proven on metal, both
+# directions, `20260907.000549`.
+#
+# WHAT IS PROVEN, on metal.
+#   The tree's constant-pen population, read across every spelling, under a ceiling that only falls.
+#   The WIPING subset read separately, because a file that only writes a shared pen may interleave
+#     and survive, while one that `rm -rf`s it takes a peer's in-flight state down. Seven today.
+#   Twenty-seven behaviors on real git repositories in a throwaway pen -- both ceilings shown from
+#     both sides, seven free rules each planted and read as zero, the quoting rule and the lock
+#     rule each shown in BOTH directions so neither can be used as a hole, and two refusals for a
+#     root that cannot answer, so an unreadable tree never reports clean. The count is DERIVED by
+#     the control from its own claims rather than spelled, since it read 24 while 27 ran.
+#
+# TWICE THE CONTROL CAUGHT THIS GUARD COUNTING SOMETHING THE TREE HAD NOT DONE WRONG, and both are
+# worth naming because both would have instructed a repair that was already made or never needed.
+# The token class stops at `$`, so `/tmp/pen_$$` matched as the constant `/tmp/pen_` -- five files
+# repaired the lap before, read as damage. And text inside single quotes is text: a control writing
+# a plant into a throwaway tree, and a scan normalising a path bwrap made, are talking ABOUT a path
+# rather than claiming one. Four files, seventeen sites, every one of them a control or a scan --
+# two of them this guard's own control, so it was counting its plants (the shape %519 booked).
+#
+# WHAT IS NOT PROVEN. That any pen is ever actually contended, which depends on which ships run
+# which guard at which second. This proves the shape that makes contention possible, and that is
+# the whole of what a reading of the source can prove.
+#
+#   rishi/bin/rishi run tools/s/shared_pen_witness.rish
+
+say "shared-pen: Language EN -- a name chosen at write time is a name every ship chose."
+say "shared-pen: Style Gauge, Meter -- refusal is the subject."
+say "shared-pen: Lens TAME -- safety first: a guard reporting a peer's pen is a guard reporting nothing."
+
+let scan = run ["sh" "tools/fixtures/s/shared_pen_scan.sh"]
+assert scan.ok else "shared-pen: the constant-pen population stands past a ceiling -- read the scan's own lines"
+say scan.out
+assert scan.out contains "verdict=ok" else "shared-pen: the scan must balance before it is believed"
+say "field GREEN -- the constant-pen population and its wiping subset both stand under their ceilings"
+
+let control = run ["sh" "tools/fixtures/s/shared_pen_control.sh"]
+assert control.ok else "shared-pen: the control must complete"
+say control.out
+assert control.out contains "clean_reads_zero=yes" else "shared-pen: a clean tree must read zero rather than merely pass"
+assert control.out contains "clean_free=yes" else "shared-pen: a clean tree must pass free"
+assert control.out contains "planted_counted=yes" else "shared-pen: a planted constant pen must be counted"
+assert control.out contains "planted_named=yes" else "shared-pen: the reading must name the file, so the repair is one line away"
+assert control.out contains "mktemp_free=yes" else "shared-pen: a mktemp line is unique by construction"
+assert control.out contains "template_free=yes" else "shared-pen: an XXXXXX template is unique by construction"
+assert control.out contains "pid_free=yes" else "shared-pen: a pen carrying the process id is already repaired"
+assert control.out contains "interpolate_free=yes" else "shared-pen: a name chosen at run time is not a constant"
+assert control.out contains "comment_free=yes" else "shared-pen: a comment creates no directory"
+assert control.out contains "single_quoted_free=yes" else "shared-pen: text inside single quotes is text, not a path this file opens"
+assert control.out contains "single_quoted_absent=yes" else "shared-pen: a freed token must be absent from the listing, not merely uncounted"
+assert control.out contains "double_quoted_counted=yes" else "shared-pen: the quoting rule must not become a hole -- double quotes still count"
+assert control.out contains "tmpdir_default_counted=yes" else "shared-pen: a pen written ${TMPDIR:-/tmp}/<name> is a constant pen on a pier where TMPDIR is unset"
+assert control.out contains "lock_free=yes" else "shared-pen: a lock over a pier-wide resource is shared on purpose"
+assert control.out contains "lock_wiping_counted=yes" else "shared-pen: the lock rule must not become a hole -- a wiped .lock is a pen"
+assert control.out contains "behaviors=27" else "shared-pen: the control must run every behavior this witness names"
+assert control.out contains "dated_testimony_free=yes" else "shared-pen: dated testimony keeps every word it wrote"
+assert control.out contains "wiping_counted=yes" else "shared-pen: a wipe of a shared pen must be counted separately"
+assert control.out contains "holding_not_wiping=yes" else "shared-pen: a pen only written to is not a pen wiped"
+assert control.out contains "rishi_wipe_counted=yes" else "shared-pen: a Rishi list wipe is how this tree spells rm -rf"
+assert control.out contains "files_at_ceiling_free=yes" else "shared-pen: a population at its ceiling must pass free"
+assert control.out contains "files_over_ceiling_refused=yes" else "shared-pen: a population past its ceiling must refuse"
+assert control.out contains "files_over_named=yes" else "shared-pen: the refusal must name a verdict, never only an exit code"
+assert control.out contains "wipe_at_ceiling_free=yes" else "shared-pen: a wiping set at its ceiling must pass free"
+assert control.out contains "wipe_over_ceiling_refused=yes" else "shared-pen: a wiping set past its ceiling must refuse"
+assert control.out contains "other_extension_free=yes" else "shared-pen: this reading is of shell and Rishi sources"
+assert control.out contains "no_sources_refused=yes" else "shared-pen: a tree with no sources must refuse rather than read zero"
+assert control.out contains "no_git_refused=yes" else "shared-pen: a root that is not a checkout must refuse"
+assert control.out contains "control_verdict=proven" else "shared-pen: the control must agree with itself"
+say "RED and GREEN paths proven -- four refusals bitten, every free rule planted then read as zero, and the quoting rule and the lock rule each shown from both sides"
+
+say "GREEN: shared-pen -- every pen this guard counts is a pen two ships could both have claimed."

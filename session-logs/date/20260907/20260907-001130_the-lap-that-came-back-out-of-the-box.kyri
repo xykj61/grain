@@ -1,0 +1,50 @@
+format session-log-v1
+stamp 20260907.001130
+editor Claude Code, terminal on the pier
+provider Anthropic
+product Claude Code
+role petrichor -- docs-geode and the prose product
+modality text
+model claude-opus-5
+model_status active runtime reported by the harness environment block
+configured_model claude-opus-5
+configured_reasoning max
+configured_status configured, not runtime-verified
+evidence .claude/settings.json is the configured record; the harness environment block is this session's runtime reading
+voice Kyri
+host Linux pier, TZ America/New_York, 8 vCPU, no jail (Keaton's word 20260906)
+title The lap that came back out of the box
+prompt Autonomous fleet lap -- Petrichor seat, opening on a round-open stash eleven seconds old.
+rota lap N was 4113 at the open, so N mod 5 is row 3 -- WATER, Venus, care and flow, the sense of TASTE. Read the threshold, the shape you grew and the shape you are, the happy zone and the thin edge, growing a language. The row's own discipline chose this lap's method: taste only works up close, so read the actual file and run the actual witness. Every number below was measured rather than recalled, and three of them changed when I did.
+think THE ROUND OPEN PARKED A WHOLE LAP ELEVEN SECONDS BEFORE I READ THE CLOCK, AND THE GUARD THAT READS THE BOX WAS ALREADY RED ON IT. stash@{0} held 11 files: a shared_pen witness family, an amphora repair, a REDS row and a session log that stood nowhere else. stash_record read stashes=8 records=7 landed=6 unlanded=1, and an independent count of my own -- does each stash's log exist on disk -- agreed exactly. Two readings agreeing is the strongest form a finding takes, and it is why I spent the lap landing rather than opening.
+think SIX OF THE EIGHT STASHES ARE RESIDUE RATHER THAN LOSS, WHICH IS THE HONEST HALF OF THE SAME READING. Their logs landed; five files that read absent landed under corrected paths -- stash_record_witness at tools/s/ rather than tools/f/, three archive shelves under names their authors changed. So the dead-letter box is doing its job, and exactly one lap of eight had gone unread.
+think I NEARLY KILLED A PEER'S LIVE PASS ON A SHAPE THAT MATCHED. Two standing_equipment_run processes read as one tree's orphan and one mine; the elder precedent kills the orphan with TERM. Reading /proc/<pid>/cwd said the other was Bakery's own healthy pass in grain-bakery. The process table is fleet-wide and the lock is per-tree, so the lock file is the instrument and the process table is not -- fleet_watch already knows this and matches on the seat name, so there is no tree fault here, only a lap that almost made one.
+think AND THEN I DID KILL MY OWN. A stray kill in a command I meant as an inspection took my cold open at 6:33 of a 20-minute pass; its EXIT trap released the lock cleanly and I re-ran it whole. That is 13 minutes I spent and the tree did not, and it is written here rather than left for the transcript.
+think THE RE-RUN NAMED THE FIND. tlb_reach red, GREEN alone one minute later -- the fourth firing of green-alone-red-in-company in three laps, and the second by a guard an earlier sweep had already repaired. Its pen is ${TMPDIR:-/tmp}/tlb_reach_build_pen, rm -rf'd before a Zig build, and the text holds no literal /tmp/ at all, so the four-spelling loom I was in the middle of landing passed straight over it.
+think THE PROOF IS THE DIFFERENCE, AND I TOOK IT BOTH WAYS. Two concurrent copies of the repaired census: both build_only green. Two concurrent copies of the elder line restored: one green, one build_only RED reason=compile_failed -- the exact assertion the roster reported. A fault of location repeats and a race does not, so the concurrent-versus-alone difference is the discriminator rather than either reading alone.
+think THE WIDENING IS A NORMALISATION RATHER THAN A SECOND MATCHER, SO EVERY RULE STAYS ONE RULE. The scan substitutes a SAME-LENGTH stand-in for ${TMPDIR:-/tmp} before matching, so the quote rule and the dollar lookahead read true column positions and there is one matcher to reason about, not two that can drift apart.
+think THE LOCK IS THE DISCRIMINATOR THE WIDENING HAD TO CARRY. amphora_vessel_port_lock.sh holds a constant path on purpose: TCP port 38494 is one resource for the whole pier, so a pier-wide lock is what makes it work and a per-process one would unserialise eight ships in silence. Freed only on a line that does not wipe, since a lock is released with rm -f and a pen wearing .lock behaves like a pen the moment it is wiped -- proven in both directions so the rule is not a door.
+obs MY FIRST TWO READINGS OF THE FIFTH SPELLING WERE BOTH WRONG, IN THE DIRECTION THAT WOULD HAVE INSTRUCTED A SWEEP. A grep for the spelling said 47 files. Applying the scan's own free rules took it to 16. Applying its dollar lookahead -- the rule this guard's own control had caught it missing one lap earlier -- took it to 3. I made the same error the control had already booked, twice, before reaching for the rule that had been written down for me.
+obs AND ONE MEASUREMENT IN BETWEEN WAS PURE NOISE I ALMOST BELIEVED. A malformed regex made every grep error out and the loop printed 0; a zero from a command that never ran reads exactly like a zero from a clean tree, which is REDS %514's own sentence one room over. Re-measured with awk: the assignment-then-wipe blind spot has ZERO live instances now that tlb_reach_census.sh is repaired, so it is named in the scan's WHAT IS NOT PROVEN rather than gated.
+obs THE POPULATION DID NOT MOVE WHILE ITS REACH DID. 61 files, 308 sites, 7 wiping before and after -- two files entered with the fifth spelling and two were repaired out. A ceiling that holds while the thing it measures grows is the shape worth reporting, because it is the one a reader would otherwise take for no change at all.
+obs THE CONTROL RECITED ITS OWN COUNT AND THE COUNT HAD DRIFTED. behaviors=24 was echoed as a literal while 27 claims ran. It is derived from the claim function now, which is REDS %110's lesson applied to a control's own headline -- a number carried in prose drifts from the thing it counts on the first lap nobody edits both.
+obs THE CARD COST SIX DRAFTS AND ONE CAIRN, AND THE CAIRN IS A REPAIR RATHER THAN A SHAVE. The pin stood at 40,959 of 40,960 -- one byte -- so an account that fit had to be paid for. I folded my own finished %512 block to a shelf, and removed one paragraph whose three claims had every one been answered or overtaken on the same card: the reading moved 166 to 170, the classification it called impossible was done in the block above it, and guard dated_path stands rostered at line 65 where it says nothing does. The pre-lap reading at d9a10c18c, which only that paragraph held, is kept in the cairn.
+loom roster=cold_open_scoped guards_run=136 green=131 red=3 gated=2 seconds=1207 tree_moved=no skipped_scope=20
+loom pens spelling_first_read=47 after_free_rules=16 after_dollar_lookahead=3 real=2 by_design=1 files=61 sites=308 wiping=7
+loom mirror=tlb_reach elder_concurrent_failed=1of2 repaired_concurrent_failed=0of2 fault=compile_failed
+loom mirror=amphora_rneg repaired_concurrent_failed=0of2 witness_seconds=14
+loom control=shared_pen behaviors=27 faults=0 counted_not_recited=yes
+loom box stashes=8 records=7 landed=6 unlanded=1 orphans=9 recovered_files=5
+file tools/fixtures/s/shared_pen_scan.sh the fifth spelling read by same-length normalisation, and the lock rule with its reason
+file tools/fixtures/s/shared_pen_control.sh three behaviors added, and the behavior count derived from the claims rather than spelled
+file tools/s/shared_pen_witness.rish the four new asserts, and the second tlb_reach firing written into the head
+file tools/fixtures/t/tlb_reach_census.sh the build pen carries the process id; this is the red the cold open named
+file tools/fixtures/f/footprint_latency_control.sh the diagnostic drop carries the process id too
+file tools/am/amphora_restore_negative_witness.rish the parked repair, landed and proven twice concurrent
+file construction/standing-equipment.kyri the shared_pen row, its comment corrected from four spellings to five
+file construction/REDS.md the row, cited by its stamp `20260906.225150` rather than its number -- which moved from %520 to %524 to %525 to %530 across three fetches and a rebase while the stamp never moved; and %520 folded to a shelf to make the room
+file construction/ITINERARY.md the block, both live questions carried, my finished account shelved
+file construction/CHECKPOINTS.md the cairn for the one paragraph condensed, naming what only it held
+file session-logs/date/20260906/20260906-225809_the-sweep-that-read-one-spelling.kyri the parked lap's own account, landed with its work; manifest corrected, every think and obs untouched
+recommend check-in (Keaton) -- two questions, both cheap and both measured. Does a page three clicks into docs-geode owe one way onward? And may `qa_report_card.sh` read the setting a page declares in its own head -- honouring a declared **Door** and **Field**, refusing a declared **Meter** -- given that 305 living pages declare one, the default is the looser class, and 13 of the 44 Door-declared read a better letter than they own with 3 crossing the B door?
+scope landing a lap out of the dead-letter box with its own account, closing the red its recovery uncovered, and widening the loom to the spelling that red was written in

@@ -192,7 +192,7 @@ if [ -x "$ZIG" ] && [ -x "$RYE" ]; then
     else
       echo "FAULT stride_builds -- the planted probe did not build; see $PEN/stride/build.log"
       echo "      a plant that cannot run proves nothing, so this is a fault rather than a skip"
-      assertions=$((assertions + 1)); faults=$((faults + 1)); cp -r "$PEN/stride" "${TMPDIR:-/tmp}/footprint_stride_build_failure" 2>/dev/null || true
+      assertions=$((assertions + 1)); faults=$((faults + 1)); cp -r "$PEN/stride" "${TMPDIR:-/tmp}/footprint_stride_build_failure_$$" 2>/dev/null || true
     fi
   else
     echo "FAULT stride_plants -- the draw line was not found to plant; the probe's source has moved"
