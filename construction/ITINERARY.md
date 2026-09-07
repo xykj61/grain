@@ -133,24 +133,25 @@ all three now, where it gave an exact number and no way to act (`%528` one room 
 `duty1`'s list last grew `20260713`, the day `vocabulary-nib` was born, four bans seated since, and
 **exactly one is mechanically checkable**: `dogfood`. The three that are not are named ABSENT with
 the reason. Wired the one, repaired both front doors (**A/91**, **A/87**). **YOURS:** it reads
-**60 paths**; **11 of 12 living spellings stood outside it**. **Two reported:** `rebindings=1`
-stands on **`xy/main` without my commit** (`%530` bound two ways, a peer's row), and ASCII-first
+**60 paths**; **11 of 12 living spellings stood outside it**. *(**`%530`: the fact a peer's OPEN row
+(`20260907.014654`) called uncountable is countable, since the later row is MINE.** Living
+citations of `%530` meaning `20260907.000030`: **three**, all in `construction/archive/` -- shelf
+title, row header, recital line -- and **zero** elsewhere. I built the move and **withdrew** it;
+answering a peer's escalation is not mine. Three lines, on your word.)* **One reported:** ASCII-first
 reads comments, never what a tool **prints** -- **5,511 non-ASCII printed lines across 1,584
 files**, read by nothing.
 **Carried from the folded Pheromone ratchet account** ([shelf](archive/20260907-013015_itinerary-landed-accounts.md)): `proposed` stands in
 TWO_ROOMS' prose and in none of its four gloss tokens. **Yours.**
 **Two Pheromone accounts folded** to the [`002052` shelf](archive/20260907-002052_itinerary-landed-accounts.md).
 
-**PHEROMONE -- THE ONLY GUARD THAT RUNS GLOW DESKS NAMES THEM BY HAND, AND THE CORPUS GREW PAST
-THE LIST.** Row `20260907.005950` OPEN, by stamp. You gave me
-`glow_run_desk_witness.rish` to roster; measuring first found this. It names **218** desks;
-`glow/gen/` holds **352**; five declare they must never run, leaving **129 no guard speaks for**,
-**89 passing bare**. Its run-contract lived in **three places no instrument read together**, all
-three agreeing perfectly, held only in memory. Landed: `glow_desk_reach`, three gates at zero,
-`uncovered` ratcheted at **129**, 23 controls, `tier lap`. My scan first read 10
-phantoms all present on disk -- `sort` under `LC_ALL=C`, `comm` not. **Yours:** three files fail
-`unsupported Glow head` and are data fixtures carrying **no marker in name or head** -- what marks
-a non-desk is language custody. **Prior account** [folded](archive/20260907-010121_itinerary-landed-accounts.md).
+**PHEROMONE -- ONE RATCHET HELD TWO DEBTS, SO ITS NUMBER COULD STAND STILL WHILE A NEW FAULT
+LANDED.** Row `20260907.021050` CLOSED, [folded](archive/REDS-one-ratchet-two-debts-rows-537.md).
+`uncovered=129` was a sum: the desk witness passes **zero arguments** (218 run lines) and
+`glow_run_worker.sh` **refuses** one off its hand-written **94**, **46** here -- **all 46
+uncovered, not one covered.** The instrument's shape, not an oversight. Split: `sample_phantom` at
+zero, ratchets **83** and **46**, the sum **derived**, controls **23 -> 43**. **Yours, still:** the
+three data fixtures with no marker. **Prior account**
+[folded](archive/20260907-021249_itinerary-landed-accounts.md).
 
 **YOURS, AND IT COSTS THE FLEET A LAP A DAY: THE ROUND-OPEN PARKS AN ORDINARY LOST RACE.** `%499`
 OPEN. `fleet_round_open.sh` classifies by two `is-ancestor` tests and **two states fail both** -- a

@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260907.021435` | [one ratchet that held two debts](20260907/20260907-021435_one-ratchet-that-held-two-debts.kyri) | 129 uncovered desks were 83 and 46. |
 | `20260907.013921` | [the half of a walk-back that travels](20260907/20260907-013921_the-half-of-a-walk-back-that-travels.kyri) | a floating hash closed; a word list 56 days stale. |
 | `20260907.013145` | [the send that met its own fold coming back](20260907/20260907-013145_the-send-that-met-its-own-fold-coming-back.kyri) | a fold withdrawn; a number moved twice. |
 | `20260907.011253` | [rebuilt what the box already held](20260907/20260907-011253_the-lap-that-rebuilt-what-the-box-already-held.kyri) | Two reds, one root; the parked paper GREEN. |
