@@ -1,0 +1,68 @@
+# tools/t/two_rooms_doorway_touch_witness.rish -- a page this round adds names its room at the door.
+#   rishi/bin/rishi run tools/t/two_rooms_doorway_touch_witness.rish
+#
+# WHAT THIS GATES, and what it leaves to its elder. `two_rooms_doorway` already reads every page in
+# three rooms and holds the unnamed ones under a ceiling that only falls. A second assertion on that
+# same reading would be a second roof over one question, so this gates only what is its own: that
+# the commit-time reading refuses an ADDED page naming no room, off the INDEX; that it reports a
+# MODIFIED one and lets it pass; that it refuses in the pen from both sides; and that
+# tools/hooks/pre-commit actually turns a real `git commit` away. The tree's own 44 unnamed pages
+# are the elder's gate, and one fault should red in one place.
+#
+# WHY THE CLASSES DIFFER. A page a commit ADDS has no accreted testimony to protect and exactly one
+# person who knows its register -- the hand writing it, in this commit -- so a wall may refuse it
+# without guessing. A page a commit MODIFIES may be dated testimony that accrete-never-break keeps
+# exactly as written; refusing an unrelated commit for touching one would be a wall somebody turns
+# off. So this holds the ratchet's RISE at zero and leaves its FALL to the cadence guard.
+#
+# WHY IT EXISTS AT ALL. On 20260907 four pages landed in one day whose Status named `proposed` and
+# no room, three of them AFTER the canon (`context/TWO_ROOMS.md`, 20260907.015907) and the room's
+# own front door both taught the token that morning. The ratchet went 44 to 48 in a day, and a hand
+# swept it back by reading four sentences already on the pages. A lantern that fires twice becomes a
+# loom.
+say "doorway-touch: Language EN -- a page born this round says which room it speaks from."
+say "doorway-touch: Style Gauge Meter -- index blobs - one gated class - refusal named."
+say "doorway-touch: Lens TAME -- bound everything, and check at the edge the round can still fix."
+
+# Reported, never gated: what this round's own staged set reads. A lap that stages nothing rests at
+# zero, which is the ordinary answer and the reason this line cannot be a gate.
+let live = run ["sh" "tools/fixtures/t/two_rooms_doorway_touch_scan.sh" "staged"]
+say live.out
+assert live.out contains "added_unnamed=0" else "doorway-touch: this round adds a page whose Status names no room -- name it"
+
+# The RED path, proven rather than assumed -- a guard shown only in the passing direction cannot be
+# told from a bypass.
+let red = run ["sh" "tools/fixtures/t/two_rooms_doorway_touch_scan.sh" "prove-red"]
+assert (red.ok == false) else "doorway-touch: prove-red must refuse"
+assert red.out contains "RED_added_page_names_no_room" else "doorway-touch: prove-red wants the named refusal"
+
+let unknown = run ["sh" "tools/fixtures/t/two_rooms_doorway_touch_scan.sh" "--nonsense"]
+assert (unknown.ok == false) else "doorway-touch: an argument the scan does not know must refuse"
+assert unknown.out contains "RED_unknown_argument" else "doorway-touch: want the unknown-argument refusal"
+
+let pen = run ["sh" "tools/fixtures/t/two_rooms_doorway_touch_control.sh"]
+say pen.out
+assert pen.ok else "doorway-touch: the pen must pass"
+assert pen.out contains "cases_failed=0" else "doorway-touch: every planted case must pass"
+assert pen.out contains "case=added_unnamed_refuses ok" else "doorway-touch: an added page naming no room must refuse"
+assert pen.out contains "case=repaired_page_walks_free ok" else "doorway-touch: and pass once the room is named"
+assert pen.out contains "case=added_unnamed_names_the_repair ok" else "doorway-touch: the refusal must name the four tokens"
+assert pen.out contains "case=pen_path_stays_out_of_the_report ok" else "doorway-touch: a reader repairs their page, never a temporary"
+assert pen.out contains "case=reads_the_index_not_the_disk ok" else "doorway-touch: the index is the reading, not the worktree"
+assert pen.out contains "case=modified_unnamed_walks_free ok" else "doorway-touch: an elder page must not refuse an unrelated commit"
+assert pen.out contains "case=modified_unnamed_is_reported ok" else "doorway-touch: and it must still be counted"
+assert pen.out contains "case=folded_shelf_is_read ok" else "doorway-touch: a page on a date/ shelf stays in the reach"
+assert pen.out contains "case=front_door_stays_out ok" else "doorway-touch: a room's README is not a page speaking from a room"
+assert pen.out contains "case=yonder_stays_out ok" else "doorway-touch: the roster's exclusions must travel, not be respelled"
+assert pen.out contains "case=before_seating_walks_free ok" else "doorway-touch: a pre-seating page is grandfathered"
+assert pen.out contains "case=resting_commit_walks_free ok" else "doorway-touch: a commit adding no page must rest"
+assert pen.out contains "case=head_mode_reads_the_commit ok" else "doorway-touch: head mode must read the commit just made"
+assert pen.out contains "case=missing_seating_refuses ok" else "doorway-touch: an unreadable seating stamp must refuse, never grandfather the tree"
+assert pen.out contains "case=hook_refuses_unnamed_page ok" else "doorway-touch: the hook itself must refuse a real commit"
+assert pen.out contains "case=hook_says_why ok" else "doorway-touch: the refusal must say plainly what is wrong"
+assert pen.out contains "case=hook_names_repair ok" else "doorway-touch: the refusal must name the repair"
+assert pen.out contains "case=hook_frees_repaired_page ok" else "doorway-touch: the hook must let a named page through"
+assert pen.out contains "case=hook_rests_off_pages ok" else "doorway-touch: a commit adding no page passes free"
+assert pen.out contains "control=ok" else "doorway-touch: want pen control ok"
+
+say "GREEN: doorway-touch -- the rise held at zero - refusals both ways - the wall driven - 30 cases in the pen"

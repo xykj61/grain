@@ -258,6 +258,42 @@ if [ -f tools/fixtures/s/shelf_link_touch_scan.sh ]; then
   fi
 fi
 
+
+# RULE FIVE -- a page this commit ADDS names its room at the door. `context/TWO_ROOMS.md` asks a
+# forward-facing page to name its register in its own Status line -- checkable, vision, mixed, or
+# research for understanding -- and settled on 20260907 that `proposed` answers a different
+# question and leaves the register open. The whole reading exists already and stands at
+# `tier cadence`: it walks 978 pages, costs a minute, and speaks hours after the page was written.
+# On 20260907 four pages landed in one day naming no room, three of them after the canon and the
+# room's front door both taught the token that morning, and a hand swept the ratchet back by
+# reading four sentences that were already on the pages. That is a lantern; this is the loom.
+#
+# ONLY WHAT THE COMMIT ADDS IS GATED. A brand-new page has no accreted testimony to protect and
+# exactly one person who knows its register -- the hand writing it, right now. A page the commit
+# MODIFIES is reported and walks free, because forty-four elder pages name no room and three of
+# them are dated testimony; refusing an unrelated commit for touching one would be a wall somebody
+# turns off. So this holds the ratchet's RISE at zero and leaves its fall to the cadence guard.
+#
+# NO TRIGGER OF ITS OWN, like rule four: the reading is one `git diff --cached` and a roster, and
+# it rests at `added_read=0` on the many commits that add no page.
+if [ -f tools/fixtures/t/two_rooms_doorway_touch_scan.sh ]; then
+  if ! doorway_report=$("$scan_shell" tools/fixtures/t/two_rooms_doorway_touch_scan.sh staged 2>&1); then
+    if echo "$doorway_report" | grep -q '^detail=RED_added_page_names_no_room'; then
+      echo "pre-commit: this commit adds a forward-facing page whose Status names no room. A reader" >&2
+      echo "arriving at the door has to guess which register they are standing in, and only the hand" >&2
+      echo "writing the page knows. Name the room in the Status line -- the four tokens are below." >&2
+      echo "$doorway_report" | grep -E '^(detail_page|detail_said|detail_repair)=' >&2
+    else
+      echo "pre-commit: the doorway wall could not MEASURE the staged set, and a wall that cannot" >&2
+      echo "measure refuses rather than waves through. This is an environment fault, never a page --" >&2
+      echo "read the scan's own words below and repair the bench or the jail." >&2
+      echo "$doorway_report" | head -4 >&2
+    fi
+    echo "  full reading: $scan_shell tools/fixtures/t/two_rooms_doorway_touch_scan.sh staged" >&2
+    refused=yes
+  fi
+fi
+
 [ "$refused" = no ] || exit 1
 
 # Spelled as an `if` rather than `[ ... ] && echo ...`, because under `set -eu` a failing AND-list

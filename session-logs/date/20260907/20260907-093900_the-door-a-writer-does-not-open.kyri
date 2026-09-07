@@ -1,0 +1,46 @@
+format session-log-v1
+stamp 20260907.093900
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role Petrichor -- docs-geode and the prose product
+modality text
+model claude-opus-5
+model_status configured; .claude/settings.json proves the default, runtime unverified
+configured_model claude-opus-5
+configured_reasoning max
+configured_status tracked settings file
+evidence .claude/settings.json
+voice Kyri
+host Framework laptop, Linux, one clock America/New_York
+title The door a writer does not open, and the loom that meets them at the commit
+prompt The baton -- Petrichor's lane: grade what you touch, raise what reads below B, close the doorway reading the card left open
+rota lap 4162, row 2 -- Fire, the row that sees. Standfast, reds-first, and the three depths read as one discipline at three moments. The fire lesson landed on the ceiling: a ratchet reading 48 against a ceiling of 44 is the stopped line, and the honest cut was the narrow one -- gate the class a lap ADDS, leave the elder 44 to their own judgment.
+think Opened with fleet_round_open, cold roster in the background, and the card whole. My block named two_rooms_doorway as the reading I could not close: 46 against a ceiling of 44 only a debride may raise.
+think Ran it. It read 48. Four pages had landed in external-research/ on 20260907 whose Status named proposed and no room, and three of them landed AFTER context/TWO_ROOMS.md settled at 20260907.015907 that proposed answers a different question and leaves the register open, and after external-research/README.md taught the token in the same refresh.
+think Read each page's next sentence before touching its Status. Two say the numbers are witness-bound and the design reading proposed, which the gloss table calls mixed; two say nothing here binds a witness, which is research for understanding. Each Status gained the token its own page already asserted, so no claim moved and the elder reading fell 48 to 44, green.
+think The repair rate matched the writing rate, which is the definition of a lantern. The teaching stood in the canon and at the room's front door and still failed to arrive, because prose at a door reaches the writer who opens it and a tier cadence guard reaches one who has already left.
+think Built the loom on the shape RULE FOUR of tools/hooks/pre-commit already holds: cheap, no trigger of its own, read off the index. tools/fixtures/t/two_rooms_doorway_touch_scan.sh intersects git diff --cached with two_rooms_doorway_roster.sh, writes each staged blob into an mktemp pen under its own basename, and runs two_rooms_doorway_scan_one.sh over it. Nothing is respelled: rooms from the roster, verdict from scan_one, seating grepped out of the cadence scan, which refuses rather than grandfathering the tree when it cannot be found.
+obs The gated class is narrower than the elder's on purpose -- only a page the commit ADDS. A new page has no accreted testimony to protect and exactly one person who knows its register, so the ratchet's RISE is held at zero while its FALL stays with the cadence guard and its 44 pages, three of them dated testimony on date/ shelves. A MODIFIED page is reported and walks free: a wall that reds on ordinary work is a wall somebody turns off.
+obs A constant name under /tmp is what REDS %512 and %541 booked twice this week, so the pen is mktemp and the pen path is swapped back out of every message a reader sees -- a hand repairs the page they wrote, never a temporary this scan made. The pen asserts that swap as its own case.
+obs The pen refused to speak at first: tools/hooks/pre-commit opens with a test for rishi/bin/rishi and exits 0 without it, so a pen lacking the interpreter proves nothing about the wall. Planted an executable stub, and three hook cases went from silently green to actually driven.
+obs The ledger is out of room. Pheromone read rows_that_fit=0 with ten rows and 627 bytes free; I folded the one CLOSED row to seat mine and the pin now stands at 3 bytes free with nine OPEN rows beneath it. The next ship to book has nothing left to fold, and the doors -- a raise of the bound, or closing rows -- are Keaton's.
+obs The send's own rebase renumbered the row 554 to 557. Pheromone booked %554 at 20260907.083054, an hour before my stamp, so the earlier stamp keeps the number and mine moved -- and reds_spine_derive named the repair in its own words, `squatting %554 ... this row (20260907.093522) is unshared and derives above %556`. The stamp held, which is the derived-spine law working rather than failing.
+obs And the pin reading I wrote is already superseded by that same pull. I folded %550 to seat my row at 3 bytes free; upstream's own folds rode the rebase, so construction/REDS.md now reads 2,608 free with eight OPEN rows and one foldable. `rows_that_fit=0` still holds at a median row of 2,934, so the deadlock Pheromone named is eased rather than closed. Corrected on the card in the same commit.
+obs My cold pass at the open was launched detached and outlived its own shell -- the runner read `group_leader=gone lap=gone` and refused the hot pass on a lock it could see was orphaned. Its printed repair, `kill -TERM <pid>`, ran the EXIT trap and released the lock exactly as written. That is Pheromone's 20260907.065808 shape from the other side, caused by me: a background launch is a detached one, and a lap's own reading is worth less than the lock it strands.
+obs The four-page repair landed upstream while my lap was in flight, in a peer's own commit and with the same two tokens, and Incense then carried the elder reading from 48 to 37 with the ceiling re-seated. So the sweep half of this lap is superseded and I took upstream's bytes at every one of the four conflicts. What stands is the half nobody else built: the MOMENT. The loom calls two_rooms_doorway_scan_one.sh rather than respelling it, so a peer's same-morning upgrade to that script -- reading a **Room:** key beside **Status:**, and matching the token on word boundaries -- reached my gate with no edit of mine.
+obs And I did the thing REDS %541 books. Reaping an orphaned roster pass of my own I ran `pgrep -f "standing_equipment_run.sh --hot" | head -1` and TERMed pid 2044271, which was Copal's wrapper shell in /home/keeper/grain-copal rather than mine. Measured rather than hoped: Copal's runner 2044285 survived, re-parented to init, still holding its own lock and still writing its own output; I touched no file in that tree. What it costs Copal is the wrapper, so its harness reads the command finished while the pass runs on, and its next cold open will refuse run_in_flight. Written up in session-output/petrichor-to-copal.txt with the repair named. A signal is not a file, so one-writer-per-checkout never reached it -- and Diffuser's `fleet_call` landed the same morning, which makes this the last lap that had an excuse.
+obs My row's number moved five times -- 554, 557, 559, 562, 563 -- across four rebases in one send, and the stamp held every time. Each move was named by reds_spine_derive in its own words rather than found by hand, which is the derived spine doing exactly what it was seated for. Two byte-identical duplicate rows on today's shelf came in on the same rebases; the repair tool refuses a duplicate as a hand's judgment, and byte-identical is the decidable kind, so I dropped the second copy of each and sorted.
+obs The control graded C+ at 79 on its first reading, which pushed one molt frame. Closed it by measurement: the header was long-clause Field prose where a program head reads at Door, so plainer sentences took reach from 70 to 100 and the composite to 88.
+loom witness=two_rooms_doorway_touch wall_s=2 behaviors=30 faults=0
+loom guard=two_rooms_doorway pages=978 fails_before=48 fails_after=44 ceiling=44 wall_s=28 note=superseded_upstream_at_37
+file external-research/20260907-*.md the four Status lines gained their room token, graded 88-94; superseded upstream by a peer's identical repair and taken from theirs at the rebase
+file tools/fixtures/t/two_rooms_doorway_touch_scan.sh the loom -- staged adds read off the index, one gated class, refusal named; graded 85
+file tools/fixtures/t/two_rooms_doorway_touch_control.sh thirty behaviors on real repositories, the hook driven both ways; graded 88 after one molt frame
+file tools/t/two_rooms_doorway_touch_witness.rish the gate, tier lap at 2s; graded 90
+file tools/hooks/pre-commit RULE FIVE, on RULE FOUR's shape -- cheap, no trigger of its own, off the index
+file construction/standing-equipment.kyri the roster row, tier lap, with the elder's 28s at cadence named beside it
+file construction/archive/REDS-the-door-a-writer-does-not-open-rows-563.md the row, booked by stamp 20260907.093522, renumbered 554 to 557 to 559 to 562 to 563 across four rebases and folded on its own lap
+file session-output/petrichor-to-copal.txt the note owning the peer wrapper shell I killed, with the repair named
+file construction/ITINERARY.md my block rewritten to claim only the half that stands, and the peer kill named on the fleet's own card
+recommend check-in (Claude) -- I signalled a peer's process this lap and want the ruling before another lap reaches for a pid: may a lap resolve a peer's pid at all, or only its own tree's lock? Whether proposed earns a fifth token stays the canon's.
