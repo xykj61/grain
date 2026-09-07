@@ -10,7 +10,15 @@
 # a gate once the docs shelf proves stable.
 #
 # Duties (fixtures/living_docs_lint_scan.rish - .sh body via run seam):
-#   1. retired LEXICON words in living-voice lines (word-boundary; keeps.txt exemptions)
+#   1. retired LEXICON words in living-voice lines. READS ITS OWN ROSTER since 20260907 --
+#      tools/fixtures/l/living_prose_roster.sh (379 living pages), rather than the 60-path docs
+#      roster the other duties weigh. A word ban is a prose-level question and governs every
+#      living page; the meter enforcing it heard a fourteenth of them. The reading is
+#      tools/fixtures/l/retired_word_scan.sh, proven by a nine-behavior control on real git
+#      history -- an advisory never shown naming a violation is a guard that cannot red.
+#      `corpus` LEFT the list: tools/v/vocabulary_collection_witness.rish holds it at zero,
+#      ENFORCED, with a pattern that tells a prose use from an identifier or a path segment,
+#      which a word-boundary match cannot. Wired here it named 135 lawful lines.
 #   2. broken relative links on roster
 #   3. orphan roster pages (no inbound from roster + docs/README)
 #   4. Status rooms on rostered living pages
@@ -38,4 +46,12 @@
 say "living-docs lint: ratchet advisory (eight duties)…"
 let scan = run ["rishi/bin/rishi" "run" "tools/fixtures/l/living_docs_lint_scan.rish"]
 say scan.out
+
+# The one ASSERTION in an advisory witness, and it is about the meter rather than the prose.
+# Duty 1 refuses nothing, so its silence is its whole output -- and silence from a reading that
+# cannot bite says nothing at all. The control plants nine shapes in a throwaway repository and
+# proves both directions: the violation caught, every lawful shape free.
+let control = run ["sh" "tools/fixtures/l/retired_word_control.sh"]
+assert control.ok else "living-docs lint: the duty-1 control must pass -- ${control.out}"
+assert control.out contains "control_verdict=ok" else "living-docs lint: want the retired-word reading proven able to bite -- ${control.out}"
 say "GREEN: living-docs lint — advisories printed; witness never fails."

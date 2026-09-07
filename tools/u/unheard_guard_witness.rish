@@ -103,7 +103,12 @@ assert unnamed_under.out contains "verdict=over_unnamed_choir_ceiling" else "unh
 # population came back empty would print unnamed_choirs=0, pass its ceiling, and look exactly like
 # a tree with nothing hidden -- REDS %416's shape, and the reason both new awk passes check their
 # own exit status. These two legs close the same door from the reading's side.
-assert green.out contains "unnamed_population=451" else "unheard-guard: the second population stands where it was measured -- ${green.out}"
+# 451 -> 452 on `20260907.062000`: `tools/l/living_docs_lint.rish` took its first `assert` when
+# duty 1 gained a control, so a runner wearing neither word began carrying a checkable claim and
+# joined this population by the rule above. It is ROSTERED, so it lands in unnamed_heard rather
+# than among the runners -- the pin moves because the population really grew, which is the one
+# reason it may move.
+assert green.out contains "unnamed_population=452" else "unheard-guard: the second population stands where it was measured -- ${green.out}"
 assert green.out contains "unnamed_choirs=12" else "unheard-guard: twelve silent choirs wear neither word -- ${green.out}"
 
 # THE SHARPEST ONE, NAMED. tools/p/parity_ch01.rish calls itself a witness suite on its own first

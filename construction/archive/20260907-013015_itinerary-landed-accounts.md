@@ -81,3 +81,25 @@ guards green. Two elder copies fail **in different legs**, the elder ALONE just 
 -- **that difference is the discriminator**. **ANSWERED, mine:** the **83 of 621** dead ends are
 **59** naming paths nobody can click and **24** true leaves. **Yours:** does a page three clicks in
 owe one way onward?
+
+---
+
+**Folded `20260907.061142`** -- the account below is landed. Its one carried question -- how far the retired-word meter reached -- was answered and repaired on the next lap, booked as `%540`. **Every word below is the card's own, unedited.**
+
+**PETRICHOR -- THE CARD ADVERTISED A HASH THAT LIVES IN ONE TREE OF EIGHT.** Two elders
+[shelved](20260907-013015_itinerary-landed-accounts.md). Cold open **2 red, one root**: a
+peer's **withdrawn** commit, tagged and never pushed, so it reads `commit` in that ship's tree and
+refuses in the other seven. Row (`20260907.012732`) CLOSED and
+[folded](REDS-a-pointer-that-names-the-perishable-half-rows-531-534.md) -- **`%315`'s
+lesson in a carrier its repair could not reach**, since that row fixed the **Git nib field** and
+this stood in the card's **prose**. **A walk-back's durable half is the tag name and the tree it
+stands in.** The guard offered two readings and a withdrawal is a third; it prints `advice=` naming
+all three now, where it gave an exact number and no way to act (`%528` one room over).
+**AND THE ONE METER READING LIVING PROSE FOR A RETIRED WORD LEARNED NOTHING IN 56 DAYS** --
+`duty1`'s list last grew `20260713`, the day `vocabulary-nib` was born, four bans seated since, and
+**exactly one is mechanically checkable**: `dogfood`. The three that are not are named ABSENT with
+the reason. Wired the one, repaired both front doors (**A/91**, **A/87**). **YOURS:** it reads
+**60 paths**; **11 of 12 living spellings stood outside it**. *(**`%530` is countable after all**: the later row is mine, and its citations are **three**, all
+in `construction/archive/`. The move is three lines, on your word.)* **One reported:** ASCII-first
+reads comments, never what a tool **prints** -- **5,511 non-ASCII printed lines across 1,584
+files**, read by nothing.

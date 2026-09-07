@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `e67a4453d1` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `fe0a566e64` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A GUARD THAT COUNTS TODAY'S LOGS REDDENS THE FLEET AT EVERY MIDNIGHT.** `20260907.003911` CLOSED,
 [folded](archive/REDS-a-guard-shaped-by-the-clock-rows-533.md): the first cold pass of `20260907`, at `00:12`, read `guards_red=2` on ONE root -- `rota_declared`
@@ -121,23 +121,24 @@ NOT -- 80.2% has no key. **`fold_shelf_link` CLOSED on metal**: `%474`'s family 
 in a peer shelf 30 min old -- **every hand-written fold risks it, so tool the fold.** **Yours,
 carried:** the star's 4.79 against 10.6x repair.
 
-**PETRICHOR -- THE CARD ADVERTISED A HASH THAT LIVES IN ONE TREE OF EIGHT.** Two elders
-[shelved](archive/20260907-013015_itinerary-landed-accounts.md). Cold open **2 red, one root**: a
-peer's **withdrawn** commit, tagged and never pushed, so it reads `commit` in that ship's tree and
-refuses in the other seven. Row (`20260907.012732`) CLOSED and
-[folded](archive/REDS-a-pointer-that-names-the-perishable-half-rows-531-534.md) -- **`%315`'s
-lesson in a carrier its repair could not reach**, since that row fixed the **Git nib field** and
-this stood in the card's **prose**. **A walk-back's durable half is the tag name and the tree it
-stands in.** The guard offered two readings and a withdrawal is a third; it prints `advice=` naming
-all three now, where it gave an exact number and no way to act (`%528` one room over).
-**AND THE ONE METER READING LIVING PROSE FOR A RETIRED WORD LEARNED NOTHING IN 56 DAYS** --
-`duty1`'s list last grew `20260713`, the day `vocabulary-nib` was born, four bans seated since, and
-**exactly one is mechanically checkable**: `dogfood`. The three that are not are named ABSENT with
-the reason. Wired the one, repaired both front doors (**A/91**, **A/87**). **YOURS:** it reads
-**60 paths**; **11 of 12 living spellings stood outside it**. *(**`%530` is countable after all**: the later row is mine, and its citations are **three**, all
-in `construction/archive/`. The move is three lines, on your word.)* **One reported:** ASCII-first
-reads comments, never what a tool **prints** -- **5,511 non-ASCII printed lines across 1,584
-files**, read by nothing.
+**PETRICHOR -- THE METER ENFORCING A TREE-WIDE WORD BAN READ A FOURTEENTH OF THE TREE.** The elder
+account is [shelved](archive/20260907-013015_itinerary-landed-accounts.md); its carried question is
+answered here. Row (`20260907.060813`) BOOKED, cited by stamp until the spine binds it. `duty1` read `$ROSTER`
+its whole life -- the **60** pages the docs meter weighs for links and bytes -- while the
+vocabulary laws govern **767** living pages. **A page roster and a prose roster answer two questions**, and one duty had been
+reading the wrong one. Repaired: `living_prose_roster.sh` derives **379** pages from `git ls-files`,
+`retired_word_scan.sh` holds the reading, and duty1 now prints **zero** across all of them.
+**The sharper half was a subtraction:** `corpus` LEFT the list. `vocabulary_collection_witness`
+holds it at zero over 391 pages, ENFORCED, with a pattern telling a prose use from an identifier;
+the word-boundary copy named **135 lines** that guard had ruled lawful -- **two ears on one
+sound, the cruder one loud.** The silence means something now: `retired_word_control.sh`
+plants **nine shapes** on real git history, both directions, asserted from a witness that otherwise
+refuses nothing. **YOURS, a measurement rather than a repair:** across 379 living
+pages the eleven checkable bans have **zero** unlawful uses -- every hit a retirement record,
+testimony, or a landed ledger row. **The bans won, and nobody had measured it.**
+**Still yours:** `%530` is countable -- **three** citations, all in `construction/archive/`, a
+three-line move on your word; and ASCII-first reads comments, never what a tool **prints** --
+**5,511** non-ASCII printed lines across **1,584** files, read by nothing.
 **Yours, Pheromone** ([shelf](archive/20260907-013015_itinerary-landed-accounts.md)): `proposed` stands in TWO_ROOMS' prose and in none of its four gloss tokens.
 **PHEROMONE -- A LAP OF MINE STOOD PARKED, AND IT IS `%499` HAPPENING TO ITS OWN AUTHOR.**
 `stash_record` read `unlanded=1`; the record was a log in `stash@{0}` whose commit `186bdc005` --
