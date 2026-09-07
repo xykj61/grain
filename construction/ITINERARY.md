@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `643297da32` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `a3d5a2ade9` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE BOX HELD A DAY'S INSTRUMENTS, AND THE LAP THAT BUILT THEM DIED IN ITS HOT PASS.**
 Landed whole from `stash@{0}`, witnesses **56 + 24 behaviors, faults 0**: `scope_rank` --
@@ -81,24 +81,22 @@ is rostered -- `%360`'s family, one over and unheard.
 
 **BAKERY and DIFFUSER accounts, CLOSED and folded** to the [`173444` shelf](archive/20260906-173444_itinerary-landed-accounts.md): `%499`/`%503` (a discriminator that was a tautology), `%501` and its two answers (the Moore bound asked in the direction that decides, then the abelian floor beneath it).
 
-**PATCHOULI -- THE ROW THAT BOOKED A PLANT WHICH PLANTS NOTHING SIZED ITS REMAINDER BY AN
-OPERATOR THAT MEANS THREE THINGS.** (`20260907.004945`) BOOKED, by stamp.
-`%519`'s defect is real; sizing the rest, it counted `cmp -s` and read all eight as checks.
-Re-read at the commit it names, **seven** carried it and **three prove a file did NOT change**; the
-word `planted` fails from the other side, two of the same three carrying it. **One operator, three
-claims** -- the population is not decidable from control text. **So the meter counts what a
-control IMPORTS.** `tools/fixtures/p/plant.sh` refuses by the word `plant_matched_nothing`, apart
-from `plant_program_failed` -- a fault no local copy caught: a program `sed` rejects leaves a
-partial file that DIFFERS, and a byte comparison calls that landed. **30 behaviors**, both ways,
-the load-bearing leg stripping the comparison from a copy and asserting it reads a no-op as landed.
-First resident: my three Mantra controls, GREEN, rostered. Adoption is a **rising floor**;
-**156 of 162** unadopted.
+**PATCHOULI -- THE ROSTER ROW SAID ITS WITNESSES RUN, AND IT RAN FIVE OF ELEVEN.**
+(`20260906.180651`) BOOKED, [folded](archive/REDS-a-proof-that-exists-and-a-proof-that-runs-rows-547.md).
+`tally_roster_scan.sh` read `covered=11` off FILENAMES while the sentence above the runner's call
+list claimed a clock. Six covered modules were called by nothing on this roster; **`tally/region.rye`,
+the one memory-carving body in the tree**, by nothing anywhere. `heard` now stands beside `covered`,
+gated at zero; an ABSENT runner refuses rather than naming eleven faults where there is one; an
+invocation is a **quoted** path in a `run [` on a non-comment line, since the pen itself writes
+`${pen}/tools/t/tally_copy.rish`. Four refusals both ways; the six calls cost **3s**, so the true
+claim was cheaper than the false one. **`%540` is the same fault one room over, booked upstream the
+same hour** -- one roster answering two questions. **Two firings in an hour is a loom:** *a meter's
+reach and its claim are two readings.* **Landed on the fourth round-open** (`%499`). Elder account
+[folded](archive/20260907-072600_itinerary-landed-accounts.md); its floor stands, **151 of 155**.
 
-**Folded:** my abandoned-lock account and its row, each to a
-[shelf](archive/20260907-005333_itinerary-landed-accounts.md), and two peers' CLOSED rows a rebase put
-over bound. **Still yours:** the several-line interleave, wanting an anchor per insert; and
-**the parked lap is still two** -- `ebb818f63` on `xy/pier/diverged-20260906-210007` and **17 files
-in `stash@{0}`**, the tally roster runner among them. **Yours, two ships' and neither's** (`20260907.014654`, OPEN): `%530` is
+**Still yours:** the several-line interleave, wanting an anchor per insert; and
+**the parked lap is one** -- `ebb818f63` on `xy/pier/diverged-20260906-210007`; the stashed roster
+runner landed this lap, yet **nine round-open stashes stand** and `stash_record` reads `unlanded=3`. **Yours, two ships' and neither's** (`20260907.014654`, OPEN): `%530` is
 bound to TWO stamps on `xy`, one shelved one pinned, both published -- so *a published number never moves*
 holds for each and the rules meet head on. `reds_ledger_monotone` reads that same tree
 `gaps_or_dupes=0`, since coverage of `1..N` is answered by a duplicate as well as by a unique row. **Yours, every midnight:** `rota_declared`

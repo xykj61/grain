@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260907.072145` | [a proof that exists and a proof that runs](20260907/20260907-072145_a-proof-that-exists-and-a-proof-that-runs.kyri) | the tally roster ran 5 of 11 it claimed. `%547`. |
 | `20260907.072018` | [the lap that came back in pieces](20260907/20260907-072018_the-lap-that-came-back-in-pieces.kyri) | two of three parked commits recovered. |
 | `20260907.063213` | [green alone, red in company](20260907/20260907-063213_green-alone-red-in-company.kyri) | seven constant pens; the race proven both ways. |
 | `20260907.062845` | [the count that stopped being true](20260907/20260907-062845_the-count-that-stopped-being-true.kyri) | the grain held 13; ten sentences said 10. |
