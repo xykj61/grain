@@ -18,6 +18,32 @@ pub const max_mark_len: u32 = 32;
 pub const max_name_len: u32 = 200;
 pub const max_line_len: u32 = max_mark_len + 1 + digest_hex_len + 1 + max_name_len;
 
+/// The two roots the engine hardcodes, and the only marks it knows without asking.
+/// `foundations/20260703-202312_the-marked-value.md` names exactly these two and says
+/// why the circle of who-validates-the-validators has to break somewhere: the
+/// plain-bytes mark, which every value trivially satisfies, and the manifest mark,
+/// so a vessel can always be read. Everything above them is defined in the tree and
+/// arrives through `mark_verdict`, never by widening this pair.
+pub const mark_plain_bytes = "plain-bytes";
+pub const mark_manifest = "manifest";
+
+/// What the engine can say about a mark on sight. `known` is one of the two roots;
+/// `unknown` is cargo whose kind cannot be named, which the wreck rule refuses whole.
+pub const MarkVerdict = enum { known, unknown };
+
+/// Read a mark's verdict off its face, the way a shoulder line is read before a seal breaks.
+/// Postcondition: every mark receives exactly one verdict -- there is no third answer and
+/// no partial trust, which is the wreck rule stated positively.
+pub fn mark_verdict(mark: []const u8) MarkVerdict {
+    // invariant: a mark reaching here has already passed the shape check above.
+    assert(mark.len >= 1);
+    // invariant: the roster is the two roots, so the walk is bounded by a named pair.
+    assert(mark.len <= max_mark_len);
+    if (std.mem.eql(u8, mark, mark_plain_bytes)) return .known;
+    if (std.mem.eql(u8, mark, mark_manifest)) return .known;
+    return .unknown;
+}
+
 pub const ManifestEntry = struct {
     mark: []const u8,
     digest_hex: []const u8,
@@ -31,8 +57,10 @@ fn is_lower_hex(c: u8) bool {
 }
 
 /// Precondition: line contains no newline and fits the named bound.
-/// Postcondition: all three fields are nonempty; the digest is well-formed.
-pub fn parse_manifest_line(line: []const u8) error{InvalidFormat}!ManifestEntry {
+/// Postcondition: all three fields are nonempty, the digest is well-formed, and the
+/// mark is one the engine can name. An unknown mark refuses whole rather than
+/// riding through unread -- there is no partial trust of cargo whose kind has no name.
+pub fn parse_manifest_line(line: []const u8) error{ InvalidFormat, UnknownMark }!ManifestEntry {
     assert(line.len >= 1);
     assert(line.len <= max_line_len);
 
@@ -67,22 +95,38 @@ pub fn parse_manifest_line(line: []const u8) error{InvalidFormat}!ManifestEntry 
     assert(entry.mark.len >= 1);
     assert(entry.digest_hex.len == digest_hex_len);
     assert(entry.name.len >= 1);
+    // The wreck rule, kept here so all five reading sites inherit it from one place:
+    // vessel_core (manifest and cargo lines), vessel_seal (two), and vessel_fetch_delivery
+    // each discard the parsed entry with `_ =` and keep only the refusal, so a check
+    // written per caller would be a rule written five times to be forgotten once.
+    if (mark_verdict(entry.mark) == .unknown) return error.UnknownMark;
+    // invariant: past this line the mark is a root the engine names.
+    assert(mark_verdict(entry.mark) == .known);
     return entry;
 }
 
 fn run_selftest(_: std.Io) !u8 {
-    const line = "bytes " ++ ("ab" ** 32) ++ " session-logs/example.md";
+    const line = mark_plain_bytes ++ " " ++ ("ab" ** 32) ++ " session-logs/example.md";
     const entry = try parse_manifest_line(line);
-    assert(std.mem.eql(u8, entry.mark, "bytes"));
+    assert(std.mem.eql(u8, entry.mark, mark_plain_bytes));
     assert(entry.digest_hex.len == digest_hex_len);
     assert(std.mem.eql(u8, entry.name, "session-logs/example.md"));
 
-    if (parse_manifest_line("bytes short name")) |_| return error.UnwelcomePassed else |_| {}
+    if (parse_manifest_line(mark_plain_bytes ++ " short name")) |_| return error.UnwelcomePassed else |_| {}
     if (parse_manifest_line(" " ++ ("ab" ** 32) ++ " x")) |_| return error.UnwelcomePassed else |_| {}
-    if (parse_manifest_line("bytes " ++ ("AB" ** 32) ++ " x")) |_| return error.UnwelcomePassed else |_| {}
+    if (parse_manifest_line(mark_plain_bytes ++ " " ++ ("AB" ** 32) ++ " x")) |_| return error.UnwelcomePassed else |_| {}
+
+    // Both directions of the wreck rule, since a refusal proven only one way cannot be
+    // told from a bypass. The manifest root walks free beside plain-bytes; a stranger
+    // and an inviting-sounding kind the engine never named both refuse.
+    const manifest_line = mark_manifest ++ " " ++ ("ab" ** 32) ++ " nested.bron";
+    const nested = try parse_manifest_line(manifest_line);
+    assert(std.mem.eql(u8, nested.mark, mark_manifest));
+    if (parse_manifest_line("zzz-unknown-stranger " ++ ("ab" ** 32) ++ " x")) |_| return error.UnwelcomePassed else |err| assert(err == error.UnknownMark);
+    if (parse_manifest_line("executable " ++ ("ab" ** 32) ++ " payload.so")) |_| return error.UnwelcomePassed else |err| assert(err == error.UnknownMark);
 
     print("amphora: version {s}\n", .{amphora_manifest_entry_version});
-    print("GREEN: Amphora manifest entry — parse and refuse whole.\n", .{});
+    print("GREEN: Amphora manifest entry -- parse, name the mark, and refuse whole.\n", .{});
     return 0;
 }
 

@@ -396,3 +396,5 @@ at a closed fold.*
 *Rows %531 and %534 folded to [`REDS-a-pointer-that-names-the-perishable-half-rows-531-534.md`](REDS-a-pointer-that-names-the-perishable-half-rows-531-534.md) on `20260907.014522`, both **CLOSED** -- a record is only as good as the part something reads, and a pointer only as good as the half that survives leaving the tree that wrote it.*
 
 *Row %530 folded to [`REDS-a-channel-that-drops-its-cargo-rows-530.md`](REDS-a-channel-that-drops-its-cargo-rows-530.md) on `20260907.021038`, **CLOSED** -- a channel built to carry a claim forward drops the one thing it was built to carry.*
+
+*Rows %537 and %538 folded to [`REDS-a-charter-and-a-shoulder-line-rows-537-538.md`](REDS-a-charter-and-a-shoulder-line-rows-537-538.md) on `20260907.021046`, both **CLOSED** -- two claims a ship read aloud every lap that nothing in the tree could check -- a charter's own line count, and a vessel's wreck rule.*
