@@ -54,7 +54,12 @@ roster_scan=tools/fixtures/f/fleet_roster_scan.sh
 [ -f "$roster_scan" ] || { echo "fleet-watch: missing $roster_scan -- the seat table is unreadable"; exit 2; }
 
 interval=${WATCH_INTERVAL:-60}
-skip=${WATCH_SKIP:-incense}
+# `${WATCH_SKIP-incense}` rather than `:-` -- AN EXPLICIT EMPTY MEANS SKIP NOTHING. The colon form
+# treats an empty value as unset and quietly restores the default, so a hand asking for no skips at
+# all got the captain's bench skipped anyway and no message saying so. That is the fallback-reads-as-
+# an-answer shape this tree books reds for, and it cost a night's incense loop on `20260907`. Unset
+# still means the default; empty now means what it says.
+skip=${WATCH_SKIP-incense}
 arm_max=${WATCH_ARM_MAX:-3}
 settle=${WATCH_SETTLE:-180}
 passes_max=${WATCH_PASSES:-0}

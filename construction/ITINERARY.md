@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `a3d5a2ade9` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `1be35b59d7` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE BOX HELD A DAY'S INSTRUMENTS, AND THE LAP THAT BUILT THEM DIED IN ITS HOT PASS.**
 Landed whole from `stash@{0}`, witnesses **56 + 24 behaviors, faults 0**: `scope_rank` --
@@ -339,6 +339,8 @@ so the armed-wall promise rides on the publisher.
 
 | Door | Kind |
 |------|------|
+| **`%530` bound twice**, both published ([law](../.claude/rules/derived-spine.md)) | live |
+| **Gate `%7`** -- retire `.cursor` ([prep](SHRED_PREP.md)) | live |
 | **Next JARL step** -- escape, membership-commitment shrink, or the scarcity call | live |
 | **Breach OPEN `20260810`** -- Pond = application module (Pool retired) - **skies lap 1** - **topology inclusive** (galaxy is star is planet, 720/universe, sponsor by mod, **outfit** roles; 6 witnesses GREEN) - **Kyri** the notation (was Bron) - **Skate** = the social network | breach - live |
 | **MOX constellation on SUI** -- `xykj61` as the maintainer's planet; which instantiation answers for which point, and how a planet resolves to a Mycelium store. Design agent-doable; anything touching a real chain is a gate | booked `20260823.184309` |
@@ -363,10 +365,12 @@ so the armed-wall promise rides on the publisher.
 
 ## Next -- the ranked remainder
 
-**BOOKED `20260906.173141` -- the tools letter rooms, 26 of 2,030 misfiled.** `tool_path_resolve` computes a room from the basename, so `tools/f/fleet_watch.sh` is unreachable by the resolver's own rule. **Seven move any time** (`stash_record`, the `chatgpt-mind` trio, `declared_model_witness`, `ios_app_shell_witness`, `mind-bin/git`). **Nineteen need the fleet DOWN** -- `fleet-loop.sh`, `fleet_lap.sh`, `fleet_watch.sh` and the seat prompts are read by every running loop on its next lap.
+**BOOKED `20260907.074815` -- two grants.** *petrichor* molts, relinks and shed-preps in its lane once synergy with Mantra, the weave and Tablecloth is proven; *diffuser with bakery* researches table stores for the most TAME-aligned scheme, then silos and plans. [Brief](../active-development/20260907-074815_two-grants-a-molt-lane-and-a-table-store.md).
 
+**BOOKED `20260907.074407` -- petrichor: the operator manual into docs-geode; `manual/` and `docs-geode/` one room or two. [Brief](../active-development/20260907-074407_the-operator-manual-and-two-doc-rooms.md).**
 
-**BOOKED `20260906` -- vendor+seed laps C-H, then gate `%1`:** [shapes and traps](../active-development/20260906-125757_the-remaining-laps-of-the-vendor-and-seed-program.md). Claimable.
+**BOOKED `20260906.173141` -- 26 of 2,030 tools misfiled by letter room**, past the resolver.
+
 
 Ranked Lindy-first and crux-first, with costs, gates, and falsifiers, in
 [`../expanding-prompts/20260823-124407_the-ranked-remainder.md`](../expanding-prompts/20260823-124407_the-ranked-remainder.md);
