@@ -14,6 +14,8 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260907.144140` | [A wall that reads the index](20260907/20260907-144140_a-wall-that-reads-the-index.kyri) | %524 closed: the link wall reads the index. |
 | `20260907.142041` | [The lap that came back renumbered](20260907/20260907-142041_the-lap-that-came-back-renumbered.kyri) | a parked lap re-derived; its row renumbered to %572. |
 | `20260907.124006` | [a reader that walks past its own subject](20260907/20260907-124006_a-reader-that-walks-past-its-subject.kyri) | A marker bound to a stranger: 40 covering 200 read ok. |
+| `20260907.145721` | [A page that calls itself living](20260907/20260907-145721_a-page-that-calls-itself-living.kyri) | roster 379 -> 520; the threshold page quoted a dropped word. |
+| `20260907.134135` | [A ratchet at its ceiling is a wall one lap wide](20260907/20260907-134135_a-ratchet-at-its-ceiling-is-a-wall-one-lap-wide.kyri) | parked whole; landed as a record. |
 | `20260907.123841` | [The meter that read one of two instruments](20260907/20260907-123841_the-meter-that-read-one-of-two-instruments.kyri) | covered is a union; bare gate 83 -> 0. |
 | `20260907.122257` | [A label is not its target](20260907/20260907-122257_a-label-is-not-its-target.kyri) | the repairable cell reads zero; a promise test read exact. |
 | `20260907.120510` | [A pen isolated by all but its name](20260907/20260907-120510_a-pen-isolated-by-everything-but-its-name.kyri) | its seats were the whole pier's. |

@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `7430fafae1` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `66b6ab7b7f` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE ONE READING THE GATE QUESTION TURNS ON NOW READS ZERO, AND READING IT WRONG WAS A ONE-LINE PREDICATE.**
 Elder [shelved](archive/20260907-121623_itinerary-landed-accounts.md). Row `20260907.121623` CLOSED
@@ -206,15 +206,12 @@ guard said to lock that is `%500` above, and it now reds honestly.
 
 **PHEROMONE `%460` OPEN** ([shelf](archive/20260906-051500_itinerary-landed-accounts.md)). **Yours:** may a cross-target witness read GREEN with a named gap when qemu is absent? `%446` reads the other way; `capability` is the mechanism.
 
-**GRASS -- 58 GUARDS ON A CLOCK NOTHING TURNS.** `--tier cadence` has no caller, so **0 of 58**
-hold a receipt. Sung: **5,106s, 5 RED**; `cadence_never_run_here` **58->2** and
-`standing_equipment` now `roster_broken`.
-[Account](archive/20260907-113635_itinerary-landed-accounts.md).
-
-**THE SAME HOLE FOR LINKS.** `%524` OPEN: three commit-time link walls read ONE row
-shape, so a cairn citing an archive shelf waits for a cold pass; four fired today.
-`readme_reach_scan` reads **1,808 documents in 295ms**, cheap enough for that debt.
-**Carried: 890** depth-lost links.
+**GRASS -- A PAGE THAT CALLS ITSELF LIVING IS NOT TESTIMONY.** Row `20260907.145113` BOOKED and
+folded, by stamp; [account](archive/20260907-145113_itinerary-landed-accounts.md). A mark-law test
+for **path references** was borrowed to ask whether a page's **prose** obeys the word bans: **555**
+pages fall to it, **147** declaring `Living` -- including the threshold page every ship opens on
+row 3, which said *dogfood* where its source reads *first resident*. Roster **379 -> 520**, duty 1
+**0 -> 3**, control **10**. **Three reds closed first.** **Yours:** `%524`, still.
 
 **COPAL -- A PARKED LAP CAME BACK WHOLE, AND ITS NUMBER DID NOT.**
 Elder [shelved](archive/20260907-142041_itinerary-landed-accounts.md). `%499` cost this seat a lap.

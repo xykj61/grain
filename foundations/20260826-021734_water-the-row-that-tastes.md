@@ -89,11 +89,11 @@ sweet on every push, and the design feels the gentle pressure and grows clearer 
 `foundations/20260618-184912_growing-a-language.md` (written 20260618, reviewed and kept
 20260629, graduated to foundations) draws the method out of Rye's own
 raising and hands it to Rishi: stand on proven ground, wear a thin costume first, own the
-core by path, diverge by strengthening, dogfood and gate. Rishi stands on Rye the way Rye
-stands on its foundation, sharing one value model so the seam between shell and language
-never opens, and the parity gate is the specification -- build exactly enough language to
-express it, and no more. One style serves the whole family: a shared TAME root, and a
-small supplement each language earns only when its idioms are real.
+core by path, diverge by strengthening, live in it as first resident, and gate. Rishi
+stands on Rye the way Rye stands on its foundation, sharing one value model so the seam
+between shell and language never opens, and the parity gate is the specification -- build
+exactly enough language to express it, and no more. One style serves the whole family: a
+shared TAME root, and a small supplement each language earns only when its idioms are real.
 
 Taste reads this page as lineage on the tongue. A family of languages that shares one
 value model tastes like itself in every member, the way a family's cooking does; the
