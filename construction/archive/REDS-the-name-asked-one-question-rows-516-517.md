@@ -16,7 +16,7 @@ through three conditions, none of them capacity, so the one question the file is
 never change its answer.
 
 **Kin.** This is a loom rather than a lantern, and it now spans four lanes.
-[`%510`](REDS-a-guards-reach-is-a-claim-rows-511.md) named a guard that read a proxy and answered
+[`%510`](REDS-a-guard-that-reads-a-proxy-rows-510.md) named a guard that read a proxy and answered
 about the proxy. The row that landed beside this fold -- the plant that plants nothing -- is the
 same family again: a control whose `sed` matched nothing built the unmutated module and read like a
 law that holds. Each was found by a different hand, in a different room, on the same day.
