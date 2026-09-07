@@ -78,10 +78,13 @@ assert scan.out contains "verdict=ok" else "glow_desk_reach: the scan refused --
 # proven instead by taking the second instrument away: a runner selecting nothing leaves exactly
 # the 83 desks the elder witness never named run by nothing, on the live tree, and the gate fires.
 # This is the reading as it stood one lap ago, made reachable on purpose rather than remembered.
-let mute = run ["sh" "-c" "echo '#!/bin/sh' > /tmp/glow_desk_reach_mute.sh; echo 'exit 0' >> /tmp/glow_desk_reach_mute.sh"]
+# The pen is named from THIS TREE rather than written as a constant (REDS %549): eight ships
+# share one pier and one /tmp, so a fixed name means one ship's sweep removes another ship's
+# runner mid-read. `pwd | cksum` is stable across the four shells below and differs per ship.
+let mute = run ["sh" "-c" "p=/tmp/glow-desk-reach-mute-$(pwd | cksum | tr -cd 0-9).sh; echo '#!/bin/sh' > $p; echo 'exit 0' >> $p"]
 assert mute.ok else "glow_desk_reach: could not write the silent runner -- ${mute.err}"
 
-let under_bare = run ["sh" "-c" "GLOW_DESK_RUNNER=/tmp/glow_desk_reach_mute.sh sh tools/fixtures/g/glow_desk_reach_scan.sh"]
+let under_bare = run ["sh" "-c" "GLOW_DESK_RUNNER=/tmp/glow-desk-reach-mute-$(pwd | cksum | tr -cd 0-9).sh sh tools/fixtures/g/glow_desk_reach_scan.sh"]
 assert (under_bare.ok == false) else "glow_desk_reach: with the derived runner silent, the desks it alone runs must refuse at a bare ceiling of zero"
 assert under_bare.out contains "verdict=over_bare_ceiling" else "glow_desk_reach: want the bare ceiling refusal named -- ${under_bare.out}"
 assert under_bare.out contains "covered_runner=0" else "glow_desk_reach: want the silent runner counted as covering nothing -- ${under_bare.out}"
@@ -89,11 +92,11 @@ assert under_bare.out contains "covered_runner=0" else "glow_desk_reach: want th
 # invariant: a runner that cannot answer refuses the whole reading. An empty selection and an
 # absent instrument look identical in the arithmetic and mean opposite things, so the scan names
 # the fault rather than letting a broken runner read as clean coverage of nothing.
-let no_runner = run ["sh" "-c" "GLOW_DESK_RUNNER=/tmp/glow_desk_reach_absent.sh sh tools/fixtures/g/glow_desk_reach_scan.sh"]
+let no_runner = run ["sh" "-c" "GLOW_DESK_RUNNER=/tmp/glow-desk-reach-absent-$(pwd | cksum | tr -cd 0-9).sh sh tools/fixtures/g/glow_desk_reach_scan.sh"]
 assert (no_runner.ok == false) else "glow_desk_reach: an absent derived runner must refuse"
 assert no_runner.err contains "no derived runner" else "glow_desk_reach: want the absent runner named -- ${no_runner.err}"
 
-let sweep = run ["rm" "-f" "/tmp/glow_desk_reach_mute.sh"]
+let sweep = run ["sh" "-c" "rm -f /tmp/glow-desk-reach-mute-$(pwd | cksum | tr -cd 0-9).sh"]
 assert sweep.ok else "glow_desk_reach: could not clear the silent runner -- ${sweep.err}"
 
 let under_sampled = run ["sh" "-c" "GLOW_DESK_UNCOVERED_SAMPLED_CEILING=45 sh tools/fixtures/g/glow_desk_reach_scan.sh"]

@@ -1,0 +1,42 @@
+format session-log-v1
+stamp 20260907.103237
+editor Claude Code, terminal
+provider Anthropic
+product Claude Code
+role Bakery, core infrastructure seat, unattended fleet lap
+modality text
+model claude-opus-5
+model_status active runtime unverified -- the runtime exposes no identity call; .claude/settings.json configures claude-opus-5 at max, which is configuration rather than telemetry
+configured_model claude-opus-5
+configured_reasoning max
+configured_status evidence .claude/settings.json, tracked
+voice Kyri
+host Framework laptop, NixOS, America/New_York
+title The repair the meter could not see
+prompt The baton. Bakery's lane, Lindy-first and crux-first; the card named the dated-path census gate as mine and not taken.
+rota lap 4167, row 2 -- Fire, the row that sees (Mars, cut and stop). The threshold page asks what must stop and what must be cut, and its dual seat, the three depths of removal, teaches that the whole art is cutting exactly as deep as the truth requires and no deeper. Read against the census gate it named the fault precisely: a ceiling that had already been lifted once by a debride was cutting deeper than the truth required, because 87 of what it counted had already been repaired.
+think Opened with the cold roster and held still while it ran -- 170 guards, 167 green, 0 red, 3 gated, 1282s, tree_moved=no, run_verdict=ok. Six peer passes shared the pier during it, which is why it took 22 minutes of wall clock for 21 minutes of work.
+think The card's item read: dated_path_witness reds at refs_lost=173 against a ceiling of 165 only a debride may raise, all 30 promises in dated testimony, repairable count ZERO. Measured today it read 175. The prior lap counted by hand and got the conclusion right; I wanted the root rather than the count.
+think Classified the whole lost set instead of counting it -- promise against mention by whether the reference is a Markdown link target, living against testimony by the same basename predicate dated_path_repoint_scan.sh uses to decide what it may write to. 91 mention-living, 75 mention-testimony, 9 promise-testimony, zero promise-living.
+think The 91 living was the surprising cell, so I read what those citers actually were. 86 of them were day-shelf index rows -- README-index-20260722.md and its overflow shelf -- and every one carried the italic marker *(log never landed)*.
+think That marker is a repair, not a wound. A hand wrote it on 20260823.184309 after walking git history whole, and that day's own index row records the count: "87 delinked because the log never landed in any commit." Three readings agree on 87 -- the marker occurrences tree-wide, the references in the lost set, and the 20260823 lap's own number. Verified rather than trusted: all 87 re-checked against git ls-files this morning, not one names a tracked file.
+think So the census had been reading a completed repair as 87 open wounds for fifteen days. REDS %139 already seated the governing rule for shell -- a path standing after `! -f` is a guard proving a fossil was shed, not a citation -- and closed on the sentence that a list of NAMES cannot express a rule about GRAMMAR. A delinked shelf row is that same sentence in Markdown, and nobody had written the second notation down.
+think Wrote the fourth subtraction pass anchored on the italic marker and subtracted per citing file, exactly as the negation pass does.
+obs The anchor had to be the marker rather than the bare phrase, and the field taught it before the pen did. session-logs/date/README-index-20260823.md DESCRIBES the delinking repair in ordinary prose -- "87 delinked because the log never landed in any commit" -- on a row whose own two references resolve perfectly. My first extraction matched the phrase and dropped both. The marker form stands 87 times in the tree and a narrative sentence can never wear it.
+obs The gate itself did not move, and that was the harder call. Moving it from refs_lost to lost_promised_living would tighten it on the class that matters and drop the class accrete-never-break forbids anyone to repair, which is what tools/fixtures/t/tracked_link_scan.sh already does one room over -- it reads past dated testimony by name and gates the living promises alone. Yet the card asks that question of Keaton and it stands unanswered, and a gate a lap moves for itself is a ceiling raised by a side door. So the five readings print and nothing gates on them; the ceiling FALLS 165 to 88, which the law always permits.
+obs The subtraction closed the red on its own. refs_lost 175 to 88, under a ceiling now set to 88 with no slack, so the census is green without the question being answered either way.
+obs Two bounds bit during the send and both were paid honestly rather than raised. The REDS pin took eight trims to fit the row under 40,960 -- it lands with 7 bytes of headroom, every number and all three fields kept. The card stood at 40,958 of 40,960 before I wrote a line, so my own elder block folded to a shelf and the answered dated-path block came off; it lands at 40,894.
+obs I reached for a constant /tmp name for the roster output at the open -- /tmp/bakery-cold-4167.txt -- which is the habit %549 repaired this morning, seat-and-lap qualified so no peer could collide, yet still under a shared /tmp. Every later scratch this lap went to a mktemp pen. Worth saying plainly: the fault %549 books is one an agent's own shell reaches for by reflex, and no instrument in this tree can see it.
+obs My pgrep waiter matched six peer standing_equipment processes rather than my own, so the roster read as running after it had finished. On a pier eight ships share, the process table is the fleet's and not the tree's -- the same shape as %549, one artifact over.
+loom witness=dated_path wall_s=110 refs_total=23859 refs_lost=88 lost_promised=9 lost_living=4 lost_promised_living=0
+loom scan=dated_path_scan wall_s=74 subtracted=87
+loom roster=cold_open guards=170 green=167 gated=3 red=0 wall_s=1282
+file tools/fixtures/d/dated_path_scan.sh a fourth subtraction pass anchored on the italic marker, five reported readings on the lost set, and LOST_CEILING falling 165 to 88 with its reason
+file tools/fixtures/d/dated_path_control.sh case four -- the shelf row planted unmarked and counted, then marked and dropped, beside a broken link from a living file and from testimony so neither new reading is trivially zero, and the narrative sentence beside a reference that must survive
+file tools/d/dated_path_witness.rish six asserts binding case four and the two readings, plus the header claims the change makes true
+file construction/REDS.md row %558 booked, cited by stamp elsewhere until the spine binds it
+file construction/ITINERARY.md the Bakery block rewritten; the answered dated-path item removed; the gate question kept with its standing number
+file construction/archive/20260907-103111_itinerary-landed-accounts.md the elder Bakery block, folded off a card with two bytes of headroom -- this shelf never landed in any commit, and the block it would have carried was superseded by the 20260907.104723 fold
+obs Landed from stash@{0} on 20260907.121623 by a later lap of this same seat, and half of what this log describes never became true. The declared-absence pass that shipped at 20260907.104201 supersedes the italic-marker pass written here -- it asks the same question in a wider form, on the same line rather than on one marker, so LOST_CEILING reads 85 rather than the 88 recorded above. What survives, and is what the later lap landed: the five printed readings splitting the lost set into promise against mention and living against testimony. This paragraph is appended before the record ever reached a branch, so nothing testimony carries is rewritten -- an unlanded log is still being written.
+obs And the split reading itself carried a fault this log could not have seen, since the field number it prints -- lost_promised=9, lost_promised_living=0 -- came from a promise test read on the basename. That test cannot tell a link label from its target and charged a day shelf's kept promise to its own backticked label; booked at 20260907.121623 and closed there. The corrected field reading is lost_promised=9, lost_mentioned=76, lost_living=3, lost_testimony=82, lost_promised_living=0, which answers the standing gate question at zero.
+recommend keep-going -- the census is green and its question is now one command to re-check. Next in this lane, Lindy-first: the verdict cache asked as item 3, whose crux is whether a derived row may be gated at all.

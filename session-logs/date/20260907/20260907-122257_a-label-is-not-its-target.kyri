@@ -1,0 +1,49 @@
+format session-log-v1
+stamp 20260907.122257
+editor Claude Code, terminal
+provider Anthropic
+product Claude Code
+role Bakery, core infrastructure seat, unattended fleet lap
+modality text
+model claude-opus-5
+model_status active runtime unverified -- the runtime exposes no identity call; .claude/settings.json configures claude-opus-5 at max, which is configuration rather than telemetry
+configured_model claude-opus-5
+configured_reasoning max
+configured_status evidence .claude/settings.json, tracked
+voice Kyri
+host Framework laptop, NixOS, America/New_York
+title A label is not its target
+prompt The baton. Bakery's lane, core infrastructure, Lindy-first and crux-first. The card named an unmerged reading left in stash@{0} and a standing gate question of Keaton's.
+rota lap 4173, row 3 -- Water, the row that tastes (Venus, care and flow). Threshold plus its three seats read whole. The row's discipline is closeness: taste only works up close, so a water lap reads by running the actual witness and opening the actual file rather than measuring from a distance. That is exactly what turned this lap. The split reading printed lost_promised_living=1, a count small enough to open, so I opened the one reference it named and found the census right and my own predicate wrong. A sampling read would have shipped it.
+think Opened with the cold roster, scoped, and held still for its 1,251 seconds. Three reds: index_row_bound, stash_record, and standing_equipment, which reds because the other two do.
+think index_row_bound was rows_misordered=1 on today's shelf -- the %440 shape, a peer's row auto-merged above mine by a rebase. tools/fixtures/i/index_shelf_repair.sh sorts the block and proves the permutation before writing. Ran it, rescanned, verdict=ok. That is the twelfth firing repaired by a tool rather than a hand.
+think stash_record read records_unlanded=1, naming session-logs/date/20260907/20260907-103237_the-repair-the-meter-could-not-see.kyri in stash@{0}. Its code half had been superseded 25 minutes later by the declared pass, so the surviving value was the five printed readings splitting the lost set into promise against mention and living against testimony.
+think Landed those five into tools/fixtures/d/dated_path_scan.sh, reading the lost set after the declared pass rather than before it, so the numbers describe whatever remains rather than one lap's frozen figure. Added the testimony leg to the control's case four, so lost_testimony and lost_promised_living are both proven away from zero.
+think The field then read lost_promised_living=1, which is the number the gate question turns on. One reference is small enough to read whole, so I opened it: waymarks/date/README-index-20260725.md, whose link is correct and resolves.
+think The fault was mine and one line long. The promise test grepped for a link to the BASENAME with any directory. A day shelf names its log twice -- backticked label, then dir-qualified target -- and the extractor records two references, correctly. The target resolves home; the label cannot, since it names no room. So the basename test found the target's link and charged its promise to the label.
+obs The loose test is not wrong, it is answering a different question, and the declared pass one screen up needs exactly that looseness. It asks whether a LINE still links what it calls absent, where any spelling withdraws the declaration. The split asks whether THIS reference is a promise, which only its own text answers. Copying a neighbor's predicate without asking which question it was written for is the mechanism, and it is what the row books.
+obs Proven from both sides on metal rather than reasoned. Ran the loose spelling and the exact spelling against the same pen: loose reads lost_promised=4, lost_mentioned=2, lost_promised_living=3; exact reads 3, 3, 2. The control now plants a label-and-target row, so a regression to the loose form fails an assert rather than passing quietly.
+obs The field answer is the lap's real product. lost_promised=9, lost_mentioned=76, lost_living=3, lost_testimony=82, lost_promised_living=0. Every one of the nine promises stands in dated testimony, which accrete-never-break forbids anyone to repair. So Keaton's standing question -- may the gate move from refs_lost to lost_promised_living -- now costs nothing to answer either way, where the card carried a hand count of 13. I did not move the gate; a gate a lap moves for itself is a ceiling raised by a side door.
+obs A record can be unlandable as written, and stash_record cannot see that. Its header says the only way to turn it green is to put the record back in the channel. Landing this one verbatim would have put a superseded claim in the record, since the ceiling it names is 88 and the tree reads 85. It landed with two appended obs lines naming what survived -- lawful, because an unlanded log is still being written -- and one file line rewritten to declare a shelf that never landed. That is this family's own new mechanism used on itself: broken_declared rose 90 to 91 and refs_lost held at 85.
+loom witness=dated_path wall_s=110 refs_total=23973 refs_lost=85 lost_promised=9 lost_mentioned=76 lost_living=3 lost_testimony=82 lost_promised_living=0
+loom scan=dated_path_scan wall_s=105 broken_declared=91
+loom roster=cold_open_scoped guards=143 green=138 red=3 gated=2 wall_s=1251 skipped_scope=28
+file tools/fixtures/d/dated_path_scan.sh the five split readings, and the promise test read exactly on the reference rather than on its basename
+file tools/fixtures/d/dated_path_control.sh case four grown by a dated citer and a label-and-target row; the head's sentences shortened, C+ to A
+file tools/d/dated_path_witness.rish five asserts binding the split, the label-versus-target pair, and the header claims the change makes true
+file session-logs/date/20260907/20260907-103237_the-repair-the-meter-could-not-see.kyri landed out of stash@{0} with two appended obs lines and one declared file line
+file session-logs/date/README-index-20260907.md the misorder sorted by the repair tool, and the landed record's row
+file construction/REDS.md row 20260907.121623 booked, closed, and folded
+file construction/archive/REDS-a-label-is-not-its-target-rows-570.md the shelf the closed row folded to
+file construction/ITINERARY.md the Bakery block rewritten around the measured zero; the elder account shelved
+file construction/archive/20260907-121623_itinerary-landed-accounts.md the elder Bakery account
+obs Four reds arrived with the rebase rather than with my own work, and three were a peer's. The shared card linked REDS-the-door-has-two-keys-rows-565.md where that shelf is rows-561, which reds readme_reach for every ship. Today's index shelf carried 20260907.105712 twice, the %381 shape a rebase leaves when it re-applies an updated row without lifting the stale one. REDS-the-meter-that-read-one-of-two-instruments-rows-566.md landed with no recital line, standing unrecorded_shelves at 63 against a ceiling of 62. And tools/g/glow_desk_reach_witness.rish named a constant pen /tmp/glow_desk_reach_mute.sh, wrote it and removed it, which is %549 exactly -- eight ships on one pier share one /tmp, so one ship's sweep deletes another's runner mid-read.
+obs Repaired all four rather than reporting them, because each reds a lap-tier guard for every ship and none touches a peer's in-flight work: the shelves are landed on xy/main and shared history. The pen took a $(pwd | cksum) suffix, stable across the witness's four shells and different per tree, and constant_pen_files returned to 53. Rishi interpolates ${...} itself, so ${TMPDIR:-/tmp} raised UndefinedName and the plain /tmp prefix with the derived suffix is what the scan accepts.
+obs fleet_watch red in the hot pass and GREEN alone, which is a fourth guard in the concurrent-pen flake family beside live_group_plant. Named rather than booked, since the shape already stands on the card.
+obs The renumber tax was paid three times. My row booked %564 after a fetch, collided with an upstream %564 published while I worked, moved to %566, collided again with a peer's %566 stamped nine seconds after my own log, and landed at %568. Each move cost one shelf filename, one recital line, one card link and one log line, because every other citation already spelled the stamp -- which is derived-spine rule 4 paying for itself for the second day running.
+obs The pattern under all four peer reds is worth Keaton's word and is on the card: a guard reds in MY tree for work landed in a PEER'S, and whichever lap next rebases pays the read. A send that ran the roster against xy/main before rebasing would name a peer's red where it was made.
+loom scan=shared_pen constant_pen_files_before=54 constant_pen_files_after=53 ceiling=53
+loom scan=reds_pin_capacity unrecorded_shelves_before=63 unrecorded_shelves_after=62 ceiling=62
+file tools/g/glow_desk_reach_witness.rish a peer's constant /tmp pen given a tree-derived suffix, %549's shape
+file construction/archive/REDS-fold-recital.md the missing recital line for a peer's shelf, and my own row's line
+recommend check-in (Keaton) -- the gate question is answered as far as a lap may answer it: lost_promised_living reads zero, and moving the gate there costs nothing today. Moving it is still your word. Next in this lane, Lindy-first: the verdict cache, whose crux is whether a derived row may be gated at all.

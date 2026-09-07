@@ -15,9 +15,12 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260907.120346` | [The day that had not started](20260907/20260907-120346_the-day-that-had-not-started.kyri) | %567: a census whose day was "today" refused every midnight. |
 | `20260907.114608` | [The canon that taught the door](20260907/20260907-114608_the-canon-that-taught-the-door-it-never-opened.kyri) | the rota's 20 pages: 14 named no room. |
 | `20260907.114054` | [a cadence nothing counts](20260907/20260907-114054_a-tier-is-only-a-cadence-if-something-counts-the-beats.kyri) | 58 guards, 0 receipts, 5 red on the first sing. |
+| `20260907.122257` | [A label is not its target](20260907/20260907-122257_a-label-is-not-its-target.kyri) | the repairable cell reads zero; a promise test read exact. |
+| `20260907.120346` | [The day that had not started](20260907/20260907-120346_the-day-that-had-not-started.kyri) | %567: a census whose day was "today" refused every midnight. |
 | `20260907.111550` | [the ratchet whose only repair was the defect](20260907/20260907-111550_the-ratchet-whose-only-repair-was-the-defect.kyri) | 301 desks derived and run; %565. |
 | `20260907.105712` | [A declared absence is not breakage](20260907/20260907-105712_a-declared-absence-is-not-breakage.kyri) | %562: 88 of 173 lost were honest rows. |
 | `20260907.103608` | [a door and the wall behind it](20260907/20260907-103608_a-door-and-the-wall-behind-it.kyri) | %565: a door of 16 over a roof of 12. |
+| `20260907.103237` | [the repair the meter could not see](20260907/20260907-103237_the-repair-the-meter-could-not-see.kyri) | landed from the stash; its marker pass was superseded. |
 | `20260907.102349` | [the door has two keys](20260907/20260907-102349_the-door-has-two-keys.kyri) | doorway 48 -> 37; the DOOR clause. |
 | `20260907.100809` | [the room guard that never read the why-room](20260907/20260907-100809_the-room-guard-that-never-read-the-why-room.kyri) | 112 pages in 4 unread rooms; row by stamp. |
 | `20260907.100416` | [What a supersede reads backwards](20260907/20260907-100416_what-a-supersede-reads-backwards.kyri) | row `20260907.095458`; `topology_stretch` GREEN. |
