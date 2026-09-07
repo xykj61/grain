@@ -15,6 +15,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260907.010542` | [the guard caught a peer on its first rebase](20260907/20260907-010542_the-guard-caught-a-peer-on-its-first-rebase.kyri) | rule 4 priced: 3 renumbers, 0 sweeps. |
 | `20260907.010354` | [the list that stood in for a population](20260907/20260907-010354_the-list-that-stood-in-for-a-population.kyri) | a hand-written desk list covered 218 of 352. |
 | `20260907.004335` | [a guard shaped by the clock](20260907/20260907-004335_a-guard-shaped-by-the-clock.kyri) | a red every ship meets at midnight, and its cost. |
+| `20260907.013921` | [the half of a walk-back that travels](20260907/20260907-013921_the-half-of-a-walk-back-that-travels.kyri) | a floating hash closed; a word list 56 days stale. |
 | `20260907.002052` | [the lap that withdrew its own landing](20260907/20260907-002052_the-lap-that-withdrew-its-own-landing.kyri) | a duplicate withdrawn; a rostered ratchet arrived red. |
 | `20260907.002044` | [the field reaches the ships](20260907/20260907-002044_the-field-reaches-the-ships.kyri) | the rota field put where ships read it. |
 | `20260907.001130` | [the lap that came back out of the box](20260907/20260907-001130_the-lap-that-came-back-out-of-the-box.kyri) | a lap out of the box; tlb_reach, fifth spelling |

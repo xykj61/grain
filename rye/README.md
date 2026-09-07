@@ -87,7 +87,7 @@ Because the `rye` command is itself a Rye program (`src/main.rye`), Rye builds i
 ./bootstrap.sh
 ```
 
-From then on, Rye rebuilds itself with its own `build` verb, self-hosting the build and dogfooding the `std` it ships. We write the new binary beside the old one and move it into place. A running program keeps its open file, so the move swaps the directory entry while the process finishes on the prior copy:
+From then on, Rye rebuilds itself with its own `build` verb, self-hosting the build and standing as the first resident of the `std` it ships. We write the new binary beside the old one and move it into place. A running program keeps its open file, so the move swaps the directory entry while the process finishes on the prior copy:
 
 ```sh
 export RYE_ZIG="$PWD/../vendor/zig-toolchain/zig"

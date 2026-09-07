@@ -41,7 +41,34 @@ if [ "$roster_n" -eq 0 ]; then
 fi
 echo "living-docs lint: roster ${roster_n} paths"
 
-RETIRED='corpus|footgun|dead-peer|sanity check|empty plate|ungated diet|thin ring|product tip|suite tip|git tip|product_tip|suite_tip|git_tip'
+# The retired words, written as a record of which law seats each rather than as a bare
+# string. The reason is measured: this list last learned a word on 20260713 -- nib's six
+# spellings, wired in the day .claude/rules/vocabulary-nib.md was born -- and gained
+# nothing in the 56 days since, across four further vocabulary seatings on Keaton's word.
+# A word list nobody can date is a word list nobody notices going stale.
+#
+#   corpus, footgun, dead-peer, sanity check, empty plate, ungated diet, thin ring
+#                                  context/LEXICON.md, the Radiant vocabulary pass
+#   product/suite/git tip, six spellings   .claude/rules/vocabulary-nib.md (20260713)
+#   dogfood, three forms          .claude/rules/vocabulary-first-resident.md (20260828)
+#
+# THREE BANS SEATED SINCE ARE DELIBERATELY ABSENT, each carrying an exemption a
+# word-boundary match cannot judge, so wiring one in would refuse honest prose:
+#   bug   -- vocabulary-red-over-bug: debug, debugging and debugger are different words
+#   smell -- vocabulary-aroma: ordinary English about a nose is not banned
+#   child -- vocabulary-dependent: std.process.Child keeps Zig's name, and a human child
+#            in civic prose keeps its own
+# Each of those needs a reader rather than a pattern. Named here so the absence reads as
+# a decision rather than an oversight, and so the next seating knows which shelf it is
+# on. Only dogfood is banned in EVERY form with no exemption, which is what makes it the
+# one of the four this meter can honestly carry.
+#
+# WHAT THIS DUTY DOES NOT REACH: the roster below, 60 paths. Measured 20260907.012732,
+# twelve living files held a dogfood spelling and exactly ONE -- rye/README.md -- stood
+# on the roster. The representative case is docs-geode/edu/README.md, a room front door
+# holding a live prose use and absent from the roster entirely. Both were repaired by
+# hand on that lap; the reach itself is a booked question rather than a silent limit.
+RETIRED='corpus|footgun|dead-peer|sanity check|empty plate|ungated diet|thin ring|product tip|suite tip|git tip|product_tip|suite_tip|git_tip|dogfood|dogfooded|dogfooding'
 
 kept_line() {
   rel=$1
