@@ -41,6 +41,12 @@ const std = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 const weave = @import("weave.rye");
+
+/// The site this witness edits from. A site names the hand making an edit, and
+/// no two hands share a counter, so a line's identity is its position and this
+/// number together. One hand is enough here: every claim below is about the
+/// diff of one document against itself, rather than about two branches.
+const site_here: u32 = 1;
 const diff_mod = @import("diff.rye");
 
 const witness_version = "20260906.062000";
@@ -66,7 +72,7 @@ fn planted(garden: std.mem.Allocator, texts: []const []const u8) !weave.Weave {
     // its claims by showing every line it moves
     assert(texts.len <= max_planted_lines);
     var w = weave.Weave.empty();
-    try w.apply(garden, .{ .inserts = texts, .deletes = &[_]u32{} });
+    try w.apply(garden, .{ .site = site_here, .inserts = texts, .deletes = &[_]weave.LineId{} });
     // invariant: the plant holds exactly the lines it was handed, so every later
     // claim about a diff is a claim about known input
     assert(w.lines.items.len == texts.len);
@@ -112,7 +118,7 @@ fn round_trip(
     assert(new.len <= max_planted_lines);
     var w = try planted(garden, old);
     const before = try w.current(garden);
-    const d = try diff_mod.diff(garden, before, new);
+    const d = try diff_mod.diff(garden, site_here, before, new);
     try w.apply(garden, d);
     return .{
         .inserts = @intCast(d.inserts.len),
@@ -152,14 +158,14 @@ fn prove_pure(garden: std.mem.Allocator) !void {
     var w = try planted(garden, &old);
     const before = try w.current(garden);
 
-    const first = try diff_mod.diff(garden, before, &new);
-    const second = try diff_mod.diff(garden, before, &new);
+    const first = try diff_mod.diff(garden, site_here, before, &new);
+    const second = try diff_mod.diff(garden, site_here, before, &new);
     // invariant: same inputs, same answer -- a pure function's whole promise,
     // and the one a weave leans on when two hands diff the same file
     assert(first.inserts.len == second.inserts.len);
     assert(first.deletes.len == second.deletes.len);
     assert(same_document(first.inserts, second.inserts));
-    for (first.deletes, second.deletes) |a, b| assert(a == b);
+    for (first.deletes, second.deletes) |a, b| assert(a.eq(b));
     print("diff: the same inputs give the same diff twice\n", .{});
 }
 

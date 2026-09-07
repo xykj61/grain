@@ -1,13 +1,21 @@
 ::  name       mantra line field count
 ::  shape      fields - int (@u32)
-::  invariant  a weave Line carries exactly three fields (text · gen · pos)
-::  example    3
+::  invariant  a weave Line carries exactly four fields (text - gen - pos - site)
+::  example    4
 ::  readers    Mantra · Glow Tend · Sur museum · Ashvini nest-only
 ::  nib        equinox-e203-mantra-tend-v0
 ::
-::  Equinox e203 · Mantra M1 — first Mantra structure pedestal in src/shape/.
+::  Equinox e203 - Mantra M1 -- first Mantra structure pedestal in src/shape/.
 ::  Names Line's field count from mantra/src/weave.rye. Pedestal only; Rye
-::  still owns Weave · Diff · apply · current.
+::  still owns Weave - Diff - apply - current.
+::
+::  Moved three to four on 20260906.212206, when `site` landed beside `pos`.
+::  A position counter runs inside one weave, so two weaves that parted hand
+::  the same small integer to different lines; the site is what makes the pair
+::  unique, and it is why two branches can merge at all. REDS %500 is the row
+::  that made this placard COUNT rather than grep for presence -- a fourth
+::  field used to pass it -- so this refusal on the lap the fourth field
+::  arrived is that row's own instrument working.
 +$  mantra-line-field-count-shape
   $:  fields=@u32
   ==

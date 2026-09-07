@@ -66,7 +66,8 @@ assert selftest.out contains "reads left_only" else "mantra-annotate: the left-o
 assert selftest.out contains "the generation merge lands on" else "mantra-annotate: the claim holding the story to the merge is missing"
 assert selftest.out contains "mirrors every note" else "mantra-annotate: the side-swap claim is missing"
 assert selftest.out contains "interleaving union comes out in position order" else "mantra-annotate: the leg that reaches the sort is missing"
-assert selftest.out contains "refused PositionTextDisagrees" else "mantra-annotate: the colliding-insert refusal is missing"
+assert selftest.out contains "read as one left_only and one right_only" else "mantra-annotate: the claim that two branches READ rather than refuse is missing"
+assert selftest.out contains "one site, one identity, two texts refused PositionTextDisagrees" else "mantra-annotate: the forged-identity refusal is missing -- annotate must refuse exactly what merge refuses"
 assert selftest.out contains "refused TooManyLines" else "mantra-annotate: the bound refusal is missing"
 assert selftest.out contains "deleting one line read agreed and gone both ways" else "mantra-annotate: the both-deleted claim is missing"
 

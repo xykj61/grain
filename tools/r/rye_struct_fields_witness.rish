@@ -32,7 +32,10 @@ say "rye-struct-fields: the reader answers the four structures the limbs stand o
 let line = run ["sh" "tools/fixtures/r/rye_struct_fields_scan.sh" "--fields" "mantra/src/weave.rye" "Line"]
 assert line.ok else "rye-struct-fields: the reader refused on Line -- ${line.out}"
 let line_fields = trim line.out
-assert line_fields == "text gen pos" else "rye-struct-fields: Line no longer reads text gen pos -- ${line_fields}"
+# Line took `site` on 20260906.212206: a position counter runs inside one weave, so `pos`
+# alone names a line there and nowhere else, and the pair is what lets two branches merge.
+# The ORDER is held as hard as the count, since a reorder is a silent wire change.
+assert line_fields == "text gen pos site" else "rye-struct-fields: Line no longer reads text gen pos site -- ${line_fields}"
 
 let weave = run ["sh" "tools/fixtures/r/rye_struct_fields_scan.sh" "--fields" "mantra/src/weave.rye" "Weave"]
 assert weave.ok else "rye-struct-fields: the reader refused on Weave -- ${weave.out}"
@@ -42,7 +45,9 @@ assert weave_fields == "lines next_pos" else "rye-struct-fields: Weave no longer
 let diff = run ["sh" "tools/fixtures/r/rye_struct_fields_scan.sh" "--fields" "mantra/src/weave.rye" "Diff"]
 assert diff.ok else "rye-struct-fields: the reader refused on Diff -- ${diff.out}"
 let diff_fields = trim diff.out
-assert diff_fields == "inserts deletes" else "rye-struct-fields: Diff no longer reads inserts deletes -- ${diff_fields}"
+# Diff took `site` first on the same lap -- the hand that authored the edit, stamped on every
+# insert. It sits on the edit rather than on the weave, so a merge has no site to reconcile.
+assert diff_fields == "site inserts deletes" else "rye-struct-fields: Diff no longer reads site inserts deletes -- ${diff_fields}"
 
 let store = run ["sh" "tools/fixtures/r/rye_struct_fields_scan.sh" "--fields" "mantra/src/store.rye" "Store"]
 assert store.ok else "rye-struct-fields: the reader refused on Store -- ${store.out}"

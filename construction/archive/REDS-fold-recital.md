@@ -380,3 +380,5 @@ at a closed fold.*
 *Row %512 folded to [`REDS-a-pen-one-path-wide-for-eight-ships-rows-512.md`](REDS-a-pen-one-path-wide-for-eight-ships-rows-512.md) on `20260906.220000`, **BOOKED** -- a pen named for its purpose is one path wide for eight ships, and the two-legs-two-failures reading is what tells a race from a flake.*
 
 *Row %512 folded to [`REDS-a-pen-named-by-its-purpose-rows-512.md`](REDS-a-pen-named-by-its-purpose-rows-512.md) on `20260906.213000`, **CLOSED** -- a pen named by its purpose alone is a fleet-wide race that arrives differently each time, which is what a flake looks like.*
+
+*Rows %516 and %517 folded to [`REDS-the-name-asked-one-question-rows-516-517.md`](REDS-the-name-asked-one-question-rows-516-517.md) on `20260906.222619`, both **CLOSED** -- an instrument can perform its act correctly and still be wrong about which act it performed.*

@@ -1,0 +1,73 @@
+format session-log-v1
+stamp 20260906.212206
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role Patchouli -- mantra and tally, in grain-patchouli
+modality text
+model claude-opus-5
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_reasoning max
+configured_status evidence .claude/settings.json, tracked; not runtime telemetry
+evidence .claude/settings.json declares model claude-opus-5 and effortLevel max
+voice Kyri
+host Linux pier, one clock America/New_York
+title a line is named by a pair -- the weave merges two branches
+prompt the baton; my lane names the identity gap as the next real work
+
+think The card's Patchouli account named the crux in one sentence: the identity gap stays unblocked, and closing it wants a fourth field on Line. That is Lindy-first (mantra is the version store 120 files reach into) and crux-first (the hard, still-tractable move that opens the rest), so I took it rather than opening anything new.
+think Read the module before touching it. pos is a u32 from a per-weave counter next_pos, so two weaves that parted hand the same small integer to different lines, union_into joins on pos alone, sees one position with two texts, and returns PositionTextDisagrees. The merge law was sound; the identity was too narrow. Claim 6 of the merge witness existed to PROVE that gap.
+think Chose the shape by asking where a site belongs. A site is the hand making an edit; a weave is the history several hands merge into one. Holding site on Weave would make it a field merge has to reconcile, and there is no honest answer to whose a merged history is -- so it rides on Diff, empty() keeps its signature, and merge stays commutative field for field.
+think Chose the pair over a fused Pos struct because pos and site do two different jobs -- where in the document, and whose counter -- and the ordering key wants pos first. LineId names the pair for the outside world, with eq and less_than written ONCE, since an order spelled at each call site is an order those sites may come to disagree about, which for a merge means two sides computing two documents from one history.
+think Kept PositionTextDisagrees rather than renaming it. The pair IS the position now; what was wrong was the width rather than the word. Renaming would have spent the lap on seven files of spelling. Named the choice in the head so a later reader sees it was chosen rather than missed.
+think My first postcondition assert was true by construction and proved nothing, so I replaced it with the invariant the pair actually buys: a fresh insert's identity is one this weave does not already hold, asserted at construction rather than trusted.
+think Turned claim 6 from a refusal into its opposite and added claim 9 in both witnesses, because the two are one sentence read from both sides -- two branches merge, one site issuing one name twice refuses -- and neither reads right alone. Claim 9 is built by hand since apply cannot produce that state.
+think tame_style_check caught assert(saw_x and saw_z) as a compound assert. Split it, and the split is better: a failure now says WHICH side was dropped.
+think Then the diff control read break_not_caught. My type change turned its elder-form plant into a no-op: the sed matched nothing, the pen was byte-identical, and the phase built the UNMUTATED module and read 0. That is a red rather than a chore -- a plant is a claim about a file and nothing was checking that claim.
+think Measured before booking it rather than after. 102 of 155 tracked controls mutate a pen with sed; 8 carry a cmp -s, and reading all eight, every one uses it to prove a plant landed -- five lanes, five spellings, five hands who each met this alone. That is a loom rather than a lantern, and 94 controls still have no such check.
+think Repaired only my three, per read scope: touch means the lane's own rooms. The 94 want either 94 edits or one shared helper the fixtures import, which is a shape decision rather than a lap, so it is named on the card as Keaton's.
+think The card stood at 40,951 bytes of a 40,960 bound before I wrote a word. Trimmed my own account to 1,836 first, then folded Bakery's %510 account -- CLOSED on the ledger, so a finished section -- whole and unedited onto the same shelf, leaving a pointer. Folding accretes where shaving destroys.
+think Found one more thing I did not book: the card's Pheromone account cites %506 for a proof two living pages cite, and %506 is MY row about the module head enumeration; that account's subject is %504 in the ledger. Measured the mechanical half -- of 71 distinct numbers the card cites, all but the four custody gates hold a real row -- so existence is clean and only agreement drifted. One firing, in a lane not mine, so I named it rather than editing a peer's account or booking a second row.
+
+obs The site earns its keep twice, which is why one field was enough: it separates two branches' lines AND orders them, so a total order over the pair leaves nothing for a tiebreak to invent.
+obs The gap that stays open is the one I did NOT close, and the head says so rather than claiming otherwise: two branches each inserting SEVERAL lines interleave line by line, since pos alone decides and both counted from the same place. An anchor per insert closes it and widens Diff.
+obs A control's plants are literal lines of the module they break, so the lap that edits one of those lines disarms its plant silently. The verdict loop caught mine by luck rather than design -- it demands that phase be non-zero, and a plant whose absence exits non-zero for an unrelated reason would have read ok.
+obs No cold roster pass opened this lap; the hot full pass at the close is what measures the tree the commit ships. Naming it so the record is accurate rather than implied.
+obs THE HOT PASS CAUGHT ME, AND IT WAS %500'S OWN INSTRUMENT. Five reds: rye_struct_fields and mantra_glow_tend_limb1 and limb3, all three mine and all three the same mechanism -- a museum placard in src/shape/ naming Line's field count as three and Diff's as two, held to the code by a guard %500 taught to COUNT rather than grep for presence, precisely because a fourth field used to pass it. The fourth field arrived and it refused on that lap. Both placards moved with their reason written on them, and every pin now holds the ORDER as well as the count, since a reorder is a silent wire change.
+obs AND THE FIFTH RED WAS MY OWN TREE'S PARKED RECORDS, WHICH TURNED OUT TO BE MINE. Two complete Patchouli session logs -- 20260906.180937 and 20260906.195019, 44 and 50 lines -- stood in the dead-letter box and on no ref but a pier/ park, and their shelf rows were gone with them. Recovered both at their own paths with their rows restored in stamp order: unlanded 2 -> 0, parked 2 -> 0, verdict ok. What I did NOT recover from the same stash is the parked ITINERARY nib and REDS headline, both superseded by this lap's own; landing them would move a living pin backwards.
+obs THE AIR ROW ASKED ME TO PRESS EACH REFLEX AND ONE POST GAVE. TAME Core states aim >=2 asserts per fn, and nothing measures it: tame_style_check reads bans and file-level ratchets, so a zero-assert FUNCTION in a module full of asserts is invisible. My own four new accessors -- LineId.eq, LineId.less_than, Line.id, Note.id -- are exactly that shape, and I judge zero right for a two-line total function over two integers, yet that is a judgment no instrument shares. Not booked: nothing is wrong, and a law with no meter is a different thing from a law broken. Written down because the row that feels says to write down the post the hand passes through.
+
+loom witness=mantra_weave_merge claims=10 build=ok control_phases=9 breaks_caught=7 elder_breaks=5
+loom witness=mantra_weave_annotate claims=12 head_scan=5of5 both_ways control_breaks=10
+loom witness=mantra_diff claims=8 control_phases=7 elder_arraylist_exit=1 was=0
+loom control=mantra_diff probe=plant_matched_nothing exit=1 real_exit=0
+loom census controls_tracked=155 mutating_with_sed=102 proving_plant_landed=8 unguarded=94
+loom qa weave.rye=85 B+ merge_witness=90 A diff_control=93 A
+loom pin reds_before=44088 reds_after_fold=38293 card_before=40951 card_after=40914 card_bound=40960
+loom card citations=71 distinct numbers, 4 are custody gates, 67 hold a real row, 1 names the wrong row
+
+file mantra/src/weave.rye LineId with eq and less_than; Line gains site and id(); Diff gains site and names deletes by LineId; apply, current, union_into, merge, Note, annotate all read identity
+file mantra/src/diff.rye diff() takes the authoring site; deletes collected by line.id() rather than line.pos
+file mantra/src/weave_merge_witness.rye claim 6 inverted to two branches MERGE, claim 9 added for a forged identity, same() compares identity
+file mantra/src/weave_annotate_witness.rye claim 6 inverted to one left_only and one right_only, claim 9 added, three site constants seated
+file mantra/src/diff_witness.rye one site constant, every call and delete list widened
+file tools/fixtures/m/mantra_diff_control.sh plant_matched_nothing guard, verdict reads the word ahead of every number, elder plant names the FORM rather than one line
+file tools/fixtures/m/mantra_weave_merge_control.sh same guard; two plants added -- identity narrows eq to pos, tiebreak drops the site
+file tools/fixtures/m/mantra_weave_annotate_control.sh same guard on both run_pens
+file tools/m/mantra_weave_merge_witness.rish asserts the merge claim and the forged-identity refusal, and both new control phases
+file tools/m/mantra_weave_annotate_witness.rish asserts the read claim and the forged-identity refusal
+file construction/REDS.md the row booked with the 102-of-155 census, seated %514 on landing; headline derived to 514
+file construction/archive/20260906-210016_itinerary-landed-accounts.md my elder account and Bakery's CLOSED one, both whole
+file construction/ITINERARY.md the new account, the Bakery pointer, git nib to HEAD's parent
+file src/shape/shape-mantra-line-field-count.glow the placard moved three to four, with the reason and %500's name on it
+file src/shape/shape-mantra-diff-field-count.glow the placard moved two to three, naming why the site rides on the edit
+file tools/r/rye_struct_fields_witness.rish the Line and Diff field-list pins moved, order held as hard as count
+file tools/m/mantra_glow_tend_limb1_witness.rish example, names and order pins moved to four fields
+file tools/m/mantra_glow_tend_limb3_witness.rish example, names and order pins moved to three fields
+file session-logs/date/20260906/20260906-195019_the-row-that-lost-its-number.kyri recovered whole from stash@{0}, on no ref but a park
+file session-logs/date/20260906/20260906-180937_a-name-is-not-a-clock.kyri recovered whole from stash@{1}, on no ref but a park
+
+scope closing the identity gap in the weave so two branches merge, booking the plant-that-plants-nothing red with its census, and bringing both living pins back under their bounds by folding rather than shaving
+status GREEN -- three Rye witnesses build and run, three rish runners green with their controls, tame_style_check clean, width-check green, the spine gapless with no headline drift, both pins under bound -- re-proven at 514 on the lap that landed it
+recommend check-in (Keaton) -- three want your word. The ANCHOR: two branches each inserting several lines still interleave line by line, and closing it wants an anchor per insert, which widens Diff -- a seam rather than a lap, and the head names it rather than claiming otherwise. The 94 CONTROLS: a plant aimed at a line that has moved is a plant that plants nothing, and 94 of them span every lane, so the fix is 94 edits or one shared helper the fixtures import. And the CARD: it held 46 bytes of slack after I folded a peer's closed account whole rather than shaving live ones, which is the accreting trade -- yet eight ships at 2,048 apiece do not fit beside the spine, and that arithmetic is the standing tax.

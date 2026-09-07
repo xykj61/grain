@@ -74,6 +74,17 @@ run_pen() {
   cp "$witness" "$pen/diff_witness.rye"
   if [ -n "$module_program" ]; then
     sed "$module_program" "$pen/diff.rye" > "$pen/diff.tmp"
+    # A plant that matched nothing leaves the pen byte for byte identical, and the
+    # phase then reads the UNMUTATED module's exit code -- which is 0, and is
+    # indistinguishable from a law that holds. That is exactly what happened when
+    # `deletes` changed type from u32 to LineId on 20260906 and this plant's sed
+    # went on naming the elder spelling. Refuse by name instead.
+    if cmp -s "$pen/diff.tmp" "$pen/diff.rye"; then
+      echo "plant_matched_nothing:$name" >&2
+      rm -f "$pen/diff.tmp"
+      echo "plant_matched_nothing"
+      return
+    fi
     cat "$pen/diff.tmp" > "$pen/diff.rye"
     rm -f "$pen/diff.tmp"
   fi
@@ -82,6 +93,12 @@ run_pen() {
   fi
   if [ -n "$witness_program" ]; then
     sed "$witness_program" "$pen/diff_witness.rye" > "$pen/witness.tmp"
+    if cmp -s "$pen/witness.tmp" "$pen/diff_witness.rye"; then
+      echo "plant_matched_nothing:$name" >&2
+      rm -f "$pen/witness.tmp"
+      echo "plant_matched_nothing"
+      return
+    fi
     cat "$pen/witness.tmp" > "$pen/diff_witness.rye"
     rm -f "$pen/witness.tmp"
   fi
@@ -99,7 +116,7 @@ drop_walker='/^comptime {$/,/^}$/d'
 
 clean_exit="$(run_pen clean '' '' '')"
 elder_exit="$(run_pen elder_arraylist \
-  's/    var deletes: std.ArrayListUnmanaged(u32) = .empty;/    var deletes = std.ArrayListUnmanaged(u32){};/' '' '')"
+  's/var \([a-z_]*\): std\.ArrayListUnmanaged(\([A-Za-z0-9_]*\)) = \.empty;/var \1 = std.ArrayListUnmanaged(\2){};/' '' '')"
 walker_teeth_exit="$(run_pen walker_teeth '' '' 'yes')"
 walker_removed_exit="$(run_pen walker_removed '' "$drop_walker" 'yes')"
 lcs_exit="$(run_pen lcs_equality \
@@ -125,10 +142,19 @@ echo "phase=trailing_token"
 echo "trailing_token_exit=$trailing_exit"
 
 verdict=ok
-[ "$clean_exit" -eq 0 ] || verdict=clean_failed
-[ "$walker_removed_exit" -eq 0 ] || verdict=walker_removed_not_innocent
-for broken in "$elder_exit" "$walker_teeth_exit" "$lcs_exit" "$inverted_inserts_exit" "$trailing_exit"; do
-  [ "$broken" -ne 0 ] || verdict=break_not_caught
+# A plant that matched nothing is read FIRST and by its own name, because every
+# other reading below is a number and this one is a word -- and because a phase
+# that planted nothing would otherwise be judged on the clean module's exit code.
+for reading in "$clean_exit" "$elder_exit" "$walker_teeth_exit" "$walker_removed_exit" \
+               "$lcs_exit" "$inverted_inserts_exit" "$trailing_exit"; do
+  [ "$reading" != plant_matched_nothing ] || verdict=plant_matched_nothing
 done
+if [ "$verdict" = ok ]; then
+  [ "$clean_exit" -eq 0 ] || verdict=clean_failed
+  [ "$walker_removed_exit" -eq 0 ] || verdict=walker_removed_not_innocent
+  for broken in "$elder_exit" "$walker_teeth_exit" "$lcs_exit" "$inverted_inserts_exit" "$trailing_exit"; do
+    [ "$broken" -ne 0 ] || verdict=break_not_caught
+  done
+fi
 echo "control_verdict=$verdict"
 [ "$verdict" = ok ]

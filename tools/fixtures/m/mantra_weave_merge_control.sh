@@ -37,6 +37,12 @@
 #
 # EXPECTED: clean_exit=0, bound_shrunk_exit=0, and every other phase non-zero.
 #
+# SEVEN BREAKS, two of them added with the site (20260906.210016). `identity` narrows
+# LineId.eq back to the position alone, which is the state that refused two branches before
+# the site landed; `tiebreak` drops the site from LineId.less_than, so two lines sharing a
+# position are never strictly ordered and the merge postcondition fires. A control that does
+# not plant the law a round added is a control that would not notice that law leaving.
+#
 # Driven by tools/m/mantra_weave_merge_witness.rish. Run from the repository root.
 
 set -eu
@@ -60,6 +66,16 @@ run_pen() {
   cp "$witness" "$pen/weave_merge_witness.rye"
   if [ -n "$program" ]; then
     sed "$program" "$pen/weave.rye" > "$pen/weave.tmp"
+    # A plant that matched nothing leaves the pen byte for byte identical, so the
+    # phase reads the UNMUTATED module's exit code -- 0, indistinguishable from a
+    # law that holds. Every plant here names a literal line of weave.rye, and a
+    # line that is edited stops being that literal. Refuse by name instead.
+    if cmp -s "$pen/weave.tmp" "$pen/weave.rye"; then
+      echo "plant_matched_nothing:$name" >&2
+      rm -f "$pen/weave.tmp"
+      echo "plant_matched_nothing"
+      return
+    fi
     cat "$pen/weave.tmp" > "$pen/weave.rye"
     rm -f "$pen/weave.tmp"
   fi
@@ -78,6 +94,14 @@ clean_exit="$(run_pen clean '')"
 join_exit="$(run_pen join 's/held.gen = @max(held.gen, line.gen);/held.gen = line.gen;/')"
 order_exit="$(run_pen order '/std.mem.sort(Line, out.items/,/}.less_than);/d')"
 text_exit="$(run_pen text 's/if (!std.mem.eql(u8, held.text, line.text)) {/if (false) {/')"
+# Identity is a PAIR. Narrow eq back to the position alone and two branches'
+# concurrent inserts answer to one name again -- which is the exact state this
+# module refused before the site landed, so a plant of it is the law of this
+# movement shown from the failing side.
+identity_exit="$(run_pen identity 's/        return self.pos == other.pos and self.site == other.site;/        return self.pos == other.pos;/')"
+# The site orders as well as separates. Drop the tiebreak and two lines sharing
+# a position are never strictly ordered, so the merge postcondition fires.
+tiebreak_exit="$(run_pen tiebreak 's/        return self.site < other.site;/        return false;/')"
 shrunk_exit="$(run_pen bound_shrunk "$shrink")"
 removed_exit="$(run_pen bound_removed "$shrink; /if (self.lines.items.len + other.lines.items.len > max_weave_lines) {/,+2d")"
 misnamed_exit="$(run_pen bound_misnamed "$shrink; s/            return WeaveError.TooManyLines;/            return WeaveError.PositionTextDisagrees;/")"
@@ -90,6 +114,10 @@ echo "phase=order"
 echo "order_exit=$order_exit"
 echo "phase=text"
 echo "text_exit=$text_exit"
+echo "phase=identity"
+echo "identity_exit=$identity_exit"
+echo "phase=tiebreak"
+echo "tiebreak_exit=$tiebreak_exit"
 echo "phase=bound_shrunk"
 echo "bound_shrunk_exit=$shrunk_exit"
 echo "phase=bound_removed"
@@ -98,10 +126,18 @@ echo "phase=bound_misnamed"
 echo "bound_misnamed_exit=$misnamed_exit"
 
 verdict=ok
-[ "$clean_exit" -eq 0 ] || verdict=clean_failed
-[ "$shrunk_exit" -eq 0 ] || verdict=shrink_not_innocent
-for broken in "$join_exit" "$order_exit" "$text_exit" "$removed_exit" "$misnamed_exit"; do
-  [ "$broken" -ne 0 ] || verdict=break_not_caught
+# A plant that matched nothing is read FIRST and by its own name, because every
+# other reading below is a number and this one is a word.
+for reading in "$clean_exit" "$join_exit" "$order_exit" "$text_exit" "$identity_exit" \
+               "$tiebreak_exit" "$shrunk_exit" "$removed_exit" "$misnamed_exit"; do
+  [ "$reading" != plant_matched_nothing ] || verdict=plant_matched_nothing
 done
+if [ "$verdict" = ok ]; then
+  [ "$clean_exit" -eq 0 ] || verdict=clean_failed
+  [ "$shrunk_exit" -eq 0 ] || verdict=shrink_not_innocent
+  for broken in "$join_exit" "$order_exit" "$text_exit" "$identity_exit" "$tiebreak_exit" "$removed_exit" "$misnamed_exit"; do
+    [ "$broken" -ne 0 ] || verdict=break_not_caught
+  done
+fi
 echo "control_verdict=$verdict"
 [ "$verdict" = ok ]
