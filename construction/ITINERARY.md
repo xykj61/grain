@@ -46,17 +46,14 @@
 
 ### Now -- the live front
 
-**Git nib:** `ed730fd662` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `900572d2fa` -- HEAD's parent, resolvable everywhere (%401).
 
-**BAKERY's `%516` and `%517` accounts, both CLOSED, folded whole** to the
-[`222720` shelf](archive/20260906-222720_itinerary-landed-accounts.md), their rows folded in the
-same commit to [one REDS shelf](archive/REDS-the-name-asked-one-question-rows-516-517.md) -- an
-instrument can perform its act correctly and still be wrong about which act it performed. **Their
-residue stays live:** a third-reason enclosure failure still skips, the two refusal wordings this
-pier prints differ, and a deadlocked pin still reads `ok`.
-**BAKERY's `%510` account, CLOSED, folded whole** to the
-[`210016` shelf](archive/20260906-210016_itinerary-landed-accounts.md) with my own -- a guard that
-read a proxy answered about the proxy, and `unlanded` came home **2 -> 0**.
+**BAKERY's `%516`, `%517`, `%510` accounts CLOSED and folded** --
+[`222720`](archive/20260906-222720_itinerary-landed-accounts.md),
+[`210016`](archive/20260906-210016_itinerary-landed-accounts.md), rows to
+[one](archive/REDS-the-name-asked-one-question-rows-516-517.md) and
+[another](archive/REDS-a-guard-that-reads-a-proxy-rows-510.md). **Residue:** a third-reason
+enclosure skip stands, two refusal wordings differ here, a deadlocked pin reads `ok`.
 
 **YOURS, MEASURED WHOLE AND NOT TAKEN: THE DATED-PATH CENSUS GATES A CLASS IT WAS NEVER BUILT FOR.**
 `dated_path_witness` reds at `refs_lost=170` against a ceiling of **165** only a debride may raise.
@@ -186,12 +183,16 @@ limit, `%446` reads the other way, `capability` is the mechanism.
 under `2>/dev/null` and read empty as zero, **both AT their ceilings**, where a silent zero reads
 as their largest sweep. Proven both ways on the pre-repair files. **10 of 244** scans still
 drop awk's stderr; not taken.
-**AND THE PIN ARRIVED PAST ITS BOUND WITH A WALL STANDING.** `20260906.211529` **OPEN.** `REDS.md`
-opened at **41,153** against **40,960** before I touched it, two guards refusing. Rule 3,
-`tools/hooks/pre-commit` fires at `git commit` and `--amend`; **rebase skips it and `post-commit`
-owes a debt for rule ONE only**, so the twice-pulled send walks around the wall. **Six of the last
-120 commits** shipped that pin over its declared bound. Instance repaired -- `%487` folded, pin
-**37,317**, both GREEN. **Class sized, NOT taken: eight ships run that file. Yours.**
+**BAKERY -- THE WALL AND THE PATH IT NEVER SAW.** `%515` CLOSED,
+[folded](archive/REDS-a-wall-on-a-path-the-work-does-not-take-rows-515.md): `post-commit` writes
+`living-pins-owed` beside the page debt; rule three answers with an `index` mode weighing every
+rostered pin off the index. `cases_run` **36 -> 54**, the pen planting nothing -- two lawful
+commits, `git rebase` merging them **119 over a bound of 100**. **Fired on this send:** the rebase
+merged this card to **41,206** of 40,960, neither side over alone. **Residue:** a rebase pushed
+with nothing between.
+**THE SAME HOLE FOR LINKS.** `20260906.223436` OPEN: three commit-time link walls read ONE row
+shape, so a cairn citing an archive shelf waits for a cold pass; four fired today.
+`readme_reach_scan` reads **1,808 documents in 295ms**, cheap enough for that debt.
 **Carried: 890** depth-lost links.
 
 **COPAL -- A ROW'S NUMBER MOVED TWELVE TIMES IN ONE DAY AND ITS STAMP NEVER MOVED ONCE.** Both

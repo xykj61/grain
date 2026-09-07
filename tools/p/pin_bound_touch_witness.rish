@@ -54,6 +54,24 @@ assert pen.out contains "case=hook_refuses_fat_pin ok" else "pin-bound-touch: th
 assert pen.out contains "case=hook_says_why ok" else "pin-bound-touch: the refusal must say plainly what is wrong"
 assert pen.out contains "case=hook_frees_trimmed ok" else "pin-bound-touch: the hook must let a trimmed pin through"
 assert pen.out contains "case=hook_rests_off_pins ok" else "pin-bound-touch: a commit touching no pin passes free"
+
+# The reading that closes the rebase hole (REDS 20260906.211529). Each is named rather than counted,
+# because a named case reds when it is deleted where a total only gets smaller.
+assert pen.out contains "case=index_staged_still_narrow ok" else "pin-bound-touch: the staged reading must stay narrow"
+assert pen.out contains "case=index_sees_untouched ok" else "pin-bound-touch: index mode must weigh a pin no diff names"
+assert pen.out contains "case=index_weighs_all ok" else "pin-bound-touch: index mode must weigh every rostered pin"
+assert pen.out contains "case=index_freed ok" else "pin-bound-touch: and pass once the pin is lawful"
+assert pen.out contains "case=index_thin_passes ok" else "pin-bound-touch: a thin blob in the index passes"
+assert pen.out contains "case=rebase_both_sides_lawful ok" else "pin-bound-touch: each side of the rebase must be lawful alone"
+assert pen.out contains "case=rebase_merge_crosses_bound ok" else "pin-bound-touch: the auto-merged pin must cross the bound"
+assert pen.out contains "case=rebase_records_pin_debt ok" else "pin-bound-touch: an unseen landing must record a pin debt"
+assert pen.out contains "case=rebase_debt_refuses_next ok" else "pin-bound-touch: the next commit must be refused"
+assert pen.out contains "case=rebase_debt_says_unseen ok" else "pin-bound-touch: the refusal must name the path that skipped the wall"
+assert pen.out contains "case=rebase_debt_freed_by_trim ok" else "pin-bound-touch: a trimmed pin must commit -- both sides"
+assert pen.out contains "case=rebase_debt_cleared_by_landing ok" else "pin-bound-touch: a landing must clear the pin debt"
+assert pen.out contains "case=rebase_no_debt_ordinary_free ok" else "pin-bound-touch: with no debt an ordinary commit passes free"
+
+assert pen.out contains "cases_run=" else "pin-bound-touch: the pen must count what it ran -- a control that ran nothing prints cases_failed=0 too"
 assert pen.out contains "verdict=ok" else "pin-bound-touch: want pen verdict ok"
 
-say "GREEN: pin-bound-touch -- refusals both ways - the hook proven by doing - 36 cases in the pen"
+say "GREEN: pin-bound-touch -- refusals both ways - the staged wall and the rebase debt each proven by doing, on real commits and a real rebase"
