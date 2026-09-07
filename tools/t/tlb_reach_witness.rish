@@ -65,6 +65,13 @@ say "GREEN: tlb-reach -- each plant is proven to have changed the reading it was
 
 # The probe still compiles. This is the rung REDS %449 and %463 paid for, in nineteen seconds.
 let built = run ["sh" "tools/fixtures/t/tlb_reach_census.sh" "--build-only"]
+# A refusal that keeps its reason to itself costs the next reader the whole diagnosis. The roster
+# writes this witness's own output to construction/standing-equipment-reds/tlb_reach.txt and
+# nothing else, so an assert that fires without printing the build's words leaves a red naming a
+# symptom with no cause -- which is exactly what one cold pass here answered on 20260906.
+if built.ok == false then say "tlb-reach: the build leg's own words follow --"
+if built.ok == false then say built.out
+if built.ok == false then say built.err
 assert built.ok else "tlb-reach: the probe no longer builds -- an authored .rye nothing compiles is how %449 began"
 assert built.out contains "build_only green" else "tlb-reach: the build leg reported no green"
 say "GREEN: tlb-reach -- the probe compiles on this toolchain, so it is not a file nothing reaches."
