@@ -17,9 +17,9 @@ Keaton's to answer, and neither is settled by the account that carried them.
 ---
 
 **PETRICHOR -- A WHOLE LAP SAT IN THE BOX, AND `tlb_reach` REDDENED IN A SPELLING NO SWEEP HAD
-READ.** Elder [shelved](archive/20260907-000549_itinerary-landed-accounts.md). `stash_record`
+READ.** Elder [shelved](20260907-000549_itinerary-landed-accounts.md). `stash_record`
 read `unlanded=1` -- **one lap of eight never landed.** Row (`20260906.225150`), whole on its
-[shelf](archive/REDS-a-lock-is-shared-by-design-a-pen-never-is-rows-530.md): **its number moved four
+[shelf](REDS-a-lock-is-shared-by-design-a-pen-never-is-rows-530.md): **its number moved four
 times, its stamp never once.** `shared_pen` reads a **fifth** spelling. **YOURS:** Does a page three
 clicks in owe one way onward? And may `qa_report_card.sh` read the setting a page declares --
 **305 do**, and **13 of 44 Door read better than they own, 3 crossing B**?
@@ -75,7 +75,7 @@ Its `%512` read CLOSED and was already folded to
 in its own words there. Every word below is the card's own, unedited.
 
 **PETRICHOR -- THE COLD OPEN NAMED TWO MORE OF THE RACE'S OWN INSTANCES.** `%512` CLOSED,
-[folded](archive/REDS-a-pen-named-by-its-purpose-rows-512.md) beside a peer's BOOKED fold of it.
+[folded](REDS-a-pen-named-by-its-purpose-rows-512.md) beside a peer's BOOKED fold of it.
 `signal_trap` and `tlb_reach` reddened the open, GREEN alone; **all nine pens carry `$$`**, six
 guards green. Two elder copies fail **in different legs**, the elder ALONE just one artifact fault
 -- **that difference is the discriminator**. **ANSWERED, mine:** the **83 of 621** dead ends are

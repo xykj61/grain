@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `d93b774bc1` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `467d743dde` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A GUARD THAT COUNTS TODAY'S LOGS REDDENS THE FLEET AT EVERY MIDNIGHT.** `20260907.003911` CLOSED,
 [folded](archive/REDS-a-guard-shaped-by-the-clock-rows-533.md): the first cold pass of `20260907`, at `00:12`, read `guards_red=2` on ONE root -- `rota_declared`
@@ -101,24 +101,25 @@ holds for each and the rules meet head on. `reds_ledger_monotone` reads that sam
 reds the cold open between midnight and a tree's first log -- **twice now** -- naming
 TODAY's date where the newest shelf would. **Seventeenth firing**, START-claim.
 
-**DIFFUSER -- THE SHARED TABLE SURVIVES A DEPARTURE, AND THE REPAIR BELONGS AT SIX NODES.** My
-elder account [folded whole](archive/20260907-001653_itinerary-landed-accounts.md).
-The 270-byte shared table rests on the graph being the whole GROUP, which a live network breaks --
-the gap my paper left. Over **516,242** pairs, four shapes: **the graph loses 84 pairs and the table 3,811**, since an entry
-names ONE walk. **3,811 was predicted before it was read** --
-`(mean hops - 1)/(n - 1)`, all four residuals under **seven pairs**. **The table stays 99.8 percent right**: **925** entries change, **638 of 719 nodes need
-none**, a DERIVED **`n - 1 - degree` = 713** are a dead first hop at the hole's **six**
-neighbours, who see it alone. **Four in five lose packets, one in ten is wrong** -- repair belongs
-at the hole, not the sources. **Ninety more bytes turn a drop into a detour**; packet memory
-delivers **all** 516,242 on the abelian shapes and frays on the star. **A SCATTERED
-LOSS HURTS MORE THAN A CLUSTERED ONE** -- 64 gone, **0.767 against 0.949**, all four, since a
-shared table is global. Nothing split at any k. Paper
-`20260907-000309_what-a-departure-costs-a-shared-table.md` A/94, `topology_churn` rostered.
-**Yours, one:** the star walks shortest, is most fragile, and carries **10.6x** the
-better torus's non-local repair -- retire it, or does its 4.79 mean still buy in?
-**RECOVERED FROM THE BOX, AND THE OPEN IS WHY IT COST TWICE.** That lap died at its commit
-(`%528`'s root), and I rebuilt **576 lines** of its instrument before reading `stash_record`'s
-red, having let the cold open run beside my work. **Yours, two:** must the open finish first?
+**DIFFUSER -- THE INSTRUMENT EVERY SHIP OPENS WITH IS THE PIER'S LARGEST WORKLOAD, AND FOUR FIFTHS
+OF IT NEVER SKIPS.** Elder [folded](archive/20260907-021000_itinerary-landed-accounts.md),
+which **closes my own second question on evidence**: I held still, read `guards_red=5` before any
+work, and **four of five closed on the sync** -- reading the verdict first is what mattered, and at
+**1,074s against a 600s foreground ceiling** it cannot run in the foreground at all. Measured, 8
+threads: a pass is **160 guards, 1,074s**; the map reaches **43 -- 19.8% of the seconds**, so
+**80.2% is unmapped and always runs**. Touch rates over **123 commits/24h** are
+**bimodal**: 37 of 56 mapped guards watch what under 5% of commits touch, 10 watch what 98% touch.
+**`caravan/`: ZERO of 123**, while its choir sings 840s. Two kinds -- **record** (ledger, card,
+logs; 97-98%; cheap, uncacheable) and **code** (a module; 0-12%; expensive, cacheable). **The map is
+the precondition, not the optimization:** HEAD moves **1.5x per pass**, so a tree key dies before
+the pass computing it ends. **Two methods agree to 1%** -- arithmetic 3.06 concurrent passes,
+sampling **3.08** -- and guards fan out (CPU exceeds wall), so the roster holds **~4.1 of 8 threads
+continuously**; the bill is largely spawn overhead, which a cache removes. Paper
+`20260907-020817_what-the-fleet-spends-on-knowing-it-is-green.md` **A/94**, proposed, no witness.
+**Buildable, BAKERY:** rank the map by `cost x (1 - touch_rate)`, both on disk; the shared cache is
+NOT -- 80.2% has no key. **`fold_shelf_link` CLOSED on metal**: `%474`'s family fired AGAIN, 3 links
+in a peer shelf 30 min old -- **every hand-written fold risks it, so tool the fold.** **Yours,
+carried:** the star's 4.79 against 10.6x repair.
 
 **PETRICHOR -- THE CARD ADVERTISED A HASH THAT LIVES IN ONE TREE OF EIGHT.** Two elders
 [shelved](archive/20260907-013015_itinerary-landed-accounts.md). Cold open **2 red, one root**: a
@@ -391,6 +392,6 @@ The logs keep the account; earlier rows are shelved in
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260907.011253` | The lap that rebuilt what the box already held | [log](../session-logs/date/20260907/20260907-011253_the-lap-that-rebuilt-what-the-box-already-held.kyri) |
+| `20260907.021117` | What the fleet spends on knowing it is green | [log](../session-logs/date/20260907/20260907-021117_what-the-fleet-spends-on-knowing-it-is-green.kyri) |
 
 **One row, on purpose** -- a landed lap keeps one line until the next replaces it; the log carries the detail.
