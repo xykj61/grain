@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260907.144140` | [A wall that reads the index](20260907/20260907-144140_a-wall-that-reads-the-index.kyri) | %524 closed: the link wall reads the index. |
 | `20260907.123841` | [The meter that read one of two instruments](20260907/20260907-123841_the-meter-that-read-one-of-two-instruments.kyri) | covered is a union; bare gate 83 -> 0. |
 | `20260907.122257` | [A label is not its target](20260907/20260907-122257_a-label-is-not-its-target.kyri) | the repairable cell reads zero; a promise test read exact. |
 | `20260907.120510` | [A pen isolated by all but its name](20260907/20260907-120510_a-pen-isolated-by-everything-but-its-name.kyri) | its seats were the whole pier's. |

@@ -25,9 +25,18 @@
 # second meter over one quantity is how two meters come to disagree. Testimony is resolved rather
 # than rewritten: `rishi/bin/rishi run tools/d/dated_path_resolve.rish <reference>`.
 #
-# Pen: tools/fixtures/r/readme_reach_control.sh -- eight cases, a living break bitten and named, the
-# same break in testimony counted rather than gated, the ceiling proven to bite, an unreached
-# document out of scope, and an http target never followed. Run from the repository root.
+# TWO STORES, ONE LAW (`--store`, 20260907, REDS %524). The law above is answered out of either the
+# worktree or the git INDEX. This witness reads the worktree, because the roster reads a hand's own
+# tree; tools/hooks/pre-commit rule six reads the index, because that is the tree a commit will
+# actually carry. Writing a second reader for the commit-time question would put one rule in two
+# files (REDS %382), so the store moves the bytes and nothing else -- proven by a pen case where
+# both stores reach the same documents and the same verdict.
+#
+# Pen: tools/fixtures/r/readme_reach_control.sh -- fifteen cases. A living break bitten and named,
+# the same break in testimony counted rather than gated, an unreached document out of scope, an
+# http target never followed -- and seven for the index store, including the two readings where
+# the stores rightly disagree: a repair standing only on disk, and a target staged for deletion
+# that disk still holds. Run from the repository root.
 
 say "readme-reach: Language EN -- a newcomer follows links, and a door that fails to open is the tree's word breaking."
 say "readme-reach: Style Gauge -- the count is split by tier, because testimony is resolved and living prose is repaired."
@@ -51,7 +60,14 @@ assert control.out contains "case=testimony_ratchets ok" else "readme-reach: the
 assert control.out contains "case=testimony_never_gates ok" else "readme-reach: testimony must be reported and never refused -- the LOST duty belongs to dated_path_witness"
 assert control.out contains "case=unreached_free ok" else "readme-reach: a document the front door never reaches is out of scope"
 assert control.out contains "case=external_free ok" else "readme-reach: an http target is never followed and never counted"
+assert control.out contains "case=index_agrees ok" else "readme-reach: on one clean tree both stores must reach the same documents and verdict"
+assert control.out contains "case=index_bitten ok" else "readme-reach: a break the index carries must be refused by the index store"
+assert control.out contains "case=index_ignores_disk ok" else "readme-reach: a repair standing only in the worktree must not excuse the index"
+assert control.out contains "case=index_sees_deletion ok" else "readme-reach: a target staged for deletion must be refused though disk still holds it"
+assert control.out contains "case=index_dir_target ok" else "readme-reach: a link naming a directory must resolve, though the index lists files alone"
+assert control.out contains "case=index_needs_repo ok" else "readme-reach: outside a git repository the index store must refuse by name"
+assert control.out contains "case=store_unknown ok" else "readme-reach: an unknown --store word must refuse rather than fall back to a default"
 assert control.out contains "control=ok" else "readme-reach: the control must agree with itself"
 
-say "RED and GREEN paths proven -- a living break bitten and named, testimony reported and never gated"
+say "RED and GREEN paths proven -- a living break bitten and named, testimony reported and never gated, and both stores proven to agree and to disagree exactly where they should"
 say "GREEN: readme-reach -- from the front door, every living door opens."

@@ -40,8 +40,14 @@
 # roster, and learned about the row an hour later from somebody else's repair. The repair rate
 # matched the writing rate exactly, which is a lantern rather than a loom.
 #
-# FOUR RULES, EACH WITH ITS OWN TRIGGER, because the pages go stale for different reasons and a
-# single trigger would either miss one or fire on everything:
+# A SIXTH DUTY joined on 20260907: every living link this commit will carry. REDS %524 fired four
+# times with one mechanism -- a fold that a rebase reshapes leaves every citation of its planned
+# shelf name pointing at a file nobody wrote -- and each firing was found by the roster at the
+# next cold pass, half an hour after the push. The reading was never expensive; it was simply
+# never asked here.
+#
+# SIX RULES. Four carry their own trigger, because the pages go stale for different reasons and a
+# single trigger would either miss one or fire on everything; two rest cheaply on every commit:
 #
 #   rule one   the fast front-door numbers -- README.md and docs-geode/libraries/README.md.
 #              Trigger: a tools/*_witness.rish or a *.rye file ARRIVES or LEAVES, OR a debt stands
@@ -57,6 +63,13 @@
 #   rule four  a day-shelf row's link -- every shelf index this commit stages.
 #              Trigger: none of its own; the scan reads the staged set and rests at zero shelves.
 #              Refuses rather than regenerates, and names the one repair it can compute.
+#   rule five  a page this commit ADDS names its room at the door -- context/TWO_ROOMS.md.
+#              Trigger: none of its own; the scan reads the staged set and rests at zero pages.
+#              Refuses the ratchet's RISE only; a page the commit MODIFIES is reported and free.
+#   rule six   every living link this commit will carry -- readme_reach_scan.sh --store index.
+#              Trigger: none of its own, deliberately. The class arrives by REBASE rather than by
+#              staging, so no staged-set trigger could see it; the whole index crawl costs 544ms.
+#              Refuses rather than regenerates -- only the author knows which end of a link moved.
 #
 # WHAT EACH RULE DOES, in order:
 #   1. Rests unless rishi is executable here. A tree without it -- the depersonalized seed, a
@@ -290,6 +303,48 @@ if [ -f tools/fixtures/t/two_rooms_doorway_touch_scan.sh ]; then
       echo "$doorway_report" | head -4 >&2
     fi
     echo "  full reading: $scan_shell tools/fixtures/t/two_rooms_doorway_touch_scan.sh staged" >&2
+    refused=yes
+  fi
+fi
+
+# RULE SIX -- a link this commit carries opens. `tools/fixtures/r/readme_reach_scan.sh` already
+# holds the whole law -- what a link is, what living means, what passes free -- and the roster
+# already gates `broken_in_living` at zero. What it never did was read at commit time, so the
+# reading arrived at the NEXT cold pass, half an hour after the push made the break public.
+#
+# REDS %524 fired FOUR times with one mechanism: a fold that a rebase reshapes leaves every
+# citation of its planned shelf name pointing at a file nobody wrote. Each firing came in by
+# rebase -- a commit landing by a path no hook sees -- so no staged-set reading could have caught
+# any of them. This rule reads the whole index instead, which is the tree the commit will actually
+# carry, and therefore sees a peer's reshaped fold the moment it lands here.
+#
+# IT READS THE INDEX, never disk, for the reason rules three and four do. A crawl off the worktree
+# at commit time answers about a tree nobody is committing: it refuses for an unstaged edit and
+# waves a staged deletion through while the worktree still holds the target. `--store index` is
+# one option on the one scan; a second reader would put one rule in two files (REDS %382).
+#
+# NO TRIGGER OF ITS OWN, like rules four and five. Measured 20260907 on this pier: the index crawl
+# reaches 1,884 documents in 544ms, two subprocesses rather than one per document. That is cheap
+# beside rule one's ten-second render, and a trigger would have to guess which staged path could
+# strand a link somewhere else -- which is the guess that made the class invisible.
+#
+# WHAT IS GATED: broken relative links in LIVING files, at zero, exactly as the roster gates them.
+# Dated testimony is reported and never gated here, because accrete-never-break keeps it as
+# written and `tools/d/dated_path_resolve.rish` recovers it.
+if [ -f tools/fixtures/r/readme_reach_scan.sh ]; then
+  if ! link_report=$("$scan_shell" tools/fixtures/r/readme_reach_scan.sh --store index 2>&1); then
+    if echo "$link_report" | grep -q '^verdict=living_link_broken'; then
+      echo "pre-commit: this commit carries a living document whose relative link opens nothing." >&2
+      echo "A link is a promise, and the index below is the tree this commit will actually ship." >&2
+      echo "Repoint it, or stage the file it names, and commit again. Dated testimony is exempt." >&2
+      echo "$link_report" | grep -E '^(living:|broken_in_living|living_files_affected)' >&2
+    else
+      echo "pre-commit: the link wall could not MEASURE the index, and a wall that cannot measure" >&2
+      echo "refuses rather than waves through. This is an environment fault, never a broken link --" >&2
+      echo "read the scan's own words below and repair the bench or the jail." >&2
+      echo "$link_report" | head -4 >&2
+    fi
+    echo "  full reading: $scan_shell tools/fixtures/r/readme_reach_scan.sh --store index" >&2
     refused=yes
   fi
 fi
