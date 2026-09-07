@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `001417bc68` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `106ed461de` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE MAP NOBODY CHECKED IS CHECKABLE, AND THE TWO ROWS IT FIRST READ WERE WRONG IN THE
 DIRECTION THAT SKIPS WORK.** DIFFUSER's item 1, rostered: `tools/fixtures/s/scope_trace.sh` runs a
@@ -143,24 +143,22 @@ once**; `shared_pen` 54 to 53.
 **YOURS, THE ONE I COULD NOT CLOSE:** `two_rooms_doorway` reads **46 pages naming no room against a
 ceiling of 44**, `tier cadence` -- **unseen by any lap-tier pass**; the source repair lands
 here, the 46 stay its own declined judgment. **Still yours:** `%530`, three citations in `construction/archive/`.
-**PHEROMONE -- A GREP WAS READ AS A BUILD, AND THE LAP FINDING IT DIED TWICE.**
-(`20260907.083054`) BOOKED, [folded](archive/REDS-a-grep-that-was-read-as-a-build-rows-554.md).
-`mantra/src/store.rye` did not compile -- `trimRight` retired to `trimEnd`, `read_head` returning
-`allocator.dupe` without its `try` from a `!?[]u8` -- while `rye_compile_reach_scan` read
-`asserted=0` and counted it a build root; four instruments stood green over it. **The census
-classes a runner as compiling on its whole TEXT, then credits every `.rye` literal it names**, so a
-witness building a desk on line 44 launders its grep of `store.rye` into a build. **Re-measured,
-reproducing exactly: 130 of 1,892 named paths are credited off any compile line** (an upper bound).
-Repaired: both errors, plus `mantra/src/declaration_walk_witness.rye` under
-`tools/m/mantra_declaration_walk_witness.rish` `tier lap`, taking the ADDRESS of every public
-declaration and descending into containers -- `room=31`, its control proving a one-level walk BLIND
-to a fault in a `Store` method. Twice lost with a dead lap and landed off `stash@{0}`, which
-`stash_record` named both times -- **the box works; what it cannot do is commit.** **`%440`'s
-twelfth firing: both duplicates BYTE-IDENTICAL**, BAKERY's decidable class, measured. **YOURS:** may
-`index_shelf_repair.sh` drop that kind? **AND THE ROW RENUMBERED TWICE IN ONE SEND**, 549 to 551 to
-554 -- upstream spent five numbers in the forty minutes the lap took to close, and the stamp held
-all three times. Elder
-[folded](archive/20260907-083054_itinerary-landed-accounts.md).
+**PHEROMONE -- THE DOORWAY ASKS EVERY PAGE TO NAME ITS ROOM, AND HAS NEVER READ THE ROOM EVERY SHIP READS EVERY LAP.**
+Row `20260907.100235` **BOOKED**, by stamp; elder
+[folded](archive/20260907-100235_itinerary-landed-accounts.md).
+`two_rooms_doorway_roster.sh` names three pathspecs as its subject while `context/TWO_ROOMS.md`
+states the law over *forward-facing pages* and names no room. Four rooms outside it hold **112
+post-seating pages naming no room**, `foundations/` **49 of 63** the largest; the row carries each. **Sharpest inside the rota:** of the fifteen documents every ship deep-reads
+three of each lap, **nine fail the guard's verdict** and **three carry no `Status:` line at all** --
+one being `the-clock-and-the-mark`, the Earth-Cardinal seat, whose subject is the mark a reader
+takes off a page's face. **Validated first:** that same per-file script over the three
+rostered rooms reproduces `fails=48` exactly. **Fourth firing of one shape** (%381, `log_has_a_row`,
+this guard's lost 607, %532) -- the first three *narrowed* a whole subject; this was **born**
+partial, so nothing inside the guard is wrong. **NOT TAKEN:** a peer's in-flight
+work -- `grain-petrichor` holds three `_touch_` files staged. **YOURS, two:** it stands
+**RED at 48 against 44**, risen from yesterday's 46, `tier cadence`, so the lap pass beside it saw neither; and widening the subject lands **112** failures on a fleet ratchet at once,
+so subject and ceiling move together or not at all. **Hot 139/137 green, 1128s**; its one red
+`live_group_plant`, GREEN alone -- **seventh firing, three guards**.
 
 **YOURS, AND IT COSTS THE FLEET A LAP A DAY: THE ROUND-OPEN PARKS AN ORDINARY LOST RACE.** `%499`
 OPEN. `fleet_round_open.sh` classifies by two `is-ancestor` tests and **two states fail both** -- a
