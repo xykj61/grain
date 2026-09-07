@@ -8,14 +8,32 @@
 # never do are type into a keyboard somebody else is using, and start a second writer on one
 # checkout (%291). Both are proven here from both sides.
 
+# WHY THE PEN'S SEATS CARRY A RUN ID, from `20260907`. This guard reddened three times under a
+# full roster pass -- `20260907.000903`, `20260907.050053`, and this lap's cold open -- and passed
+# every time it was run alone, which is the shape of a control that reads something outside its own
+# pen. `fleet_watch.sh` asks the process table `pgrep -f "fleet-loop\.sh <seat>$"`, matching a
+# command line by its ENDING rather than its path, so the fake loop the control plants at
+# `$pen/fleet-loop.sh penone` is indistinguishable from the one a PEER SHIP'S copy of this same
+# control plants in its own pen. Eight ships run the roster from eight trees on one pier.
+#
+# PROVEN BY MAKING IT FIRE, which is what a peer could not do on `20260907.050053`: with
+# `sh /tmp/foreign-fleet/fleet-loop.sh penone` alive the elder control answered `pass=14 fail=2`,
+# the first failure the exact line the cold open printed -- and its own `pkill -f` cleanup then
+# killed that foreign process, which is REDS %515's wound inside a tracked file. With per-run seat
+# names the same plant leaves `pass=17 fail=0` and the foreign process alive.
+#
+# The seventeenth case is that plant, kept: a loop under the ELDER shared name, from a foreign path,
+# and the pen's own seat still armed. It flips to `no` when the shared name is put back, which is
+# how a leg is proven load-bearing rather than merely green.
+
 say "fleet-watch: Language EN -- a watcher that discovers its windows and refuses to guess."
 say "fleet-watch: Style Gauge, Meter -- each leg names what it plants and what must refuse."
 say "fleet-watch: Lens TAME -- every refusal planted and then lifted, so a wall is not a habit."
 
-say "fleet-watch: the control -- sixteen behaviors on a real tmux session in a throwaway pen..."
+say "fleet-watch: the control -- seventeen behaviors on a real tmux session in a throwaway pen..."
 let ctl = run ["sh" "tools/fixtures/f/fleet_watch_control.sh"]
 assert ctl.ok else "fleet-watch: the control refused --\n${ctl.out}\n${ctl.err}"
-assert ctl.out contains "pass=16 fail=0" else "fleet-watch: the control did not prove sixteen behaviors --\n${ctl.out}\n${ctl.err}"
+assert ctl.out contains "pass=17 fail=0" else "fleet-watch: the control did not prove seventeen behaviors --\n${ctl.out}\n${ctl.err}"
 
 say "fleet-watch: no window index is written down anywhere in the watcher..."
 # invariant: the layout is DISCOVERED every pass. A number spelled here would be true until somebody
