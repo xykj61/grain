@@ -1,7 +1,7 @@
 # The External-Research Stack
 
 **Language:** EN
-**Last updated:** 2026-08-02 (SSH - Mosh - IPv6 secure transport `161500`)
+**Last updated:** `20260906.212046` (the two topology papers seated in the list, recovered from the dead-letter box)
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Status:** Foundation
 **Molted:** `20260827.173952` -- in place, under checkpoint `3a606a8ac9`
@@ -52,6 +52,8 @@ Dated explorations carry `YYYYMMDD-HHMMSS_short-sprig.md`; living documents (`RE
 
 | Stamp | Note | Meaning |
 |-------|------|---------|
+| `20260906.195719` | [What it costs to decide the next hop](20260906-195719_what-it-costs-to-decide-the-next-hop.md) | one 270-byte table routes every node; two address spaces route free; lookahead buys nothing |
+| `20260906.152821` | [The floor you can stand on](20260906-152821_the-floor-you-can-stand-on.md) | the abelian floor is 8, twice Moore's 4, and the lever is the generating set |
 | `20260826.182611` | [Codex CLI on macOS Tahoe -- the first hour to a Sound outer loop](20260826-182611_codex-cli-macos-tahoe-sound-first-hour.md) | Standalone Codex path; real Sound prompt; jailed supervised once before any bounded loop |
 | `20260826.145514` | [Skate on macOS -- native-shell decision tablecloth](20260826-145514_skate-native-macos-decision-tablecloth.md) | Swift 6.2+ AppKit shell; bounded Grain core; a C seam only when proof earns it |
 | `20260825.230422` | [The isolation reading](20260825-230422_the-isolation-reading-from-the-wells-own-record.md) | the Garrett No. 1 sworn tops; separation shown, salinity owed |

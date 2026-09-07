@@ -2235,3 +2235,17 @@ guard amphora_udp_reuseaddr
 path tools/am/amphora_udp_reuseaddr_witness.rish
 tier cadence
 seated 20260906.154105
+
+# topology_routing -- what a node HOLDS and COMPUTES to pick the next hop, at 720 points.
+# Its sibling `topology_attained` binds the WALK -- how many hops a shape takes. This binds the
+# DECISION: the exact shared next-hop table (719 entries, 3 bits each, 270 bytes, the same 270 at
+# every node), what a table-free local rule costs instead, and whether more lookahead recovers the
+# difference. Coordinate subtraction and permutation sorting are exact and free; the circulant's
+# ring-gap rule reaches 609 of 719 and three depths of lookahead move nothing. `tier cadence`
+# because the scan walks 517,680 ordered pairs three times over and the control runs ten plants --
+# 52s for the scan, measured `20260906.195719` -- and its answer moves only when the scan moves.
+
+guard topology_routing
+path tools/t/topology_routing_witness.rish
+tier cadence
+seated 20260906.195719

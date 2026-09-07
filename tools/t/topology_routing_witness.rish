@@ -1,0 +1,101 @@
+# tools/t/topology_routing_witness.rish -- what it costs to DECIDE the next hop, and it can be
+# made to red.
+#
+#   rishi/bin/rishi run tools/t/topology_routing_witness.rish
+#
+# WHAT IT BINDS. `tools/fixtures/t/topology_routing_scan.sh` builds four Cayley graphs on 720
+# points, walks one breadth-first search out of the identity to get both the exact distances and
+# the exact shared next-hop table, then measures three things: what that table costs, what a
+# table-free local rule costs instead, and whether more lookahead recovers the difference. This
+# binds every figure by name and proves the reading can be broken through
+# `tools/fixtures/t/topology_routing_control.sh`.
+#
+# WHY THIS SITS BESIDE `topology_attained` RATHER THAN INSIDE IT. That witness binds the WALK -- how
+# many hops a shape takes. This one binds the DECISION -- what a node holds and computes to pick
+# the next one. A design argument needs both, and they move for different reasons: a new graph
+# moves the first, a new routing rule moves the second.
+#
+# WHY IT IS `tier cadence`. The scan walks 517,680 ordered pairs three times over -- once for
+# transitivity, once for any-node routing, once for the rule's translation -- at 52s measured
+# `20260906`. Its answer moves only when the scan moves, which is a deliberate act, so a per-lap
+# row would spend 52s a lap on eight ships to watch a number that did not change.
+
+say "topology-routing: Language EN -- what a node holds and computes to pick the next hop."
+say "topology-routing: Style Gauge, Meter -- every figure walked here, never recalled."
+say "topology-routing: Lens TAME -- the shortcut checked where it is relied on, the plants lifted."
+
+say "topology-routing: the scan builds the shapes and routes them..."
+let scan = run ["sh" "tools/fixtures/t/topology_routing_scan.sh"]
+# invariant: the scan stands green before any reading of it is trusted.
+assert scan.ok else "topology-routing: the scan refused --\n${scan.out}"
+assert scan.out contains "verdict=ok" else "topology-routing: the scan did not reach its own green --\n${scan.out}"
+
+say "topology-routing: the exact table is 270 bytes, and it is the same 270 at every node..."
+# invariant: 719 entries at 3 bits is 270 bytes, against 194,130 for a table per node -- 720 times.
+assert scan.out contains "table shape=circ_1_8_75 degree=6 diameter=9 exact_mean_hops=6.3004 entries=719 bits_per_entry=3 shared_bytes=270 naive_bytes=194130 ratio=720" else "topology-routing: the circulant's table size or diameter moved --\n${scan.out}"
+assert scan.out contains "table shape=torus_12x5x12 degree=6 diameter=14 exact_mean_hops=7.2100" else "topology-routing: the seated torus moved --\n${scan.out}"
+assert scan.out contains "table shape=torus_8x9x10 degree=6 diameter=13 exact_mean_hops=6.7316" else "topology-routing: the best three-ring torus moved --\n${scan.out}"
+assert scan.out contains "table shape=star_S6 degree=5 diameter=7 exact_mean_hops=4.7900" else "topology-routing: the star graph moved --\n${scan.out}"
+# invariant: these four means were read from ONE walk here and from an all-pairs walk in the elder
+# scan on the same day; agreement to four places is vertex-transitivity confirmed by two hands.
+
+say "topology-routing: two address spaces route optimally with no table, and one does not..."
+# invariant: coordinate subtraction reaches the breadth-first distance at every one of 719 points.
+assert scan.out contains "greedy shape=torus_12x5x12 rule=axis_subtract destinations=719 optimal=719 exact_share=1.0000 total_hops=5184 mean_hops=7.2100 mean_stretch=0.0000 worst_stretch=0 greedy_diameter=14 true_diameter=14 unreached=0" else "topology-routing: the torus rule stopped being exact --\n${scan.out}"
+assert scan.out contains "greedy shape=torus_8x9x10 rule=axis_subtract destinations=719 optimal=719" else "topology-routing: the second torus rule stopped being exact --\n${scan.out}"
+# invariant: sorting the difference is exact on the star graph, so a permutation address is free too.
+assert scan.out contains "greedy shape=star_S6 rule=sort_the_difference destinations=719 optimal=719 exact_share=1.0000 total_hops=3444 mean_hops=4.7900" else "topology-routing: the star rule stopped being exact --\n${scan.out}"
+# invariant: the circulant's rule is the greedy coin algorithm on a non-canonical system, so it misses.
+assert scan.out contains "greedy shape=circ_1_8_75 rule=ring_gap_min destinations=719 optimal=609 exact_share=0.8470 total_hops=4786 mean_hops=6.6565 mean_stretch=0.3561 worst_stretch=6 greedy_diameter=12 true_diameter=9 unreached=0" else "topology-routing: the circulant rule's reading moved --\n${scan.out}"
+
+say "topology-routing: and thirty-six times the local computation moves nothing..."
+# invariant: depths 1, 2 and 3 reach the same total, so the gap is the potential's rather than the
+# search's -- and the depth-2 rule takes a different first hop on 162 of 719 destinations while
+# arriving in the same number of hops, which is why the total is the reading and not the path.
+assert scan.out contains "claim lookahead_total_hops depth1=4786 depth2=4786 depth3=4786 buys=0" else "topology-routing: lookahead started buying something, or stopped --\n${scan.out}"
+assert scan.out contains "greedy shape=circ_1_8_75 rule=ring_gap_min_depth3 destinations=719 optimal=609" else "topology-routing: the depth-3 rule's reading moved --\n${scan.out}"
+# invariant: the depths take DIFFERENT paths of the SAME length -- 162 first hops differ and no hop
+# count does. Two rules agreeing on every step would make the insensitivity trivial rather than a
+# finding, so both halves are bound and neither stands alone.
+assert scan.out contains "lookahead_paths shape=circ_1_8_75 destinations=719 first_hop_differs=162 hop_count_differs=0" else "topology-routing: the depths stopped disagreeing on the path, or started disagreeing on its length --\n${scan.out}"
+
+say "topology-routing: what a node holds, address and table together..."
+# invariant: 720 is not a product of powers of two, so three ring coordinates cost a bit more than one integer.
+assert scan.out contains "state shape=circ_1_8_75 address_bits=10 table_bytes=270 table_free_rule=approximate" else "topology-routing: the circulant's address or rule verdict moved --\n${scan.out}"
+assert scan.out contains "state shape=torus_12x5x12 address_bits=11 table_bytes=270 table_free_rule=exact" else "topology-routing: the torus's address or rule verdict moved --\n${scan.out}"
+# invariant: a permutation packs to 10 bits and is read unpacked, so both forms are printed.
+assert scan.out contains "state shape=star_S6 address_bits=18 address_bits_packed=10" else "topology-routing: the star graph's two address widths moved --\n${scan.out}"
+
+say "topology-routing: the table is proven to route rather than argued to..."
+# invariant: a table built from the wrong end of a path holds perfect distances and routes nowhere.
+assert scan.out contains "route shape=circ_1_8_75 source=identity destinations=719 exact=719 wrong=0" else "topology-routing: the circulant's table stopped routing --\n${scan.out}"
+assert scan.out contains "route shape=star_S6 source=identity destinations=719 exact=719 wrong=0" else "topology-routing: the star graph's table stopped routing --\n${scan.out}"
+# invariant: vertex-transitivity is CHECKED where it is relied on, over every ordered pair.
+assert scan.out contains "transit shape=circ_1_8_75 pairs=517680 mismatches=0 agree" else "topology-routing: the from-identity shortcut stopped agreeing with an all-pairs walk --\n${scan.out}"
+# invariant: ONE table, EVERY node -- the central claim, proven end to end rather than from the group.
+assert scan.out contains "anynode shape=circ_1_8_75 sources=720 pairs=517680 exact=517680 wrong=0" else "topology-routing: one shared table stopped routing from every node --\n${scan.out}"
+# invariant: the translation leg defends the implementation only, and says so in its own line.
+assert scan.out contains "greedy_translation shape=circ_1_8_75 pairs=517680 disagreements=0 defends=implementation_only" else "topology-routing: the translation leg moved or stopped naming what it defends --\n${scan.out}"
+
+say "topology-routing: and the design reading that follows from all of it..."
+# invariant: the circulant routed by its crudest rule, holding nothing, still walks shorter than the
+# seated torus routed perfectly -- 12 against 14, and 6.6565 against 7.2100.
+assert scan.out contains "claim tableless_circulant_beats_seated_torus=yes" else "topology-routing: the table-free circulant stopped beating the seated torus --\n${scan.out}"
+assert scan.out contains "claim circulant_greedy_diameter=12 depth2_diameter=12 true_diameter=9 seated_torus_diameter=14" else "topology-routing: one of the four diameters moved --\n${scan.out}"
+assert scan.out contains "claim torus_greedy_exact=yes" else "topology-routing: a torus rule stopped being exact --\n${scan.out}"
+assert scan.out contains "claim circulant_greedy_exact=no share=0.8470" else "topology-routing: the circulant rule's exact share moved --\n${scan.out}"
+
+say "topology-routing: and the reading can be broken, each plant lifted after..."
+let control = run ["sh" "tools/fixtures/t/topology_routing_control.sh"]
+# invariant: a refusal proven only in the passing direction cannot be told from a bypass.
+assert control.ok else "topology-routing: the control refused --\n${control.out}"
+assert control.out contains "verdict=ok" else "topology-routing: the control did not reach its own green --\n${control.out}"
+# invariant: the pen is innocent, so every plant reads as the break speaking rather than the pen.
+assert control.out contains "clean_verdict ok ok" else "topology-routing: the unbroken pen did not pass --\n${control.out}"
+# invariant: the checking legs earn their keep -- broken with them gone, the scan reads green.
+assert control.out contains "plant10_legless ok ok" else "topology-routing: the checking legs are not what catches the break --\n${control.out}"
+# invariant: a reduced reach still reads ok, so the printed count is the reading rather than the word.
+assert control.out contains "plant9_one_source_only ok ok" else "topology-routing: the reach-cut plant stopped reading ok, so the lesson it carries is gone --\n${control.out}"
+assert control.out contains "failures=0" else "topology-routing: the control reported a failing case --\n${control.out}"
+
+say "topology-routing: GREEN -- one 270-byte table routes every node, two address spaces route free, and lookahead buys nothing."
