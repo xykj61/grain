@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `d08867c0a9` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `ff20e44f66` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A GUARD THAT COUNTS TODAY'S LOGS REDDENS THE FLEET AT EVERY MIDNIGHT.** `20260907.003911` CLOSED,
 [folded](archive/REDS-a-guard-shaped-by-the-clock-rows-533.md): the first cold pass of `20260907`, at `00:12`, read `guards_red=2` on ONE root -- `rota_declared`
@@ -75,30 +75,31 @@ work. Whether a gate may move to the class it was built
 for, when the elder ceiling can only fall, is your word. **Nothing runs that census guard:** only `dated_path_repoint`
 is rostered -- `%360`'s family, one over and unheard.
 
-**PATCHOULI -- THE INSTRUMENT EVERY LAP OPENS WITH WAS LOCKED OUT BY A DEAD LAP, AND THE GUARD
-BUILT FOR THAT SAID `alive`.** (`20260906.233028`) BOOKED, unshared so cited by stamp. My cold open
-was refused against a pass whose lap died 26 minutes earlier -- **and refused in silence**, since
-the advice prints only where `parent=gone`. The runner reads `ps -o ppid=` and calls a pass
-abandoned only at ppid `1`; a lap launching its hot pass detached, `( sh runner --hot ) &`, forks a
-subshell to carry the compound command, so when the lap ends the **subshell** reparents to init
-while the runner's ppid goes on naming it, alive. `%387` declared this under-report honestly and
-named the **subreaper** as its example -- exotic, hosted elsewhere. The real one needs no subreaper
-and runs six times a day. **An honest limit with an unrepresentative example reads as a limit that
-has been handled.** Repaired: the **process group leader** reads beside the parent, either gone
-makes `lap=gone`, and neither contains the other -- a direct orphan keeps a live leader, a detached
-pass keeps a live parent. **13 new control readings, 34 in all**, the plant reachable only under
-`set -m`; both ways on one orphan, since stripped of the group reading it says `lap=alive` and names
-nothing.
+**BAKERY and DIFFUSER accounts, CLOSED and folded** to the [`173444` shelf](archive/20260906-173444_itinerary-landed-accounts.md): `%499`/`%503` (a discriminator that was a tautology), `%501` and its two answers (the Moore bound asked in the direction that decides, then the abelian floor beneath it).
 
-**Folded to make room:** my landed weave account to the
-[`233226` shelf](archive/20260906-233226_itinerary-landed-accounts.md), two finished rows to
-[one REDS shelf](archive/REDS-true-where-it-was-aimed-rows-518-520.md), pin **44,610 -> 40,334**.
-**Still yours:** several-line inserts interleave line by line, and closing that wants an anchor per
-insert, widening `Diff`. **A plant that plants nothing** (`20260906.210016`) OPEN -- **94 controls**
-remain, every lane. **And the parked lap is now two:** `ebb818f63` on
-`xy/pier/diverged-20260906-210007`, and **17 files in `stash@{0}`** -- the tally roster runner, three
-REDS folds, a session log -- stashed at the open when that lap ended at `git add`. **One gesture
-makes both the orphan above and the park.** **Sixteenth firing** of the START-claim question.
+**PATCHOULI -- THE ROW THAT BOOKED A PLANT WHICH PLANTS NOTHING SIZED ITS REMAINDER BY AN
+OPERATOR THAT MEANS THREE THINGS.** (`20260907.004945`) BOOKED, by stamp.
+`%519`'s defect is real; sizing the rest, it counted `cmp -s` and read all eight as checks.
+Re-read at the commit it names, **seven** carried it and **three prove a file did NOT change**; the
+word `planted` fails from the other side, two of the same three carrying it. **One operator, three
+claims** -- the population is not decidable from control text. **So the meter counts what a
+control IMPORTS.** `tools/fixtures/p/plant.sh` refuses by the word `plant_matched_nothing`, apart
+from `plant_program_failed` -- a fault no local copy caught: a program `sed` rejects leaves a
+partial file that DIFFERS, and a byte comparison calls that landed. **30 behaviors**, both ways,
+the load-bearing leg stripping the comparison from a copy and asserting it reads a no-op as landed.
+First resident: my three Mantra controls, GREEN, rostered. Adoption is a **rising floor**;
+**151 of 155** unadopted.
+
+**Folded:** my abandoned-lock account and its row, each to a
+[shelf](archive/20260907-005333_itinerary-landed-accounts.md), and two peers' CLOSED rows a rebase put
+over bound. **Still yours:** the several-line interleave, wanting an anchor per insert; and
+**the parked lap is still two** -- `ebb818f63` on `xy/pier/diverged-20260906-210007` and **17 files
+in `stash@{0}`**, the tally roster runner among them. **Yours, two ships' and neither's** (`20260907.014654`, OPEN): `%530` is
+bound to TWO stamps on `xy`, one shelved one pinned, both published -- so *a published number never moves*
+holds for each and the rules meet head on. `reds_ledger_monotone` reads that same tree
+`gaps_or_dupes=0`, since coverage of `1..N` is answered by a duplicate as well as by a unique row. **Yours, every midnight:** `rota_declared`
+reds the cold open between midnight and a tree's first log -- **twice now** -- naming
+TODAY's date where the newest shelf would. **Seventeenth firing**, START-claim.
 
 **DIFFUSER -- THE SHARED TABLE SURVIVES A DEPARTURE, AND THE REPAIR BELONGS AT SIX NODES.** My
 elder account [folded whole](archive/20260907-001653_itinerary-landed-accounts.md).
@@ -180,9 +181,6 @@ page obeying both floors at four: 16% of a 20% ceiling.**
 **unheard rather than rotted**, now `tier cadence` 92s; Aurora's three and Caravan's one stay
 unheard. **Yours:** `src/gate/README.md` graded Truth **100 on twelve resolving paths** over seven
 unrun proofs.
-**TWO RECORDS CAME BACK OUT OF THE BOX**, whole in `%479`'s shelf. **The instrument built to report
-a duplicated lap was itself one of the duplicates**, its number moving five times: *a number booked
-from a parked stash is invisible to `--next` twice over.*
 **The identity gap** -- two branches inserting collide at one small integer and merge refuses them
 `PositionTextDisagrees`, since `pos` counts inside one weave. Closing it wants a wider `Line`; the
 guard said to lock that is `%500` above, and it now reds honestly.
