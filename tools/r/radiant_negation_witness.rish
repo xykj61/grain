@@ -40,9 +40,25 @@ assert green.out contains "enforce_risen=0" else "radiant-negation: a living rul
 assert green.out contains "advisory=ratchet_report" else "radiant-negation: want the advisory roster reported as a ratchet"
 assert green.out contains "register_target=0.40" else "radiant-negation: want the register named, so the sweep has somewhere to aim"
 assert green.out contains "verdict=ok" else "radiant-negation: want verdict ok"
+assert green.out contains "enforce_matched=" else "radiant-negation: want the matched count printed -- an admitted count alone cannot say whether anything was compared"
+
+# THE BASELINE'S OWN TWO REFUSALS (20260906). Until this lap the lookup read
+# `awk ... 2>/dev/null || echo -`, and `-` is the one token meaning *no baseline row, admit this
+# file*. So a baseline the guard could not read admitted all 51 rules and printed `verdict=ok` at
+# exit 0 -- green while comparing nothing. Both failures are planted here, because a ratchet that
+# cannot say whether it compared anything is a ratchet nobody can trust.
+let blind = run ["sh" "-c" "d=$(mktemp -d); printf 'x\\n' > $d/b.txt; chmod 000 $d/b.txt; BASELINE=$d/b.txt sh tools/fixtures/r/radiant_negation_scan.sh; s=$?; chmod 644 $d/b.txt; rm -rf $d; exit $s"]
+assert (blind.ok == false) else "radiant-negation: an unreadable baseline must refuse -- it used to admit every rule and read green"
+assert blind.out contains "baseline_verdict=unreadable" else "radiant-negation: want the unreadable baseline named, with awk's own reason beside it"
+
+# The sibling, where awk RUNS and answers honestly: an emptied or path-shifted baseline has no row
+# for any file, so every lookup admits and the ratchet compares nothing -- byte-identical to health.
+let matchless = run ["sh" "-c" "d=$(mktemp -d); : > $d/b.txt; BASELINE=$d/b.txt sh tools/fixtures/r/radiant_negation_scan.sh; s=$?; rm -rf $d; exit $s"]
+assert (matchless.ok == false) else "radiant-negation: a baseline matching no file in the corpus must refuse -- nothing was compared"
+assert matchless.out contains "verdict=BASELINE_MATCHED_NOTHING" else "radiant-negation: want the matchless baseline named by its own verdict"
 
 let red = run ["sh" "tools/fixtures/r/radiant_negation_scan.sh" "prove-red"]
 assert (red.ok == false) else "radiant-negation: prove-red must refuse, not merely report"
 assert red.out contains "RED_negation_rise_caught" else "radiant-negation: prove-red want the prohibition control caught"
 
-say "GREEN: radiant-negation -- every living rule reads at or below its baseline, the advisory roster is reported with a mean and a register to aim at, and a page written entirely as bans is refused on metal."
+say "GREEN: radiant-negation -- every living rule reads at or below its baseline, the advisory roster is reported with a mean and a register to aim at, a page written entirely as bans is refused on metal, and a baseline the guard cannot read or cannot match refuses rather than admitting the whole corpus."

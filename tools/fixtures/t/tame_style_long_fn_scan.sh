@@ -6,7 +6,7 @@
 #     caravan/farewell.rye: check_suffice_runs = 809 lines
 #     ...
 #
-# WHY THE WALK MOVED HERE FROM THE `.rish` (REDS %519). The elder orchestration spawned one rishi
+# WHY THE WALK MOVED HERE FROM THE `.rish` (REDS `20260906.173013`). The elder orchestration spawned one rishi
 # subprocess per file and then joined every chunk into one string to rank it. With the counter
 # repaired the ledger holds 321 rows rather than 15, and interpolating that blob into a command
 # refuses with `StringTooLong` -- a bound doing its job. A scan that walks once and prints a

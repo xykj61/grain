@@ -32,10 +32,16 @@ assert control.out contains "swallowed_awk_bitten=yes" else "instrument-refusal:
 assert control.out contains "grep_exit_one_free=yes" else "instrument-refusal: grep's found-nothing exit was read as a fault"
 assert control.out contains "marker_exempts_one_line_only=yes" else "instrument-refusal: the toleration marker leaked past its own line"
 assert control.out contains "meter_refuses_when_blind=yes" else "instrument-refusal: the meter does not obey the law it enforces"
+assert control.out contains "fallback_value_bitten=yes" else "instrument-refusal: a failure that substitutes a VALUE was not bitten -- emptiness reads as nothing, a value reads as an answer"
+assert control.out contains "ternary_free=yes" else "instrument-refusal: a `test && echo yes || echo no` ternary was read as a discard -- its `||` is an else-branch"
+assert control.out contains "multiline_ternary_free=yes" else "instrument-refusal: a ternary written across continuation lines was judged by its tail alone"
+assert control.out contains "grep_fallback_free=yes" else "instrument-refusal: a placeholder for grep's found-nothing exit was read as a fault"
+assert control.out contains "raised_fallback_ceiling_frees_only_itself=yes" else "instrument-refusal: one shape's ceiling freed the other -- the two readings are counted apart for exactly this"
 
 let live = run ["sh" "tools/fixtures/i/instrument_refusal_scan.sh"]
 say live.out
 assert live.ok else "instrument-refusal: a scan in this tree discards an instrument's failure -- read the swallowed lines"
 assert live.out contains "under_ceiling=yes" else "instrument-refusal: swallowed instrument passes rose above the ceiling, and a ceiling only falls"
+assert live.out contains "fallback_instrument_passes=0" else "instrument-refusal: a scan substitutes a fallback value for an instrument failure -- read the fallback lines"
 
-say "GREEN: instrument-refusal -- no scan reports a tree it could not read."
+say "GREEN: instrument-refusal -- no scan reports a tree it could not read, in either spelling: the failure discarded and the failure answered with a value."

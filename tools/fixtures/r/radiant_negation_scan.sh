@@ -67,8 +67,15 @@ density_of() {
   ' "$1"
 }
 
+# A LOOKUP THAT COULD NOT RUN IS A REFUSAL, NEVER AN ADMIT. This line read
+# `... 2>/dev/null || echo -` until `20260906`, which threw away awk's reason AND put back the one
+# token that means *no baseline row for this file, admit it at its measured value*. Pointed at a
+# mode-000 baseline the guard printed `enforce_admitted=51` of `enforce_files=51`,
+# `enforce_risen=0`, `verdict=ok`, exit 0 -- green while comparing nothing, and its own stderr
+# already gone. Now awk's reason reaches the caller and a failure yields NO answer, which the probe
+# below catches ahead of the loop and which an empty `b` turns into a rise rather than an admit.
 baseline_for() {
-  awk -v p="$1" '$1 == p { print $2; found = 1 } END { if (!found) print "-" }' "$BASELINE" 2>/dev/null || echo -
+  awk -v p="$1" '$1 == p { print $2; found = 1 } END { if (!found) print "-" }' "$BASELINE"
 }
 
 if test "$MODE" = "prove-red"; then
@@ -87,6 +94,18 @@ if test "$MODE" = "prove-red"; then
 fi
 
 test -f "$BASELINE" || { echo "baseline_verdict=missing"; exit 1; }
+# EXISTS AND READABLE ARE TWO QUESTIONS, and only the first had a check. A baseline that exists and
+# cannot be read fails every lookup below, and each failure used to become an admission -- so the
+# corpus read as 51 brand-new rules and the ratchet compared nothing. One awk read of the whole
+# file answers it once, loudly, before a single file is measured.
+_rn_work=$(mktemp -d)
+trap 'rm -rf "$_rn_work"' EXIT INT TERM
+if ! awk 'END { }' "$BASELINE" 2>"$_rn_work/err"; then
+  echo "baseline_verdict=unreadable"
+  sed -n '1,3p' "$_rn_work/err" | sed 's/^/detail_awk=/'
+  echo "refused: the baseline exists and cannot be read, so every lookup would admit its file and the ratchet would compare nothing." >&2
+  exit 1
+fi
 
 risen=0; admitted=0; enforced=0
 for f in .claude/rules/*.md; do
@@ -108,6 +127,7 @@ for f in .claude/rules/*.md; do
 done
 echo "enforce_files=$enforced"
 echo "enforce_admitted=$admitted"
+echo "enforce_matched=$((enforced - admitted))"
 echo "enforce_risen=$risen"
 
 # The advisory ratchet: reported so a sweep has a target, and failing nothing.
@@ -122,6 +142,18 @@ echo "advisory_files=$adv"
 echo "advisory_mean=$(awk -v s="$advsum" -v n="$adv" 'BEGIN { if (n == 0) print "0.00"; else printf "%.2f", s / n }')"
 echo "register_target=0.40"
 echo "advisory=ratchet_report"
+
+# A BASELINE THAT MATCHES NOTHING IS A BASELINE COMPARING NOTHING, and it reads exactly like a
+# healthy tree: `risen=0`, `verdict=ok`, exit 0. This is the sibling of the swallow above and needs
+# its own gate, because here awk RUNS and answers honestly -- an emptied, truncated, or path-shifted
+# baseline simply has no row for any file. The guard already refuses a MISSING baseline, so a
+# present one matching not a single file in the corpus is broken rather than fresh. Measured
+# `20260906`: the honest tree reads 14 admitted of 51, and an empty baseline read 51 of 51.
+if test "$enforced" -gt 0 && test "$admitted" -eq "$enforced"; then
+  echo "verdict=BASELINE_MATCHED_NOTHING"
+  echo "refused: a baseline is present and matched none of the $enforced files, so nothing was compared." >&2
+  exit 1
+fi
 
 if test "$risen" -eq 0; then
   echo "verdict=ok"

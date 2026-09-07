@@ -5,7 +5,7 @@
 # depth that line opened at. Depth is read from CODE alone: a brace inside a line comment, a string
 # literal, a char literal, or a Zig multiline-string line never moves it.
 #
-# WHY DEPTH RATHER THAN A CLOSING-BRACE PATTERN (REDS %519). The elder awk ended a function at the
+# WHY DEPTH RATHER THAN A CLOSING-BRACE PATTERN (REDS `20260906.173013`). The elder awk ended a function at the
 # first line matching `^}$` or `^    }$`. The second alternative was written for a struct method,
 # whose own body closes at four spaces -- yet applied to a free function it matches the closing
 # brace of that function's FIRST `if` block, which sits at exactly four spaces too. Its start

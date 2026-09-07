@@ -7,8 +7,8 @@ question -- the capped fascia signal -- stays on the card; the closed rows read 
 
 ---
 
-**GRASS -- A BLIND LEDGER WAS PUBLISHING FASCIA ON THE FRONT DOOR.** `%518` BOOKED, `%519` CLOSED,
-[folded](REDS-two-instruments-that-could-not-see-their-subject-rows-518-519.md); elder three
+**GRASS -- A BLIND LEDGER WAS PUBLISHING FASCIA ON THE FRONT DOOR.** %525 BOOKED, %526 CLOSED,
+[folded](REDS-two-instruments-that-could-not-see-their-subject-rows-525-526.md); elder three
 [shelved](20260906-161500_itinerary-landed-accounts.md). Two guards could not see their subject --
 a shell `*` stops at `/`; a function's first `if` block closes where a struct method's body does --
 so one read **216** pages of **1,085**, the other **15** of **321**, longest **180** on a true
@@ -25,6 +25,6 @@ caught before it shipped.
 ---
 
 *The rows themselves read at
-[`REDS-two-instruments-that-could-not-see-their-subject-rows-518-519.md`](REDS-two-instruments-that-could-not-see-their-subject-rows-518-519.md);
+[`REDS-two-instruments-that-could-not-see-their-subject-rows-525-526.md`](REDS-two-instruments-that-could-not-see-their-subject-rows-525-526.md);
 the round's own account is
 [`20260906-194921_two-records-out-of-the-box.kyri`](../../session-logs/date/20260906/20260906-194921_two-records-out-of-the-box.kyri).*
