@@ -53,9 +53,21 @@ echo "active-designing/yonder/date/20260712/20260712-063558_receipt-verify-wasm-
 echo "active-designing/yonder/date/20260712/20260712-063213_door3-consumer-edge-pass-hammock.md"
 
 # Module front doors whose sources sit one level down, so the rule cannot reach them.
-for f in rye/README.md rishi/README.md aurora/README.md; do
-  [ -f "$f" ] && echo "$f"
-done
+#
+# NAMED UNCONDITIONALLY, like the hammocks and the pins above and below. These three lines read
+# `for f in ...; do [ -f "$f" ] && echo "$f"; done` from the day REDS %187 seated them, and that
+# test is the drop-off the same repair was written to prevent: the roster's guard against a page
+# that moves is `phantom` in tools/fixtures/l/living_docs_roster_scan.sh, which reads the roster's
+# OUTPUT, so a path the roster declines to print can never become one. The discovery rule cannot
+# reach these three either -- that is why they are held by hand -- so `unrostered` is blind to
+# them as well, and both gates read clean over a missing front door. Measured in a pen: a roster
+# emitting one real door and holding one absent path behind the test prints front_doors=1
+# rostered=1 unrostered=0 phantom=0 verdict=ok. Spelled plainly, that same move reds on the lap
+# it lands, which is what %170 asks for -- a page dropping off a meter is a page whose pass
+# nobody witnessed.
+echo "rye/README.md"
+echo "rishi/README.md"
+echo "aurora/README.md"
 
 # Living pins under the pin-and-ledger law (duty 6 size bound).
 echo "session-logs/README.md"

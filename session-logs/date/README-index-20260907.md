@@ -18,6 +18,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260907.162331` | [A lap that came back out of the stash](20260907/20260907-162331_a-lap-that-came-back-out-of-the-stash.kyri) | %499 parked a proven lap; landing it cost six repairs. |
 | `20260907.155948` | [a-number-written-four-times](20260907/20260907-155948_a-number-written-four-times.kyri) | A fold shelf spells its number four times; one guard read one. |
 | `20260907.155612` | [The claim a sweep cannot follow](20260907/20260907-155612_the-claim-a-sweep-cannot-follow.kyri) | two laps in one tree booked one ledger number |
+| `20260907.165730` | [A roster line that cannot fail](20260907/20260907-165730_a-roster-line-that-cannot-fail.kyri) | three doors named behind an existence test never red. |
 | `20260907.155025` | [A reading of nothing is not clean](20260907/20260907-155025_a-reading-of-nothing-is-not-a-clean-tree.kyri) | a scan fed nothing printed a swept tree's bytes. |
 | `20260907.154925` | [A wipe read as a flag](20260907/20260907-154925_a-wipe-read-as-a-flag.kyri) | The hold class was reasoned, never read. |
 | `20260907.153124` | [A wall built for a red a peer had already walled](20260907/20260907-153124_a-wall-built-for-a-red-a-peer-had-already-walled.kyri) | withdrawn; %573 survived it. |

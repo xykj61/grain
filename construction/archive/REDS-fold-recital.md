@@ -462,3 +462,4 @@ at a closed fold.*
 *Row %581 folded to [`REDS-one-checkout-collided-with-itself-rows-581.md`](REDS-one-checkout-collided-with-itself-rows-581.md) on `20260907.160531`, **CLOSED** -- one checkout collided with itself on a ledger number, because an unlanded row is invisible to the allocator that hands them out.*
 
 *Row %582 folded to [`REDS-a-guards-own-exemption-rows-582.md`](REDS-a-guards-own-exemption-rows-582.md) on `20260907.174409`, **BOOKED** -- a guard's own exemption is a claim, and a wipe predicate reading a flag rather than an act made that claim false of the two files it named.*
+*Row %576 folded to [`REDS-a-reading-of-nothing-rows-576.md`](REDS-a-reading-of-nothing-rows-576.md) on `20260907.172225`, **BOOKED** -- an empty subject and an absent subject are two readings, and a scan that cannot tell them apart proves nothing by its silence.*

@@ -45,8 +45,16 @@
 # resolve (living_docs_lint duty 2). This guard proves only that the meter can see the page, which
 # is the one thing every other reading depends on.
 #
-# Pen: tools/fixtures/l/living_docs_roster_control.sh -- sixteen behaviors on real git repositories
-# in a throwaway pen, five refusals bitten and eleven honest readings left free, the ratchet
+# WHAT THE ROSTER MUST NOT DO, seated 20260907. Three hand-held pages -- rye/, rishi/ and
+# aurora/README.md, whose sources sit one level down where the discovery rule cannot reach -- were
+# named behind an existence test for their whole life. `phantom` reads the roster's OUTPUT, so a
+# line that declines to print when its page moves can never become one, and `unrostered` cannot see
+# these three either, which is what left both gates blind to a front door leaving the meter. The
+# roster names them plainly now; cases 17 and 18 hold the pair, and case 17 is the one that would
+# have caught it.
+#
+# Pen: tools/fixtures/l/living_docs_roster_control.sh -- eighteen behaviors on real git repositories
+# in a throwaway pen, six refusals bitten and twelve honest readings left free, the ratchet
 # ceiling proven from both sides by planting six over-bound pages and then seven, so no override
 # exists and none is wanted. Run from the repository root.
 
@@ -78,6 +86,8 @@ assert control.out contains "10 free: an empty tree publishes front_doors=0 rath
 assert control.out contains "12 free: six over-bound pages sit at the ceiling and pass free" else "living-docs-roster: the ratchet must welcome the count it stands at"
 assert control.out contains "13 bitten: seven over-bound pages cross the ceiling and are bitten" else "living-docs-roster: the ratchet ceiling must refuse from above"
 assert control.out contains "15 bitten: a roster regressed to a hand list of two over six doors is bitten" else "living-docs-roster: a roster that returns to a hand list must red"
+assert control.out contains "17 free: a hand-held door named behind an existence test vanishes unseen when it moves" else "living-docs-roster: the departing spelling must be shown going quiet, or the repair cannot be told from a rewording"
+assert control.out contains "18 bitten: the same missing hand-held door named plainly is bitten as a phantom" else "living-docs-roster: a hand-held door that moves must red as a phantom"
 
 say ""
 say "GREEN: living-docs-roster -- the roster the docs meter reads describes the tree it measures, gated at zero for coverage and ratcheted for the pages still over bound, proven both ways on real git repositories."

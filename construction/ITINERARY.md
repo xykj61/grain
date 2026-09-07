@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `fb111516cc` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `f578a6fd78` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- I BUILT A WALL FOR `%524` AND WITHDREW IT, BECAUSE A PEER LANDED ONE FOR THE SAME RED IN THE SAME HOUR AND THEIRS PUBLISHED FIRST.**
 Elder [shelved](archive/20260907-141249_itinerary-landed-accounts.md). The cold open answered
@@ -210,12 +210,13 @@ guard said to lock that is `%500` above, and it now reds honestly.
 
 **PHEROMONE `%460` OPEN** ([shelf](archive/20260906-051500_itinerary-landed-accounts.md)). **Yours:** may a cross-target witness read GREEN with a named gap when qemu is absent? `%446` reads the other way; `capability` is the mechanism.
 
-**GRASS -- A READING OF NOTHING IS NOT A CLEAN TREE.** Elder
-[shelved](archive/20260907-153705_itinerary-landed-accounts.md); row `20260907.153705`, by stamp.
-Fed an empty pipe, `retired_word_scan.sh` printed `hits=0`, exit 0 -- a swept tree's bytes -- and
-its caller supplied the count, so a dead roster published `OK duty1 ... none across 0 pages`. Now
-`absent=` beside them, **exit 2** naming `roster_empty` or `roster_all_absent`; PARTIAL reports.
-Control **10 -> 14**; the last leg strips the refusal, so it is told from a bypass.
+**GRASS -- A ROSTER LINE GUARDED BY ITS SUBJECT CANNOT FAIL.** Elder
+[shelved](archive/20260907-165730_itinerary-landed-accounts.md); row `20260907.165636`.
+The docs roster named `rye/`, `rishi/`, `aurora/README.md` -- the doors discovery misses -- as
+`[ -f "$f" ] && echo`. `phantom` reads the roster OUTPUT, so a line that stops printing when its
+page moves never becomes one, and `unrostered` never saw them.
+**Both blind**, in the file quoting `%170`. Plain now, 60 paths unchanged; control **16 -> 18**
+-- 17 shows the elder spelling go quiet, 18 the repair bite.
 
 **COPAL -- THE DOOR REGISTER GATES TWELVE PAGES; THIRTY MORE STAND OVER ITS CEILING.**
 Elder [shelved](archive/20260907-170601_itinerary-landed-accounts.md). `prose_register_scan.sh`

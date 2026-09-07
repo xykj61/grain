@@ -55,9 +55,16 @@ door() {
   head -c "$3" /dev/zero | tr '\0' 'x' >"$t/README.md"
 }
 
-# roster_add <pen> <path> -- one line on the pen's roster.
+# roster_add <pen> <path> -- one line on the pen's roster, named unconditionally.
 roster_add() {
   echo "echo '$2'" >>"$PEN/$1/roster.sh"
+}
+
+# roster_add_iffile <pen> <path> -- the departing spelling of a hand-held door: a line that names
+# the page only while it is still there. Cases 17 and 18 are the pair that tells the two apart.
+roster_add_iffile() {
+  echo "[ -f '$2' ] && echo '$2'" >>"$PEN/$1/roster.sh"
+  echo "true" >>"$PEN/$1/roster.sh"
 }
 
 stage() { ( cd "$PEN/$1" && git add -A . >/dev/null 2>&1 ) || true; }
@@ -172,6 +179,18 @@ check "a roster regressed to a hand list of two over six doors is bitten" p red 
 pen q; door q mod1 100; door q mod2 100; stage q
 roster_add q mod1/README.md; roster_add q gone/README.md
 check "coverage and phantom together name the coverage verdict" q red "verdict=front_door_off_the_meter"
+
+# 17 -- the departing spelling of a hand-held door, shown from the side where it goes quiet.
+# A page the discovery rule cannot reach, named behind an existence test, simply stops being
+# printed the day it moves: phantom reads the roster's output, so there is nothing to read.
+pen r; door r mod1 100; stage r
+roster_add r mod1/README.md; roster_add_iffile r deep/README.md
+check "a hand-held door named behind an existence test vanishes unseen when it moves" r ok "phantom=0"
+
+# 18 -- the repair, same pen and same missing page, named unconditionally.
+pen s; door s mod1 100; stage s
+roster_add s mod1/README.md; roster_add s deep/README.md
+check "the same missing hand-held door named plainly is bitten as a phantom" s red "phantom=1"
 
 echo "control_cases=$n"
 echo "control_fail=$fail"
