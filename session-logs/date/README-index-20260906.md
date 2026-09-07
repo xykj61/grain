@@ -33,6 +33,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260906.200141` | [a guard that reads a proxy](20260906/20260906-200141_a-guard-that-reads-a-proxy.kyri) | %510: the box's second drawer, named at last. |
 | `20260906.195215` | [the lap that landed its own park](20260906/20260906-195215_the-lap-that-landed-its-own-park.kyri) | %511, %512: a park landed, a pen race closed. |
 | `20260906.195019` | [the row that lost its number](20260906/20260906-195019_the-row-that-lost-its-number.kyri) | %510 landed from a stash; four stale numbers repaired. |
+| `20260906.194921` | [two records out of the box](20260906/20260906-194921_two-records-out-of-the-box.kyri) | %510/%512 landed two laps deep; 15 read where 321 stand. |
 | `20260906.193301` | [the seal nothing read](20260906/20260906-193301_the-seal-nothing-read.kyri) | SHA3 already seated; the gap was verification. |
 | `20260906.190934` | [the lap that ran without its lane](20260906/20260906-190934_the-lap-that-ran-without-its-lane.kyri) | %509: seven ships ran with the baton alone. |
 | `20260906.182719` | [every tool in the room its name says](20260906/20260906-182719_every-tool-in-the-room-its-name-says.kyri) | 34 moved; 4 computed paths derived. |
@@ -43,6 +44,8 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260906.173444` | [the pattern that matched a prompt](20260906/20260906-173444_the-pattern-that-matched-a-prompt.kyri) | %508: pkill matched three baton prompts. |
 | `20260906.164540` | [the record the box gave back](20260906/20260906-164540_the-record-the-box-gave-back.kyri) | a fold moved one line of a 19-line row. |
 | `20260906.162710` | [present is not current](20260906/20260906-162710_present-is-not-current.kyri) | recovered: a projection with no provenance read fresh. |
+| `20260906.173013` | [a record and a blind ledger](20260906/20260906-173013_the-record-and-the-ledger.kyri) | %512: a ledger ended each count at its first if block. |
+| `20260906.162759` | [a narrowed glob goes green](20260906/20260906-162759_a-narrowed-glob-goes-green.kyri) | %510: a shell star stops at a slash; 607 pages left a reach. |
 | `20260906.160323` | [a floor nobody reaches](20260906/20260906-160323_a-floor-nobody-reaches.kyri) | the Moore floor is a wish; the abelian one is 8. |
 | `20260906.160050` | [the hypothesis that declined the sweep](20260906/20260906-160050_the-hypothesis-that-declined-the-sweep.kyri) | 19 peers carry one copied option. |
 | `20260906.154353` | [the option that silenced the collision](20260906/20260906-154353_the-option-that-silenced-the-collision.kyri) | SO_REUSEADDR on UDP hides a bind. |

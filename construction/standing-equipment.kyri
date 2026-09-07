@@ -2260,3 +2260,47 @@ guard topology_routing
 path tools/t/topology_routing_witness.rish
 tier cadence
 seated 20260906.195719
+# TWO-ROOMS DOORWAY -- seated 20260705, rostered 20260906, and RED for the whole gap between.
+#
+# `context/TWO_ROOMS.md` asks every forward-facing page to name its register in its own Status
+# line, and this rung reads that token. It stood on no roster, so nothing ran it: it was RED at
+# 45 pages when a hand finally did. That is REDS %360's family -- a refusal nobody receives --
+# with an actual refusal waiting behind it.
+#
+# It was also blind. Its roster was a shell glob over three rooms; `active-designing/` folded to
+# `date/YYYYMMDD/` and a shell `*` stops at `/`, so 607 pages left the subject with nothing to
+# say so. A broken path reds; a narrowed glob goes green. It reads `git ls-files` now, whose
+# pathspec `*` crosses `/`, and the scan floors its own reach on a folded page so the same
+# narrowing refuses rather than reporting a smaller clean tree.
+#
+# `tier cadence`: 972 pages, one subprocess each, 28s on this pier -- and eight ships read the
+# roster twice a lap on four cores, so a lap clock would spend 448 contended seconds a round on a
+# reading that moves when a room folds. That is `dated_path`'s reasoning verbatim, one room over.
+
+guard two_rooms_doorway
+path tools/t/two_rooms_doorway.rish
+tier cadence
+seated 20260906.161500
+
+# TAME'S 70-LINE LEDGER -- the instrument behind the tidy ratchet could not see its own subject.
+#
+# `tools/fixtures/t/tame_style_long_fn_one.sh` ended a function at the first line matching `^}$`
+# OR `^    }$`. The second alternative fits a struct method, whose body closes at four spaces --
+# applied to a free function it matches that function's FIRST `if` block, which closes at four
+# spaces too. Its start pattern matched any INDENTED `fn `, so an inline comparator restarted the
+# count inside its parent. Both fail OPEN: over 611 authored files it reported 15 functions past
+# 70 lines where 321 stand, its longest reading 180 against a true 809.
+#
+# The witness gates the INSTRUMENT, never the count: the control's twenty planted legs, the two
+# elder patterns' absence from the code, and a floor of one on the tree's own reading -- a ledger
+# answering zero across 611 files has gone blind, and blindness prints what health prints. The
+# count itself stays a ratchet that prints, as TAME's own tidy rules seat this family, since 321
+# standing functions belong to six lanes and a ceiling would refuse other ships' ordinary work.
+#
+# `tier cadence`: 611 files, one awk each, 19s under fleet load -- and the number it reads moves
+# when a hand splits a function, which is a deliberate act rather than a per-lap event.
+
+guard tame_style_long_fn
+path tools/t/tame_style_long_fn_witness.rish
+tier cadence
+seated 20260906.173013

@@ -1,0 +1,67 @@
+# tame_style_long_fn_witness.rish -- the >70-line ledger can see the functions it is for.
+#
+#   rishi/bin/rishi run tools/t/tame_style_long_fn_witness.rish
+#
+# REDS %519. TAME's tidy rules name "functions past 70 lines" as a migrate-on-touch ratchet, and
+# `tools/fixtures/t/tame_style_long_fn_one.sh` is the instrument that counts them. It ended a
+# function at the first line matching `^}$` OR `^    }$`. The second alternative was written for a
+# struct method, whose own body closes at four spaces -- applied to a free function it matches the
+# closing brace of that function's FIRST `if` block, which sits at four spaces too. Its start
+# pattern `^( *)?(pub )?fn ` matched any INDENTED `fn ` as well, so an inline comparator restarted
+# the count inside its own parent. Both holes fail OPEN.
+#
+# Measured over the roster's 611 authored files on `20260906.173013`: the elder reported **15**
+# functions past 70 lines where **321** stand, and its longest read 180 lines against a true 809 --
+# `caravan/farewell.rye:check_suffice_runs`, lines 10768 to 11576, counted by hand. Every function
+# it did find is still found, each at a longer count.
+#
+# WHAT IS GATED, hard: the instrument, never the tree. Three readings --
+#   1. the control's twenty planted legs, refusals and welcomes alike;
+#   2. the elder's two patterns are absent from the scan, so the fix cannot be walked back quietly;
+#   3. the ledger is NON-EMPTY on this tree, which is the floor `%505` earned -- a guard reporting
+#      zero over 611 files has gone blind, and blindness and health print the same number.
+#
+# WHAT IS DELIBERATELY NOT GATED: the count itself. TAME's own tidy rules seat this family as a
+# ratchet -- "ratchets print, never fail" -- and 321 standing functions belong to six lanes at once,
+# so a ceiling here would refuse other ships' ordinary work for a defect this lap did not create.
+# The number is printed every run instead, which is what a ratchet is for.
+
+say "tame-style-long-fn: Language EN -- a function runs from its `fn` line to the brace that closes it, and a ledger that ends it sooner reads a clean tree."
+say "tame-style-long-fn: Style Gauge, Meter -- every leg run on planted sources in a throwaway pen, never described."
+say "tame-style-long-fn: Lens TAME -- bound the walk (4096 lines per function, named), and read depth from code alone rather than from a closing-brace pattern."
+
+# invariant: run from the repo root, where the scan, its roster, and its control all live.
+let root = run ["test" "-f" "construction/ITINERARY.md"]
+assert root.ok else "run from the repo root (construction/ITINERARY.md not found)"
+
+# invariant: the scan under test stands before any reading of it is believed.
+let present = run ["test" "-f" "tools/fixtures/t/tame_style_long_fn_one.sh"]
+assert present.ok else "tools/fixtures/t/tame_style_long_fn_one.sh is missing -- the ledger has no counter"
+
+# invariant: every planted case reads as planted, refusals and welcomes alike.
+let control = run ["sh" "tools/fixtures/t/tame_style_long_fn_control.sh"]
+say control.out
+assert control.ok else "tame-style-long-fn: a planted case read wrong -- see the control's own lines"
+assert control.out contains "fail=0" else "tame-style-long-fn: the control closed with a failing leg"
+
+# invariant: the elder terminator is gone from the CODE. The header quotes both elder patterns on
+# purpose, so the reading strips comment lines first -- a guard that red on its own explanation
+# would teach the next hand to delete the explanation.
+let no_indent_close = run ["sh" "-c" "grep -v '^ *#' tools/fixtures/t/tame_style_long_fn_one.sh | grep -F -c '^    }$' || true"]
+assert (trim no_indent_close.out) == "0" else "tame-style-long-fn: the four-space closing-brace terminator is back in the scan"
+
+# invariant: the elder start pattern is gone too. `^( *)?(pub )?fn ` restarts the count on any
+# indented `fn`, so an inline comparator zeroes its own parent.
+let no_loose_start = run ["sh" "-c" "grep -v '^ *#' tools/fixtures/t/tame_style_long_fn_one.sh | grep -F -c '( *)?(pub )?fn ' || true"]
+assert (trim no_loose_start.out) == "0" else "tame-style-long-fn: the loose `fn` start pattern is back in the scan"
+
+# invariant: the ledger reads its own subject on THIS tree. A ceiling would refuse other lanes'
+# ordinary work; a floor of one only refuses an instrument that has gone blind.
+let ledger = run ["rishi/bin/rishi" "run" "tools/fixtures/t/tame_style_long_fn.rish"]
+assert ledger.ok else "tame-style-long-fn: the ledger runner refused"
+say ledger.out
+assert ledger.out contains "functions_over_70=" else "tame-style-long-fn: the ledger no longer reports its own total, so its reach would be claimed by implication"
+let blind = run ["sh" "-c" "sh tools/fixtures/t/tame_style_long_fn_scan.sh | grep -c 'functions_over_70=0 ' || true"]
+assert (trim blind.out) == "0" else "tame-style-long-fn: the ledger reports zero long functions across the whole roster -- the counter has gone blind, which reads exactly like a healthy tree"
+
+say "tame-style-long-fn: GREEN -- the ledger measures a function from its `fn` line to the brace that closes it, and says how many it found."
