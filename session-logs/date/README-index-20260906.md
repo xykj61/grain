@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260906.222120` | [the field that had no law](20260906/20260906-222120_the-field-that-had-no-law.kyri) | rota field seated; 20/53/36 measured. |
 | `20260906.220522` | [the lap that landed a parked lap](20260906/20260906-220522_the-lap-that-landed-a-parked-lap.kyri) | a park is not a landing, and %513 collided |
 | `20260906.214931` | [The lap that was already written](20260906/20260906-214931_the-lap-that-was-already-written.kyri) | a Glow lap out of a park; two guards green. |
 | `20260906.213507` | [the pen that had no owner](20260906/20260906-213507_the-pen-that-had-no-owner.kyri) | 9 pens got the pid; %510 and %512 folded. |

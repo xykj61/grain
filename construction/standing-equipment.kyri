@@ -191,6 +191,17 @@ guard unshared_citation
 path tools/r/unshared_citation_witness.rish
 tier lap
 seated 20260906.210117
+
+# rota_declared -- the council rota's reading, counted rather than assumed. On `20260906` the record
+# answered three ways across 109 logs: 20 carried a `rota` field, 53 named a row in prose alone, 36
+# said nothing -- one observation carrying two claims (whether a rota was read, whether it was
+# recorded), which is the single-stranded braid. The field existed in practice and in no law until
+# that day. REPORTED, never gated: a lap that legitimately did no rota read is indistinguishable
+# from one that skipped it, and a gate that cannot tell them apart reds on honest work.
+guard rota_declared
+path tools/r/rota_declared_witness.rish
+tier lap
+seated 20260906.222120
 # capability seated 20260906.140000 (REDS %493). The guard reads the SHIPPED side, so it needs a
 # projection at `seed/` -- which is gitignored, built by `tools/s/sow.rish`, and therefore absent
 # from every fresh clone. Rostered `tier lap` with no capability it went red on this tree's first
