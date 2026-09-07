@@ -76,7 +76,7 @@ radiant_negation tools/r/radiant_negation_witness.rish tools/fixtures/r/radiant_
 scope_rank tools/s/standing_equipment_scope_rank_witness.rish tools/fixtures/s/standing_equipment_scope_rank.sh tools/fixtures/s/standing_equipment_scope_rank_control.sh tools/fixtures/s/scope_match.sh tools/fixtures/s/standing_equipment_scope_map.sh construction/standing-equipment.kyri
 reds_fold tools/r/reds_fold_witness.rish tools/fixtures/r/reds_fold.sh tools/fixtures/r/reds_fold_control.sh tools/fixtures/r/reds_fold_reanchor.sh construction/
 reds_ledger_headline tools/r/reds_ledger_headline_witness.rish construction/REDS.md construction/archive/REDS-* tools/fixtures/r/reds_ledger_headline_control.sh
-reds_ledger_monotone tools/gen/chapter/reds_ledger_monotone_witness.rish tools/fixtures/r/reds_ledger_monotone_scan.sh construction/REDS.md construction/archive/REDS-*
+reds_ledger_monotone tools/gen/chapter/reds_ledger_monotone_witness.rish tools/fixtures/r/reds_ledger_monotone_scan.sh construction/REDS.md construction/archive/REDS-* tools/fixtures/p/plant.sh
 reds_pin_capacity tools/r/reds_pin_capacity_witness.rish tools/fixtures/r/reds_pin_capacity_scan.sh tools/fixtures/r/reds_pin_capacity_rows.awk tools/fixtures/r/reds_pin_capacity_control.sh tools/fixtures/l/living_pin_max_bytes.sh construction/
 reds_row_present tools/r/reds_row_present_witness.rish tools/fixtures/r/reds_row_present.sh tools/fixtures/r/reds_spine_grep.sh construction/ tools/fixtures/r/reds_row_present_control.sh
 reds_status_consistency tools/r/reds_status_consistency_witness.rish tools/fixtures/r/reds_status_consistency_scan.sh tools/fixtures/r/reds_status_consistency_control.sh tools/fixtures/r/reds_spine_files.sh construction/

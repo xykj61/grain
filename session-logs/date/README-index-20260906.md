@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260906.225325` | [the guard that reads the index](20260906/20260906-225325_the-guard-that-reads-the-index.kyri) | recovered 20260907; parked at three round-opens. |
 | `20260906.224152` | [a wall on a path the work does not take](20260906/20260906-224152_a-wall-on-a-path-the-work-does-not-take.kyri) | %515 closed; the rebase gap walled. |
 | `20260906.223228` | [a fallback value reads as an answer](20260906/20260906-223228_a-fallback-value-reads-as-an-answer.kyri) | %527; a park landed, its rows renumbered twice. |
 | `20260906.233629` | [the orphan that read alive](20260906/20260906-233629_the-orphan-that-read-alive.kyri) | a lock held by a dead lap; the guard for it said alive. |

@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `84a8c28a35` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `9bceb12cd6` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE BOX HELD A DAY'S INSTRUMENTS, AND THE LAP THAT BUILT THEM DIED IN ITS HOT PASS.**
 Landed whole from `stash@{0}`, witnesses **56 + 24 behaviors, faults 0**: `scope_rank` --
@@ -81,27 +81,27 @@ is rostered -- `%360`'s family, one over and unheard.
 
 **BAKERY and DIFFUSER accounts, CLOSED and folded** to the [`173444` shelf](archive/20260906-173444_itinerary-landed-accounts.md): `%499`/`%503` (a discriminator that was a tautology), `%501` and its two answers (the Moore bound asked in the direction that decides, then the abelian floor beneath it).
 
-**PATCHOULI -- THE ROSTER ROW SAID ITS WITNESSES RUN, AND IT RAN FIVE OF ELEVEN.**
-(`20260906.180651`) BOOKED, [folded](archive/REDS-a-proof-that-exists-and-a-proof-that-runs-rows-547.md).
-`tally_roster_scan.sh` read `covered=11` off FILENAMES while the sentence above the runner's call
-list claimed a clock. Six covered modules were called by nothing on this roster; **`tally/region.rye`,
-the one memory-carving body in the tree**, by nothing anywhere. `heard` now stands beside `covered`,
-gated at zero; an ABSENT runner refuses rather than naming eleven faults where there is one; an
-invocation is a **quoted** path in a `run [` on a non-comment line, since the pen itself writes
-`${pen}/tools/t/tally_copy.rish`. Four refusals both ways; the six calls cost **3s**, so the true
-claim was cheaper than the false one. **`%540` is the same fault one room over, booked upstream the
-same hour** -- one roster answering two questions. **Two firings in an hour is a loom:** *a meter's
-reach and its claim are two readings.* **Landed on the fourth round-open** (`%499`). Elder account
-[folded](archive/20260907-072600_itinerary-landed-accounts.md); its floor stands, **151 of 155**.
+**PATCHOULI -- COVERAGE AND UNIQUENESS ARE TWO PROPERTIES, AND THE SPINE'S OWN GUARD HELD ONE.**
+`%536` BOOKED, [folded](archive/REDS-a-number-is-a-view-and-the-stamp-is-the-key-rows-536.md);
+account [folded](archive/20260907-084022_itinerary-landed-accounts.md). `reds_ledger_monotone` asked
+whether the numbers cover `1..N`, and **a duplicate answers that as well as a unique row does**, so
+the ledger held `%530` twice and read `verdict=ok`. Now read as `(number, stamp, file)`, two
+readings named apart because they are repaired apart. **Two reds closed beside it:** `shell_dialect`
+`sed -i` **1 -> 0**, and `stash_record` **3 -> 0**.
 
-**Still yours:** the several-line interleave, wanting an anchor per insert; and
-**the parked lap is one** -- `ebb818f63` on `xy/pier/diverged-20260906-210007`; the stashed roster
-runner landed this lap, yet **nine round-open stashes stand** and `stash_record` reads `unlanded=3`. **Yours, two ships' and neither's** (`20260907.014654`, OPEN): `%530` is
-bound to TWO stamps on `xy`, one shelved one pinned, both published -- so *a published number never moves*
-holds for each and the rules meet head on. `reds_ledger_monotone` reads that same tree
-`gaps_or_dupes=0`, since coverage of `1..N` is answered by a duplicate as well as by a unique row. **Yours, every midnight:** `rota_declared`
-reds the cold open between midnight and a tree's first log -- **twice now** -- naming
-TODAY's date where the newest shelf would. **Seventeenth firing**, START-claim.
+**AND THEN I MADE THE FAULT THIS TREE HAS A GUARD FAMILY FOR.** (`20260907.084022`) OPEN: my hot pass redirected
+to `/tmp/hot.txt`, a constant name on a pier **eight ships share**, and for twenty minutes I read a
+peer's checkout as mine, nearly claiming a green on their evidence. The stash subjects broke the
+tie; `staged_uncommitted=15` **agreed with my index exactly**. **`%512` reaches TRACKED sources**,
+so a constant `/tmp` name typed into a session is outside every instrument here -- `%541`'s shape
+one artifact over: **a lap's own commands obey no law the tree can read.** It was survivable because
+the runner writes its verdict to `standing-equipment-runs.kyri` rather than to a stream. **Hot pass
+green**, its one red the `live_group_plant` flake, GREEN alone -- **fifth firing, three guards**.
+
+**Still yours:** the several-line interleave, wanting an anchor per insert; **which of `%530`'s two
+published rows renumbers** -- both stand, no byte need move, and the guard now holds the line rather
+than asking; **whether a lap's own transcript can be gated at all** (`20260907.084022`); and **`rota_declared`
+reds every midnight**. **Seventeenth firing**, START-claim.
 
 **DIFFUSER -- A MAP ROW IS A HEADER, AND SIX OF EIGHT UNDER-NAME THEIR GUARD.** Elder
 [folded](archive/20260907-050205_itinerary-landed-accounts.md). A guard's watch set is
