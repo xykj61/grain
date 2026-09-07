@@ -205,13 +205,16 @@ seated 20260906.210117
 # recorded), which is the single-stranded braid. The field existed in practice and in no law until
 # that day. REPORTED, never gated: a lap that legitimately did no rota read is indistinguishable
 # from one that skipped it, and a gate that cannot tell them apart reds on honest work.
-# capability seated 20260907.003211. The guard counts TODAY's logs, so before the day's first log
-# lands there is nothing to count and its scan refuses -- which is right (REDS %170) and made an
+# capability seated 20260907.003211. REPAIRED `20260907.114500`: the guard counted TODAY's logs and
+# nothing else, so between 00:00 and the day's first COMMITTED log there was nothing to count and
+# its scan refused -- right about the corpus (REDS %170) and wrong about the subject, which made an
 # ordinary daily state read as a fault. Measured at 00:12 on `20260907`, the first cold pass of a
 # day answered `guards_red=2` on one root: this guard, and `standing_equipment` reading its own
 # roster's red. A red guard withholds the roster receipt, so `--scoped` refuses and every ship pays
 # a FULL cold pass -- daily, fleet-wide, and healing itself an hour later, which is worse than a
-# standing red because it looks like somebody's fault and then vanishes.
+# standing red because it looks like somebody's fault and then vanishes. The scan now falls back to
+# the newest shelf that HOLDS a corpus, at most seven shelves back, and prints `day_source=` so an
+# open-day reading and a fallback reading are told apart; a day a caller NAMES still refuses.
 guard rota_declared
 path tools/r/rota_declared_witness.rish
 tier lap
