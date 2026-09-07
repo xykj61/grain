@@ -19,6 +19,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260907.010542` | [the guard caught a peer on its first rebase](20260907/20260907-010542_the-guard-caught-a-peer-on-its-first-rebase.kyri) | rule 4 priced: 3 renumbers, 0 sweeps. |
 | `20260907.010354` | [the list that stood in for a population](20260907/20260907-010354_the-list-that-stood-in-for-a-population.kyri) | a hand-written desk list covered 218 of 352. |
 | `20260907.005819` | [one operator, three claims](20260907/20260907-005819_one-operator-three-claims.kyri) | a plant meter sized by an operator that means three things. |
+| `20260907.005052` | [the door that opened on the seat it replaced](20260907/20260907-005052_the-door-that-opened-on-the-seat-it-replaced.kyri) | %529, %530; the rota grid walled. |
 | `20260907.004335` | [a guard shaped by the clock](20260907/20260907-004335_a-guard-shaped-by-the-clock.kyri) | a red every ship meets at midnight, and its cost. |
 | `20260907.002052` | [the lap that withdrew its own landing](20260907/20260907-002052_the-lap-that-withdrew-its-own-landing.kyri) | a duplicate withdrawn; a rostered ratchet arrived red. |
 | `20260907.002044` | [the field reaches the ships](20260907/20260907-002044_the-field-reaches-the-ships.kyri) | the rota field put where ships read it. |

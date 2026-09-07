@@ -28,7 +28,12 @@ assert ctl.out contains "pass=11 fail=0" else "rota-declared: the control did no
 
 say "rota-declared: the open day's shelf answers all three counts..."
 let scan = run ["sh" "tools/fixtures/r/rota_declared_scan.sh"]
-assert scan.ok else "rota-declared: the scan refused --\n${scan.out}"
+# invariant: a refusal reports BOTH streams. `run` returns `out` and `err` separately, probed on
+# metal `20260907`, and this scan writes its reason to stderr -- so reporting `${scan.out}` alone
+# wrote an EMPTY reason into `construction/standing-equipment-reds/rota_declared.txt`, the one file
+# a reader opens to learn why a guard stopped. The control leg above was repaired the same day; this
+# one was the half left behind.
+assert scan.ok else "rota-declared: the scan refused --\n${scan.out}\n${scan.err}"
 # invariant: the census reports every bucket, empty or full. A reading that printed only the fault
 # would leave a reader unable to tell a healthy day from a day the scan could not see.
 assert scan.out contains "rota_field=" else "rota-declared: the declared count went unreported"

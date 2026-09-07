@@ -218,6 +218,25 @@ tier lap
 capability day_shelf
 seated 20260906.222120
 
+# rota_grid -- the twenty paths the council rota rests on, held as a set. The 5 x 3 grid in
+# `recursion-prompts/seed/autonomous-loop.seed.md` returns this tree's canon to living awareness on
+# a schedule, and its five thresholds are Markdown links while its fifteen seats are backticked bare
+# paths no link wall follows. On `20260907` the Earth threshold still routed its reader to the seat
+# Earth-Cardinal replaced two days earlier -- both paths resolving, so nothing was broken and no wall
+# could see it. Three readings gated at zero: a path the grid names that is missing from disk, a
+# threshold missing a modality heading, and a modality section naming a seat other than its own.
+guard rota_grid
+path tools/r/rota_grid_witness.rish
+tier lap
+seated 20260907.004329
+# capability seated 20260906.140000 (REDS %493). The guard reads the SHIPPED side, so it needs a
+# projection at `seed/` -- which is gitignored, built by `tools/s/sow.rish`, and therefore absent
+# from every fresh clone. Rostered `tier lap` with no capability it went red on this tree's first
+# cold pass after landing, and a red guard withholds the roster receipt, so `--scoped` refuses and
+# every ship pays a FULL cold pass every lap: 778s measured here. The scan's own refusal is right
+# (REDS %170) and the roster is where the environment fact belongs -- the same reading the operator
+# card already gives an empty `vendor/`. Absence is announced by name rather than made silent.
+
 # publish_template -- the one file this tree ships that a stranger RUNS against their own forge.
 # publish-seed.sh is personal by law, so a newcomer inherits every room except a publisher;
 # publish-seed.template.sh is that room. Two gates: no literal this field owns survives in it, and
