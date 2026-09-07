@@ -448,6 +448,74 @@ lost=$((ambiguous + gone))
 echo "refs_lost=$lost"
 echo "lost_ceiling=$LOST_CEILING"
 
+# THE LOST SET READ TWO WAYS -- reported, never gated, and the two questions are separate.
+#
+# WHY THESE TWO. A gate is worth having only where a lap can act on it, and `refs_lost` mixes a
+# class a lap must repair with a class the tree's own law forbids it to touch. Two readings tell
+# them apart, and each borrows its rule from a guard that already draws the same line:
+#
+#   PROMISE vs MENTION. `.claude/rules/collaboration.md` seats it: references are promises. A
+#     Markdown link is a promise a reader clicks and finds broken; a name in prose or backticks
+#     tells them a filename and promises nothing. `tools/fixtures/t/tracked_link_scan.sh` already
+#     draws this line -- "only the second one is a promise" -- and gates the promises alone.
+#
+#   LIVING vs TESTIMONY. The mark law's own rule, read here with the same predicate
+#     `tools/fixtures/d/dated_path_repoint_scan.sh` uses to decide what it may write to: a file
+#     whose own basename opens with a one-clock stamp is testimony and keeps every word it wrote.
+#     A lost reference inside testimony is not a defect a lap declined to fix -- it is a reference
+#     accrete-never-break forbids anyone to repair.
+#
+# THE CELL THAT IS BOTH -- a broken link, in a file a lap may lawfully edit -- is the repairable
+# class, and it is the one number the gate question turns on. The `declared` pass above cut the
+# lost set from 173 to 85 without touching this split, so these five print the shape of whatever
+# remains rather than a number frozen at one lap's reading.
+#
+# STILL REPORTED RATHER THAN GATED. Moving the gate from `refs_lost` to `lost_promised_living`
+# would tighten it on the class that matters and drop the class nobody may repair, which is what
+# every other link guard in this family already does. It is asked on `construction/ITINERARY.md`
+# and waits on Keaton's word, because a gate a lap moves for itself is a ceiling raised by a side
+# door. Until then these five numbers are the diagnosis, so the next lap that meets the ceiling
+# reads whether the count is repairable instead of counting it again by hand -- which two laps
+# did, by hand, on 20260907 alone.
+awk -F'\t' '$1 == "ambiguous" || $1 == "gone"' "$work/final.txt" > "$work/lost_split.txt"
+lost_promised=0
+lost_promised_living=0
+lost_living=0
+while IFS="$tab" read -r verdict file ref rel root found; do
+  [ -n "${file:-}" ] || continue
+  # THE LINK TEST IS EXACT ON THE REFERENCE, never on its basename, and the field taught the
+  # difference before the pen could. `waymarks/date/README-index-20260725.md` writes one row that
+  # names its log twice -- once as the link's own LABEL in backticks, once as the link target
+  # `20260725/<basename>` -- and the extractor records those as two references, because they are
+  # two different strings. The target resolves home. The label cannot resolve, since it names no
+  # room, and it is the label that reaches this split. A basename-shaped test reads the target's
+  # promise onto the label and calls a kept promise a broken one: measured on this tree, that is
+  # the whole of `lost_promised_living`, 1 against the 0 the exact test reads.
+  #
+  # The declared pass above is deliberately loose in exactly this place, and the two are not in
+  # conflict. It asks whether a LINE still links what it calls absent -- a question about the
+  # sentence, where any spelling of the link withdraws the declaration. This asks whether THIS
+  # reference is itself a promise, which only its own text can answer.
+  promised=no
+  if [ -f "$file" ] && grep -qF -- "]($ref)" "$file" 2>/dev/null; then
+    promised=yes
+  fi
+  living=yes
+  case "${file##*/}" in
+    [0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9][_.]*) living=no ;;
+  esac
+  [ "$promised" = yes ] && lost_promised=$((lost_promised + 1))
+  [ "$living" = yes ] && lost_living=$((lost_living + 1))
+  if [ "$promised" = yes ] && [ "$living" = yes ]; then
+    lost_promised_living=$((lost_promised_living + 1))
+  fi
+done < "$work/lost_split.txt"
+echo "lost_promised=$lost_promised"
+echo "lost_mentioned=$((lost - lost_promised))"
+echo "lost_living=$lost_living"
+echo "lost_testimony=$((lost - lost_living))"
+echo "lost_promised_living=$lost_promised_living"
+
 if [ "$lost" -le "$LOST_CEILING" ]; then
   echo "under_ceiling=yes"
 else

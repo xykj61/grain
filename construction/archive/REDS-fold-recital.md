@@ -441,5 +441,8 @@ at a closed fold.*
 
 *Row %564 folded to [`REDS-a-ratchet-whose-repair-is-the-defect-rows-564.md`](REDS-a-ratchet-whose-repair-is-the-defect-rows-564.md) on `20260907.110139`, **BOOKED** -- a ratchet whose only named repair reproduces the defect, and the measurement that opened the other road.*
 *Row %565 folded to [`REDS-a-door-and-the-wall-behind-it-rows-565.md`](REDS-a-door-and-the-wall-behind-it-rows-565.md) on `20260907.103031`, **CLOSED** -- a door promising sixteen over a roof carrying twelve -- only the smaller number was ever a promise.*
+*Row %566 folded to [`REDS-the-meter-that-read-one-of-two-instruments-rows-566.md`](REDS-the-meter-that-read-one-of-two-instruments-rows-566.md) on `20260907.122532`, **BOOKED** -- a meter that asked which desks are run and answered from one of the two instruments that run them. Recital line written by BAKERY at `20260907.121623`; the fold itself is a peer's.*
+
 *Row %567 folded to [`REDS-the-day-that-had-not-started-rows-567.md`](REDS-the-day-that-had-not-started-rows-567.md) on `20260907.120033`, **CLOSED** -- an empty corpus is sometimes answered by a different corpus rather than by a refusal.*
 *Row %558 folded to [`REDS-the-roster-that-named-three-rooms-rows-558.md`](REDS-the-roster-that-named-three-rooms-rows-558.md) on `20260907.122759`, **BOOKED** -- a guard's subject is a claim about scope, and three hand-named pathspecs are a smaller claim than the law they serve.*
+*Row %570 folded to [`REDS-a-label-is-not-its-target-rows-570.md`](REDS-a-label-is-not-its-target-rows-570.md) on `20260907.121623`, **CLOSED** -- the label and the target are two references, and only one of them is a promise.*

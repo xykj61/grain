@@ -46,40 +46,44 @@
 
 ### Now -- the live front
 
-**Git nib:** `2736c4a868` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `9a6b468753` -- HEAD's parent, resolvable everywhere (%401).
 
-**BAKERY -- HALF OF WHAT THE CENSUS CALLED BREAKAGE WAS THE TREE TELLING THE TRUTH ABOUT A GAP.**
-Row `20260907.105303` **CLOSED** and [folded](archive/REDS-a-declared-absence-is-not-breakage-rows-562.md)
-(the number waits on `xy`; the stamp is the key). `dated_path_scan.sh` asked one question of every dated
-name -- does a file of that name exist? -- so a shelf row reading `` `...bron` *(log never landed)* ``
-landed in `broken_gone` beside a stale link. **That row IS the repair**, word for word from the
-shelves' own header, and the census charged them for performing it. **88 of the 173**, from reading
-the citing LINE of all of them rather than sampling -- `declared=88 / promise=13 / mention=72`,
-against my elder box's `139/15/15` and its *repairable count is ZERO*.
+**BAKERY -- THE ONE READING THE GATE QUESTION TURNS ON NOW READS ZERO, AND READING IT WRONG WAS A ONE-LINE PREDICATE.**
+Elder [shelved](archive/20260907-121623_itinerary-landed-accounts.md). Row `20260907.121623` CLOSED
+and [folded](archive/REDS-a-label-is-not-its-target-rows-570.md); the number waits on `xy`, the
+stamp is the key. **`stash@{0}` is landed** -- the duplicate lap's record and the half of its work
+that survived the `declared` pass: five readings splitting the lost set into **promise against
+mention** and **living against testimony**, printed beside the gate. Field: `9 / 76 / 3 / 82`.
 
-**A fourth verdict, `declared`, printed beside the gate rather than folded into it. Two bounds keep it
-from being an escape hatch, both planted in `dated_path_control.sh` case four:** a line that also
-**links** the basename stays counted however worded, and the declaration must stand on the **same
-line**, so a header silences nothing beneath it. **The narrowing proves itself by what did not move** --
-`refs_total` 23,961 and `refs_home` 13,998 unchanged, so nothing left the set the census walks.
-`refs_lost` **173 -> 85**; ceiling **165 -> 85**, the direction a ceiling may always go.
+**YOUR GATE QUESTION HAS A NUMBER: `lost_promised_living=0`.** All nine promises stand in dated
+testimony, which accrete-never-break forbids repairing -- so moving the gate from `refs_lost` to
+that cell gates the class that matters at a cost of nothing today. **I did not move it**; a gate a
+lap moves for itself is a ceiling raised by a side door.
 
-**My elder question dissolves rather than answers.** The gate was already on the right class; what
-reached it was wrong. Gating a `lost_promised_living` cell stays yours, now costing **13 promises
-rather than 173**. **Nothing runs this census** -- only `dated_path_repoint` is rostered.
+**AND THE FIRST READING SAID ONE, WHICH IS THE RED.** A day shelf names its log **twice** -- the
+basename in backticks as the link **label**, `<day>/<basename>` as the **target** -- and the
+basename-shaped test charged the target's kept promise to the label. One reference tree-wide, small
+enough to open, which is why it was caught rather than published. Loose and exact answer two real
+questions, and the shelf holds which; the pen now plants a label-and-target row so the loosening is
+bitten. Witness GREEN, scan 110s.
 
-**AND I BUILT IT TWICE.** A prior lap of this seat (`20260907.103237`) reached the same root 25
-minutes earlier; its whole change sits in **`stash@{0}`**, parked by THIS round's own open and never
-read. `stash_record` is `tier lap` and stood **RED at `records_unlanded=1`** throughout -- *the next lap
-paid to rediscover it*, in the guard's own header words. **I skipped the cold open**, so the warning
-came in the hot pass, after the duplicate. **Left unmerged, worth taking:** that stash prints **five
-readings** splitting the remainder into promise/mention against living/testimony -- including the
-**`lost_promised_living` cell your gate question turns on**. Its row booked `%558`, already Diffuser's.
+**FOUR REDS ARRIVED WITH THE REBASE, ALL REPAIRED HERE, THREE OF THEM A PEER'S.** The card linked
+`rows-565` where that shelf is `rows-561`, so `readme_reach` reds on the shared card for every ship.
+Today's shelf carried one stamp twice, the `%381` shape a rebase leaves -- lifted, then sorted by
+`index_shelf_repair.sh`. A peer's shelf landed with no recital line, `unrecorded_shelves` 63 over
+62. And `tools/g/glow_desk_reach_witness.rish` wrote then removed a constant `/tmp` pen, `%549`
+exactly: one ship's sweep deletes another's runner mid-read; a `$(pwd | cksum)` suffix returns
+`constant_pen_files` to 53. **`fleet_watch` red hot and GREEN alone** -- a fourth guard in the
+concurrent-pen flake family. **The pattern: a guard reds in MY tree for work landed in a PEER'S.**
+Worth your word: should a send run the roster against `xy/main` before it rebases, so a peer's red
+is named where it was made?
 
-**Still yours, two.** Item 3: a read set digests for tenths of a percent of the guard it skips, so a
-**verdict cache** is buildable -- may a **derived** row be gated? And the several-line interleave,
-wanting an anchor per insert.
-**My box account [folded](archive/20260907-081500_itinerary-landed-accounts.md).** **BAKERY and DIFFUSER accounts, CLOSED and folded** to the [`173444` shelf](archive/20260906-173444_itinerary-landed-accounts.md): `%499`/`%503` (a discriminator that was a tautology), `%501` and its two answers (the Moore bound asked in the direction that decides, then the abelian floor beneath it).
+**Still yours, three.** The gate move above; a **verdict cache** for the census -- may a
+**derived** row be gated? And the several-line interleave, wanting an anchor per insert.
+**A record can be unlandable as written, and `stash_record` cannot see that.** The parked log
+described a pass superseded 25 minutes later. It landed with two appended `obs` lines naming what
+survived -- lawful, since an unlanded log is still being written -- and one `file` line rewritten
+to **declare** the shelf that never landed: this family's own new mechanism used on itself.
 
 **PATCHOULI -- A CENSUS WHOSE SUBJECT WAS "TODAY" REFUSED EVERY NIGHT AT MIDNIGHT.**
 Row `20260907.114500` **CLOSED**, [folded](archive/REDS-the-day-that-had-not-started-rows-567.md),
@@ -156,7 +160,7 @@ carry no marker in name or head, so nothing tells them from a desk that ought to
 run where the enumeration named 218. [Folded](archive/20260907-122532_itinerary-landed-accounts.md).
 
 **INCENSE -- THE DOOR HAS TWO KEYS, AND THE GUARD READ ONE.** `20260907.094712` BOOKED,
-[folded](archive/REDS-the-door-has-two-keys-rows-565.md). Beside Pheromone's `%558`, same guard and
+[folded](archive/REDS-the-door-has-two-keys-rows-561.md). Beside Pheromone's `%558`, same guard and
 hour: **theirs the subject, mine the reading.** Nine pages answer under `**Room:**` rather than
 `**Status:**`, **two spelling `Mixed`** -- the table's own token, read as silence, since **two laws
 wear that word** (TWO_ROOMS a REGISTER, design-rooms a DIRECTORY). **48 -> 37.** **THE FINDING IS
