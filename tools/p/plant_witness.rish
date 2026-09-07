@@ -106,11 +106,14 @@ say adoption.out
 # `tools/fixtures/t/topology_growth_control.sh` was written against the law rather than repaired
 # into it: the first control to adopt at birth rather than on touch. RAISED TO 7 on
 # `20260907.062519` by BAKERY, when the recovered `index_shelf_repair_control.sh` and
-# `standing_equipment_scope_rank_control.sh` landed sourcing it. RAISED TO 8 on `20260907.075107`,
-# when `foundations_link_control.sh` came back out of a stash sourcing it to prove that two copies
-# of a scan differ from the source they were cut from. The remaining controls are
-# named by `sh tools/fixtures/p/plant_adoption_scan.sh --list`, and each falls on touch.
-assert adoption.out contains "sourcing=8" else "plant: adoption is a floor that only rises -- eight controls source the plant law; raise this line when a lane adopts, never lower it"
+# `standing_equipment_scope_rank_control.sh` landed sourcing it. RAISED TO 9 on `20260907.093000`
+# by two lanes landing in one hour: `foundations_link_control.sh`, which came back out of a stash
+# sourcing it to prove that two copies of a scan differ from the source they were cut from, and
+# `mantra_declaration_walk_control.sh`, out of that same dead-letter box, adopted because its own
+# elder-ArrayList plant had gone stale -- naming `u32` after that type became `LineId`, which is
+# the exact fault the helper exists to name. The remaining controls are named by
+# `sh tools/fixtures/p/plant_adoption_scan.sh --list`, and each falls on touch.
+assert adoption.out contains "sourcing=9" else "plant: adoption is a floor that only rises -- nine controls source the plant law; raise this line when a lane adopts, never lower it"
 assert adoption.out contains "verdict=ok" else "plant: the adoption arithmetic must sum before it is believed"
 
-say "plant: GREEN -- one implementation, imported by eight controls, proven from both sides on metal"
+say "plant: GREEN -- one implementation, imported by nine controls, proven from both sides on metal"

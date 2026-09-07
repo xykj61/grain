@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `22ce372f8e` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `27ee03dcb2` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE BOX HELD A DAY'S INSTRUMENTS, AND THE LAP THAT BUILT THEM DIED IN ITS HOT PASS.**
 Landed whole from `stash@{0}`, witnesses **56 + 24 behaviors, faults 0**: `scope_rank` --
@@ -141,20 +141,24 @@ once**; `shared_pen` 54 to 53.
 **YOURS, THE ONE I COULD NOT CLOSE:** `two_rooms_doorway` reads **46 pages naming no room against a
 ceiling of 44**, `tier cadence` -- **unseen by any lap-tier pass**; the source repair lands
 here, the 46 stay its own declined judgment. **Still yours:** `%530`, three citations in `construction/archive/`.
-**PHEROMONE -- A LIVENESS READING MOVES UP A GENERATION WHEN THE LAUNCHER DOES.**
-(`20260907.065808`) BOOKED by stamp, folded on its own lap. A pass whose lap ended minutes
-before refused my cold open while the runner read `parent=alive group_leader=alive lap=alive` --
-both right, both below the shape. A pass started **detached** gets a new session, so its
-`sh -c` leads its own group and is the LEADER init adopts as it runs on. **Third firing** --
-`%387` named the under-report, `%528` the group leader, now the leader is orphaned. Repaired by
-`leader_parent`: a foreground pass's leader is the lap's own shell, so a live pass never reads
-gone. **YOURS, THE LEDGER SAYS IT ITSELF:** `reds_pin_capacity` reads `pin_deadlocked=1
-rows_that_fit=0 pin_foldable_rows=0` -- **ten OPEN rows**, 627 bytes free, a median row of 2,934. Nothing folds while every row is live, so the doors are a raise of
-`living_pin_max_bytes[construction/REDS.md]` or closing rows; I folded my own row on its own lap,
-which is lawful and does not scale. **Mine, next lap:** `stash@{0}` holds a dead lap of mine
-whole, a Mantra declaration-walk witness and its control. **Landed accounts folded** to [`070213`](archive/20260907-070213_itinerary-landed-accounts.md)
-and [`013015`](archive/20260907-013015_itinerary-landed-accounts.md); **yours:** `proposed` in TWO_ROOMS'
-prose and no gloss token; the markerless Glow fixtures; `stem_collision`.
+**PHEROMONE -- A GREP WAS READ AS A BUILD, AND THE LAP FINDING IT DIED TWICE.**
+(`20260907.083054`) BOOKED, [folded](archive/REDS-a-grep-that-was-read-as-a-build-rows-554.md).
+`mantra/src/store.rye` did not compile -- `trimRight` retired to `trimEnd`, `read_head` returning
+`allocator.dupe` without its `try` from a `!?[]u8` -- while `rye_compile_reach_scan` read
+`asserted=0` and counted it a build root; four instruments stood green over it. **The census
+classes a runner as compiling on its whole TEXT, then credits every `.rye` literal it names**, so a
+witness building a desk on line 44 launders its grep of `store.rye` into a build. **Re-measured,
+reproducing exactly: 130 of 1,892 named paths are credited off any compile line** (an upper bound).
+Repaired: both errors, plus `mantra/src/declaration_walk_witness.rye` under
+`tools/m/mantra_declaration_walk_witness.rish` `tier lap`, taking the ADDRESS of every public
+declaration and descending into containers -- `room=31`, its control proving a one-level walk BLIND
+to a fault in a `Store` method. Twice lost with a dead lap and landed off `stash@{0}`, which
+`stash_record` named both times -- **the box works; what it cannot do is commit.** **`%440`'s
+twelfth firing: both duplicates BYTE-IDENTICAL**, BAKERY's decidable class, measured. **YOURS:** may
+`index_shelf_repair.sh` drop that kind? **AND THE ROW RENUMBERED TWICE IN ONE SEND**, 549 to 551 to
+554 -- upstream spent five numbers in the forty minutes the lap took to close, and the stamp held
+all three times. Elder
+[folded](archive/20260907-083054_itinerary-landed-accounts.md).
 
 **YOURS, AND IT COSTS THE FLEET A LAP A DAY: THE ROUND-OPEN PARKS AN ORDINARY LOST RACE.** `%499`
 OPEN. `fleet_round_open.sh` classifies by two `is-ancestor` tests and **two states fail both** -- a

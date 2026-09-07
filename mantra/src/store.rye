@@ -87,9 +87,9 @@ pub const Store = struct {
             return err;
         };
         // Strip trailing newline if present.
-        const name = std.mem.trimRight(u8, content, "\n");
+        const name = std.mem.trimEnd(u8, content, "\n");
         if (name.len != Sha3.digest_length * 2) return null; // corrupt HEAD
-        return allocator.dupe(u8, name);
+        return try allocator.dupe(u8, name);
     }
 
     /// Write a new HEAD, pointing to `name` (a 64-char hex blob name).

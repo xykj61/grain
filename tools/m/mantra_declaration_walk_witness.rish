@@ -1,0 +1,57 @@
+# tools/m/mantra_declaration_walk_witness.rish -- the mantra room COMPILES,
+# rather than merely parsing.
+#
+# Zig analyses lazily. A build that imports a module and leaves its declarations
+# alone proves exactly one thing: the module parses. Four guards read this room
+# with `grep` -- width-check, tame_check, opening_lines, and the compile-reach
+# census. The compiler read none of it. `weave.rye` had stood that way since the
+# toolchain moved (REDS %449). `diff.rye` and `store.rye` stood the same way until
+# the lap this guard was written.
+#
+# The Rye witness sits beside the module it proves, at
+# mantra/src/declaration_walk_witness.rye. Zig accepts an import only within the
+# root file's own directory, so beside is the only place it fits. The witness walks
+# every public declaration in the room, descends into containers, and takes each
+# address -- which is what forces analysis.
+#
+# The descent earns its place. A one-level walk stays blind to every method on a
+# struct, and the control measures that gap on the same planted fault.
+#
+# Module room: mantra/src/. The census that found the gap:
+# tools/r/rye_compile_reach_witness.rish.
+#
+# Run it from the repository root:
+#   rishi/bin/rishi run tools/m/mantra_declaration_walk_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mantra/bin/declaration_walk_witness"
+
+say "mantra-walk: Language EN -- the room is built, rather than read."
+say "mantra-walk: Style Gauge, Meter -- every claim is a run, and every refusal is named."
+say "mantra-walk: Lens TAME -- three named bounds, each read at the edge, each saying why."
+
+say "mantra-walk: the witness still names its bounds and walks the whole room..."
+let bounds = run ["sh" "-c" "grep -q 'max_walk_depth' mantra/src/declaration_walk_witness.rye && grep -q 'min_room_declarations' mantra/src/declaration_walk_witness.rye && grep -q 'max_room_declarations' mantra/src/declaration_walk_witness.rye"]
+assert bounds.ok else "mantra-walk: a named bound left declaration_walk_witness.rye"
+
+let room = run ["sh" "-c" "grep -q 'weave.rye' mantra/src/declaration_walk_witness.rye && grep -q 'diff.rye' mantra/src/declaration_walk_witness.rye && grep -q 'store.rye' mantra/src/declaration_walk_witness.rye && grep -q 'main.rye' mantra/src/declaration_walk_witness.rye"]
+assert room.ok else "mantra-walk: a module of the room left the walk"
+
+say "mantra-walk: building the witness against the real room..."
+let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/src/declaration_walk_witness.rye -femit-bin=${bin}"]
+assert build.ok else "mantra-walk: the room does not compile -- read the error above, it names the file and the line"
+
+let walk = run ["sh" "-c" "${bin} 2>&1"]
+assert walk.ok else "mantra-walk: the walk exited non-zero -- a floor or a ceiling refused"
+assert walk.out contains "GREEN" else "mantra-walk: the walk did not reach GREEN"
+assert walk.out contains "room=" else "mantra-walk: the room count is missing, and a walk that counts nothing reports everything sound"
+
+say "mantra-walk: breaking the room six ways in a pen, so the walk is proven able to red..."
+let control = run ["sh" "tools/fixtures/m/mantra_declaration_walk_control.sh"]
+assert control.ok else "mantra-walk: the control must complete -- a witness nobody has watched fail is a witness nobody has tested"
+assert control.out contains "control_verdict=ok" else "mantra-walk: the control must reach its own verdict"
+assert control.out contains "clean_exit=0" else "mantra-walk: the unmutated copy must green, or every other phase fails for a reason the pen invented"
+assert control.out contains "shallow_exit=0" else "mantra-walk: the one-level walk must pass the fault the recursive walk refuses, or the descent is decoration"
+assert control.out contains "floor_at_exit=0" else "mantra-walk: the floor must be free at the measured count, or it is refusing the honest tree"
+
+say "GREEN: the mantra room compiles -- six breaks caught, and a one-level walk shown blind to one of them."
