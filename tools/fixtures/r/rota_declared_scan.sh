@@ -22,6 +22,10 @@
 #   sh tools/fixtures/r/rota_declared_scan.sh list       # one line per undeclared log
 #   ROTA_DAY=YYYYMMDD sh tools/fixtures/r/rota_declared_scan.sh
 #
+# THE FIELD HAS A FORM FOR AN HONEST ABSENCE. `rota none -- pure repair, no rota this lap` counts as
+# declared, because the record then says which of the three things happened rather than leaving a
+# reader to guess. Seated in the baton `20260907.002044` so every ship reads it.
+#
 # THE READING is deliberately a REPORT rather than a gate. A lap that legitimately did no rota read
 # -- a lap that is pure repair, a lap that ends at a custody stop -- looks identical from outside to
 # one that skipped it, and a gate unable to tell them apart would red on honest work, which is the
@@ -53,6 +57,9 @@ field=0; prose=0; silent=0
 : > "$work/undeclared.txt"
 while IFS= read -r f; do
   [ -f "$f" ] || continue
+  # `rota none -- <why>` counts as DECLARED, and that is the whole point of the third answer. A lap
+  # that honestly did no rota read has a way to say so, and the record then distinguishes it from a
+  # lap that simply left no trace -- which the elder three-way split could not do.
   if grep -q '^rota ' "$f" 2>/dev/null; then
     field=$((field + 1))
   elif grep -qiE 'row [0-9]' "$f" 2>/dev/null; then
