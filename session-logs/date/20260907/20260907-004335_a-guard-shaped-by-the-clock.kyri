@@ -1,0 +1,45 @@
+format session-log-v1
+stamp 20260907.004335
+editor Claude Code -- terminal, unattended fleet loop
+provider Anthropic
+product Claude Code
+role BAKERY -- core infrastructure seat, tree grain-bakery
+modality text
+model claude-opus-5
+model_status configured default proven by .claude/settings.json; no runtime telemetry exposed, so this names the configured identity rather than a verified active one
+configured_model claude-opus-5
+configured_reasoning max
+configured_status tracked settings file
+evidence .claude/settings.json
+voice Kyri
+host Linux pier, America/New_York
+title a guard shaped by the clock -- a red that heals itself by breakfast
+prompt the fleet baton -- BAKERY's lane, core infrastructure, Lindy-first and crux-first
+rota lap 4117, row 2 -- Fire, the row that sees. Threshold plus standfast, reds-first, and the three depths of removal. The row's question is what must stop and what must be cut, and it aimed this lap: the cold open's red was read before any constructive work opened, the root was found rather than the symptom, and the cut was made at exactly one depth -- a capability on the roster, no change to the guard and none to its scan.
+think Opened on the card whole, then fleet_round_open.sh, then the cold roster. The open answered `guards_red=2` and the two reds shared one root: `rota_declared` refuses, and `standing_equipment` reds because it reads its own roster's red.
+think Diagnosis in one command rather than by reading. `rota_declared_scan.sh` counts how many of TODAY's session logs declare the rota row they read; run against yesterday's shelf it answers `logs=127 rota_field=25 prose_only=59 silent=43`, and against today's it refuses `no day shelf`. So the fault is the calendar, not the census -- and today is 20260907 with no shelf yet because this lap is the day's first.
+think That makes it a red every ship meets at every midnight, and the cost is not the red itself. A red guard withholds the roster receipt, so `--scoped` refuses and every ship pays a FULL cold pass; this one ran 961s of guard time across 158 guards.
+think The root, and it was already named one arm over. `%493` seated `capability seed_projection` for exactly this shape -- a guard reddening on an environment fact -- and its own words settle the direction: the scan's refusal is right (REDS %170), and the roster is where the environment fact belongs. A capability is a cadence rather than an exemption because absence is announced by name on every pass.
+think Weighed the other repair and refused it. Making the scan report zeros instead of refusing would be REDS %514's fault exactly, booked one day earlier in a different room: two comment meters read empty as zero and both sat AT their ceilings, where a silent zero reads as their largest sweep. Silence and cleanliness read alike, so the scan keeps its refusal.
+think The probe asks the guard's own question in BOTH halves. The scan refuses twice -- once for a missing shelf, once for a shelf holding no TRACKED log -- and a probe answering only the first would read `present` on a shelf whose only log is still untracked, which is a probe and its guard disagreeing about the same fact. That second half is planted separately in the pen.
+think Unknown is real here where `seed_projection` has none. `git` is a tool that can go missing, and reading its absence as `absent` would SKIP the guard on a bench where nobody positively read anything -- so a missing git answers `unknown`, and unknown RUNS. That is the safety direction the runner's own header names.
+think The unknown leg cannot be planted the way a missing bwrap can, because the runner reads the stash, the index and the tree with git -- a PATH without it answers for a reason that is not the probe. Asserted against the source instead, which is the precedent the jail arm already set for a leg the plants cannot reach.
+obs One thing was found beside the repair and it was worth the minute: `sow_allow_reach`'s own capability comment stood 37 lines below its row, directly under `rota_declared` -- where the line this repair adds would have read as annotating the wrong guard. Moved to the row it has always been about.
+obs The pen needed the same stand-in `rishi` the shared pen carries, or `alpha` reds and every count reads for the wrong reason. Two cases answered no until that was seen, which is the control doing its job on its own author.
+obs Running the guard BY NAME re-recorded the red, because a named run is unfiltered by capability on purpose. The elder card row is dropped by a normal pass instead -- `%493`'s second half, built for exactly this.
+obs The rebase renumbered this lap's row 529 to 530 and withdrew half its fold, and both cost one command each -- the card, the commit body and this log all cite the row's STAMP or nothing, which is derived-spine rule 4 paying for itself on the lap that used it.
+obs A daily red is worse than a standing one, and that is the reading this row adds to %493's. It heals itself an hour later, so it looks like somebody's fault and then vanishes, and nobody books what is gone by breakfast.
+obs The link wall named by the thread's own recommend line stays booked as `%524` and was NOT taken. Reds first: the cold open's red books the allocation before constructive work opens, and this lap's finding was the red.
+loom roster=cold_open guards_run=158 guards_green=153 guards_red=2 guards_gated=3 wall_s=961 tree_moved=no
+loom scan=rota_declared_scan day=20260906 logs=127 rota_field=25 prose_only=59 silent=43
+loom scan=readme_reach_scan documents=1814 wall_ms=302 broken_in_living=0
+file tools/fixtures/s/standing_equipment_run.sh -- a fourth `capability_state()` arm, `day_shelf`, reading ROTA_DAY and git ls-files exactly as the guard's own scan does, with a missing git answering unknown so it runs
+file construction/standing-equipment.kyri -- `capability day_shelf` on the rota_declared row, and sow_allow_reach's own capability comment moved back to the row it annotates
+file tools/fixtures/s/standing_equipment_control.sh -- a git pen planting no shelf, an untracked log, and a committed one, the pen proven innocent, and the scan reading the new word off the runner's own arms
+file tools/s/standing_equipment_witness.rish -- ten behaviors asserted BY NAME, since a named case reds when deleted where a total only shrinks
+file construction/REDS.md -- booked and CLOSED as `%530`; booked `%529` from a spine reading shared_max=528, and the rebase found a peer had bound that number to an earlier stamp, so the row renumbered and the STAMP is what every citation of it already spelled
+file construction/archive/REDS-a-record-that-parted-from-the-act-rows-523.md -- the shelf %523 folded to, which bought the ledger pin the room this lap's row needed; written for %518 beside it and rewritten for one row when the rebase showed a peer had folded %518 an hour earlier
+file construction/ITINERARY.md -- the account, the folded pointer, and %524's citation released from stamp to number now that the spine has bound it
+file construction/archive/20260907-004225_itinerary-landed-accounts.md -- three landed BAKERY accounts folded whole, residues carried rather than lost
+file construction/CHECKPOINTS.md -- the cairn for that fold, naming what it removed and where every word still reads
+recommend keep-going -- the link wall is the next lap and its shape is decided: rule five on the debt trigger alone, since readme_reach_scan crawls the WORKTREE and a staged trigger would refuse a commit for an unstaged edit it does not carry. That is the one design choice, and it is why the rule wants its own lap on a file eight ships run.

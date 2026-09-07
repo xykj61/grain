@@ -565,6 +565,38 @@ capability_state() {
       # it a cadence rather than a quiet hole.
       if [ -d "${SOW_SEED:-seed}" ]; then echo present; else echo absent; fi
       ;;
+    day_shelf)
+      # Does the day this pass stands in have a shelf with tracked logs in it? `rota_declared`
+      # counts how many of TODAY's session logs declare the row they read, and before the day's
+      # first log lands there is nothing to count -- so its scan refuses (REDS %170: a scan that
+      # cannot measure refuses rather than reporting clean) and the guard reds. That is the state
+      # of every day between midnight and its first landing, on every ship, so the elder rostering
+      # made an ordinary daily state read as a fault: measured 20260907.003211, a cold pass at
+      # 00:12 answered `guards_red=2` -- this guard, and `standing_equipment` reading its own
+      # roster's red -- and the receipt was withheld, which is what makes `--scoped` refuse and
+      # every ship pay a FULL cold pass. Same reading the operator card gives an empty `vendor/`,
+      # and the same one `seed_projection` gives a fresh clone one arm above.
+      #
+      # THE PROBE ASKS THE GUARD'S OWN QUESTION, in both of its halves, reading `ROTA_DAY` and the
+      # one clock exactly as `tools/fixtures/r/rota_declared_scan.sh` does and then asking git the
+      # same `ls-files` it asks. The scan refuses twice -- once for a missing shelf and once for a
+      # shelf holding no TRACKED log -- and a probe answering only the first would read `present`
+      # on a shelf whose only log is still untracked, which is a probe and its guard disagreeing.
+      #
+      # UNKNOWN IS REAL HERE, unlike `seed_projection`'s `test -d`: `git` is a tool that can go
+      # missing, and reading its absence as `absent` would SKIP the guard on a bench where nobody
+      # had positively read anything. Unknown runs, which is the safety direction the header above
+      # names.
+      command -v git >/dev/null 2>&1 || { echo unknown; return 0; }
+      _day=${ROTA_DAY:-$(TZ=America/New_York date +%Y%m%d)}
+      _shelf="session-logs/date/$_day"
+      [ -d "$_shelf" ] || { echo absent; return 0; }
+      if [ -n "$(git ls-files "$_shelf/*.kyri" 2>/dev/null | head -1)" ]; then
+        echo present
+      else
+        echo absent
+      fi
+      ;;
     *) echo unknown ;;
   esac
 }
