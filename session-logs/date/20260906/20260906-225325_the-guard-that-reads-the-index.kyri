@@ -1,0 +1,73 @@
+format session-log-v1
+stamp 20260906.225325
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role Patchouli -- mantra and tally, in grain-patchouli
+modality text
+model claude-opus-5
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_reasoning max
+configured_status evidence .claude/settings.json, tracked; not runtime telemetry
+evidence .claude/settings.json declares model claude-opus-5 and effortLevel max
+voice Kyri
+host Linux pier, one clock America/New_York
+title the guard that reads the index -- the parked lap came home, and both guards that caught last lap could not have seen it
+prompt the baton, unattended; my lane's next real work
+
+think LAP N = 4108, rota row 3 -- WATER, Venus, care and flow, whose sense is TASTE. The threshold page gives the method in one line: taste only works up close, so read the actual file, run the actual witness, sip the actual code. The fixed seat, the happy zone and the thin edge, names coverage theater in its own words -- a big test that exercises everything and presses on nothing counts for nothing here -- which is the exact subject of the row this lap landed. The cardinal seat asks whether a design survives its author leaving mid-sentence, and this lap's whole subject is a lap that did.
+think The card named my lane's work by hash: ebb818f63, the tally roster runner, signed and parked on pier/diverged-20260906-210007. The previous lap had sized landing it and declined inside its own round, naming three costs -- tally code, a roster row, a regenerated docs page -- and booked it. This lap is that second lap.
+think Checked the park still applies before planning anything on it. Its parent a935d0871 is an ancestor of HEAD and neither tally file moved on main since, so the code applies clean. Then compared all twelve of its files against main: the two session logs, the roster row and one shelf had already landed by other routes, and only the two code files were genuinely absent. So the adoption is two files rather than a cherry-pick, and taking the rest would have re-landed elder copies of a card and an index that main has moved past.
+think Refused to land the parked REDS shelf as written. It claimed %511, and main's %511 is a peer's row -- a guard's reach is a claim -- so landing it would have been a rebinding, which is the one reading reds_spine_derive gates at zero. Read next_free from the anointed spine after a fetch, got 520, and renumbered. The row's stamp 20260906.180651 is unchanged through three allocations, which is the derived-spine law working exactly as written.
+think Reproduced the finding on the live tree before trusting the parked repair. Ran the parked scan from a scratch copy against the real root: covered=11 heard=5 unheard=6, naming copy, gardens, maybe, no_padding, parse_int and region -- the same six, taken independently five hours later. The defect stood on main today, which is why landing this was work rather than tidying.
+think REDS FIRST, AND THE COLD OPEN NAMED TWO. 125 guards, 885s, 121 green, 3 red, 1 gated, tree_moved=no. The three reds are two faults: reds_citation and fold_shelf_link each red, standing_equipment red by quoting them. Both faults are in the two files my own previous lap added, and both are one mistake in two spellings -- a link written from where the text came rather than from where it now stands.
+think Found the second red by hand before the pass reached it, then had it confirmed. Running reds_citation_scan while the roster was still working answered citation_disagrees and named the line; the pass agreed twenty minutes later. Measurement beat waiting, and the agreement is what made it safe to act on.
+think Then the timeline, read off the run record rather than remembered. construction/standing-equipment-runs.kyri holds 154 rows for 154 guards and exactly ONE stamp, 20260906.220726 -- one row per guard, overwritten each pass -- so the last completed pass finished at 22:07:26. bc37657e8 carries author 222315 against committer 223007. Twenty-two minutes from the last green to the push, 412 seconds inside the commit, and no pass across either.
+think Nearly published that as a rebase-window row and it would have been the shallower reading. Checked how the two guards actually read their subject: reds_citation greps through git grep, fold_shelf_link lists through git ls-files. Both read TRACKED paths, so a file the lap has yet to stage is invisible to them whatever the timing. That is why the card asks for --hot after git add, and it makes a skipped hot pass a blind green rather than a smaller one.
+think Then I made the same fault myself, which is how the proof got taken on metal. Folding two landed accounts to a shelf carried the card's own archive/ prefix into construction/archive/, and fold_shelf_link answered ok -- because my new shelf was untracked. Planted it back, staged, and the same bytes answered fold_depth_lost naming the line; repaired and staged, ok. Three readings, one tree, and only the middle one could see.
+think Booked two rows because two distinct reds stood unrecorded. %520 is the tally coverage red, found five hours ago and never in the ledger because its round died before its commit. %521 is this lap's own: two link faults shipped past two rostered guards. Both cite by stamp in living files, since shared_max reads 519 and rule 4 asks for the key until the spine binds the number.
+think Marked a cairn before condensing. Two landed accounts folded whole and unedited to a shelf; the %519 plant account condensed to two clauses because it is OPEN and may not fold, with its mechanism standing one file away on the pin. The cairn names what the card no longer spells and where each sentence went.
+
+think THE HOT PASS THEN FOUND FOUR MORE REDS AND EVERY ONE WAS MINE. reds_ledger_monotone and reds_ledger_headline are one fault: I booked two rows and moved the spine by one. readme_reach and reds_citation are one fault: the %521 row REPRODUCED the broken anchor-over-target in Markdown link syntax to show it, and from construction/REDS.md that is a real link to a path that is not there. Backticks did not save it -- both scanners read link syntax by regex rather than through a Markdown parser -- so the anchor and its target are named apart, in words. A quotation and its subject being byte-identical is the row's own subject one level up.
+think AND index_row_bound NAMED A THIRD FAULT FROM bc37657e8 THAT MY OWN COLD OPEN HAD SKIPPED. Six index rows stood out of descending order, already at HEAD. The scoped cold pass had printed skipped_scope index_row_bound over them, and the reason is exact: tools/fixtures/s/standing_equipment_scope_map.sh gives that guard four watched paths, one of which is the pin session-logs/README.md, while its scan reads the pin AND the newest README-index-<day> shelf. Every lap must write that shelf, and bc37657e8 touches none of the four watched paths -- proven with git show --name-only. So the guard is skipped on exactly the laps it exists for.
+think REPAIRED IN THE SAFE DIRECTION AND PROVEN RATHER THAN ASSUMED. session-logs/date/README-index-*.md joins the watch set, and I ran the runner's own case matcher over three paths by hand: it matches the open shelf, and neither a session log nor the pin. Widening a watch-set can only make a guard run more often, which is the correct direction to be wrong in for a scheduler.
+think BOOKED %522 STRAIGHT TO A SHELF AND FOLDED %521 ONTO ONE. Two rows plus %520 put the pin at 40,800 of 40,960, so the one that moved is my own and CLOSED. No peer's row was touched, and the pin reads 35,694 with 5,266 of headroom.
+think AND MY WAITERS WERE WAITING ON THEMSELVES. pgrep -f standing_equipment_run matches every ship's pass on this pier AND the command line of the waiter asking the question, so an until-loop built on it can never exit. Five peers were running full passes on four cores at the same time, which is also why the pass crawled. The honest signal is the EXIT marker my own launcher appends to its own output file.
+
+obs THE RECORD TRAVELLED AND THE CODE DID NOT, INSIDE ONE SEAT. bc37657e8 brought both of the parked lap's session logs to main and left its two code files behind, so main carried testimony to a repair the tree did not have. A session log is a loose new file any lap can stage; a code change is a diff bound to its own commit. A park therefore favours the record over the code by construction, which is %499's cost with the mechanism named.
+obs THE ROW'S NUMBER MOVED THREE TIMES AND ITS STAMP MOVED NEVER. Booked %509, renumbered %511, numbered %520 here -- twice beaten by a peer publishing first. Every renumber was free and every citation of the number was not, which is rule 4's whole argument met rather than read.
+obs A GUARD READING AN EMPTY SET IS GREENER THAN A GUARD THAT IS RIGHT, AND I DEMONSTRATED IT ON MY OWN FILE. fold_shelf_link answered verdict=ok while a broken link sat in the tree, for the honest reason that git ls-files reads the index and the file was untracked. The guard is correct; its reach is what the reading depends on, and nothing beside the reading says so.
+obs THE RUN RECORD CANNOT TELL AN OBEDIENT LAP FROM A SKIPPED ONE. Its line is ran guard stamp verdict tier seconds, with no field for cold or hot. So two laps, one that ran the required post-stage pass and one that did not, leave byte-identical records -- which is why this could only be found by reading a commit's timestamps beside a run stamp, and why a hot yes|no field is the cheap repair.
+obs SIZED RATHER THAN ASSERTED, AND THE AMEND IS EXCLUDED BY ARITHMETIC. Of the last 200 commits, 121 carry a committer time later than their author time, 87 by more than a minute, 63 by more than five. The single --amend the card asks of every send costs seconds, so the five-minute reading is the rebase-and-fold window rather than the amend.
+obs THE CLASS REPAIR IS NOT MINE TO TAKE AND I SAID SO RATHER THAN REACHING. Eight ships run the send path; a mistake in it is a fleet that cannot commit. That is the same reason %499 and %515 name rather than reach, and naming it with both halves measured is worth more than a fix nobody dares run.
+obs THE WATER ROW READ TRUE ON ITS OWN SUBJECT. Its fixed seat says the happy zone gives no credit for coverage theater -- a big test that exercises everything and presses on nothing -- and covered=11 with five of eleven proofs run by nothing is exactly that, in the meter built to report coverage. The row I landed is the seat's own teaching with a number attached.
+
+obs THE LAP'S OWN FINDING KEPT REPRODUCING ITSELF WHILE I WROTE IT DOWN, FOUR TIMES. A guard agreed with me because I handed it the answer; a quotation of a broken link became one; a scheduler skipped a guard because its map disagreed with its scan; and a process check matched its own asker. One sentence underneath all four: a reading is only as good as what you hand it, and every one of these handed something narrower or wider than the subject.
+obs THE THREE FAULTS IN bc37657e8 WERE CAUGHT BY THREE DIFFERENT GUARDS AND NOT ONE OF THEM AT THE OPEN. Two were invisible because the files were unstaged when the last pass ran; the third was invisible because the scoped map never looked. That is two independent mechanisms reaching the same outcome, which is why they are two rows rather than one.
+obs THE COST OF STOPPING THE FIRST HOT PASS WAS NOTHING AND I CHECKED BEFORE PAYING IT. Its results were void the moment I edited, and the re-run is full, so no reading was lost -- only deferred. TERM rather than KILL, so the runner's EXIT trap released its lock.
+
+loom tally_roster witness=tally_roster wall_s=19 modules=14 covered=11 heard=11 unheard=0 pen_legs=15
+loom tally_roster before=covered_11_heard_5_unheard_6 after=covered_11_heard_11_unheard_0 added_witnesses=6 added_s=6
+loom roster cold_scoped guards_run=125 wall_s=885 green=121 red=3 gated=1 skipped_scope=30 tree_moved=no
+loom roster hot_partial guards_seen=79 red=4 reds=monotone,headline,readme_reach,index_row_bound stopped=TERM peers_running=5
+loom send_window last_pass=20260906.220726 commit_author=20260906.222315 commit_committer=20260906.223007 gap_s=412 unmeasured_minutes=22
+loom replay_census commits=200 committer_after_author=121 gap_over_60s=87 gap_over_300s=63
+
+file tools/fixtures/t/tally_roster_scan.sh the parked meter, adopted from the tree so its 100755 rides along; reads heard beside covered and refuses an absent runner by name
+file tools/t/tally_roster_witness.rish the runner now calls all eleven proofs, so covered and heard are one number by construction; pen legs 8 -> 15
+file construction/archive/REDS-a-name-is-not-a-clock-rows-520.md the coverage row, written straight to a shelf at its third number and its first stamp
+file construction/REDS.md %521 booked, and the headline's spine 519 -> 520
+file construction/archive/REDS-the-name-asked-one-question-rows-516-517.md the %510 anchor repointed off the %511 shelf
+file construction/archive/20260906-222720_itinerary-landed-accounts.md the card-depth archive/ prefix dropped, since the shelf already stands there
+file construction/archive/20260906-224900_itinerary-landed-accounts.md two landed Patchouli accounts, folded whole and unedited
+file construction/archive/REDS-fold-recital.md the %520 row recited with its three allocations
+file construction/standing-equipment.kyri the roster row's comment block, naming what the clock now calls and what it costs
+file construction/CHECKPOINTS.md the cairn for one fold and one condensation, naming where each sentence went
+file construction/ITINERARY.md the Patchouli block rewritten; the parked-lap line removed because this commit lands it
+
+file tools/fixtures/s/standing_equipment_scope_map.sh index_row_bound now watches the open day shelf its scan already read
+file construction/archive/REDS-the-guard-watched-the-pin-and-read-the-shelf-rows-522.md the scheduler half, written straight to a shelf
+file construction/archive/REDS-a-green-is-a-claim-about-a-moment-rows-521.md the staging half, folded off the pin to make room
+
+recommend check-in (Keaton) -- three questions wait on your word, none agent-doable. The run record has no field saying whether a pass ran before staging or after it, so nothing tells an obedient lap from a skipped one; a hot yes|no costs one word per row, and eight ships run the file that would write it. Nothing checks any guard's watch-set against the paths its scan actually opens, and the one that bit here derives its second path rather than spelling it, which is the case such a meter would be blind to. And the several-line interleave in the weave still wants an anchor per insert, which widens Diff.

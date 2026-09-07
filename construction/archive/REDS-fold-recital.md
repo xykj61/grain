@@ -413,3 +413,5 @@ at a closed fold.*
 
 *Row %546 folded to [`REDS-the-file-nobody-reads-is-the-file-that-drifts-rows-546.md`](REDS-the-file-nobody-reads-is-the-file-that-drifts-rows-546.md) on `20260907.073623`, **CLOSED** -- the map row that named less than its guard gates, and the reader that finally read the map.*
 *Row %548 folded to [`REDS-a-leader-alive-and-orphaned-rows-548.md`](REDS-a-leader-alive-and-orphaned-rows-548.md) on `20260907.074209`, **BOOKED** -- a liveness reading is fixed at whatever generation its author could see, and the launcher keeps moving which process that is -- third firing after %387 and %528.*
+
+*Row %536 folded to [`REDS-a-number-is-a-view-and-the-stamp-is-the-key-rows-536.md`](REDS-a-number-is-a-view-and-the-stamp-is-the-key-rows-536.md) on `20260907.081454`, **BOOKED** -- coverage and uniqueness are two properties of one spine, and the ledger's own guard held only the first.*
