@@ -23,6 +23,28 @@ move the pin *as well*; what stays refused is a commit whose whole content is th
 4. A pin-only follow-up stays off the remote.
 5. **A follow-up carries the nib forward too** (REDS %450, `20260906`). When a send lands a commit on top of the work commit -- a session log recording facts that did not exist until the send was over -- that commit stages `construction/ITINERARY.md` with **Git nib** rewritten to `git rev-parse --short=10 HEAD`, read **before** the follow-up is committed. That HEAD becomes the follow-up's parent, so the card lands in the same `parent` state rule 2 aims for. **No amend is needed here, unlike rule 2**: the final rebase is already behind the send, so the parent is known before the commit is made rather than after it.
 
+## An amend asks whether a rebase is standing (`20260906.230614`)
+
+**`git commit --amend` inside a conflicted rebase rewrites a PEER'S commit.** Mid-rebase, `HEAD` is
+the last successfully applied commit -- which, on a tree that just pulled, is somebody else's. A send
+that chains its steps as one command (`pull`, pin, `git add -A && git commit --amend`) has no state
+between the links, so a pull that stops on a conflict hands the amend a HEAD it never meant to touch.
+Rule 2's amend then folds the whole lap into a peer's commit, `rebase --continue` finds the lap's own
+commit empty and drops it, and the log reads as though the lap never happened -- the red booked
+at `20260906.230614`, cited by stamp here until the anointed spine binds its number
+([`derived-spine`](derived-spine.mdc) rule 4).
+
+**So step 2 begins by asking.** `[ -d .git/rebase-merge ] || [ -d .git/rebase-apply ]` answers in one
+test; a standing rebase is finished or aborted before any amend. The same sentence is already seated
+one room over for the round-open -- *do not run `git rebase --continue` on a tree that opens
+mid-rebase* ([`the-baton`](the-baton.md)) -- and it is owed to the send for the same reason: **a
+rebase is a state, and a chained command carries none.**
+
+**What made this recoverable rather than a loss:** nothing had been pushed, so upstream held the
+peer's commit at its own hash throughout, and `git diff` between that commit and the amended one
+named exactly the lap's own files -- which is what proved the peer's work was otherwise untouched
+before anything was reset.
+
 ## Why
 
 Pin-only commits doubled Surface Chapter history and hurt `git log` scroll reading. Keaton seated this tidy `20260728.205029`.

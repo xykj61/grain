@@ -1,0 +1,45 @@
+# tools/r/rota_declared_witness.rish -- a rota reading that leaves no field is not a reading anyone can count.
+#
+#   rishi/bin/rishi run tools/r/rota_declared_witness.rish
+#
+# The council rota asks each lap to deep-read one row of the 5 x 3 grid, and the value of that habit
+# is entirely that the corpus returns to living awareness on a schedule. Whether it happened is only
+# knowable from the record -- and on `20260906` the record answered three ways across 109 logs: 20
+# carried a `rota` FIELD, 53 named a row in prose alone, 36 said nothing.
+#
+# THAT THREE-WAY SPLIT IS ONE OBSERVATION CARRYING TWO CLAIMS, the braid
+# `foundations/20260823-204456_single-stranded.md` names: *a row appears in this log* was answering
+# both *a rota was read* and *the reading was recorded*, and those come apart. The field separates
+# them, and it existed in practice before any law mentioned it -- which is why a ship following the
+# convention and a ship that never met it read identically from the law's side until `20260906.222120`.
+#
+# REPORTED, NEVER GATED. A lap that legitimately did no rota read -- pure repair, a custody stop --
+# looks identical from outside to one that skipped it, and a gate unable to tell them apart would
+# red on honest work, which is the gate somebody turns off.
+
+say "rota-declared: Language EN -- three answers where the record should give one."
+say "rota-declared: Style Gauge, Meter -- a census that reports rather than refuses."
+say "rota-declared: Lens TAME -- each bucket proven by moving a member into its neighbour."
+
+say "rota-declared: the control -- nine behaviors on planted logs in a throwaway repository..."
+let ctl = run ["sh" "tools/fixtures/r/rota_declared_control.sh"]
+assert ctl.ok else "rota-declared: the control refused --\n${ctl.out}"
+assert ctl.out contains "pass=9 fail=0" else "rota-declared: the control did not prove nine behaviors --\n${ctl.out}"
+
+say "rota-declared: the open day's shelf answers all three counts..."
+let scan = run ["sh" "tools/fixtures/r/rota_declared_scan.sh"]
+assert scan.ok else "rota-declared: the scan refused --\n${scan.out}"
+# invariant: the census reports every bucket, empty or full. A reading that printed only the fault
+# would leave a reader unable to tell a healthy day from a day the scan could not see.
+assert scan.out contains "rota_field=" else "rota-declared: the declared count went unreported"
+assert scan.out contains "prose_only=" else "rota-declared: the prose-only count went unreported"
+assert scan.out contains "silent=" else "rota-declared: the silent count went unreported"
+
+say "rota-declared: and the field the census counts is seated in the law..."
+let seated = run ["sh" "-c" "grep -c 'rota lap N, row R' .claude/rules/session-logs.md || true"]
+assert seated.ok else "rota-declared: the law could not be read"
+# invariant: a field a census counts and no law names is a convention, and a convention cannot be
+# followed by a ship that never met it -- which is the very gap this census measured.
+assert (trim seated.out) != "0" else "rota-declared: the rota field is counted by a census and named by no law"
+
+say "GREEN: rota-declared -- the rota reading has a field of its own, the law names it, and the three answers are counted rather than confused."
