@@ -432,3 +432,5 @@ at a closed fold.*
 *Row %550 folded to [`REDS-a-control-that-reached-for-sed-i-rows-550.md`](REDS-a-control-that-reached-for-sed-i-rows-550.md) on `20260907.100350`, **CLOSED** -- a guard reading every file is the guard a file-adding lap never runs, and its red costs the whole fleet its receipt.*
 
 *Row %559 folded to [`REDS-a-supersede-reads-backwards-rows-559.md`](REDS-a-supersede-reads-backwards-rows-559.md) on `20260907.103809`, **CLOSED** -- to ask whether B supersedes A, measure what A holds that B does not -- overlap reads the same from either end and cannot answer an asymmetric question.*
+
+*Row %560 folded to [`REDS-a-gate-that-agreed-with-its-own-copy-rows-560.md`](REDS-a-gate-that-agreed-with-its-own-copy-rows-560.md) on `20260907.095650`, **CLOSED** -- a heard proof can still be wrong about its subject, when every instrument around it carries the same copy of the number.*

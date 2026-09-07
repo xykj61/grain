@@ -40,14 +40,16 @@ Witness: `rishi/bin/rishi run tools/r/rishi_a1_gate_walls_witness.rish` (also er
 | `gate-aurora-signature-length-eq-u32` | signature_length = 64 | 64→1 · 63→0 · 65→0 |
 | `gate-aurora-living-stages-eq-u32` | living stages = 6 | 6→1 · 5→0 · 7→0 |
 | `gate-caravan-exit-meanings-eq-u32` | exit meanings = 3 | 3→1 · 2→0 · 4→0 |
-| `gate-mantra-line-fields-eq-u32` | line fields = 3 | 3→1 · 2→0 · 4→0 |
+| `gate-mantra-line-fields-eq-u32` | line fields = 4 | 4→1 · 3→0 · 5→0 |
 | `gate-mantra-weave-fields-eq-u32` | weave fields = 2 | 2→1 · 1→0 · 3→0 |
-| `gate-mantra-diff-fields-eq-u32` | diff fields = 2 | 2→1 · 1→0 · 3→0 |
+| `gate-mantra-diff-fields-eq-u32` | diff fields = 3 | 3→1 · 2→0 · 4→0 |
 | `gate-mantra-store-dirs-eq-u32` | store dirs = 3 | 3→1 · 2→0 · 4→0 |
 
 Witnesses: `tools/au/aurora_a1_seed_length_eq_witness.rish` - `tools/au/aurora_a1_signature_length_eq_witness.rish` - `tools/au/aurora_a1_living_stages_eq_witness.rish` - `tools/ca/caravan_c4_exit_meanings_eq_witness.rish` - `tools/rye/mantra_a1_line_fields_eq_witness.rye` - `tools/rye/mantra_a1_weave_fields_eq_witness.rye` - `tools/rye/mantra_a1_diff_fields_eq_witness.rye` - `tools/rye/mantra_a1_store_dirs_eq_witness.rye` -- eight gates, each proven at its seating.
 
 **Four of the eight are heard, and four await a runner** (measured `20260906`). The Mantra four run every cadence lap under [`tools/m/mantra_a1_equality_witness.rish`](../../tools/m/mantra_a1_equality_witness.rish), which builds each witness against the desk it reads and asserts both its claim and its just-over side. The Aurora three and the Caravan one stand on no roster, and a grep across `tools/` and `construction/` returns their names only here -- so a lane that rosters them turns four silent proofs into four heard ones, and each is a short lap in its own room. All eight stood that way until this line was written. The sentence this replaced read *the equality arc stands closed (8/8)*, true of the seating and by now a claim about the present that something measures (REDS %482).
+
+**And a heard proof can still be wrong about its subject** (`20260907.094747`). Each of these four desks decides a field count in the Rye, and until this stamp every instrument compared a desk against a number spelled beside it -- the witness, its control, and this table all carried their own copy. Line grew `site` when identity became a pair and Diff grew `site` on `20260906.212206`, so two of the four spent a day answering 0 for the count their own struct carries, green throughout. [`tools/fixtures/m/mantra_gate_constant_scan.sh`](../../tools/fixtures/m/mantra_gate_constant_scan.sh) now reads the decided constant off the `eq` rune and the field count out of the module, and the guard asserts they agree; the control plants a disagreement in a pen and watches that same scan refuse.
 
 ## The a1 Deciding Gates (STOA331)
 

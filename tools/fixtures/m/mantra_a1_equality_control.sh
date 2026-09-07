@@ -2,7 +2,7 @@
 # tools/fixtures/m/mantra_a1_equality_control.sh -- the equality arc, broken on purpose.
 #
 # WHAT THIS DOES. tools/m/mantra_a1_equality_witness.rish claims that four Glow desks under
-# src/gate/ decide Mantra's field counts EXACTLY -- 3 for a Line, 2 for a Weave, 2 for a Diff,
+# src/gate/ decide Mantra's field counts EXACTLY -- 4 for a Line, 2 for a Weave, 3 for a Diff,
 # 3 for a Store -- answering 1 on the count and 0 on either neighbor. This control builds a pen,
 # changes ONE thing in it, and watches a witness answer with a non-zero exit. Every break is
 # shown from both sides, so a real refusal stays tellable from a bypass.
@@ -14,7 +14,7 @@
 # symlink keeps the pen small and keeps the phases honest, because the only thing that differs
 # between a passing phase and a failing one is the desk this control edited.
 #
-# SIX PHASES.
+# EIGHT PHASES.
 #   clean                -- the unmutated pen reaches GREEN, exit 0. This leg is what lets every
 #                           other phase read as the break speaking rather than the pen.
 #   eq_to_gth            -- `(eq sample 2)` becomes `(gth sample 1)`, so a CEILING answers where
@@ -29,12 +29,18 @@
 #   neighbor_broken      -- the gth neighbor desk src/gate/gate-mantra-gen-floor-u32.glow is
 #                           broken. Each witness re-checks that neighbor by name, so the arc
 #                           cannot be closed by breaking the family it was measured against.
+#   constant_agrees      -- the unmutated pen's weave desk decides the count Weave carries, so
+#                           the reading below is the plant speaking rather than the scan.
+#   constant_disagrees   -- the desk decides 5 where Weave carries 2. The desk is well formed
+#                           and the rune is right; it is simply wrong about its own subject,
+#                           which is what stood green on two of the four desks until 20260907.
 #   witness_uncompilable -- a type error is planted in the witness copy and it is built. This is
 #                           REDS %449's fault -- a proof that stopped compiling while grep-shaped
 #                           guards stayed green -- reproduced here so this guard is known to
 #                           catch it rather than assumed to.
 #
-# EXPECTED: clean_exit=0 and every other phase non-zero. The exit codes are printed rather than
+# EXPECTED: clean_exit=0, every other exit phase non-zero, and the two constant phases reading
+# ok and constant_disagrees. The exit codes are printed rather than
 # asserted here; tools/m/mantra_a1_equality_witness.rish holds them, so the numbers live in one
 # place and this file stays the thing that produces them.
 #
@@ -60,7 +66,7 @@ make_pen() {
   _pen="$1"
   mkdir -p "$_pen/src"
   cp -R "$root/src/gate" "$_pen/src/gate"
-  for _room in tools glow rye vendor; do
+  for _room in tools glow rye vendor mantra; do
     ln -s "$root/$_room" "$_pen/$_room"
   done
 }
@@ -106,7 +112,32 @@ run_phase constant_moved 's|(eq sample 2)|(eq sample 3)|' ''
 run_phase desk_missing '' "rm -f src/gate/$desk_name"
 run_phase neighbor_broken '' "printf 'this is not a desk\n' > src/gate/$neighbor_name"
 
-# The sixth phase is a build rather than a run, so it stands outside run_phase.
+# THE CONSTANT AGAINST ITS SUBJECT, both ways. The five phases above prove the witness refuses
+# a broken desk; these two prove the guard refuses a desk that is well formed and simply wrong
+# about its own subject -- the fault that stood green on two of the four desks until 20260907.
+# They run tools/fixtures/m/mantra_gate_constant_scan.sh, the file the guard itself reads, so
+# no copy of the comparison lives here. The pen symlinks mantra/ for the module the scan counts.
+constant_pen="$work/constant_agrees"
+make_pen "$constant_pen"
+agrees="$( cd "$constant_pen" && sh tools/fixtures/m/mantra_gate_constant_scan.sh \
+  "src/gate/$desk_name" mantra/src/weave.rye Weave | grep '^verdict=' )"
+echo "constant_agrees_${agrees}"
+
+disagree_pen="$work/constant_disagrees"
+make_pen "$disagree_pen"
+sed 's|(eq sample 2)|(eq sample 5)|' "$disagree_pen/src/gate/$desk_name" > "$disagree_pen/desk.tmp"
+cat "$disagree_pen/desk.tmp" > "$disagree_pen/src/gate/$desk_name"
+rm -f "$disagree_pen/desk.tmp"
+if ! grep -q '(eq sample 5)' "$disagree_pen/src/gate/$desk_name"; then
+  echo "control_verdict=plant_matched_nothing"
+  echo "detail: the weave desk no longer decides 2, so the disagreement below was never planted"
+  exit 1
+fi
+disagrees="$( cd "$disagree_pen" && sh tools/fixtures/m/mantra_gate_constant_scan.sh \
+  "src/gate/$desk_name" mantra/src/weave.rye Weave | grep '^verdict=' )"
+echo "constant_disagrees_${disagrees}"
+
+# The seventh phase is a build rather than a run, so it stands outside run_phase.
 sed "$planted_fault" "$witness_src" > "$work/planted_witness.rye"
 if ! grep -q 'return hay + needle;' "$work/planted_witness.rye"; then
   echo "control_verdict=broken"
