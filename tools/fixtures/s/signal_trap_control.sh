@@ -43,7 +43,7 @@
 # Guards:       tools/fixtures/s/signal_trap_scan.sh
 set -u
 
-PEN="${TMPDIR:-/tmp}/signal_trap_control_pen"
+PEN="${TMPDIR:-/tmp}/signal_trap_control_pen.$$"
 # This control's own trap is the CORRECTED shape, which is the point: a control proving a bug
 # must not carry the bug. The signal traps exit; the EXIT trap cleans up exactly once.
 trap 'rm -rf "$PEN"' EXIT

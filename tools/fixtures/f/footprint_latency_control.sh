@@ -55,7 +55,7 @@ RYE="$ROOT/rye/bin/rye"
 [ -f "$CENSUS" ]    || { echo "control: the census is missing at $CENSUS" >&2; exit 2; }
 [ -f "$PROBE_SRC" ] || { echo "control: the probe source is missing at $PROBE_SRC" >&2; exit 2; }
 
-PEN="${TMPDIR:-/tmp}/footprint_latency_control_pen"
+PEN="${TMPDIR:-/tmp}/footprint_latency_control_pen.$$"
 rm -rf "$PEN"
 mkdir -p "$PEN"
 trap 'rm -rf "$PEN"' EXIT INT TERM

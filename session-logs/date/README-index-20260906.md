@@ -11,13 +11,16 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
-| `20260906.212202` | [silence and cleanliness read alike](20260906/20260906-212202_silence-and-cleanliness-read-alike.kyri) | %513, %514: a meter reading nothing; a skipped wall. |
 | `20260906.213313` | [what the fleet fixed by accident](20260906/20260906-213313_what-the-fleet-fixed-by-accident.kyri) | rota coverage uniform at fleet scale. |
-| `20260906.210117` | [the rule that was written and never formed](20260906/20260906-210117_the-rule-that-was-written-and-never-formed.kyri) | rule 4 made a gate; 28 errata priced. |
 | `20260906.212721` | [one fold away from healthy](20260906/20260906-212721_one-fold-away-from-healthy.kyri) | %517: a capacity scan that never gated on capacity. |
+| `20260906.212539` | [the box gave back two laps](20260906/20260906-212539_the-box-gave-back-two-laps.kyri) | roster 5 red -> 0; two stranded laps landed. |
+| `20260906.212202` | [silence and cleanliness read alike](20260906/20260906-212202_silence-and-cleanliness-read-alike.kyri) | %513, %514: a meter reading nothing; a skipped wall. |
+| `20260906.210117` | [the rule that was written and never formed](20260906/20260906-210117_the-rule-that-was-written-and-never-formed.kyri) | rule 4 made a gate; 28 errata priced. |
 | `20260906.204809` | [the fleet set down for a key change](20260906/20260906-204809_the-fleet-set-down-for-a-key-change.kyri) | 7 ships and the watch down; nothing lost. |
 | `20260906.204332` | [the act and the act performed](20260906/20260906-204332_the-act-and-the-act-performed.kyri) | %516: a probe wrong about which act it ran. |
+| `20260906.203243` | [a finished lap in the dead-letter box](20260906/20260906-203243_a-finished-lap-in-the-dead-letter-box.kyri) | 1,071 insertions recovered; died before its commit. |
 | `20260906.203052` | [the seed crosses its gate](20260906/20260906-203052_the-seed-crosses-its-gate.kyri) | gate %1 crossed; 7,978 files to both doors. |
+| `20260906.201219` | [what it costs to decide the next hop](20260906/20260906-201219_what-it-costs-to-decide-the-next-hop.kyri) | %510: nine shared pens; a 270-byte table. |
 | `20260906.200141` | [a guard that reads a proxy](20260906/20260906-200141_a-guard-that-reads-a-proxy.kyri) | %510: the box's second drawer, named at last. |
 | `20260906.195215` | [the lap that landed its own park](20260906/20260906-195215_the-lap-that-landed-its-own-park.kyri) | %511, %512: a park landed, a pen race closed. |
 | `20260906.193301` | [the seal nothing read](20260906/20260906-193301_the-seal-nothing-read.kyri) | SHA3 already seated; the gap was verification. |

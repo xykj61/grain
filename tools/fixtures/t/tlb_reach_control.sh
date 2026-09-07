@@ -37,7 +37,7 @@ done
 CENSUS="$ROOT/tools/fixtures/t/tlb_reach_census.sh"
 [ -f "$CENSUS" ] || { echo "refused: no census at $CENSUS" >&2; exit 2; }
 
-PEN="${TMPDIR:-/tmp}/tlb_reach_control_pen"
+PEN="${TMPDIR:-/tmp}/tlb_reach_control_pen.$$"
 rm -rf "$PEN"; mkdir -p "$PEN"
 trap 'rm -rf "$PEN"' EXIT INT TERM
 

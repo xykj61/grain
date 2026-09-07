@@ -108,7 +108,7 @@ if [ "$line_bytes_sys" -le 0 ] || [ "$l1d_kib" -le 0 ] || [ "$l3_kib" -le 0 ]; t
 fi
 
 # ---- the reading ----------------------------------------------------------------------------
-PEN="${TMPDIR:-/tmp}/footprint_latency_census_pen"
+PEN="${TMPDIR:-/tmp}/footprint_latency_census_pen.$$"
 READING="$PEN/reading.txt"
 if [ -n "$FROM" ]; then
   [ -f "$FROM" ] || { echo "refused: no reading at $FROM" >&2; exit 2; }

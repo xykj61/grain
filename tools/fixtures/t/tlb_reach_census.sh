@@ -110,7 +110,7 @@ if [ "$BUILD_ONLY" = yes ]; then
   [ -x "$ZIG" ] || { echo "refused: no vendored Zig toolchain at $ZIG -- run tools/fixtures/f/fetch_toolchain_scan.sh" >&2; exit 2; }
   [ -x "$RYE" ] || { echo "refused: no rye driver at $RYE" >&2; exit 2; }
   [ -f "$PROBE_SRC" ] || { echo "refused: no probe source at $PROBE_SRC" >&2; exit 2; }
-  BPEN="${TMPDIR:-/tmp}/tlb_reach_build_pen"
+  BPEN="${TMPDIR:-/tmp}/tlb_reach_build_pen.$$"
   rm -rf "$BPEN"; mkdir -p "$BPEN"
   cp "$PROBE_SRC" "$BPEN/probe.rye"
   if ( cd "$BPEN" && RYE_ZIG="$ZIG" "$RYE" build probe.rye -OReleaseFast --cache-dir "$BPEN/cache" ) >"$BPEN/build.log" 2>&1; then
@@ -167,7 +167,7 @@ if [ "$PAGE_SIZE" -le 0 ] || [ "$line_bytes_sys" -le 0 ] || [ "$l1d_kib" -le 0 ]
 fi
 
 # ---- the readings ---------------------------------------------------------------------------
-PEN="${TMPDIR:-/tmp}/tlb_reach_census_pen"
+PEN="${TMPDIR:-/tmp}/tlb_reach_census_pen.$$"
 PLAIN="$PEN/plain.txt"
 HUGE="$PEN/huge.txt"
 

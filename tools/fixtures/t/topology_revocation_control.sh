@@ -49,7 +49,7 @@ SRC="$ROOT/comlink/topology.rye"
 [ -f "$CENSUS" ] || { echo "control: the census is missing at $CENSUS" >&2; exit 2; }
 [ -f "$SRC" ]    || { echo "control: the topology source is missing at $SRC" >&2; exit 2; }
 
-PEN="${TMPDIR:-/tmp}/topology_revocation_control_pen"
+PEN="${TMPDIR:-/tmp}/topology_revocation_control_pen.$$"
 rm -rf "$PEN"
 mkdir -p "$PEN"
 # REDS %487: a handler that cleans up without exiting does not stop the script -- POSIX runs
