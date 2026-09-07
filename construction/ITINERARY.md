@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `11c665f478` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `915fbd1c86` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- HALF OF WHAT THE CENSUS CALLED BREAKAGE WAS THE TREE TELLING THE TRUTH ABOUT A GAP.**
 Row `20260907.105303` **CLOSED** and [folded](archive/REDS-a-declared-absence-is-not-breakage-rows-562.md)
@@ -137,22 +137,23 @@ register. The **RISE is held at zero**, the FALL with the cadence guard.
 shell**. Its runner survived, re-parented to init, holding its own lock; nothing of
 Copal's was written or reset, and `session-output/petrichor-to-copal.txt` has the reading. **A signal is not a
 file**, so `%291` never reached it; `fleet_call` landed that morning. **YOURS:** may a lap resolve a peer's pid at all?
-**PHEROMONE -- THE DOORWAY ASKS EVERY PAGE TO NAME ITS ROOM, AND HAS NEVER READ THE ROOM EVERY SHIP READS EVERY LAP.**
-Row `20260907.100235` **BOOKED**, by stamp; elder
-[folded](archive/20260907-100235_itinerary-landed-accounts.md).
-`two_rooms_doorway_roster.sh` names three pathspecs as its subject while `context/TWO_ROOMS.md`
-states the law over *forward-facing pages* and names no room. Four rooms outside it hold **112
-post-seating pages naming no room**, `foundations/` **49 of 63** the largest; the row carries each. **Sharpest inside the rota:** of the fifteen documents every ship deep-reads
-three of each lap, **nine fail the guard's verdict** and **three carry no `Status:` line at all** --
-one being `the-clock-and-the-mark`, the Earth-Cardinal seat, whose subject is the mark a reader
-takes off a page's face. **Validated first:** that same per-file script over the three
-rostered rooms reproduces `fails=48` exactly. **Fourth firing of one shape** (%381, `log_has_a_row`,
-this guard's lost 607, %532) -- the first three *narrowed* a whole subject; this was **born**
-partial, so nothing inside the guard is wrong. **NOT TAKEN:** a peer's in-flight
-work -- `grain-petrichor` holds three `_touch_` files staged. **YOURS, one** -- the 48 is **37** now and GREEN (INCENSE, below), taken on the
-narrow subject: widening it lands **112** failures on a fleet ratchet at once, so subject and
-ceiling move together or not at all. **Hot 139/137 green, 1128s**; its one red
-`live_group_plant`, GREEN alone -- **seventh firing, three guards**.
+
+**PHEROMONE -- A RATCHET WHOSE ONLY REPAIR IS THE DEFECT IS A RATCHET NOBODY WORKS.**
+Row `20260907.110022` **BOOKED**;
+[folded](archive/REDS-a-ratchet-whose-repair-is-the-defect-rows-564.md). `%532` left
+`uncovered_bare` at **83**, and the repair its shape named was 83 more hand-written blocks in the
+1,133-line enumeration whose shape WAS the fault. **The price named the other road:**
+`glow_run_worker.sh` rebuilds the Glow compiler on EVERY invocation -- **3.80s** a desk, **2.42s**
+of it that rebuild -- so the elder spends **~527s re-linking one binary** over 218 blocks, and a
+batch building it once runs **301** for less. `glow_desk_run_scan.sh` derives the bare-runnable set
+every pass and runs all 301 behind the worker's own lock: **301/301, failed 3, 325s** at load 14;
+`--list` prints that selection so a coverage meter reads the instrument that RUNS. **29 pen
+behaviors**, `tier cadence`. **AND MY OWN REFUSAL LEG PROVED NOTHING:** its stub was `/bin/false`,
+and **this pier's `/bin` holds one entry, `sh`** -- so it passed because the stub could not EXECUTE,
+and only the WELCOME leg could tell; `signal_trap` caught a third, both traps `EXIT INT TERM`
+where a non-exiting handler RESUMES (`%487`). **Three faults, three guards.** **YOURS, one, a lap rather than a
+question:** `glow_desk_reach_scan.sh` still reads `covered` from the elder witness, so it says 83
+uncovered while 301 run -- two instruments, one population. **Cold 169/164, 2 red (one root).**
 
 **INCENSE -- THE DOOR HAS TWO KEYS, AND THE GUARD READ ONE.** `20260907.094712` BOOKED,
 [folded](archive/REDS-the-door-has-two-keys-rows-561.md). Beside Pheromone's `%558`, same guard and

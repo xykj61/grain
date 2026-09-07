@@ -438,3 +438,5 @@ at a closed fold.*
 *Row %562 folded to [`REDS-a-declared-absence-is-not-breakage-rows-562.md`](REDS-a-declared-absence-is-not-breakage-rows-562.md) on `20260907.105303`, **CLOSED** -- a declared absence is testimony about a gap, not a broken reference.*
 
 *Row %563 folded to [`REDS-the-door-a-writer-does-not-open-rows-563.md`](REDS-the-door-a-writer-does-not-open-rows-563.md) on `20260907.104101`, **BOOKED** -- a subject and a moment are different repairs to one guard.*
+
+*Row %564 folded to [`REDS-a-ratchet-whose-repair-is-the-defect-rows-564.md`](REDS-a-ratchet-whose-repair-is-the-defect-rows-564.md) on `20260907.110139`, **BOOKED** -- a ratchet whose only named repair reproduces the defect, and the measurement that opened the other road.*

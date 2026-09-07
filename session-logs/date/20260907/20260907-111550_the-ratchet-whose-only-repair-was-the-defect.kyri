@@ -1,0 +1,43 @@
+format session-log-v1
+stamp 20260907.111550
+editor Claude Code CLI, unattended fleet loop
+provider Anthropic
+product Claude Code
+role Pheromone -- the molecular star, language lane
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_reasoning max
+configured_status evidence .claude/settings.json, tracked; not runtime telemetry
+voice Kyri
+host Vultr Dallas pier, Linux, America/New_York
+title the ratchet whose only repair was the defect
+prompt the baton -- take the next agent-doable lap, reds first, rota row, send and log
+rota lap 4169, row 4 by the modulus -- Earth, already read on my own last lap at 20260907.100809, so the rota advanced by hand to row 0, Aether, the row that hears. Threshold, Follow Our Compass, the Lindy Effect, the Grain and the Crossing. What it surfaced chose the whole lap: the Lindy page turns witness-before-narrative into an ear rule -- a checked claim stays audible, an asserted one fades -- and a hand-written enumeration standing in for a population is exactly an asserted claim wearing a witness's clothes.
+think Opened cold. 169 guards, 164 green, 2 red, 3 gated, 1440s, tree_moved=no. The two reds were one root: index_row_bound on today's day shelf, and standing_equipment beneath it for reading the run card.
+think Reds first. tools/fixtures/i/index_shelf_repair.sh sorted the shelf and proved its output a permutation of its input before writing. A peer's 20260907.093147 row stood above my own 20260907.100809 -- the ordinary rebase outcome %440 booked and closed, and 36 logs across the room now name that fault.
+think Then the lane. REDS %532 left uncovered_bare a ratchet at 83, and the repair its own shape named was 83 more hand-written blocks inside tools/g/glow_run_desk_witness.rish -- the 1,133-line enumeration whose shape WAS the fault it booked. A ratchet whose only named repair reproduces the defect is a ratchet nobody works.
+think Measured the other road before taking it. tools/g/glow_run_worker.sh runs build_atomic on glow/glow_run.rye at every invocation, so every desk pays to re-link the Glow compiler: 3.80s a desk through the worker, 2.42s of it the compiler, 1.38s the desk's own lower-build-run. Across the elder witness's 218 blocks that is ~527s spent on one unchanged binary.
+think So the runner builds the compiler once and loops. tools/fixtures/g/glow_desk_run_scan.sh derives its population every pass -- every .glow under glow/gen/ minus those declaring they must not run by EITHER marker, minus those the worker's sample-permission case will only take with an argument -- then lowers, builds and runs each, behind the same glow/.cache/.build.lock.d directory lock the worker takes.
+think The union rather than the intersection is deliberate, and it is the one place this scan and glow_desk_reach_scan.sh read the markers differently. The reach scan GATES their disagreement at zero and excludes by intersection, which is right for a meter; a runner excludes by union, because a desk half-declared is one to decline rather than one to hand the compiler on a technicality.
+think --list prints the selection and runs nothing, so the coverage question can be answered by the instrument that does the running rather than by a second copy of its rule. That is the seam the next lap closes.
+obs THE PRICE WAS THE FINDING. I went looking for a way to cover 83 desks and found that the corpus pays for its compiler 218 times. 301 bare-runnable desks ran in 325s under a load average of 14 -- less wall than the elder witness spends on 218 -- selected=301 ran=301 failed=3.
+obs THE THREE FAILURES ARE %532'S OWN OPEN QUESTION, AND ITS ROW IS ONE REFUSAL SHORT. sample-demo-fact-line-lits and sample-demo-fixture-lits refuse at TooManyLines; sample-digraph-table at unsupported Glow head. %532 recorded one refusal for all three. Ceiling 3, only falls; the marker that would tell a data fixture from a desk is a language custody ruling and stays Keaton's.
+obs THE CONTROL PROVES THE READING AND THE WITNESS PROVES THE RUN. 29 pen behaviors on miniature desk rooms with a stub runner -- both markers separately, the head band's own edge, --list proven to hand the runner nothing, the ceiling planted then lifted. Dragging a Zig toolchain into a pen would be slower, would red on a bench without one, and would still not prove what the live pass proves.
+obs WHAT I DID NOT TAKE, NAMED RATHER THAN LEFT. glow_desk_reach_scan.sh still reads covered from the elder witness alone, so it reports 83 uncovered bare desks while 301 are run every cadence pass. Two instruments, two answers, one population -- the tell. The union is one if over --list plus two pen behaviors, and it belongs in its own round rather than at the end of a long one.
+obs AND MY OWN REFUSAL LEG PROVED NOTHING, WHICH THE WELCOME LEG CAUGHT. The two ceiling legs swap the per-desk runner, and I wrote them /bin/false and /bin/true. This pier's /bin holds exactly one entry, sh -- so the refusing leg passed because the stub could not EXECUTE, which is indistinguishable from a refusal. Only the passing leg could tell: it read failed=301 against a ceiling of 3 and refused. Bare false and true now, which every shell resolves.
+think A second repair rode with that one. The live pass ran FIRST in the version that failed, so a fault in a seconds-long leg was found after minutes of Zig builds. The cheap legs run ahead of the live one now, and the file's own head says the ordering is load-bearing rather than tidy.
+obs THE MONOTONE GUARD READS A TREE THAT HAS NOT CAUGHT UP. It answers expected row 559, found 561 -- the number came from the anointed spine, which holds 559 and 560 from peers this checkout had yet to bring down. The rebase before the push is what closes it, and it is the derived spine working rather than a fault.
+file tools/g/glow_desk_run_witness.rish GREEN on metal -- 301 derived and run, both runner-swap legs, 29 control behaviors
+loom guard=glow_desk_run selected=301 ran=301 failed=3 wall_s=325 load_avg=14
+loom desk_via_worker_s=3.80 compiler_rebuild_s=2.42 desk_only_s=1.38 elder_blocks=218 elder_compiler_s=527
+loom roster=cold guards=169 green=164 red=2 gated=3 wall_s=1440 tree_moved=no
+file tools/fixtures/g/glow_desk_run_scan.sh the derived runner -- selection from the room, compiler built once, --list for the coverage answer
+file tools/fixtures/g/glow_desk_run_control.sh 29 behaviors on pen desk rooms, every refusal planted then lifted
+file tools/g/glow_desk_run_witness.rish the live 301 on metal, plus both ceiling directions proven by swapping the per-desk runner
+file construction/standing-equipment.kyri the roster row, tier cadence, with the measurement that chose the tier
+file construction/archive/REDS-a-ratchet-whose-repair-is-the-defect-rows-561.md the row, booked and folded in one lap so the pin never grew
+file session-logs/date/README-index-20260907.md the shelf misorder repaired, the fault's latest firing
+file construction/ITINERARY.md my live-front account, and the one seam left named
+recommend check-in (Keaton) -- the runner stands green and rostered, and the one seam left is a lap rather than a question: glow_desk_reach_scan.sh reads covered from the elder witness alone, so two instruments now answer differently about one population. That union is one if over --list plus two pen behaviors, and it wants its own round.
