@@ -15,15 +15,22 @@ const std   = @import("std");
 const assert = std.debug.assert;
 const print = std.debug.print;
 const Weave = @import("weave.rye").Weave;
-const Line  = @import("weave.rye").Line;
-const Diff  = @import("weave.rye").Diff;
+const Line   = @import("weave.rye").Line;
+const Diff   = @import("weave.rye").Diff;
+const LineId = @import("weave.rye").LineId;
 
 /// Compute the diff between `old_lines` (the weave's current view) and
-/// `new_text` (the desired lines of the file as it is now).
+/// `new_text` (the desired lines of the file as it is now), as an edit
+/// authored by `site`.
 ///
-/// Precondition:  old_lines is sorted by position (guaranteed by Weave.current).
+/// The site is carried rather than derived: a diff is one hand's edit, and
+/// every line it inserts is stamped with that hand so the identity is unique
+/// across every weave the edit will ever reach. `Weave.apply` reads it off the
+/// Diff, so this is the one place a caller says who is editing.
+///
+/// Precondition:  old_lines is sorted by identity (guaranteed by Weave.current).
 /// Postcondition: the returned Diff names exactly the lines that changed --
-///   every old line absent from the LCS by its stable position, and every new
+///   every old line absent from the LCS by its stable identity, and every new
 ///   line absent from it in new-text order.
 ///
 /// What this deliberately does NOT promise, because it cannot: that applying
@@ -40,6 +47,7 @@ const Diff  = @import("weave.rye").Diff;
 /// must ensure `new_text` outlives the Diff, or copy as needed.
 pub fn diff(
     allocator: std.mem.Allocator,
+    site:      u32,
     old_lines: []const Line,
     new_text:  []const []const u8,
 ) !Diff {
@@ -89,11 +97,13 @@ pub fn diff(
         }
     }
 
-    // Collect deletes: old lines not in the LCS, by their stable position.
-    var deletes: std.ArrayListUnmanaged(u32) = .empty;
+    // Collect deletes: old lines not in the LCS, by their stable identity.
+    // Identity rather than position, since old_lines may come from a merged
+    // weave holding lines of several sites, where a position alone names two.
+    var deletes: std.ArrayListUnmanaged(LineId) = .empty;
     for (old_lines, 0..) |line, idx| {
         if (!kept_old[idx]) {
-            try deletes.append(allocator, line.pos);
+            try deletes.append(allocator, line.id());
         }
     }
 
@@ -108,6 +118,7 @@ pub fn diff(
     // Postcondition: applying the diff is a net transformation -- not necessarily
     // fewer lines, yet never a negative-length insert or delete.
     const result = Diff{
+        .site    = site,
         .inserts = try inserts.toOwnedSlice(allocator),
         .deletes = try deletes.toOwnedSlice(allocator),
     };

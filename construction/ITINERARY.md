@@ -46,40 +46,20 @@
 
 ### Now -- the live front
 
-**Git nib:** `94cba0f71b` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `221c8faf47` -- HEAD's parent, resolvable everywhere (%401).
 
-**BAKERY -- A PROBE PERFORMED THE ACT AND WAS WRONG ABOUT WHICH ACT IT PERFORMED.** `%516` CLOSED;
-`%510` [shelved](archive/REDS-a-guard-that-reads-a-proxy-rows-510.md). The `jail_nesting` arm ran
-`bwrap ... /bin/true`, and this pier ships **one entry in `/bin`, `sh`** -- so bwrap built the
-namespace and then failed to EXEC, and exit 1 read as a refused namespace. `agent_jail_enclosure`
-was skipped here every pass since `013116`, while `%446`'s head promised *a bench where the legs
-would work always runs them* and named this bare bench as the one. Run by hand, the four legs
-pass GREEN: host home invisible, `/etc` denied. **The root is in the seating log** -- the probe was
-tested inside a jail, where both failures are true at once, so it was right for the wrong reason.
-Payload is `/bin/sh -c :` now and runs OUTSIDE first; only a DIFFERENCE is evidence. Control **+14
-legs**; the missing-tool answer plants a pen of 1,028 symlinks. **Residue pinned:** a
-third-reason failure still skips; the two refusal wordings this pier prints differ.
-
-**BAKERY -- THE SCAN TITLED *CAN THE LEDGER STILL ACCEPT A ROW?* PRINTED `rows_that_fit=0` AND
-ANSWERED `verdict=ok`.** `%517` CLOSED, and it is **GRASS's `%515` from the other side** -- that row
-asks why the wall did not run, this one why the instrument reading capacity said `ok` while it
-stood there. Capacity never reached its verdict; three shelf and recital conditions did. Caught by
-the cold pass answering `guards_red=4` with **two of them one page**, `equinox_e123` and
-`declared_ceiling`, neither naming a remedy. The pin's bound was derived that morning for the OPEN
-set, which stood at **58% of its allowance**: the overflow was **18,153 bytes of already-foldable
-rows**. The verdict now crosses headroom against foldability, gates the cell that is both with the
-fold command inside the refusal, and leaves the cell beside it reported -- only your word raises a
-bound. Control **31 -> 39**, every neighbouring cell shown free. **It fired on this lap's own
-rebase** and I obeyed it. **Residue:** a deadlocked pin still reads `ok`.
-**Recovered, not authored:** `%516` came whole out of `stash@{0}`, a signed lap a round open parked
--- **`%499` in my own tree** -- and `skipped_capability` fell **1 -> 0** when it landed, four
-enclosure legs running here for the first time since `013116`. **Withdrawn on the rebase:** my
-`487-512` fold, since peers folded `%487`, `%508` and `%509` to their own shelves in the same hour.
-**Sibling:** `reds_citation` reads `git ls-files`, so it read GREEN over a wrong shelf link until
-the file was staged.
+**BAKERY's `%516` and `%517` accounts, both CLOSED, folded whole** to the
+[`222720` shelf](archive/20260906-222720_itinerary-landed-accounts.md), their rows folded in the
+same commit to [one REDS shelf](archive/REDS-the-name-asked-one-question-rows-516-517.md) -- an
+instrument can perform its act correctly and still be wrong about which act it performed. **Their
+residue stays live:** a third-reason enclosure failure still skips, the two refusal wordings this
+pier prints differ, and a deadlocked pin still reads `ok`.
+**BAKERY's `%510` account, CLOSED, folded whole** to the
+[`210016` shelf](archive/20260906-210016_itinerary-landed-accounts.md) with my own -- a guard that
+read a proxy answered about the proxy, and `unlanded` came home **2 -> 0**.
 
 **YOURS, MEASURED WHOLE AND NOT TAKEN: THE DATED-PATH CENSUS GATES A CLASS IT WAS NEVER BUILT FOR.**
-`dated_path_witness` reds at `refs_lost=169` against a ceiling of **165** only a debride may raise.
+`dated_path_witness` reds at `refs_lost=170` against a ceiling of **165** only a debride may raise.
 Classified by two independent readers agreeing exactly: **139 backticked mentions, 15 bare, 15
 links** -- and crossed with living-versus-testimony, **all 30 promises sit in dated testimony**, so
 the repairable count is **ZERO**. The largest population, **86 rows in two `20260722` shelves, is a
@@ -92,11 +72,30 @@ for, when the elder ceiling can only fall, is your word.
 
 **BAKERY and DIFFUSER accounts, CLOSED and folded** to the [`173444` shelf](archive/20260906-173444_itinerary-landed-accounts.md): `%499`/`%503` (a discriminator that was a tautology), `%501` and its two answers (the Moore bound asked in the direction that decides, then the abelian floor beneath it).
 
-**PATCHOULI -- a park is not a landing.** `%505`'s sibling, `%507` CLOSED and whole on its [shelf](archive/REDS-a-park-is-not-a-landing-rows-507.md): `reader_refs` excludes the `pier/` namespace, `parked` reports beside the gate, control **22 -> 34**. `%510` above is the drawer beneath it.
+**PATCHOULI -- THE WEAVE MERGES TWO BRANCHES NOW: A LINE IS NAMED BY A PAIR.** The identity gap
+is closed. `Line` takes a fourth field `site`; `LineId{pos, site}` names a line for all time; and
+`Diff.site` puts the hand on the EDIT rather than the weave, since a merged history has no honest
+answer to whose it is. Two branches inserting used to refuse `PositionTextDisagrees` -- they merge
+and keep **both lines**. Order is `(pos, site)`, written once in `LineId.less_than`: ancestor lines
+keep their exact place, concurrent inserts land adjacent, both sides compute it alike. The refusal
+keeps its name and narrows to what it was written for -- one site, one identity, two texts, which
+is corruption rather than branching, proven by hand since `apply` cannot build it. Merge claims
+8 -> 10, annotate 10 -> 12, head scan 5/5 both ways, merge pen 5 -> 7 breaks (**identity** narrows
+`eq` to `pos`; **tiebreak** drops the site and the postcondition fires). **Open, named in the head
+rather than claimed away:** two branches each inserting SEVERAL lines still interleave line by
+line; closing it wants an anchor per insert, widening `Diff` -- **yours**.
 
 **`%506` CLOSED**, [folded](archive/REDS-the-property-nobody-named-rows-506.md): `Weave.annotate`
-and `mantra_weave_head_scan.sh`, ten claims GREEN, roster `runs_unrostered` **1 -> 0**. **Yours:**
-the identity gap stays unblocked, and closing it wants a fourth field on `Line`.
+and `mantra_weave_head_scan.sh`, ten claims GREEN, roster `runs_unrostered` **1 -> 0**. **The
+identity gap it left open is closed above** -- that line read *stays unblocked* until this lap.
+**AND A PLANT THAT PLANTS NOTHING READS EXACTLY LIKE A LAW THAT HOLDS.** (`20260906.210016`)
+OPEN, unshared so cited by stamp -- rule 4, kept rather than admired. A type change turned a
+control's `sed` into a no-op, so the pen built the **unmutated** module and the phase read 0.
+**102 of 155 controls mutate a pen with `sed`; 8 carry a `cmp -s`, all for exactly this.** Mine
+answer `plant_matched_nothing`; **94 remain**, **yours**.
+**AND A SIGNED LAP OF THIS LANE IS PARKED:** `ebb818f63`, the tally roster runner, sits on
+`xy/pier/diverged-20260906-210007` **one rebase off main**. Its shelf came home here because two
+logs cite it; the code waits. **Fifteenth firing** of the START-claim question.
 
 **DIFFUSER -- A FLOOR NOBODY REACHES, AND THE ONE UNDERNEATH IT.** No red; this answers `%501`'s
 own falsifier, *low on how much of the gap any real construction recovers*. **The Moore floor of

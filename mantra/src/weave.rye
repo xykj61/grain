@@ -1,10 +1,35 @@
 //! mantra/src/weave.rye -- the weave: a living history of a text stream.
 //!
 //! A Weave is a list of Lines. Each Line carries its text, a generation count,
-//! and a stable position that never changes once assigned. Generation parity
+//! and a stable identity that never changes once assigned. Generation parity
 //! names presence: odd = present, even = gone. Generations never decrease.
 //! These two facts together mean the weave remembers every line ever seen --
 //! its full history -- while current() surfaces only what is present now.
+//!
+//! IDENTITY IS A PAIR, which is what lets two branches merge at all. A position
+//! counter runs inside one weave, so two weaves that parted hand the same small
+//! integer to different lines; a join reading that integer alone saw one line
+//! where there were two and refused the ordinary case of branching. A line is
+//! named by a LineId instead -- the position, AND the site whose counter
+//! assigned it -- and that pair is unique by construction, since no two sites
+//! share a counter. The site rides on Diff rather than on Weave, because an
+//! edit is authored by one hand while the history it lands in is shared by
+//! every hand.
+//!
+//! DOCUMENT ORDER is position first, site second. Position first, so every line
+//! the two sides inherited from a common ancestor keeps its exact place; site
+//! second, so two concurrent inserts land next to each other in an order both
+//! sides compute alike. LineId.less_than is that order written once, and every
+//! sort and every ordering assert in this file reads it.
+//!
+//! WHAT THIS STILL LEAVES OPEN, so the head promises exactly what the code
+//! does: two branches that each insert SEVERAL lines interleave line by line
+//! rather than block by block, since position alone decides and both sides
+//! counted from the same place. Closing that wants an anchor per insert -- a
+//! line naming the line it follows -- which widens Diff, and is a seam rather
+//! than a lap. PositionTextDisagrees keeps its name through this widening: the
+//! pair IS the position now, so what was wrong was the width rather than the
+//! word.
 //!
 //! The operations, listed rather than counted. This list is read against the
 //! module's own `pub fn` declarations by
@@ -34,18 +59,49 @@ pub const max_weave_lines: u32 = 1 << 20;
 /// What a weave refuses, by name. Each refusal is read at the edge -- before an
 /// allocation is made, rather than after one has grown.
 pub const WeaveError = error{
-    /// Two weaves hold one position with different text. A position names a
-    /// line for all time, so this says the two positions came from counters
-    /// that never met -- and merging them would keep one line while silently
-    /// dropping the other, which is the single outcome a weave exists to
-    /// prevent. Refusing here is what keeps the history whole.
+    /// Two weaves hold one LineId with different text. An identity names a
+    /// line for all time, and it carries the site that issued it, so this now
+    /// says one site handed one identity to two different lines -- a replayed
+    /// counter or a forged weave, rather than the ordinary parting of two
+    /// branches, which the site distinguishes. Merging them would keep one
+    /// line while silently dropping the other, the single outcome a weave
+    /// exists to prevent. Refusing here is what keeps the history whole.
     PositionTextDisagrees,
     /// The weave would pass max_weave_lines -- by a diff's inserts in `apply`,
     /// or by the union of two weaves in `merge`.
     TooManyLines,
 };
 
-/// A single line in the weave. Once added, its position is permanent.
+/// What names a line for all time: the position one counter handed it, and the
+/// site of the hand that was counting.
+///
+/// Either half alone is ambiguous across two weaves. A position counter runs
+/// inside one weave, so two weaves that parted hand the same small integer to
+/// different lines; a site names a hand and says nothing about where in the
+/// document its line sits. Together they are unique by construction rather
+/// than by coordination, because no two sites share a counter.
+pub const LineId = struct {
+    pos: u32,
+    site: u32,
+
+    /// Whether two identities name one line.
+    pub fn eq(self: LineId, other: LineId) bool {
+        return self.pos == other.pos and self.site == other.site;
+    }
+
+    /// Document order: position first, site to break the tie.
+    ///
+    /// Written once, here, because every sort and every ordering assert in this
+    /// module reads it -- and an order spelled at each call site is an order
+    /// those call sites may come to disagree about, which for a merge would
+    /// mean two sides computing two documents from one history.
+    pub fn less_than(self: LineId, other: LineId) bool {
+        if (self.pos != other.pos) return self.pos < other.pos;
+        return self.site < other.site;
+    }
+};
+
+/// A single line in the weave. Once added, its identity is permanent.
 ///
 /// Invariants:
 ///   gen >= 1         -- zero is reserved; every line starts at generation 1
@@ -54,14 +110,27 @@ pub const Line = struct {
     text: []const u8,
     gen: u32,
     pos: u32,
+    site: u32,
+
+    /// What names this line in every weave that will ever hold it.
+    pub fn id(self: Line) LineId {
+        return .{ .pos = self.pos, .site = self.site };
+    }
 };
 
-/// An edit to a weave: a set of lines to insert (with their text) and a set
-/// of positions to delete (by stable position). Inserts arrive in the order
-/// they should appear; deletes are positions of currently-present lines.
+/// An edit to a weave: who is making it, a set of lines to insert (with their
+/// text), and a set of lines to delete (by identity). Inserts arrive in the
+/// order they should appear; deletes name currently-present lines.
+///
+/// The site sits here rather than on Weave on purpose. A weave is a shared
+/// history that several hands merge into one; an edit is the act of one hand.
+/// Holding the site on the weave would make it a field a merge has to
+/// reconcile, and there is no honest answer to whose history a merged history
+/// is -- so the question is never asked.
 pub const Diff = struct {
+    site: u32,                   // whose edit this is; stamped on every insert
     inserts: []const []const u8, // text of new lines, in order
-    deletes: []const u32,        // positions of lines to remove
+    deletes: []const LineId,     // identities of lines to remove
 };
 
 /// What the two sides did at one position, in a single word.
@@ -71,8 +140,10 @@ pub const Diff = struct {
 /// position, or both have and their counts are equal, or both have and one
 /// stands higher.
 pub const Reading = enum {
-    /// Only the left weave has ever seen this position, so the left is the
-    /// side that added the line and the right has not met it yet.
+    /// Only the left weave has ever seen this line, so the left is the side
+    /// that added it and the right has not met it yet. Two branches that each
+    /// inserted read as one left_only and one right_only, rather than as a
+    /// collision, because the two lines carry different sites.
     left_only,
     /// The mirror: only the right weave has seen it.
     right_only,
@@ -88,8 +159,8 @@ pub const Reading = enum {
     right_moved,
 };
 
-/// One position, read from both sides: what each weave holds there, and what a
-/// merge of the two lands on.
+/// One line, read from both sides: what each weave holds at that identity, and
+/// what a merge of the two lands on.
 ///
 /// A generation of **zero** means that side has never seen this position. Zero
 /// is already reserved by the module -- every line starts at generation 1 --
@@ -103,8 +174,14 @@ pub const Reading = enum {
 /// worse than no story.
 pub const Note = struct {
     pos: u32,
+    site: u32,
     left_gen: u32,
     right_gen: u32,
+
+    /// The line this note is about, named the way merge names it.
+    pub fn id(self: Note) LineId {
+        return .{ .pos = self.pos, .site = self.site };
+    }
 
     /// The generation a merge of the two sides lands on at this position --
     /// the same `@max` the merge itself takes, read from the same two counts.
@@ -158,10 +235,12 @@ pub const Weave = struct {
     /// Advance the weave by one diff. Deletes remove lines by toggling their
     /// generation to even (gone); inserts append new lines at the current
     /// generation (1 = first time seen). Position counters are assigned
-    /// monotonically and never reused.
+    /// monotonically and never reused, and each insert is stamped with the
+    /// diff's site, so the pair the line is named by is unique across every
+    /// weave that will ever hold it.
     ///
-    /// Precondition:  every delete position exists in the weave and is present
-    ///   (odd gen) -- asserted individually.
+    /// Precondition:  every delete names a line the weave holds and that is
+    ///   present (odd gen) -- asserted individually.
     /// Postcondition: all inserted lines carry gen == 1 and odd (present);
     ///   all deleted lines carry gen % 2 == 0 (gone).
     pub fn apply(self: *Weave, allocator: std.mem.Allocator, diff: Diff) !void {
@@ -176,11 +255,13 @@ pub const Weave = struct {
             return WeaveError.TooManyLines;
         }
 
-        // Process deletes first: find each position and bump its gen to even.
-        for (diff.deletes) |target_pos| {
+        // Process deletes first: find each line by identity and bump its gen to
+        // even. Identity rather than position, since a position alone names a
+        // line in one weave and a merged weave holds lines from several.
+        for (diff.deletes) |target| {
             var found = false;
             for (self.lines.items) |*line| {
-                if (line.pos == target_pos) {
+                if (line.id().eq(target)) {
                     // invariant: an odd generation means present -- the parity IS the
                     // tombstone, so an even one reaching here would be a deleted line treated
                     // as live
@@ -190,7 +271,7 @@ pub const Weave = struct {
                     break;
                 }
             }
-            // invariant: a delete names a position the weave holds, since deleting one that is
+            // invariant: a delete names a line the weave holds, since deleting one that is
             // not there would report success for a change that never happened
             assert(found);
         }
@@ -202,10 +283,16 @@ pub const Weave = struct {
                 .text = text,
                 .gen   = 1,
                 .pos   = self.next_pos,
+                .site  = diff.site,
             };
             // invariant: an odd generation means present -- the parity IS the tombstone, so an
             // even one reaching here would be a deleted line treated as live
             assert(line.gen % 2 == 1);
+            // invariant: the identity being handed out is one this weave does not already
+            // hold. This is what the pair buys, asserted where it is created rather than
+            // trusted: a counter that repeated itself, or a merged-in line from this same
+            // site, would otherwise make two lines answer to one name.
+            for (self.lines.items) |held| assert(!held.id().eq(line.id()));
             try self.lines.append(allocator, line);
             self.next_pos += 1;
         }
@@ -231,12 +318,14 @@ pub const Weave = struct {
                 try out.append(allocator, line);
             }
         }
-        // Sort by position -- inserts append to the backing list in order of
-        // arrival; a merge may interleave positions from two weave branches.
+        // Sort by identity -- inserts append to the backing list in order of
+        // arrival, and a merge interleaves lines from two branches whose
+        // positions may coincide, so the site is what breaks the tie the same
+        // way on both sides.
         const result = try out.toOwnedSlice(allocator);
         std.mem.sort(Line, result, {}, struct {
             fn less_than(_: void, a: Line, b: Line) bool {
-                return a.pos < b.pos;
+                return a.id().less_than(b.id());
             }
         }.less_than);
 
@@ -248,9 +337,9 @@ pub const Weave = struct {
         }
         for (result, 0..) |line, i| {
             if (i + 1 < result.len) {
-                // invariant: the result comes out ordered by position, which is what makes a
+                // invariant: the result comes out ordered by identity, which is what makes a
                 // weave readable as a document rather than a bag of lines
-                assert(result[i].pos < result[i + 1].pos);
+                assert(result[i].id().less_than(result[i + 1].id()));
             }
             _ = line;
         }
@@ -259,14 +348,18 @@ pub const Weave = struct {
     }
 
     /// Fold one weave's lines into a list already holding the other's: a line
-    /// whose position is already held joins by the higher generation, and one
-    /// whose position is new is appended.
+    /// whose identity is already held joins by the higher generation, and one
+    /// whose identity is new is appended.
+    ///
+    /// Two branches that each inserted therefore keep BOTH lines, since their
+    /// sites differ even where their positions agree. That is the whole reason
+    /// identity is a pair.
     ///
     /// The caller has already ensured capacity for the whole union, so nothing
     /// here allocates and the only way out is the refusal.
     ///
     /// Precondition:  `out` has room for every line of `incoming`.
-    /// Postcondition: every position of `incoming` is held by `out` exactly once.
+    /// Postcondition: every identity of `incoming` is held by `out` exactly once.
     fn union_into(out: *std.ArrayListUnmanaged(Line), incoming: []const Line) WeaveError!void {
         // invariant: the list can take the whole union without growing, which is
         // what lets this fold run with no allocator and no error but the refusal
@@ -278,7 +371,7 @@ pub const Weave = struct {
         for (incoming) |line| {
             var joined = false;
             for (out.items) |*held| {
-                if (held.pos != line.pos) continue;
+                if (!held.id().eq(line.id())) continue;
                 if (!std.mem.eql(u8, held.text, line.text)) {
                     return WeaveError.PositionTextDisagrees;
                 }
@@ -298,19 +391,27 @@ pub const Weave = struct {
     /// Merge another weave into this one, returning a new weave and leaving
     /// both arguments exactly as they were.
     ///
-    /// A position names a line for all time. So a position both weaves hold is
-    /// one line seen twice, and a position only one of them holds is a line the
-    /// other has not seen yet. The rule is therefore a union over positions
-    /// where the HIGHER GENERATION wins -- no commit identifier is consulted,
-    /// only the counts in front of it, which is what keeps the merge structural.
+    /// An identity names a line for all time. So an identity both weaves hold
+    /// is one line seen twice, and an identity only one of them holds is a line
+    /// the other has not seen yet. The rule is therefore a union over
+    /// identities where the HIGHER GENERATION wins -- no commit identifier is
+    /// consulted, only the counts in front of it, which keeps the merge
+    /// structural.
     ///
-    /// Three operations sit underneath: union of the positions, max on the
+    /// Two branches that each inserted are exactly the second case, twice over:
+    /// their sites differ, so their identities differ, so the union keeps both
+    /// lines and the merge succeeds. That is the ordinary case of parting and
+    /// coming back, and it is the case this merge was named for.
+    ///
+    /// Three operations sit underneath: union of the identities, max on the
     /// generation, max on next_pos. Each of the three is commutative,
     /// associative, and idempotent, so the merge is all three as well -- by
-    /// construction rather than by care. Sorting the result by position makes
+    /// construction rather than by care. Sorting the result by identity makes
     /// that structural rather than merely visible: `a.merge(alloc, b)` and
     /// `b.merge(alloc, a)` come out equal field for field, rather than only
-    /// equal once they are read as a document.
+    /// equal once they are read as a document. The site earns its keep twice
+    /// here: it separates two branches' lines, AND it orders them, so a total
+    /// order over the pair leaves nothing for a tiebreak to invent.
     ///
     /// Cost is |self| x |other| text comparisons, since a weave carries no index
     /// from position to line. That is deliberate at this size: the bound above
@@ -322,10 +423,10 @@ pub const Weave = struct {
     /// position comes from one of the two sides, and both already agreed with
     /// the third -- so no grouping can hide a disagreement from a later one.
     ///
-    /// Precondition:  a position held by both weaves carries the same text --
-    ///   refused by name, because two counters that never met hand the same
-    ///   small integers to different lines.
-    /// Postcondition: positions strictly increase, every line keeps a real
+    /// Precondition:  an identity held by both weaves carries the same text --
+    ///   refused by name. With the site in the identity this is corruption
+    ///   rather than ordinary branching: one site issued one name twice.
+    /// Postcondition: identities strictly increase, every line keeps a real
     ///   generation, and next_pos stands above every position in the result.
     pub fn merge(self: *const Weave, allocator: std.mem.Allocator, other: *const Weave) !Weave {
         // invariant: each weave already stands inside the named bound, so a
@@ -356,7 +457,7 @@ pub const Weave = struct {
 
         std.mem.sort(Line, out.items, {}, struct {
             fn less_than(_: void, a: Line, b: Line) bool {
-                return a.pos < b.pos;
+                return a.id().less_than(b.id());
             }
         }.less_than);
 
@@ -373,10 +474,11 @@ pub const Weave = struct {
             // next insert is handed one neither side has ever used
             assert(line.pos < merged.next_pos);
             if (i + 1 < merged.lines.items.len) {
-                // invariant: positions strictly increase, which both orders the
+                // invariant: identities strictly increase, which both orders the
                 // document and proves the union kept exactly one line per
-                // position
-                assert(merged.lines.items[i].pos < merged.lines.items[i + 1].pos);
+                // identity -- two branches' concurrent inserts share a position
+                // and are separated here by their sites
+                assert(merged.lines.items[i].id().less_than(merged.lines.items[i + 1].id()));
             }
         }
 
@@ -393,7 +495,7 @@ pub const Weave = struct {
     /// union, and the reading differs only in what it writes down.
     ///
     /// Precondition:  `out` has room for every line of `left`.
-    /// Postcondition: `out` holds one note per position of `left`.
+    /// Postcondition: `out` holds one note per identity of `left`.
     fn notes_from_left(
         out: *std.ArrayListUnmanaged(Note),
         left: []const Line,
@@ -409,7 +511,7 @@ pub const Weave = struct {
         for (left) |line| {
             var right_gen: u32 = 0;
             for (right) |held| {
-                if (held.pos != line.pos) continue;
+                if (!held.id().eq(line.id())) continue;
                 if (!std.mem.eql(u8, held.text, line.text)) {
                     return WeaveError.PositionTextDisagrees;
                 }
@@ -418,18 +520,19 @@ pub const Weave = struct {
             }
             out.appendAssumeCapacity(.{
                 .pos = line.pos,
+                .site = line.site,
                 .left_gen = line.gen,
                 .right_gen = right_gen,
             });
         }
     }
 
-    /// Append a note for each position only the RIGHT has seen. Every shared
-    /// position already had its text compared by the fold above, so this one
-    /// reads positions alone and cannot refuse.
+    /// Append a note for each line only the RIGHT has seen. Every shared
+    /// identity already had its text compared by the fold above, so this one
+    /// reads identities alone and cannot refuse.
     ///
     /// Precondition:  `out` has room for every line of `right`.
-    /// Postcondition: every position of `right` is held by `out` exactly once.
+    /// Postcondition: every identity of `right` is held by `out` exactly once.
     fn notes_from_right(
         out: *std.ArrayListUnmanaged(Note),
         left: []const Line,
@@ -445,7 +548,7 @@ pub const Weave = struct {
         for (right) |line| {
             var shared = false;
             for (left) |held| {
-                if (held.pos == line.pos) {
+                if (held.id().eq(line.id())) {
                     shared = true;
                     break;
                 }
@@ -453,6 +556,7 @@ pub const Weave = struct {
             if (!shared) {
                 out.appendAssumeCapacity(.{
                     .pos = line.pos,
+                    .site = line.site,
                     .left_gen = 0,
                     .right_gen = line.gen,
                 });
@@ -460,8 +564,8 @@ pub const Weave = struct {
         }
     }
 
-    /// Read two weaves side by side: for every position either one holds, what
-    /// each side did there, in position order.
+    /// Read two weaves side by side: for every line either one holds, what each
+    /// side did there, in document order.
     ///
     /// `merge` answers *what is the one state*. This answers *what did each
     /// side do to reach it* -- the story the weave was named to be able to
@@ -482,7 +586,9 @@ pub const Weave = struct {
     /// *between* two existing ones. The reading therefore names what each side
     /// did to each line, and not yet where a new line sits relative to the
     /// other side's delete. That second story wants an anchor per insert,
-    /// which widens `Diff` -- a seam rather than a lap.
+    /// which widens `Diff` -- a seam rather than a lap. It is the same seam the
+    /// module head names: the site separates two branches' lines and orders
+    /// them, and an anchor is what would place them.
     ///
     /// Cost is |self| x |other| text comparisons, the same as `merge` and for
     /// the same reason: a weave carries no index from position to line, and a
@@ -490,11 +596,12 @@ pub const Weave = struct {
     ///
     /// The caller owns the returned slice; it is allocated from `allocator`.
     ///
-    /// Precondition:  a position held by both weaves carries the same text --
-    ///   refused by name, since two counters that never met hand the same
-    ///   small integers to different lines.
-    /// Postcondition: positions strictly increase, and every note names a
-    ///   position at least one side has seen.
+    /// Precondition:  an identity held by both weaves carries the same text --
+    ///   refused by name, and by the same reading `merge` takes: with the site
+    ///   in the identity, one name on two lines is corruption rather than the
+    ///   ordinary parting of two branches.
+    /// Postcondition: identities strictly increase, and every note names a line
+    ///   at least one side has seen.
     pub fn annotate(self: *const Weave, allocator: std.mem.Allocator, other: *const Weave) ![]const Note {
         // invariant: each weave already stands inside the named bound, so the
         // refusal below names the union rather than covering for an input that
@@ -524,19 +631,20 @@ pub const Weave = struct {
         const result = try out.toOwnedSlice(allocator);
         std.mem.sort(Note, result, {}, struct {
             fn less_than(_: void, a: Note, b: Note) bool {
-                return a.pos < b.pos;
+                return a.id().less_than(b.id());
             }
         }.less_than);
 
         for (result, 0..) |note, i| {
-            // invariant: a note names a position at least one side has seen,
-            // since a position neither weave holds never enters the union
+            // invariant: a note names a line at least one side has seen,
+            // since an identity neither weave holds never enters the union
             assert(note.left_gen != 0 or note.right_gen != 0);
             if (i + 1 < result.len) {
-                // invariant: positions strictly increase, which orders the
+                // invariant: identities strictly increase, which orders the
                 // reading as a document and proves the union kept exactly one
-                // note per position
-                assert(result[i].pos < result[i + 1].pos);
+                // note per identity -- the reading stays line for line with the
+                // merge it describes, which is the seam between the two
+                assert(result[i].id().less_than(result[i + 1].id()));
             }
         }
 

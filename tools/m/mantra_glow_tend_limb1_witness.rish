@@ -2,9 +2,9 @@
 #
 #   rishi/bin/rishi run tools/m/mantra_glow_tend_limb1_witness.rish
 
-say "mantra-tend-1: Language EN — first Mantra Glow Tend limb (sur museum)."
-say "mantra-tend-1: Style Radiant — Line field count; Rye still weaves."
-say "mantra-tend-1: Lens TAME — Equinox e203 · Ashvini nest-only · Equinox B."
+say "mantra-tend-1: Language EN -- first Mantra Glow Tend limb (sur museum)."
+say "mantra-tend-1: Style Radiant -- Line field count; Rye still weaves."
+say "mantra-tend-1: Lens TAME -- Equinox e203 - Ashvini nest-only - Equinox B."
 
 let zig = "vendor/zig-toolchain/zig"
 let desk = "src/shape/shape-mantra-line-field-count.glow"
@@ -15,11 +15,11 @@ assert placard.ok else "mantra-tend-1: placard scan failed"
 let pcount = trim placard.out
 assert pcount == "6" else "mantra-tend-1: placard missing six lines"
 
-say "mantra-tend-1: example locks to three fields..."
-let ex = run ["sh" "-c" "grep -q 'example    3' src/shape/shape-mantra-line-field-count.glow"]
-assert ex.ok else "mantra-tend-1: example 3 missing"
-let names = run ["sh" "-c" "grep -q 'text' src/shape/shape-mantra-line-field-count.glow && grep -q 'gen' src/shape/shape-mantra-line-field-count.glow && grep -q 'pos' src/shape/shape-mantra-line-field-count.glow"]
-assert names.ok else "mantra-tend-1: placard must name text · gen · pos"
+say "mantra-tend-1: example locks to four fields..."
+let ex = run ["sh" "-c" "grep -q 'example    4' src/shape/shape-mantra-line-field-count.glow"]
+assert ex.ok else "mantra-tend-1: example 4 missing"
+let names = run ["sh" "-c" "grep -q 'text' src/shape/shape-mantra-line-field-count.glow && grep -q 'gen' src/shape/shape-mantra-line-field-count.glow && grep -q 'pos' src/shape/shape-mantra-line-field-count.glow && grep -q 'site' src/shape/shape-mantra-line-field-count.glow"]
+assert names.ok else "mantra-tend-1: placard must name text - gen - pos - site"
 let elder = run ["sh" "-c" "grep -q 'mantra/src/weave.rye' src/shape/shape-mantra-line-field-count.glow"]
 assert elder.ok else "mantra-tend-1: weave.rye citation missing"
 
@@ -41,7 +41,7 @@ assert got_count == want_count else "mantra-tend-1: Line declares ${got_count} f
 let named = run ["sh" "tools/fixtures/r/rye_struct_fields_scan.sh" "--fields" "mantra/src/weave.rye" "Line"]
 assert named.ok else "mantra-tend-1: the field reader refused on Line -- ${named.out}"
 let got_fields = trim named.out
-assert got_fields == "text gen pos" else "mantra-tend-1: Line fields missing or reordered in the rye -- ${got_fields}"
+assert got_fields == "text gen pos site" else "mantra-tend-1: Line fields missing or reordered in the rye -- ${got_fields}"
 
 say "mantra-tend-1: lower and run..."
 let gate = run ["env" "RYE_ZIG=${zig}" "sh" "tools/g/glow_run_worker.sh" desk]
@@ -52,4 +52,4 @@ say "mantra-tend-1: Aurora A3 and Tally T6 still present..."
 let prior = run ["sh" "-c" "test -f src/shape/shape-aurora-living-stages.glow -a -f src/shape/shape-tally-stack-laws.glow"]
 assert prior.ok else "mantra-tend-1: A3 or T6 missing"
 
-say "GREEN: mantra Glow Tend limb 1 — Line three fields in src/shape/; Tend ladder kept."
+say "GREEN: mantra Glow Tend limb 1 -- Line four fields in src/shape/; Tend ladder kept."

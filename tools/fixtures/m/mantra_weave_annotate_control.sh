@@ -88,6 +88,16 @@ run_pen() {
   cp "$witness" "$pen/weave_annotate_witness.rye"
   if [ -n "$program" ]; then
     sed "$program" "$pen/weave.rye" > "$pen/weave.tmp"
+    # A plant that matched nothing leaves the pen byte for byte identical, so the
+    # phase reads the UNMUTATED module's exit code -- 0, indistinguishable from a
+    # law that holds. Every plant here names a literal line of weave.rye, and a
+    # line that is edited stops being that literal. Refuse by name instead.
+    if cmp -s "$pen/weave.tmp" "$pen/weave.rye"; then
+      echo "plant_matched_nothing:$name" >&2
+      rm -f "$pen/weave.tmp"
+      echo "plant_matched_nothing"
+      return
+    fi
     cat "$pen/weave.tmp" > "$pen/weave.rye"
     rm -f "$pen/weave.tmp"
   fi
@@ -111,6 +121,16 @@ run_head_pen() {
   cp "$module" "$pen/weave.rye"
   if [ -n "$program" ]; then
     sed "$program" "$pen/weave.rye" > "$pen/weave.tmp"
+    # A plant that matched nothing leaves the pen byte for byte identical, so the
+    # phase reads the UNMUTATED module's exit code -- 0, indistinguishable from a
+    # law that holds. Every plant here names a literal line of weave.rye, and a
+    # line that is edited stops being that literal. Refuse by name instead.
+    if cmp -s "$pen/weave.tmp" "$pen/weave.rye"; then
+      echo "plant_matched_nothing:$name" >&2
+      rm -f "$pen/weave.tmp"
+      echo "plant_matched_nothing"
+      return
+    fi
     cat "$pen/weave.tmp" > "$pen/weave.rye"
     rm -f "$pen/weave.tmp"
   fi
@@ -156,14 +176,23 @@ echo "phase=bound_misnamed"
 echo "bound_misnamed_exit=$misnamed_exit"
 
 verdict=ok
-[ "$clean_exit" -eq 0 ] || verdict=clean_failed
-[ "$shrunk_exit" -eq 0 ] || verdict=shrink_not_innocent
-[ "$head_clean_exit" -eq 0 ] || verdict=head_clean_failed
-for broken in "$derive_exit" "$unseen_exit" "$side_exit" "$text_exit" "$order_exit" \
-              "$removed_exit" "$misnamed_exit" \
-              "$head_missing_exit" "$head_stale_exit" "$head_container_exit"; do
-  [ "$broken" -ne 0 ] || verdict=break_not_caught
+# A plant that matched nothing is read FIRST and by its own name, because every
+# other reading below is a number and this one is a word.
+for reading in "$clean_exit" "$derive_exit" "$unseen_exit" "$side_exit" "$text_exit" \
+               "$order_exit" "$shrunk_exit" "$removed_exit" "$misnamed_exit" \
+               "$head_clean_exit" "$head_missing_exit" "$head_stale_exit" "$head_container_exit"; do
+  [ "$reading" != plant_matched_nothing ] || verdict=plant_matched_nothing
 done
+if [ "$verdict" = ok ]; then
+  [ "$clean_exit" -eq 0 ] || verdict=clean_failed
+  [ "$shrunk_exit" -eq 0 ] || verdict=shrink_not_innocent
+  [ "$head_clean_exit" -eq 0 ] || verdict=head_clean_failed
+  for broken in "$derive_exit" "$unseen_exit" "$side_exit" "$text_exit" "$order_exit" \
+                "$removed_exit" "$misnamed_exit" \
+                "$head_missing_exit" "$head_stale_exit" "$head_container_exit"; do
+    [ "$broken" -ne 0 ] || verdict=break_not_caught
+  done
+fi
 echo "phase=head_clean"
 echo "head_clean_exit=$head_clean_exit"
 echo "phase=head_missing"

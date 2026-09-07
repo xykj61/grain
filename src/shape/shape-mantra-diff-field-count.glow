@@ -1,13 +1,19 @@
 ::  name       mantra diff field count
 ::  shape      fields - int (@u32)
-::  invariant  a Diff carries exactly two fields (inserts · deletes)
-::  example    2
+::  invariant  a Diff carries exactly three fields (site - inserts - deletes)
+::  example    3
 ::  readers    Mantra · Glow Tend · Sur museum · Ashvini nest-only
 ::  nib        equinox-e205-mantra-tend-v0
 ::
-::  Equinox e205 · Mantra M3 — third Mantra structure pedestal in src/shape/.
-::  Names Diff's field count from mantra/src/weave.rye: the ordered insert
-::  texts and the delete positions. Pedestal only; Rye still owns advance.
+::  Equinox e205 - Mantra M3 -- third Mantra structure pedestal in src/shape/.
+::  Names Diff's field count from mantra/src/weave.rye: the authoring site,
+::  the ordered insert texts, and the deleted line identities. Pedestal only;
+::  Rye still owns advance.
+::
+::  Moved two to three on 20260906.212206. The site sits on the EDIT rather
+::  than on the weave, because a weave is a shared history several hands merge
+::  into one and an edit is the act of one hand -- so there is no honest answer
+::  to whose a merged history is, and the question is never asked.
 +$  mantra-diff-field-count-shape
   $:  fields=@u32
   ==

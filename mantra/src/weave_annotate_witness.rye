@@ -26,9 +26,14 @@
 //!      note's `gen()` is the generation merge lands on there.
 //!   5. Swapping the sides mirrors the reading exactly: same positions in the
 //!      same order, left and right exchanged, each word its own mirror.
-//!   6. Two branches disagreeing on one position's text are REFUSED by name,
-//!      the same precondition merge holds and for the same reason -- a
-//!      per-weave counter cannot name a line across two branches.
+//!   6. Two branches that BOTH insert are READ, as one `left_only` and one
+//!      `right_only`. Each handed its line the same position, since a position
+//!      counter runs inside one weave; each stamped its own site, so the
+//!      identities differ. This claim used to be the refusal.
+//!   9. One site issuing one identity to two different lines is REFUSED by
+//!      name -- the same precondition merge holds, and for the same reason.
+//!      Claims 6 and 9 are the two sides of one sentence, and neither reads
+//!      right without the other.
 //!   7. A union past `max_weave_lines` is refused at the edge, before a single
 //!      note is written.
 //!   8. Notes come out in position order when the union interleaves -- the leg
@@ -45,7 +50,15 @@ const assert = std.debug.assert;
 const print = std.debug.print;
 const weave = @import("weave.rye");
 
-const witness_version = "20260906.115458";
+const witness_version = "20260906.210016";
+
+/// The sites this witness edits from. A site names the hand making an edit, and
+/// no two hands share a counter -- so these constants are what let one planted
+/// branch be told apart from another. `site_here` is the single hand every
+/// claim that is not about branching edits from.
+const site_here: u32 = 1;
+const site_x: u32 = 2;
+const site_z: u32 = 3;
 
 // Every declaration of the module under test, forced through semantic analysis
 // at comptime. Zig analyses lazily, so without this leg a `pub fn` carrying a
@@ -71,7 +84,7 @@ fn planted(garden: std.mem.Allocator, texts: []const []const u8) !weave.Weave {
     // a law by showing every line it annotates
     assert(texts.len <= max_planted_lines);
     var w = weave.Weave.empty();
-    try w.apply(garden, .{ .inserts = texts, .deletes = &[_]u32{} });
+    try w.apply(garden, .{ .site = site_here, .inserts = texts, .deletes = &[_]weave.LineId{} });
     // invariant: the plant holds exactly the lines it was handed, so every
     // later claim about a reading is a claim about known input
     assert(w.lines.items.len == texts.len);
@@ -125,7 +138,7 @@ fn wide_weave(garden: std.mem.Allocator, count: u32) !weave.Weave {
     try out.ensureTotalCapacity(garden, count);
     var pos: u32 = 0;
     while (pos < count) : (pos += 1) {
-        out.appendAssumeCapacity(.{ .text = "wide", .gen = 1, .pos = pos });
+        out.appendAssumeCapacity(.{ .text = "wide", .gen = 1, .pos = pos, .site = site_here });
     }
     // invariant: the plant holds exactly what was asked for, so the sum the
     // bound reads is the sum this function promised
@@ -255,30 +268,67 @@ fn prove_swap_mirrors(
     print("mantra-annotate: swapping the sides mirrors every note, word for word -- GREEN welcome path\n", .{});
 }
 
-/// Claim 6: the identity gap, refused by name. Two branches that both insert
-/// hand their new lines the same small integer, because `pos` comes from a
-/// per-weave counter. Annotate holds the same precondition merge does, since a
-/// story about a merge that cannot happen is a story about nothing.
-fn prove_colliding_inserts_refused(
+/// Claim 6: two branches that both insert are READ as one left_only and one
+/// right_only, rather than refused. Each branch handed its new line the same
+/// position, because a position counter runs inside one weave -- and each
+/// stamped its own site, so the two identities differ and the reading names
+/// both. Annotate holds the same precondition merge does, and this is that
+/// precondition being met rather than broken.
+fn prove_colliding_inserts_read(
     garden: std.mem.Allocator,
     base: *const weave.Weave,
 ) !void {
     var branch_x = try copy_of(garden, base);
-    try branch_x.apply(garden, .{ .inserts = &[_][]const u8{"x"}, .deletes = &[_]u32{} });
+    try branch_x.apply(garden, .{ .site = site_x, .inserts = &[_][]const u8{"x"}, .deletes = &[_]weave.LineId{} });
     var branch_z = try copy_of(garden, base);
-    try branch_z.apply(garden, .{ .inserts = &[_][]const u8{"z"}, .deletes = &[_]u32{} });
-    // invariant: the two branches genuinely collide -- each handed its new line
-    // the same position, which is exactly what makes the refusal necessary
+    try branch_z.apply(garden, .{ .site = site_z, .inserts = &[_][]const u8{"z"}, .deletes = &[_]weave.LineId{} });
+    // invariant: the two branches genuinely collide on position -- each handed
+    // its new line the same integer, which is the state that used to refuse
     assert(branch_x.next_pos == branch_z.next_pos);
 
-    if (branch_x.annotate(garden, &branch_z)) |_| {
-        return error.CollidingInsertsNotRefused;
+    const notes = try branch_x.annotate(garden, &branch_z);
+    var left_only: u32 = 0;
+    var right_only: u32 = 0;
+    for (notes) |note| {
+        if (note.reading() == .left_only) left_only += 1;
+        if (note.reading() == .right_only) right_only += 1;
+    }
+    // invariant: each side's own insert is named once, from its own side --
+    // which is the story a merge of these two would tell, printed rather than
+    // applied
+    assert(left_only == 1);
+    assert(right_only == 1);
+    print("mantra-annotate: two branches inserting at one position read as one left_only and one right_only -- GREEN welcome path\n", .{});
+}
+
+/// Claim 9: one site issuing one identity to two different lines is refused by
+/// name, and by the same reading `merge` takes. With the site in the identity
+/// this is a replayed counter rather than an ordinary branch, so the story and
+/// the merge still refuse exactly the same inputs -- which is the whole seam
+/// between them.
+///
+/// Built by hand rather than grown through `apply`, since `apply` cannot make
+/// it: its counter only rises, and it asserts a fresh identity is one the
+/// weave does not already hold.
+fn prove_forged_identity_refused(garden: std.mem.Allocator) !void {
+    const left = try seeded(garden, &[_]weave.Line{
+        .{ .text = "one", .gen = 1, .pos = 0, .site = site_here },
+    }, 1);
+    const right = try seeded(garden, &[_]weave.Line{
+        .{ .text = "other", .gen = 1, .pos = 0, .site = site_here },
+    }, 1);
+    // invariant: the two lines answer to one name and carry different text,
+    // which is the corruption the refusal exists for
+    assert(left.lines.items[0].id().eq(right.lines.items[0].id()));
+
+    if (left.annotate(garden, &right)) |_| {
+        return error.ForgedIdentityNotRefused;
     } else |err| {
         // invariant: the refusal arrives by its own name, so a caller can tell
         // this apart from running out of room
         assert(err == weave.WeaveError.PositionTextDisagrees);
     }
-    print("mantra-annotate: two branches inserting at one position refused PositionTextDisagrees -- GREEN unwelcome path\n", .{});
+    print("mantra-annotate: one site, one identity, two texts refused PositionTextDisagrees -- GREEN unwelcome path\n", .{});
 }
 
 /// Claim 7: the union bound is checked at the edge, before a note is written.
@@ -306,12 +356,12 @@ fn prove_bound_refused(garden: std.mem.Allocator) !void {
 /// deleted would pass all seven of them.
 fn prove_interleaved_order(garden: std.mem.Allocator) !void {
     const left = try seeded(garden, &[_]weave.Line{
-        .{ .text = "one", .gen = 1, .pos = 0 },
-        .{ .text = "three", .gen = 1, .pos = 2 },
+        .{ .text = "one", .gen = 1, .pos = 0, .site = site_here },
+        .{ .text = "three", .gen = 1, .pos = 2, .site = site_here },
     }, 3);
     const right = try seeded(garden, &[_]weave.Line{
-        .{ .text = "one", .gen = 1, .pos = 0 },
-        .{ .text = "two", .gen = 1, .pos = 1 },
+        .{ .text = "one", .gen = 1, .pos = 0, .site = site_here },
+        .{ .text = "two", .gen = 1, .pos = 1, .site = site_here },
     }, 3);
 
     const notes = try left.annotate(garden, &right);
@@ -336,9 +386,9 @@ fn prove_interleaved_order(garden: std.mem.Allocator) !void {
 /// last -- and what they agree about is that the line is gone.
 fn prove_both_deleted(garden: std.mem.Allocator, base: *const weave.Weave) !void {
     var branch_x = try copy_of(garden, base);
-    try branch_x.apply(garden, .{ .inserts = &[_][]const u8{}, .deletes = &[_]u32{2} });
+    try branch_x.apply(garden, .{ .site = site_here, .inserts = &[_][]const u8{}, .deletes = &[_]weave.LineId{.{ .pos = 2, .site = site_here }} });
     var branch_y = try copy_of(garden, base);
-    try branch_y.apply(garden, .{ .inserts = &[_][]const u8{}, .deletes = &[_]u32{2} });
+    try branch_y.apply(garden, .{ .site = site_here, .inserts = &[_][]const u8{}, .deletes = &[_]weave.LineId{.{ .pos = 2, .site = site_here }} });
 
     const notes = try branch_x.annotate(garden, &branch_y);
     // invariant: the union is the base's three positions -- neither branch
@@ -366,18 +416,19 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     const base = try planted(garden, &[_][]const u8{ "alpha", "beta", "gamma" });
 
     var deleted_left = try copy_of(garden, &base);
-    try deleted_left.apply(garden, .{ .inserts = &[_][]const u8{}, .deletes = &[_]u32{1} });
+    try deleted_left.apply(garden, .{ .site = site_here, .inserts = &[_][]const u8{}, .deletes = &[_]weave.LineId{.{ .pos = 1, .site = site_here }} });
 
     var grown_right = try copy_of(garden, &base);
-    try grown_right.apply(garden, .{ .inserts = &[_][]const u8{"delta"}, .deletes = &[_]u32{} });
+    try grown_right.apply(garden, .{ .site = site_here, .inserts = &[_][]const u8{"delta"}, .deletes = &[_]weave.LineId{} });
 
     try prove_the_three_shapes(garden, &base, &deleted_left, &grown_right);
     try prove_agrees_with_merge(garden, &deleted_left, &grown_right);
     try prove_swap_mirrors(garden, &deleted_left, &grown_right);
-    try prove_colliding_inserts_refused(garden, &base);
+    try prove_colliding_inserts_read(garden, &base);
     try prove_bound_refused(garden);
     try prove_interleaved_order(garden);
     try prove_both_deleted(garden, &base);
+    try prove_forged_identity_refused(garden);
 
     print("mantra-annotate: version {s}\n", .{witness_version});
     print("GREEN: the merge told rather than taken -- five readings, a mirror, and the story held to the merge itself.\n", .{});
