@@ -165,6 +165,13 @@ seated 20260823.034321
 # allowed room, the projection ran, and sow_witness answered GREEN -- because a room that ships no
 # bytes leaks no names (REDS %485). A publish is as wrong when a room is missing as when a name
 # leaks, and quieter.
+# capability seated 20260906.140000 (REDS %493). The guard reads the SHIPPED side, so it needs a
+# projection at `seed/` -- which is gitignored, built by `tools/s/sow.rish`, and therefore absent
+# from every fresh clone. Rostered `tier lap` with no capability it went red on this tree's first
+# cold pass after landing, and a red guard withholds the roster receipt, so `--scoped` refuses and
+# every ship pays a FULL cold pass every lap: 778s measured here. The scan's own refusal is right
+# (REDS %170) and the roster is where the environment fact belongs -- the same reading the operator
+# card already gives an empty `vendor/`. Absence is announced by name rather than made silent.
 guard sow_allow_reach
 path tools/s/sow_allow_reach_witness.rish
 tier lap
@@ -198,17 +205,18 @@ seated 20260906.210117
 # recorded), which is the single-stranded braid. The field existed in practice and in no law until
 # that day. REPORTED, never gated: a lap that legitimately did no rota read is indistinguishable
 # from one that skipped it, and a gate that cannot tell them apart reds on honest work.
+# capability seated 20260907.003211. The guard counts TODAY's logs, so before the day's first log
+# lands there is nothing to count and its scan refuses -- which is right (REDS %170) and made an
+# ordinary daily state read as a fault. Measured at 00:12 on `20260907`, the first cold pass of a
+# day answered `guards_red=2` on one root: this guard, and `standing_equipment` reading its own
+# roster's red. A red guard withholds the roster receipt, so `--scoped` refuses and every ship pays
+# a FULL cold pass -- daily, fleet-wide, and healing itself an hour later, which is worse than a
+# standing red because it looks like somebody's fault and then vanishes.
 guard rota_declared
 path tools/r/rota_declared_witness.rish
 tier lap
+capability day_shelf
 seated 20260906.222120
-# capability seated 20260906.140000 (REDS %493). The guard reads the SHIPPED side, so it needs a
-# projection at `seed/` -- which is gitignored, built by `tools/s/sow.rish`, and therefore absent
-# from every fresh clone. Rostered `tier lap` with no capability it went red on this tree's first
-# cold pass after landing, and a red guard withholds the roster receipt, so `--scoped` refuses and
-# every ship pays a FULL cold pass every lap: 778s measured here. The scan's own refusal is right
-# (REDS %170) and the roster is where the environment fact belongs -- the same reading the operator
-# card already gives an empty `vendor/`. Absence is announced by name rather than made silent.
 
 # publish_template -- the one file this tree ships that a stranger RUNS against their own forge.
 # publish-seed.sh is personal by law, so a newcomer inherits every room except a publisher;

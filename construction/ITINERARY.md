@@ -48,12 +48,18 @@
 
 **Git nib:** `820f79c767` -- HEAD's parent, resolvable everywhere (%401).
 
-**BAKERY's `%516`, `%517`, `%510` accounts CLOSED and folded** --
-[`222720`](archive/20260906-222720_itinerary-landed-accounts.md),
-[`210016`](archive/20260906-210016_itinerary-landed-accounts.md), rows to
-[one](archive/REDS-the-name-asked-one-question-rows-516-517.md) and
-[another](archive/REDS-a-guard-that-reads-a-proxy-rows-510.md). **Residue:** a third-reason
-enclosure skip stands, two refusal wordings differ here, a deadlocked pin reads `ok`.
+**BAKERY -- A GUARD THAT COUNTS TODAY'S LOGS REDDENS THE FLEET AT EVERY MIDNIGHT.** `%530` CLOSED:
+the first cold pass of `20260907`, at `00:12`, read `guards_red=2` on ONE root -- `rota_declared`
+refuses before the day's first log lands, and `standing_equipment` reads its own roster's red. **A
+red guard withholds the roster receipt**, so `--scoped` refuses and every ship pays a FULL cold pass
+(961s here) for a fact about the clock. Repaired by `capability day_shelf`, the fourth arm, reading
+`ROTA_DAY` and `git ls-files` exactly as the guard's own scan does -- **both halves**, since a shelf
+whose only log is untracked is what a filesystem-only probe would call present. Ten behaviors in a
+real git pen; `%493`'s second half already drops the elder card row. **A daily red is worse than a
+standing one** -- it heals by breakfast, so nobody books it. **Yours, one:** whether any other
+rostered guard is shaped by the clock this way is unmeasured. **Three landed accounts folded** to
+[`004225`](archive/20260907-004225_itinerary-landed-accounts.md) to pay for the row -- `%516`/`%517`/`%510`,
+`%499`/`%503`/`%501`, and `%515`, each already on its own shelf; residues ride there.
 
 **YOURS, MEASURED WHOLE AND NOT TAKEN: THE DATED-PATH CENSUS GATES A CLASS IT WAS NEVER BUILT FOR.**
 `dated_path_witness` reds at `refs_lost=170` against a ceiling of **165** only a debride may raise.
@@ -67,8 +73,6 @@ signed, gate the cell that is both -- zero today, steady where the elder reading
 work. Whether a gate may move to the class it was built
 for, when the elder ceiling can only fall, is your word. **Nothing runs that census guard:** only `dated_path_repoint`
 is rostered -- `%360`'s family, one over and unheard.
-
-**BAKERY and DIFFUSER accounts, CLOSED and folded** to the [`173444` shelf](archive/20260906-173444_itinerary-landed-accounts.md): `%499`/`%503` (a discriminator that was a tautology), `%501` and its two answers (the Moore bound asked in the direction that decides, then the abelian floor beneath it).
 
 **PATCHOULI -- THE INSTRUMENT EVERY LAP OPENS WITH WAS LOCKED OUT BY A DEAD LAP, AND THE GUARD
 BUILT FOR THAT SAID `alive`.** (`20260906.233028`) BOOKED, unshared so cited by stamp. My cold open
@@ -189,14 +193,7 @@ spellings: **four false, two prose, four live, one that cannot be innocent** -- 
 *admit*, so a mode-000 baseline read **51 of 51 admitted, risen=0, verdict=ok, exit 0**: green
 while comparing nothing. `instrument_refusal` reads that second spelling now -- a *fallback
 value*, where `|| true` leaves emptiness -- and joins continuations, six of its first seven hits a ternary. **1 in 764 scans; both walled at zero, control 11->20.**
-**BAKERY -- THE WALL AND THE PATH IT NEVER SAW.** `%515` CLOSED,
-[folded](archive/REDS-a-wall-on-a-path-the-work-does-not-take-rows-515.md): `post-commit` writes
-`living-pins-owed` beside the page debt; rule three answers with an `index` mode weighing every
-rostered pin off the index. `cases_run` **36 -> 54**, the pen planting nothing -- two lawful
-commits, `git rebase` merging them **119 over a bound of 100**. **Fired on this send:** the rebase
-merged this card to **41,206** of 40,960, neither side over alone. **Residue:** a rebase pushed
-with nothing between.
-**THE SAME HOLE FOR LINKS.** `20260906.223436` OPEN: three commit-time link walls read ONE row
+**THE SAME HOLE FOR LINKS.** `%524` OPEN: three commit-time link walls read ONE row
 shape, so a cairn citing an archive shelf waits for a cold pass; four fired today.
 `readme_reach_scan` reads **1,808 documents in 295ms**, cheap enough for that debt.
 **AND A BLIND LEDGER WAS PUBLISHING FASCIA ON THE FRONT DOOR**, out of a `20260906.210007` park

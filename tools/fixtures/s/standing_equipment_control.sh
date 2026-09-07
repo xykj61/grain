@@ -896,6 +896,102 @@ else
   echo "jail_payload_proven_outside=no"
 fi
 
+# --- the day_shelf probe, planted in both of its answers ----------------------------------------
+# The fourth capability arm, and the first that asks a CALENDAR question rather than one about the
+# host, the checkout, or the kernel: does the day this pass stands in have a shelf with tracked logs
+# in it? `rota_declared` counts how many of TODAY's session logs declare the rota row they read, so
+# before the day's first log lands there is nothing to count and its scan refuses (REDS %170).
+# Rostered without a capability it reddened the fleet's first cold pass of every day -- and a red
+# guard withholds the roster receipt, so every ship then paid a FULL pass for a fact about the clock.
+#
+# PLANTED IN A REAL GIT REPOSITORY, because the probe asks git the same `ls-files` its guard asks. A
+# shelf holding an UNTRACKED log is exactly the state a filesystem-only probe would call present
+# while its guard refused, so both halves of the guard's precondition are planted apart: no shelf at
+# all, a shelf whose only log is untracked, and a shelf carrying a tracked one. `ROTA_DAY` is read by
+# probe and scan alike, which is what keeps the two asking one question.
+daypen="$pen/daypen"
+mkdir -p "$daypen/tools" "$daypen/rishi/bin"
+echo "# a standing guard, for the control only" > "$daypen/tools/real_witness.rish"
+# The same stand-in rishi the shared pen carries above: the runner invokes a guard through it, so a
+# pen without one answers `alpha red` and every count below would then read for the wrong reason.
+printf '#!/bin/sh\nexit 0\n' > "$daypen/rishi/bin/rishi"
+chmod +x "$daypen/rishi/bin/rishi"
+cat > "$daypen/daycap.kyri" <<'EOF'
+format standing-equipment-v1
+guard alpha
+path tools/real_witness.rish
+tier lap
+seated 20260822.000000
+
+guard needs_day
+path tools/real_witness.rish
+tier lap
+capability day_shelf
+seated 20260907.003211
+EOF
+( cd "$daypen" && git init -q . && git config user.email a@b.c && git config user.name t \
+  && git config commit.gpgsign false ) >/dev/null 2>&1
+
+run_day_capability() {
+  rm -f "$daypen/day-card.kyri"
+  ( cd "$daypen" && ROTA_DAY=20260101 STANDING_ROSTER=daycap.kyri STANDING_CARD=day-card.kyri \
+      sh "$runner" 2>/dev/null ) || true
+}
+
+# absent -- no shelf for that day at all, which is the state of every day between midnight and its
+# first landing. Skipped, named, counted, and the pass still passes: all four, because the whole
+# point is that a day which has not started yet stops costing the fleet a full cold pass.
+out=$(run_day_capability)
+case "$out" in *"guards_run=1"*) echo "day_absent_skips=yes" ;; *) echo "day_absent_skips=no" ;; esac
+case "$out" in *"skipped_capability=1"*) echo "day_absent_counted=yes" ;; *) echo "day_absent_counted=no" ;; esac
+case "$out" in *"skipped_capability needs_day wants=day_shelf"*) echo "day_absent_named=yes" ;; *) echo "day_absent_named=no" ;; esac
+case "$out" in *"run_verdict=ok"*) echo "day_absent_still_passes=yes" ;; *) echo "day_absent_still_passes=no" ;; esac
+
+# absent, THE SECOND HALF -- the shelf stands and its only log is untracked. The guard's own scan
+# reads `git ls-files` and refuses here, so a probe answering on the directory alone would call this
+# present and hand its guard a refusal it had just promised would not come.
+mkdir -p "$daypen/session-logs/date/20260101"
+printf 'stamp 20260101.010101\n' > "$daypen/session-logs/date/20260101/20260101-010101_a.kyri"
+out=$(run_day_capability)
+case "$out" in *"skipped_capability=1"*) echo "day_untracked_skips=yes" ;; *) echo "day_untracked_skips=no" ;; esac
+
+# present -- the same log, committed. The guard runs like any other row. Committed rather than left
+# staged on purpose: a cold pass over a dirty index refuses under `lap_unclosed`, and this leg would
+# then read absent for a reason that has nothing to do with the shelf.
+( cd "$daypen" && git add -A && git commit -q -m "pen: the day's first log lands" ) >/dev/null 2>&1
+out=$(run_day_capability)
+case "$out" in *"guards_run=2"*) echo "day_present_runs=yes" ;; *) echo "day_present_runs=no" ;; esac
+case "$out" in *"skipped_capability=0"*) echo "day_present_skips_none=yes" ;; *) echo "day_present_skips_none=no" ;; esac
+
+# THE PEN PROVEN INNOCENT, the reading the jail arm takes above: a pen where the runner never ran at
+# all would answer these counts for a reason that has nothing to do with the calendar.
+case "$out" in *"alpha green"*) echo "day_pen_runner_ran=yes" ;; *) echo "day_pen_runner_ran=no" ;; esac
+
+# unknown -- git itself gone. It cannot be planted the way a missing bwrap can: the runner reads the
+# stash, the index and the tree with git, so a PATH without it answers for a reason that is not the
+# probe. Asserted against the source instead, exactly as the jail arm asserts its own pre-check.
+# Unknown RUNS, so a bench whose probe tool went missing keeps its guard rather than quietly thinning
+# the roster while every meter reads green.
+if grep -q 'command -v git >/dev/null 2>&1 || { echo unknown; return 0; }' "$runner"; then
+  echo "day_unknown_runs_on_missing_git=yes"
+else
+  echo "day_unknown_runs_on_missing_git=no"
+fi
+
+# and the scan counts a day_shelf row as gated rather than refusing it, because it reads the
+# capability words off the runner's own `capability_state()` arms rather than keeping a second list
+# beside them -- the drift REDS %493's arm names and this one inherits for free.
+cat > "$pen/dayscan.kyri" <<'EOF'
+format standing-equipment-v1
+guard alpha
+path tools/real_witness.rish
+tier lap
+capability day_shelf
+seated 20260907.003211
+EOF
+out=$(run_scan dayscan.kyri good-card.kyri)
+case "$out" in *"guards_unknown_capability=0"*) echo "day_capability_known_to_scan=yes" ;; *) echo "day_capability_known_to_scan=no" ;; esac
+
 # A GUARD THIS HOST CANNOT RUN LOSES ITS ELDER CARD ROW (REDS %492, second half). The carry-forward
 # keeps a `tier cadence` guard's history between its runs, which is right; it is wrong for a guard
 # that cannot run here at all, whose last verdict was recorded in a different world and which nothing
