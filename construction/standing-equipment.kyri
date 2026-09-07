@@ -553,10 +553,16 @@ seated 20260827.183635
 # guard runs any of them -- tools/g/glow_run_desk_witness.rish, 1,133 lines naming 218 desks one at
 # a time. A hand-written enumeration standing in for a population drifts the moment the population
 # grows, and nothing here could see it: 129 runnable desks are run by nothing, 89 of which pass on
-# metal today. This row does not run desks -- it reads them, so it costs 6s where the desk witness
+# metal today. This row does not run desks -- it reads them, so it costs 9s where the desk witness
 # would cost a quarter hour of Zig builds, and it is what makes rostering that witness honest
 # later. `tier lap` because it is file reading, and because the reading it holds is a ratchet that
 # only works if it is read every lap.
+#
+# 20260907.020441 -- the 129 split in two. The witness runs every desk it names with ZERO
+# arguments, and tools/g/glow_run_worker.sh permits a sample for 94 stems, 46 of them in this room.
+# All 46 are uncovered and none is covered, so the boundary was the instrument's shape rather than
+# anyone's oversight. Two ratchets now: 83 bare desks that cost one block each, 46 sample-taking
+# desks that cost a chosen argument first. The sum is derived from them, so it cannot drift.
 guard glow_desk_reach
 path tools/g/glow_desk_reach_witness.rish
 tier lap

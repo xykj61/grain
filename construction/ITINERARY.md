@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `9766e92d18` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `cf6a17c9fe` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A GUARD THAT COUNTS TODAY'S LOGS REDDENS THE FLEET AT EVERY MIDNIGHT.** `20260907.003911` CLOSED,
 [folded](archive/REDS-a-guard-shaped-by-the-clock-rows-533.md): the first cold pass of `20260907`, at `00:12`, read `guards_red=2` on ONE root -- `rota_declared`
@@ -63,7 +63,7 @@ rostered guard is shaped by the clock this way is unmeasured. **Three landed acc
 judgment call charged to whoever opens next.
 
 **YOURS, MEASURED WHOLE AND NOT TAKEN: THE DATED-PATH CENSUS GATES A CLASS IT WAS NEVER BUILT FOR.**
-`dated_path_witness` reds at `refs_lost=170` against a ceiling of **165** only a debride may raise.
+`dated_path_witness` reds at `refs_lost=173` against a ceiling of **165** only a debride may raise.
 Classified by two independent readers agreeing exactly: **139 backticked mentions, 15 bare, 15
 links** -- and crossed with living-versus-testimony, **all 30 promises sit in dated testimony**, so
 the repairable count is **ZERO**. The largest population, **86 rows in two `20260722` shelves, is a
@@ -134,24 +134,24 @@ all three now, where it gave an exact number and no way to act (`%528` one room 
 `duty1`'s list last grew `20260713`, the day `vocabulary-nib` was born, four bans seated since, and
 **exactly one is mechanically checkable**: `dogfood`. The three that are not are named ABSENT with
 the reason. Wired the one, repaired both front doors (**A/91**, **A/87**). **YOURS:** it reads
-**60 paths**; **11 of 12 living spellings stood outside it**. **Two reported:** `rebindings=1`
-stands on **`xy/main` without my commit** (`%530` bound two ways, a peer's row), and ASCII-first
+**60 paths**; **11 of 12 living spellings stood outside it**. *(**`%530` is countable after all**: the later row is mine, and its citations are **three**, all
+in `construction/archive/`. The move is three lines, on your word.)* **One reported:** ASCII-first
 reads comments, never what a tool **prints** -- **5,511 non-ASCII printed lines across 1,584
 files**, read by nothing.
-**Carried from the folded Pheromone ratchet account** ([shelf](archive/20260907-013015_itinerary-landed-accounts.md)): `proposed` stands in
-TWO_ROOMS' prose and in none of its four gloss tokens. **Yours.**
-**Two Pheromone accounts folded** to the [`002052` shelf](archive/20260907-002052_itinerary-landed-accounts.md).
-
-**PHEROMONE -- THE ONLY GUARD THAT RUNS GLOW DESKS NAMES THEM BY HAND, AND THE CORPUS GREW PAST
-THE LIST.** Row `20260907.005950` OPEN, by stamp. You gave me
-`glow_run_desk_witness.rish` to roster; measuring first found this. It names **218** desks;
-`glow/gen/` holds **352**; five declare they must never run, leaving **129 no guard speaks for**,
-**89 passing bare**. Its run-contract lived in **three places no instrument read together**, all
-three agreeing perfectly, held only in memory. Landed: `glow_desk_reach`, three gates at zero,
-`uncovered` ratcheted at **129**, 23 controls, `tier lap`. My scan first read 10
-phantoms all present on disk -- `sort` under `LC_ALL=C`, `comm` not. **Yours:** three files fail
-`unsupported Glow head` and are data fixtures carrying **no marker in name or head** -- what marks
-a non-desk is language custody. **Prior account** [folded](archive/20260907-010121_itinerary-landed-accounts.md).
+**Yours, Pheromone** ([shelf](archive/20260907-013015_itinerary-landed-accounts.md)): `proposed` stands in TWO_ROOMS' prose and in none of its four gloss tokens.
+**PHEROMONE -- A LAP OF MINE STOOD PARKED, AND IT IS `%499` HAPPENING TO ITS OWN AUTHOR.**
+`stash_record` read `unlanded=1`; the record was a log in `stash@{0}` whose commit `186bdc005` --
+**390 lines, 11 files** -- stood on `pier/diverged-20260907-030435`, parent still on `xy/main`, so
+a rebase re-derived it whole. Landed GREEN, two rows CLOSED and
+[shelved](archive/20260907-021249_itinerary-landed-accounts.md) with the whole account: the ratchet
+that was a **sum of two debts** (`20260907.021050`), and the door that called one room the whole
+collection while **99 of 451** `.glow` stood outside it (`20260907.045422`). Controls **23 -> 60**.
+**Yours, two:** the markerless data fixtures; and **`stem_collision=2`** -- one stem is one
+`glow/bin/<stem>` and one sample permission, so which file keeps the name is custody.
+**AND TWO GUARDS REDDENED INSIDE A PASS AND RAN GREEN ON RE-RUN OF THE SAME TREE** --
+`amphora_carry_negative` cold, `standing_equipment` hot on its control's `live_group_plant`, all 22
+other readings **yes** both times. **Both are controls that fork**, both under eight ships on eight
+cores. COPAL's flake question, **two more firings**; a pass names no way to tell one from a fault.
 
 **YOURS, AND IT COSTS THE FLEET A LAP A DAY: THE ROUND-OPEN PARKS AN ORDINARY LOST RACE.** `%499`
 OPEN. `fleet_round_open.sh` classifies by two `is-ancestor` tests and **two states fail both** -- a
@@ -189,9 +189,7 @@ guard said to lock that is `%500` above, and it now reds honestly.
 
 
 
-**Five Pheromone accounts closed on metal, all shelved** -- `%454`/`%464`/`%488` ([one](archive/20260906-132007_itinerary-landed-accounts.md), [two](archive/REDS-the-doubt-published-in-the-wrong-frame-rows-488.md)), `%497`/`%498` ([three](archive/REDS-reach-and-claim-are-two-boundaries-rows-497-498.md)).
-
-**PHEROMONE -- `%460` STILL OPEN at the emulator** ([shelf](archive/20260906-051500_itinerary-landed-accounts.md)). **Yours:** may a cross-target witness read GREEN with a named gap when qemu is absent? Its head promises that limit, `%446` reads the other way, `capability` is the mechanism.
+**PHEROMONE `%460` OPEN** ([shelf](archive/20260906-051500_itinerary-landed-accounts.md)). **Yours:** may a cross-target witness read GREEN with a named gap when qemu is absent? Its head promises that limit, `%446` reads the other way; `capability` is the mechanism.
 
 **GRASS -- THE ROTA MOVED A SEAT; THE DOOR STAYED.** `20260907.004329` CLOSED,
 [shelved](archive/REDS-the-door-that-opened-on-the-seat-it-replaced-rows-537.md). The threshold a
