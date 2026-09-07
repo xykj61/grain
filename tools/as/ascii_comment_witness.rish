@@ -8,17 +8,24 @@
 # written that same day -- copied from the surrounding style rather than read. A lantern that fires
 # twice becomes a loom.
 #
-# ONE LAW, TWO COMMENT SYNTAXES. The rule governs every code comment, and this witness read `*.rye`
+# ONE LAW, THREE COMMENT SYNTAXES. The rule governs every code comment, and this witness read `*.rye`
 # alone for its first day, so 2,243 tracked Rishi sources and 580 shell sources stood outside a law
 # they are governed by -- 10,468 non-ASCII characters, measured `20260825.084500`. Rye spells a
 # comment `//` and must refuse to count a `\\` multiline string; Rishi and shell spell it `#` and
-# must refuse to count a heredoc body. Two meters, each readable alone, one guard over both.
+# must refuse to count a heredoc body. Glow spells it `::` and needs no such exclusion, because
+# `glow/tokens.rye:239` refuses a newline inside a cord literal, so no Glow literal can reach a
+# second line to begin one with the comment mark.
+#
+# THE THIRD SYNTAX WAITED A FORTNIGHT, and the head above is why: two comment marks read as full
+# coverage while an authored language of this tree's own stood outside the law entirely. Measured
+# `20260907.141019`: 451 tracked `.glow` sources carrying 942 non-ASCII characters across 342 files.
+# Three meters, each readable alone, one guard over all three.
 
 say "ascii-comment: Language EN -- plain ASCII survives every tool, terminal, diff, and re-encoding intact."
 say "ascii-comment: Style Gauge -- every number is measured on this run and printed as each scan's own output, never recited here."
 say "ascii-comment: Lens TAME -- safety first: the meters count COMMENTS and never program content, because converting a string or a heredoc changes what a program prints. Purely local -- no key, no network, no funds, no device."
 
-say "ascii-comment: reading one of two -- authored Rye comments."
+say "ascii-comment: reading one of three -- authored Rye comments."
 
 let control = run ["sh" "tools/fixtures/r/rye_comment_ascii_control.sh"]
 assert control.ok else "ascii-comment: the Rye control must complete"
@@ -65,7 +72,7 @@ say living.out
 assert living.out contains "instrument=ok" else "ascii-comment: the living Rye reading must say its instrument ran -- a meter that opened nothing prints a clean ceiling too"
 assert living.out contains "under_ceiling=yes" else "ascii-comment: non-ASCII in Rye comments rose above the ceiling -- convert on touch rather than raising it"
 
-say "ascii-comment: reading two of two -- authored Rishi and shell comments."
+say "ascii-comment: reading two of three -- authored Rishi and shell comments."
 
 let shell_control = run ["sh" "tools/fixtures/s/shell_comment_ascii_control.sh"]
 assert shell_control.ok else "ascii-comment: the shell control must complete"
@@ -122,8 +129,75 @@ say shell_living.out
 assert shell_living.out contains "instrument=ok" else "ascii-comment: the living shell reading must say its instrument ran"
 assert shell_living.out contains "under_ceiling=yes" else "ascii-comment: non-ASCII in Rishi and shell comments rose above the ceiling -- convert on touch rather than raising it"
 
+say "ascii-comment: reading three of three -- authored Glow comments."
+
+# THE THIRD SYNTAX, AND WHY IT WAITED. This witness read `//` and `#`, which is two comment marks
+# and covers Rye, Rishi and shell. Glow spells a comment `::` and this tree tracks 451 Glow
+# sources, so an authored language of our own stood outside a law it is governed by -- measured
+# `20260907.141019`: 942 non-ASCII characters across 342 files. The reach was won the same way the
+# Rishi and shell reach was: by counting, rather than by assuming the meter already covered what
+# the law names.
+#
+# AND THIS METER NEEDS NO ESCAPE HATCH, where both siblings do. Rye must refuse to count a `\\`
+# multiline string and shell must refuse to count a heredoc body, because in both a literal spans
+# lines and a later line of one can open with the comment mark. `glow/tokens.rye:239` refuses a
+# newline inside a cord literal outright, so a line whose first non-blank characters are `::` can
+# never sit inside a literal. The exclusion is carried by the language rather than by a convention
+# this scan would have to keep in step with -- and the control plants a cord beside a comment
+# anyway, since a language rule that is not measured is a memory.
+
+let glow_control = run ["sh" "tools/fixtures/g/glow_comment_ascii_control.sh"]
+assert glow_control.ok else "ascii-comment: the Glow control must complete"
+say glow_control.out
+assert glow_control.out contains "control_verdict=ok" else "ascii-comment: the Glow control must reach its own verdict"
+
+# Prose is counted, plain, indented, and beside real Glow lines.
+assert glow_control.out contains "comment_counted=yes" else "ascii-comment: a :: comment in a Glow source is prose and must be counted"
+assert glow_control.out contains "indented_counted=yes" else "ascii-comment: leading whitespace must not hide Glow prose from the meter"
+assert glow_control.out contains "with_code_counted=yes" else "ascii-comment: a header comment on a desk that also holds rune lines must still be counted"
+
+# Program content is never counted -- the one distinction that makes a sweep safe.
+assert glow_control.out contains "cord_counted=no" else "ascii-comment: a Glow cord literal is what a program carries, never prose"
+assert glow_control.out contains "cord_marker_counted=no" else "ascii-comment: a :: INSIDE a cord literal is content -- a meter reading any :: on the line would rewrite what a desk carries"
+assert glow_control.out contains "bare_counted=no" else "ascii-comment: a rune line with no comment contributes nothing"
+assert glow_control.out contains "trailing_counted=no" else "ascii-comment: a trailing :: after code is the named undercount, since telling it from a cord is parsing"
+
+# AND THE UNDERCOUNT IS REPORTED RATHER THAN SILENT. Both sibling meters name their trailing-comment
+# blind spot in prose and neither prints it, so a reader cannot tell an empty blind spot from a
+# large one. This meter counts what it declines to read and says so on its own line: zero across all
+# 451 tracked sources on the lap it was seated, and two in the pen that plants both shapes.
+assert glow_control.out contains "trailing_reported=yes" else "ascii-comment: the meter must COUNT the lines it declines to read -- a blind spot nobody can measure is the same blind spot with better manners"
+
+assert glow_control.out contains "vendor_excluded=yes" else "ascii-comment: vendored sources are not ours to convert"
+assert glow_control.out contains "total_is_three=yes" else "ascii-comment: three planted prose files carry one character each, and nothing else may be counted"
+
+# The symlink skip, planted in the third language before the fault has ever fired there. This tree
+# tracks no symlinked `.glow` today, and REDS %340 is what a link beside its target costs when the
+# skip is missing: a rise nobody had written.
+assert glow_control.out contains "symlink_skipped=yes" else "ascii-comment: a symlink must not be counted a second time in Glow either -- one set of bytes counts once"
+assert glow_control.out contains "symlink_target_kept=yes" else "ascii-comment: skipping a link must drop the duplicate rather than the file"
+
+# The ceiling, from both sides.
+assert glow_control.out contains "clean_pen_under_ceiling=yes" else "ascii-comment: a clean Glow pen must read under the ceiling"
+assert glow_control.out contains "over_ceiling_refuses=yes" else "ascii-comment: one character past the Glow ceiling must refuse, or the ceiling is decoration"
+assert glow_control.out contains "removed_returns_green=yes" else "ascii-comment: removing the plant must return the Glow reading to green, or the refusal is a latch"
+
+# The same three instrument readings, one language over (REDS %513).
+assert glow_control.out contains "broken_instrument_named=yes" else "ascii-comment: a Glow meter whose awk refuses must say instrument=failed, never count a zero"
+assert glow_control.out contains "broken_instrument_refuses=yes" else "ascii-comment: a broken Glow instrument must never answer under_ceiling=yes"
+assert glow_control.out contains "unreadable_verdict=ok" else "ascii-comment: a present file the Glow meter cannot open must be named rather than counted as clean"
+assert glow_control.out contains "absent_counted=yes" else "ascii-comment: a path staged and gone must be skipped and COUNTED in the Glow meter too"
+assert glow_control.out contains "absent_is_fatal=no" else "ascii-comment: an absent path must never be fatal"
+
+let glow_living = run ["sh" "tools/fixtures/g/glow_comment_ascii_scan.sh"]
+assert glow_living.ok else "ascii-comment: the living Glow scan must complete"
+say glow_living.out
+assert glow_living.out contains "instrument=ok" else "ascii-comment: the living Glow reading must say its instrument ran"
+assert glow_living.out contains "under_ceiling=yes" else "ascii-comment: non-ASCII in Glow comments rose above the ceiling -- convert on touch rather than raising it"
+
 let rye_proven = where (lines control.out) as l: l contains "=yes"
 let shell_proven = where (lines shell_control.out) as l: l contains "=yes"
-say "ascii-comment: ${length rye_proven} Rye and ${length shell_proven} shell behaviors proven in throwaway repositories, counted off each pen rather than recited -- a total carried inside a sentence stays at whatever it was on the day somebody typed it (REDS %110)."
+let glow_proven = where (lines glow_control.out) as l: l contains "=yes"
+say "ascii-comment: ${length rye_proven} Rye, ${length shell_proven} shell and ${length glow_proven} Glow behaviors proven in throwaway repositories, counted off each pen rather than recited -- a total carried inside a sentence stays at whatever it was on the day somebody typed it (REDS %110)."
 
-say "GREEN: ascii-comment -- authored comments in all three of this tree's languages stand under ceilings that only fall, each printed above as its scan's own output rather than recited here, with every reading proven on planted repositories and counted off the pen above, both ceilings proven from both sides, the symlink skip planted in both languages, and -- since REDS %513 -- each meter proven to NAME a refused instrument rather than answer a clean zero over files it never opened. Each meter counts comments and refuses to count program content, which is the one distinction that makes a sweep safe rather than a rewrite of what programs print."
+say "GREEN: ascii-comment -- authored comments in all three of this tree's comment syntaxes -- `//` in Rye, `#` in Rishi and shell, `::` in Glow -- stand under ceilings that only fall, each printed above as its scan's own output rather than recited here, with every reading proven on planted repositories and counted off the pen above, all three ceilings proven from both sides, the symlink skip planted in every language, and -- since REDS %513 -- each meter proven to NAME a refused instrument rather than answer a clean zero over files it never opened. Each meter counts comments and refuses to count program content, which is the one distinction that makes a sweep safe rather than a rewrite of what programs print; two of the three must dodge a multi-line literal to manage it, and Glow's own tokenizer does that job for the third."

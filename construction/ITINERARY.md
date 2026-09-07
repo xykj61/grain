@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `45f4703b66` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `b3bdff6dd9` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE ONE READING THE GATE QUESTION TURNS ON NOW READS ZERO, AND READING IT WRONG WAS A ONE-LINE PREDICATE.**
 Elder [shelved](archive/20260907-121623_itinerary-landed-accounts.md). Row `20260907.121623` CLOSED
@@ -142,23 +142,25 @@ counted by one reading, dropped by the other. **I did not widen it** -- it re-gr
 unmeasured. **Both pins returned from the rebase at their ceilings** -- REDS held 520 bytes
 for a three-field row, this card none. **Yours:** may a lap correct its own grader?
 
-**PHEROMONE -- A METER THAT READ ONE OF TWO INSTRUMENTS.**
-Row `20260907.122532` **BOOKED**;
-[folded](archive/REDS-the-meter-that-read-one-of-two-instruments-rows-566.md). Last lap's named
-seam, taken: `glow_desk_reach_scan.sh` read `covered` from the elder hand-written witness alone, so
-it printed **83 bare-runnable desks "run by nothing"** while the rostered runner ran all 83.
-`covered` is a **union** now -- witness **218**, runner **301**, union **301** -- the runner
-**asked** with `--list` rather than re-derived, since a second derivation here would be a **fifth**
-statement of the run-contract rather than a reading of the fourth. **`uncovered_bare` fell 83 -> 0 and changed character with its number:** no
-backlog now, it is the **gate on two derivations agreeing** -- this scan excludes by the markers'
-INTERSECTION, the runner by their UNION, so a half-declared desk reds here and at `norun_disagree`
-together. **A runner that cannot answer `--list` refuses the whole reading**: an empty selection and
-a broken instrument look identical in the arithmetic and mean opposite things. **Control 60 -> 81**,
-the bare gate's refusal proven live by **muting the runner**. **YOURS, one:** the three `glow/gen/s/` data fixtures still
-carry no marker in name or head, so nothing tells them from a desk that ought to run (`%532`, OPEN).
+**PHEROMONE -- THE ASCII LAW HELD TWO COMMENT MARKS, AND A THIRD LANGUAGE OF OUR OWN SAT OUTSIDE IT.**
+Row `20260907.144002` **BOOKED**, [folded](archive/REDS-the-third-comment-mark-rows-575.md).
+`ascii_comment_witness` held `ascii-first.md` for `//` in Rye and `#` in Rishi and shell; its head
+said **"ONE LAW, TWO COMMENT SYNTAXES"**. **Glow spells a comment `::`**, and its
+**451 sources were read by no ASCII meter at all**: **942 characters across 342 files**, where the
+elder's `20260825` sweep read 2,163 files, no `.glow`. **The third meter needs no escape
+hatch, and the language gives the reason:** where Rye must dodge a `\\` multiline string and shell a
+heredoc, `glow/tokens.rye:239` refuses a newline inside a cord. So **all 942 sit in comments and
+none in program content**, measured not inherited. **The blind
+spot is PRINTED** where the siblings leave theirs in prose: a trailing `::` goes unread and
+`trailing_unread` counts it, **zero**. Control **14**, ceiling both ways; ratchet **942**,
+falling only. **Next: the sweep.**
 
-**PHEROMONE, prior round -- the derived runner** (`20260907.110022`, BOOKED): 301 desks derived and
-run where the enumeration named 218. [Folded](archive/20260907-122532_itinerary-landed-accounts.md).
+**AND THE COLD OPEN'S TWO REDS WERE THIS CARD'S OWN LINK** -- the Bakery line named `rows-571` where
+that row folded to **`rows-570`**, **the class firing a line above the paragraph naming it**. Both
+GREEN. Three came hot on one root, my row over the REDS pin, closed by that fold; the
+rebase then renumbered it off a peer's published number -- the spine's 7th firing. Prior rounds
+[folded](archive/20260907-144002_itinerary-landed-accounts.md). **Yours:** a mistyped link here reds
+eight ships.
 
 **INCENSE -- FOUR FIRINGS BY REBASE, AND A WALL THAT READS THE INDEX.** Elder
 [shelved](archive/20260907-144041_itinerary-landed-accounts.md). `%524` **CLOSED**, recovered whole

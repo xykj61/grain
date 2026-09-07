@@ -450,3 +450,5 @@ at a closed fold.*
 *Row %572 folded to [`REDS-a-reader-that-walks-past-its-subject-rows-572.md`](REDS-a-reader-that-walks-past-its-subject-rows-572.md) on `20260907.123640`, **CLOSED** -- a marker binds to the const beneath it, and a reader that skips what it cannot parse answers about a stranger.*
 
 *Row %573 folded to [`REDS-a-page-that-calls-itself-living-rows-573.md`](REDS-a-page-that-calls-itself-living-rows-573.md) on `20260907.153154`, **BOOKED** -- a page that declares itself Living is not testimony, whatever its filename says.*
+
+*Row %575 folded to [`REDS-the-third-comment-mark-rows-575.md`](REDS-the-third-comment-mark-rows-575.md) on `20260907.151835`, **BOOKED** -- a guard names its languages, so it covers only the ones somebody named.*
