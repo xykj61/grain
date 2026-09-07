@@ -32,7 +32,10 @@ loom witness=fleet_call_witness control_cases=22 fail=0
 loom helper=fleet_call dry_run candidates=24 refused_foreign=18 peer_trees=5 would_send=1 refused_self=4 refused_unknown=1
 loom roster=cold scoped guards_run=137 seconds=857 green=133 red=3 gated=1
 loom pin=construction/ITINERARY.md bytes_peak=41315 bound=40960 bytes_after_fold=40765
-file tools/fixtures/s/seat_prompt_figure_control.sh the bare sed -i replaced by a write through a temporary, with the BSD suffix behavior named in the comment
+obs Correction, added after the send: the sed half of this repair WITHDREW TO A PEER. The rebase onto xy/main brought their version of seat_prompt_figure_control.sh, repaired the same hour with sed_inplace from shell_portable.sh and the sourcing line to match -- a better repair than my inline temporary, because it reaches the tree's own named helper. Theirs was adopted whole and mine dropped; the readlink half, which was mine alone, stands. That is the ninth time this ledger records a finding meeting its peer inside one hour.
+obs And the row renumbered before it was ever pushed. A peer published their own %549 at 20260907.084022 while this lap ran; mine was booked at 20260907.081135 and was still unshared, so mine moved to %553 under the rule that renumbering is confined to unshared rows. The stamp is the key and it did not move. Second correction of the same shape today, and the shelf dedupe of %440 fired TWICE inside this one lap -- once per rebase.
+obs The forking flake fired again. standing_equipment was the only red left in the closing pass at 137 green, and GREEN when run alone on the same tree -- a fifth reading for COPAL's open question, and still no way from inside a pass to tell a fork race from a fault.
+file tools/fixtures/s/seat_prompt_figure_control.sh the sed -i repair, WITHDRAWN -- a peer landed sed_inplace there first and their file was adopted whole
 file tools/f/fleet_call.sh recovered from the stash, and its readlink -f cwd resolver replaced by a subshell cd plus pwd -P
 file tools/f/fleet_call_witness.rish recovered whole, GREEN on 22 pen behaviors before anything was claimed
 file tools/fixtures/f/fleet_call_control.sh recovered whole, the pen that proves the helper on real processes
