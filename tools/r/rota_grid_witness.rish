@@ -1,0 +1,63 @@
+# tools/r/rota_grid_witness.rish -- the rota grid is an instruction to open twenty documents, and
+# fifteen of them are written in a form no link wall reads.
+#
+#   rishi/bin/rishi run tools/r/rota_grid_witness.rish
+#
+# The 5 x 3 council grid in `recursion-prompts/seed/autonomous-loop.seed.md` is the one mechanism
+# returning this tree's canon to living awareness on a schedule: each lap deep-reads one row -- the
+# threshold page first, then its three seats. Measured at fleet scale `20260906.213125`, eight ships
+# read the five rows 11, 12, 13, 20 and 12 times across 105 logs, so every document comes back
+# roughly daily. That whole promise rests on twenty paths being right.
+#
+# NO GUARD WAS READING THOSE TWENTY PATHS AS A SET. The five thresholds are Markdown links; the
+# fifteen seats are backticked bare paths, and `tools/fixtures/r/readme_reach_scan.sh` follows links
+# alone. Fold a seat and the grid goes on naming a dead path in silence, while whatever OTHER citer
+# linked that file reds instead -- so the repair lands over there and the grid stays wrong.
+#
+# THE DRIFT THAT ACTUALLY HAPPENED IS INVISIBLE TO EVERY LINK WALL BY CONSTRUCTION. Earth-Cardinal
+# changed hands `20260905`, from `context/specs/20260627-102012_one-clock-naming-law.md` to
+# `foundations/20260905-154954_the-clock-and-the-mark.md`, because a rota reads foundations and the
+# mark law sat on no seat at all. The change reached the grid and not the Earth threshold page -- the
+# FIRST thing an earth lap reads. **Both paths exist and both resolve.** Nothing was broken; the door
+# opened on the seat it had replaced, which only a check comparing the door against the grid can see.
+# A lap obeying the door got the clock half of the concern and missed the mark half, which was the
+# whole reason the seat moved. Measured `20260907`: fourteen of fifteen seats agreed, and the one
+# that did not was in the row being read that morning.
+
+say "rota-grid: Language EN -- the twenty paths the canon's own schedule rests on."
+say "rota-grid: Style Gauge, Meter -- three readings gated at zero, two reported."
+say "rota-grid: Lens TAME -- bounds named at 5 rows and 3 seats, and every refusal shown from both sides."
+
+say "rota-grid: the control -- sixteen behaviors on a grid built for the purpose, in a pen..."
+let ctl = run ["sh" "tools/fixtures/r/rota_grid_control.sh"]
+assert ctl.ok else "rota-grid: the control refused --\n${ctl.out}\n${ctl.err}"
+assert ctl.out contains "pass=16 fail=0" else "rota-grid: the control did not prove sixteen behaviors --\n${ctl.out}\n${ctl.err}"
+
+say "rota-grid: and the living grid answers..."
+let scan = run ["sh" "tools/fixtures/r/rota_grid_scan.sh"]
+# invariant: a refusal reports BOTH streams. `run` returns `out` and `err` separately, and this
+# scan writes every refusal to stderr -- so `${scan.out}` alone leaves the roster's evidence page
+# saying a guard stopped without saying why. Measured `20260907`: of 75 rostered witnesses that
+# assert on a scan's `ok`, 14 report stdout alone and 3 report both.
+assert scan.ok else "rota-grid: the scan refused --\n${scan.out}\n${scan.err}"
+
+# invariant: the shape is reported before any fault count, so a reader can tell a healthy grid from
+# a grid the parser could not see. A scan that printed only faults would read zero on both.
+assert scan.out contains "rows=5" else "rota-grid: the grid no longer parses five element rows"
+assert scan.out contains "cells=15" else "rota-grid: the grid no longer parses fifteen cells"
+
+# invariant: every path the grid names exists. A lap sent to a moved file reads nothing and its log
+# records the row all the same, so absence here is silent by construction.
+assert scan.out contains "unresolved=0" else "rota-grid: the grid names a document that is not on disk --\n${scan.out}"
+
+# invariant: every threshold page carries its three modality headings. The heading is the door a lap
+# walks through first; without it there is nothing to check the seat against.
+assert scan.out contains "sections_missing=0" else "rota-grid: a threshold page lost a modality section --\n${scan.out}"
+
+# invariant: each modality section names its own cell's seat. This is the drift that opened the row:
+# a seat may change hands in the grid and leave the door pointing at the seat it replaced.
+assert scan.out contains "seat_undeclared=0" else "rota-grid: a threshold page routes its reader to a seat the grid retired --\n${scan.out}"
+
+assert scan.out contains "verdict=ok" else "rota-grid: the grid reads drifted --\n${scan.out}"
+
+say "GREEN: rota-grid -- twenty paths named, twenty on disk, and every door opens onto the seat the grid seats."

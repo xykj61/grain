@@ -5,7 +5,7 @@
 **Style:** Gauge, Field setting (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
 **Status:** Living -- the earth row's threshold page, read first on its rota lap; seated 20260826 on Keaton's word
-**Kin:** [`20260826-014901_the-panchanga.md`](20260826-014901_the-panchanga.md) -- `kyri/receipt.rye` (the two palettes) -- [`../context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md) -- [`../context/TWO_ROOMS.md`](../context/TWO_ROOMS.md) -- [`20260703-202312_the-marked-value.md`](20260703-202312_the-marked-value.md)
+**Kin:** [`20260826-014901_the-panchanga.md`](20260826-014901_the-panchanga.md) -- `kyri/receipt.rye` (the two palettes) -- [`20260905-154954_the-clock-and-the-mark.md`](20260905-154954_the-clock-and-the-mark.md) -- [`../context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md) -- [`../context/TWO_ROOMS.md`](../context/TWO_ROOMS.md) -- [`20260703-202312_the-marked-value.md`](20260703-202312_the-marked-value.md)
 
 Earth is the Mercury row, and its question is the concrete one: what already
 stands true, before anyone argues with it? A stamp on a filename, a status line
@@ -55,20 +55,35 @@ fact uses grain; one that finds the ground still unresolved uses mist; a
 deliberate scent-check at a door uses incense; and a lap that leaves a field
 honestly resting tags it fallow rather than forcing a harvest from it.
 
-## Cardinal: The One-Clock Naming Law
+## Cardinal: The Clock and the Mark
 
-`context/specs/20260627-102012_one-clock-naming-law.md` seats the row's
-initiating fact: one clock, one order, one name per stamp. The law replaced
-three colliding count schemes with `YYYYMMDD-HHMMSS` filenames, so a stamp is
-unique across the whole tree and the name points at exactly one file. Living
-documents keep plain names; dated artifacts carry the stamp; the folder says
-what kind of thing, the stamp says when. The addendum of 20260724.205009 seats
-the zone by IANA name -- America/New_York on this bench -- and the witness
-holds four duties: shape, monotonicity, zone, and provenance within 900 seconds
-of the live clock. Aroma reads this document at the filename itself: the stamp
-is the grain of the whole system, the concrete fact a reader takes in before
-opening the file. A lap takes in a malformed or fabricated stamp the way a nose
-catches smoke -- instantly, at the door, ahead of any argument the body makes.
+`foundations/20260905-154954_the-clock-and-the-mark.md` seats the row's
+initiating fact, and it carries two halves. **The clock says when**: one clock,
+one order, one name per stamp. The naming law replaced three colliding count
+schemes with `YYYYMMDD-HHMMSS` filenames, so a stamp is unique across the whole
+tree and the name points at exactly one file. Living documents keep plain names;
+dated artifacts carry the stamp; the folder says what kind of thing, the stamp
+says when. That half's canon is
+[the one-clock naming law](../context/specs/20260627-102012_one-clock-naming-law.md),
+whose `20260724.205009` addendum seats the zone by IANA name -- America/New_York
+on this bench -- and whose witness holds four duties: shape, monotonicity, zone,
+and provenance within 900 seconds of the live clock.
+
+**The mark says what**, and promises only what the work can keep: a stamp and a
+name -- `the standing movement (20260821-142939)` -- rather than a counted rung,
+because a number written into a name is a forecast that reads like a fact. Nine
+announced ladders, measured against what they reached, make the case in one
+table, and a census of work already done keeps its number, since it forecasts
+nothing. Both halves are law in
+[`stamp-and-name`](../.claude/rules/stamp-and-name.md).
+
+**This seat changed hands on `20260905`, and the reason belongs to the row.** The
+mark law sat on no rota seat while the clock law sat on this one, so the concern
+had one half of itself in a spec and the other half nowhere. Aroma reads both at
+the door: the stamp off the filename, the promise off the name beside it. A lap
+takes in a fabricated stamp the way a nose catches smoke -- instantly, ahead of
+any argument the body makes -- and takes in an announced length the same way,
+asking the one question that sorts them: could this number turn out to be wrong?
 
 ## Fixed: The Two Rooms
 
