@@ -14,6 +14,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260907.013921` | [the half of a walk-back that travels](20260907/20260907-013921_the-half-of-a-walk-back-that-travels.kyri) | a floating hash closed; a word list 56 days stale. |
 | `20260907.013145` | [the send that met its own fold coming back](20260907/20260907-013145_the-send-that-met-its-own-fold-coming-back.kyri) | a fold withdrawn; a number moved twice. |
 | `20260907.011253` | [rebuilt what the box already held](20260907/20260907-011253_the-lap-that-rebuilt-what-the-box-already-held.kyri) | Two reds, one root; the parked paper GREEN. |
+| `20260907.011322` | [a row nobody could read](20260907/20260907-011322_a-row-nobody-could-read.kyri) | a refusal taught to name its own repair. |
 | `20260907.010542` | [the guard caught a peer on its first rebase](20260907/20260907-010542_the-guard-caught-a-peer-on-its-first-rebase.kyri) | rule 4 priced: 3 renumbers, 0 sweeps. |
 | `20260907.010354` | [the list that stood in for a population](20260907/20260907-010354_the-list-that-stood-in-for-a-population.kyri) | a hand-written desk list covered 218 of 352. |
 | `20260907.005819` | [one operator, three claims](20260907/20260907-005819_one-operator-three-claims.kyri) | a plant meter sized by an operator that means three things. |

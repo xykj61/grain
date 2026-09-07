@@ -92,6 +92,11 @@ reading=$(find "$root/session-logs/date" -type f \( -name '*.kyri' -o -name '*.b
   -v law="$born_on_shelf_day" -v pin="$pin" '
   # The living pin: one row per day, naming a count and the shelf that holds it.
   FILENAME == pin {
+    # Every day this pin MENTIONS, whether or not the line parses as a row. The strict match below
+    # decides what counts as a row; this remembers what the page talked about, so a malformed row can
+    # be told from an absent one.
+    if (match($0, /20[0-9][0-9][01][0-9][0-3][0-9]/))
+      pin_seen_day[substr($0, RSTART, RLENGTH)] = 1
     if (match($0, /^\| `20[0-9][0-9][01][0-9][0-3][0-9]` *(\*\*open\*\*)? *\|/)) {
       match($0, /20[0-9][0-9][01][0-9][0-3][0-9]/); d = substr($0, RSTART, RLENGTH)
       split($0, c, "|"); n = c[3]; gsub(/[ *]/, "", n)
@@ -127,7 +132,19 @@ reading=$(find "$root/session-logs/date" -type f \( -name '*.kyri' -o -name '*.b
   }
   END {
     for (d in day_shelf) {
-      if (!(d in pin_count)) { pin_missing++; print "no_pin_row: " d; continue }
+      if (!(d in pin_count)) {
+        pin_missing++
+        # A ROW THE PARSER CANNOT READ IS NOT A MISSING ROW, and saying so is the difference between
+        # a reader finding the fault in a minute and finding it in ten. `pin_seen_day` records every
+        # line of the pin that CONTAINED this day, so a row plainly on the page that failed the strict
+        # match is named as malformed with the shape it needed -- learned `20260907` when a pin row
+        # reading "`20260906` closed" reported as absent and sent its author hunting a regex.
+        if (d in pin_seen_day)
+          print "pin_row_malformed: " d " -- a line names this day yet does not match the row shape; want: | `" d "` | <count or **open**> | [link] |"
+        else
+          print "no_pin_row: " d " -- the pin carries no line naming this day at all"
+        continue
+      }
       if (d == newest) continue
       if (pin_count[d] == "open") continue
       # An empty shelf carries zero rows rather than no reading; unset would compare unequal to "0"
