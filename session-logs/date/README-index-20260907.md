@@ -14,6 +14,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260907.123841` | [The meter that read one of two instruments](20260907/20260907-123841_the-meter-that-read-one-of-two-instruments.kyri) | covered is a union; bare gate 83 -> 0. |
 | `20260907.111550` | [the ratchet whose only repair was the defect](20260907/20260907-111550_the-ratchet-whose-only-repair-was-the-defect.kyri) | 301 desks derived and run; %565. |
 | `20260907.120346` | [The day that had not started](20260907/20260907-120346_the-day-that-had-not-started.kyri) | %567: a census whose day was "today" refused every midnight. |
+| `20260907.114054` | [a cadence nothing counts](20260907/20260907-114054_a-tier-is-only-a-cadence-if-something-counts-the-beats.kyri) | 58 guards, 0 receipts, 5 red on the first sing. |
 | `20260907.105712` | [A declared absence is not breakage](20260907/20260907-105712_a-declared-absence-is-not-breakage.kyri) | %562: 88 of 173 lost were honest rows. |
 | `20260907.103608` | [a door and the wall behind it](20260907/20260907-103608_a-door-and-the-wall-behind-it.kyri) | %565: a door of 16 over a roof of 12. |
 | `20260907.102349` | [the door has two keys](20260907/20260907-102349_the-door-has-two-keys.kyri) | doorway 48 -> 37; the DOOR clause. |
@@ -24,7 +25,6 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260907.093227` | [the key held and the view moved](20260907/20260907-093227_the-key-held-and-the-view-moved.kyri) | a whole lap recovered from the round-open stash. |
 | `20260907.093147` | [the room emptied by the motion that confirms](20260907/20260907-093147_the-room-emptied-by-the-motion-that-confirms.kyri) | %557: a pass clears what it answered. |
 | `20260907.092303` | [existence is not coverage](20260907/20260907-092303_existence-is-not-coverage.kyri) | the Tally caller map read 19 of 68. |
-| `20260907.114054` | [a cadence nothing counts](20260907/20260907-114054_a-tier-is-only-a-cadence-if-something-counts-the-beats.kyri) | 58 guards, 0 receipts, 5 red on the first sing. |
 | `20260907.083428` | [the box works, what it cannot do is commit](20260907/20260907-083428_the-box-works-what-it-cannot-do-is-commit.kyri) | a lost lap landed, row `20260907.083054`. |
 | `20260907.081756` | [the map a guard writes for itself](20260907/20260907-081756_the-map-a-guard-writes-for-itself.kyri) | a row made checkable; two repaired by trace. |
 | `20260907.081627` | [a duplicate fills the hole it would have left](20260907/20260907-081627_a-duplicate-fills-the-hole-it-would-have-left.kyri) | %536 BOOKED; two reds closed. |
