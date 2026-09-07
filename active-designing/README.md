@@ -13,7 +13,7 @@
 
 
 **Language:** EN
-**Last updated:** 2026-08-27 (`20260827.173952` -- coverage stated honestly against a 94-document room; the resolver named as the way to a file the index does not carry)
+**Last updated:** 2026-09-07 (`20260907.015907` -- the room at the door named: a brief here carries its two-rooms token in its Status line, where this door had stayed quiet while supplying 31 of the doorway's 44 unnamed pages; elder refresh `20260827.173952`, coverage stated honestly against a 94-document room)
 **Molted:** `20260827.173952` -- in place, under checkpoint `3a606a8ac9`
 **Kin:** [`../.claude/rules/design-rooms.md`](../.claude/rules/design-rooms.md) (which shelf a piece belongs on) - [`../active-development/README.md`](../active-development/README.md) (its sibling room) - [`../construction/CHECKPOINTS.md`](../construction/CHECKPOINTS.md) (the walk-back) - home is [`../README.md`](../README.md)
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
@@ -65,6 +65,19 @@ Ideas flow one way across the boundary: a concept learned in external research, 
 ## One clock, one order
 
 Dated briefs carry `YYYYMMDD-HHMMSS_short-sprig.md` filenames; this README is the living foundation and reverse-chron index. Full naming law: [`../context/specs/20260627-102012_one-clock-naming-law.md`](../context/specs/20260627-102012_one-clock-naming-law.md).
+
+## The room at the door
+
+A brief here carries a `**Status:**` line, and that line names which of the two rooms it speaks
+from -- one of `checkable`, `vision`, `mixed`, or `research for understanding`, glossed at
+[`../context/TWO_ROOMS.md`](../context/TWO_ROOMS.md). The token rides beside whatever else the
+line says, so `**Status:** Living, mixed -- ...` answers where the page stands in its life and
+which register it speaks from, both in one line.
+
+[`../tools/t/two_rooms_doorway.rish`](../tools/t/two_rooms_doorway.rish) reads that token on every
+cadence pass and names every page whose Status has yet to carry one. This room supplies **756 of
+the 975** pages it reads and **31 of the 44** it names (measured `20260907`), which is what earned
+this section: the rule stood in canon and on the roster, and this door had yet to mention it.
 
 ## Design briefs (newest first)
 

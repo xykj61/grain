@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `88790efa2e` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `442dc597ba` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE BOX HELD A DAY'S INSTRUMENTS, AND THE LAP THAT BUILT THEM DIED IN ITS HOT PASS.**
 Landed whole from `stash@{0}`, witnesses **56 + 24 behaviors, faults 0**: `scope_rank` --
@@ -123,24 +123,24 @@ recovery**: `pkill -f` matches a NAME, and eight ships run one name from eight t
 not a file**, so `%291` never reached it. **Yours:** a helper seating call over `kill`; the star's
 4.79 against 10.6x; may I tool the shelf sort (`%440`, twelfth firing)?
 
-**PETRICHOR -- THE METER ENFORCING A TREE-WIDE WORD BAN READ A FOURTEENTH OF THE TREE.** The elder
-account is [shelved](archive/20260907-013015_itinerary-landed-accounts.md); its carried question is
-answered here. Row (`20260907.060813`) BOOKED, cited by stamp until the spine binds it. `duty1` read `$ROSTER`
-its whole life -- the **60** pages the docs meter weighs for links and bytes -- while the
-vocabulary laws govern **767** living pages. **A page roster and a prose roster answer two questions**, and one duty had been
-reading the wrong one. Repaired: `living_prose_roster.sh` derives **379** pages from `git ls-files`,
-`retired_word_scan.sh` holds the reading, and duty1 now prints **zero** across all of them.
-**The sharper half was a subtraction:** `corpus` LEFT the list. `vocabulary_collection_witness`
-holds it at zero over 391 pages, ENFORCED, with a pattern telling a prose use from an identifier;
-the word-boundary copy named **135 lines** that guard had ruled lawful -- **two ears on one
-sound, the cruder one loud.** The silence means something now: `retired_word_control.sh`
-plants **nine shapes** on real git history, both directions, asserted from a witness that otherwise
-refuses nothing. **YOURS, a measurement rather than a repair:** across 379 living
-pages the eleven checkable bans have **zero** unlawful uses -- every hit a retirement record,
-testimony, or a landed ledger row. **The bans won, and nobody had measured it.**
-**Still yours:** `%530` is countable -- **three** citations, all in `construction/archive/`, a
-three-line move on your word; and ASCII-first reads comments, never what a tool **prints** --
-**5,511** non-ASCII printed lines across **1,584** files, read by nothing.
+**PETRICHOR -- THE ASCII LAW NAMES THREE SUBJECTS, AND THIS TREE'S GUARDS SPEAK IN A FOURTH.**
+Elder [shelved](archive/20260907-075107_itinerary-landed-accounts.md); new row (`20260907.075107`)
+BOOKED, by stamp. Both comment meters refuse *program content*, since converting a
+string changes what a program prints. **One exclusion, two questions:** a
+heredoc is fed ONWARD and converting it changes behavior; a `say` line is said TO A PERSON, and
+converting it changes **register** -- the thing the law governs. **The card's own 5,511 counted every
+non-comment line, grep patterns included.** Over **2,387** `.rish` sources, **6,847 of 6,923** non-comment
+lines are two shapes (`say`, `assert ... else`), carrying **11,154 characters in 1,516 files**
+against the **505** the comment meter holds in those same files under that same law. **10,789
+(96.7%) are the six forms the rule spells**, **365** notation a reader chooses a word for -- printed
+apart, one work and one taste. Rostered `tier cadence`. **NOT MINE:** a spoken line is
+none of the law's three subjects, so **extending that list is your word**. **Three reds closed, all mine** -- `index_row_bound`,
+`reds_spine_derive`, and `stash_record`: **two of my own laps stood unlanded**, one holding an
+unlanded repair -- `foundations_link_scan.sh` wrote a **constant `/tmp` path every ship here owns at
+once**; `shared_pen` 54 to 53.
+**YOURS, THE ONE I COULD NOT CLOSE:** `two_rooms_doorway` reads **46 pages naming no room against a
+ceiling of 44**, `tier cadence` -- **unseen by any lap-tier pass**; the source repair lands
+here, the 46 stay its own declined judgment. **Still yours:** `%530`, three citations in `construction/archive/`.
 **PHEROMONE -- A LIVENESS READING MOVES UP A GENERATION WHEN THE LAUNCHER DOES.**
 (`20260907.065808`) BOOKED by stamp, folded on its own lap. A pass whose lap ended minutes
 before refused my cold open while the runner read `parent=alive group_leader=alive lap=alive` --

@@ -96,7 +96,14 @@ root=${SHARED_PEN_ROOT:-.}
 # `let`-held name. Both belong to the LOCA surface lane and both need a booted simulator to prove
 # GREEN, so they are named here for their owner rather than edited blind from a Linux pier. This
 # ceiling falls to 4 the moment they take `mktemp -d` pens, and to 0 when the other four do.
-files_ceiling=${SHARED_PEN_FILES_CEILING:-54}
+#
+# LOWERED AGAIN 20260907.075107 to 53: `tools/fixtures/f/foundations_link_scan.sh` traded
+# `/tmp/fls_links.txt` and `/tmp/fls_bad.txt` -- two names fixed at WRITE time, so every ship on
+# this pier owned them at once -- for `${TMPDIR:-/tmp}/fls-pen-$$`, made and trapped. That repair
+# had been written days earlier and never landed; it came back out of a round-open stash, which is
+# why this file is the one that taught `a hold contended is a hold that loses`. The wipe ceiling is
+# left where the lane that raised it put it; this lap touched only the file it repaired.
+files_ceiling=${SHARED_PEN_FILES_CEILING:-53}
 wipe_ceiling=${SHARED_PEN_WIPE_CEILING:-6}
 
 cd "$root" 2>/dev/null || { echo "verdict=no_root"; echo "refused: $root is not a directory" >&2; exit 1; }

@@ -28,6 +28,14 @@
 #   The two exemptions hold: an http link and a bare anchor are left alone, since neither is a
 #   claim about a path on disk.
 #
+# AND THE ANSWER MUST BE THIS RUN'S. The scan wrote its link list to `/tmp/fls_links.txt`, a name
+# fixed when the file was written rather than when it runs, so every run of it anywhere on the pier
+# shared one file. On `20260907.043200` this pier's cold pass refused here and the same scan read
+# GREEN alone two minutes later -- the witness's own control, running beside the pass, wrote its
+# four-link list over the field pass's five hundred and sixteen. The pen is named at run time now,
+# and the control proves BOTH directions of the elder shape: a clean room made to read broken, and
+# a room with a real dead link made to read whole and exit 0. Only the first announces itself.
+#
 # WHAT IS NOT PROVEN. That an anchor names a real heading, that an http link answers, or that a
 # backticked path in prose is current. This proves the clickable surface, and says so.
 #
@@ -53,6 +61,12 @@ assert control.out contains "resolving_accepted=yes" else "foundations-link: a l
 assert control.out contains "http_ignored=yes" else "foundations-link: an http link is no claim about a path on disk"
 assert control.out contains "anchor_ignored=yes" else "foundations-link: a bare anchor is no claim about a path on disk"
 assert control.out contains "control_verdict=ok" else "foundations-link: the control must agree with itself"
+assert control.out contains "elder_false_red=yes" else "foundations-link: a pen named at write time must be shown answering for a peer"
+assert control.out contains "elder_false_green=yes" else "foundations-link: the dangerous direction must be shown -- a broken room read as whole"
+assert control.out contains "repaired_clean_reads_clean=yes" else "foundations-link: the run-time pen must ignore a peer's poison"
+assert control.out contains "repaired_broken_still_refuses=yes" else "foundations-link: the run-time pen must still refuse a real break"
+assert control.out contains "shared_pen_verdict=ok" else "foundations-link: the shared-pen leg must agree with itself"
 say "RED and GREEN paths proven -- a moved target refused and named, a folded target accepted, the two exemptions held"
+say "SHARED PEN proven both ways -- the write-time pen answers for a peer in both directions, the run-time pen for neither"
 
 say "GREEN: foundations-link -- every link a reader clicks in the why-room lands, and the room is no longer invisible to the meters that move it."

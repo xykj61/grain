@@ -1,0 +1,91 @@
+# spoken_ascii_witness.rish -- what a Rishi guard SAYS is prose, and stands under a ceiling that only falls.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/s/spoken_ascii_witness.rish
+#
+# `.claude/rules/ascii-first.md` governs prose, and until this witness the meters holding it read
+# COMMENTS alone -- `//` in Rye, `#` in Rishi and shell. Both refuse to count "program content",
+# and `tools/as/ascii_comment_witness.rish` gives the reason in its own GREEN line: converting a
+# string "changes what a program prints".
+#
+# ONE EXCLUSION, TWO QUESTIONS. Program content is two populations wearing one name. A heredoc body
+# is what a program feeds ONWARD, and converting it changes behavior -- excluded there, excluded
+# here, and that exclusion is what makes a sweep safe. A `say` line is what a program says TO A
+# PERSON, on their terminal and into `session-output/`, and converting it changes register rather
+# than behavior. Register is exactly what the rule governs, so the law's own instrument was blind
+# at the point where the law applies most plainly: a guard's spoken sentence.
+#
+# THE SIZE OF THE BLIND SPOT, measured on the lap this witness was seated, over the same 2,387
+# `.rish` sources the comment meter opens, under the same law, on the same run: 505 characters
+# counted and held, against 11,154 counted by nothing. Twenty-two times the enforced surface. The
+# numbers below are printed as the scan's own output rather than recited here.
+
+say "spoken-ascii: Language EN -- a sentence a guard says out loud is prose, and plain ASCII survives every terminal, pipe, and re-encoding intact."
+say "spoken-ascii: Style Gauge -- every number is measured on this run and printed as the scan's own output, never recited in this file."
+say "spoken-ascii: Lens TAME -- safety first: the meter counts what a guard SAYS and refuses to count what it FEEDS ONWARD. A grep pattern hunting an em dash must contain one, so a meter reading patterns as prose would ask the tree's own guards to go blind. Purely local -- no key, no network, no funds, no device."
+
+let control = run ["sh" "tools/fixtures/r/rish_spoken_ascii_control.sh"]
+assert control.ok else "spoken-ascii: the control must complete"
+say control.out
+assert control.out contains "control_verdict=ok" else "spoken-ascii: the control must reach its own verdict"
+
+# Prose is counted, in both of Rishi's ways of speaking, and behind indentation.
+assert control.out contains "spoken_counted=yes" else "spoken-ascii: a say line is a sentence put in front of a reader and must be counted"
+assert control.out contains "refusal_counted=yes" else "spoken-ascii: an assert ... else message is what a guard says when it refuses, and must be counted"
+assert control.out contains "indented_counted=yes" else "spoken-ascii: leading whitespace must not hide prose from the meter"
+assert control.out contains "notation_counted=yes" else "spoken-ascii: notation outside the rule's table is still non-ASCII in a spoken line and must be counted"
+
+# What is fed onward is never counted. These are the readings that keep a sweep safe -- and the
+# pattern leg is the sharpest, since the tree's own guards search for the very characters counted here.
+assert control.out contains "pattern_counted=no" else "spoken-ascii: a run [...] grep pattern must never be read as prose -- a guard hunting an em dash has to contain one"
+assert control.out contains "binding_counted=no" else "spoken-ascii: a let binding may be fed onward, and following a value is parsing rather than scanning"
+assert control.out contains "no_message_counted=no" else "spoken-ascii: an assert with no else message says nothing, so there is nothing to count"
+assert control.out contains "via_variable_counted=no" else "spoken-ascii: a sentence assembled through a variable is the named undercount, declared in the scan rather than hidden"
+assert control.out contains "comment_counted=no" else "spoken-ascii: a comment belongs to the sibling meter -- charging one character to two ceilings would make each reading depend on the other"
+
+# THE GATE ITSELF, proven by removing it. Every refusal above could also be explained by a plant the
+# meter simply never met, and a refusal proven only in the passing direction cannot be told from a
+# bypass. With `if (!spoken) next` stripped from a copy, the same pen counts the pattern and the
+# binding -- which is what makes the exclusion a mechanism rather than a coincidence of fixtures.
+assert control.out contains "gate_is_load_bearing=yes" else "spoken-ascii: strip the spoken gate and the grep pattern must be counted, or the gate proves nothing"
+assert control.out contains "gate_holds_bindings=yes" else "spoken-ascii: the stripped copy must count the binding too, from the same one deleted line"
+
+assert control.out contains "vendor_excluded=yes" else "spoken-ascii: vendored sources are not ours to convert"
+assert control.out contains "symlink_skipped=yes" else "spoken-ascii: a symlink must not be counted a second time -- git ls-files lists a link and its target as two paths (REDS %340)"
+assert control.out contains "symlink_target_kept=yes" else "spoken-ascii: skipping a link must drop the duplicate rather than the file"
+assert control.out contains "total_is_four=yes" else "spoken-ascii: four planted spoken files carry one character each, and nothing else may be counted"
+
+# TWO NUMBERS, BECAUSE THEY ASK TWO THINGS. `table_forms` is the subset the rule's own substitution
+# table names and spells -- em dash, en dash, middle dot, ellipsis, three arrows -- which a sweep
+# converts mechanically. `notation` is everything else, where a reader chooses the ASCII word rather
+# than a script guessing it. Reported as one total would hide which half is work and which is taste.
+assert control.out contains "table_split=yes" else "spoken-ascii: the six forms the rule spells must land in table_forms -- that is the sweepable number"
+assert control.out contains "notation_split=yes" else "spoken-ascii: notation outside the table must land apart, since it is a reader's judgment rather than a sweep"
+
+# The ceiling, from both sides. There is no override, and none is wanted.
+assert control.out contains "clean_pen_under_ceiling=yes" else "spoken-ascii: a clean pen must read under the ceiling"
+assert control.out contains "over_ceiling_refuses=yes" else "spoken-ascii: one character past the ceiling must refuse, or the ceiling is decoration"
+assert control.out contains "removed_returns_green=yes" else "spoken-ascii: removing the plant must return the reading to green, or the refusal is a latch"
+
+# THE INSTRUMENT ITSELF (REDS %513, inherited from both siblings). Every assert above asks what the
+# meter COUNTED; these ask whether it READ anything. An empty answer from a refused read is
+# byte-identical to an empty answer from a clean file, and the second is the one everyone hopes for.
+assert control.out contains "broken_instrument_named=yes" else "spoken-ascii: a meter whose awk refuses must say instrument=failed, never count a zero"
+assert control.out contains "broken_instrument_refuses=yes" else "spoken-ascii: a broken instrument must never answer under_ceiling=yes -- a green from a meter that read nothing is the worst shape a reading can take"
+assert control.out contains "absent_counted=yes" else "spoken-ascii: git ls-files reads the INDEX, so a path staged and gone must be skipped and COUNTED"
+assert control.out contains "absent_is_fatal=no" else "spoken-ascii: an absent path must never be fatal -- a rebase is exactly when a reading is worth having"
+
+let living = run ["sh" "tools/fixtures/r/rish_spoken_ascii_scan.sh"]
+assert living.ok else "spoken-ascii: the living scan must complete"
+say living.out
+assert living.out contains "instrument=ok" else "spoken-ascii: the living reading must say its instrument ran -- a meter that opened nothing prints a clean ceiling too"
+assert living.out contains "under_ceiling=yes" else "spoken-ascii: non-ASCII in spoken Rishi lines rose above the ceiling -- convert on touch rather than raising it"
+
+# COUNTED OFF THE PEN, BOTH DIRECTIONS. A `_counted=no` is a behavior proven exactly as hard as a
+# `=yes` -- it is the reading that keeps a grep pattern out of a prose ceiling -- so a tally that
+# read only the affirmative half would understate the control by every refusal it owns.
+let affirmed = where (lines control.out) as l: l contains "=yes"
+let refused = where (lines control.out) as l: l contains "_counted=no"
+say "spoken-ascii: ${length affirmed} affirmative readings and ${length refused} refusals proven in a throwaway repository, counted off the pen rather than recited -- a total carried inside a sentence stays at whatever it was on the day somebody typed it (REDS %110)."
+
+say "GREEN: spoken-ascii -- what a Rishi guard says out loud now stands under a ceiling that only falls, printed above as the scan's own output. The meter counts a say line and an assert's refusal message, and refuses to count a grep pattern, a binding, or a comment -- the first because a guard hunting an em dash must contain one, the last because a character charged to two ceilings makes each reading depend on the other. The sweepable subset and the reader's-judgment tail are reported apart, so the next lap converts the first and weighs the second."

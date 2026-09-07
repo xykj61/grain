@@ -12,6 +12,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | Stamp | Log | What it recorded |
 |---|---|---|
 | `20260907.081627` | [a duplicate fills the hole it would have left](20260907/20260907-081627_a-duplicate-fills-the-hole-it-would-have-left.kyri) | %536 BOOKED; two reds closed. |
+| `20260907.075706` | [a fourth surface the law never named](20260907/20260907-075706_a-fourth-surface-the-law-never-named.kyri) | 11,154 spoken characters no meter read. |
 | `20260907.075628` | [the number the broken reading gave](20260907/20260907-075628_the-number-the-broken-reading-gave.kyri) | a guard declined a repair on its own bad count. |
 | `20260907.074407` | [the watch that skipped the bench](20260907/20260907-074407_the-watch-that-skipped-the-bench.kyri) | empty meant unset. |
 | `20260907.072145` | [a proof that exists and a proof that runs](20260907/20260907-072145_a-proof-that-exists-and-a-proof-that-runs.kyri) | the tally roster ran 5 of 11 it claimed. `%547`. |
@@ -26,11 +27,13 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260907.055545` | [the fleet drops to medium](20260907/20260907-055545_the-fleet-drops-to-medium.kyri) | effort medium, live on all seven. |
 | `20260907.054701` | [the box held a day's instruments](20260907/20260907-054701_the-box-held-a-days-instruments.kyri) | two parked laps recovered; the red at zero. |
 | `20260907.053708` | [six processes where one would do](20260907/20260907-053708_six-processes-where-one-would-do.kyri) | width_check 75s to 17s. |
+| `20260907.050637` | [a pen two runs both claimed](20260907/20260907-050637_a-pen-two-runs-both-claimed.kyri) | a constant pen let one guard poison another. |
 | `20260907.050258` | [the room that said it was the corpus](20260907/20260907-050258_the-room-that-said-it-was-the-corpus.kyri) | a parked lap landed; a room was not the corpus. |
 | `20260907.050056` | [the guard that could not see its own shelf](20260907/20260907-050056_the-guard-that-could-not-see-its-own-shelf.kyri) | a scoped pass skipped the shelf's own guard. |
 | `20260907.050053` | [the numbering carries the graph](20260907/20260907-050053_the-numbering-carries-the-graph.kyri) | One counter, two numberings: 36 pieces or one. |
 | `20260907.045406` | [the finding that was parked three times](20260907/20260907-045406_the-finding-that-was-parked-three-times.kyri) | recovered; a claim false for six. |
 | `20260907.043033` | [the fork before the skip](20260907/20260907-043033_the-fork-before-the-skip.kyri) | the slowest guard, 25% faster. |
+| `20260907.023056` | [the word the gloss could not bind](20260907/20260907-023056_the-word-the-gloss-could-not-bind.kyri) | one Status field answered three questions. |
 | `20260907.023053` | [the cores, the rooms, and the serial pass](20260907/20260907-023053_the-cores-the-rooms-and-the-serial-pass.kyri) | 161 guards serial; the deadlock named. |
 | `20260907.021854` | [The mark nothing read](20260907/20260907-021854_the-mark-nothing-read.kyri) | Amphora claimed the wreck rule; Pond kept it. |
 | `20260907.021435` | [one ratchet that held two debts](20260907/20260907-021435_one-ratchet-that-held-two-debts.kyri) | 129 uncovered desks were 83 and 46. |
