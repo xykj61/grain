@@ -32,9 +32,13 @@
 #     every welcome leg above; that failing reading standing green beside the real one is what
 #     tells a working check from one that has merely started saying yes.
 #
-# WHAT IS REPORTED RATHER THAN GATED: adoption. tools/fixtures/p/plant_adoption_scan.sh counts the
-# tracked controls that source the helper, and the floor below only ever RISES -- the mirror of
-# this tree's usual ratchet, because the population being counted is the good one.
+# WHAT IS GATED BESIDE THE PEN: adoption, under a floor. tools/fixtures/p/plant_adoption_scan.sh
+# counts the tracked controls that source the helper and holds that count at or above `floor=13`,
+# declared in the scan and compared there with `-lt`. The floor only ever RISES -- the mirror of
+# this tree's usual ratchet, because the population being counted is the good one -- and a rise
+# passes free, which is a property the pen proves rather than a promise this comment makes.
+# `remainder` is reported and never gated: it counts controls that have not imported the law, some
+# of which plant nothing at all, so it cannot reach zero and was never the ratchet.
 #
 # WHY ADOPTION AND NOT EXPOSURE. Counting the controls that plant without checking needs a rule for
 # telling a plant from a fixture build, and every candidate rule misreads real files today.
@@ -93,10 +97,19 @@ assert control.out contains "OK   stripped_helper_left_the_file_unmutated" else 
 assert control.out contains "OK   real_source_plant_lands" else "plant: the helper must work on a tracked source"
 assert control.out contains "OK   real_source_stale_plant_refuses" else "plant: a stale line in a tracked source must refuse"
 
+# The adoption floor, forced in a real git pen rather than waited for. The first is the leg the
+# elder equality failed: a count ABOVE the floor is adoption, and adoption must pass free.
+assert control.out contains "OK   above_floor_passes_free" else "plant: a count above the floor is a lane adopting the law, and it must never refuse"
+assert control.out contains "OK   at_floor_passes" else "plant: a count standing exactly at the floor must pass"
+assert control.out contains "OK   below_floor_refuses" else "plant: a count that fell below the floor must refuse -- the one direction a floor has an opinion about"
+assert control.out contains "OK   below_floor_names_its_word" else "plant: a fallen floor must name below_floor, a word rather than an exit code"
+assert control.out contains "OK   floor_pen_counts_three_adopters" else "plant: the pen's own adopters must be counted, or the floor legs test nothing"
+assert control.out contains "OK   floor_pen_reads_a_prose_mention_as_remainder" else "plant: a control naming the helper in prose alone is remainder -- the dot command is the import"
+
 say "field GREEN -- a plant that plants nothing says so by name, and the stripped helper proves the saying is load-bearing"
 
 let adoption = run ["sh" "tools/fixtures/p/plant_adoption_scan.sh"]
-assert adoption.ok else "plant: the adoption scan must balance -- read its own lines"
+assert adoption.ok else "plant: the adoption scan refused -- verdict=unbalanced means it miscounted, verdict=below_floor means a control stopped sourcing the law; read its own lines"
 say adoption.out
 
 # A FLOOR THAT ONLY RISES, which is the mirror of this tree's usual ratchet. The population counted
@@ -125,7 +138,17 @@ say adoption.out
 # RAISED AGAIN on `20260907.153000` by DIFFUSER: `topology_occupied_control.sh` was born sourcing the
 # plant law, by the same sibling door -- a control that plants a fault into a copy of its own scan
 # and lifts it again wants the portable spelling from its first line rather than on its first refusal.
-assert adoption.out contains "sourcing=13" else "plant: adoption is a floor that only rises -- thirteen controls source the plant law; raise this line when a lane adopts, never lower it"
-assert adoption.out contains "verdict=ok" else "plant: the adoption arithmetic must sum before it is believed"
+#
+# THE FLOOR MOVED INTO THE SCAN ON `20260907.171500`, AND SO DID THE COMPARISON. Until then this
+# line read `assert adoption.out contains "sourcing=13"`, which is an equality wearing a floor's
+# name: a lane that ADOPTED the law moved the count to 14 and refused the assert, and
+# `construction/standing-equipment.kyri` seats this guard at `tier lap`, so the red landed on every
+# lap of all eight ships until a hand edited this file. The guard refused the one act it exists to
+# reward. `contains` is a substring reading besides, so `sourcing=130` satisfied `sourcing=13` --
+# out of reach at 178 controls, inside it as the corpus grows. Both halves were shown on metal in a
+# pen before the repair. The number is `floor=13` in the scan now, compared with `-lt`, which is
+# the shape `ceiling=57` already keeps in `tools/fixtures/e/exec_bit_scan.sh`; this rung asserts
+# the scan's verdict WORD, so no count is spelled here and no substring reading remains.
+assert adoption.out contains "verdict=ok" else "plant: the adoption arithmetic must sum, and sourcing must stand at or above the floor the scan declares -- raise that floor when a lane adopts, never lower it"
 
 say "plant: GREEN -- one implementation, imported by thirteen controls, proven from both sides on metal"

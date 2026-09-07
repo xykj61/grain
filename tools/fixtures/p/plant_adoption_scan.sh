@@ -23,7 +23,8 @@
 # WHAT THIS DOES NOT CLAIM. That the remainder is unsafe. Some of those controls plant nothing at
 # all; some carry their own correct check in one of five local spellings. The remainder is the
 # population that has NOT yet imported one proven implementation, which is the honest thing this
-# reading can say and the whole of it.
+# reading can say and the whole of it. It follows that the remainder is not the ratchet and cannot
+# be one -- it can never reach zero -- so the number gated below is `sourcing`, under a floor.
 #
 # Run from anywhere; the root is found by upward walk.
 #   sh tools/fixtures/p/plant_adoption_scan.sh          # the counts
@@ -46,6 +47,21 @@ want_list=no
 [ "${1:-}" = "--list" ] && want_list=yes
 
 cd "$_fd_root"
+
+# THE FLOOR RISES, AND IT IS A NUMBER RATHER THAN A SPELLING (`20260907.171500`). This reading was
+# gated in `tools/p/plant_witness.rish` by `assert adoption.out contains "sourcing=13"`, beneath a
+# paragraph calling it "a floor that only ever RISES". An equality is not a floor, and the gap cost
+# two things on metal. A lane that ADOPTED the law -- the one act this number exists to reward --
+# moves the count to 14 and refuses that assert, and `construction/standing-equipment.kyri` seats
+# `guard plant` at `tier lap`, so the red lands on every lap of all eight ships until a hand edits
+# the witness. And Rishi's `contains` is a substring reading, so `sourcing=130` satisfies
+# `sourcing=13` -- out of reach at 178 tracked controls today, inside it as the corpus grows.
+#
+# So the bound lives here and is compared numerically, which is the shape every other ratchet in
+# this tree already keeps -- `ceiling=57` in `tools/fixtures/e/exec_bit_scan.sh`, compared with
+# `-le`, its witness asserting a word rather than the measurement. Raise this when a lane adopts;
+# it may never fall. The chronicle of who raised it and why stays in the witness.
+floor=13
 
 work="$(mktemp -d)"
 trap 'rm -rf "$work"' EXIT
@@ -90,13 +106,26 @@ fi
 
 echo "controls=$controls"
 echo "sourcing=$sourcing"
+echo "floor=$floor"
 echo "remainder=$remainder"
 
-# The arithmetic is stated so a reader can check the reading rather than trust it. A scan whose
-# parts do not sum to its whole has measured something other than what it named.
-if [ "$((sourcing + remainder))" -eq "$controls" ]; then
-  echo "verdict=ok"
-  exit 0
+# The arithmetic is read FIRST and decides alone. A scan whose parts do not sum to its whole has
+# measured something other than what it named, and a floor read off a miscount is a second claim
+# resting on a broken first one.
+if [ "$((sourcing + remainder))" -ne "$controls" ]; then
+  echo "verdict=unbalanced"
+  exit 1
 fi
-echo "verdict=unbalanced"
-exit 1
+
+# WHICH NUMBER IS THE RATCHET. `sourcing` is, and `remainder` is a population this scan reports
+# rather than gates. The remainder cannot reach zero and was never meant to: some of those controls
+# plant nothing at all, and a control that authors its own fixtures has no claim about somebody
+# else's line to check. A floor under the good population moves the only direction adoption can
+# move, so the number to watch rises rather than falls.
+if [ "$sourcing" -lt "$floor" ]; then
+  echo "verdict=below_floor"
+  exit 1
+fi
+
+echo "verdict=ok"
+exit 0

@@ -460,3 +460,5 @@ at a closed fold.*
 *Row %580 folded to [`REDS-the-spelling-the-scan-prescribed-rows-580.md`](REDS-the-spelling-the-scan-prescribed-rows-580.md) on `20260907.160524`, **CLOSED** -- a guard reading one line at a time called two correct scans wrong, and the spelling the scan's own header prescribed was the fix.*
 
 *Row %581 folded to [`REDS-one-checkout-collided-with-itself-rows-581.md`](REDS-one-checkout-collided-with-itself-rows-581.md) on `20260907.160531`, **CLOSED** -- one checkout collided with itself on a ledger number, because an unlanded row is invisible to the allocator that hands them out.*
+
+*Row %576 folded to [`REDS-a-reading-of-nothing-rows-576.md`](REDS-a-reading-of-nothing-rows-576.md) on `20260907.171735`, **BOOKED** -- a scan fed no file at all printed the bytes of a swept tree, and its one caller published that as OK.*

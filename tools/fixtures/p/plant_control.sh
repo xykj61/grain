@@ -187,6 +187,64 @@ note "real_source_stale_plant_refuses" \
   "$(plant_apply "$PEN/diff.rye" 's/^const this_line_never_existed = 1;$/x/' realstale 2>/dev/null && echo landed || echo nothing)" "nothing"
 
 echo
+# --- the adoption floor, which rises ------------------------------------------------------------
+echo "== 6. the adoption floor passes a rise free, where an equality refuses the act it rewards =="
+# WHY A PEN TREE RATHER THAN THE REAL ONE. The floor has three readings -- above, at, below -- and
+# a control that waits for the tree to supply them proves one of the three. The scan finds its root
+# by walking up for `rishi/bin` and `tools/fixtures`, and reads the INDEX with `git ls-files`, so
+# the pen is a real git repository holding real control files.
+#
+# The floor value is moved by `plant_apply`, so the control that proves the plant law is held by it.
+# A floor plant that stopped matching would otherwise leave the elder number in place and hand this
+# phase a verdict answering a question it never asked -- which is REDS %519 exactly, one file in.
+FPEN="$PEN/floor"
+mkdir -p "$FPEN/rishi/bin" "$FPEN/tools/fixtures/p" "$FPEN/tools/fixtures/a"
+cp "$HELPER" "$FPEN/tools/fixtures/p/plant.sh"
+cp "$_fd_root/tools/fixtures/p/plant_adoption_scan.sh" "$FPEN/tools/fixtures/p/plant_adoption_scan.sh"
+for n in one two three; do
+  printf '#!/bin/sh\n. "$r/tools/fixtures/p/plant.sh"\n' > "$FPEN/tools/fixtures/a/${n}_control.sh"
+done
+# The fourth names the helper in prose alone and must read as remainder -- `20260907.145907`'s
+# repair, standing proven here rather than remembered.
+printf '#!/bin/sh\n# this control does not source tools/fixtures/p/plant.sh, and its header says why\n' \
+  > "$FPEN/tools/fixtures/a/four_control.sh"
+(
+  cd "$FPEN" || exit 1
+  git init -q .
+  git config user.email pen@example.invalid
+  git config user.name pen
+  git config commit.gpgsign false
+  git add -A
+  git commit -qm pen
+) >/dev/null 2>&1
+
+FSCAN="$FPEN/tools/fixtures/p/plant_adoption_scan.sh"
+
+# floor_verdict N -> "<verdict>:<exit>", the floor moved by the very law under test.
+floor_verdict() {
+  if ! plant_apply "$FSCAN" "s/^floor=[0-9][0-9]*\$/floor=$1/" "floor$1" >/dev/null 2>&1; then
+    echo "plant_matched_nothing:2"
+    return
+  fi
+  _fv_out=$(sh "$FSCAN" 2>/dev/null) && _fv_code=0 || _fv_code=$?
+  echo "$(echo "$_fv_out" | sed -n 's/^verdict=//p'):$_fv_code"
+}
+
+note "floor_pen_counts_three_adopters" \
+  "$(sh "$FSCAN" 2>/dev/null | sed -n 's/^sourcing=//p')" "3"
+note "floor_pen_reads_a_prose_mention_as_remainder" \
+  "$(sh "$FSCAN" 2>/dev/null | sed -n 's/^remainder=//p')" "1"
+# THE LOAD-BEARING LEG. Three controls source the law against a floor of one -- an adoption ABOVE
+# the declared floor, which is exactly what the elder `contains "sourcing=13"` refused, on every
+# lap of every ship.
+note "above_floor_passes_free" "$(floor_verdict 1)" "ok:0"
+note "at_floor_passes" "$(floor_verdict 3)" "ok:0"
+note "below_floor_refuses" "$(floor_verdict 4)" "below_floor:1"
+# A word rather than a number, so a fallen floor can never be mistaken for an exit code.
+note "below_floor_names_its_word" \
+  "$(sh "$FSCAN" 2>/dev/null | grep -c '^verdict=below_floor$')" "1"
+
+echo
 echo "behaviors=$behaviors"
 echo "faults=$faults"
 if [ "$faults" -eq 0 ]; then

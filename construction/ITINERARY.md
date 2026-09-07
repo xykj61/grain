@@ -46,40 +46,39 @@
 
 ### Now -- the live front
 
-**Git nib:** `e216292102` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `c2d9b40f13` -- HEAD's parent, resolvable everywhere (%401).
 
-**BAKERY -- I BUILT A WALL FOR `%524` AND WITHDREW IT, BECAUSE A PEER LANDED ONE FOR THE SAME RED IN THE SAME HOUR AND THEIRS PUBLISHED FIRST.**
-Elder [shelved](archive/20260907-141249_itinerary-landed-accounts.md). The cold open answered
-`guards_red=3`, one root: this card linked `rows-571` where the shelf is `rows-570`. `%524`'s
-**fourth firing** -- and a peer repaired the link and landed **rule six** of
-`tools/hooks/pre-commit` while my own wall was in flight. Theirs stands; mine is withdrawn whole
-rather than roofing one question twice, which is the derived spine's rule applied to a repair
-instead of to a number. **Sixth time in two days** that a finding met its peer inside one hour.
+**BAKERY -- A FLOOR THAT REFUSES A RISE IS AN EQUALITY WEARING A FLOOR'S NAME, AND IT REDS EIGHT SHIPS EVERY LAP.**
+Elder [shelved](archive/20260907-171735_itinerary-landed-accounts.md). Row `20260907.171500`
+**CLOSED**, booked off the fetched spine and cited by stamp until `xy` binds its number.
+`tools/p/plant_witness.rish` held adoption with `assert adoption.out contains "sourcing=13"`, under
+a paragraph reading *"a floor that only ever RISES."* **A lane that ADOPTS the law moves the count
+to 14 and refuses that assert** -- and `guard plant` sits at `tier lap`, so the red lands on every
+lap of all eight ships until a hand edits the witness. The guard refused the one act it exists to
+reward. `contains` is a substring reading besides, so `sourcing=130` satisfies `sourcing=13`; both
+halves shown on metal in a pen. `floor=13` lives in the scan now, compared with `-lt`, arithmetic
+read first, `verdict=below_floor` on a fall -- the shape `ceiling=57` already keeps in
+`exec_bit_scan.sh`. Control **30 -> 36**, the floor proven above, at, and below in a real git pen,
+each floor value moved by `plant_apply` so the control that proves the plant law is held by it.
+**Swept: of 1,864 tracked witnesses, 25 assert a literal non-zero count under floor-or-ratchet
+prose, and this was the only one whose number is the measurement rather than the declared bound.**
+A lantern, not a loom.
 
-**THE TWO WALLS DIFFER, AND THE DIFFERENCE IS YOURS.** Theirs reads the **whole index** (544ms),
-so it sees the rebase class that is three of `%524`'s four firings -- the half no staged-set
-reading can reach. Mine read `readme_reach`'s own findings and kept only the pages **this commit
-staged**, so it could never refuse a commit the roster would accept. **That is the property
-`%524` declined the lap for:** *eight ships run that file, and a mistake in it is a fleet that
-cannot commit.* Theirs refuses on any broken living link anywhere, so **one hand's break now stops
-every ship's commit until somebody repairs it.** I proved the split is buildable -- a pen holding
-two breaks at once where exactly one bites, 26 cases, real commits through the armed hook -- and
-did not land it. **Should the wall refuse for a peer's break, or only for your own?** The pen is
-on `stash@{0}` if the answer is the second.
+**AND THE CARD'S OPEN QUESTION IS ANSWERED WITHOUT A PROXY.** `remainder=165` was never the ratchet
+and cannot be one -- it counts controls that have not imported the law, some of which plant nothing
+at all, so zero is unreachable by construction. **`sourcing` is the ratchet**, it counts the good
+population, and the only direction adoption moves is up. No rule for telling a plant from a fixture
+build is needed, which is the rule its author correctly declined to invent.
 
-**LANDED, AND ITS OWN FINDING** (`20260907.153124`, cited by stamp until `xy` binds it) -- booked one number, and a peer had spent it and the one before it by the time my rebase landed; the stamp is what made the re-seat one line. `plant_adoption_scan.sh` decided
-adoption by grepping the helper's **path**, in a header arguing that sourcing is exact where
-`cmp -s` is a proxy. My control's paragraph explaining **why it does not import the plant law**
-counted as an import, raising `sourcing` 12 to 13 and reding `plant`. **A grep for a path reads
-every mention of it, including the ones that say the opposite.** The reading is the dot command
-now, which all twelve real adopters carry and no comment does. **Still yours:** `remainder=164`
-counts every control that never plants at all, so it can never reach zero and nobody can act on
-it -- the adoption question its author left for your word.
+**The cold open's two reds were one root** -- `%440` again, a duplicate and a misordered row on the
+open day shelf from a peer's rebase; `index_shelf_repair.sh` refuses a duplicate by design (*which
+of two rows to lift is a hand's*), so the lift was mine and the sort was the tool's.
+`standing_equipment` red only because `runs_red=1` counted it.
 
-**AND THE PIER'S OWN CAPACITY, unasked.** Three ships ran full cold roster passes **concurrently**
-on this 4-core pier within one hour; mine took **1,527s** cold and **1,304s** hot against a
-nominal ~1,139. Eight ships x every lap is the pier's whole capacity spent proving one tree.
-`--scoped` exists for exactly this and the cold open does not reach for it.
+**Still yours:** whether a lap's own transcript can be gated at all (`20260907.084022`); which of
+`%530`'s two published rows renumbers; **and the one this lap declined** -- `%519`'s larger half,
+the 94-and-growing controls that mutate a pen without checking. Adoption is now measurable in the
+direction it moves, and a sweep of it is a booked lap rather than a lantern.
 
 **PATCHOULI -- FOUR LAPS OF THIS SEAT'S WORK WERE WRITTEN AND NEVER SENT.**
 Elder [folded](archive/20260907-155612_itinerary-landed-accounts.md); the account is in the
@@ -395,6 +394,6 @@ The logs keep the account; earlier rows are shelved in
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260907.153124` | A wall built for a red a peer had already walled | [log](../session-logs/date/20260907/20260907-153124_a-wall-built-for-a-red-a-peer-had-already-walled.kyri) |
+| `20260907.171500` | A floor that refuses a rise | [log](../session-logs/date/20260907/20260907-171500_a-floor-that-refuses-a-rise.kyri) |
 
 **One row, on purpose** -- a landed lap keeps one line until the next replaces it; the log carries the detail.

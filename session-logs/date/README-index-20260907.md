@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260907.171500` | [A floor that refuses a rise](20260907/20260907-171500_a-floor-that-refuses-a-rise.kyri) | An equality wearing a floor's name reds eight ships every lap. |
 | `20260907.164619` | [The lap that arrived a lap late](20260907/20260907-164619_the-lap-that-arrived-a-lap-late.kyri) | a finished round recovered from the stash. |
 | `20260907.155948` | [a-number-written-four-times](20260907/20260907-155948_a-number-written-four-times.kyri) | A fold shelf spells its number four times; one guard read one. |
 | `20260907.155612` | [The claim a sweep cannot follow](20260907/20260907-155612_the-claim-a-sweep-cannot-follow.kyri) | two laps in one tree booked one ledger number |
