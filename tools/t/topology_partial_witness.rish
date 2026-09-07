@@ -1,0 +1,143 @@
+# tools/t/topology_partial_witness.rish -- a membership never lands on a whole class either, and
+# this binds what the leftover addresses cost.
+#
+#   rishi/bin/rishi run tools/t/topology_partial_witness.rish
+#
+# WHAT IT BINDS. Its sibling `topology_occupied_witness.rish` bound a finding a builder can act on:
+# which addresses you leave empty is a design variable, and at S(7,4) a whole far-end symbol class
+# -- 120 of 840 vertices -- costs nothing measurable, while the same 120 taken at random cost a
+# sixth of the traffic. That paper closed by naming its own falsifier and leaving it unfired:
+#
+#   "A membership landing between whole classes -- 800 on 840, say -- leaves 40 holes with no class
+#    to hide them in, and the finding above is silent on the best partial-class arrangement."
+#
+# `tools/fixtures/t/topology_partial_scan.sh` fires it, and this binds three findings and one
+# method correction. Both are proven breakable through `tools/fixtures/t/topology_partial_control.sh`.
+#
+# THE ANCHOR IS THE FIRST THING BOUND. This scan carries its OWN copy of the builder and the chain
+# rule, because a shell fixture has no import, so S(6,5) must still reproduce 720 points at degree
+# 5 and diameter 7 and S(7,4) must still reproduce 840 at degree 6 and diameter 7, each routed
+# whole. A drifted copy would print confident numbers about the wrong graph.
+#
+# FINDING ONE -- THE LADDER IS REAL AND THE FREEDOM DOES NOT DESCEND IT. The classes of an
+# (n,k)-star nest: fixing the last position of S(7,4) gives 120 vertices, the last two give 20, the
+# last three give 4, all four give 1. That ladder is DERIVED by the falling-factorial closed form
+# and COUNTED by grouping the vertices that actually share each suffix, and the scan refuses when
+# the two disagree. What does NOT survive is the hope that rode on it: emptying a whole class one
+# level DOWN is not free the way emptying a whole far-end class is. Forty-two whole classes of
+# twenty vertices each, every one the same size and every one leaving the shape in one piece, cost
+# between 3 and 491 lost packets of 9,828 -- a hundred and sixty-fourfold spread. Choosing a whole
+# class is not enough; WHICH whole class is the choice that pays.
+#
+# FINDING TWO -- THE LEFTOVER ADDRESSES ARE NEARLY FREE, which is the falsifier answered. At the
+# falsifier's own shape, 800 live on 840, an arrangement that takes its holes in far-end-major
+# order loses 429 of 9,588 to the published rule where the same count scattered loses 1,156. Two
+# more holes than a whole class can hold -- 42, the case the falsifier is actually about -- costs
+# 457 rather than 429. The remainder is a rounding error, not a cliff.
+#
+# FINDING THREE -- THE SAME CONTIGUOUS RUN PARTITIONS OR DOES NOT, DEPENDING WHICH END OF THE
+# ADDRESS IS SIGNIFICANT. A sequential allocator handing out addresses in ordinary lexicographic
+# order -- door-major -- breaks S(6,3) into three components at 20 holes of 120, leaving 600 pairs
+# unreachable. The same 20 holes taken in far-end-major order leave one component and a diameter
+# that has not moved. This is one line of allocator code, and it is the difference between a
+# network that is partitioned and one that is whole.
+#
+# AND THE METHOD CORRECTION, bound because the finding depends on it. Targets are sampled from the
+# WHOLE address space and held fixed across arrangements, rather than sampled from each
+# arrangement's own live set as the sibling scan samples them. Scored the sibling's way at three
+# targets, `class_partial` read BEST of the five arrangements; at fifteen it read WORST by a factor
+# of fourteen. A three-target sample is enough to see that holes cost something and far too few to
+# say which arrangement costs less, so the default is twelve and every line prints how many targets
+# it used and how many the hole set killed.
+#
+# WHY IT IS `tier cadence`. The scan runs about five minutes and the control about two, which is
+# heavy for a lap and ordinary for a cadence. The cost is real work rather than waste: every live
+# pair of every arrangement is routed by three rules, and 42 whole classes are each emptied in turn
+# and routed. What IS sampled is the target, and every line says so.
+
+say "topology-partial: Language EN -- a membership lands between whole classes, so the leftover addresses are the ordinary case."
+say "topology-partial: Style Gauge, Meter -- every packet routed, every class emptied in turn, nothing recalled."
+say "topology-partial: Lens TAME -- the rule read as well as run; bound the sample, say why."
+
+say "topology-partial: the scan builds the ladder, arranges the holes five ways, and empties 42 classes..."
+let scan = run ["sh" "tools/fixtures/t/topology_partial_scan.sh"]
+# invariant: the scan stands green before any reading of it is trusted.
+assert scan.ok else "topology-partial: the scan refused --\n${scan.out}"
+assert scan.out contains "verdict=ok" else "topology-partial: the scan did not reach its own green --\n${scan.out}"
+assert scan.out contains "refusals=0" else "topology-partial: the scan named a refusal --\n${scan.out}"
+assert scan.out contains "legs=all" else "topology-partial: a reduced run must never be read as a full one"
+assert scan.out contains "sizes=default" else "topology-partial: a reduced size list must never be read as the full set"
+assert scan.out contains "holes=default" else "topology-partial: a reduced hole list must never be read as the full set"
+assert scan.out contains "targets=12" else "topology-partial: the target count that makes a ranking stable must be the one that ran"
+
+say "topology-partial: table-free is read off the rule, never inferred from its answer..."
+# invariant: no routing function reads the breadth-first distance array -- the one fault the
+# output cannot show, since a rule that consulted the walk would print perfect delivery.
+assert scan.out contains "purity routing_functions_reading_distance_array=0" else "topology-partial: a routing rule reads the distance array, so free routing would be a claim about nothing"
+
+say "topology-partial: the anchor -- this file carries its own builder, so it must reproduce both siblings..."
+# invariant: S(6,5) still reproduces the seated star reading at 720 points.
+assert scan.out contains "anchor n=6 k=5 points=720 degree=5 diameter=7 chain_optimal=720/720" else "topology-partial: S(6,5) no longer reproduces the star graph at 720 points"
+# invariant: S(7,4) still reproduces the headline shape both sibling papers measured.
+assert scan.out contains "anchor n=7 k=4 points=840 degree=6 diameter=7 chain_optimal=840/840" else "topology-partial: S(7,4) no longer reproduces the sibling reading at 840 points"
+
+say "topology-partial: the nested ladder, derived by the closed form and counted on the graph..."
+# invariant: the sizes a hole set can be built from at S(7,4) are 120, 20, 4 and 1, and the derived
+# and counted readings agree -- a ladder nobody counted would be a claim rather than a reading.
+assert scan.out contains "radix n=7 k=4 points=840 ladder=120,20,4,1" else "topology-partial: the nested class ladder of S(7,4) moved"
+assert scan.out contains "radix n=6 k=3 points=120 ladder=20,4,1" else "topology-partial: the nested class ladder of S(6,3) moved"
+assert scan.out contains "radix n=7 k=4 level=2 fixed_positions=2 classes=42 class_size_derived=20 class_size_counted=20" else "topology-partial: the level-2 classes of S(7,4) are no longer 42 of 20"
+
+say "topology-partial: the falsifier, answered -- 800 live on 840, holes taken in far-end order..."
+# invariant: the published rule loses 429 of 9,588 with the holes arranged, against 1,156 scattered.
+# That is the falsifier's own count of holes, at its own shape, arranged two ways.
+assert scan.out contains "deliver n=7 k=4 arrangement=nested holes=40 rule=blind targets=12 targets_dead=0 pairs=9588 delivered=9159 holehit=429" else "topology-partial: the arranged bill at 800 live on 840 moved"
+assert scan.out contains "deliver n=7 k=4 arrangement=spread holes=40 rule=blind targets=12 targets_dead=0 pairs=9588 delivered=8432 holehit=1156" else "topology-partial: the scattered bill at 800 live on 840 moved"
+# invariant: and the naive heuristic -- keep the holes inside one far-end class, taken door-major --
+# is WORSE than scattering them. A reader must not take "cluster the holes" from this finding.
+assert scan.out contains "deliver n=7 k=4 arrangement=class_partial holes=40 rule=blind targets=11 targets_dead=1 pairs=8789 delivered=7379 holehit=1410" else "topology-partial: the one-class heuristic no longer reads worse than scattering"
+
+say "topology-partial: the two addresses no class can hold, which is what the falsifier is about..."
+# invariant: 42 holes -- two whole classes plus a remainder of two -- cost 457 where 40 cost 429.
+# The leftover is a rounding error rather than a cliff, which is the whole answer to the doubt.
+assert scan.out contains "deliver n=7 k=4 arrangement=nested holes=42 rule=blind targets=12 targets_dead=0 pairs=9564 delivered=9107 holehit=457" else "topology-partial: the cost of a remainder no class can hold moved"
+
+say "topology-partial: the packet that carries its own trail still delivers everything..."
+# invariant: every reachable pair of every arrangement, and the arrangement is worth an order of
+# magnitude in what the trail costs -- 11 entries and 0.05 hops arranged, 26 and 0.81 unarranged.
+assert scan.out contains "deliver n=7 k=4 arrangement=nested holes=40 rule=trace targets=12 targets_dead=0 pairs=9588 delivered=9588 holehit=0 deadend=0 bail=0 unreachable=0 stretch_max=3 stretch_mean=0.050 max_visited=11" else "topology-partial: the retreating rule's arranged cost moved"
+assert scan.out contains "deliver n=7 k=4 arrangement=class_partial holes=40 rule=trace targets=11 targets_dead=1 pairs=8789 delivered=8789 holehit=0 deadend=0 bail=0 unreachable=0 stretch_max=19 stretch_mean=0.814 max_visited=26" else "topology-partial: the retreating rule's unarranged cost moved"
+assert scan.out contains "trace_undelivered=0" else "topology-partial: the retreating rule left a reachable pair undelivered"
+
+say "topology-partial: whole classes of equal size are not interchangeable, and this is the spread..."
+# invariant: 42 whole level-2 classes, every one twenty vertices and every one leaving the shape in
+# one piece, cost between 3 and 491 lost packets. Emptying "a whole class" is not the finding; the
+# elder freedom belongs to the FAR-END class and does not descend the ladder below it.
+assert scan.out contains "offset_range classes=42 best_holehit=3 worst_holehit=491" else "topology-partial: the spread across equal whole classes moved"
+assert scan.out contains "offset n=7 k=4 class_index=32 class_size=20 far=6 next=3 spare=1 live=820 components=1 live_diameter=7 targets=12 targets_dead=0 blind_pairs=9828 blind_delivered=9337 blind_holehit=491" else "topology-partial: the dearest whole class moved"
+
+say "topology-partial: the same run, read from the other end of the address, partitions or does not..."
+# invariant: twenty holes of S(6,3) taken door-major leave THREE components and 600 unreachable
+# pairs; the same twenty taken far-end-major leave one component and an unmoved diameter.
+assert scan.out contains "sweep n=6 k=3 arrangement=block holes=20 live=100 targets=10 targets_dead=2 components=3 live_diameter=5 blind_pairs=390 blind_delivered=390 blind_holehit=0 unreachable=600" else "topology-partial: door-major allocation no longer partitions at twenty holes"
+assert scan.out contains "sweep n=6 k=3 arrangement=nested holes=20 live=100 targets=10 targets_dead=2 components=1 live_diameter=5 blind_pairs=990 blind_delivered=972 blind_holehit=18 unreachable=0" else "topology-partial: far-end-major allocation no longer holds the shape together at twenty holes"
+# invariant: and the partitioned line is bound by its own count, because 390 of 390 delivered reads
+# as perfection until the 600 pairs the shape refused stand beside it.
+assert scan.out contains "unreachable_pairs=5640" else "topology-partial: the pairs the shape refused are no longer counted"
+
+say "topology-partial: the whole finding in one line, absences printed as counted zeros..."
+# invariant: a witness can bind a line that says zero and cannot bind a line that is missing, so
+# the readings whose meaning is "this never happened" are counted rather than left to silence.
+assert scan.out contains "summary configs=117 anchors=2 radix_rows=7 partitioned=20 nested_blind_lost=1275 block_blind_lost=2582 spread_blind_lost=3694 trace_undelivered=0 unreachable_pairs=5640 max_visited=27" else "topology-partial: the summary across 117 configurations moved --\n${scan.out}"
+say "GREEN: topology-partial -- the leftover addresses are nearly free when they are arranged, and which whole class you empty is worth a hundred and sixty-fourfold."
+
+say "topology-partial: the control plants each fault and lifts it again..."
+let control = run ["sh" "tools/fixtures/t/topology_partial_control.sh"]
+# invariant: every refusal this witness rests on is shown from the failing side too.
+assert control.ok else "topology-partial: the control refused --\n${control.out}"
+assert control.out contains "failed=0" else "topology-partial: the control did not prove every behavior --\n${control.out}"
+assert control.out contains "pen copy reads exactly what the tree reads" else "topology-partial: the pen was not proven innocent"
+assert control.out contains "a plant matching nothing refuses by name" else "topology-partial: a plant that lands nowhere is not proven to refuse"
+assert control.out contains "every arrangement is scored against the same target list" else "topology-partial: the fixed target list is not proven"
+assert control.out contains "door-major contiguous allocation partitions the shape" else "topology-partial: the partition finding is not proven from the failing side"
+say "GREEN: topology-partial -- every refusal bitten, every plant proven to land, and every reading asserted."
