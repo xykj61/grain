@@ -1,0 +1,32 @@
+format session-log-v1
+stamp 20260907.072018
+editor Claude Code, terminal
+provider Anthropic
+product Claude Code
+role Copal -- amphora/ and bron-resins/, the vessels and the crossing
+modality text
+model claude-opus-5
+model_status configured default proven by .claude/settings.json; runtime identity unverified
+voice Kyri
+host Vultr Dallas pier, NixOS, AMD 4/8/180, America/New_York, FLEET_BARE
+title the lap that came back in pieces -- a parked round recovered, and what a park costs in numbers
+prompt the same lap, continued -- the hot pass named a red that turned out to be my own parked work
+rota lap 4145, row 0 -- Aether, the row that hears (recorded in full on this lap's first log, 20260907.063213). The row asks what the work is FOR, and this half answered a narrower question: what a record is for, when the work it records was never published.
+think The hot pass came back with one red, standing_equipment, verdict roster_broken on runs_unrostered=2 -- two guards had RUN on this pier and stood on no roster. Neither name was a tracked file.
+think Following them led to pier/diverged-20260907-055442: three commits of my own, parked by this very round's opening stash, holding both guards. The run ledger is per-pier and gitignored, so it remembered work the tree had forgotten.
+think %499's discriminator decided the shape rather than a guess: the merge-base cf6a17c9fe is still an ancestor of main, so this is the ordinary lost race and the line re-derives whole rather than needing a rewrite.
+obs A PARK COSTS ITS FINDINGS TWICE, AND I PAID BOTH HALVES IN ONE LAP. The parked card block carried an open note -- the fleet's wait-loops poll a bare pgrep -f standing_equipment_run, matching every tree on this pier, so each waits for all six. I hit that exact fault an hour earlier and spent two turns rediscovering it, because the finding was sitting where no lap could read it. A record nobody can reach is not a record.
+obs THE NUMBERS RENUMBERED A SECOND TIME, AND THE STAMP IS WHY IT COST ALMOST NOTHING. The parked lap had already renumbered 535 and 536 to 537 and 538 on its own rebase. While it sat parked, upstream published its own 537 and 538 as well, so recovering it re-seated both a second time: the seat-prompt row to %541 and the shoulder-line row to %542. Four renumberings across two rounds, and every living citation already spelled the stamp, so the whole cost was two shelf renames and no sweep. That is derived-spine rule 4 earning its keep on the exact case it was written for.
+obs TWO OF THE THREE PARKED COMMITS LANDED AND ONE DID NOT, AND STOPPING WAS THE RIGHT ANSWER. The third, 3e65da093, carries ledger bookkeeping upstream has since done differently -- a shelf for %531 and %534 whose rows already stand upstream, one of them byte-identical to the published %530. Forcing that resolution would have written a third copy of rows that exist. It stays parked and named on the card for a hand.
+obs A PARKED SHELF CAN BE REDUNDANT IN A WAY THE LEDGER CANNOT SEE. The recovered shelf's %534 was byte-for-byte the published %530 -- same stamp, 20260907.000030, different number. gaps_or_dupes read zero the whole time, because coverage of 1..N is answered by a duplicate as well as by a unique row; what caught it was duplicate_headlines rising past its ceiling. Two rows can be the same row and the spine cannot tell.
+obs THE COMMIT-MESSAGE WALL CAUGHT THE RENAME I MADE. The recovered commit's body cited the shelf its rows were meant to land on, and I had renamed that shelf while re-seating the numbers. The hook refused the commit and left the message on disk, so the body says where the rows actually stand. A commit message is permanent testimony and this is the one wall that reads it.
+obs AND THE ROSTER RED CLOSED BY LANDING THE WORK RATHER THAN BY EDITING THE RECORD. runs_unrostered fell 2 to 1 when seat_prompt_figure landed, and 1 to 0 when amphora_mark_wreck did; standing_equipment reads verdict=ok. The cheaper repair -- deleting two rows from a gitignored file -- would have made the guard quiet and left the work parked, which is the shape of every instrument anyone ever turned off.
+loom recovery parked_commits=3 landed=2 still_parked=1 base=cf6a17c9fe renumberings=2 shelves_renamed=2 citation_sweeps=0
+loom roster runs_unrostered_before=2 runs_unrostered_after=0 standing_equipment=ok reds_rows=542
+file construction/archive/REDS-a-charter-that-said-how-big-its-lane-was-rows-541.md the seat-prompt row, re-seated and folded on arrival
+file construction/archive/REDS-a-shoulder-line-that-never-read-the-mark-rows-542.md the wreck-rule row, re-seated and folded on arrival
+file tools/am/amphora_mark_wreck_witness.rish recovered and GREEN; it already opened its pen with mktemp -d
+file construction/ITINERARY.md the recovery stated honestly -- two of three -- and the Git nib carried forward
+scope the hot pass's one red, followed to its root and closed by landing the work it named
+status GREEN -- standing_equipment ok, reds_monotone ok at 542 rows, index_row_bound ok, amphora_mark_wreck GREEN, pins under bound
+recommend check in (Keaton) -- 3e65da093 is still parked and its ledger half is superseded upstream; whether to lift its findings by hand or let the branch rest is your word.
