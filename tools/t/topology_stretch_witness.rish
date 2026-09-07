@@ -1,0 +1,89 @@
+# tools/t/topology_stretch_witness.rish -- a diameter is a promise about a road, and this asks
+# whether a router can find that road without being handed a map.
+#
+#   rishi/bin/rishi run tools/t/topology_stretch_witness.rish
+#
+# WHAT IT BINDS. `tools/fixtures/t/topology_stretch_scan.sh` builds seven graphs, walks each one,
+# and then ROUTES every difference through a named rule that reads the two addresses and nothing
+# else. This binds the diameter, the mean, the routed diameter, the routed mean, the count of
+# differences each rule sends by a shortest path, and the stretch -- how many hops the rule gives
+# back. It proves the readings can be broken, through `tools/fixtures/t/topology_stretch_control.sh`.
+#
+# WHY IT SITS BESIDE `topology_attained` RATHER THAN INSIDE IT. That witness answers what diameter
+# a builder can REACH. This one answers what diameter a builder can reach AND ROUTE, which turns
+# out to be a different number for two of the seven shapes. The circulant that walks 9 is routed at
+# 12 by the better of two table-free rules, so three of the five hops it appeared to buy are bought
+# by a table instead. A design argument needs both numbers, and reading only the first is how the
+# sibling's own finding came out half-priced.
+#
+# THE ONE LEG NO OUTPUT COULD CATCH. A routing rule that quietly consulted the breadth-first
+# distance array would print stretch=0 and class=table_free and would be exactly the table-bound
+# case wearing the table-free answer. Every other leg reads hop counts, and a hop count cannot say
+# what the rule looked at. So the scan reads its own source and refuses when a routing function
+# mentions the distance arrays at all, and the control plants that fault twice -- once in a body and
+# once on a declaration line, since a first draft read bodies alone.
+#
+# WHY IT IS `tier lap`. The scan is under two seconds and the control under half a minute, because
+# vertex-transitivity is CHECKED rather than paid for: one walk stands for 720 once six sources
+# spread by a coprime stride agree. Cheap enough to hear every lap.
+
+say "topology-stretch: Language EN -- a diameter you cannot route is a diameter you cannot use."
+say "topology-stretch: Style Gauge, Meter -- every hop walked, every rule named, nothing recalled."
+say "topology-stretch: Lens TAME -- the rule read as well as run; bound the cap, say why."
+
+say "topology-stretch: the scan builds the shapes, walks them, and routes every difference..."
+let scan = run ["sh" "tools/fixtures/t/topology_stretch_scan.sh"]
+# invariant: the scan stands green before any reading of it is trusted.
+assert scan.ok else "topology-stretch: the scan refused --\n${scan.out}"
+assert scan.out contains "verdict=ok" else "topology-stretch: the scan did not reach its own green --\n${scan.out}"
+assert scan.out contains "refusals=0" else "topology-stretch: the scan named a refusal --\n${scan.out}"
+assert scan.out contains "legs=all" else "topology-stretch: a reduced run must never be read as a full one"
+
+say "topology-stretch: table-free is read off the rule, never inferred from its answer..."
+# invariant: no routing function reads a breadth-first distance array, and ten of them are read.
+assert scan.out contains "purity routing_functions=10 reads_distance_table=0" else "topology-stretch: a routing rule reads the distance table, so table-free would be a claim about nothing"
+
+say "topology-stretch: one walk stands for 720 only because six spread sources agree..."
+# invariant: every shape is measured vertex-transitive rather than assumed to be.
+assert scan.out contains "transit torus_12x5x12 sources=6" else "topology-stretch: the seated torus was not checked from more than one source"
+assert scan.out contains "transit star_S6 sources=6" else "topology-stretch: the star at 720 was not checked from more than one source"
+assert scan.out contains "transit star_S7 sources=6" else "topology-stretch: the star at 5,040 was not checked from more than one source"
+assert scan.out contains "agreed=yes" else "topology-stretch: a shape disagreed with itself across sources"
+
+say "topology-stretch: the two shapes whose rule is free and whose answer is optimal..."
+# invariant: the seated torus routes by coordinate subtraction and gives back nothing.
+assert scan.out contains "shape torus_12x5x12 degree=6 diameter=14 mean=7.2100 routed_diameter=14 routed_mean=7.2100 optimal=719 of=719 stretch=0 class=table_free" else "topology-stretch: the seated torus no longer routes optimally with no table"
+# invariant: the star graph reaches half that diameter on one degree less, still with no table.
+assert scan.out contains "shape star_S6 degree=5 diameter=7 mean=4.7900 routed_diameter=7 routed_mean=4.7900 optimal=719 of=719 stretch=0 class=table_free" else "topology-stretch: the star at 720 no longer routes optimally with no table"
+
+say "topology-stretch: the shapes that publish a diameter their rule cannot reach..."
+# invariant: the circulant gives back three hops under the better of two rules, four under the other.
+assert scan.out contains "shape circulant_1_8_75_A degree=6 diameter=9 mean=6.3004 routed_diameter=12 routed_mean=6.6565 optimal=609 of=719 stretch=3 class=table_bound" else "topology-stretch: the circulant's table-free bill moved"
+assert scan.out contains "shape circulant_1_8_75_B degree=6 diameter=9 mean=6.3004 routed_diameter=13 routed_mean=6.6898 optimal=593 of=719 stretch=4 class=table_bound" else "topology-stretch: the second circulant rule moved, so the first may be a straw man"
+# invariant: pancake is the better graph and the worse network, on one group at one degree.
+assert scan.out contains "shape pancake_P6 degree=5 diameter=7 mean=4.5828 routed_diameter=9 routed_mean=5.6579 optimal=296 of=719 stretch=2 class=table_bound" else "topology-stretch: pancake's split between graph and network moved"
+# invariant: bubble-sort is table-free and still worse than the torus, so free is not sufficient.
+assert scan.out contains "shape bubble_B6 degree=5 diameter=15 mean=7.5104 routed_diameter=15 routed_mean=7.5104 optimal=719 of=719 stretch=0 class=table_free" else "topology-stretch: bubble-sort moved, and it is what keeps table-free from reading as a verdict"
+
+say "topology-stretch: the second point on the curve, where the two families are at one degree..."
+# invariant: at 5,040 points and equal degree the star walks 9 and the best torus walks 25.
+assert scan.out contains "shape star_S7 degree=6 diameter=9 mean=5.8797 routed_diameter=9 routed_mean=5.8797 optimal=5039 of=5039 stretch=0 class=table_free" else "topology-stretch: the star at 5,040 moved"
+assert scan.out contains "factor points=5040 best=15x16x21 degree=6 diameter=25 abelian_floor=16" else "topology-stretch: the best degree-six torus at 5,040, or its abelian floor, moved"
+assert scan.out contains "factor points=720 best=8x9x10 degree=6 diameter=13 abelian_floor=8" else "topology-stretch: the best degree-six torus at 720, or its abelian floor, moved"
+# invariant: the wall is reported rather than buried -- the family offers no size in between.
+assert scan.out contains "wall star_sizes_between_720_and_5040=0" else "topology-stretch: the factorial wall must be printed beside the win it limits"
+
+say "topology-stretch: table-free is priced rather than asserted..."
+# invariant: the star rule's scan branch is measured, so its per-hop cost is a number.
+assert scan.out contains "branch star_S6 hops=3444 home_moves=3000 scan_moves=444 scan_share=0.1289 mean_scan=1.703 max_scan=4" else "topology-stretch: the star rule's own per-hop cost moved"
+assert scan.out contains "branch star_S7 hops=29628 home_moves=25920 scan_moves=3708 scan_share=0.1252 mean_scan=1.913 max_scan=5" else "topology-stretch: the star rule's per-hop cost at 5,040 moved"
+say "GREEN: topology-stretch -- seven shapes walked and routed, and two of them route worse than they walk."
+
+say "topology-stretch: the control plants each fault and lifts it again..."
+let control = run ["sh" "tools/fixtures/t/topology_stretch_control.sh"]
+# invariant: every refusal this witness rests on is shown from the failing side too.
+assert control.ok else "topology-stretch: the control refused --\n${control.out}"
+assert control.out contains "behaviors=26 passed=26 failed=0" else "topology-stretch: the control did not prove all 26 behaviors --\n${control.out}"
+assert control.out contains "pen copy reads exactly what the tree reads" else "topology-stretch: the pen was not proven innocent"
+assert control.out contains "verdict=ok" else "topology-stretch: the control did not reach a verdict"
+say "GREEN: topology-stretch -- 26 behaviors, every refusal bitten and every reading asserted."

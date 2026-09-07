@@ -2704,3 +2704,25 @@ guard scope_rank
 path tools/s/standing_equipment_scope_rank_witness.rish
 tier lap
 seated 20260907.045528
+
+# topology_stretch -- whether the diameter a shape PUBLISHES is one a table-free router can reach.
+# Its sibling `topology_routing` prices the shared next-hop TABLE at 720 points on four shapes; this
+# binds the RULE, on seven shapes across two sizes, and the pair divides the subject rather than
+# repeating it. Two of the seven route worse than they walk: the circulant that walks 9 is routed at
+# 12 by the better of two rules reading only the two addresses, so three of the five hops it seemed
+# to buy are bought by a 719-entry table; and pancake, which beats star on mean at one group and one
+# degree, finds a shortest path for 296 of 719 where star finds one for all 719. Bubble-sort is the
+# counterweight -- table-free, exactly optimal, and still worse than the torus at 15.
+# It also reads its OWN source, refusing when a routing function mentions the breadth-first distance
+# arrays -- the one fault no hop count can report, since a rule that consults the table prints the
+# table-free answer. `tier lap` because vertex-transitivity is CHECKED rather than paid for: one walk
+# stands for 720 once six sources spread by a stride coprime to 720 agree, so scan and control
+# together are 29s measured `20260907.095458`.
+# Named `topology_stretch` rather than the draft's `topology_routed`, which stood three letters from
+# the seated `topology_routing` in a roster of 220 -- a grep that cannot separate two guards is a
+# collision whatever the filesystem thinks. It is named for the column it alone reports.
+
+guard topology_stretch
+path tools/t/topology_stretch_witness.rish
+tier lap
+seated 20260907.095458
