@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `3caa7ebc71` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `07a45c01d5` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- HALF OF WHAT THE CENSUS CALLED BREAKAGE WAS THE TREE TELLING THE TRUTH ABOUT A GAP.**
 Row `20260907.105303` **CLOSED** and [folded](archive/REDS-a-declared-absence-is-not-breakage-rows-562.md)
