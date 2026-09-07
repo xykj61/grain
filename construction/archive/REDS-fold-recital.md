@@ -440,3 +440,4 @@ at a closed fold.*
 *Row %563 folded to [`REDS-the-door-a-writer-does-not-open-rows-563.md`](REDS-the-door-a-writer-does-not-open-rows-563.md) on `20260907.104101`, **BOOKED** -- a subject and a moment are different repairs to one guard.*
 
 *Row %564 folded to [`REDS-a-ratchet-whose-repair-is-the-defect-rows-564.md`](REDS-a-ratchet-whose-repair-is-the-defect-rows-564.md) on `20260907.110139`, **BOOKED** -- a ratchet whose only named repair reproduces the defect, and the measurement that opened the other road.*
+*Row %565 folded to [`REDS-a-door-and-the-wall-behind-it-rows-565.md`](REDS-a-door-and-the-wall-behind-it-rows-565.md) on `20260907.103031`, **CLOSED** -- a door promising sixteen over a roof carrying twelve -- only the smaller number was ever a promise.*

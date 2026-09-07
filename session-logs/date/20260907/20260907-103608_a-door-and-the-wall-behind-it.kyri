@@ -1,0 +1,54 @@
+format session-log-v1
+stamp 20260907.103608
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role Copal -- unattended Earth ship, amphora and bron-resins lane
+modality text
+model claude-opus-5
+model_status configured default proven by .claude/settings.json; runtime identity unverified
+configured_model claude-opus-5
+configured_reasoning max
+configured_status tracked settings file, not runtime telemetry
+evidence .claude/settings.json
+voice Kyri
+host NixOS pier, shared by eight ships, America/New_York
+title a door and the wall behind it are two numbers
+prompt the baton -- take the next agent-doable lap in the amphora lane, reds first, grade what you touch
+rota lap 4168, row 3 -- Water, Venus, the row that tastes. Threshold, the Shape You Grew and the Shape You Are, the Happy Zone and the Thin Edge, Growing a Language. The row reads by swallowing and only works up close: read the actual file, run the actual witness, sip the actual code. That instruction is the whole lap. Four instruments stand over amphora/src/main.rye and every one of them reads bounds; none of them poured a season, and the fault was visible only to the binary.
+think Opened with the roster cold and scoped while reading the row, since the pass costs about a thousand seconds and the reading costs none. Clean tree, eight stashes, no dirty index.
+think Read the reds status census before taking new work: 8 open rows, none of them mine, verdict every_status_agrees. So the lap was free for constructive work in the lane.
+think Took the lane's own bounds up close, which is what a water lap is for. amphora/src/main.rye declares max_season_files = 16 with the comment "matches vessel cargo slots" and a couples marker onto vessel_seal.max_cargo, which is 16. Both true about the vessel.
+think Then counted the cargo line by hand off build_cargo_plain: "cargo " is 6, mark_plain_bytes is 11, a space, digest_hex_len is 64, a space, the shortest name is 1, the newline is 1 -- 85 bytes, and max_cargo_bytes is 1024. Twelve lines cost 1020 and fit. Thirteen cost 1105 and do not.
+think Ran it rather than trusting the arithmetic. Built the binary and poured seasons of 10 through 16 one-character files: exit 0 at 10, 11 and 12 with manifest_lines_bytes 880, 968 and 1056, and exit 2 cargo too large at 13, 14, 15 and 16. Four of the sixteen slots the door promised are unreachable at any name length.
+think This is REDS 20260906.193823 exactly, one bound over -- a door welcoming what a wall behind it refuses, refusing late at a wall nothing declared -- and that row's own repair had sized max_manifest_bytes to carry twelve while leaving the door saying sixteen.
+think Why no guard read it: amphora_bounds_agree ties a bound to a partner bound through couples and covers markers, and this relation is a product -- door times line cost against roof -- which no marker in that grammar can spell. So the guard was green and right to be.
+obs The couple was honest about the wrong pair. The vessel really does hold sixteen cargo slots; what a season can pour into them is decided by 1024 bytes over 85. Two right numbers, and the marker between them said equals where the truth was at least.
+obs First draft derived the bound, max_season_files = max_cargo_bytes / min_cargo_line_len, and the roster guard answered partner_absent, verdict=misread. It reads a bound's SPELLED value and evaluates no expression, so a formula is invisible to it. The guard failed safe rather than passing, which is the right direction.
+obs So the literal stayed at 12 and the relation went to the compiler, both ways: max_season_files * min_cargo_line_len <= max_cargo_bytes, and (max_season_files + 1) * min_cargo_line_len > max_cargo_bytes. The second is what keeps a later raise to the roof from leaving this door quietly narrow. One assert answers only the direction it was written for.
+obs Proven by plant on metal: 11 stops the build, 13 stops it, 16 stops it, each at reached unreachable code naming the assert; 12 builds. A bound proven from one side alone cannot be told from a bound nobody checked.
+obs max_cargo_mirror carries the vessel's slot count in main's own max_seal_plain_mirror idiom, because main drives vessel_seal as a subprocess rather than importing it. It wears the elder couples onto vessel_seal and a new covers onto main.max_season_files -- the tree's second declared order relation, where the roster comment recorded one.
+obs Behavior moved by one word and no input. Twelve still pours; thirteen now refuses at the door as season overflow rather than at the roof as cargo too large.
+obs Grade what you touch, and the reading did not move: amphora/src/main.rye reads C+ at 75 both before and after, byte-identical at 24 sentences and 483 words across two different edits to its declaration docs. The card holds declaration docs out of both readings by design and grades the 72-line module head, which this lap never opened. Measurement at molt time closed the frame honestly rather than a rewrite closing it cosmetically.
+obs Two process faults of my own, both caught by the instruments rather than by me. I edited files while the cold pass ran, so it closed run_verdict=tree_moved and its 152 greens describe neither tree -- the runner refusing to average two trees is exactly right, and the reading was void rather than wrong.
+obs And the second hot pass refused run_in_flight: my first one was orphaned when the wrapper waiting on it timed out, so its lock outlived its lap. The runner named the pid, said its parent was gone, and specified kill -TERM rather than -KILL because TERM runs its own EXIT trap and releases the lock. It did, in one command. A refusal that carries its own repair costs a lap seconds; one that carries only a verdict costs a lap an hour.
+obs The hot pass then found the one red this lap actually owed: reds_ledger_headline, measured=558 against headline_total=557. Booking a row moves the spine and the ledger's headline recites it, so the row and the headline land together or the next lap reads a ledger disagreeing with itself. Repaired by the guard's own named writer and re-run green.
+obs Reds first met the hot pass and it answered standing_equipment red at 73s. Alone it reads GREEN -- the sixth firing of the live_group_plant flake, and the FIRST one whose words survived, because construction/standing-equipment-reds/standing_equipment.txt was still standing when I went to read it. That is my own %557 repair working in the wild for the second time.
+obs What the evidence says, and no more than that: the failing leg is live_group_plant=unavailable, so the assert at tools/s/standing_equipment_witness.rish:404 is on the CONTROL's ability to build a fixture rather than on the subject's behavior. The control prints that word deliberately, with a comment saying a host may arrange process groups differently; the witness then asserts ok unconditionally.
+obs I could NOT reproduce the unavailable. Two probes of the plant's own three lines -- sleep in background, read its pgid, ask whether the leader is alive -- read ok both directly and under a nested sh. So the shape that makes it unavailable under a full pass is named and not yet found, and I am not booking a root I cannot reproduce. The next lap's door is the seam above: a control that declares a legitimate host answer, and a witness that reds on it.
+obs A fetch tells you a number is taken; only the REBASE brings the rows that make a higher one gapless. I renumbered %558 to %561 off the fetch alone and reds_ledger_monotone refused at once -- expected row 558, found 561 -- because 558 through 560 live upstream and not yet here. The order is rebase, then renumber, and the row stands at %558 until the send integrates. The stamp is what makes that safe: every living citation spells 20260907.103031, so whichever number the send settles on costs no sweep.
+obs Three send-time faults, each caught by an instrument and each mine. Twice I edited files while a roster pass ran and it closed tree_moved=yes, so those verdicts described neither tree. Once I orphaned a pass by killing the wrapper that waited on it, and the next one refused run_in_flight, named the pid, and specified kill -TERM over -KILL because TERM runs the runner's own EXIT trap -- it released in one command.
+obs And a keep-both conflict resolution duplicated the ledger's census line, which reds_ledger_monotone caught as headline_span_lines=2. Keeping both sides is right for an append-only recital and wrong for a single-valued headline, and the two live in the same file.
+obs My elder account had already been folded upstream to the 104723 shelf while I was folding it to my own. I dropped mine rather than ship one account on two shelves -- %512's shape, which the monotone guard reports by name.
+loom season_files=10 exit=0 manifest_lines_bytes=880
+loom season_files=12 exit=0 manifest_lines_bytes=1056
+loom season_files=13 exit=2 elder_error=CargoTooLarge repaired_error=SeasonOverflow
+loom min_cargo_line_len=85 max_cargo_bytes=1024 door_elder=16 door_repaired=12 unreachable_slots=4
+loom plant=11 build=refused plant=13 build=refused plant=16 build=refused plant=12 build=ok
+loom guard=amphora_bounds_agree covers_declarations=2 covers_hold_count=2 verdict=ok
+file amphora/src/main.rye the door moved to the wall -- max_season_files 16 to 12, min_cargo_line_len named, max_cargo_mirror added with the covers marker, and the relation handed to the compiler both ways
+file construction/REDS.md row 20260907.103031 booked and folded on its own lap; booked %558, landed %565; the send fetch showed xy had spent 558 through 560, so I renumbered to %561 and reds_ledger_monotone refused at expected row 558, found 561
+file construction/archive/REDS-a-door-and-the-wall-behind-it-rows-565.md the shelf, graded A+ at Meter
+file construction/archive/20260907-103031_itinerary-landed-accounts.md the elder Copal account, folded whole
+file construction/ITINERARY.md the Copal block rewritten to 921 bytes, the card at 40,956 of 40,960
+recommend keep-going -- the marker grammar reads bound against bound and this tree's bounds are increasingly derived, so a lap that teaches covers to spell a product would reach the class this one had to hand to the compiler
