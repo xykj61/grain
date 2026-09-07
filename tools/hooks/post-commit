@@ -31,6 +31,28 @@
 # property: a rebase refuses to continue over unstaged changes, so a hook that wrote into the tree
 # mid-replay could wedge the very rebase it was helping. These files are invisible to `git status`.
 #
+# A SECOND DEBT JOINED THE FIRST on 20260906 (REDS 20260906.211529). pre-commit RULE THREE refuses
+# a commit staging a living pin that is over the byte bound its own header declares, and it sits on
+# the same skipped path as rule one -- so a pin can cross its bound inside a rebase-replayed commit
+# and no wall reads it. Measured in a pen with both hooks armed: a fat pin landed by `git rebase`
+# stands at 150 bytes against a bound of 100, `derived-pages-owed` IS recorded, and the next
+# ordinary commit passes free. Six of the last 120 commits touching construction/REDS.md shipped it
+# over its declared bound that way. So this hook records a pin debt beside the page debt, and
+# pre-commit pays it by weighing EVERY rostered pin off the index rather than only the staged ones.
+#
+# WHY THE PIN DEBT IS RECORDED HERE AND NOT MEASURED HERE, which is rule one's reasoning reused
+# rather than restated: this hook runs once per replayed commit, and a rebase of ten commits would
+# pay ten whole-roster readings to answer a question the next commit answers once. Recording costs
+# one `: >`.
+#
+# WHAT THE SECOND DEBT CANNOT DO, said plainly: it refuses the NEXT commit, so a rebase followed
+# immediately by a push ships the over-bound pin once. The tree's own send ritual puts a
+# `git commit --amend` between the two -- the Git nib is rewritten to HEAD's parent after the final
+# rebase -- and git runs pre-commit for an amend, so on the ordinary send path the debt is paid
+# before anything is public. A send that rebases and pushes with no amend is the gap, and it is
+# named rather than closed here, because a pre-push wall is a bigger blast radius than a
+# pre-commit one and wants its own lap.
+#
 # WHAT IT COSTS. Two file tests and at most one `: >` -- microseconds. Rendering here was weighed
 # and declined: the two generators take 3.1s and 9.4s measured on this bench 20260829, and a rebase
 # replaying ten commits would pay two minutes to answer a question the next commit answers free.
@@ -57,18 +79,25 @@ set -eu
 gitdir=$(git rev-parse --git-dir)
 ran="$gitdir/pre-commit-ran"
 owed="$gitdir/derived-pages-owed"
+pins_owed="$gitdir/living-pins-owed"
 
 if [ -f "$ran" ]; then
-  # The commit that just landed ran pre-commit, so rule one had its say -- including the case where
-  # it fired BECAUSE a debt was standing. The debt is paid by the landing, never by the intent.
-  rm -f "$ran" "$owed"
+  # The commit that just landed ran pre-commit, so both rules had their say -- including the case
+  # where either fired BECAUSE a debt was standing. A debt is paid by the landing, never by the
+  # intent.
+  rm -f "$ran" "$owed" "$pins_owed"
   exit 0
 fi
 
 : > "$owed"
+: > "$pins_owed"
 echo "post-commit: this commit did not run pre-commit -- a rebase, a cherry-pick, or a path like"
-echo "  them. The two generated pages were not refreshed with it. The next commit here will do it,"
-echo "  or refresh them now:"
+echo "  them. Two debts are recorded for the next commit here to pay."
+echo "  The two generated pages were not refreshed with it -- refresh them now, or let the next"
+echo "  commit do it:"
 echo "    rishi/bin/rishi run tools/r/readme_metrics.rish write"
 echo "    rishi/bin/rishi run tools/g/geode_libraries.rish write"
+echo "  And no living pin was weighed. Read them all now, or let the next commit refuse if one is"
+echo "  over the byte bound its own header declares:"
+echo "    sh tools/fixtures/p/pin_bound_touch_scan.sh index"
 exit 0

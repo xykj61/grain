@@ -50,7 +50,10 @@
 #   rule two   the ledger's headline -- construction/REDS.md.
 #              Trigger: the ledger or one of its fold shelves is staged at all.
 #   rule three the living pins' byte bounds -- every page on the pin roster.
-#              Trigger: this commit stages a rostered pin at all. Refuses rather than regenerates.
+#              Trigger: this commit stages a rostered pin at all, OR a pin debt stands in the git
+#              directory because a commit landed by a path git skips this hook for. The debt widens
+#              the reading from the staged pins to EVERY rostered one, off the index
+#              (REDS 20260906.211529; tools/hooks/post-commit records it). Refuses, never regenerates.
 #   rule four  a day-shelf row's link -- every shelf index this commit stages.
 #              Trigger: none of its own; the scan reads the staged set and rests at zero shelves.
 #              Refuses rather than regenerates, and names the one repair it can compute.
@@ -73,9 +76,12 @@
 # the sibling that notices and records the debt rule one pays here. `git merge --no-ff` skips both,
 # and this tree's seated send merges --ff-only, which creates no commit and stales nothing. The
 # fascia grade and the rooms-over-bound count can drift from a commit that adds no witness and no
-# module, and this hook is silent about both. Rule three reads
-# a pin only when the round stages it, so a pin that crosses its bound by a hand editing it outside
-# a commit goes unread here. The rostered guards still catch all three at a cold start -- and on
+# module, and this hook is silent about both. Rule three reads a pin only when the round stages it
+# or while a pin debt stands, so a pin that crosses its bound by a hand editing it outside a commit
+# goes unread here until some later unseen landing widens the reading. And the pin debt refuses the
+# NEXT commit, so a rebase followed straight by a push with nothing between them ships an
+# over-bound pin once; the tree's own send puts a Git-nib amend there, which git DOES run this hook
+# for. The rostered guards still catch all three at a cold start -- and on
 # this bench a cold roster pass runs for roughly half an hour, which is the whole reason the fast,
 # frequent half is worth closing here.
 #
@@ -182,12 +188,31 @@ fi
 # and the fixed /bin/sh that repaired that fell to the same wrapper's denied read inside the
 # 20260829 jail. A crash is told from a measurement: the pin prose is spoken only when the report carries the RED
 # detail; a scan that could not measure refuses honestly in its own words, still failing closed.
+#
+# THE SECOND TRIGGER, added 20260906 (REDS 20260906.211529), and it changes WHICH PINS ARE READ
+# rather than whether the rule runs. `staged` weighs a pin only when this commit's own diff names
+# it, and a `git rebase` makes commits that never reach this hook -- so a pin can cross its bound
+# in a replayed commit and be named by no later diff. tools/hooks/post-commit records
+# `living-pins-owed` when a commit lands without this hook running; while that debt stands, the
+# reading widens to `index`: every rostered pin, weighed off the index, which is the state this
+# commit will actually land. The debt is cleared by post-commit when a commit LANDS, never here,
+# for rule one's own reason -- a refusal further down would otherwise forget a debt still owed.
+pin_mode=staged
+if [ -f "$(git rev-parse --git-dir)/living-pins-owed" ]; then
+  pin_mode=index
+fi
 if [ -f tools/fixtures/p/pin_bound_touch_scan.sh ] && [ -f tools/fixtures/l/living_pin_guard_roster.txt ]; then
-  if ! pin_report=$("$scan_shell" tools/fixtures/p/pin_bound_touch_scan.sh staged 2>&1); then
+  if ! pin_report=$("$scan_shell" tools/fixtures/p/pin_bound_touch_scan.sh "$pin_mode" 2>&1); then
     if echo "$pin_report" | grep -q '^detail=RED_touched_pin_over_bound'; then
-      echo "pre-commit: this commit stages a living pin that is over the byte bound its own header" >&2
-      echo "declares. A pin is read in one breath beside a lap, so the overage is spent back out of" >&2
-      echo "the prose rather than carried. Trim the page, or fold it, and commit again." >&2
+      if [ "$pin_mode" = index ]; then
+        echo "pre-commit: a commit landed here by a path this hook never sees -- a rebase, a" >&2
+        echo "cherry-pick -- and it left a living pin over the byte bound its own header declares." >&2
+        echo "This commit is refused until the pin is lawful, because the next push makes it public." >&2
+      else
+        echo "pre-commit: this commit stages a living pin that is over the byte bound its own header" >&2
+        echo "declares. A pin is read in one breath beside a lap, so the overage is spent back out of" >&2
+        echo "the prose rather than carried. Trim the page, or fold it, and commit again." >&2
+      fi
       echo "$pin_report" | grep -E '^(detail_path|detail_bytes|detail_bound|detail_over_by|pin_over)=' >&2
     else
       echo "pre-commit: the pin wall could not MEASURE the staged set, and a wall that cannot" >&2
@@ -195,7 +220,7 @@ if [ -f tools/fixtures/p/pin_bound_touch_scan.sh ] && [ -f tools/fixtures/l/livi
       echo "over-bound pin -- read the scan's own words below and repair the bench or the jail." >&2
       echo "$pin_report" | head -4 >&2
     fi
-    echo "  full reading: $scan_shell tools/fixtures/p/pin_bound_touch_scan.sh staged" >&2
+    echo "  full reading: $scan_shell tools/fixtures/p/pin_bound_touch_scan.sh $pin_mode" >&2
     refused=yes
   fi
 fi

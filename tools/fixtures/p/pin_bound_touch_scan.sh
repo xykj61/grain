@@ -17,6 +17,23 @@
 # disagree about which pages are pins or about how heavy a pin may be, which is the whole content of
 # the two-roofs refusal.
 #
+# A THIRD READING, `index`, JOINED THEM 20260906 (REDS 20260906.211529): every rostered pin,
+# weighed off the index. The partial reading above has a hole in it that its own trigger cannot
+# see. `staged` weighs a pin only when THIS commit's diff names it, which is right for the commit
+# that moves a pin -- and a `git rebase` makes commits that run no pre-commit at all, so a pin can
+# cross its bound in a replayed commit and be named by no later diff. Proven in a pen: a fat pin
+# landed by rebase reads 150 bytes at HEAD against a bound of 100, and the next ordinary commit
+# passes free. `head` is too narrow to close it, because a rebase replays MANY commits and only
+# the last one's tree is readable that way. So the question this mode asks is the honest one --
+# is ANY rostered pin over its bound in the state this commit will land? -- and it is asked off
+# the index for the same reason `staged` is: `git cat-file -s :<path>` is the blob the commit
+# will actually carry, where a worktree read answers about bytes that may never ship.
+#
+# THE COST ARGUMENT ABOVE SURVIVES, because nothing calls this mode on an ordinary commit.
+# tools/hooks/post-commit records a pin debt when a commit lands without pre-commit having run,
+# and tools/hooks/pre-commit reads `index` only while that debt stands -- so the whole-roster
+# reading is paid once per unseen landing rather than on every commit.
+#
 # THE HISTORY. REDS %293 (20260827.164635) found construction/SHRED_PREP.md shipped at 24,676 bytes
 # against the 24,576 its own header declares, and named this exact repair in its own third field:
 # "`git diff --cached --name-only` piped against the pin roster answers the question mechanically
@@ -28,6 +45,7 @@
 #   bash tools/fixtures/p/pin_bound_touch_scan.sh                  # what this commit ships
 #   bash tools/fixtures/p/pin_bound_touch_scan.sh head             # what HEAD shipped
 #   bash tools/fixtures/p/pin_bound_touch_scan.sh worktree         # every pin, off disk
+#   bash tools/fixtures/p/pin_bound_touch_scan.sh index            # every pin, off the index
 #   bash tools/fixtures/p/pin_bound_touch_scan.sh prove-red        # the planted refusal
 #   bash tools/fixtures/p/pin_bound_touch_scan.sh staged --roster <path>   # a pen roster
 #
@@ -46,9 +64,11 @@
 # unreported for four commits. A meter that stops at the first fault reports one number about a set.
 #
 # Proven both ways by tools/fixtures/p/pin_bound_touch_control.sh on real git repositories in a
-# throwaway pen -- 36 cases, every refusal shown from both sides, and five of them arming
-# tools/hooks/pre-commit the way a clone arms it and running real `git commit`s through it, since a
-# wall proven only by its scan is a wall nobody has watched refuse. Gated by
+# throwaway pen -- the pen counts and prints its own `cases_run`, every refusal shown from both
+# sides, six cases arming
+# tools/hooks/pre-commit the way a clone arms it and running real `git commit`s through it, and ten
+# more arming pre-commit AND post-commit together and driving a real `git rebase` through them,
+# since a wall proven only by its scan is a wall nobody has watched refuse. Gated by
 # tools/p/pin_bound_touch_witness.rish.
 #
 # Law: context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md
@@ -106,7 +126,7 @@ MAX_ROSTER_ROWS=64
 
 while [ $# -gt 0 ]; do
   case "$1" in
-    staged|head|worktree|prove-red) MODE=$1 ;;
+    staged|head|worktree|index|prove-red) MODE=$1 ;;
     --roster) shift; ROSTER=${1:-} ;;
     *) echo "detail=RED_unknown_argument"; echo "detail_argument=$1"; echo "verdict=misread"; exit 1 ;;
   esac
@@ -175,7 +195,7 @@ while IFS="$(printf '\t')" read -r path min_bytes header bound_mode || [ -n "${p
 
   # Is this pin in the round's own diff? A whole-line match, so `a/README.md` can never answer for
   # `b/a/README.md`.
-  if [ "$MODE" != worktree ]; then
+  if [ "$MODE" != worktree ] && [ "$MODE" != index ]; then
     printf '%s\n' "$TOUCHED" | grep -qxF "$path" || continue
   fi
 
@@ -183,6 +203,7 @@ while IFS="$(printf '\t')" read -r path min_bytes header bound_mode || [ -n "${p
   BYTES=""
   case "$MODE" in
     staged)   BYTES=$(git cat-file -s ":$path" 2>/dev/null || true) ;;
+    index)    BYTES=$(git cat-file -s ":$path" 2>/dev/null || true) ;;
     head)     BYTES=$(git cat-file -s "HEAD:$path" 2>/dev/null || true) ;;
     worktree) [ -f "$path" ] && BYTES=$(wc -c < "$path" | tr -d ' ') ;;
   esac
@@ -241,5 +262,11 @@ if [ "$OVER_ENFORCED" -gt 0 ]; then
   exit 1
 fi
 
-echo "story=the_round_weighs_the_pin_it_moved"
+# The story names which question was asked, because the two readings answer different ones and
+# a reader of the report should never have to infer the mode from the numbers.
+if [ "$MODE" = index ]; then
+  echo "story=the_commit_after_an_unseen_landing_weighs_every_pin"
+else
+  echo "story=the_round_weighs_the_pin_it_moved"
+fi
 echo "verdict=ok"

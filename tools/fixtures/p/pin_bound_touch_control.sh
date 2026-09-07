@@ -1,10 +1,19 @@
 #!/bin/sh
 # tools/fixtures/p/pin_bound_touch_control.sh -- the pen for pin_bound_touch_scan.sh.
 #
-# Twenty cases on real git repositories in a throwaway directory. Every refusal is shown from both
-# sides -- planted and then removed -- because a refusal proven only in the passing direction cannot
-# be told from a bypass, and every welcome is asserted as hard as every refusal, because a guard
-# that reds on ordinary work is a guard somebody turns off.
+# Cases on real git repositories in three throwaway directories -- the pen counts its own and
+# prints `cases_run`, rather than carrying a total in this sentence that stays at whatever it was
+# the day somebody typed it. Every refusal is shown from both sides -- planted and then removed -- because a refusal proven only in the passing
+# direction cannot be told from a bypass, and every welcome is asserted as hard as every refusal,
+# because a guard that reds on ordinary work is a guard somebody turns off.
+#
+# THE THIRD PEN PLANTS NOTHING (REDS 20260906.211529). Rule three refuses a commit STAGING an
+# over-bound pin, and `git rebase` makes commits git runs no pre-commit for. So the third pen makes
+# two lawful commits, each welcomed by its own wall, editing opposite ends of one pin -- and lets
+# `git rebase` auto-merge them into a blob neither side committed and no wall ever weighed. Measured
+# there: 89 bytes and 91 bytes merging to 119 against a bound of 100. Against HEAD's hooks before
+# the repair the next ordinary commit passed free; against the repaired pair it is refused and the
+# refusal names the pin and the overage.
 #
 # The pen carries its own copy of the bound law with small numbers in it, so a plant is a few bytes
 # rather than twenty-four kilobytes and the per-path exception can be proven without touching the
@@ -40,8 +49,9 @@ pen=$(mktemp -d .mind-state/tmp/pin-bound.XXXXXX) || exit 1
 trap 'rm -rf "$pen"' EXIT
 
 fails=0
-ok() { echo "case=$1 ok"; }
-no() { echo "case=$1 FAILED -- $2"; fails=$((fails + 1)); }
+ran=0
+ok() { ran=$((ran + 1)); echo "case=$1 ok"; }
+no() { ran=$((ran + 1)); echo "case=$1 FAILED -- $2"; fails=$((fails + 1)); }
 
 # The pen wears the root's two markers -- rishi/bin and tools/fixtures -- and mirrors the folded
 # letter rooms, so the copies' depth-proof walk (letter fold, seated 20260828) resolves the pen
@@ -226,6 +236,48 @@ run staged --roster "$roster" | grep -q '^pin_absent=construction/SOFT.md' \
 [ "$(exits prove-red --roster "$roster")" = 1 ] \
   && ok prove_red_nonzero || no prove_red_nonzero "prove-red must exit non-zero"
 
+# --- 13. index mode: every rostered pin, off the index, whether or not the round named it --------
+# The staged reading has a hole its own trigger cannot see, and this is the mode that closes it.
+# Both readings are asserted here, because widening the wrong one would make every commit pay for
+# a whole-roster read.
+fill construction/A.md 50
+fill construction/B.md 50
+fill construction/SOFT.md 50
+fill construction/WIDE.md 50
+( cd "$pen" && git add -A && git commit -q -m "pen: lawful before the index cases" ) >/dev/null 2>&1
+fill construction/A.md 150
+( cd "$pen" && git add construction/A.md && git commit -q -m "pen: a fat pin, landed" ) >/dev/null 2>&1
+echo hello2 > "$pen/notes2.txt"
+( cd "$pen" && git add notes2.txt )
+[ "$(verdict staged --roster "$roster")" = ok ] \
+  && ok index_staged_still_narrow || no index_staged_still_narrow "the staged reading must still ignore a pin this round never named"
+[ "$(verdict index --roster "$roster")" = misread ] \
+  && ok index_sees_untouched || no index_sees_untouched "index mode must weigh a pin no diff names"
+[ "$(key detail_path index --roster "$roster")" = construction/A.md ] \
+  && ok index_names_path || no index_names_path "index mode must name the pin it caught"
+[ "$(key touched_pins index --roster "$roster")" = 4 ] \
+  && ok index_weighs_all || no index_weighs_all "index mode must weigh every rostered pin present"
+fill construction/A.md 50
+( cd "$pen" && git add construction/A.md )
+[ "$(verdict index --roster "$roster")" = ok ] \
+  && ok index_freed || no index_freed "index mode must pass once the pin is lawful in the index"
+run index --roster "$roster" | grep -q '^story=the_commit_after_an_unseen_landing_weighs_every_pin' \
+  && ok index_story_named || no index_story_named "the report must name which question it answered"
+
+# --- 14. index mode reads the index, not the disk -- both directions -----------------------------
+fill construction/A.md 150
+( cd "$pen" && git add construction/A.md )
+fill construction/A.md 50
+[ "$(verdict index --roster "$roster")" = misread ] \
+  && ok index_over_disk || no index_over_disk "a fat blob in the index must refuse though disk is thin"
+fill construction/A.md 50
+( cd "$pen" && git add construction/A.md )
+fill construction/A.md 150
+[ "$(verdict index --roster "$roster")" = ok ] \
+  && ok index_thin_passes || no index_thin_passes "a thin blob in the index passes though disk is fat"
+fill construction/A.md 50
+( cd "$pen" && git add construction/A.md && git commit -q -m "pen: lawful again" ) >/dev/null 2>&1
+
 # --- 13. the wall itself, armed the way a clone arms it and made to refuse a real commit ---------
 # The scan is proven above; this proves the HOOK, by doing. A second pen gets the real
 # tools/hooks/pre-commit, the real default roster path, a fake rishi so the hook's own top gate does
@@ -291,6 +343,122 @@ else
   no hook_present "tools/hooks/pre-commit is the wall this pen arms, and it is absent"
 fi
 
+# --- 15. THE REBASE, DONE FOR REAL: a wall that stands on a path the work does not take ---------
+# REDS 20260906.211529. Rule three refuses a commit STAGING an over-bound pin, and `git rebase`
+# makes commits git runs no pre-commit for -- so the pin the fleet actually ships over its bound is
+# the one no wall ever weighed. This pen proves it by doing, and it plants nothing: every commit
+# below passes its own wall honestly, and the over-bound blob is the one GIT ITSELF writes when it
+# auto-merges two lawful edits to opposite ends of one pin. That is the fleet's ordinary outcome
+# rather than an exotic one -- eight ships, one anointed order, a rebase whenever it moved.
+rebasepen=$(mktemp -d .mind-state/tmp/pin-bound-rebase.XXXXXX) || exit 1
+trap 'rm -rf "$pen" "$hookpen" "$rebasepen"' EXIT
+
+if [ -f tools/hooks/pre-commit ] && [ -f tools/hooks/post-commit ]; then
+  mkdir -p "$rebasepen/tools/hooks" "$rebasepen/tools/fixtures/p" "$rebasepen/tools/fixtures/l" \
+           "$rebasepen/context/specs" "$rebasepen/construction" "$rebasepen/rishi/bin"
+  cp tools/hooks/pre-commit  "$rebasepen/tools/hooks/pre-commit"
+  cp tools/hooks/post-commit "$rebasepen/tools/hooks/post-commit"
+  cp "$scan"   "$rebasepen/tools/fixtures/p/pin_bound_touch_scan.sh"
+  cp "$reader" "$rebasepen/tools/fixtures/l/living_pin_max_bytes.sh"
+  chmod +x "$rebasepen/tools/hooks/pre-commit" "$rebasepen/tools/hooks/post-commit"
+  printf '#!/bin/sh\nexit 0\n' > "$rebasepen/rishi/bin/rishi"
+  chmod +x "$rebasepen/rishi/bin/rishi"
+  cp "$pen/context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md" \
+     "$rebasepen/context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md"
+  printf 'construction/A.md%s10%sPin A%senforce\n' "$TAB" "$TAB" "$TAB" \
+    > "$rebasepen/tools/fixtures/l/living_pin_guard_roster.txt"
+
+  rgit() { ( cd "$rebasepen" && git "$@" ); }
+  rbytes() { ( cd "$rebasepen" && git cat-file -s "HEAD:construction/A.md" 2>/dev/null || echo 0 ); }
+  rcount() { ( cd "$rebasepen" && git rev-list --count HEAD 2>/dev/null || echo 0 ); }
+  rdebt() { [ -f "$rebasepen/.git/living-pins-owed" ] && echo yes || echo no; }
+
+  ( cd "$rebasepen" && git init -q . && git config user.email pen@example.invalid \
+    && git config user.name Pen && git config commit.gpgsign false \
+    && git config core.hooksPath tools/hooks ) >/dev/null 2>&1
+
+  # A base pin of ten short rows, comfortably inside the pen's bound of 100.
+  i=1
+  : > "$rebasepen/construction/A.md"
+  while [ "$i" -le 10 ]; do echo "row $i" >> "$rebasepen/construction/A.md"; i=$((i + 1)); done
+  rgit add -A >/dev/null 2>&1
+  rgit commit -q -m "pen: the pin starts lawful" >/dev/null 2>&1
+  rbase=$( cd "$rebasepen" && git rev-parse HEAD )
+
+  # A peer appends to the END of the pin. Lawful on its own, and its wall welcomes it.
+  rgit checkout -q -b peer
+  i=11
+  while [ "$i" -le 14 ]; do echo "row $i" >> "$rebasepen/construction/A.md"; i=$((i + 1)); done
+  rgit add construction/A.md >/dev/null 2>&1
+  rgit commit -q -m "pen: a peer appends to the pin" >/dev/null 2>&1
+  peer_bytes=$(rbytes)
+
+  # Our own line prepends to the TOP of the pin, from the same base. Also lawful, also welcomed.
+  rgit checkout -q -b mine "$rbase" >/dev/null 2>&1
+  { echo "our head note"; echo "our second note"; cat "$rebasepen/construction/A.md"; } \
+    > "$rebasepen/construction/A.next" \
+    && cat "$rebasepen/construction/A.next" > "$rebasepen/construction/A.md" \
+    && rm -f "$rebasepen/construction/A.next"
+  rgit add construction/A.md >/dev/null 2>&1
+  rgit commit -q -m "pen: our line prepends to the pin" >/dev/null 2>&1
+  mine_bytes=$(rbytes)
+
+  { [ "$peer_bytes" -le 100 ] && [ "$peer_bytes" -gt 0 ] \
+    && [ "$mine_bytes" -le 100 ] && [ "$mine_bytes" -gt 0 ]; } \
+    && ok rebase_both_sides_lawful \
+    || no rebase_both_sides_lawful "each side must be lawful alone -- peer=$peer_bytes mine=$mine_bytes"
+
+  # The debts either side's own landing recorded are cleared, so what stands after the rebase can
+  # only have come from the rebase.
+  rm -f "$rebasepen/.git/living-pins-owed" "$rebasepen/.git/derived-pages-owed"
+
+  rgit rebase peer >/dev/null 2>&1
+  merged_bytes=$(rbytes)
+  [ "$merged_bytes" -gt 100 ] \
+    && ok rebase_merge_crosses_bound \
+    || no rebase_merge_crosses_bound "the auto-merged pin must exceed the bound -- got $merged_bytes"
+  [ "$(rdebt)" = yes ] \
+    && ok rebase_records_pin_debt || no rebase_records_pin_debt "an unseen landing must record a pin debt"
+
+  before=$(rcount)
+  rebout=$( cd "$rebasepen" && echo note > notes.txt && git add notes.txt \
+            && git commit -m "pen: an ordinary next commit" 2>&1 )
+  [ "$(rcount)" = "$before" ] \
+    && ok rebase_debt_refuses_next \
+    || no rebase_debt_refuses_next "the next commit must be refused while a pin stands over bound"
+  printf '%s' "$rebout" | grep -q 'landed here by a path this hook never sees' \
+    && ok rebase_debt_says_unseen || no rebase_debt_says_unseen "the refusal must name the path that skipped the wall"
+  printf '%s' "$rebout" | grep -q '^detail_path=construction/A.md' \
+    && ok rebase_debt_names_path || no rebase_debt_names_path "the refusal must name the pin"
+  printf '%s' "$rebout" | grep -q '^detail_over_by=' \
+    && ok rebase_debt_names_overage || no rebase_debt_names_overage "the refusal must say how far over"
+
+  # The refusal from the other side: trim the pin and the same commit lands.
+  i=1
+  : > "$rebasepen/construction/A.md"
+  while [ "$i" -le 6 ]; do echo "row $i" >> "$rebasepen/construction/A.md"; i=$((i + 1)); done
+  rgit add construction/A.md >/dev/null 2>&1
+  rgit commit -q -m "pen: trim the pin and commit" >/dev/null 2>&1
+  [ "$(rcount)" -gt "$before" ] \
+    && ok rebase_debt_freed_by_trim \
+    || no rebase_debt_freed_by_trim "a trimmed pin must commit -- the refusal proven from both sides"
+  [ "$(rdebt)" = no ] \
+    && ok rebase_debt_cleared_by_landing \
+    || no rebase_debt_cleared_by_landing "a landing that ran pre-commit must clear the pin debt"
+
+  # And with no debt standing, an ordinary commit that names no pin passes free, exactly as before
+  # this rule learned its second trigger. A wall that reds on ordinary work is one somebody turns off.
+  after_trim=$(rcount)
+  ( cd "$rebasepen" && echo more > notes3.txt && git add notes3.txt \
+    && git commit -q -m "pen: an ordinary commit, no debt" ) >/dev/null 2>&1
+  [ "$(rcount)" -gt "$after_trim" ] \
+    && ok rebase_no_debt_ordinary_free \
+    || no rebase_no_debt_ordinary_free "with no debt standing an ordinary commit must pass free"
+else
+  no rebase_hooks_present "tools/hooks/pre-commit and post-commit are the pair this pen arms, and one is absent"
+fi
+
+echo "cases_run=$ran"
 echo "cases_failed=$fails"
 if [ "$fails" -ne 0 ]; then
   echo "verdict=misread"
