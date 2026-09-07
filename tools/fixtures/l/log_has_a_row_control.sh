@@ -164,6 +164,20 @@ o=$(run)
 [ "$(val "$o" verdict)" = pin_shelf_missing ] && echo "pin_gap_bitten=yes" || echo "pin_gap_bitten=no"
 echo "$o" | grep -q 'no_pin_row: 20260901' && echo "pin_gap_named=yes" || echo "pin_gap_named=no"
 
+# 15b -- A ROW THE PARSER CANNOT READ IS NOT A MISSING ROW. A pin line that names the day yet fails
+# the row shape used to report as absent, which sent its author hunting a regex for a row plainly on
+# the page (`20260907`). The two faults are told apart now, and the refusal prints the shape it wants.
+shelfroom; day 20260901; log 20260901 100000; shelfrow 20260901 100000
+day 20260902; log 20260902 100000; shelfrow 20260902 100000
+pintable 20260901:1 20260902:open
+# break the row the way a hand actually breaks it: an extra word in the day cell
+awk '{ if ($0 ~ /^\| `20260901` \| 1 \|/) sub(/`20260901` \|/, "`20260901` closed |"); print }' \
+  "$pen/session-logs/README.md" > "$pen/pin.tmp" && cat "$pen/pin.tmp" > "$pen/session-logs/README.md"
+o=$(run)
+echo "$o" | grep -q 'pin_row_malformed: 20260901' && echo "malformed_told_apart=yes" || echo "malformed_told_apart=no"
+echo "$o" | grep -q 'want: | `20260901` |' && echo "malformed_names_the_shape=yes" || echo "malformed_names_the_shape=no"
+echo "$o" | grep -q 'no_pin_row: 20260901' && echo "malformed_not_called_absent=no" || echo "malformed_not_called_absent=yes"
+
 # 16 -- a closed day whose pin count disagrees with its shelf is bitten, and freed by the repair.
 shelfroom; day 20260901; log 20260901 100000; shelfrow 20260901 100000
 day 20260902; log 20260902 100000; shelfrow 20260902 100000
