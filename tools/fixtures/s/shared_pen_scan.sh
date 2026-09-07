@@ -103,8 +103,30 @@ root=${SHARED_PEN_ROOT:-.}
 # had been written days earlier and never landed; it came back out of a round-open stash, which is
 # why this file is the one that taught `a hold contended is a hold that loses`. The wipe ceiling is
 # left where the lane that raised it put it; this lap touched only the file it repaired.
-files_ceiling=${SHARED_PEN_FILES_CEILING:-53}
-wipe_ceiling=${SHARED_PEN_WIPE_CEILING:-6}
+#
+# THE SIXTH SPELLING, AND THE ONE RAISE IT FORCED (`20260907.163000`). The wipe predicate demanded
+# an `r` or `R` flag, so `rm -f /tmp/name.txt` on a plain file read as a HOLD -- and the hold
+# class was defined by the claim that a writer "may interleave with a peer and survive". That
+# claim was false of exactly those files. `tools/fixtures/s/shipped_binary_claim_scan.sh`
+# truncated a constant name, appended its hits, counted them, and removed the file; on this pier's
+# cold pass of `20260907.150519` that guard read RED in company and GREEN alone, and the roster's
+# own `standing_equipment` reddened behind it. Removing an in-flight FILE takes a peer down
+# exactly as removing a directory does. Two files were repaired in the same lap -- that scan and
+# `tools/fixtures/d/documented_room_scan.sh`, which carried the shape line for line -- and the
+# remaining sixteen are named by `--list` for their owners, five of them the Caravan poll family
+# sharing ONE sentinel path across five witnesses.
+#
+# So `wipe_ceiling` is RE-DERIVED 6 -> 16 rather than raised: the tree did not get worse, the
+# meter started reading what was already there, and holding the elder number would gate on a
+# measurement now known to be narrow. This is the second such re-derivation in this file and it
+# follows the first (`%544`, 4 -> 6) exactly. Two tightenings landed with it, so the widening
+# could not buy its number with noise: a `/tmp` path must begin at a BOUNDARY, which stopped two
+# HAWM witnesses being charged for the Android device path `/data/local/tmp/...`; and a removal is
+# charged to the path it NAMES, within its own command segment, which stopped
+# `tools/l/launch-claude-chapter.rish` being charged for a pen it only tees after removing
+# something else on the same very long line. `files_ceiling` FALLS 53 -> 49 on the same readings.
+files_ceiling=${SHARED_PEN_FILES_CEILING:-49}
+wipe_ceiling=${SHARED_PEN_WIPE_CEILING:-16}
 
 cd "$root" 2>/dev/null || { echo "verdict=no_root"; echo "refused: $root is not a directory" >&2; exit 1; }
 git rev-parse --git-dir >/dev/null 2>&1 || { echo "verdict=no_git"; echo "refused: this scan reads git ls-files" >&2; exit 1; }
@@ -144,8 +166,53 @@ hits=$(printf '%s\n' "$sources" | while read -r f; do
     # 20260906.233225 at "the probe no longer builds" while running GREEN alone one minute later.
     # Substituting a SAME-LENGTH stand-in keeps every column where it stood, so the quote rule and
     # the dollar lookahead below read true positions and there is one matcher rather than two.
-    function norm(l) { gsub(/\$\{TMPDIR:-\/tmp\}/, "___________/tmp", l); return l }
-    function wipes(l) { return (l ~ /rm[ \t]+-[a-zA-Z]*[rR]/ || l ~ /"rm"[ \t]+"-[a-zA-Z]*[rR]/) }
+    # The stand-in is dashes rather than underscores: the path boundary rule below reads the
+    # character before /tmp, and an underscore is a word character, so the elder filler made the
+    # fifth spelling look like the tail of a longer name and freed it. Same length either way, so
+    # every column the quote rule and the dollar lookahead read stays where it stood.
+    function norm(l) { gsub(/\$\{TMPDIR:-\/tmp\}/, "-----------/tmp", l); return l }
+    # A WIPE IS ANY REMOVAL OF THE PEN, RECURSIVE OR NOT -- the sixth spelling, seated
+    # 20260907.163000. The elder predicate demanded an r or R flag, so `rm -f /tmp/name.txt` on a
+    # plain file read as a HOLD, and the header reason for the hold class -- that a writer may
+    # interleave with a peer and survive -- was false of exactly those files. It fired on this
+    # pier cold pass of 20260907.150519: tools/fixtures/s/shipped_binary_claim_scan.sh truncated a
+    # constant /tmp name, appended, counted, and removed it, and the guard read red in company and
+    # GREEN alone. Removing an in-flight FILE takes a peer down exactly as removing a directory
+    # does; the flag says how, never whether.
+    function wipes(l) { return (l ~ /(^|[^A-Za-z0-9_.\/-])rm[ \t]+-/ || l ~ /"rm"[ \t]+"-/) }
+    # WHERE THE rm STANDS ON THE LINE, so a removal is charged to the path it actually names. Any
+    # rm on a line used to mark every /tmp token on that line, which the widening made loud:
+    # tools/l/launch-claude-chapter.rish removes .loop-gates-only and tees a constant pen in one
+    # long command, and the pen is a hold rather than a wipe. Zero means no rm on this line.
+    function rm_at(l,   p) {
+      p = match(l, /(^|[^A-Za-z0-9_.\/-])rm[ \t]+-/); if (p > 0) return p + RLENGTH
+      p = match(l, /"rm"[ \t]+"-/); if (p > 0) return p + RLENGTH
+      return 0
+    }
+    # THE SEGMENT A TOKEN STANDS IN, so a removal never reaches across a command separator. One
+    # line of tools/l/launch-claude-chapter.rish removes .loop-gates-only and, several commands
+    # later in the same line, tees a constant pen: the pen is a hold, and only a reading that stops
+    # at the ; && || | between them can say so. Ordinary prose carrying an ampersand costs nothing,
+    # since a segment with no rm in it is a hold either way.
+    function seg_head(l, pos,   i, c, start) {
+      start = 1
+      for (i = 1; i < pos; i++) {
+        c = substr(l, i, 1)
+        if (c == ";" || c == "&" || c == "|") start = i + 1
+      }
+      return start
+    }
+    function wiped_here(l, pos,   start, p) {
+      start = seg_head(l, pos)
+      p = rm_at(substr(l, start))
+      return (p > 0 && start + p - 1 < pos)
+    }
+    # The recursive form is still read apart, because one rule needs it: the port lock below is
+    # RELEASED with rm -f by design, so the lock exemption asks whether the removal was recursive
+    # rather than whether it happened at all. That keeps both halves of the elder rule -- a real
+    # lock passes free, and a pen wearing a .lock suffix to escape the rule is counted the moment
+    # it is destroyed like a pen.
+    function wipes_recursive(l) { return (l ~ /rm[ \t]+-[a-zA-Z]*[rR]/ || l ~ /"rm"[ \t]+"-[a-zA-Z]*[rR]/) }
     # PASS ONE READS THE ASSIGNMENTS, so a wipe one line below its pen is read as a wipe. See the
     # header: the elder reading was line-scoped, and it hid two of the six wipers in this tree.
     FNR == NR {
@@ -153,11 +220,16 @@ hits=$(printf '%s\n' "$sources" | while read -r f; do
       if (line ~ /^[ \t]*#/) next
       if (line ~ /mktemp|XXXXXX/) next
       s = line; off = 0
-      while (match(s, /\/tmp\/[A-Za-z0-9_.\-]+/)) {
+      while (match(s, /(^|[^A-Za-z0-9_.])\/tmp\/[A-Za-z0-9_.\-]+/)) {
         rs = RSTART; rl = RLENGTH
-        tok = substr(s, rs, rl)
+        # A PATH BEGINS AT A BOUNDARY. The token class alone matches the tail of
+        # /data/local/tmp/seva_b0_witness, an Android device path this pier never opens, and two
+        # HAWM witnesses were counted for it. The boundary character is consumed by the match, so
+        # it is stepped over here rather than folded into the token.
+        lead = (substr(s, rs, 1) == "/") ? 0 : 1
+        tok = substr(s, rs + lead, rl - lead)
         next_ch = substr(s, rs + rl, 1)
-        abs_pos = off + rs
+        abs_pos = off + rs + lead
         off = off + rs + rl - 1
         s = substr(s, rs + rl)
         if (tok ~ /\$/) continue
@@ -194,29 +266,32 @@ hits=$(printf '%s\n' "$sources" | while read -r f; do
       }
       s = line
       off = 0
-      # A wipe is read off the WHOLE line rather than the token, since the `rm -rf` and its target
-      # are separate words and Rishi spells it as a list: run ["rm" "-rf" home].
-      wipe = wipes(line) ? "wipe" : "hold"
-      while (match(s, /\/tmp\/[A-Za-z0-9_.\-]+/)) {
-        tok  = substr(s, RSTART, RLENGTH)
+      while (match(s, /(^|[^A-Za-z0-9_.])\/tmp\/[A-Za-z0-9_.\-]+/)) {
+        rs = RSTART; rl = RLENGTH
+        lead = (substr(s, rs, 1) == "/") ? 0 : 1
+        tok  = substr(s, rs + lead, rl - lead)
         # READ THE CHARACTER AFTER THE TOKEN, not only the token. The token class stops at `$`, so
         # `/tmp/pen_$$` and `/tmp/pen_${home}` both match as the constant `/tmp/pen_` and would be
         # counted -- the guard instructing the repair the file has already made. The control caught
         # both on the first run (pid_free, interpolate_free).
-        next_ch = substr(s, RSTART + RLENGTH, 1)
-        abs_pos = off + RSTART
-        off = off + RSTART + RLENGTH - 1
-        s = substr(s, RSTART + RLENGTH)
+        next_ch = substr(s, rs + rl, 1)
+        abs_pos = off + rs + lead
+        off = off + rs + rl - 1
+        s = substr(s, rs + rl)
         if (tok ~ /\$/) continue
         if (next_ch == "$") continue
         if (quoted(line, abs_pos)) continue
+        # A REMOVAL IS CHARGED TO THE PATH IT NAMES, so a token standing BEFORE the rm on its line
+        # is a hold. A held variable removed anywhere on the line is still a wipe, which pass one
+        # settles above.
+        wipe = wiped_here(line, abs_pos) ? "wipe" : "hold"
         # A LOCK IS SHARED ON PURPOSE, WHERE A PEN NEVER IS. tools/fixtures/a/amphora_vessel_port_lock.sh
         # holds a .lock under the same default, and TCP port 38494 is one resource for the whole
         # pier -- so a pier-wide path is what makes that lock work, and a per-process one would
         # silently unserialise eight ships. Freed only on a line that does NOT wipe: a lock is
         # released with rm -f, never rm -rf, so a pen wearing a .lock suffix to escape this rule is
         # still counted the moment it behaves like a pen. Proven both ways in the control.
-        if (wipe == "hold" && tok ~ /\.lock$/) continue
+        if (tok ~ /\.lock$/ && !wipes_recursive(line)) continue
         print F "\t" wipe "\t" tok
       }
     }

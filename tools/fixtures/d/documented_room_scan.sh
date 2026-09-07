@@ -27,9 +27,18 @@
 
 set -eu
 
+# THE SCRATCH FILE IS PRIVATE. Until `20260907.163000` this scan truncated, appended to, counted,
+# and removed one constant name under the `/tmp` eight ships share, so two ships running it in the
+# same second read one file: a peer truncation empties it mid-append, a peer removal deletes it
+# before `wc -l`, and a peer room list is counted as this tree's. The sibling carrying the same
+# shape, `tools/fixtures/s/shipped_binary_claim_scan.sh`, reddened this pier's cold pass of
+# `20260907.150519` and ran GREEN alone. `mktemp -d` asks the kernel for a name no two runs share.
+pen=$(mktemp -d)
+trap 'rm -rf "$pen"' EXIT INT TERM
+
 named=0
 invisible=0
-: > /tmp/drs_bad.txt
+: > "$pen/bad.txt"
 
 for room in $(grep -oE '^\*\*`[a-z][a-z0-9-]*/`\*\*' ORGANIZING.md | tr -d '*`/' | sort -u); do
   named=$((named + 1))
@@ -46,15 +55,14 @@ for room in $(grep -oE '^\*\*`[a-z][a-z0-9-]*/`\*\*' ORGANIZING.md | tr -d '*`/'
   fi
 
   if [ -z "$(git ls-files "$room" 2>/dev/null | head -1)" ]; then
-    echo "$room" >> /tmp/drs_bad.txt
+    echo "$room" >> "$pen/bad.txt"
     invisible=$((invisible + 1))
   fi
 done
 
 echo "rooms_named=$named"
 echo "rooms_invisible=$invisible"
-if [ "$invisible" -gt 0 ]; then sed 's/^/invisible: /' /tmp/drs_bad.txt; fi
-rm -f /tmp/drs_bad.txt
+if [ "$invisible" -gt 0 ]; then sed 's/^/invisible: /' "$pen/bad.txt"; fi
 
 if [ "$invisible" -eq 0 ]; then echo "verdict=ok"; exit 0; fi
 echo "verdict=invisible_room"
