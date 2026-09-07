@@ -2447,3 +2447,25 @@ guard topology_churn
 path tools/t/topology_churn_witness.rish
 tier cadence
 seated 20260907.000309
+
+
+# THE PLANT LAW -- a control's break is a claim about a file, and nothing was checking it.
+#
+# A control breaks a module on purpose by naming one literal line of the real source in a `sed`.
+# When that line moves, the sed matches nothing, the pen is copied byte for byte, and the phase
+# builds and runs the UNMUTATED module -- exit 0, which is what a law that holds reads like
+# (REDS %519). `tools/fixtures/p/plant.sh` answers that once, and this rung proves it can red:
+# twenty-eight behaviors, each function shown from both sides, and one leg that strips the byte
+# comparison out of a copy and asserts the copy calls a no-op plant LANDED.
+#
+# Adoption is a FLOOR that only rises, which is the mirror of this tree's usual ratchet, because
+# the population counted is the good one. Seated at 4; `sh tools/fixtures/p/plant_adoption_scan.sh
+# --list` names the rest, and each falls on touch.
+#
+# `tier lap`: the control writes pen text and runs no compiler, so the whole rung costs under a
+# second -- and what it guards is every other control's honesty.
+
+guard plant
+path tools/p/plant_witness.rish
+tier lap
+seated 20260907.004838

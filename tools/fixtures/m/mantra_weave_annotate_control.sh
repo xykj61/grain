@@ -69,6 +69,22 @@
 
 set -eu
 
+# The plant law, imported rather than restated: `plant_apply` rewrites a pen file through a sed
+# program and refuses by name when the program matched nothing, so a line that moves in the module
+# reds this control instead of quietly handing a phase an unmutated file (REDS %519). Root by
+# upward walk (seated 20260828), so the letter fold's depth is never spelled here.
+_fd_root=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
+_fd_steps=0
+while [ ! -d "$_fd_root/rishi/bin" ] || [ ! -d "$_fd_root/tools/fixtures" ]; do
+  _fd_steps=$((_fd_steps + 1))
+  if [ "$_fd_steps" -gt 8 ] || [ "$_fd_root" = "/" ] || [ -z "$_fd_root" ]; then
+    echo "$0: no tree root within 8 steps (needs rishi/bin and tools/fixtures)" >&2
+    exit 2
+  fi
+  _fd_root=$(dirname "$_fd_root")
+done
+. "$_fd_root/tools/fixtures/p/plant.sh"
+
 root="$(pwd)"
 zig="$root/vendor/zig-toolchain/zig"
 rye="$root/rye/bin/rye"
@@ -87,19 +103,15 @@ run_pen() {
   cp "$module" "$pen/weave.rye"
   cp "$witness" "$pen/weave_annotate_witness.rye"
   if [ -n "$program" ]; then
-    sed "$program" "$pen/weave.rye" > "$pen/weave.tmp"
     # A plant that matched nothing leaves the pen byte for byte identical, so the
     # phase reads the UNMUTATED module's exit code -- 0, indistinguishable from a
     # law that holds. Every plant here names a literal line of weave.rye, and a
-    # line that is edited stops being that literal. Refuse by name instead.
-    if cmp -s "$pen/weave.tmp" "$pen/weave.rye"; then
-      echo "plant_matched_nothing:$name" >&2
-      rm -f "$pen/weave.tmp"
+    # line that is edited stops being that literal. `plant_apply` refuses by name,
+    # and it is imported rather than written here so the next control inherits it.
+    if ! plant_apply "$pen/weave.rye" "$program" "$name"; then
       echo "plant_matched_nothing"
       return
     fi
-    cat "$pen/weave.tmp" > "$pen/weave.rye"
-    rm -f "$pen/weave.tmp"
   fi
   code=0
   ( cd "$pen" && env RYE_ZIG="$zig" "$rye" build weave_annotate_witness.rye \
@@ -120,19 +132,15 @@ run_head_pen() {
   mkdir -p "$pen"
   cp "$module" "$pen/weave.rye"
   if [ -n "$program" ]; then
-    sed "$program" "$pen/weave.rye" > "$pen/weave.tmp"
     # A plant that matched nothing leaves the pen byte for byte identical, so the
     # phase reads the UNMUTATED module's exit code -- 0, indistinguishable from a
     # law that holds. Every plant here names a literal line of weave.rye, and a
-    # line that is edited stops being that literal. Refuse by name instead.
-    if cmp -s "$pen/weave.tmp" "$pen/weave.rye"; then
-      echo "plant_matched_nothing:$name" >&2
-      rm -f "$pen/weave.tmp"
+    # line that is edited stops being that literal. `plant_apply` refuses by name,
+    # and it is imported rather than written here so the next control inherits it.
+    if ! plant_apply "$pen/weave.rye" "$program" "$name"; then
       echo "plant_matched_nothing"
       return
     fi
-    cat "$pen/weave.tmp" > "$pen/weave.rye"
-    rm -f "$pen/weave.tmp"
   fi
   code=0
   sh "$root/tools/fixtures/m/mantra_weave_head_scan.sh" "$pen/weave.rye" >/dev/null 2>&1 || code=$?

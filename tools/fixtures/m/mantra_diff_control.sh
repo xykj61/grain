@@ -47,6 +47,22 @@
 
 set -eu
 
+# The plant law, imported rather than restated: `plant_apply` rewrites a pen file through a sed
+# program and refuses by name when the program matched nothing, so a line that moves in the module
+# reds this control instead of quietly handing a phase an unmutated file (REDS %519). Root by
+# upward walk (seated 20260828), so the letter fold's depth is never spelled here.
+_fd_root=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
+_fd_steps=0
+while [ ! -d "$_fd_root/rishi/bin" ] || [ ! -d "$_fd_root/tools/fixtures" ]; do
+  _fd_steps=$((_fd_steps + 1))
+  if [ "$_fd_steps" -gt 8 ] || [ "$_fd_root" = "/" ] || [ -z "$_fd_root" ]; then
+    echo "$0: no tree root within 8 steps (needs rishi/bin and tools/fixtures)" >&2
+    exit 2
+  fi
+  _fd_root=$(dirname "$_fd_root")
+done
+. "$_fd_root/tools/fixtures/p/plant.sh"
+
 root="$(pwd)"
 zig="$root/vendor/zig-toolchain/zig"
 rye="$root/rye/bin/rye"
@@ -73,34 +89,25 @@ run_pen() {
   cp "$module" "$pen/diff.rye"
   cp "$witness" "$pen/diff_witness.rye"
   if [ -n "$module_program" ]; then
-    sed "$module_program" "$pen/diff.rye" > "$pen/diff.tmp"
     # A plant that matched nothing leaves the pen byte for byte identical, and the
     # phase then reads the UNMUTATED module's exit code -- which is 0, and is
     # indistinguishable from a law that holds. That is exactly what happened when
     # `deletes` changed type from u32 to LineId on 20260906 and this plant's sed
-    # went on naming the elder spelling. Refuse by name instead.
-    if cmp -s "$pen/diff.tmp" "$pen/diff.rye"; then
-      echo "plant_matched_nothing:$name" >&2
-      rm -f "$pen/diff.tmp"
+    # went on naming the elder spelling. `plant_apply` refuses by name instead,
+    # and it is imported rather than written here so the next control inherits it.
+    if ! plant_apply "$pen/diff.rye" "$module_program" "$name"; then
       echo "plant_matched_nothing"
       return
     fi
-    cat "$pen/diff.tmp" > "$pen/diff.rye"
-    rm -f "$pen/diff.tmp"
   fi
   if [ -n "$append_decl" ]; then
     printf '\n%s\n' "$planted_decl" >> "$pen/diff.rye"
   fi
   if [ -n "$witness_program" ]; then
-    sed "$witness_program" "$pen/diff_witness.rye" > "$pen/witness.tmp"
-    if cmp -s "$pen/witness.tmp" "$pen/diff_witness.rye"; then
-      echo "plant_matched_nothing:$name" >&2
-      rm -f "$pen/witness.tmp"
+    if ! plant_apply "$pen/diff_witness.rye" "$witness_program" "$name"; then
       echo "plant_matched_nothing"
       return
     fi
-    cat "$pen/witness.tmp" > "$pen/diff_witness.rye"
-    rm -f "$pen/witness.tmp"
   fi
   code=0
   ( cd "$pen" && env RYE_ZIG="$zig" "$rye" build diff_witness.rye \

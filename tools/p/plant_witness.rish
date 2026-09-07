@@ -1,0 +1,110 @@
+# tools/p/plant_witness.rish -- a plant is a claim about a file, and this proves the claim can red.
+#
+# WHY THIS RUNG. A control breaks a module on purpose and watches its witness refuse. The break is
+# almost always a `sed` naming one literal line of the real source. That naming is a claim -- "this
+# line, spelled this way, stands in that file today" -- and on 20260906 a type in
+# mantra/src/diff.rye changed from u32 to LineId while tools/fixtures/m/mantra_diff_control.sh went
+# on naming the elder spelling. The sed matched nothing, the pen was copied byte for byte, and the
+# phase built and ran the UNMUTATED module. It exited 0, which is the reading a law that holds
+# gives. Every phase in that control asserted what the pen does AFTER the break; not one asserted
+# the break landed (REDS %519).
+#
+# Three hands had already met this fault and each repaired it locally, in its own spelling. This
+# rung proves the one implementation they can all import instead.
+#
+# WHAT IS PROVEN, on metal, by tools/fixtures/p/plant_control.sh.
+#   Thirty behaviors on real files in a throwaway pen, each function shown from BOTH sides.
+#   plant_landed reads a difference, reads its absence by name, and refuses an absent file.
+#   plant_write lands, leaves the source alone, and on a stale line writes NO destination at all --
+#     so a caller ignoring the return value still cannot build an unmutated pen and read it as a
+#     break, which is the exact shape %519 booked.
+#   plant_write refuses an empty program and a program sed itself rejects, each by its own word.
+#     The second matters more than it looks: a rejected program leaves a partial or empty file,
+#     which DIFFERS from the source, so a bare byte comparison would call that plant landed.
+#   plant_apply rewrites in place, keeps the file's exec bit (it writes through the original inode,
+#     where `mv` would carry the temporary's mode -- .claude/rules/exec-bit.md), leaves no
+#     temporary behind, and leaves a stale plant's file byte-identical.
+#   plant_write to a destination that does not exist yet keeps the mode too, by seeding it with
+#     `cp` rather than reading the mode back -- `stat`'s field-format flag is GNU's `-c` and BSD's
+#     `-f`, one more dialect question, and `shell_dialect` holds `stat -c` at zero.
+#   The load-bearing leg: the same helper with the byte comparison stripped out of plant_apply
+#     reads a no-op plant as LANDED. A helper that answered "landed" about everything would pass
+#     every welcome leg above; that failing reading standing green beside the real one is what
+#     tells a working check from one that has merely started saying yes.
+#
+# WHAT IS REPORTED RATHER THAN GATED: adoption. tools/fixtures/p/plant_adoption_scan.sh counts the
+# tracked controls that source the helper, and the floor below only ever RISES -- the mirror of
+# this tree's usual ratchet, because the population being counted is the good one.
+#
+# WHY ADOPTION AND NOT EXPOSURE. Counting the controls that plant without checking needs a rule for
+# telling a plant from a fixture build, and every candidate rule misreads real files today.
+# Measured at e567cbc128 over the seven controls carrying `cmp -s`: four use it to prove a plant
+# landed, and three use it to prove a file did NOT change. Reading the word `planted` instead fails
+# from the other side -- two of those three carry it, once for pen rows the control wrote itself
+# and once in header prose. One operator, three claims. Sourcing a file is exact.
+#
+# WHAT IS NOT PROVEN. That a control's plants are the RIGHT plants, or that its witness bites for
+# the right reason. Only that a plant which changed nothing says so, by name, before any number is
+# read.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/p/plant_witness.rish
+
+say "plant: Language EN -- a plant that plants nothing reads exactly like a law that holds."
+say "plant: Style Gauge, Meter -- each function shown from both sides, the refusal named."
+say "plant: Lens TAME -- safety first: the check that asserts the defect is the load-bearing one."
+
+let control = run ["sh" "tools/fixtures/p/plant_control.sh"]
+assert control.ok else "plant: the control must complete -- read its own lines"
+say control.out
+assert control.out contains "faults=0" else "plant: every behavior must be satisfied"
+assert control.out contains "control_verdict=ok" else "plant: the control must balance before it is believed"
+
+# The reading alone, both ways.
+assert control.out contains "OK   landed_on_difference" else "plant: two differing files must read as a landed plant"
+assert control.out contains "OK   landed_on_identical" else "plant: two identical files must read as a plant that landed nothing"
+assert control.out contains "OK   identical_names_the_word" else "plant: the refusal must name plant_matched_nothing, a word rather than a number"
+assert control.out contains "OK   absent_names_its_own_word" else "plant: an absent file must be told apart from a stale line"
+
+# plant_write: the destination is the safety, not only the return value.
+assert control.out contains "OK   write_lands" else "plant: a program that matches must rewrite the file"
+assert control.out contains "OK   write_actually_changed_the_bytes" else "plant: the rewrite must reach the bytes, not only the exit code"
+assert control.out contains "OK   write_refuses_a_stale_line" else "plant: a program matching nothing must refuse"
+assert control.out contains "OK   refused_write_leaves_no_destination" else "plant: a refused plant must write no destination, so an ignored return value still cannot pass"
+assert control.out contains "OK   empty_program_names_its_own_word" else "plant: an empty program is a caller fault and must be named apart"
+assert control.out contains "OK   write_refuses_a_program_sed_rejects" else "plant: a program sed rejects leaves a file that DIFFERS, so the exit code must be read"
+assert control.out contains "OK   rejected_program_names_its_own_word" else "plant: a rejected program must be told apart from a stale line"
+assert control.out contains "OK   rejected_program_leaves_no_destination" else "plant: a rejected program must write no destination"
+
+# plant_apply: in place, and the mode is tracked content.
+assert control.out contains "OK   apply_lands" else "plant: an in-place plant must reach the file"
+assert control.out contains "OK   apply_refuses_a_stale_line" else "plant: an in-place plant matching nothing must refuse"
+assert control.out contains "OK   refused_apply_leaves_the_file_byte_identical" else "plant: a refused in-place plant must leave the file untouched"
+assert control.out contains "OK   apply_keeps_the_exec_bit" else "plant: writing through the original inode is what keeps a tracked mode"
+assert control.out contains "OK   apply_left_no_temporary" else "plant: a plant must leave no temporary in the pen"
+assert control.out contains "OK   write_to_a_new_destination_keeps_the_exec_bit" else "plant: a new destination is seeded with cp, so the source mode travels without asking stat"
+
+# The load-bearing leg -- the defect asserted, not only the repair.
+assert control.out contains "OK   the_strip_plant_landed" else "plant: the plant into the helper copy must itself land, or phase 4 tests nothing"
+assert control.out contains "OK   stripped_helper_reads_a_no_op_as_landed" else "plant: stripped of its comparison the helper must read a no-op as landed -- that is the defect this rung exists for"
+assert control.out contains "OK   stripped_helper_left_the_file_unmutated" else "plant: the stripped helper's victim must stand unmutated, proving the reading was the only thing removed"
+
+# The real tree, not only pen text.
+assert control.out contains "OK   real_source_plant_lands" else "plant: the helper must work on a tracked source"
+assert control.out contains "OK   real_source_stale_plant_refuses" else "plant: a stale line in a tracked source must refuse"
+
+say "field GREEN -- a plant that plants nothing says so by name, and the stripped helper proves the saying is load-bearing"
+
+let adoption = run ["sh" "tools/fixtures/p/plant_adoption_scan.sh"]
+assert adoption.ok else "plant: the adoption scan must balance -- read its own lines"
+say adoption.out
+
+# A FLOOR THAT ONLY RISES, which is the mirror of this tree's usual ratchet. The population counted
+# here is the good one, so the number moves the other way: raise it whenever a lane adopts, and it
+# may never fall. Seated at 4 on 20260907 -- the three Mantra controls that met the fault, plus the
+# helper's own control. The remaining controls are named by
+# `sh tools/fixtures/p/plant_adoption_scan.sh --list`, and each falls on touch.
+assert adoption.out contains "sourcing=4" else "plant: adoption is a floor that only rises -- four controls source the plant law; raise this line when a lane adopts, never lower it"
+assert adoption.out contains "verdict=ok" else "plant: the adoption arithmetic must sum before it is believed"
+
+say "plant: GREEN -- one implementation, imported by four controls, proven from both sides on metal"
