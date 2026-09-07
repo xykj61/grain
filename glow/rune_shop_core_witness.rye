@@ -1,0 +1,230 @@
+//! glow/rune_shop_core_witness.rye -- proves the shop core knows its own shape.
+//!
+//!   rye build glow/rune_shop_core_witness.rye -femit-bin=glow/bin/rune_shop_core_witness
+//!
+//! A `|%` source comes in two shapes. A THIN core names its arms and stops;
+//! glow/lower_core.rye lowers that down the welcome road. A SHOP core gives each
+//! arm a two-line gate; glow/lower_shop_core.rye lowers that to one function per
+//! arm plus an argv main. `glow_run` has to pick a road before it lowers, and
+//! for one week it picked with looks_like_core, which reads the first live line's
+//! two characters and answers yes to both (REDS `20260906.195208`).
+//!
+//! So this witness holds looks_like_shop_core to the separation, from both sides:
+//! every thin shape the desks under glow/gen/c/ actually carry reads NOT the
+//! shop's, the standing shop desk reads the shop's, and a source that is no core
+//! at all reads neither. A predicate proven only where it says yes cannot be told
+//! from one that always says yes.
+//!
+//! The ARMLESS leg below is the one that decides the predicate's shape, and it was
+//! written after glow_core_witness.rish caught the first draft. "Does any arm carry
+//! a body" and "does every arm carry a body" agree on all fourteen thin desks and
+//! on the shop desk; `|%` then `--` is the single source that tells them apart, and
+//! only the `every` reading keeps the shop's own EmptyCore refusal reachable.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const rc = @import("rune_shop_core.rye");
+
+// invariant: every declaration of the module goes through semantic analysis, so a type
+// error in a body this witness never calls reds the build (REDS %463, %470).
+comptime {
+    for (@typeInfo(rc).@"struct".decls) |decl| {
+        _ = &@field(rc, decl.name);
+    }
+}
+
+const witness_version = "20260906.195500";
+
+/// The thin shapes, copied from the desks under glow/gen/c/ that the elder
+/// routing refused. Each names the desk it stands for, so a desk that changes
+/// shape and a witness that stops matching it are one grep apart.
+const thin_one_src = // glow/gen/c/core-double.glow
+    \\::  Thin core -- one arm double (STOA14).
+    \\|%
+    \\++  double
+    \\--
+;
+
+const thin_two_src = // glow/gen/c/core-two.glow
+    \\::  Two-arm core (STOA15).
+    \\|%
+    \\++  double
+    \\++  inc
+    \\--
+;
+
+const thin_three_src = // glow/gen/c/core-three.glow
+    \\::  Three-arm core (STOA20).
+    \\|%
+    \\++  double
+    \\++  inc
+    \\++  dec
+    \\--
+;
+
+const thin_payload_src = // glow/gen/c/core-payload.glow
+    \\::  Core with payload sample (STOA17).
+    \\|%
+    \\=/  amount  5
+    \\++  double
+    \\--
+;
+
+const thin_payload_typed_src = // glow/gen/c/core-payload-typed.glow
+    \\::  Core with typed @u32 payload (STOA21).
+    \\|%
+    \\=/  amount=@u32  5
+    \\++  double
+    \\--
+;
+
+const thin_open_src = // glow/gen/c/core-open.glow
+    \\::  Open arm body -- sample face (STOA25).
+    \\|%
+    \\++  id  sample
+    \\--
+;
+
+/// The shop shape, copied from src/gate/gate-lantern-face-core.glow -- the one
+/// desk the argv road actually serves.
+const shop_src =
+    \\::  The Lantern face's three laws under one roof.
+    \\|%
+    \\++  face-text-law
+    \\|=  sample=@u32
+    \\?:  (gth sample 38)  0  1
+    \\++  unknown-law
+    \\|=  [kind=@u32 answer_len=@u32]
+    \\?:  (and (eq kind 2) (gth answer_len 0))  0  1
+    \\--
+;
+
+/// A one-arm shop core: the least a source can carry and still want the argv road.
+const shop_one_src =
+    \\|%
+    \\++  face-text-law
+    \\|=  sample=@u32
+    \\?:  (gth sample 38)  0  1
+    \\--
+;
+
+/// tools/fixtures/g/glow_core_empty_refuses.glow -- no arms at all, so no arm
+/// can lack a body. Under the `every` reading it stays the shop's, whose
+/// parse_core names it EmptyCore.
+const armless_src =
+    \\|%
+    \\--
+;
+
+/// tools/fixtures/g/glow_core_unclosed_refuses.glow -- an arm WITH a body and no
+/// closing `--`. The shop's, and its parser names the fault MalformedCore.
+const unclosed_shop_src =
+    \\|%
+    \\++  half-open
+    \\|=  sample=@u32
+    \\?:  (gth sample 5)  1  0
+;
+
+const face_desk_src =
+    \\=/  amount  5
+    \\=/  note  3
+;
+
+const compose_core_src = // glow/gen/c/compose-core.glow -- a face, then a thin core
+    \\::  Face then thin core arm (STOA18).
+    \\=/  amount  5
+    \\|%
+    \\++  double
+    \\--
+;
+
+fn thin_leg(src: []const u8, label: []const u8) !void {
+    // invariant: a leg names the desk it stands for, so a refusal says which one.
+    assert(label.len >= 1);
+    // invariant: every fixture below carries at least the two bytes `|%` to read.
+    assert(src.len >= 2);
+    if (!rc.looks_like_core(src)) return error.ThinShapeNotSeenAsCore;
+    if (rc.looks_like_shop_core(src)) return error.ThinShapeClaimedByShop;
+    print("shop-core: {s} is a core and not the shop's -- GREEN\n", .{label});
+}
+
+fn shop_leg(src: []const u8, label: []const u8) !void {
+    // invariant: a leg names the desk it stands for, so a refusal says which one.
+    assert(label.len >= 1);
+    // invariant: every fixture below carries at least the two bytes `|%` to read.
+    assert(src.len >= 2);
+    if (!rc.looks_like_core(src)) return error.ShopShapeNotSeenAsCore;
+    if (!rc.looks_like_shop_core(src)) return error.ShopShapeNotClaimedByShop;
+    print("shop-core: {s} is the shop's own -- GREEN\n", .{label});
+}
+
+fn run_selftest() !u8 {
+    print("shop-core: Language EN -- which road a `|%` source takes, decided before it lowers.\n", .{});
+
+    try thin_leg(thin_one_src, "core-double");
+    try thin_leg(thin_two_src, "core-two");
+    try thin_leg(thin_three_src, "core-three");
+    try thin_leg(thin_payload_src, "core-payload");
+    try thin_leg(thin_payload_typed_src, "core-payload-typed");
+    try thin_leg(thin_open_src, "core-open");
+
+    try shop_leg(shop_src, "gate-lantern-face-core");
+    try shop_leg(shop_one_src, "a one-arm shop core");
+    try shop_leg(armless_src, "an armless core");
+    try shop_leg(unclosed_shop_src, "an unclosed core whose arm carries a body");
+
+    // A source that opens with a face is no core at all, so neither road claims it.
+    if (rc.looks_like_core(face_desk_src)) return error.FaceDeskSeenAsCore;
+    if (rc.looks_like_shop_core(face_desk_src)) return error.FaceDeskClaimedByShop;
+    print("shop-core: a face desk is neither road's -- GREEN\n", .{});
+
+    // compose-core opens with a face, so looks_like_core already declined it; the
+    // sharper predicate must decline it too rather than reading past the opener.
+    if (rc.looks_like_core(compose_core_src)) return error.ComposeCoreSeenAsCore;
+    if (rc.looks_like_shop_core(compose_core_src)) return error.ComposeCoreClaimedByShop;
+    print("shop-core: compose-core opens with a face, so neither road claims it -- GREEN\n", .{});
+
+    // The empty source answers no on both roads rather than indexing a byte it has not got.
+    if (rc.looks_like_core("")) return error.EmptySeenAsCore;
+    if (rc.looks_like_shop_core("")) return error.EmptyClaimedByShop;
+    print("shop-core: an empty source is neither road's -- GREEN\n", .{});
+
+    // The shop's own parser agrees with the predicate, which is what makes the
+    // separation load-bearing: it parses what the predicate claims and refuses
+    // what the predicate declines.
+    _ = rc.parse_core(shop_src) catch return error.ShopShapeDidNotParse;
+    print("shop-core: parse_core parses the shape the predicate claims -- GREEN\n", .{});
+
+    if (rc.parse_core(thin_one_src)) |_| {
+        return error.ThinShapeParsedByShop;
+    } else |err| {
+        if (err != rc.CoreError.MalformedCore) return err;
+    }
+    print("shop-core: parse_core refuses the thin shape MalformedCore -- GREEN\n", .{});
+
+    // The two refusals glow_core_witness.rish has proven on metal since
+    // 20260830.224500 stay the shop's to name. An armless core routed to the thin
+    // road would lose EmptyCore entirely, which is what the `every` reading buys.
+    if (rc.parse_core(armless_src)) |_| {
+        return error.ArmlessCoreParsed;
+    } else |err| {
+        if (err != rc.CoreError.EmptyCore) return err;
+    }
+    print("shop-core: an armless core stays the shop's and refuses EmptyCore -- GREEN\n", .{});
+
+    if (rc.parse_core(unclosed_shop_src)) |_| {
+        return error.UnclosedCoreParsed;
+    } else |err| {
+        if (err != rc.CoreError.MalformedCore) return err;
+    }
+    print("shop-core: an unclosed core refuses MalformedCore -- GREEN\n", .{});
+
+    print("shop-core: version {s}\n", .{witness_version});
+    print("GREEN: looks_like_shop_core separates the thin `|%` desks from the shop's own by the every-arm law, both ways (REDS 20260906.195208).\n", .{});
+    return 0;
+}
+
+pub fn main(_: std.process.Init) !u8 {
+    return run_selftest();
+}

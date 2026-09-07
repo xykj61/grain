@@ -1,0 +1,49 @@
+# tools/g/glow_rune_shop_core_witness.rish -- which road a `|%` source takes.
+#
+#   rishi/bin/rishi run tools/g/glow_rune_shop_core_witness.rish
+#
+# glow/rune_shop_core.rye and glow/lower_shop_core.rye landed on 20260830.224500
+# and were imported by glow/glow_run.rye alone -- no runner on disk named either,
+# so nothing ran them. The dispatch they carried read looks_like_core, which
+# answers yes to every `|%` source, and it swallowed the fourteen thin core desks
+# under glow/gen/c/ that the welcome road had lowered since STOA14 (REDS `20260906.195208`).
+#
+# This runner drives the module's own selftest, which holds looks_like_shop_core
+# to the separation from both sides: six thin shapes decline, four shop shapes
+# claim, and parse_core agrees with the predicate on each. The armless leg is the
+# one that decided the predicate's shape -- `|%` then `--` is the single source on
+# which "any arm carries a body" and "every arm carries a body" disagree, and only
+# the second keeps the shop's own EmptyCore refusal reachable.
+
+say "glow-shop-core: Language EN -- the predicate that picks a core's road."
+say "glow-shop-core: Style Gauge, Meter -- each leg names its shape and its side."
+say "glow-shop-core: Lens TAME -- the declines are proven as hard as the claims."
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "glow/bin/rune_shop_core_witness"
+
+let build = run ["sh" "-c" "mkdir -p glow/bin && env RYE_ZIG=${zig} rye/bin/rye build glow/rune_shop_core_witness.rye -femit-bin=${bin}"]
+assert build.ok else "rune_shop_core_witness build failed: ${build.err}${build.out}"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "rune_shop_core_witness exited non-zero: ${selftest.out}"
+assert selftest.out contains "GREEN" else "rune_shop_core_witness not GREEN"
+assert selftest.out contains "core-double is a core and not the shop's" else "missing the core-double decline"
+assert selftest.out contains "core-two is a core and not the shop's" else "missing the core-two decline"
+assert selftest.out contains "core-three is a core and not the shop's" else "missing the core-three decline"
+assert selftest.out contains "core-payload is a core and not the shop's" else "missing the core-payload decline"
+assert selftest.out contains "core-payload-typed is a core and not the shop's" else "missing the typed-payload decline"
+assert selftest.out contains "core-open is a core and not the shop's" else "missing the core-open decline"
+assert selftest.out contains "gate-lantern-face-core is the shop's own" else "missing the standing shop-desk claim"
+assert selftest.out contains "a one-arm shop core is the shop's own" else "missing the one-arm shop claim"
+assert selftest.out contains "an armless core is the shop's own" else "missing the armless-core claim"
+assert selftest.out contains "an unclosed core whose arm carries a body is the shop's own" else "missing the unclosed-core claim"
+assert selftest.out contains "a face desk is neither road's" else "missing the face-desk leg"
+assert selftest.out contains "compose-core opens with a face" else "missing the compose-core leg"
+assert selftest.out contains "an empty source is neither road's" else "missing the empty-source leg"
+assert selftest.out contains "parse_core parses the shape the predicate claims" else "missing the parser-agrees leg"
+assert selftest.out contains "parse_core refuses the thin shape MalformedCore" else "missing the parser-refuses leg"
+assert selftest.out contains "an armless core stays the shop's and refuses EmptyCore" else "missing the EmptyCore leg"
+assert selftest.out contains "an unclosed core refuses MalformedCore" else "missing the unclosed MalformedCore leg"
+
+say "GREEN: the `|%` road is picked by whether EVERY arm carries a body -- 17 legs, declines and claims alike."

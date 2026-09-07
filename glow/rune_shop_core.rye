@@ -79,6 +79,55 @@ pub fn looks_like_core(src: []const u8) bool {
     return false;
 }
 
+/// True when EVERY arm of this core carries a gate body -- the shape this shop
+/// lowers, stated as the shop's own law rather than as an existence check.
+///
+/// A `|%` source comes in two shapes and only one of them is the shop's. A THIN
+/// core names its arms and stops -- `++  double` followed straight by the next
+/// arm or by the closing `--` -- and glow/lower_core.rye has lowered that shape
+/// since STOA14. A SHOP core gives each arm the whole two-line gate this
+/// module's own header describes, which parse_core hands to the gate shop and
+/// lower_shop_core turns into one public function per arm.
+///
+/// looks_like_core cannot separate them, because it reads the first live line's
+/// two characters and every core answers yes to that. Routing on the looser
+/// question sent all fourteen thin `core-*.glow` desks down the shop road, which
+/// refuses a core with no sample by name (REDS `20260906.195208`).
+///
+/// WHY EVERY RATHER THAN ANY, and it is not a preference. "Does any arm carry a
+/// body" and "does every arm carry a body" agree on all fourteen thin desks and
+/// on the standing shop desk, and they disagree on exactly one source: the
+/// ARMLESS core `|%` then `--`, which has no arm to carry anything. Under `any`
+/// it falls to the thin road and loses the shop's own named EmptyCore refusal,
+/// which glow_core_witness.rish has proven since 20260830.224500. Under `every`
+/// it stays the shop's and refuses by that name. A core nobody can lower belongs
+/// to the road that says so best, so the law is the requirement, not the search.
+pub fn looks_like_shop_core(src: []const u8) bool {
+    if (!looks_like_core(src)) return false;
+    // invariant: past the guard above, the source opens `|%`, so this walk reads
+    // a core rather than an arbitrary file.
+    assert(src.len >= 2);
+    var it = std.mem.splitScalar(u8, src, '\n');
+    var prev_opens_arm = false;
+    var live: u32 = 0;
+    while (it.next()) |raw| {
+        if (line_is_blank_or_comment(raw)) continue;
+        // Past the ceiling no road lowers this source, so the walk stops and
+        // leaves it with the shop, whose own core_max_lines check in glow_run
+        // then refuses it by the more specific name. Bounded read, same verdict.
+        if (live >= core_max_lines) return true;
+        live += 1;
+        const line = trim(raw);
+        const opens_arm = line.len >= 2 and line[0] == '+' and line[1] == '+';
+        const closes = line.len == 2 and line[0] == '-' and line[1] == '-';
+        if (prev_opens_arm and (opens_arm or closes)) return false;
+        prev_opens_arm = opens_arm;
+    }
+    // invariant: the walk read the whole source inside the core's own line budget.
+    assert(live <= core_max_lines);
+    return true;
+}
+
 /// Parse the whole core. Arms are handed to the gate shop two lines at a time.
 pub fn parse_core(src: []const u8) CoreError!CoreSpec {
     if (src.len == 0) return error.NotACore;

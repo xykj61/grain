@@ -25,6 +25,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260906.195215` | [the lap that landed its own park](20260906/20260906-195215_the-lap-that-landed-its-own-park.kyri) | %511, %512: a park landed, a pen race closed. |
 | `20260906.195019` | [the row that lost its number](20260906/20260906-195019_the-row-that-lost-its-number.kyri) | %510 landed from a stash; four stale numbers repaired. |
 | `20260906.193301` | [the seal nothing read](20260906/20260906-193301_the-seal-nothing-read.kyri) | SHA3 already seated; the gap was verification. |
+| `20260906.200636` | [the fence drawn round fourteen desks](20260906/20260906-200636_the-fence-drawn-round-fourteen-desks.kyri) | 14 desks refused: two characters claimed every core. |
 | `20260906.190934` | [the lap that ran without its lane](20260906/20260906-190934_the-lap-that-ran-without-its-lane.kyri) | %509: seven ships ran with the baton alone. |
 | `20260906.182719` | [every tool in the room its name says](20260906/20260906-182719_every-tool-in-the-room-its-name-says.kyri) | 34 moved; 4 computed paths derived. |
 | `20260906.180937` | [a name is not a clock](20260906/20260906-180937_a-name-is-not-a-clock.kyri) | covered counted names; six of eleven unrun. |

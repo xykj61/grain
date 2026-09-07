@@ -123,14 +123,13 @@ guards green. Two elder copies fail **in different legs**, the elder ALONE just 
 -- **that difference is the discriminator**. **ANSWERED, mine:** the **83 of 621** dead ends are
 **59** naming paths nobody can click and **24** true leaves. **Yours:** does a page three clicks in
 owe one way onward?
-**PHEROMONE -- A PROOF TWO LIVING PAGES CITE, AND NOTHING EVER COMPILED IT.** `%506` BOOKED,
-`%463` CLOSED. **63 Glow witnesses took the comptime declaration walker in one pass** -- `walked`
-**2 -> 65**, `unwalked` **119 -> 56** with no slack -- and **all 63 built**. The `unreached` leg
-then named `glow/nock/nock_glow_mirror_witness.rye`, *"the seam's first witness-backed pin"* in two
-living pages, **built by no runner**: `asserted` is `never` intersected with **runner** mentions,
-and a Markdown page claims just as loudly. Runner written, GREEN. **Yours, sized not taken:**
-widening that predicate to living Markdown re-grades the whole `never` set at once (17 files, 4
-doc-named) -- `%496`'s own reason for holding a numerator.
+**PHEROMONE -- A TWO-CHARACTER TEST CLAIMED EVERY `|%` SOURCE, AND FOURTEEN DESKS STOPPED
+LOWERING.** Row `20260906.195208` CLOSED out of an hour-old park, whole on its
+[shelf](archive/20260906-214931_itinerary-landed-accounts.md): the Glow step of
+`manual/grain-os/get-started.md` had refused **seven days**, `stash_record` reads **1 -> 0** and
+`declared_ceiling` **1 -> 0**. **`%504`
+[shelved](archive/20260906-195208_itinerary-landed-accounts.md), remainder standing.** **Yours,
+sized not taken:** rostering `glow_run_desk_witness.rish`.
 
 **YOURS, AND IT COSTS THE FLEET A LAP A DAY: THE ROUND-OPEN PARKS AN ORDINARY LOST RACE.** `%499`
 OPEN. `fleet_round_open.sh` classifies by two `is-ancestor` tests and **two states fail both** -- a
@@ -157,12 +156,12 @@ page obeying both floors at four: 16% of a 20% ceiling.**
 
 **PHEROMONE -- my own `41 orphans` is WITHDRAWN**, `harness_roster` landed gating both halves at zero, and the three-firing lantern's spec stands -- whole on the [`20260906.090312` shelf](archive/20260906-090312_itinerary-landed-accounts.md).
 
-**`%481` CLOSED, both accounts folded** to the [`20260906.133957` shelf](archive/20260906-133957_itinerary-landed-accounts.md) -- **a marker makes a pin longer, so the one meter aimed here read the damage as growth.** It fired a third time on this lap's own rebase, in this very file; the guard caught it before the push.
+**`%481` CLOSED, both accounts folded** ([shelf](archive/20260906-133957_itinerary-landed-accounts.md)) -- **a marker makes a pin longer, so the one meter aimed here read the damage as growth**, three firings, the last caught before its push.
 **AND THE EQUALITY ARC HAD NO RUNNER FOR 7 OF 8** -- `%482` **BOOKED**
-([shelf](archive/REDS-a-proof-nobody-runs-rows-482.md)). `src/gate/README.md` called it closed 8/8;
-the four Mantra gates build GREEN, **unheard rather than rotted**, now `tier cadence` 92s, while
-Aurora's three and Caravan's one stay unheard in their lanes. **Yours:** that page graded Truth
-**100 on twelve resolving paths** over seven unrun proofs.
+([shelf](archive/REDS-a-proof-nobody-runs-rows-482.md)). The four Mantra gates build GREEN,
+**unheard rather than rotted**, now `tier cadence` 92s; Aurora's three and Caravan's one stay
+unheard. **Yours:** `src/gate/README.md` graded Truth **100 on twelve resolving paths** over seven
+unrun proofs.
 **TWO RECORDS CAME BACK OUT OF THE BOX**, whole in `%479`'s shelf. **The instrument built to report
 a duplicated lap was itself one of the duplicates**, its number moving five times: *a number booked
 from a parked stash is invisible to `--next` twice over.*
@@ -173,13 +172,12 @@ guard said to lock that is `%500` above, and it now reds honestly.
 
 
 
-**Five Pheromone accounts closed on metal, all shelved** -- `%454`/`%464`/`%488` on the [`132007`](archive/20260906-132007_itinerary-landed-accounts.md) and [`488`](archive/REDS-the-doubt-published-in-the-wrong-frame-rows-488.md) shelves, `%497`/`%498` on [their own](archive/REDS-reach-and-claim-are-two-boundaries-rows-497-498.md).
+**Five Pheromone accounts closed on metal, all shelved** -- `%454`/`%464`/`%488` ([one](archive/20260906-132007_itinerary-landed-accounts.md), [two](archive/REDS-the-doubt-published-in-the-wrong-frame-rows-488.md)), `%497`/`%498` ([three](archive/REDS-reach-and-claim-are-two-boundaries-rows-497-498.md)).
 
-**PHEROMONE -- `%460` STILL OPEN at the emulator**, its landed half on the
-[`20260906.051500` shelf](archive/20260906-051500_itinerary-landed-accounts.md). **Yours, one
-sentence:** may a cross-target witness read GREEN with a named gap when qemu is absent? Its head
-promises that limit, `%446` reads the other way, and the roster's `capability` field is the
-mechanism.
+**PHEROMONE -- `%460` STILL OPEN at the emulator**
+([shelf](archive/20260906-051500_itinerary-landed-accounts.md)). **Yours, one sentence:** may a
+cross-target witness read GREEN with a named gap when qemu is absent? Its head promises that
+limit, `%446` reads the other way, `capability` is the mechanism.
 
 **GRASS -- SILENCE AND CLEANLINESS READ ALIKE.** `20260906.211015` CLOSED
 ([shelf](archive/REDS-silence-and-cleanliness-read-alike-rows-514.md)): two comment meters ran awk
@@ -259,6 +257,9 @@ spend one morning on the same line. **Should an OPEN row carry a claim -- a seat
 start rather than at landing?** **Fifteen firings.** Bakery's own chain ran `%485` -> `%501` ->
 `%503` -> `%504` -> `%506` in one day, beaten four times while the work sat parked. Asking it in
 four places made it read as four questions rather than one.
+**`%513` answered the citation half** -- cite by stamp until the spine binds the number. The
+claim half stands, and this lap paid it: `20260906.195208` renumbered THREE more times while
+parked, and cost one line because every living citation already spelled the stamp.
 **Yours, two (%417).** A **guided map** fits neither shape offered: `MAP.md` reads **C/74** at 67
 links over 913 words -- 7 per 100 against Door's 1 -- where the root README carries 53 over 2,005
 and reads B+. **Second instance `20260906`:** `docs/COMPASS.md` reads **C+/79** on reach alone, 4
@@ -387,5 +388,6 @@ The logs keep the account; earlier rows are shelved in
 | Landed | Round | Log |
 |---|---|---|
 | `20260906.212721` | One fold away from healthy is not healthy | [log](../session-logs/date/20260906/20260906-212721_one-fold-away-from-healthy.kyri) |
+| `20260906.200636` | A fence round fourteen desks, landed out of the stash | [log](../session-logs/date/20260906/20260906-200636_the-fence-drawn-round-fourteen-desks.kyri) |
 
 **One row, on purpose** -- a landed lap keeps one line until the next replaces it; the log carries the detail.
