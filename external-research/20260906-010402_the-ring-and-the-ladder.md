@@ -4,7 +4,7 @@
 **Language:** EN
 **Style:** Gauge, Field setting (see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md))
 **Voice:** Kyri
-**Status:** Proposed -- external research. Nothing here binds a witness (`context/TWO_ROOMS.md`).
+**Status:** Proposed -- external research, **research for understanding**. Nothing here binds a witness (`context/TWO_ROOMS.md`).
 **Room two:** [`a-third-of-the-sky-has-no-road`](../active-designing/20260906-010402_a-third-of-the-sky-has-no-road.md) -- the same question asked of our own module, with an instrument
 **Kin:** [`what-a-coordinate-frame-makes-free`](20260905-224730_what-a-coordinate-frame-makes-free.md) -- the elder pair, which priced what a metric distinguishes
 

@@ -110,6 +110,13 @@ if [ "$BUILD_ONLY" = yes ]; then
   [ -x "$ZIG" ] || { echo "refused: no vendored Zig toolchain at $ZIG -- run tools/fixtures/f/fetch_toolchain_scan.sh" >&2; exit 2; }
   [ -x "$RYE" ] || { echo "refused: no rye driver at $RYE" >&2; exit 2; }
   [ -f "$PROBE_SRC" ] || { echo "refused: no probe source at $PROBE_SRC" >&2; exit 2; }
+  # THE BUILD PEN CARRIES THE PROCESS ID for the reason the census pen below does, and the reason
+  # is written here because the sweep that gave nine pens their pid matched on `PEN=` while this
+  # one is spelled `BPEN=` inside a branch of its own -- so the tenth pen stayed shared inside the
+  # very file the repair edited, and every ship read the result as a flake. Measured
+  # `20260906.234606` in a throwaway root: on ONE shared pen, three of six concurrent runs
+  # answered `build_only RED reason=compile_failed` against a probe that compiles alone; with the
+  # pid, six of six are green. A pen two ships can both `rm -rf` reports a fault nobody wrote.
   BPEN="${TMPDIR:-/tmp}/tlb_reach_build_pen.$$"
   rm -rf "$BPEN"; mkdir -p "$BPEN"
   cp "$PROBE_SRC" "$BPEN/probe.rye"
