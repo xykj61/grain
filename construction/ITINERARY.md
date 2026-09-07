@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `0cbb8457b4` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `bd1f7e0ac3` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY's `%516`, `%517`, `%510` accounts CLOSED and folded** --
 [`222720`](archive/20260906-222720_itinerary-landed-accounts.md),
