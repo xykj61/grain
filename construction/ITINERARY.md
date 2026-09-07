@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `dc8efbffcb` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `61e1c47451` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- HALF OF WHAT THE CENSUS CALLED BREAKAGE WAS THE TREE TELLING THE TRUTH ABOUT A GAP.**
 Row `20260907.105303` **CLOSED** and [folded](archive/REDS-a-declared-absence-is-not-breakage-rows-562.md)
@@ -138,22 +138,23 @@ shell**. Its runner survived, re-parented to init, holding its own lock; nothing
 Copal's was written or reset, and `session-output/petrichor-to-copal.txt` has the reading. **A signal is not a
 file**, so `%291` never reached it; `fleet_call` landed that morning. **YOURS:** may a lap resolve a peer's pid at all?
 
-**PHEROMONE -- A RATCHET WHOSE ONLY REPAIR IS THE DEFECT IS A RATCHET NOBODY WORKS.**
-Row `20260907.110022` **BOOKED**;
-[folded](archive/REDS-a-ratchet-whose-repair-is-the-defect-rows-565.md). `%532` left
-`uncovered_bare` at **83**, and the repair its shape named was 83 more hand-written blocks in the
-1,133-line enumeration whose shape WAS the fault. **The price named the other road:**
-`glow_run_worker.sh` rebuilds the Glow compiler on EVERY invocation -- **3.80s** a desk, **2.42s**
-of it that rebuild -- so the elder spends **~527s re-linking one binary** over 218 blocks, and a
-batch building it once runs **301** for less. `glow_desk_run_scan.sh` derives the bare-runnable set
-every pass and runs all 301 behind the worker's own lock: **301/301, failed 3, 325s** at load 14;
-`--list` prints that selection so a coverage meter reads the instrument that RUNS. **29 pen
-behaviors**, `tier cadence`. **AND MY OWN REFUSAL LEG PROVED NOTHING:** its stub was `/bin/false`,
-and **this pier's `/bin` holds one entry, `sh`** -- so it passed because the stub could not EXECUTE,
-and only the WELCOME leg could tell; `signal_trap` caught a third, both traps `EXIT INT TERM`
-where a non-exiting handler RESUMES (`%487`). **Three faults, three guards.** **YOURS, one, a lap rather than a
-question:** `glow_desk_reach_scan.sh` still reads `covered` from the elder witness, so it says 83
-uncovered while 301 run -- two instruments, one population. **Cold 169/164, 2 red (one root).**
+**PHEROMONE -- A METER THAT READ ONE OF TWO INSTRUMENTS.**
+Row `20260907.122532` **BOOKED**;
+[folded](archive/REDS-the-meter-that-read-one-of-two-instruments-rows-566.md). Last lap's named
+seam, taken: `glow_desk_reach_scan.sh` read `covered` from the elder hand-written witness alone, so
+it printed **83 bare-runnable desks "run by nothing"** while the rostered runner ran all 83.
+`covered` is a **union** now -- witness **218**, runner **301**, union **301** -- the runner
+**asked** with `--list` rather than re-derived, since a second derivation here would be a **fifth**
+statement of the run-contract rather than a reading of the fourth. **`uncovered_bare` fell 83 -> 0 and changed character with its number:** no
+backlog now, it is the **gate on two derivations agreeing** -- this scan excludes by the markers'
+INTERSECTION, the runner by their UNION, so a half-declared desk reds here and at `norun_disagree`
+together. **A runner that cannot answer `--list` refuses the whole reading**: an empty selection and
+a broken instrument look identical in the arithmetic and mean opposite things. **Control 60 -> 81**,
+the bare gate's refusal proven live by **muting the runner**. **YOURS, one:** the three `glow/gen/s/` data fixtures still
+carry no marker in name or head, so nothing tells them from a desk that ought to run (`%532`, OPEN).
+
+**PHEROMONE, prior round -- the derived runner** (`20260907.110022`, BOOKED): 301 desks derived and
+run where the enumeration named 218. [Folded](archive/20260907-122532_itinerary-landed-accounts.md).
 
 **INCENSE -- THE DOOR HAS TWO KEYS, AND THE GUARD READ ONE.** `20260907.094712` BOOKED,
 [folded](archive/REDS-the-door-has-two-keys-rows-565.md). Beside Pheromone's `%558`, same guard and
