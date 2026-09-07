@@ -152,6 +152,31 @@ out=$(run_scan "$pen/g" REDS_PIN_BOUND=100000 SHELF_OPEN_ROWS_CEILING=0)
 say "a closed shelf row counts zero"          "$(has "$out" 'shelf_open_rows=0')"
 say "a closed shelf row walks free"           "$(has "$out" 'verdict=ok')"
 
+# ---- 5b. the one gated cell: over the bound WITH a lawful fold (REDS %517) ----------------------
+# The 2x2 this scan crosses -- headroom against foldability -- with every neighbouring cell shown
+# free, since a refusal proven only in the failing direction cannot be told from a wall that always
+# refuses. One open row and one closed row, so a lawful fold always exists except where stated.
+build "$pen/h" 1 1 100
+size=$(wc -c < "$pen/h/REDS.md" | tr -d ' ')
+out=$(run_scan "$pen/h" REDS_PIN_BOUND=$((size - 10)))
+say "over bound + foldable refuses"           "$(has "$out" 'verdict=over_bound_foldable')"
+say "the refusal names the remedy"            "$(has "$out" 'reds_fold.sh')"
+say "over bound + foldable exits 1"           "$([ "$(run_status "$pen/h" REDS_PIN_BOUND=$((size - 10)))" = 1 ] && echo yes || echo no)"
+out=$(run_scan "$pen/h" REDS_PIN_BOUND="$size")
+say "AT the bound + foldable walks free"      "$(has "$out" 'verdict=ok')"
+out=$(run_scan "$pen/h" REDS_PIN_BOUND=$((size + 500)))
+say "under bound + foldable walks free"       "$(has "$out" 'verdict=ok')"
+
+# The cell beside it: over the bound with NOTHING foldable is the state only a bound raise resolves,
+# and raising a bound is Keaton's word -- so it is reported and never gated. This is the scan
+# header's own argument, asserted rather than promised.
+build "$pen/i" 2 0 100
+size=$(wc -c < "$pen/i/REDS.md" | tr -d ' ')
+out=$(run_scan "$pen/i" REDS_PIN_BOUND=$((size - 10)))
+say "over bound + none foldable walks free"   "$(has "$out" 'verdict=ok')"
+say "and is still named a deadlock"           "$(has "$out" 'pin_deadlocked=1')"
+say "over bound + none foldable exits 0"      "$([ "$(run_status "$pen/i" REDS_PIN_BOUND=$((size - 10)))" = 0 ] && echo yes || echo no)"
+
 # ---- 6. misuse refuses rather than guessing ----------------------------------------------------
 if ( cd "$ROOT" && env REDS_PIN="$pen/absent/REDS.md" sh "$SCAN" >/dev/null 2>&1 ); then code=0; else code=$?; fi
 say "an absent pin exits 2"                   "$([ "$code" = 2 ] && echo yes || echo no)"

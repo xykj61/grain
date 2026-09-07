@@ -768,6 +768,134 @@ out=$( ( cd "$pen" && SOW_SEED=elsewhere STANDING_ROSTER=seedcap.kyri STANDING_C
 case "$out" in *"guards_run=2"*) echo "seed_env_followed=yes" ;; *) echo "seed_env_followed=no" ;; esac
 rmdir "$pen/elsewhere"
 
+# --- the jail_nesting probe, planted in all three answers (REDS %516) ---------------------------
+# The third capability arm, and the first that asks a KERNEL question: can this bench build a second
+# mount namespace, which is what each of `agent_jail_enclosure`'s four legs needs before it can
+# start. Planted by shadowing `bwrap` on PATH, since the arm resolves the tool with `command -v` and
+# a plant that skipped that step would prove a shorter function than the one that ships.
+#
+# WHY THIS ARM EARNED ITS OWN BLOCK RATHER THAN RIDING THE ipv6 ONE. The tier machinery above is
+# proven with `ipv6`, and that proves the RUNNER. It says nothing about whether a particular arm
+# answers the question its name claims -- and `jail_nesting` did not: it handed bwrap `/bin/true`,
+# which NixOS does not ship, so bwrap built the namespace, failed to exec, exited non-zero, and was
+# read as a refused namespace on the one bench where the guard's legs actually pass.
+cat > "$pen/jailcap.kyri" <<'EOF'
+format standing-equipment-v1
+guard alpha
+path tools/real_witness.rish
+tier lap
+seated 20260822.000000
+
+guard needs_jail
+path tools/real_witness.rish
+tier lap
+capability jail_nesting
+seated 20260906.000000
+EOF
+
+plant_bwrap() {
+  # A real executable rather than a variable, because the arm resolves the tool with `command -v`.
+  printf '%s\n%s\n' '#!/bin/sh' "$1" > "$pen/fakebin/bwrap"
+  chmod +x "$pen/fakebin/bwrap"
+}
+run_jail_capability() {
+  rm -f "$pen/jail-card.kyri"
+  ( cd "$pen" && PATH="$1" STANDING_ROSTER=jailcap.kyri STANDING_CARD=jail-card.kyri \
+      sh "$runner" 2>/dev/null ) || true
+}
+
+# present -- a bwrap that builds the namespace, so the guard runs like any other row.
+plant_bwrap 'exit 0'
+out=$(run_jail_capability "$pen/fakebin:$PATH")
+case "$out" in *"guards_run=2"*) echo "jail_present_runs=yes" ;; *) echo "jail_present_runs=no" ;; esac
+case "$out" in *"skipped_capability=0"*) echo "jail_present_skips_none=yes" ;; *) echo "jail_present_skips_none=no" ;; esac
+
+# absent -- the kernel refusing the second wrapper, which is the line every jailed ship reads. The
+# wording is the one this pier actually printed when bwrap was nested inside bwrap, measured rather
+# than recalled; the arm reads the exit status rather than the words, so the words are here for the
+# next reader instead of for the code.
+plant_bwrap 'echo "bwrap: setting up uid map: Read-only file system" >&2; exit 1'
+out=$(run_jail_capability "$pen/fakebin:$PATH")
+case "$out" in *"guards_run=1"*) echo "jail_refused_skips=yes" ;; *) echo "jail_refused_skips=no" ;; esac
+case "$out" in *"skipped_capability=1"*) echo "jail_refused_counted=yes" ;; *) echo "jail_refused_counted=no" ;; esac
+case "$out" in *"skipped_capability needs_jail wants=jail_nesting"*) echo "jail_refused_named=yes" ;; *) echo "jail_refused_named=no" ;; esac
+case "$out" in *"run_verdict=ok"*) echo "jail_refused_still_passes=yes" ;; *) echo "jail_refused_still_passes=no" ;; esac
+
+# THE RESIDUE, pinned so the next hand moves it on purpose. The arm reads bwrap's exit status
+# rather than its words, so a failure that is not a refused namespace -- an unsupported flag, a
+# broken install, the execvp message `/bin/true` produced here -- still reads `absent` and still
+# skips. This leg does NOT reproduce REDS %516: a planted bwrap never execs anything, so the missing
+# payload is unreachable from this side and is proven at the source instead, two legs below. What it
+# fixes is the residue's value, so a later wording table changes this reading rather than sliding
+# past it.
+plant_bwrap 'echo "bwrap: execvp /bin/true: No such file or directory" >&2; exit 1'
+out=$(run_jail_capability "$pen/fakebin:$PATH")
+case "$out" in *"guards_run=1"*) echo "jail_unrecognized_failure_skips=yes" ;; *) echo "jail_unrecognized_failure_skips=no" ;; esac
+
+# unknown -- no bwrap at all. A pier without bubblewrap cannot run `agent-jail.sh` either, so this
+# must NOT skip: the guard runs and reds honestly rather than vanishing, which is the safety
+# direction the whole capability field rests on.
+#
+# HOW ABSENCE OF THE TOOL IS PLANTED. `command -v` finds any executable anywhere on PATH, so
+# shadowing cannot hide one -- the pen must be a PATH that genuinely holds no `bwrap`. Dropping the
+# directories that carry it is not available here: this pier keeps `bwrap` and `sh` in the same
+# directory, so dropping it takes the shell with it. A pen of symlinks to every tool but that one is
+# the shape that works, and it is bounded -- a PATH past `max_pen_links` entries means something
+# stranger than a test bench, and the leg says so rather than building forever.
+max_pen_links=8192
+mkdir -p "$pen/nobwrap"
+pen_links=0
+_oldifs=$IFS
+IFS=:
+for _d in $PATH; do
+  [ -d "$_d" ] || continue
+  for _f in "$_d"/*; do
+    _b=${_f##*/}
+    [ "$_b" = bwrap ] && continue
+    [ "$_b" = '*' ] && continue
+    [ -e "$pen/nobwrap/$_b" ] && continue
+    pen_links=$((pen_links + 1))
+    [ "$pen_links" -gt "$max_pen_links" ] && break
+    ln -s "$_f" "$pen/nobwrap/$_b" 2>/dev/null || true
+  done
+done
+IFS=$_oldifs
+if [ "$pen_links" -le "$max_pen_links" ] && ! ( PATH="$pen/nobwrap"; export PATH; command -v bwrap >/dev/null 2>&1 ); then
+  echo "jail_pen_hides_bwrap=yes"
+else
+  echo "jail_pen_hides_bwrap=no"
+fi
+out=$(run_jail_capability "$pen/nobwrap")
+case "$out" in *"guards_run=2"*) echo "jail_missing_runs=yes" ;; *) echo "jail_missing_runs=no" ;; esac
+case "$out" in *"skipped_capability=0"*) echo "jail_missing_skips_none=yes" ;; *) echo "jail_missing_skips_none=no" ;; esac
+# THE PEN PROVEN INNOCENT. A PATH missing some tool the runner needs would print no guard line at
+# all, and the two readings above would then answer for a reason that has nothing to do with bwrap.
+case "$out" in *"alpha green"*) echo "jail_pen_runner_ran=yes" ;; *) echo "jail_pen_runner_ran=no" ;; esac
+rm -f "$pen/fakebin/bwrap"
+
+# --- and the arm's payload must exist where the probe runs --------------------------------------
+# The leg that would have caught this on the day. The three plants above prove what the runner DOES
+# with each answer; they cannot prove the arm asks its question of a real program, because a fake
+# bwrap never execs anything. So the payload is read off the runner's own source and executed here:
+# a path this bench does not carry makes every real bwrap attempt exit non-zero for a reason that is
+# not the namespace. A pattern matching nothing reports broken rather than passing, since a control
+# that quietly stops reading is the failure it exists to prevent.
+jail_payload=$(sed -n 's/^ *if bwrap --ro-bind \/ \/ --dev \/dev \([^ ]*\) .*/\1/p' "$runner" | head -1)
+if [ -z "$jail_payload" ]; then
+  echo "jail_payload_read=no"
+else
+  echo "jail_payload_read=yes"
+  if [ -x "$jail_payload" ]; then echo "jail_payload_exists=yes"; else echo "jail_payload_exists=no"; fi
+fi
+# and the arm proves that payload outside the wrapper before it blames the wrapper, so a bench
+# lacking it answers unknown rather than absent. Asserted against the source, because the plants
+# above cannot reach a step that runs before bwrap is ever called.
+if grep -q '^ *\/bin\/sh -c : >\/dev\/null 2>&1 || { echo unknown; return 0; }' "$runner"; then
+  echo "jail_payload_proven_outside=yes"
+else
+  echo "jail_payload_proven_outside=no"
+fi
+
 # A GUARD THIS HOST CANNOT RUN LOSES ITS ELDER CARD ROW (REDS %492, second half). The carry-forward
 # keeps a `tier cadence` guard's history between its runs, which is right; it is wrong for a guard
 # that cannot run here at all, whose last verdict was recorded in a different world and which nothing

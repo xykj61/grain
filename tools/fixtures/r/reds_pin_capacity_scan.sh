@@ -50,10 +50,33 @@
 # WHAT IS REPORTED, never gated: pin_bytes, pin_bound, pin_headroom, pin_rows, pin_open_rows,
 # pin_fold_refused_rows, pin_foldable_rows, median_row_bytes, rows_that_fit, pin_deadlocked.
 #
-# WHY CAPACITY IS REPORTED AND NOT GATED. A full pin wants a person: raising a page's bound is
-# Keaton's word, seated that way once already for `session-logs/README.md`. A gate here would red on
-# every ordinary lap until he speaks, and a gate that reds on ordinary work is a gate someone turns
-# off. So the deadlock is printed loudly and refuses nothing.
+# WHY CAPACITY IS MOSTLY REPORTED AND NOT GATED. A full pin wants a person: raising a page's bound
+# is Keaton's word, seated that way once already for `session-logs/README.md`. A gate here would red
+# on every ordinary lap until he speaks, and a gate that reds on ordinary work is a gate someone
+# turns off. So the deadlock is printed loudly and refuses nothing.
+#
+# THE ONE CELL THAT DOES GATE, and why it is not an exception to the paragraph above but the state
+# that paragraph was never written about (REDS %517). Two readings cross here:
+#
+#                       | foldable row exists      | no foldable row
+#   -------------------|--------------------------|--------------------------
+#   headroom >= 0      | ok                       | ok
+#   headroom <  0      | over_bound_foldable GATE | pin_deadlocked, reported
+#
+# The argument above holds exactly in the right-hand column: nothing a lap can do makes room, so
+# only Keaton's word helps and a refusal would red on ordinary work. The left-hand column is the
+# opposite state, and this scan's own deadlock comment already names it -- "a full pin with a
+# foldable row is one reds_fold.sh away from healthy." One fold away from healthy is not healthy.
+# It is repairable by whichever lap meets it, with no word from anyone, in one command.
+#
+# Measured `20260906.212057`, which is why the cell is gated rather than merely printed: the pin
+# stood at 41,153 of 40,960 with `pin_foldable_rows=7`, and TWO OTHER rostered guards red on that
+# same page in that same cold pass -- `equinox_e123_living_pin_guard` with `detail=pin_over_bound`
+# and `declared_ceiling` with `verdict=over_declared_bound`. Neither names a remedy, because
+# neither knows this ledger folds. This scan knew, printed `rows_that_fit=0` beside
+# `pin_headroom=-193`, and answered `verdict=ok`. Four of 111 commit states that day carried the
+# pin over its bound. A verdict that disagrees with its own numbers is worth less than no verdict,
+# so the word and the exit status move together here.
 #
 # HOW A ROW IS READ -- two questions, two readings, on purpose. A row is a line beginning
 # `**REDS %N` or `**REDS #N`, and this scan asks two different things of it:
@@ -191,6 +214,14 @@ if [ "$UNRECORDED" -gt "$UNRECORDED_SHELVES_CEILING" ]; then
 fi
 if [ "$SHELF_OPEN" -gt "$SHELF_OPEN_ROWS_CEILING" ]; then
   echo "verdict=shelf_open_rows_above_ceiling ceiling=$SHELF_OPEN_ROWS_CEILING"
+  exit 1
+fi
+# The one gated cell -- over the declared bound WITH a lawful fold available. See the header table:
+# the deadlocked cell beside it stays reported, since only a bound raise helps there and that is
+# Keaton's word. Here a lap repairs it in one command, so the remedy is named in the refusal itself.
+if [ "$HEADROOM" -lt 0 ] && [ "$PIN_FOLDABLE" -gt 0 ]; then
+  echo "detail: over_bound_foldable -- the pin stands ${HEADROOM#-}B above its bound with $PIN_FOLDABLE of $PIN_ROWS rows foldable; write a shelf head and run sh tools/fixtures/r/reds_fold.sh <shelf> <rows> --why '<what they taught together>'"
+  echo "verdict=over_bound_foldable"
   exit 1
 fi
 echo "verdict=ok"
