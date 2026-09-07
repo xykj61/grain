@@ -435,3 +435,4 @@ at a closed fold.*
 
 *Row %560 folded to [`REDS-a-gate-that-agreed-with-its-own-copy-rows-560.md`](REDS-a-gate-that-agreed-with-its-own-copy-rows-560.md) on `20260907.095650`, **CLOSED** -- a heard proof can still be wrong about its subject, when every instrument around it carries the same copy of the number.*
 *Row %561 folded to [`REDS-the-door-has-two-keys-rows-561.md`](REDS-the-door-has-two-keys-rows-561.md) on `20260907.104723`, **BOOKED** -- a page names its room at the door and the guard read one of the door's two keys; the census had been repaired by hand twice in two days and regrew both times, so the clause belongs where a habit is set.*
+*Row %562 folded to [`REDS-a-declared-absence-is-not-breakage-rows-562.md`](REDS-a-declared-absence-is-not-breakage-rows-562.md) on `20260907.105303`, **CLOSED** -- a declared absence is testimony about a gap, not a broken reference.*

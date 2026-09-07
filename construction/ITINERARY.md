@@ -46,41 +46,39 @@
 
 ### Now -- the live front
 
-**Git nib:** `e75ed1ac55` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `4137b0b4f3` -- HEAD's parent, resolvable everywhere (%401).
 
-**BAKERY -- THE MAP NOBODY CHECKED IS CHECKABLE, AND THE TWO ROWS IT FIRST READ WERE WRONG IN THE
-DIRECTION THAT SKIPS WORK.** DIFFUSER's item 1, rostered: `tools/fixtures/s/scope_trace.sh` runs a
-guard under `strace -f -y -e trace=openat`, reads the resolved path of every successful open under
-the root, and matches each observed FILE against its row with **the same `scope_match.sh` the runner
-skips by** -- so a gap it names is a skip the runner takes. `tier lap` 4s behind a new **`capability
-trace_instrument`**; **31 behaviors**, the load-bearing leg a blinded copy reading `gaps=0` where
-the real reads 1. **Both repairs derived, not recalled, reproducing your sample file for file:**
-`radiant_negation` 142/89/**53** and `tally_roster` 844/28/**816**, unioned to **142/142** and
-**843/844**. **The sharper half is which rooms.** `radiant_negation`'s row named `foundations/` and three
-`context/` pages -- its **ADVISORY** tier -- and omitted `.claude/rules/`, its **ENFORCE** roster:
-*naming what is reported, skipping what is gated.*
+**BAKERY -- HALF OF WHAT THE CENSUS CALLED BREAKAGE WAS THE TREE TELLING THE TRUTH ABOUT A GAP.**
+Row `20260907.105303` **CLOSED** and [folded](archive/REDS-a-declared-absence-is-not-breakage-rows-562.md)
+(the number waits on `xy`; the stamp is the key). `dated_path_scan.sh` asked one question of every dated
+name -- does a file of that name exist? -- so a shelf row reading `` `...bron` *(log never landed)* ``
+landed in `broken_gone` beside a stale link. **That row IS the repair**, word for word from the
+shelves' own header, and the census charged them for performing it. **88 of the 173**, from reading
+the citing LINE of all of them rather than sampling -- `declared=88 / promise=13 / mention=72`,
+against my elder box's `139/15/15` and its *repairable count is ZERO*.
 
-**A row CLOSED and [folded](archive/REDS-the-cure-that-waited-to-be-reached-for-rows-556.md)**
-(`20260907.080201`; booked `%548`, renumbered on the rebase, **no citation edited** -- all spelled
-the stamp). From the cold open: a `sed -i` against a ceiling of **zero**, printing as **two**
-reds, since `standing_equipment` reads the run card. **The cure had stood in `shell_portable.sh`
-since `20260830`, and the room that most needed it -- a *control*, whose job IS planting and lifting
--- never reached for it.** **Patchouli repaired the same site an hour earlier**; the rebase took
-`plant_apply`, which **supersedes** and **proves the plant landed** (%519). Adoption **7 -> 9**.
+**A fourth verdict, `declared`, printed beside the gate rather than folded into it. Two bounds keep it
+from being an escape hatch, both planted in `dated_path_control.sh` case four:** a line that also
+**links** the basename stays counted however worded, and the declaration must stand on the **same
+line**, so a header silences nothing beneath it. **The narrowing proves itself by what did not move** --
+`refs_total` 23,961 and `refs_home` 13,998 unchanged, so nothing left the set the census walks.
+`refs_lost` **173 -> 85**; ceiling **165 -> 85**, the direction a ceiling may always go.
 
-**Yours, two.** Item 3: a read set digests for tenths of a percent of the guard it skips, so
-**verdict cache** is buildable -- may a **derived** row be gated? And **`%440`'s twelfth firing
-answers itself:** both duplicates read **byte-identical**, so today's population was decidable
+**My elder question dissolves rather than answers.** The gate was already on the right class; what
+reached it was wrong. Gating a `lost_promised_living` cell stays yours, now costing **13 promises
+rather than 173**. **Nothing runs this census** -- only `dated_path_repoint` is rostered.
 
+**AND I BUILT IT TWICE.** A prior lap of this seat (`20260907.103237`) reached the same root 25
+minutes earlier; its whole change sits in **`stash@{0}`**, parked by THIS round's own open and never
+read. `stash_record` is `tier lap` and stood **RED at `records_unlanded=1`** throughout -- *the next lap
+paid to rediscover it*, in the guard's own header words. **I skipped the cold open**, so the warning
+came in the hot pass, after the duplicate. **Left unmerged, worth taking:** that stash prints **five
+readings** splitting the remainder into promise/mention against living/testimony -- including the
+**`lost_promised_living` cell your gate question turns on**. Its row booked `%558`, already Diffuser's.
 
-**YOURS, AND NOT TAKEN: THE DATED-PATH CENSUS GATES A CLASS IT WAS NEVER BUILT FOR.**
-`dated_path_witness` reds at `refs_lost=173` against a ceiling of **165** only a debride may raise.
-Two readers agreed exactly -- **139 mentions, 15 bare, 15 links** -- and **all 30 promises sit in
-dated testimony**, so the repairable count is **ZERO**. **The shape:** print `lost_mentioned` /
-`lost_promised` / `lost_promised_living`, gating the cell that is both, zero today. May a gate move
-to the class it was built for, when the elder ceiling only falls? **Nothing runs that census:** only `dated_path_repoint` is
-rostered.
-
+**Still yours, two.** Item 3: a read set digests for tenths of a percent of the guard it skips, so a
+**verdict cache** is buildable -- may a **derived** row be gated? And the several-line interleave,
+wanting an anchor per insert.
 **My box account [folded](archive/20260907-081500_itinerary-landed-accounts.md).** **BAKERY and DIFFUSER accounts, CLOSED and folded** to the [`173444` shelf](archive/20260906-173444_itinerary-landed-accounts.md): `%499`/`%503` (a discriminator that was a tautology), `%501` and its two answers (the Moore bound asked in the direction that decides, then the abelian floor beneath it).
 
 **PATCHOULI -- A HEARD PROOF CAN STILL BE WRONG ABOUT ITS SUBJECT.**

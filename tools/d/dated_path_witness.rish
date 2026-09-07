@@ -41,14 +41,23 @@
 #   every dated reference in the field, and its numbers are printed verbatim rather than recited
 #   here (REDS %108). The gate is on the LOST references -- a basename that exists nowhere, and
 #   a basename at two paths where no single answer is safe -- rather than on the whole broken
-#   count. Under the mark law a stale reference is resolved rather than repointed, so recovered
+#   count. A DECLARED ABSENCE is neither: a row that names a log and says on the same line that
+#   it never landed is testimony about a gap, deliberately written, and it reads `declared` and
+#   is reported beside the gate rather than inside it. Two bounds hold it there, both planted in
+#   the control: a line that LINKS the basename stays counted however it is worded, and a
+#   declaration standing a line above the reference silences nothing.
+#
+#   Under the mark law a stale reference is resolved rather than repointed, so recovered
 #   references RISE when a room folds and that is the fold working; what must never rise is what
 #   the resolver cannot recover. The lost ceiling has no slack.
 #
 # WHAT IS NOT PROVEN. Nothing here moves a file or repairs a reference; the resolver reads and
-# reports, and the repairing is a later round's work. The 183 references whose basename exists
+# reports, and the repairing is a later round's work. The references whose basename exists
 # nowhere are counted rather than explained -- some are renames, some are files that never
-# landed, and telling those apart needs a history walk this rung does not take.
+# landed, and telling those apart needs a history walk this rung does not take. The count is
+# left to the scan's own output rather than recited here, which is what REDS %108 asks: this
+# line read `183` while the scan read 68, since a number copied into prose drifts on the first
+# lap that moves it and nobody edits both.
 #
 # Chapter: the Standfast restrategizing of `20260821`, arc one -- the mark and the path.
 # Kin: tools/d/dated_path_resolve.rish - tools/fixtures/d/dated_path_scan.sh -
@@ -241,6 +250,19 @@ assert control.out contains "worktree_roster=hand " else "dated-path: the roster
 assert control.out contains "roster_names_pen_root=0" else "dated-path: the roster must never name the root itself -- the main worktree is the field, and pruning it would prune everything"
 assert control.out contains "refs_total=4" else "dated-path: an ORDINARY copied directory must still be counted, or the worktree reading cannot be told from a walker that never descends"
 say "worktree GREEN -- the walk reaches the copy, the census declines it, an ordinary copy is still counted, and the root is never pruned"
+
+# A DECLARED ABSENCE IS NOT BREAKAGE, and the two bounds that keep the marker from becoming an
+# escape hatch. The session-log shelves write a row that names a log and says on the same line
+# that it never landed -- their own header asks for exactly that row, since a link promises a
+# file a reader can open -- and the census counted all 88 of them as lost, which stood the gate
+# at 173 against a ceiling of 165 with a repairable count of zero. Case four plants four ghosts
+# whose answer is known before the walker runs, and the last two legs are what make the
+# narrowing safe rather than convenient: a line that also LINKS the basename stays counted
+# however it is worded, and a declaration a line ABOVE the reference silences nothing.
+assert control.out contains "refs_total=5" else "dated-path: case four must carry the five references it was built with"
+assert control.out contains "broken_declared=1" else "dated-path: a row declaring on its own line that a log never landed must read declared rather than lost"
+assert control.out contains "broken_gone=3" else "dated-path: the three remaining ghosts must stay gone -- the plain one, the one whose line still LINKS what it calls absent, and the one whose declaration sits a line above it"
+say "declared GREEN -- a declared absence leaves the lost count, while a link and a page-level declaration each keep their reference counted"
 
 # ONE LIST, read by both tools. They kept private copies for a day, diverged twice, and the second
 # divergence let the repointer rewrite the stale fixture three asserts above -- leaving the rung
