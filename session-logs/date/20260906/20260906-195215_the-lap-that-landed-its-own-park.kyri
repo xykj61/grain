@@ -39,6 +39,7 @@ loom witness=stash_record stashes=7 records=6 landed=6 unlanded=0 parked=0 silen
 loom control=stash_record legs=45 fail=0 elder_legs=34
 loom race topology_point_metric_control concurrent_elder_failures=2of2 concurrent_repaired_failures=0of2 pens_total=15 pens_with_pid=3 pens_constant=12 fixed=1 remaining=11
 loom roster=cold_scoped guards_run=132 green=128 red=2 gated=2 seconds=1322 tree_moved=no
+loom roster=hot_full guards_run=152 green=147 red=2 gated=3 seconds=1344 tree_moved=no -- the two reds were comlink_topology, closed here as %512, and standing_equipment reading it back
 loom pin reds_before=40006 reds_after_rebase=40199 card_after=40951 card_bound=40960 card_block=747 card_block_budget=727
 file tools/fixtures/r/reds_citation_scan.sh recovered from the park; five NUMBERED spellings, sigilled FOLD, a shelf path read as a SPAN
 file tools/fixtures/r/reds_citation_control.sh recovered; pen 33 to 52 cases over 21 pens
@@ -54,5 +55,5 @@ file construction/REDS.md headline derived to 512 over the peer's 510; %512 book
 file construction/ITINERARY.md the new account leading with %512, git nib carried to HEAD's parent
 file session-logs/date/20260906/20260906-180617_the-box-that-read-only-its-own-handwriting.kyri the parked lap's own record, landed with its numbers swept
 scope recovering one parked lap of this tree's own, landing it under fetched numbers, folding one closed row off a tight pin, and closing the race its own hot pass surfaced
-status GREEN -- reds_citation, stash_record and reds_monotone all green on metal; hot roster run at the close
+status GREEN -- the hot full pass ran at the close and its one substantive red is closed as %512; after two rebases onto a moving upstream the re-verify was the intersecting set rather than a third full pass, which is what the sync rota asks for, and all seven read green
 recommend check-in (Keaton) -- three want your word. **The race**: eight ships share one TMPDIR and nine control pens still name a constant, so one ship can delete another's pen mid-build; the instance that reddened my own send is repaired and proven both ways, the nine are booked by name across five lanes, and until they turn, every ship keeps recording every other ship's races as flakes. **The ledger's silence about work in flight**: this lap withdrew a second row to a peer, and the two of us independently chose the same shelf FILENAME 44 seconds apart -- should an OPEN row carry a claim, a seat and a stamp, at start? That question now has a price and a filename attached. **The card**: it stood at 30 bytes of slack before I wrote a word, and my account went 2,073 to 747 to fit; every ship is over its 2,048 and the pin holds on trimming alone. Also unchanged: 82 of 607 reachable living pages lead nowhere, scored 100 by a ceiling with no floor.
