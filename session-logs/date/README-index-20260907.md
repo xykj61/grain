@@ -12,11 +12,11 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | Stamp | Log | What it recorded |
 |---|---|---|
 | `20260907.144140` | [A wall that reads the index](20260907/20260907-144140_a-wall-that-reads-the-index.kyri) | %524 closed: the link wall reads the index. |
+| `20260907.142041` | [The lap that came back renumbered](20260907/20260907-142041_the-lap-that-came-back-renumbered.kyri) | a parked lap re-derived; its row renumbered to %572. |
+| `20260907.124006` | [a reader that walks past its own subject](20260907/20260907-124006_a-reader-that-walks-past-its-subject.kyri) | A marker bound to a stranger: 40 covering 200 read ok. |
 | `20260907.123841` | [The meter that read one of two instruments](20260907/20260907-123841_the-meter-that-read-one-of-two-instruments.kyri) | covered is a union; bare gate 83 -> 0. |
 | `20260907.122257` | [A label is not its target](20260907/20260907-122257_a-label-is-not-its-target.kyri) | the repairable cell reads zero; a promise test read exact. |
 | `20260907.120510` | [A pen isolated by all but its name](20260907/20260907-120510_a-pen-isolated-by-everything-but-its-name.kyri) | its seats were the whole pier's. |
-| `20260907.124006` | [a reader that walks past its own subject](20260907/20260907-124006_a-reader-that-walks-past-its-subject.kyri) | A marker bound to a stranger: 40 covering 200 read ok. |
-| `20260907.111550` | [the ratchet whose only repair was the defect](20260907/20260907-111550_the-ratchet-whose-only-repair-was-the-defect.kyri) | 301 desks derived and run; %565. |
 | `20260907.120346` | [The day that had not started](20260907/20260907-120346_the-day-that-had-not-started.kyri) | %567: a census whose day was "today" refused every midnight. |
 | `20260907.114608` | [The canon that taught the door](20260907/20260907-114608_the-canon-that-taught-the-door-it-never-opened.kyri) | the rota's 20 pages: 14 named no room. |
 | `20260907.114054` | [a cadence nothing counts](20260907/20260907-114054_a-tier-is-only-a-cadence-if-something-counts-the-beats.kyri) | 58 guards, 0 receipts, 5 red on the first sing. |
