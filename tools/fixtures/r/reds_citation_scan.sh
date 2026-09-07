@@ -29,13 +29,15 @@
 # that are PROMISES TO A READER rather than mentions:
 #
 #   NUMBERED  the anchor text IS the number -- [`%492`](path). A reader clicks a number, so the
-#             number claims the destination. No judgment: the claim is in the anchor.
-#   FOLD      the recital line the loom writes -- `Row 172 folded to [text](path)`. The words
+#             number claims the destination. No judgment: the claim is in the anchor. Five
+#             spellings stand in living prose and all five are read: `%492`, %492, `REDS %108`,
+#             REDS %188, and the sigilless `488`.
+#   FOLD      the recital line the loom writes -- `Row %184 folded to [text](path)`. The words
 #             `Row <n> folded to ` stand immediately before the link, which anchors the number as
-#             tightly as an anchor text does, and the number is bare rather than sigilled. 47 of
-#             this tree's 274 living shelf links wear this shape and neither form beside it could
-#             see one: the anchor is a path, so NUMBERED skips it, and it holds no shelf word.
-#             A range is checked at both endpoints.
+#             tightly as an anchor text does. 194 of this tree's 284 living shelf links wear this
+#             shape and neither form beside it could see one: the anchor is a path, so NUMBERED
+#             skips it, and it holds no shelf word. A list -- `Rows %195, %196 and %197` -- names
+#             several claims and every one is checked.
 #   SHELF     the anchor text is a shelf word -- [shelf](path), [own shelf](path). The sentence
 #             says *the shelf of the row just named*, so the claim is the nearest `%N` before the
 #             link, on its own line or the one above -- one line of lookback, because this tree
@@ -43,8 +45,8 @@
 #             A `%N` AFTER the link is never its claim, which is what keeps a recital's trailing
 #             lesson number from reading as a misdirection.
 #
-# A path may name several rows (`rows-451-469.md`), and a claim matching ANY of them agrees -- the
-# shelf genuinely holds them all.
+# A path names one row or a closed SPAN (`rows-451-469.md`), and a claim INSIDE the span agrees --
+# the shelf genuinely holds the rows between its endpoints, read on metal rather than assumed.
 #
 # WHAT IT READS, AND WHAT IT LEAVES ALONE. Tracked `*.md` present in the worktree, minus testimony:
 # a basename carrying a one-clock stamp is a dated record and keeps every word it wrote
@@ -54,19 +56,25 @@
 #
 #   files_read            -- living documents holding at least one shelf link
 #   numbered_links        -- [`%N`](shelf) citations found
-#   numbered_disagree     -- of those, the number is not among the rows the path names. HELD AT ZERO.
+#   numbered_disagree     -- of those, the number is outside the row or span the path names. ZERO.
 #   shelf_links           -- [shelf-word](shelf) citations found
-#   shelf_disagree        -- of those, the nearest preceding claim is not among them. HELD AT ZERO.
+#   shelf_disagree        -- of those, the nearest preceding claim is outside them. HELD AT ZERO.
 #   shelf_unnumbered      -- shelf-word links with no `%N` in the window. Reported, never gated:
 #                            such a link makes no numeric promise to check.
-#   fold_links            -- `Row N folded to [text](shelf)` citations found
-#   fold_disagree         -- of those, the row folded is not among the rows the path names. ZERO.
+#   fold_links            -- `Row %N folded to [text](shelf)` citations found, sigilled or bare
+#   fold_disagree         -- of those, a row folded is outside what the path names. HELD AT ZERO.
 #   all_links             -- every link into a shelf, in any form
 #   unread_links          -- of those, the ones no form above can check. Reported, never gated --
 #                            and the reason it is printed at all is that a guard reporting only what
 #                            it gates reads as though it covered the room (REDS %451, %469). On this
-#                            tree the three forms reach 66 of 274, and saying so is the difference
-#                            between a green that means checked and a green that means unlooked-at.
+#                            tree the three forms reach 219 of 284, measured `20260906.195215`,
+#                            and saying so is the difference between a green that means checked
+#                            and a green that means unlooked-at.
+#                            The 65 still unread carry no number in their anchor at all: 61 repeat
+#                            the path itself, and four read `folded` or `their own`. Their claim,
+#                            if they make one, lives in the surrounding prose, which this reading
+#                            declines on purpose -- a nearest-preceding-%N window called 32 honest
+#                            sentences wrong before the forms were narrowed to promises.
 #
 # USAGE
 #   sh tools/fixtures/r/reds_citation_scan.sh           # census -- key=value lines
@@ -147,13 +155,22 @@ FNR == 1 { prev = "" }
 {
   line = $0
 
-  # NUMBERED -- the anchor text is the number itself.
+  # NUMBERED -- the anchor text is the number itself, in any of the four spellings this tree
+  # actually writes: `%492`, %492, `REDS %108`, REDS %188, and the sigilless `488`. The elder form
+  # read the first two and missed the rest, which is half of this shape (REDS %511).
   s = line
-  while (match(s, /\[`?%[0-9]+`?\]\([^)]*REDS-[A-Za-z0-9-]*rows-[0-9][0-9-]*\.md\)/)) {
+  while (match(s, /\[`?(REDS[ ]+)?%?[0-9]+`?\]\([^)]*REDS-[A-Za-z0-9-]*rows-[0-9][0-9-]*\.md\)/)) {
     m = substr(s, RSTART, RLENGTH)
     s = substr(s, RSTART + RLENGTH)
-    match(m, /%[0-9]+/)
-    claim = substr(m, RSTART + 1, RLENGTH - 1) + 0
+    # The claim is read out of the ANCHOR rather than found anywhere in the match, since a
+    # sigilless anchor holds no `%` to search for and the path holds digits of its own.
+    claim = m
+    sub(/^\[/, "", claim)
+    sub(/\].*$/, "", claim)
+    gsub(/`/, "", claim)
+    sub(/^REDS[ ]+/, "", claim)
+    sub(/^%/, "", claim)
+    claim = claim + 0
     match(m, /rows-[0-9][0-9-]*\.md/)
     rows = substr(m, RSTART + 5, RLENGTH - 8)
     numbered++
@@ -189,13 +206,32 @@ FNR == 1 { prev = "" }
     }
   }
 
-  # FOLD -- the recital line the loom writes: the words `Row 172 folded to ` stand immediately
+  # FOLD -- the recital line the loom writes: the words `Row %184 folded to ` stand immediately
   # before the link, so the number is anchored exactly the way the SHELF shape is anchored, rather
-  # than found in a window. The number is bare here (`Row 172`, no sigil), and a range names both
-  # its endpoints. 47 citations wear this shape and no reading above can see one: the anchor text
-  # is a path, so NUMBERED skips it, and it holds no shelf word, so SHELF skips it too.
+  # than found in a window. The anchor text is a path, so NUMBERED skips it, and it holds no shelf
+  # word, so SHELF skips it too. 192 citations wear this shape -- every one of them checked here.
+  #
+  # THE SPELLING IS READ FROM THE TREE RATHER THAN FROM ONE PAGE (REDS %511). The elder form
+  # required a BARE number, `Row 172 folded to`, and read 47 of the 192. The fold recital writes
+  # the sigil -- `Row %184 folded to` -- because `git-signing.md` seats `%` as the sigil for a
+  # number this tree assigns itself, and the fold INDEX writes the bare form. Two pages disagree
+  # about the spelling, and the form was drawn from the one that spells it against the law.
+  # Measured `20260906` with this very pattern, every spelling it reads, N standing for a number:
+  #
+  #   Row %N            79      Rows %N and %N          23      Rows %N, %N and %N        4
+  #   Rows %N-%N        34      Row N                   18      Rows N                    4
+  #   Rows N-N          25      four longer lists, one each -- up to eight members
+  #
+  # So the separator is `-`, `,` or `and`, a number may wear a sigil and a backtick, and a list
+  # runs to eight. `through` is deliberately ABSENT: the recital writes `Rows %1 through %172 are
+  # folded`, never `folded to`, and a form reading a spelling nobody writes is this same fault
+  # inverted, so case 32 in the pen holds that absence rather than trusting a reader with it.
+  # EVERY number in the list is a claim, so all of them are checked. One spelling stays unread
+  # on purpose: one recital line in the fold index writes the row number, then four words, then
+  # the verb -- row 163, its opening and seating, folded to a shelf -- and widening for a single
+  # citation buys reach at the price of a form nobody can predict.
   s = line
-  while (match(s, /Rows?[ ]+[0-9]+(-[0-9]+)?[ ]+folded to[ ]+\[[^]]*\]\([^)]*REDS-[A-Za-z0-9-]*rows-[0-9][0-9-]*\.md\)/)) {
+  while (match(s, /Rows?[ ]+`?%?[0-9]+`?([ ]*(-|,|and)[ ]*`?%?[0-9]+`?)*[ ]+folded to[ ]+\[[^]]*\]\([^)]*REDS-[A-Za-z0-9-]*rows-[0-9][0-9-]*\.md\)/)) {
     m = substr(s, RSTART, RLENGTH)
     s = substr(s, RSTART + RLENGTH)
     match(m, /rows-[0-9][0-9-]*\.md/)
@@ -203,13 +239,15 @@ FNR == 1 { prev = "" }
     nums = m
     sub(/^Rows?[ ]+/, "", nums)
     sub(/[ ]+folded to.*$/, "", nums)
-    fold_n = split(nums, fold_span, "-")
-    fold_lo = fold_span[1] + 0
-    fold_hi = (fold_n > 1 ? fold_span[2] + 0 : fold_lo)
+    gsub(/[`%]/, "", nums)
+    gsub(/[ ]*(and|,|-)[ ]*/, " ", nums)
+    fold_n = split(nums, fold_span, " ")
     fold++
-    if (!holds(rows, fold_lo) || !holds(rows, fold_hi)) {
-      fold_bad++
-      printf "disagree fold %s:%d claim=%%%d path=rows-%s\n", FILENAME, FNR, fold_lo, rows
+    for (fold_i = 1; fold_i <= fold_n; fold_i++) {
+      if (!holds(rows, fold_span[fold_i] + 0)) {
+        fold_bad++
+        printf "disagree fold %s:%d claim=%%%d path=rows-%s\n", FILENAME, FNR, fold_span[fold_i] + 0, rows
+      }
     }
   }
 
@@ -223,10 +261,19 @@ FNR == 1 { prev = "" }
 
   prev = line
 }
-function holds(rows, claim,   n, part, i) {
+# A path names ONE row (`rows-292.md`) or a closed SPAN (`rows-242-254.md`), and a span-named shelf
+# holds every row between its endpoints. Read on metal `20260906`:
+# REDS-the-integration-and-its-wake-rows-242-254.md carries rows 242, 245, 246, 247, 248, 251 and
+# 254, and REDS-the-booked-remainders-rows-291-330.md carries 291, 301, 306, 311, 326, 327, 328 and
+# 330. Reading the two numbers as a SET called eighteen of those interior citations wrong -- honest
+# prose naming a row the shelf genuinely holds -- so the span is read as the interval it is
+# (REDS %511). Measured the same day, every shelf path in living prose names one row (256) or two
+# (294) and none names three, and the two spans whose endpoints are equal collapse to the
+# single-row answer by the same arithmetic.
+function holds(rows, claim,   n, part) {
   n = split(rows, part, "-")
-  for (i = 1; i <= n; i++) if (part[i] + 0 == claim) return 1
-  return 0
+  if (n == 1) return (part[1] + 0 == claim)
+  return (claim >= part[1] + 0 && claim <= part[n] + 0)
 }
 END {
   printf "numbered_links=%d\n", numbered + 0
