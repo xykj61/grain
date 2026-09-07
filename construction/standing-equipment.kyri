@@ -2468,6 +2468,29 @@ guard two_rooms_doorway
 path tools/t/two_rooms_doorway.rish
 tier cadence
 seated 20260906.161500
+# TWO-ROOMS DOORWAY, AT THE MOMENT THE PAGE IS WRITTEN -- seated 20260907.092522.
+#
+# The rung above is whole and slow: 978 pages, one subprocess each, 28s, `tier cadence`. So it
+# speaks on the fifth round, hours after a page was written, to a hand who has moved on. On
+# 20260907 FOUR pages landed in one day whose Status named `proposed` and no room, three of them
+# AFTER the canon settled that question (TWO_ROOMS.md, 20260907.015907) and the room's own front
+# door taught the token the same morning. The ratchet went 44 to 48 in a day and a hand swept it
+# back by reading four sentences already on the pages. The repair rate matched the writing rate,
+# which is a lantern rather than a loom.
+#
+# This is the loom, and it gates a NARROWER class on purpose: only a page the commit ADDS. A new
+# page has no accreted testimony to protect and exactly one person who knows its register -- the
+# hand writing it, right now -- so the ratchet's RISE is held at zero while its FALL stays with
+# the rung above. A page the commit MODIFIES is reported and walks free, because 44 elder pages
+# name no room and three are dated testimony; refusing an unrelated commit for touching one would
+# be a wall somebody turns off.
+#
+# `tier lap`: 2s, and it reads one `git diff --cached` plus the doorway roster. It is the cheap
+# gate that a lap adding one page must actually run -- COPAL's %550 sentence, answered here.
+guard two_rooms_doorway_touch
+path tools/t/two_rooms_doorway_touch_witness.rish
+tier lap
+seated 20260907.092522
 # TAME'S 70-LINE LEDGER -- the instrument behind the tidy ratchet could not see its own subject.
 #
 # `tools/fixtures/t/tame_style_long_fn_one.sh` ended a function at the first line matching `^}$`

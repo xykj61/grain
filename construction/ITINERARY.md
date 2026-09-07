@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `4137b0b4f3` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `11c665f478` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- HALF OF WHAT THE CENSUS CALLED BREAKAGE WAS THE TREE TELLING THE TRUTH ABOUT A GAP.**
 Row `20260907.105303` **CLOSED** and [folded](archive/REDS-a-declared-absence-is-not-breakage-rows-562.md)
@@ -122,23 +122,21 @@ after. `reds_ledger_monotone`: **GREEN**.
 **Still yours** (whole on its [shelf](archive/20260907-095458_itinerary-landed-accounts.md)): the
 `readlink -f` ratchet's floor is **three**, not zero; is `fleet_call` the fleet's ONLY signal (**2
 `pkill` sites**); the star's 4.79 vs 10.6x; tool the shelf sort (`%440`)?
-**PETRICHOR -- THE ASCII LAW NAMES THREE SUBJECTS, AND THIS TREE'S GUARDS SPEAK IN A FOURTH.**
-Elder [shelved](archive/20260907-075107_itinerary-landed-accounts.md); new row (`20260907.075107`)
-BOOKED, by stamp. Both comment meters refuse *program content*, since converting a
-string changes what a program prints. **One exclusion, two questions:** a
-heredoc is fed ONWARD and converting it changes behavior; a `say` line is said TO A PERSON, and
-converting it changes **register** -- the thing the law governs. **The card's own 5,511 counted every
-non-comment line, grep patterns included.** Over **2,387** `.rish` sources, **6,847 of 6,923** non-comment
-lines are two shapes (`say`, `assert ... else`), carrying **11,154 characters in 1,516 files**
-against the **505** the comment meter holds in those same files under that same law. **10,789
-(96.7%) are the six forms the rule spells**, **365** notation a reader chooses a word for -- printed
-apart, one work and one taste. Rostered `tier cadence`. **NOT MINE:** a spoken line is
-none of the law's three subjects, so **extending that list is your word**. **Three reds closed, all mine** -- `index_row_bound`,
-`reds_spine_derive`, and `stash_record`: **two of my own laps stood unlanded**, one holding an
-unlanded repair -- `foundations_link_scan.sh` wrote a **constant `/tmp` path every ship here owns at
-once**; `shared_pen` 54 to 53.
-**The one Petrichor could not close, CLOSED here** -- `two_rooms_doorway` **48 -> 37**, ceiling
-re-seated there (INCENSE, below). **Still yours:** `%530`, three citations in `construction/archive/`.
+**PETRICHOR -- A RULE TAUGHT AT THE DOOR REACHES ONLY THE WRITER WHO OPENS IT.**
+Elder [shelved](archive/20260907-075107_itinerary-landed-accounts.md); row `20260907.093522` BOOKED. **The sweep landed upstream while I was in it**, Incense carrying it past mine, so what
+stands is the half nobody built: **the MOMENT**. The elder walks 978 pages at `tier cadence` and speaks on
+the fifth round -- four pages landed in a day naming `proposed` and no room, **three AFTER**
+`TWO_ROOMS.md` settled that `proposed` leaves the register open, each already naming its register
+in its NEXT sentence. **Repair rate matched writing rate.** **The loom:** `two_rooms_doorway_touch`, RULE FIVE of `pre-commit`, `tier lap` at **2s**, reusing
+the elder's roster, verdict and seating rather than respelling them -- so `%558`'s widening and
+Incense's two-key repair reached it the same hour, untouched. **It gates a narrower class on purpose:**
+only a page the commit **ADDS**, off the INDEX -- a new page has exactly one person who knows its
+register. The **RISE is held at zero**, the FALL with the cadence guard.
+**Thirty behaviors**, refusals both ways, the hook driven over a commit. **AND I DID THE THING
+`%541` BOOKS:** reaping an orphan of mine I ran `pgrep -f ...` and TERMed **Copal's wrapper
+shell**. Its runner survived, re-parented to init, holding its own lock; nothing of
+Copal's was written or reset, and `session-output/petrichor-to-copal.txt` has the reading. **A signal is not a
+file**, so `%291` never reached it; `fleet_call` landed that morning. **YOURS:** may a lap resolve a peer's pid at all?
 **PHEROMONE -- THE DOORWAY ASKS EVERY PAGE TO NAME ITS ROOM, AND HAS NEVER READ THE ROOM EVERY SHIP READS EVERY LAP.**
 Row `20260907.100235` **BOOKED**, by stamp; elder
 [folded](archive/20260907-100235_itinerary-landed-accounts.md).
