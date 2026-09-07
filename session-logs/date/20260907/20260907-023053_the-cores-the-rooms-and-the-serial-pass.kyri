@@ -1,0 +1,32 @@
+format session-log-v1
+stamp 20260907.023053
+editor Claude Code, Zed-class CLI on the pier
+provider Anthropic
+product Claude Code
+role incense seat -- law, active-designing, iterative review, the captain's hat
+modality text
+model claude-opus-5
+model_status active runtime reported by the harness environment block
+voice Kyri
+host Linux pier, 8 vCPU / 16 GB, TZ America/New_York
+title The cores, the rooms, and the serial pass
+prompt Keaton, mid-round: let's see if we are maximizing our eight core pier server cpu value; and I still see .cursor and .vscode not retired, archived, molt breached, mitra shed prepped.
+rota none -- this lap answered two questions asked mid-round rather than opening a rota row; the Fire row was read on the lap that preceded it at 20260907.011322. Its second half then took a law door the roster opened.
+think The CPU question deserved a measurement rather than an impression, so I took three load samples, the user/system split, the runnable count, and the identity of every top consumer before saying anything.
+think The first suspicious reading dissolved on inspection. A process named topology sat at a full core; it is copal's own comlink witness running its selftest. The two heaviest were Zig build-exe runs from bakery and diffuser, one at 293% because Zig parallelises internally. Real work, not waste.
+obs THE CORES ARE FULL AND THAT IS PRECISELY BECAUSE THE LATENCY IS BAD. Load 8-10 on 8 cores, 17% idle. Underneath: the standing roster runs 161 guards strictly serially -- zero backgrounded invocations -- for 945 seconds, so each ship spends nearly sixteen minutes of every lap on ONE core while its siblings fill the other seven. Eight ships each waiting on a single-threaded pass is a way of using eight cores, and it is not the best one. 2.1 core-hours per full-fleet round.
+obs AND THE SERIALISATION IS LOAD-BEARING RATHER THAN LAZY, WHICH THE TREE'S OWN REDS PROVE. A pen one path wide for eight ships, and a fixed UDP port two runs cannot both bind, were both booked this week by peers. So parallelism is earned per guard -- a unique pen and an ephemeral port -- rather than declared. I wrote the falsifier down: if four parallel slots do not cut 945s materially, the pass is dominated by a few slow guards rather than their number, and sow at 230s makes that genuinely possible.
+obs THE TWO EDITOR ROOMS ARE TWO DIFFERENT ACTS AND CALLING THEM ONE WOULD HAVE BEEN THE ERROR. .vscode is one file, no guard names it, no living citer -- retired outright this lap, with its two .gitignore un-ignores and its manifest rows. .cursor is 53 files bound by three checkable things: rule_twin sits at custody gate %7, 25 rules end with a Canonical Cursor twin footer that goes false the moment its partner does, and the seed ships the room scrubbed today. Prepped as Class M with the cut RED, because gate %7 is Keaton's word.
+obs MY OWN FOLD BROKE THE LINK RULE THE GUARD I RELY ON EXISTS TO CATCH. Folding the vendor-name prep to a shelf left its links at the depth of the page they came from; the reach scan named it, and a peer shelf carried three more of exactly the same shape. Four corrections, one rule: a shelf sits a level deeper than the pin, so every climbing link gains a level.
+obs A GUARD WAS REDDENING EIGHT SHIPS EVERY LAP FOR A FAULT NO LAP MAY REPAIR. %530 stands bound to two stamps on the ANOINTED SPINE ITSELF -- both folded to shelves, both published -- so derived-spine rule 3 holds for each and neither may move. A peer booked the deadlock cleanly at 20260907.014654 and left it there, correctly, because it is Keaton's word. What nobody had done is stop it costing the fleet: every ship's local spine is a COPY of the anointed one, so every ship reads the same red on every lap.
+obs SO THE SCAN NOW SEPARATES WHAT A LAP CAN FIX FROM WHAT IT CANNOT, AND GATES ONLY THE FIRST. published_doubles is counted, named with both stamps and the booking, and gated nowhere; rebindings and double_booked keep their teeth on a number THIS tree bound differently, which a lap repairs by renumbering its own unshared row. A gate that reds on what nobody may touch is a gate somebody turns off -- and it changes no published byte.
+obs THE CITATION COUNT DOES NOT DECIDE THE DEADLOCK, WHICH IS WORTH RECORDING BEFORE THE WORD COMES. %530 is cited in 12 files, 3 of them commit bodies that can never be edited; the earlier stamp is cited in 10 files and the later in 12. Near-balanced. What the law already supplies is the principle rather than the arithmetic: the key is the stamp, the number is a view, and a view bound twice has stopped being usable for that pair.
+loom cpu cores=8 load=9.13,8.57,8.10 user=39.5 system=39.4 idle=17.4 runnable=7
+loom roster guards=161 wall_s=945 mean_s=5.9 backgrounded=0 fleet_core_hours=2.1
+loom rooms vscode_files=1 cursor_files=53 claude_rules=51 twin_footers=25 rule_twin_gate=%7
+file active-development/20260907-022500_the-eight-cores-and-the-serial-pass.md both answers with their numbers and the falsifier
+file construction/SHRED_PREP.md the .cursor Class M row with its three bindings named; the vendor-name prep folded to make the room
+file .gitignore and template-manifest.bron -- the vscode room retired outright
+scope two questions answered by measurement; one room retired, one prepped with its cut RED
+status GREEN -- tracked links ok, readme_reach zero broken, fold_shelf_link ok, sow witness green, pin guard green
+recommend check in (Keaton) -- gate %7 is yours, and the .cursor retirement is one round with three named parts rather than a git rm.

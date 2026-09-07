@@ -257,17 +257,25 @@ manufactures a fault that then invites a rewrite**. The four `docs/` waymark car
 compressors and all read Meter. Recorded so the next hand grading a pointer card starts at the right
 door.
 
-### Class M -- the vendor names, prepped `20260906.114734` (Tier 1 and Tier 2, cut stays RED)
+### Class M -- `.cursor`, prepped `20260907.023053` (cut stays RED; `.vscode` retired outright)
 
-Tiers 1 and 2 of the [vendor-name survey](../active-development/20260906-100247_the-three-vendor-names-survey.md), approved `20260906`. Its one open question was answered: **gratitude stays**, so the Grok page and the two Grokipedia source links are out of scope -- a thanks record outlives the tool it thanks.
+Keaton asked `20260907` why both editor rooms still stood. **`.vscode` needed no prep and is gone**:
+one file, no guard naming it, no living citer -- retired in that lap with its `.gitignore` un-ignores
+and its `template-manifest.bron` rows.
+
+**`.cursor` is a different act, because three things bind it and each is checkable.**
 
 | Elder | Living mutant | What the cut asks |
 | --- | --- | --- |
-| `tools/fixtures/b/bench_bakeoff_scorecard.md` | `construction/fleet-roster.kyri` and the roster receipts `standing_equipment_run.sh` writes | An empty skeleton for three benches, never run; the question was answered by doing. |
-| `tools/l/chatgpt-mind.{sh,rish}`, `tools/c/chatgpt-mind-rishi-adaptation.md`, `tools/fixtures/c/chatgpt_mind_*` (3 controls), `chatgpt_mind_lane.awk`, `chatgpt_mystery_lane.awk`, `tools/l/print-{mind-cardinal,mystery-planet}-prompt.rish`, `tools/m/mind-bin/git` | `tools/f/fleet-loop.sh` reading `construction/fleet-roster.kyri`, with `tools/f/fleet_watch.sh` above it | The Codex supervisor family. Class H already holds its three launchers with the note *the Codex supervisor law is untouched*; this is that note's other half. **`tools/f/fleet_rearm.sh` still prints the `mind` and `mystery` pastes by name and `fleet_rearm_witness.rish` asserts on `MIND_SEAT=cardinal` in both directions -- those legs go in the same commit as the cut, or the guard reds on every ship.** |
-| the six `arbor/launch-chatgpt-chapter*` files and `arbor/launch-mystery-chapter.arbor` | `tools/f/fleet_baton.txt` plus each seat's lane stanza | Seven of `arbor/`'s nine files carry the ChatGPT chapter readings. `README.md` and `author.sh` are the room. **No banner on `.arbor` (spoken text), the parsed catalogs, or `chatgpt-mind.sh` (byte-pinned) -- each carries it on this row instead.** |
+| `.cursor/` -- 53 rule twins | `.claude/rules/*.md`, 51 rules, which every seat prompt already names as the law a lap reads | **Gate `%7`.** `tools/r/rule_twin_witness.rish` compares the two rooms and sits on the roster at that gate, so retiring the room retires the guard -- Keaton's word, not a lap's. |
+| the 25 rules ending in a *Canonical Cursor twin* line | the same rules with that footer removed | Each footer names a partner; the moment the partner goes, 25 living sentences become false. One sweep, in the same commit as the removal. |
+| `scrub .cursor` in `template-manifest.bron` | the manifest without that row | The public seed ships the room depersonalised today, so the retirement changes what a stranger inherits -- and `sow_allow_reach` will read the room as gone rather than as silently missing, which is the guard doing its job. |
 
-**Three traps.** `brushstroke/edit_cursor.rye` spells the type `Cursor` 17 times and means the caret, so a sweep keys on a marker rather than the word. `GROK` is line 19 of `tools/fixtures/f/flw-four-letter.txt`, the list `waymark_derive` draws from. And the `voice_seat_cursor` rows in `tools/gen/chapter/recursion_block.brix` are accrete-never-rewrite by their own header, guarded by `dated_guard` -- they stay whatever is cut.
+**Measured `20260907.023053`:** `.cursor` holds 53 tracked files, all under `rules/`; `.claude/rules`
+holds 51 `.md`; `rule_twin` reads 39 drifted pairs against a ceiling of 36 and has been gated at
+`%7` since `20260824.112806`. Full reading: [`../active-development/20260907-022500_the-eight-cores-and-the-serial-pass.md`](../active-development/20260907-022500_the-eight-cores-and-the-serial-pass.md).
+
+### Class M -- the vendor names (Codex, arbor, the bench scorecard) -- prepped `20260906.114734`, folded whole to [`archive/SHRED_PREP-vendor-names-class-m-20260906.md`](archive/SHRED_PREP-vendor-names-class-m-20260906.md) on `20260907.023053`. Thirteen fossils bannered, three refused a banner for three different reasons, three traps named. **Cut still RED.**
 
 ### Class M -- CUT `20260826`, the rune renames -- folded whole to [`archive/SHRED_PREP-rune-rename-cut-20260826.md`](archive/SHRED_PREP-rune-rename-cut-20260826.md) on `20260906.114734`: 19 files renamed, 46 touched, 538 substitutions, and 273 occurrences of the syllable left standing as the scope line rather than a leftover.
 

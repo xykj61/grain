@@ -12,6 +12,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | Stamp | Log | What it recorded |
 |---|---|---|
 | `20260907.021117` | [what the fleet spends on being green](20260907/20260907-021117_what-the-fleet-spends-on-knowing-it-is-green.kyri) | 80.2% of a pass never skips. |
+| `20260907.023053` | [the cores, the rooms, and the serial pass](20260907/20260907-023053_the-cores-the-rooms-and-the-serial-pass.kyri) | 161 guards serial; the deadlock named. |
 | `20260907.013921` | [the half of a walk-back that travels](20260907/20260907-013921_the-half-of-a-walk-back-that-travels.kyri) | a floating hash closed; a word list 56 days stale. |
 | `20260907.013145` | [the send that met its own fold coming back](20260907/20260907-013145_the-send-that-met-its-own-fold-coming-back.kyri) | a fold withdrawn; a number moved twice. |
 | `20260907.011322` | [a row nobody could read](20260907/20260907-011322_a-row-nobody-could-read.kyri) | a refusal taught to name its own repair. |
