@@ -49,7 +49,11 @@ SRC="$ROOT/comlink/topology.rye"
 [ -f "$CENSUS" ] || { echo "control: the census is missing at $CENSUS" >&2; exit 2; }
 [ -f "$SRC" ]    || { echo "control: the topology source is missing at $SRC" >&2; exit 2; }
 
-PEN="${TMPDIR:-/tmp}/topology_revocation_control_pen"
+# THE PEN CARRIES THIS PROCESS'S ID, load-bearing rather than tidy (REDS %512). Eight ships share
+# one pier and therefore one TMPDIR, each running this file on its own lap. With a constant name
+# two overlapping runs share one directory, and each one's `rm -rf` deletes the other's pen
+# mid-run -- so the reading that comes back is a fault nobody wrote, recorded as a flake.
+PEN="${TMPDIR:-/tmp}/topology_revocation_control_pen.$$"
 rm -rf "$PEN"
 mkdir -p "$PEN"
 # REDS %487: a handler that cleans up without exiting does not stop the script -- POSIX runs

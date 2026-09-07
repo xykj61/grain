@@ -11,10 +11,11 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
-| `20260906.212202` | [silence and cleanliness read alike](20260906/20260906-212202_silence-and-cleanliness-read-alike.kyri) | %513, %514: a meter reading nothing; a skipped wall. |
+| `20260906.213507` | [the pen that had no owner](20260906/20260906-213507_the-pen-that-had-no-owner.kyri) | 9 pens got the pid; %510 and %512 folded. |
 | `20260906.213313` | [what the fleet fixed by accident](20260906/20260906-213313_what-the-fleet-fixed-by-accident.kyri) | rota coverage uniform at fleet scale. |
-| `20260906.210117` | [the rule that was written and never formed](20260906/20260906-210117_the-rule-that-was-written-and-never-formed.kyri) | rule 4 made a gate; 28 errata priced. |
 | `20260906.212721` | [one fold away from healthy](20260906/20260906-212721_one-fold-away-from-healthy.kyri) | %517: a capacity scan that never gated on capacity. |
+| `20260906.212202` | [silence and cleanliness read alike](20260906/20260906-212202_silence-and-cleanliness-read-alike.kyri) | %513, %514: a meter reading nothing; a skipped wall. |
+| `20260906.210117` | [the rule that was written and never formed](20260906/20260906-210117_the-rule-that-was-written-and-never-formed.kyri) | rule 4 made a gate; 28 errata priced. |
 | `20260906.204809` | [the fleet set down for a key change](20260906/20260906-204809_the-fleet-set-down-for-a-key-change.kyri) | 7 ships and the watch down; nothing lost. |
 | `20260906.204332` | [the act and the act performed](20260906/20260906-204332_the-act-and-the-act-performed.kyri) | %516: a probe wrong about which act it ran. |
 | `20260906.203052` | [the seed crosses its gate](20260906/20260906-203052_the-seed-crosses-its-gate.kyri) | gate %1 crossed; 7,978 files to both doors. |

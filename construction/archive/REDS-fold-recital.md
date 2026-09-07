@@ -378,3 +378,5 @@ at a closed fold.*
 *Row %487 folded to [`REDS-a-handler-that-cleans-up-and-carries-on-rows-487.md`](REDS-a-handler-that-cleans-up-and-carries-on-rows-487.md) on `20260906.211257`, **BOOKED** -- a POSIX trap handler that cleans up without exiting does not stop the script; folded oldest-first to bring the pin back under the bound its own header declares.*
 
 *Row %512 folded to [`REDS-a-pen-one-path-wide-for-eight-ships-rows-512.md`](REDS-a-pen-one-path-wide-for-eight-ships-rows-512.md) on `20260906.220000`, **BOOKED** -- a pen named for its purpose is one path wide for eight ships, and the two-legs-two-failures reading is what tells a race from a flake.*
+
+*Row %512 folded to [`REDS-a-pen-named-by-its-purpose-rows-512.md`](REDS-a-pen-named-by-its-purpose-rows-512.md) on `20260906.213000`, **CLOSED** -- a pen named by its purpose alone is a fleet-wide race that arrives differently each time, which is what a flake looks like.*

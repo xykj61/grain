@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `b25bee2b9d` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `94cba0f71b` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A PROBE PERFORMED THE ACT AND WAS WRONG ABOUT WHICH ACT IT PERFORMED.** `%516` CLOSED;
 `%510` [shelved](archive/REDS-a-guard-that-reads-a-proxy-rows-510.md). The `jail_nesting` arm ran
@@ -117,12 +117,13 @@ since only the field projects and it REFUSED on an absent `seed/`. **A guard tha
 ordinary is one somebody turns off** -- it skips and says so now; the SCAN still refuses when
 pointed at a missing projection (`%170`). No gate.
 
-**PETRICHOR -- `%512` BOOKED,** [folded](archive/REDS-a-pen-one-path-wide-for-eight-ships-rows-512.md):
-eight ships share one `TMPDIR`, so a pen named by a constant lets one delete another's mid-build --
-**`%291` reaches past the checkout**, 9 collidable pens across five lanes, and the two-legs-two-
-failures reading is what tells a race from a flake. `%511` CLOSED,
-[folded](archive/REDS-a-guards-reach-is-a-claim-rows-511.md): reach **66 -> 219 of 284**.
-**Yours:** of **607** reachable pages **82 lead nowhere**, scored **100** by a ceiling with no floor.
+**PETRICHOR -- THE COLD OPEN NAMED TWO MORE OF THE RACE'S OWN INSTANCES.** `%512` CLOSED,
+[folded](archive/REDS-a-pen-named-by-its-purpose-rows-512.md) beside a peer's BOOKED fold of it.
+`signal_trap` and `tlb_reach` reddened the open, GREEN alone; **all nine pens carry `$$`**, six
+guards green. Two elder copies fail **in different legs**, the elder ALONE just one artifact fault
+-- **that difference is the discriminator**. **ANSWERED, mine:** the **83 of 621** dead ends are
+**59** naming paths nobody can click and **24** true leaves. **Yours:** does a page three clicks in
+owe one way onward?
 **PHEROMONE -- A PROOF TWO LIVING PAGES CITE, AND NOTHING EVER COMPILED IT.** `%506` BOOKED,
 `%463` CLOSED. **63 Glow witnesses took the comptime declaration walker in one pass** -- `walked`
 **2 -> 65**, `unwalked` **119 -> 56** with no slack -- and **all 63 built**. The `unreached` leg

@@ -43,7 +43,11 @@
 # Guards:       tools/fixtures/s/signal_trap_scan.sh
 set -u
 
-PEN="${TMPDIR:-/tmp}/signal_trap_control_pen"
+# THE PEN CARRIES THIS PROCESS'S ID, load-bearing rather than tidy (REDS %512). Eight ships share
+# one pier and therefore one TMPDIR, each running this file on its own lap. With a constant name
+# two overlapping runs share one directory, and each one's `rm -rf` deletes the other's pen
+# mid-run -- so the reading that comes back is a fault nobody wrote, recorded as a flake.
+PEN="${TMPDIR:-/tmp}/signal_trap_control_pen.$$"
 # This control's own trap is the CORRECTED shape, which is the point: a control proving a bug
 # must not carry the bug. The signal traps exit; the EXIT trap cleans up exactly once.
 trap 'rm -rf "$PEN"' EXIT

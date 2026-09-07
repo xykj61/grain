@@ -167,7 +167,11 @@ if [ "$PAGE_SIZE" -le 0 ] || [ "$line_bytes_sys" -le 0 ] || [ "$l1d_kib" -le 0 ]
 fi
 
 # ---- the readings ---------------------------------------------------------------------------
-PEN="${TMPDIR:-/tmp}/tlb_reach_census_pen"
+# THE PEN CARRIES THIS PROCESS'S ID, load-bearing rather than tidy (REDS %512). Eight ships share
+# one pier and therefore one TMPDIR, each running this file on its own lap. With a constant name
+# two overlapping runs share one directory, and each one's `rm -rf` deletes the other's pen
+# mid-run -- so the reading that comes back is a fault nobody wrote, recorded as a flake.
+PEN="${TMPDIR:-/tmp}/tlb_reach_census_pen.$$"
 PLAIN="$PEN/plain.txt"
 HUGE="$PEN/huge.txt"
 
