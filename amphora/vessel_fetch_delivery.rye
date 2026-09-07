@@ -17,6 +17,7 @@ const vfw = @import("vessel_fetch_wire.rye");
 const wf = @import("wire_format.rye");
 const tally_copy = @import("tally_copy.rye");
 const vessel_seal = @import("vessel_seal.rye");
+const me = @import("manifest_entry.rye");
 
 const vfd_version = "20260710.154300";
 
@@ -356,11 +357,17 @@ fn parse_cargo_lines(text: []const u8, out: *[8][64]u8) !u32 {
     while (lines.next()) |raw| {
         const line = std.mem.trim(u8, raw, " \t\r\n");
         if (!std.mem.startsWith(u8, line, "cargo ")) continue;
-        var parts = std.mem.tokenizeScalar(u8, line, ' ');
-        _ = parts.next(); // cargo
-        _ = parts.next(); // mark
-        const digest = parts.next() orelse return error.BadVessel;
-        if (digest.len != 64) return error.BadVessel;
+        // The receipt seam reads the mark rather than stepping over it. This is the far
+        // side of a UDP fetch, so the vow in `the-marked-value` lands exactly here: the
+        // digest is checked twice and the mark is checked at receipt, both sides guarded.
+        // Routing through `parse_manifest_line` means one wreck rule rather than a second
+        // hand-rolled tokenizer that could drift from it.
+        const entry = me.parse_manifest_line(line["cargo ".len..]) catch return error.BadVessel;
+        // invariant: the parser refuses an unnamed kind, so a mark reaching here is a root.
+        assert(me.mark_verdict(entry.mark) == .known);
+        const digest = entry.digest_hex;
+        // invariant: the parser fixes the digest width, so the copy below stays in bounds.
+        assert(digest.len == 64);
         if (count >= 8) return error.Overflow;
         tally_copy.copy_disjoint(u8, out[count][0..], digest[0..64]);
         count += 1;

@@ -23,6 +23,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260907.050053` | [the numbering carries the graph](20260907/20260907-050053_the-numbering-carries-the-graph.kyri) | One counter, two numberings: 36 pieces or one. |
 | `20260907.043033` | [the fork before the skip](20260907/20260907-043033_the-fork-before-the-skip.kyri) | the slowest guard, 25% faster. |
 | `20260907.023053` | [the cores, the rooms, and the serial pass](20260907/20260907-023053_the-cores-the-rooms-and-the-serial-pass.kyri) | 161 guards serial; the deadlock named. |
+| `20260907.021854` | [The mark nothing read](20260907/20260907-021854_the-mark-nothing-read.kyri) | Amphora claimed the wreck rule; Pond kept it. |
 | `20260907.021435` | [one ratchet that held two debts](20260907/20260907-021435_one-ratchet-that-held-two-debts.kyri) | 129 uncovered desks were 83 and 46. |
 | `20260907.021117` | [what the fleet spends on being green](20260907/20260907-021117_what-the-fleet-spends-on-knowing-it-is-green.kyri) | 80.2% of a pass never skips. |
 | `20260907.014146` | [the charter that said how big its lane was](20260907/20260907-014146_the-charter-that-said-how-big-its-lane-was.kyri) | a charter stating a count nothing reads. |

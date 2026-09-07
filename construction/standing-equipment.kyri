@@ -2334,6 +2334,45 @@ path tools/am/amphora_udp_reuseaddr_witness.rish
 tier cadence
 seated 20260906.154105
 
+# amphora_mark_wreck -- the vessel named the wreck rule for eight weeks and kept it nowhere.
+#
+# WHAT WAS WRONG (`20260907.015042`). `foundations/20260703-202312_the-marked-value.md` vows that
+# an unknown mark is refused whole -- *there is no partial trust of cargo whose kind cannot be
+# named* -- and hardcodes exactly two roots, the plain-bytes mark and the manifest mark. Pond, one
+# of the two sites that page names, kept the vow: `pond/customs.rye` asserts
+# `verdict_for_mark("stranger-mark") == .refuse`. Amphora, the OTHER site -- the crossing vessel
+# whose shoulder line is the whole image the page is built on -- carried the mark field and checked
+# it nowhere. `parse_manifest_line` validated the mark's SHAPE (nonempty, at or under
+# `max_mark_len`) and never its IDENTITY, and all five reading sites threw the parsed entry away:
+# `vessel_core.rye:160` and `:167`, `vessel_seal.rye:115` and `:229` each wrote
+# `_ = me.parse_manifest_line(...) catch return error.InvalidVessel`, keeping the refusal and
+# discarding the mark, while `vessel_fetch_delivery.rye` -- the far side of a UDP fetch, which is
+# *receipt* in the vow's own word -- stepped over the token with `_ = parts.next(); // mark`
+# without parsing at all. Probed on metal: `plain-bytes`, `manifest`, `zzz-unknown-stranger`, and
+# `executable` were all ACCEPTED. The module's own header line claimed `wreck rule` and its
+# selftest printed `refuse whole`.
+#
+# WHY NO GUARD SAW IT. The eight elder amphora witnesses plant six tampers -- an absent season, a
+# tampered `seal_cargo`, a truncated vessel, a forged resin body, a torn chunk, a reordered pair --
+# and every one is an INTEGRITY plant. Not one plants a TYPE. The mark was the only field of the
+# three-field line with no negative case anywhere in the room.
+#
+# WHY THE REFUSAL HAD TO BE READ BY REASON. Editing a sealed vessel breaks its Kumara signature, so
+# a planted stranger refuses either way and the exit code proves nothing about marks. Restoring the
+# elder behavior, the planted vessel still refuses -- as `error: VerifyFailed`, the signature, with
+# `parse_manifest_line` nowhere in the trace. So a correctly sealed vessel carrying `executable`
+# rode straight through, and only a tampered one ever refused. This witness asserts the FRAME:
+# `parse_manifest_line` must be what turns it away, which is the one assertion the elder tree fails.
+#
+# WHAT IT COST TO FIX: nothing real. Measured before the gate went in -- exactly one mark rides in
+# this whole tree, `plain-bytes`, six occurrences -- so the two named roots break no vessel that
+# exists. The check sits in the parser rather than at five call sites, because a rule written five
+# times is a rule four places can forget.
+guard amphora_mark_wreck
+path tools/am/amphora_mark_wreck_witness.rish
+tier lap
+seated 20260907.015042
+
 # topology_routing -- what a node HOLDS and COMPUTES to pick the next hop, at 720 points.
 # Its sibling `topology_attained` binds the WALK -- how many hops a shape takes. This binds the
 # DECISION: the exact shared next-hop table (719 entries, 3 bits each, 270 bytes, the same 270 at
