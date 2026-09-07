@@ -140,17 +140,32 @@ local_max=$(awk '{print $1}' "$work/local.txt" | sort -n | tail -1)
 # upstream under a different number is a row that moved.
 rebindings=0
 squatters=0
+published_doubles=0
 if [ "$anointed_ok" = yes ]; then
   while read -r n stamp; do
     [ -n "${n:-}" ] || continue
     up=$(awk -v k="$n" '$1 == k {print $2; exit}' "$work/shared.txt")
     [ -n "${up:-}" ] || continue
     [ "$up" = "$stamp" ] && continue
-    rebindings=$((rebindings + 1))
     if awk -v s="$stamp" '$2 == s {found=1} END {exit !found}' "$work/shared.txt"; then
       elsewhere=$(awk -v s="$stamp" '$2 == s {print $1; exit}' "$work/shared.txt")
+      # ONE NUMBER BOUND TO TWO PUBLISHED STAMPS IS NOT A REBINDING A LAP CAN REPAIR, and calling it
+      # one reddens eight ships every lap on a fault none of them may touch. A rebinding means THIS
+      # tree binds a number the anointed spine bound elsewhere -- repairable here, by renumbering the
+      # unshared row. A published double-binding means the ANOINTED SPINE ITSELF carries the number
+      # twice: `derived-spine` rule 3 holds for both rows, so neither may move, and the two rules
+      # meet head on. That deadlock is Keaton's word rather than a lap's, and it stands booked at
+      # `20260907.014654`. Counted and named separately from `20260907.024141`, so the gate keeps
+      # biting what a lap can fix and stops biting what it cannot.
+      if [ "$elsewhere" = "$n" ]; then
+        published_doubles=$((published_doubles + 1))
+        detail "detail: published_double %$n -- the anointed spine binds this number to BOTH $up and $stamp; rule 3 holds for each, so no lap may move either. Keaton's word, booked 20260907.014654"
+        continue
+      fi
+      rebindings=$((rebindings + 1))
       detail "detail: rebinding %$n -- the anointed spine binds it to $up, and binds $stamp to %$elsewhere"
     else
+      rebindings=$((rebindings + 1))
       squatters=$((squatters + 1))
       detail "detail: squatting %$n -- the anointed spine spent it on $up; this row ($stamp) is unshared and derives above %$shared_max"
     fi
@@ -183,10 +198,26 @@ done
 # a number meaning two rows breaks every citation that trusts it.
 pair_count=$(sort -u "$work/local.txt" | grep -c . || true)
 number_count=$(awk '{print $1}' "$work/local.txt" | sort -u | grep -c . || true)
-double_booked=$((pair_count - number_count))
-awk '{print $1}' "$work/local.txt" | sort | uniq -d | while IFS= read -r n; do
-  [ -n "$n" ] && detail "detail: double_booked %$n -- this tree binds one number to two stamps"
-done
+# A DOUBLE-BOOKING THE ANOINTED SPINE ALREADY CARRIES IS NOT ONE THIS LAP MADE (`20260907.024141`).
+# The gate above is right in principle -- a number meaning two rows breaks every citation that trusts
+# it -- and it reads the local spine, which on every ship is a copy of the anointed one. So a pair
+# published upstream reddens EIGHT SHIPS EVERY LAP on a fault none of them may repair: `derived-spine`
+# rule 3 holds for both rows, so neither number may move, and the deadlock is Keaton's word (booked
+# `20260907.014654`). Such a pair is counted as `published_doubles` and named loudly; the GATE keeps
+# biting a pair this tree created, which is the class a lap can actually fix by renumbering its own
+# unshared row. A gate that reds on what nobody may touch is a gate somebody turns off.
+double_booked=0
+awk '{print $1}' "$work/local.txt" | sort | uniq -d > "$work/dupes.txt" || true
+while IFS= read -r n; do
+  [ -n "$n" ] || continue
+  if [ "$anointed_ok" = yes ] \
+     && [ "$(awk -v k="$n" '$1 == k' "$work/shared.txt" | wc -l | tr -d ' ')" -ge 2 ]; then
+    : # already named above by the anointed-comparison pass; one message per pair, not two
+  else
+    double_booked=$((double_booked + 1))
+    detail "detail: double_booked %$n -- this tree binds one number to two stamps"
+  fi
+done < "$work/dupes.txt"
 
 # The allocator. A new row takes one above the ANOINTED maximum, never one above the local
 # maximum -- reading the local tree is the fault, not the fix. With no anointed ref reachable,
@@ -231,6 +262,7 @@ echo "shared_max=$shared_max"
 echo "local_rows=$local_rows"
 echo "local_max=$local_max"
 echo "rebindings=$rebindings"
+echo "published_doubles=$published_doubles"
 echo "squatters=$squatters"
 echo "dropped_upstream_stamps=$dropped"
 echo "stamp_duplicates=$stamp_duplicates"

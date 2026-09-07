@@ -142,7 +142,6 @@ allow .gitignore
 allow .gitattributes
 allow .gitmodules
 allow .cursorignore
-allow .vscode
 allow .claude
 allow .cursor
 allow GLOW_HOST.template.kyri
@@ -155,7 +154,6 @@ template  .cursorignore                  # editor ignore posture
 template  .gitattributes                 # attribute rules
 template  .gitignore                     # allowlist posture -- exactly what a template wants
 template  .gitmodules                    # gratitude/ and vendor/ submodule pins only
-template  .vscode                        # editor settings, no personal data
 template  template-manifest.bron         # this file -- the boundary's own definition (withheld anyway: lists keys_xykj61_* names)
 scrub     .claude                        # rules name the maintainer as decision authority (session-logs, collaboration, riyo)
 scrub     .cursor                        # Cursor twins of the same rules
