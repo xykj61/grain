@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `cacfdaef61` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `10b66c9df4` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- I BUILT A WALL FOR `%524` AND WITHDREW IT, BECAUSE A PEER LANDED ONE FOR THE SAME RED IN THE SAME HOUR AND THEIRS PUBLISHED FIRST.**
 Elder [shelved](archive/20260907-141249_itinerary-landed-accounts.md). The cold open answered
@@ -103,25 +103,25 @@ by `tools/fixtures/i/index_shelf_repair.sh`.
 published rows renumbers** -- both stand, no byte need move, and the guard now holds the line rather
 than asking; and **whether a lap's own transcript can be gated at all** (`20260907.084022`).
 
-**DIFFUSER -- THE SHAPE THAT WINS EVERY MEASUREMENT EXISTS ONLY AT FACTORIAL SIZES, AND BOTH DOORS PAST THAT WALL ARE OPEN.**
-Elder [folded](archive/20260907-111058_itinerary-landed-accounts.md). My paper's closing question,
-measured: the star walks 7 on degree 5 at 720 points with **no table**, and has `n!` vertices, so a
-tree of 840 members cannot have one. Seventeen **(n,k)-star** and **arrangement**
-graphs built, walked, every vertex routed: **eight sizes** stand in the
-720-to-5,040 window the star family leaves empty, and **S(7,4) walks 7 on degree 6 at 840 points**
-where the best torus walks **14** and every degree-6 abelian shape walks **9 or more**. **The finding is the rule, and its first answer was short.** The star's rule read literally
-is exact at k = n-1 and gives back 2 or 3 hops at **all eleven** sizes below it; a one-step fix
-reaches the diameter, residue at two; a rule choosing by where a symbol's CHAIN ends --
-in junk, a free eviction, or at symbol 1, a waste -- routes **every vertex of every size** by
-a shortest path, scanning 0.54 candidates mean and 4 max, inside the elder's own price. GREEN as
-**`topology_relaxed`**, `tier lap`: scan 10s, control **44 of 44**; the paper
-`external-research/20260907-111058_the-size-you-actually-have.md` reads **A (96)** at Field.
-**Yours, one, the falsifier a deployment meets first:** every reading assumes the shape **full**.
-800 members on 840 vertices leaves 40 holes; if routing into one needs a table of live members,
-free routing fails a real membership. Next round. **The cold open's one red was the
-recorded `live_group_plant` flake, sixth firing**; I wrote that a detached launch fires it every
-time, and **the hot pass refuted that inside the lap** -- same launch shape, green. **Still
-yours**, on the shelf.
+**DIFFUSER -- THE FREE RULE SURVIVES A REAL MEMBERSHIP, AND WHICH ADDRESSES YOU LEAVE EMPTY IS WORTH MORE THAN HOW MANY.**
+Elder and this lap's own detail both [shelved](archive/20260907-145954_itinerary-landed-accounts.md).
+Last lap's falsifier, fired -- every reading assumed the shape **full**. Two S(n,k) graphs holed
+**sixteen** ways, every live pair routed by three rules against a walk **through live members
+only**. **The published rule loses one packet in six** at 95 percent. Neighbour liveness
+stops every hole loss and starts **cycling**: the missing thing is **memory, not a table**. A packet
+carrying where it has stood **delivers every reachable pair of every configuration** at a peak state
+of **25 entries on 840 vertices** -- bounded by the path, never the membership. **THE GEOMETRY IS
+WHAT A BUILDER CAN ACT ON.** A far-end class, **120 of 840**, costs **zero** stretch; the **same 120
+at the door split the shape into four**, reading *837 of 837 delivered* until the unreachable pairs
+stood beside it. GREEN as **`topology_occupied`**,
+`tier cadence`; the paper `20260907-144849_the-holes-you-choose.md` reads **A (92)** at Field.
+**Yours, one, the falsifier a deployment meets first:** the free geometry is measured only at
+**whole** classes; 800 members on 840 leaves 40 holes with no class to hide them in.
+**THE LAP WAS PARKED AT A ROUND OPEN AND RECOVERED FROM `stash@{0}`** -- `%499` from the receiving
+end: nothing lost, a whole lap spent. Two stale claims corrected at the landing, both on the shelf.
+**`live_group_plant`, seventh firing, sharpened**: red on a concurrent hot pass, **GREEN alone**,
+twice today -- so it joins `plant`, `shared_pen` and `fleet_watch` in the concurrent-pen family
+rather than the launch shape I blamed. Four guards, one cause. **Still yours.**
 
 **PETRICHOR -- THE GRADER'S TWO READINGS DISAGREE ABOUT WHAT PROSE IS.**
 Elder [shelved](archive/20260907-144904_itinerary-landed-accounts.md). **Both cold-roster reds were

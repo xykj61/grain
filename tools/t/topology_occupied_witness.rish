@@ -1,0 +1,129 @@
+# tools/t/topology_occupied_witness.rish -- the free-routing claim meets a real membership, and
+# this binds what survives the meeting.
+#
+#   rishi/bin/rishi run tools/t/topology_occupied_witness.rish
+#
+# WHAT IT BINDS. Its sibling `topology_relaxed_witness.rish` bound a table-free rule that routes
+# every vertex of seventeen graphs by a shortest path, and that paper closed by naming its own
+# second falsifier: every reading assumed all n!/(n-k)! vertices occupied, and a membership never
+# lands on a falling factorial. `tools/fixtures/t/topology_occupied_scan.sh` fires it -- it punches
+# holes in two (n,k)-star graphs in four named geometries, routes every live pair to several live
+# targets under three rules, and reports delivery, stretch against the shortest path IN THE LIVE
+# SUBGRAPH, and what each rule costs. This binds those readings and proves they can be broken,
+# through `tools/fixtures/t/topology_occupied_control.sh`.
+#
+# THE ANCHOR IS THE FIRST THING BOUND, and it is load-bearing here in a way it was not in the
+# sibling. This scan carries its OWN copy of the builder and the chain rule, because a shell
+# fixture has no import. So S(6,5) must still reproduce 720 points at degree 5 and diameter 7, and
+# S(7,4) must still reproduce 840 at degree 6 and diameter 7, routed whole. A drifted copy would
+# print confident numbers about the wrong graph.
+#
+# THE FINDING, IN THREE READINGS THAT MUST ALL HOLD. The published rule loses one packet in six at
+# ninety-five percent occupancy, so the falsifier is real. The memoryless rule that filters its own
+# choices by neighbour liveness stops losing packets to holes and starts losing them to cycles, so
+# the missing thing is memory rather than a table. And the rule that carries the vertices it has
+# already stood on IN THE PACKET delivers every reachable pair of every configuration measured, at
+# a maximum packet state of twenty-five entries on an 840-vertex shape -- bounded by the path, not
+# by the membership.
+#
+# THE GEOMETRY READING IS BOUND FROM BOTH ENDS, because only one of them is free. A far-end symbol
+# class -- 120 of S(7,4) 840 vertices, one seventh of the shape -- costs nothing at all: every rule
+# delivers every pair with zero stretch and the diameter does not move. A DOOR class of exactly the
+# same size partitions the shape into four components. Binding only the free half would let a
+# reader take "clusters are free" from a finding that is narrower and sharper than that.
+#
+# AND THE PARTITION IS BOUND BY ITS OWN COUNT, because a partition reads as perfection. With one
+# door class gone, every surviving pair routes flawlessly and the delivery line says 837 of 837.
+# The `unreachable` count is the only number that says half the membership cannot be reached, so it
+# is bound where the partition is.
+#
+# WHY IT IS `tier cadence`. The scan is under a minute and the control under two, which is heavy
+# for a lap and ordinary for a cadence. The cost is real work rather than waste: every live pair of
+# every configuration is routed by three rules, and the delivery claim is exhaustive rather than
+# sampled. What IS sampled is the target, and the scan prints how many.
+
+say "topology-occupied: Language EN -- a membership never lands on a falling factorial, so holes are the ordinary case."
+say "topology-occupied: Style Gauge, Meter -- every packet routed, every hole chosen, nothing recalled."
+say "topology-occupied: Lens TAME -- the rule read as well as run; bound the cap, say why."
+
+say "topology-occupied: the scan punches holes in both shapes and routes every live pair..."
+let scan = run ["sh" "tools/fixtures/t/topology_occupied_scan.sh"]
+# invariant: the scan stands green before any reading of it is trusted.
+assert scan.ok else "topology-occupied: the scan refused --\n${scan.out}"
+assert scan.out contains "verdict=ok" else "topology-occupied: the scan did not reach its own green --\n${scan.out}"
+assert scan.out contains "refusals=0" else "topology-occupied: the scan named a refusal --\n${scan.out}"
+assert scan.out contains "legs=all" else "topology-occupied: a reduced run must never be read as a full one"
+assert scan.out contains "sizes=default" else "topology-occupied: a reduced size list must never be read as the full set"
+assert scan.out contains "fill=default" else "topology-occupied: a reduced occupancy list must never be read as the full set"
+
+say "topology-occupied: table-free is read off the rule, never inferred from its answer..."
+# invariant: no routing function reads the breadth-first distance array -- the one fault the
+# output cannot show, since a rule that consulted the walk would print perfect delivery.
+assert scan.out contains "purity routing_functions_reading_distance_array=0" else "topology-occupied: a routing rule reads the distance array, so free routing would be a claim about nothing"
+
+say "topology-occupied: the anchor -- this file carries its own builder, so it must reproduce the sibling..."
+# invariant: S(6,5) still reproduces the seated star reading at 720 points.
+assert scan.out contains "anchor n=6 k=5 points=720 degree=5 diameter=7 chain_optimal=720/720" else "topology-occupied: S(6,5) no longer reproduces the star graph at 720 points"
+# invariant: S(7,4) still reproduces the sibling's own headline at 840 points.
+assert scan.out contains "anchor n=7 k=4 points=840 degree=6 diameter=7 chain_optimal=840/840" else "topology-occupied: S(7,4) no longer reproduces the sibling reading at 840 points"
+
+say "topology-occupied: the shape under holes, before any rule is asked to do anything..."
+# invariant: forty-two scattered holes leave one component and do not move the diameter.
+assert scan.out contains "occupy n=7 k=4 points=840 mode=spread fill=95 live=798 holes=42 classes=0 components=1 largest=798 live_diameter=7" else "topology-occupied: S(7,4) at 95 percent occupancy moved"
+# invariant: a quarter of the shape gone still leaves one component, and costs one hop of diameter.
+assert scan.out contains "occupy n=7 k=4 points=840 mode=spread fill=75 live=630 holes=210 classes=0 components=1 largest=630 live_diameter=8" else "topology-occupied: S(7,4) at 75 percent occupancy moved"
+
+say "topology-occupied: the falsifier, fired -- the published rule walks into holes..."
+# invariant: the rule that cannot see liveness loses 390 of 2,391 packets with 5 percent of the
+# shape empty. That is the sibling paper's own closing doubt, measured.
+assert scan.out contains "deliver n=7 k=4 mode=spread fill=95 rule=blind targets=3 pairs=2391 delivered=2001 holehit=390 deadend=0 bail=0 unreachable=0 stretch_max=0 stretch_mean=0.000" else "topology-occupied: the published rule's bill at 95 percent occupancy moved"
+
+say "topology-occupied: neighbour liveness alone, which trades holes for cycles..."
+# invariant: filtering by live neighbours stops the hole losses and starts cycling instead --
+# so what the rule lacks is memory rather than a table of members.
+assert scan.out contains "deliver n=7 k=4 mode=spread fill=95 rule=local targets=3 pairs=2391 delivered=2162 holehit=0 deadend=0 bail=229 unreachable=0 stretch_max=2 stretch_mean=0.017" else "topology-occupied: the memoryless rule's bill at 95 percent occupancy moved"
+
+say "topology-occupied: the packet that carries its own trail, which delivers everything..."
+# invariant: every reachable pair, at the headline occupancy, at a mean cost under a third of a hop.
+assert scan.out contains "deliver n=7 k=4 mode=spread fill=95 rule=trace targets=3 pairs=2391 delivered=2391 holehit=0 deadend=0 bail=0 unreachable=0 stretch_max=6 stretch_mean=0.304" else "topology-occupied: the retreating rule's delivery at 95 percent occupancy moved"
+# invariant: and still every pair with a quarter of the shape empty, for one and a half hops.
+assert scan.out contains "deliver n=7 k=4 mode=spread fill=75 rule=trace targets=3 pairs=1887 delivered=1887 holehit=0 deadend=0 bail=0 unreachable=0 stretch_max=19 stretch_mean=1.526" else "topology-occupied: the retreating rule's delivery at 75 percent occupancy moved"
+
+say "topology-occupied: what the trail costs, which is the number the whole claim turns on..."
+# invariant: the packet's state is bounded by its path rather than by the membership -- thirteen
+# entries at 95 percent and twenty-five at 75, on a shape of 840.
+assert scan.out contains "cost n=7 k=4 mode=spread fill=95 rule=trace candidates_per_pair=30.12 max_visited=13 max_stack=13" else "topology-occupied: the packet state at 95 percent occupancy moved"
+assert scan.out contains "cost n=7 k=4 mode=spread fill=75 rule=trace candidates_per_pair=40.70 max_visited=25 max_stack=25" else "topology-occupied: the packet state at 75 percent occupancy moved"
+
+say "topology-occupied: the geometry of the holes, which matters more than their number..."
+# invariant: a whole far-end symbol class -- one seventh of the shape -- costs nothing at all.
+assert scan.out contains "occupy n=7 k=4 points=840 mode=class1 fill=85 live=720 holes=120 classes=1 components=1 largest=720 live_diameter=7" else "topology-occupied: the far-end class reading moved"
+assert scan.out contains "deliver n=7 k=4 mode=class1 fill=85 rule=blind targets=3 pairs=2157 delivered=2157 holehit=0 deadend=0 bail=0 unreachable=0 stretch_max=0 stretch_mean=0.000" else "topology-occupied: a far-end class is no longer free for the published rule"
+# invariant: two whole classes, 240 of 840 gone, still free.
+assert scan.out contains "deliver n=7 k=4 mode=class2 fill=71 rule=blind targets=3 pairs=1797 delivered=1797 holehit=0 deadend=0 bail=0 unreachable=0 stretch_max=0 stretch_mean=0.000" else "topology-occupied: two far-end classes are no longer free"
+# invariant: and the SAME hole count taken at the door partitions the shape into four.
+assert scan.out contains "occupy n=7 k=4 points=840 mode=door1 fill=85 live=720 holes=120 classes=1 components=4 largest=360 live_diameter=6" else "topology-occupied: a door class no longer partitions, so the two ends read alike"
+# invariant: the partition is named on the delivery line, because it otherwise reads as perfection.
+assert scan.out contains "deliver n=7 k=4 mode=door1 fill=85 rule=trace targets=3 pairs=837 delivered=837 holehit=0 deadend=0 bail=0 unreachable=1320 stretch_max=0 stretch_mean=0.000" else "topology-occupied: the partitioned reading no longer counts its unreachable pairs"
+
+say "topology-occupied: against the shape a builder reaches for when a factorial is unavailable..."
+# invariant: at equal points and equal degree, the torus under the same holes and the same
+# memoryless rule dead-ends on 303 of 755 pairs where the star loses 312 of 2,265.
+assert scan.out contains "compare shape=torus points=840 dims=7x8x15 degree=6 fill=90 live=756 rule=local pairs=755 delivered=452 holehit=0 deadend=303 bail=0 stretch_max=0 stretch_mean=0.000" else "topology-occupied: the torus comparison at 90 percent occupancy moved"
+# invariant: and its retreating rule pays nearly twice the stretch the star's does.
+assert scan.out contains "compare shape=torus points=840 dims=7x8x15 degree=6 fill=90 live=756 rule=trace pairs=755 delivered=755 holehit=0 deadend=0 bail=0 stretch_max=4 stretch_mean=0.766" else "topology-occupied: the torus retreating reading at 90 percent occupancy moved"
+
+say "topology-occupied: the whole finding in one line, absences printed as counted zeros..."
+# invariant: a witness can bind a line that says zero and cannot bind a line that is missing, so
+# the readings whose meaning is "this never happened" are counted rather than left to silence.
+assert scan.out contains "summary configs=16 anchors=2 partitioned=2 trace_undelivered=0 local_undelivered=2005 blind_undelivered=3358 torus_trace_undelivered=0 unreachable_pairs=4440 max_visited=22" else "topology-occupied: the summary across fourteen configurations moved --\n${scan.out}"
+say "GREEN: topology-occupied -- free routing survives a real membership when the packet carries its own trail, and the holes are chosen rather than scattered."
+
+say "topology-occupied: the control plants each fault and lifts it again..."
+let control = run ["sh" "tools/fixtures/t/topology_occupied_control.sh"]
+# invariant: every refusal this witness rests on is shown from the failing side too.
+assert control.ok else "topology-occupied: the control refused --\n${control.out}"
+assert control.out contains "failed=0" else "topology-occupied: the control did not prove every behavior --\n${control.out}"
+assert control.out contains "pen copy reads exactly what the tree reads" else "topology-occupied: the pen was not proven innocent"
+assert control.out contains "a plant matching nothing refuses by name" else "topology-occupied: a plant that lands nowhere is not proven to refuse"
+say "GREEN: topology-occupied -- every refusal bitten, every plant proven to land, and every reading asserted."

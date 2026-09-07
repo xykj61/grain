@@ -122,7 +122,10 @@ say adoption.out
 # refused the hot pass at its ceiling of zero, and the portable spelling this law already owned was
 # the repair. The second gain was the one the law is actually for -- one of those eleven plants had
 # been rewriting the checker's own string literals and proving nothing, which `plant_apply` names.
-assert adoption.out contains "sourcing=12" else "plant: adoption is a floor that only rises -- twelve controls source the plant law; raise this line when a lane adopts, never lower it"
+# RAISED AGAIN on `20260907.153000` by DIFFUSER: `topology_occupied_control.sh` was born sourcing the
+# plant law, by the same sibling door -- a control that plants a fault into a copy of its own scan
+# and lifts it again wants the portable spelling from its first line rather than on its first refusal.
+assert adoption.out contains "sourcing=13" else "plant: adoption is a floor that only rises -- thirteen controls source the plant law; raise this line when a lane adopts, never lower it"
 assert adoption.out contains "verdict=ok" else "plant: the adoption arithmetic must sum before it is believed"
 
-say "plant: GREEN -- one implementation, imported by twelve controls, proven from both sides on metal"
+say "plant: GREEN -- one implementation, imported by thirteen controls, proven from both sides on metal"

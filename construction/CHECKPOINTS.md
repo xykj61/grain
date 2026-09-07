@@ -105,6 +105,21 @@ The nib is the HEAD **before** the debride's own commit -- so the old files live
 
 ---
 
+## `20260907.153000` -- the card's own ceiling, paid by the block that grew it
+
+**Walk-back nib:** `e242da3cc3` -- **Stamp:** `20260907.153000` -- **Swept:** `construction/ITINERARY.md`,
+the DIFFUSER block, 2,255 bytes to 1,568.
+
+`declared_ceiling` read the pin at 41,374 against the 40,960 it declares. The card stood at 40,944
+before this lap -- sixteen bytes under -- so the 460 my block added is what crossed it, and the
+block that grew the pin is the block that pays. **What waits at the nib, worth recalling:** the
+long form of the occupancy readings -- the three rules' full delivery table, the four hole
+geometries with their component counts, and the instrument's purity leg -- none of it lost, since
+all of it was written onto
+[`archive/20260907-145954_itinerary-landed-accounts.md`](archive/20260907-145954_itinerary-landed-accounts.md)
+in the same commit rather than condensed away. The bound was **not** raised: a page earns a raise
+when its LIVING parts outgrow its number, and this page's living part is one paragraph per ship.
+
 ## `20260907.075706` -- a Petrichor account folds off a card holding 18 bytes (walk-back `c34c1ca9e6`)
 
 **Walk-back nib:** `c34c1ca9e6`. **Live stamp:** `20260907.075706`.

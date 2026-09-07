@@ -2839,3 +2839,34 @@ guard topology_relaxed
 path tools/t/topology_relaxed_witness.rish
 tier lap
 seated 20260907.111058
+
+# topology_occupied -- the free-routing claim meets a real membership. Its sibling
+# `topology_relaxed` found a table-free rule that routes every vertex of seventeen graphs by a
+# shortest path, and closed by naming its own second falsifier unfired: every reading assumed all
+# n!/(n-k)! vertices occupied, and a membership never lands on a falling factorial. This fires it.
+# Two (n,k)-star graphs are holed in four named geometries across sixteen configurations, and every
+# live pair is routed to three sampled targets by three rules, with stretch measured against a walk
+# through LIVE members only. Three readings carry the finding. The published rule, which cannot see
+# liveness, loses 390 of 2,391 packets at 95 percent occupancy -- one in six. Filtering by neighbour
+# liveness stops every hole loss and starts cycling instead, so what the rule lacks is MEMORY rather
+# than a table. And a packet carrying the vertices it has already stood on, retreating one hop when
+# every ranked neighbour is dead or visited, delivers every reachable pair of every configuration at
+# a maximum packet state of 25 entries on an 840-vertex shape -- bounded by the path, not by the
+# membership. The geometry reading is bound from BOTH ends because only one is free: a far-end
+# symbol class, 120 of 840, costs zero stretch and does not move the diameter, while a DOOR class of
+# the same size splits the shape into four components. That partition read 837 of 837 delivered, so
+# the count of pairs it made unreachable stands on the same line -- excluding them silently is how a
+# partition reads as perfection. Its anchor is the sibling's own two readings, since this file
+# carries its own copy of the builder and a drifted copy would measure the wrong graph. It reads its
+# OWN source too, refusing when a routing function mentions the breadth-first distance array,
+# INCLUDING on the declaration line -- the control planted it there and the first draft passed.
+# `tier cadence`: scan 57s, control 35s, witness 95s measured 20260907.145954 and 125s re-measured
+# at the landing 20260907.153000 on the same pier -- report the range rather than the luckier run --
+# because every live
+# pair of every configuration is routed exhaustively rather than sampled, which is heavy for a lap
+# and ordinary for a cadence.
+
+guard topology_occupied
+path tools/t/topology_occupied_witness.rish
+tier cadence
+seated 20260907.145954
