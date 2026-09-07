@@ -17,15 +17,19 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260906.212202` | [silence and cleanliness read alike](20260906/20260906-212202_silence-and-cleanliness-read-alike.kyri) | %513, %514: a meter reading nothing; a skipped wall. |
 | `20260906.220522` | [the lap that landed a parked lap](20260906/20260906-220522_the-lap-that-landed-a-parked-lap.kyri) | a park is not a landing, and %513 collided |
 | `20260906.212206` | [a line is named by a pair](20260906/20260906-212206_a-line-is-named-by-a-pair.kyri) | the weave merges two branches; %513 booked. |
+| `20260906.214931` | [The lap that was already written](20260906/20260906-214931_the-lap-that-was-already-written.kyri) | a Glow lap out of a park; two guards green. |
+| `20260906.213313` | [what the fleet fixed by accident](20260906/20260906-213313_what-the-fleet-fixed-by-accident.kyri) | rota coverage uniform at fleet scale. |
+| `20260906.212721` | [one fold away from healthy](20260906/20260906-212721_one-fold-away-from-healthy.kyri) | %517: a capacity scan that never gated on capacity. |
+| `20260906.212202` | [silence and cleanliness read alike](20260906/20260906-212202_silence-and-cleanliness-read-alike.kyri) | %513, %514: a meter reading nothing; a skipped wall. |
 | `20260906.210117` | [the rule that was written and never formed](20260906/20260906-210117_the-rule-that-was-written-and-never-formed.kyri) | rule 4 made a gate; 28 errata priced. |
 | `20260906.204809` | [the fleet set down for a key change](20260906/20260906-204809_the-fleet-set-down-for-a-key-change.kyri) | 7 ships and the watch down; nothing lost. |
 | `20260906.204332` | [the act and the act performed](20260906/20260906-204332_the-act-and-the-act-performed.kyri) | %516: a probe wrong about which act it ran. |
 | `20260906.203052` | [the seed crosses its gate](20260906/20260906-203052_the-seed-crosses-its-gate.kyri) | gate %1 crossed; 7,978 files to both doors. |
+| `20260906.200636` | [the fence drawn round fourteen desks](20260906/20260906-200636_the-fence-drawn-round-fourteen-desks.kyri) | 14 desks refused: two characters claimed every core. |
 | `20260906.200141` | [a guard that reads a proxy](20260906/20260906-200141_a-guard-that-reads-a-proxy.kyri) | %510: the box's second drawer, named at last. |
 | `20260906.195215` | [the lap that landed its own park](20260906/20260906-195215_the-lap-that-landed-its-own-park.kyri) | %511, %512: a park landed, a pen race closed. |
 | `20260906.195019` | [the row that lost its number](20260906/20260906-195019_the-row-that-lost-its-number.kyri) | %510 landed from a stash; four stale numbers repaired. |
 | `20260906.193301` | [the seal nothing read](20260906/20260906-193301_the-seal-nothing-read.kyri) | SHA3 already seated; the gap was verification. |
-| `20260906.200636` | [the fence drawn round fourteen desks](20260906/20260906-200636_the-fence-drawn-round-fourteen-desks.kyri) | 14 desks refused: two characters claimed every core. |
 | `20260906.190934` | [the lap that ran without its lane](20260906/20260906-190934_the-lap-that-ran-without-its-lane.kyri) | %509: seven ships ran with the baton alone. |
 | `20260906.182719` | [every tool in the room its name says](20260906/20260906-182719_every-tool-in-the-room-its-name-says.kyri) | 34 moved; 4 computed paths derived. |
 | `20260906.180937` | [a name is not a clock](20260906/20260906-180937_a-name-is-not-a-clock.kyri) | covered counted names; six of eleven unrun. |

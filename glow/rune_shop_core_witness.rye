@@ -40,14 +40,14 @@ const witness_version = "20260906.195500";
 /// routing refused. Each names the desk it stands for, so a desk that changes
 /// shape and a witness that stops matching it are one grep apart.
 const thin_one_src = // glow/gen/c/core-double.glow
-    \\::  Thin core -- one arm double (STOA14).
+    \\::  Thin core -- one arm double.
     \\|%
     \\++  double
     \\--
 ;
 
 const thin_two_src = // glow/gen/c/core-two.glow
-    \\::  Two-arm core (STOA15).
+    \\::  Two-arm core.
     \\|%
     \\++  double
     \\++  inc
@@ -55,7 +55,7 @@ const thin_two_src = // glow/gen/c/core-two.glow
 ;
 
 const thin_three_src = // glow/gen/c/core-three.glow
-    \\::  Three-arm core (STOA20).
+    \\::  Three-arm core.
     \\|%
     \\++  double
     \\++  inc
@@ -64,7 +64,7 @@ const thin_three_src = // glow/gen/c/core-three.glow
 ;
 
 const thin_payload_src = // glow/gen/c/core-payload.glow
-    \\::  Core with payload sample (STOA17).
+    \\::  Core with payload sample.
     \\|%
     \\=/  amount  5
     \\++  double
@@ -72,7 +72,7 @@ const thin_payload_src = // glow/gen/c/core-payload.glow
 ;
 
 const thin_payload_typed_src = // glow/gen/c/core-payload-typed.glow
-    \\::  Core with typed @u32 payload (STOA21).
+    \\::  Core with typed @u32 payload.
     \\|%
     \\=/  amount=@u32  5
     \\++  double
@@ -80,7 +80,7 @@ const thin_payload_typed_src = // glow/gen/c/core-payload-typed.glow
 ;
 
 const thin_open_src = // glow/gen/c/core-open.glow
-    \\::  Open arm body -- sample face (STOA25).
+    \\::  Open arm body -- sample face.
     \\|%
     \\++  id  sample
     \\--
@@ -132,7 +132,7 @@ const face_desk_src =
 ;
 
 const compose_core_src = // glow/gen/c/compose-core.glow -- a face, then a thin core
-    \\::  Face then thin core arm (STOA18).
+    \\::  Face then thin core arm.
     \\=/  amount  5
     \\|%
     \\++  double
