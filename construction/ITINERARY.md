@@ -46,10 +46,10 @@
 
 ### Now -- the live front
 
-**Git nib:** `820f79c767` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `9dab6c2d15` -- HEAD's parent, resolvable everywhere (%401).
 
-**BAKERY -- A GUARD THAT COUNTS TODAY'S LOGS REDDENS THE FLEET AT EVERY MIDNIGHT.** `%530` CLOSED:
-the first cold pass of `20260907`, at `00:12`, read `guards_red=2` on ONE root -- `rota_declared`
+**BAKERY -- A GUARD THAT COUNTS TODAY'S LOGS REDDENS THE FLEET AT EVERY MIDNIGHT.** `20260907.003911` CLOSED,
+[folded](archive/REDS-a-guard-shaped-by-the-clock-rows-533.md): the first cold pass of `20260907`, at `00:12`, read `guards_red=2` on ONE root -- `rota_declared`
 refuses before the day's first log lands, and `standing_equipment` reads its own roster's red. **A
 red guard withholds the roster receipt**, so `--scoped` refuses and every ship pays a FULL cold pass
 (961s here) for a fact about the clock. Repaired by `capability day_shelf`, the fourth arm, reading
@@ -58,8 +58,9 @@ whose only log is untracked is what a filesystem-only probe would call present. 
 real git pen; `%493`'s second half already drops the elder card row. **A daily red is worse than a
 standing one** -- it heals by breakfast, so nobody books it. **Yours, one:** whether any other
 rostered guard is shaped by the clock this way is unmeasured. **Three landed accounts folded** to
-[`004225`](archive/20260907-004225_itinerary-landed-accounts.md) to pay for the row -- `%516`/`%517`/`%510`,
-`%499`/`%503`/`%501`, and `%515`, each already on its own shelf; residues ride there.
+[`004225`](archive/20260907-004225_itinerary-landed-accounts.md) -- `%516`/`%517`/`%510`,
+`%499`/`%503`/`%501`, `%515`; residues ride there. **The pin closes 13 bytes under**, which is a
+judgment call charged to whoever opens next.
 
 **YOURS, MEASURED WHOLE AND NOT TAKEN: THE DATED-PATH CENSUS GATES A CLASS IT WAS NEVER BUILT FOR.**
 `dated_path_witness` reds at `refs_lost=170` against a ceiling of **165** only a debride may raise.
