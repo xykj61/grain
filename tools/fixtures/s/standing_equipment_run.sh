@@ -303,12 +303,35 @@ if [ -d "$(dirname "$lock")" ]; then
     # reading alone. Reporting both keeps each visible where it fires, and `lap` is the one word
     # the advice below turns on.
     #
-    # THE DIRECTION OF ERROR IS UNCHANGED. Both readings only ever ADD a reason to say `gone`,
-    # each sound on its own, and both fail silent when `ps` cannot answer. Being wrong here still
+    # AND A GROUP LEADER CAN BE ALIVE AND ORPHANED AT ONCE, which is the shape neither reading
+    # above reaches. A lap that launches its pass through the harness's own detached form --
+    # `sh -c '... runner --hot --scoped > /tmp/hot.txt ...'` started in the background -- gets a
+    # NEW SESSION for that command, so the `sh -c` becomes the leader of its own group rather than
+    # sharing the lap's. While the lap runs, that leader's parent is the lap's shell; when the lap
+    # ends, the LEADER is what reparents to init and goes on running. The owner's parent is then
+    # the leader (alive, not 1) and the leader itself exists, so `parent=alive`, `group_leader=alive`,
+    # `lap=alive` -- for a lap that has been gone for minutes. Measured on this tree
+    # `20260907.065148`: owner 3457737, parent and group leader both 3457725, whose own ppid was 1.
+    #
+    # SO THE THIRD READING ASKS THE LEADER THE FIRST QUESTION: has the process that started the
+    # family exited? The leader is the root of the pass's own family by construction, so a leader
+    # adopted by init means nobody is waiting on this pass and its output reaches nobody -- the
+    # same sentence the two readings above already turn on, asked one generation further up. It is
+    # one extra `ps`, never a walk: the ancestry above the leader belongs to the lap, not the pass.
+    #
+    # WHY THIS CANNOT CALL A LIVE PASS GONE, measured rather than assumed. A pass launched in the
+    # foreground from a lap's own shell has that shell as its group leader -- the shell takes its
+    # own group -- and the shell's parent is the agent process, alive. Only a detached pass makes
+    # the `sh -c` the leader, and only a dead lap makes that leader's parent init. Both halves have
+    # to hold before this reading fires.
+    #
+    # THE DIRECTION OF ERROR IS UNCHANGED. All three readings only ever ADD a reason to say `gone`,
+    # each sound on its own, and each fails silent when `ps` cannot answer. Being wrong here still
     # costs one advisory sentence: nothing is reaped, an orphan is a live writer, and one pass
     # ending another's is the cross-hand act REDS %291 asks a body never to take.
     parent=unknown
     group_leader=unknown
+    leader_parent=unknown
     case "$owner" in
       ''|*[!0-9]*) : ;;
       *)
@@ -327,6 +350,14 @@ if [ -d "$(dirname "$lock")" ]; then
           *)
             if [ -n "$(ps -o pid= -p "$owner_group" 2>/dev/null | tr -d ' ')" ]; then
               group_leader=alive
+              # The third reading, and it only means anything while the leader is alive -- a leader
+              # that has gone is already answered above.
+              leader_ppid=$(ps -o ppid= -p "$owner_group" 2>/dev/null | tr -d ' ')
+              case "$leader_ppid" in
+                '') : ;;
+                1) leader_parent=gone ;;
+                *) leader_parent=alive ;;
+              esac
             else
               group_leader=gone
             fi
@@ -335,21 +366,23 @@ if [ -d "$(dirname "$lock")" ]; then
         ;;
     esac
     # One word for the advice to turn on, so a third reading joins here rather than at every site.
-    if [ "$parent" = gone ] || [ "$group_leader" = gone ]; then
+    if [ "$parent" = gone ] || [ "$group_leader" = gone ] || [ "$leader_parent" = gone ]; then
       lap=gone
     elif [ "$parent" = alive ] || [ "$group_leader" = alive ]; then
       lap=alive
     else
       lap=unknown
     fi
-    echo "run_lock=in_flight pid=$owner parent=$parent group_leader=$group_leader lap=$lap"
+    echo "run_lock=in_flight pid=$owner parent=$parent group_leader=$group_leader leader_parent=$leader_parent lap=$lap"
     echo "run_verdict=run_in_flight"
     echo "refused: another roster pass holds $lock (pid $owner) -- read its output rather than opening a second." >&2
     if [ "$lap" = gone ]; then
       if [ "$parent" = gone ]; then
         echo "detail: that pass's parent has exited, so its output reaches nobody and its lock outlives the lap that took it." >&2
-      else
+      elif [ "$group_leader" = gone ]; then
         echo "detail: that pass's process group leader has exited -- the lap launched it detached, so its own parent is a subshell that is still alive while the lap is gone. Its output reaches nobody and its lock outlives the lap that took it." >&2
+      else
+        echo "detail: that pass's process group leader is running and has itself been adopted by init -- the lap launched it into its own session, so parent and leader both read alive while the lap that started the family is gone. Its output reaches nobody and its lock outlives the lap that took it." >&2
       fi
       echo "detail: stop it with \`kill -TERM $owner\`, which runs this runner's own EXIT trap and releases the lock; SIGKILL bypasses the trap and leaves the lock behind for the next pass to reap." >&2
     fi

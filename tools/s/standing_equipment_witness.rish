@@ -370,11 +370,31 @@ assert control.out contains "deep_orphan_names_the_repair=yes" else "standing-eq
 assert control.out contains "deep_orphan_names_the_reading=yes" else "standing-equipment: the advice must say WHICH reading fired -- a hand reading parent=alive beside stop it deserves to be told why those two stand together"
 assert control.out contains "deep_orphan_left_running=yes" else "standing-equipment: a refused pass must never stop a detached holder either (REDS %291)"
 assert control.out contains "deep_orphan_keeps_its_lock=yes" else "standing-equipment: a refused pass must leave a detached holder's lock exactly where it found it"
+# AND A GROUP LEADER CAN BE ALIVE AND ORPHANED AT ONCE, which is the shape BOTH readings above
+# answer `alive` for. A lap that launches its pass through the harness's detached form gets a new
+# SESSION for that command, so the `sh -c` leads its own group and is what reparents to init when
+# the lap ends -- while going on running. Parent alive, leader alive, lap dead. Measured on this
+# tree `20260907.065148`, holding the lock against a cold open. So the runner asks the LEADER the
+# first question: has the process that started the family exited? One extra `ps`, never a walk.
+assert control.out contains "session_orphan_plant=ok" else "standing-equipment: the pen could not build a live-but-orphaned group leader, so the third reading is unproven here -- a HOST fact rather than a runner defect, and it wants reading before it is treated as a red"
+# THE TWO LOAD-BEARING ONES, and they assert the DEFECT rather than the repair: BOTH elder readings
+# must still answer `alive` on this plant. Proving only that the new reading fires could not tell a
+# widened check from one that had started calling every holder gone.
+assert control.out contains "session_orphan_parent_reads_alive=yes" else "standing-equipment: the session-orphan plant must still read parent=alive -- that is half the shape both elder readings miss"
+assert control.out contains "session_orphan_group_reads_alive=yes" else "standing-equipment: the session-orphan plant must still read group_leader=alive -- that is the other half, and together they are why a third reading was needed at all"
+assert control.out contains "session_orphan_leader_parent_reads_gone=yes" else "standing-equipment: a holder whose group leader has itself been adopted by init must read leader_parent=gone"
+assert control.out contains "session_orphan_lap_reads_gone=yes" else "standing-equipment: any reading answering gone must make lap=gone, since that is the one word the repair advice turns on"
+assert control.out contains "session_orphan_still_refuses=yes" else "standing-equipment: naming a session-orphaned pass changes the diagnosis, never the refusal"
+assert control.out contains "session_orphan_names_the_repair=yes" else "standing-equipment: the session-orphan refusal must name kill -TERM, exactly as the other two orphan refusals do"
+assert control.out contains "session_orphan_names_the_reading=yes" else "standing-equipment: the advice must say WHICH reading fired -- a hand reading parent=alive and group_leader=alive beside stop it is owed the sentence that reconciles them"
+assert control.out contains "session_orphan_left_running=yes" else "standing-equipment: a refused pass must never stop a session-orphaned holder either (REDS %291)"
+assert control.out contains "session_orphan_keeps_its_lock=yes" else "standing-equipment: a refused pass must leave a session-orphaned holder's lock exactly where it found it"
 # The group reading's own negative side, on its own plant. The live case above holds the lock with
 # the control's own pid, whose group leader is whatever launched the control -- true, and not this
 # file's to assume, so a holder with a certainly-live leader is made and read.
 assert control.out contains "live_group_plant=ok" else "standing-equipment: the pen could not make a holder with a live group leader, so the alive side of the group reading is unproven here"
 assert control.out contains "live_group_reads_alive=yes" else "standing-equipment: a holder whose group leader is alive must read group_leader=alive -- a reading that always says gone is stuck on"
+assert control.out contains "live_leader_parent_reads_gone=no" else "standing-equipment: a live holder whose group leader was started by something still running must NOT read leader_parent=gone -- the third reading proven only where it fires cannot be told from one stuck on"
 assert control.out contains "live_lap_reads_alive=yes" else "standing-equipment: a holder with a live parent and a live group leader must read lap=alive"
 assert control.out contains "live_lap_names_no_repair=yes" else "standing-equipment: a live lap must earn no kill -TERM advice -- printing one beside a running pass invites the cross-hand act REDS %291 forbids"
 assert control.out contains "dead_owner_reaped=yes" else "standing-equipment: a lock whose owner has died must be reaped rather than waited out"

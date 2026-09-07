@@ -1371,6 +1371,74 @@ else
 fi
 rm -rf "$lockpen/lock.d"
 
+# THE LEADER THAT IS ALIVE AND ORPHANED AT ONCE -- the shape BOTH readings above answer `alive` for,
+# and the one that actually held this tree's lock at `20260907.065148`. The harness a lap reaches
+# for when it wants a pass to outlive a tool call starts the command in its OWN SESSION:
+# `sh -c 'sh runner --hot --scoped > /tmp/hot.txt 2>&1; ...'` detached. That `sh -c` is therefore
+# the leader of its own group rather than a member of the lap's, and it is what reparents to init
+# when the lap ends -- while going right on running. The holder's parent is that leader (alive, not
+# init) and the leader exists, so the parent reading says `alive`, the group reading says `alive`,
+# and a pass whose lap died minutes ago reads as a live writer.
+#
+# THE PLANT IS THE DEEP ONE WITH THE LEADER LEFT STANDING. Same three processes and the same
+# `set -m` (job control off would put every plant in this control's own live group, which is the
+# host fact that makes the shape unreachable rather than absent): an outer shell backgrounds the
+# LEADER under `set -m` and exits at once, so the leader takes its own group and is adopted by
+# init; the leader then spawns the HOLDER inside that group and stays alive. Where the deep plant
+# above kills its leader, this one keeps it -- which is the whole difference between the two cases.
+cat > "$lockpen/session-leader.sh" <<'EOF'
+sleep 45 &
+printf '%s\n' "$!" > "$1"
+sleep 45
+EOF
+rm -f "$lockpen/session.pid"
+sh -c 'set -m; sh "$0" "$1" &' "$lockpen/session-leader.sh" "$lockpen/session.pid"
+sess=""
+for _try in 1 2 3 4 5 6 7 8 9 10; do
+  sess=$(cat "$lockpen/session.pid" 2>/dev/null || true)
+  [ -n "$sess" ] && break
+  sleep 1
+done
+sess_parent=$(ps -o ppid= -p "$sess" 2>/dev/null | tr -d ' ')
+sess_group=$(ps -o pgid= -p "$sess" 2>/dev/null | tr -d ' ')
+sess_group_alive=$(ps -o pid= -p "$sess_group" 2>/dev/null | tr -d ' ')
+sess_leader_ppid=$(ps -o ppid= -p "$sess_group" 2>/dev/null | tr -d ' ')
+# VERIFIED BEFORE IT IS TRUSTED, four ways, because three of them are exactly what the elder plants
+# already cover and only the fourth is this case: the holder's parent alive and not init (else this
+# is the two-generation orphan), the group leader alive (else it is the deep orphan), and the
+# LEADER'S OWN parent at init (else the plant has not taken at all).
+if [ -n "$sess" ] && [ -n "$sess_parent" ] && [ "$sess_parent" != 1 ] \
+   && [ -n "$sess_group_alive" ] && [ "$sess_leader_ppid" = 1 ]; then
+  echo "session_orphan_plant=ok"
+  mkdir -p "$lockpen/lock.d"
+  printf '%s\n' "$sess" > "$lockpen/lock.d/pid"
+  rm -f "$lockpen/session-card.kyri"
+  sess_out=$(run_locked lock.d session-card.kyri 2>&1)
+  sess_err=$( ( cd "$lockpen" && STANDING_ROSTER=roster.kyri STANDING_CARD=session-err.kyri \
+      STANDING_LOCK=lock.d sh "$runner" 2>&1 >/dev/null ) || true )
+  # THE LOAD-BEARING READINGS, and there are two of them here rather than one. BOTH elder checks
+  # must still answer `alive` -- that is the defect shown rather than described -- while the pass is
+  # nonetheless called gone. A control proving only that the new reading fires could not tell a
+  # widened check from one that had simply started saying `gone` about every holder.
+  case "$sess_out" in *"parent=alive"*) echo "session_orphan_parent_reads_alive=yes" ;; *) echo "session_orphan_parent_reads_alive=no" ;; esac
+  case "$sess_out" in *"group_leader=alive"*) echo "session_orphan_group_reads_alive=yes" ;; *) echo "session_orphan_group_reads_alive=no" ;; esac
+  case "$sess_out" in *"leader_parent=gone"*) echo "session_orphan_leader_parent_reads_gone=yes" ;; *) echo "session_orphan_leader_parent_reads_gone=no" ;; esac
+  case "$sess_out" in *"lap=gone"*) echo "session_orphan_lap_reads_gone=yes" ;; *) echo "session_orphan_lap_reads_gone=no" ;; esac
+  case "$sess_out" in *"run_verdict=run_in_flight"*) echo "session_orphan_still_refuses=yes" ;; *) echo "session_orphan_still_refuses=no" ;; esac
+  case "$sess_err" in *"kill -TERM $sess"*) echo "session_orphan_names_the_repair=yes" ;; *) echo "session_orphan_names_the_repair=no" ;; esac
+  # The advice must name THIS reading, not one of the other two -- a hand reading `parent=alive
+  # group_leader=alive` beside `stop it` is owed the sentence that reconciles them.
+  case "$sess_err" in *"adopted by init"*) echo "session_orphan_names_the_reading=yes" ;; *) echo "session_orphan_names_the_reading=no" ;; esac
+  # AND IT STILL TAKES NO ACTION, exactly as both elder orphan cases must not (REDS %291).
+  if kill -0 "$sess" 2>/dev/null; then echo "session_orphan_left_running=yes"; else echo "session_orphan_left_running=no"; fi
+  if [ -d "$lockpen/lock.d" ]; then echo "session_orphan_keeps_its_lock=yes"; else echo "session_orphan_keeps_its_lock=no"; fi
+  kill "$sess" 2>/dev/null || true
+  kill "$sess_group" 2>/dev/null || true
+else
+  echo "session_orphan_plant=unavailable"
+fi
+rm -rf "$lockpen/lock.d"
+
 # THE NEGATIVE SIDE OF THE GROUP READING, and it needs its own plant. The live case above holds the
 # lock with this control's own pid, whose group leader is whatever launched the control -- true, and
 # not something this file may assume. So a holder is made whose group leader is certainly alive:
@@ -1387,6 +1455,11 @@ if [ -n "$live_group_alive" ]; then
   rm -f "$lockpen/live-group-card.kyri"
   live_out=$(run_locked lock.d live-group-card.kyri 2>&1)
   case "$live_out" in *"group_leader=alive"*) echo "live_group_reads_alive=yes" ;; *) echo "live_group_reads_alive=no" ;; esac
+  # THE NEGATIVE SIDE OF THE THIRD READING, and this is the plant that carries it: a live holder in
+  # a live group whose leader was itself started by something still running must NOT read
+  # `leader_parent=gone`. `lap=alive` below is the composite that would break first, and this line
+  # says which of the three readings held, so a stuck-on check is visible rather than merely absent.
+  case "$live_out" in *"leader_parent=gone"*) echo "live_leader_parent_reads_gone=yes" ;; *) echo "live_leader_parent_reads_gone=no" ;; esac
   case "$live_out" in *"lap=alive"*) echo "live_lap_reads_alive=yes" ;; *) echo "live_lap_reads_alive=no" ;; esac
   # A live lap earns no repair advice: the refusal's own sentence, read its output, is the whole
   # answer, and a `kill -TERM` printed beside a running lap would invite exactly the cross-hand act.

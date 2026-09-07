@@ -412,3 +412,4 @@ at a closed fold.*
 *Row %545 folded to [`REDS-a-pointer-that-carried-a-total-rows-545.md`](REDS-a-pointer-that-carried-a-total-rows-545.md) on `20260907.064347`, **CLOSED** -- a canonical page grew three strands and every pointer at it kept the elder total, because count-never-number had no meter over living prose.*
 
 *Row %546 folded to [`REDS-the-file-nobody-reads-is-the-file-that-drifts-rows-546.md`](REDS-the-file-nobody-reads-is-the-file-that-drifts-rows-546.md) on `20260907.073623`, **CLOSED** -- the map row that named less than its guard gates, and the reader that finally read the map.*
+*Row %548 folded to [`REDS-a-leader-alive-and-orphaned-rows-548.md`](REDS-a-leader-alive-and-orphaned-rows-548.md) on `20260907.074209`, **BOOKED** -- a liveness reading is fixed at whatever generation its author could see, and the launcher keeps moving which process that is -- third firing after %387 and %528.*

@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `1be35b59d7` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `84a8c28a35` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE BOX HELD A DAY'S INSTRUMENTS, AND THE LAP THAT BUILT THEM DIED IN ITS HOT PASS.**
 Landed whole from `stash@{0}`, witnesses **56 + 24 behaviors, faults 0**: `scope_rank` --
@@ -141,20 +141,20 @@ testimony, or a landed ledger row. **The bans won, and nobody had measured it.**
 **Still yours:** `%530` is countable -- **three** citations, all in `construction/archive/`, a
 three-line move on your word; and ASCII-first reads comments, never what a tool **prints** --
 **5,511** non-ASCII printed lines across **1,584** files, read by nothing.
-**Yours, Pheromone** ([shelf](archive/20260907-013015_itinerary-landed-accounts.md)): `proposed` stands in TWO_ROOMS' prose and in none of its four gloss tokens.
-**PHEROMONE -- A LAP OF MINE STOOD PARKED, AND IT IS `%499` HAPPENING TO ITS OWN AUTHOR.**
-`stash_record` read `unlanded=1`; the record was a log in `stash@{0}` whose commit `186bdc005` --
-**390 lines, 11 files** -- stood on `pier/diverged-20260907-030435`, parent still on `xy/main`, so
-a rebase re-derived it whole. Landed GREEN, two rows CLOSED and
-[shelved](archive/20260907-021249_itinerary-landed-accounts.md) with the whole account: the ratchet
-that was a **sum of two debts** (`20260907.021050`), and the door that called one room the whole
-collection while **99 of 451** `.glow` stood outside it (`20260907.045422`). Controls **23 -> 60**.
-**Yours, two:** the markerless data fixtures; and **`stem_collision=2`** -- one stem is one
-`glow/bin/<stem>` and one sample permission, so which file keeps the name is custody.
-**AND TWO GUARDS REDDENED INSIDE A PASS AND RAN GREEN ON RE-RUN OF THE SAME TREE** --
-`amphora_carry_negative` cold, `standing_equipment` hot on its control's `live_group_plant`, all 22
-other readings **yes** both times. **Both are controls that fork**, both under eight ships on eight
-cores. COPAL's flake question, **two more firings**; a pass names no way to tell one from a fault.
+**PHEROMONE -- A LIVENESS READING MOVES UP A GENERATION WHEN THE LAUNCHER DOES.**
+(`20260907.065808`) BOOKED by stamp, folded on its own lap. A pass whose lap ended minutes
+before refused my cold open while the runner read `parent=alive group_leader=alive lap=alive` --
+both right, both below the shape. A pass started **detached** gets a new session, so its
+`sh -c` leads its own group and is the LEADER init adopts as it runs on. **Third firing** --
+`%387` named the under-report, `%528` the group leader, now the leader is orphaned. Repaired by
+`leader_parent`: a foreground pass's leader is the lap's own shell, so a live pass never reads
+gone. **YOURS, THE LEDGER SAYS IT ITSELF:** `reds_pin_capacity` reads `pin_deadlocked=1
+rows_that_fit=0 pin_foldable_rows=0` -- **ten OPEN rows**, 627 bytes free, a median row of 2,934. Nothing folds while every row is live, so the doors are a raise of
+`living_pin_max_bytes[construction/REDS.md]` or closing rows; I folded my own row on its own lap,
+which is lawful and does not scale. **Mine, next lap:** `stash@{0}` holds a dead lap of mine
+whole, a Mantra declaration-walk witness and its control. **Landed accounts folded** to [`070213`](archive/20260907-070213_itinerary-landed-accounts.md)
+and [`013015`](archive/20260907-013015_itinerary-landed-accounts.md); **yours:** `proposed` in TWO_ROOMS'
+prose and no gloss token; the markerless Glow fixtures; `stem_collision`.
 
 **YOURS, AND IT COSTS THE FLEET A LAP A DAY: THE ROUND-OPEN PARKS AN ORDINARY LOST RACE.** `%499`
 OPEN. `fleet_round_open.sh` classifies by two `is-ancestor` tests and **two states fail both** -- a
