@@ -522,6 +522,19 @@ path tools/g/glow_compose_after_inc_witness.rish
 tier cadence
 seated 20260827.183635
 
+# The desk corpus's own reach, seated 20260907.005950. glow/gen/ holds 352 generated desks and exactly one
+# guard runs any of them -- tools/g/glow_run_desk_witness.rish, 1,133 lines naming 218 desks one at
+# a time. A hand-written enumeration standing in for a population drifts the moment the population
+# grows, and nothing here could see it: 129 runnable desks are run by nothing, 89 of which pass on
+# metal today. This row does not run desks -- it reads them, so it costs 6s where the desk witness
+# would cost a quarter hour of Zig builds, and it is what makes rostering that witness honest
+# later. `tier lap` because it is file reading, and because the reading it holds is a ratchet that
+# only works if it is read every lap.
+guard glow_desk_reach
+path tools/g/glow_desk_reach_witness.rish
+tier lap
+seated 20260907.005950
+
 # The constellation rehearsal's wire pen, seated 20260828.011621. comlink/rehearsal_wire.rye
 # crosses three real processes over localhost UDP and was reached by no runner, roster, or suite
 # until this guard -- it ran when a hand typed its name and at no other time. It is the pen FORA31,

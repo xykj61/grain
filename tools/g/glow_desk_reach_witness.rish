@@ -1,0 +1,53 @@
+# glow_desk_reach_witness.rish -- the desk witness's reach over the Glow desk corpus.
+#
+# Holds three readings at zero and one ratchet under a ceiling that only falls, over
+# tools/fixtures/g/glow_desk_reach_scan.sh. The scan's own head carries the reasoning; the short
+# form is that glow/gen/ holds 352 generated desks and exactly one guard runs any of them, by a
+# hand-written enumeration of 218 that nothing derives and nothing measured until now.
+#
+#   rishi/bin/rishi run tools/g/glow_desk_reach_witness.rish
+
+let scan = run ["sh" "tools/fixtures/g/glow_desk_reach_scan.sh"]
+assert scan.ok else "glow_desk_reach scan failed: ${scan.err}${scan.out}"
+
+# invariant: the corpus is present -- a scan reading zero desks has lost its subject, and every
+# reading below would then be trivially satisfied by an empty tree.
+assert scan.out contains "desks=" else "glow_desk_reach scan printed no desk count"
+
+# invariant: the two run-contract markers name one set. A desk declares it must not run in its
+# name and in its head; those are independent statements of one fact, and their parting is the
+# silent drift this guard exists to feel. Held at zero.
+assert scan.out contains "norun_disagree=0" else "glow_desk_reach: the name marker and the head marker name different desks -- a desk was renamed without re-declaring, or declared without renaming"
+
+# invariant: every desk the witness names is a desk on disk. An assertion against an absent file
+# proves nothing while reading exactly like proof. Held at zero.
+assert scan.out contains "phantom=0" else "glow_desk_reach: the desk witness names desks that are not on disk"
+
+# invariant: the witness never runs a desk that declares it must not run. When those two disagree,
+# one of them is lying, and which one is a language question rather than a repair. Held at zero.
+assert scan.out contains "contradicted=0" else "glow_desk_reach: the desk witness runs a desk whose own head declares it unrunnable"
+
+# invariant: the uncovered population only falls. 129 stood on 20260907 -- runnable desks that no
+# guard speaks for, of which 89 run GREEN bare on metal today and 42 want a sample argument the
+# witness would have to choose. The ceiling is a ratchet rather than a gate because the backlog was
+# not made today, and a guard that reds on ordinary work is a guard somebody turns off. What it
+# does buy from here forward: a desk landing tomorrow is covered by the witness, declares itself
+# unrunnable in both markers, or turns this red on the lap it arrives.
+assert scan.out contains "uncovered_ceiling=129" else "glow_desk_reach: the ceiling stands where it was measured -- a ceiling only falls"
+assert scan.out contains "verdict=ok" else "glow_desk_reach: the scan refused -- ${scan.out}"
+
+# invariant: the refusal path is reachable. A ceiling proven only in the passing direction cannot
+# be told from a bypass, so the guard drops it one under the live reading and requires the scan to
+# refuse, naming that refusal apart from the three marker gates.
+let under = run ["sh" "-c" "GLOW_DESK_UNCOVERED_CEILING=128 sh tools/fixtures/g/glow_desk_reach_scan.sh"]
+assert (under.ok == false) else "glow_desk_reach: a ceiling one under the live reading must refuse"
+assert under.out contains "verdict=over_ceiling" else "glow_desk_reach: want the ceiling refusal named -- ${under.out}"
+
+# invariant: the reading itself is proven on real desk rooms rather than trusted. The control
+# builds miniature glow/gen/ trees in a throwaway pen and plants each refusal, then lifts it --
+# 23 behaviors, both sides of every gate and of the ceiling.
+let control = run ["sh" "tools/fixtures/g/glow_desk_reach_control.sh"]
+assert control.ok else "glow_desk_reach control failed: ${control.out}"
+assert control.out contains "fail=0" else "glow_desk_reach control reported failures: ${control.out}"
+
+say "GREEN: glow_desk_reach -- markers agree, no phantom, no contradiction, uncovered 129 at its ceiling, refusal proven, 23 control behaviors green."
