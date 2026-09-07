@@ -11,7 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
-| `20260907.111550` | [the ratchet whose only repair was the defect](20260907/20260907-111550_the-ratchet-whose-only-repair-was-the-defect.kyri) | 301 desks derived and run. |
+| `20260907.111550` | [the ratchet whose only repair was the defect](20260907/20260907-111550_the-ratchet-whose-only-repair-was-the-defect.kyri) | 301 desks derived and run; %564. |
 | `20260907.105712` | [A declared absence is not breakage](20260907/20260907-105712_a-declared-absence-is-not-breakage.kyri) | %562: 88 of 173 lost were honest rows. |
 | `20260907.102349` | [the door has two keys](20260907/20260907-102349_the-door-has-two-keys.kyri) | doorway 48 -> 37; the DOOR clause. |
 | `20260907.100809` | [the room guard that never read the why-room](20260907/20260907-100809_the-room-guard-that-never-read-the-why-room.kyri) | 112 pages in 4 unread rooms; row by stamp. |
