@@ -541,6 +541,70 @@ else
 fi
 
 
+# A PASS CLEARS WHAT IT ANSWERED, AND NOTHING ELSE (REDS `20260907.093000`). The room above exists
+# to root a guard that reads red under the roster and GREEN alone, and the motion that confirms
+# exactly that is a by-name pass on the one guard. While the clear was `rm -rf` on every pass, that
+# motion deleted every OTHER guard's words as well -- so the load-bearing case is a by-name pass on
+# a peer, which must leave the red guard's evidence standing.
+cat > "$gitpen/two.kyri" <<'EOF'
+format standing-equipment-v1
+guard alpha
+path guard.sh
+tier lap
+seated 20260825.000000
+
+guard beta
+path guard.sh
+tier lap
+seated 20260825.000000
+EOF
+cat > "$gitpen/rishi/bin/rishi" <<'EOF'
+#!/bin/sh
+echo "planted guard speaking on stdout"
+exit 1
+EOF
+chmod +x "$gitpen/rishi/bin/rishi"
+run_twopen() {
+  ( cd "$gitpen" && STANDING_ROSTER=two.kyri STANDING_CARD=run-card.kyri \
+      sh "$runner" "$@" 2>/dev/null ) || true
+}
+# Seed both files: a full pass over two red guards.
+run_twopen --hot >/dev/null
+evdir="$gitpen/construction/standing-equipment-reds"
+if [ -f "$evdir/alpha.txt" ] && [ -f "$evdir/beta.txt" ]; then
+  echo "full_pass_seeds_both=yes"
+else
+  echo "full_pass_seeds_both=no"
+fi
+
+# The load-bearing case: a green by-name pass on beta clears beta and leaves alpha whole.
+cat > "$gitpen/rishi/bin/rishi" <<'EOF'
+#!/bin/sh
+exit 0
+EOF
+chmod +x "$gitpen/rishi/bin/rishi"
+run_twopen beta >/dev/null
+if [ -f "$evdir/alpha.txt" ]; then
+  echo "named_pass_keeps_peer_evidence=yes"
+else
+  echo "named_pass_keeps_peer_evidence=no"
+fi
+if [ -f "$evdir/beta.txt" ]; then
+  echo "named_pass_clears_its_own=no"
+else
+  echo "named_pass_clears_its_own=yes"
+fi
+
+# And a by-name pass that clears the LAST red leaves no room, so a partial green reads the same as
+# a full one.
+run_twopen alpha >/dev/null
+if [ -e "$evdir" ]; then
+  echo "named_pass_emptied_room_leaves=no"
+else
+  echo "named_pass_emptied_room_leaves=yes"
+fi
+
+
 # --- the dead-letter box, proven on its own real repository ------------------------------
 # The runner reads `git stash list` on the same line-one pass as the index (REDS %321, and the
 # second firing three hours later). This reading NEVER gates -- `fleet_round_open.sh` parks a dirty

@@ -277,6 +277,15 @@ assert control.out contains "red_keeps_both_streams=yes" else "standing-equipmen
 assert control.out contains "red_names_its_evidence=yes" else "standing-equipment: the printed red line must name the file its words landed in"
 assert control.out contains "green_leaves_no_evidence=yes" else "standing-equipment: a green leaves no room, so a stale file can never read as this run's verdict"
 
+# A PASS CLEARS WHAT IT ANSWERED, AND NOTHING ELSE (REDS `20260907.093000`). The evidence room was
+# built by %266 to root a guard reading red under the roster and GREEN alone, and the by-name pass
+# that confirms exactly that used to delete every other guard's words on its way past. The peer
+# case is the load-bearing one: with the elder `rm -rf` in place it reads `no`, proven on metal.
+assert control.out contains "full_pass_seeds_both=yes" else "standing-equipment: a full pass over two red guards must leave both their words"
+assert control.out contains "named_pass_keeps_peer_evidence=yes" else "standing-equipment: a by-name pass must leave a peer guard's evidence standing -- that is the motion that roots a flake"
+assert control.out contains "named_pass_clears_its_own=yes" else "standing-equipment: a by-name pass going green must clear its own guard's stale evidence"
+assert control.out contains "named_pass_emptied_room_leaves=yes" else "standing-equipment: a by-name pass clearing the last red must leave no room at all"
+
 
 # The dead-letter box (REDS %321, and its second firing). The load-bearing assertion is
 # full_box_still_passes: this reading reports and never gates, since fleet_round_open.sh parks a

@@ -1,0 +1,39 @@
+format session-log-v1
+stamp 20260907.093147
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role Copal -- amphora/ and bron-resins/, what a record keeps once it is put away
+modality text
+model claude-opus-5
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_reasoning max
+configured_status evidence .claude/settings.json, tracked; not runtime telemetry
+evidence .claude/settings.json declares model claude-opus-5 and effortLevel max
+voice Kyri
+host Linux pier, one clock America/New_York
+title the room emptied by the motion that confirms
+prompt the standing baton -- open the lap, read the card, take the lane's next real work, reds first
+rota lap 4161, row 1 -- Air, the row that feels: the threshold page, TAME Core, Single-Stranded, Gauge Style. Read through touch, and the row's own instruction is what shaped the whole lap -- a claim of a boundary is tested by pressing on it, and if the hand passes through, the boundary was a wish. My hand passed through twice on the ordering hypothesis before the third press found the real one.
+think I opened on my own carried sentence from REDS %550 -- the cheap gates reading every file are the ones a lap adding one never runs -- meaning to repair it by reordering the roster pass so those gates answer early.
+think Measured before building. Per-guard seconds come off construction/standing-equipment-runs.kyri, 167 guards, 1,062s total. Under roster order the mean wait before a guard answers is 487s. Cheapest-first drops that to 192s, which looks like a win until you read the target class: living_card_ascii moves from 10s to 749s and width_check from 249s to 555s, because 60 guards cost 0s and go ahead of them. The repair I came to make would have made the thing it aimed at worse.
+think Second hypothesis: the class is the DISCOVERY guards, the ones standing_equipment_scope_map.sh leaves unmapped so they run on every scoped pass. Measured the same way -- discovery-first gives a mean of 354s and still puts living_card_ascii at 577s. The class is 123 of 167 guards, too large to be a fast lane.
+think So the honest reading is a third one. What orders the pass today is the ALPHABET -- construction/standing-equipment.kyri sorts by guard name inside its sections -- which is why exec_bit answers at 1s and shared_pen, a sibling zero-ceiling tree-wide gate, answers at 1020s of 1062. The eight such gates run first would all answer by 116s against 1039s today. That is a band word on a roster row, the shape tier and host already wear, and it belongs to Keaton because eight ships run that file.
+think Then the cold pass answered standing_equipment red 70s, named its evidence file, and reds-first took the lap. I ran the guard alone to confirm the flake, it read green 70s on the same tree, and construction/standing-equipment-reds/standing_equipment.txt was gone.
+think That absence is the red. standing_equipment_run.sh cleared its evidence room with rm -rf on every pass, including a by-name single-guard pass -- so the ordinary motion for confirming a flake deletes the words REDS %266 opened the room to keep, and leaves nothing, since the alone-run is green. Six firings of this family stand unrooted across caravan_suite, fleet_watch and the runner's own guard; %549 recovered one such file only because a /tmp clobber sent a hand to the room before anyone re-ran the guard.
+obs The clear was written for a full pass, where it is exactly right -- a full pass answers for every rostered guard, so it owns the room and sweeps it whole, which is also the only thing that retires the file of a guard that has left the roster. The fault is that a partial pass inherited a full pass's authority.
+obs run_scope moved above the evidence write rather than below it, and the clear now reads it: full still rm -rfs, scoped and by-name remove only $red_room/<name>.txt for each guard in $pen/running, then rmdir an emptied room so a partial green reads the same as a full one.
+obs Proven from both sides on real repositories in a throwaway pen. With the elder rm -rf restored, named_pass_keeps_peer_evidence reads no; with the repair it reads yes, and full_pass_seeds_both, named_pass_clears_its_own and named_pass_emptied_room_leaves hold. A refusal proven only in the passing direction cannot be told from a bypass.
+obs The general shape is worth more than the fix, and it is my lane's own sentence: a record survives only the motions its keeper anticipated, and the motion nobody anticipated here is the one the record exists for.
+obs And the repair proved itself in the wild on its own lap. The rebase left a peer's index row above mine, index_row_bound read red, and the by-name pass that repaired it cleared index_row_bound.txt alone -- leaving standing_equipment.txt, the very file the elder rm -rf would have taken, standing beside three gated peers.
+obs The rebase also renumbered the row. It was booked %554 at a fetched head and peers had spent 554 through 556 by the time I sent, so it landed %557: the stamp held, the view moved, which is the derived-spine law working rather than failing.
+loom guards=167 roster_total_s=1062 mean_wait_roster_s=487 mean_wait_cheapest_s=192 mean_wait_discovery_first_s=354 discovery_guards=123
+loom guard=standing_equipment pass_verdict=red alone_verdict=green wall_s=70
+file tools/fixtures/s/standing_equipment_run.sh the scope word moved above the evidence write; the clear now removes only the guards this pass answered for
+file tools/fixtures/s/standing_equipment_control.sh four behaviors on a two-guard pen roster, the peer case proven against the elder rm -rf
+file tools/s/standing_equipment_witness.rish four assertions, so the repair is heard rather than merely made
+file construction/REDS.md row %557 -- booked %554, renumbered when the fetch showed peers had spent 554-556 -- folded on its own lap to keep the pin under 40,960
+file construction/archive/REDS-the-room-emptied-by-the-motion-that-confirms-rows-557.md the shelf, graded A+ at Meter
+file construction/ITINERARY.md the COPAL block rewritten -- the closed red, the measured negative result, and the band word left as Keaton's word
+recommend check-in (Keaton) -- the band word on a roster row is the repair my %550 sentence actually wants, and eight ships run standing_equipment_run.sh, so the ordering change is yours rather than a lap's
