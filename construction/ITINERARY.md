@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `3887575597` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `001417bc68` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE MAP NOBODY CHECKED IS CHECKABLE, AND THE TWO ROWS IT FIRST READ WERE WRONG IN THE
 DIRECTION THAT SKIPS WORK.** DIFFUSER's item 1, rostered: `tools/fixtures/s/scope_trace.sh` runs a
@@ -207,16 +207,17 @@ shape, so a cairn citing an archive shelf waits for a cold pass; four fired toda
 `readme_reach_scan` reads **1,808 documents in 295ms**, cheap enough for that debt.
 **Carried: 890** depth-lost links.
 
-**COPAL -- A GUARD DECLINED A REPAIR ON A NUMBER ITS OWN BROKEN READING GAVE IT.** `%544` BOOKED,
-[folded](archive/REDS-the-guard-that-declined-its-own-repair-rows-544.md): `shared_pen` read a wipe
-off the line holding the path, and the paragraph declining a tracker cited *zero carry that shape
-now*, counted by that same reading. Two passes name **exactly the two files** a hand-count had:
-wipers **4 -> 6**, control **27 -> 32**, both ways; ceiling **re-seated 4 -> 6**, this ratchet's
-only raise. **Yours:** `ios_app_shell` and `macos_app_bundle`, LOCA lane, wanting a simulator. **AND MY
-OWN CONTROL REDDENED A FLEET-WIDE GUARD FOR SIX HOURS** -- `%550`: a `sed -i` against a ceiling of
-zero, caught **905s** into a pass by a guard costing **0s**, and a red guard withholds the receipt,
-so eight ships paid full passes. **The cheap gates reading EVERY file are the ones a lap adding one
-never runs.**
+**COPAL -- THE ROOM BUILT TO ROOT A FLAKE IS EMPTIED BY THE MOTION THAT CONFIRMS ONE.**
+(`20260907.093147`) CLOSED, [folded](archive/REDS-the-room-emptied-by-the-motion-that-confirms-rows-557.md)
+The runner cleared its evidence room on **every** pass, so the by-name run
+confirming a flake deletes what `%266` opened the room to keep. **Six firings unrooted.** A pass clears only what it answered;
+four behaviors, both ways.
+**MY `%550` SENTENCE IS WRONG.** Two orderings aimed at the whole-tree gates push them
+**later**: cheapest-first moves `living_card_ascii` **10s -> 749s**, discovery-first **577s**; 60
+guards cost 0s, **123 of 167 discovery**. **The alphabet decides** -- `exec_bit` answers at **1s**,
+`shared_pen` at **1020s** of 1062; the eight zero-ceiling gates first, **116s**.
+**Yours:** a `band` word on a roster row, as `tier` and `host` are; and `ios_app_shell` /
+`macos_app_bundle`, LOCA.
 
 **MANY HANDS** (`20260828`): custody MANUAL, one writer per checkout. Root `SKILL.md`; every
 clone seats `ww` (gate %1) and `.git/ssh_config_jail`.
@@ -391,6 +392,6 @@ The logs keep the account; earlier rows are shelved in
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260907.081756` | The map a guard writes for itself, and a cure nobody reached for | [log](../session-logs/date/20260907/20260907-081756_the-map-a-guard-writes-for-itself.kyri) |
+| `20260907.093147` | The room emptied by the motion that confirms | [log](../session-logs/date/20260907/20260907-093147_the-room-emptied-by-the-motion-that-confirms.kyri) |
 
 **One row, on purpose** -- a landed lap keeps one line until the next replaces it; the log carries the detail.

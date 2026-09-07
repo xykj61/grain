@@ -944,10 +944,43 @@ tree_close=$(tree_digest)
 # reason: nothing this runner writes belongs between its own two digests.
 hitledger_write
 
+# The scope word, computed here rather than beside the receipt below, because a pass that refuses
+# has to name what the refusal COST as well as what it found -- and because the evidence clear
+# immediately below turns on it.
+run_scope=full
+[ "$scoped" = yes ] && run_scope=scoped
+[ -n "$only" ] && run_scope=named
+
 # The evidence lands now, after the digest and beside the card, for the reason written above the
-# room's name. The old room is cleared first so a stale file can never be read as this run's
+# room's name. The old evidence is cleared first so a stale file can never be read as this run's
 # verdict, and a run with no reds leaves no room at all.
-rm -rf "$red_room"
+#
+# A PASS CLEARS WHAT IT ANSWERED, AND NOTHING ELSE (REDS `20260907.093000`). The clear was
+# `rm -rf "$red_room"` on every pass, and REDS %266 built this room for one purpose: to root a
+# guard that reads red under the roster and GREEN alone. The motion that confirms exactly that --
+# see `standing_equipment red` in the pass, then run `standing_equipment_run.sh standing_equipment`
+# to check it alone -- therefore DELETED the words it was opened to read, and left nothing, because
+# the alone-run is green. Six firings of the flake family across `caravan_suite`, `fleet_watch` and
+# this runner's own guard have gone unrooted, and %549 recovered one file only because a clobber
+# elsewhere sent a hand to the room before anyone re-ran the guard.
+#
+# So the rule is the one the pass can honestly keep. A FULL pass answered for every rostered guard,
+# so it owns the room and sweeps it whole -- which also retires the file of a guard that has left
+# the roster, the one thing a per-guard clear would leave behind forever. A `--scoped` or by-name
+# pass answered for a named few, so it clears exactly those and leaves every other guard's words
+# standing. Nothing here changes what a full pass leaves, which is what the control's
+# `green_leaves_no_evidence` case reads.
+if [ "$run_scope" = full ]; then
+  rm -rf "$red_room"
+else
+  while read -r _rn; do
+    [ -n "$_rn" ] || continue
+    rm -f "$red_room/$_rn.txt"
+  done < "$pen/running"
+  # An emptied room leaves, so a partial pass that cleared the last red reads the same as a green
+  # full one. `rmdir` refuses a room still holding a peer's words, which is the reading wanted.
+  rmdir "$red_room" 2>/dev/null || true
+fi
 for _ev in "$pen"/evidence.*.txt; do
   [ -f "$_ev" ] || continue
   mkdir -p "$red_room"
@@ -981,12 +1014,6 @@ echo "skipped_host=$skipped_host"
 echo "skipped_capability=$skipped_capability"
 echo "tree_at_close=$tree_close"
 echo "tree_moved=$moved"
-
-# The scope word, computed here rather than beside the receipt below, because a pass that refuses
-# has to name what the refusal COST as well as what it found.
-run_scope=full
-[ "$scoped" = yes ] && run_scope=scoped
-[ -n "$only" ] && run_scope=named
 
 if [ "$red" -ne 0 ]; then
   # A RED COSTS THE RECEIPT, AND THAT IS SAID HERE RATHER THAN LEFT TO BE INFERRED. The receipt is

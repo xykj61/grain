@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260907.093147` | [the room emptied by the motion that confirms](20260907/20260907-093147_the-room-emptied-by-the-motion-that-confirms.kyri) | %557: a pass clears what it answered. |
 | `20260907.083428` | [the box works, what it cannot do is commit](20260907/20260907-083428_the-box-works-what-it-cannot-do-is-commit.kyri) | a lost lap landed, row `20260907.083054`. |
 | `20260907.081756` | [the map a guard writes for itself](20260907/20260907-081756_the-map-a-guard-writes-for-itself.kyri) | a row made checkable; two repaired by trace. |
 | `20260907.081627` | [a duplicate fills the hole it would have left](20260907/20260907-081627_a-duplicate-fills-the-hole-it-would-have-left.kyri) | %536 BOOKED; two reds closed. |
