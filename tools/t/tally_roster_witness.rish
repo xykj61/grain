@@ -1,13 +1,23 @@
 # tools/t/tally_roster_witness.rish -- every tally module answers to a witness, or is counted.
 #
 # The choir-and-bijection calling reaching the allocator room (the constellation charter's own
-# tally row): coverage is a reading taken off disk by tools/fixtures/t/tally_roster_scan.sh --
-# 14 modules, 11 covered by anchored name, 3 test-program exceptions, 0 uncovered under a
-# ceiling of 0 that only falls (measured 20260830.102631). Three claims, in order: the live
-# room reads whole and SEEN; a planted newborn module with no witness refuses past the ceiling
-# in a pen, and removing it passes at the same ceiling -- the fence pressed from both sides;
-# and the anchored matcher credits nothing by a longer word -- a planted tally_budget check
-# never covers `bud` (the flag-inside-a-longer-word lesson).
+# tally row). The room is read TWICE, because a proof existing and a proof running are two
+# questions and one word was answering both (the row stamped `20260906.180651`):
+#
+#   covered -- a module owns a witness FILE by anchored name. 14 modules, 11 covered,
+#              3 test-program exceptions, 0 uncovered under a ceiling of 0 that only falls
+#              (measured 20260830.102631).
+#   heard   -- that witness is INVOKED, in command position, by this very file. 11 of 11,
+#              gated at zero unheard. It read 5 of 11 the day the reading was added.
+#
+# Five claims, in order: the live room reads whole and SEEN on both readings; a planted newborn
+# with no witness refuses past the ceiling in a pen, and removing it passes at the same ceiling --
+# the fence pressed from both sides; the anchored matcher credits nothing by a longer word, so a
+# planted tally_penpaired check never covers `penpair` (the flag-inside-a-longer-word lesson); a
+# covered module the runner never calls refuses by name, and neither a comment citation nor a
+# witness path sitting inside a longer path frees it; and an ABSENT runner refuses outright rather
+# than reporting every module unheard, since that reading would name eleven faults where there is
+# one.
 #
 # Purely local: no key, no network, no funds, no device. Run from the repository root:
 #   rishi/bin/rishi run tools/t/tally_roster_witness.rish
@@ -18,6 +28,12 @@ say "tally-roster: Lens TAME -- the ceiling is named, the count is checked at th
 
 # These per-module proofs are the ownership edges this roster reports. Calling them here makes
 # the name and the clock one fact: a covered module has a proof the standing roster actually runs.
+# ALL ELEVEN are called, and the sentence above is checked rather than trusted -- the scan reads
+# `heard` off this very file and gates the gap at zero (the row stamped `20260906.180651`).
+# Measured 20260907.071500 on this pier, each run alone: region 2s, gardens 0s, copy 0s, maybe 1s,
+# no_padding 0s, parse_int 0s -- 3s for the six together, so keeping the claim true costs this
+# lap-tier row three seconds. A cheaper claim than the one it replaces, which cost nothing and was
+# not true.
 let bud_proof = run ["rishi/bin/rishi" "run" "tools/t/tally_bud_witness.rish"]
 assert bud_proof.ok else "tally-roster: bud's owned witness must pass -- ${bud_proof.out}"
 let seed_proof = run ["rishi/bin/rishi" "run" "tools/t/tally_seed_witness.rish"]
@@ -29,6 +45,23 @@ assert pedersen_proof.ok else "tally-roster: pedersen's owned witness must pass 
 let kumara_proof = run ["rishi/bin/rishi" "run" "tools/t/tally_kumara_witness.rish"]
 assert kumara_proof.ok else "tally-roster: kumara's owned witness must pass -- ${kumara_proof.out}"
 
+# The six the sentence above had been claiming and this row never ran. region is the one that
+# mattered most: tally/region.rye is the single memory-carving body in the tree -- seed and
+# gardens fold into it, three Caravan rungs reach it through the caravan/region.rye symlink -- and
+# its witness, which watches two construction asserts die, was named by no runner anywhere.
+let region_proof = run ["rishi/bin/rishi" "run" "tools/t/tally_region_witness.rish"]
+assert region_proof.ok else "tally-roster: region's owned witness must pass -- ${region_proof.out}"
+let gardens_proof = run ["rishi/bin/rishi" "run" "tools/t/tally_gardens_witness.rish"]
+assert gardens_proof.ok else "tally-roster: gardens' owned witness must pass -- ${gardens_proof.out}"
+let copy_proof = run ["rishi/bin/rishi" "run" "tools/t/tally_copy.rish"]
+assert copy_proof.ok else "tally-roster: copy's owned witness must pass -- ${copy_proof.out}"
+let maybe_proof = run ["rishi/bin/rishi" "run" "tools/t/tally_maybe.rish"]
+assert maybe_proof.ok else "tally-roster: maybe's owned witness must pass -- ${maybe_proof.out}"
+let no_padding_proof = run ["rishi/bin/rishi" "run" "tools/t/tally_no_padding.rish"]
+assert no_padding_proof.ok else "tally-roster: no_padding's owned witness must pass -- ${no_padding_proof.out}"
+let parse_int_proof = run ["rishi/bin/rishi" "run" "tools/t/tally_parse_int.rish"]
+assert parse_int_proof.ok else "tally-roster: parse_int's owned witness must pass -- ${parse_int_proof.out}"
+
 # Claim one: the live room, whole and seen.
 let live = run ["sh" "tools/fixtures/t/tally_roster_scan.sh"]
 assert live.ok else "tally-roster: the room must read whole -- ${live.out}"
@@ -36,17 +69,27 @@ assert live.out contains "verdict=ok" else "tally-roster: want the live verdict 
 assert live.out contains "modules_total=14" else "tally-roster: the roster moved -- re-read the census before trusting the ceiling: ${live.out}"
 assert live.out contains "covered=11" else "tally-roster: the covered count moved -- a change here is a change to name, not to absorb silently: ${live.out}"
 assert live.out contains "uncovered=0" else "tally-roster: the whole roster moved -- a newborn arrives with its check: ${live.out}"
+assert live.out contains "heard=11" else "tally-roster: every covered module's proof must be one this row actually calls -- ${live.out}"
+assert live.out contains "unheard=0" else "tally-roster: a covered module whose witness nothing runs is a filename wearing a proof's name -- ${live.out}"
 
-# The pen: a throwaway room with one covered module, its check, and room to plant.
+# THE PEN. A throwaway room with modules, their checks, and a runner to plant against.
+#
+# PEN NAMES ARE PEN-ONLY, and that is load-bearing rather than cosmetic. The `heard` reading greps
+# THIS FILE for a quoted witness path, so a pen line writing "tools/t/tally_copy.rish" would credit
+# the live `copy` module whether or not the real call above still stood -- the pen would be
+# proving the gate while quietly holding it open. Every pen module is therefore named for the pen
+# alone, and the runner is built with printf's \042 so the quotes land in the pen file rather than
+# in this one's grep surface.
 let pen_mk = run ["sh" "-c" "d=$(mktemp -d) && mkdir -p $d/tally $d/tools/t && printf '%s' $d"]
 assert pen_mk.ok else "tally-roster: could not build the pen -- ${pen_mk.err}"
 let pen = trim pen_mk.out
-let seed_pen = run ["sh" "-c" "printf '%s\n' '// pen module' > ${pen}/tally/copy.rye && printf '%s\n' '# pen check' > ${pen}/tools/t/tally_copy.rish"]
+let seed_pen = run ["sh" "-c" "printf '%s\n' '// pen module' > ${pen}/tally/penmod.rye && printf '%s\n' '# pen check' > ${pen}/tools/t/tally_penmod.rish && printf 'let a = run [\042rishi/bin/rishi\042 \042run\042 \042tools/t/tally_penmod.rish\042]\n' > ${pen}/tools/t/tally_roster_witness.rish"]
 assert seed_pen.ok else "tally-roster: could not seed the pen"
 
-# Claim two, the passing side first: one covered module, ceiling zero, verdict ok.
+# Claim two, the passing side first: one covered module, called by the pen's runner, ceiling zero.
 let clean = run ["sh" "-c" "TALLY_ROSTER_CEILING=0 sh tools/fixtures/t/tally_roster_scan.sh ${pen}"]
 assert clean.ok else "tally-roster: a fully covered pen must pass at a ceiling of zero -- ${clean.out}"
+assert clean.out contains "heard=1" else "tally-roster: the pen's one call must read as heard -- ${clean.out}"
 
 # The newborn arrives with no check: past the ceiling, refused by name.
 let plant = run ["sh" "-c" "printf '%s\n' '// newborn, no witness' > ${pen}/tally/newborn.rye"]
@@ -56,20 +99,64 @@ assert red.ok == false else "tally-roster: a planted newborn past the ceiling mu
 assert red.out contains "verdict=over_ceiling" else "tally-roster: the refusal names its verdict -- ${red.out}"
 assert red.out contains "uncovered: tally/newborn.rye" else "tally-roster: the refusal names the module that owes its check -- ${red.out}"
 
-# Claim three: a longer word never credits a shorter name. tally_budget does not cover bud.
-let bud = run ["sh" "-c" "printf '%s\n' '// bud module' > ${pen}/tally/bud.rye && printf '%s\n' '# budget check, not buds' > ${pen}/tools/t/tally_budget_check.rish"]
-assert bud.ok else "tally-roster: could not plant the longer-word pair"
+# Claim three: a longer word never credits a shorter name. tally_penpaired does not cover penpair.
+let pair = run ["sh" "-c" "printf '%s\n' '// penpair module' > ${pen}/tally/penpair.rye && printf '%s\n' '# paired check, not penpair' > ${pen}/tools/t/tally_penpaired_check.rish"]
+assert pair.ok else "tally-roster: could not plant the longer-word pair"
 let anchored = run ["sh" "-c" "TALLY_ROSTER_CEILING=2 sh tools/fixtures/t/tally_roster_scan.sh ${pen}"]
 assert anchored.ok else "tally-roster: two honest uncovered under a ceiling of two must pass -- ${anchored.out}"
-assert anchored.out contains "uncovered: tally/bud.rye" else "tally-roster: tally_budget must never credit bud -- the matcher anchors the whole name: ${anchored.out}"
+assert anchored.out contains "uncovered: tally/penpair.rye" else "tally-roster: tally_penpaired must never credit penpair -- the matcher anchors the whole name: ${anchored.out}"
 
-# And the same fence from the other side: the newborn gains its check and the pen heals.
-let heal = run ["sh" "-c" "printf '%s\n' '# newborn check' > ${pen}/tools/t/tally_newborn_witness.rish && printf '%s\n' '# bud check' > ${pen}/tools/t/tally_bud.rish"]
+# And the same fence from the other side: the newborn and penpair gain their checks, and the pen's
+# runner gains the calls, so the room heals on BOTH readings at zero.
+let heal = run ["sh" "-c" "printf '%s\n' '# newborn check' > ${pen}/tools/t/tally_newborn_witness.rish && printf '%s\n' '# penpair check' > ${pen}/tools/t/tally_penpair.rish && printf 'let b = run [\042rishi/bin/rishi\042 \042run\042 \042tools/t/tally_newborn_witness.rish\042]\nlet c = run [\042rishi/bin/rishi\042 \042run\042 \042tools/t/tally_penpair.rish\042]\n' >> ${pen}/tools/t/tally_roster_witness.rish"]
 assert heal.ok else "tally-roster: could not heal the pen"
 let green = run ["sh" "-c" "TALLY_ROSTER_CEILING=0 sh tools/fixtures/t/tally_roster_scan.sh ${pen}"]
 assert green.ok else "tally-roster: a healed pen must pass at zero -- covering is the door the ceiling falls through: ${green.out}"
+assert green.out contains "heard=3" else "tally-roster: three covered modules, three calls -- ${green.out}"
+
+# Claim four, the reading this round added (the row stamped `20260906.180651`): a module
+# COVERED by a witness the runner
+# never calls. This is the live gap that stood at six of eleven, planted here at one of four.
+let quiet = run ["sh" "-c" "printf '%s\n' '// quiet module' > ${pen}/tally/penquiet.rye && printf '%s\n' '# quiet check' > ${pen}/tools/t/tally_penquiet.rish"]
+assert quiet.ok else "tally-roster: could not plant the uncalled module"
+let unheard = run ["sh" "-c" "TALLY_ROSTER_CEILING=0 sh tools/fixtures/t/tally_roster_scan.sh ${pen}"]
+assert unheard.ok == false else "tally-roster: a covered module no runner calls must refuse -- it passed instead"
+assert unheard.out contains "verdict=unheard_over_ceiling" else "tally-roster: the second reading names its own verdict -- ${unheard.out}"
+assert unheard.out contains "unheard: tally/penquiet.rye" else "tally-roster: the refusal names the module whose proof nothing runs -- ${unheard.out}"
+assert unheard.out contains "covered=4" else "tally-roster: the module stays COVERED while it is unheard -- the two readings are separate or this proves nothing: ${unheard.out}"
+
+# A CITATION IS NOT A CALL. The runner names the path on a comment line alone, which is the shape
+# tools/fixtures/w/witness_reach_scan.sh calls a promise rather than an invocation (REDS %218).
+let cited = run ["sh" "-c" "printf '# let d = run [\042rishi/bin/rishi\042 \042run\042 \042tools/t/tally_penquiet.rish\042]\n' >> ${pen}/tools/t/tally_roster_witness.rish"]
+assert cited.ok else "tally-roster: could not plant the comment citation"
+let still = run ["sh" "-c" "TALLY_ROSTER_CEILING=0 sh tools/fixtures/t/tally_roster_scan.sh ${pen}"]
+assert still.ok == false else "tally-roster: a path named in a comment must not read as a call -- it passed instead"
+assert still.out contains "unheard: tally/penquiet.rye" else "tally-roster: a citation is a promise, never a run -- ${still.out}"
+
+# A LONGER PATH IS NOT A CALL either, and this is the trap the reader was shaped around: a pen
+# path carrying the witness name reads as an invocation under any looser match.
+let longer = run ["sh" "-c" "printf 'let e = run [\042sh\042 \042-c\042 \042cp seed ${pen}/tools/t/tally_penquiet.rish\042]\n' >> ${pen}/tools/t/tally_roster_witness.rish"]
+assert longer.ok else "tally-roster: could not plant the longer path"
+let still_two = run ["sh" "-c" "TALLY_ROSTER_CEILING=0 sh tools/fixtures/t/tally_roster_scan.sh ${pen}"]
+assert still_two.ok == false else "tally-roster: a witness path inside a longer one must not read as a call -- it passed instead"
+assert still_two.out contains "unheard: tally/penquiet.rye" else "tally-roster: the quoted token is the whole reading -- ${still_two.out}"
+
+# And freed by the one thing that should free it.
+let called = run ["sh" "-c" "printf 'let f = run [\042rishi/bin/rishi\042 \042run\042 \042tools/t/tally_penquiet.rish\042]\n' >> ${pen}/tools/t/tally_roster_witness.rish"]
+assert called.ok else "tally-roster: could not plant the real call"
+let freed = run ["sh" "-c" "TALLY_ROSTER_CEILING=0 sh tools/fixtures/t/tally_roster_scan.sh ${pen}"]
+assert freed.ok else "tally-roster: a real call must free the module it names -- ${freed.out}"
+assert freed.out contains "heard=4" else "tally-roster: four covered, four called -- ${freed.out}"
+assert freed.out contains "unheard=0" else "tally-roster: the healed pen reads zero unheard -- ${freed.out}"
+
+# Claim five: with no runner at all, the meter REFUSES rather than reporting every module unheard.
+# A reading taken against an absent file would name eleven faults where there is one, and a guard
+# reading an empty set is greener than a guard that is right (REDS %505's lesson, one room over).
+let no_runner = run ["sh" "-c" "rm -f ${pen}/tools/t/tally_roster_witness.rish && TALLY_ROSTER_CEILING=0 sh tools/fixtures/t/tally_roster_scan.sh ${pen}"]
+assert no_runner.ok == false else "tally-roster: an absent runner must refuse -- it answered instead"
+assert no_runner.out contains "verdict=no_runner" else "tally-roster: the absent runner is named rather than counted -- ${no_runner.out}"
 
 let pen_rm = run ["sh" "-c" "rm -rf ${pen}"]
 assert pen_rm.ok else "tally-roster: could not remove the pen"
 
-say "GREEN: tally-roster -- fourteen modules read, eleven covered and three test programs make the roster whole; the newborn refused by name, the longer word credited nothing, and the healed pen passed at zero."
+say "GREEN: tally-roster -- fourteen modules read, eleven covered and eleven heard, three test programs; the newborn refused by name, the longer word credited nothing, a covered module no runner calls refused and was named, a citation and a longer path each credited nothing, and the absent runner refused rather than counting eleven faults where there was one."
