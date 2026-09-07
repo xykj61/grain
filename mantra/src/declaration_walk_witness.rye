@@ -1,0 +1,110 @@
+//! mantra/src/declaration_walk_witness.rye -- the compiler ANALYZES every
+//! declaration this room publishes, rather than merely parsing them.
+//!
+//! Zig analyses lazily. A build that imports a module and leaves its declarations
+//! alone proves exactly one thing: the module parses. So a module keeps that green
+//! the day a toolchain moves past it, and every guard reading it with `grep` agrees.
+//! `weave.rye` stood that way (REDS %449). So did `diff.rye` and `store.rye`, on the
+//! lap this witness was written: four guards read this room, and the compiler read
+//! none of it.
+//!
+//! The walk takes the ADDRESS of each public declaration, and that address is what
+//! forces analysis. Reading a value suffices for a constant; a function wants its
+//! address taken. The walk then descends into declarations that are themselves
+//! containers, because this tree keeps most of its code in methods on a struct.
+//! `store.rye` measured that descent here: a one-level walk read it GREEN while two
+//! real errors stood inside `Store`'s methods.
+//!
+//! Its honest reach is the public surface plus everything that surface calls.
+//! `std.meta.declarations` publishes the public names, and a private helper earns
+//! its analysis the moment a reachable declaration calls it.
+//!
+//! Run it through its Rishi guard, from the repository root:
+//!   rishi/bin/rishi run tools/m/mantra_declaration_walk_witness.rish
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+const weave = @import("weave.rye");
+const diff = @import("diff.rye");
+const store = @import("store.rye");
+const program = @import("main.rye");
+
+/// The deepest container nesting one walk descends. This room's own deepest
+/// shape is a module holding a struct holding its methods, which is two; eight
+/// leaves room to grow and still refuses a cyclic container shape by name,
+/// rather than exhausting the compiler's branch quota with a message nobody can
+/// read.
+const max_walk_depth: u32 = 8;
+
+/// The fewest declarations one module may publish and still have been honestly
+/// walked. A module answering zero has lost its import or stopped publishing,
+/// and a walk of zero declarations reports every one of them sound -- which is
+/// the one answer indistinguishable from health (REDS %463).
+const min_module_declarations: u32 = 1;
+
+/// The fewest declarations the whole room publishes. Measured at 31 on
+/// `20260907.062400` -- weave 21, diff 2, store 7, main 1 -- where it read 19 the
+/// day this witness was written, weave alone growing 9 to 21. A floor of 16 lets a
+/// module retire declarations honestly while still catching a walk that collapsed,
+/// and the control proves the floor from both sides against the count it READS
+/// from the clean run rather than against a number spelled twice.
+const min_room_declarations: u32 = 16;
+
+/// The most declarations one walk counts, so a runaway descent is refused by a
+/// named bound rather than by the compiler running out of quota.
+const max_room_declarations: u32 = 4096;
+
+/// Reference every public declaration of `T`, descending into those that are
+/// themselves containers, and answer how many were referenced.
+fn walk(comptime T: type, comptime depth: u32) u32 {
+    @setEvalBranchQuota(1_000_000);
+    // invariant: the descent stops at a named depth, so a cyclic container shape is
+    // refused here rather than exhausting the compiler's branch quota downstream
+    assert(depth <= max_walk_depth);
+    switch (@typeInfo(T)) {
+        .@"struct", .@"enum", .@"union", .@"opaque" => {},
+        else => return 0,
+    }
+    var seen: u32 = 0;
+    inline for (comptime std.meta.declarations(T)) |decl| {
+        if (@TypeOf(@field(T, decl.name)) == type) {
+            seen += walk(@field(T, decl.name), depth + 1);
+        }
+        _ = &@field(T, decl.name);
+        seen += 1;
+    }
+    // invariant: a walk counts at or under the room's named ceiling, so a runaway
+    // descent reads as a named refusal rather than as a number nobody checks
+    assert(seen <= max_room_declarations);
+    return seen;
+}
+
+pub fn main() void {
+    const weave_seen = comptime walk(weave, 0);
+    const diff_seen = comptime walk(diff, 0);
+    const store_seen = comptime walk(store, 0);
+    const main_seen = comptime walk(program, 0);
+    const room_seen = weave_seen + diff_seen + store_seen + main_seen;
+
+    print("mantra-walk: weave={d} diff={d} store={d} main={d} room={d}\n", .{
+        weave_seen, diff_seen, store_seen, main_seen, room_seen,
+    });
+
+    // invariant: every module publishes at least one declaration, so a module whose
+    // import resolved to an empty container is named here rather than counted sound
+    assert(weave_seen >= min_module_declarations);
+    assert(diff_seen >= min_module_declarations);
+    assert(store_seen >= min_module_declarations);
+    assert(main_seen >= min_module_declarations);
+
+    // invariant: the room's total stands at or above its measured floor, so a walk
+    // that collapsed to a handful of declarations reads as a refusal, never as health
+    assert(room_seen >= min_room_declarations);
+    // invariant: the total stays under the ceiling the walk itself enforces, so the
+    // two bounds agree rather than each guarding a different number
+    assert(room_seen <= max_room_declarations);
+
+    print("GREEN: every declaration this room publishes was analyzed, not merely parsed.\n", .{});
+}

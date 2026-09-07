@@ -1346,6 +1346,11 @@ path tools/m/mantra_diff_witness.rish
 tier lap
 seated 20260906.061556
 
+guard mantra_declaration_walk
+path tools/m/mantra_declaration_walk_witness.rish
+tier lap
+seated 20260907.081500
+
 guard mantra_a1_equality
 path tools/m/mantra_a1_equality_witness.rish
 tier cadence

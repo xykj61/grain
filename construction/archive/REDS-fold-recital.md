@@ -422,3 +422,5 @@ at a closed fold.*
 
 *Row %552 written straight to [`REDS-a-fourth-surface-the-law-never-named-rows-552.md`](REDS-a-fourth-surface-the-law-never-named-rows-552.md) on `20260907.075107`, **BOOKED** -- born onto a shelf because the pin stood at its bound with every row OPEN; the ASCII law names three subjects and this tree's guards speak in a fourth.*
 *Row %553 folded to [`REDS-a-guard-no-author-can-run-rows-553.md`](REDS-a-guard-no-author-can-run-rows-553.md) on `20260907.083737`, **BOOKED** -- a portability fault is the one fault an author cannot reproduce, so the meter reads what no witness of theirs can.*
+
+*Row %554 folded to [`REDS-a-grep-that-was-read-as-a-build-rows-554.md`](REDS-a-grep-that-was-read-as-a-build-rows-554.md) on `20260907.083107`, **BOOKED** -- a file-level classifier cannot answer a per-site question, and the file it credited did not compile.*
