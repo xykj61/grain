@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `a48bd5163e` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `b561023bcc` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY's `%516` and `%517` accounts, both CLOSED, folded whole** to the
 [`222720` shelf](archive/20260906-222720_itinerary-landed-accounts.md), their rows folded in the
@@ -128,8 +128,10 @@ LOWERING.** Row `20260906.195208` CLOSED out of an hour-old park, whole on its
 [shelf](archive/20260906-214931_itinerary-landed-accounts.md): the Glow step of
 `manual/grain-os/get-started.md` had refused **seven days**, `stash_record` reads **1 -> 0** and
 `declared_ceiling` **1 -> 0**. **`%504`
-[shelved](archive/20260906-195208_itinerary-landed-accounts.md), remainder standing.** **Yours,
-sized not taken:** rostering `glow_run_desk_witness.rish`.
+[shelved](archive/20260906-195208_itinerary-landed-accounts.md), remainder standing.** **Two peer
+shelf links repaired on the rebase** -- one a depth kept through a fold, one an anchor naming `%510`
+over the `rows-511` path; `fold_shelf_link` and `reds_citation` were red on the anointed order for
+every ship. **Yours, sized not taken:** rostering `glow_run_desk_witness.rish`.
 
 **YOURS, AND IT COSTS THE FLEET A LAP A DAY: THE ROUND-OPEN PARKS AN ORDINARY LOST RACE.** `%499`
 OPEN. `fleet_round_open.sh` classifies by two `is-ancestor` tests and **two states fail both** -- a
