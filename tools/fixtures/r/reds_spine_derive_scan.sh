@@ -207,7 +207,13 @@ number_count=$(awk '{print $1}' "$work/local.txt" | sort -u | grep -c . || true)
 # biting a pair this tree created, which is the class a lap can actually fix by renumbering its own
 # unshared row. A gate that reds on what nobody may touch is a gate somebody turns off.
 double_booked=0
-awk '{print $1}' "$work/local.txt" | sort | uniq -d > "$work/dupes.txt" || true
+# NO `|| true` HERE. `uniq -d` prints nothing when there are no duplicates and still exits 0, so the
+# empty case needs no rescue -- and a `|| true` would discard a REAL failure of awk or sort, which is
+# the shape `instrument_refusal` gates at zero. It caught this line on the lap that wrote it.
+if ! awk '{print $1}' "$work/local.txt" | sort | uniq -d > "$work/dupes.txt"; then
+  echo "refused: the duplicate-number read failed -- no verdict can be given about double-booking" >&2
+  exit 2
+fi
 while IFS= read -r n; do
   [ -n "$n" ] || continue
   if [ "$anointed_ok" = yes ] \
