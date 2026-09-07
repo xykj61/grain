@@ -129,6 +129,15 @@ fi
 if test "$gone" -eq 0; then
   echo "verdict=ok"
 else
+  # The repair, printed where the fault is met. A hash reaching this branch is one of
+  # three things and each has its own answer: a commit still only local, which is
+  # pushed; a commit a rebase rewrote, whose new hash is read and re-pinned; or a
+  # WITHDRAWN commit -- tagged locally so nothing was lost, never pushed by design --
+  # whose TAG NAME and tree are what a reader elsewhere can act on, since the tag is
+  # the half of a walk-back that travels and the hash is the half that does not.
+  # The elder guard reported gone=1 and stopped, so a reader met an exact number with
+  # no way to act on it -- REDS %528's lesson, one room over.
+  echo "advice=gone means pushable, rewritten, or withdrawn -- push it, re-pin it, or name its tag and tree"
   echo "verdict=FLOATING_CLAIM"
   exit 1
 fi

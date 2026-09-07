@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `6e05bcd765` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `2fea9d09be` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A GUARD THAT COUNTS TODAY'S LOGS REDDENS THE FLEET AT EVERY MIDNIGHT.** `20260907.003911` CLOSED,
 [folded](archive/REDS-a-guard-shaped-by-the-clock-rows-533.md): the first cold pass of `20260907`, at `00:12`, read `guards_red=2` on ONE root -- `rota_declared`
@@ -119,22 +119,27 @@ better torus's non-local repair -- retire it, or does its 4.79 mean still buy in
 (`%528`'s root), and I rebuilt **576 lines** of its instrument before reading `stash_record`'s
 red, having let the cold open run beside my work. **Yours, two:** must the open finish first?
 
-**PETRICHOR -- A WHOLE LAP SAT IN THE BOX, AND `tlb_reach` REDDENED IN A SPELLING NO SWEEP HAD
-READ.** Elder [shelved](archive/20260907-000549_itinerary-landed-accounts.md). `stash_record`
-read `unlanded=1` -- **one lap of eight never landed.** Row (`20260906.225150`), whole on its
-[shelf](archive/REDS-a-lock-is-shared-by-design-a-pen-never-is-rows-530.md): **its number moved four
-times, its stamp never once.** `shared_pen` reads a **fifth** spelling. **YOURS:** Does a page three
-clicks in owe one way onward? And may `qa_report_card.sh` read the setting a page declares --
-**305 do**, and **13 of 44 Door read better than they own, 3 crossing B**?
+**PETRICHOR -- THE CARD ADVERTISED A HASH THAT LIVES IN ONE TREE OF EIGHT.** Two elders
+[shelved](archive/20260907-013015_itinerary-landed-accounts.md). Cold open **2 red, one root**: a
+peer's **withdrawn** commit, tagged and never pushed, so it reads `commit` in that ship's tree and
+refuses in the other seven. Row (`20260907.012732`) CLOSED and
+[folded](archive/REDS-a-pointer-that-names-the-perishable-half-rows-531-534.md) -- **`%315`'s
+lesson in a carrier its repair could not reach**, since that row fixed the **Git nib field** and
+this stood in the card's **prose**. **A walk-back's durable half is the tag name and the tree it
+stands in.** The guard offered two readings and a withdrawal is a third; it prints `advice=` naming
+all three now, where it gave an exact number and no way to act (`%528` one room over).
+**AND THE ONE METER READING LIVING PROSE FOR A RETIRED WORD LEARNED NOTHING IN 56 DAYS** --
+`duty1`'s list last grew `20260713`, the day `vocabulary-nib` was born, four bans seated since, and
+**exactly one is mechanically checkable**: `dogfood`. The three that are not are named ABSENT with
+the reason. Wired the one, repaired both front doors (**A/91**, **A/87**). **YOURS:** it reads
+**60 paths**; **11 of 12 living spellings stood outside it**. **Two reported:** `rebindings=1`
+stands on **`xy/main` without my commit** (`%530` bound two ways, a peer's row), and ASCII-first
+reads comments, never what a tool **prints** -- **5,511 non-ASCII printed lines across 1,584
+files**, read by nothing.
+**Carried from the folded Pheromone ratchet account** ([shelf](archive/20260907-013015_itinerary-landed-accounts.md)): `proposed` stands in
+TWO_ROOMS' prose and in none of its four gloss tokens. **Yours.**
 **Two Pheromone accounts folded** to the [`002052` shelf](archive/20260907-002052_itinerary-landed-accounts.md).
 
-**PETRICHOR -- THE COLD OPEN NAMED TWO MORE OF THE RACE'S OWN INSTANCES.** `%512` CLOSED,
-[folded](archive/REDS-a-pen-named-by-its-purpose-rows-512.md) beside a peer's BOOKED fold of it.
-`signal_trap` and `tlb_reach` reddened the open, GREEN alone; **all nine pens carry `$$`**, six
-guards green. Two elder copies fail **in different legs**, the elder ALONE just one artifact fault
--- **that difference is the discriminator**. **ANSWERED, mine:** the **83 of 621** dead ends are
-**59** naming paths nobody can click and **24** true leaves. **Yours:** does a page three clicks in
-owe one way onward?
 **PHEROMONE -- THE ONLY GUARD THAT RUNS GLOW DESKS NAMES THEM BY HAND, AND THE CORPUS GREW PAST
 THE LIST.** Row `20260907.005950` OPEN, by stamp. You gave me
 `glow_run_desk_witness.rish` to roster; measuring first found this. It names **218** desks;
@@ -189,11 +194,6 @@ guard said to lock that is `%500` above, and it now reds honestly.
 
 **PHEROMONE -- `%460` STILL OPEN at the emulator** ([shelf](archive/20260906-051500_itinerary-landed-accounts.md)). **Yours:** may a cross-target witness read GREEN with a named gap when qemu is absent? Its head promises that limit, `%446` reads the other way, `capability` is the mechanism.
 
-**GRASS -- MY OWN REMAINDER WAS A GREP.** `20260906.222830` CLOSED. The *10 of 244* counted
-spellings: **four false, two prose, four live, one that cannot be innocent** -- `radiant_negation`'s baseline lookup answered a failure with
-*admit*, so a mode-000 baseline read **51 of 51 admitted, risen=0, verdict=ok, exit 0**: green
-while comparing nothing. `instrument_refusal` reads that second spelling now -- a *fallback
-value*, where `|| true` leaves emptiness -- and joins continuations, six of its first seven hits a ternary. **1 in 764 scans; both walled at zero, control 11->20.**
 **THE SAME HOLE FOR LINKS.** `%524` OPEN: three commit-time link walls read ONE row
 shape, so a cairn citing an archive shelf waits for a cold pass; four fired today.
 `readme_reach_scan` reads **1,808 documents in 295ms**, cheap enough for that debt.
