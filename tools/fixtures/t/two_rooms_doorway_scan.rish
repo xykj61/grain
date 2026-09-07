@@ -34,13 +34,25 @@ if seating_env != "" then let seating = seating_env
 # commit and one external-research page landed in the gap; a number measured on a tree that has
 # since moved is REDS %341's class, and the honest reading is the one taken at the send.
 #
-# Two of the 46 read `**Status:** Proposed -- external research`, and TWO_ROOMS.md's gloss table
-# names four tokens -- checkable, vision, mixed, research for understanding -- with `proposed`
-# among none of them, while its own prose says "what is proven as proven and what is proposed as
-# proposed". That disagreement is the canon's to settle rather than this guard's, so the pages are
-# counted honestly and the question is carried on the card.
+# IT ARRIVED RED AND FELL TO 44 (`20260907.001500`). The 46 was measured on a 972-page tree at
+# `20260906.161500` and published on a 974-page tree seven hours later, by which time a third
+# `Proposed` page had landed and the reading stood at **47** -- a ratchet rostered at a ceiling its
+# own tree already exceeded, which is a guard that reds on arrival. That is this scan's own header
+# reasoning turned on itself: a number measured before the send and landed after is a number about
+# a tree that has moved.
+#
+# The repair is not a wider gate. Three pages read `**Status:** Proposed -- external research`, and
+# TWO_ROOMS.md's gloss table names four tokens -- checkable, vision, mixed, research for
+# understanding -- with `proposed` among none of them, while its own prose says "what is proven as
+# proven and what is proposed as proposed". Each of the three already NAMED its register in its own
+# next sentence: two say the numbers are witness-bound and the design reading is proposed, which is
+# `mixed` by the table's own gloss, and the third says nothing here binds a witness, which is
+# `research for understanding`. So each Status gained the token its own sentence already asserted --
+# no claim changed, three pages started naming their room, and the reading fell 47 to 44. Whether
+# `proposed` should itself be a fifth token is still the canon's to settle rather than this
+# guard's, and it is carried on the card.
 let ceiling_env = env "TWO_ROOMS_DOORWAY_CEILING"
-let ceiling = "46"
+let ceiling = "44"
 if ceiling_env != "" then let ceiling = ceiling_env
 
 let roster = run ["sh" "tools/fixtures/t/two_rooms_doorway_roster.sh"]

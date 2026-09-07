@@ -4,7 +4,7 @@
 **Language:** EN
 **Style:** Gauge, Field setting (see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md))
 **Voice:** Kyri
-**Status:** Proposed -- external research. The numbers are measured and bound by a witness; the design recommendation is proposed (`context/TWO_ROOMS.md`).
+**Status:** Proposed -- external research, **mixed**. The numbers are measured and bound by a witness; the design recommendation is proposed (`context/TWO_ROOMS.md`).
 **Instrument:** `tools/fixtures/t/topology_attained_scan.sh` -- witness `tools/t/topology_attained_witness.rish` -- control `tools/fixtures/t/topology_attained_control.sh`
 **Elder:** [`the-ring-and-the-ladder`](20260906-010402_the-ring-and-the-ladder.md), whose third erratum asked the question this paper answers
 

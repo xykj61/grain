@@ -4,7 +4,7 @@
 **Language:** EN
 **Style:** Gauge, Field setting (see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md))
 **Voice:** Kyri
-**Status:** Proposed -- external research. The numbers are measured and bound by a witness; the design reading is proposed (`context/TWO_ROOMS.md`).
+**Status:** Proposed -- external research, **mixed**. The numbers are measured and bound by a witness; the design reading is proposed (`context/TWO_ROOMS.md`).
 **Instrument:** `tools/fixtures/t/topology_routing_scan.sh` -- witness `tools/t/topology_routing_witness.rish` -- control `tools/fixtures/t/topology_routing_control.sh`
 **Elder:** [`the-floor-you-can-stand-on`](20260906-152821_the-floor-you-can-stand-on.md), whose closing paragraph named the cost this paper prices
 
