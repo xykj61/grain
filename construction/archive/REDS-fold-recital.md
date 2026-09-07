@@ -455,3 +455,8 @@ at a closed fold.*
 
 *Row %524 folded to [`REDS-a-link-is-checked-only-if-its-shape-has-a-wall-rows-524.md`](REDS-a-link-is-checked-only-if-its-shape-has-a-wall-rows-524.md) on `20260907.154559`, **CLOSED** -- a link is checked at commit time only if its own row shape has a wall, and all four firings arrived by rebase where no staged-set trigger could see them.*
 *Row %577 folded to [`REDS-a-shelf-that-disagreed-with-its-own-name-rows-577.md`](REDS-a-shelf-that-disagreed-with-its-own-name-rows-577.md) on `20260907.155647`, **CLOSED** -- a folded row spells its number four times and one instrument reads one of them.*
+*Row %579 folded to [`REDS-the-fence-the-neighbour-had-rows-579.md`](REDS-the-fence-the-neighbour-had-rows-579.md) on `20260907.155612`, **CLOSED** -- a bound proven on one side of a seam says nothing about the other side, and a stated lens is not a checked one.*
+
+*Row %580 folded to [`REDS-the-spelling-the-scan-prescribed-rows-580.md`](REDS-the-spelling-the-scan-prescribed-rows-580.md) on `20260907.160524`, **CLOSED** -- a guard reading one line at a time called two correct scans wrong, and the spelling the scan's own header prescribed was the fix.*
+
+*Row %581 folded to [`REDS-one-checkout-collided-with-itself-rows-581.md`](REDS-one-checkout-collided-with-itself-rows-581.md) on `20260907.160531`, **CLOSED** -- one checkout collided with itself on a ledger number, because an unlanded row is invisible to the allocator that hands them out.*

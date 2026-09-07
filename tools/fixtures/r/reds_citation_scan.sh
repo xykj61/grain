@@ -123,15 +123,18 @@ if [ "$grep_status" -ge 2 ]; then
   exit 1
 fi
 
-# Testimony keeps every word it wrote: a basename carrying a one-clock stamp is a dated record, and
-# the spelling matches the three this tree writes (`_sprig.md` and the sprigless `.md` alike).
+# Testimony keeps every word it wrote: a basename carrying a one-clock stamp is a dated record,
+# and the separator is written as the class `[_.]` -- one arm, the spelling dated_spelling_scan.sh
+# prescribes by name, reading `_sprig.md` and the sprigless `.md` alike. It stood as two arms,
+# `_*` and `.md`, which was narrow twice over: a line-reading meter charged the sprigged arm as a
+# pattern requiring the sprig, and the sprigless arm named ONE extension, so a sprigless `.kyri`
+# log read as living where the law calls it testimony (20260907.145507).
 : > "$pen/files"
 while IFS= read -r f; do
   [ -n "$f" ] || continue
   base=${f##*/}
   case "$base" in
-    [0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9]_*|\
-    [0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9].md) continue ;;
+    [0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9][_.]*) continue ;;
   esac
   [ -f "$f" ] || continue
   printf '%s\n' "$f" >> "$pen/files"

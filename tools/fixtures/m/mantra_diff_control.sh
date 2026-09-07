@@ -34,6 +34,19 @@
 #                     catches it at its first assert: an unchanged document stops being free.
 #   trailing_token -- the break that drops the empty token after a file's last newline is
 #                     deleted, so "one\ntwo\n" reads as three lines. Claim 7 catches it.
+#   bound_widened  -- the per-side ceiling inside check_bounds is doubled, so every pair the
+#                     module admitted is still admitted and the refusal one line past the
+#                     ceiling stops arriving. Claim 8 catches it, and only because that claim
+#                     presses the boundary from both sides: a refusal proven only in the
+#                     failing direction cannot tell a bound from a wall.
+#   ceiling_restated -- the imported per-side ceiling becomes a hand-typed number that looks
+#                     reasonable. Nothing stops compiling and every behavioral claim still
+#                     passes; claim 9 reds, because a quantity spelled twice is a quantity
+#                     that drifts.
+#   edge_check_removed -- the call to check_bounds is deleted from `diff` and check_bounds
+#                     itself is left standing, so the decision stays correct and nobody asks
+#                     it. Claim 8 cannot see this; claim 10 exists for it. A bound nobody
+#                     calls is a bound.
 #
 # WHY walker_removed IS THE SHARPEST PHASE. Every other phase proves the witness bites.
 # This one proves the witness would NOT bite without its walker -- the plant the grain's own
@@ -41,7 +54,7 @@
 # (foundations/20260826-024942_the-grain-and-the-crossing.md, "a guard that cannot red
 # guards nothing").
 #
-# EXPECTED: clean_exit=0, walker_removed_exit=0, and every other phase non-zero.
+# EXPECTED: clean_exit=0, walker_removed_exit=0, and every other phase non-zero. Ten phases.
 #
 # Driven by tools/m/mantra_diff_witness.rish. Run from the repository root.
 
@@ -133,6 +146,28 @@ inverted_inserts_exit="$(run_pen inverted_inserts \
 trailing_exit="$(run_pen trailing_token \
   '/        if (line.len == 0 and it.rest().len == 0) break;/d' '' '')"
 
+# The three bound plants, added 20260907 with the ceilings themselves. Until that
+# day the module allocated a quadratic LCS table with no named max, no named
+# error, and no edge check, so none of these three phases had anything to break.
+#
+# bound_widened doubles the per-side ceiling inside check_bounds, which leaves
+# every admitted pair admitted and stops the refusal one line past the ceiling
+# -- the direction a loosened bound always fails in, and the one a passing test
+# cannot see.
+bound_widened_exit="$(run_pen bound_widened \
+  's/    if (old_len > max_diff_lines) return DiffError.TooManyLines;/    if (old_len > max_diff_lines * 2) return DiffError.TooManyLines;/' '' '')"
+# ceiling_restated replaces the imported per-side ceiling with a number that
+# merely looks reasonable. Nothing about the module stops compiling and every
+# behavioral claim still passes; only the derivation claim reds, which is what
+# that claim is for.
+ceiling_restated_exit="$(run_pen ceiling_restated \
+  's|^pub const max_diff_lines: u32 = @import("weave.rye").max_weave_lines;|pub const max_diff_lines: u32 = 1 << 19;|' '' '')"
+# edge_check_removed deletes the call from `diff` and leaves `check_bounds`
+# standing, so the decision is still correct and nobody asks it. This is the
+# phase claim 8 alone could not catch, and the reason claim 10 exists.
+edge_removed_exit="$(run_pen edge_check_removed \
+  '/    try check_bounds(old_lines.len, new_text.len);/d' '' '')"
+
 echo "phase=clean"
 echo "clean_exit=$clean_exit"
 echo "phase=elder_arraylist"
@@ -147,19 +182,27 @@ echo "phase=inverted_inserts"
 echo "inverted_inserts_exit=$inverted_inserts_exit"
 echo "phase=trailing_token"
 echo "trailing_token_exit=$trailing_exit"
+echo "phase=bound_widened"
+echo "bound_widened_exit=$bound_widened_exit"
+echo "phase=ceiling_restated"
+echo "ceiling_restated_exit=$ceiling_restated_exit"
+echo "phase=edge_check_removed"
+echo "edge_check_removed_exit=$edge_removed_exit"
 
 verdict=ok
 # A plant that matched nothing is read FIRST and by its own name, because every
 # other reading below is a number and this one is a word -- and because a phase
 # that planted nothing would otherwise be judged on the clean module's exit code.
 for reading in "$clean_exit" "$elder_exit" "$walker_teeth_exit" "$walker_removed_exit" \
-               "$lcs_exit" "$inverted_inserts_exit" "$trailing_exit"; do
+               "$lcs_exit" "$inverted_inserts_exit" "$trailing_exit" \
+               "$bound_widened_exit" "$ceiling_restated_exit" "$edge_removed_exit"; do
   [ "$reading" != plant_matched_nothing ] || verdict=plant_matched_nothing
 done
 if [ "$verdict" = ok ]; then
   [ "$clean_exit" -eq 0 ] || verdict=clean_failed
   [ "$walker_removed_exit" -eq 0 ] || verdict=walker_removed_not_innocent
-  for broken in "$elder_exit" "$walker_teeth_exit" "$lcs_exit" "$inverted_inserts_exit" "$trailing_exit"; do
+  for broken in "$elder_exit" "$walker_teeth_exit" "$lcs_exit" "$inverted_inserts_exit" "$trailing_exit" \
+                "$bound_widened_exit" "$ceiling_restated_exit" "$edge_removed_exit"; do
     [ "$broken" -ne 0 ] || verdict=break_not_caught
   done
 fi

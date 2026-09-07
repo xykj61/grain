@@ -200,10 +200,13 @@ while IFS= read -r f; do
   b=${f##*/}
   # A one-clock stamp at the head of the basename means testimony. The sprig is optional, so the
   # stamp alone marks it (`%175`: 237 logs carry a stamp and no sprig, and a pattern requiring one
-  # read every last of them as living).
+  # read every last of them as living). ONE ARM, spelled `[_.]` -- the separator written as a
+  # class, which is the repair dated_spelling_scan.sh prescribes by name. It stood as two arms,
+  # `_*` and `.*`, matching exactly the same set; that meter reads a line at a time and cannot
+  # see a sibling arm, so the sprigged half read as a pattern requiring the sprig and reddened a
+  # cadence guard for a scan that was already answering correctly (20260907.145507).
   case "$b" in
-    [0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9]_*) continue ;;
-    [0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9].*) continue ;;
+    [0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9][_.]*) continue ;;
   esac
   if [ ! -f "$f" ]; then
     ratchet_absent=$((ratchet_absent + 1))

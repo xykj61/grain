@@ -34,6 +34,18 @@
 //!      widening of `Diff` a visible change rather than a silent one.
 //!   7. split_lines drops the empty token a trailing newline leaves, keeps an
 //!      interior blank line, and answers zero lines for empty text.
+//!   8. The ceilings refuse by name one cell past themselves and admit the
+//!      cell at them -- both readings, both directions. The module allocated a
+//!      quadratic LCS table with no named max, no named error, and no edge
+//!      check until `20260907`; `check_bounds` allocates nothing, so the
+//!      boundary is pressed directly rather than by building a million-line
+//!      document to learn one boolean.
+//!   9. The ceilings are derived rather than restated: the per-side bound IS
+//!      `weave.max_weave_lines`, and the cell bound is the byte bound divided
+//!      by a cell. A quantity spelled twice is a quantity that drifts.
+//!  10. `diff` reads that edge check itself, proven by handing it a side one
+//!      line past the ceiling and watching it refuse before it allocates. A
+//!      bound nobody calls is a bound.
 //!
 //! Part of Mantra -- TAME-first from line one.
 
@@ -49,7 +61,7 @@ const weave = @import("weave.rye");
 const site_here: u32 = 1;
 const diff_mod = @import("diff.rye");
 
-const witness_version = "20260906.062000";
+const witness_version = "20260907.110117";
 
 // Every declaration of the module under test, forced through semantic analysis
 // at comptime. This is the leg that makes the witness a compile proof: without
@@ -237,6 +249,103 @@ fn prove_split_lines(garden: std.mem.Allocator) !void {
     print("diff: split_lines drops the trailing token, keeps interior blanks, answers zero for empty\n", .{});
 }
 
+/// Claim 8: the ceiling is pressed by hand, at it and one past it, in both of
+/// its refusals.
+///
+/// `check_bounds` allocates nothing, which is the whole reason it exists as a
+/// function: proving the per-side ceiling by BUILDING a document of
+/// `max_diff_lines` lines would cost a million slice headers to learn one
+/// boolean, and proving the table ceiling that way would cost a gibibyte. So
+/// the boundary is pressed directly -- exactly at the ceiling it must admit,
+/// and one line or one cell past it, where it must refuse by name.
+///
+/// A refusal proven only in the failing direction cannot be told from a wall
+/// that refuses everything, so every plant below is shown from both sides.
+fn prove_the_bounds_refuse(_: std.mem.Allocator) !void {
+    const max_lines: u64 = diff_mod.max_diff_lines;
+
+    // invariant: a small pair is admitted, which is what every other claim in
+    // this witness has been relying on without saying so
+    try diff_mod.check_bounds(2, 3);
+
+    // The per-side ceiling, from both sides. A single line against the full
+    // ceiling keeps the table small, so this plant isolates the per-side
+    // reading from the table reading rather than tripping both at once.
+    try diff_mod.check_bounds(max_lines, 1);
+    try diff_mod.check_bounds(1, max_lines);
+    // invariant: one line past the per-side ceiling refuses by NAME, so a
+    // caller can tell an oversized side from an oversized table
+    try std.testing.expectError(diff_mod.DiffError.TooManyLines, diff_mod.check_bounds(max_lines + 1, 1));
+    try std.testing.expectError(diff_mod.DiffError.TooManyLines, diff_mod.check_bounds(1, max_lines + 1));
+
+    // The table ceiling, from both sides. The square root of the cell ceiling
+    // is the largest side that may meet itself: at `side` the table is exactly
+    // `max_diff_table_cells`, and one line more passes it.
+    const side: u64 = std.math.sqrt(diff_mod.max_diff_table_cells) - 1;
+    // invariant: the plant is a real boundary rather than a number that merely
+    // looks like one -- the table at `side` against `side` IS the ceiling
+    assert((side + 1) * (side + 1) == diff_mod.max_diff_table_cells);
+    try diff_mod.check_bounds(side, side);
+    // invariant: one line past it refuses by the OTHER name, because two sides
+    // that are each ordinary can still ask for a table that is not
+    try std.testing.expectError(diff_mod.DiffError.TableTooLarge, diff_mod.check_bounds(side + 1, side));
+    try std.testing.expectError(diff_mod.DiffError.TableTooLarge, diff_mod.check_bounds(side, side + 1));
+
+    // invariant: both sides inside the per-side ceiling and the product past
+    // the table ceiling is the case that has no other name -- it is why the
+    // module carries two refusals rather than one
+    assert(max_lines <= diff_mod.max_diff_lines);
+    try std.testing.expectError(diff_mod.DiffError.TableTooLarge, diff_mod.check_bounds(max_lines, max_lines));
+
+    print("diff: the bounds refuse by name at one cell past the ceiling, and admit it at the ceiling\n", .{});
+}
+
+/// Claim 9: the ceilings are derived rather than restated, so nothing in this
+/// module family can spell one of them a second time and drift.
+fn prove_the_ceilings_are_derived(_: std.mem.Allocator) !void {
+    // invariant: the per-side ceiling IS the weave's own, rather than a number
+    // that happens to match it today
+    assert(diff_mod.max_diff_lines == weave.max_weave_lines);
+    // invariant: the cell ceiling is the byte ceiling divided by a cell, so
+    // moving the byte ceiling moves both and neither can be edited alone
+    assert(diff_mod.max_diff_table_cells == diff_mod.max_diff_table_bytes / @sizeOf(u32));
+    print("diff: the per-side ceiling is the weave's own and the cell ceiling is derived from bytes\n", .{});
+}
+
+/// Claim 10: `diff` itself reads the edge check, rather than merely living in
+/// a module that owns one.
+///
+/// Claim 8 presses `check_bounds` directly, which proves the decision and says
+/// nothing about the call site -- and a bound nobody calls is a bound. So this
+/// plants an oversized NEW side and watches `diff` refuse by name before it
+/// allocates anything. The new side is chosen over the old on cost: one slice
+/// header per line at `max_diff_lines + 1` is about 16 MiB of pointers all
+/// aimed at one literal, where the same plant on the old side would cost a
+/// `Line` apiece. The refusal arrives before the table, which is the whole
+/// point: had it arrived after, this claim would need a gibibyte to make.
+fn prove_diff_reads_the_edge(garden: std.mem.Allocator) !void {
+    const oversized = try garden.alloc([]const u8, diff_mod.max_diff_lines + 1);
+    for (oversized) |*slot| slot.* = "one line, repeated";
+    // invariant: the plant is one line past the ceiling rather than merely
+    // large, so a refusal here names the boundary and not a machine limit
+    assert(oversized.len == @as(usize, diff_mod.max_diff_lines) + 1);
+
+    const empty_old = [_]weave.Line{};
+    try std.testing.expectError(
+        diff_mod.DiffError.TooManyLines,
+        diff_mod.diff(garden, site_here, &empty_old, oversized),
+    );
+
+    // invariant: and the ceiling itself is admitted through `diff`'s own edge,
+    // so the refusal above is a boundary rather than a wall -- proven on the
+    // pair that costs nothing, since claim 8 already pressed the ceiling
+    const small = [_][]const u8{"a"};
+    const accepted = try diff_mod.diff(garden, site_here, &empty_old, &small);
+    assert(accepted.inserts.len == 1);
+
+    print("diff: diff refuses an oversized side at its own edge, before the table is allocated\n", .{});
+}
+
 fn run_selftest(garden: std.mem.Allocator) !u8 {
     try prove_shapes(garden);
     try prove_pure(garden);
@@ -244,6 +353,9 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     try prove_append_round_trip(garden);
     try prove_middle_insert_lands_at_the_end(garden);
     try prove_split_lines(garden);
+    try prove_the_bounds_refuse(garden);
+    try prove_the_ceilings_are_derived(garden);
+    try prove_diff_reads_the_edge(garden);
 
     print("diff: version {s}\n", .{witness_version});
     print("GREEN: the diff compiles, keeps the common subsequence, round-trips an append, and appends a middle insert.\n", .{});
