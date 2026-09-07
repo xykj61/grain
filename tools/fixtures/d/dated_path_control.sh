@@ -73,3 +73,42 @@ sh "$root/tools/fixtures/d/dated_path_scan.sh"
 cp -R room plain
 echo "=== case three: an ordinary copy, which the census must count"
 sh "$root/tools/fixtures/d/dated_path_scan.sh"
+
+# CASE FOUR, added 20260907: A DECLARED ABSENCE IS NOT BREAKAGE, AND THE TWO BOUNDS THAT KEEP THAT
+# FROM BECOMING AN ESCAPE HATCH. A row naming a log and saying on the same line that it never
+# landed is testimony about a gap rather than a reference that broke -- the session-log shelves
+# write exactly that row, 88 of them, and the census counted every one as lost. The narrowing is
+# only safe if the two bounds hold, so both are planted here and read from both sides.
+#
+# Four ghosts in one pen, whose right answer is known before the walker runs:
+#
+#   plain     -- named, nothing said about it            -> gone      (the control on the control)
+#   declared  -- named, "never landed" on the same line  -> declared  (the narrowing itself)
+#   linked    -- named, "never landed", AND linked       -> gone      (a link is a promise still)
+#   header    -- named; the declaration is a LINE ABOVE  -> gone      (same-line, not same-page)
+#
+# The last two are the load-bearing legs. Drop the link test and any page may withdraw a promise
+# it is still making by writing a sentence beside it; drop the same-line test and one header
+# sentence silences every row beneath it.
+work4="$(mktemp -d)"
+mkdir -p "$work4/room"
+: > "$work4/room/20260101-000000_real.md"
+{
+  printf 'Some rows below name a log that never landed anywhere in this pen.\n'
+  printf 'cites room/20260101-000000_real.md plainly\n'
+  printf 'cites room/20260101-000000_ghost-plain.md plainly\n'
+  printf 'row room/20260101-000000_ghost-declared.md *(log never landed)*\n'
+  printf 'row [t](room/20260101-000000_ghost-linked.md) *(log never landed)*\n'
+  printf 'cites room/20260101-000000_ghost-header.md\n'
+} > "$work4/room/citer.md"
+
+cd "$work4"
+git init -q
+git config user.email pen@example.invalid
+git config user.name Pen
+git config commit.gpgsign false
+git add -A
+echo "=== case four: a declared absence, and the two bounds on it"
+sh "$root/tools/fixtures/d/dated_path_scan.sh"
+cd "$work"
+rm -rf "$work4"

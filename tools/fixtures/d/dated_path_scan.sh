@@ -103,7 +103,13 @@ verb="${1:-census}"
 # between readings. Discovery skips full-line comments now, and the page is LISTED in
 # dated_path_exclusions.sh by decision, so the subtraction is on the record and this comment is
 # free to name it. Proven both ways: remove the listing and the same tree reads 183.
-LOST_CEILING=165   # 168 until 20260829.081500, when in-root git worktrees left the corpus and
+LOST_CEILING=85    # 165 until 20260907.104201, when a DECLARED ABSENCE stopped reading as
+                   # breakage. 88 of the 173 then standing were rows that name a log and say on
+                   # the same line that it never landed -- the exact repair the shelves' own
+                   # header asks for, counted as the wound it heals. The buckets are what prove
+                   # the narrowing honest: refs_total and refs_home did not move, so nothing
+                   # left the set the census walks and 88 references merely changed bucket.
+                   # 168 until 20260829.081500, when in-root git worktrees left the corpus and
                    # the field's own reading stood alone: a peer's checkout was supplying 148
                    # of 296 gone and 22 of 39 ambiguous, so this gate read 335 and the tree
                    # read 165. A ceiling only falls, and the three it falls by are repairs
@@ -375,6 +381,45 @@ while IFS="$tab" read -r verdict file ref rel root found; do
   printf '%s\t%s\t%s\t%s\t%s\t%s\n' "$verdict" "$file" "$ref" "$rel" "$root" "$found" >> "$work/final.txt"
 done < "$work/doubt.txt"
 
+# A DECLARED ABSENCE IS NOT A BROKEN REFERENCE. A row that names a file and says on the same
+# line that the file never landed is testimony ABOUT a gap, deliberately written, rather than a
+# reference that broke. The session-log shelves say so in their own header -- "the row keeps its
+# stamp and its meaning, and carries no link, since a link promises a file a reader can open" --
+# and then the census counted all 88 of those honest rows as lost, which is the guard reding on
+# the exact repair its own law asks for. Same shape as REDS %246 one artifact over, where a
+# dated name written on a full-line comment reads as a page a round WROTE ABOUT rather than one
+# an instrument planted; and the same cost the %245 note in the ceiling comment above paid once
+# by hand, met here at the scale that made paying it by hand wrong.
+#
+# TWO BOUNDS, so the marker can never become an escape hatch. The declaration must stand on the
+# SAME LINE as the reference -- a header sentence covers a page and would silence every row under
+# it. And a line that LINKS the basename still counts however it is worded: a link promises a
+# file a reader can open, and no adjacent prose withdraws that promise. Both are proven in
+# tools/fixtures/d/dated_path_control.sh rather than trusted here.
+#
+# Two spellings stand in the tree for one meaning -- "*(log never landed)*" on 87 lines across
+# three shelves, and "-- never landed in any commit" on one -- so the pattern reads the phrase
+# they share rather than either page's punctuation.
+: > "$work/declared.txt"
+awk -F'\t' '$1 == "ambiguous" || $1 == "gone"' "$work/final.txt" > "$work/lost.txt"
+awk -F'\t' '$1 != "ambiguous" && $1 != "gone"' "$work/final.txt" > "$work/kept.txt"
+while IFS="$tab" read -r verdict file ref rel root found; do
+  [ -n "${verdict:-}" ] || continue
+  _b="${ref##*/}"
+  # The two greps read the SAME line set: the citing lines that name this basename and carry the
+  # declaration. The second asks whether any of them also links it -- against every form the
+  # target may wear, since a shelf row links `<day>/<basename>` while the reference is recorded
+  # bare -- and a link keeps the reference counted however the line is worded.
+  _decl="$(grep -F -- "$_b" "$file" 2>/dev/null | grep -F -- 'never landed' || :)"
+  if [ -n "$_decl" ] && ! printf '%s\n' "$_decl" | grep -q -- '](\([^)]*/\)\?'"$_b"')'; then
+    printf '%s\t%s\t%s\t%s\t%s\t%s\n' declared "$file" "$ref" "$rel" "$root" "$found" >> "$work/declared.txt"
+  else
+    printf '%s\t%s\t%s\t%s\t%s\t%s\n' "$verdict" "$file" "$ref" "$rel" "$root" "$found" >> "$work/kept.txt"
+  fi
+done < "$work/lost.txt"
+cat "$work/declared.txt" >> "$work/kept.txt"
+mv "$work/kept.txt" "$work/final.txt"
+
 if [ "$verb" = list ]; then
   awk -F'\t' '$1 != "home"' "$work/final.txt"
   exit 0
@@ -385,10 +430,10 @@ fi
 eval "$(awk -F'\t' '
   { total++; n[$1]++ }
   END {
-    printf "total=%d\nhome=%d\nrecoverable=%d\nambiguous=%d\ngone=%d\n",
-      total, n["home"], n["recoverable"], n["ambiguous"], n["gone"]
+    printf "total=%d\nhome=%d\nrecoverable=%d\nambiguous=%d\ngone=%d\ndeclared=%d\n",
+      total, n["home"], n["recoverable"], n["ambiguous"], n["gone"], n["declared"]
   }' "$work/final.txt")"
-broken=$((recoverable + ambiguous + gone))
+broken=$((recoverable + ambiguous + gone + declared))
 
 echo "refs_total=$total"
 echo "refs_home=$home"
@@ -396,6 +441,9 @@ echo "refs_broken=$broken"
 echo "broken_recoverable=$recoverable"
 echo "broken_ambiguous=$ambiguous"
 echo "broken_gone=$gone"
+# Reported beside the gate rather than folded silently into it: a subtraction nobody can see
+# reads as "the tree got better" on the lap it is made.
+echo "broken_declared=$declared"
 lost=$((ambiguous + gone))
 echo "refs_lost=$lost"
 echo "lost_ceiling=$LOST_CEILING"
