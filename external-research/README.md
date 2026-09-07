@@ -52,6 +52,7 @@ Dated explorations carry `YYYYMMDD-HHMMSS_short-sprig.md`; living documents (`RE
 
 | Stamp | Note | Meaning |
 |-------|------|---------|
+| `20260907.000309` | [What a departure costs a table everybody shares](20260907-000309_what-a-departure-costs-a-shared-table.md) | one departure leaves 99.8% of the shared table right; the repair belongs at six nodes |
 | `20260906.195719` | [What it costs to decide the next hop](20260906-195719_what-it-costs-to-decide-the-next-hop.md) | one 270-byte table routes every node; two address spaces route free; lookahead buys nothing |
 | `20260906.152821` | [The floor you can stand on](20260906-152821_the-floor-you-can-stand-on.md) | the abelian floor is 8, twice Moore's 4, and the lever is the generating set |
 | `20260826.182611` | [Codex CLI on macOS Tahoe -- the first hour to a Sound outer loop](20260826-182611_codex-cli-macos-tahoe-sound-first-hour.md) | Standalone Codex path; real Sound prompt; jailed supervised once before any bounded loop |
