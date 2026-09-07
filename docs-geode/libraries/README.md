@@ -19,7 +19,7 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 | Room | Rye modules | Witnesses that reference it |
 |---|---:|---:|
 | [`amphora/`](../../amphora/README.md) | 7 | 17 |
-| [`aurora/`](../../aurora/README.md) | 7 | 6 |
+| [`aurora/`](../../aurora/README.md) | 7 | 7 |
 | [`brix/`](../../brix/README.md) | 1 | 2 |
 | [`caravan/`](../../caravan/README.md) | 112 | 129 |
 | [`classical-vedic-astrology/`](../../classical-vedic-astrology/README.md) | 1 | 0 |
@@ -47,8 +47,8 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 | [`mycelium/`](../../mycelium/README.md) | 97 | 87 |
 | [`pleac/`](../../pleac/README.md) | 3 | 6 |
 | [`pond/`](../../pond/README.md) | 156 | 165 |
-| [`rishi/`](../../rishi/README.md) | 2 | 6 |
-| [`rye/`](../../rye/README.md) | 117 | 93 |
+| [`rishi/`](../../rishi/README.md) | 2 | 7 |
+| [`rye/`](../../rye/README.md) | 117 | 94 |
 | [`scribble/`](../../scribble/README.md) | 2 | 2 |
 | [`scribe/`](../../scribe/README.md) | 2 | 4 |
 | [`settlement/`](../../settlement/README.md) | 2 | 3 |

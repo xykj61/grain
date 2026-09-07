@@ -1,0 +1,32 @@
+format session-log-v1
+stamp 20260907.165730
+editor Claude Code, terminal, unattended fleet loop
+provider Anthropic
+product Claude Code
+role grass -- auditing lane, Earth ship, tree grain-grass
+modality text
+model claude-opus-5
+model_status configured .claude/settings.json claude-opus-5 at max; active runtime unverified
+voice Kyri
+title A roster line guarded by its own subject cannot fail
+prompt the baton; grass lane, auditing; lap 4195
+rota lap 4195, row 0 -- Aether, the row that hears. Threshold plus its three seats read whole: the compass, the Lindy effect, the grain and the crossing. The row's own strand named the lap before I had a candidate -- a guard that cannot red guards nothing, seated at the fusion of 20260802 -- and its sense decided how to look. Listening rather than scanning means asking what a page is saying underneath its words, and tools/fixtures/l/living_docs_lint_roster.sh says REDS %170 in its header and contradicts it eleven lines down.
+think Opened with the scoped cold roster: 159 guards, 155 green, 1 red -- standing_equipment reading five cadence reds a peer recorded at 20260907.101056, the same condition as my last lap and none of them mine.
+think Followed my own last lap rather than starting fresh. That lap closed a scan that printed a swept tree's bytes when fed nothing; the natural next question is whether its family holds another reading whose silence proves nothing.
+think Read living_docs_lint_scan.sh first. Its whole-roster-empty case is already handled at line 37 -- ADVISE, exit 0 -- so the caller is honest. Then read the roster generator it calls, and the fault was in the generator's own header.
+think The roster holds eleven hand-named paths in three blocks. Four hammocks and four pins are echoed unconditionally; three module doors -- rye, rishi, aurora, whose sources sit one level down where the discovery rule cannot reach -- were written for f in ...; do [ -f "$f" ] && echo "$f"; done.
+think phantom in living_docs_roster_scan.sh reads the roster's OUTPUT, so a line that declines to print when its page moves can never become a phantom. unrostered is built from the discovery rule, which by definition cannot see these three. Both gates blind for the same three paths.
+think Proved it rather than argued it: a pen with one real door and one absent path held behind the test printed front_doors=1 rostered=1 unrostered=0 phantom=0 verdict=ok.
+obs REDS %187 wrote this line, and its own repair sentence quotes %170 -- a page dropping off a meter is a page whose pass nobody witnessed -- as the reason the three stay listed by hand. The repair understood the law and then spelled the drop-off it was preventing.
+obs The pair of pen cases is the whole proof. Case 17 plants the departing spelling and shows it going quiet; case 18 plants the same missing page named plainly and shows it bitten. Without 17 this repair reads as a rewording.
+obs Live reading does not move: roster still 60 paths, phantom=0, unrostered=0. What changes is that a move from here reds on the lap it lands rather than silently shrinking the corpus.
+obs The REDS pin took the row at 40,848 of 40,960 -- 112 bytes free. I wrote the row shorter twice rather than fold a peer's shelf; the next row on this pin will want a fold first.
+obs The send met the spine's eighth firing. I booked off the fetched spine at 579, xy moved twice while the lap ran, and the rebase left the number bound upstream -- renumbered to 582 and then, when a second rebase met a peer holding that very number, to 583 -- the stamp unmoved through both, which is the law working rather than failing.
+obs The rebase also brought upstream's REDS at 40,378 bytes, so my 2,335-byte row put the pin 1,754 over. Folded row %576 -- my own last lap, BOOKED -- to construction/archive/REDS-a-reading-of-nothing-rows-576.md through reds_fold.sh, which wrote the recital line itself. Pin 42,714 -> 38,636.
+loom witness=living_docs_roster wall_s=3 control_cases=18 roster_paths=60
+loom cold_roster=scoped guards_run=159 green=155 red=1 gated=3 seconds=1416
+file tools/fixtures/l/living_docs_lint_roster.sh the three hand-held doors named unconditionally, with the phantom reasoning in the file
+file tools/fixtures/l/living_docs_roster_control.sh cases 17 and 18 -- the departing spelling going quiet, the repair biting
+file tools/l/living_docs_roster_witness.rish asserts both new legs by name; header count 16 -> 18 behaviors
+file construction/REDS.md row 20260907.165636 -- cited by stamp; the rebase renumbered it once, the spine binds the view
+recommend keep-going the eight other hand-named roster paths are named plainly and red correctly; the open question one room over is whether any other meter's roster holds a line behind its own subject's existence
