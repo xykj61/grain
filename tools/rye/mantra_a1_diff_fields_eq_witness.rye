@@ -1,9 +1,9 @@
-//! tools/rye/mantra_a1_diff_fields_eq_witness.rye -- Ashvini equality: exact 2 (STOA337).
+//! tools/rye/mantra_a1_diff_fields_eq_witness.rye -- Ashvini equality: exact 3 (STOA337).
 //!
 //!   env RYE_ZIG=vendor/zig-toolchain/zig rye/bin/rye run tools/rye/mantra_a1_diff_fields_eq_witness.rye
 //!
-//! gth speaks ceilings. eq speaks exactly. A Diff carries exactly two
-//! fields (inserts - deletes) -- the seventh pedestal that could not decide until
+//! gth speaks ceilings. eq speaks exactly. A Diff carries exactly three
+//! fields (site - inserts - deletes) -- the seventh pedestal that could not decide until
 //! this rune. The tending speaks Rye by Keaton's word: Glow - Tend - Rye.
 
 const std = @import("std");
@@ -44,17 +44,17 @@ pub fn main(init: std.process.Init) !u8 {
     print("eq-diff: Language EN — the seventh exact deciding gate (STOA337).\n", .{});
     print("eq-diff: Lens TAME — exact match; both sides; gth neighbor still stands.\n", .{});
 
-    print("eq-diff: exact 2 answers 1...\n", .{});
-    const exact_out = try run_gate(a, io, desk, "2");
+    print("eq-diff: exact 3 answers 1...\n", .{});
+    const exact_out = try run_gate(a, io, desk, "3");
     assert(contains(exact_out, "EXIT:0"));
     assert(contains(exact_out, "1"));
 
-    print("eq-diff: just under (1) answers 0...\n", .{});
-    const under_out = try run_gate(a, io, desk, "1");
+    print("eq-diff: just under (2) answers 0...\n", .{});
+    const under_out = try run_gate(a, io, desk, "2");
     assert(contains(under_out, "0"));
 
-    print("eq-diff: just over (3) answers 0...\n", .{});
-    const over_out = try run_gate(a, io, desk, "3");
+    print("eq-diff: just over (4) answers 0...\n", .{});
+    const over_out = try run_gate(a, io, desk, "4");
     assert(contains(over_out, "0"));
 
     print("eq-diff: the desk names eq, not gth...\n", .{});
@@ -66,6 +66,6 @@ pub fn main(init: std.process.Init) !u8 {
     const gth_out = try run_gate(a, io, neighbor, "1");
     assert(contains(gth_out, "1"));
 
-    print("GREEN: equality seventh — diff fields=2 decide exactly; gth still stands.\n", .{});
+    print("GREEN: equality seventh — diff fields=3 decide exactly; gth still stands.\n", .{});
     return 0;
 }

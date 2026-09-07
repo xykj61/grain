@@ -1,7 +1,7 @@
 # tools/m/mantra_a1_equality_witness.rish -- the equality arc, finally heard.
 #
 # WHAT THIS GUARDS. Four Glow desks under src/gate/ pin the field counts of Mantra's four
-# shapes: a Line has 3 fields, a Weave has 2, a Diff has 2, and a Store has 3 directories.
+# shapes: a Line has 4 fields, a Weave has 2, a Diff has 3, and a Store has 3 directories.
 # Each desk decides EXACTLY -- `eq` rather than `gth` -- so it answers 1 on the count and 0
 # on either neighbor, which a ceiling rune cannot do. Four Rye witnesses under tools/rye/
 # ask each desk all three questions and print a named claim. This guard builds all four and
@@ -61,14 +61,48 @@ let exact = run ["sh" "-c" "grep -lE '\\(gth ' src/gate/gate-mantra-line-fields-
 assert exact.ok else "mantra-eq: could not read the four equality desks"
 assert exact.out contains "0" else "mantra-eq: an equality desk reaches for gth, and a ceiling cannot decide exactly"
 
-say "mantra-eq: building and running the fifth gate -- a Line carries exactly three fields..."
+# THE CONSTANT AGAINST ITS SUBJECT. Every leg below this one asks a desk what it decides and
+# compares the answer with a number spelled beside it, so the family could only ever agree with
+# itself -- and on 20260907 two of the four were deciding the OPPOSITE of the truth. Line grew
+# `site` when identity became a pair, and Diff grew `site` on 20260906.212206; both desks went
+# on answering 1 for the elder count and 0 for the real one, green under this guard, its
+# control, and the cadence pass. The sur shapes one directory over had been bound to the Rye on
+# 20260906 (REDS %500) and the gates beside them had not, so two Glow desks named one fact and
+# disagreed.
+#
+# So neither number is spelled here. tools/fixtures/m/mantra_gate_constant_scan.sh reads the
+# desk's own decided constant off its `eq` rune and the struct's field count out of the module
+# by tools/fixtures/r/rye_struct_fields_scan.sh, the same reader the sur limbs use, and answers
+# a verdict word. The control plants a disagreement in a pen and watches that same scan refuse,
+# so the comparison is written once and both read it.
+say "mantra-eq: each desk's decided constant, read against the struct it names in the rye..."
+let line_const = run ["sh" "tools/fixtures/m/mantra_gate_constant_scan.sh" "src/gate/gate-mantra-line-fields-eq-u32.glow" "mantra/src/weave.rye" "Line"]
+assert line_const.ok else "mantra-eq: the constant scan refused on Line -- ${line_const.out}"
+assert line_const.out contains "verdict=ok" else "mantra-eq: the line gate and Line disagree -- ${line_const.out}"
+
+let weave_const = run ["sh" "tools/fixtures/m/mantra_gate_constant_scan.sh" "src/gate/gate-mantra-weave-fields-eq-u32.glow" "mantra/src/weave.rye" "Weave"]
+assert weave_const.ok else "mantra-eq: the constant scan refused on Weave -- ${weave_const.out}"
+assert weave_const.out contains "verdict=ok" else "mantra-eq: the weave gate and Weave disagree -- ${weave_const.out}"
+
+let diff_const = run ["sh" "tools/fixtures/m/mantra_gate_constant_scan.sh" "src/gate/gate-mantra-diff-fields-eq-u32.glow" "mantra/src/weave.rye" "Diff"]
+assert diff_const.ok else "mantra-eq: the constant scan refused on Diff -- ${diff_const.out}"
+assert diff_const.out contains "verdict=ok" else "mantra-eq: the diff gate and Diff disagree -- ${diff_const.out}"
+
+# Store's three fields are all directory handles -- the root, `.mantra/`, and `.mantra/blobs/`
+# -- so the struct reader answers this desk's question exactly. A non-directory field added
+# later reds this leg, which is the honest outcome: the desk would then want its own reader.
+let store_const = run ["sh" "tools/fixtures/m/mantra_gate_constant_scan.sh" "src/gate/gate-mantra-store-dirs-eq-u32.glow" "mantra/src/store.rye" "Store"]
+assert store_const.ok else "mantra-eq: the constant scan refused on Store -- ${store_const.out}"
+assert store_const.out contains "verdict=ok" else "mantra-eq: the store gate and Store disagree -- ${store_const.out}"
+
+say "mantra-eq: building and running the fifth gate -- a Line carries exactly four fields..."
 let line_build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build tools/rye/mantra_a1_line_fields_eq_witness.rye -femit-bin=mantra/bin/a1-line-fields"]
 assert line_build.ok else "mantra-eq: the line-fields witness does not compile"
 let line_run = run ["sh" "-c" "mantra/bin/a1-line-fields 2>&1"]
 assert line_run.ok else "mantra-eq: the line-fields witness exited non-zero"
 assert line_run.out contains "GREEN" else "mantra-eq: the line-fields witness is not GREEN"
-assert line_run.out contains "line fields=3 decide exactly" else "mantra-eq: the line-fields claim is missing"
-assert line_run.out contains "just over (4) answers 0" else "mantra-eq: the line-fields just-over side is missing -- the side a ceiling cannot answer"
+assert line_run.out contains "line fields=4 decide exactly" else "mantra-eq: the line-fields claim is missing"
+assert line_run.out contains "just over (5) answers 0" else "mantra-eq: the line-fields just-over side is missing -- the side a ceiling cannot answer"
 
 say "mantra-eq: building and running the sixth gate -- a Weave carries exactly two fields..."
 let weave_build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build tools/rye/mantra_a1_weave_fields_eq_witness.rye -femit-bin=mantra/bin/a1-weave-fields"]
@@ -79,14 +113,14 @@ assert weave_run.out contains "GREEN" else "mantra-eq: the weave-fields witness 
 assert weave_run.out contains "weave fields=2 decide exactly" else "mantra-eq: the weave-fields claim is missing"
 assert weave_run.out contains "just over (3) answers 0" else "mantra-eq: the weave-fields just-over side is missing"
 
-say "mantra-eq: building and running the seventh gate -- a Diff carries exactly two fields..."
+say "mantra-eq: building and running the seventh gate -- a Diff carries exactly three fields..."
 let diff_build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build tools/rye/mantra_a1_diff_fields_eq_witness.rye -femit-bin=mantra/bin/a1-diff-fields"]
 assert diff_build.ok else "mantra-eq: the diff-fields witness does not compile"
 let diff_run = run ["sh" "-c" "mantra/bin/a1-diff-fields 2>&1"]
 assert diff_run.ok else "mantra-eq: the diff-fields witness exited non-zero"
 assert diff_run.out contains "GREEN" else "mantra-eq: the diff-fields witness is not GREEN"
-assert diff_run.out contains "diff fields=2 decide exactly" else "mantra-eq: the diff-fields claim is missing"
-assert diff_run.out contains "just over (3) answers 0" else "mantra-eq: the diff-fields just-over side is missing"
+assert diff_run.out contains "diff fields=3 decide exactly" else "mantra-eq: the diff-fields claim is missing"
+assert diff_run.out contains "just over (4) answers 0" else "mantra-eq: the diff-fields just-over side is missing"
 
 say "mantra-eq: building and running the eighth gate -- a Store carries exactly three directories..."
 let store_build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build tools/rye/mantra_a1_store_dirs_eq_witness.rye -femit-bin=mantra/bin/a1-store-dirs"]
@@ -97,7 +131,7 @@ assert store_run.out contains "GREEN" else "mantra-eq: the store-dirs witness is
 assert store_run.out contains "store dirs=3 decide exactly" else "mantra-eq: the store-dirs claim is missing"
 assert store_run.out contains "just over (4) answers 0" else "mantra-eq: the store-dirs just-over side is missing"
 
-say "mantra-eq: breaking the arc six ways in a pen, so this guard is proven able to red..."
+say "mantra-eq: breaking the arc eight ways in a pen, so this guard is proven able to red..."
 let control = run ["sh" "tools/fixtures/m/mantra_a1_equality_control.sh"]
 assert control.ok else "mantra-eq: the control must complete -- a guard nobody has watched fail is a guard nobody has tested"
 assert control.out contains "control_verdict=ok" else "mantra-eq: the control must reach its own verdict"
@@ -106,6 +140,8 @@ assert control.out contains "eq_to_gth_exit=134" else "mantra-eq: swapping eq fo
 assert control.out contains "constant_moved_exit=134" else "mantra-eq: moving the decided constant must red -- that is a field count drifting out from under its lock"
 assert control.out contains "desk_missing_exit=134" else "mantra-eq: an absent desk must red rather than read as agreement"
 assert control.out contains "neighbor_broken_exit=134" else "mantra-eq: breaking the gth neighbor must red -- each witness re-checks it by name"
+assert control.out contains "constant_agrees_verdict=ok" else "mantra-eq: the unmutated pen must agree, or the disagreement below reads as the scan rather than the plant"
+assert control.out contains "constant_disagrees_verdict=constant_disagrees" else "mantra-eq: a desk deciding a number its own struct does not carry must refuse -- the fault two of these four desks stood green on until 20260907"
 assert control.out contains "witness_uncompilable_exit=1" else "mantra-eq: a witness that stops compiling must red -- that is the %449 fault this arc was standing over"
 
 say "GREEN: the equality arc is heard -- four Mantra gates decide exactly, both sides, and the gth neighbor stands."

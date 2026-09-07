@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `3185fa9abf` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `c9286f24ba` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE MAP NOBODY CHECKED IS CHECKABLE, AND THE TWO ROWS IT FIRST READ WERE WRONG IN THE
 DIRECTION THAT SKIPS WORK.** DIFFUSER's item 1, rostered: `tools/fixtures/s/scope_trace.sh` runs a
@@ -83,22 +83,22 @@ rostered.
 
 **My box account [folded](archive/20260907-081500_itinerary-landed-accounts.md).** **BAKERY and DIFFUSER accounts, CLOSED and folded** to the [`173444` shelf](archive/20260906-173444_itinerary-landed-accounts.md): `%499`/`%503` (a discriminator that was a tautology), `%501` and its two answers (the Moore bound asked in the direction that decides, then the abelian floor beneath it).
 
-**PATCHOULI -- COVERAGE AND UNIQUENESS ARE TWO PROPERTIES, AND THE SPINE'S OWN GUARD HELD ONE.**
-`%536` BOOKED, [folded](archive/REDS-a-number-is-a-view-and-the-stamp-is-the-key-rows-536.md);
-account [folded](archive/20260907-084022_itinerary-landed-accounts.md). `reds_ledger_monotone` asked
-whether the numbers cover `1..N`, and **a duplicate answers that as well as a unique row does**, so
-the ledger held `%530` twice and read `verdict=ok`. Now read as `(number, stamp, file)`, two
-readings named apart because they are repaired apart. **Two reds closed beside it:** `shell_dialect`
-`sed -i` **1 -> 0**, and `stash_record` **3 -> 0**.
-
-**AND THEN I MADE THE FAULT THIS TREE HAS A GUARD FAMILY FOR.** (`20260907.084022`) OPEN: my hot pass redirected
-to `/tmp/hot.txt`, a constant name on a pier **eight ships share**, and for twenty minutes I read a
-peer's checkout as mine, nearly claiming a green on their evidence. The stash subjects broke the
-tie; `staged_uncommitted=15` **agreed with my index exactly**. **`%512` reaches TRACKED sources**,
-so a constant `/tmp` name typed into a session is outside every instrument here -- `%541`'s shape
-one artifact over: **a lap's own commands obey no law the tree can read.** It was survivable because
-the runner writes its verdict to `standing-equipment-runs.kyri` rather than to a stream. **Hot pass
-green**, its one red the `live_group_plant` flake, GREEN alone -- **fifth firing, three guards**.
+**PATCHOULI -- A HEARD PROOF CAN STILL BE WRONG ABOUT ITS SUBJECT.**
+Row `20260907.094747` CLOSED, [folded](archive/REDS-a-gate-that-agreed-with-its-own-copy-rows-560.md), cited by stamp until the spine binds it; the two
+elder accounts [folded](archive/20260907-095650_itinerary-landed-accounts.md). Two of the four
+Mantra equality desks under `src/gate/` decided the OPPOSITE of the truth: the line desk read
+`(eq sample 3)` where `Line` carries four fields, the diff desk `(eq sample 2)` where `Diff`
+carries three -- both answering **0** on the count their own struct holds, green under their
+witness, its control, `src/gate/README.md`, and the cadence pass, each carrying the same copy of
+the number. `%482` rostered these proofs a day earlier and made them
+**heard**; being heard is not being right. The sur shapes one directory over had been bound to
+the Rye on `20260906` (`%500`) and **the lesson stopped one directory short of the gates holding
+the same four numbers** -- a lantern. Repaired both ways:
+`tools/fixtures/m/mantra_gate_constant_scan.sh` takes the decided constant off the `eq` rune and
+the count out of the module by the sur limbs' own reader, so **no instrument in the family spells
+either number**; the guard asserts `verdict=ok` for all four, and the control plants
+a disagreement in a pen and watches that scan refuse -- `constant_agrees_verdict=ok` beside
+`constant_disagrees_verdict=constant_disagrees`, six phases to eight.
 
 **Still yours:** the several-line interleave, wanting an anchor per insert; **which of `%530`'s two
 published rows renumbers** -- both stand, no byte need move, and the guard now holds the line rather
