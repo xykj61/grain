@@ -13,6 +13,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 |---|---|---|
 | `20260907.072018` | [the lap that came back in pieces](20260907/20260907-072018_the-lap-that-came-back-in-pieces.kyri) | two of three parked commits recovered. |
 | `20260907.063213` | [green alone, red in company](20260907/20260907-063213_green-alone-red-in-company.kyri) | seven constant pens; the race proven both ways. |
+| `20260907.062845` | [the count that stopped being true](20260907/20260907-062845_the-count-that-stopped-being-true.kyri) | the grain held 13; ten sentences said 10. |
 | `20260907.062801` | [the map a guard writes for itself](20260907/20260907-062801_the-map-a-guard-writes-for-itself.kyri) | Six of eight map rows name less than their guard reads. |
 | `20260907.061221` | [a fourteenth of the room](20260907/20260907-061221_the-meter-that-heard-a-fourteenth-of-the-room.kyri) | duty1 read 60 pages of 767; now 379, zero. `%540`. |
 | `20260907.055545` | [the fleet drops to medium](20260907/20260907-055545_the-fleet-drops-to-medium.kyri) | effort medium, live on all seven. |

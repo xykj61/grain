@@ -2,7 +2,7 @@
 
 *Living mutant, re-seated `20260826.024943` in the chapter era (standfast molt, Keaton's word); the elder stands whole at its own stamp and banner-points here.*
 
-*The tree already names a **grain** -- ten structural strands that decide how an idea may be cut to fit. This brief names a **compass** -- the habit of returning to those strands, the foundations beneath them, and the active-designing ladder ahead -- so "which way next?" has one calm answer without replacing the grain we already seated.*
+*The tree already names a **grain** -- the standing structural strands that decide how an idea may be cut to fit. This brief names a **compass** -- the habit of returning to those strands, the foundations beneath them, and the active-designing ladder ahead -- so "which way next?" has one calm answer without replacing the grain we already seated.*
 
 **Stamp:** `20260706.185112`
 **Language:** EN
@@ -13,6 +13,7 @@
 Radiant pass `20260725.035453`
 Radiant pass `20260727.213740` -- Voice/Radiant named on the day-one rose (`docs/COMPASS.md`); claims unchanged
 AHOY1 weave `20260811.214423` -- kin block added; the return read now orders by **Lindy-first, crux-first**; claims unchanged
+Strand-count erratum `20260907.062544` -- four sentences carried the elder total of ten; the grain has held thirteen since the fusion of `20260802`, and a pointer now names the strands rather than counting them
 
 ---
 
@@ -25,14 +26,14 @@ AHOY1 weave `20260811.214423` -- kin block added; the return read now orders by 
 
 **Grain** answers *does this cut clean?* **Compass** answers *where do I look to remember what we already decided?*
 
-We do **not** need to rename the ten **grain strands** to "compass points." The strands are precise and deeply cited. We **do** gain by saying **follow our compass** in conversation, README intros, and collaboration rhythm -- because newcomers grasp a compass immediately, and the metaphor matches what `context/` already calls itself: *memory and compass*.
+We do **not** need to rename the **grain strands** to "compass points." The strands are precise and deeply cited. We **do** gain by saying **follow our compass** in conversation, README intros, and collaboration rhythm -- because newcomers grasp a compass immediately, and the metaphor matches what `context/` already calls itself: *memory and compass*.
 
 ## The compass rose (read order)
 
 When refreshing before a lap or a roadmap edit, walk this rose **oldest conviction to newest lap**:
 
 1. **Foundations** -- [`foundations/README.md`](README.md): why beneath the work; happy zone; sameness; wire serves the fold.
-2. **Grain index** -- [`foundations/20260826-024942_the-grain-and-the-crossing.md`](20260826-024942_the-grain-and-the-crossing.md): ten strands + crossing test.
+2. **Grain index** -- [`foundations/20260826-024942_the-grain-and-the-crossing.md`](20260826-024942_the-grain-and-the-crossing.md): the strands + crossing test.
 3. **Two rooms** -- [`context/TWO_ROOMS.md`](../context/TWO_ROOMS.md): external-research vs active-designing; doorway witness.
 4. **Active-designing ladder** -- [`active-designing/README.md`](../active-designing/README.md): newest briefs first; only our names.
 5. **Now** -- [`construction/ITINERARY.md`](../construction/ITINERARY.md) *Now -- the live front*: what is open, what waits on a word.
@@ -69,7 +70,7 @@ The compass is one of two canonical hubs every leaf foundation routes through; n
 
 - **The front door** -- the root [`../README.md`](../README.md) opens onto the whole tree and points here for the return habit.
 - **The room** -- the [`foundations/README.md`](README.md) indexes the *why*; this brief is its navigation habit.
-- **The sibling hub** -- [The Grain and the Crossing](20260826-024942_the-grain-and-the-crossing.md) defines the ten strands the compass returns you *to*; the compass says *where to look*, the grain says *does this cut clean*.
+- **The sibling hub** -- [The Grain and the Crossing](20260826-024942_the-grain-and-the-crossing.md) defines the strands the compass returns you *to*; the compass says *where to look*, the grain says *does this cut clean*.
 - **The order of the read** -- the newest-first walk now follows [**Lindy-first, crux-first**](../.claude/rules/lindy-first-crux.md): among what direction offers, take the longest-lived work first, and within a tier the *crux* -- the hardest solvable problem. Grounded in [the Lindy effect](20260811-211431_the-lindy-effect-and-the-long-return.md).
 
 ---
