@@ -143,7 +143,7 @@ earth_claude_cmd() {
   if [ "$(uname -s)" = Linux ] && [ "${FLEET_BARE:-0}" != 1 ]; then
     printf '%s\n' "./tools/ag/agent-jail.sh lap ${seat}   # flags live in tools/f/fleet_lap.sh (%414)"
   else
-    printf '%s\n' "claude --dangerously-skip-permissions --effort max --output-format stream-json --verbose -p <${prompt_file}>"
+    printf '%s\n' "claude --dangerously-skip-permissions --effort medium --output-format stream-json --verbose -p <${prompt_file}>"
   fi
 }
 
@@ -247,7 +247,7 @@ run_earth_claude() {
     # argv, and every flag claude needs is spelled in there.
     ./tools/ag/agent-jail.sh lap "$seat" | stream_claude
   else
-    claude --dangerously-skip-permissions --effort max --output-format stream-json --verbose \
+    claude --dangerously-skip-permissions --effort medium --output-format stream-json --verbose \
       -p "$_prompt" \
       | stream_claude
   fi

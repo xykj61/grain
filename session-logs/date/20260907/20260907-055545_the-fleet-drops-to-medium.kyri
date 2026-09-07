@@ -1,0 +1,33 @@
+format session-log-v1
+stamp 20260907.055545
+editor Claude Code, Zed-class CLI on the pier
+provider Anthropic
+product Claude Code
+role incense seat -- law, active-designing, iterative review, the captain's hat
+modality text
+model claude-opus-5
+model_status active runtime reported by the harness environment block
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status configured default, changed this lap from max on Keaton's word
+evidence .claude/settings.json effortLevel, tools/f/fleet-loop.sh invocation, GLOW_PROFILE.bron effort line, and the live process table
+voice Kyri
+host Linux pier, 8 vCPU / 16 GB, TZ America/New_York
+title The fleet drops to medium
+prompt Keaton, mid-round: switch our effort to medium for all the fleet in our scripts and profiles; I ran /effort medium in this session which reset the cache; generate our rota context again; we are still opus 5 which I grant for all.
+rota lap 4144, row 4 by the modulus -- Earth, already read today at 20260907.002044, so the rota advanced by hand to row 0, Aether. Its pair sound and silence carried the width_check lap logged at 20260907.053708; this record is the same round's second half.
+think Three surfaces per tree carry the setting and I found all three before changing any: the --effort flag in tools/f/fleet-loop.sh (twice -- the dry-run printf and the real invocation), effortLevel in .claude/settings.json, and an effort line in GLOW_PROFILE.bron. Neither the baton nor any seat prompt names effort, so those three are the whole surface.
+think Eight trees, so twenty-four sites. Five of the eight profiles never carried an effort line at all, which is worth knowing rather than papering over -- their loop and settings both read medium now and the absent line was never a max.
+obs THE CHANGE WAS ON DISK AND NOT YET LIVE, WHICH IS THE PART THAT MATTERS WHEN THE GOAL IS TO SPEND LESS. sed -i renames a new file over the old, so a running shell keeps the version it started with -- I checked the loop process rather than assuming, and the seven agents were still invoking --effort max. A setting written to a file nobody has re-read is a setting that has not happened.
+obs SO I RESTARTED THE FLEET, WATCH FIRST AND SENTINEL SET. Stopping the loops without stopping the watch would have had it re-arm them one at a time from the new script mid-swap -- correct by accident rather than by design, and impossible to report cleanly. Watch down with .loop-gates-only's sibling sentinel in place, seven loops stopped, seven relaunched, watch back up.
+obs PROVEN FROM THE PROCESS TABLE RATHER THAN THE FILE: ps reads 7 --effort medium and zero max. That is the difference between a config change and a claim about one, and it is the same discipline as a witness on metal.
+obs THE PROFILE IS UNTRACKED AND THAT IS CORRECT. GLOW_PROFILE.bron is per-clone host configuration, so its effort line changes on disk in every tree and ships in none. The tracked halves -- the loop script and the settings file -- are what travel.
+obs THE RESTART REDDENED fleet_watch ON THE PASS THAT RAN THROUGH IT, AND THAT IS THE GUARD BEING RIGHT. Its control builds a real tmux session, and I was stopping and relaunching seven windows underneath it. Run again on a settled fleet it is green. A guard that reads live state will red when the live state is mid-change, and the honest response is to re-run rather than to loosen it.
+loom effort trees=8 sites_per_tree=3 loop_flags=2 profiles_carrying_a_line=3_of_8 max_remaining=0
+loom effort live_processes=7 flag=medium verified_from=process_table
+file tools/f/fleet-loop.sh both --effort flags, dry-run and real invocation
+file .claude/settings.json effortLevel medium
+file GLOW_PROFILE.bron effort medium -- untracked, per-clone, changed in all eight on disk
+scope one fleet-wide configuration change, found on every surface, made live rather than merely written
+status GREEN -- 7 loops and the watch turning, ps reads 7 medium and 0 max
+recommend keep-going -- crushed_index at 59s is the next guard, and the question that fits it is the sharpened one: how many processes per file, and does the language already hold the answer.
