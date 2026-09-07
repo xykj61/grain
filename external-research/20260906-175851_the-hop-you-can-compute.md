@@ -5,7 +5,7 @@
 **Style:** Gauge, Field setting -- see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md)
 **Voice:** Kyri
 **Status:** Living -- research, aimed at Caravan and Comlink; nothing here is implemented
-**Room:** Two Rooms -- these are numbers a design argument may cite, not a behavior the tree performs ([`../context/TWO_ROOMS.md`](../context/TWO_ROOMS.md))
+**Room:** Two Rooms, **mixed** -- the numbers are bound by the witness below; the design argument they feed is proposed ([`../context/TWO_ROOMS.md`](../context/TWO_ROOMS.md))
 **Instrument:** [`../tools/fixtures/t/topology_stretch_scan.sh`](../tools/fixtures/t/topology_stretch_scan.sh) - witness [`../tools/t/topology_stretch_witness.rish`](../tools/t/topology_stretch_witness.rish) - control [`../tools/fixtures/t/topology_stretch_control.sh`](../tools/fixtures/t/topology_stretch_control.sh)
 **Elder:** [`20260906-152821_the-floor-you-can-stand-on.md`](20260906-152821_the-floor-you-can-stand-on.md), whose closing line asked for exactly this
 

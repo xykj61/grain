@@ -1,0 +1,46 @@
+format session-log-v1
+stamp 20260907.102349
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role incense -- captain, law and iterative review
+modality text
+model claude-opus-5
+model_status configured; runtime identity unverified
+configured_model claude-opus-5
+configured_reasoning max
+configured_status .claude/settings.json, tracked
+evidence tracked settings file; no runtime telemetry read this lap
+voice Kyri
+host Vultr Dallas pier, Linux, AMD 4/8; TZ America/New_York
+title the door has two keys, and the guard read one
+prompt autonomous lap -- reds first, Lindy-first crux-first, in the law lane
+rota lap 4164, row 4 -- Earth, the row that breathes in; the fixed seat is context/TWO_ROOMS.md, and reading it whole is what sent me to the doorway guard that binds it. The row's own teaching -- take the fact in at the door, before interpretation -- is exactly what the guard was failing to do.
+think Opened cold: 141 guards, 139 green, 1 gated (pond %5), 1 red -- standing_equipment on live_group_plant, GREEN when run alone, sixth firing of the three-guard concurrency flake. Carried, not booked new.
+think two_rooms_doorway is tier cadence, so no lap-tier pass hears it. Run by hand it stood RED at 48 against a ceiling of 44 -- petrichor left it on the card as mine.
+think Read the 48 FAIL lines whole rather than repairing from the summary. Nine pages answer at the door under a key literally named **Room:** rather than **Status:**, and two of them spell Mixed -- TWO_ROOMS.md's own gloss token, in the law's own word -- and were counted as pages naming no room at all.
+think The word room carries two laws. TWO_ROOMS names a REGISTER; design-rooms names a DIRECTORY, decided by would this still be worth reading if the code were deleted. Four of the nine use **Room:** for the second sense, which is honest and still names no register.
+think Widening the guard to both keys freed 4 and exposed a second fault: the token matched as a SUBSTRING, so `no infrastructure provisioned`, `no VPS provisioned` and `divisional roles` each carried the letters of vision and three post-seating pages were passing on them. Required a word boundary, keeping `visionary` on purpose since **Status:** Visionary room is an honest naming two pages write.
+think A third shape stays unfixed and is named rather than guessed at: a token can be DENIED and still match. `**Room:** Proposed -- nothing here is checkable until a witness binds it` read as naming the checkable room. A negation heuristic would refuse `not vision -- checkable`, which is honest prose, so presence is what a grep reads and assertion stays a reader's.
+think Eleven pages gained the token their own next sentence already asserted -- transcription rather than judgment, no claim changed on any of them. 48 -> 37; ceiling re-seated at 37.
+obs The finding is the arithmetic rather than the guard. This census was repaired by hand twice in two days and regrew both times -- 44 at 20260907.001500, 48 nine hours later -- and all four new pages came from hands that had READ the law, two of them citing TWO_ROOMS.md inside the very Status line that named no room. A tier cadence guard counts damage a day after it is done.
+obs So the durable half is at write time: tools/f/fleet_baton.txt carries a DOOR clause now, which reaches every ship on its next lap without a restart. A lantern that fires twice becomes a loom, and the loom here is a habit rather than a meter.
+obs On the first rebase a peer's %558 landed on the SAME guard in the same hour, read from the SAME rota row and the same lap number. Theirs is the guard's SUBJECT -- three hand-named rooms while the law says forward-facing pages, 112 pages outside it. Mine is its READING. Two real faults in one instrument, found by two hands from one document, and neither is the other.
+obs Three folds this lap were withdrawn on that rebase. BAKERY, GRASS and COPAL had each replaced their own card block upstream within the hour, and a peer had folded %550 twelve minutes ahead of me. A published fold does not move; the duplicate shelf was deleted. My row renumbered %557 -> %560 -> %561 across two rebases and the stamp held every time, which is the derived spine's fourth rule earning its keep -- every living citation spelled the stamp, so three renumbers cost one line each.
+obs A red of my own, caught before the push. Resolving the second rebase I ran `git add -A` in the same command that asked `git diff --diff-filter=U --name-only`, so the listing printed empty because the staging had already marked everything resolved -- and `construction/ITINERARY.md` went into the index carrying `<<<<<<< HEAD` and `>>>>>>>`. A `git grep` for the two labelled markers found it. %481's shape on my own hand: never stage in the same command that asks what is unmerged.
+obs The card closes at 40,943 of 40,960, seventeen bytes free. That is the %338 shape one pin over, named rather than paid for by shaving further into a peer's block.
+loom guard=two_rooms_doorway pages=978 fails_before=48 fails_after=37 ceiling=37 behaviors=18
+loom pass=cold_scoped guards=141 green=139 red=1 gated=1 seconds=1146 tree_moved=no
+file tools/fixtures/t/two_rooms_doorway_scan_one.sh reads both **Status:** and **Room:**, and matches the token as a word rather than a substring
+file tools/fixtures/t/two_rooms_doorway_control.sh three legs for the second key; three of four flip to no under the single-key reading
+file tools/t/two_rooms_doorway.rish asserts the new legs; 18 behaviors
+file tools/fixtures/t/two_rooms_doorway_scan.rish ceiling 44 -> 37, with the three moves that got there written where the number is
+file context/TWO_ROOMS.md the door is the head and two keys open it; the token is a word; the other law wearing the same term
+file tools/f/fleet_baton.txt the DOOR clause -- a page names its room where the habit is set
+file .claude/rules/the-baton.md records the DOOR section and why it exists
+file construction/REDS.md row 20260907.094712 BOOKED as %560, folded to its own shelf on the lap that booked it, since a peer's %558 landed on the pin in the same hour
+file construction/ITINERARY.md the incense account; GRASS, COPAL and PATCHOULI condensed to pointers, and two peers' now-false doorway readings corrected to point at this repair
+file construction/CHECKPOINTS.md the cairn, rewritten after the rebase to record the shelf that actually stands
+file construction/archive/20260907-104723_itinerary-landed-accounts.md what the card no longer spells
+file .cursor/rules/the-baton.mdc mirrored, so rule_twin drift returns to 39 rather than 40
+recommend check-in (Keaton) -- should `proposed` be a fifth room token? Six pages now write it as though it were, up from three yesterday, and each was written by a hand that had read the table saying it is not. The guard cannot settle it and the canon can.

@@ -4,7 +4,7 @@
 **Language:** EN
 **Style:** Gauge, Field setting -- see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md)
 **Voice:** Kyri
-**Room:** Proposed -- nothing here is checkable until a witness binds it
+**Room:** Proposed, **research for understanding** -- nothing here is checkable until a witness binds it
 ([`../context/TWO_ROOMS.md`](../context/TWO_ROOMS.md))
 **Instrument:** [`../tools/fixtures/b/bound_kind_census.sh`](../tools/fixtures/b/bound_kind_census.sh)
 **Crossing:** the measurement over this tree is room two,

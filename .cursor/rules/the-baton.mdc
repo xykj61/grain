@@ -26,6 +26,7 @@ that reaches the agent without the baton are each counted at zero.
 |---|---|
 | **VOICE** | [`kyri`](kyri.md) - [`gauge-style`](gauge-style.md) - [`radiant-style`](radiant-style.md) - [`twilight-style`](twilight-style.md) - [`vocabulary-aroma`](vocabulary-aroma.md) *(the G-friendly default)* |
 | **CARD** | [`ascii-first`](ascii-first.md) - [`stamp-and-name`](stamp-and-name.md) - [`quality-assurance`](quality-assurance.md) - [`reds-first`](reds-first.md) - [`read-scope`](read-scope.md) |
+| **DOOR** | [`../../context/TWO_ROOMS.md`](../../context/TWO_ROOMS.md) - [`design-rooms`](design-rooms.md) *(the other law wearing the word)* |
 | **ROTA** | **this rule** -- it had none |
 | **THREAD** | [`session-logs`](session-logs.md) |
 | **FLEET** | **this rule** -- one writer per checkout had none |
@@ -163,5 +164,29 @@ stream would false-stop the loop the moment it began.
 The captain prints the baton as a raw code block in the round's reply, so a hand at any door can
 paste it without opening a file. That printing is a courtesy; **this file and
 `tools/f/fleet_baton.txt` are the record**, and the guard reads the file.
+
+## A page names its room at the door (`20260907.094712`)
+
+**The doorway census was repaired by hand twice in two days and regrew both times.** It stood at 44
+pages naming no room on `20260907.001500` and read **48** nine hours later; every one of the four
+new pages was written by a hand that had read the law, and two of them cite
+[`../../context/TWO_ROOMS.md`](../../context/TWO_ROOMS.md) inside the very `**Status:**` line that
+names no room. `tools/t/two_rooms_doorway.rish` runs at `tier cadence`, so no lap-tier pass hears
+it; a hand meets the finding a day late, repairs the pages, and the next night's pages arrive the
+same way.
+
+So the clause is on the baton, where a habit is set, rather than only in the guard that counts the
+damage afterward. **A page written into `external-research/`, `active-designing/` or `docs/` names
+its room -- checkable, vision, mixed, or research for understanding -- in its `**Status:**` or
+`**Room:**` line.** `Proposed`, `Living`, `Landed` and `Design` answer a different question and
+belong beside the token rather than instead of it, which the law's own three-question table already
+says.
+
+**Two laws in this tree use the word room, and that is half of why the habit slipped.**
+`TWO_ROOMS.md` names a **register**; [`design-rooms`](design-rooms.md) names a **directory**,
+decided by *would this still be worth reading if the code were deleted?* Nine pages under the
+roster answered at the door under a key literally named `**Room:**`, two of them spelling `Mixed`,
+and the guard read only `**Status:**` -- so the tree's own honest answers were being counted as
+silence. The guard reads both keys now.
 
 Canonical Cursor twin: `.cursor/rules/the-baton.mdc`.

@@ -3,7 +3,7 @@
 **Language:** EN
 **Version:** `20260714.015200` (Pacific)
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
-**Status:** Research and strategy -- no VPS provisioned, no script run against a real box from here. Register: findings are current as of this research date and **must be re-verified against each provider's own live docs before any commitment**, since virtualization policies change. Addressed to a generic Acme Corporation employee.
+**Status:** Research and strategy, **research for understanding** -- no VPS provisioned, no script run against a real box from here. Register: findings are current as of this research date and **must be re-verified against each provider's own live docs before any commitment**, since virtualization policies change. Addressed to a generic Acme Corporation employee.
 **Builds on:** `docs/PROVEN_SEAT.md` (the Genode/Sculpt ladder), `20260714-012125_neth-vps-cost-and-cluster-plan.md`, `../manual/guides/macos-ai-jail-setup.md`, `../manual/guides/self-hosted-vpn-setup.md`, `20260713-202929_macos-enclosure-and-qemu-vs-vz-study.md`
 
 ---

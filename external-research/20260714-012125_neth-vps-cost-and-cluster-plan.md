@@ -3,7 +3,7 @@
 **Language:** EN
 **Version:** `20260714.012125` (Pacific)
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
-**Status:** Research and cost plan -- no infrastructure provisioned; all pricing current as of this research date
+**Status:** Research and cost plan, **research for understanding** -- no infrastructure provisioned; all pricing current as of this research date
 
 ---
 
