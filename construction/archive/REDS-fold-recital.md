@@ -448,3 +448,5 @@ at a closed fold.*
 *Row %570 folded to [`REDS-a-label-is-not-its-target-rows-570.md`](REDS-a-label-is-not-its-target-rows-570.md) on `20260907.121623`, **CLOSED** -- the label and the target are two references, and only one of them is a promise.*
 *Row %571 folded to [`REDS-a-pen-isolated-by-everything-but-its-name-rows-571.md`](REDS-a-pen-isolated-by-everything-but-its-name-rows-571.md) on `20260907.120759`, **CLOSED** -- a sandbox has two halves, what it writes and what it reads.*
 *Row %572 folded to [`REDS-a-reader-that-walks-past-its-subject-rows-572.md`](REDS-a-reader-that-walks-past-its-subject-rows-572.md) on `20260907.123640`, **CLOSED** -- a marker binds to the const beneath it, and a reader that skips what it cannot parse answers about a stranger.*
+
+*Row %573 folded to [`REDS-a-page-that-calls-itself-living-rows-573.md`](REDS-a-page-that-calls-itself-living-rows-573.md) on `20260907.153154`, **BOOKED** -- a page that declares itself Living is not testimony, whatever its filename says.*

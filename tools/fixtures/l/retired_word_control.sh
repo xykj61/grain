@@ -18,6 +18,9 @@
 #   6  a page under counsel/                             free -- a closed room keeping its words
 #   7  a page under tools/fixtures/                      free -- planted corpora
 #   8  a keeps.txt path plus regex                       free -- one lawful line at a time
+#   9  a stamped basename declaring itself Living        CAUGHT -- the page's own word overrides
+#                                                        the mark law's test (20260907.144000)
+#  10  a stamped basename declaring another Status       free -- a lifecycle word is not Living
 #
 #   sh tools/fixtures/l/retired_word_control.sh
 set -eu
@@ -43,6 +46,8 @@ printf '# counsel\n\nfootgun in a closed room.\n' > counsel/20260101-010101_note
 printf '# counsel door\n\nfootgun on a front door that carries no stamp.\n' > counsel/README.md
 printf '# fixture\n\nfootgun is planted input here.\n' > tools/fixtures/planted.md
 printf '# kept\n\nfootgun on a line the keeps file rules lawful.\n' > kept.md
+printf '# declared\n\n**Status:** Living -- a page that calls itself living\n\nfootgun in living prose.\n' > 20260101-010101_declared_living.md
+printf '# retired page\n\n**Status:** Retired -- a lifecycle word that is not Living\n\nfootgun here.\n' > 20260101-010101_declared_retired.md
 printf 'kept.md\ta line the keeps file rules lawful\n' > keeps.txt
 
 git add -A >/dev/null
@@ -55,17 +60,17 @@ caught=$(printf '%s\n' "$out" | grep -c '^RETIRED ' || :)
 echo "control_caught=$caught"
 
 verdict=ok
-if [ "$caught" -ne 2 ]; then
-  echo "MISSED want exactly two caught -- the plain living page and the unstamped front door"
+if [ "$caught" -ne 3 ]; then
+  echo "MISSED want exactly three caught -- the plain living page, the unstamped front door, and the stamped page declaring itself Living"
   verdict=MISSED
 fi
-for bite in 'plain\.md' 'counsel/README\.md'; do
+for bite in 'plain\.md' 'counsel/README\.md' '20260101-010101_declared_living\.md'; do
   if ! printf '%s\n' "$out" | grep -q "^RETIRED ${bite}:"; then
     echo "MISSED ${bite} walked free -- the reading cannot bite"
     verdict=MISSED
   fi
 done
-for free in token.md fenced.md 20260101-010101_testimony.md date/shelf.md counsel/20260101-010101_note.md tools/fixtures/planted.md kept.md; do
+for free in token.md fenced.md 20260101-010101_testimony.md 20260101-010101_declared_retired.md date/shelf.md counsel/20260101-010101_note.md tools/fixtures/planted.md kept.md; do
   if printf '%s\n' "$out" | grep -q "^RETIRED ${free}:"; then
     echo "MISSED ${free} was named, and it is lawful -- the reading refuses honest prose"
     verdict=MISSED
