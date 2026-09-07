@@ -516,6 +516,34 @@ guard reds_fold
 path tools/r/reds_fold_witness.rish
 seated 20260826.175633
 
+# scope_trace seated 20260907.081500. THE MAP IS THE ONE BEHAVIORAL CLAIM IN THIS SYSTEM NOBODY
+# CHECKED. tools/fixtures/s/standing_equipment_scope_map.sh tells a `--scoped` pass which guards a
+# change can reach, and a row naming LESS than its guard gates SKIPS REAL WORK -- the map's own
+# header says so, and thirteen such rows were repaired by hand on 20260906. This rung runs a guard
+# under `strace -f -y -e trace=openat` and matches its observed read set against its row with the
+# same tools/fixtures/s/scope_match.sh the runner skips by, so a gap named here is a skip the runner
+# would actually take. Two rows were repaired by running it rather than by reading them the day it
+# was seated: `radiant_negation` read 142 files against a row reaching 89, missing `.claude/rules/`
+# -- its ENFORCE roster, while the rooms the row DID name are its ADVISORY tier -- and
+# `tally_roster` read 844 against 28, missing the build edge. Both reproduce
+# external-research/20260907-061951 file for file, on a second tree.
+#
+# WHAT IS GATED is the CONTROL, never a live gap. A row follows a guard's GATED readings and
+# observation cannot tell a gated read from an advisory one, so a gap is a word a hand considers
+# rather than a defect this rung declares. Union, never subtract.
+#
+# `capability trace_instrument` because strace is Linux-only; a bench without it reads its own name
+# in `skipped_capability` rather than reddening for a kernel it does not have.
+#
+# `tier lap` at 4s: the control traces a pen guard whose whole read set is four files, so it costs
+# nothing near the 58s a real trace of `tally_roster` takes. Tracing a REAL guard stays a hand's
+# command, since its cost is the guard's own cost times 1.1x to 6.7x.
+guard scope_trace
+path tools/s/scope_trace_witness.rish
+tier lap
+capability trace_instrument
+seated 20260907.081500
+
 guard tally_roster
 path tools/t/tally_roster_witness.rish
 seated 20260826.224730

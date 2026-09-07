@@ -26,6 +26,21 @@
 # none of the twelve-document DOOR roster it gates. Adding a watch word only ever makes a guard
 # run more often, so a row grows freely.
 #
+# A ROW IS NOW CHECKABLE, which it was not until 20260907. tools/fixtures/s/scope_trace.sh runs a
+# named guard under `strace -f -y -e trace=openat`, reads the resolved path of every successful open
+# under the root, and matches each observed FILE against that guard's row with the same
+# tools/fixtures/s/scope_match.sh the runner skips by. Two rows were repaired that day by running
+# it rather than by reading them: `radiant_negation` read 142 files and its row reached 89, missing
+# `.claude/rules/` -- which is that guard's ENFORCE roster, while the two rooms its row DID name are
+# the guard's own ADVISORY tier, so the row named what is reported and omitted what is gated.
+# `tally_roster` read 844 and its row reached 28, missing the build edge below. Both derivations
+# reproduce the sample in external-research/20260907-061951 file for file, on a second tree.
+#
+# UNION, NEVER SUBTRACT. Observation cannot tell a gated read from an advisory one, and this
+# header's own rule turns on that distinction -- so a derived path is ADDED to a hand-written row
+# and nothing is ever removed by a trace. Adding a watch word only ever makes a guard run more
+# often, which is why growth is safe and shrinkage is a judgment.
+#
 # THE BUILD EDGE: a guard that compiles Rye watches the compiler too -- rye/, rishi's source and
 # binary, the copy shim, and the vendored toolchain -- so the map stays true the day the
 # toolchain moves. Rows carry [build] and the expansion happens below, spelled once.
@@ -72,7 +87,8 @@ pond_policy_launcher tools/p/pond_policy_launcher_witness.rish tools/fixtures/p/
 pond_enclosure_built tools/p/pond_enclosure_built_witness.rish tools/fixtures/p/ pond/ tools/ag/agent-jail.sh
 pond_enclosure_state tools/p/pond_enclosure_state_witness.rish tools/fixtures/p/pond_enclosure_state_scan.sh tools/ag/agent-jail.sh tools/e/enclosure.conf* tools/fixtures/p/pond_enclosure_state_control.sh
 prose_register tools/p/prose_register_witness.rish tools/fixtures/p/prose_register_scan.sh docs-geode/ manual/ docs-geode/edu/yonder/ CONTRIBUTING.md SOURCE.md ORGANIZING.md MAP.md tools/fixtures/p/prose_register_control.sh README.md docs/README.md foundations/README.md caravan/README.md mycelium/README.md image/README.md lotus/README.md crypto/README.md constel/README.md
-radiant_negation tools/r/radiant_negation_witness.rish tools/fixtures/r/radiant_negation_scan.sh foundations/ context/RADIANT_STYLE.md context/TWILIGHT_STYLE.md context/KYRI.md
+radiant_negation tools/r/radiant_negation_witness.rish tools/fixtures/r/radiant_negation_scan.sh .claude/rules/ foundations/ context/RADIANT_STYLE.md context/TWILIGHT_STYLE.md context/KYRI.md tools/fixtures/r/radiant_negation_baseline.txt tools/fixtures/radiant_negation_control/
+scope_trace tools/s/scope_trace_witness.rish tools/fixtures/s/scope_trace.sh tools/fixtures/s/scope_trace_control.sh tools/fixtures/s/scope_match.sh tools/fixtures/p/plant.sh construction/standing-equipment.kyri tools/fixtures/s/standing_equipment_scope_map.sh
 scope_rank tools/s/standing_equipment_scope_rank_witness.rish tools/fixtures/s/standing_equipment_scope_rank.sh tools/fixtures/s/standing_equipment_scope_rank_control.sh tools/fixtures/s/scope_match.sh tools/fixtures/s/standing_equipment_scope_map.sh construction/standing-equipment.kyri
 reds_fold tools/r/reds_fold_witness.rish tools/fixtures/r/reds_fold.sh tools/fixtures/r/reds_fold_control.sh tools/fixtures/r/reds_fold_reanchor.sh construction/
 reds_ledger_headline tools/r/reds_ledger_headline_witness.rish construction/REDS.md construction/archive/REDS-* tools/fixtures/r/reds_ledger_headline_control.sh
@@ -89,7 +105,7 @@ sha3_file tools/s/sha3_file_witness.rish tools/fixtures/s/sha3_file_control.sh c
 skate_macos_choice tools/s/skate_macos_choice_witness.rish tools/fixtures/s/skate_macos_choice_scan.sh skate/ tools/fixtures/s/skate_macos_choice_control.sh
 sow_lock tools/s/sow_lock_witness.rish tools/fixtures/s/sow_lock_control.sh tools/fixtures/s/sow_project.sh
 tally_bud tools/t/tally_bud_witness.rish tally/ [build]
-tally_roster tools/t/tally_roster_witness.rish tools/fixtures/t/tally_roster_scan.sh tally/ tools/t/tally_*
+tally_roster tools/t/tally_roster_witness.rish tools/fixtures/t/tally_roster_scan.sh tally/ tools/t/tally_* tools/fixtures/t/tally_* [build]
 tame_style_check tools/t/tame_style_check.rish tools/t/tame_style_scan_bans.rish tools/t/tame_style_scan_advise.rish mantra/ caravan/ linengrow/ comlink/ rishi/src/ tally/ aurora/ pond/ brushstroke/ image/ mikrophone/ rye/src/ amphora/ glow/ mycelium/ constel/ lattice/ ember/ lantern/ scribble/
 wire_lab_fn_drift tools/w/wire_lab_fn_drift_witness.rish tools/fixtures/w/wire_lab_fn_drift_scan.sh tools/fixtures/w/wire_lab_fn_drift_control.sh tools/co/comlink_*_wire_lab.rish
 MAP

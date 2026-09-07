@@ -1,0 +1,105 @@
+# tools/s/scope_trace_witness.rish -- a map row is a header, and this opens the pack.
+#
+# WHY THIS RUNG. tools/fixtures/s/standing_equipment_scope_map.sh tells a `--scoped` roster pass
+# which guards a change can reach. Every row is therefore a behavioral claim: this guard reads these
+# files, so a change touching none of them may skip it. Until now a hand wrote that claim and
+# nothing measured it.
+#
+# The map's own header names the cost. A row naming LESS than its guard gates skips real work, and
+# thirteen such rows were repaired by hand on 20260906. The roster exists because a claim in prose
+# can be read and trusted and never run; the map was prose of the same kind, one layer down.
+#
+# WHAT IS PROVEN, on metal, by tools/fixtures/s/scope_trace_control.sh -- 31 behaviors on a pen tree
+# whose read set is stated in full before the tracer runs:
+#
+#   FOUR KINDS OF OPEN, told apart. A covered file. An uncovered file NAMED rather than counted. A
+#     listed directory, which stays a reading of its own, since a changed path in a git diff is
+#     always a file. And a failed open inside the tree, counted apart from all three.
+#   THE GAP LIFTED by a union, so a reader can tell a real finding from a scan stuck shut. A hand
+#     unioning every gap reaches zero while leaving the room and the absence alone.
+#   AN UNMAPPED GUARD named as unmapped. From outside, `gaps=0` is what a perfect row and an absent
+#     row both print, so the verdict tells them apart.
+#   EIGHT REFUSALS, each shown beside the argument that passes: an unseated guard, two guard names,
+#     an unknown flag, a timeout that is words, one past the bound and one at it, a zero, and a
+#     roster row pointing at a file that has gone.
+#   THE LOAD-BEARING LEG is a BLINDED COPY. It is the real scan with its path-resolution line
+#     removed, the removal proven landed by plant_write (%519), and it reads
+#     `read_files=0 gaps=0 verdict=ok` on the same pen where the real scan reads three files and one
+#     gap. That output matches a perfectly mapped guard byte for byte. A scan of this shape earns
+#     its silence only by being shown failing quietly first.
+#
+# WHAT IS REPORTED RATHER THAN GATED, and the map's own header gives the reason. A row follows a
+# guard's GATED readings, so an advisory ratchet leaves the watch set where it is -- and observation
+# reads every open alike. So a gap is a word a hand CONSIDERS, and this rung gates the control alone.
+# UNION, NEVER SUBTRACT: a derived path joins a hand-written row, and a trace removes none. Adding a
+# watch word only ever makes a guard run more often, which is what makes growth safe.
+#
+# WHAT IT REACHES, honestly. One trace describes one tree at one moment. A guard whose read set
+# branches on the CONTENT of a file may open a room it left closed here, so a second trace is owed
+# before such a row is trusted. The instrument is Linux-only, which the roster carries as
+# `capability trace_instrument`.
+#
+# Style: context/GAUGE_STYLE.md - Paper: external-research/20260907-061951_the-map-a-guard-writes-for-itself.md
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/s/scope_trace_witness.rish
+
+say "scope-trace: Language EN -- a row asserts what a guard reads; a trace observes it."
+say "scope-trace: Style Gauge, Meter -- every reading names what it counted and what it left out."
+say "scope-trace: Lens TAME -- probe the instrument, bound the trace, and print an absence rather than gating one."
+
+let control = run ["sh" "tools/fixtures/s/scope_trace_control.sh"]
+assert control.ok else "scope-trace: the control must complete -- read its own lines\n${control.out}\n${control.err}"
+say control.out
+
+# THE INSTRUMENT IS A ROSTER CAPABILITY, not an `if` here. `capability trace_instrument` in
+# construction/standing-equipment.kyri has the runner skip this guard BY NAME on a bench with no
+# strace -- `skipped_capability scope_trace wants=trace_instrument here=absent` -- where a witness
+# that branched on the probe itself would print a green it did not earn. The control still answers
+# `no_instrument` for a hand running it directly, and this rung asserts the legs, so running it on
+# a bench without the instrument is an honest red rather than a silent pass.
+
+# The four kinds of open.
+assert control.out contains "OK   the watched file and the guard's own source are covered" else "scope-trace: a file the row reaches must count as covered"
+assert control.out contains "OK   an unwatched file is a gap" else "scope-trace: a file no watch word reaches is the whole finding"
+assert control.out contains "OK   the gap is named, not just counted" else "scope-trace: a gap must be named, so it can be unioned rather than hunted"
+assert control.out contains "OK   three files read" else "scope-trace: a guard reads its own source, which is why every real row names its guard's path"
+assert control.out contains "OK   a listed room is a dir, never a gap" else "scope-trace: a changed path is always a file, so a bare directory can never be a gap"
+assert control.out contains "OK   an in-tree failed open is counted apart" else "scope-trace: a dependency on an absence is real, and it is not a watch word"
+assert control.out contains "OK   and the absent path is named" else "scope-trace: an absence must be named for a reader to judge it"
+assert control.out contains "OK   an under-named row says so" else "scope-trace: a row missing a file must not read ok"
+
+# The lift, so no bypass exists.
+assert control.out contains "OK   unioning the word closes the gap" else "scope-trace: adding a watch word must close the gap it names"
+assert control.out contains "OK   and every file is covered" else "scope-trace: the covered count must rise to the whole read set"
+assert control.out contains "OK   and the verdict returns to ok" else "scope-trace: a refusal proven only one way cannot be told from a scan stuck shut"
+assert control.out contains "OK   ok without a word for the room" else "scope-trace: a hand must reach zero without inventing a word for a directory"
+assert control.out contains "OK   the room is still observed" else "scope-trace: a room left out of the gaps must still be reported"
+
+# An unmapped guard, which prints like a clean one and is not.
+assert control.out contains "OK   no row reads unmapped" else "scope-trace: a guard with no row must say so"
+assert control.out contains "OK   and gaps stay zero rather than false" else "scope-trace: an unmapped guard has no row to be short of"
+assert control.out contains "OK   and the verdict says which" else "scope-trace: unmapped and ok must be told apart in the verdict, not only in a count"
+
+# Every refusal, beside the argument that passes.
+assert control.out contains "OK   an unseated guard refuses" else "scope-trace: a guard the roster does not seat must refuse"
+assert control.out contains "OK   a seated guard does not" else "scope-trace: the refusal must not reach a guard that is seated"
+assert control.out contains "OK   a second guard name refuses" else "scope-trace: one guard at a time, so a second name is a caller fault"
+assert control.out contains "OK   an unknown flag refuses" else "scope-trace: an argument this scan does not know must refuse rather than be read past"
+assert control.out contains "OK   a timeout that is not a number refuses" else "scope-trace: a timeout must be a whole number of seconds"
+assert control.out contains "OK   a timeout past the bound refuses" else "scope-trace: every bound is checked at the edge"
+assert control.out contains "OK   a timeout at the bound is taken" else "scope-trace: the bound itself must be inside the range, or it names a value no caller can use"
+assert control.out contains "OK   a timeout of zero refuses" else "scope-trace: a trace with no time observes nothing"
+assert control.out contains "OK   an absent guard file refuses" else "scope-trace: a roster row pointing nowhere must refuse rather than trace an empty run"
+
+# The load-bearing leg.
+assert control.out contains "OK   blind copy planted" else "scope-trace: the blinding must land, or this leg tests the real scan twice"
+assert control.out contains "OK   the blind copy reads no files" else "scope-trace: a scan whose resolution stops matching goes quietly to zero"
+assert control.out contains "OK   the blind copy reads no gaps" else "scope-trace: a quietly-zero reading passes every welcome leg ever written for it"
+assert control.out contains "OK   and calls an under-named row ok" else "scope-trace: the silent failure prints byte for byte like a perfect row"
+assert control.out contains "OK   while the real scan reads its files" else "scope-trace: the real scan must read what the blind copy cannot"
+assert control.out contains "OK   and the real scan still reds" else "scope-trace: the two must differ on the same pen, or the leg proves nothing"
+
+assert control.out contains "faults=0" else "scope-trace: every behavior must be satisfied"
+assert control.out contains "control_verdict=ok" else "scope-trace: the control must balance before it is believed"
+say "GREEN: scope-trace -- 31 behaviors on a pen whose read set is known, the silent-zero failure shown before the silence is trusted."

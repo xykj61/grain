@@ -18,7 +18,16 @@ set -u
 
 ROOT=$(pwd)
 SCAN="$ROOT/tools/fixtures/s/seat_prompt_figure_scan.sh"
-. "$ROOT/tools/fixtures/s/shell_portable.sh"
+
+# THE PLANTS ARE IMPORTED RATHER THAN SPELLED. `sed -i` has no portable spelling -- GNU takes no
+# argument and BSD requires a backup suffix -- and a peer repaired this file's one site with
+# `sed_inplace` from tools/fixtures/s/shell_portable.sh an hour before this rebase met it. This
+# takes tools/fixtures/p/plant.sh's `plant_apply` instead, which SUPERSEDES that repair rather than
+# competing with it: it writes a temporary through the original inode exactly as `sed_inplace` does,
+# so it is equally portable and equally mode-preserving (.claude/rules/exec-bit.md), and it also
+# PROVES the rewrite landed, so a phase can never test the unmutated file and read that as a law
+# holding (REDS %519).
+. "$ROOT/tools/fixtures/p/plant.sh"
 PEN=$(mktemp -d "${TMPDIR:-/tmp}/seat_prompt_figure_control.XXXXXX") || exit 2
 trap 'rm -rf "$PEN"' EXIT
 
@@ -89,10 +98,8 @@ check "clean fleet verdict"               "ok" "$(field_of verdict "$p")"
 p=$(mkfleet modules)
 printf 'It holds 10 Rye modules.\n' >> "$(prompt_of "$p" alpha)"
 check "a module count is read"            "1" "$(field_of figures "$p")"
-# `sed -i` has no portable spelling -- GNU takes no argument and BSD requires a backup suffix -- so
-# the tree's own helper writes a temporary and copies back through the original inode, which also
-# keeps the mode the repository tracks (`.claude/rules/exec-bit.md`).
-sed_inplace 's/It holds 10 Rye modules\.//' "$(prompt_of "$p" alpha)"
+check "removing it is a landed plant" "0" \
+  "$(plant_apply "$(prompt_of "$p" alpha)" 's/It holds 10 Rye modules\.//' modules_removed >/dev/null 2>&1; echo $?)"
 check "and removing it lifts the reading" "0" "$(field_of figures "$p")"
 
 # -- 3. a line count is a measurement, and a thousands comma is ONE figure ------------------------
@@ -162,12 +169,12 @@ check "three figures named"    "3" "$(details_of "$p")"
 
 # -- 13. the pen is proven innocent -------------------------------------------------------------------
 LIAR="$PEN/liar_scan.sh"
-sed 's/^  figures=\$((figures + a))$/  figures=$((figures + 0))/' "$SCAN" > "$LIAR"
-if [ ! -s "$LIAR" ] || cmp -s "$LIAR" "$SCAN"; then
+# plant_write carries the four readings this leg used to spell for itself, and one it did not: a
+# `sed` program the interpreter REFUSES leaves a partial file that differs from the source, which a
+# bare byte comparison reads as a landed patch.
+if ! plant_write "$SCAN" "$LIAR" 's/^  figures=\$((figures + a))$/  figures=$((figures + 0))/' innocence_patch 2>/dev/null; then
   behaviors=$((behaviors + 1))
-  # An unreadable source leaves an EMPTY copy, which differs from the original and would read as a
-  # landed patch -- so emptiness is checked before difference.
-  echo "  FAIL innocence patch matched nothing -- the liar scan is empty or byte-identical"
+  echo "  FAIL innocence patch matched nothing -- the liar scan is absent, empty, or byte-identical"
   failed=$((failed + 1))
 else
   echo "  ok   innocence patch landed"
