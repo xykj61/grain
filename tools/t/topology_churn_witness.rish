@@ -1,0 +1,123 @@
+# tools/t/topology_churn_witness.rish -- what one departure costs a table everybody shares, and it
+# can be made to red.
+#
+#   rishi/bin/rishi run tools/t/topology_churn_witness.rish
+#
+# WHAT IT BINDS. `tools/fixtures/t/topology_churn_scan.sh` removes points from the four Cayley
+# graphs its sibling priced and measures what the survivors lose: the graph's own damage, the stale
+# shared table's damage, how many of the 719 entries actually change and at which nodes, and how the
+# answer bends as departures accumulate under two named removal patterns. This binds every figure by
+# name and proves the reading can be broken through
+# `tools/fixtures/t/topology_churn_control.sh`.
+#
+# WHY THIS SITS BESIDE `topology_routing` RATHER THAN INSIDE IT. That witness binds the DECISION on
+# a whole graph -- what a node holds and computes to pick the next hop. This one binds the same
+# state on a graph that has LOST a point, which is the condition its sibling's central claim rests
+# on and the gap its sibling's coverage section named. They move for different reasons: a new
+# routing rule moves the first, a new failure model moves the second.
+#
+# THE TWO DERIVATIONS ARE BOUND AS DERIVATIONS. The drop count is predicted from the intact walk
+# before it is measured, and the dead-hop entry count is `n - 1 - degree` by an argument written
+# down ahead of the reading. Both are asserted here at the value the derivation gives rather than at
+# the value the scan happened to print, so a scan that drifted from its own arithmetic reds.
+#
+# WHY IT IS `tier cadence`. The scan walks 516,242 ordered pairs three ways per shape on four
+# shapes, plus 56 curve configurations, at 135s measured `20260907`. Its answer moves only when the
+# scan moves, which is a deliberate act, so a per-lap row would spend those seconds on eight ships
+# to watch a number that did not change.
+
+say "topology-churn: Language EN -- what one departure costs a table every node agreed on."
+say "topology-churn: Style Gauge, Meter -- every figure walked here, never recalled."
+say "topology-churn: Lens TAME -- the transitivity shortcut checked under its own coordinates."
+
+say "topology-churn: the scan punctures the shapes and routes the remainder..."
+let scan = run ["sh" "tools/fixtures/t/topology_churn_scan.sh"]
+# invariant: the scan stands green before any reading of it is trusted.
+assert scan.ok else "topology-churn: the scan refused --\n${scan.out}"
+assert scan.out contains "verdict=ok legs=all faults=0" else "topology-churn: the scan did not reach its own green --\n${scan.out}"
+
+say "topology-churn: the choice of removed point is immaterial, checked rather than argued..."
+# invariant: G minus v is isomorphic to G minus w on a vertex-transitive graph, so three probes at
+# three removed points must agree EXACTLY -- and the sample translates with the hole, since a sample
+# fixed in absolute numbering names a different relative set at each probe and disagrees with itself.
+assert scan.out contains "hole shape=circ probes=3 removed=0,137,421 signature=42362/10/393/42176/42176 agree=yes" else "topology-churn: the three probes stopped agreeing, so the graph is not what it claims --\n${scan.out}"
+
+say "topology-churn: the graph itself barely notices one departure..."
+# invariant: nothing disconnects, no diameter moves, and the worst walk that grows grows by two.
+assert scan.out contains "blast shape=circ removed=1 pairs=516242 damaged=84 disconnected=0 extra_hops=152 worst_increase=2 diameter_intact=9 diameter_punctured=9 by1=16 by2=68 by3plus=0" else "topology-churn: the circulant's damage from one departure moved --\n${scan.out}"
+assert scan.out contains "blast shape=torus12 removed=1 pairs=516242 damaged=42 disconnected=0 extra_hops=82 worst_increase=2 diameter_intact=14 diameter_punctured=14" else "topology-churn: the seated torus's damage moved --\n${scan.out}"
+assert scan.out contains "blast shape=torus8 removed=1 pairs=516242 damaged=30 disconnected=0 extra_hops=54" else "topology-churn: the second torus's damage moved --\n${scan.out}"
+# invariant: the star graph is bipartite -- transpositions are odd, so every walk between two points
+# has one parity and a detour costs an EVEN number of hops. Its `by1` column is therefore zero, and
+# all 980 damaged pairs cost exactly two. This is the parity argument bound as a number.
+assert scan.out contains "blast shape=star removed=1 pairs=516242 damaged=980 disconnected=0 extra_hops=1960 worst_increase=2 diameter_intact=7 diameter_punctured=7 by1=0 by2=980 by3plus=0" else "topology-churn: the star graph's detour parity moved -- a bipartite shape pays in twos --\n${scan.out}"
+
+say "topology-churn: the stale table loses far more than the graph does, and the number was predicted..."
+# invariant: a departure kills the routes that CROSSED it, so the share lost is (mean hops - 1)/(n-1)
+# computed from the intact walk. Every residual stands under seven pairs of a 516,242-pair reading.
+assert scan.out contains "predict shape=circ mean_hops_intact=6.3004 predicted_drops=3805.7 measured_drops=3811 residual=5.3" else "topology-churn: the circulant's drop prediction parted from its measurement --\n${scan.out}"
+assert scan.out contains "predict shape=torus12 mean_hops_intact=7.2100 predicted_drops=4458.8 measured_drops=4465 residual=6.2" else "topology-churn: the seated torus's drop prediction parted from its measurement --\n${scan.out}"
+assert scan.out contains "predict shape=star mean_hops_intact=4.7900 predicted_drops=2721.2 measured_drops=2725 residual=3.8" else "topology-churn: the star graph's drop prediction parted from its measurement --\n${scan.out}"
+# invariant: the table loses 3,811 where the graph loses 84 -- forty-five times -- because a table
+# entry commits to ONE of the shortest walks and a departure kills every route that chose it.
+assert scan.out contains "stale shape=circ rule=table bytes=270 arrived=512431 dropped=3811 optimal=512431 arrival_share=0.992618 extra_hops=0" else "topology-churn: the circulant's stale-table reading moved --\n${scan.out}"
+assert scan.out contains "stale shape=torus12 rule=table bytes=270 arrived=511777 dropped=4465" else "topology-churn: the seated torus's stale-table reading moved --\n${scan.out}"
+
+say "topology-churn: ninety more bytes turn a drop into a detour..."
+# invariant: the distance array holds enough to DERIVE an alternative where the generator index
+# holds only the answer, so its failures fall from 3,811 drops to 1,351 cycles.
+assert scan.out contains "stale shape=circ rule=distance bytes=360 arrived=514891 stalled=0 cycled=1351 optimal=514884 arrival_share=0.997383 extra_hops=11 worst_stretch=2" else "topology-churn: the circulant's distance reading moved --\n${scan.out}"
+# invariant: a packet that remembers where it has been arrives EVERYWHERE on the abelian shapes --
+# all 516,242 pairs, at 2,575 extra hops and a worst walk of 11.
+assert scan.out contains "stale shape=circ rule=distance_nr bytes=360 packet_state=visited_set arrived=516242 stalled=0 cycled=0 optimal=514947 arrival_share=1.000000 extra_hops=2575 worst_walk=11 packet_bits=110" else "topology-churn: packet memory stopped closing the circulant --\n${scan.out}"
+assert scan.out contains "stale shape=torus12 rule=distance_nr bytes=360 packet_state=visited_set arrived=516242 stalled=0 cycled=0" else "topology-churn: packet memory stopped closing the seated torus --\n${scan.out}"
+# invariant: and it FRAYS on the non-abelian shape, which is the honest reading rather than a win --
+# 28 pairs stall, the worst walk reaches 63, and it spends four times the circulant's extra hops.
+assert scan.out contains "stale shape=star rule=distance_nr bytes=270 packet_state=visited_set arrived=516214 stalled=28 cycled=0 optimal=514729 arrival_share=0.999946 extra_hops=10028 worst_walk=63" else "topology-churn: the star graph's packet-memory fraying moved, and it is recorded rather than dressed as a win --\n${scan.out}"
+
+say "topology-churn: how many of the 719 entries actually change, and why..."
+# invariant: the dead-hop count is n - 1 - degree by derivation -- 720 - 1 - 6 = 713 at degree six on
+# every shape, and 720 - 1 - 5 = 714 at degree five. Each non-identity difference has exactly one
+# table entry naming exactly one neighbour of the hole, excluded only when the destination IS the
+# hole. Asserted at the derived value, so a scan drifting from its own arithmetic reds here.
+assert scan.out contains "entry shape=circ entries_per_node=718 nodes=719 changed_entries=925 changed_share=0.001792 nodes_with_a_change=81 clean_nodes=638 worst_node_changes=311 mean_changes=1.2865 cause_dead_hop=713 cause_stale_path=212 ring1=713 ring2=67 ring3=55 ring4plus=90" else "topology-churn: the circulant's entry reading moved --\n${scan.out}"
+assert scan.out contains "cause_dead_hop=713 cause_stale_path=92 ring1=713" else "topology-churn: the seated torus's dead-hop count left n-1-degree, or its ring-1 concentration broke --\n${scan.out}"
+assert scan.out contains "cause_dead_hop=713 cause_stale_path=81 ring1=713" else "topology-churn: the second torus's dead-hop count left n-1-degree --\n${scan.out}"
+assert scan.out contains "cause_dead_hop=714 cause_stale_path=862 ring1=714" else "topology-churn: the star graph's dead-hop count left n-1-degree at degree five --\n${scan.out}"
+# invariant: the LOCAL half is a fixed 713 held by the hole's six neighbours whatever shape is
+# chosen, so only the NON-local half discriminates -- 81, 92, 212, 862 across the four.
+
+say "topology-churn: and the two counts of one departure disagree by seven times..."
+# invariant: four nodes in five lose packets and one in ten holds a wrong table, because a packet
+# dies at the hole rather than at its source. That gap is where repair belongs.
+assert scan.out contains "patch shape=circ survivors=719 rule=table clean_nodes=150 patch_nodes=569 patch_share=0.791377" else "topology-churn: the circulant's traffic-side blast radius moved --\n${scan.out}"
+assert scan.out contains "mean_hole_distance=5.7151" else "topology-churn: the damage stopped spreading by paths rather than by proximity --\n${scan.out}"
+
+say "topology-churn: the curve holds, and a scattered loss hurts more than a clustered one..."
+# invariant: 56 configurations, no shape splits at any k up to 64 -- 8.9 percent of the network.
+assert scan.out contains "claims hole_agree=yes curve_rows=56 curve_splits=0 legs=all bad=0" else "topology-churn: a curve configuration split the graph, or the curve stopped running --\n${scan.out}"
+# invariant: sixty-four departures in ONE region poison one region's routes; sixty-four scattered
+# poison routes everywhere, and a six-hop walk has six chances to meet one. Cluster wins on all four.
+assert scan.out contains "curve shape=circ pattern=spread removed=64 live=656 connected=yes pairs=35370 arrived=27137 stalled=0 cycled=8233 optimal=27077 arrival_share=0.767232" else "topology-churn: the circulant's scattered-loss reading moved --\n${scan.out}"
+assert scan.out contains "curve shape=circ pattern=cluster removed=64 live=656 connected=yes pairs=35370 arrived=33582 stalled=0 cycled=1788 optimal=33578 arrival_share=0.949449" else "topology-churn: the circulant's clustered-loss reading moved --\n${scan.out}"
+assert scan.out contains "curve shape=star pattern=spread removed=64 live=656 connected=yes pairs=35370 arrived=25888 stalled=0 cycled=9482 optimal=25745 arrival_share=0.731920" else "topology-churn: the star graph's scattered-loss reading moved --\n${scan.out}"
+assert scan.out contains "curve shape=star pattern=cluster removed=64 live=656 connected=yes pairs=34715 arrived=31245 stalled=0 cycled=3470 optimal=31072 arrival_share=0.900043" else "topology-churn: the star graph's clustered-loss reading moved --\n${scan.out}"
+
+say "topology-churn: and the reading can be broken, each plant lifted after..."
+let control = run ["sh" "tools/fixtures/t/topology_churn_control.sh"]
+# invariant: a refusal proven only in the passing direction cannot be told from a bypass.
+assert control.ok else "topology-churn: the control refused --\n${control.out}"
+assert control.out contains "verdict=ok" else "topology-churn: the control did not reach its own green --\n${control.out}"
+# invariant: the pen is innocent, so every plant reads as the break speaking rather than the pen.
+assert control.out contains "clean_verdict ok ok" else "topology-churn: the unbroken pen did not pass --\n${control.out}"
+# invariant: every plant APPLIED -- a sed that matches nothing builds the unmutated module, and the
+# phase then reads zero while looking exactly like a law that holds.
+assert control.out contains "plants_applied=10" else "topology-churn: a plant matched nothing, so its phase measured the unbroken pen --\n${control.out}"
+# invariant: the vacuous transitivity check PASSES, which is the lesson it carries: three probes at
+# one point agree trivially, and only the printed `removed=` says otherwise.
+assert control.out contains "plant7_hole_one_point ok ok" else "topology-churn: the vacuous-probe plant stopped reading ok, so the lesson it carries is gone --\n${control.out}"
+# invariant: the checking legs earn their keep -- broken with them skipped, the scan reads green.
+assert control.out contains "plant10_legless ok ok" else "topology-churn: the checking legs are not what catches the break --\n${control.out}"
+assert control.out contains "failures=0" else "topology-churn: the control reported a failing case --\n${control.out}"
+
+say "topology-churn: GREEN -- one departure leaves 99.8 percent of the shared table right, and the repair belongs at six nodes."

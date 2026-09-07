@@ -19,3 +19,5 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260907.002044` | [the field reaches the ships](20260907/20260907-002044_the-field-reaches-the-ships.kyri) | the rota field put where ships read it. |
 | `20260907.001130` | [the lap that came back out of the box](20260907/20260907-001130_the-lap-that-came-back-out-of-the-box.kyri) | a lap out of the box; tlb_reach, fifth spelling |
 | `20260907.000903` | [the sentence that rode the other channel](20260907/20260907-000903_the-sentence-that-rode-the-other-channel.kyri) | a reason rode stderr; five guards did not. |
+| `20260907.011253` | [rebuilt what the box already held](20260907/20260907-011253_the-lap-that-rebuilt-what-the-box-already-held.kyri) | Two reds, one root; the parked paper GREEN. |
+| `20260907.002019` | [what a departure costs a shared table](20260907/20260907-002019_what-a-departure-costs-a-shared-table.kyri) | 99.8% of the table stays right; repair sits at 6 nodes. |

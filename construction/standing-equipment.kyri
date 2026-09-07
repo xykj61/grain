@@ -2430,3 +2430,20 @@ guard bron_resins_catalog
 path tools/b/bron_resins_catalog_witness.rish
 tier lap
 seated 20260907.000030
+# topology_churn -- what ONE DEPARTURE costs a table everybody shares, at 720 points.
+# Its sibling `topology_routing` binds the DECISION on a whole graph -- 719 entries, 3 bits each,
+# 270 bytes, the same 270 at every node. That claim rests on the graph being the whole GROUP, which
+# a live network breaks the first afternoon it runs. This binds the same state on a punctured graph:
+# the graph's own damage (84 pairs of 516,242 on the circulant, nothing disconnected, no diameter
+# moved), the stale table's damage (3,811 drops -- 45x the graph's, and predicted to within six
+# pairs by (mean hops - 1)/(n - 1)), how many of the 719 entries change (925, of which a DERIVED
+# n-1-degree = 713 are a dead first hop held by the hole's six neighbours), and the curve under two
+# named removal patterns, where a SCATTERED loss of 64 points hurts more than a clustered one.
+# `tier cadence` because the scan walks 516,242 pairs three ways on four shapes plus 56 curve
+# configurations -- 135s measured `20260907.000309` -- and the control runs ten plants across four
+# leg words; its answer moves only when the scan moves.
+
+guard topology_churn
+path tools/t/topology_churn_witness.rish
+tier cadence
+seated 20260907.000309
