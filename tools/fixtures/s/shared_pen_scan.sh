@@ -66,8 +66,19 @@ root=${SHARED_PEN_ROOT:-.}
 # counting its plants. The third arrived with the fifth spelling: a first reading called 47 files
 # damaged, and applying this scan's own dollar lookahead to that spelling took it to 3, of which one
 # is the port lock that is shared on purpose. Two were real, and both are repaired.
-files_ceiling=${SHARED_PEN_FILES_CEILING:-61}
-wipe_ceiling=${SHARED_PEN_WIPE_CEILING:-7}
+#
+# LOWERED 20260907 to 54 and 4: the whole Amphora vessel family -- seven rostered witnesses -- took
+# `mktemp -d` pens in one lap, which is 7 of the 61 files and THREE of the 7 wipers. The race was
+# proven on metal in both directions before the repair shipped: four concurrent copies of the elder
+# tools/am/amphora_carry_negative_witness.rish read two red and two green, and the two reds failed
+# at DIFFERENT assertions (line 55 and line 77), which is a race rather than a defect; four
+# concurrent copies of the repaired file read four green, and sixteen concurrent runs across the
+# whole repaired family read zero red. What the same lap measured is why it mattered every lap
+# rather than rarely: all eight ships had a roster pass live at one instant, their starts spread
+# over 164 seconds against a pass of 1,422 seconds, so the passes overlap almost entirely and this
+# guard's own "not proven -- that any pen is ever actually contended" is answered for this pier.
+files_ceiling=${SHARED_PEN_FILES_CEILING:-54}
+wipe_ceiling=${SHARED_PEN_WIPE_CEILING:-4}
 
 cd "$root" 2>/dev/null || { echo "verdict=no_root"; echo "refused: $root is not a directory" >&2; exit 1; }
 git rev-parse --git-dir >/dev/null 2>&1 || { echo "verdict=no_git"; echo "refused: this scan reads git ls-files" >&2; exit 1; }

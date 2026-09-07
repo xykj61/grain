@@ -6,19 +6,27 @@
 #   rishi/bin/rishi run tools/am/amphora_grand_round_witness.rish
 
 let season = "tools/fixtures/cellar_ring1_tree"
-let home = "/tmp/amphora_grand_round_home"
-let near = "/tmp/amphora_grand_round_home/near"
-let vessel = "/tmp/amphora_grand_round_home/near/v.bron"
-let dock = "/tmp/amphora_grand_round_home/dock"
-let far = "/tmp/amphora_grand_round_home/dock/vessel.bron"
-let out_home = "/tmp/amphora_grand_round_home/dock/vessel.bron.season"
-let hello = "/tmp/amphora_grand_round_home/dock/vessel.bron.season/hello.txt"
-let nested = "/tmp/amphora_grand_round_home/dock/vessel.bron.season/nested/leaf.txt"
-let blob = "/tmp/amphora_grand_round_home/dock/vessel.bron.season/blob.bin"
-let empty = "/tmp/amphora_grand_round_home/dock/vessel.bron.season/empty.file"
 
-let wipe = run ["rm" "-rf" home]
-assert wipe.ok else "grand_round: home wipe"
+# THE PEN CARRIES A UNIQUE NAME (REDS %512's class, held by tools/s/shared_pen_witness.rish).
+# Eight ships run this roster from eight checkouts and share one /tmp, so a pen named by a
+# constant is ONE directory on all eight: a peer's `rm -rf` lands mid-run and the reading becomes
+# a fact about the pen wearing the costume of a fact about Amphora. `mktemp -d` lets the kernel
+# pick the suffix, so no two runs can agree by accident, and the fresh directory is already empty
+# -- which is why the wipe-then-mkdir this replaced is gone rather than moved.
+# Full argument and the seated exemplar: tools/am/amphora_restore_negative_witness.rish.
+let pen = run ["sh" "-c" "mktemp -d /tmp/amphora_grand.XXXXXX"]
+assert pen.ok else "grand_round: pen must open"
+let home = trim pen.out
+let near = "${home}/near"
+let vessel = "${home}/near/v.bron"
+let dock = "${home}/dock"
+let far = "${home}/dock/vessel.bron"
+let out_home = "${home}/dock/vessel.bron.season"
+let hello = "${home}/dock/vessel.bron.season/hello.txt"
+let nested = "${home}/dock/vessel.bron.season/nested/leaf.txt"
+let blob = "${home}/dock/vessel.bron.season/blob.bin"
+let empty = "${home}/dock/vessel.bron.season/empty.file"
+
 let mk = run ["mkdir" "-p" near]
 assert mk.ok else "grand_round: near mkdir"
 

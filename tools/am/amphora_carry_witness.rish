@@ -7,11 +7,19 @@
 #   rishi/bin/rishi run tools/am/amphora_carry_witness.rish
 
 let season = "tools/fixtures/cellar_ring1_tree"
-let vessel = "/tmp/amphora_carry_witness_vessel.bron"
-let dock = "/tmp/amphora_carry_witness_dock"
 
-let clean = run ["rm" "-rf" vessel dock]
-assert clean.ok else "amphora_carry: clean must pass"
+# THE PEN CARRIES A UNIQUE NAME (REDS %512's class, held by tools/s/shared_pen_witness.rish).
+# Eight ships run this roster from eight checkouts and share one /tmp, so a pen named by a
+# constant is ONE directory on all eight: a peer's `rm -rf` lands mid-run and the reading becomes
+# a fact about the pen wearing the costume of a fact about Amphora. `mktemp -d` lets the kernel
+# pick the suffix, so no two runs can agree by accident, and the fresh directory is already empty
+# -- which is why the wipe-then-mkdir this replaced is gone rather than moved.
+# Full argument and the seated exemplar: tools/am/amphora_restore_negative_witness.rish.
+let pen = run ["sh" "-c" "mktemp -d /tmp/amphora_carry.XXXXXX"]
+assert pen.ok else "amphora_carry: pen must open"
+let home = trim pen.out
+let vessel = "${home}/v.bron"
+let dock = "${home}/dock"
 
 # The witness builds the binaries it runs, rather than assuming a previous lap left them
 # behind. amphora/bin/ is gitignored (.gitignore:336), so a clone carries none of them and
@@ -45,11 +53,11 @@ assert faropen.ok else "amphora_carry: far seal must open"
 let again = run ["amphora/bin/amphora" "carry" vessel dock]
 assert again.ok else "amphora_carry: re-carry must welcome"
 
-let forkprep = run ["sh" "-c" "rm -rf /tmp/amphora_carry_fork; cp -r ${season} /tmp/amphora_carry_fork; printf x >> /tmp/amphora_carry_fork/$(ls /tmp/amphora_carry_fork | head -1)"]
+let forkprep = run ["sh" "-c" "rm -rf ${home}/fork; cp -r ${season} ${home}/fork; printf x >> ${home}/fork/$(ls ${home}/fork | head -1)"]
 assert forkprep.ok else "amphora_carry: fork plant must prepare"
-let fv = run ["amphora/bin/amphora" "pour" "/tmp/amphora_carry_fork" "/tmp/amphora_carry_fork_vessel.bron"]
+let fv = run ["amphora/bin/amphora" "pour" "${home}/fork" "${home}/fork_v.bron"]
 assert fv.ok else "amphora_carry: fork pour must pass"
-let plant = run ["cp" "/tmp/amphora_carry_fork_vessel.bron" "${dock}/vessel.bron"]
+let plant = run ["cp" "${home}/fork_v.bron" "${dock}/vessel.bron"]
 assert plant.ok else "amphora_carry: fork plant at dock"
 let refused = run ["amphora/bin/amphora" "carry" vessel dock]
 assert (refused.ok == false) else "amphora_carry: forked dock must refuse"

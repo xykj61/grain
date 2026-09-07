@@ -9,10 +9,19 @@
 #   rishi/bin/rishi run tools/am/amphora_pour_negative_witness.rish
 
 let season = "tools/fixtures/cellar_ring1_tree"
-let vessel = "/tmp/amphora_pour_neg_vessel.bron"
 
-let clean = run ["rm" "-f" vessel]
-assert clean.ok else "amphora_pour_neg: temp clean must pass"
+# THE PEN CARRIES A UNIQUE NAME (REDS %512's class, held by tools/s/shared_pen_witness.rish).
+# Eight ships run this roster from eight checkouts and share one /tmp, so a pen named by a
+# constant is ONE directory on all eight: a peer's `rm -rf` lands mid-run and the reading becomes
+# a fact about the pen wearing the costume of a fact about Amphora. `mktemp -d` lets the kernel
+# pick the suffix, so no two runs can agree by accident, and the fresh directory is already empty
+# -- which is why the wipe-then-mkdir this replaced is gone rather than moved.
+# Full argument and the seated exemplar: tools/am/amphora_restore_negative_witness.rish.
+let pen = run ["sh" "-c" "mktemp -d /tmp/amphora_pour_neg.XXXXXX"]
+assert pen.ok else "amphora_pour_neg: pen must open"
+let home = trim pen.out
+let vessel = "${home}/v.bron"
+
 # The witness builds the binaries it runs, rather than assuming a previous lap left them
 # behind. amphora/bin/ is gitignored (.gitignore:336), so a clone carries none of them and
 # this witness died on a missing file rather than on an Amphora fact (REDS %334).
@@ -40,16 +49,16 @@ let fresh = run ["rm" "-f" vessel]
 assert fresh.ok else "amphora_pour_neg: refresh must pass"
 let reseed = run ["amphora/bin/amphora" "pour" season vessel]
 assert reseed.ok else "amphora_pour_neg: reseed must pass"
-let forkprep = run ["sh" "-c" "rm -rf /tmp/amphora_neg_fork; cp -r ${season} /tmp/amphora_neg_fork; printf x >> /tmp/amphora_neg_fork/$(ls /tmp/amphora_neg_fork | head -1)"]
+let forkprep = run ["sh" "-c" "rm -rf ${home}/fork; cp -r ${season} ${home}/fork; printf x >> ${home}/fork/$(ls ${home}/fork | head -1)"]
 assert forkprep.ok else "amphora_pour_neg: fork plant must prepare"
-let fork = run ["amphora/bin/amphora" "pour" "/tmp/amphora_neg_fork" vessel]
+let fork = run ["amphora/bin/amphora" "pour" "${home}/fork" vessel]
 assert (fork.ok == false) else "amphora_pour_neg: forked pour must refuse"
 assert fork.err contains "identity fork" else "amphora_pour_neg: fork must name its fault"
 let still = run ["amphora/bin/vessel-core" "verify" vessel]
 assert still.ok else "amphora_pour_neg: refused pour must clobber nothing"
 say "plant_fork=refused standing=untouched"
 
-let missing = run ["amphora/bin/amphora" "pour" "/tmp/amphora_neg_absent" "/tmp/amphora_neg_v2.bron"]
+let missing = run ["amphora/bin/amphora" "pour" "${home}/absent" "${home}/v2.bron"]
 assert (missing.ok == false) else "amphora_pour_neg: missing season must refuse"
 assert missing.err contains "season absent" else "amphora_pour_neg: absence must name its fault"
 say "plant_missing=refused"
