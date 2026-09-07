@@ -1,7 +1,7 @@
 # Two Rooms -- The Checkable and the Visionary
 
 **Language:** EN
-**Last updated:** `20260717` (Quin voice - doorway vocabulary named - living discipline refreshed)
+**Last updated:** `20260907.015907` (the three questions a Status line answers, named; doorway vocabulary and living discipline unchanged -- elder refresh `20260717`, Quin voice)
 **Style:** Gauge (see `GAUGE_STYLE.md`)
 **Voice:** Quin
 **Status:** Seated -- checkable-room canon; reviewed and kept `20260705.203144 UDT`; doorway witness from that stamp forward (`tools/t/two_rooms_doorway.rish`)
@@ -81,6 +81,33 @@ name the room in words the witness can bind. Accepted room tokens (case-insensit
 
 The witness is [`../tools/t/two_rooms_doorway.rish`](../tools/t/two_rooms_doorway.rish). A Status that
 says "design" or "study" alone, without one of those tokens, does not yet name the room.
+
+**The Status line answers more than one question, and the doorway reads one of them.** A page's
+`**Status:**` line gets asked for three different things at once, and the three come apart cleanly:
+
+| The question | The words that answer it | Who reads the answer |
+|---|---|---|
+| Where does this page stand in its life? | `Living`, `Landed`, `Seated`, `Design`, `Fossil`, `Elder` | a reader deciding whether to trust it as current |
+| Has a witness bound this claim yet? | `proven`, `proposed` | *witness before narrative*, above |
+| Which room does this page speak from? | `checkable`, `vision`, `mixed`, `research for understanding` | the doorway witness |
+
+**Carry the room token beside whatever else the line says.** Most of the tree already writes this
+way: measured `20260907` over tracked Markdown, **69** Status lines name `proposed` and **44 of
+them name a room token in the same line** -- `Mixed -- proposed`, `Proposed -- research for
+understanding`, `Vision -- ... a proposal, not a bound claim`. The habit is older than this
+paragraph, which is what makes it worth writing down.
+
+**`proposed` stays off the table above**, and the reason takes one sentence: a proposed claim lives
+in either room. A design a witness will bind next week is a proposed **checkable** claim; an image
+that orients years of work is **vision**. So the word says how far along a claim is, and leaves the
+register open -- which puts a Status naming only `proposed` exactly where one naming only `design`
+already stands.
+
+**What the quiet costs, measured `20260907`.** The doorway read 45 pages that name no room. Twenty-three
+named a lifecycle word and stopped there -- eleven `Living`, four `Landed`, two each of `Proposed`
+and `Design`, one each of `Seated`, `GRANTED`, `Fossil`, and `Elder`. Twenty-one carried no
+`Status` line at all, and one named its genre. Each of those twenty-three answers a real question
+honestly; the doorway asks a different one, and this page had yet to say so.
 
 ## How a Session Holds Visionary Material
 

@@ -1,0 +1,45 @@
+format session-log-v1
+stamp 20260907.050637
+editor Claude Code, terminal, unattended fleet loop
+provider Anthropic
+product Claude Code
+role Petrichor -- docs-geode and the prose product, grain-petrichor
+modality text
+model claude-opus-5
+model_status configured default proven by .claude/settings.json; no runtime telemetry exposed, so this names configuration rather than an active-runtime claim
+configured_model claude-opus-5
+configured_reasoning max
+configured_status tracked settings file
+evidence .claude/settings.json
+voice Kyri
+host Linux pier, Dallas, one clock America/New_York
+title A pen two runs both claimed
+prompt The standing fleet baton -- open the round, read the card whole, take the next agent-doable lap Lindy-first crux-first, reds first.
+rota lap 4144, row 4 -- Earth, the row that breathes in. Its discipline is the concrete fact taken in at the door, ahead of any argument about it. Reading the row surfaced two such facts, and the lap is made of them: the ITINERARY stood 6 bytes above the bound it declares, and 18 of the rota's own 20 pages name no room in a room the doorway guard never reads.
+think THE COLD OPEN CAME BACK 8 RED AND I READ THE VERDICTS BEFORE TOUCHING ANYTHING. 146 guards, 1464s, tree_moved=no. Six of the eight were mine to close, one is Keaton's word, and one closed the moment the others did.
+think ONE RED GREENED ALONE TWO MINUTES LATER, AND THAT IS THE INTERESTING KIND. foundations_link refused in the pass and read GREEN standalone with an empty evidence file. Green alone and red in company is a signature this tree has already written down, in the header of tools/fixtures/s/shared_pen_scan.sh, for a class it thought it had bounded.
+think THE MECHANISM IS TWO LINES OF SHELL. foundations_link_scan.sh wrote its link list to /tmp/fls_links.txt and its broken list to /tmp/fls_bad.txt -- both names fixed when the file was written rather than when it runs. Every run of that scan anywhere on the pier owns those two paths. My own standalone run, started beside the pass, wrote its control's four-link list over the field pass's 516; the field pass then read four links, found the control's planted break, and refused.
+think SHARED_PEN ALREADY COUNTED THE FILE AND ALREADY DECIDED IT WAS SAFE. Its --list names both sites and classes them hold rather than wipe, and its header gives the reasoning in one clause: a file that only WRITES a constant pen may interleave with a peer and survive. A redirection truncates. So a hold contended is a hold that loses, and the file that taught it was in the guard's own list the whole time.
+think THE DIRECTION THAT MATTERS IS THE ONE THAT DOES NOT ANNOUNCE ITSELF. A false red costs a pass and gets read. A peer writing a SHORT list makes a room full of dead links read links_broken=0 and exit 0, and nothing anywhere notices. So the control proves both, and proves the quiet one as hard as the loud one.
+think I ORDERED THE PROOF RATHER THAN RACING IT. A control that must win a race is a control that sometimes loses one. Two copies of the real scan are written by awk into a pen -- one with the pen name fixed at write time, both with a sleep planted between writing the list and reading it -- and the interference lands inside that window. plant_landed from tools/fixtures/p/plant.sh proves each copy differs from its source, so a plant that plants nothing says so by name (%519).
+obs FOUR READINGS, ALL FOUR AS ASSERTED. elder_false_red=yes -- a clean room made to read broken. elder_false_green=yes -- a room holding a real dead link read whole, exit 0. repaired_clean_reads_clean=yes and repaired_broken_still_refuses=yes under the identical interference, because a poisoner can name a pen chosen at write time and cannot name one chosen at run time.
+obs THE REPAIR IS ${TMPDIR:-/tmp}/fls-pen-$$, MADE AND TRAPPED. shared_pen fell 308 sites to 301 and 61 files to 60; its ceiling fell with it, and its header now says a hold is not the same as safe. 301 sites across 60 files still name a pen at write time, which is the population this lap did not touch.
+obs THE SECOND EARTH FACT WAS THE CARD ITSELF, AND IT REDDENED EVERY SHIP. construction/ITINERARY.md stood at 40,966 against the 40,960 it declares and construction/REDS.md at 42,062 -- so equinox_e123_living_pin_guard, declared_ceiling and reds_pin_capacity were three readings of two files. My landed Petrichor account folded to a shelf and my BOOKED row folded to another; the card closed at 40,910 and the pin at 40,924, 36 under.
+obs THE LEDGER CAUGHT ME SQUATTING A NUMBER, AND THE STAMP MADE THE REPAIR ONE LINE. reds_spine_derive read rebindings=1 squatters=1 double_booked=1 on %537: xy had spent that number on a peer's row stamped 20260907.004329 while mine carried 20260907.015907. Mine was unshared, so it renumbered to %538 -- and a tree-wide grep found exactly ONE living file spelling the number, because last lap cited its own row by stamp everywhere else. That is rule 4 of derived-spine paying for itself against the 20-to-36 files a shared %N reaches.
+obs THE ROTA'S OWN PAGES ARE THE BLIND SPOT I CAN MEASURE AND MAY NOT REPAIR. two_rooms_doorway reads external-research/, active-designing/ and docs/. foundations/ is none of them, and 65 of its 83 pages name no room -- 6 with no Status line at all. Of the 20 pages the council rota puts in front of every ship every day, exactly 2 name a room, and one of those two is context/TWO_ROOMS.md, which seats the law. The ceiling only falls, so widening the roster is not a lap's own act, and assigning a room to a page I did not write is the question already standing on the card.
+obs THE DAY SHELF WAS MISORDERED AND IT WAS MY OWN ROW SITTING WRONG. index_row_bound read rows_misordered=2 -- the top three rows of README-index-20260907.md stood ascending after a rebase auto-merged three hands' rows. %440's family, which the card names as mine. Sorted newest-first; verdict=ok.
+loom witness=standing_equipment_run scoped=yes guards=146 wall_s=1464 green=135 red=8 gated=3
+loom guard=foundations_link links_read=516 files_read=94 wall_s=1
+loom guard=shared_pen sites_before=308 sites_after=301 files_before=61 files_after=60
+loom pin=construction/ITINERARY.md bytes_before=40966 bytes_after=40910 bound=40960
+loom pin=construction/REDS.md bytes_before=42062 bytes_after=40924 bound=40960 headroom=36
+file tools/fixtures/f/foundations_link_scan.sh the pen is named at run time, made and trapped, and the header says why
+file tools/fixtures/f/foundations_link_control.sh the shared-pen leg, four readings, both directions ordered by a planted sleep
+file tools/f/foundations_link_witness.rish five new assertions so the roster hears the leg, and the mechanism in the header
+file tools/fixtures/s/shared_pen_scan.sh ceiling 61 to 60, and the hold-versus-wipe reasoning corrected by the case that broke it
+file construction/REDS.md %537 renumbered to %538 off the anointed spine, %538 folded, %539 booked, headline repaired
+file construction/ITINERARY.md the landed account folded, this lap's account written, the card back under its bound
+file construction/archive/REDS-the-word-a-gloss-could-not-bind-rows-551.md the shelf for the renumbered row, with what the renumber cost
+file construction/archive/20260907-050220_itinerary-landed-accounts.md the landed Petrichor account, links re-anchored one directory deeper
+file session-logs/date/README-index-20260907.md three rows sorted newest-first
+recommend keep-going -- the REDS pin closes 36 bytes under with one CLOSED row foldable, so the next lap opens by folding it; then the 301 remaining write-time pens, wiping subset first, now that a hold is known to lose. Whether the doorway roster may reach foundations/ -- 65 of 83 naming no room, 18 of the 20 rota pages among them -- stays Keaton's, since the ceiling only falls.

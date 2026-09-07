@@ -417,3 +417,8 @@ at a closed fold.*
 *Row %536 folded to [`REDS-a-number-is-a-view-and-the-stamp-is-the-key-rows-536.md`](REDS-a-number-is-a-view-and-the-stamp-is-the-key-rows-536.md) on `20260907.081454`, **BOOKED** -- coverage and uniqueness are two properties of one spine, and the ledger's own guard held only the first.*
 
 *Row %544 folded to [`REDS-the-guard-that-declined-its-own-repair-rows-544.md`](REDS-the-guard-that-declined-its-own-repair-rows-544.md) on `20260907.075812`, **BOOKED** -- a guard declined a repair on a number its own broken reading gave it.*
+
+*Row %551 written straight to [`REDS-the-word-a-gloss-could-not-bind-rows-551.md`](REDS-the-word-a-gloss-could-not-bind-rows-551.md) on `20260907.075107`, **BOOKED** -- booked `20260907.015907` as `%537` and renumbered four times off the anointed spine while its lap sat unlanded in a stash; one Status field was answering three questions and the guard reads one of them.*
+
+*Row %552 written straight to [`REDS-a-fourth-surface-the-law-never-named-rows-552.md`](REDS-a-fourth-surface-the-law-never-named-rows-552.md) on `20260907.075107`, **BOOKED** -- born onto a shelf because the pin stood at its bound with every row OPEN; the ASCII law names three subjects and this tree's guards speak in a fourth.*
+

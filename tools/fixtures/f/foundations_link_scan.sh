@@ -37,7 +37,18 @@ max_links=8192
 
 links=0
 broken=0
-: > /tmp/fls_bad.txt
+
+# The pen is named at RUN time, never at write time. Two ships run one roster from eight
+# checkouts, and a constant `/tmp/fls_links.txt` is the SAME file on every one of them -- so a
+# peer's run, or this witness's own control running beside its field pass, writes the list this
+# read then trusts. That is not a theoretical shape: on `20260907.043200` this pier's cold pass
+# refused here while the same scan ran GREEN alone two minutes later, because the control's
+# planted broken link arrived in the field pass's own link list. The dangerous direction is the
+# other one -- a peer writing a SHORT list makes a room full of broken links read `broken=0`.
+pen=${TMPDIR:-/tmp}/fls-pen-$$
+mkdir -p "$pen" || exit 2
+trap 'rm -rf "$pen"' EXIT INT TERM
+: > "$pen/bad"
 
 # The file bound is checked before the walk, never inside it: the walk's own output is redirected
 # to a file, so a refusal printed from within it would land in the temp file and never reach a
@@ -60,7 +71,7 @@ for f in $(find "$room" -name '*.md' -type f | sort); do
     esac
     printf '%s\t%s\n' "$dir" "${target%%#*}"
   done
-done > /tmp/fls_links.txt
+done > "$pen/links"
 
 while IFS="$(printf '\t')" read -r dir target; do
   [ -n "$target" ] || continue
@@ -70,17 +81,16 @@ while IFS="$(printf '\t')" read -r dir target; do
     exit 1
   fi
   if [ ! -e "$dir/$target" ]; then
-    echo "$dir -> $target" >> /tmp/fls_bad.txt
+    echo "$dir -> $target" >> "$pen/bad"
     broken=$((broken + 1))
   fi
-done < /tmp/fls_links.txt
+done < "$pen/links"
 
 echo "room=$room"
 echo "files_read=$files"
 echo "links_read=$links"
 echo "links_broken=$broken"
-if [ "$broken" -gt 0 ]; then sed 's/^/broken: /' /tmp/fls_bad.txt; fi
-rm -f /tmp/fls_bad.txt /tmp/fls_links.txt
+if [ "$broken" -gt 0 ]; then sed 's/^/broken: /' "$pen/bad"; fi
 
 if [ "$broken" -eq 0 ]; then echo "verdict=ok"; exit 0; fi
 echo "verdict=broken_link"

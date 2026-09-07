@@ -418,6 +418,22 @@ path tools/as/ascii_comment_witness.rish
 seated 20260825.011000
 tier cadence   # non-ASCII in every comment, held as a ratchet that only falls
 
+# spoken_ascii -- the ASCII-first law names three subjects, and the tree's guards speak in a fourth.
+# Both comment meters refuse to count "program content", and `ascii_comment_witness` gives the
+# reason in its own GREEN line: converting a string "changes what a program prints". That one
+# exclusion answers two questions. A heredoc body is what a program feeds ONWARD, and converting it
+# changes behavior -- rightly excluded, here as there. A `say` line is what a program says TO A
+# PERSON, on their terminal and into `session-output/`, and converting it changes register, which is
+# what the law governs. Measured 20260907.075500 over the same 2,387 `.rish` sources the comment
+# meter opens, under the same law, on the same run: 505 characters counted and held, against 11,154
+# counted by nothing -- and 11,154 is very nearly the 10,468 the comment surface itself stood at on
+# the day its own meter was built. Same files, same law, one sweep less of attention. `tier cadence`:
+# 10s, and it reads 2,387 files where a lap touches a handful.
+guard spoken_ascii
+path tools/s/spoken_ascii_witness.rish
+seated 20260907.075500
+tier cadence   # non-ASCII in what a Rishi guard says out loud, a ratchet that only falls
+
 guard comment_citation
 path tools/co/comment_citation_witness.rish
 seated 20260825.052000
