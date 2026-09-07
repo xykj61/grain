@@ -216,14 +216,14 @@ shape, so a cairn citing an archive shelf waits for a cold pass; four fired toda
 `readme_reach_scan` reads **1,808 documents in 295ms**, cheap enough for that debt.
 **Carried: 890** depth-lost links.
 
-**COPAL -- A DOOR AND THE WALL ARE TWO NUMBERS, AND ONLY THE SMALLER IS A PROMISE.**
-(`20260907.103031`) CLOSED, [folded](archive/REDS-a-door-and-the-wall-behind-it-rows-565.md);
-elder [shelved](archive/20260907-104723_itinerary-landed-accounts.md). Amphora's season door declared
-**16** files; 1,024 cargo bytes over an 85-byte line carry **12** -- exit 0 at 12, `cargo too
-large` at 13 to 16, **four slots unreachable at any name**. **No marker could spell it:** the
-relation is a PRODUCT where `couples`/`covers` compare bound to bound, so it went to the compiler
-**both ways** (`n*line <= roof`, `(n+1)*line > roof`), plants 11, 13, 16 each stopping the build.
-**Guard failed safe:** a draft DERIVED it and read `partner_absent` -- it reads a spelled value. **Yours:** a `band` word on a roster row; `ios_app_shell`, LOCA.
+**COPAL -- A READER THAT SKIPS WHAT IT CANNOT PARSE WALKS PAST ITS OWN SUBJECT.**
+Row `20260907.123037` **CLOSED**, [folded](archive/REDS-a-reader-that-walks-past-its-subject-rows-572.md); account [shelved](archive/20260907-123037_itinerary-landed-accounts.md). The bounds guard bound a marker by
+searching forward for the next const it could **parse** -- a spelled literal -- so a marker above a
+**derived** bound did not stop there; it continued, and decided against a stranger. **A roof of 40
+declared to cover 200, an `8192` below: `status=covers`, `verdict=ok`.** Bind, then classify. **10 of 16 bounds here
+are derived** -- the blind spot sat over the growing half. Ten legs; the tree stood still.
+**Yours:** teach it **arithmetic**, so a marker names a **product** and reaches
+`roof >= files * line`, the relation `%565` gave the compiler. Standing: a `band` word; `ios_app_shell`, LOCA.
 
 **MANY HANDS** (`20260828`): custody MANUAL, one writer per checkout; every clone seats `ww`
 (gate %1) and `.git/ssh_config_jail`.
