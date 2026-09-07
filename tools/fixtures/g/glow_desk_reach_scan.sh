@@ -2,10 +2,18 @@
 # tools/fixtures/g/glow_desk_reach_scan.sh -- which Glow desks does the desk witness actually run?
 #
 # WHY THIS EXISTS. glow/gen/ is the desk ROOM this meter reads, and exactly one
-# guard runs desks: tools/g/glow_run_desk_witness.rish, 1,133 lines of hand-written blocks that
+# guard ran desks: tools/g/glow_run_desk_witness.rish, 1,133 lines of hand-written blocks that
 # name their desks one at a time. A hand-written enumeration standing in for a population drifts
 # the moment the population grows, and nothing in this tree could see the drift. Measured
-# 20260907.020441: the witness names 218 desks and glow/gen/ holds 352. (This door read 213 and
+# 20260907.020441: the witness names 218 desks and glow/gen/ holds 352.
+#
+# A SECOND INSTRUMENT NOW RUNS DESKS, AND THIS READING WENT ON ASKING ONLY THE FIRST.
+# tools/fixtures/g/glow_desk_run_scan.sh, rostered 20260907.110022, derives the bare-runnable set
+# from the room on every pass and runs all 301 of it. For one lap after that landed, this scan
+# still read `covered` out of the elder witness alone and so reported 83 desks "run by nothing"
+# that a rostered guard was running -- two instruments answering differently about one population.
+# `covered` is a union from 20260907.122532, and `uncovered_bare` fell from a ratchet of 83 to a
+# gate at zero: what it counts now is a desk NOTHING runs, which is a fault rather than a backlog. (This door read 213 and
 # 134 for one lap -- the numbers a mis-collated `comm` produced before `LC_ALL=C` was exported
 # below, left standing in the prose when the fix landed in the code. A door that recites a
 # number its own body disproves is the drift this meter exists to catch, one room in.)
@@ -42,7 +50,9 @@
 #   norun_by_head   desks whose leading `::` comments declare Refuse or `do not glow_run`
 #   norun_disagree  the symmetric difference of those two           -- GATED AT ZERO
 #   declared_norun  the agreed set: a desk that says both ways it must not run
-#   covered         distinct desks the witness names
+#   covered_witness distinct desks the elder hand-written witness names
+#   covered_runner  distinct desks the derived runner selects and runs, asked by --list
+#   covered         their union -- what anything in this tree runs
 #   phantom         covered desks absent from disk                  -- GATED AT ZERO
 #   contradicted    declared_norun desks the witness runs anyway    -- GATED AT ZERO
 #   runnable        desks - declared_norun
@@ -51,7 +61,7 @@
 #   sample_phantom  permitted stems naming no .glow in the tree     -- GATED AT ZERO
 #   sample_permitted  desks in this room the worker will take a sample for
 #   uncovered_sampled uncovered desks the worker only runs WITH a sample  -- RATCHET
-#   uncovered_bare  uncovered desks the witness could name today    -- RATCHET
+#   uncovered_bare  bare-runnable desks NOTHING runs                 -- GATED AT ZERO
 #   corpus_glow     every *.glow in the tree, all rooms
 #   corpus_outside  those standing outside this room
 #   stem_collision  stems two or more *.glow files share
@@ -135,6 +145,7 @@ cd "$ROOT" || exit 2
 DESK_DIR=${GLOW_DESK_DIR:-glow/gen}
 WITNESS=${GLOW_DESK_WITNESS:-tools/g/glow_run_desk_witness.rish}
 WORKER=${GLOW_DESK_WORKER:-tools/g/glow_run_worker.sh}
+RUNNER=${GLOW_DESK_RUNNER:-tools/fixtures/g/glow_desk_run_scan.sh}
 
 # Bound: the corpus stood at 352 on 20260907 and grows by hand, a few desks a round. 4096 is a
 # power of two an order of magnitude above that -- high enough never to refuse honest growth, low
@@ -151,6 +162,10 @@ if [ ! -f "$WITNESS" ]; then
 fi
 if [ ! -f "$WORKER" ]; then
   echo "glow_desk_reach: no run worker at $WORKER" >&2
+  exit 2
+fi
+if [ ! -f "$RUNNER" ]; then
+  echo "glow_desk_reach: no derived runner at $RUNNER" >&2
   exit 2
 fi
 
@@ -188,9 +203,39 @@ norun_disagree=$(wc -l < "$WORK/disagree" | tr -d ' ')
 comm -12 "$WORK/norun_name" "$WORK/norun_head" > "$WORK/declared_norun"
 declared_norun=$(wc -l < "$WORK/declared_norun" | tr -d ' ')
 
-# What the witness names. A desk path in any position counts as covered -- the witness runs each
-# through glow_run and asserts the path back out of the claim line, so naming it is running it.
-grep -oE "$DESK_DIR/[A-Za-z0-9._-]+/[A-Za-z0-9._-]+\.glow" "$WITNESS" | sort -u > "$WORK/covered"
+# WHAT RUNS A DESK, READ FROM BOTH INSTRUMENTS. Two things run desks in this tree now, and until
+# 20260907.122532 this reading knew about one of them.
+#
+#   covered_witness  the desk paths tools/g/glow_run_desk_witness.rish names, one hand-written
+#                    block at a time. A desk path in any position counts: the witness runs each
+#                    through glow_run and asserts the path back out of the claim line, so naming
+#                    it is running it.
+#   covered_runner   the selection tools/fixtures/g/glow_desk_run_scan.sh derives from the room
+#                    and runs on every pass, asked for by name with --list so nothing is compiled
+#                    to answer the question.
+#
+# `covered` is their UNION, because the reading's own question is *does anything run this desk*.
+# Read from the witness alone it answered a narrower question -- does the ELDER witness name it --
+# and printed the answer under the wider question's name. That is how this scan came to report 83
+# bare-runnable desks "run by nothing" on a lap where a rostered guard ran all 83 of them; two
+# instruments answering differently about one population, which is the same braid this meter was
+# built to untangle, one turn further out.
+grep -oE "$DESK_DIR/[A-Za-z0-9._-]+/[A-Za-z0-9._-]+\.glow" "$WITNESS" | sort -u > "$WORK/covered_witness"
+covered_witness=$(wc -l < "$WORK/covered_witness" | tr -d ' ')
+
+# The runner is asked rather than re-derived. Deriving its selection a second time here would put
+# a fourth hand-written statement of the run-contract in the tree, which is the fault, not the fix.
+# --list prints one desk path a line and compiles nothing; a runner that cannot answer refuses the
+# whole reading rather than letting an empty answer read as an honest zero.
+if ! sh "$RUNNER" --list > "$WORK/runner_raw" 2>"$WORK/runner_err"; then
+  echo "glow_desk_reach: the derived runner refused --list (see below)" >&2
+  sed 's/^/  /' "$WORK/runner_err" >&2
+  exit 2
+fi
+grep -E "^$DESK_DIR/" "$WORK/runner_raw" | sort -u > "$WORK/covered_runner" || true
+covered_runner=$(wc -l < "$WORK/covered_runner" | tr -d ' ')
+
+sort -u "$WORK/covered_witness" "$WORK/covered_runner" > "$WORK/covered"
 covered=$(wc -l < "$WORK/covered" | tr -d ' ')
 
 comm -23 "$WORK/covered" "$WORK/desks" > "$WORK/phantom"
@@ -294,18 +339,27 @@ uncovered_bare=$(wc -l < "$WORK/uncovered_bare" | tr -d ' ')
 # the witness, so a control can move them by name and prove the refusal from both sides, and a
 # ceiling only falls. What changed on 20260907.020441 is that there are two of them:
 #
-#   uncovered_bare     83 -- a desk the witness can name in one three-line block, run bare
-#   uncovered_sampled  46 -- a desk the worker will only run WITH a sample the witness must choose
+#   uncovered_bare      0 -- a bare-runnable desk nothing runs. The derived runner closed this
+#                            debt on 20260907 by running the whole bare-runnable set, so the
+#                            ceiling is zero and the reading has changed character: it is no
+#                            longer a backlog counting down, it is a GATE on the two derivations
+#                            agreeing. This scan computes `runnable` by excluding the marker
+#                            INTERSECTION; the runner excludes by their UNION. Those agree only
+#                            while `norun_disagree` is zero, and the day a desk is half-declared
+#                            both readings fire together, which is the truth said twice rather
+#                            than once. A desk landing in a room the runner's selection misses
+#                            for any other reason reds here on the lap it arrives.
+#   uncovered_sampled  46 -- a desk the worker will only run WITH a sample somebody must choose
 #
-# The elder single ceiling of 129 could not tell those apart, and they are not the same debt. A
-# bare desk costs a line. A sampled desk costs a judgment -- what value proves this gate? -- and
+# The elder single ceiling of 129 could not tell those apart, and they were not the same debt. A
+# bare desk cost a line. A sampled desk costs a judgment -- what value proves this gate? -- and
 # then a fourth hand-written enumeration to hold the answer, which is the very shape %532 booked.
 # Worse, the sum hides a real fault: a sampled desk landing while a bare one is covered leaves 129
 # standing, and the elder gate reads that as no change.
 #
 # The sum is printed and DERIVED from the two rather than spelled, so it can never disagree with
 # its parts; the gates are on the parts.
-UNCOVERED_BARE_CEILING=${GLOW_DESK_UNCOVERED_BARE_CEILING:-83}
+UNCOVERED_BARE_CEILING=${GLOW_DESK_UNCOVERED_BARE_CEILING:-0}
 UNCOVERED_SAMPLED_CEILING=${GLOW_DESK_UNCOVERED_SAMPLED_CEILING:-46}
 UNCOVERED_CEILING=$((UNCOVERED_BARE_CEILING + UNCOVERED_SAMPLED_CEILING))
 
@@ -317,12 +371,12 @@ if [ "$norun_disagree" -ne 0 ]; then
 fi
 if [ "$phantom" -ne 0 ]; then
   verdict=phantom
-  echo "detail: the witness names desks that are not on disk --"
+  echo "detail: a desk named as covered is not on disk --"
   sed 's/^/  /' "$WORK/phantom"
 fi
 if [ "$contradicted" -ne 0 ]; then
   verdict=contradicted
-  echo "detail: the witness runs desks that declare they must not run --"
+  echo "detail: a covered desk declares it must not run --"
   sed 's/^/  /' "$WORK/contradicted"
 fi
 if [ "$sample_phantom" -ne 0 ]; then
@@ -346,6 +400,8 @@ echo "norun_by_name=$norun_by_name"
 echo "norun_by_head=$norun_by_head"
 echo "norun_disagree=$norun_disagree"
 echo "declared_norun=$declared_norun"
+echo "covered_witness=$covered_witness"
+echo "covered_runner=$covered_runner"
 echo "covered=$covered"
 echo "phantom=$phantom"
 echo "contradicted=$contradicted"

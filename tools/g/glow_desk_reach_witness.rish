@@ -1,9 +1,13 @@
 # glow_desk_reach_witness.rish -- the desk witness's reach over the Glow desk corpus.
 #
-# Holds four readings at zero and two ratchets under ceilings that only fall, over
+# Holds five readings at zero and one ratchet under a ceiling that only falls, over
 # tools/fixtures/g/glow_desk_reach_scan.sh. The scan's own head carries the reasoning; the short
 # form is that glow/gen/ holds 352 generated desks and exactly one guard runs any of them, by a
 # hand-written enumeration of 218 that nothing derives and nothing measured until now.
+#
+# The fifth zero arrived 20260907.122532, when `covered` learned to read the derived runner beside
+# the elder witness. For one lap the two answered differently about one population: the runner ran
+# 301 desks on a roster while this reading called 83 of them run by nothing.
 #
 # The fourth zero and the second ratchet arrived 20260907.020441. The witness runs every desk it
 # names with ZERO arguments, and tools/g/glow_run_worker.sh refuses an argument for any stem
@@ -39,27 +43,58 @@ assert scan.out contains "contradicted=0" else "glow_desk_reach: the desk witnes
 # over, and gated for the same reason. Held at zero.
 assert scan.out contains "sample_phantom=0" else "glow_desk_reach: the run worker permits a sample for a stem that names no Glow file"
 
-# invariant: the two uncovered populations only fall, each on its own repair. 83 bare desks cost
-# one three-line block apiece; 46 sample-taking desks cost a judgment -- what argument proves this
-# gate? -- and then a fourth hand-written enumeration to hold the answers, which is the shape %532
-# booked. Ratchets rather than gates because the backlog was not made today, and a guard that reds
-# on ordinary work is a guard somebody turns off. Two ceilings rather than one because their sum
-# hid a real fault: cover one bare desk while a sample-taking desk lands, and 129 stood unchanged.
-assert scan.out contains "uncovered_bare_ceiling=83" else "glow_desk_reach: the bare ceiling stands where it was measured -- a ceiling only falls"
+# invariant: `covered` reads BOTH instruments that run desks in this tree, and prints each apart.
+# It read the elder hand-written witness alone until 20260907.122532, so it reported 83 desks "run
+# by nothing" on a lap where the rostered derived runner ran all 83 -- two instruments answering
+# differently about one population. The union is the answer to the question the reading's own name
+# asks; the parts stay printed so the elder witness's own drift is still visible beside it.
+assert scan.out contains "covered_witness=" else "glow_desk_reach scan printed no witness coverage count"
+assert scan.out contains "covered_runner=" else "glow_desk_reach scan printed no derived-runner coverage count"
+
+# invariant: nothing bare-runnable is run by nothing. This fell from a ratchet of 83 to a gate at
+# zero when the derived runner landed and ran the whole bare-runnable set. Its character changed
+# with its number: it is no longer a backlog counting down, it is the gate on two derivations
+# agreeing. tools/fixtures/g/glow_desk_reach_scan.sh excludes by the markers' INTERSECTION and
+# tools/fixtures/g/glow_desk_run_scan.sh by their UNION, so a desk half-declared reddens here and
+# at norun_disagree together -- the truth said twice rather than once.
+assert scan.out contains "uncovered_bare_ceiling=0" else "glow_desk_reach: the bare ceiling stands at zero -- a ceiling only falls"
+
+# invariant: the sample-taking population only falls. Those 46 desks cost a judgment apiece --
+# what argument proves this gate? -- and then a fourth hand-written enumeration to hold the
+# answers, which is the shape %532 booked. A ratchet rather than a gate because the backlog was
+# not made today, and a guard that reds on ordinary work is a guard somebody turns off.
 assert scan.out contains "uncovered_sampled_ceiling=46" else "glow_desk_reach: the sampled ceiling stands where it was measured -- a ceiling only falls"
 
 # invariant: the printed sum is its two parts added, never a third spelled number that could
 # drift from them.
-assert scan.out contains "uncovered_ceiling=129" else "glow_desk_reach: the sum ceiling must equal 83 + 46"
+assert scan.out contains "uncovered_ceiling=46" else "glow_desk_reach: the sum ceiling must equal 0 + 46"
 assert scan.out contains "verdict=ok" else "glow_desk_reach: the scan refused -- ${scan.out}"
 
 # invariant: both refusal paths are reachable. A ceiling proven only in the passing direction
 # cannot be told from a bypass, so the guard drops each ceiling one under its live reading in turn
 # and requires the scan to refuse, naming each refusal apart from the marker gates and from the
 # other ceiling.
-let under_bare = run ["sh" "-c" "GLOW_DESK_UNCOVERED_BARE_CEILING=82 sh tools/fixtures/g/glow_desk_reach_scan.sh"]
-assert (under_bare.ok == false) else "glow_desk_reach: a bare ceiling one under the live reading must refuse"
+# The bare gate stands at zero, so it cannot be proven by dropping the ceiling one further. It is
+# proven instead by taking the second instrument away: a runner selecting nothing leaves exactly
+# the 83 desks the elder witness never named run by nothing, on the live tree, and the gate fires.
+# This is the reading as it stood one lap ago, made reachable on purpose rather than remembered.
+let mute = run ["sh" "-c" "echo '#!/bin/sh' > /tmp/glow_desk_reach_mute.sh; echo 'exit 0' >> /tmp/glow_desk_reach_mute.sh"]
+assert mute.ok else "glow_desk_reach: could not write the silent runner -- ${mute.err}"
+
+let under_bare = run ["sh" "-c" "GLOW_DESK_RUNNER=/tmp/glow_desk_reach_mute.sh sh tools/fixtures/g/glow_desk_reach_scan.sh"]
+assert (under_bare.ok == false) else "glow_desk_reach: with the derived runner silent, the desks it alone runs must refuse at a bare ceiling of zero"
 assert under_bare.out contains "verdict=over_bare_ceiling" else "glow_desk_reach: want the bare ceiling refusal named -- ${under_bare.out}"
+assert under_bare.out contains "covered_runner=0" else "glow_desk_reach: want the silent runner counted as covering nothing -- ${under_bare.out}"
+
+# invariant: a runner that cannot answer refuses the whole reading. An empty selection and an
+# absent instrument look identical in the arithmetic and mean opposite things, so the scan names
+# the fault rather than letting a broken runner read as clean coverage of nothing.
+let no_runner = run ["sh" "-c" "GLOW_DESK_RUNNER=/tmp/glow_desk_reach_absent.sh sh tools/fixtures/g/glow_desk_reach_scan.sh"]
+assert (no_runner.ok == false) else "glow_desk_reach: an absent derived runner must refuse"
+assert no_runner.err contains "no derived runner" else "glow_desk_reach: want the absent runner named -- ${no_runner.err}"
+
+let sweep = run ["rm" "-f" "/tmp/glow_desk_reach_mute.sh"]
+assert sweep.ok else "glow_desk_reach: could not clear the silent runner -- ${sweep.err}"
 
 let under_sampled = run ["sh" "-c" "GLOW_DESK_UNCOVERED_SAMPLED_CEILING=45 sh tools/fixtures/g/glow_desk_reach_scan.sh"]
 assert (under_sampled.ok == false) else "glow_desk_reach: a sampled ceiling one under the live reading must refuse"
@@ -81,7 +116,7 @@ assert scan.out contains "stem_collision=" else "glow_desk_reach scan printed no
 
 # invariant: the reading itself is proven on real desk rooms rather than trusted. The control
 # builds miniature desk rooms in a throwaway pen and plants each refusal, then lifts it --
-# 60 behaviors, both sides of every gate and of both ceilings, and the two gates proven
+# 81 behaviors, both sides of every gate and of both ceilings, and the two gates proven
 # independent: a sample-taking desk refuses at its own ceiling while the bare ceiling stands at
 # zero, which is the reading the elder sum could not express. The last of them is the one that
 # earns the prune: a permission whose only file is a build-cache leftover reads phantom, where the
@@ -90,4 +125,4 @@ let control = run ["sh" "tools/fixtures/g/glow_desk_reach_control.sh"]
 assert control.ok else "glow_desk_reach control failed: ${control.out}"
 assert control.out contains "fail=0" else "glow_desk_reach control reported failures: ${control.out}"
 
-say "GREEN: glow_desk_reach -- markers agree, no phantom, no contradiction, no dead permission, uncovered 83 bare and 46 sample-taking at their own ceilings, the room named apart from the corpus, both refusals proven, 60 control behaviors green."
+say "GREEN: glow_desk_reach -- markers agree, no phantom, no contradiction, no dead permission, covered read from both instruments as a union, zero bare-runnable desks run by nothing and 46 sample-taking at their ceilings, the room named apart from the corpus, both refusals proven, 81 control behaviors green."

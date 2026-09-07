@@ -38,7 +38,24 @@ newpen() {
   mkdir -p "$d/tools/fixtures/g" "$d/tools/g" "$d/glow/gen/g" "$d/glow/gen/s"
   cp "$scan" "$d/tools/fixtures/g/glow_desk_reach_scan.sh"
   worker "$d" ""
+  runner "$d" ""
   echo "$d"
+}
+
+# A stub derived runner. The scan asks the runner for its selection with --list rather than
+# re-deriving it, so a pen can hand it any answer and the reading is proven against what it was
+# TOLD rather than against what this control could recompute. Left empty the stub selects nothing,
+# which is exactly the tree as it stood before the derived runner existed -- so every case written
+# against the elder witness-only reading keeps its arithmetic unchanged.
+runner() {
+  {
+    printf '#!/bin/sh\n'
+    printf 'case "${1:-}" in --list) ;; *) echo "stub: run not implemented" >&2; exit 2 ;; esac\n'
+    # The selection is emitted as `echo` LINES rather than bare paths: a bare path in a shell
+    # script is a command, and the stub's first version tried to execute the desks it was meant
+    # to name -- exit 127, which the scan read as a runner that could not answer.
+    for _rn_desk in $2; do printf 'echo %s\n' "$_rn_desk"; done
+  } > "$1/tools/fixtures/g/glow_desk_run_scan.sh"
 }
 
 # A miniature run worker. The scan reads its `case` PATTERN lines for the sample-permission list,
@@ -271,6 +288,92 @@ desk "$d6/glow/gen/g/gate-cached.glow"
 runscan "$d6" "$pen/o" GLOW_DESK_UNCOVERED_BARE_CEILING=9 GLOW_DESK_UNCOVERED_SAMPLED_CEILING=9
 check ok "$(field "$pen/o" verdict)" "a real desk of that stem lifts the refusal"
 check 0 "$(field "$pen/o" sample_phantom)" "and the permission reads live again"
+
+# --- 14. covered reads BOTH instruments, and their union is what `covered` means ---------------
+# Until 20260907.122532 `covered` was the elder hand-written witness alone, so this scan reported
+# desks "run by nothing" that the derived runner ran on every pass. The union is proven here from
+# every side: each instrument alone, the two together with no double count, and the refusal that
+# stands when neither one reaches a desk.
+d7=$(newpen union)
+desk "$d7/glow/gen/g/gate-by-witness.glow"
+desk "$d7/glow/gen/g/gate-by-runner.glow"
+printf 'let a = run ["glow/gen/g/gate-by-witness.glow"]\n' > "$d7/tools/g/glow_run_desk_witness.rish"
+
+runscan "$d7" "$pen/o" GLOW_DESK_UNCOVERED_BARE_CEILING=0 GLOW_DESK_UNCOVERED_SAMPLED_CEILING=0
+check over_bare_ceiling "$(field "$pen/o" verdict)" "with the runner selecting nothing, the desk it would run reads uncovered"
+check 1 "$(field "$pen/o" covered_witness)" "the witness reading stands alone and is counted alone"
+check 0 "$(field "$pen/o" covered_runner)" "and the runner reading is honestly zero"
+
+runner "$d7" "glow/gen/g/gate-by-runner.glow"
+runscan "$d7" "$pen/o" GLOW_DESK_UNCOVERED_BARE_CEILING=0 GLOW_DESK_UNCOVERED_SAMPLED_CEILING=0
+check ok "$(field "$pen/o" verdict)" "the runner selecting that desk lifts the refusal -- the repair, proven"
+check 1 "$(field "$pen/o" covered_runner)" "the runner reading is counted"
+check 2 "$(field "$pen/o" covered)" "covered is the union of the two, not either one"
+check 0 "$(field "$pen/o" uncovered_bare)" "and nothing is left that neither instrument runs"
+
+# A desk both instruments claim is counted once. A union that double-counted would read coverage
+# past the size of the room, which is the one arithmetic a reader could not catch by eye.
+runner "$d7" "glow/gen/g/gate-by-runner.glow glow/gen/g/gate-by-witness.glow"
+runscan "$d7" "$pen/o" GLOW_DESK_UNCOVERED_BARE_CEILING=0 GLOW_DESK_UNCOVERED_SAMPLED_CEILING=0
+check 2 "$(field "$pen/o" covered)" "a desk both instruments run is covered once"
+check ok "$(field "$pen/o" verdict)" "and the room still reads ok"
+
+# The runner cannot smuggle in a desk the room does not hold, nor one that declares it must not
+# run: both gates read the union, so a runner claiming either is refused rather than believed.
+norun "$d7/glow/gen/g/gate-seven-refuse.glow"
+runner "$d7" "glow/gen/g/gate-seven-refuse.glow"
+runscan "$d7" "$pen/o" GLOW_DESK_UNCOVERED_BARE_CEILING=9 GLOW_DESK_UNCOVERED_SAMPLED_CEILING=9
+check contradicted "$(field "$pen/o" verdict)" "a runner selecting a declared-unrunnable desk refuses"
+runner "$d7" "glow/gen/g/gate-nowhere.glow"
+runscan "$d7" "$pen/o" GLOW_DESK_UNCOVERED_BARE_CEILING=9 GLOW_DESK_UNCOVERED_SAMPLED_CEILING=9
+check phantom "$(field "$pen/o" verdict)" "a runner naming a desk that is not on disk refuses"
+
+# --- 15. a runner that cannot answer refuses the whole reading ---------------------------------
+# An empty selection and an unreadable runner look identical in the arithmetic and mean opposite
+# things, so the scan refuses by name rather than letting a broken instrument read as clean
+# coverage of nothing -- the same shape case 6 proves for the witness.
+d8=$(newpen norunner)
+desk "$d8/glow/gen/g/gate-one.glow"
+printf 'let a = run ["glow/gen/g/gate-one.glow"]\n' > "$d8/tools/g/glow_run_desk_witness.rish"
+rm -f "$d8/tools/fixtures/g/glow_desk_run_scan.sh"
+( cd "$d8" && sh tools/fixtures/g/glow_desk_reach_scan.sh ) > "$pen/o" 2>&1 && rc=0 || rc=$?
+check 2 "$rc" "a missing derived runner refuses by name rather than reading zero coverage"
+
+printf '#!/bin/sh\nexit 3\n' > "$d8/tools/fixtures/g/glow_desk_run_scan.sh"
+( cd "$d8" && sh tools/fixtures/g/glow_desk_reach_scan.sh ) > "$pen/o" 2>&1 && rc=0 || rc=$?
+check 2 "$rc" "a runner that refuses --list refuses the reading rather than counting its silence"
+
+runner "$d8" "glow/gen/g/gate-one.glow"
+runscan "$d8" "$pen/o" GLOW_DESK_UNCOVERED_BARE_CEILING=0 GLOW_DESK_UNCOVERED_SAMPLED_CEILING=0
+check ok "$(field "$pen/o" verdict)" "a runner that answers lifts both refusals"
+
+# --- 16. the real derived runner, against the real derivation ----------------------------------
+# The two scripts derive the run-contract by rules that are not identical -- this scan excludes by
+# the markers' INTERSECTION, the runner by their UNION -- so they agree only while norun_disagree
+# is zero. Proven here with the actual runner rather than a stub, which is what makes uncovered_bare
+# a gate on that agreement rather than a backlog counting down.
+d9=$(newpen real)
+cp "$root/tools/fixtures/g/glow_desk_run_scan.sh" "$d9/tools/fixtures/g/glow_desk_run_scan.sh"
+desk "$d9/glow/gen/g/gate-one.glow"
+desk "$d9/glow/gen/g/gate-two.glow"
+norun "$d9/glow/gen/g/gate-three-refuse.glow"
+: > "$d9/tools/g/glow_run_desk_witness.rish"
+runscan "$d9" "$pen/o" GLOW_DESK_UNCOVERED_BARE_CEILING=0 GLOW_DESK_UNCOVERED_SAMPLED_CEILING=0
+check ok "$(field "$pen/o" verdict)" "the real runner covers the bare-runnable set with no witness at all"
+check 0 "$(field "$pen/o" covered_witness)" "the elder witness names nothing here"
+check 2 "$(field "$pen/o" covered_runner)" "and the runner selects every bare-runnable desk"
+check 0 "$(field "$pen/o" uncovered_bare)" "so the bare gate reads zero on the real pair"
+
+# The half-declared desk: this scan calls it runnable, the runner declines it. Both readings fire,
+# which is the truth said twice rather than once, and the bare gate is what makes the second half
+# visible at all.
+printf '::  Refuse desk -- head says so, name does not.\n|^  sample\nsample\n' > "$d9/glow/gen/g/gate-half.glow"
+runscan "$d9" "$pen/o" GLOW_DESK_UNCOVERED_BARE_CEILING=0 GLOW_DESK_UNCOVERED_SAMPLED_CEILING=0
+check 1 "$(field "$pen/o" norun_disagree)" "a half-declared desk is a marker disagreement"
+check 1 "$(field "$pen/o" uncovered_bare)" "and the runner declining it leaves it run by nothing"
+rm -f "$d9/glow/gen/g/gate-half.glow"
+runscan "$d9" "$pen/o" GLOW_DESK_UNCOVERED_BARE_CEILING=0 GLOW_DESK_UNCOVERED_SAMPLED_CEILING=0
+check ok "$(field "$pen/o" verdict)" "removing it returns both readings to zero"
 
 echo "glow_desk_reach control: pass=$pass fail=$fail"
 [ "$fail" -eq 0 ] || exit 1

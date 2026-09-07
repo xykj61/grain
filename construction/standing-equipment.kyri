@@ -607,6 +607,14 @@ seated 20260827.183635
 # All 46 are uncovered and none is covered, so the boundary was the instrument's shape rather than
 # anyone's oversight. Two ratchets now: 83 bare desks that cost one block each, 46 sample-taking
 # desks that cost a chosen argument first. The sum is derived from them, so it cannot drift.
+#
+# 20260907.122532 -- the bare ratchet became a gate at zero, because `covered` learned to read both
+# instruments. The derived runner below landed and was rostered, and for one lap this reading went
+# on deriving `covered` from the elder hand-written witness alone -- printing 83 desks "run by
+# nothing" while a guard on this very roster ran all 83. `covered` is the union of `covered_witness`
+# and `covered_runner` now, the runner asked with --list rather than derived a second time. What
+# `uncovered_bare` counts is a desk NOTHING runs, which makes it the gate on the two derivations
+# agreeing: this scan excludes by the markers' intersection, the runner by their union.
 guard glow_desk_reach
 path tools/g/glow_desk_reach_witness.rish
 tier lap
