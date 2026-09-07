@@ -1,0 +1,44 @@
+format session-log-v1
+stamp 20260907.080925
+editor Claude Code, terminal
+provider Anthropic
+product Claude Code
+role grass -- the auditing seat, tree grain-grass
+modality text
+model claude-opus-5
+model_status active runtime, self-reported by the harness environment block; no telemetry endpoint read
+configured_model claude-opus-5
+configured_reasoning max
+configured_status .claude/settings.json, tracked, proves the default rather than this session
+voice Kyri
+host linux pier, one clock America/New_York
+title An absence is well-formed on both sides
+prompt An unattended auditing lap under the baton; rota lap 4154, row 4.
+rota lap 4154, row 4 -- Earth, the row that breathes in. Its cardinal seat is the clock and the mark, whose law is count, never number; reading that seat against the operator card is what found this red, and the row's own sense is why -- aroma takes in the concrete fact at the door, and the card's Waymarks section named thirteen ladders where the registry holds thirty.
+think Opened with fleet_round_open.sh -- already on the anointed order, with one unlanded log and three orphan files in the dead-letter box, none of them mine. Started a scoped cold roster pass in the background and held the tree still while it ran, doing reads only.
+think Last lap's recommend line asked one question: how many OTHER living totals in this tree are carried rather than derived. So the lap began as a census. A grep for number-words followed by a countable noun across 829 living pages returned 71 "four laws", 65 "two rooms", 25 "eight ships" and a long tail, and most of it is lawful -- a total local to one paragraph, or a measurement bound to a stamp, which Gauge asks for rather than forbids.
+think The class that actually drifts is narrower: a living page carrying the ROSTER of a collection some other file owns. Two instances stood. "Eight ships" is correct today against construction/fleet-roster.kyri, which reads eight live of twelve seats -- exposure rather than a fault. The operator card's Waymarks section was the fault: it enumerated nine elder ladders plus four Compass ones, thirteen, while construction/waymark-registry.bron holds 28 living marks and .claude/rules/waymark-ladders.md seats 30.
+think Then the sharper half, one layer down. tools/fixtures/w/waymark_table_registry_completeness.sh exists precisely to compare those two rosters, and it reads ONE direction -- every table mark has a registry row. It was written for AHOY, which stood in the table with no registry row, and it never asked the reverse.
+obs An absence is well-formed on BOTH sides, and the unread direction is the likelier one. The registry re-seals itself as part of a draw, so a drawn mark lands there by machinery; the readable face waits on a hand. So the side that drifts is the face, and the face was the side nobody read.
+obs Today the reverse reading is clean -- all 28 living marks stand in the table -- so the guard lands green rather than red. That is the honest outcome and it is worth saying plainly: the repair is a wall built before the wave, not after it. The instance the law's own lantern found was the operator card, which is neither roster and enumerated anyway.
+obs The two exclusions are load-bearing and the control asserts them as hard as the refusals. The registry deliberately records four abandoned draws redrawn before use, and three hand-seated NAMES that are not ladders at all -- SEVA, MAND, MONA, which the rule keeps on its exclude roster. Gating the whole registry would refuse the tree for telling the truth about a draw it declined.
+obs The one thing status cannot do is tell a hand-seated LADDER from a hand-seated NAME -- SETU and POLE belong in the table, the other three do not, and only the note prose says so. Those five are reported by name and left ungated. A kind field would close it, and editing the registry breaks its seal, so the re-seal is Keaton's word.
+obs The card repair is the same move %545 made one room over: a pointer points. The Waymarks section now names the registry, the face, and the guard that holds them in agreement, plus the live chapter's four -- and no roster at all.
+obs Grading pushed one frame, worked down at depth 2. The extended scan read C+/78 on its own comments, register 50 against Door's 80, because a header about what goes wrong reads as fifty percent negative sentences. Rewritten to lead with what the guard does and what holds, every fact kept, it reads B+/88.
+obs The pin was at 40,333 of 40,960 with ten OPEN rows and nothing closed to move, so the row was booked and folded to its own shelf in the same lap through reds_fold.sh -- last lap's pattern, and the reason the ledger's byte bound is on the card as Keaton's.
+obs Two reds stood in the cold pass and neither is mine: shell_dialect refuses on one gated sed -i site, and stash_record on a peer's parked lap, with standing_equipment reading both back. Both were proven pre-existing by stashing this lap's work and re-running.
+obs The hot pass died at 51 lines of about 165 with no run_verdict line, and my own waiting shell took exit 144 beside it -- %541 seen from a third angle. A peer's `pkill -f standing_equipment_run` reaches eight trees, and a shell WAITING on that name matches the pattern as surely as the pass itself does. The re-run finished clean, so the loss was time rather than truth.
+obs The row booked as %548 and landed as %550. Upstream published its own %548 while this lap ran, and the rebase brought it down as a conflict in the fold recital -- so the shelf was renamed, its two spellings swept, and the recital line rewritten. The stamp `20260907.080356` never moved, which is the key doing its job.
+obs The card cites the row by stamp and names no shelf link, because `unshared_citation` reads a shelf basename holding an unshared number as a citation of it -- which is derived-spine rule 4 arriving through a filename rather than through prose. The link belongs on a later lap, once the spine has bound the number.
+loom witness=waymark_registry wall_s=3 table_marks=30 registry_living=28 absent_from_registry=0 absent_from_table=0 hand_seated_reported=3 control_behaviors=17 control_failures=0
+loom pass=standing_equipment_cold scoped=yes guards_run=150 guards_seconds=920 guards_green=144 guards_red=3 guards_gated=3
+loom census=carried_totals living_pages=829 phrase_hits_top=four_laws:71 two_rooms:65 eight_ships:25 rosters_drifted=1
+file tools/fixtures/w/waymark_table_registry_completeness.sh the reverse direction added, absent_from_table gated at zero, abandoned draws and hand-seated names excluded by design and reported by name
+file tools/fixtures/w/waymark_table_registry_control.sh seventeen behaviors on throwaway pens, both directions planted and lifted, the two exclusions asserted as hard as the refusals
+file tools/w/waymark_registry_witness.rish the control wired in, the completeness assertion reworded to name both ways, the GREEN line saying what now holds
+file construction/ITINERARY.md the Waymarks section carries no roster, and the GRASS block swapped for this account
+file construction/archive/REDS-a-completeness-guard-that-read-one-direction-rows-555.md the row's shelf, folded on the lap that booked it because the pin stood at its bound
+file construction/archive/20260907-080356_itinerary-landed-accounts.md the elder GRASS card account, shelved whole
+file construction/archive/REDS-fold-recital.md the fold's own row, written by the tool
+file session-logs/date/README-index-20260907.md this lap's row
+recommend keep-going -- the same reading one room over is unmeasured: every OTHER pair of rosters in this tree where one file is the authority and another is its readable face. construction/standing-equipment.kyri and the guards on disk are one such pair, and %532 already booked a hand-named desk list that the corpus grew past; a guard comparing a roster to what it claims to describe is the shape, and it has now fired twice.

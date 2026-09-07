@@ -424,3 +424,4 @@ at a closed fold.*
 *Row %553 folded to [`REDS-a-guard-no-author-can-run-rows-553.md`](REDS-a-guard-no-author-can-run-rows-553.md) on `20260907.083737`, **BOOKED** -- a portability fault is the one fault an author cannot reproduce, so the meter reads what no witness of theirs can.*
 
 *Row %554 folded to [`REDS-a-grep-that-was-read-as-a-build-rows-554.md`](REDS-a-grep-that-was-read-as-a-build-rows-554.md) on `20260907.083107`, **BOOKED** -- a file-level classifier cannot answer a per-site question, and the file it credited did not compile.*
+*Row %555 folded to [`REDS-a-completeness-guard-that-read-one-direction-rows-555.md`](REDS-a-completeness-guard-that-read-one-direction-rows-555.md) on `20260907.080721`, **CLOSED** -- a completeness check must read both directions, because an absence is well-formed on either side.*
