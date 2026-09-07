@@ -1204,6 +1204,105 @@ else
 fi
 rm -rf "$lockpen/lock.d"
 
+# THE SHAPE THE FLEET ACTUALLY MAKES, and the one the plant above cannot reach. The orphan above is
+# two generations -- parent exits, child adopted by init -- and the parent reading catches it. A lap
+# that launches its hot pass detached makes THREE: `( sh runner --hot > out; echo EXIT=$? ) &` forks
+# a subshell to carry the compound command, so the runner's parent is that subshell. When the lap
+# ends it is the SUBSHELL that reparents to init, while the runner's own ppid goes on naming a live
+# process. The parent reading answers `alive` for a lap that has gone, which is how a pass came to
+# hold this tree's lock at `20260906.231137` while the next seat was refused with no repair named.
+#
+# The plant reproduces it in three processes, and `set -m` is what makes it reachable at all. A
+# LEADER shell backgrounds a MIDDLE shell and exits at once; the middle shell reparents to init,
+# stays alive, and spawns the planted HOLDER. All three share the leader's process group, so the
+# holder ends with a live parent and a leader that has gone -- the real case, exactly.
+#
+# WHY `set -m`. Job control is off in a non-interactive shell, so `&` starts no new process group
+# and every plant would simply inherit THIS control's group, whose leader is alive for as long as
+# the control runs -- which is how the first draft of this case read `unavailable` on a host that
+# could make the shape perfectly well. `set -m` is POSIX and turns the backgrounded leader into the
+# leader of its own group, which is the one thing the plant needs and cannot fake.
+cat > "$lockpen/deep-leader.sh" <<'EOF'
+sh "$1" "$2" &
+EOF
+cat > "$lockpen/deep-middle.sh" <<'EOF'
+sleep 45 &
+printf '%s\n' "$!" > "$1"
+sleep 45
+EOF
+rm -f "$lockpen/deep.pid"
+sh -c 'set -m; sh "$0" "$1" "$2" &' \
+  "$lockpen/deep-leader.sh" "$lockpen/deep-middle.sh" "$lockpen/deep.pid"
+deep=""
+for _try in 1 2 3 4 5 6 7 8 9 10; do
+  deep=$(cat "$lockpen/deep.pid" 2>/dev/null || true)
+  [ -n "$deep" ] && break
+  sleep 1
+done
+deep_parent=$(ps -o ppid= -p "$deep" 2>/dev/null | tr -d ' ')
+deep_group=$(ps -o pgid= -p "$deep" 2>/dev/null | tr -d ' ')
+deep_group_alive=$(ps -o pid= -p "$deep_group" 2>/dev/null | tr -d ' ')
+# VERIFIED BEFORE IT IS TRUSTED, the same discipline the two-generation plant keeps. The plant has
+# only taken when the holder's parent is ALIVE and not init -- otherwise this is the elder orphan
+# wearing a new name -- and when its group leader has actually gone. A host that arranges either
+# differently reads `unavailable` rather than failing for the host's reason.
+if [ -n "$deep" ] && [ -n "$deep_parent" ] && [ "$deep_parent" != 1 ] && [ -z "$deep_group_alive" ]; then
+  echo "deep_orphan_plant=ok"
+  mkdir -p "$lockpen/lock.d"
+  printf '%s\n' "$deep" > "$lockpen/lock.d/pid"
+  rm -f "$lockpen/deep-card.kyri"
+  deep_out=$(run_locked lock.d deep-card.kyri 2>&1)
+  deep_err=$( ( cd "$lockpen" && STANDING_ROSTER=roster.kyri STANDING_CARD=deep-err.kyri \
+      STANDING_LOCK=lock.d sh "$runner" 2>&1 >/dev/null ) || true )
+  # THE LOAD-BEARING READING. The elder parent check must still answer `alive` here -- that is the
+  # defect, shown rather than described -- while the pass is nonetheless called gone. A control
+  # that only proved the new reading fires could not tell a widened check from one that had merely
+  # started saying `gone` about everything.
+  case "$deep_out" in *"parent=alive"*) echo "deep_orphan_parent_reads_alive=yes" ;; *) echo "deep_orphan_parent_reads_alive=no" ;; esac
+  case "$deep_out" in *"group_leader=gone"*) echo "deep_orphan_group_reads_gone=yes" ;; *) echo "deep_orphan_group_reads_gone=no" ;; esac
+  case "$deep_out" in *"lap=gone"*) echo "deep_orphan_lap_reads_gone=yes" ;; *) echo "deep_orphan_lap_reads_gone=no" ;; esac
+  case "$deep_out" in *"run_verdict=run_in_flight"*) echo "deep_orphan_still_refuses=yes" ;; *) echo "deep_orphan_still_refuses=no" ;; esac
+  # The repair is named for this shape too, and the sentence says which reading fired, since a hand
+  # reading `parent=alive` beside `stop it` deserves to be told why those two stand together.
+  case "$deep_err" in *"kill -TERM $deep"*) echo "deep_orphan_names_the_repair=yes" ;; *) echo "deep_orphan_names_the_repair=no" ;; esac
+  case "$deep_err" in *"process group leader has exited"*) echo "deep_orphan_names_the_reading=yes" ;; *) echo "deep_orphan_names_the_reading=no" ;; esac
+  # AND IT STILL TAKES NO ACTION, exactly as the two-generation case must not (REDS %291).
+  if kill -0 "$deep" 2>/dev/null; then echo "deep_orphan_left_running=yes"; else echo "deep_orphan_left_running=no"; fi
+  if [ -d "$lockpen/lock.d" ]; then echo "deep_orphan_keeps_its_lock=yes"; else echo "deep_orphan_keeps_its_lock=no"; fi
+  kill "$deep" 2>/dev/null || true
+else
+  echo "deep_orphan_plant=unavailable"
+fi
+rm -rf "$lockpen/lock.d"
+
+# THE NEGATIVE SIDE OF THE GROUP READING, and it needs its own plant. The live case above holds the
+# lock with this control's own pid, whose group leader is whatever launched the control -- true, and
+# not something this file may assume. So a holder is made whose group leader is certainly alive:
+# a background child of this shell, sharing this shell's group. Verified before it is trusted, and
+# `unavailable` where the host arranges groups differently, since a reading proven only where it
+# fires cannot be told from one that is stuck on.
+sleep 45 & live_holder=$!
+live_group=$(ps -o pgid= -p "$live_holder" 2>/dev/null | tr -d ' ')
+live_group_alive=$(ps -o pid= -p "$live_group" 2>/dev/null | tr -d ' ')
+if [ -n "$live_group_alive" ]; then
+  echo "live_group_plant=ok"
+  mkdir -p "$lockpen/lock.d"
+  printf '%s\n' "$live_holder" > "$lockpen/lock.d/pid"
+  rm -f "$lockpen/live-group-card.kyri"
+  live_out=$(run_locked lock.d live-group-card.kyri 2>&1)
+  case "$live_out" in *"group_leader=alive"*) echo "live_group_reads_alive=yes" ;; *) echo "live_group_reads_alive=no" ;; esac
+  case "$live_out" in *"lap=alive"*) echo "live_lap_reads_alive=yes" ;; *) echo "live_lap_reads_alive=no" ;; esac
+  # A live lap earns no repair advice: the refusal's own sentence, read its output, is the whole
+  # answer, and a `kill -TERM` printed beside a running lap would invite exactly the cross-hand act.
+  live_err=$( ( cd "$lockpen" && STANDING_ROSTER=roster.kyri STANDING_CARD=live-group-err.kyri \
+      STANDING_LOCK=lock.d sh "$runner" 2>&1 >/dev/null ) || true )
+  case "$live_err" in *"kill -TERM"*) echo "live_lap_names_no_repair=no" ;; *) echo "live_lap_names_no_repair=yes" ;; esac
+else
+  echo "live_group_plant=unavailable"
+fi
+kill "$live_holder" 2>/dev/null || true
+rm -rf "$lockpen/lock.d"
+
 # A lock whose owner has died is reaped rather than waited out, so a killed pass costs one retry
 # rather than every later pass. The pid is a child run and waited on, which has certainly exited.
 # The lock is re-made first: a runner that wrongly released the holder's lock leaves nothing to
