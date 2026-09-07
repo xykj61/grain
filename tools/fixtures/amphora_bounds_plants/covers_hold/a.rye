@@ -1,0 +1,4 @@
+//! Plant -- a declared order that holds (negative control).
+//! The wider ceiling names the narrower one it must cover.
+/// covers: b.max_partner
+const max_local: u32 = 800;

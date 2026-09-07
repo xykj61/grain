@@ -3,11 +3,17 @@
 # Path C (e146): leave every home as it is; prove agreement with a witness.
 # e147: also alias value groups (1024 under three names - 340 under two widths).
 # e148: declared `/// couples:` markers -- coupling named, never inferred.
+# REDS `20260906.193823`: declared `/// covers:` markers -- an ORDER, not an equality. The
+#   three readings above can each state only `A == B`, and the relations that
+#   decide whether Amphora refuses a pour are `A >= B`: a door that welcomes a
+#   name the record describing it cannot hold. Both instances refused honestly
+#   and both refused LATE, at a wall nothing had declared.
 #
 # Planted pairs before totals are believed:
 #   same-name disagree MUST fail - same-name agree MUST pass
 #   alias disagree MUST fail - alias agree MUST pass
 #   couples disagree MUST fail - couples agree MUST pass
+#   covers short MUST fail - covers holding MUST pass
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/am/amphora_bounds_agree.rish
@@ -19,6 +25,8 @@ let alias_agree = "tools/fixtures/amphora_bounds_plants/alias_agree"
 let alias_disagree = "tools/fixtures/amphora_bounds_plants/alias_disagree"
 let couples_agree = "tools/fixtures/amphora_bounds_plants/couples_agree"
 let couples_disagree = "tools/fixtures/amphora_bounds_plants/couples_disagree"
+let covers_hold = "tools/fixtures/amphora_bounds_plants/covers_hold"
+let covers_short = "tools/fixtures/amphora_bounds_plants/covers_short"
 
 let pos = run ["env" "AMPHORA_BOUNDS_ROOT=${disagree}" "sh" scan]
 assert (pos.ok == false) else "amphora_bounds_agree: disagree plant must FAIL"
@@ -52,6 +60,19 @@ assert cneg.ok else "amphora_bounds_agree: couples agree must PASS"
 assert cneg.out contains "couples_status=agree" else "couples agree must name agree"
 say "plant_couples_negative=honored"
 
+# The short plant carries Amphora's own `20260906` numbers -- 200 covering 512
+# -- so the refusal this leg proves is the one the living tree actually had.
+let vpos = run ["env" "AMPHORA_BOUNDS_ROOT=${covers_short}" "sh" scan]
+assert (vpos.ok == false) else "amphora_bounds_agree: covers short must FAIL"
+assert vpos.out contains "covers_status=short" else "covers short must name short"
+assert vpos.out contains "_slack=-312" else "covers short must print the signed gap"
+say "plant_covers_positive=honored"
+
+let vneg = run ["env" "AMPHORA_BOUNDS_ROOT=${covers_hold}" "sh" scan]
+assert vneg.ok else "amphora_bounds_agree: covers holding must PASS"
+assert vneg.out contains "covers_status=hold" else "covers holding must name hold"
+say "plant_covers_negative=honored"
+
 let living = run ["sh" scan]
 assert living.ok else "amphora_bounds_agree: living amphora must agree"
 assert living.out contains "verdict=ok" else "amphora_bounds_agree: living missing ok"
@@ -61,5 +82,7 @@ assert living.out contains "bound_digest_hex_len_status=agree" else "living dige
 assert living.out contains "alias_cargo_ceiling_status=agree" else "living cargo_ceiling alias"
 assert living.out contains "alias_datagram_status=agree" else "living datagram alias"
 assert living.out contains "couples_status=agree" else "living couples must agree"
+assert living.out contains "covers_status=hold" else "living covers must hold"
+assert living.out contains "cover_max_manifest_name_len_to_main_max_season_name_len_status=covers" else "living season door must fit the listing"
 say living.out
-say "GREEN: amphora_bounds_agree -- same-name - alias - couples - planted pairs - no rename."
+say "GREEN: amphora_bounds_agree -- same-name - alias - couples - covers - planted pairs - no rename."

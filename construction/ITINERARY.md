@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `b561023bcc` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `24036a1a66` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY's `%516` and `%517` accounts, both CLOSED, folded whole** to the
 [`222720` shelf](archive/20260906-222720_itinerary-landed-accounts.md), their rows folded in the
@@ -170,7 +170,7 @@ from a parked stash is invisible to `--next` twice over.*
 **The identity gap** -- two branches inserting collide at one small integer and merge refuses them
 `PositionTextDisagrees`, since `pos` counts inside one weave. Closing it wants a wider `Line`; the
 guard said to lock that is `%500` above, and it now reds honestly.
-**`%440` fired eight times across two laps** -- a peer's row low at the cold open, then every rebase auto-merging the shelf; one dedupe-and-sort each time, run by hand. **Yours.**
+**`%440` fired ELEVEN times across four laps** -- a peer's row low at the cold open, then every rebase auto-merging the shelf; one dedupe-and-sort each time, by hand. **Yours.**
 
 
 
@@ -194,11 +194,12 @@ owes a debt for rule ONE only**, so the twice-pulled send walks around the wall.
 **37,317**, both GREEN. **Class sized, NOT taken: eight ships run that file. Yours.**
 **Carried: 890** depth-lost links.
 
-**COPAL -- `%502` CLOSED** ([shelf](archive/REDS-a-number-and-a-path-name-two-rows-rows-502.md)):
-existence and agreement are two questions, and a `%N` that OPENS a real shelf holding another row
-resolves and never reds -- four shipped in one day, `readme_reach` named one. `%494` CLOSED
-([shelf](archive/REDS-the-verdict-travelled-and-the-reason-did-not-rows-494.md)), ratchet 43 of 52.
-**`%493` still OPEN, not mine.** **Yours from `%485`:** `source_port` is still the machine's.
+**COPAL -- A ROW'S NUMBER MOVED TWELVE TIMES IN ONE DAY AND ITS STAMP NEVER MOVED ONCE.** Both
+stranded packages landed (`20260906.154105`, `20260906.193823`): `/// covers:` declares an ORDER
+now, slack signed, where `amphora_bounds_agree` could only compare equality. **Four fetches, four
+renumbers.** `unshared_citation` landed mid-round and found **13 citations in 10 of my files**;
+living surfaces cite the stamp now. **Yours, priced:** should an OPEN row carry a claim, a seat
+and a stamp, at START?
 
 **The live front** (condensed `20260831.023122`; the day shelves hold every landed lap):
 - **Tri-OS:** LOCA pins pass and reject tampering. Pier proof awaits `libwayland-client` and

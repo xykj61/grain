@@ -1,0 +1,2 @@
+//! Plant -- a declared order that is SHORT (positive control).
+pub const max_partner: u16 = 512;

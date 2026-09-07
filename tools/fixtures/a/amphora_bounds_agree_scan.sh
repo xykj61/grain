@@ -10,6 +10,15 @@
 # (3) Declared couples (e148): `/// couples: <module>.<name>` above a const
 #     must match the partner's VALUE (width free; report widths). Coupling is
 #     declared, never inferred -- coincidences carry no marker.
+# (4) Declared covers (REDS `20260906.193823`): `/// covers: <module>.<name>` above a const
+#     means THIS bound must be >= that partner. Every relation the three
+#     readings above can state is an EQUALITY, and the relations that decide
+#     whether a pour refuses are ORDERS -- a door that admits what the record
+#     it feeds cannot hold. Measured `20260906`: Amphora's season door welcomed
+#     a 512-character name into a 200-character listing contract, and its
+#     manifest roof was declared equal to the cargo roof while needing three
+#     bytes more per line. Both refused honestly and both refused LATE, at a
+#     wall nothing had declared.
 #
 # Hardcodes no declaration count. Discovers under AMPHORA_BOUNDS_ROOT
 # (default: amphora).
@@ -238,6 +247,82 @@ else
   fi
 fi
 rm -f "$COUPLE_HITS"
+
+# Declared covers -- parse `/// covers: module.name` then the next const.
+# The marker asserts an ORDER: this const must be >= the partner it names.
+# Discovers marker count; hardcodes no expectation of how many exist.
+COVER_HITS=$(mktemp)
+rg -n --no-heading -g '*.rye' '/// covers: ([a-z0-9_]+)\.([a-z0-9_]+)' "$ROOT" 2>/dev/null \
+  >"$COVER_HITS" || true
+COVER_N=$(wc -l <"$COVER_HITS" | tr -d ' ')
+echo "covers_declarations=${COVER_N}"
+
+if [ "$COVER_N" -eq 0 ]; then
+  # Unlike couples, an absent covers marker is not a fault anywhere: a root
+  # whose bounds stand in no declared order has nothing to state.
+  echo "covers_status=absent"
+else
+  COVER_FAIL=0
+  COVER_OK=0
+  while IFS= read -r hit; do
+    [ -z "$hit" ] && continue
+    file=${hit%%:*}
+    rest=${hit#*:}
+    line=${rest%%:*}
+    text=${rest#*:}
+    partner=$(printf '%s\n' "$text" | sed -E 's/.*\/\/\/ covers: ([a-z0-9_]+)\.([a-z0-9_]+).*/\1.\2/')
+    pmod=${partner%%.*}
+    pname=${partner#*.}
+
+    SRC_SIG=$(awk -v start="$line" '
+      NR > start && /^(pub )?const [a-zA-Z0-9_]+: u[0-9]+ = [0-9]+;/ {
+        print; exit
+      }
+    ' "$file" | sed -E 's/^(pub )?const ([a-zA-Z0-9_]+): (u[0-9]+) = ([0-9]+);/\2:\3=\4/')
+
+    if [ -z "$SRC_SIG" ]; then
+      echo "cover_${pmod}_${pname}_status=orphan_marker"
+      COVER_FAIL=1
+      continue
+    fi
+
+    src_name=${SRC_SIG%%:*}
+    src_tv=${SRC_SIG#*:}
+    src_type=${src_tv%%=*}
+    src_val=${src_tv#*=}
+
+    DST_SIG=$(partner_value "$pmod" "$pname")
+    if [ -z "$DST_SIG" ]; then
+      echo "cover_${src_name}_to_${pmod}_${pname}_status=partner_absent"
+      echo "cover_${src_name}_to_${pmod}_${pname}_src=${src_type}=${src_val}"
+      COVER_FAIL=1
+      continue
+    fi
+    dst_type=${DST_SIG%%=*}
+    dst_val=${DST_SIG#*=}
+
+    echo "cover_${src_name}_to_${pmod}_${pname}_src=${src_type}=${src_val}"
+    echo "cover_${src_name}_to_${pmod}_${pname}_dst=${dst_type}=${dst_val}"
+    # The order, and the slack, so a reader sees how close the wall stands.
+    echo "cover_${src_name}_to_${pmod}_${pname}_slack=$((src_val - dst_val))"
+    if [ "$src_val" -ge "$dst_val" ]; then
+      echo "cover_${src_name}_to_${pmod}_${pname}_status=covers"
+      COVER_OK=$((COVER_OK + 1))
+    else
+      echo "cover_${src_name}_to_${pmod}_${pname}_status=short"
+      COVER_FAIL=1
+    fi
+  done <"$COVER_HITS"
+
+  echo "covers_hold_count=${COVER_OK}"
+  if [ "$COVER_FAIL" -ne 0 ]; then
+    echo "covers_status=short"
+    FAIL=1
+  else
+    echo "covers_status=hold"
+  fi
+fi
+rm -f "$COVER_HITS"
 
 if [ "$FAIL" -ne 0 ]; then
   echo "verdict=misread"

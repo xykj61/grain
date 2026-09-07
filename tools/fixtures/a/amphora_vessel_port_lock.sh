@@ -8,10 +8,38 @@
 # and the answer it waits for never comes. Measured 20260906 before the module was bounded, two
 # witnesses started together stalled past ten minutes where each alone finishes in two seconds.
 #
-# THE LOCK IS TAKEN AT A HOST PATH, on purpose. shell_portable.sh's lock_acquire is usually handed
-# a path under the tree root, which is right for a resource the tree owns; a lock under eight roots
-# is eight locks and no mutual exclusion at all. This one sits under TMPDIR and is named for the
-# port, so a hand who finds it knows what is held and by which pid.
+# HOW WIDE THIS LOCK IS, MEASURED IN THE CONFIGURATION THAT IS RUNNING. The header above read
+# *the lock is taken at a HOST path, on purpose ... a lock under eight roots is eight locks and no
+# mutual exclusion at all*, and chose TMPDIR to escape those eight roots. Whether TMPDIR escapes
+# them is a fact about how the ship was LAUNCHED, so it is measured here rather than assumed.
+#
+# ON THIS PIER, `20260906.175330`, TMPDIR IS HOST-WIDE and this lock does the job it claims. Five
+# fleet loops and eight trees stood live. Every fleet process shared one mount namespace
+# (`mnt:[4026531832]`, the host's initial one); this tree read a peer ship's
+# `/tmp/grass-cold-open.txt` while that ship was writing it, and read
+# `/home/keeper/grain-grass/README.md` besides. The roster agreed from its own side, skipping
+# `agent_jail_enclosure` with `wants=jail_nesting here=absent`.
+#
+# A JAILED SHIP GIVES THE OPPOSITE ANSWER, and that reading is real too. Measured inside the
+# enclosure the same day: a private mount namespace, `/tmp` the ship's own tmpfs, and a private PID
+# table, so the `kill -0` testing a lock owner's liveness reads another ship's number. There this
+# file is eight locks -- the shape it was written to avoid. Both readings are honest and they
+# describe different launches, so the elder line *the lock reaches one tree, not the pier* is true
+# jailed and false bare, and it was written as though the launch were settled. That is this row's
+# own subject one level up: an environment claim is one command from being a measurement, and
+# WHICH CONFIGURATION IS RUNNING is part of the claim. REDS `20260906.154105`.
+#
+# WHAT IT STILL DOES, under either launch. It excludes two runs WITHIN one tree, which is what its
+# own measurement above actually proved -- two `chunkdemo` runs started together, necessarily in
+# one checkout. That is a real job and this file does it.
+#
+# WHAT COVERS THE PIER UNDER EITHER LAUNCH. `amphora/vessel_fetch_delivery.rye` no longer sets
+# SO_REUSEADDR, so a second reacher for a held port is refused by the kernel with
+# `error.BindFailed`. That refusal is taken in the NETWORK namespace, which reads
+# `net:[4026531833]` both inside the enclosure and outside it -- the same inode, because ai-jail is
+# Landlock, and Landlock is a filesystem LSM that never touches networking. So it is exactly as
+# wide as the resource however the ship started, and it is the only mutual exclusion here whose
+# width is not a question about the launch.
 #
 # WHAT THIS IS NOT. It is not the repair -- the repair is in the module, which now binds before it
 # sends, holds one socket across an exchange, and bounds every receive with a named error. This is
