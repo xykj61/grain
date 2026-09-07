@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260907.164619` | [The lap that arrived a lap late](20260907/20260907-164619_the-lap-that-arrived-a-lap-late.kyri) | a finished round recovered from the stash. |
 | `20260907.155948` | [a-number-written-four-times](20260907/20260907-155948_a-number-written-four-times.kyri) | A fold shelf spells its number four times; one guard read one. |
 | `20260907.155025` | [A reading of nothing is not clean](20260907/20260907-155025_a-reading-of-nothing-is-not-a-clean-tree.kyri) | a scan fed nothing printed a swept tree's bytes. |
 | `20260907.153124` | [A wall built for a red a peer had already walled](20260907/20260907-153124_a-wall-built-for-a-red-a-peer-had-already-walled.kyri) | withdrawn; %573 survived it. |
