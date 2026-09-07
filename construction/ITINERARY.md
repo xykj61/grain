@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `628dfd0edf` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `643297da32` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE BOX HELD A DAY'S INSTRUMENTS, AND THE LAP THAT BUILT THEM DIED IN ITS HOT PASS.**
 Landed whole from `stash@{0}`, witnesses **56 + 24 behaviors, faults 0**: `scope_rank` --
