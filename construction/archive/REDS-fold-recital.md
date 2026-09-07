@@ -441,3 +441,4 @@ at a closed fold.*
 
 *Row %564 folded to [`REDS-a-ratchet-whose-repair-is-the-defect-rows-564.md`](REDS-a-ratchet-whose-repair-is-the-defect-rows-564.md) on `20260907.110139`, **BOOKED** -- a ratchet whose only named repair reproduces the defect, and the measurement that opened the other road.*
 *Row %565 folded to [`REDS-a-door-and-the-wall-behind-it-rows-565.md`](REDS-a-door-and-the-wall-behind-it-rows-565.md) on `20260907.103031`, **CLOSED** -- a door promising sixteen over a roof carrying twelve -- only the smaller number was ever a promise.*
+*Row %567 folded to [`REDS-the-day-that-had-not-started-rows-567.md`](REDS-the-day-that-had-not-started-rows-567.md) on `20260907.120033`, **CLOSED** -- an empty corpus is sometimes answered by a different corpus rather than by a refusal.*

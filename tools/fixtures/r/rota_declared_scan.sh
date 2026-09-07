@@ -22,6 +22,9 @@
 #   sh tools/fixtures/r/rota_declared_scan.sh list       # one line per undeclared log
 #   ROTA_DAY=YYYYMMDD sh tools/fixtures/r/rota_declared_scan.sh
 #
+# `day_source` names which day answered: `open` when today held a corpus, `fallback` when the newest
+# earlier shelf did, `asked` when a caller named the day. See the walk below for why midnight needs it.
+#
 # THE FIELD HAS A FORM FOR AN HONEST ABSENCE. `rota none -- pure repair, no rota this lap` counts as
 # declared, because the record then says which of the three things happened rather than leaving a
 # reader to guess. Seated in the baton `20260907.002044` so every ship reads it.
@@ -31,26 +34,64 @@
 # one that skipped it, and a gate unable to tell them apart would red on honest work, which is the
 # gate everybody turns off.
 #
-# BOUNDS: one day shelf, at most 400 logs, at most 200 reported.
+# BOUNDS: one day shelf, at most 400 logs, at most 200 reported, at most 7 shelves walked back.
 set -eu
 
 root=${ROTA_ROOT:-$(CDPATH= cd -- "$(dirname -- "$0")/../../.." && pwd)}
 cd "$root"
 
 MODE=${1:-count}
+DAY_ASKED=${ROTA_DAY:-}
 DAY=${ROTA_DAY:-$(TZ=America/New_York date +%Y%m%d)}
 MAX_LOGS=400
 MAX_REPORT=200
-
-shelf="session-logs/date/$DAY"
-[ -d "$shelf" ] || { echo "refused: no day shelf at $shelf -- nothing to read" >&2; exit 2; }
+# How many shelves back the walk below may look before it refuses. Seven is a working week, so a
+# fleet that stops for a weekend still reads its last real corpus, and a tree genuinely abandoned
+# for longer refuses rather than reporting a fortnight-old census as though it were today's.
+MAX_LOOKBACK=7
 
 work=$(mktemp -d "${TMPDIR:-/tmp}/rota-declared.XXXXXX")
 trap 'rm -rf "$work"' EXIT INT TERM
 
-git ls-files "$shelf/*.kyri" | head -"$MAX_LOGS" > "$work/logs.txt"
-# A CORPUS OF ZERO IS A RED, NEVER A READING (REDS %170).
-[ -s "$work/logs.txt" ] || { echo "refused: the day shelf holds no tracked logs -- every count below would read zero" >&2; exit 2; }
+# invariant: a corpus of zero is a red, never a reading (REDS %170) -- so the day this scan reports
+# is always a day that actually holds tracked logs.
+tracked_logs() {
+  git ls-files "session-logs/date/$1/*.kyri" | head -"$MAX_LOGS" > "$work/logs.txt"
+  [ -s "$work/logs.txt" ]
+}
+
+# THE OPEN DAY IS EMPTY AT MIDNIGHT, AND THAT IS A CLOCK FACT RATHER THAN A FAULT. The subject was
+# `today` alone, so between 00:00 and the day's first COMMITTED log there is nothing to count and
+# the scan refused -- daily, on every ship, healing itself an hour later. A withheld receipt makes
+# every ship pay a full cold pass, so an ordinary daily state read as somebody's fault.
+#
+# A named day still refuses. A caller who writes ROTA_DAY asked about THAT day and is owed the
+# refusal rather than a silent answer about another one; only the open day, which nobody named,
+# falls back to the newest shelf that holds a corpus.
+#
+# The walk reads SHELF NAMES on disk in descending order rather than doing date arithmetic, so it
+# needs no second reading of what yesterday is, and it never reads a shelf dated ahead of the day
+# asked for.
+if [ -n "$DAY_ASKED" ]; then
+  day_source=asked
+  [ -d "session-logs/date/$DAY" ] || { echo "refused: no day shelf at session-logs/date/$DAY -- nothing to read" >&2; exit 2; }
+  tracked_logs "$DAY" || { echo "refused: the day shelf holds no tracked logs -- every count below would read zero" >&2; exit 2; }
+else
+  day_source=open
+  if ! tracked_logs "$DAY"; then
+    day_source=fallback
+    found=
+    seen=0
+    for d in $(ls -1 session-logs/date 2>/dev/null | grep -E '^[0-9]{8}$' | sort -r); do
+      [ "$d" -gt "$DAY" ] && continue
+      seen=$((seen + 1))
+      [ "$seen" -gt "$MAX_LOOKBACK" ] && break
+      if tracked_logs "$d"; then found=$d; break; fi
+    done
+    [ -n "$found" ] || { echo "refused: no shelf within $MAX_LOOKBACK of $DAY holds tracked logs -- every count below would read zero" >&2; exit 2; }
+    DAY=$found
+  fi
+fi
 
 logs=$(wc -l < "$work/logs.txt" | tr -d ' ')
 field=0; prose=0; silent=0
@@ -81,6 +122,7 @@ if [ "$MODE" = list ]; then
 fi
 
 echo "day=$DAY"
+echo "day_source=$day_source"
 echo "logs=$logs"
 echo "rota_field=$field"
 echo "prose_only=$prose"

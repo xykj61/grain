@@ -4,9 +4,13 @@
 # Each of the three answers is planted and then changed into another, because a census that sorts
 # into three buckets is only proven when a member of each is shown moving to the right neighbour.
 #
+# The last seven cases prove the day the census reads, which is a separate claim from what it counts:
+# an open day with no corpus falls back to the newest shelf that has one and says so, a day a caller
+# NAMED still refuses, and the walk back stops at seven shelves.
+#
 #   sh tools/fixtures/r/rota_declared_control.sh
 #
-# Prints `pass=N fail=N`. Bounded: 11 cases, one pen holding a throwaway git repository.
+# Prints `pass=N fail=N`. Bounded: 18 cases, one pen holding a throwaway git repository.
 set -eu
 
 root=$(CDPATH= cd -- "$(dirname -- "$0")/../../.." && pwd)
@@ -62,6 +66,41 @@ if ROTA_ROOT="$pen" ROTA_DAY=19990101 sh "$scan" >/dev/null 2>&1; then
   check "an absent shelf refuses" refused accepted
 else
   check "an absent shelf refuses" refused refused
+fi
+
+# THE MIDNIGHT LEG. With no ROTA_DAY the subject is the open day, and the pen holds no shelf for
+# today at all -- which is exactly the state every real tree is in between 00:00 and its first
+# committed log. The scan answers from the newest shelf that holds a corpus and says which.
+open_out=$(ROTA_ROOT="$pen" sh "$scan" 2>&1)
+check "an empty open day falls back"      yes "$(has "$open_out" 'day_source=fallback')"
+check "and names the shelf it read"       yes "$(has "$open_out" 'day=20260101')"
+check "and counts that shelf's corpus"    yes "$(has "$open_out" 'rota_field=3')"
+
+# The same fallback covers the second half of the midnight state: a shelf that EXISTS while its
+# logs are still untracked. `git ls-files` reads the index, so an uncommitted log is invisible and
+# the count would read zero over a directory that plainly has files in it.
+today=$(TZ=America/New_York date +%Y%m%d)
+mkdir -p "$pen/session-logs/date/$today"
+printf 'stamp %s.000100\nrota lap 1, row 0\n' "$today" > "$pen/session-logs/date/$today/${today}-000100_untracked.kyri"
+untracked_out=$(ROTA_ROOT="$pen" sh "$scan" 2>&1)
+check "an untracked open day falls back"  yes "$(has "$untracked_out" 'day_source=fallback')"
+check "and still reads the older shelf"   yes "$(has "$untracked_out" 'day=20260101')"
+
+# A NAMED DAY IS NOT RESCUED. A caller who writes ROTA_DAY asked about that day; answering from
+# another one would report a census under a heading nobody asked for.
+if ROTA_ROOT="$pen" ROTA_DAY="$today" sh "$scan" >/dev/null 2>&1; then
+  check "a named empty day still refuses" refused accepted
+else
+  check "a named empty day still refuses" refused refused
+fi
+
+# AND THE WALK IS BOUNDED. Seven empty shelves stand between the open day and the corpus, so the
+# eighth step is never taken and the scan refuses rather than reporting a stale census as today's.
+for d in 20260102 20260103 20260104 20260105 20260106 20260107 20260108; do mkdir -p "$pen/session-logs/date/$d"; done
+if ROTA_ROOT="$pen" sh "$scan" >/dev/null 2>&1; then
+  check "the walk back is bounded" refused accepted
+else
+  check "the walk back is bounded" refused refused
 fi
 
 printf 'pass=%d fail=%d\n' "$pass" "$fail"
