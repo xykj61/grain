@@ -12,6 +12,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | Stamp | Log | What it recorded |
 |---|---|---|
 | `20260907.123841` | [The meter that read one of two instruments](20260907/20260907-123841_the-meter-that-read-one-of-two-instruments.kyri) | covered is a union; bare gate 83 -> 0. |
+| `20260907.124006` | [a reader that walks past its own subject](20260907/20260907-124006_a-reader-that-walks-past-its-subject.kyri) | A marker bound to a stranger: 40 covering 200 read ok. |
 | `20260907.111550` | [the ratchet whose only repair was the defect](20260907/20260907-111550_the-ratchet-whose-only-repair-was-the-defect.kyri) | 301 desks derived and run; %565. |
 | `20260907.120346` | [The day that had not started](20260907/20260907-120346_the-day-that-had-not-started.kyri) | %567: a census whose day was "today" refused every midnight. |
 | `20260907.105712` | [A declared absence is not breakage](20260907/20260907-105712_a-declared-absence-is-not-breakage.kyri) | %562: 88 of 173 lost were honest rows. |

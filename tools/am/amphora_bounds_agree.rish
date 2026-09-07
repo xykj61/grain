@@ -14,6 +14,19 @@
 #   alias disagree MUST fail - alias agree MUST pass
 #   couples disagree MUST fail - couples agree MUST pass
 #   covers short MUST fail - covers holding MUST pass
+#   a marker above a DERIVED bound MUST fail, naming marker_on_derived
+#   a marker whose partner is DERIVED MUST fail, naming partner_derived
+#
+# REDS `20260907.123037`: a marker binds to the const BENEATH IT, whatever form
+#   its value takes. Reading only literal consts made the walk step over a
+#   derived bound and decide the relation against a stranger further down the
+#   file -- proven in a pen, a forty-byte roof declared to cover two hundred
+#   read `status=covers` and `verdict=ok` because an unrelated 8192 sat six
+#   lines below it. Ten of this family's bounds are derived, so the blind spot
+#   was the growing half. A partner that is present and derived now reads
+#   `partner_derived` rather than `partner_absent`: the const is spelled, and
+#   the repair is to spell its value or to teach this reader arithmetic, never
+#   to hunt a typo that is not there.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/am/amphora_bounds_agree.rish
@@ -27,6 +40,8 @@ let couples_agree = "tools/fixtures/amphora_bounds_plants/couples_agree"
 let couples_disagree = "tools/fixtures/amphora_bounds_plants/couples_disagree"
 let covers_hold = "tools/fixtures/amphora_bounds_plants/covers_hold"
 let covers_short = "tools/fixtures/amphora_bounds_plants/covers_short"
+let covers_on_derived = "tools/fixtures/amphora_bounds_plants/covers_marker_on_derived"
+let covers_partner_derived = "tools/fixtures/amphora_bounds_plants/covers_partner_derived"
 
 let pos = run ["env" "AMPHORA_BOUNDS_ROOT=${disagree}" "sh" scan]
 assert (pos.ok == false) else "amphora_bounds_agree: disagree plant must FAIL"
@@ -73,6 +88,23 @@ assert vneg.ok else "amphora_bounds_agree: covers holding must PASS"
 assert vneg.out contains "covers_status=hold" else "covers holding must name hold"
 say "plant_covers_negative=honored"
 
+# A marker whose subject is derived must be REFUSED rather than re-aimed. The
+# elder reader answered `verdict=ok` on this exact plant, having bound the
+# marker to the unrelated 8192 below -- so the leg proves the false green, not
+# merely the refusal.
+let dpos = run ["env" "AMPHORA_BOUNDS_ROOT=${covers_on_derived}" "sh" scan]
+assert (dpos.ok == false) else "amphora_bounds_agree: a marker on a derived bound must FAIL"
+assert dpos.out contains "cover_max_roof_to_b_max_partner_status=marker_on_derived" else "the marker must bind to max_roof and name it derived"
+assert (dpos.out contains "unrelated_large" == false) else "the marker must never reach the stranger below it"
+say "plant_marker_on_derived=honored"
+
+# A partner that exists and carries an expression is present, not absent.
+let ppos = run ["env" "AMPHORA_BOUNDS_ROOT=${covers_partner_derived}" "sh" scan]
+assert (ppos.ok == false) else "amphora_bounds_agree: a derived partner must FAIL"
+assert ppos.out contains "cover_max_roof_to_b_max_line_len_status=partner_derived" else "a spelled derived partner must read partner_derived"
+assert (ppos.out contains "partner_absent" == false) else "a present const must never be called absent"
+say "plant_partner_derived=honored"
+
 let living = run ["sh" scan]
 assert living.ok else "amphora_bounds_agree: living amphora must agree"
 assert living.out contains "verdict=ok" else "amphora_bounds_agree: living missing ok"
@@ -85,4 +117,4 @@ assert living.out contains "couples_status=agree" else "living couples must agre
 assert living.out contains "covers_status=hold" else "living covers must hold"
 assert living.out contains "cover_max_manifest_name_len_to_main_max_season_name_len_status=covers" else "living season door must fit the listing"
 say living.out
-say "GREEN: amphora_bounds_agree -- same-name - alias - couples - covers - planted pairs - no rename."
+say "GREEN: amphora_bounds_agree -- same-name - alias - couples - covers - derived binding - planted pairs - no rename."

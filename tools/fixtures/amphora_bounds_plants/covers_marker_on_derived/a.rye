@@ -1,0 +1,12 @@
+//! Plant -- a marker written above a DERIVED bound (positive control).
+//! The marker's subject is `max_roof`, whose value is an expression. A reader
+//! that walks forward for the next LITERAL const steps over it and answers
+//! about `unrelated_large` six lines down -- 8192 covers 200, so the guard
+//! reads `covers` and `verdict=ok` while the declared bound is forty and
+//! covers nothing. The truth: 10 * 4 = 40, against a partner of 200.
+const base: u32 = 10;
+/// covers: b.max_partner
+const max_roof: u32 = base * 4;
+
+/// Unrelated and generous -- the stranger the elder walk landed on.
+const unrelated_large: u32 = 8192;

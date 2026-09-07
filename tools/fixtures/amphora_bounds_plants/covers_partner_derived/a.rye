@@ -1,0 +1,6 @@
+//! Plant -- the partner exists and is DERIVED (positive control).
+//! `b.max_line_len` is spelled in b.rye and its value is an expression, so a
+//! reader of literals alone calls a present const absent and sends a hand
+//! hunting a typo rather than spelling the bound.
+/// covers: b.max_line_len
+const max_roof: u32 = 400;

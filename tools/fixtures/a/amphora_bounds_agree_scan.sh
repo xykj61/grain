@@ -80,6 +80,89 @@ partner_value() {
     || true
 }
 
+# The const a marker BINDS TO is the first const beneath it, whatever form its
+# value takes. Reading only literal consts made this walk step OVER a derived
+# bound and answer about a stranger further down the file: proven in a pen
+# 20260907, a marker declaring `max_roof: u32 = base * 4` covers a 200-byte
+# partner bound instead to an unrelated `8192` six lines below and printed
+# `status=covers` with `verdict=ok`, while the bound it was written above was
+# forty and covered nothing. A reader that skips what it cannot parse walks
+# past its own subject. So bind first, classify second.
+# Prints `name:type=value` when the value is a spelled literal, `name:derived`
+# when it is an expression, and nothing at all when no const follows.
+next_const_sig() {
+  file=$1
+  start=$2
+  awk -v start="$start" '
+    NR > start && /^(pub )?const [a-zA-Z0-9_]+/ {
+      line = $0
+      # `const NAME: TYPE = VALUE;` with a spelled integer VALUE.
+      if (match(line, /^(pub )?const [a-zA-Z0-9_]+: u[0-9]+ = [0-9]+;/)) {
+        sub(/^(pub )?const /, "", line)
+        split(line, part, ":")
+        name = part[1]
+        rest = part[2]
+        sub(/^ /, "", rest)
+        split(rest, tv, " = ")
+        val = tv[2]
+        sub(/;.*$/, "", val)
+        print name ":" tv[1] "=" val
+        exit
+      }
+      # Any other const: the subject is found, its value is not a literal.
+      sub(/^(pub )?const /, "", line)
+      name = line
+      sub(/[^a-zA-Z0-9_].*$/, "", name)
+      print name ":derived"
+      exit
+    }
+  ' "$file"
+}
+
+# Resolve partner module.NAME -> `type=value` for a spelled literal, the word
+# `derived` when the const exists and carries an expression, or nothing when
+# no const of that name is there. The elder reader answered `partner_absent`
+# for a derived partner -- naming a const that is present and readable as one
+# that does not exist, which sends a hand hunting a typo rather than spelling
+# the bound. Ten of this family's bounds are derived, so the distinction is
+# the difference between a repair and a wild goose.
+partner_kind() {
+  mod=$1
+  name=$2
+  cand=""
+  if test -f "$ROOT/${mod}.rye"; then
+    cand="$ROOT/${mod}.rye"
+  elif test -f "$ROOT/src/${mod}.rye"; then
+    cand="$ROOT/src/${mod}.rye"
+  elif [ "$mod" = "main" ] && test -f "$ROOT/src/main.rye"; then
+    cand="$ROOT/src/main.rye"
+  fi
+  if [ -z "$cand" ]; then
+    echo ""
+    return 0
+  fi
+  awk -v want="$name" '
+    /^(pub )?const [a-zA-Z0-9_]+/ {
+      line = $0
+      sub(/^(pub )?const /, "", line)
+      name = line
+      sub(/[^a-zA-Z0-9_].*$/, "", name)
+      if (name != want) next
+      if (match($0, /^(pub )?const [a-zA-Z0-9_]+: u[0-9]+ = [0-9]+;/)) {
+        rest = line
+        sub(/^[a-zA-Z0-9_]+: /, "", rest)
+        split(rest, tv, " = ")
+        val = tv[2]
+        sub(/;.*$/, "", val)
+        print tv[1] "=" val
+        exit
+      }
+      print "derived"
+      exit
+    }
+  ' "$cand"
+}
+
 for name in $NAMES; do
   TMP=$(mktemp)
   collect_name "$name" "$TMP"
@@ -196,12 +279,8 @@ else
     pmod=${partner%%.*}
     pname=${partner#*.}
 
-    # Walk forward from marker line to the next real const in this file.
-    SRC_SIG=$(awk -v start="$line" '
-      NR > start && /^(pub )?const [a-zA-Z0-9_]+: u[0-9]+ = [0-9]+;/ {
-        print; exit
-      }
-    ' "$file" | sed -E 's/^(pub )?const ([a-zA-Z0-9_]+): (u[0-9]+) = ([0-9]+);/\2:\3=\4/')
+    # Bind to the const beneath the marker, whatever form its value takes.
+    SRC_SIG=$(next_const_sig "$file" "$line")
 
     if [ -z "$SRC_SIG" ]; then
       echo "couple_${pmod}_${pname}_status=orphan_marker"
@@ -211,12 +290,23 @@ else
 
     src_name=${SRC_SIG%%:*}
     src_tv=${SRC_SIG#*:}
+    if [ "$src_tv" = "derived" ]; then
+      echo "couple_${src_name}_to_${pmod}_${pname}_status=marker_on_derived"
+      COUPLE_FAIL=1
+      continue
+    fi
     src_type=${src_tv%%=*}
     src_val=${src_tv#*=}
 
-    DST_SIG=$(partner_value "$pmod" "$pname")
+    DST_SIG=$(partner_kind "$pmod" "$pname")
     if [ -z "$DST_SIG" ]; then
       echo "couple_${src_name}_to_${pmod}_${pname}_status=partner_absent"
+      echo "couple_${src_name}_to_${pmod}_${pname}_src=${src_type}=${src_val}"
+      COUPLE_FAIL=1
+      continue
+    fi
+    if [ "$DST_SIG" = "derived" ]; then
+      echo "couple_${src_name}_to_${pmod}_${pname}_status=partner_derived"
       echo "couple_${src_name}_to_${pmod}_${pname}_src=${src_type}=${src_val}"
       COUPLE_FAIL=1
       continue
@@ -274,11 +364,7 @@ else
     pmod=${partner%%.*}
     pname=${partner#*.}
 
-    SRC_SIG=$(awk -v start="$line" '
-      NR > start && /^(pub )?const [a-zA-Z0-9_]+: u[0-9]+ = [0-9]+;/ {
-        print; exit
-      }
-    ' "$file" | sed -E 's/^(pub )?const ([a-zA-Z0-9_]+): (u[0-9]+) = ([0-9]+);/\2:\3=\4/')
+    SRC_SIG=$(next_const_sig "$file" "$line")
 
     if [ -z "$SRC_SIG" ]; then
       echo "cover_${pmod}_${pname}_status=orphan_marker"
@@ -288,12 +374,23 @@ else
 
     src_name=${SRC_SIG%%:*}
     src_tv=${SRC_SIG#*:}
+    if [ "$src_tv" = "derived" ]; then
+      echo "cover_${src_name}_to_${pmod}_${pname}_status=marker_on_derived"
+      COVER_FAIL=1
+      continue
+    fi
     src_type=${src_tv%%=*}
     src_val=${src_tv#*=}
 
-    DST_SIG=$(partner_value "$pmod" "$pname")
+    DST_SIG=$(partner_kind "$pmod" "$pname")
     if [ -z "$DST_SIG" ]; then
       echo "cover_${src_name}_to_${pmod}_${pname}_status=partner_absent"
+      echo "cover_${src_name}_to_${pmod}_${pname}_src=${src_type}=${src_val}"
+      COVER_FAIL=1
+      continue
+    fi
+    if [ "$DST_SIG" = "derived" ]; then
+      echo "cover_${src_name}_to_${pmod}_${pname}_status=partner_derived"
       echo "cover_${src_name}_to_${pmod}_${pname}_src=${src_type}=${src_val}"
       COVER_FAIL=1
       continue
