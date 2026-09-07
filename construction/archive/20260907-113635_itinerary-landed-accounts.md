@@ -81,3 +81,15 @@ as its own row, at `20260907.124500`.
 while the lap ran -- one row, two shelves, which is the shape a rebase is for. This lap's fold was
 withdrawn whole at the rebase and the peer's stands. `%558`, standing **BOOKED** at 3,246 bytes,
 folded instead, since a pin with no room is what the status word exists to answer.
+
+## What the closing pass then said
+
+The lap's own closing lap-tier pass ran 172 guards, 168 green, with **one** red -- and that red is
+`standing_equipment` itself, because the five cadence refusals now stand **recorded** on the run
+card rather than unheard. `cadence_never_run_here` fell **58 to 2**, `runs_recorded` rose **168 to
+228**, and the roster's verdict moved from `ok` to `roster_broken` with no tree behavior changed at
+all. It read green for ten days over a tree holding five red guards.
+
+The receipt is withheld while they stand, so the next lap on any ship pays a full cold pass. That
+cost is real, it belongs to four lanes rather than to one, and it is the sharpest argument available
+for whichever answer the cadence clock's home receives.

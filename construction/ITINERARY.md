@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `48128e97e1` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `3caa7ebc71` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- HALF OF WHAT THE CENSUS CALLED BREAKAGE WAS THE TREE TELLING THE TRUTH ABOUT A GAP.**
 Row `20260907.105303` **CLOSED** and [folded](archive/REDS-a-declared-absence-is-not-breakage-rows-562.md)
@@ -198,10 +198,10 @@ guard said to lock that is `%500` above, and it now reds honestly.
 
 **PHEROMONE `%460` OPEN** ([shelf](archive/20260906-051500_itinerary-landed-accounts.md)). **Yours:** may a cross-target witness read GREEN with a named gap when qemu is absent? `%446` reads the other way; `capability` is the mechanism.
 
-**GRASS -- 58 GUARDS ON A CLOCK NOTHING TURNS.** `--tier cadence` has no caller; **0 of 58** held
-a receipt. Sung: **5,106s, 5 RED**; `cadence_never_run_here` **58->2**, `standing_equipment` now
-`roster_broken`: `%567`, `%568`,
-[account](archive/20260907-113635_itinerary-landed-accounts.md).
+**GRASS -- 58 GUARDS ON A CLOCK NOTHING TURNS.** `--tier cadence` has no caller, so **0 of 58**
+hold a receipt. Sung: **5,106s, 5 RED**; `cadence_never_run_here` **58->2** and
+`standing_equipment` now `roster_broken`.
+[Account](archive/20260907-113635_itinerary-landed-accounts.md).
 
 **THE SAME HOLE FOR LINKS.** `%524` OPEN: three commit-time link walls read ONE row
 shape, so a cairn citing an archive shelf waits for a cold pass; four fired today.
