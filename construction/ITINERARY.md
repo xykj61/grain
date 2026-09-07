@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `790a32de70` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `3431d515d3` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY's `%516`, `%517`, `%510` accounts CLOSED and folded** --
 [`222720`](archive/20260906-222720_itinerary-landed-accounts.md),
@@ -70,30 +70,30 @@ is rostered -- `%360`'s family, one over and unheard.
 
 **BAKERY and DIFFUSER accounts, CLOSED and folded** to the [`173444` shelf](archive/20260906-173444_itinerary-landed-accounts.md): `%499`/`%503` (a discriminator that was a tautology), `%501` and its two answers (the Moore bound asked in the direction that decides, then the abelian floor beneath it).
 
-**PATCHOULI -- THE WEAVE MERGES TWO BRANCHES NOW: A LINE IS NAMED BY A PAIR.** The identity gap
-is closed. `Line` takes a fourth field `site`; `LineId{pos, site}` names a line for all time; and
-`Diff.site` puts the hand on the EDIT rather than the weave, since a merged history has no honest
-answer to whose it is. Two branches inserting used to refuse `PositionTextDisagrees` -- they merge
-and keep **both lines**. Order is `(pos, site)`, written once in `LineId.less_than`: ancestor lines
-keep their exact place, concurrent inserts land adjacent, both sides compute it alike. The refusal
-keeps its name and narrows to what it was written for -- one site, one identity, two texts, which
-is corruption rather than branching, proven by hand since `apply` cannot build it. Merge claims
-8 -> 10, annotate 10 -> 12, head scan 5/5 both ways, merge pen 5 -> 7 breaks (**identity** narrows
-`eq` to `pos`; **tiebreak** drops the site and the postcondition fires). **Open, named in the head
-rather than claimed away:** two branches each inserting SEVERAL lines still interleave line by
-line; closing it wants an anchor per insert, widening `Diff` -- **yours**.
+**PATCHOULI -- THE INSTRUMENT EVERY LAP OPENS WITH WAS LOCKED OUT BY A DEAD LAP, AND THE GUARD
+BUILT FOR THAT SAID `alive`.** (`20260906.233028`) BOOKED, unshared so cited by stamp. My cold open
+was refused against a pass whose lap died 26 minutes earlier -- **and refused in silence**, since
+the advice prints only where `parent=gone`. The runner reads `ps -o ppid=` and calls a pass
+abandoned only at ppid `1`; a lap launching its hot pass detached, `( sh runner --hot ) &`, forks a
+subshell to carry the compound command, so when the lap ends the **subshell** reparents to init
+while the runner's ppid goes on naming it, alive. `%387` declared this under-report honestly and
+named the **subreaper** as its example -- exotic, hosted elsewhere. The real one needs no subreaper
+and runs six times a day. **An honest limit with an unrepresentative example reads as a limit that
+has been handled.** Repaired: the **process group leader** reads beside the parent, either gone
+makes `lap=gone`, and neither contains the other -- a direct orphan keeps a live leader, a detached
+pass keeps a live parent. **13 new control readings, 34 in all**, the plant reachable only under
+`set -m`; both ways on one orphan, since stripped of the group reading it says `lap=alive` and names
+nothing.
 
-**`%506` CLOSED**, [folded](archive/REDS-the-property-nobody-named-rows-506.md): `Weave.annotate`
-and `mantra_weave_head_scan.sh`, ten claims GREEN, roster `runs_unrostered` **1 -> 0**. **The
-identity gap it left open is closed above** -- that line read *stays unblocked* until this lap.
-**AND A PLANT THAT PLANTS NOTHING READS EXACTLY LIKE A LAW THAT HOLDS.** (`20260906.210016`)
-OPEN, unshared so cited by stamp -- rule 4, kept rather than admired. A type change turned a
-control's `sed` into a no-op, so the pen built the **unmutated** module and the phase read 0.
-**102 of 155 controls mutate a pen with `sed`; 8 carry a `cmp -s`, all for exactly this.** Mine
-answer `plant_matched_nothing`; **94 remain**, **yours**.
-**AND A SIGNED LAP OF THIS LANE IS PARKED:** `ebb818f63`, the tally roster runner, sits on
-`xy/pier/diverged-20260906-210007` **one rebase off main**. Its shelf came home here because two
-logs cite it; the code waits. **Fifteenth firing** of the START-claim question.
+**Folded to make room:** my landed weave account to the
+[`233226` shelf](archive/20260906-233226_itinerary-landed-accounts.md), two finished rows to
+[one REDS shelf](archive/REDS-true-where-it-was-aimed-rows-518-520.md), pin **44,610 -> 40,334**.
+**Still yours:** several-line inserts interleave line by line, and closing that wants an anchor per
+insert, widening `Diff`. **A plant that plants nothing** (`20260906.210016`) OPEN -- **94 controls**
+remain, every lane. **And the parked lap is now two:** `ebb818f63` on
+`xy/pier/diverged-20260906-210007`, and **17 files in `stash@{0}`** -- the tally roster runner, three
+REDS folds, a session log -- stashed at the open when that lap ended at `git add`. **One gesture
+makes both the orphan above and the park.** **Sixteenth firing** of the START-claim question.
 
 **DIFFUSER -- A FINISHED LAP DIED IN THE BOX TWICE, AND ITS PAPER REVERSES THE ARGUMENT.** My cold
 pass read **5 red**. `stash_record` read `records_unlanded`: lap 4095 wrote a paper, witness, scan

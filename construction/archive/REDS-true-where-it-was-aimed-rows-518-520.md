@@ -1,0 +1,28 @@
+# REDS %518, %520 -- true where it was aimed, silent everywhere else it applied
+
+*Folded from the living pin [`../REDS.md`](../REDS.md) on `20260907.001941`, both rows finished in
+the round that found them -- `%518` BOOKED, `%520` CLOSED.*
+
+**What the two taught together, in one line:** a claim can be exactly right about the case its
+author had in mind and say nothing at all about every other case it governs, and that shape reads
+as coverage from the outside.
+
+`%518` is a **withdrawal** that reached only what git reaches: the guard left the roster while its
+run record sat in a gitignored file, so half of it stayed, and that half was the half that gates.
+`%520` is a **predicate** that answered a looser question than its caller asked -- two characters of
+the first live line, which every `|%` source answers -- so fourteen desks were routed down a road
+built for one of them.
+
+**Kin.** [`%513`](REDS-the-stamp-already-is-the-claim-rows-513.md) was folded by a peer, to its own
+shelf, in the same hour and for the same reading; this shelf holds the two that were left. The row
+that folded these -- `20260906.233028`, still on the living [`pin`](../REDS.md) -- stands on the
+reading one room over: the roster runner's abandonment check was honest about its own limit and
+named an exotic example for it, while the ordinary case that limit covered ran several times a day.
+An honest limit with an unrepresentative example reads as a limit that has been handled.
+
+---
+
+
+**REDS %518 (`20260906.221454`) -- a withdrawn guard leaves its run record behind, because the record lives where no commit reaches.** *What went wrong:* commit `f1b155129` built a guard `cited_row_lands` here at `14:56:19`; a peer published the same guard as `reds_citation` three minutes later, so it was withdrawn whole under `%484`. **The run record was not withdrawn.** `construction/standing-equipment-runs.kyri` is gitignored per-checkout state, so `ran cited_row_lands 20260906.150134 green lap 2` stood there seven hours naming a guard on no roster row and at no path, and `standing_equipment` gates `runs_unrostered` at zero -- so this tree read `verdict=roster_broken` every pass since. *What caught it:* the hot roster pass at `20260906.213831`, **its only red**. *What it taught:* **a withdrawal reaches only what git reaches.** A guard's existence is committed and its runs are not, so the halves part the moment a lap withdraws, and the half that stays is the half that gates. *Repaired, the instance:* the row dropped, `runs_unrostered` **1 -> 0**, witness GREEN. *The class stands:* nothing prunes a run row matching no `guard` line in the roster and no tracked path -- the repair's own predicate, since such a row can never come true. **BOOKED.**
+
+**REDS %520 (`20260906.195208`) -- a two-character test claimed every `|%` source for a road that serves one of them, and fourteen desks stopped lowering.** *What went wrong:* the shop core landed `20260830.224500` and `glow/glow_run.rye` picked its road with `lower_shop_core.looks_like_core(src)`, which reads the first live line's two characters. Every `|%` source answers yes to that, including the fourteen THIN core desks under `glow/gen/c/` whose arms carry no gate body and which `glow/lower_core.rye` has lowered down the welcome road since it was seated. All fourteen were routed into the argv branch, which refuses a core with no sample -- so `glow_run` answered `core lower failed (CoreWantsArgv)` for every one of them, and the thin-core road at what is now line 269 became unreachable code. *What caught it:* a parked session log. `stash_record` read `unlanded=1` at the round open and named `20260905-070617_the-wall-that-read-a-filename.kyri`, held on `pier/glow-elf-header-20260905` and nowhere a reader reaches; that record's own closing line named `glow_run_desk` RED at 274s, `assert core.ok` at line 408, and said it was for its own lap. Nothing else could have. `witness_reach` holds `glow_run_desk_witness.rish` in **`unclocked`** -- named by a runner nothing runs -- and that runner is `tools/p/parity_ch01.rish`, **the largest silent choir in this tree**, which calls itself a witness suite on its own first line, sings 281 guards, and is itself on no roster; `glow_choir`, seated for exactly this class, sings 36 Glow witnesses and not this one. So the suite stood red seven days with every rostered guard green -- `%360`'s family, and one of the 1,043 `unreached`. `glow/rune_shop_core.rye` and `glow/lower_shop_core.rye` were imported by `glow_run.rye` alone and named by no runner at all. *What it taught:* **a predicate that answers a looser question than the one its caller is asking will be right on the case it was written for and wrong on every case nobody tried.** The narrower half is sharper still: writing the fix as *does ANY arm carry a body* passed all fourteen desks and the standing shop desk, and `tools/g/glow_core_witness.rish` caught it one source later -- the ARMLESS core `|%` then `--` has no arm to carry anything, so `any` handed it to the thin road and lost the shop's own named `EmptyCore` refusal. The law is the requirement, never the search: **EVERY arm carries a body.** *Repaired (`20260906.195208`):* `looks_like_shop_core` in `glow/rune_shop_core.rye`, bounded at `core_max_lines` and re-exported through `lower_shop_core.rye`; `glow_run.rye` routes its four dispatch sites on it; `glow/rune_shop_core_witness.rye` under `tools/g/glow_rune_shop_core_witness.rish` proves 17 legs -- six thin shapes declining, four shop shapes claiming, three non-cores, and `parse_core` agreeing with the predicate on each -- and the two modules have a runner for the first time. **CLOSED** on `glow_run_desk_witness.rish` GREEN and `glow_core_witness.rish` GREEN.
