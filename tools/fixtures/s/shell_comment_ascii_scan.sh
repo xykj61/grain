@@ -76,13 +76,25 @@ CEILING=505
 # byte miscounted. Booked at REDS %340.
 list=$(git ls-files "*.rish" "*.sh" 2>/dev/null | grep -vE "^(vendor|gratitude|seed)/")
 
-total=0
-files=0
-report=""
-for f in $list; do
-  # A link and its target are two paths and one set of bytes; the target is read on its own row.
-  [ -L "$f" ] && continue
-  n=$(LC_ALL=C awk '
+# A GUARD THAT CANNOT RUN ITS INSTRUMENT MUST SAY SO -- REDS %513. The elder loop read
+# `n=$(LC_ALL=C awk ... 2>/dev/null)` and then `[ -z "$n" ] && n=0`, so awk's exit status was never
+# read and its complaint was discarded. An empty answer from a refused read is byte-identical to an
+# empty answer from a clean file, and the second is the one everyone hopes for. Proven on metal in a
+# throwaway pen: with one comment planted between a trailing `||` and the newline continuing the
+# statement -- the exact fault `tools/fixtures/a/ascii_document_scan.sh` carried in its own first
+# draft -- awk refused the whole program and this meter answered `files=0 chars=0 under_ceiling=yes`
+# over every tracked source it never opened. Both meters sat AT their ceilings when this was found,
+# so a silent zero would have read as the largest sweep either had ever recorded.
+#
+# The awk moves into a function so its status can be read. Three answers, told apart:
+#   * ABSENT is skipped and COUNTED, never fatal -- `git ls-files` reads the INDEX, so a rename
+#     staged mid-lap lists a path the working tree no longer holds, and a rebase is exactly when a
+#     reading is worth having.
+#   * REFUSED is fatal and NAMED -- the file is present and awk could not read it.
+#   * A non-numeric answer is refused too, since `END { print n + 0 }` prints a number whenever the
+#     program runs at all; anything else means it did not.
+count_file() {
+  LC_ALL=C awk '
     {
       if (inhere) {
         # `<<-WORD` strips leading tabs, so its delimiter may be indented; plain `<<WORD` requires
@@ -112,8 +124,38 @@ for f in $list; do
       }
     }
     END { print n + 0 }
-  ' "$f" 2>/dev/null)
-  [ -z "$n" ] && n=0
+  ' "$1"
+}
+
+total=0
+files=0
+absent=0
+opened=0
+report=""
+for f in $list; do
+  # A link and its target are two paths and one set of bytes; the target is read on its own row.
+  [ -L "$f" ] && continue
+  if [ ! -f "$f" ]; then
+    absent=$((absent + 1))
+    continue
+  fi
+  opened=$((opened + 1))
+  n=$(count_file "$f") || {
+    echo "instrument=failed"
+    echo "detail=awk_refused_a_file"
+    echo "detail_path=$f"
+    echo "verdict=misread"
+    exit 1
+  }
+  case "$n" in
+    '' | *[!0-9]*)
+      echo "instrument=failed"
+      echo "detail=awk_answered_no_number"
+      echo "detail_path=$f"
+      echo "verdict=misread"
+      exit 1
+      ;;
+  esac
   if [ "$n" -gt 0 ]; then
     files=$((files + 1))
     total=$((total + n))
@@ -127,4 +169,5 @@ if [ "$mode" = "--list" ]; then
 fi
 
 if [ "$total" -le "$CEILING" ]; then under=yes; else under=no; fi
-echo "SHELL_COMMENT_ASCII files=$files chars=$total ceiling=$CEILING under_ceiling=$under"
+echo "instrument=ok"
+echo "SHELL_COMMENT_ASCII files=$files chars=$total opened=$opened absent=$absent ceiling=$CEILING under_ceiling=$under"

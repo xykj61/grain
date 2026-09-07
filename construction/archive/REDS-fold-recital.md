@@ -370,3 +370,7 @@ at a closed fold.*
 *Row %511 folded to [`REDS-a-guards-reach-is-a-claim-rows-511.md`](REDS-a-guards-reach-is-a-claim-rows-511.md) on `20260906.204500`, **CLOSED** -- a form fitted to the spelling of the one page in front of its author, so 151 of the 208 links it called unreadable wore a shape it already claimed to read.*
 
 *Rows %489, %508 and %509 folded to [`REDS-a-lock-the-stamp-already-was-rows-489-508-509.md`](REDS-a-lock-the-stamp-already-was-rows-489-508-509.md) on `20260906.210925`, each **BOOKED** -- Three cases of selecting a thing by a name something else also carries: a room name that a second filter also matched, a filename that three running prompts contained, and a row number the remote had yet to allocate.*
+
+*Row %514 folded to [`REDS-silence-and-cleanliness-read-alike-rows-514.md`](REDS-silence-and-cleanliness-read-alike-rows-514.md) on `20260906.211120`, **CLOSED** -- a guard that never reads its instrument's status cannot tell silence from cleanliness, and the two are byte-identical exactly when the meter sits at its ceiling and a green is most wanted.*
+
+*Row %487 folded to [`REDS-a-handler-that-cleans-up-and-carries-on-rows-487.md`](REDS-a-handler-that-cleans-up-and-carries-on-rows-487.md) on `20260906.211257`, **BOOKED** -- a POSIX trap handler that cleans up without exiting does not stop the script; folded oldest-first to bring the pin back under the bound its own header declares.*
