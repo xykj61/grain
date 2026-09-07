@@ -1,0 +1,4 @@
+//! Plant -- the partner exists and is DERIVED (positive control).
+pub const max_mark_len: u32 = 11;
+pub const max_name_len: u32 = 200;
+pub const max_line_len: u32 = max_mark_len + 1 + max_name_len;
