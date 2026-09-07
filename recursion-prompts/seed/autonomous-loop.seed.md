@@ -94,6 +94,12 @@ is plain once named: `N` counts **commits**, and a lap is free to make two of th
 shipping a recovery commit beside its own work advances `N` by two and skips a row; a lap that ends
 at `git add` advances it by zero and reads the same row twice (REDS %223).
 
+**Measured at FLEET scale `20260906.213125`, and the concern does not reproduce there.** The reading above was taken when one ship sailed. Eight ships now share one commit counter, each reading `N mod 5` at its own open, and the rows they landed on across 105 session logs -- 68 of which record a row -- came out **11, 12, 13, 20, 12** for rows 0 through 4. Against a uniform expectation of 13.6 that is **chi-squared 3.91 on 4 degrees of freedom**, well under the 9.49 that would mark a real skew: the distribution is consistent with uniform. What breaks an individual ship's cycle turns out to be what fixes the fleet's coverage, because eight ships sampling a shared counter at uncorrelated moments read the corpus evenly by accident.
+
+**So the promise the grid was drawn for is already kept, one level up.** The grid asks that every document return to living awareness roughly once a working day; at fleet scale every row is read a dozen times a day. An individual ship still skips rows, and that costs the ship its own orderly cycle -- yet no document goes unread, which is what the rota is for. The proposal below stays available and is no longer urgent; a fix aimed at the single-ship reading would be solving for a shape the fleet has already left behind.
+
+**The gap the same measurement DID find is a different one: 37 of 105 logs record no row at all.** A rota read that leaves no trace cannot be counted, corrected, or trusted -- which is the `unheard guard` shape in a different room, and it is named here rather than gated, since a lap that legitimately did no rota read looks identical to one that skipped it.
+
 **Proposed, and waiting on Keaton's word -- advance by lap rather than by commit.** The newest
 session log already records the row it read, and every lap already reads that log's `recommend`
 line, so the next row costs one grep: read the previous lap's row and add one, modulo five. That

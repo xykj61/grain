@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `0877a5f56a` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `6f46b5f1d4` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A GUARD THAT READS A PROXY ANSWERS ABOUT THE PROXY, AND THE PARAGRAPH SAYING SO SAT IN
 THE BOX IT COULD NOT READ.** `%510` CLOSED. `stash_record_scan.sh` asked every session log in a
