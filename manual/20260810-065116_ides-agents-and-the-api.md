@@ -5,7 +5,7 @@
 **Voice:** Kyri
 **Audience:** an Acme Corporation employee working on this template with a modern editor and a coding agent -- beginner-welcome, developer-precise
 **Law:** [`../context/TAME_GUIDANCE.md`](../context/TAME_GUIDANCE.md)
-**Status:** Living -- describes the general pattern for working on this tree with editors, agents, and a hosted model; horizons named as horizons. No vendor secrets, no accounts, no keys.
+**Status:** Living -- describes the general pattern for working on this tree with editors, agents, and a hosted model; horizons named as horizons. No vendor secrets, no accounts, no keys. **Mixed room**: the editor and agent setup is checkable; the hosted-model horizon is named as a horizon.
 
 ---
 

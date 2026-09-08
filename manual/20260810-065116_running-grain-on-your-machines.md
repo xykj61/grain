@@ -6,7 +6,7 @@
 **Audience:** an Acme Corporation employee bringing Grain to the machines they already own
 **Law:** [`../context/TAME_GUIDANCE.md`](../context/TAME_GUIDANCE.md)
 **Corrected:** `20260821.190707` (REDS %118) -- this page said the `rye` and `rishi` binaries ship with a clone, in three places. They do not; the build steps now stand where the claim did.
-**Status:** Setup guide -- the general shape runs today on x86-64 Linux; each machine below names honestly what runs now and what waits on the horizon.
+**Status:** Setup guide -- the general shape runs today on x86-64 Linux; each machine below names honestly what runs now and what waits on the horizon. **Mixed room**: what runs now is checkable; what waits is named as a horizon.
 
 ---
 

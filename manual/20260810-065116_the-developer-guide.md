@@ -3,7 +3,7 @@
 **Language:** EN
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Audience:** Acme Corporation employees - anyone contributing to this tree
-**Status:** Living -- describes what runs today; horizons named as horizons.
+**Status:** Living -- describes what runs today; horizons named as horizons. **Mixed room**: the build and witness steps are checkable; the horizons are named as horizons.
 
 ---
 

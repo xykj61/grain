@@ -90,7 +90,7 @@ if [ -z "$SEATING" ]; then
 fi
 echo "seating=$SEATING"
 
-# The doorway's own subject: three rooms, README and yonder and archive left out, every depth
+# The doorway's own subject: the roster's rooms, README and yonder and archive left out, every depth
 # reached. Read from the roster rather than respelled, so a room added there is read here.
 ROSTER=$(sh tools/fixtures/t/two_rooms_doorway_roster.sh 2>/dev/null || true)
 if [ -z "$ROSTER" ]; then

@@ -5,7 +5,7 @@
 **Voice:** Kyri
 **Audience:** an Acme Corporation employee meeting Grain for the first time -- no prior knowledge assumed
 **Law:** [`../context/TAME_GUIDANCE.md`](../context/TAME_GUIDANCE.md)
-**Status:** Tutorial -- every command below runs today, on this tree, and ends at a line you can see with your own eyes. Step 2 corrected `20260821.190149` (REDS %117): the clone does not carry the built tools, and now says how to build them.
+**Status:** Tutorial -- every command below runs today, on this tree, and ends at a line you can see with your own eyes. Step 2 corrected `20260821.190149` (REDS %117): the clone does not carry the built tools, and now says how to build them. **Checkable room**: every claim here is a command you run and a line you read.
 
 ---
 

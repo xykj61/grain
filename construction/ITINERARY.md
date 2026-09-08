@@ -114,27 +114,28 @@ stale one would shut later laps out. Control **+8**, both sides, an elder copy r
 for the docs lane:** `seed_link` reds on today's Bhakta seating, `README.md ->
 context/BHAKTA_STYLE.md`, a room the seed lacks, ratchet **848 -> 850**. Manifest, or prose?
 
-**PETRICHOR -- A GUARD'S ROOMS WERE A HAND-WRITTEN LIST, AND MY OWN SHELF WAS NEVER ON IT.**
-Elder [shelved](archive/20260908-101759_itinerary-landed-accounts.md); row `20260908.101759`
-**BOOKED**, [folded](archive/REDS-a-guard-whose-rooms-were-a-hand-written-list-rows-635.md) on its
-own lap, by stamp until the spine binds it (`derived-spine` 4 -- I broke it, the gate caught it).
-**EARTH READS THE FACT AT THE DOOR, SO I READ A DOOR.** Grading `templates/README.md`, its token
-was absent, and one grep said whether any guard would notice: `two_rooms_doorway_roster.sh` draws
-its whole population from **three room names in one pathspec**. `docs-geode/` -- whose job IS the
-page a stranger meets first -- stood outside the doorway law its whole life. Five stand:
-`manual/` **29 pages, 7 silent**, `foundations/` **83, 35**, `context/` **105, 38** -- **80 pages
-with no register token, unreachable by the guard built to count them**.
-**THE JOIN COST NOTHING, WHICH IS WHY TAKE IT NOW.** 10 enter, **0 silent**, `fails=3` against a
-ceiling of **3, unmoved**. Fourth reach leg `geode=`; `docs/` and `docs-geode/` part at the fourth
-character, **checked rather than assumed**. Control **19 -> 23**.
-**THE PIN CANNOT ACCEPT A RED FROM ANY SHIP -- A GATE.** `reds_pin_capacity_scan.sh`: **40,949 of
-40,960, eleven bytes**, 13 of 15 rows OPEN, **`rows_that_fit=0`**. Mine broke `declared_ceiling` on
-arrival; I folded **my own**, left the peer's alone. **Yours:** close open rows, or size it for
-eight ships. **A peer published `%630` seven minutes ahead of my stamp** -- another guard, same
-class of fault, twice in an hour.
-**AGAINST MYSELF, TWICE, ON MY ROW'S OWN LESSON:** I read two doors by eye and the verdict
-contradicted both. Cold held still: **188 guards, 1,938s, 0 red**.
-**Yours:** the three rooms -- 80 repairs or a raised ceiling. **Mine:** templates **79 -> 89**.
+**PETRICHOR -- A DILEMMA IS AN AGGREGATE NOBODY LET DIVIDE.**
+Elder [shelved](archive/20260908-123607_itinerary-landed-accounts.md); `20260908.123607`
+**CLOSED**, [folded](archive/REDS-the-door-nobody-let-divide-rows-642.md).
+**LAST LAP I HANDED YOU A CHOICE MISSING A DOOR.** The roster's header measured three rooms, then
+wrote *either 80 repairs or a raised ceiling, so that choice is Keaton's* -- both real, both costly,
+neither forced. **The third stood all along: repair ONE room**; `manual/` was 7.
+**WATER TASTES, SO I RAN THE PREDICATE.** Re-measuring read 32/7, 94/44, 112/38 -- **nine over the
+80 on record** -- which sent me to the roster's exclusions and proved the elder figure **exactly
+right** under its own population. No correction owed; the split by room was the by-product: **a
+total that divides is a plan; the whole is a gate**.
+**PAID, NOT WAIVED.** All seven answered the lifecycle question and never the register one. Token
+beside what each said, judged from the page: **four `mixed`**, **three `checkable`**. 29 pages, **0
+silent**, on `docs-geode/`'s terms: **1,006 -> 1,035**, `fails=3` and ceiling **3 unmoved**; all B
+or better. Reach leg `manual=`; control **23 -> 31**, witness **31 over 32** -- its tally read 23
+over 24 while the control printed 31, so eight went unread. **Against myself:** a page added to the
+honest tree broke a hard-coded `pages=5`, a leg that reds *because* it counts.
+**A PEER'S FOLD LEFT MY LANE'S DOOR SHORT:** `crushed_index` red on `press/date` -- an HTML
+projection shelved `20260907`, the press room's first non-Markdown member and its first one deep.
+Row added, **A/92**.
+**Yours:** `foundations/` **35**, `context/` **38** -- 73 repairs, two more laps.
+**THE PIN IS DEADLOCKED, NOT FULL:** a peer's row landed beside mine at **2,579 over**; I folded my
+own and it reads **24 bytes**, **0 of 13 foldable**, all OPEN.
 **PHEROMONE -- THE DESK NOW CARRIES THE SAMPLE THAT PROVES IT.**
 Elder [shelved](archive/20260908-155428_itinerary-landed-accounts.md). `%532`'s agent half **CLOSED**
 on metal; the ledger could not take the words.
