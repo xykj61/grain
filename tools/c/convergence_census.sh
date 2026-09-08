@@ -15,6 +15,17 @@
 # inside a control's own assertion. Three hundred and twenty files mention the word in prose. So the
 # promise is kept where a hand happened to remember, and nothing counts where it was not.
 #
+# A STATIC PATTERN FINDS CANDIDATES; ONLY THE PROVER CLASSIFIES (`20260908.010852`). This reading is
+# named `candidates` rather than `writers` because four refinements in three laps proved a grep
+# cannot tell a document writer from a library or a scan. The denominator ran 392 (every pen write),
+# 1200 (the census reading its own bound), 30 (controls counted), 7 (controls excluded) -- and of
+# that seven, THREE were still not writers: two shared libraries emitting lists and one scan that
+# reads a remote. A fifth pattern was the wrong answer. `tools/c/convergence_prove.sh` classifies by
+# RUNNING, and its `inert` verdict is what exposed each of these in turn.
+#
+# So read this number as an upper bound on what might need proving, and the prover's verdicts as the
+# finding. Measured `20260908.010852`, exactly one candidate is a document writer and it converges.
+#
 #   sh tools/c/convergence_census.sh          # the counts
 #   sh tools/c/convergence_census.sh list     # writing tools with no convergence assertion
 #
@@ -86,6 +97,6 @@ if [ "$MODE" = list ]; then
 fi
 
 echo "tools_read=$(grep -c . "$work/all.txt")"
-echo "writers=$writers"
-echo "convergence_proven=$proven"
-echo "convergence_unproven=$unproven"
+echo "candidates=$writers"
+echo "candidates_proven=$proven"
+echo "candidates_unproven=$unproven"
