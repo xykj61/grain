@@ -187,6 +187,32 @@ out=$(run_scan cadence.kyri both-card.kyri)
 case "$out" in *"cadence_never_run_here=0"*) echo "cadence_run_lowers_count=yes" ;; *) echo "cadence_run_lowers_count=no" ;; esac
 case "$out" in *"verdict=ok"*) echo "tiered_card_free=yes" ;; *) echo "tiered_card_free=no" ;; esac
 
+# --- the undeclared-tier ratchet NAMES what it counts (REDS %592) ------------------------
+# Every other named class here prints its rows; this one printed a quantity alone, and it is the
+# one that reds. So two laps in a row hand-walked the roster with awk to answer "which guard is
+# new" -- the same question the scan already had the answer to. Proven from both sides, since a
+# naming shown only where it fires cannot be told from one that names everything: the undeclared
+# guard is named with its own seated stamp, and the guard beside it that DID declare a tier is
+# absent from the list while the count stays the whole population.
+cat > "$pen/mixed-tier.kyri" <<'EOF'
+format standing-equipment-v1
+guard alpha
+path tools/real_witness.rish
+tier lap
+seated 20260822.000000
+guard silent
+path tools/real_witness.rish
+seated 20260901.000000
+EOF
+out=$(run_scan mixed-tier.kyri good-card.kyri)
+case "$out" in *"guards_undeclared_tier=1"*) echo "undeclared_counted=yes" ;; *) echo "undeclared_counted=no" ;; esac
+case "$out" in *"undeclared_tier_newest: silent seated 20260901.000000"*) echo "undeclared_named=yes" ;; *) echo "undeclared_named=no" ;; esac
+case "$out" in *"undeclared_tier_newest: alpha"*) echo "declared_not_named=no" ;; *) echo "declared_not_named=yes" ;; esac
+# A ROSTER WITH NOTHING UNDECLARED NAMES NOTHING. A list printed unconditionally would read as a
+# finding on a clean roster, which is the shape a reader stops trusting first.
+out=$(run_scan cadence.kyri good-card.kyri)
+case "$out" in *"undeclared_tier_newest:"*) echo "clean_roster_names_none=no" ;; *) echo "clean_roster_names_none=yes" ;; esac
+
 # --- what the pass cost, read from the card's sixth field and from its absence -----------
 # A verdict without a cost left every lap to size a pass by watching a window of it (REDS %388),
 # so the field is proven from both sides: a card carrying it totals, names its slowest guard and

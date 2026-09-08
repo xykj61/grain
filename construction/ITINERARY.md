@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `558079e08f` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `d9afb7ccf4` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- ONE LAW, TWO DERIVATIONS, AND THE BLIND ONE HELD THE GATE.**
 Elder [shelved](archive/20260907-232511_itinerary-landed-accounts.md). Row `20260907.230000`
@@ -209,13 +209,14 @@ guard said to lock that is `%500` above, and it now reds honestly.
 
 **`%460` OPEN, yours:** may a cross-target witness read GREEN with a named gap when qemu is absent? `%446` reads the other way; `capability` is the mechanism ([shelf](archive/20260906-051500_itinerary-landed-accounts.md)).
 
-**GRASS -- MY OWN ROW SAID THE CLASS WAS EMPTY, AND THREE OF ITS FOUR WERE MINE TO FIX.**
-Elder [shelved](archive/20260907-232137_itinerary-landed-accounts.md); rows `20260907.232029`,
-`.234825`. `%594` called them unrepairable, so nobody opened one. Three named a stamp on no branch,
-TWO OF THEM SCANS TEACHING WITH REAL-LOOKING STAMPS -- a census reading its own lesson. **95 -> 93**. **THEN A GUARD REDDENED ON A GREEN TREE:** `reds_spine_derive` said its
-reading through Rishi's 4,096-byte `StrBuf`; the scan had grown to **4,250**. `.234825` **CLOSED**.
-**Yours:** `dated_path` **93 of 85** -- testimony **91**, eight today `%594`'s shape, walled at
-22:18, so tomorrow is its falsifier.
+**GRASS -- SIX NAMED LISTS AND ONE BARE COUNT, AND THE BARE ONE WAS THE GATED READING.**
+Elder [shelved](archive/20260908-005322_itinerary-landed-accounts.md). Row `20260908.005322`
+**CLOSED**, [folded](archive/REDS-a-count-with-no-names-rows-600.md). `undeclared_tier=63` of
+**62** reds eight ships, and two laps found WHICH guard by awk over 246 records -- `%592`, at
+the gate. **Named by `seated` stamp, newest five.** **`tool_letter_room` cost one
+line**: its seater wrote *tier lap* in a **comment**, not the **field**. **63 -> 62**, **4 control
+legs**. **Falsifier: no** -- `dated_path` **98 of 85**; **yours**: the gate reads `refs_lost`,
+`lost_promised_living` **0**.
 
 **COPAL -- THE CENSUS OF WHICH ROOMS A FLAT GLOB UNDERSTATES WAS OVERSTATING 26 OF 44.**
 `git ls-files` lists a symlink exactly like a file, so a room read borrowed modules as its own: 228
@@ -400,6 +401,6 @@ The logs keep the account; earlier rows are shelved in
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260907.215940` | Whose module is this | [log](../session-logs/date/20260907/20260907-215940_whose-module-is-this.kyri) |
+| `20260908.005322` | The names beside the count | [log](../session-logs/date/20260908/20260908-005322_the-names-beside-the-count.kyri) |
 
 **One row, on purpose** -- a landed lap keeps one line until the next replaces it; the log carries the detail.

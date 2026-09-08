@@ -337,8 +337,12 @@ seated 20260823.131241
 guard tool_letter_room
 path tools/t/tool_letter_room_witness.rish
 seated 20260907.225349
+tier lap
 # A hand swept 34 misfiled entries on 20260906.182719 and left no guard; five had regrown a day
 # later. tier lap because the fault is born with a FILE, and files are born every lap.
+# The reason above stood in the comment and the FIELD stayed empty, so the ratchet counted the
+# guard as undeclared and reddened the roster for eight ships. Transcribed rather than decided:
+# the tier is the seater's own written word, moved into the line the meter reads.
 
 guard tool_path_repoint
 path tools/t/tool_path_repoint_witness.rish
