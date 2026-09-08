@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `177525f0e4` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `b12b274cb0` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A FINISHED GREEN LAP WAS STASHED BY THE NEXT LAP'S OWN ROUND-OPEN.**
 Elder [shelved](archive/20260908-073157_itinerary-landed-accounts.md).
@@ -90,25 +90,28 @@ class is one file. **Molted:** `tally/parse_int.rye`, 149 citers, **C+ 75 -> A+ 
 *symlink or import, not copies* and **69** stand in the tree -- with `copy_lag` covering the drift
 half properly, is that guard's remaining seat the **prose binding** alone, and should it say so?
 **Next:** the port is mechanical and stays **Keaton's word** (`%589`).
-**DIFFUSER -- THE CHEAPER PASS WAS EARNED FOUR DAYS AGO AND THE TREE STILL SAYS IT CANNOT BE.**
-Elder [shelved](archive/20260908-065034_itinerary-landed-accounts.md).
-[Study](../external-research/20260908-065034_the-receipt-that-was-earned-and-the-map-that-cannot-spend-it.md) **A/91**.
-**THE RECEIPT EXISTS.** `standing_equipment_run.sh` line 1037 says, present tense, *the fusion
-build's cheaper pass can never be earned* (`%374`) -- yet `standing-equipment-receipt.kyri` stands
-written `20260908.052552`, `scope full`, `guards 186 gated 3`, red zero. **The repair sits 140 lines
-ABOVE that comment in the same file**: line 897 splits the counter so a gated red books `gated`
-and only `red` refuses the receipt (`20260904`).
-**THE HIT METER READS ZERO, AND IS BUILT TO.** 89 opens: **53 `miss`, 36 `none`, `match` 0** --
-`match` wants a byte-identical tree digest, so any lap that commits moves it, and **`--scoped` never
-consults it**: line 707 asks `scope=full` and a head. One meter, two questions.
-**THE CONSTRAINT IS MAP COVERAGE NOW.** Rank scan: **58 rows own 258s of 1,454s, save
-167s (11.5%); 82.3% lies beyond the map**; 20 scoped passes skipped **14-33** of ~186. **AND
-ROWS BARELY REACH IT** -- of the twelve costliest unmapped, **eight are whole-tree censuses** so
-touch is 1.0 and a row buys zero; two are `rye build`; two mappable. **Falsifier:** rank scan `20260915`, `unmapped_cost_share` under 0.60 kills it.
-**Reds first, on metal:** cold read `dayshelf_merge red` + `standing_equipment red` (188 guards,
-1486s) -- **this clone never armed the driver.** One `install_hooks.rish`; GREEN.
-**Yours:** the stale comment; a hit-ledger reading beside `match`; the census question -- an
-incremental census costs the diff rather than the tree, Tally's shape, Caravan's discipline.
+**DIFFUSER -- A CENSUS PAID FOR ITS FORKS, NOT ITS TREE.**
+Elder [shelved](archive/20260908-082356_itinerary-landed-accounts.md).
+[Study](../external-research/20260908-082356_a-census-pays-for-its-forks-not-its-tree.md) A/93.
+**MY ELDER PAPER CALLED EIGHT GUARDS UNCLAIMABLE, ON AN UNTESTED CLAIM.**
+DISCOVERY is right about mapping and says nothing about **cost**. `dated_path`, 63,107ms, is **73%**
+of the family's 86,468ms; probes at eight statement boundaries put lines 274-283 at **68,370 of
+74,838ms, 91.4%**, while its true tree reads are `git ls-files` **11ms** and one `grep` over 29,440
+pairs **267ms** -- **0.36%**. That 91.4% was one `basename` per path: **16,447 forks**.
+**ONE `sed` INSTEAD, PROVEN TWICE.** Stage alone **61,714 -> 64ms**, 8,629 sprigs byte-identical;
+whole guard A/B on one tree **75,153 -> 15,070ms**, twenty lines byte-identical -- 60.1s back per
+round. Row `20260908.074500` **CLOSED**.
+**THE LANTERN WAS LIT TWICE IN ITS OWN FAMILY** -- `empty_document_scan.sh` and `exec_bit_scan.sh`
+each name this shape as a fault already paid for and neither reached the third: **a comment repairs
+the file it sits in**. **Spent lever**: a grep finds three sites, one repaired, two small. **Against
+myself:** mid-bisect I guessed the filter loop; **4,036ms**.
+**AND IT REDS AT HEAD, NOT BY MY HAND** -- proven by injecting only the reading-identical fast
+function into a clean tree, reading the same 100. `refs_lost=100` vs `LOST_CEILING=85`, set
+`20260907.104201` with zero slack; **95 testimony, 5 living**, repairable class **0**. It rises when
+a ship writes a log, falls for nobody, and `tier cadence` means no lap hears it. Row
+`20260908.082356` **OPEN**.
+**Yours, two:** the gate move the scan proposes, `refs_lost` -> `lost_promised_living`; and
+`dated_path` at `tier lap`, which 15s affords and wants his word first.
 
 **PETRICHOR -- THE BOUNDARY IS WRITTEN AT BOTH DOORS NOW, SO A READER ANSWERS IT WITHOUT ASKING.**
 Elder [shelved](archive/20260908-071909_itinerary-landed-accounts.md).

@@ -515,9 +515,18 @@ dp_fixture_basenames() {
 dp_discovered_fixture_basenames() {
   _dp_root=${1:-.}
   ( cd "$_dp_root" 2>/dev/null || exit 0
-    git ls-files 2>/dev/null | while IFS= read -r _f; do
-      basename "$_f"
-    done | sed -n 's/^[0-9]\{8\}-[0-9]\{6\}[_.]//p' | sort -u > "$_dp_root/.dp_sprigs.$$" 2>/dev/null \
+    # ONE `sed` RATHER THAN ONE `basename` PER TRACKED FILE. The elder shape here spawned a
+    # process for every path `git ls-files` prints -- 16,447 of them on this pier, measured
+    # `20260908.074500` -- and cost 61,714 ms of the 74,838 ms this scan's whole run took, which
+    # is 82% of the costliest DISCOVERY guard on a 1,630 s roster pass. `sed 's|.*/||'` answers the
+    # same question in one process: 64 ms, and byte-identical over all 8,629 sprigs the two forms
+    # emit. The two commands agree on every path `git ls-files` can print -- it emits no trailing
+    # slash and no bare `/`, which are the only inputs where `basename` and this substitution part.
+    # The lantern was already lit twice in this family: tools/fixtures/e/empty_document_scan.sh and
+    # tools/fixtures/e/exec_bit_scan.sh each carry a comment naming this exact fork-per-file shape
+    # as a fault they had already paid for, and it stood here unread.
+    git ls-files 2>/dev/null | sed 's|.*/||' \
+      | sed -n 's/^[0-9]\{8\}-[0-9]\{6\}[_.]//p' | sort -u > "$_dp_root/.dp_sprigs.$$" 2>/dev/null \
       || return 0
     git ls-files '*.rye' '*.rish' '*.sh' '*.brix' 2>/dev/null \
       | grep -vE '^(vendor|gratitude|old)/' \
