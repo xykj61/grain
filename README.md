@@ -9,7 +9,7 @@
 <p align="center">
   <a href="LICENSE"><img alt="Code license: Apache-2.0 OR MIT" src="https://img.shields.io/badge/code-Apache--2.0%20OR%20MIT-c8992f"></a>
   <a href="LICENSE-CC-BY"><img alt="Docs license: CC-BY-4.0" src="https://img.shields.io/badge/docs-CC--BY--4.0-9a6f22"></a>
-  <a href="context/GAUGE_STYLE.md"><img alt="Prose: New Gauge Style" src="https://img.shields.io/badge/prose-New%20Gauge-d9b45a"></a>
+  <a href="context/BHAKTA_STYLE.md"><img alt="Prose: Bhakta register" src="https://img.shields.io/badge/prose-Bhakta-d9b45a"></a>
   <a href="context/TAME_GUIDANCE.md"><img alt="Code: TAME discipline" src="https://img.shields.io/badge/code-TAME-9a6f22"></a>
   <a href="tools/"><img alt="Proof: witnesses on metal" src="https://img.shields.io/badge/proof-witnesses%20on%20metal-2f7d4f"></a>
   <a href="context/TWO_ROOMS.md"><img alt="Status: crashed-meteor, honest register" src="https://img.shields.io/badge/status-crashed--meteor-b9954a"></a>
@@ -17,15 +17,66 @@
 
 ---
 
-**Welcome.** Grain is a computer that answers to you. Your words stay on your machine. Your
-identity lives in a key you hold. Every line that runs is yours to read, and every promise this
+**Style:** Bhakta (see [`context/BHAKTA_STYLE.md`](context/BHAKTA_STYLE.md)) -- the register that
+assumes no background and still tells you everything.
+
+> **A grain is a piece you can hold.**
+
+Welcome. You are at the start of a new internet, and your first interaction with it begins a
+trajectory on Earth that did not exist a moment ago.
+
+Walk into a forest and notice what greets you. Your senses wake one at a time -- the sound first,
+then a touch, then what you see, until the water and the earth have wrapped all the way around you.
+Software can arrive that way too, and this is an invitation to let it.
+
+What if humanity cleaned up our rivers? Imagine every person nourished and healthy. Picture a world
+where every town has its own rockstars. Consider telling the arc of your life -- your chapters, your
+loved ones -- to the people who inherit the Earth after you, from someone who was there for the
+computing revolution and remembers what it felt like.
+
+**Grain is a free environment you download, and it installs a new realm of possibilities.** With
+Grain, your AI bowling alley gets bumper lanes. If that sentence was hard to follow, Grain is right
+there to ask what it means, and again after that, as many times as the universe allows -- because
+the game of Grain is itself helping you harvest and blossom your dreams.
+
+**Try us before you trust us.** You are reading this in a web browser you chose. Here is something
+you can copy and paste into any AI search engine, and there are many today. It asks nothing personal
+of you and carries no risk:
+
+```
+What is Helen Atthowe's ecological agriculture, and, radiantly, how might we source fair computers?
+```
+
+If you like what comes back, **[join here](docs-geode/tutorials/the-first-hour.md)** -- an early
+pre-alpha for hobbyists, the bored, the confused, the excited, the hungry, the rich, the admired,
+the notorious, and the legal. Anyone under our Sun.
+
+**A word about who this is for.** We recommend Grain for humans from around eighth grade upward, and
+for agents powered by the state of the art in ethical, Fair Trade technology, whether frontier or
+open source. We all have a long way to go toward a better world, and each of us already carries
+responsibilities.
+
+So take a chance on us. Consider how it might feel if Grain helped turn the heavy jewels in your
+backpack into precious fabric -- a choice to accept that love is the biggest risk and worth gambling
+on every time, and that the fabric still trades well at market, where the happy magic we gain makes
+for a far lighter journey.
+
+Thank you for your time.
+
+All the best,
+**The Grain team**
+
+---
+
+**What this is, plainly.** Grain is a computer that answers to you. Your words stay on your machine.
+Your identity lives in a key you hold. Every line that runs is yours to read, and every promise this
 software makes is one a program has already checked.
 
-It is early, and it says so on every page. What already works is listed below, plainly.
+It is early, and it says so on every page. What already works is listed below.
 
 **Two links, and nothing else you need yet.** Read
-**[why this exists](foundations/20260823-034321_the-return-that-feeds-everyone.md)** for the idea
-in plain English with no code in it, or spend
+**[why this exists](foundations/20260823-034321_the-return-that-feeds-everyone.md)** for the idea in
+plain English with no code in it, or spend
 **[your first hour](docs-geode/tutorials/the-first-hour.md)** cloning the tree and watching
 something turn green on your own machine.
 

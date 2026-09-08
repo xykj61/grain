@@ -61,6 +61,17 @@ slogan, which is the opposite of what this register is for.
 
 ## When to write in Bhakta
 
+**The rooms are named rather than described**, so a hand editing one can find this page instead of
+inferring it: `SOURCE.md`, `CONTRIBUTING.md`, the `manual/` room, `docs-geode/` reference pages,
+`docs/redacted/` generalisations, and any first-hour or onboarding page.
+
+**Every one of them declares Gauge today** (measured `20260908.142326`), which is honest rather than
+a fault. This register was seated hours before that reading, so no page could yet have been written
+in it. **A register governs forward.** A room adopts Bhakta when a hand next writes in it, and the
+first page actually carrying it is the redaction at
+[`../docs/redacted/20260908-140216_borrowing-against-what-you-already-own.md`](../docs/redacted/20260908-140216_borrowing-against-what-you-already-own.md).
+
+
 Specification and design reference, API documentation, the OS user manual, onboarding and first-hour
 pages, and any writing whose reader may be meeting computing itself for the first time.
 

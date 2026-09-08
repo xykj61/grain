@@ -13,6 +13,16 @@ makes a reader.
 
 ## Where it is reached for
 
+**The rooms, named rather than described** -- so a hand editing one can find this register instead of
+inferring it. `SOURCE.md`, `CONTRIBUTING.md`, the `manual/` room, `docs-geode/` reference pages,
+`docs/redacted/` generalisations, and any first-hour or onboarding page.
+
+**Every one of those declares Gauge today**, measured `20260908.142326`, and that is correct rather
+than a fault: Bhakta was seated hours ago and no page could have been written in it yet. A register
+governs forward, exactly as the Radiant floor does -- **a room adopts Bhakta when a hand next writes
+in it**, and until then Gauge is an honest declaration.
+
+
 **Specification and design reference, API documentation, the OS user manual, onboarding and
 first-hour pages** -- any writing whose reader may be meeting computing itself for the first time.
 Radiant carries the day, Twilight the threshold, Bhakta the open door.
