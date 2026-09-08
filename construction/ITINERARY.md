@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `c97ff7398a` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `1a1b01dc3a` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A PRESCRIPTION THAT CANNOT FIRE PRESCRIBES NOTHING.**
 Elder [shelved](archive/20260908-093634_itinerary-landed-accounts.md). Row `20260908.093634`
@@ -76,22 +76,22 @@ commits I adopted mid-lap, answering Petrichor's `--dry-run` question.
 not say the first held it, since a row appears when it CLOSES. Still yours: the `links_dead=735`
 split, reported or gated.
 
-**PATCHOULI -- A GUARD READ 19 OF 69, BY A PREDICATE ITS CANON FORBIDS, UNHEARD.**
-Elder [shelved](archive/20260908-091217_itinerary-landed-accounts.md). `20260908.091217` **BOOKED**,
-[folded](archive/REDS-nineteen-of-sixty-nine-rows-629.md), renumbered twice.
-**YOUR QUESTION IS ANSWERED, AND THE ANSWER IS NO.** Asking whether `tally_caller_map`'s remaining
-seat is the **prose binding** alone found two more faults and a third under both. **Reach:** the
-index holds **69** symlinks resolving under `tally/`; the hand list read 19, missing **six** that
-reach canon via another room's link. **Predicate:** `-e` follows a symlink, so it passes in
-silence on the regular-file COPY that canon sentence forbids. **Clock:** **no roster row**, its lone
-caller unrostered too, so neither fault had an arrival date.
-**A HAND LIST AND A DERIVATION ARE BLIND IN OPPOSITE DIRECTIONS**, so the reading is their union: a
-list cannot grow with the tree, and a derivation cannot see a member LEAVE it -- a retargeted link
-stops matching, and the count falls. The nineteen stay **by name** beside the derived
-sixty-nine. **Control 0 -> 32**, one leg asserting the elder `-e` DOES pass the copy. Rostered
-`tier lap`.
-**Yours:** `tally/README.md` reads **C+ 77** after a claim-preserving register pass (**59 -> 71**).
-**Next:** `%589` stays **your word**.
+**PATCHOULI -- TWO GATES DISAGREE ABOUT A PARKED LAP.**
+Elder [shelved](archive/20260908-105623_itinerary-landed-accounts.md). `20260908.105623` **OPEN**,
+on the pin at `%636` -- booked `%632`, renumbered on the rebase.
+**THE COLD OPEN WENT RED.** `stash_record` read `unlanded=3`. I landed the three logs; the hot pass
+answered `log_file_claim red`, `staged_unwritten=8`. **A parked lap's `file` fields name the files
+parked beside it**, so the two gates cannot both be green while the work stays stashed.
+**ALL THREE ARE SUPERSEDED.** `stash@{4}` made `Weave.apply` binary search the weave, calling
+identity order a `Weave` invariant. `8fb075741` (`%599`) fixed the same red eight
+hours later from a DIFFERENT parked lap, sorting the caller's targets -- because `merge` returns
+**place** order (`bdb20178b`). The parked repair would search an unsorted list, and `merge-file`
+conflicted where a clean apply prints nothing. `rish_report_bound` is superseded by
+`say_compose_bound` (`%592`): same 4,096-byte `StrBuf`, 2,422 scripts against 38 sites, shares
+rather than a count. Proven green on today's tree first, then withdrawn.
+**NOTHING LANDED, NOTHING DROPPED.** The closing move is a cut, and a cut is yours.
+**Yours:** three stashes the tree no longer needs, or a `stash_record` that tells a parked lap
+wanting recovery from one already healed around. And `%589`.
 
 **DIFFUSER -- THE SAME FORK, PAID PER ITEM, IN THE GUARD THAT WATCHES THE LEDGER.**
 Elder [shelved](archive/20260908-093333_itinerary-landed-accounts.md).
