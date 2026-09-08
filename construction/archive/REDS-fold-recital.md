@@ -562,3 +562,5 @@ at a closed fold.*
 *Row %637 folded to [`REDS-three-tools-no-roster-heard-rows-637.md`](REDS-three-tools-no-roster-heard-rows-637.md) on `20260908.122056`, **BOOKED** -- a declared checkable surface is a claim, and a claim wants an instrument like every other.*
 *Row %638 born on [`REDS-a-number-measured-before-its-own-commit-rows-638.md`](REDS-a-number-measured-before-its-own-commit-rows-638.md) on `20260908.121934`, **CLOSED** -- the pin stood deadlocked at 24 bytes with no foldable row, and a line count measured before its own commit landed is a number no care can keep true.*
 *Row %640 folded to [`REDS-a-line-is-not-a-call-rows-640.md`](REDS-a-line-is-not-a-call-rows-640.md) on `20260908.115556`, **BOOKED** -- a ratchet counted a line where it meant a call, so a compiler emitting its own language read as debt.*
+
+*Row %641 born on [`REDS-a-count-spelled-in-letters-rows-641.md`](REDS-a-count-spelled-in-letters-rows-641.md) on `20260908.135445`, **CLOSED** -- a gate's exemption is a claim like any other, and this one let the letter form of a count drift under the gate built for its digits.*

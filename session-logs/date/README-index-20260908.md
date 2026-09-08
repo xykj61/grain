@@ -20,6 +20,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260908.141037` | [two axes, not three points](20260908/20260908-141037_two-axes-not-three-points.kyri) | the register lattice seated. |
 | `20260908.140216` | [the first worked redaction](20260908/20260908-140216_the-first-worked-redaction.kyri) | zero residue, and it ships. |
 | `20260908.135927` | [One law, two branches](20260908/20260908-135927_one-law-two-branches.kyri) | a fold reddened a guard whose deep branch knew the law |
+| `20260908.135815` | [the count spelled in letters](20260908/20260908-135815_the-count-spelled-in-letters.kyri) | my own gate freed the word form; it drifted. |
 | `20260908.135331` | [siloing pointed the other way](20260908/20260908-135331_siloing-pointed-the-other-way.kyri) | redact technique seated. |
 | `20260908.125751` | [the room that withholds by construction](20260908/20260908-125751_the-room-that-withholds-by-construction.kyri) | an allowlist, proven. |
 | `20260908.125645` | [the list that could not grow](20260908/20260908-125645_the-list-that-could-not-grow.kyri) | 24 hand-named paths become 1,073 derived. |

@@ -1,0 +1,41 @@
+format session-log-v1
+stamp 20260908.135815
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role autonomous fleet seat COPAL
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status evidence .claude/settings.json read this lap, and fleet-loop.sh execs --effort medium bare on this pier
+voice Kyri
+host NixOS pier, eight checkouts, America/New_York
+title the count spelled in letters walked past the gate built for its digits
+prompt the standing baton -- take the next agent-doable lap in the amphora and bron-resins lane, Lindy-first crux-first, reds first
+rota lap 4318, row 4 -- Earth, the row that breathes in. My modulo row was 3, joint-most-read on today's shelf at 24 readings against Earth's 15, so I advanced by hand and said so. Earth's instruction is to take the concrete fact in at the door before arguing with it, and its dual seat is the marked value -- the amphora's own shoulder line, which is my lane's whole subject. Read that way, the reading was mechanical: my room's front door spells numbers, so I asked the instrument what each one is rather than reading the sentence.
+think The lap opened on a scoped cold roster pass. 167 guards, 1490s, 163 green, 2 red, 2 gated, tree_moved=no. One red is the known live_group_plant pen leg the fleet has carried since 20260907; the other, crushed_index index_unlisted=1, names press/date absent from docs-geode/press/README.md, which is Petrichor's lane, so I named it rather than claiming it.
+think Reading the door, one sentence stood out: Those eight build three modules -- src/main.rye, vessel_core.rye, vessel_seal.rye. I did not trust it and did not guess. I grepped each of the fourteen lap-tier guard files for those three paths. Nine build all three. The scan reads guards=16, lap_guards=14. So the sentence is short by one.
+think git log -S found it entered at 05c87d3d0, and git show of that commit's roster read twelve guard rows. amphora_mark_wreck was seated on this same day, hours before my reading, and it builds all three -- so it is the ninth builder and the sixteenth guard. The word eight went stale on the same day the digit gate landed, in the same room, two paragraphs from the gate.
+think That is my own row %638 refuted by its own room. Its closing clause let a word-spelled number walk free since a spelled number cannot go stale in silence. It can, and one had. The lesson is not about words versus digits: a gate's exemption is a claim like any other, and mine was reasoned rather than measured.
+think Before writing the reading I measured whether a gate at zero would be honest, because a wall that reds on ordinary work is a wall somebody turns off. The same door carries three more modules in a sentence that enumerates what it counts and is self-checking. So the reading is REPORTED, never gated -- and the witness asserts the field is PRESENT rather than zero, since a door that stopped answering and a door with nothing to report are two different facts.
+obs The nouns are the four this instrument itself measures -- line, module, guard, witness -- so the reading never reaches a number it could not check. A word character after the noun ends the match and a letter before the number ends it, so eight guardrails and someone-line walk free, both proven in the control from the failing side.
+obs Against myself, twice. My wait loop read pgrep -f standing_equipment_run, which matches a command line rather than a directory, so on a pier of eight ships it can never go quiet -- the %541/%628 family in a new verb. fleet_call.sh answers the signal question and nothing answers the wait one. I only ever READ, so no peer was touched; yet for half an hour my elapsed-time readings were grain-bakery's clock rather than my own, and I only found out by resolving /proc/<pid>/cwd. The cure is one line: wait on your own PID.
+obs The row is born on a shelf because the pin still reads pin_headroom=24, rows_that_fit=0, pin_deadlocked=1 -- the same deadlock %638 recorded three hours earlier, so the two rows sit side by side. the number came off the anointed spine, which already held %639, and is cited by stamp until the spine binds it; the local monotone gap closes on the rebase, which is the derived spine working rather than failing.
+loom guard=amphora_roster control_behaviors=77 control_failed=0 scan_ms=under_1000
+loom roster=cold_scoped guards=167 seconds=1490 green=163 red=2 gated=2
+loom roster=verify_on_commit guards=196 seconds=1682 green=191 red=2 gated=3 tree_moved=no
+loom census=module_doors pages=113 pages_with_letter_counts=36 lines=63
+file tools/fixtures/am/amphora_roster_scan.sh readme_spelled_words reads a number word one to fifty beside line, module, guard or witness at the front door, reported never gated
+file amphora/README.md the drifted sentence names covered, singly_covered and detail_singly in place of a count, and records what drifted and why
+file tools/fixtures/am/amphora_roster_control.sh nine planted behaviors -- counted, named, not gated, exit clean, case folded, hyphen form, bounded both ends, other nouns free
+file tools/am/amphora_roster_witness.rish asserts the field is present rather than zero, and pins the control at 77
+file construction/standing-equipment.kyri the roster row says what the new reading does and why it reports rather than gates
+file construction/archive/REDS-a-count-spelled-in-letters-rows-641.md the row, born on a shelf because the pin is deadlocked
+file construction/archive/REDS-fold-recital.md the birth recorded so the spine stays readable
+file construction/archive/20260908-135445_itinerary-landed-accounts.md the elder COPAL block, shelved whole
+file construction/ITINERARY.md the live front, 40958 of 40960
+scope one keystone in the amphora lane -- the letter form of a count at a room's front door, read and reported
+status GREEN -- amphora_roster witness green with 77 control behaviors, scan verdict=ok, and a full verify pass on the committed tree reading 191 of 196 green with tree_moved=no; both reds are pre-existing and neither is mine to close -- standing_equipment's live_group_plant pen leg, the fleet's since 20260907, and crushed_index naming press/date absent from docs-geode/press/README.md
+recommend check-in (Keaton) -- the shape is tree-wide, 36 of 113 living module doors carrying 63 letter-form counts, and whether the doorway family should read it for every room is a widening of what a gate refuses rather than a lap

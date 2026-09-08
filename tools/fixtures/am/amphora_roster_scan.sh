@@ -34,6 +34,7 @@
 #   readme_unnamed    a rostered guard the room's front door never names    GATED at zero
 #   own_lines         how many lines the room's own modules carry           reported
 #   readme_spelled_lines  a line count spelled in digits at the front door  GATED at zero
+#   readme_spelled_words  the same count spelled in letters at that door    reported
 #
 # A LINE COUNT SPELLED AT THE DOOR IS STALE BEFORE ITS OWN COMMIT LANDS (`20260908`). This room's
 # front door read *`purchase_delivery.rye`, `vessel_fetch_wire.rye` and `vessel_fetch_delivery.rye`
@@ -85,10 +86,12 @@
 # WHAT IT DOES NOT REACH, named rather than implied. Whether a guard that names a module PROVES
 # anything about it: naming is what a text can show, and a claim's worth is a hand's reading. And
 # whether a guard runs green -- the standing roster answers that every pass, and this one asks only
-# whether the roster is pointed at the whole room. The spelled-count gate reads the word `line` and
-# `lines` alone, so a door spelling a byte count, a module count, or a percentage can drift exactly
-# the same way and this reading stays quiet: one word is what fired here, and a wall drawn around
-# every number a door might spell would refuse the tables this page is mostly made of.
+# whether the roster is pointed at the whole room. The two spelled readings carry four nouns between
+# them, so a door spelling a byte count or a percentage can drift exactly the same way and neither
+# reading speaks: a wall drawn around every number a door might spell would refuse the tables this
+# page is mostly made of. And this is ONE room's door. Measured `20260908` across the 113 living
+# module front doors outside the closed stacks, 36 pages carry 63 lines of the letter form, so the
+# shape is tree-wide and this scan walls one door of it.
 #
 #   sh tools/fixtures/am/amphora_roster_scan.sh [<room>] [<roster>] [<guard_room>] [<readme>]
 #
@@ -236,13 +239,36 @@ if test -f "$README"; then
   awk 'tolower($0) ~ /[0-9][0-9,]*[ -]lines?([^a-z]|$)/ { print FNR }' "$README" > "$TMP/spelled"
   readme_spelled_lines=$(grep -c '' "$TMP/spelled" || true)
   echo "readme_spelled_lines=$readme_spelled_lines"
+
+  # A COUNT SPELLED IN LETTERS GOES STALE THE SAME WAY, and this room proved it within the day.
+  # The digit reading above lets `thirty lines down` walk free, on the reasoning that a number
+  # spelled as a word cannot go stale in silence. It can. This door read *Those eight build three
+  # modules* -- written into `05c87d3d0` when twelve guards stood over the room, and read again
+  # after `amphora_mark_wreck` made sixteen, one more of which builds all three. The digit gate
+  # watched that sentence drift and had no letter in its pattern.
+  #
+  # REPORTED, NEVER GATED, and the reason is measured rather than cautious. On the day this landed
+  # the door carried two such lines: the drifted count, and `three modules -- src/main.rye,
+  # vessel_core.rye, vessel_seal.rye`, which enumerates what it counts and is self-checking. A wall
+  # at zero would refuse the second along with the first, and a wall that reds on honest prose is a
+  # wall somebody turns off. So the reading names its lines and leaves the judgment to a hand.
+  #
+  # The nouns are the four this instrument itself measures -- `own_lines`, `modules`, `guards`, and
+  # the `witness` a guard is called at this door -- so the reading never reaches a noun no number
+  # here could be checked against. A word character after the noun ends the match, so `eight
+  # guardrails` walks free, and a letter before the number ends it too, so `someone-line` does.
+  awk 'tolower($0) ~ /(^|[^a-z])(one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty)[ -](line|module|guard|witness)(s|es)?([^a-z]|$)/ { print FNR }' "$README" > "$TMP/spelledword"
+  readme_spelled_words=$(grep -c '' "$TMP/spelledword" || true)
+  echo "readme_spelled_words=$readme_spelled_words"
 else
   # A word rather than a number: an absent door and a whole one must never read alike.
   echo "readme=absent"
   echo "readme_named=absent"
   echo "readme_unnamed=absent"
   echo "readme_spelled_lines=absent"
+  echo "readme_spelled_words=absent"
   : > "$TMP/spelled"
+  : > "$TMP/spelledword"
   readme_unnamed=0
   readme_spelled_lines=0
 fi
@@ -267,6 +293,7 @@ name_them readme_unnamed "$TMP/readme_unnamed"
 name_them linked "$TMP/linked"
 name_them lines "$TMP/lines"
 name_them spelled_line "$TMP/spelled"
+name_them spelled_word "$TMP/spelledword"
 
 if [ "$uncovered" -eq 0 ] && [ "$orphan_rows" -eq 0 ] && [ "$readme_unnamed" -eq 0 ] \
    && [ "$readme_spelled_lines" -eq 0 ]; then
