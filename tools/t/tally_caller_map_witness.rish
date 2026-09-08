@@ -1,20 +1,83 @@
-# tally_caller_map_witness.rish -- one seam caller map for Tally marks (Arc IV Unify).
+# tools/t/tally_caller_map_witness.rish -- every mark that reaches Tally, and how.
 #
-# Canon prose: tally/README.md § Who calls Tally. This witness proves a closed
-# set of consumer symlink homes still resolve -- drift fails loud.
+# Canon prose: tally/README.md section "Who calls Tally" -- callers reach marks through their own
+# symlinks or imports, not copies. This witness proves the tree still holds that, over a population
+# DERIVED from the index rather than spelled by hand, and it proves the prose binding itself, which
+# nothing else in the tree reads.
+#
+# The reading and its bounds live in tools/fixtures/t/tally_caller_map_scan.sh; the refusals are
+# proven on real trees in a throwaway pen by tools/fixtures/t/tally_caller_map_control.sh.
+#
+# What this does NOT read, so the split between guards stays single-stranded: a COPY standing where
+# siblings link belongs to copy_lag, and tally_copy.rye against the canon's bytes to copy_sameness.
+# A copy cannot be seen by listing links, by construction.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/t/tally_caller_map_witness.rish
 
+say "tally-caller-map: Language EN -- which marks reach Tally, and do they reach it the canon way?"
+say "tally-caller-map: Style Gauge, Meter -- counts, a verdict, and every refusal by name."
+say "tally-caller-map: Lens TAME -- one derived population, bounded, with the named sample beside it."
+
+say "tally-caller-map: reading every tracked symlink that resolves under tally/..."
 let scan = run ["sh" "tools/fixtures/t/tally_caller_map_scan.sh"]
-if scan.ok == false then say "MISSING caller symlink or file:"
 if scan.ok == false then say scan.out
-assert scan.ok else "tally caller map has a broken consumer path"
+assert scan.ok else "tally caller map refused -- read the verdict line above"
+assert scan.out contains "verdict=ok" else "tally caller map did not reach verdict=ok"
 
-let readme = run ["sh" "-c" "grep -F '## Who calls Tally' tally/README.md"]
-assert readme.ok else "tally/README.md must carry the canon Who calls Tally section"
+# The population is derived, so a reading that shrinks to nothing must refuse rather than pass.
+assert scan.out contains "marks=" else "scan printed no mark count"
+assert scan.out contains "dangling=0" else "a mark's symlink does not resolve to a file under tally/"
+assert scan.out contains "named_missing=0" else "a named canon-sample mark is absent"
+assert scan.out contains "named_not_link=0" else "a named canon-sample mark is a copy, not a symlink"
+assert scan.out contains "named_escaped=0" else "a named canon-sample mark resolves outside tally/"
 
-let saga = run ["sh" "-c" "grep -F 'Canon caller map' saga/README.md"]
-assert saga.ok else "saga/README.md must point at the tally canon caller map"
+# The prose binding: this guard's own seat, read by no other instrument here.
+assert scan.out contains "prose_tally_missing=0" else "tally/README.md lost its Who calls Tally section"
+assert scan.out contains "prose_saga_missing=0" else "saga/README.md no longer points at the canon caller map"
 
-say "GREEN: tally caller map — closed consumer paths resolve; canon prose seated."
+say "tally-caller-map: proving the refusals in a throwaway pen, twelve ways..."
+let control = run ["sh" "tools/fixtures/t/tally_caller_map_control.sh"]
+if control.ok == false then say control.out
+assert control.ok else "tally caller map control did not complete"
+say control.out
+assert control.out contains "clean_free=yes" else "a canon and its linking room must pass free"
+assert control.out contains "clean_counted=yes" else "the derived population must find the mark it is meant to find"
+assert control.out contains "sample_read=yes" else "the named sample file must be read instead of the built-in list"
+assert control.out contains "clean_exits_zero=yes" else "an honest tree must exit zero, not merely say ok"
+assert control.out contains "dangling_counted=yes" else "a link whose target is gone must be counted"
+assert control.out contains "dangling_refused=yes" else "a dangling mark must refuse by name"
+assert control.out contains "dangling_exits_one=yes" else "a dangling mark must refuse by exit code too"
+assert control.out contains "dangling_lift_green=yes" else "removing the plant must return the reading to green"
+assert control.out contains "copy_counted=yes" else "a copy standing where the canon says symlink must be counted"
+assert control.out contains "copy_refused=yes" else "a copy must refuse -- this is the state the elder predicate passed"
+assert control.out contains "elder_predicate_passes_the_copy=yes" else "the elder existence predicate must be shown passing the copy it could not see"
+assert control.out contains "copy_lift_green=yes" else "restoring the symlink must return the reading to green"
+assert control.out contains "absent_counted=yes" else "a named mark simply gone must be counted"
+assert control.out contains "absent_refused=yes" else "an absent named mark must refuse under its own verdict, not the copy's"
+assert control.out contains "escaped_counted=yes" else "a named mark retargeted out of tally/ must be counted"
+assert control.out contains "escaped_refused=yes" else "a retargeted named mark must refuse by name"
+assert control.out contains "derived_half_is_blind=yes" else "the retarget must be shown invisible to the derived half, which is why the named sample stays"
+assert control.out contains "chain_counted=yes" else "a mark reaching the canon through another room's link must be counted a chain"
+assert control.out contains "chain_in_population=yes" else "a chained mark still belongs to the population"
+assert control.out contains "chain_free=yes" else "a resolved chain is lawful and must pass free"
+assert control.out contains "prose_tally_counted=yes" else "a lost Who calls Tally section must be counted"
+assert control.out contains "prose_tally_refused=yes" else "a lost Who calls Tally section must refuse"
+assert control.out contains "prose_saga_counted=yes" else "a lost saga pointer must be counted"
+assert control.out contains "prose_saga_refused=yes" else "a lost saga pointer must refuse"
+assert control.out contains "untracked_unread=yes" else "an untracked link must stay outside the population"
+assert control.out contains "untracked_free=yes" else "an untracked link must not red the tree a commit would ship"
+assert control.out contains "no_canon_says_so=yes" else "an absent tally/ room must be named rather than read as clean"
+assert control.out contains "no_canon_refuses=yes" else "an absent tally/ room must refuse"
+assert control.out contains "no_sample_says_so=yes" else "a sample file that does not exist must refuse rather than fall back"
+assert control.out contains "empty_sample_read=yes" else "an empty sample must read as zero named marks"
+assert control.out contains "no_marks_says_so=yes" else "a derivation finding nothing must say so"
+assert control.out contains "no_marks_refuses=yes" else "a derivation finding nothing must refuse, since nothing found reads like nothing wrong"
+assert control.out contains "loop_counted=yes" else "a link loop must be counted unresolvable rather than spinning"
+assert control.out contains "loop_named=yes" else "an unresolvable link must name its path"
+assert control.out contains "loop_reported_not_gated=yes" else "a loop in a room that never calls Tally is another lane's, so it reports rather than gates"
+assert control.out contains "loop_leaves_marks_intact=yes" else "an unresolvable link must not take the honest marks out of the count with it"
+assert control.out contains "control_verdict=ok" else "the control reached no ok verdict"
+
+say scan.out
+say "GREEN: every tracked mark resolves under tally/, the named sample holds the canon rule, and the prose binding stands."

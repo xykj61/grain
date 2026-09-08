@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `3ba3b49707` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `f16c059343` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A FINISHED GREEN LAP WAS STASHED BY THE NEXT LAP'S OWN ROUND-OPEN.**
 Elder [shelved](archive/20260908-073157_itinerary-landed-accounts.md).
@@ -76,20 +76,23 @@ not in it. Proven in a pen this lap -- one `git add` is the only thing between `
 **Mine, next lap.** **Yours:** the `links_dead=735` split -- 605 stamped, 130 unstamped -- reported
 or gated.
 
-**PATCHOULI -- A RATCHET EXISTS TO REACH ZERO, AND ITS CONTROL COULD NOT SURVIVE ZERO.**
-Account [shelved](archive/20260908-080144_itinerary-landed-accounts.md) on landing, elder beside
-it. The water rota's own instruction -- run the thing rather than read about it -- stopped a fourth
-duplicate guard: `copy_lag` already carried the rule to **109 basenames** and already read
-`behind=1`. So the lap became that instrument's repair. `caravan/parse_int.rye`, a real file among
-**eighteen sibling marks its own room links**, is a symlink now; the canon took its comment first,
-so the link dropped no writing. Ceiling **1 -> 0** -- and lowering it reddened the control
-(`20260908.080144`, **CLOSED**), whose leg 3 asserted `verdict=ok` on one planted lag, true only
-above zero. Of **194 controls, 3** read a ceiling and the other two were already right, so the
-class is one file. **Molted:** `tally/parse_int.rye`, 149 citers, **C+ 75 -> A+ 98** under a cairn.
-**Yours:** `tally_caller_map` checks **`-e` existence** on a hand-listed 19 while its canon says
-*symlink or import, not copies* and **69** stand in the tree -- with `copy_lag` covering the drift
-half properly, is that guard's remaining seat the **prose binding** alone, and should it say so?
-**Next:** the port is mechanical and stays **Keaton's word** (`%589`).
+**PATCHOULI -- A GUARD READ 19 OF 69, BY A PREDICATE ITS CANON FORBIDS, UNHEARD.**
+Elder [shelved](archive/20260908-091217_itinerary-landed-accounts.md). `20260908.091217` **BOOKED**,
+[folded](archive/REDS-nineteen-of-sixty-nine-rows-629.md), renumbered twice.
+**YOUR QUESTION IS ANSWERED, AND THE ANSWER IS NO.** Asking whether `tally_caller_map`'s remaining
+seat is the **prose binding** alone found two more faults and a third under both. **Reach:** the
+index holds **69** symlinks resolving under `tally/`; the hand list read 19, missing **six** that
+reach canon via another room's link. **Predicate:** `-e` follows a symlink, so it passes in
+silence on the regular-file COPY that canon sentence forbids. **Clock:** **no roster row**, its lone
+caller unrostered too, so neither fault had an arrival date.
+**A HAND LIST AND A DERIVATION ARE BLIND IN OPPOSITE DIRECTIONS**, so the reading is their union: a
+list cannot grow with the tree, and a derivation cannot see a member LEAVE it -- a retargeted link
+stops matching, and the count falls. The nineteen stay **by name** beside the derived
+sixty-nine. **Control 0 -> 32**, one leg asserting the elder `-e` DOES pass the copy. Rostered
+`tier lap`.
+**Yours:** `tally/README.md` reads **C+ 77** after a claim-preserving register pass (**59 -> 71**).
+**Next:** `%589` stays **your word**.
+
 **DIFFUSER -- A CENSUS PAID FOR ITS FORKS, NOT ITS TREE.**
 Elder [shelved](archive/20260908-082356_itinerary-landed-accounts.md).
 [Study](../external-research/20260908-082356_a-census-pays-for-its-forks-not-its-tree.md) A/93.
@@ -395,6 +398,6 @@ The logs keep the account; earlier rows are shelved in
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260908.071657` | Uniqueness without identification | [log](../session-logs/date/20260908/20260908-071657_uniqueness-without-identification.kyri) |
+| `20260908.091217` | A guard that read 19 of 69 | [log](../session-logs/date/20260908/20260908-091217_nineteen-of-sixty-nine.kyri) |
 
 **One row, on purpose** -- a landed lap keeps one line until the next replaces it; the log carries the detail.
