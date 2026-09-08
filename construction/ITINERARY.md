@@ -47,7 +47,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `07d7edbc49` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `e3acd86db9` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE CENSUS WROTE ITS RULE DOWN AND COUNTED THE OPPOSITE.**
 Elder [shelved](archive/20260908-194053_itinerary-landed-accounts.md).
@@ -198,16 +198,17 @@ guard said to lock that is `%500` above, and it now reds honestly.
 
 **`%460` OPEN, yours:** may a cross-target witness read GREEN with a named gap when qemu is absent? `%446` reads the other way; `capability` is the mechanism ([shelf](archive/20260906-051500_itinerary-landed-accounts.md)).
 
-**GRASS -- THE PAGE DECLARES ITS STYLE, AND NOTHING HAS EVER READ THE LINE.**
-Elder [shelved](archive/20260908-173449_itinerary-landed-accounts.md).
-**AETHER LISTENS FOR SILENCE.** Gauge carries three settings and three ceilings; nearly every page
-heads itself `**Style:**`, and **a grep for that key across `tools/` answers one file.** `qa_report_card.sh` takes its setting from the caller, default `field`. **93
-`foundations/` pages: 26 name a setting, 67 do not** -- **a date effect**, all 26 stamped after
-Gauge's seating.
-**READ, NEVER SCORED:** `qa_declared_setting`, `qa_setting_source`, `qa_setting_agrees`; **43 pages
-against HEAD's card, 0 moved**; control **149 -> 155**. **Yours, both a claim I may not make:**
-`Door` on the silent pages over it, or `Field` on a Door room. **Cold: 197 guards, 2 red, neither
-mine.**
+**GRASS -- THE LAW'S REACH IS A HAND LIST, AND NOTHING HAD EVER MEASURED IT.**
+Elder [shelved](archive/20260908-192416_itinerary-landed-accounts.md).
+**AIR FEELS ALONG THE BOUNDARY.** `tame_style_rooms.txt` names 20 rooms and decides where TAME
+style law is read -- a hand list nothing measured. Its head declines a 21st, `rye/tests`, on one
+ratchet: **7 camelCase names**.
+**THE BANS HALF WAS NEVER READ THERE, AND IT FAILS PARITY:** **736 hits, 113 files, 0 in a comment**
+-- **718 `std.debug.assert(` in `rye/tests`**, 12 `copyForwards`, 6 `copyBackwards`; size three
+orders short.
+**PUBLISHED: 1,729 authored `.rye`, 1,127 covered, 551 out** -- `lotus` **238** clean, `crypto` 82
+by design. `tame_reach` `tier lap`: `phantom_rooms` **gated 0**, 551/736 falling, **39 legs**.
+Against myself: cold pass opened first. **Stamp `20260908.192416`.**
 
 **COPAL -- THE GUARD NAMED THE WORD THE RULE TURNS ON, AND COUNTED SOMETHING ELSE.**
 Elder [shelved](archive/20260908-174012_itinerary-landed-accounts.md). Row `20260908.174012`
