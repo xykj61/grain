@@ -1,4 +1,4 @@
-::  Thin barket — sample=xfer-shape through closed flip call body (STOA129).
-::  XferShape flip: .mint → .send; baked expect .send.
+::  Thin barket -- sample=xfer-shape through closed flip call body (STOA129).
+::  XferShape flip: .mint -> .send; baked expect .send.
 |^  sample=xfer-shape
 %-  flip  sample

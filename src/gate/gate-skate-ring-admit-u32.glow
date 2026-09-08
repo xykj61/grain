@@ -1,9 +1,9 @@
 ::  name       skate ring admit gate
 ::  shape      occupancy - int (@u32) -> lawful - int (@u32)
 ::  invariant  answers 1 while occupancy leaves a seat free (0..127 used); answers 0 at the full ring
-::  example    5 -> 1 · 128 -> 0
-::  readers    Skate · the native surface · Glow
-::  nib        loca-skate-binding-v0 · the ring's Full wall in Glow (20260829)
+::  example    5 -> 1 - 128 -> 0
+::  readers    Skate - the native surface - Glow
+::  nib        loca-skate-binding-v0 - the ring's Full wall in Glow (20260829)
 ::
 ::  The event ring owns 128 fixed seats and refuses the 129th event without
 ::  eviction -- Rye's wall is event_capacity = 128 in

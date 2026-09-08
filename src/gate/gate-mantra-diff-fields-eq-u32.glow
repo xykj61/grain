@@ -1,12 +1,12 @@
 ::  name       mantra diff fields equality gate
 ::  shape      count - int (@u32) -> lawful - int (@u32)
 ::  invariant  answers 1 exactly when count is diff fields=3; answers 0 otherwise
-::  example    3 -> 1 · 2 -> 0 · 4 -> 0
-::  readers    Mantra · Glow Tend a1 unfinished · Ashvini
-::  nib        equinox-e258-equality-seventh-v0 · STOA337
+::  example    3 -> 1 - 2 -> 0 - 4 -> 0
+::  readers    Mantra - Glow Tend a1 unfinished - Ashvini
+::  nib        equinox-e258-equality-seventh-v0 - STOA337
 ::
-::  Ashvini equality · seventh pedestal gth cannot speak. The sur shape names
-::  a Diff's three fields (site · inserts · deletes); this gate decides
+::  Ashvini equality - seventh pedestal gth cannot speak. The sur shape names
+::  a Diff's three fields (site - inserts - deletes); this gate decides
 ::  *exactly*, not by a ceiling.
 ::
 ::  Moved two to three on 20260907.094747, the same lap and the same fault as

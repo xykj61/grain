@@ -1,4 +1,4 @@
-::  Thin barket — sample=quad-shape through closed flip call body (STOA137).
-::  QuadShape flip: from↔amount · fee and nonce stay; baked 5/3/1/2 → expect 3/5/1/2.
+::  Thin barket -- sample=quad-shape through closed flip call body (STOA137).
+::  QuadShape flip: from<->amount - fee and nonce stay; baked 5/3/1/2 -> expect 3/5/1/2.
 |^  sample=quad-shape
 %-  flip  sample

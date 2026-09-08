@@ -1,4 +1,4 @@
-::  Same-desk named-cast — +$ count-shape then ^- count-shape (STOA162).
+::  Same-desk named-cast -- +$ count-shape then ^- count-shape (STOA162).
 ::  Glow OS primary spelling; shape-count.glow keeps the study twin.
 +$  count-shape
   $:  count=@u32

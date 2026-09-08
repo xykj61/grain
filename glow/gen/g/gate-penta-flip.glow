@@ -1,4 +1,4 @@
-::  Thin bartis — sample=penta-shape through closed flip call body (STOA139).
-::  PentaShape flip: from↔amount · fee nonce memo stay; baked 5/3/1/2/7 → expect 3/5/1/2/7.
+::  Thin bartis -- sample=penta-shape through closed flip call body (STOA139).
+::  PentaShape flip: from<->amount - fee nonce memo stay; baked 5/3/1/2/7 -> expect 3/5/1/2/7.
 |=  sample=penta-shape
 %-  flip  sample

@@ -1,4 +1,4 @@
-::  Thin bartis Glow gate — sample=amount-shape returns sample (STOA109).
-::  amount-shape is the closed one-field $: named shape (≡ @u32 lower).
+::  Thin bartis Glow gate -- sample=amount-shape returns sample (STOA109).
+::  amount-shape is the closed one-field $: named shape (== @u32 lower).
 |=  sample=amount-shape
 sample
