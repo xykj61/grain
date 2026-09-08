@@ -9,9 +9,9 @@ const std = @import("std");
 pub fn main() void {
     const gpa = std.heap.page_allocator;
 
-    const joined = std.fs.path.join(gpa, &.{ "home", "xy", "veganreyklah2" }) catch unreachable;
+    const joined = std.fs.path.join(gpa, &.{ "home", "xy", "grain" }) catch unreachable;
     defer gpa.free(joined);
-    std.debug.assert(std.mem.eql(u8, joined, "home" ++ std.fs.path.sep_str ++ "xy" ++ std.fs.path.sep_str ++ "veganreyklah2"));
+    std.debug.assert(std.mem.eql(u8, joined, "home" ++ std.fs.path.sep_str ++ "xy" ++ std.fs.path.sep_str ++ "grain"));
 
     const skips_empty = std.fs.path.join(gpa, &.{ "a", "", "b" }) catch unreachable;
     defer gpa.free(skips_empty);

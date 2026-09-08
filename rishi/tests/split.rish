@@ -1,10 +1,10 @@
 # split.rish -- tests for the `split` string builtin.
 
-let path = "home/xy/veganreyklah2"
+let path = "home/xy/grain"
 let segs = split path "/"
 assert segs contains "home" else "split: first segment missing"
 assert segs contains "xy" else "split: middle segment missing"
-assert segs contains "veganreyklah2" else "split: last segment missing"
+assert segs contains "grain" else "split: last segment missing"
 assert length segs == 3 else "split: segment count failed"
 
 let csv = "rye,rishi,mantra"

@@ -1,7 +1,7 @@
 # align_session_logs.rish -- proves the session-log aligner on a fixture, never on the real tree.
 #
 # align_session_logs.rye derives its target directory from the repo root via
-# enrich/root.rye's resolveRoot, which checks VEGANREYKLAH2_ROOT before it ever
+# enrich/root.rye's resolveRoot, which checks GRAIN_ROOT before it ever
 # walks the filesystem. Setting that variable to a small fixture root -- never
 # to this repository -- lets the tool run for real, mutate a real file, and be
 # checked against a known-correct result, with zero risk to the live tree.
@@ -42,7 +42,7 @@ assert (before_text contains "Stamp:") == false else "fixture must start without
 let pwd_r = run ["pwd"]
 let pwd_s = trim pwd_r.out
 let work_root = "${pwd_s}/${work}"
-let run_result = run ["env" "VEGANREYKLAH2_ROOT=${work_root}" "tools/bin/align-session-logs"]
+let run_result = run ["env" "GRAIN_ROOT=${work_root}" "tools/bin/align-session-logs"]
 if run_result.ok == false then say "align_session_logs run stdout:"
 if run_result.ok == false then say run_result.out
 if run_result.ok == false then say "align_session_logs run stderr:"

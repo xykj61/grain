@@ -5,7 +5,7 @@
 # docs, and reads tools/p/parity.rish read-only -- then writes two whole-file
 # outputs (work-in-progress/992_strengthening_width_crosswalk.md and
 # external-research/yonder/strengthening-compiler/0000_STRENGTHENING_LEXICON.md) besides mutating every
-# pass doc it finds. The same VEGANREYKLAH2_ROOT override align_session_logs'
+# pass doc it finds. The same GRAIN_ROOT override align_session_logs'
 # witness already uses lets this run for real, against a small fixture tree
 # that mirrors all three subtrees, with zero risk to the live repository.
 #
@@ -50,7 +50,7 @@ let pwd_r = run ["pwd"]
 let pwd_s = trim pwd_r.out
 let work_root = "${pwd_s}/${work}"
 
-let first = run ["env" "VEGANREYKLAH2_ROOT=${work_root}" "tools/bin/enrich-strengthening-docs"]
+let first = run ["env" "GRAIN_ROOT=${work_root}" "tools/bin/enrich-strengthening-docs"]
 if first.ok == false then say "enrich first-run stdout:"
 if first.ok == false then say first.out
 if first.ok == false then say "enrich first-run stderr:"
@@ -71,7 +71,7 @@ assert crosswalk_out contains "9001" else "crosswalk output is missing the fixtu
 let lexicon_out = read-file "${work}/external-research/yonder/strengthening-compiler/0000_STRENGTHENING_LEXICON.md"
 assert lexicon_out contains "9001_fixture_pass" else "lexicon output is missing the fixture pass entry"
 
-let second = run ["env" "VEGANREYKLAH2_ROOT=${work_root}" "tools/bin/enrich-strengthening-docs"]
+let second = run ["env" "GRAIN_ROOT=${work_root}" "tools/bin/enrich-strengthening-docs"]
 assert second.ok else "enrich_strengthening_docs second run failed"
 assert second.err contains "enriched 0 files" else "second run was not idempotent — enrich_file re-enriched an already-enriched doc"
 

@@ -121,11 +121,19 @@ occurrences across 243 tracked files**, 187 of them dated testimony that keeps e
 to name them); `construction/domain-registry.bron` (`reyklah.com`, `.net` -- real registrations);
 every comment teaching what a thing molted FROM; and 187 dated files plus git history.
 
-**Unbreached, awaiting a word:** ~30 files under `expanding-prompts/yonder/`, plus `gratitude/`,
-`MAP.md`, `construction/CHECKPOINTS.md`. Each wants reading rather than a sweep -- this lap's
-finding is that a blind rename would have falsified an identity record and a domain registry.
+**Second pass, granted `20260908.181500`.** The env var `VEGANREYKLAH2_ROOT` becomes **`GRAIN_ROOT`**
+in `tools/rye/enrich/root.rye` and its two callers; the elder spelling is still READ, deliberately, so
+a shell that exported it stays served. Both branches proven on the built binary, and the no-env case
+proven to differ. Five test files carrying the name as pure data breached and re-run: two `rye/tests/`
+path tests, three `rishi/tests/` string tests.
 
-### Class W3 -- three charters walked, cited, kept (`20260827.162143`)
+**Held, and each for its own reason -- these are the interesting ones.** `tools/fixtures/s/sow_scrub.sed`
+carries the patterns that scrub the elder name OUT of the public seed, so breaching it would disarm the
+scrub. `tools/gen/chapter/sunn9_claude_llms_stewards_witness.rish` ASSERTS the name is absent.
+`personalize.template.brix` names it as the legacy path to replace. `equinox_e136_...scan.sh` greps for
+`Kaeden Reyklah` in a document as a fact check. **Four tools whose whole job is the elder word.**
+
+**Unbreached, awaiting a word:**### Class W3 -- three charters walked, cited, kept (`20260827.162143`)
 
 Three documents carrying elder banners were measured in the same pass and **held**, because the
 condition a mitra shed asks -- *the mutant carries the elder's content* -- fails for each:
