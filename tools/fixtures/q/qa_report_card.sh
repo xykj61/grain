@@ -424,12 +424,15 @@ fi
 # numerator would re-grade the tree in one unmeasured step, and this file already refuses that shape
 # once -- a separate open question is not settled quietly inside a different repair. What a reader
 # can no longer do is quote `links` as the page's link count, which is what it had been read as.
-reach_raw=$(awk -v gc="$grade_ceiling" -v xc="$xref_ceiling" '
+reach_read() { awk -v gc="$grade_ceiling" -v xc="$xref_ceiling" -v rule="$1" '
   BEGIN { infence = 0 }
   /^```/ { infence = 1 - infence; next }
   infence { next }
   /^[ \t]*\|/ { next }
-  /^[ \t]*[-*>#]/ { next }
+  rule != "register" && /^[ \t]*[-*>#]/ { next }
+  rule == "register" && /^[ \t]*[-*_][-*_ \t]*$/ { next }
+  rule == "register" && /^[ \t]*[-*+][ \t]/ { next }
+  rule == "register" && /^[ \t]*[>#]/ { next }
   /^[ \t]*$/ { next }
   {
     line = $0
@@ -470,7 +473,15 @@ reach_raw=$(awk -v gc="$grade_ceiling" -v xc="$xref_ceiling" '
     # the repair for a file with nothing to read: no overage, so no penalty.
     printf "%d %d %d %d %d %d %d\n", int(go + 0.5), int(xo + 0.5), int(grade + 0.5), int(per100 + 0.5), words, links, sent
   }
-' "$prose_path")
+' "$2"; }
+# TWO READINGS FROM ONE FUNCTION, so the shadow can never drift from the reading it shadows. The
+# `card` rule is the line filter this reading has always applied and is unchanged; the `register`
+# rule is prose_register_scan.sh's own four line rules, spelled here because that scan holds them
+# inside measure() rather than in a file this one can source. What the shadow reading exists for is
+# stated in the comment below its own arithmetic: to MEASURE the standing question, never to answer
+# it. Nothing in the default path reads the shadow.
+reach_raw=$(reach_read card "$prose_path")
+reach_raw_shadow=$(reach_read register "$prose_path")
 # The whole-page count, extracted the way Truth extracts its citations, so the two readings of one
 # file can never disagree about how many links it holds.
 # Read from the file on disk rather than from `$prose_path`, which by here is the reference-block
@@ -557,6 +568,48 @@ fi
 # neither, either, or both is answered by the same line rather than by three of them.
 reach=$(( 100 - 10 * grade_over - 10 * xref_over ))
 [ "$reach" -lt 0 ] && reach=0
+
+# --- The shadow reading: what the standing question would COST, measured rather than answered -----
+# The report above says the two scored readings measure two different documents, and names the
+# question on construction/ITINERARY.md rather than settling it: should Reach see what Register
+# already sees? That question had a shape and no number. This is the number.
+#
+# The shadow runs the SAME reach arithmetic over the SAME prose_path under prose_register_scan.sh's
+# line rules, and passes through the same two freeing doors -- the sentence floor for the grade
+# term, the index door for the cross-reference term -- so the two readings differ in exactly one
+# thing, which is the thing under question. It is PRINTED, never composed into `composite`, and
+# nothing above reads it.
+#
+# MEASURED 20260907 over the 1,204 living tracked Markdown pages outside gratitude/, vendor/,
+# seed/, session-logs/ and the dated shelves, at Service 100 so the counted half alone decides:
+# pages 1,204 -- letters_moved 383 -- down 293, up 90 -- mean composite delta -0.99
+# Reach falls on 479 pages and rises on 140. Across the B door: 55 pages cross BELOW it, 26 cross up.
+# By room, the skew is the finding: foundations/ moves 26 pages and 25 of them DOWN;
+# active-designing/ 55 down against 1 up; external-research/ 55 down against 14 up; .claude/rules/
+# 13 of 51 pages move and 10 fall. counsel/, whose registers are mixed, is 30 down against 20 up.
+# The widest single readings are context/specs/20260715-193000_two-dev-environments-and-mobile-
+# emulation.md, A+ to C+ as Reach goes 100 to 0, and granary/README.md, C+ to A+ as it goes 0 to 90.
+#
+# THE DIRECTION IS THE FINDING, and it is the opposite of what the three pages that prompted this
+# lap suggested. Admitting the dropped prose does two things at once. On a LONG page it restores
+# hard, bold-led paragraphs, which raises the Flesch-Kincaid grade past the ceiling of 9 and Reach
+# FALLS -- and those pages are this tree's own house style, .claude/rules/ above all, so the
+# blind spot flatters precisely the prose written most carefully in this voice. On a SHORT page the
+# current reading survives as a fragment of the shared navigation header whose link density floors
+# it, so admitting the body dilutes the density and Reach RISES. Same blind spot, two populations,
+# and the long one is far the larger.
+#
+# SO THE RE-GRADE IS A NET DEMOTION rather than the repair it looks like from three doors. That is
+# worth knowing before anyone takes it, and it is why this stays reported. The question is still
+# Keaton's; what changed is that it now has a cost attached.
+set -- $reach_raw_shadow
+shadow_grade_over=$1
+shadow_xref_over=$2
+shadow_words=$5
+[ "$sentences" -lt "$register_floor" ] && shadow_grade_over=0
+[ "$declares_index" = yes ] && [ "$shadow_words" -lt "$index_floor" ] && shadow_xref_over=0
+reach_shadow=$(( 100 - 10 * shadow_grade_over - 10 * shadow_xref_over ))
+[ "$reach_shadow" -lt 0 ] && reach_shadow=0
 
 # Meter carries no reach budget, because refusal-first prose is the subject rather than a fault.
 # A whole program is never Meter: its head remains Door and its bound lines are reported below.
@@ -822,6 +875,8 @@ fi
 
 echo "service=$service"
 composite=$(( (register + reach + truth + service + 2) / 4 ))
+composite_shadow=$(( (register + reach_shadow + truth + service + 2) / 4 ))
+[ "$composite_shadow" -gt 100 ] && composite_shadow=100
 [ "$composite" -gt 100 ] && composite=100
 
 # Truth is a gate rather than a quarter. A page whose claims have gone false costs a reader more
@@ -832,6 +887,10 @@ if [ "$truth" -lt 60 ]; then
   gated=yes
 fi
 
+[ "$gated" = yes ] && composite_shadow=59
 echo "truth_gate=$gated"
 echo "composite=$composite"
 echo "letter=$(letter_for "$composite")"
+echo "reach_shadow=$reach_shadow (reported, never scored -- Reach under the register reading's line rules)"
+echo "composite_shadow=$composite_shadow"
+echo "letter_shadow=$(letter_for "$composite_shadow")"

@@ -216,6 +216,49 @@ printf 'const p = "/tmp/rye_pen";\n' > "$pen/othertype/tools/f/x.rye"
 ( cd "$pen/othertype" && git add -A >/dev/null 2>&1 && git commit -qm other >/dev/null 2>&1 )
 claim other_extension_free 0 "$(readout othertype constant_pen_files)"
 
+# --- 17b. a heredoc body is program content, and the exemption is proven in BOTH directions -------
+# A control writes a plant into a throwaway tree, and every constant path inside that plant belongs
+# to the plant rather than to the control. An exemption proven only in the freeing direction cannot
+# be told from a hole, so the SAME token is planted twice: once inside a heredoc body, where it must
+# be free, and once outside one in the same file, where it must still bite. The sibling
+# instrument-absence control carries this pairing for the same reason under %443.
+newtree heredoc
+{
+  printf '#!/bin/sh\n'
+  printf 'cat > "$d/probe.sh" <<PLANT\n'
+  printf '  work=/tmp/planted_pen_body\n'
+  printf '  echo "$work"\n'
+  printf 'PLANT\n'
+} > "$pen/heredoc/tools/f/writer.sh"
+( cd "$pen/heredoc" && git add -A >/dev/null 2>&1 && git commit -qm heredoc >/dev/null 2>&1 )
+claim heredoc_body_free 0 "$(readout heredoc constant_pen_files)"
+
+# THE SAME TOKEN OUTSIDE THE BODY STILL BITES, which is what tells a reading from a hole.
+{
+  printf '#!/bin/sh\n'
+  printf 'cat > "$d/probe.sh" <<PLANT\n'
+  printf '  work=/tmp/planted_pen_body\n'
+  printf 'PLANT\n'
+  printf 'real=/tmp/planted_pen_body\n'
+  printf 'echo "$real"\n'
+} > "$pen/heredoc/tools/f/writer.sh"
+( cd "$pen/heredoc" && git add -A >/dev/null 2>&1 && git commit -qm heredoc2 >/dev/null 2>&1 )
+claim pen_outside_the_body_bites 1 "$(readout heredoc constant_pen_files)"
+
+# AND THE BODY CLOSES AT ITS OWN TERMINATOR rather than swallowing the rest of the file, which is
+# the failure a heredoc reader makes when the terminator is written with leading whitespace or the
+# opener is quoted. A quoted opener and an indented terminator, with a real pen standing after it.
+{
+  printf '#!/bin/sh\n'
+  printf "cat > \"\$d/probe.sh\" <<'PLANT'\n"
+  printf '  work=/tmp/planted_pen_body\n'
+  printf '  PLANT\n'
+  printf 'after=/tmp/pen_after_the_body\n'
+  printf 'echo "$after"\n'
+} > "$pen/heredoc/tools/f/writer.sh"
+( cd "$pen/heredoc" && git add -A >/dev/null 2>&1 && git commit -qm heredoc3 >/dev/null 2>&1 )
+claim body_closes_at_its_terminator 1 "$(readout heredoc constant_pen_files)"
+
 # --- 18. an empty tools/ refuses rather than reading zero -----------------------------------------
 newtree bare
 ( cd "$pen/bare" && git rm -q -r tools >/dev/null 2>&1 && git commit -qm bare >/dev/null 2>&1 )

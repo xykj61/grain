@@ -12,6 +12,8 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | Stamp | Log | What it recorded |
 |---|---|---|
 | `20260907.222830` | [the book nobody opened](20260907/20260907-222830_the-book-nobody-opened.kyri) | 3,426 measurements, no reader. |
+| `20260907.222100` | [The formatting outscored the writing](20260907/20260907-222100_the-formatting-was-worth-more-than-the-writing.kyri) | the re-grade priced: 293 of 383 letters fall |
+| `20260907.221124` | [The wall that faced one artifact](20260907/20260907-221124_the-wall-that-faced-one-artifact.kyri) | a log's file field is a claim nobody read: 228 name nothing. |
 | `20260907.220138` | [The falsifier that was never run](20260907/20260907-220138_the-falsifier-that-was-never-run.kyri) | 19 papers, 18 named one, 6 ever ran |
 | `20260907.215940` | [Whose module is this](20260907/20260907-215940_whose-module-is-this.kyri) | a census overstating 26 of 44 rooms; a parked lap recovered |
 | `20260907.214518` | [A wall that watches files](20260907/20260907-214518_a-wall-that-watches-files.kyri) | the shared process table gets a guard; 22 procs, 7 peer trees |
@@ -21,10 +23,9 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260907.210725` | [The ceiling nobody timed](20260907/20260907-210725_the-ceiling-nobody-timed.kyri) | a merge the bound permitted ran past ten minutes; the fold searches now. |
 | `20260907.210207` | [The census that counted itself](20260907/20260907-210207_the-census-that-counted-itself.kyri) | the falsifier fired; the instrument was inside its own reading |
 | `20260907.210124` | [The guard asleep while its own hazard arrived](20260907/20260907-210124_the-guard-asleep-while-its-hazard-arrived.kyri) | a parked guard, and the widening it missed |
-| `20260907.204202` | [The workload and the index](20260907/20260907-204202_the-workload-and-the-index.kyri) | the query census, measured at its own stamp |
-| `20260907.221124` | [The wall that faced one artifact](20260907/20260907-221124_the-wall-that-faced-one-artifact.kyri) | a log's file field is a claim nobody read: 228 name nothing. |
-| `20260907.200326` | [a killed lap and a finished one](20260907/20260907-200326_a-killed-lap-and-a-finished-one.kyri) | status: 21 of 95 declared. |
 | `20260907.205007` | [The page read in three words](20260907/20260907-205007_the-page-read-in-three-words.kyri) | the grader reads a 1,132-word page in three; %574 advanced |
+| `20260907.204202` | [The workload and the index](20260907/20260907-204202_the-workload-and-the-index.kyri) | the query census, measured at its own stamp |
+| `20260907.200326` | [a killed lap and a finished one](20260907/20260907-200326_a-killed-lap-and-a-finished-one.kyri) | status: 21 of 95 declared. |
 | `20260907.195724` | [The lap that was already written](20260907/20260907-195724_the-lap-that-was-already-written.kyri) | a whole parked lap landed; a floor spelled as an equality |
 | `20260907.195249` | [Built twice in one hour](20260907/20260907-195249_the-floor-that-red-on-good-news.kyri) | A peer shelved the same repair first; mine withdrew, the pen work stands. |
 | `20260907.194642` | [The floor that refused its own good news](20260907/20260907-194642_the-floor-that-refused-its-own-good-news.kyri) | two parked laps landed; a floor red on adoption. |

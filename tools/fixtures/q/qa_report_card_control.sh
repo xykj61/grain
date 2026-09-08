@@ -222,6 +222,65 @@ ep=$( ( cd "$pen/elderprose" && QA_CARD_ROOT=. sh tools/fixtures/q/qa_report_car
   && echo "elder_readings_were_equally_blind=yes" \
   || echo "elder_readings_were_equally_blind=no ($(echo "$ep" | sed -n 's/^\(reach_prose=[^(]*\).*/\1/p'))"
 
+# 4c -- THE SHADOW READING, which puts a number on the question 4b could only name. The report above
+# says the two scored readings measure two different documents and leaves the decision on
+# construction/ITINERARY.md. What it could not say is what deciding it either way would COST, and a
+# question with no cost attached is answered by whoever feels strongest. `reach_shadow` runs the same
+# reach arithmetic over the same prepared prose under the register reading's line rules, so the two
+# differ in exactly one thing.
+#
+# THE PLANT IS THE HOUSE STYLE ITSELF: eight short plain sentences that clear the register floor,
+# then three bold-led paragraphs written the way this tree writes an administrative page. The card
+# reads the eight and scores A+; the shadow reads all eleven and scores B. Nothing about the page
+# changed between those two readings except which lines were admitted.
+cat > "$pen/housestyle.md" <<'EOF'
+# A long page written in this tree's own house style
+
+**Status:** Living -- checkable
+
+This opening line is plain and short, and the reach reading sees it. Here is a second plain line, also short. A third plain line follows it. A fourth plain line stands here. A fifth plain line stands here too. A sixth plain line joins them. A seventh plain line is here. An eighth plain line closes the plain run.
+
+**What the bold key carries:** a substantially longer and considerably more polysyllabic paragraph whose accumulated subordinate constructions demonstrably elevate the computed readability grade beyond the ceiling this setting establishes for documentation intended for newcomers.
+
+**Why the elevation matters here:** the incorporation of these characteristically dense administrative formulations into the measured population necessarily reconfigures the arithmetic underpinning the readability determination, notwithstanding the identical vocabulary standing unaltered throughout.
+
+**What a reader consequently loses:** an evaluative instrument systematically excluding precisely those paragraphs exhibiting the greatest syntactic complexity will predictably communicate an unrepresentatively favorable impression of comprehensibility.
+EOF
+hs=$(run housestyle.md --setting door --service 100)
+[ "$(val "$hs" letter)" = "A+" ] && [ "$(val "$hs" letter_shadow)" = "B" ] \
+  && echo "shadow_moves_where_the_rules_part=yes" \
+  || echo "shadow_moves_where_the_rules_part=no ($(val "$hs" letter) vs $(val "$hs" letter_shadow))"
+[ "$(val "$hs" reach)" -gt "$(val "$hs" reach_shadow)" ] \
+  && echo "shadow_falls_on_the_house_style=yes" \
+  || echo "shadow_falls_on_the_house_style=no ($(val "$hs" reach) vs $(val "$hs" reach_shadow))"
+
+# AND IT DISCRIMINATES, which is what tells a reading from a decoration -- the same discipline leg
+# 4b already keeps. The same words with their keys unbolded are one document to both rules, so the
+# two readings meet. That the unbolded twin reads B is the finding stated at its sharpest: the
+# formatting was worth two and a half letters and the writing was worth none of them.
+sed 's/^\*\*\([^*]*\):\*\* /\1: /' "$pen/housestyle.md" > "$pen/housestyle_plain.md"
+hp=$(run housestyle_plain.md --setting door --service 100)
+[ "$(val "$hp" reach)" = "$(val "$hp" reach_shadow)" ] \
+  && [ "$(val "$hp" letter)" = "$(val "$hp" letter_shadow)" ] \
+  && echo "shadow_still_where_the_rules_agree=yes" \
+  || echo "shadow_still_where_the_rules_agree=no ($(val "$hp" reach) vs $(val "$hp" reach_shadow))"
+[ "$(val "$hp" letter)" = "$(val "$hs" letter_shadow)" ] \
+  && echo "unbolded_twin_reads_the_shadow_grade=yes" \
+  || echo "unbolded_twin_reads_the_shadow_grade=no ($(val "$hp" letter) vs $(val "$hs" letter_shadow))"
+
+# THE LEG THAT REFUSES A QUIET RE-GRADE, and it is the one this whole reading turns on. A shadow
+# that leaked into the score would be the unmeasured step the file refuses twice already, wearing a
+# report's clothes. Two proofs, because one is not enough: the composite is recomputed here from the
+# card's OWN four published readings and must match, and the shadow lines must be the last lines of
+# the output, so nothing scored can have been computed downstream of them.
+recomputed=$(( ( $(val "$hs" register) + $(val "$hs" reach) + $(val "$hs" truth) + $(val "$hs" service) + 2 ) / 4 ))
+[ "$recomputed" = "$(val "$hs" composite)" ] \
+  && echo "shadow_never_enters_the_grade=yes" \
+  || echo "shadow_never_enters_the_grade=no (recomputed $recomputed vs $(val "$hs" composite))"
+[ "$(echo "$hs" | tail -3 | sed -n 's/^\([a-z_]*\)=.*/\1/p' | tr '\n' ' ')" = "reach_shadow composite_shadow letter_shadow " ] \
+  && echo "shadow_is_appended_only=yes" \
+  || echo "shadow_is_appended_only=no ($(echo "$hs" | tail -3 | sed -n 's/^\([a-z_]*\)=.*/\1/p' | tr '\n' ' '))"
+
 # 5 -- Meter carries no register or reach budget: refusal-first prose is the subject there.
 m=$(run cold.md --setting meter)
 [ "$(val "$m" register)" -eq 100 ] && echo "meter_register_free=yes" || echo "meter_register_free=no"
