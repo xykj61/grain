@@ -244,6 +244,10 @@
   #   this pier runs 2026.04.12 -- so the config is already correct for its channel
   #   and a rebuild changes nothing. `nixos-unstable` carries the newer one; moving
   #   the pin moves every package, which is Keaton's word rather than a lap's.
+  #   DECIDED 20260908 on that word: WAIT. "the kakoune we have now is good" --
+  #   so the pin stays on nixos-26.05 and 2026.04.12 is the seated version here.
+  #   This is a decision rather than a backlog item; a later reader meeting the
+  #   version gap should read it as chosen, not as drift nobody noticed.
   #   Gratitude: gratitude/maxime-coste-kakoune.md
   # perl - python3 -- outer-terminal interpreters for legacy scripts the pier
   #   still carries (the .sh/.pl fold to Rishi is in motion, not complete);
