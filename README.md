@@ -17,13 +17,15 @@
 
 ---
 
-**Style:** Bhakta (see [`context/BHAKTA_STYLE.md`](context/BHAKTA_STYLE.md)) -- the register that
-assumes no background and still tells you everything.
+**Style:** [Bhakta](context/BHAKTA_STYLE.md) with [Gauge](context/GAUGE_STYLE.md) and
+[Twilight](context/TWILIGHT_STYLE.md) -- a register that welcomes every reader, measures what it
+claims, and reaches for the image. Its negation reads **6%**, down from 14, and the last of it lives
+in a teacher's quotation and a foundation's title, which keep their own words.
 
 > **A grain is a piece you can hold.**
 
 Welcome. You are at the start of a new internet, and your first interaction with it begins a
-trajectory on Earth that did not exist a moment ago.
+trajectory on Earth that begins with you.
 
 Walk into a forest and notice what greets you. Your senses wake one at a time -- the sound first,
 then a touch, then what you see, until the water and the earth have wrapped all the way around you.
@@ -40,8 +42,8 @@ there to ask what it means, and again after that, as many times as the universe 
 the game of Grain is itself helping you harvest and blossom your dreams.
 
 **Try us before you trust us.** You are reading this in a web browser you chose. Here is something
-you can copy and paste into any AI search engine, and there are many today. It asks nothing personal
-of you and carries no risk:
+you can copy and paste into any AI search engine, and there are many today. It stays entirely
+your own question, and it costs you a moment:
 
 ```
 What is Helen Atthowe's ecological agriculture, and, radiantly, how might we source fair computers?
@@ -74,9 +76,9 @@ software makes is one a program has already checked.
 
 It is early, and it says so on every page. What already works is listed below.
 
-**Two links, and nothing else you need yet.** Read
+**Two links, and they carry the whole of it for now.** Read
 **[why this exists](foundations/20260823-034321_the-return-that-feeds-everyone.md)** for the idea in
-plain English with no code in it, or spend
+plain English, all prose, or spend
 **[your first hour](docs-geode/tutorials/the-first-hour.md)** cloning the tree and watching
 something turn green on your own machine.
 
@@ -123,7 +125,7 @@ place by catching a real mistake on purpose, so you know the green line means so
 or something we have designed and intend to build, and it always says which. That habit has its
 own home at [`context/TWO_ROOMS.md`](context/TWO_ROOMS.md).
 
-Underneath all three sits one idea, borrowed from ecological farming and explained without jargon
+Underneath all three sits one idea, borrowed from ecological farming and explained in ordinary words
 in **[The Return That Feeds Everyone](foundations/20260823-034321_the-return-that-feeds-everyone.md)**:
 a field can be made to feed itself, growing its own fertility from plants alone. **A system that
 renews itself from within needs only what it can account for.** That is a farming sentence and a
@@ -202,7 +204,7 @@ Every seated term, with the date and the reason we chose it, lives in
 Three of those names work together often enough to be worth reading as one idea, since it is the
 habit most of this tree runs on.
 
-**Brix declares.** A `.brix` file states what a system is made of, in one field per line with no
+**Brix declares.** A `.brix` file states what a system is made of, in one field per line, held to
 punctuation to get wrong. It is a statement about how things should be, written where a reader and
 a program can both find it.
 
@@ -239,7 +241,7 @@ It is also the hardest problem we can currently solve, and solving it opens the 
 
 **Grain is molten**, and we chose that word carefully. The shapes are still moving, the interfaces
 still change, and a design settled on Tuesday may be re-cut on Friday when a better one appears.
-Moving a wall now costs almost nothing, and moving it once a thousand people have hung pictures
+Moving a wall now costs a morning, and moving it once a thousand people have hung pictures
 on it costs a great deal.
 
 So the teaching comes later, and deliberately. Polished tutorials describe an interface, and an
@@ -263,7 +265,7 @@ one reason: **thinking and building are filed separately, so each has space to b
 - **[`active-development/`](active-development/)** -- the notes of a working session: scoping a
   round, planning a lap, recording what a survey found. Notes about *what we did*.
   One question sorts the two: *would this still be worth reading if the code it describes were
-  deleted?* Yes goes to designing, no goes to development.
+  deleted?* Yes goes to designing, otherwise to development.
 - **[`docs-geode/`](docs-geode/)** -- the shipped documentation shelf, and an ambition we are
   growing into. A geode is plain outside and crystalline within, and that is the aim: a reference
   that rewards cracking open. It holds the
@@ -283,13 +285,13 @@ one reason: **thinking and building are filed separately, so each has space to b
   ([`seat_nakshatra.rye`](classical-vedic-astrology/seat_nakshatra.rye)), the studies, and the
   teachings. The **readings themselves stay in the maintainer's field**, since a natal chart holds
   a named person's birth date, time, and place, and the friends whose skies seeded the library
-  asked for privacy. What ships is the method, never anybody's chart.
+  asked for privacy. What ships is the method alone, and the chart stays home.
 
 **The rooms kept in the maintainer's field**
 
-A few rooms hold personal working tissue, and the public seed is projected without them. They are
-named here so the tree reads as one whole, with the understanding that in this copy there is
-simply nothing to click.
+A few rooms hold personal working tissue, and the public seed is projected from the rest. They are
+named here so the tree reads as one whole, with the understanding that in this copy they rest
+quietly out of reach.
 
 *Session logs* keep a reasoning trace for every working round, so a later reader can follow how a
 decision was actually reached. *Construction* holds the live operator card, the reds ledger, and the checkpoints: what is next, right now, and what went wrong on the way.
@@ -321,7 +323,7 @@ Shopping for the three things that hour needs -- a language model, a source forg
 
 Then, in order:
 
-1. **[`SOURCE.md`](SOURCE.md)** -- from nothing to a signed, sandboxed home.
+1. **[`SOURCE.md`](SOURCE.md)** -- the whole path to a signed, sandboxed home.
 2. **[`ORGANIZING.md`](ORGANIZING.md)** -- where each kind of work lives.
 3. **[`MAP.md`](MAP.md)** -- the rooms of the tree at a glance.
 4. **[`manual/grain-os/`](manual/grain-os/README.md)** -- the onboarding rooms.
@@ -342,7 +344,7 @@ identity that signs the work. Both stay local to you.
 - **[`context/GAUGE_STYLE.md`](context/GAUGE_STYLE.md)** -- **New Gauge Style**, how the prose
   reads and the style this repository is written in (**Gauge Style** in short form, **Gauge
   Guidance** where it instructs an agent). A gauge reports a reading exactly, and this style keeps that
-  exactness while adding what a gauge alone has never had: warmth, plain words, and a clear sense
+  exactness while adding what a gauge alone leaves out: warmth, plain words, and a clear sense
   of who is reading. Its first rule comes before all the others -- **don't be too smart about
   it** -- and it inherits its warmth from [`context/RADIANT_STYLE.md`](context/RADIANT_STYLE.md),
   its habit of asking *what does this reward* from [`context/CIVIC_STYLE.md`](context/CIVIC_STYLE.md),
