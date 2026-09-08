@@ -44,6 +44,16 @@
 # worse -- each has read over the Field target the whole time, on the half of itself the meter could
 # not see.
 #
+# THE BLIND SPOT IS COUNTED NOW, rather than written into a header once. The scan reads every
+# tracked README.md -- `tools/fixtures/` and `vendor/` read past, since a frozen plant and
+# third-party source are pages no lane may sweep -- holds each to the same eight-sentence floor,
+# and prints `front_doors`, `front_doors_readable`, `front_doors_unrostered_over` and a
+# `candidate:` line naming each door the roster leaves out that stands above the ceiling. So the
+# green says THE DOORS THAT AGREED ARE INSIDE and shows its work. The reading is REPORTED and
+# never gated, proven in a pen: one over-ceiling page off the roster is named and the verdict
+# still reads ok; the same bytes on the roster refuse at `door_over_ceiling=1`. One roster line
+# apart, so the report is told from the gate rather than assumed to differ from it.
+#
 # WHAT IS NOT PROVEN. That the prose is GOOD. This counts negation density, one honest proxy among
 # several. A page can pass this meter and still fail a reader, so the second number to read is
 # always the prose itself.
@@ -82,6 +92,9 @@ assert control.out contains "body_after_front_matter_is_read=yes" else "prose-re
 assert control.out contains "bold_opening_without_key_is_read=yes" else "prose-register: a bold opening carrying no short key is a sentence"
 assert control.out contains "live_door_clean=yes" else "prose-register: the live door roster must agree with the control's reading"
 assert control.out contains "live_verdict_ok=yes" else "prose-register: the scan must agree with itself"
+assert control.out contains "census_names_the_page=yes" else "prose-register: the unrostered census must name the page by path and share, or a count nobody can act on is all it prints"
+assert control.out contains "census_reported_not_gated=yes" else "prose-register: a front door that agreed to nothing must be reported and never refuse the tree"
+assert control.out contains "census_roster_gates_the_same_page=yes" else "prose-register: the same page one roster line apart must refuse, or the reading cannot be told from the gate"
 assert control.out contains "control_verdict=ok" else "prose-register: the control must agree with itself"
 say "the reading discriminates -- warm prose low, refusal-led prose high, and the edges read correctly"
 

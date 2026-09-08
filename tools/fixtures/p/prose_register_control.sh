@@ -162,4 +162,55 @@ out=$(sh "$scan" 2>/dev/null)
 echo "$out" | grep -q 'door_over_ceiling=0' && echo "live_door_clean=yes" || echo "live_door_clean=no"
 echo "$out" | grep -q 'verdict=ok' && echo "live_verdict_ok=yes" || echo "live_verdict_ok=no"
 
+# 14-16. THE UNROSTERED CENSUS, proven by planting rather than by watching the live tree. The
+#     reading names every tracked README.md that clears the eight-sentence floor, stands above the
+#     door ceiling, and is absent from the DOOR roster -- and it is REPORTED, never gated, because
+#     a page that agreed to nothing must not refuse the tree. Watching the live numbers would prove
+#     that only while the tree happens to hold a candidate, so the proof is a pen: one page, two
+#     rosters, and the verdict read both ways.
+census=$(mktemp -d "${TMPDIR:-/tmp}/prose_register_census.XXXXXX")
+mkdir -p "$census/room"
+cat > "$census/README.md" <<'EOF'
+# The pen front door
+
+This page leads with what is, and it names the work it holds in plain words.
+Every room here keeps its own catalog, and the catalog names each file it holds.
+A reader arriving today finds the same order a reader finds in a decade.
+The witnesses run on metal, and each one prints the reading it took.
+The bounds are named at construction, and the edge checks them once.
+Each claim carries the measurement that earned it, in the same sentence.
+The style is Gauge, and the door setting holds at twenty percent.
+A lane joins this roster by sweeping its page and adding its path.
+EOF
+cat > "$census/room/README.md" <<'EOF'
+# The pen room door
+
+Nothing here was measured, and the claim never refused a wrong input.
+The reading is broken, and the stale number cannot be trusted at all.
+No guard watches this page, and no witness reads what it says.
+The elder shape failed, and the repair was lost before it landed.
+This room has no catalog, and nobody knows what it holds.
+The bound is missing, so an allocation here is unbounded and wrong.
+Every path it names is stale, and not one of them resolves.
+A reader finds no order, and the absent index makes it worse.
+EOF
+( cd "$census" && git init -q . && git add -A ) >/dev/null 2>&1
+sed 's|^DOOR=".*"|DOOR="README.md"|' "$scan" > "$census/scan_unrostered.sh"
+sed 's|^DOOR=".*"|DOOR="README.md room/README.md"|' "$scan" > "$census/scan_rostered.sh"
+un=$(cd "$census" && sh scan_unrostered.sh 2>/dev/null)
+ro=$(cd "$census" && sh scan_rostered.sh 2>/dev/null)
+
+# The plant plants something: the page IS named, by path and by share.
+echo "$un" | grep -q '^candidate: room/README.md ' \
+  && echo "census_names_the_page=yes" || echo "census_names_the_page=no"
+# And naming it changes no verdict -- one candidate standing, and the scan still balances.
+{ echo "$un" | grep -q '^front_doors_unrostered_over=1$' && echo "$un" | grep -q '^verdict=ok$'; } \
+  && echo "census_reported_not_gated=yes" || echo "census_reported_not_gated=no"
+# The load-bearing other side: the SAME bytes on the roster refuse. One roster line apart, so the
+# reading is told from the gate rather than assumed to differ from it.
+{ echo "$ro" | grep -q '^door_over_ceiling=1$' && echo "$ro" | grep -q '^verdict=register_drift$' \
+  && echo "$ro" | grep -q '^front_doors_unrostered_over=0$'; } \
+  && echo "census_roster_gates_the_same_page=yes" || echo "census_roster_gates_the_same_page=no"
+rm -rf "$census"
+
 echo "control_verdict=ok"

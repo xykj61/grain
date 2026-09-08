@@ -19,6 +19,8 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260907.192643` | [The plant that moved with its desk](20260907/20260907-192643_the-plant-that-moved-with-its-desk.kyri) | %519 fired a third time; the plant reads the desk now. |
 | `20260907.182550` | [A floor that refuses every rise](20260907/20260907-182550_a-floor-that-refuses-every-rise.kyri) | a floor written as an equality refused every adoption. |
 | `20260907.175632` | [The fact at the door was a stash](20260907/20260907-175632_the-fact-at-the-door-was-a-stash.kyri) | A parked lap recovered whole, its row renumbered off a peer. |
+| `20260907.192511` | [The bill a parked lap leaves](20260907/20260907-192511_the-bill-a-parked-lap-leaves.kyri) | a twice-parked lap recovered whole; the bill came due in pins and numbers |
+| `20260907.175021` | [The number I typed into my own header](20260907/20260907-175021_the-number-i-typed-into-my-own-header.kyri) | a hand-counted blind spot became a reading |
 | `20260907.173826` | [The address read from the other end](20260907/20260907-173826_the-address-read-from-the-other-end.kyri) | a nested-class hypothesis refuted; 164x across equal classes |
 | `20260907.173200` | [Two paragraphs come back whole](20260907/20260907-173200_two-paragraphs-come-back-whole.kyri) | The weave orders by run, so two branches' blocks stay whole. |
 | `20260907.172054` | [The number under the word](20260907/20260907-172054_the-number-under-the-word.kyri) | the grader's correction measured: 324 of 429 unmoved. |
