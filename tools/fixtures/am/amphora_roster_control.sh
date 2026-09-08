@@ -262,12 +262,41 @@ check "spelled count named"    "yes"     "$(detail_has spelled_line 4 "$p")"
 # Folded case, so a door writing `1,160 Lines` cannot walk past a lowercase reading.
 printf '# room\n\nGuards: room_alpha and room_beta.\nThe two are 1,160 Lines together.\n' > "$p/room/README.md"
 check "spelled count folded"   "1"       "$(field_of readme_spelled_lines "$p")"
-# A number spelled as a word cannot go stale in silence, and the reading's own field names carry
-# `lines` after a word character -- all three walk free, or the repair would refuse its own sentence.
+# The digit reading passes over the word form and the field names alike: `own_lines`, `detail_lines`
+# and `thirty lines down` all walk free here, or the repair would refuse its own sentence. The word
+# form is read by `readme_spelled_words` below rather than let go -- `%638` closed by saying a number
+# spelled as a word cannot go stale in silence, and this room's own door proved otherwise the same day.
 printf '# room\n\nGuards: room_alpha and room_beta.\nThe list thirty lines down reads own_lines and detail_lines off the scan.\n' \
   > "$p/room/README.md"
 check "spelled count lifted"   "0"   "$(field_of readme_spelled_lines "$p")"
 check "lift verdict"           "ok"  "$(field_of verdict "$p")"
+
+# -- 14b. a count spelled in letters is read too, and reported rather than gated ------------------
+# `%638` closed by saying a number spelled as a word cannot go stale in silence. It can: this room's
+# own door read *Those eight build three modules* while nine of the rostered guards built all three,
+# the sentence having been written when twelve guards stood over the room rather than sixteen. So
+# the letter form is read beside the digit form -- and REPORTED, because the same door carries
+# `three more modules` in a sentence that enumerates what it counts, and a wall refusing that would
+# refuse honest prose.
+printf '# room\n\nGuards: room_alpha and room_beta.\nThose eight build three modules here.\n' > "$p/room/README.md"
+check "spelled word counted"   "1"   "$(field_of readme_spelled_words "$p")"
+check "spelled word named"     "yes" "$(detail_has spelled_word 4 "$p")"
+check "spelled word not gated" "ok"  "$(field_of verdict "$p")"
+check "spelled word exit"      "0"   "$(exit_of "$p")"
+# Case folded, so a door opening a sentence with the number is read too.
+printf '# room\n\nGuards: room_alpha and room_beta.\nEight guards stand over this room.\n' > "$p/room/README.md"
+check "spelled word folded"    "1"   "$(field_of readme_spelled_words "$p")"
+# Hyphen form, since a door writes `a nine-line function` as readily as `nine lines`.
+printf '# room\n\nGuards: room_alpha and room_beta.\nA nine-line function opens it.\n' > "$p/room/README.md"
+check "spelled word hyphen"    "1"   "$(field_of readme_spelled_words "$p")"
+# A word character after the noun ends the match, and a letter before the number ends it, so
+# `eight guardrails` and `someone-line` walk free -- or the reading would refuse ordinary English.
+printf '# room\n\nGuards: room_alpha and room_beta.\nThe eight guardrails hold, and someone-line wrote them.\n' > "$p/room/README.md"
+check "spelled word bounded"   "0"   "$(field_of readme_spelled_words "$p")"
+# The nouns are the four this instrument measures; a number beside any other noun is not its business.
+printf '# room\n\nGuards: room_alpha and room_beta.\nIt holds one socket per exchange across two ports.\n' > "$p/room/README.md"
+check "spelled word nouns"     "0"   "$(field_of readme_spelled_words "$p")"
+check "spelled word clean"     "ok"  "$(field_of verdict "$p")"
 
 # -- 15. the pen is proven innocent ---------------------------------------------------------------
 # A scan that always answers ok must fail the uncovered leg above; if it passes, this control proves

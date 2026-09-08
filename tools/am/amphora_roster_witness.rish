@@ -58,7 +58,7 @@ say "amphora roster: the control, so a green reading below can be believed..."
 let c = run ["sh" control]
 assert c.ok else "amphora_roster: control FAILED -- the scan cannot be trusted to red"
 assert c.out contains "verdict=ok" else "amphora_roster: control did not answer ok"
-assert c.out contains "behaviors=68" else "amphora_roster: control ran a different number of behaviors"
+assert c.out contains "behaviors=77" else "amphora_roster: control ran a different number of behaviors"
 assert c.out contains "failed=0" else "amphora_roster: control reported a failed behavior"
 assert c.out contains "innocence patch landed" else "amphora_roster: the innocence patch planted nothing"
 
@@ -72,5 +72,11 @@ assert s.out contains "readme=amphora/README.md" else "amphora_roster: the room'
 assert s.out contains "readme_unnamed=0" else "amphora_roster: a rostered guard the room's README never names -- run `sh tools/fixtures/am/amphora_roster_scan.sh` and read `detail_readme_unnamed`"
 assert s.out contains "readme_spelled_lines=0" else "amphora_roster: a line count spelled at the room's front door -- run `sh tools/fixtures/am/amphora_roster_scan.sh` and read `detail_spelled_line`; the door names `own_lines` rather than spelling it"
 assert s.out contains "own_lines=" else "amphora_roster: the room's weight went unread, so the door has nothing to name in place of a number"
+# REPORTED rather than gated, so what is asserted is that the reading HAPPENED. A door that stops
+# answering here would look exactly like a door with nothing to report, and those are two different
+# facts. `%638` closed by saying a number spelled as a word cannot go stale in silence; this room's
+# own door read `Those eight build three modules` while nine of sixteen rostered guards built all
+# three, so the letter form is read beside the digit form and left to a hand to judge.
+assert s.out contains "readme_spelled_words=" else "amphora_roster: the letter form of a count went unread at the front door -- run `sh tools/fixtures/am/amphora_roster_scan.sh` and read `detail_spelled_word`"
 
-say "GREEN: amphora roster -- 68 planted behaviors, every authored module has a rostered guard, the room's front door names every one, and it spells no line count."
+say "GREEN: amphora roster -- 77 planted behaviors, every authored module has a rostered guard, the room's front door names every one, it spells no line count in digits, and the letter form of a count is read beside it."
