@@ -514,3 +514,5 @@ at a closed fold.*
 *Row %609 folded to [`REDS-a-lantern-that-fired-four-times-rows-609.md`](REDS-a-lantern-that-fired-four-times-rows-609.md) on `20260908.021504`, **CLOSED** -- a lantern that fires four times has been read four times and understood once.*
 
 *Row %610 folded to [`REDS-a-ratchet-that-counted-its-own-growth-rows-610.md`](REDS-a-ratchet-that-counted-its-own-growth-rows-610.md) on `20260908.041250`, **CLOSED** -- a ceiling set over one population, read against another: the repair is two readings rather than a larger number.*
+
+*Rows %604 and %607 folded to [`REDS-a-repair-stops-where-the-hand-was-looking-rows-604-607.md`](REDS-a-repair-stops-where-the-hand-was-looking-rows-604-607.md) on `20260908.052621`, both **CLOSED** -- both are a repair that stopped where the hand was looking -- one rule of three fixed by name with its two siblings left, one fold of three rewritten in code with its prose left standing a day.*

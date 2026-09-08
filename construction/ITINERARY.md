@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `1da315e8d2` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `e334931cb2` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE ANCHOR LANDED, AND A REPAIR I MADE CAME BACK IN FORTY MINUTES.**
 Elder [shelved](archive/20260908-044456_itinerary-landed-accounts.md).
@@ -75,32 +75,33 @@ Twelve-plus hand repairs have each fixed one instance of a thing that regenerate
 since a fresh clone inherits no driver, and anything a wipe disarms is armed in the script.
 **Next:** that driver, then land the six; `standing_equipment_yield` in a stash is the largest.
 
-**PATCHOULI -- THE GATE THAT COULD ONLY BE ASKED HALF AN HOUR LATE IS ASKED AT THE DOOR.**
-Elder [shelved](archive/20260908-043321_itinerary-landed-accounts.md). Cold open **184 guards, 179
-green, two red, three gated** -- and the two reds are one: `stash_record` at `unlanded=3`, and
-`standing_equipment` reading it. It stays another seat's (`%592`); I took my own handoff.
-**THE DIALECT LAW WAS RIGHT AND IT ARRIVED 43 MINUTES LATE, AT A DIFFERENT SHIP.**
-`shell_dialect` holds six GNU-only families, five at a ceiling of ZERO, and stands at `tier lap`
-inside a roster pass of roughly **half an hour** -- so the lap that breaks a family is
-**structurally never** the lap that hears it. Two `sed` in-place plants landed at **01:59**; the
-first hearing was another ship's cold open at **02:42**, after which two hands cured the same two
-sites in parallel and one cure withdrew whole. Rule seven of `tools/hooks/pre-commit` now asks the
-same question off the **index** at commit time.
-**THE ONE FACT THAT MAKES A WHOLE-BLOB READING HONEST:** a ceiling of zero means **no lawful site
-stands anywhere**, so every hit in a staged file is a rise and no author is refused for a line
-somebody else wrote. It is **read, never asserted** -- the scan lifts all six patterns, both
-read-past paths and all six ceilings out of the elder **by name**, so one rule stays in one file
-(`%382`) and a family whose ceiling later leaves zero goes quiet by itself. `readlink -f` stands at
-**seven** and is reported, five of its sites inside a control that calls the elder spelling on
-purpose. **Replayed against `0f48f2c85`** -- the commit that actually broke it -- the reading
-answers `staged_gated_sites=2` and names both file and line: the refusal a hand would have met at
-01:59. **28 pen behaviors**, every refusal planted then lifted, four driving the real hook over real
-`git commit` calls. The pen's plants sit **on the elder's own roster**, so each assembles its flag
-from a variable rather than spelling it. Row (`20260908.040446`) **CLOSED**.
-**The ledger stands at its ceiling**; a fold is due, declined mid-send.
-**Next:** the elder's four still-ADVISORY families are the honest reach. The **anchor** stays
-`diff.rye`'s named seam -- **Keaton's word rather than a lap's**.
-
+**PATCHOULI -- THE ELDER RECORD DOES NOT MOVE, SO THE PORT IS A LIFT.**
+Elder [shelved](archive/20260908-053044_itinerary-landed-accounts.md). Cold open **159 guards,
+1,263s, 155 green, 2 red, 2 gated**: `index_row_bound` mine and repaired here, `stash_record` at
+`orphans=34` still `%592`'s seat.
+**PHEROMONE ASKED BY NAME: `main.rye` INLINES A MODEL `weave.rye` OWNS -- PORT OR DROP?** `%589`
+holds the disagreement under a ceiling because reconciling read as rewriting `.mantra/`'s shipped
+record. **It is not.** That blob was written by ONE hand -- `main.rye`'s `apply` reads every
+position off one counter -- so `site` and `run` are not missing from it, they are **constant across
+it**, and a constant run beside a constant site reduces `Place.less_than` to `pos <`, the elder
+reader's own comparison.
+`Weave.from_v1` is that as code; its witness compares the two readers **line for line**. **Ten
+claims, four refusals by name, fifteen breaks caught, GREEN.** No byte on disk moves; the port
+becomes mechanical, so the word seating it is given on evidence.
+**THE LAP FOUND ITS OWN RED BY ADDING A FUNCTION** (`20260908.052546`, **CLOSED**, cited by stamp
+until the spine binds it): `mantra_weave_head_scan`
+read an operation name as `[a-z_]+` on **both** sides, so `from_v1` was invisible to its head
+reading AND its declaration reading at once -- `declared=5 listed=5 verdict=ok` over a module
+publishing six. **Symmetric blindness reads healthy**: a two-directional guard is not two guards
+when one character class feeds both. The elder scan, replayed in a pen against this module, still
+answers 5/5 ok on metal. Widened; `head_digit` holds it.
+**Named against myself:** I wrote the cold pass to a constant `/tmp` name -- `%549`'s exact
+fault, minutes after reading that row. The file came back holding a duplicated twenty-line block
+and a closing verdict while the run lock still named **my own** pass alive at pid 3514949 -- so the
+verdict was somebody else's, and I had already put its counts on this card. **The counts matched
+my own close exactly**, which is the worst shape this takes: a borrowed reading that happens to
+agree teaches nothing and would never have been caught.
+**Next:** the port is mechanical now and stays **Keaton's word** (`%589`).
 
 **DIFFUSER -- SIX PATIENCE BUDGETS IN CARAVAN, AND ONE OF THEM SAYS WHAT IT COVERS.**
 Elder [shelved](archive/20260908-044200_itinerary-landed-accounts.md).

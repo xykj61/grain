@@ -51,6 +51,7 @@
 //! operation that lands without a line here reds on the lap it arrives --
 //! which is what `merge` did for half a day (REDS %506):
 //!   Weave.empty()            -- an empty weave, no lines yet
+//!   Weave.from_v1(alloc, rows) -- an elder v1 record, lifted as one hand
 //!   weave.apply(alloc, d)    -- advance the weave by one Diff
 //!   weave.current(alloc)     -- the lines present now, in document order
 //!   weave.merge(alloc, w)    -- one weave from two, by union and max
@@ -84,6 +85,18 @@ pub const WeaveError = error{
     /// The weave would pass max_weave_lines -- by a diff's inserts in `apply`,
     /// or by the union of two weaves in `merge`.
     TooManyLines,
+    /// An elder v1 record handed to `from_v1` carries its rows out of order,
+    /// or twice at one position. The record's own writer appends in position
+    /// order off a counter that only rises, so a record that does not rise is
+    /// a hand-edited or truncated blob rather than one Mantra wrote -- and
+    /// lifting it would hand `current` a list whose document order was already
+    /// broken, which that read asserts rather than tidies.
+    V1PositionsDoNotRise,
+    /// An elder v1 row carries generation zero. Zero is reserved by this module
+    /// -- every line starts at generation 1, and zero is what an unseen
+    /// position reads as -- so a row claiming it would lift as a line that
+    /// predates the weave holding it.
+    V1GenerationBelowOne,
 };
 
 /// What names a line for all time: the position one counter handed it, and the
@@ -168,6 +181,43 @@ pub const Place = struct {
         return self.pos < other.pos;
     }
 };
+
+/// One row of the elder `mantra-weave-v1` record: the three fields the CLI
+/// seed writes to disk, in the order it writes them.
+///
+/// The record predates the pair identity and the run. It was written by ONE
+/// hand -- `mantra/src/main.rye` is a single-site CLI whose `apply` reads its
+/// positions off one counter -- so every line it ever wrote belongs to one site
+/// and one block, and the two fields the record does not carry are not missing
+/// from it. They are constant across it, which is a different thing and the
+/// whole reason `from_v1` is a lift rather than a migration.
+pub const V1Row = struct {
+    text: []const u8,
+    gen: u32,
+    pos: u32,
+};
+
+/// The site every line of an elder v1 record carries once lifted.
+///
+/// Zero rather than a fresh number on purpose: the record holds the whole
+/// history of one hand, so naming that hand `0` makes the elder document the
+/// first site of every weave that will ever descend from it, and a second hand
+/// merging into it takes a site of its own. Two elder records lifted and merged
+/// would share this site, and that is honest -- two histories written by one
+/// CLI on one disk are two edits of one hand, and the merge refuses by name if
+/// they ever disagree about a line.
+pub const v1_site: u32 = 0;
+
+/// The run every line of an elder v1 record carries once lifted, and the reason
+/// the lifted weave hands out `1` next.
+///
+/// The whole elder document is ONE block: it was written before runs existed,
+/// so nothing inside it distinguishes one edit from another, and `Place`
+/// ordering over a constant run and a constant site reduces to position order
+/// -- which is exactly what the elder reader already did. Giving the next edit
+/// run 1 is what keeps that block whole: a later hand's lines sort after every
+/// line the record held, rather than interleaving with them at the site tie.
+pub const v1_run: u32 = 0;
 
 /// A single line in the weave. Once added, its identity is permanent.
 ///
@@ -375,6 +425,102 @@ pub const Weave = struct {
     /// An empty weave -- no history yet.
     pub fn empty() Weave {
         return .{ .lines = .empty, .next_pos = 0, .next_run = 0 };
+    }
+
+    /// Read an elder `mantra-weave-v1` record as a weave of one hand.
+    ///
+    /// WHAT THIS ANSWERS. `mantra/src/main.rye` declares its own three-field
+    /// `Line` and writes `{gen}\t{pos}\t{text}` rows to `.mantra/`. The module
+    /// here widened past it -- a line is named by a pair and placed by a triple
+    /// -- and the two models have stood apart since, one guard holding the
+    /// disagreement under a ceiling (REDS %589). The open question was whether
+    /// closing that gap breaks the record already on disk. It does not, and
+    /// this function is the reason stated as code: the elder record is a
+    /// weave whose site and run happen to be constant, so it lifts rather
+    /// than converts, and every byte on disk reads the same document after.
+    ///
+    /// WHY DOCUMENT ORDER SURVIVES, which is the claim worth checking rather
+    /// than believing. `Place.less_than` reads run, then site, then position.
+    /// Hold the first two constant and it reduces to `pos <` -- which is
+    /// exactly the comparison the elder reader sorts by. So the lifted weave's
+    /// `current` returns the elder `current`'s sequence, line for line, with no
+    /// sort in the middle to disagree about.
+    ///
+    /// WHY IDENTITY SURVIVES. The elder writer hands out positions off one
+    /// counter that only rises, so no two rows of a record it wrote share a
+    /// position; pairing each with the one site makes `(pos, v1_site)` unique
+    /// by the same construction the module already relies on.
+    ///
+    /// The rows arrive in the record's own order and are NOT sorted here. A
+    /// record whose positions do not rise was not written by that counter, and
+    /// sorting it would hide that -- so it is refused by name, at the edge,
+    /// before a line is allocated. That refusal is the one thing the elder
+    /// reader has never had: `deserialize_weave` appends rows in blob order and
+    /// asks nothing, so a hand-edited blob reaches `current`'s ordering assert
+    /// as a crash rather than an error.
+    ///
+    /// The caller keeps ownership of each row's text; the lifted lines borrow
+    /// it, exactly as `apply` borrows a diff's insert text.
+    ///
+    /// Precondition:  the rows rise strictly by position and each carries a
+    ///   generation of at least one -- both refused by name rather than
+    ///   asserted, since a record is input from disk rather than a caller's
+    ///   promise.
+    /// Postcondition: the weave holds one line per row, in place order, every
+    ///   line at `v1_site` and `v1_run`; `next_pos` stands above every position
+    ///   held and `next_run` at one, so the next edit follows the whole block.
+    pub fn from_v1(allocator: std.mem.Allocator, rows: []const V1Row) !Weave {
+        // The bound is read at the edge, before anything is allocated, so a
+        // record too large to hold is named rather than half-lifted.
+        if (rows.len > max_weave_lines) return WeaveError.TooManyLines;
+
+        // usize lives at the inherited-std seam alone: a slice counts in usize,
+        // and the bound just checked is what makes the cast safe.
+        const row_count: u32 = @intCast(rows.len);
+
+        var next_pos: u32 = 0;
+        var seen_any = false;
+        var previous_pos: u32 = 0;
+        for (rows) |row| {
+            if (row.gen == 0) return WeaveError.V1GenerationBelowOne;
+            if (seen_any and row.pos <= previous_pos) return WeaveError.V1PositionsDoNotRise;
+            previous_pos = row.pos;
+            seen_any = true;
+            // A position counter that only rises means the last row carries the
+            // highest position, so the floor for the next line is one above it.
+            next_pos = row.pos + 1;
+        }
+
+        var lifted: Weave = .{ .lines = .empty, .next_pos = next_pos, .next_run = 1 };
+        errdefer lifted.lines.deinit(allocator);
+        try lifted.lines.ensureTotalCapacity(allocator, row_count);
+        for (rows) |row| {
+            lifted.lines.appendAssumeCapacity(.{
+                .text = row.text,
+                .gen = row.gen,
+                .pos = row.pos,
+                .site = v1_site,
+                .run = v1_run,
+            });
+        }
+
+        for (lifted.lines.items, 0..) |line, i| {
+            // invariant: every lifted line stands below the weave's own counter,
+            // which is what lets a later apply hand out a position no line here
+            // already answers to
+            assert(line.pos < lifted.next_pos);
+            // invariant: a generation counts from one, so a lifted line never
+            // predates the weave that now holds it
+            assert(line.gen >= 1);
+            if (i + 1 < lifted.lines.items.len) {
+                // invariant: the backing list comes out in strictly increasing
+                // place order, which is the precondition `current` asserts --
+                // proven here at the lift rather than discovered there
+                assert(line.place().less_than(lifted.lines.items[i + 1].place()));
+            }
+        }
+
+        return lifted;
     }
 
     /// Advance the weave by one diff. Deletes remove lines by toggling their

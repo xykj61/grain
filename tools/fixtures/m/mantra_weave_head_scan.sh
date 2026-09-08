@@ -56,7 +56,7 @@ fi
 
 readings="$(awk '
   # A head entry: //! then the operation name with its open parenthesis.
-  /^\/\/!   ([A-Za-z_]+\.)?[a-z_]+\(/ {
+  /^\/\/!   ([A-Za-z_][A-Za-z0-9_]*\.)?[a-z][a-z0-9_]*\(/ {
     name = $2
     sub(/\(.*/, "", name)
     sub(/^.*\./, "", name)
@@ -67,7 +67,7 @@ readings="$(awk '
   # The last container in the file. Everything below it belongs to Weave.
   /^pub const Weave = struct \{/ { in_weave = 1; next }
   # A published operation of Weave: pub fn at four-space indent, inside it.
-  in_weave && /^    pub fn [a-z_]+\(/ {
+  in_weave && /^    pub fn [a-z][a-z0-9_]*\(/ {
     name = $3
     sub(/\(.*/, "", name)
     declared[name] = 1
