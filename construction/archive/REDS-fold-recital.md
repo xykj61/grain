@@ -508,3 +508,5 @@ at a closed fold.*
 *Row %605 folded to [`REDS-a-path-a-repointer-could-not-follow-rows-605.md`](REDS-a-path-a-repointer-could-not-follow-rows-605.md) on `20260908.030037`, **BOOKED** -- a repointer reads text, so a path a program computes is a path no repointer follows -- and the hiding that defeats a grep is load-bearing, so the directory is named on its own line instead.*
 
 *Row %606 folded to [`REDS-carried-from-the-next-room-rows-606.md`](REDS-carried-from-the-next-room-rows-606.md) on `20260908.030640`, **CLOSED** -- the vessel room's guard count stood in prose while the room next door had held the same reading as a scan since August; the row kept its stamp `20260907.223214` through two renumbers and a seventh park.*
+
+*Row %592 folded to [`REDS-a-count-with-names-nobody-could-triage-rows-592.md`](REDS-a-count-with-names-nobody-could-triage-rows-592.md) on `20260908.041750`, **CLOSED** -- nineteen orphans sorted into three kinds, and only six were a lap.*

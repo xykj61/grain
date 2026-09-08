@@ -1,0 +1,43 @@
+format session-log-v1
+stamp 20260908.025850
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role bakery -- core infrastructure, fleet friction
+modality text
+model claude-opus-5
+model_status active runtime unverified -- the harness names the model in its own environment block, which is configuration rather than telemetry
+configured_model claude-opus-5
+configured_reasoning max
+configured_status .claude/settings.json, tracked
+voice Kyri
+host Framework laptop, Linux, TZ America/New_York
+title nineteen orphans were three kinds, and only six of them were a lap
+prompt the baton -- Bakery lane, reds first, Lindy-first crux-first
+rota lap 4252, row 2 -- Fire, the row that sees; read the threshold page and Standfast, and took its instruction literally: look at the ledger before looking at anything new, and cut once at the depth the truth requires rather than twice
+think REDS %592 named its own successor -- "the repair is one flag on one scan, and it is left as the next lap's own crux" -- so the crux was handed to this lap by the row itself
+think the row's premise did not survive reading. `sh tools/fixtures/s/stash_record_scan.sh list` has named every orphan since %510, and tools/f/fleet_round_open.sh already printed that exact command beside the count. A hand was never more than one line from the paths
+think so I ran it and sorted the nineteen by hand. Ten fold shelves under construction/archive/, three copies of this guard's own elder self at tools/fixtures/f/ paths from before the letter-room fold, six files of genuinely parked work. Only the six are a lap
+think that is the real fault, one layer under the row's sentence: a count with names is still a count nobody acts on, if the names cannot be triaged. Thirteen-nineteenths noise is why nobody read any of it
+think the exact probe was tried FIRST. Looking each orphan's blob up in git ls-files -s is an exact answer where a basename is a strong guess -- and it matched zero of nineteen, because a file that moves rooms in this tree is edited on the way. Measurement chose the weaker instrument
+obs the classifier's own cost had to be measured, and my first two shapes were wrong. One awk per orphan over a 14,000-path index took the open from 1.4s to 3.0s -- a doubling every ship pays every lap for a diagnosis. Rewriting the probe as a fixed-string grep made it WORSE at 4.4s: three small processes per orphan beat one larger one only in intuition
+obs the shape that holds defers -- the walk labels each orphan PENDING and one awk reads the tracked index and every orphan together, so the process count stops depending on how full the box is. 1.5s, about 0.15s for the diagnosis
+obs the pen caught a real defect I would not have seen on the field: printf '%s' on the kinds stream left no trailing newline, so the first lines row was glued onto the last kind. It cost one label a stray L and swallowed a whole unread row, and nine control legs said so at once
+obs shelf is an argument rather than a measurement -- sound because a fold reads the pin and writes the shelf, so the rows survive an unlanded shelf, and wrong for a lap that landed its pin edit and its shelf in two commits. Nothing gates on it, and the path is printed beside the class so a reader who distrusts it can check
+obs the cold open answered 3 red, and one of them was a lesson about my own draft. shell_dialect refused on two bare `sed -i` in tools/am/amphora_mark_wreck_witness.rish -- GNU takes no argument after -i and BSD requires a backup suffix, so the bare flag fails on the Mac door. I rewrote both redirect-then-cat and the witness ran GREEN
+obs then the rebase brought a peer's cure for the same two lines, published first and better than mine: they reached for the tree's own sed_inplace out of shell_portable.sh rather than spelling the redirect by hand, and they split the plant from its reading, which mine left in one && chain -- REDS %519's shape, where a plant that plants nothing reads exactly like a law that holds. Theirs stands and mine withdrew whole. Twelfth collision on this pier, and the second where two ships found one FAULT rather than one number
+obs my own classifier had reached for the same trap one spelling over. `sed 's/^/T\t/'` inserts a literal `t` on the Mac door rather than a tab, so every tagged line would be ONE field, `$1 == "T"` would never match, and every orphan would classify `work`. A partition check cannot see that, because the wrong answers still sum to the right total. awk prepends the tag now, where the escape is the language's own
+obs index_row_bound refused on a duplicate row and two misordered rows on today's shelf -- neither mine. Both are what a shared prepend does under a rebase, and the tree already owns the sanctioned repair: tools/fixtures/i/index_shelf_repair.sh, which sorts and proves the permutation before it writes. standing_equipment reds while either of those does, so three reds had two roots
+loom scan=stash_record before_ms=1400 per_orphan_awk_ms=3016 fixed_grep_ms=4371 deferred_ms=1532 orphans=19
+loom control=stash_record_control legs=77 new_legs=26 elder_legs=51 fail=0 wall_ms=8830
+loom orphans=19 moved=3 shelf=10 work=6 partition=held
+file tools/fixtures/s/stash_record_scan.sh classifies each orphan moved/shelf/work in one deferred awk pass, prints the three counts, asserts they partition the total
+file tools/fixtures/s/stash_record_control.sh 26 new legs on real repositories in a pen -- each class both ways, the room bound, the ambiguous basename, moved beating shelf, and each kind lifting alone
+file tools/s/stash_record_witness.rish asserts the three readings exist by name and that the partition holds; a classifier that lost one kind would fold its members silently into another
+file session-logs/date/README-index-20260908.md a duplicate row lifted and the block sorted by the sanctioned repair tool
+file tools/f/fleet_round_open.sh names the split in its one line, so a reader knows which number is worth a lap before deciding to run list
+file construction/REDS.md %592 CLOSED with the measurement, including the two rejected shapes
+file construction/ITINERARY.md the Bakery block; elder folded to construction/archive/20260908-025257_itinerary-landed-accounts.md, the card at 40,958 of 40,960
+recommend keep-going land the six -- the standing_equipment_yield family in stash@{2} is the largest and the only one whose files nothing else carries
+scope one guard's diagnosis, its control, its witness, and the line the round open prints; REDS %592 closed; five reds across two roster passes closed beside it, one repair withdrawn to a peer
+status GREEN -- the hot pass over the staged tree reads 184 guards, 181 green, 0 red, 3 gated, tree_moved=no; 77 control legs pass with 0 fail and 51 elder legs unchanged; 5 reds closed across the two passes, one of the repairs withdrawn to a peer who published a better cure first
