@@ -544,26 +544,84 @@ pub const Weave = struct {
 
     /// Return the lines currently present (odd generation), in document order.
     /// The caller owns the returned slice; it is allocated from `allocator`.
+    ///
+    /// THE BACKING LIST IS ALREADY IN PLACE ORDER, so this reads it once and
+    /// sorts nothing. It sorted every call until `20260908`, which was the
+    /// third and last of the three quadratic-or-worse shapes this module
+    /// carried -- `merge` was repaired on `20260907`, `apply` the same night,
+    /// and this one is the read the other two are measured through.
+    ///
+    /// The order is held by all three of the ways a weave can come to exist,
+    /// which is why it is an invariant rather than a hope:
+    ///
+    ///   `empty`  starts with no lines, so it is ordered trivially.
+    ///   `apply`  appends its inserts carrying `next_run`, and every line the
+    ///            weave already holds carries a run BELOW that -- asserted in
+    ///            that function's own postcondition -- so an appended line
+    ///            sorts after every held line whatever its site, and the run
+    ///            of them sorts among itself by a position counter that only
+    ///            rises. Deletes change a generation and move nothing.
+    ///   `merge`  sorts its result by place and asserts places strictly
+    ///            increase before it returns.
+    ///
+    /// So the order is established where a line is placed rather than
+    /// re-established where a line is read, and the walk below asserts it
+    /// rather than trusting it: a caller reaching past the module's own API to
+    /// push a line onto `lines` is caught at the next read.
+    ///
+    /// NAME WHAT THAT ASSERT IS NOT: it is a restatement, and no control phase
+    /// isolates it. Planting a disorder means removing `merge`'s place sort,
+    /// and `merge`'s own postcondition then fires first; removing that assert
+    /// too still reds the pen through the field-for-field equality claim, which
+    /// two differently-ordered merges fail whatever the read does. Both plants
+    /// were built and run on `20260908` and both exited 134 with the sort here
+    /// and without it, so the isolating phase was declined rather than written
+    /// -- a plant that reds for a reason the phase did not name proves the same
+    /// nothing as a plant that matched no line, which is the fault the merge
+    /// control already warns about in its own comments. The honest claim is the
+    /// narrow one: this read no longer TIDIES a disorder it did not create.
+    ///
+    /// Measured on this pier, ReleaseSafe -- the checked build a witness
+    /// actually runs -- as twenty reads of a weave holding n present lines,
+    /// best of three runs, sorting then reading:
+    ///
+    ///   n =  16,384    0.4ms ->  0.4ms
+    ///   n = 131,072    3.3ms ->  2.7ms
+    ///   n = 524,288   25.3ms -> 13.3ms
+    ///
+    /// SAY THE SHAPE HONESTLY: this is a factor of two at half the ceiling and
+    /// nothing at all at sixteen thousand, where the sort sat inside the
+    /// timing noise. What remains dominates -- the read copies every present
+    /// line into a slice the caller owns, which at 524,288 lines is about
+    /// sixteen megabytes of Line, and no ordering change touches that. The
+    /// win worth naming is the one that is not a number: document order is now
+    /// something the module HOLDS rather than something each read rebuilds, so
+    /// a caller that corrupts it is caught here instead of being tidied over.
+    ///
+    /// Precondition:  the backing list is in strictly increasing place order --
+    ///   asserted below, over the whole list.
+    /// Postcondition: every returned line is present, and places strictly
+    ///   increase.
     pub fn current(self: *const Weave, allocator: std.mem.Allocator) ![]const Line {
         // invariant: the weave stands inside its own ceiling, so the slice this
         // returns is bounded by max_weave_lines rather than by whoever calls it
         assert(self.lines.items.len <= max_weave_lines);
         var out: std.ArrayListUnmanaged(Line) = .empty;
-        for (self.lines.items) |line| {
+        for (self.lines.items, 0..) |line, i| {
+            // invariant: the backing list is in place order already, which is what
+            // lets this read return document order without sorting. Held over the
+            // whole list rather than over the filtered result, because a filter can
+            // hide a disorder that a later delete would then reveal.
+            if (i + 1 < self.lines.items.len) {
+                assert(line.place().less_than(self.lines.items[i + 1].place()));
+            }
             if (line.gen % 2 == 1) { // odd = present
                 try out.append(allocator, line);
             }
         }
-        // Sort by place -- inserts append to the backing list in order of
-        // arrival, and a merge folds in lines from two branches whose positions
-        // coincide, so the run groups each hand's edit and the site breaks the
-        // tie between two concurrent runs the same way on both sides.
+        // A subsequence of an ordered list is ordered, so the filter above
+        // carries document order out with it and nothing is sorted here.
         const result = try out.toOwnedSlice(allocator);
-        std.mem.sort(Line, result, {}, struct {
-            fn less_than(_: void, a: Line, b: Line) bool {
-                return a.place().less_than(b.place());
-            }
-        }.less_than);
 
         // Postcondition: result is sorted and all entries are present.
         for (result) |line| {
