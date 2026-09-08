@@ -1,0 +1,789 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Radiator and the Wire</title>
+<meta name="description" content="A chip question for orbit, before a mass driver. A public projection, stamped 20260907.175821.">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#DDD3BD">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#2A2520">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;500;600&display=swap">
+<style>
+:root{
+  /* Linengrow first cloth: Stone and Oat carry the light, Hearth and Ember the dark (active-designing 20260825.234156) */
+  --page:#DDD3BD; --surface:#EDE5D3; --ink:#2D2620; --ink-surface:#3D3528; --ink-2:#6a5f4e; --rule:#c9bda3; --rule-2:#b3a488;
+  --thread:85,65,30; --thread-a:.055;
+  /* plant-dye hues, matte, no indigo: madder, annatto, weld, sage, elderberry */
+  --madder:#9a4a3a; --annatto:#b5652a; --weld:#a68a1f; --sage:#6b7a42; --elder:#6f4e6b;
+  --font:"PragmataPro Mono","PragmataPro Liga","PragmataPro","Iosevka Term","Iosevka","Inconsolata",ui-monospace,Menlo,Consolas,monospace;
+  --measure:70ch;
+}
+/* the cloth follows the system, and the [ hearth ] / [ stone ] switch flips it; the switch is a checkbox so it works with scripts off */
+@media (prefers-color-scheme: dark){ :root{ --page:#2A2520; --surface:#3A332C; --ink:#E5DCC8; --ink-surface:#EAE1CC; --ink-2:#b4a892; --rule:#4a4034; --rule-2:#5f5346;
+  --thread:255,240,215; --thread-a:.045;
+  --madder:#c8766a; --annatto:#d38a4f; --weld:#d0b34a; --sage:#9fae6c; --elder:#b08aab; } }
+html:has(#mode:checked){ --page:#2A2520; --surface:#3A332C; --ink:#E5DCC8; --ink-surface:#EAE1CC; --ink-2:#b4a892; --rule:#4a4034; --rule-2:#5f5346;
+  --thread:255,240,215; --thread-a:.045;
+  --madder:#c8766a; --annatto:#d38a4f; --weld:#d0b34a; --sage:#9fae6c; --elder:#b08aab; }
+@media (prefers-color-scheme: dark){ html:has(#mode:checked){ --page:#DDD3BD; --surface:#EDE5D3; --ink:#2D2620; --ink-surface:#3D3528; --ink-2:#6a5f4e; --rule:#c9bda3; --rule-2:#b3a488;
+  --thread:85,65,30; --thread-a:.055;
+  --madder:#9a4a3a; --annatto:#b5652a; --weld:#a68a1f; --sage:#6b7a42; --elder:#6f4e6b; } }
+html[data-theme="dark"]{ --page:#2A2520; --surface:#3A332C; --ink:#E5DCC8; --ink-surface:#EAE1CC; --ink-2:#b4a892; --rule:#4a4034; --rule-2:#5f5346;
+  --thread:255,240,215; --thread-a:.045;
+  --madder:#c8766a; --annatto:#d38a4f; --weld:#d0b34a; --sage:#9fae6c; --elder:#b08aab; }
+html[data-theme="light"]{ --page:#DDD3BD; --surface:#EDE5D3; --ink:#2D2620; --ink-surface:#3D3528; --ink-2:#6a5f4e; --rule:#c9bda3; --rule-2:#b3a488;
+  --thread:85,65,30; --thread-a:.055;
+  --madder:#9a4a3a; --annatto:#b5652a; --weld:#a68a1f; --sage:#6b7a42; --elder:#6f4e6b; }
+.mode{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.mode-label .w::after{content:"hearth"}
+html:has(#mode:checked) .mode-label .w::after{content:"stone"}
+@media (prefers-color-scheme: dark){ .mode-label .w::after{content:"stone"} html:has(#mode:checked) .mode-label .w::after{content:"hearth"} }
+html[data-theme="dark"] .mode-label .w::after{content:"stone"}
+html[data-theme="light"] .mode-label .w::after{content:"hearth"}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;background:var(--page);color:var(--ink);font-family:var(--font);font-size:16.5px;line-height:1.75;-webkit-text-size-adjust:100%}
+@media (min-width:560px){html{font-size:17px}}
+body{margin:0;min-height:100vh;background-color:var(--page);
+  background-image:
+    repeating-linear-gradient(0deg,rgba(var(--thread),var(--thread-a)) 0,rgba(var(--thread),var(--thread-a)) 1px,transparent 1px,transparent 4px),
+    repeating-linear-gradient(90deg,rgba(var(--thread),var(--thread-a)) 0,rgba(var(--thread),var(--thread-a)) 1px,transparent 1px,transparent 4px)}
+a{color:inherit;text-decoration:underline;text-decoration-color:var(--madder);text-decoration-thickness:1px;text-underline-offset:.22em}
+a:hover{color:var(--madder)}
+:focus-visible{outline:2px solid var(--annatto);outline-offset:3px}
+::selection{background:var(--weld);color:var(--page)}
+.surface{background-color:var(--surface);color:var(--ink-surface);
+  background-image:
+    repeating-linear-gradient(0deg,rgba(var(--thread),calc(var(--thread-a) - .01)) 0,rgba(var(--thread),calc(var(--thread-a) - .01)) 1px,transparent 1px,transparent 3px),
+    repeating-linear-gradient(90deg,rgba(var(--thread),calc(var(--thread-a) - .01)) 0,rgba(var(--thread),calc(var(--thread-a) - .01)) 1px,transparent 1px,transparent 3px)}
+
+/* chrome */
+.top{position:sticky;top:0;z-index:5;display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:.55rem 1rem;border-bottom:1px solid var(--rule);background:color-mix(in oklab,var(--page) 90%,transparent);backdrop-filter:blur(6px)}
+.top>div:last-child{white-space:nowrap}
+.top .stamp{color:var(--ink-2);font-size:.85rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top .stamp b{color:var(--ink);font-weight:500}
+.btn{font:inherit;font-size:.85rem;background:none;border:0;color:var(--ink);cursor:pointer;padding:.2rem .35rem;border-radius:2px;text-decoration:none}
+.btn .br{color:var(--rule-2)}
+.btn:hover{color:var(--ink)} .btn:hover .br{color:var(--madder)}
+
+.frame{display:grid;grid-template-columns:1fr;max-width:1180px;margin:0 auto;padding:0 1rem 6rem}
+.frame>*{min-width:0}
+@media (min-width:980px){.frame{grid-template-columns:17rem 1fr;gap:3rem}}
+.rail{display:none}
+@media (min-width:980px){
+  .rail{display:block;position:sticky;top:3.2rem;align-self:start;max-height:calc(100vh - 3.6rem);overflow:auto;padding:1.6rem 0 2rem;font-size:.82rem;line-height:1.5}
+  .rail ol{list-style:none;margin:0;padding:0}
+  .rail li{margin:0 0 .4rem}
+  .rail a{text-decoration:none;color:var(--ink-2);display:flex;gap:.6rem}
+  .rail a:hover,.rail a[aria-current="true"]{color:var(--ink)}
+  .rail a[aria-current="true"] .n{color:var(--annatto)}
+  .rail .n{color:var(--rule-2);width:2ch;flex:none}
+  .rail .h{color:var(--ink-2);margin:0 0 .8rem;font-weight:500}
+}
+main{max-width:var(--measure);padding-top:1.6rem;min-width:0;width:100%}
+
+/* MLA heading block, left */
+.mla{font-size:.95rem;line-height:1.6;margin:0 0 1.4rem;color:var(--ink)}
+.mla div{margin:0}
+
+/* hero */
+.hero{padding:.4rem 0 2rem;border-bottom:1px solid var(--rule)}
+.wordmark{margin:0 0 1rem;font-size:.6rem;line-height:1.12;color:var(--weld);white-space:pre;overflow-x:auto;font-weight:600;font-variant-ligatures:none}
+@media (min-width:560px){.wordmark{font-size:.78rem}}
+h1.title{font-size:1.5rem;font-weight:500;letter-spacing:-.005em;line-height:1.3;margin:.2rem 0 .5rem;text-align:left}
+.sub{color:var(--ink-2);margin:0 0 1.4rem;max-width:60ch;text-indent:0}
+.field{position:relative;border:1px solid var(--rule);padding:.6rem .75rem;overflow:hidden}
+.field pre{margin:0 0 .9rem;font-size:.7rem;line-height:1.05;letter-spacing:.05em;color:var(--ink-surface);white-space:pre;user-select:none;font-variant-ligatures:none}
+@media (min-width:560px){.field pre{font-size:.8rem}}
+.torus pre{font-size:.62rem;line-height:1.05}
+@media (min-width:560px){.torus pre{font-size:.78rem}}
+.field .legend{position:absolute;right:.7rem;bottom:.5rem;font-size:.72rem;color:var(--ink-2)}
+.witness{display:grid;gap:.6rem 1.2rem;margin:.9rem 0 0;padding:.9rem 0 0;border-top:1px dashed var(--rule)}
+@media (min-width:640px){.witness{grid-template-columns:1fr 1fr}}
+.witness label{display:block;font-size:.88rem;color:var(--ink-2)}
+.witness output{font-weight:500;color:var(--ink)}
+.witness input[type=range]{width:100%;accent-color:var(--annatto);margin:.35rem 0 0}
+.readout{font-size:.88rem;margin:0;padding:0;list-style:none}
+.readout li{display:flex;justify-content:space-between;gap:1rem;border-bottom:1px dotted var(--rule);padding:.2rem 0}
+.readout li span:last-child{font-weight:500;white-space:nowrap}
+.readout .ok{color:var(--sage)}
+.readout .no{color:var(--madder)}
+.scroll{margin:1.2rem 0 0;font-size:.88rem;color:var(--ink-2);text-indent:0}
+
+/* document, set the MLA way with the maintainer's tweaks: left-aligned, ragged right, first-line indents, generous leading */
+h2{font-size:1.18rem;font-weight:500;margin:2.6rem 0 .6rem;padding-top:1.2rem;border-top:1px solid var(--rule);letter-spacing:-.003em;scroll-margin-top:3.4rem;text-align:left}
+h2 .n{color:var(--annatto);margin-right:.6ch;font-weight:400}
+h3{font-size:1rem;font-weight:500;margin:1.6rem 0 .4rem}
+p{margin:0 0 .55rem;max-width:var(--measure);text-align:left;text-indent:3ch;hyphens:none}
+p.noindent,.box p,.proj p,.credit p,.meta p{text-indent:0}
+strong{font-weight:600}
+em{font-style:italic;color:var(--ink)}
+.fascia{font-size:.8rem;color:var(--ink-2);margin:-.2rem 0 1rem;text-indent:0}
+.fascia a{text-decoration:none;color:var(--ink-2)}
+.fascia a:hover{color:var(--madder);text-decoration:underline}
+.meta{border:1px solid var(--rule);padding:.9rem 1rem;margin:0 0 1.6rem;font-size:.86rem;color:var(--ink-surface);line-height:1.6}
+.meta dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:.25rem .9rem}
+.meta dt{color:var(--ink);font-weight:500;white-space:nowrap}
+.meta dd{margin:0}
+.toc ol{padding-left:1.4rem;margin:0;columns:1;font-size:.9rem;line-height:1.55}
+@media (min-width:640px){.toc ol{columns:2;column-gap:2rem}}
+.toc li{break-inside:avoid;margin:.1rem 0}
+.toc a{text-decoration:none;color:var(--ink-2)}
+.toc a:hover{color:var(--ink)}
+table{border-collapse:collapse;width:100%;font-size:.86rem;line-height:1.5;margin:.6rem 0 1.4rem;display:block;overflow-x:auto}
+th,td{text-align:left;vertical-align:top;padding:.45rem .6rem;border-bottom:1px solid var(--rule)}
+th{font-weight:500;color:var(--ink-2);border-bottom:1px solid var(--rule-2)}
+td:first-child,th:first-child{padding-left:0}
+tr:last-child td{border-bottom:1px solid var(--rule-2)}
+pre.block{font-variant-ligatures:none;border:1px solid var(--rule);padding:.9rem 1rem;overflow-x:auto;font-size:.8rem;line-height:1.45;margin:.4rem 0 1.2rem}
+pre.block .k{color:var(--sage)}
+.box{border-left:3px solid var(--elder);padding:.2rem 0 .2rem 1rem;margin:.4rem 0 1.4rem;color:var(--ink)}
+.box.moss{border-left-color:var(--sage)}
+.proj p{border-bottom:1px dotted var(--rule);padding-bottom:.9rem;margin-bottom:.9rem}
+.bene{margin:2.4rem 0 .6rem;font-style:italic;color:var(--ink-2);max-width:60ch;text-indent:0}
+.credit{font-size:.84rem;color:var(--ink-2);border-top:1px solid var(--rule);padding-top:1rem;margin-top:2rem;line-height:1.6}
+.credit p{margin:0 0 .5rem}
+.sources ol{list-style:none;margin:0;padding:0;font-size:.9rem;line-height:1.6}
+.sources li{padding-left:3ch;text-indent:-3ch;margin:0 0 .6rem;overflow-wrap:anywhere}
+@media (prefers-reduced-motion: reduce){.field pre{opacity:.95}}
+/* one second everywhere: the value is set inline on <body> as --duration, and every motion on the page reads it */
+@keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes land{from{color:var(--annatto)}to{color:var(--ink)}}
+h2:target,h2.landed{animation:land calc(var(--duration) * 2) var(--ease)}
+.readout li{align-items:baseline}.readout li span:first-child{flex:1}
+html,body,.top,.surface,.field,.meta,.box,pre.block,table,th,td,.rail,.readout li,.btn,select{transition:background-color var(--duration) var(--ease),color var(--duration) var(--ease),border-color var(--duration) var(--ease)}
+a{transition:color var(--duration) var(--ease),text-decoration-color var(--duration) var(--ease)}
+main>*{animation:rise var(--duration) var(--ease) both;animation-delay:calc(var(--i,0) * 15ms)}
+.rail{animation:fade var(--duration) var(--ease) both}
+.top{animation:fade var(--duration) var(--ease) both}
+.readout li span:last-child{transition:color var(--duration) var(--ease)}
+.witness input[type=range],.witness select{transition:accent-color var(--duration) var(--ease),border-color var(--duration) var(--ease)}
+@media (prefers-reduced-motion: reduce){body{--duration:0s}}
+
+</style>
+</head>
+<body style="--duration:1s;--ease:ease">
+<input type="checkbox" id="mode" class="mode" aria-label="Switch between stone and hearth">
+
+<div class="top">
+  <div class="stamp">stamp <b>20260907.175821</b> · public projection · draft for comment, two replies carried</div>
+  <div>
+    <label class="btn mode-label" for="mode"><span class="br">[</span> <span class="w"></span> <span class="br">]</span></label>
+    <a class="btn" href="#toc"><span class="br">[</span> index <span class="br">]</span></a>
+  </div>
+</div>
+
+<div class="frame">
+<nav class="rail" aria-label="Sections">
+  <p class="h">The Radiator and the Wire</p>
+  <ol>
+    <li><a href="#context"><span class="n">--</span>Context table</a></li>
+    <li><a href="#abstract"><span class="n">--</span>Abstract</a></li>
+    <li><a href="#status"><span class="n">--</span>Status and shape</a></li>
+    <li><a href="#exec"><span class="n">--</span>Executive reading</a></li>
+    <li><a href="#investors"><span class="n">--</span>For investment readers</a></li>
+    <li><a href="#s1"><span class="n">01</span>The question</a></li>
+    <li><a href="#s2"><span class="n">02</span>Three rooms and the clock</a></li>
+    <li><a href="#s3"><span class="n">03</span>The radiator, measured</a></li>
+    <li><a href="#s4"><span class="n">04</span>The wire, measured</a></li>
+    <li><a href="#s5"><span class="n">05</span>The memory habit</a></li>
+    <li><a href="#s6"><span class="n">06</span>The ranked list</a></li>
+    <li><a href="#s7"><span class="n">07</span>Public-interest capital</a></li>
+    <li><a href="#s8"><span class="n">08</span>The first ship is the witness</a></li>
+    <li><a href="#s9"><span class="n">09</span>An open operating system</a></li>
+    <li><a href="#s10"><span class="n">10</span>The maintainer's own torus</a></li>
+    <li><a href="#s11"><span class="n">11</span>The bound, for a small fund</a></li>
+    <li><a href="#s12"><span class="n">12</span>Projections</a></li>
+    <li><a href="#s13"><span class="n">13</span>Base rates</a></li>
+    <li><a href="#s14"><span class="n">14</span>Structural and cyclical</a></li>
+    <li><a href="#s15"><span class="n">15</span>Trust, and the two rooms</a></li>
+    <li><a href="#s16"><span class="n">16</span>Stories, for all kinds of people</a></li>
+    <li><a href="#refuses"><span class="n">--</span>Refusals and gaps</a></li>
+    <li><a href="#comments"><span class="n">--</span>Comments received</a></li>
+    <li><a href="#audit"><span class="n">--</span>Audit</a></li>
+    <li><a href="#gratitude"><span class="n">--</span>Gratitude</a></li>
+    <li><a href="#sources"><span class="n">--</span>Sources cited</a></li>
+  </ol>
+</nav>
+
+<main>
+<header class="hero" id="top" style="--i:1">
+<div class="mla"><div>Kyri, counsel to a small family fund</div><div>The tree, public projection</div><div>The radiator and the wire, draft for comment</div><div>7 September 2026</div></div>
+<pre class="wordmark" aria-hidden="true">   ___          ___      __
+  / _ \___ ____/ (_)__ _/ /____  ____
+ / , _/ _ `/ _  / / _ `/ __/ _ \/ __/
+/_/|_|\_,_/\_,_/_/\_,_/\__/\___/_/
+               __  __  __         _      ___
+ ___ ____  ___/ / / /_/ /  ___   | | /| / (_)______
+/ _ `/ _ \/ _  / / __/ _ \/ -_)  | |/ |/ / / __/ -_)
+\_,_/_//_/\_,_/  \__/_//_/\__/   |__/|__/_/_/  \__/</pre>
+<h1 class="title">The Radiator and the Wire: a chip question for orbit, before a mass driver</h1>
+<p class="sub">Every watt a chip burns in orbit leaves as infrared, at a rate set by the fourth power of the radiator's temperature. The field below is that law, drawn in text: a hot die at the centre, heat flowing out to a cold sky. Move the junction temperature and read what the panel can shed.</p>
+
+<div class="field surface" aria-label="Animated radiator field">
+  <pre id="ascii" aria-hidden="true">............................................................
+......   .....    .....    .....    .....    .....    ......
+.....    .....    ......  .......  .......   .....    ..... 
+.....    ..........................................   ..... 
+.   .....................:........:....................   ..
+.   ...:.......:::.....:::::...:::::.....::::......::..   ..
+.   ...:.......::::.:::--===---====--::::::::......::... ...
+...............:::---=++**#########**++=---::::.............
+..........:::::::-=+**##%@@@@@@@@@@@%%#*+=--:::::......::...
+..::......:::::::-=+##%%@@@@@@@@@@@@@@%#*+=--:::::.....:::..
+...........::::::-=++*#%%@@@@@@@@@@@%%#*+==-:::::...........
+..............::::---==+**#########**+==---:::..............
+.   ..:::.....:::::..::--===---====--::::::::......::...  ..
+.   ...........:::.....:::::...::::::.....:::......:....  ..
+............................................................
+.....    ......  ...::......:::.......::..........    ..... 
+.....    .....    ......  .......  .......   .....    ..... 
+....... ......    .....    ......   .....    ......  .......</pre>
+  <div class="legend">ramp  . : - = + * # % @</div>
+</div>
+
+<div class="witness">
+  <div>
+    <label for="tj">junction temperature <output id="tjv" for="tj">100 C</output></label>
+    <input id="tj" type="range" min="60" max="125" step="1" value="100" aria-label="Junction temperature in degrees Celsius">
+    <label for="dt" style="margin-top:.6rem">coolant sits below the junction by <output id="dtv" for="dt">10 K</output></label>
+    <input id="dt" type="range" min="0" max="30" step="1" value="10" aria-label="Temperature drop from junction to coolant in kelvin">
+    <label for="eps" style="margin-top:.6rem">panel emissivity <output id="epsv" for="eps">0.90</output></label>
+    <input id="eps" type="range" min="0.70" max="1.00" step="0.01" value="0.90" aria-label="Radiator surface emissivity">
+    <label for="sink" style="margin-top:.6rem">sink the panel faces <output id="sinkv" for="sink">250 K</output></label>
+    <input id="sink" type="range" min="3" max="280" step="1" value="250" aria-label="Effective sink temperature in kelvin">
+    <label for="tax" style="margin-top:.6rem">self-view tax, the share the panel gives back to itself <output id="taxv" for="tax">15%</output></label>
+    <input id="tax" type="range" min="0" max="40" step="1" value="15" aria-label="Self-view tax in percent">
+    <label for="geo" style="margin-top:.6rem">geometry</label>
+    <select id="geo" aria-label="Radiator geometry" style="font:inherit;font-size:.88rem;width:100%;margin:.3rem 0 0;padding:.3rem .4rem;background:var(--surface);color:var(--ink);border:1px solid var(--rule)">
+      <option value="one">one face, to the sink above</option>
+      <option value="two">two faces, both to the sink above</option>
+      <option value="split">one face to 3 K space, one face to 255 K Earth</option>
+    </select>
+    <p class="noindent" style="font-size:.78rem;color:var(--ink-2);margin:.7rem 0 0">Five inputs, as section 9 asked and the outside reading's reply asked again, same day. The 110 m&sup2; is read as panel area; if it already counts both faces, read the one-face row. The self-view tax is the second reply's ask: the doughnut in section 10 sets it from its fatness, or set it here by hand.</p>
+  </div>
+  <ul class="readout" id="readout" aria-live="polite">
+    <li><span>panel temperature</span><span id="tp">90 C</span></li>
+    <li><span>shed per m&sup2; of panel, this geometry, after the tax</span><span id="qg">585 W/m&sup2;</span></li>
+    <li><span>one face, emissivity 0.9, sink 250 K (the memo's row)</span><span id="q2">688 W/m&sup2;</span></li>
+    <li><span>square metres per kilowatt</span><span id="m2">1.71 m&sup2;/kW</span></li>
+    <li><span>panel needed for 150 kW</span><span id="area">256 m&sup2;</span></li>
+    <li><span>AI1 peak, 1,364 W/m&sup2; over 110 m&sup2;</span><span id="verdict" class="no">refuses: short by 779 W/m&sup2;</span></li>
+  </ul>
+</div>
+<noscript><p class="noindent" style="font-size:.82rem;color:var(--ink-2);margin:.8rem 0 0">This viewer runs no scripts, so the field stands still at its first frame and the readings show the default case. The sliders, the geometry, and the live verdict need a browser that runs scripts, such as Brave; the [ hearth ] switch and the jumps work here as they are.</p></noscript>
+<p class="scroll"><a href="#context">Scroll to the reading</a></p>
+</header>
+
+<h2 id="context" style="--i:2">Context table</h2>
+<p class="fascia" style="--i:3"><a href="#toc">contents</a> &middot; <a href="#abstract">next: Abstract</a></p>
+<table style="--i:4">
+<tr><th>Field</th><th>Reading</th></tr>
+<tr><td>Subject</td><td>which mass-scale data-center chip idea could ease the energy problem of an orbital and terrestrial AI builder, SpaceX, whose public disclosures are the evidence here, before a lunar mass driver exists</td></tr>
+<tr><td>The question</td><td>asked by the maintainer of an open operating-system tree, in the words quoted in section 1</td></tr>
+<tr><td>Asked of</td><td>an outside counsel model (Grok), on 2026-09-07</td></tr>
+<tr><td>Read by</td><td>Kyri, the tree's standing voice, as counsel to a small family fund</td></tr>
+<tr><td>Method</td><td>carry the outside reading in the tree's own words; re-source every figure the same day; run the physics it leans on; mark corrections as counsel's; name what each thing rewards and who verifies it</td></tr>
+<tr><td>Web reads</td><td>twelve, dated 2026-09-07, named in place</td></tr>
+<tr><td>Arithmetic</td><td>the Stefan-Boltzmann law on disclosed spacecraft numbers, run in a container</td></tr>
+<tr><td>Lineage</td><td>the maintainer's own prompted whitepapers on toroidal computing, an earlier season under an earlier handle, held whole in the tree's gratitude room and cited here only through the tree's siloed adaptations</td></tr>
+<tr><td>Audience</td><td>engineers; the fund's advisers; readers at larger investment firms; limited partners who want to know what this is before they read it</td></tr>
+<tr><td>What it is not</td><td>a buy list, an offering, an engineering opinion a licensed thermal or radiation engineer would sign, or a design for a satellite</td></tr>
+<tr><td>The one number</td><td>150 kW behind 110 square metres of radiator, disclosed for the first orbital data-center craft; section 3 says what temperature that needs</td></tr>
+<tr><td>The falsifier</td><td>a flown 2027 to 2028 orbital box whose tokens per joule and kilograms per kilowatt fail to beat a shielded terrestrial GPU once lasers, pumps, and spares are counted</td></tr>
+</table>
+
+<div class="meta surface" style="--i:5">
+<dl>
+<dt>Stamp</dt><dd>20260907.175821 (EDT, taken from the device clock on the maintainer's word this session)</dd>
+<dt>Style</dt><dd>New Gauge, Field setting; Civic and TAME carried through; the opening and the close in the press register, radiant twilight</dd>
+<dt>Voice</dt><dd>Kyri</dd>
+<dt>Kind</dt><dd>public projection: an RFC-shaped brief with an abstract, a context table, an executive reading, a disclosure for investment readers, a sources list, a trust section, stories for all kinds of people, and an audit; set the MLA way with the maintainer's tweaks: left-aligned, first-line indents, generous line spacing, hanging-indent sources, the title left rather than centred</dd>
+<dt>Status</dt><dd>draft for comment, two replies received and carried in <a href="#comments">Comments received</a>, and the page audited in <a href="#audit">Audit</a>. Scrubbed by the tree's seed rule: names are roles, the fund is <em>the fund</em>, household and portfolio figures are absent, and kin that stay in the private field are dropped. Nothing here is investment, legal, or tax advice; nothing seats. Counsel holds no license and no stake, and designs no satellite</dd>
+<dt>Projection</dt><dd>the private original stands in the maintainer's field under its own stamp. This projection carries every public figure of the original and none of the private ones. The scrub is the same name-to-role transform the seed publisher runs, applied by hand, read twice, and walked against the leak scan's list</dd>
+<dt>Basis</dt><dd>the maintainer's question; an outside reading by a second counsel model, carried with three corrections marked as counsel's; the tree at tip 45f4703b (2026-09-07); twelve web reads dated 2026-09-07; the arithmetic in section 3. Company efficiency claims are named as claims; an unsourced figure is dropped rather than carried</dd>
+<dt>Kin, public</dt><dd>the tree's photonic and thermodynamic survey (external-research/20260826-002700); Two Rooms; TAME core; Civic Style</dd>
+</dl>
+</div>
+
+<div class="toc" id="toc" style="--i:6">
+<h2 style="border-top:0;margin-top:1rem;padding-top:0">Table of contents</h2>
+<ol>
+<li><a href="#context">Context table</a></li>
+<li><a href="#abstract">Abstract</a></li>
+<li><a href="#status">Status of this memo, and the shape chosen</a></li>
+<li><a href="#exec">Executive reading</a></li>
+<li><a href="#investors">For investment readers: what this is, and is not</a></li>
+<li><a href="#s1">1. The question, and the answer in one breath</a></li>
+<li><a href="#s2">2. Three rooms, three rewards, and the clock</a></li>
+<li><a href="#s3">3. The radiator, measured</a></li>
+<li><a href="#s4">4. The wire, measured</a></li>
+<li><a href="#s5">5. The memory habit</a></li>
+<li><a href="#s6">6. The ranked list, carried and corrected</a></li>
+<li><a href="#s7">7. Public-interest capital, on the public list</a></li>
+<li><a href="#s8">8. The first ship is the witness</a></li>
+<li><a href="#s9">9. What an open operating system has to do with it</a></li>
+<li><a href="#s10">10. The maintainer's own torus, read for orbit</a></li>
+<li><a href="#s11">11. The bound, for any small fund</a></li>
+<li><a href="#s12">12. Projections</a></li>
+<li><a href="#s13">13. Base rates, before the story</a></li>
+<li><a href="#s14">14. Structural and cyclical, sorted</a></li>
+<li><a href="#s15">15. Trust, and the two rooms</a></li>
+<li><a href="#s16">16. Stories, for all kinds of people</a></li>
+<li><a href="#refuses">What this refuses, and the named gaps</a></li>
+<li><a href="#comments">Comments received</a></li>
+<li><a href="#audit">Audit: Gauge, Civic, and TAME</a></li>
+<li><a href="#gratitude">Gratitude</a></li>
+<li><a href="#sources">Sources cited</a></li>
+</ol>
+</div>
+
+<h2 id="abstract" style="--i:7">Abstract</h2>
+<p class="fascia" style="--i:8"><a href="#toc">contents</a> &middot; <a href="#context">previous: Context table</a> &middot; <a href="#status">next: Status of this memo, and the shape chosen</a></p>
+<p style="--i:9">An orbital data center has one energy problem on Earth and a different one in orbit. On Earth the constraint is grid watts and copper; in orbit it is heat, which leaves a spacecraft only as infrared, at a rate set by the fourth power of the radiator's temperature. This brief reads an outside counsel's answer to a question about which chip idea could ease those constraints on a 2026 to 2029 clock, before a lunar mass driver changes the cost of mass. The outside reading named a die: a hot-junction, memory-local inference chiplet on optical interconnect. This brief lands close to it with one change of shape and three corrections. The change is that the favorite idea is a bound before a die, four ceilings a witness can read, named before the arithmetic is chosen. The corrections are a leakage tax on hot junctions, an upset tax on static memory in low orbit, and a supervisor that holds the thermal ceiling, which is software. Running the physics on the builder's own disclosed numbers shows the hot loop is already inside the disclosed spacecraft rather than optional: 150 kW behind 110 square metres needs a two-faced panel near 89 C or a one-faced one near 145 C. The maintainer's own toroidal whitepapers, read through the tree's siloed adaptations, give the thesis its geometry: the torus enters the orbit question as a map and a manifold, the shape of a production optical interconnect and of a bounded optimizer, rather than as a radiator. Every figure carries its unit, date, and source; every projection carries its horizon and falsifier.</p>
+
+<h2 id="status" style="--i:10">Status of this memo, and the shape chosen</h2>
+<p class="fascia" style="--i:11"><a href="#toc">contents</a> &middot; <a href="#abstract">previous: Abstract</a> &middot; <a href="#exec">next: Executive reading</a></p>
+<p style="--i:12">This is a draft for comment, in the sense a request for comments means it: the claims are numbered so a reader can answer one at a time, and a reply that finds a wrong number is the most useful reply it can get.</p>
+<p style="--i:13">The shape was chosen by asking what each candidate register rewards, which is the Civic question. A venture pitch to limited partners rewards persuasion, and a reader cannot tell which sentence to check. A consulting deck rewards decisiveness, and it tends to hide its assumptions on the last slide. A paper with an abstract rewards checkable claims, and an RFC rewards the reply. So the body is a paper's body under an RFC's discipline, with two courtesies added for busy readers: an executive reading that says the finding in a page, and a disclosure box that tells an investment reader what this is and is not before they read further. Anyone who wants the pitch can build one from the numbers here; the numbers come first so the pitch can be checked.</p>
+
+<h2 id="exec" style="--i:14">Executive reading</h2>
+<p class="fascia" style="--i:15"><a href="#toc">contents</a> &middot; <a href="#status">previous: Status of this memo, and the shape chosen</a> &middot; <a href="#investors">next: For investment readers: what this is, and is not</a></p>
+<p style="--i:16"><strong>Three findings.</strong> First, the energy problem is three problems, and they reward different chips: tokens per joule on Earth, watts shed per kilogram of radiator in orbit, and kilograms per useful operation on the manifest. Second, on a 2026 to 2029 clock the interconnect and the thermal envelope are where the joules are, and the market has already priced that: about USD 6.5 billion of one chipmaker's money into photonics since March 2026, a USD 3.25 billion optical-fabric purchase closed in February, a USD 500 million round for co-packaged optics at a USD 3.75 billion valuation in March. Third, new arithmetic, thermodynamic sampling and all-optical logic, ships outside the window and stays a laboratory for this question.</p>
+<p style="--i:17"><strong>One lineage.</strong> The tree's own earlier whitepapers on toroidal computing, cited through their siloed adaptations, turn out to hold the thesis in geometry: a closed surface has a fixed area, so a bound comes before a die; and the torus is already the topology of a production, optically switched supercomputer, which is where it belongs in this question, as a map rather than a radiator (<a href="#s10">section 10</a>).</p>
+<p style="--i:18"><strong>One number.</strong> The first orbital data-center craft discloses 120 kW average and 150 kW peak compute behind up to 110 square metres of radiator. That is 1,091 to 1,364 watts per square metre of panel, against about 166 flown on the space station's loop. The gap is bridged by temperature and by radiating from both faces, so the hotter chip the builder described in March is what makes the June spacecraft's radiator close. The number is disclosed and unflown; the witness is the first thermistor log.</p>
+<p style="--i:19"><strong>One recommendation.</strong> Treat the first orbital boxes as witnesses rather than solutions, treat the hot-die-on-optics idea as the right shape under a named bound, and keep the bound in software: a supervisor that refuses a job the radiator cannot carry, provably. For a small fund, none of this is a buy; it is sector knowledge, held until a sector list admits it.</p>
+
+<h2 id="investors" style="--i:20">For investment readers: what this is, and is not</h2>
+<p class="fascia" style="--i:21"><a href="#toc">contents</a> &middot; <a href="#exec">previous: Executive reading</a> &middot; <a href="#s1">next: 01 The question, and the answer in one breath</a></p>
+<div class="box" style="--i:22">
+<p>This brief is a reading of public disclosures and physics. It names companies because their public numbers are the evidence, and it names their claims as claims. It is not an offering, a recommendation to buy any security, or a forecast anyone should act on without their own adviser. It was written for a small family fund whose own rules keep any single company to a small share of its portfolio and route every money move behind five gates and a licensed team; those rules are why the brief can be honest about companies it will never own. A larger firm reading this should treat it the way it treats an analyst's first pass: check the sources in place, re-run the arithmetic in <a href="#s3">section 3</a>, and reply where a number is wrong. The reply is the point.</p>
+</div>
+
+<h2 id="s1" style="--i:23"><span class="n">01</span>The question, and the answer in one breath</h2>
+<p class="fascia" style="--i:24"><a href="#toc">contents</a> &middot; <a href="#investors">previous: For investment readers: what this is, and is not</a> &middot; <a href="#s2">next: 02 Three rooms, three rewards, and the clock</a></p>
+<p style="--i:25">The maintainer asked the outside counsel this: <em>what is your favorite mass-scale datacenter HPC chip idea from all of these, or others we haven't considered, or others funded by public-interest capital, for the purpose of solving the orbital builder's energy problem before the Moon mass driver is accomplished in several years, Hari iccha, Inshallah, God willing?</em> The outside reading answered with a die, and ranked ten ideas beneath it. Counsel read the answer, ran the physics it leans on, and lands close to it.</p>
+<p style="--i:26">The change of shape is this. <strong>Counsel's favorite is a bound before a die.</strong> Name the payload's ceilings first, in units a witness can read: watts shed per kilogram of radiator, picojoules per bit moved, joules per useful token, upsets per bit per day. Then choose the arithmetic that fits under them. That is the tree's own code rule, name the ceiling before the loop, applied to a spacecraft, and it matters because the ceiling is already public. SpaceX's first-craft disclosure puts 150 kW of peak compute behind 110 square metres of radiator, and <a href="#s3">section 3</a> shows that number is only reachable with a hot loop. So "run hotter" is the physics of the disclosed spacecraft rather than a slide.</p>
+<p style="--i:27">Inside that bound, the die the outside reading named is the right die on a 2026 to 2029 clock, and the three corrections are the tax it pays. Leakage and wear rise with junction temperature, so a hotter die earns less than its radiator suggests. Static memory is the most upset-prone structure on a chip, so memory-local weights in a 600 km orbit want correction and scrubbing that cost area and watts. And a die with a thermal ceiling needs a supervisor that keeps it there, which is software, and the one part of this question an open operating-system tree can touch.</p>
+
+<h2 id="s2" style="--i:28"><span class="n">02</span>Three rooms, three rewards, and the clock</h2>
+<p class="fascia" style="--i:29"><a href="#toc">contents</a> &middot; <a href="#s1">previous: 01 The question, and the answer in one breath</a> &middot; <a href="#s3">next: 03 The radiator, measured</a></p>
+<p style="--i:30">The outside reading split the energy problem into three rooms, and the split is right. Civic Style asks what each room rewards and who verifies it, and the answers differ.</p>
+<table style="--i:31">
+<tr><th>Room</th><th>Binding constraint</th><th>What a chip must buy</th><th>The reward, and who verifies it</th></tr>
+<tr><td>Earth, before the builder's own fab is full</td><td>grid watts and copper</td><td>tokens per joule; picojoules per bit moved</td><td>joules per token, read by the buyer's own rack meter; the seller's ratio is a claim on a chosen link</td></tr>
+<tr><td>orbit, the first-craft class</td><td>heat rejection in vacuum</td><td>watts shed per kilogram of radiator; a die allowed to run hot</td><td>kilograms per kilowatt, read at the scale before launch and the thermistors after</td></tr>
+<tr><td>launch mass, before a mass driver</td><td>the launcher's manifest</td><td>fewer memory stacks, fewer copper links, less cold-plate plumbing per useful operation</td><td>kilograms per useful operation, read at the same scale</td></tr>
+</table>
+<p style="--i:32">A fourth room is the clock, and it sorts the list harder than the first three. The mass driver is several years out on the maintainer's own framing, so the window is 2026 to 2029. Packaging and interconnect ship inside that window: Ayar Labs is working to a second-half-2027 qualification for 2028 systems (The Next Platform, 2026-03-04), and Marvell expects its first Photonic Fabric revenue in the second half of fiscal 2028 (Investing.com, 2026-02-02). New arithmetic ships outside it: Extropic's early access is 2027 at the earliest, and all-optical general-purpose logic has no ship date at all.</p>
+<p style="--i:33">The builder's own near-term energy move on Earth, meanwhile, is generation rather than silicon: it has started making its own turbine blades to raise output from gas-powered generators for its data centers (Tom's Hardware, 2026). That is a plain reading of where the grid room's constraint binds this year.</p>
+
+<h2 id="s3" style="--i:34"><span class="n">03</span>The radiator, measured</h2>
+<p class="fascia" style="--i:35"><a href="#toc">contents</a> &middot; <a href="#s2">previous: 02 Three rooms, three rewards, and the clock</a> &middot; <a href="#s4">next: 04 The wire, measured</a></p>
+<p style="--i:36">Every watt a chip burns in orbit leaves as infrared, and the Stefan-Boltzmann law sets the rate: emitted power per square metre rises with the fourth power of the radiator's temperature. Counsel ran the numbers rather than quoting them. The field at the top of this page runs the same numbers for any temperature you choose.</p>
+<pre class="block surface" style="--i:37"><span class="k">format</span> radiator-v1
+<span class="k">law</span>                    q = eps * sigma * (T^4 - Tsink^4), sigma 5.670e-8 W/m^2/K^4
+<span class="k">one_face_cold_sky</span>      70 C: 786 W/m^2 | 100 C: 1,099 | 125 C: 1,425 (eps 1.0, sink 0 K)
+<span class="k">one_face_warm_sink</span>     70 C: 508 | 100 C: 790 | 125 C: 1,083 (eps 0.9, sink 250 K)
+<span class="k">hotter_by_30_degrees</span>   100 C over 70 C sheds 1.40x against a cold sky, 1.55x against a 250 K sink,
+                       1.72x against a 280 K sink -- the outside reading's "about 70% more" is the
+                       warm-sink case; the cold-sky case is 40%
+<span class="k">first_craft_disclosed</span>  120 kW average and 150 kW peak behind up to 110 m^2 of deployable liquid
+                       radiator (Tom's Hardware, 2026-06-09) = 1,091 W/m^2 average, 1,364 W/m^2 peak
+<span class="k">station_flown</span>          about 70 kW across 422 m^2 (same source, citing SemiAnalysis) = 166 W/m^2
+<span class="k">what_the_peak_needs</span>    1,364 W per m^2 of panel at eps 0.9 and a 250 K sink: a one-faced panel
+                       must run near 145 C; a two-faced panel near 89 C
+<span class="k">reading</span>                the disclosed number is reachable only as a two-faced panel running hot or a
+                       one-faced panel running hotter than any silicon behind it; either way the
+                       coolant sits near 90 C and the junction above it, so the hotter die is the
+                       spacecraft's arithmetic rather than a preference
+<span class="k">tax</span>                    leakage power and wear rise with junction temperature; a 30 K hotter die buys
+                       a 40% to 70% smaller radiator and pays part of it back in watts
+<span class="k">verifier</span>               the panel's own thermistors and the payload's kilogram count; both are flown
+                       numbers rather than disclosed ones
+<span class="k">falsifier</span>              a flown first craft rejecting under 1,000 W per m^2 at its rated payload, or
+                       a radiator mass per kilowatt above the station loop's once pumps and spares
+                       count</pre>
+<p style="--i:38">Two readings follow. The first is that the outside reading's central idea holds, with its number bounded: a hotter die shrinks the radiator by 40% to 70% depending on what the panel faces, and a knife-edge panel that sees cold sky gets the smaller of those. The second is that the disclosed first-craft figure sits eight times above the flown station figure per square metre. That gap is bridged by temperature and by radiating from both faces, and the outside reading was right to call the number <em>disclosed, unflown</em>. The witness is the first thermistor log.</p>
+<p style="--i:39">A reply received the same day (see <a href="#comments">Comments received</a>) re-ran the table and reports the arithmetic stands, and it named the load-bearing ambiguity plainly: <strong>the 110 square metres</strong>. If that figure already counts both faces, the two-faced row above double-counts and the disclosed spec fails even hotter; if it is panel area, the two-faced row is the honest one. The field cannot settle it; the first thermistor log can. The reply also asked for the third geometry the poetry usually skips, one face to 3 K space and one face to 255 K Earth: at the default 90 C panel and emissivity 0.9 that geometry sheds 1,559 W per square metre and clears; at 70 C it sheds 1,199 and refuses, short by 164. The witness at the top of this page now takes five inputs, junction, coolant delta, emissivity, sink, and geometry, and refuses when the law cannot carry 150 kW over 110 square metres.</p>
+
+<h2 id="s4" style="--i:40"><span class="n">04</span>The wire, measured</h2>
+<p class="fascia" style="--i:41"><a href="#toc">contents</a> &middot; <a href="#s3">previous: 03 The radiator, measured</a> &middot; <a href="#s5">next: 05 The memory habit</a></p>
+<p style="--i:42">The energy spent moving data between chips is the other half of the problem, and it is the half the market has already priced. Ayar Labs closed a USD 500 million Series E on 2026-03-03 at a USD 3.75 billion valuation, with Nvidia, AMD, and MediaTek in the round and USD 870 million raised in all; its TeraPHY optical engine is an 8 Tbps-class chiplet fed by a sixteen-wavelength light source, and the company claims four to twenty times the throughput per watt of copper (SiliconANGLE, 2026-03-03; Inside Deep Tech, 2026-09). Marvell closed its purchase of Celestial AI on 2026-02-02 for USD 3.25 billion at closing, USD 1 billion in cash and USD 2.25 billion in stock, and claims 75% lower power for accelerator-to-accelerator links on its Photonic Fabric (SDxCentral, 2026-05; marvell.com, read 2026-09-07). Nvidia has put at least USD 6.5 billion into photonics since March: USD 2 billion each into Coherent, Lumentum, and Marvell, up to USD 3.2 billion into Corning, and a seat in Ayar's round (TNW, 2026-05-29; CNBC, 2026-03-02). Lightmatter's Passage interposer and its USD 4.4 billion valuation are already in the tree's photonic survey.</p>
+<p style="--i:43">Read the Civic way, what optics reward is a ratio on a chosen link, and who verifies it is the buyer's rack meter. Four-to-twenty is a wide claim, and the honest reading is that the low end is what a first-generation part delivers on a real board. The outside reading's "30% to 60% of a cluster's energy is movement" carried no source, and this brief leaves the percentage behind: Ayar's own framing, a power wall driven by interconnect inefficiency (its chief executive, 2026-03-03), says the direction without the number.</p>
+<p style="--i:44">For orbit, the wire does two jobs at once. It moves the bits at lower energy, and it removes the copper SerDes furnace from the radiator's load. Both are mass. Both are witnessed by the same thermistor.</p>
+
+<h2 id="s5" style="--i:45"><span class="n">05</span>The memory habit</h2>
+<p class="fascia" style="--i:46"><a href="#toc">contents</a> &middot; <a href="#s4">previous: 04 The wire, measured</a> &middot; <a href="#s6">next: 06 The ranked list, carried and corrected</a></p>
+<p style="--i:47">The third leg is where the weights live. Static memory on the die instead of stacked high-bandwidth memory cuts the energy of fetching weights and cuts the stacks that have to be lifted, and the incumbents have said so with money. Nvidia took most of Groq's team and a licence in December 2025, in a deal reported near USD 20 billion (Hashrate Index, 2026-05; The Chip Letter, 2026-01), and its chief executive has described a data center in which Rubin handles prefill and attention while Groq-class parts handle token generation, at up to a quarter of the floor (Tech Investments, 2026-05, quoting him). Cerebras keeps the same habit on a whole wafer. OpenAI and Broadcom unveiled Jalapeno on 2026-06-24, an inference-only accelerator with a first deployment planned by the end of 2026 and a roughly 50% cost claim against current GPUs from Broadcom's chief executive (SiliconANGLE, 2026-06-24; OpenAI, 2026-06-24). Tokens per joule is the scoreboard now, and it is the scoreboard the outside reading named.</p>
+<p style="--i:48">The correction for orbit is radiation. Static memory cells flip under charged particles more readily than any other structure on a die, and a 600 km orbit passes through the South Atlantic Anomaly many times a day (counsel's knowledge, unfetched). So a memory-heavy inference die in orbit wants error correction on every array and scrubbing on a schedule, which costs area, watts, and some of the energy the memory saved. The outside reading asked for radiation tolerance at the circuit level rather than behind a vault of metal, and that is right; the addition here is that it is a witnessed error budget, upsets per bit per day against a ceiling, rather than a line in a brief. The reply of the same day agrees on the direction and marks the magnitude as the gap it is: static memory in the South Atlantic Anomaly wants a published error budget, and this brief carries none.</p>
+
+<h2 id="s6" style="--i:49"><span class="n">06</span>The ranked list, carried and corrected</h2>
+<p class="fascia" style="--i:50"><a href="#toc">contents</a> &middot; <a href="#s5">previous: 05 The memory habit</a> &middot; <a href="#s7">next: 07 Public-interest capital, on the public list</a></p>
+<table style="--i:51">
+<tr><th>Rank</th><th>Idea</th><th>Carried or moved</th><th>Why</th></tr>
+<tr><td>1</td><td>hot-junction, memory-local inference chiplets on optical I/O</td><td>carried, under a bound</td><td>the only shape that gets lighter as the temperature rises, and the only one on the 2026 to 2029 clock; it pays a leakage tax and an upset tax, and both are measurable</td></tr>
+<tr><td>2</td><td>optical fabric under whoever's accelerator: Ayar, Marvell's Photonic Fabric, Lightmatter Passage</td><td>carried</td><td>shipping to a 2028 window with Nvidia's money behind it; asks nobody to rewrite a framework; removes the SerDes load from the radiator</td></tr>
+<tr><td>3</td><td>static-memory inference on the ground: Groq-class inside Nvidia, Cerebras</td><td>carried, and re-labelled</td><td>Groq is inside Nvidia since December 2025, so the row reads Nvidia's own decode sidecar; Cerebras is a terrestrial second source; neither is a payload</td></tr>
+<tr><td>4</td><td>custom inference silicon: Jalapeno, the builder's own vehicle-class parts, TPU</td><td>carried</td><td>a lower-watt part is a smaller radiator on Earth and in orbit; first generations stay on copper and stacked memory</td></tr>
+<tr><td>5</td><td>Extropic Z1</td><td>carried</td><td>real physics for sampling; the wrong shape for dense decode; helper processor in the budget today</td></tr>
+<tr><td>6</td><td>Tenstorrent</td><td>carried</td><td>the open bench for the tree's own labs; no thermal story for orbit</td></tr>
+<tr><td>7</td><td>Akhetonics</td><td>carried, headcount dropped</td><td>photons as wires are ready; photons as arithmetic are a laboratory; the "21 people" figure carried no source and stays behind</td></tr>
+<tr><td>8</td><td>superconducting logic in orbit</td><td>carried, as a no</td><td>a 4 K cooler rejects its heat at 300 K anyway, at a coefficient of performance that multiplies the radiator rather than shrinking it</td></tr>
+<tr><td>9</td><td>quantum</td><td>carried, as a no</td><td>on the public-interest list for sensing and cryptography; not a token engine on this clock</td></tr>
+<tr><td>10</td><td>Substrate</td><td>carried</td><td>a lithography tool, USD 100 million seed at a valuation above USD 1 billion with public-interest capital in the round (DCD, 2026-07); zero tokens per joule by itself</td></tr>
+</table>
+<p style="--i:52">Two rows were added after the second reply, carried as that reply's ranking: <strong>a torus rehearsed in software</strong> at third, the wraparound optical mesh and the torus topology in the tree's own carrier, which needs no new silicon and is what 2026 to 2029 can actually build; and <strong>a monolithic 3D silicon torus</strong> at eighth, because the geometry stands and the fabrication does not on this clock. The rows below it move down one each.</p>
+<p style="--i:53">One label is marked rather than carried. The outside reading calls the space-hardened chip "D3." Counsel's read of the builder's March announcement finds two chip types, an edge inference part for vehicles and robots and a higher-power space-hardened part that runs hotter to cut radiator mass (Tom's Hardware, 2026-03-22), and no name for the second. The idea is sourced; the label is the outside reading's own until the builder's own page carries it, and on re-read the outside counsel confirms it took the name from secondary write-ups rather than from the builder.</p>
+
+<h2 id="s7" style="--i:54"><span class="n">07</span>Public-interest capital, on the public list</h2>
+<p class="fascia" style="--i:55"><a href="#toc">contents</a> &middot; <a href="#s6">previous: 06 The ranked list, carried and corrected</a> &middot; <a href="#s8">next: 08 The first ship is the witness</a></p>
+<p style="--i:56">On the public list counsel read (Dakota, 2025-12-18), the intelligence community's venture arm holds compute and adjacent bets in D-Wave (invested October 2012), Cerebras, Groq, and ICEYE (from about January 2019), beside SandboxAQ, Databricks, Anduril, Skydio, Fortanix, and Cohesity. Substrate joined by its seed round in October 2025 (DCD). Read as what they reward, this is sovereign inference in an air-gapped hall, domestic lithography, and sensing: watts in a secure room, verified by a contracting officer who can field the box. It is a room-temperature answer to a different problem. Counsel found neither Ayar nor Lightmatter on that list, which agrees with the outside reading and is the interesting gap: the intelligence community's compute problem lives in a building, and the orbital builder's lives in a vacuum. The two agree on one sentence, stop carrying weights across copper and stacked memory, and part on where the box sits.</p>
+
+<h2 id="s8" style="--i:57"><span class="n">08</span>The first ship is the witness</h2>
+<p class="fascia" style="--i:58"><a href="#toc">contents</a> &middot; <a href="#s7">previous: 07 Public-interest capital, on the public list</a> &middot; <a href="#s9">next: 09 What an open operating system has to do with it</a></p>
+<p style="--i:59"><strong>The builder's first craft.</strong> SpaceX laid out its first orbital data center craft, AI1, on 2026-06-08. The compute payload is 120 kW average and 150 kW peak at 70 kW per ton, on a 70 metre deployed wingspan, in an orbit near 600 km. Up to 110 square metres of deployable liquid radiator with redundant pumping loops carry the heat away. The payload is interchangeable and sized to about one GB300 rack, so any vendor's silicon can ride (Tom's Hardware, 2026-06-09). The company has filed with the FCC to launch up to a million such craft, has signed compute deals including one with Google near USD 920 million a month, and has unveiled an eleven-million-square-foot factory for them (same source). Its listing filing says it cannot yet secure enough chips, which is its own fab's reason for being.</p>
+<p style="--i:60"><strong>Starcloud.</strong> Starcloud-1 flew an Nvidia H100 in November 2025, the first GPU of that class operated in orbit, and trained a model there. Starcloud-2 is to bring about a hundred times the power and cooling within about eight months of May 2026. The company contracted more than fifty Starlink Mini Laser terminals across at least twenty-five satellites, each link up to 25 Gbps at up to 4,000 km, with first hardware on orbit within a year. It raised a USD 170 million Series A at a USD 1.1 billion valuation in March 2026, has filed for 88,000 satellites, and plans a 200 kW class by late 2028 (Business Wire, 2026-05-26; MLQ, 2026-06; Y Combinator podcast summary, 2026-08).</p>
+<p style="--i:60">Read together: commercial silicon works in orbit behind shielding, and it is a poor match for mass and heat. That is the outside reading's sentence and it stands. What these two craft reward is a witnessed number, kilowatts per ton and square metres per kilowatt, flown rather than disclosed. The first craft with an off-the-shelf rack is the correct first ship precisely because it measures the thermal loop before anyone bets a fab on it.</p>
+
+<h2 id="s9" style="--i:60"><span class="n">09</span>What an open operating system has to do with it</h2>
+<p class="fascia" style="--i:60"><a href="#toc">contents</a> &middot; <a href="#s8">previous: 08 The first ship is the witness</a> &middot; <a href="#s10">next: 10 The maintainer's own torus, read for orbit</a></p>
+<p style="--i:60">The tree this brief comes from designs no die and flies no panel. Three of its habits are the part of this question a software tree can touch.</p>
+<p style="--i:60"><strong>The bound before the loop.</strong> The tree's code rule asks for the ceiling beside the constant, with the why. A payload specified as kilograms per kilowatt, picojoules per bit, joules per token, and upsets per bit per day, each with its verifier, is that discipline in procurement text. A brief without those four numbers is a slide.</p>
+<p style="--i:60"><strong>The supervisor with a thermal ceiling.</strong> A die allowed to run at 100 C needs a scheduler that keeps it there: a job that pushes the loop past the radiator's rating has to be refused, and the refusal has to be provable. That is the shape of the tree's supervisor, which starts everything inside limits fixed before it begins, and of its fence, which a program works inside. Inference only for the first orbital generation, as the outside reading proposes, is a bound a supervisor can hold.</p>
+<p style="--i:60"><strong>The witness before the narrative.</strong> The tree keeps a research lane for energy-saving work. A small witness in that lane that takes junction temperature, coolant delta, emissivity, sink, and faces, prints square metres per kilowatt, and refuses a spec outside the Stefan-Boltzmann bound would turn <a href="#s3">section 3</a> from prose into a program. The field at the top of this page is a first sketch of it, in a browser. It is a lap of days, it names its own falsifier, and it is the kind of artifact the tree should show a stranger.</p>
+<p style="--i:60">One small word matters for the fund this was written for. The fibre in Corning's factories is glass; the fibre in the fund's thesis is bast, the plant kind. This brief keeps the two apart.</p>
+
+<h2 id="s10" style="--i:60"><span class="n">10</span>The maintainer's own torus, read for orbit</h2>
+<p class="fascia" style="--i:60"><a href="#toc">contents</a> &middot; <a href="#s9">previous: 09 What an open operating system has to do with it</a> &middot; <a href="#s11">next: 11 The bound, for any small fund</a></p>
+<p style="--i:60">The tree keeps a lineage room: six prompted whitepapers from an earlier season, written under an earlier handle and held whole in gratitude, with a visionary and at times devotional register that the tree preserves as written. Beside them sit six siloed adaptations that restate the load-bearing engineering in plain, secular language, and the tree's own law is that a public page cites the silo rather than the originals. This section does that. It reads the lineage for what it gives the orbit question, and it finds that the torus enters as a map and a manifold rather than as a radiator.</p>
+<p style="--i:60"><strong>What stands in the silo, in one sentence each.</strong> A computer shaped as a torus has no edges, every core has the same neighbors, and the farthest two points sit a known distance apart before the machine runs. A memory cell's coordinate on the torus, major angle, minor angle, radial depth, is its address, with no translation layer. Parameters that wrap or that live inside fixed limits map onto a torus, and natural-gradient descent on that compact domain is a bounded, deterministic optimizer that runs on ordinary hardware today. Local data that agrees on its overlaps glues into a global whole. Allocate once, never grow, never free. The silo also says what the aether framing costs: the geometry's advantages survive with the aether removed, and the framing is the author's inspiration rather than a premise. This brief keeps that law.</p>
+<p style="--i:60"><strong>The bound before a die is the lineage's own instinct.</strong> The original wrote that every maximum constant in its code style maps to a topological constraint, and the silo restates it as TAME's root rule expressed as hardware: bound everything and know the maximum before you run. A closed surface has a fixed area, so its heat budget is a geometry. <a href="#s1">Section 1</a>'s four ceilings are that sentence with units on it.</p>
+<p style="--i:60"><strong>The torus is a map, not a radiator.</strong> The lineage's cooling section claims significant surface area for heat dissipation and no edge hot spots, and on Earth, inside a liquid-cooled casing, convection makes that true. In vacuum only the surface that sees the sky counts. A closed shape's inner faces see each other, and a doughnut's hole faces itself, so part of what one face emits the opposite face absorbs; per kilogram, a flat two-faced knife-edge panel sheds more to cold sky than any closed volume can. So the torus does its work in this question as topology, and topology is where it is already real. Google's TPU v4 runs a dedicated 3D torus interconnect, 4 by 4 by 4 blocks with wraparound links through optical circuit switches; the optical components are under 5% of system cost and under 3% of system power, and the machine improved performance per watt 2.7 times over its predecessor (Jouppi et al., ISCA 2023). A torus of light rather than of silicon, and it is the shape of the wire <a href="#s4">section 4</a> priced.</p>
+<p style="--i:60"><strong>The coordinate is the address; the address is the distance; the distance is the energy.</strong> If every hop's length is legible from the coordinates, the picojoules per bit of a move are known before the move, which makes an energy budget a compile-time bound. That is the vision room speaking, and the silo names the ordinary road to it: ring and torus topologies in the tree's sealed carrier and its supervisor need no exotic silicon.</p>
+<p style="--i:60"><strong>The governor as a bounded optimizer.</strong> Duty cycles, phases, and coolant setpoints wrap or live inside limits, so they map onto a compact domain, and natural-gradient descent with a diagonal Fisher approximation is deterministic, single-threaded, and TAME-shaped there. A thermal governor that tunes a payload's duty cycle against a radiator ceiling is that technique's plainest use, and it is proposed here as a lap rather than claimed. The lineage's own speed projections, 1.7 to 2.9 times a Cerebras baseline, are entangled with hardware that does not exist and stay behind, as the silo already says.</p>
+<p style="--i:60"><strong>Antipodal pairs, for the upset tax.</strong> The original reads a fixed-point theorem colorfully: because a torus has a hole, a continuous map on it need have no fixed point, and antipodal nodes make a natural mirror pair at maximum distance. Read plainly, that is one shape for the correction <a href="#s5">section 5</a> asks for, a mirrored copy far enough away that one particle cannot flip both. Proposed; the error budget still wants a published number.</p>
+<p style="--i:60"><strong>The sheaf and the thermistors.</strong> The lineage's one engineering claim about wholes, local data that agrees glues into a global whole, is how a radiator log should be read. Each thermistor is a local section of a temperature field; where two overlap and disagree, that is a hot spot, and the disagreement is the information. That is how <a href="#s3">section 3</a>'s witness grows from one number into a field.</p>
+<p style="--i:60"><strong>The self-view tax, measured.</strong> The second reply (see <a href="#comments">Comments received</a>) did the subtraction the January hardware paper left out. A solid torus has surface over volume of 2 over its minor radius, the same as a cylinder, so it buys no area per kilogram that a plain tube does not, and a thin panel still wins; and a fat torus sees itself, so a share of what its inner surface emits lands on the opposite wall and comes back as heat. The reply named that share the self-view tax and asked for it as a knob. At the default 90 C panel, emissivity 0.9, and a 250 K sink, a 15% tax turns the two-faced 1,376 into 1,170 and the disclosed 1,364 refuses, short by 194; the split geometry, one face to space and one to Earth, drops from 1,559 to 1,325 and refuses too, short by 38; at 10% the split still clears and the two-faced row already fails. The doughnut below is that tax drawn in text: brighter marks are heat leaving into space, and the dark band on the inside is heat the doughnut gives back to itself. The share is an illustration tied to how fat the doughnut is, and the true view factor of any closed shape stays a named gap until someone computes it for a real panel.</p>
+<div class="field surface torus" id="torus-box" aria-label="A doughnut of hot metal you can turn with a finger" style="--i:60">
+  <pre id="torus" aria-hidden="true">               %@@@@@@@@@@@@@@@@@@@@@@@@@@@@%
+             @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@%
+            @@@@@@@@@@@@@@@@@%%%%%%%@@@@@@@@@@@%
+           @@@@@@@@@@@@@%%%####**#####%%%%@@@@@@%
+          %@@@@@@@@@%%%##***++++++++++**##%%%@@@%%
+         %@@@@@@@@%%##**+===---------==+++*##%%@@%
+         %@@@@@@@%%#*++=--::...    ..::--=+**#%%%%
+         @@@@@@%%##++=-:..            ..:--+*##%%%
+         @@@@@%%##+=-::.                .:-=++*%%%
+         @@@@@%##++=-:.                 .:-=+*#%%%
+         %@@@%%#*+=-:.                  .:-=+*#%%*
+          %@@@%#*+=-:.                .:::-+*#%%#
+          #%%@%%#*+=-:...          ..:::-=++##%#
+            %%%%#*+=--::::......::::--===+*#%%
+             %%%%%#*+=====------===++****##%#
+               #%%%%#*++=++++++*****+*##%%
+                  #%%%%##********###%%#
+                       ###%%%%%%##
+
+
+
+</pre>
+  <div class="legend" id="tor-ang">tilt 57&deg;, turn 20&deg;</div>
+</div>
+<div class="witness" style="--i:60">
+  <div>
+    <label for="fat">how fat the doughnut is, minor over major radius <output id="fatv" for="fat">0.33</output></label>
+    <input id="fat" type="range" min="0.20" max="0.90" step="0.01" value="0.33" aria-label="Doughnut fatness, minor radius over major radius">
+    <p class="noindent" style="font-size:.82rem;color:var(--ink-2);margin:.7rem 0 0">First time here: drag or swipe the doughnut to turn it and look from any side, and it keeps turning on its own when you let go; one tap holds it still, another lets it go. Brighter marks are heat leaving into space. The dark band on the inside is heat the doughnut gives back to itself. The slider makes it fatter; a fatter doughnut sees more of itself and pays a larger self-view tax, and that tax is also a knob in the witness at the top of the page, so the verdict there follows this doughnut.</p>
+  </div>
+  <ul class="readout" aria-live="polite">
+    <li><span>self-view tax from this fatness</span><span id="tor-tax">15%</span></li>
+    <li><span>two faces, current panel, after the tax</span><span id="tor-two">1,170 W/m&sup2;</span></li>
+    <li><span>one face to space, one to Earth, after the tax</span><span id="tor-split">1,325 W/m&sup2;</span></li>
+    <li><span>AI1 peak, 1,364 W/m&sup2;</span><span id="tor-verdict" class="no">refuses: short by 194 W/m&sup2;</span></li>
+  </ul>
+</div>
+<pre class="block surface" style="--i:60"><span class="k">format</span> torus-for-orbit-v1
+<span class="k">lineage</span>            six prompted whitepapers, an earlier season, an earlier handle, held whole in gratitude;
+                   the public page cites the six siloed adaptations, as the tree's own law asks
+<span class="k">checkable</span>          no edges, bounded known distance, coordinate as address; natural gradient on a
+                   compact domain; local agreement glues to a global whole; allocate once
+<span class="k">already_real</span>       a 3D torus interconnect of 4x4x4 blocks with optical wraparound links, under 3% of
+                   system power (Jouppi et al., ISCA 2023); a pumped coolant loop is already a torus
+<span class="k">self_view_tax</span>      A/V of a solid torus = 2/r, the same as a cylinder; a fat torus sees itself; at 15%
+                   the two-faced 1,376 becomes 1,170 and refuses (short 194), the split 1,559 becomes
+                   1,325 and refuses (short 38); at 10% only the two-faced row fails
+<span class="k">proposed</span>           a torus topology in the sealed carrier on ordinary hardware; a thermal governor as
+                   a bounded optimizer; antipodal mirror pairs against upsets; thermistor logs read as
+                   local sections of one field
+<span class="k">set_aside</span>          the aether framing, per the silo; the torus as a physical radiator, per the view
+                   factor; the lineage's own speed multipliers, per the silo
+<span class="k">falsifier</span>          a season closes with the torus still only in prose: no carrier witness, no governor
+                   lap, no log read as a field</pre>
+<h2 id="s11" style="--i:60"><span class="n">11</span>The bound, for any small fund</h2>
+<p class="fascia" style="--i:60"><a href="#toc">contents</a> &middot; <a href="#s10">previous: 10 The maintainer's own torus, read for orbit</a> &middot; <a href="#s12">next: 12 Projections</a></p>
+<div class="box moss" style="--i:60">
+<p>None of this is a buy. A small fund's position-size law holds any single company to a small share of its portfolio, and the companies above are priced in the billions or held inside larger ones. The listed optics names, Coherent, Lumentum, Corning, and Marvell, sit outside the sectors the fund this was written for means, which are water, plant fibre, materials, and resource recovery, so they stay sector knowledge until a fiduciary's list says otherwise. The builder's fab and the orbital craft stay flows beside the ground, behind the fund's five gates and its licensed team.</p>
+</div>
+
+<h2 id="s12" style="--i:60"><span class="n">12</span>Projections</h2>
+<p class="fascia" style="--i:60"><a href="#toc">contents</a> &middot; <a href="#s11">previous: 11 The bound, for any small fund</a> &middot; <a href="#s13">next: 13 Base rates, before the story</a></p>
+<div class="proj" style="--i:60">
+<p><strong>The first craft's first flown radiator log lands within a factor of two of the disclosed 1,364 W per m².</strong> Horizon: the first flight, on the builder's own cadence, by the end of 2027. Assumptions: two-faced panels near 90 C with emissivity near 0.9. Falsifier: a flown rejection under 700 W per m² at rated payload, or a mass per kilowatt above the station loop's. Confidence: plausible.</p>
+<p><strong>Optical I/O reaches ordinary AI racks by 2028.</strong> Horizon: end of 2028. Assumptions: Ayar's 2027 qualification and Marvell's fiscal-2028 revenue arrive on schedule. Falsifier: neither company reports production revenue on optical I/O by then. Confidence: likely; the tree's photonic survey made the same call a month earlier.</p>
+<p><strong>A memory-local inference part flies in orbit with a published upset budget.</strong> Horizon: end of 2028. Assumptions: a vendor treats upsets per bit per day as a specification rather than a footnote. Falsifier: every flown payload through 2028 is a shielded terrestrial part. Confidence: a live possibility.</p>
+<p><strong>The torus leaves the prose within a season.</strong> Horizon: one season from this stamp. Assumptions: the diffuser lane's energy-saving charter takes one of the three proposed laps in <a href="#s10">section 10</a>. Falsifier: the season closes with no torus topology witnessed in the sealed carrier, no bounded thermal governor, and no radiator log read as a field. Confidence: plausible.</p>
+<p><strong>The honest near-term move, if the hot die slips, is fewer, hotter, optically meshed terrestrial clusters beside the builder's own generation.</strong> Horizon: 2029. Assumptions: the space-hardened part misses its window and optical I/O shows up in Earth racks first. Falsifier: a flown 2027 to 2028 orbital box whose tokens per joule and kilograms per kilowatt beat a shielded H100 once lasers, pumps, and spares are counted. Confidence: plausible, and it is the outside reading's own falsifier, kept.</p>
+</div>
+
+<h2 id="s13" style="--i:60"><span class="n">13</span>Base rates, before the story</h2>
+<p class="fascia" style="--i:60"><a href="#toc">contents</a> &middot; <a href="#s12">previous: 12 Projections</a> &middot; <a href="#s14">next: 14 Structural and cyclical, sorted</a></p>
+<p style="--i:60">Most large space programs slip their first flight by a year or more, and first-of-kind thermal systems are among the parts that slip them (counsel's knowledge, unfetched). Radiators flown to date on crewed and uncrewed craft reject a few hundred watts per square metre at most, and the station loop's 166 is the best-documented large one. Interconnect transitions in data centers take two to three product generations from first announcement to majority share, and copper has outlived every prior obituary at short reach. Custom inference silicon at hyperscalers has, in its first generation, saved cost more than it saved energy, because the first parts ship on the same memory and the same copper. And the share of chip startups whose first-generation part ships on the announced date is small enough that every date in this brief is a horizon rather than a plan.</p>
+
+<h2 id="s14" style="--i:60"><span class="n">14</span>Structural and cyclical, sorted</h2>
+<p class="fascia" style="--i:60"><a href="#toc">contents</a> &middot; <a href="#s13">previous: 13 Base rates, before the story</a> &middot; <a href="#s15">next: 15 Trust, and the two rooms</a></p>
+<p style="--i:60">Structural: the fourth-power law; the vacuum, which allows only radiation; the South Atlantic Anomaly; the mass of a stacked memory die and of a metre of copper; the energy of moving a bit versus computing on it; the launcher's cost per kilogram until a mass driver exists; a small fund's position-size law. Cyclical: every valuation above; Nvidia's photonics purchases and the stock prices they moved; the first-craft and Starcloud schedules; Jalapeno's first deployment date; the price of a kilowatt on the Texas grid this summer; the public-interest list, which grows by the quarter.</p>
+
+<h2 id="s15" style="--i:60"><span class="n">15</span>Trust, and the two rooms</h2>
+<p class="fascia" style="--i:60"><a href="#toc">contents</a> &middot; <a href="#s14">previous: 14 Structural and cyclical, sorted</a> &middot; <a href="#s16">next: 16 Stories, for all kinds of people</a></p>
+<p style="--i:60">The maintainer's own feeling after the second reply was that the tree should trust itself and its metaphysics, and this section says how it does, in a form that keeps both rooms honest.</p>
+<p style="--i:60">The tree keeps two rooms on purpose. The checkable room holds what a witness can bind: a temperature, a permit, a ledger row, a law of physics on a disclosed number. The vision room holds what orients before it can be proven: that the whole is present in every part, that a field is the truer picture of a wire, that a path is worth walking because it has a heart. Trouble begins when the two share a room without saying so, and the second reply named that trouble exactly: mixing them is how a good shape becomes an uncheckable claim. So the trust is not a claim that the aether belongs in Stefan-Boltzmann. In the tree's own rota, aether is the row that hears, the sense of purpose and sound, and that is where it stays.</p>
+<p style="--i:60">The trust is this. The tree's metaphysics is the reason it works at all, and the bench is how it keeps its promises. The whole-in-every-part reading is why a ledger anyone can fold from the log feels like the right instrument rather than a feature. The path with heart is why the tree releases work that has lost its heart with open hands, and why it chose to write for the person who has to live beside the fab before it wrote for the fab. Daily service, small and unending, is why the reward is checked against the good every day rather than promised once. Custody first, nothing to give away that was not yours, is why every instrument here belongs to the one who runs it. Those are not decorations on the engineering; they are its source. A tree that trusted only its bench would have no reason to build the instruments the bench needs.</p>
+<p style="--i:60">Framed for the companies that can actually reach orbit, the trust reads as an offer rather than a rivalry. The builders of launch vehicles, satellites, fabs, and the largest optical interconnects on Earth are the ones capable of a flourishing in space, and none of them needs an open operating-system tree to design a die. What the tree can give, and gives away open and royalty free, is the discipline that makes such work trustworthy to the people who fund it, license it, and live under it: a bound named before the loop; a witness that refuses in public; a supervisor with a ceiling; a ledger that a contracting officer, a co-investor, and a neighbor can read without trusting anyone's letter; and a habit of naming who is rewarded and who verifies. That is how an open tree helps the top companies capable of space flourishing: by making their promises checkable, and by keeping the people under the launch site in the same ledger as the watts. The gift is the instrument, and the instrument carries the ethic inside it, which is why the tree trusts the metaphysics enough to build.</p>
+<p style="--i:60">What this trust refuses is as important as what it holds. It refuses to let a beautiful image borrow the bench's authority, which is why the self-view tax stands in <a href="#s10">section 10</a> beside the poem. It refuses to spend the bench's rigor mocking an image that is doing honest orienting work, which is why the lineage is cited with gratitude rather than embarrassment. And it refuses to hide the ethic behind the numbers, which is why the next section is stories.</p>
+<h2 id="s16" style="--i:60"><span class="n">16</span>Stories, for all kinds of people</h2>
+<p class="fascia" style="--i:60"><a href="#toc">contents</a> &middot; <a href="#s15">previous: 15 Trust, and the two rooms</a> &middot; <a href="#refuses">next: What this refuses, and the named gaps</a></p>
+<p style="--i:60">One human family, many seats at the table. These are short, and each one asks the same question the Civic discipline asks: what is this person rewarded for, who checks it, and what does a witnessed number give them that a promise did not. None of them names a race, because the lens is human.</p>
+<p style="--i:60"><strong>The farmer on the plain.</strong> She irrigates with water the town treated the night before, and the receipt on her phone says how many acre-feet and what the lab found in them. When the fab downstream draws from a reservoir instead of her aquifer, she wants that in the same kind of receipt, signed daily, that nobody can quietly edit. An open ledger is the difference between a neighbor and a rumor.</p>
+<p style="--i:60"><strong>The plant operator on nights.</strong> He runs the reclamation loop and posts the daily reading on the wall by the door. He has never needed a satellite, and he recognizes the radiator log at once: a loop, a temperature, a number that is either inside its rating or is not. A supervisor that refuses a job the loop cannot carry is the machine version of the rule he keeps by hand.</p>
+<p style="--i:60"><strong>The nurse who commutes an hour.</strong> Her hospital's power bill rose with the data centers, and she has heard both that compute must move to orbit and that it never will. What helps her is a page that says which claim has a falsifier and when it lands, so she can read the first thermistor log herself instead of choosing a side.</p>
+<p style="--i:60"><strong>The retiree on a fixed income.</strong> He holds a small fund's shares through an adviser and worries about a story he cannot check. A brief that tells him it is not a buy, names what each company claims, and marks the claims as claims is the kind of thing he wishes he had been handed in 2008.</p>
+<p style="--i:60"><strong>The first-year fab technician.</strong> She took the job for the wage and the training, and she reads that the state's grant is verified by the jobs the statute counts. Knowing that her own hire is one of the numbers a public program is rewarded for changes how she reads the town's tax abatement, and it makes her want the count to be honest.</p>
+<p style="--i:60"><strong>The schoolteacher.</strong> He wants the field at the top of this page for his class, because a doughnut of hot metal that you can turn with a finger teaches the fourth-power law faster than a formula. The instructions say drag, tap, and read, and the verdict says refuses in plain letters, which is the first time his students will see a machine decline to lie.</p>
+<p style="--i:60"><strong>The long-haul driver.</strong> She hauls panels and pumps to a launch site and knows what a kilogram costs on a manifest. The line that a hotter die buys a smaller radiator and pays part of it back in leakage is a line about freight, and she reads it that way: everything that flies was trucked first.</p>
+<p style="--i:60"><strong>The council member in a town of eight thousand.</strong> He will vote on a tax abatement for a factory whose chips are meant for orbit, and the memo he was handed had no verifier on any line. He wants the works-town rule instead: choose the tenant so the rent is the good, name the outcome, name the measure, and fund the checking as load bearing.</p>
+<p style="--i:60"><strong>The shopkeeper near the launch site.</strong> She came from far away and opened a store where the workers eat. Her interest in the radiator arithmetic is simple: if the promises hold, the town lives; if they slip by two years, her lease does not wait. A page that says slips are the base rate lets her plan for the base rate rather than the brochure.</p>
+<p style="--i:60"><strong>The parent who wants a dark sky.</strong> He is not against orbit; he wants his daughter to see the stars from the yard, and a million craft is a number that worries him. His interest lives in the falsifiers and the gaps, and this brief was written so that his question sits in the same ledger as the builder's, verified by the same kind of log.</p>
+<p style="--i:60"><strong>The analyst at a large fund.</strong> She reads for a living and distrusts anything that reads like a pitch. What she gets here is a sources list she can check in an afternoon, an arithmetic block she can re-run in a minute, and a disclosure box that tells her what the brief is not before she wastes an hour.</p>
+<p style="--i:60"><strong>The veteran.</strong> He spent years under specifications without verifiers and knows what they cost. The four ceilings in <a href="#s1">section 1</a>, each with the name of who checks it, are the kind of document he would have wanted signed before a launch.</p>
+<p style="--i:60"><strong>The person who leads the prayers.</strong> She keeps a room where people bring what they cannot check, and she recognizes the two rooms at once. The trust in <a href="#s15">section 15</a> is familiar to her: the reason you work and the way you keep your word are different rooms, and a life is honest when both are open.</p>
+<p style="--i:60">Read together, the stories say one thing. A witnessed number is a public good. It serves the farmer and the analyst, the operator and the parent, the town and the builder, and it costs nothing to share, which is why an open tree makes them and gives them away.</p>
+<h2 id="refuses" style="--i:60">What this refuses, and the named gaps</h2>
+<p class="fascia" style="--i:60"><a href="#toc">contents</a> &middot; <a href="#s16">previous: 16 Stories, for all kinds of people</a> &middot; <a href="#comments">next: Comments received</a></p>
+<p style="--i:60">It picks no chip to buy, no company to back, and no satellite to design. It moves nothing; every dollar of the fund it was written for waits on five gates and a word. It carries the outside reading's ranking with three corrections and one label marked, and it drops two of its figures for want of a source. It gives no engineering opinion a licensed thermal or radiation engineer would sign; the arithmetic in <a href="#s3">section 3</a> is textbook physics on disclosed numbers, and the flown numbers replace it the day they exist.</p>
+<p style="--i:60">Eleven gaps are named rather than filled. Six sit on the spacecraft: the view factor of any closed radiator shape to cold sky, which the lineage's cooling section never computed and this brief states only in direction; whether the disclosed 110 square metres counts panel area or both radiating faces, which decides whether the two-faced row in <a href="#s3">section 3</a> stands or double-counts; the panel emissivity, face count, and sink geometry the first craft actually flies; the junction temperature the space-hardened part is specified to; the leakage share at that temperature on the process the builder's fab will use; and the upset rate per bit per day the part will be rated for. Two sit on the sources: the true energy share of movement in a current cluster, which the outside reading stated without a source; and whether the name "D3" appears anywhere in the builder's own words. Two sit in the house: the terms of the Google compute agreement beyond its monthly figure, and the research lane a radiator witness would belong to. One more sits on the page: the self-view share is a heuristic tied to how fat the doughnut is, and the true share for a real closed panel is the gap the reply named.</p>
+
+<h2 id="comments" style="--i:60">Comments received</h2>
+<p class="fascia" style="--i:60"><a href="#toc">contents</a> &middot; <a href="#refuses">previous: What this refuses, and the named gaps</a> &middot; <a href="#audit">next: Audit: Gauge, Civic, and TAME</a></p>
+<p style="--i:60">An RFC is only as good as its replies, and the first arrived the same day. It is carried here in the tree's words, with its table as it sent it, and what changed in this revision is listed beneath it. The original text above stands; this section accretes.</p>
+<p style="--i:60"><strong>Reply 1, the outside counsel, 2026-09-07.</strong> It re-ran <a href="#s3">section 3</a> and reports the arithmetic stands:</p>
+<table style="--i:60">
+<tr><th>Panel</th><th>One face, emissivity 0.9, 250 K sink</th><th>Two faces</th><th>Clears 1,364 W per m&sup2;?</th></tr>
+<tr><td>70 C</td><td>508</td><td>1,017</td><td>no</td></tr>
+<tr><td>89 C</td><td>about 682</td><td>about 1,364</td><td>two faces, barely</td></tr>
+<tr><td>90 C</td><td>688</td><td>1,376</td><td>yes</td></tr>
+<tr><td>145 C</td><td>about 1,364</td><td>--</td><td>one face</td></tr>
+</table>
+<p style="--i:60">It accepts the change of shape, a bound before a die, as better TAME than the stack it had named, and puts it in one line: Pond, written for a radiator. It carries the ranking as written, agrees that Groq inside Nvidia is the right relabel, that the Akhetonics headcount was unsourced and rightly dropped, and that superconducting logic in orbit remains a no. It asked for three things, numbered as this brief asked.</p>
+<ul class="plain" style="--i:60">
+<li><strong><a href="#s3">Section 3</a>, the 110 square metres.</strong> The load-bearing ambiguity: if the figure already counts both faces, the two-faced row double-counts and the spec fails even hotter. The field cannot settle it; the first thermistor log can.</li>
+<li><strong><a href="#s5">Section 5</a>, the upset tax.</strong> The direction is right and the magnitude is a gap: static memory in the South Atlantic Anomaly wants a published error budget rather than a line of prose.</li>
+<li><strong><a href="#s6">Section 6</a>, the D3 label.</strong> Mark it. The name came from secondary write-ups rather than from a page of the builder's; the idea is in the March announcement and the three-character name is not, until they print it.</li>
+</ul>
+<p style="--i:60">It asked for one more thing of the page: a witness with the five inputs <a href="#s9">section 9</a> already listed, junction, coolant delta, emissivity, sink, and geometry, including the honest third case of one face to 3 K space and one face to 255 K Earth, with a verdict that refuses when the law cannot carry 150 kW over 110 square metres. And it closed with an instruction worth keeping: turn the geometry to one space, one Earth at the default 100 C junction and 10 K delta, because that is the case the poetry usually skips. At that setting the panel sits at 90 C and sheds 1,559 W per square metre; at a 70 C panel the same geometry sheds 1,199 and refuses, short by 164.</p>
+<p style="--i:60"><strong>What changed in this revision.</strong> The witness at the top of the page takes the five inputs and refuses on the law; the knobs are marked as the outside reading's ask, same day, and the stamp stays the maintainer's. The 110 square metre ambiguity is named in section 3 and in the gaps. The upset budget is restated as a published error budget the brief does not carry. The D3 label carries the outside reading's own confirmation. Nothing above was rewritten to agree with the reply; the reply was added beside it.</p>
+<p style="--i:60"><strong>Reply 2, the outside counsel, 2026-09-07, stamped 20260907.144500.</strong> It read the lineage section and reports that the lineage already did the hard split and it followed it. What stands, in its words, is geometry: no edges, bounded hop, coordinate as address, memory beside compute; wrap the angles and assert the radius, which is TAME in polar coordinates and needs no aether. It added a line worth keeping: the first craft's pumped radiator is already a torus of coolant, and the 2026 to 2029 version of the doughnut is a wraparound optical mesh rather than a 3D foundry. What does not stand as a free gift is area: a solid torus has surface over volume of 2 over its minor radius, the same as a cylinder, a thin panel still wins on area per kilogram, and a fat torus sees itself, which the January paper did not subtract. It asked for a self-view tax knob and gave its number: at 15% on the default two-faced 90 C case, the disclosed 1,364 refuses. What stays in gratitude, it agrees: aether as a medium, longitudinal modes, field reinforcement, the mathematics as devotion, the Vedic convergence; and it noticed the tree's own rota already places aether as the row that hears. Its rank after hearing: the polar-bound hot die on optical I/O first; the optical wrap second; a torus rehearsed in software as a new third row; a monolithic 3D silicon torus eighth, because the geometry stands and the fabrication does not on this clock. It closed with one instruction: turn the self-view slider, because that is the tax the poetry skipped.</p>
+<p style="--i:60"><strong>What changed after reply 2.</strong> The self-view tax is a knob in the witness and a doughnut you can turn in <a href="#s10">section 10</a>, with the reply's numbers checked and two more cases added: at 15% the split geometry refuses as well, short by 38, and at 10% the two-faced row already fails. Two rows were added to the ranked list in <a href="#s6">section 6</a>, a torus rehearsed in software at third and a monolithic silicon torus at eighth, marked as the reply's ranking carried. The maintainer answered the reply with a feeling rather than a number, that the tree should trust itself and its metaphysics, and <a href="#s15">section 15</a> is that trust written down in a form the two rooms allow. The stamp stays the maintainer's, and it is later than the reply's.</p>
+<h2 id="audit" style="--i:60">Audit: Gauge, Civic, and TAME</h2>
+<p class="fascia" style="--i:60"><a href="#toc">contents</a> &middot; <a href="#comments">previous: Comments received</a> &middot; <a href="#gratitude">next: Gratitude</a></p>
+<p style="--i:60">The tree audits its own pages, and this revision was audited on the day it was stamped, with the readings below taken by the tree's own register measure and by counsel's checks in a browser.</p>
+<p style="--i:60"><strong>Gauge, the prose.</strong> Field setting. Sentences carrying a negative: 28% of 363 sentences, against the Field ceiling of 30%; the refuse-and-short vocabulary of the witness and the replies lifted it from 19% in the first cut, and it stays inside. Reading grade 9.8 against a ceiling of 11. Body links 126 over 9,777 words, 1.29 per hundred, against a ceiling of 3. Non-ASCII characters in the markdown: 0. One title. Every figure carries a unit, a date, and a source, or says plainly that it is counsel's knowledge, unfetched. Every projection carries a horizon, assumptions, a falsifier, and a confidence in words.</p>
+<p style="--i:60"><strong>Civic, the rewards.</strong> The page rewards a reply rather than a click: there is no tracking, no advertisement, and no call to act, and the disclosure box keeps investment readers off the pitch. Each section names what its subject rewards and who verifies it: the buyer's rack meter, the scale before launch and the thermistors after, the statute's jobs count, the reviewer's own re-run of the arithmetic. The fund this was written for is rewarded by the good it can prove, and the page names its own verifier, the comments room, and its own falsifier, the first flown log.</p>
+<p style="--i:60"><strong>TAME, the code.</strong> The page's script was read against the tree's code discipline and repaired where it fell short. Every constant is named with the reason beside it: the Stefan-Boltzmann constant, the disclosed need of 150 kW over 110 square metres, the column bounds of 36 to 96, the row count, the frame cap, the density ramp, the torus sample counts, and the largest tax the slider allows. Every loop is bounded before it runs: the field is at most 96 columns by 18 rows, the doughnut is 90 by 240 samples into a 64 by 22 buffer, and the sliders carry their limits in the markup and again in the script, which clamps and refuses to trust a value outside them. Buffers are allocated once at their maximum size and reused every frame rather than grown. The refusal is the content: the verdict says refuses in plain letters, and the tax knob makes the refusal reachable from every geometry. Motion reads one inline value and stops when the system asks. The page stands with scripts off. What fails the audit and is owned rather than hidden: the field and the doughnut shade with an illustration rather than a solved heat equation, the self-view share is a heuristic tied to fatness, one network request fetches the fallback typeface, and the cloth switch needs a 2022 or newer engine to work without scripts.</p>
+<p style="--i:60"><strong>Silo and scrub.</strong> The lineage is cited through its siloed adaptations; the teachers of the path with heart, of daily service, and of the two rooms are thanked in the gratitude room and named nowhere on this page; the devotional register stays sung where it was sung. The leak scan's identifier list was run against both files with this session's house words added, and it found nothing. Names are roles, the fund is the fund, the old handle is absent, and no household number survives.</p>
+<p style="--i:60"><strong>Stories and the human lens.</strong> The stories in <a href="#s16">section 16</a> were read for the same thing: each names a reward and a verifier, none names a race, and each leaves the reader with a door open rather than a sermon.</p>
+<h2 id="gratitude" style="--i:60">Gratitude</h2>
+<p class="fascia" style="--i:60"><a href="#toc">contents</a> &middot; <a href="#audit">previous: Audit: Gauge, Civic, and TAME</a> &middot; <a href="#sources">next: Sources cited</a></p>
+<p style="--i:60">The question is the maintainer's, and its benediction is carried in the maintainer's words. The outside reading is Grok's, thanked in the tree's gratitude room already; its ranking stands here with counsel's corrections marked as counsel's. The physics is Stefan's and Boltzmann's, and the arithmetic was run rather than remembered. SpaceX, Starcloud, Ayar Labs, Marvell, Nvidia, OpenAI, Broadcom, the public-interest portfolio companies, and the newsrooms cited by date taught their own numbers by publishing them. The tree's own photonic survey taught the interconnect reading a month before this brief needed it. The lineage room taught the geometry: the maintainer's own whitepapers from an earlier season, under an earlier handle, held whole and cited here only through the silo the tree keeps for exactly this use; and Jouppi and his co-authors taught, by building it, that a torus of light already runs. The path with heart, daily service, custody first, and the two rooms are the tree's own foundations, and the teachers behind them are thanked in the gratitude room by name and here by their teaching only. The people in the stories are nobody in particular and everybody in general, which is the point. The scrub that made this projection possible is the tree's own seed rule, and the people whose names it turned into roles are thanked in the field where their names belong. Nothing of anyone's is reproduced here.</p>
+<p style="--i:60">Next: comment on any numbered claim; the first flown thermistor log, whenever it lands, read against <a href="#s3">section 3</a> before anything else in this brief is believed.</p>
+<p class="bene" style="--i:60">Hari iccha, inshallah: may the radiator arithmetic get its witness before the poetry does, and may the people under the launch site and beside the fab be counted in the same ledger as the watts.</p>
+<p style="--i:60">Written together by the maintainer and Kyri.</p>
+
+<h2 id="sources" style="--i:60">Sources cited</h2>
+<p class="fascia" style="--i:60"><a href="#toc">contents</a> &middot; <a href="#gratitude">previous: Gratitude</a></p>
+<p class="noindent" style="--i:60">Listed the MLA way, alphabetically by the first word of the entry, with the date the page was read where a page carries no date of its own. Every in-text citation above resolves to one line here.</p>
+<div class="sources" style="--i:60"><ol>
+<li>"Ayar Labs Gets $500 Million To Ramp Photonics Into 2028 AI Systems." The Next Platform, 4 Mar. 2026, nextplatform.com/connect/2026/03/04/ayar-labs-gets-500-million-to-ramp-photonics-into-2028-ai-systems/4093515.</li>
+<li>"Cerebras Deep Dive." Tech Investments, May 2026, techinvestments.io/p/cerebras-deep-dive.</li>
+<li>Deutscher, Maria. "Co-packaged optics startup Ayar Labs raises $500M round backed by Nvidia, AMD." SiliconANGLE, 3 Mar. 2026, siliconangle.com/2026/03/03/co-packaged-optics-startup-ayar-labs-raises-500m-round-backed-nvidia-amd/.</li>
+<li>Deutscher, Maria. "OpenAI, Broadcom debut custom Jalapeno chip for AI inference." SiliconANGLE, 24 June 2026, siliconangle.com/2026/06/24/openai-broadcom-debut-custom-jalapeno-chip-llm-inference/.</li>
+<li>"From One to One Billion: Torx, Thermalizers, and Z1." Extropic, Aug. 2026, extropic.ai/writing/from-one-to-one-billion/.</li>
+<li>Harris, Peter. "Top 10 IQT Portfolio Companies 2025." Dakota, 18 Dec. 2025, dakota.com/resources/blog/top-10-iqt-portfolio-companies-2025.</li>
+<li>James, Luke. "Elon Musk unveils $20 billion 'TeraFab' chip project to make chips, memory, and package processors all under one roof." Tom's Hardware, 22 Mar. 2026, tomshardware.com/tech-industry/elon-musk-formally-launches-20-billion-terafab-chip-project.</li>
+<li>James, Luke. "Elon Musk's first-gen orbital data center craft spans wider than a Boeing 747 and runs an interchangeable chip payload." Tom's Hardware, 9 June 2026, tomshardware.com/tech-industry/spacex-details-its-ai1-compute-satellite.</li>
+<li>Jouppi, Norman P., et al. "TPU v4: An Optically Reconfigurable Supercomputer for Machine Learning with Hardware Support for Embeddings." Proceedings of the International Symposium on Computer Architecture, June 2023, arxiv.org/abs/2304.01433.</li>
+<li>Kyri, after the lineage authors. "Grain Lineage, Siloed for Plain Use." The tree, external-research/grain-lineage-silo/README.md, 13 July 2026; the six siloed adaptations beside it: the toroidal hardware proposal stated plainly, toroidal bounded optimization, the state at center, one carrier many flows, the dual-description design principle, and whole in every part.</li>
+<li>Kyri, with the maintainer. "The Heart in the Work." The tree, foundations/20260628-121512_the-heart-in-the-work.md, 28 June 2026; and "Two Rooms," context/TWO_ROOMS.md, seated 5 July 2026.</li>
+<li>Kyri. "Computing Toward the Field: A Survey of Photonic and Thermodynamic Compute." The tree, external-research/20260826-002700, 26 Aug. 2026.</li>
+<li>"Marvell completes $3.25B acquisition of photonic startup Celestial AI." SDxCentral, May 2026, sdxcentral.com/news/marvell-completes-325b-acquisition-of-photonic-startup-celestial-ai/.</li>
+<li>"Marvell completes acquisition of optical interconnect firm Celestial AI." Investing.com, 2 Feb. 2026, investing.com/news/company-news/marvell-completes-acquisition-of-optical-interconnect-firm-celestial-ai-93CH-4479186.</li>
+<li>Nicol-Schwarz, Kai. "Nvidia to invest $4 billion into photonics companies Coherent and Lumentum." CNBC, 2 Mar. 2026, cnbc.com/2026/03/02/nvidia-investment-coherent-lumentum.html.</li>
+<li>"Nvidia has spent $6.5 billion in three months to replace copper with light inside AI data centres." TNW, 29 May 2026, thenextweb.com/news/nvidia-photonics-investment-copper-bottleneck-ai-data-centre.</li>
+<li>"OpenAI and Broadcom unveil LLM-optimized inference chip." OpenAI, 24 June 2026, openai.com/index/openai-broadcom-jalapeno-inference-chip/.</li>
+<li>"Philip Johnston's StarCloud Put an H100 in Orbit for $2M. Now It's Filing for 88,000 Satellites." BigGo Finance, summarizing the Y Combinator Startup Podcast, Aug. 2026, finance.biggo.com/news/59ba3e329abb999a.</li>
+<li>"Photonic Fabric Technology." Marvell, read 7 Sept. 2026, marvell.com/ai/photonic-fabric-technology.html.</li>
+<li>"Qualcomm's Ventana RISC-V Acquisition." The Chip Letter, Jan. 2026, thechipletter.substack.com/p/qualcomms-risc-ventana-fusion.</li>
+<li>"Silicon Photonics: A Full Guide to the Optical Chips Moving AI Data." Inside Deep Tech, Sept. 2026, insidedeeptech.com/silicon-photonics-ai-data-centers-full-guide.</li>
+<li>"SpaceX starts in-house turbine blade manufacturing to boost gas-powered generator output for Elon's AI data centers." Tom's Hardware, 2026, linked from the AI1 report above.</li>
+<li>"Starcloud Orders 50+ Starlink Laser Terminals for Orbital Data Center Constellation." MLQ, June 2026, mlq.ai/news/v2/starcloud-orders-50-starlink-laser-terminals-for-orbital-data-center-constellation/.</li>
+<li>"Starcloud to Integrate SpaceX's Starlink Mini Lasers Into Its Orbital Data Center Constellation." Business Wire, 26 May 2026, businesswire.com/news/home/20260526670395/en/.</li>
+<li>"The AI ASIC Market, Part 3: The Independent AI Chip Companies Taking on NVIDIA." Hashrate Index, May 2026, hashrateindex.com/blog/independent-ai-chip-companies-ai-asic-market-part-3/.</li>
+<li>The maintainer, under an earlier handle, with prompted co-authors. "Solid Silicon Torus High-Performance Computing Architecture," "Toroidal Information Geometry for Bounded Optimization," "The Grain Point," "Silken Ground," and the topos essay. The tree, gratitude/grain-lineage/, Jan. to Mar. 2026, held whole and cited here only through the silo.</li>
+<li>"US startup Substrate raises $100m for development of lithography tools to challenge ASML." DCD, July 2026, datacenterdynamics.com/en/news/us-startup-substrate-raises-100m-for-development-of-lithography-tools-to-challenge-asml/.</li>
+</ol></div>
+<div class="credit" style="--i:60">
+<p>Page design after the static, monospace, ASCII-first pages at <a href="https://bit-trading-company.com/">bit-trading-company.com</a>, its <a href="https://bit-trading-company.com/shadow-v2/">signal terminal</a>, and <a href="https://ase.lat/">ase.lat</a>, with their public source at <a href="https://github.com/Bit-Trading-Company">github.com/Bit-Trading-Company</a>. Thank you, everyone. The cloth is Linengrow's first: Stone and Oat by day, Hearth and Ember by dusk, with the linen weave drawn as two crossed threads; the accents are plant dyes, madder, annatto, weld, sage, and elderberry, and no indigo. The face is PragmataPro Mono where a reader has it, Iosevka, its open sibling, where they do not, and Inconsolata as the web fallback. The cloth switch and the jumps work with scripts off; with scripts on, every jump takes the same second the rest of the page takes, and the heading you land on glows once. Motion off when your system asks for it.</p>
+<p><a href="#top">back to the top</a> &middot; <a href="#toc">contents</a></p>
+<p>Stamp 20260907.175821. A public projection of a private memo, scrubbed by the seed rule: names are roles, the fund is the fund, no household number survives.</p>
+</div>
+</main>
+</div>
+
+<script>
+(function(){
+  // ---- theme: the checkbox is the truth; scripts only mirror it onto html[data-theme] for engines without :has()
+  var root=document.documentElement, mode=document.getElementById('mode');
+  var prefersDark=matchMedia('(prefers-color-scheme: dark)').matches;
+  function mirror(){root.setAttribute('data-theme',(mode.checked!==prefersDark)?'dark':'light');}
+  mode.addEventListener('change',mirror); mirror();
+
+  // ---- jumps: one second, eased, reading the same --duration the rest of the page reads
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var STICKY_PX=54;            // invariant: the height of the sticky top bar, so a landing heading is not hidden under it
+  document.addEventListener('click',function(e){
+    var a=e.target.closest?e.target.closest('a[href^="#"]'):null; if(!a)return;
+    var id=a.getAttribute('href').slice(1), el=document.getElementById(id); if(!el)return;
+    e.preventDefault();
+    var dur=(parseFloat(getComputedStyle(document.body).getPropertyValue('--duration'))||0)*1000;
+    var start=window.pageYOffset, top=el.getBoundingClientRect().top+start-STICKY_PX;
+    root.style.scrollBehavior='auto'; /* the timed loop drives every frame itself; the css smooth scroll is the scripts-off path */
+    function done(){root.style.scrollBehavior='';history.pushState(null,'','#'+id);el.classList.add('landed');setTimeout(function(){el.classList.remove('landed');},dur*2);}
+    if(reduce||dur<=0){window.scrollTo(0,top);done();return;}
+    var t0=performance.now();
+    (function step(now){var k=Math.min(1,(now-t0)/dur);var s=k<.5?2*k*k:-1+(4-2*k)*k;window.scrollTo(0,start+(top-start)*s);if(k<1)requestAnimationFrame(step);else done();})(t0);
+  });
+
+  // ---- physics: five inputs and a tax, and a verdict that refuses on the law
+  var SIGMA=5.670374e-8;       // invariant: the Stefan-Boltzmann constant, W per m^2 per K^4 (CODATA); the whole page rests on it
+  var NEED=150000/110;         // invariant: the disclosed first-craft peak, 150 kW over up to 110 m^2 of panel (Tom's Hardware, 2026-06-09); the verdict measures against this and nothing else
+  var MAX_TAX=0.40;            // invariant: the largest self-view share the slider allows; a real panel that gave back more than 40% would not be flown
+  var SPACE_K=3, EARTH_K=255;  // invariant: the split geometry's two sinks, cold sky and an Earth-facing panel's effective sink, in kelvin
+  var $=function(i){return document.getElementById(i);};
+  function bound(v,lo,hi){v=+v; if(!(v>=lo)) return lo; if(v>hi) return hi; return v;} // a value outside its declared range is clamped, never trusted
+  function qf(TC,eps,Ts){var T=TC+273.15;return eps*SIGMA*(Math.pow(T,4)-Math.pow(Ts,4));}
+  function fmt(n){return Math.round(n).toLocaleString('en-US');}
+  var tj=$('tj'),dt=$('dt'),eps=$('eps'),sink=$('sink'),geo=$('geo'),tax=$('tax');
+  var panelC=90, E=0.9, S=250, TAX=0;
+  function shed(g,pc,e,s){ if(g==='one') return qf(pc,e,s); if(g==='two') return 2*qf(pc,e,s); return qf(pc,e,SPACE_K)+qf(pc,e,EARTH_K); }
+  function verdict(el,q){ if(q>=NEED){el.textContent='clears at '+fmt(q);el.className='ok';} else {el.textContent='refuses: short by '+fmt(NEED-q)+' W/m\u00b2';el.className='no';} }
+  function update(){
+    var J=bound(tj.value,60,125), D=bound(dt.value,0,30); E=bound(eps.value,0.70,1.00); S=bound(sink.value,3,280); TAX=bound(tax.value,0,100*MAX_TAX)/100; panelC=J-D;
+    $('tjv').textContent=J+' C'; $('dtv').textContent=D+' K'; $('epsv').textContent=E.toFixed(2); $('sinkv').textContent=S+' K'; $('taxv').textContent=Math.round(TAX*100)+'%'; $('tp').textContent=panelC+' C';
+    var q=shed(geo.value,panelC,E,S)*(1-TAX), ref=qf(panelC,0.9,250);
+    $('qg').textContent=fmt(q)+' W/m\u00b2'; $('q2').textContent=fmt(ref)+' W/m\u00b2';
+    $('m2').textContent=(1000/q).toFixed(2)+' m\u00b2/kW'; $('area').textContent=fmt(150000/q)+' m\u00b2';
+    verdict($('verdict'),q);
+    var two=2*qf(panelC,E,S)*(1-TAX), split=(qf(panelC,E,SPACE_K)+qf(panelC,E,EARTH_K))*(1-TAX);
+    $('tor-tax').textContent=Math.round(TAX*100)+'%'; $('tor-two').textContent=fmt(two)+' W/m\u00b2'; $('tor-split').textContent=fmt(split)+' W/m\u00b2';
+    verdict($('tor-verdict'),(geo.value==='split')?split:two);
+  }
+  [tj,dt,eps,sink,tax].forEach(function(el){el.addEventListener('input',update);}); geo.addEventListener('change',update);
+
+  // ---- the doughnut's fatness sets the tax: an illustration tied to r/R, named as such in section 10
+  var fat=$('fat'), TAX_PER_FATNESS=0.45; // invariant: 0.45 * (r/R) puts the reply's 15% at r/R = 1/3; a heuristic, and the true view factor is a named gap
+  function fatToTax(){ var f=bound(fat.value,0.20,0.90); $('fatv').textContent=f.toFixed(2); tax.value=Math.round(100*Math.min(MAX_TAX,TAX_PER_FATNESS*f)); update(); }
+  fat.addEventListener('input',fatToTax); fatToTax();
+
+  // ---- the field: a hot die at the centre, heat flowing outward to a cold sky
+  var ramp=' .:-=+*#%@';          // invariant: ten steps of density, the same ramp the inspiration pages use, printed in the legend
+  var COLS_MIN=36, COLS_MAX=96;   // invariant: the field is never narrower than a phone can hold nor wider than a reader can scan
+  var ROWS=18;                    // invariant: eighteen rows keeps the field under one phone screen above the sliders
+  var FRAME_MS=33;                // invariant: 30 frames a second is enough for text and keeps a phone cool
+  var pre=$('ascii'), cols=64, t=0, last=0;
+  function size(){var w=pre.parentNode.clientWidth-24;var cw=parseFloat(getComputedStyle(pre).fontSize)*0.6+0.75;cols=bound(Math.floor(w/cw),COLS_MIN,COLS_MAX);}
+  function fieldFrame(){
+    t+=0.225;
+    var heat=bound((panelC-40)/85,0,1), cx=cols/2, cy=ROWS/2, out='';
+    for(var y=0;y<ROWS;y++){
+      var line='';
+      for(var x=0;x<cols;x++){
+        var dx=(x-cx)/(cols/2), dy=(y-cy)/(ROWS/2), d=Math.sqrt(dx*dx+dy*dy*1.6);
+        var core=Math.exp(-d*d*6)*(0.7+0.5*heat), wave=0.5+0.5*Math.sin(d*9-t*(1.4+heat))*Math.exp(-d*1.6);
+        var v=bound(core+0.42*wave*heat+0.06*Math.sin(x*0.7+t)*Math.sin(y*0.9-t),0,1);
+        line+=ramp.charAt(Math.min(ramp.length-1,Math.floor(v*ramp.length)));
+      }
+      out+=line+'\n';
+    }
+    pre.textContent=out;
+  }
+
+  // ---- the doughnut: a torus of hot metal drawn in text, turned by hand, shaded by the heat that escapes
+  var TW=64, TH=22;               // invariant: the doughnut's text buffer is 64 by 22, fixed, so its buffers are allocated once below and never grown
+  var TSTEPS=90, PSTEPS=240;      // invariant: 90 by 240 samples a frame is enough to fill 64 by 22 without holes and is cheap at 30 frames a second
+  var VIEW_D=5.0;                 // invariant: the viewer stands five minor radii away; nearer would distort, farther would flatten
+  var SCALE=0.72;                 // invariant: fits the fattest doughnut the slider allows inside the buffer
+  var SPIN_A=0.004, SPIN_B=0.011; // invariant: slow enough to read, fast enough to show every side inside a minute
+  var zbuf=new Float32Array(TW*TH), cbuf=new Uint8Array(TW*TH), lineChars=new Array(TW); // allocated once
+  var tpre=$('torus'), box=$('torus-box'), angA=1.0, angB=0.35, held=false, dragging=false, moved=0, lx=0, ly=0;
+  var R1=1.0;
+  function torusFrame(){
+    var f=bound(fat.value,0.20,0.90), r2=R1/f, K1=TW*VIEW_D*3/(8*(R1+r2))*SCALE, k=Math.min(1,2*R1/r2);
+    zbuf.fill(0); cbuf.fill(0);
+    var cA=Math.cos(angA),sA=Math.sin(angA),cB=Math.cos(angB),sB=Math.sin(angB);
+    for(var i=0;i<TSTEPS;i++){
+      var th=2*Math.PI*i/TSTEPS, ct=Math.cos(th), st=Math.sin(th);
+      for(var j=0;j<PSTEPS;j++){
+        var ph=2*Math.PI*j/PSTEPS, cp=Math.cos(ph), sp=Math.sin(ph);
+        var cx=r2+R1*ct, cy=R1*st;
+        var x=cx*(cB*cp+sA*sB*sp)-cy*cA*sB, y=cx*(sB*cp-sA*cB*sp)+cy*cA*cB, ooz=1/(VIEW_D+cA*cx*sp+cy*sA);
+        var xp=(TW/2+K1*ooz*x)|0, yp=(TH/2-K1*ooz*y*0.5)|0; if(xp<0||xp>=TW||yp<0||yp>=TH) continue;
+        var L=-(cA*ct*sp+st*sA); if(L<=0) continue;                 // the far side faces away and is not drawn
+        var esc=(ct>=0)?1:1-k*(-ct);                                 // outer surface escapes; the inner band gives part back
+        var lum=esc*(0.2+0.8*L), idx=xp+yp*TW;
+        if(ooz>zbuf[idx]){zbuf[idx]=ooz; cbuf[idx]=1+Math.min(9,(lum*10)|0);}
+      }
+    }
+    var out='';
+    for(var yy=0;yy<TH;yy++){ for(var xx=0;xx<TW;xx++){ var c=cbuf[xx+yy*TW]; lineChars[xx]=c?ramp.charAt(c-1):' '; } out+=lineChars.join('')+'\n'; }
+    tpre.textContent=out;
+    $('tor-ang').textContent='tilt '+(((Math.round(angA*57.2958)%360)+360)%360)+'\u00b0, turn '+(((Math.round(angB*57.2958)%360)+360)%360)+'\u00b0';
+  }
+  function onDown(e){dragging=true;moved=0;lx=e.clientX;ly=e.clientY;box.setPointerCapture&&box.setPointerCapture(e.pointerId);}
+  function onMove(e){if(!dragging)return;var dx=e.clientX-lx,dy=e.clientY-ly;lx=e.clientX;ly=e.clientY;moved+=Math.abs(dx)+Math.abs(dy);angB+=dx*0.012;angA+=dy*0.012;if(reduce)torusFrame();}
+  function onUp(e){if(!dragging)return;dragging=false;if(moved<6)held=!held;if(reduce)torusFrame();}
+  box.addEventListener('pointerdown',onDown); box.addEventListener('pointermove',onMove); box.addEventListener('pointerup',onUp); box.addEventListener('pointercancel',onUp);
+  box.style.touchAction='none'; box.style.cursor='grab';
+
+  // ---- one clock for both pictures
+  function frame(now){
+    if(!reduce && now-last<FRAME_MS){requestAnimationFrame(frame);return;}
+    last=now; fieldFrame();
+    if(!held && !dragging && !reduce){angA+=SPIN_A;angB+=SPIN_B;}
+    torusFrame();
+    if(!reduce)requestAnimationFrame(frame);
+  }
+  size(); addEventListener('resize',function(){size();if(reduce)frame(0);});
+  requestAnimationFrame(frame);
+
+  // ---- the rail marks the section in view
+  var links=[].slice.call(document.querySelectorAll('.rail a'));
+  if('IntersectionObserver' in window && links.length){
+    var map={}; links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a;});
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){links.forEach(function(a){a.removeAttribute('aria-current');});var a=map[e.target.id];if(a)a.setAttribute('aria-current','true');}});},{rootMargin:'-20% 0px -70% 0px'});
+    Object.keys(map).forEach(function(id){var el=document.getElementById(id);if(el)io.observe(el);});
+  }
+})();
+</script>
+</body>
+</html>
