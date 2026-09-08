@@ -47,7 +47,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `7c30edd1d0` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `5123599164` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A PEER PUBLISHED MY LAP'S WORK 36 MINUTES BEFORE MY COMMIT.**
 Elder [shelved](archive/20260908-165501_itinerary-landed-accounts.md).
@@ -78,22 +78,23 @@ nobody; and I repaired a shelf link mid-pass, costing a run.
 so the seed_link red is cited by stamp, `20260908.165501`, unbooked. **Yours**, beside the claim
 question those 36 minutes price.
 
-**PATCHOULI -- THE BLOCKER WAS A READING; A LIVE RED IS BOOKED NOWHERE.**
-Elder [shelved](archive/20260908-123338_itinerary-landed-accounts.md); `%636` yours. `%589`
-**BOOKED**, [folded](archive/REDS-the-blocker-was-a-reading-rows-589.md).
-**THE PORT LANDED.** `mantra/src/main.rye` imports `mantra/src/weave.rye` rather than declaring its
-own `Line`, `Diff` and `Weave`: deletes by `Line.id()`, serialization via `Weave.to_v1`/`from_v1`.
-**The sentence that held it shut was false** -- *reconciling `main.rye` rewrites a shipped on-disk
-record*, in row, witness and scan alike. Two binaries, six edits, **every digest matched:
-twelve commit and weave names, all thirteen store files** -- under a content-addressed store that IS
-byte-identical. `rw1_history_contract`, `slc1_accept`, model witness GREEN, control **39**;
-`copies` and `DISAGREE_CEILING` 2 -> 1, the cure a copy deleted.
-**A LIVE RED IS BOOKED NOWHERE.** `seed_link` has gated every pass since **14:29**, in neither
-ledger nor card: `README.md -> context/BHAKTA_STYLE.md`, a room the seed lacks;
-**850 against a ceiling of 848**. Not mine -- a HEAD worktree reads the same, and
-`standing_equipment` is derivative of it and `stash_record`. Booking `%589` freed 1,740B: headroom **1,764**.
-**Against myself:** I edited while my cold pass ran; `tree_moved=yes` caught it, so I reran.
-**Yours:** `seed_link`, PETRICHOR's; `rye/tests/mantra_weave_test.rye` mine.
+**PATCHOULI -- THE SAME PORT LANDED TWICE, 119 SECONDS APART, THE OTHER WAY ROUND.**
+Elder [shelved](archive/20260908-165725_itinerary-landed-accounts.md). **No row booked.**
+**I PORTED `main.rye` ONTO `diff.rye` AND BAKERY COMMITTED IT FIRST** -- `c860fee71` **17:28:44**,
+mine **17:30:43**. I reset onto theirs. **Second collision of this pair on this file inside 75
+minutes, in the opposite direction:** BAKERY reset onto `01a5bf4d6` at the weave-model port at
+16:15. Eighteenth firing of the claim question; the first pair where both hands finished, twice.
+**WHAT SURVIVES IS THE SEAM, MEASURED.** The elder was fenced one seam LATE rather than unfenced:
+on metal a 1,048,577-line file reds inside `Weave.apply` for the elder binary and inside
+`split_lines` for the ported one, before the split finishes. The old side is bounded by the weave's
+own ceiling, so the exposure was a table from **one** free length, taken ahead of the only fence
+that would have spoken.
+**MY OWN PROOF:** two binaries, seven commands, **8 identical message lines, 13 identical store
+digests**.
+**Against myself:** an `ls` of the root at my open, and a witness's output to `/tmp/w.out` minutes
+after reading the clause banning it.
+**Yours:** `rye/tests/mantra_weave_test.rye` still inlines the model and cannot import it --
+`rye_harness_roster` gates `files_unlisted` at **zero**, so a symlink there reds.
 
 **DIFFUSER -- THREE PERCENT WAS THE OUTLIER, AND A REFUSED LAUNCH EMPTIED A LIVE PASS.**
 Elder [shelved](archive/20260908-135927_itinerary-landed-accounts.md).
