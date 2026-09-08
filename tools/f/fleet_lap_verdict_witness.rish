@@ -17,14 +17,24 @@ let ctl = run ["sh" "tools/fixtures/f/fleet_lap_verdict_control.sh"]
 assert ctl.ok else "fleet-lap-verdict: the control refused --\n${ctl.out}\n${ctl.err}"
 assert ctl.out contains "pass=12 fail=0" else "fleet-lap-verdict: the control did not prove twelve behaviors --\n${ctl.out}\n${ctl.err}"
 
+# THE TRANSCRIPTS ARE NAMED PER RUN, never constants. Eight ships share this pier and run this
+# witness from eight trees, so `${pen}/limit.txt` is one file eight hands write, read and then
+# `rm -f` -- and each leg here WRITES a transcript and immediately asks the classifier to read it,
+# so a peer overwriting between those two steps feeds this witness a transcript it never wrote.
+# That failure is silent and it inverts a verdict, which is exactly what this guard exists to
+# catch. The class is `%618`/`%601`; a ratchet migrates on touch (`20260908.175200`).
+let mk = run ["sh" "-c" "mktemp -d /tmp/fleet_lap_verdict.XXXXXX"]
+assert mk.ok else "fleet-lap-verdict: the pen could not be opened"
+let pen = trim mk.out
+
 say "fleet-lap-verdict: the classifier answers the four verdicts by name..."
-let limit = run ["sh" "-c" "printf 'You have hit your session limit - resets 7:30am\\n' > /tmp/flv-limit.txt && sh tools/fixtures/f/fleet_lap_verdict.sh /tmp/flv-limit.txt 1 2"]
+let limit = run ["sh" "-c" "printf 'You have hit your session limit - resets 7:30am\\n' > ${pen}/limit.txt && sh tools/fixtures/f/fleet_lap_verdict.sh ${pen}/limit.txt 1 2"]
 assert limit.ok else "fleet-lap-verdict: the classifier refused to run"
 # invariant: an instant lap carrying the limit words reads `limit` -- this is the whole repair, and
 # the elder rule read exactly this shape as an invocation fault.
 assert limit.out contains "verdict=limit" else "fleet-lap-verdict: an instant limit refusal still reads as a quickfail -- the fleet would stop itself again"
 
-let jail = run ["sh" "-c" "printf 'ai-jail: unrecognized option --verbose\\n' > /tmp/flv-jail.txt && sh tools/fixtures/f/fleet_lap_verdict.sh /tmp/flv-jail.txt 1 2"]
+let jail = run ["sh" "-c" "printf 'ai-jail: unrecognized option --verbose\\n' > ${pen}/jail.txt && sh tools/fixtures/f/fleet_lap_verdict.sh ${pen}/jail.txt 1 2"]
 assert jail.ok else "fleet-lap-verdict: the classifier refused on the jail transcript"
 # invariant: %414's own wound still reads `quickfail` -- the repair widened nothing it should not.
 assert jail.out contains "verdict=quickfail" else "fleet-lap-verdict: the elder invocation fault stopped being caught"
@@ -39,7 +49,7 @@ assert wired.out contains "WIRED_CALL" else "fleet-lap-verdict: the loop's call 
 # word, so a lap classified `limit` cannot also reach the quickfail arm. Order is proven where it
 # actually lives -- inside the classifier -- by the control's first case.
 
-let sweep = run ["sh" "-c" "rm -f /tmp/flv-limit.txt /tmp/flv-jail.txt"]
+let sweep = run ["sh" "-c" "rm -rf ${pen}"]
 assert sweep.ok else "fleet-lap-verdict: the pen files were left standing"
 
 say "GREEN: fleet-lap-verdict -- a spent window is a hold, an unreachable agent is a stop, and the loop can tell them apart."
