@@ -3432,3 +3432,18 @@ guard rishi_run_record
 path tools/r/rishi_run_record_witness.rish
 tier lap
 seated 20260908.101500
+
+# glow_literal_law -- one language, one answer for a leading zero. Glow reads a decimal literal in
+# fourteen places and on 20260908 those fourteen gave two answers: glow/rune_shop_gate.rye refuses
+# `007` and calls the refusal "the house parse law" in its own comment, and the other thirteen read
+# it as seven. Proven on metal through both public entries the same day. The gate is the MINORITY,
+# min(strict, permissive), so it closes under either lawful ruling rather than choosing one; the
+# language question itself is Keaton's. `lap` rather than `cadence`: the pass costs 2.5s measured
+# 20260908.170542 on this pier, and the surface it reads is glow/ source, which the language lane
+# edits every round. Authored 20260908.143733 in a lap that never landed; restored from its stash
+# and re-proven on metal before this row was written.
+
+guard glow_literal_law
+path tools/g/glow_literal_law_witness.rish
+tier lap
+seated 20260908.170542

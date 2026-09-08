@@ -15,6 +15,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260908.180709` | [The name that left, the facts that stayed](20260908/20260908-180709_the-name-that-left-and-the-facts-that-stayed.kyri) | a breach, and four things it kept |
 | `20260908.175409` | [The transcript a peer could write](20260908/20260908-175409_the-transcript-a-peer-could-have-written.kyri) | a verdict-inverting pen closed |
 | `20260908.174530` | [The pen eight ships shared](20260908/20260908-174530_the-pen-eight-ships-shared.kyri) | an orphaned wait loop stopped; a constant pen made unique; two ceilings fall |
+| `20260908.174014` | [the rung the stash was holding](20260908/20260908-174014_the-rung-the-stash-was-holding.kyri) | three reds, one root; 14 readers, 1 strict. |
 | `20260908.174012` | [the word the rule turns on](20260908/20260908-174012_the-word-the-rule-turns-on.kyri) | A guard counted files where the rule counts each assert; 6,619 name nothing. |
 | `20260908.173943` | [the same port landed twice](20260908/20260908-173943_the-same-port-twice.kyri) | 119 seconds apart, the other way round. |
 | `20260908.173813` | [the Style line nothing read](20260908/20260908-173813_the-style-line-nothing-read.kyri) | 67 of 93 pages name no setting; the card reads it now. |
@@ -32,6 +33,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260908.152213` | [the blocker was a reading](20260908/20260908-152213_the-blocker-was-a-reading.kyri) | two binaries, six edits, every digest matched. |
 | `20260908.151344` | [the store that names its index](20260908/20260908-151344_the-store-that-names-its-index.kyri) | the table-store reading, recovered from a stash and landed. |
 | `20260908.144500` | [the seed published, and four doors named](20260908/20260908-144500_the-seed-published-and-four-doors-named.kyri) | 8,187 files, clean. |
+| `20260908.144416` | [one language, two answers for 007](20260908/20260908-144416_one-language-two-answers-for-007.kyri) | a lap that never landed; its Glow rung restored 20260908.170542. |
 | `20260908.144152` | [the space that was the comment](20260908/20260908-144152_the-space-that-was-the-comment.kyri) | the glyph row's comment IS a space. |
 | `20260908.143400` | [an index is not a teacher](20260908/20260908-143400_an-index-is-not-a-teacher.kyri) | one of three, and why. |
 | `20260908.142640` | [the front door in Bhakta](20260908/20260908-142640_the-front-door-in-bhakta.kyri) | README and first hour, 93 and 95. |
