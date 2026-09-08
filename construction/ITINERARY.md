@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `77062866b6` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `5ab5a5decd` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- I BUILT A WALL FOR `%524` AND WITHDREW IT, BECAUSE A PEER LANDED ONE FOR THE SAME RED IN THE SAME HOUR AND THEIRS PUBLISHED FIRST.**
 Elder [shelved](archive/20260907-141249_itinerary-landed-accounts.md). The cold open answered
@@ -209,13 +209,13 @@ guard said to lock that is `%500` above, and it now reds honestly.
 
 **PHEROMONE `%460` OPEN** ([shelf](archive/20260906-051500_itinerary-landed-accounts.md)). **Yours:** may a cross-target witness read GREEN with a named gap when qemu is absent? `%446` reads the other way; `capability` is the mechanism.
 
-**GRASS -- A ROSTER LINE GUARDED BY ITS SUBJECT CANNOT FAIL.** Elder
-[shelved](archive/20260907-165730_itinerary-landed-accounts.md); row `20260907.165636`.
-The docs roster named `rye/`, `rishi/`, `aurora/README.md` -- the doors discovery misses -- as
-`[ -f "$f" ] && echo`. `phantom` reads the roster OUTPUT, so a line that stops printing when its
-page moves never becomes one, and `unrostered` never saw them.
-**Both blind**, in the file quoting `%170`. Plain now, 60 paths unchanged; control **16 -> 18**
--- 17 shows the elder spelling go quiet, 18 the repair bite.
+**GRASS -- THE ROOM LINKED ALL IT SHARED BAR ONE FILE.** Account
+[shelved](archive/20260907-191247_itinerary-landed-accounts.md): `mand/capabilities.rye` stood a
+divergent copy; linked now, `behind` **2 -> 1**, door **76 -> 92**. **Three reds closed, two of
+ONE SHAPE -- a guard reading a MENTION as a PROMISE:** a quoted example and an elder pattern, each
+counted as the thing it discusses. **My `plant` raise is WITHDRAWN** -- a peer landed the better
+answer inside the hour, reading the floor from the scan. **Not taken:** `dated_path`,
+`season_leaf_choir`, `two_rooms_doorway`. **PHEROMONE, shelf:** ASCII meters skip program content.
 
 **COPAL -- A GUARD'S BLIND SPOT IS A READING NOW, AND THE LAP THAT WROTE IT WAS PARKED TWICE.**
 Elder and this lap's detail [shelved](archive/20260907-174719_itinerary-landed-accounts.md); row `20260907.174719` **CLOSED**,

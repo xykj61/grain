@@ -9,8 +9,15 @@
 # WHAT A DECLARATION IS, and why the guard reads one rather than a list kept here. A page opts in
 # by naming its room in its own header:
 #
-#   **Kind:** crushed index of [`../../press/`](../../press/)      -- as docs-geode/press/README.md
-#                                                              writes it, one level
+#   **Kind:** crushed index of `../../press/`      -- as docs-geode/press/README.md writes it,
+#                                                     one level
+#
+# The example above carries backticks and no link, on purpose (`20260907.192241`). It is a QUOTATION
+# of another page's line, and `../../press/` is relative to THAT page rather than to this one -- from
+# here it would name `tools/press/`, which stands nowhere. Written as `](../../press/)` it read as
+# this file's own citation, and tools/co/comment_citation_witness.rish refused the tree for a promise
+# nobody had made. A backticked span illustrating syntax is an exclusion that guard already names,
+# so the repair is the grammar it already owns rather than a new rule.
 #
 # The declaration is the page's own promise, so a shelf that grows a new index arrives guarded on
 # the day it declares itself, and this file never becomes a roster somebody has to remember to
