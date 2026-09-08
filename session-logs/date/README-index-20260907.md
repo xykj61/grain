@@ -24,6 +24,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260907.204202` | [The workload and the index](20260907/20260907-204202_the-workload-and-the-index.kyri) | the query census, measured at its own stamp |
 | `20260907.221124` | [The wall that faced one artifact](20260907/20260907-221124_the-wall-that-faced-one-artifact.kyri) | a log's file field is a claim nobody read: 228 name nothing. |
 | `20260907.200326` | [a killed lap and a finished one](20260907/20260907-200326_a-killed-lap-and-a-finished-one.kyri) | status: 21 of 95 declared. |
+| `20260907.205007` | [The page read in three words](20260907/20260907-205007_the-page-read-in-three-words.kyri) | the grader reads a 1,132-word page in three; %574 advanced |
 | `20260907.195724` | [The lap that was already written](20260907/20260907-195724_the-lap-that-was-already-written.kyri) | a whole parked lap landed; a floor spelled as an equality |
 | `20260907.195249` | [Built twice in one hour](20260907/20260907-195249_the-floor-that-red-on-good-news.kyri) | A peer shelved the same repair first; mine withdrew, the pen work stands. |
 | `20260907.194642` | [The floor that refused its own good news](20260907/20260907-194642_the-floor-that-refused-its-own-good-news.kyri) | two parked laps landed; a floor red on adoption. |

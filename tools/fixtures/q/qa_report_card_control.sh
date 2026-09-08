@@ -167,6 +167,61 @@ echo "$el" | grep -q "reach_links=0 of 0 " \
   && echo "filtered_count_reproduces_the_blindness=yes" \
   || echo "filtered_count_reproduces_the_blindness=no ($(echo "$el" | sed -n 's/^\(reach_links=[^(]*\).*/\1/p'))"
 
+# 4b -- THE SENTENCES THE DENSITY READING CANNOT SEE, the other half of the same blindness. A body
+# paragraph opening with a bold key starts with `*`, so the reach awk's marker-alone skip drops it
+# while prose_register_scan.sh -- marker THEN whitespace -- reads it as the prose it is. Two scored
+# readings on one card then measure two different documents.
+#
+# THE PARAGRAPHS BELOW STAND ON ONE LINE EACH, which is what makes the fault reproduce. A bold-led
+# paragraph wrapped across two lines leaks its continuation back into the reading, since only the
+# first line opens with the marker -- so the damage across the tree is uneven, and heaviest exactly
+# where a page writes one paragraph per line. The first draft of this plant wrapped, read 4 of 4,
+# and reported no gap at all.
+cat > "$pen/bolded.md" <<'EOF'
+# A page written the way this tree writes its front doors
+
+**Status:** Living -- checkable
+
+This first line carries no bold key at all and is therefore the only prose the reach reading sees.
+
+**What would enter:** a paragraph opening with a bold key and holding a full sentence after it, written on ONE line, exactly as the front doors of this tree are written every day of the week.
+
+**Why it is dropped:** the skip pattern reads a marker alone rather than a marker then whitespace, so a doubled asterisk opening a paragraph is taken for a bullet and thrown away entire.
+
+**What that costs a reader:** the grade printed beside this page was computed over one sentence of the several standing here, and nothing on the card had ever said so out loud.
+EOF
+ob=$(run bolded.md --setting door)
+rp_seen=$(echo "$ob" | sed -n 's/^reach_prose=\([0-9]*\) of .*/\1/p')
+rp_all=$(echo "$ob" | sed -n 's/^reach_prose=[0-9]* of \([0-9]*\) .*/\1/p')
+rp_held=$(echo "$ob" | sed -n 's/^reach_prose=.* (\([0-9]*\) held out.*/\1/p')
+[ "$rp_held" -gt 0 ] 2>/dev/null \
+  && echo "bold_body_paragraphs_reported=yes" \
+  || echo "bold_body_paragraphs_reported=no ($(echo "$ob" | sed -n 's/^\(reach_prose=[^(]*\).*/\1/p'))"
+[ -n "$rp_all" ] && [ $((rp_seen + rp_held)) -eq "$rp_all" ] \
+  && echo "reach_prose_adds_up=yes" || echo "reach_prose_adds_up=no ($rp_seen + $rp_held vs $rp_all)"
+
+# AND IT DISCRIMINATES, which is what tells a reading from a decoration. The same words with the
+# bold keys unbolded read the same sentences twice, so the gap closes to nothing.
+sed 's/^\*\*\([^*]*\):\*\* /\1: /' "$pen/bolded.md" > "$pen/plainly.md"
+op=$(run plainly.md --setting door)
+[ "$(echo "$op" | sed -n 's/^reach_prose=.* (\([0-9]*\) held out.*/\1/p')" = 0 ] \
+  && echo "plain_paragraphs_hold_out_nothing=yes" \
+  || echo "plain_paragraphs_hold_out_nothing=no ($(echo "$op" | sed -n 's/^\(reach_prose=[^(]*\).*/\1/p'))"
+
+# THE LEG THAT TELLS THIS REPORT FROM A DECORATION TOO. The elder is the state where the gap could
+# not be seen from either side: give the register scan the reach awk's own marker-alone rule and
+# both readings go equally blind, so the page reads one sentence of one and reports nothing held.
+mkdir -p "$pen/elderprose/tools/fixtures/q" "$pen/elderprose/tools/fixtures/p"
+cp "$pen/tools/fixtures/q/qa_report_card.sh" "$pen/elderprose/tools/fixtures/q/qa_report_card.sh"
+for d in $deps; do mkdir -p "$pen/elderprose/$(dirname "$d")" && cp "$d" "$pen/elderprose/$d"; done
+sed 's%^    /\^\[ \\t\]\*\[-\*+\]\[ \\t\]/ { next }.*$%    /^[ \\t]*[-*>#]/ { next }%' \
+  "$pen/tools/fixtures/p/prose_register_scan.sh" > "$pen/elderprose/tools/fixtures/p/prose_register_scan.sh"
+cp "$pen/bolded.md" "$pen/elderprose/"
+ep=$( ( cd "$pen/elderprose" && QA_CARD_ROOT=. sh tools/fixtures/q/qa_report_card.sh bolded.md --setting door ) 2>&1 )
+[ "$(echo "$ep" | sed -n 's/^reach_prose=.* (\([0-9]*\) held out.*/\1/p')" = 0 ] \
+  && echo "elder_readings_were_equally_blind=yes" \
+  || echo "elder_readings_were_equally_blind=no ($(echo "$ep" | sed -n 's/^\(reach_prose=[^(]*\).*/\1/p'))"
+
 # 5 -- Meter carries no register or reach budget: refusal-first prose is the subject there.
 m=$(run cold.md --setting meter)
 [ "$(val "$m" register)" -eq 100 ] && echo "meter_register_free=yes" || echo "meter_register_free=no"
@@ -913,7 +968,7 @@ linky=$(run linky.md --setting door --service 100)
 # WAS the reach itself rather than the grade overage. With both restored, the corpus reads zero and
 # the empty file reads zero -- the readings this repair was written against.
 mkdir -p "$pen/eldergrade/tools/fixtures/q" "$pen/eldergrade/tools/fixtures/p"
-sed 's/^if \[ "\$sentences" -lt "\$register_floor" \]; then$/if false; then/; s/^    if (sent == 0 || words == 0) { print "0 0 0 0 0 0"; exit }$/    if (sent == 0 || words == 0) { print "10 0 0 0 0 0"; exit }/' \
+sed 's/^if \[ "\$sentences" -lt "\$register_floor" \]; then$/if false; then/; s/^    if (sent == 0 || words == 0) { print "0 0 0 0 0 0 0"; exit }$/    if (sent == 0 || words == 0) { print "10 0 0 0 0 0 0"; exit }/' \
   "$pen/tools/fixtures/q/qa_report_card.sh" > "$pen/eldergrade/tools/fixtures/q/qa_report_card.sh"
 for d in $deps; do mkdir -p "$pen/eldergrade/$(dirname "$d")" && cp "$d" "$pen/eldergrade/$d"; done
 cp "$pen/hex_corpus.bron" "$pen/empty_prose.kyri" "$pen/eldergrade/"
