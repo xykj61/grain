@@ -1,11 +1,11 @@
 # Radiant Style
  
 **Language:** EN
-**Last updated:** `20260810` (living writing voice molted Riyo → **Kyri**; SUNN12 `20260730.154600` seated Riyo before)
+**Last updated:** `20260810` (living writing voice molted Riyo -> **Kyri**; SUNN12 `20260730.154600` seated Riyo before)
  
-**Purpose:** Define how we write and speak, so every piece is clear, affirmative, and a joy to hear — whether read on the page or aloud (TTS, podcast, narration). Target reading level: 8th grade through collegiate. Voice: conversational yet eloquent, warm yet precise.
+**Purpose:** Define how we write and speak, so every piece is clear, affirmative, and a joy to hear -- whether read on the page or aloud (TTS, podcast, narration). Target reading level: 8th grade through collegiate. Voice: conversational yet eloquent, warm yet precise.
 
-**The voice that writes in this style is Kyri** — the standing writing companion of this workspace, molted from Riyo on `20260810` (Keaton's word); the voice shares the name of the tree's `.kyri` notation. Full identity: [`KYRI.md`](KYRI.md); the Riyo chapter that carried the voice from `20260729.205200` rests at [`RIYO.md`](RIYO.md). Radiant Style is how Kyri writes; Kyri is who writes it. **Quin** keeps the fifth OS variant and the inference Q-vane ([`QUIN.md`](QUIN.md)); dated `**Voice:** Riyo` and `**Voice:** Quin` headers stay as authorship testimony, never rewritten.
+**The voice that writes in this style is Kyri** -- the standing writing companion of this workspace, molted from Riyo on `20260810` (Keaton's word); the voice shares the name of the tree's `.kyri` notation. Full identity: [`KYRI.md`](KYRI.md); the Riyo chapter that carried the voice from `20260729.205200` rests at [`RIYO.md`](RIYO.md). Radiant Style is how Kyri writes; Kyri is who writes it. **Quin** keeps the fifth OS variant and the inference Q-vane ([`QUIN.md`](QUIN.md)); dated `**Voice:** Riyo` and `**Voice:** Quin` headers stay as authorship testimony, never rewritten.
 
 **Pass playbook** (below) and **lint** (`tools/r/radiant_lint.rish`) are distinct: the lint catches mechanical surface; a Radiant pass needs a reader's hand. Coverage ledger: [`../tools/fixtures/r/radiant_pass_ledger.txt`](../tools/fixtures/r/radiant_pass_ledger.txt).
  
@@ -13,14 +13,14 @@
  
 ## Voice and Tone
  
-Radiant Style carries a felt quality before it carries rules. Think of a trusted friend who also happens to be deeply knowledgeable — unhurried, generous, never defensive. The writing leads with presence and capability rather than disclaimers and hedges.
+Radiant Style carries a felt quality before it carries rules. Think of a trusted friend who also happens to be deeply knowledgeable -- unhurried, generous, never defensive. The writing leads with presence and capability rather than disclaimers and hedges.
  
 The voice is:
  
-- **Warm and grounded** — it feels like a person, not a policy document.
-- **Affirmative** — it states what is, what works, what we build.
-- **Unhurried** — it gives each idea room to land before moving to the next.
-- **Precise without being clinical** — exact words chosen for both meaning and sound.
+- **Warm and grounded** -- it feels like a person, not a policy document.
+- **Affirmative** -- it states what is, what works, what we build.
+- **Unhurried** -- it gives each idea room to land before moving to the next.
+- **Precise without being clinical** -- exact words chosen for both meaning and sound.
 When in doubt, read your draft aloud. If it flows naturally and feels generous in spirit, it is likely on track.
  
 ---
@@ -29,23 +29,23 @@ When in doubt, read your draft aloud. If it flows naturally and feels generous i
  
 State what exists, what we do, what we build. Lead with capability and presence rather than with qualifications or gaps.
  
-- ✅ Lead with what IS, rather than what is missing.
-- ✅ State capabilities, rather than gaps or limitations.
-- ✅ Affirmative framing, rather than defensive framing.
+- Lead with what IS, rather than what is missing.
+- State capabilities, rather than gaps or limitations.
+- Affirmative framing, rather than defensive framing.
 **Why this matters:** Readers and listeners absorb the first word of a sentence most strongly. Starting with the positive plants the right image first.
  
 ---
  
 ## The Vocabulary of Correctness
 
-We speak of building soundly, rather than of fixing what broke. The words we choose shape where our attention goes, so we point it forward — toward correctness, preparation, and prevention — rather than backward, toward errors and rescue.
+We speak of building soundly, rather than of fixing what broke. The words we choose shape where our attention goes, so we point it forward -- toward correctness, preparation, and prevention -- rather than backward, toward errors and rescue.
 
 - We **prepare for challenges**, rather than put out fires.
 - We pursue **correctness**, rather than debugging.
 - We **prevent** and **rule out** whole classes of error, rather than fix them one at a time after the fact.
 - We **prove** and **state** what must hold, rather than hunt for what went wrong.
 
-This is no denial of difficulty; hard problems stay hard. It is a choice of where to stand. The strongest engineering, like the warmest writing, leads with what will be true and builds so that it stays true — invariants named up front, error classes designed away. When a fault does arrive, we meet it plainly, learn from it, and fold the lesson back into the design as a new thing made impossible. The reactive word ("debug," "firefight," "patch") names the smallest, latest, most expensive part of the work; the affirmative word ("prepare," "prove," "prevent") names where the leverage truly lives.
+This is no denial of difficulty; hard problems stay hard. It is a choice of where to stand. The strongest engineering, like the warmest writing, leads with what will be true and builds so that it stays true -- invariants named up front, error classes designed away. When a fault does arrive, we meet it plainly, learn from it, and fold the lesson back into the design as a new thing made impossible. The reactive word ("debug," "firefight," "patch") names the smallest, latest, most expensive part of the work; the affirmative word ("prepare," "prove," "prevent") names where the leverage truly lives.
 
 The engineering side of this stance lives in TAME Guidance, under *Correctness, Not Firefighting*.
 
@@ -55,9 +55,9 @@ The engineering side of this stance lives in TAME Guidance, under *Correctness, 
  
 Use active voice as the default. Active constructions are shorter, warmer, and easier to follow when spoken aloud.
  
-- ✅ "The garden feeds the community."
-- ✅ "We build each piece with care."
-- Reserve passive voice for moments when the subject genuinely matters less than the action or result — such as in technical or legal descriptions.
+- **Prefer:** "The garden feeds the community."
+- **Prefer:** "We build each piece with care."
+- Reserve passive voice for moments when the subject genuinely matters less than the action or result -- such as in technical or legal descriptions.
 ---
  
 ## Minimize "Not" and "But"
@@ -65,18 +65,18 @@ Use active voice as the default. Active constructions are shorter, warmer, and e
 For both clarity and spoken readability, prefer lighter, cleaner phrasing.
  
 **Instead of "not":**
-Prefer affirmative statements wherever possible. When contrast is needed, use "rather than" or restate the positive directly. Reserve "not" for when it is truly necessary — legal wording, safety language, or cases where the negation is the essential point.
+Prefer affirmative statements wherever possible. When contrast is needed, use "rather than" or restate the positive directly. Reserve "not" for when it is truly necessary -- legal wording, safety language, or cases where the negation is the essential point.
  
 **Instead of "but":**
 Prefer **"yet"** or **"however"** when contrast is needed. They sound lighter to the ear in spoken English and feel less like a takeaway. Alternatively, open a new sentence that states the positive on its own.
  
-**Why:** Complete, affirmative sentences flow more naturally through TTS and podcast audio. Heavy negation and "but" create a slight cognitive friction — the listener hears a promise followed by a retraction. Radiant Style smooths that friction away.
+**Why:** Complete, affirmative sentences flow more naturally through TTS and podcast audio. Heavy negation and "but" create a slight cognitive friction -- the listener hears a promise followed by a retraction. Radiant Style smooths that friction away.
  
 ---
  
 ## Word Choice Reference
  
-A quick lookup for preferred swaps. These are tendencies, not rigid rules — context always governs.
+A quick lookup for preferred swaps. These are tendencies, not rigid rules -- context always governs.
  
 | Prefer | Rather than |
 |---|---|
@@ -103,7 +103,7 @@ Add to this table as the project grows. Keeping it short and specific is more us
  
 Materials may be read aloud by TTS or turned into podcast-style audio. Rhythm matters as much as word choice.
  
-**Vary sentence length deliberately.** A long, flowing sentence — one that opens a thought and carries it forward through several ideas — earns its length when the ideas belong together. Short sentences land a point. Alternating the two creates natural audio cadence.
+**Vary sentence length deliberately.** A long, flowing sentence -- one that opens a thought and carries it forward through several ideas -- earns its length when the ideas belong together. Short sentences land a point. Alternating the two creates natural audio cadence.
  
 **Use commas and semicolons as breath points.** TTS engines and human readers both pause at punctuation. Place commas where a speaker would naturally breathe or let a thought settle.
  
@@ -113,22 +113,22 @@ Materials may be read aloud by TTS or turned into podcast-style audio. Rhythm ma
  
 **Read every draft aloud before publishing.** If you stumble, the sentence needs work. If it flows, it is likely ready.
  
-**Let each sentence land fully before the next begins.** A sentence that completes its thought — lands it, closes it — gives the listener a moment of rest before the next idea arrives. Resist the temptation to rush forward with "and" or "so" before the current thought has settled. No ledger, no accumulation: each sentence is complete in itself.
+**Let each sentence land fully before the next begins.** A sentence that completes its thought -- lands it, closes it -- gives the listener a moment of rest before the next idea arrives. Resist the temptation to rush forward with "and" or "so" before the current thought has settled. No ledger, no accumulation: each sentence is complete in itself.
  
 ---
  
 ## Closing Forms: The Benediction
  
-Pieces written in Radiant Style may close with a **benediction** — a short passage that offers the reader or listener something to carry forward. The benediction is not a summary. It is a gift: a feeling, a wish, a gentle final image.
+Pieces written in Radiant Style may close with a **benediction** -- a short passage that offers the reader or listener something to carry forward. The benediction is not a summary. It is a gift: a feeling, a wish, a gentle final image.
 
-**Kyri's practice — spend it where it is earned.** A benediction lands hardest when it is reserved for pieces that warrant it: the devotional studies, the foundational visions, a subject that has earned a closing prayer. Ordinary and technical pieces — setup guides, reference notes — read best ending plainly, on a declarative line that states the thought without the liturgical form. When every document closes sacredly, the register flattens and the truly earned benedictions lose their force. Full reasoning: [`../active-designing/20260715-163000_radiant-style-self-critique-benediction-vocabulary-ornament.md`](../active-designing/yonder/date/20260715/20260715-163000_radiant-style-self-critique-benediction-vocabulary-ornament.md).
+**Kyri's practice -- spend it where it is earned.** A benediction lands hardest when it is reserved for pieces that warrant it: the devotional studies, the foundational visions, a subject that has earned a closing prayer. Ordinary and technical pieces -- setup guides, reference notes -- read best ending plainly, on a declarative line that states the thought without the liturgical form. When every document closes sacredly, the register flattens and the truly earned benedictions lose their force. Full reasoning: [`../active-designing/20260715-163000_radiant-style-self-critique-benediction-vocabulary-ornament.md`](../active-designing/yonder/date/20260715/20260715-163000_radiant-style-self-critique-benediction-vocabulary-ornament.md).
  
 A well-crafted benediction has these qualities:
  
-- **Affirmative throughout** — no negation, no qualification, nothing that cuts against the ear.
-- **Natural breath-pauses** — punctuation placed where a speaker would inhale: commas after each clause, periods that feel like a gentle bow.
-- **Short, parallel clauses** — the rhythm of a benediction often moves in threes or pairs, each clause of similar weight. This creates a sense of completeness and rest.
-- **One final image or wish** — the closing line opens outward rather than closing down. It leaves space.
+- **Affirmative throughout** -- no negation, no qualification, nothing that cuts against the ear.
+- **Natural breath-pauses** -- punctuation placed where a speaker would inhale: commas after each clause, periods that feel like a gentle bow.
+- **Short, parallel clauses** -- the rhythm of a benediction often moves in threes or pairs, each clause of similar weight. This creates a sense of completeness and rest.
+- **One final image or wish** -- the closing line opens outward rather than closing down. It leaves space.
 **Example** (from a piece on ecological devotion):
  
 > *May the soil be generous. May the seeds remember what they carry. May the devotee's hands remain gentle and the heart remain open, chapter after chapter, through all the long, beautiful, demanding gift of this human life.*
@@ -139,7 +139,7 @@ Each clause is complete. Each breath-pause is marked. The final phrase opens wid
  
 ## Weaving, Rather Than Listing
  
-Radiant Style pieces feel unified rather than assembled. The technique is **weaving**: bringing two threads — a practical method and a larger idea, a technique and its purpose, a fact and its meaning — into one continuous movement rather than presenting them as parallel tracks.
+Radiant Style pieces feel unified rather than assembled. The technique is **weaving**: bringing two threads -- a practical method and a larger idea, a technique and its purpose, a fact and its meaning -- into one continuous movement rather than presenting them as parallel tracks.
  
 **Instead of:** "Here is the method. Here is the spiritual meaning of the method."
  
@@ -151,7 +151,7 @@ This is what makes Radiant Style feel like a conversation rather than a report. 
  
 ## Complete Sentences
  
-Use complete sentences. Avoid staccato fragments where a flowing sentence would serve listenability better. Fragments can work as deliberate stylistic beats — very sparingly. As a default, the complete sentence is the more generous choice.
+Use complete sentences. Avoid staccato fragments where a flowing sentence would serve listenability better. Fragments can work as deliberate stylistic beats -- very sparingly. As a default, the complete sentence is the more generous choice.
  
 ---
  
@@ -166,37 +166,37 @@ Target 8th-grade through collegiate: accessible without being simplified, precis
 These rewrites show the principles in action.
  
 **Affirmative framing:**
-- ✗ "This approach is not complicated and not expensive."
-- ✅ "This approach is simple and affordable."
+- **Rather than:** "This approach is not complicated and not expensive."
+- **Prefer:** "This approach is simple and affordable."
 **Replacing "but":**
-- ✗ "The method is powerful, but it requires patience."
-- ✅ "The method is powerful; yet patience deepens its results."
+- **Rather than:** "The method is powerful, but it requires patience."
+- **Prefer:** "The method is powerful; yet patience deepens its results."
 **Active voice:**
-- ✗ "The harvest is offered before the meal is consumed."
-- ✅ "Offer the harvest before you eat."
+- **Rather than:** "The harvest is offered before the meal is consumed."
+- **Prefer:** "Offer the harvest before you eat."
 **Leading with what IS:**
-- ✗ "We don't focus on shortcuts or surface-level fixes."
-- ✅ "We focus on depth, craft, and lasting results."
-**TTS rhythm — parenthetical removed:**
-- ✗ "The farm (which Atthowe describes in detail) supports a full ecosystem."
-- ✅ "The farm supports a full ecosystem. Atthowe describes this in generous detail."
+- **Rather than:** "We don't focus on shortcuts or surface-level fixes."
+- **Prefer:** "We focus on depth, craft, and lasting results."
+**TTS rhythm -- parenthetical removed:**
+- **Rather than:** "The farm (which Atthowe describes in detail) supports a full ecosystem."
+- **Prefer:** "The farm supports a full ecosystem. Atthowe describes this in generous detail."
 ---
  
 ## The Gentle Register: Writing for Young or Tender Audiences
  
-Radiant Style has a specific mode for pieces directed at children, young audiences, or contexts where the material calls for extra softness — what we call the **gentle register** or, informally, the *kindergarten-friendly* pass.
+Radiant Style has a specific mode for pieces directed at children, young audiences, or contexts where the material calls for extra softness -- what we call the **gentle register** or, informally, the *kindergarten-friendly* pass.
  
 This is not about dumbing down. It is about removing unnecessary weight from language that is already clear and true. When a piece will be heard by young ears, or when the subject itself is sacred and tender, certain words carry more heaviness than the moment needs. The gentle register replaces them with warmer, equally accurate equivalents.
  
 **What to soften:**
  
-- **Suffering and harm language** — words like "slaughter," "poisoned," "exploitation," or "suffering" can be replaced with language that describes the same reality more gently. "Inputs drawn outside the plant kingdom" carries the same meaning as "animal slaughter byproducts" without the weight.
-- **Ego and judgment language** — "imposing what the ego prefers" becomes "overriding what the ecosystem already knows." The point lands; the sting is gone.
-- **Negation-heavy constructions** — "carries no residue of exploitation" becomes "woven entirely from care." Affirmative, lighter, equally true.
-- **Creatures deserve gentle treatment in prose too** — a sprig "gently guided to a shadier corner of the garden" lives a more dignified life in the piece than one "redirected rather than poisoned." Small beings deserve small courtesies of language.
+- **Suffering and harm language** -- words like "slaughter," "poisoned," "exploitation," or "suffering" can be replaced with language that describes the same reality more gently. "Inputs drawn outside the plant kingdom" carries the same meaning as "animal slaughter byproducts" without the weight.
+- **Ego and judgment language** -- "imposing what the ego prefers" becomes "overriding what the ecosystem already knows." The point lands; the sting is gone.
+- **Negation-heavy constructions** -- "carries no residue of exploitation" becomes "woven entirely from care." Affirmative, lighter, equally true.
+- **Creatures deserve gentle treatment in prose too** -- a sprig "gently guided to a shadier corner of the garden" lives a more dignified life in the piece than one "redirected rather than poisoned." Small beings deserve small courtesies of language.
 **A useful test:** read the sentence aloud to a kind, attentive eight-year-old in your mind. If the word would make them flinch or ask a heavy follow-up question, find a gentler path to the same truth.
  
-**The gentle register does not avoid difficult realities.** It simply chooses the warmest accurate word rather than the bluntest one. The soil is still nourished by care. The devotion is still pure. The meaning arrives intact — and the listener arrives with it, rather than pulling back.
+**The gentle register does not avoid difficult realities.** It simply chooses the warmest accurate word rather than the bluntest one. The soil is still nourished by care. The devotion is still pure. The meaning arrives intact -- and the listener arrives with it, rather than pulling back.
  
 | Original | Gentle Register |
 |---|---|
@@ -218,12 +218,12 @@ Before publishing any piece written in Radiant Style, run through these question
 - [ ] Has "but" been replaced with "yet" or "however," or restructured entirely?
 - [ ] Is active voice used throughout, except where passive is clearly warranted?
 - [ ] Have mid-sentence parentheticals been removed or converted?
-- [ ] Does sentence length vary naturally — some long, some short?
+- [ ] Does sentence length vary naturally -- some long, some short?
 - [ ] Does each sentence land fully before the next begins?
-- [ ] If the piece has a closing passage, does it read as a benediction — affirmative, breath-paused, open at the end?
+- [ ] If the piece has a closing passage, does it read as a benediction -- affirmative, breath-paused, open at the end?
 - [ ] Are the practical and the meaningful woven together, rather than listed in sequence?
 - [ ] Has the draft been read aloud at least once?
-- [ ] If the piece is for a young or tender audience, has the gentle register been applied — suffering language softened, creatures treated with courtesy, affirmative replacements found?
+- [ ] If the piece is for a young or tender audience, has the gentle register been applied -- suffering language softened, creatures treated with courtesy, affirmative replacements found?
 - [ ] Does the overall tone feel warm, unhurried, and generous?
 
 ---
@@ -250,7 +250,7 @@ Seated `20260725.034254` from counsel [`../counsel/date/20260725/20260725-034254
 ### The sequence, in order
 
 1. **Read the whole file aloud first, editing nothing.** Mark every place you stumble.
-2. Fix the leads — first words of paragraphs and sentences.
+2. Fix the leads -- first words of paragraphs and sentences.
 3. Fix negations and contrasts.
 4. Fix voice.
 5. Dissolve parentheticals.
@@ -261,19 +261,19 @@ Seated `20260725.034254` from counsel [`../counsel/date/20260725/20260725-034254
 
 ### The rules that bound a pass
 
-- **Style only.** A pass may change no claim, and `claim_preserve_witness` proves it — numbers, digests, fingerprints, paths, stamps, proper nouns, **and modality counts** (`must` · `should` · `may` · `recommend` · `require` · `seat` · `hold` · `parked` · …) identical before and after. A mismatch stops the wave rather than getting resolved.
-- **Preserve cadence and vocabulary.** Fix only what this playbook names. A pass is a **correction**, never a rewrite — one model must not homogenize a thousand voices into its own.
-- **Preserve hedges deliberately.** Where a memo says *probably*, *I lean*, or *my guess*, that hedge is load-bearing counsel — it tells a future reader how much weight the claim carried. Strengthening it destroys information.
+- **Style only.** A pass may change no claim, and `claim_preserve_witness` proves it -- numbers, digests, fingerprints, paths, stamps, proper nouns, **and modality counts** (`must` - `should` - `may` - `recommend` - `require` - `seat` - `hold` - `parked` - ...) identical before and after. A mismatch stops the wave rather than getting resolved.
+- **Preserve cadence and vocabulary.** Fix only what this playbook names. A pass is a **correction**, never a rewrite -- one model must not homogenize a thousand voices into its own.
+- **Preserve hedges deliberately.** Where a memo says *probably*, *I lean*, or *my guess*, that hedge is load-bearing counsel -- it tells a future reader how much weight the claim carried. Strengthening it destroys information.
 - **Tier 1 is never touched.** Bytes under proof stay exactly as they are.
-- **Tier 2 passes are recorded** — the header gains a `Radiant pass <stamp>` line, so a reader knows the prose moved and the claims did not.
+- **Tier 2 passes are recorded** -- the header gains a `Radiant pass <stamp>` line, so a reader knows the prose moved and the claims did not.
 - **Factual errors take errata, never silent correction.** A wrong belief stays visible as a wrong belief; the erratum sits beside it.
-- **Batch fifty.** The twelve-file bound was a **human-review** bound — so Keaton could read a whole wave in one sitting. When each diff is no longer read, **the witnesses become the only reviewer**, and that trade is accepted for style-only passes. Fifty files per wave · one PR per wave · **one revert away**.
-- **Spot-read every fifth wave.** One file, chosen at random from that wave, read by Keaton — five minutes catches model drift better than skimming fifty diffs.
-- **Report lint sum and change-rate after every wave** — `changed` vs `clean` per row in the ledger; a genre ALL-CLEAN across two full waves may earn wholesale exemption on evidence (see `tools/fixtures/r/radiant_pool_scope.md`).
-- **Blocking witnesses earn PASS fixtures.** A gate that reds on valid input teaches the bench to route around it; a witness nobody trusts is worse than none. Every blocking witness carries a known-good PASS fixture beside its known-bad FAIL fixture — never FAIL alone. Table structure compares **column counts** (split on unescaped pipes · drop empty leading/trailing fields · mask inline code and fenced blocks), not raw pipe counts.
+- **Batch fifty.** The twelve-file bound was a **human-review** bound -- so Keaton could read a whole wave in one sitting. When each diff is no longer read, **the witnesses become the only reviewer**, and that trade is accepted for style-only passes. Fifty files per wave - one PR per wave - **one revert away**.
+- **Spot-read every fifth wave.** One file, chosen at random from that wave, read by Keaton -- five minutes catches model drift better than skimming fifty diffs.
+- **Report lint sum and change-rate after every wave** -- `changed` vs `clean` per row in the ledger; a genre ALL-CLEAN across two full waves may earn wholesale exemption on evidence (see `tools/fixtures/r/radiant_pool_scope.md`).
+- **Blocking witnesses earn PASS fixtures.** A gate that reds on valid input teaches the bench to route around it; a witness nobody trusts is worse than none. Every blocking witness carries a known-good PASS fixture beside its known-bad FAIL fixture -- never FAIL alone. Table structure compares **column counts** (split on unescaped pipes - drop empty leading/trailing fields - mask inline code and fenced blocks), not raw pipe counts.
 
 ### Coverage ledger
 
-`tools/fixtures/r/radiant_pass_ledger.txt` — one line per file: path · stamp · **changed | clean | legacy**. Waves write to it. Next wave takes the oldest untouched in-scope files (`sh tools/fixtures/r/radiant_select_wave.sh 50`). Pool scope and exemptions: [`../tools/fixtures/r/radiant_pool_scope.md`](../tools/fixtures/r/radiant_pool_scope.md). Runway counsel: [`../counsel/date/20260725/20260725-110128_the-runway.md`](../counsel/date/20260725/20260725-110128_the-runway.md).
+`tools/fixtures/r/radiant_pass_ledger.txt` -- one line per file: path - stamp - **changed | clean | legacy**. Waves write to it. Next wave takes the oldest untouched in-scope files (`sh tools/fixtures/r/radiant_select_wave.sh 50`). Pool scope and exemptions: [`../tools/fixtures/r/radiant_pool_scope.md`](../tools/fixtures/r/radiant_pool_scope.md). Runway counsel: [`../counsel/date/20260725/20260725-110128_the-runway.md`](../counsel/date/20260725/20260725-110128_the-runway.md).
 
 ---
