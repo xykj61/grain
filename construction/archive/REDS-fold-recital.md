@@ -523,3 +523,4 @@ at a closed fold.*
 *Row %608 folded to [`REDS-a-refusal-nothing-performed-rows-608.md`](REDS-a-refusal-nothing-performed-rows-608.md) on `20260908.062833`, **CLOSED** -- a refusal is named for what it refuses, or it teaches the wrong lesson to everyone who reads it.*
 
 *Rows %611 and %612 folded to [`REDS-a-guard-heard-too-late-rows-611-612.md`](REDS-a-guard-heard-too-late-rows-611-612.md) on `20260908.064211`, both **CLOSED** -- a guard is worth what it is heard in time to prevent -- one right and forty-three minutes late, one fast and blind to a digit.*
+*Row %618 folded to [`REDS-a-population-picked-by-directory-rows-618.md`](REDS-a-population-picked-by-directory-rows-618.md) on `20260908.052557`, **CLOSED** -- a guard whose population is a glob is an enumeration nobody counted.*

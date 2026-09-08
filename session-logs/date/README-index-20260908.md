@@ -17,6 +17,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260908.053719` | [a citer that only needed it to exist](20260908/20260908-053719_the-citer-that-only-needed-a-file-to-exist.kyri) | the choir sings 33 of 33 |
 | `20260908.053413` | [the law that named half its guards](20260908/20260908-053413_the-law-that-named-half-its-guards.kyri) | two named, four stood; canon swept. |
 | `20260908.053147` | [The record that need not move](20260908/20260908-053147_the-record-that-did-not-have-to-move.kyri) | the elder v1 record lifts whole; a head guard blind to a digit. |
+| `20260908.052908` | [a population picked by directory](20260908/20260908-052908_a-population-picked-by-directory.kyri) | a guard read a room, not a class |
 | `20260908.051653` | [The safe tool that sends by default](20260908/20260908-051653_the-safe-tool-that-sends-by-default.kyri) | fleet_call sends by default; %609 booked, docs repaired |
 | `20260908.044602` | [The anchor and the order that comes back](20260908/20260908-044602_the-anchor-and-the-order-that-comes-back.kyri) | A census leg anchored; a shelf repair returned. |
 | `20260908.044146` | [the wait that names what it covers](20260908/20260908-044146_the-wait-that-names-what-it-covers.kyri) | six patience budgets, one checked. |
