@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260907.195724` | [The lap that was already written](20260907/20260907-195724_the-lap-that-was-already-written.kyri) | a whole parked lap landed; a floor spelled as an equality |
 | `20260907.194642` | [The floor that refused its own good news](20260907/20260907-194642_the-floor-that-refused-its-own-good-news.kyri) | two parked laps landed; a floor red on adoption. |
 | `20260907.192817` | [Two shapes, one notation](20260907/20260907-192817_two-shapes-one-notation.kyri) | 91 pct of journal records repeat a field; no registry row does. |
 | `20260907.192800` | [A door that recorded teaching](20260907/20260907-192800_the-door-that-recorded-teaching-what-it-never-said.kyri) | the doorway census fell 38 to 3. |
@@ -18,6 +19,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260907.173826` | [The address read from the other end](20260907/20260907-173826_the-address-read-from-the-other-end.kyri) | a nested-class hypothesis refuted; 164x across equal classes |
 | `20260907.172054` | [The number under the word](20260907/20260907-172054_the-number-under-the-word.kyri) | the grader's correction measured: 324 of 429 unmoved. |
 | `20260907.170704` | [The doors that agreed are inside](20260907/20260907-170704_the-doors-that-agreed.kyri) | 30 of 80 front doors sit over the ceiling; this lane's joined. |
+| `20260907.170355` | [The pen that plants into itself](20260907/20260907-170355_the-pen-that-plants-into-itself.kyri) | Glow ASCII sweep 942 to 0; a ceiling of zero broke its control |
 | `20260907.165730` | [A roster line that cannot fail](20260907/20260907-165730_a-roster-line-that-cannot-fail.kyri) | three doors named behind an existence test never red. |
 | `20260907.164619` | [The lap that arrived a lap late](20260907/20260907-164619_the-lap-that-arrived-a-lap-late.kyri) | a finished round recovered from the stash. |
 | `20260907.162812` | [The same lap parked twice](20260907/20260907-162812_the-same-lap-parked-twice.kyri) | %499 parked one lap twice; the second park cost it its number. |

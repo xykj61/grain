@@ -465,3 +465,4 @@ at a closed fold.*
 *Row %576 folded to [`REDS-a-reading-of-nothing-rows-576.md`](REDS-a-reading-of-nothing-rows-576.md) on `20260907.172225`, **BOOKED** -- an empty subject and an absent subject are two readings, and a scan that cannot tell them apart proves nothing by its silence.*
 
 *Row %584 folded to [`REDS-a-floor-that-refuses-every-rise-rows-584.md`](REDS-a-floor-that-refuses-every-rise-rows-584.md) on `20260907.192800`, **CLOSED** -- a floor written as an equality refused every rise.*
+*Row %586 folded to [`REDS-a-pen-that-plants-into-itself-rows-586.md`](REDS-a-pen-that-plants-into-itself-rows-586.md) on `20260907.170116`, **CLOSED** -- a control's pen and its tree's ceiling are one number only above zero; booked `%579`, re-seated `%582`, then `%584`, landed `%586`, the stamp holding through all four.*

@@ -1,4 +1,4 @@
-::  Thin bartis — sample=pair-shape through closed flip call body (STOA131).
-::  PairShape flip: from↔amount; baked 5/3 → expect 3/5.
+::  Thin bartis -- sample=pair-shape through closed flip call body (STOA131).
+::  PairShape flip: from<->amount; baked 5/3 -> expect 3/5.
 |=  sample=pair-shape
 %-  flip  sample

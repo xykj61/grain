@@ -1,2 +1,2 @@
-::  Null test with nest jam both then-arm — (jam (mix …) (mix …)).
+::  Null test with nest jam both then-arm -- (jam (mix ...) (mix ...)).
 ?~  records.cur  (jam (mix from amount) (mix cell gate))  0

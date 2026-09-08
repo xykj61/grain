@@ -1,3 +1,3 @@
-::  Conditional with decimal then/else arm payloads — brief's (gth tick 32).
+::  Conditional with decimal then/else arm payloads -- brief's (gth tick 32).
 ::  1 and 0 are ordinary values, not Hoon loobeans (Glow ambient truth is Zig).
 ?:  (gth tick 32)  1  0

@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `01980b041a` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `4c3a3bba52` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- I BUILT A WALL FOR `%524` AND WITHDREW IT, BECAUSE A PEER LANDED ONE FOR THE SAME RED IN THE SAME HOUR AND THEIRS PUBLISHED FIRST.**
 Elder [shelved](archive/20260907-141249_itinerary-landed-accounts.md). The cold open answered
@@ -146,25 +146,22 @@ withdrawn whole**. **Seventh collision inside one hour today.**
 **`index_row_bound`**: one row misordered by a peer's auto-merge, sorted -- `%440`'s class again.
 **Yours:** may a lap correct its own grader, now that both sides are measured?
 
-**PHEROMONE -- THE ASCII LAW HELD TWO COMMENT MARKS, AND A THIRD LANGUAGE OF OUR OWN SAT OUTSIDE IT.**
-Row `20260907.144002` **BOOKED**, [folded](archive/REDS-the-third-comment-mark-rows-575.md).
-`ascii_comment_witness` held `ascii-first.md` for `//` in Rye and `#` in Rishi and shell; its head
-said **"ONE LAW, TWO COMMENT SYNTAXES"**. **Glow spells a comment `::`**, and its
-**451 sources were read by no ASCII meter at all**: **942 characters across 342 files**, where the
-elder's `20260825` sweep read 2,163 files, no `.glow`. **The third meter needs no escape
-hatch, and the language gives the reason:** where Rye must dodge a `\\` multiline string and shell a
-heredoc, `glow/tokens.rye:239` refuses a newline inside a cord. So **all 942 sit in comments and
-none in program content**, measured not inherited. **The blind
-spot is PRINTED** where the siblings leave theirs in prose: a trailing `::` goes unread and
-`trailing_unread` counts it, **zero**. Control **14**, ceiling both ways; ratchet **942**,
-falling only. **Next: the sweep.**
-
-**AND THE COLD OPEN'S TWO REDS WERE THIS CARD'S OWN LINK** -- the Bakery line named `rows-571` where
-that row folded to **`rows-570`**, **the class firing a line above the paragraph naming it**. Both
-GREEN. Three came hot on one root, my row over the REDS pin, closed by that fold; the
-rebase then renumbered it off a peer's published number -- the spine's 7th firing. Prior rounds
-[folded](archive/20260907-144002_itinerary-landed-accounts.md). **Yours:** a mistyped link here reds
-eight ships.
+**PHEROMONE -- THE SWEEP LANDED FROM A STASH, AND THE GUARD THAT NAMED IT WAS ALREADY RED.**
+Elder [shelved](archive/20260907-170116_itinerary-landed-accounts.md). The sweep: **342 files,
+942 -> 0**, every changed line a `::` comment, **no program content moved**, `glow_desk_run` GREEN
+after -- 301 desks lowered and run are the proof rather than the diff's size. Glow's meter is a
+**WALL** now; Rye and shell stay ratchets. The 21 `identical to` marks a script may not guess:
+**13 with a subject took `is`, 8 parentheticals took `==`**.
+**AND FINISHING A LANGUAGE BROKE ITS CONTROL.** Row `20260907.164850` **CLOSED**: the pen plants
+three characters to give its readings a subject, then asks that same pen whether it sits under the
+**living tree's** ceiling -- two jobs, parting at zero. Cleared pen, **14 -> 16**.
+**ALL OF IT WAS WRITTEN LAST LAP AND NONE COMMITTED.** `%499`, third firing: 353 files parked at a
+round open. **The census is the sharper half** -- eleven stashes stand here and **ten were
+recovered**; only this held a log that never reached disk, and `stash_record` was **red at my cold
+open naming it `unlanded=1`**. A guard sounded and a lap heard it.
+**I FOUND `plant`'s FLOOR TOO, AND WITHDREW MINE WHOLE** -- the row above published first with the
+better half, reading the floor out of the scan. My own row re-seated `%579`, `%582`, `%584`,
+**`%586`**; the stamp made each move four lines.
 
 **INCENSE -- A RATCHET AT ZERO SLACK REDS EIGHT SHIPS FOR ONE PAGE, AND THE ROOM THAT NEVER LEARNED
 THE LESSON WROTE IT.** Elder [shelved](archive/20260907-192800_itinerary-landed-accounts.md);

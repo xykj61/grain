@@ -12,9 +12,13 @@
 # `tools/fixtures/s/shell_comment_ascii_scan.sh`. The pen that proves this one is
 # `tools/fixtures/g/glow_comment_ascii_control.sh`.
 #
-# THE EIGHT FORMS FOUND, so a later sweep knows what it is converting. Seven are named outright by
-# the rule's own substitution table; the eighth is left to a reader's judgment, which is why a
-# script never guesses it:
+# THE EIGHT FORMS FOUND, and all eight are now converted -- the table stands as the record of what
+# the sweep of `20260907.161048` met. Seven were named outright by the rule's own substitution
+# table. The eighth was left to a reader's judgment, which is why a script never guessed it, and a
+# reader read all 21 of its lines: thirteen say `X-shape (identical to) X-mold`, a sentence with a
+# subject, and took the word **is**; eight say `((identical to) @u32 lower)`, a parenthetical with
+# none, and took **==**. Both spellings are the rule's own two options, so the register moved and
+# not one word of meaning:
 #
 #   504  middle dot        `-` or `,`   named
 #   321  em dash           `--`         named
@@ -58,7 +62,13 @@ mode="${1:-count}"
 
 # The ceiling only falls. Lower it whenever a lap converts comments; never raise it.
 #   942  `20260907.141019`  across 342 files, the reading on the lap this meter was seated
-CEILING=942
+#     0  `20260907.161048`  the sweep, 342 files rewritten, every changed line a `::` comment and
+#                           no program content touched -- so this meter is a WALL for Glow rather
+#                           than a ratchet, and the next non-ASCII character to enter a Glow comment
+#                           reds on the lap it arrives. The control was repaired in the same commit:
+#                           a pen planting three characters cannot ask a ceiling of zero whether it
+#                           is under it, so the ceiling legs now run on a cleared pen.
+CEILING=0
 
 # THE UNIT IS A CHARACTER, COUNTED BY ITS UTF-8 LEAD BYTE IN THE C LOCALE -- the same reading both
 # siblings take, and for the reason they learned the expensive way: "this awk reads UTF-8 text" was

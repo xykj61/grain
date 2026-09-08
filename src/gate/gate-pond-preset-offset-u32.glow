@@ -1,8 +1,8 @@
 ::  name       pond preset offset gate
 ::  shape      offset count - ints (@u32) -> lawful - int (@u32)
 ::  invariant  answers 0 when offset is at or past count, unless both stand at zero; answers 1 otherwise
-::  example    0 0 -> 1 · 0 5 -> 1 · 5 5 -> 0 · 7 5 -> 0 · 1 0 -> 0
-::  readers    Pond · the hearth shelf · Glow
+::  example    0 0 -> 1 - 0 5 -> 1 - 5 5 -> 0 - 7 5 -> 0 - 1 0 -> 0
+::  readers    Pond - the hearth shelf - Glow
 ::  nib        preset-shelf offset law spoken in Glow (20260830)
 ::
 ::  The shelf-offset law from pond/apps/preset_shelf.rye -- an offset at or past

@@ -1,12 +1,12 @@
 ::  name       mantra line fields equality gate
 ::  shape      count - int (@u32) -> lawful - int (@u32)
 ::  invariant  answers 1 exactly when count is line fields=4; answers 0 otherwise
-::  example    4 -> 1 · 3 -> 0 · 5 -> 0
-::  readers    Mantra · Glow Tend a1 unfinished · Ashvini
-::  nib        equinox-e256-equality-fifth-v0 · STOA337
+::  example    4 -> 1 - 3 -> 0 - 5 -> 0
+::  readers    Mantra - Glow Tend a1 unfinished - Ashvini
+::  nib        equinox-e256-equality-fifth-v0 - STOA337
 ::
-::  Ashvini equality · fifth pedestal gth cannot speak. The sur shape names
-::  a weave Line's four fields (text · gen · pos · site); this gate decides
+::  Ashvini equality - fifth pedestal gth cannot speak. The sur shape names
+::  a weave Line's four fields (text - gen - pos - site); this gate decides
 ::  *exactly*, not by a ceiling.
 ::
 ::  Moved three to four on 20260907.094747, the lap that bound this constant

@@ -1,13 +1,13 @@
 ::  name       brush surface field count
 ::  shape      fields - int (@u32)
-::  invariant  BrushSurface carries the fields at_nib · present · max_lines · line_count · style_count
+::  invariant  BrushSurface carries the fields at_nib - present - max_lines - line_count - style_count
 ::  example    5
-::  readers    Brushstroke · Surface · .brush lower · refuse suite
+::  readers    Brushstroke - Surface - .brush lower - refuse suite
 ::  nib        surface-p43-v0
 ::
-::  Surface Chapter p43 — ninth pedestal in src/sur (structure museum).
+::  Surface Chapter p43 -- ninth pedestal in src/sur (structure museum).
 ::  Names BrushSurface in brushstroke/brush_parse.rye (five fields).
-::  Does not invent a Wayland window · surf/ graduation · or Realidream invent.
+::  Does not invent a Wayland window - surf/ graduation - or Realidream invent.
 +$  brush-surface-field-count-shape
   $:  fields=@u32
   ==

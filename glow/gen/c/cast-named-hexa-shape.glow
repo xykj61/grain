@@ -1,4 +1,4 @@
-::  Multi-field named-cast — +$ hexa-shape then ^- hexa-shape (STOA176).
+::  Multi-field named-cast -- +$ hexa-shape then ^- hexa-shape (STOA176).
 ::  Peek budget field_count+3 after named_cast_parts widen.
 +$  hexa-shape
   $:  from=@u32

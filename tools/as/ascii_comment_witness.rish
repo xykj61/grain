@@ -138,6 +138,15 @@ say "ascii-comment: reading three of three -- authored Glow comments."
 # Rishi and shell reach was: by counting, rather than by assuming the meter already covered what
 # the law names.
 #
+# AND GLOW IS SWEPT, `20260907.161048`: 342 files rewritten, 942 -> **0**, so its ceiling is a WALL
+# where the two siblings are still ratchets. Every changed line was a `::` comment and no program
+# content moved. The zero is what repaired the control in the same commit: a pen that plants three
+# characters into itself to give the counting readings a subject was ALSO the pen being asked
+# whether it sat under the living tree's ceiling, and those two jobs part company at zero -- three
+# planted characters over a ceiling of nothing answered `clean_pen_under_ceiling=no` for a tree
+# that was perfectly clean. The ceiling legs run on a cleared pen now. The siblings will meet the
+# same wall on the lap that finishes them, which is why it is written here rather than only there.
+#
 # AND THIS METER NEEDS NO ESCAPE HATCH, where both siblings do. Rye must refuse to count a `\\`
 # multiline string and shell must refuse to count a heredoc body, because in both a literal spans
 # lines and a later line of one can open with the comment mark. `glow/tokens.rye:239` refuses a

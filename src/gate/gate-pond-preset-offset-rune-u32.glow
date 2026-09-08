@@ -1,8 +1,8 @@
 ::  name       pond preset offset gate, rune spelling
 ::  shape      offset count - ints (@u32) -> lawful - int (@u32)
 ::  invariant  answers exactly as gate-pond-preset-offset-u32 -- one law, the ancestor's runes
-::  example    0 0 -> 1 · 5 5 -> 0
-::  readers    Pond · the hearth shelf · Glow
+::  example    0 0 -> 1 - 5 5 -> 0
+::  readers    Pond - the hearth shelf - Glow
 ::  nib        alias-sameness twin of the preset offset gate (20260830)
 ::
 ::  The same shelf-offset law wearing ?& and ?| -- alias-sameness: one body kind,

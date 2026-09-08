@@ -1,3 +1,3 @@
-::  Exhaustive switch with decimal mint/send arm payloads — kind.cur-record.
+::  Exhaustive switch with decimal mint/send arm payloads -- kind.cur-record.
 ::  1 and 0 are ordinary values, not Hoon loobeans (Glow ambient truth is Zig).
 ?-  kind.cur-record  %mint  1  %send  0

@@ -1,9 +1,9 @@
 ::  name       lantern feed unknown gate
 ::  shape      stop-reason text-len - ints (@u32) -> face kind - int (@u32)
 ::  invariant  answers 2 (unknown) when the stop is err_stop (2) OR the text is empty; answers 1 (proposed) otherwise
-::  example    2 5 -> 2 · 0 0 -> 2 · 0 5 -> 1
-::  readers    Lantern · the asking voice · Glow
-::  nib        lantern-face-v0 · the feed's kind law spoken in Glow (20260830)
+::  example    2 5 -> 2 - 0 0 -> 2 - 0 5 -> 1
+::  readers    Lantern - the asking voice - Glow
+::  nib        lantern-face-v0 - the feed's kind law spoken in Glow (20260830)
 ::
 ::  The feed's ruling, in the language's first or-composition: a machine's answer
 ::  is unknown when its stop was an error or its text is empty, and proposed

@@ -1,4 +1,4 @@
-::  Same-desk named-cast — +$ stamp-shape then ^- stamp-shape.
+::  Same-desk named-cast -- +$ stamp-shape then ^- stamp-shape.
 ::  First consumer of admitted `$:` @u64 (aura floor `20260724.205719`).
 +$  stamp-shape
   $:  stamp=@u64

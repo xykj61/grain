@@ -1,2 +1,2 @@
-::  Face over cue of nest jam both — (cue (jam (mix …) (mix …))).
+::  Face over cue of nest jam both -- (cue (jam (mix ...) (mix ...))).
 =/  right=@u32  (cue (jam (mix from amount) (mix cell gate)))

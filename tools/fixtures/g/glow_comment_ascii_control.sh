@@ -105,11 +105,28 @@ case "$out" in *"chars=3 "*) echo "total_is_three=yes";; *) echo "total_is_three
 # read. A blind spot nobody can measure is the same blind spot with better manners.
 case "$out" in *"trailing_unread=2"*) echo "trailing_reported=yes";; *) echo "trailing_reported=no";; esac
 
-case "$out" in *"under_ceiling=yes"*) echo "clean_pen_under_ceiling=yes";; *) echo "clean_pen_under_ceiling=no";; esac
+# THE CEILING RUNS ON A CLEARED PEN, and a finished sweep is what taught this. The three plants
+# above give the counting readings their subject -- three characters, named by `total_is_three`.
+# Those same three characters are also what `under_ceiling` was being asked about, which is two
+# jobs on one pen, and the two part company the moment a ceiling reaches ZERO. On `20260907` the
+# Glow sweep took the living reading 942 -> 0, and this pen then answered `clean_pen_under_ceiling=no`
+# for a tree that was perfectly clean: three planted characters over a ceiling of nothing. A pen
+# proves the METER; the ceiling belongs to the TREE. So the counted plants are rewritten to ASCII
+# before the ceiling is asked, and the ceiling is then proven from both sides against a pen holding
+# no non-ASCII at all -- which is the only pen whose reading is honest at every ceiling, zero
+# included. The siblings still carry residue and will meet this on the lap that finishes them.
+printf "::  a Glow comment -- one\n"                          > room/comment.glow
+printf "    ::  indented -- one\n"                            > room/indented.glow
+printf "::  header -- one\n|=  sample=@u32\n"                 > room/with_code.glow
+git add -A >/dev/null 2>&1
+cleared=$(sh "$scan" 2>/dev/null)
+echo "$cleared" | sed 's/^/cleared_/'
+case "$cleared" in *" chars=0 "*) echo "cleared_pen_reads_zero=yes";; *) echo "cleared_pen_reads_zero=no";; esac
+case "$cleared" in *"under_ceiling=yes"*) echo "clean_pen_under_ceiling=yes";; *) echo "clean_pen_under_ceiling=no";; esac
 
 # The ceiling, from the refusing side. The scan's own ceiling is read rather than spelled here, so
-# this stays true when a lap lowers it.
-ceiling=$(printf '%s' "$out" | sed -n 's/.* ceiling=\([0-9][0-9]*\) .*/\1/p')
+# this stays true when a lap lowers it -- including all the way to zero, where `over` is one.
+ceiling=$(printf '%s' "$cleared" | sed -n 's/.* ceiling=\([0-9][0-9]*\) .*/\1/p')
 over=$((ceiling + 1))
 { printf ':: '; i=0; while [ "$i" -lt "$over" ]; do printf "$em"; i=$((i + 1)); done; printf '\n'; } > room/over.glow
 git add -A >/dev/null 2>&1
