@@ -8,13 +8,23 @@
 # Negative: context/fixtures/link_witness_broken.md must FAIL.
 # Tree walk: LINK_WITNESS_ALLOW_BASELINE=1 for the first honest count.
 # ROUND MODE (via scan env; used each T3 / Sound breach motion):
-#   LINK_WITNESS_SNAPSHOT=/tmp/dangling_before.txt   -- capture sorted dangling set
-#   LINK_WITNESS_COMPARE=/tmp/dangling_before.txt    -- assert AFTER ⊆ BEFORE
+#   LINK_WITNESS_SNAPSHOT=<path>   -- capture sorted dangling set
+#   LINK_WITNESS_COMPARE=<path>    -- assert AFTER is a subset of BEFORE
 # ALLOW_BASELINE is IGNORED in COMPARE -- if it can suppress a red there, STOP.
 #
+# WHERE THE SNAPSHOT GOES, and why the example moved off `/tmp` (`20260907.191214`). The four lines
+# below taught `/tmp/dangling_before.txt`, a name fixed at write time, on a pier where eight ships
+# share one TMPDIR -- so a reader copying them ran the SNAPSHOT in this tree and, if a peer had run
+# the same command, took the COMPARE against a dangling set from somebody else's checkout. Two
+# different trees compared as one can read GREEN while a real new dangling link stands. `mktemp`
+# cannot serve here, because the two commands are two shells and the file has to outlive the first;
+# the tree's own answer is its per-checkout untracked window, `session-output/` (gitignored, seated
+# `20260828`). REDS %549 booked the habit; this is the doc that was teaching against it.
+#
 #   rishi/bin/rishi run tools/l/link_witness.rish
-#   LINK_WITNESS_SNAPSHOT=/tmp/dangling_before.txt sh tools/fixtures/l/link_witness_scan.sh
-#   LINK_WITNESS_COMPARE=/tmp/dangling_before.txt  sh tools/fixtures/l/link_witness_scan.sh
+#   mkdir -p session-output
+#   LINK_WITNESS_SNAPSHOT=session-output/link-dangling-before.txt sh tools/fixtures/l/link_witness_scan.sh
+#   LINK_WITNESS_COMPARE=session-output/link-dangling-before.txt  sh tools/fixtures/l/link_witness_scan.sh
 
 say "link_witness: fixture PASS (valid relative links)…"
 let pass = run ["sh" "-c" "LINK_WITNESS_FILES='context/fixtures/link_witness_valid.md' sh tools/fixtures/l/link_witness_scan.sh"]

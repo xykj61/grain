@@ -125,8 +125,15 @@ root=${SHARED_PEN_ROOT:-.}
 # charged to the path it NAMES, within its own command segment, which stopped
 # `tools/l/launch-claude-chapter.rish` being charged for a pen it only tees after removing
 # something else on the same very long line. `files_ceiling` FALLS 53 -> 49 on the same readings.
-files_ceiling=${SHARED_PEN_FILES_CEILING:-49}
-wipe_ceiling=${SHARED_PEN_WIPE_CEILING:-16}
+# BOTH FALL on `20260907.191214`, by one file that carried both readings. The `link_witness` ROUND
+# MODE self-check held four constant pens and WIPED one of them -- `/tmp/link_witness_round_selfcheck_before.txt`,
+# the snapshot its own compare reads back. That is the lethal shape this scan asks be driven to zero
+# first, and it was worse than a clobber: a peer's snapshot landing between this tree's SNAPSHOT and
+# its COMPARE makes the compare ask whether one tree's dangling set grew against another tree's, and
+# two different trees compared as one can read GREEN while a real new dangling link stands. Repaired
+# to `mktemp -d`, which cannot collide. Sites 252 -> 239, files 49 -> 48, wiping 16 -> 15.
+files_ceiling=${SHARED_PEN_FILES_CEILING:-48}
+wipe_ceiling=${SHARED_PEN_WIPE_CEILING:-15}
 
 cd "$root" 2>/dev/null || { echo "verdict=no_root"; echo "refused: $root is not a directory" >&2; exit 1; }
 git rev-parse --git-dir >/dev/null 2>&1 || { echo "verdict=no_git"; echo "refused: this scan reads git ls-files" >&2; exit 1; }
