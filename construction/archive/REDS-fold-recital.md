@@ -490,7 +490,6 @@ at a closed fold.*
 
 *Row %596 folded to [`REDS-a-row-that-says-a-class-is-empty-rows-596.md`](REDS-a-row-that-says-a-class-is-empty-rows-596.md) on `20260907.232130`, **BOOKED** -- the three fabricated citations stand repaired; the gate above them is Keaton's.*
 
-
 *Row %597 folded to [`REDS-the-explanation-that-cannot-be-built-rows-597.md`](REDS-the-explanation-that-cannot-be-built-rows-597.md) on `20260907.234900`, **CLOSED** -- the reading is said before it is judged, and the witness is GREEN on metal.*
 
 *Row %598 folded to [`REDS-a-guard-that-could-not-say-what-it-knew-rows-598.md`](REDS-a-guard-that-could-not-say-what-it-knew-rows-598.md) on `20260907.232316`, **CLOSED** -- the ledger's file-only reading gated a doubling it could not tell from one the anointed spine already carried, so the teeth moved to the guard that reads the remote.*
@@ -541,10 +540,8 @@ at a closed fold.*
 *Row %625 folded to [`REDS-a-comment-repairs-the-file-it-sits-in-rows-625.md`](REDS-a-comment-repairs-the-file-it-sits-in-rows-625.md) on `20260908.085628`, **CLOSED** -- a census paid for its forks rather than for its tree, and the lantern had been lit twice in its own family.*
 *Row %627 folded to [`REDS-a-reflex-three-pages-stated-and-no-guard-read-rows-627.md`](REDS-a-reflex-three-pages-stated-and-no-guard-read-rows-627.md) on `20260908.083214`, **CLOSED** -- three law pages stated a reflex as an absolute and no guard read the word; every reflex beside it was held, so a guard list read as covering a reflex list.*
 
-
 *Row %628 folded to [`REDS-the-question-that-sent-rows-628.md`](REDS-the-question-that-sent-rows-628.md) on `20260908.075950`, **CLOSED** -- the sixth firing of the process-reach family, and the first where the bounded helper itself was the instrument -- the wall held and the verb was what was wrong.*
 *Row %629 folded to [`REDS-nineteen-of-sixty-nine-rows-629.md`](REDS-nineteen-of-sixty-nine-rows-629.md) on `20260908.094402`, **BOOKED** -- a hand list and a derivation are blind in opposite directions, so the honest population is their union -- and an unheard guard's defects have no arrival date.*
-
 
 *Row %574 folded to [`REDS-two-readings-of-what-prose-is-rows-574.md`](REDS-two-readings-of-what-prose-is-rows-574.md) on `20260908.093504`, **CLOSED** -- the card read a marker alone where Markdown reads a marker then whitespace, so it dropped every bold-led paragraph and every italic benediction this tree's own style rules ask for.*
 *Row %630 folded to [`REDS-one-room-list-in-five-files-rows-630.md`](REDS-one-room-list-in-five-files-rows-630.md) on `20260908.101352`, **CLOSED** -- one room list stood in five files, and equal counts over unequal populations still compare equal.*
@@ -557,7 +554,10 @@ at a closed fold.*
 *Row %623 folded to [`REDS-a-seat-named-in-four-places-rows-623.md`](REDS-a-seat-named-in-four-places-rows-623.md) on `20260908.094425`, **BOOKED** -- a guard reading three of a fact's four homes reads the three somebody thought of.*
 
 *Row %634 folded to [`REDS-the-third-answer-a-witness-did-not-know-rows-634.md`](REDS-the-third-answer-a-witness-did-not-know-rows-634.md) on `20260908.104016`, **CLOSED** -- a control's honest third answer is a fault only to a witness that knows two, and the repair took the cause rather than the reading.*
+
 *Row %635 folded to [`REDS-a-guard-whose-rooms-were-a-hand-written-list-rows-635.md`](REDS-a-guard-whose-rooms-were-a-hand-written-list-rows-635.md) on `20260908.101759`, **BOOKED** -- a guard whose population is a hand-written list is bounded by what the hand remembered, and its greenness reports the list rather than the subject.*
+
+*Row %639 folded to [`REDS-ten-names-for-one-transcript-rows-639.md`](REDS-ten-names-for-one-transcript-rows-639.md) on `20260908.115212`, **CLOSED** -- the roster runner now names its own detached transcript, so no lap invents or globs one.*
 
 *Row %637 folded to [`REDS-three-tools-no-roster-heard-rows-637.md`](REDS-three-tools-no-roster-heard-rows-637.md) on `20260908.122056`, **BOOKED** -- a declared checkable surface is a claim, and a claim wants an instrument like every other.*
 *Row %638 born on [`REDS-a-number-measured-before-its-own-commit-rows-638.md`](REDS-a-number-measured-before-its-own-commit-rows-638.md) on `20260908.121934`, **CLOSED** -- the pin stood deadlocked at 24 bytes with no foldable row, and a line count measured before its own commit landed is a number no care can keep true.*

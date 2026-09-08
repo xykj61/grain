@@ -68,6 +68,23 @@ Every guard that could see this reads **tracked sources**, and a command typed a
 is in no file -- which `%569` had already written down in its own third field. A defect nothing in
 the tree can measure is set where habits are set, or it is not set at all.
 
+**And a lap's own output lands in the tree, under a name the tool hands it.** `session-output/` is
+gitignored and per seat, so a path under one root cannot be reached by another ship -- or by another
+day. That habit was seated on the baton twice, at `%549` (a redirect to a constant name under a
+shared `/tmp`) and `%620` (a unique name found again by globbing, which returned the same pid's file
+from the day before), and eight hands then wrote **ten spellings** of one runner's cold-pass
+transcript under it. A glob over `grain-copal`'s returned 07:17's pass rather than 08:56's, on live
+state, inside the room `%620`'s own repair had moved the file to.
+
+So the row of `20260908.113404` moved the naming into the tool: `sh tools/fixtures/s/standing_equipment_run.sh --detach`
+derives the transcript path from the flags it was handed, truncates it, writes a header naming this
+launch before the child starts, and prints the path and the child's pid. One shell owns the redirect
+and the naming, which is what all three firings had split. The pass is finished when its transcript
+carries a `run_verdict=` line -- a predicate on content, since an mtime and a process table are both
+things a second shell can read wrongly. **A habit that must be typed is a habit that will be typed
+differently**, so a rule asking a lap to choose a good name cannot close this class and a tool
+handing it one can.
+
 ## A tree carries its own keys (REDS `%427`)
 
 **`agent-jail.sh` binds ONE tree, so every path a ship needs lives inside that tree.** Its keyring

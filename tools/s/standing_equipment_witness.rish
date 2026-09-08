@@ -152,6 +152,27 @@ assert control.out contains "name_selects_any_tier=yes" else "standing-equipment
 assert control.out contains "name_runs_only_that_guard=yes" else "standing-equipment: a guard named by hand runs alone"
 assert control.out contains "absent_path_reds_runner=yes" else "standing-equipment: a rostered path absent from disk must red the runner"
 
+# THE DETACHED LAUNCH (REDS row `20260908.113404`). Three reds in one family -- `%541` signaling a
+# pass by command line, `%549` redirecting one to a constant name under a shared `/tmp`, `%620`
+# naming one uniquely and then globbing it back -- all had one shape: the redirect and the naming
+# ran in different shells. `--detach` puts both in the runner, so a lap types no path and globs
+# nothing. The truncation is shown from both sides, since it alone is what makes an elder pass's
+# bytes unreadable as this one's.
+assert control.out contains "detach_prints_path=yes" else "standing-equipment: --detach must print the transcript it just named -- a lap left to invent one is the fault this closes"
+assert control.out contains "detach_prints_pid=yes" else "standing-equipment: --detach must print the child's pid, so no lap finds its own pass by matching a command line"
+assert control.out contains "detach_parent_returns=yes" else "standing-equipment: --detach must return having launched, never having run the roster"
+assert control.out contains "detach_header_written=yes" else "standing-equipment: the transcript must identify its own launch before the child writes a byte"
+assert control.out contains "detach_truncates_elder=yes" else "standing-equipment: an elder pass's bytes must not survive a launch, or a stale read stays possible"
+assert control.out contains "append_runner_built=yes" else "standing-equipment: the append-shaped runner must actually differ, or the failing side proves nothing"
+assert control.out contains "append_runner_ran=yes" else "standing-equipment: the append-shaped runner must start and launch -- a copy that cannot run proves nothing about truncation"
+assert control.out contains "append_runner_keeps_elder=yes" else "standing-equipment: without the truncation yesterday's bytes must survive, which is what the repair removes"
+assert control.out contains "detach_child_closes=yes" else "standing-equipment: the detached pass must reach a run_verdict line, which is how a reader knows it finished"
+assert control.out contains "detach_child_runs_roster=yes" else "standing-equipment: the detached child must actually run the roster -- a launch that runs nothing proves nothing"
+assert control.out contains "detach_mode_names_file=yes" else "standing-equipment: the mode must name the transcript, so two modes never share one path"
+assert control.out contains "detach_modes_stay_apart=yes" else "standing-equipment: a second mode's launch must leave the first mode's transcript standing"
+assert control.out contains "detach_refuses_before_launch=yes" else "standing-equipment: a refusal must stay in the foreground, where the hand that typed it is standing"
+assert control.out contains "detach_refusal_writes_nothing=yes" else "standing-equipment: a pass that never began must leave no transcript to be read as one that did"
+
 # The tree digest, both sides, on a real git repository the control builds and throws away. A lap
 # that begins editing while the roster runs gets verdicts spread across two trees, which is REDS
 # %221 -- so the runner measures the tree at the open and again at the close and says when it moved.

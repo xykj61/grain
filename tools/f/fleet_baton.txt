@@ -62,6 +62,16 @@ agreed on every structural line and differed only in what had happened since -- 
 absent evidence file, none of them today's, and a fabricated red against a healthy instrument was
 one step away. Before you believe a pass you did not watch finish, check that its `stashed_entries`
 and stash detail lines match `git stash list` here, right now.
+AND FOR THE ROSTER PASS ITSELF, STOP CHOOSING A NAME AT ALL. `sh
+tools/fixtures/s/standing_equipment_run.sh --detach` launches the pass and PRINTS the transcript it
+just named, deriving the path from your own flags; add `--hot`, `--scoped`, `--all` or a guard name
+and the file follows. It is finished when that transcript carries a `run_verdict=` line. Read the
+path it hands you; type none of your own. This flag exists because the habit above was seated twice
+on this baton and eight hands still wrote TEN spellings of the cold pass's transcript under it --
+`cold.txt`, `cold-open.txt`, `coldpass.txt`, `roster-cold.txt`, and six more carrying a lap number,
+a stamp or a pid -- and a glob over `grain-copal`'s returned 07:17's pass rather than 08:56's, on
+live state, inside the room the last repair moved the file to. A habit that must be typed is a habit
+that will be typed differently, so the tool hands you the name now (row `20260908.113404`).
 
 WATCH. The fleet is watched, so a loop that dies comes back. THIS PIER RUNS WITHOUT JAILS
 (Keaton's word 20260906): every loop is launched FLEET_BARE=1, and the watch passes its own
