@@ -1,0 +1,19 @@
+# REDS shelf -- a seat named in four places
+
+**Language:** EN
+**Status:** Shelf -- immutable once written; the living pin is [`../REDS.md`](../REDS.md)
+**Voice:** Kyri
+**Row:** `%623` (`20260908.080219`), **BOOKED** by Incense and folded here by Bakery on
+`20260908.094425` to hold the pin under its declared bound
+
+The row is Incense's and stands exactly as it was written. It folds rather than shrinks because
+BOOKED is the ledger's word for a defect whose instances stand repaired, and because the pin held
+fourteen OPEN rows against eleven bytes of slack -- so the next row of any ship's, on any lap,
+needed this seat.
+
+What it taught is worth carrying at the door: **a guard reading three of a fact's four homes reads
+the three somebody thought of.** A rota threshold page names its seats in four places, the scan was
+written for three of them, and both seat changes this tree has ever made drifted at the fourth.
+
+
+**REDS %623 (`20260908.080219`) -- a seat is named in four places, the guard read three, and both seat changes this tree has ever made drifted at the fourth.** *What went wrong:* every rota threshold page opens with a `**Kin:**` line naming its three seats in modality order -- the first line an element lap opens. Water-Cardinal changed hands `20260908.001350` and its Kin line was never touched, so `foundations/20260826-021734_water-the-row-that-tastes.md` named the released `shape-you-grew` seat and never named the live `what-brix-infuse-is`. Earth-Cardinal had moved three days earlier and drifted the same way, differently: its Kin line kept the retired one-clock naming law BESIDE the new seat, reading four seats where the grid seats three. **Two seat changes, two drifts, one site, and `rota_grid_witness` GREEN through both**, since the grid cell, the `## Cardinal:` heading and the section's path were correct in each case. The seed's prose also named the wrong column -- *Water's third seat* against the seating commit's own **Cardinal** -- and a modality instructs a reading rather than labelling one, so a reader sent to the wrong column reads the right page at the wrong angle. *What caught it:* the water rota read at its own sense. Water tastes -- read up close and run the actual thing -- so this lap opened the threshold page rather than trusting the grid, and the Kin line is line 8. One loop comparing five Kin lines against five grid rows found both drifts at once: three read `panchanga, cardinal, fixed, dual` and two did not. *What it taught:* **a guard reading three of a fact's four homes reads the three somebody thought of.** `rota_grid_scan.sh` was written `20260907` for this failure one site over, counting the sites the drift had used the day before. Its honest boundary -- *whether the threshold's PROSE about a seat is still true* -- is where a Kin line sits, and a list of links is nearer to a path than to prose. *Repaired (`20260908.080219`):* both Kin lines carry their live seats and all five read one shape; the seed's paragraph reads `CARDINAL` and records the correction in place, the commit keeping its word as testimony. `rota_grid_scan.sh` gates a fourth reading, **`kin_seat_absent`** at zero, compared by basename since a Kin entry is relative to `foundations/` and the grid names a repo-root path, and REPORTS `kin_extra` -- a Kin page the grid does not seat there, which is what a retired seat and a new kin link look like alike from a scan. Control **16 -> 25** legs: the drift planted and lifted, the extra page proven reported rather than gated, a page with no Kin line counted as three absent seats so one number means one thing. **BOOKED** -- the two instances stand repaired and gated; the remainder is the *not taken* half, generating a Kin line from the grid rather than checking it, which would end the family by construction and make the door repeat the grid rather than agree with it.

@@ -7,9 +7,11 @@
 # answer. Every refusal is shown from both sides -- planted, then lifted -- since a refusal proven
 # only in the failing direction cannot be told from a scan that reds on everything.
 #
-# WHY REAL REPOSITORIES. The scan draws its population from `git ls-files`, so an untracked draft in
-# the room is invisible to it on purpose: gating one would refuse a hand in the middle of a fold.
-# That behavior is only provable on a tree where tracked and untracked genuinely differ.
+# WHY REAL REPOSITORIES. The scan draws its population from git, so an untracked draft in the room
+# is invisible to the GATE on purpose: gating one would refuse a hand in the middle of a fold. The
+# REPAIR reads the working tree instead, since the file needing the correction is exactly the one a
+# hand has just written. Both behaviors, and the ignored path that neither reaches, are only
+# provable on a tree where tracked, untracked, and ignored genuinely differ.
 #
 # THE PHASES.
 #   clean_free            -- a shelf whose links resolve from its own directory: verdict=ok, exit 0.
@@ -47,7 +49,14 @@
 #                            deliberately leaves alone, and gating it would rewrite testimony.
 #   outside_room_free     -- the same fault in a file outside the room passes: this reading has one
 #                            subject and says so.
-#   untracked_free        -- an untracked shelf carrying the fault passes -- a hand mid-fold.
+#   untracked_free        -- an untracked shelf carrying the fault passes under the DEFAULT corpus
+#                            -- a hand mid-fold, and the gate's population is the index.
+#   untracked_seen_in_working -- the SAME shelf, one variable apart, is read and refused. The gate
+#                            reads the index and the REPAIR reads the working tree, because the file
+#                            needing the correction is the one a hand has not staged yet.
+#   ignored_free_in_working -- a path git IGNORES is in neither corpus, so widening the repair can
+#                            never walk into a build artifact or a peer's scratch.
+#   bad_corpus_refused    -- an unknown corpus word refuses at exit 2 rather than guessing.
 #   no_repo_refused       -- outside a git repository: verdict=no_repo, exit 2.
 #   no_room_refused       -- the room absent: verdict=no_room, exit 2.
 #   no_shelves_refused    -- the room present and tracked-empty: verdict=no_shelves, exit 2. A
@@ -98,6 +107,11 @@ shelf() {
 # substitution assigned to a variable carries that exit outward and kills the script at its first
 # successful refusal -- which reads exactly like a control that ran out of phases.
 run_scan() { ( set +e; cd "$pen/$1" || exit 0; sh ./tools/fixtures/f/fold_shelf_link_scan.sh 2>/dev/null; exit 0 ); }
+# The REPAIR corpus. The gate never sets this variable, so a leg that wants the widened population
+# has to ask for it by name -- which is what keeps the two readings from drifting into one.
+run_scan_working() { ( set +e; cd "$pen/$1" || exit 0; FOLD_SHELF_CORPUS=working sh ./tools/fixtures/f/fold_shelf_link_scan.sh 2>/dev/null; exit 0 ); }
+run_scan_corpus() { ( set +e; cd "$pen/$1" || exit 0; FOLD_SHELF_CORPUS="$2" sh ./tools/fixtures/f/fold_shelf_link_scan.sh 2>/dev/null; exit 0 ); }
+run_code_corpus() { ( set +e; cd "$pen/$1" || { echo 99; exit 0; }; FOLD_SHELF_CORPUS="$2" sh ./tools/fixtures/f/fold_shelf_link_scan.sh >/dev/null 2>&1; echo $?; exit 0 ); }
 run_code() { ( set +e; cd "$pen/$1" || { echo 99; exit 0; }; sh ./tools/fixtures/f/fold_shelf_link_scan.sh >/dev/null 2>&1; echo $?; exit 0 ); }
 say() { case "$2" in *"$3"*) echo "$1=yes" ;; *) echo "$1=no" ;; esac; }
 # `deny` is `say` inverted, and it exists because the first draft of this control spelled an
@@ -337,6 +351,44 @@ new_repo untracked
 printf '[guide](../context/GUIDE.md)\n' > "$pen/untracked/construction/archive/20260202-000000_draft.md"
 out=$(run_scan untracked)
 say untracked_free "$out" "verdict=ok"
+say default_corpus_is_tracked "$out" "corpus=tracked"
+say tracked_counts_no_untracked "$out" "shelves_untracked=0"
+
+# --- the working corpus, which is the REPAIR's population ----------------------------------
+# THE SAME PEN, ONE VARIABLE APART. `20260908.044602` wrote the remedy for this fault down -- run
+# the repointer BEFORE staging -- and `20260908.063650` ran exactly that, read `nothing_to_do`, and
+# repaired nine links by hand. The instruction could not fire while the corpus was the index: a
+# shelf a lap has just written is absent from `git ls-files` until `git add`. A prescription that
+# cannot fire prescribes nothing, and these four legs are that sentence proven from both sides.
+out=$(run_scan_working untracked)
+say untracked_seen_in_working "$out" "verdict=fold_depth_lost"
+say untracked_counted_in_working "$out" "shelves_untracked=1"
+say working_names_its_corpus "$out" "corpus=working"
+out=$(run_scan_corpus untracked tracked)
+say tracked_word_matches_default "$out" "verdict=ok"
+
+# --- ignored_free_in_working ---------------------------------------------------------------
+# AN IGNORED PATH IS IN NEITHER CORPUS. Widening to the working tree is what makes the repair
+# reach a hand's own draft; `--exclude-standard` is what keeps it out of a build artifact, a
+# `session-output/` transcript, or a peer's scratch. Proven where it would otherwise bite: the
+# ignored shelf carries the identical fault the untracked one does.
+new_repo ignored
+printf 'construction/archive/20260303-*\n' > "$pen/ignored/.gitignore"
+( cd "$pen/ignored" && git add .gitignore && git commit -q -m "pen: ignore a shelf" )
+printf '[guide](../context/GUIDE.md)\n' > "$pen/ignored/construction/archive/20260303-000000_build.md"
+out=$(run_scan_working ignored)
+say ignored_free_in_working "$out" "verdict=ok"
+say ignored_uncounted_in_working "$out" "shelves_untracked=0"
+
+# --- bad_corpus_refused ---------------------------------------------------------------------
+# An unknown word REFUSES rather than guessing which population was meant -- the tree's own habit
+# for a tier, a mode, or any other named setting, and the safe direction here is to read nothing
+# rather than to read everything.
+out=$(run_scan_corpus untracked sideways)
+say bad_corpus_refused "$out" "verdict=bad_corpus"
+deny bad_corpus_never_ok "$out" "verdict=ok"
+code=$(run_code_corpus untracked sideways)
+[ "$code" = 2 ] && echo "bad_corpus_exit_two=yes" || echo "bad_corpus_exit_two=no"
 
 # --- absent_listed_survived -----------------------------------------------------------------
 # `git ls-files` reads the INDEX, so a shelf staged for deletion or renamed mid-rebase is listed

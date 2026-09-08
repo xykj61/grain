@@ -32,20 +32,36 @@
 # reaching for `mv` (REDS, the exec-bit rule). These are Markdown files at 100644 either way -- the
 # habit is what the law exists to seat.
 #
+# IT READS THE WORKING TREE, WHERE THE GATE READS THE INDEX, and that difference is the whole
+# reason this line exists. The scan's default corpus is `tracked`, because gating an untracked draft
+# would refuse a hand mid-fold. A REPAIR wants the opposite: the file that needs the correction is
+# precisely the one a hand has just written and has yet to stage. `20260908.044602` wrote the remedy
+# down -- run the repointer BEFORE staging -- and `20260908.063650` ran it, read
+# `verdict=nothing_to_do`, and repaired nine links by hand, because one `git add` was the whole
+# distance between the two answers. So this sets `FOLD_SHELF_CORPUS=working` and says so in its own
+# output; `--tracked-only` restores the elder population for a caller who wants the gate's exact
+# reading. An IGNORED path is in neither corpus, so a rewrite never walks into a build artifact.
+#
 # USAGE
-#   sh tools/fixtures/f/fold_shelf_link_repoint.sh --dry-run   # name every edit, change nothing
-#   sh tools/fixtures/f/fold_shelf_link_repoint.sh             # apply them
+#   sh tools/fixtures/f/fold_shelf_link_repoint.sh --dry-run       # name every edit, change nothing
+#   sh tools/fixtures/f/fold_shelf_link_repoint.sh                 # apply them, working tree
+#   sh tools/fixtures/f/fold_shelf_link_repoint.sh --tracked-only  # apply them, index only
 #
 # Proven by doing: the pass that landed this tool repaired 345 links across four shelves, and
 # `tools/f/fold_shelf_link_witness.rish` read zero afterward. Run from the repository root.
 set -eu
 
-MODE="${1:-apply}"
-case "$MODE" in
-  --dry-run|-n) MODE=dry ;;
-  apply) MODE=apply ;;
-  *) echo "refused: unknown argument $MODE -- pass --dry-run or nothing" >&2; exit 2 ;;
-esac
+MODE=apply
+CORPUS=working
+for arg in "$@"; do
+  case "$arg" in
+    --dry-run|-n) MODE=dry ;;
+    apply) MODE=apply ;;
+    --tracked-only) CORPUS=tracked ;;
+    *) echo "refused: unknown argument $arg -- pass --dry-run, --tracked-only, or nothing" >&2; exit 2 ;;
+  esac
+done
+export FOLD_SHELF_CORPUS="$CORPUS"
 
 scan=$(CDPATH= cd -- "$(dirname "$0")" && pwd)/fold_shelf_link_scan.sh
 [ -f "$scan" ] || { echo "verdict=no_scan"; echo "refused: no fold_shelf_link_scan.sh beside this repointer" >&2; exit 2; }
@@ -58,6 +74,7 @@ trap 'rm -rf "$work"' EXIT
 edits=$(grep -c . "$work/lost" || true)
 
 if [ "$edits" -eq 0 ]; then
+  echo "corpus=$CORPUS"
   echo "edits=0"
   echo "verdict=nothing_to_do"
   exit 0
@@ -68,6 +85,7 @@ files=$(grep -c . "$work/files" || true)
 
 if [ "$MODE" = dry ]; then
   awk -F"$(printf '\t')" '{print "would repoint: " $1 " :: " $2 " -> " $3}' "$work/lost"
+  echo "corpus=$CORPUS"
   echo "files=$files"
   echo "edits=$edits"
   echo "verdict=dry_run"
@@ -111,6 +129,7 @@ while IFS= read -r f; do
   applied=$((applied + 1))
 done < "$work/files"
 
+echo "corpus=$CORPUS"
 echo "files=$files"
 echo "files_written=$applied"
 echo "edits=$edits"

@@ -552,3 +552,6 @@ at a closed fold.*
 *Row %631 folded to [`REDS-the-roster-sets-the-cost-rows-631.md`](REDS-the-roster-sets-the-cost-rows-631.md) on `20260908.092049`, **BOOKED** -- a loop's price is the roster it iterates rather than the corpus it reads, and a subtraction that removed nothing cost 8,976 ms.*
 
 *Row %632 folded to [`REDS-the-law-named-a-field-the-language-refuses-rows-632.md`](REDS-the-law-named-a-field-the-language-refuses-rows-632.md) on `20260908.101157`, **CLOSED** -- an erratum records a correction; only a guard carries it to the pages that repeat the retired claim.*
+*Row %633 folded to [`REDS-a-prescription-that-cannot-fire-rows-633.md`](REDS-a-prescription-that-cannot-fire-rows-633.md) on `20260908.094425`, **CLOSED** -- a remedy written down, followed exactly, and inert because the gate's corpus was the repair's corpus.*
+
+*Row %623 folded to [`REDS-a-seat-named-in-four-places-rows-623.md`](REDS-a-seat-named-in-four-places-rows-623.md) on `20260908.094425`, **BOOKED** -- a guard reading three of a fact's four homes reads the three somebody thought of.*

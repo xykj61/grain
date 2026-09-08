@@ -58,6 +58,18 @@
 # `](date/YYYYMMDD/name)` is an illustration built from placeholders exactly as stamp-and-name asks,
 # and counting one is the fabrication that law warns about.
 #
+# THE CORPUS ANSWERS TWO QUESTIONS AND NOW TAKES TWO SETTINGS. This gate reads `git ls-files`,
+# since an untracked draft in the room is a hand mid-fold and the index is what a promise looks
+# like. The REPAIR beside it wants the other population: the file needing the correction is exactly
+# the one a hand has just written and still holds. One reading served both for as long as the tree's
+# own remedy stayed inert -- `20260908.044602` wrote *run the repointer BEFORE staging*, and
+# `20260908.063650` ran it, read `verdict=nothing_to_do`, and repaired nine links by hand, since one
+# `git add` was the whole distance between the two answers. A prescription that can fire is the
+# thing worth writing down, which is the grain's `a guard that cannot red guards nothing` standing
+# on the repair side. `FOLD_SHELF_CORPUS` splits them: `tracked` by default and asserted by name
+# here so the gate stays the index, `working` for the repointers, an ignored path outside both, and
+# an unknown word refusing at exit 2.
+#
 # WHAT IT DOES NOT REACH, with a number rather than a shrug. The five rooms that fold two levels
 # deep carry the same class needing `../../../`. Sampled at most 400 files per room on
 # `20260906.120905`: active-designing 730, counsel 99, expanding-prompts 34, waymarks 27 -- at least
@@ -75,6 +87,11 @@ say scan.out
 assert scan.ok else "fold-shelf-link: a shelf link kept the depth of the file it was folded out of -- run the scan with `list` to see each one and its single correction"
 assert scan.out contains "fold_depth_lost=0" else "fold-shelf-link: no shelf link may resolve only under a card-to-shelf correction"
 assert scan.out contains "verdict=ok" else "fold-shelf-link: the scan must balance before it is believed"
+# invariant: the GATE reads the index. This witness never sets `FOLD_SHELF_CORPUS`, so the reading
+# above is the tracked population, and asserting the corpus by name is what stops the gate widening
+# by accident on the day somebody exports the variable in a wrapper.
+assert scan.out contains "corpus=tracked" else "fold-shelf-link: the gate reads the index -- an untracked draft is a hand mid-fold and is nobody's promise yet"
+assert scan.out contains "shelves_untracked=0" else "fold-shelf-link: the tracked corpus holds no untracked shelf by definition, so a nonzero count means the population widened under the gate"
 say "field GREEN -- every shelf link reads from the directory it actually sits in"
 
 let control = run ["sh" "tools/fixtures/f/fold_shelf_link_control.sh"]
@@ -120,6 +137,17 @@ assert control.out contains "dead_counted=yes" else "fold-shelf-link: the dead c
 assert control.out contains "dead_not_gated=yes" else "fold-shelf-link: the dead class must leave the gate at zero"
 assert control.out contains "outside_room_free=yes" else "fold-shelf-link: this reading has one subject and must say so -- the card itself is correct as written"
 assert control.out contains "untracked_free=yes" else "fold-shelf-link: an untracked draft is a hand mid-fold and is nobody's promise yet"
+assert control.out contains "default_corpus_is_tracked=yes" else "fold-shelf-link: the default corpus must be the index, or the gate refuses a hand mid-fold"
+assert control.out contains "tracked_counts_no_untracked=yes" else "fold-shelf-link: the tracked corpus must count zero untracked shelves, or the two populations have already merged"
+assert control.out contains "untracked_seen_in_working=yes" else "fold-shelf-link: the REPAIR must reach the shelf a hand has just written -- a prescription that cannot fire prescribes nothing"
+assert control.out contains "untracked_counted_in_working=yes" else "fold-shelf-link: a widened reading must say how much it widened by, or a corpus change is silent"
+assert control.out contains "working_names_its_corpus=yes" else "fold-shelf-link: a reading must name the population it read"
+assert control.out contains "tracked_word_matches_default=yes" else "fold-shelf-link: naming the default corpus explicitly must read the same as leaving it unset"
+assert control.out contains "ignored_free_in_working=yes" else "fold-shelf-link: a path git ignores is in neither corpus -- widening the repair must never reach a build artifact or a peer's scratch"
+assert control.out contains "ignored_uncounted_in_working=yes" else "fold-shelf-link: an ignored path must not even be counted, or the widened reading overstates its own reach"
+assert control.out contains "bad_corpus_refused=yes" else "fold-shelf-link: an unknown corpus word must refuse rather than guess which population was meant"
+assert control.out contains "bad_corpus_never_ok=yes" else "fold-shelf-link: a refused corpus must never also read ok"
+assert control.out contains "bad_corpus_exit_two=yes" else "fold-shelf-link: an instrument refusal exits 2 -- a reading that could not run is not a reading that passed"
 assert control.out contains "absent_listed_survived=yes" else "fold-shelf-link: a shelf listed in the index and absent from disk must not kill the reading -- a tree mid-rebase is when this guard matters most"
 assert control.out contains "absent_listed_counted=yes" else "fold-shelf-link: an absent listed path must be counted, since a reading that quietly got smaller is the fault %463 booked"
 assert control.out contains "absent_listed_no_fatal=yes" else "fold-shelf-link: the reading must produce no fatal from its own extractor"
@@ -143,5 +171,5 @@ assert control.out contains "repoint_leaves_green=yes" else "fold-shelf-link: th
 assert control.out contains "repoint_stale_still_counted=yes" else "fold-shelf-link: the stale class must still be reported after a repoint, or the repair looks like a repair of everything"
 assert control.out contains "repoint_idempotent=yes" else "fold-shelf-link: a second pass must find nothing to do -- a repointer that rewrites its own repair walks a file deeper every run"
 
-say "RED and GREEN paths proven -- 66 readings over 23 planted states, 22 of them real repositories in a throwaway pen and one deliberately not a repository at all, every refusal lifted in its own pen"
+say "RED and GREEN paths proven -- 78 readings over 23 planted states, 22 of them real repositories in a throwaway pen and one deliberately not a repository at all, every refusal lifted in its own pen"
 say "GREEN: fold-shelf-link -- every shelf link reads from where the shelf stands."
