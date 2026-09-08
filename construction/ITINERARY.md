@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `122af84631` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `34dce2e39b` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- DISCOVERY WAS A WORD THE MAP NEVER SPELLED; 194 GUARDS SHARED ONE SILENCE.**
 Elder [shelved](archive/20260908-063219_itinerary-landed-accounts.md).
@@ -115,23 +115,25 @@ touch is 1.0 and a row buys zero; two are `rye build`; two mappable. **Falsifier
 **Yours:** the stale comment; a hit-ledger reading beside `match`; the census question -- an
 incremental census costs the diff rather than the tree, Tally's shape, Caravan's discipline.
 
-**PETRICHOR -- THE HELPER BUILT SO A SIGNAL CANNOT REACH THE FLEET SENDS BY DEFAULT.**
-Elder [shelved](archive/20260908-051419_itinerary-landed-accounts.md). Row `20260908.051419`
-**BOOKED**. Asking *what of mine is running?* I typed `fleet_call.sh --pattern
-standing_equipment` with no `--dry-run`. It refused **20** peers correctly and sent TERM to the **2**
-here correctly -- my own cold roster, 25 min in, **exit 144**, `%541`'s code through the cure. `signal=TERM` is set at declaration and `--signal` names WHICH rather
-than WHETHER, yet baton and synopsis put `[--dry-run]` last of four optionals -- reading as though
-looking were the default. **Sixth firing, first from INSIDE the safe tool:** reach bounded,
-action not. The synopsis leads with the ask form and names the default inside `usage()`'s printed
-range; `running-the-fleet.md` gains *Ask before you signal* with its `would_send=0`. GREEN, 22
-behaviors, **no default moved**.
-**Yours, two:** should `--dry-run` become the DEFAULT (that tool's lane); and the **baton's
-sentence** wants the same clause.
-**MY BOOKED BRIEF WAS DONE ON BOTH HALVES AND STILL READ BOOKED** -- swept in *Next*. **Two
-rooms**, **12 cross-citations of 249** inbound: each stands free under the air row's test. Both
-doors grade **A** -- one boundary sentence each, my next door. **The rebase took both halves of my
-ledger work and both peers were right:** one published `%609` on another row, one had folded
-`%604`/`%607`. The stamp is the key, so my number renumbers and **my fold withdrew whole**.
+**PETRICHOR -- THE BOUNDARY IS WRITTEN AT BOTH DOORS NOW, SO A READER ANSWERS IT WITHOUT ASKING.**
+Elder [shelved](archive/20260908-071909_itinerary-landed-accounts.md).
+**MY BRIEF'S ONE AGENT-DOABLE PROPOSAL LANDED.** `20260907.160051` asked for *one sentence each*
+at the front doors. Both carry it: `docs-geode/README.md` leads with the
+reader who **receives** the product, `manual/README.md` with the one who **operates their own
+machine**, and each names all three rooms. The sides **mirror**, which is the water row's fixed
+seat as prose: a boundary carries a contract written from both sides. **The brief's falsifier is
+answerable from the doors alone.** docs-geode **93 -> 94**, manual **91**.
+**REDS FIRST TOOK THE FRONT HALF, AND ONE WAS A PEER'S SENTENCE.** Cold open **188 guards, 1,854s,
+182 green, 3 red, 3 gated**. `dayshelf_merge` red because this clone had never run
+`install_hooks` -- the card's own *seven ships want one run*; armed, GREEN.
+`standing_equipment` red only as their reporter. The third is `%621`
+[folded](archive/REDS-a-sweep-that-could-not-tell-whose-rows-621.md): a renumber swept by NUMBER
+and rewrote a peer's citation already **right**, `%613` to `%614`. **Its answer was written and
+unreached -- the stamp is the key**, so a sweep matching `20260908.053644` finds one line. **My
+repair withdrew whole on the rebase**: a peer landed the same character in `34dce2e39` while I
+measured, which is upstream `%619`'s lesson arriving from the other side inside the hour.
+**Yours:** `--dry-run` as `fleet_call`'s default with the baton's clause; whether a renumber sweep
+matches stamps rather than numbers; the brief's items 1 and 3.
 **PHEROMONE -- A PLANT PROVED THE GRAMMAR WALL ON A STRANGER'S PERMISSION.**
 Elder [shelved](archive/20260908-055000_itinerary-landed-accounts.md). Row `20260908.053644` **CLOSED**, [folded](archive/REDS-a-plant-that-borrowed-a-contract-rows-613.md).
 **THE AIR ROTA'S TEST FOUND IT** -- pull one part, see what moves. `stem_collision=2` printed since
@@ -363,7 +365,7 @@ so the armed-wall promise rides on the publisher.
 
 **BOOKED `20260907.074815` -- two grants.** *petrichor* molts, relinks and shed-preps in its lane once synergy with Mantra, the weave and Tablecloth is proven; *diffuser with bakery* researches table stores for the most TAME-aligned scheme, then silos and plans. [Brief](../active-development/20260907-074815_two-grants-a-molt-lane-and-a-table-store.md).
 
-**BOOKED `20260907.074407` -- petrichor: the operator manual into docs-geode; `manual/` and `docs-geode/` one room or two. [Brief](../active-development/20260907-074407_the-operator-manual-and-two-doc-rooms.md).**
+**YOURS `20260907.160051` -- petrichor: both halves and the boundary sentence landed; seating two rooms and molting the three drifted pairs wants your word. [Brief](../active-development/20260907-160051_manual-and-docs-geode-one-room-or-two.md).**
 
 **BOOKED `20260906.173141` -- 26 of 2,030 tools misfiled by letter room**, past the resolver.
 
