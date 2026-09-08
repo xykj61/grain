@@ -240,7 +240,11 @@ done
 # without the declaration they ran 131 witnesses while this meter counted every one unreached, and
 # the honest limit above says exactly why: a glob is not inferred from, on purpose, since inferring
 # once overstated by 111. The door was already built; the choirs simply had to walk through it.
-CEILING=${WITNESS_REACH_CEILING:-898}
+# 898 -> 818 on `20260908.192900`, a fall of 80: the Mycelium family, 81 witnesses of which 69 were
+# unheard, joined as the generic scan's THIRD caller. It cost a file of comments and one roster row,
+# with no scan and no control of its own, which is the return on generalizing the second choir
+# rather than copying the first. Three families and 212 witnesses now run under three rows.
+CEILING=${WITNESS_REACH_CEILING:-818}
 # The family ceiling, seated 20260828 at what the tree measured that day: 220 of 292 families carry
 # no clock at all. It only falls, and it falls whenever a family's first roster row lands. It is a
 # ratchet rather than a wall at zero for the same reason CEILING is: a wall that refuses ordinary

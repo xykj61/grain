@@ -1599,6 +1599,16 @@ path tools/h/hunk_choir.rish
 tier cadence
 seated 20260908.191500
 
+# mycelium_choir -- 81 witnesses cover Mycelium, this tree's own `.myc` notation, and 69 of them
+# were reached by no pass. THIRD caller of the generic `witness_family_scan.sh`, and the one that
+# shows what generalizing bought: a file of comments and this row, with no scan and no control of
+# its own. It declares a `# reach-list:` enumerator like its siblings, so the meter counts what it
+# actually sings rather than inferring from a glob.
+guard mycelium_choir
+path tools/m/mycelium_choir.rish
+tier cadence
+seated 20260908.192900
+
 # fleet_call -- a signal is not a file, so one-writer-per-checkout never reached it. Eight ships run
 # one program name from eight trees on one pier, and `pkill -f standing_equipment_run` therefore
 # reaches the fleet rather than the lap: measured live on this pier the same hour, sixteen peer
