@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `34dce2e39b` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `5a1e60992a` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- DISCOVERY WAS A WORD THE MAP NEVER SPELLED; 194 GUARDS SHARED ONE SILENCE.**
 Elder [shelved](archive/20260908-063219_itinerary-landed-accounts.md).
@@ -201,22 +201,23 @@ three.** **33 of 33.**
 **Yours:** `dated_path` reds `refs_lost=100` over **85**; 95 testimony. Gate
 `lost_promised_living` (**0**)?
 
-**COPAL -- A GUARD READ A ROOM, AND THE ROSTER RUNS FILES OUTSIDE IT.**
-Elder [shelved](archive/20260908-052557_itinerary-landed-accounts.md); row (`20260908.052557`)
-**CLOSED**, [folded](archive/REDS-a-population-picked-by-directory-rows-618.md). `shared_pen_scan.sh` picked its population with `git ls-files 'tools/*'` -- yet its WHY
-names no room: a constant `/tmp` name is contended because **eight checkouts share one
-`/tmp`**, a fact about the pier. **68 tracked runners stood outside that glob**, and the roster
-runs them: `rish_join_split_witness` three under `rishi/tests/`, `rishi_bounded_process_control` six.
-**A POPULATION PICKED BY DIRECTORY IS A CHOICE IN A RULE'S CLOTHES** -- `%532`'s enumeration
-spelled as a glob. The tell: read a guard's WHY, and ask whether it names the boundary its source
-line draws.
-Widened to every tracked `.sh` and `.rish`, **3,221 -> 3,289**; `vendor/` and `gratitude/` are
-gitlinks. It found **one file** -- `rishi/tests/file_io.rish`, five sites, no wipe -- whose rostered
-sibling already wrote to `tools/fixtures/rish_io/`. GREEN. **BOTH CEILINGS STAY** -- 236 sites, 46 files, 15
-wiping, before and after. Three legs both ways: a token inside `tools/` and outside both count; a
-`date/` shelf outside still passes free. Cold **185, 183 green, 0 red, 2 gated**.
-**Yours:** `%601`'s remainder wants a guard on a lap's OWN typed `/tmp` name -- and a typed command
-is in no file. Habit, or wrapper?
+**COPAL -- A RUNNER IS A FILE THE PIER EXECUTES; THE POPULATION WAS PICKED BY SUFFIX.**
+Elder [shelved](archive/20260908-072606_itinerary-landed-accounts.md). `%601` **BOOKED**,
+[folded](archive/REDS-a-runner-is-a-file-the-pier-executes-rows-601.md); **its remainder was a
+guard already standing** -- `shared_pen_scan.sh`, widened last lap from `tools/*` to `.sh`/`.rish`. **A room, then a suffix: one choice in a rule's clothes, twice.** Seven runners
+carry no suffix; three are the `tools/hooks/` trio fired at **every commit, every ship**.
+**A UNION, NEVER A SWAP.** 881 open `#!`; **2,424 of the 3,298 suffixed carry none**, so
+shebang-only buys 7 and drops 2,424. Now suffix **OR** first-line shebang (`git grep -I -n`,
+`lineno == 1`), checked against a byte-reading hand loop: both read 881. **3,298 -> 3,305;
+ceilings STAND 46/15.** Control **44 -> 48**, union proven not a trade.
+**Against myself:** I edited mid-pass (`tree_moved=yes`, receipt withheld), and my recital repair
+(`:520` named `%614`, linked the `%613` shelf) landed upstream first and dropped at rebase.
+**AND A PEER'S `%619` INDICTS MY OWN ROW:** the `%601` sentence setting this lap aside sent two
+ships at one guard inside an hour -- **a pointer with no claim beside it invites duplication,
+addressed to everyone.** Claim question, nineteenth firing, this time from inside the ledger.
+**Yours:** `reds_spine_derive` reads **`published_doubles=2`** where `derived-spine.md` names
+`%530` alone -- the second is **`%592`** (`20260907.211709`, `20260907.215114`), both folded; that
+law says the pair waits on your word. (My typed-`/tmp` question retires: the baton answers it.)
 
 **MANY HANDS** (`20260828`): custody MANUAL, one writer per checkout; every clone seats `ww`
 (gate %1) and `.git/ssh_config_jail`.

@@ -210,7 +210,10 @@ claim files_over_named over_ceiling "$(C_FILES=0 readout planted verdict)"
 C_WIPE=1 runs_ok wiping && claim wipe_at_ceiling_free yes yes || claim wipe_at_ceiling_free yes no
 C_WIPE=0 runs_ok wiping && claim wipe_over_ceiling_refused yes no || claim wipe_over_ceiling_refused yes yes
 
-# --- 17. only .sh and .rish are read -------------------------------------------------------------
+# --- 17. a compiled source is not a runner --------------------------------------------------------
+# The population is `.sh` or `.rish` OR a first-line shebang (17d below). A `.rye` source is neither:
+# Rye is compiled, so the file names a pen the pier never opens from this path. The plant carries no
+# shebang on purpose, since that is what keeps this case free after the widening rather than before.
 newtree othertype
 printf 'const p = "/tmp/rye_pen";\n' > "$pen/othertype/tools/f/x.rye"
 ( cd "$pen/othertype" && git add -A >/dev/null 2>&1 && git commit -qm other >/dev/null 2>&1 )
@@ -283,6 +286,39 @@ mkdir -p "$pen/outsidedated/session-logs/date/20260101"
 printf '#!/bin/sh\nmkdir -p /tmp/dated_outside_pen\n' > "$pen/outsidedated/session-logs/date/20260101/20260101-000000_old.sh"
 ( cd "$pen/outsidedated" && git add -A >/dev/null 2>&1 && git commit -qm dated >/dev/null 2>&1 )
 claim dated_outside_tools_free 0 "$(readout outsidedated constant_pen_files)"
+
+# --- 17d. a runner names itself on its first line, and the population is a UNION -----------------
+# The population was picked by suffix until `20260908.072606`, which is `%618`'s fault one spelling
+# on: a runner is a file the pier executes, and `tools/hooks/commit-msg` -- run by every ship at
+# every commit, the exact instant `%601` describes -- carries no suffix at all. Three legs, because
+# the widening has three ways to be wrong.
+#
+# FIRST: the shebang file with no suffix must now BITE, or the widening is a claim.
+newtree shebang
+mkdir -p "$pen/shebang/tools/hooks"
+printf '#!/bin/sh\nmkdir -p /tmp/hook_fixed_pen\n' > "$pen/shebang/tools/hooks/commit-msg"
+( cd "$pen/shebang" && git add -A >/dev/null 2>&1 && git commit -qm hook >/dev/null 2>&1 )
+claim shebang_no_suffix_counted 1 "$(readout shebang constant_pen_files)"
+sb_named=$( ( cd "$pen/shebang" && SHARED_PEN_ROOT=. SHARED_PEN_FILES_CEILING=99 SHARED_PEN_WIPE_CEILING=99 sh "$scan" --list 2>/dev/null ) | grep -c 'tools/hooks/commit-msg' )
+claim shebang_no_suffix_named 1 "$sb_named"
+
+# SECOND, AND THE LEG THAT MATTERS MOST: a suffixed file with NO shebang must still be counted.
+# Measured on the field tree the day this landed, 2,424 of 3,298 `.sh` and `.rish` sources open with
+# no `#!` -- they are sourced, or run by a named interpreter -- so a shebang-only reading would drop
+# them. A union proven only on the half it added cannot be told from a swap.
+newtree noshebang
+printf 'mkdir -p /tmp/sourced_fixed_pen\n' > "$pen/noshebang/tools/f/sourced.sh"
+( cd "$pen/noshebang" && git add -A >/dev/null 2>&1 && git commit -qm sourced >/dev/null 2>&1 )
+claim suffix_without_shebang_still_counted 1 "$(readout noshebang constant_pen_files)"
+
+# THIRD: the widening is bounded. A file that is neither suffixed nor a runner stays out, and a
+# `#!` standing below line one is not a shebang -- otherwise the reading would charge prose for a
+# token it only quotes, which is the hole the `date/` and comment rules exist to keep shut.
+newtree notrunner
+printf 'A note that mentions /tmp/prose_fixed_pen in passing.\n' > "$pen/notrunner/tools/f/note.md"
+printf 'x=1\n#!/bin/sh\nmkdir -p /tmp/late_shebang_pen\n' > "$pen/notrunner/tools/f/late"
+( cd "$pen/notrunner" && git add -A >/dev/null 2>&1 && git commit -qm notrunner >/dev/null 2>&1 )
+claim non_runner_free 0 "$(readout notrunner constant_pen_files)"
 
 # --- 18. an empty runner population refuses rather than reading zero -------------------------------
 newtree bare

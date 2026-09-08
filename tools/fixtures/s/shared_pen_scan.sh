@@ -33,6 +33,36 @@
 # and the two seed publishers at the root. Vendored source enters by none of this: `vendor/` and
 # `gratitude/` are gitlinks, so `git ls-files` never lists a byte inside them.
 #
+# AND THE POPULATION WAS STILL PICKED BY EXTENSION UNTIL `20260908.072606`, WHICH IS THE SAME
+# CHOICE ONE SPELLING ON. Widening `tools/*` to `.sh` and `.rish` traded a room for a suffix, and a
+# suffix is no more a class than a directory is: a runner is a file the pier EXECUTES, and this tree
+# writes seven tracked runners that carry no such suffix at all. Three of them are
+# `tools/hooks/commit-msg`, `tools/hooks/pre-commit` and `tools/hooks/post-commit`, which
+# `install_hooks.rish` points `core.hooksPath` at -- so every ship runs all three at every commit,
+# which is the exact instant REDS `%601` describes, eight bodies written toward one `/tmp` name at
+# once. A fourth, `tools/m/mind-bin/git`, is a git shim that runs as often as git does. The elder
+# population could not read a line of any of them.
+#
+# THE POPULATION IS THEREFORE A UNION AND NEVER A SWAP, and the measurement is why the distinction
+# is load-bearing rather than pedantic. Read `20260908.072606`: 881 tracked files open with `#!`,
+# and 3,298 carry `.sh` or `.rish` -- yet **2,424 of those 3,298 carry no shebang**, because this
+# tree's fixtures and Rishi sources are sourced or run by a named interpreter rather than executed.
+# So a shebang-only reading would have bought 7 files and dropped 2,424, which is a widening in name
+# and the largest narrowing this meter has ever taken. Extension OR shebang: 3,298 -> 3,305.
+#
+# THE SEVEN HOLD NO PEN TODAY, so both ceilings stay exactly where they stood -- the same shape the
+# `tools/` widening took one lap earlier, and the honest one. A population widening that buys no
+# number is buying reach, and reach is what it is for: the hooks are clean this morning, and the
+# next fixed `/tmp` name written into the file that runs at every commit on eight ships now reds on
+# the lap it arrives rather than on the morning a commit body goes missing.
+#
+# THE FIRST-LINE TEST IS EXACT rather than approximate. `git grep -I -n -E '^#!'` prints
+# `path:lineno:text` and the reading keeps `lineno == 1`, so a `#!` inside a heredoc, a comment, or
+# an awk program further down the file is read past. `-I` holds binaries out. Corroborated against a
+# hand loop reading the first two bytes of every tracked file: both answer 881, and both name the
+# same seven outside the suffix population -- which is the check worth having, since a fast reading
+# that disagrees with a slow one is a fast reading that is wrong.
+#
 # THE WIDENING FOUND ONE FILE AND THE REPAIR LANDED IN THE SAME LAP, so both ceilings stay where
 # they stood. `rishi/tests/file_io.rish` wrote `/tmp/rishi_io_test.txt`, `/tmp/rishi_io_test_num.txt`
 # and `/tmp/rishi_io_var_path.txt` -- five sites, no wipe -- while its own rostered sibling
@@ -171,7 +201,13 @@ wipe_ceiling=${SHARED_PEN_WIPE_CEILING:-15}
 cd "$root" 2>/dev/null || { echo "verdict=no_root"; echo "refused: $root is not a directory" >&2; exit 1; }
 git rev-parse --git-dir >/dev/null 2>&1 || { echo "verdict=no_git"; echo "refused: this scan reads git ls-files" >&2; exit 1; }
 
-sources=$(git ls-files 2>/dev/null | grep -E '\.(sh|rish)$' | grep -v '/date/')
+sources=$(
+  {
+    git ls-files 2>/dev/null | grep -E '\.(sh|rish)$'
+    # A runner names itself on its first line. `git grep -n` prints `path:lineno:text`, so keeping
+    # only `lineno == 1` reads the shebang rather than a `#!` standing anywhere further down.
+    git grep -I -n -E '^#!' 2>/dev/null | awk -F: '$2 == 1 { print $1 }'
+  } | grep -v '/date/' | sort -u)
 sources_n=$(printf '%s\n' "$sources" | grep -c . || true)
 if [ "$sources_n" -eq 0 ]; then
   echo "verdict=no_sources"
