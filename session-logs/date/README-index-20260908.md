@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260908.085146` | [The room that was waiting for a first piece](20260908/20260908-085146_the-room-that-was-waiting-for-a-first-piece.kyri) | the blog shelf gets its first piece. |
 | `20260908.083738` | [The reflex with no witness](20260908/20260908-083738_the-reflex-with-no-witness.kyri) | three law pages, one absolute, zero guards; walled at 0/1,958. |
 | `20260908.083306` | [A finished lap in the stash](20260908/20260908-083306_a-finished-lap-in-the-stash.kyri) | a green lap recovered from a round-open stash. |
 | `20260908.082906` | [A census pays for its forks](20260908/20260908-082906_a-census-pays-for-its-forks.kyri) | 16,447 forks, not the tree: 75,153 -> 15,070ms, identical. |
