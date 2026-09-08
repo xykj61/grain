@@ -5,8 +5,14 @@
 # writing to the tracked tree with 3 proving they converge, and the obvious repair was to hand-write
 # a convergence case into each of the other 27 controls. That is the same fault the census found,
 # performed once per tool: a rule kept where a hand remembered. **22 of the 27 share one invocation
-# shape** -- a single file path as the first argument -- so one prover answers for all of them, and
-# the five that differ are named rather than silently skipped.
+# shape** -- a single file path as the first argument -- so one prover RUNS for all of them.
+#
+# CORRECTED `20260908.005904`, and the correction came from this prover's own `inert` verdict. Run
+# across all 27 with one generic markdown sample the readings were **24 inert, 2 refused, 1
+# converges**. Inert is the honest answer: a prover without a sample that TRIGGERS the tool proves
+# nothing. Twenty-three of the twenty-seven were `*_control.sh` files writing only into their own
+# pens, with nothing to converge -- so the census excludes controls now and its population is FOUR.
+# One prover still serves them all; what it needs per tool is a SAMPLE, not a hand-written case.
 #
 # WHAT IT PROVES, and it is narrow on purpose: given a tool and a sample file, running the tool twice
 # leaves the file byte-identical to what one run left. `infusion(world') -> world'`, which
