@@ -132,7 +132,19 @@ root=${SHARED_PEN_ROOT:-.}
 # its COMPARE makes the compare ask whether one tree's dangling set grew against another tree's, and
 # two different trees compared as one can read GREEN while a real new dangling link stands. Repaired
 # to `mktemp -d`, which cannot collide. Sites 252 -> 239, files 49 -> 48, wiping 16 -> 15.
-files_ceiling=${SHARED_PEN_FILES_CEILING:-48}
+# AND IT FALLS AGAIN 48 -> 46 on `20260907.213612`, this time because the meter stopped reading
+# what it was never looking at. The heredoc rule below holds out a plant's own body, and the two
+# files that leave the population by it never held a pen at all: an instrument-absence control that
+# writes two plants on purpose, and a claim-preserve fixture carrying an embedded Python selftest.
+# So 48 was set over a population contaminated by two, which is the reading that matters when a
+# ceiling stands at zero slack -- the 49th file at that cold open was a correct peer control, and it
+# reddened every ship on the pier for a path no process ever opens.
+#
+# WHETHER A RATCHET SHOULD CARRY SLACK IS NOT DECIDED HERE. It is the same standing question the
+# doorway census raised the same day and left on the card, and answering it inside a repair to a
+# different fault is the shape this tree refuses. The ceiling is set at the true reading, as every
+# ratchet here is, and the question stands where it stands.
+files_ceiling=${SHARED_PEN_FILES_CEILING:-46}
 wipe_ceiling=${SHARED_PEN_WIPE_CEILING:-15}
 
 cd "$root" 2>/dev/null || { echo "verdict=no_root"; echo "refused: $root is not a directory" >&2; exit 1; }
@@ -220,6 +232,54 @@ hits=$(printf '%s\n' "$sources" | while read -r f; do
     # lock passes free, and a pen wearing a .lock suffix to escape the rule is counted the moment
     # it is destroyed like a pen.
     function wipes_recursive(l) { return (l ~ /rm[ \t]+-[a-zA-Z]*[rR]/ || l ~ /"rm"[ \t]+"-[a-zA-Z]*[rR]/) }
+    # A HEREDOC BODY IS PROGRAM CONTENT, not a path this file opens -- the same distinction the
+    # quote rule above already draws, one scale up. A control writes a plant with
+    # `cat > "$pen/probe.sh" <<PEN ... PEN`, and every /tmp path inside that body belongs to the
+    # PLANT rather than to the control: the control never opens it, no peer can collide on it, and
+    # the plant is usually never executed at all.
+    #
+    # THIS IS THE THIRD ROOM TO MEET THE FAULT, which is what makes it a law rather than a patch.
+    # %443 taught it to the instrument-absence meter, whose control now carries the sentence in its
+    # own body -- "the meter must be able to read a control like this one without counting the
+    # plants it writes" -- and the ASCII comment meters learned it as "skip program content" when a
+    # Rye multiline string and a shell heredoc body proved to be what a program PRINTS. This meter
+    # had not, and it read four tokens across three files that way, every one inside a heredoc:
+    # tools/fixtures/j/journal_query_control.sh (a planted probe reading a constant path),
+    # tools/fixtures/i/instrument_absence_control.sh (two plants it writes on purpose), and
+    # tools/fixtures/c/claim_preserve_modality.sh (an embedded Python selftest).
+    #
+    # WHAT IT COST, and why it was worth a lap rather than a ceiling raise. The files ceiling stood
+    # at 48 against a true reading of 46, so the population it was set over was contaminated by two
+    # files that never held a pen. A ratchet at zero slack over a contaminated population reds every
+    # ship on the pier for a plant -- the shape REDS %585 books -- and it fired here at the cold
+    # open of 20260907.213612 reading 49 files, the 49th a correct peer control landed that hour.
+    #
+    # THE OPENING LINE IS STILL READ, since `cat > /tmp/real_pen <<EOF` genuinely claims a path; only
+    # the body between the opener and its terminator is held out. Both passes skip it, so a pen
+    # ASSIGNED inside a plant is not learned either. The delimiter is read by stripping the optional
+    # dash, tilde and quotes rather than by matching a quote inside this regex, because the awk
+    # program is a single-quoted shell string and a literal apostrophe here would end it.
+    { if (FNR == 1) { inhere = 0; hereterm = "" } }
+    inhere {
+      hline = $0; sub(/^[ \t]+/, "", hline)
+      if (hline == hereterm) { inhere = 0; hereterm = "" }
+      next
+    }
+    {
+      if ($0 !~ /^[ \t]*#/) {
+        hp = index($0, "<<")
+        if (hp > 0) {
+          hrest = substr($0, hp + 2)
+          sub(/^[-~]/, "", hrest)
+          sub(/^[ \t]+/, "", hrest)
+          hq = sprintf("%c", 39)
+          gsub(hq, "", hrest); gsub(/"/, "", hrest)
+          if (match(hrest, /^[A-Za-z_][A-Za-z0-9_]*/)) {
+            hereterm = substr(hrest, 1, RLENGTH); inhere = 1
+          }
+        }
+      }
+    }
     # PASS ONE READS THE ASSIGNMENTS, so a wipe one line below its pen is read as a wipe. See the
     # header: the elder reading was line-scoped, and it hid two of the six wipers in this tree.
     FNR == NR {

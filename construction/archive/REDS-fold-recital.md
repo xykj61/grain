@@ -477,6 +477,8 @@ at a closed fold.*
 
 *Row %590 folded to [`REDS-a-bound-is-two-claims-rows-590.md`](REDS-a-bound-is-two-claims-rows-590.md) on `20260907.212118`, **CLOSED** -- a named ceiling the operation could not serve, and the guard that would have caught it is the one nobody writes.*
 
+*Row %591 folded to [`REDS-a-pen-inside-a-heredoc-rows-591.md`](REDS-a-pen-inside-a-heredoc-rows-591.md) on `20260907.222632`, **BOOKED** -- a scan reading source text cannot tell a program from a plant, and a control is made of plants -- both halves landed, the control's plant renamed and the scan taught to hold out a heredoc body.*
+
 *Row %592 folded to [`REDS-a-duplicate-that-was-never-a-judgment-rows-592.md`](REDS-a-duplicate-that-was-never-a-judgment-rows-592.md) on `20260907.215529`, **CLOSED** -- a duplicate stamp is two classes wearing one count, and only the divergent one is a hand's judgment.*
 
 *Row %593 folded to [`REDS-whose-module-is-this-rows-593.md`](REDS-whose-module-is-this-rows-593.md) on `20260907.222553`, **CLOSED** -- an instrument built to publish one blindness carried another, and the tree already held the right answer elsewhere.*
