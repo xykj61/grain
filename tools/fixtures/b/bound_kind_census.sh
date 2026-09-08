@@ -144,16 +144,44 @@ extent_sample_bound=44
 
 time_file=$(mktemp 2>/dev/null || echo "./.bound_kind_time.$$")
 ctl_file=$(mktemp 2>/dev/null || echo "./.bound_kind_ctl.$$")
+ctl_full_file=$(mktemp 2>/dev/null || echo "./.bound_kind_ctlfull.$$")
+ctl_anch_file=$(mktemp 2>/dev/null || echo "./.bound_kind_ctlanch.$$")
 guard_file=$(mktemp 2>/dev/null || echo "./.bound_kind_guard.$$")
-trap 'rm -f "$names_file" "$sites_file" "$time_file" "$ctl_file" "$guard_file"' EXIT INT TERM
+trap 'rm -f "$names_file" "$sites_file" "$time_file" "$ctl_file" "$ctl_full_file" "$ctl_anch_file" "$guard_file"' EXIT INT TERM
 
-git ls-files '*.rye' -z 2>/dev/null | xargs -0 grep -hoE '^[[:space:]]*(pub )?const [a-z0-9_]+' 2>/dev/null \
-  | sed -E 's/^[[:space:]]*(pub )?const //' | sort -u \
+# THE TIME LEG IS ANCHORED AT COLUMN ZERO, `^(pub )?const`, and the control is not.
+# An indent-tolerant pattern admits function-local constants, and a local is not a policy
+# constant: measured `20260908.042007`, the tolerant read returned 47 time names of which
+# fourteen were locals -- four Lotus millisecond ARRAYS guarded on their length (the header's
+# own declared counterexample, firing), a `linger_ms` parsed from an argument at run time, and
+# two carrying no time at all (`from_sec` extracts surfaces, `then_rest` trims a string). The
+# anchored read returns 33, and 6 of those are guarded where 11 were.
+#
+# THE ASYMMETRY IS IN THE TREE RATHER THAN IN THE INSTRUMENT, which is the only thing that
+# makes anchoring one leg honest. Every one of the 208 names in the extent family is already
+# declared at column zero, so the anchor has nothing to take from the control -- measured, not
+# assumed, and re-measured on every run as `control_anchor_delta` below. Read that number
+# before trusting the comparison: at zero the anchor tightened the population and left the
+# comparison fixed, and above zero the two sides have started being gathered differently.
+git ls-files '*.rye' -z 2>/dev/null | xargs -0 grep -hoE '^(pub )?const [a-z0-9_]+' 2>/dev/null \
+  | sed -E 's/^(pub )?const //' | sort -u \
   | grep -E '_(ms|us|ns|sec|secs|seconds|millis)$|interval|_period$|cadence|_hz$|duty|_rest$|_delay$|_sleep' \
   | grep -vE '^(max|min)_' > "$time_file" || true
 
 git ls-files '*.rye' -z 2>/dev/null | xargs -0 grep -hoE '^[[:space:]]*(pub )?const max_[a-z0-9_]*(bytes|len|size)' 2>/dev/null \
-  | sed -E 's/^[[:space:]]*(pub )?const //' | sort -u | head -"$extent_sample_bound" > "$ctl_file"
+  | sed -E 's/^[[:space:]]*(pub )?const //' | sort -u > "$ctl_full_file"
+head -"$extent_sample_bound" "$ctl_full_file" > "$ctl_file"
+
+# The same family read the time leg's way. The difference is a READING rather than a gate:
+# a `const max_frame_bytes` declared inside a function is ordinary Rye, so a tree that grows
+# one has done nothing wrong and a refusal here would red on honest work. What the number
+# buys is that the comparison states its own validity in the output, where a paragraph
+# claiming it would go unre-run.
+git ls-files '*.rye' -z 2>/dev/null | xargs -0 grep -hoE '^(pub )?const max_[a-z0-9_]*(bytes|len|size)' 2>/dev/null \
+  | sed -E 's/^(pub )?const //' | sort -u > "$ctl_anch_file"
+ctl_full=$(wc -l < "$ctl_full_file" | tr -d ' ')
+ctl_anch=$(wc -l < "$ctl_anch_file" | tr -d ' ')
+ctl_delta=$((ctl_full - ctl_anch))
 
 # One pass over the tree collects every asserting or erroring line, so the two
 # populations are then tested against one cached corpus rather than re-walking 1,939
@@ -186,6 +214,8 @@ echo "time_consts_guarded=$time_guarded"
 echo "extent_control=$ctl_total"
 echo "extent_control_guarded=$ctl_guarded"
 echo "extent_sample_bound=$extent_sample_bound"
+echo "extent_family=$ctl_full"
+echo "control_anchor_delta=$ctl_delta"
 
 echo "verdict=ok"
 exit 0
