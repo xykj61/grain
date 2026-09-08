@@ -1,5 +1,12 @@
 # Fifteen asks, sorted for the fleet -- rough draft, HELD
 
+> **Fossil.** The living page is
+> [`20260908-160500_fifteen-asks-sorted-for-the-fleet.md`](20260908-160500_fifteen-asks-sorted-for-the-fleet.md),
+> rewritten in New Gauge Radiant on Keaton's word `20260908.160500` -- every finding, number, and
+> lane held exactly, register 61 -> **100** (39% negation -> 0% across 44 sentences). This page keeps
+> every word it wrote.
+
+
 **Language:** EN - **Style:** Gauge, Field setting - **Voice:** Kyri
 **Stamp:** `20260908.114418` - **Status:** ROUGH DRAFT, **held on Keaton's own word**
 **Room:** mixed -- the measurements are checkable, the sequencing is a proposal
