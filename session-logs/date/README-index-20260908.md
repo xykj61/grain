@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260908.065545` | [The receipt that was earned](20260908/20260908-065545_the-receipt-that-was-earned.kyri) | the cheaper pass earned 4 days ago; 82.3% beyond the map. |
 | `20260908.063650` | [The word the map never spelled](20260908/20260908-063650_the-word-the-map-never-spelled.kyri) | DISCOVERY seated: 8 rows, ceiling 82.2% -> 78.1%. |
 | `20260908.055306` | [More instrument than thing](20260908/20260908-055306_more-instrument-than-thing.kyri) | 117 guards seated, module source touched 32 times. |
 | `20260908.054145` | [a plant that borrowed a contract](20260908/20260908-054145_a-plant-that-borrowed-a-contract.kyri) | a fixture proved a wall on a stranger's permission. |
