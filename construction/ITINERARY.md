@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `bfafcce7d4` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `8ec45a1fa2` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- NINETEEN ORPHANS WERE THREE KINDS, AND ONLY SIX WERE A LAP.**
 Elder [shelved](archive/20260908-025257_itinerary-landed-accounts.md).
@@ -157,26 +157,27 @@ act here. A per-mille share asks the habit -- a pen quadrupled without changing 
 the same number. Control **33**, `tier lap` 5.7s.
 **Yours:** `main.rye` inlines a model `weave.rye` owns -- port or drop?
 
-**INCENSE -- A SEAT SEATED LAST NIGHT ON A NUMBER ITS OWN INSTRUMENT REFUTED BEFORE MORNING.**
-Water's cardinal seat, taken on your word `20260908.001350`, cites *30 tools write to the tracked
-tree and 3 prove they converge* (`20260907.234808`). Water's instruction is to run the actual thing,
-so I ran it: `tools/c/convergence_census.sh` answers **7 candidates, 3 proven**, and three of the
-seven are libraries or a remote-reading scan -- **one real document writer**, proven `converges` on a
-sample that triggers it rather than the `inert` a dead sample would earn. The denominator was wrong
-**four** times in three laps, not the two its roster note claimed.
-**THE SEAT STANDS; ONLY THE FIGURE MOVED.** What justified it is that this tree states an
-idempotence claim in a foundation and proves it in almost nothing -- one writer says that as loudly
-as three of thirty. Corrected in the three living places that teach it, each now telling a lap to
-**run** the census rather than read the sentence about it.
-**The lesson is the stamp.** `Measured <stamp>` reads as a fact with provenance, and is one; what it
-cannot say is that the reading still stands -- so here a stamp made a superseded number look **more**
-checked than a bare one would have. **Yours:** sixteen such claims stand across twelve living law
-pages, every one a command away from being current. Worth an instrument, or worth reading by hand?
-**Elder INCENSE accounts condensed** (cairn `20260908.030324`): the doorway ratchet `20260907.192800`
-**BOOKED** and the two `stash@{0}` reds `20260907.180000` **CLOSED**, both
-[shelved](archive/20260907-192800_itinerary-landed-accounts.md). Their open question stands: at its
-floor of 3 the doorway ratchet is **a gate on new writing in a ratchet's clothes**, on `tier cadence`,
-so a stranger meets the refusal rounds after the hand that earned it.
+**INCENSE -- EVERY STALE FIGURE IN OUR LAW WAS FREE; EVERY HELD ONE WAS PINNED OR WALLED.**
+Elder [shelved](archive/20260908-042507_itinerary-landed-accounts.md). Last lap found one stamped
+claim four laps stale and asked whether sixteen more wanted an instrument. **They wanted a class
+law.** I re-ran the eight reachable by one command, sorted by *what holds them*.
+**PINNED** -- `gratitude-licenses`'s seL4 table (`185/185/185/0`, kernel **618**, Microkit
+**303**, two GPL device trees) reads **byte-identical eighteen days on**: a submodule at a fixed
+commit. **WALLED** -- Glow comment non-ASCII **0**, shell **504** of 505, exec-bit ratchet **57**
+where seated: a guard reds the lap each moves. **FREE** -- tracked files **13,650 ->
+16,084**, `%N` citations **2,519 -> 10,011** (commit bodies **532 -> 1,876**), logs declaring
+`scope` and `status` **21 of 95 -> 26 of 26**.
+**AND EVERY FREE FIGURE MOVED THE WAY THAT MADE ITS ARGUMENT STRONGER** -- never a wrong law, a law
+**understating itself**, the quietest wrong, since nothing reds. `session-log-provenance` was sharp:
+it cited `21 of 95` in the breath that justified *counted rather than gated*, so thin adoption reads
+as the reason. It is structural -- a killed lap cannot write a status whatever the habit -- and at
+**26 of 26** it argues FOR the gate. **`status_declared` by day: 0/45, 0/61, 48/134, 41/129,
+26/26** -- the `20260907` baton clause took inside a day.
+**Seated** in `context/GAUGE_STYLE.md` beside *unit, date, source*: **a figure carries a fifth thing
+-- what holds it still**. Pinned: cite the number. Walled: **cite the guard**. Free: **RUN, not
+READ**. **Yours:** naming those guards beside their numbers closes it.
+**Elder open** ([shelf](archive/20260907-192800_itinerary-landed-accounts.md)): at floor 3 the
+doorway ratchet is a **gate in ratchet's clothes**, `tier cadence`.
 
 **`%499` OPEN, having parked one lap of mine twice, COPAL's once, and both laps recovered here** --
 discriminator on [the shelf](archive/20260907-154440_itinerary-landed-accounts.md); COPAL asks it in
