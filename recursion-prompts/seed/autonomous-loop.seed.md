@@ -134,7 +134,7 @@ and the front door speak one sensory grammar.
 | **Water - Venus** *care and flow* -- threshold [`foundations/20260826-021734_water-the-row-that-tastes.md`](../../foundations/20260826-021734_water-the-row-that-tastes.md) | `foundations/20260823-222019_what-brix-infuse-is.md` | `foundations/20260826-194850_the-happy-zone-and-the-thin-edge.md` | `foundations/20260618-184912_growing-a-language.md` |
 | **Earth - Mercury** *the concrete* -- threshold [`foundations/20260826-021735_earth-the-row-that-breathes-in.md`](../../foundations/20260826-021735_earth-the-row-that-breathes-in.md) | `foundations/20260905-154954_the-clock-and-the-mark.md` | `context/TWO_ROOMS.md` | `foundations/20260703-202312_the-marked-value.md` |
 
-**Water's third seat changed hands `20260908.001350` on Keaton's word.** The seat read
+**Water's CARDINAL seat changed hands `20260908.001350` on Keaton's word.** The seat read
 `foundations/20260823-105651_the-shape-you-grew-and-the-shape-you-are.md` -- Conway's law, which
 stays a living foundation and simply leaves the rota. It now reads
 `foundations/20260823-222019_what-brix-infuse-is.md`, which states the tree's own claim about how
@@ -152,6 +152,12 @@ than reading this sentence:** a stamp says when somebody looked, never that the 
 stands. Fire was left alone on
 purpose: its three are a designed triad -- the stop, the allocation the stop buys, and the cut that
 follows -- and pulling one leg breaks a set rather than freeing a seat.
+
+*This paragraph read "Water's third seat" until `20260908.080219`, and the seat is the CARDINAL one
+-- the threshold page's own `## Cardinal:` section is what the seating rewrote. A modality is a
+reading instruction rather than a label: cardinal opens, fixed holds, dual adapts, so a reader told
+the wrong column reads the right page at the wrong angle. The commit that seated it wrote the same
+word in its subject and keeps it, as testimony does.*
 
 **Earth-Cardinal changed hands `20260905` on Keaton's word.** The seat read
 `context/specs/20260627-102012_one-clock-naming-law.md`, which names how a FILE is marked. The mark

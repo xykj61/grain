@@ -55,6 +55,8 @@ for e in $elements; do
   thr="$pen/foundations/2026010$i-000000_${low}-threshold.md"
   {
     printf '# %s -- the threshold\n\n' "$e"
+    printf '**Kin:** [`20260101-000000_the-panchanga.md`](20260101-000000_the-panchanga.md) -- `kyri/receipt.rye` -- [`2026010%s-000001_%s-cardinal.md`](2026010%s-000001_%s-cardinal.md) -- [`2026010%s-000002_%s-fixed.md`](2026010%s-000002_%s-fixed.md) -- [`2026010%s-000003_%s-dual.md`](2026010%s-000003_%s-dual.md)\n\n' \
+      "$i" "$low" "$i" "$low" "$i" "$low" "$i" "$low" "$i" "$low" "$i" "$low"
     for m in Cardinal Fixed Dual; do
       printf '## %s: the %s seat\n\n' "$m" "$m"
       printf 'This seat reads `foundations/2026010%s-00000%s_%s-%s.md`, which seats the row.\n\n' \
@@ -96,6 +98,8 @@ check "a whole grid reads ok"              yes "$(has "$out" 'verdict=ok')"
 check "with nothing unresolved"            yes "$(has "$out" 'unresolved=0')"
 check "no section missing"                 yes "$(has "$out" 'sections_missing=0')"
 check "and no seat undeclared"             yes "$(has "$out" 'seat_undeclared=0')"
+check "every Kin line names its seats"     yes "$(has "$out" 'kin_seat_absent=0')"
+check "and names nothing beside them"      yes "$(has "$out" 'kin_extra=0')"
 
 # A seat the grid names and disk does not hold.
 gone="$pen/foundations/20260103-000002_fire-fixed.md"
@@ -142,6 +146,36 @@ if ROTA_GRID_ROOT="$pen" ROTA_GRID_SEED="recursion-prompts/seed/absent.md" sh "$
   check "an absent seed refuses"           refused accepted
 else
   check "an absent seed refuses"           refused refused
+fi
+
+# THE FOURTH SITE, the one that drifted twice unseen: a threshold's `**Kin:**` line.
+# A Kin line that stops naming a live seat -- exactly Water's `20260908` drift, where the grid, the
+# heading and the section path were all correct and only this line pointed at the released page.
+thr="$pen/foundations/20260104-000000_water-threshold.md"
+if plant "$thr" '/^\*\*Kin:\*\*/s|20260104-000001_water-cardinal\.md|20260104-000009_water-retired.md|g' "the released seat on the Kin line"; then
+  out=$(ask)
+  check "a Kin line dropping a seat reds"  yes "$(has "$out" 'kin_seat_absent=1')"
+  check "and drift is the verdict"         yes "$(has "$out" 'verdict=drift')"
+  check "the section itself stays clean"   yes "$(has "$out" 'seat_undeclared=0')"
+  unplant "$thr"
+fi
+out=$(ask)
+check "lifting it returns to green"        yes "$(has "$out" 'verdict=ok')"
+
+# A Kin line that gains a page the grid does not seat is REPORTED and never gated, because a retired
+# seat and a deliberate new kin link are the same shape from here and only a reader tells them apart.
+if plant "$thr" 's|^\(\*\*Kin:\*\*.*\)$|\1 -- [`20260101-000000_a-friendly-page.md`](20260101-000000_a-friendly-page.md)|' "an extra kin page"; then
+  out=$(ask)
+  check "an extra Kin page is reported"    yes "$(has "$out" 'kin_extra=1')"
+  check "and it does not red"              yes "$(has "$out" 'verdict=ok')"
+  unplant "$thr"
+fi
+
+# A threshold carrying no Kin line at all names none of its three seats, and says so as three.
+if plant "$thr" 's|^\*\*Kin:\*\*.*$||' "the whole Kin line"; then
+  out=$(ask)
+  check "no Kin line reds for all three"   yes "$(has "$out" 'kin_seat_absent=3')"
+  unplant "$thr"
 fi
 
 printf 'pass=%d fail=%d\n' "$pass" "$fail"

@@ -532,3 +532,7 @@ at a closed fold.*
 *Row %619 folded to [`REDS-a-pointer-with-no-claim-rows-619.md`](REDS-a-pointer-with-no-claim-rows-619.md) on `20260908.080235`, **CLOSED** -- the ledger broadcast an unclaimed lap in a row's own closing sentence, and two ships took it inside one hour.*
 
 *Row %601 folded to [`REDS-a-runner-is-a-file-the-pier-executes-rows-601.md`](REDS-a-runner-is-a-file-the-pier-executes-rows-601.md) on `20260908.082832`, **BOOKED** -- a population is a rule only when the guard's own WHY names the boundary its source line draws -- here it named neither a room nor a suffix but a file the pier executes.*
+
+*Row %619 folded to [`REDS-a-pointer-with-no-claim-rows-619.md`](REDS-a-pointer-with-no-claim-rows-619.md) on `20260908.084235`, **CLOSED** -- the ledger broadcast unclaimed work in a row's closing sentence and recorded nobody taking it, so two ships made one repair inside an hour.*
+
+*Row %622 folded to [`REDS-a-leg-that-could-not-survive-zero-rows-622.md`](REDS-a-leg-that-could-not-survive-zero-rows-622.md) on `20260908.085508`, **CLOSED** -- a control leg planting one lagging copy asserted the scan still passed, which held only while the ceiling stood above zero.*
