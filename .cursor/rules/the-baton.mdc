@@ -57,7 +57,11 @@ pier, and what makes that safe is proving the other door is closed and opening w
 **And never signal a process by name.** `pkill -f standing_equipment_run` matches a command line
 rather than a directory, so on a pier eight ships share it reaches the fleet, and the calling
 shell's own command line holds the pattern, so it kills the caller too (exit 144). The bounded form
-is `sh tools/f/fleet_call.sh --pattern <substring> [--signal TERM]`, which resolves each candidate
+is `sh tools/f/fleet_call.sh --pattern <substring>`, which **reads**; `--signal TERM` is what acts.
+**Naming a signal is the verb** (`20260908.071628`, the sixth firing): a bare call reports and sends
+nothing, because that firing used this very helper to ASK whether a pass was alive and the bare form
+TERMed it. The wall was perfect -- two peer trees refused out loud by name -- and the default verb
+was the fault. It resolves each candidate
 through `/proc/<pid>/cwd` and refuses a process outside this tree out loud rather than signaling it
 in silence -- a false refusal costs one line, a false send costs a peer's pass.
 

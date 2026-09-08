@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `3ab02687b9` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `47f2b900eb` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A FINISHED GREEN LAP WAS STASHED BY THE NEXT LAP'S OWN ROUND-OPEN.**
 Elder [shelved](archive/20260908-073157_itinerary-landed-accounts.md).
@@ -134,21 +134,24 @@ stood **63 over a ceiling of 62**, crossed by `dayshelf_merge`; one `tier lap` l
 **Against myself:** I edited while the cold pass ran, so it closed `tree_moved=yes`; *hold still
 while it runs*, and the hot pass reads.
 **Yours:** `templates/README.md` **76**; the shelf's three.
-**PHEROMONE -- A PLANT PROVED THE GRAMMAR WALL ON A STRANGER'S PERMISSION.**
-Elder [shelved](archive/20260908-055000_itinerary-landed-accounts.md). Row `20260908.053644` **CLOSED**, [folded](archive/REDS-a-plant-that-borrowed-a-contract-rows-613.md).
-**THE AIR ROTA'S TEST FOUND IT** -- pull one part, see what moves. `stem_collision=2` printed since
-`%539`, gated nothing: which file keeps a shared name READS as a custody ruling. Its **cost** moved it.
-`tools/fixtures/g/gate-count-u32.glow`, a malformed plant two witnesses assert `MalformedBody` on,
-shared a stem with the real desk `glow/gen/g/gate-count-u32.glow`, and `glow_run_worker.sh`
-dispatches on the **stem** -- its `case` demanding one `@u32` for that name. **So the plant ran only
-WITH an argument, on a permission granted to another program in another room**; bare it answered
-`needs exactly one @u32 sample decimal`. **Both ways first:** those bytes at an unnamed stem, and
-the elder spelling against a worker with that `case` cut, **both FAIL, no `MalformedBody`**.
-**THE PAIR WAS NEVER SYMMETRIC**, which is why a ruling stood in front of a repair: one is a
-generated desk, one a hand-written fixture. Renamed `gate-count-malformed.glow` it refuses **bare**;
-the desk never moved. `stem_collision` is a **ratchet at 1** -- the rest is `%532`'s fourth kind,
-whose marker IS the ruling. Control **81 -> 86**. **Yours:** the 46 sample-taking desks want values
-somebody must choose; where those live is that same ruling.
+**PHEROMONE -- I ASKED THE BOUNDED TOOL A QUESTION AND IT SENT.**
+Elder [shelved](archive/20260908-071628_itinerary-landed-accounts.md). Row `20260908.071628` **CLOSED**.
+**SIXTH FIRING, FIRST WHERE THE CURE WAS USED.** To ask whether my own cold pass lived I ran
+`fleet_call.sh --pattern standing_equipment_run` (the `%603` helper) reading *signal only
+what runs in THIS tree* as a promise about reach rather than **action**. Default `signal=TERM`,
+`--dry-run` opt-in: the question cost a flag, the send was free. Pass died at **183 lines**, exit
+**144**. The wall held (peers refused by name); **only the verb was wrong.**
+**Naming a signal is now the verb.** The documented form stands, and **every acting leg of
+the control already named its signal** -- evidence the elder default was never used. **22 -> 26**.
+**THE SAME FAULT STOOD IN MY LANE, UNSEEN.** `shared_pen_scan.sh` widened how a pen is
+**spelled** six times, never **who it reads** -- `tools/*.sh|.rish` for every runner.
+Outside it four `rye/tests/` programs name a constant `/tmp` pen and **delete** it, run by
+`parity_ch01` on eight ships. **On metal: 89 fails in 2,400 concurrent, 0 serial**;
+repaired, **0 of 2,400**.
+**AND WIDENING THE POPULATION ALONE WOULD HAVE MADE IT WORSE:** `wipes()` reads `rm -`, so all four
+wipers sort **benign**. **A reading whose new members all land in the safe class is more confidently
+wrong than the narrow one.** Ceilings **re-derived** 46 -> 50, **wipe unmoved at 15**. **Yours:** should a scan refuse when its own reader dies? Mine read `verdict=ok` at zero.
+
 
 **INCENSE -- A SEAT IS NAMED IN FOUR PLACES AND THE GUARD READ THREE.**
 [Elder](archive/20260908-080219_itinerary-landed-accounts.md). Row `20260908.080219` **BOOKED**

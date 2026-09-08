@@ -1,0 +1,63 @@
+format session-log-v1
+stamp 20260908.072238
+editor Claude Code
+provider Anthropic
+product Claude Code
+role unattended fleet seat -- Pheromone, the molecular star
+modality text
+model unverified
+model_status active runtime unverified -- .claude/settings.json configures claude-opus-5 at max, which is configuration rather than telemetry
+configured_model claude-opus-5
+configured_reasoning max
+configured_status proven by tracked .claude/settings.json
+evidence tracked settings file; no runtime identity endpoint read this lap
+voice Kyri
+host Framework laptop, Linux, America/New_York; fleet pier, no jail (FLEET_BARE)
+title The question that sent, and the meter that could not see its own language
+prompt the standing fleet baton -- Pheromone's lane is the language and its molecules
+rota lap 4272, row 2 -- Fire, the row that sees; cut and stop. Its instruction is to read the ledger BEFORE reading anything new, and to look straight at the uncomfortable thing rather than survey around it. That is what put me in construction/REDS.md at the open rather than in a module, and the row I made twenty minutes later is one the fire row would have predicted: the lap that squints cuts twice.
+think Fire says reds first, so I read the open rows for my lane. %532 and %589 are both language-custody rulings that stop and wait for Keaton, so the lane's agent-doable queue was genuinely empty and I looked for the fault behind an existing guard rather than in front of one.
+think %519's population caught my eye -- 94 controls with no plant-landed check -- and measuring it split the count in two: a control that AUTHORS its pen carries no drift hazard, and only one that copies a tracked module does. The Glow room's seven all author their own. That is a paragraph rather than a lap, so I kept looking.
+think shared_pen_scan.sh was the real find. Its header widens how a pen is SPELLED six times over -- five spellings, then a sixth, each re-derivation argued at length -- and every one of them held the reading to git ls-files 'tools/*' filtered to .sh and .rish. Six widenings of the predicate, zero of the population.
+think The population it could not see is the language this tree writes its own programs in. Widened in a pen: sources 3,226 -> 5,252, files 46 -> 55. Nine new files, four of them rye/tests programs that name a constant /tmp path and delete it, all four built and run by tools/p/parity_ch01.rish every parity pass, on eight ships.
+think Before repairing anything I proved the race on metal, because this scan's own header sets that standard. Eight concurrent runs all passed -- the window is microseconds -- so I ran 2,400. 89 failures concurrent, 0 serial. Green alone, red in company: this guard's own signature, in a room it could not read.
+think Then the finding that made the lap worth writing down. Widening the POPULATION alone would have made the meter WORSE. wipes() reads rm -, and Rye deletes with deleteTree, so all four wipers would have sorted into the benign hold class; the comment rule reads #, so a //! usage line is charged; and << is Zig's shift operator, so the heredoc detector swallowed the rest of a file. A reading whose new members all land in the safe class is more confidently wrong than the narrow one it replaced.
+think Population and predicate had to move together, and the run-time-name rule had to land in BOTH awk passes -- with it in pass one alone a pen reads free of the wipe count and stays charged as a constant, which is the half-repair that looks like a repair.
+obs I made this lap's own red at 06:5x. To check whether my cold roster pass was alive I ran fleet_call.sh --pattern standing_equipment_run and read the output as an answer. Its default is signal=TERM and --dry-run is the opt-in, so the question cost a flag and the send was free. My pass died at 183 lines with zero red, and the shell exited 144.
+obs What matters about that firing is which half worked. The wall was perfect -- grain-patchouli and grain-copal were refused out loud by name and the blast radius was exactly this checkout. This is the sixth firing of the family and the FIRST where the cure was used: %541, %569, %587 and %603 all typed the raw pkill, and %603 closed the day before by putting the bounded helper on the baton. The baton clause worked. What remained was a verb rather than a reach.
+obs Every other instrument in this tree reads before it writes -- index-preview before index-fold, --list before a repair, reds_fold.sh refusing an open row. fleet_call was the one family whose wrong guess costs a lap and whose default acted. Naming a signal is the verb now; the documented --pattern X --signal TERM did not move, no tracked file calls the helper at all, and every acting leg of its control already named its signal, which is the evidence the elder default was never the used one.
+obs Two more faults of mine, both caught before they shipped. An apostrophe in shell's-marker inside the single-quoted awk program ended the string, and the broken scan answered sites=0 constant_pen_files=0 verdict=ok -- a meter reading nothing and calling it clean, %463's shape, inside the guard I was repairing. It refuses on no awk failure, which is a question I hand back rather than answer.
+obs And my invariant asserts respelled the pen stem, which both kept four files in the count and put a second copy of a path in the file. Removed: the asserts now read the bound and the trailing digit, and the stem is written once.
+obs fold_shelf_link_repoint answered nothing_to_do over my new shelf's two dead links and its witness read GREEN, because both read tracked files and a shelf is untracked until staged. Repaired by hand; the ordering is worth a peer's attention.
+loom race=rye_dir_iterate_test form=fixed_name concurrent_runs=2400 fails=89 serial_runs=2400 serial_fails=0
+loom race=rye_dir_iterate_test form=runtime_name concurrent_runs=600 fails=0
+loom race=rye_fs_boundary_test form=runtime_name concurrent_runs=600 fails=0
+loom race=rye_read_file_alloc_test form=runtime_name concurrent_runs=600 fails=0
+loom race=rye_write_streaming_all_test form=runtime_name concurrent_runs=600 fails=0
+loom scan=shared_pen sources_read=5252 sources_elder=3226 constant_pen_sites=244 constant_pen_files=50 files_ceiling=50 wiping_files=15 wipe_ceiling=15
+loom control=shared_pen behaviors=50 faults=0 elder_behaviors=41
+loom control=fleet_call pass=26 fail=0 elder_pass=22
+loom roster=standing_equipment_run tier=lap scope=scoped cold_guards_run=162 cold_seconds=1417 cold_green=160 cold_red=0 cold_gated=2 skipped_scope=25
+loom qa file=tools/f/fleet_call.sh setting=meter composite=84 letter=B
+loom qa file=tools/fixtures/s/shared_pen_scan.sh setting=meter composite=92 letter=A
+loom qa file=rye/tests/dir_iterate_test.rye setting=meter composite=98 letter=A+
+file tools/f/fleet_call.sh naming a signal is the verb -- dry is the default, --signal sets dry=no, --dry-run forces the reading in either flag order
+file tools/fixtures/f/fleet_call_control.sh four legs for the new law, this lap's own fault planted and lifted on a live process
+file tools/f/fleet_call_witness.rish the behavior count carried 22 -> 26
+file tools/f/fleet_baton.txt the clause every ship reads, since a verb is a habit and habits are set here
+file .claude/rules/the-baton.md the record beside the one-writer law
+file .cursor/rules/the-baton.mdc the canonical twin, worded identically so cohort drift did not move
+file tools/fixtures/s/shared_pen_scan.sh the population widened to every tracked runner, with the three shell-shaped rules widened beside it and the ceilings re-derived
+file tools/fixtures/s/shared_pen_control.sh eight new legs, each Rye rule proven from both sides; the elder only-sh-and-rish leg inverted rather than deleted
+file tools/s/shared_pen_witness.rish the ten new legs bound by NAME -- a tally is one assertion for eight laws
+file rye/tests/dir_iterate_test.rye the pen named from Thread.getCurrentId rather than at write time
+file rye/tests/fs_boundary_test.rye the same
+file rye/tests/read_file_alloc_test.rye the same, both of its pens
+file rye/tests/write_streaming_all_test.rye the same
+file construction/REDS.md row 20260908.071628 booked and closed on the lap it fired
+file construction/ITINERARY.md the live front carries this lap; elder account shelved to hold the card under its ceiling
+file construction/archive/20260908-071628_itinerary-landed-accounts.md the shelved elder account, links re-anchored one directory down by hand
+file session-logs/date/README-index-20260908.md this lap's row
+scope one lap -- a red of my own making, and the guard in my lane that could not see its own language
+status GREEN -- shared_pen, fleet_call and process_reach each GREEN by name; tame_style_check and width-check GREEN; shared_pen control 50/0 and fleet_call control 26/0; four Rye tests build and run and read 0 fails in 600 concurrent runs each; cold roster 162 guards, 160 green, 0 red, 2 gated (%7, %5); hot roster over the staged tree to follow
+recommend keep-going the widened scan names four files at its new ceiling in lanes I do not hold -- rishi/tests/file_io.rish, pond/enclosure_policy.rye and two LOCA macos probes -- and the question worth a word is whether a scan should refuse when its own reader dies rather than reading zero and calling it clean

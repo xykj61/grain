@@ -136,5 +136,24 @@ sleep 1
 out=$(sh "$call" --pattern "$tag" --root "$mine" --dry-run 2>&1)
 check "a live pen process is seen"  yes "$(has "$out" "pid=$e cwd=$mine verdict=dry")"
 
+# -- 17-20: NAMING A SIGNAL IS THE VERB, and the reading is what a bare call gives ----------------
+# invariant: this is the fault of `20260908` proven from the failing side. A bare --pattern over a
+# process in this very root must report and leave it ALIVE; the same call with --signal must reach
+# it. Proved on a live process rather than on the summary line alone, since a summary saying
+# would_send while a process dies is the silence this helper exists to end.
+f=$(sleeper "$mine")
+sleep 1
+out=$(sh "$call" --pattern "$tag" --root "$mine" 2>&1)
+sleep 1
+check "a bare call only reads"      yes "$(has "$out" "pid=$f cwd=$mine verdict=dry")"
+check "a bare call signals nothing" yes "$(alive "$f")"
+# invariant: --dry-run wins in EITHER order, so a preview asked for after a signal is a preview.
+out=$(sh "$call" --pattern "$tag" --root "$mine" --dry-run --signal KILL 2>&1)
+sleep 1
+check "dry-run wins before signal"  yes "$(alive "$f")"
+out=$(sh "$call" --pattern "$tag" --root "$mine" --signal KILL 2>&1)
+sleep 1
+check "naming a signal acts"        no  "$(alive "$f")"
+
 printf 'pass=%s fail=%s\n' "$pass" "$fail"
 [ "$fail" -eq 0 ]

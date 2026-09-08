@@ -121,7 +121,20 @@ assert control.out contains "rishi_var_wipe_counted=yes" else "shared-pen: a Ris
 assert control.out contains "var_mktemp_free=yes" else "shared-pen: a variable named by mktemp holds no constant pen"
 assert control.out contains "var_wipe_unheld_free=yes" else "shared-pen: the tracker must not read every wipe in a file that holds a pen as a wipe of it"
 assert control.out contains "var_unheld_still_counted=yes" else "shared-pen: freeing the wipe must not free the pen"
-assert control.out contains "behaviors=48" else "shared-pen: the control must run every behavior this witness names"
+# THE POPULATION IS EVERY RUNNER, and each Rye rule is bound here by NAME rather than by the
+# tally alone -- a count is one assertion for eight behaviors, and a leg that quietly stops
+# proving its own subject keeps the tally while losing the law (20260908).
+assert control.out contains "rye_extension_read=yes" else "shared-pen: a Rye source is a runner and must be read"
+assert control.out contains "outside_tools_read=yes" else "shared-pen: rooms outside tools/ hold runners too"
+assert control.out contains "prose_not_a_runner=yes" else "shared-pen: prose names a path, it does not open one"
+assert control.out contains "vendored_not_ours=yes" else "shared-pen: a vendored tree is held unmodified, never repaired here"
+assert control.out contains "rye_comment_free=yes" else "shared-pen: a Rye comment teaches, it creates no directory"
+assert control.out contains "rye_code_after_comment=yes" else "shared-pen: the comment rule must not become a hole"
+assert control.out contains "rye_delete_is_a_wipe=yes" else "shared-pen: deleteTree removes a pen exactly as rm -rf does"
+assert control.out contains "rye_hold_is_not_a_wipe=yes" else "shared-pen: a Rye pen merely held is a hold"
+assert control.out contains "rye_runtime_name_free=yes" else "shared-pen: a bufPrint placeholder completes the name at run time"
+assert control.out contains "rye_fixed_name_bites=yes" else "shared-pen: the run-time rule must not free a name fixed at write time"
+assert control.out contains "behaviors=57" else "shared-pen: the control must run every behavior this witness names"
 assert control.out contains "nonrecursive_wipe_counted=yes" else "shared-pen: a removal without an r flag still removes -- the sixth spelling"
 assert control.out contains "nonrecursive_var_wipe_counted=yes" else "shared-pen: the sixth spelling must read through a held name too"
 assert control.out contains "lock_release_free=yes" else "shared-pen: a lock is released with rm -f, so the widening must leave that rule standing"
@@ -137,7 +150,9 @@ assert control.out contains "files_over_ceiling_refused=yes" else "shared-pen: a
 assert control.out contains "files_over_named=yes" else "shared-pen: the refusal must name a verdict, never only an exit code"
 assert control.out contains "wipe_at_ceiling_free=yes" else "shared-pen: a wiping set at its ceiling must pass free"
 assert control.out contains "wipe_over_ceiling_refused=yes" else "shared-pen: a wiping set past its ceiling must refuse"
-assert control.out contains "other_extension_free=yes" else "shared-pen: this reading is of shell and Rishi sources"
+# The elder line here read `other_extension_free` -- the law that a .rye source is NOT a runner.
+# It was true of the scan and false of the tree, and rye/tests proved it false by racing on metal.
+# The inverted legs are asserted by name above; this line stays as the record of what moved.
 assert control.out contains "no_sources_refused=yes" else "shared-pen: a tree with no sources must refuse rather than read zero"
 assert control.out contains "no_git_refused=yes" else "shared-pen: a root that is not a checkout must refuse"
 assert control.out contains "control_verdict=proven" else "shared-pen: the control must agree with itself"

@@ -20,6 +20,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260908.080058` | [A runner is a file the pier executes](20260908/20260908-080058_a-runner-is-a-file-the-pier-executes.kyri) | %601 booked; population a union, 3298 -> 3305. |
 | `20260908.073308` | [An enumeration that stood for a rule](20260908/20260908-073308_an-enumeration-that-stood-for-a-rule.kyri) | a gate read zero over nine of its own subjects. |
 | `20260908.072952` | [The boundary written from both sides](20260908/20260908-072952_the-boundary-written-from-both-sides.kyri) | a sweep by number hit a peer; two doors mirror. |
+| `20260908.072238` | [The question that sent](20260908/20260908-072238_the-question-that-sent.kyri) | a bounded tool asked, and sent; a meter blind to Rye. |
 | `20260908.071657` | [Uniqueness without identification](20260908/20260908-071657_uniqueness-without-identification.kyri) | a glob handed me my own tree, a day old. |
 | `20260908.070532` | [The pointer with no claim](20260908/20260908-070532_the-pointer-with-no-claim.kyri) | Two ships widened one guard in one hour; the ledger sent both. |
 | `20260908.065545` | [The receipt that was earned](20260908/20260908-065545_the-receipt-that-was-earned.kyri) | the cheaper pass earned 4 days ago; 82.3% beyond the map. |

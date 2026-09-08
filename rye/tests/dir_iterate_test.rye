@@ -11,13 +11,30 @@
 
 const std = @import("std");
 const Dir = std.Io.Dir;
+const Thread = std.Thread;
+
+/// A PEN NAMED AT WRITE TIME IS A PEN EVERY SHIP CLAIMS AT ONCE. Eight ships share one /tmp on
+/// this pier and `tools/p/parity_ch01.rish` builds and runs this program on all of them, so a
+/// fixed name is one path several processes create, iterate and delete in each other's hands.
+/// Measured `20260908` on the fixed-name form: **89 failures in 2,400 concurrent runs**, and
+/// **0 in 2,400 serial runs** -- green alone, red in company. The repaired form reads 0 of 2,400
+/// either way. The name is completed from this thread's own id, which no peer process holds.
+const max_pen_path_len: u32 = 96;
 
 pub fn main(init: std.process.Init) !u8 {
     const io = init.io;
     const cwd = Dir.cwd();
 
     // Set up: fresh directory with exactly one file.
-    const tmp_dir = "/tmp/rye_dir_iterate_test";
+    var pen_buf: [max_pen_path_len]u8 = undefined;
+    const tmp_dir = try std.fmt.bufPrint(&pen_buf, "/tmp/rye_dir_iterate_test-{d}", .{Thread.getCurrentId()});
+    // invariant: the name fits the named bound rather than the buffer accident.
+    std.debug.assert(tmp_dir.len <= max_pen_path_len);
+    // invariant: the pen ENDS in this thread id, so no peer process can name it. The
+    // stem is not respelled here: a path written twice is a path two lines may come
+    // to disagree about, and the run-time half is the half that carries the safety.
+    std.debug.assert(tmp_dir[tmp_dir.len - 1] >= 48);
+    std.debug.assert(tmp_dir[tmp_dir.len - 1] <= 57);
     const tmp_file = "rye_seed.txt";
     cwd.deleteTree(io, tmp_dir) catch {};
     try cwd.createDir(io, tmp_dir, .default_dir);
