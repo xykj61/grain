@@ -34,6 +34,22 @@ pond
 brushstroke
 image
 mikrophone
+# A TWENTY-FIRST ROOM IS NAMED HERE AND NOT ADDED (20260908.105721). `rye/tests` is absent while
+# `rye/src` is present, and nothing in either half of this scan exempts a test by name. Measured the
+# day this roster widened: the camelCase ratchet reads 0 against the twenty rooms and SEVEN against
+# authored Rye tree-wide, all seven in `rye/tests` -- `ascI32`, `ascU8`, `clearAll`, `clearOne`,
+# `computeDiff`, and `pub fn lessThan`. That is the same blindness this file was written to end,
+# one room further out: a reading of the population rather than of the tree.
+#
+# NOT ADDED HERE, and the reason is the ratchets rather than the rooms. Adding a room moves memcpy,
+# parseInt, Ed25519, long-fn and assert counts all at once, and a ratchet ceiling only falls -- so a
+# widening has to RE-DERIVE each ceiling with the reason recorded, exactly as the memcpy line did
+# when it went from 1 to 137. That is one deliberate lap by the hand that owns these counts, not a
+# line appended by a passer-by.
+#
+# ONE OF THE SEVEN IS EXEMPT ON ITS OWN MERITS: `pub fn lessThan` is the shape Zig's own sort API
+# asks for, an inherited-name seam under `context/specs/inherited-names.md`. A widening should count
+# six, not seven.
 rye/src
 amphora
 
