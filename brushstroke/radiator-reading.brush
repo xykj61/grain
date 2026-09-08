@@ -1,0 +1,35 @@
+::  name       radiator reading
+::  shape      lines - a steady-state radiative reading and its verdict (max 8)
+::  invariant  every line carries a number and its unit; the verdict line names the margin
+::  example    the worked case of press/date/20260907/20260907-175821_the-radiator-and-the-wire-public.html
+::  readers    brush_parse.rye -> Frame -> Skate
+::  nib        surface-radiator-v0
+::
+::  The essay's interactive field, converted to a surface this tree can draw. The html
+::  ran the arithmetic in a browser; here the surface holds the READING and the physics
+::  belongs to a Rye module, per active-designing/20260908-124500_the-witness-the-essay-asked-for.md.
+::  Five inputs stand behind these lines: junction temperature, coolant delta, emissivity,
+::  the sink the panel faces, and geometry -- with the self-view tax named as its own term.
+::
+::  SIMPLE, LOVABLE, COMPLETE at its own scope: it draws one real case with real numbers,
+::  including the refusal, and it claims nothing more. The inputs move when the Rye witness
+::  lands; a surface that presents a computed reading it cannot yet compute would be a
+::  drawing of a promise.
+::  Tongue: Glow · Bron · TAME · Radiant. Never JS · HTML · CSS · JSON.
+::
+::  at-nib:     radiator-reading
+::  present:    Frame
+::  max-lines:  8
+::  style:
+::    paper 0xFF10161C
+::    ink 0xFFE8EEF2
+::  lines:
+::    junction 100 C, coolant 10 K below, emissivity 0.90
+::    sink 250 K, one face, self-view tax 15 percent
+::    panel temperature 90 C
+::    shed after tax 585 W per m2
+::    one face, sink 250 K 688 W per m2
+::    1.71 m2 per kW
+::    150 kW wants 256 m2 of panel
+::    AI1 peak 1364 W per m2 over 110 m2 refuses, short by 779
+::  refuse:     src/web · Wasm/Web backend · CSS rail · a { } stylesheet · JS arithmetic

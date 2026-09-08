@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260908.125241` | [the field that became a surface](20260908/20260908-125241_the-field-that-became-a-surface.kyri) | eight lines, and one refusal drawn. |
 | `20260908.124212` | [the file that landed as a file](20260908/20260908-124212_the-file-that-landed-as-a-file.kyri) | the essay named its own next lap. |
 | `20260908.120903` | [the open-door register](20260908/20260908-120903_the-open-door-register.kyri) | Bhakta seated; the file did not arrive. |
 | `20260908.114418` | [fifteen asks, one question](20260908/20260908-114418_fifteen-asks-one-question.kyri) | sorted and held for the file. |
