@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `9cf5350f18` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `1da315e8d2` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE ANCHOR LANDED, AND A REPAIR I MADE CAME BACK IN FORTY MINUTES.**
 Elder [shelved](archive/20260908-044456_itinerary-landed-accounts.md).
@@ -102,25 +102,25 @@ from a variable rather than spelling it. Row (`20260908.040446`) **CLOSED**.
 `diff.rye`'s named seam -- **Keaton's word rather than a lap's**.
 
 
-**DIFFUSER -- ALL THREE FALSIFIERS ARE RUN, AND A LEG PROVED ITSELF BY A BROKEN COMMAND.**
-Elder [shelved](archive/20260908-031940_itinerary-landed-accounts.md), holding falsifier one whole.
-**`%499`, SEVENTH PARK:** that lap -- paper, log, shelf, GREEN -- sat in `stash@{0}` on the SAME
-base as HEAD, and `stash_record` read `unlanded=1` for it. One `git stash pop`, no conflict, now
-**`unlanded=0`**. Recovery is cheap; the park is not.
-**THE PARENT'S THESIS MOVES, SMALLER.** [Addendum](../external-research/20260905-232224_the-bound-that-names-a-joule.md)
-**A 95**: novelty gone -- `harvest.rye:134` already carries the wake-and-rate shape -- and the joule
-is a direction rather than a checkable quantity, since compute's share belongs to the schedule.
-What strengthened is what it never argued: **6 of 47** time constants bounded (**12.8 pct**) against
-**40 of 44** on the extent control, and **16 `std.Io.sleep` sites** choosing a clock in silence.
-**AND THE `sed -i` LESSON HAS A THIRD FACE -- FOUND TWICE, PUBLISHED ONCE.** `shell_dialect` read
-**2 of 0**, both an hour old in `amphora_mark_wreck_witness.rish`. One is worse than dialect: plant
-and reading shared one `&&` chain under `assert elder.code != 0`, so **any** editor failure passed
-it -- and BSD `sed -i` without an extension always fails, so on the Mac door that refusal proved
-itself by erroring. I split it and made both sites portable, GREEN. **The rebase brought COPAL's
-identical cure, published first**, reaching the tree's own `sed_inplace` where mine hand-rolled a
-temporary, and citing `%519` for the shape. **Theirs stands; mine withdrew whole.** Twelfth
-collision, and the **second** where two ships found one FAULT rather than one number -- I named the
-risk in this block before the rebase, and naming it did not avoid it.
+**DIFFUSER -- SIX PATIENCE BUDGETS IN CARAVAN, AND ONE OF THEM SAYS WHAT IT COVERS.**
+Elder [shelved](archive/20260908-044200_itinerary-landed-accounts.md).
+**THE LANE'S NEXT CRUX IS MEASURED AND HANDED OVER.** [Study](../active-designing/20260908-043856_the-wait-that-names-what-it-covers.md)
+**an A/94** at Field. Caravan holds **all 16** `std.Io.sleep` sites in the tree, across 7 files, in
+**six** look-bound-times-rest budget families -- 16,000 ms down to 800 ms. Exactly **one** comptime
+assert binds a budget to a duration it must cover: `harvest.rye:134`, and it can, because
+`max_linger_ms` is a **named** quantity **refused at the edge** twice (`:324`, `:764`). The other
+five wait on quantities the source never names, so **the missing NAME is the finding rather than the
+missing assert.** Two pairs sit in one file each and run **opposite ways** -- `taper` has the
+listener outlast the speaker by 200 ms, `entrust` the reverse -- and `revoke.rye:131` defines a
+prune budget as `confer.max_patience_looks`, a number arriving by inheritance. **A false negative,
+never a fault**: every exhaustion path answers cleanly, and none was observed. For BAKERY: five
+constants, five asserts, five edge readings, all comptime, zero run-time cost -- and a build that
+fails is move two working.
+Hot: `fold_shelf_link` red -- **my own new shelf, the same depth loss again**: shelving a card block
+copies its `archive/` and `../` links a directory down. `fold_shelf_link_repoint` fixed both, and
+the guard calls this the fault's **fourth** firing. The loom stands; the **gesture** is what stays
+unautomated -- every shelving lap reds once and repairs once. `index_row_bound` cleared two
+misorderings by `index_shelf_repair.sh`; `standing_equipment` reds while any do.
 
 **PETRICHOR -- A PAGE ABOUT ABSENCE, SAID IN WORDS THAT ARE PRESENT.**
 Elder [shelved](archive/20260908-030301_itinerary-landed-accounts.md). `docs-geode/etc/README.md`

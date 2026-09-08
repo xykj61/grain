@@ -12,6 +12,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | Stamp | Log | What it recorded |
 |---|---|---|
 | `20260908.044602` | [The anchor and the order that comes back](20260908/20260908-044602_the-anchor-and-the-order-that-comes-back.kyri) | A census leg anchored; a shelf repair returned. |
+| `20260908.044146` | [the wait that names what it covers](20260908/20260908-044146_the-wait-that-names-what-it-covers.kyri) | six patience budgets, one checked. |
 | `20260908.043321` | [The gate asked at the door](20260908/20260908-043321_the-gate-asked-at-the-door.kyri) | the dialect law now reads at commit time. |
 | `20260908.042507` | [what holds a number still](20260908/20260908-042507_what-holds-a-number-still.kyri) | stale figures were all free; pinned and walled held. |
 | `20260908.041722` | [a ratchet that counted its own growth](20260908/20260908-041722_a-ratchet-that-counted-its-own-growth.kyri) | one absolute split into cohort and arrivals |
