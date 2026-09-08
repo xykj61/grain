@@ -59,9 +59,10 @@ module=${MODULE_PATH:-mantra/src/weave.rye}
 # scan is for and a pen proving a break should meet the strict reading. The caller may raise it,
 # and exactly one caller does: `tools/m/mantra_weave_model_witness.rish` passes 2 for the live
 # tree, where `mantra/src/main.rye` and `rye/tests/mantra_weave_test.rye` still carry the
-# three-field `Line` the module widened to four at `bc37657e8`. Reconciling them rewrites the
-# on-disk `.mantra/` record, which is a seam at Keaton's word, so the count is held under a
-# ceiling that only falls rather than gated at a zero no lap may reach.
+# three-field `Line` the module widened to four at `bc37657e8`. Reconciling them does NOT move the
+# on-disk `.mantra/` record -- `Weave.from_v1` and `Weave.to_v1` prove the round trip both ways --
+# yet the port is a lap nobody has taken, so the count is held under a ceiling that only falls
+# rather than gated at a zero no lap may reach.
 ceiling=${DISAGREE_CEILING:-0}
 
 # One struct's fields, or the empty string when the reader refuses. The refusal is the caller's

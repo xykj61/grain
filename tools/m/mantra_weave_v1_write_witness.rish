@@ -1,0 +1,82 @@
+# tools/m/mantra_weave_v1_write_witness.rish -- the elder record, written back.
+#
+# WHAT THIS PROVES, and why the lift alone did not prove it. `mantra/src/main.rye` -- the CLI
+# seed that actually writes `.mantra/` -- declares a three-field model, and
+# `mantra/src/weave.rye` widened past it (REDS %589). The lift guard beside this one answered
+# the reading half: an elder `mantra-weave-v1` record READS the same after the widening, since
+# site and run are constant across a record one hand wrote. `main.rye` WRITES that record on
+# every commit, so until a weave the module has advanced can be written back as three fields,
+# "the port moves no byte on disk" is a claim about reading wearing the clothes of a claim
+# about the record. `Weave.to_v1` is the other half, and this guard is the proof.
+#
+# WHAT THE WRITE CLAIMS, narrower than the lift's and said plainly. The round trip is identity
+# on the DOCUMENT rather than on the weave: the runs come back collapsed to `v1_run`, because
+# the record has no field for them and does not need one. Inside ONE site `next_run` and
+# `next_pos` both only rise and both are read at the same apply, so a line with a higher run
+# always carries a higher position -- order by `(run, pos)` and order by `pos` alone are the
+# same order there. The Rye witness shows that from both sides at once: the documents agree
+# line for line AND the runs differ.
+#
+# WHERE THE FORMAT RUNS OUT, which a guard owes as much as the half that works. A second site
+# cannot be written at all, since the record has no field to tell two hands apart and two lines
+# at one position would come back as one. And a merge can leave position order and document
+# order parted even inside one site -- the witness BUILDS that weave rather than arguing it:
+# an elder record skipping a position, a shorter record whose own edit takes it, merged. Both
+# are refused by name, at the edge, before a row is allocated.
+#
+# WHAT THIS DOES NOT DO. It does not port `main.rye`, does not touch the on-disk format, and
+# does not lower the `mantra_weave_model` ceiling. It closes the record's safety argument in
+# both directions, so the word that seats the port is given on evidence rather than on a guess.
+#
+# The Rye witness lives beside the module it proves, at mantra/src/weave_v1_write_witness.rye,
+# because Zig refuses an import that escapes the root file's directory.
+#
+# Module: mantra/src/weave.rye. Siblings: the lift guard at
+# tools/m/mantra_weave_v1_lift_witness.rish, the merge and annotate guards beside it, and the
+# model reading at tools/m/mantra_weave_model_witness.rish.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/mantra_weave_v1_write_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mantra/bin/weave_v1_write_witness"
+
+say "mantra-v1-write: Language EN -- the wide weave written back as the elder record."
+say "mantra-v1-write: Style Gauge, Meter -- every claim is a run, and every refusal is named."
+say "mantra-v1-write: Lens TAME -- two named refusals, both read at the edge before a row."
+
+say "mantra-v1-write: the module still declares the write and the refusal it adds..."
+let seat = run ["sh" "-c" "grep -q 'pub fn to_v1' mantra/src/weave.rye && grep -q 'V1SiteNotConstant' mantra/src/weave.rye && grep -q 'V1PositionsDoNotRise' mantra/src/weave.rye && grep -q 'pub const V1Row' mantra/src/weave.rye"]
+assert seat.ok else "mantra-v1-write: to_v1, V1SiteNotConstant, V1PositionsDoNotRise or V1Row left weave.rye"
+
+say "mantra-v1-write: the module head still names every operation the module publishes..."
+let head = run ["sh" "tools/fixtures/m/mantra_weave_head_scan.sh" "mantra/src/weave.rye"]
+say head.out
+assert head.ok else "mantra-v1-write: the module head and the module disagree -- read the head_missing and head_stale lines above"
+assert head.out contains "container_seen=1" else "mantra-v1-write: the Weave container was not found, so the operation count is a reading of nothing"
+assert head.out contains "head_missing=0" else "mantra-v1-write: an operation of Weave stands unnamed in the module head"
+assert head.out contains "head_stale=0" else "mantra-v1-write: the module head names an operation the module no longer publishes"
+
+say "mantra-v1-write: building the witness against the real module..."
+let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/src/weave_v1_write_witness.rye -femit-bin=${bin}"]
+assert build.ok else "mantra-v1-write: weave v1 write witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "mantra-v1-write: weave v1 write witness exited non-zero"
+assert selftest.out contains "GREEN" else "mantra-v1-write: weave v1 write witness not GREEN"
+assert selftest.out contains "writes back row for row" else "mantra-v1-write: the projection claim is missing"
+assert selftest.out contains "rising rows, the new line last" else "mantra-v1-write: the claim that an edited weave still writes a record is missing"
+assert selftest.out contains "returns the document and collapses the runs" else "mantra-v1-write: the load-bearing claim -- document identity without weave identity -- is missing"
+assert selftest.out contains "an empty weave writes an empty record" else "mantra-v1-write: the empty claim is missing"
+assert selftest.out contains "even generation and stays out of the document" else "mantra-v1-write: the history claim is missing -- a record that dropped its tombstones would be a snapshot"
+assert selftest.out contains "refused V1SiteNotConstant" else "mantra-v1-write: the second-site refusal is missing"
+assert selftest.out contains "refused V1PositionsDoNotRise" else "mantra-v1-write: the parted-order refusal is missing"
+
+say "mantra-v1-write: breaking the write in a pen, so the guard is proven able to red..."
+let control = run ["sh" "tools/fixtures/m/mantra_weave_v1_write_control.sh"]
+assert control.ok else "mantra-v1-write: the control must complete -- a witness nobody has watched fail is a witness nobody has tested"
+assert control.out contains "control_verdict=ok" else "mantra-v1-write: the control must reach its own verdict"
+assert control.out contains "clean_exit=0" else "mantra-v1-write: the unmutated copy must reach GREEN, or every other phase fails for a reason the pen invented"
+assert control.out contains "head_clean_exit=0" else "mantra-v1-write: the head scan's own innocence leg must pass"
+
+say "GREEN: the wide weave writes the elder record back whole -- seven claims, two refusals by name, seven breaks caught."

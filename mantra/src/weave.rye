@@ -55,6 +55,7 @@
 //!   weave.apply(alloc, d)    -- advance the weave by one Diff
 //!   weave.current(alloc)     -- the lines present now, in document order
 //!   weave.merge(alloc, w)    -- one weave from two, by union and max
+//!   weave.to_v1(alloc)       -- this weave written back as an elder record
 //!   weave.annotate(alloc, w) -- what each side did, one Note per position
 //!
 //! Part of Mantra -- TAME-first from line one.
@@ -97,6 +98,13 @@ pub const WeaveError = error{
     /// position reads as -- so a row claiming it would lift as a line that
     /// predates the weave holding it.
     V1GenerationBelowOne,
+    /// A weave handed to `to_v1` carries a line from a site other than
+    /// `v1_site`. The elder record has three fields and no place to say whose
+    /// hand wrote a line, so two lines a merge kept apart by their sites would
+    /// come back as one row -- the single outcome a weave exists to prevent. A
+    /// history two hands have written is wider than the format, and saying so
+    /// is the only honest answer.
+    V1SiteNotConstant,
 };
 
 /// What names a line for all time: the position one counter handed it, and the
@@ -521,6 +529,98 @@ pub const Weave = struct {
         }
 
         return lifted;
+    }
+
+    /// Write this weave back out as an elder `mantra-weave-v1` record.
+    ///
+    /// WHAT THIS ANSWERS, and why `from_v1` alone did not answer it. The lift
+    /// proved that an elder record READS the same after the widening: site and
+    /// run are constant across a record one hand wrote, so `Place.less_than`
+    /// reduces to `pos <` and the lifted document is the elder document. That
+    /// is half of the port. `mantra/src/main.rye` writes the record on every
+    /// commit, so the other half is whether a weave the module has since
+    /// advanced can still be WRITTEN as three fields -- and until both halves
+    /// stand, "the port moves no byte on disk" is a claim about reading wearing
+    /// the clothes of a claim about the record.
+    ///
+    /// WHY THE RUN IS DROPPED RATHER THAN LOST. Every `apply` carrying inserts
+    /// advances `next_run`, so a weave edited after a lift holds several runs
+    /// and the elder record has no field for any of them. It does not need one:
+    /// inside ONE site, `next_run` and `next_pos` both only rise and both are
+    /// read at the same apply, so a line with a higher run always carries a
+    /// higher position. Order by `(run, pos)` and order by `pos` alone are the
+    /// same order over such a weave, which is why the run can be dropped
+    /// without the document moving. The round trip is therefore identity on the
+    /// DOCUMENT and not on the weave -- the runs come back collapsed to
+    /// `v1_run`, and the next edit follows the whole record as one block.
+    ///
+    /// WHAT IT REFUSES, and why each refusal is the record's own limit rather
+    /// than this function's caution. A line carrying a site of its own means a
+    /// second hand has merged in, and the record has no field to tell the two
+    /// apart -- so two lines at one position would come back as one, which is
+    /// the outcome a weave exists to prevent. Positions that do not rise mean
+    /// position order and document order have parted, which happens exactly
+    /// when two records of one site merge; writing the position alone would
+    /// then hand the elder reader a different document. Both are read at the
+    /// edge, over the whole weave, before a row is allocated.
+    ///
+    /// The caller keeps ownership of each line's text; the rows borrow it, the
+    /// same way `from_v1`'s lifted lines borrow the rows'.
+    ///
+    /// Precondition:  every line stands at `v1_site` and the positions rise --
+    ///   both refused by name rather than asserted, since the weave may have
+    ///   reached here through a merge the caller never inspected.
+    /// Postcondition: one row per line, in the weave's own order, every row
+    ///   carrying a generation of at least one and a position above the row
+    ///   before it -- which is exactly what `from_v1` demands of a record, so
+    ///   what this writes is a record that lifts.
+    pub fn to_v1(self: *const Weave, allocator: std.mem.Allocator) ![]const V1Row {
+        // invariant: the weave stands inside its own ceiling, so the record this
+        // writes is bounded by max_weave_lines rather than by whoever calls it
+        assert(self.lines.items.len <= max_weave_lines);
+
+        // Both refusals are read over the whole weave BEFORE anything is
+        // allocated, so a record too wide for the format is named rather than
+        // half-written.
+        var seen_any = false;
+        var previous_pos: u32 = 0;
+        for (self.lines.items) |line| {
+            if (line.site != v1_site) return WeaveError.V1SiteNotConstant;
+            if (seen_any and line.pos <= previous_pos) return WeaveError.V1PositionsDoNotRise;
+            previous_pos = line.pos;
+            seen_any = true;
+        }
+
+        // usize lives at the inherited-std seam alone: a slice counts in usize,
+        // and the ceiling asserted above is what makes the cast safe.
+        const line_count: u32 = @intCast(self.lines.items.len);
+
+        var rows: std.ArrayListUnmanaged(V1Row) = .empty;
+        errdefer rows.deinit(allocator);
+        try rows.ensureTotalCapacity(allocator, line_count);
+        for (self.lines.items) |line| {
+            // invariant: a generation counts from one, so a row this writes never
+            // predates the weave it came out of -- and never trips `from_v1`'s own
+            // reserved-generation refusal on the way back
+            assert(line.gen >= 1);
+            rows.appendAssumeCapacity(.{ .text = line.text, .gen = line.gen, .pos = line.pos });
+        }
+        const result = try rows.toOwnedSlice(allocator);
+
+        // invariant: one row per line, since a record that dropped or invented a
+        // row would make every later reading a reading of a different document
+        assert(result.len == self.lines.items.len);
+        for (result, 0..) |row, i| {
+            // invariant: every row carries a real generation, which is the parity
+            // the record uses as its tombstone
+            assert(row.gen >= 1);
+            if (i + 1 < result.len) {
+                // invariant: the rows rise strictly by position, which is what
+                // `from_v1` demands of a record -- so what this writes lifts
+                assert(row.pos < result[i + 1].pos);
+            }
+        }
+        return result;
     }
 
     /// Advance the weave by one diff. Deletes remove lines by toggling their

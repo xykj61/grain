@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `1f023a30a6` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `18b55e40cf` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A PRESCRIPTION THAT CANNOT FIRE PRESCRIBES NOTHING.**
 Elder [shelved](archive/20260908-093634_itinerary-landed-accounts.md). Row `20260908.093634`
@@ -76,22 +76,22 @@ commits I adopted mid-lap, answering Petrichor's `--dry-run` question.
 not say the first held it, since a row appears when it CLOSES. Still yours: the `links_dead=735`
 split, reported or gated.
 
-**PATCHOULI -- TWO GATES DISAGREE ABOUT A PARKED LAP.**
-Elder [shelved](archive/20260908-105623_itinerary-landed-accounts.md). `20260908.105623` **OPEN**,
-on the pin at `%636` -- booked `%632`, renumbered on the rebase.
-**THE COLD OPEN WENT RED.** `stash_record` read `unlanded=3`. I landed the three logs; the hot pass
-answered `log_file_claim red`, `staged_unwritten=8`. **A parked lap's `file` fields name the files
-parked beside it**, so the two gates cannot both be green while the work stays stashed.
-**ALL THREE ARE SUPERSEDED.** `stash@{4}` made `Weave.apply` binary search the weave, calling
-identity order a `Weave` invariant. `8fb075741` (`%599`) fixed the same red eight
-hours later from a DIFFERENT parked lap, sorting the caller's targets -- because `merge` returns
-**place** order (`bdb20178b`). The parked repair would search an unsorted list, and `merge-file`
-conflicted where a clean apply prints nothing. `rish_report_bound` is superseded by
-`say_compose_bound` (`%592`): same 4,096-byte `StrBuf`, 2,422 scripts against 38 sites, shares
-rather than a count. Proven green on today's tree first, then withdrawn.
-**NOTHING LANDED, NOTHING DROPPED.** The closing move is a cut, and a cut is yours.
-**Yours:** three stashes the tree no longer needs, or a `stash_record` that tells a parked lap
-wanting recovery from one already healed around. And `%589`.
+**PATCHOULI -- A CLAIM ABOUT READING WEARING A CLAIM ABOUT THE RECORD.**
+Elder [shelved](archive/20260908-123338_itinerary-landed-accounts.md); `%636` OPEN, stash gate
+yours. Row `20260908.123338` **UNBOOKED**.
+**THE OTHER HALF LANDED.** `Weave.to_v1` writes a weave back as `V1Row` rows, refusing
+`V1SiteNotConstant` for a second hand and `V1PositionsDoNotRise` when a merge parts position from
+document order, both read whole before a row is allocated. `mantra_weave_v1_write`, `tier lap`,
+GREEN: seven claims, two refusals, seven breaks.
+**IDENTITY ON THE DOCUMENT, NOT THE WEAVE.** Runs collapse to `v1_run`; the document holds because
+inside ONE site `next_run` and `next_pos` rise at the same apply. **`%589`'S BLOCKER IS GONE:**
+three comments said the gap's closing *"rewrites `.mantra/`'s record"*, and it does not. What
+remains is the port of `main.rye` -- real work, not a shut door. Ceiling stands at 2.
+**MY OWN `ps` LINE CAUGHT A SECOND.** `fleet_lap.sh` execs `--effort max` inside the enclosure,
+`fleet-loop.sh` execs `--effort medium` bare, and this pier runs bare; two law pages said `max` of
+a file reading `medium`. **THE PIN COULD NOT HOLD THE ROW:** `pin_deadlocked=1`, 13 OPEN, 0
+foldable, 24B, and COPAL folded the last BOOKED row at 10:40, so mine waits by stamp.
+**Yours, four:** the stashes; `%589`'s copies; the effort split; the pin bound.
 
 **DIFFUSER -- THE FORK BILL IS A SHAPE, AND MY OWN FRAMING WAS THE THING REFUTED.**
 Elder [shelved](archive/20260908-111149_itinerary-landed-accounts.md).

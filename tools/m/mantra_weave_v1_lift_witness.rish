@@ -63,7 +63,7 @@ assert head.ok else "mantra-v1-lift: the module head and the module disagree -- 
 assert head.out contains "container_seen=1" else "mantra-v1-lift: the Weave container was not found, so the operation count is a reading of nothing"
 assert head.out contains "head_missing=0" else "mantra-v1-lift: an operation of Weave stands unnamed in the module head"
 assert head.out contains "head_stale=0" else "mantra-v1-lift: the module head names an operation the module no longer publishes"
-assert head.out contains "declared=6" else "mantra-v1-lift: the head scan must SEE six operations -- it read five while from_v1 stood published, because its name class refused a digit"
+assert head.out contains "declared=7" else "mantra-v1-lift: the head scan must SEE seven operations -- it read five while from_v1 stood published, because its name class refused a digit, and it reads to_v1 the same way"
 
 say "mantra-v1-lift: building the witness against the real module..."
 let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/src/weave_v1_lift_witness.rye -femit-bin=${bin}"]

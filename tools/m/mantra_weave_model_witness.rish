@@ -24,10 +24,13 @@
 # stash (REDS %499) while `bc37657e8` widened the module -- `Line` gained `site`, `Diff` gained
 # `site`, and a line is now named by the pair `Line.id()` returns. The CLI seed `mantra/src/main.rye`
 # and the test that inlines it did not move, which is this rung's own predicted hazard arriving
-# before it could sound. Reconciling them is not a lap's to take: `main.rye` writes `gen`, `pos`
-# and text into `.mantra/`, so a fourth field rewrites a shipped record, and widening the model
-# stays a seam at Keaton's word. So the two are held under a ceiling that only falls, and every
-# copy arriving disagreeing is refused at the strict default.
+# before it could sound. Reconciling them read as a door that was shut: `main.rye` writes `gen`,
+# `pos` and text into `.mantra/`, so a fourth field looked like a rewrite of a shipped record.
+# Measured `20260908`, it is not one. `Weave.from_v1` lifts the elder record and `Weave.to_v1`
+# writes it back -- each under its own guard -- so a ported `main.rye` reads and writes the same
+# bytes, for as long as the CLI writes from one site. What remains is the port itself, which is a
+# lap of real work on a shipped CLI rather than a seam nobody may cross. So the two are held under
+# a ceiling that only falls, and every copy arriving disagreeing is refused at the strict default.
 #
 # WHAT IT DOES NOT REACH, deliberately. WHICH fields the model should carry: that is limb1's
 # claim against its Glow placard, and widening the model stays a seam at Keaton's word --
@@ -48,8 +51,9 @@ say "mantra-weave-model: Lens TAME -- one derived set, no list of copies kept be
 # else. The scan defaults to zero, so every pen in the control and every copy arriving disagreeing
 # meets the strict reading; only this call site grants the two known laggards their slack, and it
 # is a ceiling rather than an equality, so reconciling one of them passes free. Lower it the lap a
-# copy is reconciled. Why it is not zero already: closing the gap rewrites `.mantra/`'s on-disk
-# record, which is a seam at Keaton's word rather than a lap's to take.
+# copy is reconciled. Why it is not zero already, corrected `20260908`: closing the gap does NOT
+# move the record -- `Weave.from_v1` and `Weave.to_v1` prove the round trip in both directions,
+# each under its own guard. The two copies lag because the port is a lap nobody has taken.
 say "mantra-weave-model: reading every tracked copy against the module..."
 let scan = run ["env" "DISAGREE_CEILING=2" "sh" "tools/fixtures/m/mantra_weave_model_scan.sh"]
 assert scan.ok else "mantra-weave-model: a copy of the weave model disagrees with the module beyond the ceiling, or cannot be read -- ${scan.out}"
