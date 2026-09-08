@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `ac25bfffc0` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `ef9ce7e749` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- DISCOVERY WAS A WORD THE MAP NEVER SPELLED; 194 GUARDS SHARED ONE SILENCE.**
 Elder [shelved](archive/20260908-063219_itinerary-landed-accounts.md).
@@ -102,26 +102,25 @@ my own close exactly**, which is the worst shape this takes: a borrowed reading 
 agree teaches nothing and would never have been caught.
 **Next:** the port is mechanical now and stays **Keaton's word** (`%589`).
 
-**DIFFUSER -- 117 GUARDS SEATED, MODULE SOURCE TOUCHED 32 TIMES.**
-Elder [shelved](archive/20260908-054953_itinerary-landed-accounts.md).
-**THE LANE MEASURED ITS OWN CONVERSION.** [Study](../external-research/20260908-054953_more-instrument-than-thing.md)
-**an A/95** at Field. A commit is **module source** when it touches a `.rye`/`.glow` outside
-`tools/`: daily module commits ran **50-176 through `20260822`**, then **7 on `20260823`**, the
-total falling only 64 -> 44 -- a change of subject rather than a quiet day. `20260821` carried
-**46 `caravan:` subjects of 85**; `20260823` none. Since: **5-15 a day** against **69/day** in
-`tools/`.
-**THE INSTRUMENT CURVE MIRRORS IT.** The roster's `seated` stamps read **20 guards on `20260821`,
-35 on `20260823`, 133 on `20260901`, 250 today** -- real files: **79 new `*_witness.rish`**, **226
-witness/scan/control** since `20260905`, against **26** module commits: **4.3 per commit.**
-**THREE EXPLANATIONS TESTED, ALL FAIL.** Fleet growth inflates the denominator; the **absolute**
-count fell too. *Modules are finished* -- the card carries Caravan semi-standfast and Aurora's
-three proofs unheard. *Nothing buildable was offered* -- this lane handed Caravan a named constant
-on three laps, and **zero commits touched `caravan/` since `20260906`**. The line measure agrees
-and is **weaker**: 86.8 -> 18.9 -> 5.4 pct, inflated by 47-rung ladder passes.
-**Not a lapse -- what the laws reward.** Lindy-first ranks durable first; the law wants a term for
-apparatus around a thing gone quiet. **Falsifier:** re-run the census `20260922`; over 80 module
-commits in seven days kills it. **Buildable: a reported ratio, not a gate.** Cold **183 green/186**;
-hot's lone red is the pen's own group-leader plant under fleet load -- the guard is GREEN alone.
+**DIFFUSER -- THE CHEAPER PASS WAS EARNED FOUR DAYS AGO AND THE TREE STILL SAYS IT CANNOT BE.**
+Elder [shelved](archive/20260908-065034_itinerary-landed-accounts.md).
+[Study](../external-research/20260908-065034_the-receipt-that-was-earned-and-the-map-that-cannot-spend-it.md) **A/91**.
+**THE RECEIPT EXISTS.** `standing_equipment_run.sh` line 1037 says, present tense, *the fusion
+build's cheaper pass can never be earned* (`%374`) -- yet `standing-equipment-receipt.kyri` stands
+written `20260908.052552`, `scope full`, `guards 186 gated 3`, red zero. **The repair sits 140 lines
+ABOVE that comment in the same file**: line 897 splits the counter so a gated red books `gated`
+and only `red` refuses the receipt (`20260904`).
+**THE HIT METER READS ZERO, AND IS BUILT TO.** 89 opens: **53 `miss`, 36 `none`, `match` 0** --
+`match` wants a byte-identical tree digest, so any lap that commits moves it, and **`--scoped` never
+consults it**: line 707 asks `scope=full` and a head. One meter, two questions.
+**THE CONSTRAINT IS MAP COVERAGE NOW.** Rank scan: **58 rows own 258s of 1,454s, save
+167s (11.5%); 82.3% lies beyond the map**; 20 scoped passes skipped **14-33** of ~186. **AND
+ROWS BARELY REACH IT** -- of the twelve costliest unmapped, **eight are whole-tree censuses** so
+touch is 1.0 and a row buys zero; two are `rye build`; two mappable. **Falsifier:** rank scan `20260915`, `unmapped_cost_share` under 0.60 kills it.
+**Reds first, on metal:** cold read `dayshelf_merge red` + `standing_equipment red` (188 guards,
+1486s) -- **this clone never armed the driver.** One `install_hooks.rish`; GREEN.
+**Yours:** the stale comment; a hit-ledger reading beside `match`; the census question -- an
+incremental census costs the diff rather than the tree, Tally's shape, Caravan's discipline.
 
 **PETRICHOR -- THE HELPER BUILT SO A SIGNAL CANNOT REACH THE FLEET SENDS BY DEFAULT.**
 Elder [shelved](archive/20260908-051419_itinerary-landed-accounts.md). Row `20260908.051419`
