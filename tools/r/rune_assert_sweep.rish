@@ -19,15 +19,33 @@
 # files while the printed population grew a hundredfold, which is a guard reading more and proving
 # less. So the twelve keep a leg of their own, read by name whatever the roster holds.
 #
+# WHAT THE THIRD READING FOUND, added `20260908.170042`, and it is the word EACH. Both readings
+# below are FILE questions -- does this file assert at all, does it name an invariant anywhere --
+# and the rule they serve asks that each assert be preceded by its own `// invariant:` comment. The
+# scan's own header had claimed to count that from the day it was written. Measured across the same
+# rooms: 24,495 asserts stand in the 859 asserting module sources and **6,619 name nothing**, so
+# 73 percent of ASSERTS are named, while 899 of the 1,100 function-bearing files -- 82 percent --
+# already satisfied the file reading beside it. The elder reading is a strict subset of the new one,
+# proven by plant rather than argued.
+#
+# AND THE SPLIT IS WHAT KEEPS IT HONEST. A `*_witness.rye` asserts about another program's OUTPUT,
+# so 2,588 unnamed asserts there are correct practice rather than debt; they are reported and gated
+# nowhere. Read whole, `glow/` scores 1.1 percent named and looks like the worst room in the tree;
+# read on its modules alone it scores 92 percent, and the 2,331 asserts were its witnesses all
+# along.
+#
 # WHAT IS PROVEN, on metal.
 #   The twelve elder cores keep their asserts, each printed by name, at a ceiling of zero.
 #   Across 1,127 authored sources in the twenty rooms: 1,100 carry functions, 100 of those carry no
 #   `assert(` at all, and 101 more assert without naming a single `// invariant:`.
+#   Across the 859 asserting module sources among them: 6,619 of 24,495 asserts name no invariant.
 #
-# WHAT IS RATCHETED rather than gated, and why. Both derived readings are ceilings that only fall.
-# A wall at zero would ask for two hundred files to be repaired in one lap, and a wall that reds on
-# honest work is a wall somebody turns off. TAME's own gate-versus-ratchet split says the same:
-# migrate on touch.
+# WHAT IS RATCHETED rather than gated, and why. All three derived readings are ceilings that only
+# fall. A wall at zero would ask for two hundred files, or six thousand comments, to be repaired in
+# one lap, and a wall that reds on honest work is a wall somebody turns off. Each of those comments
+# has to state a true reason rather than restate the line beneath it, so this is a ratchet on
+# purpose and not merely by scale. TAME's own gate-versus-ratchet split says the same: migrate on
+# touch.
 #
 # WHAT IS NOT PROVEN. That an assert is the RIGHT assert, that a named `// invariant:` states a true
 # one, or that a bound is ever checked. This counts whether a file speaks at all.
@@ -44,6 +62,8 @@ say result.out
 assert result.out contains "elder_faults=0 ceiling=0" else "rune-assert-sweep RED: a gated core dropped to zero asserts"
 assert result.out contains "elder_roster=12" else "rune-assert-sweep RED: the elder roster lost a file"
 assert result.out contains "ratchets_over_ceiling=0" else "rune-assert-sweep RED: an assert ratchet rose past its ceiling -- ceilings only fall"
+assert result.out contains "module_assert=" else "rune-assert-sweep: the per-assert reading must be printed, not merely computed"
+assert result.out contains "proving_assert=" else "rune-assert-sweep: the proving half is reported even though it gates nothing"
 assert result.out contains "verdict=read" else "rune-assert-sweep: the scan must finish before it is believed"
 
 # THE CONTROL, on every run rather than on a hand's memory. Each reading above is a claim about
@@ -65,6 +85,19 @@ assert control.out contains "invariant_gap_counted=yes" else "rune-assert-sweep:
 assert control.out contains "invariant_gap_leaves_zero_alone=yes" else "rune-assert-sweep: the invariant gap must leave the zero-assert count alone"
 assert control.out contains "invariant_gap_over_ceiling_refused=yes" else "rune-assert-sweep: the invariant-gap ceiling must refuse from the failing side"
 assert control.out contains "invariant_gap_cleared=yes" else "rune-assert-sweep: the gap must clear once the comment arrives"
+assert control.out contains "clean_assert_named=yes" else "rune-assert-sweep: an assert under its own comment must read named"
+assert control.out contains "unnamed_assert_counted=yes" else "rune-assert-sweep: an assert naming nothing must be counted inside a file that names one"
+assert control.out contains "module_asserts_counted=yes" else "rune-assert-sweep: the denominator must count every module assert"
+assert control.out contains "unnamed_leaves_gap_alone=yes" else "rune-assert-sweep: the per-assert reading must move without the file reading"
+assert control.out contains "unnamed_assert_named=yes" else "rune-assert-sweep: a red must name the file and its count"
+assert control.out contains "unnamed_over_ceiling_refused=yes" else "rune-assert-sweep: the per-assert ceiling must refuse from the failing side"
+assert control.out contains "run_under_one_comment_named=yes" else "rune-assert-sweep: a run of asserts under one comment is named"
+assert control.out contains "comment_block_names=yes" else "rune-assert-sweep: a comment block opening on the invariant names what follows"
+assert control.out contains "unnamed_assert_cleared=yes" else "rune-assert-sweep: the count must fall back once the plant is lifted"
+assert control.out contains "proving_counted_apart=yes" else "rune-assert-sweep: a witness assert lands in the proving half"
+assert control.out contains "proving_leaves_module_alone=yes" else "rune-assert-sweep: a witness assert must not enter the gated reading"
+assert control.out contains "proving_gates_nothing=yes" else "rune-assert-sweep: the proving half gates nothing"
+assert control.out contains "same_bytes_module_counted=yes" else "rune-assert-sweep: the same bytes under a module name must be counted"
 assert control.out contains "no_fn_not_fn_bearing=yes" else "rune-assert-sweep: a file declaring no fn states no invariant and is asked for none"
 assert control.out contains "qualified_counts_as_assert=yes" else "rune-assert-sweep: a qualified std.debug.assert( still states an invariant"
 assert control.out contains "near_miss_not_an_assert=yes" else "rune-assert-sweep: an identifier ending in assert is a different function"
@@ -74,4 +107,4 @@ assert control.out contains "tree_elder_roster_twelve=yes" else "rune-assert-swe
 assert control.out contains "absent_roster_refused=yes" else "rune-assert-sweep: an absent rooms file must refuse rather than read an empty population"
 assert control.out contains "control=done" else "rune-assert-sweep: the control must run to its end"
 
-say "GREEN: rune-assert-sweep -- twelve cores keep their asserts; the two ratchets hold under their ceilings"
+say "GREEN: rune-assert-sweep -- twelve cores keep their asserts; the three ratchets hold under their ceilings"

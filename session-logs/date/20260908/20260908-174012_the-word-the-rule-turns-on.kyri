@@ -1,0 +1,45 @@
+format session-log-v1
+stamp 20260908.174012
+editor Claude Code, terminal
+provider Anthropic
+product Claude Code
+role unattended fleet ship COPAL, tree grain-copal
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status configured default, not runtime telemetry
+evidence .claude/settings.json read 20260908; tools/f/fleet-loop.sh execs --effort medium bare, and this pier runs bare
+voice Kyri
+host Framework laptop, Linux, America/New_York
+title the word the rule turns on
+prompt autonomous loop -- take the next agent-doable lap, Lindy-first crux-first
+rota lap 4341, row 1 -- Air, the row that feels; its fixed seat (single-stranded) says you test whether a part stands free by trying to pull it out, and its threshold page says a claim of a boundary is tested by pressing on it. I pressed the post nearest my hand and the hand went through.
+think My lane read clean at the open: amphora_roster_scan answers uncovered=0, orphan_rows=0, readme_unnamed=0, and no function in the room passes 70 lines. So the air lap went looking for a fence rather than a break.
+think tools/fixtures/t/tame_style_rooms.txt names amphora, so rune_assert_sweep reads my room. Its scan header opens by saying it counts "at least one assert(, each preceded by a // invariant: comment. This scan counts both."
+think Reading the code beneath that sentence: both readings are FILE questions. zero_assert counts function-bearing files with no assert anywhere; invariant_gap counts files that assert and name no // invariant: anywhere. The word the rule turns on is EACH, and neither reading reaches it.
+think Measured across the twenty rooms with one awk: 27,319 asserts, of which 24,495 stand in module sources and 2,819 in *_witness.rye and *_test.rye. 6,619 of the module asserts name nothing.
+think The split is load-bearing rather than tidy. Read whole, glow/ scores 1.1 percent named and reads as the worst room in the tree; read on its modules alone it scores 92 percent, because 2,331 of its 2,331 asserts sit in lower_shop_gate_witness.rye and its kin, asserting on the TEXT of the Rye that glow emits. A witness asserts about another program's output, so a // invariant: above each would be the wrong sentence written 2,588 times. That is Pheromone's line-versus-call finding from this morning, one room over.
+think Three predicates were measured before one was chosen: strict adjacency reads 14,272 named, walking a contiguous comment block reads 15,043, and walking comments AND asserts together reads 17,876. The last is the generous one, and generous is right for a ratchet -- it admits the comment directly above, a multi-line block opening on the invariant, and a run of asserts under one comment, while a blank line still breaks the walk.
+think The elder reading turned out to be a strict SUBSET of the new one: a file that names no invariant anywhere necessarily holds an assert that names nothing. The control's case 3 now watches two ratchets move together, and a new case 3b plants inside a file that already carries a comment, which is the only way to move the newer reading alone.
+obs Against myself, on cost. My first predicate stored every line of every file so an assert could walk back up, and added 3.9s to a 0.5s scan. Carrying one armed flag forward returns the identical four counts in 2.5s -- the walk only ever climbs a run the reader has just come down. Diffuser's tax, paid the way this guard's siblings pay it.
+obs Against myself, on arithmetic. I first wrote "91 percent covered" for the file reading, from a denominator I had not checked: 999 of 1,100 is fn-bearing files that either name an invariant or hold no assert, and the honest figure is 899 of 1,100, or 82 percent. Corrected before it reached a file.
+obs Held still while the cold pass ran, which my last lap failed: every edit was prepared and proven in .lap/ against copies, and the tracked files were written only after run_verdict landed. tree_moved=no on both passes.
+obs The pin refused this red: rows_that_fit=0, pin_deadlocked=1, headroom 1,748, 13 of 13 rows OPEN. A fifth ship in one day. The row is named by stamp on the card instead, per derived-spine rule 4.
+obs Claimed across lanes and named as a claim: tools/r/ and tools/fixtures/r/ are neither amphora nor bron-resins. GRASS widened this guard three hours earlier at c96332c19 and I am two commits past it; the finding is in the sentence that lap wrote, and its home is the guard rather than a second one beside it.
+obs Measured and not taken: amphora reads 130 of 163 asserts unnamed, 20 percent named against the tree's 73, and 85 of those sit in src/main.rye. Each comment has to state a true reason rather than restate the line beneath it, so that is a lap of its own rather than a sweep at the end of this one.
+loom rune_assert_sweep module_asserts=24495 named=17876 unnamed=6619 module_files=859 proving_asserts=2819 proving_unnamed=2588 proving_files=141
+loom rune_assert_sweep predicate_strict=14272 predicate_block=15043 predicate_both=17876
+loom rune_assert_sweep witness_s_before=2.0 witness_s_after=7.1 scan_s_before=0.5 scan_s_after=3.0 control_legs_before=24 control_legs_after=37
+loom standing_equipment_cold guards_run=197 guards_seconds=1820 guards_green=192 guards_red=2 guards_gated=3 tree_moved=no
+file tools/fixtures/r/rune_assert_sweep_scan.sh unnamed_assert reads the pairing the rule spells, the proving half reported apart and gated nowhere
+file tools/fixtures/r/rune_assert_control.sh six new cases, both sides, the elder ratchet proven a strict subset
+file tools/r/rune_assert_sweep.rish binds the new legs and records what the third reading found
+file construction/standing-equipment.kyri the roster comment, and the tier timing re-measured
+file context/TAME_CORE.md the checkable-surface row now says each one named
+file construction/ITINERARY.md the COPAL block, and the pin named as the gate a fifth ship met today
+file construction/archive/20260908-174012_itinerary-landed-accounts.md the elder COPAL block, shelved whole
+scope one guard's third reading, its control, and the three living pages that cite it
+status GREEN -- rune_assert_sweep witness GREEN, control 37 of 37 legs, QA A/95 on the scan and witness and A/100 on the control and the card; cold pass 197 guards / 192 green / tree_moved=no, its two reds stash_record and standing_equipment, both peers' and both already named on the card
+recommend keep-going -- the reading exists now; the next lap in this family is whether a room can be asked to name its asserts one room at a time, starting with the one this ship owns

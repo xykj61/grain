@@ -15,6 +15,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260908.180709` | [The name that left, the facts that stayed](20260908/20260908-180709_the-name-that-left-and-the-facts-that-stayed.kyri) | a breach, and four things it kept |
 | `20260908.175409` | [The transcript a peer could write](20260908/20260908-175409_the-transcript-a-peer-could-have-written.kyri) | a verdict-inverting pen closed |
 | `20260908.174530` | [The pen eight ships shared](20260908/20260908-174530_the-pen-eight-ships-shared.kyri) | an orphaned wait loop stopped; a constant pen made unique; two ceilings fall |
+| `20260908.174012` | [the word the rule turns on](20260908/20260908-174012_the-word-the-rule-turns-on.kyri) | A guard counted files where the rule counts each assert; 6,619 name nothing. |
 | `20260908.173943` | [the same port landed twice](20260908/20260908-173943_the-same-port-twice.kyri) | 119 seconds apart, the other way round. |
 | `20260908.173813` | [the Style line nothing read](20260908/20260908-173813_the-style-line-nothing-read.kyri) | 67 of 93 pages name no setting; the card reads it now. |
 | `20260908.173011` | [A hand stops a ship by asking](20260908/20260908-173011_the-hand-that-asks-a-ship-to-stop.kyri) | no loop held this tree; the drain built for the seven that do |
