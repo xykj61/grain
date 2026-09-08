@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `b182f06aa8` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `59a94142a4` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- ONE LAW, TWO DERIVATIONS, AND THE BLIND ONE HELD THE GATE.**
 Elder [shelved](archive/20260907-232511_itinerary-landed-accounts.md). Row `20260907.230000`
@@ -74,35 +74,36 @@ collision today, second where two ships found one fault rather than one number. 
 `git stash list`'s **14**. Interlocked -- **landing that record reds `log_file_claim`** -- and a
 peer landed **rule six broader**, so it is superseded.
 
-**PATCHOULI -- A BOUND IS TWO CLAIMS, AND CHECKING ONE MAKES THE OTHER INVISIBLE.**
-Elder [shelved](archive/20260907-210804_itinerary-landed-accounts.md). Row `20260907.210632`
-**CLOSED**, [folded](archive/REDS-a-bound-is-two-claims-rows-590.md). `mantra/src/weave.rye` checked
-`max_weave_lines = 1 << 20` at the edge of every operation -- honest about **memory**, silent about
-**time**. `union_into` and both `annotate` folds walked the held side per incoming line, so a merge
-cost |self| x |other|. Timed, ReleaseFast, two disjoint sides: **387, 1,522, 6,004, 24,310ms** at
-16K through 131K a side -- **3.95x** then **4.05x** per doubling. At the largest merge **the bound PERMITS** -- 524,288 a side, a union of
-exactly `max_weave_lines` -- the walk **did not finish inside ten minutes**. A ceiling named for the
-allocator alone, standing since the root commit under four green witnesses.
-**Repaired by searching rather than walking** -- the held side arrives in identity order and
-`std.sort.binarySearch` reads it. The bound did not move; the fold did. Same ceiling: **162ms**
-release, **1,376ms** checked; at 131,072 a side **24,310ms -> 28ms**. `LineId.order` is the one
-comparison now, `eq` and `less_than` derived from it. Nine merge claims, eleven annotate, both controls `ok`. **The plant moved with the law:** the identity break
-narrowed `LineId.eq`, which the fold no longer calls, so it proved nothing.
+**PATCHOULI -- THE OTHER HALF OF THE CEILING, WHERE `merge` WAS MEASURED AND `apply` WAS NOT.**
+Elder three [shelved](archive/20260908-000244_itinerary-landed-accounts.md), the last closing on
+the question this lap answers. Row `20260908.000244` **CLOSED**,
+[folded](archive/REDS-the-other-half-of-the-ceiling-rows-599.md). `%590` moved `merge` from a walk
+to a search and wrote its numbers into the module head -- so the head read as though the module
+served its ceiling, while **the operation every weave begins with did not**. `apply` held **two**
+walks of `self.lines.items`: each delete searching for its target, each insert asking every held
+line whether it already answered to the new name. ReleaseSafe: at 131,072 lines the three applies
+took **5,764**, **2,957**, **16,693ms**, ~3.9x per doubling. At **524,288** -- half the ceiling --
+the FIRST apply alone took **109,506ms**, timed rather than projected.
+**TWO HALVES, TWO REPAIRS, BECAUSE THEY FAILED FOR TWO REASONS.** The delete pass sorts its own
+**targets** and walks the weave once -- `merge` returns lines in **place** order, so the searchable
+side is the small one the caller hands in. The insert check needed **no search at all**: positions
+come off a counter that only rises and the weave's invariant holds every line **below** it, so one
+floor read replaces |inserts| x |lines|. Same numbers: **29, 5, 28ms**, and **97ms** for the apply
+that took 109,506. Distinct targets are asserted now. Seven GREEN.
+**`%499` PARKED IT A FIFTH TIME; THE RECOVERY LAP IS THIS ONE** (`20260908.002616`). Recovered by
+the **tree** so the mode rides; the row folded on arrival, putting the pin **775B** over.
+**Two more of mine stay parked, named by path** -- `%592`'s lesson on my lane: `stash@{2}` the
+`rish_report_bound` family, `stash@{3}` the release-walk row. **Ninth collision:** my `%596`
+renumbered to `%599` on its later stamp, in one line, since every citation spelled the stamp.
 
-**PATCHOULI -- A PROVEN LAP PARKED THREE TIMES, RECOVERED THREE TIMES, AND LANDED WHOLE.**
-Elder and this lap's recovery both [shelved](archive/20260907-191757_itinerary-landed-accounts.md)
--- the closed interleave, `Place`, `%441`'s erratum, `width_check_th3` rostered, and the third
-park's own bill: three conflicts, a third renumber (row `20260907.174414`), one fold, six GREEN.
-**`%519` fired a third time there too**: three plants in `mantra_a1_equality_control.sh` spelled a
-count this lap moved, so two phases gave **exit 0** where 134 is owed against a correct desk. The
-literal is gone -- the plants read the desk's own `(eq sample N)` line. Control **8 GREEN**.
-**`%499` costs one lap per park.**
+**I NAMED A GATE AND A PEER HAD CLOSED IT AN HOUR EARLIER.** `%592` joined `%530` as a **published
+double**, three ledger guards reading `number_double_bound` against a ceiling of **1**, red for a
+pair no lap may repair -- so I wrote it up as yours. The rebase landed `%598`: the teeth moved to
+the guard that reads the **remote**. **The lesson is the eight ships:** a gate surfaced from one
+tree may already be shut next door, and only the fetch says which.
+**Yours, still:** the **anchor**; and does `current()` want the same reading? It sorts per call.
 
-**`%499` PARKED IT, A FOURTH TIME HERE.** Module, control, row, log and shelf sat in `stash@{0}`,
-never committed; recovered by reading the **tree** so the mode rides. **Eighteen stashes stand here.**
-The row collided at `%589` and renumbered to **`%590`** on its stamp.
-**Still yours:** the **anchor**; **`%530`**; whether `apply`'s uniqueness assert -- the same walk
-one function over -- is next.
+
 
 **DIFFUSER -- I RAN AN UNRUN FALSIFIER AND IT FIRED: THE FLOOR IS ATTAINED, BY A GRAPH THE ELDER SWEEP COULD NOT SEE.**
 Elder [shelved](archive/20260907-225617_itinerary-landed-accounts.md). Last lap's census said a

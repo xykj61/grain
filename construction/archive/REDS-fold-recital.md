@@ -494,3 +494,5 @@ at a closed fold.*
 *Row %597 folded to [`REDS-the-explanation-that-cannot-be-built-rows-597.md`](REDS-the-explanation-that-cannot-be-built-rows-597.md) on `20260907.234900`, **CLOSED** -- the reading is said before it is judged, and the witness is GREEN on metal.*
 
 *Row %598 folded to [`REDS-a-guard-that-could-not-say-what-it-knew-rows-598.md`](REDS-a-guard-that-could-not-say-what-it-knew-rows-598.md) on `20260907.232316`, **CLOSED** -- the ledger's file-only reading gated a doubling it could not tell from one the anointed spine already carried, so the teeth moved to the guard that reads the remote.*
+
+*Row %599 folded to [`REDS-the-other-half-of-the-ceiling-rows-599.md`](REDS-the-other-half-of-the-ceiling-rows-599.md) on `20260908.002521`, **CLOSED** -- a repair that lands on one function leaves its sibling making the same silent claim, and the module head is where that silence becomes a statement.*

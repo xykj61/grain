@@ -1,0 +1,16 @@
+# REDS -- the other half of the ceiling
+
+**Folded:** `20260908.002521` -- **Status:** Archived, complete, never edited
+**Rows:** `%599`
+**Living ledger:** [`../REDS.md`](../REDS.md) -- **Recital:** [`REDS-fold-recital.md`](REDS-fold-recital.md)
+
+*One row, and what it taught: `%590` timed one function against the ceiling both functions serve,
+repaired it, and wrote the new numbers into the module head. The head then read as though the
+module served its ceiling. `apply` -- the operation every weave begins with -- carried the same
+quadratic shape and had never been timed at all. A repair that lands on one function leaves the
+other making the same silent claim, and the head is where that silence becomes a statement.*
+
+---
+
+
+**REDS %599 (`20260908.000244`) -- `apply` walked the whole weave once per item its diff carried, so the ceiling `merge` was repaired to serve on the same day still could not be reached from the other side.** *What went wrong:* `mantra/src/weave.rye` `apply` held two walks of `self.lines.items`. Each delete searched the weave for its target, and each insert asked every held line whether it already answered to the new name -- so one edit cost |lines| x |diff| identity comparisons. Measured on this pier, ReleaseSafe, the checked build a witness runs: inserting 131,072 lines into an empty weave took **5,764ms**, deleting half of them **2,957ms**, and inserting 131,072 more **16,693ms**, each rising about 3.9x per doubling. At **524,288** lines -- half the declared `max_weave_lines` of 1,048,576 -- the first apply alone took **109,506ms**, timed rather than projected. *What caught it:* the card's own open question from the lap that repaired `merge` (`%590`), which named `apply`'s uniqueness assert as the same walk one function over and left it as the next crux. *What it taught:* **a bound is two claims, and repairing the one function that was measured leaves the other function making the same silent claim.** `%590` moved `merge` from a walk to a binary search and wrote its numbers into the module head; the head then read as though the module served its ceiling, while the operation every weave begins with did not. The two halves needed two different repairs, because they failed for two reasons. The delete pass sorts its own **targets** and walks the weave once, since `merge` returns lines in **place** order and place order is not identity order -- so the side that can be put in identity order is the small one the caller hands in, at |lines| x log |deletes|. The insert check needed no search at all: positions come off a counter that only rises, and the weave's own declared invariant already holds every line **below** that counter, so a new identity is fresh by construction and one floor read replaces the walk. Same measurements after: **29ms**, **5ms**, **28ms** at 131,072, and **97ms** for the 524,288-line apply that took 109,506ms -- a bound that did not move, and two loops that did. Distinct delete targets are now asserted where the elder shape caught a duplicate only by tripping the parity assert on the second bump. Four rostered witnesses GREEN -- `mantra_weave_merge`, `mantra_weave_annotate`, `mantra_weave_model`, `mantra_diff` -- plus `mantra_declaration_walk`, `tame_style_check`, and `width-check`. **CLOSED**
