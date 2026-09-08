@@ -1,0 +1,49 @@
+# tools/s/store_shape_witness.rish -- the tree keeps two data shapes, and a store fitted to one is
+# wrong for the other.
+#
+# Language EN -- Style Gauge, Meter -- Voice Kyri -- Lens TAME, bound every claim and say why.
+#
+# WHAT THIS BINDS, and what it deliberately does not. Every count this census prints grows daily --
+# the journal takes roughly a hundred records a day -- so a witness spelling any of them would red
+# on ordinary work, and a guard that reds on ordinary work is a guard somebody turns off. What it
+# holds instead is the SEPARATION, which is structural: the journal's records mostly carry a field
+# more than once, and the registries' rows carry none at all. That separation is the whole finding
+# of `external-research/20260907-191657_two-shapes-one-notation.md`, and it is what a store decision
+# rests on.
+#
+# WHY A FLOOR RATHER THAN A NUMBER. `journal_multivalued_share_pct` stood at 91 on `20260907`. The
+# floor is 50, which is where the reading stops meaning "mostly" -- far enough below to survive a
+# season of ordinary writing, and close enough that a notation change collapsing repeated fields
+# into one line would still be caught.
+#
+# WHY THE REGISTRY SIDE IS HELD AT ZERO. A registry row gaining a second copy of one field is not
+# drift, it is a table becoming a document, and the four registries named here are read by witnesses
+# that assume one value per column. Zero is the honest bound and one is a real change.
+#
+#   rishi/bin/rishi run tools/s/store_shape_witness.rish
+
+say "store-shape: Language EN -- the shape of the data decides the store, so the shape is measured."
+say "store-shape: Style Gauge, Meter -- a floor and a zero, each with the reason it is that number."
+say "store-shape: Lens TAME -- bound every claim; the census names its ceiling and refuses past it."
+
+let scan = run ["sh" "tools/fixtures/s/store_shape_census.sh"]
+assert scan.ok else "store-shape: the census refused -- read its own line"
+say scan.out
+
+assert scan.out contains "verdict=two_shapes" else "store-shape: the two populations have stopped reading as two shapes -- the store finding rests on this line"
+assert scan.out contains "registry_multivalued_rows=0" else "store-shape: a registry row carries a field twice, so a table has become a document"
+assert scan.out contains "journal_widest_field=file" else "store-shape: the widest repeated field has moved -- the join arity in the paper is measured from it"
+
+# THE FLOOR IS INSIDE `verdict=two_shapes` RATHER THAN BESIDE IT, and the first draft of this
+# witness asserted it twice. `two_shapes` is printed only when the journal share stands at or above
+# 50 AND the registry count is zero, so a second reading of the share adds no guard and costs a
+# whole second walk of every record in the room. One walk, one verdict, the floor named in the
+# census where the comparison happens.
+
+let control = run ["sh" "tools/fixtures/s/store_shape_control.sh"]
+assert control.ok else "store-shape: the control faulted -- a reading is unproven"
+say control.out
+assert control.out contains "control_verdict=ok" else "store-shape: the control must balance before the census is believed"
+assert control.out contains "faults=0" else "store-shape: a planted fault went unseen"
+
+say "store-shape: GREEN -- one notation, two shapes; the journal repeats and the registries do not, both proven from both sides in a pen."
