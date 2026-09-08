@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260908.135331` | [siloing pointed the other way](20260908/20260908-135331_siloing-pointed-the-other-way.kyri) | redact technique seated. |
 | `20260908.125751` | [the room that withholds by construction](20260908/20260908-125751_the-room-that-withholds-by-construction.kyri) | an allowlist, proven. |
 | `20260908.125645` | [the list that could not grow](20260908/20260908-125645_the-list-that-could-not-grow.kyri) | 24 hand-named paths become 1,073 derived. |
 | `20260908.125241` | [the field that became a surface](20260908/20260908-125241_the-field-that-became-a-surface.kyri) | eight lines, and one refusal drawn. |

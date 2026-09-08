@@ -1,0 +1,28 @@
+---
+description: Redact Technique -- take our own particular (a real portfolio, rate, parcel) and set it down as a general principle anyone can use, so the teaching ships while the specifics stay home. Siloing pointed the other way.
+alwaysApply: false
+---
+
+# Redact Technique
+
+Full guide: `context/REDACT_TECHNIQUE.md` - sibling of the Silo Technique
+(`context/SILO_TECHNIQUE.md`) - register: Bhakta (`context/BHAKTA_STYLE.md`) - Voice: **Kyri**.
+
+**Redacting is siloing pointed the other way.** Silo receives the world's particular and makes it our
+general. Redact takes our own particular and makes it a public general. Silo protects us from
+borrowing; redact protects a person from being published.
+
+**Let go:** names, entities, parcels, account identifiers, exact sums, dates tied to a person,
+counterparties, anything that with one search names a household.
+
+**Keep:** the shape of the calculation -- variables and what each does, which way each relationship
+moves, the thresholds where a decision flips, base rates and where a reader finds their own, and the
+refusals naming what the method cannot tell you. **Turn a figure into a level.**
+
+**Check:** could this page describe a hundred different households? A page without a name that still
+gives acreage on a named highway under contract in a named month has published a parcel.
+
+**Not built:** the manifest carries `scrub`, `template` and `personal`; redact proposes a fourth
+verdict whose tool and witness are their own lap.
+
+Canonical Claude twin: `.claude/rules/redact-technique.md`.
