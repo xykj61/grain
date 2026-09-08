@@ -191,3 +191,74 @@ written. The first and second falsifiers remain unrun.
 
 Full run, sources, and the surface across 2,304 part pairs:
 [`20260908-005732_the-share-that-is-not-a-property-of-the-parts.md`](20260908-005732_the-share-that-is-not-a-property-of-the-parts.md).
+
+---
+
+## Addendum `20260908.031940` -- all three falsifiers are run, and the thesis moves
+
+**The first and second falsifiers have now been run too, which supersedes the closing sentence of
+the addendum above.** None of the three fired cleanly, so the paper survives -- and it survives as
+a smaller claim than it made. That is worth saying here, at the paper a reader arrives at, rather
+than leaving it distributed across three companion studies.
+
+| Falsifier | Run | What it returned |
+|---|---|---|
+| **First** -- name the deployment; given a mains-only roadmap this paper is enthusiasm | `20260908.025249` | **Fails.** Of 33 living and hand-seated ladders in `construction/waymark-registry.bron`, **13 name a hardware target and 7 are battery-primary**. DREY settles it alone: firmware whose capture is *"held only while powered, provably dissolved on power-down."* |
+| **Second** -- exhibit the layer that already bounds wakefulness | `20260908.021719` | **Fires on its terms, and stops short of its purpose.** Caravan bounds wakefulness twice, and the wake-and-rate shape this paper proposed is already written once at `caravan/harvest.rye:134`. There is nothing to duplicate, because the existing layer states almost no maximum. |
+| **Third** -- a power budget in which compute is a minority share | `20260908.005732` | **Neither fires nor survives.** It returns a threshold rather than a verdict: compute is a minority share exactly when the processor is awake under **14.5 percent** of wall time. |
+
+### What weakened
+
+**The novelty.** This paper's headline is an axis the discipline has yet to grow. The second
+falsifier's exhibit shows the axis is not missing -- `caravan/harvest.rye:134` carries
+
+```
+comptime { assert(max_poll_sweeps * poll_rest_ms > max_linger_ms); }
+```
+
+a rest interval times a work count, asserted to cover a span. That is the wake-and-rate shape
+proposed below, written once, before this paper, by a hand that needed it. So the honest verb is
+**carry** rather than **grow**, and the paper's own framing of a new kind of bound overstates what
+is wanted.
+
+**The joule.** The third falsifier's budget shows compute's share of a duty-cycled device is a
+property of the schedule rather than of the parts. A bound proportional to energy therefore cannot
+be validated against a fixed subsystem breakdown, which is what a joule-naming bound would want.
+The physical-floor section below reaches a **ratio** rather than a budget, and the ratio is what
+carries the argument; the joule in this paper's title is a direction rather than a checkable
+quantity, and the paper already says so one section down.
+
+### What strengthened, and it is not what this paper argued
+
+**The decisions are already being made, at existing sites, in silence.** Three measurements, each
+taken on this tree and each with its own reading recorded:
+
+- **47 time constants** in authored Rye stand outside the bound form; a hand read of the eleven the
+  census flags finds **6** genuinely constrained -- **12.8 percent**, against **90.9 percent** for
+  the extent control (40 of 44). Source: the second falsifier's hand read, over
+  [`../tools/fixtures/b/bound_kind_census.sh`](../tools/fixtures/b/bound_kind_census.sh).
+- **16 `std.Io.sleep` sites** across 7 files pass `.awake` -- Zig's `CLOCK_MONOTONIC`, which
+  *excludes* suspended time -- with zero exceptions, so the suspend question is answered uniformly
+  in an argument slot.
+- `grep -rni "monotonic|suspend|clock_boottime|wall.clock"` over `caravan/**.rye` returns **zero**.
+  Sixteen suspend decisions, no sentence.
+
+### The thesis, restated at its measured size
+
+**This tree's rest and wake decisions are made in constants and parameters rather than in bounds,
+and the cheap repair is to name them where they already stand** -- a `// invariant:` line at
+`caravan/entrust.rye:145` beside `note_rest_ms`, and the `harvest.rye` assert carried to the rest
+constants that have no such neighbor -- before any new axis is designed. A comment costs one
+sentence; an axis costs a design round. **The cheap thing first.**
+
+### What stands unchanged
+
+Every figure, derivation, and physical claim below stands as written: the Landauer arithmetic, the
+CMOS illustration, the two-question distinction between extent and cost, and the wake-and-rate
+shape as the only checkable form a joule bound can take. What moved is the claim of novelty and
+the order of the work.
+
+Full runs: [`20260908-025249_the-clock-nobody-chose.md`](20260908-025249_the-clock-nobody-chose.md)
+(first) - [`20260908-021719_the-layer-was-already-there.md`](20260908-021719_the-layer-was-already-there.md)
+(second) - [`20260908-005732_the-share-that-is-not-a-property-of-the-parts.md`](20260908-005732_the-share-that-is-not-a-property-of-the-parts.md)
+(third).
