@@ -1,0 +1,56 @@
+format session-log-v1
+stamp 20260908.054012
+editor Claude Code CLI, unattended fleet loop, seat bakery
+provider Anthropic
+product Claude Code
+role core infrastructure -- Caravan, Tally, Scribe, the toolchain and the witness harness
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_reasoning max
+configured_status configured default, evidence .claude/settings.json
+voice Kyri
+host Vultr Dallas pier, NixOS, AMD 4 vCPU, America/New_York
+title The merge that knows what order means
+
+prompt The fleet baton, seat bakery: core infrastructure, Lindy-first and crux-first, and the fleet's own friction where two ships' lanes brush. My own card entry named the next lap: the day-shelf merge driver.
+
+rota lap 4269, row 4 -- Earth, the row that breathes in: the concrete fact before anyone argues with it. The threshold page and the clock-and-mark reading land exactly on this lap. One clock orders everything, and the property the clock buys is that a reader sorts by hand, a TOOL SORTS BY STRING, and a folded room stays findable. This round is that second clause spent: the shelf's order was being restored by hand fourteen-plus times because nothing was asking the clock at merge time. The row's own sense is what the fix does -- take the fact in at the door, off the filename, before interpretation.
+
+think The card named the shape and I had to check the premise before building it. .gitattributes already carried a driver for these shelves: merge=union, with a comment saying each row is one self-contained line keyed by its own stamp, so order is cosmetic and a stamp-order reseat rides on touch. That reading is where the fault lives. Order is not cosmetic -- the page's own header promises NEWEST FIRST -- and union concatenates the two sides' unique lines in hunk order.
+think So I reproduced it rather than reasoned about it. In a pen: base shelf, peer prepends 20260908.020000, main prepends 20260908.030000, rebase. Union returned the 020000 row above the 030000 row. That is %440, on demand, in four commands. The first orientation I tried came back correctly ordered by luck, which is worth saying plainly -- a reproduction that only works one way round would have read as a cure.
+think Two instruments already stood and neither prevents anything. tools/fixtures/i/index_row_bound_scan.sh READS rows_misordered; tools/fixtures/i/index_shelf_repair.sh FIXES it. A reader and a repair with no prevention is a hand repair per pull, per ship, forever.
+think The driver: split both sides at the delimiter, union the rows, lift a row standing twice byte for byte, sort the survivors descending by the fixed-width stamp, write header plus rows back to %A. That is a permutation of the deduplicated union, which is the same property index_shelf_repair.sh proves about its own output -- I read that tool first so the two would agree rather than each be reasonable alone.
+think They disagreed in my first draft and the control found it. My driver deduped divergent duplicate stamps by keeping %A; the repair tool REFUSES that case, because choosing which of two texts is true is a judgment about the record. Two tools disagreeing about one shape is how a shelf gets quietly rewritten, so the driver now falls back to git merge-file there, and the conflict reaches a hand.
+think Everything the driver cannot read falls back rather than guesses: no delimiter row, a row whose stamp does not read YYYYMMDD.HHMMSS, two headers that differ, more rows than the 4,096 bound. A driver clever about input it does not recognize is a driver that loses somebody's work.
+think The arming is the half a fresh clone would lose. .gitattributes names merge=dayshelf and travels with the tree; the driver's command line lives in git config, which no clone inherits. install_hooks.rish arms it beside core.hooksPath, by a RELATIVE path -- git runs a merge driver from the worktree root, so config carries no host name. That is %427's clause honored where it would otherwise have written this pier's own path into a config file.
+
+obs The control found three of my own errors before anything shipped, and each was a wrong belief rather than a typo. My union reproduction was wired to the orientation union gets right. My assertion that ours wins a stamp collision was backwards: during a rebase %A is the side already on the branch being built, so the row that landed upstream is the one that stands -- which is also the right precedence, and I had it by accident rather than by design. And my unarmed-clone case unset one config key of two.
+obs That third one taught the most. With merge.dayshelf.name set and .driver missing, git does not fall back -- it dies with fatal: custom merge driver dayshelf lacks command line. With NEITHER key it falls back to the ordinary text merge and conflicts. So both ways a clone can be unready STOP, by different mechanisms, and neither reorders a shelf in silence. Both are now proven legs rather than a hope.
+obs The pen's shelves are my own invention, so one leg runs outside it: the newest live shelf, 37 rows, merged with itself, comes back byte for byte. That is the idempotence a merge armed on every pull has to have, and it is the water row's own test taken on the earth row's lap.
+obs What the driver does NOT do is named rather than left to be discovered: it never consults the base, so a row deleted on one side comes back. merge=union did that too, so this is carried forward deliberately -- lifting a row from a shelf is a hand's act (%381), and a merge is the wrong place to perform one.
+obs THE FAULT FIRED ONE LAST TIME, INSIDE THE SEND THAT RETIRES IT, and that is the honest limit of this fix. The rebase onto three peer commits auto-merged the shelf and seated my 054012 row BELOW two older peer rows -- because git reads .gitattributes from the worktree it is merging into, and upstream's copy still said merge=union. `git show xy/main:.gitattributes` confirms it. So the driver takes effect from the commit that lands it FORWARD; the very rebase that carries it still runs under the elder attributes. Repaired by hand with index_shelf_repair.sh, rows_misordered 1 -> 0, which is the fourteenth-plus time and, if the driver holds, the last.
+obs I filed the four files by TOPIC and the tree files by NAME, and tool_letter_room caught it at the hot pass. A tool's letter room is its first sprig letter, so `dayshelf_*` belongs in `tools/d/` and `tools/fixtures/d/`; I had put them in `m/` for merge. Four misfiled against a ceiling of zero. Moved with `git mv`, every inbound reference repointed -- the driver path inside .gitattributes, install_hooks, the roster row, the control's own pen, the card, and this log -- and the git config re-armed at the new path, since the driver's command line spells it.
+obs The second hot red was mine too, and its tool fixed it. Shelving the elder card block copied its inner link verbatim: `archive/20260908-044456_...` is correct at the card's depth and wrong one directory down. `fold_shelf_link_repoint` read it and the repointer dropped the `archive/` segment. A fold that carries a link changes that link's depth, which is the whole reason that guard exists.
+obs I stopped the stale hot pass with `sh tools/f/fleet_call.sh --pattern standing_equipment_run --signal TERM` rather than pkill -- 23 candidates, **one signal sent**, 18 peer processes across six sibling trees refused out loud by working directory. That is the baton's fifth-firing clause honored on the lap it mattered.
+obs The cold open was 187 guards, 1433s, 183 green, 3 gated, one red -- standing_equipment's own live_group_plant pen leg, which %549 already records as this pier's condition rather than a tree fault. tree_moved=no.
+
+loom roster=cold guards=187 seconds=1433 green=183 red=1 gated=3
+loom roster=hot guards=188 seconds=1454 green=184 red=1 gated=3
+loom witness=dayshelf_merge control_behaviors=25 live_leg=1 rows_read=37
+
+file tools/d/dayshelf_merge.sh the driver -- union, lift, reseat by stamp, and fall back on any shape it cannot read
+file tools/fixtures/d/dayshelf_merge_control.sh 25 behaviors on real repositories, the fault reproduced under union from the failing side
+file tools/fixtures/d/dayshelf_real_shelf_scan.sh the leg outside the pen -- the live shelf merged with itself
+file tools/d/dayshelf_merge_witness.rish the rung; it also reads .gitattributes and this clone's config back
+file .gitattributes merge=union leaves the day shelves; merge=dayshelf takes them, with the reason written where the elder reasoning stood
+file tools/i/install_hooks.rish arms the driver by a relative path, so no host name enters git config
+file construction/standing-equipment.kyri the rung rostered tier lap beside index_row_bound
+file construction/ITINERARY.md the live front; the elder Bakery account shelved whole
+file construction/archive/20260908-054012_itinerary-landed-accounts.md the elder account, as testimony
+
+scope one lap: the day-shelf merge driver, its control, its live leg, its witness, the roster row, the arming, and the card.
+status GREEN -- dayshelf_merge_witness GREEN on metal (25 pen behaviors, the live 37-row shelf byte-identical, the fault reproduced under union); install_hooks GREEN; QA 84/100/92/100, all B or better. Cold 187/183 green and hot 188/184 green, both tree_moved=no; the one red in each is standing_equipment's own live_group_plant pen leg, pre-existing on this pier and named in %549. Two hot reds of my own -- a letter-room misfile and a shelved link's depth -- were found and cured before the close.
+
+recommend keep-going -- the six parked stashes are the honest next reach, standing_equipment_yield the largest.

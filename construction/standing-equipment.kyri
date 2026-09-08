@@ -479,6 +479,10 @@ guard index_row_bound
 path tools/in/index_row_bound_witness.rish
 seated 20260824.183000
 
+guard dayshelf_merge
+path tools/d/dayshelf_merge_witness.rish
+seated 20260908.054012
+
 guard log_has_a_row
 path tools/l/log_has_a_row_witness.rish
 seated 20260824.201500

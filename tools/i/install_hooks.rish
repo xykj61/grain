@@ -21,6 +21,16 @@
 # with those pages unrefreshed. post-commit notices, records the debt in the git directory, and the
 # next ordinary commit pays it. REDS %337 is the round that shipped both pages stale that way.
 #
+# And one merge driver, `dayshelf`, which reseats a day-shelf index in stamp order when two seats'
+# rows meet. `.gitattributes` names the driver by name; the command line it runs lives in git
+# config, which a clone inherits from nothing. So a fresh clone falls back to an ordinary text
+# merge on every shelf until this command runs -- visible rather than wrong, which is the safe
+# direction, and still a conflict a hand resolves on every pull. REDS %440 fired fourteen-plus
+# times under the elder `merge=union`, which merged those rows cleanly and in the wrong order.
+# The driver is named by a RELATIVE path, since git runs a merge driver from the worktree root
+# and a relative name keeps a host path out of this clone's config (%427).
+# Proven by tools/d/dayshelf_merge_witness.rish.
+#
 # The setting is per-clone and per-machine on purpose; it is not something a repository can
 # turn on for someone else, which is the same reason a fresh clone must run this once.
 #
@@ -57,6 +67,21 @@ assert post_present.ok else "install-hooks: ${post} is missing -- nothing to arm
 let post_runnable = run ["sh" "-c" "test -x ${post}"]
 assert post_runnable.ok else "install-hooks: ${post} is not executable -- git would skip it silently"
 
+let merge_driver = "tools/d/dayshelf_merge.sh"
+
+let merge_present = run ["sh" "-c" "test -f ${merge_driver}"]
+assert merge_present.ok else "install-hooks: ${merge_driver} is missing -- nothing to arm"
+
+let merge_named = run ["git" "config" "merge.dayshelf.name" "day-shelf index -- union the rows, reseat them in stamp order"]
+assert merge_named.ok else "install-hooks: could not name the dayshelf merge driver -- ${merge_named.err}"
+
+let merge_armed = run ["git" "config" "merge.dayshelf.driver" "sh tools/d/dayshelf_merge.sh %O %A %B %P"]
+assert merge_armed.ok else "install-hooks: could not set merge.dayshelf.driver -- ${merge_armed.err}"
+
+let merge_readback = run ["git" "config" "--get" "merge.dayshelf.driver"]
+assert merge_readback.ok else "install-hooks: merge.dayshelf.driver did not read back -- ${merge_readback.err}"
+assert merge_readback.out contains "dayshelf_merge.sh" else "install-hooks: merge.dayshelf.driver reads ${merge_readback.out} rather than the tree's own driver"
+
 let armed = run ["git" "config" "core.hooksPath" "tools/hooks"]
 assert armed.ok else "install-hooks: could not set core.hooksPath -- ${armed.err}"
 
@@ -64,4 +89,4 @@ let readback = run ["git" "config" "--get" "core.hooksPath"]
 assert readback.ok else "install-hooks: core.hooksPath did not read back -- ${readback.err}"
 assert (trim readback.out) == "tools/hooks" else "install-hooks: core.hooksPath reads ${readback.out} rather than tools/hooks"
 
-say "GREEN: install-hooks -- core.hooksPath now names tools/hooks; the commit-msg wall, the front-door pre-commit, and its post-commit sibling are armed on this clone."
+say "GREEN: install-hooks -- core.hooksPath now names tools/hooks; the commit-msg wall, the front-door pre-commit, its post-commit sibling, and the dayshelf merge driver are armed on this clone."

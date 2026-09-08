@@ -1,0 +1,103 @@
+# tools/d/dayshelf_merge_witness.rish -- the shelf comes back in order, because the merge puts it there.
+#
+# WHY THIS RUNG. A day-shelf index takes one prepended row from every seat, so any two clones that
+# both land a lap edit the same line of one file. `.gitattributes` answered that with git's built-in
+# `merge=union`, which keeps both sides' lines and concatenates them in HUNK order -- and hunk order
+# is not stamp order. So a rebase whose own row is newer than the peer's seats the older row on top,
+# every time, and the page that promises NEWEST FIRST breaks without anybody writing a wrong row.
+#
+# REDS %440 fired eleven times across four laps, then three more in one lap, and a peer shipped the
+# same hand repair within the hour. Two instruments already stood: `index_row_bound_scan` READS the
+# disorder and `index_shelf_repair.sh` FIXES it. Neither stops it coming back, because it is not a
+# habit anyone can drop -- every ship that pulls re-earns it. This rung is the third thing, the one
+# that keeps it from arriving: `merge=dayshelf` reseats the union in stamp order at merge time.
+#
+# WHAT IS PROVEN, on metal. Twenty-five behaviors on real repositories in a throwaway pen, driven
+# through real `git rebase` and `git merge` calls rather than by calling the driver by hand:
+#   The fault reproduced -- the same divergence under `merge=union` comes back with the older row
+#     on top, so the refusal and the thing refused are both shown.
+#   Both orientations of the ordinary divergence keep every row and come back descending.
+#   Five rows interleaved across two branches come back in one descending run.
+#   A row prepended identically by both sides is lifted to one; a stamp stands once (%381).
+#   Two DIFFERENT rows under one stamp CONFLICT rather than merge -- the same case
+#     tools/fixtures/i/index_shelf_repair.sh refuses, for the same reason.
+#   An unreadable row, and two headers that disagree, each conflict rather than merge.
+#   The header, the table head, and the delimiter each survive exactly once.
+#   A clone that never armed the driver conflicts visibly; a half-armed clone refuses outright with
+#     `lacks command line`. Both ways of being unready stop, and neither reorders in silence.
+# And one leg outside the pen: the newest LIVE day shelf, merged with itself, comes back byte for
+# byte. The pen's shelves are this tree's own invention; the live one is the shape the driver meets.
+#
+# WHAT IS PROVEN ABOUT THIS CLONE. `.gitattributes` names `merge=dayshelf` for the day shelves and
+# no longer names `merge=union` for them, and this clone's git config carries the driver's command
+# line. The command lives in config, which no clone inherits, so the repair when this reds is one
+# line: rishi/bin/rishi run tools/i/install_hooks.rish
+#
+# WHAT IS NOT PROVEN HERE. Whether the live shelves are in order today -- that reading belongs to
+# tools/in/index_row_bound_witness.rish, which already owns it, and one reading in two places is
+# how two guards come to disagree. This rung proves the mechanism that keeps that reading green.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/d/dayshelf_merge_witness.rish
+
+say "dayshelf-merge: Language EN -- a shared page that everyone prepends to needs a merge that knows what order means."
+say "dayshelf-merge: Style Radiant -- the clock already says which row is newer; the merge simply asks it."
+say "dayshelf-merge: Lens TAME -- safety first: every shape the driver cannot read falls back to an ordinary conflict."
+
+let attrs = run ["sh" "-c" "grep 'README-index' .gitattributes | grep -c 'merge=dayshelf'"]
+assert attrs.ok else "dayshelf-merge: .gitattributes must name merge=dayshelf for the day shelves"
+assert (trim attrs.out) == "1" else "dayshelf-merge: .gitattributes names the dayshelf driver ${attrs.out} times rather than once"
+
+let union_gone = run ["sh" "-c" "grep 'README-index' .gitattributes | grep -c 'merge=union' || true"]
+assert (trim union_gone.out) == "0" else "dayshelf-merge: the union driver still claims the day shelves -- it is what misorders them"
+
+let armed = run ["sh" "-c" "git config --get merge.dayshelf.driver"]
+assert armed.ok else "dayshelf-merge: this clone has not armed the driver -- run: rishi/bin/rishi run tools/i/install_hooks.rish"
+assert armed.out contains "dayshelf_merge.sh" else "dayshelf-merge: merge.dayshelf.driver names ${armed.out} rather than the tree's own driver"
+
+let named = run ["sh" "-c" "git config --get merge.dayshelf.name"]
+assert named.ok else "dayshelf-merge: merge.dayshelf.name must be set beside the driver -- run install_hooks"
+say "this clone armed -- .gitattributes names the driver and git config carries its command line"
+
+let control = run ["sh" "tools/fixtures/d/dayshelf_merge_control.sh"]
+assert control.ok else "dayshelf-merge: the control must complete"
+say control.out
+assert control.out contains "union_misorders=yes" else "dayshelf-merge: the fault must reproduce under merge=union, or the cure guards nothing"
+assert control.out contains "union_puts_older_first=yes" else "dayshelf-merge: the union fault must be named, never only counted"
+assert control.out contains "newer_kept_both=yes" else "dayshelf-merge: a merge must keep both seats' rows"
+assert control.out contains "newer_in_order=yes" else "dayshelf-merge: the ordinary divergence must come back descending"
+assert control.out contains "older_kept_both=yes" else "dayshelf-merge: the other orientation must keep both rows too"
+assert control.out contains "older_in_order=yes" else "dayshelf-merge: the orientation union breaks must come back descending"
+assert control.out contains "older_newest_first=yes" else "dayshelf-merge: the newest row must stand at the top, which is the whole promise"
+assert control.out contains "identical_row_lifted=yes" else "dayshelf-merge: a row prepended identically by both sides must be lifted to one"
+assert control.out contains "identical_row_once=yes" else "dayshelf-merge: a stamp stands once on a shelf"
+assert control.out contains "divergent_stamp_conflicts=yes" else "dayshelf-merge: two different rows under one stamp must conflict rather than merge"
+assert control.out contains "divergent_kept_theirs=yes" else "dayshelf-merge: a refused merge must leave both texts for the hand"
+assert control.out contains "divergent_kept_ours=yes" else "dayshelf-merge: a refused merge must leave both texts for the hand"
+assert control.out contains "header_kept=yes" else "dayshelf-merge: the shelf's own header must survive the merge"
+assert control.out contains "delimiter_once=yes" else "dayshelf-merge: the table delimiter must stand exactly once"
+assert control.out contains "table_head_once=yes" else "dayshelf-merge: the table head must stand exactly once"
+assert control.out contains "interleaved_kept_all=yes" else "dayshelf-merge: five rows across two branches must all survive"
+assert control.out contains "interleaved_in_order=yes" else "dayshelf-merge: interleaved rows must come back as one descending run"
+assert control.out contains "unreadable_conflicts=yes" else "dayshelf-merge: a row carrying no readable stamp must conflict rather than be sorted by its title"
+assert control.out contains "unreadable_row_kept=yes" else "dayshelf-merge: a refusal must lose nothing"
+assert control.out contains "header_clash_conflicts=yes" else "dayshelf-merge: two headers that disagree must conflict, so a prose edit is never dropped"
+assert control.out contains "unarmed_conflicts=yes" else "dayshelf-merge: an unarmed clone must conflict visibly rather than merge wrong"
+assert control.out contains "half_armed_fatal=yes" else "dayshelf-merge: a half-armed clone must refuse outright"
+assert control.out contains "half_armed_no_merge=yes" else "dayshelf-merge: a refused rebase must leave the shelf untouched"
+assert control.out contains "merge_in_order=yes" else "dayshelf-merge: a merge reaches the same driver a rebase does"
+assert control.out contains "merge_kept_both=yes" else "dayshelf-merge: a merge must keep both seats' rows too"
+assert control.out contains "control_verdict=ok" else "dayshelf-merge: the control must agree with itself"
+# The pen's shelves are miniature by design, so the driver is also run once over a REAL one: the
+# newest live day shelf, copied into a throwaway pen and merged with itself. An already-ordered
+# shelf must come back byte for byte -- the same property `index_shelf_repair.sh` proves about its
+# own output, and the reason a merge armed on every pull is safe to leave armed.
+let real = run ["sh" "tools/fixtures/d/dayshelf_real_shelf_scan.sh"]
+assert real.ok else "dayshelf-merge: the real-shelf leg must run -- read its own verdict line"
+say real.out
+assert real.out contains "real_shelf_unchanged=yes" else "dayshelf-merge: a real ordered shelf merged with itself must come back byte for byte"
+assert real.out contains "verdict=ok" else "dayshelf-merge: the real-shelf leg must balance before it is believed"
+
+say "RED and GREEN paths proven -- the fault reproduced under union, five refusals bitten, and every honest merge left descending"
+
+say "GREEN: dayshelf-merge -- the shelf comes back in order, because the merge puts it there."
