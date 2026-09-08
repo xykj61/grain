@@ -1,0 +1,45 @@
+format session-log-v1
+stamp 20260907.232825
+editor Claude Code, terminal
+provider Anthropic
+product Claude Code
+role unattended fleet seat -- BAKERY, core infrastructure
+modality text
+model claude-opus-5
+model_status configured default proven by .claude/settings.json; no runtime telemetry read this lap
+configured_model claude-opus-5
+configured_reasoning max
+configured_status tracked settings file
+evidence .claude/settings.json
+voice Kyri
+host Linux pier, America/New_York
+title One law, two derivations, and the blind one held the gate
+prompt the fleet baton -- BAKERY's lane, core infrastructure, Lindy-first and crux-first
+rota lap 4225, row 0 -- Aether, the row that hears. Read the threshold and its three seats through sound. The row's own hard rule chose this lap: a guard that cannot red guards nothing, and its mirror -- a guard that reds where nothing can be repaired is the same silence wearing noise. Both fired here in one pass.
+think Cold open with six ships on the roster concurrently; 1,174s, 180 guards, five red. Held the tree still through it and read only.
+think Four reds, three roots, all in one family. Sorting them by what a lap can actually repair is what named the crux: index_row_bound was one misordered row, standing_equipment was one missing field, and the two ledger-spine guards shared a root neither of them could state.
+think reds_ledger_monotone_scan.sh reads FILES and counts numbers_double_bound -- one row number over two stamps -- under a ceiling of 1. It cannot see which side of the derived spine's own split a doubling falls on, because that answer lives in the anointed remote. reds_spine_derive_scan.sh reads that remote and split the class on 20260907.024141: double_booked gated at zero for a pair this tree made, published_doubles reported for a pair upstream already carries.
+think So the same tree, the same hour, read verdict=number_double_bound in one instrument and verdict=ok published_doubles=2 in the other. One law, two derivations, and the blind one held the gate -- the shape single-stranded names, arriving as a fleet-wide refusal rather than as an argument.
+think The repair is subtraction: the teeth move to the guard holding the remote, the count and both stamps stay where they are cheap to plant, and numbers_double_bound_gated_by= prints beside them so the class never reads unguarded.
+obs A removed ceiling needs a different proof than a raised one. The elder leg planted ONE double and watched it pass; that leg reads identically against a ceiling quietly bumped to two. The new leg plants a SECOND and asserts verdict=ok, which only a lifted ceiling can answer.
+obs Naming another guard is a claim, so the witness runs it. A leg builds a real git repository in a pen, plants a local double on no anointed spine, and asserts double_booked=1 verdict=double_booked -- the pointer checked by running rather than by citing. Without it the phrase gated_by= would be a promise nobody reads.
+obs reds_spine_derive could not print. It composed its reading with say "...\n${scan.out}"; Rishi builds an interpolated string in a 4,096-byte StrBuf at rishi/src/main.rye:3101, and that scan emits one detail: line per finding, so it reached 4,250 bytes and died StringTooLong while the scan itself answered verdict=ok. The roster wrote reds_spine_derive red -- a guard reporting its own printer's fault as the ledger's.
+obs The sharper half was on the path that never ran. The verdict=ok assertion carried the same interpolation in its refusal message, so on the one path most needing to name which rows collided, the message would itself have exceeded the buffer. A fault reachable only by failing, hidden for as long as the reading stayed short. A bare say of a captured value composes nothing.
+obs standing_equipment's self-red was one missing line, and the record's own comment already argued for it: "lap rather than cadence: 0.4s measured 20260907". The prose was written and the field never typed, so the ratchet rose 62 -> 63 and refused the roster it belongs to.
+obs THREE of this lap's acts withdrew to peers who published first, and only one cost anything. A peer reached the StringTooLong fault and the identical cure -- the reading said before it is judged, never interpolated -- from the other end and landed it as %597; two rows for one incident is worse than one row under another's number, so my row 20260907.230500 withdrew whole rather than renumbering. The tier lap line and the libraries regeneration landed upstream identically and the rebase dropped both. What survives is the gate move, which nobody else reached.
+obs The renumbering cost two path edits rather than a sweep, because every citation of my rows spelled the stamp. %595 was taken while the lap sat, then %596 and %597 while it rebased; the surviving row settled at %598 on its third number. Rule 4 of the derived spine paid for itself here in one line.
+obs The commit-message wall caught my own stale citation on the amend: the body still named the shelf path as it stood before the renumber. A rebase runs no hook, so the wall only speaks at commit and amend -- which is exactly where it spoke.
+obs Measured, not repaired: %592's own gate reads only stashes whose subject says fleet-round-open, and stash@{0} here is a plain WIP holding that row's whole parked lap -- three link_touch guard files and a session log carried by no ref. stashes=12 against git stash list's 14, and unlanded=0 over a genuinely unlanded record. Widening the filter is interlocked: landing that record reds log_file_claim, since its file fields name three paths that never landed -- and a peer landed pre-commit rule six broader the same day, so the parked guard is superseded rather than merely late. Named on the card rather than taken, because the resolution is a word about superseded work rather than a repair.
+loom roster=cold guards_run=180 wall_seconds=1174 green=172 red=5 gated=3 concurrent_ships=6
+loom guard=reds_spine_derive scan_bytes=4250 strbuf_bytes=4096
+loom ledger=reds pin_bytes_before=45067 pin_bytes_after=40622 bound=40960 rows_folded=2
+file tools/fixtures/r/reds_ledger_monotone_scan.sh numbers_double_bound reported rather than gated, and the header says which guard holds the teeth and why this one cannot
+file tools/gen/chapter/reds_ledger_monotone_witness.rish the second-double leg proving the ceiling lifted rather than raised, and a leg running the named guard on a planted local double
+file construction/REDS.md the surviving row, booked after a fetch and folded the same hour to hold the pin under bound
+file construction/archive/REDS-a-guard-that-could-not-say-what-it-knew-rows-598.md the shelf, its header recording the row that withdrew and to whom
+file construction/ITINERARY.md this lap's account, the elder shelved, the parked-lap interlock surfaced as a word
+file construction/archive/20260907-232511_itinerary-landed-accounts.md the elder Bakery account, shelved whole
+file session-logs/date/README-index-20260907.md one misordered row sorted by index_shelf_repair.sh
+scope core infrastructure -- the REDS ledger guard family, four reds closed, two rows booked and folded
+status GREEN -- hot roster pass 176 green of 180, its one red the known detached-shell leg that reads GREEN from an ordinary shell; after two rebases the eleven intersecting guards re-verified green by name, including all seven ledger-spine guards, fold_shelf_link, index_row_bound, log_file_claim and living_pin_near_bound
+recommend check-in (Keaton) -- one. %592's gate is false-safe by its subject filter and I can widen it in an hour, yet landing the record it would then demand reds log_file_claim, because that lap's work was superseded by a peer's broader pre-commit rule six the same day. A superseded parked lap has no lawful door: the record gate refuses to be satisfied by dropping evidence, and rightly. Does an abandoned lap get a named exit, or does its work land anyway?

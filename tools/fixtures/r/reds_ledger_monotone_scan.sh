@@ -170,13 +170,33 @@ duplicate_headlines=$(wc -l < "$dup_file" | tr -d ' ')
 # spelled out digit by digit rather than with an interval, since interval expressions are not
 # something every awk on a borrowed pier answers to.
 #
-# CEILINGS THAT ONLY FALL, rather than gates at zero, and for the same reason
-# duplicate_headlines_ceiling already carries above. Both instances stand on published dated
-# shelves, so touching either edits testimony -- Keaton's word under `debride` -- and one of them
-# is not a fault at all, merely a pair somebody kept. Holding the line where it stands is what
-# makes the NEXT doubling red inside the tree that made it.
-numbers_double_bound_ceiling=1
+# `rows_double_shelved` KEEPS ITS CEILING, and for the same reason duplicate_headlines_ceiling
+# carries above: its one instance stands on published dated shelves, so touching it edits testimony
+# -- Keaton's word under `debride` -- and it is not a fault at all, merely a pair somebody kept.
 rows_double_shelved_ceiling=1
+
+# `numbers_double_bound` IS REPORTED HERE AND GATED ELSEWHERE (REDS `20260907.230000`). It carried a
+# ceiling of 1 until this reading was written, on the argument that holding the line makes the NEXT
+# doubling red inside the tree that made it. That argument wants one fact this scan cannot reach:
+# whether the doubling is one a lap may repair.
+#
+# `tools/fixtures/r/reds_spine_derive_scan.sh` reads the ANOINTED remote and splits the class in two.
+# A pair this tree created is `double_booked`, gated at zero, and a lap repairs it in one line by
+# renumbering its own unshared row. A pair the anointed spine already carries is `published_doubles`,
+# reported and gated by nothing: `.claude/rules/derived-spine.md` rule 3 holds for BOTH rows, so no
+# lap may move either, and the deadlock is Keaton's word (booked `20260907.014654`).
+#
+# This scan reads FILES. It sees a number standing over two stamps and it cannot see which side of
+# that split the pair falls on, so a ceiling here bites both classes identically. On `20260907` the
+# second published double landed -- `%592`, bound to `20260907.211709` on a shelf and to
+# `20260907.215114` on the living pin, both already on `xy/main` -- and this ceiling reddened
+# `reds_ledger_monotone` and `reds_row_present` on every ship that fetched it, for a fault none of
+# them may touch. `reds_spine_derive` read the same tree, the same hour, and answered `verdict=ok`
+# with `published_doubles=2` beside it, because it could see what this reading cannot.
+#
+# So the teeth move to the instrument holding the remote, and the count stays here where it is
+# cheap and where the pen can plant it. Two derivations of one law that disagree are one law
+# written twice, and the blind one was holding the gate.
 
 bindings=$(for f in "$@"; do
   awk '
@@ -210,7 +230,7 @@ echo "duplicate_headlines=$duplicate_headlines"
 echo "duplicate_headlines_ceiling=$duplicate_headlines_ceiling"
 echo "bindings=$n_bindings"
 echo "numbers_double_bound=$numbers_double_bound"
-echo "numbers_double_bound_ceiling=$numbers_double_bound_ceiling"
+echo "numbers_double_bound_gated_by=reds_spine_derive"
 echo "rows_double_shelved=$rows_double_shelved"
 echo "rows_double_shelved_ceiling=$rows_double_shelved_ceiling"
 while IFS= read -r h; do
@@ -222,7 +242,7 @@ rm -f "$dup_file"
 while IFS= read -r n; do
   [ -n "$n" ] || continue
   ss=$(printf '%s\n' "$bindings" | awk -F'\t' -v n="$n" '$1==n { printf "%s ", $2 }')
-  echo "detail: %$n is bound to ${ss}-- two incidents under one number; a word says which renumbers"
+  echo "detail: %$n is bound to ${ss}-- two incidents under one number; sh tools/fixtures/r/reds_spine_derive_scan.sh says whether a lap may repair it"
 done < "$bound_file"
 rm -f "$bound_file"
 while IFS= read -r line; do
@@ -236,7 +256,6 @@ rm -f "$shelved_file"
 if [ "$rows" -eq 0 ]; then echo "verdict=no_rows"; exit 1; fi
 if [ "$fail" -eq 0 ] &&
    [ "$duplicate_headlines" -le "$duplicate_headlines_ceiling" ] &&
-   [ "$numbers_double_bound" -le "$numbers_double_bound_ceiling" ] &&
    [ "$rows_double_shelved" -le "$rows_double_shelved_ceiling" ]; then
   echo "verdict=ok"
   exit 0
@@ -247,14 +266,9 @@ if [ "$duplicate_headlines" -gt "$duplicate_headlines_ceiling" ]; then
   echo "refused: one headline stands under two row numbers past the ceiling -- read the lines above" >&2
   exit 1
 fi
-# The two verdicts below are named apart on purpose. One number over two incidents and one
-# incident in two files are repaired by different acts, so a single word for both would tell a
-# reader that something is doubled and leave them to find out what (REDS %528).
-if [ "$numbers_double_bound" -gt "$numbers_double_bound_ceiling" ]; then
-  echo "verdict=number_double_bound"
-  echo "refused: a row number stands over two incidents past the ceiling -- read the lines above" >&2
-  exit 1
-fi
+# One incident in two files is repaired by opening both and choosing, which is a different act from
+# every refusal above, so it keeps its own word rather than sharing one that would tell a reader
+# something is doubled and leave them to find out what (REDS %528).
 echo "verdict=row_double_shelved"
 echo "refused: one row stands in two files past the ceiling -- read the lines above" >&2
 exit 1
