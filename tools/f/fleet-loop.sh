@@ -274,6 +274,16 @@ run_lap() {
 }
 
 while [ "$(date +%s)" -lt "$deadline" ]; do
+  # A DRAIN IS NEVER REMOVED BY THE LOOP. `.loop-gates-only` is the AGENT's own stop, set
+  # during its lap and read at the foot of this body, so clearing it at the top is right --
+  # a stale one from last night would stop tonight's first lap before it opened. `.loop-drain`
+  # is a HAND's stop, and it may land at any moment, including the 20s sleep below where the
+  # next iteration's rm would have erased it silently and kept running. So it is read here
+  # too, before a lap opens, and it is cleared by the hand that set it rather than by us.
+  if [ -f .loop-drain ]; then
+    echo "DRAIN: $seat stopping before lap $((laps + 1)) -- .loop-drain stands; remove it to resume"
+    break
+  fi
   rm -f .loop-gates-only
   lap_open=$(date +%s)
   echo "fleet-loop: lap $((laps + 1)) opens at $(TZ=America/New_York date +%H:%M:%S)"
@@ -341,6 +351,10 @@ while [ "$(date +%s)" -lt "$deadline" ]; do
   laps=$((laps + 1))
   if [ -f .loop-gates-only ]; then
     echo 'GATES-ONLY: loop paused'
+    break
+  fi
+  if [ -f .loop-drain ]; then
+    echo "DRAIN: $seat stopped after lap $laps -- the lap finished whole; remove .loop-drain to resume"
     break
   fi
   if [ "$max_laps" -gt 0 ] && [ "$laps" -ge "$max_laps" ]; then
