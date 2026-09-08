@@ -17,13 +17,22 @@
 #      the two markers' DISAGREEMENT at zero and excludes by their intersection; this scan excludes
 #      by their UNION, which is the safe direction for a runner: a desk half-declared is a desk we
 #      decline to hand to the compiler, rather than one we hand over on a technicality.
-#   3. minus every desk whose stem sits in tools/g/glow_run_worker.sh's sample-permission `case`.
-#      Those desks refuse to run without an argument the runner would have to choose, and choosing
-#      it is a judgment per desk rather than a loop. They are the reach scan's `uncovered_sampled`
-#      ratchet and they stay it.
+#   3. minus every desk whose stem sits in tools/g/glow_run_worker.sh's sample-permission `case`
+#      AND whose head declares no sample. A sampled desk refuses to run without an argument, and
+#      the elder reading stopped there: choosing that argument was called a judgment per desk
+#      rather than a loop, so 46 desks stood run by nothing. Holding the answers in a table here
+#      would be a FOURTH hand-written enumeration of one corpus -- the shape REDS %532 booked in
+#      the first place. So the desk carries its own, in the same head band its run-contract already
+#      uses:
 #
-# What remains is the BARE-RUNNABLE set: 301 desks measured 20260907, of which the elder witness
-# names 218 and nothing named the other 83.
+#          ::  Sample: 3 5
+#
+#      One line, in the file the sample proves, read on every pass. A sampled desk landing tomorrow
+#      declares what proves it or stays out of the selection and is counted by name.
+#
+# What remains is the SELECTION: 347 desks measured 20260908 -- the whole runnable room, 301 bare
+# and 46 declaring their own sample -- where the elder witness names 218 and nothing named the
+# other 129.
 #
 # THE COMPILER IS BUILT ONCE, AND THAT IS MOST OF THE COST. tools/g/glow_run_worker.sh rebuilds
 # glow/bin/glow_run from glow/glow_run.rye on EVERY invocation, because one desk run is one hand's
@@ -74,6 +83,14 @@ MAX_DESKS=4096
 # sample-demo-fixture-lits and sample-digraph-table. Giving them a marker changes what declares a
 # desk's kind, which is a language custody ruling rather than a repair a lap takes (REDS %532).
 FAILED_CEILING=${GLOW_DESK_RUN_FAILED_CEILING:-3}
+
+# A RUNNABLE SAMPLED DESK THAT DECLARES NO SAMPLE, held at zero. The ceiling is zero rather than a
+# ratchet counting down because all 46 were given their line in one lap, measured on metal before
+# it was written -- each desk run with its own declared values through tools/g/glow_run.rish, 46 of
+# 46 GREEN. A backlog earns a ratchet; an empty set earns a wall, and the wall is what makes the
+# next sampled desk arrive covered. The cure is one line in the desk's own head, and the refusal
+# below names it.
+SAMPLE_UNDECLARED_CEILING=${GLOW_DESK_SAMPLE_UNDECLARED_CEILING:-0}
 
 # A per-desk runner the control can replace. Left empty, the scan runs the real lower-build-run
 # below; a pen sets it to a stub so the reading -- selection, counting, ceiling, refusal -- is
@@ -156,8 +173,48 @@ sort -o "$WORK/sampled" "$WORK/sampled"
 sampled=$(wc -l < "$WORK/sampled" | tr -d ' ')
 
 comm -23 "$WORK/desks" "$WORK/norun" > "$WORK/runnable"
-comm -23 "$WORK/runnable" "$WORK/sampled" > "$WORK/selected"
+comm -23 "$WORK/runnable" "$WORK/sampled" > "$WORK/bare"
+bare=$(wc -l < "$WORK/bare" | tr -d ' ')
+
+# THE SAMPLE A DESK DECLARES FOR ITSELF, read from the same six-line head band the run-contract
+# above is read from, so one band answers every question this scan asks of a desk. The first
+# `Sample:` line wins: a desk saying it twice has said one thing twice, and taking the first is the
+# reading a human eye takes.
+#
+# Only a RUNNABLE sampled desk is asked. A desk that has declared it must not run has already
+# answered, and counting it undeclared would ask a file to fill in a form it declined to enter.
+comm -12 "$WORK/runnable" "$WORK/sampled" > "$WORK/sampled_runnable"
+: > "$WORK/sample_declared"
+: > "$WORK/sample_undeclared"
+while IFS= read -r desk; do
+  args=$(head -6 "$desk" | sed -n 's/^::[[:space:]]*Sample:[[:space:]]*//p' | head -1)
+  if [ -n "$args" ]; then
+    printf '%s\t%s\n' "$desk" "$args" >> "$WORK/sample_declared"
+  else
+    printf '%s\n' "$desk" >> "$WORK/sample_undeclared"
+  fi
+done < "$WORK/sampled_runnable"
+sort -o "$WORK/sample_declared" "$WORK/sample_declared"
+sort -o "$WORK/sample_undeclared" "$WORK/sample_undeclared"
+sample_declared=$(wc -l < "$WORK/sample_declared" | tr -d ' ')
+sample_undeclared=$(wc -l < "$WORK/sample_undeclared" | tr -d ' ')
+
+cut -f1 "$WORK/sample_declared" | sort > "$WORK/declared_paths"
+sort -u "$WORK/bare" "$WORK/declared_paths" > "$WORK/selected"
 selected=$(wc -l < "$WORK/selected" | tr -d ' ')
+
+# The selection with each desk's own arguments beside it, so the run loop reads one file rather
+# than looking a second one up per desk. A bare desk carries an empty field, which is what makes
+# the loop below single -- one path through the corpus, not one for each kind of desk.
+# The map is read in BEGIN rather than by the usual NR==FNR two-file idiom, and the control is why:
+# NR==FNR asks "am I still in the first file?" by arithmetic, and when the first file is EMPTY that
+# arithmetic answers yes for every record of the second -- so a room where no desk declares a sample
+# consumed its whole selection as map entries and ran nothing, while every count above still read
+# right. A clean room is the commonest room there is.
+awk -F'\t' -v decl="$WORK/sample_declared" '
+  BEGIN { while ((getline line < decl) > 0) { split(line, f, "\t"); a[f[1]] = f[2] } }
+  { print $1 "\t" (($1 in a) ? a[$1] : "") }
+' "$WORK/selected" > "$WORK/selected_args"
 
 # --list is the coverage answer other meters ask for, and it runs nothing. Keeping the selection
 # and the running in one file is what stops a second enumeration from being born beside this one:
@@ -209,16 +266,25 @@ fi
 # would red on a reworded message with nothing wrong.
 run_desk() {
   _desk=$1
+  shift
   _stem=${_desk##*/}
   _stem=${_stem%.glow}
-  _rye=$(glow/bin/glow_run "$_desk" 2>>"$WORK/fail.log") || return 1
+  # TWO LOWERINGS, and the worker chose between them the same way. A desk handed a sample is
+  # lowered with --sample-argv, which emits a program reading its values from argv; a bare desk is
+  # lowered with its baked sample. Handing a sampled desk the bare lowering builds a program that
+  # ignores the values, which would run, exit 0, and prove nothing.
+  if [ "$#" -gt 0 ]; then
+    _rye=$(glow/bin/glow_run --sample-argv "$_desk" 2>>"$WORK/fail.log") || return 1
+  else
+    _rye=$(glow/bin/glow_run "$_desk" 2>>"$WORK/fail.log") || return 1
+  fi
   [ -n "$_rye" ] || return 1
   env RYE_ZIG="$ZIG" rye/bin/rye build "$_rye" -femit-bin="glow/bin/$_stem.batch.$$" >>"$WORK/fail.log" 2>&1 || return 1
   mv -f "glow/bin/$_stem.batch.$$" "glow/bin/$_stem" || return 1
   if [ -f "glow/bin/$_stem.batch.$$.ryekey" ]; then
     mv -f "glow/bin/$_stem.batch.$$.ryekey" "glow/bin/$_stem.ryekey"
   fi
-  "glow/bin/$_stem" >>"$WORK/fail.log" 2>&1 || return 1
+  "glow/bin/$_stem" "$@" >>"$WORK/fail.log" 2>&1 || return 1
   return 0
 }
 
@@ -226,22 +292,32 @@ ran=0
 failed=0
 : > "$WORK/failures"
 : > "$WORK/fail.log"
-while IFS= read -r desk; do
+TAB=$(printf '\t')
+while IFS="$TAB" read -r desk args; do
   ran=$((ran + 1))
+  # $args is deliberately unquoted here and nowhere else: a declared sample is a WORD LIST -- nine
+  # decimals for a nona desk -- and the split is the whole point of the field. A bare desk's field
+  # is empty, which splits to no words at all, so both kinds walk one loop.
   if [ -n "$RUN_ONE" ]; then
-    if ! $RUN_ONE "$desk" >/dev/null 2>&1; then
+    if ! $RUN_ONE "$desk" $args >/dev/null 2>&1; then
       failed=$((failed + 1))
       printf '%s\n' "$desk" >> "$WORK/failures"
     fi
   else
-    if ! run_desk "$desk"; then
+    if ! run_desk "$desk" $args; then
       failed=$((failed + 1))
       printf '%s\n' "$desk" >> "$WORK/failures"
     fi
   fi
-done < "$WORK/selected"
+done < "$WORK/selected_args"
 
 verdict=ok
+if [ "$sample_undeclared" -gt "$SAMPLE_UNDECLARED_CEILING" ]; then
+  verdict=sample_undeclared
+  echo "detail: $sample_undeclared runnable desks take a sample and declare none, past the ceiling of $SAMPLE_UNDECLARED_CEILING --"
+  head -20 "$WORK/sample_undeclared" | sed 's/^/  /'
+  echo "detail: the cure is one line in the desk's own head band -- ::  Sample: <the values that prove it>"
+fi
 if [ "$failed" -gt "$FAILED_CEILING" ]; then
   verdict=over_failed_ceiling
   echo "detail: $failed selected desks did not run, past the ceiling of $FAILED_CEILING --"
@@ -254,6 +330,10 @@ fi
 echo "desks=$desks"
 echo "declined=$declined"
 echo "sampled=$sampled"
+echo "sample_declared=$sample_declared"
+echo "sample_undeclared=$sample_undeclared"
+echo "sample_undeclared_ceiling=$SAMPLE_UNDECLARED_CEILING"
+echo "bare=$bare"
 echo "selected=$selected"
 echo "ran=$ran"
 echo "failed=$failed"

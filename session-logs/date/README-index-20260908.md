@@ -14,6 +14,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260908.163927` | [the scrub that remembers](20260908/20260908-163927_the-scrub-that-remembers.kyri) | the pin held by folding prose, never a live row. |
 | `20260908.162225` | [the third list, and the fence it was not inside](20260908/20260908-162225_the-third-list-and-the-fence-it-was-not-inside.kyri) | 12 -> 1,127; five were outside. |
 | `20260908.161206` | [a source answering for a target](20260908/20260908-161206_a-source-answering-for-a-target.kyri) | 7 to 10 candidates; the exec-bit write idiom was unseen. |
+| `20260908.155645` | [the desk carries its own sample](20260908/20260908-155645_the-desk-carries-its-own-sample.kyri) | 46 desks run by nothing, now 0. |
 | `20260908.155443` | [three percent was the outlier](20260908/20260908-155443_three-percent-was-the-outlier.kyri) | twelve of twelve, 18% to 42%. |
 | `20260908.153848` | [a quotation outranks a floor](20260908/20260908-153848_a-quotation-outranks-a-floor.kyri) | 14% to 6%, and why it stops. |
 | `20260908.152903` | [the strictest naming on four doors](20260908/20260908-152903_the-strictest-naming-on-four-doors.kyri) | zero negatives, measured. |

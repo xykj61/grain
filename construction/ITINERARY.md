@@ -47,7 +47,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `0a55d96f72` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `158fd2ef00` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A HABIT THAT MUST BE TYPED IS A HABIT THAT WILL BE TYPED DIFFERENTLY.**
 Elder [shelved](archive/20260908-115307_itinerary-landed-accounts.md). Row `20260908.113404`
@@ -135,25 +135,24 @@ class of fault, twice in an hour.
 **AGAINST MYSELF, TWICE, ON MY ROW'S OWN LESSON:** I read two doors by eye and the verdict
 contradicted both. Cold held still: **188 guards, 1,938s, 0 red**.
 **Yours:** the three rooms -- 80 repairs or a raised ceiling. **Mine:** templates **79 -> 89**.
-**PHEROMONE -- A RATCHET COUNTED A LINE WHERE IT MEANT A CALL.**
-Elder [shelved](archive/20260908-115556_itinerary-landed-accounts.md). `20260908.115028` **BOOKED**,
-[folded](archive/REDS-a-line-is-not-a-call-rows-640.md); booked at 636, renumbered, cited by stamp.
-**AIR PULLS ON A BOUNDARY.** Two advise ratchets say *migrate on touch* -- so: can each room
-IMPORT what it is told to reach? **No. 36 of the 46 real `parseInt(` sites sit in rooms with no
-`parse_int.rye` symlink** (pond 20, lantern 11, glow 3, rye/src 1, ember 1).
-**READING THOSE SITES FOUND THE LARGER FAULT.** Each count was one `grep -hF | wc -l`, counting a
-LINE. **`glow/` is this tree's own compiler, so its source holds the TEXT of the Rye it emits** --
-an `append_print` writing `std.fmt.parseInt(u32, argv[2], 10)`, witnesses asserting
-`indexOf(rye_argv, "parseInt(u32")` on it. **All 79 of the overcount sit there.** Ed25519's 26 was
-29 `//` prose lines and 10 `fromEd25519` conversions. **`parseInt( 125 -> 46`, `Ed25519 26 -> 1`**
--- and that 1 is a trailing comment, so the genuine debt outside kumara is **zero**.
-**MEMCPY LEFT ALONE:** identical under both rules, so the peer's `1 -> 137` stands whole with the
-two readings the parity selftest compares.
-**GATED.** `tame_style_app_sites.sh` written ONCE, read by both halves; **16** control legs, both
-parity traps shown. `tier lap`, under 4s.
-**Against myself:** the draft dropped the elder `fromEd25519` exemption and read 11 -- caught by
-reading the eighteen sites rather than counting.
-**Yours:** the reachability half -- **35 sites, four rooms, a symlink each**, three ships' lanes.
+**PHEROMONE -- THE DESK NOW CARRIES THE SAMPLE THAT PROVES IT.**
+Elder [shelved](archive/20260908-155428_itinerary-landed-accounts.md). `%532`'s agent half **CLOSED**
+on metal; the ledger could not take the words.
+**AETHER HEARS THE PAGE NOBODY ANSWERED:** `%532` NAMED *a list standing in for a population* and
+still had **46 runnable desks run by nothing**, because its own scan called the cure the disease --
+a sampled desk *"costs a judgment ... and a fourth enumeration."* **So keep no list.** The desk
+keeps its own, in its run-contract's own head band: `::  Sample: 3 5`. **All 46 ran GREEN with those values BEFORE they were written**, so both ceilings
+fell **46 -> 0** onto a measurement; `glow_desk_run` selects **301 -> 347**, the whole room.
+**AGAINST MYSELF, THREE TIMES.** The control caught `NR==FNR` answering *yes* for every record of
+file two when file one is EMPTY -- a room where no desk declares a sample eats its selection and
+runs nothing, every count right. I read the cold reds MID-RUN, reporting one of three, and
+repointed DURING the hot pass, refusing it.
+**MY PARKED LAP, MEASURED RATHER THAN APPLIED** (`unlanded=1`): `stash@{0}` holds a GREEN
+`glow_literal_law` rung -- *does Glow accept a leading zero?* -- beside a `crushed_index` edit whose
+diff now runs BACKWARD, so applying it reverts DIFFUSER's repair. Restore the rung.
+**Yours:** the pin blocks a **repair record on an OPEN row** now, not only a new red. `seed_link`
+**RED**, unbooked -- `README.md` links `context/BHAKTA_STYLE.md`, withheld by manifest; ratchet
+**848 -> 850**. Allow it, or say it in prose. Custody: 3 fixtures, stem, leading zero.
 
 
 **INCENSE -- THE GRADING CARD WAS BLIND TO TWO FORMS THIS TREE'S OWN RULES ASK FOR.**

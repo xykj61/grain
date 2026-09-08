@@ -1,4 +1,4 @@
-# glow_desk_run_witness.rish -- every bare-runnable Glow desk actually run, derived from the room.
+# glow_desk_run_witness.rish -- every runnable Glow desk actually run, derived from the room.
 #
 # glow/gen/ holds the generated desk corpus for the Glow language. Until 20260907 exactly one guard
 # ran any of it -- tools/g/glow_run_desk_witness.rish, 1,133 lines naming 218 desks one block at a
@@ -7,14 +7,22 @@
 #
 # This guard runs tools/fixtures/g/glow_desk_run_scan.sh, which DERIVES its population from the room
 # on every pass. The selection is every desk under glow/gen/ minus those declaring they must not run
-# (by either marker) minus those the run worker will only accept with a sample argument -- 301 desks
-# measured 20260907, where the elder witness names 218.
+# (by either marker), plus every sample-taking desk that declares its own sample in its head band --
+# 347 desks measured 20260908, the whole runnable room, where the elder witness names 218.
 #
 # THE COST, AND WHY THE BATCH IS CHEAPER THAN THE BLOCKS. tools/g/glow_run_worker.sh rebuilds
 # glow/bin/glow_run from glow/glow_run.rye on every invocation, which is right for a hand running one
-# desk and wasteful 301 times over. Measured on this pier 20260907: 3.80s per desk through the
+# desk and wasteful 347 times over. Measured on this pier 20260907: 3.80s per desk through the
 # worker, of which 2.42s is that rebuild -- so the elder witness spends roughly 527s re-linking one
 # unchanged binary across its 218 blocks. The batch builds the compiler once.
+#
+# THE 46 SAMPLE-TAKING DESKS JOINED THE SELECTION ON 20260908. A desk the worker will only run with
+# an argument was excluded because choosing that argument was a judgment per desk rather than a
+# loop, and the only place named to keep 46 answers was a fourth hand-written enumeration -- the
+# shape REDS %532 booked. Each desk carries its own instead: `::  Sample: 3 5` in the same six-line
+# head band the run-contract is read from. The scan lowers those with --sample-argv and hands the
+# words to the built binary; a runnable sampled desk declaring nothing is refused by name. All 46
+# values were run on metal before they were written, 46 of 46 GREEN through tools/g/glow_run.rish.
 #
 # THE CHEAP LEGS RUN FIRST, and that ordering is load-bearing rather than tidy. The two stub legs
 # below take seconds; the live pass takes minutes of Zig builds. Running the live pass first means a
@@ -26,7 +34,7 @@
 # invariant: the refusal is reachable ON THIS SELECTION. A ceiling proven only in the passing
 # direction cannot be told from a bypass. Re-running the real batch under a lower ceiling would
 # prove it and cost a second pass of Zig builds for a reading the live leg already takes, so the
-# proof swaps the PER-DESK RUNNER instead: a runner that always refuses turns the live 301 into 301
+# proof swaps the PER-DESK RUNNER instead: a runner that always refuses turns the live 347 into 347
 # failures and the ceiling must bite, and a runner that always passes must read zero and ok. Both
 # legs walk the same derived selection the live leg walks, so what they prove is this room's reading
 # rather than a pen's. The swap is a proof seam and never a bypass -- the live leg below runs with
@@ -40,16 +48,17 @@
 let all_fail = run ["sh" "-c" "GLOW_DESK_RUN_ONE=false sh tools/fixtures/g/glow_desk_run_scan.sh"]
 assert (all_fail.ok == false) else "glow_desk_run: a runner that refuses every desk must break the ceiling"
 assert all_fail.out contains "verdict=over_failed_ceiling" else "glow_desk_run: want the ceiling refusal named -- ${all_fail.out}"
-assert all_fail.out contains "failed=301" else "glow_desk_run: every selected desk must reach the runner -- ${all_fail.out}"
+assert all_fail.out contains "failed=347" else "glow_desk_run: every selected desk must reach the runner -- ${all_fail.out}"
 
 let all_pass = run ["sh" "-c" "GLOW_DESK_RUN_ONE=true sh tools/fixtures/g/glow_desk_run_scan.sh"]
 assert all_pass.ok else "glow_desk_run: a runner that passes every desk must read ok: ${all_pass.out}"
 assert all_pass.out contains "failed=0" else "glow_desk_run: want zero failures from a passing runner -- ${all_pass.out}"
 
 # invariant: the reading is proven on real desk rooms rather than trusted. The control builds
-# miniature desk rooms in a throwaway pen and plants each refusal, then lifts it -- 29 behaviors,
-# both sides of the ceiling, both declaration markers separately, the head band's own edge, and
-# --list proven to hand the runner nothing. The per-desk run there is a stub on purpose: the control
+# miniature desk rooms in a throwaway pen and plants each refusal, then lifts it -- 48 behaviors,
+# both sides of both ceilings, both declaration markers separately, the head band's own edge read
+# from both the run-contract and the sample side, a declared sample proven to reach the runner as
+# split words, and --list proven to hand the runner nothing. The per-desk run there is a stub on purpose: the control
 # proves WHICH desks are selected and how they are counted, and the live leg below proves that they
 # lower, build and run on metal.
 let control = run ["sh" "tools/fixtures/g/glow_desk_run_control.sh"]
@@ -67,8 +76,8 @@ assert scan.out contains "desks=" else "glow_desk_run scan printed no desk count
 # invariant: every selected desk was handed to the runner. `ran` and `selected` are counted in two
 # different places -- one off the file list, one inside the loop -- so their agreement is a reading
 # rather than a restatement.
-assert scan.out contains "selected=301" else "glow_desk_run: the bare-runnable selection stands at 301 -- a desk landed, left, or changed its declaration"
-assert scan.out contains "ran=301" else "glow_desk_run: the loop must run every desk the selection names -- ${scan.out}"
+assert scan.out contains "selected=347" else "glow_desk_run: the runnable selection stands at 347 -- a desk landed, left, or changed its declaration"
+assert scan.out contains "ran=347" else "glow_desk_run: the loop must run every desk the selection names -- ${scan.out}"
 
 # invariant: the failure count only falls. It stands at 3 rather than 0 because three files under
 # glow/gen/ are data fixtures rather than desks and carry no marker in either name or head --
@@ -80,4 +89,4 @@ assert scan.out contains "ran=301" else "glow_desk_run: the loop must run every 
 assert scan.out contains "failed_ceiling=3" else "glow_desk_run: the ceiling stands where it was measured -- a ceiling only falls"
 assert scan.out contains "verdict=ok" else "glow_desk_run: the scan refused -- ${scan.out}"
 
-say "GREEN: glow_desk_run -- 301 bare-runnable desks derived from the room and run, 3 unmarked data fixtures at their ceiling, both runner-swap legs proven, 29 control behaviors green."
+say "GREEN: glow_desk_run -- 347 runnable desks derived from the room and run, 301 bare and 46 on the sample each declares for itself, 3 unmarked data fixtures at their ceiling, both runner-swap legs proven, 48 control behaviors green."
