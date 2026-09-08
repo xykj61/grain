@@ -20,9 +20,12 @@ check() { if [ "$3" = "$2" ]; then pass=$((pass+1)); else fail=$((fail+1)); prin
 has() { case "$1" in *"$2"*) echo yes ;; *) echo no ;; esac; }
 
 # A CONVERGING tool: it replaces a marker with a settled form, and the settled form matches nothing.
+# THE PLANTED TOOL WRITES PORTABLY, because `shell_dialect` gates the in-place flag at zero and a
+# pen file is still a tracked line in this control. GNU and BSD spell that flag differently, which
+# is why this tree writes a temporary and moves it through the original inode instead.
 cat > "$pen/good.sh" <<'G'
 #!/bin/sh
-sed -i 's/DASH/--/g' "$1"
+sed 's/DASH/--/g' "$1" > "$1.tmp" && cat "$1.tmp" > "$1" && rm -f "$1.tmp"
 G
 # A DIVERGING tool: every run appends, so the second run never equals the first.
 cat > "$pen/bad.sh" <<'B'
