@@ -69,13 +69,44 @@ if seating_env != "" then let seating = seating_env
 #   +11 repaired -- each page's own next sentence already said its register, transcribed into the
 #      door line. No claim changed on any of them.
 #
+# THE RATCHET REACHED ITS FLOOR, 38 -> 3 (`20260907.191211`), and the floor is structural rather
+# than tidy. The reading arrived RED at 38 against a ceiling of 37 -- one page had landed overnight,
+# which is what a zero-slack ceiling does over a population that grows. Twenty-nine living pages
+# were repaired the same way the +11 move above was: each page's own opening sentence already
+# asserted its register, and the token was transcribed into its door line beside whatever else that
+# line said. No claim changed on any of them, and the commonest honest answer was `mixed` -- a
+# design essay reasoning from measured readings toward a proposal is both registers by construction,
+# which is why `mixed` is also the most-written token in the tree (334 of 846 post-seating door
+# lines, measured this lap).
+#
+# THE THREE THAT REMAIN CAN NEVER BE REPAIRED, and that is the point. All three sit on
+# `active-designing/date/20260820/`, and dated testimony keeps every word it wrote
+# (accrete-never-break). So 3 is a floor rather than a target, and the ceiling stands there: from
+# here the guard's whole remaining job is catching pages written from now on.
+#
+# WHICH MAKES IT A GATE ON NEW WRITING, WEARING A RATCHET'S CLOTHES, and the difference decides
+# where the repair belongs. A ratchet reports a backlog somebody works down; this now reds the whole
+# fleet the first time any hand writes a door line without a token. It runs at `tier cadence`, so
+# the hand that wrote the page is not the hand that meets the refusal -- a stranger meets it, up to
+# five rounds later, and repairs somebody else's door. That is the shape the census has already
+# regrown from twice.
+#
+# THE WRITE-TIME REACH TAKEN THIS LAP is the room's own front door rather than a hook.
+# `active-designing/README.md` gained a *The room at the door* section on `20260907.015907` and has
+# had no silent page since; `external-research/README.md` recorded teaching the token in its own
+# `Last updated` line on the same stamp and left its body silent, and the one page that landed
+# between then and now came from that room. Its *How To Add an Exploration* ritual -- the list a
+# writer actually reads before adding a page -- now carries the token. Sample size one, said
+# plainly; the mechanism is what recommends it, not the count. `docs/README.md` is untouched: it
+# supplies 14 pages, none of them silent, and it stands at the 40 lines it declares.
+#
 # WHAT A GREP STILL CANNOT READ, named rather than guessed at: a token can be DENIED and still
 # match. `**Room:** Proposed -- nothing here is checkable until a witness binds it` read OK on the
 # word its own sentence negates. That page is repaired at the source, and a negation heuristic is
 # declined here -- `not vision -- checkable` is honest prose and a rule refusing it would refuse
 # more truth than it caught. Presence is what a grep reads; assertion stays a reader's.
 let ceiling_env = env "TWO_ROOMS_DOORWAY_CEILING"
-let ceiling = "37"
+let ceiling = "3"
 if ceiling_env != "" then let ceiling = ceiling_env
 
 let roster = run ["sh" "tools/fixtures/t/two_rooms_doorway_roster.sh"]

@@ -1,6 +1,6 @@
 # The Instruments That Were Never Pointed Inward
 
-**Stamp:** `20260823.162138` - **Style:** Gauge, Field setting - **Lens:** TAME - **Status:** Living
+**Stamp:** `20260823.162138` - **Style:** Gauge, Field setting - **Lens:** TAME - **Status:** Living, mixed -- every number is measured on one tree and stated with what produced it; the lessons drawn from them are a design argument
 
 **What this is.** A field report from one day of auditing a repository's own measuring
 equipment, written so you can run the same audit on a codebase you maintain. Every number

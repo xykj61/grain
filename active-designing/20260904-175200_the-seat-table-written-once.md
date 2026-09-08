@@ -4,7 +4,7 @@
 **Language:** EN
 **Style:** Gauge, Field setting (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
-**Status:** Living charter -- the Earth fleet's consolidation plan, seated on Keaton's word `20260904`
+**Status:** Living charter, mixed -- the seat table is read by live tools and the consolidation plan is a proposal, seated on Keaton's word `20260904`
 **Kin:** [`20260829-203718_the-six-bodies-and-the-always-fleet.md`](20260829-203718_the-six-bodies-and-the-always-fleet.md) (the aether elder, testimony) -
 [`../.claude/rules/stamp-and-name.md`](../.claude/rules/stamp-and-name.md) -
 [`../.claude/rules/comlink-tendency.md`](../.claude/rules/comlink-tendency.md) -

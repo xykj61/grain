@@ -4,6 +4,7 @@
 **Stamp:** `20260824.165106`
 **Style:** Gauge, **Field** setting
 **Voice:** Kyri
+**Status:** Living, mixed -- what the card counts today is measured, the fourth reading it proposes is an argument
 **Room:** Design essay -- worth reading with the code deleted
 **Kin:** [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md) -> *Quality assurance* - [`../.claude/rules/quality-assurance.md`](../.claude/rules/quality-assurance.md)
 

@@ -4,7 +4,7 @@
 **Language:** EN
 **Style:** Gauge, Field setting (see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md))
 **Voice:** Kyri
-**Status:** Living -- a reading, with one meter landed and one seat named and left standing
+**Status:** Living, mixed -- a measured reading, with one meter landed and one seat named and left standing
 **Kin:** [`../.claude/rules/reds-first.md`](../.claude/rules/reds-first.md) -- [`../foundations/20260816-214652_standfast-the-stopped-line.md`](../foundations/20260816-214652_standfast-the-stopped-line.md) -- [`../foundations/20260729-224828_reds-first-and-the-allocation.md`](../foundations/20260729-224828_reds-first-and-the-allocation.md)
 **Meter:** [`../tools/r/reds_pin_capacity_witness.rish`](../tools/r/reds_pin_capacity_witness.rish)
 **Ledger row:** [`../construction/archive/REDS-the-ledger-that-could-not-book-a-red-rows-338.md`](../construction/archive/REDS-the-ledger-that-could-not-book-a-red-rows-338.md)

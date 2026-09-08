@@ -4,7 +4,7 @@
 **Language:** EN
 **Style:** Gauge, Field setting (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
-**Status:** Living charter -- seated on Keaton's word `20260829` (the fleet re-map: one tree per
+**Status:** Living charter, mixed -- the seat table is fact and the six-body framing is vision; seated on Keaton's word `20260829` (the fleet re-map: one tree per
 star, Mystery's move, claim-as-override); molted from
 [`20260827-155213_the-six-bodies-and-the-closed-stacks.md`](20260827-155213_the-six-bodies-and-the-closed-stacks.md),
 which stands whole as the closed-stacks elder and still carries the read-scope law's fuller telling.

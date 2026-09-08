@@ -1,6 +1,6 @@
 # The Tic and the Meter
 
-**Stamp:** `20260823.182512` - **Style:** Gauge, Field setting - **Lens:** TAME - **Status:** Living
+**Stamp:** `20260823.182512` - **Style:** Gauge, Field setting - **Lens:** TAME - **Status:** Living -- research for understanding: it reads a filed report and argues from it, and seats no fact of its own
 **Source:** Claude Code issue **#77136**, *"Claude 4.7, 4.8, 5.0, and Fable increasingly default to repetitive rhetorical tics and often struggle to produce coherent prose despite explicit style instructions"* -- read `2026-08-23` at `github.com/anthropics/claude-code/issues/77136`.
 
 **What this is.** A short note on a reported failure mode in language-model prose, and on why a

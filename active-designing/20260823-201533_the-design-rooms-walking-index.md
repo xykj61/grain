@@ -1,6 +1,6 @@
 # The Design Room's Walking Index
 
-**Stamp:** `20260823.201533` - **Style:** Gauge, Field setting - **Voice:** Kyri - **Status:** Living
+**Stamp:** `20260823.201533` - **Style:** Gauge, Field setting - **Voice:** Kyri - **Status:** Living, mixed -- the groupings are counted, the map they make is a reader's argument
 **What this is:** a map, not a record. Thirty-nine dated design documents, grouped by what they are about, so a reader arriving at `active-designing/` has somewhere to start other than a directory listing of 629 files.
 **Kin:** [`README.md`](README.md) - [`../active-development/20260823-182512_the-thirty-nine-named-for-shed.md`](../active-development/20260823-182512_the-thirty-nine-named-for-shed.md) - [`../.claude/rules/design-rooms.md`](../.claude/rules/design-rooms.md)
 

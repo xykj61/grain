@@ -5,7 +5,7 @@
 **Style:** New Gauge, Field setting -- Civic (name what it rewards) and TAME (bound every claim, say
 why) carried through (see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md))
 **Voice:** Kyri
-**Status:** Design -- reasons about a running arrangement and the repair it recommends. Every module and every name stays
+**Status:** Design, mixed -- the running arrangement is measured and the repair it recommends is a proposal. Every module and every name stays
 exactly where it stands.
 **Silo:** our own modules and RISC-V only.
 **Grounds in:** [`../foundations/20260825-211055_mycelium-the-consensus-protocol.md`](../foundations/20260825-211055_mycelium-the-consensus-protocol.md)

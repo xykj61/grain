@@ -4,6 +4,7 @@
 **Stamp:** `20260824.165036`
 **Style:** Gauge, **Field** setting
 **Voice:** Kyri
+**Status:** Living, mixed -- the dial's two settings are seated in the style guide, the reach into code is a proposal
 **Room:** Design essay -- worth reading with the code deleted
 **Kin:** [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md) - [`../.claude/rules/quality-assurance.md`](../.claude/rules/quality-assurance.md) - [`../external-research/`](../external-research/)
 

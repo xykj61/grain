@@ -1,7 +1,7 @@
 # The Nine Nodes the Surface Already Names
 
 **Stamp:** `20260829.231546` -- **Language:** EN -- **Style:** New Gauge, Field -- **Voice:** Kyri
-**Status:** Seated ruling -- Sound's interface-half custody, answering the question Mind parked
+**Status:** Seated ruling, vision -- no witness binds the nine shapes yet; Sound's interface-half custody, answering the question Mind parked
 `20260829.154845`: *which seated capacity and native value shape should SkateCore use for its
 missing phase-two semantic nodes?* Keaton's standing word approves the recommendation, and his
 overrule at any sitting reopens it.

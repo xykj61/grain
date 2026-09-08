@@ -4,7 +4,7 @@
 **Language:** EN
 **Style:** Gauge, Field setting (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
-**Status:** Elder -- the planets seated here on Keaton's word `20260827.144712`; the living
+**Status:** Elder, mixed -- the planets are seated fact and the star framing is vision; seated on Keaton's word `20260827.144712`; the living
 charter is [`20260827-155213_the-six-bodies-and-the-closed-stacks.md`](20260827-155213_the-six-bodies-and-the-closed-stacks.md),
 which carries the Sound-Dream role swap and the read-scope law. Molted from
 [`20260826-151528_the-three-stars-of-the-aether-row.md`](20260826-151528_the-three-stars-of-the-aether-row.md),

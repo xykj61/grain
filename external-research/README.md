@@ -1,7 +1,7 @@
 # The External-Research Stack
 
 **Language:** EN
-**Last updated:** `20260907.015907` (the register law named as seated and read on every cadence pass, where this door had called it proposed; the room token taught in the same status line -- elder refresh `20260906.212046`, the two topology papers seated in the list)
+**Last updated:** `20260907.191211` (the room token taught in the ritual a writer actually reads, where the elder refresh had recorded teaching it and left the body silent -- prior `20260907.015907`: the register law named as seated and read on every cadence pass, where this door had called it proposed; the room token taught in the same status line -- elder refresh `20260906.212046`, the two topology papers seated in the list)
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Status:** Foundation
 **Molted:** `20260827.173952` -- in place, under checkpoint `3a606a8ac9`
@@ -190,6 +190,7 @@ Adding research is a small, glad ritual:
 - **Name the file with its stamp** in `YYYYMMDD-HHMMSS_short-sprig.md` form, or as a living document when the work revises in place.
 - **Name the sprig for its subject.** A short, descriptive sprig tells the reader where they are.
 - **Write it in Gauge Style, at the Field setting.** Lead with what you found, in active voice and affirmative framing. Bound every claim -- scope, period, assumptions, before the number -- and give every figure its unit, date, and source. Separate what you observed from what you inferred. Weave the method together with its meaning, so the reader arrives at the insight through the description itself.
+- **Name the room at the door.** The `**Status:**` line carries one of `checkable`, `vision`, `mixed`, or `research for understanding`, glossed at [`../context/TWO_ROOMS.md`](../context/TWO_ROOMS.md). The token rides **beside** whatever else the line says, since `Living`, `Landed` and `Proposed` answer where a page stands in its life rather than which register it speaks from -- so `**Status:** Living, mixed -- ...` answers both in one line. Most studies here read `mixed`: measured readings, with the argument drawn from them still a proposal. [`../tools/t/two_rooms_doorway.rish`](../tools/t/two_rooms_doorway.rish) names every page whose door has yet to carry one.
 - **Say why.** Open with the question that prompted the exploration, so a future reader understands the motive as readily as the result.
 - **Close when it is whole.** A finished exploration can end with a benediction or a plain summary of what we now know and what it opens next.
 

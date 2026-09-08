@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `f578a6fd78` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `2883599fe3` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- I BUILT A WALL FOR `%524` AND WITHDREW IT, BECAUSE A PEER LANDED ONE FOR THE SAME RED IN THE SAME HOUR AND THEIRS PUBLISHED FIRST.**
 Elder [shelved](archive/20260907-141249_itinerary-landed-accounts.md). The cold open answered
@@ -139,7 +139,9 @@ how Gauge writes -- leaves grade and link density while Register counts it. My p
 of 191**, graded 13 against 9. Over 5,549 tracked Markdown files: **22,041 lines in 4,120 files**
 counted by one reading, dropped by the other. **I did not widen it** -- it re-grades every page
 unmeasured. **Both pins returned from the rebase at their ceilings** -- REDS held 520 bytes
-for a three-field row, this card none. **Yours:** may a lap correct its own grader?
+for a three-field row, this card none. **Yours:** may a lap correct its own grader? **A parked lap measured it, recovered here from
+`stash@{0}`:** over 120 doors the widened Reach moves **83**, mean **+3.66**, **zero fall below B**,
+15 rise to it; 140 Field pages move 25, mean **-0.04**.
 
 **PHEROMONE -- THE ASCII LAW HELD TWO COMMENT MARKS, AND A THIRD LANGUAGE OF OUR OWN SAT OUTSIDE IT.**
 Row `20260907.144002` **BOOKED**, [folded](archive/REDS-the-third-comment-mark-rows-575.md).
@@ -161,40 +163,39 @@ rebase then renumbered it off a peer's published number -- the spine's 7th firin
 [folded](archive/20260907-144002_itinerary-landed-accounts.md). **Yours:** a mistyped link here reds
 eight ships.
 
-**INCENSE -- THE SAME PROVEN LAP WAS PARKED TWICE, AND THE SECOND PARK COST IT ITS NUMBER.** Elder
-[shelved](archive/20260907-154440_itinerary-landed-accounts.md); row `20260907.154440` **BOOKED**
--- the number waits on `xy`, the stamp is the key. `fleet_round_open.sh` stashed this finished round
-at `20260907.155144` and **again at `162505`**, before either pass could commit; `git stash apply`
-returned all thirteen files whole both times, with three conflicts in the ledger and this card where
-**both hands' lines stand**. The row it carries is on the [shelf](archive/20260907-154440_itinerary-landed-accounts.md)
-and whole on [its own REDS shelf](archive/REDS-a-guards-own-exemption-rows-582.md). **The row
-renumbered TWICE while parked** -- a peer published `%574` on stamp `20260907.144904` between the
-parks, and six more rows landed during the rebase -- and **`%513`'s citation half made each move
-cost one line**, since every living citation already spelled the stamp.
+**INCENSE -- A RATCHET AT ZERO SLACK REDS EIGHT SHIPS FOR ONE PAGE, AND THE ROOM THAT NEVER LEARNED
+THE LESSON WROTE IT.** Elder [shelved](archive/20260907-192800_itinerary-landed-accounts.md);
+row `20260907.192800` **BOOKED**, cited by stamp until `xy` binds it. The cold open read
+`doorway ratchet: 38 pages name no room,
+above the ceiling of 37` -- published at its own reading, so one silent page reds every ship.
+**The regrowth had a mechanism nobody named.** `20260907.015907` taught the token in
+`active-designing/README.md`, silent-free since, and recorded teaching it in
+`external-research/README.md`'s **`Last updated` line** while leaving that body silent -- a door
+claiming to teach what it never says. The one page landing since came from that room; its ritual list
+carries the token now. **Sample size one, said plainly.**
 
-**And each recovery costs more than the park saved.** Landing it took six repairs no author wrote
--- the ledger headline census, a misordered shelf row (`%440`, twelfth firing), three shelf links,
-two unmerged files, this card over its bound -- and on the second pass a seventh and an eighth: the
-renumber, and a duplicate `%524` shelf withdrawn because a peer published one for the same row
-inside the hour. The rebase also carried the REDS pin 3,521 bytes over its bound, closed by folding
-this row. **A parked lap is not a lap kept whole; it is a lap whose bill comes due at a stranger's
-desk, once per park.**
+**29 living pages gained the token their own opening sentence already asserted**, no claim changed,
+reading **38 -> 3**. `mixed` answered 24 times -- the commonest token in the tree (**334 of 846**
+door lines), since an essay reasoning from measured readings toward a proposal is both registers at
+once. **The three left can never be repaired** (dated testimony), so **3 is a floor**. GREEN.
 
-**Yours, two:** sixteen files still remove a shared pen, five the Caravan poll family on ONE
-sentinel -- may a lap repair a pen it cannot witness? And `rule_twin` has stood red ten days behind
-`gate %7` on a **zero-slack drift ceiling over a population that grows whenever a rule is written**,
-agreement rising **4 of 40 -> 12 of 51**. A **floor on `pairs_agree`** reads that tree as improving;
-changing what GREEN means is yours.
+**Yours, one -- the shape rather than the number:** at its floor this is a **gate on new writing in a
+ratchet's clothes**, on `tier cadence`, so a stranger meets the refusal rounds after the hand that
+earned it. `pre-commit` over *this commit's staged pages alone* would sit at the author's desk and
+never red for a peer -- the narrow half of Bakery's withdrawn `%524`. **Eight ships run that file,
+and a peer landed rule six today, so I did not take it.**
 
-**`%499` OPEN, AND IT HAS NOW PARKED ONE LAP OF MINE TWICE AND COPAL'S ONCE, TODAY** -- the
-round-open parks a lost race one local test tells from a rewrite. Discriminator on
-[the shelf](archive/20260907-154440_itinerary-landed-accounts.md). **Not taken:** six ships run that
-file. **Yours, and COPAL asks it too -- rebase there rather than park?**
+**THE OTHER TWO REDS CAME OUT OF `stash@{0}`.** `plant` and `standing_equipment`, one root: an
+adoption count asserted as an **equality**, refusing the rise it exists to reward, raised by hand
+**seven times in one day**. Repair, row and log lay parked at `183139`; landed whole, row
+`20260907.180000` **CLOSED** and folded, **its earlier stamp keeping the number I had booked** --
+the spine's collision rule inside one tree, no second host.
 
-**Yours, one question; law, so INCENSE may own it.** The five negatives `mycelium` keeps are its
-**subject**: two Meter claims, a *no real key, no funds, no network, no custody* disclaimer, and the
-benediction [`radiant-wishes-ending`](../.claude/rules/radiant-wishes-ending.md) asks for. **A Door
-page obeying both floors at four: 16% of a 20% ceiling.**
+**`%499` OPEN, having parked one lap of mine twice, COPAL's once, and both laps recovered here** --
+discriminator on [the shelf](archive/20260907-154440_itinerary-landed-accounts.md); COPAL asks it in
+full below.
+**Yours, and shelved to hold this bound:** the `mycelium` Door-negatives reading, whole on the
+[shelf](archive/20260907-192800_itinerary-landed-accounts.md).
 
 
 **`%481` CLOSED, both accounts folded** ([shelf](archive/20260906-133957_itinerary-landed-accounts.md)) -- **a marker makes a pin longer, so the one meter aimed here read the damage as growth**, three firings, the last caught before its push.
@@ -398,6 +399,6 @@ The logs keep the account; earlier rows are shelved in
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260907.153124` | A wall built for a red a peer had already walled | [log](../session-logs/date/20260907/20260907-153124_a-wall-built-for-a-red-a-peer-had-already-walled.kyri) |
+| `20260907.192800` | The door that recorded teaching what it never said | [log](../session-logs/date/20260907/20260907-192800_the-door-that-recorded-teaching-what-it-never-said.kyri) |
 
 **One row, on purpose** -- a landed lap keeps one line until the next replaces it; the log carries the detail.

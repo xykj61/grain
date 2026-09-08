@@ -4,7 +4,7 @@
 **Language:** EN
 **Style:** Gauge, Field setting (see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md))
 **Voice:** Kyri
-**Status:** Living -- orbit four's first reading, GREEN on metal `20260829`; every count below is measured on this pier
+**Status:** Living, mixed -- orbit four's first reading, GREEN on metal `20260829`, with the door it names still proposed; every count below is measured on this pier
 **Kin:** [`../tools/p/pond_enclosure_door_witness.rish`](../tools/p/pond_enclosure_door_witness.rish) -- [`20260829-054303_the-three-the-enclosure-keeps.md`](20260829-054303_the-three-the-enclosure-keeps.md) -- [`../pond/enclosure_policy.kyri`](../pond/enclosure_policy.kyri) -- the quest plan `20260826-033051_pond-completes-the-enclosure.md` in `expanding-prompts/`
 
 ## The question

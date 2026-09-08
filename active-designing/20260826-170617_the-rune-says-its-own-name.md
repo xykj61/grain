@@ -4,7 +4,7 @@
 **Version:** `20260826.170617`
 **Style:** Gauge, Field setting (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
-**Status:** Design -- a naming proposal for Glow's rune surface. Every file and every line stays
+**Status:** Design, mixed -- the rune census is measured, the naming is a proposal for Glow's rune surface. Every file and every line stays
 exactly where it is; the cut discipline is at the tail and waits for Keaton's word.
 **Silo:** our own modules and RISC-V only. The ancestry this replaces is studied, with attribution,
 at [`../external-research/20260826-170617_the-syllable-that-taught-nothing.md`](../external-research/20260826-170617_the-syllable-that-taught-nothing.md).

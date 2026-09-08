@@ -1,6 +1,6 @@
 # When a Number Is Honest
 
-**Stamp:** `20260823.173634` - **Style:** Gauge, Field setting - **Lens:** TAME - **Status:** Living
+**Stamp:** `20260823.173634` - **Style:** Gauge, Field setting - **Lens:** TAME - **Status:** Living, mixed -- the worked case is one tree's own ledger, measured; the rule drawn from it is an argument
 
 **What this is.** A short argument about a question most codebases answer twice and never notice:
 **when may a name carry a counting number, and when may it not?** Written so you can apply the test

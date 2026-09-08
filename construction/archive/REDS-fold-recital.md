@@ -463,3 +463,5 @@ at a closed fold.*
 
 *Row %582 folded to [`REDS-a-guards-own-exemption-rows-582.md`](REDS-a-guards-own-exemption-rows-582.md) on `20260907.174409`, **BOOKED** -- a guard's own exemption is a claim, and a wipe predicate reading a flag rather than an act made that claim false of the two files it named.*
 *Row %576 folded to [`REDS-a-reading-of-nothing-rows-576.md`](REDS-a-reading-of-nothing-rows-576.md) on `20260907.172225`, **BOOKED** -- an empty subject and an absent subject are two readings, and a scan that cannot tell them apart proves nothing by its silence.*
+
+*Row %584 folded to [`REDS-a-floor-that-refuses-every-rise-rows-584.md`](REDS-a-floor-that-refuses-every-rise-rows-584.md) on `20260907.192800`, **CLOSED** -- a floor written as an equality refused every rise.*

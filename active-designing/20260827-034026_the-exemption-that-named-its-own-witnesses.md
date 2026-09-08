@@ -4,7 +4,7 @@
 **Language:** EN
 **Style:** Gauge, Field setting (see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md))
 **Voice:** Kyri
-**Status:** Proposed -- the reading is measured on this bench; the repair below is sized and unbegun
+**Status:** Proposed, mixed -- the reading is measured on this bench; the repair below is sized and unbegun
 **Kin:** [`../tools/ca/caravan_suite_witness.rish`](../tools/ca/caravan_suite_witness.rish) -- [`../.claude/rules/docs-implementation-sync.md`](../.claude/rules/docs-implementation-sync.md) -- [`../.claude/rules/reds-first.md`](../.claude/rules/reds-first.md)
 
 ## The mechanism, first
