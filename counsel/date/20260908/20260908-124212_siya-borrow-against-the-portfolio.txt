@@ -1,0 +1,52 @@
+ANSWER
+  the test      borrow wins when kept-stock return > loan rate; deferral adds ~0.5% of cushion at 5 yrs; the
+                step-up at death is what makes it permanent (tax attorney's question)
+  the benchmark SOFR 3.66% (NY Fed, 2026-08-25)
+  the rates     IBKR Pro margin 4.71% blended on USD 600k (published table, read today); Robinhood 4.50% but zero
+                entity account types (its own pages); Schwab PAL 6.56% for an LLC borrower / 6.06% individual
+                with the relationship discount organizations are excluded from (rate page, 2026-08-24);
+                Morgan Stanley LAL ~5.2-6.7% negotiated (aggregator range, May 2026 -- a written quote replaces it)
+  the discount  real, ~2 points = ~USD 12k/yr on 600k; paid for in auto-liquidation, zero negotiation, no LLC (RH)
+  the tax       selling 600k costs USD 36k-107k federal by basis case (75%/50%/25% basis); +13.3% for any member
+                California can still reach in 2026 -- Sara's NV residency dates 2026-06-29, so 2026 is a borrow year
+  the size      opening draw <=25% (USD 625k), ceiling 30%; at 24% a bank line calls only after a 52-66% fall
+  the split     100k DJINN (equity, bridge repaid from income <90 days) / 375k across 2-3 Brazos-kind syndications
+                (<8% each, property debt modest and fixed) / 125k private business held undrawn until a named deal
+  the shape     600k deployed -> stock 80.6% of gross assets; reaching 30% public by borrowing alone needs USD 5.83M
+                (LTV 233%); the four-quarter shape is a destination for income + distributions, leverage is one step
+  1, 2, or 3    one line, three named tranches (counsel's lean); two lenders only if MS holds > SOFR+2.5 or says no
+                on private placements in writing; a fixed-rate tranche is worth a quote once a syndication has a date
+
+SHAPE  the bank lines are non-purpose: Schwab's own words bar "purchase securities"; MS's elder letter reads
+       "purchase, carry or trade securities". A private C-corp share and a Reg D LP interest are both securities,
+       so the written question now has two parts, and a no routes those tranches to the margin desk.
+       Tracing: each tranche its own draw, receiving account, and Dimeroll line from day one (163(d) vs 469 lanes).
+
+PROPOSE  pull the lot-level basis report + account title first (lots near today's price sell at ~1-3% tax, which
+         beats any loan); then the MS ask with the 4.71% reading in hand: SOFR+2.0 or better, relationship
+         discount by name, private-placement answer in writing; then sections 3/4/8 to the Growth Circle tax attorney
+
+READS TAKEN  NY Fed SOFR 2026-08-25; IBKR Pro USD tiers (read today); Schwab PAL rate page (SOFR as of
+             2026-08-24, IAP excludes organizations, non-purpose language verbatim); Robinhood account-type pages;
+             Robinhood tiers (secondary, Jul 2026); two aggregators (Apr/May 2026, ranges only, marked); 2026
+             LTCG thresholds 545,500 / 613,700; elder session 20260810 (bridge, 25% rail, written question)
+
+GAPS  twelve named in the memo; the four that gate the next step: lot-level cost basis, account title (LLC vs
+      individual), pool concentration (advance rates), and the LAL agreement's use-of-proceeds clause
+
+BATON
+  coords      pinned from memory: Wheel Season; round/journey a gap this session (no baton pasted)
+  basis       counsel's arithmetic run in the container and pasted from output, never typed; elder field guide
+              and the two sleeve memos read from project files; no tree fetch this session (memo is field-only)
+  meters      fresh, counsel's own scan (the tree's witness still to run): strict negation 14.9% (Field <=30),
+              rough FK 9.3 (<=11), links 0.16/100 words, non-ASCII 0, H1 1, 3,746 prose words
+  reds        none booked; four soft ones owned: MS spread range is aggregator-sourced; Robinhood tiers are
+              secondary-sourced; the 2021-vintage syndication capital-call base rate and the angel-return study
+              are counsel's knowledge, unfetched; entity form reads LLC (your word today) vs Wyoming PBC (memory)
+  banked      nothing seated; money, custody, and keys are stop-and-park by standing law
+  parked      the Robinhood margin-withdrawal rule; MS fixed-rate advance pricing; the fiduciary's IPS bands and a
+              real-estate position-size law; Growth Circle's own deal terms (unread)
+  artifacts   outputs/STAMP_the-loan-beside-the-portfolio.md (STAMP awaits the one clock; its Kin link to the
+              Plainview study also carries STAMP and resolves when both are stamped)
+  next        your stamp on the filename; bench seats to active-designing/ beside the two sleeve memos, field-only
+              by sow; then the basis report and the written MS quote before any draw
