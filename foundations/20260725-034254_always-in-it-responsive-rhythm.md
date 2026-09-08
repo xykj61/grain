@@ -6,7 +6,7 @@
 **Language:** EN  
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Voice:** Quin  
-**Status:** Foundations -- operator rhythm seated; answers OPEN_QUESTIONS #5  
+**Status:** Foundations -- operator rhythm seated; answers OPEN_QUESTIONS #5 -- **Vision room**: an operator rhythm that orients how a round is paced, seating no measured fact.  
 **Silo:** Full -- teachers named only in the gratitude close  
 **Counsel:** [`../counsel/date/20260725/20260725-034254_always-in-it.md`](../counsel/date/20260725/20260725-034254_always-in-it.md)
 

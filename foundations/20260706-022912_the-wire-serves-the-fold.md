@@ -7,7 +7,7 @@
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Register:** foundations -- the why beneath the work, on our own roots; owned vocabulary, teachers named in gratitude
 **Ground:** siloed from [`../external-research/20260706-022912_ames-vere-libuv-content-carriage.md`](../external-research/20260706-022912_ames-vere-libuv-content-carriage.md); companion to the grain index [`20260826-024942_the-grain-and-the-crossing.md`](20260826-024942_the-grain-and-the-crossing.md) and [`../context/SILO_TECHNIQUE.md`](../context/SILO_TECHNIQUE.md)
-**Status:** Landed -- affirmed as written at Claude ruling `20260706.232812` (zip 58 sitting); description, not aspiration, after parity 166 wire ladder.
+**Status:** Landed -- affirmed as written at Claude ruling `20260706.232812` (zip 58 sitting); description, not aspiration, after parity 166 wire ladder. **Mixed room**: the wire ladder measured at parity 166 is checkable; the reliability and congestion laps are named as later laps.
 
 *Written together by Kaeden and Rio 3.*
 Radiant pass `20260725.035453`

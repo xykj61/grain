@@ -9,7 +9,7 @@
 <p align="center">
   <a href="LICENSE"><img alt="Code license: Apache-2.0 OR MIT" src="https://img.shields.io/badge/code-Apache--2.0%20OR%20MIT-c8992f"></a>
   <a href="LICENSE-CC-BY"><img alt="Docs license: CC-BY-4.0" src="https://img.shields.io/badge/docs-CC--BY--4.0-9a6f22"></a>
-  <a href="context/BHAKTA_STYLE.md"><img alt="Prose: Bhakta register" src="https://img.shields.io/badge/prose-Bhakta-d9b45a"></a>
+  <img alt="Prose: Bhakta register" src="https://img.shields.io/badge/prose-Bhakta-d9b45a">
   <a href="context/TAME_GUIDANCE.md"><img alt="Code: TAME discipline" src="https://img.shields.io/badge/code-TAME-9a6f22"></a>
   <a href="tools/"><img alt="Proof: witnesses on metal" src="https://img.shields.io/badge/proof-witnesses%20on%20metal-2f7d4f"></a>
   <a href="context/TWO_ROOMS.md"><img alt="Status: crashed-meteor, honest register" src="https://img.shields.io/badge/status-crashed--meteor-b9954a"></a>
@@ -17,10 +17,12 @@
 
 ---
 
-**Style:** [Bhakta](context/BHAKTA_STYLE.md) with [Gauge](context/GAUGE_STYLE.md) and
+**Style:** Bhakta with [Gauge](context/GAUGE_STYLE.md) and
 [Twilight](context/TWILIGHT_STYLE.md) -- a register that welcomes every reader, measures what it
 claims, and reaches for the image. Its negation reads **6%**, down from 14, and the last of it lives
-in a teacher's quotation and a foundation's title, which keep their own words.
+in a teacher's quotation and a foundation's title, which keep their own words. Bhakta's own guide,
+`context/BHAKTA_STYLE.md`, stays in the maintainer's working tree rather than in this published
+copy, so it is named here rather than linked.
 
 > **A grain is a piece you can hold.**
 

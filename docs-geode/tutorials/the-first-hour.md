@@ -3,7 +3,7 @@
 *From nothing to something you made work. One path, straight through. Everything else in this tree
 is a map you will want **after** this hour.*
 
-**Language:** EN - **Style:** Bhakta (see [`../../context/BHAKTA_STYLE.md`](../../context/BHAKTA_STYLE.md)) - **Voice:** Kyri
+**Language:** EN - **Style:** Bhakta (guide at `context/BHAKTA_STYLE.md`, named rather than linked -- it stays in the field) - **Voice:** Kyri
 **Written:** `20260821.180613` - **Last updated:** `20260903.215224` (NixOS cloud path -- musl `-lc`, `RYE_ZIG` from clone root)
 **Status:** Living - the beginner path
 **You will need:** a Linux or macOS terminal with `git`, `curl`, and `tar`, and about an hour.

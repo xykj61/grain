@@ -5,7 +5,7 @@ the seed is force-pushed every fifth round, so the face the world sees is never 
 behind the tree that made it.*
 
 **Stamp:** `20260823.111029`
-**Language:** EN - **Status:** Living - **Style:** Gauge, Field setting
+**Language:** EN - **Status:** Living - **Style:** Gauge, Field setting -- **Mixed room**: the four gates are named witnesses that run; five is a chosen cadence, carrying its own falsifier.
 **Kin:** [`../context/SILO_TECHNIQUE.md`](../context/SILO_TECHNIQUE.md) - [`../context/CIVIC_STYLE.md`](../context/CIVIC_STYLE.md) - [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md) - [`../context/TAME_GUIDANCE.md`](../context/TAME_GUIDANCE.md)
 **Machinery:** `publish-seed.sh` - `tools/fixtures/sow_project.sh` - `tools/s/sow_witness.rish` - `tools/s/seed_link_witness.rish`
 

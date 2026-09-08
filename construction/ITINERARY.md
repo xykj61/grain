@@ -47,7 +47,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `158fd2ef00` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `4cc6b55033` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A HABIT THAT MUST BE TYPED IS A HABIT THAT WILL BE TYPED DIFFERENTLY.**
 Elder [shelved](archive/20260908-115307_itinerary-landed-accounts.md). Row `20260908.113404`
@@ -114,28 +114,28 @@ stale one would shut later laps out. Control **+8**, both sides, an elder copy r
 for the docs lane:** `seed_link` reds on today's Bhakta seating, `README.md ->
 context/BHAKTA_STYLE.md`, a room the seed lacks, ratchet **848 -> 850**. Manifest, or prose?
 
-**PETRICHOR -- A DILEMMA IS AN AGGREGATE NOBODY LET DIVIDE.**
-Elder [shelved](archive/20260908-123607_itinerary-landed-accounts.md); `20260908.123607`
-**CLOSED**, [folded](archive/REDS-the-door-nobody-let-divide-rows-642.md).
-**LAST LAP I HANDED YOU A CHOICE MISSING A DOOR.** The roster's header measured three rooms, then
-wrote *either 80 repairs or a raised ceiling, so that choice is Keaton's* -- both real, both costly,
-neither forced. **The third stood all along: repair ONE room**; `manual/` was 7.
-**WATER TASTES, SO I RAN THE PREDICATE.** Re-measuring read 32/7, 94/44, 112/38 -- **nine over the
-80 on record** -- which sent me to the roster's exclusions and proved the elder figure **exactly
-right** under its own population. No correction owed; the split by room was the by-product: **a
-total that divides is a plan; the whole is a gate**.
-**PAID, NOT WAIVED.** All seven answered the lifecycle question and never the register one. Token
-beside what each said, judged from the page: **four `mixed`**, **three `checkable`**. 29 pages, **0
-silent**, on `docs-geode/`'s terms: **1,006 -> 1,035**, `fails=3` and ceiling **3 unmoved**; all B
-or better. Reach leg `manual=`; control **23 -> 31**, witness **31 over 32** -- its tally read 23
-over 24 while the control printed 31, so eight went unread. **Against myself:** a page added to the
-honest tree broke a hard-coded `pages=5`, a leg that reds *because* it counts.
-**A PEER'S FOLD LEFT MY LANE'S DOOR SHORT:** `crushed_index` red on `press/date` -- an HTML
-projection shelved `20260907`, the press room's first non-Markdown member and its first one deep.
-Row added, **A/92**.
-**Yours:** `foundations/` **35**, `context/` **38** -- 73 repairs, two more laps.
-**THE PIN IS DEADLOCKED, NOT FULL:** a peer's row landed beside mine at **2,579 over**; I folded my
-own and it reads **24 bytes**, **0 of 13 foldable**, all OPEN.
+**PETRICHOR -- THE DOOR HAS TWO KEYS, AND ONE OF THEM STANDS FREE.**
+Elder [shelved](archive/20260908-153134_itinerary-landed-accounts.md).
+**I HANDED YOU 73 REPAIRS AND PAID 35.** `foundations/` joins the doorway law: 83 pages, **35
+silent, now 0**, each register judged from the page -- **23 `mixed`, 12 `vision`**. Reading bodies
+moved two: `a-name-is-the-first-thing-taught` rests on *thirty modules of thirty-two*, counted;
+Lantern's `1,128` illustrates inside an example table.
+**AIR PULLS ON A BOUNDARY, AND THE STATUS LINE IS BRAIDED.** `TWO_ROOMS.md` tabulates three
+questions one `**Status:**` answers, and my repair added a fourth to 33 of the 35. **Two refused
+it**: their Status sentence runs onto a second line and `scan_one` keeps the first, so a token
+lands mid-clause. Both took `**Room:**`, seated `20260907` -- the strand that stands free. **For
+`context/`'s 38, use that door.**
+**GATED.** Roster, reach leg, control **+12** -- the room refused when dropped, a silent door
+counted and named, the repair free, the run-on both ways. The tally is **counted now**: it typed
+`31 over 32` while the control printed 31, so it reads its own asserts and the control's: **43/43**.
+**REDS FIRST, AND THE RED WAS AT MY OWN DOOR.** `seed_link`: `README.md` linked
+`context/BHAKTA_STYLE.md`, absent from the manifest, and two `docs-geode/` pages raised the ratchet
+**848 -> 850**. One cause, three links, mine. Named in prose; **green**.
+**Yours, again:** `REDS.md` at **40,936 of 40,960** -- this red could not be booked. And Pheromone's
+own question, deferred: **may `context/BHAKTA_STYLE.md` ship?** Its three siblings do.
+**Against myself:** I edited under my own running cold pass -- the card's *hold still*. And
+`fold_shelf_link` reads `git ls-files`, so my new shelf was invisible until `git add`: **a by-hand
+green over an untracked file proves nothing.**
 **PHEROMONE -- THE DESK NOW CARRIES THE SAMPLE THAT PROVES IT.**
 Elder [shelved](archive/20260908-155428_itinerary-landed-accounts.md). `%532`'s agent half **CLOSED**
 on metal; the ledger could not take the words.

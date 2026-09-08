@@ -5,7 +5,7 @@
 **Style:** Gauge, Door setting -- see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md)
 **Registers:** Gauge - Civic - TAME
 **Voice:** Kyri
-**Status:** Living -- a foundation, written for a complete beginner
+**Status:** Living -- a foundation, written for a complete beginner -- **Vision room**: a faculty of the writing voice, described rather than measured.
 **Kin:** [`../context/KYRI.md`](../context/KYRI.md) - the four voices: [Lattice](20260823-212603_the-lattice-voice.md) - [Scribble](20260823-212604_the-scribble-voice.md) - [Lantern](20260823-212605_the-lantern-voice.md) - [Kiln](20260827-195316_the-kiln-voice.md)
 
 ---

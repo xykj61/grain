@@ -11,6 +11,7 @@ never opened a terminal.*
 **Lens:** TAME -- safety, performance, joy - Civic (see [`../context/CIVIC_STYLE.md`](../context/CIVIC_STYLE.md))
 **Status:** Canon -- a founding statement. Every claim about running software marks itself
 proven or proposed, per [`../context/TWO_ROOMS.md`](../context/TWO_ROOMS.md).
+**Room:** Mixed -- the closed-loop argument orients; the software claims are marked and checkable.
 
 ---
 

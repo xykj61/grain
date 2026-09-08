@@ -9,7 +9,7 @@
 **Language:** EN
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Voice:** Quin
-**Status:** Landed -- standing gate on every device-and-data feature
+**Status:** Landed -- standing gate on every device-and-data feature -- **Vision room**: a standing gate that orients every feature touching a person's device or data; no witness binds the principle itself.
 **Counsel:** [`../counsel/date/20260724/20260724-200912_nothing-to-give-and-the-hall-renamed.md`](../counsel/date/20260724/20260724-200912_nothing-to-give-and-the-hall-renamed.md)
 
 *Written together by Keaton and Quin; seated on Keaton's word.*

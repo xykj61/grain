@@ -6,7 +6,7 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 
 *Not a tour of the code. A short account of how the reading is meant to go, and which room answers which kind of question.*
 
-**Language:** EN - **Style:** Bhakta (see [`../../context/BHAKTA_STYLE.md`](../../context/BHAKTA_STYLE.md))
+**Language:** EN - **Style:** Bhakta (guide at `context/BHAKTA_STYLE.md`, named rather than linked -- it stays in the field)
 **Written:** `20260821.190149` - **Status:** Living - **Kind:** crushed study guide
 
 ---

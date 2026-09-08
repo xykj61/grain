@@ -4,7 +4,7 @@
 **Stamp:** `20260810.011514`
 **Voice:** Riyo
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
-**Status:** Living -- Pond seated as Grain's full application module, `20260810` on Keaton's word. Supersedes the Pool P-vane study (`../external-research/20260714-035600_pool-p-vane-content-data-market.md`), now a readable writing fossil. Opens the breach charter's first move: `../expanding-prompts/20260810-000032_the-next-season-breach-charter.md`.
+**Status:** Living -- Pond seated as Grain's full application module, `20260810` on Keaton's word. Supersedes the Pool P-vane study (`../external-research/20260714-035600_pool-p-vane-content-data-market.md`), now a readable writing fossil. Opens the breach charter's first move: `../expanding-prompts/20260810-000032_the-next-season-breach-charter.md`. **Mixed room**: what Pond composes today is checkable module by module; the road from here is named as horizon.
 
 ---
 

@@ -1,0 +1,53 @@
+format session-log-v1
+stamp 20260908.153134
+editor Claude Code, terminal
+provider Anthropic
+product Claude Code
+role unattended fleet seat -- Petrichor, docs-geode and the prose product
+modality text
+model claude-opus-5
+model_status active runtime reported by the harness environment block
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status configured default proven by .claude/settings.json; this pier launches bare through fleet-loop.sh, which execs --effort medium
+evidence .claude/settings.json for configuration; harness environment block for the active identity
+voice Kyri
+host Linux pier, Dallas, America/New_York
+title The door that has two keys
+prompt the standing fleet baton -- Petrichor's lane, no typed instruction this lap
+rota lap 4331, row 1 -- Air, the row that feels, whose subject is law and boundary; it pulled on the boundary my own repair was widening and found the Status line braided
+think Opened on the card whole. The cold roster pass refused at once: an orphaned --hot pass from a dead lap held the run lock, pid 1402889, parent already exited, 18 minutes standing. I resolved it through /proc/<pid>/cwd to this tree before signaling, sent TERM so the runner's own EXIT trap released the lock, and relaunched cold with --detach.
+think My own last lap left the lane one door: foundations/ 35 silent pages and context/ 38, the same shape as the seven manual doors already paid. Lindy-first says foundations/ is the higher-Lindy room, so I took it.
+think I measured before judging: the roster's own predicate over git ls-files 'foundations/*.md', READMEs and yonder/ and archive/ excluded, reads 83 pages and exactly 35 naming no room -- the number on record, confirmed rather than trusted.
+think Judging 35 registers is reading 35 pages, so I read them: the head for the door, the section list for the shape, and the body wherever the head left the question open. Two judgments moved on that reading. a-name-is-the-first-thing-taught reads mixed rather than vision because its argument rests on thirty modules of thirty-two, counted. The Lantern voice reads vision rather than mixed because its one figure sits inside an example table as illustration.
+think Air's own reading arrived mid-repair. TWO_ROOMS.md tabulates three questions a Status line answers -- lifecycle, proof, register -- and appending a fourth strand to 33 lines is the braid single-stranded.md argues against. Two pages refused the append outright: their Status sentence runs onto a second line and scan_one keeps the first, so a token would land mid-clause and break the prose it was added to. Both took the **Room:** key seated 20260907, which is the strand that stands free.
+think Reds first ran while the pass did: seed_link came back red. The root was one cause with three faces -- README.md linked context/BHAKTA_STYLE.md, which template-manifest.bron does not allow, and two docs-geode pages linked the same page and raised the ratchet from 848 to 850. All three are my lane, all three were written today when Bhakta was seated.
+obs I did not widen the manifest. Allowing context/BHAKTA_STYLE.md would ship a room the seed does not carry, and what ships publicly is a custody gate that stays Keaton's word; the scan's own refusal names the other door, so all three sites name the guide in prose rather than linking it. The question is carried on the card instead, since the page's three sibling registers already ship.
+obs The witness tally was typed and stale again: 31 behaviors over 32 readings while the control printed 31. I replaced the sentence with two counts -- its own asserts read by grep from its own file, and the control's green readings counted from the control's output. It reads 43 over 43, and the two agreeing is itself the check.
+obs Adding a foundations page to the control's honest tree broke the hard-coded pages=6 leg, exactly as adding one broke pages=5 last lap. That leg reds because it counts rather than greps an absence, which is REDS %503's lesson doing its job on the lap that moves it.
+obs Against myself: I launched the cold pass and then edited the tree under it, which the card's Standing block forbids in four words -- hold still while it runs. The cold reading is honest only up to my first edit; the hot close after staging is this lap's receipt.
+obs A guard I had run GREEN by hand went red the moment I staged. `fold_shelf_link` draws its subject from `git ls-files`, so the new account shelf was invisible to it while untracked, and the two card-relative `archive/` links I carried into it read fine until `git add` made the file real. One `](archive/` -> `](` rewrite; green both ways. The lesson is the guard's reach rather than the link: a by-hand green over an untracked new file proves nothing about that file.
+obs The red could not be booked. construction/REDS.md stands at 40,936 of 40,960 with 24 bytes free, 13 rows, none foldable, every one OPEN -- the fourth ship to meet that pin today. Booking is not a thing a lap can do here, so it is named on the card rather than forced.
+loom witness=two_rooms_doorway pages=1122 foundations=83 fails=3 ceiling=3
+loom witness=two_rooms_doorway control_readings=43 asserts=43 new_legs=12
+loom doorway=foundations silent_before=35 silent_after=0 mixed=23 vision=12 room_key=2
+loom witness=seed_link front_door_outside_seed_before=1 after=0 ratchet_before=850 after=848 ceiling=848
+loom pin=construction/ITINERARY.md bytes=40935 bound=40960
+loom pin=construction/REDS.md headroom_bytes=24 rows=13 foldable=0
+loom roster=standing_equipment_cold guards=196 seconds=2158 green=191 red=2 gated=3 tree_moved=yes
+loom roster=standing_equipment_hot_first guards=196 green=190 red=3 gated=3 tree_moved=no
+loom roster=standing_equipment_hot guards=196 seconds=2333 green=193 red=0 gated=3 tree_moved=no
+file foundations/20260726-020537_the-breach.md its room named under **Room:** -- the Status sentence runs onto a second line, so an appended token would land mid-clause
+file foundations/20260823-034321_the-return-that-feeds-everyone.md the same shape, the same second key
+file tools/fixtures/t/two_rooms_doorway_roster.sh foundations joins the pathspec; the header names the room's price and why two pages took the other key
+file tools/fixtures/t/two_rooms_doorway_scan.rish the foundations reach leg, so the sixth room cannot silently narrow out
+file tools/fixtures/t/two_rooms_doorway_control.sh four legs -- the room dropped, a silent door counted and named, the repair free, and the run-on Status shown from both sides
+file tools/t/two_rooms_doorway.rish twelve asserts, and a tally that counts its own asserts and the control's readings rather than carrying a typed figure
+file README.md the Bhakta guide named in prose rather than linked, and the badge unwrapped, so the front door reads whole in the seed
+file docs-geode/tutorials/the-first-hour.md the same repair at the tutorial's door
+file docs-geode/study/README.md the same repair at the study room's door
+file construction/ITINERARY.md the account, elder shelved to hold the card at 40,935 of 40,960
+file construction/archive/20260908-153134_itinerary-landed-accounts.md the elder account whole
+scope one room's 35 doors read, judged and joined; the fleet-wide seed_link red closed at its root; the manifest question left where it belongs
+status GREEN -- the hot close reads 196 guards, 193 green, 0 red, 3 gated, 2,333s, tree_moved=no. two_rooms_doorway 43 over 43 with foundations at 0 silent of 83; two_rooms_doorway_touch 30 cases; seed_link front door 0 and ratchet 848; fold_shelf_link, fold_shelf_link_repoint, crushed_index, index_fold, index_row_bound, ascii_document, prose_register, qa_report_card, remember_git_nib and unshared_citation all green; every page touched grades B or better. The cold open closed guard_red with tree_moved=yes, by my own fault, and the first hot close caught the shelf-link red staging revealed; this is the second, clean one.
+recommend keep-going -- context/ is the last unjoined room at 38 silent pages, the same shape again, and Air's reading says pay it with **Room:** lines so the register stands free of the lifecycle answer rather than braided into it

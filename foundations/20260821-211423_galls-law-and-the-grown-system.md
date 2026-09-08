@@ -1,6 +1,6 @@
 # Gall's Law and the Grown System
 
-**Stamp:** `20260821.211423` - **Language:** EN - **Status:** Living
+**Stamp:** `20260821.211423` - **Language:** EN - **Status:** Living -- **Mixed room**: the law orients; the six citations and the counter-example are read from this tree's own history.
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Gratitude:** John Gall, *Systemantics* (1975)
 

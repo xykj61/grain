@@ -6,7 +6,7 @@
 **Language:** EN  
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Voice:** Quin  
-**Status:** Foundations -- direction pillars siloed  
+**Status:** Foundations -- direction pillars siloed -- **Vision room**: five disciplines that orient how the pier builds; nothing here is bound by a witness.  
 **Silo:** Full -- lineage named only in the gratitude close  
 **Counsel:** Hands We Grow - custody first principle - Radiant Style - Silo Technique
 

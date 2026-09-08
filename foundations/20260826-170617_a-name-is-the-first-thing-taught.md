@@ -4,7 +4,7 @@
 **Stamp:** `20260826.170617`
 **Style:** Gauge, Door setting (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
-**Status:** Living
+**Status:** Living -- **Mixed room**: the naming argument orients, and the thirty modules of thirty-two it rests on were counted.
 **Kin:** [`comlink-tendency`](../.claude/rules/comlink-tendency.md) -- [`stamp-and-name`](../.claude/rules/stamp-and-name.md) -- [`gauge-style`](../.claude/rules/gauge-style.md)
 
 ---

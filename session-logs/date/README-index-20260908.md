@@ -17,6 +17,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260908.155645` | [the desk carries its own sample](20260908/20260908-155645_the-desk-carries-its-own-sample.kyri) | 46 desks run by nothing, now 0. |
 | `20260908.155443` | [three percent was the outlier](20260908/20260908-155443_three-percent-was-the-outlier.kyri) | twelve of twelve, 18% to 42%. |
 | `20260908.153848` | [a quotation outranks a floor](20260908/20260908-153848_a-quotation-outranks-a-floor.kyri) | 14% to 6%, and why it stops. |
+| `20260908.153134` | [the door that has two keys](20260908/20260908-153134_the-door-that-has-two-keys.kyri) | foundations joins; 35 doors, 0 silent. |
 | `20260908.152903` | [the strictest naming on four doors](20260908/20260908-152903_the-strictest-naming-on-four-doors.kyri) | zero negatives, measured. |
 | `20260908.152213` | [the blocker was a reading](20260908/20260908-152213_the-blocker-was-a-reading.kyri) | two binaries, six edits, every digest matched. |
 | `20260908.144500` | [the seed published, and four doors named](20260908/20260908-144500_the-seed-published-and-four-doors-named.kyri) | 8,187 files, clean. |
