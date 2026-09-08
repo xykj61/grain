@@ -1,0 +1,43 @@
+format session-log-v1
+stamp 20260908.005228
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role COPAL -- Amphora and bron-resins lane, unattended fleet ship
+modality text
+model claude-opus-5
+model_status configured default proven by .claude/settings.json; no runtime telemetry exposed
+configured_model claude-opus-5
+configured_reasoning max
+configured_status tracked settings file
+evidence .claude/settings.json
+voice Kyri
+host Framework laptop, NixOS pier, America/New_York, bare (FLEET_BARE=1)
+title The rule spelled twice where routing is forbidden, and the cure that did not reach the hand
+prompt Baton lap as COPAL -- take the next agent-doable lap in the amphora lane, Lindy-first crux-first.
+rota lap 4234, row 4 -- Earth, the row that breathes in; its dual seat is the marked value, which is Amphora's own page, so the lap took the shoulder-line vow to the module and counted its reading sites instead of trusting the comment that counted them
+think The earth row reads the concrete fact at the door before any argument. The marked value's dual seat names Amphora by image: the shoulder line says what rides inside. So I read amphora/manifest_entry.rye and counted rather than trusting.
+think The contract's own comment justifies centralizing with a census -- all five reading sites -- and grep found six routing through parse_manifest_line: vessel_core:160, :167, and :234 in take_listed_line, which neither the comment nor the roster note names.
+think Then the sharper find. amphora/src/main.rye:append_cargo_line reads the same three-field grammar through its own hand-rolled tokenizer and its own copy of the plain-bytes literal, and welcomes ONE root where the contract holds two. A manifest-marked cargo line passes six readers and dies there as CargoUnproven.
+think It is unreachable from outside because that door writes what it reads: pour builds the cargo plain, seals it, restore opens the same plain. No vessel edit reaches it without breaking the AEAD seal, which is exactly why it stood since the module was written, and why amphora_mark_wreck -- seated the day before for this vow -- reads vessel-core's frame and never opens src/.
+think Repaired where it lives. Added amphora/src/manifest_entry.rye as a symlink, the same bare-name idiom amphora/kumara.rye and tally_copy.rye already use, since Zig refuses an import escaping the root file's directory. The reader borrows me.mark_verdict and bounds the mark field with sp1 > me.max_mark_len ahead of it, so an over-long mark REFUSES rather than tripping mark_verdict's own precondition assert.
+think A couples: marker on the mirrored literal was tried and refused -- amphora_bounds_agree compares a bound's spelled numeric value and answered marker_on_derived, which is the right refusal and pointed at the better home. A comptime assert against me.mark_plain_bytes is checked every build rather than when a guard runs.
+obs Three legs added to amphora_mark_wreck, each proven to BITE: the elder narrower rule restored in a source pen, the bound line deleted, and a divergent literal planted whose build refusal is asserted to NAME the comptime tie rather than merely to be non-zero.
+obs I fired REDS %569 a fifth time. To stop my own cold roster pass -- which I had wrongly left running while I edited, so it was going to answer tree_moved regardless -- I typed pkill -f standing_equipment_run. My shell exited 144, that row's exact signature; one peer --hot at 1,418s survives and the rest is unattributable.
+obs The cure already existed: tools/f/fleet_call.sh bounds by /proc/<pid>/cwd, carries a witness, and process_reach is rostered. Every one of those reads TRACKED SOURCES, and a command typed at a session prompt is in no file -- which %569 wrote in its own third field. Repaired on tools/f/fleet_baton.txt and .claude/rules/the-baton.md, which reach every ship next lap with no per-seat edit. No new guard, and that is the finding.
+obs The cold roster open was abandoned rather than believed: it opened before my edits and would have answered tree_moved. The reading that stands is the --hot pass after git add, which measures the tree this commit ships.
+loom witness=amphora_mark_wreck wall_s=7.4 legs=3 pens=2 builds=6
+loom witness=amphora_bounds_agree verdict=ok
+loom card_bytes=40957 card_bound=40960 reds_pin_bytes=38482 reds_bound=40960
+file amphora/src/main.rye the cargo reader borrows the contract's roster, bounds the mark field, and holds its written root at comptime
+file amphora/src/manifest_entry.rye symlink to ../manifest_entry.rye -- Zig refuses an import escaping the root file's directory
+file amphora/manifest_entry.rye the reading-site census counted rather than recalled: six through the parser, a seventh that cannot route
+file tools/am/amphora_mark_wreck_witness.rish three legs over the reader no plant can reach, each proven to bite
+file construction/standing-equipment.kyri the roster note carries the corrected census and why the marker was refused
+file tools/f/fleet_baton.txt never signal a process by name -- the bounded form, and why the tool was not enough
+file .claude/rules/the-baton.md the record of that clause beside the one-writer law
+file construction/REDS.md two rows booked and folded the hour they were written
+file construction/ITINERARY.md the COPAL live front, elder account shelved to hold the card under its bound
+scope one keystone in the amphora lane plus the baton clause the second red demanded
+status GREEN -- amphora_mark_wreck, amphora_bounds_agree, amphora_grand_round, tame_style_check and width-check all green on metal; the hot roster pass runs after staging and its reading rides the send
+recommend check-in (Keaton) -- %569 is a peer's OPEN row and this lap gave it a baton clause rather than a guard, because no instrument in this tree can read a prompt; whether that closes it is yours

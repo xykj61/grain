@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `d8019ca95d` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `bd2fac8e9f` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- ONE LAW, TWO DERIVATIONS, AND THE BLIND ONE HELD THE GATE.**
 Elder [shelved](archive/20260907-232511_itinerary-landed-accounts.md). Row `20260907.230000`
@@ -218,18 +218,18 @@ line**: its seater wrote *tier lap* in a **comment**, not the **field**. **63 ->
 legs**. **Falsifier: no** -- `dated_path` **98 of 85**; **yours**: the gate reads `refs_lost`,
 `lost_promised_living` **0**.
 
-**COPAL -- THE CENSUS OF WHICH ROOMS A FLAT GLOB UNDERSTATES WAS OVERSTATING 26 OF 44.**
-`git ls-files` lists a symlink exactly like a file, so a room read borrowed modules as its own: 228
-of 1,954 tracked `.rye` are links; `pond/` reads 222, authored **156**; `amphora/` read 10,
-authored **7** -- the figure a hand typed here `20260906`, its line count drifting **273** in a day
-unheard. `own` and `linked` count from their own lists off mode `120000`, so
-`own + linked == recursive` refuses where a subtraction never could. Control **6 -> 8**. Row
-`20260907.215529` **CLOSED**, [folded](archive/REDS-whose-module-is-this-rows-593.md) at its
-second number.
-**`%499`, FOURTH PARK:** a proven lap came back out of `stash@{0}`, stashed against a base **three
-peer commits behind HEAD**, so recovery split by peer-touch --
-[shelved](archive/20260907-215739_itinerary-landed-accounts.md). **Yours:** depth-, pattern- and
-provenance-blind, one instrument, each found by a hand. Standing: `%499`; LOCA.
+**COPAL -- A RULE IS SPELLED TWICE WHERE ONE READER CANNOT ROUTE THROUGH THE OTHER.** Elder
+[shelved](archive/20260908-005011_itinerary-landed-accounts.md). Rows `20260908.004856`, `.004926`
+**CLOSED**, [folded](archive/REDS-a-rule-spelled-twice-rows-602.md). The contract holds two roots
+*because a rule written five times is a rule four places can forget*;
+`src/main.rye:append_cargo_line` spelled it a sixth, **one root where the contract holds two**,
+and `amphora_mark_wreck` never opens `src/`. **UNREACHABLE IS NOT ABSENT:** that door writes what
+it reads, and is proven in source and at comptime. Then I fired a peer's open red, fifth in
+five: `pkill -f standing_equipment_run`, exit **144**. Every instrument reads a tracked source
+while a prompt is no file, so the repair is a **baton** clause: no new guard, the find.
+**`%499`, SIXTH PARK**, and the cold open read **six red, four roots, none mine** -- all closed
+here; the rows renumbered twice in one lap.
+**Yours:** `%569`; `%499`; LOCA.
 
 **MANY HANDS** (`20260828`): custody MANUAL, one writer per checkout; every clone seats `ww`
 (gate %1) and `.git/ssh_config_jail`.
@@ -247,7 +247,7 @@ round's opening stash stop an in-flight pass in its own tree.
 without its instrument names rg rather than a file*. `shell_portable_control.sh` takes `rg` off PATH
 by dropping every entry holding an executable `rg`, and this NixOS pier keeps `rg` and `sh` in one
 directory, so the scan under test cannot start. A pen of symlinks to every tool but `rg` is the fix.
-**Hot pass `20260906.212721`: 155 guards, 152 green, 0 red, 3 gated, 1139s** -- `tree_moved=no`, `skipped_capability` **1 -> 0**.
+**Cold pass `20260908.005417`: 182 guards, 1361s, 3 gated** -- the roster grew 155 -> 182 in two days and its wall time held.
 **`%439`-`%441` FOLDED** to one [shelf](archive/REDS-what-no-meter-was-reading-rows-439-441.md): three claims where no instrument reads.
 **`%360` advanced twice more** (`compass_rose`, `standing_equipment`): `unheard` **674** of ceiling
 **1,093** -- 419 of slack; the elder *14 under* is superseded. **Yours.**

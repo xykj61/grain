@@ -95,10 +95,16 @@ pub fn parse_manifest_line(line: []const u8) error{ InvalidFormat, UnknownMark }
     assert(entry.mark.len >= 1);
     assert(entry.digest_hex.len == digest_hex_len);
     assert(entry.name.len >= 1);
-    // The wreck rule, kept here so all five reading sites inherit it from one place:
-    // vessel_core (manifest and cargo lines), vessel_seal (two), and vessel_fetch_delivery
-    // each discard the parsed entry with `_ =` and keep only the refusal, so a check
-    // written per caller would be a rule written five times to be forgotten once.
+    // The wreck rule, kept here so every reading site inherits it from one place. Counted
+    // `20260908` rather than recalled: SIX callers route a whole line through here --
+    // `vessel_core.rye:160` and `:167` (the parts reader) and `:234` (`take_listed_line`),
+    // `vessel_seal.rye:115` and `:229`, and `vessel_fetch_delivery.rye:365` -- each
+    // discarding the parsed entry with `_ =` and keeping only the refusal. This comment
+    // read `five` and named `:234` nowhere. A SEVENTH reader cannot route the whole line:
+    // `amphora/src/main.rye:append_cargo_line` walks decrypted seal plain into a catalog
+    // slot, so it borrows `mark_verdict` alone and holds its written root against
+    // `mark_plain_bytes` at comptime (REDS `20260908.004856`). A check written per caller
+    // would be a rule written seven times to be forgotten once.
     if (mark_verdict(entry.mark) == .unknown) return error.UnknownMark;
     // invariant: past this line the mark is a root the engine names.
     assert(mark_verdict(entry.mark) == .known);

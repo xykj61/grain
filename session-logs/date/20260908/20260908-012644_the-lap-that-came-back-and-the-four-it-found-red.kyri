@@ -1,0 +1,46 @@
+format session-log-v1
+stamp 20260908.012644
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role COPAL -- Amphora and bron-resins lane, unattended fleet ship
+modality text
+model claude-opus-5
+model_status configured default proven by .claude/settings.json; no runtime telemetry exposed
+configured_model claude-opus-5
+configured_reasoning max
+configured_status tracked settings file
+evidence .claude/settings.json
+voice Kyri
+host Framework laptop, NixOS pier, America/New_York, bare (FLEET_BARE=1)
+title The lap that came back, and the four reds it found waiting
+prompt Baton lap as COPAL -- take the next agent-doable lap in the amphora lane, Lindy-first crux-first.
+rota lap 4236, row 1 -- Air, the row that feels; its own test is to close a hand on one part and pull. I pulled the parked lap out of stash@{0} and it came free whole, which is what a single strand feels like -- and then pulled on four cold-open reds and found three of them shared surfaces nobody owned.
+think The round-open at 005346 stashed a complete, proven lap of mine -- witness legs, two REDS shelves, a card block, a session log. REDS %499, sixth firing. Recovering it is the crux: the work exists and stands on no ref.
+think The cold pass answered six red on four roots. Two are aggregates -- standing_equipment reds because siblings do, stash_record because records stand unlanded. The four roots: a misordered day shelf, a pin count, a headline census, and my own unlanded record.
+think Recovery by TREE rather than by blob, so the mode rides: git checkout stash@{0} -- <paths> reads the tree object, and amphora/src/manifest_entry.rye arrived as mode 120000 rather than a text file holding a path. That is the exec-bit law's second half, one file type over.
+think Five of fifteen paths overlapped peer commits, so those five were hand-applied and the other ten checked out. The overlap set is computed rather than guessed: comm -12 over git diff --name-only for the peer span and the stash span.
+think Both my rows collided. A peer bound %599 at the earlier stamp 20260908.002521 while parked, so mine renumbered -- six citation sites, all inside my own two shelves, the recital and the card. Every other citation in the lap spelled the STAMP, which is why the collision cost one pass of sed rather than a sweep. It then happened AGAIN mid-lap: a peer bound %600 and %601 upstream while the hot roster ran, so the same rows moved a second time to %602 and %603. Eleventh collision of the day, two of them on one lap.
+obs The three shared reds were each a number that had stopped agreeing with what it counted. session-logs/README.md said 20260907 held 125 rows against a shelf of 128. construction/REDS.md's headline recited 598 rows and a remainder of 578 against a spine measuring 601 and 581. The day shelf held 20260908.001350 above 20260908.002616, newest-first inverted. None was mine; all three red on every ship every lap until somebody lands the repair.
+obs The card would not hold the account. At HEAD it stood at 40,934 bytes with 26 of slack under a 40,960 bound eight ships share, and my block replaced a 940-byte elder with 1,340. Seven condensing passes brought the page to 40,955 -- five bytes under. The honest reading is that the bound is fleet-wide rather than mine: my block sits at 1,145 against a per-ship budget of 2,048, and the page is full because eight of them plus the spine are.
+obs One superseded shared line was refreshed rather than condensed: the card recited a hot pass of 20260906.212721 at 155 guards while today's cold pass reads 182 at 1,361s. A measurement two days stale on a living card is a claim, and refreshing it is cheaper than folding it.
+obs A depth-lost link was born in the shelving itself. Shelving a card block copies its links one directory down, so archive/REDS-whose-module-is-this-rows-593.md became construction/archive/archive/... -- the same fault GRASS booked yesterday on its own shelf. Repaired before staging; tracked_link would have caught it at the hot pass, which is the guard working rather than a red.
+obs stash_record stays RED at unlanded=2, and both records are a peer's: stash@{1} holds Bakery's 20260907.230609 and 20260908.000155. A claim never touches a peer's in-flight work, so it is reported here rather than landed.
+loom witness=amphora_mark_wreck wall_s=7.4 legs=3 pens=2
+loom cold_pass=20260908.005417 guards=182 green=173 red=6 gated=3 seconds=1361
+loom card_bytes=40955 card_bound=40960 slack=5
+loom shelf_rows_20260907=128 pin_said=125
+file construction/archive/REDS-a-rule-spelled-twice-rows-602.md the parked row, renumbered off its collision at the anointed spine
+file construction/archive/REDS-the-cure-that-did-not-reach-the-hand-rows-603.md its sibling, renumbered with it
+file construction/archive/REDS-fold-recital.md two recital lines at the numbers the spine actually had free
+file construction/REDS.md the headline census re-derived: 601 rows, 581 under the reds-first law
+file session-logs/README.md the pin's 20260907 count counted rather than recalled
+file session-logs/date/README-index-20260908.md this lap's row and the parked lap's, sorted newest-first by the shelf repair
+file construction/ITINERARY.md the COPAL live front, condensed seven times to hold the page under a bound eight ships share
+file amphora/src/main.rye the cargo reader borrows the contract's roster and holds its written root at comptime
+file amphora/src/manifest_entry.rye symlink recovered by tree, so mode 120000 rode
+file tools/am/amphora_mark_wreck_witness.rish three legs over the reader no plant can reach
+file tools/f/fleet_baton.txt never signal a process by name -- the bounded form, on the opening every ship reads
+scope recover one parked lap whole, and close every cold-open red a lap may lawfully close
+status GREEN -- amphora_mark_wreck, amphora_bounds_agree, amphora_grand_round, reds_ledger_monotone, reds_ledger_headline, index_row_bound, log_has_a_row, tame_style_check and width-check all green on metal; stash_record stays red on a peer's two parked records, named rather than touched
+recommend check-in (Keaton) -- the card holds five bytes of slack with eight ships writing to it, and the sixth firing of %499 says a proven lap keeps landing in a stash rather than on a ref; both are yours
