@@ -234,7 +234,13 @@ done
 # reads rather than keeping slack a later lap could spend without noticing. Slack in a ratchet is a
 # quiet allowance to get worse: the reading had stood 63 under its own ceiling, so 63 witnesses
 # could have fallen out of reach and every pass would still have read green.
-CEILING=${WITNESS_REACH_CEILING:-1029}
+# 1029 -> 898 on `20260908.191500`, a fall of 131 and the largest this ceiling has taken. Two
+# families joined the roster as discovering choirs -- 45 font5x7 glyph witnesses and 86 HUNK -- and
+# both DECLARE a `# reach-list:` enumerator, which is the whole reason the number moved. Rostered
+# without the declaration they ran 131 witnesses while this meter counted every one unreached, and
+# the honest limit above says exactly why: a glob is not inferred from, on purpose, since inferring
+# once overstated by 111. The door was already built; the choirs simply had to walk through it.
+CEILING=${WITNESS_REACH_CEILING:-898}
 # The family ceiling, seated 20260828 at what the tree measured that day: 220 of 292 families carry
 # no clock at all. It only falls, and it falls whenever a family's first roster row lands. It is a
 # ratchet rather than a wall at zero for the same reason CEILING is: a wall that refuses ordinary

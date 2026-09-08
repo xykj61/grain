@@ -8,20 +8,24 @@
 # own quality. Forty-five rows would be one rule written forty-five times.
 #
 # THE FAMILY IS DISCOVERED, NEVER LISTED, and the discovery lives in
-# `tools/fixtures/f/font5x7_choir_scan.sh` so the loop is written in the language that has loops.
+# `tools/fixtures/w/witness_family_scan.sh`, which is GENERIC. This choir was written for one font
+# first; the very next family wanted the same thirty lines with one word changed, so the scan took a
+# `--dir` and a `--prefix` and a family costs a roster row rather than a file.
 # Two faults were met writing this and both are recorded there and here, because each reads exactly
 # like a pass: a glob assuming a middle segment ran 44 of the 45, and an untrimmed `wc` newline
 # reached `sh` as two lines so a family of 45 refused against a bound of 128.
 
+# reach-list: sh tools/fixtures/w/witness_family_scan.sh --dir tools/f --prefix font5x7 --list
+
 say "font5x7-choir: Style Gauge, Meter -- the family is counted, bounded, and sung."
 say "font5x7-choir: Lens TAME -- a corpus of zero is a red rather than a reading."
 
-say "font5x7-choir: the control -- eight behaviors, every refusal planted and then lifted..."
-let ctl = run ["sh" "tools/fixtures/f/font5x7_choir_control.sh"]
+say "font5x7-choir: the control -- eleven behaviors, every refusal planted and then lifted..."
+let ctl = run ["sh" "tools/fixtures/w/witness_family_control.sh"]
 assert ctl.ok else "font5x7-choir: the control refused -- read its own pass/fail lines"
 assert ctl.out contains "fail=0" else "font5x7-choir: a planted refusal behaved differently than stated"
 
-let scan = run ["sh" "tools/fixtures/f/font5x7_choir_scan.sh"]
+let scan = run ["sh" "tools/fixtures/w/witness_family_scan.sh" "--dir" "tools/f" "--prefix" "font5x7"]
 say scan.out
 assert scan.ok else "font5x7-choir: the family refused -- read its own verdict line above"
 
