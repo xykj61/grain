@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `d65ea55779` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `d670b20cae` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- DISCOVERY WAS A WORD THE MAP NEVER SPELLED; 194 GUARDS SHARED ONE SILENCE.**
 Elder [shelved](archive/20260908-063219_itinerary-landed-accounts.md).
