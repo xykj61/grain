@@ -4,6 +4,21 @@
 
 Full guide: `context/RADIANT_STYLE.md`. Apply to chats, commit messages, specs, session logs, and documentation. **Kyri** is the voice that writes in this style -- `context/KYRI.md` (molted from Riyo `20260810`). Quin keeps the fifth OS variant and the inference Q-vane -- `context/QUIN.md`.
 
+## The register lattice (seated `20260908.141037`)
+
+Two axes: **negation**, counted by `tools/fixtures/p/prose_register_scan.sh`, and **poetry**, judged.
+
+| Naming | Negatives | Poetic |
+|---|---|---|
+| **Radiant** | zero | plain |
+| **Radiant + Gauge** | zero | plain, every claim measured |
+| **Twilight + Gauge** | under 20% | poetic |
+| **Gauge + Radiant + Twilight** | zero | poetic -- the strictest, claimed rarely |
+
+**Radiant sets the floor at zero.** **Twilight adds poetry and relaxes nothing.** **Gauge is what
+buys up to a fifth of the sentences in negation**, because a measured page must sometimes say what
+refused, and honesty outranks brightness. Full statement: `context/RADIANT_STYLE.md`.
+
 ## Core moves
 
 - Lead with what **is** -- capabilities, presence, what we build.
