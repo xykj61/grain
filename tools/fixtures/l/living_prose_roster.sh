@@ -51,6 +51,20 @@
 # tools/fixtures/l/retired_word_scan.sh, and proven by retired_word_control.sh.
 #
 #   sh tools/fixtures/l/living_prose_roster.sh        # one path per line
+#
+# THE RADIANT-VOCABULARY EXCLUSION NAMES ITS FILE OUTRIGHT (`20260907.192241`). It carried two
+# date classes and an underscore before the sprig, which `tools/d/dated_spelling_witness.rish`
+# refuses: 237 logs in this tree carry a stamp and no sprig, and a pattern demanding one reads
+# straight past them. Here the demand was for a different reason -- the exclusion means ONE page
+# and identified it by its sprig -- so the repair is the literal path rather than a looser date
+# class. It excludes exactly the page it means, and a mutant seated at a fresh stamp arrives
+# reconsidered rather than silently inherited. The roster reads 520 paths before and after.
+#
+# The elder spelling is described here rather than quoted, and that is the finding rather than a
+# nicety: quoting it left the guard reading this comment as a live pattern and refusing the tree
+# for prose explaining the repair. A grep for a shape counts the sentence that says the opposite --
+# the same reading `tools/fixtures/p/plant_adoption_scan.sh` booked at `20260907.145907` and
+# `tools/fixtures/c/crushed_index_scan.sh` met on this same lap. Three houses, one shape.
 set -eu
 
 git rev-parse --is-inside-work-tree >/dev/null 2>&1 || exit 0
@@ -58,7 +72,7 @@ git rev-parse --is-inside-work-tree >/dev/null 2>&1 || exit 0
 git ls-files '*.md' \
   | grep -vE '(^|/)(date|archive|yonder)/' \
   | grep -vE '^(gratitude|vendor|seed|external-research|research-silo|tools/fixtures)/' \
-  | grep -vE '^(\.claude/rules/vocabulary-|\.claude/rules/tame-guidance\.md$|context/LEXICON\.md$|context/GAUGE_STYLE\.md$|context/TAME_GUIDANCE\.md$|context/specs/[0-9]{8}-[0-9]{6}_radiant-vocabulary-pass\.md$)' \
+  | grep -vE '^(\.claude/rules/vocabulary-|\.claude/rules/tame-guidance\.md$|context/LEXICON\.md$|context/GAUGE_STYLE\.md$|context/TAME_GUIDANCE\.md$|context/specs/20260707-053212_radiant-vocabulary-pass\.md$)' \
   | while IFS= read -r rel; do
       case "${rel##*/}" in
         [0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9][_.]*)

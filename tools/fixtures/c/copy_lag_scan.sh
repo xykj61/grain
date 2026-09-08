@@ -42,7 +42,15 @@ set -u
 # The ratchet, named here so the control can ask the law rather than spell a snapshot of it.
 # Measured 20260906.070000: mand/capabilities.rye (four published items behind caravan's) and
 # caravan/parse_int.rye (identical code, two comment lines behind tally's). It only falls.
-behind_ceiling=2
+#
+# 20260907.191247 -- mand/capabilities.rye became a symlink to caravan/capabilities.rye, so the
+# ceiling falls 2 -> 1. The room argued for it in its own hand: mand/tally_copy.rye was ALREADY a
+# symlink to ../tally/copy.rye, and linengrow/capabilities.rye already linked caravan's, so mand
+# held the one copied file in a room that otherwise links what it shares. The copy published
+# neither Refusal nor refusal_reason and its three used symbols -- CapabilityTable, right_read,
+# right_write -- all stand in caravan's, which is why the link costs nothing: the three mand ring
+# witnesses and caravan's own capability witness are GREEN across it.
+behind_ceiling=1
 
 max_basenames=4096
 max_copies=512
