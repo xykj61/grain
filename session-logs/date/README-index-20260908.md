@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260908.190256` | [The meter that cannot see a glob](20260908/20260908-190256_the-meter-that-cannot-see-a-glob.kyri) | 45 glyph witnesses made to run |
 | `20260908.184655` | [A guard's reach is the roster](20260908/20260908-184655_a-guards-reach-is-the-roster.kyri) | ten front-door guards ran in no pass; one red sixteen days |
 | `20260908.184559` | [Four named, three asserted](20260908/20260908-184559_four-named-three-asserted.kyri) | the run the merge postcondition let pass |
 | `20260908.182537` | [Four tools whose job is the elder word](20260908/20260908-182537_four-tools-whose-job-is-the-elder-word.kyri) | an env contract breached, its fallback proven |
