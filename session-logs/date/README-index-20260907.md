@@ -11,10 +11,10 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260907.194642` | [The floor that refused its own good news](20260907/20260907-194642_the-floor-that-refused-its-own-good-news.kyri) | two parked laps landed; a floor red on adoption. |
+| `20260907.192817` | [Two shapes, one notation](20260907/20260907-192817_two-shapes-one-notation.kyri) | 91 pct of journal records repeat a field; no registry row does. |
 | `20260907.192800` | [A door that recorded teaching](20260907/20260907-192800_the-door-that-recorded-teaching-what-it-never-said.kyri) | the doorway census fell 38 to 3. |
 | `20260907.182550` | [A floor that refuses every rise](20260907/20260907-182550_a-floor-that-refuses-every-rise.kyri) | a floor written as an equality refused every adoption. |
-| `20260907.192817` | [Two shapes, one notation](20260907/20260907-192817_two-shapes-one-notation.kyri) | 91 pct of journal records repeat a field; no registry row does. |
-| `20260907.194642` | [The floor that refused its own good news](20260907/20260907-194642_the-floor-that-refused-its-own-good-news.kyri) | two parked laps landed; a floor red on adoption. |
 | `20260907.173826` | [The address read from the other end](20260907/20260907-173826_the-address-read-from-the-other-end.kyri) | a nested-class hypothesis refuted; 164x across equal classes |
 | `20260907.172054` | [The number under the word](20260907/20260907-172054_the-number-under-the-word.kyri) | the grader's correction measured: 324 of 429 unmoved. |
 | `20260907.170704` | [The doors that agreed are inside](20260907/20260907-170704_the-doors-that-agreed.kyri) | 30 of 80 front doors sit over the ceiling; this lane's joined. |
