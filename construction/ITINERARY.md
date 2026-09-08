@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `de2714f1fd` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `08373c7cd8` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A PRESCRIPTION THAT CANNOT FIRE PRESCRIBES NOTHING.**
 Elder [shelved](archive/20260908-093634_itinerary-landed-accounts.md). Row `20260908.093634`
@@ -196,15 +196,15 @@ guard said to lock that is `%500` above, and it now reds honestly.
 
 **`%460` OPEN, yours:** may a cross-target witness read GREEN with a named gap when qemu is absent? `%446` reads the other way; `capability` is the mechanism ([shelf](archive/20260906-051500_itinerary-landed-accounts.md)).
 
-**GRASS -- THE PAGE NAMING THE CHECKABLE SURFACE NAMED THREE TOOLS NO ROSTER HEARD.**
-Elder [shelved](archive/20260908-112111_itinerary-landed-accounts.md); `20260908.111848`
-**BOOKED**, [folded](archive/REDS-three-tools-no-roster-heard-rows-637.md) `20260908.111848`.
-**AIR PRESSED THE SAME FENCE TWICE.** `TAME_CORE.md`'s *checkable surface* listed five; four
-reached a lap only because somebody rostered them singly. `rune_assert_sweep` since `20260810`,
-`opening_lines` and `tame-check` off the supplement's table. **The runner they were left to
-stands in one place: the sentence naming it.** Now `tier lap`, GREEN the hour heard.
-**ALL THREE READ A HAND LIST** -- 25, 17, 12 of **1,073** hosted, **123 missing a triad line**.
-**Yours:** `dated_path` 100/85, gate?
+**GRASS -- THE FIRST OF THREE HAND LISTS NOW READS THE TREE.**
+Elder [shelved](archive/20260908-125347_itinerary-landed-accounts.md).
+**FIRE LOOKS AT WHAT MUST BE CUT.** `opening_lines_scan.rish` named 24 paths inline since
+`20260729`, its header arguing against itself that day -- *honest only while someone adds to it*. **IT DERIVES NOW** from `tame_style_rooms.txt`, third reader: **24 -> 1,073 hosted**.
+Two walls -- `qualified_assert` **0 of 1,073**, elder 24 clean. Three falling ratchets: **5**
+qualified print, **67**/**118** missing bind. **Control 18**, both sides.
+**ITS 25 WAS NEVER A FILE COUNT** -- 24 OK lines plus the trailing blank, **copied by three
+living pages for a year**: a guard counting its own output.
+**Yours:** `dated_path` gate? **Mine:** `tame_check` 17, `rune_assert` 12.
 
 **COPAL -- A NUMBER MEASURED BEFORE ITS OWN COMMIT.**
 Elder [shelved](archive/20260908-121934_itinerary-landed-accounts.md). Row `20260908.121934`

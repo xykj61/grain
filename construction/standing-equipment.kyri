@@ -339,18 +339,30 @@ tier lap       # authored Rye style, named on touch by the same
 #
 # WHAT EACH ONE ACTUALLY READS, written here so a green never reads wider than it is. The TAME
 # rooms in `tools/fixtures/t/tame_style_rooms.txt` hold 1,126 authored `.rye` files, 1,073 of which
-# import std and are therefore hosted. Against that: `opening_lines` reads 25 hand-named files and
-# says "all 25 hosted files"; `tame_check` reads 17; `rune_assert_sweep` gates 12 hand-named cores.
+# import std and are therefore hosted. At the seating: `opening_lines` read 25 hand-named files and
+# said "all 25 hosted files"; `tame_check` reads 17; `rune_assert_sweep` gates 12 hand-named cores.
 # Each is a regression guard over its own list rather than a reading of the tree, and a hand list
 # cannot grow with the tree -- the same shape `tally_caller_map` was repaired for on `20260908`.
-# Measured this lap over the whole roster: 123 of the 1,073 hosted files are missing at least one
-# line of the opening triad. Widening the lists is its own lap and is named on the card, not taken
-# here: rostering a guard and changing what it reads are two acts, and doing both at once means no
-# one can tell which of them moved the number.
+# Measured at the seating over the whole roster: 123 of the 1,073 hosted files are missing at least
+# one line of the opening triad. Widening the lists is its own lap and was named on the card, not
+# taken there: rostering a guard and changing what it reads are two acts, and doing both at once
+# means no one can tell which of them moved the number.
 #
-# `tier lap` for all three, measured on this pier `20260908`: 966ms, 401ms, 172ms -- 1.5s together
-# against a lap pass of 1,392s, or one tenth of one percent. A guard this cheap on a slower clock
-# would be a cadence bought for nothing.
+# THE FIRST OF THE THREE WAS WIDENED `20260908.125347`. `opening_lines_scan.rish` now derives its
+# population from the rooms roster rather than an inline list, so it reads 1,073 hosted files rather
+# than 24. Its "25" was never a file count at all: the witness printed `length lines result.out`,
+# which counted 24 OK lines plus the trailing empty one, and three living pages copied the number
+# for a year. Two readings are walls -- `qualified_assert` at zero across all 1,073, and the elder
+# twenty-four held clean on all four of their duties, so the widening lowers nothing the narrow list
+# had proven. Three are ratchets whose ceilings only fall: 5 files calling `std.debug.print(`, 67
+# missing the assert bind, 118 missing the print bind. `tame_check` and `rune_assert_sweep` still
+# read their lists, one guard per lap by design.
+#
+# `tier lap` for all three, measured on this pier `20260908`: 19,564ms, 401ms, 172ms against a lap
+# pass of 1,537s. The first grew 966ms -> 19.6s at the widening, and the scan itself is 1.3s of that
+# -- the other 18 is its control, which runs the scan once per planted state across a throwaway pen.
+# A control that proves eighteen behaviors is what the widening is worth, and 1.3 percent of a pass
+# is what it costs.
 guard rune_assert_sweep
 path tools/r/rune_assert_sweep.rish
 tier lap   # 172ms; gates 12 asserting cores against regression, advises the rest
@@ -358,7 +370,7 @@ seated 20260908.111848
 
 guard opening_lines
 path tools/o/opening_lines_witness.rish
-tier lap   # 966ms; the opening triad over 25 hand-named hosted files
+tier lap   # 19.6s (1.3s scan, 18s control); the opening triad over 1,073 derived hosted files
 seated 20260908.111848
 
 guard tame_check

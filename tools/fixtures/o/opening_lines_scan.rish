@@ -1,17 +1,103 @@
-# opening_lines_scan.rish -- hosted .rye canonical head (std / assert / print).
+# opening_lines_scan.rish -- the canonical opening triad, read across the TAME rooms.
 #
-# Native repoint of opening_lines_scan.sh -- map + where per tame_style_scan_advise.
-#
-# Roster accreted 20260729.230300 (Voice v12 - slot 12 - opening_lines_and_silo).
-# Six files authored across the Equinox and Voice seasons carried the canonical
-# head correctly and sat OUTSIDE this roster, so they passed by their author's
-# care rather than by proof. A fixed roster is honest only while someone keeps
-# adding to it; every new hosted .rye that speaks or checks joins here.
 # Run from the repository root:
-#   rishi/bin/rishi run tools/fixtures/o/opening_lines_scan.rish
+#   rishi/bin/rishi run tools/fixtures/o/opening_lines_scan.rish [rooms-file]
+#
+# WHAT THIS READS. Every authored `.rye` under the rooms named in
+# `tools/fixtures/t/tame_style_rooms.txt` that binds `const std = @import(...)` -- the first line of
+# the opening triad, and this tree's own definition of a hosted source. An optional argument names a
+# different rooms file, which is how the control plants a pen and proves each refusal from both
+# sides.
+#
+# WHY IT NO LONGER READS A HAND LIST. This scan named twenty-four files inline from `20260729.230300`
+# until `20260908`. Its own header argued the case against itself the day it was written -- *a fixed
+# roster is honest only while someone keeps adding to it; every new hosted .rye that speaks or checks
+# joins here* -- and nobody did. Measured `20260908`: the rooms hold 1,126 authored `.rye`, 1,073 of
+# them hosted, so the list gated 2.2 percent of the population it claimed. Nothing had rotted; the
+# reading simply stopped at twenty-four names.
+#
+# It is the third reader to arrive at the same file. `tame_style_rooms.txt` exists because the bans
+# half and the advise half of the style scan each spelled their own rooms inline and drifted 857
+# files apart while a selftest called them equal. A list typed into a guard is one more copy of a
+# claim; the roster is the one copy.
+#
+# WHAT IS GATED, and why each is a wall rather than a ratchet.
+#   qualified_assert -- `std.debug.assert(` anywhere in a hosted source. Zero across all 1,073 at
+#   the widening, and `tame_style_check` already bans the spelling, so the wall records a fact
+#   rather than asking for work.
+#   elder_missing_assert_bind, elder_missing_print_bind, elder_qualified_assert,
+#   elder_qualified_print -- the twenty-four files the hand list gated, read one duty at a time. All
+#   twenty-four are clean under the derived predicate, so widening the population takes nothing away
+#   from what the narrower one had already proven. A ratchet alone would let one of them regress
+#   under a falling ceiling and say nothing.
+#
+# WHAT IS RATCHETED, under a ceiling that only ever falls. Each was measured at the widening and
+# each is repaired on touch rather than swept.
+#   qualified_print 5 files -- `std.debug.print(` at a call site; `rye/src/main.rye` holds 13 of the
+#   19 sites.
+#   missing_assert_bind 67 -- a hosted file that never binds bare `assert`.
+#   missing_print_bind 118 -- a hosted file that never binds bare `print`. TAME asks for this one
+#   as-you-touch and gates it nowhere, so a ratchet is the honest instrument.
+#
+# WHAT THIS DOES NOT READ. Whether a bound assert is ever called, and whether a file that binds the
+# triad asserts anything worth asserting. `tame_style_check`'s zero-assert duty owns that question.
 
-let files = ["tally/seed.rye" "tally/gardens.rye" "caravan/seed.rye" "caravan/bounded.rye" "caravan/twin.rye" "caravan/chain.rye" "caravan/capabilities.rye" "mantra/src/main.rye" "mantra/src/store.rye" "mantra/src/weave.rye" "mantra/src/diff.rye" "rishi/src/main.rye" "brushstroke/seed.rye" "comlink/wire_format.rye" "comlink/hosted_wire.rye" "comlink/device_wire.rye" "pond/apps/drawn_terminal.rye" "lattice/approx_equal_test.rye" "brushstroke/east_pack_test.rye" "caravan/refusal_reason_test.rye" "tally/total_capacity_test.rye" "tally/divisions_test.rye" "glow/priority_fold_test.rye" "amphora/src/main.rye"]
+let default_rooms = "tools/fixtures/t/tame_style_rooms.txt"
+let rooms_file = default_rooms
+if args.len > 0 then let rooms_file = args[0]
+let rooms = "grep -v '^#' ${rooms_file} | grep -v '^$'"
+let find_rye = "find $(${rooms}) -name '*.rye' ! -type l ! -path '*/.cache/*' ! -path '*/bin/*' 2>/dev/null"
+let hosted = "grep -lE '^[[:space:]]*const[[:space:]]+std[[:space:]]*=[[:space:]]*@import' $(${find_rye}) 2>/dev/null"
 
-let scans = map files as f: { path: f, bind_a: length (where (lines (read-file f)) as ln: ln contains "const assert = std.debug.assert;"), bind_p: length (where (lines (read-file f)) as ln: ln contains "const print = std.debug.print;"), qual_a: length (where (lines (read-file f)) as ln: ln contains "std.debug.assert("), qual_p: length (where (lines (read-file f)) as ln: ln contains "std.debug.print(") }
+# ONE SHELL, FIVE GREPS. The elder shape mapped four `read-file` reads per file across the roster,
+# which costs a read per file per reading and refuses past `max_list_items = 1024` -- and the derived
+# population is 1,073. Each reading here is one `grep` over the whole list, so the cost is five
+# processes rather than four thousand, and no list crosses a Rishi bound.
+let counts = run ["sh" "-c" "H=$(${hosted}); set -- $H; n=$#; qa=$(grep -lF 'std.debug.assert(' $H 2>/dev/null | wc -l); qp=$(grep -lF 'std.debug.print(' $H 2>/dev/null | wc -l); ba=$(grep -lF 'const assert = std.debug.assert;' $H 2>/dev/null | wc -l); bp=$(grep -lF 'const print = std.debug.print;' $H 2>/dev/null | wc -l); echo $n $qa $qp $((n-ba)) $((n-bp))"]
+assert counts.ok else "opening-lines scan: the derived reading failed -- read the rooms file it was handed"
 
-for-each scans as s do if (s.bind_a == 0) then say "FAIL ${s.path} assert-bind" else if (s.bind_p == 0) then say "FAIL ${s.path} print-bind" else if (s.qual_a != 0) then say "FAIL ${s.path} qual-assert=${s.qual_a}" else if (s.qual_p != 0) then say "FAIL ${s.path} qual-print=${s.qual_p}" else say "OK   ${s.path}"
+let read = split (trim counts.out) " "
+let hosted_count = read[0]
+let qualified_assert = read[1]
+let qualified_print = read[2]
+let missing_assert_bind = read[3]
+let missing_print_bind = read[4]
+
+say "rooms_file=${rooms_file}"
+say "hosted=${hosted_count}"
+say "qualified_assert=${qualified_assert} ceiling=0"
+say "qualified_print=${qualified_print} ceiling=5"
+say "missing_assert_bind=${missing_assert_bind} ceiling=67"
+say "missing_print_bind=${missing_print_bind} ceiling=118"
+
+# THE ELDER TWENTY-FOUR, still walled by name. These are the files the hand list held, and every one
+# of them reads clean under the derived predicate. Named here so the widening cannot quietly lower
+# what they already proved. The check reads real tree paths, so it runs on the default roster alone;
+# a pen run reports it absent rather than reading a tree the pen does not own.
+let elder = ["tally/seed.rye" "tally/gardens.rye" "caravan/seed.rye" "caravan/bounded.rye" "caravan/twin.rye" "caravan/chain.rye" "caravan/capabilities.rye" "mantra/src/main.rye" "mantra/src/store.rye" "mantra/src/weave.rye" "mantra/src/diff.rye" "rishi/src/main.rye" "brushstroke/seed.rye" "comlink/wire_format.rye" "comlink/hosted_wire.rye" "comlink/device_wire.rye" "pond/apps/drawn_terminal.rye" "lattice/approx_equal_test.rye" "brushstroke/east_pack_test.rye" "caravan/refusal_reason_test.rye" "tally/total_capacity_test.rye" "tally/divisions_test.rye" "glow/priority_fold_test.rye" "amphora/src/main.rye"]
+
+if rooms_file == default_rooms then say "elder_roster=${length elder}"
+if rooms_file != default_rooms then say "elder_roster=absent -- a pen roster reads its own files"
+
+let elder_scans = map elder as f: { path: f, bind_a: length (where (lines (read-file f)) as ln: ln contains "const assert = std.debug.assert;"), bind_p: length (where (lines (read-file f)) as ln: ln contains "const print = std.debug.print;"), qual_a: length (where (lines (read-file f)) as ln: ln contains "std.debug.assert("), qual_p: length (where (lines (read-file f)) as ln: ln contains "std.debug.print(") }
+let elder_bad_a = where elder_scans as s: s.bind_a == 0
+let elder_bad_p = where elder_scans as s: s.bind_p == 0
+let elder_bad_qa = where elder_scans as s: s.qual_a != 0
+let elder_bad_qp = where elder_scans as s: s.qual_p != 0
+
+for-each elder_bad_a as s do say "FAIL ${s.path} assert-bind"
+for-each elder_bad_p as s do say "FAIL ${s.path} print-bind"
+for-each elder_bad_qa as s do say "FAIL ${s.path} qual-assert=${s.qual_a}"
+for-each elder_bad_qp as s do say "FAIL ${s.path} qual-print=${s.qual_p}"
+
+if rooms_file == default_rooms then say "elder_missing_assert_bind=${length elder_bad_a} ceiling=0"
+if rooms_file == default_rooms then say "elder_missing_print_bind=${length elder_bad_p} ceiling=0"
+if rooms_file == default_rooms then say "elder_qualified_assert=${length elder_bad_qa} ceiling=0"
+if rooms_file == default_rooms then say "elder_qualified_print=${length elder_bad_qp} ceiling=0"
+
+# THE CEILINGS ARE COMPARED HERE rather than in the witness, so a reader of the scan's own output
+# can see whether a ratchet has moved without holding the witness open beside it. Each only falls.
+let over = run ["sh" "-c" "echo $(( (${qualified_print} > 5) + (${missing_assert_bind} > 67) + (${missing_print_bind} > 118) ))"]
+assert over.ok else "opening-lines scan: the ceiling comparison failed"
+say "ratchets_over_ceiling=${trim over.out}"
+say "verdict=read"

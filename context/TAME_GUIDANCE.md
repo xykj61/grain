@@ -619,7 +619,7 @@ These are the machine-checkable rules -- the lint surface. The discipline is the
 | **Radiant surface advisory** (bare but-word - emoji - benediction - co-author - header) | `tools/r/radiant_lint.rish` (ratchet advisory; never fails) |
 | **Radiant pass claim preserve** (tokens - modality - structure - pinned digests) | `tools/cl/claim_preserve_witness.rish` - includes `markdown_structure_witness` (blocking for any pass) |
 | **Unqualified assert** | `tools/t/tame-check.rish` (live witness, TH-2c) |
-| **Opening lines** (`const assert` + `const print`, no qualified debug calls) | `tools/o/opening_lines_witness.rish` (live witness, parity **140** -- hosted sources + `pond/apps/drawn_terminal.rye`) |
+| **Opening lines** (`const assert` + `const print`, no qualified debug calls) | `tools/o/opening_lines_witness.rish` (live witness, parity **140**; widened `20260908.125347` from 24 hand-named files to the **1,073 hosted `.rye`** derived from `tools/fixtures/t/tame_style_rooms.txt` -- two walls, three ratchets) |
 | **At most one designed-not-built functional spec** (`context/specs/*.md` Status) | `tools/d/designed_not_built_witness.rish` (live witness, parity **143**, Edit 5 ruling `20260703.032812`) |
 | **Amber first lap** (export / verify / restore on fixture tree) | `tools/ce/cellar_first_ring.rish` (live witness, parity **144**, `20260703.051812`) |
 | **No `Self = @This()`** | `tools/t/tame-check.rish` (witness) |
