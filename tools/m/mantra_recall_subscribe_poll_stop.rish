@@ -5,7 +5,17 @@
 
 let zig = "vendor/zig-toolchain/zig"
 let bin = "mantra/bin/recall-subscribe-poll-delivery"
-let sentinel = "/tmp/veganreyklah2-ns-poll-stop"
+# THE PEN IS UNIQUE PER RUN, and the elder name leaves with it. `/tmp/veganreyklah2-*` was a
+# CONSTANT shared by six files, so two of them running at once -- or one witness on each of eight
+# ships -- collide on one stop sentinel: one run's prep `rm -f` deletes the stop signal another
+# run just wrote to halt its service, and a service that never stops hangs a witness or, worse,
+# stops early and inverts its result. Each file is self-contained, so a per-run pen breaks no
+# contract (%618/%601). The elder repository name is breached to `grain` here and kept in history
+# and in dated testimony, which is where a superseded name belongs (`20260908.180000`).
+let mk = run ["sh" "-c" "mktemp -d /tmp/grain_poll.XXXXXX"]
+assert mk.ok else "poll pen: the pen could not be opened"
+let pen = trim mk.out
+let sentinel = "${pen}/poll-stop"
 
 let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/recall_subscribe_poll_delivery.rye -lc -femit-bin=${bin}"]
 assert build.ok else "subscribe poll delivery build failed"
@@ -13,7 +23,7 @@ assert build.ok else "subscribe poll delivery build failed"
 let prep = run ["sh" "-c" "rm -f ${sentinel}"]
 assert prep.ok else "sentinel prep failed"
 
-let source = run ["sh" "-c" "nohup ${bin} source-loop >/dev/null 2>&1 & echo $! > /tmp/veganreyklah2-ns-poll-source.pid; sleep 0.1"]
+let source = run ["sh" "-c" "nohup ${bin} source-loop >/dev/null 2>&1 & echo $! > ${pen}/source.pid; sleep 0.1"]
 assert source.ok else "source-loop start failed"
 
 let c1 = run ["sh" "-c" "${bin} fetcher-poll ${sentinel} 2>&1; echo exit:$?"]
@@ -33,7 +43,7 @@ assert c3.ok else "stop boundary poll failed"
 assert c3.out contains "stop_requested" else "sentinel not honored"
 assert c3.out contains "exit:8" else "stop should exit 8"
 
-let cleanup = run ["sh" "-c" "kill $(cat /tmp/veganreyklah2-ns-poll-source.pid 2>/dev/null) 2>/dev/null; rm -f ${sentinel} /tmp/veganreyklah2-ns-poll-source.pid"]
+let cleanup = run ["sh" "-c" "kill $(cat ${pen}/source.pid 2>/dev/null) 2>/dev/null; rm -f ${sentinel} ${pen}/source.pid"]
 assert cleanup.ok else "cleanup failed"
 
 say "GREEN: subscribe poll stop sentinel witness passed (boundary honored)."
