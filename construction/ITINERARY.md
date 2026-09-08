@@ -46,40 +46,43 @@
 
 ### Now -- the live front
 
-**Git nib:** `5ab5a5decd` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `d180c8a545` -- HEAD's parent, resolvable everywhere (%401).
 
-**BAKERY -- I BUILT A WALL FOR `%524` AND WITHDREW IT, BECAUSE A PEER LANDED ONE FOR THE SAME RED IN THE SAME HOUR AND THEIRS PUBLISHED FIRST.**
-Elder [shelved](archive/20260907-141249_itinerary-landed-accounts.md). The cold open answered
-`guards_red=3`, one root: this card linked `rows-571` where the shelf is `rows-570`. `%524`'s
-**fourth firing** -- and a peer repaired the link and landed **rule six** of
-`tools/hooks/pre-commit` while my own wall was in flight. Theirs stands; mine is withdrawn whole
-rather than roofing one question twice, which is the derived spine's rule applied to a repair
-instead of to a number. **Sixth time in two days** that a finding met its peer inside one hour.
+**BAKERY -- I BUILT `%584`, AND A PEER HAD BUILT AND SHELVED IT AN HOUR EARLIER.**
+Elder [shelved](archive/20260907-194406_itinerary-landed-accounts.md). **Seventh time in two days.**
+`plant` red at the cold open: the floor read `assert adoption.out contains "sourcing=13"`, and Rishi
+compares strings, so a floor spelled that way is an **equality** refusing a rise as hard as a fall. It had been hand-raised
+**4 -> 5 -> 7 -> 9 -> 11 -> 12 -> 13 in one day**, seven fleet-wide reds for lanes doing right. I
+moved it into the scan as `floor=${PLANT_ADOPTION_FLOOR:-14}` with `-lt`, proved in a sixth control
+phase reading the **live** scan rather than a constant -- free at the reading, bitten one
+past, green one below, 30 to 35 behaviors. **Every byte withdrawn at the rebase.** Theirs is
+`FLOOR=13` with `-ge` and `adoption_floor_held`, booked `20260907.180000` and already
+[shelved](archive/REDS-a-floor-that-refuses-every-rise-rows-584.md). My row withdrew too: one
+fault, one row, theirs first.
 
-**THE TWO WALLS DIFFER, AND THE DIFFERENCE IS YOURS.** Theirs reads the **whole index** (544ms),
-so it sees the rebase class that is three of `%524`'s four firings -- the half no staged-set
-reading can reach. Mine read `readme_reach`'s own findings and kept only the pages **this commit
-staged**, so it could never refuse a commit the roster would accept. **That is the property
-`%524` declined the lap for:** *eight ships run that file, and a mistake in it is a fleet that
-cannot commit.* Theirs refuses on any broken living link anywhere, so **one hand's break now stops
-every ship's commit until somebody repairs it.** I proved the split is buildable -- a pen holding
-two breaks at once where exactly one bites, 26 cases, real commits through the armed hook -- and
-did not land it. **Should the wall refuse for a peer's break, or only for your own?** The pen is
-on `stash@{0}` if the answer is the second.
+**NEITHER OF US COULD HAVE KNOWN.** Their repair was in flight and unpushed while my cold pass
+read the same red; `--next` answered 584 at 19:44 against a spine that spent it at 18:00. **Both
+hands measured honestly and both were right.** The instrument stands unbuilt: **a lap cannot ask
+what a peer is holding**, and `session-output/` shows a transcript once it is written.
 
-**LANDED, AND ITS OWN FINDING** (`20260907.153124`, cited by stamp until `xy` binds it) -- booked one number, and a peer had spent it and the one before it by the time my rebase landed; the stamp is what made the re-seat one line. `plant_adoption_scan.sh` decided
-adoption by grepping the helper's **path**, in a header arguing that sourcing is exact where
-`cmp -s` is a proxy. My control's paragraph explaining **why it does not import the plant law**
-counted as an import, raising `sourcing` 12 to 13 and reding `plant`. **A grep for a path reads
-every mention of it, including the ones that say the opposite.** The reading is the dot command
-now, which all twelve real adopters carry and no comment does. **Still yours:** `remainder=164`
-counts every control that never plants at all, so it can never reach zero and nobody can act on
-it -- the adoption question its author left for your word.
+**WHAT STANDS.** `link_witness_round_mode_selfcheck.sh` held four constant `/tmp` pens and **wiped**
+one -- the snapshot its own COMPARE reads back. The clobber is the loud half; the quiet half is
+worse: a peer's snapshot landing between this tree's SNAPSHOT and its COMPARE makes the compare ask
+whether **one tree's dangling set grew against another tree's**, and two trees read as one
+**answer GREEN while a new dangling link stands**. `mktemp -d` now. Sites **252 -> 239**, files
+**49 -> 48**, wiping **16 -> 15** -- the subset `shared_pen_scan.sh` asks be driven to zero first.
+Six teaching lines went with it: `link_witness.rish` and the Sound shelf taught
+`/tmp/dangling_before.txt` as a **copyable command**, where `mktemp` cannot serve two shells and
+`session-output/` can. Shelf **C+ 79 -> A 94**. `%440` fell in **one command** three times
+this lap; the rebase also left **three identical duplicate rows**, `%381`'s class, lifted by hand
+because a tool may not choose between rows that match.
 
-**AND THE PIER'S OWN CAPACITY, unasked.** Three ships ran full cold roster passes **concurrently**
-on this 4-core pier within one hour; mine took **1,527s** cold and **1,304s** hot against a
-nominal ~1,139. Eight ships x every lap is the pier's whole capacity spent proving one tree.
-`--scoped` exists for exactly this and the cold open does not reach for it.
+**Yours, two.** `pgrep -f standing_equipment_run` **matches the waiter as well as the pass** --
+twenty processes across eight trees answered it this lap, three in my own, and only
+`/proc/<pid>/cwd` told my finished pass from my own waiting loops -- `%587` from the reading side.
+And `remainder=165` counts every control that never plants: 95 carry a `sed` program, 22 copy a
+tracked path, 12 carry `cmp -s` -- **three rules, three populations**, so the split wants a
+**declaration** rather than a grep.
 
 **PATCHOULI -- A PROVEN LAP PARKED THREE TIMES, RECOVERED THREE TIMES, AND LANDED WHOLE.**
 Elder and this lap's recovery both [shelved](archive/20260907-191757_itinerary-landed-accounts.md)
