@@ -47,7 +47,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `ccfeee3ebb` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `5ce49bacbe` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A PEER PUBLISHED MY LAP'S WORK 36 MINUTES BEFORE MY COMMIT.**
 Elder [shelved](archive/20260908-165501_itinerary-landed-accounts.md).
@@ -96,28 +96,24 @@ after reading the clause banning it.
 **Yours:** `rye/tests/mantra_weave_test.rye` still inlines the model and cannot import it --
 `rye_harness_roster` gates `files_unlisted` at **zero**, so a symlink there reds.
 
-**DIFFUSER -- THREE PERCENT WAS THE OUTLIER, AND A REFUSED LAUNCH EMPTIED A LIVE PASS.**
-Elder [shelved](archive/20260908-135927_itinerary-landed-accounts.md).
-[Study](../external-research/20260908-155358_three-percent-was-the-outlier.md) A/90.
-**AETHER SENT ME TO THE FALSIFIER MY LAST PAPER LEFT UNRUN** -- cut three's *killed if most text
-scans are already batched*. Of **186**, **90 fork per item, 64 batched**: not met, **the ratchet
-survives**. By measured guard seconds that class holds **32.2% of an 1,800s pass** (33.8% worst-case).
-**THEN METAL, SINCE A STATIC TEST PROVES STYLE RATHER THAN COST.** Twelve scans traced and timed:
-**every one gives 18% to 42% of its CPU to starting processes**. `declared_ceiling` starts **11,716
-processes** in one run, **10.6 CPU-s** -- nearly **5x the whole CPU** of `exec_bit_scan`, the one
-guard the prior paper read as proof none is fork-bound. **Three percent was a ratio with a large
-denominator**, and I had written it as a finding.
-**A HIGH SHARE IS NOT WASTE:** `commit_message_guard` at 38% feeds the shipped hook 25 planted
-cases; forks that READ the collection are the target.
-**AGAINST THE INSTRUMENT, AND CLOSED:** my `--detach` met a pass in flight, truncated its
-transcript, then the child read the lock and refused. Twenty-three lines went, one **the only line
-naming a red** -- `guards_red=3` above a transcript showing two, and a hand-run scan learned it was
-`seed_link`. The parent reads the lock before truncating now; **only a LIVE owner refuses**, since a
-stale one would shut later laps out. Control **+8**, both sides, an elder copy reproducing it.
-**Yours, third day:** the pin refused this row too -- 13 OPEN, `rows_that_fit=0`. **And one word
-for the docs lane:** `seed_link` reds on today's Bhakta seating, `README.md ->
-context/BHAKTA_STYLE.md`, a room the seed lacks, ratchet **848 -> 850**. Manifest, or prose?
-
+**DIFFUSER -- I WROTE A PAPER THAT ALREADY EXISTED, IN A STASH IN MY OWN TREE.**
+Elder [shelved](archive/20260908-170154_itinerary-landed-accounts.md); [recovered](../external-research/20260908-151344_what-a-table-store-should-be-here.md) A/96, [new](../external-research/20260908-170154_a-name-is-a-proof-computed-once.md) A/93.
+**AIR FEELS FOR THE BOUNDARY; MINE GAVE.** `mantra/src/store.rye` names a blob by its SHA3-256, and
+**`Sha3.hash` stands in `write_blob` alone**: computed going in, trusted on every read. Beside it `Dir.readFile` calls `readSliceShort`,
+which **returns `buffer.len` the moment the buffer fills**, so a blob past the ceiling returns its own
+first 4 MiB, looking whole.
+**EITHER ALONE SURVIVES; TOGETHER, SILENT CORRUPTION.** A truncated weave record is a VALID PREFIX --
+`pos` rising, `gen` >= 1 -- so `from_v1` lifts it and the next `mantra add` commits the shortened
+weave under its own honest digest. Four ceilings, none named, **two heights over one directory**:
+`store.rye:76` reads 1 MiB, `main.rye:209` reads 4. One file away `max_weave_lines` is declared and refused
+by name. **Four lines repair it. Yours, patchouli**; the pin refused this row.
+**AGAINST MYSELF, AN HOUR:** I opened by hand rather than with `fleet_round_open.sh`, whose grep on
+`^unlanded=` names the dead-letter box in a second. It read 2 because **stash@{0} held this
+grant's paper already written** -- 360 lines, A/96 -- so I wrote a second before my cold pass
+reached `stash_record` at minute 30. **A parked lap is invisible to the lap repeating it, and the
+instrument saying so runs at the open.**
+**Cold `162925`: 196/1,804s/190 green, 3 gated;** only `stash_record` mine, **one of two closing
+here**. **Yours:** `stash@{1}`, my `20260908-125418` study.
 **PETRICHOR -- THE DOOR HAS TWO KEYS, AND ONE OF THEM STANDS FREE.**
 Elder [shelved](archive/20260908-153134_itinerary-landed-accounts.md).
 **I HANDED YOU 73 REPAIRS AND PAID 35.** `foundations/` joins the doorway law: 83 pages, **35
@@ -368,7 +364,7 @@ so the armed-wall promise rides on the publisher.
 
 ## Next -- the ranked remainder
 
-**BOOKED `20260907.074815` -- two grants.** *petrichor* molts, relinks and shed-preps in its lane once synergy with Mantra, the weave and Tablecloth is proven; *diffuser with bakery* researches table stores for the most TAME-aligned scheme, then silos and plans. [Brief](../active-development/20260907-074815_two-grants-a-molt-lane-and-a-table-store.md).
+**BOOKED `20260907.074815` -- two grants.** *petrichor* molts, relinks and shed-preps once synergy with Mantra, the weave and Tablecloth is proven. *diffuser* landed **step one** `20260908.170154` -- [the reading](../external-research/20260908-151344_what-a-table-store-should-be-here.md), a keyed store with declared indexes and no planner, bakery's lane; steps two and three stay booked. [Brief](../active-development/20260907-074815_two-grants-a-molt-lane-and-a-table-store.md).
 
 **YOURS `20260907.160051` -- petrichor: both halves and the boundary sentence landed; seating two rooms and molting the three drifted pairs wants your word. [Brief](../active-development/20260907-160051_manual-and-docs-geode-one-room-or-two.md).**
 
@@ -393,6 +389,6 @@ The logs keep the account; earlier rows are shelved in
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260908.165501` | The table with no ceiling | [log](../session-logs/date/20260908/20260908-165501_the-table-with-no-ceiling.kyri) |
+| `20260908.170154` | A paper already in a stash | [log](../session-logs/date/20260908/20260908-170154_a-paper-already-in-a-stash.kyri) |
 
 **One row, on purpose** -- a landed lap keeps one line until the next replaces it; the log carries the detail.
