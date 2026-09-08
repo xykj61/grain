@@ -480,3 +480,5 @@ at a closed fold.*
 *Row %592 folded to [`REDS-a-duplicate-that-was-never-a-judgment-rows-592.md`](REDS-a-duplicate-that-was-never-a-judgment-rows-592.md) on `20260907.215529`, **CLOSED** -- a duplicate stamp is two classes wearing one count, and only the divergent one is a hand's judgment.*
 
 *Row %593 folded to [`REDS-whose-module-is-this-rows-593.md`](REDS-whose-module-is-this-rows-593.md) on `20260907.222553`, **CLOSED** -- an instrument built to publish one blindness carried another, and the tree already held the right answer elsewhere.*
+
+*Row %594 folded to [`REDS-a-wall-facing-one-artifact-rows-594.md`](REDS-a-wall-facing-one-artifact-rows-594.md) on `20260907.223812`, **BOOKED** -- one wall was built and pointed at one of a commit's two permanent artifacts.*
