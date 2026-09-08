@@ -132,6 +132,11 @@ detach=no
 # gone. A `for` fixes its word list before the first iteration, so rebuilding `$@` inside one is
 # safe; an explicit `if` rather than `test && x`, because a false test as a loop body's last command
 # exits the script under `set -e`.
+# The lock name is read by TWO callers now -- this parent, before it truncates a transcript, and
+# the pass itself, where the lock is taken -- so it is spelled once, above both. A second spelling
+# of one path is how two readings of one intent begin.
+lock="${STANDING_LOCK:-construction/standing-equipment-run.lock.d}"
+
 for a in "$@"; do
   if [ "$a" = --detach ]; then detach=yes; fi
 done
@@ -235,6 +240,34 @@ if [ "$detach" = yes ]; then
   # roster would refuse is still a word this script must never open a path with.
   label=$(printf '%s' "$label" | tr -c 'a-z0-9_-' '-')
   transcript="session-output/standing-equipment-$label.txt"
+  # A REFUSED LAUNCH MUST NOT EMPTY A LIVE PASS'S TRANSCRIPT. The header write below opens the file
+  # with `>`, which is `%620`'s own cure and stays: an elder pass's bytes can never be read as
+  # today's. Yet the child this parent launches discovers the run lock only AFTER the parent has
+  # already truncated, so a `--detach` typed while a pass is in flight destroys the running pass's
+  # record and then refuses. Measured on this tree `20260908.152208`: twenty-three lines went, one
+  # of them the only line naming a red, and the pass closed reporting `guards_red=3` above a
+  # transcript showing two. Truncating an ELDER file and truncating a LIVE one are two different
+  # acts that one `>` was performing, and only the first was ever wanted.
+  #
+  # ONLY A LIVE OWNER REFUSES. A stale lock is left exactly as it stands, for `lock_acquire` to
+  # reap the way it always has -- refusing on a dead owner would lock a later lap out of the
+  # instrument its own card opens with, which is the fault this check exists to avoid one door
+  # over. The liveness test is `kill -0`, the same one `lock_acquire` uses, so the two readings
+  # cannot disagree.
+  if [ -s "$lock/pid" ]; then
+    detach_owner=$(cat "$lock/pid" 2>/dev/null || printf '')
+    case "$detach_owner" in
+      ''|*[!0-9]*) : ;;
+      *)
+        if kill -0 "$detach_owner" 2>/dev/null; then
+          echo "run_verdict=run_in_flight"
+          echo "transcript=$transcript"
+          echo "refused: another roster pass holds $lock (pid $detach_owner) -- its transcript is untouched; read that rather than opening a second." >&2
+          exit 1
+        fi
+        ;;
+    esac
+  fi
   mkdir -p "$(dirname "$transcript")"
   {
     echo "launch_stamp $(TZ=America/New_York date +%Y%m%d.%H%M%S)"
@@ -324,7 +357,6 @@ fi
 # WHY HERE, ahead of the unclosed-lap refusal. That refusal tells a hand to commit, and a hand
 # committing while another pass measures moves the tree under it -- which is the very reading
 # `tree_moved` exists to catch. A pass that cannot run says the runner is busy first.
-lock="${STANDING_LOCK:-construction/standing-equipment-run.lock.d}"
 if [ -d "$(dirname "$lock")" ]; then
   if lock_acquire "$lock" 0; then
     # The release is armed ONLY on the side that acquired. A refusing pass that released would

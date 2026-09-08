@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260908.155443` | [three percent was the outlier](20260908/20260908-155443_three-percent-was-the-outlier.kyri) | twelve of twelve, 18% to 42%. |
 | `20260908.153848` | [a quotation outranks a floor](20260908/20260908-153848_a-quotation-outranks-a-floor.kyri) | 14% to 6%, and why it stops. |
 | `20260908.152903` | [the strictest naming on four doors](20260908/20260908-152903_the-strictest-naming-on-four-doors.kyri) | zero negatives, measured. |
 | `20260908.152213` | [the blocker was a reading](20260908/20260908-152213_the-blocker-was-a-reading.kyri) | two binaries, six edits, every digest matched. |

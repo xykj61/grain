@@ -478,6 +478,79 @@ out=$( ( cd "$pen" && STANDING_ROSTER=no-such-roster.kyri STANDING_CARD=run-card
         sh "$runner" --detach 2>&1 ) || true )
 case "$out" in *"refused: no roster"*) echo "detach_refuses_before_launch=yes" ;; *) echo "detach_refuses_before_launch=no" ;; esac
 if [ -e "$pen/session-output" ]; then echo "detach_refusal_writes_nothing=no"; else echo "detach_refusal_writes_nothing=yes"; fi
+
+# --- a refused launch leaves a LIVE pass's transcript standing (`20260908.152208`) --------------
+# THE FAULT THIS CLOSES. The truncation above is right about an ELDER file and was performing a
+# second act nobody asked for: the child discovers the run lock only after this parent has already
+# emptied the transcript, so a `--detach` typed while a pass is in flight destroyed the RUNNING
+# pass's own record and then refused. Measured on `grain-diffuser` that stamp: twenty-three lines
+# went, one of them the only line naming a red, and the pass closed reporting `guards_red=3` above
+# a transcript showing two. Both sides are planted -- a live owner must refuse and spare the file,
+# and a stale owner must be walked straight past, since refusing on a dead lock would shut every
+# later lap out of the instrument its own card opens with.
+rm -rf "$pen/session-output"
+mkdir -p "$pen/session-output"
+echo "live_pass_in_flight" > "$(detach_transcript cold)"
+rm -rf "$pen/live.lock.d"
+mkdir -p "$pen/live.lock.d"
+# The control's own pid is alive by construction, which is the one liveness plant that cannot race.
+echo "$$" > "$pen/live.lock.d/pid"
+out=$( ( cd "$pen" && STANDING_ROSTER=cadence.kyri STANDING_CARD=run-card.kyri \
+        STANDING_LOCK=live.lock.d sh "$runner" --detach 2>&1 ) || true )
+case "$out" in *"run_verdict=run_in_flight"*)
+  echo "detach_refuses_live_pass=yes" ;; *) echo "detach_refuses_live_pass=no" ;; esac
+case "$out" in *"transcript=session-output/standing-equipment-cold.txt"*)
+  echo "detach_live_refusal_names_path=yes" ;; *) echo "detach_live_refusal_names_path=no" ;; esac
+if grep -q 'live_pass_in_flight' "$(detach_transcript cold)"; then
+  echo "detach_spares_live_transcript=yes"; else echo "detach_spares_live_transcript=no"; fi
+
+# THE OTHER SIDE, and it is the one a careless repair breaks. A lock whose owner has EXITED is
+# reaped by `lock_acquire`, so the launch must walk past it and truncate exactly as before. A pid
+# is made dead here rather than guessed: a shell is started, waited on, and its number reused for
+# nothing else in the time this leg takes.
+( exit 0 ) & dead_pid=$!
+wait "$dead_pid" 2>/dev/null || true
+rm -rf "$pen/session-output"
+mkdir -p "$pen/session-output"
+echo "elder_pass_from_yesterday" > "$(detach_transcript cold)"
+rm -rf "$pen/live.lock.d"
+mkdir -p "$pen/live.lock.d"
+echo "$dead_pid" > "$pen/live.lock.d/pid"
+out=$( ( cd "$pen" && STANDING_ROSTER=cadence.kyri STANDING_CARD=run-card.kyri \
+        STANDING_LOCK=live.lock.d sh "$runner" --detach 2>&1 ) || true )
+case "$out" in *"run_verdict=run_in_flight"*)
+  echo "detach_stale_lock_refuses=yes" ;; *) echo "detach_stale_lock_refuses=no" ;; esac
+if grep -q 'elder_pass_from_yesterday' "$(detach_transcript cold)"; then
+  echo "detach_stale_lock_keeps_elder=yes"; else echo "detach_stale_lock_keeps_elder=no"; fi
+detach_wait "$(detach_transcript cold)" || true
+rm -rf "$pen/live.lock.d"
+rm -rf "$pen/session-output"
+
+# THE REPAIR PROVEN LOAD-BEARING. Three legs answering `yes` cannot be told from three legs on a
+# runner that never carried the fault, so the same live-lock plant runs again against a copy whose
+# liveness test can never fire -- the elder shape, where the parent truncates and the child refuses
+# afterwards. Yesterday's bytes must NOT survive it. Every sibling the runner sources travels with
+# the copy, since a copy that cannot start prints nothing and reads exactly like a repair that
+# worked.
+sed 's|^        if kill -0 "$detach_owner" 2>/dev/null; then$|        if false; then|' \
+  "$runner" > "$pen/run-elder.sh"
+cp "$(dirname "$runner")/shell_portable.sh" "$pen/shell_portable.sh"
+cp "$(dirname "$runner")/scope_match.sh" "$pen/scope_match.sh"
+if cmp -s "$runner" "$pen/run-elder.sh"; then
+  echo "elder_runner_built=no"; else echo "elder_runner_built=yes"; fi
+mkdir -p "$pen/session-output"
+echo "live_pass_in_flight" > "$(detach_transcript cold)"
+rm -rf "$pen/live.lock.d"
+mkdir -p "$pen/live.lock.d"
+echo "$$" > "$pen/live.lock.d/pid"
+out=$( ( cd "$pen" && STANDING_ROSTER=cadence.kyri STANDING_CARD=run-card.kyri \
+        STANDING_LOCK=live.lock.d sh "$pen/run-elder.sh" --detach 2>&1 ) || true )
+case "$out" in *"transcript="*) echo "elder_runner_ran=yes" ;; *) echo "elder_runner_ran=no" ;; esac
+if grep -q 'live_pass_in_flight' "$(detach_transcript cold)"; then
+  echo "elder_empties_live_transcript=no"; else echo "elder_empties_live_transcript=yes"; fi
+detach_wait "$(detach_transcript cold)" || true
+rm -rf "$pen/live.lock.d"
+rm -rf "$pen/session-output"
 rm -rf "$pen/session-output"
 
 # --- the tree digest, proven from both sides on a REAL git repository ---------------------

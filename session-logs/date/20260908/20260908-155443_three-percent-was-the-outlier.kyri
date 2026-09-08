@@ -1,0 +1,86 @@
+format session-log-v1
+stamp 20260908.155443
+editor Claude Code
+provider Anthropic
+product Claude Code
+role diffuser -- moonshots and research
+modality text
+model claude-opus-5
+model_status active runtime identity reported by the harness system card
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status .claude/settings.json read 20260908; this pier launches bare via tools/f/fleet-loop.sh, which execs --effort medium
+evidence .claude/settings.json -- configuration, never runtime telemetry
+voice Kyri
+host Dallas pier, AMD EPYC-Rome, nproc=8, America/New_York
+title Three percent was the outlier
+prompt autonomous lap -- moonshots and research, aimed at Caravan, Aurora, Tally, Mantra
+rota lap 4330, row 0 -- Aether, the row that hears. Its threshold asks why the work exists, and
+rota its fixed seat is the Lindy effect: a claim that was checked stays checkable, and one merely
+rota asserted fades into the silence the lap is trained to notice. That is exactly what this lap
+rota found. The prior paper's heading -- no single guard is fork-bound -- rested on ONE guard and
+rota was written as a finding rather than as a sample of one. The dual seat's test closed it: could
+rota a reader who never met the source understand this completely? Not from one measurement, and
+rota running the paper's own named falsifier is what turned an assertion back into a reading.
+think The prior study named three cuts at the fork bill and gave each a kill condition. Cut three
+think carried the word unknown, because its falsifier was a survey nobody had run. A named
+think falsifier left unrun is the shape this shelf already has a paper about, so I ran it.
+think The survey is static: an awk pass finds while-read and for-in headers, tracks depth to the
+think matching done, and asks whether the loop body invokes an external command. Three verdicts --
+think per_item, loop_no_fork, batched. Of 186 text-and-index scans, 90 are per_item and 64 are
+think batched, so the kill condition (most already batched) is not met and the ratchet survives.
+think Joining static verdict to measured guard seconds gives the weight: per_item holds 32.2% of a
+think 1,800-second pass, and 33.8% if each witness naming several scans is classed by its worst.
+think Then metal, because a static test proves style rather than cost. Twelve scans traced with
+think strace -f -c for clone/clone3/vfork and timed with time -p: every one gives between 18% and
+think 42% of its CPU to process creation. declared_ceiling starts 11,716 processes in one run and
+think spends 10.6 CPU-s doing it -- nearly five times the whole CPU of exec_bit_scan, the guard the
+think prior paper read as evidence that no guard is fork-bound. Three percent was the outlier, and
+think the reason is arithmetic: the share is a ratio, and exec_bit_scan holds a large denominator.
+obs A high fork share is not the same as waste. commit_message_guard sits at 38% and must not be
+obs touched -- it feeds the shipped commit-msg hook a planted message for each of twenty-five
+obs cases, so its forks are its job. Forks spent reading the collection are the target; forks
+obs spent running the thing under test are the work. The static test selects the first kind, which
+obs is why both its false negatives are false negatives worth having.
+obs My own cold open found a second thing, against the instrument rather than the tree. A pass
+obs from the previous lap was already in flight; my --detach truncated its transcript, wrote a
+obs header, and only then did the child discover the run lock and refuse. Twenty-three lines went,
+obs one of them the only line naming a red, so the pass closed reporting guards_red=3 above a
+obs transcript showing two. The missing name was seed_link, and I had to run the scan by hand to
+obs learn it. Truncating an elder file and truncating a live one are two acts one > was doing.
+obs The REDS pin still refuses a row -- 13 OPEN, rows_that_fit=0 -- so this red is named by stamp
+obs here and on the card rather than booked, which is the third day it has had to be.
+loom survey=scan_fixtures total=280 building=94 text=186 per_item=90 batched=64 loop_no_fork=32
+loom weighting=pass_seconds guards=196 seconds=1800 per_item_share=0.322 per_item_worst_case=0.338
+loom trace=declared_ceiling clones=11716 cpu_s=25.070 fork_cpu_s=10.638 fork_share=0.42
+loom trace=crushed_index clones=2577 cpu_s=7.120 fork_cpu_s=2.340 fork_share=0.33
+loom trace=commit_message_guard clones=1071 cpu_s=2.590 fork_cpu_s=0.972 fork_share=0.38
+loom trace=fleet_key_locality clones=327 cpu_s=0.840 fork_share=0.35
+loom trace=amphora_bounds_agree clones=281 cpu_s=0.620 fork_share=0.41
+loom trace=glow_gate_answer clones=229 cpu_s=0.750 fork_share=0.28
+loom trace=loop_prompt_parse clones=204 cpu_s=0.930 fork_share=0.20
+loom trace=fascia_home_link clones=124 cpu_s=0.420 fork_share=0.27
+loom trace=dated_pattern clones=112 cpu_s=0.530 fork_share=0.19
+loom trace=ales_roster_bijection clones=24 cpu_s=0.090 fork_share=0.24
+loom trace=compass_station clones=24 cpu_s=0.090 fork_share=0.24
+loom trace=fleet_roster clones=6 cpu_s=0.030 fork_share=0.18
+loom pier=forks total=289477062 uptime_s=252675 mean_per_s=1145
+file external-research/20260908-155358_three-percent-was-the-outlier.md the study; graded A 90 at Field
+file tools/fixtures/s/standing_equipment_run.sh the detach parent reads the run lock before it truncates; the lock name hoisted above both readers
+file tools/fixtures/s/standing_equipment_control.sh five live-lock and stale-lock legs, plus the elder-shaped copy proving the defect
+file tools/s/standing_equipment_witness.rish eight assertions over those legs, both sides asserted
+file construction/ITINERARY.md the diffuser block and the git nib
+scope one keystone in lane -- a named falsifier run to a verdict -- and one instrument red closed beside it
+status GREEN on what this lap owns: the control answers control_verdict=ok with all eight new
+status readings exactly as asserted, the elder-shaped runner reproduces the defect
+status (elder_empties_live_transcript=yes), and the study grades A 90 at Field. The
+status standing_equipment WITNESS stays red for reasons outside this lap: its scan reports
+status seed_link and stash_record, both standing before I opened. seed_link is today's Bhakta
+status seating -- README.md -> context/BHAKTA_STYLE.md, a room the seed does not carry -- and its
+status ratchet rose 848 -> 850; that is the docs lane's page and the seed manifest, so I named it
+status rather than took it. Cold pass: 196 guards, 1,684s, 190 green, 3 red, 3 gated,
+status tree_moved=yes for the %321 shape (this lap's round-open stash moved a tree the previous
+status lap's orphaned pass had digested at its open).
+recommend check in (Keaton) -- the REDS pin has refused a real red on three consecutive days; and
+recommend seed_link wants one word: does context/BHAKTA_STYLE.md join the seed manifest, or does
+recommend the front door name Bhakta in prose?

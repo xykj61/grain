@@ -173,6 +173,23 @@ assert control.out contains "detach_modes_stay_apart=yes" else "standing-equipme
 assert control.out contains "detach_refuses_before_launch=yes" else "standing-equipment: a refusal must stay in the foreground, where the hand that typed it is standing"
 assert control.out contains "detach_refusal_writes_nothing=yes" else "standing-equipment: a pass that never began must leave no transcript to be read as one that did"
 
+# A REFUSED LAUNCH LEAVES A LIVE PASS'S TRANSCRIPT STANDING (`20260908.152208`). The truncation
+# asserted above is right about an ELDER file and was doing a second thing beside it: the child
+# reads the run lock only after this parent has emptied the transcript, so a `--detach` typed while
+# a pass ran destroyed the RUNNING pass's record and then refused. Twenty-three lines went on this
+# tree, one of them the only line naming a red, and the pass closed reporting `guards_red=3` above
+# a transcript showing two. The stale-lock legs are the other side, and they are the ones a
+# careless repair breaks: refusing on a dead owner would shut every later lap out of the instrument
+# its own card opens with.
+assert control.out contains "detach_refuses_live_pass=yes" else "standing-equipment: a launch meeting a live pass must refuse, in the foreground, where the hand that typed it stands"
+assert control.out contains "detach_live_refusal_names_path=yes" else "standing-equipment: the refusal must name the transcript the live pass is writing, or the reader is sent looking again"
+assert control.out contains "detach_spares_live_transcript=yes" else "standing-equipment: a refused launch must leave the live pass's bytes untouched -- emptying them loses the only record of guards already run"
+assert control.out contains "detach_stale_lock_refuses=no" else "standing-equipment: a lock whose owner has exited must not refuse a launch -- lock_acquire reaps it, and refusing here locks every later lap out"
+assert control.out contains "detach_stale_lock_keeps_elder=no" else "standing-equipment: past a stale lock the launch must truncate exactly as before, or the elder-bytes cure is undone by the repair beside it"
+assert control.out contains "elder_runner_built=yes" else "standing-equipment: the elder-shaped runner must actually differ, or the failing side proves nothing"
+assert control.out contains "elder_runner_ran=yes" else "standing-equipment: the elder-shaped runner must start and launch -- a copy that cannot run reads exactly like a repair that worked"
+assert control.out contains "elder_empties_live_transcript=yes" else "standing-equipment: without the check, the live pass's bytes must be destroyed -- that is the defect, asserted rather than assumed"
+
 # The tree digest, both sides, on a real git repository the control builds and throws away. A lap
 # that begins editing while the roster runs gets verdicts spread across two trees, which is REDS
 # %221 -- so the runner measures the tree at the open and again at the close and says when it moved.
