@@ -16,6 +16,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260908.175409` | [The transcript a peer could write](20260908/20260908-175409_the-transcript-a-peer-could-have-written.kyri) | a verdict-inverting pen closed |
 | `20260908.174530` | [The pen eight ships shared](20260908/20260908-174530_the-pen-eight-ships-shared.kyri) | an orphaned wait loop stopped; a constant pen made unique; two ceilings fall |
 | `20260908.173943` | [the same port landed twice](20260908/20260908-173943_the-same-port-twice.kyri) | 119 seconds apart, the other way round. |
+| `20260908.173813` | [the Style line nothing read](20260908/20260908-173813_the-style-line-nothing-read.kyri) | 67 of 93 pages name no setting; the card reads it now. |
 | `20260908.173011` | [A hand stops a ship by asking](20260908/20260908-173011_the-hand-that-asks-a-ship-to-stop.kyri) | no loop held this tree; the drain built for the seven that do |
 | `20260908.170154` | [a paper already in a stash](20260908/20260908-170154_a-paper-already-in-a-stash.kyri) | a read that verifies nothing, over a buffer that fills in silence. |
 | `20260908.165501` | [the table with no ceiling](20260908/20260908-165501_the-table-with-no-ceiling.kyri) | a peer landed the port; the bound was left. |
