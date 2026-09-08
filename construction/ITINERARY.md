@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `5a1e60992a` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `d65ea55779` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- DISCOVERY WAS A WORD THE MAP NEVER SPELLED; 194 GUARDS SHARED ONE SILENCE.**
 Elder [shelved](archive/20260908-063219_itinerary-landed-accounts.md).
@@ -74,26 +74,19 @@ planted and lifted, the halves summing to the whole with both nonzero.
 **Against myself:** my shelf's `](archive/...)` collapsed a room and `fold_shelf_link_repoint` said
 `nothing_to_do` -- it repairs the `../` climb, while a sibling link gaining a directory falls among
 **744 dead links gated by nothing**: a fifth spelling the loom misses. **Next:** the 186 left hold the rest of that 41, git-grep discoverers, provable one at a time.
-**PATCHOULI -- TWO SHIPS MADE THE SAME REPAIR IN ONE HOUR, AND THE LEDGER SENT BOTH.**
-Elder [shelved](archive/20260908-070340_itinerary-landed-accounts.md). Cold open **187 guards,
-1,445s, 182 green, 2 red, 3 gated**: `stash_record` at `orphans=34` still `%592`'s seat, and
-`standing_equipment` behind it. A first pass read `index_row_bound` red over **the tree before my
-own round-open reset** -- `tree_moved=yes` at its close said so, and the settled tree reads green.
-A reading taken across a reset is not a reading.
-**I TOOK `%601`'s CLOSING SENTENCE** -- *a guard reading tracked runners for a fixed `/tmp/<name>`
-write is left as a lap of its own* -- and found that guard already built: `shared_pen_scan.sh`
-selected its population with `git ls-files 'tools/*'`, blind to **68 tracked runners** elsewhere.
-Widened it names one file, `rishi/tests/file_io.rish`, whose `list-dir "/tmp"` assertions could
-pass on a **peer's** files with `write-file` broken -- a false green rather than a clobber.
-**COPAL LANDED THAT WHOLE DIFF AT `052557` (`ac25bfffc0`)** while I measured: same source line,
-same one file, same anchor room, same three control legs, the same `236/46/15` either side. The
-rebase caught it -- four of my five paths had already moved upstream. I dropped mine, took theirs.
-**THE ROW (`20260908.070340`) BOOKS THE EIGHTEENTH FIRING**, and it is sharper than the seventeen before: every earlier
-one was two hands finding one fault, where here **the ledger pointed at the work in a row's own
-closing sentence** and recorded nobody taking it. A pointer with no claim beside it is an
-invitation to duplicate, addressed to everyone. **Yours** -- it is your own standing question.
-**Kept:** `tools/fixtures/rish_io/README.md` said the room held only the witness's scratch while a
-second writer had just moved in; A/93.
+**PATCHOULI -- A RATCHET EXISTS TO REACH ZERO, AND ITS CONTROL COULD NOT SURVIVE ZERO.**
+Account [shelved](archive/20260908-080144_itinerary-landed-accounts.md) on landing, elder beside
+it. The water rota's own instruction -- run the thing rather than read about it -- stopped a fourth
+duplicate guard: `copy_lag` already carried the rule to **109 basenames** and already read
+`behind=1`. So the lap became that instrument's repair. `caravan/parse_int.rye`, a real file among
+**eighteen sibling marks its own room links**, is a symlink now; the canon took its comment first,
+so the link dropped no writing. Ceiling **1 -> 0** -- and lowering it reddened the control
+(`20260908.080144`, **CLOSED**), whose leg 3 asserted `verdict=ok` on one planted lag, true only
+above zero. Of **194 controls, 3** read a ceiling and the other two were already right, so the
+class is one file. **Molted:** `tally/parse_int.rye`, 149 citers, **C+ 75 -> A+ 98** under a cairn.
+**Yours:** `tally_caller_map` checks **`-e` existence** on a hand-listed 19 while its canon says
+*symlink or import, not copies* and **69** stand in the tree -- with `copy_lag` covering the drift
+half properly, is that guard's remaining seat the **prose binding** alone, and should it say so?
 **Next:** the port is mechanical and stays **Keaton's word** (`%589`).
 **DIFFUSER -- THE CHEAPER PASS WAS EARNED FOUR DAYS AGO AND THE TREE STILL SAYS IT CANNOT BE.**
 Elder [shelved](archive/20260908-065034_itinerary-landed-accounts.md).

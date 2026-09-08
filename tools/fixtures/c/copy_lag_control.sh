@@ -43,6 +43,14 @@ scan_status() { ( cd "$1" && sh "$scan" >/dev/null 2>&1; echo $?; ) }
 
 has() { printf '%s\n' "$1" | grep -q "$2"; }
 
+# The ceiling, read once from the scan's own output before any leg asks about it. Leg 3 and leg 8
+# both need it: leg 3 to know whether ONE lag is free or refused, leg 8 to plant at it and past it.
+# It is read rather than spelled for the reason the header gives -- and reading it early is what
+# lets leg 3 stay true on the day the ratchet reaches zero, which it did on `20260908`.
+d=$(build ceiling_read); seal "$d"
+ceiling=$(read_scan "$d" | sed -n 's/^behind_ceiling=//p')
+case "${ceiling:-}" in ''|*[!0-9]*) echo "ceiling_read=no"; ceiling=0 ;; *) echo "ceiling_read=yes" ;; esac
+
 # 1. A canon and a symlink, nothing else. No copy exists, and the canon is never counted as one.
 d=$(build clean); seal "$d"
 out=$(read_scan "$d")
@@ -68,7 +76,12 @@ out=$(read_scan "$d")
 has "$out" 'behind=1'                  && echo "behind_counted=yes" || echo "behind_counted=no"
 has "$out" 'detail: behind gamma/thing.rye' && echo "behind_named=yes" || echo "behind_named=no"
 has "$out" 'lacking 1'                 && echo "behind_priced=yes" || echo "behind_priced=no"
-has "$out" 'verdict=ok'                && echo "behind_under_ceiling_free=yes" || echo "behind_under_ceiling_free=no"
+# The verdict a single lag earns is the CEILING's question, not this leg's, and the two part at a
+# ceiling of zero -- where one lag is over rather than under it. So this leg asks the ceiling it
+# already read and asserts the verdict that follows from it, which keeps the claim as hard as it
+# was while staying true at every ceiling. Leg 8 still proves the ceiling from both sides.
+if [ "$ceiling" -ge 1 ]; then want3='verdict=ok'; else want3='verdict=behind_over_ceiling'; fi
+has "$out" "$want3" && echo "behind_verdict_follows_ceiling=yes" || echo "behind_verdict_follows_ceiling=no"
 
 # 4. A different module sharing a word. It publishes its own, so it is a sibling rather than a lag.
 d=$(build sibling)
@@ -112,10 +125,6 @@ has "$out" 'split_canon=1'      && echo "split_counted=yes" || echo "split_count
 has "$out" 'verdict=canon_split' && echo "split_refused=yes" || echo "split_refused=no"
 
 # 8. The ceiling, proven from both sides, with the ceiling ASKED FOR rather than spelled.
-d=$(build ceiling); seal "$d"
-ceiling=$(read_scan "$d" | sed -n 's/^behind_ceiling=//p')
-case "${ceiling:-}" in ''|*[!0-9]*) echo "ceiling_read=no"; ceiling=0 ;; *) echo "ceiling_read=yes" ;; esac
-
 plant_behind() {
   # $1 pen dir, $2 how many rooms each holding a copy that lacks one published item
   i=0

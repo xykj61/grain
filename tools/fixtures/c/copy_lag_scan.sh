@@ -50,7 +50,17 @@ set -u
 # neither Refusal nor refusal_reason and its three used symbols -- CapabilityTable, right_read,
 # right_write -- all stand in caravan's, which is why the link costs nothing: the three mand ring
 # witnesses and caravan's own capability witness are GREEN across it.
-behind_ceiling=1
+#
+# 20260908.075300 -- caravan/parse_int.rye became a symlink to ../tally/parse_int.rye, so the
+# ceiling falls 1 -> 0 and the reading is now a wall. The same argument as mand's, one room over:
+# caravan already linked ../tally/copy.rye and eighteen sibling marks across the tree link the same
+# canon, so this room held the one copied file among marks it otherwise links. The copy published
+# nothing of its own and lacked nothing -- the code was identical and only two comment lines
+# differed, one on each side. The canon took the copy's comment first (the `negative space` note on
+# the LeadingZero assert, which says why that assert is there), so the link dropped no writing;
+# tally/parse_int.rye's own fuller invariant comment already stood. tools/t/tally_parse_int.rish
+# and caravan/abandon.rye, which imports it, are both GREEN across the link.
+behind_ceiling=0
 
 max_basenames=4096
 max_copies=512
