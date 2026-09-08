@@ -1,4 +1,4 @@
-//! Resolve veganreyklah2 repository root from env or cwd walk.
+//! Resolve the grain repository root from env or cwd walk.
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -6,6 +6,11 @@ const assert = std.debug.assert;
 pub const max_walk_depth: u32 = 32;
 
 pub fn resolve_root(a: std.mem.Allocator, io: std.Io, init: std.process.Init) ![]const u8 {
+    // THE NAME IS `GRAIN_ROOT` FROM `20260908.181500`, breached on Keaton's word from the elder
+    // repository name. The elder spelling is still READ, and deliberately: a shell that exported
+    // it hours ago is a live contract, and a breach that renames the living surface has no reason
+    // to strand one. New callers write `GRAIN_ROOT`; the elder stays until it is measured unused.
+    if (init.environ_map.get("GRAIN_ROOT")) |p| return try a.dupe(u8, p);
     if (init.environ_map.get("VEGANREYKLAH2_ROOT")) |p| return try a.dupe(u8, p);
     // The starting directory is read from the kernel's `/proc/self/cwd`, and that reading is
     // LINUX-ONLY: macOS and the BSDs publish no /proc, so this call is FileNotFound there. Two
@@ -13,7 +18,7 @@ pub fn resolve_root(a: std.mem.Allocator, io: std.Io, init: std.process.Init) ![
     // resolves through `/proc/self/fd` in this std and fails the same way, and `std.c.getcwd` is
     // the libc seam, which would need an explicit `-lc` on the Linux pier that no caller passes
     // (REDS %286's shape). So the honest door on a host without /proc is the environment branch
-    // above: run these tools as  VEGANREYKLAH2_ROOT=$PWD <tool>  and the walk never starts.
+    // above: run these tools as  GRAIN_ROOT=$PWD <tool>  and the walk never starts.
     // The refusal below says so by name rather than surfacing a bare FileNotFound.
     var buf: [std.fs.max_path_bytes]u8 = undefined;
     const len = std.Io.Dir.readLinkAbsolute(io, "/proc/self/cwd", &buf) catch return error.RootNeedsEnvOnThisHost;
