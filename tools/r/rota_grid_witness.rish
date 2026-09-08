@@ -23,15 +23,24 @@
 # A lap obeying the door got the clock half of the concern and missed the mark half, which was the
 # whole reason the seat moved. Measured `20260907`: fourteen of fifteen seats agreed, and the one
 # that did not was in the row being read that morning.
+#
+# A SEAT IS NAMED IN FOUR PLACES AND THIS GUARD READ THREE, found by the water rota `20260908.080219`.
+# Every threshold page opens with a `**Kin:**` line naming its own three seats in modality order --
+# the first line of the first page an element lap opens -- and BOTH seat changes this tree has ever
+# made drifted there and nowhere else. Earth-Cardinal moved `20260905` and the Kin line kept the
+# retired page BESIDE the new one, reading four seats where the grid seats three. Water-Cardinal
+# moved `20260908` and the Kin line was never touched, so it named the released page and never named
+# the live one -- while the grid, the heading, and the section path were all correct and this witness
+# read GREEN. Widening it to the fourth site is what makes the door's own kin list a checked promise.
 
 say "rota-grid: Language EN -- the twenty paths the canon's own schedule rests on."
-say "rota-grid: Style Gauge, Meter -- three readings gated at zero, two reported."
+say "rota-grid: Style Gauge, Meter -- four readings gated at zero, three reported."
 say "rota-grid: Lens TAME -- bounds named at 5 rows and 3 seats, and every refusal shown from both sides."
 
-say "rota-grid: the control -- sixteen behaviors on a grid built for the purpose, in a pen..."
+say "rota-grid: the control -- twenty-five behaviors on a grid built for the purpose, in a pen..."
 let ctl = run ["sh" "tools/fixtures/r/rota_grid_control.sh"]
 assert ctl.ok else "rota-grid: the control refused --\n${ctl.out}\n${ctl.err}"
-assert ctl.out contains "pass=16 fail=0" else "rota-grid: the control did not prove sixteen behaviors --\n${ctl.out}\n${ctl.err}"
+assert ctl.out contains "pass=25 fail=0" else "rota-grid: the control did not prove twenty-five behaviors --\n${ctl.out}\n${ctl.err}"
 
 say "rota-grid: and the living grid answers..."
 let scan = run ["sh" "tools/fixtures/r/rota_grid_scan.sh"]
@@ -58,6 +67,11 @@ assert scan.out contains "sections_missing=0" else "rota-grid: a threshold page 
 # a seat may change hands in the grid and leave the door pointing at the seat it replaced.
 assert scan.out contains "seat_undeclared=0" else "rota-grid: a threshold page routes its reader to a seat the grid retired --\n${scan.out}"
 
+# invariant: each threshold's own `**Kin:**` line names all three of its live seats. This is the
+# fourth site, and the only one both real seat changes drifted at -- compared by basename, since a
+# Kin entry is relative to `foundations/` while the grid names a repo-root path.
+assert scan.out contains "kin_seat_absent=0" else "rota-grid: a threshold's Kin line stopped naming a seat the grid gives it --\n${scan.out}"
+
 assert scan.out contains "verdict=ok" else "rota-grid: the grid reads drifted --\n${scan.out}"
 
-say "GREEN: rota-grid -- twenty paths named, twenty on disk, and every door opens onto the seat the grid seats."
+say "GREEN: rota-grid -- twenty paths named, twenty on disk, and every door and kin list opens onto the seat the grid seats."

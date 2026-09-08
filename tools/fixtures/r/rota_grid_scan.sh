@@ -29,13 +29,27 @@
 #   sh tools/fixtures/r/rota_grid_scan.sh          # the counts
 #   sh tools/fixtures/r/rota_grid_scan.sh list     # one line per fault
 #
+# A SEAT IS NAMED IN FOUR PLACES AND THIS GUARD READ THREE, which the water rota found on
+# `20260908.080219`. Every threshold page opens with a `**Kin:**` line naming its own three seats in
+# modality order, after the panchanga and `kyri/receipt.rye`; it is the first line of the first page
+# an element lap opens. Both seat changes this tree has ever made drifted there and nowhere else.
+# Earth-Cardinal moved on `20260905` and the Kin line kept the retired page BESIDE the new one, so
+# it read four seats where the grid seats three. Water-Cardinal moved on `20260908` and the Kin line
+# was not touched at all, so it named the retired page and never named the live one -- while the
+# grid, the `## Cardinal:` heading, and the section's own path were all correct and this scan read
+# `verdict=ok`. A reader following the door's own kin list arrived at a page the rota had released.
+#
 # WHAT IS GATED, hard, at zero.
 #   unresolved       -- a path the grid names that does not exist on disk.
 #   sections_missing -- a threshold page lacking one of its three modality headings.
 #   seat_undeclared  -- a modality section that does not name the grid's seat for its own cell.
+#   kin_seat_absent  -- a threshold page's `**Kin:**` line not naming a seat the grid gives it.
 #
 # WHAT IS REPORTED. `rows` and `cells`, empty or full, so a reader can tell a healthy grid from a
-# grid this scan could not parse -- the shape `rota_declared_scan.sh` keeps one room over.
+# grid this scan could not parse -- the shape `rota_declared_scan.sh` keeps one room over. And
+# `kin_extra`, a page on a Kin line that is neither the panchanga, `kyri/receipt.rye`, nor one of
+# that element's three live seats -- which is what a retired seat looks like from here, and equally
+# what a deliberate new kin link looks like. Only a reader tells those apart, so this one reports.
 #
 # WHAT PASSES FREE. Whether a seat is worth reading, and whether the threshold's PROSE about a seat
 # is still true. This reads paths and headings, which are concrete; the rest is a reader's job.
@@ -92,6 +106,8 @@ cells=$(grep -c . "$work/cells.txt" || true)
 unresolved=0
 sections_missing=0
 seat_undeclared=0
+kin_seat_absent=0
+kin_extra=0
 : > "$work/faults.txt"
 
 # Every path the grid names must exist: the five thresholds and the fifteen seats.
@@ -118,9 +134,41 @@ while IFS="$(printf '\t')" read -r element modality threshold seat; do
   fi
 done < "$work/cells.txt"
 
+# THE FOURTH SITE: the `**Kin:**` line at the head of each threshold page. It is compared by
+# BASENAME rather than by written path, because a Kin entry is relative to `foundations/` while the
+# grid names a repo-root path, and this tree's own naming law makes a stamped basename unique.
+cut -f1,3 "$work/cells.txt" | sort -u | while IFS="$(printf '\t')" read -r element threshold; do
+  [ -f "$threshold" ] || continue
+  kin=$(grep -m1 '^\*\*Kin:\*\*' "$threshold" || true)
+  if [ -z "$kin" ]; then
+    # One fault per seat, so the count means the same thing whether the line is wrong or absent.
+    awk -F'\t' -v el="$element" '$1 == el { print $4 }' "$work/cells.txt" | while IFS= read -r seat; do
+      [ -n "$seat" ] || continue
+      printf 'kin_seat_absent\t%s\t%s carries no "**Kin:**" line, so it names no path matching %s\n' \
+        "$threshold" "$element" "${seat##*/}"
+    done
+    continue
+  fi
+  awk -F'\t' -v el="$element" '$1 == el { print $4 }' "$work/cells.txt" | while IFS= read -r seat; do
+    [ -n "$seat" ] || continue
+    base=${seat##*/}
+    printf '%s\n' "$kin" | grep -qF "$base" || \
+      printf 'kin_seat_absent\t%s\t%s Kin names no path matching %s\n' "$threshold" "$element" "$base"
+  done
+  # Reported: a Kin page that is not a companion and not one of this element's live seats.
+  printf '%s\n' "$kin" | grep -oE '\[`[^`]+`\]' | sed 's/^\[`//; s/`\]$//' | while IFS= read -r entry; do
+    ebase=${entry##*/}
+    case $ebase in the-panchanga.md|*_the-panchanga.md|receipt.rye) continue ;; esac
+    awk -F'\t' -v el="$element" '$1 == el { print $4 }' "$work/cells.txt" | sed 's|.*/||' | grep -qFx "$ebase" && continue
+    printf 'kin_extra\t%s\t%s Kin names %s, which the grid does not seat for this element\n' "$threshold" "$element" "$ebase"
+  done
+done >> "$work/faults.txt"
+
 unresolved=$(grep -c '^unresolved	' "$work/faults.txt" || true)
 sections_missing=$(grep -c '^sections_missing	' "$work/faults.txt" || true)
 seat_undeclared=$(grep -c '^seat_undeclared	' "$work/faults.txt" || true)
+kin_seat_absent=$(grep -c '^kin_seat_absent	' "$work/faults.txt" || true)
+kin_extra=$(grep -c '^kin_extra	' "$work/faults.txt" || true)
 
 if [ "$MODE" = list ]; then
   head -"$MAX_REPORT" "$work/faults.txt" | while IFS="$(printf '\t')" read -r kind where why; do
@@ -134,7 +182,9 @@ echo "cells=$cells"
 echo "unresolved=$unresolved"
 echo "sections_missing=$sections_missing"
 echo "seat_undeclared=$seat_undeclared"
-if [ "$unresolved" -eq 0 ] && [ "$sections_missing" -eq 0 ] && [ "$seat_undeclared" -eq 0 ]; then
+echo "kin_seat_absent=$kin_seat_absent"
+echo "kin_extra=$kin_extra"
+if [ "$unresolved" -eq 0 ] && [ "$sections_missing" -eq 0 ] && [ "$seat_undeclared" -eq 0 ] && [ "$kin_seat_absent" -eq 0 ]; then
   echo "verdict=ok"
 else
   echo "verdict=drift"

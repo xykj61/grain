@@ -5,7 +5,7 @@
 **Style:** Gauge, Field setting (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
 **Status:** Living -- the water row's threshold page, read first on its rota lap; seated 20260826 on Keaton's word -- **mixed room**: the rota mechanics and the seated palette are checkable, the planetary frame is vision
-**Kin:** [`20260826-014901_the-panchanga.md`](20260826-014901_the-panchanga.md) -- `kyri/receipt.rye` (the two palettes) -- [`20260823-105651_the-shape-you-grew-and-the-shape-you-are.md`](20260823-105651_the-shape-you-grew-and-the-shape-you-are.md) -- [`20260826-194850_the-happy-zone-and-the-thin-edge.md`](20260826-194850_the-happy-zone-and-the-thin-edge.md) -- [`20260618-184912_growing-a-language.md`](20260618-184912_growing-a-language.md)
+**Kin:** [`20260826-014901_the-panchanga.md`](20260826-014901_the-panchanga.md) -- `kyri/receipt.rye` (the two palettes) -- [`20260823-222019_what-brix-infuse-is.md`](20260823-222019_what-brix-infuse-is.md) -- [`20260826-194850_the-happy-zone-and-the-thin-edge.md`](20260826-194850_the-happy-zone-and-the-thin-edge.md) -- [`20260618-184912_growing-a-language.md`](20260618-184912_growing-a-language.md)
 
 Water is the Venus row: care and flow. The other rows ask whether a thing stands, moves,
 or burns bright; this row asks whether it is cared for, and whether the work moves the way
