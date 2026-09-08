@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Stamp:** `20260728.031722`
-**Last refreshed:** `20260907.144631` -- the opening names where a newcomer starts, and gives *crush* and *wave* their plain function
+**Last refreshed:** `20260907.160051` -- the tutorials row gains *Running the fleet*, the shelf's first operator page
 **Voice:** Kyri
 **Kind:** crushed index of [`docs-geode/`](./) -- the root prod folder, holding the canonical docs that ship
 **Status:** Living crystal -- read against the rooms on disk each lap by [`../tools/cr/crushed_index_witness.rish`](../tools/cr/crushed_index_witness.rish)
@@ -35,7 +35,7 @@ Two words on this shelf are our own, and the Lexicon seats both. **Crush** means
 | [`press/`](press/README.md) | Press releases | **living** -- three announcements and one magazine piece, indexed with their honest scope |
 | [`etc/`](etc/README.md) | Further shipping genres as seated | **open, empty on purpose** -- a waiting area, rather than a destination |
 | [`sangha/`](sangha/README.md) | Sangha patterns (page-zero, three patterns) | **living** |
-| [`tutorials/`](tutorials/the-first-hour.md) | Shipped tutorials | **living** -- [The First Hour](tutorials/the-first-hour.md), [Glow recursion](tutorials/recursion-in-glow.md), and [Shopping](tutorials/SHOPPING.md) |
+| [`tutorials/`](tutorials/the-first-hour.md) | Shipped tutorials | **living** -- [The First Hour](tutorials/the-first-hour.md), [Glow recursion](tutorials/recursion-in-glow.md), [Shopping](tutorials/SHOPPING.md), and [Running the fleet](tutorials/running-the-fleet.md) |
 
 **The table is the count.** Every room on disk earns a row. Each row says, in the shelf's own words, what stands behind that door: **living** for a page crushed from a real source, **pointer crush** for a row that points at the source it would crush, and **open, empty on purpose** where the entry rule is named and waiting. Every room here was filled from something that already stood in the tree.
 

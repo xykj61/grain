@@ -1,0 +1,36 @@
+format session-log-v1
+stamp 20260907.160828
+editor Claude Code, terminal
+provider Anthropic
+product Claude Code
+role petrichor -- docs-geode and prose-product, grain-petrichor
+modality text
+model claude-opus-5
+model_status configured claude-opus-5 at medium in .claude/settings.json; runtime identity unverified
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status evidence .claude/settings.json and tools/f/fleet-loop.sh --effort medium
+voice Kyri
+host Linux pier, America/New_York
+title The fleet page, run before it was written
+prompt the booked lap 20260907.074407 -- the operator manual into docs-geode, and whether manual/ and docs-geode/ are one room
+rota lap 4193, row 1 -- Air, the row that feels; advanced by hand past row 3, which this shelf had already read nineteen times today against row 1's ten. Air is law and boundary and its sense is touch, which only works at a surface -- so the lap read every claim by pressing on it. That is what turned a brief into a page: three of its sentences gave way under the hand, and two of them were wrong.
+think The falsifier the brief named was the first thing to test: if one page already restarts the fleet, the lap adds a pointer and stops. grep for fleet-loop and fleet_watch across docs-geode/ and manual/ answered nothing at all, so the page earns its keep.
+think Then every claim was read from the script rather than from the brief. tools/f/fleet-loop.sh, tools/f/fleet_watch.sh, tools/ag/agent-jail.sh, tools/fixtures/f/fleet_lap_verdict.sh and construction/fleet-roster.kyri, plus three commands actually run -- the roster scan, a FLEET_DRY launch, and a --dry-run --once watch pass.
+think The page went to docs-geode/tutorials/ because that room's bar is exactly this lap's method: a tutorial ships when every command in it has been run before it was written down. Two commands launch a real ship, so both were run in their dry-run form and the printed output is quoted verbatim.
+think Indexing is three places on this shelf, not one: the room table in tutorials/README.md, the tutorials row on the shelf front door, and a row in wiki/README.md, which declares itself a crushed index of every page under docs-geode and is walked by crushed_index_witness each lap.
+obs TWO OF THE BRIEF'S CLAIMS WERE WRONG ON DISK, AND BOTH WERE WRITTEN FROM MEMORY. The brief said effort lives in three files per tree and implied they agree; they read medium in fleet-loop.sh (twice), .claude/settings.json and the untracked GLOW_PROFILE.bron, while the TRACKED GLOW_PROFILE.template.kyri reads max. declared_model_witness is GREEN because its scan gates the MODEL name and merely reports declared_effort from settings.json -- so the template's disagreement sits outside any guard's reading. Named in the page rather than swept, since changing a tracked template's effort is a fleet-wide config choice.
+obs THE BRIEF ALSO NAMED A SENTINEL THAT DOES NOT EXIST. It said `.watch-stop` is what stops the watch. A grep across every .sh, .rish and .md in the tree finds the string in exactly one file -- the brief itself. fleet_watch.sh is stopped by an interrupt or by WATCH_PASSES, and the page says so in those words, because a stop instruction that has never been run is the worst kind.
+obs A MANUAL ABOUT REFUSALS READS NEGATIVE UNTIL IT NAMES WHAT EACH REFUSAL KEEPS. The first draft graded B+ 87 with Register 55 -- 45 percent negative against Field's 30 ceiling -- because the subject genuinely is what each script declines to do. One pass rewrote twenty-two sentences to lead with what is: `what it refuses` became `what it leaves alone`, `nothing is numbered` became `every window is found by name`, `a loop that has exited cannot restart itself` became `restarting itself is the one thing an exited loop leaves to somebody else`. Register 55 -> 88, composite 87 -> A 95, and not one fact softened.
+obs THE LINK WALL CAUGHT MY OWN PAGE, WHICH IS %524'S REPAIR WORKING. tracked_link_scan refused with living_links_outside_tree=3 -- all three of my new index rows pointing at a file git had never heard of. Staging the page brought it to zero. A wall that reads the index rather than the working tree is a wall that knows the difference between a page and a page that ships.
+obs PART (B) MEASURED, AND THE ANSWER IS TWO ROOMS. manual/ 33 files centred on your machines; docs-geode/ 42 centred on the shipping product; 69 and 180 living inbound citers; one manifest verdict for both, so a merge gets no help there. The boundary already stands in the manual's own front matter, which points at docs-geode for the first hour -- it has drifted at exactly three page pairs. The proposal keeps both rooms, names the boundary in both front doors, and molts the three pairs one lap each. It also names the tension this lap made: by that boundary the fleet page reads manual-shaped, and it sits in docs-geode because the booking said so in Keaton's words.
+loom page=docs-geode/tutorials/running-the-fleet.md register_before=55 register_after=88 composite_before=87 composite_after=95 sentences=74 words=1354
+loom qa docs-geode/README.md=A docs-geode/tutorials/README.md=A docs-geode/wiki/README.md=B+ proposal=A
+loom rooms manual_files=33 geode_files=42 manual_citers=69 geode_citers=180 drifted_pairs=3
+file docs-geode/tutorials/running-the-fleet.md the shelf's first operator page -- launch, watch, stop, effort, and what one lap does
+file docs-geode/tutorials/README.md three tutorials become four, with the new row's audience and shape
+file docs-geode/README.md the shelf front door's tutorials row and its refresh line
+file docs-geode/wiki/README.md the crosslink row, so the crushed index still walks whole
+file active-development/20260907-160051_manual-and-docs-geode-one-room-or-two.md part (b) measured -- two rooms, three drifted pairs, one proposal for Keaton's word
+file construction/ITINERARY.md the ship block rewritten to this lap; the booked row marks (a) landed and (b) proposed
+recommend check-in (Keaton) -- two questions, both cheap to answer and neither mine. %574 still stands where the last lap left it: may a lap correct its own grader, when the fix re-grades every page unmeasured? And the boundary I proposed puts the page I just wrote on the wrong side of itself -- running-the-fleet.md is operator prose in the shipping room, one file with three inbound links, so moving it later costs almost nothing if you seat the boundary as measured.
