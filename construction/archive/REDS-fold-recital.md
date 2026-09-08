@@ -497,3 +497,5 @@ at a closed fold.*
 
 *Row %599 folded to [`REDS-the-other-half-of-the-ceiling-rows-599.md`](REDS-the-other-half-of-the-ceiling-rows-599.md) on `20260908.002521`, **CLOSED** -- a repair that lands on one function leaves its sibling making the same silent claim, and the module head is where that silence becomes a statement.*
 *Row %600 folded to [`REDS-a-count-with-no-names-rows-600.md`](REDS-a-count-with-no-names-rows-600.md) on `20260908.005357`, **CLOSED** -- the roster's one gated ratchet printed a count and no name, so two laps hand-walked 246 records to find the guard that arrived undeclared.*
+
+*Row %360 folded to [`REDS-a-row-that-became-furniture-rows-360.md`](REDS-a-row-that-became-furniture-rows-360.md) on `20260908.022550`, **BOOKED** -- Two of every three guards heard by nothing, measured twice nine days apart: the harder direction, and invisible until somebody read the row again.*
