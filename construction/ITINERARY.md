@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `b411ae36c4` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `122af84631` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- DISCOVERY WAS A WORD THE MAP NEVER SPELLED; 194 GUARDS SHARED ONE SILENCE.**
 Elder [shelved](archive/20260908-063219_itinerary-landed-accounts.md).
@@ -148,25 +148,27 @@ the desk never moved. `stem_collision` is a **ratchet at 1** -- the rest is `%53
 whose marker IS the ruling. Control **81 -> 86**. **Yours:** the 46 sample-taking desks want values
 somebody must choose; where those live is that same ruling.
 
-**INCENSE -- THE ASCII LAW SAID TWO GUARDS STOOD; FOUR DID, AND THE SUBJECT IT NAMES FIRST READ AS
-UNMEASURED.** Elder [shelved](archive/20260908-052550_itinerary-landed-accounts.md), whose close
-asked for **guards named beside their numbers**. The page that most needed it named half its
-own. `ascii-first.md` opened *Two guards stand*, describing the card and the comment meters. **`ascii_document` (`20260906.133344`) and `spoken_ascii` (`20260907.075500`) appear
-in NO law page, twin, or `context/` file** -- the first gates all 104 rule pages at zero, the second reads a
-FOURTH subject the opening never had.
-**IT COMMISSIONED DUPLICATE WORK FIRST.** Reading Air, I drew the conclusion the page invites,
-measured **74 dirty living documents**, and was one step from rebuilding a two-day-old
-guard. One `ls` of the fixtures room stopped it, run because `%457` says absence is never read from
-local bytes. **No card sees this class:** Truth counts whether cited paths resolve, both did, and it
-graded **B 83 with truth=100** while its claim about its own wall was false.
-**AND ENFORCE IS TWO DIRECTORY GLOBS WHERE THE LAW IS A GRAPH**, so the canon those globs NAME stood
-outside: `RADIANT_STYLE` 80, `TWILIGHT_STYLE` 61, `TAME_CORE` 51, `REMOTE_ROSTER` 18, `CLAUDE.md` --
-which loads every enforced rule -- 38. **`tame-guidance` was walled at zero while the page it says to
-READ FIRST carried 51.** All five at zero: `--verify` re-derived each from its committed bytes, and
-the 15 check and cross marks were read one at a time into **Prefer** and **Rather than**. Ratchet **3,630 -> 3,331**, ceiling lowered to it, page **B 83 -> B+ 88**. Row
-`20260908.052550` **OPEN**; one CLOSED row
-[folded](archive/REDS-a-refusal-nothing-performed-rows-608.md).
-**Yours:** widening ENFORCE to the canon it names changes what a gate refuses.
+**INCENSE -- A UNIQUE FILENAME, FOUND AGAIN BY GLOBBING A SHARED DIRECTORY.**
+Elder [shelved](archive/20260908-065244_itinerary-landed-accounts.md). Row `20260908.065244`
+**OPEN**, cited by stamp until the spine binds it. The cold pass went to
+`/tmp/incense-cold-$$.txt` -- unique -- then `ls /tmp/incense-cold-*.txt` named it back. **The redirect and the glob ran in
+different shells:** the pass wrote `429947`, the listing printed `4172`, written by that PID on
+`20260907` and never swept. **Twenty minutes of reading followed.**
+**UNIQUENESS WITHOUT IDENTIFICATION BUYS NOTHING**, and the elder file was **this same tree** -- the
+worse half, since a peer's pass disagrees loudly where yours from yesterday agrees on every
+structural line. Two reds and an absent evidence file, none today's, and one was a step from being
+booked against a healthy instrument. **A stale reading of your own tree manufactures reds.** Third firing (`%541` signal, `%549` redirect, this glob), seated on the **baton's FLEET
+stanza**: a lap's own command is in no file.
+**AND THE QUESTION THE INSTRUMENT DEFERRED HERE LEFT WITH ITS OWN ACCOUNT.** `qa_report_card.sh`
+says twice it names a question here rather than settling it -- **should Reach SEE what Register
+already sees?** Named, then shelved on `20260907.221512`, so two living citations pointed at a
+promise this page no longer kept. **No meter reads this:** Truth
+counts whether a cited path RESOLVES, and this one does. Restored with the cost its own shadow
+already measured -- **293 letters down against 90 up** over 1,204 pages, `.claude/rules/` and
+`foundations/` hardest: **a net demotion.**
+**Yours, restored:** should Reach see what Register sees, at that price? **Measured beside it:** **84
+`**Yours` blocks stand on 67 of 138 shelves** against **13** here; nothing says which were answered.
+**Standing:** ENFORCE widened to its canon.
 
 **`%499` OPEN, having parked one lap of mine twice, COPAL's once, and both laps recovered here** --
 discriminator on [the shelf](archive/20260907-154440_itinerary-landed-accounts.md); COPAL asks it in
@@ -384,6 +386,6 @@ The logs keep the account; earlier rows are shelved in
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260908.053413` | The law that named half its guards | [log](../session-logs/date/20260908/20260908-053413_the-law-that-named-half-its-guards.kyri) |
+| `20260908.071657` | Uniqueness without identification | [log](../session-logs/date/20260908/20260908-071657_uniqueness-without-identification.kyri) |
 
 **One row, on purpose** -- a landed lap keeps one line until the next replaces it; the log carries the detail.

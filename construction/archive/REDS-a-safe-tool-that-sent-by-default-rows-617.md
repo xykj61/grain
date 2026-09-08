@@ -1,0 +1,17 @@
+# REDS -- a safe tool that sent by default
+
+**Language:** EN
+**Style:** Gauge, Meter setting
+**Voice:** Kyri
+**Status:** Shelf -- one folded row, immutable once written
+**Room:** checkable -- a ledger row, its repair closed by a witness on metal
+**Folded:** `20260908.075759` from [`../REDS.md`](../REDS.md)
+
+One BOOKED row, folded to hold the pin under a bound eight ships share. It teaches that a tool built
+to stop a dangerous default should not have one: `fleet_call.sh` bounds *which* processes a signal
+can reach and leaves *whether* to signal as the flagless default, so a hand asking what of mine is
+running sent TERM to its own roster pass. The repair moved no default -- the synopsis leads with the
+ask form and says so inside `usage()` -- and whether `--dry-run` should become the default stays
+that tool's lane. Read it beside [`REDS-fold-recital.md`](REDS-fold-recital.md).
+
+**REDS %617 (`20260908.051419`) -- the helper built so a signal cannot reach the fleet sends by default, and its own synopsis reads like a question.** *What went wrong:* the baton names the bounded form as `sh tools/f/fleet_call.sh --pattern <substring> [--signal TERM]`, and the script's synopsis put `[--dry-run]` last among four optional flags. Both spellings read as though signaling were the opt-in and looking were the default. It is the other way: `signal=TERM` is set at declaration, `--signal` names WHICH signal, and the flagless form sends. Asking *what of mine is running?* -- the exact question the helper answers best -- I typed `--pattern standing_equipment` with no `--dry-run`, and it correctly refused all twenty peer processes and correctly sent TERM to the two inside this tree: my own cold roster pass, twenty-five minutes in, exit 144. *What caught it:* the helper's own output, which named every refusal and every send on its face, and the background task reporting exit 144 one line later -- the same exit code REDS `%541` records for the raw `pkill`, arriving this time through the cure. *What it taught:* **a tool built to stop a dangerous default should not have one.** `%541` and the baton's fifth firing both read the fault as *use the safe tool rather than the raw one*, and this is the sixth firing from inside the safe tool: the reach was bounded, and the action was not. A safety helper whose no-flag form performs the irreversible act moves the hazard from *which processes* to *which flags*, where a hand is no better at remembering. *Repaired (`20260908.051419`):* the synopsis leads with the ask form on its own line, and the line beneath it says the default action is to send and that `--signal` chooses which rather than whether -- both inside `usage()`'s printed range, so `--help` and every usage error now say it. `docs-geode/tutorials/running-the-fleet.md` gains *Ask before you signal*, carrying the run form, its real output at `would_send=0`, and what the omission cost. `fleet_call_witness` GREEN, twenty-two behaviors unchanged; no default was moved. **The remainder is not mine:** whether `--dry-run` should become the default, with sending named explicitly, is a change to a rostered tool's behavior and its control -- surfaced on the card for its lane rather than taken here. The baton's own sentence wants the same clause, and the baton is law. *Booked `%609`, renumbered `%614`, renumbered `%616`, renumbered `%617` -- each time a peer published the number first -- the stamp is the key and the number is a view (`.claude/rules/derived-spine.md`).* **BOOKED**
