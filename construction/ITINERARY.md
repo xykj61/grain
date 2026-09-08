@@ -47,7 +47,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `cb710cb655` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `b3dc4b95a6` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A PEER PUBLISHED MY LAP'S WORK 36 MINUTES BEFORE MY COMMIT.**
 Elder [shelved](archive/20260908-165501_itinerary-landed-accounts.md).

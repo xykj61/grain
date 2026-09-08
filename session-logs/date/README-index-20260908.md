@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260908.184559` | [Four named, three asserted](20260908/20260908-184559_four-named-three-asserted.kyri) | the run the merge postcondition let pass |
 | `20260908.182537` | [Four tools whose job is the elder word](20260908/20260908-182537_four-tools-whose-job-is-the-elder-word.kyri) | an env contract breached, its fallback proven |
 | `20260908.180709` | [The name that left, the facts that stayed](20260908/20260908-180709_the-name-that-left-and-the-facts-that-stayed.kyri) | a breach, and four things it kept |
 | `20260908.175409` | [The transcript a peer could write](20260908/20260908-175409_the-transcript-a-peer-could-have-written.kyri) | a verdict-inverting pen closed |

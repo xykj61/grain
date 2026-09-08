@@ -520,6 +520,19 @@ pub const Weave = struct {
             // invariant: a generation counts from one, so a lifted line never
             // predates the weave that now holds it
             assert(line.gen >= 1);
+            // invariant: every lifted line stands below the weave's run counter as
+            // well as its position counter -- the third of the weave's three declared
+            // counter invariants, said at the third constructor so all three say the
+            // same three things.
+            //
+            // NAME WHAT THIS ASSERT IS NOT: it is a restatement, and no control phase
+            // isolates it. The lift control's `next_run` plant rewrites the counter
+            // from 1 to 0, and the witness's own `lifted.next_run == 1` fires on that
+            // whatever this line does -- proven on `20260908` by running that plant
+            // with this assert removed, which exits 134 either way. It is kept for
+            // uniformity across the constructors rather than for a break it catches
+            // alone, and the merge assert one function over is the opposite case.
+            assert(line.run < lifted.next_run);
             if (i + 1 < lifted.lines.items.len) {
                 // invariant: the backing list comes out in strictly increasing
                 // place order, which is the precondition `current` asserts --
@@ -1001,6 +1014,18 @@ pub const Weave = struct {
     /// Postcondition: places strictly increase, every line keeps a real
     ///   generation, and next_pos and next_run stand above every position and
     ///   run in the result.
+    ///
+    /// THAT POSTCONDITION NAMED FOUR THINGS AND ASSERTED THREE until
+    /// `20260908`. The run was the one that passed, and it is the field
+    /// `Place.less_than` reads FIRST. Two things rest on it: the next `apply`
+    /// stamps its whole insert block with `next_run` and appends, and
+    /// `current` reads the backing list without sorting. Both were argued from
+    /// `apply`'s postcondition, which does assert all three -- so the argument
+    /// cited a post standing on one path into a weave rather than on this one.
+    ///
+    /// The plant isolates the line rather than reaching an assert already
+    /// there: the control rewrites the max below to `@min`, and that pen exits
+    /// 134 with the assert and 0 without it, every other claim passing.
     pub fn merge(self: *const Weave, allocator: std.mem.Allocator, other: *const Weave) !Weave {
         // invariant: each weave already stands inside the named bound, so a
         // refusal below names the union rather than covering for an input that
@@ -1056,6 +1081,14 @@ pub const Weave = struct {
             // invariant: every position stays under the merged counter, so the
             // next insert is handed one neither side has ever used
             assert(line.pos < merged.next_pos);
+            // invariant: every run stays under the merged counter too, which is
+            // the third of the weave's three declared counter invariants and the
+            // one `Place.less_than` reads FIRST. The next `apply` stamps its whole
+            // insert block with `next_run` and appends it, and `current` reads the
+            // backing list without sorting -- both rest on every held run standing
+            // below that number. Max carries it here, and this is where the max is
+            // held to rather than trusted.
+            assert(line.run < merged.next_run);
             if (i + 1 < merged.lines.items.len) {
                 // invariant: identities strictly increase, which both orders the
                 // document and proves the union kept exactly one line per

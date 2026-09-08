@@ -156,6 +156,15 @@ tiebreak_exit="$(run_pen tiebreak 's/        if (self.site != other.site) return
 # first, which groups by hand and keeps the blocks whole for a different reason,
 # and a plant that leaves the law satisfied proves nothing.
 run_ignored_exit="$(run_pen run_ignored 's/        if (self.run != other.run) return self.run < other.run;/        if (self.pos != other.pos) return self.pos < other.pos;/')"
+# The run counter is MAXED across the two sides, and that max is what keeps every
+# held run below the number the next `apply` will stamp its whole insert block
+# with. Take the min instead and a merged weave carries a line whose run equals
+# the counter, so the next edit's block sorts level with a block already there --
+# and `Place.less_than` reads the run FIRST, so that is the field the document
+# order loses first. The plant is isolating on purpose: it moves no line and no
+# position, so place order and `pos < next_pos` both still hold, and the merge
+# postcondition's run assert is the only reading that can fire.
+run_counter_exit="$(run_pen run_counter 's/            .next_run = @max(self.next_run, other.next_run),/            .next_run = @min(self.next_run, other.next_run),/')"
 shrunk_exit="$(run_pen bound_shrunk "$shrink")"
 removed_exit="$(run_pen bound_removed "$shrink; /if (self.lines.items.len + other.lines.items.len > max_weave_lines) {/,+2d")"
 misnamed_exit="$(run_pen bound_misnamed "$shrink; s/            return WeaveError.TooManyLines;/            return WeaveError.PositionTextDisagrees;/")"
@@ -174,6 +183,8 @@ echo "phase=tiebreak"
 echo "tiebreak_exit=$tiebreak_exit"
 echo "phase=run_ignored"
 echo "run_ignored_exit=$run_ignored_exit"
+echo "phase=run_counter"
+echo "run_counter_exit=$run_counter_exit"
 echo "phase=bound_shrunk"
 echo "bound_shrunk_exit=$shrunk_exit"
 echo "phase=bound_removed"
@@ -185,7 +196,7 @@ verdict=ok
 # A plant that matched nothing is read FIRST and by its own name, because every
 # other reading below is a number and this one is a word.
 for reading in "$clean_exit" "$join_exit" "$order_exit" "$text_exit" "$identity_exit" \
-               "$tiebreak_exit" "$run_ignored_exit" "$shrunk_exit" "$removed_exit" \
+               "$tiebreak_exit" "$run_ignored_exit" "$run_counter_exit" "$shrunk_exit" "$removed_exit" \
                "$misnamed_exit"; do
   [ "$reading" != plant_matched_nothing ] || verdict=plant_matched_nothing
 done
@@ -193,7 +204,7 @@ if [ "$verdict" = ok ]; then
   [ "$clean_exit" -eq 0 ] || verdict=clean_failed
   [ "$shrunk_exit" -eq 0 ] || verdict=shrink_not_innocent
   for broken in "$join_exit" "$order_exit" "$text_exit" "$identity_exit" "$tiebreak_exit" \
-                "$run_ignored_exit" "$removed_exit" "$misnamed_exit"; do
+                "$run_ignored_exit" "$run_counter_exit" "$removed_exit" "$misnamed_exit"; do
     [ "$broken" -ne 0 ] || verdict=break_not_caught
   done
 fi
