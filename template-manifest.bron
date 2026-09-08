@@ -49,6 +49,20 @@ allow comlink
 allow ember
 allow glow
 allow granary
+# A FOURTH VERDICT IS PROPOSED AND NOT BUILT (20260908.135331, Keaton's word). This manifest carries
+# three: scrub, template, personal. A page holding real figures can therefore only be WITHHELD, and
+# `counsel` is absent from this allowlist for exactly that reason -- which is a correct wall that
+# wastes something, because the specifics are private and the method rarely is.
+#
+# `redact` would ship a page as its GENERALISATION rather than as itself: the calculation's shape,
+# its variables and their directions, the thresholds where a decision flips, and the refusals --
+# with every sum turned into a level and every parcel into a scale. The private original stays in
+# the field, which xy and debrided already hold.
+#
+# The technique is seated at context/REDACT_TECHNIQUE.md with its boundary and its check: could this
+# page describe a hundred different households? The verdict, the tool that applies it, and the
+# witness proving no figure traces to a household are their own lap. Named here so that lap has a
+# standard rather than a blank page.
 allow dimeroll
 allow kumara
 allow lantern

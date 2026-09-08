@@ -1,0 +1,35 @@
+format session-log-v1
+stamp 20260908.135331
+editor Claude Code, Zed-class CLI on the pier
+provider Anthropic
+product Claude Code
+role incense seat -- law, active-designing, iterative review, the captain's hat
+modality text
+model claude-opus-5
+model_status active runtime reported by the harness environment block
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status configured default; this pier launches bare at --effort medium via tools/f/fleet-loop.sh
+voice Kyri
+host Linux pier, 8 vCPU / 16 GB, TZ America/New_York
+title Siloing pointed the other way
+prompt Keaton: I am okay with the details being in xy and debrided; adapt silo technique into a redact technique the seed scrub can call -- a generalizing function in Bhakta Gauge voice that finds the general principle, the teaching, the non-personal example, across the degrees of assets, capital, opportunity and network that go into value creation.
+rota none -- a commissioned law written from Keaton's word; the Aether row was read this sitting at 20260908.125751.
+think The ask names a new technique, so the first job was to read the one it adapts rather than to invent beside it. Silo technique receives an idea from the world and sets it down in our own words, so a particular method becomes a general principle we own.
+think Read that way the new one names itself: REDACT IS SILO POINTED THE OTHER WAY. Silo takes the world's particular and makes it our general; redact takes OUR particular and makes it a public general. Same operation, opposite direction -- silo protects us from borrowing, redact protects a person from being published.
+obs THE MANIFEST CARRIES THREE VERDICTS AND THAT IS WHY THIS IS NEW. scrub, template, personal -- 37, 57 and 22 rows. A page holding real figures can therefore only be WITHHELD, which is why counsel is absent from the allowlist, and I proved that absence in the projected seed two laps ago. The wall is correct and it wastes something: the specifics are private and the method rarely is.
+obs A TREE THAT ONLY KNOWS HOW TO WITHHOLD TEACHES NOTHING FROM ITS OWN HARDEST THINKING. That sentence is the whole argument for the technique. When does borrowing beat selling is a question anyone with any portfolio faces; whose portfolio and at which rate on which date is the part that must stay home.
+obs THE OPERATIVE MOVE IS TURNING A FIGURE INTO A LEVEL. A sum becomes a portfolio at a scale where one sale realises a material gain; a rate becomes a benchmark read on the day and cited to its publisher. The reader then learns to find their own numbers, which serves them better than being handed ours.
+obs AND THE CHECK IS ONE QUESTION RATHER THAN A CHECKLIST. Could this page describe a hundred different households? That catches the failure a name-removal misses: a page with no name that still says 4.94 acres on a named highway under contract in August has published a parcel. Anonymising edits the surface; redaction rewrites at the level of the idea.
+obs I NAMED THE FOURTH VERDICT AND DID NOT BUILD IT, IN THE MANIFEST ITSELF. The verdict, the tool that applies it, and the witness proving no figure traces to a household are their own lap. Written where a hand extending the manifest will meet it, so that lap has a standard rather than a blank page.
+obs THE PAGE GRADES 93 AT FIELD AND CLEARS THE DOOR CEILING ANYWAY. 20% negative sentences against Field's 30 and Door's 20 -- which matters for a page whose own register is Bhakta, since a technique page that could not pass the register it prescribes would be arguing against itself.
+loom redact silo_direction=inbound redact_direction=outbound manifest_verdicts=3 proposed=1
+loom manifest scrub=37 template=57 personal=22 counsel_in_allowlist=no
+loom qa redact_technique setting=field register=80 truth=100 composite=93 sow=GREEN
+file context/REDACT_TECHNIQUE.md the technique, its boundary, and the one-question check
+file .claude/rules/redact-technique.md the agent-facing rule
+file .cursor/rules/redact-technique.mdc the twin, to convention
+file template-manifest.bron the fourth verdict named as proposed and unbuilt, where a hand will meet it
+scope one commissioned law seated as the mirror of an existing one, with its unbuilt half named rather than implied
+status GREEN -- sow witness green, tracked links ok, ascii documents ok
+recommend keep-going -- the first worked redaction is the proof this technique needs: take one landed counsel cell and produce its public generalisation, then compare the two for anything traceable.
