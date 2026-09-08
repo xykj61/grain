@@ -12,6 +12,11 @@
 # the corrected target EXISTS on disk. So the answer was already computed and a human was being asked
 # to retype it -- six links across three spellings, on the night this was written.
 #
+# PREVENTION LIVES ONE DIRECTORY OVER, and this tool is the repair. `tools/fixtures/r/reds_fold_reanchor.sh`
+# rewrites the links of any block moving from `construction/` into `construction/archive/` AT WRITE
+# TIME, which is the move an ITINERARY landed-accounts shelf makes on every send. Reach for that one
+# while writing a shelf; reach for this one when a shelf already stands wrong.
+#
 #   sh tools/f/fold_shelf_link_repoint.sh            # show what would change, touch nothing
 #   sh tools/f/fold_shelf_link_repoint.sh --apply    # rewrite the links
 #

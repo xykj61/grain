@@ -465,6 +465,25 @@ reach_read() { awk -v gc="$grade_ceiling" -v xc="$xref_ceiling" -v rule="$1" '
   /^[ \t]*[-*_][-*_ \t]*$/ { next }
   /^[ \t]*[-*+][ \t]/ { next }
   /^[ \t]*[>#]/ { next }
+  # THE RESIDUE IS RULED ON RATHER THAN LEFT OPEN (20260908.104232). This hold-out wants the colon
+  # INSIDE the bold run, so a bold label followed by a parenthetical and then a colon is still
+  # counted as prose -- 44 lines of 276 on the page that raised it. The obvious repair is to allow a
+  # colon AFTER the bold run with a parenthetical permitted between, and measuring that repair
+  # refuses it.
+  #
+  # Tree-wide it would newly exclude 257 lines, and those 257 are two different things wearing one
+  # shape: 172 are LABELS -- a noun phrase, a qualifier, a colon, then values -- and 85 are CLAIMS,
+  # bold assertion then colon then evidence, which is this trees own house sentence form. Splitting
+  # them by bold-run length misfiles the 85. Splitting them by what follows the colon misfiles as
+  # many. No positional rule separates a label from a claim, because the difference is whether the
+  # bold run holds a verb, and that is semantics rather than shape.
+  #
+  # SO THE RULE STAYS, AND THE REASON IS THAT THE ERROR IS ASYMMETRIC. This reading counts NEGATIVE
+  # sentences. Counting a label as a sentence dilutes the ratio slightly toward positive, since a
+  # label carries little negation. EXCLUDING a claim hides real negation, which is the one thing this
+  # reading exists to see. Erring toward counting errs in the safe direction, so the residue is a
+  # known dilution rather than a defect, written here so the next reader meets the measurement
+  # instead of repeating it.
   rule == "card" && /^[ \t]*\*\*[^*]+:\*\*/ && $0 !~ /[.!?]["`)]?[ \t]*$/ { next }
   /^[ \t]*$/ { next }
   {
