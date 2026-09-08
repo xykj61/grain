@@ -443,6 +443,19 @@ assert control.out contains "blind_runner_ran=yes" else "standing-equipment: the
 assert control.out contains "blind_runner_reads_stale=yes" else "standing-equipment: without the hand-off a guard must read the last pass's card and refuse"
 assert control.out contains "blind_runner_refuses=yes" else "standing-equipment: without the hand-off the pass must carry a red nothing in it caused"
 
+# THE SHAPE BETWEEN THE SUM AND THE MAX (row `20260908.020050`). The median and the slowest guards'
+# share separate a uniformly slow suite from a fast one carrying a short tail -- two trees the sum
+# and the maximum read alike, and which want opposite repairs. The two cards below total within two
+# seconds of each other, so only these readings tell them apart.
+assert control.out contains "shape_median=yes" else "standing-equipment: the card's median second must be read, or a sum and a max are the whole shape"
+assert control.out contains "shape_share=yes" else "standing-equipment: the slowest guards' share of the total must be read, or a reader cannot see where an hour went"
+assert control.out contains "shape_named_costliest=yes" else "standing-equipment: the costliest guards must be named -- the repairable question is which, never how many"
+assert control.out contains "shape_bound_holds=yes" else "standing-equipment: the named list must stay bounded, or the report becomes a wall nobody reads"
+assert control.out contains "flat_median=yes" else "standing-equipment: a flat card's median must rise, or the reading cannot tell the two suite shapes apart"
+assert control.out contains "flat_share=yes" else "standing-equipment: a flat card's share must fall, or the reading cannot tell the two suite shapes apart"
+assert control.out contains "untimed_median_absent=yes" else "standing-equipment: an untimed card must answer absent rather than zero -- a missing measurement reading as a fast guard is the fault one layer down"
+assert control.out contains "untimed_share_absent=yes" else "standing-equipment: an untimed card's share must answer absent rather than zero"
+
 assert control.out contains "control_verdict=ok" else "standing-equipment: the control must agree with itself"
 # No total is spelled here. This line read `sixty-two behaviors` while the control ran more, the
 # same drift the header above just shed: a recited count is the one part of a green line that goes

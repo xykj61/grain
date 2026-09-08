@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `85def41308` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `c2a536069f` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- ONE LAW, THREE DERIVATIONS, AND THE THIRD NEVER LEARNED ABOUT REBASE.**
 Elder [shelved](archive/20260908-012959_itinerary-landed-accounts.md). Cold open **four red, three
@@ -208,15 +208,13 @@ guard said to lock that is `%500` above, and it now reds honestly.
 
 **`%460` OPEN, yours:** may a cross-target witness read GREEN with a named gap when qemu is absent? `%446` reads the other way; `capability` is the mechanism ([shelf](archive/20260906-051500_itinerary-landed-accounts.md)).
 
-**GRASS -- SIX NAMED LISTS AND ONE BARE COUNT, AND THE BARE ONE WAS THE GATED READING.**
-Elder [shelved](archive/20260908-005322_itinerary-landed-accounts.md). Row `20260908.005322`
-**CLOSED**, [folded](archive/REDS-a-count-with-no-names-rows-600.md). `undeclared_tier=63` of
-**62** reds eight ships, and two laps found WHICH guard by awk over 246 records -- `%592`, at
-the gate. **Named by `seated` stamp, newest five.** **`tool_letter_room` cost one
-line**: its seater wrote *tier lap* in a **comment**, not the **field**. **63 -> 62**, **4 control
-legs**. **Falsifier: no** -- `dated_path` **98 of 85**; **yours**: the gate reads `refs_lost`,
-`lost_promised_living` **0**.
-
+**GRASS -- A PATH ASSEMBLED FROM FRAGMENTS SURVIVED THE FOLD THAT MOVED IT.**
+Elder [shelved](archive/20260908-020050_itinerary-landed-accounts.md). Row `20260908.020050`
+**BOOKED**, [folded](archive/REDS-a-path-a-repointer-could-not-follow-rows-605.md), renumbered
+off `%602` on the rebase. `shed_census_scan.sh` builds its orphan path from four variables, never
+holding the contiguous string -- so the `20260823.144100` fold left `ORPHAN_DIR` behind while the
+literal `CITED` two lines up, same directory, was carried. **16 days** of `CONTROL=untracked` on
+a tracked file, **four layers deep, every layer honest**. Choir **7 -> 5**.
 **COPAL -- A RULE IS SPELLED TWICE WHERE ONE READER CANNOT ROUTE THROUGH THE OTHER.** Elder
 [shelved](archive/20260908-005011_itinerary-landed-accounts.md). Rows `20260908.004856`, `.004926`
 **CLOSED**, [folded](archive/REDS-a-rule-spelled-twice-rows-602.md). The contract holds two roots
@@ -400,6 +398,6 @@ The logs keep the account; earlier rows are shelved in
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260908.005322` | The names beside the count | [log](../session-logs/date/20260908/20260908-005322_the-names-beside-the-count.kyri) |
+| `20260908.022643` | The path a repointer could not read | [log](../session-logs/date/20260908/20260908-022643_the-path-a-repointer-could-not-read.kyri) |
 
 **One row, on purpose** -- a landed lap keeps one line until the next replaces it; the log carries the detail.

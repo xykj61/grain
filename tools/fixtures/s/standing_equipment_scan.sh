@@ -131,8 +131,8 @@ known_gates=$(
 names=$(mktemp); paths_missing=$(mktemp); halfrows=$(mktemp)
 unrostered=$(mktemp); reds=$(mktemp); ranlist=$(mktemp); reds_self=$(mktemp)
 badtiers=$(mktemp); cadence_names=$(mktemp); badhosts=$(mktemp); badcaps=$(mktemp); badgates=$(mktemp)
-undeclaredrows=$(mktemp)
-trap 'rm -f "$names" "$paths_missing" "$halfrows" "$unrostered" "$reds" "$reds_self" "$ranlist" "$badtiers" "$cadence_names" "$badhosts" "$badcaps" "$badgates" "$undeclaredrows"' EXIT
+undeclaredrows=$(mktemp); timedrows=$(mktemp)
+trap 'rm -f "$names" "$paths_missing" "$halfrows" "$unrostered" "$reds" "$reds_self" "$ranlist" "$badtiers" "$cadence_names" "$badhosts" "$badcaps" "$badgates" "$undeclaredrows" "$timedrows"' EXIT
 
 rostered=0
 red_self=0
@@ -280,6 +280,7 @@ if [ -f "$card" ]; then
         case "$rseconds" in
           ''|*[!0-9]*) seconds_absent=$((seconds_absent + 1)) ;;
           *) seconds_total=$((seconds_total + rseconds))
+             echo "$rseconds $rname" >> "$timedrows"
              # The FIRST timed row always claims the seat, rather than only one costing more than
              # zero. Comparing on `-gt` alone left a card whose every timed guard cost 0 reading
              # `-:0`, which is the reading an entirely UNTIMED card gives -- two states wearing one
@@ -360,6 +361,50 @@ echo "runs_red_self=$red_self"
 echo "runs_seconds_total=$seconds_total"
 echo "runs_seconds_absent=$seconds_absent"
 echo "runs_slowest=$slowest_name:$slowest_sec"
+
+# THE SHAPE BETWEEN THE SUM AND THE MAX. `runs_seconds_total` and `runs_slowest` are a sum and a
+# maximum, and between them a reader cannot tell a suite of 239 uniformly slow guards from one fast
+# suite carrying a short heavy tail. Those two trees want opposite repairs -- the first wants every
+# guard looked at, the second wants five. Measured `20260908.020050` over the card's 239 timed rows:
+# median 4s, p90 51s, and the five costliest carrying 2,417s of 6,464. So the tree is the second
+# kind, which is the shape `foundations/20260826-194850_the-happy-zone-and-the-thin-edge.md` asks a
+# suite to have -- a fast isolated middle with a few honest slow witnesses at the edge -- and no
+# reading said so.
+#
+# THE MEDIAN IS THE HALF THAT SAYS THE SUITE IS HEALTHY; the share is the half that says where an
+# hour went. Both are needed, because either alone reads as the other tree: a median of 4 with no
+# share hides that ten guards cost more than the other 229, and a share with no median cannot say
+# whether the remaining guards are cheap or merely less expensive.
+#
+# NAMED AND BOUNDED, like every other list this scan prints -- the repairable question is which
+# guards to look at, never how many there were. REPORTED, NEVER GATED: a guard that takes ten
+# minutes because it builds a toolchain is doing its job, and a ceiling could not tell it from one
+# that has quietly gone slow. The number is the finding; a ceiling is a later word.
+slowest_show="${SLOWEST_SHOW:-5}"
+echo "runs_slowest_shown=$slowest_show"
+if [ -s "$timedrows" ]; then
+  timed_n=$(wc -l < "$timedrows" | tr -d ' ')
+  # The median reads the LOWER of the two middles on an even count, which is the ordinary
+  # order-statistic answer and needs no arithmetic a shell would round differently.
+  median_row=$(((timed_n + 1) / 2))
+  echo "runs_seconds_median=$(sort -n "$timedrows" | sed -n "${median_row}p" | awk '{print $1}')"
+  slowest_sum=$(sort -rn "$timedrows" | head -n "$slowest_show" | awk '{s += $1} END {print s + 0}')
+  echo "runs_seconds_slowest_sum=$slowest_sum"
+  # Integer percent, floored. A tenth of a percent changes no decision a reader makes here, and
+  # integer division is the one arithmetic every POSIX shell agrees on.
+  if [ "$seconds_total" -gt 0 ]; then
+    echo "runs_seconds_slowest_share_pct=$((100 * slowest_sum / seconds_total))"
+  else
+    echo "runs_seconds_slowest_share_pct=0"
+  fi
+  sort -rn "$timedrows" | head -n "$slowest_show" | sed 's/^\([0-9]*\) \(.*\)$/runs_slowest_named: \2 \1s/'
+else
+  # An untimed card answers with the absence rather than with a zero, for the reason the block
+  # above already names one layer down: a missing measurement reading as a free guard is the fault.
+  echo "runs_seconds_median=absent"
+  echo "runs_seconds_slowest_sum=absent"
+  echo "runs_seconds_slowest_share_pct=absent"
+fi
 echo "guards_never_run_here=$never"
 echo "cadence_never_run_here=$never_cadence"
 echo "oldest_run=${oldest:-none}"
