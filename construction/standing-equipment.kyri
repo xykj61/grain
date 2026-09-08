@@ -1594,6 +1594,23 @@ path tools/m/mantra_weave_v1_lift_witness.rish
 tier lap
 seated 20260908.051232
 
+# The elder record, written back. The lift guard above answered the READING half of REDS %589:
+# an elder `mantra-weave-v1` record reads the same after the widening, since site and run are
+# constant across a record one hand wrote. `mantra/src/main.rye` WRITES that record on every
+# commit, so until a weave the module has advanced can be written back as three fields, "the
+# port moves no byte on disk" was a claim about reading wearing the clothes of a claim about
+# the record. `Weave.to_v1` is the other half, and the round trip is identity on the DOCUMENT
+# rather than on the weave -- the runs come back collapsed to `v1_run`, and the document is
+# unmoved because inside ONE site `next_run` and `next_pos` both only rise at the same apply,
+# so a higher run always carries a higher position. What the format cannot hold it refuses by
+# name: a second site, since the record has no field to tell two hands apart; and a merge whose
+# position order has parted from its document order, which the witness BUILDS rather than
+# argues. It ports nothing and moves no byte on disk.
+guard mantra_weave_v1_write
+path tools/m/mantra_weave_v1_write_witness.rish
+tier lap
+seated 20260908.123338
+
 guard mantra_diff
 path tools/m/mantra_diff_witness.rish
 tier lap
