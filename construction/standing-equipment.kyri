@@ -1561,8 +1561,9 @@ seated 20260908.183744
 # pass; `witness_reach_scan.sh` counted every one `unheard`. One choir row rather than 45 roster
 # rows, and the family is DISCOVERED rather than listed, since a hand-written list goes stale the
 # first lap somebody adds a glyph table and goes stale silently. Two faults met while writing it are
-# recorded in the scan, both because each read exactly like a pass: a glob assuming a middle segment
-# ran 44 of 45, and an untrimmed `wc` newline reached `sh` as two lines. Eight behaviors proven in a
+# recorded in the shared scan, both because each read exactly like a pass: a glob assuming a middle
+# segment ran 44 of 45, and an untrimmed `wc` newline reached `sh` as two lines. The scan is generic
+# from `20260908.191500` and `hunk_choir` is its second caller. Eight behaviors proven in a
 # pen, every refusal planted and then lifted, the bound shown from both sides at the bound itself.
 #
 # ONE HONEST LIMIT, measured rather than assumed: `witness_reach_scan.sh` counts a witness reached
@@ -1584,6 +1585,19 @@ guard fleet_rearm
 path tools/f/fleet_rearm_witness.rish
 tier cadence
 seated 20260908.185500
+
+# hunk_choir -- 86 witnesses cover the HUNK ladder, Chapter A's open image module and what grew
+# beside it, and NOT ONE was reached by any pass. One choir row rather than 86, over the GENERIC
+# `witness_family_scan.sh`: the font choir written one lap earlier was bolted to its own family, and
+# the very next family wanted the same thirty lines with one word changed, so the scan took a
+# `--dir` and a `--prefix` and both choirs now call it. A third family costs a roster row rather
+# than a file. Eleven behaviors proven in a pen, every refusal planted and then lifted, the bound
+# shown from both sides at the bound itself, and the two required arguments proven to refuse rather
+# than default -- since a silent default picks a family nobody chose.
+guard hunk_choir
+path tools/h/hunk_choir.rish
+tier cadence
+seated 20260908.191500
 
 # fleet_call -- a signal is not a file, so one-writer-per-checkout never reached it. Eight ships run
 # one program name from eight trees on one pier, and `pkill -f standing_equipment_run` therefore
