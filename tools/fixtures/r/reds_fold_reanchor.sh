@@ -9,6 +9,19 @@
 #
 #   sh tools/fixtures/r/reds_fold_reanchor.sh < rows.txt > rows-reanchored.txt
 #
+# THE FILTER IS GENERAL AND ITS NAME IS NOT (`20260908.104232`). Nothing here is REDS-specific: it
+# rewrites relative links for any prose moving from `construction/` down into `construction/archive/`,
+# which is the same move an ITINERARY landed-accounts shelf makes on every send. That shelf is
+# written BY HAND, by the send, with no tool in its path -- and the depth fault it causes fired five
+# times in one week from five different hands, each repairing it afterward.
+#
+#   ITINERARY account shelf, at the moment the block is written:
+#     sh tools/fixtures/r/reds_fold_reanchor.sh < account-block.txt >> construction/archive/<stamp>_itinerary-landed-accounts.md
+#
+# Prevention at write time and repair after the fact are two different tools and both are wanted:
+# this filter is the first, `tools/f/fold_shelf_link_repoint.sh` is the second, and the second exists
+# because the first was reachable and unknown rather than absent.
+#
 # THE TWO CLASSES, and only one of them was named. REDS %247 named this fault; REDS %270 met it a
 # second time and specified the fix as re-anchoring `](../` to `](../../`, with `](../REDS.md)`
 # held as written. Measured `20260826` over the living pin, a second form is there too:
