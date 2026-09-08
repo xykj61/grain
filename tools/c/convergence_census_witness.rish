@@ -22,6 +22,21 @@
 # `tools_read=1200` against its own bound of 1200: the corpus is 3,210, so the bound was silently
 # truncating two thirds of the tree and reporting one writer where thirty stand.
 #
+# THE FIFTH WRONG DENOMINATOR WAS A SOURCE ANSWERING FOR A TARGET (`20260908.154530`). The exclusion
+# tested the whole matched span, so `ca[t] "$tmp" > "$f"` was dropped on the `$tmp` sitting on its
+# SOURCE side -- and that shape is what `.claude/rules/exec-bit.md` prescribes, since writing through
+# the original inode preserves the mode the repository tracks. The census was therefore blind to the
+# writes this tree's own law requires, including `readme_metrics_splice.sh` and
+# `reds_ledger_headline_write.sh`, which `tools/hooks/pre-commit` runs on EVERY commit. The same
+# reading ran the other way too, admitting `dated_classify_seam.sh` on a `"$f"` that was a printf's
+# source while its target was a scratch file. The exclusion reads the target now; 7 -> 10 candidates,
+# 3 -> 5 proven, one false positive removed and four false negatives admitted.
+#
+# AND THE PREDICATE HAS A CONTROL NOW, which is what four of the five wrong denominators lacked:
+# `tools/fixtures/c/convergence_census_control.sh` plants both shapes in real repositories and
+# asserts the ELDER predicate disagrees on exactly the two legs the repair moves, because a repair
+# proven only in the passing direction cannot be told from a coincidence.
+#
 # REPORTED, NEVER GATED. A tool that legitimately runs once -- a publisher, a one-shot projection --
 # has nothing to converge, and no reading here can tell it from a tool that never checked.
 
@@ -39,6 +54,13 @@ assert scan.out contains "candidates_unproven=" else "convergence-census: the un
 # invariant: the corpus is printed and must exceed the writer population, since a writer is drawn
 # FROM it. A tools_read equal to the bound is the truncation this census was born from.
 assert scan.out contains "tools_read=" else "convergence-census: the corpus size went unreported -- a truncated corpus reads like a small tree"
+
+say "convergence-census: and the predicate is proven from both sides on planted repositories..."
+let control = run ["sh" "tools/fixtures/c/convergence_census_control.sh"]
+assert control.ok else "convergence-census: the control refused --\n${control.out}"
+assert control.out contains "legs_fail=0" else "convergence-census: a planted leg disagreed --\n${control.out}"
+assert control.out contains "exec_bit_idiom_counted -- yes" else "convergence-census: the exec-bit write idiom is unseen again"
+assert control.out contains "elder_dropped_the_exec_bit_idiom -- no" else "convergence-census: the elder predicate no longer fails the leg this repair exists for, so the repair proves nothing"
 
 say "convergence-census: and the foundation that states the claim still stands..."
 let found = run ["sh" "-c" "test -f foundations/20260823-222019_what-brix-infuse-is.md && echo present || echo absent"]

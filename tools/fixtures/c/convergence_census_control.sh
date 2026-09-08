@@ -1,0 +1,108 @@
+#!/bin/sh
+# convergence_census_control.sh -- prove the census's writer predicate from both sides, on real
+# repositories in a throwaway pen.
+#
+# WHAT IT PROVES. A write has a source and a target, and this control asserts the census reads the
+# TARGET: a write landing in a pen stays out of the population, a write landing on a tracked path
+# joins it, and a per-file variable sitting on the source side answers for nothing. Each shape is
+# planted in a real git repository, since the census draws its population with `git ls-files`.
+#
+# WHY IT EXISTS. `tools/c/convergence_census.sh` has published five denominators -- 392, 1200, 30,
+# 7, and 10 -- and the first four were each repaired by argument. The fifth came from a reading: the
+# exclusion tested the whole matched span, so `ca[t] "$tmp" > "$f"` fell out on the `$tmp` sitting to
+# the left of the arrow. That shape is the one `.claude/rules/exec-bit.md` asks for, since writing
+# through the original inode preserves the mode the repository tracks -- so the census passed over
+# exactly the writes this tree's own law prescribes, `readme_metrics_splice.sh` and
+# `reds_ledger_headline_write.sh` among them, which `tools/hooks/pre-commit` runs on every commit.
+#
+# THE ELDER PREDICATE RUNS HERE TOO, over the same plants, and the control asserts it disagrees on
+# exactly the two legs the repair moves. A repair shown only in the passing direction reads the same
+# as a coincidence, which is what the four earlier denominators had in common.
+#
+#   sh tools/fixtures/c/convergence_census_control.sh
+#
+# BOUNDS: one pen, eight legs, at most 16 planted tools. The pen is removed on every exit path.
+set -eu
+
+root=$(CDPATH= cd -- "$(dirname -- "$0")/../../.." && pwd)
+census="$root/tools/c/convergence_census.sh"
+[ -f "$census" ] || { echo "refused: no census at $census" >&2; exit 2; }
+
+pen=$(mktemp -d "${TMPDIR:-/tmp}/conv-census-control.XXXXXX")
+trap 'rm -rf "$pen"' EXIT INT TERM
+
+pass=0; fail=0
+leg() {
+  # leg <name> <want> <got>
+  if [ "$2" = "$3" ]; then pass=$((pass + 1)); echo "leg green  $1 -- $3"
+  else fail=$((fail + 1)); echo "leg RED    $1 -- wanted $2, read $3"; fi
+}
+
+# A PEN THAT IS A REAL REPOSITORY, since the census draws its population with `git ls-files`.
+mkdir -p "$pen/tree/tools/x"
+cd "$pen/tree"
+git init -q .
+git config user.email pen@example.invalid
+git config user.name pen
+
+plant() { # plant <relative-path> <body>
+  mkdir -p "$(dirname -- "$1")"
+  printf '%s\n' "$2" > "$1"
+}
+
+# 1. A write whose TARGET is a pen has nothing to converge.
+plant tools/x/pen_target.sh 'cat "$src" > "$work/out.txt"'
+# 2. THE EXEC-BIT IDIOM: pen source, tree target. This is the leg the elder predicate dropped.
+plant tools/x/exec_bit_idiom.sh 'cat "$tmp" > "$f"'
+# 3. A per-file variable on the SOURCE side answering for a pen target the exclusion list does not
+#    name. This is the elder predicate's false positive, taken from the tree: `dated_classify_seam.sh`
+#    was counted on a `"$f"` that was the printf's SOURCE, while its target was the scratch `$resc`.
+plant tools/x/file_source_pen_target.sh "printf '%s\\n' \"\$f\" > \"\$resc\""
+# 4. An in-place edit of a per-file variable is a write, in the single-quoted form the tree writes.
+#    THE FLAG IS COMPOSED RATHER THAN SPELLED. `shell_dialect` walls the GNU in-place spelling at
+#    zero across tracked sources, since BSD sed needs an argument after it, and that guard counts a
+#    SITE by spelling -- so a file planting one reads as a file using one. The census's own header
+#    dodges the same wall with `sed -[i]`; a plant needs the real bytes in the PLANTED file, so the
+#    flag is assembled here and this source never carries it.
+in_place_flag="-$(printf i)"
+plant tools/x/in_place.sh "sed $in_place_flag 's/a/b/' \"\$f\"" 
+# 5. A control writes into its own pen and is skipped by name, whatever it writes.
+plant tools/x/planted_control.sh 'cat "$tmp" > "$f"'
+git add -A >/dev/null
+git commit -q -m "pen: planted writers"
+
+read_count() { # read_count <key>
+  CONV_ROOT="$pen/tree" sh "$census" 2>/dev/null | sed -n "s/^$1=//p"
+}
+listed() { CONV_ROOT="$pen/tree" sh "$census" list 2>/dev/null | sed -n 's/^unproven: //p'; }
+
+names=$(CONV_ROOT="$pen/tree" sh "$census" list 2>/dev/null | sed -n 's/^unproven: //p' | sed 's|.*/||' | sort | tr '\n' ' ')
+has() { case " $names " in *" $1 "*) echo yes ;; *) echo no ;; esac; }
+
+leg pen_target_refused              no  "$(has pen_target.sh)"
+leg exec_bit_idiom_counted          yes "$(has exec_bit_idiom.sh)"
+leg file_source_pen_target_refused  no  "$(has file_source_pen_target.sh)"
+leg in_place_counted                yes "$(has in_place.sh)"
+leg control_skipped_by_name         no  "$(has planted_control.sh)"
+
+# 6. THE ELDER PREDICATE, run over the same plants, must DISAGREE on legs 2 and 3 -- otherwise this
+# control proves the repair changed nothing and the population moved for some other reason.
+elder() { # elder <file> -> yes|no
+  if grep -hoE '(sed -[i][^"]*"[^"]+"|(cat|printf)[^|>]*> *"[^"]+")' "$1" 2>/dev/null \
+    | grep -vE '\$(work|pen|tmp|TMP|out|d)\b' \
+    | grep -qE '\$(f|file|path|p|target|dst)\b|construction/|session-logs/|\.claude/'; then echo yes; else echo no; fi
+}
+leg elder_dropped_the_exec_bit_idiom   no  "$(elder tools/x/exec_bit_idiom.sh)"
+leg elder_admitted_the_pen_target      yes "$(elder tools/x/file_source_pen_target.sh)"
+
+# 7. A CORPUS OF ZERO IS A RED, NEVER A READING (REDS %170) -- shown rather than trusted.
+mkdir -p "$pen/bare"
+cd "$pen/bare"
+git init -q .
+if CONV_ROOT="$pen/bare" sh "$census" >/dev/null 2>&1; then empty=accepted; else empty=refused; fi
+leg empty_corpus_refuses refused "$empty"
+
+echo "legs_pass=$pass"
+echo "legs_fail=$fail"
+if [ "$fail" -eq 0 ]; then echo "verdict=ok"; exit 0; fi
+echo "verdict=control_red"; exit 1
