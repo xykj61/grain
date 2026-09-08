@@ -47,6 +47,9 @@ assert audit contains "Second SSH" else "sunn6: audit want Second SSH prose"
 
 let src = read-file "SOURCE.md"
 assert src contains "FP_SSH_SECOND" else "sunn6: SOURCE want FP_SSH_SECOND"
-assert src contains "SUNN6" else "sunn6: SOURCE want SUNN6 touch"
+# THE MARK IS THE WAYMARK, never the counted rung (`20260908.183500`, Keaton's word). SOURCE names
+# the ladder that seated its key-card fields; which rung of a closed ladder did it is a census the
+# Lexicon keeps, rather than a promise this face has to carry.
+assert src contains "SUNN" else "sunn6: SOURCE want the SUNN waymark on its key-card note"
 
 say "GREEN: sunn6 — ops · key-cards · example · scripts · SOURCE · legacy alias"

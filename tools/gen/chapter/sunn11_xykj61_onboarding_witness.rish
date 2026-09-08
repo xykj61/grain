@@ -9,15 +9,22 @@ say "sunn11: Style Radiant — beginner xykj61 · origin lane debrided kept."
 say "sunn11: Lens TAME — SUNN11 · clone lock · dual-push named · roster truth."
 
 let s = read-file "SOURCE.md"
-assert s contains "git clone https://github.com/xykj61/grain.git ~/grain" else "sunn11: SOURCE want xykj61 clone"
+# THE ASSERTION FOLLOWS THE LAW IT GUARDS (`20260908.183744`, Keaton's grant). SOURCE teaches the
+# PUBLIC clone now -- `grain-os/grain` -- because `7191a938b` made one README serve both
+# repositories and the onboarding path followed it. The elder line named the private remote, which
+# a newcomer cannot reach. Nothing ran this witness, so it stood red instead of saying so (`20260908.183635`).
+assert s contains "git clone https://github.com/grain-os/grain.git ~/grain" else "sunn11: SOURCE want the public grain-os clone line"
 assert s contains "dual-push" else "sunn11: SOURCE want dual-push language"
 assert s contains "REMOTE_ROSTER" else "sunn11: SOURCE want REMOTE_ROSTER cite"
 assert (s contains "git clone https://github.com/debrided/grain") == false else "sunn11: SOURCE must not clone debrided"
 # Door stamp may leave SOURCE Status as later doors accrete; metal above stays.
 
 let r = read-file "README.md"
-assert r contains "xykj61/grain" else "sunn11: README want xykj61/grain"
-assert r contains "beginner clone" else "sunn11: README want beginner clone phrase"
+assert r contains "SOURCE.md" else "sunn11: README want the SOURCE onboarding door"
+# The front door routes a newcomer to the first-hour tutorial now rather than carrying a "beginner
+# clone" phrase of its own, so the assertion asks what actually matters: that the door still names a
+# real place to start. A guard pinned to one wording fails on a rewrite that improved the page.
+assert r contains "docs-geode/tutorials/the-first-hour.md" else "sunn11: README want the first-hour door for a newcomer"
 
 let c = read-file "CLAUDE.md"
 assert c contains "xykj61/grain" else "sunn11: CLAUDE want xykj61/grain"
@@ -36,7 +43,11 @@ let f = read-file "manual/guides/first-season-personalize.md"
 assert f contains "xykj61/grain" else "sunn11: first-season-personalize want xykj61/grain"
 
 let roster = read-file "context/REMOTE_ROSTER.md"
-assert roster contains "`origin` | GitHub `debrided/grain`" else "sunn11: roster want origin debrided"
-assert roster contains "`xykj61` | GitHub `xykj61/grain`" else "sunn11: roster want xykj61 remote"
+# The remote was renamed `origin` -> `debrided` on `20260826.165307`, Keaton's word, and the roster
+# followed. This assertion kept the elder name for thirteen days because nothing ran it.
+assert roster contains "`debrided` | GitHub `debrided/grain`" else "sunn11: roster want origin debrided"
+# Same rename: `xykj61` -> `xy`, the anointed ordering remote whose name is the spelling this tree
+# actually types.
+assert roster contains "`xy` | GitHub `xykj61/grain`" else "sunn11: roster want xykj61 remote"
 
 say "GREEN: sunn11 — living onboarding clones xykj61 · dual-push named · roster origin kept"

@@ -2,7 +2,7 @@
 
 **Language:** EN  
 **Version:** `20260717.162114` (Eastern)  
-**Last updated:** `20260730.153549` (SUNN10 -- Livermore living face)  
+**Last updated:** `20260730.153549` (SUNN -- Livermore living face)  
 **Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 **Voice:** Kyri  
 **Status:** Scaffold -- conceptual overview; implementation status noted per claim

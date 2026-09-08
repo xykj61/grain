@@ -23,7 +23,10 @@ assert (r contains "The voice that writes in this style is Quin") == false else 
 let c = read-file "CONTRIBUTING.md"
 assert c contains "Voice:** Kyri" else "sunn12: CONTRIBUTING want Voice Kyri"
 assert c contains "context/KYRI.md" else "sunn12: CONTRIBUTING want KYRI.md"
-assert c contains "Kyri's Radiant Style" else "sunn12: CONTRIBUTING want Kyri Radiant Style"
+# THE WORKING STYLE IS GAUGE, seated `20260823.045448`, and Radiant keeps its name as the warm
+# register rather than as the law a commit message follows. `commit-messages.md` says Meter now.
+# These assertions pinned the elder law for sixteen days because nothing ran them (`20260908.183635`).
+assert c contains "Kyri" else "sunn12: CONTRIBUTING want Kyri named as the voice"
 assert c contains "Q-vane" else "sunn12: CONTRIBUTING want Q-vane kept"
 
 let o = read-file "ORGANIZING.md"
@@ -43,21 +46,23 @@ let clrs = read-file ".claude/rules/radiant-style.md"
 assert clrs contains "**Kyri** is the voice that writes" else "sunn12: claude radiant-style want Kyri writer"
 
 let csc = read-file ".cursor/rules/commit-messages.mdc"
-assert csc contains "Kyri's Radiant Style" else "sunn12: cursor commit-messages want Kyri Radiant"
+assert csc contains "Kyri" else "sunn12: cursor commit-messages want Kyri Radiant"
 assert csc contains "**Kyri's** voice" else "sunn12: cursor commit-messages want Kyri voice"
 
 let clc = read-file ".claude/rules/commit-messages.md"
-assert clc contains "Kyri's Radiant Style" else "sunn12: claude commit-messages want Kyri Radiant"
+assert clc contains "Kyri" else "sunn12: claude commit-messages want Kyri Radiant"
 assert clc contains "**Kyri's** voice" else "sunn12: claude commit-messages want Kyri voice"
 
 let css = read-file ".cursor/rules/session-logs.mdc"
 assert css contains "voice Kyri" else "sunn12: cursor session-logs want voice Kyri"
-assert css contains "record `voice Kyri`" else "sunn12: cursor session-logs want record voice Kyri"
+# Both twins carry `Record `voice Kyri`` with a capital R; this assertion asked for lowercase and so
+# could never have passed. A guard nothing runs never learns it is wrong.
+assert css contains "Record `voice Kyri`" else "sunn12: cursor session-logs want the record-voice sentence"
 assert (css contains "record `voice Quin`") == false else "sunn12: cursor session-logs must not require voice Quin"
 
 let cls = read-file ".claude/rules/session-logs.md"
 assert cls contains "voice Kyri" else "sunn12: claude session-logs want voice Kyri"
-assert cls contains "record `voice Kyri`" else "sunn12: claude session-logs want record voice Kyri"
+assert cls contains "Record `voice Kyri`" else "sunn12: claude session-logs want record voice Kyri"
 
 let q = read-file "context/QUIN.md"
 assert q contains "fifth OS variant" else "sunn12: QUIN.md want OS hat"
@@ -65,8 +70,13 @@ assert q contains "Q-vane" else "sunn12: QUIN.md want Q-vane"
 assert q contains "Standing voice:** **Kyri**" else "sunn12: QUIN.md header want Standing voice Kyri"
 
 let lex = read-file "context/LEXICON.md"
-assert lex contains "Elder writing-voice season" else "sunn12: LEXICON Quin want elder writing season"
-assert lex contains "SUNN0–" else "sunn12: LEXICON SUNN want SUNN0– progress"
+# The Lexicon's Quin row states the handover directly now rather than through the phrase "Elder
+# writing-voice season", and the next assertion already reads that sentence. One reading, once.
+assert lex contains "the writing voice passed to Riyo" else "sunn12: LEXICON Quin want the handover named"
+# ASCII-FIRST changed this text under the guard: the Lexicon wrote an EN DASH here until the sweep,
+# and this assertion still pinned the non-ASCII form. A guard nothing runs cannot notice a law
+# passing through the page it watches.
+assert lex contains "SUNN0-" else "sunn12: LEXICON SUNN want the SUNN0- span"
 assert lex contains "writing voice passed to Riyo" else "sunn12: LEXICON Quin want writing voice passed"
 
 say "GREEN: sunn12 — living writing voice Kyri (molted from Riyo) · Quin OS+Q-vane held · dated Voice stays"

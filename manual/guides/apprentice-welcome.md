@@ -3,7 +3,7 @@
 **Language:** EN  
 **Status:** Living guide — person-to-person welcome; not a seating of this pier’s voice  
 **Voice:** Keaton’s letter, lightly tightened by Riyo  
-**Last updated:** `20260730.145124` (EDT) · SUNN5
+**Last updated:** `20260730.145124` (EDT) - SUNN
 
 ---
 

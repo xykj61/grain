@@ -2,7 +2,7 @@
 
 **Language:** EN  
 **Seated:** `20260724.143155`  
-**Last updated:** `20260730.153243` (SUNN9 — living voice face)  
+**Last updated:** `20260730.153243` (SUNN -- living voice face)  
 **Voice:** Kyri  
 **Status:** Living pin  
 **Bound:** keep under `living_pin_max_bytes`  

@@ -4,20 +4,24 @@
 
 say "sunn10: Language EN — custody and overview name the living hand."
 say "sunn10: Style Radiant — Livermore · Riyo · xykj61 · dated Dunsford stays."
-say "sunn10: Lens TAME — SUNN10 · keys/README · grain-os/overview."
+say "sunn10: Lens TAME -- SUNN - keys/README - grain-os/overview."
 
 let k = read-file "keys/README.md"
 assert k contains "Voice:** Kyri" else "sunn10: keys want Voice Riyo"
 assert k contains "Keaton Dunsford" else "sunn10: keys want Keaton Dunsford"
 assert k contains "xykj61" else "sunn10: keys want xykj61"
-assert k contains "SUNN10" else "sunn10: keys want SUNN10 stamp"
+# THE ASSERTION FOLLOWS THE LAW IT GUARDS (`20260908.183744`, Keaton's grant). This witness had
+# pinned a fact the tree deliberately moved past, and nothing ran it, so it stood red rather than
+# saying so -- the shape REDS (`20260908.183635`) books. Updated to the living fact, and rostered so the next
+# drift is heard on the lap it happens.
+assert k contains "SUNN" else "sunn10: keys want the SUNN waymark on its face"
 assert k contains "Keaton Dunsford" else "sunn10: keys want dated Dunsford testimony kept"
 assert (k contains "current identity** (`xykj61` / Keaton Dunsford") == false else "sunn10: keys must not keep Dunsford as current identity"
 
 let o = read-file "manual/grain-os/overview.md"
 assert o contains "Voice:** Kyri" else "sunn10: overview want Voice Riyo"
 assert o contains "Keaton Dunsford" else "sunn10: overview want Keaton Dunsford"
-assert o contains "SUNN10" else "sunn10: overview want SUNN10 stamp"
+assert o contains "SUNN" else "sunn10: overview want the SUNN waymark on its face"
 assert o contains "xykj61" else "sunn10: overview want xykj61"
 assert o contains "intentionally unpaired" else "sunn10: overview want Quin unpaired"
 assert o contains "context/KYRI.md" else "sunn10: overview want RIYO.md"
