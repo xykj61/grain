@@ -59,6 +59,7 @@ else
   echo "clean_reads_zero=no"
 fi
 [ "$(field ratchets_over_ceiling)" = "0" ] && echo "clean_under_ceiling=yes" || echo "clean_under_ceiling=no"
+[ "$(field unnamed_assert)" = "0" ] && echo "clean_assert_named=yes" || echo "clean_assert_named=no"
 clean_file "$COMMENTED/also.rye"
 [ "$(read_field authored)" = "1" ] && echo "roster_comment_stripped=yes" || echo "roster_comment_stripped=no"
 
@@ -79,10 +80,53 @@ printf 'const std = @import("std");\nconst assert = std.debug.assert;\npub fn lo
 snap
 [ "$(field invariant_gap)" = "1" ] && echo "invariant_gap_counted=yes" || echo "invariant_gap_counted=no"
 [ "$(field zero_assert)" = "0" ] && echo "invariant_gap_leaves_zero_alone=yes" || echo "invariant_gap_leaves_zero_alone=no"
-[ "$(field ratchets_over_ceiling)" = "1" ] && echo "invariant_gap_over_ceiling_refused=yes" || echo "invariant_gap_over_ceiling_refused=no"
+# TWO RATCHETS MOVE HERE, not one, and that is a finding rather than a nuisance: a file that
+# asserts and names no invariant ANYWHERE necessarily holds an assert naming nothing, so the elder
+# file reading is a strict subset of the per-assert one added below. Case 3b plants inside a file
+# that already carries a comment, which is the only way to move the newer reading alone.
+[ "$(field ratchets_over_ceiling)" = "2" ] && echo "invariant_gap_over_ceiling_refused=yes" || echo "invariant_gap_over_ceiling_refused=no"
 clean_file "$ROOM/loud.rye"
 [ "$(read_field invariant_gap)" = "0" ] && echo "invariant_gap_cleared=yes" || echo "invariant_gap_cleared=no"
 rm -f "$ROOM/loud.rye"
+
+# 3b -- THE PER-ASSERT READING, which is the one the rule's own word EACH asks for. Its sibling
+# above is a file question and goes quiet the moment a file names one invariant anywhere, so every
+# case below plants inside a file that already carries a `// invariant:` -- otherwise the elder
+# reading would move too and neither could be told apart from the other.
+#
+# An assert with no comment above it is unnamed: counted, over the pen's ceiling, named by file,
+# and read back to zero once the comment arrives.
+printf 'const std = @import("std");\nconst assert = std.debug.assert;\npub fn two() void {\n    // invariant: the first one says why.\n    assert(true);\n\n    assert(false);\n}\n' > "$ROOM/pair.rye"
+snap
+[ "$(field unnamed_assert)" = "1" ] && echo "unnamed_assert_counted=yes" || echo "unnamed_assert_counted=no"
+[ "$(field module_assert)" = "3" ] && echo "module_asserts_counted=yes" || echo "module_asserts_counted=no"
+[ "$(field invariant_gap)" = "0" ] && echo "unnamed_leaves_gap_alone=yes" || echo "unnamed_leaves_gap_alone=no"
+grep -q "detail: unnamed_assert $ROOM/pair.rye 1" "$SNAP" && echo "unnamed_assert_named=yes" || echo "unnamed_assert_named=no"
+[ "$(field ratchets_over_ceiling)" = "1" ] && echo "unnamed_over_ceiling_refused=yes" || echo "unnamed_over_ceiling_refused=no"
+
+# A BLANK LINE IS THE BOUNDARY, and the case above is what proves it: the same file with the blank
+# line closed reads zero, so the walk stops where a reader's eye stops.
+printf 'const std = @import("std");\nconst assert = std.debug.assert;\npub fn two() void {\n    // invariant: one comment carries the run beneath it.\n    assert(true);\n    assert(false);\n}\n' > "$ROOM/pair.rye"
+[ "$(read_field unnamed_assert)" = "0" ] && echo "run_under_one_comment_named=yes" || echo "run_under_one_comment_named=no"
+
+# A multi-line comment block that OPENS on the invariant still names the assert beneath it, which
+# is how the longer reasons in this tree are actually written.
+printf 'const std = @import("std");\nconst assert = std.debug.assert;\npub fn blk() void {\n    // invariant: the block opens on the word,\n    // and the reason runs on past it.\n    assert(true);\n}\n' > "$ROOM/pair.rye"
+[ "$(read_field unnamed_assert)" = "0" ] && echo "comment_block_names=yes" || echo "comment_block_names=no"
+rm -f "$ROOM/pair.rye"
+[ "$(read_field unnamed_assert)" = "0" ] && echo "unnamed_assert_cleared=yes" || echo "unnamed_assert_cleared=no"
+
+# 3c -- a proving file's asserts are counted apart and gated nowhere. A `*_witness.rye` asserts
+# about another program's OUTPUT, so the rule's `// invariant:` is the wrong sentence above it.
+# The same bytes under the two names must land in two different counters.
+printf 'const std = @import("std");\nconst assert = std.debug.assert;\n// invariant: the file names one, so the elder reading stays quiet and this one stands alone.\npub fn go() void {\n    assert(true);\n}\n' > "$ROOM/proof_witness.rye"
+snap
+[ "$(field proving_unnamed)" = "1" ] && echo "proving_counted_apart=yes" || echo "proving_counted_apart=no"
+[ "$(field unnamed_assert)" = "0" ] && echo "proving_leaves_module_alone=yes" || echo "proving_leaves_module_alone=no"
+[ "$(field ratchets_over_ceiling)" = "0" ] && echo "proving_gates_nothing=yes" || echo "proving_gates_nothing=no"
+mv "$ROOM/proof_witness.rye" "$ROOM/proof.rye"
+[ "$(read_field unnamed_assert)" = "1" ] && echo "same_bytes_module_counted=yes" || echo "same_bytes_module_counted=no"
+rm -f "$ROOM/proof.rye"
 
 # 4 -- a file with no functions is authored and is asked for nothing. A data table or an enum
 # declaring no `fn` states no invariant because it has none to state.

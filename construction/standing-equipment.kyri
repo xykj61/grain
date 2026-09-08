@@ -385,6 +385,30 @@ tier lap       # authored Rye style, named on touch by the same
 # files while the printed population grew a hundredfold. The twelve keep a wall of their own at
 # zero, each printed by name.
 #
+# AND ITS OWN HEADER NAMED A READING IT NEVER MADE, caught `20260908.170042` on the air rota --
+# the row that feels along a boundary and presses each post. The scan opened by saying it counts
+# "at least one `assert(`, each preceded by a `// invariant:` comment. This scan counts both," and
+# both of its readings were FILE questions: does this source assert at all, does it name an
+# invariant anywhere. The word the rule turns on is EACH, and no instrument in this tree read it.
+# `unnamed_assert` reads it now: 6,619 of 24,495 asserts across the 859 asserting module sources
+# name nothing. So 73 percent of ASSERTS are named, while 899 of the 1,100
+# function-bearing files -- 82 percent -- already satisfied the file reading beside it.
+#
+# THE SPLIT IS WHAT MAKES THE NUMBER MEAN ANYTHING. A `*_witness.rye` asserts about another
+# program's OUTPUT, so its 2,588 unnamed asserts are correct practice rather than debt -- reported
+# here and gated nowhere. Read whole, `glow/` scores 1.1 percent named and reads as the worst room
+# in the tree; read on its modules alone it scores 92 percent, and those 2,331 asserts were its
+# witnesses all along. A reading that libels a room is a reading of the pattern rather than of the
+# tree, which is `tame_style_app_sites`' own finding one room over on the same day.
+#
+# THE ELDER READING IS A STRICT SUBSET, proven by plant rather than argued: a file counted by
+# `invariant_gap` necessarily holds an assert counted here, so the control's case 3 now watches two
+# ratchets move together, and case 3b plants inside a file that already carries a comment, the only
+# way to move the newer reading alone. A blank line breaks the pairing and a comment block opening
+# on the invariant carries the run beneath it -- both shown from the failing side. Control 24 legs
+# -> 37. The reading costs 2.5s of a lap pass, one `awk` per batch carrying a single flag forward,
+# never one grep per file.
+#
 # AND ITS FIRST DRAFT PAID DIFFUSER'S TAX. Three greps per file against 1,127 sources is 3,381
 # processes and 19.3s; three list-wide `grep -l` readings plus `comm` set arithmetic is six, and
 # returns the same three counts in 237ms. The witness fell 47.4s -> 2.0s with the control included.
@@ -396,7 +420,7 @@ tier lap       # authored Rye style, named on touch by the same
 # is what it costs.
 guard rune_assert_sweep
 path tools/r/rune_assert_sweep.rish
-tier lap   # 2.0s (0.24s scan, 1.8s control); 1,127 derived authored files, plus the twelve elder cores by name
+tier lap   # 7.1s (3.0s scan, 4.1s control); 1,127 derived authored files, plus the twelve elder cores by name
 seated 20260908.111848
 
 guard opening_lines

@@ -48,7 +48,7 @@ Every tool below sits on `construction/standing-equipment.kyri`, so a roster pas
 | `tools/c/chapter_allocator_witness.rish` | the chapter-allocator reflex, two walls at zero over 1,958 sources | lap |
 | `tools/o/opening_lines_witness.rish` | the opening triad, **1,073 hosted `.rye` derived from the rooms roster** | lap |
 | `tools/t/tame-check.rish` | unqualified assert, `Self = @This()`, tabs, trailing whitespace, **1,127 authored `.rye` derived from the rooms roster** | lap |
-| `tools/r/rune_assert_sweep.rish` | asserts stated at all, **1,127 authored `.rye` derived from the rooms roster**, plus the twelve elder cores by name | lap |
+| `tools/r/rune_assert_sweep.rish` | asserts stated at all, and **each one named** -- 1,127 authored `.rye` derived from the rooms roster, plus the twelve elder cores by name | lap |
 | `tools/t/tame_style_long_fn_witness.rish` | functions past 70 lines | cadence |
 | `tools/w/width_check_th3.rish` | Mantra's own width reading | lap |
 | `tools/l/living_docs_lint.rish` | living-doc links, status, retired words -- advise only | cadence |
