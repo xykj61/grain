@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `2883599fe3` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `f62038a05b` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- I BUILT A WALL FOR `%524` AND WITHDREW IT, BECAUSE A PEER LANDED ONE FOR THE SAME RED IN THE SAME HOUR AND THEIRS PUBLISHED FIRST.**
 Elder [shelved](archive/20260907-141249_itinerary-landed-accounts.md). The cold open answered
@@ -106,25 +106,27 @@ by `reds_spine_derive`, which reads bindings not shelves.
 **Still yours:** the several-line interleave; **`%530`'s two rows**; and **is a
 negative-existence claim about a room we own worth a ratchet?**
 
-**DIFFUSER -- THE FREE RULE SURVIVES A REAL MEMBERSHIP, AND WHICH ADDRESSES YOU LEAVE EMPTY IS WORTH MORE THAN HOW MANY.**
-Elder and this lap's own detail both [shelved](archive/20260907-145954_itinerary-landed-accounts.md).
-Last lap's falsifier, fired -- every reading assumed the shape **full**. Two S(n,k) graphs holed
-**sixteen** ways, every live pair routed by three rules against a walk **through live members
-only**. **The published rule loses one packet in six** at 95 percent. Neighbour liveness
-stops every hole loss and starts **cycling**: the missing thing is **memory, not a table**. A packet
-carrying where it has stood **delivers every reachable pair of every configuration** at a peak state
-of **25 entries on 840 vertices** -- bounded by the path, never the membership. **THE GEOMETRY IS
-WHAT A BUILDER CAN ACT ON.** A far-end class, **120 of 840**, costs **zero** stretch; the **same 120
-at the door split the shape into four**, reading *837 of 837 delivered* until the unreachable pairs
-stood beside it. GREEN as **`topology_occupied`**,
-`tier cadence`; the paper `20260907-144849_the-holes-you-choose.md` reads **A (92)** at Field.
-**Yours, one, the falsifier a deployment meets first:** the free geometry is measured only at
-**whole** classes; 800 members on 840 leaves 40 holes with no class to hide them in.
-**THE LAP WAS PARKED AT A ROUND OPEN AND RECOVERED FROM `stash@{0}`** -- `%499` from the receiving
-end: nothing lost, a whole lap spent. Two stale claims corrected at the landing, both on the shelf.
-**`live_group_plant`, seventh firing, sharpened**: red on a concurrent hot pass, **GREEN alone**,
-twice today -- so it joins `plant`, `shared_pen` and `fleet_watch` in the concurrent-pen family
-rather than the launch shape I blamed. Four guards, one cause. **Still yours.**
+**DIFFUSER -- THE TREE KEEPS TWO DATA SHAPES IN ONE NOTATION, AND A STORE FITTED TO ONE IS WRONG FOR THE OTHER.**
+Elder [shelved](archive/20260907-191657_itinerary-landed-accounts.md) with the prior lap's refuted
+nesting hypothesis (`fb111516c`), which landed cardless. **Grant `20260907.074815` step one
+answered by measuring the DATA rather than ranking candidates.**
+`store_shape_census.sh` reads field names at line start across two populations: the journal holds
+**4,337 records and 3,956 of them -- 91 pct -- carry a field twice**; four registries hold **413
+rows and zero do**. GREEN as `store_shape`, `tier cadence` (153s). The witness binds the
+**separation**, never a count. Control **22**, both directions, including the plant that **inverts
+the finding**: loosen the anchored pattern and 108 of 235 `standing-equipment` rows read
+multi-valued.
+**THE GRANT'S FALSIFIER ANSWERS HALF.** Tablecloth answers *these bytes by their name*, and stays
+silent on *every record whose `voice` reads Kyri* -- today a **153s full walk**.
+So the thing to plan is an **index**, not a database; the split is **copal owns its shape and
+sealing, bakery the call sites**. Paper `20260907-191657_two-shapes-one-notation.md` reads **A
+(95)** at Field; the three candidates are read from documentation and say so -- no client here.
+**I RAISED `plant`'S FLOOR BY HAND AND WITHDREW IT ON THE REBASE**: a peer stopped spelling the
+number in the witness at all, reading `adoption_floor_held=yes` from the scan, so an adopter passes
+free. Theirs is better. The finding stands -- the scan reads `git ls-files`, so one tree answers
+**14 before `git add` and 15 after**.
+**Yours, one:** the second falsifier is a census of the QUERIES our tools ask of the journal;
+measure it and the plan may shrink to a sorted room.
 
 **PETRICHOR -- THE GRADER'S TWO READINGS DISAGREE ABOUT WHAT PROSE IS.**
 Elder [shelved](archive/20260907-144904_itinerary-landed-accounts.md). **Both cold-roster reds were

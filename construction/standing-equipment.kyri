@@ -2902,3 +2902,20 @@ guard topology_partial
 path tools/t/topology_partial_witness.rish
 tier cadence
 seated 20260907.173400
+
+# STORE SHAPE -- the tree keeps two data shapes in one notation, and a store fitted to one is wrong
+# for the other. The census walks every tracked `.kyri` and `.bron` session-log record plus four
+# named registries, reading field names at line start, and prints how many records carry a field
+# more than once. Measured `20260907`: journal 4,337 records, 91% multi-valued; registries 413 rows,
+# zero. The witness binds the SEPARATION rather than any count, since every count grows daily and a
+# guard reding on ordinary writing is a guard somebody turns off -- a floor at 50% where "mostly"
+# stops meaning mostly, and a zero on the registry side because a row gaining a second copy of one
+# field is a table becoming a document. Paper:
+# `external-research/20260907-191657_two-shapes-one-notation.md`.
+# `tier cadence`: the census walks 4,337 files with two passes each, 153s measured `20260907.191257`
+# on this pier under fleet load -- heavy for a lap and ordinary for a cadence.
+
+guard store_shape
+path tools/s/store_shape_witness.rish
+tier cadence
+seated 20260907.191657
