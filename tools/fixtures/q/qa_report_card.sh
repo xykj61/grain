@@ -409,7 +409,40 @@ fi
 # WHICH LINES THIS READING CAN SEE, stated because for a long time it was not. Flesch-Kincaid is
 # arithmetic over sentences, and a table row, a list item, a heading and a bold-key header line hold
 # none -- so all four are held out, the same call `reference_block.awk` makes for Register one
-# reading up. That part is right. What was NOT stated is that the link count rides in the same awk,
+# reading up. That part is right.
+#
+# WHAT WAS WRONG WITH IT, AND WHY THE FIX IS NOT THE ONE THE RED PROPOSED (REDS %574). The elder
+# card rule was the single pattern `/^[ \t]*[-*>#]/` -- a line opening with a list marker OR an
+# emphasis marker, with no test for the whitespace that tells the two apart. Markdown needs that
+# whitespace: `- item` is a list, `**Lotus** is Grain's own creative suite` is a paragraph, and
+# `*May every vessel stay sealed in motion.*` is a radiant wish. So the reading dropped every
+# sentence this tree's own style rules ask for -- Gauge writes a paragraph's claim in bold at its
+# head, and `radiant-wishes-ending` closes an earned page in italics. Measured over the 45 graded
+# pages of the door, teaching and candidate rosters on `20260908.085832`: **155 bold-led prose
+# lines on 33 pages, and 55 italic-led lines on 42 of the 45**. The card was blind to the closing
+# line of nearly every front door it grades.
+#
+# THE RED NAMED THE CURE AS ADOPTING THE REGISTER RULE, AND THE MEASUREMENT REFUSED IT. Register's
+# three line rules do keep both forms, so they fix the blindness -- and they also admit the
+# `**Key:** value` header line, which holds no sentence and is the fourth kind held out above.
+# Across the same 45 pages that is **232 header lines against 155 bold-led prose lines**, on 44 of
+# 45 pages: adopting the shadow wholesale would let in more noise than signal, by count. Composites
+# under it moved 19 down, 7 up, mean -1.42 -- the net of two opposite errors partly cancelling,
+# which is why 7 pages ROSE under a reading everyone called stricter.
+#
+# SO THE RULE IS THE THIRD ONE: Register's marker-then-whitespace tests, PLUS a hold-out for the
+# `**Key:**` header line -- bold run ending in a colon, and no terminal punctuation, since a line
+# that ends in a full stop is a sentence whatever it opens with. Measured across the same 45:
+# **22 unchanged, 13 up, 10 down, mean +0.58, worst fall 5 (`amphora/README.md`), best rise 8**
+# (`docs-geode/edu/yonder/pleac/README.md`). **No page crosses below the B door**, and two rise
+# above it -- `expanding-prompts/components/README.md` and `mandate/README.md` -- which were held
+# under the door by a blindness rather than by their prose.
+#
+# THE RESIDUE, NAMED RATHER THAN SWALLOWED: the hold-out reads a colon INSIDE the bold run, so the
+# `**Standing witnesses** (twelve at tier lap): ...` form -- colon outside -- is still counted as
+# prose. That is **44 lines of the 276** across the 45, and it is the whole of `amphora`'s 5-point
+# fall. Widening it wants a rule that can tell a parenthetical from a sentence, which is a bigger
+# question than this repair, so it is measured here rather than guessed at. What was NOT stated is that the link count rides in the same awk,
 # so a citation on any of those lines is held out with the words, and the density below is computed
 # over running prose alone.
 #
@@ -429,10 +462,10 @@ reach_read() { awk -v gc="$grade_ceiling" -v xc="$xref_ceiling" -v rule="$1" '
   /^```/ { infence = 1 - infence; next }
   infence { next }
   /^[ \t]*\|/ { next }
-  rule != "register" && /^[ \t]*[-*>#]/ { next }
-  rule == "register" && /^[ \t]*[-*_][-*_ \t]*$/ { next }
-  rule == "register" && /^[ \t]*[-*+][ \t]/ { next }
-  rule == "register" && /^[ \t]*[>#]/ { next }
+  /^[ \t]*[-*_][-*_ \t]*$/ { next }
+  /^[ \t]*[-*+][ \t]/ { next }
+  /^[ \t]*[>#]/ { next }
+  rule == "card" && /^[ \t]*\*\*[^*]+:\*\*/ && $0 !~ /[.!?]["`)]?[ \t]*$/ { next }
   /^[ \t]*$/ { next }
   {
     line = $0
@@ -848,7 +881,7 @@ echo "reach_links=$links of $links_all on the page ($links_held held out with th
 # construction/ITINERARY.md rather than settled quietly inside a report.
 reach_prose_held=$(( sentences - reach_sentences ))
 [ "$reach_prose_held" -lt 0 ] && reach_prose_held=0
-echo "reach_prose=$reach_sentences of $sentences sentences the register reading sees ($reach_prose_held held out where the two line rules part -- this reading skips a marker alone, the register scan a marker then whitespace, so a bold-led body paragraph parts company; reported, never scored)"
+echo "reach_prose=$reach_sentences of $sentences sentences the register reading sees ($reach_prose_held held out where the two line rules part -- both now read a marker then whitespace, so what parts company is the \`**Key:**\` header line this reading holds out and the register reading counts; reported, never scored)"
 echo "reach_mode=$reach_mode (declares_index=$declares_index; index floor $index_floor words)"
 echo "grade_mode=$grade_mode (floor $register_floor sentences, cited from prose_register_scan.sh)"
 echo "truth_counted=$truth_counted ($unresolved of $cited cited paths unresolved; $illustrations placeholder shapes read as illustrations)"

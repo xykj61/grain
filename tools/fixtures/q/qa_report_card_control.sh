@@ -167,10 +167,13 @@ echo "$el" | grep -q "reach_links=0 of 0 " \
   && echo "filtered_count_reproduces_the_blindness=yes" \
   || echo "filtered_count_reproduces_the_blindness=no ($(echo "$el" | sed -n 's/^\(reach_links=[^(]*\).*/\1/p'))"
 
-# 4b -- THE SENTENCES THE DENSITY READING CANNOT SEE, the other half of the same blindness. A body
-# paragraph opening with a bold key starts with `*`, so the reach awk's marker-alone skip drops it
-# while prose_register_scan.sh -- marker THEN whitespace -- reads it as the prose it is. Two scored
-# readings on one card then measure two different documents.
+# 4b -- THE SENTENCES THE DENSITY READING ONCE COULD NOT SEE, and the repair that gave them back
+# (REDS %574). A body paragraph opening with a bold key starts with `*`, and the elder reach awk
+# skipped a marker ALONE, so it threw the paragraph away as if it were a bullet while
+# prose_register_scan.sh -- marker THEN whitespace -- read it as the prose it is. Two scored
+# readings on one card measured two different documents. Both now read marker-then-whitespace, so
+# the plant below is seen whole; the leg that proves the repair bites restores the elder pattern in
+# a copy of the card and watches the same page collapse to one sentence.
 #
 # THE PARAGRAPHS BELOW STAND ON ONE LINE EACH, which is what makes the fault reproduce. A bold-led
 # paragraph wrapped across two lines leaks its continuation back into the reading, since only the
@@ -194,9 +197,9 @@ ob=$(run bolded.md --setting door)
 rp_seen=$(echo "$ob" | sed -n 's/^reach_prose=\([0-9]*\) of .*/\1/p')
 rp_all=$(echo "$ob" | sed -n 's/^reach_prose=[0-9]* of \([0-9]*\) .*/\1/p')
 rp_held=$(echo "$ob" | sed -n 's/^reach_prose=.* (\([0-9]*\) held out.*/\1/p')
-[ "$rp_held" -gt 0 ] 2>/dev/null \
-  && echo "bold_body_paragraphs_reported=yes" \
-  || echo "bold_body_paragraphs_reported=no ($(echo "$ob" | sed -n 's/^\(reach_prose=[^(]*\).*/\1/p'))"
+[ "$rp_seen" = "$rp_all" ] && [ "$rp_held" = 0 ] 2>/dev/null \
+  && echo "bold_body_paragraphs_now_read=yes" \
+  || echo "bold_body_paragraphs_now_read=no ($(echo "$ob" | sed -n 's/^\(reach_prose=[^(]*\).*/\1/p'))"
 [ -n "$rp_all" ] && [ $((rp_seen + rp_held)) -eq "$rp_all" ] \
   && echo "reach_prose_adds_up=yes" || echo "reach_prose_adds_up=no ($rp_seen + $rp_held vs $rp_all)"
 
@@ -208,19 +211,25 @@ op=$(run plainly.md --setting door)
   && echo "plain_paragraphs_hold_out_nothing=yes" \
   || echo "plain_paragraphs_hold_out_nothing=no ($(echo "$op" | sed -n 's/^\(reach_prose=[^(]*\).*/\1/p'))"
 
-# THE LEG THAT TELLS THIS REPORT FROM A DECORATION TOO. The elder is the state where the gap could
-# not be seen from either side: give the register scan the reach awk's own marker-alone rule and
-# both readings go equally blind, so the page reads one sentence of one and reports nothing held.
-mkdir -p "$pen/elderprose/tools/fixtures/q" "$pen/elderprose/tools/fixtures/p"
-cp "$pen/tools/fixtures/q/qa_report_card.sh" "$pen/elderprose/tools/fixtures/q/qa_report_card.sh"
-for d in $deps; do mkdir -p "$pen/elderprose/$(dirname "$d")" && cp "$d" "$pen/elderprose/$d"; done
-sed 's%^    /\^\[ \\t\]\*\[-\*+\]\[ \\t\]/ { next }.*$%    /^[ \\t]*[-*>#]/ { next }%' \
-  "$pen/tools/fixtures/p/prose_register_scan.sh" > "$pen/elderprose/tools/fixtures/p/prose_register_scan.sh"
-cp "$pen/bolded.md" "$pen/elderprose/"
-ep=$( ( cd "$pen/elderprose" && QA_CARD_ROOT=. sh tools/fixtures/q/qa_report_card.sh bolded.md --setting door ) 2>&1 )
-[ "$(echo "$ep" | sed -n 's/^reach_prose=.* (\([0-9]*\) held out.*/\1/p')" = 0 ] \
-  && echo "elder_readings_were_equally_blind=yes" \
-  || echo "elder_readings_were_equally_blind=no ($(echo "$ep" | sed -n 's/^\(reach_prose=[^(]*\).*/\1/p'))"
+# THE LEG THAT PROVES THE REPAIR BITES, shown from the failing side rather than asserted. Restore
+# the elder marker-alone pattern in a copy of the card and the same four-sentence page collapses to
+# the one line that opens with no marker at all -- which is the fault exactly as it stood.
+mkdir -p "$pen/eldercard/tools/fixtures/q"
+for d in $deps; do mkdir -p "$pen/eldercard/$(dirname "$d")" && cp "$d" "$pen/eldercard/$d"; done
+sed -e 's%^  /\^\[ \\t\]\*\[-\*_\]\[-\*_ \\t\]\*\$/ { next }$%  rule != "register" \&\& /^[ \\t]*[-*>#]/ { next }%' \
+    -e 's%^  /\^\[ \\t\]\*\[-\*+\]\[ \\t\]/ { next }$%  rule == "register" \&\& /^[ \\t]*[-*_][-*_ \\t]*$/ { next }%' \
+    -e 's%^  /\^\[ \\t\]\*\[>#\]/ { next }$%  rule == "register" \&\& /^[ \\t]*[-*+][ \\t]/ { next }%' \
+    -e 's%^  rule == "card" \&\& /\^\[ \\t\]\*\\\*\\\*\[\^\*\]+:\\\*\\\*/.*$%  rule == "register" \&\& /^[ \\t]*[>#]/ { next }%' \
+  "$pen/tools/fixtures/q/qa_report_card.sh" > "$pen/eldercard/tools/fixtures/q/qa_report_card.sh"
+cmp -s "$pen/eldercard/tools/fixtures/q/qa_report_card.sh" "$pen/tools/fixtures/q/qa_report_card.sh" \
+  && echo "elder_card_plant_landed=no -- the sed matched nothing and the pen is unmutated" \
+  || echo "elder_card_plant_landed=yes"
+cp "$pen/bolded.md" "$pen/eldercard/"
+ec=$( ( cd "$pen/eldercard" && QA_CARD_ROOT=. sh tools/fixtures/q/qa_report_card.sh bolded.md --setting door ) 2>&1 )
+ec_seen=$(echo "$ec" | sed -n 's/^reach_prose=\([0-9]*\) of .*/\1/p')
+[ "$ec_seen" = 1 ] && [ "$rp_seen" -gt "$ec_seen" ] \
+  && echo "elder_card_read_one_sentence_of_four=yes" \
+  || echo "elder_card_read_one_sentence_of_four=no ($ec_seen vs $rp_seen)"
 
 # 4c -- THE SHADOW READING, which puts a number on the question 4b could only name. The report above
 # says the two scored readings measure two different documents and leaves the decision on
@@ -230,9 +239,11 @@ ep=$( ( cd "$pen/elderprose" && QA_CARD_ROOT=. sh tools/fixtures/q/qa_report_car
 # differ in exactly one thing.
 #
 # THE PLANT IS THE HOUSE STYLE ITSELF: eight short plain sentences that clear the register floor,
-# then three bold-led paragraphs written the way this tree writes an administrative page. The card
-# reads the eight and scores A+; the shadow reads all eleven and scores B. Nothing about the page
-# changed between those two readings except which lines were admitted.
+# then three long `**Key:**` HEADER lines -- a bold run closing on a colon, no terminal punctuation
+# -- written the way this tree writes an administrative head. Since REDS %574 both readings admit a
+# bold-led PARAGRAPH, so what the two rules now part on is exactly this: the card holds a header
+# line out, the register reading counts it. Nothing about the page changes between the two readings
+# except whether three lines carrying no sentence enter a sentence-counting arithmetic.
 cat > "$pen/housestyle.md" <<'EOF'
 # A long page written in this tree's own house style
 
@@ -240,14 +251,14 @@ cat > "$pen/housestyle.md" <<'EOF'
 
 This opening line is plain and short, and the reach reading sees it. Here is a second plain line, also short. A third plain line follows it. A fourth plain line stands here. A fifth plain line stands here too. A sixth plain line joins them. A seventh plain line is here. An eighth plain line closes the plain run.
 
-**What the bold key carries:** a substantially longer and considerably more polysyllabic paragraph whose accumulated subordinate constructions demonstrably elevate the computed readability grade beyond the ceiling this setting establishes for documentation intended for newcomers.
+**What the bold key carries:** a substantially longer and considerably more polysyllabic administrative formulation whose accumulated subordinate constructions demonstrably elevate the computed readability grade beyond the ceiling this setting establishes for documentation intended for newcomers
 
-**Why the elevation matters here:** the incorporation of these characteristically dense administrative formulations into the measured population necessarily reconfigures the arithmetic underpinning the readability determination, notwithstanding the identical vocabulary standing unaltered throughout.
+**Why the elevation matters here:** the incorporation of these characteristically dense administrative constructions into the measured population necessarily reconfigures the arithmetic underpinning the readability determination, notwithstanding the identical vocabulary standing unaltered throughout
 
-**What a reader consequently loses:** an evaluative instrument systematically excluding precisely those paragraphs exhibiting the greatest syntactic complexity will predictably communicate an unrepresentatively favorable impression of comprehensibility.
+**What a reader consequently loses:** an evaluative instrument systematically admitting precisely those header lines exhibiting the greatest syntactic complexity will predictably communicate an unrepresentatively unfavorable impression of comprehensibility
 EOF
 hs=$(run housestyle.md --setting door --service 100)
-[ "$(val "$hs" letter)" = "A+" ] && [ "$(val "$hs" letter_shadow)" = "B" ] \
+[ "$(val "$hs" letter)" = "A+" ] && [ "$(val "$hs" letter_shadow)" = "C+" ] \
   && echo "shadow_moves_where_the_rules_part=yes" \
   || echo "shadow_moves_where_the_rules_part=no ($(val "$hs" letter) vs $(val "$hs" letter_shadow))"
 [ "$(val "$hs" reach)" -gt "$(val "$hs" reach_shadow)" ] \
@@ -256,8 +267,9 @@ hs=$(run housestyle.md --setting door --service 100)
 
 # AND IT DISCRIMINATES, which is what tells a reading from a decoration -- the same discipline leg
 # 4b already keeps. The same words with their keys unbolded are one document to both rules, so the
-# two readings meet. That the unbolded twin reads B is the finding stated at its sharpest: the
-# formatting was worth two and a half letters and the writing was worth none of them.
+# two readings meet. That the unbolded twin reads C+ is the finding stated at its sharpest: three
+# header lines were worth four letters of grade and the writing was worth none of them, which is
+# why the card holds them out and reports what holding them out cost.
 sed 's/^\*\*\([^*]*\):\*\* /\1: /' "$pen/housestyle.md" > "$pen/housestyle_plain.md"
 hp=$(run housestyle_plain.md --setting door --service 100)
 [ "$(val "$hp" reach)" = "$(val "$hp" reach_shadow)" ] \
@@ -280,6 +292,49 @@ recomputed=$(( ( $(val "$hs" register) + $(val "$hs" reach) + $(val "$hs" truth)
 [ "$(echo "$hs" | tail -3 | sed -n 's/^\([a-z_]*\)=.*/\1/p' | tr '\n' ' ')" = "reach_shadow composite_shadow letter_shadow " ] \
   && echo "shadow_is_appended_only=yes" \
   || echo "shadow_is_appended_only=no ($(echo "$hs" | tail -3 | sed -n 's/^\([a-z_]*\)=.*/\1/p' | tr '\n' ' '))"
+
+# 4d -- THE SECOND BLINDNESS THE SAME PATTERN CARRIED, and the one nobody had named (REDS %574).
+# `radiant-wishes-ending` asks an earned page to close on a benediction, and this tree writes that
+# line in italics -- one asterisk, then a capital. The elder marker-alone skip read it as a bullet
+# and threw it away, so the card could not see the closing line of nearly every front door it
+# grades: measured over the 45 pages of the door, teaching and candidate rosters on
+# `20260908.085832`, **55 italic-led lines on 42 of the 45**. Both plants below stand on one line,
+# for the reason leg 4b gives.
+#
+# AND THE HOLD-OUT DISCRIMINATES BY PUNCTUATION rather than by the bold run alone, because a line
+# ending in a full stop is a sentence whatever it opens with. So `**Key:** value` leaves and
+# `**Key:** a whole sentence.` stays, and both directions are proven here.
+cat > "$pen/wish.md" <<'EOF'
+# A page that closes the way this tree closes
+
+This first line is plain running prose and every reading has always seen it standing here.
+
+*May every stamp read true off the one clock, and may every page say its room at its own door.*
+EOF
+cat > "$pen/wishless.md" <<'EOF'
+# The same page with its benediction unmarked
+
+This first line is plain running prose and every reading has always seen it standing here.
+
+May every stamp read true off the one clock, and may every page say its room at its own door.
+EOF
+w_seen=$(run wish.md --setting door | sed -n 's/^reach_prose=\([0-9]*\) of .*/\1/p')
+wl_seen=$(run wishless.md --setting door | sed -n 's/^reach_prose=\([0-9]*\) of .*/\1/p')
+[ "$w_seen" = "$wl_seen" ] && [ "$w_seen" = 2 ] \
+  && echo "radiant_wish_read_as_prose=yes" \
+  || echo "radiant_wish_read_as_prose=no ($w_seen vs $wl_seen)"
+
+printf '# k\n\nA plain opening line of running prose that every reading here has always seen standing.\n\n**Status:** Living pin -- operator carry card\n' > "$pen/keyline.md"
+printf '# k\n\nA plain opening line of running prose that every reading here has always seen standing.\n\n**Status:** this key line closes on a full stop and is therefore a sentence.\n' > "$pen/keysentence.md"
+k_seen=$(run keyline.md --setting door | sed -n 's/^reach_prose=\([0-9]*\) of .*/\1/p')
+k_all=$(run keyline.md --setting door | sed -n 's/^reach_prose=[0-9]* of \([0-9]*\) .*/\1/p')
+ks_seen=$(run keysentence.md --setting door | sed -n 's/^reach_prose=\([0-9]*\) of .*/\1/p')
+[ "$k_seen" -lt "$k_all" ] \
+  && echo "key_header_line_held_out=yes" \
+  || echo "key_header_line_held_out=no ($k_seen of $k_all)"
+[ "$ks_seen" = 2 ] \
+  && echo "key_line_ending_in_a_stop_is_prose=yes" \
+  || echo "key_line_ending_in_a_stop_is_prose=no ($ks_seen)"
 
 # 5 -- Meter carries no register or reach budget: refusal-first prose is the subject there.
 m=$(run cold.md --setting meter)
