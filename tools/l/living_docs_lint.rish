@@ -14,7 +14,7 @@
 #      tools/fixtures/l/living_prose_roster.sh (379 living pages), rather than the 60-path docs
 #      roster the other duties weigh. A word ban is a prose-level question and governs every
 #      living page; the meter enforcing it heard a fourteenth of them. The reading is
-#      tools/fixtures/l/retired_word_scan.sh, proven by a nine-behavior control on real git
+#      tools/fixtures/r/retired_word_scan.sh, proven by a nine-behavior control on real git
 #      history -- an advisory never shown naming a violation is a guard that cannot red.
 #      `corpus` LEFT the list: tools/v/vocabulary_collection_witness.rish holds it at zero,
 #      ENFORCED, with a pattern that tells a prose use from an identifier or a path segment,
@@ -51,7 +51,7 @@ say scan.out
 # Duty 1 refuses nothing, so its silence is its whole output -- and silence from a reading that
 # cannot bite says nothing at all. The control plants nine shapes in a throwaway repository and
 # proves both directions: the violation caught, every lawful shape free.
-let control = run ["sh" "tools/fixtures/l/retired_word_control.sh"]
+let control = run ["sh" "tools/fixtures/r/retired_word_control.sh"]
 assert control.ok else "living-docs lint: the duty-1 control must pass -- ${control.out}"
 assert control.out contains "control_verdict=ok" else "living-docs lint: want the retired-word reading proven able to bite -- ${control.out}"
 say "GREEN: living-docs lint — advisories printed; witness never fails."

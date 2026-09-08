@@ -48,7 +48,7 @@
 # living prose. A page dropping off a meter is a page whose pass nobody witnessed (REDS %170).
 #
 # Read by duty 1 of tools/fixtures/l/living_docs_lint_scan.sh, through
-# tools/fixtures/l/retired_word_scan.sh, and proven by retired_word_control.sh.
+# tools/fixtures/r/retired_word_scan.sh, and proven by retired_word_control.sh.
 #
 #   sh tools/fixtures/l/living_prose_roster.sh        # one path per line
 #

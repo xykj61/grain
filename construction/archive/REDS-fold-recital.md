@@ -485,3 +485,5 @@ at a closed fold.*
 
 *Row %594 folded to [`REDS-a-wall-facing-one-artifact-rows-594.md`](REDS-a-wall-facing-one-artifact-rows-594.md) on `20260907.223812`, **BOOKED** -- one wall was built and pointed at one of a commit's two permanent artifacts.*
 *Row %587 folded to [`REDS-the-namespace-no-wall-watches-rows-587.md`](REDS-the-namespace-no-wall-watches-rows-587.md) on `20260907.223042`, **BOOKED** -- The reading it asked for now stands: a guard naming every tracked script that reaches the shared process table with an unscoped pattern, beside the helper that makes the bounded form near.*
+
+*Row %595 folded to [`REDS-a-sweep-that-left-no-guard-rows-595.md`](REDS-a-sweep-that-left-no-guard-rows-595.md) on `20260907.225452`, **CLOSED** -- a census repaired by hand and left unguarded regrows at the rate its tree writes files.*
