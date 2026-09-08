@@ -14,7 +14,7 @@ The highest points, token-dense; the full form is [`context/TAME_CORE.md`](../..
 - **Assert invariants first** -- construction - mutation - postcondition, **>=2 per fn**, each `// invariant:`, stated **positively**.
 - **Explicit widths** -- `u32` in-memory - `u64` wire - `usize` **seam-only** (assert bound, `@intCast` at edge). **Say why.** Accrete by tier. One value model (string-int-bool-list-record).
 - **Rye reflexes** -- opening triad (`std`-`assert`-`print`) - `snake_case` - short fns - named errors with `try` - `copy_disjoint` not bare `@memcpy` - unqualified `assert` (never `std.debug.assert(`) - no compound `assert(a and b)` - `garden` arena, never raw `ArenaAllocator`.
-- **Rishi** -- `run` -> `{ ok, out, code }`, check before trusting `out`; no integer div/mod; `run [ ... ]` args on one line.
+- **Rishi** -- `run` -> `{ out, err, code, ok }`, check `ok` before trusting `out`; no integer div/mod; `run [ ... ]` args on one line.
 - **Reds-first** -- a red books the allocation; a fix closes on a **witness on metal**, never a claim.
 
 ## When this rule is active
@@ -57,7 +57,7 @@ Tiger Style discipline: **`usize` is a boundary type, not a design type.** Read 
 | **Rye** | `u32` bounded, `u64` wire. Seam-only `usize`. Unqualified `assert`. Named errors with `try`. Short functions named with a verb. |
 | **Brix** | Composition language -- declares systems. Evaluates to Bron. Interfaces with Mantra, targets Aurora + Tally. |
 | **Bron** | Data notation -- plain key-value, one field per line. Parsed, not evaluated. |
-| **Rishi** | `run` always returns `{ status, out, err }`. Check `status` before trusting `out`. `assert` as a pipeline gate. `if/then/else` for conditionals. `for-each` for iteration. |
+| **Rishi** | `run` always returns `{ out, err, code, ok }`. Check `ok` before trusting `out`. `assert` as a pipeline gate. `if/then/else` for conditionals. `for-each` for iteration. |
 
 ## Chapter memory (Rye only)
 

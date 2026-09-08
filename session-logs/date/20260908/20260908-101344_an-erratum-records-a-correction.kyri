@@ -1,0 +1,41 @@
+format session-log-v1
+stamp 20260908.101344
+editor Claude Code, terminal
+provider Anthropic
+product Claude Code
+role unattended fleet ship -- Pheromone, the language lane
+modality text
+model claude-opus-5
+model_status configured default proven by .claude/settings.json; runtime identity unverified
+voice Kyri
+host Vultr Dallas pier, NixOS, America/New_York
+title An erratum records a correction; only a guard carries it
+prompt the standing fleet baton -- take the next agent-doable lap in the language lane, reds first
+rota lap 4295, row 0 -- Aether, the row that hears. My modulo row was 0 and all five rows had already been read today, so the tie among the three least-read rows (0, 2 and 4 at nine each) resolved to my own modulo row rather than an advance. The row's instruction is to listen for the claim a page keeps repeating and for the silence where a claim used to be and a witness now stands. An erratum is exactly that silence -- a correction recorded once in prose, with nothing standing to carry it -- and that is the whole of what this lap found.
+think The prior lap in this lane closed on a recommend I could act on: it had pressed TAME Core's eleven Rye reflexes one at a time and found the chapter-allocator reflex stated as an absolute on three law pages and checked by nothing. Its own close named the remainder -- the same press applied to Rishi, Brix, Bron and Glow, which is my lane rather than its own.
+think Pressing the Rishi line found something different from a missing guard. `context/TAME_CORE.md` line 33 says `run` returns `{ ok, out, code }` and then, in the same sentence, tells the reader to check `status`/`.ok`. `.claude/rules/tame-guidance.md` line 60 says `run` always returns `{ status, out, err }` and to check `status` before trusting `out`. That page disagrees with ITSELF: its own TAME Core block eight lines above reads `{ ok, out, code }`.
+think The implementation settles it in one function. `rishi/src/main.rye` builds the record in `run_result_record`, four fields, `out` `err` `code` `ok`. I proved it on metal in a mktemp pen rather than by reading: `say r.out`, `r.code`, `r.ok` and `r.err` all answer, and `say r.status` answers `NoSuchField` and exits 1.
+think Then the shelf answered the question of how long it had stood. `context/TAME_GUIDANCE.md` carries an erratum stamped `20260729.214600` saying precisely this -- the field is `ok`, `status` does not exist, `say r.status` answers `NoSuchField` -- and it says outright that the wrong belief stays visible rather than being quietly overwritten. Forty days on, the correction had reached the page that recorded it and the Cursor twin, and neither Claude-side page.
+think That asymmetry is the sharp part. The Cursor twin was right and the Claude rule was wrong, and the Claude rule is the page every unattended lap of this fleet loads before its first token. Being wrong there is read more often than being wrong anywhere else in the tree.
+obs The fault was self-limiting in code and expensive only in the head. A script written by that instruction refuses at runtime, so no `.rish` source in the tree reads `.status` -- the language rejected every attempt. What it cost instead is an agent's belief about its own shell, once per lap, in the one seat where a belief is acted on unattended.
+obs I built the guard to derive rather than to spell. A field list typed into the scan would have been a fifth copy of the very claim the guard exists to check, so the set is parsed out of `run_result_record` and the control plants a pen source carrying a fifth field to prove the reading follows the source.
+obs The aether row's hard rule shaped the metal legs: a guard that cannot red guards nothing. So the scan asks for a field the derivation says does not exist and requires that request to REFUSE. Without that leg a broken probe would report every field present and read green over anything.
+obs Against myself: the first draft matched the word run anywhere and the word check anywhere, and read `check the`, `check whether`, `check filenames` and `check reads` as field names -- 15 false claims across pages that make no claim about this record. Requiring the builtin as code and requiring a backtick after `check` brought it to the three sites that were real.
+obs The interpreter is a build artifact and untracked, so its absence is reported rather than gated, and the control proves an absent interpreter never softens the claim gate.
+obs Booking the row pushed construction/REDS.md eleven bytes past its ceiling, so the row folded to its own shelf on the lap it was booked and the pin returned to the bytes it had. Adding a row also moves the ledger's headline census, which is measured rather than recited -- reds_ledger_monotone caught both the total and the span, in that order, since fixing one uncovers the other.
+loom witness=rishi_run_record wall_s=3.1 scan_s=1.0 control_s=1.9 pages_read=108 claim_sites=20 behaviors=31
+loom roster=cold_scoped guards=160 seconds=1513 green=157 red=1 gated=2
+loom roster=hot_scoped guards=161 seconds=1242 green=158 red=1 gated=2 tree_moved=no
+file tools/fixtures/r/rishi_run_record_scan.sh the reading -- derives the field set from the source, proves it on metal, gates law-page claims at zero
+file tools/r/rishi_run_record_witness.rish the rung -- names what is proven and what is not
+file tools/fixtures/r/rishi_run_record_control.sh 31 behaviors in a throwaway pen, every refusal planted and lifted
+file .claude/rules/tame-guidance.md the wrong table row and the incomplete core line, both repaired to one record
+file context/TAME_CORE.md the dead field removed from the check clause, the record spelled whole
+file .cursor/rules/tame-guidance.mdc the twin kept parallel with the record it already had right
+file construction/standing-equipment.kyri the guard rostered at tier lap, with its measured cost as the reason
+file construction/REDS.md the row booked, then folded to its own shelf to hold the pin under bound
+file construction/archive/REDS-the-law-named-a-field-the-language-refuses-rows-632.md the shelf
+file construction/ITINERARY.md the account, the elder shelved, the git nib carried
+scope one lap -- one red booked as %629, renumbered %632 when three peers published %629, %630 and %631 during the lap, and closed on a witness, four law sites repaired, one guard seated and rostered
+status GREEN -- rishi_run_record GREEN on metal in both roster passes, scan verdict=ok at claims_unknown_field=0, control 31 of 31 with faults=0; reds_ledger_monotone and reds_ledger_headline GREEN after the census move; the four repaired pages grade A, A and B+ under qa_report_card. HONEST GAP: both passes read one red that is not mine, standing_equipment's own control leg live_group_plant, which peers have booked since 20260907 (%549). AGAINST MYSELF: I moved the ledger headline while the first hot pass was running, so it closed tree_moved=yes and its receipt is withheld; the second pass held still and reads 161 guards, 1,242s, 158 green, 1 red, 2 gated, tree_moved=no.
+recommend keep-going -- the same press applied to the two tongues still unread: TAME Core states Brix reflexes (every field bounded, override by double-seat rather than silent reflow) and Bron/Kyri reflexes (one key value per line, no quotes or braces, parsed rather than evaluated) in the same imperative, and nothing in this lap touched either. The question worth Keaton's word is one room over: the guard reads law pages for claims about ONE builtin's record, and Rishi has other builtins whose shapes are stated in prose the same way -- should the reading widen to every record the language returns, or stay narrow where the fault actually fired?

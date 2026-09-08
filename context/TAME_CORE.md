@@ -30,7 +30,7 @@ Token-dense on purpose. This is the smallest form that still holds TAME's highes
 
 ## The other family tongues
 
-- **Rishi (`.rish`)** -- `run` returns `{ ok, out, code }`; check `status`/`.ok` **before** trusting `out`. `assert ... else "msg"` as a gate. `if/then/else`, `for-each`. No integer div/mod; put `run [ ... ]` args on one line.
+- **Rishi (`.rish`)** -- `run` returns `{ out, err, code, ok }`; check `.ok` **before** trusting `out`. `assert ... else "msg"` as a gate. `if/then/else`, `for-each`. No integer div/mod; put `run [ ... ]` args on one line.
 - **Brix (`.brix`)** -- composition language; declares systems, **evaluates to Bron**; every field bounded; override by **`double-seat`**/infuse, never silent reflow.
 - **Bron / Kyri (`.bron` - `.kyri`)** -- data notation: one `key value` per line, `#` comments, no quotes/braces; **parsed, not evaluated**; immutable values.
 - **Glow** -- the language: runes, **shape** (never Hoon's *mold*), lowers Glow->Rye->Zig->RISC-V; the Root rules hold through the lowering.
