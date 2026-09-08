@@ -65,7 +65,7 @@ worker() {
 stub() {
   {
     printf '#!/bin/sh\n'
-    printf 'printf "%%s\\n" "$1" >> "%s/calls"\n' "$1"
+    printf 'printf "%%s\\n" "$*" >> "%s/calls"\n' "$1"
     printf 'case "${1##*/}" in\n'
     if [ -n "$2" ]; then printf '%s) exit 1 ;;\n' "$2"; fi
     printf '*) exit 0 ;;\n'
@@ -80,6 +80,10 @@ desk() { printf '::  A desk (pen).\n|^  sample\nsample\n' > "$1"; }
 norun() { printf '::  Refuse desk -- pen negative space.\n::  Parse-only; do not glow_run -- nest refuses.\n|^  sample\nsample\n' > "$1"; }
 # a desk declaring only in its head
 norun_head() { printf '::  Parse-only; do not glow_run.\n|^  sample\nsample\n' > "$1"; }
+# a sample-taking desk that declares the values which prove it, in its own head band
+sampled_desk() { printf '::  A desk (pen).\n::  Sample: %s\n|^  sample\nsample\n' "$2" > "$1"; }
+# the same declaration written below the six-line band, where the scan does not read
+late_sample() { printf '::  a\n::  b\n::  c\n::  d\n::  e\n::  f\n::  Sample: 9\n|^  sample\nsample\n' > "$1"; }
 # a desk whose refusal words sit below the head band the scan reads
 late_words() { printf '::  A desk (pen).\n::  b\n::  c\n::  d\n::  e\n::  f\n::  do not glow_run -- too late to count.\n|^  sample\nsample\n' > "$1"; }
 
@@ -139,6 +143,56 @@ runscan "$d" "$pen/o"
 check 1 "$(field "$pen/o" sampled)" "the permitted stem is read off the case pattern"
 check 2 "$(field "$pen/o" selected)" "a sample-taking desk leaves the bare selection"
 check 3 "$(field "$pen/o" desks)" "the commented stem is no permission -- it stays selected"
+
+# --- 5b. a sampled desk that declares its sample rejoins the selection, args and all -----------
+d=$(newpen declared)
+desk "$d/glow/gen/g/gate-one.glow"
+sampled_desk "$d/glow/gen/g/gate-two.glow" "3 5"
+worker "$d" "gate-two"
+runscan "$d" "$pen/o"
+check ok "$(field "$pen/o" verdict)" "a declared sample reads ok"
+check 1 "$(field "$pen/o" sampled)" "the desk is still sample-taking"
+check 1 "$(field "$pen/o" sample_declared)" "and its head declares the sample"
+check 0 "$(field "$pen/o" sample_undeclared)" "so nothing stands undeclared"
+check 2 "$(field "$pen/o" selected)" "the declared desk rejoins the selection"
+check 1 "$(grep -c '^.*gate-two.glow 3 5$' "$d/calls")" "and its own words reach the runner, split"
+check 1 "$(grep -c '^.*gate-one.glow$' "$d/calls")" "a bare desk is handed no words at all"
+
+# --- 5c. an undeclared sampled desk is counted, named, and refused ----------------------------
+d=$(newpen undeclared)
+desk "$d/glow/gen/g/gate-one.glow"
+desk "$d/glow/gen/g/gate-two.glow"
+worker "$d" "gate-two"
+runscan "$d" "$pen/o"
+check sample_undeclared "$(field "$pen/o" verdict)" "a sampled desk declaring nothing refuses"
+check 1 "$(field "$pen/o" sample_undeclared)" "and it is counted"
+check 1 "$(grep -c 'gate-two.glow' "$pen/o")" "and named"
+check 1 "$(grep -c 'Sample: <the values that prove it>' "$pen/o")" "and the cure is named beside it"
+check 1 "$(field "$pen/o" selected)" "an undeclared sampled desk stays out of the selection"
+runscan "$d" "$pen/o" GLOW_DESK_SAMPLE_UNDECLARED_CEILING=1
+check ok "$(field "$pen/o" verdict)" "the same desk under a ceiling of one reads ok"
+sampled_desk "$d/glow/gen/g/gate-two.glow" "7"
+runscan "$d" "$pen/o"
+check ok "$(field "$pen/o" verdict)" "giving it a sample returns the pen to ok at a ceiling of zero"
+check 2 "$(field "$pen/o" selected)" "and the selection grows by it"
+
+# --- 5d. a declaration below the head band is no declaration ----------------------------------
+d=$(newpen late_sample)
+desk "$d/glow/gen/g/gate-one.glow"
+late_sample "$d/glow/gen/g/gate-two.glow"
+worker "$d" "gate-two"
+runscan "$d" "$pen/o"
+check 1 "$(field "$pen/o" sample_undeclared)" "a Sample line below the sixth head line declares nothing"
+check sample_undeclared "$(field "$pen/o" verdict)" "and the desk refuses like any undeclared one"
+
+# --- 5e. a DECLINED sampled desk is never asked for a sample -----------------------------------
+d=$(newpen declined_sampled)
+desk "$d/glow/gen/g/gate-one.glow"
+norun "$d/glow/gen/g/gate-two-refuse.glow"
+worker "$d" "gate-two-refuse"
+runscan "$d" "$pen/o"
+check ok "$(field "$pen/o" verdict)" "a desk that declined to run is not asked to declare a sample"
+check 0 "$(field "$pen/o" sample_undeclared)" "and it is counted nowhere"
 
 # --- 6. a failing desk is counted and named, and the ceiling bites from both sides -------------
 d=$(newpen failing)

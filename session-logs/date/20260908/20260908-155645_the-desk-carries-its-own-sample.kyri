@@ -1,0 +1,45 @@
+format session-log-v1
+stamp 20260908.155645
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role pheromone -- the language lane, unattended fleet loop
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status .claude/settings.json declares claude-opus-5; tools/f/fleet-loop.sh execs --effort medium bare, and this pier runs bare
+evidence tracked .claude/settings.json and tools/f/fleet-loop.sh read this lap
+voice Kyri
+host Linux 6.18 x86_64 pier, America/New_York
+title the desk carries the sample that proves it
+prompt the standing fleet baton -- take the next agent-doable lap in the language lane
+rota lap 4330, row 0 -- Aether, the row that hears; it asked what the work is FOR, and the answer was that three ships closed the hand-written-list shape today in three rooms while REDS %532, the row that NAMED the shape, still had 46 desks run by nothing in its own room
+think Opened on an orphaned --hot roster pass holding the lock, parent exited, 26 minutes old. Resolved every candidate through /proc/<pid>/cwd before signalling -- and pgrep -f standing_equipment_run matched my OWN claude process, since the baton text contains that string. Named pid, verified command line and tree, TERM, trap released the lock.
+think Cold pass closed run_verdict=guard_red on seed_link alone, tree_moved=no, 190-odd guards otherwise green.
+think %532's own scan named the remaining gap and called the cure the disease: a sampled desk "costs a judgment -- what value proves this gate? -- and then a fourth hand-written enumeration to hold the answer, which is the very shape %532 booked." The answer is to stop looking for a place to keep the list. The desk keeps its own.
+think The marker goes in the SAME six-line head band the run-contract already uses, so one band answers every question the scan asks of a desk. Precedent: two markers already live there.
+think Measured before written -- every one of the 46 desks run through tools/g/glow_run.rish with the values it now declares, 46 of 46 GREEN, so the ceilings fall onto a measurement rather than a hope.
+obs The control caught my own fault before it shipped: the two-file awk idiom NR==FNR answers yes for EVERY record of the second file when the first is empty, so a room where no desk declares a sample consumed its whole selection as map entries and ran nothing -- while every printed count still read right. A clean room is the commonest room there is. The map is read in BEGIN now.
+obs Both ceilings now stand at zero, so neither can be proven by dropping one lower. Each refusal leg raises its SIBLING's ceiling, because a silent runner trips both gates at once and the later verdict was overwriting the earlier one -- the bare leg was proving its sibling's refusal while naming its own.
+obs Two witness pens moved from a pwd-derived /tmp name into this tree's own gitignored .lap/, which is the baton's newer clause and a stronger guarantee than the arithmetic it replaces.
+obs %532 is repaired and the ledger cannot say so: the pin stands at 40,904 of 40,960 with rows_that_fit=0, so a deadlocked pin now blocks a REPAIR RECORD on an OPEN row, not only a new red. Three ships named the pin today; this is the fourth, and it is a different consequence.
+obs Against myself, three times. The awk fault above was the first. The second: I read the cold pass's red list MID-RUN and reported one red where the closed pass named three -- seed_link, stash_record, and standing_equipment cascading off it. A list read before a pass closes is not a reading. The third: I applied the shelf-link repoint DURING the hot pass, which then refused tree_moved=yes, correctly; the pass was re-run on a still tree.
+obs My shelf carried its elder block's links verbatim, so from one directory down they pointed at construction/archive/archive/. tools/f/fold_shelf_link_repoint.sh computed the repair and applied exactly that -- the tree has a tool for this and my hand did not need to guess.
+obs My own parked lap, measured rather than applied. stash@{0} holds a GREEN glow_literal_law rung -- does Glow accept a leading zero in a decimal literal, a language custody question -- beside a crushed_index edit whose diff now runs BACKWARD against the tree, because DIFFUSER landed the same repair since. Applying the stash whole would revert a peer's landed work, which is exactly the hazard REDS %636 booked. Restore the rung alone, on its own lap.
+obs A red I cannot close, surfaced rather than routed around: seed_link RED, unbooked -- README.md links context/BHAKTA_STYLE.md, a room template-manifest.bron withholds. Both cures are somebody else's: allow the page (a privacy boundary, Keaton's word) or name it in prose (Petrichor's front door). The ratchet also rose 848 -> 850.
+loom witness=glow_desk_run selected=347 bare=301 sampled_declared=46 failed=0 failed_ceiling=3
+loom witness=glow_desk_reach uncovered=0 uncovered_bare=0 uncovered_sampled=0 desks=352 runnable=347 control_behaviors=86
+loom probe=glow_run_sample_values desks=46 green=46 red=0
+loom control=glow_desk_run behaviors=48 elder=29
+file glow/gen/g/*.glow one `::  Sample: <values>` line in each of the 46 sample-taking desks, the values proven on metal first
+file tools/fixtures/g/glow_desk_run_scan.sh reads the marker, lowers a declared desk with --sample-argv, hands it its words split, gates an undeclared one at zero
+file tools/fixtures/g/glow_desk_run_control.sh four new legs -- declared, undeclared both sides, below the band, and a declined desk never asked
+file tools/fixtures/g/glow_desk_reach_scan.sh the sampled ceiling falls 46 -> 0, so both readings are gates
+file tools/g/glow_desk_reach_witness.rish the sampled gate made reachable by a sample-blind runner; pens moved to .lap/
+file tools/g/glow_desk_run_witness.rish the selection stands at 347, the whole runnable room
+file construction/ITINERARY.md the PHEROMONE account, elder shelved whole
+scope one keystone -- REDS %532's agent-doable half, closed in the Glow desk room
+status GREEN for this round's own work -- glow_desk_run 347 on metal, glow_desk_reach GREEN with 86 control behaviors, glow_desk_run_control 48 of 48, fold_shelf_link_repoint GREEN after the repoint, declared_ceiling ok, the ASCII scans under their ceilings. The roster pass carries reds I did not close and did not cause: seed_link (another lane, and one cure is a custody word), stash_record unlanded=1 (my own parked lap, restorable only in part), and standing_equipment cascading off the second. Named on the card rather than routed around. %532's own remainder stays custody: the three unmarked data fixtures, the shared stem, and Glow's leading zero.
+recommend check-in (Claude) -- the pin blocks a repair record now, and seed_link wants either your word on the manifest or Petrichor's front door

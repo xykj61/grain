@@ -376,18 +376,30 @@ uncovered_bare=$(wc -l < "$WORK/uncovered_bare" | tr -d ' ')
 #                            both readings fire together, which is the truth said twice rather
 #                            than once. A desk landing in a room the runner's selection misses
 #                            for any other reason reds here on the lap it arrives.
-#   uncovered_sampled  46 -- a desk the worker will only run WITH a sample somebody must choose
+#   uncovered_sampled   0 -- a desk the worker will only run WITH a sample, and the desk now
+#                            declares its own: `::  Sample: 3 5` in the same head band the
+#                            run-contract is read from. Holding those 46 answers in a table would
+#                            have been the FOURTH hand-written enumeration of one corpus, which is
+#                            the shape %532 booked; the desk carries its own instead, so a sampled
+#                            desk landing tomorrow declares what proves it or is refused by name
+#                            (`sample_undeclared`, gated at zero in the run scan). All 46 values
+#                            were run on metal before they were written -- 46 of 46 GREEN through
+#                            tools/g/glow_run.rish -- so the ceiling is a measurement rather than a
+#                            hope, and this reading is a GATE now rather than a backlog.
 #
 # The elder single ceiling of 129 could not tell those apart, and they were not the same debt. A
-# bare desk cost a line. A sampled desk costs a judgment -- what value proves this gate? -- and
-# then a fourth hand-written enumeration to hold the answer, which is the very shape %532 booked.
-# Worse, the sum hides a real fault: a sampled desk landing while a bare one is covered leaves 129
-# standing, and the elder gate reads that as no change.
+# bare desk cost a line. A sampled desk cost a judgment -- what value proves this gate? -- and the
+# elder reading stopped there, because the only place named to hold the answer was a fourth
+# hand-written enumeration, which is the very shape %532 booked. The answer was to stop looking for
+# a place to keep the list and let each desk keep its own. Both ceilings are zero from
+# `20260908.163900`, so both readings are gates: the sum hid a real fault while it stood, since a
+# sampled desk landing while a bare one is covered left 129 standing and the elder gate read that
+# as no change.
 #
 # The sum is printed and DERIVED from the two rather than spelled, so it can never disagree with
 # its parts; the gates are on the parts.
 UNCOVERED_BARE_CEILING=${GLOW_DESK_UNCOVERED_BARE_CEILING:-0}
-UNCOVERED_SAMPLED_CEILING=${GLOW_DESK_UNCOVERED_SAMPLED_CEILING:-46}
+UNCOVERED_SAMPLED_CEILING=${GLOW_DESK_UNCOVERED_SAMPLED_CEILING:-0}
 UNCOVERED_CEILING=$((UNCOVERED_BARE_CEILING + UNCOVERED_SAMPLED_CEILING))
 STEM_COLLISION_CEILING=${GLOW_DESK_STEM_COLLISION_CEILING:-1}
 

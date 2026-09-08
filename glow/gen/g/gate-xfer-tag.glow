@@ -1,5 +1,6 @@
 ::  Thin bartis generator (STOA305): xfer-shape identity; payload tag + from/amount from Rishi argv.
 ::  Matching fixture desk: gate-xfer-shape.glow (baked welcome).
 ::  Args: mint <from-u32> <amount-u32> - or send
+::  Sample: mint 3 7
 |=  sample=xfer-shape
 sample
