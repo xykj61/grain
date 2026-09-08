@@ -5,6 +5,13 @@
 //! Amphora carriage and live TB wait.
 //!
 //! Ground: [`../context/specs/20260710-171202_mandi-listing-settle-seated.md`](../context/specs/20260710-171202_mandi-listing-settle-seated.md)
+//!
+//! WHAT A VERIFIED SETTLE PROVES, AND WHAT IT DOES NOT. `settle_seed` below is a constant written
+//! in this source file, so any reader can regenerate the keypair and sign a settle this module
+//! accepts. `verify_settle` proves the body parses to the canonical form and the signature over
+//! that form is intact; it proves nothing about who settled, and `record_settle` is what refuses
+//! a second close of one listing receipt. The same bound is written at the head of
+//! `mandi/mandi_core.rye`, whose listing seed 0x67 is public in exactly the same way.
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -21,6 +28,7 @@ pub const max_price_len: u32 = 16;
 pub const max_settled: u32 = 8;
 
 /// Settle seed -- distinct from Mandi listing 0x67, Exchange 0x66, delivery 0x64.
+/// Public by construction: it is written here, so the keypair is reproducible by any reader.
 const settle_seed: [kumara.seed_length]u8 = .{0x68} ** kumara.seed_length;
 
 pub const SettleError = error{

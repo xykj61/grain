@@ -26,7 +26,7 @@ fn run_selftest(io: std.Io) !u8 {
     var listing_receipt: [mandi.digest_hex_len]u8 = undefined;
     try mandi.receipt_digest(listing[0..ln], &listing_receipt);
 
-    // 2. MALA: mint then send 25 (payment).
+    // 2. MUR: mint then send 25 (payment).
     const issuer_kp = kumara.keypair_from_seed(&murr.issuer_seed);
     const holder_kp = kumara.keypair_from_seed(&murr.holder_seed);
     var issuer_hex: [murr.pubkey_hex_len]u8 = undefined;
@@ -128,19 +128,21 @@ fn run_selftest(io: std.Io) !u8 {
     }
     print("mandi settle: zero amount refused\n", .{});
 
-    // Unwelcome: lying settle sig.
+    // Unwelcome: tampered settle signature. One flipped hex character breaks the signature over
+    // the canonical body, which is an integrity check rather than an honesty check -- the settle
+    // seed is a source constant, so this lap can never demonstrate a refused lie.
     try settle.payment_digest(payment_fields, &payment_hex);
-    var lying: [settle.max_settle_len]u8 = undefined;
-    const lyn = try settle.sign_settle(settle.settle_version, &listing_receipt, &payment_hex, &lying);
+    var tampered: [settle.max_settle_len]u8 = undefined;
+    const lyn = try settle.sign_settle(settle.settle_version, &listing_receipt, &payment_hex, &tampered);
     const sig_key = "stamp_sig ";
-    const sig_at = std.mem.indexOf(u8, lying[0..lyn], sig_key) orelse return error.MissingSig;
-    lying[sig_at + sig_key.len] = if (lying[sig_at + sig_key.len] == '0') '1' else '0';
-    if (settle.verify_settle(lying[0..lyn])) |_| {
-        return error.LyingAccepted;
+    const sig_at = std.mem.indexOf(u8, tampered[0..lyn], sig_key) orelse return error.MissingSig;
+    tampered[sig_at + sig_key.len] = if (tampered[sig_at + sig_key.len] == '0') '1' else '0';
+    if (settle.verify_settle(tampered[0..lyn])) |_| {
+        return error.TamperedAccepted;
     } else |err| {
         assert(err == error.VerifyFailed);
     }
-    print("mandi settle: lying settle refused\n", .{});
+    print("mandi settle: tampered signature refused\n", .{});
 
     // Restore honest slip for bind checks.
     try settle.payment_digest(payment_fields, &payment_hex);
@@ -174,7 +176,7 @@ fn run_selftest(io: std.Io) !u8 {
     }
     print("mandi settle: price mismatch refused\n", .{});
 
-    // Unwelcome: MALA overdraft fold.
+    // Unwelcome: MUR overdraft fold.
     var bad_log: [rc.max_log_len]u8 = undefined;
     var bad_len: u32 = 0;
     try murr.sign_append(&bad_log, &bad_len, mint_fields, issuer_kp);
@@ -209,8 +211,8 @@ fn run_selftest(io: std.Io) !u8 {
     }
     print("mandi settle: double settle refused\n", .{});
 
-    print("mandi settle lap3: version {s} — GREEN\n", .{settle.settle_version});
-    print("GREEN: Mandi settle — listing receipt + MALA/WOV payment, no identities.\n", .{});
+    print("mandi settle lap3: version {s} -- GREEN\n", .{settle.settle_version});
+    print("GREEN: Mandi settle -- listing receipt + MUR/WOV payment, no identities.\n", .{});
     return 0;
 }
 

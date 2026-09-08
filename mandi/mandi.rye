@@ -23,7 +23,7 @@ fn run_selftest(io: std.Io) !u8 {
     assert(receipt[0] != 0 or receipt[1] != 0);
     assert(std.mem.indexOf(u8, listing[0..n], "buyer") == null);
     assert(std.mem.indexOf(u8, listing[0..n], "seller") == null);
-    print("mandi: listed vessel at 25 murr — receipt {s}\n", .{receipt[0..16]});
+    print("mandi: listed vessel at 25 murr -- receipt {s}\n", .{receipt[0..16]});
 
     // Unwelcome: zero price.
     if (mc.sign_listing(mc.mandi_version, &parent, "0", &listing)) |_| {
@@ -33,18 +33,32 @@ fn run_selftest(io: std.Io) !u8 {
     }
     print("mandi: zero price refused\n", .{});
 
-    // Unwelcome: lying signature.
-    var lying: [mc.max_listing_len]u8 = undefined;
-    const ln = try mc.sign_listing(mc.mandi_version, &parent, "10", &lying);
+    // Unwelcome: tampered signature. One flipped hex character breaks the signature over the
+    // canonical body, which is an integrity check rather than an honesty check.
+    var tampered: [mc.max_listing_len]u8 = undefined;
+    const ln = try mc.sign_listing(mc.mandi_version, &parent, "10", &tampered);
     const sig_key = "stamp_sig ";
-    const sig_at = std.mem.indexOf(u8, lying[0..ln], sig_key) orelse return error.MissingSig;
-    lying[sig_at + sig_key.len] = if (lying[sig_at + sig_key.len] == '0') '1' else '0';
-    if (mc.verify_listing(lying[0..ln])) |_| {
-        return error.LyingAccepted;
+    const sig_at = std.mem.indexOf(u8, tampered[0..ln], sig_key) orelse return error.MissingSig;
+    tampered[sig_at + sig_key.len] = if (tampered[sig_at + sig_key.len] == '0') '1' else '0';
+    if (mc.verify_listing(tampered[0..ln])) |_| {
+        return error.TamperedAccepted;
     } else |err| {
         assert(err == error.VerifyFailed);
     }
-    print("mandi: lying listing refused\n", .{});
+    print("mandi: tampered signature refused\n", .{});
+
+    // The bound, shown rather than claimed: the listing seed is a constant in the source, so a
+    // second listing naming the same vessel at a different price signs and verifies exactly as
+    // well as the first. Verification proves integrity; it proves no authority, and until a
+    // seller's own key binds the listing this surface cannot refuse a well-formed false price.
+    var forged: [mc.max_listing_len]u8 = undefined;
+    const fn_len = try mc.sign_listing(mc.mandi_version, &parent, "1", &forged);
+    try mc.verify_listing(forged[0..fn_len]);
+    // invariant: the forgery is a different listing, or it demonstrates nothing
+    assert(fn_len != n or !std.mem.eql(u8, forged[0..fn_len], listing[0..n]));
+    // invariant: it names the same vessel, so nothing but the price distinguishes the two
+    try mc.verify_against_parent(forged[0..fn_len], &parent);
+    print("mandi: forged listing accepted -- integrity proven, authority not\n", .{});
 
     // Unwelcome: parent mismatch.
     const other_shoulder = "other-vessel-shoulder\n";
@@ -64,8 +78,8 @@ fn run_selftest(io: std.Io) !u8 {
     }
     print("mandi: parent mismatch refused\n", .{});
 
-    print("mandi lap1: version {s} — GREEN\n", .{mc.mandi_version});
-    print("GREEN: Mandi — vessel listing in MALA, receipt without identities.\n", .{});
+    print("mandi lap1: version {s} -- GREEN\n", .{mc.mandi_version});
+    print("GREEN: Mandi -- vessel listing in MUR, receipt without identities.\n", .{});
     return 0;
 }
 
