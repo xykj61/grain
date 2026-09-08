@@ -173,10 +173,15 @@ if [ -f "$RECITAL" ]; then
   work=$(mktemp -d)
   trap 'rm -rf "$work"' EXIT INT TERM
   grep -o 'REDS-[A-Za-z0-9-]*rows-[0-9-]*\.md' "$RECITAL" | sort -u > "$work/recital.txt" || true
+  # One `sed` over the whole list rather than one `basename` fork per file. The glob holds
+  # 339 archive shelves today, and the fork loop cost 1,451ms of this scan's 2,723ms --
+  # 53% of the wall for 339 of its 708 clones, measured `20260908.092431`. `printf` is a
+  # shell builtin, so the existence check keeps its meaning and the loop keeps no fork.
+  # Third site of the class REDS %622 named; a comment repairs the file it sits in.
   for f in $ARCHIVE_GLOB; do
     [ -f "$f" ] || continue
-    basename "$f"
-  done | sort -u > "$work/disk.txt"
+    printf '%s\n' "$f"
+  done | sed 's|.*/||' | sort -u > "$work/disk.txt"
   UNRECORDED=$(comm -13 "$work/recital.txt" "$work/disk.txt" | wc -l | tr -d ' ')
   PHANTOM=$(comm -23 "$work/recital.txt" "$work/disk.txt" | wc -l | tr -d ' ')
   comm -23 "$work/recital.txt" "$work/disk.txt" | while read -r m; do

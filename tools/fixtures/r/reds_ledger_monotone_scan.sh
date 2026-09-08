@@ -53,10 +53,12 @@ done
 # Both shapes: the elder table line opening on a digit cell, and the prose row opening
 # on a bold `**REDS %N` or `**REDS #N` -- the living ledger writes the latter and wrote
 # the former, so the spine spans both.
-mentions=$(for f in "$@"; do
-  sed -n 's/^| *\([0-9][0-9]*\) *|.*/\1/p' "$f"
-  sed -n 's/^\*\*REDS [%#]\([0-9][0-9]*\).*/\1/p' "$f"
-done | sort -n)
+# One `sed`/`awk` over the whole file list rather than one fork per file. `sed` and `awk`
+# both take many operands, and `awk` sets FILENAME per record, so the readings are
+# unchanged -- proven byte-identical over the 340-shelf corpus, `20260908.092431`.
+# Three such loops cost 1,399 execs and 6,365ms; collapsed they cost 42 and 479ms.
+# Same class as REDS %622; a comment repairs the file it sits in.
+mentions=$(sed -n -e 's/^| *\([0-9][0-9]*\) *|.*/\1/p' -e 's/^\*\*REDS [%#]\([0-9][0-9]*\).*/\1/p' "$@" | sort -n)
 
 # The spine is the DISTINCT set of row numbers, because the ledger honestly names one
 # row more than once: a full row is written when the red is found, and a closure note
@@ -102,8 +104,7 @@ done
 # word under `debride`. So this holds the line where it stands and refuses the fourth.
 duplicate_headlines_ceiling=3
 
-pairs=$(for f in "$@"; do
-  awk '
+pairs=$(awk '
     /^\*\*REDS [%#][0-9]+/ {
       line = $0
       match(line, /^\*\*REDS [%#][0-9]+/)
@@ -117,8 +118,7 @@ pairs=$(for f in "$@"; do
       if (q > 0) head = substr(head, 1, q - 1)
       printf "%s\t%s\n", num, head
     }
-  ' "$f"
-done | sort -u)
+  ' "$@" | sort -u)
 
 dup_file=$(mktemp)
 printf '%s\n' "$pairs" | cut -f2- | sort | uniq -d > "$dup_file"
@@ -198,16 +198,14 @@ rows_double_shelved_ceiling=1
 # cheap and where the pen can plant it. Two derivations of one law that disagree are one law
 # written twice, and the blind one was holding the gate.
 
-bindings=$(for f in "$@"; do
-  awk '
+bindings=$(awk '
     match($0, /^\*\*REDS [%#][0-9][0-9]* \(`[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9](\.[0-9][0-9][0-9][0-9][0-9][0-9])?`\)/) {
       s = substr($0, RSTART, RLENGTH)
       num = s; sub(/^\*\*REDS [%#]/, "", num); sub(/ .*/, "", num)
       st = s; sub(/^.*\(`/, "", st); sub(/`\).*/, "", st)
       printf "%s\t%s\t%s\n", num, st, FILENAME
     }
-  ' "$f"
-done | sort -u)
+  ' "$@" | sort -u)
 
 n_bindings=$(printf '%s\n' "$bindings" | grep -c '	' || true)
 

@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260908.093547` | [The fork you pay per item](20260908/20260908-093547_the-fork-you-pay-per-item.kyri) | 28s guard to 4.1s; wall time cannot rank forks. |
 | `20260908.093504` | [Two readings of what prose is](20260908/20260908-093504_two-readings-of-what-prose-is.kyri) | %574 closed; the card could not see a bold claim or a radiant wish. |
 | `20260908.091217` | [Nineteen of sixty-nine](20260908/20260908-091217_nineteen-of-sixty-nine.kyri) | A guard read 19 of 69, by a predicate its canon forbids. |
 | `20260908.090736` | [The count and the list](20260908/20260908-090736_the-count-and-the-list-beside-it.kyri) | a door named 11 of 16 guards; readme_unnamed gated at zero. |

@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `349cc9d68b` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `a7193b6dcc` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A FINISHED GREEN LAP WAS STASHED BY THE NEXT LAP'S OWN ROUND-OPEN.**
 Elder [shelved](archive/20260908-073157_itinerary-landed-accounts.md).
@@ -93,28 +93,27 @@ sixty-nine. **Control 0 -> 32**, one leg asserting the elder `-e` DOES pass the 
 **Yours:** `tally/README.md` reads **C+ 77** after a claim-preserving register pass (**59 -> 71**).
 **Next:** `%589` stays **your word**.
 
-**DIFFUSER -- A CENSUS PAID FOR ITS FORKS, NOT ITS TREE.**
-Elder [shelved](archive/20260908-082356_itinerary-landed-accounts.md).
-[Study](../external-research/20260908-082356_a-census-pays-for-its-forks-not-its-tree.md) A/93.
-**MY ELDER PAPER CALLED EIGHT GUARDS UNCLAIMABLE, ON AN UNTESTED CLAIM.**
-DISCOVERY is right about mapping and says nothing about **cost**. `dated_path`, 63,107ms, is **73%**
-of the family's 86,468ms; probes at eight statement boundaries put lines 274-283 at **68,370 of
-74,838ms, 91.4%**, while its true tree reads are `git ls-files` **11ms** and one `grep` over 29,440
-pairs **267ms** -- **0.36%**. That 91.4% was one `basename` per path: **16,447 forks**.
-**ONE `sed` INSTEAD, PROVEN TWICE.** Stage alone **61,714 -> 64ms**, 8,629 sprigs byte-identical;
-whole guard A/B on one tree **75,153 -> 15,070ms**, twenty lines byte-identical -- 60.1s back per
-round. Row `20260908.074500` **CLOSED**.
-**THE LANTERN WAS LIT TWICE IN ITS OWN FAMILY** -- `empty_document_scan.sh` and `exec_bit_scan.sh`
-each name this shape as a fault already paid for and neither reached the third: **a comment repairs
-the file it sits in**. **Spent lever**: a grep finds three sites, one repaired, two small. **Against
-myself:** mid-bisect I guessed the filter loop; **4,036ms**.
-**AND IT REDS AT HEAD, NOT BY MY HAND** -- proven by injecting only the reading-identical fast
-function into a clean tree, reading the same 100. `refs_lost=100` vs `LOST_CEILING=85`, set
-`20260907.104201` with zero slack; **95 testimony, 5 living**, repairable class **0**. It rises when
-a ship writes a log, falls for nobody, and `tier cadence` means no lap hears it. Row
-`20260908.082356` **OPEN**.
-**Yours, two:** the gate move the scan proposes, `refs_lost` -> `lost_promised_living`; and
-`dated_path` at `tier lap`, which 15s affords and wants his word first.
+**DIFFUSER -- THE SAME FORK, PAID PER ITEM, IN THE GUARD THAT WATCHES THE LEDGER.**
+Elder [shelved](archive/20260908-093333_itinerary-landed-accounts.md).
+[Study](../external-research/20260908-093333_the-fork-you-pay-per-item.md) A/93.
+**A LANTERN LIT TWICE BECAME A LOOM.** My `20260908.082356` lap named two more sites of the
+fork-per-item class and called them small. **One was 25 seconds.** Both landed, byte-identical over the
+real 340 shelves, both witnesses GREEN.
+`reds_pin_capacity_scan.sh`: `basename` per file over 339 shelves -- **702 -> 364 execve**, exactly
+the 338 predicted, **3,208 -> 1,898ms** interleaved. `reds_ledger_monotone_scan.sh`: three
+`for f in "$@"` loops where `sed` and `awk` both take many operands and `awk` sets `FILENAME` per
+record -- **1,399 -> 42 execve**, **6,365 -> 479ms**, and the whole guard **28s -> 4.1s**.
+**~25s back per roster pass, every ship, every lap.** **WALL TIME CANNOT RANK THIS CLASS, AND FORK COUNT CAN.** `living_card_ascii` 27s / **142** execs and
+`reds_ledger_monotone` 28s / **6,596** -- a 46x split behind a 4% difference. The roster's free
+per-guard timing sees neither. A static loop-depth census finds **744 candidates** and cannot rank
+them either, because cost is forks times a population static analysis never sees.
+**AND THE FREE INSTRUMENT IS DEFEATED BY THE FLEET.** `/proc/stat` processes read **5,074** for a scan
+that forked **708**; the fleet forks ~**970/s** beside it. `strace -f -c` is exact and charges
+**3.7-5.1x**, so exact fork accounting is offline-only here.
+**AGAINST MYSELF:** I first A/B'd in blocks, reporting **633ms** for a change worth **1,310ms** --
+load drift on a shared pier outruns a block. Interleave, or do not publish.
+**Yours, still two, unchanged:** the `refs_lost` -> `lost_promised_living` gate move, and `dated_path`
+at `tier lap`.
 
 **PETRICHOR -- A ROOM THAT SAID IT WAS WAITING FOR A FIRST PIECE HAS ONE.**
 Elder [shelved](archive/20260908-084845_itinerary-landed-accounts.md).
