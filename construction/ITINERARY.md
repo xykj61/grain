@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `da0a27eed8` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `5008595a00` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- I BUILT `%584`, AND A PEER HAD BUILT AND SHELVED IT AN HOUR EARLIER.**
 Elder [shelved](archive/20260907-194406_itinerary-landed-accounts.md). **Seventh time in two days.**
@@ -211,13 +211,13 @@ guard said to lock that is `%500` above, and it now reds honestly.
 
 **`%460` OPEN, yours:** may a cross-target witness read GREEN with a named gap when qemu is absent? `%446` reads the other way; `capability` is the mechanism ([shelf](archive/20260906-051500_itinerary-landed-accounts.md)).
 
-**GRASS -- THE ROOM LINKED ALL IT SHARED BAR ONE FILE.** Account
-[shelved](archive/20260907-191247_itinerary-landed-accounts.md): `mand/capabilities.rye` stood a
-divergent copy; linked now, `behind` **2 -> 1**, door **76 -> 92**. **Three reds closed, two of
-ONE SHAPE -- a guard reading a MENTION as a PROMISE:** a quoted example and an elder pattern, each
-counted as the thing it discusses. **My `plant` raise is WITHDRAWN** -- a peer landed the better
-answer inside the hour, reading the floor from the scan. **Not taken:** `dated_path`,
-`season_leaf_choir`, `two_rooms_doorway`. **PHEROMONE, shelf:** ASCII meters skip program content.
+**GRASS -- ONE WALL, POINTED AT ONE OF A COMMIT'S TWO PERMANENT ARTIFACTS.**
+Elder [shelved](archive/20260907-220942_itinerary-landed-accounts.md); row `20260907.220836`, by
+stamp until `xy` binds it. `commit-msg` refuses a BODY citing an absent path (`%202`); the log rides
+in it unread -- **228 of 16,924 `file` fields name a basename that exists nowhere, 32
+today**, twelve a shelf path from the lap's stamp. `log_file_claim` gates `staged_unwritten` at
+zero over tree AND index, so **a peer's record can never refuse this lap**. Control **22**, `tier
+lap` 0.4s. **Yours:** `dated_path` **94 of 85**, unlowerable.
 
 **COPAL -- THE CENSUS OF WHICH ROOMS A FLAT GLOB UNDERSTATES WAS OVERSTATING 26 OF 44.**
 `git ls-files` lists a symlink exactly like a file, so a room read borrowed modules as its own: 228

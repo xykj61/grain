@@ -1,0 +1,93 @@
+# tools/l/log_file_claim_witness.rish -- a session log's `file` field is a claim, and the wall that
+# checks that claim was pointed at the other artifact in the same commit.
+#
+# WHY THIS RUNG. `tools/hooks/commit-msg` refuses a commit whose BODY cites a path that is not in
+# the tree (REDS %202) -- a commit message is permanent testimony, so a citation invented there
+# stays wrong forever. The session log rides in that same commit, closes with `file <path> <why>`
+# lines making exactly the same kind of claim, is exactly as permanent, and nothing reads it.
+#
+# WHAT THAT COST, measured `20260907.221500` by tools/fixtures/l/log_file_claim_scan.sh over 4,352
+# tracked logs. 16,924 path-shaped `file` fields stand and **228 name a basename that exists
+# nowhere in the tree**. 32 of them were written today. Twelve, read one at a time, share one
+# shape: a lap folds its live front to `construction/archive/<stamp>_itinerary-landed-accounts.md`
+# and then writes the path using its OWN log's stamp rather than the shelf's. Checked with
+# `git log --all` against every branch, not one of those twelve paths has ever existed.
+#
+# WHY IT NEVER SURFACED. A session log's basename carries a one-clock stamp, so it is testimony and
+# accrete-never-break forbids repairing it. The only guard that sees these is `dated_path`, which
+# folds them into `refs_lost` -- 94 against a ceiling of 85 today, red -- on `tier cadence`, the
+# clock REDS %568 found nothing turns. And that ceiling cannot be brought down by any lawful lap:
+# its three `lost_living` references sit in vendored `gratitude/reaper/`, an immutable
+# `waymarks/date/README-index-` shelf, and a REDS fold archive. A defect visible only through a
+# wall nobody can climb is a defect nobody meets.
+#
+# WHAT IS GATED, AND AS WHAT. `staged_unwritten` at **zero** -- the `file` fields of the session
+# logs THIS commit stages, read against the working tree and the index together. It is the lap's
+# own claim about its own work, so it can never refuse for a peer's break, which is the property
+# the readme wall withdrawn on `20260907.153124` was declined for. `unwritten_total` and
+# `unwritten_today` are reported and never gated: that population grows ~26 a day across eight
+# ships and every entry is testimony no lap may repair, so a ceiling over it would red tomorrow at
+# a stranger's desk -- REDS %585's fault over a population that cannot even be swept.
+#
+# WHAT IS PROVEN, on metal, by tools/fixtures/l/log_file_claim_control.sh: twenty-two behaviors on
+# real git repositories in a throwaway pen, every refusal planted and then lifted.
+#   A staged log whose shelf is on disk walks free; one naming a shelf nobody wrote refuses and
+#     names `staged_claim_unwritten`, a word rather than a number.
+#   The load-bearing WELCOME: a shelf present only in the INDEX passes free, because that is what a
+#     lap staging its shelf and its log in one commit looks like. Phase 8 strips the index leg out
+#     of a copy of the scan and shows that same case turning into a refusal -- a welcome proven
+#     only while the check is present cannot be told from a check that has merely started saying
+#     yes. The strip is a `plant_apply` from tools/fixtures/p/plant.sh, so a plant that planted
+#     nothing would say so by name rather than reading as proof (REDS %519).
+#   A value wearing no slash or an unwritten extension is read past, on the hook's own path shape.
+#   A committed log that lies is COUNTED and never gated, so a peer's record cannot stop this lap.
+#   A reference whose room merely folded keeps its basename and is not counted, since the resolver
+#     answers it by computation -- that population belongs to `dated_path`.
+#
+# WHAT IS NOT PROVEN. That the `why` clause beside a path is true, or that a path which resolves is
+# the RIGHT file. A stamp off by one second that happens to name another lap's shelf reads as kept.
+# This proves a lap cannot commit a claim about a file nobody wrote, and stops there.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/l/log_file_claim_witness.rish
+
+say "log-file-claim: Language EN -- a log's file field is a claim, and the wall that checks such claims faced the other artifact in the same commit."
+say "log-file-claim: Style Gauge, Meter -- the gate is the lap's own set, the diagnosis is everyone's."
+say "log-file-claim: Lens TAME -- safety first: the load-bearing leg is the welcome, shown from both sides."
+
+let control = run ["sh" "tools/fixtures/l/log_file_claim_control.sh"]
+assert control.ok else "log-file-claim: the control must complete -- read its own lines"
+say control.out
+assert control.out contains "faults=0" else "log-file-claim: every behavior must be satisfied"
+assert control.out contains "control_verdict=ok" else "log-file-claim: the control must balance before it is believed"
+
+# The refusal, both ways.
+assert control.out contains "OK   kept_walks_free" else "log-file-claim: a staged log whose paths resolve must walk free"
+assert control.out contains "OK   unwritten_refuses" else "log-file-claim: a staged log naming a file nobody wrote must refuse"
+assert control.out contains "OK   unwritten_names_its_word" else "log-file-claim: the refusal must name staged_claim_unwritten, a word rather than a number"
+
+# The load-bearing welcome, and the strip that proves it load-bearing.
+assert control.out contains "OK   index_only_walks_free" else "log-file-claim: a shelf staged in this same commit must pass -- that is the ordinary lap"
+assert control.out contains "OK   strip_plant_landed" else "log-file-claim: the plant into the scan copy must land, or the strip leg tests nothing"
+assert control.out contains "OK   stripped_refuses" else "log-file-claim: stripped of the index reading, the honest lap must refuse -- that is what makes the welcome load-bearing"
+
+# The path shape, borrowed rather than re-invented.
+assert control.out contains "OK   unshaped_values_read_past" else "log-file-claim: a value with no slash or an unwritten extension must be read past"
+assert control.out contains "OK   trailing_stop_stripped" else "log-file-claim: a sentence ending on its own path must still resolve"
+
+# The population that is reported and never gated.
+assert control.out contains "OK   committed_lie_is_counted" else "log-file-claim: a committed log that lies must still be counted"
+assert control.out contains "OK   committed_lie_walks_free" else "log-file-claim: a peer's committed record must never refuse this lap's commit"
+assert control.out contains "OK   folded_is_not_unwritten" else "log-file-claim: a folded room keeps its basename and belongs to the resolver, not here"
+
+assert control.out contains "OK   unknown_argument_refuses" else "log-file-claim: an unknown argument must refuse rather than measure something else"
+
+say "field GREEN -- the gate bites on a lap's own fabricated citation, and the welcome it depends on is proven from both sides"
+
+# The tree's own reading. The gate is asserted; the two diagnosis numbers are printed for the lap
+# that reads this receipt, and never gated, for the reason the header names.
+let census = run ["sh" "tools/fixtures/l/log_file_claim_scan.sh"]
+say census.out
+assert census.out contains "verdict=ok" else "log-file-claim: a staged session log in THIS tree names a path that is in neither the tree nor the index -- read the name off disk rather than composing it from the lap's own stamp"
+
+say "log-file-claim GREEN -- no staged log claims a file nobody wrote"

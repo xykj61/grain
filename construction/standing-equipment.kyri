@@ -2991,3 +2991,21 @@ guard journal_query
 path tools/j/journal_query_witness.rish
 tier cadence
 seated 20260907.203000
+
+# log_file_claim -- tools/hooks/commit-msg has refused a commit BODY citing an absent path since
+# REDS %202, on the reasoning that a commit message is permanent testimony. The session log rides in
+# that same commit, closes with `file <path> <why>` lines making the same claim, is exactly as
+# permanent, and nothing read it. Measured 20260907: 16,924 path-shaped `file` fields across 4,352
+# logs, and 228 name a basename that exists nowhere -- 32 written that day. Twelve share one shape:
+# a lap folds its live front to a shelf and writes the path from its OWN log's stamp rather than the
+# shelf's, and `git log --all` finds not one of the twelve ever existed. Gates `staged_unwritten` at
+# zero -- this commit's own logs, read against tree and index together, so a shelf staged beside the
+# log naming it passes free and a peer's record can never refuse this lap. Reports `unwritten_total`
+# and `unwritten_today`, never gated: that population grows ~26 a day across eight ships and is
+# testimony no lap may repair, so a ceiling over it would fire at a stranger's desk. `lap` rather
+# than `cadence`: 0.4s measured 20260907, down from 55s read log by log, and the claim it refuses
+# can be written again in any lap that closes a session log.
+
+guard log_file_claim
+path tools/l/log_file_claim_witness.rish
+seated 20260907.221800
