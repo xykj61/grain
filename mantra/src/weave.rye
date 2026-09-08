@@ -313,6 +313,17 @@ fn search_by_id(key: LineId, item: Line) std.math.Order {
     return key.order(item.id());
 }
 
+/// Where an identity falls against an identity -- the same order, read over a
+/// slice of NAMES rather than of lines.
+///
+/// `apply` searches its own delete targets rather than the weave, because a
+/// merged weave comes back in place order and place order is not identity
+/// order. The small side is the one that can be sorted, so the search reads a
+/// slice of LineId and this is its comparison.
+fn search_by_name(key: LineId, item: LineId) std.math.Order {
+    return key.order(item);
+}
+
 /// Copy lines into a caller-owned slice of exactly their count.
 ///
 /// Named rather than reached for through `@memcpy`, per the module family's
@@ -373,8 +384,41 @@ pub const Weave = struct {
     /// diff's site, so the pair the line is named by is unique across every
     /// weave that will ever hold it.
     ///
+    /// COST IS LINEAR IN THE WEAVE, which it was not until `20260907`. Both
+    /// halves of this function walked the whole weave once per item the diff
+    /// carried -- each delete searching for its target, each insert asking
+    /// every held line whether it already answered to the new name -- so one
+    /// apply cost |lines| x |diff|. `merge` carried the same shape one function
+    /// over and was repaired the same day; this is its other half.
+    ///
+    /// Measured on this pier, ReleaseSafe -- the checked build a witness
+    /// actually runs -- as three applies in sequence: insert n lines into an
+    /// empty weave, delete half of them by identity, then insert n more.
+    /// Wall time for each apply, walking then reading:
+    ///
+    ///   n = 16,384    insert    83ms -> 10ms
+    ///                 delete    59ms -> under the timer's floor
+    ///                 insert   262ms -> under the timer's floor
+    ///   n = 131,072   insert 5,764ms -> 29ms
+    ///                 delete 2,957ms -> 5ms
+    ///                 insert 16,693ms -> 28ms
+    ///
+    /// The walk rose about 3.9x per doubling, which is the quadratic the shape
+    /// predicts. At **524,288** lines -- half the ceiling -- the first apply
+    /// alone took **109,506ms** walking and takes **97ms** reading, so the
+    /// declared ceiling was again one the operation could not serve. The bound
+    /// did not move; the two loops did.
+    ///
+    /// Two different repairs, because the two halves fail for two reasons.
+    /// The delete pass sorts its own TARGETS and walks the weave once, since a
+    /// merged weave comes back in place order and cannot itself be searched by
+    /// identity; that costs |lines| x log |deletes|. The insert check needed no
+    /// search at all: positions come off a counter that only rises, and the
+    /// weave's own invariant already holds every line below it, so a new
+    /// identity is fresh by construction and one floor read replaces the walk.
+    ///
     /// Precondition:  every delete names a line the weave holds and that is
-    ///   present (odd gen) -- asserted individually.
+    ///   present (odd gen), and no two deletes name one line -- both asserted.
     /// Postcondition: all inserted lines carry gen == 1 and odd (present);
     ///   all deleted lines carry gen % 2 == 0 (gone).
     pub fn apply(self: *Weave, allocator: std.mem.Allocator, diff: Diff) !void {
@@ -389,25 +433,54 @@ pub const Weave = struct {
             return WeaveError.TooManyLines;
         }
 
-        // Process deletes first: find each line by identity and bump its gen to
-        // even. Identity rather than position, since a position alone names a
-        // line in one weave and a merged weave holds lines from several.
-        for (diff.deletes) |target| {
-            var found = false;
-            for (self.lines.items) |*line| {
-                if (line.id().eq(target)) {
-                    // invariant: an odd generation means present -- the parity IS the
-                    // tombstone, so an even one reaching here would be a deleted line treated
-                    // as live
-                    assert(line.gen % 2 == 1);
-                    line.gen += 1;                       // odd -> even: mark gone
-                    found = true;
-                    break;
+        // Process deletes first: bump each named line's gen to even. Identity
+        // rather than position, since a position alone names a line in one
+        // weave and a merged weave holds lines from several.
+        //
+        // THE TARGETS ARE SORTED AND THE WEAVE IS WALKED ONCE, rather than the
+        // weave being walked once per target. The pass costs |lines| x
+        // log |deletes| where the walk cost |lines| x |deletes|. The weave is
+        // the side that cannot be searched: `merge` returns its lines in PLACE
+        // order, and place order is not identity order, so the side put in
+        // identity order is the small one the caller handed in.
+        if (diff.deletes.len > 0) {
+            // invariant: a diff names no more lines than the weave can hold, since
+            // every target must name a line this weave already carries -- and this is
+            // the bound the scratch slice just below is sized by
+            assert(diff.deletes.len <= max_weave_lines);
+
+            const targets = try allocator.alloc(LineId, diff.deletes.len);
+            defer allocator.free(targets);
+            for (targets, diff.deletes) |*into, from| into.* = from;
+            std.mem.sort(LineId, targets, {}, struct {
+                fn less_than(_: void, a: LineId, b: LineId) bool {
+                    return a.less_than(b);
                 }
+            }.less_than);
+            for (targets, 0..) |_, i| {
+                // invariant: the targets are distinct and strictly increasing, which is
+                // what lets the hit count below prove every one of them was found. Two
+                // deletes naming one line would otherwise bump one generation twice and
+                // report two changes where the weave saw one.
+                if (i + 1 < targets.len) assert(targets[i].less_than(targets[i + 1]));
             }
-            // invariant: a delete names a line the weave holds, since deleting one that is
-            // not there would report success for a change that never happened
-            assert(found);
+
+            var hits: u32 = 0;
+            for (self.lines.items) |*line| {
+                if (std.sort.binarySearch(LineId, targets, line.id(), search_by_name) == null) continue;
+                // invariant: an odd generation means present -- the parity IS the
+                // tombstone, so an even one reaching here would be a deleted line treated
+                // as live
+                assert(line.gen % 2 == 1);
+                line.gen += 1;                       // odd -> even: mark gone
+                hits += 1;
+            }
+            // usize lives at the inherited-std seam alone: a slice counts in usize, and
+            // the bound asserted above is what makes the cast safe.
+            // invariant: every delete named a line the weave holds, since deleting one
+            // that is not there would report success for a change that never happened.
+            // The targets are distinct, so one hit apiece is exactly this count.
+            assert(hits == @as(u32, @intCast(diff.deletes.len)));
         }
 
         // Process inserts: each new line enters at generation 1 (first appearance,
@@ -416,6 +489,19 @@ pub const Weave = struct {
         // line this edit adds sorts as one block rather than each line taking its
         // chances against the other side's lines separately.
         const run = self.next_run;
+        // The floor every identity this edit hands out stands above, read once
+        // before a line is added. Positions come off a counter that only rises,
+        // and the weave's own invariant holds every line it already carries
+        // BELOW that counter -- so a new line's position is above every held
+        // position, and the identity is therefore fresh whatever its site.
+        const floor = self.next_pos;
+        // invariant: every line the weave already holds sits below the counter the
+        // inserts are about to draw from. This is the weave's declared invariant,
+        // checked here at the edge because the uniqueness asserted inside the loop
+        // rests on it -- one pass, where asking each new line against every held
+        // line cost |inserts| x |lines| and was the second quadratic this function
+        // carried.
+        for (self.lines.items) |held| assert(held.pos < floor);
         for (diff.inserts) |text| {
             const line = Line{
                 .text = text,
@@ -429,9 +515,10 @@ pub const Weave = struct {
             assert(line.gen % 2 == 1);
             // invariant: the identity being handed out is one this weave does not already
             // hold. This is what the pair buys, asserted where it is created rather than
-            // trusted: a counter that repeated itself, or a merged-in line from this same
-            // site, would otherwise make two lines answer to one name.
-            for (self.lines.items) |held| assert(!held.id().eq(line.id()));
+            // trusted: its position stands at or above the floor every held line sits
+            // below, so no held line can answer to this name whatever its site, and a
+            // counter that repeated itself is caught right here.
+            assert(line.pos >= floor);
             try self.lines.append(allocator, line);
             self.next_pos += 1;
         }
