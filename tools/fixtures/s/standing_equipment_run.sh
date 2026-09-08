@@ -1031,10 +1031,15 @@ echo "tree_moved=$moved"
 if [ "$red" -ne 0 ]; then
   # A RED COSTS THE RECEIPT, AND THAT IS SAID HERE RATHER THAN LEFT TO BE INFERRED. The receipt is
   # written below, past this exit, so a full pass carrying any red writes none -- and `--scoped`
-  # reads that receipt for its basis. Where a tree's reds sit at a custody gate the living card
-  # names, that is a permanent state rather than a delay: this pier carries two, pond_enclosure_door
-  # at gate %5 and rule_twin at gate %7, so no pass here can ever close fully green and the fusion
-  # build's cheaper pass can never be earned (REDS %374).
+  # reads that receipt for its basis. A GATED READING IS NOT A RED, and that is what makes the
+  # receipt reachable on this pier: the branch 140 lines above books a custody-gated refusal to
+  # `gated` and only a genuine break to `red`, so the permanent gates the living card names --
+  # rule_twin at %7, the two pond_enclosure rows at %5 -- no longer withhold it (REDS %374,
+  # Keaton's word `20260904`). The sentence standing here until `20260908.072554` still read that
+  # the cheaper pass could never be earned, four days after its own repair landed in this file and
+  # while `construction/standing-equipment-receipt.kyri` stood written `20260908.052552` at
+  # `scope full`, `guards 186`, `gated 3`. A comment describing a constraint its own file has
+  # already lifted teaches the next reader not to look.
   [ "$run_scope" = full ] && echo "roster_receipt_write=withheld_guard_red"
   echo "run_verdict=guard_red"
   echo "refused: a rostered guard answered red -- read its own line" >&2

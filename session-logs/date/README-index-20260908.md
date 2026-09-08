@@ -12,6 +12,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | Stamp | Log | What it recorded |
 |---|---|---|
 | `20260908.083306` | [A finished lap in the stash](20260908/20260908-083306_a-finished-lap-in-the-stash.kyri) | a green lap recovered from a round-open stash. |
+| `20260908.082906` | [A census pays for its forks](20260908/20260908-082906_a-census-pays-for-its-forks.kyri) | 16,447 forks, not the tree: 75,153 -> 15,070ms, identical. |
 | `20260908.081752` | [A seat named in four places](20260908/20260908-081752_a-seat-named-in-four-places.kyri) | the guard read three of them; both seat changes drifted at the fourth. |
 | `20260908.080951` | [A ratchet that could not reach zero](20260908/20260908-080951_a-ratchet-that-could-not-reach-zero.kyri) | The last drifting Tally copy linked. |
 | `20260908.080058` | [A runner is a file the pier executes](20260908/20260908-080058_a-runner-is-a-file-the-pier-executes.kyri) | %601 booked; population a union, 3298 -> 3305. |
