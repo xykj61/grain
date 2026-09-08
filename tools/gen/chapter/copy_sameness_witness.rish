@@ -8,10 +8,16 @@
 # SYMLINKS to the one canonical tally/copy.rye -- the tree already keeps sameness
 # through the filesystem. Exactly one, mand/tally_copy.rye, is a real file and
 # is therefore the only path that can drift silently. This guard makes it loud.
+#
+# That real file has since been linked, so the split the lines below once announced no longer
+# stands: 20260908.075300 reads 23 paths, all symlinks, no real file and no drift. The dated
+# figures above are testimony and keep every word; what speaks as NOW reads its count off the
+# scan rather than out of this header, which is why the say lines below print the scan's own
+# output instead of a number written here.
 
-say "copy-sameness: Language EN — one fold, many copies, no drift."
-say "copy-sameness: Style Radiant — fourteen symlinks, one real file, no drift."
-say "copy-sameness: Lens TAME — sameness asserted, never assumed."
+say "copy-sameness: Language EN -- one fold, many copies, no drift."
+say "copy-sameness: Style Gauge, Meter -- the split is the scan's to report, not this line's."
+say "copy-sameness: Lens TAME -- sameness asserted, never assumed."
 
 let scan = run ["sh" "tools/fixtures/c/copy_sameness_scan.sh"]
 say scan.out
@@ -19,10 +25,11 @@ assert scan.out contains "verdict=ok" else "copy-sameness: a copy has drifted fr
 # values_apart: the scan's status and its verdict key must agree. If they ever
 # disagree, a sentinel was typo'd or a path changed -- exactly the failure the
 # old text-only verdict could pass silently.
-assert scan.ok else "copy-sameness: the verdict reads ok while the status fails — they must agree"
+assert scan.ok else "copy-sameness: the verdict reads ok while the status fails -- they must agree"
 
-say "copy-sameness: HAZARD, named on purpose — fourteen module-local paths are"
-say "copy-sameness:   symlinks to tally/copy.rye, so a write to ANY of them edits"
+say "copy-sameness: HAZARD, named on purpose -- every module-local tally_copy.rye is"
+say "copy-sameness:   a symlink to tally/copy.rye, so a write to ANY of them edits"
 say "copy-sameness:   the canon for every module at once. An on-touch edit inside"
-say "copy-sameness:   one module home is a tree-wide edit. Measured live 20260729."
-say "GREEN: copy-sameness — every tally_copy.rye matches the canon byte for byte"
+say "copy-sameness:   one module home is a tree-wide edit. The count is in the scan"
+say "copy-sameness:   output above; this line names the hazard, never a figure."
+say "GREEN: copy-sameness -- every tally_copy.rye matches the canon byte for byte"

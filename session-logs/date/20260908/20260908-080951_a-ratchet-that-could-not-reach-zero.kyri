@@ -1,0 +1,61 @@
+format session-log-v1
+stamp 20260908.080951
+editor Claude Code, terminal
+provider Anthropic
+product Claude Code
+role unattended fleet seat, Patchouli
+modality text
+model unverified
+model_status active runtime unverified -- the process line reads --effort medium, an invocation flag rather than a model identity
+configured_model claude-opus-5
+configured_reasoning max
+configured_status .claude/settings.json is tracked and proves the configured default, never that this session ran it
+evidence .claude/settings.json
+voice Kyri
+host Linux pier, America/New_York
+title A ratchet that could not reach zero -- the control reddened on the lap that closed it
+prompt autonomous loop, fire rota lap; my lane's crux (%589, the Weave port) stays Keaton's word, so the lap opened on the rota row and followed it into tally/
+rota lap 4282, row 3 -- Water, the row that tastes. 4282 mod 5 is 2, the row my last lap read, so I advanced by hand per the baton. Water's cardinal seat asks would running it again change anything, and its discipline is to run the actual thing up close rather than read about it. That instruction is what saved this lap: it sent me to run guards instead of reasoning about them, and running them is what showed the work was already done.
+think My lane is mantra/ and tally/. mantra/src/weave.rye already proves merge commutative, associative and idempotent, and annotate agreeing with merge -- so the water row's obvious first question was answered on metal before I asked it. The head names the next real work as an anchor per insert, which it calls a seam rather than a lap.
+think So I read tally/ instead. tools/fixtures/u/unheard_guard_scan.sh list names exactly one unheard guard in my lane: tools/t/tally_caller_map_witness.rish. I ran it -- GREEN in milliseconds.
+think Its scan checks [ ! -e "$p" ] over 19 hand-listed paths, while the canon it defends (tally/README.md, Who calls Tally) says callers reach marks by symlink or import, not copies. Existence is a weaker question than the sentence being defended -- %614's shape, one room over.
+think Measured rather than assumed: 69 tracked symlinks resolve into tally/, and the guard's list names 18 of them plus one regular file. That regular file was caravan/parse_int.rye.
+think My first discriminator was the basename, and it was wrong: it called lotus/stack.rye a copy of tally/stack.rye when lotus/stack.rye is an audio tone stack that merely shares a name. Measurement corrected my own claim before I published it, which is the water discipline working.
+think The right discriminator is the tree's own opening-line convention: a file whose //! line names tally/x.rye while sitting elsewhere is a copy of it. Over every tracked regular .rye that found exactly two files -- caravan/parse_int.rye and a drift fixture.
+think Then, before building anything, I searched for the guard that already does this -- the habit %457 and %619 both cost the fleet. It exists twice. copy_sameness_scan.sh guards one basename; copy_lag_scan.sh (seated 20260906.070240) carries the same rule to 109 basenames, derives each canon from its own symlinks, and already reads behind=1 naming caravan/parse_int.rye. It had also already told lotus/stack.rye apart as a sibling, the same false positive I had produced an hour earlier.
+think So the lap became the repair the instrument was waiting for rather than a fourth duplicate guard. The divergence was two comment lines, one held by each side and no code difference. I carried the copy's comment into the canon first, so the link dropped no writing, then made caravan/parse_int.rye a symlink to ../tally/parse_int.rye like its eighteen sibling marks -- the precedent a peer set for mand/capabilities.rye on 20260907.191247.
+think The scan still read the file as a copy until I staged it: copy_lag reads git ls-files -s, which reads the INDEX, so an unstaged mode change is invisible to it. Staged, copies fell 4 -> 3 and behind 1 -> 0.
+think Lowering behind_ceiling 1 -> 0 broke the control. Leg 3 planted one lag and asserted verdict=ok under the marker behind_under_ceiling_free, which was true only while the ceiling stood above zero. The witness failed at line 71 on the lap that closed the ratchet it guards.
+obs That is the red this lap books. A leg that plants a fixed count and asserts a verdict asks two questions -- is a lag counted, named and priced, and what verdict does that count earn -- and the second belongs to the ceiling. The two part exactly at zero, which is the same seam the ASCII comment control met the same day.
+obs The right pattern stood one leg away in the same file: leg 8 asks the scan for its own ceiling, plants at it and one past it, and proves both sides. I moved the ceiling read to the top of the control so every leg can reach it, and leg 3 now asserts the verdict its ceiling implies.
+obs Bounded before claimed: of 194 controls in the tree, exactly 3 read a ceiling out of scan output, and the other two -- width_check_control.sh and socket_dialect_control.sh -- already plant at the derived ceiling and one past it. So the class is one file and the tree's habit is otherwise correct. I nearly wrote this row as a general class and the measurement stopped me.
+obs Proven three ways, planted and lifted: at the live ceiling of 0 the leg takes the refusal branch and says yes; at a ceiling temporarily raised to 1 it takes the ok branch and says yes; with the branch deliberately inverted it says no. A marker that can only agree proves nothing.
+obs A ratchet exists to reach zero, so a control leg that cannot survive zero is a control that reds on success -- and it reds hardest on the lap that deserved it least.
+obs Reds first, on metal: the cold pass answered 3 red. stash_record at orphans=34 is %592's standing seat, unchanged since my last lap and not this lap's to close. standing_equipment reds while any do. reds_citation was new and closable: REDS-fold-recital.md line 520 claimed %614 while linking the rows-613 shelf, and both that shelf and the row inside it read %613, so the recital's number was the error. Repaired; the scan reads fold_disagree=0, verdict=ok.
+obs The cold pass closed tree_moved=yes, because I edited the tree while it ran. Its guard readings are still each guard's own answer, yet the pass as a whole measured a tree that no longer stands -- so the hot pass after staging is the reading this send rests on.
+obs Named against myself: I counted running roster passes with grep -c on a process pattern and read 19, when 17 of those were peer ships whose PROMPT TEXT contains the string standing_equipment_run. That is the exact hazard the baton names for pkill -f, arriving in a harmless direction. fleet_call.sh --dry-run resolved it correctly at would_send=2, and I used it for the wait loop instead.
+loom cold_pass=standing_equipment_run guards=188 wall_s=1484 green=182 red=3 gated=3 tree_moved=yes
+loom scan=copy_lag paths=1958 basenames_both_ways=109 copies_before=4 copies_after=3 behind_before=1 behind_after=0 ceiling_before=1 ceiling_after=0
+loom control=copy_lag behaviors=31 faults=0 branches_proven=3
+loom scan=copy_sameness paths=23 symlinks=23 real_files=0 drift=0
+loom census=tally_marks symlinks=69 guard_list=19 listed_symlinks=18 listed_regular=1
+loom census=tracked_symlinks total=281 dangling=0
+loom scan=rye_compile_reach symlinks=229 distinct=1729 never=70 dangling=4 asserted=0
+loom census=ceiling_reading_controls total=194 read_a_ceiling=3 carried_the_fault=1
+loom qa copy_lag_scan=A/91 copy_lag_control=B+/88 copy_sameness_scan=B+/89 copy_sameness_witness=B+/86
+loom qa tally_parse_int_before=C+/75 tally_parse_int_after=A+/98 register=50->92 reach=50->100
+file tally/parse_int.rye the copy's comment carried into the canon, then the module head molted in place under a cairn; C+ 75 -> A+ 98, no code line moved
+file caravan/parse_int.rye a regular file among eighteen sibling marks its own room links, now a symlink to ../tally/parse_int.rye
+file tools/fixtures/c/copy_lag_scan.sh behind_ceiling 1 -> 0, with the argument for the fall written where the elder fall's argument stands
+file tools/fixtures/c/copy_lag_control.sh the ceiling read moved to the top; leg 3 asserts the verdict its ceiling implies rather than a fixed one
+file tools/co/copy_lag_witness.rish the assertion renamed to the claim the leg now makes
+file tools/fixtures/c/copy_sameness_scan.sh its 20260729 split spoke as now while the tree reads 23, 0, 0; the elder figure kept as testimony, the current one pointed at its successor guard
+file tools/gen/chapter/copy_sameness_witness.rish the say lines print the scan's own count rather than a written one; five em dashes to ASCII
+file construction/archive/REDS-fold-recital.md a fold line named %614 and linked the %613 shelf; the number was the error
+file construction/REDS.md %620 booked and CLOSED; %619 folded out to make room under the bound
+file construction/CHECKPOINTS.md the walk-back cairn for the in-place molt of a living path with 149 citers
+file construction/ITINERARY.md this round's account, elder block folded whole, nib carried
+rota_note Water tastes, and taste only works up close. Every finding this lap turned on running something rather than reading about it -- the unheard witness, the two census scans, the guard that already existed, and the control that only failed once the tree actually changed.
+scope one in-lane repair landing the last drifting copy of a Tally mark, one control defect found by that repair and closed on a witness, one recital citation repaired, one living path molted in place, two guard headers synced to the tree
+status GREEN -- copy_lag 31 behaviors, copy_sameness and its negative, tally_parse_int, caravan/abandon.rye across the new link, reds_citation verdict=ok, tame_style_check and width-check all GREEN on metal. Two reds stand and neither is closable here: stash_record at orphans=34 is %592's seat, unchanged since my last open, and standing_equipment reds while any do. The cold pass closed tree_moved=yes against my own edits, so the hot pass carries this send.
+recommend check-in (Keaton) -- tally_caller_map now names 18 of 69 consumer homes while copy_lag covers the drift half properly. Is that guard's remaining seat the PROSE binding alone -- that tally/README.md carries its canon section and saga/README.md points at it -- and should its header say so rather than calling itself the caller map?

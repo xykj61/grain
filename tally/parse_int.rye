@@ -1,25 +1,23 @@
 //! tally/parse_int.rye -- strict-by-default integer parsing.
 //!
-//! `std.fmt.parseInt` accepts a leading zero silently -- `"007"` parses as
-//! `7`, the same shape of trust a leading zero would betray in almost any
-//! other context: truncation, a copy-paste seam, an attempt to look like a
-//! different number than the one actually meant. `parse_int` refuses a
-//! leading zero by default, validates every character before parsing at
-//! all, and only widens on request -- explicit options at the call site,
-//! rather than a default silently trusted everywhere.
+//! `parse_int` refuses a leading zero by default. It checks every character
+//! before it parses at all, and it widens only where a call site asks in
+//! writing. `std.fmt.parseInt` reads `"007"` as `7`, silently.
 //!
-//! Not every honest use wants the strict default, and this file does not
-//! pretend otherwise. A two-digit hex byte pair -- `"0a"`, `"0f"`, `"09"` --
-//! carries a leading zero as an entirely ordinary, correct byte, not a
-//! warning sign; that shape of call passes `.allow_leading_zero = true`
-//! explicitly, saying so in the text rather than leaning on a default that
-//! would wrongly refuse a valid byte.
+//! A leading zero is a warning sign almost everywhere it appears: a
+//! truncated value, a copy-paste seam, a number wearing the shape of a
+//! different number. The strict default answers all three at once.
+//!
+//! Some honest calls want that zero, and they say so in the text. A
+//! two-digit hex byte pair -- `"0a"`, `"0f"`, `"09"` -- carries a leading
+//! zero as an ordinary correct byte. Those calls pass
+//! `.allow_leading_zero = true` explicitly, so the widening stands at the
+//! call site where a reader meets it.
 //!
 //! Gratitude: TigerBeetle's `stdx.parse_int`, ported at the letter. The
-//! `@field` indirection below is not cleverness for its own sake -- it is
-//! how the one function whose entire job is calling the banned form can
-//! exist at all without the ban seeing it, the same shape TigerBeetle's own
-//! source already uses for its own wrapper.
+//! `@field` indirection below is what lets one function reach the banned
+//! form while the ban holds everywhere else -- the same shape TigerBeetle's
+//! own source uses for its own wrapper.
 //!
 //!   rye build tally/parse_int.rye -femit-bin=tally/bin/parse-int
 //!   tally/bin/parse-int selftest
@@ -64,7 +62,7 @@ fn run_selftest(_: std.Io) !u8 {
     const ok_dec = try parse_int(u32, "42", .{});
     assert(ok_dec == 42);
     const leading_zero = parse_int(u32, "042", .{});
-    assert(leading_zero == error.LeadingZero);
+    assert(leading_zero == error.LeadingZero); // negative space: the footgun std.fmt.parseInt would allow
 
     // Signed values carry their sign through the same strict path.
     const ok_signed = try parse_int(i64, "-1500", .{});

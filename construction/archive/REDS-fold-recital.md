@@ -529,4 +529,6 @@ at a closed fold.*
 
 *Row %621 folded to [`REDS-a-sweep-that-could-not-tell-whose-rows-621.md`](REDS-a-sweep-that-could-not-tell-whose-rows-621.md) on `20260908.071909`, **BOOKED** -- a renumber that sweeps by number cannot tell its own citation from a peer's -- the stamp is the key.*
 
+*Row %619 folded to [`REDS-a-pointer-with-no-claim-rows-619.md`](REDS-a-pointer-with-no-claim-rows-619.md) on `20260908.080235`, **CLOSED** -- the ledger broadcast an unclaimed lap in a row's own closing sentence, and two ships took it inside one hour.*
+
 *Row %601 folded to [`REDS-a-runner-is-a-file-the-pier-executes-rows-601.md`](REDS-a-runner-is-a-file-the-pier-executes-rows-601.md) on `20260908.082832`, **BOOKED** -- a population is a rule only when the guard's own WHY names the boundary its source line draws -- here it named neither a room nor a suffix but a file the pier executes.*

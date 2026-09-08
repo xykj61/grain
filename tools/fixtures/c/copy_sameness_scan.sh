@@ -9,6 +9,20 @@
 # symlinks and ONE real file (mand/tally_copy.rye), which is the only path that
 # can silently drift from the canon. This guard makes that drift loud, and
 # reports the symlink/real split so the asymmetry stays visible.
+#
+# THAT ONE REAL FILE IS GONE, and the reading has moved: 20260908.075300 reads 23 paths, 23
+# symlinks, 0 real files, 0 drift. The elder figure above stays as the testimony of the lap that
+# measured it -- run the scan for the current one rather than reading either number here.
+#
+# AND THE NAME IN THE `find` BELOW IS THIS GUARD'S WHOLE POPULATION, which is narrower than the
+# reason above. The header argues a CLASS -- each module home needs a shared mark reachable
+# locally, and the tree keeps those same by symlink -- while the source line names ONE basename.
+# `tools/fixtures/c/copy_lag_scan.sh` (seated 20260906.070240) carries that same rule to every
+# basename held both ways, deriving each canon by resolving its own symlinks rather than spelling
+# one. It found the last real-file copy this guard could never see: caravan/parse_int.rye, linked
+# to ../tally/parse_int.rye on 20260908 and its ratchet now a wall at zero. This guard keeps its
+# narrow seat, because a canon spelled in one line is the cheapest possible reading of the file
+# every module home links, and cheap readings are what a per-lap tier can afford.
 # Output convention: context/specs/20260729-215600_scan-seam-convention.md
 #   values key=value - detail: prefixed - verdict= its own key - status agrees.
 set -eu
