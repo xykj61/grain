@@ -39,14 +39,14 @@ which files changed.** Two publishes twenty minutes apart, differing by one rewr
 paid the full cost and each exceeded the ten-minute foreground bound.
 
 The scrub is a pure function of a file's bytes and its manifest verdict, so its answer is cacheable
-by content -- which is precisely what Tablecloth holds. Booked as **REDS `%642`**, designed at
+by content -- which is precisely what Tablecloth holds. Booked as **the scrub red (`20260908.155715`)**, designed at
 `expanding-prompts/20260908-155715_the-scrub-that-remembers.md`, and standing on one load-bearing
 clause: **the sow witness still reads the whole projection before any push.** What caches is the
 per-file scrub; the proof stays whole, because a cache that skipped the proof would publish on faith.
 
 ## What stands open
 
-- **`%642`** -- the incremental scrub, awaiting Keaton's word and the two measurements the design
+- **(`20260908.155715`)** -- the incremental scrub, awaiting Keaton's word and the two measurements the design
   names: what share of a publish the scrub actually is, and how many files change between publishes.
 - **The fifteen asks** -- sorted, measured, and rewritten at register 100 in
   `expanding-prompts/20260908-160500_fifteen-asks-sorted-for-the-fleet.md`. The single cheapest
