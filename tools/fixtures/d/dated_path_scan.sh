@@ -153,7 +153,7 @@ set +f
 #
 # A REFERENCE BEGINS AT A BOUNDARY, which the leading group is here to say. Without it the stamp
 # may start in the middle of a longer filename, and the retired countdown-prefix names are exactly
-# that shape: `99991_20260619-090912.md` contains `20260619-090912.md`, and the rename mapping
+# that shape: `99991_YYYYMMDD-HHMMSS.md` contains `YYYYMMDD-HHMMSS.md`, and the rename mapping
 # that records those names quotes 251 of them. Measured `20260824`: 24 such substrings read as
 # lost references, every one of them inside a longer name that resolves perfectly well. The old
 # pattern hid this by requiring an underscore after the stamp -- the elder names put theirs
