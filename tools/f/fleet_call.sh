@@ -1,8 +1,13 @@
 #!/bin/sh
 # fleet_call.sh -- signal only what runs in THIS tree, and say out loud what it refused.
 #
-#   sh tools/f/fleet_call.sh --pattern <substring> [--signal TERM] [--root <path>] [--dry-run]
+#   sh tools/f/fleet_call.sh --pattern <substring> --dry-run    # ASK: decide, print, send nothing
+#   sh tools/f/fleet_call.sh --pattern <substring> [--signal TERM] [--root <path>]
 #   sh tools/f/fleet_call.sh --pid <pid> [--pid <pid>] ...
+#
+# THE DEFAULT ACTION IS TO SEND, so reach for --dry-run whenever the question is `what of mine is
+# running?`. Without that flag every candidate inside this tree is signaled; --signal names WHICH
+# signal rather than WHETHER to send one, and reading it as opt-in costs a pass (`20260908.051419`).
 #
 # WHY THIS EXISTS. Eight ships run one program name from eight trees on one pier, so `pkill -f
 # standing_equipment_run` reaches the fleet rather than the lap (REDS %541, fired three times in

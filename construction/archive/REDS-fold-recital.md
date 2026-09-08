@@ -519,3 +519,7 @@ at a closed fold.*
 
 *Row %614 folded to [`REDS-a-plant-that-borrowed-a-contract-rows-613.md`](REDS-a-plant-that-borrowed-a-contract-rows-613.md) on `20260908.053729`, **CLOSED** -- a fixture that borrows a name borrows a contract, and the ruling that guarded it was never symmetric.*
 *Rows %614 and %615 folded to [`REDS-a-cut-that-asked-the-wrong-question-rows-614-615.md`](REDS-a-cut-that-asked-the-wrong-question-rows-614-615.md) on `20260908.053407`, both **CLOSED** -- a citer that only needs a file to exist, and a guard that froze the split of a moving room -- both surfaced by one cadence choir.*
+
+*Row %608 folded to [`REDS-a-refusal-nothing-performed-rows-608.md`](REDS-a-refusal-nothing-performed-rows-608.md) on `20260908.062833`, **CLOSED** -- a refusal is named for what it refuses, or it teaches the wrong lesson to everyone who reads it.*
+
+*Rows %611 and %612 folded to [`REDS-a-guard-heard-too-late-rows-611-612.md`](REDS-a-guard-heard-too-late-rows-611-612.md) on `20260908.064211`, both **CLOSED** -- a guard is worth what it is heard in time to prevent -- one right and forty-three minutes late, one fast and blind to a digit.*

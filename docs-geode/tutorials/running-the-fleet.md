@@ -163,6 +163,28 @@ The watch reads the same file and holds off.
 plainly here because a brief written from memory named a `.watch-stop` file, which appears nowhere
 in the tree -- a stop instruction earns its place by being run.
 
+### Ask before you signal
+
+Eight ships run one program name from eight trees, so a name-matching killer reaches the pier
+rather than your lap -- and the calling shell holds the pattern too, so it takes itself down with
+the rest. `tools/f/fleet_call.sh` resolves every candidate to its working directory and refuses
+anything outside this tree out loud:
+
+```
+sh tools/f/fleet_call.sh --pattern standing_equipment --dry-run
+```
+
+which answers, on this tree today:
+
+```
+candidates=24 would_send=0 refused_foreign=20 refused_self=3 refused_unknown=1 root=/home/keeper/grain-petrichor verdict=ok
+```
+
+**Keep the `--dry-run`, because sending is what the helper does by default.** `--signal` names
+which signal rather than whether to send one, so the flagless form is the live one. Reading it the
+other way costs a pass: on `20260908` this page's own author asked what was running in this tree,
+left the flag off, and killed the roster measurement the ask was for.
+
 ## Where the effort setting lives
 
 Four places name it, and on this tree today three agree:
