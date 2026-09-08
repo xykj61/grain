@@ -19,10 +19,10 @@
 //!   rye/bin/rye build mantra/src/main.rye -femit-bin=mantra/bin/mantra
 //!
 //! Architecture (three sections, one file for the seed):
-//!   § Weave   -- the data model, imported from mantra/src/weave.rye
-//!   § Diff    -- pure diff computation over line equality (LCS)
-//!   § Store   -- SHA3-256 content-addressed blob store under .mantra/
-//!   § Main    -- CLI: init / add / status
+//!   Section Weave   -- the data model, imported from mantra/src/weave.rye
+//!   Section Diff    -- the LCS diff, imported from mantra/src/diff.rye
+//!   Section Store   -- SHA3-256 content-addressed blob store under .mantra/
+//!   Section Main    -- CLI: init / add / status
 
 const std  = @import("std");
 const assert = std.debug.assert;
@@ -34,7 +34,7 @@ const Sha3 = std.crypto.hash.sha3.Sha3_256;
 const mantra_version = "20260619.213800";
 
 // =========================================================================
-// § Weave -- the data model, imported rather than declared
+// Section Weave -- the data model, imported rather than declared
 // =========================================================================
 //
 // The model lives in one file. `mantra/src/weave.rye` publishes `Line`, `Diff`
@@ -61,105 +61,44 @@ const LineId = weave.LineId;
 const V1Row = weave.V1Row;
 
 // =========================================================================
-// § Diff -- pure diff computation (LCS over line text equality)
+// Section Diff -- pure diff computation, imported rather than declared
 // =========================================================================
+//
+// The LCS diff lives in one file too. `mantra/src/diff.rye` publishes `diff`
+// and `split_lines`, and this CLI calls them rather than carrying its own
+// copies, which it did until `20260908`.
+//
+// THE COPY HERE HAD NO CEILING. Its table was `(m + 1) * (n + 1)` cells of
+// `u32` allocated straight from two lengths a caller chooses, with no named
+// maximum, no named error, and no check at the edge -- the exact fault
+// `diff.rye`'s own header describes fixing one seam over, left standing in the
+// file that actually reads a user's file off disk. `diff.rye` names
+// `max_diff_lines`, read from the weave's own `max_weave_lines` so one
+// quantity is spelled once; it names `max_diff_table_bytes` in bytes, because
+// bytes are what the machine has; and it refuses through `check_bounds`
+// before a single cell is allocated. Calling it is how the CLI inherits that
+// fence.
+//
+// `split_lines` comes with it, because the two split rules have to agree: the
+// slice this CLI hands `diff` is the slice `diff` reads its ceiling against,
+// and one drop-the-trailing-newline rule written in two files is one rule two
+// files will come to disagree about.
+//
+// The diff carries `cli_site` on every insert and names its deletes by the
+// `LineId` that `Line.id()` returns, which is the model's own identity rather
+// than a bare position.
+const diff_mod = @import("diff.rye");
 
-/// Compute the diff between `old_lines` (the weave's current view) and
-/// `new_text` (the desired lines). Pure: same inputs -> same Diff, every time.
+/// The site every line this CLI writes belongs to.
 ///
-/// Postcondition: applying the Diff to a weave whose current() == old_lines
-///   will produce a weave whose current() == new_text.
-fn compute_diff(
-    allocator: std.mem.Allocator,
-    old_lines: []const Line,
-    new_text:  []const []const u8,
-) !Diff {
-    const m = old_lines.len;
-    const n = new_text.len;
-
-    // LCS table: lcs[i*(n+1)+j] = LCS length of old[0..i] and new[0..j].
-    const table = try allocator.alloc(u32, (m + 1) * (n + 1));
-    defer allocator.free(table);
-    @memset(table, 0);
-
-    for (1..m + 1) |i| {
-        for (1..n + 1) |j| {
-            if (std.mem.eql(u8, old_lines[i - 1].text, new_text[j - 1])) {
-                table[i * (n + 1) + j] = table[(i-1) * (n+1) + (j-1)] + 1;
-            } else {
-                const up   = table[(i-1) * (n+1) + j];
-                const left = table[i * (n+1) + (j-1)];
-                table[i * (n+1) + j] = if (up >= left) up else left;
-            }
-        }
-    }
-
-    // Back-track: mark which old lines and new lines are in the LCS.
-    const kept_old = try allocator.alloc(bool, m);
-    const kept_new = try allocator.alloc(bool, n);
-    defer allocator.free(kept_old);
-    defer allocator.free(kept_new);
-    @memset(kept_old, false);
-    @memset(kept_new, false);
-
-    var i: u32 = @intCast(m);
-    var j: u32 = @intCast(n);
-    while (i > 0 and j > 0) {
-        if (std.mem.eql(u8, old_lines[@intCast(i - 1)].text, new_text[@intCast(j - 1)])) {
-            kept_old[@intCast(i - 1)] = true;
-            kept_new[@intCast(j - 1)] = true;
-            i -= 1; j -= 1;
-        } else if (table[@intCast((i - 1) * (@as(u32, @intCast(n)) + 1) + j)] >= table[@intCast(i * (@as(u32, @intCast(n)) + 1) + (j - 1))]) {
-            i -= 1;
-        } else {
-            j -= 1;
-        }
-    }
-
-    // Collect deletes (old lines not in LCS) and inserts (new lines not in LCS).
-    // A delete names a line by its identity -- the pair `Line.id()` returns --
-    // rather than by its position alone, because a position names a line only
-    // inside the one weave whose counter issued it, and `Weave.apply` reads the
-    // pair.
-    var deletes = std.ArrayListUnmanaged(LineId).empty;
-    for (old_lines, 0..) |line, idx| {
-        if (!kept_old[idx]) try deletes.append(allocator, line.id());
-    }
-    var inserts = std.ArrayListUnmanaged([]const u8).empty;
-    for (new_text, 0..) |text, idx| {
-        if (!kept_new[idx]) try inserts.append(allocator, text);
-    }
-
-    // The site is `v1_site` because this CLI is one hand writing one record.
-    // A second hand takes a site of its own, and the merge that would need it
-    // lives in the module rather than here.
-    const result = Diff{
-        .site = weave.v1_site,
-        .inserts = try inserts.toOwnedSlice(allocator),
-        .deletes = try deletes.toOwnedSlice(allocator),
-    };
-    // invariant: a diff inserts no more than the new document holds and deletes no more than
-    // the old one did, so neither side can be asked to apply a change to a line that never
-    // existed
-    assert(result.inserts.len <= n);
-    assert(result.deletes.len <= m);
-    return result;
-}
-
-/// Split `text` into lines on '\n'. A trailing newline produces no empty
-/// trailing entry -- the common case for text files.
-fn split_lines(allocator: std.mem.Allocator, text: []const u8) ![]const []const u8 {
-    var lines = std.ArrayListUnmanaged([]const u8).empty;
-    var it = std.mem.splitScalar(u8, text, '\n');
-    while (it.next()) |line| {
-        if (line.len == 0 and it.rest().len == 0) break; // trailing newline
-        try lines.append(allocator, line);
-    }
-    return lines.toOwnedSlice(allocator);
-}
+/// `mantra/src/weave.rye` names it `v1_site` because that is the site an elder
+/// record is lifted onto. Read from here it is the same fact said the other
+/// way round: the elder record IS this CLI's history, so the CLI keeps writing
+/// at the site its own record already carries.
+const cli_site: u32 = weave.v1_site;
 
 // =========================================================================
-// § Store -- SHA3-256 content-addressed blob store
+// Section Store -- SHA3-256 content-addressed blob store
 // =========================================================================
 //
 // Layout under the repository root:
@@ -249,7 +188,7 @@ fn hex_encode(allocator: std.mem.Allocator, bytes: []const u8) ![]u8 {
 }
 
 // =========================================================================
-// § Weave serialization
+// Section Weave serialization
 // =========================================================================
 //
 // Format: a text blob.
@@ -324,7 +263,7 @@ fn deserialize_weave(allocator: std.mem.Allocator, blob: []const u8) !Weave {
 }
 
 // =========================================================================
-// § Commit -- the chain link
+// Section Commit -- the chain link
 // =========================================================================
 //
 // A commit blob names a weave blob and points to its parent commit.
@@ -394,7 +333,7 @@ fn deserialize_commit(allocator: std.mem.Allocator, blob: []const u8) !CommitRec
 }
 
 // =========================================================================
-// § Brix -- .brix course descriptor
+// Section Brix -- .brix course descriptor
 // =========================================================================
 //
 // A .brix descriptor names a project and the bricks (source files) Mantra
@@ -464,7 +403,7 @@ fn load_weave(allocator: std.mem.Allocator, store: *const Store, io: std.Io) !We
 }
 
 // =========================================================================
-// § Main -- CLI
+// Section Main -- CLI
 // =========================================================================
 
 pub fn main(init: std.process.Init) !u8 {
@@ -565,8 +504,8 @@ fn cmd_add(allocator: std.mem.Allocator, io: std.Io, file_path: []const u8) !u8 
     const parent_name = try store.read_head(allocator, io);
     var w             = try load_weave(allocator, &store, io);
     const old         = try w.current(allocator);
-    const new         = try split_lines(allocator, file_content);
-    const d           = try compute_diff(allocator, old, new);
+    const new         = try diff_mod.split_lines(allocator, file_content);
+    const d           = try diff_mod.diff(allocator, cli_site, old, new);
     try w.apply(allocator, d);
     const weave_blob  = try serialize_weave(allocator, &w);
     const weave_name  = try store.write_blob(allocator, io, weave_blob);
@@ -648,8 +587,8 @@ fn cmd_status(allocator: std.mem.Allocator, io: std.Io, file_path: []const u8) !
     };
     var w       = try load_weave(allocator, &store, io);
     const old   = try w.current(allocator);
-    const new   = try split_lines(allocator, file_content);
-    const d     = try compute_diff(allocator, old, new);
+    const new   = try diff_mod.split_lines(allocator, file_content);
+    const d     = try diff_mod.diff(allocator, cli_site, old, new);
     if (d.inserts.len == 0 and d.deletes.len == 0) {
         print("mantra status: '{s}' — clean\n", .{file_path});
         return 0;
