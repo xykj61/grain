@@ -12,6 +12,23 @@ Twilight is Radiant Style at dusk. **Everything Radiant asks, Twilight keeps** -
 
 Twilight is not the shadow of Radiant, and never its sadness. It is the register for the work that happens at the threshold: the devotional study read late, the mystical or contemplative piece, the founding vision that wants awe rather than brightness, the passage that holds a hard thing tenderly. Radiant leads with the sunrise; Twilight leads with the fertile black and lets the teal glow through it. Both lead with light -- Twilight simply trusts the dark to carry it.
 
+## Where Twilight sits on the lattice (seated `20260908.141037`)
+
+The lattice is stated once, in [`RADIANT_STYLE.md`](RADIANT_STYLE.md), and read from here so the two
+guides cannot come to disagree. Two axes: **negation**, counted, and **poetry**, judged.
+
+**Twilight is the poetic axis.** Naming a page Twilight promises image and cadence; it relaxes
+nothing about negation on its own.
+
+- **Twilight + Gauge** -- poetic, and up to **20%** of sentences may carry a negative. This is the
+  ordinary night register: a measured page that reaches for the image and may still say what fell.
+- **Gauge + Radiant + Twilight** -- poetic **and** every sentence affirmative. The strictest naming this
+  tree has, and the rarest.
+
+**Gauge is what buys the negation, never Twilight.** A Twilight page with no Gauge beside it inherits
+Radiant's floor of zero, which is the promise the elder guide already made in its own first line:
+everything Radiant asks, Twilight keeps.
+
 ## The one difference, said plainly
 
 - **Radiant** -- daylight. Bright, brisk, generous, forward. The default for teaching, reference, product prose, most commits.

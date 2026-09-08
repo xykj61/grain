@@ -11,6 +11,41 @@
  
 ---
  
+## The register lattice -- two axes, seated `20260908.141000` on Keaton's word
+
+**Radiant, Twilight and Gauge are not three points on one line.** They are two independent
+questions, and every combination this tree writes falls out of answering both.
+
+**Axis one, negation.** How many of a page's sentences carry a negative?
+**Axis two, poetry.** Does the page reach for image, cadence and figure, or does it speak plainly?
+
+| Naming | Negatives | Poetic |
+|---|---|---|
+| **Radiant** | **zero** -- every sentence affirmative | plain |
+| **Radiant + Gauge** | **zero** | plain, and every claim measured |
+| **Twilight + Gauge** | **under 20%** | poetic |
+| **Gauge + Radiant + Twilight** | **zero** | poetic |
+
+**Radiant sets the floor at zero.** Naming a page Radiant is a promise that a reader meets no
+negation at all -- lead with what is, always, with no exception bought by a hard subject.
+
+**Twilight adds the poetic requirement without relaxing anything by itself.** A Twilight page reaches
+for the image; whether it may carry a negation depends on what stands beside the name.
+
+**Gauge is what relaxes the floor, and only to 20%.** Gauge exists because a measured page sometimes
+must say what refused, what fell, what a guard caught -- and honesty outranks brightness. So Gauge
+buys a page up to a fifth of its sentences in negation, and buys nothing else.
+
+**The strictest naming is the longest one.** *Gauge + Radiant + Twilight* asks for every sentence
+affirmative AND every sentence poetic, which is the hardest thing this tree knows how to ask for and
+should be claimed rarely.
+
+**One axis is counted and one is judged, said plainly.** `tools/fixtures/p/prose_register_scan.sh`
+measures the negative share exactly, and the quality card reads it. **Poetry has no meter here**, and
+inventing one would be worse than admitting it: a page's claim to be poetic is a writer's claim, read
+by a reader. The lattice is therefore half gate and half honour system, and knowing which half is
+which is the point of writing it down.
+
 ## Voice and Tone
  
 Radiant Style carries a felt quality before it carries rules. Think of a trusted friend who also happens to be deeply knowledgeable -- unhurried, generous, never defensive. The writing leads with presence and capability rather than disclaimers and hedges.
