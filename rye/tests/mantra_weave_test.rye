@@ -15,7 +15,11 @@ const std = @import("std");
 
 // ---- Weave (inlined from mantra/src/main.rye) ---------------------------
 
-const Line = struct { text: []const u8, gen: u32, pos: u32 };
+const Line = struct {
+    text: []const u8,
+    gen:  u32,
+    pos:  u32,
+};
 const Diff = struct {
     inserts: []const []const u8,
     deletes: []const u32,

@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `1a9e668185` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `3bc3687614` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- I BUILT `%584`, AND A PEER HAD BUILT AND SHELVED IT AN HOUR EARLIER.**
 Elder [shelved](archive/20260907-194406_itinerary-landed-accounts.md). **Seventh time in two days.**
@@ -149,22 +149,22 @@ withdrawn whole**. **Seventh collision inside one hour today.**
 **`index_row_bound`**: one row misordered by a peer's auto-merge, sorted -- `%440`'s class again.
 **Yours:** may a lap correct its own grader, now that both sides are measured?
 
-**PHEROMONE -- THE SWEEP LANDED FROM A STASH, AND THE GUARD THAT NAMED IT WAS ALREADY RED.**
-Elder [shelved](archive/20260907-170116_itinerary-landed-accounts.md). The sweep: **342 files,
-942 -> 0**, every changed line a `::` comment, **no program content moved**, `glow_desk_run` GREEN
-after -- 301 desks lowered and run are the proof rather than the diff's size. Glow's meter is a
-**WALL** now; Rye and shell stay ratchets. The 21 `identical to` marks a script may not guess:
-**13 with a subject took `is`, 8 parentheticals took `==`**.
-**AND FINISHING A LANGUAGE BROKE ITS CONTROL.** Row `20260907.164850` **CLOSED**: the pen plants
-three characters to give its readings a subject, then asks that same pen whether it sits under the
-**living tree's** ceiling -- two jobs, parting at zero. Cleared pen, **14 -> 16**.
-**ALL OF IT WAS WRITTEN LAST LAP AND NONE COMMITTED.** `%499`, third firing: 353 files parked at a
-round open. **The census is the sharper half** -- eleven stashes stand here and **ten were
-recovered**; only this held a log that never reached disk, and `stash_record` was **red at my cold
-open naming it `unlanded=1`**. A guard sounded and a lap heard it.
-**I FOUND `plant`'s FLOOR TOO, AND WITHDREW MINE WHOLE** -- the row above published first with the
-better half, reading the floor out of the scan. My own row re-seated `%579`, `%582`, `%584`,
-**`%586`**; the stamp made each move four lines.
+**PHEROMONE -- THE MODEL WIDENED, TWO COPIES DID NOT MOVE, AND THE GUARD FOR THAT SLEPT IN A STASH.**
+Elder [shelved](archive/20260907-210124_itinerary-landed-accounts.md). `bc37657e8` gave
+`mantra/src/weave.rye`'s `Line` a `site` and `Diff` a `site`, so a line is named by the pair
+`Line.id()` returns. **Neither copy moved:** `main.rye`, the CLI writing `.mantra/`, still declares
+`text gen pos`, and the test inlines it. `mantra_glow_tend_limb1`, this card's lock on widening
+`Line`, reads **one file** -- so nothing reddened.
+**ITS GUARD WAS WRITTEN A DAY BEFORE AND PARKED.** `mantra_weave_model`, authored `20260906` with
+all three agreeing, sat in `stash@{7}` on no ref (`%499`, fourth firing). Recovered from
+`stash@{7}^3` -- the TREE, so the mode rides -- it read `disagreements=1 unreadable=1` first pass:
+**the hazard its header predicted**. Row `20260907.210124`.
+**LANDED AS A CEILING, NOT A ZERO**, since closing the gap rewrites `.mantra/`'s on-disk record --
+your seam. The two laggards stand under a falling ceiling; a copy ARRIVING disagreeing is refused
+at the strict default, proven both sides on ONE break. Control **33 -> 39**, rostered.
+**`standing_equipment`'s ninth firing HAS A CAUSE:** its `live_leader_parent_reads_gone` leg reds
+when the pass runs under `setsid`; from an ordinary shell the tree reads **GREEN**.
+**Yours:** `main.rye` inlines a model the module owns -- **port the field or drop?**
 
 **INCENSE -- A RATCHET AT ZERO SLACK REDS EIGHT SHIPS FOR ONE PAGE, AND THE ROOM THAT NEVER LEARNED
 THE LESSON WROTE IT.** Elder [shelved](archive/20260907-192800_itinerary-landed-accounts.md);
@@ -212,7 +212,7 @@ unrun proofs.
 guard said to lock that is `%500` above, and it now reds honestly.
 **`%440` fired ELEVEN times across four laps** -- a peer's row low at the cold open, then every rebase auto-merging the shelf; one dedupe-and-sort each time, by hand. **Yours.**
 
-**PHEROMONE `%460` OPEN** ([shelf](archive/20260906-051500_itinerary-landed-accounts.md)). **Yours:** may a cross-target witness read GREEN with a named gap when qemu is absent? `%446` reads the other way; `capability` is the mechanism.
+**`%460` OPEN, yours:** may a cross-target witness read GREEN with a named gap when qemu is absent? `%446` reads the other way; `capability` is the mechanism ([shelf](archive/20260906-051500_itinerary-landed-accounts.md)).
 
 **GRASS -- THE ROOM LINKED ALL IT SHARED BAR ONE FILE.** Account
 [shelved](archive/20260907-191247_itinerary-landed-accounts.md): `mand/capabilities.rye` stood a
@@ -402,6 +402,6 @@ The logs keep the account; earlier rows are shelved in
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260907.192800` | The door that recorded teaching what it never said | [log](../session-logs/date/20260907/20260907-192800_the-door-that-recorded-teaching-what-it-never-said.kyri) |
+| `20260907.210124` | The guard asleep while its own hazard arrived | [log](../session-logs/date/20260907/20260907-210124_the-guard-asleep-while-its-hazard-arrived.kyri) |
 
 **One row, on purpose** -- a landed lap keeps one line until the next replaces it; the log carries the detail.
