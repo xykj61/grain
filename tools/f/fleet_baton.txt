@@ -73,7 +73,11 @@ LOG. A session log ends EVERY response, born on its day's shelf,
 session-logs/date/YYYYMMDD/YYYYMMDD-HHMMSS_sprig.kyri, its stamp read from the one clock at that
 moment (TZ=America/New_York), its shelf-qualified row prepended to date/README-index-YYYYMMDD.md
 under the delimiter, at or under 192 bytes, and committed with the work. Carry the `rota` field
-described above, and `loom` lines for anything the round measured.
+described above, and `loom` lines for anything the round measured. CLOSE ON `scope` AND `status`:
+`status` is your own verdict on your own lap -- GREEN with the witnesses named, or an honest word for
+what was left open. Write it BEFORE the send rather than after, because a lap cancelled mid-send
+cannot write one afterwards, and a killed lap and a finished one that declined to send read
+identically without it. Measured `20260907`: 21 logs of 95 carried both fields, 73 carried neither.
 
 PINS. A living pin at its ceiling taxes every lap a judgment call. Before a sweep condenses prose
 worth keeping, mark a cairn in construction/CHECKPOINTS.md naming what it removed and why. A

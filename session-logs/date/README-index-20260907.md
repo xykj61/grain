@@ -14,6 +14,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260907.195724` | [The lap that was already written](20260907/20260907-195724_the-lap-that-was-already-written.kyri) | a whole parked lap landed; a floor spelled as an equality |
 | `20260907.194642` | [The floor that refused its own good news](20260907/20260907-194642_the-floor-that-refused-its-own-good-news.kyri) | two parked laps landed; a floor red on adoption. |
 | `20260907.192817` | [Two shapes, one notation](20260907/20260907-192817_two-shapes-one-notation.kyri) | 91 pct of journal records repeat a field; no registry row does. |
+| `20260907.200326` | [a killed lap and a finished one](20260907/20260907-200326_a-killed-lap-and-a-finished-one.kyri) | status: 21 of 95 declared. |
 | `20260907.192800` | [A door that recorded teaching](20260907/20260907-192800_the-door-that-recorded-teaching-what-it-never-said.kyri) | the doorway census fell 38 to 3. |
 | `20260907.192643` | [The plant that moved with its desk](20260907/20260907-192643_the-plant-that-moved-with-its-desk.kyri) | %519 fired a third time; the plant reads the desk now. |
 | `20260907.182550` | [A floor that refuses every rise](20260907/20260907-182550_a-floor-that-refuses-every-rise.kyri) | a floor written as an equality refused every adoption. |
