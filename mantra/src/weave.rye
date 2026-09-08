@@ -927,9 +927,33 @@ pub const Weave = struct {
     /// story wants an anchor per insert, which widens `Diff` -- a seam rather
     /// than a lap, and the same seam the module head names.
     ///
-    /// Cost is |self| x |other| text comparisons, the same as `merge` and for
-    /// the same reason: a weave carries no index from position to line, and a
-    /// map earns its place when a measurement asks for one.
+    /// Cost is one sort of each side plus one binary search per line of the
+    /// union -- the same shape `merge` takes, and for the same reason: both
+    /// folds search the side they do not walk.
+    ///
+    /// It was |self| x |other| text comparisons until `20260907`, when
+    /// `union_into` and both folds below were repaired in one commit. This
+    /// header kept the elder claim for a day, and kept the elder REASON with
+    /// it -- that a weave carries no index, and a map earns its place when a
+    /// measurement asks for one -- three lines above code that now builds two
+    /// sorted copies per call. The measurement had asked and been answered;
+    /// only the sentence had not moved (`20260908.031547`).
+    ///
+    /// Measured on this pier, two disjoint sides of equal size so no identity
+    /// joins and both folds do their whole work. One annotate per run, best of
+    /// three, ReleaseFast then the checked build a witness actually runs:
+    ///
+    ///   n =  16,384      3ms /     37ms
+    ///   n =  32,768      6ms /     76ms
+    ///   n =  65,536     13ms /    154ms
+    ///   n = 131,072     28ms /    322ms
+    ///   n = 524,288    132ms /  1,464ms
+    ///
+    /// Each doubling costs about 2.1x, and the last row is four times the size
+    /// of the one above it at 4.7x -- the linearithmic shape the sort and the
+    /// searches predict, rather than the quadratic the elder claim described.
+    /// At 524,288 a side the union is exactly `max_weave_lines`, so the largest
+    /// reading the bound permits is one this operation can serve.
     ///
     /// The caller owns the returned slice; it is allocated from `allocator`.
     ///

@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `c480cc2ca0` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `6a2d0c3e9c` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- ONE LAW, THREE DERIVATIONS, AND THE THIRD NEVER LEARNED ABOUT REBASE.**
 Elder [shelved](archive/20260908-012959_itinerary-landed-accounts.md). Cold open **four red, three
@@ -74,34 +74,30 @@ declared; ratchet back under.
 **Next:** `stash@{2}`, the `rish_report_bound` family -- the larger parked lap, and the only one
 whose files nothing else carries.
 
-**PATCHOULI -- THE ORDER A READ HAD BEEN REBUILDING; THE THIRD SHAPE IS REPAIRED.**
-Elder two [shelved](archive/20260908-015138_itinerary-landed-accounts.md), the last closing on this
-lap's question. `merge` and `apply` left their walks on `20260907`; `current()` is the read those
-two are **measured through**, and it **sorted every call**. It is owed nothing: the backing list is
-in place order by construction, held three ways. **`empty`** has no lines.
-**`apply`** appends carrying `next_run`, and its own postcondition asserts every held run stands
-**below** it -- so an appended line sorts after every held line whatever its site, and the run of
-them sorts by a counter that only rises. **`merge`** sorts by place and asserts strict increase before
-returning. A subsequence of an ordered list is ordered, so the filter carries the order out.
-ReleaseSafe, 20 reads, best of 3: **131,072 3.3 -> 2.7ms**, **524,288 25.3 -> 13.3ms**, **nothing**
-at 16,384. **Say the shape honestly**: what remains dominates, ~16MB of `Line`
-copied into a caller-owned slice. The win that is not a number: order is **held** rather than
-rebuilt, so a corrupt list is refused rather than tidied.
-**THE ASSERT IS NAMED FOR WHAT IT IS NOT.** No control phase isolates it; both plants were **built
-and run**, and each reds through an older claim **with the sort and without it**, so the phase was
-**declined and recorded**. 13 GREEN; the hot pass 177 of 183.
-**FIVE RED AT THE OPEN, FOUR CLOSED, AND MY ROW WITHDREW WHOLE.** The fresh one: a **GNU-only
-`sed -i` inside a heredoc**, landed an hour earlier, writing the pen tool whose *convergence is the
-whole subject* -- on the Mac door it edits nothing and converges by doing nothing, the one failure a
-convergence prover cannot tell from success. I booked and folded it; the rebase brought **a peer's
-identical cure, published first**, and the ledger carries the lesson **twice** (`%553`, `%591`), so
-**theirs stands and mine withdrew** -- row, shelf and recital. **Eleventh collision, third where two
-ships found one FAULT rather than one number.** Two others were my `%599` fold's headline drift.
-**The booking taught before it went:** written twice, the first reading `next_free` off the anointed
-spine while this tree stood three rows behind, opening gaps. **Fetch-before-book is not enough; the
-row lands on the fetched tree.**
-**Yours:** the **anchor** -- what a merge is taken AGAINST when two weaves share no history.
-`stash_record` stays another seat's (`%592`).
+**PATCHOULI -- A REPAIR MOVED THREE FOLDS AND ONE HEADER; THE OTHER HEADER KEPT A SPENT REASON.**
+Elder [shelved](archive/20260908-031547_itinerary-landed-accounts.md). Row `20260908.031547`
+**CLOSED**. `%590` moved `union_into` and **both** of `annotate`'s folds to a binary search and
+rewrote **`merge`'s** cost paragraph. `annotate`'s stood at *|self| x |other| text comparisons* --
+and kept its elder REASON three lines above two sorted copies: *a weave carries no index, and a map
+earns its place when a measurement asks for one*. **The measurement had asked and been answered in
+that same commit.** A stale number is a small wrong; a stale reason **teaches the next reader not to
+look**. Caught by its own helper contradicting it eleven lines below. **Lantern, not loom:** `Cost
+is` reads **16 sites in 15 files**, one stale. Measured, two disjoint sides, best of 3, fast/checked:
+**3/37, 6/76, 13/154, 28/322, 132/1,464 ms** at 16,384 -> 524,288 a side -- **2.1x** a doubling,
+**4.7x** on the fourfold step. Linearithmic, and 524,288 a side IS `max_weave_lines`.
+**A RED I CLOSED, AND MY CURE WITHDREW WHOLE.** `shell_dialect` red at **zero slack**: two GNU-only
+`sed -i` plants landed in `amphora_mark_wreck_witness` at **01:59**, first heard at **my 02:42 cold
+open** -- **43 minutes and one ship later**, because the family is checked by a 25-minute roster
+pass and the lap that breaks it is **never** the lap that hears it. I rewrote both inline and proved
+each still BITES by disarming its pattern in a copy; the rebase then brought **a peer's cure,
+published first, calling `shell_portable.sh`'s shared `sed_inplace`** rather than spelling the
+temporary twice. **Theirs reads better and stands; mine withdrew.** **Twelfth collision, fourth where
+two ships found one FAULT rather than one number.** `index_row_bound` stands mine: one duplicate,
+four misordered rows on the shared shelf, closed by `index_shelf_repair.sh`. Hot pass **178 of 183**;
+the two are `stash_record` and the roster reading it.
+**Yours:** a **pre-commit** dialect read over staged shell would close that 43 minutes to zero.
+The **anchor** stays the lane's crux -- and it is `diff.rye`'s own named seam, **Keaton's word
+rather than a lap's**. `stash_record` stays another seat's (`%592`).
 
 
 **DIFFUSER -- THE LAYER THE FALSIFIER ASKED FOR EXISTS, AND OUR OWN METER UNDERSTATES THE GAP.**

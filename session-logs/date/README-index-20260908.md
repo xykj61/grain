@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260908.031547` | [the header that kept a spent reason](20260908/20260908-031547_the-header-that-kept-a-spent-reason.kyri) | a repair moved three folds and one header. |
 | `20260908.031128` | [The seventh park landed](20260908/20260908-031128_the-lap-that-would-not-stay-landed-landed.kyri) | a parked guard recovered; the dialect red was mine. |
 | `20260908.022643` | [the path a repointer could not read](20260908/20260908-022643_the-path-a-repointer-could-not-read.kyri) | a fold left one assembled path behind. |
 | `20260908.022051` | [a row that became furniture](20260908/20260908-022051_a-row-that-became-furniture.kyri) | the oldest open red, booked. |
