@@ -4,6 +4,7 @@
 **Language:** EN
 **Style:** Gauge (see `../GAUGE_STYLE.md`)
 **Status:** Seated -- four doors through Exchange listing `20260710.165348` (parity **232**-**237**); Sharing device wire `20260710.170132` (parity **239**); Exchange view `20260710.170838` (parity **241**); weave settle `20260710.172625` (parity **243**); live TB waits; Mandi seated separately `20260710.165634` with listing settle `20260710.171202` (parity **242**); kitchen twin [`../../external-research/20260710-171707_granary-mandi-commerce-plainly.md`](../../external-research/20260710-171707_granary-mandi-commerce-plainly.md)
+**Room:** mixed -- four doors landed with witnesses and parity pins; live TigerBeetle waits its own gate
 **Ground:** study [`../../external-research/20260703-182612_the-granary-question.md`](../../external-research/20260703-182612_the-granary-question.md) - counsel [`../../session-logs/20260710-162312_granary-naming-mission.md`](../../session-logs/20260710-162312_granary-naming-mission.md)
 
 *Written by Kaeden and Rio 3.*

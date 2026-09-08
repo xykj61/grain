@@ -4,6 +4,7 @@
 **Version:** `20260713.225658`
 **Style:** Gauge (see `../GAUGE_STYLE.md`)
 **Status:** Amendment to `20260713-224212_glow-and-four-kernel-variants-naming-research.md` and `20260713-214400_urbit-parallel-naming-mapping-proposal.md` -- still no rename committed
+**Room:** mixed -- the acceptance is seated; the pairing of Trey and Triz is proposed and not yet confirmed
 
 Radiant pass `20260725.035955`
 

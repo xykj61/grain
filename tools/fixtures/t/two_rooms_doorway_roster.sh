@@ -1,5 +1,5 @@
 #!/bin/sh
-# two_rooms_doorway_roster.sh -- the doorway's subject: forward-facing pages in six rooms.
+# two_rooms_doorway_roster.sh -- the doorway's subject: forward-facing pages in seven rooms.
 #
 # WHY IT READS EVERY DEPTH, from 20260906. This helper was a shell glob --
 # `for f in external-research/*.md active-designing/*.md docs/*.md` -- written when all three
@@ -28,6 +28,8 @@
 #                        post-seating pages, 11 of which name no room, wait on Keaton's word.
 #   */archive/*          finished-and-historical; same reasoning, and the sibling roster
 #                        `chrono_version_roster.sh` excludes exactly this pair.
+#   */fixtures/*         a plant, read byte for byte by the guard it feeds; see the seventh room
+#                        below, which is the only room supplying one today.
 #
 # A `date/` shelf is NOT excluded, because a fold files a page rather than retiring it: the mark
 # law chose `date/` over `archive/` precisely so the room would claim only *when*.
@@ -68,8 +70,23 @@
 # has read since 20260907. A door with two keys is what makes the repair possible without rewriting
 # a paragraph to fit a grep.
 #
-# ONE ROOM STAYS OUT, with the number it had: `context/` 105 pages and 38 naming no room. That is
-# one more lap of the same shape, and it is carried on `construction/ITINERARY.md`.
+# THE SEVENTH ROOM, added 20260908, and it closes the list the hand started. `context/` is where
+# `TWO_ROOMS.md` itself lives, so the room that houses this law was the last room outside it. Its
+# own front door already teaches the vocabulary -- `context/README.md` names all four tokens in the
+# `TWO_ROOMS.md` bullet -- and 38 of its pages named no room at all, which is what a law reads like
+# when it is written in a room and never applied to it. All 38 sit in `context/specs/`, all 38
+# carried an honest `**Status:**` line answering the lifecycle question and never the register one,
+# and each was read and given the token its own body earns: 14 `checkable`, 21 `mixed`, 3 `vision`.
+# Every one took the second key, a `**Room:**` line beneath the Status, because a spec's Status
+# here carries parity pins and links and a token appended to it lands inside a citation.
+#
+# AND THE SEVENTH ROOM BRINGS ONE THING THE SIX BEFORE IT DID NOT: a `fixtures/` subroom. Those 8
+# pages are INPUTS to guards rather than pages speaking from a room -- a planted broken table, a
+# planted `but`, a planted incomplete ledger -- and their bytes are what the guard under test
+# reads. Today all 8 pass free because none carries a one-clock stamp, so this exclusion changes no
+# reading; it closes the trap that fires the day somebody writes a stamped fixture and the census
+# asks a plant to name its register. Measured 20260908: of the seven rooms, `context/` supplies all
+# 8 fixture pages and the other six supply none, so the clause costs those six nothing.
 #
 # THE COUNTS ABOVE ARE THIS SCRIPT'S OWN POPULATION, which is not the room's file list. Measured
 # on 20260908 with `git ls-files 'manual/*.md'` alone -- READMEs, `yonder/` and `archive/` left in
@@ -81,12 +98,13 @@
 #   sh tools/fixtures/t/two_rooms_doorway_roster.sh
 set -eu
 
-git ls-files 'external-research/*.md' 'active-designing/*.md' 'docs/*.md' 'docs-geode/*.md' 'manual/*.md' 'foundations/*.md' 2>/dev/null |
+git ls-files 'external-research/*.md' 'active-designing/*.md' 'docs/*.md' 'docs-geode/*.md' 'manual/*.md' 'foundations/*.md' 'context/*.md' 2>/dev/null |
 while IFS= read -r f; do
   [ -n "$f" ] || continue
   case "$f" in
     */README.md) continue ;;
     */yonder/*|*/archive/*) continue ;;
+    */fixtures/*) continue ;;
   esac
   [ -f "$f" ] || continue
   printf '%s\n' "$f"

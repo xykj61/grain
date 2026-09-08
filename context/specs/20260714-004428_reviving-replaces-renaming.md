@@ -4,6 +4,7 @@
 **Version:** `20260714.004428` (Pacific)
 **Style:** Gauge (see `../GAUGE_STYLE.md`)
 **Status:** Living -- seats "reviving" as a first-class project concept and supersedes the earlier "mass rename deferred" framing
+**Room:** vision -- reviving is seated as a way of growing, and no witness binds a way of growing
 
 Radiant pass `20260725.040728`
 

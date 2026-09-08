@@ -4,6 +4,7 @@
 **Language:** EN
 **Style:** Gauge (see `../GAUGE_STYLE.md`)
 **Status:** Seated -- Mandi lap 3 in-process settle; parity **242**
+**Room:** checkable -- the settle slip landed at parity 242 with its witness, and nothing here waits
 **Ground:** Mandi seating [`20260710-165634_mandi-name-seated.md`](20260710-165634_mandi-name-seated.md) - MUR M1 (was MALA) - WOV exit honesty
 
 *Written by Kaeden and Rio 3.*

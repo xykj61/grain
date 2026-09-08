@@ -4,6 +4,7 @@
 **Language:** EN
 **Style:** Gauge (see `../GAUGE_STYLE.md`)
 **Status:** Seated -- lap 3 on metal; laps 1-2 grammar retained
+**Room:** mixed -- lap 3 stands on metal; the continuity check is a named placeholder
 
 *Written by Kaeden and Rio 3.*
 Radiant pass `20260725.035852`

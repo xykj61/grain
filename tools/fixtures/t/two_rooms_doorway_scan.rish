@@ -141,6 +141,7 @@ let from_docs = where files as f: f starts-with "docs/"
 let from_geode = where files as f: f starts-with "docs-geode/"
 let from_manual = where files as f: f starts-with "manual/"
 let from_foundations = where files as f: f starts-with "foundations/"
+let from_context = where files as f: f starts-with "context/"
 let from_shelves = where files as f: f contains "/date/"
 
 let results = map files as f: run ["sh" "tools/fixtures/t/two_rooms_doorway_scan_one.sh" f seating]
@@ -149,7 +150,7 @@ for-each results as r do say trim r.out
 
 let fails = where results as r: r.ok == false
 
-say "doorway pages=${length files} research=${length from_research} designing=${length from_designing} docs=${length from_docs} geode=${length from_geode} manual=${length from_manual} foundations=${length from_foundations} folded=${length from_shelves}"
+say "doorway pages=${length files} research=${length from_research} designing=${length from_designing} docs=${length from_docs} geode=${length from_geode} manual=${length from_manual} foundations=${length from_foundations} context=${length from_context} folded=${length from_shelves}"
 say "doorway fails=${length fails} ceiling=${ceiling} seating=${seating}"
 
 if length from_research == 0 then say "FAIL doorway reach: external-research read no page"
@@ -158,6 +159,7 @@ if length from_docs == 0 then say "FAIL doorway reach: docs read no page"
 if length from_geode == 0 then say "FAIL doorway reach: docs-geode read no page"
 if length from_manual == 0 then say "FAIL doorway reach: manual read no page"
 if length from_foundations == 0 then say "FAIL doorway reach: foundations read no page"
+if length from_context == 0 then say "FAIL doorway reach: context read no page"
 if length from_shelves == 0 then say "FAIL doorway reach: no folded page read -- a glob has narrowed to the flat room again"
 
 if length from_research == 0 then exit 1
@@ -166,6 +168,7 @@ if length from_docs == 0 then exit 1
 if length from_geode == 0 then exit 1
 if length from_manual == 0 then exit 1
 if length from_foundations == 0 then exit 1
+if length from_context == 0 then exit 1
 if length from_shelves == 0 then exit 1
 
 let under = run ["sh" "-c" "test ${length fails} -le ${ceiling}"]

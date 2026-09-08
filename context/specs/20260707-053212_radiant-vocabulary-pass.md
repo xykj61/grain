@@ -4,6 +4,7 @@
 **Language:** EN
 **Style:** Gauge (see `../GAUGE_STYLE.md`)
 **Status:** Applied -- the swaps below landed in this bundle's living surfaces; dated artifacts stay as written
+**Room:** checkable -- the swaps landed and the origin is quoted from the source file and its line numbers
 **Register:** Specification of a completed pass, and the standing law for the words
 
 *Written by Kaeden and Rio 3.*

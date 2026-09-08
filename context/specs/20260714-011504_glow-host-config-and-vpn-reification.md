@@ -4,6 +4,7 @@
 **Version:** `20260714.011504` (Pacific)
 **Style:** Gauge (see `../GAUGE_STYLE.md`)
 **Status:** Living -- seats the host-config concept and records both artifacts as real, witnessed work
+**Room:** checkable -- both artifacts exist and both paths are proven by a witness green on this host
 
 Radiant pass `20260725.040728`
 

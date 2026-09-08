@@ -4,6 +4,7 @@
 **Language:** EN
 **Style:** Gauge (see `../GAUGE_STYLE.md`)
 **Status:** Seated -- lap 2 on metal; lap 1 grammar retained
+**Room:** mixed -- lap 2 stands on metal; the continuity fact is a sketch rather than a bound check
 
 *Written by Kaeden and Rio 3.*
 Radiant pass `20260725.035852`

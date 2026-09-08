@@ -4,6 +4,7 @@
 **Version:** `20260713.235455` (Pacific)
 **Style:** Gauge (see `../GAUGE_STYLE.md`)
 **Status:** Living seal for Keaton's name - **umbrella speech replaced** for living *Now* by Grain (`20260725.185041`) -- [`20260725-185041_grain-umbrella-supersedes-glow-os.md`](20260725-185041_grain-umbrella-supersedes-glow-os.md). Section 2 below stays as the dated Glow OS decision; do not rewrite it.
+**Room:** mixed -- the name is sealed and the reference counts are measured; the migration is deferred
 
 Radiant pass `20260725.035955` - Grain living supersede `20260725.185041`
 

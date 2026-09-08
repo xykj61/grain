@@ -4,6 +4,7 @@
 **Version:** `20260714.024800` (Pacific)
 **Style:** Gauge (see `../GAUGE_STYLE.md`)
 **Status:** Living -- the authoritative reframing; a sibling to the Keaton-name and Glow-OS-umbrella markers, sealing how "fork" is read across the tree.
+**Room:** vision -- a decision about register and posture, which no witness binds
 
 Radiant pass `20260725.040728`
 

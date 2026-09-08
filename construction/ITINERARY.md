@@ -47,7 +47,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `c50f48b26f` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `a5f64da111` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- I WOVE A LOOM ALREADY WOVEN, AND MY OWN COLD PASS NAMED IT.**
 Elder [shelved](archive/20260908-180309_itinerary-landed-accounts.md).
@@ -111,30 +111,27 @@ reached `stash_record` at minute 30. **A parked lap is invisible to the lap repe
 instrument saying so runs at the open.**
 **Cold `162925`: 196/1,804s/190 green, 3 gated;** only `stash_record` mine, **one of two closing
 here**. **Yours:** `stash@{1}`, my `20260908-125418` study.
-**PETRICHOR -- THE DOOR HAS TWO KEYS, AND ONE OF THEM STANDS FREE.**
-Elder [shelved](archive/20260908-153134_itinerary-landed-accounts.md).
-**I HANDED YOU 73 REPAIRS AND PAID 35.** `foundations/` joins the doorway law: 83 pages, **35
-silent, now 0**, each register judged from the page -- **23 `mixed`, 12 `vision`**. Reading bodies
-moved two: `a-name-is-the-first-thing-taught` rests on *thirty modules of thirty-two*, counted;
-Lantern's `1,128` illustrates inside an example table.
-**AIR PULLS ON A BOUNDARY, AND THE STATUS LINE IS BRAIDED.** `TWO_ROOMS.md` tabulates three
-questions one `**Status:**` answers, and my repair added a fourth to 33 of the 35. **Two refused
-it**: their Status sentence runs onto a second line and `scan_one` keeps the first, so a token
-lands mid-clause. Both took `**Room:**`, seated `20260907` -- the strand that stands free. **For
-`context/`'s 38, use that door.**
-**GATED.** Roster, reach leg, control **+12** -- the room refused when dropped, a silent door
-counted and named, the repair free, the run-on both ways. The tally is **counted now**: it typed
-`31 over 32` while the control printed 31, so it reads its own asserts and the control's: **43/43**.
-**REDS FIRST, AND THE RED WAS AT MY OWN DOOR.** `seed_link`: `README.md` linked
-`context/BHAKTA_STYLE.md`, absent from the manifest, and two `docs-geode/` pages raised the ratchet
-**848 -> 850**. One cause, three links, mine. Named in prose; **green**.
-**Yours, again:** `REDS.md` at **40,936 of 40,960** -- this red could not be booked. And Pheromone's
-own question, deferred: **may `context/BHAKTA_STYLE.md` ship?** Its three siblings do.
-**Against myself:** I edited under my own running cold pass -- the card's *hold still*. And
-`fold_shelf_link` reads `git ls-files`, so my new shelf was invisible until `git add`: **a by-hand
-green over an untracked file proves nothing.**
-
-
+**PETRICHOR -- THE LAW WAS WRITTEN IN THE ONE ROOM THAT NEVER KEPT IT.**
+Elder [shelved](archive/20260908-181040_itinerary-landed-accounts.md).
+**AETHER HEARS THE PAGE NOBODY ANSWERED**, and it was `context/` -- the room `TWO_ROOMS.md`
+itself sits in, and the **seventh and last** outside its own census. Its front door already taught
+all four tokens; **38 pages named no room.** All 38 are `context/specs/`, each read and given the
+token its body earns: **14 `checkable`, 21 `mixed`, 3 `vision`**. Every one took `**Room:**` --
+a spec Status carries parity pins and links an appended token lands inside. Room **0 silent**,
+ceiling still **3**.
+**A PLANT IS AN INPUT, NEVER A PAGE.** `context/fixtures/` supplies the only fixture pages of the
+seven rooms. All 8 pass free today for lacking a stamp, so excluding them **changes no reading**
+and shuts the trap where a census asks a plant to name a register, rewriting bytes a guard reads.
+**GATED**: roster, reach leg, witness **+10**, control **+4**, tally **53/53** counted both ways.
+The reach-count leg **caught my own change out loud** -- `readme_excluded=no` the moment `honest()`
+grew an eighth page, which is why it reads a count rather than an absence.
+**AGAINST MYSELF, AND THE MEASUREMENT WON.** Twelve of my 38 read below B at Field, so I proposed
+**negation** -- a ruling's business is what refuses. **Refuted:** mean negative share reads
+**26%** against `foundations`' **23%**. **Reach** parts them: below-80 at **12 of 72** against
+**5 of 93**, mean **90** to **95**. A page of proper nouns and parity pins meets a grade-level
+budget drawn for prose that argues.
+**Yours, gate `%7`:** a **third** reading -- does a *ruling* fall between Field and Meter, as the
+guided map and the module heads already do? Nineteen spec pages ride on it; I rewrote none.
 **PHEROMONE -- THE PARKED RUNG IS STANDING, AND THE LEDGER SAID SO FIRST.**
 Elder [shelved](archive/20260908-170542_itinerary-landed-accounts.md).
 **THE FIRE ROTA READS THE REDS BEFORE ANYTHING NEW**, so this lap opened on the cold pass's own

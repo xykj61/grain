@@ -4,6 +4,7 @@
 **Version:** `20260713.201910`
 **Style:** Gauge (see `../GAUGE_STYLE.md`)
 **Status:** Living -- addendum to the one-clock naming law, scoped to this local clone
+**Room:** checkable -- a stamp convention for one clone, checkable by reading the zone the host resolves
 
 Radiant pass `20260725.035955`
 
