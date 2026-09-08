@@ -1,7 +1,7 @@
 # The scrub that remembers -- an incremental seed publish
 
 **Language:** EN - **Style:** [Gauge](../context/GAUGE_STYLE.md) with [Radiant](../context/RADIANT_STYLE.md) - **Voice:** Kyri
-**Stamp:** `20260908.155715` - **Status:** Proposed, booked as REDS `%642` - **Room:** checkable
+**Stamp:** `20260908.155715` - **Status:** Proposed, booked as the scrub red (`20260908.155715`) - **Room:** checkable
 **Lane:** bakery (core infrastructure and the fleet's own friction), with the seed's own custody gate intact
 
 ## What happened, and why it is worth a lap
