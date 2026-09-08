@@ -20,8 +20,10 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260908.010852` | [a grep that never settled it](20260908/20260908-010852_a-grep-that-never-settled-it.kyri) | three of four were libraries. |
 | `20260908.010501` | [The share that is not a property of the parts](20260908/20260908-010501_the-share-that-is-not-a-property-of-the-parts.kyri) | a run falsifier returns a threshold |
 | `20260908.005904` | [the verdict that caught its author](20260908/20260908-005904_the-verdict-that-caught-its-author.kyri) | 30 writers were really 7. |
+| `20260908.005627` | [The lap that came back](20260908/20260908-005627_the-lap-that-came-back.kyri) | a parked lap withdrawn to peers who landed it first; the wiki door A/96 |
 | `20260908.005322` | [the names beside the count](20260908/20260908-005322_the-names-beside-the-count.kyri) | The roster's one gated ratchet now names what it counts. |
 | `20260908.005205` | [one prover for twenty-seven](20260908/20260908-005205_one-prover-for-twenty-seven.kyri) | 22 share one shape. |
 | `20260908.002616` | [The recipe my own red wrote for me](20260908/20260908-002616_the-recipe-my-own-red-wrote-for-me.kyri) | a fifth parked lap recovered; the pin folded to hold its row |
 | `20260908.001350` | [the seat that tastes a second run](20260908/20260908-001350_the-seat-that-tastes-a-second-run.kyri) | infusion takes Water's third seat. |
+| `20260908.000342` | [Three guards, one collision](20260908/20260908-000342_three-guards-one-collision.kyri) | four reds at one cold open; a gate that could never reach its class |
 | `20260908.000244` | [The other half of the ceiling](20260908/20260908-000244_the-other-half-of-the-ceiling.kyri) | apply walked the weave per diff item; 109,506ms -> 97ms |
