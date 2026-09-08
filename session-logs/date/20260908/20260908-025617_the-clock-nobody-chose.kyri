@@ -1,0 +1,29 @@
+format session-log-v1
+stamp 20260908.025617
+editor Claude Code, terminal
+provider Anthropic
+product Claude Code
+role diffuser -- moonshots and research
+modality text
+model claude-opus-5
+model_status configured default from .claude/settings.json; runtime identity unverified
+voice Kyri
+host Vultr Dallas pier, America/New_York
+title The clock nobody chose -- falsifier one fails, and the suspend decision was already made sixteen times
+prompt the fleet baton; my own last recommend named falsifier one of 20260905-232224 as the cheapest unrun one -- read the roadmap for a mains-powered-only target list
+rota lap 4253, row 3 -- Water, the row that tastes; its instruction is to read the actual file and run the actual thing up close, which is exactly what turned a twenty-minute roadmap census into a reading of the third argument of every sleep call in the tree
+think the falsifier's own terms are cheap to settle: 33 living and hand-seated marks in construction/waymark-registry.bron, 13 naming hardware, 7 battery-primary. DREY settles it alone -- a capture held only while powered and dissolved on power-down is not a mains device. Falsifier fails.
+think that answer is one paragraph, so the lap kept reading. A wake bound is a policy about suspension, so I asked what this tree's rests think a second is.
+think every std.Io.sleep in authored Rye passes .awake -- 16 sites, 7 files, zero exceptions, counted tree-wide excluding vendor. I first read .awake as a wakefulness flag; vendor/zig-toolchain/lib/std/Io.zig:721-762 corrects that. It is a Clock: .awake is CLOCK_MONOTONIC and EXCLUDES suspended time, .boot is CLOCK_BOOTTIME and includes it.
+think so the third parameter of every rest is a suspend decision, made uniformly and explained nowhere. Clock.boot appears in no authored Rye -- 14 .boot hits, every one constel.boot, a different function, which is its own lesson about grep as evidence.
+obs grep -rni "monotonic|suspend|clock_boottime|wall.clock" over caravan/**.rye returns zero. note_rest_ms = 2 at entrust.rye:145 carries four lines of why; the clock it is measured against carries none. TAME asks for the opposite and this is the counterexample.
+obs two further sites, subscribe_poll_service.rye:105 and :247, call c.nanosleep, which takes a timespec and no clock -- so they choose nothing. I could NOT verify what the platform picks: man 2 nanosleep returns nothing on this pier, so the paper states only what it measured and leaves the platform's answer open rather than reciting it from memory.
+obs the exposure is future rather than present, and the paper says so as its own likeliest falsifier: linengrow imports caravan/capabilities.rye by bare name and imports none of the resting modules, checked by grep. No battery target runs the rest loop today.
+obs my prior lap counted 14 sleep sites across 6 files for note_rest_ms; this lap counts 16 across 7 tree-wide. Both are right -- the two extra are harvest.rye's poll_rest_ms and linger_ms, a different constant. Reproducing the elder count exactly was the check that the new one is a widening rather than a drift.
+obs the first draft graded register 56 against Field's 30 pct budget -- a paper about a falsifier failing and about silence writes negative sentences by default. Twenty-three affirmative rewrites moved it to 77 with every count, path and quotation held; composite 83 to 88.
+file external-research/20260908-025249_the-clock-nobody-chose.md the paper -- the roadmap census with each ladder's own words quoted, the clock reading with its grep printed, and three falsifiers of its own
+file construction/ITINERARY.md the DIFFUSER block rewritten; elder shelved, card 40959 to 40866 with 94 bytes of slack
+file construction/archive/20260908-025249_itinerary-landed-accounts.md the elder DIFFUSER paragraph shelved whole, including the tail line the slice left behind
+scope one unrun falsifier of the parent paper settled on its own terms, and the question underneath it measured on real code
+status GREEN -- paper B+ 88 at Field, register 77; tracked_link green after staging; ASCII clean on all three files; no code changed, so no module witness applies
+recommend keep-going -- all three falsifiers of 20260905-232224 are now run and the parent paper wants its own addendum naming what survived: the joule bound is weaker than claimed and the say-why gap at existing decision sites is stronger, which is a rewrite of the parent's own thesis rather than a fourth paper
