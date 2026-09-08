@@ -13,4 +13,6 @@ Substitute: em/en-dash -> `--`/`-`; middot -> `-`/`,`/`;`; curly quotes -> strai
 
 **Exception:** an explicitly-named set of work rounds where non-ASCII is the point (a Unicode module's fixtures, an i18n surface, a font codec's glyph tables). Name it in the round; keep it out of the operator card, commit subjects, and general prose.
 
+**Four guards stand**, all rostered in `construction/standing-equipment.kyri`: `living_card_ascii` (the operator card and the ledger, plus valid UTF-8 across every tracked text file), `ascii_document` (the rule rooms gated at zero, every other living `.md` on a falling ceiling), `ascii_comment` (Rye, shell and Rishi, Glow), and `spoken_ascii` (what a Rishi guard says out loud -- the fourth subject, which the sentence above does not name). Full form and current readings: the Claude twin.
+
 **Never rewrite dated artifacts** to retrofit this (one-clock law, accrete-never-break); repairing a mojibake *corruption* is a fix, not a style rewrite.

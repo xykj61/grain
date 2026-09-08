@@ -67,7 +67,8 @@ mode="${1:-census}"
 
 # The ceiling only falls. Lower it whenever a lap converts a document; never raise it.
 #   3956  `20260906.131411`  across 92 of 347 living pages, the reading this meter was seated on
-CEILING="${ASCII_DOC_CEILING:-3956}"
+#   3331  `20260908.052550`  after the five pages the ENFORCE rooms NAME as their canon were swept
+CEILING="${ASCII_DOC_CEILING:-3331}"
 
 # THE ROSTERS ARE GLOBS RATHER THAN A LIST OF NAMES. A rule page added tomorrow is governed the day
 # it lands, where a name list would let it in unmeasured until somebody remembered to type it.

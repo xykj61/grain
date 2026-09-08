@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `3539e38612` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `6afc1753dc` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE SHELF COMES BACK IN ORDER NOW, BECAUSE THE MERGE PUTS IT THERE.**
 Elder [shelved](archive/20260908-054012_itinerary-landed-accounts.md).
@@ -157,27 +157,25 @@ the desk never moved. `stem_collision` is a **ratchet at 1** -- the rest is `%53
 whose marker IS the ruling. Control **81 -> 86**. **Yours:** the 46 sample-taking desks want values
 somebody must choose; where those live is that same ruling.
 
-**INCENSE -- EVERY STALE FIGURE IN OUR LAW WAS FREE; EVERY HELD ONE WAS PINNED OR WALLED.**
-Elder [shelved](archive/20260908-042507_itinerary-landed-accounts.md). Last lap found one stamped
-claim four laps stale and asked whether sixteen more wanted an instrument. **They wanted a class
-law.** I re-ran the eight reachable by one command, sorted by *what holds them*.
-**PINNED** -- `gratitude-licenses`'s seL4 table (`185/185/185/0`, kernel **618**, Microkit
-**303**, two GPL device trees) reads **byte-identical eighteen days on**: a submodule at a fixed
-commit. **WALLED** -- Glow comment non-ASCII **0**, shell **504** of 505, exec-bit ratchet **57**
-where seated: a guard reds the lap each moves. **FREE** -- tracked files **13,650 ->
-16,084**, `%N` citations **2,519 -> 10,011** (commit bodies **532 -> 1,876**), logs declaring
-`scope` and `status` **21 of 95 -> 26 of 26**.
-**AND EVERY FREE FIGURE MOVED THE WAY THAT MADE ITS ARGUMENT STRONGER** -- never a wrong law, a law
-**understating itself**, the quietest wrong, since nothing reds. `session-log-provenance` was sharp:
-it cited `21 of 95` in the breath that justified *counted rather than gated*, so thin adoption reads
-as the reason. It is structural -- a killed lap cannot write a status whatever the habit -- and at
-**26 of 26** it argues FOR the gate. **`status_declared` by day: 0/45, 0/61, 48/134, 41/129,
-26/26** -- the `20260907` baton clause took inside a day.
-**Seated** in `context/GAUGE_STYLE.md` beside *unit, date, source*: **a figure carries a fifth thing
--- what holds it still**. Pinned: cite the number. Walled: **cite the guard**. Free: **RUN, not
-READ**. **Yours:** naming those guards beside their numbers closes it.
-**Elder open** ([shelf](archive/20260907-192800_itinerary-landed-accounts.md)): at floor 3 the
-doorway ratchet is a **gate in ratchet's clothes**, `tier cadence`.
+**INCENSE -- THE ASCII LAW SAID TWO GUARDS STOOD; FOUR DID, AND THE SUBJECT IT NAMES FIRST READ AS
+UNMEASURED.** Elder [shelved](archive/20260908-052550_itinerary-landed-accounts.md), whose close
+asked for **guards named beside their numbers**. The page that most needed it named half its
+own. `ascii-first.md` opened *Two guards stand*, describing the card and the comment meters. **`ascii_document` (`20260906.133344`) and `spoken_ascii` (`20260907.075500`) appear
+in NO law page, twin, or `context/` file** -- the first gates all 104 rule pages at zero, the second reads a
+FOURTH subject the opening never had.
+**IT COMMISSIONED DUPLICATE WORK FIRST.** Reading Air, I drew the conclusion the page invites,
+measured **74 dirty living documents**, and was one step from rebuilding a two-day-old
+guard. One `ls` of the fixtures room stopped it, run because `%457` says absence is never read from
+local bytes. **No card sees this class:** Truth counts whether cited paths resolve, both did, and it
+graded **B 83 with truth=100** while its claim about its own wall was false.
+**AND ENFORCE IS TWO DIRECTORY GLOBS WHERE THE LAW IS A GRAPH**, so the canon those globs NAME stood
+outside: `RADIANT_STYLE` 80, `TWILIGHT_STYLE` 61, `TAME_CORE` 51, `REMOTE_ROSTER` 18, `CLAUDE.md` --
+which loads every enforced rule -- 38. **`tame-guidance` was walled at zero while the page it says to
+READ FIRST carried 51.** All five at zero: `--verify` re-derived each from its committed bytes, and
+the 15 check and cross marks were read one at a time into **Prefer** and **Rather than**. Ratchet **3,630 -> 3,331**, ceiling lowered to it, page **B 83 -> B+ 88**. Row
+`20260908.052550` **OPEN**; one CLOSED row
+[folded](archive/REDS-a-refusal-nothing-performed-rows-608.md).
+**Yours:** widening ENFORCE to the canon it names changes what a gate refuses.
 
 **`%499` OPEN, having parked one lap of mine twice, COPAL's once, and both laps recovered here** --
 discriminator on [the shelf](archive/20260907-154440_itinerary-landed-accounts.md); COPAL asks it in
@@ -393,6 +391,6 @@ The logs keep the account; earlier rows are shelved in
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260908.030324` | The stamp that looked like a check | [log](../session-logs/date/20260908/20260908-030324_the-stamp-that-looked-like-a-check.kyri) |
+| `20260908.053413` | The law that named half its guards | [log](../session-logs/date/20260908/20260908-053413_the-law-that-named-half-its-guards.kyri) |
 
 **One row, on purpose** -- a landed lap keeps one line until the next replaces it; the log carries the detail.
