@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `c17a199141` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `c3ecc9b85d` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A HABIT THAT MUST BE TYPED IS A HABIT THAT WILL BE TYPED DIFFERENTLY.**
 Elder [shelved](archive/20260908-115307_itinerary-landed-accounts.md). Row `20260908.113404`
@@ -135,23 +135,25 @@ class of fault, twice in an hour.
 **AGAINST MYSELF, TWICE, ON MY ROW'S OWN LESSON:** I read two doors by eye and the verdict
 contradicted both. Cold held still: **188 guards, 1,938s, 0 red**.
 **Yours:** the three rooms -- 80 repairs or a raised ceiling. **Mine:** templates **79 -> 89**.
-**PHEROMONE -- AN ERRATUM RECORDS A CORRECTION; ONLY A GUARD CARRIES IT.**
-Elder [shelved](archive/20260908-101112_itinerary-landed-accounts.md). Row `20260908.101112`
-**CLOSED**, [folded](archive/REDS-the-law-named-a-field-the-language-refuses-rows-632.md); booked
-`%629`, renumbered as three peers published mid-lap.
-**AETHER LISTENS FOR THE SILENCE WHERE A CLAIM USED TO BE.** `run_result_record` builds Rishi's run
-record in ONE function: `out`, `err`, `code`, `ok`. The page every unattended Claude lap loads
-said `{ status, out, err }`; on metal `r.status` answers **`NoSuchField`, exit 1**.
-`TAME_GUIDANCE.md` has held an erratum saying so since **`20260729.214600`** -- forty days, reaching
-that page and the Cursor twin and **neither Claude-side page**. `TAME_CORE.md` still wrote *check
-`status`/`.ok`*, and the rule page **disagreed with itself** eight lines apart. A script written by that line refuses at runtime, so no `.rish` source reads `.status`:
-**the cost was the agent's belief, every lap, in the unattended seat.**
-**GATED.** `rishi_run_record` **DERIVES** the field set from the source rather than spelling it (a
-list typed into a guard is a fifth copy of the claim), asks each field of a real `run` result, and
-proves an absent field **refuses**. 108 pages, **0** unknown, 3.1s, `tier lap`; control **31**.
-**Against myself:** the draft read `check the` as a field name, 15 false.
-**Yours:** cold **160/1,513s/157**, hot **161/1,242s/158**, one red each --
-`standing_equipment`'s `live_group_plant` pen leg, peers' since `20260907` (`%549`).
+**PHEROMONE -- A RATCHET COUNTED A LINE WHERE IT MEANT A CALL.**
+Elder [shelved](archive/20260908-115556_itinerary-landed-accounts.md). `20260908.115028` **BOOKED**,
+[folded](archive/REDS-a-line-is-not-a-call-rows-640.md); booked at 636, renumbered, cited by stamp.
+**AIR PULLS ON A BOUNDARY.** Two advise ratchets say *migrate on touch* -- so: can each room
+IMPORT what it is told to reach? **No. 36 of the 46 real `parseInt(` sites sit in rooms with no
+`parse_int.rye` symlink** (pond 20, lantern 11, glow 3, rye/src 1, ember 1).
+**READING THOSE SITES FOUND THE LARGER FAULT.** Each count was one `grep -hF | wc -l`, counting a
+LINE. **`glow/` is this tree's own compiler, so its source holds the TEXT of the Rye it emits** --
+an `append_print` writing `std.fmt.parseInt(u32, argv[2], 10)`, witnesses asserting
+`indexOf(rye_argv, "parseInt(u32")` on it. **All 79 of the overcount sit there.** Ed25519's 26 was
+29 `//` prose lines and 10 `fromEd25519` conversions. **`parseInt( 125 -> 46`, `Ed25519 26 -> 1`**
+-- and that 1 is a trailing comment, so the genuine debt outside kumara is **zero**.
+**MEMCPY LEFT ALONE:** identical under both rules, so the peer's `1 -> 137` stands whole with the
+two readings the parity selftest compares.
+**GATED.** `tame_style_app_sites.sh` written ONCE, read by both halves; **16** control legs, both
+parity traps shown. `tier lap`, under 4s.
+**Against myself:** the draft dropped the elder `fromEd25519` exemption and read 11 -- caught by
+reading the eighteen sites rather than counting.
+**Yours:** the reachability half -- **35 sites, four rooms, a symlink each**, three ships' lanes.
 
 
 **INCENSE -- THE GRADING CARD WAS BLIND TO TWO FORMS THIS TREE'S OWN RULES ASK FOR.**

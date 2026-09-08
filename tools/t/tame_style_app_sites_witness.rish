@@ -1,0 +1,47 @@
+# tame_style_app_sites_witness.rish -- the program-position predicate, proven by doing.
+#
+# WHAT IT WATCHES. tools/fixtures/t/tame_style_app_sites.sh decides whether an occurrence of a
+# pattern is a CALL or the TEXT of a call, and two published TAME ratchets read their numbers
+# through it. On the lap it landed that decision moved `parseInt(` from 125 to 46 and `Ed25519`
+# from 26 to 1, because `glow/` is this tree's own language implementation and its source holds
+# the text of the Rye it emits.
+#
+# HOW IT PROVES. The control plants every case into a throwaway pen and reads it back -- accepts
+# asserted as hard as refusals, both parity traps shown, and the one documented overcount (a
+# trailing comment) asserted so it cannot move in silence. Then this witness confirms the two
+# live ratchet lines still say `program position`, so a later hand cannot quietly route the
+# counts back through a line grep and leave the wording behind.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/t/tame_style_app_sites_witness.rish
+
+let control = run ["sh" "tools/fixtures/t/tame_style_app_sites_control.sh"]
+assert control.ok else "tame_style_app_sites: control failed -- ${control.out}${control.err}"
+assert control.out contains "fail=0" else "tame_style_app_sites: control reported a failure -- ${control.out}"
+
+let pass_lines = where (lines control.out) as ln: ln contains "pass="
+assert (length pass_lines) == 1 else "tame_style_app_sites: control summary line missing or duplicated"
+let pass_parts = split pass_lines[0] " "
+let cases = split pass_parts[0] "="
+assert cases[1] != "0" else "tame_style_app_sites: control proved nothing"
+
+# The wording is load-bearing: it is what tells a reader of the ratchet line that the number
+# counts calls rather than lines. Both halves are checked, because the pair must agree.
+let native = run ["rishi/bin/rishi" "run" "tools/t/tame_style_scan_advise.rish"]
+assert native.ok else "tame_style_app_sites: native advise failed"
+assert native.out contains "parseInt( application sites = " else "native lost the parseInt ratchet line"
+assert native.out contains "Ed25519 application sites = " else "native lost the Ed25519 ratchet line"
+
+let native_pi = where (lines native.out) as ln: ln contains "parseInt( application sites ="
+assert native_pi[0] contains "program position" else "native parseInt ratchet no longer counts program position"
+let native_ed = where (lines native.out) as ln: ln contains "Ed25519 application sites ="
+assert native_ed[0] contains "program position" else "native Ed25519 ratchet no longer counts program position"
+
+let legacy = run ["sh" "tools/fixtures/t/tame_style_scan.sh" "advise-legacy"]
+assert legacy.ok else "tame_style_app_sites: legacy advise failed"
+let legacy_pi = where (lines legacy.out) as ln: ln contains "parseInt( application sites ="
+assert legacy_pi[0] == native_pi[0] else "native and legacy parseInt ratchet lines disagree"
+let legacy_ed = where (lines legacy.out) as ln: ln contains "Ed25519 application sites ="
+assert legacy_ed[0] == native_ed[0] else "native and legacy Ed25519 ratchet lines disagree"
+
+say "GREEN: tame_style_app_sites -- ${cases[1]} control cases, both halves counting program position."
