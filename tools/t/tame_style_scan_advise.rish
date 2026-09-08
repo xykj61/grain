@@ -18,33 +18,41 @@ let tools_py_run = run ["sh" "-c" "find tools -name '*.py' -type f ! -path 'tool
 assert tools_py_run.ok else "tame_style_scan_advise: tools py count failed"
 say "ratchet: tools/*.py count = ${trim tools_py_run.out} (blocking at zero in bans; cast_a_chart.py exempt outside tools/)"
 
-let roster = run ["sh" "-c" "find mantra caravan linengrow comlink rishi/src tally aurora pond brushstroke image mikrophone rye/src amphora glow/tokens.rye glow/lower_named_cast.rye -name '*.rye' ! -type l 2>/dev/null | sort"]
-assert roster.ok else "tame_style_scan_advise: find roster failed"
+# THE ROOMS COME FROM ONE FILE, from 20260908 -- tools/fixtures/t/tame_style_rooms.txt, the same
+# list the bans half and the legacy parity copy read. Until that stamp this half named fifteen
+# rooms and two glow FILES while the bans half beside it named twenty rooms, so one script pair
+# read 857 files and 1,126 and a selftest called their counts equal. It did not catch the gap
+# because equal counts over unequal populations still compare equal: `image/`, `mikrophone/` and
+# `amphora/` stood in one list and not the other for weeks, and they happened to carry none of the
+# four patterns counted here. Parity held by luck.
+#
+# WHAT THE GAP HID: 137 genuine `@memcpy` application sites in authored Rye -- `glow/` above all,
+# this tree's own language implementation -- while the line below printed 0.
+let tame_rooms = "grep -v '^#' tools/fixtures/t/tame_style_rooms.txt | grep -v '^$'"
+let find_rye = "find $(${tame_rooms}) -name '*.rye' ! -type l ! -path '*/.cache/*' ! -path '*/bin/*' 2>/dev/null"
 
-let file_lines = lines roster.out
-let files = where file_lines as f: f != ""
-
-let per_memcpy = map files as f: length (where (lines (read-file f)) as ln: ln contains "@memcpy(")
-let per_memcpy_str = map per_memcpy as n: "${n}"
-let memcpy_expr = join per_memcpy_str " + "
+# EACH COUNT IS ONE GREP THROUGH THE RUN SEAM, which is the idiom the camelCase line below has
+# always used, rather than the per-file map + join + shell arithmetic the other three used until
+# 20260908. That technique built one shell expression holding a term per file, and widening the
+# roster to 1,126 rooms-worth of files refused with `StringTooLong` on line 31 -- measured, after
+# a first guess that `max_list_items` would be what bit. The accumulator the comment above calls
+# for is a `wc -l`, and it has no length to outgrow.
 let memcpy_canonical = length (where (lines (read-file "tally/copy.rye")) as ln: ln contains "@memcpy(")
-let memcpy_app_run = run ["sh" "-c" "echo $((${memcpy_expr} - ${memcpy_canonical}))"]
+let memcpy_app_run = run ["sh" "-c" "echo $(( $(grep -hF '@memcpy(' $(${find_rye}) 2>/dev/null | wc -l) - ${memcpy_canonical} ))"]
+assert memcpy_app_run.ok else "tame_style_scan_advise: memcpy count failed"
 let memcpy_app = memcpy_app_run.out
 
-let camel_run = run ["sh" "-c" "grep -hE '^( *)?(pub )?fn [a-z]+[A-Z]' $(find mantra caravan linengrow comlink rishi/src tally aurora pond brushstroke image mikrophone rye/src amphora glow/tokens.rye glow/lower_named_cast.rye -name '*.rye' ! -type l 2>/dev/null) 2>/dev/null | wc -l | tr -d ' '"]
+let camel_run = run ["sh" "-c" "grep -hE '^( *)?(pub )?fn [a-z]+[A-Z]' $(${find_rye}) 2>/dev/null | wc -l | tr -d ' '"]
+assert camel_run.ok else "tame_style_scan_advise: camelCase count failed"
 
-let per_parseint = map files as f: length (where (lines (read-file f)) as ln: ln contains "parseInt(")
-let per_parseint_str = map per_parseint as n: "${n}"
-let parseint_expr = join per_parseint_str " + "
 let parseint_canonical = length (where (lines (read-file "tally/parse_int.rye")) as ln: ln contains "parseInt(")
-let parseint_app_run = run ["sh" "-c" "echo $((${parseint_expr} - ${parseint_canonical}))"]
+let parseint_app_run = run ["sh" "-c" "echo $(( $(grep -hF 'parseInt(' $(${find_rye}) 2>/dev/null | wc -l) - ${parseint_canonical} ))"]
+assert parseint_app_run.ok else "tame_style_scan_advise: parseInt count failed"
 let parseint_app = parseint_app_run.out
 
-let per_ed25519 = map files as f: length (where (where (where (lines (read-file f)) as ln: ln contains "Ed25519") as ln2: ln2 contains "fromEd25519" == false) as ln3: ln3 contains "FromEd25519" == false)
-let per_ed25519_str = map per_ed25519 as n: "${n}"
-let ed25519_expr = join per_ed25519_str " + "
 let ed25519_canonical = length (where (lines (read-file "tally/kumara.rye")) as ln: ln contains "Ed25519")
-let ed25519_app_run = run ["sh" "-c" "echo $((${ed25519_expr} - ${ed25519_canonical}))"]
+let ed25519_app_run = run ["sh" "-c" "echo $(( $(grep -hF Ed25519 $(${find_rye}) 2>/dev/null | grep -vi fromed25519 | wc -l) - ${ed25519_canonical} ))"]
+assert ed25519_app_run.ok else "tame_style_scan_advise: Ed25519 count failed"
 let ed25519_app = ed25519_app_run.out
 
 say "ratchet: @memcpy application sites = ${trim memcpy_app} (migrate to copy_disjoint on touch)"
@@ -57,8 +65,14 @@ say "ratchet: functions past 70 lines —"
 
 # Parenthesize every `== false` -- bare `f == "path" == false` empties the list
 # (Rish binds `==` tighter than intended; seated 20260717.181715).
-let za1 = where files as f: ((read-file f) contains "assert(") == false
-let za2 = where za1 as f: (f starts-with "comlink/guest_") == false
+# THE ZERO-ASSERT LIST IS DRAWN BY `grep -L` AND FILTERED HERE, so the in-process list holds the
+# files that answered rather than every file asked. Materializing the whole widened roster would
+# put 1,126 items where `max_list_items` seats 1,024; the answer set is 127 and the exempt filters
+# below read exactly as they always did.
+let za_run = run ["sh" "-c" "grep -LF 'assert(' $(${find_rye}) 2>/dev/null | sort"]
+assert za_run.ok else "tame_style_scan_advise: zero-assert list failed"
+let za0 = where (lines za_run.out) as f: f != ""
+let za2 = where za0 as f: (f starts-with "comlink/guest_") == false
 let za3 = where za2 as f: (f starts-with "aurora/src/") == false
 let za4 = where za3 as f: (f == "brushstroke/font8x8_data.rye") == false
 let za5 = where za4 as f: (f == "caravan/supervisor_signal.rye") == false

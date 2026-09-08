@@ -1,9 +1,17 @@
 #!/bin/sh
 # tame_style_scan_advise_legacy.sh -- original shell ratchet lines (parity selftest only).
 set -u
-FILES=$(find mantra caravan linengrow comlink rishi/src tally aurora pond brushstroke rye/src \
-    glow/tokens.rye glow/lower_named_cast.rye \
-    -name "*.rye" ! -type l 2>/dev/null)
+# THE ROOMS COME FROM ONE FILE, from 20260908 -- tools/fixtures/t/tame_style_rooms.txt, read by
+# the bans half, the advise half, and this parity copy alike. Three inline lists is why this one
+# and the half it checks drifted 248 files apart and a green selftest never said so: the counts it
+# compares were equal because the rooms only one list held happened to carry none of the patterns.
+# A NOTE ON WHAT THIS COPY STILL PROVES. Its whole job is to hold the elder shell reading beside
+# the native Rishi one. With the population now shared, what remains under test is the arithmetic
+# and the predicates -- `grep -qE '\bassert\('` here against `grep -LF 'assert('` there, which are
+# not the same predicate -- rather than the roster. Whether a parity oracle whose two halves read
+# one list has outlived its seat is a REMOVAL, so it is named on the card and left for Keaton.
+FILES=$(find $(grep -v '^#' tools/fixtures/t/tame_style_rooms.txt | grep -v '^$') \
+    -name "*.rye" ! -type l ! -path '*/.cache/*' ! -path '*/bin/*' 2>/dev/null)
 # Root by upward walk (seated 20260828): the letter fold moved this script one
 # directory deeper, and fixed ../.. depth arithmetic is what broke. The walk finds
 # the first ancestor holding rishi/bin and tools/fixtures -- git-free so pen copies

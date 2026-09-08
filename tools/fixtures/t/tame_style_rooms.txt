@@ -1,0 +1,47 @@
+# tame_style_rooms.txt -- the one population every TAME style reading walks.
+#
+# One room per line; a `#` line is a comment and every reader strips it. The
+# find flags that go with it -- `-name '*.rye' ! -type l ! -path '*/.cache/*'
+# ! -path '*/bin/*'` -- stay in each reader, because they are about what a FILE
+# is rather than about which rooms the law reaches.
+#
+# WHY THE LIST LIVES IN A FILE. It stood three times: inline in the bans half,
+# inline in the advise half, and inline in the legacy shell copy the selftest
+# compares advise against. The bans half's own comment argued the case on
+# 20260827 -- "two rosters that must agree are one roster plus a bug waiting for
+# the day they stop agreeing" -- and then widened only itself, to the seven rooms
+# below the divider. The advise half kept the elder fifteen for twelve days, so
+# the pair the selftest calls equal read populations 857 and 1,126 files apart.
+#
+# WHAT THAT COST, measured 20260908: 137 genuine `@memcpy` application sites in
+# authored Rye, `glow/` above all, stood outside every ratchet that watches for
+# them while the printed count read 0. Nothing was wrong with the counting; the
+# population simply did not include the room.
+#
+# WHAT DOES NOT BELONG HERE. `crypto/` is absent on purpose and has always been:
+# it implements Ed25519 rather than calling it, so counting its lines against a
+# "prefer tally/kumara.rye" ratchet would book the implementation as its own
+# debt. Add a room here when the reflexes above genuinely govern it.
+
+mantra
+caravan
+linengrow
+comlink
+rishi/src
+tally
+aurora
+pond
+brushstroke
+image
+mikrophone
+rye/src
+amphora
+
+# Widened into the bans half 20260827, into the advise half and this file 20260908.
+glow
+mycelium
+constel
+lattice
+ember
+lantern
+scribble

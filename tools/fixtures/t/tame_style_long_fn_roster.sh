@@ -1,5 +1,7 @@
 #!/bin/sh
 # tame_style_long_fn_roster.sh -- authored .rye roster for >70-line ledger.
-find mantra caravan linengrow comlink rishi/src tally aurora pond brushstroke rye/src \
-    glow/tokens.rye glow/lower_named_cast.rye glow/lower_shape.rye glow/lower_shop_gate.rye glow/lower_shop_nest.rye \
-    -name "*.rye" ! -type l 2>/dev/null
+# THE ROOMS COME FROM ONE FILE, from 20260908 -- tools/fixtures/t/tame_style_rooms.txt. This was
+# the fifth inline copy of one list, and it named five glow FILES where the bans half named the
+# whole room, so the >70-line ledger measured a population no other TAME reading shared.
+find $(grep -v '^#' tools/fixtures/t/tame_style_rooms.txt | grep -v '^$') \
+    -name "*.rye" ! -type l ! -path '*/.cache/*' ! -path '*/bin/*' 2>/dev/null
