@@ -653,6 +653,17 @@ guard tally_roster
 path tools/t/tally_roster_witness.rish
 seated 20260826.224730
 
+# Seated 20260908.090000. The guard stood UNHEARD: no roster row, and its one caller
+# `tools/t/tensegral_arc_iv_witness.rish` is unrostered too, so nothing on any clock ran it. Widened
+# the same lap from a hand-listed 19 paths tested with `-e` to a population derived from the index
+# -- every tracked symlink resolving under tally/, 69 on this date -- with the named 19 kept beside
+# it, since a retargeted link leaves a derived population in silence. `tier lap`: the reading is one
+# `git ls-files` and 69 `readlink -f` calls, well under a second.
+guard tally_caller_map
+path tools/t/tally_caller_map_witness.rish
+tier lap
+seated 20260908.090000
+
 guard socket_dialect
 path tools/s/socket_dialect_witness.rish
 seated 20260827.004535

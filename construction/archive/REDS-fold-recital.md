@@ -543,3 +543,4 @@ at a closed fold.*
 
 
 *Row %628 folded to [`REDS-the-question-that-sent-rows-628.md`](REDS-the-question-that-sent-rows-628.md) on `20260908.075950`, **CLOSED** -- the sixth firing of the process-reach family, and the first where the bounded helper itself was the instrument -- the wall held and the verb was what was wrong.*
+*Row %629 folded to [`REDS-nineteen-of-sixty-nine-rows-629.md`](REDS-nineteen-of-sixty-nine-rows-629.md) on `20260908.094402`, **BOOKED** -- a hand list and a derivation are blind in opposite directions, so the honest population is their union -- and an unheard guard's defects have no arrival date.*

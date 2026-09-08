@@ -47,6 +47,25 @@ Beside the allocator itself, Tally holds a second kind of thing: small, universa
 
 Other season shelves cite this section; they do not duplicate the rows.
 
+**The table is a family map; the witness reads every mark.** The rows above name consumer
+*families*, so the count they imply stands apart from the count on disk. The witness derives its
+population from the index -- every tracked symlink whose resolved target is a file under `tally/`
+-- and read **69** of them on `20260908.090000`, where its scan had carried 19 paths by hand since
+Arc IV. Six reach the canon through another room's link
+(`granary/parse_int.rye -> ../linengrow/parse_int.rye -> tally/parse_int.rye`); a chain is lawful,
+and it is counted so the shape stays visible. Run the scan for the current number:
+
+```
+sh tools/fixtures/t/tally_caller_map_scan.sh
+```
+
+**What the witness holds, and what it hands on.** It proves every mark resolves, that the 19 named
+paths reach the canon *as symlinks* -- the canon's own rule, where the elder `-e` predicate passed
+silently over the copy this section forbids -- and that this section and `saga/README.md`'s pointer
+both stand. A **copy** standing where siblings link belongs to a sibling instrument, since a list of
+links can only ever surface links: `tools/fixtures/c/copy_lag_scan.sh` owns that reading, and
+`tools/fixtures/c/copy_sameness_scan.sh` owns `tally_copy.rye` against the canon's bytes.
+
 ## Elder call sites migrate on touch
 
 `copyForwards`/`copyBackwards` and bare `@memcpy` are banned in new code; `tools/t/tame_style_check.rish` counts what remains and only ever watches the count fall. Nothing here is a sweep -- each mark earns its home the day a real caller needs it, and `maybe` and `no_padding` both arrived exactly that way: proposed in full, unseated, until the tree had something genuine to use them on.
