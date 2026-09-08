@@ -462,7 +462,12 @@ at a closed fold.*
 *Row %581 folded to [`REDS-one-checkout-collided-with-itself-rows-581.md`](REDS-one-checkout-collided-with-itself-rows-581.md) on `20260907.160531`, **CLOSED** -- one checkout collided with itself on a ledger number, because an unlanded row is invisible to the allocator that hands them out.*
 
 *Row %582 folded to [`REDS-a-guards-own-exemption-rows-582.md`](REDS-a-guards-own-exemption-rows-582.md) on `20260907.174409`, **BOOKED** -- a guard's own exemption is a claim, and a wipe predicate reading a flag rather than an act made that claim false of the two files it named.*
+
 *Row %576 folded to [`REDS-a-reading-of-nothing-rows-576.md`](REDS-a-reading-of-nothing-rows-576.md) on `20260907.172225`, **BOOKED** -- an empty subject and an absent subject are two readings, and a scan that cannot tell them apart proves nothing by its silence.*
+
+*Row %578 folded to [`REDS-a-grep-for-a-path-rows-578.md`](REDS-a-grep-for-a-path-rows-578.md) on `20260907.191611`, **BOOKED** -- a grep for a path reads every mention of it, including the ones that say the opposite -- only the dot command is the act.*
 
 *Row %584 folded to [`REDS-a-floor-that-refuses-every-rise-rows-584.md`](REDS-a-floor-that-refuses-every-rise-rows-584.md) on `20260907.192800`, **CLOSED** -- a floor written as an equality refused every rise.*
 *Row %586 folded to [`REDS-a-pen-that-plants-into-itself-rows-586.md`](REDS-a-pen-that-plants-into-itself-rows-586.md) on `20260907.170116`, **CLOSED** -- a control's pen and its tree's ceiling are one number only above zero; booked `%579`, re-seated `%582`, then `%584`, landed `%586`, the stamp holding through all four.*
+
+*Row %583 folded to [`REDS-a-roster-line-guarded-by-its-subject-rows-583.md`](REDS-a-roster-line-guarded-by-its-subject-rows-583.md) on `20260907.203412`, **BOOKED** -- a roster line guarded by its own subject's existence cannot fail, so the drop-off it was written to catch is the one shape it can never report.*

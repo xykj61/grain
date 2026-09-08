@@ -95,23 +95,23 @@ let store_const = run ["sh" "tools/fixtures/m/mantra_gate_constant_scan.sh" "src
 assert store_const.ok else "mantra-eq: the constant scan refused on Store -- ${store_const.out}"
 assert store_const.out contains "verdict=ok" else "mantra-eq: the store gate and Store disagree -- ${store_const.out}"
 
-say "mantra-eq: building and running the fifth gate -- a Line carries exactly four fields..."
+say "mantra-eq: building and running the fifth gate -- a Line carries exactly five fields..."
 let line_build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build tools/rye/mantra_a1_line_fields_eq_witness.rye -femit-bin=mantra/bin/a1-line-fields"]
 assert line_build.ok else "mantra-eq: the line-fields witness does not compile"
 let line_run = run ["sh" "-c" "mantra/bin/a1-line-fields 2>&1"]
 assert line_run.ok else "mantra-eq: the line-fields witness exited non-zero"
 assert line_run.out contains "GREEN" else "mantra-eq: the line-fields witness is not GREEN"
-assert line_run.out contains "line fields=4 decide exactly" else "mantra-eq: the line-fields claim is missing"
-assert line_run.out contains "just over (5) answers 0" else "mantra-eq: the line-fields just-over side is missing -- the side a ceiling cannot answer"
+assert line_run.out contains "line fields=5 decide exactly" else "mantra-eq: the line-fields claim is missing"
+assert line_run.out contains "just over (6) answers 0" else "mantra-eq: the line-fields just-over side is missing -- the side a ceiling cannot answer"
 
-say "mantra-eq: building and running the sixth gate -- a Weave carries exactly two fields..."
+say "mantra-eq: building and running the sixth gate -- a Weave carries exactly three fields..."
 let weave_build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build tools/rye/mantra_a1_weave_fields_eq_witness.rye -femit-bin=mantra/bin/a1-weave-fields"]
 assert weave_build.ok else "mantra-eq: the weave-fields witness does not compile"
 let weave_run = run ["sh" "-c" "mantra/bin/a1-weave-fields 2>&1"]
 assert weave_run.ok else "mantra-eq: the weave-fields witness exited non-zero"
 assert weave_run.out contains "GREEN" else "mantra-eq: the weave-fields witness is not GREEN"
-assert weave_run.out contains "weave fields=2 decide exactly" else "mantra-eq: the weave-fields claim is missing"
-assert weave_run.out contains "just over (3) answers 0" else "mantra-eq: the weave-fields just-over side is missing"
+assert weave_run.out contains "weave fields=3 decide exactly" else "mantra-eq: the weave-fields claim is missing"
+assert weave_run.out contains "just over (4) answers 0" else "mantra-eq: the weave-fields just-over side is missing"
 
 say "mantra-eq: building and running the seventh gate -- a Diff carries exactly three fields..."
 let diff_build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build tools/rye/mantra_a1_diff_fields_eq_witness.rye -femit-bin=mantra/bin/a1-diff-fields"]

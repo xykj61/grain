@@ -1,12 +1,18 @@
 ::  name       mantra weave fields equality gate
 ::  shape      count - int (@u32) -> lawful - int (@u32)
-::  invariant  answers 1 exactly when count is weave fields=2; answers 0 otherwise
-::  example    2 -> 1 - 1 -> 0 - 3 -> 0
+::  invariant  answers 1 exactly when count is weave fields=3; answers 0 otherwise
+::  example    3 -> 1 - 2 -> 0 - 4 -> 0
 ::  readers    Mantra - Glow Tend a1 unfinished - Ashvini
 ::  nib        equinox-e257-equality-sixth-v0 - STOA337
 ::
 ::  Ashvini equality - sixth pedestal gth cannot speak. The sur shape names
-::  a Weave's two fields (lines - next_pos); this gate decides *exactly*,
-::  not by a ceiling.
+::  a Weave's three fields (lines - next_pos - next_run); this gate decides
+::  *exactly*, not by a ceiling.
+::
+::  Moved two to three on 20260907.182409. Weave grew `next_run` on
+::  20260907.173200 and this gate answered 0 for its own subject's count for a
+::  lap, green throughout -- not because the binding was missing, yet because
+::  the field reader stopped at the doc comment above the new field and
+::  reported two. A binding is only as sharp as the reading under it.
 |=  sample=@u32
-?:  (eq sample 2)  1  0
+?:  (eq sample 3)  1  0

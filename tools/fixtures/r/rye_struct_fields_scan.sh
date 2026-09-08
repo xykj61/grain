@@ -22,8 +22,14 @@
 # WHAT IT ASSUMES, stated rather than hidden. A struct declares its fields contiguously at the
 # head of its body, one per line, each ending in a comma and optionally a trailing `//` comment.
 # That is how every struct in `mantra/` is written and what Zig's own formatter produces. The
-# scan stops at the first line under the opener that is not a field -- a blank line, a doc
-# comment, a `pub fn`, or the closing brace -- so a method body is never read as a field list.
+# scan stops at the first line under the opener that is not a field -- a blank line, a `pub fn`,
+# or the closing brace -- so a method body is never read as a field list.
+#
+# A `///` DOC COMMENT IS READ PAST rather than treated as the end of the block (`20260907`).
+# It stood as a terminator until then, which made this reader quietly under-count exactly the
+# structs written the way TAME asks: `Weave` declared `lines`, `next_pos` and a documented
+# `next_run`, and the reader answered two. A guard pinned to that answer agreed with it, so
+# the field the round added was invisible to the one instrument built to see fields arrive.
 #
 # WHEN IT CANNOT ANSWER it says so rather than guessing, and exits 1 so a caller that trusts
 # `count=` never reads a zero as an answer:
@@ -91,6 +97,12 @@ result=$(awk -v want="$name" '
     next
   }
   {
+    # A doc comment is never a field and never a method body, so it is read past rather than
+    # read as the end of the field block. TAME asks a surprising field to say why it exists,
+    # and the elder walk stopped at the first one -- so the better a struct was documented,
+    # the fewer fields this reader saw. `Weave` read `lines next_pos` while declaring
+    # `next_run` under three `///` lines, and the pin that named two agreed with it.
+    if ($0 ~ /^[ \t]*\/\/\//) next
     # A field: leading space, a lowercase identifier, a colon, a type, a comma, and an
     # optional `//` tail -- several fields in mantra/ carry one.
     if ($0 ~ /^[ \t]+[a-z_][a-zA-Z0-9_]*[ \t]*:[ \t]*[^,]+,[ \t]*(\/\/.*)?$/) {

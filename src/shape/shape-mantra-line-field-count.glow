@@ -1,7 +1,7 @@
 ::  name       mantra line field count
 ::  shape      fields - int (@u32)
-::  invariant  a weave Line carries exactly four fields (text - gen - pos - site)
-::  example    4
+::  invariant  a weave Line carries exactly five fields (text - gen - pos - site - run)
+::  example    5
 ::  readers    Mantra - Glow Tend - Sur museum - Ashvini nest-only
 ::  nib        equinox-e203-mantra-tend-v0
 ::
@@ -16,6 +16,12 @@
 ::  that made this placard COUNT rather than grep for presence -- a fourth
 ::  field used to pass it -- so this refusal on the lap the fourth field
 ::  arrived is that row's own instrument working.
+::
+::  Moved four to five on 20260907.173200, when document order left `LineId`
+::  for `Place`. A line now carries the run that placed it, so every line of
+::  one `apply` sorts as one block and two branches each appending a paragraph
+::  come back whole rather than alternating. The count refused on that lap
+::  too, which is the same instrument working a second time.
 +$  mantra-line-field-count-shape
   $:  fields=@u32
   ==

@@ -11,20 +11,27 @@
 # weave.rye and its witness sit side by side here. Everything reads from the filesystem
 # alone, which makes a plain directory the honest pen.
 #
-# SEVEN PHASES.
+# TEN PHASES -- two innocent, eight breaks.
 #   clean          -- the unmutated copy reaches GREEN, exit 0. This leg is what lets every
 #                     other phase read as the break speaking rather than the pen.
 #   join           -- `@max(held.gen, line.gen)` becomes `line.gen`, so the last weave read
 #                     wins where the higher count should. Commutativity goes with it.
 #   order          -- the sort inside merge is deleted. Measured `20260906`: claims 1 through
 #                     7 all still print GREEN, and the run stops inside claim 8, at merge's own
-#                     strictly-increasing postcondition (weave.rye line 272). Claim 8 exists
-#                     for exactly this. Every other merge in the witness has a union already
-#                     in position order, so the sort stayed unreachable until a leg was
-#                     written to reach it.
+#                     strictly-increasing postcondition -- the `assert` on consecutive places
+#                     in `merge`, named rather than cited by line, since a line number is a
+#                     claim that goes stale on the next edit. Claim 8 exists for exactly this.
+#                     Every other merge in the witness has a union already in place order, so
+#                     the sort stayed unreachable until a leg was written to reach it.
 #   text           -- the shared-position text comparison is neutered, so two branches that
 #                     both insert join where they should be refused.
-#   bound_shrunk   -- max_weave_lines drops from 1<<20 to 8, and that is the only change.
+#   identity       -- LineId.eq narrows back to the position alone, the state that refused two
+#                     branches before the site landed.
+#   tiebreak       -- the site leaves Place.less_than, so two concurrent lines are never
+#                     strictly ordered and the merge postcondition fires.
+#   run_ignored    -- the run leaves Place.less_than and the position takes its seat, which is
+#                     the elder order exactly; claim 10's paragraphs come back shuffled.
+#   bound_shrunk   -- max_weave_lines drops from 1<<20 to 16, and that is the only change.
 #                     Staying GREEN here is what makes the two phases below attributable to
 #                     what they break rather than to the shrink.
 #   bound_removed  -- shrunk, with the edge check deleted. The oversize union is admitted.
@@ -35,13 +42,31 @@
 # hours. Shrinking gets the same answer in milliseconds, and bound_shrunk keeps the shrink
 # itself honest.
 #
+# WHY THE SHRINK IS 16 AND NOT 8. bound_shrunk must stay GREEN, so the ceiling has to sit above
+# the largest union the witness's WELCOME claims build -- and claim 10 merges two branches of a
+# three-line base plus a three-line block each, a union of twelve. It was 8 until 20260907, and
+# the lap that added claim 10 read `shrink_not_innocent`: the shrink had stopped being innocent,
+# which is exactly what that phase exists to say. 16 is the next power of two above twelve, and
+# bound_refused still refuses at nine against nine, in milliseconds.
+#
 # EXPECTED: clean_exit=0, bound_shrunk_exit=0, and every other phase non-zero.
 #
-# SEVEN BREAKS, two of them added with the site (20260906.210016). `identity` narrows
-# LineId.eq back to the position alone, which is the state that refused two branches before
-# the site landed; `tiebreak` drops the site from LineId.less_than, so two lines sharing a
-# position are never strictly ordered and the merge postcondition fires. A control that does
-# not plant the law a round added is a control that would not notice that law leaving.
+# EIGHT BREAKS. `identity` narrows LineId.eq back to the position alone, which is the state
+# that refused two branches before the site landed (20260906.210016); `tiebreak` drops the
+# site from Place.less_than, so two concurrent lines are never strictly ordered and the merge
+# postcondition fires; `run_ignored` drops the RUN from Place.less_than, which is the exact
+# elder order -- position first, site second -- and it fires on claim 10, the paragraphs
+# arriving whole. A control that does not plant the law a round added is a control that would
+# not notice that law leaving.
+#
+# `tiebreak` HAD to be repointed on 20260907, and how it failed is worth the sentence: it aimed
+# at `return self.site < other.site;` inside LineId.less_than, and when document order moved out
+# of LineId and into Place, that line was still there and the sed still matched. So the plant
+# landed, the bytes changed, `plant_apply`'s own matched-nothing refusal stayed quiet -- and the
+# phase exited 0, because the function it broke no longer decided anything the witness reads.
+# A plant can miss in TWO ways: matching nothing, which %519 named and `cmp -s` catches, and
+# matching something that has stopped mattering, which only the verdict loop's demand that every
+# break be caught can see. It saw it: `break_not_caught`.
 #
 # Driven by tools/m/mantra_weave_merge_witness.rish. Run from the repository root.
 
@@ -100,7 +125,7 @@ run_pen() {
   echo "$code"
 }
 
-shrink='s/pub const max_weave_lines: u32 = 1 << 20;/pub const max_weave_lines: u32 = 8;/'
+shrink='s/pub const max_weave_lines: u32 = 1 << 20;/pub const max_weave_lines: u32 = 16;/'
 
 clean_exit="$(run_pen clean '')"
 join_exit="$(run_pen join 's/held.gen = @max(held.gen, line.gen);/held.gen = line.gen;/')"
@@ -111,9 +136,17 @@ text_exit="$(run_pen text 's/if (!std.mem.eql(u8, held.text, line.text)) {/if (f
 # module refused before the site landed, so a plant of it is the law of this
 # movement shown from the failing side.
 identity_exit="$(run_pen identity 's/        return self.pos == other.pos and self.site == other.site;/        return self.pos == other.pos;/')"
-# The site orders as well as separates. Drop the tiebreak and two lines sharing
-# a position are never strictly ordered, so the merge postcondition fires.
-tiebreak_exit="$(run_pen tiebreak 's/        return self.site < other.site;/        return false;/')"
+# The site orders as well as separates. Drop the tiebreak from the DOCUMENT order
+# -- Place.less_than, not LineId.less_than -- and two concurrent lines are never
+# strictly ordered, so the merge postcondition fires.
+tiebreak_exit="$(run_pen tiebreak 's/        if (self.site != other.site) return self.site < other.site;/        _ = other.site;/')"
+# The run groups each hand's edit. Put the POSITION back in front of the site and
+# the order is exactly what it was before this law landed -- position first, site
+# second -- so two branches that each appended a paragraph come back shuffled and
+# claim 10 fires. Deleting the run line alone would NOT do it: that leaves site
+# first, which groups by hand and keeps the blocks whole for a different reason,
+# and a plant that leaves the law satisfied proves nothing.
+run_ignored_exit="$(run_pen run_ignored 's/        if (self.run != other.run) return self.run < other.run;/        if (self.pos != other.pos) return self.pos < other.pos;/')"
 shrunk_exit="$(run_pen bound_shrunk "$shrink")"
 removed_exit="$(run_pen bound_removed "$shrink; /if (self.lines.items.len + other.lines.items.len > max_weave_lines) {/,+2d")"
 misnamed_exit="$(run_pen bound_misnamed "$shrink; s/            return WeaveError.TooManyLines;/            return WeaveError.PositionTextDisagrees;/")"
@@ -130,6 +163,8 @@ echo "phase=identity"
 echo "identity_exit=$identity_exit"
 echo "phase=tiebreak"
 echo "tiebreak_exit=$tiebreak_exit"
+echo "phase=run_ignored"
+echo "run_ignored_exit=$run_ignored_exit"
 echo "phase=bound_shrunk"
 echo "bound_shrunk_exit=$shrunk_exit"
 echo "phase=bound_removed"
@@ -141,13 +176,15 @@ verdict=ok
 # A plant that matched nothing is read FIRST and by its own name, because every
 # other reading below is a number and this one is a word.
 for reading in "$clean_exit" "$join_exit" "$order_exit" "$text_exit" "$identity_exit" \
-               "$tiebreak_exit" "$shrunk_exit" "$removed_exit" "$misnamed_exit"; do
+               "$tiebreak_exit" "$run_ignored_exit" "$shrunk_exit" "$removed_exit" \
+               "$misnamed_exit"; do
   [ "$reading" != plant_matched_nothing ] || verdict=plant_matched_nothing
 done
 if [ "$verdict" = ok ]; then
   [ "$clean_exit" -eq 0 ] || verdict=clean_failed
   [ "$shrunk_exit" -eq 0 ] || verdict=shrink_not_innocent
-  for broken in "$join_exit" "$order_exit" "$text_exit" "$identity_exit" "$tiebreak_exit" "$removed_exit" "$misnamed_exit"; do
+  for broken in "$join_exit" "$order_exit" "$text_exit" "$identity_exit" "$tiebreak_exit" \
+                "$run_ignored_exit" "$removed_exit" "$misnamed_exit"; do
     [ "$broken" -ne 0 ] || verdict=break_not_caught
   done
 fi
