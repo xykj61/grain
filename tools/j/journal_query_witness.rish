@@ -1,0 +1,59 @@
+# tools/j/journal_query_witness.rish -- the journal is asked for records, never for fields.
+#
+# Language EN -- Style Gauge, Meter -- Voice Kyri -- Lens TAME, bound every claim and say why.
+#
+# WHAT THIS BINDS. `external-research/20260907-191657_two-shapes-one-notation.md` recommended an
+# index over the journal and named its own second falsifier: count the queries the tree's tools
+# actually ask, and if nearly none asks a field predicate the plan shrinks to a sorted room. The
+# census answers `verdict=sorted_room`. This witness holds that verdict, so the day a tool starts
+# asking the journal for every record whose `voice` reads Kyri, the plan is told rather than
+# discovered later by a slow walk.
+#
+# WHY A VERDICT RATHER THAN A COUNT. Every number the census prints moves as `tools/` grows. A
+# witness spelling any of them would red on ordinary work, and a guard that reds on ordinary work is
+# a guard somebody turns off. The verdict is a SEPARATION: field-capable sources stand under a tenth
+# of the querying sites, or they do not.
+#
+# WHAT A RED HERE MEANS, and it is not a fault. `verdict=indexed_room` says the workload has
+# changed and the recommendation in that paper is live work rather than a horizon. Read the
+# `field_capable=` lines it prints, confirm they query the journal rather than a registry, and take
+# the finding to the card. This is a tripwire on a research claim, never a wall against a commit.
+#
+# THE HONEST LIMIT, stated because a zero is the easiest reading to fake. `class_field=0` is a
+# LOWER bound from a line-level read; `field_capable_files` is the file-level UPPER bound and stood
+# at 4 on `20260907.205400`, of which TWO genuinely query the journal --
+# `tools/fixtures/r/rota_declared_scan.sh` reading `^rota ` and `tools/fixtures/s/status_declared_scan.sh`
+# reading `^status ` and `^scope ` -- while two query the equipment registry. The verdict takes the
+# upper bound, so a wrong answer errs toward building the index rather than toward skipping it.
+#
+# AND BOTH JOURNAL QUERIES WALK ONE DAY'S SHELF, roughly a hundred records, rather than the room.
+# The sorted room narrows the population by two orders of magnitude before either field is read, so
+# neither is the whole-room predicate an index would earn its keep against. The count doubled inside
+# a day, which is why this is a watch; the shape of both queries is why it is not yet an alarm.
+#
+# THE INSTRUMENT IS NOT THE WORKLOAD. The census excludes its own two files by exact path before
+# reading a line, and prints `self_excluded_sources` so the step is visible. Left in, they counted
+# themselves as two of the capable files and put this guard one file from a red that would have
+# meant nothing about the journal. The control proves the exclusion from both sides over the real
+# tree, and asserts first that both files WOULD have counted -- an absence proves nothing beside a
+# file that never qualified.
+#
+#   rishi/bin/rishi run tools/j/journal_query_witness.rish
+
+say "journal-query: Language EN -- a store is fitted to a workload, so the workload is measured."
+say "journal-query: Style Gauge, Meter -- one verdict, with the reason it is a verdict and not a count."
+say "journal-query: Lens TAME -- bound every claim; the census names its ceiling and refuses past it."
+
+let scan = run ["sh" "tools/fixtures/j/journal_query_census.sh"]
+assert scan.ok else "journal-query: the census refused -- read its own line"
+say scan.out
+
+assert scan.out contains "verdict=sorted_room" else "journal-query: the journal is now asked field predicates -- the index recommendation in external-research/20260907-191657_two-shapes-one-notation.md has gone live; read the field_capable lines, confirm they reach the journal rather than a registry, and take it to the card"
+
+let control = run ["sh" "tools/fixtures/j/journal_query_control.sh"]
+assert control.ok else "journal-query: the control faulted -- a reading is unproven"
+say control.out
+assert control.out contains "control_verdict=ok" else "journal-query: the control must balance before the census is believed"
+assert control.out contains "fail=0" else "journal-query: a planted class went unseen"
+
+say "journal-query: GREEN -- the workload is recency, named paths and enumeration; a sorted room answers it, and the field class is proven visible from both sides in a pen."

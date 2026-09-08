@@ -2942,3 +2942,25 @@ guard store_shape
 path tools/s/store_shape_witness.rish
 tier cadence
 seated 20260907.191657
+
+# JOURNAL QUERY -- the journal is asked for records, never for fields. The store-shape census above
+# measured the DATA and recommended an index; it named its own second falsifier in plain words --
+# count the queries the tree's tools actually ask, and if nearly none asks a field predicate the
+# plan shrinks to a sorted room. This census is that count. It classes every non-comment line in a
+# tracked tool source that names `session-logs/` into five non-query classes (exclude, construct,
+# message, roster, and `rule` for a line reading the LAW rather than the room) and six query
+# classes (field, recency, by_path, index, enumerate, exists). Measured `20260907`: 234 sites, 168
+# of them naming the room without reading a record, 52 real queries, and `class_field=0`. The
+# file-level upper bound `field_capable_files` reads 3, of which one queries the journal and two
+# query the equipment registry. The witness binds `verdict=sorted_room`, which is a SEPARATION and
+# not a count: field-capable sources under a tenth of the querying sites. A red here says the
+# workload changed and the index recommendation went live -- a tripwire on a research claim, never
+# a wall against a commit. Paper:
+# `external-research/20260907-201914_the-workload-and-the-index.md`.
+# `tier cadence`: the census greps 3,359 tool sources line by line, 40s measured `20260907.204600`,
+# and its control runs the census 26 more times over a pen.
+
+guard journal_query
+path tools/j/journal_query_witness.rish
+tier cadence
+seated 20260907.203000
