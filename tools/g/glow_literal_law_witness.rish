@@ -1,0 +1,80 @@
+# glow_literal_law_witness.rish -- Glow gives one answer for `007`, or the split is held still.
+#
+# WHY THIS RUNG. A decimal literal is part of a language's meaning, so every reader of one inside
+# a language implementation owes the others agreement. Glow has fourteen readers and, on
+# 20260908, two answers. Proven on metal that day through both public entries, in one probe:
+#
+#   ?:  (gth a b)  007  1     -> rune_shop_gate.parse_source refuses  (MalformedBody)
+#   =.  root  007             -> lower_mutate lowers `root = 7`
+#
+# `glow/rune_shop_gate.rye` calls its refusal "the house parse law" in its own comment. It is the
+# only file in the room that keeps it.
+#
+# WHAT IS GATED, AND WHY IT IS THE MINORITY. The reading is `disagreement`, which is
+# min(strict, permissive). It is zero when the language agrees, and it falls under EITHER ruling:
+# making the thirteen strict drives it to zero, and so does making the one permissive. A ceiling
+# on the permissive count alone would refuse one of the two lawful answers, and a guard that reds
+# on a correct repair is a guard somebody turns off.
+#
+# WHAT THIS DOES NOT DECIDE. Whether Glow should accept `007`. A rune is earned by a law, and so
+# is a literal; that word is Keaton's. This rung holds the split from widening while it is out,
+# and names the sites so the ruling can be applied in one pass.
+#
+# WHY IT IS NOT A REDS ROW TODAY. `construction/REDS.md` stands at its byte ceiling with every
+# row OPEN and `rows_that_fit=0`, so the ledger cannot accept one. The finding is carried here,
+# in the card, and in the lap's session log instead.
+#
+# WHAT IS NOT PROVEN. That the fourteen readers agree about anything ELSE -- overflow, sign, an
+# empty string. This rung reads the leading zero, which is the disagreement that exists.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/g/glow_literal_law_witness.rish
+
+say "glow literal law: Language EN -- one language, one answer for a leading zero."
+say "glow literal law: Style Gauge, Meter -- the split is counted, never inferred."
+say "glow literal law: Lens TAME -- safety first: a reading that narrowed in silence would read as agreed."
+
+say "glow literal law: asserting the strict reader is where the guard says it is..."
+
+let seat = run ["sh" "-c" "grep -Fq 'house parse law' glow/rune_shop_gate.rye"]
+assert seat.ok else "glow literal law: rune_shop_gate.rye no longer names the house parse law -- repoint this rung at wherever the strict reader went"
+
+say "glow literal law: reading every decimal-literal reader under glow/..."
+
+let result = run ["sh" "tools/fixtures/g/glow_literal_law_scan.sh" "--detail"]
+
+# The output comes first, always. The failing run is the one whose names a reader needs.
+say result.out
+if result.ok == false then say "glow literal law scan stderr:"
+if result.ok == false then say result.err
+assert result.ok else "glow literal law: the scan must complete"
+
+assert result.out contains "readers=" else "glow literal law: the scan must report its own reach"
+assert result.out contains "reader glow/rune_shop_gate.rye strict" else "glow literal law: the one strict reader must be seen by name, or the roster has narrowed in silence"
+assert result.out contains "readers_max_per_file=1" else "glow literal law: a file holding two readers wants classifying by function rather than by file -- read the detail lines above"
+assert result.out contains "disagreement=1" else "glow literal law RED -- the minority moved. It falls to zero on a ruling and never rises; read the reader lines above."
+
+say "field GREEN -- fourteen readers seen, the minority at its ceiling of one"
+
+let control = run ["sh" "tools/fixtures/g/glow_literal_law_control.sh"]
+assert control.ok else "glow literal law: the control must complete"
+say control.out
+assert control.out contains "permissive_counted=yes" else "glow literal law: a reader with no refusal must read permissive"
+assert control.out contains "agreed_all_permissive=yes" else "glow literal law: a wholly permissive language must read agreed"
+assert control.out contains "agreed_all_strict=yes" else "glow literal law: a wholly strict language must read agreed too -- both rulings are lawful"
+assert control.out contains "split_counted=yes" else "glow literal law: one reader against the rest must read as a split"
+assert control.out contains "minority_is_the_reading=yes" else "glow literal law: the gate reads the minority, never the permissive count"
+assert control.out contains "minority_size_read=yes" else "glow literal law: two against three must read two -- the gate measures size, not presence"
+assert control.out contains "parseint_counted=yes" else "glow literal law: a program-position parseInt is a reader"
+assert control.out contains "emitted_free=yes" else "glow literal law: a compiler writing Rye holds the pattern in a string, and that is output rather than a call"
+assert control.out contains "naive_count_reads_emitted=yes" else "glow literal law: the program-position reading must be load-bearing, proven by putting the elder count back"
+assert control.out contains "comment_free=yes" else "glow literal law: a comment naming the pattern is prose"
+assert control.out contains "witness_excluded=yes" else "glow literal law: a witness proves a reader and is not one"
+assert control.out contains "untracked_free=yes" else "glow literal law: an untracked file is outside the reading"
+assert control.out contains "two_in_one_file_reported=yes" else "glow literal law: two readers in one file must be reported, since the file is the classification's unit"
+assert control.out contains "detail_names_each=yes" else "glow literal law: the detail lines must name each reader and its verdict"
+assert control.out contains "missing_sites_refused=yes" else "glow literal law: losing the program-position reading must refuse, never read every tree as clean"
+assert control.out contains "control_verdict=ok" else "glow literal law: the control must agree with itself"
+say "RED and GREEN paths proven -- 15 behaviors asserted, both rulings shown lawful and the elder count shown wrong"
+
+say "GREEN: glow literal law -- fourteen readers, one minority, held at its ceiling."
