@@ -230,8 +230,13 @@ root=${SHARED_PEN_ROOT:-.}
 # hour (`%618`, dropping the `tools/*` glob), so the two widenings met in one file -- theirs by
 # room, this one by room AND by language. The merged reading is one file lower than either lap
 # predicted alone, and a ratchet is set at the true reading rather than at the one a lap expected.
-files_ceiling=${SHARED_PEN_FILES_CEILING:-49}
-wipe_ceiling=${SHARED_PEN_WIPE_CEILING:-15}
+# BOTH FALL BY ONE, `20260908.174500`: `tools/f/fleet_rearm_witness.rish` built and then
+# `rm -rf`ed a CONSTANT `/tmp/fleet-rearm-pen` across five separate shells, which on a pier of
+# eight ships running one roster is one directory eight hands wipe. It takes `mktemp -d` now and
+# interpolates the captured path, so files 49 -> 48 and wiping 15 -> 14. A ratchet migrates on
+# touch, and this lap was in the fleet tools already.
+files_ceiling=${SHARED_PEN_FILES_CEILING:-48}
+wipe_ceiling=${SHARED_PEN_WIPE_CEILING:-14}
 
 cd "$root" 2>/dev/null || { echo "verdict=no_root"; echo "refused: $root is not a directory" >&2; exit 1; }
 git rev-parse --git-dir >/dev/null 2>&1 || { echo "verdict=no_git"; echo "refused: this scan reads git ls-files" >&2; exit 1; }

@@ -12,10 +12,17 @@ say "fleet-rearm: Language EN -- the re-arm printer, proven in a pen."
 say "fleet-rearm: Style Gauge, Meter -- each leg names what it plants and what refuses."
 say "fleet-rearm: Lens TAME -- the sentinel wall shown refusing and then welcoming."
 
-let pen = "/tmp/fleet-rearm-pen"
+# THE PEN IS UNIQUE PER RUN, never a constant name. Eight ships share this pier and run this
+# same witness from eight trees, so a fixed `${pen}` is one directory eight hands
+# build and `rm -rf` -- a peer wiping the pen mid-assert, and this witness sweeping a peer's.
+# The class is `%618`/`%601`; the ratchet had counted this file rather than refusing it, and a
+# ratchet migrates on touch. `mktemp -d` names it, so no two runs can collide (`20260908.174500`).
+let mk = run ["sh" "-c" "mktemp -d /tmp/fleet_rearm.XXXXXX"]
+assert mk.ok else "fleet-rearm: the pen could not be opened"
+let pen = trim mk.out
 
 say "fleet-rearm: building the pen -- one gated codex seat, one clean claude seat..."
-let build = run ["sh" "-c" "rm -rf /tmp/fleet-rearm-pen && mkdir -p /tmp/fleet-rearm-pen/grain /tmp/fleet-rearm-pen/grain-mind/.mind-state /tmp/fleet-rearm-pen/grain-silence/session-output && git init -q /tmp/fleet-rearm-pen/grain-mind && git init -q /tmp/fleet-rearm-pen/grain-silence && printf 'root refresh belongs to a hand\\n' > /tmp/fleet-rearm-pen/grain-mind/.mind-state/CUSTODY && printf 'lap 3 closed clean\\n' > /tmp/fleet-rearm-pen/grain-silence/session-output/silence.txt"]
+let build = run ["sh" "-c" "rm -rf ${pen} && mkdir -p ${pen}/grain ${pen}/grain-mind/.mind-state ${pen}/grain-silence/session-output && git init -q ${pen}/grain-mind && git init -q ${pen}/grain-silence && printf 'root refresh belongs to a hand\\n' > ${pen}/grain-mind/.mind-state/CUSTODY && printf 'lap 3 closed clean\\n' > ${pen}/grain-silence/session-output/silence.txt"]
 assert build.ok else "fleet-rearm: the pen failed to build -- read the shell's own words"
 
 say "fleet-rearm: the RED side -- a CUSTODY sentinel gates its seat..."
@@ -35,7 +42,7 @@ assert gated.out contains "mystery -- ${pen}/grain-mystery" else "fleet-rearm: a
 assert gated.out contains "not on this host" else "fleet-rearm: absence was not named"
 
 say "fleet-rearm: the GREEN side -- lifting the sentinel returns the paste..."
-let lift = run ["sh" "-c" "rm /tmp/fleet-rearm-pen/grain-mind/.mind-state/CUSTODY"]
+let lift = run ["sh" "-c" "rm ${pen}/grain-mind/.mind-state/CUSTODY"]
 assert lift.ok else "fleet-rearm: the pen sentinel could not be lifted"
 let open = run ["env" "FLEET_HOME=${pen}" "sh" "tools/f/fleet_rearm.sh"]
 assert open.ok else "fleet-rearm: the printer refused after the lift"
@@ -49,7 +56,7 @@ say "fleet-rearm: a LIVE seat outside the elder name list still earns its paste.
 # whole time, because every one named a seat the elder list happened to carry. So the leg is planted
 # with `copal`, a live roster seat that list never knew, and the sweep beneath it counts EMPTY pastes
 # across the whole card rather than trusting the one name.
-let newer = run ["sh" "-c" "mkdir -p /tmp/fleet-rearm-pen/grain-copal/session-output && git init -q /tmp/fleet-rearm-pen/grain-copal && printf 'lap 2 closed clean\\n' > /tmp/fleet-rearm-pen/grain-copal/session-output/copal.txt"]
+let newer = run ["sh" "-c" "mkdir -p ${pen}/grain-copal/session-output && git init -q ${pen}/grain-copal && printf 'lap 2 closed clean\\n' > ${pen}/grain-copal/session-output/copal.txt"]
 assert newer.ok else "fleet-rearm: the pen could not seat a newer roster ship"
 let armed = run ["env" "FLEET_HOME=${pen}" "sh" "tools/f/fleet_rearm.sh"]
 assert armed.ok else "fleet-rearm: the printer refused with a newer seat in the pen"
@@ -68,7 +75,7 @@ assert sweep_empty.out contains "empty_pastes=0" else "fleet-rearm: a seat print
 say "fleet-rearm: the field seat never earns a paste..."
 assert (open.out contains "no loop to re-arm") == true else "fleet-rearm: the field seat's non-loop nature went unspoken"
 
-let sweep = run ["sh" "-c" "rm -rf /tmp/fleet-rearm-pen"]
+let sweep = run ["sh" "-c" "rm -rf ${pen}"]
 assert sweep.ok else "fleet-rearm: the pen was left standing"
 
 say "GREEN: fleet-rearm -- the printer reports every seat, the sentinel wall refuses and welcomes, and the hand keeps the keystroke."
