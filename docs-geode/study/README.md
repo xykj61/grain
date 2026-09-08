@@ -6,14 +6,18 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 
 *Not a tour of the code. A short account of how the reading is meant to go, and which room answers which kind of question.*
 
-**Language:** EN - **Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
+**Language:** EN - **Style:** Bhakta (see [`../../context/BHAKTA_STYLE.md`](../../context/BHAKTA_STYLE.md))
 **Written:** `20260821.190149` - **Status:** Living - **Kind:** crushed study guide
 
 ---
 
 ## Four questions, four rooms
 
-A tree this size is unreadable front to back and perfectly readable by question. Ask yours first.
+Welcome. This page is for someone who has just arrived and would like a way in, and it assumes you
+have never read a codebase before. That is a fine place to start.
+
+A tree this size reads beautifully by question, the way a library does, and it reads poorly cover to
+cover for the same reason. So ask your question first and let it choose the room for you.
 
 **"What is this *for*?"** -> [`foundations/`](../../foundations/README.md). The why beneath the craft -- work as offering, custody before capability, why a front door is the most Lindy-exposed thing a project owns. Fifty-odd pages, deliberately small, the most-cited room in the tree.
 
@@ -32,7 +36,10 @@ minutes, and it is the shortest way to feel at home on this shelf.
 
 ## Two habits worth borrowing before you read anything
 
-**Read the witness, not the claim.** Nothing here is called working because a document says so. `tools/*_witness.rish` holds more than sixteen hundred proofs that run on real hardware, and a green line is a fact a computer spoke first. When a page and a witness disagree, the witness is right and the page is a red.
+These two are the difference between reading this tree and trusting it, and both take a minute to
+learn.
+
+**Read the witness rather than the claim.** A thing here earns the word working when a program has checked it. `tools/*_witness.rish` holds more than sixteen hundred proofs that run on real hardware, and a green line is a fact a computer spoke first. When a page and a witness disagree, the witness is right and the page is a red.
 
 **Read the reds.** [`construction/REDS.md`](../../construction/REDS.md) records what this tree got wrong, in three fields: what went wrong, what caught it, what it taught. It is the fastest way to learn how a project actually thinks, because nobody polishes a mistake. Start at the newest and read backward.
 
