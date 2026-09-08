@@ -18,6 +18,22 @@ ceilings, and the meter -- while **New Gauge Style** speaks to a person choosing
 **Seated:** `20260823.045448` on Keaton's word
 **Status:** Living -- the working style for technical documentation, analysis, forecasting, ecosystem description, and design essays
 **Inherits:** [`RADIANT_STYLE.md`](RADIANT_STYLE.md) (warmth and clarity) - [`CIVIC_STYLE.md`](CIVIC_STYLE.md) (name what you reward) - [`TAME_GUIDANCE.md`](TAME_GUIDANCE.md) (bound everything, say why)
+
+**Whether Gauge now contains the elders, asked and answered `20260908.141652` on Keaton's word.**
+**It does not, and the lattice is why.** Gauge *relaxes* the negation floor to 20% so a measured page
+may say what refused; Radiant holds it at **zero**. A register that is stricter on an axis cannot be
+contained by the one that loosens it, so archiving Radiant would delete the strictest row of a table
+this tree seated the same afternoon. Twilight likewise carries the poetic axis, which Gauge never
+names at all.
+
+**The citation reading agrees, and it is the cheaper argument.** Living files citing each guide:
+**Gauge 923, Radiant 129, Twilight 76, Bhakta 4.** Radiant and Twilight are not vestigial pages kept
+from sentiment -- 205 living files reach for them by name, and every one of those references is a
+promise this tree has already made.
+
+**What Gauge genuinely inherits is warmth and clarity**, which the line above already says. What it
+does not inherit is the *floor* or the *poetry*, and those are exactly what the elder pages are for.
+A guide is archived when nothing needs it; three registers on two axes need all three.
 **Kin:** [`TWILIGHT_STYLE.md`](TWILIGHT_STYLE.md) (the nocturne register) - [`TWO_ROOMS.md`](TWO_ROOMS.md) (proven or proposed)
 
 **Purpose:** One style for writing that carries measurements and still welcomes a reader. A gauge
