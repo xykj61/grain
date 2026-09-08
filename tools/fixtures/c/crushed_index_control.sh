@@ -262,6 +262,25 @@ check "and every one of its pages is counted" "$(read_of "$d" index_members)" "2
 check "one page past the bound is refused by name" "$(read_of "$d" index_rooms_oversize)" "1"
 check "and the verdict refuses" "$(read_of "$d" verdict)" "index_disagrees"
 
+# --- 26, 27, 28. A FOLDED SHELF IS NOT A MEMBER, at one level as well as deep --------------------
+# The deep branch has dropped `date/`, `archive/`, and `yonder/` since `20260906`, on the tree's own
+# law that those rooms hold testimony and deferred work. The one-level branch cuts each tracked path
+# to its FIRST COMPONENT, so a folded day shelf arrives as the bare word `date` and a pattern
+# written `(^|/)date/` cannot match a word carrying no slash. `press/` folded its first shelf on
+# `20260908` and this guard reddened within the hour, asking `docs-geode/press/README.md` for a row
+# the fold law forbids it to write. Proven from both sides: the shelf walks free, and a genuine
+# second directory in the same room is still counted, so the exclusion cannot be read as a hole.
+d=$(build fold)
+( cd "$d" && mkdir -p room/date/20260907 \
+  && printf '# folded\n' > room/date/20260907/20260907-175821_a-folded-page.md \
+  && git add -A && git commit -qm 'pen: the room folds a day shelf' ) >/dev/null 2>&1
+check "a folded day shelf owes the index no row" "$(read_of "$d" index_unlisted)" "0"
+check "and the index still reads clean" "$(read_of "$d" verdict)" "ok"
+( cd "$d" && mkdir -p room/sub \
+  && printf '# unlisted\n' > room/sub/three.md \
+  && git add -A && git commit -qm 'pen: an ordinary directory beside the shelf' ) >/dev/null 2>&1
+check "an ordinary directory in the same room is still counted" "$(read_of "$d" index_unlisted)" "1"
+
 # --- 16. AN EMPTY CORPUS REFUSES ------------------------------------------------------------------
 d=$pen/empty
 mkdir -p "$d"
