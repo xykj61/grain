@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `fcd076d15b` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `c97ff7398a` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A PRESCRIPTION THAT CANNOT FIRE PRESCRIBES NOTHING.**
 Elder [shelved](archive/20260908-093634_itinerary-landed-accounts.md). Row `20260908.093634`

@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260908.114418` | [fifteen asks, one question](20260908/20260908-114418_fifteen-asks-one-question.kyri) | sorted and held for the file. |
 | `20260908.105721` | [the twenty-first room](20260908/20260908-105721_the-twenty-first-room.kyri) | camelCase reads 0; seven stand. |
 | `20260908.105313` | [The lap that stashed itself](20260908/20260908-105313_the-lap-that-stashed-itself.kyri) | two laps out of the box; %627 -> %631. |
 | `20260908.104232` | [two rulings the loop left](20260908/20260908-104232_two-rulings-the-loop-left.kyri) | a refusal, and a tool nobody could find. |
