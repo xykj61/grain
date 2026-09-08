@@ -151,6 +151,27 @@ trustworthy.
   gave a median of **14** against every comment line and **53** against ordinary comments alone --
   same data, same day, opposite conclusions, because half of all comments were declaration docs
   with no stake in the share they were diluting. Where two denominators are defensible, give both.
+- **A figure carries a fifth thing: what holds it still.** A stamp says when a number was read.
+  It cannot say the reading still stands, and that gap is wide enough to make a superseded figure
+  look *more* checked than a bare one. Eight stamped claims across this tree's living law pages were
+  re-run on `20260908.041006`, and they sort cleanly into three classes by what holds the counted
+  thing:
+  - **Pinned** -- the thing cannot move. `.claude/rules/gratitude-licenses.md`'s seL4 table
+    (`185/185/185/0`, kernel `618`, Microkit `303`, two GPL device trees) reads **identical**
+    eighteen days on, because it counts a submodule at a fixed commit. Cite the number; the stamp is
+    a true receipt.
+  - **Walled** -- a guard reds the lap the number moves. Glow comment non-ASCII stands at **0**
+    against a wall; shell comment non-ASCII reads **504** against a ceiling of 505; the exec-bit
+    ratchet reads **57**, exactly where it was seated. **Cite the guard beside the number**, because
+    the guard is what keeps the sentence true, and a reader who knows that can trust the figure
+    without re-running it.
+  - **Free** -- nothing holds it, and it is stale within days. Tracked regular files **13,650 ->
+    16,084**; `%N` citations **2,519 -> 10,011**, of which commit-message citations **532 -> 1,876**;
+    session logs declaring both `scope` and `status` **21 of 95 -> 26 of 26**. **Say RUN, not READ**:
+    name the command in the sentence, so the reader gets the current number for the price of one line.
+  Every stale figure was free and every held figure was pinned or walled, with no exception across
+  the eight -- and every free figure moved in the direction that made its own argument *stronger*, so
+  the cost of the staleness was never a wrong law but a law understating itself.
 - **Say why.** Beside every surprising choice, threshold, or projection, one sentence on the
   reason. This is TAME's own rule and the single highest-value habit in the whole guide.
 - **Safety first, performance second, joy third** becomes **honesty first, brevity second,

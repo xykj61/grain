@@ -241,9 +241,13 @@ re-derived. Three reasons, each checkable:
   [`../../tools/gen/chapter/reds_ledger_monotone_witness.rish`](../../tools/gen/chapter/reds_ledger_monotone_witness.rish)
   reads N off disk across the living pin and every fold archive and holds `1..N` with no gaps. Take a
   stamped row away and the remainder still reads complete; take `%118` away and the guard reds.
-- **The citations reach further than any migration could.** Measured `20260823.173634`: **2,519** across
-  the tree, of which **532** sit in commit messages and **208** in dated testimony -- both beyond reach, so
-  a conversion would leave the majority pointing at a retired scheme.
+- **The citations reach further than any migration could**, and further every week. Measured
+  `20260823.173634`: **2,519** across the tree, **532** of them in commit messages. Re-measured
+  `20260908.041006` by `git grep -ohE '%[0-9]{2,4}\b'` outside the ledger and its folds, and by the
+  same pattern over `git log --format=%B`: **10,011** and **1,876** -- four times the reach in sixteen
+  days. Both figures are free to grow, so read them by running those two commands rather than from
+  this line; what the growth settles is the argument, since a conversion now would leave a larger
+  majority pointing at a retired scheme.
 - **A citation that carries a link is checked against the row it names** (`20260906.143706`). A `%N`
   is a number a reader recognises and a path a reader clicks, and the two halves are edited at
   different moments -- the number when the derived spine renumbers an unshared row, the path when a
