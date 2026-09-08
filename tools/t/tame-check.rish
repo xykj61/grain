@@ -1,11 +1,48 @@
-# tame-check.rish -- TAME textual lints on authored .rye.
+# tame-check.rish -- four TAME textual rules, proven across the rooms rather than a list.
 #
-# Rules (context/TAME_GUIDANCE.md): unqualified assert, no Self = @This(),
-# no tabs, no trailing whitespace. TH-2c cleared the hosted corpus; gate is live.
+# WHY THIS RUNG. TAME asks authored Rye to call `assert` bare, to leave `Self = @This()` out, and to
+# carry no tab and no trailing space. `context/TAME_GUIDANCE.md`'s lint table cites this tool for
+# five separate rules, so what it reads is what those rules are actually held to.
+#
+# WHAT CHANGED, and why it needed changing. From the parity chapter until `20260908` this rung read
+# sixteen file paths typed into its scan -- 1.4 percent of the 1,127 authored `.rye` the TAME rooms
+# hold, with the other 98.6 passing by their author's care. The reading is now derived from
+# `tools/fixtures/t/tame_style_rooms.txt`, the same roster the bans half, the advise half and
+# `opening_lines` read, so a room added once reaches all four.
+#
+# ITS OWN COUNT WAS NEVER A FILE COUNT. The elder witness printed `length lines result.out` and said
+# "all 17 files"; the list held sixteen paths and the seventeenth was the trailing empty line. That
+# is the second of these three guards to have been measuring its own output rather than the tree --
+# `opening_lines` said 25 for 24 the same day, and both numbers had stood on living pages for a year.
+#
+# WHAT IS PROVEN, on metal.
+#   Across 1,127 authored sources in the twenty rooms: no qualified `std.debug.assert(`, no
+#   `Self = @This()`, and no tab. Each predicate is looser than the elder literal it replaced --
+#   `Self[ \t]*=[ \t]*@This()` reaches every spacing -- and each still reads zero, so the widening
+#   reaches further and costs nothing.
+#   The sixteen files the hand list held stay clean on all four readings, printed by name, so
+#   widening the population takes nothing away from what the narrower one had already proven.
+#   Behaviors on a throwaway pen: every plant counted while it stands and read back to zero once
+#   removed, a symlink and a `bin/` path skipped, a commented roster room stripped, and the one
+#   ratchet's ceiling shown from both sides.
+#
+# WHAT IS RATCHETED rather than gated, and why the number is 1. `trailing_authored` reads one file:
+# `brushstroke/font8x8_data.rye:35`, the glyph row for the space character, whose `//` comment is a
+# space. The two other trailing-whitespace sites the widening found sit inside `\\` multiline string
+# literals -- bytes the program emits as generated Zig and generated Brush -- and are reported under
+# `trailing_content` rather than gated, on the same line the ASCII comment guards already drew:
+# program content is not the subject. A wall at zero here would ask for a sweep that changes emitted
+# bytes and erases a comment's meaning, and a wall that reds on honest work is a wall somebody
+# turns off.
+#
+# WHAT IS NOT PROVEN. That a file asserts anything, that its functions are short, or that a bound
+# name is ever called. `tame_style_check` and `opening_lines` own those questions.
 #
 # Usage: rishi run tools/t/tame-check.rish
 
-say "tame-check: scanning authored .rye (three textual rules)..."
+say "tame-check: Language EN -- four textual rules, read across the rooms."
+say "tame-check: Style Gauge, Meter -- the count is the sentence."
+say "tame-check: Lens TAME -- safety first: a guard reads the population, never a list of it."
 
 let result = run ["rishi/bin/rishi" "run" "tools/fixtures/t/tame_check_scan.rish"]
 assert result.ok else "tame-check scan script failed"
@@ -14,9 +51,45 @@ say result.out
 
 let lines = lines result.out
 let fails = where lines as l: l starts-with "FAIL"
-let oks = where lines as l: l starts-with "OK"
 
-if length fails == 0 then say "TAME CHECK GREEN: all ${length lines} files pass assert style and whitespace rules."
-if length fails != 0 then say "TAME CHECK RED: ${length fails} file(s) carry tame-check debt."
+assert result.out contains "qualified_assert=0 ceiling=0" else "tame-check RED: an authored source writes a qualified std.debug.assert("
+assert result.out contains "self_this=0 ceiling=0" else "tame-check RED: an authored source binds Self = @This()"
+assert result.out contains "tabs=0 ceiling=0" else "tame-check RED: an authored source carries a tab"
+assert result.out contains "elder_faults=0 ceiling=0" else "tame-check RED: a file the hand list already proved has regressed"
+assert result.out contains "ratchets_over_ceiling=0" else "tame-check RED: trailing whitespace rose past its ceiling -- ceilings only fall"
+assert result.out contains "verdict=read" else "tame-check: the scan must finish before it is believed"
+assert length fails == 0 else "tame-check RED: a named file carries assert or whitespace debt"
 
-assert length fails == 0 else "tame-check RED: authored .rye still carries assert or whitespace debt"
+say "field GREEN -- 1,127 authored sources read, three walls at zero, every elder promise kept"
+
+let control = run ["sh" "tools/fixtures/t/tame_check_control.sh"]
+assert control.ok else "tame-check: the control must complete"
+say control.out
+assert control.out contains "clean_counted=yes" else "tame-check: an authored .rye must be counted"
+assert control.out contains "clean_reads_zero=yes" else "tame-check: a clean file must read zero rather than merely pass"
+assert control.out contains "roster_comment_stripped=yes" else "tame-check: a commented roster line must name no room"
+assert control.out contains "non_hosted_counted=yes" else "tame-check: these four rules reach a file that never imports std"
+assert control.out contains "qualified_assert_counted=yes" else "tame-check: a qualified std.debug.assert( must be counted"
+assert control.out contains "qualified_assert_spaced_counted=yes" else "tame-check: the looser predicate must reach a spaced call"
+assert control.out contains "qualified_assert_cleared=yes" else "tame-check: the wall must fall back to zero once the call is removed"
+assert control.out contains "self_this_counted=yes" else "tame-check: Self = @This() must be counted"
+assert control.out contains "self_this_tight_counted=yes" else "tame-check: the looser predicate must reach Self=@This()"
+assert control.out contains "self_this_cleared=yes" else "tame-check: the wall must fall back to zero once the bind is removed"
+assert control.out contains "tab_counted=yes" else "tame-check: a tab must be counted"
+assert control.out contains "tab_cleared=yes" else "tame-check: the wall must fall back to zero once the tab is removed"
+assert control.out contains "trailing_authored_counted=yes" else "tame-check: trailing whitespace outside a string must be authored debt"
+assert control.out contains "trailing_authored_cleared=yes" else "tame-check: the ratchet must fall back to zero once the line is repaired"
+assert control.out contains "ratchet_at_ceiling_free=yes" else "tame-check: a ratchet standing at its ceiling must pass free"
+assert control.out contains "ratchet_over_counted=yes" else "tame-check: the ratchet must count past its ceiling rather than saturate"
+assert control.out contains "ratchet_over_ceiling_refused=yes" else "tame-check: a ratchet one over its ceiling must refuse"
+assert control.out contains "trailing_content_counted=yes" else "tame-check: the same space inside a multiline string must read as content"
+assert control.out contains "trailing_content_ungated=yes" else "tame-check: program content is reported, never gated"
+assert control.out contains "trailing_content_cleared=yes" else "tame-check: the content reading must fall back to zero"
+assert control.out contains "symlink_skipped=yes" else "tame-check: a symlink is not a file the law reaches"
+assert control.out contains "bin_path_skipped=yes" else "tame-check: a bin/ path is not authored source"
+assert control.out contains "pen_roster_absents_elder=yes" else "tame-check: a pen roster owns its own files and names no elder set"
+assert control.out contains "default_roster_names_elder=yes" else "tame-check: the default roster must still name the sixteen"
+assert control.out contains "control_verdict=ok" else "tame-check: the control must agree with itself"
+say "RED and GREEN paths proven -- every plant counted while it stood and read back to zero once lifted"
+
+say "TAME CHECK GREEN: the four rules are read across the rooms, not across a list of sixteen."

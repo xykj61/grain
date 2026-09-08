@@ -1,11 +1,99 @@
-# tame_check_scan.rish -- scan authored .rye for TH-2 textual rules.
+# tame_check_scan.rish -- the four TAME textual rules, read across the TAME rooms.
 #
-# Native repoint of tame_check_scan.sh -- map + where per opening_lines_scan.rish.
 # Run from the repository root:
-#   rishi/bin/rishi run tools/fixtures/t/tame_check_scan.rish
+#   rishi/bin/rishi run tools/fixtures/t/tame_check_scan.rish [rooms-file]
+#
+# WHAT THIS READS. Every authored `.rye` under the rooms named in
+# `tools/fixtures/t/tame_style_rooms.txt` -- 1,127 files, measured `20260908`. These four rules
+# reach a file whether or not it imports std, which is where they part from the opening triad: a
+# tab, a trailing space, and `Self = @This()` are faults in any authored source, hosted or not. An
+# optional argument names a different rooms file, which is how the control plants a pen and proves
+# each refusal from both sides.
+#
+# WHY IT NO LONGER READS A HAND LIST. This scan named sixteen files inline from the parity chapter
+# until `20260908`. Against 1,127 authored sources that is 1.4 percent, and the list could not grow
+# with the tree. It is the fourth reader to arrive at `tame_style_rooms.txt`, which exists because
+# the bans and advise halves of the style scan each spelled their rooms inline and drifted 857 files
+# apart while a selftest called them equal.
+#
+# WHAT THE WIDENING FOUND, and it is one thing rather than none. Three files carry trailing
+# whitespace that the sixteen could not see. All three are load-bearing rather than sloppy, so the
+# reading is split in two:
+#   trailing_content 2 -- `glow/lower_named_cast.rye` (2 lines) and `brushstroke/brush_parse.rye`
+#   (1 line), each inside a `\\` multiline string literal. Those bytes are what the program EMITS,
+#   so stripping them changes generated Zig and generated Brush rather than tidying a source. This
+#   is the same line the ASCII comment guards already draw: program content is not the subject.
+#   trailing_authored 1 -- `brushstroke/font8x8_data.rye:35`, a `//` comment on the glyph row for
+#   the space character, whose comment IS a space. Stripping it makes the row read as an unnamed
+#   blank beside 94 named neighbors. It stands at a ceiling of 1 rather than behind a named
+#   exemption, so a day that names the glyph in words instead lowers the ceiling honestly.
+#
+# WHAT IS GATED, each a wall because zero is what the tree already reads and `tame_style_check`
+# bans the two spellings independently: `qualified_assert`, `self_this`, `tabs`. Each predicate is
+# looser than the elder literal -- `Self[ \t]*=[ \t]*@This()` rather than one spelling -- and all
+# three still read zero across 1,127, so the widening costs nothing and reaches further.
+#
+# WHAT THIS DOES NOT READ. Whether a file asserts anything, how long its functions run, or whether
+# a bound name is ever called. `tame_style_check` and `opening_lines` own those.
 
-let files = ["tally/seed.rye" "tally/gardens.rye" "caravan/seed.rye" "caravan/bounded.rye" "caravan/twin.rye" "caravan/chain.rye" "caravan/capabilities.rye" "mantra/src/main.rye" "mantra/src/store.rye" "mantra/src/weave.rye" "mantra/src/diff.rye" "rishi/src/main.rye" "brushstroke/seed.rye" "comlink/hosted_wire.rye" "aurora/src/deciding.rye" "aurora/src/seed.rye"]
+let default_rooms = "tools/fixtures/t/tame_style_rooms.txt"
+let rooms_file = default_rooms
+if args.len > 0 then let rooms_file = args[0]
+let rooms = "grep -v '^#' ${rooms_file} | grep -v '^$'"
+let find_rye = "find $(${rooms}) -name '*.rye' ! -type l ! -path '*/.cache/*' ! -path '*/bin/*' 2>/dev/null"
 
-let scans = map files as f: { path: f, qual_assert: length (where (lines (read-file f)) as ln: ln contains "std.debug.assert("), self_ref: length (where (lines (read-file f)) as ln: ln contains "Self = @This()"), tab: length (where (lines (read-file f)) as ln: ln contains "	"), trail_s: length (where (lines (read-file f)) as ln: ln ends-with " "), trail_t: length (where (lines (read-file f)) as ln: ln ends-with "	") }
+# ONE SHELL, POSIX READINGS ONLY. The elder shape mapped five `read-file` reads per file, which
+# against 1,127 sources would ask for 5,635 reads and refuse past `max_list_items = 1024`
+# (`rishi/src/main.rye`). Each reading here is one pass over the whole list, so the cost is a handful
+# of processes rather than five thousand.
+#
+# EVERY PATTERN IS POSIX, and `shell_dialect` is why: it gates `grep -P` at zero, and the first draft
+# of this scan reached for PCRE twice. The trailing-whitespace split needs no lookahead -- `grep -H`
+# lists every trailing-blank line and a second `grep -v` drops the ones opening a `\\` string. The tab
+# reading is `awk`, whose ERE spells a tab as `\t` inside single quotes, so neither a tab byte nor a
+# nested double quote has to enter this file to ask the question.
+let counts = run ["sh" "-c" "F=$(${find_rye}); set -- $F; n=$#; qa=$(grep -lE 'std[.]debug[.]assert[[:blank:]]*[(]' $F 2>/dev/null | wc -l); st=$(grep -lE 'Self[[:blank:]]*=[[:blank:]]*@This[(][)]' $F 2>/dev/null | wc -l); tb=$(awk '/\t/ { print FILENAME }' $F 2>/dev/null | sort -u | wc -l); tc=$(grep -HE '^[[:blank:]]*\\\\.*[[:blank:]]$' $F 2>/dev/null | cut -d: -f1 | sort -u | wc -l); ta=$(grep -HE '[[:blank:]]$' $F 2>/dev/null | grep -vE '^[^:]*:[[:blank:]]*\\\\' | cut -d: -f1 | sort -u | wc -l); echo $n $qa $st $tb $tc $ta"]
+assert counts.ok else "tame-check scan: the derived reading failed -- read the rooms file it was handed"
 
-for-each scans as s do if (s.qual_assert != 0) then say "FAIL ${s.path} assert=${s.qual_assert} self=${s.self_ref} tab=${s.tab} trail=${s.trail_s + s.trail_t}" else if (s.self_ref != 0) then say "FAIL ${s.path} assert=${s.qual_assert} self=${s.self_ref} tab=${s.tab} trail=${s.trail_s + s.trail_t}" else if (s.tab != 0) then say "FAIL ${s.path} assert=${s.qual_assert} self=${s.self_ref} tab=${s.tab} trail=${s.trail_s + s.trail_t}" else if ((s.trail_s + s.trail_t) != 0) then say "FAIL ${s.path} assert=${s.qual_assert} self=${s.self_ref} tab=${s.tab} trail=${s.trail_s + s.trail_t}" else say "OK   ${s.path}"
+let read = split (trim counts.out) " "
+let authored = read[0]
+let qualified_assert = read[1]
+let self_this = read[2]
+let tabs = read[3]
+let trailing_content = read[4]
+let trailing_authored = read[5]
+
+say "rooms_file=${rooms_file}"
+say "authored=${authored}"
+say "qualified_assert=${qualified_assert} ceiling=0"
+say "self_this=${self_this} ceiling=0"
+say "tabs=${tabs} ceiling=0"
+say "trailing_authored=${trailing_authored} ceiling=1"
+say "trailing_content=${trailing_content} reported -- bytes a multiline string emits, never swept here"
+
+# THE ELDER SIXTEEN, still read by name. These are the files the hand list held, and each one prints
+# its own line so the TH-2 witnesses that name `mantra/src/main.rye`, `tally/seed.rye` and
+# `rishi/src/main.rye` keep reading what they always read. A ratchet alone would let one of them
+# regress under a falling ceiling and say nothing. The block reads real tree paths, so it runs on the
+# default roster alone; a pen run reports it absent rather than reading a tree the pen does not own.
+let elder = ["tally/seed.rye" "tally/gardens.rye" "caravan/seed.rye" "caravan/bounded.rye" "caravan/twin.rye" "caravan/chain.rye" "caravan/capabilities.rye" "mantra/src/main.rye" "mantra/src/store.rye" "mantra/src/weave.rye" "mantra/src/diff.rye" "rishi/src/main.rye" "brushstroke/seed.rye" "comlink/hosted_wire.rye" "aurora/src/deciding.rye" "aurora/src/seed.rye"]
+
+if rooms_file != default_rooms then say "elder_roster=absent -- a pen roster reads its own files"
+if rooms_file == default_rooms then say "elder_roster=${length elder}"
+
+let elder_scans = map elder as f: { path: f, qual_assert: length (where (lines (read-file f)) as ln: ln contains "std.debug.assert("), self_ref: length (where (lines (read-file f)) as ln: ln contains "Self = @This()"), tab: length (where (lines (read-file f)) as ln: ln contains "	"), trail_s: length (where (lines (read-file f)) as ln: ln ends-with " "), trail_t: length (where (lines (read-file f)) as ln: ln ends-with "	") }
+let elder_bad = where elder_scans as s: (s.qual_assert + s.self_ref + s.tab + s.trail_s + s.trail_t) != 0
+let elder_ok = where elder_scans as s: (s.qual_assert + s.self_ref + s.tab + s.trail_s + s.trail_t) == 0
+
+if rooms_file == default_rooms then for-each elder_bad as s do say "FAIL ${s.path} assert=${s.qual_assert} self=${s.self_ref} tab=${s.tab} trail=${s.trail_s + s.trail_t}"
+if rooms_file == default_rooms then for-each elder_ok as s do say "OK   ${s.path}"
+if rooms_file == default_rooms then say "elder_faults=${length elder_bad} ceiling=0"
+
+# THE CEILING IS COMPARED HERE rather than in the witness, so a reader of the scan's own output can
+# see whether the ratchet has moved without holding the witness open beside it. It is printed on
+# every roster, pen included, because a control that cannot watch the ceiling refuse has not proven
+# the ceiling at all.
+let over = run ["sh" "-c" "echo $(( (${trailing_authored} > 1) ))"]
+assert over.ok else "tame-check scan: the ceiling comparison failed"
+say "ratchets_over_ceiling=${trim over.out}"
+say "verdict=read"
