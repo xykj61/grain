@@ -90,6 +90,7 @@
 #   sh tools/fixtures/s/standing_equipment_run.sh --scoped        # only what moved since the full receipt
 #   sh tools/fixtures/s/standing_equipment_run.sh --tier cadence  # one tier
 #   sh tools/fixtures/s/standing_equipment_run.sh banner_room     # one guard by name, whatever its tier
+#   sh tools/fixtures/s/standing_equipment_run.sh --detach        # launch it detached; the path is printed, never invented
 #
 # The flags compose: `--hot --all` is the cadence lap's own after-`git add` pass.
 #
@@ -124,6 +125,24 @@ only=""
 hot=no
 probe=no
 scoped=no
+
+detach=no
+# `--detach` is stripped BEFORE the parse loop rather than handled inside it, because the loop's
+# `--*` arm refuses an unknown option and the relaunch below re-runs this same script with the flag
+# gone. A `for` fixes its word list before the first iteration, so rebuilding `$@` inside one is
+# safe; an explicit `if` rather than `test && x`, because a false test as a loop body's last command
+# exits the script under `set -e`.
+for a in "$@"; do
+  if [ "$a" = --detach ]; then detach=yes; fi
+done
+if [ "$detach" = yes ]; then
+  rebuilt=no
+  for a in "$@"; do
+    if [ "$a" = --detach ]; then continue; fi
+    if [ "$rebuilt" = no ]; then set -- "$a"; rebuilt=yes; else set -- "$@" "$a"; fi
+  done
+  if [ "$rebuilt" = no ]; then set --; fi
+fi
 
 # A loop rather than a single case, so `--hot` composes with `--all` and with `--tier`. A bare word
 # is a guard name and selects every tier, which is what asking for one guard has always meant.
@@ -160,6 +179,74 @@ fi
 if [ "$scoped" = yes ] && [ "$want_tier" != lap ]; then
   echo "refused: --scoped serves the lap tier only; the cadence sings the full choir" >&2
   exit 1
+fi
+
+# THE DETACHED LAUNCH (REDS row `20260908.113404`). A full pass runs for twenty minutes, so a lap
+# that wants to keep working launches it detached and reads the transcript later -- and NAMING that
+# transcript has now been the root of three reds in one family. `%541` signaled the pass by command
+# line and reached the whole pier; `%549` redirected it to a constant name under a shared `/tmp`;
+# `%620` gave it a unique name and then found it again by globbing, which returned the same pid's
+# file from the day before. One shape under all three: THE REDIRECT AND THE NAMING RAN IN DIFFERENT
+# SHELLS, so nothing could hold them to one answer.
+#
+# `--detach` puts both in one shell -- this one. It derives the path from the flags it was handed,
+# truncates it, writes a header naming this launch, starts the pass appending to exactly that path,
+# and prints the path and the child's pid. A lap types no name and globs nothing, because the only
+# name is the one it was just handed.
+#
+# WHY UNDER `session-output/`, AND CONSTANT PER MODE. The room is gitignored and sits inside THIS
+# tree, so no peer ship can reach it (the FLEET stanza of tools/f/fleet_baton.txt), and `tree_digest`
+# above passes over ignored paths, so a transcript written mid-pass leaves `tree_moved` still. The
+# name carries the MODE rather than a stamp or a pid because a second pass in one tree already
+# refuses under `run_verdict=run_in_flight` -- there is never a second live pass of one mode to
+# collide with, and a re-verify after a rebase supersedes the reading it overwrites. A stamped or
+# pid-stamped name is the very thing that made `%620` unreadable: a room of near-identical names
+# ordered by a rule nobody wrote down. Measured `20260908.113404` across the pier's eight trees,
+# `session-output/` held 165 files carrying at least eleven hand-invented spellings of this one
+# transcript, and in `grain-copal` a glob-and-tail over them returned 07:17's pass rather than
+# 08:56's -- `%620` standing again, inside the room its own repair moved the file to.
+#
+# HOW A READER KNOWS IT IS THIS PASS. The header is written at launch, before the child starts, so
+# the file can never hold an elder pass's bytes. The pass FINISHED when the transcript carries a
+# `run_verdict=` line, which every exit path emits -- a predicate on content rather than on an mtime
+# or a process table, neither of which survives being read from the wrong shell.
+#
+# WHY NOT TEE EVERY PASS. A foreground pass is read on the terminal as it runs and needs no name at
+# all, so teeing would touch every invocation by every ship to answer a question only the detached
+# case asks.
+if [ "$detach" = yes ]; then
+  # The child's arguments are rendered from the PARSED flags rather than from the words this script
+  # was handed, so one reader of the flags serves both the relaunch and the label -- a second reader
+  # is how two spellings of one intent begin. A guard name already implies every tier, which is what
+  # asking for one guard has always meant.
+  label=cold
+  set --
+  if [ "$hot" = yes ]; then set -- "$@" --hot; label=hot; fi
+  if [ "$scoped" = yes ]; then set -- "$@" --scoped; label="$label-scoped"; fi
+  if [ "$probe" = yes ]; then set -- "$@" --receipt-probe; label="$label-probe"; fi
+  if [ -n "$only" ]; then
+    set -- "$@" "$only"; label="$label-$only"
+  elif [ "$want_tier" = all ]; then
+    set -- "$@" --all; label="$label-all"
+  elif [ "$want_tier" != lap ]; then
+    set -- "$@" --tier "$want_tier"; label="$label-$want_tier"
+  fi
+  # The label reaches a filename, so it carries only what a filename may carry. A tier word the
+  # roster would refuse is still a word this script must never open a path with.
+  label=$(printf '%s' "$label" | tr -c 'a-z0-9_-' '-')
+  transcript="session-output/standing-equipment-$label.txt"
+  mkdir -p "$(dirname "$transcript")"
+  {
+    echo "launch_stamp $(TZ=America/New_York date +%Y%m%d.%H%M%S)"
+    echo "launch_tree $(pwd)"
+    echo "launch_head $(git rev-parse --short=10 HEAD 2>/dev/null || echo nogit)"
+    echo "launch_args $*"
+  } > "$transcript"
+  nohup sh "$0" "$@" >> "$transcript" 2>&1 < /dev/null &
+  echo "transcript=$transcript"
+  echo "pid=$!"
+  echo "finished_when=the transcript carries a run_verdict line"
+  exit 0
 fi
 
 stamp=$(TZ=America/New_York date +%Y%m%d.%H%M%S)

@@ -403,6 +403,83 @@ out=$( ( cd "$pen" && STANDING_ROSTER=gonepath.kyri STANDING_CARD=absent-run.kyr
         sh "$runner" 2>/dev/null ) || true )
 case "$out" in *"run_verdict=guard_red"*) echo "absent_path_reds_runner=yes" ;; *) echo "absent_path_reds_runner=no" ;; esac
 
+# --- the detached launch names its own transcript, both sides (REDS row `20260908.113404`) -------
+# THE FAULT THIS CLOSES is three reds wide: `%541` signaled a pass by command line, `%549`
+# redirected one to a constant name under a shared `/tmp`, and `%620` gave one a unique name and
+# then found it again by globbing. Every firing put the redirect in one shell and the naming in
+# another. `--detach` puts both in this runner, so the legs below prove the parent returns having
+# named the file, the file identifies this launch before the child writes a byte, and an elder file
+# standing at that path cannot survive to be read as today's.
+detach_transcript() { echo "$pen/session-output/standing-equipment-$1.txt"; }
+# A bounded wait rather than an unbounded one: the stub guard costs nothing, so a pass that has not
+# closed within a hundred seconds has failed in a way this control must report rather than hang on.
+detach_wait() {
+  _i=0
+  while [ "$_i" -lt 100 ]; do
+    if grep -q '^run_verdict=' "$1" 2>/dev/null; then return 0; fi
+    sleep 1
+    _i=$((_i + 1))
+  done
+  return 1
+}
+
+rm -rf "$pen/session-output"
+# The elder file the launch must destroy -- `%620`'s own fault, planted where it would bite.
+mkdir -p "$pen/session-output"
+echo "elder_pass_from_yesterday" > "$(detach_transcript cold)"
+out=$(run_runner --detach)
+case "$out" in *"transcript=session-output/standing-equipment-cold.txt"*)
+  echo "detach_prints_path=yes" ;; *) echo "detach_prints_path=no" ;; esac
+case "$out" in *"pid="[0-9]*) echo "detach_prints_pid=yes" ;; *) echo "detach_prints_pid=no" ;; esac
+# The parent returns having launched rather than having run: no guard line, no verdict of its own.
+case "$out" in *"ran alpha"*|*"run_verdict="*) echo "detach_parent_returns=no" ;; *) echo "detach_parent_returns=yes" ;; esac
+cold=$(detach_transcript cold)
+if grep -q '^launch_stamp [0-9]' "$cold" && grep -q '^launch_head ' "$cold" && grep -q '^launch_args' "$cold"; then
+  echo "detach_header_written=yes"; else echo "detach_header_written=no"; fi
+if grep -q 'elder_pass_from_yesterday' "$cold"; then
+  echo "detach_truncates_elder=no"; else echo "detach_truncates_elder=yes"; fi
+if detach_wait "$cold"; then echo "detach_child_closes=yes"; else echo "detach_child_closes=no"; fi
+if grep -q '^alpha ' "$cold"; then echo "detach_child_runs_roster=yes"; else echo "detach_child_runs_roster=no"; fi
+
+# The MODE is what names the file, so two modes never share one path and a lap never disambiguates
+# by hand. `--hot` over the same pen writes its own transcript and leaves the cold one alone.
+out=$(run_runner --detach --hot)
+case "$out" in *"transcript=session-output/standing-equipment-hot.txt"*)
+  echo "detach_mode_names_file=yes" ;; *) echo "detach_mode_names_file=no" ;; esac
+hot=$(detach_transcript hot)
+if detach_wait "$hot" && [ -f "$cold" ]; then echo "detach_modes_stay_apart=yes"; else echo "detach_modes_stay_apart=no"; fi
+
+# A refusal stays in the FOREGROUND, where the hand that typed it is standing. An absent roster is
+# refused before anything is launched, and no transcript is written for a pass that never began.
+# THE TRUNCATION PROVEN INNOCENT. `detach_truncates_elder=yes` above is the whole of `%620`'s cure,
+# and a leg that only ever passes cannot be told from one testing nothing. So the same launch runs
+# again over a runner copy whose header write APPENDS rather than truncates -- the elder shape,
+# `%549`'s constant name without the clean start -- and yesterday's bytes must survive it. One
+# character changed, and the change is asserted rather than assumed. Every sibling the runner
+# sources travels with the copy, since a copy that cannot start prints nothing and reads exactly
+# like a repair that worked.
+sed 's|^  } > "\$transcript"$|  } >> "$transcript"|' "$runner" > "$pen/run-append.sh"
+cp "$(dirname "$runner")/shell_portable.sh" "$pen/shell_portable.sh"
+cp "$(dirname "$runner")/scope_match.sh" "$pen/scope_match.sh"
+if cmp -s "$runner" "$pen/run-append.sh"; then
+  echo "append_runner_built=no"; else echo "append_runner_built=yes"; fi
+rm -rf "$pen/session-output"
+mkdir -p "$pen/session-output"
+echo "elder_pass_from_yesterday" > "$(detach_transcript cold)"
+out=$( ( cd "$pen" && STANDING_ROSTER=cadence.kyri STANDING_CARD=run-card.kyri \
+        sh "$pen/run-append.sh" --detach 2>/dev/null ) || true )
+case "$out" in *"transcript="*) echo "append_runner_ran=yes" ;; *) echo "append_runner_ran=no" ;; esac
+if grep -q 'elder_pass_from_yesterday' "$(detach_transcript cold)"; then
+  echo "append_runner_keeps_elder=yes"; else echo "append_runner_keeps_elder=no"; fi
+detach_wait "$(detach_transcript cold)" || true
+
+rm -rf "$pen/session-output"
+out=$( ( cd "$pen" && STANDING_ROSTER=no-such-roster.kyri STANDING_CARD=run-card.kyri \
+        sh "$runner" --detach 2>&1 ) || true )
+case "$out" in *"refused: no roster"*) echo "detach_refuses_before_launch=yes" ;; *) echo "detach_refuses_before_launch=no" ;; esac
+if [ -e "$pen/session-output" ]; then echo "detach_refusal_writes_nothing=no"; else echo "detach_refusal_writes_nothing=yes"; fi
+rm -rf "$pen/session-output"
+
 # --- the tree digest, proven from both sides on a REAL git repository ---------------------
 # The runner takes twelve characters of `git rev-parse HEAD` plus `git status --porcelain` before
 # the first guard and again after the last, so a lap that starts editing while the roster runs is
