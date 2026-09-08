@@ -1992,10 +1992,23 @@ seated 20260905.225551
 # `sh tools/fixtures/am/amphora_roster_scan.sh` on every run.
 #
 # WHAT IT GATES at zero: `uncovered`, a module no rostered guard names -- a break a lap would not
-# catch; and `orphan_rows`, a row naming a guard file the room lacks -- the roster promising a run
-# nobody can make. `singly_covered` is REPORTED and never gated, because a module born today is
+# catch; `orphan_rows`, a row naming a guard file the room lacks -- the roster promising a run
+# nobody can make; and `readme_unnamed`, a rostered guard the room's front door never names.
+# `singly_covered` is REPORTED and never gated, because a module born today is
 # named by exactly one guard on the day it lands, and a ceiling there would red on the most ordinary
 # work in the room. Two stand there now, `manifest_entry.rye` and `purchase_delivery.rye`.
+#
+# THE THIRD GATE LANDED `20260908`, and it closes the half the first repair left open. This block's
+# own counts came off an instrument from `20260907.223214` forward, while the guard LIST on
+# `amphora/README.md` stayed hand-typed and drifted the same way the counts had: it named 11 of the
+# 16 rows seated here, passing over `amphora_roster` -- the guard this scan serves -- and
+# `amphora_mark_wreck`, both seated after the list was last written. A count read off an instrument
+# beside a list typed by hand is half a repair. It has teeth where `singly_covered` does not for a
+# plain reason: seating a guard is a roster row a hand writes, and naming it at the room's door is
+# the same hand, the same lap, one line -- so the wall refuses nothing anyone does on purpose. It
+# was reached by REPAIR rather than by decree; both missing names were written the lap it landed.
+# An absent front door answers the word `absent` rather than zero and gates nothing, so the witness
+# asserts this room's door BY PATH.
 #
 # A SYMLINK IS ANOTHER LANE'S MODULE. The room is read with `find ! -type l`, so `kumara.rye`,
 # `tally_copy.rye` and `wire_format.rye` are counted apart rather than held to this lane's account
@@ -2004,7 +2017,7 @@ seated 20260905.225551
 # and the module names live in the target.
 #
 # `tier lap`: shell and awk only, no build, measured under a second against a lap pass of 1,248.
-# Proven by 40 planted behaviors on throwaway rooms in
+# Proven by 56 planted behaviors on throwaway rooms in
 # `tools/fixtures/am/amphora_roster_control.sh` -- every refusal shown from the failing side and
 # then lifted, the vacuum leg proving that zero rostered guards over a room holding modules refuses
 # rather than reading covered, and the pen proven innocent against a scan patched to always say ok.

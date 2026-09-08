@@ -1,6 +1,6 @@
 # amphora_roster_witness.rish -- every authored Amphora module answers to a rostered guard.
 #
-# TWO CLAIMS, in the order that makes the second worth believing. The control runs first: 40 planted
+# TWO CLAIMS, in the order that makes the second worth believing. The control runs first: 56 planted
 # behaviors on throwaway rooms, each refusal shown from the failing side and then lifted, the
 # reported reading proven to leave the verdict alone, and the pen proven innocent against a scan
 # patched to always answer ok. The real room follows, once the instrument has shown it can red. A
@@ -14,11 +14,26 @@
 # run where prose keeps whatever it was given, so the count reads off an instrument from here
 # forward. That is REDS `%360`'s family, repaired the way the family asks.
 #
-# WHAT IS GATED, and what is counted beside it. `uncovered` and `orphan_rows` stand at zero, each
-# for a plain reason: a module every rostered guard passes over would ship a break green, and a
-# roster row earns its place by naming a file that stands. `singly_covered` is REPORTED, because a
-# module born today is named by exactly one guard on the day it lands -- a ceiling there would
-# refuse the most ordinary work in the room, and a wall like that is one somebody turns off.
+# AND THE FIRST REPAIR REACHED THE COUNT WITHOUT REACHING THE LIST (`20260908`). Both sentences
+# above were written into the scan and this header as a present-tense diagnosis, and both drifted
+# with the roster they described -- 15 rows became 16 while the words stood still. The page's own
+# guard list drifted the same way, naming 11 of 16. `readme_unnamed` is why neither can do it
+# again; these two paragraphs are kept in the past tense they belong to.
+#
+# WHAT IS GATED, and what is counted beside it. `uncovered`, `orphan_rows` and `readme_unnamed`
+# stand at zero, each for a plain reason: a module every rostered guard passes over would ship a
+# break green, a roster row earns its place by naming a file that stands, and the room's front door
+# is where a reader looks for the guard list before ever opening the roster. `singly_covered` is
+# REPORTED, because a module born today is named by exactly one guard on the day it lands -- a
+# ceiling there would refuse the most ordinary work in the room, and a wall like that is one
+# somebody turns off.
+#
+# WHY THE THIRD GATE HAS TEETH WHERE `singly_covered` DOES NOT. Seating a guard is a roster row a
+# hand writes; naming it at the room's door is the same hand, the same lap, one line. So the wall
+# refuses nothing anyone does on purpose, and it was arrived at by repair rather than by decree --
+# the two names it was missing on `20260908`, `amphora_roster` and `amphora_mark_wreck`, were
+# written the lap the reading landed. The door is asserted BY PATH below, so the room cannot answer
+# the reading by deleting the page it reads.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/am/amphora_roster_witness.rish
@@ -30,7 +45,7 @@ say "amphora roster: the control, so a green reading below can be believed..."
 let c = run ["sh" control]
 assert c.ok else "amphora_roster: control FAILED -- the scan cannot be trusted to red"
 assert c.out contains "verdict=ok" else "amphora_roster: control did not answer ok"
-assert c.out contains "behaviors=40" else "amphora_roster: control ran a different number of behaviors"
+assert c.out contains "behaviors=56" else "amphora_roster: control ran a different number of behaviors"
 assert c.out contains "failed=0" else "amphora_roster: control reported a failed behavior"
 assert c.out contains "innocence patch landed" else "amphora_roster: the innocence patch planted nothing"
 
@@ -40,5 +55,7 @@ assert s.ok else "amphora_roster: the room and the roster disagree"
 assert s.out contains "verdict=ok" else "amphora_roster: scan did not answer ok"
 assert s.out contains "uncovered=0" else "amphora_roster: a module no rostered guard names"
 assert s.out contains "orphan_rows=0" else "amphora_roster: a roster row naming an absent guard"
+assert s.out contains "readme=amphora/README.md" else "amphora_roster: the room's front door went absent -- an absent door reads `absent` and gates nothing, so its path is asserted here"
+assert s.out contains "readme_unnamed=0" else "amphora_roster: a rostered guard the room's README never names -- run `sh tools/fixtures/am/amphora_roster_scan.sh` and read `detail_readme_unnamed`"
 
-say "GREEN: amphora roster -- 40 planted behaviors, and every authored module has a rostered guard."
+say "GREEN: amphora roster -- 56 planted behaviors, every authored module has a rostered guard, and the room's front door names every one."

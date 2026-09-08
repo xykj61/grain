@@ -12,9 +12,15 @@
 # is counted*). Amphora had no twin, so its coverage lived in a roster comment a hand typed and
 # re-typed: the block above the vessel rows carried `7 modules and 3,603 lines` on `20260906` and
 # the line count had drifted 273 by the next morning with nothing listening (the row booked
-# `20260907.215529`), and `amphora/README.md` still reads *twelve standing witnesses run every lap*
+# `20260907.215529`), and `amphora/README.md` read *twelve standing witnesses run every lap*
 # against 15 rostered rows, 13 of them on the lap clock. A count in prose is a claim with no
 # instrument -- REDS `%360`'s family -- and this is the instrument for this room.
+#
+# THAT SENTENCE THEN DRIFTED HERE (`20260908`). It was written in the present tense and the roster
+# grew past it: 15 rows became 16, and the README's own guard LIST drifted from whole to 11 of 16
+# in the same span. So the paragraph diagnosing a stale count went stale, inside the instrument
+# built to stop stale counts. It reads as history now, and `readme_unnamed` below holds the list
+# the way `guards` holds the count.
 #
 # THE READINGS:
 #   modules           authored `.rye` under the room, symlinks excluded
@@ -25,6 +31,32 @@
 #   orphan_rows       a roster row naming a guard file the room lacks      GATED at zero
 #   uncovered         a module no rostered guard names                     GATED at zero
 #   singly_covered    a module exactly one rostered guard names            reported
+#   readme_unnamed    a rostered guard the room's front door never names    GATED at zero
+#
+# THE FRONT DOOR IS PART OF THE ROSTER'S REACH. `amphora/README.md` lists the guards that stand
+# over this room, and a reader reaches for that list before reaching for the roster. It was hand
+# typed, so it drifted exactly as the counts beside it did: on `20260908` it named 11 of the 16
+# rostered guards, missing `amphora_roster` -- the guard this scan serves -- and `amphora_mark_wreck`,
+# both seated after the list was last written. A count read off an instrument and a LIST typed by
+# hand is half a repair, so the list is held here too.
+#
+# GATED rather than ratcheted, and the counter-argument is named. `singly_covered` is reported
+# because a module born today is named by one guard on the day it lands, which is ordinary work; a
+# guard seated today is a roster row a hand writes, and naming it at the room's door is the same
+# hand, the same lap, one line. So a wall refuses nothing anyone does on purpose. The wall was
+# arrived at by REPAIR rather than by decree -- the two missing names were written the lap this
+# reading landed -- so it has never refused work already done.
+#
+# A NAME IS MATCHED AT ITS BOUNDARIES, never as a substring. `amphora_pour` sits inside
+# `amphora_pour_negative` and inside its own path `amphora_pour_witness.rish`, so a plain `grep -F`
+# would credit a door that names only the negative twin. The token is bounded by non-word
+# characters on both sides, and underscore counts as a word character -- which is what keeps
+# `amphora_pour_witness` from answering for `amphora_pour`.
+#
+# AN ABSENT FRONT DOOR ANSWERS `absent`, never zero -- the same rule the absent room and roster
+# take. A room with no README and a room whose README is whole must never read alike, so the count
+# is a word rather than a number there and the gate stands down. The witness asserts this room's
+# door BY PATH, so `amphora/` cannot go quiet by deleting it.
 #
 # A SYMLINK IS NOT THIS LANE'S MODULE. `amphora/kumara.rye`, `tally_copy.rye` and `wire_format.rye`
 # are links into `tally/` and `comlink/`, and a coverage reading that counted them would hold this
@@ -44,7 +76,7 @@
 # whether a guard runs green -- the standing roster answers that every pass, and this one asks only
 # whether the roster is pointed at the whole room.
 #
-#   sh tools/fixtures/am/amphora_roster_scan.sh [<room>] [<roster>] [<guard_room>]
+#   sh tools/fixtures/am/amphora_roster_scan.sh [<room>] [<roster>] [<guard_room>] [<readme>]
 #
 # Exit 0 when the room is covered, 1 when it parts, and 2 when the scan cannot read what it was
 # pointed at. An absent room or roster answers `misread`, since zero is the reading a covered room
@@ -54,6 +86,7 @@ set -eu
 ROOM=${1:-amphora}
 ROSTER=${2:-construction/standing-equipment.kyri}
 GUARD_ROOM=${3:-tools/am}
+README=${4:-$ROOM/README.md}
 
 # Bound: the detail listing stops here and says so. An unbounded print is an unbounded allocation
 # (TAME), and a room past this wants a fold rather than a longer printout.
@@ -91,11 +124,13 @@ echo "linked=$linked"
 
 # The roster's rows for this guard room, each carrying the tier it was seated at. A row with no
 # tier line runs every lap, which is the roster's own default, so absence is spelled `lap` here.
+# The name rides along as a third field, which every reader below is free to ignore: the two `awk`
+# tier filters key on field 2 and the two `read` loops name only the fields they use.
 awk -v room="$GUARD_ROOM/" '
-  /^guard /  { if (path != "") print path, tier; path = ""; tier = "lap"; next }
+  /^guard /  { if (path != "") print path, tier, name; path = ""; tier = "lap"; name = $2; next }
   /^path /   { if (index($2, room) == 1) path = $2; next }
   /^tier /   { if (path != "") tier = $2; next }
-  END        { if (path != "") print path, tier }
+  END        { if (path != "") print path, tier, name }
 ' "$ROSTER" > "$TMP/rows"
 
 guards=$(grep -c '' "$TMP/rows" || true)
@@ -154,6 +189,27 @@ echo "covered=$covered"
 echo "uncovered=$uncovered"
 echo "singly_covered=$singly_covered"
 
+# The front door names every guard that stands over the room, or the one it passes over is counted.
+: > "$TMP/readme_unnamed"
+if test -f "$README"; then
+  echo "readme=$README"
+  while read -r _p _t n; do
+    test -n "$n" || continue
+    # Bounded on both sides by a non-word character, so `amphora_pour` is never credited by
+    # `amphora_pour_negative` or by its own `amphora_pour_witness.rish` path.
+    grep -qE "(^|[^A-Za-z0-9_])$n([^A-Za-z0-9_]|\$)" "$README" || echo "$n" >> "$TMP/readme_unnamed"
+  done < "$TMP/rows"
+  readme_unnamed=$(grep -c '' "$TMP/readme_unnamed" || true)
+  echo "readme_named=$((guards - readme_unnamed))"
+  echo "readme_unnamed=$readme_unnamed"
+else
+  # A word rather than a number: an absent door and a whole one must never read alike.
+  echo "readme=absent"
+  echo "readme_named=absent"
+  echo "readme_unnamed=absent"
+  readme_unnamed=0
+fi
+
 # Name every one of them. A count nobody can act on is the complaint the dated-path census made of
 # itself: it printed no list, so nobody could name the thing it was refusing over.
 name_them() { # name_them <key> <file>
@@ -170,9 +226,10 @@ name_them() { # name_them <key> <file>
 name_them uncovered "$TMP/uncovered"
 name_them singly "$TMP/singly"
 name_them orphan_row "$TMP/orphans"
+name_them readme_unnamed "$TMP/readme_unnamed"
 name_them linked "$TMP/linked"
 
-if [ "$uncovered" -eq 0 ] && [ "$orphan_rows" -eq 0 ]; then
+if [ "$uncovered" -eq 0 ] && [ "$orphan_rows" -eq 0 ] && [ "$readme_unnamed" -eq 0 ]; then
   echo "verdict=ok"
   exit 0
 fi

@@ -59,6 +59,50 @@ peer loop's full output by named path rather than a hand pasting it. A read wind
 room: the loops' own state stays in `loops/`, and nothing in `session-output/` is a record --
 `session-logs/` remains the journal.
 
+**A third gitignored room holds one lap's scratch, and eight ships reached it before any law named
+it.** `.lap/` sits at each tree's own root and holds what a single lap writes for itself and then
+lets go -- a commit body drafted before `git commit -F`, a roster pass's captured output, a path a
+helper printed. Measured `20260908.065109` across the pier's eight checkouts: **all eight hold
+`.lap/`, carrying 22 files between them, and `commit-msg.txt` stands in every one.** Each hand made
+the directory itself after reading REDS `%601`, whose repair moved one commit body out of a shared
+`/tmp` and into the ship's own tree. Ten other names appear, none on more than three ships, so the
+room is shared and its filing stays each ship's own.
+
+**It is per-ship by construction rather than by care.** `.gitignore` denies the root with `/*` and
+allows the project's paths back one at a time, so a room stays outside the repository until that
+file names it, and `.lap/` waits there unnamed by design. The same root deny once covered
+`publish-seed.sh` the same incidental way, until `%444` gave that file a named allow-back on
+Keaton's word and made it tracked ([`git-signing`](git-signing.md)) -- so whether `.lap/` earns a
+named line of its own is a question for the card rather than an assumption for this page. Two other properties ride along and both are load-bearing:
+`fleet_round_open.sh` stashes with `git stash push -u`, which sweeps untracked files and passes
+over ignored ones, so a round-open leaves a lap's draft where the lap left it; and
+`standing_equipment_run.sh` keeps ignored paths outside both halves of its tree digest, so scratch
+written mid-pass leaves `tree_moved` alone.
+
+**Why a room of its own beside `loops/`.** `loops/` holds the launcher's state, which outlives every
+lap -- a transcript, a counter, an auth token a hand typed once. `.lap/` holds what dies with the
+lap. The lifetimes differ, so the rooms differ. The second reason is typing: a scratch path is
+reached from a command line in the middle of a lap, and `.lap/msg.txt` is short enough that a hand
+takes it over `/tmp/msg.txt`, which is the whole substance of the repair.
+
+**The law records it because the ledger row will fold.** A REDS row folds to a shelf once it closes,
+and the sentence that reached eight ships lives inside one. Written here, where a lap reads its
+rooms, the answer outlasts the row that taught it. **One guard already covers the half a guard can
+cover, and the rest belongs to habit:** `shared_pen` reads every tracked runner -- a
+`.sh` or `.rish` suffix OR a first-line shebang -- for a fixed `/tmp` name (`%618`, widened at
+`%601`), while that row's remainder is a command a hand types, which lives outside
+every file a guard reads. Eight independent adoptions inside eighteen hours are the evidence that a
+named room carried it where a wrapper, a flag, or a meter would each have asked a hand to remember
+one more thing.
+
+**One hazard moved rather than left, and it is named here ahead of its first firing.** A fixed name
+inside one tree is safe from eight hands and open to one hand's own past: `.lap/commit-msg.txt`
+stands in all eight rooms and persists between laps, so a lap running `git commit -F
+.lap/commit-msg.txt` ahead of rewriting the file commits its own previous message. Every wall
+welcomes it -- the commit-msg hook checks that paths named in a body exist, and a body left from
+this same tree cites paths that do. The discipline is one step: write the body and commit from it
+inside the same chain, so the write and the read sit together.
+
 ## Open shelves
 
 `construction/` pins (the card, REDS, the registries) - `context/` guides - `foundations/` -
