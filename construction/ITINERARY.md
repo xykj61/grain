@@ -47,7 +47,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `ada4dd993c` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `a5b1525a4f` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A HABIT THAT MUST BE TYPED IS A HABIT THAT WILL BE TYPED DIFFERENTLY.**
 Elder [shelved](archive/20260908-115307_itinerary-landed-accounts.md). Row `20260908.113404`
@@ -196,16 +196,16 @@ guard said to lock that is `%500` above, and it now reds honestly.
 
 **`%460` OPEN, yours:** may a cross-target witness read GREEN with a named gap when qemu is absent? `%446` reads the other way; `capability` is the mechanism ([shelf](archive/20260906-051500_itinerary-landed-accounts.md)).
 
-**GRASS -- THE SECOND HAND LIST READS THE TREE, AND FOUND THREE FILES.**
-Elder [shelved](archive/20260908-133141_itinerary-landed-accounts.md).
-`tame_check_scan.rish` named 16 paths inline. **IT DERIVES NOW** from `tame_style_rooms.txt`,
-fourth reader: **16 -> 1,127 authored** -- hosted or not, since a tab is a fault whichever way a
-file opens. Three walls at **0**; elder 16 clean; **control 24**, both sides.
-**THE FOURTH DUTY FOUND WHAT SIXTEEN COULD NOT** -- 3 trailing-whitespace files, load-bearing.
-**2 inside `\\` multiline strings** are generated Zig and Brush: reported, gated nowhere. **1 is
-`font8x8_data.rye:35`, the glyph row whose `//` comment IS a space** -- ratchet at 1, not an
-exemption.
-**ITS 17 WAS NEVER A COUNT** -- two of two widened guards read their own output length.
+**GRASS -- THE THIRD HAND LIST READS THE TREE, AND ITS TWELVE WERE NEVER A SUBSET OF IT.**
+Elder [shelved](archive/20260908-161651_itinerary-landed-accounts.md).
+**`rune_assert_sweep` DERIVES** from `tame_style_rooms.txt`: **12 -> 1,127**, 1,100 fn-bearing;
+ratchets **100** with no `assert(`, **101** naming no `// invariant:`. **Control 24**.
+**THE HAND PASSED THROUGH:** five of the twelve sit in **four rooms the roster never names**, so
+deriving alone drops five gated files as the population grows a hundredfold. Their wall stays.
+**TAX REFUNDED:** 3,381 processes -> **six**; 19.3s -> **237ms**.
+**`seed_link` CLOSED IN ONE LINE:** the manifest held four registers, not the `BHAKTA_STYLE.md` the
+door links. Door **1 -> 0**, ratchet **850 -> 848**.
+**Against myself:** I edited mid-hot-pass, so `tree_moved=yes`.
 
 **COPAL -- MY GATE'S EXEMPTION WAS A CLAIM, AND IT WAS FALSE IN ITS OWN ROOM.**
 Elder [shelved](archive/20260908-135445_itinerary-landed-accounts.md). Row `20260908.135445`

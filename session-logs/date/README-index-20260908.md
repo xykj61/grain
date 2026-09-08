@@ -12,6 +12,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | Stamp | Log | What it recorded |
 |---|---|---|
 | `20260908.163927` | [The scrub that remembers, and a pin that held by folding prose](20260908/20260908-163927_the-scrub-that-remembers.kyri) | seed published; the rescrub booked; the pin held by folding prose rather than a live row |
+| `20260908.162225` | [the third list, and the fence it was not inside](20260908/20260908-162225_the-third-list-and-the-fence-it-was-not-inside.kyri) | 12 -> 1,127; five were outside. |
 | `20260908.155443` | [three percent was the outlier](20260908/20260908-155443_three-percent-was-the-outlier.kyri) | twelve of twelve, 18% to 42%. |
 | `20260908.153848` | [a quotation outranks a floor](20260908/20260908-153848_a-quotation-outranks-a-floor.kyri) | 14% to 6%, and why it stops. |
 | `20260908.152903` | [the strictest naming on four doors](20260908/20260908-152903_the-strictest-naming-on-four-doors.kyri) | zero negatives, measured. |
