@@ -318,6 +318,54 @@ path tools/t/tame_style_check.rish
 seated 20260707.164612
 tier lap       # authored Rye style, named on touch by the same
 
+# THE THREE TAME GUARDS THE LAW PAGES NAME AND NO ROSTER HEARD, seated 20260908.111848.
+# `context/TAME_CORE.md` closes on a section titled "The checkable surface (the audit runs these)"
+# and names five tools. Four of the five reached a lap only because somebody rostered them one at a
+# time for their own reasons; the fifth, `rune_assert_sweep`, was rostered by nobody. The runner the
+# page names for all five -- "the TAME Guidance Audit Quest" -- appears in exactly one place in the
+# living tree, which is the sentence that names it. `context/TAME_GUIDANCE.md`'s own lint table
+# names two more, `opening_lines_witness` and `tame-check`, and neither stood here either;
+# `tame-check` is the tool that table cites for FIVE separate rules, unqualified assert among them.
+#
+# ALL THREE ARE GREEN AT HEAD and have been unheard since they were seated -- `tame-check` and
+# `opening_lines` since the parity chapter, `rune_assert_sweep` since `20260810`. Nothing was
+# broken; nothing was listening either, which is the second half of this file's own opening law.
+#
+# `unheard_guard` COUNTED THEM AND COULD NOT NAME THEM. All three stand inside its reading -- one
+# in `unheard`, two in the 405 `unnamed_runners` -- under ceilings of 1,108 and 405. An aggregate
+# ratchet answers "how many runners does no lap reach"; it cannot answer "is the tool this law page
+# declares as its checkable surface one of them". Two questions, one number, and only the first
+# was being asked.
+#
+# WHAT EACH ONE ACTUALLY READS, written here so a green never reads wider than it is. The TAME
+# rooms in `tools/fixtures/t/tame_style_rooms.txt` hold 1,126 authored `.rye` files, 1,073 of which
+# import std and are therefore hosted. Against that: `opening_lines` reads 25 hand-named files and
+# says "all 25 hosted files"; `tame_check` reads 17; `rune_assert_sweep` gates 12 hand-named cores.
+# Each is a regression guard over its own list rather than a reading of the tree, and a hand list
+# cannot grow with the tree -- the same shape `tally_caller_map` was repaired for on `20260908`.
+# Measured this lap over the whole roster: 123 of the 1,073 hosted files are missing at least one
+# line of the opening triad. Widening the lists is its own lap and is named on the card, not taken
+# here: rostering a guard and changing what it reads are two acts, and doing both at once means no
+# one can tell which of them moved the number.
+#
+# `tier lap` for all three, measured on this pier `20260908`: 966ms, 401ms, 172ms -- 1.5s together
+# against a lap pass of 1,392s, or one tenth of one percent. A guard this cheap on a slower clock
+# would be a cadence bought for nothing.
+guard rune_assert_sweep
+path tools/r/rune_assert_sweep.rish
+tier lap   # 172ms; gates 12 asserting cores against regression, advises the rest
+seated 20260908.111848
+
+guard opening_lines
+path tools/o/opening_lines_witness.rish
+tier lap   # 966ms; the opening triad over 25 hand-named hosted files
+seated 20260908.111848
+
+guard tame_check
+path tools/t/tame-check.rish
+tier lap   # 401ms; unqualified assert, `Self = @This()`, tabs and trailing whitespace over 17 files
+seated 20260908.111848
+
 # sow -- the projected seat is clean before it is ever public. MOVED TO `tier cadence`
 # `20260904` (REDS %412): at 230s it was the single most expensive guard on the roster, and unlike
 # the two repaired beside it that cost is INHERENT -- it projects the whole public seed and scrubs

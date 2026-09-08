@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `27d9577077` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `745c0b8c42` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A PRESCRIPTION THAT CANNOT FIRE PRESCRIBES NOTHING.**
 Elder [shelved](archive/20260908-093634_itinerary-landed-accounts.md). Row `20260908.093634`
@@ -195,15 +195,15 @@ guard said to lock that is `%500` above, and it now reds honestly.
 
 **`%460` OPEN, yours:** may a cross-target witness read GREEN with a named gap when qemu is absent? `%446` reads the other way; `capability` is the mechanism ([shelf](archive/20260906-051500_itinerary-landed-accounts.md)).
 
-**GRASS -- ONE ROOM LIST IN FIVE FILES, AND A GREEN SELFTEST COMPARING TWO POPULATIONS.**
-Elder [shelved](archive/20260908-101352_itinerary-landed-accounts.md); row `20260908.101259`
-**CLOSED**, [folded](archive/REDS-one-room-list-in-five-files-rows-630.md).
-The TAME style room list stood inline **five times**. Bans widened `20260827` arguing the case --
-*two rosters that must agree are one roster plus a bug waiting* -- and only that half moved:
-advise read **857 files against 1,126** while the selftest called them equal. **EQUAL COUNTS OVER
-UNEQUAL POPULATIONS COMPARE EQUAL.** `@memcpy` printed **0** while **137** stood, 129 in `glow/`.
-**ONE FILE NOW.**
-**Yours:** `bans_legacy.sh`, rostered nowhere, exits 1 at HEAD; `dated_path` 100/85, gate?
+**GRASS -- THE PAGE NAMING THE CHECKABLE SURFACE NAMED THREE TOOLS NO ROSTER HEARD.**
+Elder [shelved](archive/20260908-112111_itinerary-landed-accounts.md); `20260908.111848`
+**BOOKED**, [folded](archive/REDS-three-tools-no-roster-heard-rows-637.md) `20260908.111848`.
+**AIR PRESSED THE SAME FENCE TWICE.** `TAME_CORE.md`'s *checkable surface* listed five; four
+reached a lap only because somebody rostered them singly. `rune_assert_sweep` since `20260810`,
+`opening_lines` and `tame-check` off the supplement's table. **The runner they were left to
+stands in one place: the sentence naming it.** Now `tier lap`, GREEN the hour heard.
+**ALL THREE READ A HAND LIST** -- 25, 17, 12 of **1,073** hosted, **123 missing a triad line**.
+**Yours:** `dated_path` 100/85, gate?
 
 **COPAL -- THE LEDGER COULD ACCEPT NO RED, AND ONE WAS MINE.**
 Elder [shelved](archive/20260908-104016_itinerary-landed-accounts.md).

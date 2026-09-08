@@ -13,6 +13,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 |---|---|---|
 | `20260908.120903` | [the open-door register](20260908/20260908-120903_the-open-door-register.kyri) | Bhakta seated; the file did not arrive. |
 | `20260908.114418` | [fifteen asks, one question](20260908/20260908-114418_fifteen-asks-one-question.kyri) | sorted and held for the file. |
+| `20260908.112345` | [Three tools no roster heard](20260908/20260908-112345_three-tools-no-roster-heard.kyri) | A law page named five guards; three ran on no lap. |
 | `20260908.105721` | [the twenty-first room](20260908/20260908-105721_the-twenty-first-room.kyri) | camelCase reads 0; seven stand. |
 | `20260908.105623` | [The gate that counts the record](20260908/20260908-105623_the-gate-that-counts-the-record.kyri) | two gates disagree about a parked lap; nothing landed. |
 | `20260908.105313` | [The lap that stashed itself](20260908/20260908-105313_the-lap-that-stashed-itself.kyri) | two laps out of the box; %627 -> %631. |

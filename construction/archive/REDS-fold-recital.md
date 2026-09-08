@@ -558,3 +558,5 @@ at a closed fold.*
 
 *Row %634 folded to [`REDS-the-third-answer-a-witness-did-not-know-rows-634.md`](REDS-the-third-answer-a-witness-did-not-know-rows-634.md) on `20260908.104016`, **CLOSED** -- a control's honest third answer is a fault only to a witness that knows two, and the repair took the cause rather than the reading.*
 *Row %635 folded to [`REDS-a-guard-whose-rooms-were-a-hand-written-list-rows-635.md`](REDS-a-guard-whose-rooms-were-a-hand-written-list-rows-635.md) on `20260908.101759`, **BOOKED** -- a guard whose population is a hand-written list is bounded by what the hand remembered, and its greenness reports the list rather than the subject.*
+
+*Row %637 folded to [`REDS-three-tools-no-roster-heard-rows-637.md`](REDS-three-tools-no-roster-heard-rows-637.md) on `20260908.122056`, **BOOKED** -- a declared checkable surface is a claim, and a claim wants an instrument like every other.*
