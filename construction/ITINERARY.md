@@ -47,36 +47,33 @@
 
 ### Now -- the live front
 
-**Git nib:** `02c47ade81` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `828f6c727d` -- HEAD's parent, resolvable everywhere (%401).
 
-**BAKERY -- A PEER PUBLISHED MY LAP'S WORK 36 MINUTES BEFORE MY COMMIT.**
-Elder [shelved](archive/20260908-165501_itinerary-landed-accounts.md).
-**THE STANDING QUESTION NOW HAS A PRICE FROM THIS SEAT.** I took `%589` because its blocker had
-just been disproven -- and PATCHOULI took it the same hour. `01a5bf4d6` landed **16:15:30**, mine
-**16:51:22**; three conflicted files, and I reset onto theirs. **Nothing in the ledger said the row
-was being worked.** First firing where both hands finished.
-**WHAT WAS LEFT WAS REAL, AND IT WAS A BOUND.** Their port bound the model and kept the CLI's own
-LCS: `main.rye` still allocated `(m + 1) * (n + 1)` cells of `u32` from two caller lengths --
-**no named max, no named error, no edge check** -- in the file that reads a user's document off
-disk. `mantra/src/diff.rye` had named all three since `20260907`.
-**IT CALLS THE MODULE NOW.** `diff_mod.diff(allocator, cli_site, old, new)` and
-`diff_mod.split_lines`; both local copies deleted; **667 -> 606 lines**, `max_diff_lines` -
-`max_diff_table_bytes` - `check_bounds` inherited. The splitter travelled with it: one slice, one
-ceiling.
-**PROVEN AGAINST THE PUBLISHED BINARY:** `a5b1525a4`'s `main.rye` and this one each drove one
-init-add-add-status sequence in a pen -- `diff -r` over the two `.mantra/` trees identical, status
-identical. GREEN: `mantra_diff`, `mantra_weave_model`, `rw1_history_contract`, `slc1_accept`,
-`tame_style_check`, `width-check`.
-**THE COLD PASS FOUND A RED NOT MINE, AND IT WENT FIRST.** `seed_link`
-`front_door_links_outside_seed=1`: `README.md` links `context/BHAKTA_STYLE.md`, seated hours
-earlier, and `template-manifest.bron` carried every sibling register and not that one -- the PUBLIC
-front door pointed into a room the projection leaves behind. One `allow` row: gate to **0**,
-ratchet **850 -> 848**; `sow_witness` GREEN, `IDENT_CLEAN`.
-**AGAINST MYSELF, TWICE:** my elder lap left its cold pass orphaned, holding the lock and reaching
-nobody; and I repaired a shelf link mid-pass, costing a run.
-**THE PIN REFUSED A FIFTH SHIP TODAY:** `pin_headroom=24`, `rows_that_fit=0`, `pin_deadlocked=1`,
-so the seed_link red is cited by stamp, `20260908.165501`, unbooked. **Yours**, beside the claim
-question those 36 minutes price.
+**BAKERY -- I WOVE A LOOM ALREADY WOVEN, AND MY OWN COLD PASS NAMED IT.**
+Elder [shelved](archive/20260908-180309_itinerary-landed-accounts.md).
+**I TOOK A LAP OFF A CARD LINE A DAY STALE.** INCENSE's account reads *`%440` fired ELEVEN times
+across four laps ... one dedupe-and-sort each time, by hand. **Yours.*** I measured it myself --
+**nine commits since `20260906` whose whole subject is a hand re-sorting or de-duplicating a day
+shelf** -- and wrote the loom: sort the open shelf by stamp, lift byte-identical duplicates, refuse
+a stamp whose two texts disagree. Driver, witness, control: **21 behaviors, 3 bitten, GREEN**.
+**IT EXISTED ALREADY, TWICE.** `tools/fixtures/i/index_shelf_repair.sh` landed `20260907 22:45`,
+same subject, same refusal, plus a permutation gate mine lacked; then `dayshelf_merge_witness`
+put a `merge=dayshelf` driver ABOVE it, so the fault stops arriving rather than being repaired.
+**My cold pass named the file** while it ran. **Withdrawn; nothing shipped.**
+**THE CHECK I SKIPPED IS ONE LINE:** `git log --since=<the account's stamp> --diff-filter=A
+--name-only`, for the tool the repair would create. **An account line is a snapshot of THAT lap,
+and no peer updates it when the work lands.** Second firing from this seat today -- my elder took
+`%589` and PATCHOULI published it 36 minutes ahead.
+**SO THE LAP TOOK ITS COLD PASS'S RED.** `rule_twin`: **37 of 40 cohort pairs drifted against a
+ceiling of 35**, set `20260908.034712` and breached the same day. I named the two by re-running the
+scan over `bfafcce7d`'s rule directories in a pen and diffing the drift sets -- six new, four
+arrivals, and the cohort two are **`exec-bit`** and **`gauge-style`**, both from `fb7704a98`,
+Keaton's own `.claude/rules/` edit with no `.cursor/` twin.
+**ONE-DIRECTIONAL, SO NO JUDGMENT WAS OWED.** The scan declines reconciliation because drift runs
+both ways; these ran one way, and each page names the `.md` canon. The re-read table and the *what
+holds it still* bullet lifted across. **35 of 40, agree 9 -> 11, GREEN.**
+**Roster cold: 192 green, 2 red, 3 gated.** The other red is `stash_record` `unlanded=2`, `%636`.
+**Yours:** may a card account carry the commit that closed it, so a stale line shows its age.
 
 **PATCHOULI -- THE SAME PORT LANDED TWICE, 119 SECONDS APART, THE OTHER WAY ROUND.**
 Elder [shelved](archive/20260908-165725_itinerary-landed-accounts.md). **No row booked.**

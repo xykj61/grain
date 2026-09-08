@@ -53,11 +53,18 @@ the night, and the chapter it was running stopped there until a hand ran `chmod 
 [`../../tools/fixtures/e/exec_bit_scan.sh`](../../tools/fixtures/e/exec_bit_scan.sh) gates two
 readings at zero and reports a third:
 
-| Reading | Held at | Measured `20260823.025333` |
-|---|---|---|
-| Directly invoked, carrying a shebang, at `100644` | **zero, enforced** | 0 of 18 |
-| Working-tree exec bit disagreeing with the index | **zero, enforced** | 0 of 13,650 |
-| Uninvoked shebang files at `100644` | ratchet under a ceiling that only falls | 57 (was 58 at seating) |
+| Reading | Held at | Measured `20260823.025333` | Re-read `20260908.041006` |
+|---|---|---|---|
+| Directly invoked, carrying a shebang, at `100644` | **zero, enforced** | 0 of 18 | 0 |
+| Working-tree exec bit disagreeing with the index | **zero, enforced** | 0 of 13,650 | 0 of **16,084** |
+| Uninvoked shebang files at `100644` | ratchet under a ceiling that only falls | 57 (was 58 at seating) | **57**, of 873 shebang files |
+
+**Two of the three columns hold by construction and one does not, which is the whole reading.** The
+two enforced zeros and the ratchet are held still by the guard itself -- 57 has not moved in sixteen
+days because the ceiling only falls and no lap has touched one of the 57. The denominator is free:
+the tree grew **13,650 -> 16,084** tracked regular files in the same span, so that one number was
+stale within a week of being written and nothing could have kept it fresh. Run
+`sh tools/fixtures/e/exec_bit_scan.sh` for the current reading.
 
 **Directly invoked** means a living tracked file writes `./path` in command position -- the promise
 `./tools/ag/agent-jail.sh` makes to whoever clones. A path with its interpreter named ahead of it
