@@ -1,0 +1,34 @@
+# tools/l/loom_trend_witness.rish -- the journal's measurements can be read back out.
+#
+#   rishi/bin/rishi run tools/l/loom_trend_witness.rish
+#
+# `.claude/rules/session-logs.md` asks a lap to record what it measured on a `loom` line and gives
+# the reason plainly: *so a future Loom-aware reader can trend them across logs*. Measured
+# `20260907.222830`, that reader had never been written -- **3,426 measurements stood across 1,577
+# session logs and nothing in the tree read one.**
+#
+# THE CONVENTION WAS NEVER THE PROBLEM, which is why this is a reader rather than a census: 115 of
+# 116 logs on `20260907` carried a loom line. The tree was writing diligently into a book nobody
+# opened, and the first question it answered had been unanswerable all along -- the standing roster
+# grew from 17 guards to 173 while its wall time FELL, which no memory could have established.
+#
+# A BARE KEY COLLIDES ACROSS FAMILIES and the first reading proved it: `seconds` returned a minimum
+# of 0.4 beside a maximum of 1806. `LOOM_FAMILY` scopes a reading so a trend answers about one thing.
+
+say "loom-trend: Language EN -- a promise the law made and the tree had not kept."
+say "loom-trend: Style Gauge, Meter -- every reading carries its stamp and its source."
+say "loom-trend: Lens TAME -- an unwritten key refuses rather than printing a flat line."
+
+say "loom-trend: the control -- thirteen behaviors on planted logs in a throwaway repository..."
+let ctl = run ["sh" "tools/fixtures/l/loom_trend_control.sh"]
+assert ctl.ok else "loom-trend: the control refused --\n${ctl.out}\n${ctl.err}"
+assert ctl.out contains "pass=13 fail=0" else "loom-trend: the control did not prove thirteen behaviors --\n${ctl.out}\n${ctl.err}"
+
+say "loom-trend: and this tree's own journal answers when asked..."
+let keys = run ["sh" "tools/l/loom_trend.sh" "--keys"]
+assert keys.ok else "loom-trend: the key census refused --\n${keys.out}"
+# invariant: the journal holds measurements under keys, so the map of keys is never empty. An empty
+# map would mean the reader had lost the corpus rather than that the tree had stopped measuring.
+assert keys.out contains "witness" else "loom-trend: the key map named no key -- the corpus was not read"
+
+say "GREEN: loom-trend -- the journal's own measurements read back, ordered by stamp, scoped by family, and honest when a key was never written."
