@@ -964,6 +964,19 @@ run_scope=full
 # this runner's own guard have gone unrooted, and %549 recovered one file only because a clobber
 # elsewhere sent a hand to the room before anyone re-ran the guard.
 #
+# THE FAMILY HAS A RATE, MEASURED `20260908.011935` OUT OF THE JOURNAL ITSELF. Six firings counts
+# what a hand happened to root; `tools/l/loom_trend.sh red --summary` scoped to the roster family
+# reads **192 recorded passes, a mean of 2.49 reds per pass, rising from 0 to 5**, with the last
+# seven passes at 3, 3, 10, 2, 6, 3, 5. Green rose 22 -> 172 over the same journal, so the guard
+# count grew about eightfold while the red count grew from nothing to a standing floor.
+#
+# WHAT IS NOT MEASURED, said plainly: the RATIO of flake to defect inside that floor. On `20260907`
+# one seat re-ran its pass reds one at a time and found both kinds -- `shared_pen`,
+# `fold_shelf_link` and `rota_grid` were real and were repaired, while others read GREEN alone with
+# nothing changed between. Nobody has counted which dominates, and the floor deserves a number
+# rather than an impression: a roster whose ordinary reading is two-to-five reds teaches every ship
+# that a red is weather.
+#
 # So the rule is the one the pass can honestly keep. A FULL pass answered for every rostered guard,
 # so it owns the room and sweeps it whole -- which also retires the file of a guard that has left
 # the roster, the one thing a per-guard clear would leave behind forever. A `--scoped` or by-name
