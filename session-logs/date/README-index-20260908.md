@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260908.165501` | [the table with no ceiling](20260908/20260908-165501_the-table-with-no-ceiling.kyri) | a peer landed the port; the bound was left. |
 | `20260908.163927` | [the scrub that remembers](20260908/20260908-163927_the-scrub-that-remembers.kyri) | the pin held by folding prose, never a live row. |
 | `20260908.162225` | [the third list, and the fence it was not inside](20260908/20260908-162225_the-third-list-and-the-fence-it-was-not-inside.kyri) | 12 -> 1,127; five were outside. |
 | `20260908.161206` | [a source answering for a target](20260908/20260908-161206_a-source-answering-for-a-target.kyri) | 7 to 10 candidates; the exec-bit write idiom was unseen. |
