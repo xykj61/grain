@@ -150,6 +150,16 @@ assert control.out contains "OK   unknown_argument_refused" else "scope-rank: an
 assert control.out contains "OK   blind_copy_reads_every_rate_zero" else "scope-rank: a copy with the reach pass stripped must read every rate as zero"
 assert control.out contains "OK   blind_copy_saves_the_whole_cost" else "scope-rank: a quietly-zero meter must be shown, since it passes every welcome leg"
 
+assert control.out contains "OK   discovery_row_counted" else "scope-rank: a row spelling DISCOVERY must be counted as its own class"
+assert control.out contains "OK   discovery_is_not_static" else "scope-rank: a DISCOVERY row has no watch-set, so it must never be priced as a static one"
+assert control.out contains "OK   discovery_cost_named_apart" else "scope-rank: a DISCOVERY guard's seconds can never be claimed by any row, so they are named apart"
+assert control.out contains "OK   discovery_leaves_nothing_claimable" else "scope-rank: declaring every unmapped guard DISCOVERY must leave no claimable seconds"
+assert control.out contains "OK   discovery_named_in_rank_unmapped" else "scope-rank: the unmapped ranking must say which entries can never be mapped"
+assert control.out contains "OK   absent_cost_claimable_again" else "scope-rank: lifting the DISCOVERY row must return its seconds to the claimable half, so no bypass exists"
+assert control.out contains "OK   unmapped_total_unchanged_either_way" else "scope-rank: the split must partition the unmapped tail rather than change it"
+assert control.out contains "OK   split_sums_to_the_whole" else "scope-rank: the two halves must sum to the whole, so neither is dropped nor double-counted"
+assert control.out contains "OK   claimable_share_below_unmapped_share" else "scope-rank: the claimable ceiling must read below the unmapped one once any guard is declared"
+
 assert control.out contains "faults=0" else "scope-rank: every behavior must be satisfied"
 assert control.out contains "control_verdict=ok" else "scope-rank: the control must balance before it is believed"
 say "the matcher and the arithmetic proven in a real repository, all three gates shown from both sides"

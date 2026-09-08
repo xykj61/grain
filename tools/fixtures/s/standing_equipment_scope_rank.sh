@@ -17,6 +17,14 @@
 #   Per unmapped guard: cost alone, since an unmapped guard runs on every pass by the map's own
 #   ABSENCE rule, so its saving today is exactly zero and its cost is the prize for mapping it.
 #
+# EXCEPT THAT HALF OF THAT PRIZE IS NOT ONE. A guard the map declares DISCOVERY reads the whole
+# tree on purpose, so no watch-set could ever be right and its seconds are unclaimable forever; a
+# guard merely ABSENT is one nobody has mapped yet, and its seconds are what a row would actually
+# win. Until 20260908 the two shared `unmapped_cost_s`, and they shared it because no row in
+# tools/fixtures/s/standing_equipment_scope_map.sh had ever spelled the word: `discovery=0` stood
+# against 194 unmapped guards holding 82% of the pass. `discovery_cost_s` and `absent_cost_s` are
+# printed apart now, and `absent_cost_share` is the honest ceiling on what further mapping saves.
+#
 # WHAT IT GATES, and why these two and nothing else. A map row naming a guard the roster does not
 # seat does nothing at all, and it fails SILENTLY: the runner looks the guard up by name, finds no
 # row, and runs it -- so a typo reads exactly like coverage while buying a full run every pass. The
@@ -233,7 +241,13 @@ awk -F'\t' -v commits="$commits_read" '
       static_cost_s += $4
       static_save_s += save
     } else if ($3 != "static") {
+      # THE UNMAPPED TAIL IS TWO POPULATIONS, and only one of them is a prize. A guard declared
+      # DISCOVERY reads the whole tree by design, so no watch-set could ever be right and its
+      # seconds can never be claimed; a guard merely ABSENT from the map is one nobody has got to
+      # yet, and its seconds are exactly what writing a row would win. Summed together they read as
+      # one number a hand plans against, which is what `unmapped_cost_s` was until 20260908.
       unmapped_cost_s += $4
+      if ($3 == "discovery") { discovery_cost_s += $4 } else { absent_cost_s += $4 }
     }
   }
   END {
@@ -248,8 +262,11 @@ awk -F'\t' -v commits="$commits_read" '
     printf "static_saving_s=%d\n", static_save_s + 0
     printf "static_saving_share=%.3f\n", (static_cost_s > 0 ? static_save_s / static_cost_s : 0)
     printf "unmapped_cost_s=%d\n", unmapped_cost_s + 0
+    printf "discovery_cost_s=%d\n", discovery_cost_s + 0
+    printf "absent_cost_s=%d\n", absent_cost_s + 0
     total = static_cost_s + unmapped_cost_s
     printf "unmapped_cost_share=%.3f\n", (total > 0 ? unmapped_cost_s / total : 0)
+    printf "absent_cost_share=%.3f\n", (total > 0 ? absent_cost_s / total : 0)
   }
 ' "$pen/table"
 

@@ -226,6 +226,57 @@ note "reached_control_counted_zero" "$(val "$o" rows_missing_control)" "0"
 note "guards_without_a_control_counted_apart" "$(val "$o" rows_without_control)" "2"
 
 echo
+echo "== 8. DISCOVERY is a class of its own, and its seconds are not a prize =="
+# THE SILENCE THIS PROVES SHUT. The map's header has named a DISCOVERY vocabulary since it was
+# written, the runner has run such a row since the fusion landed, and until 20260908 no row in the
+# tree spelled the word -- so `discovery=0` stood beside 194 unmapped guards, and every leg below
+# tested a class with no input. A guard that reads the whole tree BY DESIGN and a guard nobody has
+# mapped YET are opposite facts: the first can never be mapped, the second is exactly what a hand
+# reading `rank_unmapped` is shopping for. Summed into one number they read as one queue.
+mapfile 'slow caravan/' 'noisy glow/' 'quiet tally/' 'bare DISCOVERY'
+o=$(rank --window 10 --top 8)
+note "discovery_row_counted" "$(val "$o" discovery)" "1"
+note "discovery_is_not_static" "$(val "$o" static)" "3"
+note "discovery_leaves_the_absent_count" "$(val "$o" unmapped_absent)" "0"
+# It still RUNS, so it is unmapped cost -- and it is the unclaimable half of it.
+note "discovery_cost_is_unmapped_cost" "$(val "$o" unmapped_cost_s)" "70"
+note "discovery_cost_named_apart" "$(val "$o" discovery_cost_s)" "70"
+note "discovery_leaves_nothing_claimable" "$(val "$o" absent_cost_s)" "0"
+# A DISCOVERY guard is never ranked among the static rows, since it has no watch-set to price.
+note "discovery_absent_from_rank_static" \
+  "$(echo "$o" | grep -c '^rank_static .* bare ' || true)" "0"
+note "discovery_named_in_rank_unmapped" \
+  "$(echo "$o" | sed -n 's/^rank_unmapped 1 bare .*class=\([a-z]*\).*/\1/p')" "discovery"
+
+# LIFTED: the same guard with no row at all is ABSENT, and its seconds become claimable again --
+# the two readings differ in exactly the place the split was built for.
+mapfile 'slow caravan/' 'noisy glow/' 'quiet tally/'
+o=$(rank --window 10 --top 8)
+note "absent_counted_when_the_row_is_lifted" "$(val "$o" unmapped_absent)" "1"
+note "absent_cost_claimable_again" "$(val "$o" absent_cost_s)" "70"
+note "discovery_cost_back_to_zero" "$(val "$o" discovery_cost_s)" "0"
+note "unmapped_total_unchanged_either_way" "$(val "$o" unmapped_cost_s)" "70"
+note "discovery_count_back_to_zero" "$(val "$o" discovery)" "0"
+
+# AND THE TWO HALVES SUM TO THE WHOLE, at a reading where both are nonzero -- so neither can be
+# quietly dropped or double-counted.
+roster slow:lap noisy:lap quiet:lap bare:lap census:lap
+cardfile slow:100 noisy:100 quiet:100 bare:70 census:30
+mapfile 'slow caravan/' 'noisy glow/' 'quiet tally/' 'census DISCOVERY'
+o=$(rank --window 10 --top 8)
+note "split_sums_to_the_whole" \
+  "$(( $(val "$o" discovery_cost_s) + $(val "$o" absent_cost_s) ))" "$(val "$o" unmapped_cost_s)"
+note "split_both_halves_nonzero_discovery" "$(val "$o" discovery_cost_s)" "30"
+note "split_both_halves_nonzero_absent" "$(val "$o" absent_cost_s)" "70"
+# The claimable share is the honest ceiling, and it is lower than the unmapped one whenever any
+# guard is declared -- which is the whole reason for printing it.
+note "claimable_share_below_unmapped_share" \
+  "$(yn awk -v a="$(val "$o" absent_cost_share)" -v u="$(val "$o" unmapped_cost_share)" \
+      'BEGIN { exit !(a < u) }')" "yes"
+roster slow:lap noisy:lap quiet:lap bare:lap
+cardfile slow:100 noisy:100 quiet:100 bare:70
+
+echo
 echo "behaviors=$behaviors"
 echo "faults=$faults"
 if [ "$faults" -eq 0 ]; then echo "control_verdict=ok"; exit 0; fi
