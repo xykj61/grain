@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# tools/fixtures/l/retired_word_scan.sh -- read a roster on stdin, name every retired word in it.
+# tools/fixtures/r/retired_word_scan.sh -- read a roster on stdin, name every retired word in it.
 #
 # This is duty 1 of the living-docs lint. It stands on its own file so a control can feed it a
 # planted tree and watch it work. The grain asks that every guard be proven able to red. An
@@ -33,7 +33,7 @@
 #
 # Which pages hold the vocabulary itself is the caller's question. The roster answers it.
 #
-#   sh tools/fixtures/l/living_prose_roster.sh | sh tools/fixtures/l/retired_word_scan.sh
+#   sh tools/fixtures/l/living_prose_roster.sh | sh tools/fixtures/r/retired_word_scan.sh
 #
 # THREE READINGS, AND ONE REFUSAL. It prints `retired_word_files`, `retired_word_hits`, and
 # `retired_word_absent` -- roster lines naming no readable file, which is ordinary during a move

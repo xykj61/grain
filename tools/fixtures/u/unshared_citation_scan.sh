@@ -14,8 +14,8 @@
 # every OTHER file that spelled the number. A `%N` is cited in 20 to 36 files within a day of being
 # written, so citing an unshared number is choosing a sweep the stamp would have avoided.
 #
-#   sh tools/fixtures/r/unshared_citation_scan.sh          # counts
-#   sh tools/fixtures/r/unshared_citation_scan.sh list     # one line per unshared citation
+#   sh tools/fixtures/u/unshared_citation_scan.sh          # counts
+#   sh tools/fixtures/u/unshared_citation_scan.sh list     # one line per unshared citation
 #
 # THE READING. Take `shared_max` from `reds_spine_derive_scan.sh` -- the highest number the anointed
 # spine has bound. Any `%N` above it, cited anywhere in the working tree, names a row the spine has

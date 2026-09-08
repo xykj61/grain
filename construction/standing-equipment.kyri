@@ -195,7 +195,7 @@ seated 20260906.192644
 # the stamp would have spared. Reads shared_max from the spine on every run; the ledger, testimony,
 # and a five-digit colour are each read past for their own reason.
 guard unshared_citation
-path tools/r/unshared_citation_witness.rish
+path tools/u/unshared_citation_witness.rish
 tier lap
 seated 20260906.210117
 
@@ -311,6 +311,12 @@ seated 20260823.134057
 guard tool_path
 path tools/t/tool_path_witness.rish
 seated 20260823.131241
+
+guard tool_letter_room
+path tools/t/tool_letter_room_witness.rish
+seated 20260907.225349
+# A hand swept 34 misfiled entries on 20260906.182719 and left no guard; five had regrown a day
+# later. tier lap because the fault is born with a FILE, and files are born every lap.
 
 guard tool_path_repoint
 path tools/t/tool_path_repoint_witness.rish

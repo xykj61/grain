@@ -19,6 +19,8 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260907.214518` | [A wall that watches files](20260907/20260907-214518_a-wall-that-watches-files.kyri) | the shared process table gets a guard; 22 procs, 7 peer trees |
 | `20260907.212612` | [the repair the guard already knew](20260907/20260907-212612_the-repair-the-guard-already-knew.kyri) | fourth firing, one loom. |
 | `20260907.212422` | [The duplicate that was never a judgment](20260907/20260907-212422_the-duplicate-that-was-never-a-judgment.kyri) | 38 of 42 duplicate stamps were never a judgment. |
+| `20260907.225848` | [The sweep that left no guard](20260907/20260907-225848_the-sweep-that-left-no-guard.kyri) | a hand-swept census regrew in a day; the fold rule has a guard now. |
+| `20260907.212612` | [the repair the guard already knew](20260907/20260907-212612_the-repair-the-guard-already-knew.kyri) | fourth firing, one loom. |
 | `20260907.212208` | [The lap that was in the stash](20260907/20260907-212208_the-lap-that-was-in-the-stash.kyri) | a parked lap recovered whole; a killed pass leaves the victim a receipt. |
 | `20260907.210725` | [The ceiling nobody timed](20260907/20260907-210725_the-ceiling-nobody-timed.kyri) | a merge the bound permitted ran past ten minutes; the fold searches now. |
 | `20260907.210207` | [The census that counted itself](20260907/20260907-210207_the-census-that-counted-itself.kyri) | the falsifier fired; the instrument was inside its own reading |

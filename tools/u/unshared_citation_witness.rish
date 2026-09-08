@@ -1,6 +1,6 @@
-# tools/r/unshared_citation_witness.rish -- a lap cites its own row by stamp until the row is shared.
+# tools/u/unshared_citation_witness.rish -- a lap cites its own row by stamp until the row is shared.
 #
-#   rishi/bin/rishi run tools/r/unshared_citation_witness.rish
+#   rishi/bin/rishi run tools/u/unshared_citation_witness.rish
 #
 # `.claude/rules/derived-spine.md` rule 4 has said this since `20260827`: the `%N` beside a row is a
 # VIEW allocated by the anointed remote, so a lap names its own row by stamp until that number is
@@ -18,12 +18,12 @@ say "unshared-citation: Style Gauge, Meter -- one boundary, read from the anoint
 say "unshared-citation: Lens TAME -- every refusal planted in a pen and then lifted."
 
 say "unshared-citation: the control -- ten behaviors against a stub spine in a throwaway repository..."
-let ctl = run ["sh" "tools/fixtures/r/unshared_citation_control.sh"]
+let ctl = run ["sh" "tools/fixtures/u/unshared_citation_control.sh"]
 assert ctl.ok else "unshared-citation: the control refused --\n${ctl.out}\n${ctl.err}"
 assert ctl.out contains "pass=10 fail=0" else "unshared-citation: the control did not prove ten behaviors --\n${ctl.out}\n${ctl.err}"
 
 say "unshared-citation: no living surface cites a number the spine has not bound..."
-let scan = run ["sh" "tools/fixtures/r/unshared_citation_scan.sh"]
+let scan = run ["sh" "tools/fixtures/u/unshared_citation_scan.sh"]
 assert scan.ok else "unshared-citation: the scan refused --\n${scan.out}"
 # invariant: a citation of an unshared number is a sweep this lap has chosen and the stamp would
 # have avoided -- the ledger assigns numbers, testimony records them, and living prose cites only
@@ -31,7 +31,7 @@ assert scan.ok else "unshared-citation: the scan refused --\n${scan.out}"
 assert scan.out contains "unshared_citations=0" else "unshared-citation: a living file cites a row number the anointed spine has not allocated -- cite the stamp until it is shared --\n${scan.out}"
 
 say "unshared-citation: and the boundary is read rather than spelled..."
-let derived = run ["sh" "-c" "grep -c 'reds_spine_derive_scan.sh' tools/fixtures/r/unshared_citation_scan.sh"]
+let derived = run ["sh" "-c" "grep -c 'reds_spine_derive_scan.sh' tools/fixtures/u/unshared_citation_scan.sh"]
 assert derived.ok else "unshared-citation: the derivation could not be read"
 # invariant: shared_max comes from the spine on every run. A number written into this file would be
 # a second copy of the allocation, which is the fault the derived-spine law exists to end.

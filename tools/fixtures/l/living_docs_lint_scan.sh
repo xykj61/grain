@@ -67,7 +67,7 @@ echo "living-docs lint: roster ${roster_n} paths"
 # on the roster. The representative case is docs-geode/edu/README.md, a room front door
 # holding a live prose use and absent from the roster entirely. Both were repaired by
 # hand on that lap; the reach itself is a booked question rather than a silent limit.
-# kept_line and the keeps file moved with duty 1 into tools/fixtures/l/retired_word_scan.sh,
+# kept_line and the keeps file moved with duty 1 into tools/fixtures/r/retired_word_scan.sh,
 # which is the only reading that ever consulted them.
 
 resolve_cand() {
@@ -110,7 +110,7 @@ resolve_cand() {
 # was. Booked as REDS `20260907.153705`.
 d1_rc=0
 sh tools/fixtures/l/living_prose_roster.sh \
-  | sh tools/fixtures/l/retired_word_scan.sh > "$TMP/d1raw" 2>"$TMP/d1err" || d1_rc=$?
+  | sh tools/fixtures/r/retired_word_scan.sh > "$TMP/d1raw" 2>"$TMP/d1err" || d1_rc=$?
 grep '^RETIRED ' "$TMP/d1raw" 2>/dev/null \
   | sed 's/^RETIRED /ADVISE duty1 retired-word /' >"$TMP/d1" || true
 d1_files=$(sed -n 's/^retired_word_files=//p' "$TMP/d1raw" 2>/dev/null | tail -1)

@@ -59,8 +59,8 @@ within a day of being written, so citing an unshared number chooses a sweep the 
 spared. One such sweep "ran as a blind `sed` that rewrote a peer's row and two upstream passages."
 
 So rule 4 is now a **gate** rather than a habit:
-[`../../tools/r/unshared_citation_witness.rish`](../../tools/r/unshared_citation_witness.rish) over
-[`../../tools/fixtures/r/unshared_citation_scan.sh`](../../tools/fixtures/r/unshared_citation_scan.sh)
+[`../../tools/u/unshared_citation_witness.rish`](../../tools/u/unshared_citation_witness.rish) over
+[`../../tools/fixtures/u/unshared_citation_scan.sh`](../../tools/fixtures/u/unshared_citation_scan.sh)
 reads `shared_max` from the anointed spine on every run and holds citations above it at **zero**
 across living surfaces. Three rooms are read past, each for its own reason. **The ledger assigns** a
 number rather than citing one, so `construction/REDS.md` and its fold archives are exempt by

@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# tools/fixtures/l/retired_word_control.sh -- prove the retired-word reading on real git history.
+# tools/fixtures/r/retired_word_control.sh -- prove the retired-word reading on real git history.
 #
 # WHY A CONTROL FOR AN ADVISORY. Duty 1 prints and never refuses, and for its whole life it read
 # 60 of the tree's 767 living markdown pages -- so its silence covered a fourteenth of the room it
@@ -27,11 +27,11 @@
 #  14  the refusal stripped out of the scan               exit 0 on an empty roster, so the
 #                                                         refusal is told apart from a bypass
 #
-#   sh tools/fixtures/l/retired_word_control.sh
+#   sh tools/fixtures/r/retired_word_control.sh
 set -eu
 
 ROOT=$(pwd)
-SCAN="$ROOT/tools/fixtures/l/retired_word_scan.sh"
+SCAN="$ROOT/tools/fixtures/r/retired_word_scan.sh"
 ROSTER="$ROOT/tools/fixtures/l/living_prose_roster.sh"
 PEN=$(mktemp -d)
 trap 'rm -rf "$PEN"' EXIT

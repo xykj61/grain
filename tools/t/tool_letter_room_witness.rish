@@ -1,0 +1,41 @@
+# tools/t/tool_letter_room_witness.rish -- every tool sits in the room its own name says.
+#
+#   rishi/bin/rishi run tools/t/tool_letter_room_witness.rish
+#
+# WHAT THIS PROVES. `tools/` and `tools/fixtures/` fold by first sprig letter, and the fold's whole
+# value is that the path is a PURE FUNCTION of the name -- `tools/t/tool_path_resolve.rish` finds a
+# stale reference by computing the room rather than consulting a table. This witness holds the
+# count of entries the letter rule cannot reach at ZERO, so that computation keeps answering.
+#
+# WHY IT EXISTS, and why now rather than on the day the room folded. A hand swept 34 misfiled
+# entries on `20260906.182719` -- 26 under `tools/` and 8 under `tools/fixtures/` -- and left no
+# guard behind it. Five had regrown one day later, on `20260907.221559`, written by hands that
+# had read the law. That is the doorway census's shape one room over: a census repaired by hand
+# regrows, because a rule nobody measures lives in whoever remembers it. A lantern that fires twice
+# becomes a loom.
+#
+# WHAT IT DOES NOT REACH. Whether a tool is in the right FAMILY, whether its name is a good name,
+# and whether a named room of three characters or more holds what it should. The letter rule says
+# only where a name belongs, and this proves only that.
+#
+# Scan: tools/fixtures/t/tool_letter_room_scan.sh -- control: tools/fixtures/t/tool_letter_room_control.sh
+
+say "tool-letter-room: Language EN -- a path computed from a name is a path a stale reference can still find."
+say "tool-letter-room: Style Gauge, Meter -- one claim, counted, with the ceiling said out loud."
+say "tool-letter-room: Lens TAME -- a guard that cannot red guards nothing, so the control plants every refusal and lifts it again."
+
+say "tool-letter-room: the control -- refusals planted in a real git pen and then lifted..."
+let ctl = run ["sh" "tools/fixtures/t/tool_letter_room_control.sh"]
+assert ctl.ok else "tool-letter-room: the control refused --\n${ctl.out}\n${ctl.err}"
+# The count is asserted as well as the verdict, so a control quietly losing a leg is caught here
+# rather than passing as a shorter proof of the same name.
+assert ctl.out contains "control_behaviors=25" else "tool-letter-room: the control no longer proves 25 behaviors --\n${ctl.out}"
+say ctl.out
+
+say "tool-letter-room: and the tree itself, read from the index..."
+let scan = run ["sh" "tools/fixtures/t/tool_letter_room_scan.sh"]
+say scan.out
+assert scan.ok else "tool-letter-room: an entry sits in a room its own name does not say -- read the scan's own lines"
+
+say ""
+say "GREEN: tool-letter-room -- every tracked entry of a letter room is one the letter rule can compute, so the resolver's pure reading still answers."

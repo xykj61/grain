@@ -4,22 +4,22 @@
 # Every refusal is planted and then LIFTED, because a gate proven only in the passing direction
 # cannot be told from a gate that never fires.
 #
-#   sh tools/fixtures/r/unshared_citation_control.sh
+#   sh tools/fixtures/u/unshared_citation_control.sh
 #
 # Prints `pass=N fail=N`. Bounded: 10 cases, one pen holding a stub spine.
 set -eu
 
 root=$(CDPATH= cd -- "$(dirname -- "$0")/../../.." && pwd)
-real="$root/tools/fixtures/r/unshared_citation_scan.sh"
+real="$root/tools/fixtures/u/unshared_citation_scan.sh"
 pen=${TMPDIR:-/tmp}/unshared-cite-pen-$$
 trap 'rm -rf "$pen"' EXIT INT TERM
-mkdir -p "$pen/tools/fixtures/r" "$pen/construction/archive" "$pen/context/date/20260101"
+mkdir -p "$pen/tools/fixtures/u" "$pen/tools/fixtures/r" "$pen/construction/archive" "$pen/context/date/20260101"
 
 pass=0; fail=0
 check() { if [ "$3" = "$2" ]; then pass=$((pass+1)); else fail=$((fail+1)); printf 'FAIL %s -- wanted %s, got %s\n' "$1" "$2" "$3" >&2; fi; }
 has() { case "$1" in *"$2"*) echo yes ;; *) echo no ;; esac; }
 
-cp "$real" "$pen/tools/fixtures/r/unshared_citation_scan.sh"
+cp "$real" "$pen/tools/fixtures/u/unshared_citation_scan.sh"
 
 # A STUB SPINE, so the pen never reaches a network and the shared boundary is a number this control
 # chooses. The real scan reads the real spine; here the reading under test is what it does WITH it.
@@ -35,7 +35,7 @@ git init -q .
 git config user.email pen@example.invalid
 git config user.name pen
 
-ask() { ( cd "$pen" && SPINE_SHARED="${SPINE_SHARED:-500}" sh tools/fixtures/r/unshared_citation_scan.sh "${1:-count}" 2>&1 ); }
+ask() { ( cd "$pen" && SPINE_SHARED="${SPINE_SHARED:-500}" sh tools/fixtures/u/unshared_citation_scan.sh "${1:-count}" 2>&1 ); }
 
 # A living file citing a number above the shared boundary is the fault this census names.
 printf 'The repair is booked as %%505 and stands.\n' > context/living.md
@@ -79,7 +79,7 @@ check "lifting it returns zero"           yes "$(has "$out" 'unshared_citations=
 check "and no file is affected"           yes "$(has "$out" 'files_affected=0')"
 
 # A spine that cannot answer refuses rather than calling everything shared, or everything unshared.
-out=$( ( cd "$pen" && SPINE_MUTE=1 sh tools/fixtures/r/unshared_citation_scan.sh 2>&1 || true ) )
+out=$( ( cd "$pen" && SPINE_MUTE=1 sh tools/fixtures/u/unshared_citation_scan.sh 2>&1 || true ) )
 check "a mute spine refuses"              yes "$(has "$out" 'refused: the anointed spine')"
 
 printf 'pass=%d fail=%d\n' "$pass" "$fail"
