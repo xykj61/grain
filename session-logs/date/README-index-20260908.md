@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260908.021718` | [the help I truncated](20260908/20260908-021718_the-help-i-truncated.kyri) | the wall already said it. |
 | `20260908.021022` | [the weaver and the weave](20260908/20260908-021022_the-weaver-and-the-weave.kyri) | Kabir named, shaped, filed yonder. |
 | `20260908.013500` | [four of four stood](20260908/20260908-013500_four-of-four-stood.kyri) | zero flakes in the sample. |
 | `20260908.011935` | [a red that teaches weather](20260908/20260908-011935_a-red-that-teaches-weather.kyri) | a red floor of 2.49 per pass. |
