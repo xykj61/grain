@@ -155,21 +155,32 @@ let elder = run ["sh" "-c" "d=$(mktemp -d); { echo '**REDS %1 (`20260901`) -- a.
 assert elder.ok else "reds-monotone: an elder date-only stamp is still a row opening -- ${elder.out}"
 assert elder.out contains "bindings=2" else "reds-monotone: want the date-only opening read beside the one-clock opening"
 
-# One number over two incidents, at the ceiling. Both numbers are published and both rows sit on
-# dated shelves, so resolving %530 edits testimony and is Keaton's word under `debride`; the
-# ceiling holds the line where it stands and refuses the next one.
+# One number over two incidents. This reading COUNTS AND NAMES and no longer gates
+# (REDS `20260907.230000`): a ceiling here bites a pair this tree created and a pair the anointed
+# spine already carries identically, and only the first is one a lap may repair. The teeth sit in
+# `reds_spine_derive`, which reads the remote and can tell them apart; the leg below proves the
+# gate is genuinely there rather than merely cited.
 let bound_at = run ["sh" "-c" "d=$(mktemp -d); { echo '**REDS %1 (`20260901.000001`) -- a.** x'; echo '**REDS %2 (`20260901.000002`) -- b.** x'; echo '**REDS %2 (`20260901.000003`) -- c.** x'; } > $d/L.md; sh tools/fixtures/r/reds_ledger_monotone_scan.sh $d/L.md; s=$?; rm -rf $d; exit $s"]
-assert bound_at.ok else "reds-monotone: one double-bound number is the line as it stands and must pass -- ${bound_at.out}"
+assert bound_at.ok else "reds-monotone: a double-bound number is reported here rather than gated -- ${bound_at.out}"
 assert bound_at.out contains "numbers_double_bound=1" else "reds-monotone: want the double-bound number counted"
 
-# One past it. A gate proven only in the passing direction cannot be told from a bypass, so the
-# refusal is planted and watched to refuse -- and it names the number and both stamps, because a
-# refusal that gives an exact count and no way to act is REDS %528's own fault.
+# A SECOND one passes too, and this leg is what proves the ceiling is gone rather than merely
+# raised. Under the elder ceiling of 1 this exact tree refused; a reading that only ever showed the
+# passing case at one instance could not be told from a ceiling quietly bumped to two.
 let bound_over = run ["sh" "-c" "d=$(mktemp -d); { echo '**REDS %1 (`20260901.000001`) -- a.** x'; echo '**REDS %1 (`20260901.000009`) -- z.** x'; echo '**REDS %2 (`20260901.000002`) -- b.** x'; echo '**REDS %2 (`20260901.000003`) -- c.** x'; } > $d/L.md; sh tools/fixtures/r/reds_ledger_monotone_scan.sh $d/L.md; s=$?; rm -rf $d; exit $s"]
-assert (bound_over.ok == false) else "reds-monotone: a second number standing over two incidents must refuse"
-assert bound_over.out contains "verdict=number_double_bound" else "reds-monotone: want the doubled number refused by its own name"
+assert bound_over.ok else "reds-monotone: a second double-bound number must pass too, or the ceiling was raised rather than lifted -- ${bound_over.out}"
+assert bound_over.out contains "verdict=ok" else "reds-monotone: want the doubled number reported under an ok verdict"
 assert bound_over.out contains "numbers_double_bound=2" else "reds-monotone: want the second double-binding counted"
-assert bound_over.out contains "%1 is bound to 20260901.000001 20260901.000009" else "reds-monotone: a refusal must name the number and both stamps, or nobody can read which rows collided"
+assert bound_over.out contains "%1 is bound to 20260901.000001 20260901.000009" else "reds-monotone: a report must name the number and both stamps, or nobody can read which rows collided"
+assert bound_over.out contains "numbers_double_bound_gated_by=reds_spine_derive" else "reds-monotone: a reading that stops gating must name where the teeth went, or the class reads unguarded"
+
+# AND THE TEETH ARE REALLY THERE. Naming another guard is a claim, so it is checked by running that
+# guard's own scan on a planted double rather than by citing it. A tree binding one number to two
+# stamps, neither of them on any anointed spine, must refuse there -- and the same plant walks free
+# here, which is the whole point of moving the gate rather than dropping it.
+let teeth = run ["sh" "-c" "d=$(mktemp -d); cd $d; git init -q -b main .; { echo '**REDS %1 (`20260901.000001`) -- a.** x'; echo '**REDS %1 (`20260901.000009`) -- z.** x'; } > construction-REDS.md; mkdir -p construction; cp construction-REDS.md construction/REDS.md; sh $OLDPWD/tools/fixtures/r/reds_spine_derive_scan.sh 2>&1; s=$?; cd $OLDPWD; rm -rf $d; exit 0"]
+assert teeth.out contains "double_booked=1" else "reds-monotone: the guard this reading points at does not count a locally-made double-booking, so the class is gated nowhere -- ${teeth.out}"
+assert teeth.out contains "verdict=double_booked" else "reds-monotone: the guard this reading points at does not REFUSE a locally-made double-booking -- ${teeth.out}"
 
 # One incident written into two files, at the ceiling. This is the other half and it fails
 # differently -- and whether it fails at all is a reading. %512 stands on two shelves under one

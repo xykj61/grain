@@ -46,35 +46,33 @@
 
 ### Now -- the live front
 
-**Git nib:** `dbf5e07b4a` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `88d414cb43` -- HEAD's parent, resolvable everywhere (%401).
 
-**BAKERY -- EVERY WALL HERE WATCHES FILES, AND THE ACT THAT BIT TWICE TODAY TOUCHES NONE.**
-Elder [shelved](archive/20260907-214518_itinerary-landed-accounts.md). Row `20260907.174414`
-**BOOKED**, [folded](archive/REDS-the-namespace-no-wall-watches-rows-587.md). It named two artifacts
-unwritten; **one was already built under another name** -- `fleet_call.sh` IS the tree-scoped
-signaller -- so what was missing was the **reading**. `process_reach_witness.rish` over
-`process_reach_scan.sh` reads tracked `.sh`/`.rish` for a **command-position** `pkill`, `killall`,
-or `pgrep` selecting by pattern. **The read counts beside the kill**: `pgrep -f
-standing_equipment_run` answered **22 processes across seven peer trees**, so a lap reading that is
-as wrong about its tree as a kill reaching past it. `tier lap` 3s, **24 behaviors**, mutation-tested.
-
-**A REAL BOUNDARY DECLARES ITSELF IN WORDS**, `# process-reach: bounded -- <why>`, within three
-lines -- the alternative being a hand-kept path list, a judgment's second copy, drifting. Four
-exclusions proven both ways, three biting the first draft: **`ripgrep` contains `pgrep`**; a quoted
-mention named `fleet_call_witness.rish` itself; **and the guard read its own control** -- 2 bare
-untracked, **10 once staged**.
-**Ratchet 2**, `hawm0_stop.sh:37` and `prin_matrix.sh:76`, the second sharper since it prints every
-ship's workers as **live**. **Yours:** the prompt half has no instrument -- I typed the bare
-pattern myself while grading, reaching three peers.
-
-**A COUNT WITH NO NAMES HID A WHOLE LAP OF MINE FOR SIX HOURS.** Row `20260907.215114` **OPEN**:
-`stash_record_scan.sh` prints `orphans=19`, naming no path. Behind it, parked `15:32:43`: the
-**`link_touch` guard family**, a `pre-commit` change and its log, **608 insertions**, `absent` here
-AND upstream. `exec_bit` names its files *so the repair is one line away*; this does not.
-
-**Eighth collision, by 71 seconds** -- the first costing nothing: two of my three ledger acts
-withdrew to peers who published first, the survivor renumbering in one line since every citation
-spelled its stamp. **`%513` paid.**
+**BAKERY -- ONE LAW, TWO DERIVATIONS, AND THE BLIND ONE HELD THE GATE.**
+Elder [shelved](archive/20260907-232511_itinerary-landed-accounts.md). Row `20260907.230000`
+**CLOSED**, [folded](archive/REDS-a-guard-that-could-not-say-what-it-knew-rows-598.md). Cold open
+**four red**, three roots.
+**`reds_ledger_monotone_scan.sh` GATED A CLASS IT CANNOT SEE.** It counts `numbers_double_bound`
+from FILES, so a pair this tree made and one the spine carries look identical, and a ceiling of 1
+held both. The second published double landed today -- **`%592`, at `20260907.211709`
+on a shelf and `20260907.215114` on the pin, both on `xy/main`**, where
+[rule 3](../.claude/rules/derived-spine.md) holds for each. It reddened
+`reds_ledger_monotone` and `reds_row_present` on **every ship fetching it**, while
+`reds_spine_derive` read the same tree the same hour at `verdict=ok`, `published_doubles=2`: **it
+split this exact class on `20260907.024141` and the sibling never learned it.** Teeth move to the
+guard holding the remote; the count and both stamps stay, `numbers_double_bound_gated_by=` names
+where they went, and the ceiling is **gone rather than raised** -- a SECOND double planted and
+watched to pass, and a leg runs the named guard on that plant: **the pointer is checked by
+running.**
+**AND THAT GUARD COULD NOT SPEAK.** Its witness interpolated the reading into a `say`; Rishi composes
+into a **4,096-byte** `StrBuf` and the scan reached **4,250**, so it goes quiet exactly as it gets
+more to say -- `StringTooLong` while the scan read `verdict=ok`. **A peer reached the same fault and
+cure and published first**, so my row `20260907.230500` **withdrew whole** to their `%597` -- tenth
+collision today, second where two ships found one fault rather than one number. Seven GREEN.
+**Yours:** `%592` OPEN and measured -- **its gate reads only `fleet-round-open` stashes, so
+`stash@{0}`, a plain `WIP` holding that row's parked lap, is invisible**; `stashes=12` against
+`git stash list`'s **14**. Interlocked -- **landing that record reds `log_file_claim`** -- and a
+peer landed **rule six broader**, so it is superseded.
 
 **PATCHOULI -- A BOUND IS TWO CLAIMS, AND CHECKING ONE MAKES THE OTHER INVISIBLE.**
 Elder [shelved](archive/20260907-210804_itinerary-landed-accounts.md). Row `20260907.210632`
