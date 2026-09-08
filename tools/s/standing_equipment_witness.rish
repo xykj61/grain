@@ -116,6 +116,17 @@ assert control.out contains "cadence_counted=yes" else "standing-equipment: the 
 assert control.out contains "cadence_never_run_counted=yes" else "standing-equipment: a cadence guard the card never names must be counted"
 assert control.out contains "cadence_run_lowers_count=yes" else "standing-equipment: a recorded cadence run must lower that count"
 assert control.out contains "tiered_card_free=yes" else "standing-equipment: a card carrying tiers must pass free"
+
+# THE ONE GATED RATCHET THAT PRINTED NO NAMES (REDS %592). It reds, so a lap meets it -- and then
+# hand-walks 246 roster records with awk to find the guard that arrived without a `tier` line.
+# Two laps did exactly that, `20260907` and `20260908`. The four readings below hold the naming
+# exact from both sides: the undeclared guard is named with its own seated stamp, the guard that
+# declared one is absent from the list, the count stays the whole population, and a clean roster
+# names nobody -- since a list that prints on a clean roster reads as a finding and stops being read.
+assert control.out contains "undeclared_counted=yes" else "standing-equipment: a guard with no tier line must still be counted -- the naming narrows the report, never the reading"
+assert control.out contains "undeclared_named=yes" else "standing-equipment: the undeclared guard must be named with its own seated stamp, or the ceiling sends every lap back to awk"
+assert control.out contains "declared_not_named=yes" else "standing-equipment: a guard that declared its tier must never appear in the list -- a naming that names everything names nothing"
+assert control.out contains "clean_roster_names_none=yes" else "standing-equipment: a roster with nothing undeclared must print no name at all"
 assert control.out contains "seconds_totalled=yes" else "standing-equipment: a card carrying elapsed seconds must total them"
 assert control.out contains "slowest_named=yes" else "standing-equipment: the slowest guard must be named, not only counted"
 assert control.out contains "seconds_present_counted=yes" else "standing-equipment: a row carrying its seconds must count as present"

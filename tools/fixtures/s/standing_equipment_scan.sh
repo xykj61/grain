@@ -131,7 +131,8 @@ known_gates=$(
 names=$(mktemp); paths_missing=$(mktemp); halfrows=$(mktemp)
 unrostered=$(mktemp); reds=$(mktemp); ranlist=$(mktemp); reds_self=$(mktemp)
 badtiers=$(mktemp); cadence_names=$(mktemp); badhosts=$(mktemp); badcaps=$(mktemp); badgates=$(mktemp)
-trap 'rm -f "$names" "$paths_missing" "$halfrows" "$unrostered" "$reds" "$reds_self" "$ranlist" "$badtiers" "$cadence_names" "$badhosts" "$badcaps" "$badgates"' EXIT
+undeclaredrows=$(mktemp)
+trap 'rm -f "$names" "$paths_missing" "$halfrows" "$unrostered" "$reds" "$reds_self" "$ranlist" "$badtiers" "$cadence_names" "$badhosts" "$badcaps" "$badgates" "$undeclaredrows"' EXIT
 
 rostered=0
 red_self=0
@@ -154,6 +155,7 @@ tier_cadence=0
 name=""
 sawpath=0
 tier=""
+seated=""
 host=""
 capability=""
 gate=""
@@ -165,7 +167,16 @@ close_record() {
   # chose. The default stays -- a roster that refuses on a missing field would red on 62 guards at
   # once, and a wall that reds on ordinary work is a wall somebody turns off -- so the count is
   # REPORTED as a ratchet that only falls, and a hand deciding one on touch lowers it.
-  [ -n "$tier" ] || undeclared_tier=$((undeclared_tier + 1))
+  # THE NAMES BESIDE THE COUNT (REDS %592). This ratchet is the only reading here that printed a
+  # quantity and no name, and it is the one that reds -- so a lap meeting the ceiling asked "which
+  # guard is new?" and answered it by hand-walking the roster with awk. That happened on
+  # `20260907` and again on `20260908`, which is a lantern firing twice. The rows are recorded by
+  # their own `seated` stamp so the report can name the NEWEST, which is the one a lap can act on:
+  # a ratchet that only falls rises exactly when a guard is seated without the field, and its
+  # author is the hand still holding the context. A guard carrying no `seated` line sorts first
+  # under a zero stamp rather than vanishing, since a record missing two fields is not less
+  # interesting than one missing one.
+  [ -n "$tier" ] || { undeclared_tier=$((undeclared_tier + 1)); echo "${seated:-00000000.000000} $name" >> "$undeclaredrows"; }
   t="${tier:-lap}"
   case " $known_tiers " in
     *" $t "*) ;;
@@ -198,7 +209,7 @@ close_record() {
       *) unknown_gate=$((unknown_gate + 1)); echo "$name -> $gate" >> "$badgates" ;;
     esac
   fi
-  name=""; sawpath=0; tier=""; host=""; capability=""; gate=""
+  name=""; sawpath=0; tier=""; seated=""; host=""; capability=""; gate=""
 }
 
 while IFS= read -r line; do
@@ -221,6 +232,10 @@ while IFS= read -r line; do
     tier\ *)
       [ -n "$name" ] || continue
       tier=$(printf '%s' "$line" | awk '{print $2}')
+      ;;
+    seated\ *)
+      [ -n "$name" ] || continue
+      seated=$(printf '%s' "$line" | awk '{print $2}')
       ;;
     host\ *)
       [ -n "$name" ] || continue
@@ -353,6 +368,14 @@ echo "newest_run=${newest:-none}"
 [ "$missing" -eq 0 ] || sed 's/^/missing: /' "$paths_missing"
 [ "$half" -eq 0 ] || sed 's/^/half_written: /' "$halfrows"
 [ "$unknown_tier" -eq 0 ] || sed 's/^/unknown_tier: /' "$badtiers"
+# NAMED NEWEST-FIRST, AND BOUNDED. Sixty-three names every run would be a wall of text nobody
+# reads, and the repairable question is never "which sixty-three" -- it is "which one arrived".
+# The bound is named here rather than left to a pipe so a reader can see it, and the count above
+# stays the whole population, so this list narrows the report without narrowing the reading.
+undeclared_show="${UNDECLARED_TIER_SHOW:-5}"
+echo "undeclared_tier_shown=$undeclared_show"
+[ "$undeclared_tier" -eq 0 ] || sort -r "$undeclaredrows" | head -n "$undeclared_show" \
+  | sed 's/^\([^ ]*\) \(.*\)$/undeclared_tier_newest: \2 seated \1/'
 [ "$unknown_host" -eq 0 ] || sed 's/^/unknown_host: /' "$badhosts"
 [ "$unknown_capability" -eq 0 ] || sed 's/^/unknown_capability: /' "$badcaps"
 [ "$unknown_gate" -eq 0 ] || sed 's/^/unknown_gate: /' "$badgates"
