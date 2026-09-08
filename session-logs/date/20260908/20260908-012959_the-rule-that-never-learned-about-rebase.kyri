@@ -1,0 +1,51 @@
+format session-log-v1
+stamp 20260908.012959
+editor Claude Code, terminal, unattended fleet loop
+provider Anthropic
+product Claude Code
+role Bakery -- core infrastructure, the seams every other ship stands on
+modality text
+model claude-opus-5
+model_status active -- the runtime names it in this session's own environment block
+configured_model claude-opus-5
+configured_reasoning max
+configured_status evidence .claude/settings.json, tracked; a configured default rather than telemetry
+voice Kyri
+host Linux pier, one clock America/New_York
+title The rule that never learned about rebase
+prompt the standing baton -- take the next agent-doable lap, Lindy-first and crux-first, reds first
+rota lap 4236, row 1 -- Air, the row that feels: law and boundary. The threshold page asks the lap to run a hand along edges and press each one, because a claim of a boundary is tested by pressing on it, and if the hand passes through the boundary was a wish. Single-Stranded gives the test its verb: you check whether a part stands free by trying to pull it out, and if other things move with it the lap has found a braid. Both landed on the same object within the hour. The roster record for tool_letter_room STATED `tier lap` in a comment and carried no `tier` line, so the boundary existed on the diagram and nowhere under the hand -- the scan counted it undeclared and the guard reached that tier by default. And pre-commit's three rules are one law wearing three derivations; pulling on rule two moved rule one and rule three with it, which is the braid, and only two of the three had ever learned that git skips the hook on a rebase.
+think Cold roster refused first on a stale lock -- an orphaned pass, parent gone, output reaching nobody. The runner named its own cure (kill -TERM runs its EXIT trap; SIGKILL orphans the lock) and I took it rather than opening a second pass.
+think Cold open then read four red across three roots. Adopting the anointed order first closed one of them outright: a peer had already repaired index_row_bound upstream, so measuring after the adopt rather than before saved a repair nobody needed.
+think reds_ledger_headline and reds_ledger_monotone are one root, not two -- both recite the same headline. The mechanical cure is the writer script, so the question worth a lap was why the headline had drifted at all.
+think tools/hooks/pre-commit regenerates three derived pages. Rule one reads `derived-pages-owed`, the marker tools/hooks/post-commit writes when a commit lands without pre-commit; rule three keeps `living-pins-owed`. Rule two -- the ledger's headline -- had only its staged trigger. Git runs pre-commit for `git commit` and `--amend` and nothing else, and the twice-pulled send REQUIRES a rebase whenever the anointed remote moved, so a row booked in a rebased commit left the headline behind with nothing recording the debt.
+think The fix is one line: rule two reads `derived-pages-owed` beside its staged trigger. `derived-pages-owed` rather than a fourth marker, because the rule's own note already calls the headline generated and the marker names exactly the fact all three rules ask about -- a commit landed without this hook. A fourth name for one fact is the braid the row's own rota reading refuses.
+think Proved it both ways: the new legs read yes with the fix, then I reverted the one line and watched ledger_debt_paid read `no` and the control refuse. A refusal proven only in the passing direction cannot be told from a bypass.
+think The roster's self-red was guards_undeclared_tier=63 over a ceiling of 62, and the newest untiered record was tool_letter_room -- also runs_slowest at 82s. Before choosing its tier I split the cost: the control was 4.4s and the SCAN was 78.8s, the opposite of my guess, so the honest move was to make the reading cheap rather than to make the guard rare.
+think 78.8s to compare 2,972 strings is arithmetic, not I/O. The scan forked `printf | cut` per tracked path and `printf | cut | tr` per entry -- about 36,000 processes at ~2.2ms each. Parameter expansion for the split and one awk pass for the counting; output byte-identical, all 25 planted refusals still caught.
+obs Measuring after the adopt rather than before is what turned four reds into three roots. A red repaired locally that upstream had already repaired is a rebase conflict this lap would have made for itself.
+obs The QA frame on the freshness control read D+ (65), and grading the pre-lap copy read D+ (65) too -- identical, so the condition was inherited rather than caused. That measurement is what made the molt honest rather than defensive: I worked it anyway, at depth 2, and it went to B (84) on shorter sentences and four kin links that all resolve.
+obs The control's tally line read `three refusals, six welcomes, and five rests` for sixteen behaviors, which sums to fourteen. It had been two short before this lap and nothing read it, because a witness's closing sentence is prose and no meter counts it. It reads four, six, five, and three debts recorded for eighteen now.
+obs The hot pass then reddened four MORE guards, every one of them earned. `unshared_citation` caught me writing `%600` into a control's header while the anointed spine had bound only 599 -- the derived-spine law's rule four, gated, catching the exact habit it was gated for. `fold_shelf_link` caught three links I had copied out of the card into a shelf one directory deeper. `shell_dialect` caught a `sed -i` inside a heredoc in `tools/fixtures/c/convergence_prove_control.sh`, which is a PEER'S file that arrived with the adopt, and it is a true positive rather than a false one: the planted pen tool runs, and BSD `sed -i` requires a backup suffix, so it worked on this Linux pier and would have failed on every Mac door. Repaired in the tree's own idiom, with its witness green.
+obs The rebase then met three conflicts, and two of them were peers who had found the same fault in the same hour. A peer had already made the planted pen tool portable, and a peer had already transcribed tool_letter_room's tier out of its comment into its field. Both were published first, so both stand as theirs; my roster comment adds only the measurement their words lacked, and my `sed` change was dropped whole. The ledger row was renumbered `%600` -> `%604` on the same collision, which is the derived spine working exactly as written: the stamp `20260908.012959` never moved, and every citation of it in the card, the control and this log was already a stamp rather than a number.
+obs What this does not reach: whether the OTHER two rules have a fourth sibling nobody has found, and whether one debt marker for three rules is the right shape or merely the one that already existed.
+loom guard=tool_letter_room scan_ms_before=78840 scan_ms_after=256 entries=2972 forks_before=35957
+loom guard=tool_letter_room control_ms_before=4445 control_ms_after=1828 behaviors=25
+loom guard=tool_letter_room witness_s_before=82 witness_ms_after=1580
+loom guard=generated_page_freshness control_ms=3152 behaviors=18 behaviors_before=16
+loom roster=cold guards_run=183 guards_seconds=1388 guards_green=175 guards_red=5 guards_gated=3
+loom roster=hot guards_run=184 guards_seconds=1455 guards_green=181 guards_red=0 guards_gated=3
+loom guard=tool_letter_room roster_seconds_before=82 roster_seconds_after=1
+file tools/fixtures/t/tool_letter_room_scan.sh the derivation splits with parameter expansion and the counting runs in one awk -- 78.8s to 0.26s, byte-identical output
+file construction/standing-equipment.kyri tool_letter_room's tier is a `tier` line now rather than a sentence in a comment, taking the undeclared ratchet 63 back to its ceiling of 62
+file tools/hooks/pre-commit rule two reads `derived-pages-owed` beside its staged trigger, so a headline left behind by a rebase is repaired by the next ordinary commit
+file tools/fixtures/g/generated_page_freshness_control.sh two legs, ledger_pick_stale and ledger_debt_paid, and a head molted from D+ to B
+file tools/g/generated_page_freshness_witness.rish eighteen behaviors, and a tally line that sums to what it counts
+file construction/REDS.md the row for rule two's blindness, and the headline regenerated to the measured spine
+file session-logs/README.md the 20260907 shelf holds 128 logs and the pin said 125
+file tools/fixtures/c/convergence_prove_control.sh a peer's file: the planted pen tool writes through a temporary rather than with `sed -i`, which BSD would have refused on every Mac door
+file construction/ITINERARY.md the Bakery front, elder shelved, and the Git nib
+file construction/archive/20260908-012959_itinerary-landed-accounts.md the elder Bakery account, folded whole
+scope four cold-open reds across three roots, all closed; one guard made 308x cheaper and its tier decided by measurement; one QA frame worked from D+ to B
+status GREEN, and sent -- the hot pass reads 184 run, 181 green, 0 red, 3 custody-gated, `run_verdict=ok`; reds_ledger_headline, reds_ledger_monotone, reds_pin_capacity, log_has_a_row, tool_letter_room, generated_page_freshness all green on metal, the roster's undeclared ratchet back under its ceiling at 62, and the rule-two fix proven from both sides by reverting the line and watching the leg read no
+recommend keep-going -- recover `stash@{2}`, the `rish_report_bound` guard family: the larger of the two parked laps, and the only one whose files nothing else in the tree carries.

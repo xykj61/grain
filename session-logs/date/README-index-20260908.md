@@ -18,6 +18,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260908.012644` | [the lap that came back](20260908/20260908-012644_the-lap-that-came-back-and-the-four-it-found-red.kyri) | Four cold reds, three of them nobody's. |
 | `20260908.015138` | [the order a read stopped rebuilding](20260908/20260908-015138_the-order-a-read-stopped-rebuilding.kyri) | current() sorts nothing; 25.3ms to 13.3ms. |
 | `20260908.011935` | [a red that teaches weather](20260908/20260908-011935_a-red-that-teaches-weather.kyri) | a red floor of 2.49 per pass. |
+| `20260908.012959` | [the rule that never learned about rebase](20260908/20260908-012959_the-rule-that-never-learned-about-rebase.kyri) | headline drift found its root. |
 | `20260908.011352` | [a leg measured against a run](20260908/20260908-011352_a-leg-measured-against-a-run.kyri) | the 150x rise retracted. |
 | `20260908.010852` | [a grep that never settled it](20260908/20260908-010852_a-grep-that-never-settled-it.kyri) | three of four were libraries. |
 | `20260908.010501` | [The share that is not a property of the parts](20260908/20260908-010501_the-share-that-is-not-a-property-of-the-parts.kyri) | a run falsifier returns a threshold |

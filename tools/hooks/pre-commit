@@ -186,9 +186,25 @@ for cand in /bin/bash bash /bin/sh; do
 done
 
 # RULE TWO -- the ledger's headline. It moves whenever a row is booked or a fold shelf lands, so
-# the trigger is the ledger itself being staged in any way, rather than a file kind arriving.
+# the first trigger is the ledger itself being staged in any way, rather than a file kind arriving.
+#
+# THE SECOND TRIGGER, added 20260908 -- the same debt rule one reads, for the same reason, and it
+# was missing here alone. Rule one learned on 20260829 (REDS %337) that git runs pre-commit for
+# `git commit` and `--amend` and for nothing else, so a row booked inside a commit that lands by
+# `git rebase` or `git cherry-pick` -- which the twice-pulled send REQUIRES whenever the anointed
+# remote moved -- never reaches this rule, records nothing, and leaves the headline reciting a
+# total the spine has already passed. Rule three took the same lesson as `living-pins-owed`. Rule
+# two took neither, so it held one law with two derivations and the blind one gated: measured
+# 20260908.011500, the headline read 598 against a measured 599 and reddened BOTH
+# reds_ledger_headline and reds_ledger_monotone on every ship that fetched it, while nothing in
+# any tree could say why. `derived-pages-owed` is the honest marker to read rather than a third
+# file of its own: this rule's own note above calls the headline generated, the debt names
+# exactly the fact all three rules ask about -- a commit landed without this hook -- and a fourth
+# name for one fact is the braid single-strandedness refuses. A clean ledger costs nothing here,
+# since refresh_page compares the page hash and returns without staging when the writer moved
+# nothing.
 ledger_moved=$(git diff --cached --name-only -- construction/REDS.md 'construction/archive/REDS-*.md')
-if [ -n "$ledger_moved" ]; then
+if [ -n "$ledger_moved" ] || [ -f "$owed" ]; then
   refresh_page tools/fixtures/r/reds_ledger_headline_write.sh construction/REDS.md \
     "$scan_shell" tools/fixtures/r/reds_ledger_headline_write.sh write
 fi

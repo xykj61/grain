@@ -8,7 +8,7 @@
 # this room match this name? -- then counts the answers:
 #
 #   sh tools/fixtures/t/tool_letter_room_scan.sh
-#   entries=2035  matched=2035  misfiled=0  misfiled_ceiling=0  ceiling_held=yes
+#   entries=2972  matched=2972  misfiled=0  misfiled_ceiling=0  ceiling_held=yes  (read `20260908.011500`)
 #   verdict=ok
 #
 # WHY IT EXISTS, and it is the second firing rather than the first. On `20260906.182719` a hand
@@ -48,25 +48,37 @@
 # VERDICTS. ok - misfiled (more misfiled entries than the ceiling welcomes) - no_rooms (the tools
 # room is gone or holds no letter room, so this reading has no subject).
 #
+#
+# WHY IT READS IN TWO PASSES OF ONE PROCESS EACH, rather than in two shell loops. The first draft
+# derived each triple with `printf | cut` and lowercased each name with `printf | cut | tr`, which
+# is about five forked processes per tracked path and six per unique entry: 3,625 paths and 2,972
+# entries came to roughly 36,000 processes, and the scan took **78.8 seconds** measured
+# `20260908.011500`. Nothing in that reading touches a disk twice or asks the index a second
+# question -- it is one string comparison per name, spent almost entirely on process creation at
+# about 2.2ms each. So the derivation now splits paths with shell parameter expansion, which forks
+# nothing, and the counting runs in a single `awk` that has `tolower` and `substr` built in. The
+# reading is unchanged in every particular -- same index, same triples, same `sort -u`, same
+# ordering, same counters, same misfiled lines -- and the control proves that by asserting the same
+# 25 behaviors it asserted before. It matters because this guard's own reason for existing is that
+# five misfilings regrew in ONE DAY: a guard that must run every lap to keep its promise, and costs
+# 82 seconds of every lap across eight ships, is a guard somebody eventually moves to `cadence` --
+# and the day it moves is the day the letter rule goes back to living in whoever remembers it.
+#
 # Read by tools/t/tool_letter_room_witness.rish. Proven by
 # tools/fixtures/t/tool_letter_room_control.sh. Run from the repository root.
+
 
 set -eu
 
 ceiling=${MISFILED_CEILING:-0}
 
-entries=0
-matched=0
-misfiled=0
-letter_rooms=0
-named_rooms=0
-named_seen=""
-
-# One temporary file holds the derived (parent, room, entry) triples, so the counting loop runs in
-# THIS shell rather than in a pipeline subshell -- a `while` on the right of a pipe increments its
-# counters in a process that exits, and every count would read zero.
+# Two temporary files. `work` holds the derived (parent, room, entry) triples so the counting reads
+# a settled set rather than a pipeline; `out` holds the counting pass's own output, because the
+# shell needs five of those numbers for the arithmetic below and a pipeline would carry them into a
+# subshell that exits.
 work=$(mktemp)
-trap 'rm -f "$work"' EXIT INT TERM
+out=$(mktemp)
+trap 'rm -f "$work" "$out"' EXIT INT TERM
 
 # The two rooms that fold by letter, read from the INDEX rather than from disk. `tools/fixtures/`
 # folds by the same rule as `tools/` and had eight of the same fault on the day the elder sweep
@@ -74,39 +86,64 @@ trap 'rm -f "$work"' EXIT INT TERM
 # entries come from `git ls-files`, so an untracked scratch file a lap leaves in a letter room is
 # not judged -- a guard that reds on somebody's temporary is a guard somebody turns off -- and a
 # file staged this lap IS judged, on the lap it arrives.
-rooms_seen=""
+#
+# The split is parameter expansion rather than `cut`: `${rest%%/*}` takes the room and `${rest#*/}`
+# drops it, both inside the shell. A path with no second slash has no entry under a room -- a file
+# sitting directly in `tools/` or in `tools/fixtures/` -- and `${rest%%/*}` returning the whole
+# string is exactly how that is detected, which is the same set `cut -f3` skipped by returning empty.
 git ls-files 'tools/*' | while IFS= read -r path; do
   case "$path" in
-    tools/fixtures/*) room=$(printf '%s' "$path" | cut -d/ -f3); entry=$(printf '%s' "$path" | cut -d/ -f4); parent=tools/fixtures ;;
-    *) room=$(printf '%s' "$path" | cut -d/ -f2); entry=$(printf '%s' "$path" | cut -d/ -f3); parent=tools ;;
+    tools/fixtures/*) parent=tools/fixtures; rest=${path#tools/fixtures/} ;;
+    *) parent=tools; rest=${path#tools/} ;;
   esac
+  room=${rest%%/*}
+  [ "$room" != "$rest" ] || continue
+  erest=${rest#*/}
+  entry=${erest%%/*}
   [ -n "$entry" ] || continue
   printf '%s\t%s\t%s\n' "$parent" "$room" "$entry"
 done | sort -u > "$work"
 
-while IFS="$(printf '\t')" read -r parent room entry; do
+# One awk pass over the settled triples. It asks the same single question of each entry -- does this
+# room match this name? -- and prints the misfiled lines first and the five counters last, which is
+# the order the shell loop printed them in. `tolower` reaches the name only, never the room: an
+# uppercase room has never matched and does not begin to now.
+awk -F'	' '
+{
+  parent = $1; room = $2; entry = $3
+  key = parent "/" room
   # A room of three characters or more is a NAMED room, outside the letter rule entirely.
-  if [ ${#room} -gt 2 ]; then
-    case " $named_seen " in *" $parent/$room "*) : ;; *) named_rooms=$((named_rooms + 1)); named_seen="$named_seen $parent/$room" ;; esac
-    continue
-  fi
-  case " $rooms_seen " in *" $parent/$room "*) : ;; *) letter_rooms=$((letter_rooms + 1)); rooms_seen="$rooms_seen $parent/$room" ;; esac
-  entries=$((entries + 1))
-  one=$(printf '%s' "$entry" | cut -c1 | tr 'A-Z' 'a-z')
-  two=$(printf '%s' "$entry" | cut -c1-2 | tr 'A-Z' 'a-z')
-  if [ "$room" = "$one" ] || [ "$room" = "$two" ]; then
-    matched=$((matched + 1))
-  else
-    misfiled=$((misfiled + 1))
-    echo "misfiled: $parent/$room/$entry room=$room name_says=$one or $two"
-  fi
-done < "$work"
+  if (length(room) > 2) {
+    if (!(key in named)) { named[key] = 1; named_rooms++ }
+    next
+  }
+  if (!(key in rooms)) { rooms[key] = 1; letter_rooms++ }
+  entries++
+  one = tolower(substr(entry, 1, 1))
+  two = tolower(substr(entry, 1, 2))
+  if (room == one || room == two) {
+    matched++
+  } else {
+    misfiled++
+    print "misfiled: " parent "/" room "/" entry " room=" room " name_says=" one " or " two
+  }
+}
+END {
+  print "letter_rooms=" letter_rooms + 0
+  print "named_rooms=" named_rooms + 0
+  print "entries=" entries + 0
+  print "matched=" matched + 0
+  print "misfiled=" misfiled + 0
+}
+' "$work" > "$out"
 
-echo "letter_rooms=$letter_rooms"
-echo "named_rooms=$named_rooms"
-echo "entries=$entries"
-echo "matched=$matched"
-echo "misfiled=$misfiled"
+cat "$out"
+
+letter_rooms=$(sed -n 's/^letter_rooms=//p' "$out")
+entries=$(sed -n 's/^entries=//p' "$out")
+matched=$(sed -n 's/^matched=//p' "$out")
+misfiled=$(sed -n 's/^misfiled=//p' "$out")
+
 echo "misfiled_ceiling=$ceiling"
 
 if [ "$letter_rooms" -eq 0 ]; then

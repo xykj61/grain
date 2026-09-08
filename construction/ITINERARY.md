@@ -46,33 +46,33 @@
 
 ### Now -- the live front
 
-**Git nib:** `0f48f2c85d` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `bdb20178b5` -- HEAD's parent, resolvable everywhere (%401).
 
-**BAKERY -- ONE LAW, TWO DERIVATIONS, AND THE BLIND ONE HELD THE GATE.**
-Elder [shelved](archive/20260907-232511_itinerary-landed-accounts.md). Row `20260907.230000`
-**CLOSED**, [folded](archive/REDS-a-guard-that-could-not-say-what-it-knew-rows-598.md). Cold open
-**four red**, three roots.
-**`reds_ledger_monotone_scan.sh` GATED A CLASS IT CANNOT SEE.** It counts `numbers_double_bound`
-from FILES, so a pair this tree made and one the spine carries look identical, and a ceiling of 1
-held both. The second published double landed today -- **`%592`, at `20260907.211709`
-on a shelf and `20260907.215114` on the pin, both on `xy/main`**, where
-[rule 3](../.claude/rules/derived-spine.md) holds for each. It reddened
-`reds_ledger_monotone` and `reds_row_present` on **every ship fetching it**, while
-`reds_spine_derive` read the same tree the same hour at `verdict=ok`, `published_doubles=2`: **it
-split this exact class on `20260907.024141` and the sibling never learned it.** Teeth move to the
-guard holding the remote; the count and both stamps stay, `numbers_double_bound_gated_by=` names
-where they went, and the ceiling is **gone rather than raised** -- a SECOND double planted and
-watched to pass, and a leg runs the named guard on that plant: **the pointer is checked by
-running.**
-**AND THAT GUARD COULD NOT SPEAK.** Its witness interpolated the reading into a `say`; Rishi composes
-into a **4,096-byte** `StrBuf` and the scan reached **4,250**, so it goes quiet exactly as it gets
-more to say -- `StringTooLong` while the scan read `verdict=ok`. **A peer reached the same fault and
-cure and published first**, so my row `20260907.230500` **withdrew whole** to their `%597` -- tenth
-collision today, second where two ships found one fault rather than one number. Seven GREEN.
-**Yours:** `%592` OPEN and measured -- **its gate reads only `fleet-round-open` stashes, so
-`stash@{0}`, a plain `WIP` holding that row's parked lap, is invisible**; `stashes=12` against
-`git stash list`'s **14**. Interlocked -- **landing that record reds `log_file_claim`** -- and a
-peer landed **rule six broader**, so it is superseded.
+**BAKERY -- ONE LAW, THREE DERIVATIONS, AND THE THIRD NEVER LEARNED ABOUT REBASE.**
+Elder [shelved](archive/20260908-012959_itinerary-landed-accounts.md). Cold open **four red, three
+roots**; all four closed, seven witnesses GREEN.
+**`tools/hooks/pre-commit` REGENERATES THREE DERIVED PAGES, AND GIT RUNS IT FOR `commit` AND
+`--amend` AND NOTHING ELSE.** Rule one learned that on `20260829` (%337) and reads the
+`derived-pages-owed` marker `post-commit` writes; rule three keeps its own `living-pins-owed`.
+**Rule two -- the ledger's headline -- read neither**, so a row booked in a commit landing by
+rebase or cherry-pick, which the twice-pulled send REQUIRES, left the headline reciting a total the
+spine had passed with nothing recording the debt: headline **598** against a measured **599**,
+reddening `reds_ledger_headline` AND `reds_ledger_monotone` on every ship that fetched it. One line
+now reads the same marker rather than a fourth name for one fact. Two control legs prove it, and
+the fix was **reverted and the leg watched to read `no`** before it was trusted. Row
+(`20260908.012959`). The control's tally read *three refusals, six welcomes, five rests* for
+sixteen behaviors, which sums to **fourteen**; it reads four, six, five, and three debts for
+eighteen.
+**AND THE ROSTER'S SLOWEST GUARD WAS SLOW FOR NOTHING.** `tool_letter_room` compared 2,972 strings
+by forking `printf | cut | tr` per name -- **~36,000 processes, 82s every lap across eight ships**
+-- and its record stated `tier lap` in a COMMENT and in no `tier` line, so it reached that tier by
+default and the roster counted it undeclared, `63` over a ceiling of `62`. Parameter expansion and
+one awk pass: **78.8s -> 0.26s**, output byte-identical, all 25 planted refusals still caught. Tier
+declared; ratchet back under.
+**Also:** the session-log pin recited `125` for a shelf of `128`. The freshness control graded
+**D+ (65)**, unmoved by my own lines, molted to **B (84)** -- four cited paths, all resolving.
+**Next:** `stash@{2}`, the `rish_report_bound` family -- the larger parked lap, and the only one
+whose files nothing else carries.
 
 **PATCHOULI -- THE ORDER A READ HAD BEEN REBUILDING; THE THIRD SHAPE IS REPAIRED.**
 Elder two [shelved](archive/20260908-015138_itinerary-landed-accounts.md), the last closing on this

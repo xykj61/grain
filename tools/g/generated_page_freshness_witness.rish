@@ -52,7 +52,7 @@
 # rostered readme_metrics guard still catches them at a cold start. This closes the fast, frequent
 # half of the drift, and says so rather than implying it closed the whole.
 #
-# Kin: tools/hooks/pre-commit (the wall), tools/fixtures/g/generated_page_freshness_control.sh (the sixteen
+# Kin: tools/hooks/pre-commit (the wall), tools/fixtures/g/generated_page_freshness_control.sh (the eighteen
 # cases), tools/r/readme_metrics.rish (the generator), tools/r/readme_metrics_witness.rish (the block's
 # own freshness guard), tools/i/install_hooks.rish (the arming).
 #
@@ -60,7 +60,7 @@
 #   rishi/bin/rishi run tools/g/generated_page_freshness_witness.rish
 
 say "generated-page-freshness: Language EN -- a generated number is worth more than a typed one only while it is regenerated, so the commit that moves it is the commit that refreshes it."
-say "generated-page-freshness: Style Gauge, Meter -- sixteen behaviors proven on a throwaway repository over all three generated pages, and the honest silence about fascia and about git merge --no-ff named rather than implied."
+say "generated-page-freshness: Style Gauge, Meter -- eighteen behaviors proven on a throwaway repository over all three generated pages, and the honest silence about fascia and about git merge --no-ff named rather than implied."
 say "generated-page-freshness: Lens TAME -- safety first: the hook stages only its own regeneration, and refuses rather than sweep an author's unstaged edits into a commit they never wrote."
 
 let hook = "tools/hooks/pre-commit"
@@ -106,6 +106,6 @@ assert control.out contains "no_rishi_no_debt=yes" else "generated-page-freshnes
 assert control.out contains "link_wall_bitten=yes" else "generated-page-freshness: rule six must refuse a commit carrying a living link that opens nothing"
 assert control.out contains "link_wall_free=yes" else "generated-page-freshness: rule six must wave the same commit through once it carries the file the link names"
 assert control.out contains "control_verdict=ok" else "generated-page-freshness: the control must agree with itself"
-say "RED and GREEN paths proven -- three refusals, six welcomes, and five rests"
+say "RED and GREEN paths proven -- four refusals, six welcomes, five rests, and three debts recorded"
 
 say "GREEN: generated-page-freshness -- the commit that moves a generated page's numbers is the commit that refreshes it."
