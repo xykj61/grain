@@ -1,14 +1,13 @@
 # The Wiki -- how the shelf connects, both ways
 
+**Language:** EN - **Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
+**Written:** `20260821.190149` - **Status:** Living
+**Kind:** the shelf's connective tissue -- a crushed index of every page under [`../`](../)
 **Where this sits:** home is [`../../README.md`](../../README.md) - a first hour in your hands is
 [`../tutorials/the-first-hour.md`](../tutorials/the-first-hour.md) - the whole
 path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURCE.md)
 
-*A wiki is not a pile of pages; it is the links between them. This is the geode's own crosslink map -- every shipped page, what it leads to, and what leads back.*
-
-**Language:** EN - **Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
-**Written:** `20260821.190149` - **Status:** Living
-**Kind:** the shelf's connective tissue -- a crushed index of every page under [`../`](../)
+*A wiki lives in the links between its pages. This is the geode's own crosslink map -- every shipped page, what it leads to, and what leads back.*
 
 ---
 
@@ -34,27 +33,35 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 
 ## Why the "reached from" column matters
 
-A page nobody links to is a page nobody finds, however good it is. The right-hand column above is the honest check: **every page on this shelf is reachable from at least one other**, and the two entry points -- the root README and `study/` -- reach the rest within two hops.
+A page finds its readers through the pages that link to it. The right-hand column above is the honest check: **every page on this shelf is reachable from at least one other**, and the two entry points -- the root README and `study/` -- reach the rest within two hops.
 
-That is the whole discipline of a wiki here. Not a search box; a promise that following any thread gets you somewhere, and that somewhere leads back.
+That is the whole discipline of a wiki here: a promise that following any thread gets you somewhere, and that somewhere leads back.
 
 ## What is missing, named plainly
 
-`blog/` and `etc/` hold no pages, and their own READMEs say why rather than pretending. `templates/` carries a pointer crush. When a page enters any of them, it earns a row above -- **a page that is not in this table is a page the shelf has not finished admitting.**
+`blog/` and `etc/` stand empty, and their own READMEs say so plainly. `templates/` carries a pointer crush. When a page enters any of them, it earns a row above -- **a row in this table is how the shelf finishes admitting a page.**
 
 **The room doors are ways in rather than shipped pages.** `api/README.md`, `tutorials/README.md`, and the shelf's own [front door](../README.md) each stand behind the row that names their room, so this table lists what the shelf ships.
 
-**[Shopping](../tutorials/SHOPPING.md) joined the table on `20260906`, and three sangha pattern pages joined it the same day.** Shopping had stood in `tutorials/` since `20260823`, linked from four other pages and one hop from the first hour -- present everywhere except on the map that promises every shipped page. The reading that catches the next one now exists: this page declares itself a **crushed index of every page under [`../`](../)** in its own header, and [`../../tools/cr/crushed_index_witness.rish`](../../tools/cr/crushed_index_witness.rish) walks the whole shelf against it each lap.
+**Four pages joined this table on `20260906`.** [Shopping](../tutorials/SHOPPING.md) had stood in
+`tutorials/` since `20260823`. Four other pages linked it, and it sat one hop from the first hour.
+It was present everywhere except on the map that promises every shipped page.
 
-**And the three pattern pages lead somewhere now.** Each one cites the code that proved it, and on
-`20260906` those citations became links -- clickable for a reader, and readable by
+The three sangha pattern pages stood outside for a subtler reason. This page links
+`sangha/README.md`, and a link entering a room counted the whole room as listed. **A room's door is
+a different promise from the pages behind it**, and a guard reading one floor reads the two as one.
+So the walk that finds them reads a floor deeper now. This page declares itself a **crushed index of
+every page under [`../`](../)** in its own header, and
+[`../../tools/cr/crushed_index_witness.rish`](../../tools/cr/crushed_index_witness.rish) walks the
+whole shelf against it each lap.
+
+**And the three pattern pages lead somewhere now.** Each one cites the code that proved it. On
+`20260906` those citations became links, clickable for a reader and readable by
 [`../../tools/fixtures/t/tracked_link_scan.sh`](../../tools/fixtures/t/tracked_link_scan.sh), which
-follows links and reads past a backtick. Every page also carries a **Shelf** line home to the
-pattern book, whose row stands three lines above. The column above kept an honest *nothing yet* until
-the day it could say what each page leads to, and today it says it: the pattern book is a place you
-can arrive at, read from, and leave by the same thread you came in on.
-
-**What the deeper walk found on its first run.** Three pattern pages -- [one](../sangha/01-descriptor-exchange.md), [two](../sangha/02-fact-fold.md), [three](../sangha/03-five-primitives.md) -- had never had a row here, and the one-level reading could not see them: this page links `sangha/README.md`, and a link entering a room counts the room as listed. So a map promising every shipped page was green over three pages it had never named, for the same reason it had been green over Shopping. **A room's door is not the same promise as the pages behind it**, and a guard reading one floor cannot tell the two apart.
+follows a link and reads past a backtick. Every page also carries a **Shelf** line home to the
+pattern book, whose row stands three lines above. The column above held an honest *nothing yet*
+until the day it could say what each page leads to. Today it says it, and the pattern book is a
+place you can arrive at, read from, and leave by the same thread you came in on.
 
 ---
 

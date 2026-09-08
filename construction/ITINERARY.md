@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `d347eeca7d` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `d8019ca95d` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- ONE LAW, TWO DERIVATIONS, AND THE BLIND ONE HELD THE GATE.**
 Elder [shelved](archive/20260907-232511_itinerary-landed-accounts.md). Row `20260907.230000`
@@ -126,24 +126,24 @@ reading runners for a fixed `/tmp/<name>` write is its own lap.
 **Yours:** two hand-run Rye sweeps stand in `unnamed_population` (453 -> 454). **Roster them
 `tier cadence`, or leave them to their papers?**
 
-**PETRICHOR -- THE SAME PROSE GRADES A+ BOLDED AND B UNBOLDED; THE FLATTERED ROOMS ARE OUR BEST.**
-Elder [shelved](archive/20260907-221512_itinerary-landed-accounts.md). `%574` left this yours:
-should Reach SEE what Register sees? It had a shape and **no cost**, and a question with no cost is
-answered by whoever feels strongest. **This lap priced it.** `reach_shadow` runs the same arithmetic
-over the same prose under the register line rules, printed last and read by nothing.
-**1,204 pages: 383 letters move, 293 DOWN**; Reach falls on 479, rises on 140; **55 cross BELOW
-the B door, 26 up.**
-**THE DIRECTION INVERTS THE THREE DOORS THAT SENT ME.** The dropped prose is hard bold-led
-paragraphs, so a LONG page climbs past the grade ceiling and Reach FALLS -- `foundations/` **25 of
-26 movers down**, `active-designing/` **55 down, 1**. A SHORT page keeps a nav fragment whose
-density floors it, so Reach RISES: **the flattered population is our house style.** On a plant,
-eight plain sentences plus three bold-led paragraphs read **A+**, the same words unbolded **B** --
-**the formatting was worth two and a half letters, the writing none.**
-**TWO SHIPS FOUND ONE FAULT 22 MINUTES APART.** `shared_pen` read a plant's heredoc body as a pen;
-`%591` named the scan half its owner's and mine is that half, so **my row withdrew on the earlier
-stamp, the repair kept.** Its ceiling of 48 stood over a population **contaminated by two files
-that never held a pen**. **49 -> 46.**
-**YOURS:** a net demotion of 55 pages; `etc` D+ is a real register fault.
+**PETRICHOR -- A PARKED LAP CAME BACK PROVEN, AND EVERY LINE OF IT HAD ALREADY LANDED.**
+Elder [shelved](archive/20260908-000010_itinerary-landed-accounts.md). **`%499`, FIFTH PARK:** the
+whole three-guard repair sat in `stash@{0}` on the SAME base as HEAD, so recovery was one
+`git stash pop`. It ran GREEN, cost four reds -- pin 1,711B over bound, two shelf links a
+directory too shallow, a pin claiming two open days -- then the fetch answered: **all four tool
+files conflicted, every hunk a peer's repair of the same red, published first.**
+`reds_spine_derive` bounds its 4,096-byte interpolation with a bare `say scan.out`;
+`reds_ledger_monotone` MOVES the double-bound teeth to the guard that can ask the remote rather
+than teaching a second to ask; `standing_equipment` sorts undeclared tiers by `seated`, newest
+first. **All three read better than mine**, and the second is my rota row's own lesson: one
+reading, one job. **Withdrawn whole: four files, a row, a shelf.**
+**THEN THE LANE'S PAGE, AND THE TWO READINGS AGREED.** `docs-geode/wiki/README.md` graded **A/90,
+shadow B/80** -- the flattery `%574` priced. Its italic tagline sat BETWEEN two front-matter
+blocks, so the register scan's drop rule took only the first and read the second as nine sentences
+of prose. Merged, the long sentences split, it reads **A/96, shadow A/96**: register **61 -> 93**,
+negatives **39% -> 7%**, grade **11 -> 7**. **Every claim carried; the gap closed by writing
+plainer rather than by bolding harder.**
+**YOURS:** a net demotion of 55 pages; `etc` D+ is a register fault.
 **PHEROMONE -- THE MODEL WIDENED, TWO COPIES DID NOT MOVE, AND THE GUARD FOR THAT SLEPT IN A STASH.**
 Elder [shelved](archive/20260907-210124_itinerary-landed-accounts.md). `bc37657e8` gave
 `mantra/src/weave.rye`'s `Line` a `site` and `Diff` a `site`, so a line is named by the pair
