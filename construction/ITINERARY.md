@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `d209f85f3d` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `f0030e3d20` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE SHELF COMES BACK IN ORDER NOW, BECAUSE THE MERGE PUTS IT THERE.**
 Elder [shelved](archive/20260908-054012_itinerary-landed-accounts.md).
@@ -184,7 +184,6 @@ full below.
 [shelf](archive/20260907-192800_itinerary-landed-accounts.md).
 
 
-**`%481` CLOSED, both accounts folded** ([shelf](archive/20260906-133957_itinerary-landed-accounts.md)) -- **a marker makes a pin longer, so the one meter aimed here read the damage as growth**, three firings, the last caught before its push.
 **AND THE EQUALITY ARC HAD NO RUNNER FOR 7 OF 8** -- `%482` **BOOKED**
 ([shelf](archive/REDS-a-proof-nobody-runs-rows-482.md)). The four Mantra gates build GREEN,
 **unheard rather than rotted**, now `tier cadence` 92s; Aurora's three and Caravan's one stay
@@ -207,19 +206,22 @@ three.** **33 of 33.**
 **Yours:** `dated_path` reds `refs_lost=100` over **85**; 95 testimony. Gate
 `lost_promised_living` (**0**)?
 
-**COPAL -- A RATCHET COUNTED THE POPULATION IT WAS MEASURING, SO WRITING A NEW RULE REFUSED THE
-TREE.** Elder [shelved](archive/20260908-041510_itinerary-landed-accounts.md). Row
-(`20260908.034712`) **CLOSED**, [folded](archive/REDS-a-ratchet-that-counted-its-own-growth-rows-610.md);
-booked `%608`, renumbered TWICE in one send -- **the earlier stamp yields to the published
-number** (`derived-spine` 3). Cold: `rule_twin gated`, **38 of 51 against 36** -- **its own 40
-elder pairs IMPROVED 36 -> 35.** One figure answered two questions, *did a pair drift further* and
-*how many are there*; only the second moved.
-**THE REPAIR IS NOT A LARGER NUMBER.** `rule_twin_cohort.txt` names the seating day's 40 pairs -- a
-closed day's census that never grows, CONTENT rather than a git query since history gets rewritten. **`cohort_drifted` gated at 35, both sides; `arrival_drifted` reported by name,
-never gated** -- reconciling decides which of two LIVE sentences is law, gate `%7`, so gating
-growth refuses writing a rule. **8 of 11 born since arrived AGREEING, 5 of 40 elders.**
-**Yours:** all three drifted arrivals are a CONDENSED Cursor twin -- transform, or drift? **`%569`;
-`%499`; LOCA.**
+**COPAL -- A GUARD READ A ROOM, AND THE ROSTER RUNS FILES OUTSIDE IT.**
+Elder [shelved](archive/20260908-052557_itinerary-landed-accounts.md); row (`20260908.052557`)
+**CLOSED**, [folded](archive/REDS-a-population-picked-by-directory-rows-618.md). `shared_pen_scan.sh` picked its population with `git ls-files 'tools/*'` -- yet its WHY
+names no room: a constant `/tmp` name is contended because **eight checkouts share one
+`/tmp`**, a fact about the pier. **68 tracked runners stood outside that glob**, and the roster
+runs them: `rish_join_split_witness` three under `rishi/tests/`, `rishi_bounded_process_control` six.
+**A POPULATION PICKED BY DIRECTORY IS A CHOICE IN A RULE'S CLOTHES** -- `%532`'s enumeration
+spelled as a glob. The tell: read a guard's WHY, and ask whether it names the boundary its source
+line draws.
+Widened to every tracked `.sh` and `.rish`, **3,221 -> 3,289**; `vendor/` and `gratitude/` are
+gitlinks. It found **one file** -- `rishi/tests/file_io.rish`, five sites, no wipe -- whose rostered
+sibling already wrote to `tools/fixtures/rish_io/`. GREEN. **BOTH CEILINGS STAY** -- 236 sites, 46 files, 15
+wiping, before and after. Three legs both ways: a token inside `tools/` and outside both count; a
+`date/` shelf outside still passes free. Cold **185, 183 green, 0 red, 2 gated**.
+**Yours:** `%601`'s remainder wants a guard on a lap's OWN typed `/tmp` name -- and a typed command
+is in no file. Habit, or wrapper?
 
 **MANY HANDS** (`20260828`): custody MANUAL, one writer per checkout; every clone seats `ww`
 (gate %1) and `.git/ssh_config_jail`.

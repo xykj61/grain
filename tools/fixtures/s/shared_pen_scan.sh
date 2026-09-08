@@ -18,8 +18,29 @@
 # cost two files and bought back the two it named: 61 files either way, one more spelling covered.
 #
 # WHAT IS COUNTED. A `/tmp/<token>` path -- written literally, or as `${TMPDIR:-/tmp}/<token>` on a
-# pier where TMPDIR is unset -- in a living tracked `.sh` or `.rish` under `tools/`, whose token
-# carries no `$`, so the name is fixed at write time rather than at run time.
+# pier where TMPDIR is unset -- in any living tracked `.sh` or `.rish`, whose token carries no `$`,
+# so the name is fixed at write time rather than at run time.
+#
+# THE POPULATION WAS `tools/` UNTIL `20260908.052557`, AND THE ROSTER RUNS FILES OUTSIDE IT. The
+# source line read `git ls-files 'tools/*'`, which is a room rather than a class: a constant pen is
+# contended because eight checkouts share one `/tmp`, and nothing about that reasoning mentions a
+# directory. The gap was not hypothetical -- `tools/r/rish_join_split_witness.rish` runs
+# `rishi/tests/join.rish` and two siblings, and `tools/fixtures/r/rishi_bounded_process_control.sh`
+# runs six more under `rishi/tests/`, so the roster already executes a room this meter could not
+# read. Widened here to every tracked `.sh` and `.rish`, which takes the population from 3,221
+# sources to 3,289 -- 68 files across `rishi/`, `comlink/`, `arbor/`, `aurora/`, `nixos/`,
+# `pond/`, `rye/`, `context/fixtures/`, `classical-vedic-astrology/`, `active-designing/docs/glow/`
+# and the two seed publishers at the root. Vendored source enters by none of this: `vendor/` and
+# `gratitude/` are gitlinks, so `git ls-files` never lists a byte inside them.
+#
+# THE WIDENING FOUND ONE FILE AND THE REPAIR LANDED IN THE SAME LAP, so both ceilings stay where
+# they stood. `rishi/tests/file_io.rish` wrote `/tmp/rishi_io_test.txt`, `/tmp/rishi_io_test_num.txt`
+# and `/tmp/rishi_io_var_path.txt` -- five sites, no wipe -- while its own rostered sibling
+# `tools/r/rish_file_io_witness.rish` had written into `tools/fixtures/rish_io/` since it was
+# seated. The elder copy simply never followed, and the meter could not say so. Pointed at the same
+# anchor and run GREEN on metal. Measured before and after: `tools/`-only reads 236 sites, 46 files,
+# 15 wiping; widened and repaired reads 236, 46, 15. Reach bought, number unchanged -- which is the
+# one shape a population widening can take without asking for slack.
 #
 # WHAT PASSES FREE, by named rule.
 #   A line carrying `mktemp` or `XXXXXX`. The kernel picks that suffix, so no two runs can agree.
@@ -150,11 +171,11 @@ wipe_ceiling=${SHARED_PEN_WIPE_CEILING:-15}
 cd "$root" 2>/dev/null || { echo "verdict=no_root"; echo "refused: $root is not a directory" >&2; exit 1; }
 git rev-parse --git-dir >/dev/null 2>&1 || { echo "verdict=no_git"; echo "refused: this scan reads git ls-files" >&2; exit 1; }
 
-sources=$(git ls-files 'tools/*' 2>/dev/null | grep -E '\.(sh|rish)$' | grep -v '/date/')
+sources=$(git ls-files 2>/dev/null | grep -E '\.(sh|rish)$' | grep -v '/date/')
 sources_n=$(printf '%s\n' "$sources" | grep -c . || true)
 if [ "$sources_n" -eq 0 ]; then
   echo "verdict=no_sources"
-  echo "refused: no tracked tools sources under this root -- a zero here would read as clean" >&2
+  echo "refused: no tracked shell or Rishi sources under this root -- a zero here would read as clean" >&2
   exit 1
 fi
 

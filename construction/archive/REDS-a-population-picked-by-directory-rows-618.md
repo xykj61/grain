@@ -1,0 +1,15 @@
+# REDS %618 -- a population picked by directory
+
+*Folded from the living pin [`../REDS.md`](../REDS.md) on `20260908.052557`, so the pin keeps its
+declared bound and holds what is still open. The row is CLOSED, its repair stands rostered, and
+its instrument's own header carries the measurement in full. Kept as the record of a shape that
+will recur: this tree holds many scans whose population is a glob, and a glob is an enumeration
+nobody counted. The tell is written here once -- read a guard's WHY paragraph beside its source
+line, and ask whether the WHY names the boundary the source line draws. When it does not, the
+boundary is a choice somebody made once and nobody has questioned since, and it reads as coverage
+from every side.*
+
+---
+
+
+**REDS %618 (`20260908.052557`) -- the shared-pen guard read a ROOM, and the roster runs files outside it.** *What went wrong:* `tools/fixtures/s/shared_pen_scan.sh` selected its population with `git ls-files 'tools/*'`, so **68 tracked `.sh` and `.rish` outside `tools/`** were never read -- across `rishi/`, `comlink/`, `arbor/`, `aurora/`, `nixos/`, `pond/`, `rye/`, `context/fixtures/`, `classical-vedic-astrology/`, `active-designing/docs/glow/` and the two seed publishers. The guard's own WHY names no directory: a constant `/tmp` name is contended because **eight checkouts share one `/tmp`**, a fact about the pier. *What caught it:* the aether rota row read against `%601`'s open remainder, which asks for a guard on a fixed `/tmp/<name>` write and had one standing, scoped to a room nobody had questioned. Measured from there: `tools/r/rish_join_split_witness.rish` runs three scripts under `rishi/tests/` and `tools/fixtures/r/rishi_bounded_process_control.sh` six more, so **the roster already executes a room this meter could not read.** *What it taught:* **a population selected by directory is a choice wearing the clothes of a rule**, and it reads as coverage from every side -- `%532`'s hand-written enumeration one instrument over, spelled as a glob rather than a list. The tell is cheap and general: read a guard's WHY paragraph and ask whether it names the boundary its source line draws. *Repaired (`20260908.052557`):* the source line reads every tracked `.sh` and `.rish`, **3,221 -> 3,289** sources; `vendor/` and `gratitude/` are gitlinks, so no vendored byte enters. It found exactly one file -- `rishi/tests/file_io.rish`, five sites, no wipe -- whose own rostered sibling `tools/r/rish_file_io_witness.rish` had written into the gitignored anchor `tools/fixtures/rish_io/` since it was seated, while the elder copy kept its three `/tmp` names. Pointed at that anchor, GREEN on metal. **Both ceilings stay** -- 236 sites, 46 files, 15 wiping, before and after -- the one shape a widening takes without asking for slack. Three legs prove it both ways: one token planted inside `tools/` and outside must both count, and a `date/` shelf outside `tools/` still passes free, since an exemption proven in one room cannot be told from an accident. `behaviors=41 -> 44`, faults 0. **CLOSED**

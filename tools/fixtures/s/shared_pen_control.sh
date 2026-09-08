@@ -259,7 +259,32 @@ claim pen_outside_the_body_bites 1 "$(readout heredoc constant_pen_files)"
 ( cd "$pen/heredoc" && git add -A >/dev/null 2>&1 && git commit -qm heredoc3 >/dev/null 2>&1 )
 claim body_closes_at_its_terminator 1 "$(readout heredoc constant_pen_files)"
 
-# --- 18. an empty tools/ refuses rather than reading zero -----------------------------------------
+# --- 17c. the population is a CLASS, not a room, and the widening is shown from both sides --------
+# The source line read `git ls-files 'tools/*'` until `20260908.052557`, and the roster already ran
+# files outside it -- `tools/r/rish_join_split_witness.rish` runs three scripts under `rishi/tests/`
+# and `tools/fixtures/r/rishi_bounded_process_control.sh` runs six more. A pen is contended because
+# eight checkouts share one `/tmp`, which names no directory, so a room-scoped reading was a choice
+# wearing the clothes of a rule. The SAME token is planted twice: once under `tools/`, where the
+# elder reading already bit, and once outside it, where only the widened reading can. Both must
+# count, or the widening is a claim rather than a reading.
+newtree outsideroom
+mkdir -p "$pen/outsideroom/rishi/tests"
+printf '#!/bin/sh\nmkdir -p /tmp/outside_the_tools_room\n' > "$pen/outsideroom/rishi/tests/io.sh"
+( cd "$pen/outsideroom" && git add -A >/dev/null 2>&1 && git commit -qm outside >/dev/null 2>&1 )
+claim pen_outside_tools_counted 1 "$(readout outsideroom constant_pen_files)"
+outside_named=$( ( cd "$pen/outsideroom" && SHARED_PEN_ROOT=. SHARED_PEN_FILES_CEILING=99 SHARED_PEN_WIPE_CEILING=99 sh "$scan" --list 2>/dev/null ) | grep -c 'rishi/tests/io.sh' )
+claim pen_outside_tools_named 1 "$outside_named"
+
+# AND A DATED SHELF OUTSIDE `tools/` IS STILL TESTIMONY. The `date/` exemption was written when the
+# only rooms read were under `tools/`; widening the population widens the exemption with it, and an
+# exemption proven in one room only cannot be told from an accident.
+newtree outsidedated
+mkdir -p "$pen/outsidedated/session-logs/date/20260101"
+printf '#!/bin/sh\nmkdir -p /tmp/dated_outside_pen\n' > "$pen/outsidedated/session-logs/date/20260101/20260101-000000_old.sh"
+( cd "$pen/outsidedated" && git add -A >/dev/null 2>&1 && git commit -qm dated >/dev/null 2>&1 )
+claim dated_outside_tools_free 0 "$(readout outsidedated constant_pen_files)"
+
+# --- 18. an empty runner population refuses rather than reading zero -------------------------------
 newtree bare
 ( cd "$pen/bare" && git rm -q -r tools >/dev/null 2>&1 && git commit -qm bare >/dev/null 2>&1 )
 claim no_sources_refused no_sources "$(readout bare verdict)"
