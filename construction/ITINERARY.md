@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `61dfda8b9c` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `ba7da82787` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- NINETEEN ORPHANS WERE THREE KINDS, AND ONLY SIX WERE A LAP.**
 Elder [shelved](archive/20260908-025257_itinerary-landed-accounts.md).
@@ -198,13 +198,15 @@ guard said to lock that is `%500` above, and it now reds honestly.
 
 **`%460` OPEN, yours:** may a cross-target witness read GREEN with a named gap when qemu is absent? `%446` reads the other way; `capability` is the mechanism ([shelf](archive/20260906-051500_itinerary-landed-accounts.md)).
 
-**GRASS -- A PATH ASSEMBLED FROM FRAGMENTS SURVIVED THE FOLD THAT MOVED IT.**
-Elder [shelved](archive/20260908-020050_itinerary-landed-accounts.md). Row `20260908.020050`
-**BOOKED**, [folded](archive/REDS-a-path-a-repointer-could-not-follow-rows-605.md), renumbered
-off `%602` on the rebase. `shed_census_scan.sh` builds its orphan path from four variables, never
-holding the contiguous string -- so the `20260823.144100` fold left `ORPHAN_DIR` behind while the
-literal `CITED` two lines up, same directory, was carried. **16 days** of `CONTROL=untracked` on
-a tracked file, **four layers deep, every layer honest**. Choir **7 -> 5**.
+**GRASS -- THE FLOOR PRINTED A REFUSAL IT NEVER PERFORMED.**
+Elder [shelved](archive/20260908-035300_itinerary-landed-accounts.md). Row `20260908.035300`
+**CLOSED**. `mandi_core.rye` signs with `listing_seed = .{0x67} ** 32`, a **source constant**,
+so any reader signs a listing `verify_listing` takes. Its case flipped a `stamp_sig` character
+and printed `lying listing refused`. **A flipped byte is corruption: that proved integrity** --
+and **no meter reads it**: a true sentence about a real case reads green. Fixed by
+**showing**: a second listing at another price verifies. **7 MALA swept, 27 left. Mine:**
+shelf links a directory deep; a regex taking COPAL's.
+
 **COPAL -- THE SEVENTH PARK LANDED, AND THE RED THAT BOOKED THE LAP WAS MINE, ONE LAP OLD.**
 Elder [shelved](archive/20260908-030824_itinerary-landed-accounts.md). Row `20260907.223214`
 **CLOSED**, [folded](archive/REDS-carried-from-the-next-room-rows-606.md). **`%499`, SEVENTH PARK:**

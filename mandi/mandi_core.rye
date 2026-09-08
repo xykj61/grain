@@ -1,9 +1,19 @@
-//! mandi/mandi_core.rye -- Mandi -- market listing: vessel market listing priced in MALA - 20260728.
+//! mandi/mandi_core.rye -- Mandi -- market listing: vessel market listing priced in MUR - 20260728.
 //!
 //! Distinct from Granary weave listings. Amphora carries; Mandi names the offer.
 //! WOV settlement waits.
 //!
 //! Ground: [`../context/specs/20260710-165634_mandi-name-seated.md`](../context/specs/20260710-165634_mandi-name-seated.md)
+//!
+//! WHAT A VERIFIED LISTING PROVES, AND WHAT IT DOES NOT. `listing_seed` below is a constant
+//! written in this source file, so every reader of the tree can regenerate the keypair and sign
+//! a listing this module accepts. `verify_listing` therefore proves exactly two things -- the
+//! body parses to the canonical form, and the signature over that form is intact. It proves
+//! nothing about who wrote the listing, so it cannot refuse a well-formed false price: a second
+//! listing naming the same `vessel_parent` at a different price verifies just as well, and the
+//! lap's own `forged listing accepted` case demonstrates that on metal rather than asserting it
+//! here. Binding a listing to a seller's own key is a later lap behind the identity-key gate;
+//! `mandi/listing_settle_core.rye` carries the same bound at seed 0x68.
 
 const std = @import("std");
 const assert = std.debug.assert;
@@ -18,6 +28,7 @@ pub const stamp_sig_hex_len: u32 = kumara.signature_length * 2;
 pub const max_price_len: u32 = 16;
 
 /// Mandi listing seed -- distinct from Granary exchange 0x66 and Amphora delivery 0x64.
+/// Public by construction: it is written here, so the keypair is reproducible by any reader.
 const listing_seed: [kumara.seed_length]u8 = .{0x67} ** kumara.seed_length;
 
 pub const ListingError = error{
