@@ -41,6 +41,8 @@ read it for implementation. Concepts enter through the clean room; code never do
 **Measured `20260908.011935`.** Upstream stands at **`v2026.05.21`**; this pier runs
 **`v2026.04.12`**, which is what the pinned `nixos-26.05` channel carries. `nixos-unstable` carries
 the newer one. Nothing is wrong here -- a pinned channel moving deliberately is a pin doing its job,
-and the gap is recorded so the next reader meets a fact rather than a guess.
+and the gap is recorded so the next reader meets a fact rather than a guess. **Keaton's word the
+same day: wait.** The pin stays where it is and `2026.04.12` is the seated version on this pier, so
+the gap above is a choice rather than drift.
 
 *May the thing you are about to change always be visible before you change it.*

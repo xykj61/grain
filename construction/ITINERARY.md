@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `b28e0a37ec` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `e4a67d4063` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- ONE LAW, TWO DERIVATIONS, AND THE BLIND ONE HELD THE GATE.**
 Elder [shelved](archive/20260907-232511_itinerary-landed-accounts.md). Row `20260907.230000`
