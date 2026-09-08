@@ -176,7 +176,7 @@ classify() {
   if printf '%s' "$_line" | grep -qE '\[ -[dfe] '; then echo exists; return; fi
   # An assignment naming the room and nothing more specific builds a variable, never a reading.
   # It sits LAST among the constructs on purpose: the SHAPE of a path is a stronger signal than the
-  # syntax of the line holding it, so `let ref = "session-logs/20260710-000045_x.md"` reads as the
+  # syntax of the line holding it, so `let ref = "session-logs/YYYYMMDD-HHMMSS_sprig.kyri"` reads as the
   # record path it names rather than as the assignment it happens to be written as.
   if printf '%s' "$_line" | grep -qE '^[[:space:]]*(let )?_?[A-Za-z_]+ *='; then
     echo construct; return

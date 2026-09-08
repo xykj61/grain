@@ -487,3 +487,8 @@ at a closed fold.*
 *Row %587 folded to [`REDS-the-namespace-no-wall-watches-rows-587.md`](REDS-the-namespace-no-wall-watches-rows-587.md) on `20260907.223042`, **BOOKED** -- The reading it asked for now stands: a guard naming every tracked script that reaches the shared process table with an unscoped pattern, beside the helper that makes the bounded form near.*
 
 *Row %595 folded to [`REDS-a-sweep-that-left-no-guard-rows-595.md`](REDS-a-sweep-that-left-no-guard-rows-595.md) on `20260907.225452`, **CLOSED** -- a census repaired by hand and left unguarded regrows at the rate its tree writes files.*
+
+*Row %596 folded to [`REDS-a-row-that-says-a-class-is-empty-rows-596.md`](REDS-a-row-that-says-a-class-is-empty-rows-596.md) on `20260907.232130`, **BOOKED** -- the three fabricated citations stand repaired; the gate above them is Keaton's.*
+
+
+*Row %597 folded to [`REDS-the-explanation-that-cannot-be-built-rows-597.md`](REDS-the-explanation-that-cannot-be-built-rows-597.md) on `20260907.234900`, **CLOSED** -- the reading is said before it is judged, and the witness is GREEN on metal.*

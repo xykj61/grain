@@ -35,7 +35,19 @@ assert control.out contains "control_verdict=ok" else "reds-spine-derive: the co
 
 # 2. Then this tree, against the anointed remote.
 let scan = run ["sh" "tools/fixtures/r/reds_spine_derive_scan.sh"]
-assert scan.out contains "verdict=ok" else "reds-spine-derive: the living ledger disagrees with the anointed spine --\n${scan.out}"
+# THE READING IS SAID BEFORE IT IS JUDGED, and the bound is why. Rishi composes an interpolated
+# string in a `StrBuf` bounded at 4,096 bytes (`rishi/src/main.rye`), so `"...${scan.out}"` refuses
+# with `StringTooLong` the moment the scan has more to report than that. Measured `20260907.232343`:
+# the scan printed 4,250 bytes -- 154 past the bound -- once the ledger reached 42 stamp duplicates
+# and 2 published doubles, and this witness went RED on a tree its own scan called `verdict=ok`.
+# A guard that reds because it succeeded at reporting is a guard ships learn to read past. Worse,
+# the message was carried in the assert's `else` clause, so the one composition that could not be
+# built was the one describing a real disagreement -- the explanation failing exactly when it is
+# needed. A bare `say` writes the value straight out and never opens a StrBuf, so the reading is
+# printed whole first and the assert then carries a short, always-composable sentence.
+say "reds-spine-derive: the reading on this tree --"
+say scan.out
+assert scan.out contains "verdict=ok" else "reds-spine-derive: the living ledger disagrees with the anointed spine -- read the reading printed above"
 # THE GATE BITES WHAT A LAP CAN FIX. A number the ANOINTED SPINE ITSELF carries twice is reported
 # as `published_doubles` and never gated: `derived-spine` rule 3 holds for both rows, so no lap
 # may move either, and gating it would red eight ships every lap on a deadlock only Keaton can
@@ -43,6 +55,5 @@ assert scan.out contains "verdict=ok" else "reds-spine-derive: the living ledger
 # repairs by renumbering its own unshared row.
 assert scan.out contains "published_doubles=" else "reds-spine-derive: the published-double reading went unreported, so a deadlock and a repairable rebinding are one message again"
 
-say "reds-spine-derive: the reading on this tree --\n${scan.out}"
 
 say "GREEN: reds-spine-derive -- every number the anointed spine has bound stays bound to the same stamp here, the next row's seat is read from that spine rather than from this tree, and seventeen cases prove the refusal and the welcome on real git repositories in a throwaway pen."

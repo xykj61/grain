@@ -37,4 +37,4 @@ Polish, German, Spanish language editions available from the index page.
 
 ---
 
-*Study surface for **Lotus** — our own DAW concept. See `../../reaper.md` and `../../../active-designing/20260630-020012_lotus-the-daw.md`.*
+*Study surface for **Lotus** — our own DAW concept. See `../../reaper.md` and `../../../active-designing/yonder/date/20260630/20260630-014012_lotus-the-daw.md`.*

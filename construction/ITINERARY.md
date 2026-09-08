@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `c9261ae070` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `f463b2afdd` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- EVERY WALL HERE WATCHES FILES, AND THE ACT THAT BIT TWICE TODAY TOUCHES NONE.**
 Elder [shelved](archive/20260907-214518_itinerary-landed-accounts.md). Row `20260907.174414`
@@ -147,25 +147,22 @@ eight plain sentences plus three bold-led paragraphs read **A+**, the same words
 stamp, the repair kept.** Its ceiling of 48 stood over a population **contaminated by two files
 that never held a pen**. **49 -> 46.**
 **YOURS:** a net demotion of 55 pages; `etc` D+ is a real register fault.
-
-**PHEROMONE -- A HAND SWEPT 34 MISFILED TOOLS, LEFT NO GUARD, AND FIVE HAD REGROWN BY THE NEXT DAY.**
-Elder [shelved](archive/20260907-225349_itinerary-landed-accounts.md). Row `20260907.225349`
-**CLOSED**, [folded](archive/REDS-a-sweep-that-left-no-guard-rows-595.md). `tools/` folds by first
-sprig letter so a path is a **pure function of a name** -- what `tool_path_resolve` answers with no
-index, and what a stale reference leans on. On `20260906.182719` a hand moved all 34,
-**rostering nothing to read the rule after**. This lap: **five back in the wrong room**, three
-`unshared_citation` under `r` for `u`, two `retired_word` under `l` for `r`, each by a hand that
-read the law.
-
-**THE GUARD NAMED ALL FIVE BEFORE I DID** -- `tool_letter_room_scan.sh` reads the **index**, which a
-`git stash` round trip had left holding the elder paths. It reads the entry **directly
-under the room** rather than the leaf, so `tools/m/mind-bin/git` passes with **no exemption list**
-where the elder census called it a mismatch it could never stop reporting; untracked scratch is
-invisible and a **staged** file is judged on the lap it arrives. `tier lap`. **25 behaviors**, each
-refusal planted then lifted, a roomless tree answering `no_rooms` not zero.
-
-**`index_row_bound` red at the cold open** -- `%440`'s class, repaired by the tool that landed at
-HEAD. **Yours:** `main.rye` inlines a model `weave.rye` owns -- **port or drop?**
+**PHEROMONE -- THE MODEL WIDENED, TWO COPIES DID NOT MOVE, AND THE GUARD FOR THAT SLEPT IN A STASH.**
+Elder [shelved](archive/20260907-210124_itinerary-landed-accounts.md). `bc37657e8` gave
+`mantra/src/weave.rye`'s `Line` a `site` and `Diff` a `site`, so a line is named by the pair
+`Line.id()` returns. **Neither copy moved:** `main.rye`, the CLI writing `.mantra/`, still declares
+`text gen pos`, and the test inlines it. `mantra_glow_tend_limb1`, this card's lock on widening
+`Line`, reads **one file** -- so nothing reddened.
+**ITS GUARD WAS WRITTEN A DAY BEFORE AND PARKED.** `mantra_weave_model`, authored `20260906` with
+all three agreeing, sat in `stash@{7}` on no ref (`%499`, fourth firing). Recovered from
+`stash@{7}^3` -- the TREE, so the mode rides -- it read `disagreements=1 unreadable=1` first pass:
+**the hazard its header predicted**. Row `20260907.210124`.
+**LANDED AS A CEILING, NOT A ZERO**, since closing the gap rewrites `.mantra/`'s on-disk record --
+your seam. The two laggards stand under a falling ceiling; a copy ARRIVING disagreeing is refused
+at the strict default, proven both sides on ONE break. Control **33 -> 39**, rostered.
+**`standing_equipment`'s ninth firing HAS A CAUSE:** its `live_leader_parent_reads_gone` leg reds
+when the pass runs under `setsid`; from an ordinary shell the tree reads **GREEN**.
+**Yours:** `main.rye` inlines a model the module owns -- **port the field or drop?**
 
 **INCENSE -- A RATCHET AT ZERO SLACK REDS EIGHT SHIPS FOR ONE PAGE, AND THE ROOM THAT NEVER LEARNED
 THE LESSON WROTE IT.** Elder [shelved](archive/20260907-192800_itinerary-landed-accounts.md);
@@ -215,13 +212,13 @@ guard said to lock that is `%500` above, and it now reds honestly.
 
 **`%460` OPEN, yours:** may a cross-target witness read GREEN with a named gap when qemu is absent? `%446` reads the other way; `capability` is the mechanism ([shelf](archive/20260906-051500_itinerary-landed-accounts.md)).
 
-**GRASS -- ONE WALL, POINTED AT ONE OF A COMMIT'S TWO PERMANENT ARTIFACTS.**
-Elder [shelved](archive/20260907-220942_itinerary-landed-accounts.md); row `20260907.220836`, by
-stamp until `xy` binds it. `commit-msg` refuses a BODY citing an absent path (`%202`); the log rides
-in it unread -- **228 of 16,924 `file` fields name a basename that exists nowhere, 32
-today**, twelve a shelf path from the lap's stamp. `log_file_claim` gates `staged_unwritten` at
-zero over tree AND index, so **a peer's record can never refuse this lap**. Control **22**, `tier
-lap` 0.4s. **Yours:** `dated_path` **94 of 85**, unlowerable.
+**GRASS -- MY OWN ROW SAID THE CLASS WAS EMPTY, AND THREE OF ITS FOUR WERE MINE TO FIX.**
+Elder [shelved](archive/20260907-232137_itinerary-landed-accounts.md); rows `20260907.232029`,
+`.234825`. `%594` called them unrepairable, so nobody opened one. Three named a stamp on no branch,
+TWO OF THEM SCANS TEACHING WITH REAL-LOOKING STAMPS -- a census reading its own lesson. **95 -> 93**. **THEN A GUARD REDDENED ON A GREEN TREE:** `reds_spine_derive` said its
+reading through Rishi's 4,096-byte `StrBuf`; the scan had grown to **4,250**. `.234825` **CLOSED**.
+**Yours:** `dated_path` **93 of 85** -- testimony **91**, eight today `%594`'s shape, walled at
+22:18, so tomorrow is its falsifier.
 
 **COPAL -- THE CENSUS OF WHICH ROOMS A FLAT GLOB UNDERSTATES WAS OVERSTATING 26 OF 44.**
 `git ls-files` lists a symlink exactly like a file, so a room read borrowed modules as its own: 228
