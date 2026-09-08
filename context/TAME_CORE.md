@@ -37,15 +37,27 @@ Token-dense on purpose. This is the smallest form that still holds TAME's highes
 - **Brush (Brushstroke)** -- paint/Skate surface; bounded frames, zero-copy where the pixels allow.
 - **Myc (`.myc` / Mycelium)** -- Sui-side reimpl; the same bounds, asserts, and named errors cross the seam.
 
-## The checkable surface (the audit runs these)
+## The checkable surface -- what stands, on which clock, over what
 
-- `tools/w/width-check.rish` -- widths (seam-only `usize`).
-- `tools/t/tame_style_check.rish` -- tidy **bans** (fail) + **ratchets** (migrate on touch).
-- `tools/r/rune_assert_sweep.rish` -- asserting cores keep their asserts.
-- `tools/l/living_docs_lint.rish` -- living-doc links, status, retired words.
-- `tools/c/chapter_allocator_witness.rish` -- the chapter-allocator reflex above, two walls at zero. Seated `20260908.083050`, after a grep found that reflex stated as an absolute on three pages and checked by nothing.
+Every tool below sits on `construction/standing-equipment.kyri`, so a roster pass runs it whether or not a hand remembers to. Read the clock and the reach beside each name: a green says exactly as much as the population behind it.
 
-Run them when touching authored code; the **TAME Guidance Audit Quest** (one Quest/Equinox, double-seated) walks all five and books reds.
+| Tool | Reads | Clock |
+|---|---|---|
+| `tools/w/width-check.rish` | widths, seam-only `usize`, over the authored rooms | lap |
+| `tools/t/tame_style_check.rish` | tidy **bans** (fail) + **ratchets** (migrate on touch), 1,126 authored `.rye` | lap |
+| `tools/c/chapter_allocator_witness.rish` | the chapter-allocator reflex, two walls at zero over 1,958 sources | lap |
+| `tools/o/opening_lines_witness.rish` | the opening triad, **25 hand-named hosted files** | lap |
+| `tools/t/tame-check.rish` | unqualified assert, `Self = @This()`, whitespace, **17 hand-named files** | lap |
+| `tools/r/rune_assert_sweep.rish` | asserting cores keep their asserts, **12 hand-named cores** | lap |
+| `tools/t/tame_style_long_fn_witness.rish` | functions past 70 lines | cadence |
+| `tools/w/width_check_th3.rish` | Mantra's own width reading | lap |
+| `tools/l/living_docs_lint.rish` | living-doc links, status, retired words -- advise only | cadence |
+
+**Three of these reached no lap until `20260908.111848`.** This section named five tools and called them *the audit*, and four of the five arrived on the roster only because somebody seated them one at a time for their own reasons. `rune_assert_sweep` was seated by nobody; `opening_lines_witness` and `tame-check` stood on the supplement's own lint table and nowhere else. All three read GREEN the hour they were rostered, so the loss was hearing rather than health. The runner this section used to name -- *the TAME Guidance Audit Quest* -- stands in exactly one place in the living tree, which is the sentence that named it. A roster row runs; a sentence describes.
+
+**Three of them read a hand-typed list.** `opening_lines`, `tame_check` and `rune_assert_sweep` gate 25, 17 and 12 named files against regression, where the rooms in `tools/fixtures/t/tame_style_rooms.txt` hold **1,126** authored `.rye` and **1,073** of them are hosted. Measured `20260908.111848`: **123 of the 1,073 are missing at least one line of the opening triad.** A list holds what it was typed to hold, and the tree grows past it -- so each row above names its reach, and widening a list is its own lap.
+
+Run them when touching authored code; a roster pass, cold at the open and hot after `git add`, runs them for you.
 
 ## Crash headroom
 
