@@ -53,7 +53,9 @@ check "an unwritten key says so"         yes "$(has "$out" 'verdict=key_never_wr
 check "rather than printing a flat line" no  "$(has "$out" 'direction=')"
 
 out=$(run guards)
-check "a listing carries the log path"   yes "$(has "$out" 'session-logs/date/20260101/20260101-010000_one.kyri')"
+# THE LISTING CARRIES THE SOURCE LINE, so a reader sees the scope a value was measured in. A key is
+# comparable only within one scope, and this reader once merged a single fast leg with a whole run.
+check "a listing shows the loom line"    yes "$(has "$out" 'loom roster=a guards=10 seconds=100')"
 
 printf 'pass=%d fail=%d\n' "$pass" "$fail"
 [ "$fail" -eq 0 ]

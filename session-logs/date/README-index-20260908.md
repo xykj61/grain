@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260908.011352` | [a leg measured against a run](20260908/20260908-011352_a-leg-measured-against-a-run.kyri) | the 150x rise retracted. |
 | `20260908.010852` | [a grep that never settled it](20260908/20260908-010852_a-grep-that-never-settled-it.kyri) | three of four were libraries. |
 | `20260908.005904` | [the verdict that caught its author](20260908/20260908-005904_the-verdict-that-caught-its-author.kyri) | 30 writers were really 7. |
 | `20260908.005205` | [one prover for twenty-seven](20260908/20260908-005205_one-prover-for-twenty-seven.kyri) | 22 share one shape. |

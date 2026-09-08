@@ -107,8 +107,14 @@ if [ "$MODE" = "--summary" ]; then
   exit 0
 fi
 
+# THE WHOLE LOOM LINE IS SHOWN, NOT ONLY THE VALUE (`20260908.011352`). A key is comparable only
+# within one scope, and this reader merged two that were not: `legs=hole wall_s=10` -- a single fast
+# leg -- read beside `wall_s=1502` for a whole witness run, which looks like a 150x regression and is
+# a leg measured against a run. Printing the line the value came from makes the scope visible, so a
+# reader can see incomparability rather than infer a trend from it.
 head -"$MAX_VALUES" "$work/values.txt" | while IFS="$(printf '\t')" read -r stamp v f; do
-  printf '%s\t%s\t%s\n' "$stamp" "$v" "$f"
+  ctx=$(grep -h "^loom .*[ =]${KEY}=${v}\([ ]\|$\)" "$f" 2>/dev/null | head -1 | cut -c1-96)
+  printf '%s\t%s\t%s\n' "$stamp" "$v" "${ctx:-$f}"
 done
 echo "key=$KEY"
 echo "values=$n"
