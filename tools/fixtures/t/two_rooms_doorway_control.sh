@@ -79,6 +79,7 @@ honest() {
   page "$d/external-research/20260901-010101_a.md" 'Living -- checkable'
   page "$d/active-designing/20260901-010102_b.md" 'Living -- vision'
   page "$d/docs/20260901-010103_c.md" 'Living -- mixed'
+  page "$d/docs-geode/20260901-010105_e.md" 'Living -- checkable'
   page "$d/active-designing/date/20260901/20260901-010104_d.md" 'Living -- research for understanding'
 }
 
@@ -88,6 +89,7 @@ out=$(scan_at "$d" 0)
 echo "$out" | grep -q 'verdict=ok' && echo "named_room_free=yes" || echo "named_room_free=no"
 echo "$out" | grep -q 'doorway fails=0 ' && echo "clean_reads_zero=yes" || echo "clean_reads_zero=no"
 echo "$out" | grep -q 'folded=1' && echo "folded_page_read=yes" || echo "folded_page_read=no"
+echo "$out" | grep -q 'geode=1 ' && echo "geode_room_read=yes" || echo "geode_room_read=no"
 
 # 2. A Status that names no room -- counted, named, refused.
 d=$(build no_room); honest "$d"
@@ -131,9 +133,9 @@ commit_all "$d"
 out=$(scan_at "$d" 0)
 echo "$out" | grep -q 'verdict=ok' && echo "yonder_excluded=yes" || echo "yonder_excluded=no"
 # Counted rather than grepped-for-absence: `grep -qv PATTERN` answers yes whenever ANY line
-# fails to match, which is a test that cannot fail (REDS %503). The honest tree holds four
-# pages; two more were planted, and the reach must still read four.
-echo "$out" | grep -q 'doorway pages=4 ' && echo "readme_excluded=yes" || echo "readme_excluded=no"
+# fails to match, which is a test that cannot fail (REDS %503). The honest tree holds five
+# pages; two more were planted, and the reach must still read five.
+echo "$out" | grep -q 'doorway pages=5 ' && echo "readme_excluded=yes" || echo "readme_excluded=no"
 
 # 8. THE ELDER DEFECT, planted. A roster narrowed to the flat room must refuse rather than
 #    report a smaller clean tree -- the folded floor is what tells those two apart.
@@ -185,5 +187,47 @@ d=$(build both_keys); honest "$d"
 page_room "$d/docs/20260902-060603_both.md" 'vision' 'Living'
 commit_all "$d"
 scan_at "$d" 0 | grep -q 'verdict=ok' && echo "both_keys_free=yes" || echo "both_keys_free=no"
+
+# 13. THE ROOM A HAND FORGOT TO NAME. The roster's rooms are a hand-written list, so the way it
+#     narrows now is by room rather than by depth: a roster reading every depth of only the elder
+#     three passes every other leg in this file and still leaves the shipping shelf unread. It
+#     must refuse. This is leg 8's defect one axis over, planted the same way -- the elder list
+#     restored -- and proven from the failing side, because a reach leg is exactly the kind of
+#     check that reports a smaller clean tree instead of an error.
+d=$(build room_missing); honest "$d"
+commit_all "$d"
+cat > "$d/tools/fixtures/t/two_rooms_doorway_roster.sh" <<'THREEROOM'
+#!/bin/sh
+git ls-files 'external-research/*.md' 'active-designing/*.md' 'docs/*.md' 2>/dev/null |
+while IFS= read -r f; do
+  [ -n "$f" ] || continue
+  case "$f" in
+    */README.md) continue ;;
+    */yonder/*|*/archive/*) continue ;;
+  esac
+  [ -f "$f" ] || continue
+  printf '%s\n' "$f"
+done
+THREEROOM
+out=$(scan_at "$d" 0)
+echo "$out" | grep -q 'FAIL doorway reach: docs-geode read no page' \
+  && echo "geode_missing_refused=yes" || echo "geode_missing_refused=no"
+# And the same plant must not walk free on its verdict either -- a scan that names a refusal and
+# then reports ok is a report wearing a gate's clothes.
+echo "$out" | grep -q 'verdict=ok' && echo "geode_missing_verdict_refused=no" || echo "geode_missing_verdict_refused=yes"
+
+# 14. THE SIBLING PREFIX. `docs/` and `docs-geode/` part at the fourth character, and a reach leg
+#     written with a loose prefix would let one room's pages satisfy the other's. With ONLY a
+#     docs-geode page planted and no `docs/` page at all, the docs reach must still refuse.
+d=$(build sibling_prefix)
+page "$d/external-research/20260901-010101_a.md" 'Living -- checkable'
+page "$d/active-designing/20260901-010102_b.md" 'Living -- vision'
+page "$d/active-designing/date/20260901/20260901-010104_d.md" 'Living -- mixed'
+page "$d/docs-geode/20260901-010105_e.md" 'Living -- checkable'
+commit_all "$d"
+out=$(scan_at "$d" 0)
+echo "$out" | grep -q 'FAIL doorway reach: docs read no page' \
+  && echo "sibling_prefix_distinct=yes" || echo "sibling_prefix_distinct=no"
+echo "$out" | grep -q 'geode=1 ' && echo "sibling_prefix_geode_counted=yes" || echo "sibling_prefix_geode_counted=no"
 
 echo "control_verdict=ok"

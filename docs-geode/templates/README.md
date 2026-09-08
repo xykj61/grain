@@ -1,12 +1,22 @@
 # docs-geode / templates
 
 **Stamp:** `20260728.031722`  
-**Last refreshed:** `20260801.033305` - e149 Acme personalize pointer crush  
+**Last refreshed:** `20260908.101500` -- what a template is, said in plain words; elder refresh `20260801.033305`, the Acme personalize pointer crush  
 **Status:** Room living -- source templates stay in `tools/gen/chapter/` and repo root; this page is the shipping index.  
 **Parent:** [`../README.md`](../README.md)  
 **Voice:** Kyri
 
 Shipping genre: **templates**. Bidirectional relative links - Radiant lint - Geode Chapter rounds.
+
+A template here is a file you copy rather than a file you edit. Each template is tracked, so a
+fresh clone carries it; the copy you fill in stays untracked, so your own names, keys, and host
+paths remain on your own machine. That pairing is the whole design: the shape ships, and the
+contents stay yours.
+
+So the habit is three steps. Copy the tracked template, fill your copy in, and leave the copy out
+of git. The table below names every pair this tree ships today -- the template on the left, the
+filename your copy takes in the middle, and the guide that walks you through filling it on the
+right.
 
 ## Acme Corporation -- clone and personalize
 

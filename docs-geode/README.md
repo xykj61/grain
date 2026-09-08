@@ -43,6 +43,25 @@ Two words on this shelf are our own, and the Lexicon seats both. **Crush** means
 
 **The count lives in the table, and here is why.** Three sentences here once said *ten rooms* while the table listed twelve. They said it from the very commit that added the twelfth, and they stood for sixteen days. A number typed beside the thing it counts holds for as long as nobody adds a room. So the tally moved into the table, where [`../tools/cr/crushed_index_witness.rish`](../tools/cr/crushed_index_witness.rish) reads it against the rooms on disk each lap.
 
+## The room at the door
+
+A page here that carries a one-clock stamp in its filename names which of the two rooms it speaks
+from -- one of `checkable`, `vision`, `mixed`, or `research for understanding`, glossed at
+[`../context/TWO_ROOMS.md`](../context/TWO_ROOMS.md). The token rides beside whatever else the line
+says, under either `**Status:**` or `**Room:**`, so one line answers where the page stands in its
+life and which register it speaks from.
+
+The blog is the genre this reaches first, because blog pieces are the one kind here that stamp
+their filenames. Everything else on this shelf carries a plain living name, and a plain name is
+grandfathered.
+
+[`../tools/t/two_rooms_doorway.rish`](../tools/t/two_rooms_doorway.rish) reads that token and names
+every page whose door has yet to carry one. This shelf joined its roster on `20260908`, having
+stood outside it since the shelf was opened: it supplies **10** of the **1,004** pages the guard
+reads and **0** of the 3 it names, which is what made the joining free. A room brought under a
+guard while it is clean stays clean; the same room brought under it later is a repair somebody has
+to schedule.
+
 ## Laws
 
 - **Accrete-never-break** -- dated sources stay; geode pages are compiled outputs and living indexes.

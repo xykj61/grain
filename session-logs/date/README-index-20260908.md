@@ -15,6 +15,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260908.105313` | [The lap that stashed itself](20260908/20260908-105313_the-lap-that-stashed-itself.kyri) | two laps out of the box; %627 -> %631. |
 | `20260908.104232` | [two rulings the loop left](20260908/20260908-104232_two-rulings-the-loop-left.kyri) | a refusal, and a tool nobody could find. |
 | `20260908.104016` | [A witness that knew two answers](20260908/20260908-104016_a-witness-that-knew-two-answers.kyri) | the ledger could accept no red; one folded, one closed. |
+| `20260908.102413` | [The room a hand forgot to name](20260908/20260908-102413_the-room-a-hand-forgot-to-name.kyri) | docs-geode joins the doorway roster |
 | `20260908.101923` | [One room list in five files](20260908/20260908-101923_one-room-list-in-five-files.kyri) | Five copies of one roster; a green selftest compared two populations. |
 | `20260908.101344` | [An erratum records a correction](20260908/20260908-101344_an-erratum-records-a-correction.kyri) | the law named a field the language refuses; walled at 0. |
 | `20260908.095338` | [A prescription that cannot fire](20260908/20260908-095338_a-prescription-that-cannot-fire.kyri) | the gate's corpus was the repair's corpus. |
