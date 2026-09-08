@@ -10,8 +10,8 @@
 # that fails it corrupts on the second run, and the second run is exactly what an unattended loop
 # does at three in the morning.
 #
-# Measured `20260907.234808`: **30 tools in this tree write to the TRACKED TREE** rather than to a
-# throwaway pen, and only a few name idempotence
+# Measured `20260908.005904` after the control exclusion: **4 tools transform a document handed to
+# them**, and one of the four names idempotence
 # inside a control's own assertion. Three hundred and twenty files mention the word in prose. So the
 # promise is kept where a hand happened to remember, and nothing counts where it was not.
 #
@@ -60,6 +60,14 @@ while IFS= read -r f; do
   grep -hoE '(sed -i[^"]*"[^"]+"|(cat|printf)[^|>]*> *"[^"]+")' "$f" 2>/dev/null \
     | grep -vE '\$(work|pen|tmp|TMP|out|d)\b' \
     | grep -qE '\$(f|file|path|p|target|dst)\b|construction/|session-logs/|\.claude/' || continue
+  # A CONTROL WRITES INTO ITS OWN PEN AND HAS NOTHING TO CONVERGE, and counting them was this
+  # census's third wrong denominator (`20260908.005904`). 23 of the 27 it first called unproven were
+  # `*_control.sh` files whose writes target a throwaway directory they created and delete. The
+  # prover found this empirically rather than by argument: handed a document sample, all 23 answered
+  # `inert` -- the sample exercised no path, because a control is not a document writer. The real
+  # population is FOUR. A denominator wrong by a factor of seven makes a fraction that reads like a
+  # finding and is a description of the naming convention instead.
+  case "$f" in *_control.sh) continue ;; esac
   writers=$((writers + 1))
   base=${f##*/}; stem=${base%.*}
   # Its own siblings: the control and witness that stand beside it by name.
