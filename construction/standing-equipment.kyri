@@ -481,6 +481,7 @@ seated 20260824.183000
 
 guard dayshelf_merge
 path tools/d/dayshelf_merge_witness.rish
+tier lap   # 2s on metal, and the fault it prevents is re-earned by every pull, so it belongs on the clock that follows a pull
 seated 20260908.054012
 
 guard log_has_a_row
@@ -2379,8 +2380,9 @@ tier lap
 seated 20260906.120137
 
 # fold_shelf_link -- a link that kept the depth of the file it was folded out of (REDS %491, closing
-# %474's booked loom). The card sits in `construction/`, so a link it writes as `](archive/X)` or
-# `](../Y)` is correct there and broken the moment that text is folded onto `construction/archive/`.
+# %474's booked loom). The card sits in `construction/`, so a link it writes as `](archive/X)`,
+# `](../Y)`, or a bare `](Z)` is correct there and broken the moment that text is folded onto
+# `construction/archive/`.
 # FOUR link guards read this tree and none reaches it, three of them for one shared reason: a fold
 # shelf's basename carries a one-clock stamp, stamped means testimony, and testimony is where
 # `tracked_link` reads past and `readme_reach` stops gating. The fold's own output wears the exact
@@ -2388,7 +2390,11 @@ seated 20260906.120137
 # because a depth-lost link was never correct in the file it sits in -- the fold broke it in the
 # same act that created the file -- and it is told from a stale reference mechanically: it resolves
 # under exactly ONE card-to-shelf correction where a stale one resolves under neither. Ambiguity is
-# impossible by construction, since `archive/` and `../` are disjoint prefixes. 5s on metal; `lap`
+# impossible by construction: `archive/`, `../`, and neither-of-those partition every relative
+# target, and an absolute path takes no arm. That third arm was MISSING until `20260908.072125`,
+# when the gate was found reading zero over nine bare siblings sitting in its own reported column --
+# the correction block had enumerated the two spellings a hand had just repaired rather than
+# deriving them from the rule those two spell. 5s on metal; `lap`
 # rather than `cadence` because the live front folds by hand on nearly every lap, and this fault
 # fired three times in one lap under the hand that had just written it down.
 

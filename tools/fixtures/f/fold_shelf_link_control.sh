@@ -16,6 +16,15 @@
 #   archive_form_bitten   -- `](archive/X)` where `X` sits beside the shelf: refused, repair named.
 #   parent_form_bitten    -- `](../Y)` where `../../Y` exists: refused, repair named.
 #   plant_lifted_free     -- the SAME pen repaired: green. Both sides, one move.
+#   bare_form_bitten      -- `](Z)`, a bare sibling correct in the parent: refused, repair named.
+#   bare_form_lifted_free -- the SAME pen repaired: green. Both sides, one move.
+#   bare_in_room_free     -- a bare name that already resolves INSIDE the room passes untouched,
+#                            even when the parent holds a namesake. The scan tests the shelf's own
+#                            directory first, so the widened arm can never steal a correct link.
+#   bare_dead_free        -- a bare name the parent does not hold either stays in `links_dead`.
+#   absolute_free         -- an absolute target takes no arm; without its own case the bare arm
+#                            would test a doubled slash and mean something else.
+#   three_forms_counted   -- all three spellings in one shelf: counted as three.
 #   two_forms_counted     -- both forms in one shelf: counted as two, not one.
 #   two_shelves_counted   -- one form on each of two shelves: both named.
 #   pin_self_free         -- `](../REDS.md)` passes untouched. From a shelf it resolves to
@@ -148,6 +157,88 @@ say parent_form_repair_named "$out" "-> ../../context/GUIDE.md"
 out=$(run_scan parentform)
 say plant_lifted_free "$out" "verdict=ok"
 say plant_lifted_zero "$out" "fold_depth_lost=0"
+
+# --- bare_form_bitten ---------------------------------------------------------------------
+# THE THIRD SPELLING, added `20260908`. `](REDS.md)` is correct in `construction/` and points at
+# `construction/archive/REDS.md` from a shelf. The repair is one climb. This form fell through the
+# correction block into `links_dead` for two days while nine real instances stood in the tree, so
+# it is proven here from both sides like the other two.
+new_repo bareform
+shelf bareform 20260202-000000_l.md <<'EOF'
+# folded, sibling depth kept
+
+Rows lifted from [the pin](REDS.md).
+EOF
+out=$(run_scan bareform)
+say bare_form_bitten "$out" "verdict=fold_depth_lost"
+say bare_form_counted "$out" "fold_depth_lost=1"
+say bare_form_repair_named "$out" "-> ../REDS.md"
+[ "$(run_code bareform)" = 1 ] && echo "bare_form_exit_one=yes" || echo "bare_form_exit_one=no"
+
+# --- bare_form_lifted_free ----------------------------------------------------------------
+# The SAME pen repaired. A refusal proven only in the failing direction cannot be told from a scan
+# that reds on every bare name it meets -- which is exactly what a careless third arm would do.
+( cd "$pen/bareform" \
+  && printf '# folded, sibling depth kept\n\nRows lifted from [the pin](../REDS.md).\n' \
+     > construction/archive/20260202-000000_l.md \
+  && git add -A && git commit -q -m "pen: repair" )
+out=$(run_scan bareform)
+say bare_form_lifted_free "$out" "verdict=ok"
+say bare_form_lifted_zero "$out" "fold_depth_lost=0"
+
+# --- bare_in_room_free --------------------------------------------------------------------
+# THE SHADOW CASE, and the one that makes the third arm safe. A bare name that already resolves
+# inside the room must never be repaired -- even when the parent holds a file of the same name and
+# the climb would therefore "work". The scan tests `$d/$t` first and continues, so the shelf beside
+# it wins and the parent's namesake is never reached. Proven rather than reasoned, because this is
+# the only way the widened arm could steal a correct link.
+new_repo bareshadow
+( cd "$pen/bareshadow" \
+  && printf 'the parent namesake\n' > construction/TWIN.md \
+  && printf 'the shelf namesake\n' > construction/archive/TWIN.md \
+  && git add -A && git commit -q -m "pen: twins" )
+shelf bareshadow 20260202-000000_m.md <<'EOF'
+See [the twin](TWIN.md).
+EOF
+out=$(run_scan bareshadow)
+say bare_in_room_free "$out" "verdict=ok"
+say bare_in_room_not_lost "$out" "fold_depth_lost=0"
+say bare_in_room_not_dead "$out" "links_dead=0"
+
+# --- bare_dead_free -----------------------------------------------------------------------
+# A bare name the parent does not hold either. The third arm LOOKS, finds nothing, and leaves the
+# link in `links_dead` where the other guards leave it. Widening what is looked at never widens
+# what is claimed.
+new_repo baredead
+shelf baredead 20260202-000000_n.md <<'EOF'
+See [a departed sibling](NOWHERE.md).
+EOF
+out=$(run_scan baredead)
+say bare_dead_free "$out" "verdict=ok"
+say bare_dead_counted "$out" "links_dead=1"
+say bare_dead_not_gated "$out" "fold_depth_lost=0"
+
+# --- absolute_free ------------------------------------------------------------------------
+# An absolute target is nobody's relative path, so it takes no arm at all. Without its own case the
+# bare arm would test `$d/..//etc/hostname` -- a path that means something else entirely, and on
+# some trees exists.
+new_repo absolute
+shelf absolute 20260202-000000_o.md <<'EOF'
+See [a system file](/etc/hostname).
+EOF
+out=$(run_scan absolute)
+say absolute_free "$out" "verdict=ok"
+say absolute_not_lost "$out" "fold_depth_lost=0"
+
+# --- three_forms_counted ------------------------------------------------------------------
+# All three spellings in one shelf, counted as three. The prefixes partition every relative target,
+# so each link matches exactly one arm and the total is the sum.
+new_repo threeforms
+shelf threeforms 20260202-000000_p.md <<'EOF'
+[elder](archive/20260101-000000_elder.md), [guide](../context/GUIDE.md), and [pin](REDS.md).
+EOF
+out=$(run_scan threeforms)
+say three_forms_counted "$out" "fold_depth_lost=3"
 
 # --- two_forms_counted --------------------------------------------------------------------
 new_repo twoforms

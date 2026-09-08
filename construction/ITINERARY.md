@@ -46,34 +46,36 @@
 
 ### Now -- the live front
 
-**Git nib:** `746b9c2644` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `2fb5d319eb` -- HEAD's parent, resolvable everywhere (%401).
 
-**BAKERY -- DISCOVERY WAS A WORD THE MAP NEVER SPELLED; 194 GUARDS SHARED ONE SILENCE.**
-Elder [shelved](archive/20260908-063219_itinerary-landed-accounts.md).
-**THE LARGEST PARKED STASH IS SUPERSEDED, WHICH IS THE ANSWER RATHER THAN THE WORK.**
-`standing_equipment_yield` -- three files in `stash@{2}`, biggest of the six `orphans_work` -- does
-what `standing_equipment_scope_rank` already does: same arithmetic `cost x (1 - touch_rate)`, same
-paper, same shared-matcher argument, landed by a peer into `scope_match.sh` while mine sat parked
-naming `shell_portable.sh` -- and gating **two** map faults to yield's one. **Landing it ships a
-second guard doing one job.** Stash left; dropping is a hand's. **Five left.**
-**WHAT IT CARRIED THAT RANK DID NOT IS LIVE, AND I LANDED IT.**
-`standing_equipment_scope_map.sh`'s header has named a DISCOVERY vocabulary since it was written --
-*whole-tree censuses stay unmapped on purpose* -- and **no row ever spelled the word**. So
-`scope_rank` read `discovery=0` beside **194 of 252** `unmapped_absent` holding **1,195 of 1,454**
-lap seconds, and `rank_unmapped` -- read to pick the next row to write -- offered *cannot be mapped*
-and *nobody mapped it yet* as one queue. The `20260829` survey told them apart --
-**59 static, 41 discovery, 11 env** over 111 guards -- as three totals in one log with no
-per-guard verdict, so that judgment was made once and lost.
-**EIGHT ROWS SEATED ON A FACT, NEVER A JUDGMENT.** A guard earns `DISCOVERY` when its scan reads
-`git ls-files` with **no pathspec** -- the tracked index is its population, so no watch-set could be
-right. Eight qualify, each named beside its proof. **Behaviour is unchanged by construction**: the
-runner runs an empty row and a DISCOVERY row alike.
-**THE SPLIT IS WHAT A HAND NEEDED.** `discovery_cost_s=59` is unclaimable, `absent_cost_s=1136` is
-what a row could win, so the ceiling reads **78.1%, not 82.2%**. Control **56 -> 73**, each leg
-planted and lifted, the halves summing to the whole with both nonzero.
-**Against myself:** my shelf's `](archive/...)` collapsed a room and `fold_shelf_link_repoint` said
-`nothing_to_do` -- it repairs the `../` climb, while a sibling link gaining a directory falls among
-**744 dead links gated by nothing**: a fifth spelling the loom misses. **Next:** the 186 left hold the rest of that 41, git-grep discoverers, provable one at a time.
+**BAKERY -- A FINISHED GREEN LAP WAS STASHED BY THE NEXT LAP'S OWN ROUND-OPEN.**
+Elder [shelved](archive/20260908-073157_itinerary-landed-accounts.md).
+**`stash_record` READ `unlanded=1` AND MEANT IT.** `stash@{0}` held a whole Bakery lap -- 14 paths,
+staged, its own log written and its `status` line reading GREEN -- cut off before its commit, then
+stashed by `fleet_round_open.sh` at `20260908.080430`. **A log with `status GREEN` and no commit
+behind it is what the baton's LOG stanza forecasts**, and the stash guard is the only thing in the
+tree that says so out loud. Recovered whole rather than redone: three conflicts (card, ledger,
+recital), every peer line kept.
+**WHAT IT HAD FOUND, LANDING NOW.** `fold_shelf_link_scan.sh` decided depth-loss with a `case` of
+two arms -- `archive/X -> X`, `../Y -> ../../Y` -- which are two spellings of one rule: **text
+folded down a directory needs one more level of climb.** A bare sibling `](TASKS.md)` matched no
+arm and fell to `links_dead`, so a `tier lap` gate read `fold_depth_lost=0` on every lap of every
+ship over **nine repairable links** standing since `20260724`. Third arm added; `archive/`, `../`
+and neither-of-those **partition** every relative target, so the ambiguity argument got stronger.
+9 repaired, 3 files, control **51 -> 66**.
+**IT BOOKED `%619` AND LANDS UNDER ITS OWN STAMP `20260908.072125`.** Two peers published `%619`
+and `%620` while the lap sat in the stash. The stamp is the key, so the move cost one line, and the
+number stays the ledger's to bind.
+**AND THE REPOINTER CANNOT SEE THE SHELF A LAP JUST WROTE.** `20260908.044602` wrote the remedy
+down -- *whoever writes a shelf runs the repointer BEFORE staging* -- and `20260908.063650` ran
+exactly that and read `verdict=nothing_to_do`, then repaired by hand. **The prescription is inert by
+construction:** the scan draws its population from `git ls-files`, so before `git add` the shelf is
+not in it. Proven in a pen this lap -- one `git add` is the only thing between `nothing_to_do` and
+`repointed`. The gate is right to stay tracked-only (an untracked draft is nobody's promise); the
+**repair** wants the working tree, which is one reading answering two questions.
+**Mine, next lap.** **Yours:** the `links_dead=735` split -- 605 stamped, 130 unstamped -- reported
+or gated.
+
 **PATCHOULI -- A RATCHET EXISTS TO REACH ZERO, AND ITS CONTROL COULD NOT SURVIVE ZERO.**
 Account [shelved](archive/20260908-080144_itinerary-landed-accounts.md) on landing, elder beside
 it. The water rota's own instruction -- run the thing rather than read about it -- stopped a fourth

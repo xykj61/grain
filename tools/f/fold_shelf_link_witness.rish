@@ -1,13 +1,23 @@
 # tools/f/fold_shelf_link_witness.rish -- no shelf link still carries the depth it was folded out of.
 #
 # WHAT THIS GUARDS. `construction/ITINERARY.md` sits in `construction/`, so a link it writes as
-# `](archive/X)` or `](../Y)` is correct from there. Folding that text down onto
-# `construction/archive/` moves it one directory without touching the link, and both forms break at
-# once: `archive/X` wants the bare `X`, and `../Y` wants `../../Y`. REDS %474 measured sixteen such
-# links across five shelves, repaired them, and then watched the fault fire twice more in the same
-# lap under the hand that had just written the mechanism down. Eighteen instances, three consecutive
-# hand-folds, the last two by an author actively thinking about the defect. A property a hand cannot
-# hold while looking straight at it is a property that wants a program.
+# `](archive/X)`, `](../Y)`, or `](Z)` is correct from there. Folding that text down onto
+# `construction/archive/` moves it one directory without touching the link, and all three forms
+# break at once: `archive/X` wants the bare `X`, `../Y` wants `../../Y`, and a bare sibling `Z`
+# wants `../Z`. REDS %474 measured sixteen such links across five shelves, repaired them, and then
+# watched the fault fire twice more in the same lap under the hand that had just written the
+# mechanism down. Eighteen instances, three consecutive hand-folds, the last two by an author
+# actively thinking about the defect. A property a hand cannot hold while looking straight at it is
+# a property that wants a program.
+#
+# THE THIRD FORM JOINED ON `20260908`, and it had been standing in this guard's own room the whole
+# time. The scan's correction block enumerated the two spellings the hand had just repaired instead
+# of deriving them from the rule they share -- text descending a directory needs one more level of
+# climb -- so a bare sibling matched no arm and fell into the reported `links_dead` column. The gate
+# read `fold_depth_lost=0` over nine of its own subjects, each repairable and none of them ever
+# going to be repaired: eight naming `TASKS.md` and `ROADMAP.md` from the two season ledgers folded
+# on `20260724`, one naming a width baseline. An enumeration standing in for a rule is complete only
+# by luck, and it reads green over exactly the cases nobody thought to list.
 #
 # WHY NOTHING CAUGHT IT, and the reason is one sentence rather than four. Four instruments read
 # links here: `tracked_link_scan.sh` reads only "resolves here, breaks in a fresh clone" and reads
@@ -32,9 +42,15 @@
 # reference resolves under neither.
 #
 # AMBIGUITY IS IMPOSSIBLE BY CONSTRUCTION, not merely absent. One correction wants a target
-# beginning `archive/`, the other one beginning `../`, and those prefixes are disjoint -- so a
+# beginning `archive/`, another one beginning `../`, and the third one beginning with neither; an
+# absolute path takes none of them. Those three classes partition every relative target -- so a
 # target matches at most one and no repair ever guesses. This scan therefore carries no ambiguity
 # counter, because a counter that can never fire teaches a reader something false about the risk.
+#
+# The widened arm looks in one more place and claims nothing more. It tests its candidate on disk
+# before naming a repair, and the scan resolves a target from the shelf's own directory FIRST, so a
+# bare name already answering inside the room is never reached -- proven in the pen by planting a
+# namesake in both directories at once (`bare_in_room_free`).
 #
 # WHAT IT REFUSES TO MISREAD. A `](...)` form inside backticks is prose ABOUT a link -- Markdown
 # renders a code span literally -- and `REDS-a-citation-in-a-comment-rows-218.md` quotes two broken
@@ -78,6 +94,17 @@ assert control.out contains "parent_form_repair_named=yes" else "fold-shelf-link
 assert control.out contains "plant_lifted_free=yes" else "fold-shelf-link: the refusal must be proven from both sides, or it cannot be told from a scan that reds on everything"
 assert control.out contains "plant_lifted_zero=yes" else "fold-shelf-link: the repaired pen must read zero, not merely pass"
 assert control.out contains "two_forms_counted=yes" else "fold-shelf-link: two forms in one shelf are two losses"
+
+# The third spelling, proven from both sides like the other two. The shadow leg is the one that
+# makes widening safe: a bare name resolving inside the room must survive even when the parent
+# holds a namesake, or the new arm would steal correct links wholesale.
+assert control.out contains "bare_form_bitten=yes" else "fold-shelf-link: a bare sibling that resolves only one directory up is depth-lost, and the gate must bite it"
+assert control.out contains "bare_form_repair_named=yes" else "fold-shelf-link: the bare form's refusal must name its single correction"
+assert control.out contains "bare_form_lifted_free=yes" else "fold-shelf-link: the repaired pen must read green, or the refusal cannot be told from a scan that reds on every bare name"
+assert control.out contains "bare_in_room_free=yes" else "fold-shelf-link: a bare name resolving inside the room must never be repaired, even when the parent holds a namesake"
+assert control.out contains "bare_dead_free=yes" else "fold-shelf-link: a bare name the parent does not hold either stays a reported dead link, never a gated one"
+assert control.out contains "absolute_free=yes" else "fold-shelf-link: an absolute target is nobody's relative path and takes no correction"
+assert control.out contains "three_forms_counted=yes" else "fold-shelf-link: three spellings in one shelf are three losses, since the prefix classes partition every relative target"
 assert control.out contains "two_shelves_counted=yes" else "fold-shelf-link: a loss on each of two shelves is two losses"
 assert control.out contains "two_shelves_first_named=yes" else "fold-shelf-link: each losing shelf must be named"
 assert control.out contains "two_shelves_second_named=yes" else "fold-shelf-link: a second losing shelf must be named as plainly as the first"
@@ -116,5 +143,5 @@ assert control.out contains "repoint_leaves_green=yes" else "fold-shelf-link: th
 assert control.out contains "repoint_stale_still_counted=yes" else "fold-shelf-link: the stale class must still be reported after a repoint, or the repair looks like a repair of everything"
 assert control.out contains "repoint_idempotent=yes" else "fold-shelf-link: a second pass must find nothing to do -- a repointer that rewrites its own repair walks a file deeper every run"
 
-say "RED and GREEN paths proven -- 50 readings over 18 planted states, 17 of them real repositories and one deliberately not a repository at all, every refusal lifted in its own pen"
+say "RED and GREEN paths proven -- 66 readings over 23 planted states, 22 of them real repositories in a throwaway pen and one deliberately not a repository at all, every refusal lifted in its own pen"
 say "GREEN: fold-shelf-link -- every shelf link reads from where the shelf stands."

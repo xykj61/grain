@@ -1,13 +1,28 @@
 #!/bin/sh
 # tools/fixtures/f/fold_shelf_link_scan.sh -- a link that lost its depth when its text was folded.
 #
-# WHY. `construction/ITINERARY.md` sits in `construction/`, so a link it writes as `](archive/X)`
-# or `](../Y)` is correct from there. A hand folding that text onto `construction/archive/` moves
-# it one directory down without touching the link, and both forms break: `archive/X` now needs the
-# bare `X`, and `../Y` now needs `../../Y`. REDS %474 measured sixteen such links across five
-# shelves and repaired them; the fault then fired again in the same lap, twice, under the hand that
-# had just written the mechanism down. A property a hand cannot hold while actively thinking about
-# it is a property that wants a program.
+# WHY. `construction/ITINERARY.md` sits in `construction/`, so a link it writes as `](archive/X)`,
+# `](../Y)`, or `](Z)` is correct from there. A hand folding that text onto `construction/archive/`
+# moves it one directory down without touching the link, and all three forms break: `archive/X` now
+# needs the bare `X`, `../Y` now needs `../../Y`, and a bare sibling `Z` now needs `../Z`. REDS %474
+# measured sixteen such links across five shelves and repaired them; the fault then fired again in
+# the same lap, twice, under the hand that had just written the mechanism down. A property a hand
+# cannot hold while actively thinking about it is a property that wants a program.
+#
+# THE THIRD FORM STOOD OUTSIDE THIS SCAN FOR TWO DAYS, and how it hid is the sharper lesson. The
+# correction block was written as a `case` enumerating the two spellings a hand had just repaired,
+# rather than as the one rule those two spell: text descending a directory needs one more level of
+# climb. A bare sibling matched neither arm, fell through to `links_dead`, and was described there
+# as a stale reference for a resolver to answer. So the gate read `fold_depth_lost=0` while nine of
+# its own subjects stood in the reported column, each repairable, none of them ever going to be
+# repaired. Measured `20260908.072125`: eight links naming `TASKS.md` and `ROADMAP.md` from the two
+# season ledgers folded on `20260724`, and one naming `20260620-212126_usize-width-baseline.md` --
+# every one a page that stayed in `construction/` while the text citing it descended.
+#
+# The general shape, booked twice in this tree in two days: an enumeration standing in for a rule
+# is complete only by luck, and it reads green over exactly the cases nobody thought to list. COPAL
+# booked the same thing one room over as a population picked by directory. The tell is the same
+# both times -- read the source line, and ask whether it draws the boundary its own WHY claims.
 #
 # WHY NO STANDING GUARD SEES IT, and this is the sharp part. Four instruments read links in this
 # tree and each stops short here for its own reason, yet three of them stop for the SAME reason:
@@ -40,9 +55,14 @@
 # subject is defined by the very property that distinguishes it, which is what makes gating safe.
 #
 # AMBIGUITY IS IMPOSSIBLE BY CONSTRUCTION, not absent by luck. Correction A wants a target beginning
-# `archive/`; correction B wants one beginning `../`. Those prefixes are disjoint, so a target can
+# `archive/`; correction B wants one beginning `../`; correction C wants one beginning with neither,
+# and takes no absolute path. Those three classes partition every relative target, so a target can
 # match at most one and no repair ever guesses. That is why this scan carries no ambiguity counter:
 # a counter that can never fire teaches a reader something false about the risk.
+#
+# Each correction tests its own candidate on disk before naming it, so a bare target whose parent
+# holds nothing by that name stays in `links_dead` where it belongs. The third arm widens what is
+# LOOKED at; it never widens what is claimed.
 #
 # WHAT IS READ PAST, each for a reason the tree already seats.
 #   A CODE SPAN. `](../X)` inside backticks is prose ABOUT a link, and Markdown renders it
@@ -154,10 +174,30 @@ while IFS="$(printf '\t')" read -r f t; do
   links_read=$((links_read + 1))
   [ -e "$d/$t" ] && continue
 
+  # THE ONE FACT, WORN THREE WAYS. A fold moves the text one directory DOWN, so every relative
+  # target it carries needs exactly one more level of climb. That single rule wears three spellings
+  # because a relative target begins one of three ways, and the third stood unwritten until
+  # `20260908`:
+  #   `archive/X`  the descent was already spelled in the target, so climbing one strips it -> `X`
+  #   `../Y`       an existing climb gains a level                                 -> `../../Y`
+  #   `Z`          a BARE SIBLING, correct in the parent, gains its first climb        -> `../Z`
+  # The three prefixes are disjoint by construction -- a target begins with `archive/`, with `../`,
+  # or with neither -- so a target matches at most one arm and no repair ever guesses. That is the
+  # same argument the header makes, and the bare arm neither weakens nor widens it.
+  #
+  # WHY THE THIRD ARM WAS MISSING, which is the part worth keeping. The first draft enumerated the
+  # two spellings a hand had just repaired by hand rather than deriving them from the rule above,
+  # and an enumeration is complete only by luck. Nine bare-sibling links stood inside this guard's
+  # own room, held at zero, counted as `links_dead` and left to a resolver that would never be run
+  # on them -- the gate reading green over its own subject.
+  #
+  # An absolute target is nobody's relative path, so it takes no arm at all.
   repair=""
   case "$t" in
     archive/*) [ -e "$d/${t#archive/}" ] && repair="${t#archive/}" ;;
     ../*)      [ -e "$d/../$t" ] && repair="../$t" ;;
+    /*)        : ;;
+    *)         [ -e "$d/../$t" ] && repair="../$t" ;;
   esac
 
   if [ -n "$repair" ]; then
