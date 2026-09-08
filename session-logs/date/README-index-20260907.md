@@ -13,6 +13,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 |---|---|---|
 | `20260907.220138` | [The falsifier that was never run](20260907/20260907-220138_the-falsifier-that-was-never-run.kyri) | 19 papers, 18 named one, 6 ever ran |
 | `20260907.215940` | [Whose module is this](20260907/20260907-215940_whose-module-is-this.kyri) | a census overstating 26 of 44 rooms; a parked lap recovered |
+| `20260907.214518` | [A wall that watches files](20260907/20260907-214518_a-wall-that-watches-files.kyri) | the shared process table gets a guard; 22 procs, 7 peer trees |
 | `20260907.212612` | [the repair the guard already knew](20260907/20260907-212612_the-repair-the-guard-already-knew.kyri) | fourth firing, one loom. |
 | `20260907.212422` | [The duplicate that was never a judgment](20260907/20260907-212422_the-duplicate-that-was-never-a-judgment.kyri) | 38 of 42 duplicate stamps were never a judgment. |
 | `20260907.212208` | [The lap that was in the stash](20260907/20260907-212208_the-lap-that-was-in-the-stash.kyri) | a parked lap recovered whole; a killed pass leaves the victim a receipt. |

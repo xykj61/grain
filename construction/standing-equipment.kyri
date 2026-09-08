@@ -1337,6 +1337,21 @@ path tools/f/fleet_call_witness.rish
 tier lap
 seated 20260907.073406
 
+# process_reach -- the helper above made the safe form near; this makes the unsafe form loud. Every
+# wall in this tree watches FILES, and a pattern kill touches none, so the two firings on `20260907`
+# (%569, %587) were invisible to every standing guard. This one reads tracked `.sh` and `.rish`
+# sources for a command-position `pkill`, `killall`, or `pgrep` whose selector is a command-line or
+# program-name pattern -- the READ counted beside the kill, since `pgrep -f standing_equipment_run`
+# answered 22 processes across seven peer trees on this pier the hour it was written. `-P` is
+# bounded by parent and free; a comment discusses rather than calls; `ripgrep` can never open a
+# fragment; and a site whose boundary is real DECLARES it in words on one of the three lines above,
+# so the judgment stays readable instead of drifting inside a hand-kept path list. Ratchet at 2, both
+# named in the scan and both in lanes this seat does not hold. Twenty-one behaviors in a pen.
+guard process_reach
+path tools/p/process_reach_witness.rish
+tier lap
+seated 20260907.214518
+
 # fleet_key_locality -- one jail binds one tree, so every path a ship's git config names must live
 # inside that ship's own tree. grain-pheromone was born naming petrichor's keyring and petrichor's
 # deploy keys, and could neither sign nor push from inside its own enclosure while every check at a

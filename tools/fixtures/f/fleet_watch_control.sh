@@ -47,6 +47,8 @@ cleanup() {
   tmux kill-session -t "$sess" 2>/dev/null || true
   # Scoped to THIS run's seat name: the elder line killed any `fleet-loop.sh penone`
   # on the host, which is a peer control's planted process (REDS %515's family).
+  # process-reach: bounded -- $s1 is `penone$$`, unique to this control run, so the pattern
+  # cannot reach a live seat or a peer control's planted process.
   pkill -f "fleet-loop\.sh $s1\$" 2>/dev/null || true
   rm -rf "$pen"
 }
@@ -125,6 +127,7 @@ wait_prompt() {
 wait_loop() {
   _i=0
   while [ "$_i" -lt 40 ]; do
+    # process-reach: bounded -- a pen-unique seat name passed in by the caller
     pgrep -f "fleet-loop\.sh $1\$" >/dev/null 2>&1 && return 0
     sleep 0.5
     _i=$((_i + 1))
@@ -135,6 +138,7 @@ wait_loop() {
 wait_noloop() {
   _i=0
   while [ "$_i" -lt 40 ]; do
+    # process-reach: bounded -- a pen-unique seat name passed in by the caller
     pgrep -f "fleet-loop\.sh $1\$" >/dev/null 2>&1 || return 0
     sleep 0.5
     _i=$((_i + 1))
