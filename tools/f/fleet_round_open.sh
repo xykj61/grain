@@ -156,10 +156,18 @@ if [ -r "$SCAN" ]; then
     ''|0) : ;;
     *) say "$UNLANDED session log(s) stand in the dead-letter box and nowhere else -- sh $SCAN list" ;;
   esac
+  # THREE KINDS, AND ONLY ONE IS A LAP (REDS %592). The bare count was honest and unreadable: on
+  # this field it stood at nineteen for a day and a half while every ship read past it, because
+  # ten were fold shelves whose rows come off the living pin, three were a guard's own elder paths
+  # from before a room fold, and six were the actual parked work. The open names the split so a
+  # reader knows which number is worth a lap before deciding whether to run `list`.
   ORPHANS=$(printf '%s\n' "$BOX" | grep '^orphans=' | cut -d= -f2)
+  WORK=$(printf '%s\n' "$BOX" | grep '^orphans_work=' | cut -d= -f2)
+  SHELF=$(printf '%s\n' "$BOX" | grep '^orphans_shelf=' | cut -d= -f2)
+  MOVED=$(printf '%s\n' "$BOX" | grep '^orphans_moved=' | cut -d= -f2)
   case "${ORPHANS:-0}" in
     ''|0) : ;;
-    *) say "$ORPHANS file(s) stand in the dead-letter box and on no ref -- sh $SCAN list" ;;
+    *) say "$ORPHANS file(s) stand in the dead-letter box and on no ref -- ${WORK:-?} parked work, ${SHELF:-?} fold shelves, ${MOVED:-?} answered elsewhere -- sh $SCAN list" ;;
   esac
 fi
 

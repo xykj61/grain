@@ -72,6 +72,45 @@
 # So `unlanded` stays the single gate, unmoved, and `tools/f/fleet_round_open.sh` keeps the meaning
 # it greps for. What changes is that the box's other drawer is now NAMED at every open.
 #
+# NINETEEN ORPHANS ARE THREE KINDS, AND ONLY ONE OF THEM IS A LAP (REDS %592). The count was
+# honest and unreadable: measured on this field `20260908.024426`, `orphans=19` stood for a day and
+# a half and every ship read past it, because a hand who runs `list` gets nineteen paths wanting
+# three different actions with nothing telling them apart. Sorted by hand that morning they were
+# ten fold shelves, three copies of this guard's own elder self, and six files of genuinely parked
+# work. The six are the lap; the other thirteen are noise competing with it for a reader's
+# attention, and thirteen-nineteenths noise is why nobody read any of it.
+#
+#   `orphan:moved:<path>`  A tracked file elsewhere in the worktree carries the same BASENAME, and
+#                          exactly one does. The tools letter-room fold moved this guard's own
+#                          three files from `f/` to `s/`, so a stash holding the elder paths is
+#                          neither a checkout nor a loss -- it is a diff against the living path.
+#                          Exactly one match is required: two make the claim a guess, and a guess
+#                          in a triage column is worse than the count it replaced, so an ambiguous
+#                          basename falls through and stays whatever it would otherwise be.
+#   `orphan:shelf`         A fold shelf under `construction/archive/` -- `REDS-*.md` or
+#                          `*_itinerary-landed-accounts.md`, the two families the fold tools write
+#                          (442 of that room's 490 files). A shelf is a fold's OUTPUT rather than a
+#                          lap's source: its rows come off the living pin, so an unlanded shelf
+#                          loses nothing and its recovery is re-running the fold rather than
+#                          checking the snapshot out. Checking one out is a ROLLBACK, since seven
+#                          peers append to those rooms.
+#   `orphan:work`          Everything else -- a guard, a pen, a probe standing on no ref. This is
+#                          the number a hand acts on, and it is the only one worth a lap.
+#
+# THE BLOB PROBE WAS TRIED FIRST AND FOUND NOTHING, which is why the basename is what ships. Asking
+# `git rev-parse "$sref:$p"` for each orphan's blob and looking it up in `git ls-files -s` is an
+# EXACT answer where the basename is a strong guess -- and on this field it matched zero of the
+# nineteen, because a file that moves rooms in this tree is also edited on the way. An exact probe
+# that answers never is worth less than an inexact one that answers, so long as the inexact one
+# says how it knows. It does: `moved` names the path it matched, so a reader checks the claim in
+# one `diff`.
+#
+# THE CLASSES REPORT, THEY DO NOT GATE, for the same three reasons the orphan count does not, plus
+# a fourth of their own: `shelf` is an argument rather than a measurement. It is sound -- a fold
+# reads the pin and writes the shelf, so the rows survive an unlanded shelf -- and it would be
+# wrong for a lap that landed its pin edit and not its shelf in two separate commits. Nothing turns
+# on it, so a reader who distrusts the class reads the path beside it.
+#
 # WHAT A RECORD IS. A session log: a path under `session-logs/` whose basename carries the one-clock
 # stamp `YYYYMMDD-HHMMSS` followed by a sprig or straight by the extension. The sprig is OPTIONAL
 # (REDS %175: 237 logs carry a stamp and no sprig, and a pattern requiring one reads every last of
@@ -116,11 +155,16 @@
 #   parked=N     of the unlanded, the ones a `pier/` park ref carries -- the diagnosis
 #   paths=N      distinct NON-record paths across those stashes -- the work beside the reasoning
 #   orphans=N    of those, the ones nothing outside the box carries -- reported, never gated
+#   orphans_moved=N   of the orphans, the ones a uniquely-named tracked file elsewhere answers for
+#   orphans_shelf=N   of the orphans, the fold shelves, whose recovery is a fold re-run
+#   orphans_work=N    of the orphans, the remainder -- parked work, and the number worth a lap
 #   unread=N     of those, the ones something does carry, so whether the stash's EDIT to them
 #                landed cannot be read by a path probe; printed rather than left silent
 #   verdict=ok | records_unlanded
 #
 # `paths` = `orphans` + `unread`, always, since every path is asked exactly one question.
+# `orphans` = `orphans_moved` + `orphans_shelf` + `orphans_work`, always, since every orphan is
+# given exactly one kind -- asserted below rather than left to the arithmetic here.
 #
 # USE
 #   sh tools/fixtures/s/stash_record_scan.sh          # report on this repository
@@ -174,6 +218,52 @@ parked_on() {
   return 1
 }
 
+# THE CLASSIFIER IS DEFERRED TO ONE PASS, and the cost is why. Asked per orphan -- one `awk` over
+# a 14,000-path index for each of nineteen -- the open went from 1.4s to 3.0s, a doubling every
+# ship pays every lap for a diagnosis. Rewriting the probe as a fixed-string `grep` made it WORSE
+# at 4.4s, because three small processes per orphan beat one larger one only in intuition. So the
+# walk defers: it records each orphan and labels its line `orphan:PENDING`, and ONE `awk` at the
+# end reads the tracked index and every orphan together. The process count stops depending on how
+# full the box is.
+orphan_paths=""
+
+# WHICH KIND, decided for every orphan at once. Three, and they want three different hands -- see
+# the header. The two streams are tagged `T` (tracked) and `O` (orphan) and read in one pass, since
+# POSIX shell has neither an associative array nor process substitution to carry a map between two.
+classify_orphans() {
+  # The tag is prepended by `awk` rather than by `sed 's/^/T\t/'`, which is the portability trap
+  # this tree booked one lane over the same day: a `\t` in a sed REPLACEMENT is a GNU extension and
+  # inserts a literal `t` on the Mac door, where every field would then be one field and the
+  # classifier would answer `work` for everything -- a failure a partition check cannot see, since
+  # the wrong answers still sum. In `awk` the escape is the language's own and portable.
+  { git ls-files 2>/dev/null | awk '{ print "T\t" $0 }'
+    printf '%s' "$1"        | awk 'NF { print "O\t" $0 }'
+  } | awk -F'\t' -v OFS='\t' '
+    # The basename is taken by splitting on "/" rather than matched as a pattern: every path here
+    # ends in `.sh`, `.rish`, or `.md`, and a regex `.` matches any character, so a pattern probe
+    # would claim matches it never earned. Two answers are remembered because one of them may be
+    # the orphan itself, and an orphan is never its own evidence.
+    $1 == "T" { n = split($2, a, "/"); b = a[n]
+                c[b]++
+                if (c[b] == 1)      first[b] = $2
+                else if (c[b] == 2) second[b] = $2
+                next }
+    $1 == "O" { n = split($2, a, "/"); b = a[n]
+                k = c[b]; m = first[b]
+                if (m == $2) { k--; m = second[b] }
+                # MOVED, and only when exactly one tracked file answers. Two make the claim a
+                # guess, and a guess in a triage column is worse than the count it replaced, so an
+                # ambiguous basename falls through to whatever it would otherwise be.
+                if (k == 1 && m != "") { print $2, "moved:" m; next }
+                # SHELF is bound by its ROOM as well as its name: the two families the fold tools
+                # write, and only where the fold writes them.
+                if ($2 ~ /^construction\/archive\/REDS-.*\.md$/ ||
+                    $2 ~ /^construction\/archive\/.*_itinerary-landed-accounts\.md$/) {
+                  print $2, "shelf"; next }
+                print $2, "work" }
+  '
+}
+
 # Every path a stash holds, tracked changes and untracked additions alike.
 stash_paths() {
   git stash show --include-untracked --name-only "$1" 2>/dev/null
@@ -186,6 +276,9 @@ unlanded=0
 parked=0
 paths=0
 orphans=0
+orphans_moved=0
+orphans_shelf=0
+orphans_work=0
 unread=0
 seen=""
 seen_path=""
@@ -217,7 +310,9 @@ for sref in $(git stash list --format='%gd' 2>/dev/null); do
 "
     else
       orphans=$((orphans + 1))
-      lines="$lines$sref	$p	orphan
+      orphan_paths="$orphan_paths$p
+"
+      lines="$lines$sref	$p	orphan:PENDING
 "
     fi
   done
@@ -247,6 +342,26 @@ for sref in $(git stash list --format='%gd' 2>/dev/null); do
   done
 done
 
+# The one pass, and the labels it fills in. Skipped entirely on an empty box, since a classifier
+# run over nothing still forks `git ls-files` at every open on every ship.
+if [ -n "$orphan_paths" ]; then
+  kinds=$(classify_orphans "$orphan_paths")
+  orphans_moved=$(printf '%s\n' "$kinds" | grep -c '	moved:')
+  orphans_shelf=$(printf '%s\n' "$kinds" | grep -c '	shelf$')
+  orphans_work=$(printf '%s\n'  "$kinds" | grep -c '	work$')
+  # `printf '%s'` on the kinds, whose last line carries no newline of its own, glues the first
+  # `lines` row onto it -- which cost one label a stray `L` and swallowed a whole `unread` row,
+  # caught by the pen the same lap. The newline is the fix and the reason it is spelled out here.
+  lines=$( { printf '%s\n' "$kinds" | awk 'NF { print "K\t" $0 }'
+             printf '%s'   "$lines" | awk 'NF { print "L\t" $0 }'
+           } | awk -F'\t' -v OFS='\t' '
+             $1 == "K" { k[$2] = $3; next }
+             $1 == "L" { if ($4 == "orphan:PENDING") $4 = "orphan:" k[$3]
+                         print $2, $3, $4 }' )
+  lines="$lines
+"
+fi
+
 case "$mode" in
   list)
     # Both gate states, since a parked record is unlanded with a reason attached rather than a
@@ -267,7 +382,19 @@ echo "unlanded=$unlanded"
 echo "parked=$parked"
 echo "paths=$paths"
 echo "orphans=$orphans"
+echo "orphans_moved=$orphans_moved"
+echo "orphans_shelf=$orphans_shelf"
+echo "orphans_work=$orphans_work"
 echo "unread=$unread"
+# invariant: every orphan is given exactly one kind, so the three sum to the count they partition.
+# A partition stated in a header and never checked is a partition that drifts on the lap somebody
+# adds a fourth kind.
+kind_sum=$((orphans_moved + orphans_shelf + orphans_work))
+if [ "$kind_sum" -ne "$orphans" ]; then
+  echo "orphan_kinds=disagree:$kind_sum"
+else
+  echo "orphan_kinds=partition"
+fi
 if [ "$unlanded" -gt 0 ]; then
   echo "verdict=records_unlanded"
 else

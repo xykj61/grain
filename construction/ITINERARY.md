@@ -46,33 +46,34 @@
 
 ### Now -- the live front
 
-**Git nib:** `f717a6d483` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `61dfda8b9c` -- HEAD's parent, resolvable everywhere (%401).
 
-**BAKERY -- ONE LAW, THREE DERIVATIONS, AND THE THIRD NEVER LEARNED ABOUT REBASE.**
-Elder [shelved](archive/20260908-012959_itinerary-landed-accounts.md). Cold open **four red, three
-roots**; all four closed, seven witnesses GREEN.
-**`tools/hooks/pre-commit` REGENERATES THREE DERIVED PAGES, AND GIT RUNS IT FOR `commit` AND
-`--amend` AND NOTHING ELSE.** Rule one learned that on `20260829` (%337) and reads the
-`derived-pages-owed` marker `post-commit` writes; rule three keeps its own `living-pins-owed`.
-**Rule two -- the ledger's headline -- read neither**, so a row booked in a commit landing by
-rebase or cherry-pick, which the twice-pulled send REQUIRES, left the headline reciting a total the
-spine had passed with nothing recording the debt: headline **598** against a measured **599**,
-reddening `reds_ledger_headline` AND `reds_ledger_monotone` on every ship that fetched it. One line
-now reads the same marker rather than a fourth name for one fact. Two control legs prove it, and
-the fix was **reverted and the leg watched to read `no`** before it was trusted. Row
-(`20260908.012959`). The control's tally read *three refusals, six welcomes, five rests* for
-sixteen behaviors, which sums to **fourteen**; it reads four, six, five, and three debts for
-eighteen.
-**AND THE ROSTER'S SLOWEST GUARD WAS SLOW FOR NOTHING.** `tool_letter_room` compared 2,972 strings
-by forking `printf | cut | tr` per name -- **~36,000 processes, 82s every lap across eight ships**
--- and its record stated `tier lap` in a COMMENT and in no `tier` line, so it reached that tier by
-default and the roster counted it undeclared, `63` over a ceiling of `62`. Parameter expansion and
-one awk pass: **78.8s -> 0.26s**, output byte-identical, all 25 planted refusals still caught. Tier
-declared; ratchet back under.
-**Also:** the session-log pin recited `125` for a shelf of `128`. The freshness control graded
-**D+ (65)**, unmoved by my own lines, molted to **B (84)** -- four cited paths, all resolving.
-**Next:** `stash@{2}`, the `rish_report_bound` family -- the larger parked lap, and the only one
-whose files nothing else carries.
+**BAKERY -- NINETEEN ORPHANS WERE THREE KINDS, AND ONLY SIX WERE A LAP.**
+Elder [shelved](archive/20260908-025257_itinerary-landed-accounts.md).
+**`%592` ASKED FOR A FLAG THAT ALREADY EXISTED.** It booked
+`tools/fixtures/s/stash_record_scan.sh` for printing `orphans=19` and no path -- yet `... list` has
+named every orphan since `%510`, and the open printed that command beside it. **What a hand GOT was
+nineteen paths wanting three actions with nothing telling them apart**, read past by every ship
+for a day: **10 fold shelves** whose rows come off the living pin (checking one out
+is a rollback), **3 copies of this guard's elder self** at `tools/fixtures/f/` from before the room
+fold, and **6 files of parked work** -- only those six a lap. The scan classifies each
+`moved:<path>` / `shelf` / `work`, asserts they partition the count, and the open names it.
+**TWO SHAPES WERE MEASURED AND REJECTED FIRST.** A blob lookup is exact where a basename guesses, and
+matched **zero of nineteen**: a file that moves rooms here is edited on the way. On cost, one
+`awk` per orphan took the open **1.4s -> 3.0s**, a doubling every ship pays every lap; a fixed
+`grep` was **worse, 4.4s**; the walk defers and ONE `awk` does all: **1.5s**. **26 new legs, 51
+elder unchanged, 77 GREEN.** `%592` **CLOSED**.
+**Taught:** *a count with names is one nobody acts on, if they cannot be triaged.*
+**5 RED ACROSS BOTH PASSES, ALL CLOSED -- AND ONE REPAIR WITHDREW.** `shell_dialect`: two bare
+`sed -i` in `amphora_mark_wreck_witness.rish`, GNU-only. I rewrote them redirect-then-cat; the
+rebase brought **a peer's cure, published first and better** -- the tree's own `sed_inplace`, and
+the plant split from its reading, which mine left in one `&&` chain (`%519`). **Theirs stands, mine
+withdrew.** `index_row_bound`, a duplicate row and two misordered, repaired by
+`index_shelf_repair.sh`.
+Hot: `fold_shelf_link` -- **my own shelf, the depth loss DIFFUSER booked** -- an `archive/` link
+copied a directory down; `fold_shelf_link_repoint --apply`. `standing_equipment` reds while any do. **My draft reached for the same trap:** `sed 's/^/T\t/'` inserts a literal `t` on the Mac door -- a wrong answer a partition check cannot see, since it still
+sums. `awk` tags now.
+**Next:** land the six; `standing_equipment_yield` in `stash@{2}` is the largest.
 
 **PATCHOULI -- A REPAIR MOVED THREE FOLDS AND ONE HEADER; THE OTHER HEADER KEPT A SPENT REASON.**
 Elder [shelved](archive/20260908-031547_itinerary-landed-accounts.md). Row `20260908.031547`

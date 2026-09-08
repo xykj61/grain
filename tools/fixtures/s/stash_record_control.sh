@@ -246,5 +246,89 @@ echo mine > "$pen/box/tools/mine.sh"
 ( cd "$pen/box" && g stash push -u -m "wip: my own thing" >/dev/null 2>&1 )
 nk "a hand's own stash adds no path" "tools/mine.sh" "$(box all)"
 
+# NINETEEN ORPHANS ARE THREE KINDS (REDS %592), and each kind is proven in its own repository so
+# every count here is absolute. The field's reading was honest and unreadable -- one number for ten
+# fold shelves, three copies of this guard's elder self, and six files of parked work -- and only
+# the six were a lap. Built in a fresh pen because the box above deliberately ends holding an
+# orphan and two unread paths, and a partition asserted on numbers a previous leg moved is a
+# partition proving the pen.
+g init -q -b main "$pen/kinds"
+mkdir -p "$pen/kinds/tools/s" "$pen/kinds/tools/fixtures/s" "$pen/kinds/construction/archive"
+( cd "$pen/kinds" && echo seed > seed.txt
+  # The living path a moved orphan is answered BY. Its content differs from the stashed elder on
+  # purpose: a blob probe finds nothing across a room move in this tree, which is why the basename
+  # is what ships, and a pen where the bytes matched would prove the wrong instrument.
+  echo "the living version" > tools/s/moved_guard.rish
+  g add -A && g commit -qm seed )
+kinds() { ( cd "$pen/kinds" && sh "$src" "$@" 2>&1 ); }
+
+# One stash carrying all four shapes at once, because a real lap parks them mixed and the
+# classification has to hold when it meets them that way.
+mkdir -p "$pen/kinds/tools/fixtures/f" "$pen/kinds/construction/archive" "$pen/kinds/tools/fixtures/a"
+echo "the elder version" > "$pen/kinds/tools/fixtures/f/moved_guard.rish"
+printf '# rows\n'        > "$pen/kinds/construction/archive/REDS-a-pen-shelf-rows-1.md"
+printf '# accounts\n'    > "$pen/kinds/construction/archive/20260101-010101_itinerary-landed-accounts.md"
+printf '# a real pen\n'  > "$pen/kinds/tools/fixtures/a/parked_pen_control.sh"
+( cd "$pen/kinds" && g stash push -u -m "fleet-round-open 20260101-090909: a lap's unsent work, stashed at the open" >/dev/null 2>&1 )
+out=$(kinds); outall=$(kinds all)
+ck "four orphans, mixed in one stash"        "orphans=4"       "$out"
+ck "one answered by a moved file"            "orphans_moved=1" "$out"
+ck "two fold shelves"                        "orphans_shelf=2" "$out"
+ck "and one file of actual parked work"      "orphans_work=1"  "$out"
+ck "the three kinds partition the count"     "orphan_kinds=partition" "$out"
+ck "the moved one NAMES where it moved to"   "tools/fixtures/f/moved_guard.rish	orphan:moved:tools/s/moved_guard.rish" "$outall"
+ck "a REDS shelf is a shelf"                 "REDS-a-pen-shelf-rows-1.md	orphan:shelf"        "$outall"
+ck "an accounts shelf is a shelf too"        "20260101-010101_itinerary-landed-accounts.md	orphan:shelf" "$outall"
+ck "a pen nothing carries is work"           "tools/fixtures/a/parked_pen_control.sh	orphan:work" "$outall"
+nk "and work is never called a shelf"        "parked_pen_control.sh	orphan:shelf"         "$outall"
+ck "list still names every orphan"           "moved_guard.rish"  "$(kinds list)"
+
+# THE SHELF CLASS IS BOUND BY ITS ROOM, not by its name. A file named exactly like a fold shelf and
+# living anywhere else is parked work, or the class would swallow any path a hand named that way.
+printf '# not a shelf\n' > "$pen/kinds/tools/REDS-a-pen-shelf-rows-2.md"
+( cd "$pen/kinds" && g stash push -u -m "fleet-round-open 20260101-091010: a lap's unsent work, stashed at the open" >/dev/null 2>&1 )
+outall=$(kinds all)
+ck "a shelf name outside the room is work"  "tools/REDS-a-pen-shelf-rows-2.md	orphan:work" "$outall"
+nk "and never a shelf"                      "tools/REDS-a-pen-shelf-rows-2.md	orphan:shelf" "$outall"
+ck "the partition still holds"              "orphan_kinds=partition" "$(kinds)"
+
+# AN AMBIGUOUS BASENAME IS NOT A CLAIM. Two tracked files answering to one name make `moved` a
+# guess, and a guess in a triage column is worse than the count it replaced -- so the orphan falls
+# through and stays whatever it would otherwise be. Proven by ADDING a second living copy under the
+# same name, so the only thing differing from the welcome above is the number of answers.
+( cd "$pen/kinds" && mkdir -p tools/other && echo "a second living version" > tools/other/moved_guard.rish
+  g add -A && g commit -qm "a second file answering to the same name" )
+outall=$(kinds all)
+nk "two answers make no moved claim" "moved_guard.rish	orphan:moved" "$outall"
+ck "the orphan falls through to work" "tools/fixtures/f/moved_guard.rish	orphan:work" "$outall"
+ck "and the moved count falls to zero" "orphans_moved=0" "$(kinds)"
+
+# MOVED BEATS SHELF when a shelf's own basename is uniquely answered elsewhere, since naming the
+# living path is strictly more useful than naming the class. Ordering is a decision rather than an
+# accident, so it is asserted.
+# `git stash push -u` carries an untracked directory away WITH its files, so the rooms a plant
+# used are gone by the time the next leg writes into them -- caught here by a redirect failing on
+# an absent `construction/`. Each plant makes its own room.
+( cd "$pen/kinds" && mkdir -p construction && printf '# the landed shelf\n' > construction/REDS-a-pen-shelf-rows-1.md
+  g add -A && g commit -qm "land the shelf under a path of its own" )
+outall=$(kinds all)
+ck "a shelf answered elsewhere reads moved" "construction/archive/REDS-a-pen-shelf-rows-1.md	orphan:moved:construction/REDS-a-pen-shelf-rows-1.md" "$outall"
+nk "and stops being read as a shelf"        "construction/archive/REDS-a-pen-shelf-rows-1.md	orphan:shelf" "$outall"
+ck "so the shelf count falls by one"        "orphans_shelf=1" "$(kinds)"
+
+# AND THE KINDS LIFT THE WAY THE COUNT DOES -- one at a time, which is the whole point of the
+# split. Land the parked pen and leave every stash standing: `orphans_work` falls by exactly one
+# while `moved` and `shelf` hold still, and the landed path moves to `unread` rather than
+# vanishing, since it exists now and its stashed edit is no longer readable by a path probe.
+( cd "$pen/kinds" && mkdir -p tools/fixtures/a && printf '# a real pen\n' > tools/fixtures/a/parked_pen_control.sh
+  g add -A && g commit -qm "land the work" )
+out=$(kinds)
+ck "landing one file moves one kind"     "orphans_work=2"  "$out"
+ck "and the other two hold still"        "orphans_moved=1" "$out"
+ck "-- both of them"                     "orphans_shelf=1" "$out"
+ck "the landed path counts as unread"    "unread=1"        "$out"
+ck "with the partition still holding"    "orphan_kinds=partition" "$out"
+ck "and every stash still standing"      "fleet-round-open" "$( g -C "$pen/kinds" stash list )"
+
 echo "pass=$pass fail=$fail"
 [ "$fail" -eq 0 ] || exit 1

@@ -45,6 +45,24 @@
 # `%446`'s skip, waiting in the box while the guard they were written for landed ahead of them.
 # That is the reading the record gate leaves open, and it is why the second drawer earns a name at
 # every open.
+#
+# AND NINETEEN ORPHANS ARE THREE KINDS (REDS %592). The count above was honest and unreadable: a
+# hand who runs `list` gets one number's worth of paths wanting three different actions, with
+# nothing telling them apart, so every ship read past all of them for a day and a half. Measured on
+# this field `20260908.024426`, `orphans=19` sorted into `orphans_moved=3` -- this guard's own
+# three files, stashed at their elder `tools/fixtures/f/` paths before the letter-room fold moved
+# them to `s/` -- `orphans_shelf=10` fold shelves, whose rows come off the living pin so an
+# unlanded shelf loses nothing, and `orphans_work=6`: a whole unlanded `standing_equipment_yield`
+# guard family, `sow_allow_reach_control.sh`, `agent_jail_control.sh`, `mount_namespace_probe.sh`.
+# Only the six are a lap, and thirteen-nineteenths noise is why nobody read any of it.
+#
+# THE THREE REPORT AND DO NOT GATE, like the count they partition -- plus a fourth reason of their
+# own: `shelf` is an argument rather than a measurement, sound because a fold reads the pin and
+# writes the shelf, and wrong for a lap that landed its pin edit and its shelf in two commits.
+# Nothing turns on it, so a reader who distrusts the class reads the path printed beside it. What
+# IS asserted here is that the partition holds and that the readings exist at all: a classifier
+# that silently lost a kind would answer zero for it on every tree forever, which is the one number
+# a healthy field and a blind instrument spell identically (%463).
 
 say "stash-record: Language EN -- a session log parked at a round open is a record only once something carries it."
 say "stash-record: Style Gauge, Meter -- every leg run on real repositories in a throwaway pen, never described."
@@ -84,6 +102,18 @@ assert excludes.ok else "stash-record: the scan no longer excludes the pier/ par
 # assumed, exactly as the park exclusion above is.
 assert here.out contains "orphans=" else "stash-record: the scan no longer reads the paths beside the records, so the work in the box would read as nothing at all"
 assert here.out contains "unread=" else "stash-record: the scan no longer names the paths it cannot judge, and an unprinted reach is claimed by implication"
+
+# invariant: the three kinds are read at all. Each is asserted by name rather than the group, since
+# a classifier that lost ONE kind would fold its members silently into another and the total would
+# still balance -- the partition below cannot see that, and these three can.
+assert here.out contains "orphans_moved=" else "stash-record: the scan no longer tells a moved orphan from a lost one, so this guard's own elder paths would read as parked work"
+assert here.out contains "orphans_shelf=" else "stash-record: the scan no longer tells a fold shelf from a lap, and a shelf checked out is a rollback rather than a recovery"
+assert here.out contains "orphans_work=" else "stash-record: the scan no longer names the orphans that are actually a lap, which is the only one of the three worth a hand"
+
+# invariant: and every orphan is given exactly one kind. The scan sums the three against the count
+# it partitions and says which it got; a partition stated in a header and never checked is a
+# partition that drifts on the lap somebody adds a fourth kind.
+assert here.out contains "orphan_kinds=partition" else "stash-record: the orphan kinds no longer sum to the orphan count, so a path is being reported twice or not at all -- run `sh tools/fixtures/s/stash_record_scan.sh all`"
 
 # invariant: the round open actually calls the reading, or the report exists and nobody hears it.
 let wired = run ["grep" "-q" "stash_record_scan.sh" "tools/f/fleet_round_open.sh"]
