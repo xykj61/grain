@@ -244,6 +244,83 @@ case "$out" in *"runs_seconds_total=0"*) echo "untimed_totals_zero=yes" ;; *) ec
 case "$out" in *"runs_slowest=-:0"*) echo "untimed_names_nobody=yes" ;; *) echo "untimed_names_nobody=no" ;; esac
 case "$out" in *"verdict=ok"*) echo "untimed_card_free=yes" ;; *) echo "untimed_card_free=no" ;; esac
 
+# --- the shape between the sum and the max (REDS row `20260908.020050`) -----------------
+# A sum and a maximum cannot tell a uniformly slow suite from a fast one with a short heavy tail,
+# and those two trees want opposite repairs. The median and the slowest guards' share of the total
+# are what separate them, so both are planted against a card whose arithmetic is checkable by hand:
+# seven guards costing 100, 50, 20, 4, 3, 2, 1 -- total 180, median 4, and the five costliest
+# summing 177, which is 98 percent. Every number below was computed by hand from that card first.
+cat > "$pen/shape.kyri" <<'EOF'
+format standing-equipment-v1
+guard alpha
+path tools/real_witness.rish
+seated 20260822.000000
+guard beta
+path tools/real_witness.rish
+seated 20260822.000000
+guard gamma
+path tools/real_witness.rish
+seated 20260822.000000
+guard delta
+path tools/real_witness.rish
+seated 20260822.000000
+guard epsilon
+path tools/real_witness.rish
+seated 20260822.000000
+guard zeta
+path tools/real_witness.rish
+seated 20260822.000000
+guard eta
+path tools/real_witness.rish
+seated 20260822.000000
+EOF
+cat > "$pen/shape-card.kyri" <<'EOF'
+format standing-equipment-runs-v1
+ran alpha 20260822.100000 green lap 100
+ran beta 20260822.100000 green lap 50
+ran gamma 20260822.100000 green lap 20
+ran delta 20260822.100000 green lap 4
+ran epsilon 20260822.100000 green lap 3
+ran zeta 20260822.100000 green lap 2
+ran eta 20260822.100000 green lap 1
+EOF
+out=$(run_scan shape.kyri shape-card.kyri)
+case "$out" in *"runs_seconds_total=180"*) echo "shape_total=yes" ;; *) echo "shape_total=no" ;; esac
+case "$out" in *"runs_seconds_median=4"*) echo "shape_median=yes" ;; *) echo "shape_median=no" ;; esac
+case "$out" in *"runs_seconds_slowest_sum=177"*) echo "shape_slowest_sum=yes" ;; *) echo "shape_slowest_sum=no" ;; esac
+case "$out" in *"runs_seconds_slowest_share_pct=98"*) echo "shape_share=yes" ;; *) echo "shape_share=no" ;; esac
+case "$out" in *"runs_slowest_named: alpha 100s"*) echo "shape_named_costliest=yes" ;; *) echo "shape_named_costliest=no" ;; esac
+case "$out" in *"runs_slowest_named: epsilon 3s"*) echo "shape_named_fifth=yes" ;; *) echo "shape_named_fifth=no" ;; esac
+# The bound is a bound: the sixth and seventh guards are counted in the total and left unnamed.
+case "$out" in *"runs_slowest_named: zeta"*) echo "shape_bound_holds=no" ;; *) echo "shape_bound_holds=yes" ;; esac
+case "$out" in *"runs_slowest_shown=5"*) echo "shape_bound_named=yes" ;; *) echo "shape_bound_named=no" ;; esac
+case "$out" in *"verdict=ok"*) echo "shape_card_free=yes" ;; *) echo "shape_card_free=no" ;; esac
+
+# THE OTHER TREE, planted so the reading is proven to TELL THEM APART rather than merely to
+# compute. Seven guards each costing 26 total 182 -- within two seconds of the card above -- and
+# the sum and the max alone read nearly the same. The median rises 4 -> 26 and the share falls
+# 98 -> 71, which is the whole reason both readings exist.
+cat > "$pen/flat-card.kyri" <<'EOF'
+format standing-equipment-runs-v1
+ran alpha 20260822.100000 green lap 26
+ran beta 20260822.100000 green lap 26
+ran gamma 20260822.100000 green lap 26
+ran delta 20260822.100000 green lap 26
+ran epsilon 20260822.100000 green lap 26
+ran zeta 20260822.100000 green lap 26
+ran eta 20260822.100000 green lap 26
+EOF
+out=$(run_scan shape.kyri flat-card.kyri)
+case "$out" in *"runs_seconds_median=26"*) echo "flat_median=yes" ;; *) echo "flat_median=no" ;; esac
+case "$out" in *"runs_seconds_slowest_share_pct=71"*) echo "flat_share=yes" ;; *) echo "flat_share=no" ;; esac
+
+# An untimed card answers with the absence rather than with a zero, on all three readings -- the
+# same discipline `runs_seconds_absent` already keeps one layer down.
+out=$(run_scan good.kyri good-card.kyri)
+case "$out" in *"runs_seconds_median=absent"*) echo "untimed_median_absent=yes" ;; *) echo "untimed_median_absent=no" ;; esac
+case "$out" in *"runs_seconds_slowest_share_pct=absent"*) echo "untimed_share_absent=yes" ;; *) echo "untimed_share_absent=no" ;; esac
+case "$out" in *"runs_slowest_named:"*) echo "untimed_names_nobody_here=no" ;; *) echo "untimed_names_nobody_here=yes" ;; esac
+
 # --- a tier no runner honors would run on no lap at all, silently -----------------------
 cat > "$pen/badtier.kyri" <<'EOF'
 format standing-equipment-v1

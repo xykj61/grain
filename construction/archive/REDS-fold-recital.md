@@ -504,3 +504,5 @@ at a closed fold.*
 *Row %602 folded to [`REDS-a-rule-spelled-twice-rows-602.md`](REDS-a-rule-spelled-twice-rows-602.md) on `20260908.004623`, **CLOSED** -- a rule is spelled twice wherever one reader cannot route through the other, and that reader is exactly the one no guard reaches.*
 
 *Row %603 folded to [`REDS-the-cure-that-did-not-reach-the-hand-rows-603.md`](REDS-the-cure-that-did-not-reach-the-hand-rows-603.md) on `20260908.004934`, **CLOSED** -- a cure that lives only in tracked sources cannot reach a hand typing at a prompt; a habit is set where habits are set.*
+
+*Row %605 folded to [`REDS-a-path-a-repointer-could-not-follow-rows-605.md`](REDS-a-path-a-repointer-could-not-follow-rows-605.md) on `20260908.030037`, **BOOKED** -- a repointer reads text, so a path a program computes is a path no repointer follows -- and the hiding that defeats a grep is load-bearing, so the directory is named on its own line instead.*

@@ -17,7 +17,20 @@ CITER=tools/fixtures/s/shed_census_citer.md
 CITED=tools/fixtures/2/20260731-124500_shed_census_cited_control.md
 # Orphan control path is assembled from fragments so this scan file never
 # contains the contiguous path string (C2 planted negative).
-ORPHAN_DIR=tools/fixtures
+#
+# AND THAT ASSEMBLY IS WHY THIS PATH WENT STALE AND ITS NEIGHBOR DID NOT (row `20260908.020050`).
+# `tools/` folded into letter rooms on `20260823.144100`, and `tools/t/tool_path_repoint.rish`
+# carried every literal path across. `CITED` above is a literal, so it was repointed and reads
+# `tools/fixtures/2/` today; this one is four variables, so the repointer never saw it and the
+# directory stayed `tools/fixtures`. One file, one fold, two paths, and the only difference is
+# whether the string was contiguous -- which is the exact property the assembly exists to destroy.
+# The scan then answered `CONTROL=untracked` about a file that is tracked, and reddened
+# `shed_census`, `instrument_suite`, and the seven equinox leaves above it for sixteen days.
+#
+# A repointer reads text, so a path a program computes is a path no repointer can follow. Where a
+# fixture must hide a literal, the fold-fragile part is the DIRECTORY, and it is named here on its
+# own line so a reader repairing a fold finds it by eye.
+ORPHAN_DIR=tools/fixtures/2
 ORPHAN_STAMP=20260731-124500
 ORPHAN_STEM=shed_census_orphan_control
 ORPHAN="${ORPHAN_DIR}/${ORPHAN_STAMP}_${ORPHAN_STEM}.md"
