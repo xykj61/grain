@@ -1,0 +1,107 @@
+# tools/c/chapter_allocator_witness.rish -- the chapter-allocator reflex, held by something other than habit.
+#
+# WHY THIS RUNG. `context/TAME_CORE.md` states the reflex as an absolute -- "never construct
+# `ArenaAllocator` in authored `.rye`" -- and `context/TAME_GUIDANCE.md` and
+# `context/specs/inherited-names.md` each say it again in their own words. On `20260908.074000` a
+# grep for that word across every file under `tools/` answered ZERO: eleven bans stand in
+# `tame_style_scan_bans.rish` and this is not one, nine ratchets stand in
+# `tame_style_scan_advise.rish` including the two siblings the same reflex list names -- `parseInt(`
+# and `Ed25519` -- and this is not one, and `tame-check.rish` reads three textual rules and this is
+# none of them. The rule was carried by habit across 1,958 tracked Rye sources.
+#
+# THE HABIT HELD, WHICH IS WHY THIS IS A WALL. Measured the same moment: zero authored `.rye` files
+# name `ArenaAllocator`, and zero name `GardenAllocator`. A population standing at zero is the
+# cheapest moment a gate can be seated, because the ceiling and the wall are one number and no lap
+# inherits a backlog. The next arrival reds on the lap it enters.
+#
+# HOW THE AIR ROW FOUND IT. The air lap's test is to run a hand along an edge and press: a claim of
+# a boundary is tested by pressing on it, and if the hand passes through, the boundary was a wish.
+# Pressed one at a time, TAME Core's Rye reflexes each answered with a guard -- `std.debug.assert(`,
+# `Self = @This()`, `usingnamespace`, `FIXME`, `dbg(`, `copyForwards`, the compound assert, the
+# memcpy sites, camelCase, `parseInt(`, `Ed25519` -- and the chapter allocator answered with
+# nothing at all.
+#
+# WHAT IS PROVEN, on metal.
+#   Two walls at zero, gated separately because they fail differently. `arena_direct` is reaching
+#     past the season allocator for the inherited type; `garden_alias` is renaming a borrowed thing
+#     into the name `inherited-names.md` reserves for Tally's own region. One is the wrong reach,
+#     the other the wrong name, and a refusal says which.
+#   The affirmative half, reported and never gated: 737 of the 1,958 sources reach
+#     `init.arena.allocator()`, which is the spelling all three law pages say YES to. A file that
+#     reaches no arena may be entirely correct -- `TAME_GUIDANCE.md` names a freestanding case with
+#     no `Init` at all -- so this number describes the tree's shape rather than its debt.
+#   Thirty-five behaviors on real git repositories in a throwaway pen, every refusal planted and
+#     then LIFTED so a return to green is proven rather than assumed, and every free rule shown
+#     from both sides so none can be used as a hole: a comment teaches and a code line on the same
+#     file still counts; dated testimony keeps every word and a living file does not; inherited std
+#     may keep the name and `rye/lib/stdish` one character over may not. Three refusals for a root
+#     that cannot answer, so an unreadable tree never reports clean. The count is DERIVED by the
+#     control from its own claims rather than spelled.
+#
+# THE ONE CASE WORTH NAMING ALONE. The canonical rename spells BOTH banned words on one line --
+# `pub const GardenAllocator = std.heap.ArenaAllocator;` -- so a reading that counted each word
+# separately would charge one defect twice and leave a repair looking half-done. The line is
+# charged to the stolen name, which is the fault with the different cure, and the control asserts
+# the arena counter stays at zero for it.
+#
+# WHAT IS NOT PROVEN. Whether a file reaching no arena SHOULD reach one, and whether an arena
+# reached correctly is then used within its bound -- the widths and asserts other guards read.
+# This proves that the one name three law pages forbid is absent from the code they govern.
+#
+#   rishi/bin/rishi run tools/c/chapter_allocator_witness.rish
+
+say "chapter-allocator: Language EN -- the season arena is reached at the seam, never constructed in our own code."
+say "chapter-allocator: Style Gauge, Meter -- refusal is the subject."
+say "chapter-allocator: Lens TAME -- safety first: a program that builds its own arena has left the one bounded region the chapter clears whole."
+
+let scan = run ["sh" "tools/fixtures/c/chapter_allocator_scan.sh"]
+assert scan.ok else "chapter-allocator: authored Rye names a type three law pages forbid -- read the scan's own lines"
+say scan.out
+assert scan.out contains "verdict=ok" else "chapter-allocator: the scan must balance before it is believed"
+assert scan.out contains "arena_direct_sites=0" else "chapter-allocator: the wall stands at zero, and zero is what the tree must read"
+assert scan.out contains "garden_alias_sites=0" else "chapter-allocator: garden is Tally's own name, reserved rather than borrowed"
+say "field GREEN -- no authored Rye source constructs the inherited arena or renames it"
+
+let control = run ["sh" "tools/fixtures/c/chapter_allocator_control.sh"]
+assert control.ok else "chapter-allocator: the control must complete"
+say control.out
+assert control.out contains "clean_arena_zero=yes" else "chapter-allocator: a clean tree must read zero rather than merely pass"
+assert control.out contains "clean_alias_zero=yes" else "chapter-allocator: both readings must read zero on a clean tree"
+assert control.out contains "clean_verdict_ok=yes" else "chapter-allocator: a clean tree must name its verdict"
+assert control.out contains "clean_free=yes" else "chapter-allocator: a clean tree must pass free"
+assert control.out contains "arena_planted_counted=yes" else "chapter-allocator: a constructed arena must be counted"
+assert control.out contains "arena_planted_one_file=yes" else "chapter-allocator: the file count must follow the site count"
+assert control.out contains "arena_planted_not_alias=yes" else "chapter-allocator: an arena reach is not a stolen name"
+assert control.out contains "arena_named=yes" else "chapter-allocator: the reading must name the file, so the repair is one line away"
+assert control.out contains "arena_over_named=yes" else "chapter-allocator: the refusal must name a verdict, never only an exit code"
+assert control.out contains "arena_over_refused=yes" else "chapter-allocator: one site past the wall must refuse"
+assert control.out contains "arena_lifted_zero=yes" else "chapter-allocator: lifting the plant must return the reading to zero"
+assert control.out contains "arena_lifted_free=yes" else "chapter-allocator: a refusal proven only one way cannot be told from a bypass"
+assert control.out contains "alias_planted_counted=yes" else "chapter-allocator: a rename of the inherited allocator must be counted"
+assert control.out contains "alias_planted_one_file=yes" else "chapter-allocator: the alias file count must follow its site count"
+assert control.out contains "alias_line_not_double_counted=yes" else "chapter-allocator: the canonical rename spells both words on one line, and it is one defect"
+assert control.out contains "alias_over_named=yes" else "chapter-allocator: the alias refusal must name its verdict"
+assert control.out contains "alias_over_refused=yes" else "chapter-allocator: one stolen name past the wall must refuse"
+assert control.out contains "comment_free=yes" else "chapter-allocator: a comment constructs no allocator -- it teaches"
+assert control.out contains "comment_alias_free=yes" else "chapter-allocator: a comment naming the reserved word teaches too"
+assert control.out contains "comment_absent_from_listing=yes" else "chapter-allocator: a freed line must be absent from the listing, not merely uncounted"
+assert control.out contains "comment_passes_free=yes" else "chapter-allocator: a file that only teaches the ban must pass free"
+assert control.out contains "comment_rule_not_a_door=yes" else "chapter-allocator: the comment rule must not become a hole -- a code line still counts"
+assert control.out contains "dated_testimony_free=yes" else "chapter-allocator: dated testimony keeps every word it wrote"
+assert control.out contains "dated_absent_from_listing=yes" else "chapter-allocator: testimony must be absent from the listing, not merely uncounted"
+assert control.out contains "inherited_std_free=yes" else "chapter-allocator: inherited std may keep the name, by the spec's own clause"
+assert control.out contains "inherited_std_absent=yes" else "chapter-allocator: the inherited room must be absent from the listing"
+assert control.out contains "inherited_rule_not_a_door=yes" else "chapter-allocator: the inherited rule must not become a hole -- one room over still counts"
+assert control.out contains "other_extension_free=yes" else "chapter-allocator: this reading is of authored Rye"
+assert control.out contains "untracked_free=yes" else "chapter-allocator: the population is the tracked index"
+assert control.out contains "seam_reach_counted=yes" else "chapter-allocator: the affirmative half must read what it claims"
+assert control.out contains "seam_is_not_a_hit=yes" else "chapter-allocator: the spelling the spec says YES to must never be counted as a fault"
+assert control.out contains "seam_passes_free=yes" else "chapter-allocator: a file reaching the seam correctly must pass free"
+assert control.out contains "no_sources_refused=yes" else "chapter-allocator: a tree with no Rye sources must refuse rather than read zero"
+assert control.out contains "no_git_refused=yes" else "chapter-allocator: a root that is not a checkout must refuse"
+assert control.out contains "no_root_refused=yes" else "chapter-allocator: a root that is not a directory must refuse"
+assert control.out contains "behaviors=35" else "chapter-allocator: the control must run every behavior this witness names"
+assert control.out contains "control_verdict=proven" else "chapter-allocator: the control must agree with itself"
+say "RED and GREEN paths proven -- both walls bitten and lifted, every free rule planted then read as zero and shown from its other side, three refusals for a tree that cannot answer"
+
+say "GREEN: chapter-allocator -- the one name three law pages forbid is absent from the code they govern."

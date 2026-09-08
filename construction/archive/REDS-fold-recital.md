@@ -539,3 +539,4 @@ at a closed fold.*
 
 *Row %624 folded to [`REDS-an-enumeration-standing-for-a-rule-rows-624.md`](REDS-an-enumeration-standing-for-a-rule-rows-624.md) on `20260908.073157`, **CLOSED** -- a gate held at zero read green over nine of its own subjects, because its correction block enumerated two spellings instead of stating the one rule they share.*
 *Row %625 folded to [`REDS-a-comment-repairs-the-file-it-sits-in-rows-625.md`](REDS-a-comment-repairs-the-file-it-sits-in-rows-625.md) on `20260908.085628`, **CLOSED** -- a census paid for its forks rather than for its tree, and the lantern had been lit twice in its own family.*
+*Row %627 folded to [`REDS-a-reflex-three-pages-stated-and-no-guard-read-rows-627.md`](REDS-a-reflex-three-pages-stated-and-no-guard-read-rows-627.md) on `20260908.083214`, **CLOSED** -- three law pages stated a reflex as an absolute and no guard read the word; every reflex beside it was held, so a guard list read as covering a reflex list.*

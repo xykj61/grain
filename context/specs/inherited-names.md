@@ -46,6 +46,8 @@ This is TAME discipline recorded in `context/TAME_GUIDANCE.md` and enforced in C
 
 Inherited `rye/lib/std/**` may keep `ArenaAllocator` internally; `vendor/` and `gratitude/` are untouched.
 
+**Held by a guard from `20260908.083050`**, rather than by habit. `tools/c/chapter_allocator_witness.rish` over `tools/fixtures/c/chapter_allocator_scan.sh` reads every tracked `.rye` source and walls two counts at zero: `arena_direct` for a line naming `ArenaAllocator`, and `garden_alias` for one naming `GardenAllocator`. Both stood at zero across 1,958 sources when the wall was seated, which is why it is a wall rather than a ceiling -- no lap inherits a backlog, and the next arrival reds on the lap it enters. The affirmative half is reported and never gated: 737 of those sources reach `init.arena.allocator()`, and a file reaching no arena may be entirely correct under the freestanding clause. The exemptions above cost nothing to honor here, because `rye/lib/std` is a symlink into `vendor/zig-toolchain/lib/std` and `git ls-files` lists no byte inside it; the path rule is carried and proven anyway, so a later lap that vendors std into the index does not red this wall for obeying this page.
+
 ## The One Place We Speak Freely
 
 Prose is freer than code. In our writing we may call the mechanism a **garden** even where the code says `arena`, because the writing speaks in our own voice and points kindly back to the inherited name. The `rye` README already models this -- *"the process arena -- a single garden the runtime clears whole"* -- introducing the two to each other rather than confusing them. The metaphor lives in the prose; the inherited name stays in the code.
