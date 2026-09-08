@@ -108,9 +108,45 @@ git rev-parse --git-dir >/dev/null 2>&1 || { echo "verdict=no_repo"; echo "refus
 work=$(mktemp -d 2>/dev/null) || { echo "verdict=no_workspace"; echo "refused: could not make a temporary directory" >&2; exit 2; }
 trap 'rm -rf "$work"' EXIT
 
-# Tracked only: an untracked draft in the room is nobody's promise yet, and gating one would refuse
-# a hand mid-fold.
-git ls-files "$ROOM" 2>/dev/null | grep '\.md$' | sort -u > "$work/all_shelves" || : > "$work/all_shelves"
+# THE CORPUS ANSWERS TWO QUESTIONS, SO IT TAKES TWO SETTINGS, and the default is the elder one.
+#
+#   tracked  -- `git ls-files`. An untracked draft in the room is nobody's promise yet, and gating
+#               one would refuse a hand in the middle of a fold. This is what the GATE reads, and
+#               the witness never sets the variable, so the gate's population cannot widen by
+#               accident.
+#   working  -- tracked, plus every untracked path git does not ignore. This is what the REPAIR
+#               reads.
+#
+# WHY THE SECOND SETTING EXISTS, and it is a measurement rather than a preference. `20260908.044602`
+# wrote the remedy for this fault down -- whoever writes a shelf runs the repointer BEFORE staging --
+# and `20260908.063650` ran exactly that, read `verdict=nothing_to_do`, and then repaired nine links
+# by hand. The instruction could never have fired: a shelf a lap has just written is absent from
+# `git ls-files` until `git add`, so one `git add` was the whole distance between `nothing_to_do`
+# and a repair. **A prescription that cannot fire prescribes nothing** -- which is the grain's own
+# `a guard that cannot red guards nothing`, standing on the repair side of the same wall.
+#
+# The two readings were one reading answering two questions. Gating wants tracked, because an
+# untracked draft is nobody's promise; repairing wants the working tree, because the file a hand is
+# holding is exactly the one that needs the correction. Splitting them costs one variable.
+#
+# AN IGNORED PATH IS IN NEITHER CORPUS. `--exclude-standard` is what keeps a build artifact, a
+# `session-output/` transcript, or a peer's scratch out of a rewrite that walks the working tree.
+# An unknown corpus word REFUSES rather than guessing which population was meant.
+CORPUS="${FOLD_SHELF_CORPUS:-tracked}"
+case "$CORPUS" in
+  tracked|working) : ;;
+  *) echo "verdict=bad_corpus"
+     echo "refused: FOLD_SHELF_CORPUS reads '$CORPUS' -- it takes 'tracked' or 'working', and an unknown word refuses rather than guessing which population was meant" >&2
+     exit 2 ;;
+esac
+
+git ls-files "$ROOM" 2>/dev/null | grep '\.md$' | sort -u > "$work/tracked_shelves" || : > "$work/tracked_shelves"
+: > "$work/untracked_shelves"
+if [ "$CORPUS" = working ]; then
+  git ls-files --others --exclude-standard "$ROOM" 2>/dev/null | grep '\.md$' | sort -u > "$work/untracked_shelves" || : > "$work/untracked_shelves"
+fi
+shelves_untracked=$(grep -c . "$work/untracked_shelves" || true)
+sort -u "$work/tracked_shelves" "$work/untracked_shelves" > "$work/all_shelves"
 
 # A LISTED PATH IS NOT ALWAYS A READABLE ONE, and this bit for real on the lap that wrote this scan.
 # `git ls-files` reads the INDEX: a path staged for deletion, a file renamed mid-rebase, and an
@@ -133,7 +169,7 @@ shelves_scanned=$(grep -c . "$work/shelves" || true)
 if [ "$shelves_scanned" -eq 0 ]; then
   echo "shelves_scanned=0"
   echo "verdict=no_shelves"
-  echo "refused: $ROOM holds no tracked .md file, so this reading read nothing (REDS %463)" >&2
+  echo "refused: $ROOM holds no .md file in the $CORPUS corpus, so this reading read nothing (REDS %463)" >&2
   exit 2
 fi
 
@@ -215,7 +251,9 @@ if [ "$MODE" = list ]; then
   exit 0
 fi
 
+echo "corpus=$CORPUS"
 echo "shelves_scanned=$shelves_scanned"
+echo "shelves_untracked=$shelves_untracked"
 echo "shelves_absent=$shelves_absent"
 echo "links_read=$links_read"
 echo "fold_depth_lost=$fold_depth_lost"

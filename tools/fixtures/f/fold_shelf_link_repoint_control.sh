@@ -6,7 +6,7 @@
 #
 #   sh tools/fixtures/f/fold_shelf_link_repoint_control.sh
 #
-# Prints `pass=N fail=N`. Bounded: 12 cases, one pen holding a real git repository.
+# Prints `pass=N fail=N`. Bounded: 20 cases, one pen holding a real git repository.
 set -eu
 
 root=$(CDPATH= cd -- "$(dirname -- "$0")/../../.." && pwd)
@@ -60,15 +60,43 @@ git add -A >/dev/null; git commit -qm dead
 out=$(run --apply)
 check "a dead link is not rewritten"       yes "$(has "$(cat construction/archive/dead.md)" '](archive/nowhere.md)')"
 
-# AN UNTRACKED SHELF IS NEVER OFFERED, which is a stronger fact than being skipped. The scan reads
-# `git ls-files`, so an untracked file cannot enter its list at all -- the repointer's own tracked
-# check therefore guards a case the scan already forecloses, and this asserts the REAL behaviour
-# rather than the one the check was written for. The check stays as a second wall in case the scan's
-# corpus ever widens; what is proven here is that today nothing untracked is even considered.
+# AN UNTRACKED SHELF IS THE ONE THIS TOOL EXISTS TO REACH, and the day the elder comment forecast
+# has come. It used to read "never offered": the scan drew its population from `git ls-files`, so
+# nothing untracked could enter the list, and the repointer's tracked check guarded a case already
+# foreclosed. That made the tree's own written remedy inert -- `20260908.044602` said run the
+# repointer BEFORE staging, `20260908.063650` did exactly that, read `nothing_to_do`, and repaired
+# nine links by hand, because one `git add` was the whole distance between the two answers.
+#
+# The scan now takes `FOLD_SHELF_CORPUS`, this tool asks it for `working`, and both directions are
+# proven here: the shelf a hand has just written IS repaired, and `--tracked-only` restores the
+# elder population on the same pen so the widening can be told from a tool that ignores the flag.
 printf '# untracked\n[sibling](archive/sibling.md)\n' > construction/archive/untracked.md
-out=$(run --apply)
-check "an untracked shelf is never offered" yes "$(has "$out" 'verdict=nothing_to_do')"
+out=$(run --tracked-only --apply)
+check "--tracked-only leaves it alone"      yes "$(has "$out" 'verdict=nothing_to_do')"
+check "and names the corpus it read"        yes "$(has "$out" 'corpus=tracked')"
 check "and it is left byte-for-byte"        yes "$(has "$(cat construction/archive/untracked.md)" '](archive/sibling.md)')"
+
+out=$(run --apply)
+check "the working corpus repairs it"       yes "$(has "$out" 'verdict=ok')"
+check "and names the corpus it read"        yes "$(has "$out" 'corpus=working')"
+body=$(cat construction/archive/untracked.md)
+check "the unstaged shelf is deepened"      yes "$(has "$body" '](sibling.md)')"
+check "and the elder spelling is gone"      no  "$(has "$body" '](archive/sibling.md)')"
+
+# AN IGNORED PATH IS REFUSED UNDER EITHER CORPUS. Widening to the working tree is what lets the
+# repair reach a hand's own draft; the ignore rule is what keeps it out of a build artifact, a
+# `session-output/` transcript, or a peer's scratch. Proven where it would otherwise bite: this
+# shelf carries the identical fault the one above did.
+printf 'construction/archive/ignored-*\n' > .gitignore
+git add .gitignore >/dev/null; git commit -qm ignore
+printf '# ignored\n[sibling](archive/sibling.md)\n' > construction/archive/ignored-build.md
+out=$(run --apply)
+check "an ignored shelf is never offered"   yes "$(has "$out" 'verdict=nothing_to_do')"
+check "and it is left byte-for-byte"        yes "$(has "$(cat construction/archive/ignored-build.md)" '](archive/sibling.md)')"
+
+# An unknown argument refuses rather than being read as one of the two it resembles.
+out=$( set +e; run --sideways 2>&1; exit 0 )
+check "an unknown argument refuses"         yes "$(has "$out" 'refused: unknown argument --sideways')"
 
 printf 'pass=%d fail=%d\n' "$pass" "$fail"
 [ "$fail" -eq 0 ]

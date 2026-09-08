@@ -13,15 +13,24 @@
 # THE SCAN STAYS THE AUTHORITY. This tool invents nothing: it applies the scan's `repair` column and
 # nothing else, leaves a DEAD link alone because a broken link with no computed repair needs a
 # reader, and writes through the original inode so a tracked file keeps its mode.
+#
+# AND IT READS THE WORKING TREE, WHERE THE GATE READS THE INDEX. The scan's corpus is `tracked` by
+# default, because gating an untracked draft would refuse a hand mid-fold; this tool asks it for
+# `working`, because the file needing the correction is exactly the one a hand has just written and
+# has yet to stage. That difference is why the tree's own written remedy was inert: `20260908.044602`
+# said run the repointer BEFORE staging, `20260908.063650` did precisely that, read
+# `nothing_to_do`, and repaired nine links by hand -- one `git add` being the whole distance between
+# the two answers. A prescription that cannot fire prescribes nothing. `--tracked-only` restores the
+# elder population, an IGNORED path is refused under either, and the control proves all three.
 
 say "fold-shelf-repoint: Language EN -- the fourth firing of one fault, answered once."
 say "fold-shelf-repoint: Style Gauge, Meter -- the repair is applied, never guessed."
 say "fold-shelf-repoint: Lens TAME -- safety first; every refusal proven from both sides."
 
-say "fold-shelf-repoint: the control -- twelve behaviors on a real fold in a throwaway repository..."
+say "fold-shelf-repoint: the control -- twenty behaviors on a real fold in a throwaway repository..."
 let ctl = run ["sh" "tools/fixtures/f/fold_shelf_link_repoint_control.sh"]
 assert ctl.ok else "fold-shelf-repoint: the control refused --\n${ctl.out}\n${ctl.err}"
-assert ctl.out contains "pass=12 fail=0" else "fold-shelf-repoint: the control did not prove twelve behaviors --\n${ctl.out}\n${ctl.err}"
+assert ctl.out contains "pass=20 fail=0" else "fold-shelf-repoint: the control did not prove twenty behaviors --\n${ctl.out}\n${ctl.err}"
 
 say "fold-shelf-repoint: and this tree reads clean, so the tool has nothing to do here..."
 let dry = run ["sh" "tools/f/fold_shelf_link_repoint.sh"]
