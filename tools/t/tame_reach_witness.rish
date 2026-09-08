@@ -1,0 +1,93 @@
+# tame_reach_witness.rish -- the reach of the TAME style law over authored Rye.
+#
+# One gate at zero and two ratchets under ceilings that only fall, over
+# tools/fixtures/t/tame_reach_scan.sh. The scan's own head carries the reasoning; the short form is
+# that tools/fixtures/t/tame_style_rooms.txt is a hand-written list of twenty rooms, it decides
+# where the tree's own style law is ever read, and nothing has ever measured what stands outside
+# it. That is the shape REDS %532 booked one room over: a hand-written enumeration standing in for
+# a population reads as coverage from every side.
+#
+# WHAT THE FIRST READING FOUND, 20260908.184342. The roster's own head names a twenty-first room,
+# rye/tests, and declines to add it -- deliberately, with reasons, and sized from ONE advisory
+# ratchet: seven camelCase names, six after an inherited-name exemption. Read the BAN class over
+# the same uncovered population, the half of the law that FAILS parity rather than printing a
+# count, and it stands at 736 hits across 113 files: 718 `std.debug.assert(` in rye/tests, twelve
+# copyForwards, six copyBackwards, and not one of them inside a comment. The deferral was sound.
+# Its stated size came from the only number anyone had measured, and it was three orders short.
+#
+#   rishi/bin/rishi run tools/t/tame_reach_witness.rish
+
+let scan = run ["sh" "tools/fixtures/t/tame_reach_scan.sh"]
+assert scan.ok else "tame_reach scan refused: ${scan.err}${scan.out}"
+
+# invariant: the population is present. A scan reading zero authored Rye has lost its subject, and
+# every reading below would then be satisfied by an empty tree.
+assert scan.out contains "population=" else "tame_reach scan printed no population count"
+assert (scan.out contains "population=0") == false else "tame_reach: the population reads zero -- git ls-files found no authored Rye, so this reading proves nothing"
+
+# invariant: every room the roster names holds tracked authored Rye. A roster line is hand-typed,
+# so a rename anywhere in the tree can leave one naming nothing, and the law then narrows in
+# silence -- this whole guard's subject wearing its smallest form. Held at zero because it costs
+# nothing to hold and is loud on the day it goes.
+assert scan.out contains "phantom_rooms=0" else "tame_reach: the roster names a room holding no tracked authored Rye -- ${scan.out}"
+
+# invariant: the roster's reach is published rather than reasoned about. Both parts stay printed
+# so a hand sizing a widening reads the population instead of the one number at hand.
+assert scan.out contains "roster_rooms=" else "tame_reach scan printed no roster room count"
+assert scan.out contains "covered=" else "tame_reach scan printed no covered count"
+
+# invariant: the authored Rye outside every roster room only falls. It stands at 551 today, and a
+# ceiling that only falls buys the promise that matters: a room born tomorrow joins the roster, or
+# this guard hears it on the lap it arrives. Gating at zero would refuse the tree for a backlog
+# nobody made today, and crypto/ is absent from the roster on purpose -- it implements Ed25519
+# rather than calling it -- so zero was never the right number here.
+assert scan.out contains "uncovered_ceiling=551" else "tame_reach: the uncovered ceiling stands at 551 -- a ceiling only falls"
+
+# invariant: a control's own plant is read past. A guard proves its refusals by planting them, so
+# tools/fixtures/t/tame_style_ban_err_eq_code.rye and its siblings MUST carry the bans they exist
+# to trip. Counting one as unwatched debt would red this meter over the files proving the law works.
+assert scan.out contains "uncovered_plant=" else "tame_reach scan printed no plant count"
+
+# invariant: the ban hits standing in unread authored Rye only fall. These are the class the law
+# refuses rather than counts -- `) == error.`, `std.debug.assert(`, copyForwards, copyBackwards,
+# `Self = @This()`, usingnamespace, `!comptime`, FIXME, `dbg(` -- and the roster's reach is the
+# only reason they are green today. 736 at seating.
+assert scan.out contains "ban_ceiling=736" else "tame_reach: the ban ceiling stands at 736 -- a ceiling only falls"
+assert scan.out contains "unwatched_ban_files=" else "tame_reach scan printed no unwatched ban file count"
+
+# invariant: the rooms carrying them are named. A count says how much and a room says where, and
+# where is the half a hand widening the roster actually needs -- the elder note sized its deferred
+# lap from a number with no room attached.
+assert scan.out contains "unwatched_ban_rooms=" else "tame_reach scan printed no unwatched ban room list"
+
+assert scan.out contains "verdict=ok" else "tame_reach: the scan refused -- ${scan.out}"
+
+# invariant: every refusal is reachable. A ceiling proven only in the passing direction cannot be
+# told from a bypass, so each is dropped one under its live reading in turn and the scan must
+# refuse, naming each refusal apart from the other.
+let under_uncovered = run ["sh" "-c" "TAME_REACH_UNCOVERED_CEILING=0 TAME_REACH_BAN_CEILING=99999 sh tools/fixtures/t/tame_reach_scan.sh"]
+assert (under_uncovered.ok == false) else "tame_reach: authored Rye outside the roster must refuse at a ceiling of zero"
+assert under_uncovered.out contains "verdict=over_uncovered_ceiling" else "tame_reach: want the uncovered refusal named -- ${under_uncovered.out}"
+
+let under_ban = run ["sh" "-c" "TAME_REACH_UNCOVERED_CEILING=99999 TAME_REACH_BAN_CEILING=0 sh tools/fixtures/t/tame_reach_scan.sh"]
+assert (under_ban.ok == false) else "tame_reach: unwatched ban hits must refuse at a ceiling of zero"
+assert under_ban.out contains "verdict=over_ban_ceiling" else "tame_reach: want the ban refusal named -- ${under_ban.out}"
+
+# invariant: an absent roster refuses rather than reading a clean tree. Zero rooms and a missing
+# file look identical in the arithmetic and mean opposite things -- with no roster every file is
+# uncovered, which is a reading no one should receive as a measurement.
+let no_roster = run ["sh" "-c" "TAME_REACH_ROSTER=tools/fixtures/t/tame_reach_absent.txt sh tools/fixtures/t/tame_reach_scan.sh"]
+assert (no_roster.ok == false) else "tame_reach: an absent roster must refuse"
+assert no_roster.err contains "no roster at" else "tame_reach: want the absent roster named -- ${no_roster.err}"
+
+# invariant: the reading is proven on real git trees rather than trusted. The control builds
+# miniature repositories in a throwaway pen under this tree's own .lap/ and proves 39 behaviors --
+# the phantom gate and both ceilings planted and then lifted, a ban inside a roster room left
+# uncounted, a fixture plant read past, symlink and .cache/ and bin/ held outside the population,
+# and the tracked-rather-than-found choice shown from both sides by committing an untracked file
+# and watching it arrive.
+let control = run ["sh" "tools/fixtures/t/tame_reach_control.sh"]
+assert control.ok else "tame_reach control failed: ${control.out}"
+assert control.out contains "fail=0" else "tame_reach control reported failures: ${control.out}"
+
+say "GREEN: tame_reach -- no phantom room, the roster's reach published rather than reasoned about, authored Rye outside it held at 551 and unwatched ban hits at 736, both refusals proven, absent roster refuses, 39 control behaviors green."

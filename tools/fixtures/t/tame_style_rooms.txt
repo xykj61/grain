@@ -50,6 +50,21 @@ mikrophone
 # ONE OF THE SEVEN IS EXEMPT ON ITS OWN MERITS: `pub fn lessThan` is the shape Zig's own sort API
 # asks for, an inherited-name seam under `context/specs/inherited-names.md`. A widening should count
 # six, not seven.
+#
+# AND THE SIZE OF THAT LAP CAME FROM THE WRONG HALF OF THE LAW (20260908.184342). Every number above
+# is the camelCase ratchet, which PRINTS a count. The bans half FAILS parity, and nobody had read it
+# over the rooms this file leaves out: 736 hits across 113 files, not one inside a comment -- 718
+# `std.debug.assert(` in `rye/tests`, twelve `copyForwards` and six `copyBackwards` in the three
+# tests named for those primitives. So adding `rye/tests` does not move six advisory counts; it
+# turns the bans half RED until 736 sites are repaired or exempted by name. Bigger lap than this
+# note said, and the same lap.
+#
+# THE WHOLE REACH IS MEASURED NOW rather than reasoned about -- tools/fixtures/t/tame_reach_scan.sh,
+# rostered `tier lap`. It derives the population from the tree and reads it against this file: 1,729
+# tracked authored `.rye`, 1,127 under a room named here, 551 outside. `lotus` alone holds 238, more
+# than most rooms on this list, and carries no ban at all -- it complies with a law nothing holds it
+# to. A roster line naming no tracked Rye is gated at zero; the gap rides two ceilings that only
+# fall, so a room born tomorrow is added here or reds on the lap it arrives.
 rye/src
 amphora
 

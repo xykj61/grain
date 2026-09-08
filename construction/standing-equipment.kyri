@@ -440,6 +440,31 @@ path tools/t/tame-check.rish
 tier lap   # 13.4s (1.0s scan, 12s control); the four textual rules over 1,127 derived authored files
 seated 20260908.111848
 
+# A FOURTH LAP, AND IT READS THE ROSTER RATHER THAN THROUGH IT, seated 20260908.184342 on the air
+# rota -- the row that feels along a boundary. The three widenings above each derived a guard's
+# population from `tools/fixtures/t/tame_style_rooms.txt`, which is the right move and leaves one
+# question standing: that file is itself a hand-written list of twenty rooms, and nothing has ever
+# measured what it leaves out. A hand-written enumeration standing in for a population reads as
+# coverage from every side, which is the shape REDS %532 booked one room over.
+#
+# THE ROSTER'S OWN HEAD ALREADY NAMES A TWENTY-FIRST ROOM and declines to add it, deliberately and
+# with reasons -- and it sizes that deferred lap from ONE advisory ratchet: seven camelCase names,
+# six after an inherited-name exemption. The bans half FAILS parity rather than printing a count,
+# and nobody had read it over the rooms the roster leaves out. It stands at 736 hits across 113
+# files, none in a comment: 718 `std.debug.assert(` in `rye/tests`, twelve `copyForwards` and six
+# `copyBackwards` in the three tests named for those primitives. The deferral was sound. Its stated
+# size came from the only number anyone had measured, and it was three orders short.
+#
+# THE REACH, PUBLISHED RATHER THAN REASONED ABOUT: 1,729 tracked authored `.rye`, 1,127 under a
+# roster room, 551 outside -- `lotus` 238, `rye` 116, `crypto` 82. `crypto/` is absent on purpose
+# and this meter never asks for it; what the meter refuses is that the number was nobody's to say.
+# One gate at zero (`phantom_rooms` -- a roster line naming no tracked Rye, the law narrowing in
+# silence) and two ceilings that only fall, so a room born tomorrow joins the roster or reds here.
+guard tame_reach
+path tools/t/tame_reach_witness.rish
+tier lap   # 5.0s (0.6s scan, 4.4s control); the roster's reach over 1,729 derived authored files
+seated 20260908.184342
+
 # sow -- the projected seat is clean before it is ever public. MOVED TO `tier cadence`
 # `20260904` (REDS %412): at 230s it was the single most expensive guard on the roster, and unlike
 # the two repaired beside it that cost is INHERENT -- it projects the whole public seed and scrubs
