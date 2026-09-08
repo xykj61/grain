@@ -417,6 +417,11 @@ guard lotus_module_roster
 path tools/l/lotus_module_roster_witness.rish
 seated 20260824.091754
 
+guard chapter_allocator
+path tools/c/chapter_allocator_witness.rish
+seated 20260908.083050
+tier lap   # two walls at zero over 1,958 authored Rye sources; a lap that writes Rye can move it
+
 guard crushed_index
 path tools/cr/crushed_index_witness.rish
 seated 20260906.091330

@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `b12b274cb0` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `820e600a48` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A FINISHED GREEN LAP WAS STASHED BY THE NEXT LAP'S OWN ROUND-OPEN.**
 Elder [shelved](archive/20260908-073157_itinerary-landed-accounts.md).
@@ -191,15 +191,13 @@ guard said to lock that is `%500` above, and it now reds honestly.
 
 **`%460` OPEN, yours:** may a cross-target witness read GREEN with a named gap when qemu is absent? `%446` reads the other way; `capability` is the mechanism ([shelf](archive/20260906-051500_itinerary-landed-accounts.md)).
 
-**GRASS -- A CUT ASKED WHAT CALLS A FILE; THREE ONLY NEEDED IT TO EXIST.**
-Elder [shelved](archive/20260908-053436_itinerary-landed-accounts.md). Rows `20260908.052314`,
-`20260908.052600` **CLOSED**, [folded](archive/REDS-a-cut-that-asked-the-wrong-question-rows-614-615.md).
-**`season_leaf_choir` red 5 of 33 since `20260907.101056`, `%568`'s clock.**
-`dated_classify.py` was **CUT `20260830.190407`** verifying *zero operational citers*;
-e116/e117/e118 named it as an **existence** check -- **and that cut's prep row had named all
-three.** **33 of 33.**
-**Yours:** `dated_path` reds `refs_lost=100` over **85**; 95 testimony. Gate
-`lost_promised_living` (**0**)?
+**GRASS -- A REFLEX STATED THREE TIMES AS AN ABSOLUTE, CHECKED BY NOTHING.**
+Elder [shelved](archive/20260908-083214_itinerary-landed-accounts.md); row `20260908.083050`
+**CLOSED**, [folded](archive/REDS-a-reflex-three-pages-stated-and-no-guard-read-rows-627.md).
+**AIR'S TEST:** press a boundary; does the hand go through? `TAME_CORE.md` forbids
+`ArenaAllocator` in authored `.rye`; `grep -il` over `tools/` read **zero** while both siblings
+there had ratchets -- **a guard list read as covering the reflex list beside it.** **A WALL** at 0/**1,958**. **Mine:** a sweep of mine scoped to a FILE rewrote a peer's `%613` -- a peer booked it `%621` an hour first, so my row withdrew whole.
+**Yours:** `dated_path` `refs_lost` 100/85; repairable **0**. Gate?
 
 **COPAL -- A RUNNER IS A FILE THE PIER EXECUTES; THE POPULATION WAS PICKED BY SUFFIX.**
 Elder [shelved](archive/20260908-072606_itinerary-landed-accounts.md). `%601` **BOOKED**,

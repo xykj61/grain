@@ -25,7 +25,7 @@ Token-dense on purpose. This is the smallest form that still holds TAME's highes
 - **Opening triad**, every hosted file: `const std` - `const assert = std.debug.assert` - `const print = std.debug.print`. Then bare `assert(...)` / `print(...)`.
 - **`snake_case`** fns/vars/files - **short fns** (split past ~70 lines at natural seams) - **named errors with `try`**.
 - **No bare `@memcpy`** in new code -> `tally/copy.rye` `copy_disjoint`. **No `std.debug.assert(`** (unqualified only). **No compound `assert(a and b)`** (split). No `Self = @This()`, `usingnamespace`, `FIXME`, `dbg(`.
-- **Chapter allocator:** reach the arena via `const garden = init.arena.allocator()`; never construct `ArenaAllocator` in authored `.rye`.
+- **Chapter allocator:** reach the arena via `const garden = init.arena.allocator()`; never construct `ArenaAllocator` in authored `.rye`, and never rename it `GardenAllocator` -- `garden` is Tally's own reserved name. Walled at zero by `tools/c/chapter_allocator_witness.rish`.
 - Prefer `tally/parse_int.rye` over bare `std.fmt.parseInt`; `tally/kumara.rye` over bare Ed25519.
 
 ## The other family tongues
@@ -43,8 +43,9 @@ Token-dense on purpose. This is the smallest form that still holds TAME's highes
 - `tools/t/tame_style_check.rish` -- tidy **bans** (fail) + **ratchets** (migrate on touch).
 - `tools/r/rune_assert_sweep.rish` -- asserting cores keep their asserts.
 - `tools/l/living_docs_lint.rish` -- living-doc links, status, retired words.
+- `tools/c/chapter_allocator_witness.rish` -- the chapter-allocator reflex above, two walls at zero. Seated `20260908.083050`, after a grep found that reflex stated as an absolute on three pages and checked by nothing.
 
-Run them when touching authored code; the **TAME Guidance Audit Quest** (one Quest/Equinox, double-seated) walks all four and books reds.
+Run them when touching authored code; the **TAME Guidance Audit Quest** (one Quest/Equinox, double-seated) walks all five and books reds.
 
 ## Crash headroom
 

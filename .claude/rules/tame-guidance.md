@@ -63,6 +63,8 @@ Tiger Style discipline: **`usize` is a boundary type, not a design type.** Read 
 
 - **Never** construct or name `std.heap.ArenaAllocator` in authored `.rye`.
 - **Always** reach for the season allocator via `const garden = init.arena.allocator()` -- `init.arena` at the std seam; `garden` as the warm local name (Tally's future concept).
+- Never rename it either: `std.heap.GardenAllocator` as a thin alias steals the name reserved for Tally's own region type.
+- **Walled at zero** by [`../../tools/c/chapter_allocator_witness.rish`](../../tools/c/chapter_allocator_witness.rish) over [`../../tools/fixtures/c/chapter_allocator_scan.sh`](../../tools/fixtures/c/chapter_allocator_scan.sh), seated `20260908.083050`. Both readings are gated separately, because reaching for the inherited type and renaming it are two faults with two cures; a comment teaching the ban passes free, and inherited std keeps the name by the spec's own clause. Until that stamp the reflex stood on three law pages as an absolute and in no guard at all.
 - Full policy: `context/specs/inherited-names.md`.
 
 ## The priority order
