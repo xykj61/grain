@@ -48,23 +48,30 @@ A lap tags its receipts from these six, and speaks both registers. A reading tha
 a new channel uses river; one that returns to a seam on its own rhythm uses tide; a seam
 proven sweet uses nectar, and a horizon named without rushing a single step uses longing.
 
-## Cardinal: The Shape You Grew and the Shape You Are
+## Cardinal: What Brix Infuse Is
 
-`foundations/20260823-105651_the-shape-you-grew-and-the-shape-you-are.md` (seated
-20260823, fusing two elders written 20260821) fuses two laws:
-Gall's (1975) -- a working complex system is invariably grown from a working simple one --
-and Conway's (1968) -- a system copies the communication structure of whoever builds it.
-Together they say the shape you get is the shape you grew and the shape you are, and the
-page reads this tree against both: one durable person, a rotating population of agents who
-share no memory, and a channel between them that is the tree itself -- session logs,
-witnesses, ledgers, rules loaded every lap.
+`foundations/20260823-222019_what-brix-infuse-is.md` (seated on this row `20260908`, on
+Keaton's word) states the tree's own claim about how change behaves:
 
-Taste reads this page as provenance. A wine carries its ground in its flavor, and so does
-a system: every design decision here tastes of the soil it grew from. The lap's question
-at this seat is the page's own first question -- what smaller thing already works, and can
-this grow from it? A design whose answer tastes thin, that assumes a memory nobody in this
-organization has, is the off note the cardinal cut exists to catch early, while the
-channel is still soft.
+    declaration + world  ->  infusion  ->  world'
+    infusion(world')     ->  world'          idempotent
+
+The first line says a declaration and a world produce a new world. The second carries the
+weight: infusing that new world again yields the same world, so running a change twice does
+what running it once did. A tool that fails it corrupts on its second run -- and the second
+run is what an unattended loop performs at three in the morning.
+
+Taste reads this page by doing rather than by reading. Water's whole instruction is to run
+the actual thing up close, and an infusion is tested by running it a SECOND time; the row's
+sense and the page's proof are one gesture. The lap's question at this seat is plain: what
+did this round change, and would running it again change anything more? Measured
+`20260907.234808`, 30 tools in this tree write to the tracked tree and 3 prove they
+converge, so the claim was stated in a foundation, checked by almost nothing, and read by
+no lap until this seat opened.
+
+*The elder seat, `20260823-105651_the-shape-you-grew-and-the-shape-you-are.md`, fusing
+Gall's law with Conway's, stays a living foundation with every word it wrote. A seat is a
+reading schedule rather than a judgment of worth.*
 
 ## Fixed: The Happy Zone and the Thin Edge
 
