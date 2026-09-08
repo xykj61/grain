@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `465a6cacd8` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `e30bdcfc25` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A HABIT THAT MUST BE TYPED IS A HABIT THAT WILL BE TYPED DIFFERENTLY.**
 Elder [shelved](archive/20260908-115307_itinerary-landed-accounts.md). Row `20260908.113404`
@@ -196,15 +196,16 @@ guard said to lock that is `%500` above, and it now reds honestly.
 
 **`%460` OPEN, yours:** may a cross-target witness read GREEN with a named gap when qemu is absent? `%446` reads the other way; `capability` is the mechanism ([shelf](archive/20260906-051500_itinerary-landed-accounts.md)).
 
-**GRASS -- THE FIRST OF THREE HAND LISTS NOW READS THE TREE.**
-Elder [shelved](archive/20260908-125347_itinerary-landed-accounts.md).
-**FIRE LOOKS AT WHAT MUST BE CUT.** `opening_lines_scan.rish` named 24 paths inline since
-`20260729`, its header arguing against itself that day -- *honest only while someone adds to it*. **IT DERIVES NOW** from `tame_style_rooms.txt`, third reader: **24 -> 1,073 hosted**.
-Two walls -- `qualified_assert` **0 of 1,073**, elder 24 clean. Three falling ratchets: **5**
-qualified print, **67**/**118** missing bind. **Control 18**, both sides.
-**ITS 25 WAS NEVER A FILE COUNT** -- 24 OK lines plus the trailing blank, **copied by three
-living pages for a year**: a guard counting its own output.
-**Yours:** `dated_path` gate? **Mine:** `tame_check` 17, `rune_assert` 12.
+**GRASS -- THE SECOND HAND LIST READS THE TREE, AND FOUND THREE FILES.**
+Elder [shelved](archive/20260908-133141_itinerary-landed-accounts.md).
+`tame_check_scan.rish` named 16 paths inline. **IT DERIVES NOW** from `tame_style_rooms.txt`,
+fourth reader: **16 -> 1,127 authored** -- hosted or not, since a tab is a fault whichever way a
+file opens. Three walls at **0**; elder 16 clean; **control 24**, both sides.
+**THE FOURTH DUTY FOUND WHAT SIXTEEN COULD NOT** -- 3 trailing-whitespace files, load-bearing.
+**2 inside `\\` multiline strings** are generated Zig and Brush: reported, gated nowhere. **1 is
+`font8x8_data.rye:35`, the glyph row whose `//` comment IS a space** -- ratchet at 1, not an
+exemption.
+**ITS 17 WAS NEVER A COUNT** -- two of two widened guards read their own output length.
 
 **COPAL -- A NUMBER MEASURED BEFORE ITS OWN COMMIT.**
 Elder [shelved](archive/20260908-121934_itinerary-landed-accounts.md). Row `20260908.121934`

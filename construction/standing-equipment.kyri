@@ -355,8 +355,25 @@ tier lap       # authored Rye style, named on touch by the same
 # for a year. Two readings are walls -- `qualified_assert` at zero across all 1,073, and the elder
 # twenty-four held clean on all four of their duties, so the widening lowers nothing the narrow list
 # had proven. Three are ratchets whose ceilings only fall: 5 files calling `std.debug.print(`, 67
-# missing the assert bind, 118 missing the print bind. `tame_check` and `rune_assert_sweep` still
-# read their lists, one guard per lap by design.
+# missing the assert bind, 118 missing the print bind. `rune_assert_sweep` still reads its
+# twelve, one guard per lap by design.
+#
+# `tame_check` TOOK THE SECOND LAP `20260908.133141`, and it found something the first did not.
+# Its scan reads the same roster and counts every authored `.rye` rather than only the hosted ones,
+# because a tab and a trailing space are faults whichever way a file opens: 1,127 rather than 16.
+# Three duties are walls at zero across all of them, each on a looser predicate than the literal it
+# replaced -- `std.debug.assert(` at any spacing, `Self = @This()` at any spacing, any tab. The
+# fourth found three files the sixteen could not see, and all three are load-bearing: two carry a
+# trailing space inside a `\\` multiline string, which is generated Zig and generated Brush rather
+# than an untidy source, so they are reported under `trailing_content` and gated nowhere; the third
+# is `brushstroke/font8x8_data.rye:35`, the glyph row whose `//` comment IS the space character it
+# draws. That one is a ratchet at 1 rather than a named exemption, so naming the glyph in words some
+# day lowers the ceiling honestly.
+#
+# ITS COUNT WAS THE SAME FAULT AS THE FIRST ONE'S. `tame-check` printed `length lines result.out`
+# and said "all 17 files" against a list of 16, the seventeenth being the trailing empty line --
+# exactly the 25-for-24 above, in the guard standing beside it, found the same day. Two of two
+# widened guards had been measuring their own output, which is the argument for widening the third.
 #
 # `tier lap` for all three, measured on this pier `20260908`: 19,564ms, 401ms, 172ms against a lap
 # pass of 1,537s. The first grew 966ms -> 19.6s at the widening, and the scan itself is 1.3s of that
@@ -375,7 +392,7 @@ seated 20260908.111848
 
 guard tame_check
 path tools/t/tame-check.rish
-tier lap   # 401ms; unqualified assert, `Self = @This()`, tabs and trailing whitespace over 17 files
+tier lap   # 13.4s (1.0s scan, 12s control); the four textual rules over 1,127 derived authored files
 seated 20260908.111848
 
 # sow -- the projected seat is clean before it is ever public. MOVED TO `tier cadence`

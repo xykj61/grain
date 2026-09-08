@@ -618,12 +618,12 @@ These are the machine-checkable rules -- the lint surface. The discipline is the
 | **Dated artifacts on main stay Tier-2 sealed** (living ledger - freeze pointer - recorded Radiant pass); **Tier 1 proof paths refuse edit** | `tools/d/dated_guard.rish` (live; roster `tools/fixtures/d/dated_guard_tier1.txt`; spec [`living-vs-dated.md`](specs/living-vs-dated.md)) |
 | **Radiant surface advisory** (bare but-word - emoji - benediction - co-author - header) | `tools/r/radiant_lint.rish` (ratchet advisory; never fails) |
 | **Radiant pass claim preserve** (tokens - modality - structure - pinned digests) | `tools/cl/claim_preserve_witness.rish` - includes `markdown_structure_witness` (blocking for any pass) |
-| **Unqualified assert** | `tools/t/tame-check.rish` (live witness, TH-2c) |
+| **Unqualified assert** | `tools/t/tame-check.rish` (live witness, TH-2c; widened `20260908.133141` from 16 hand-named files to the **1,127 authored `.rye`** derived from `tools/fixtures/t/tame_style_rooms.txt` -- three walls at zero, one ratchet) |
 | **Opening lines** (`const assert` + `const print`, no qualified debug calls) | `tools/o/opening_lines_witness.rish` (live witness, parity **140**; widened `20260908.125347` from 24 hand-named files to the **1,073 hosted `.rye`** derived from `tools/fixtures/t/tame_style_rooms.txt` -- two walls, three ratchets) |
 | **At most one designed-not-built functional spec** (`context/specs/*.md` Status) | `tools/d/designed_not_built_witness.rish` (live witness, parity **143**, Edit 5 ruling `20260703.032812`) |
 | **Amber first lap** (export / verify / restore on fixture tree) | `tools/ce/cellar_first_ring.rish` (live witness, parity **144**, `20260703.051812`) |
-| **No `Self = @This()`** | `tools/t/tame-check.rish` (witness) |
-| **No tabs, no trailing whitespace** | `tools/t/tame-check.rish` (witness) |
+| **No `Self = @This()`** | `tools/t/tame-check.rish` (witness; the predicate reaches any spacing, `Self=@This()` included) |
+| **No tabs, no trailing whitespace** | `tools/t/tame-check.rish` (witness; tabs walled at zero, trailing whitespace split -- **1** authored site ratcheted, **2** inside `\\` multiline strings reported as program content the tree emits) |
 | **Line length <= 100 columns** | flag lines past 100, allowing a URL or a multiline-string result that itself fits |
 | **One `# Title` per markdown** | flag any `.md` with zero or more than one top-level `#`, fenced code ignored -- directly serving our doc-heavy tree |
 | **Living docs lint (roster advisory)** | `tools/l/living_docs_lint.rish` -- five duties; ratchet advisory; prints in parity ch.1 beside `tame_style`; roster in `tools/fixtures/l/living_docs_lint_roster.sh` |
