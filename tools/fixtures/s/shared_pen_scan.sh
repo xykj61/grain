@@ -242,8 +242,8 @@ root=${SHARED_PEN_ROOT:-.}
 # wiping 14 -> 13. `tools/g/glow_host_run_witness.sh` carries the same shape in two `.out` files
 # and stays counted on purpose: it SKIPs on a host lacking GLOW_HOST.kyri, which this pier is, so
 # no lap here can close the repair on metal and a claim is not a witness.
-files_ceiling=${SHARED_PEN_FILES_CEILING:-47}
-wipe_ceiling=${SHARED_PEN_WIPE_CEILING:-13}
+files_ceiling=${SHARED_PEN_FILES_CEILING:-41}
+wipe_ceiling=${SHARED_PEN_WIPE_CEILING:-7}
 
 cd "$root" 2>/dev/null || { echo "verdict=no_root"; echo "refused: $root is not a directory" >&2; exit 1; }
 git rev-parse --git-dir >/dev/null 2>&1 || { echo "verdict=no_git"; echo "refused: this scan reads git ls-files" >&2; exit 1; }

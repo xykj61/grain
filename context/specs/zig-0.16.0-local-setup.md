@@ -13,9 +13,9 @@ Kaeden wanted the Zig 0.16.0 stable source on hand, cloned from the Ziglang proj
 
 ## What We Learned About the Sandbox
 
-The ai-jail wrapper keeps a single promise about persistence: the current project directory stays, and everything else resets. Parent directories, the home directory, and `/tmp` all live in tmpfs, so they vanish the moment ai-jail exits. The session that hosts this work mounts `~/veganreyklah2` read-write and maps `~/py-out` read-write as well.
+The ai-jail wrapper keeps a single promise about persistence: the current project directory stays, and everything else resets. Parent directories, the home directory, and `/tmp` all live in tmpfs, so they vanish the moment ai-jail exits. The session that hosts this work mounts `~/grain` read-write and maps `~/py-out` read-write as well.
 
-This makes the answer clear and affirmative: anything we want to keep belongs inside `~/veganreyklah2`. A clone in the home directory or a sibling folder would look writable from inside the sandbox, yet vanish on exit. The project directory is the durable ground.
+This makes the answer clear and affirmative: anything we want to keep belongs inside `~/grain`. A clone in the home directory or a sibling folder would look writable from inside the sandbox, yet vanish on exit. The project directory is the durable ground.
 
 ## The Decision
 
@@ -26,8 +26,8 @@ We cloned the exact stable tag rather than the full history. A shallow clone at 
 ## How We Did It
 
 ```bash
-mkdir -p ~/veganreyklah2/vendor
-cd ~/veganreyklah2/vendor
+mkdir -p ~/grain/vendor
+cd ~/grain/vendor
 git clone --depth 1 --branch 0.16.0 --single-branch \
   https://codeberg.org/ziglang/zig.git zig
 ```
@@ -37,7 +37,7 @@ git clone --depth 1 --branch 0.16.0 --single-branch \
 The clone landed on the peeled `0.16.0` tag commit `24fdd5b7a4c1c8b5deb5b56756b9dbc8e08c86a8`, and `git describe --tags` reports `0.16.0`. The tree weighs about 325 MB and holds the full compiler source, the standard library under `lib/`, the build files, and the docs.
 
 ```bash
-cd ~/veganreyklah2/vendor/zig
+cd ~/grain/vendor/zig
 git rev-parse HEAD          # 24fdd5b7a4c1c8b5deb5b56756b9dbc8e08c86a8
 git describe --tags         # 0.16.0
 ```

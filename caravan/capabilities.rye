@@ -248,7 +248,7 @@ fn demo_table() !CapabilityTable {
     try display.grant(Capability.init("gpu0", right_read | right_device));
 
     const repl = try table.add_dependent("repl");
-    try repl.grant(Capability.init("/home/xy/veganreyklah2", right_read));
+    try repl.grant(Capability.init("/home/xy/grain", right_read));
     try repl.grant(Capability.init("here", right_read | right_write));
 
     assert(table.dependent_count == 3);
@@ -278,7 +278,7 @@ fn run_self_test() u8 {
     assert(!table.allows("display", "gpu1", right_device));
 
     // REPL pond: read home, write here, no network right granted.
-    assert(table.allows("repl", "/home/xy/veganreyklah2", right_read));
+    assert(table.allows("repl", "/home/xy/grain", right_read));
     assert(table.allows("repl", "here", right_write));
     assert(table.allows("repl", "here", right_read | right_write));
     assert(!table.allows("repl", "here", right_net));
