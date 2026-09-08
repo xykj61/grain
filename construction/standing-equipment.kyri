@@ -3132,3 +3132,33 @@ guard log_file_claim
 path tools/l/log_file_claim_witness.rish
 tier lap
 seated 20260907.221800
+
+# say_compose_bound -- a guard must not fail for having something to say. Rishi composes an
+# interpolated string into `StrBuf`, a fixed 4,096-byte buffer declared in `rishi/src/main.rye`, so
+# `say "reading -- ${scan.out}"` promises that a scan's output will stay under that width forever
+# while the output grows with the tree it reads. On 20260907.232343 reds_spine_derive passed every
+# assert it makes and then died reporting, `rishi: line 46: StringTooLong`. The same fault has been
+# met four times by four hands -- reds_spine_derive_witness.rish, readme_metrics_splice.sh, and
+# tame_style_long_fn twice -- each repaired where it landed, each lesson written into a different
+# file's comments, so one class read as four accidents. This is that lantern's loom.
+#
+# Two shapes counted apart, since they fail at different moments: `eager` composes on EVERY run and
+# would red a GREEN tree the day its scan grows, and `deferred` composes only in an assert's `else`,
+# which is to say exactly when an explanation is owed. `safe` reports the population already spelling
+# the repair, a bare `say <name>.out`, which never opens a StrBuf at all. Ten sites of each kind are
+# named on every pass with `list` printing them all, so the repair is one line away (%592). The
+# width is READ off Rishi's own declaration rather than carried as a copy.
+#
+# THE CEILINGS ARE SHARES, IN PER MILLE, and that was learned inside the round that wrote them. The
+# first draft held raw ceilings at exactly what stood -- 502 and 1,741 -- and the rebase closing that
+# same round brought two peers' new guards in and refused. Eight ships write here and every one lands
+# witnesses; a ceiling on the count reds on the most ordinary act on this pier. A share asks about
+# the habit instead, so a tree that doubles without changing how it writes reads where it stood.
+#
+# `lap` rather than `cadence`: one awk pass over 2,415 tracked scripts costs 5.7s measured
+# 20260908, and the shape it counts can be written again in any lap that adds a witness.
+
+guard say_compose_bound
+path tools/s/say_compose_bound_witness.rish
+tier lap
+seated 20260908.014200

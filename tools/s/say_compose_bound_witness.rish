@@ -1,0 +1,66 @@
+# tools/s/say_compose_bound_witness.rish -- a guard must not fail for having something to say.
+#
+#   rishi/bin/rishi run tools/s/say_compose_bound_witness.rish
+#
+# Rishi composes an interpolated string into `StrBuf`, a fixed buffer declared in
+# `rishi/src/main.rye`, and a composition past that width returns `error.StringTooLong` and stops
+# the script. So `say "reading -- ${scan.out}"` promises that a scan's output will stay under that
+# width forever, and a scan's output grows with the tree it reads. On `20260907.232343`
+# `tools/r/reds_spine_derive_witness.rish` passed every assert it makes and then died reporting,
+# once the ledger reached 42 lawful stamp duplicates and its scan printed 4,250 bytes.
+#
+# THE SAME FAULT HAS BEEN MET FOUR TIMES BY FOUR HANDS, each repaired where it landed and each
+# lesson written into a different file's own comments -- `reds_spine_derive_witness.rish`,
+# `tools/fixtures/r/readme_metrics_splice.sh`, and `tools/fixtures/t/tame_style_long_fn.rish` twice.
+# A lantern that fires twice becomes a loom (`.claude/rules/reds-first.md`); this one has fired four
+# times, and the class it belongs to had no instrument until this guard.
+#
+# THE REPAIR IS ALREADY THE TREE'S OWN HABIT, which is why the readings are ratchets rather than
+# gates: a bare `say scan.out` writes the captured value straight out and never opens a `StrBuf`,
+# so it cannot refuse however large the reading grows. Over a thousand sites already spell it that
+# way. Every hazard site's repair is that same two-line shape, and it loses nothing -- no reader is
+# asked to give up a diagnosis to satisfy this guard.
+#
+# AND THE READINGS ARE SHARES RATHER THAN COUNTS, learned inside the round that wrote them. The
+# first draft held raw ceilings at exactly what stood, and the rebase closing that same round brought
+# two peers' new guards in and refused. Writing a witness is the most ordinary act on this pier, so a
+# ceiling on the count reds on work nobody did wrong. What these readings are about is a habit -- of
+# the sites that could reach for the safe shape, how many do -- and a share says that where a count
+# cannot.
+
+say "say-compose-bound: Language EN -- a guard reports whatever it found, however much that is."
+say "say-compose-bound: Style Gauge, Meter -- two ratchets counted apart, every site named, the width read rather than recited."
+say "say-compose-bound: Lens TAME -- bound everything; the one bound this reads is Rishi's own, and the scan derives it from the declaration rather than carrying a copy."
+
+# 1. The control first -- a ratchet whose refusal has never been watched is a ratchet nobody has
+#    proven. Twenty-nine behaviors on planted Rishi scripts in real git repositories, each pen
+#    holding its own copy of the scan so the root walk lands inside the pen rather than back in
+#    this tree.
+let control = run ["sh" "tools/fixtures/s/say_compose_bound_control.sh"]
+assert control.ok else "say-compose-bound: the control is RED -- read its own lines by running it"
+assert control.out contains "control_verdict=ok" else "say-compose-bound: the control did not reach control_verdict=ok"
+assert control.out contains "cases_red=0" else "say-compose-bound: the control reported a red case"
+
+# 2. Then this tree. The reading is printed WHOLE and with a bare `say`, which is the shape this
+#    guard exists to ask for -- a guard that asked for a habit it did not keep would be teaching
+#    one thing and doing another, and the scan's own door reads a comment as prose rather than as
+#    the shape for exactly the same reason.
+let scan = run ["sh" "tools/fixtures/s/say_compose_bound_scan.sh"]
+say "say-compose-bound: the reading on this tree --"
+say scan.out
+assert scan.out contains "verdict=ok" else "say-compose-bound: a composing site stands past its ceiling -- read the reading printed above"
+
+# invariant: the width is derived from Rishi's own declaration, so a widened buffer moves this
+# reading rather than leaving a stale number in a comment nobody rereads.
+assert scan.out contains "strbuf_bytes=4096" else "say-compose-bound: the StrBuf width read something other than 4096 -- if Rishi's declaration moved, this line moves with it"
+
+# invariant: the safe shape is reported beside the hazards, so a reader meets the repair in the same
+# breath as the count rather than having to be told it elsewhere.
+assert scan.out contains "safe=" else "say-compose-bound: the safe-shape population went unreported, leaving the repair unnamed beside the hazard"
+
+# invariant: the raw counts are printed beside the shares, because a share tells a reader whether the
+# habit is holding and a count tells them how much work the repair is -- two questions, and a guard
+# answering only the first leaves nobody able to size the second.
+assert scan.out contains "shaped=" else "say-compose-bound: the shaped population went unreported, so no reader can check the shares against their own denominator"
+
+say "GREEN: say-compose-bound -- every tracked Rishi script is read for the two shapes that compose a captured output into Rishi's fixed string buffer, the eager kind that would red a green tree and the deferred kind that fails exactly when an explanation is owed, each counted apart and each named site by site under a SHARE that only falls -- a ceiling on the raw count would refuse the fleet every time a peer lands a new guard -- with the safe shape and the shaped population reported beside them and the buffer's width read from Rishi's own declaration -- and the control proves every reading from both sides on planted scripts in throwaway git repositories."
