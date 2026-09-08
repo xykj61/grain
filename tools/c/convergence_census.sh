@@ -26,6 +26,25 @@
 # So read this number as an upper bound on what might need proving, and the prover's verdicts as the
 # finding. Measured `20260908.010852`, exactly one candidate is a document writer and it converges.
 #
+# A FIFTH DENOMINATOR, AND THE FIRST TO RUN TOO SMALL (`20260908.154530`). The four above all
+# over-counted; this one under-counted, because the exclusion was applied to the whole matched span
+# rather than to the write's TARGET. `ca[t] ...` here for the same reason `sed -[i]` is spelled that
+# way above, and it was learned by RUNNING rather than by reasoning: spelling the idiom whole made
+# this file and its witness count THEMSELVES, 10 candidates reading 12 on a mention. A scan counting
+# a mention as a use, arriving in the paragraph that warns about it.
+# `ca[t] "$tmp" > "$f"` was dropped on the `$tmp` on its SOURCE
+# side -- and that shape is prescribed by `.claude/rules/exec-bit.md`, since writing through the
+# original inode preserves the mode the repository tracks, so the census was blind to exactly the
+# writes this tree's own law requires. The same span reading ran the other way, admitting a write
+# whose target was a scratch file on a `"$f"` that the printf was merely reading. Reading the target
+# alone: 7 -> 10 candidates, 3 -> 5 proven, one false positive out and four false negatives in --
+# two of them, `readme_metrics_splice.sh` and `reds_ledger_headline_write.sh`, run by
+# `tools/hooks/pre-commit` on EVERY commit, which is the busiest writing this tree does.
+#
+# PROVEN FROM BOTH SIDES from that stamp, which four of the five wrong denominators never were:
+# `tools/fixtures/c/convergence_census_control.sh` plants each shape in a real repository and
+# asserts the elder predicate disagrees on exactly the two legs the repair moves.
+#
 #   sh tools/c/convergence_census.sh          # the counts
 #   sh tools/c/convergence_census.sh list     # writing tools with no convergence assertion
 #
@@ -72,8 +91,25 @@ while IFS= read -r f; do
   # spelling, and a pattern that SEARCHES for one reads as one. The character class matches the same
   # text and mentions nothing (`20260908.011935`) -- a scan counting a mention as a use is the
   # family this whole session has been finding, arriving here in my own file.
-  grep -hoE '(sed -[i][^"]*"[^"]+"|(cat|printf)[^|>]*> *"[^"]+")' "$f" 2>/dev/null \
-    | grep -vE '\$(work|pen|tmp|TMP|out|d)\b' \
+  #
+  # THE EXCLUSION READS THE TARGET, NEVER THE WHOLE MATCHED SPAN (`20260908.154530`). A write has a
+  # source and a target, and testing the span lets either one answer for both. `cat "$tmp" > "$LEDGER"`
+  # was DROPPED, because `$tmp` sits in the span and the pen list is checked against the span -- yet
+  # that shape is not a stylistic accident, it is what `.claude/rules/exec-bit.md` PRESCRIBES, since
+  # writing through the original inode preserves the mode the repository tracks. So the census was
+  # systematically blind to the writes this tree's own law requires: `readme_metrics_splice.sh` (the
+  # front door's metrics block) and `reds_ledger_headline_write.sh` (the ledger's headline), both run
+  # by `tools/hooks/pre-commit` on EVERY commit, plus `index_shelf_repair.sh` and
+  # `fold_shelf_link_repoint.sh`. The same span reading ran the other way too:
+  # `dated_classify_seam.sh` was ADMITTED on a `"$f"` sitting on the printf's SOURCE side while its
+  # target was the pen `$resc`. One fault, two directions, and the fifth wrong denominator.
+  #
+  # Both shapes end with their target as the last quoted run in the match -- `> *"[^"]+"` for a
+  # redirect, and the path argument for `sed -[i]` -- so one extraction serves both.
+  writes=$(grep -hoE '(sed -[i][^"]*"[^"]+"|(cat|printf)[^|>]*> *"[^"]+")' "$f" 2>/dev/null || true)
+  [ -n "$writes" ] || continue
+  printf '%s\n' "$writes" | sed 's/.*"\([^"]*\)"$/\1/' \
+    | grep -vE '^\$(work|pen|tmp|TMP|out|d)\b' \
     | grep -qE '\$(f|file|path|p|target|dst)\b|construction/|session-logs/|\.claude/' || continue
   # A CONTROL WRITES INTO ITS OWN PEN AND HAS NOTHING TO CONVERGE, and counting them was this
   # census's third wrong denominator (`20260908.005904`). 23 of the 27 it first called unproven were

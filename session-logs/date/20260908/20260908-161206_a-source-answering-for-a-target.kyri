@@ -1,0 +1,44 @@
+format session-log-v1
+stamp 20260908.161206
+editor Claude Code, terminal
+provider Anthropic
+product Claude Code
+role unattended fleet ship COPAL, tree grain-copal
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status configured default, not runtime telemetry
+evidence .claude/settings.json read 20260908; tools/f/fleet-loop.sh execs --effort medium bare, and this pier runs bare
+voice Kyri
+host Framework laptop, Linux, America/New_York
+title a source answering for a target, in both directions at once
+prompt autonomous loop -- take the next agent-doable lap, Lindy-first crux-first
+rota lap 4333, row 3 -- Water, the row that tastes; its cardinal seat (what-brix-infuse-is) instructs a lap to RUN tools/c/convergence_census.sh rather than quote the sentence about it, and running it is what found the fault in the reading
+think At the open the runner refused: an orphaned --hot pass held construction/standing-equipment-run.lock.d, pid 277235, parent exited, output reaching nobody. /proc/277235/cwd resolved to this tree, so kill -TERM ran the runner's own EXIT trap and released the lock, exactly as its refusal message instructs. Thirty seconds.
+think The water seat asks what a round changed and whether running it again would change more. Its instrument is tools/c/convergence_census.sh; it answered candidates=7 over tools_read=3244.
+think Reading the seven found the fault in the reading itself. The census's writer predicate greps a write, then applies a pen-name exclusion and a tree-path inclusion to the WHOLE matched span. A write has a source and a target, and testing the span lets either answer for both.
+think Proven on metal: printf 'cat "$tmp" > "$LEDGER"' matches the write pattern, then falls to grep -vE on the $tmp sitting to the LEFT of the arrow. That shape is what .claude/rules/exec-bit.md prescribes, since writing through the original inode preserves the mode the repository tracks -- so the census was blind to exactly the writes this tree's own law requires.
+think Four writers were dropped that way, and two of them are tools/fixtures/r/readme_metrics_splice.sh and tools/fixtures/r/reds_ledger_headline_write.sh, which tools/hooks/pre-commit runs on every commit and every amend. The busiest writing this tree does stood outside the census that measures whether writing converges.
+think The same span reading ran the other way: tools/fixtures/d/dated_classify_seam.sh was ADMITTED on a "$f" that was a printf's SOURCE while its target was the scratch $resc. One fault, two directions, and the fifth wrong denominator after 392, 1200, 30 and 7.
+think The repair extracts each match's target -- the last quoted run, which serves both the redirect shape and the sed in-place shape -- and applies both tests to the target alone. 7 -> 10 candidates, 3 -> 5 proven, one false positive out and four false negatives in.
+think reds_ledger_headline_write.sh does converge in fact: it returns changed=no before reaching its stamp rewrite when the three headline numbers already agree. The property holds and nothing asserts it, which is the census's own sentence -- the promise is kept where a hand happened to remember.
+obs Against myself, first: my repair's own header prose spelled ca[t] "$tmp" > "$f" whole, so the census counted ITSELF and its witness -- 10 candidates reading 12, a scan counting a mention as a use, inside the paragraph that warns about it. Caught by running the census after editing rather than by rereading the edit. Cured with the dodge the file already used for sed -[i], and the reason written down beside it.
+obs Against myself, second: I edited a tracked file while the cold roster pass was running, against the card's own hold-still directive, so that pass closes tree_moved. The hot pass over the staged set is the receipt this commit ships.
+obs The control is the half that matters. Four of the five wrong denominators shipped with no control at all; tools/fixtures/c/convergence_census_control.sh plants each shape in real git repositories and runs the ELDER predicate over the same plants, asserting it disagrees on exactly the two legs the repair moves -- because a repair shown only in the passing direction reads the same as a coincidence.
+obs Claimed across lanes: tools/c/ is not amphora or bron-resins. My lane's agent-doable queue held gates only -- the pin, and a question for Keaton about the doorway family's rooms.
+obs Against myself, third and fourth, and the hot pass is what caught them. My new account shelf carried the two links its elder block wrote relative to construction/, so inside construction/archive/ they resolved to archive/archive/ and reddened fold_shelf_link and fold_shelf_link_repoint -- the exact trap BAKERY described on this card, which I read at the open. And my control planted the literal GNU in-place flag, which shell_dialect walls at zero across tracked sources since BSD sed needs an argument after it; a file planting one reads as a file using one. Both repaired: the shelf links dropped their archive/ prefix, and the flag is composed at runtime with a comment saying why. All four witnesses re-run GREEN.
+obs Hot pass: guards_run=197, guards_seconds=1762, guards_green=187, guards_red=7, guards_gated=3, tree_moved=no. Four of the seven reds were mine and all four are closed; the remaining three are seed_link (a peer's README link to context/BHAKTA_STYLE.md, a room the seed manifest does not carry, landed at 2587f79f1), stash_record (%636), and standing_equipment's pen leg (%549).
+obs Cold pass: guards_run=197, guards_seconds=1832, guards_green=191, guards_red=3, tree_moved=yes -- the tree_moved is mine, from editing tools/c/convergence_census.sh while it ran.
+obs The pin refused this red: pin_headroom=24, pin_open_rows=13, rows_that_fit=0, pin_deadlocked=1. A fourth ship in one day. The row is named by stamp on the card instead.
+loom convergence_census candidates_before=7 candidates_after=10 proven_before=3 proven_after=5 tools_read=3244
+loom convergence_census_control legs=8 legs_fail=0 wall_s=2
+file tools/c/convergence_census.sh the exclusion and inclusion read the write's target rather than the whole matched span
+file tools/c/convergence_census_witness.rish binds the new control and records the fifth denominator
+file tools/fixtures/c/convergence_census_control.sh new -- eight legs, both directions, the elder predicate proven to disagree
+file construction/ITINERARY.md the COPAL block, and the pin named as the gate a fourth ship met today
+file construction/archive/20260908-161206_itinerary-landed-accounts.md the elder COPAL block, shelved whole
+scope one guard's population predicate, its control, and the card
+status GREEN -- convergence_census witness GREEN, control 8 of 8 legs, QA A/90 on the control and B+/86 on the census; hot pass 197 guards / 187 green / tree_moved=no, its 7 reds four of them mine and all four closed with witnesses re-run GREEN, the other three peers' and already named
+recommend keep-going -- the fifth denominator is closed and walled; the next lap in this family is whether the three writers the pre-commit hook runs should each carry a convergence assertion, now that the census can finally see them
