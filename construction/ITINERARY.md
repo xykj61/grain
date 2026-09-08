@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `6a2d0c3e9c` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `f717a6d483` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- ONE LAW, THREE DERIVATIONS, AND THE THIRD NEVER LEARNED ABOUT REBASE.**
 Elder [shelved](archive/20260908-012959_itinerary-landed-accounts.md). Cold open **four red, three
@@ -156,33 +156,26 @@ at the strict default, proven both sides on ONE break. Control **33 -> 39**, ros
 when the pass runs under `setsid`; from an ordinary shell the tree reads **GREEN**.
 **Yours:** `main.rye` inlines a model the module owns -- **port the field or drop?**
 
-**INCENSE -- A RATCHET AT ZERO SLACK REDS EIGHT SHIPS FOR ONE PAGE, AND THE ROOM THAT NEVER LEARNED
-THE LESSON WROTE IT.** Elder [shelved](archive/20260907-192800_itinerary-landed-accounts.md);
-row `20260907.192800` **BOOKED**, cited by stamp until `xy` binds it. The cold open read
-`doorway ratchet: 38 pages name no room,
-above the ceiling of 37` -- published at its own reading, so one silent page reds every ship.
-**The regrowth had a mechanism nobody named.** `20260907.015907` taught the token in
-`active-designing/README.md`, silent-free since, and recorded teaching it in
-`external-research/README.md`'s **`Last updated` line** while leaving that body silent -- a door
-claiming to teach what it never says. The one page landing since came from that room; its ritual list
-carries the token now. **Sample size one, said plainly.**
-
-**29 living pages gained the token their own opening sentence already asserted**, no claim changed,
-reading **38 -> 3**. `mixed` answered 24 times -- the commonest token in the tree (**334 of 846**
-door lines), since an essay reasoning from measured readings toward a proposal is both registers at
-once. **The three left can never be repaired** (dated testimony), so **3 is a floor**. GREEN.
-
-**Yours, one -- the shape rather than the number:** at its floor this is a **gate on new writing in a
-ratchet's clothes**, on `tier cadence`, so a stranger meets the refusal rounds after the hand that
-earned it. `pre-commit` over *this commit's staged pages alone* would sit at the author's desk and
-never red for a peer -- the narrow half of Bakery's withdrawn `%524`. **Eight ships run that file,
-and a peer landed rule six today, so I did not take it.**
-
-**THE OTHER TWO REDS CAME OUT OF `stash@{0}`.** `plant` and `standing_equipment`, one root: an
-adoption count asserted as an **equality**, refusing the rise it exists to reward, raised by hand
-**seven times in one day**. Repair, row and log lay parked at `183139`; landed whole, row
-`20260907.180000` **CLOSED** and folded, **its earlier stamp keeping the number I had booked** --
-the spine's collision rule inside one tree, no second host.
+**INCENSE -- A SEAT SEATED LAST NIGHT ON A NUMBER ITS OWN INSTRUMENT REFUTED BEFORE MORNING.**
+Water's cardinal seat, taken on your word `20260908.001350`, cites *30 tools write to the tracked
+tree and 3 prove they converge* (`20260907.234808`). Water's instruction is to run the actual thing,
+so I ran it: `tools/c/convergence_census.sh` answers **7 candidates, 3 proven**, and three of the
+seven are libraries or a remote-reading scan -- **one real document writer**, proven `converges` on a
+sample that triggers it rather than the `inert` a dead sample would earn. The denominator was wrong
+**four** times in three laps, not the two its roster note claimed.
+**THE SEAT STANDS; ONLY THE FIGURE MOVED.** What justified it is that this tree states an
+idempotence claim in a foundation and proves it in almost nothing -- one writer says that as loudly
+as three of thirty. Corrected in the three living places that teach it, each now telling a lap to
+**run** the census rather than read the sentence about it.
+**The lesson is the stamp.** `Measured <stamp>` reads as a fact with provenance, and is one; what it
+cannot say is that the reading still stands -- so here a stamp made a superseded number look **more**
+checked than a bare one would have. **Yours:** sixteen such claims stand across twelve living law
+pages, every one a command away from being current. Worth an instrument, or worth reading by hand?
+**Elder INCENSE accounts condensed** (cairn `20260908.030324`): the doorway ratchet `20260907.192800`
+**BOOKED** and the two `stash@{0}` reds `20260907.180000` **CLOSED**, both
+[shelved](archive/20260907-192800_itinerary-landed-accounts.md). Their open question stands: at its
+floor of 3 the doorway ratchet is **a gate on new writing in a ratchet's clothes**, on `tier cadence`,
+so a stranger meets the refusal rounds after the hand that earned it.
 
 **`%499` OPEN, having parked one lap of mine twice, COPAL's once, and both laps recovered here** --
 discriminator on [the shelf](archive/20260907-154440_itinerary-landed-accounts.md); COPAL asks it in
@@ -393,6 +386,6 @@ The logs keep the account; earlier rows are shelved in
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260908.022643` | The path a repointer could not read | [log](../session-logs/date/20260908/20260908-022643_the-path-a-repointer-could-not-read.kyri) |
+| `20260908.030324` | The stamp that looked like a check | [log](../session-logs/date/20260908/20260908-030324_the-stamp-that-looked-like-a-check.kyri) |
 
 **One row, on purpose** -- a landed lap keeps one line until the next replaces it; the log carries the detail.

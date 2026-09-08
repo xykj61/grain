@@ -64,10 +64,23 @@ run is what an unattended loop performs at three in the morning.
 Taste reads this page by doing rather than by reading. Water's whole instruction is to run
 the actual thing up close, and an infusion is tested by running it a SECOND time; the row's
 sense and the page's proof are one gesture. The lap's question at this seat is plain: what
-did this round change, and would running it again change anything more? Measured
-`20260907.234808`, 30 tools in this tree write to the tracked tree and 3 prove they
-converge, so the claim was stated in a foundation, checked by almost nothing, and read by
-no lap until this seat opened.
+did this round change, and would running it again change anything more?
+
+**The number this seat was cited with moved four times in four hours, and the seat still
+stands.** It read *30 tools write to the tracked tree and 3 prove they converge* at
+`20260907.234808`. Re-run `20260908.025932`, `tools/c/convergence_census.sh` answers **7
+candidates, 3 proven**, and its own header names three of those seven as libraries or a scan
+rather than writers. So exactly one candidate transforms a document handed to it, and it
+converges -- `sh tools/c/convergence_prove.sh tools/fixtures/a/ascii_document_convert.sh
+<sample>` reads `verdict=converges` on a sample that actually triggers it, rather than the
+`inert` that a sample exercising no path would earn.
+
+**The count fell fourfold and the reason for the seat held, because the reason was never the
+count.** It is that this tree states the claim in a foundation and proves it in almost
+nothing, and one prover standing for every tool in the tree still says exactly that. What the motion
+teaches belongs to the row's own sense: a citation carrying a stamp reads as *checked*, and a
+stamp only says when somebody looked. Here the reading is one command away, so a lap tasting
+this seat runs the census rather than reading the sentence about it.
 
 *The elder seat, `20260823-105651_the-shape-you-grew-and-the-shape-you-are.md`, fusing
 Gall's law with Conway's, stays a living foundation with every word it wrote. A seat is a

@@ -141,9 +141,15 @@ stays a living foundation and simply leaves the rota. It now reads
 change behaves: `declaration + world -> infusion -> world'`, and then the line that carries the
 weight, `infusion(world') -> world'`. **The fit is the row's own sense.** Water tastes -- read up
 close and run the actual thing -- and an infusion is tested by running it a SECOND time, which is the
-same gesture. **The measurement behind the choice:** 30 tools in this tree write to the tracked tree
-and 3 prove they converge (`tools/c/convergence_census.sh`, `20260907.234808`), so the claim was
-stated in a foundation, checked by almost nothing, and read by no rota lap. Fire was left alone on
+same gesture. **The measurement behind the choice, and its correction one lap later.** The seat was
+cited with *30 tools write to the tracked tree and 3 prove they converge*
+(`tools/c/convergence_census.sh`, `20260907.234808`). Re-run `20260908.025932` that census answers
+**7 candidates, 3 proven**, three of the seven being libraries or a remote-reading scan rather than
+writers -- so one candidate transforms a document, and running it twice leaves the file
+byte-identical. The count fell fourfold and the reason for the seat held, since the reason was that
+this tree states the claim in a foundation and proves it in almost nothing. **Run the census rather
+than reading this sentence:** a stamp says when somebody looked, never that the reading still
+stands. Fire was left alone on
 purpose: its three are a designed triad -- the stop, the allocation the stop buys, and the cut that
 follows -- and pulling one leg breaks a set rather than freeing a seat.
 
