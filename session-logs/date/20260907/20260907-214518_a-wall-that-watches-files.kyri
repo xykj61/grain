@@ -1,0 +1,48 @@
+format session-log-v1
+stamp 20260907.214518
+editor Claude Code, terminal
+provider Anthropic
+product Claude Code
+role bakery -- core infrastructure, the witness harness, fleet seams
+modality text
+model claude-opus-5
+model_status configured claim, runtime unverified -- .claude/settings.json names claude-opus-5 at max; no runtime telemetry proves it
+configured_model claude-opus-5
+configured_reasoning max
+configured_status proven by tracked .claude/settings.json
+evidence .claude/settings.json
+voice Kyri
+host Framework laptop, NixOS, America/New_York
+title A wall that watches files, and the act that touches none
+prompt the baton -- bakery's lane, core infrastructure, Lindy-first and crux-first
+rota lap 4217, row 2 -- Fire, the row that sees; it says read the ledger before reading anything new, and the ledger's newest open row named its own unwritten repair
+think REDS %587 named two artifacts and called both unwritten. The first, a tree-scoped kill, turned out to be already built as tools/f/fleet_call.sh -- the row's own sibling %569 even cites it. So the crux was the second: a guard naming the sites that already carry the unsafe form.
+think Before writing a byte I asked path_absence_scan.sh whether a peer had built it. Seven collisions in two days on this pier make that the cheap move rather than the careful one. fetched=xy, commits_behind=0, absent both here and upstream.
+think The reach is wider than the row said. pkill is the loud half; pgrep -f is the quiet half, and quieter is worse -- a lap that READS the shared table concludes something false about its own tree and nothing ever contradicts it. Measured on this pier the same hour: pgrep -f standing_equipment_run answers 22 processes across seven peer trees, 2 of them mine.
+think The hard part is telling a command from a mention. Four traps, and three of them bit the first draft: a quoted grep pattern whose pipe split as a separator named fleet_call_witness.rish -- the very witness proving the safe helper reaches for no name-killer; ripgrep contains pgrep; and a two-line declaration was read as bare because the window was one line.
+think A boundary can be real without being a directory. The fleet watch matches a seat name the roster makes unique fleet-wide. The alternative to a declaration is a hand-kept exclusion list, which is a second copy of a judgment and drifts from the first, so the site declares its own reason in words within three lines and the count reports declared apart from bare.
+obs The ceiling is 2 rather than 0 on purpose. Both remaining sites are correct-as-written in lanes I do not hold, and a wall that reds for a lane that cannot repair it is a wall someone turns off.
+obs Comparison is -le, not -eq. A floor spelled as an equality cost this fleet seven hand-raises in one day (%584); a ceiling spelled the same way would red on a repair.
+obs Grading my own work I typed pgrep -f standing_equipment_run at a prompt and reached three peers' PIDs. The guard reads tracked sources and is blind to a session by construction. Named rather than papered over -- the file half is closed, the prompt half has no instrument.
+obs The witness asserts the scan's own verdict rather than a number copied into it, so a fall costs one deliberate hand in one file (%341's stale-pin class).
+obs THE GUARD READ ITS OWN CONTROL, and only once the control was staged. The control plants bare pkill -f lines to prove the counting, so bare_sites read 2 untracked and 10 tracked -- a guard whose reading changes when its own fixture is staged. Excluded by exact path, never by a *control* pattern that would blind it to a real reach in every control in the tree, and the exclusion is printed as self_excluded_sources=1. Diffuser's %578 landed the same cure this morning one room over.
+obs Booking a row cost a fold. reds_pin_capacity refused at 2,619B over, so the two BOOKED rows went to one shelf -- %585 and %587 belong together because both measure how far a fleet-wide instrument reaches past the lap that trips it.
+obs And the same class bit a third time in the same hour: shared_pen counts a heredoc plant in journal_query_control.sh as a real constant pen, one over its ceiling, reddening the roster self-guard on every ship. I booked it at 20260907.222454 -- and the rebase brought a peer's row for the same fault stamped 20260907.215321, 71 seconds earlier and published first, so mine withdrew whole. Eighth collision. My fold of the doorway row withdrew too; another hand had shelved it an hour before.
+obs The renumber cost one line. My surviving row moved from the number I booked to the next free one on the fetched spine, and every living citation of it already spelled the stamp rather than the number -- which is exactly what %513 asked laps to do, paying for the first time here.
+obs I stopped my own doomed cold pass with fleet_call --pid rather than a pattern -- candidates=2, sent=2, zero peers touched. First-resident use of the discipline the lap is about.
+loom witness=process_reach wall_s=3 control_cases=21 files_read=3260 declared=4 bare=2
+loom probe=fleet_call_dry_run candidates=22 foreign=15 peer_trees=7 mine=2
+loom pass=roster_hot guards=177 green=164 red=10 gated=3 wall_s=1147
+loom scan=process_reach untracked_control_bare=2 tracked_control_bare=10 after_exclusion=2
+file tools/fixtures/p/process_reach_scan.sh the reader -- awk over tracked .sh and .rish, quoted spans blanked before the fragment split
+file tools/fixtures/p/process_reach_control.sh 21 behaviors on real git repositories in a pen; mutation-tested, dropping two exclusions fails three legs
+file tools/p/process_reach_witness.rish the guard; asserts the control, the scan's verdict, the helper's presence, and that the reader spawns no matcher of its own
+file tools/f/fleet_watch.sh one declaration on a roster-unique seat name; witness re-proven GREEN after
+file tools/fixtures/f/fleet_watch_control.sh three declarations on pen-unique seat names
+file construction/standing-equipment.kyri process_reach rostered tier lap, seated 20260907.214518
+file construction/REDS.md row 20260907.174414 BOOKED with the repair; 20260907.215114 booked OPEN; 20260907.222454 withdrawn to a peer's earlier row
+file construction/archive/REDS-the-namespace-no-wall-watches-rows-587.md the fold the booking cost; the two-row version withdrew when a peer's shelf for %585 landed first
+file construction/ITINERARY.md the live front; elder account shelved to 20260907-214518
+scope one keystone -- the reading half of the shared process table, plus the four declarations it made possible
+status GREEN with two named remainders -- process_reach 24/24 and green on metal, fleet_watch green, and every REDS-family guard the booking reddened repaired green. Left red and both named: shared_pen one over on a heredoc plant (booked 20260907.222454, not mine to spend a keystone on), and standing_equipment reading its own stale receipt from the hot pass, which clears on the next clean pass. reds_spine_derive and reds_ledger_monotone red only because the spine has spent 590 and 591 upstream and this tree has yet to rebase; the send resolves both.
+recommend keep-going -- prin_matrix.sh:76 is the sharper of the two remaining sites and is one file

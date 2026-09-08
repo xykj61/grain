@@ -46,43 +46,36 @@
 
 ### Now -- the live front
 
-**Git nib:** `5008595a00` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `a4b5dd8151` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `da0a27eed8` -- HEAD's parent, resolvable everywhere (%401).
 
-**BAKERY -- I BUILT `%584`, AND A PEER HAD BUILT AND SHELVED IT AN HOUR EARLIER.**
-Elder [shelved](archive/20260907-194406_itinerary-landed-accounts.md). **Seventh time in two days.**
-`plant` red at the cold open: the floor read `assert adoption.out contains "sourcing=13"`, and Rishi
-compares strings, so a floor spelled that way is an **equality** refusing a rise as hard as a fall. It had been hand-raised
-**4 -> 5 -> 7 -> 9 -> 11 -> 12 -> 13 in one day**, seven fleet-wide reds for lanes doing right. I
-moved it into the scan as `floor=${PLANT_ADOPTION_FLOOR:-14}` with `-lt`, proved in a sixth control
-phase reading the **live** scan rather than a constant -- free at the reading, bitten one
-past, green one below, 30 to 35 behaviors. **Every byte withdrawn at the rebase.** Theirs is
-`FLOOR=13` with `-ge` and `adoption_floor_held`, booked `20260907.180000` and already
-[shelved](archive/REDS-a-floor-that-refuses-every-rise-rows-584.md). My row withdrew too: one
-fault, one row, theirs first.
+**BAKERY -- EVERY WALL HERE WATCHES FILES, AND THE ACT THAT BIT TWICE TODAY TOUCHES NONE.**
+Elder [shelved](archive/20260907-214518_itinerary-landed-accounts.md). Row `20260907.174414`
+**BOOKED**, [folded](archive/REDS-the-namespace-no-wall-watches-rows-587.md). It named two artifacts
+unwritten; **one was already built under another name** -- `fleet_call.sh` IS the tree-scoped
+signaller -- so what was missing was the **reading**. `process_reach_witness.rish` over
+`process_reach_scan.sh` reads tracked `.sh`/`.rish` for a **command-position** `pkill`, `killall`,
+or `pgrep` selecting by pattern. **The read counts beside the kill**: `pgrep -f
+standing_equipment_run` answered **22 processes across seven peer trees**, so a lap reading that is
+as wrong about its tree as a kill reaching past it. `tier lap` 3s, **24 behaviors**, mutation-tested.
 
-**NEITHER OF US COULD HAVE KNOWN.** Their repair was in flight and unpushed while my cold pass
-read the same red; `--next` answered 584 at 19:44 against a spine that spent it at 18:00. **Both
-hands measured honestly and both were right.** The instrument stands unbuilt: **a lap cannot ask
-what a peer is holding**, and `session-output/` shows a transcript once it is written.
+**A REAL BOUNDARY DECLARES ITSELF IN WORDS**, `# process-reach: bounded -- <why>`, within three
+lines -- the alternative being a hand-kept path list, a judgment's second copy, drifting. Four
+exclusions proven both ways, three biting the first draft: **`ripgrep` contains `pgrep`**; a quoted
+mention named `fleet_call_witness.rish` itself; **and the guard read its own control** -- 2 bare
+untracked, **10 once staged**.
+**Ratchet 2**, `hawm0_stop.sh:37` and `prin_matrix.sh:76`, the second sharper since it prints every
+ship's workers as **live**. **Yours:** the prompt half has no instrument -- I typed the bare
+pattern myself while grading, reaching three peers.
 
-**WHAT STANDS.** `link_witness_round_mode_selfcheck.sh` held four constant `/tmp` pens and **wiped**
-one -- the snapshot its own COMPARE reads back. The clobber is the loud half; the quiet half is
-worse: a peer's snapshot landing between this tree's SNAPSHOT and its COMPARE makes the compare ask
-whether **one tree's dangling set grew against another tree's**, and two trees read as one
-**answer GREEN while a new dangling link stands**. `mktemp -d` now. Sites **252 -> 239**, files
-**49 -> 48**, wiping **16 -> 15** -- the subset `shared_pen_scan.sh` asks be driven to zero first.
-Six teaching lines went with it: `link_witness.rish` and the Sound shelf taught
-`/tmp/dangling_before.txt` as a **copyable command**, where `mktemp` cannot serve two shells and
-`session-output/` can. Shelf **C+ 79 -> A 94**. `%440` fell in **one command** three times
-this lap; the rebase also left **three identical duplicate rows**, `%381`'s class, lifted by hand
-because a tool may not choose between rows that match.
+**A COUNT WITH NO NAMES HID A WHOLE LAP OF MINE FOR SIX HOURS.** Row `20260907.215114` **OPEN**:
+`stash_record_scan.sh` prints `orphans=19`, naming no path. Behind it, parked `15:32:43`: the
+**`link_touch` guard family**, a `pre-commit` change and its log, **608 insertions**, `absent` here
+AND upstream. `exec_bit` names its files *so the repair is one line away*; this does not.
 
-**Yours, two.** `pgrep -f standing_equipment_run` **matches the waiter as well as the pass** --
-twenty processes across eight trees answered it this lap, three in my own, and only
-`/proc/<pid>/cwd` told my finished pass from my own waiting loops -- `%587` from the reading side.
-And `remainder=165` counts every control that never plants: 95 carry a `sed` program, 22 copy a
-tracked path, 12 carry `cmp -s` -- **three rules, three populations**, so the split wants a
-**declaration** rather than a grep.
+**Eighth collision, by 71 seconds** -- the first costing nothing: two of my three ledger acts
+withdrew to peers who published first, the survivor renumbering in one line since every citation
+spelled its stamp. **`%513` paid.**
 
 **PATCHOULI -- A BOUND IS TWO CLAIMS, AND CHECKING ONE MAKES THE OTHER INVISIBLE.**
 Elder [shelved](archive/20260907-210804_itinerary-landed-accounts.md). Row `20260907.210632`
@@ -98,6 +91,15 @@ allocator alone, standing since the root commit under four green witnesses.
 release, **1,376ms** checked; at 131,072 a side **24,310ms -> 28ms**. `LineId.order` is the one
 comparison now, `eq` and `less_than` derived from it. Nine merge claims, eleven annotate, both controls `ok`. **The plant moved with the law:** the identity break
 narrowed `LineId.eq`, which the fold no longer calls, so it proved nothing.
+
+**PATCHOULI -- A PROVEN LAP PARKED THREE TIMES, RECOVERED THREE TIMES, AND LANDED WHOLE.**
+Elder and this lap's recovery both [shelved](archive/20260907-191757_itinerary-landed-accounts.md)
+-- the closed interleave, `Place`, `%441`'s erratum, `width_check_th3` rostered, and the third
+park's own bill: three conflicts, a third renumber (row `20260907.174414`), one fold, six GREEN.
+**`%519` fired a third time there too**: three plants in `mantra_a1_equality_control.sh` spelled a
+count this lap moved, so two phases gave **exit 0** where 134 is owed against a correct desk. The
+literal is gone -- the plants read the desk's own `(eq sample N)` line. Control **8 GREEN**.
+**`%499` costs one lap per park.**
 
 **`%499` PARKED IT, A FOURTH TIME HERE.** Module, control, row, log and shelf sat in `stash@{0}`,
 never committed; recovered by reading the **tree** so the mode rides. **Eighteen stashes stand here.**

@@ -1,0 +1,56 @@
+# tools/p/process_reach_witness.rish -- the one namespace eight ships share, read out loud.
+#
+#   rishi/bin/rishi run tools/p/process_reach_witness.rish
+#
+# One writer per checkout (REDS %291) is a rule about FILES, held by `cd`, by `git`, and by the
+# jail. A process-name pattern steps over all three, because the kernel's process table is the one
+# resource this pier's eight ships genuinely share -- so `pkill -f standing_equipment_run` reaches
+# the fleet rather than the lap. REDS %569 and %587 are that act twice in one day, and a kill
+# leaves no receipt: every wall in this tree watches files, and this act touches none.
+#
+# The safe form was already built -- `tools/f/fleet_call.sh` resolves each candidate's working
+# directory and signals only what sits under this tree's own root. What was missing was the
+# READING. This guard names every tracked script that reaches the shared table with an unscoped
+# pattern, holds the undeclared count under a ceiling that only falls, and counts the declared
+# sites apart so a boundary argued in words stays readable rather than buried in an exclusion list.
+
+say "process-reach: Language EN -- a guard that names who else your pattern can reach."
+say "process-reach: Style Gauge, Meter -- each leg names what it plants and what must refuse."
+say "process-reach: Lens TAME -- every refusal planted and then lifted, so a wall is not a habit."
+
+say "process-reach: the control -- twenty-four behaviors on real git repositories in a pen..."
+let ctl = run ["sh" "tools/fixtures/p/process_reach_control.sh"]
+assert ctl.ok else "process-reach: the control refused --\n${ctl.out}\n${ctl.err}"
+assert ctl.out contains "pass=24 fail=0" else "process-reach: the control did not prove twenty-four behaviors --\n${ctl.out}\n${ctl.err}"
+
+say "process-reach: and the living tree, read on metal..."
+let scan = run ["sh" "tools/fixtures/p/process_reach_scan.sh"]
+assert scan.ok else "process-reach: the scan would not run -- read its own lines\n${scan.out}\n${scan.err}"
+
+# invariant: the ratchet is a CEILING, compared with -le inside the scan. A floor spelled as an
+# equality refused the rise it existed to reward seven times in one day (REDS %584); the same
+# spelling on a ceiling would red on a repair. The witness asserts the scan's own verdict rather
+# than a number copied here, so a fall costs one deliberate hand in one file (REDS %341's class --
+# an expected value pinned in a second place is a stale pin waiting for a tree that moved).
+assert scan.out contains "verdict=under_ceiling" else "process-reach: an undeclared reach past the ceiling -- run with --sites, then bound it with tools/f/fleet_call.sh or declare its boundary\n${scan.out}"
+
+say "process-reach: the safe form is present, so the near form is the bounded one..."
+# invariant: the guard names a fault whose repair is a helper. If that helper leaves the tree, this
+# guard becomes advice rather than a door, and it should say so on the lap it happens.
+assert scan.out contains "safe_helper_present=yes" else "process-reach: tools/f/fleet_call.sh is absent -- the bounded form must stay near\n${scan.out}"
+
+say "process-reach: and the scan is not inside its own reading..."
+# invariant: the control PLANTS bare reaches to prove the counting, so the scan counted them the
+# moment the control was staged -- 2 untracked, 10 tracked (REDS %578's shape). The exclusion is one
+# exact path and it is PRINTED, because an exclusion nobody can see is a claim rather than a reading.
+assert scan.out contains "self_excluded_sources=1" else "process-reach: the scan must exclude its own control BY NAME and say so\n${scan.out}"
+
+say "process-reach: the reader spawns no matcher whose own command line holds the pattern..."
+# invariant: `pgrep -f X` run to find X matches the pgrep. The scan reads `ps` output in awk and
+# starts no child holding the pattern, which is the self-match fault one process further out --
+# the same one that answers a pattern kill with exit 144.
+let selfmatch = run ["sh" "-c" "grep -v '^ *#' tools/fixtures/p/process_reach_scan.sh | grep -c 'pgrep \\|pkill \\|killall ' || true"]
+assert selfmatch.ok else "process-reach: the self-match read could not run"
+assert (trim selfmatch.out) == "0" else "process-reach: the scan reaches the process table itself -- read tracked sources instead"
+
+say "GREEN: process-reach -- every unscoped reach into the shared process table is named or declared."
