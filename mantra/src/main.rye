@@ -84,6 +84,17 @@ const V1Row = weave.V1Row;
 // and one drop-the-trailing-newline rule written in two files is one rule two
 // files will come to disagree about.
 //
+// SAID EXACTLY, so the elder is not remembered as worse than it was: a document
+// past the ceiling was refused either way, one seam apart. The copy here split
+// its lines and built its table first, and met `WeaveError.TooManyLines` in
+// `Weave.apply` afterwards. Measured on metal `20260908` from two binaries: a
+// 1,048,577-line file reds inside `apply` for the elder and inside
+// `split_lines` for this one, before the split finishes and so before a cell is
+// asked for. The old side comes from `Weave.current` and is bounded by the
+// weave's own ceiling, so the exposure was never a table from two free lengths;
+// it was a table from ONE free length, taken ahead of the only fence that would
+// have spoken.
+//
 // The diff carries `cli_site` on every insert and names its deletes by the
 // `LineId` that `Line.id()` returns, which is the model's own identity rather
 // than a bare position.
