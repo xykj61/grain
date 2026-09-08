@@ -235,6 +235,17 @@ tier lap
 capability day_shelf
 seated 20260907.200326
 
+# fold_shelf_link_repoint -- the guard that names a repair can now make it. A shelf sits a level
+# below the pin it was folded out of, so every climbing link must gain a level, and NOTHING writes
+# these shelves -- a hand writes each one. Four different hands missed it in the week to
+# `20260907`, each repairing by hand. The scan already computed the corrected path and only ever
+# proposes one it has proven present on disk; this applies exactly that column, leaves a dead link
+# for a reader, and writes through the original inode so a mode survives.
+guard fold_shelf_link_repoint
+path tools/f/fold_shelf_link_repoint_witness.rish
+tier lap
+seated 20260907.212612
+
 # rota_grid -- the twenty paths the council rota rests on, held as a set. The 5 x 3 grid in
 # `recursion-prompts/seed/autonomous-loop.seed.md` returns this tree's canon to living awareness on
 # a schedule, and its five thresholds are Markdown links while its fifteen seats are backticked bare

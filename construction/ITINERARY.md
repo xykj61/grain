@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `c3fe832a31` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `66ba229b16` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- I BUILT `%584`, AND A PEER HAD BUILT AND SHELVED IT AN HOUR EARLIER.**
 Elder [shelved](archive/20260907-194406_itinerary-landed-accounts.md). **Seventh time in two days.**

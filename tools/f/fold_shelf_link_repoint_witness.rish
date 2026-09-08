@@ -1,0 +1,33 @@
+# tools/f/fold_shelf_link_repoint_witness.rish -- the guard that names a repair can now make it.
+#
+#   rishi/bin/rishi run tools/f/fold_shelf_link_repoint_witness.rish
+#
+# A shelf sits one directory below the pin it was folded out of, so every climbing link must gain a
+# level. NOTHING WRITES THESE SHELVES -- a hand writes each one -- so every hand must remember, and in
+# the week to `20260907` four different hands did not. A lantern that fires twice becomes a loom.
+#
+# The repair was never the hard part. `fold_shelf_link_scan.sh list` already prints the corrected
+# path for every lost link, and it proposes one only after confirming that path EXISTS on disk. The
+# answer was computed and a human was retyping it.
+#
+# THE SCAN STAYS THE AUTHORITY. This tool invents nothing: it applies the scan's `repair` column and
+# nothing else, leaves a DEAD link alone because a broken link with no computed repair needs a
+# reader, and writes through the original inode so a tracked file keeps its mode.
+
+say "fold-shelf-repoint: Language EN -- the fourth firing of one fault, answered once."
+say "fold-shelf-repoint: Style Gauge, Meter -- the repair is applied, never guessed."
+say "fold-shelf-repoint: Lens TAME -- safety first; every refusal proven from both sides."
+
+say "fold-shelf-repoint: the control -- twelve behaviors on a real fold in a throwaway repository..."
+let ctl = run ["sh" "tools/fixtures/f/fold_shelf_link_repoint_control.sh"]
+assert ctl.ok else "fold-shelf-repoint: the control refused --\n${ctl.out}\n${ctl.err}"
+assert ctl.out contains "pass=12 fail=0" else "fold-shelf-repoint: the control did not prove twelve behaviors --\n${ctl.out}\n${ctl.err}"
+
+say "fold-shelf-repoint: and this tree reads clean, so the tool has nothing to do here..."
+let dry = run ["sh" "tools/f/fold_shelf_link_repoint.sh"]
+assert dry.ok else "fold-shelf-repoint: the dry run refused --\n${dry.out}"
+# invariant: a dry run NEVER writes, so the standing guard must still read clean after it.
+let after = run ["sh" "tools/fixtures/f/fold_shelf_link_scan.sh"]
+assert after.out contains "verdict=ok" else "fold-shelf-repoint: the tree carries depth-lost links -- run the repointer with --apply"
+
+say "GREEN: fold-shelf-repoint -- the scan computes the repair, the tool applies exactly that, and a dead link is left for a reader."

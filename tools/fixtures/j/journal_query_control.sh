@@ -98,7 +98,7 @@ check verdict-falls-back     'verdict=sorted_room'
 # a census where both answer the same is a census whose bound proves nothing.
 fresh
 cat > "$pen/src/spread.sh" <<'PEN'
-git ls-files 'session-logs/date/*/*.kyri' > /tmp/logs
+git ls-files 'session-logs/date/*/*.kyri' > /tmp/logs.$$
 while read -r f; do
   : one
   : two
@@ -107,7 +107,7 @@ while read -r f; do
   : five
   : six
   if grep -q '^rota ' "$f"; then echo "$f"; fi
-done < /tmp/logs
+done < /tmp/logs.$$
 PEN
 check spread-missed-by-line  'class_field=0'
 check spread-caught-by-file  'field_capable_files=1'
