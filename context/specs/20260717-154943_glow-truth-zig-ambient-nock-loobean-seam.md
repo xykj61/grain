@@ -5,6 +5,7 @@
 **Style:** Gauge (see `../GAUGE_STYLE.md`)
 **Voice:** Quin
 **Status:** Living -- seated ruling for Glow ambient truth vs Hoon/Nock loobeans
+**Room:** checkable -- the ruling is bound by glow_truth_semantics_witness over glow/truth_semantics.rye
 **Co-author:** Keaton Dunsford (`xykj61`)
 **Witness:** [`../../tools/glow_truth_semantics_witness.rish`](../../tools/glow_truth_semantics_witness.rish) - module [`../../glow/truth_semantics.rye`](../../glow/truth_semantics.rye)
 

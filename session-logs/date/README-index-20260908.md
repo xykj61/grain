@@ -16,6 +16,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260908.184655` | [A guard's reach is the roster](20260908/20260908-184655_a-guards-reach-is-the-roster.kyri) | ten front-door guards ran in no pass; one red sixteen days |
 | `20260908.184559` | [Four named, three asserted](20260908/20260908-184559_four-named-three-asserted.kyri) | the run the merge postcondition let pass |
 | `20260908.182537` | [Four tools whose job is the elder word](20260908/20260908-182537_four-tools-whose-job-is-the-elder-word.kyri) | an env contract breached, its fallback proven |
+| `20260908.181114` | [The room the law was written in](20260908/20260908-181114_the-room-the-law-was-written-in.kyri) | context/ joins the doorway law; a plant is an input |
 | `20260908.180709` | [The name that left, the facts that stayed](20260908/20260908-180709_the-name-that-left-and-the-facts-that-stayed.kyri) | a breach, and four things it kept |
 | `20260908.180309` | [a loom already woven](20260908/20260908-180309_a-loom-already-woven.kyri) | the tool existed; rule_twin 37 -> 35 |
 | `20260908.175409` | [The transcript a peer could write](20260908/20260908-175409_the-transcript-a-peer-could-have-written.kyri) | a verdict-inverting pen closed |

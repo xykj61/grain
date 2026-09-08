@@ -5,6 +5,7 @@
 **Style:** Gauge (see `../GAUGE_STYLE.md`)
 **Voice:** Quin  
 **Status:** Living -- addendum to the one-clock naming law, scoped to this Framework 16 AMD Ubuntu host  
+**Room:** checkable -- a stamp convention for one host, checkable by reading the zone that host resolves
 **Co-author:** Keaton Dunsford (`xykj61`)
 
 Radiant pass `20260725.040728`

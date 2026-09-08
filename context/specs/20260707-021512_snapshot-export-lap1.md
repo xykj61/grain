@@ -4,6 +4,7 @@
 **Language:** EN
 **Style:** Gauge (see `../GAUGE_STYLE.md`)
 **Status:** Seated -- lap 1 on metal; lap 2 horizon bundles seated `20260707.024712`
+**Room:** mixed -- lap 1 stands on metal; weave slice, Brix closure and continuity facts are named horizon
 
 *Written by Kaeden and Rio 3.*
 Radiant pass `20260725.035645`

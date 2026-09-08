@@ -4,6 +4,7 @@
 **Language:** EN
 **Style:** Gauge (see `../GAUGE_STYLE.md`)
 **Status:** Seated -- reference; canon `20260707.011812` (Kaeden's word); describes surfaces landed through parity **175** at tip `8acdbc7`, batch rebind repair `20260707.011412`
+**Room:** checkable -- the conformance surface is the landed code, and where prose and code disagree the code governs
 **Register:** Reference -- the third room of the manual program; *must* and *should* carry conformance weight
 **Normative sources:** the `.rye` files named per section; where prose and code disagree, the landed code and its green witness govern, and this document earns a correction
 

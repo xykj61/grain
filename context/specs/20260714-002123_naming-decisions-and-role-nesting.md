@@ -4,6 +4,7 @@
 **Version:** `20260714.002123` (Pacific)
 **Style:** Gauge (see `../GAUGE_STYLE.md`)
 **Status:** Living -- records Keaton's confirmed naming decisions and the strategy that optimizes for pitchable proposals and reviewable code
+**Room:** mixed -- the confirmed names are settled record; the role-nesting strategy is direction
 
 Radiant pass `20260725.040728`
 

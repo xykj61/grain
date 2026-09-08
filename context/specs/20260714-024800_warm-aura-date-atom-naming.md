@@ -4,6 +4,7 @@
 **Version:** `20260714.024800` (Pacific)
 **Style:** Gauge (see `../GAUGE_STYLE.md`)
 **Status:** Living -- names the canonical date-atom format the whole tree already reaches for, ties it to the warm-aura versioning design, and settles how dated folders are named. Extends `20260627-102012_one-clock-naming-law.md`; does not supersede it.
+**Room:** checkable -- it names the stamp the tree already writes, and chrono_version_scan reads it
 
 Radiant pass `20260725.040728`
 

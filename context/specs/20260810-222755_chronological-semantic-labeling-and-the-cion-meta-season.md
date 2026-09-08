@@ -4,6 +4,7 @@
 **Stamp:** `20260810.222755` (2026-08-10 EDT)
 **Voice:** Kyri - **Style:** Gauge (see `../GAUGE_STYLE.md`)
 **Status:** Seated law + planned meta-season, on Keaton's word `20260810`
+**Room:** mixed -- the labeling law is sealed by a green guard; the meta-chapter's remaining rounds are planned
 **Kin:** `context/specs/20260627-102012_one-clock-naming-law.md` - `.claude/rules/waymark-ladders.md` - `context/LEXICON.md` (calendar - rankings)
 
 ---

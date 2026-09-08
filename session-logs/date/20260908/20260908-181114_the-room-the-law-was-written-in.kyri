@@ -1,0 +1,44 @@
+format session-log-v1
+stamp 20260908.181114
+editor Claude Code, terminal
+provider Anthropic
+product Claude Code
+role unattended fleet ship Petrichor, docs-geode and prose-product lane
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_status .claude/settings.json, tracked, read 20260908
+evidence tracked settings file; no runtime telemetry exposed to this lap
+voice Kyri
+host Linux pier, America/New_York, bare launch (FLEET_BARE)
+title The law was written in the one room that never kept it
+prompt Autonomous lap -- take the next agent-doable work Lindy-first, crux-first, in the Petrichor lane
+rota lap 4345, row 0 -- Aether, the row that hears -- it asks for the page nobody answered, and the answer was the room this law is written in: context/ holds TWO_ROOMS.md, its own front door already taught all four register tokens, and 38 of its pages named no room
+think Opened with the tool that names its own transcript -- standing_equipment_run.sh --detach -- rather than choosing a path, per the 20260908.113404 row. Verified the transcript was mine by matching its 15 stash detail lines against git stash list read at the open, since a transcript naming this tree agrees on every structural line and differs only in what has happened since.
+think Held still on tracked files for the whole cold pass. It closed 196 guards, 193 green, 0 red, 3 gated, tree_moved=no.
+think The thread handed me the lap: my own last recommend named context/ as the last unjoined room and said Air's reading points at **Room:** lines, so the register stands free of the lifecycle answer rather than braided into it.
+think Measured before judging. Under the roster's own predicate context/ supplies 107 pages and 38 name no room; all 38 sit in context/specs/, and none has a run-on Status, so all 38 can take the second key cleanly.
+think Read all 38 bodies and judged each register from the page rather than its title -- 14 checkable, 21 mixed, 3 vision. The dominant honest reading is mixed, because a spec here lands laps at parity pins and names the next lap gated in the same breath.
+think The seventh room brings something the six before it did not: a fixtures/ subroom, 8 pages that are inputs a guard reads byte for byte. All 8 pass free today only for lacking a one-clock stamp, so the exclusion changes no reading and closes the trap where the census would ask a plant to name a register.
+obs The doorway scan reads doorway pages=1222 with context=99 and fails=3, the ceiling unmoved. The three remaining are the dated testimony on date/ shelves that accrete-never-break keeps exactly as written.
+obs The control's reach-count leg caught my own change out loud: readme_excluded=no the moment honest() grew an eighth page. That leg reads a count rather than an absence for exactly this reason, and it worked on the first lap it could.
+obs Against myself, and the measurement won. Twelve of my 38 read below B at Field, and I proposed negation as the cause -- a ruling's business is what refuses. The measurement refuted it: mean negative share is 26% for context/specs against 23% for foundations, near-identical. Reach is what parts the rooms, below-80 at 12 of 72 against 5 of 93. A page whose sentences are proper nouns, module names and parity pins meets a grade-level budget drawn for prose that argues.
+obs So I rewrote none of the nineteen and put the reading on the card as a third question for gate %7, beside the guided map and the module heads that already fall between two settings. The QA stack is bounded at depth 2 and anything deeper becomes a card line, which is what this is.
+obs names-awaiting-confirmation.md read C at Field and A at Meter. That frame closed on a measurement rather than a molt: the page is a ledger of what is not yet settled, refusal is literally its subject, and it carries ten living citers a fresh stamp would strand.
+loom witness=two_rooms_doorway asserts=53 readings=53 control_legs_added=4 witness_asserts_added=10
+loom room=context pages_under_predicate=99 silent_before=38 silent_after=0 fixtures_excluded=8
+loom qa_field_below_b context_specs=19of72 foundations=5of93 mean_reach_specs=90 mean_reach_foundations=95
+file tools/fixtures/t/two_rooms_doorway_roster.sh the seventh room joins the git ls-files pathspec, and */fixtures/* joins the exclusion list beside yonder and archive
+file tools/fixtures/t/two_rooms_doorway_scan.rish a from_context reach leg with its own say line, FAIL and exit, so the room cannot narrow out in silence the way active-designing once did
+file tools/fixtures/t/two_rooms_doorway_control.sh four legs -- the room dropped, a silent spec counted and named, the second-key repair free, and a stamped plant passing free and staying uncounted
+file tools/t/two_rooms_doorway.rish ten asserts over those readings, the counted tally now 53 over 53
+file context/README.md an Adding a spec bullet, so the habit is set at write time at the room's own door rather than only counted afterward
+file context/specs/20260801-140607_resin-manifest-v1.md fifteen non-ASCII characters converted on touch, em and en dashes and three math signs
+file construction/ITINERARY.md the account, elder shelved whole to hold the card at 40,900 of 40,960
+file construction/archive/20260908-181040_itinerary-landed-accounts.md the elder PETRICHOR account, every word, its inherited link repointed to the shelf's own depth
+obs Against myself, the shelf-link class again. My new account shelf carried the elder block's link `archive/20260908-153134_...`, written relative to the card and depth-lost from inside `construction/archive/`. Two peers named exactly this shape on the card I read at this lap's open, and I shipped it anyway; `fold_shelf_link_repoint` caught it on the first hot pass. Repairing it moved the tree that pass was measuring, so that pass closed `guard_red` and `tree_moved=yes` honestly, and the clean second close is the one this lap stands on.
+obs A hot pass that finds a red always costs two passes, since the repair necessarily moves the tree the first was measuring. That is the instrument working rather than a fault in it, and it is worth saying plainly so a later lap does not read the doubled cost as waste.
+scope the seventh and last prose room read, judged and joined; a plant named as an input rather than a page; one register hypothesis proposed and refuted by its own measurement
+status GREEN -- cold open 196 guards, 193 green, 0 red, 3 gated, tree_moved=no; hot close 196 guards, 193 green, 0 red, 3 gated, 2,301s, tree_moved=no, on the second pass after the first found the shelf-link red. two_rooms_doorway 53 over 53 with context at 0 silent of 99; two_rooms_doorway_touch 30 cases GREEN, reading the roster rather than respelling it; ascii_document, prose_register, qa_report_card and living_docs_lint all green. Every page touched grades B or better at its own setting.
+recommend keep-going -- yonder/ is the one shelf left outside the doorway census at 262 post-seating pages and 11 silent, and the roster's own comment says it waits on Keaton's word, so the next mechanical lap in this lane is the docs-geode shelf rather than a room that needs a word

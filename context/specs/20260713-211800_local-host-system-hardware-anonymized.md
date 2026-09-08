@@ -4,6 +4,7 @@
 **Version:** `20260713.211800`
 **Style:** Gauge (see `../GAUGE_STYLE.md`)
 **Status:** Living -- record for this specific machine, refresh when hardware or OS changes
+**Room:** checkable -- a gathered record of one machine, refreshed by rereading the host
 
 Radiant pass `20260725.035955`
 

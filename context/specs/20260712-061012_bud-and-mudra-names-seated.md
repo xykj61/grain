@@ -6,6 +6,7 @@
 **Language:** EN
 **Style:** Gauge (see `../GAUGE_STYLE.md`)
 **Status:** **Seated** -- Kaeden word "seat the recommendations" (`20260712.062656`)
+**Room:** checkable -- both names are seated and both surfaces carry landed code and a living witness
 **Ground:** LEXICON - [`inherited-names.md`](inherited-names.md) - [`20260630-004512_module-name-provenance.md`](20260630-004512_module-name-provenance.md) - post-Seam counsel [`../../counsel/20260712-061012_claude-counsel-post-seam-disposition.md`](../../counsel/20260712-061012_claude-counsel-post-seam-disposition.md)
 
 *Written by Rio 3 for Kaeden - naming lap seated.*

@@ -82,6 +82,7 @@ honest() {
   page "$d/docs-geode/20260901-010105_e.md" 'Living -- checkable'
   page "$d/manual/20260901-010106_f.md" 'Living -- mixed'
   page "$d/foundations/20260901-010107_g.md" 'Living -- vision'
+  page "$d/context/specs/20260901-010108_h.md" 'Living -- checkable'
   page "$d/active-designing/date/20260901/20260901-010104_d.md" 'Living -- research for understanding'
 }
 
@@ -94,6 +95,7 @@ echo "$out" | grep -q 'folded=1' && echo "folded_page_read=yes" || echo "folded_
 echo "$out" | grep -q 'geode=1 ' && echo "geode_room_read=yes" || echo "geode_room_read=no"
 echo "$out" | grep -q 'manual=1 ' && echo "manual_room_read=yes" || echo "manual_room_read=no"
 echo "$out" | grep -q 'foundations=1 ' && echo "foundations_room_read=yes" || echo "foundations_room_read=no"
+echo "$out" | grep -q 'context=1 ' && echo "context_room_read=yes" || echo "context_room_read=no"
 
 # 2. A Status that names no room -- counted, named, refused.
 d=$(build no_room); honest "$d"
@@ -138,12 +140,12 @@ out=$(scan_at "$d" 0)
 echo "$out" | grep -q 'verdict=ok' && echo "yonder_excluded=yes" || echo "yonder_excluded=no"
 # Counted rather than grepped-for-absence: `grep -qv PATTERN` answers yes whenever ANY line
 # fails to match, which is a test that cannot fail (REDS %503). The honest tree holds seven
-# pages -- one per room, `manual/` and `foundations/` joining 20260908 -- and two more were
-# planted, so the reach must still read seven. This number moves whenever a room joins, and that
+# pages -- one per room, `manual/`, `foundations/` and `context/` joining 20260908 -- and two more
+# were planted, so the reach must still read eight. This number moves whenever a room joins, and that
 # is the point: the leg
 # reads a count rather than an absence, so a room added to `honest()` without being added here
 # says so out loud on the lap it lands.
-echo "$out" | grep -q 'doorway pages=7 ' && echo "readme_excluded=yes" || echo "readme_excluded=no"
+echo "$out" | grep -q 'doorway pages=8 ' && echo "readme_excluded=yes" || echo "readme_excluded=no"
 
 # 8. THE ELDER DEFECT, planted. A roster narrowed to the flat room must refuse rather than
 #    report a smaller clean tree -- the folded floor is what tells those two apart.
@@ -356,5 +358,67 @@ commit_all "$d"
 out=$(scan_at "$d" 0)
 echo "$out" | grep -q 'doorway fails=0 ' && echo "runon_room_key_free=yes" || echo "runon_room_key_free=no"
 echo "$out" | grep -q 'verdict=ok' && echo "runon_room_key_verdict=yes" || echo "runon_room_key_verdict=no"
+
+# 20. THE SEVENTH ROOM, AND THE ONE THE LAW IS WRITTEN IN. `context/` holds `TWO_ROOMS.md` itself
+#     and joined 20260908 after its 38 silent doors were read and repaired. A roster reading the
+#     elder six passes every leg above and leaves the law's own room unread, so it must refuse and
+#     the refusal must decide the verdict -- legs 13, 15 and 17, one room over again.
+d=$(build context_missing); honest "$d"
+commit_all "$d"
+cat > "$d/tools/fixtures/t/two_rooms_doorway_roster.sh" <<'SIXROOM'
+#!/bin/sh
+git ls-files 'external-research/*.md' 'active-designing/*.md' 'docs/*.md' 'docs-geode/*.md' 'manual/*.md' 'foundations/*.md' 2>/dev/null |
+while IFS= read -r f; do
+  [ -n "$f" ] || continue
+  case "$f" in
+    */README.md) continue ;;
+    */yonder/*|*/archive/*) continue ;;
+    */fixtures/*) continue ;;
+  esac
+  [ -f "$f" ] || continue
+  printf '%s\n' "$f"
+done
+SIXROOM
+out=$(scan_at "$d" 0)
+echo "$out" | grep -q 'FAIL doorway reach: context read no page' \
+  && echo "context_missing_refused=yes" || echo "context_missing_refused=no"
+echo "$out" | grep -q 'verdict=ok' && echo "context_missing_verdict_refused=no" || echo "context_missing_verdict_refused=yes"
+
+# 21. AND THE REPAIR IS A READING HERE TOO. The 38 spec doors each answered the lifecycle question
+#     -- `Seated`, `Living`, `Proposal` -- and never the register one. A page shaped like those,
+#     planted in the seventh room, must be counted and named rather than passed by membership.
+d=$(build context_silent); honest "$d"
+page "$d/context/specs/20260902-020207_seam.md" 'Seated -- Keaton word; closes the seam with prose only'
+commit_all "$d"
+out=$(scan_at "$d" 0)
+echo "$out" | grep -q 'doorway fails=1 ' && echo "context_silent_counted=yes" || echo "context_silent_counted=no"
+echo "$out" | grep -q 'FAIL context/specs/20260902-020207_seam.md Status does not name a room' \
+  && echo "context_silent_named=yes" || echo "context_silent_named=no"
+echo "$out" | grep -q 'verdict=ok' && echo "context_silent_refused=no" || echo "context_silent_refused=yes"
+
+# 22. AND THE SECOND KEY IS THE REPAIR THIS LAP ACTUALLY SHIPPED. Every one of the 38 kept its
+#     dense Status whole and gained a `**Room:**` line beneath it, because a spec Status here
+#     carries parity pins and links an appended token would land inside. The exact shape must
+#     walk free, and carry the verdict -- a fix proven only where it fails is half a proof.
+d=$(build context_repaired); honest "$d"
+page_room "$d/context/specs/20260902-020207_seam.md" \
+  'mixed -- the seam landed at its parity pin; the second seam stays unopened' \
+  'Seated -- Keaton word; closes the seam with prose only'
+commit_all "$d"
+out=$(scan_at "$d" 0)
+echo "$out" | grep -q 'doorway fails=0 ' && echo "context_repaired_free=yes" || echo "context_repaired_free=no"
+echo "$out" | grep -q 'verdict=ok' && echo "context_repaired_verdict=yes" || echo "context_repaired_verdict=no"
+
+# 23. A PLANT IS AN INPUT, NEVER A PAGE SPEAKING FROM A ROOM. `context/fixtures/` holds the only
+#     fixture pages any of the seven rooms supply -- a planted broken table, a planted `but`, a
+#     planted incomplete ledger -- and their bytes are read by the guard under test. Today all 8
+#     pass free for lacking a stamp; a stamped one must still pass free, or this census would ask
+#     a plant to name a register and change the very bytes another guard reads.
+d=$(build context_fixture); honest "$d"
+page "$d/context/fixtures/20260902-020208_planted.md" ''
+commit_all "$d"
+out=$(scan_at "$d" 0)
+echo "$out" | grep -q 'doorway fails=0 ' && echo "fixture_plant_free=yes" || echo "fixture_plant_free=no"
+echo "$out" | grep -q 'context=1 ' && echo "fixture_plant_uncounted=yes" || echo "fixture_plant_uncounted=no"
 
 echo "control_verdict=ok"

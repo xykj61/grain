@@ -4,6 +4,7 @@
 **Version:** `20260713.222416`
 **Style:** Gauge (see `../GAUGE_STYLE.md`)
 **Status:** Living -- the seam between what came before and what carries forward
+**Room:** mixed -- the audit counts and the signature proof are measured; the identity seam is a forward decision
 
 Radiant pass `20260725.035955`
 

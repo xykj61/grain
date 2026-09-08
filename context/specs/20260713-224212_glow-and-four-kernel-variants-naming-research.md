@@ -4,6 +4,7 @@
 **Version:** `20260713.224212`
 **Style:** Gauge (see `../GAUGE_STYLE.md`)
 **Status:** Research and proposal -- no rename committed, no code written
+**Room:** mixed -- the searches of the elder tree are measured; the four variant names are proposals with no code
 
 Radiant pass `20260725.035955`
 

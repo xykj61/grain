@@ -4,6 +4,7 @@
 **Language:** EN
 **Style:** Gauge (see `../GAUGE_STYLE.md`)
 **Status:** Seated -- living reference map; canon `20260707.011812`; rows correct through parity **182** + I2 snapshot lap 2
+**Room:** mixed -- rows marked proven cite a witness; rows marked designed name a seated meaning whose build waits
 **Register:** Reference -- the looking-up room; meanings in our own words, one line each
 
 *Written by Kaeden and Rio 3.*

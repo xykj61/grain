@@ -4,6 +4,7 @@
 **Language:** EN
 **Style:** Gauge (see `../GAUGE_STYLE.md`)
 **Status:** Seated -- Kaeden's word; closes snapshot "Weave slice" with prose only
+**Room:** mixed -- the ruling reads what I2 already exports; the graduation trigger is a named future
 
 *Written by Kaeden and Rio 3.*
 Radiant pass `20260725.035852`

@@ -4,6 +4,7 @@
 **Version:** `20260713.214400`
 **Style:** Gauge (see `../GAUGE_STYLE.md`)
 **Status:** Proposal -- no file has been renamed; every count below is grep-measured, so migration PRs can be sized honestly
+**Room:** mixed -- every inbound-reference count is grep-measured; every mapping is a proposal and no file moved
 
 Radiant pass `20260725.035955`
 

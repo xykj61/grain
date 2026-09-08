@@ -4,6 +4,7 @@
 **Version:** `20260714.015200` (Pacific)
 **Style:** Gauge (see `../GAUGE_STYLE.md`)
 **Status:** Living -- seats `GLOW_PROFILE.bron` and the generic-Acme adaptation of the living entry docs
+**Room:** mixed -- the profile and the voice adaptation landed; a reader for the profile is named and unbuilt
 
 Radiant pass `20260725.040728`
 

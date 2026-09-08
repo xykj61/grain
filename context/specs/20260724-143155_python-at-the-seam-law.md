@@ -3,6 +3,7 @@
 **Language:** EN  
 **Stamp:** `20260724.143155`  
 **Status:** Seated  
+**Room:** checkable -- the census is a table of real paths and the ban blocks with a witness and a planted negative
 **Counsel:** [`../../counsel/20260724-135312_vanes-shelves-and-the-glow-ladder.md`](../../counsel/20260724-135312_vanes-shelves-and-the-glow-ladder.md)
 
 Radiant pass `20260725.041039`
