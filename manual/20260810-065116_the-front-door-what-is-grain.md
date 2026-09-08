@@ -5,7 +5,7 @@
 **Voice:** Kyri
 **Audience:** anyone meeting Grain for the first time -- no prior knowledge assumed, and none needed
 **Law:** [`../context/TAME_GUIDANCE.md`](../context/TAME_GUIDANCE.md)
-**Status:** Overview -- the front door. It names what runs today plainly, and marks each horizon as a horizon. Every capability it claims is proven by a witness you can run yourself.
+**Status:** Overview -- the front door. It names what runs today plainly, and marks each horizon as a horizon. Every capability it claims is proven by a witness you can run yourself. **Mixed room**: the modules and their green witnesses are checkable; the values section orients rather than proves.
 
 ---
 

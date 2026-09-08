@@ -11,7 +11,7 @@
 # because a guard that reds on ordinary work is a guard somebody turns off.
 #
 # THE SEAM THIS PEN EXISTS FOR is a boundary two readings share. The cadence guard
-# two_rooms_doorway walks every page in three rooms and holds the unnamed ones under a ceiling
+# two_rooms_doorway walks every page in the roster's rooms and holds the unnamed ones under a ceiling
 # that only falls. This scan reads what a commit ADDS and holds those at zero. The two classes
 # differ on purpose, so the pen measures the seam: a MODIFIED page naming no room is reported and
 # walks free, while the same page ADDED refuses. Both directions matter. Loosen one and the guard
@@ -23,7 +23,7 @@
 # naming the room, one adding no page at all.
 #
 # THE PEN SEATS ITS ROOM FIRST, because an empty roster is itself a refusal. The roster reads
-# git ls-files over three rooms. A reading that returns nothing has narrowed, which is the defect
+# git ls-files over the roster's rooms. A reading that returns nothing has narrowed, which is the defect
 # its own header records three firings of, so the scan refuses there. One page is therefore
 # committed before anything else is asked.
 #
@@ -96,7 +96,7 @@ door=external-research/README.md
 yonder=external-research/yonder/20260830-101014_a-deferred-page.md
 
 # -- the room is populated first, because an EMPTY roster is itself a refusal ---------------------
-# The roster reads `git ls-files` over three rooms. A reading that returns nothing has narrowed --
+# The roster reads `git ls-files` over its own rooms. A reading that returns nothing has narrowed --
 # the exact defect the roster's own header records three firings of -- so the scan refuses rather
 # than reporting a smaller clean tree. The pen therefore seats one page before asking anything else.
 page "$named" 'Living -- checkable, bound by a witness.'

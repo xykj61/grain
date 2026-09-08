@@ -2,12 +2,14 @@
 #   rishi/bin/rishi run tools/t/two_rooms_doorway_touch_witness.rish
 #
 # WHAT THIS GATES, and what it leaves to its elder. `two_rooms_doorway` already reads every page in
-# three rooms and holds the unnamed ones under a ceiling that only falls. A second assertion on that
-# same reading would be a second roof over one question, so this gates only what is its own: that
-# the commit-time reading refuses an ADDED page naming no room, off the INDEX; that it reports a
-# MODIFIED one and lets it pass; that it refuses in the pen from both sides; and that
-# tools/hooks/pre-commit actually turns a real `git commit` away. The tree's own 44 unnamed pages
-# are the elder's gate, and one fault should red in one place.
+# every room its roster names and holds the unnamed ones under a ceiling that only falls. A second
+# assertion on that same reading would be a second roof over one question, so this gates only what
+# is its own: that the commit-time reading refuses an ADDED page naming no room, off the INDEX;
+# that it reports a MODIFIED one and lets it pass; that it refuses in the pen from both sides; and
+# that tools/hooks/pre-commit actually turns a real `git commit` away. The tree's own unnamed
+# pages are the elder's gate -- read that count from `two_rooms_doorway_scan.sh` rather than from
+# here, since it moves whenever a room joins or a door is repaired -- and one fault reds in one
+# place.
 #
 # WHY THE CLASSES DIFFER. A page a commit ADDS has no accreted testimony to protect and exactly one
 # person who knows its register -- the hand writing it, in this commit -- so a wall may refuse it

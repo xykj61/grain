@@ -34,6 +34,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260908.125751` | [the room that withholds by construction](20260908/20260908-125751_the-room-that-withholds-by-construction.kyri) | an allowlist, proven. |
 | `20260908.125645` | [the list that could not grow](20260908/20260908-125645_the-list-that-could-not-grow.kyri) | 24 hand-named paths become 1,073 derived. |
 | `20260908.125241` | [the field that became a surface](20260908/20260908-125241_the-field-that-became-a-surface.kyri) | eight lines, and one refusal drawn. |
+| `20260908.124226` | [The door nobody let divide](20260908/20260908-124226_the-door-nobody-let-divide.kyri) | manual joins the doorway: seven doors repaired, no ceiling raised |
 | `20260908.124212` | [the file that landed as a file](20260908/20260908-124212_the-file-that-landed-as-a-file.kyri) | the essay named its own next lap. |
 | `20260908.123338` | [the elder record writes back](20260908/20260908-123338_the-elder-record-writes-back.kyri) | to_v1 closes the round trip. |
 | `20260908.121934` | [A number measured before its own commit](20260908/20260908-121934_a-number-before-its-commit.kyri) | A count spelled at a door shipped stale inside its own commit. |

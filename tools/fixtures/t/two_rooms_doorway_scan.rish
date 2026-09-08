@@ -110,8 +110,12 @@ if seating_env != "" then let seating = seating_env
 # for its entire life, and `docs-geode/README.md` names "three prose rooms" that overlap this
 # roster's three in exactly one. The room joins at zero cost: 10 pages, 0 silent, because the one
 # genre here that stamps its basenames is the blog and its first piece already reads `mixed`.
-# `manual/`, `foundations/` and `context/` are measured in the roster's own header and stay out
-# on Keaton's word, since together they carry 80 silent pages against a ceiling of 3.
+# `manual/` JOINED THE NEXT LAP (20260908), by being repaired rather than by a ceiling moving.
+# Its 7 silent pages each carried an honest `**Status:**` line that answered the lifecycle question
+# and never the register one; the token was added beside what each already said, judged from the
+# page -- four `mixed`, three `checkable`. The room reads 29 pages and 0 silent, so it entered on
+# `docs-geode/`'s own terms. `foundations/` (83 pages, 35 silent) and `context/` (105, 38) stay out
+# on Keaton's word: 73 repairs against a ceiling of 3, and a ratchet's ceiling only falls.
 #
 # `starts-with "docs/"` does NOT catch a `docs-geode/` path -- the prefixes part at the fourth
 # character -- so the two rooms are counted apart and neither borrows the other's reach leg. That
@@ -130,6 +134,7 @@ let from_research = where files as f: f starts-with "external-research/"
 let from_designing = where files as f: f starts-with "active-designing/"
 let from_docs = where files as f: f starts-with "docs/"
 let from_geode = where files as f: f starts-with "docs-geode/"
+let from_manual = where files as f: f starts-with "manual/"
 let from_shelves = where files as f: f contains "/date/"
 
 let results = map files as f: run ["sh" "tools/fixtures/t/two_rooms_doorway_scan_one.sh" f seating]
@@ -138,19 +143,21 @@ for-each results as r do say trim r.out
 
 let fails = where results as r: r.ok == false
 
-say "doorway pages=${length files} research=${length from_research} designing=${length from_designing} docs=${length from_docs} geode=${length from_geode} folded=${length from_shelves}"
+say "doorway pages=${length files} research=${length from_research} designing=${length from_designing} docs=${length from_docs} geode=${length from_geode} manual=${length from_manual} folded=${length from_shelves}"
 say "doorway fails=${length fails} ceiling=${ceiling} seating=${seating}"
 
 if length from_research == 0 then say "FAIL doorway reach: external-research read no page"
 if length from_designing == 0 then say "FAIL doorway reach: active-designing read no page"
 if length from_docs == 0 then say "FAIL doorway reach: docs read no page"
 if length from_geode == 0 then say "FAIL doorway reach: docs-geode read no page"
+if length from_manual == 0 then say "FAIL doorway reach: manual read no page"
 if length from_shelves == 0 then say "FAIL doorway reach: no folded page read -- a glob has narrowed to the flat room again"
 
 if length from_research == 0 then exit 1
 if length from_designing == 0 then exit 1
 if length from_docs == 0 then exit 1
 if length from_geode == 0 then exit 1
+if length from_manual == 0 then exit 1
 if length from_shelves == 0 then exit 1
 
 let under = run ["sh" "-c" "test ${length fails} -le ${ceiling}"]

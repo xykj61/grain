@@ -80,6 +80,7 @@ honest() {
   page "$d/active-designing/20260901-010102_b.md" 'Living -- vision'
   page "$d/docs/20260901-010103_c.md" 'Living -- mixed'
   page "$d/docs-geode/20260901-010105_e.md" 'Living -- checkable'
+  page "$d/manual/20260901-010106_f.md" 'Living -- mixed'
   page "$d/active-designing/date/20260901/20260901-010104_d.md" 'Living -- research for understanding'
 }
 
@@ -90,6 +91,7 @@ echo "$out" | grep -q 'verdict=ok' && echo "named_room_free=yes" || echo "named_
 echo "$out" | grep -q 'doorway fails=0 ' && echo "clean_reads_zero=yes" || echo "clean_reads_zero=no"
 echo "$out" | grep -q 'folded=1' && echo "folded_page_read=yes" || echo "folded_page_read=no"
 echo "$out" | grep -q 'geode=1 ' && echo "geode_room_read=yes" || echo "geode_room_read=no"
+echo "$out" | grep -q 'manual=1 ' && echo "manual_room_read=yes" || echo "manual_room_read=no"
 
 # 2. A Status that names no room -- counted, named, refused.
 d=$(build no_room); honest "$d"
@@ -133,9 +135,12 @@ commit_all "$d"
 out=$(scan_at "$d" 0)
 echo "$out" | grep -q 'verdict=ok' && echo "yonder_excluded=yes" || echo "yonder_excluded=no"
 # Counted rather than grepped-for-absence: `grep -qv PATTERN` answers yes whenever ANY line
-# fails to match, which is a test that cannot fail (REDS %503). The honest tree holds five
-# pages; two more were planted, and the reach must still read five.
-echo "$out" | grep -q 'doorway pages=5 ' && echo "readme_excluded=yes" || echo "readme_excluded=no"
+# fails to match, which is a test that cannot fail (REDS %503). The honest tree holds six
+# pages -- one per room, `manual/` joining 20260908 -- and two more were planted, so the reach
+# must still read six. This number moves whenever a room joins, and that is the point: the leg
+# reads a count rather than an absence, so a room added to `honest()` without being added here
+# says so out loud on the lap it lands.
+echo "$out" | grep -q 'doorway pages=6 ' && echo "readme_excluded=yes" || echo "readme_excluded=no"
 
 # 8. THE ELDER DEFECT, planted. A roster narrowed to the flat room must refuse rather than
 #    report a smaller clean tree -- the folded floor is what tells those two apart.
@@ -229,5 +234,49 @@ out=$(scan_at "$d" 0)
 echo "$out" | grep -q 'FAIL doorway reach: docs read no page' \
   && echo "sibling_prefix_distinct=yes" || echo "sibling_prefix_distinct=no"
 echo "$out" | grep -q 'geode=1 ' && echo "sibling_prefix_geode_counted=yes" || echo "sibling_prefix_geode_counted=no"
+
+# 15. THE ROOM BOUGHT RATHER THAN FOUND FREE. `manual/` joined 20260908 after its 7 silent doors
+#     were repaired, and a room admitted by a repair narrows exactly like a room admitted free: a
+#     roster reading the elder four passes every other leg here and leaves the manual unread. It
+#     must refuse, and it must not report ok while refusing -- leg 13 one room over.
+d=$(build manual_missing); honest "$d"
+commit_all "$d"
+cat > "$d/tools/fixtures/t/two_rooms_doorway_roster.sh" <<'FOURROOM'
+#!/bin/sh
+git ls-files 'external-research/*.md' 'active-designing/*.md' 'docs/*.md' 'docs-geode/*.md' 2>/dev/null |
+while IFS= read -r f; do
+  [ -n "$f" ] || continue
+  case "$f" in
+    */README.md) continue ;;
+    */yonder/*|*/archive/*) continue ;;
+  esac
+  [ -f "$f" ] || continue
+  printf '%s\n' "$f"
+done
+FOURROOM
+out=$(scan_at "$d" 0)
+echo "$out" | grep -q 'FAIL doorway reach: manual read no page' \
+  && echo "manual_missing_refused=yes" || echo "manual_missing_refused=no"
+echo "$out" | grep -q 'verdict=ok' && echo "manual_missing_verdict_refused=no" || echo "manual_missing_verdict_refused=yes"
+
+# 16. AND THE REPAIR ITSELF IS A READING. The seven manual doors each carried a Status line that
+#     answered the lifecycle question and never the register one -- the split `context/TWO_ROOMS.md`
+#     tabulates. A page shaped like those, planted in the manual, must be counted and named rather
+#     than passed by its room's membership.
+d=$(build manual_silent); honest "$d"
+page "$d/manual/20260902-020204_setup.md" 'Setup guide -- the general shape runs today'
+commit_all "$d"
+out=$(scan_at "$d" 0)
+echo "$out" | grep -q 'doorway fails=1 ' && echo "manual_silent_counted=yes" || echo "manual_silent_counted=no"
+echo "$out" | grep -q 'FAIL manual/20260902-020204_setup.md Status does not name a room' \
+  && echo "manual_silent_named=yes" || echo "manual_silent_named=no"
+echo "$out" | grep -q 'verdict=ok' && echo "manual_silent_refused=no" || echo "manual_silent_refused=yes"
+# And the same door repaired the way this lap repaired the real seven walks free.
+d=$(build manual_repaired); honest "$d"
+page "$d/manual/20260902-020204_setup.md" 'Setup guide -- the general shape runs today. **Mixed room**: what runs now is checkable; what waits is named as a horizon.'
+commit_all "$d"
+out=$(scan_at "$d" 0)
+echo "$out" | grep -q 'doorway fails=0 ' && echo "manual_repaired_free=yes" || echo "manual_repaired_free=no"
+echo "$out" | grep -q 'verdict=ok' && echo "manual_repaired_verdict=yes" || echo "manual_repaired_verdict=no"
 
 echo "control_verdict=ok"

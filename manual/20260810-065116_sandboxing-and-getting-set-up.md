@@ -5,7 +5,7 @@
 **Voice:** Kyri
 **Audience:** an Acme Corporation employee setting up a safe place to work on this template -- beginner-welcome, developer-precise
 **Law:** [`../context/TAME_GUIDANCE.md`](../context/TAME_GUIDANCE.md)
-**Status:** Setup guide -- describes the general, provider-neutral shape that runs today; the containment tool and any credentials live in your own environment, never in the tree. No accounts, no keys, no vendor secrets committed here.
+**Status:** Setup guide -- describes the general, provider-neutral shape that runs today; the containment tool and any credentials live in your own environment, never in the tree. No accounts, no keys, no vendor secrets committed here. **Checkable room**: every step here runs today.
 
 ---
 

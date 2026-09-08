@@ -1,5 +1,5 @@
 #!/bin/sh
-# two_rooms_doorway_roster.sh -- the doorway's subject: forward-facing pages in three rooms.
+# two_rooms_doorway_roster.sh -- the doorway's subject: forward-facing pages in five rooms.
 #
 # WHY IT READS EVERY DEPTH, from 20260906. This helper was a shell glob --
 # `for f in external-research/*.md active-designing/*.md docs/*.md` -- written when all three
@@ -43,22 +43,32 @@
 # piece landed 20260908 and the room will grow. A room brought inside while it is free stays free,
 # where the same room brought inside after ten stamped pages is a repair somebody has to schedule.
 #
-# THE OTHER THREE ROOMS ARE MEASURED AND LEFT OUT, on purpose rather than by oversight. Read the
-# same lap with this family's own per-file verdict: `manual/` 29 pages and 7 naming no room,
-# `foundations/` 83 and 35, `context/` 105 and 38 -- 80 pages that would arrive above a ceiling of
-# 3. Widening to them means either 80 repairs in one lap or a raised ceiling, and a ratchet's
-# ceiling only falls, so that choice is Keaton's rather than a lap's. It is carried on
-# `construction/ITINERARY.md` with those numbers attached. Said carefully, because a first draft of
-# this same comment got it wrong: the earth rota row's own four canon pages were named here as
-# silent, and running the per-file verdict on each answered OK four times -- one names `mixed`, one
-# names `checkable-room canon`, one is unstamped, and one is stamped before the seating. A door
-# read by eye is a guess; the verdict script is the reading.
+# THE FIFTH ROOM, added 20260908, and it was bought rather than found free. `manual/` carried 7
+# pages naming no room, so the elder comment left it out beside `foundations/` and `context/` and
+# named the choice Keaton's: 80 repairs in one lap, or a raised ceiling a ratchet may never take.
+# This lap paid one room's share of that price. Each of the seven already carried an honest
+# `**Status:**` line -- `Overview -- the front door`, `Tutorial -- every command below runs today`,
+# `Setup guide` -- answering the lifecycle question well and the register question not at all,
+# which is exactly the split `context/TWO_ROOMS.md` tabulates. The token was added beside what each
+# line already said, judged from the page rather than from its title: four read `mixed` because
+# they name horizons as horizons, and three read `checkable` because nothing in them waits.
+# `manual/` now reads 29 pages and 0 silent, so it joins on the same terms `docs-geode/` did.
+#
+# TWO ROOMS STAY OUT, with the same numbers they had: `foundations/` 83 pages and 35 naming no
+# room, `context/` 105 and 38. Seventy-three repairs against a ceiling of 3, so that choice is
+# still Keaton's rather than a lap's, and it is carried on `construction/ITINERARY.md`.
+#
+# THE COUNTS ABOVE ARE THIS SCRIPT'S OWN POPULATION, which is not the room's file list. Measured
+# the same lap with `git ls-files 'manual/*.md'` alone -- READMEs, `yonder/` and `archive/` left in
+# -- the three rooms read 32/7, 94/44 and 112/38: eighty-nine rather than eighty, and the whole
+# difference is the exclusions three lines above. A number measured under a neighboring predicate
+# reads like a correction and is a different question.
 #
 # Run from the repository root:
 #   sh tools/fixtures/t/two_rooms_doorway_roster.sh
 set -eu
 
-git ls-files 'external-research/*.md' 'active-designing/*.md' 'docs/*.md' 'docs-geode/*.md' 2>/dev/null |
+git ls-files 'external-research/*.md' 'active-designing/*.md' 'docs/*.md' 'docs-geode/*.md' 'manual/*.md' 2>/dev/null |
 while IFS= read -r f; do
   [ -n "$f" ] || continue
   case "$f" in

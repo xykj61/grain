@@ -565,4 +565,6 @@ at a closed fold.*
 
 *Row %641 born on [`REDS-a-count-spelled-in-letters-rows-641.md`](REDS-a-count-spelled-in-letters-rows-641.md) on `20260908.135445`, **CLOSED** -- a gate's exemption is a claim like any other, and this one let the letter form of a count drift under the gate built for its digits.*
 
+*Row %642 folded to [`REDS-the-door-nobody-let-divide-rows-642.md`](REDS-the-door-nobody-let-divide-rows-642.md) on `20260908.132753`, **CLOSED** -- an aggregate offered as one choice hides every partition of it: the same eighty pages that read as a custody gate read as three ordinary repairs once the total was allowed to divide by room.*
+
 *Row %589 folded to [`REDS-the-blocker-was-a-reading-rows-589.md`](REDS-the-blocker-was-a-reading-rows-589.md) on `20260908.151057`, **BOOKED** -- a blocker nobody had measured kept two files apart for a day; a content-addressed store answers does-this-move-the-record in digests rather than in argument.*
