@@ -40,6 +40,18 @@ buys a page up to a fifth of its sentences in negation, and buys nothing else.
 affirmative AND every sentence poetic, which is the hardest thing this tree knows how to ask for and
 should be claimed rarely.
 
+**Faithful quotation outranks the floor** (seated `20260908.153848`). A page that quotes a teacher
+carries that teacher's sentences unaltered, and a sentence written by someone else may hold a
+negation this tree would rather avoid. The root README met exactly that: driven from 14% to **6%**,
+its remainder is a Buckminster Fuller quotation and a foundation's own title -- *build nothing that
+destroys* -- and both keep their words by older law than this table.
+
+**So Radiant's zero is unavailable to any page that quotes faithfully, and that is correct.** Such a
+page names itself **Bhakta or Gauge with Twilight** and says what its reading is, which the README
+now does in its own Style line. Altering a teacher's words to reach a register would be a worse
+fault than leaving the register unclaimed -- gratitude is the older discipline, and a number never
+outranks it.
+
 **This lattice governs what is written from here forward, and it had to, because the alternative was
 to make the tree a liar.** Measured `20260908.141457`, within the hour of seating it: **47 living
 pages carry `Style: Radiant` with no Gauge beside it**, and of a twelve-page sample **one** sits at
