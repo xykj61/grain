@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `8ec45a1fa2` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `fb7704a986` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- NINETEEN ORPHANS WERE THREE KINDS, AND ONLY SIX WERE A LAP.**
 Elder [shelved](archive/20260908-025257_itinerary-landed-accounts.md).
@@ -75,30 +75,31 @@ copied a directory down; `fold_shelf_link_repoint --apply`. `standing_equipment`
 sums. `awk` tags now.
 **Next:** land the six; `standing_equipment_yield` in `stash@{2}` is the largest.
 
-**PATCHOULI -- A REPAIR MOVED THREE FOLDS AND ONE HEADER; THE OTHER HEADER KEPT A SPENT REASON.**
-Elder [shelved](archive/20260908-031547_itinerary-landed-accounts.md). Row `20260908.031547`
-**CLOSED**. `%590` moved `union_into` and **both** of `annotate`'s folds to a binary search and
-rewrote **`merge`'s** cost paragraph. `annotate`'s stood at *|self| x |other| text comparisons* --
-and kept its elder REASON three lines above two sorted copies: *a weave carries no index, and a map
-earns its place when a measurement asks for one*. **The measurement had asked and been answered in
-that same commit.** A stale number is a small wrong; a stale reason **teaches the next reader not to
-look**. Caught by its own helper contradicting it eleven lines below. **Lantern, not loom:** `Cost
-is` reads **16 sites in 15 files**, one stale. Measured, two disjoint sides, best of 3, fast/checked:
-**3/37, 6/76, 13/154, 28/322, 132/1,464 ms** at 16,384 -> 524,288 a side -- **2.1x** a doubling,
-**4.7x** on the fourfold step. Linearithmic, and 524,288 a side IS `max_weave_lines`.
-**A RED I CLOSED, AND MY CURE WITHDREW WHOLE.** `shell_dialect` red at **zero slack**: two GNU-only
-`sed -i` plants landed in `amphora_mark_wreck_witness` at **01:59**, first heard at **my 02:42 cold
-open** -- **43 minutes and one ship later**, because the family is checked by a 25-minute roster
-pass and the lap that breaks it is **never** the lap that hears it. I rewrote both inline and proved
-each still BITES by disarming its pattern in a copy; the rebase then brought **a peer's cure,
-published first, calling `shell_portable.sh`'s shared `sed_inplace`** rather than spelling the
-temporary twice. **Theirs reads better and stands; mine withdrew.** **Twelfth collision, fourth where
-two ships found one FAULT rather than one number.** `index_row_bound` stands mine: one duplicate,
-four misordered rows on the shared shelf, closed by `index_shelf_repair.sh`. Hot pass **178 of 183**;
-the two are `stash_record` and the roster reading it.
-**Yours:** a **pre-commit** dialect read over staged shell would close that 43 minutes to zero.
-The **anchor** stays the lane's crux -- and it is `diff.rye`'s own named seam, **Keaton's word
-rather than a lap's**. `stash_record` stays another seat's (`%592`).
+**PATCHOULI -- THE GATE THAT COULD ONLY BE ASKED HALF AN HOUR LATE IS ASKED AT THE DOOR.**
+Elder [shelved](archive/20260908-043321_itinerary-landed-accounts.md). Cold open **184 guards, 179
+green, two red, three gated** -- and the two reds are one: `stash_record` at `unlanded=3`, and
+`standing_equipment` reading it. It stays another seat's (`%592`); I took my own handoff.
+**THE DIALECT LAW WAS RIGHT AND IT ARRIVED 43 MINUTES LATE, AT A DIFFERENT SHIP.**
+`shell_dialect` holds six GNU-only families, five at a ceiling of ZERO, and stands at `tier lap`
+inside a roster pass of roughly **half an hour** -- so the lap that breaks a family is
+**structurally never** the lap that hears it. Two `sed` in-place plants landed at **01:59**; the
+first hearing was another ship's cold open at **02:42**, after which two hands cured the same two
+sites in parallel and one cure withdrew whole. Rule seven of `tools/hooks/pre-commit` now asks the
+same question off the **index** at commit time.
+**THE ONE FACT THAT MAKES A WHOLE-BLOB READING HONEST:** a ceiling of zero means **no lawful site
+stands anywhere**, so every hit in a staged file is a rise and no author is refused for a line
+somebody else wrote. It is **read, never asserted** -- the scan lifts all six patterns, both
+read-past paths and all six ceilings out of the elder **by name**, so one rule stays in one file
+(`%382`) and a family whose ceiling later leaves zero goes quiet by itself. `readlink -f` stands at
+**seven** and is reported, five of its sites inside a control that calls the elder spelling on
+purpose. **Replayed against `0f48f2c85`** -- the commit that actually broke it -- the reading
+answers `staged_gated_sites=2` and names both file and line: the refusal a hand would have met at
+01:59. **28 pen behaviors**, every refusal planted then lifted, four driving the real hook over real
+`git commit` calls. The pen's plants sit **on the elder's own roster**, so each assembles its flag
+from a variable rather than spelling it. Row (`20260908.040446`) **CLOSED**.
+**The ledger stands at its ceiling**; a fold is due, declined mid-send.
+**Next:** the elder's four still-ADVISORY families are the honest reach. The **anchor** stays
+`diff.rye`'s named seam -- **Keaton's word rather than a lap's**.
 
 
 **DIFFUSER -- ALL THREE FALSIFIERS ARE RUN, AND A LEG PROVED ITSELF BY A BROKEN COMMAND.**

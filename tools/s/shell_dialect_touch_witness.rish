@@ -1,0 +1,68 @@
+# tools/s/shell_dialect_touch_witness.rish -- a shell source this round stages speaks both dialects.
+#   rishi/bin/rishi run tools/s/shell_dialect_touch_witness.rish
+#
+# WHAT THIS GATES, and what it leaves to its elder. `shell_dialect` already reads every tracked
+# shell source in the tree and holds five GNU-only families at a ceiling of zero. A second
+# assertion on that same reading would be a second roof over one question, so this gates only what
+# is its own: that the commit-time reading refuses a staged GNU-only idiom, off the INDEX; that it
+# reports the one family standing above zero and lets it pass; that it refuses in the pen from both
+# sides; and that tools/hooks/pre-commit actually turns a real `git commit` away.
+#
+# WHY IT EXISTS AT ALL. The elder reading is right and it arrives late. It runs inside a roster pass
+# of roughly half an hour, so the lap that breaks a family is structurally never the lap that hears
+# it. Measured `20260908`: two `sed -i` plants landed at 01:59 and were first heard at another
+# ship's cold open at 02:42 -- 43 minutes and one ship later. Replayed against that same commit,
+# this reading answers `staged_gated_sites=2` and names both the file and the line, which is the
+# refusal a hand would have met at 01:59.
+#
+# WHY THE FAMILIES DIFFER. A ceiling of zero means no lawful site stands anywhere, so every hit in a
+# staged blob is a rise and may be refused without guessing whose line it was. `readlink -f` stands
+# at seven -- five of them in a control that calls the elder spelling on purpose -- so it is
+# reported here and gated only by the elder, where the ratchet falls as the sites are repaired.
+say "dialect-touch: Language EN -- a script born this round runs on both piers."
+say "dialect-touch: Style Gauge Meter -- index blobs - five gated families - refusal named."
+say "dialect-touch: Lens TAME -- bound everything, and check at the edge the round can still fix."
+
+# Reported, never gated: what this round's own staged set reads. A lap that stages no shell rests at
+# zero, which is the ordinary answer and the reason this line cannot be a gate.
+let live = run ["sh" "tools/fixtures/s/shell_dialect_touch_scan.sh" "staged"]
+say live.out
+assert live.out contains "staged_gated_sites=0" else "dialect-touch: this round stages a GNU-only idiom -- reach for shell_portable.sh"
+
+# The RED path, proven rather than assumed -- a guard shown only in the passing direction cannot be
+# told from a bypass.
+let red = run ["sh" "tools/fixtures/s/shell_dialect_touch_scan.sh" "prove-red"]
+assert (red.ok == false) else "dialect-touch: prove-red must refuse"
+assert red.out contains "RED_staged_gnu_only_idiom" else "dialect-touch: prove-red wants the named refusal"
+
+let unknown = run ["sh" "tools/fixtures/s/shell_dialect_touch_scan.sh" "--nonsense"]
+assert (unknown.ok == false) else "dialect-touch: an argument the scan does not know must refuse"
+assert unknown.out contains "RED_unknown_argument" else "dialect-touch: want the unknown-argument refusal"
+
+let pen = run ["sh" "tools/fixtures/s/shell_dialect_touch_control.sh"]
+say pen.out
+assert pen.ok else "dialect-touch: the pen must pass"
+assert pen.out contains "cases_failed=0" else "dialect-touch: every planted case must pass"
+assert pen.out contains "case=gnu_only_refuses ok" else "dialect-touch: a staged GNU-only idiom must refuse"
+assert pen.out contains "case=repaired_source_walks_free ok" else "dialect-touch: and pass once it is spelled portably"
+assert pen.out contains "case=gnu_only_names_its_family ok" else "dialect-touch: the refusal must name which family bit"
+assert pen.out contains "case=gnu_only_names_the_line ok" else "dialect-touch: and the file's own line, not a pen's"
+assert pen.out contains "case=gnu_only_names_the_repair ok" else "dialect-touch: the refusal must name the repair"
+assert pen.out contains "case=pen_path_stays_out_of_the_report ok" else "dialect-touch: a reader repairs their file, never a temporary"
+assert pen.out contains "case=reads_the_index_not_the_disk ok" else "dialect-touch: the index is the reading, not the worktree"
+assert pen.out contains "case=a_comment_is_not_a_site ok" else "dialect-touch: an explanation of a repair is prose, not a command"
+assert pen.out contains "case=portable_source_walks_free ok" else "dialect-touch: a portable source must pass free"
+assert pen.out contains "case=advisory_family_walks_free ok" else "dialect-touch: a family above zero must not be gated here"
+assert pen.out contains "case=advisory_family_is_counted ok" else "dialect-touch: and it must still be counted"
+assert pen.out contains "case=helper_is_read_past ok" else "dialect-touch: the portable helper spells the elder legs on purpose"
+assert pen.out contains "case=missing_source_refuses ok" else "dialect-touch: an unreadable elder must refuse, never wave the family through"
+assert pen.out contains "case=resting_commit_walks_free ok" else "dialect-touch: a commit staging no shell must rest"
+assert pen.out contains "case=head_mode_reads_the_commit ok" else "dialect-touch: head mode must read the commit just made"
+assert pen.out contains "case=hook_refuses_gnu_only ok" else "dialect-touch: the hook itself must refuse a real commit"
+assert pen.out contains "case=hook_says_why ok" else "dialect-touch: the refusal must say plainly what is wrong"
+assert pen.out contains "case=hook_names_repair ok" else "dialect-touch: the refusal must name the repair"
+assert pen.out contains "case=hook_frees_portable_source ok" else "dialect-touch: the hook must let a portable source through"
+assert pen.out contains "case=hook_rests_off_shell ok" else "dialect-touch: a commit staging no shell passes free"
+assert pen.out contains "control=ok" else "dialect-touch: want pen control ok"
+
+say "GREEN: dialect-touch -- five families held at zero on the index - refusals both ways - the wall driven - 28 cases in the pen"

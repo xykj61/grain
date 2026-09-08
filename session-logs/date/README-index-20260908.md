@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260908.043321` | [The gate asked at the door](20260908/20260908-043321_the-gate-asked-at-the-door.kyri) | the dialect law now reads at commit time. |
 | `20260908.041722` | [a ratchet that counted its own growth](20260908/20260908-041722_a-ratchet-that-counted-its-own-growth.kyri) | one absolute split into cohort and arrivals |
 | `20260908.042507` | [what holds a number still](20260908/20260908-042507_what-holds-a-number-still.kyri) | stale figures were all free; pinned and walled held. |
 | `20260908.035921` | [the box nobody reads back](20260908/20260908-035921_the-box-nobody-reads-back.kyri) | two reds closed; a parked page landed on its third try. |

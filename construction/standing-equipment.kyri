@@ -572,6 +572,23 @@ guard shell_dialect
 path tools/s/shell_dialect_witness.rish
 seated 20260826.001630
 
+guard shell_dialect_touch
+path tools/s/shell_dialect_touch_witness.rish
+tier lap
+seated 20260908.040446
+# THE SAME LAW, ASKED WHILE THE HAND IS STILL HERE. `shell_dialect` above reads every tracked shell
+# source and holds five GNU-only families at a ceiling of zero. It is right, and it arrives late: it
+# runs inside a roster pass of roughly half an hour, so the lap that breaks a family is structurally
+# never the lap that hears it. Measured `20260908` -- two `sed -i` plants landed at 01:59 and were
+# first heard at ANOTHER ship's cold open at 02:42, 43 minutes and one ship later, after which two
+# hands cured the same two sites in parallel and one cure withdrew whole.
+#
+# This is rule seven of tools/hooks/pre-commit: the same five families, read off the INDEX at commit
+# time. It gates only the families whose tree ceiling stands at ZERO, which it reads from the elder
+# rather than respelling -- a ceiling of zero means no lawful site exists, so every staged hit is a
+# rise and no author is refused for a line somebody else wrote. Replayed against commit 0f48f2c85 it
+# answers `staged_gated_sites=2` and names both the file and the line.
+
 guard one_clock
 path tools/o/one_clock_witness.rish
 seated 20260826.075023

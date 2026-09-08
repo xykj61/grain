@@ -46,8 +46,15 @@
 # next cold pass, half an hour after the push. The reading was never expensive; it was simply
 # never asked here.
 #
-# SIX RULES. Four carry their own trigger, because the pages go stale for different reasons and a
-# single trigger would either miss one or fire on everything; two rest cheaply on every commit:
+# A SEVENTH DUTY joined on 20260908: a shell source this commit carries runs on both piers. The
+# whole dialect law already exists and stands at `tier lap` inside a roster pass of roughly half an
+# hour, so the lap that breaks a family is structurally never the lap that hears it. Measured that
+# morning: two GNU-only `sed -i` plants landed at 01:59 and were first heard at a DIFFERENT ship's
+# cold open at 02:42 -- 43 minutes and one ship later -- after which two hands cured the same two
+# sites in parallel and one cure withdrew whole. A lantern that fires twice becomes a loom.
+#
+# SEVEN RULES. Four carry their own trigger, because the pages go stale for different reasons and a
+# single trigger would either miss one or fire on everything; three rest cheaply on every commit:
 #
 #   rule one   the fast front-door numbers -- README.md and docs-geode/libraries/README.md.
 #              Trigger: a tools/*_witness.rish or a *.rye file ARRIVES or LEAVES, OR a debt stands
@@ -70,6 +77,10 @@
 #              Trigger: none of its own, deliberately. The class arrives by REBASE rather than by
 #              staging, so no staged-set trigger could see it; the whole index crawl costs 544ms.
 #              Refuses rather than regenerates -- only the author knows which end of a link moved.
+#   rule seven a shell source this commit carries speaks both dialects -- shell_dialect_touch_scan.sh.
+#              Trigger: none of its own; the scan reads the staged set and rests at zero files.
+#              Refuses rather than regenerates. Gates only the five families whose TREE ceiling
+#              stands at zero, read from the elder scan, so no author is refused for a lawful line.
 #
 # WHAT EACH RULE DOES, in order:
 #   1. Rests unless rishi is executable here. A tree without it -- the depersonalized seed, a
@@ -361,6 +372,47 @@ if [ -f tools/fixtures/r/readme_reach_scan.sh ]; then
       echo "$link_report" | head -4 >&2
     fi
     echo "  full reading: $scan_shell tools/fixtures/r/readme_reach_scan.sh --store index" >&2
+    refused=yes
+  fi
+fi
+
+# RULE SEVEN -- a shell source this commit carries runs on both piers. `shell_dialect_scan.sh` holds
+# the whole law -- six GNU-only families, five of them at a ceiling of ZERO because this tree runs on
+# a NixOS VPS with GNU coreutils and a macOS bench with BSD ones. What it never did was read at
+# commit time, so the reading arrived inside a roster pass of roughly half an hour.
+#
+# THE COST, MEASURED. On 20260908 two GNU-only `sed -i` plants landed in
+# tools/am/amphora_mark_wreck_witness.rish at 01:59 and were first heard at a DIFFERENT ship's cold
+# open at 02:42 -- 43 minutes and one ship later. Two hands then cured the same two sites in
+# parallel and one cure withdrew whole. The lap that breaks this family is structurally never the
+# lap that hears it, which is a lantern; this asks the same question while the hand is still here.
+#
+# WHY A WHOLE-BLOB READING IS SAFE HERE, and it is the one thing that makes this rule honest. A
+# ceiling of ZERO means no lawful site stands anywhere in the tree, so every hit in a staged file is
+# a rise -- no author is ever refused for a line somebody else wrote. The scan reads each family's
+# ceiling out of the elder and gates only the ones still at zero, so a family whose ceiling later
+# rises goes quiet by itself rather than on the strength of a sentence here.
+#
+# NO TRIGGER OF ITS OWN, like rules four, five and six. The reading is one `git diff --cached` and a
+# grep per staged shell source, and it rests at `files_read=0` on the many commits that stage none.
+#
+# WHAT IS GATED: the five zero-ceiling families -- xargs -a/-d, date -d, grep -P, stat -c, sed -i --
+# at zero, exactly as the roster gates them. `readlink -f` stands at seven and is reported here,
+# because five of its sites are in a control that calls the elder spelling on purpose.
+if [ -f tools/fixtures/s/shell_dialect_touch_scan.sh ]; then
+  if ! dialect_report=$("$scan_shell" tools/fixtures/s/shell_dialect_touch_scan.sh staged 2>&1); then
+    if echo "$dialect_report" | grep -q '^detail=RED_staged_gnu_only_idiom'; then
+      echo "pre-commit: this commit carries a shell source written in one host's dialect. It runs" >&2
+      echo "here and reads EMPTY on the other pier, where an empty reading counts as a healthy zero." >&2
+      echo "The portable spelling is in tools/fixtures/s/shell_portable.sh; the site is below." >&2
+      echo "$dialect_report" | grep -E '^(detail_family|detail_path|detail_site|detail_repair|staged_gated_sites)=' >&2
+    else
+      echo "pre-commit: the dialect wall could not MEASURE the staged set, and a wall that cannot" >&2
+      echo "measure refuses rather than waves through. This is an environment fault, never a GNU-only" >&2
+      echo "idiom -- read the scan's own words below and repair the bench or the jail." >&2
+      echo "$dialect_report" | head -4 >&2
+    fi
+    echo "  full reading: $scan_shell tools/fixtures/s/shell_dialect_touch_scan.sh staged" >&2
     refused=yes
   fi
 fi
