@@ -17,6 +17,8 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260908.030324` | [the stamp that looked like a check](20260908/20260908-030324_the-stamp-that-looked-like-a-check.kyri) | a seat cited a number its own tool refuted. |
 | `20260908.025850` | [nineteen orphans were three kinds](20260908/20260908-025850_nineteen-orphans-were-three-kinds.kyri) | only six were a lap. |
 | `20260908.022643` | [the path a repointer could not read](20260908/20260908-022643_the-path-a-repointer-could-not-read.kyri) | a fold left one assembled path behind. |
+| `20260908.035921` | [the box nobody reads back](20260908/20260908-035921_the-box-nobody-reads-back.kyri) | two reds closed; a parked page landed on its third try. |
+| `20260908.030459` | [the room that said what it is](20260908/20260908-030459_the-room-that-said-what-it-is.kyri) | etc door D+ 69 to B+ 89, register 29 to 100. |
 | `20260908.022051` | [a row that became furniture](20260908/20260908-022051_a-row-that-became-furniture.kyri) | the oldest open red, booked. |
 | `20260908.022039` | [the layer was already there](20260908/20260908-022039_the-layer-was-already-there.kyri) | the falsifier fired; our meter understates its own gap. |
 | `20260908.021718` | [the help I truncated](20260908/20260908-021718_the-help-i-truncated.kyri) | the wall already said it. |
