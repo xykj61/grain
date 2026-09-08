@@ -30,6 +30,7 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 | [tutorials / **recursion in Glow**](../tutorials/recursion-in-glow.md) | the Glow desk | `tutorials/` |
 | [tutorials / **Shopping**](../tutorials/SHOPPING.md) | the first hour, Gauge Style, TAME Guidance | the root README, `tutorials/`, the first hour |
 | [tutorials / **Running the fleet**](../tutorials/running-the-fleet.md) | the fleet roster, the baton, the live card, the first hour | `tutorials/`, the shelf front door |
+| [blog / **Eighteen times, two agents did the same job**](../blog/20260908-081630_eighteen-times-two-agents-did-the-same-job.md) | the root README, the first hour, SOURCE.md | `blog/`, this page |
 
 ## Why the "reached from" column matters
 
@@ -39,7 +40,7 @@ That is the whole discipline of a wiki here: a promise that following any thread
 
 ## What is missing, named plainly
 
-`blog/` and `etc/` stand empty, and their own READMEs say so plainly. `templates/` carries a pointer crush. When a page enters any of them, it earns a row above -- **a row in this table is how the shelf finishes admitting a page.**
+`etc/` stands empty and its own README says so plainly. `templates/` carries a pointer crush. `blog/` opened with its first piece on `20260908` and now carries a row like any other room. When a page enters a room, it earns a row above -- **a row in this table is how the shelf finishes admitting a page.**
 
 **The room doors are ways in rather than shipped pages.** `api/README.md`, `tutorials/README.md`, and the shelf's own [front door](../README.md) each stand behind the row that names their room, so this table lists what the shelf ships.
 

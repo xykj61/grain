@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Stamp:** `20260728.031722`
-**Last refreshed:** `20260907.160051` -- the tutorials row gains *Running the fleet*, the shelf's first operator page
+**Last refreshed:** `20260908.081630` -- the blog row turns living; the room's first piece lands
 **Voice:** Kyri
 **Kind:** crushed index of [`docs-geode/`](./) -- the root prod folder, holding the canonical docs that ship
 **Status:** Living crystal -- read against the rooms on disk each lap by [`../tools/cr/crushed_index_witness.rish`](../tools/cr/crushed_index_witness.rish)
@@ -33,7 +33,7 @@ Two words on this shelf are our own, and the Lexicon seats both. **Crush** means
 | [`edu/`](edu/README.md) | Tutorials (shipped; `edu/drafts/` may draft) | **living** -- the index of teaching surfaces and which door leads where |
 | [`demos/`](demos/README.md) | Demos | **living** -- four things you can run in a minute, output included |
 | [`templates/`](templates/README.md) | Templates | **pointer crush** -- Acme personalize and Bron |
-| [`blog/`](blog/README.md) | Blog posts | **open, empty on purpose** -- the entry criterion is named, and it waits for a first piece that meets it |
+| [`blog/`](blog/README.md) | Blog posts | **living** -- [Eighteen times, two agents did the same job](blog/20260908-081630_eighteen-times-two-agents-did-the-same-job.md), the room's first piece, landed against the entry criterion the door names |
 | [`press/`](press/README.md) | Press releases | **living** -- three announcements and one magazine piece, indexed with their honest scope |
 | [`etc/`](etc/README.md) | Further shipping genres as seated | **open, empty on purpose** -- a waiting area, rather than a destination |
 | [`sangha/`](sangha/README.md) | Sangha patterns (page-zero, three patterns) | **living** |

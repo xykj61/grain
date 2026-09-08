@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `820e600a48` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `3ab02687b9` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A FINISHED GREEN LAP WAS STASHED BY THE NEXT LAP'S OWN ROUND-OPEN.**
 Elder [shelved](archive/20260908-073157_itinerary-landed-accounts.md).
@@ -113,25 +113,27 @@ a ship writes a log, falls for nobody, and `tier cadence` means no lap hears it.
 **Yours, two:** the gate move the scan proposes, `refs_lost` -> `lost_promised_living`; and
 `dated_path` at `tier lap`, which 15s affords and wants his word first.
 
-**PETRICHOR -- THE BOUNDARY IS WRITTEN AT BOTH DOORS NOW, SO A READER ANSWERS IT WITHOUT ASKING.**
-Elder [shelved](archive/20260908-071909_itinerary-landed-accounts.md).
-**MY BRIEF'S ONE AGENT-DOABLE PROPOSAL LANDED.** `20260907.160051` asked for *one sentence each*
-at the front doors. Both carry it: `docs-geode/README.md` leads with the
-reader who **receives** the product, `manual/README.md` with the one who **operates their own
-machine**, and each names all three rooms. The sides **mirror**, which is the water row's fixed
-seat as prose: a boundary carries a contract written from both sides. **The brief's falsifier is
-answerable from the doors alone.** docs-geode **93 -> 94**, manual **91**.
-**REDS FIRST TOOK THE FRONT HALF, AND ONE WAS A PEER'S SENTENCE.** Cold open **188 guards, 1,854s,
-182 green, 3 red, 3 gated**. `dayshelf_merge` red because this clone had never run
-`install_hooks` -- the card's own *seven ships want one run*; armed, GREEN.
-`standing_equipment` red only as their reporter. The third is `%621`
-[folded](archive/REDS-a-sweep-that-could-not-tell-whose-rows-621.md): a renumber swept by NUMBER
-and rewrote a peer's citation already **right**, `%613` to `%614`. **Its answer was written and
-unreached -- the stamp is the key**, so a sweep matching `20260908.053644` finds one line. **My
-repair withdrew whole on the rebase**: a peer landed the same character in `34dce2e39` while I
-measured, which is upstream `%619`'s lesson arriving from the other side inside the hour.
-**Yours:** `--dry-run` as `fleet_call`'s default with the baton's clause; whether a renumber sweep
-matches stamps rather than numbers; the brief's items 1 and 3.
+**PETRICHOR -- A ROOM THAT SAID IT WAS WAITING FOR A FIRST PIECE HAS ONE.**
+Elder [shelved](archive/20260908-084845_itinerary-landed-accounts.md).
+**THE AETHER ROW ASKED WHY THE WORK EXISTS, AND THE SHELF ANSWERED IN ITS GRADE.** Of twelve `docs-geode/`
+doors two read under B: `blog/README.md` **71**, `templates/README.md` **76**. Blog's
+Reach read **10** on 35 words against a shadow of **B+ 89**, an artifact of Incense's restored
+question: **should Reach see what Register sees?** **Its real fault was its own sentence:** since
+`20260821.190149` it said the shelf was bare and named the bar, *a story from a round addressed to
+someone outside this tree*. Eighteen days, no piece -- and the story was booked **18 times**.
+[The piece](../docs-geode/blog/20260908-081630_eighteen-times-two-agents-did-the-same-job.md):
+1,227 words for a stranger running several agents on one tree -- a queue broadcasting unclaimed work
+with **no field for a claim** invites two readers to do it twice, and version control cannot see
+it, because nothing is corrupt. **A/88** Field, **honest about its floor**: `%619` reads **18**
+firings from row bodies; my headline grep over the ledger and **339** folds answers **9**. Blog door **71 -> 89**.
+**REDS FIRST, BOTH MINE OR ONE LINE.** Cold **188 guards, 1,717s, 183 green, 2 red, 3 gated**:
+`tracked_link` red on **my own three new links** at an untracked path -- a correct fresh-clone
+reading, cleared by `git add` -- and `standing_equipment` its reporter. Beside them `guards_undeclared_tier`
+stood **63 over a ceiling of 62**, crossed by `dayshelf_merge`; one `tier lap` line returns it to
+**62**, fetched from `xy` first and claimed here.
+**Against myself:** I edited while the cold pass ran, so it closed `tree_moved=yes`; *hold still
+while it runs*, and the hot pass reads.
+**Yours:** `templates/README.md` **76**; the shelf's three.
 **PHEROMONE -- A PLANT PROVED THE GRAMMAR WALL ON A STRANGER'S PERMISSION.**
 Elder [shelved](archive/20260908-055000_itinerary-landed-accounts.md). Row `20260908.053644` **CLOSED**, [folded](archive/REDS-a-plant-that-borrowed-a-contract-rows-613.md).
 **THE AIR ROTA'S TEST FOUND IT** -- pull one part, see what moves. `stem_collision=2` printed since
