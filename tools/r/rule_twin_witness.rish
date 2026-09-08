@@ -14,25 +14,40 @@
 # named in that descriptor; registering the other 39 would red every one of them forever. So the
 # transform is declared in the scan and checked, rather than assumed.
 #
-# WHY THIS RATCHETS RATHER THAN GATES, which is the honest part. **The drift runs in BOTH
-# directions.** `.cursor/rules/reds-first.mdc` names `work-in-progress/REDS.md`, a path that moved
+# TWO READINGS, SPLIT `20260908.034712`, BECAUSE ONE NUMBER ANSWERED TWO QUESTIONS. The elder
+# gate was the single figure 36. On `20260908` the tree held 51 pairs and 38 drifted, so it
+# refused -- while drift among the same 40 pairs it was seated over had FALLEN 36 -> 35. The count
+# was carrying both *did a standing pair drift further* and *how many pairs are there*, and the
+# second moved every time a hand wrote a new rule. `tools/fixtures/r/rule_twin_cohort.txt` names
+# the 40 pairs of the seating day -- a census of a closed day, so it can never grow -- and the
+# scan counts inside it and outside it separately.
+#
+# WHAT IS GATED: `cohort_drifted`, under a ceiling that only ever falls, so the tree can only get
+# closer to agreement among the pairs that have had the chance. An empty corpus refuses, since a
+# reading over no pairs finds no drift and would report clean while measuring nothing. A missing
+# cohort roster refuses too, since a meter that cannot tell a standing pair from a new one would
+# read all 51 as arrivals and gate on nothing.
+#
+# WHAT IS REPORTED AND NEVER GATED: `arrival_drifted`, with each pair named. Reconciling a pair
+# means reading both sides and deciding which sentence is the law -- the drift runs in BOTH
+# directions. `.cursor/rules/reds-first.mdc` names `work-in-progress/REDS.md`, a path that moved
 # to `construction/`, so that twin is behind. `.cursor/rules/send-word.mdc` carries an `ls-remote`
 # pre-push guard and a two-remote push discipline that `.claude/rules/send-word.md` has never
-# held, so that twin is AHEAD. Reconciling a pair means reading both and deciding which sentence
-# is the law, and a bulk merge in either direction would silently delete a live safety rule. That
-# is Keaton's word, surfaced as a gate rather than crossed. This meter keeps the count honest in
-# the meantime, and its ceiling only ever falls -- each pair reconciled lowers it by one.
+# held, so that twin is AHEAD. A bulk merge in either direction would silently delete a live
+# safety rule, so that decision is Keaton's word. Gating arrivals would therefore refuse the
+# ordinary act of writing a new rule while the only lawful repair waits on a word -- a gate on new
+# writing in a ratchet's clothes.
 #
-# WHAT IS GATED, hard, even so: the ceiling itself. Drift above 36 refuses, so the tree can only
-# get closer to agreement from here. An empty corpus refuses too, since a reading over no pairs
-# finds no drift and would report clean while measuring nothing.
+# THE SPLIT IS ALSO THE HONEST READING. 8 of the 11 pairs born since the seating arrived AGREEING,
+# against 5 of 40 among the elders. The habit changed, and one absolute could not see it.
 #
 # WHAT IT DOES NOT REACH. Which side of a drifted pair is RIGHT. That is a reading, and this is a
 # count. `sh tools/fixtures/r/rule_twin_scan.sh diff <name>` prints what one pair disagrees about.
 #
-# Pen: tools/fixtures/r/rule_twin_control.sh -- twelve behaviors on real directories in a throwaway
-# pen, five refusals bitten and seven honest readings left free, the ceiling proven from both
-# sides. Run from the repository root.
+# Pen: tools/fixtures/r/rule_twin_control.sh -- eighteen behaviors on real directories in a
+# throwaway pen, seven refusals bitten and eleven honest readings left free, the cohort ceiling
+# proven from both sides and the arrival leg proven to report rather than refuse. Run from the
+# repository root.
 
 say "rule-twin: Language EN -- a rule written twice is read as law twice, so both copies must say one thing."
 say "rule-twin: Style Gauge, Meter -- every count below is the scan's own output, read from the tree rather than recited here."
@@ -40,10 +55,13 @@ say "rule-twin: Lens TAME -- the transform is declared rather than assumed, the 
 
 let scan = run ["sh" "tools/fixtures/r/rule_twin_scan.sh" "census"]
 say scan.out
-assert scan.ok else "rule-twin: drift stands above a ceiling that only ever falls -- read the scan's own lines"
+assert scan.ok else "rule-twin: cohort drift stands above a ceiling that only ever falls -- read the scan's own lines"
 assert scan.out contains "verdict=ok" else "rule-twin: the census must agree with itself"
 assert (scan.out contains "rule_pairs=0" == false) else "rule-twin: a zero-pair reading would report clean over an empty roster"
 assert (scan.out contains "verdict=empty_corpus" == false) else "rule-twin: a meter over nothing must say so rather than pass"
+assert (scan.out contains "verdict=cohort_absent" == false) else "rule-twin: a meter that cannot name its cohort reads every pair as an arrival and gates on nothing"
+assert (scan.out contains "cohort_pairs=0" == false) else "rule-twin: an empty cohort would leave the gated leg measuring nothing"
+assert scan.out contains "arrival_drifted=" else "rule-twin: growth must be reported beside the gated reading rather than folded into it"
 
 let control = run ["sh" "tools/fixtures/r/rule_twin_control.sh"]
 say control.out
@@ -57,10 +75,16 @@ assert control.out contains "5 free: a blank-line reflow reads as agreeing -- ok
 assert control.out contains "6 bitten: one changed word in the body counts as drift -- ok" else "rule-twin: a transform too generous to see one word is worse than no meter"
 assert control.out contains "7 bitten: a whole paragraph present on one side only counts as drift -- ok" else "rule-twin: the send-word shape, a rule on one side only, must bite"
 assert control.out contains "8 bitten: a stale path on the twin counts as drift -- ok" else "rule-twin: the reds-first shape, a path that moved, must bite"
-assert control.out contains "9 bitten: drift above the ceiling refuses -- ok" else "rule-twin: the ceiling must bite from above"
-assert control.out contains "10 free: drift at exactly the ceiling passes free -- ok" else "rule-twin: the ceiling must pass free from below, or it is not a ceiling"
+assert control.out contains "9 bitten: cohort drift above the ceiling refuses -- ok" else "rule-twin: the ceiling must bite from above"
+assert control.out contains "10 free: cohort drift at exactly the ceiling passes free -- ok" else "rule-twin: the ceiling must pass free from below, or it is not a ceiling"
 assert control.out contains "11 bitten: an empty corpus reads as empty rather than clean -- ok" else "rule-twin: a meter over nothing must say so"
 assert control.out contains "12 free: a Cursor rule with no Claude canonical is counted rather than ignored -- ok" else "rule-twin: an orphan twin must be counted, since it is law with no canonical"
+assert control.out contains "13 free: a drifted arrival raises the total and leaves the cohort reading alone -- ok" else "rule-twin: growth entering the gated reading is the whole fault this split repairs"
+assert control.out contains "14 free: and the tree passes free at a ceiling the elder absolute would have refused -- ok" else "rule-twin: the repair must be shown to change the verdict, not only the wording"
+assert control.out contains "15 free: a pair born outside the cohort, drifted, is reported rather than refused -- ok" else "rule-twin: gating arrivals would refuse the ordinary act of writing a new rule"
+assert control.out contains "15b free: and it is named in the reading rather than passed over -- ok" else "rule-twin: an ungated reading that names nobody is an unread reading"
+assert control.out contains "16 bitten: a cohort name that is no longer a pair reads as absent -- ok" else "rule-twin: a rule retired and a pair reconciled are two facts wearing one appearance"
+assert control.out contains "17 bitten: an absent cohort roster refuses rather than reading every pair as an arrival -- ok" else "rule-twin: a meter that cannot name its cohort must refuse rather than gate on nothing"
 
 say ""
-say "GREEN: rule-twin -- the living rule pairs were measured under a declared transform, drift held under a ceiling that only falls, proven both ways across twelve behaviors, and the reconciliation itself surfaced as a gate rather than attempted."
+say "GREEN: rule-twin -- the living rule pairs were measured under a declared transform, drift among the seated cohort held under a ceiling that only falls, growth reported beside it rather than folded into it, proven both ways across eighteen behaviors, and the reconciliation itself surfaced as a gate rather than attempted."

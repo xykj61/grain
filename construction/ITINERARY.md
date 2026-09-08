@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `718166c8a2` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `7dd1dd9c8c` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- NINETEEN ORPHANS WERE THREE KINDS, AND ONLY SIX WERE A LAP.**
 Elder [shelved](archive/20260908-025257_itinerary-landed-accounts.md).
@@ -207,17 +207,19 @@ and **no meter reads it**: a true sentence about a real case reads green. Fixed 
 **showing**: a second listing at another price verifies. **7 MALA swept, 27 left. Mine:**
 shelf links a directory deep; a regex taking COPAL's.
 
-**COPAL -- THE SEVENTH PARK LANDED, AND THE RED THAT BOOKED THE LAP WAS MINE, ONE LAP OLD.**
-Elder [shelved](archive/20260908-030824_itinerary-landed-accounts.md). Row `20260907.223214`
-**CLOSED**, [folded](archive/REDS-carried-from-the-next-room-rows-606.md). **`%499`, SEVENTH PARK:**
-`amphora_roster` stood in `stash@{1}` and nowhere else, `absent` here AND upstream. GREEN.
-**`shell_dialect` red on 2 `sed -i` sites over a ceiling of 0 -- BOTH MINE, FROM LAST LAP.** Moved
-to `sed_inplace`, which writes through the original inode so the mode rides; splitting plant from
-reading found a `%519` beside it -- both in one `&&` chain, so a sed matching nothing exits non-zero
-and the leg passes for the wrong reason. Last lap's `fleet_call` clause missed the twin; carried,
-with **36 dangling links** beside it.
-**Yours:** `rule_twin` reads 38 of 51 drifted against **36** while its **40 elder pairs improved
-36 -> 35** -- an absolute over a growing population. **`%569`; `%499`; LOCA.**
+**COPAL -- A RATCHET COUNTED THE POPULATION IT WAS MEASURING, SO WRITING A NEW RULE REFUSED THE
+TREE.** Elder [shelved](archive/20260908-041510_itinerary-landed-accounts.md). Row
+(`20260908.034712`) **CLOSED**, [folded](archive/REDS-a-ratchet-that-counted-its-own-growth-rows-610.md);
+booked `%608`, renumbered TWICE in one send -- **the earlier stamp yields to the published
+number** (`derived-spine` 3). Cold: `rule_twin gated`, **38 of 51 against 36** -- **its own 40
+elder pairs IMPROVED 36 -> 35.** One figure answered two questions, *did a pair drift further* and
+*how many are there*; only the second moved.
+**THE REPAIR IS NOT A LARGER NUMBER.** `rule_twin_cohort.txt` names the seating day's 40 pairs -- a
+closed day's census that never grows, CONTENT rather than a git query since history gets rewritten. **`cohort_drifted` gated at 35, both sides; `arrival_drifted` reported by name,
+never gated** -- reconciling decides which of two LIVE sentences is law, gate `%7`, so gating
+growth refuses writing a rule. **8 of 11 born since arrived AGREEING, 5 of 40 elders.**
+**Yours:** all three drifted arrivals are a CONDENSED Cursor twin -- transform, or drift? **`%569`;
+`%499`; LOCA.**
 
 **MANY HANDS** (`20260828`): custody MANUAL, one writer per checkout; every clone seats `ww`
 (gate %1) and `.git/ssh_config_jail`.

@@ -23,6 +23,11 @@
 #  10 free    -- drift at exactly the ceiling passes free
 #  11 bitten  -- an empty corpus reads as empty rather than clean
 #  12 free    -- a Cursor rule with no Claude canonical is counted rather than ignored
+#  13 free    -- a drifted arrival raises the total and leaves the gated cohort reading alone
+#  14 free    -- and the same tree passes free at a ceiling the elder absolute would have refused
+#  15 free    -- a pair born outside the cohort, drifted, is reported rather than refused
+#  16 bitten  -- a cohort name that is no longer a pair reads as absent rather than shrinking
+#  17 bitten  -- an absent cohort roster refuses rather than reading every pair as an arrival
 #
 # Run from the repository root.
 set -eu
@@ -37,11 +42,14 @@ check() {
   else FAIL=$((FAIL + 1)); echo "$1 -- FAIL (wanted $2, got $3)"; fi
 }
 
-C="$PEN/claude"; U="$PEN/cursor"
-run_scan() { RULE_TWIN_CLAUDE_DIR="$C" RULE_TWIN_CURSOR_DIR="$U" RULE_TWIN_CEILING="${1:-99}" \
+C="$PEN/claude"; U="$PEN/cursor"; COH="$PEN/cohort.txt"
+run_scan() { RULE_TWIN_CLAUDE_DIR="$C" RULE_TWIN_CURSOR_DIR="$U" RULE_TWIN_COHORT="$COH" \
+  RULE_TWIN_COHORT_CEILING="${1:-99}" \
   sh tools/fixtures/r/rule_twin_scan.sh census 2>&1 || true; }
 
-fresh() { rm -rf "$C" "$U"; mkdir -p "$C" "$U"; }
+# Every planted pair joins the pen's cohort unless a case says otherwise, so cases 1-14 read the
+# gated leg. Cases 15-17 rewrite it on purpose.
+fresh() { rm -rf "$C" "$U"; mkdir -p "$C" "$U"; printf 'a\nr1\nr2\nr3\n' > "$COH"; }
 
 # ---- 1..5: the transform's five honest readings ---------------------------------------
 fresh
@@ -88,11 +96,11 @@ while [ "$i" -le 3 ]; do
   i=$((i + 1))
 done
 out=$(run_scan 2)
-case "$out" in *verdict=drift_over_ceiling*) got=refused;; *) got=allowed;; esac
-check "9 bitten: drift above the ceiling refuses" refused "$got"
+case "$out" in *verdict=cohort_over_ceiling*) got=refused;; *) got=allowed;; esac
+check "9 bitten: cohort drift above the ceiling refuses" refused "$got"
 out=$(run_scan 3)
 case "$out" in *verdict=ok*) got=free;; *) got=refused;; esac
-check "10 free: drift at exactly the ceiling passes free" free "$got"
+check "10 free: cohort drift at exactly the ceiling passes free" free "$got"
 
 # ---- 11: an empty corpus ---------------------------------------------------------------
 fresh
@@ -108,6 +116,58 @@ printf -- '---\nd: x\n---\n\n# Orphan\n\nno canonical\n' > "$U/orphan.mdc"
 out=$(run_scan)
 case "$out" in *cursor_only=1*) got=counted;; *) got=ignored;; esac
 check "12 free: a Cursor rule with no Claude canonical is counted rather than ignored" counted "$got"
+
+# ---- 13..14: growth does not enter the gated reading ------------------------------------
+# This is the repair itself. The elder meter held ONE number, so a new rule pair written drifted
+# raised the same figure a standing pair's regression would -- and on 20260908 it refused the tree
+# for exactly that, while drift among the pairs it was seated over had fallen.
+fresh
+i=1
+while [ "$i" -le 3 ]; do
+  printf '# R%s\n\nsame\n' "$i" > "$C/r$i.md"
+  printf -- '---\nd: x\n---\n\n# R%s\n\ndifferent\n' "$i" > "$U/r$i.mdc"
+  i=$((i + 1))
+done
+printf '# N\n\none\n' > "$C/newbie.md"
+printf -- '---\nd: x\n---\n\n# N\n\ntwo\n' > "$U/newbie.mdc"
+out=$(run_scan 3)
+case "$out" in *cohort_drifted=3*pairs_drifted=4*|*pairs_drifted=4*cohort_drifted=3*) got=apart;; *) got=fused;; esac
+check "13 free: a drifted arrival raises the total and leaves the cohort reading alone" apart "$got"
+case "$out" in *verdict=ok*) got=free;; *) got=refused;; esac
+check "14 free: and the tree passes free at a ceiling the elder absolute would have refused" free "$got"
+
+# ---- 15: an arrival is reported rather than gated --------------------------------------
+# The elder absolute refused the tree for exactly this -- a new rule pair written drifted, over a
+# ceiling set before it existed. Reconciling a pair is Keaton's word, so growth must not refuse.
+fresh
+printf 'a\n' > "$COH"
+printf '# A\n\nsame\n' > "$C/a.md"
+printf -- '---\nd: x\n---\n\n# A\n\nsame\n' > "$U/a.mdc"
+printf '# N\n\none\n' > "$C/newbie.md"
+printf -- '---\nd: x\n---\n\n# N\n\ntwo\n' > "$U/newbie.mdc"
+out=$(run_scan 0)
+case "$out" in *verdict=ok*) got=free;; *) got=refused;; esac
+check "15 free: a pair born outside the cohort, drifted, is reported rather than refused" free "$got"
+case "$out" in *arrival_drifted=1*) got=named;; *) got=silent;; esac
+check "15b free: and it is named in the reading rather than passed over" named "$got"
+
+# ---- 16: a cohort name that is no longer a pair -----------------------------------------
+fresh
+printf 'a\nghost\n' > "$COH"
+printf '# A\n\nsame\n' > "$C/a.md"
+printf -- '---\nd: x\n---\n\n# A\n\nsame\n' > "$U/a.mdc"
+out=$(run_scan 0)
+case "$out" in *cohort_missing=1*) got=reported;; *) got=silent;; esac
+check "16 bitten: a cohort name that is no longer a pair reads as absent" reported "$got"
+
+# ---- 17: an absent cohort roster ---------------------------------------------------------
+fresh
+printf '# A\n\nsame\n' > "$C/a.md"
+printf -- '---\nd: x\n---\n\n# A\n\nsame\n' > "$U/a.mdc"
+rm -f "$COH"
+out=$(run_scan 0)
+case "$out" in *verdict=cohort_absent*) got=refused;; *) got=allowed;; esac
+check "17 bitten: an absent cohort roster refuses rather than reading every pair as an arrival" refused "$got"
 
 echo "control_cases=$((PASS + FAIL))"
 echo "control_fail=$FAIL"
