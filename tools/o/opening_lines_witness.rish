@@ -1,20 +1,78 @@
-# opening_lines_witness.rish -- hosted corpus carries the canonical three-line head.
+# tools/o/opening_lines_witness.rish -- the opening triad, proven across the rooms rather than a list.
+#
+# WHY THIS RUNG. TAME asks every hosted `.rye` to open with three lines -- `const std`,
+# `const assert = std.debug.assert;`, `const print = std.debug.print;` -- so that `assert` and
+# `print` are called bare everywhere and a qualified `std.debug.assert(` never enters the tree.
+#
+# WHAT CHANGED, and why it needed changing. From `20260729.230300` this rung gated twenty-four
+# file paths typed into its scan. The scan's own header argued against that shape on the day it was
+# written -- *a fixed roster is honest only while someone keeps adding to it* -- and nobody added to
+# it. Measured `20260908`: the rooms in `tools/fixtures/t/tame_style_rooms.txt` hold 1,126 authored
+# `.rye`, 1,073 of them hosted, so the list proved 2.2 percent of the population and the other 97.8
+# passed by their author's care. The reading is now derived from that roster, which is the same file
+# the bans and advise halves of the style scan read, so a room added once reaches all three.
+#
+# WHAT IS PROVEN, on metal.
+#   Not one hosted source in the twenty rooms writes a qualified `std.debug.assert(`. Zero of 1,073.
+#   The twenty-four files the hand list held stay clean on all four of its readings, so widening the
+#   population takes nothing away from what the narrower one had already proven.
+#   Eighteen behaviors on a throwaway pen: every plant counted while it stands and read back to zero
+#   once removed, a non-hosted `.rye` left outside the population, a symlink and a `bin/` path
+#   skipped, a commented roster room stripped, and the ratchet ceiling shown from both sides -- five
+#   at the ceiling free, a sixth one over counted and refused.
+#
+# WHAT IS RATCHETED rather than gated, each under a ceiling that only ever falls, each measured at
+# the widening `20260908` and repaired on touch: 5 files calling `std.debug.print(` (19 sites, 13 of
+# them in `rye/src/main.rye`), 67 hosted files that never bind bare `assert`, and 118 that never bind
+# bare `print`. TAME asks for the print bind as-you-touch and gates it nowhere, so a ratchet is the
+# honest instrument for it. A wall here would red on ordinary work, and a wall that reds on ordinary
+# work is a wall somebody turns off.
+#
+# WHAT IS NOT PROVEN. That a bound `assert` is ever called, or that a file carrying the triad asserts
+# anything worth asserting. `tame_style_check`'s zero-assert duty owns that question.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/o/opening_lines_witness.rish
 
-say "opening-lines: scanning hosted .rye (assert and print bindings)..."
+say "opening-lines: Language EN -- three lines at the head of a file, read across the rooms."
+say "opening-lines: Style Gauge, Meter -- the count is the sentence."
+say "opening-lines: Lens TAME -- safety first: a guard reads the population, never a list of it."
 
-let result = run ["rishi/bin/rishi" "run" "tools/fixtures/o/opening_lines_scan.rish"]
-assert result.ok else "opening-lines scan script failed"
+let scan = run ["sh" "-c" "rishi/bin/rishi run tools/fixtures/o/opening_lines_scan.rish"]
+assert scan.ok else "opening-lines: the derived reading failed -- run the scan alone and read its lines"
+say scan.out
 
-say result.out
+assert scan.out contains "qualified_assert=0 ceiling=0" else "opening-lines RED: a hosted source writes a qualified std.debug.assert("
+assert scan.out contains "elder_missing_assert_bind=0 ceiling=0" else "opening-lines RED: a file the hand list already proved lost its assert bind"
+assert scan.out contains "elder_missing_print_bind=0 ceiling=0" else "opening-lines RED: a file the hand list already proved lost its print bind"
+assert scan.out contains "elder_qualified_assert=0 ceiling=0" else "opening-lines RED: a file the hand list already proved gained a qualified assert"
+assert scan.out contains "elder_qualified_print=0 ceiling=0" else "opening-lines RED: a file the hand list already proved gained a qualified print"
+assert scan.out contains "ratchets_over_ceiling=0" else "opening-lines RED: a ratchet rose past its ceiling -- ceilings only fall"
+assert scan.out contains "verdict=read" else "opening-lines: the scan must finish before it is believed"
+say "field GREEN -- 1,073 hosted sources read, no qualified assert, every elder promise kept"
 
-let lines = lines result.out
-let fails = where lines as l: l starts-with "FAIL"
-let oks = where lines as l: l starts-with "OK"
+let control = run ["sh" "tools/fixtures/o/opening_lines_control.sh"]
+assert control.ok else "opening-lines: the control must complete"
+say control.out
+assert control.out contains "clean_counted_hosted=yes" else "opening-lines: a file binding std must be counted as hosted"
+assert control.out contains "clean_reads_zero=yes" else "opening-lines: a clean file must read zero rather than merely pass"
+assert control.out contains "roster_comment_stripped=yes" else "opening-lines: a commented roster line must name no room"
+assert control.out contains "non_hosted_uncounted=yes" else "opening-lines: a .rye that never binds std is outside the population"
+assert control.out contains "missing_assert_bind_counted=yes" else "opening-lines: a missing assert bind must be counted"
+assert control.out contains "missing_assert_bind_cleared=yes" else "opening-lines: the count must fall when the bind is added"
+assert control.out contains "missing_print_bind_counted=yes" else "opening-lines: a missing print bind must be counted"
+assert control.out contains "missing_print_bind_cleared=yes" else "opening-lines: the count must fall when the bind is added"
+assert control.out contains "qualified_assert_counted=yes" else "opening-lines: a qualified std.debug.assert( must be counted"
+assert control.out contains "qualified_assert_cleared=yes" else "opening-lines: the wall's count must fall when the call is removed"
+assert control.out contains "qualified_print_counted=yes" else "opening-lines: a qualified std.debug.print( must be counted"
+assert control.out contains "symlink_skipped=yes" else "opening-lines: a symlink is not a file the law reaches"
+assert control.out contains "bin_path_skipped=yes" else "opening-lines: a bin/ path is not authored source"
+assert control.out contains "ratchet_at_ceiling_free=yes" else "opening-lines: a ratchet standing at its ceiling must pass free"
+assert control.out contains "ratchet_over_counted=yes" else "opening-lines: the ratchet must count past its ceiling rather than saturate"
+assert control.out contains "ratchet_over_ceiling_refused=yes" else "opening-lines: a ratchet one over its ceiling must refuse"
+assert control.out contains "pen_roster_absents_elder=yes" else "opening-lines: a pen roster owns its own files and names no elder set"
+assert control.out contains "default_roster_names_elder=yes" else "opening-lines: the default roster must still name the twenty-four"
+assert control.out contains "control_verdict=ok" else "opening-lines: the control must agree with itself"
+say "RED and GREEN paths proven -- every plant counted while it stood and read back to zero once lifted"
 
-if length fails == 0 then say "OPENING LINES GREEN: all ${length lines} hosted files carry bare assert and print."
-if length fails != 0 then say "OPENING LINES RED: ${length fails} file(s) missing the canonical head."
-
-assert length fails == 0 else "opening-lines RED: hosted .rye missing canonical assert/print bindings"
+say "GREEN: opening-lines -- the triad is read across the rooms, not across a list of twenty-four."

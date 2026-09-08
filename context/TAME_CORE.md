@@ -46,7 +46,7 @@ Every tool below sits on `construction/standing-equipment.kyri`, so a roster pas
 | `tools/w/width-check.rish` | widths, seam-only `usize`, over the authored rooms | lap |
 | `tools/t/tame_style_check.rish` | tidy **bans** (fail) + **ratchets** (migrate on touch), 1,126 authored `.rye` | lap |
 | `tools/c/chapter_allocator_witness.rish` | the chapter-allocator reflex, two walls at zero over 1,958 sources | lap |
-| `tools/o/opening_lines_witness.rish` | the opening triad, **25 hand-named hosted files** | lap |
+| `tools/o/opening_lines_witness.rish` | the opening triad, **1,073 hosted `.rye` derived from the rooms roster** | lap |
 | `tools/t/tame-check.rish` | unqualified assert, `Self = @This()`, whitespace, **17 hand-named files** | lap |
 | `tools/r/rune_assert_sweep.rish` | asserting cores keep their asserts, **12 hand-named cores** | lap |
 | `tools/t/tame_style_long_fn_witness.rish` | functions past 70 lines | cadence |
@@ -55,7 +55,11 @@ Every tool below sits on `construction/standing-equipment.kyri`, so a roster pas
 
 **Three of these reached no lap until `20260908.111848`.** This section named five tools and called them *the audit*, and four of the five arrived on the roster only because somebody seated them one at a time for their own reasons. `rune_assert_sweep` was seated by nobody; `opening_lines_witness` and `tame-check` stood on the supplement's own lint table and nowhere else. All three read GREEN the hour they were rostered, so the loss was hearing rather than health. The runner this section used to name -- *the TAME Guidance Audit Quest* -- stands in exactly one place in the living tree, which is the sentence that named it. A roster row runs; a sentence describes.
 
-**Three of them read a hand-typed list.** `opening_lines`, `tame_check` and `rune_assert_sweep` gate 25, 17 and 12 named files against regression, where the rooms in `tools/fixtures/t/tame_style_rooms.txt` hold **1,126** authored `.rye` and **1,073** of them are hosted. Measured `20260908.111848`: **123 of the 1,073 are missing at least one line of the opening triad.** A list holds what it was typed to hold, and the tree grows past it -- so each row above names its reach, and widening a list is its own lap.
+**Three of them read a hand-typed list, and one has been widened.** `opening_lines`, `tame_check` and `rune_assert_sweep` gated 25, 17 and 12 named files against regression, where the rooms in `tools/fixtures/t/tame_style_rooms.txt` hold **1,126** authored `.rye` and **1,073** of them are hosted. Measured `20260908.111848`: **123 of the 1,073 are missing at least one line of the opening triad.** A list holds what it was typed to hold, and the tree grows past it -- so each row above names its reach, and widening a list is its own lap.
+
+**`opening_lines` took that lap `20260908.125347`.** Its scan derives the population from the same rooms roster the style scan's two halves read, so a room added once reaches all three readers. Two duties are walls: **zero** of the 1,073 write a qualified `std.debug.assert(`, and the twenty-four files the elder list held stay clean on all four of its checks, so the wider population lowers nothing the narrow one had proven. Three are ratchets under ceilings that only fall -- **5** files calling `std.debug.print(`, **67** missing the assert bind, **118** missing the print bind -- because TAME asks for the print bind as-you-touch and gates it nowhere. Eighteen behaviors are proven on a throwaway pen, every plant counted while it stood and read back to zero once lifted.
+
+**The number in the row above was never a file count.** The elder witness printed `length lines result.out` and said *all 25 hosted files*, where the scan's list held **24** paths and the twenty-fifth was the trailing empty line. Three living pages carried the 25 from `20260729.230300`, this one among them. A guard that counts its own output is measuring the instrument rather than the tree, which is the same shape the widening itself repairs, one layer down.
 
 Run them when touching authored code; a roster pass, cold at the open and hot after `git add`, runs them for you.
 
