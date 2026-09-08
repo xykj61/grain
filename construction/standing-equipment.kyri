@@ -1512,6 +1512,19 @@ path tools/m/mantra_weave_annotate_witness.rish
 tier lap
 seated 20260906.115458
 
+# The elder record, lifted rather than converted. `mantra/src/main.rye` writes a three-field
+# `mantra-weave-v1` blob and this module widened past it, so the open question (REDS %589) was
+# whether closing that gap breaks the record already on disk. It does not: the record was
+# written by one hand, so site and run are CONSTANT across it rather than absent from it, and a
+# constant run beside a constant site reduces `Place.less_than` to `pos <` -- the elder reader's
+# own comparison. `Weave.from_v1` is that sentence as code; the witness compares the two readers
+# line for line and proves four refusals the elder reader never had. It ports nothing and moves
+# no byte on disk; it makes the port mechanical and the record's safety checkable.
+guard mantra_weave_v1_lift
+path tools/m/mantra_weave_v1_lift_witness.rish
+tier lap
+seated 20260908.051232
+
 guard mantra_diff
 path tools/m/mantra_diff_witness.rish
 tier lap

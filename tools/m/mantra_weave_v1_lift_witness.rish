@@ -1,0 +1,93 @@
+# tools/m/mantra_weave_v1_lift_witness.rish -- the elder record, lifted rather than converted.
+#
+# WHAT THIS PROVES, and the question it was asked to answer. `mantra/src/main.rye` -- the CLI
+# seed that actually writes `.mantra/` -- declares its own three-field `Line` and `Diff`, while
+# `mantra/src/weave.rye` widened past it to a pair identity and a placing triple. The two models
+# have stood apart since, held under a ceiling by `mantra_weave_model` (REDS %589), and the open
+# question was put to this seat by name: port, or drop?
+#
+# The answer this guard carries is PORT, and that no byte on disk moves to allow it. The elder
+# `mantra-weave-v1` record was written by ONE hand -- `main.rye`'s `apply` reads every position
+# off one counter -- so the two fields the record does not carry, site and run, are not missing
+# from it. They are CONSTANT across it. A constant run beside a constant site reduces
+# `Place.less_than` to `pos <`, which is exactly the comparison the elder reader sorts by, so
+# the lifted document IS the elder document. `Weave.from_v1` is that sentence written as code,
+# and the Rye witness beside it compares the two readers line for line rather than arguing.
+#
+# WHAT THE LIFT ADDS THAT THE ELDER READER NEVER HAD. `deserialize_weave` appends rows in blob
+# order and asks nothing of them, so a hand-edited or truncated blob reaches `current`'s
+# ordering assert as a crash. `from_v1` refuses at the edge, by name, before a line is
+# allocated: positions that do not rise, a position issued twice, a generation of zero, and a
+# record past the module's own ceiling.
+#
+# WHAT THIS DOES NOT DO, said plainly so the guard's reach is not read wider than it is. It does
+# not port `main.rye`, does not touch the on-disk format, and does not lower the
+# `mantra_weave_model` ceiling. It makes the port mechanical and the record's safety checkable,
+# so the word that seats it is given on evidence rather than on a guess.
+#
+# The Rye witness lives beside the module it proves, at mantra/src/weave_v1_lift_witness.rye,
+# because Zig refuses an import that escapes the root file's directory. A test one room away
+# would have to copy the module, and a copy proves the copy.
+#
+# It also carries the head reading, and the head scan was WIDENED on the lap this guard landed:
+# it read an operation name as `[a-z_]+`, so `from_v1` -- whose name carries a digit -- was
+# invisible to both of its readings at once, and it answered ok over a module publishing an
+# operation its head could not have named. A census blind to a member reads exactly like a
+# healthy file (REDS %463's family). The control's `head_digit` leg is what holds the widening.
+#
+# Module: mantra/src/weave.rye. Siblings: the merge guard at
+# tools/m/mantra_weave_merge_witness.rish, the annotate guard beside it, and the model reading
+# at tools/m/mantra_weave_model_witness.rish.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/mantra_weave_v1_lift_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mantra/bin/weave_v1_lift_witness"
+
+say "mantra-v1-lift: Language EN -- the elder record read as a weave of one hand."
+say "mantra-v1-lift: Style Gauge, Meter -- every claim is a run, and every refusal is named."
+say "mantra-v1-lift: Lens TAME -- one named max, four named errors, all read at the edge."
+
+say "mantra-v1-lift: the module still declares its bound and the refusals this lift adds..."
+let law = run ["sh" "-c" "grep -q 'pub const max_weave_lines' mantra/src/weave.rye && grep -q 'V1PositionsDoNotRise' mantra/src/weave.rye && grep -q 'V1GenerationBelowOne' mantra/src/weave.rye && grep -q 'TooManyLines' mantra/src/weave.rye"]
+assert law.ok else "mantra-v1-lift: max_weave_lines or a named refusal left weave.rye"
+
+let seat = run ["sh" "-c" "grep -q 'pub fn from_v1' mantra/src/weave.rye && grep -q 'pub const V1Row' mantra/src/weave.rye && grep -q 'pub const v1_site' mantra/src/weave.rye && grep -q 'pub const v1_run' mantra/src/weave.rye"]
+assert seat.ok else "mantra-v1-lift: from_v1, V1Row, v1_site or v1_run left weave.rye"
+
+say "mantra-v1-lift: the module head still names every operation the module publishes..."
+let head = run ["sh" "tools/fixtures/m/mantra_weave_head_scan.sh" "mantra/src/weave.rye"]
+say head.out
+assert head.ok else "mantra-v1-lift: the module head and the module disagree -- read the head_missing and head_stale lines above"
+assert head.out contains "container_seen=1" else "mantra-v1-lift: the Weave container was not found, so the operation count is a reading of nothing"
+assert head.out contains "head_missing=0" else "mantra-v1-lift: an operation of Weave stands unnamed in the module head"
+assert head.out contains "head_stale=0" else "mantra-v1-lift: the module head names an operation the module no longer publishes"
+assert head.out contains "declared=6" else "mantra-v1-lift: the head scan must SEE six operations -- it read five while from_v1 stood published, because its name class refused a digit"
+
+say "mantra-v1-lift: building the witness against the real module..."
+let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/src/weave_v1_lift_witness.rye -femit-bin=${bin}"]
+assert build.ok else "mantra-v1-lift: weave v1 lift witness build failed"
+
+let selftest = run ["sh" "-c" "${bin} 2>&1"]
+assert selftest.ok else "mantra-v1-lift: weave v1 lift witness exited non-zero"
+assert selftest.out contains "GREEN" else "mantra-v1-lift: weave v1 lift witness not GREEN"
+assert selftest.out contains "lifted at one site and one run" else "mantra-v1-lift: the shape claim is missing"
+assert selftest.out contains "the lifted document is the elder document" else "mantra-v1-lift: the load-bearing claim -- that document order survives the widening -- is missing"
+assert selftest.out contains "an even generation lifts as gone" else "mantra-v1-lift: the parity claim is missing"
+assert selftest.out contains "no two lifted lines share a LineId" else "mantra-v1-lift: the identity claim is missing -- without it a lifted record is readable and not mergeable"
+assert selftest.out contains "lands after the whole elder block" else "mantra-v1-lift: the claim that a later hand follows the elder block is missing"
+assert selftest.out contains "the merge is the union" else "mantra-v1-lift: the claim that two lifted records merge is missing"
+assert selftest.out contains "refused V1PositionsDoNotRise" else "mantra-v1-lift: the refusal the elder reader never had is missing"
+assert selftest.out contains "refused V1GenerationBelowOne" else "mantra-v1-lift: the reserved-generation refusal is missing"
+assert selftest.out contains "refused TooManyLines" else "mantra-v1-lift: the bound refusal is missing"
+
+say "mantra-v1-lift: breaking the lift eleven ways in a pen, so both guards are proven able to red..."
+let control = run ["sh" "tools/fixtures/m/mantra_weave_v1_lift_control.sh"]
+assert control.ok else "mantra-v1-lift: the control must complete -- a witness nobody has watched fail is a witness nobody has tested"
+assert control.out contains "control_verdict=ok" else "mantra-v1-lift: the control must reach its own verdict"
+assert control.out contains "clean_exit=0" else "mantra-v1-lift: the unmutated copy must reach GREEN, or every other phase fails for a reason the pen invented"
+assert control.out contains "bound_shrunk_exit=0" else "mantra-v1-lift: shrinking the bound alone must stay GREEN, or the two bound breaks below are failing for the shrink"
+assert control.out contains "head_clean_exit=0" else "mantra-v1-lift: the head scan's own innocence leg must pass"
+
+say "GREEN: the elder v1 record lifts into the wide model whole -- ten claims, four refusals by name, fifteen breaks caught."
