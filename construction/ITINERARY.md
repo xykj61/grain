@@ -46,8 +46,8 @@
 
 ### Now -- the live front
 
-**Git nib:** `a4b5dd8151` -- HEAD's parent, resolvable everywhere (%401).
-**Git nib:** `da0a27eed8` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `6b05e41596` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `6b05e41596` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- EVERY WALL HERE WATCHES FILES, AND THE ACT THAT BIT TWICE TODAY TOUCHES NONE.**
 Elder [shelved](archive/20260907-214518_itinerary-landed-accounts.md). Row `20260907.174414`

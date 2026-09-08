@@ -246,6 +246,17 @@ path tools/f/fold_shelf_link_repoint_witness.rish
 tier lap
 seated 20260907.212612
 
+# loom_trend -- the reader the loom line was promised and never had. `session-logs.md` records a
+# measurement on a `loom` line *so a future Loom-aware reader can trend them across logs*; measured
+# `20260907.222830`, 3,426 measurements stood across 1,577 logs and NOTHING read one. The convention
+# was healthy -- 115 of 116 logs that day carried a loom line -- so this is a reader rather than a
+# census. Its first question had been unanswerable: the roster grew 17 guards -> 173 while its wall
+# time FELL.
+guard loom_trend
+path tools/l/loom_trend_witness.rish
+tier lap
+seated 20260907.222830
+
 # rota_grid -- the twenty paths the council rota rests on, held as a set. The 5 x 3 grid in
 # `recursion-prompts/seed/autonomous-loop.seed.md` returns this tree's canon to living awareness on
 # a schedule, and its five thresholds are Markdown links while its fifteen seats are backticked bare
