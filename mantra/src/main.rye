@@ -19,7 +19,7 @@
 //!   rye/bin/rye build mantra/src/main.rye -femit-bin=mantra/bin/mantra
 //!
 //! Architecture (three sections, one file for the seed):
-//!   § Weave   -- the data model: Line, Diff, Weave
+//!   § Weave   -- the data model, imported from mantra/src/weave.rye
 //!   § Diff    -- pure diff computation over line equality (LCS)
 //!   § Store   -- SHA3-256 content-addressed blob store under .mantra/
 //!   § Main    -- CLI: init / add / status
@@ -34,105 +34,31 @@ const Sha3 = std.crypto.hash.sha3.Sha3_256;
 const mantra_version = "20260619.213800";
 
 // =========================================================================
-// § Weave -- the data model
+// § Weave -- the data model, imported rather than declared
 // =========================================================================
 //
-// A Weave is a list of Lines. Each Line carries its text, a generation count
-// (odd = present, even = gone), and a stable position that never changes once
-// assigned. Generations never decrease. These two facts together mean the weave
-// remembers every line ever seen -- its full history.
+// The model lives in one file. `mantra/src/weave.rye` publishes `Line`, `Diff`
+// and `Weave`, and this CLI reads them from there rather than declaring its
+// own. It declared its own until `20260908`, and the two copies drifted the
+// moment the module widened: `bc37657e8` gave `Line` a `site` and a `run` and
+// gave `Diff` a `site`, and this file kept the three-field `Line` it was born
+// with, so a line was named by a pair in one file and by a bare integer in the
+// other (REDS %589). One declaration cannot drift from itself.
 //
-// Invariants held by every Weave operation:
-//   line.gen >= 1         (zero is reserved; new lines start at gen 1)
-//   line.gen odd          ⟺  line is currently present
-//   line.pos < next_pos   (positions are assigned monotonically)
+// The identity is a pair -- the position one counter handed a line, and the
+// site of the hand that was counting -- and this CLI is one hand, so every
+// line it writes stands at `v1_site`. That is what lets it keep writing the
+// same `mantra-weave-v1` record it always wrote: the two fields the record
+// does not carry are constant across everything this CLI produces rather than
+// missing from it. `Weave.to_v1` refuses by name if that ever stops being
+// true, and `Weave.from_v1` lifts a record back.
+const weave = @import("weave.rye");
 
-/// A single line in the weave. Once added, its position is permanent.
-const Line = struct {
-    text: []const u8,
-    gen:  u32,
-    pos:  u32,
-};
-
-/// An edit to a weave: new line texts to insert and positions to delete.
-const Diff = struct {
-    inserts: []const []const u8, // text of new lines, in order
-    deletes: []const u32,        // stable positions of lines to remove
-};
-
-/// The weave: a living history of a text stream.
-const Weave = struct {
-    lines:    std.ArrayListUnmanaged(Line),
-    next_pos: u32,
-
-    /// An empty weave -- no history yet.
-    fn empty() Weave {
-        return .{ .lines = std.ArrayListUnmanaged(Line).empty, .next_pos = 0 };
-    }
-
-    /// Advance the weave by one diff. Deletes toggle lines to even (gone);
-    /// inserts append new lines at generation 1 (first appearance, present).
-    ///
-    /// Precondition:  every delete position exists in the weave and is present.
-    /// Postcondition: inserted lines carry gen == 1; deleted lines carry even gen.
-    fn apply(self: *Weave, allocator: std.mem.Allocator, d: Diff) !void {
-        for (d.deletes) |target_pos| {
-            var found = false;
-            for (self.lines.items) |*line| {
-                if (line.pos == target_pos) {
-                    // invariant: an odd generation means present -- the parity IS the
-                    // tombstone, so an even one reaching here would be a deleted line treated
-                    // as live
-                    assert(line.gen % 2 == 1);
-                    line.gen += 1;                        // odd → even: mark gone
-                    found = true;
-                    break;
-                }
-            }
-            // invariant: a delete names a position the weave holds, since deleting one that is
-            // not there would report success for a change that never happened
-            assert(found);
-        }
-        for (d.inserts) |text| {
-            const new_line = Line{ .text = text, .gen = 1, .pos = self.next_pos };
-            // invariant: an odd generation means present -- the parity IS the tombstone, so an
-            // even one reaching here would be a deleted line treated as live
-            assert(new_line.gen % 2 == 1);
-            try self.lines.append(allocator, new_line);
-            self.next_pos += 1;
-        }
-        // Postcondition: every line has a valid position.
-        for (self.lines.items) |line| {
-            // invariant: a line carries a real generation and a position inside the weave's own
-            // counter, so neither ordering nor identity is left to the caller
-            assert(line.gen >= 1);
-            assert(line.pos < self.next_pos);
-        }
-    }
-
-    /// Return the lines currently present (odd gen), sorted by position.
-    /// The caller owns the returned slice.
-    fn current(self: *const Weave, allocator: std.mem.Allocator) ![]const Line {
-        var out = std.ArrayListUnmanaged(Line).empty;
-        for (self.lines.items) |line| {
-            if (line.gen % 2 == 1) try out.append(allocator, line);
-        }
-        const result = try out.toOwnedSlice(allocator);
-        std.mem.sort(Line, result, {}, struct {
-            fn less_than(_: void, a: Line, b: Line) bool { return a.pos < b.pos; }
-        }.less_than);
-        // Postcondition: sorted, all present.
-        // invariant: an odd generation means present -- the parity IS the tombstone, so an even
-        // one reaching here would be a deleted line treated as live
-        for (result) |line| assert(line.gen % 2 == 1);
-        for (result, 0..) |_, i| {
-            // invariant: the result comes out ordered by position, which is what makes a weave
-            // readable as a document rather than a bag of lines
-            if (i + 1 < result.len) assert(result[i].pos < result[i + 1].pos);
-        }
-        return result;
-    }
-};
+const Line = weave.Line;
+const Diff = weave.Diff;
+const Weave = weave.Weave;
+const LineId = weave.LineId;
+const V1Row = weave.V1Row;
 
 // =========================================================================
 // § Diff -- pure diff computation (LCS over line text equality)
@@ -191,16 +117,24 @@ fn compute_diff(
     }
 
     // Collect deletes (old lines not in LCS) and inserts (new lines not in LCS).
-    var deletes = std.ArrayListUnmanaged(u32).empty;
+    // A delete names a line by its identity -- the pair `Line.id()` returns --
+    // rather than by its position alone, because a position names a line only
+    // inside the one weave whose counter issued it, and `Weave.apply` reads the
+    // pair.
+    var deletes = std.ArrayListUnmanaged(LineId).empty;
     for (old_lines, 0..) |line, idx| {
-        if (!kept_old[idx]) try deletes.append(allocator, line.pos);
+        if (!kept_old[idx]) try deletes.append(allocator, line.id());
     }
     var inserts = std.ArrayListUnmanaged([]const u8).empty;
     for (new_text, 0..) |text, idx| {
         if (!kept_new[idx]) try inserts.append(allocator, text);
     }
 
+    // The site is `v1_site` because this CLI is one hand writing one record.
+    // A second hand takes a site of its own, and the merge that would need it
+    // lives in the module rather than here.
     const result = Diff{
+        .site = weave.v1_site,
         .inserts = try inserts.toOwnedSlice(allocator),
         .deletes = try deletes.toOwnedSlice(allocator),
     };
@@ -326,30 +260,51 @@ fn hex_encode(allocator: std.mem.Allocator, bytes: []const u8) ![]u8 {
 // tabs or embedded newlines -- asserted at serialization. A future pass will
 // lift this with a length-prefix encoding.
 
+/// Write a weave as a `mantra-weave-v1` record.
+///
+/// The rows come from `Weave.to_v1`, which reads the two questions the format
+/// cannot answer BEFORE a row is allocated: whether every line stands at one
+/// site, and whether the positions rise. A history two hands have written is
+/// wider than three fields, and `V1SiteNotConstant` says so rather than
+/// folding two lines into one row. This function then does the one thing left
+/// -- turn rows into bytes.
 fn serialize_weave(allocator: std.mem.Allocator, w: *const Weave) ![]const u8 {
+    const rows = try w.to_v1(allocator);
     var out = std.ArrayListUnmanaged(u8).empty;
     try out.appendSlice(allocator, "mantra-weave-v1\n");
-    for (w.lines.items) |line| {
+    for (rows) |row| {
         // invariant: a line carries no tab and no newline, since both are the field and record
         // separators this serialization uses -- one inside a line would split it into two on
         // the way back
-        assert(std.mem.indexOfScalar(u8, line.text, '\t') == null);
-        assert(std.mem.indexOfScalar(u8, line.text, '\n') == null);
+        assert(std.mem.indexOfScalar(u8, row.text, '\t') == null);
+        assert(std.mem.indexOfScalar(u8, row.text, '\n') == null);
         var field_buf: [64]u8 = undefined;
-        const prefix = try std.fmt.bufPrint(&field_buf, "{d}\t{d}\t", .{ line.gen, line.pos });
+        const prefix = try std.fmt.bufPrint(&field_buf, "{d}\t{d}\t", .{ row.gen, row.pos });
         try out.appendSlice(allocator, prefix);
-        try out.appendSlice(allocator, line.text);
+        try out.appendSlice(allocator, row.text);
         try out.append(allocator, '\n');
     }
+    // invariant: one record row per weave line, since the record is the whole history
+    // rather than the present view -- a shorter record would drop a line the store has
+    // already promised to keep
+    assert(rows.len == w.lines.items.len);
     return out.toOwnedSlice(allocator);
 }
 
+/// Read a `mantra-weave-v1` record back as a weave.
+///
+/// The parsing stops at rows; `Weave.from_v1` lifts them, and the two things
+/// this reader used to take on trust are refused there by name. A record whose
+/// positions do not rise reds as `V1PositionsDoNotRise` rather than lifting as
+/// a weave whose document order was already broken, and a generation of zero
+/// reds as `V1GenerationBelowOne` rather than tripping an assert -- which is
+/// the right register for a blob read off disk, where a caller's promise is
+/// not what stands behind the bytes.
 fn deserialize_weave(allocator: std.mem.Allocator, blob: []const u8) !Weave {
-    var w = Weave.empty();
     var it = std.mem.splitScalar(u8, blob, '\n');
     const header = it.next() orelse return error.InvalidFormat;
     if (!std.mem.eql(u8, header, "mantra-weave-v1")) return error.InvalidFormat;
-    var max_pos: u32 = 0;
+    var rows = std.ArrayListUnmanaged(V1Row).empty;
     while (it.next()) |row| {
         if (row.len == 0) continue;
         var fields = std.mem.splitScalar(u8, row, '\t');
@@ -358,15 +313,14 @@ fn deserialize_weave(allocator: std.mem.Allocator, blob: []const u8) !Weave {
         const text_str = fields.rest();
         const gen = try tally_parse_int.parse_int(u32, gen_str, .{});
         const pos = try tally_parse_int.parse_int(u32, pos_str, .{});
-        // invariant: a generation counts from one, so a zero would deserialize a line that
-        // predates the weave
-        assert(gen >= 1);
         const text = try allocator.dupe(u8, text_str);
-        try w.lines.append(allocator, Line{ .text = text, .gen = gen, .pos = pos });
-        if (pos >= max_pos) max_pos = pos + 1;
+        try rows.append(allocator, V1Row{ .text = text, .gen = gen, .pos = pos });
     }
-    w.next_pos = max_pos;
-    return w;
+    // invariant: the record holds no more rows than a weave may hold, which is the same
+    // ceiling `from_v1` reads at its own edge -- said here too, since a blob read off disk
+    // is the one input this file gets that no caller vouched for
+    assert(rows.items.len <= weave.max_weave_lines);
+    return weave.Weave.from_v1(allocator, rows.items);
 }
 
 // =========================================================================
@@ -704,9 +658,9 @@ fn cmd_status(allocator: std.mem.Allocator, io: std.Io, file_path: []const u8) !
         file_path, d.inserts.len, d.deletes.len,
     });
     for (d.inserts) |line| print("+ {s}\n", .{line});
-    for (d.deletes) |pos| {
+    for (d.deletes) |target| {
         for (old) |line| {
-            if (line.pos == pos) { print("- {s}\n", .{line.text}); break; }
+            if (line.id().eq(target)) { print("- {s}\n", .{line.text}); break; }
         }
     }
     return 0;

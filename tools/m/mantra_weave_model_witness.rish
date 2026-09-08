@@ -28,9 +28,17 @@
 # `pos` and text into `.mantra/`, so a fourth field looked like a rewrite of a shipped record.
 # Measured `20260908`, it is not one. `Weave.from_v1` lifts the elder record and `Weave.to_v1`
 # writes it back -- each under its own guard -- so a ported `main.rye` reads and writes the same
-# bytes, for as long as the CLI writes from one site. What remains is the port itself, which is a
-# lap of real work on a shipped CLI rather than a seam nobody may cross. So the two are held under
-# a ceiling that only falls, and every copy arriving disagreeing is refused at the strict default.
+# bytes, for as long as the CLI writes from one site.
+#
+# THE FIRST OF THE TWO WAS PORTED `20260908`, and the ceiling fell with it. `mantra/src/main.rye`
+# imports the module now rather than declaring the triple, so it is no longer a copy at all --
+# `copies` reads 1 where it read 2, which is the cure this scan says it welcomes. The port was
+# proven on metal rather than by reading: the elder binary and the ported one were each run
+# through the same six edits, and every content-addressed digest matched -- twelve commit and
+# weave names, and all thirteen store files hashing identically. A record that is byte-identical
+# under a content-addressed store is the strongest available answer to *does the port move the
+# record*, and the answer is no. What remains at the ceiling is `rye/tests/mantra_weave_test.rye`,
+# which inlines the elder declaration and is its own lap.
 #
 # WHAT IT DOES NOT REACH, deliberately. WHICH fields the model should carry: that is limb1's
 # claim against its Glow placard, and widening the model stays a seam at Keaton's word --
@@ -42,23 +50,24 @@
 # Run from the repository root:
 #   rishi/bin/rishi run tools/m/mantra_weave_model_witness.rish
 
-say "mantra-weave-model: Language EN -- three files declare one model; do they still agree?"
+say "mantra-weave-model: Language EN -- two files declare one model; do they still agree?"
 say "mantra-weave-model: Style Gauge, Meter -- an agreement, a disagreement, or a refusal by name."
 say "mantra-weave-model: Lens TAME -- one derived set, no list of copies kept beside it."
 
-# THE CEILING IS SPELLED HERE, ONCE, AND ONLY FALLS. `DISAGREE_CEILING=2` names the two copies
-# that lag the module today -- `mantra/src/main.rye` and the test that inlines it -- and nothing
-# else. The scan defaults to zero, so every pen in the control and every copy arriving disagreeing
-# meets the strict reading; only this call site grants the two known laggards their slack, and it
-# is a ceiling rather than an equality, so reconciling one of them passes free. Lower it the lap a
-# copy is reconciled. Why it is not zero already, corrected `20260908`: closing the gap does NOT
-# move the record -- `Weave.from_v1` and `Weave.to_v1` prove the round trip in both directions,
-# each under its own guard. The two copies lag because the port is a lap nobody has taken.
+# THE CEILING IS SPELLED HERE, ONCE, AND ONLY FALLS. `DISAGREE_CEILING=1` names the one copy that
+# lags the module today -- `rye/tests/mantra_weave_test.rye`, which inlines the declaration the CLI
+# used to carry -- and nothing else. The scan defaults to zero, so every pen in the control and
+# every copy arriving disagreeing meets the strict reading; only this call site grants the known
+# laggard its slack, and it is a ceiling rather than an equality, so reconciling it passes free.
+# Lower it the lap that happens. It read `2` until `20260908`, when `mantra/src/main.rye` was
+# ported to import the module and stopped being a copy -- and the reason it could be ported is the
+# one this file already carried: closing the gap does NOT move the record, which the metal run
+# above then proved digest for digest rather than by argument.
 say "mantra-weave-model: reading every tracked copy against the module..."
-let scan = run ["env" "DISAGREE_CEILING=2" "sh" "tools/fixtures/m/mantra_weave_model_scan.sh"]
+let scan = run ["env" "DISAGREE_CEILING=1" "sh" "tools/fixtures/m/mantra_weave_model_scan.sh"]
 assert scan.ok else "mantra-weave-model: a copy of the weave model disagrees with the module beyond the ceiling, or cannot be read -- ${scan.out}"
 assert scan.out contains "verdict=ok" else "mantra-weave-model: the scan must reach its own verdict -- ${scan.out}"
-assert scan.out contains "disagreement_ceiling_held=yes" else "mantra-weave-model: a copy declares different fields than the module, past the two this rung knows about -- ${scan.out}"
+assert scan.out contains "disagreement_ceiling_held=yes" else "mantra-weave-model: a copy declares different fields than the module, past the one this rung knows about -- ${scan.out}"
 assert scan.out contains "unreadable=0" else "mantra-weave-model: a copy of the model cannot be read, so nothing is checking it -- ${scan.out}"
 
 # The module must actually be found. A scan that cannot read its own reference would otherwise
@@ -99,4 +108,4 @@ assert control.out contains "ok    module_only/verdict -- ok" else "mantra-weave
 assert control.out contains "ok    no_module/verdict -- no_module" else "mantra-weave-model: an absent module must refuse by name rather than report zero"
 assert control.out contains "ok    lifted/verdict -- ok" else "mantra-weave-model: removing the plant must return the same repository to green"
 
-say "GREEN: no copy of Mantra's weave model disagrees with the module past the two this rung names."
+say "GREEN: no copy of Mantra's weave model disagrees with the module past the one this rung names."

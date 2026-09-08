@@ -564,3 +564,5 @@ at a closed fold.*
 *Row %640 folded to [`REDS-a-line-is-not-a-call-rows-640.md`](REDS-a-line-is-not-a-call-rows-640.md) on `20260908.115556`, **BOOKED** -- a ratchet counted a line where it meant a call, so a compiler emitting its own language read as debt.*
 
 *Row %641 born on [`REDS-a-count-spelled-in-letters-rows-641.md`](REDS-a-count-spelled-in-letters-rows-641.md) on `20260908.135445`, **CLOSED** -- a gate's exemption is a claim like any other, and this one let the letter form of a count drift under the gate built for its digits.*
+
+*Row %589 folded to [`REDS-the-blocker-was-a-reading-rows-589.md`](REDS-the-blocker-was-a-reading-rows-589.md) on `20260908.151057`, **BOOKED** -- a blocker nobody had measured kept two files apart for a day; a content-addressed store answers does-this-move-the-record in digests rather than in argument.*
