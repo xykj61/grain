@@ -1,14 +1,20 @@
 ::  name       mantra weave field count
 ::  shape      fields - int (@u32)
-::  invariant  a Weave carries exactly two fields (lines - next_pos)
-::  example    2
+::  invariant  a Weave carries exactly three fields (lines - next_pos - next_run)
+::  example    3
 ::  readers    Mantra - Glow Tend - Sur museum - Ashvini nest-only
 ::  nib        equinox-e204-mantra-tend-v0
 ::
 ::  Equinox e204 - Mantra M2 -- second Mantra structure pedestal in src/shape/.
 ::  Names Weave's field count from mantra/src/weave.rye: the append-only line
-::  roster and the next position cursor. Pedestal only; Rye still owns
-::  advance - current - Diff - Store.
+::  roster, the next position cursor, and the next run number. Pedestal only;
+::  Rye still owns advance - current - Diff - Store.
+::
+::  Moved two to three on 20260907.182409, and it had been three since
+::  20260907.173200. The count stood at two for a whole lap while the struct
+::  declared `next_run`, because the field reader stopped at the doc comment
+::  above it and the guard's pin agreed with that reading. Widening the reader
+::  to read past `///` is what let this placard be wrong out loud.
 +$  mantra-weave-field-count-shape
   $:  fields=@u32
   ==

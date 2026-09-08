@@ -105,7 +105,7 @@ fn copy_of(garden: std.mem.Allocator, source: *const weave.Weave) !weave.Weave {
     // invariant: a copy holds the same count as its source, since a branch that
     // silently lost a line would make every claim below meaningless
     assert(out.items.len == source.lines.items.len);
-    return .{ .lines = out, .next_pos = source.next_pos };
+    return .{ .lines = out, .next_pos = source.next_pos, .next_run = source.next_run };
 }
 
 /// A weave seeded line by line, reaching a state `apply` cannot build on its
@@ -119,13 +119,23 @@ fn seeded(garden: std.mem.Allocator, lines: []const weave.Line, next_pos: u32) !
     var out: std.ArrayListUnmanaged(weave.Line) = .empty;
     errdefer out.deinit(garden);
     try out.ensureTotalCapacity(garden, lines.len);
+    var next_run: u32 = 0;
     for (lines) |line| {
         // invariant: every seeded position stands under the counter it is given,
         // so the weave satisfies the same law apply would have given it
         assert(line.pos < next_pos);
+        // The run counter is DERIVED from the plant rather than passed in, so a
+        // seed can never declare a run counter its own lines stand outside --
+        // the one law `apply` keeps that a hand-built weave could break.
+        if (line.run + 1 > next_run) next_run = line.run + 1;
         out.appendAssumeCapacity(line);
     }
-    return .{ .lines = out, .next_pos = next_pos };
+    for (out.items) |line| {
+        // invariant: every seeded run stands under the derived counter, which is
+        // the same law apply's own postcondition asserts
+        assert(line.run < next_run);
+    }
+    return .{ .lines = out, .next_pos = next_pos, .next_run = next_run };
 }
 
 /// A weave of `count` lines carrying one shared text, positions 0..count.
@@ -138,12 +148,15 @@ fn wide_weave(garden: std.mem.Allocator, count: u32) !weave.Weave {
     try out.ensureTotalCapacity(garden, count);
     var pos: u32 = 0;
     while (pos < count) : (pos += 1) {
-        out.appendAssumeCapacity(.{ .text = "wide", .gen = 1, .pos = pos, .site = site_here });
+        // One run for the whole plant: `wide_weave` stands in for a single
+        // enormous edit, which is what `apply` would have produced from one
+        // diff carrying `count` inserts.
+        out.appendAssumeCapacity(.{ .text = "wide", .gen = 1, .pos = pos, .site = site_here, .run = 0 });
     }
     // invariant: the plant holds exactly what was asked for, so the sum the
     // bound reads is the sum this function promised
     assert(out.items.len == count);
-    return .{ .lines = out, .next_pos = count };
+    return .{ .lines = out, .next_pos = count, .next_run = if (count == 0) 0 else 1 };
 }
 
 /// The note standing at one position, or null when no side has seen it.
@@ -312,10 +325,10 @@ fn prove_colliding_inserts_read(
 /// weave does not already hold.
 fn prove_forged_identity_refused(garden: std.mem.Allocator) !void {
     const left = try seeded(garden, &[_]weave.Line{
-        .{ .text = "one", .gen = 1, .pos = 0, .site = site_here },
+        .{ .text = "one", .gen = 1, .pos = 0, .site = site_here, .run = 0 },
     }, 1);
     const right = try seeded(garden, &[_]weave.Line{
-        .{ .text = "other", .gen = 1, .pos = 0, .site = site_here },
+        .{ .text = "other", .gen = 1, .pos = 0, .site = site_here, .run = 0 },
     }, 1);
     // invariant: the two lines answer to one name and carry different text,
     // which is the corruption the refusal exists for
@@ -356,12 +369,12 @@ fn prove_bound_refused(garden: std.mem.Allocator) !void {
 /// deleted would pass all seven of them.
 fn prove_interleaved_order(garden: std.mem.Allocator) !void {
     const left = try seeded(garden, &[_]weave.Line{
-        .{ .text = "one", .gen = 1, .pos = 0, .site = site_here },
-        .{ .text = "three", .gen = 1, .pos = 2, .site = site_here },
+        .{ .text = "one", .gen = 1, .pos = 0, .site = site_here, .run = 0 },
+        .{ .text = "three", .gen = 1, .pos = 2, .site = site_here, .run = 0 },
     }, 3);
     const right = try seeded(garden, &[_]weave.Line{
-        .{ .text = "one", .gen = 1, .pos = 0, .site = site_here },
-        .{ .text = "two", .gen = 1, .pos = 1, .site = site_here },
+        .{ .text = "one", .gen = 1, .pos = 0, .site = site_here, .run = 0 },
+        .{ .text = "two", .gen = 1, .pos = 1, .site = site_here, .run = 0 },
     }, 3);
 
     const notes = try left.annotate(garden, &right);

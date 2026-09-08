@@ -1410,6 +1410,15 @@ path tools/m/mantra_diff_witness.rish
 tier lap
 seated 20260906.061556
 
+# Mantra's own width reading, beside the tree-wide one at width_check above. It
+# had run green by hand for weeks and stood on no roster, so nothing heard it --
+# which is `%360`'s shape, a proof nobody runs. It reads one room and takes
+# under a second, so it is a lap guard rather than a cadence one.
+guard width_check_th3
+path tools/w/width_check_th3.rish
+tier lap
+seated 20260907.172608
+
 guard mantra_declaration_walk
 path tools/m/mantra_declaration_walk_witness.rish
 tier lap

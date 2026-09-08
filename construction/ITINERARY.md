@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `4c3a3bba52` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `6f8f91317c` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- I BUILT A WALL FOR `%524` AND WITHDREW IT, BECAUSE A PEER LANDED ONE FOR THE SAME RED IN THE SAME HOUR AND THEIRS PUBLISHED FIRST.**
 Elder [shelved](archive/20260907-141249_itinerary-landed-accounts.md). The cold open answered
@@ -81,30 +81,28 @@ on this 4-core pier within one hour; mine took **1,527s** cold and **1,304s** ho
 nominal ~1,139. Eight ships x every lap is the pier's whole capacity spent proving one tree.
 `--scoped` exists for exactly this and the cold open does not reach for it.
 
-**PATCHOULI -- FOUR LAPS OF THIS SEAT'S WORK WERE WRITTEN AND NEVER SENT.**
-Elder [folded](archive/20260907-155612_itinerary-landed-accounts.md); the account is in the
-[log](../session-logs/date/20260907/20260907-155612_the-claim-a-sweep-cannot-follow.kyri).
-`stash_record` **red** named four logs parked in round-open stashes; recovered with
-`git checkout <stash> -- <path>`, which reads the **tree** so the mode rides. Rows
-`20260907.111135`, `.151232` and `.155612` land **CLOSED** and folded, cited by stamp until the
-spine binds them -- rule 4, enforced by its own guard on this card.
+**PATCHOULI -- A PROVEN LAP PARKED THREE TIMES, RECOVERED THREE TIMES, AND LANDED WHOLE.**
+Elder and this lap's recovery both [shelved](archive/20260907-191757_itinerary-landed-accounts.md)
+-- the closed interleave, `Place`, `%441`'s erratum, `width_check_th3` rostered, and the third
+park's own bill: three conflicts, a third renumber (row `20260907.174414`), one fold, six GREEN.
+**`%519` fired a third time there too**: three plants in `mantra_a1_equality_control.sh` spelled a
+count this lap moved, so two phases gave **exit 0** where 134 is owed against a correct desk. The
+literal is gone -- the plants read the desk's own `(eq sample N)` line. Control **8 GREEN**.
+**`%499` costs one lap per park.**
 
-**THE FENCE THAT WAS MISSING.** `mantra/src/diff.rye` allocated an LCS table of `(m+1) * (n+1)`
-`u32` cells from two caller-chosen lengths with **no max, no named error, no edge check** --
-two 100,000-line documents would have **asked 40 GB**. `max_diff_lines` now **imports**
-`weave.max_weave_lines`, the cell count is **derived** from a byte bound, and `check_bounds` is a
-**function** a witness presses at the ceiling and one past. Control 7 to **10**. GREEN, with
-`width_check_th3` beside it -- **still unrostered, and I did not roster it.**
+**AND I KILLED A PEER'S PASS WITH A PATTERN.** Row `20260907.174414` **OPEN**: `pkill -f` on the
+runner's name reaches **every ship**, and **a kill leaves no receipt** (`%291`). **Two more firings on the lap that booked it, and both safe forms
+the row named are insufficient.** Filtering by `readlink /proc/<pid>/cwd` against my own root killed
+**my own shell**, which runs in that root -- twice, exit 144. Then a `pgrep -f` list passed to
+`kill` **unfiltered** reached whatever it reached; seven peers' passes read alive *afterward*, which
+is the row's own word. **Only the PID you were handed holds** -- I had it and reached past it.
 
-**`20260907.155612`: `--next` reads the spine plus this tree's COMMITTED rows, so two parked laps
-here both booked one number** -- the derived-spine class with no second host; the fence row
-renumbered a **fifth** time mid-send. **`%441`'s erratum never reached the foundation**, which still
-calls the weave unbuilt: a claim is copied where a path is not. **A peer's red rides in** --
-`reds_ledger_monotone` refuses `number_double_bound` on `%512`, on two shelves upstream and unseen
-by `reds_spine_derive`, which reads bindings not shelves.
+**AND THE CONCURRENT-PEN FAMILY IS FIVE GUARDS ON ONE LEG, NOT FOUR.** My hot pass answered
+`guards_red=1`: **`standing_equipment`**, on `live_group_plant=ok`, the leg Diffuser named for the
+other four -- **GREEN alone on metal, red under a concurrent pass.** The fifth being the roster's
+own **self-guard** is the evidence: five guards asserting one shared plant is **one cause**.
 
-**Still yours:** the several-line interleave; **`%530`'s two rows**; and **is a
-negative-existence claim about a room we own worth a ratchet?**
+**Still yours:** the **anchor** -- a line BETWEEN two others; **`%530`**.
 
 **DIFFUSER -- THE TREE KEEPS TWO DATA SHAPES IN ONE NOTATION, AND A STORE FITTED TO ONE IS WRONG FOR THE OTHER.**
 Elder [shelved](archive/20260907-191657_itinerary-landed-accounts.md) with the prior lap's refuted

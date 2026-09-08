@@ -90,7 +90,7 @@ fn copy_of(garden: std.mem.Allocator, source: *const weave.Weave) !weave.Weave {
     // invariant: a copy holds the same count as its source, since a branch that
     // silently lost a line would make every claim below meaningless
     assert(out.items.len == source.lines.items.len);
-    return .{ .lines = out, .next_pos = source.next_pos };
+    return .{ .lines = out, .next_pos = source.next_pos, .next_run = source.next_run };
 }
 
 /// Field-for-field equality: same counter, same lines, same order.
@@ -100,6 +100,7 @@ fn same(a: *const weave.Weave, b: *const weave.Weave) bool {
     assert(a.lines.items.len <= weave.max_weave_lines);
     assert(b.lines.items.len <= weave.max_weave_lines);
     if (a.next_pos != b.next_pos) return false;
+    if (a.next_run != b.next_run) return false;
     if (a.lines.items.len != b.lines.items.len) return false;
     for (a.lines.items, b.lines.items) |x, y| {
         // Identity rather than position: two lines of one merge may share a
@@ -263,6 +264,88 @@ fn prove_colliding_inserts_merge(
     print("mantra-merge: two branches inserting at one position merged, both lines kept -- GREEN welcome path\n", .{});
 }
 
+/// Claim 10: two branches that each append a PARAGRAPH come back as two whole
+/// paragraphs, rather than shuffled together line by line.
+///
+/// This is the claim the run was added for, and it is written as a document
+/// read rather than as a field check on purpose: what a person notices about a
+/// bad merge is that their three sentences arrived with somebody else's three
+/// sentences between them.
+///
+/// Before the run, order was the identity pair -- position first, site second.
+/// Two sides appending three lines each from a shared counter took positions
+/// N, N+1, N+2 apiece, so the site broke the tie THREE separate times and the
+/// document came back left, right, left, right, left, right. The assertion
+/// below fails on that reading, which is what makes this a proof rather than a
+/// restatement.
+///
+/// Both orders are checked, since a merge that grouped the blocks one way and
+/// shuffled them the other would be worse than one that always shuffled.
+fn prove_blocks_stay_whole(
+    garden: std.mem.Allocator,
+    base: *const weave.Weave,
+) !void {
+    const left_block = [_][]const u8{ "left-1", "left-2", "left-3" };
+    const right_block = [_][]const u8{ "right-1", "right-2", "right-3" };
+
+    var branch_x = try copy_of(garden, base);
+    try branch_x.apply(garden, .{ .site = site_x, .inserts = &left_block, .deletes = &[_]weave.LineId{} });
+    var branch_z = try copy_of(garden, base);
+    try branch_z.apply(garden, .{ .site = site_z, .inserts = &right_block, .deletes = &[_]weave.LineId{} });
+    // invariant: the two branches genuinely collide -- same counter, same run
+    // number -- which is the state where the order has something to decide
+    assert(branch_x.next_pos == branch_z.next_pos);
+    assert(branch_x.next_run == branch_z.next_run);
+
+    const joined = try branch_x.merge(garden, &branch_z);
+    const mirror = try branch_z.merge(garden, &branch_x);
+    // invariant: the two orders agree field for field, so the grouping below is
+    // a property of the merge rather than of which side was named first
+    assert(same(&joined, &mirror));
+
+    const document = try joined.current(garden);
+    // invariant: every line of both blocks stands, on top of the base, so the
+    // reading below is over the whole document rather than a surviving part
+    assert(document.len == base.lines.items.len + left_block.len + right_block.len);
+
+    // Walk the tail -- the six lines the two branches added -- and count how
+    // many times the site changes. Two whole blocks change once; a line-by-line
+    // shuffle changes five times.
+    var changes: u32 = 0;
+    var i: u32 = @intCast(base.lines.items.len);
+    const total: u32 = @intCast(document.len);
+    while (i + 1 < total) : (i += 1) {
+        if (document[i].site != document[i + 1].site) changes += 1;
+    }
+    // invariant: the two paragraphs meet exactly once, which is what "the block
+    // arrived whole" means read off the document itself
+    assert(changes == 1);
+
+    // And each block keeps the order its own hand wrote it in, which the run
+    // grouping must not have cost.
+    var seen_left: u32 = 0;
+    var seen_right: u32 = 0;
+    for (document[base.lines.items.len..]) |line| {
+        if (line.site == site_x) {
+            // invariant: the left block's lines arrive in the order the diff
+            // listed them, since a hand's own sequence is the one thing a merge
+            // has no licence to reorder
+            assert(std.mem.eql(u8, line.text, left_block[seen_left]));
+            seen_left += 1;
+        } else {
+            assert(line.site == site_z);
+            assert(std.mem.eql(u8, line.text, right_block[seen_right]));
+            seen_right += 1;
+        }
+    }
+    // invariant: both blocks were read whole, so neither count above passed by
+    // reading a shorter block than the one that was written
+    assert(seen_left == left_block.len);
+    assert(seen_right == right_block.len);
+
+    print("mantra-merge: two branches each appending three lines come back as two whole blocks -- GREEN welcome path\n", .{});
+}
+
 /// Claim 9: one site issuing one identity to two different lines is refused by
 /// name. With the site in the identity, this is no longer the ordinary parting
 /// of two branches -- it is a replayed counter or a forged weave, which is what
@@ -274,10 +357,10 @@ fn prove_colliding_inserts_merge(
 /// exactly the state its refusal must still be proven against.
 fn prove_forged_identity_refused(garden: std.mem.Allocator) !void {
     const left = try seeded(garden, &[_]weave.Line{
-        .{ .text = "one", .gen = 1, .pos = 0, .site = site_here },
+        .{ .text = "one", .gen = 1, .pos = 0, .site = site_here, .run = 0 },
     }, 1);
     const right = try seeded(garden, &[_]weave.Line{
-        .{ .text = "other", .gen = 1, .pos = 0, .site = site_here },
+        .{ .text = "other", .gen = 1, .pos = 0, .site = site_here, .run = 0 },
     }, 1);
     // invariant: the two lines answer to one name and carry different text,
     // which is the corruption the refusal exists for
@@ -324,12 +407,15 @@ fn wide_weave(garden: std.mem.Allocator, count: u32) !weave.Weave {
     try out.ensureTotalCapacity(garden, count);
     var pos: u32 = 0;
     while (pos < count) : (pos += 1) {
-        out.appendAssumeCapacity(.{ .text = "wide", .gen = 1, .pos = pos, .site = site_here });
+        // One run for the whole plant: `wide_weave` stands in for a single
+        // enormous edit, which is what `apply` would have produced from one
+        // diff carrying `count` inserts.
+        out.appendAssumeCapacity(.{ .text = "wide", .gen = 1, .pos = pos, .site = site_here, .run = 0 });
     }
     // invariant: the plant holds exactly what was asked for, so the sum the
     // bound reads is the sum this function promised
     assert(out.items.len == count);
-    return .{ .lines = out, .next_pos = count };
+    return .{ .lines = out, .next_pos = count, .next_run = if (count == 0) 0 else 1 };
 }
 
 /// A weave seeded line by line, reaching a state `apply` cannot build on its
@@ -344,30 +430,40 @@ fn seeded(garden: std.mem.Allocator, lines: []const weave.Line, next_pos: u32) !
     var out: std.ArrayListUnmanaged(weave.Line) = .empty;
     errdefer out.deinit(garden);
     try out.ensureTotalCapacity(garden, lines.len);
+    var next_run: u32 = 0;
     for (lines) |line| {
         // invariant: every seeded position stands under the counter it is given,
         // so the weave satisfies the same law apply would have given it
         assert(line.pos < next_pos);
+        // The run counter is DERIVED from the plant rather than passed in, so a
+        // seed can never declare a run counter its own lines stand outside --
+        // the one law `apply` keeps that a hand-built weave could break.
+        if (line.run + 1 > next_run) next_run = line.run + 1;
         out.appendAssumeCapacity(line);
     }
-    return .{ .lines = out, .next_pos = next_pos };
+    for (out.items) |line| {
+        // invariant: every seeded run stands under the derived counter, which is
+        // the same law apply's own postcondition asserts
+        assert(line.run < next_run);
+    }
+    return .{ .lines = out, .next_pos = next_pos, .next_run = next_run };
 }
 
 /// Claim 8: a union whose positions interleave comes out in position order.
 ///
 /// This is the leg that makes the sort inside merge reachable. Every other
-/// claim here merges weaves whose union is already position-ordered, because a
-/// per-weave counter only ever hands out a contiguous run -- so a merge with
-/// the sort deleted would pass all seven of them. That is the same identity gap
+/// claim here merges weaves whose union already arrives in place order, because
+/// a per-weave counter only ever hands out a contiguous run -- so a merge with
+/// the sort deleted would pass the rest of them. That is the same identity gap
 /// claim 6 names, read from the other side.
 fn prove_interleaved_order(garden: std.mem.Allocator) !void {
     const left = try seeded(garden, &[_]weave.Line{
-        .{ .text = "one", .gen = 1, .pos = 0, .site = site_here },
-        .{ .text = "three", .gen = 1, .pos = 2, .site = site_here },
+        .{ .text = "one", .gen = 1, .pos = 0, .site = site_here, .run = 0 },
+        .{ .text = "three", .gen = 1, .pos = 2, .site = site_here, .run = 0 },
     }, 3);
     const right = try seeded(garden, &[_]weave.Line{
-        .{ .text = "one", .gen = 1, .pos = 0, .site = site_here },
-        .{ .text = "two", .gen = 1, .pos = 1, .site = site_here },
+        .{ .text = "one", .gen = 1, .pos = 0, .site = site_here, .run = 0 },
+        .{ .text = "two", .gen = 1, .pos = 1, .site = site_here, .run = 0 },
     }, 3);
 
     const forward = try left.merge(garden, &right);
@@ -402,6 +498,7 @@ fn run_selftest(garden: std.mem.Allocator) !u8 {
     const whole = try prove_six_orders(garden, &state_a, &state_b, &state_c);
     try prove_delete_wins(garden, &whole, 1);
     try prove_colliding_inserts_merge(garden, &base);
+    try prove_blocks_stay_whole(garden, &base);
     try prove_bound_refused(garden);
     try prove_interleaved_order(garden);
     try prove_forged_identity_refused(garden);

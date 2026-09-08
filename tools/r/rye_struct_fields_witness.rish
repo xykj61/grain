@@ -11,7 +11,7 @@
 #
 # WHAT THIS PROVES. tools/fixtures/r/rye_struct_fields_scan.sh reads a named struct's declared
 # fields out of a named Rye file, in declaration order, and says by name when it cannot. The
-# control breaks it nineteen ways in a throwaway pen, and two of those breaks run the ELDER
+# control breaks it twenty-five ways in a throwaway pen, and two of those breaks run the ELDER
 # predicate verbatim beside the new reading on the same mutated file -- a fourth field and a
 # reorder, each of which the elder waves through and the scan sees. Those two passes are the
 # sharpest phases here, in the tree's own shape: every other phase proves the reader bites, and
@@ -34,13 +34,20 @@ assert line.ok else "rye-struct-fields: the reader refused on Line -- ${line.out
 let line_fields = trim line.out
 # Line took `site` on 20260906.212206: a position counter runs inside one weave, so `pos`
 # alone names a line there and nowhere else, and the pair is what lets two branches merge.
+# It took `run` on 20260907.173200, when document order moved out of `LineId` into `Place`:
+# every line of one `apply` carries one run, so a hand's whole paragraph sorts as a block
+# and the site tie is broken once for the run rather than at each line inside it.
 # The ORDER is held as hard as the count, since a reorder is a silent wire change.
-assert line_fields == "text gen pos site" else "rye-struct-fields: Line no longer reads text gen pos site -- ${line_fields}"
+assert line_fields == "text gen pos site run" else "rye-struct-fields: Line no longer reads text gen pos site run -- ${line_fields}"
 
 let weave = run ["sh" "tools/fixtures/r/rye_struct_fields_scan.sh" "--fields" "mantra/src/weave.rye" "Weave"]
 assert weave.ok else "rye-struct-fields: the reader refused on Weave -- ${weave.out}"
 let weave_fields = trim weave.out
-assert weave_fields == "lines next_pos" else "rye-struct-fields: Weave no longer reads lines next_pos -- ${weave_fields}"
+# Weave took `next_run` in the same round Line took `run`, and this pin read `lines next_pos`
+# for a lap while it did -- not because the pin was stale, yet because the reader stopped at
+# the doc comment above the new field and never saw it. The reader reads past `///` now, so
+# this line is a claim about the struct again rather than about the walk's blind spot.
+assert weave_fields == "lines next_pos next_run" else "rye-struct-fields: Weave no longer reads lines next_pos next_run -- ${weave_fields}"
 
 let diff = run ["sh" "tools/fixtures/r/rye_struct_fields_scan.sh" "--fields" "mantra/src/weave.rye" "Diff"]
 assert diff.ok else "rye-struct-fields: the reader refused on Diff -- ${diff.out}"
@@ -54,12 +61,12 @@ assert store.ok else "rye-struct-fields: the reader refused on Store -- ${store.
 let store_fields = trim store.out
 assert store_fields == "root mantra_dir blobs_dir" else "rye-struct-fields: Store no longer reads root mantra_dir blobs_dir -- ${store_fields}"
 
-say "rye-struct-fields: breaking the reader in a throwaway pen, nineteen ways..."
+say "rye-struct-fields: breaking the reader in a throwaway pen, twenty-five ways..."
 let control = run ["sh" "tools/fixtures/r/rye_struct_fields_control.sh"]
 assert control.ok else "rye-struct-fields: the control must complete -- a reader nobody has watched fail is a reader nobody has tested -- ${control.out}"
 assert control.out contains "verdict=ok" else "rye-struct-fields: a planted case behaved wrongly -- ${control.out}"
 assert control.out contains "failed=0" else "rye-struct-fields: a planted case behaved wrongly -- ${control.out}"
-assert control.out contains "behaviors=19" else "rye-struct-fields: the control ran a different number of behaviors than this rung names -- ${control.out}"
+assert control.out contains "behaviors=25" else "rye-struct-fields: the control ran a different number of behaviors than this rung names -- ${control.out}"
 
 # The pen proven innocent first, so every refusal below reads as the break speaking.
 assert control.out contains "ok    clean/count -- 3" else "rye-struct-fields: the clean pen must read its own three fields"

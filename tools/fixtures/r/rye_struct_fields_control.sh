@@ -26,7 +26,7 @@
 # module -- this scan reads source, never a build, so a directory and a here-document are the
 # honest pen.
 #
-# EXPECTED: every phase agrees with the table in its own line, and behaviors=19.
+# EXPECTED: every phase agrees with the table in its own line, and behaviors=25.
 #
 # Driven by tools/r/rye_struct_fields_witness.rish. Run from the repository root.
 
@@ -123,6 +123,36 @@ f=$(pen_file remove '    text: []const u8,
     gen: u32,')
 check "removed/count" "$(sh "$scan" --count "$f" Line)" "2"
 check "removed/elder" "$(elder "$f")"                   "fail"
+
+# --- documented: a `///` line between fields is read past, never read as the end ------------
+# The break this pen holds is the one that stood live in `mantra/src/weave.rye`: a third field
+# under three doc-comment lines, invisible to the elder walk, which answered two and stopped.
+f=$(pen_file documented "$three
+    /// Which edit placed this line. It counts EDITS where pos counts LINES.
+    /// The two advance at different rates on purpose.
+    run: u32,")
+check "documented/count"  "$(sh "$scan" --count "$f" Line)"  "4"
+check "documented/fields" "$(sh "$scan" --fields "$f" Line)" "text gen pos run"
+
+# --- documented_head: a doc comment on the FIRST field is read past too ---------------------
+f=$(pen_file dochead '    /// The text of the line, as the edit gave it.
+    text: []const u8,
+    gen: u32,
+    pos: u32,')
+check "documented_head/count"  "$(sh "$scan" --count "$f" Line)"  "3"
+check "documented_head/fields" "$(sh "$scan" --fields "$f" Line)" "text gen pos"
+
+# --- documented_method: a doc comment ahead of a method still ends the field block ----------
+# The `///` skip must not carry the walk into a method body: `pub fn` terminates as it always
+# did, and the doc comment above it is simply read past on the way to that line.
+f=$(pen_file docmethod "$three
+    /// The line this identity names.
+    pub fn id(self: Line) u32 {
+        return self.pos;
+    }
+")
+check "documented_method/count"  "$(sh "$scan" --count "$f" Line)"  "3"
+check "documented_method/fields" "$(sh "$scan" --fields "$f" Line)" "text gen pos"
 
 # --- method_body: a method's body must never be read as a field list -----------------------
 f=$(pen_file method "$three
