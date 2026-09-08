@@ -114,16 +114,55 @@ path=${1:-}
 shift
 
 setting=field
+setting_source=default
 service=-1
 truth_given=-1
 while [ $# -gt 0 ]; do
   case "$1" in
-    --setting) setting=${2:-field}; shift 2 ;;
+    --setting) setting=${2:-field}; setting_source=flag; shift 2 ;;
     --service) service=${2:--1}; shift 2 ;;
     --truth)   truth_given=${2:--1}; shift 2 ;;
     *) echo "qa: unknown option $1" >&2; exit 1 ;;
   esac
 done
+
+# WHAT THE PAGE ITSELF SAYS ITS SETTING IS, READ AND REPORTED (seated 20260908). Gauge names
+# three settings carrying three different ceilings -- Door at 20% negative sentences and a reading
+# grade of 9, Field at 30% and 11, Meter uncapped -- and this tree writes a `**Style:**` line at the
+# head of nearly every page. Nothing read that line. A grep for `Style:**` across tools/ answered
+# one file, and that one counts library pages rather than settings, so the declaration a writer
+# makes at the door reached no instrument at all.
+#
+# WHAT THAT COSTS, measured across the 93 tracked foundations/ pages the day this was written.
+# Twenty-six name a setting and 67 do not: 57 write the bare word `Gauge` and 7 carry no `**Style:**`
+# line. So two thirds of the room declares a style and withholds the number it is measured against,
+# and the caller's flag -- or this card's default of `field` -- decides it instead. Gauge's own table
+# puts foundations at DOOR, so an unflagged grading of a foundation reads it against a ceiling ten
+# points looser than its law.
+#
+# THE CORRELATION IS A DATE EFFECT, AND SAYING SO IS THE POINT. Of the 67 silent pages, 43 read
+# above Door's 20% and 26 above Field's 30%, against 5 and 2 of the 26 that name a setting -- which
+# looks like naming the setting makes a page better. It does not: every one of those 26 is stamped
+# `20260823` or later, the day Gauge was seated, while the silent 67 reach back to `20260618`. Of
+# the 14 silent pages written AFTER the seating, 4 stand above Door and 1 above Field. The habit is
+# healthy going forward; the population is the pages that predate it.
+#
+# SO THIS READS AND NEVER SCORES. No grade moves by one point. A repair would mean either writing
+# `Door setting` onto 43 pages that break Door's ceiling -- a false claim at the door -- or writing
+# `Field setting` onto foundations the law puts at Door, which is a relaxation granted by whoever
+# happened to be editing. Both are Keaton's word rather than a lap's. What a lap can do is stop the
+# silence being invisible: the card now prints what the page declares, where the effective setting
+# came from, and whether the two agree.
+declared_setting=absent
+declared_style_line=$(grep -m1 -iE '^[ \t]*\*\*Style:\*\*' "$root/$path" 2>/dev/null || :)
+if [ -n "$declared_style_line" ]; then
+  case "$declared_style_line" in
+    *[Dd]oor*)  declared_setting=door ;;
+    *[Ff]ield*) declared_setting=field ;;
+    *[Mm]eter*) declared_setting=meter ;;
+    *)          declared_setting=unnamed ;;
+  esac
+fi
 
 case "$setting" in
   door)  grade_ceiling=9;  xref_ceiling=1 ;;
@@ -821,6 +860,20 @@ fi
 # --- The card ------------------------------------------------------------------------------------
 echo "qa_path=$path"
 echo "qa_setting=$setting"
+echo "qa_setting_source=$setting_source"
+echo "qa_declared_setting=$declared_setting (the page's own **Style:** line, reported not scored)"
+# The agreement line answers one question and refuses to guess at the others. `unnamed` and
+# `absent` are both silences rather than disagreements, so neither reads `no`.
+case "$declared_setting" in
+  door|field|meter)
+    if [ "$declared_setting" = "$setting" ]; then
+      echo "qa_setting_agrees=yes"
+    else
+      echo "qa_setting_agrees=no (the page declares $declared_setting and this reading used $setting)"
+    fi ;;
+  unnamed) echo "qa_setting_agrees=unnamed (a style is declared and its setting is not)" ;;
+  *)       echo "qa_setting_agrees=absent (the page carries no **Style:** line)" ;;
+esac
 echo "reference_lines=$reference_lines (held out of both readings and reported, like declaration docs)"
 if [ "$artifact_kind" = program ]; then
   set -- $(measure "$work/program-meter.txt")

@@ -360,6 +360,20 @@ assert control.out contains "control_verdict=ok" else "qa-report-card: the contr
 # five more. A total carried inside a sentence stays at whatever it was on the day somebody typed
 # it; this one is read off the pen every time (REDS %492, and the same law the crypto count guard
 # holds one room over).
+# THE PAGE'S OWN DECLARED SETTING, READ AND REPORTED (seated 20260908). Gauge carries three
+# settings with three ceilings, this tree writes a `**Style:**` line at the head of nearly every
+# page, and no instrument read that line -- the card took its setting from the caller's flag and
+# defaulted to `field`. Measured across the 93 tracked foundations pages: 26 name a setting and 67
+# do not, 57 of those writing the bare word `Gauge`. The reading is REPORTED and never scored,
+# since the repair is either a false claim at the door or a relaxation granted sideways, and both
+# are Keaton's word. So the five legs below prove the four answers AND prove that no grade moves.
+assert control.out contains "declared_setting_read=yes" else "qa-report-card: a page naming its setting must have that reading printed"
+assert control.out contains "declared_setting_disagreement_named=yes" else "qa-report-card: the same bytes read at a setting the page does not claim must say so"
+assert control.out contains "bare_style_reads_unnamed=yes" else "qa-report-card: a style declared with no setting is a silence rather than a disagreement"
+assert control.out contains "absent_style_reads_absent=yes" else "qa-report-card: a page with no Style line must read absent rather than guessing one"
+assert control.out contains "declared_setting_never_scores=yes" else "qa-report-card: three plants differing only in their head lines must grade identically -- a reported reading that moved a grade is a scored one wearing another name"
+assert control.out contains "elder_card_was_blind_to_the_declaration=yes" else "qa-report-card: force the declaration read to answer absent and the door-declaring page must lose the reading -- the repair shown from the failing side"
+
 let proven = where (lines control.out) as l: l contains "=yes"
 say "${length proven} behaviors proven in a throwaway pen, the scale read at every boundary from both sides"
 

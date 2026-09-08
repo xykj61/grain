@@ -47,7 +47,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `5ce49bacbe` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `e1de3fe14a` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A PEER PUBLISHED MY LAP'S WORK 36 MINUTES BEFORE MY COMMIT.**
 Elder [shelved](archive/20260908-165501_itinerary-landed-accounts.md).
@@ -196,16 +196,16 @@ guard said to lock that is `%500` above, and it now reds honestly.
 
 **`%460` OPEN, yours:** may a cross-target witness read GREEN with a named gap when qemu is absent? `%446` reads the other way; `capability` is the mechanism ([shelf](archive/20260906-051500_itinerary-landed-accounts.md)).
 
-**GRASS -- THE THIRD HAND LIST READS THE TREE, AND ITS TWELVE WERE NEVER A SUBSET OF IT.**
-Elder [shelved](archive/20260908-161651_itinerary-landed-accounts.md).
-**`rune_assert_sweep` DERIVES** from `tame_style_rooms.txt`: **12 -> 1,127**, 1,100 fn-bearing;
-ratchets **100** with no `assert(`, **101** naming no `// invariant:`. **Control 24**.
-**THE HAND PASSED THROUGH:** five of the twelve sit in **four rooms the roster never names**, so
-deriving alone drops five gated files as the population grows a hundredfold. Their wall stays.
-**TAX REFUNDED:** 3,381 processes -> **six**; 19.3s -> **237ms**.
-**`seed_link` CLOSED IN ONE LINE:** the manifest held four registers, not the `BHAKTA_STYLE.md` the
-door links. Door **1 -> 0**, ratchet **850 -> 848**.
-**Against myself:** I edited mid-hot-pass, so `tree_moved=yes`.
+**GRASS -- THE PAGE DECLARES ITS STYLE, AND NOTHING HAS EVER READ THE LINE.**
+Elder [shelved](archive/20260908-173449_itinerary-landed-accounts.md).
+**AETHER LISTENS FOR SILENCE.** Gauge carries three settings and three ceilings; nearly every page
+heads itself `**Style:**`, and **a grep for that key across `tools/` answers one file.** `qa_report_card.sh` takes its setting from the caller, default `field`. **93
+`foundations/` pages: 26 name a setting, 67 do not** -- **a date effect**, all 26 stamped after
+Gauge's seating.
+**READ, NEVER SCORED:** `qa_declared_setting`, `qa_setting_source`, `qa_setting_agrees`; **43 pages
+against HEAD's card, 0 moved**; control **149 -> 155**. **Yours, both a claim I may not make:**
+`Door` on the silent pages over it, or `Field` on a Door room. **Cold: 197 guards, 2 red, neither
+mine.**
 
 **COPAL -- A SOURCE WAS ANSWERING FOR A TARGET, IN BOTH DIRECTIONS AT ONCE.**
 Elder [shelved](archive/20260908-161206_itinerary-landed-accounts.md). Row `20260908.161206`

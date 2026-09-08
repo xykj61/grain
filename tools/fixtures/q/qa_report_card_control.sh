@@ -1096,4 +1096,69 @@ eg_empty=$(eldergrade empty_prose.kyri --setting field --service 100)
   && [ "$(val "$eg_empty" composite)" != "$(val "$empty" composite)" ] \
   && echo "grade_floor_repair_bites=yes" || echo "grade_floor_repair_bites=no"
 
+# THE PAGE'S OWN DECLARED SETTING, READ AND REPORTED (seated 20260908). The card takes its setting
+# from the caller and defaults to `field`; the `**Style:**` line a writer puts at the head of the
+# page reached no instrument at all until this leg. Four plants cover the four answers -- a page
+# naming a setting, a page naming a style and no setting, a page carrying no `**Style:**` line, and
+# the disagreement case where the flag and the declaration part -- and a fifth proves the whole
+# reading changes no grade, which is the promise that makes it safe to add.
+printf '# Named\n\n**Style:** Gauge, Door setting\n\n%s\n' \
+  'Grain gives you a computer that answers to you. Every promise here is one a program has already checked. The system names each bound before it starts. A witness prints green when a claim holds.' \
+  > "$pen/declares_door.md"
+printf '# Bare\n\n**Style:** Gauge (see the guide)\n\n%s\n' \
+  'Grain gives you a computer that answers to you. Every promise here is one a program has already checked. The system names each bound before it starts. A witness prints green when a claim holds.' \
+  > "$pen/declares_bare.md"
+printf '# Silent\n\n**Voice:** Kyri\n\n%s\n' \
+  'Grain gives you a computer that answers to you. Every promise here is one a program has already checked. The system names each bound before it starts. A witness prints green when a claim holds.' \
+  > "$pen/declares_none.md"
+
+named=$(run declares_door.md --setting door --service 75)
+[ "$(val "$named" qa_declared_setting)" = door ] \
+  && [ "$(val "$named" qa_setting_agrees)" = yes ] \
+  && [ "$(val "$named" qa_setting_source)" = flag ] \
+  && echo "declared_setting_read=yes" || echo "declared_setting_read=no ($(val "$named" qa_declared_setting))"
+
+# The disagreement, from the other side: the SAME bytes read at a setting the page does not claim.
+apart=$(run declares_door.md --setting field --service 75)
+[ "$(val "$apart" qa_setting_agrees)" = no ] \
+  && [ "$(val "$apart" qa_declared_setting)" = door ] \
+  && echo "declared_setting_disagreement_named=yes" || echo "declared_setting_disagreement_named=no"
+
+# A style with no setting is a SILENCE rather than a disagreement, and the card must not read it
+# as one -- this is the two-thirds case in foundations/, so calling it `no` would drown the real
+# disagreements in it.
+bare=$(run declares_bare.md --service 75)
+[ "$(val "$bare" qa_declared_setting)" = unnamed ] \
+  && [ "$(val "$bare" qa_setting_agrees)" = unnamed ] \
+  && [ "$(val "$bare" qa_setting_source)" = default ] \
+  && echo "bare_style_reads_unnamed=yes" || echo "bare_style_reads_unnamed=no ($(val "$bare" qa_declared_setting))"
+
+none=$(run declares_none.md --service 75)
+[ "$(val "$none" qa_declared_setting)" = absent ] \
+  && [ "$(val "$none" qa_setting_agrees)" = absent ] \
+  && echo "absent_style_reads_absent=yes" || echo "absent_style_reads_absent=no ($(val "$none" qa_declared_setting))"
+
+# AND NONE OF IT SCORES. The three plants differ only in their head lines, and their bodies are the
+# same four sentences, so every counted reading and the composite must agree across all three. A
+# reported reading that moved a grade would be a scored reading wearing another name.
+c1=$(val "$named" composite); c2=$(val "$bare" composite); c3=$(val "$none" composite)
+r1=$(val "$named" register); r2=$(val "$bare" register); r3=$(val "$none" register)
+[ -n "$c1" ] && [ "$c1" = "$c2" ] && [ "$c2" = "$c3" ] && [ "$r1" = "$r2" ] && [ "$r2" = "$r3" ] \
+  && echo "declared_setting_never_scores=yes" || echo "declared_setting_never_scores=no ($c1/$c2/$c3)"
+
+# THE LEG THAT TELLS A REPAIR FROM A DECORATION, built the way the grade-floor leg above is: carry
+# the elder blindness back into a copy of the card by forcing the declaration read to answer
+# `absent` for every page, and watch the door-declaring plant lose the reading it just gained.
+mkdir -p "$pen/elderstyle/tools/fixtures/q"
+sed "s/^declared_style_line=.*/declared_style_line=/" \
+  "$pen/tools/fixtures/q/qa_report_card.sh" > "$pen/elderstyle/tools/fixtures/q/qa_report_card.sh"
+for d in $deps; do mkdir -p "$pen/elderstyle/$(dirname "$d")" && cp "$d" "$pen/elderstyle/$d"; done
+cp "$pen/declares_door.md" "$pen/elderstyle/"
+elderstyle() { ( cd "$pen/elderstyle" && QA_CARD_ROOT=. sh tools/fixtures/q/qa_report_card.sh "$@" 2>&1 ); }
+es=$(elderstyle declares_door.md --setting field --service 75)
+[ "$(val "$es" qa_declared_setting)" = absent ] \
+  && [ "$(val "$es" qa_setting_agrees)" = absent ] \
+  && [ "$(val "$es" composite)" = "$(val "$apart" composite)" ] \
+  && echo "elder_card_was_blind_to_the_declaration=yes" || echo "elder_card_was_blind_to_the_declaration=no"
+
 echo "control_verdict=ok"
