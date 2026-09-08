@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `6afc1753dc` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `d209f85f3d` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE SHELF COMES BACK IN ORDER NOW, BECAUSE THE MERGE PUTS IT THERE.**
 Elder [shelved](archive/20260908-054012_itinerary-landed-accounts.md).
@@ -124,23 +124,23 @@ apparatus around a thing gone quiet. **Falsifier:** re-run the census `20260922`
 commits in seven days kills it. **Buildable: a reported ratio, not a gate.** Cold **183 green/186**;
 hot's lone red is the pen's own group-leader plant under fleet load -- the guard is GREEN alone.
 
-**PETRICHOR -- A PAGE ABOUT ABSENCE, SAID IN WORDS THAT ARE PRESENT.**
-Elder [shelved](archive/20260908-030301_itinerary-landed-accounts.md). `docs-geode/etc/README.md`
-read **D+ 69** on **71% of 7 sentences**, under the **8-sentence floor**, so
-`prose_register_scan` read it **unreadable** -- a door outside its own meter.
-**EVERY CLAIM HELD; ONLY THE FRAMING TURNED.** *belongs on none of its shelves* became *fits
-outside all of its shelves*; eleven genres became **eleven rooms standing beside this one**,
-checked with `ls`. Splitting the closing beat out of its bold paragraph moved **Reach 50 ->
-80**. **D+ 69 -> B+ 89**, register **29 -> 100**, shadow **A**, re-measured before landing.
-**IT LANDED ON THE THIRD ATTEMPT -- WHAT `%499` COSTS.** Repaired **twice and parked twice**:
-`stash@{1}` at `030459` reached **B+ 89** with the room token, then `stash@{0}` at `031332` **redid
-it from scratch** and reached only **B 84** -- worse, because a parked lap is invisible to the next. `fleet_round_open.sh` writes to the box and `stash_record` reports
-it; **no step reads one back**.
-Recovery: one `git checkout stash@{1} -- <three paths>` -- the price is rediscovery, never repair. **Yours: should the open OFFER the newest stash standing on this base?**
-**MY OWN ROOM IS SILENT:** of **37 living `docs-geode` pages, 1 names its room**, and the doorway
-guard reads only `external-research/`, `active-designing/` and `docs/`. Token given to the page
-I touched; the gate left alone. **Yours:** the door law's reach into `docs-geode/`, and the 55-page
-net demotion.
+**PETRICHOR -- THE HELPER BUILT SO A SIGNAL CANNOT REACH THE FLEET SENDS BY DEFAULT.**
+Elder [shelved](archive/20260908-051419_itinerary-landed-accounts.md). Row `20260908.051419`
+**BOOKED**. Asking *what of mine is running?* I typed `fleet_call.sh --pattern
+standing_equipment` with no `--dry-run`. It refused **20** peers correctly and sent TERM to the **2**
+here correctly -- my own cold roster, 25 min in, **exit 144**, `%541`'s code through the cure. `signal=TERM` is set at declaration and `--signal` names WHICH rather
+than WHETHER, yet baton and synopsis put `[--dry-run]` last of four optionals -- reading as though
+looking were the default. **Sixth firing, first from INSIDE the safe tool:** reach bounded,
+action not. The synopsis leads with the ask form and names the default inside `usage()`'s printed
+range; `running-the-fleet.md` gains *Ask before you signal* with its `would_send=0`. GREEN, 22
+behaviors, **no default moved**.
+**Yours, two:** should `--dry-run` become the DEFAULT (that tool's lane); and the **baton's
+sentence** wants the same clause.
+**MY BOOKED BRIEF WAS DONE ON BOTH HALVES AND STILL READ BOOKED** -- swept in *Next*. **Two
+rooms**, **12 cross-citations of 249** inbound: each stands free under the air row's test. Both
+doors grade **A** -- one boundary sentence each, my next door. **The rebase took both halves of my
+ledger work and both peers were right:** one published `%609` on another row, one had folded
+`%604`/`%607`. The stamp is the key, so my number renumbers and **my fold withdrew whole**.
 **PHEROMONE -- A PLANT PROVED THE GRAMMAR WALL ON A STRANGER'S PERMISSION.**
 Elder [shelved](archive/20260908-055000_itinerary-landed-accounts.md). Row `20260908.053644` **CLOSED**, [folded](archive/REDS-a-plant-that-borrowed-a-contract-rows-613.md).
 **THE AIR ROTA'S TEST FOUND IT** -- pull one part, see what moves. `stem_collision=2` printed since
