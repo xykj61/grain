@@ -7,9 +7,9 @@
 #
 #   sh tools/fixtures/m/mantra_weave_model_scan.sh
 #   module=mantra/src/weave.rye
-#   module_line=text gen pos site
-#   copy=mantra/src/main.rye line=declares [text gen pos] diff=declares [inserts deletes] weave=agree
-#   copies=2  agreeing=0  disagreements=2  disagreement_ceiling_held=yes  unreadable=0
+#   module_line=text gen pos site run
+#   copy=rye/tests/mantra_weave_test.rye line=declares [text gen pos] diff=declares [inserts deletes]
+#   copies=1  agreeing=0  disagreements=1  disagreement_ceiling_held=yes  unreadable=0
 #   verdict=ok
 #
 # WHY IT EXISTS. `tools/m/mantra_glow_tend_limb1_witness.rish` proves that `Line` carries the
@@ -34,10 +34,19 @@
 # was written on `20260906` when all three copies agreed, and it sat unlanded in a round-open stash
 # (REDS %499) while `bc37657e8` widened the module: `Line` gained `site` and `Diff` gained `site`,
 # so a line is now named by the pair its `id()` returns. Neither the CLI seed nor its test moved.
-# The predicted hazard is therefore the measured one -- and the cure is not a lap's to take, since
-# `mantra/src/main.rye` writes `gen`, `pos` and text into `.mantra/` and adding a field rewrites a
-# shipped record. So the two known-lagging copies stand under a ceiling that only falls, and every
-# copy ARRIVING disagreeing is refused, which is the reading the guard was drawn for.
+# The predicted hazard is therefore the measured one. It read as a cure no lap could take, since
+# `mantra/src/main.rye` writes `gen`, `pos` and text into `.mantra/` and a fourth field looked like
+# a rewrite of a shipped record -- and that reading was wrong, which `Weave.from_v1` and
+# `Weave.to_v1` settled by lifting the elder record and writing it back under their own guards.
+#
+# THE CLI WAS PORTED `20260908` and left the candidate set entirely. It imports the module now
+# rather than declaring the triple, so `copies` reads 1 -- the count falling because a copy was
+# deleted, which is the cure this scan says below that it welcomes. The record did not move: the
+# elder binary and the ported one were run through the same six edits and every content-addressed
+# digest matched, twelve commit and weave names and all thirteen store files. The one copy left is
+# `rye/tests/mantra_weave_test.rye`, which inlines what the CLI used to declare; it stands under a
+# ceiling that only falls, and every copy ARRIVING disagreeing is refused, which is the reading the
+# guard was drawn for.
 #
 # WHAT IT CANNOT READ it says so rather than guessing. `rye_struct_fields_scan.sh` reads a
 # struct whose fields stand one per line, and refuses a single-line declaration by name. A copy
@@ -57,12 +66,12 @@ module=${MODULE_PATH:-mantra/src/weave.rye}
 
 # HOW MANY DISAGREEING COPIES THIS SCAN WELCOMES. Zero by default, because agreement is what the
 # scan is for and a pen proving a break should meet the strict reading. The caller may raise it,
-# and exactly one caller does: `tools/m/mantra_weave_model_witness.rish` passes 2 for the live
-# tree, where `mantra/src/main.rye` and `rye/tests/mantra_weave_test.rye` still carry the
-# three-field `Line` the module widened to four at `bc37657e8`. Reconciling them does NOT move the
-# on-disk `.mantra/` record -- `Weave.from_v1` and `Weave.to_v1` prove the round trip both ways --
-# yet the port is a lap nobody has taken, so the count is held under a ceiling that only falls
-# rather than gated at a zero no lap may reach.
+# and exactly one caller does: `tools/m/mantra_weave_model_witness.rish` passes 1 for the live
+# tree, where `rye/tests/mantra_weave_test.rye` still carries the three-field `Line` the module
+# widened at `bc37657e8`. It passed 2 until `20260908`, when `mantra/src/main.rye` was ported to
+# import the module rather than declare its own triple -- proven on metal, the elder and ported
+# binaries writing byte-identical records across six edits. The remaining copy is held under a
+# ceiling that only falls rather than gated at a zero no lap may reach.
 ceiling=${DISAGREE_CEILING:-0}
 
 # One struct's fields, or the empty string when the reader refuses. The refusal is the caller's

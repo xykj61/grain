@@ -13,6 +13,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 |---|---|---|
 | `20260908.153848` | [a quotation outranks a floor](20260908/20260908-153848_a-quotation-outranks-a-floor.kyri) | 14% to 6%, and why it stops. |
 | `20260908.152903` | [the strictest naming on four doors](20260908/20260908-152903_the-strictest-naming-on-four-doors.kyri) | zero negatives, measured. |
+| `20260908.152213` | [the blocker was a reading](20260908/20260908-152213_the-blocker-was-a-reading.kyri) | two binaries, six edits, every digest matched. |
 | `20260908.144500` | [the seed published, and four doors named](20260908/20260908-144500_the-seed-published-and-four-doors-named.kyri) | 8,187 files, clean. |
 | `20260908.144152` | [the space that was the comment](20260908/20260908-144152_the-space-that-was-the-comment.kyri) | the glyph row's comment IS a space. |
 | `20260908.143400` | [an index is not a teacher](20260908/20260908-143400_an-index-is-not-a-teacher.kyri) | one of three, and why. |
