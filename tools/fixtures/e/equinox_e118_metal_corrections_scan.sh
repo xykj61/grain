@@ -18,7 +18,7 @@ ITINERARY=construction/ITINERARY.md
 PRIN=tools/gen/chapter/prin_scope.rish
 ALMANAC=rye-learning-process/GLOW_ALMANAC.md
 ELDER=tools/equinox/witness/equinox_e117_fork_extend_breach_close_witness.rish
-CLASSIFY=tools/fixtures/d/dated_classify.py
+CLASSIFY=tools/fixtures/d/dated_classify.rish
 
 if test "$MODE" = "prove-red"; then
   echo "roofs=diverge"

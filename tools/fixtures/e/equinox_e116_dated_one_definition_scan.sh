@@ -11,7 +11,7 @@ set -eu
 CONTROL_SCAN=tools/fixtures/c/census_control_scan.sh
 PATTERN=tools/fixtures/d/dated_pattern_scan.sh
 DIVERGE=tools/fixtures/d/dated_roof_divergence_scan.sh
-CLASSIFY=tools/fixtures/d/dated_classify.py
+CLASSIFY=tools/fixtures/d/dated_classify.rish
 ALMANAC=rye-learning-process/GLOW_ALMANAC.md
 PRIN=tools/gen/chapter/prin_scope.rish
 MAP=construction/EQUINOX_SEAT_MAP.md
@@ -112,20 +112,20 @@ echo "$DIV_RED" | rg -q 'RED_roofs_diverge' || {
 echo "diverge_prove_red=honored"
 
 # Both roofs source the shared classifier (string presence in scan bodies)
-rg -q 'dated_classify\.py' tools/fixtures/s/shed_census_scan.sh || {
+rg -q 'dated_classify\.rish' tools/fixtures/s/shed_census_scan.sh || {
   echo "shared_source=failed"
   echo "verdict=misread"
   echo "detail=shed_missing_shared_classify"
   exit 1
 }
-rg -q 'dated_classify\.py' tools/fixtures/f/fascia_health_scan.sh || {
+rg -q 'dated_classify\.rish' tools/fixtures/f/fascia_health_scan.sh || {
   echo "shared_source=failed"
   echo "verdict=misread"
   echo "detail=health_missing_shared_classify"
   exit 1
 }
 echo "shared_source=honored"
-echo "shared_classify=tools/fixtures/d/dated_classify.py"
+echo "shared_classify=tools/fixtures/d/dated_classify.rish"
 
 # --- REDS row 40 ---
 git ls-files --error-unmatch "$REDS" >/dev/null 2>&1 || {

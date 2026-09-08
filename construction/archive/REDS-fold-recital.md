@@ -517,4 +517,5 @@ at a closed fold.*
 
 *Rows %604 and %607 folded to [`REDS-a-repair-stops-where-the-hand-was-looking-rows-604-607.md`](REDS-a-repair-stops-where-the-hand-was-looking-rows-604-607.md) on `20260908.052621`, both **CLOSED** -- both are a repair that stopped where the hand was looking -- one rule of three fixed by name with its two siblings left, one fold of three rewritten in code with its prose left standing a day.*
 
-*Row %613 folded to [`REDS-a-plant-that-borrowed-a-contract-rows-613.md`](REDS-a-plant-that-borrowed-a-contract-rows-613.md) on `20260908.053729`, **CLOSED** -- a fixture that borrows a name borrows a contract, and the ruling that guarded it was never symmetric.*
+*Row %614 folded to [`REDS-a-plant-that-borrowed-a-contract-rows-613.md`](REDS-a-plant-that-borrowed-a-contract-rows-613.md) on `20260908.053729`, **CLOSED** -- a fixture that borrows a name borrows a contract, and the ruling that guarded it was never symmetric.*
+*Rows %614 and %615 folded to [`REDS-a-cut-that-asked-the-wrong-question-rows-614-615.md`](REDS-a-cut-that-asked-the-wrong-question-rows-614-615.md) on `20260908.053407`, both **CLOSED** -- a citer that only needs a file to exist, and a guard that froze the split of a moving room -- both surfaced by one cadence choir.*
