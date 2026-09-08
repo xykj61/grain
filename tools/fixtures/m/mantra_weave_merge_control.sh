@@ -131,11 +131,20 @@ clean_exit="$(run_pen clean '')"
 join_exit="$(run_pen join 's/held.gen = @max(held.gen, line.gen);/held.gen = line.gen;/')"
 order_exit="$(run_pen order '/std.mem.sort(Line, out.items/,/}.less_than);/d')"
 text_exit="$(run_pen text 's/if (!std.mem.eql(u8, held.text, line.text)) {/if (false) {/')"
-# Identity is a PAIR. Narrow eq back to the position alone and two branches'
+# Identity is a PAIR. Narrow it back to the position alone and two branches'
 # concurrent inserts answer to one name again -- which is the exact state this
 # module refused before the site landed, so a plant of it is the law of this
 # movement shown from the failing side.
-identity_exit="$(run_pen identity 's/        return self.pos == other.pos and self.site == other.site;/        return self.pos == other.pos;/')"
+#
+# The plant names `LineId.order` rather than `LineId.eq`, and the move is the
+# whole reason this comment is longer than its neighbours. Until `20260907` the
+# fold walked the held side calling `eq`, so narrowing `eq` broke the merge.
+# The fold searches now, which reads `order`; `eq` and `less_than` are both
+# derived from that one function, so `order` is where the pair is either read
+# or lost. A plant left on `eq` would have gone on matching a real line and
+# proving nothing -- which is the shape a control cannot afford, since it is
+# indistinguishable from a law that holds.
+identity_exit="$(run_pen identity 's/        return std.math.order(self.site, other.site);/        return .eq;/')"
 # The site orders as well as separates. Drop the tiebreak from the DOCUMENT order
 # -- Place.less_than, not LineId.less_than -- and two concurrent lines are never
 # strictly ordered, so the merge postcondition fires.

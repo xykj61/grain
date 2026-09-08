@@ -98,21 +98,34 @@ pub const LineId = struct {
     pos: u32,
     site: u32,
 
-    /// Whether two identities name one line.
+    /// Whether two identities name one line -- the equality reading of the
+    /// single order below.
     pub fn eq(self: LineId, other: LineId) bool {
-        return self.pos == other.pos and self.site == other.site;
+        return self.order(other) == .eq;
     }
 
-    /// Whether one identity sorts before another, by its own two fields.
+    /// Where one identity falls against another, by its own two fields.
     ///
     /// This is an order over NAMES rather than the document order -- it exists
     /// so a caller holding identities alone can put them in a stable sequence.
     /// Where a line sits in the document is `Place.less_than`, which reads the
     /// run as well; the two were one function until `20260907`, and the seam
     /// between them is what the interleave cost.
+    ///
+    /// It answers a three-way `Order` rather than a bool because a binary
+    /// search needs to know which side it landed on, and a sort needs only
+    /// less-than. Writing the comparison once and deriving the second reading
+    /// from it is what keeps a sorted list and a search over that list from
+    /// ever disagreeing about where a name sits.
+    pub fn order(self: LineId, other: LineId) std.math.Order {
+        if (self.pos != other.pos) return std.math.order(self.pos, other.pos);
+        return std.math.order(self.site, other.site);
+    }
+
+    /// Whether one identity sorts before another -- the sort's reading of the
+    /// single order above.
     pub fn less_than(self: LineId, other: LineId) bool {
-        if (self.pos != other.pos) return self.pos < other.pos;
-        return self.site < other.site;
+        return self.order(other) == .lt;
     }
 };
 
@@ -292,6 +305,46 @@ pub const Note = struct {
     }
 };
 
+/// Where a search key falls against a line, read through the identity's own
+/// single order. Named at file scope because both folds -- the merge's and the
+/// reading's -- search the same way, and one comparison spelled twice is
+/// exactly the drift a shared function cannot have.
+fn search_by_id(key: LineId, item: Line) std.math.Order {
+    return key.order(item.id());
+}
+
+/// Copy lines into a caller-owned slice of exactly their count.
+///
+/// Named rather than reached for through `@memcpy`, per the module family's
+/// own rule, and asserted on both sides so a scratch slice sized from one
+/// count can never be filled from another.
+fn copy_lines(into: []Line, from: []const Line) void {
+    // invariant: the destination holds exactly the source's count, since a
+    // shorter one would drop lines a later search would then never find
+    assert(into.len == from.len);
+    for (from, 0..) |line, i| into[i] = line;
+}
+
+/// Put a slice of lines in identity order -- the order both folds search in.
+///
+/// Strictness is asserted rather than assumed. A weave holds each identity
+/// once, so a sorted slice of one weave's lines rises strictly; a slice that
+/// merely did not fall would mean two lines answering to one name, and a
+/// binary search over it could return either.
+fn sort_by_id(lines: []Line) void {
+    std.mem.sort(Line, lines, {}, struct {
+        fn less_than(_: void, a: Line, b: Line) bool {
+            return a.id().less_than(b.id());
+        }
+    }.less_than);
+    for (lines, 0..) |line, i| {
+        // invariant: identities strictly increase, which is what makes the
+        // search below return the one line that carries the name it was given
+        if (i + 1 < lines.len) assert(lines[i].id().less_than(lines[i + 1].id()));
+        _ = line;
+    }
+}
+
 /// A Weave: the living history of a text stream.
 ///
 /// Invariant: for all i < lines.items.len:
@@ -454,20 +507,37 @@ pub const Weave = struct {
     /// The caller has already ensured capacity for the whole union, so nothing
     /// here allocates and the only way out is the refusal.
     ///
-    /// Precondition:  `out` has room for every line of `incoming`.
+    /// THE HELD SIDE ARRIVES SORTED BY IDENTITY, so a lookup is a
+    /// binary search rather than a walk. That is the whole difference between
+    /// a merge that serves the module's declared ceiling and one that does
+    /// not. Walking cost |self| x |other| identity comparisons; searching
+    /// costs |other| x log |self|.
+    ///
+    /// A line this fold APPENDS can never be a later lookup's answer, so the
+    /// sorted prefix stays the whole search space for the whole fold. That
+    /// holds because `apply` hands out each identity once per weave and
+    /// asserts it at the point of creation: `incoming` therefore carries no
+    /// two lines of one name, and a miss is a miss for every line after it.
+    ///
+    /// Precondition:  `out` has room for every line of `incoming`, and its
+    ///   first `sorted_len` entries are sorted by identity.
     /// Postcondition: every identity of `incoming` is held by `out` exactly once.
-    fn union_into(out: *std.ArrayListUnmanaged(Line), incoming: []const Line) WeaveError!void {
+    fn union_into(out: *std.ArrayListUnmanaged(Line), sorted_len: u32, incoming: []const Line) WeaveError!void {
         // invariant: the list can take the whole union without growing, which is
         // what lets this fold run with no allocator and no error but the refusal
         assert(out.capacity >= out.items.len + incoming.len);
         // invariant: the union stays inside the weave's own ceiling, so the
         // append below can never carry the list past what merge already checked
         assert(out.items.len + incoming.len <= max_weave_lines);
+        // invariant: the searched prefix is one the list actually holds, since
+        // a search past the end would read whatever the capacity left behind
+        assert(sorted_len <= out.items.len);
 
+        const sorted = out.items[0..sorted_len];
         for (incoming) |line| {
-            var joined = false;
-            for (out.items) |*held| {
-                if (!held.id().eq(line.id())) continue;
+            const found = std.sort.binarySearch(Line, sorted, line.id(), search_by_id);
+            if (found) |at| {
+                const held = &sorted[at];
                 if (!std.mem.eql(u8, held.text, line.text)) {
                     return WeaveError.PositionTextDisagrees;
                 }
@@ -475,10 +545,7 @@ pub const Weave = struct {
                 // either side survives a merge with a side still holding the
                 // line -- gone is a larger count than present, and larger wins.
                 held.gen = @max(held.gen, line.gen);
-                joined = true;
-                break;
-            }
-            if (!joined) {
+            } else {
                 out.appendAssumeCapacity(line);
             }
         }
@@ -510,10 +577,27 @@ pub const Weave = struct {
     /// orders their runs through the place, so a total order leaves nothing for
     /// a tiebreak to invent.
     ///
-    /// Cost is |self| x |other| text comparisons, since a weave carries no index
-    /// from position to line. That is deliberate at this size: the bound above
-    /// names the ceiling, and a map earns its place when a measurement asks for
-    /// one rather than before.
+    /// Cost is one sort of this side plus |other| x log |self| searches. It
+    /// was |self| x |other| walks until `20260907`, on the reasoning that an
+    /// index earns its place when a measurement asks for one rather than
+    /// before -- and then the measurement asked, in these numbers.
+    ///
+    /// Measured on this pier, ReleaseFast, two disjoint sides of equal size so
+    /// no identity joins and the fold does its whole work. Wall time for one
+    /// merge, walking then searching: 16,384 lines a side **387ms -> 7ms**;
+    /// 32,768 **1,522ms -> 10ms**; 65,536 **6,004ms -> 17ms**; 131,072
+    /// **24,310ms -> 28ms**. The walk rose 3.95x then 4.05x across those
+    /// doublings, which is the quadratic the shape predicts.
+    ///
+    /// At the LARGEST MERGE THE BOUND PERMITS -- 524,288 a side, a union of
+    /// exactly `max_weave_lines` -- the walk **did not finish inside ten
+    /// minutes** and was stopped there; the search takes **162ms**, and
+    /// **1,376ms** in the checked build a witness runs. So the declared
+    /// ceiling was one the operation could not serve, which makes it a ceiling
+    /// named for the allocator alone. The fold changed rather than the bound.
+    ///
+    /// The order is a sort this merge already had to take, so no index is
+    /// stored and no structure outlives the call.
     ///
     /// Refusal keeps that order-independence. Weaves that pairwise agree on
     /// their shared positions are closed under merge -- the merged text at a
@@ -551,7 +635,12 @@ pub const Weave = struct {
             out.appendAssumeCapacity(line);
         }
 
-        try union_into(&out, other.lines.items);
+        // The fold below searches this side rather than walking it, so the side
+        // arrives in identity order. Sorting here rather than inside the fold
+        // keeps the fold allocation-free and states the precondition where a
+        // reader can see it being met.
+        sort_by_id(out.items);
+        try union_into(&out, self_len, other.lines.items);
 
         std.mem.sort(Line, out.items, {}, struct {
             fn less_than(_: void, a: Line, b: Line) bool {
@@ -597,12 +686,18 @@ pub const Weave = struct {
     /// shape `union_into` takes for `merge`, on purpose: two folds over one
     /// union, and the reading differs only in what it writes down.
     ///
-    /// Precondition:  `out` has room for every line of `left`.
+    /// `right_sorted` arrives in identity order for the same reason the merge's
+    /// held side does: the lookup is a binary search rather than a walk, so the
+    /// reading costs what the merge costs and the two stay comparable at every
+    /// size rather than only at small ones.
+    ///
+    /// Precondition:  `out` has room for every line of `left`, and
+    ///   `right_sorted` is in identity order.
     /// Postcondition: `out` holds one note per identity of `left`.
     fn notes_from_left(
         out: *std.ArrayListUnmanaged(Note),
         left: []const Line,
-        right: []const Line,
+        right_sorted: []const Line,
     ) WeaveError!void {
         // invariant: the list can take the whole fold without growing, which is
         // what lets this run with no allocator and no error but the refusal
@@ -613,13 +708,12 @@ pub const Weave = struct {
 
         for (left) |line| {
             var right_gen: u32 = 0;
-            for (right) |held| {
-                if (!held.id().eq(line.id())) continue;
+            if (std.sort.binarySearch(Line, right_sorted, line.id(), search_by_id)) |at| {
+                const held = right_sorted[at];
                 if (!std.mem.eql(u8, held.text, line.text)) {
                     return WeaveError.PositionTextDisagrees;
                 }
                 right_gen = held.gen;
-                break;
             }
             out.appendAssumeCapacity(.{
                 .pos = line.pos,
@@ -635,11 +729,12 @@ pub const Weave = struct {
     /// identity already had its text compared by the fold above, so this one
     /// reads identities alone and cannot refuse.
     ///
-    /// Precondition:  `out` has room for every line of `right`.
+    /// Precondition:  `out` has room for every line of `right`, and
+    ///   `left_sorted` is in identity order.
     /// Postcondition: every identity of `right` is held by `out` exactly once.
     fn notes_from_right(
         out: *std.ArrayListUnmanaged(Note),
-        left: []const Line,
+        left_sorted: []const Line,
         right: []const Line,
     ) void {
         // invariant: the list can take the whole fold without growing, which is
@@ -650,13 +745,7 @@ pub const Weave = struct {
         assert(out.items.len + right.len <= max_weave_lines);
 
         for (right) |line| {
-            var shared = false;
-            for (left) |held| {
-                if (held.id().eq(line.id())) {
-                    shared = true;
-                    break;
-                }
-            }
+            const shared = std.sort.binarySearch(Line, left_sorted, line.id(), search_by_id) != null;
             if (!shared) {
                 out.appendAssumeCapacity(.{
                     .pos = line.pos,
@@ -728,8 +817,23 @@ pub const Weave = struct {
         errdefer out.deinit(allocator);
         try out.ensureTotalCapacity(allocator, self_len + other_len);
 
-        try notes_from_left(&out, self.lines.items, other.lines.items);
-        notes_from_right(&out, self.lines.items, other.lines.items);
+        // Each fold searches the side it does not iterate, so each side is put
+        // in identity order once. The copies are scratch for this call and are
+        // freed with it -- neither weave is touched, which is the promise the
+        // head above makes, and a sorted copy is how it is kept while the
+        // lookup still costs a search rather than a walk.
+        const left_sorted = try allocator.alloc(Line, self_len);
+        defer allocator.free(left_sorted);
+        copy_lines(left_sorted, self.lines.items);
+        sort_by_id(left_sorted);
+
+        const right_sorted = try allocator.alloc(Line, other_len);
+        defer allocator.free(right_sorted);
+        copy_lines(right_sorted, other.lines.items);
+        sort_by_id(right_sorted);
+
+        try notes_from_left(&out, self.lines.items, right_sorted);
+        notes_from_right(&out, left_sorted, other.lines.items);
 
         const result = try out.toOwnedSlice(allocator);
         std.mem.sort(Note, result, {}, struct {
