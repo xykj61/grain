@@ -476,3 +476,7 @@ at a closed fold.*
 *Row %585 folded to [`REDS-a-ceiling-set-at-its-own-reading-rows-585.md`](REDS-a-ceiling-set-at-its-own-reading-rows-585.md) on `20260907.210124`, **BOOKED** -- a ratchet published at its own reading is a gate that fires at a stranger's desk.*
 
 *Row %590 folded to [`REDS-a-bound-is-two-claims-rows-590.md`](REDS-a-bound-is-two-claims-rows-590.md) on `20260907.212118`, **CLOSED** -- a named ceiling the operation could not serve, and the guard that would have caught it is the one nobody writes.*
+
+*Row %592 folded to [`REDS-a-duplicate-that-was-never-a-judgment-rows-592.md`](REDS-a-duplicate-that-was-never-a-judgment-rows-592.md) on `20260907.215529`, **CLOSED** -- a duplicate stamp is two classes wearing one count, and only the divergent one is a hand's judgment.*
+
+*Row %593 folded to [`REDS-whose-module-is-this-rows-593.md`](REDS-whose-module-is-this-rows-593.md) on `20260907.222553`, **CLOSED** -- an instrument built to publish one blindness carried another, and the tree already held the right answer elsewhere.*

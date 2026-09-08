@@ -5,7 +5,7 @@ rather than condensed, so the account keeps every number it measured. Living car
 [`../ITINERARY.md`](../ITINERARY.md).*
 
 **DIFFUSER -- THE FALSIFIER I WROTE FOR MY OWN RECOMMENDATION FIRED, AND MY INSTRUMENT WAS INSIDE ITS OWN READING.**
-Elder [shelved](archive/20260907-201914_itinerary-landed-accounts.md). Last lap's paper named its
+Elder [shelved](20260907-201914_itinerary-landed-accounts.md). Last lap's paper named its
 second falsifier plainly -- *count the QUERIES; if nearly none asks a field predicate the index
 shrinks to a sorted room*. **This lap ran it and it shrank.** Of **238** lines naming the journal,
 **170 -- 71 pct -- never read a record**; **54** are queries; **zero** are field predicates by line.

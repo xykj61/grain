@@ -126,6 +126,12 @@ shelf 20260830 "$(linkrow 20260830.100000 20260830/a.kyri)" "$(linkrow 20260830.
 o=$(run)
 [ "$(val "$o" verdict)" = rows_duplicate ] && echo "duplicate_bitten=yes" || echo "duplicate_bitten=no"
 [ "$(val "$o" rows_duplicate)" = 1 ] && echo "duplicate_counted=yes" || echo "duplicate_counted=no"
+# ... AND THIS BRANCH NAMES THE REMEDY TOO. It fires ahead of the misordered one below, so a shelf
+# carrying both faults -- 20260907's firing -- read this verdict and no advice, with the command
+# sitting one branch down. The repair sorts a duplicate into its two classes and acts or refuses
+# by which it is, so it is worth naming here whichever class the shelf holds.
+echo "$o" | grep -q '^advice=sh tools/fixtures/i/index_shelf_repair.sh$' \
+  && echo "duplicate_advises=yes" || echo "duplicate_advises=no"
 shelf 20260830 "$(linkrow 20260830.100001 20260830/a.kyri)" "$(linkrow 20260830.100000 20260830/a.kyri)"
 o=$(run); [ "$(val "$o" verdict)" = ok ] && echo "distinct_stamps_free=yes" || echo "distinct_stamps_free=no"
 

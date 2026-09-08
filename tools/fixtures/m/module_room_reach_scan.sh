@@ -62,6 +62,15 @@ SKIP_ROOMS='vendor gratitude seed'
 
 sources="$(git ls-files 2>/dev/null | grep "\\.${EXT}\$" || true)"
 
+# THE FOURTH PATTERN, AND WHOSE MODULE IT IS. A room links a peer's module by symlink -- `amphora/`
+# carries `tally_copy.rye`, `kumara.rye` and `wire_format.rye`, each a link into `tally/` or
+# `comlink/` -- and `git ls-files` lists a link exactly like a file. So every count above is the
+# room's own modules PLUS whatever it borrowed, and a hand reading a room's size from this census
+# reads a peer's work as that room's. Mode `120000` is git's own answer to which is which, read
+# from the index rather than from the filesystem, so it agrees with `git ls-files` by construction.
+linked_sources="$(git ls-files -s 2>/dev/null | awk '$1=="120000" {print $4}' | grep "\\.${EXT}\$" || true)"
+own_sources="$(git ls-files -s 2>/dev/null | awk '$1!="120000" {print $4}' | grep "\\.${EXT}\$" || true)"
+
 # THE VACUUM LEG. A census that reads nothing prints a clean report and gates nothing, which is
 # indistinguishable from a tree with no hidden shelves. `a guard that cannot red guards nothing`
 # is this tree's own strand (REDS row 59), so an instrument that found no sources refuses and says
@@ -80,6 +89,8 @@ echo "ext=$EXT"
 rooms_read=0
 hidden_rooms=0
 hidden_total=0
+linked_total=0
+rooms_with_linked=0
 inverted=0
 inconsistent=0
 
@@ -98,13 +109,21 @@ for room in $(printf '%s\n' "$sources" | awk -F/ 'NF>1 {print $1}' | sort -u); d
   flat=$(printf '%s\n' "$sources" | grep -c "^$room/[^/]*\$" || true)
   hidden=$(printf '%s\n' "$sources" | grep -c "^$room/[^/]*/" || true)
 
+  # Counted from their OWN lists rather than derived from each other, for the reason the paragraph
+  # above gives about `hidden`: `own` as `recursive - linked` would make the gate below true for
+  # every input, and a gate that cannot refuse guards nothing.
+  linked=$(printf '%s\n' "$linked_sources" | grep -c "^$room/" || true)
+  own=$(printf '%s\n' "$own_sources" | grep -c "^$room/" || true)
+
   rooms_read=$((rooms_read + 1))
   hidden_total=$((hidden_total + hidden))
+  linked_total=$((linked_total + linked))
+  if [ "$linked" -gt 0 ]; then rooms_with_linked=$((rooms_with_linked + 1)); fi
 
   # The arithmetic is the gate with teeth: a flat reading plus what it cannot see must equal the
   # whole room. Two greps over one list can only disagree if a pattern is wrong, so this refuses
   # the instrument rather than the tree -- the one thing a census can honestly check about itself.
-  if [ "$((flat + hidden))" -ne "$recursive" ]; then
+  if [ "$((flat + hidden))" -ne "$recursive" ] || [ "$((own + linked))" -ne "$recursive" ]; then
     inconsistent=$((inconsistent + 1))
     reading=inconsistent
   elif [ "$hidden" -eq 0 ]; then
@@ -120,12 +139,14 @@ for room in $(printf '%s\n' "$sources" | awk -F/ 'NF>1 {print $1}' | sort -u); d
     reading=hidden_shelf
   fi
 
-  echo "room=$room flat=$flat recursive=$recursive hidden=$hidden reading=$reading"
+  echo "room=$room flat=$flat recursive=$recursive hidden=$hidden own=$own linked=$linked reading=$reading"
 done
 
 echo "rooms_read=$rooms_read"
 echo "hidden_rooms=$hidden_rooms"
 echo "hidden_total=$hidden_total"
+echo "linked_total=$linked_total"
+echo "rooms_with_linked=$rooms_with_linked"
 echo "inverted=$inverted"
 echo "inconsistent=$inconsistent"
 

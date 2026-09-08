@@ -121,6 +121,7 @@ assert control.out contains "tie_stays_duplicate=yes" else "index-row-bound: one
 assert control.out contains "closed_shelf_order_free=yes" else "index-row-bound: a closed shelf out of order keeps every byte it wrote"
 assert control.out contains "closed_shelf_order_uncounted=yes" else "index-row-bound: a closed shelf's order must not be counted against the living gate"
 assert control.out contains "bound_applies=yes" else "index-row-bound: the bound read must be the bound applied"
+assert control.out contains "duplicate_advises=yes" else "index-row-bound: the duplicate reading fires first, so it must name the repair too"
 assert control.out contains "misordered_advises=yes" else "index-row-bound: a refusal must name the command that repairs it, never a number alone"
 assert control.out contains "control_verdict=ok" else "index-row-bound: the control must agree with itself"
 say "the scan's behaviors proven on planted pins and shelves, each reading shown from both sides"
@@ -131,6 +132,15 @@ say "the scan's behaviors proven on planted pins and shelves, each reading shown
 # swap, done by a program that proves its own output is a PERMUTATION of the page it read before
 # it writes a byte. The load-bearing leg is that postcondition shown from both sides: a copy whose
 # sort drops a line refuses, and the same copy with the postcondition removed writes the loss.
+#
+# AND THE DUPLICATE HALF, from 20260907. That tool refused the thirteenth firing, because it
+# refused every duplicate stamp on sight before looking at one. Measured over the git history of
+# this room's three most recent shelves: 20 revisions carried duplicates, 38 of those stamps were
+# BYTE-IDENTICAL rows against 4 that were not -- and the 4 were one shape, a REDS number the
+# derived spine renumbered under the row. So the two classes are proven apart here. An identical
+# duplicate is lifted, since either copy leaves the same page and there is nothing to choose; a
+# divergent one still refuses and now prints both rows, since a hand asked to choose has to see
+# what it is choosing between.
 let repair = run ["sh" "tools/fixtures/i/index_shelf_repair_control.sh"]
 assert repair.ok else "index-row-bound: the repair control must complete"
 say repair.out
@@ -152,6 +162,21 @@ assert repair.out contains "OK   closed_shelf_untouched" else "index-row-bound: 
 assert repair.out contains "OK   mode_kept_through_the_write" else "index-row-bound: a mode is tracked content, so the write goes through the inode"
 assert repair.out contains "OK   lossy_sort_refused" else "index-row-bound: a sort that drops a line must be caught before anything is written"
 assert repair.out contains "OK   lossy_sort_wrote_nothing" else "index-row-bound: a caught repair must write nothing at all"
+assert repair.out contains "OK   divergent_counted" else "index-row-bound: a duplicate whose rows differ must be counted as the divergent class"
+assert repair.out contains "OK   divergent_names_the_stamp" else "index-row-bound: a refusal must name the stamp it refuses over"
+assert repair.out contains "OK   divergent_shows_both_rows" else "index-row-bound: a hand asked to choose must be shown both rows"
+assert repair.out contains "OK   check_names_dedupe" else "index-row-bound: --check must name a dedupe it would perform"
+assert repair.out contains "OK   check_dedupe_changed_nothing" else "index-row-bound: --check must change nothing"
+assert repair.out contains "OK   identical_duplicate_lifted" else "index-row-bound: a byte-identical duplicate is provably liftable and must be lifted"
+assert repair.out contains "OK   identical_counted" else "index-row-bound: the identical class must be counted apart from the divergent one"
+assert repair.out contains "OK   identical_no_divergent" else "index-row-bound: identical rows must never be read as divergent"
+assert repair.out contains "OK   one_row_fewer" else "index-row-bound: lifting one copy must remove exactly one row"
+assert repair.out contains "OK   the_surviving_row_is_the_same_bytes" else "index-row-bound: the row that survives must be the row that stood"
+assert repair.out contains "OK   nothing_was_lost" else "index-row-bound: a dedupe must leave the line set unchanged"
+assert repair.out contains "OK   dedupe_is_idempotent" else "index-row-bound: a second run must find nothing to do"
+assert repair.out contains "OK   dedupe_and_sort_together" else "index-row-bound: the twelfth firing carried both faults, so both must repair in one pass"
+assert repair.out contains "OK   newest_on_top_after_both" else "index-row-bound: a page promising newest first keeps it after a dedupe too"
+assert repair.out contains "OK   three_rows_remain" else "index-row-bound: a dedupe removes copies and nothing else"
 assert repair.out contains "OK   blind_copy_writes_the_loss" else "index-row-bound: the postcondition must be shown to be what stops the loss"
 assert repair.out contains "OK   blind_copy_lost_a_row" else "index-row-bound: without the postcondition the page must actually lose a row"
 assert repair.out contains "faults=0" else "index-row-bound: every repair behavior must be satisfied"

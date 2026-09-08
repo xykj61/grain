@@ -12,7 +12,7 @@
 # expensive way -- its pens were plain directories, so the sweep read nothing in them and every
 # line it printed went untested for the control's whole life.
 #
-# SIX PHASES.
+# EIGHT PHASES.
 #   flat      -- a room whose Rye is all at top level reads `flat_reaches_all`, hidden zero
 #   shelf     -- ONE file planted one level down flips that room to `hidden_shelf`; removing it
 #                returns the room to `flat_reaches_all`, which is the both-sides proof
@@ -21,13 +21,19 @@
 #   skipped   -- a planted `vendor/` room never appears; third-party structure is not ours to count
 #   vacuum    -- a repository with no tracked .rye refuses `verdict=blind` rather than reporting a
 #                clean zero, because reading nothing is not the same as finding nothing
+#   linked    -- a room that LINKS a peer's module reads `own` unchanged and `linked` one higher,
+#                and removing the link returns both; a symlink is listed by `git ls-files` exactly
+#                like a file, so without this the room reports a peer's work as its own
+#   owned     -- the `own` counting pattern is broken in a COPY, and the second arithmetic gate
+#                (`own + linked == recursive`) must catch it, the same both-sides proof the
+#                `patterns` phase gives the first gate
 #   patterns  -- one of the scan's three counting patterns is deliberately broken in a COPY, and
 #                the arithmetic gate must catch it. This is the leg that proves the gate is not
 #                decorative: `hidden` was once derived as `recursive - flat`, which made the check
 #                true for every input, and this phase is what a subtraction could never pass.
 #
-# EXPECTED: phases flat, shelf, inverted, skipped each named and silent on their off side; vacuum
-# and patterns each refusing with a non-zero exit.
+# EXPECTED: phases flat, shelf, inverted, skipped, linked each named and silent on their off side;
+# vacuum, owned and patterns each refusing with a non-zero exit.
 #
 # Driven by tools/m/module_room_reach_witness.rish. Run from the repository root.
 
@@ -72,6 +78,29 @@ shelf_out="$(sh "$scan" list 2>&1 || true)"
 git -C "$pen" rm -q --cached alpha/src/hidden.rye >/dev/null 2>&1
 rm -f "$pen/alpha/src/hidden.rye"
 removed_out="$(sh "$scan" list 2>&1 || true)"
+
+# -- the linked leg: alpha borrows a module from beta by symlink ----------------------------------
+# `git ls-files` lists a symlink exactly like a regular file, so before the `own`/`linked` split a
+# borrowed module counted toward the borrowing room. The link is planted with `git add` so the
+# index carries mode 120000, which is what the scan reads.
+ln -s ../beta/src/three.rye "$pen/alpha/borrowed.rye"
+git -C "$pen" add -A >/dev/null 2>&1
+linked_out="$(sh "$scan" list 2>&1 || true)"
+
+git -C "$pen" rm -q --cached alpha/borrowed.rye >/dev/null 2>&1
+rm -f "$pen/alpha/borrowed.rye"
+unlinked_out="$(sh "$scan" list 2>&1 || true)"
+
+# -- the owned pen: the `own` counting pattern broken in a COPY -----------------------------------
+# The second arithmetic gate says a room's own modules plus its borrowed ones are the whole room.
+# Deriving `own` as `recursive - linked` would make that true for every input; breaking the pattern
+# proves it is not.
+own_broken="$work/own_broken_scan.sh"
+sed 's|own=$(printf .%s\\n. "$own_sources" . grep -c "\^\$room/" .. true)|own=0|' "$scan" > "$own_broken"
+cd "$pen"
+own_out="$(sh "$own_broken" 2>&1 || true)"
+own_code=0
+sh "$own_broken" >/dev/null 2>&1 || own_code=$?
 
 # -- the vacuum pen: a real repository holding no tracked Rye at all ------------------------------
 empty="$work/empty"
@@ -118,6 +147,16 @@ if printf '%s\n' "$flat_out" | grep -q '^room=vendor'; then
 else
   echo "vendor_counted=0"
 fi
+
+echo "phase=linked"
+printf '%s\n' "$linked_out" | grep -E '^room=alpha|^linked_total=|^rooms_with_linked=' || true
+
+echo "phase=unlinked"
+printf '%s\n' "$unlinked_out" | grep -E '^room=alpha|^linked_total=' || true
+
+echo "phase=owned"
+printf '%s\n' "$own_out" | grep -E '^verdict=|^inconsistent=' || true
+echo "own_exit=$own_code"
 
 echo "phase=vacuum"
 printf '%s\n' "$vacuum_out" | grep -E '^verdict=|^rooms_read=|^instrument=' || true

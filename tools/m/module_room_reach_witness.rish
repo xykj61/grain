@@ -17,16 +17,26 @@
 #   to name at least one room whose flat glob understates it -- and `mantra` by name, since that is
 #   the room this red was booked against and the room an erratum now cites.
 #
-#   The arithmetic holds. Three independent patterns count a room -- whole, top level, below top
-#   level -- and the first two must sum to the third. `hidden` was one subtraction away from being
-#   derived, which would have made that check true for every input and therefore worth nothing.
+#   The arithmetic holds, twice. Five independent patterns count a room -- whole, top level, below
+#   top level, its own modules, and the ones it borrowed -- and each pair must sum to the whole.
+#   `hidden` was one subtraction away from being derived, which would have made that check true for
+#   every input and therefore worth nothing; `own` is counted from its own list for the same reason.
 #
-#   Six behaviours on real git repositories in a throwaway pen, each refusal shown from both sides.
-#   One planted file flips a room from `flat_reaches_all` to `hidden_shelf` and removing it flips
-#   the room back; a room holding Rye only below its top level reads `flat_reads_zero`; a planted
-#   `vendor/` room is never counted; a repository with no tracked Rye refuses `verdict=blind`
-#   rather than reporting a clean zero; and a COPY of the scan with one counting pattern broken is
-#   caught by the arithmetic gate.
+#   WHOSE MODULE IT IS. A room links a peer's module by symlink, and `git ls-files` lists a link
+#   exactly like a file -- so every count this census published named a room's own modules plus
+#   whatever it borrowed, with no way to tell them apart. Measured `20260907.213500`: **228 of
+#   1,954** tracked Rye files are symlinks, and **26 of 44** rooms carry at least one. `pond/`
+#   reads 222 and authored 156. `amphora/` reads 10 and authored 7 -- which is the correction a
+#   hand typed into this tree's roster on `20260906` and which no instrument could answer until
+#   now (the row booked `20260907.215529`).
+#
+#   Eight behaviours on real git repositories in a throwaway pen, each refusal shown from both
+#   sides. One planted file flips a room from `flat_reaches_all` to `hidden_shelf` and removing it
+#   flips the room back; a room holding Rye only below its top level reads `flat_reads_zero`; a
+#   planted symlink raises `linked` and leaves `own` where it stood, and removing it returns both;
+#   a planted `vendor/` room is never counted; a repository with no tracked Rye refuses
+#   `verdict=blind` rather than reporting a clean zero; and a COPY of the scan with either counting
+#   pattern broken is caught by its own arithmetic gate.
 #
 # WHAT IS NOT PROVEN. Whether any published count actually used the wrong glob -- that is a claim
 # inside prose, and reading it would mean parsing an essay's intent. This publishes the trap and
@@ -58,16 +68,27 @@ let mantra = run ["sh" "-c" "sh tools/fixtures/m/module_room_reach_scan.sh list 
 assert mantra.ok else "module-room-reach: mantra absent from the census"
 assert mantra.out contains "reading=hidden_shelf" else "module-room-reach: mantra no longer reads as a hidden shelf -- the erratum at active-designing/20260905-153729 cites this reading"
 
+# The split must be able to SEE what it exists to publish, the same argument the hidden-shelf
+# assertion above makes. A census reading `linked=0` everywhere would satisfy every control leg and
+# still be blind on this tree. The COUNT stays unpinned -- a number typed into an assertion is a
+# copy of a tree that is free to move (REDS %341, %357).
+let borrowed = run ["sh" "-c" "sh tools/fixtures/m/module_room_reach_scan.sh list | grep '^rooms_with_linked=' | cut -d= -f2"]
+assert borrowed.ok else "module-room-reach: could not read rooms_with_linked"
+assert (trim borrowed.out) != "0" else "module-room-reach: no room reads a borrowed module -- the own/linked split is reading nothing"
+
 let control = run ["sh" "tools/fixtures/m/module_room_reach_control.sh"]
 
 assert control.ok else "module-room-reach: the control refused to run"
-assert control.out contains "room=alpha flat=2 recursive=2 hidden=0 reading=flat_reaches_all" else "module-room-reach: a room with no shelf did not read flat_reaches_all"
-assert control.out contains "room=alpha flat=2 recursive=3 hidden=1 reading=hidden_shelf" else "module-room-reach: one planted file below top level did not flip the room to hidden_shelf"
-assert control.out contains "room=beta flat=0 recursive=1 hidden=1 reading=flat_reads_zero" else "module-room-reach: a room holding Rye only below its top level did not read flat_reads_zero"
+assert control.out contains "room=alpha flat=2 recursive=2 hidden=0 own=2 linked=0 reading=flat_reaches_all" else "module-room-reach: a room with no shelf did not read flat_reaches_all"
+assert control.out contains "room=alpha flat=2 recursive=3 hidden=1 own=3 linked=0 reading=hidden_shelf" else "module-room-reach: one planted file below top level did not flip the room to hidden_shelf"
+assert control.out contains "room=beta flat=0 recursive=1 hidden=1 own=1 linked=0 reading=flat_reads_zero" else "module-room-reach: a room holding Rye only below its top level did not read flat_reads_zero"
 assert control.out contains "vendor_counted=0" else "module-room-reach: a planted vendor/ room was counted -- third-party structure is not ours to measure"
+assert control.out contains "room=alpha flat=3 recursive=3 hidden=0 own=2 linked=1 reading=flat_reaches_all" else "module-room-reach: a borrowed module was not told from an authored one -- own moved, or linked did not"
+assert control.out contains "room=alpha flat=2 recursive=2 hidden=0 own=2 linked=0 reading=flat_reaches_all" else "module-room-reach: removing the link did not return the room -- the linked reading is proven one way only"
+assert control.out contains "own_exit=1" else "module-room-reach: a broken own pattern was not caught by the second arithmetic gate"
 assert control.out contains "verdict=blind" else "module-room-reach: a repository with no tracked Rye did not refuse blind"
 assert control.out contains "vacuum_exit=1" else "module-room-reach: the vacuum leg did not exit non-zero"
 assert control.out contains "verdict=inconsistent" else "module-room-reach: a broken counting pattern was not caught by the arithmetic gate"
 assert control.out contains "pattern_exit=1" else "module-room-reach: the broken-pattern leg did not exit non-zero"
 
-say "GREEN: module room reach -- the census names every room a flat glob understates, and refuses when it cannot read."
+say "GREEN: module room reach -- the census names every room a flat glob understates, tells a room's own modules from the ones it borrowed, and refuses when it cannot read."

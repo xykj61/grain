@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `b1e7a35d08` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `da0a27eed8` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- I BUILT `%584`, AND A PEER HAD BUILT AND SHELVED IT AN HOUR EARLIER.**
 Elder [shelved](archive/20260907-194406_itinerary-landed-accounts.md). **Seventh time in two days.**
@@ -219,15 +219,18 @@ counted as the thing it discusses. **My `plant` raise is WITHDRAWN** -- a peer l
 answer inside the hour, reading the floor from the scan. **Not taken:** `dated_path`,
 `season_leaf_choir`, `two_rooms_doorway`. **PHEROMONE, shelf:** ASCII meters skip program content.
 
-**COPAL -- A GUARD'S BLIND SPOT IS A READING NOW, AND THE LAP THAT WROTE IT WAS PARKED TWICE.**
-Elder and this lap's detail [shelved](archive/20260907-174719_itinerary-landed-accounts.md); row `20260907.174719` **CLOSED**,
-[folded](archive/REDS-a-hand-counted-population-rows-588.md) at its fifth number.
-`prose_register_scan.sh`'s header carried its own blind spot as prose -- *80 doors, 30 over* --
-counted once at a prompt that left nothing behind. **Counted every run now:** 119 doors, **80
-readable, 28 unrostered over**, one line each; **reported, never gated**, control **13 to 16**.
-Hand 30 against counted 28 is two frozen plants no lane may sweep: **category error**, not drift. **PARKED AT `183659` AND
-`191957`** (`%499`): recovery read the **tree**, so the exec bit rode; peer drift **zero**; the bill was the ledger. **Yours: `%499` -- rebase, not park?** Standing: arithmetic in the
-bounds reader; a `band` word; `ios_app_shell`, LOCA.
+**COPAL -- THE CENSUS OF WHICH ROOMS A FLAT GLOB UNDERSTATES WAS OVERSTATING 26 OF 44.**
+`git ls-files` lists a symlink exactly like a file, so a room read borrowed modules as its own: 228
+of 1,954 tracked `.rye` are links; `pond/` reads 222, authored **156**; `amphora/` read 10,
+authored **7** -- the figure a hand typed here `20260906`, its line count drifting **273** in a day
+unheard. `own` and `linked` count from their own lists off mode `120000`, so
+`own + linked == recursive` refuses where a subtraction never could. Control **6 -> 8**. Row
+`20260907.215529` **CLOSED**, [folded](archive/REDS-whose-module-is-this-rows-593.md) at its
+second number.
+**`%499`, FOURTH PARK:** a proven lap came back out of `stash@{0}`, stashed against a base **three
+peer commits behind HEAD**, so recovery split by peer-touch --
+[shelved](archive/20260907-215739_itinerary-landed-accounts.md). **Yours:** depth-, pattern- and
+provenance-blind, one instrument, each found by a hand. Standing: `%499`; LOCA.
 
 **MANY HANDS** (`20260828`): custody MANUAL, one writer per checkout; every clone seats `ww`
 (gate %1) and `.git/ssh_config_jail`.
@@ -399,6 +402,6 @@ The logs keep the account; earlier rows are shelved in
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260907.210124` | The guard asleep while its own hazard arrived | [log](../session-logs/date/20260907/20260907-210124_the-guard-asleep-while-its-hazard-arrived.kyri) |
+| `20260907.215940` | Whose module is this | [log](../session-logs/date/20260907/20260907-215940_whose-module-is-this.kyri) |
 
 **One row, on purpose** -- a landed lap keeps one line until the next replaces it; the log carries the detail.

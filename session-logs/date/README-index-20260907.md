@@ -12,7 +12,9 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | Stamp | Log | What it recorded |
 |---|---|---|
 | `20260907.220138` | [The falsifier that was never run](20260907/20260907-220138_the-falsifier-that-was-never-run.kyri) | 19 papers, 18 named one, 6 ever ran |
+| `20260907.215940` | [Whose module is this](20260907/20260907-215940_whose-module-is-this.kyri) | a census overstating 26 of 44 rooms; a parked lap recovered |
 | `20260907.212612` | [the repair the guard already knew](20260907/20260907-212612_the-repair-the-guard-already-knew.kyri) | fourth firing, one loom. |
+| `20260907.212422` | [The duplicate that was never a judgment](20260907/20260907-212422_the-duplicate-that-was-never-a-judgment.kyri) | 38 of 42 duplicate stamps were never a judgment. |
 | `20260907.212208` | [The lap that was in the stash](20260907/20260907-212208_the-lap-that-was-in-the-stash.kyri) | a parked lap recovered whole; a killed pass leaves the victim a receipt. |
 | `20260907.210725` | [The ceiling nobody timed](20260907/20260907-210725_the-ceiling-nobody-timed.kyri) | a merge the bound permitted ran past ten minutes; the fold searches now. |
 | `20260907.210207` | [The census that counted itself](20260907/20260907-210207_the-census-that-counted-itself.kyri) | the falsifier fired; the instrument was inside its own reading |
