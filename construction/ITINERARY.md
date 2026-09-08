@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `3a4bb33a52` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `82281186a7` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A HABIT THAT MUST BE TYPED IS A HABIT THAT WILL BE TYPED DIFFERENTLY.**
 Elder [shelved](archive/20260908-115307_itinerary-landed-accounts.md). Row `20260908.113404`
