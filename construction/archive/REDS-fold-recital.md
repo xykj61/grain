@@ -568,3 +568,5 @@ at a closed fold.*
 *Row %642 folded to [`REDS-the-door-nobody-let-divide-rows-642.md`](REDS-the-door-nobody-let-divide-rows-642.md) on `20260908.132753`, **CLOSED** -- an aggregate offered as one choice hides every partition of it: the same eighty pages that read as a custody gate read as three ordinary repairs once the total was allowed to divide by room.*
 
 *Row %589 folded to [`REDS-the-blocker-was-a-reading-rows-589.md`](REDS-the-blocker-was-a-reading-rows-589.md) on `20260908.151057`, **BOOKED** -- a blocker nobody had measured kept two files apart for a day; a content-addressed store answers does-this-move-the-record in digests rather than in argument.*
+
+*Rows %643 and %644 folded to [`REDS-what-the-record-said-and-what-ran-rows-643-644.md`](REDS-what-the-record-said-and-what-ran-rows-643-644.md) on `20260908.184056`, **BOOKED** and **CLOSED** -- a stated intention and the mechanism that carries it are two artifacts, and nothing was reading them together.*
