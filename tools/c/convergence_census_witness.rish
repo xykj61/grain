@@ -10,7 +10,13 @@
 # performs at three in the morning. Measured `20260907.234808`: **30 tools write to the tracked tree
 # rather than to a throwaway pen, and 3 of them prove convergence in an assertion.**
 #
-# THE POPULATION IS THE HARD PART AND IT WAS GOT WRONG TWICE BEFORE IT WAS GOT RIGHT. Counting every
+# THE POPULATION IS THE HARD PART AND A GREP NEVER SETTLED IT. The reading is named `candidates`
+# from `20260908.010852` for that reason: four refinements ran 392 -> 1200 -> 30 -> 7, and of that
+# seven THREE were still not writers -- two shared libraries and one scan. `convergence_prove.sh`
+# classifies by RUNNING, and its `inert` verdict exposed each in turn. Read this as an upper bound
+# on what might need proving; the prover's verdicts are the finding.
+#
+# THE EARLIER WRONG TURNS, kept because each looked exactly like a measurement. Counting every
 # tool that redirects anywhere gives 392, nearly all of them writing into their own pen -- a pen has
 # nothing to converge. Counting only tree-mutating writes gives 30. And the first census answered
 # `tools_read=1200` against its own bound of 1200: the corpus is 3,210, so the bound was silently
@@ -26,9 +32,9 @@ say "convergence-census: Lens TAME -- safety first: an unproven writer is named,
 say "convergence-census: reading the tree..."
 let scan = run ["sh" "tools/c/convergence_census.sh"]
 assert scan.ok else "convergence-census: the census refused --\n${scan.out}"
-assert scan.out contains "writers=" else "convergence-census: the writer population went unreported"
-assert scan.out contains "convergence_proven=" else "convergence-census: the proven count went unreported"
-assert scan.out contains "convergence_unproven=" else "convergence-census: the unproven count went unreported"
+assert scan.out contains "candidates=" else "convergence-census: the candidate population went unreported"
+assert scan.out contains "candidates_proven=" else "convergence-census: the proven count went unreported"
+assert scan.out contains "candidates_unproven=" else "convergence-census: the unproven count went unreported"
 
 # invariant: the corpus is printed and must exceed the writer population, since a writer is drawn
 # FROM it. A tools_read equal to the bound is the truncation this census was born from.
@@ -38,4 +44,4 @@ say "convergence-census: and the foundation that states the claim still stands..
 let found = run ["sh" "-c" "test -f foundations/20260823-222019_what-brix-infuse-is.md && echo present || echo absent"]
 assert (trim found.out) == "present" else "convergence-census: the infusion foundation is gone -- this census measures a claim nothing states"
 
-say "GREEN: convergence-census -- the tree's writers are counted against its own idempotence claim, with the denominator defended."
+say "GREEN: convergence-census -- candidates counted against the tree's own idempotence claim, with the denominator named as an upper bound rather than defended as a fact.""
