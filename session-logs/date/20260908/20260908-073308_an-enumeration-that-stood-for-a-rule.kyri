@@ -1,0 +1,41 @@
+format session-log-v1
+stamp 20260908.073308
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role unattended fleet seat BAKERY, core infrastructure lane
+modality text
+model claude-opus-5
+model_status configured default proven by .claude/settings.json; runtime identity unverified
+configured_model claude-opus-5
+configured_reasoning max
+configured_status tracked settings file
+evidence .claude/settings.json
+voice Kyri
+host Vultr Dallas pier, Linux, America/New_York
+title An enumeration that stood in for a rule
+prompt autonomous lap -- the baton, core infrastructure, Lindy-first crux-first
+rota lap 4280, row 0 -- Aether, the row that hears; read the threshold, follow-our-compass, and the Lindy effect. Its hard sentence is a guard that cannot red guards nothing -- a witness must be proven able to make a sound before its silence means anything. That is exactly what this lap found: fold_shelf_link read fold_depth_lost=0 on every lap of every ship while nine of its own subjects stood in the column it reports rather than gates.
+think My own last lap closed by naming a fifth link spelling the loom misses, and located it among the 744 dead links that no guard reads. I measured the 744 rather than trusting that sentence, and it was right about the class and one door wrong about the room.
+think Classifying every dead target by which correction would resolve it: nine resolve by prepending one ../, and every one of the nine sits inside fold_shelf_link's own room, construction/archive/. The guard was not missing them for lack of reach; its correction block never had an arm for them.
+think The correction block was a case with two arms -- archive/X strips to X, ../Y climbs to ../../Y -- and those are two spellings of one rule: text descending a directory needs one more level of climb. A bare sibling is the third spelling of the same rule, and it matched no arm, so it fell to links_dead and was described there as a stale reference for dated_path_resolve to answer. Nothing would ever have run the resolver on it.
+think The header's ambiguity argument survives the widening rather than being weakened by it: archive/, ../, and neither-of-those partition every relative target, and an absolute path takes no arm at all. Three disjoint classes rather than two.
+think The one way widening could do harm is stealing a bare name that already resolves inside the room, when the parent happens to hold a namesake. The scan tests the shelf's own directory first and continues, so it cannot -- and I planted a namesake in both directories at once to prove it rather than reason it.
+obs The general shape, and this tree booked it twice in two days: an enumeration standing in for a rule is complete only by luck, and it reads green over exactly the cases nobody thought to list. COPAL booked a population picked by directory one room over on the same day. The tell is identical -- read the source line, and ask whether it draws the boundary its own WHY claims.
+obs A lap-tier guard is the worst place for this to hide. It ran on every lap of every ship in the fleet, green, over links it was built to bite, so its greenness was evidence of nothing and read as evidence of everything.
+obs Against myself: links_dead=735 still merges two populations that want different answers. 605 name a stamped target, which dated_path_scan already gates as refs_lost; 130 name an unstamped one that nothing reads at all, since tracked_link_scan reads past any file whose basename carries a one-clock stamp and every shelf in this room is stamped. One counter would tell them apart. Named on the card rather than taken, because whether that split is reported or gated is a judgment about testimony.
+loom guard=fold_shelf_link scan_s=4 shelves=525 links_read=2677 depth_lost_before=9 depth_lost_after=0 dead=735
+obs A slip of my own, worth the record because nothing in the tree could have caught it. Wanting a baseline reading of dated_path against HEAD, I typed `git stash push --include-untracked` on a tree holding this entire lap -- fourteen paths, staged. `git stash pop --index` restored every one of them with the index intact, so it cost nothing, and the near-miss is the whole point: a reach-wide command typed at a session prompt is in no file, so no guard reads it. That is the same shape as the raw pkill the baton names, one verb over. The honest baseline was available without touching the tree at all -- the card already records dated_path at refs_lost=100 over a ceiling of 85 as another lane's standing seat, and the census reads exactly 100 now, so my change moved it by zero.
+loom control=fold_shelf_link_control behaviors_before=51 behaviors_after=66 failing=0 pens=23
+file tools/fixtures/f/fold_shelf_link_scan.sh -- the third correction arm, with the one rule written down above the case that spells it three ways
+file tools/f/fold_shelf_link_witness.rish -- seven asserts for the new arm, and the header claim moved from two corrections to three
+file tools/fixtures/f/fold_shelf_link_control.sh -- six phases: bitten, lifted, the in-room shadow, the bare dead, the absolute, and all three counted at once
+file construction/standing-equipment.kyri -- the roster WHY named two disjoint prefixes; it names three and says when the third arrived
+file construction/archive/20260623-033012_open-threads.md -- two bare siblings repointed by the tool, never by hand
+file construction/archive/20260724-132812_roadmap-season-ledger.md -- five, the same
+file construction/archive/20260724-132812_tasks-season-ledger.md -- two, the same
+file construction/ITINERARY.md -- live front rewritten; elder shelved at 20260908-073157
+file construction/archive/20260908-073157_itinerary-landed-accounts.md -- the elder account, every word as the lap wrote it
+scope one guard's correction block, its control, its witness, its roster row, and the nine links the widening found
+status GREEN -- fold_shelf_link and fold_shelf_link_repoint witnesses both green on metal, control 66 of 66, cold roster open clean with rule_twin the standing gate; three touched sources graded B+ 88, B 80, B+ 89, none below the door
+recommend keep-going -- the split inside links_dead is the next reading in this room, and it wants Keaton's word on whether an unstamped dead link in testimony is reported or gated

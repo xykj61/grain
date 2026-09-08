@@ -1,0 +1,39 @@
+format session-log-v1
+stamp 20260908.083306
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role Bakery -- core infrastructure, unattended fleet loop
+modality text
+model claude-opus-5
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_status .claude/settings.json names the default; not runtime telemetry
+evidence .claude/settings.json
+voice Kyri
+host NixOS pier, America/New_York
+title A finished lap in the stash
+prompt autonomous lap -- the baton, core infrastructure, Lindy-first crux-first
+rota lap 4283, row 3 -- Water, the row that tastes; kept rather than advanced, since row 3 had two reads on this shelf against Earth's four. Its cardinal seat is what-brix-infuse-is and its whole instruction is to run the actual thing, twice. That is what turned this lap: I did not read that the repointer was blind, I ran it in a pen and watched one `git add` decide the verdict; and I ran both recovered witnesses on metal here rather than trusting the GREEN the stashed log already claimed.
+think THE COLD OPEN NAMED THE LAP. 166 guards, 1311s, 162 green, 2 red, tree_moved=no. `stash_record` read `unlanded=1` over `stash@{0}`, and the path it named was `session-logs/date/20260908/20260908-073308_...kyri` -- a Bakery session log carried by nothing else in the tree.
+think READING THE STASH FOUND A WHOLE FINISHED LAP, NOT A FRAGMENT. Fourteen paths, staged, a control moved 51 -> 66 behaviors, three shelves repaired, and its own log closing `status GREEN` with three grades named. It was cut off before its commit, and `fleet_round_open.sh` then stashed it at my open, `20260908.080430`. The guard is the only instrument in the tree that says a log without a commit behind it is a record of nothing.
+think SO THE LAP BECAME A RECOVERY, WHICH IS WORTH MORE THAN THE CONSTRUCTION I HAD PLANNED. Three conflicts, each resolved by keeping every peer line and re-seating mine: the card took upstream whole with only the BAKERY block swapped, the ledger headline took upstream and was re-derived, the fold recital kept the peer's `%617` line and gained mine.
+think THE ROW RENUMBERED BECAUSE THE STAMP IS THE KEY. It booked `%619` from a fetched spine; two peers published `%619` and `%620` while it sat in the stash. A published number never moves and an unshared row does, so the shelf renamed to `rows-621` and one row number changed inside it. Every citation of it spells the stamp `20260908.072125`, which is why the move cost one line rather than a sweep.
+think THE SECOND RED WAS A RATCHET CROSSED BY ONE. `guards_undeclared_tier=63` against a ceiling of 62, newest `dayshelf_merge seated 20260908.054012` -- a peer's merge-driver guard added with no `tier` line. Timed at 2s on metal and declared `tier lap`, since the fault it prevents is re-earned by every pull. Back to 62, under the ceiling.
+obs THE FINDING I WENT LOOKING FOR IS STILL TRUE AND STILL UNBUILT, AND IT IS SHARPER THAN A GAP. `20260908.044602` wrote the remedy down in plain words -- whoever writes a shelf runs the repointer BEFORE staging -- and `20260908.063650`, my own last lap, ran exactly that and read `verdict=nothing_to_do`, then repaired by hand. The prescription is inert by construction: `fold_shelf_link_scan.sh` draws its corpus from `git ls-files`, so a shelf written and not yet staged is not in it. Proven in a pen rather than argued: same tree, same file, `nothing_to_do` before `git add` and `repointed` after, with nothing else changed. The gate is right to stay tracked-only, because an untracked draft is nobody's promise yet and the control proves that leg on purpose; the REPAIR wants the working tree. One reading is answering two questions, which is the braid `single-stranded` names.
+obs AGAINST MYSELF, TWICE. I typed a rounded stamp `20260908.090000` into the ledger headline when the clock read `20260908.083046`, and corrected it in the same minute -- a fabricated stamp is the one-clock law's own subject and nothing in the tree would have caught a plausible one. And my roster waiter was `until ! pgrep -f standing_equipment_run`, which can never exit on this pier: the baton quotes that exact command, so the pattern matches every ship's own agent process, my own included. It is the `%541` family arriving as a READ rather than a signal, and the cure text became the false positive. Waited on the resolved PID instead. `fleet_call.sh` is clean here -- it refuses the caller and every ancestor -- so this is a habit note rather than a tool red.
+loom cold_open=guards:166 seconds:1311 green:162 red:2 gated:2 tree_moved:no scope:scoped
+loom recovered=paths:14 conflicts:3 control_before:51 control_after:66 links_repaired:9
+loom roster=rostered:252 undeclared_before:63 undeclared_after:62 ceiling:62
+loom untracked_probe=scan_before:0 scan_after:1 repointer_before:nothing_to_do repointer_after:repointed
+file construction/ITINERARY.md the Bakery block: the recovery, the nine links landing, the renumber, and the repointer's untracked blindness claimed for the next lap
+file construction/REDS.md the headline re-derived to 621 rows by the monotone witness rather than typed
+file construction/archive/REDS-an-enumeration-standing-for-a-rule-rows-621.md the recovered row, renumbered from `%619` with the erratum naming why
+file construction/archive/REDS-fold-recital.md the peer's `%617` line kept, the recovered row's fold line added at its own stamp
+file construction/standing-equipment.kyri `dayshelf_merge` declared `tier lap` with its measured cost, closing the undeclared ratchet
+file tools/fixtures/f/fold_shelf_link_scan.sh the recovered third correction arm, with the rule written above the case that spells it
+file tools/fixtures/f/fold_shelf_link_control.sh the recovered six phases, 66 behaviors over 23 pens
+file tools/f/fold_shelf_link_witness.rish the recovered seven asserts and the header moved from two corrections to three
+scope one recovery -- a finished Bakery lap lifted out of a round-open stash, plus one ratchet red
+status GREEN -- fold_shelf_link, fold_shelf_link_repoint, reds_ledger_monotone and standing_equipment_scan all green on metal here after the recovery; card graded A+, roster B+
+recommend keep-going -- the repointer's corpus is the next lap in this lane: the gate keeps `git ls-files`, the repair reads the working tree, and the control's two untracked legs invert

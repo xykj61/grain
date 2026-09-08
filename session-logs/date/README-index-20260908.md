@@ -11,9 +11,11 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260908.083306` | [A finished lap in the stash](20260908/20260908-083306_a-finished-lap-in-the-stash.kyri) | a green lap recovered from a round-open stash. |
 | `20260908.081752` | [A seat named in four places](20260908/20260908-081752_a-seat-named-in-four-places.kyri) | the guard read three of them; both seat changes drifted at the fourth. |
 | `20260908.080951` | [A ratchet that could not reach zero](20260908/20260908-080951_a-ratchet-that-could-not-reach-zero.kyri) | The last drifting Tally copy linked. |
 | `20260908.080058` | [A runner is a file the pier executes](20260908/20260908-080058_a-runner-is-a-file-the-pier-executes.kyri) | %601 booked; population a union, 3298 -> 3305. |
+| `20260908.073308` | [An enumeration that stood for a rule](20260908/20260908-073308_an-enumeration-that-stood-for-a-rule.kyri) | a gate read zero over nine of its own subjects. |
 | `20260908.072952` | [The boundary written from both sides](20260908/20260908-072952_the-boundary-written-from-both-sides.kyri) | a sweep by number hit a peer; two doors mirror. |
 | `20260908.071657` | [Uniqueness without identification](20260908/20260908-071657_uniqueness-without-identification.kyri) | a glob handed me my own tree, a day old. |
 | `20260908.070532` | [The pointer with no claim](20260908/20260908-070532_the-pointer-with-no-claim.kyri) | Two ships widened one guard in one hour; the ledger sent both. |

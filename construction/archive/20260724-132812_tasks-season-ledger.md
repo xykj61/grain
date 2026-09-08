@@ -1040,7 +1040,7 @@ Radiant pass `20260727.230010` — path re-point only; claims unchanged
 
 ## The Realidream Lane (horizon — opened `20260708.021912`)
 
-*The visual home of SLC design; ladder and gratitude in [ROADMAP — the Visual Track](ROADMAP.md); mining study and counsel filed same stamp. Nothing here enters Now — SLC-2a keeps the active rung, now visible as this lane's rung 1.*
+*The visual home of SLC design; ladder and gratitude in [ROADMAP — the Visual Track](../ROADMAP.md); mining study and counsel filed same stamp. Nothing here enters Now — SLC-2a keeps the active rung, now visible as this lane's rung 1.*
 
 - [x] **Sketchbook gratitude (Kaeden affirms `174500`; shelf-only `222852`)** — [`gratitude/grain-sketchbook.md`](../../gratitude/grain-sketchbook.md) alone; archive stays outside the tree
 - [x] **Gratitude lines (Kaeden affirms `174500`)** — [`hyperfiddle.md`](../../gratitude/hyperfiddle.md), [`matklad.md`](../../gratitude/matklad.md), Nostr via [`nips/`](../gratitude/nips/) (already kept), [`noah-b-realidream.md`](../../gratitude/noah-b-realidream.md)
@@ -1393,7 +1393,7 @@ Ground: [`external-research/20260702-014112_comlink-beyond-dns-and-sockets.md`](
 ### TAME hardening — complete (`2026-06-29`)
 
 
-- [ ] **Width migration Phase 1b (as-you-touch)** — `mantra/*` next per the living baseline [`20260620-212126_usize-width-baseline.md`](20260620-212126_usize-width-baseline.md); decoupled from any compiler fork; re-anchored here so the oldest live thread stays on the granular plan (`20260703.013412`).
+- [ ] **Width migration Phase 1b (as-you-touch)** — `mantra/*` next per the living baseline [`20260620-212126_usize-width-baseline.md`](../20260620-212126_usize-width-baseline.md); decoupled from any compiler fork; re-anchored here so the oldest live thread stays on the granular plan (`20260703.013412`).
 
 Record: `session-logs/archive/20260629/20260629-204910_th7-width-gate-yonder-convention.md` and prior TH/RS logs. Hosted `width-check` blocks in parity (**138** witnesses).
 
