@@ -474,3 +474,5 @@ at a closed fold.*
 
 *Row %588 folded to [`REDS-a-hand-counted-population-rows-588.md`](REDS-a-hand-counted-population-rows-588.md) on `20260907.202027`, **CLOSED** -- a guard header counted its own blind spot by hand, and the count was two frozen fixtures wide.*
 *Row %585 folded to [`REDS-a-ceiling-set-at-its-own-reading-rows-585.md`](REDS-a-ceiling-set-at-its-own-reading-rows-585.md) on `20260907.210124`, **BOOKED** -- a ratchet published at its own reading is a gate that fires at a stranger's desk.*
+
+*Row %590 folded to [`REDS-a-bound-is-two-claims-rows-590.md`](REDS-a-bound-is-two-claims-rows-590.md) on `20260907.212118`, **CLOSED** -- a named ceiling the operation could not serve, and the guard that would have caught it is the one nobody writes.*

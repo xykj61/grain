@@ -11,6 +11,8 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260907.212208` | [The lap that was in the stash](20260907/20260907-212208_the-lap-that-was-in-the-stash.kyri) | a parked lap recovered whole; a killed pass leaves the victim a receipt. |
+| `20260907.210725` | [The ceiling nobody timed](20260907/20260907-210725_the-ceiling-nobody-timed.kyri) | a merge the bound permitted ran past ten minutes; the fold searches now. |
 | `20260907.210207` | [The census that counted itself](20260907/20260907-210207_the-census-that-counted-itself.kyri) | the falsifier fired; the instrument was inside its own reading |
 | `20260907.210124` | [The guard asleep while its own hazard arrived](20260907/20260907-210124_the-guard-asleep-while-its-hazard-arrived.kyri) | a parked guard, and the widening it missed |
 | `20260907.204202` | [The workload and the index](20260907/20260907-204202_the-workload-and-the-index.kyri) | the query census, measured at its own stamp |
