@@ -1468,6 +1468,18 @@ path tools/m/mantra_glow_tend_limb4_witness.rish
 tier lap
 seated 20260905.161500
 
+# WHAT THE LIMB GUARDS ABOVE CANNOT SEE. Each reads ONE file, and Mantra's weave model is declared
+# in three: `mantra/src/weave.rye`, the CLI seed `mantra/src/main.rye`, and the test that inlines
+# it. `bc37657e8` widened the module -- `Line` gained `site`, `Diff` gained `site` -- and neither
+# copy moved, so the lock on widening `Line` held over a file nobody else was reading. This guard
+# reads every tracked copy against the module. It welcomes the two known laggards under a ceiling
+# that only falls, since reconciling them rewrites `.mantra/`'s on-disk record and stays a seam at
+# Keaton's word, and it refuses any copy arriving disagreeing.
+guard mantra_weave_model
+path tools/m/mantra_weave_model_witness.rish
+tier lap
+seated 20260907.210124
+
 guard tube5_mantra_revision
 path tools/t/tube5_mantra_revision_witness.rish
 tier lap

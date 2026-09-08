@@ -473,3 +473,4 @@ at a closed fold.*
 *Row %583 folded to [`REDS-a-roster-line-guarded-by-its-subject-rows-583.md`](REDS-a-roster-line-guarded-by-its-subject-rows-583.md) on `20260907.203412`, **BOOKED** -- a roster line guarded by its own subject's existence cannot fail, so the drop-off it was written to catch is the one shape it can never report.*
 
 *Row %588 folded to [`REDS-a-hand-counted-population-rows-588.md`](REDS-a-hand-counted-population-rows-588.md) on `20260907.202027`, **CLOSED** -- a guard header counted its own blind spot by hand, and the count was two frozen fixtures wide.*
+*Row %585 folded to [`REDS-a-ceiling-set-at-its-own-reading-rows-585.md`](REDS-a-ceiling-set-at-its-own-reading-rows-585.md) on `20260907.210124`, **BOOKED** -- a ratchet published at its own reading is a gate that fires at a stranger's desk.*

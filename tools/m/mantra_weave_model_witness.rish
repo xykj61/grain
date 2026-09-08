@@ -1,0 +1,98 @@
+# tools/m/mantra_weave_model_witness.rish -- every copy of Mantra's weave model agrees.
+#
+# WHY THIS RUNG EXISTS. REDS %500 repaired HOW the four Mantra limb guards read a struct: each
+# had declared that a structure "carries exactly N fields" and proved it with N presence greps,
+# which a fourth field and a reorder both walk straight through. `mantra_glow_tend_limb1` now
+# reads `Line`'s fields in order against its Glow placard, and `construction/ITINERARY.md` names
+# that guard as THE LOCK on widening `Line` -- the pin two movements of the Mantra arc, the
+# identity gap and the diff anchor, were written down as waiting on.
+#
+# It reads one file. Mantra's weave model -- the triple `Line` - `Diff` - `Weave` -- is declared
+# in THREE: `mantra/src/weave.rye`, the module the limb guards stand over; `mantra/src/main.rye`,
+# Mantra's own CLI seed, guarded by nothing; and `rye/tests/mantra_weave_test.rye`, whose own
+# comment reads `Weave (inlined from mantra/src/main.rye)`. Measured before this rung was
+# written, all three agreed field for field, so nothing was wrong -- and a hand widening the
+# module on Keaton's word would have reddened one lock while two copies stood unmoved.
+#
+# WHAT THIS PROVES. Every tracked file carrying the triple declares the same fields, in the same
+# order, as the module, except for a named and falling number of known laggards. A copy the field
+# reader cannot parse is counted `unreadable` and gated at zero, because a copy nobody can check is
+# exactly the door this rung was written to find.
+#
+# WHY A CEILING RATHER THAN A ZERO, and what happened between the writing and the landing. This
+# rung was written on `20260906` measuring three copies in agreement, and it sat in a round-open
+# stash (REDS %499) while `bc37657e8` widened the module -- `Line` gained `site`, `Diff` gained
+# `site`, and a line is now named by the pair `Line.id()` returns. The CLI seed `mantra/src/main.rye`
+# and the test that inlines it did not move, which is this rung's own predicted hazard arriving
+# before it could sound. Reconciling them is not a lap's to take: `main.rye` writes `gen`, `pos`
+# and text into `.mantra/`, so a fourth field rewrites a shipped record, and widening the model
+# stays a seam at Keaton's word. So the two are held under a ceiling that only falls, and every
+# copy arriving disagreeing is refused at the strict default.
+#
+# WHAT IT DOES NOT REACH, deliberately. WHICH fields the model should carry: that is limb1's
+# claim against its Glow placard, and widening the model stays a seam at Keaton's word --
+# `mantra/src/diff.rye` says so in its own words. Shape is limb1's; agreement is this rung's.
+# Nor does it gate the COPY COUNT: deleting a copy is the cure for a duplicated model, so a
+# guard pinned to today's count would red the day somebody applied it. The count is reported,
+# and the control proves discovery on trees whose contents are known.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/mantra_weave_model_witness.rish
+
+say "mantra-weave-model: Language EN -- three files declare one model; do they still agree?"
+say "mantra-weave-model: Style Gauge, Meter -- an agreement, a disagreement, or a refusal by name."
+say "mantra-weave-model: Lens TAME -- one derived set, no list of copies kept beside it."
+
+# THE CEILING IS SPELLED HERE, ONCE, AND ONLY FALLS. `DISAGREE_CEILING=2` names the two copies
+# that lag the module today -- `mantra/src/main.rye` and the test that inlines it -- and nothing
+# else. The scan defaults to zero, so every pen in the control and every copy arriving disagreeing
+# meets the strict reading; only this call site grants the two known laggards their slack, and it
+# is a ceiling rather than an equality, so reconciling one of them passes free. Lower it the lap a
+# copy is reconciled. Why it is not zero already: closing the gap rewrites `.mantra/`'s on-disk
+# record, which is a seam at Keaton's word rather than a lap's to take.
+say "mantra-weave-model: reading every tracked copy against the module..."
+let scan = run ["env" "DISAGREE_CEILING=2" "sh" "tools/fixtures/m/mantra_weave_model_scan.sh"]
+assert scan.ok else "mantra-weave-model: a copy of the weave model disagrees with the module beyond the ceiling, or cannot be read -- ${scan.out}"
+assert scan.out contains "verdict=ok" else "mantra-weave-model: the scan must reach its own verdict -- ${scan.out}"
+assert scan.out contains "disagreement_ceiling_held=yes" else "mantra-weave-model: a copy declares different fields than the module, past the two this rung knows about -- ${scan.out}"
+assert scan.out contains "unreadable=0" else "mantra-weave-model: a copy of the model cannot be read, so nothing is checking it -- ${scan.out}"
+
+# The module must actually be found. A scan that cannot read its own reference would otherwise
+# report a cheerful zero over an empty set -- REDS %489's fault, one room over.
+assert scan.out contains "module=mantra/src/weave.rye" else "mantra-weave-model: the module the copies are compared against is missing -- ${scan.out}"
+
+say "mantra-weave-model: breaking the agreement in a throwaway pen, thirteen ways..."
+let control = run ["sh" "tools/fixtures/m/mantra_weave_model_control.sh"]
+assert control.ok else "mantra-weave-model: the control must complete -- a guard nobody has watched fail is a guard nobody has tested -- ${control.out}"
+assert control.out contains "control_verdict=ok" else "mantra-weave-model: a planted case behaved wrongly -- ${control.out}"
+assert control.out contains "failures=0" else "mantra-weave-model: a planted case behaved wrongly -- ${control.out}"
+assert control.out contains "behaviors=39" else "mantra-weave-model: the control ran a different number of behaviors than this rung names -- ${control.out}"
+
+# The pen proven innocent first, so every refusal below reads as the break speaking rather than
+# the pen. A scan patched to answer ok whatever it reads fails this control eight ways.
+assert control.out contains "ok    clean/verdict -- ok" else "mantra-weave-model: the clean pen must agree with itself"
+assert control.out contains "ok    clean/copies -- 1" else "mantra-weave-model: the clean pen must find its own copy"
+
+# The hazard this rung exists for, and the one %500 taught: a widened copy and a reordered one.
+assert control.out contains "ok    fourth/verdict -- disagree" else "mantra-weave-model: a copy carrying a fourth field must be caught"
+assert control.out contains "ok    reorder/verdict -- disagree" else "mantra-weave-model: a reordered copy must be caught -- the break a presence check cannot see"
+
+# The ceiling from both sides on one break: the same pen, the same single disagreeing copy, read
+# at zero and then at one. A ceiling proven only in the refusing direction cannot be told from a
+# gate that never welcomes, and a ceiling proven only in the welcoming direction is not a gate.
+assert control.out contains "ok    fourth/ceiling_held -- no" else "mantra-weave-model: a break past the ceiling must name the ceiling it broke"
+assert control.out contains "ok    ceiling_welcomes/verdict -- ok" else "mantra-weave-model: a break inside the ceiling must walk free -- otherwise the ceiling is a gate at zero wearing a number"
+assert control.out contains "ok    ceiling_welcomes/ceiling_held -- yes" else "mantra-weave-model: the scan must say which side of the ceiling it read"
+assert control.out contains "ok    diff_widened/verdict -- disagree" else "mantra-weave-model: Diff must be read rather than assumed"
+assert control.out contains "ok    weave_widened/verdict -- disagree" else "mantra-weave-model: Weave must be read rather than assumed"
+assert control.out contains "ok    one_line/verdict -- unreadable" else "mantra-weave-model: a copy the reader cannot parse must refuse rather than pass"
+
+# The discovery bound, proven from the PASSING side, where a bound is easiest to get wrong: a
+# file declaring Weave alone is another subject and must walk free, and a tree that has deleted
+# its copies must read green rather than be punished for the cure.
+assert control.out contains "ok    not_the_triple/verdict -- ok" else "mantra-weave-model: a file declaring Weave alone is not this model and must not be judged"
+assert control.out contains "ok    module_only/verdict -- ok" else "mantra-weave-model: a tree with no copies left must read green -- deleting a copy is the cure"
+assert control.out contains "ok    no_module/verdict -- no_module" else "mantra-weave-model: an absent module must refuse by name rather than report zero"
+assert control.out contains "ok    lifted/verdict -- ok" else "mantra-weave-model: removing the plant must return the same repository to green"
+
+say "GREEN: no copy of Mantra's weave model disagrees with the module past the two this rung names."
