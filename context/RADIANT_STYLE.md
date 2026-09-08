@@ -40,6 +40,21 @@ buys a page up to a fifth of its sentences in negation, and buys nothing else.
 affirmative AND every sentence poetic, which is the hardest thing this tree knows how to ask for and
 should be claimed rarely.
 
+**This lattice governs what is written from here forward, and it had to, because the alternative was
+to make the tree a liar.** Measured `20260908.141457`, within the hour of seating it: **47 living
+pages carry `Style: Radiant` with no Gauge beside it**, and of a twelve-page sample **one** sits at
+zero negatives. The rest read 12%, 14%, 15%, 27%, 30%, 42%.
+
+**Those pages were not lying.** Before this lattice, naming Radiant meant *the warm register* -- lead
+with what is, active voice, affirmative contrast -- and every one of them keeps that. The word gained
+a number an hour ago, and a word that gains a number does not reach backward to convict the pages
+that used its elder sense.
+
+So: **dated testimony keeps every word it wrote**, exactly as accrete-never-break requires. A living
+page takes the new floor **when a hand next touches it**, and a page that cannot reach zero honestly
+should name itself **Radiant + Gauge** instead, which is what the middle row of the table is for. A
+sweep of 47 pages to satisfy a table written the same afternoon would be the tail wagging the tree.
+
 **One axis is counted and one is judged, said plainly.** `tools/fixtures/p/prose_register_scan.sh`
 measures the negative share exactly, and the quality card reads it. **Poetry has no meter here**, and
 inventing one would be worse than admitting it: a page's claim to be poetic is a writer's claim, read
