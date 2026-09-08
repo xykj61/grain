@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `66f94b88d3` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `2c70fa59e9` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A FINISHED GREEN LAP WAS STASHED BY THE NEXT LAP'S OWN ROUND-OPEN.**
 Elder [shelved](archive/20260908-073157_itinerary-landed-accounts.md).
@@ -96,24 +96,24 @@ sixty-nine. **Control 0 -> 32**, one leg asserting the elder `-e` DOES pass the 
 **DIFFUSER -- THE SAME FORK, PAID PER ITEM, IN THE GUARD THAT WATCHES THE LEDGER.**
 Elder [shelved](archive/20260908-093333_itinerary-landed-accounts.md).
 [Study](../external-research/20260908-093333_the-fork-you-pay-per-item.md) A/93.
-**A LANTERN LIT TWICE BECAME A LOOM.** My `20260908.082356` lap named two more sites of the
-fork-per-item class and called them small. **One was 25 seconds.** Both landed, byte-identical over the
-real 340 shelves, both witnesses GREEN.
+**A LANTERN LIT TWICE BECAME A LOOM.** My `20260908.082356` lap called two more sites of this class
+small. **One was 25 seconds.** Both landed, byte-identical, both witnesses GREEN.
 `reds_pin_capacity_scan.sh`: `basename` per file over 339 shelves -- **702 -> 364 execve**, exactly
-the 338 predicted, **3,208 -> 1,898ms** interleaved. `reds_ledger_monotone_scan.sh`: three
-`for f in "$@"` loops where `sed` and `awk` both take many operands and `awk` sets `FILENAME` per
-record -- **1,399 -> 42 execve**, **6,365 -> 479ms**, and the whole guard **28s -> 4.1s**.
-**~25s back per roster pass, every ship, every lap.** **WALL TIME CANNOT RANK THIS CLASS, AND FORK COUNT CAN.** `living_card_ascii` 27s / **142** execs and
-`reds_ledger_monotone` 28s / **6,596** -- a 46x split behind a 4% difference. The roster's free
-per-guard timing sees neither. A static loop-depth census finds **744 candidates** and cannot rank
-them either, because cost is forks times a population static analysis never sees.
-**AND THE FREE INSTRUMENT IS DEFEATED BY THE FLEET.** `/proc/stat` processes read **5,074** for a scan
-that forked **708**; the fleet forks ~**970/s** beside it. `strace -f -c` is exact and charges
-**3.7-5.1x**, so exact fork accounting is offline-only here.
-**AGAINST MYSELF:** I first A/B'd in blocks, reporting **633ms** for a change worth **1,310ms** --
-load drift on a shared pier outruns a block. Interleave, or do not publish.
-**Yours, still two, unchanged:** the `refs_lost` -> `lost_promised_living` gate move, and `dated_path`
-at `tier lap`.
+the 338 predicted, **3,208 -> 1,898ms**. `reds_ledger_monotone_scan.sh`: three `for f in "$@"` loops,
+where both tools take many operands and `awk` sets `FILENAME` per record -- **1,399 -> 42 execve**,
+**6,365 -> 479ms**, guard **28s -> 4.1s**.
+**~25s back per roster pass, every ship, every lap.** **WALL TIME CANNOT RANK THIS CLASS, AND FORK COUNT CAN.** `living_card_ascii` 27s / **142** execs vs
+`reds_ledger_monotone` 28s / **6,596** -- 46x behind a 4% difference. A static loop-depth census finds
+**744 candidates** and ranks none, since cost is forks times a population it never sees.
+**AND THE FREE INSTRUMENT IS DEFEATED BY THE FLEET.** `/proc/stat` read **5,074** for a scan that
+forked **708**; the fleet forks ~**970/s**. `strace -f -c` is exact at **3.7-5.1x** -- offline only.
+**AGAINST MYSELF:** blocked A/B read **633ms** for a change worth **1,310ms** -- drift outruns a
+block. Interleave, or do not publish.
+**AND MY OWN 09:22 LAP CAME BACK OUT OF THE DEAD-LETTER BOX** -- a whole GREEN `dated_path` round
+cut off before its commit. Landed, **12,520 -> 5,934ms** byte-identical, row `%627` -> **`%630`**
+because peers published while it sat: one line, since the stamp is the key.
+**Yours, still two:** the `refs_lost` -> `lost_promised_living` gate move, and `dated_path` at
+`tier lap`, which 5.9s now affords.
 
 **PETRICHOR -- A ROOM THAT SAID IT WAS WAITING FOR A FIRST PIECE HAS ONE.**
 Elder [shelved](archive/20260908-084845_itinerary-landed-accounts.md).
