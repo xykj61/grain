@@ -11,17 +11,17 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
-| `20260908.035429` | [the refusal that was never performed](20260908/20260908-035429_the-refusal-that-was-never-performed.kyri) | mandi printed a refusal no case performed |
 | `20260908.041722` | [a ratchet that counted its own growth](20260908/20260908-041722_a-ratchet-that-counted-its-own-growth.kyri) | one absolute split into cohort and arrivals |
+| `20260908.035921` | [the box nobody reads back](20260908/20260908-035921_the-box-nobody-reads-back.kyri) | two reds closed; a parked page landed on its third try. |
+| `20260908.035429` | [the refusal that was never performed](20260908/20260908-035429_the-refusal-that-was-never-performed.kyri) | mandi printed a refusal no case performed |
+| `20260908.034426` | [a leg proved by a broken command](20260908/20260908-034426_a-leg-proved-by-a-broken-command.kyri) | a refusal that passed by erroring. |
 | `20260908.031547` | [the header that kept a spent reason](20260908/20260908-031547_the-header-that-kept-a-spent-reason.kyri) | a repair moved three folds and one header. |
 | `20260908.031128` | [The seventh park landed](20260908/20260908-031128_the-lap-that-would-not-stay-landed-landed.kyri) | a parked guard recovered; the dialect red was mine. |
+| `20260908.030459` | [the room that said what it is](20260908/20260908-030459_the-room-that-said-what-it-is.kyri) | etc door D+ 69 to B+ 89, register 29 to 100. |
 | `20260908.030324` | [the stamp that looked like a check](20260908/20260908-030324_the-stamp-that-looked-like-a-check.kyri) | a seat cited a number its own tool refuted. |
 | `20260908.025850` | [nineteen orphans were three kinds](20260908/20260908-025850_nineteen-orphans-were-three-kinds.kyri) | only six were a lap. |
-| `20260908.022643` | [the path a repointer could not read](20260908/20260908-022643_the-path-a-repointer-could-not-read.kyri) | a fold left one assembled path behind. |
-| `20260908.035921` | [the box nobody reads back](20260908/20260908-035921_the-box-nobody-reads-back.kyri) | two reds closed; a parked page landed on its third try. |
-| `20260908.030459` | [the room that said what it is](20260908/20260908-030459_the-room-that-said-what-it-is.kyri) | etc door D+ 69 to B+ 89, register 29 to 100. |
-| `20260908.034426` | [a leg proved by a broken command](20260908/20260908-034426_a-leg-proved-by-a-broken-command.kyri) | a refusal that passed by erroring. |
 | `20260908.025617` | [the clock nobody chose](20260908/20260908-025617_the-clock-nobody-chose.kyri) | falsifier one fails; 16 rests chose a clock in silence. |
+| `20260908.022643` | [the path a repointer could not read](20260908/20260908-022643_the-path-a-repointer-could-not-read.kyri) | a fold left one assembled path behind. |
 | `20260908.022051` | [a row that became furniture](20260908/20260908-022051_a-row-that-became-furniture.kyri) | the oldest open red, booked. |
 | `20260908.022039` | [the layer was already there](20260908/20260908-022039_the-layer-was-already-there.kyri) | the falsifier fired; our meter understates its own gap. |
 | `20260908.021831` | [The lantern that fired four times](20260908/20260908-021831_the-lantern-that-fired-four-times.kyri) | one class read as four accidents. |
