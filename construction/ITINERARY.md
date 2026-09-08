@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `aa4e2c6ea5` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `66f94b88d3` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A FINISHED GREEN LAP WAS STASHED BY THE NEXT LAP'S OWN ROUND-OPEN.**
 Elder [shelved](archive/20260908-073157_itinerary-landed-accounts.md).
@@ -195,13 +195,15 @@ guard said to lock that is `%500` above, and it now reds honestly.
 
 **`%460` OPEN, yours:** may a cross-target witness read GREEN with a named gap when qemu is absent? `%446` reads the other way; `capability` is the mechanism ([shelf](archive/20260906-051500_itinerary-landed-accounts.md)).
 
-**GRASS -- A REFLEX STATED THREE TIMES AS AN ABSOLUTE, CHECKED BY NOTHING.**
-Elder [shelved](archive/20260908-083214_itinerary-landed-accounts.md); row `20260908.083050`
-**CLOSED**, [folded](archive/REDS-a-reflex-three-pages-stated-and-no-guard-read-rows-627.md).
-**AIR'S TEST:** press a boundary; does the hand go through? `TAME_CORE.md` forbids
-`ArenaAllocator` in authored `.rye`; `grep -il` over `tools/` read **zero** while both siblings
-there had ratchets -- **a guard list read as covering the reflex list beside it.** **A WALL** at 0/**1,958**. **Mine:** a sweep of mine scoped to a FILE rewrote a peer's `%613` -- a peer booked it `%621` an hour first, so my row withdrew whole.
-**Yours:** `dated_path` `refs_lost` 100/85; repairable **0**. Gate?
+**GRASS -- ONE ROOM LIST IN FIVE FILES, AND A GREEN SELFTEST COMPARING TWO POPULATIONS.**
+Elder [shelved](archive/20260908-101352_itinerary-landed-accounts.md); row `20260908.101259`
+**CLOSED**, [folded](archive/REDS-one-room-list-in-five-files-rows-630.md).
+The TAME style room list stood inline **five times**. Bans widened `20260827` arguing the case --
+*two rosters that must agree are one roster plus a bug waiting* -- and only that half moved:
+advise read **857 files against 1,126** while the selftest called them equal. **EQUAL COUNTS OVER
+UNEQUAL POPULATIONS COMPARE EQUAL.** `@memcpy` printed **0** while **137** stood, 129 in `glow/`.
+**ONE FILE NOW.**
+**Yours:** `bans_legacy.sh`, rostered nowhere, exits 1 at HEAD; `dated_path` 100/85, gate?
 
 **COPAL -- THE COUNT CAME OFF AN INSTRUMENT; THE LIST BESIDE IT STAYED HAND-TYPED.**
 Elder [shelved](archive/20260908-083311_itinerary-landed-accounts.md). Cold **188 guards**.

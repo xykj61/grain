@@ -13,7 +13,13 @@
 # ban is not a violation. Planted pair:
 #   tools/t/tame_style_ban_err_eq_comment_selftest.rish
 
-let find_rye = "find mantra caravan linengrow comlink rishi/src tally aurora pond brushstroke image mikrophone rye/src amphora glow mycelium constel lattice ember lantern scribble -name '*.rye' ! -type l ! -path '*/.cache/*' ! -path '*/bin/*' 2>/dev/null"
+# THE ROOMS COME FROM ONE FILE, from 20260908 -- tools/fixtures/t/tame_style_rooms.txt.
+# The comment below argued that two rosters which must agree are one roster plus a red waiting,
+# then widened this half alone; the advise half kept the elder fifteen rooms for twelve days and
+# the pair a selftest calls equal read 857 files against 1,126. The find FLAGS stay here because
+# they say what a file is, where the list says which rooms the law reaches.
+let tame_rooms = "grep -v '^#' tools/fixtures/t/tame_style_rooms.txt | grep -v '^$'"
+let find_rye = "find $(${tame_rooms}) -name '*.rye' ! -type l ! -path '*/.cache/*' ! -path '*/bin/*' 2>/dev/null"
 let ban_nc = "tools/fixtures/t/tame_style_ban_noncomment_files.sh"
 
 # THE COMPOUND-ASSERT ROSTER READS THE SAME ROOMS AS EVERY OTHER BAN, from 20260828.
