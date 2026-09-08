@@ -16,14 +16,23 @@
 # under 20%. The roster is named below rather than discovered, so a new file cannot join the
 # enforced tier by accident and red on work it never agreed to cover.
 #
-# WHAT THE GATED TIER LEAVES OUT, measured 20260907 and printed here rather than assumed. The
-# roster names thirteen documents. Across the 80 tracked front doors carrying at least the
-# eight-sentence floor, 30 read above the 20% ceiling and stand outside it. So a green
-# door_over_ceiling=0 says THE DOORS THAT AGREED ARE INSIDE, rather than every door in the tree is
-# -- the same distinction a roster-shaped guard owes its reader anywhere. A room joins by paying
-# its way in: sweep the page under the ceiling, then add its path here in the same commit.
-# amphora/README.md did exactly that on 20260907, 29% of 41 sentences to 14%, six sentences
-# restated to lead with what is and every claim, number and path held.
+# WHAT THE GATED TIER LEAVES OUT, counted on every run rather than written down once. A green
+# door_over_ceiling=0 says THE DOORS THAT AGREED ARE INSIDE, rather than every door in the tree
+# is -- the same distinction a roster-shaped guard owes its reader anywhere. So the scan reads
+# every tracked README.md, holds it to the same eight-sentence floor, and prints the ones the
+# roster leaves out that stand above the door ceiling: `front_doors`, `front_doors_readable`,
+# `front_doors_unrostered_over` and a `candidate:` line naming each. A room joins by paying its
+# way in -- sweep the page under the ceiling, then add its path to DOOR in the same commit --
+# and its `candidate:` line goes away as it does. amphora/README.md did exactly that on
+# 20260907, 29% of 41 sentences to 14%, six sentences restated to lead with what is and every
+# claim, number and path held.
+#
+# THE POPULATION IS REPORTED AND NEVER GATED, for the reason the roster exists at all: a page
+# that has agreed to nothing must not red the tree. What the reading buys is that the blind spot
+# carries a live number and a list of names instead of a sentence somebody typed once. The elder
+# form of this paragraph carried `80` and `30` measured 20260907, and a figure held in prose
+# drifts the first lap nobody edits both -- which is the habit `.claude/rules/session-logs.md`
+# already names: count them rather than quoting a number.
 #
 # WHAT IS REPORTED, as a ratchet under a ceiling that only ever falls. The teaching tier --
 # docs-geode/, manual/, docs-geode/edu/yonder/, and the root guides a newcomer opens -- counted as documents sitting
@@ -57,6 +66,9 @@ FIELD_MAX=30
 # what lets tools/fixtures/q/qa_report_card.sh CITE the number instead of copying it, the same way it
 # already cites measure(). One floor, two readings, and no way for them to drift apart.
 REGISTER_MIN_SENTENCES=8
+# The candidate listing stops here and says so. Forty holds every front door this tree has ever
+# read over the ceiling with room to spare, and an unbounded printout is an unbounded allocation.
+FRONT_DETAIL_MAX=40
 # THE CEILING ONLY EVER FALLS FOR A GIVEN READING, and on 20260906 the reading changed: measure()
 # began reading the body paragraphs the `*` branch had been dropping (REDS %451), which is roughly
 # twice the page on a Gauge document. A number the new reading produces and a number the old one
@@ -193,6 +205,36 @@ while IFS= read -r f; do
   fi
 done < "$work/teaching.txt"
 
+# THE UNROSTERED FRONT DOORS. Every tracked README.md is a front door by construction -- it is the
+# page a reader meets when they open the room. A dated basename is testimony and is read past, by
+# the same rule the teaching tier uses. The floor is REGISTER_MIN_SENTENCES, cited rather than
+# respelled, so a door too short to read a share from honestly is counted as unreadable rather
+# than as passing.
+#
+# TWO ROOMS ARE READ PAST, each for a reason a lane could not argue with. `tools/fixtures/` holds
+# planted and frozen material -- `caravan_ladder_prose_close_elder/README.md` opens *kept exactly
+# as it shipped* -- and a control reads those bytes as its plant, so sweeping one would break the
+# guard rather than improve a door. `vendor/` is third-party source held unmodified by law
+# (`.claude/rules/gratitude-licenses.md`). Both would put a name on a list nobody may act on,
+# which is the complaint this reading exists to answer.
+front_doors=0
+front_readable=0
+front_unrostered_over=0
+: > "$work/candidates.txt"
+git ls-files '*README.md' 2>/dev/null \
+  | grep -vE '(^|/)[0-9]{8}-[0-9]{6}[_.]|^tools/fixtures/|^vendor/' > "$work/front.txt"
+while IFS= read -r f; do
+  [ -f "$f" ] || continue
+  front_doors=$((front_doors + 1))
+  set -- $(measure "$f")
+  [ "$1" -ge "$REGISTER_MIN_SENTENCES" ] || continue
+  front_readable=$((front_readable + 1))
+  [ "$3" -gt "$DOOR_MAX" ] || continue
+  case " $DOOR " in *" $f "*) continue ;; esac
+  front_unrostered_over=$((front_unrostered_over + 1))
+  printf 'candidate: %s %s%% (%s of %s sentences)\n' "$f" "$3" "$2" "$1" >> "$work/candidates.txt"
+done < "$work/front.txt"
+
 cat "$work/door.txt"
 echo "door_documents=$(echo $DOOR | wc -w | tr -d ' ')"
 echo "door_over_ceiling=$door_over"
@@ -201,6 +243,17 @@ echo "teaching_documents=$(wc -l < "$work/teaching.txt" | tr -d ' ')"
 echo "teaching_over_field_target=$teaching_over"
 echo "teaching_ceiling=$ceiling"
 [ "$teaching_over" -eq 0 ] || sort -t% -k1 "$work/teaching_over.txt" | head -8
+echo "front_doors=$front_doors"
+echo "front_doors_readable=$front_readable"
+echo "front_doors_unrostered_over=$front_unrostered_over"
+# Bounded: a printout is an allocation (TAME). Past this the count still stands and the listing
+# says where it stopped, so a reader is never told a short list is the whole one.
+if [ "$front_unrostered_over" -gt 0 ]; then
+  sort "$work/candidates.txt" | head -"$FRONT_DETAIL_MAX"
+  if [ "$front_unrostered_over" -gt "$FRONT_DETAIL_MAX" ]; then
+    echo "candidates_truncated_at=$FRONT_DETAIL_MAX"
+  fi
+fi
 
 if [ "$door_over" -eq 0 ] && [ "$teaching_over" -le "$ceiling" ]; then
   echo "verdict=ok"

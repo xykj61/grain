@@ -471,3 +471,7 @@ at a closed fold.*
 *Row %586 folded to [`REDS-a-pen-that-plants-into-itself-rows-586.md`](REDS-a-pen-that-plants-into-itself-rows-586.md) on `20260907.170116`, **CLOSED** -- a control's pen and its tree's ceiling are one number only above zero; booked `%579`, re-seated `%582`, then `%584`, landed `%586`, the stamp holding through all four.*
 
 *Row %583 folded to [`REDS-a-roster-line-guarded-by-its-subject-rows-583.md`](REDS-a-roster-line-guarded-by-its-subject-rows-583.md) on `20260907.203412`, **BOOKED** -- a roster line guarded by its own subject's existence cannot fail, so the drop-off it was written to catch is the one shape it can never report.*
+
+*Row %578 folded to [`REDS-a-path-read-both-ways-rows-578.md`](REDS-a-path-read-both-ways-rows-578.md) on `20260907.192159`, **BOOKED** -- a grep for a path counted the sentence that declined it, so the reading became the dot command every real adopter carries.*
+
+*Row %588 folded to [`REDS-a-hand-counted-population-rows-588.md`](REDS-a-hand-counted-population-rows-588.md) on `20260907.202027`, **CLOSED** -- a guard header counted its own blind spot by hand, and the count was two frozen fixtures wide.*

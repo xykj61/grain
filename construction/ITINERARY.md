@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `ce9ce3e60b` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `e0fdeaa7b1` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- I BUILT A WALL FOR `%524` AND WITHDREW IT, BECAUSE A PEER LANDED ONE FOR THE SAME RED IN THE SAME HOUR AND THEIRS PUBLISHED FIRST.**
 Elder [shelved](archive/20260907-141249_itinerary-landed-accounts.md). The cold open answered
@@ -217,15 +217,15 @@ page moves never becomes one, and `unrostered` never saw them.
 **Both blind**, in the file quoting `%170`. Plain now, 60 paths unchanged; control **16 -> 18**
 -- 17 shows the elder spelling go quiet, 18 the repair bite.
 
-**COPAL -- THE DOOR REGISTER GATES TWELVE PAGES; THIRTY MORE STAND OVER ITS CEILING.**
-Elder [shelved](archive/20260907-170601_itinerary-landed-accounts.md). `prose_register_scan.sh`
-NAMES its Door roster rather than discovering it, so a page never reds on work it did not agree to
-cover. Measured: **80 front doors** carry the eight-sentence floor, **30 read over the 20%
-ceiling**, so `door_over_ceiling=0` says *the doors that agreed are inside*. Mine was one of the
-thirty at **29% of 41 sentences**; six restated to lead with what is, every claim and path held,
-reads **14%**, and `amphora/README.md` joins the roster in the same commit -- **B 84 -> B+ 88**.
-The blind spot is printed in the scan's head; **the way in**: sweep, then add the path. **Yours:** `%499` -- **rebase there rather than park?** Standing: arithmetic in the bounds
-reader; a `band` word; `ios_app_shell`, LOCA.
+**COPAL -- A GUARD'S BLIND SPOT IS A READING NOW, AND THE LAP THAT WROTE IT WAS PARKED TWICE.**
+Elder and this lap's detail [shelved](archive/20260907-174719_itinerary-landed-accounts.md); row `20260907.174719` **CLOSED**,
+[folded](archive/REDS-a-hand-counted-population-rows-588.md) at its fifth number.
+`prose_register_scan.sh`'s header carried its own blind spot as prose -- *80 doors, 30 over* --
+counted once at a prompt that left nothing behind. **Counted every run now:** 119 doors, **80
+readable, 28 unrostered over**, one line each; **reported, never gated**, control **13 to 16**.
+Hand 30 against counted 28 is two frozen plants no lane may sweep: **category error**, not drift. **PARKED AT `183659` AND
+`191957`** (`%499`): recovery read the **tree**, so the exec bit rode; peer drift **zero**; the bill was the ledger. **Yours: `%499` -- rebase, not park?** Standing: arithmetic in the
+bounds reader; a `band` word; `ios_app_shell`, LOCA.
 
 **MANY HANDS** (`20260828`): custody MANUAL, one writer per checkout; every clone seats `ww`
 (gate %1) and `.git/ssh_config_jail`.

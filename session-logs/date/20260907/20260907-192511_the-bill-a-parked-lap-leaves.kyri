@@ -1,0 +1,46 @@
+format session-log-v1
+stamp 20260907.192511
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role unattended fleet ship COPAL
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_reasoning max
+configured_status tracked settings file, not runtime telemetry
+evidence .claude/settings.json
+voice Kyri
+host NixOS pier, America/New_York
+title The bill a parked lap leaves
+prompt the baton -- COPAL, lane amphora and bron-resins, next agent-doable lap
+rota lap 4205, row 0 -- Aether, the row that hears: why the work exists. Read the threshold, then the Lindy page. It named this lap's finding before the lap did -- witness before narrative, because a checked claim stays checkable while an asserted one fades into the silence the row is trained to notice. A population typed into a guard's header is an asserted claim; the same population counted on every run is a checked one.
+think Opened on a clean tree with ten stashes, the newest written at 20260907.191957 -- eleven seconds before my own clock read. That is the round open parking a lap, and the parked lap was mine.
+think Read both new stashes before touching anything. Same six paths in each, an elder and a later draft of one round: the prose_register census, its control, its witness, one session log, one accounts shelf, one REDS fold shelf. The work had been written twice and sent zero times.
+think git diff stash@{0}^ HEAD over the three tool files came back empty, so no peer had touched them in either park. That is what made the recovery mechanical rather than a merge.
+think Recovered with git checkout stash@{0} -- <path>, which reads the tree object rather than the blob, so mode 100755 rode back with both fixtures. git show would have landed them 100644 and reddened exec_bit on the next lap.
+think Ran the witness before writing a word of prose. GREEN, twenty assertions, the three census legs among them.
+obs THE WORK RECOVERS WHOLE AND THE LEDGER DOES NOT. Every byte of the three tool files came back untouched; every ledger byte around them had moved. The row renumbered a third time -- 576 at the first park, 584 off the fetched spine now -- and both pins had returned to their ceilings, REDS at 38,636 of 40,960 and the card at 40,957 of 40,960, three bytes free.
+obs So the bill of a park is paid in pins and numbers rather than in work. %578 folded to its own shelf to seat the new row, and my card block was rewritten six times against living_pin_max_bytes before it fit -- 1,900 bytes of account condensed to 890, with the detail folded onto the accounts shelf where a link can still reach it.
+obs THE DRAFT LOG CARRIED A CLAIM THAT HAD GONE FALSE WHILE IT SAT. Two lines named %576 as the row folded for room; a peer folded %576 at 20260907.172225 while this lap was parked, so the draft would have shipped a path to a file it did not create. Corrected in the draft rather than errata'd after, because a stash is not testimony -- nothing had published, and correcting an unshipped draft costs one line where correcting a shipped one costs a row.
+obs What the aether row heard: the finding and the fault are the same shape one level apart. The scan's header asserted a population; the draft log asserted a fold. Both were true when typed and neither was checked at the moment it shipped.
+obs THE FIRST HOT PASS REFUSED BEFORE IT RAN A GUARD, AND THE ORPHAN WAS MINE. run_verdict=run_in_flight named pid 2654575 holding construction/standing-equipment-run.lock.d, started 19:18:56 -- the parked lap's own runner, detached, its group leader gone and its output reaching nobody. /proc/2654575/cwd resolved to this tree before I signalled it, and kill -TERM on that one pid ran the runner's own EXIT trap and released the lock, where pkill -f would have reached across a pier eight ships share (%569).
+obs TWO REDS IN THE FIRST FULL PASS, NEITHER AUTHORED HERE, BOTH WITH A NAMED REPAIR. index_row_bound refused rows_misordered=1 on a peer's pair, 20260907.155612 standing above 20260907.165730, closed by the repair the scan itself advises. plant refused sourcing=14 against a floor spelling 13: a fourteenth control adopted the plant law and the floor did not follow, which is the assert's own instruction -- raise this line when a lane adopts. Raised, with the say line beside it. standing_equipment was the third and it was the mirror of the other two.
+loom roster=hot guards=173 green=170 red=0 gated=3 seconds=1483 tree_moved=no verdict=ok
+loom roster=hot_first guards=173 green=167 red=3 roots=2 mine=0
+loom witness=prose_register wall_s=79 assertions=20 verdict=GREEN
+loom scan=prose_register front_doors=119 readable=80 unrostered_over=28 door_over_ceiling=0
+loom recovery=stash_checkout files=6 peer_drift_files=0 modes_preserved=2
+loom pins=at_ceiling reds_before=38636 card_before=40957 ceiling=40960
+loom card=qa_report_card path=construction/archive/20260907-174719_itinerary-landed-accounts.md composite=92 letter=A
+file tools/fixtures/p/prose_register_scan.sh the unrostered front-door census, recovered whole and unchanged
+file tools/fixtures/p/prose_register_control.sh the three census legs, 13 behaviors to 16
+file tools/p/prose_register_witness.rish the three assertions and the head that says what the census reads
+file construction/REDS.md the row seated at 584 off the fetched spine, %578 lifted to its shelf
+file construction/archive/REDS-a-path-read-both-ways-rows-578.md the folded row, stamped at the fold rather than at the draft
+file construction/archive/20260907-174719_itinerary-landed-accounts.md the elder account, and this lap's detail beside it
+file tools/p/plant_witness.rish the adoption floor raised 13 to 14, the count the tree measures
+file construction/ITINERARY.md the COPAL account at 890 bytes, and the git nib
+file session-logs/date/20260907/20260907-175021_the-number-i-typed-into-my-own-header.kyri the parked lap's own record, two stale lines corrected before it shipped
+recommend keep-going -- the census stands and the lane's own second door is the next mechanical lap. Worth Keaton's word on %499, sharper now that it has parked this seat twice in one day: may a round open rebase onto its own uncommitted work rather than stashing it, when the stash is the lap's own and no peer has touched the paths?
