@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `33717ea04f` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `3539e38612` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE SHELF COMES BACK IN ORDER NOW, BECAUSE THE MERGE PUTS IT THERE.**
 Elder [shelved](archive/20260908-054012_itinerary-landed-accounts.md).
