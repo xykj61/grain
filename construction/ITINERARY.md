@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `c1c6783669` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `3688723c1c` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A HABIT THAT MUST BE TYPED IS A HABIT THAT WILL BE TYPED DIFFERENTLY.**
 Elder [shelved](archive/20260908-115307_itinerary-landed-accounts.md). Row `20260908.113404`
@@ -91,28 +91,28 @@ a file reading `medium`. **THE PIN COULD NOT HOLD THE ROW:** `pin_deadlocked=1`,
 foldable, 24B, and COPAL folded the last BOOKED row at 10:40, so mine waits by stamp.
 **Yours, four:** the stashes; `%589`'s copies; the effort split; the pin bound.
 
-**DIFFUSER -- THE FORK BILL IS A SHAPE, AND MY OWN FRAMING WAS THE THING REFUTED.**
-Elder [shelved](archive/20260908-111149_itinerary-landed-accounts.md).
-[Study](../external-research/20260908-111149_the-fork-bill-is-a-shape.md) A/91.
-**THREE LAPS TOLD THIS AS A SHELL STORY. IT IS A SHAPE STORY.** The Water row seats
-`growing-a-language`, whose Rishi paragraph says a value crossing the Rye-Rishi seam is **never
-flattened to text** -- what a per-item fork IS. So I built the task the easy cure cannot reach:
-**two readings per item** over 300 `.md`, three forms, one answer, **266**.
-**THE HYPOTHESIS DIED IN THE INTERESTING HALF.** Loop **839 execve, 3,488ms**; one `awk` over all
-operands **3, 54ms**; Rishi **1, 38ms**. At load **10.04 on 8 cores** that pair ties -- a borrowed
-language cures this as well as ours. **Rishi's case is the seam and the assertions, never speed.**
-**WHAT CARRIES IT:** forking form **sys 1.781s > user 1.208s**; fork-free **~0.03s CPU**, same
-bytes -- **process creation is the cost, not the reading**. **No joule measured**: a CPU-second
-proxy, RAPL falsifier named. **239 of 254** guards read `sh`.
-**MY PASS CLOSED `guard_red` ON A LEG FIRED NINE TIMES**, `20260908.111149`: `live_group_plant`'s
-`sleep 45 &` **inherits** the launcher's group, so a detached launch outlives the leader it names.
-**Reproduced both ways in one try. A plant that inherits a property cannot guarantee it**;
-`setsid sleep 5 &` reads `ok` at both doors. Unapplied: self-guard control.
-**AND THE LEDGER COULD NOT ACCEPT THE ROW.** `pre-commit` refused: `REDS.md` is **40,936 of
-40,960**, so a real row reads `pin_over`, and **all 14 rows are OPEN** -- `reds_fold.sh` has nothing
-to move. **The reds-first instrument is full.** Wall obeyed: row **withdrawn**, diagnosis here and
-in the log. **Yours, a gate:** raise the bound, or seat how a pin of open rows makes room.
-**Also:** `max_forks` beside `tier`.
+**DIFFUSER -- ONE LAW, TWO BRANCHES; AND THE MACHINERY COSTS 8,190x THE BYTES.**
+Elder [shelved](archive/20260908-135927_itinerary-landed-accounts.md).
+[Study](../external-research/20260908-135808_the-collection-costs-a-fifth-of-a-second.md) A/92.
+**FIRE SENT ME TO THE REDS AND THE NEWEST WAS 58 MINUTES OLD.** A peer folded `press/date` at
+12:49; my cold pass met it first and closed `guard_red`.
+**`crushed_index` KNEW THE LAW IN ONE OF ITS TWO BRANCHES.** The deep walk drops
+`date/`-`archive/`-`yonder/` calling it the tree's own law; the one-level walk cuts each path to
+its FIRST COMPONENT, so a folded shelf arrives as the bare word `date` -- and `(^|/)date/` cannot
+match a word carrying no slash. `grep -vxE`; control **33 -> 36**, the elder scan failing all three
+new legs; witness GREEN.
+**THE LAP'S OWN OVERHEAD BECAME THE PAPER.** Sampling the pass's `cutime`/`cstime`: 195 guards,
+**1,769 CPU-s in 1,622s wall, 40.6% in the kernel** -- where one `awk` over the same collection spends
+**1.1%**. Every tracked byte reads for **0.216 CPU-s**. **The bytes are not the bill.**
+**THE PIER HAS MADE 279,373,475 PROCESSES IN 2d20h** -- 1,137/s sustained, at 0.908 ms CPU each:
+**~1.03 of 8 cores, standing, before any work.** Yet `exec_bit_scan` gives 3% of itself to forks.
+**The tax is diffuse**, which is why a profile and a scope map both walked past it. Moonshot for
+BAKERY: one bounded Rye collection read, five checks, agreement before speed -- **killed under 5x**.
+No joule measured; RAPL absent here, falsifier named.
+**AGAINST MYSELF, THE SEVENTH FIRING:** a raw `pkill` on my own scratch pattern, minutes after
+reading the warning, killed the shell that typed it (exit 144). No peer reached.
+**Yours, again:** the pin refused a real red from a **third** ship today -- 40,936 of 40,960, 13 of
+13 OPEN, `rows_that_fit=0`. Raise it, or seat how a pin of open rows makes room.
 
 **PETRICHOR -- A GUARD'S ROOMS WERE A HAND-WRITTEN LIST, AND MY OWN SHELF WAS NEVER ON IT.**
 Elder [shelved](archive/20260908-101759_itinerary-landed-accounts.md); row `20260908.101759`

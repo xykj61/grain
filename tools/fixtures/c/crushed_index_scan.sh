@@ -244,7 +244,15 @@ while read -r page room depth; do
       continue
     fi
   else
-    git ls-files "$room" | sed "s|^$room||" | cut -d/ -f1 | sort -u | grep -v '^README\.md$' > "$work/members.txt" || true
+    # THE SAME LAW AS THE DEEP BRANCH, applied where a member is a bare path component. The deep
+    # walk above drops `date/`, `archive/`, and `yonder/` because those rooms hold testimony and
+    # deferred work, which an index does not owe a row. The one-level walk cuts each path to its
+    # first component, so a folded day shelf arrives here as the bare word `date` -- and a pattern
+    # written `(^|/)date/` cannot match a word carrying no slash. `press/` folded its first shelf on
+    # `20260908` and the guard immediately asked its index for a row naming `date`, a row the tree's
+    # own fold law forbids. One law, two branches, and only one of them had it.
+    git ls-files "$room" | sed "s|^$room||" | cut -d/ -f1 | sort -u \
+      | grep -vxE '(date|archive|yonder)' | grep -v '^README\.md$' > "$work/members.txt" || true
   fi
   while IFS= read -r m; do
     [ -n "$m" ] || continue
