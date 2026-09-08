@@ -229,7 +229,12 @@ done
 # landed upstream in the same window, unrostered, and the population came back to 1093. A ceiling
 # reports what the tree reads, so it stands where it was published rather than recording a fall
 # the tree no longer shows.
-CEILING=${WITNESS_REACH_CEILING:-1093}
+# THE CEILING FALLS 1093 -> 1030 (`20260908.185500`). Ten front-door witnesses joined the roster
+# this lap as one `sunn_front_doors` choir entry, and the ceiling follows what the tree actually
+# reads rather than keeping slack a later lap could spend without noticing. Slack in a ratchet is a
+# quiet allowance to get worse: the reading had stood 63 under its own ceiling, so 63 witnesses
+# could have fallen out of reach and every pass would still have read green.
+CEILING=${WITNESS_REACH_CEILING:-1029}
 # The family ceiling, seated 20260828 at what the tree measured that day: 220 of 292 families carry
 # no clock at all. It only falls, and it falls whenever a family's first roster row lands. It is a
 # ratchet rather than a wall at zero for the same reason CEILING is: a wall that refuses ordinary

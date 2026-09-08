@@ -1557,6 +1557,34 @@ path tools/gen/chapter/sunn15_journey_close_witness.rish
 tier cadence
 seated 20260908.183744
 
+# font5x7_choir -- 45 witnesses covered this font's glyph tables and NOT ONE was reached by any
+# pass; `witness_reach_scan.sh` counted every one `unheard`. One choir row rather than 45 roster
+# rows, and the family is DISCOVERED rather than listed, since a hand-written list goes stale the
+# first lap somebody adds a glyph table and goes stale silently. Two faults met while writing it are
+# recorded in the scan, both because each read exactly like a pass: a glob assuming a middle segment
+# ran 44 of 45, and an untrimmed `wc` newline reached `sh` as two lines. Eight behaviors proven in a
+# pen, every refusal planted and then lifted, the bound shown from both sides at the bound itself.
+#
+# ONE HONEST LIMIT, measured rather than assumed: `witness_reach_scan.sh` counts a witness reached
+# when a rostered file NAMES it, and this choir discovers its family by glob, so the meter moved by
+# ONE when 45 witnesses began running. The 45 genuinely run -- the scan prints `members=45` and
+# fails on any red -- and the meter cannot see a glob. Naming all 45 would satisfy the number and
+# reintroduce the stale-list fault the discovery exists to prevent, so the run is kept and the
+# number is explained here. A meter that would be improved by making the code worse is a meter to
+# read alongside the thing, never instead of it.
+guard font5x7_choir
+path tools/f/font5x7_choir.rish
+tier cadence
+seated 20260908.185500
+
+# fleet_rearm -- the seat printer and its sentinel wall, proven on a real pen. It was unheard by
+# every pass until `20260908.185500`, and this lap had already repaired its shared constant pen, so
+# a guard proven green the same hour was still one nothing ran.
+guard fleet_rearm
+path tools/f/fleet_rearm_witness.rish
+tier cadence
+seated 20260908.185500
+
 # fleet_call -- a signal is not a file, so one-writer-per-checkout never reached it. Eight ships run
 # one program name from eight trees on one pier, and `pkill -f standing_equipment_run` therefore
 # reaches the fleet rather than the lap: measured live on this pier the same hour, sixteen peer
