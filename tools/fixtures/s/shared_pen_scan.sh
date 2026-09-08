@@ -235,8 +235,15 @@ root=${SHARED_PEN_ROOT:-.}
 # eight ships running one roster is one directory eight hands wipe. It takes `mktemp -d` now and
 # interpolates the captured path, so files 49 -> 48 and wiping 15 -> 14. A ratchet migrates on
 # touch, and this lap was in the fleet tools already.
-files_ceiling=${SHARED_PEN_FILES_CEILING:-48}
-wipe_ceiling=${SHARED_PEN_WIPE_CEILING:-14}
+# AND BOTH FALL AGAIN, `20260908.175200`: `tools/f/fleet_lap_verdict_witness.rish` wrote two
+# constant transcripts and asked the classifier to read each one back in the same shell, so a peer
+# landing between the write and the read fed this witness a transcript it never wrote -- a silent
+# failure that INVERTS a verdict, which is the fault the guard exists to catch. Files 48 -> 47 and
+# wiping 14 -> 13. `tools/g/glow_host_run_witness.sh` carries the same shape in two `.out` files
+# and stays counted on purpose: it SKIPs on a host lacking GLOW_HOST.kyri, which this pier is, so
+# no lap here can close the repair on metal and a claim is not a witness.
+files_ceiling=${SHARED_PEN_FILES_CEILING:-47}
+wipe_ceiling=${SHARED_PEN_WIPE_CEILING:-13}
 
 cd "$root" 2>/dev/null || { echo "verdict=no_root"; echo "refused: $root is not a directory" >&2; exit 1; }
 git rev-parse --git-dir >/dev/null 2>&1 || { echo "verdict=no_git"; echo "refused: this scan reads git ls-files" >&2; exit 1; }
