@@ -1,0 +1,44 @@
+# amphora_roster_witness.rish -- every authored Amphora module answers to a rostered guard.
+#
+# TWO CLAIMS, in the order that makes the second worth believing. The control runs first: 40 planted
+# behaviors on throwaway rooms, each refusal shown from the failing side and then lifted, the
+# reported reading proven to leave the verdict alone, and the pen proven innocent against a scan
+# patched to always answer ok. The real room follows, once the instrument has shown it can red. A
+# guard proven able to refuse is a guard whose green carries weight, so the order earns its place.
+#
+# WHY IT EXISTS (`20260907.223214`). The Sound lane has held this reading for `tally/` since
+# `20260826` -- *every tally module answers to a witness, or is counted*. The vessel room answered
+# the same question in prose: the roster's own block carried a module and line figure a hand
+# corrected by typing, and `amphora/README.md` read *twelve standing witnesses run every lap* while
+# fifteen rows stood under `tools/am/`, thirteen of them on the lap clock. A scan reports on every
+# run where prose keeps whatever it was given, so the count reads off an instrument from here
+# forward. That is REDS `%360`'s family, repaired the way the family asks.
+#
+# WHAT IS GATED, and what is counted beside it. `uncovered` and `orphan_rows` stand at zero, each
+# for a plain reason: a module every rostered guard passes over would ship a break green, and a
+# roster row earns its place by naming a file that stands. `singly_covered` is REPORTED, because a
+# module born today is named by exactly one guard on the day it lands -- a ceiling there would
+# refuse the most ordinary work in the room, and a wall like that is one somebody turns off.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/am/amphora_roster_witness.rish
+
+let control = "tools/fixtures/am/amphora_roster_control.sh"
+let scan = "tools/fixtures/am/amphora_roster_scan.sh"
+
+say "amphora roster: the control, so a green reading below can be believed..."
+let c = run ["sh" control]
+assert c.ok else "amphora_roster: control FAILED -- the scan cannot be trusted to red"
+assert c.out contains "verdict=ok" else "amphora_roster: control did not answer ok"
+assert c.out contains "behaviors=40" else "amphora_roster: control ran a different number of behaviors"
+assert c.out contains "failed=0" else "amphora_roster: control reported a failed behavior"
+assert c.out contains "innocence patch landed" else "amphora_roster: the innocence patch planted nothing"
+
+say "amphora roster: the real room..."
+let s = run ["sh" scan]
+assert s.ok else "amphora_roster: the room and the roster disagree"
+assert s.out contains "verdict=ok" else "amphora_roster: scan did not answer ok"
+assert s.out contains "uncovered=0" else "amphora_roster: a module no rostered guard names"
+assert s.out contains "orphan_rows=0" else "amphora_roster: a roster row naming an absent guard"
+
+say "GREEN: amphora roster -- 40 planted behaviors, and every authored module has a rostered guard."

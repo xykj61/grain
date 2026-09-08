@@ -37,7 +37,7 @@ at `20260906.230614`, cited by stamp here until the anointed spine binds its num
 **So step 2 begins by asking.** `[ -d .git/rebase-merge ] || [ -d .git/rebase-apply ]` answers in one
 test; a standing rebase is finished or aborted before any amend. The same sentence is already seated
 one room over for the round-open -- *do not run `git rebase --continue` on a tree that opens
-mid-rebase* ([`the-baton`](the-baton.md)) -- and it is owed to the send for the same reason: **a
+mid-rebase* ([`the-baton`](the-baton.mdc)) -- and it is owed to the send for the same reason: **a
 rebase is a state, and a chained command carries none.**
 
 **What made this recoverable rather than a loss:** nothing had been pushed, so upstream held the

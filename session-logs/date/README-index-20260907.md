@@ -14,6 +14,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260907.234808` | [the claim nobody counted](20260907/20260907-234808_the-claim-nobody-counted.kyri) | 30 writers, 3 converge. |
 | `20260907.232825` | [One law, two derivations](20260907/20260907-232825_one-law-two-derivations.kyri) | a ceiling refused eight ships over a doubling no lap may repair. |
 | `20260907.232343` | [the census counting its own lesson](20260907/20260907-232343_the-census-counting-its-own-lesson.kyri) | three fabricated stamps repaired |
+| `20260907.230609` | [The room next door](20260907/20260907-230609_the-room-next-door.kyri) | the vessel room's coverage instrument, carried from `tally/`. |
 | `20260907.230439` | [The floor is attained](20260907/20260907-230439_the-floor-is-attained.kyri) | C_720(5,55,72) walks 8; the gap held it all |
 | `20260907.225848` | [The sweep that left no guard](20260907/20260907-225848_the-sweep-that-left-no-guard.kyri) | a hand-swept census regrew in a day; the fold rule has a guard now. |
 | `20260907.222830` | [the book nobody opened](20260907/20260907-222830_the-book-nobody-opened.kyri) | 3,426 measurements, no reader. |
