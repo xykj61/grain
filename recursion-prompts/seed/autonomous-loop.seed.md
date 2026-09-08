@@ -131,8 +131,21 @@ and the front door speak one sensory grammar.
 | **Aether - Jupiter** *why the work exists* -- threshold [`foundations/20260826-021731_aether-the-row-that-hears.md`](../../foundations/20260826-021731_aether-the-row-that-hears.md) | `foundations/20260826-024943_follow-our-compass.md` | `foundations/20260811-211431_the-lindy-effect-and-the-long-return.md` | `foundations/20260826-024942_the-grain-and-the-crossing.md` |
 | **Air - Saturn** *law and boundary* -- threshold [`foundations/20260826-021732_air-the-row-that-feels.md`](../../foundations/20260826-021732_air-the-row-that-feels.md) | `context/TAME_CORE.md` | `foundations/20260823-204456_single-stranded.md` | `context/GAUGE_STYLE.md` |
 | **Fire - Mars** *cut and stop* -- threshold [`foundations/20260826-021733_fire-the-row-that-sees.md`](../../foundations/20260826-021733_fire-the-row-that-sees.md) | `foundations/20260816-214652_standfast-the-stopped-line.md` | `foundations/20260729-224828_reds-first-and-the-allocation.md` | `foundations/20260818-081438_the-three-depths-of-removal.md` |
-| **Water - Venus** *care and flow* -- threshold [`foundations/20260826-021734_water-the-row-that-tastes.md`](../../foundations/20260826-021734_water-the-row-that-tastes.md) | `foundations/20260823-105651_the-shape-you-grew-and-the-shape-you-are.md` | `foundations/20260826-194850_the-happy-zone-and-the-thin-edge.md` | `foundations/20260618-184912_growing-a-language.md` |
+| **Water - Venus** *care and flow* -- threshold [`foundations/20260826-021734_water-the-row-that-tastes.md`](../../foundations/20260826-021734_water-the-row-that-tastes.md) | `foundations/20260823-222019_what-brix-infuse-is.md` | `foundations/20260826-194850_the-happy-zone-and-the-thin-edge.md` | `foundations/20260618-184912_growing-a-language.md` |
 | **Earth - Mercury** *the concrete* -- threshold [`foundations/20260826-021735_earth-the-row-that-breathes-in.md`](../../foundations/20260826-021735_earth-the-row-that-breathes-in.md) | `foundations/20260905-154954_the-clock-and-the-mark.md` | `context/TWO_ROOMS.md` | `foundations/20260703-202312_the-marked-value.md` |
+
+**Water's third seat changed hands `20260908.001350` on Keaton's word.** The seat read
+`foundations/20260823-105651_the-shape-you-grew-and-the-shape-you-are.md` -- Conway's law, which
+stays a living foundation and simply leaves the rota. It now reads
+`foundations/20260823-222019_what-brix-infuse-is.md`, which states the tree's own claim about how
+change behaves: `declaration + world -> infusion -> world'`, and then the line that carries the
+weight, `infusion(world') -> world'`. **The fit is the row's own sense.** Water tastes -- read up
+close and run the actual thing -- and an infusion is tested by running it a SECOND time, which is the
+same gesture. **The measurement behind the choice:** 30 tools in this tree write to the tracked tree
+and 3 prove they converge (`tools/c/convergence_census.sh`, `20260907.234808`), so the claim was
+stated in a foundation, checked by almost nothing, and read by no rota lap. Fire was left alone on
+purpose: its three are a designed triad -- the stop, the allocation the stop buys, and the cut that
+follows -- and pulling one leg breaks a set rather than freeing a seat.
 
 **Earth-Cardinal changed hands `20260905` on Keaton's word.** The seat read
 `context/specs/20260627-102012_one-clock-naming-law.md`, which names how a FILE is marked. The mark
