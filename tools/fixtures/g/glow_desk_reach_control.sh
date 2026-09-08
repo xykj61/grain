@@ -259,14 +259,28 @@ check 1 "$(field "$pen/o" corpus_outside)" "the outside desk is counted"
 check 2 "$(field "$pen/o" desks)" "the room's own population is untouched"
 check 0 "$(field "$pen/o" uncovered)" "and so are its ratchets -- two populations, two questions"
 
-# --- 12. two files sharing one stem share one built binary --------------------------------------
-# The worker writes glow/bin/<stem> and matches its permission `case` on the stem alone, so a stem
-# held twice is one binary and one ruling for two desks. Reported rather than gated, since which
-# file keeps the name is a custody question; proven from both sides all the same.
+# --- 12. two files sharing one stem share one run contract, and it is a ceiling now -------------
+# The worker writes glow/bin/<stem>, caches glow/.cache/<stem>.rye, and matches its sample-
+# permission `case` on the stem alone -- so a stem held twice is one binary, one cache path and one
+# permission for two different programs. %539 reported this and gated nothing. One of the two live
+# pairs turned out to need no custody ruling at all: a malformed plant under tools/fixtures/g/ was
+# borrowing a real desk's permission to be run at all, and renaming the FIXTURE freed it. So the
+# reading is a ratchet from 20260908 -- a ceiling that only falls, standing at the one pair a lap
+# may not repair. Both sides proven here: at the ceiling it walks, one past it refuses by name.
 desk "$d6/src/shape/gate-one.glow"
 runscan "$d6" "$pen/o" GLOW_DESK_UNCOVERED_BARE_CEILING=9 GLOW_DESK_UNCOVERED_SAMPLED_CEILING=9
-check ok "$(field "$pen/o" verdict)" "a stem held by two files is reported, never gated"
+check ok "$(field "$pen/o" verdict)" "one shared stem stands at the ceiling of one"
 check 1 "$(field "$pen/o" stem_collision)" "the shared stem is counted"
+check 1 "$(field "$pen/o" stem_collision_ceiling)" "and the ceiling it stands at is printed"
+desk "$d6/src/shape/gate-two.glow"
+( cd "$d6" && env GLOW_DESK_UNCOVERED_BARE_CEILING=9 GLOW_DESK_UNCOVERED_SAMPLED_CEILING=9 \
+    sh tools/fixtures/g/glow_desk_reach_scan.sh ) > "$pen/o" 2>&1 && rc=0 || rc=$?
+check over_stem_collision_ceiling "$(field "$pen/o" verdict)" "a second shared stem refuses past the ceiling"
+check 2 "$(field "$pen/o" stem_collision)" "both shared stems are counted"
+check 1 "$rc" "and the refusal leaves a non-zero exit"
+rm -f "$d6/src/shape/gate-two.glow"
+runscan "$d6" "$pen/o" GLOW_DESK_UNCOVERED_BARE_CEILING=9 GLOW_DESK_UNCOVERED_SAMPLED_CEILING=9
+check ok "$(field "$pen/o" verdict)" "lifting the second twin returns the pen to green"
 rm -f "$d6/src/shape/gate-one.glow"
 runscan "$d6" "$pen/o" GLOW_DESK_UNCOVERED_BARE_CEILING=9 GLOW_DESK_UNCOVERED_SAMPLED_CEILING=9
 check 0 "$(field "$pen/o" stem_collision)" "removing the twin returns the reading to zero"

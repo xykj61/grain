@@ -516,3 +516,5 @@ at a closed fold.*
 *Row %610 folded to [`REDS-a-ratchet-that-counted-its-own-growth-rows-610.md`](REDS-a-ratchet-that-counted-its-own-growth-rows-610.md) on `20260908.041250`, **CLOSED** -- a ceiling set over one population, read against another: the repair is two readings rather than a larger number.*
 
 *Rows %604 and %607 folded to [`REDS-a-repair-stops-where-the-hand-was-looking-rows-604-607.md`](REDS-a-repair-stops-where-the-hand-was-looking-rows-604-607.md) on `20260908.052621`, both **CLOSED** -- both are a repair that stopped where the hand was looking -- one rule of three fixed by name with its two siblings left, one fold of three rewritten in code with its prose left standing a day.*
+
+*Row %613 folded to [`REDS-a-plant-that-borrowed-a-contract-rows-613.md`](REDS-a-plant-that-borrowed-a-contract-rows-613.md) on `20260908.053729`, **CLOSED** -- a fixture that borrows a name borrows a contract, and the ruling that guarded it was never symmetric.*
