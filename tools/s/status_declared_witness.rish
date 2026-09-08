@@ -1,0 +1,45 @@
+# tools/s/status_declared_witness.rish -- a lap that leaves no status cannot be told from one that was killed.
+#
+#   rishi/bin/rishi run tools/s/status_declared_witness.rish
+#
+# `.claude/rules/session-log-provenance.md` asks every log to finish with `scope` and `status` for
+# this hand, and `status` answers what nothing else in the record answers: did the lap consider
+# itself green when it stopped? Measured `20260907.200326`: of 95 logs on that day's shelf, 21
+# carried both fields and 73 carried neither.
+#
+# THE GAP CAME FROM AN INCIDENT RATHER THAN AN AUDIT. An incense loop was cancelled by hand at the
+# moment its lap completed. The work stood staged and whole and the log claimed no send -- so
+# nothing was dishonest -- yet nothing in the record said whether the lap had been INTERRUPTED or
+# had FINISHED AND DECLINED to send. Two different facts, two different repairs, one appearance.
+#
+# REPORTED, NEVER GATED, and the incident is the argument rather than a preference: a lap killed
+# mid-send cannot write a status by definition, so a gate would red hardest on exactly the laps that
+# were interrupted -- punishing the accident it exists to make visible.
+
+say "status-declared: Language EN -- one question the record could not answer about itself."
+say "status-declared: Style Gauge, Meter -- a census that reports rather than refuses."
+say "status-declared: Lens TAME -- each bucket proven by moving a member into its neighbour."
+
+say "status-declared: the control -- eleven behaviors on planted logs in a throwaway repository..."
+let ctl = run ["sh" "tools/fixtures/s/status_declared_control.sh"]
+assert ctl.ok else "status-declared: the control refused --\n${ctl.out}\n${ctl.err}"
+assert ctl.out contains "pass=11 fail=0" else "status-declared: the control did not prove eleven behaviors --\n${ctl.out}\n${ctl.err}"
+
+say "status-declared: the open day's shelf answers every bucket..."
+let scan = run ["sh" "tools/fixtures/s/status_declared_scan.sh"]
+assert scan.ok else "status-declared: the scan refused --\n${scan.out}"
+# invariant: every bucket is reported, empty or full. A reading that printed only the fault would
+# leave a reader unable to tell a healthy day from a day the scan could not see.
+assert scan.out contains "both=" else "status-declared: the fully-declared count went unreported"
+assert scan.out contains "neither=" else "status-declared: the undeclared count went unreported"
+assert scan.out contains "scope_only=" else "status-declared: the scope-only count went unreported"
+assert scan.out contains "status_only=" else "status-declared: the status-only count went unreported"
+
+say "status-declared: and the field the census counts is named by the law..."
+let seated = run ["sh" "-c" "grep -c 'scope. and .status' .claude/rules/session-log-provenance.md || true"]
+assert seated.ok else "status-declared: the provenance law could not be read"
+# invariant: a field a census counts and no law names is a convention, and a convention cannot be
+# followed by a ship that never met it -- the very gap this census measures.
+assert (trim seated.out) != "0" else "status-declared: the status field is counted by a census and named by no law"
+
+say "GREEN: status-declared -- a lap's own verdict has a field, the law names it, and an interrupted lap is told from a finished one."

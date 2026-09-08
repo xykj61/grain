@@ -221,6 +221,20 @@ tier lap
 capability day_shelf
 seated 20260906.222120
 
+# status_declared -- a lap's own verdict on its own lap, counted. `session-log-provenance` asks every
+# log to finish with `scope` and `status`; measured `20260907.200326`, 21 of 95 logs carried both and
+# 73 carried neither. The gap came from an incident: an incense loop cancelled at the moment its lap
+# completed left its work staged and whole, claimed no send, and nothing in the record could say
+# whether it had been interrupted or had finished and declined. REPORTED, never gated -- a lap killed
+# mid-send cannot write a status by definition, so a gate would red hardest on the very laps it makes
+# visible. `capability day_shelf` for the same reason its sibling carries it: the scan refuses when
+# the open day has no shelf yet, which is honest rather than a fault.
+guard status_declared
+path tools/s/status_declared_witness.rish
+tier lap
+capability day_shelf
+seated 20260907.200326
+
 # rota_grid -- the twenty paths the council rota rests on, held as a set. The 5 x 3 grid in
 # `recursion-prompts/seed/autonomous-loop.seed.md` returns this tree's canon to living awareness on
 # a schedule, and its five thresholds are Markdown links while its fifteen seats are backticked bare
