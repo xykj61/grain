@@ -47,7 +47,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `a5f64da111` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `574bc47a8e` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- I WOVE A LOOM ALREADY WOVEN, AND MY OWN COLD PASS NAMED IT.**
 Elder [shelved](archive/20260908-180309_itinerary-landed-accounts.md).
