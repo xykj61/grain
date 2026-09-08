@@ -1,0 +1,32 @@
+# tools/c/convergence_prove_witness.rish -- one prover where twenty-seven hand-written cases were owed.
+#
+#   rishi/bin/rishi run tools/c/convergence_prove_witness.rish
+#
+# `tools/c/convergence_census.sh` measured 30 tools writing to the tracked tree with 3 proving they
+# converge. The obvious repair was to hand-write a convergence case into each of the other 27
+# controls -- which is the census's own finding performed once per tool: a rule kept where a hand
+# remembered. **22 of the 27 share one invocation shape**, a single file path, so one prover answers
+# for all of them and the five that differ are named rather than skipped in silence.
+#
+# WHAT IT PROVES is narrow and is the tree's own claim: running a writer twice on a copy leaves the
+# file byte-identical to what one run left -- `infusion(world') -> world'`.
+#
+# THE THIRD VERDICT IS THE ONE THAT MATTERS. `inert` says the FIRST run changed nothing, so the
+# sample exercised no path and the reading proves nothing. A sample that triggers no work is the
+# quiet way a convergence proof lies, and the control plants exactly that case.
+
+say "convergence-prove: Language EN -- one instrument for a property twenty-seven tools claim."
+say "convergence-prove: Style Gauge, Meter -- three verdicts, and the honest one is named."
+say "convergence-prove: Lens TAME -- safety first: the subject is a copy, never the tree."
+
+say "convergence-prove: the control -- twelve behaviors, including a tool built to diverge..."
+let ctl = run ["sh" "tools/fixtures/c/convergence_prove_control.sh"]
+assert ctl.ok else "convergence-prove: the control refused --\n${ctl.out}\n${ctl.err}"
+assert ctl.out contains "pass=12 fail=0" else "convergence-prove: the control did not prove twelve behaviors --\n${ctl.out}\n${ctl.err}"
+
+# invariant: the control exercises the prover against a TRACKED writer on a real sample, not only
+# against tools it invented, and asserts the reading is `converges` rather than `inert` -- a green
+# built on an inert sample is the lie that verdict exists to prevent.
+assert ctl.out contains "coverage: a tracked tree writer was exercised on a real sample" else "convergence-prove: the control never exercised a tracked writer"
+
+say "GREEN: convergence-prove -- a writer run twice on a copy, with divergence caught, refusal named, and an inert sample refused as proof."
