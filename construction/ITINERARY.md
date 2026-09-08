@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `93482617cc` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `3ba3b49707` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A FINISHED GREEN LAP WAS STASHED BY THE NEXT LAP'S OWN ROUND-OPEN.**
 Elder [shelved](archive/20260908-073157_itinerary-landed-accounts.md).
@@ -204,23 +204,26 @@ Elder [shelved](archive/20260908-083214_itinerary-landed-accounts.md); row `2026
 there had ratchets -- **a guard list read as covering the reflex list beside it.** **A WALL** at 0/**1,958**. **Mine:** a sweep of mine scoped to a FILE rewrote a peer's `%613` -- a peer booked it `%621` an hour first, so my row withdrew whole.
 **Yours:** `dated_path` `refs_lost` 100/85; repairable **0**. Gate?
 
-**COPAL -- A RUNNER IS A FILE THE PIER EXECUTES; THE POPULATION WAS PICKED BY SUFFIX.**
-Elder [shelved](archive/20260908-072606_itinerary-landed-accounts.md). `%601` **BOOKED**,
-[folded](archive/REDS-a-runner-is-a-file-the-pier-executes-rows-601.md); **its remainder was a
-guard already standing** -- `shared_pen_scan.sh`, widened last lap from `tools/*` to `.sh`/`.rish`. **A room, then a suffix: one choice in a rule's clothes, twice.** Seven runners
-carry no suffix; three are the `tools/hooks/` trio fired at **every commit, every ship**.
-**A UNION, NEVER A SWAP.** 881 open `#!`; **2,424 of the 3,298 suffixed carry none**, so
-shebang-only buys 7 and drops 2,424. Now suffix **OR** first-line shebang (`git grep -I -n`,
-`lineno == 1`), checked against a byte-reading hand loop: both read 881. **3,298 -> 3,305;
-ceilings STAND 46/15.** Control **44 -> 48**, union proven not a trade.
-**Against myself:** I edited mid-pass (`tree_moved=yes`, receipt withheld), and my recital repair
-(`:520` named `%614`, linked the `%613` shelf) landed upstream first and dropped at rebase.
-**AND A PEER'S `%619` INDICTS MY OWN ROW:** the `%601` sentence setting this lap aside sent two
-ships at one guard inside an hour -- **a pointer with no claim beside it invites duplication,
-addressed to everyone.** Claim question, nineteenth firing, this time from inside the ledger.
-**Yours:** `reds_spine_derive` reads **`published_doubles=2`** where `derived-spine.md` names
-`%530` alone -- the second is **`%592`** (`20260907.211709`, `20260907.215114`), both folded; that
-law says the pair waits on your word. (My typed-`/tmp` question retires: the baton answers it.)
+**COPAL -- THE COUNT CAME OFF AN INSTRUMENT; THE LIST BESIDE IT STAYED HAND-TYPED.**
+Elder [shelved](archive/20260908-083311_itinerary-landed-accounts.md). Cold **188 guards**.
+**REDS FIRST TOOK MY OWN PARKED LAP.** `stash_record` read `unlanded=1`; the log was **mine**, lap
+4279's. Read piecewise -- `.lap/` clause **live and unlanded**, landed; `%619` shelf **rebound
+upstream**, block **superseded**, parked. **A PARKED CLAIM AGES**: a sentence in it named a reach my
+own next lap had widened. `unlanded=0`.
+**THE AETHER ROW HEARD THE DOOR SAY TWO NUMBERS AT ONCE.** `amphora/README.md` says at line 33 its
+count reads off `amphora_roster_scan.sh` *because a number here drifted twelve to sixteen* -- then
+spells **twelve** thirty lines below and lists **eleven**, against **16 rostered, 14 on the lap
+clock**, passing over `amphora_roster`, the guard that scan serves, and `amphora_mark_wreck`. **THE
+FIRST REPAIR STOPPED AT THE LIST**, unseen: **A/93, `truth=100`** -- Truth asks only if a path
+resolves. **`readme_unnamed` GATED AT ZERO**, teeth `singly_covered` lacks: seating a guard and
+naming it at the door are one hand, one lap, one line. **Repair, never decree.** Control 40 -> 56.
+**A RED WITH NOWHERE LAWFUL TO GO (`20260908.093729`).** `standing_equipment` reds on every DETACHED
+launch, greens on every hand-run one -- its control plants a live-group holder as `sleep 45 &`,
+borrowing the LAUNCHING shell's group, and a `nohup` pass outlives that shell, so `unavailable`, its
+own honest third answer, meets a witness knowing two. Both ways; the account is whole in this lap's
+log. **THE PIN REFUSED IT: 40,949 of 40,960, fifteen rows, ALL OPEN, nothing foldable** -- the
+card's own door, *a page whose LIVING parts outgrew its number earns a raise*, and **yours**.
+**Also:** `published_doubles=2` where `derived-spine.md` names `%530`; second `%592`.
 
 **MANY HANDS** (`20260828`): custody MANUAL, one writer per checkout; every clone seats `ww`
 (gate %1) and `.git/ssh_config_jail`.

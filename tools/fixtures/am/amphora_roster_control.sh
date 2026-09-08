@@ -47,6 +47,10 @@ mkpen() { # mkpen <name> ; echoes its root
     > "$d/tools/am/room_beta.rish"
   printf '# the target the shim runs\nlet m = "room/src/beta.rye"\n' > "$d/tools/gen/room/room_beta.rish"
 
+  # The room's front door, naming both rostered guards. The `readme_unnamed` legs below plant on
+  # this file; every other leg inherits a whole door so its own reading stays the thing under test.
+  printf '# room\n\nGuards: room_alpha and room_beta.\n' > "$d/room/README.md"
+
   cat > "$d/construction/roster.kyri" <<'ROSTER'
 guard room_alpha
 path tools/am/room_alpha_witness.rish
@@ -61,6 +65,8 @@ ROSTER
   printf '%s' "$d"
 }
 
+# The README defaults to `<room>/README.md`, which is where every pen puts it; the absent-door leg
+# points the fourth argument somewhere else on purpose.
 field_of() { # field_of <key> <pen_root> [<scan>]
   ( cd "$2" && sh "${3:-$SCAN}" room construction/roster.kyri tools/am 2>/dev/null ) \
     | sed -n "s/^$1=//p" | head -1
@@ -72,6 +78,10 @@ exit_of() { # exit_of <pen_root> [<scan>]
 detail_has() { # detail_has <key> <value> <pen_root>
   if ( cd "$3" && sh "$SCAN" room construction/roster.kyri tools/am 2>/dev/null ) \
      | grep -qx "detail_$1=$2"; then echo yes; else echo no; fi
+}
+field_of_door() { # field_of_door <key> <pen_root> <readme>
+  ( cd "$2" && sh "$SCAN" room construction/roster.kyri tools/am "$3" 2>/dev/null ) \
+    | sed -n "s/^$1=//p" | head -1
 }
 
 echo "amphora_roster_control: planted rooms"
@@ -108,6 +118,9 @@ path tools/am/room_gamma_witness.rish
 tier lap
 seated 20260907.223214
 ADD
+# A seated guard is named at the room's door in the same breath -- the exact step the front-door
+# reading asks of a real lap, so the lift here is the whole repair rather than half of it.
+printf '# room\n\nGuards: room_alpha, room_beta, room_gamma.\n' > "$p/room/README.md"
 check "uncovered lifted"     "ok"      "$(field_of verdict "$p")"
 
 # -- 4. a WITNESS that names it and no roster row does not cover it -------------------------------
@@ -126,6 +139,7 @@ path tools/am/room_delta_witness.rish
 tier lap
 seated 20260907.223214
 ADD
+printf '# room\n\nGuards: room_alpha, room_beta, room_delta.\n' > "$p/room/README.md"
 check "unrostered lifted"          "ok"      "$(field_of verdict "$p")"
 
 # -- 5. a roster row naming an absent file refuses, and the refusal lifts -------------------------
@@ -141,6 +155,7 @@ check "orphan verdict"       "drifted" "$(field_of verdict "$p")"
 check "orphan count"         "1"       "$(field_of orphan_rows "$p")"
 check "orphan named"         "yes"     "$(detail_has orphan_row tools/am/room_gone_witness.rish "$p")"
 printf '# it exists now\n' > "$p/tools/am/room_gone_witness.rish"
+printf '# room\n\nGuards: room_alpha, room_beta, room_gone.\n' > "$p/room/README.md"
 check "orphan lifted"        "ok"      "$(field_of verdict "$p")"
 
 # -- 6. a shim is followed one hop, and its target is what covers ---------------------------------
@@ -192,7 +207,42 @@ check "vacuum guards"        "0"       "$(field_of guards "$p")"
 check "vacuum uncovered"     "2"       "$(field_of uncovered "$p")"
 check "vacuum verdict"       "drifted" "$(field_of verdict "$p")"
 
-# -- 11. the pen is proven innocent ---------------------------------------------------------------
+# -- 11. the room's front door names every rostered guard, or the one it passes over is counted ----
+# The list on `amphora/README.md` was typed by a hand and drifted exactly as the counts beside it
+# did: 11 of 16 named. A count read off an instrument beside a hand-typed list is half a repair.
+p=$(mkpen door)
+check "door whole named"      "2"    "$(field_of readme_named "$p")"
+check "door whole unnamed"    "0"    "$(field_of readme_unnamed "$p")"
+check "door whole verdict"    "ok"   "$(field_of verdict "$p")"
+printf '# room\n\nGuards: room_alpha.\n' > "$p/room/README.md"
+check "door drops one"        "1"       "$(field_of readme_unnamed "$p")"
+check "door drop verdict"     "drifted" "$(field_of verdict "$p")"
+check "door drop exit"        "1"       "$(exit_of "$p")"
+check "door drop named"       "yes"     "$(detail_has readme_unnamed room_beta "$p")"
+printf '# room\n\nGuards: room_alpha and room_beta.\n' > "$p/room/README.md"
+check "door drop lifted"      "ok"      "$(field_of verdict "$p")"
+
+# -- 12. a name is matched at its boundaries, never as a substring ---------------------------------
+# `amphora_pour` sits inside `amphora_pour_negative` and inside its own `amphora_pour_witness.rish`
+# path, so a `grep -F` would let a door that names only the twin answer for the guard itself.
+p=$(mkpen boundary)
+printf '# room\n\nGuards: room_alpha_negative and room_beta_witness.rish.\n' > "$p/room/README.md"
+check "longer name no credit"  "2"       "$(field_of readme_unnamed "$p")"
+check "boundary verdict"       "drifted" "$(field_of verdict "$p")"
+check "boundary names alpha"   "yes"     "$(detail_has readme_unnamed room_alpha "$p")"
+check "boundary names beta"    "yes"     "$(detail_has readme_unnamed room_beta "$p")"
+printf '# room\n\nGuards: room_alpha, room_beta.\n' > "$p/room/README.md"
+check "boundary lifted"        "0"       "$(field_of readme_unnamed "$p")"
+
+# -- 13. an absent front door answers absent, never zero -------------------------------------------
+# Zero is the reading a whole door gives, so a room with no door must never look like one. The gate
+# stands down there and the word is what a reader sees.
+p=$(mkpen nodoor)
+check "absent door word"      "absent" "$(field_of_door readme "$p" room/no_such_README.md)"
+check "absent door unnamed"   "absent" "$(field_of_door readme_unnamed "$p" room/no_such_README.md)"
+check "absent door not gated" "ok"     "$(field_of_door verdict "$p" room/no_such_README.md)"
+
+# -- 14. the pen is proven innocent ---------------------------------------------------------------
 # A scan that always answers ok must fail the uncovered leg above; if it passes, this control proves
 # nothing. The patch's landing is proven by cmp rather than by sed's exit code (REDS `%519`).
 LIAR="$PEN/liar_scan.sh"
