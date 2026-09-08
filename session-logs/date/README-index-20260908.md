@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260908.143400` | [an index is not a teacher](20260908/20260908-143400_an-index-is-not-a-teacher.kyri) | one of three, and why. |
 | `20260908.142640` | [the front door in Bhakta](20260908/20260908-142640_the-front-door-in-bhakta.kyri) | README and first hour, 93 and 95. |
 | `20260908.142326` | [a register with no door](20260908/20260908-142326_a-register-with-no-door.kyri) | four citations, all its own. |
 | `20260908.141828` | [stricter cannot be contained](20260908/20260908-141828_stricter-cannot-be-contained.kyri) | keep the elders; 205 cite them. |

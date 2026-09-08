@@ -6,6 +6,12 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 
 *This room is an index rather than a shelf. The teaching in this tree is already written; it lives where it was written, and this page says which door leads where.*
 
+**This room stays in Gauge, and its own first line is why** (`20260908.143400`). An index answers
+*where does that live*, and the honest form of that answer is a table. Bhakta is for the pages that
+TEACH -- the [first hour](../tutorials/the-first-hour.md) and [how to read this tree](../study/README.md)
+both carry it. A register named on a page that merely points would be a claim about writing that is
+not there.
+
 **Language:** EN - **Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
 **Written:** `20260821.190149` - **Status:** Living - **Kind:** crushed index
 
