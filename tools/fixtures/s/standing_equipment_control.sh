@@ -1608,11 +1608,26 @@ rm -rf "$lockpen/lock.d"
 
 # THE NEGATIVE SIDE OF THE GROUP READING, and it needs its own plant. The live case above holds the
 # lock with this control's own pid, whose group leader is whatever launched the control -- true, and
-# not something this file may assume. So a holder is made whose group leader is certainly alive:
-# a background child of this shell, sharing this shell's group. Verified before it is trusted, and
-# `unavailable` where the host arranges groups differently, since a reading proven only where it
-# fires cannot be told from one that is stuck on.
+# not something this file may assume. So a holder is made whose group leader is certainly alive.
+# Verified before it is trusted, and `unavailable` where the host arranges groups differently,
+# since a reading proven only where it fires cannot be told from one that is stuck on.
+#
+# THE HOLDER LEADS ITS OWN GROUP, rather than borrowing this shell's. `&` in a shell WITHOUT job
+# control starts no new process group, so a plain `sleep 45 &` inherits the group of whatever
+# launched this control -- and when a lap launches its roster pass detached, that launcher exits
+# while the twenty-five-minute pass runs on. The leader is then gone, this plant reads
+# `unavailable`, and tools/s/standing_equipment_witness.rish -- which asserts `ok` and knows no
+# third answer -- reads the control's honest abstention as a failure. So the instrument reddened on
+# HOW IT WAS STARTED rather than on what it measured, on every detached pass and on no hand-run
+# one (REDS `20260908.093729`). `set -m` enables job control for this one command, and
+# POSIX then puts each background job in a process group of its own: measured on this pier
+# `20260908.104016`, the holder's pgid equals its own pid under `set -m` and equals the launcher's
+# without it, in a detached shell and an interactive one alike. Job control is turned off again
+# immediately, because it also changes how background children take SIGINT and SIGQUIT, and this
+# plant is the only place that trade is wanted.
+set -m
 sleep 45 & live_holder=$!
+set +m
 live_group=$(ps -o pgid= -p "$live_holder" 2>/dev/null | tr -d ' ')
 live_group_alive=$(ps -o pid= -p "$live_group" 2>/dev/null | tr -d ' ')
 if [ -n "$live_group_alive" ]; then

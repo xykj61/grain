@@ -1,0 +1,41 @@
+format session-log-v1
+stamp 20260908.104016
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role unattended fleet seat COPAL, tree grain-copal
+modality text
+model claude-opus-5
+model_status active runtime reported by the harness environment header
+configured_model claude-opus-5
+configured_reasoning max
+configured_status tracked .claude/settings.json; configuration, not runtime telemetry
+voice Kyri
+host NixOS pier, x86_64, America/New_York
+title A witness that knew two answers where its control gave three
+prompt autonomous lap under the baton -- COPAL, lane amphora/ and bron-resins/
+rota lap 4296, row 1 -- Air, the row that feels; press a boundary and see whether the hand goes through. Four fences in my own lane held under the hand, and the one that gave way was in the instrument every ship runs.
+think opened on the one clock at 20260908.101242, HEAD f16c059343, tree clean, lap N 4296 by git rev-list --count
+think ran the cold roster scoped against the 20260908.045659 full receipt -- 176 guards, 1546s, 173 green, 0 red, 3 gated, tree_moved=no
+obs the harness moved that foreground pass to the background at its 600s timeout and its pipe to `tail` withheld every byte until EOF, so the run read as silent for twenty-five minutes while the pid was alive the whole time; the lock file named the pid and answered it. Next cold pass writes to session-output/ rather than through a pipe.
+think reds first: the pin itself was the block. tools/fixtures/r/reds_pin_capacity_scan.sh read pin_bytes=40949 of 40960, rows_that_fit=0, pin_foldable_rows=1 -- eight ships sharing a ledger that could accept no red at all
+obs that is the discipline stopped by the file that carries it, and the lawful move was already named by the tree: door B (20260829) folds a BOOKED row, and exactly one stood
+obs this lap folded %623 onto a shelf of its own to make that room -- pin 40949 -> 38001, rows_that_fit 0 -> 1 -- and the rebase found the row's own seat had folded it upstream in the same hour, onto construction/archive/REDS-a-seat-named-in-four-places-rows-623.md. Two ships folding one row is what reds_ledger_monotone reads as rows_double_shelved, and its ceiling of 1 already carries %512 from `20260906`. My duplicate shelf and its recital line were dropped; upstream's fold stands, and the room it made is what this lap's own row landed in.
+think with room made, booked the red this seat parked at 20260908.093729 and could not write down: standing_equipment reds on every DETACHED launch and greens on every hand-run one
+obs the mechanism, in plain words: tools/fixtures/s/standing_equipment_control.sh plants a lock holder as `sleep 45 & live_holder=$!`, and a shell without job control starts no new process group, so the holder inherits the group of whatever launched the control. A lap that launches its roster pass detached exits while the twenty-five-minute pass runs on, the group leader is gone, the plant answers live_group_plant=unavailable, and tools/s/standing_equipment_witness.rish:415 asserts live_group_plant=ok and knows no third answer.
+obs the abstention is worth keeping -- the control's own comment says a reading proven only where it fires cannot be told from one stuck on -- so the repair took the CAUSE rather than teaching the witness to accept a third word
+file tools/fixtures/s/standing_equipment_control.sh `set -m` wraps the one background command and `set +m` follows it; POSIX job control puts each background job in a process group of its own, so the holder leads its own group and depends on no launcher. Job control goes off again immediately because it also changes how a background child takes SIGINT and SIGQUIT.
+think proved it on metal in a throwaway shell first: with `set -m` the holder's pgid equals its own pid, without it the pgid is the launcher's, in a detached shell and a live one alike
+obs proven from both sides on the real control under a launcher that dies -- `setsid sh -c 'nohup sh <control> > out 2>&1 & exit'` reads live_group_plant=unavailable at f16c05934 and ok with the repair; the whole witness, which reddened under that launch, closes GREEN under it
+file construction/REDS.md row booked and CLOSED at stamp 20260908.093729; the number derived %630 after `git fetch xy`, and the rebase found peers had published %630, %631, %632 and %633 while this lap ran, so it renumbered to %634 -- the stamp is the key, and the move cost one line because every living citation already spelled the stamp. Folded the same hour so the pin can accept the next red.
+file construction/archive/REDS-the-third-answer-a-witness-did-not-know-rows-634.md new shelf for the row; rows_that_fit back to 1 with the row on it
+file construction/ITINERARY.md COPAL block rewritten, elder shelved, the card's own bound surfaced
+file construction/archive/20260908-104016_itinerary-landed-accounts.md the elder COPAL block kept whole
+obs the air walk found nothing loose in my own lane, and that is a reading rather than an empty lap: amphora's cross-roof orders carry `couples:` and `covers:` markers AND comptime asserts in the same files, amphora/src/manifest_entry.rye is a symlink rather than a copy, and bron-resins/manifest.bron's *Bron only* law names its one .md exception in its own note line
+obs one fence beside them, measured rather than assumed: TAME_CORE's *prefer tally/kumara.rye over bare Ed25519* has no instrument and wants none -- all 27 tracked .rye reaching std.crypto.sign.Ed25519 are the canon itself or crypto/'s own implementation. Its sibling *prefer tally/parse_int.rye* has one, tools/t/tame_style_scan_advise.rish, and 42 application sites stand.
+loom witness=standing_equipment_run mode=cold_scoped guards=176 wall_s=1546 green=173 red=0 gated=3 tree_moved=no
+loom witness=standing_equipment control_wall_s=90 verdict=ok live_group_plant=ok
+loom scan=reds_pin_capacity pin_bytes_before=40949 pin_bytes_after=38001 rows_that_fit_before=0 rows_that_fit_after=1
+scope reds-first on the ledger's own capacity, one peer BOOKED row folded, one parked red booked and closed with a repair proven both ways, the COPAL card block rewritten
+status GREEN. Cold scoped roster 176 guards, 0 red, 3 gated, tree_moved=no. standing_equipment witness GREEN both hand-run and under a setsid launcher that exits -- the launch shape that reddened it. reds_fold ok twice, reds_pin_capacity verdict=ok with rows_that_fit=1. Every touched file ASCII-clean; both pins under bound (card 40,945 of 40,960; ledger 38,001 of 40,960). QA: two new shelves A+, the landed-accounts shelf A, the card A, the control's comments B, all at Meter. One red closed, none opened.
+recommend check-in (Keaton) -- the card stands at 40,945 of 40,960 with the live front folding every lap to hold it, and whether a page whose LIVING parts outgrew its number earns a raise is his door

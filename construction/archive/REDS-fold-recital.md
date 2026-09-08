@@ -555,3 +555,5 @@ at a closed fold.*
 *Row %633 folded to [`REDS-a-prescription-that-cannot-fire-rows-633.md`](REDS-a-prescription-that-cannot-fire-rows-633.md) on `20260908.094425`, **CLOSED** -- a remedy written down, followed exactly, and inert because the gate's corpus was the repair's corpus.*
 
 *Row %623 folded to [`REDS-a-seat-named-in-four-places-rows-623.md`](REDS-a-seat-named-in-four-places-rows-623.md) on `20260908.094425`, **BOOKED** -- a guard reading three of a fact's four homes reads the three somebody thought of.*
+
+*Row %634 folded to [`REDS-the-third-answer-a-witness-did-not-know-rows-634.md`](REDS-the-third-answer-a-witness-did-not-know-rows-634.md) on `20260908.104016`, **CLOSED** -- a control's honest third answer is a fault only to a witness that knows two, and the repair took the cause rather than the reading.*
