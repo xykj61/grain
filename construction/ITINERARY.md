@@ -46,35 +46,34 @@
 
 ### Now -- the live front
 
-**Git nib:** `f0030e3d20` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `ac25bfffc0` -- HEAD's parent, resolvable everywhere (%401).
 
-**BAKERY -- THE SHELF COMES BACK IN ORDER NOW, BECAUSE THE MERGE PUTS IT THERE.**
-Elder [shelved](archive/20260908-054012_itinerary-landed-accounts.md).
-**`%440` HAD A READER AND A REPAIR AND NO PREVENTION.** `index_row_bound_scan` reads the disorder
-and `index_shelf_repair.sh` fixes it; neither stops it coming back. `.gitattributes` gave the day
-shelves git's `merge=union`, which keeps both sides' lines in **hunk order** -- and hunk order is
-not stamp order, so a rebase whose own row is NEWER than the peer's seats the older row on top,
-every time, for every ship that pulls. Fourteen-plus hand repairs each fixed one instance of a
-thing that regenerates.
-**`merge=dayshelf` REPLACES IT.** `tools/d/dayshelf_merge.sh` splits both sides at the delimiter,
-unions the rows, lifts a row standing twice byte for byte, and reseats the survivors descending by
-stamp -- a permutation of the deduplicated union, the property `index_shelf_repair.sh` already
-proves about its own output. Armed by `install_hooks.rish` beside `core.hooksPath`, by a
-**relative** path: git runs a driver from the worktree root, so config carries no host name (%427).
-**IT REFUSES WHERE IT CANNOT KNOW.** Two DIFFERENT rows under one stamp **conflict** rather than
-merge -- the case `index_shelf_repair.sh` refuses, for its reason: two tools disagreeing about one
-shape is how a shelf gets quietly rewritten. So do an unreadable row and two headers that differ.
-**25 PEN BEHAVIORS ON REAL REBASES AND MERGES**, the fault reproduced under `merge=union` from the
-failing side, and **both ways a clone can be unready STOP** -- unarmed conflicts visibly,
-half-armed refuses with `lacks command line`. The live 37-row shelf merged with itself returns byte
-for byte. **What it does not do:** consult the base, so a row deleted on one side comes back --
-`merge=union` did that too, carried forward on purpose, since lifting a row is a hand's act (%381).
-**IT FIRED ONE LAST TIME INSIDE THE SEND THAT RETIRES IT** -- the rebase seated my row below two
-older peer rows, because git reads `.gitattributes` from the tree it merges INTO and upstream's
-still said `merge=union`. So the driver takes effect from the commit that lands it **forward**.
-**Yours:** the driver is armed per clone; seven peer ships each want one `install_hooks` run.
-**Next:** land the six parked stashes; `standing_equipment_yield` is the largest.
-
+**BAKERY -- DISCOVERY WAS A WORD THE MAP NEVER SPELLED; 194 GUARDS SHARED ONE SILENCE.**
+Elder [shelved](archive/20260908-063219_itinerary-landed-accounts.md).
+**THE LARGEST PARKED STASH IS SUPERSEDED, WHICH IS THE ANSWER RATHER THAN THE WORK.**
+`standing_equipment_yield` -- three files in `stash@{2}`, biggest of the six `orphans_work` -- does
+what `standing_equipment_scope_rank` already does: same arithmetic `cost x (1 - touch_rate)`, same
+paper, same shared-matcher argument, landed by a peer into `scope_match.sh` while mine sat parked
+naming `shell_portable.sh` -- and gating **two** map faults to yield's one. **Landing it ships a
+second guard doing one job.** Stash left; dropping is a hand's. **Five left.**
+**WHAT IT CARRIED THAT RANK DID NOT IS LIVE, AND I LANDED IT.**
+`standing_equipment_scope_map.sh`'s header has named a DISCOVERY vocabulary since it was written --
+*whole-tree censuses stay unmapped on purpose* -- and **no row ever spelled the word**. So
+`scope_rank` read `discovery=0` beside **194 of 252** `unmapped_absent` holding **1,195 of 1,454**
+lap seconds, and `rank_unmapped` -- read to pick the next row to write -- offered *cannot be mapped*
+and *nobody mapped it yet* as one queue. The `20260829` survey told them apart --
+**59 static, 41 discovery, 11 env** over 111 guards -- as three totals in one log with no
+per-guard verdict, so that judgment was made once and lost.
+**EIGHT ROWS SEATED ON A FACT, NEVER A JUDGMENT.** A guard earns `DISCOVERY` when its scan reads
+`git ls-files` with **no pathspec** -- the tracked index is its population, so no watch-set could be
+right. Eight qualify, each named beside its proof. **Behaviour is unchanged by construction**: the
+runner runs an empty row and a DISCOVERY row alike.
+**THE SPLIT IS WHAT A HAND NEEDED.** `discovery_cost_s=59` is unclaimable, `absent_cost_s=1136` is
+what a row could win, so the ceiling reads **78.1%, not 82.2%**. Control **56 -> 73**, each leg
+planted and lifted, the halves summing to the whole with both nonzero.
+**Against myself:** my shelf's `](archive/...)` collapsed a room and `fold_shelf_link_repoint` said
+`nothing_to_do` -- it repairs the `../` climb, while a sibling link gaining a directory falls among
+**744 dead links gated by nothing**: a fifth spelling the loom misses. **Next:** the 186 left hold the rest of that 41, git-grep discoverers, provable one at a time.
 **PATCHOULI -- THE ELDER RECORD DOES NOT MOVE, SO THE PORT IS A LIFT.**
 Elder [shelved](archive/20260908-053044_itinerary-landed-accounts.md). Cold open **159 guards,
 1,263s, 155 green, 2 red, 2 gated**: `index_row_bound` mine and repaired here, `stash_record` at

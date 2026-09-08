@@ -17,6 +17,30 @@
 # exactly as the roster's capability tier holds. So a newborn guard is covered before anyone maps
 # it, a typo in a name here buys a run, and DISCOVERY guards (whole-tree censuses, git-grep
 # discoverers, reference sweeps) stay unmapped on purpose.
+
+# DISCOVERY IS NOW A ROW RATHER THAN A SILENCE (20260908). The word above named a vocabulary this
+# file never spelled: `standing_equipment_scope_rank.sh` read `discovery=0` while 194 of 252
+# rostered guards stood unmapped, holding 1,195 of the pass's 1,454 seconds. So a guard that reads
+# the whole tree BY DESIGN and a guard nobody has mapped YET were one silence, and the ranking's
+# own `rank_unmapped` list -- which a hand reads to choose the next row worth writing -- offered
+# both as the same prize. The 20260829 survey had already told them apart, reading 59 static, 41
+# discovery, 11 env across the 111 guards of that day; it recorded three totals in one session log
+# and no per-guard verdict, so the judgment was made once and then lost.
+#
+# THE ROWS BELOW ARE THE FIRST INSTALMENT, and each is a fact about its own source rather than a
+# judgment. A guard earns `DISCOVERY` here when its scan reads `git ls-files` with NO PATHSPEC --
+# it takes the entire tracked index as its subject population, so any tracked file can change its
+# reading and no watch-set could ever be right. Eight guards read that way on 20260908; the tell is
+# one grep away and stays checkable forever. The remaining 186 include the rest of that 41 -- the
+# git-grep discoverers and reference sweeps, whose subject sets are real yet not provable from a
+# single line -- and they are paid down on touch, one guard at a time, rather than in a second
+# survey nobody will repeat.
+#
+# DECLARING DISCOVERY CHANGES NO BEHAVIOUR, which is what makes it safe to seat on evidence this
+# thin. The runner already runs an empty row and a DISCOVERY row identically, so a row added here
+# moves a guard from one always-run reading to another. What it changes is what a READER can see:
+# `discovery_cost_s` is the share of the unmapped tail that can never be claimed, and
+# `absent_cost_s` is what mapping could still win.
 #
 # A ROW GROWS WITH ITS GUARD, in the same commit (.claude/rules/docs-implementation-sync.md). A
 # static row naming less than its guard gates is the one direction that skips real work, and on
@@ -52,6 +76,7 @@ build_edge="rye/ rishi/src/ rishi/bin/ tally/copy.rye vendor/zig-toolchain/"
 sed -e "s|\[build\]|$build_edge|g" <<'MAP'
 ales_roster tools/al/ales_roster_witness.rish tools/fixtures/a/ales_roster_bijection_scan.sh tools/al/ tools/*/ales_*_witness.rish
 ales_suite tools/al/ales_suite_witness.rish tools/fixtures/a/ tools/al/ lotus/ tools/*/ales_*_witness.rish [build]
+borrowed_number DISCOVERY
 caravan_ladder_roster tools/ca/caravan_ladder_roster_witness.rish tools/fixtures/c/caravan_ladder_roster_scan.sh caravan/ tools/ca/ tools/fixtures/c/caravan_ladder_roster_control.sh
 caravan_suite tools/ca/caravan_suite_witness.rish tools/fixtures/c/ tools/ca/ caravan/ vendor/sel4/ tools/*/caravan_*_witness.rish [build]
 comlink_topology tools/co/comlink_topology_witness.rish comlink/ [build]
@@ -63,7 +88,10 @@ crypto_count_guard tools/cr/crypto_count_guard_witness.rish crypto/ tools/cr/
 crypto_module_roster tools/cr/crypto_module_roster_witness.rish tools/fixtures/m/module_roster_scan.sh crypto/
 crypto_suite tools/cr/crypto_suite_witness.rish crypto/ tools/cr/ vendor/pqclean/ vendor/monocypher/ [build]
 custody_gate_instruction tools/cu/custody_gate_instruction_witness.rish tools/fixtures/c/custody_gate_instruction_scan.sh recursion-prompts/ tools/l/launch-* tools/fixtures/c/custody_gate_instruction_control.sh
+dated_path DISCOVERY
+empty_document DISCOVERY
 equinox_e123_living_pin_guard tools/equinox/witness/equinox_e123_living_pin_guard_witness.rish tools/fixtures/e/equinox_e123_living_pin_guard_scan.sh tools/fixtures/l/living_pin_max_bytes.sh construction/ session-logs/README.md tools/equinox/witness/ gratitude/ironbeetle/
+exec_bit DISCOVERY
 fixture_depth tools/f/fixture_depth_witness.rish tools/fixtures/ tools/t/tool_path_resolve.rish
 fora_socket tools/f/fora_socket_witness.rish constel/ comlink/ [build]
 glow_choir tools/g/glow_choir_witness.rish glow/ tools/g/glow_* tools/au/aurora_glow_* tools/m/mantra_glow_* tools/t/tally_glow_* active-designing/docs/glow/ [build]
@@ -77,10 +105,12 @@ image_module_roster tools/i/image_module_roster_witness.rish tools/fixtures/m/mo
 index_fold tools/i/index_fold_witness.rish tools/fixtures/i/index_fold_scan.sh tools/rye/session_logs_archive.rye session-logs/ counsel/ active-designing/ expanding-prompts/ waymarks/ active-development/ tools/fixtures/i/index_fold_control.sh
 index_row_bound tools/in/index_row_bound_witness.rish tools/fixtures/i/index_row_bound_scan.sh tools/fixtures/i/index_row_bound_control.sh tools/fixtures/i/index_shelf_repair.sh tools/fixtures/i/index_shelf_repair_control.sh session-logs/README.md session-logs/date/
 lattice_suite tools/l/lattice_suite_witness.rish lattice/ tools/l/lattice_*_witness.rish [build]
+log_file_claim DISCOVERY
 log_has_a_row tools/l/log_has_a_row_witness.rish tools/fixtures/l/log_has_a_row_scan.sh session-logs/ tools/fixtures/l/log_has_a_row_control.sh
 loop_prompt_parse tools/l/loop_prompt_parse_witness.rish tools/fixtures/l/loop_prompt_parse_scan.sh recursion-prompts/ tools/l/launch-claude-chapter.rish tools/fixtures/l/loop_prompt_parse_control.sh
 lotus_module_roster tools/l/lotus_module_roster_witness.rish tools/fixtures/m/module_roster_scan.sh lotus/
 mycelium_map_roster tools/m/mycelium_map_roster_witness.rish tools/fixtures/m/mycelium_map_roster_scan.sh mycelium/ tools/fixtures/m/mycelium_map_roster_control.sh
+phantom_path DISCOVERY
 pond_display_gate tools/p/pond_display_gate_witness.rish tools/fixtures/p/pond_display_gate_control.sh tools/fixtures/p/pond_build_drawn_terminal.rish pond/ [build]
 pond_enclosure_policy tools/p/pond_enclosure_policy_witness.rish tools/fixtures/p/pond_enclosure_policy_scan.sh pond/ [build]
 pond_policy_launcher tools/p/pond_policy_launcher_witness.rish tools/fixtures/p/ pond/enclosure_policy.kyri tools/ag/agent-jail.sh
@@ -107,5 +137,7 @@ sow_lock tools/s/sow_lock_witness.rish tools/fixtures/s/sow_lock_control.sh tool
 tally_bud tools/t/tally_bud_witness.rish tally/ [build]
 tally_roster tools/t/tally_roster_witness.rish tools/fixtures/t/tally_roster_scan.sh tally/ tools/t/tally_* tools/fixtures/t/tally_* [build]
 tame_style_check tools/t/tame_style_check.rish tools/t/tame_style_scan_bans.rish tools/t/tame_style_scan_advise.rish mantra/ caravan/ linengrow/ comlink/ rishi/src/ tally/ aurora/ pond/ brushstroke/ image/ mikrophone/ rye/src/ amphora/ glow/ mycelium/ constel/ lattice/ ember/ lantern/ scribble/
+tracked_link DISCOVERY
 wire_lab_fn_drift tools/w/wire_lab_fn_drift_witness.rish tools/fixtures/w/wire_lab_fn_drift_scan.sh tools/fixtures/w/wire_lab_fn_drift_control.sh tools/co/comlink_*_wire_lab.rish
+witness_own_build DISCOVERY
 MAP
