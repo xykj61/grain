@@ -74,9 +74,10 @@
 # moves 130 of them -- 57 across the B door, one below it, mean +7.2. Exactly one living non-dated
 # prose file of 1,503 carries a block at all, so the reading is surgical rather than sweeping.
 #
-# WHAT IS PROVEN, on metal. One hundred and seventeen behaviors in a throwaway pen -- the control's own
+# WHAT IS PROVEN, on metal. One hundred and thirty-nine behaviors in a throwaway pen -- the control's own
 # yes/no readings, counted rather than recited, after this file carried 72 in one place and 79 in
-# another.
+# another. The prose said 117 while the counter printed 139, which is the same drift the counter
+# was added to end; the number here is read off a run rather than remembered.
 # The scale at every one of its
 # nine boundaries from both sides, and no minus grade anywhere. The register flip proven to BE the
 # register scan's own number rather than a second measurement -- and proven load-bearing, since
@@ -200,6 +201,10 @@ assert control.out contains "links_off_prose_unseen=yes" else "qa-report-card: t
 assert control.out contains "off_prose_links_never_cost_reach=yes" else "qa-report-card: and none of the three can cost reach, which is the consequence a reader must be able to see"
 assert control.out contains "reach_links_adds_up=yes" else "qa-report-card: the whole-page count is the seen count plus the held-out one, never a third measurement"
 assert control.out contains "filtered_count_reproduces_the_blindness=yes" else "qa-report-card: a whole-page count carrying the density reading own line filters reads 0 of 0 -- the elder state this report ended"
+assert control.out contains "bold_body_paragraphs_reported=yes" else "qa-report-card: a bold-led body paragraph is dropped by the density reading and read by the register one -- the card must publish the gap"
+assert control.out contains "reach_prose_adds_up=yes" else "qa-report-card: the sentences the register reading sees is the seen count plus the held-out one, never a third measurement"
+assert control.out contains "plain_paragraphs_hold_out_nothing=yes" else "qa-report-card: the same words unbolded must report nothing held -- a reading that always fires is a decoration"
+assert control.out contains "elder_readings_were_equally_blind=yes" else "qa-report-card: give the register scan the density reading own marker-alone rule and the gap must close to zero -- the elder state this report ended"
 assert control.out contains "meter_register_free=yes" else "qa-report-card: Meter carries no register budget -- refusal is its subject"
 assert control.out contains "meter_reach_free=yes" else "qa-report-card: Meter carries no reach budget either"
 assert control.out contains "resolving_link_free=yes" else "qa-report-card: a link that lands must cost nothing"

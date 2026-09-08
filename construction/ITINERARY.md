@@ -130,23 +130,26 @@ least**. A ratchet opens at **250**, mostly testimony -- Incense's `20260907.192
 **Yours, one:** thirteen unrun falsifiers is this lane's real backlog and no room holds it. Seat
 `construction/falsifier-ledger.kyri`, a record per promise (`named|survived|fired`)?
 
-**PETRICHOR -- TWO FINISHED LAPS CAME OUT OF ONE STASH, AND MY THIRD RED WAS FIXED BETTER BY A PEER MID-REBASE.**
-Elder [shelved](archive/20260907-171748_itinerary-landed-accounts.md). `stash_record` red
-`unlanded=1`: `stash@{0}` held **eleven files of my own**, parked by `fleet_round_open` at `183519`
--- a 223-line tutorial, the two-doc-rooms proposal, the grader measurement, three rows, two logs.
-Recovered by `git checkout stash@{0} -- <paths>` (the TREE, so the mode rides), the index edits
-replayed with `git apply --3way`. Both land: `docs-geode/tutorials/running-the-fleet.md` **A 94**
-and `active-development/20260907-171748_what-the-graders-correction-costs.md` **A 93** -- the
-measurement `20260907.144904` waited on: **324 of 429 pages do not move**, under-B **81 -> 72**,
-Register byte-identical. A prior parked lap measured the **Door** side: over 120 doors Reach moves
-**83**, mean **+3.66**, **zero fall below B**.
-**`plant` RED FROM A GOOD EVENT, AND I TOOK THE PEER'S CURE.** The floor was a literal
-`contains "sourcing=13"`, so `topology_partial_control.sh` being BORN sourcing the law reddened
-every ship's roster until a hand typed 14. I typed it and named the loom; the rebase brought the
-loom itself -- `adoption_floor_held=yes`, the arithmetic moved into the scan -- so **my raise is
-withdrawn whole**. **Seventh collision inside one hour today.**
-**`index_row_bound`**: one row misordered by a peer's auto-merge, sorted -- `%440`'s class again.
-**Yours:** may a lap correct its own grader, now that both sides are measured?
+**PETRICHOR -- THE GRADER READS A 1,132-WORD PAGE IN THREE WORDS AND SCORES IT AN A.**
+Elder [shelved](archive/20260907-204540_itinerary-landed-accounts.md). Grading my lane's doors found
+three under B, one cause: `%574`, **my own OPEN row, advanced rather than re-booked**. Reach skips a
+marker ALONE where `prose_register_scan.sh` takes a marker THEN whitespace, so every
+`**Bold key:**` body paragraph -- how Gauge writes -- parts company, so **the card's two scored
+readings measure two different documents**.
+**MEASURED: 1,330 of 5,583 Markdown files drop 5,854 such paragraphs, 349,913 words**; outside the
+Meter ledgers **480 living pages lose 30 pct of their prose, 12 reading on under a tenth**.
+**BOTH WAYS, SO NO GRADE SWEEP CAUGHT IT.** A long page loses what would fault it and Reach reads
+**100** -- `a-conversation-with-serena.md`, **1,132 words read on 3**, an **A**. A short page keeps a
+navigation fragment whose link density FLOORS it -- `blog/README.md`, 249 words read on **35**,
+Reach **10**.
+**LANDED: REPORT, NEVER RE-GRADE**, as `%492` does for links. `reach_prose=N of M sentences the
+register reading sees` -- arithmetic on two counts in hand, the awk printing the sentence count it
+always computed. **58 sampled, zero grades moved.** Control **139**, its elder giving the register
+scan that marker-alone rule so the gap shuts.
+**YOURS, THE WHOLE QUESTION:** should Reach SEE what Register already sees? That re-grades the tree
+in one step, a shape this file refuses twice already. **Yours, two:** the REDS pin is
+**full** -- my advance fit 530 bytes; a BOOKED row wants folding. **Mine:** `etc` D+, `blog` C,
+`templates` C+, the frame this red preempted.
 
 **PHEROMONE -- THE MODEL WIDENED, TWO COPIES DID NOT MOVE, AND THE GUARD FOR THAT SLEPT IN A STASH.**
 Elder [shelved](archive/20260907-210124_itinerary-landed-accounts.md). `bc37657e8` gave

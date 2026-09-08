@@ -457,7 +457,7 @@ reach_raw=$(awk -v gc="$grade_ceiling" -v xc="$xref_ceiling" '
         syllables += syl
       }
     }
-    if (sent == 0 || words == 0) { print "0 0 0 0 0 0"; exit }
+    if (sent == 0 || words == 0) { print "0 0 0 0 0 0 0"; exit }
     grade = 0.39 * (words / sent) + 11.8 * (syllables / words) - 15.59
     if (grade < 0) grade = 0
     per100 = links * 100 / words
@@ -468,7 +468,7 @@ reach_raw=$(awk -v gc="$grade_ceiling" -v xc="$xref_ceiling" '
     # grade term is freed below the sentence floor; the cross-reference term is freed for a
     # declared index. The empty exit above prints both overages as zero, which is the whole of
     # the repair for a file with nothing to read: no overage, so no penalty.
-    printf "%d %d %d %d %d %d\n", int(go + 0.5), int(xo + 0.5), int(grade + 0.5), int(per100 + 0.5), words, links
+    printf "%d %d %d %d %d %d %d\n", int(go + 0.5), int(xo + 0.5), int(grade + 0.5), int(per100 + 0.5), words, links, sent
   }
 ' "$prose_path")
 # The whole-page count, extracted the way Truth extracts its citations, so the two readings of one
@@ -486,6 +486,7 @@ grade=$3
 xrefs=$4
 words=$5
 links=$6
+reach_sentences=$7
 
 # --- The page's own declaration: an index says so, and then measures like one ---------------------
 # A cross-reference budget of one per hundred words is written for prose. On an index the links ARE
@@ -759,6 +760,42 @@ echo "reach=$reach ($grade_note; $xref_note; $words words, $links links)"
 links_held=$(( links_all - links ))
 [ "$links_held" -lt 0 ] && links_held=0
 echo "reach_links=$links of $links_all on the page ($links_held held out with the lines that carry no sentence -- tables, lists, headings, bold-key header lines; reported, never scored)"
+
+# THE OTHER HALF OF THE SAME BLINDNESS, and it needs no second copy of any filter to see. The line
+# above reports the links this reading cannot count. This one reports the SENTENCES, and the two
+# come from one cause: the comment above says a bold-key header line holds no sentence, which is
+# true of a header line and false of a body paragraph -- and no rule here tells them apart. The
+# skip is `/^[ \t]*[-*>#]/`, a marker ALONE, where prose_register_scan.sh takes `/^[ \t]*[-*+][ \t]/`,
+# a marker THEN whitespace, and holds the front-matter block out by its own frontmatter_key(). So
+# `**What would enter:** a piece written to be read for its own sake ...` opens with `*` and is
+# dropped here as a bullet, while the register reading opposite reads it as the prose it is.
+#
+# TWO SCORED READINGS ON ONE CARD THEREFORE MEASURE TWO DIFFERENT DOCUMENTS, which is the exact
+# agreement the sentence-floor comment above asserts holds ("both scored readings must answer it
+# the same way"). The floor made them agree about HOW MUCH prose there is; nothing made them agree
+# about WHICH LINES it is.
+#
+# MEASURED 20260907 over 5,583 tracked Markdown files outside gratitude/ and vendor/: 1,330 carry a
+# bold-led body paragraph this reading drops -- 5,854 paragraphs, 349,913 words. Excluding the
+# Meter-class ledgers and the dated shelves, 480 living pages lose 130,902 words, 30% of their
+# prose; 88 lose over half, and 12 are graded on under a tenth of their own page.
+#
+# THE HARM RUNS BOTH WAYS, which is why no grade sweep ever caught it. On a long page the dropped
+# prose leaves almost nothing to fault, so Reach reads 100 and the grade goes UP:
+# foundations/20260702-202612_a-conversation-with-serena.md carries 1,132 words and is read on 3,
+# context/THREATS.md 975 read on 13, docs-geode/libraries/README.md 661 read on 13 -- all three
+# Reach 100. On a short page the drop leaves a fragment of the shared navigation header behind and
+# its link density floors the reading, so the grade goes DOWN: docs-geode/blog/README.md holds 249
+# words and 6 links, is read on 35 and 2, and takes Reach 10 for it.
+#
+# REPORTED, NEVER RE-GRADED, on the same reasoning the link count above already carries: admitting
+# these lines would re-grade the tree in one unmeasured step, and this file refuses that shape
+# twice already. The number is published so a reader can no longer quote `words` as the page's
+# prose, and the standard question -- should Reach see what Register already sees -- is named on
+# construction/ITINERARY.md rather than settled quietly inside a report.
+reach_prose_held=$(( sentences - reach_sentences ))
+[ "$reach_prose_held" -lt 0 ] && reach_prose_held=0
+echo "reach_prose=$reach_sentences of $sentences sentences the register reading sees ($reach_prose_held held out where the two line rules part -- this reading skips a marker alone, the register scan a marker then whitespace, so a bold-led body paragraph parts company; reported, never scored)"
 echo "reach_mode=$reach_mode (declares_index=$declares_index; index floor $index_floor words)"
 echo "grade_mode=$grade_mode (floor $register_floor sentences, cited from prose_register_scan.sh)"
 echo "truth_counted=$truth_counted ($unresolved of $cited cited paths unresolved; $illustrations placeholder shapes read as illustrations)"
