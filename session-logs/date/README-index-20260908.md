@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260908.005205` | [one prover for twenty-seven](20260908/20260908-005205_one-prover-for-twenty-seven.kyri) | 22 share one shape. |
 | `20260908.001350` | [the seat that tastes a second run](20260908/20260908-001350_the-seat-that-tastes-a-second-run.kyri) | infusion takes Water's third seat. |
 | `20260908.002616` | [The recipe my own red wrote for me](20260908/20260908-002616_the-recipe-my-own-red-wrote-for-me.kyri) | a fifth parked lap recovered; the pin folded to hold its row |
 | `20260908.000244` | [The other half of the ceiling](20260908/20260908-000244_the-other-half-of-the-ceiling.kyri) | apply walked the weave per diff item; 109,506ms -> 97ms |

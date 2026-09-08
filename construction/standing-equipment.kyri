@@ -269,6 +269,16 @@ path tools/c/convergence_census_witness.rish
 tier lap
 seated 20260907.234808
 
+# convergence_prove -- one prover where 27 hand-written cases were owed. The census found 30 tree
+# writers with 3 proving convergence; hand-writing a case into each of the other 27 would be the
+# census's own finding performed once per tool. 22 of the 27 share one invocation shape, a single
+# file path, so one prover answers for all. Three verdicts, and `inert` is the load-bearing one: a
+# sample that triggers no work is the quiet way a convergence proof lies.
+guard convergence_prove
+path tools/c/convergence_prove_witness.rish
+tier lap
+seated 20260908.005205
+
 # rota_grid -- the twenty paths the council rota rests on, held as a set. The 5 x 3 grid in
 # `recursion-prompts/seed/autonomous-loop.seed.md` returns this tree's canon to living awareness on
 # a schedule, and its five thresholds are Markdown links while its fifteen seats are backticked bare
