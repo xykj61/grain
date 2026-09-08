@@ -3,6 +3,7 @@
 **Stamp:** `20260905.154858` -- **Setting:** Gauge, Field -- **Voice:** Kyri
 **Question:** is there room on this pier to launch bakery, diffuser, and grass beside incense, pheromone, and petrichor?
 **Short answer:** memory carries six comfortably; CPU carries about three, and the gap is wide.
+**Status:** Living, mixed -- the readings are measured on this pier with named tools; the berthing recommendation drawn from them is an argument
 
 ## What was measured, and how
 

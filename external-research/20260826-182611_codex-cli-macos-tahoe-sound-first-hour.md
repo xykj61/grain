@@ -4,7 +4,7 @@
 **Language:** EN
 **Style:** New Gauge Style, Field setting, Civic Tame (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
-**Status:** External research and a personalized setup runbook -- verified against this MacBook and the cited official sources on `2026-08-26`; every installation, sign-in, power, launch, and lane-custody action stays with the reader
+**Status:** External research and a personalized setup runbook, mixed -- verified against this MacBook and the cited official sources on `2026-08-26`; every installation, sign-in, power, launch, and lane-custody action stays with the reader
 **Host reading:** Apple silicon `arm64` - macOS Tahoe `26.6` build `25G5065a` - Homebrew zsh - Grain remote `xy`
 **Kin:** [`../SOURCE.md`](../SOURCE.md) (whole-project onboarding, not the Sound prompt) - [`../tools/l/launch-sound-fixed-chapter.rish`](../tools/l/launch-sound-fixed-chapter.rish) (living Sound prompt printer) - [`../active-designing/20260826-151528_the-three-stars-of-the-aether-row.md`](../active-designing/20260826-151528_the-three-stars-of-the-aether-row.md) (lane charter)
 

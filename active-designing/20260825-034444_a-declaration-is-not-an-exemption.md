@@ -2,7 +2,7 @@
 
 **Stamp:** `20260825.034444` - **Language:** EN - **Voice:** Kyri
 **Style:** Gauge, Field setting (see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md))
-**Status:** Living -- the two-condition form, seated in `tools/fixtures/qa_report_card.sh` this round
+**Status:** Living, mixed -- the two-condition form is seated in `tools/fixtures/qa_report_card.sh` this round, and the principle drawn from it is an argument
 **Kin:** [`quality-assurance`](../.claude/rules/quality-assurance.md) - [`stamp-and-name`](../.claude/rules/stamp-and-name.md) - [`TWO_ROOMS.md`](../context/TWO_ROOMS.md)
 
 ---

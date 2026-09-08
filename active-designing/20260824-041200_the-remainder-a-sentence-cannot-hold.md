@@ -5,6 +5,7 @@
 **Style:** Gauge, Field setting (see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md))
 **Voice:** Kyri
 **Kin:** [`../.claude/rules/reds-first.md`](../.claude/rules/reds-first.md) - [`../.claude/rules/stamp-and-name.md`](../.claude/rules/stamp-and-name.md) - [`../foundations/20260816-214652_standfast-the-stopped-line.md`](../foundations/20260816-214652_standfast-the-stopped-line.md)
+**Status:** Living, mixed -- the ledger cases are measured, the writing rule drawn from them is an argument
 **Room:** active-designing -- it would still be worth reading with the code deleted
 
 ---

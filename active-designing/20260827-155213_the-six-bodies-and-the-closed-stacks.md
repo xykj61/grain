@@ -4,7 +4,7 @@
 **Language:** EN
 **Style:** Gauge, Field setting (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
-**Status:** Fossil -- the living charter is
+**Status:** Fossil, mixed -- the closed-stack counts are measured and the six-body framing is vision; the living charter is
 [`20260829-203718_the-six-bodies-and-the-always-fleet.md`](20260829-203718_the-six-bodies-and-the-always-fleet.md)
 (the fleet re-map: one tree per star, Mystery's move to the campaign lane, claim-as-override);
 this page stands whole as the closed-stacks elder and the `20260827` swap's record. Was: Living

@@ -9,7 +9,7 @@ the closed-stack paths for loop information. It proposes; it cuts nothing.*
 **Language:** EN
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`), Field setting
 **Voice:** Kyri
-**Status:** GRANTED `20260827` (`approve all doors`) -- the `src/` rooms, the `loops/` room, the `glow/gen/` letter fold, and FORA31 have all landed; the **deep debride** waits on its own precondition and on Keaton's word (custody gate %5). What landed differs from what was proposed in two places, both recorded below.
+**Status:** GRANTED `20260827` (`approve all doors`), mixed -- two measured surveys and a room-naming proposal -- the `src/` rooms, the `loops/` room, the `glow/gen/` letter fold, and FORA31 have all landed; the **deep debride** waits on its own precondition and on Keaton's word (custody gate %5). What landed differs from what was proposed in two places, both recorded below.
 **Molted:** born at this stamp
 **Kin:** [`../.claude/rules/comlink-tendency.md`](../.claude/rules/comlink-tendency.md) (the naming law this applies) -
 [`../.claude/rules/stamp-and-name.md`](../.claude/rules/stamp-and-name.md) (the room bound and the fold rule) -

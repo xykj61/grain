@@ -25,11 +25,30 @@
 # population that has NOT yet imported one proven implementation, which is the honest thing this
 # reading can say and the whole of it.
 #
+# THE FLOOR IS A FLOOR, and it was an equality until `20260907.180000`. `tools/p/plant_witness.rish`
+# held `sourcing=13` as a literal, under its own comment calling it "a floor that only rises" and a
+# header calling adoption "reported rather than gated". Neither sentence described the code: an
+# equality refuses a count that RISES exactly as hard as one that falls. So every lane that ADOPTED
+# the law reddened the tree for every ship until a hand edited one number, and the number was raised
+# by hand seven times in one day -- 4 to 5 to 7 to 9 to 11 to 12 to 13. The eighth rise, to 14, is
+# the refusal this repair was found by, and it stopped a full roster pass on a tree whose only fault
+# was that one more control had done the right thing.
+#
+# A guard that reds on the exact work it exists to encourage is a guard somebody turns off.
+#
+# So the number lives here, once, and it is compared as `sourcing >= FLOOR`. Adoption passes free;
+# only a REGRESSION -- a control that dropped the import, or a rename that lost it -- refuses, by
+# name. Raise it on a lane's word when a fall is worth locking in; never lower it.
+#
 # Run from anywhere; the root is found by upward walk.
 #   sh tools/fixtures/p/plant_adoption_scan.sh          # the counts
 #   sh tools/fixtures/p/plant_adoption_scan.sh --list   # ... and every control not yet sourcing
 
 set -eu
+
+# Seated at 13 on `20260907.180000`, the count standing when the equality became a floor. The
+# adoption history a hand used to record by raising this number lives in the witness header.
+FLOOR=13
 
 _fd_root=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
 _fd_steps=0
@@ -88,15 +107,29 @@ if [ "$want_list" = yes ]; then
   echo "-- end --"
 fi
 
+floor_held=yes
+[ "$sourcing" -ge "$FLOOR" ] || floor_held=no
+
 echo "controls=$controls"
 echo "sourcing=$sourcing"
 echo "remainder=$remainder"
+echo "adoption_floor=$FLOOR"
+echo "adoption_floor_held=$floor_held"
 
 # The arithmetic is stated so a reader can check the reading rather than trust it. A scan whose
-# parts do not sum to its whole has measured something other than what it named.
-if [ "$((sourcing + remainder))" -eq "$controls" ]; then
-  echo "verdict=ok"
-  exit 0
+# parts do not sum to its whole has measured something other than what it named. It is asked FIRST,
+# because a reading that does not sum has measured something other than adoption, and a floor over
+# such a number would refuse or welcome for a reason nobody could act on.
+if [ "$((sourcing + remainder))" -ne "$controls" ]; then
+  echo "verdict=unbalanced"
+  exit 1
 fi
-echo "verdict=unbalanced"
-exit 1
+
+if [ "$floor_held" = no ]; then
+  echo "verdict=adoption_regressed"
+  echo "refused: $sourcing controls source the plant law where $FLOOR did -- an import was lost, never merely unadded" >&2
+  exit 1
+fi
+
+echo "verdict=ok"
+exit 0

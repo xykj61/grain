@@ -7,7 +7,7 @@ door; the subject outlives it.*
 **Stamp:** `20260823.045448`
 **Language:** EN
 **Style:** Gauge -- Field setting (see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md))
-**Status:** Living essay - **Books to:** `crux/REDS.md` row `%163`
+**Status:** Living essay, mixed -- the drift it reports is measured, the style it argues for is a proposal - **Books to:** `crux/REDS.md` row `%163`
 
 ---
 

@@ -187,6 +187,67 @@ note "real_source_stale_plant_refuses" \
   "$(plant_apply "$PEN/diff.rye" 's/^const this_line_never_existed = 1;$/x/' realstale 2>/dev/null && echo landed || echo nothing)" "nothing"
 
 echo
+# --- the adoption floor -------------------------------------------------------------------------
+# A FLOOR PROVEN FROM BOTH SIDES, on a real git repository, because until `20260907.180000` this
+# reading was an equality wearing a floor's name: the witness asserted the literal `sourcing=13`,
+# so a lane that ADOPTED the plant law reddened every ship until a hand edited the number. It was
+# edited seven times in one day. The three legs below ask the three questions that distinguishes a
+# floor from an equality, and the third is the load-bearing one.
+#
+# THE PEN IS A REAL REPOSITORY because the scan reads `git ls-files` -- the index, never the
+# working tree -- so a pen of loose files would read zero controls and every leg would pass for the
+# wrong reason. It carries `rishi/bin` and `tools/fixtures` so the scan's upward walk stops here
+# rather than climbing back into the field.
+#
+# THE FLOOR IS MOVED WITH `plant_apply`, which is this control's own subject: the helper that
+# refuses to build an unmutated pen is exactly what a leg planting a constant into a copied scan
+# needs, and using it here means a stale plant reads `nothing` rather than passing quietly.
+echo "== 6. the adoption floor welcomes a rise and refuses a fall =="
+FLOORPEN="$PEN/floorpen"
+mkdir -p "$FLOORPEN/rishi/bin" "$FLOORPEN/tools/fixtures/p"
+cp "$HELPER" "$FLOORPEN/tools/fixtures/p/plant.sh"
+cp "$_fd_root/tools/fixtures/p/plant_adoption_scan.sh" "$FLOORPEN/tools/fixtures/p/plant_adoption_scan.sh"
+# Two adopters and one abstainer, so the pen's own count is 2 and a floor may be set either side.
+for n in one two; do
+  printf '#!/bin/sh\n. "$root/tools/fixtures/p/plant.sh"\n' > "$FLOORPEN/tools/fixtures/p/${n}_control.sh"
+done
+printf '#!/bin/sh\n# names tools/fixtures/p/plant.sh and does not import it\n' > "$FLOORPEN/tools/fixtures/p/three_control.sh"
+(
+  cd "$FLOORPEN"
+  git init -q . 2>/dev/null
+  git add -A >/dev/null 2>&1
+) || true
+
+floor_read() {
+  ( cd "$FLOORPEN" && sh tools/fixtures/p/plant_adoption_scan.sh 2>/dev/null | sed -n "s/^$1=//p" )
+}
+floor_verdict() {
+  ( cd "$FLOORPEN" && sh tools/fixtures/p/plant_adoption_scan.sh >/dev/null 2>&1 && echo ok || echo refused )
+}
+
+note "floor_pen_counts_its_own_adopters" "$(floor_read sourcing)" "2"
+
+plant_apply "$FLOORPEN/tools/fixtures/p/plant_adoption_scan.sh" 's/^FLOOR=13$/FLOOR=1/' floorbelow >/dev/null 2>&1   && floor_planted=landed || floor_planted=nothing
+note "floor_below_the_count_plants" "$floor_planted" "landed"
+note "floor_below_the_count_welcomes_a_rise" "$(floor_verdict)" "ok"
+note "floor_below_the_count_says_so" "$(floor_read adoption_floor_held)" "yes"
+
+plant_apply "$FLOORPEN/tools/fixtures/p/plant_adoption_scan.sh" 's/^FLOOR=1$/FLOOR=3/' floorabove >/dev/null 2>&1   && floor_planted=landed || floor_planted=nothing
+note "floor_above_the_count_plants" "$floor_planted" "landed"
+note "floor_above_the_count_refuses" "$(floor_verdict)" "refused"
+note "floor_above_the_count_names_the_fall" "$(floor_read adoption_floor_held)" "no"
+
+# THE LOAD-BEARING LEG. A floor that has merely started saying `yes` passes every welcome leg
+# above. Strip the refusal out of a copy and the same below-floor pen walks free, which is what
+# tells a working floor from one that has stopped reading.
+sed '/^if \[ "\$floor_held" = no \]; then$/,/^fi$/d' \
+  "$FLOORPEN/tools/fixtures/p/plant_adoption_scan.sh" > "$FLOORPEN/tools/fixtures/p/stripped.sh"
+note "stripped_floor_is_a_different_file" \
+  "$(cmp -s "$FLOORPEN/tools/fixtures/p/plant_adoption_scan.sh" "$FLOORPEN/tools/fixtures/p/stripped.sh" && echo same || echo differs)" "differs"
+cp "$FLOORPEN/tools/fixtures/p/stripped.sh" "$FLOORPEN/tools/fixtures/p/plant_adoption_scan.sh"
+note "stripped_floor_welcomes_the_fall" "$(floor_verdict)" "ok"
+
+echo
 echo "behaviors=$behaviors"
 echo "faults=$faults"
 if [ "$faults" -eq 0 ]; then

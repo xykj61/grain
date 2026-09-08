@@ -4,7 +4,7 @@
 **Language:** EN
 **Style:** Gauge, Field setting (see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md))
 **Voice:** Kyri
-**Status:** Landed -- both halves GREEN on metal, both roster rows seated
+**Status:** Landed, mixed -- both halves GREEN on metal and both roster rows seated, with the choir argument drawn from them
 **Kin:** [`20260824-080208_the-roster-that-decides-what-gets-measured.md`](20260824-080208_the-roster-that-decides-what-gets-measured.md) - [`20260825-110922_a-tier-is-a-cadence.md`](20260825-110922_a-tier-is-a-cadence.md) - [`../construction/standing-equipment.kyri`](../construction/standing-equipment.kyri)
 
 ---

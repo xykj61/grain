@@ -1,6 +1,6 @@
 # The Edge of an Instrument's Model
 
-**Stamp:** `20260823.232125` - **Style:** Gauge, Field setting - **Voice:** Kyri - **Status:** Living
+**Stamp:** `20260823.232125` - **Style:** Gauge, Field setting - **Voice:** Kyri - **Status:** Living, mixed -- the five faults are measured cases, the design principle drawn from them is an argument
 **Room test:** worth reading with the code deleted -- it reasons about how a guard is designed rather than what any guard currently does.
 **Kin:** [`../external-research/20260823-232125_what-a-long-session-teaches-about-guards.md`](../external-research/20260823-232125_what-a-long-session-teaches-about-guards.md) - [`../.claude/rules/reds-first.md`](../.claude/rules/reds-first.md)
 

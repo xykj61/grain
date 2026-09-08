@@ -4,7 +4,7 @@
 **Stamp:** `20260825.162410`
 **Style:** Gauge, Field setting (see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md))
 **Voice:** Kyri
-**Status:** Living -- the argument behind REDS %224 and the reach meter's third band
+**Status:** Living, mixed -- the reach meter's readings are measured and the property they stand for is an argument; the reading behind REDS %224 and that meter's third band
 **Kin:** [`20260825-132121_a-choir-for-the-largest-unheard-family.md`](20260825-132121_a-choir-for-the-largest-unheard-family.md) - [`20260824-080208_the-roster-that-decides-what-gets-measured.md`](20260824-080208_the-roster-that-decides-what-gets-measured.md) - [`../construction/REDS.md`](../construction/REDS.md)
 **Meter:** [`../tools/w/witness_reach_witness.rish`](../tools/w/witness_reach_witness.rish) over [`../tools/fixtures/witness_reach_scan.sh`](../tools/fixtures/witness_reach_scan.sh)
 

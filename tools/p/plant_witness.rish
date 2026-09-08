@@ -13,7 +13,7 @@
 # rung proves the one implementation they can all import instead.
 #
 # WHAT IS PROVEN, on metal, by tools/fixtures/p/plant_control.sh.
-#   Thirty behaviors on real files in a throwaway pen, each function shown from BOTH sides.
+#   Thirty-nine behaviors on real files in a throwaway pen, each function shown from BOTH sides.
 #   plant_landed reads a difference, reads its absence by name, and refuses an absent file.
 #   plant_write lands, leaves the source alone, and on a stale line writes NO destination at all --
 #     so a caller ignoring the return value still cannot build an unmutated pen and read it as a
@@ -27,14 +27,26 @@
 #   plant_write to a destination that does not exist yet keeps the mode too, by seeding it with
 #     `cp` rather than reading the mode back -- `stat`'s field-format flag is GNU's `-c` and BSD's
 #     `-f`, one more dialect question, and `shell_dialect` holds `stat -c` at zero.
+#   The adoption floor welcomes a rise and refuses a fall, on a real git repository holding two
+#     adopters and one abstainer, with the floor moved either side of that count by plant_apply --
+#     this control's own subject planting a constant into a copy of the scan that reads it.
 #   The load-bearing leg: the same helper with the byte comparison stripped out of plant_apply
 #     reads a no-op plant as LANDED. A helper that answered "landed" about everything would pass
 #     every welcome leg above; that failing reading standing green beside the real one is what
 #     tells a working check from one that has merely started saying yes.
 #
-# WHAT IS REPORTED RATHER THAN GATED: adoption. tools/fixtures/p/plant_adoption_scan.sh counts the
-# tracked controls that source the helper, and the floor below only ever RISES -- the mirror of
-# this tree's usual ratchet, because the population being counted is the good one.
+# WHAT IS GATED, AND AS WHAT: adoption, under a FLOOR. tools/fixtures/p/plant_adoption_scan.sh
+# counts the tracked controls that source the helper and holds that count at or above a number it
+# spells itself, which is the mirror of this tree's usual ratchet, because the population being
+# counted is the good one. A rise passes free; only a FALL refuses, by name.
+#
+# IT WAS AN EQUALITY UNTIL `20260907.180000`, and this header called it "reported rather than
+# gated" while the assertion below spelled the literal `sourcing=13`. An equality refuses a count
+# that rises exactly as hard as one that falls, so every lane that ADOPTED the plant law stopped
+# every ship's roster pass until a hand edited one number here. That hand edited it seven times in
+# one day -- the history is kept below, since it is a real record of who adopted and why -- and the
+# eighth rise, to 14, is what this repair was found by. The number now lives in the scan, once, and
+# three control legs prove the floor from both sides.
 #
 # WHY ADOPTION AND NOT EXPOSURE. Counting the controls that plant without checking needs a rule for
 # telling a plant from a fixture build, and every candidate rule misreads real files today.
@@ -125,7 +137,10 @@ say adoption.out
 # RAISED AGAIN on `20260907.153000` by DIFFUSER: `topology_occupied_control.sh` was born sourcing the
 # plant law, by the same sibling door -- a control that plants a fault into a copy of its own scan
 # and lifts it again wants the portable spelling from its first line rather than on its first refusal.
-assert adoption.out contains "sourcing=13" else "plant: adoption is a floor that only rises -- thirteen controls source the plant law; raise this line when a lane adopts, never lower it"
+# THE FLOOR IS READ, NEVER SPELLED HERE. The number lives in the scan, so a lane that adopts the
+# law raises the count and passes free, and only a control that LOST its import refuses. Writing it
+# in both places is what made every adoption a fleet-wide red.
+assert adoption.out contains "adoption_floor_held=yes" else "plant: a control that once imported the plant law no longer does -- the scan names the fall and its floor"
 assert adoption.out contains "verdict=ok" else "plant: the adoption arithmetic must sum before it is believed"
 
-say "plant: GREEN -- one implementation, imported by thirteen controls, proven from both sides on metal"
+say "plant: GREEN -- one implementation, its adoption held at a floor, proven from both sides on metal"

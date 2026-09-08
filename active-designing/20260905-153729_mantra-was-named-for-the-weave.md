@@ -1,6 +1,6 @@
 # Mantra was named for the weave and built as a catalogue
 
-**Stamp:** `20260905.153729` -- **Status:** Design, proposed -- **Setting:** Gauge, Field -- **Voice:** Kyri
+**Stamp:** `20260905.153729` -- **Status:** Design, proposed, mixed -- the module readings are measured and the arc is a proposal -- **Setting:** Gauge, Field -- **Voice:** Kyri
 **Kin:** [`what-mantra-is`](../foundations/20260825-211056_what-mantra-is.md) - [`the pen, the gossip, and the derived spine`](20260825-205011_the-pen-the-gossip-and-the-derived-spine.md) - [`derived-spine`](../.claude/rules/derived-spine.md) - [`lindy-first-crux`](../.claude/rules/lindy-first-crux.md)
 **Provenance:** the weave's ancestry is studied and thanked in [`gratitude/README.md`](../gratitude/README.md) and [`external-research/yonder/20260617-195312_mantra.md`](../external-research/yonder/20260617-195312_mantra.md). This room names our own shapes only.
 

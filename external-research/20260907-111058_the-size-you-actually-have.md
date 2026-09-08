@@ -4,7 +4,7 @@
 **Language:** EN
 **Style:** Gauge, Field setting (see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md))
 **Voice:** Kyri
-**Status:** Research -- measured readings a design argument may cite; nothing here is implemented
+**Status:** Research, mixed -- the readings are witness-bound and measured; the design argument that may cite them is not implemented
 **Room:** external-research -- the named world, read through the doorway of separation
 **Witness:** [`../tools/t/topology_relaxed_witness.rish`](../tools/t/topology_relaxed_witness.rish) over [`../tools/fixtures/t/topology_relaxed_scan.sh`](../tools/fixtures/t/topology_relaxed_scan.sh) and [`../tools/fixtures/t/topology_relaxed_control.sh`](../tools/fixtures/t/topology_relaxed_control.sh)
 **Elder:** [`20260906-175851_the-hop-you-can-compute.md`](20260906-175851_the-hop-you-can-compute.md) -- this paper walks the two doors that one named and left open

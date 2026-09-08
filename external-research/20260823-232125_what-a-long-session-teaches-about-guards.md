@@ -1,6 +1,6 @@
 # What a Long Session Teaches About Guards
 
-**Stamp:** `20260823.232125` - **Style:** Gauge, Field setting - **Lens:** TAME - **Status:** Living
+**Stamp:** `20260823.232125` - **Style:** Gauge, Field setting - **Lens:** TAME - **Status:** Living, mixed -- a field report whose readings are measured on one tree, with the lessons drawn from them as argument
 
 **What this is.** A second field report from the same day as
 [`20260823-162138_the-instruments-that-were-never-pointed-inward.md`](20260823-162138_the-instruments-that-were-never-pointed-inward.md),

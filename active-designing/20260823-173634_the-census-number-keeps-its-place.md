@@ -1,6 +1,6 @@
 # The Census Number Keeps Its Place
 
-**Stamp:** `20260823.173634` - **Style:** Gauge, Field setting - **Voice:** Kyri - **Status:** Living - **Decision: seated**
+**Stamp:** `20260823.173634` - **Style:** Gauge, Field setting - **Voice:** Kyri - **Status:** Living, mixed -- the citation counts are measured, the decision drawn from them is an argument - **Decision: seated**
 **Question asked:** should the `%NNN` REDS row pattern be remodelled chronologically, in the shape of the mark law, as an immediate itinerary standfast?
 **Answer:** the pattern **stands**, and the mark law gains the exemption in writing.
 **Kin:** [`../.claude/rules/stamp-and-name.md`](../.claude/rules/stamp-and-name.md) - [`../.claude/rules/reds-first.md`](../.claude/rules/reds-first.md) - [`../external-research/20260823-173634_when-a-number-is-honest.md`](../external-research/20260823-173634_when-a-number-is-honest.md)

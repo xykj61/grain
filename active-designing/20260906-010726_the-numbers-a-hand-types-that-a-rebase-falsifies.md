@@ -1,7 +1,7 @@
 # The numbers a hand types that a rebase falsifies
 
 **Stamp:** `20260906.010726`
-**Language:** EN - **Status:** Living - **Style:** Gauge, Field setting
+**Language:** EN - **Status:** Living, mixed -- the three firings are measured and the generalization is an argument - **Style:** Gauge, Field setting
 **Voice:** Kyri
 **Kin:** [`../.claude/rules/derived-spine.md`](../.claude/rules/derived-spine.md) - [`../.claude/rules/remember-git-nib.md`](../.claude/rules/remember-git-nib.md) - [`../.claude/rules/reds-first.md`](../.claude/rules/reds-first.md) - [`../.claude/rules/session-logs.md`](../.claude/rules/session-logs.md)
 

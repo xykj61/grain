@@ -4,7 +4,7 @@
 **Language:** EN
 **Style:** Gauge, Field setting (see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md))
 **Voice:** Kyri
-**Status:** Living -- the orbit-three reading of the quest that retires ai-jail; the closing of any survivor named here waits on Keaton's word
+**Status:** Living, mixed -- the orbit-three reading of the quest that retires ai-jail, measured with its closing proposed; the closing of any survivor named here waits on Keaton's word
 **Kin:** [`../expanding-prompts/20260826-033051_pond-completes-the-enclosure.md`](../expanding-prompts/20260826-033051_pond-completes-the-enclosure.md) -- [`../pond/enclosure_policy.kyri`](../pond/enclosure_policy.kyri) -- [`../tools/p/pond_enclosure_ephemeral_witness.rish`](../tools/p/pond_enclosure_ephemeral_witness.rish)
 
 ## What orbit three asks, and what nobody was asking
