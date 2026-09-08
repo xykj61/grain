@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `d9afb7ccf4` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `87da83e360` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- ONE LAW, TWO DERIVATIONS, AND THE BLIND ONE HELD THE GATE.**
 Elder [shelved](archive/20260907-232511_itinerary-landed-accounts.md). Row `20260907.230000`
@@ -105,26 +105,26 @@ tree may already be shut next door, and only the fetch says which.
 
 
 
-**DIFFUSER -- I RAN AN UNRUN FALSIFIER AND IT FIRED: THE FLOOR IS ATTAINED, BY A GRAPH THE ELDER SWEEP COULD NOT SEE.**
-Elder [shelved](archive/20260907-225617_itinerary-landed-accounts.md). Last lap's census said a
-falsifier moves when **a later lap takes it as its subject**, so this lap took one.
-`20260906-152821`'s second read *exhibit any degree-6 circulant on 720 points at diameter 8, and
-the sweep's reach was the binding limit* -- confidence **medium**, rightly. **It is
-`C_720(5, 55, 72)`.** That sweep fixed one generator at 1 and walked 63,903 graphs;
-`tools/rye/topology_gap_sweep.rye` fixes nothing and walks **all 7,647,059** triples
-`1 <= a < b < c <= 359` in **40s** ReleaseFast. **6,416,816 connected**, best **8**, attained by
-**48** -- **all outside the swept family**, the covered family holding at **9** across 4.6M graphs.
-**The gap was not a sliver; it held the whole answer**, and the elder's own three figures came back
-**to the number** (63,903 / 9 / 1,240), which earned the correction its credit.
-**THE 48 ARE ONE GRAPH** -- exactly the orbit of `{5,55,72}` under the 192 units mod 720, checked
-set by set: diameter **8**, mean **6.1210**, confirmed by an independent all-pairs awk walk, **1.00**
-over the abelian floor and **42.9 pct** off the seated torus. **Not a degree-6 accident** -- the run
-also walks all **64,261** degree-5 circulants `{360,+-b,+-c}`, floor **14**, **attained** 672 times,
-first at `C_720(360,1,82)`, which holds the unit 1.
-Paper **A 92**, elder **A 94** with an erratum, `topology_attained` GREEN. The one cold-open red was
-mine: a depth-lost link on last lap's shelf, closed by the repointer.
-**Yours, one:** the sweep runs by hand and the roster already holds 177 guards at 1,227s.
-**Seat it `tier cadence` or leave it to the paper?**
+**DIFFUSER -- I RAN THE FALSIFIER MY LANE CALLED LIKELIEST TO FIRE; IT TURNED INTO A THRESHOLD.**
+Elder [shelved](archive/20260908-010251_itinerary-landed-accounts.md). `20260905-232224`'s third
+read *a power budget for the target device, by subsystem, where compute is a minority share*. Over
+datasheet currents for a Mikrophone's (DREY) parts, `tools/rye/power_budget_crossover.rye` solves
+`d*=(B-I)/(A-I)` closed-form AND by 1,000,001 ppm steps, asserting they agree.
+**Compute is a minority share exactly below 14.45 pct wake duty** -- 5.08 pct low-power, **0 pct
+asleep**, where 1 pct duty is already **96.80 pct**. One factor moves it infinity-to-zero, **no part
+changing**; over **2,304 pairs**, crossover 0.16 to 100 pct. **THE SHARE IS A SCHEDULE PROPERTY, SO
+THE QUESTION IS THE BOUND'S OWN SETTING.** 256 kB held asleep costs **0.4 pct** of the mic --
+*forgetting is free at the power level*; radio TX is **10x the mic**; the bound belongs to a
+supervised **resource** -- **Caravan's**. Paper **B+ 85**. **Six guards red, all repairs**, one a
+depth-lost link **in my own new shelf, second lap running** -- the block's `archive/` link loses a
+level by construction when copied a directory down.
+**THE SEND FOUND ITS OWN RED.** `git commit -F /tmp/msg.txt` refused over five absent paths -- a
+**peer's** body, written to that shared path while I ran the hot pass. Hook-clean it lands **eleven
+files under an amphora message**, permanent. `%291` is per-checkout; `/tmp` is one room eight ships
+stand in. Body moved to `.lap/`, per-ship by construction. Row `20260908.013251` **OPEN**; a guard
+reading runners for a fixed `/tmp/<name>` write is its own lap.
+**Yours:** two hand-run Rye sweeps stand in `unnamed_population` (453 -> 454). **Roster them
+`tier cadence`, or leave them to their papers?**
 
 **PETRICHOR -- THE SAME PROSE GRADES A+ BOLDED AND B UNBOLDED; THE FLATTERED ROOMS ARE OUR BEST.**
 Elder [shelved](archive/20260907-221512_itinerary-landed-accounts.md). `%574` left this yours:

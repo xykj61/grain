@@ -163,3 +163,31 @@ measurement -- which reads names in source files -- separate from any claim abou
 
 *May every fence in this tree have a post on each side it is asked to hold, and may the
 discipline that made the first one grow the second when the ground asks for it.*
+
+---
+
+## Addendum `20260908.005732` -- the third falsifier was run
+
+**The third falsifier above -- *a power budget for the target device, broken down by subsystem, in
+which compute is a minority share* -- was run on `20260908`, and it neither fired nor survived.**
+
+Built over published datasheet currents for the parts a Mikrophone-class capture device is made
+from, the budget returns a **threshold rather than a verdict**: compute is a minority share exactly
+when the processor is awake less than **14.5 percent** of wall time, falling to **5.1 percent** if
+the microphone runs in low-power mode, and to **zero** while the microphone sleeps. Compute's share
+is a property of the schedule rather than of the parts, and the schedule is what this paper's own
+proposed wake bound sets.
+
+**What that does to the argument.** The falsifier assumed compute's share is a fact a budget can
+report. On a duty-cycled device it is not, so the question converts into the number the bound
+should be set to -- which is what this paper wanted the third axis to buy, arrived at from the
+other side. **The radio leg redirects exactly as predicted here:** a radio at 0 dBm outdraws the
+microphone tenfold, so the same two bounds belong to a supervised **resource** rather than to
+compute.
+
+**What stands unchanged.** Every figure, derivation, and claim above -- the Landauer arithmetic,
+the CMOS illustration, the two-question distinction, and the wake-and-rate shape -- stands as
+written. The first and second falsifiers remain unrun.
+
+Full run, sources, and the surface across 2,304 part pairs:
+[`20260908-005732_the-share-that-is-not-a-property-of-the-parts.md`](20260908-005732_the-share-that-is-not-a-property-of-the-parts.md).
