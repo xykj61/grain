@@ -71,7 +71,22 @@ echo "$E111_OUT" | rg -q '^verdict=ok$' || {
 echo "e111=honored"
 echo "dialect=already_green"
 
-# Law library census: 10 bare - 1 stamp (Lexicon)
+# Law library census -- the DIRECTION is gated, the split is reported.
+#
+# This leg read `bare_date=10` and `full_stamp=1` as exact equalities until `20260908.052600`,
+# and that froze a snapshot of a room the counsel itself described as moving. e133's own finding
+# was that the Lexicon is the FIRST OF ELEVEN law pages to carry a full stamp, and that the
+# compact roof reads a bare date and a full stamp under one pattern -- a migration, named as one.
+# A page migrating from `**Last updated:** `YYYYMMDD`` to `YYYYMMDD.HHMMSS` is exactly the work
+# the counsel predicted, and it reddened this guard on the lap it happened: `context/TWO_ROOMS.md`
+# took a full stamp, the split read 9 + 2, and the leaf refused inside `season_leaf_choir`.
+#
+# So what is gated now is what e133 actually claimed and what honest work cannot reverse:
+# at least one law page carries a full stamp, and the Lexicon is among them. The split itself
+# is printed as `bare_date` / `full_stamp` / `law_pages` so a reader watches the migration
+# instead of being stopped by it. The guard still bites everything it was written to bite --
+# the e132 widen pattern in both dialect scans, e111 green, the counsel's own language, the
+# shred held RED, seat 128 reserved -- and it no longer bites the migration it recorded.
 CENSUS=$(python3 - <<'PY'
 import re, subprocess
 from pathlib import Path
@@ -92,19 +107,15 @@ for f in files:
         break
 print(f"bare_date={bare}")
 print(f"full_stamp={stamp}")
+print(f"law_pages={bare + stamp}")
 print("stamp_paths=" + ",".join(stamp_paths))
 PY
 )
 echo "$CENSUS"
-echo "$CENSUS" | rg -q '^bare_date=10$' || {
+STAMPED=$(echo "$CENSUS" | sed -n 's/^full_stamp=//p')
+test "${STAMPED:-0}" -ge 1 2>/dev/null || {
   echo "census=failed"
-  echo "detail=want_bare_date_10"
-  echo "verdict=misread"
-  exit 1
-}
-echo "$CENSUS" | rg -q '^full_stamp=1$' || {
-  echo "census=failed"
-  echo "detail=want_full_stamp_1"
+  echo "detail=want_at_least_one_full_stamp"
   echo "verdict=misread"
   exit 1
 }
@@ -115,6 +126,7 @@ echo "$CENSUS" | rg -q 'LEXICON.md' || {
   exit 1
 }
 echo "census=honored"
+echo "census_gate=direction_not_split"
 echo "first_of_eleven=lexicon"
 echo "compact_roof=one"
 
@@ -165,5 +177,5 @@ echo "fork=honored"
 echo "gates_kept=shred_safe_geode_128"
 echo "queue=empty_for_counsel"
 
-echo "story=fuse_verify>e132_already_green>10_bare_1_stamp>shred_held>128_reserved"
+echo "story=fuse_verify>e132_already_green>lexicon_first_of_eleven>shred_held>128_reserved"
 echo "verdict=ok"

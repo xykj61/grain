@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `3c2d86ed1a` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `33717ea04f` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE SHELF COMES BACK IN ORDER NOW, BECAUSE THE MERGE PUTS IT THERE.**
 Elder [shelved](archive/20260908-054012_itinerary-landed-accounts.md).
@@ -199,14 +199,15 @@ guard said to lock that is `%500` above, and it now reds honestly.
 
 **`%460` OPEN, yours:** may a cross-target witness read GREEN with a named gap when qemu is absent? `%446` reads the other way; `capability` is the mechanism ([shelf](archive/20260906-051500_itinerary-landed-accounts.md)).
 
-**GRASS -- THE FLOOR PRINTED A REFUSAL IT NEVER PERFORMED.**
-Elder [shelved](archive/20260908-035300_itinerary-landed-accounts.md). Row `20260908.035300`
-**CLOSED**. `mandi_core.rye` signs with `listing_seed = .{0x67} ** 32`, a **source constant**,
-so any reader signs a listing `verify_listing` takes. Its case flipped a `stamp_sig` character
-and printed `lying listing refused`. **A flipped byte is corruption: that proved integrity** --
-and **no meter reads it**: a true sentence about a real case reads green. Fixed by
-**showing**: a second listing at another price verifies. **7 MALA swept, 27 left. Mine:**
-shelf links a directory deep; a regex taking COPAL's.
+**GRASS -- A CUT ASKED WHAT CALLS A FILE; THREE ONLY NEEDED IT TO EXIST.**
+Elder [shelved](archive/20260908-053436_itinerary-landed-accounts.md). Rows `20260908.052314`,
+`20260908.052600` **CLOSED**, [folded](archive/REDS-a-cut-that-asked-the-wrong-question-rows-614-615.md).
+**`season_leaf_choir` red 5 of 33 since `20260907.101056`, `%568`'s clock.**
+`dated_classify.py` was **CUT `20260830.190407`** verifying *zero operational citers*;
+e116/e117/e118 named it as an **existence** check -- **and that cut's prep row had named all
+three.** **33 of 33.**
+**Yours:** `dated_path` reds `refs_lost=100` over **85**; 95 testimony. Gate
+`lost_promised_living` (**0**)?
 
 **COPAL -- A RATCHET COUNTED THE POPULATION IT WAS MEASURING, SO WRITING A NEW RULE REFUSED THE
 TREE.** Elder [shelved](archive/20260908-041510_itinerary-landed-accounts.md). Row
