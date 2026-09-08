@@ -39,7 +39,9 @@
 #   - a window whose pane does not end at a shell prompt -- somebody or something else has that
 #     keyboard, and typing into it would interleave with their line.
 #   - a seat name that appears on two windows -- ambiguous, and a watcher must never pick.
-#   - a tree carrying .loop-gates-only, .mind-state/CUSTODY or .mind-state/TRANSACTION -- the same
+#   - a tree carrying .loop-drain -- a HAND asked that seat to finish its lap and stop, and a
+#     watcher that re-armed it would undo the one request the drain exists to make
+#   - a tree carrying .loop-gates-only, .mind-state/CUSTODY or .mind-state/TRANSACTION -- the sam
 #     wall fleet_rearm.sh stands behind: a gated choice belongs to a hand.
 #   - a seat that has burned WATCH_ARM_MAX arms without taking hold -- the loop's own quickfail law
 #     one level up. An arm that dies instantly every time is a fault upstream of the watcher, and
@@ -136,6 +138,7 @@ pane_at_prompt() {
 gated() {
   # The same wall fleet_rearm.sh prints instead of a paste.
   [ -f "$1/.loop-gates-only" ] && { echo "loop-gates-only"; return 0; }
+  [ -f "$1/.loop-drain" ] && { echo "loop-drain"; return 0; }
   [ -f "$1/.mind-state/CUSTODY" ] && { echo "CUSTODY"; return 0; }
   [ -f "$1/.mind-state/TRANSACTION" ] && { echo "TRANSACTION"; return 0; }
   return 1

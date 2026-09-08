@@ -1,0 +1,48 @@
+# tools/f/fleet_drain_witness.rish -- the hand's stop, proven from both sides.
+#
+#   rishi/bin/rishi run tools/f/fleet_drain_witness.rish
+#
+# TWO STOPS WITH TWO OWNERS WANT TWO FILES. `.loop-gates-only` belongs to the AGENT: it is set
+# during a lap and read at the foot of that lap, so `fleet-loop.sh` is right to clear it at the
+# top of the next one -- a stale sentinel from last night would otherwise stop tonight's first
+# lap before it opened. `.loop-drain` belongs to a HAND, may land at any moment, and is removed
+# by the hand that set it.
+#
+# THE FAULT THIS CLOSES (`20260908.165143`): the loop opened each iteration with an
+# unconditional `rm -f .loop-gates-only` and read the sentinel only at the foot, so a stop
+# request landing in the twenty-second sleep between laps was deleted before anything read it
+# and the loop worked on. It failed SILENTLY, toward *keep running*, which is the one direction
+# a stop must never fail -- leaving a kill as the only reliable hand-stop, and a kill cuts a lap
+# mid-send, which is the fault that made `status` a written-before-the-send field.
+#
+# The control does the proving on a real loop body in a throwaway pen, every sentinel planted
+# and then LIFTED, because a refusal proven only in the passing direction cannot be told from a
+# bypass.
+
+say "fleet-drain: the control -- nine behaviors, both directions, in a throwaway pen..."
+let ctl = run ["sh" "tools/fixtures/f/fleet_drain_control.sh"]
+assert ctl.ok else "fleet-drain: the drain control refused -- read its own pass/fail lines"
+assert ctl.out contains "fail=0" else "fleet-drain: a planted drain behaved differently than stated"
+assert ctl.out contains "coverage:" else "fleet-drain: the control declared no coverage line"
+
+say "fleet-drain: the loop reads a drain BEFORE a lap opens, so a stop burns no lap..."
+let before = run ["sh" "-c" "grep -c 'loop-drain' tools/f/fleet-loop.sh"]
+assert before.ok else "fleet-drain: the loop could not be read"
+assert (trim before.out) == "5" else "fleet-drain: the loop's drain reads moved -- re-prove the control, then this count"
+
+say "fleet-drain: and the loop never removes what a hand set..."
+let owns = run ["sh" "-c" "grep -c 'rm -f .loop-drain' tools/f/fleet-loop.sh || true"]
+assert owns.ok else "fleet-drain: the removal read could not run"
+assert (trim owns.out) == "0" else "fleet-drain: the loop removes a hand's drain, which erases the request"
+
+say "fleet-drain: the watch refuses to re-arm a drained seat..."
+let watch = run ["sh" "-c" "grep -q 'loop-drain' tools/f/fleet_watch.sh && echo HONOURS"]
+assert watch.ok else "fleet-drain: the watch could not be read"
+assert watch.out contains "HONOURS" else "fleet-drain: the watch would re-arm a seat a hand asked to stop"
+
+say "fleet-drain: and every ship meets the word on the baton..."
+let baton = run ["sh" "-c" "grep -q 'loop-drain' tools/f/fleet_baton.txt && echo SEATED"]
+assert baton.ok else "fleet-drain: the baton could not be read"
+assert baton.out contains "SEATED" else "fleet-drain: the drain is built and unannounced, so no ship knows to read it"
+
+say "GREEN: fleet-drain -- a hand stops a ship by asking, the lap finishes whole, and the watch leaves it alone."
