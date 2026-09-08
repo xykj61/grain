@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260908.055306` | [More instrument than thing](20260908/20260908-055306_more-instrument-than-thing.kyri) | 117 guards seated, module source touched 32 times. |
 | `20260908.054145` | [a plant that borrowed a contract](20260908/20260908-054145_a-plant-that-borrowed-a-contract.kyri) | a fixture proved a wall on a stranger's permission. |
 | `20260908.054012` | [The merge that knows what order means](20260908/20260908-054012_the-merge-that-knows-what-order-means.kyri) | a merge driver reseats the day shelf in stamp order. |
 | `20260908.053147` | [The record that need not move](20260908/20260908-053147_the-record-that-did-not-have-to-move.kyri) | the elder v1 record lifts whole; a head guard blind to a digit. |
