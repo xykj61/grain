@@ -104,3 +104,24 @@ The second is a refusal of a claim this paper could have made and did not. The f
 ## Gratitude
 
 The degree-diameter problem and the Moore bound come from the graph-theory literature, studied rather than borrowed; the star and pancake graphs are standard constructions with a long interconnect history behind them. Every graph here was built and walked in this tree, and every number was measured on this bench rather than recalled from a table.
+
+## Erratum -- the second falsifier fired (`20260907.225617`)
+
+**The claim that no circulant reaches the abelian floor of 8 is wrong**, and it is wrong in exactly
+the way the coverage gap above predicted: the sweep's reach was the binding limit rather than the
+family. An exhaustive walk of all **7,647,059** degree-6 triples on 720 points, fixing no
+generator, found the floor **attained** by **48** connection sets -- **all of them outside this
+paper's swept family**, while the covered family's best stayed at 9 across 4.6 million graphs. The
+exhibit is **`C_720(5, 55, 72)`**, diameter **8**, mean hops **6.1210**, confirmed by an
+independent all-pairs walk; the 48 are one graph under 48 labellings.
+
+**Every measured figure on this page stands.** The instrument's own three published sweep numbers
+-- 63,903 walked, best 9, 1,240 attainers -- reproduced to the number under the new program, which
+is what let it correct the one sentence. The abelian floor of 8 stands and is now known to be
+**tight**; the seated torus's 1.75x stands; `C_720(1, 8, 75)` at diameter 9 stands as the best
+circulant with a unit generator. What changes is the word *reached*: the floor is reachable, and
+the graph that reaches it has no generator coprime to 720 and therefore no odometer reading at all,
+which sharpens rather than softens this page's closing trade.
+
+The reading, the family split, and the degree-5 leg that shows the same attainment at the other
+wire budget: [`20260907-225617_the-floor-is-attained.md`](20260907-225617_the-floor-is-attained.md).

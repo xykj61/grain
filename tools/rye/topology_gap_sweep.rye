@@ -1,0 +1,288 @@
+//! Walk EVERY degree-6 circulant on 720 points, so the coverage gap named in
+//! `external-research/20260906-152821_the-floor-you-can-stand-on.md` is closed by measurement
+//! rather than bounded by a sweep's reach.
+//!
+//! The elder sweep fixed one generator at 1 and walked 63,903 graphs. That covers every circulant
+//! holding a generator coprime to 720, since multiplying a connection set by a unit gives an
+//! isomorphic graph -- yet three non-units can still generate, and those triples stood outside it.
+//! This program fixes nothing: it walks all C(359,3) = 7,653,969 triples 1 <= a < b < c <= 359,
+//! reports the two families apart, and answers one question in one line -- does any degree-6
+//! circulant on 720 points reach the abelian floor of 8.
+//!
+//! Run: `rye build -O ReleaseFast tools/rye/topology_gap_sweep.rye && ./topology_gap_sweep`
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+/// The seated sky. Every figure in this program is about exactly this many points.
+const points: u32 = 720;
+/// A jump of 360 is its own inverse on 720 points, so it buys one neighbour rather than two and
+/// the graph lands at degree 5. Three inverse pairs -- degree exactly 6 -- stop at 359.
+const gen_max: u32 = 359;
+/// A connected circulant on 720 points cannot walk further than 359 (the cycle C_720(1) walks 360,
+/// and every graph here holds at least three generators). The cap is loose on purpose: it bounds
+/// the loop without pretending to know the answer.
+const walk_cap: u32 = 400;
+/// Reported when the connection set shares a factor with 720 and the walk never closes.
+const disconnected: u32 = walk_cap + 1;
+/// The abelian floor at degree 6, derived and checked in the elder paper: 720 points overflow the
+/// 575-point L1 ball of radius 7, and 833 points sit within radius 8.
+const abelian_floor: u32 = 8;
+
+fn gcd(a_in: u32, b_in: u32) u32 {
+    // invariant: gcd is asked only of a real jump and the point count, both positive
+    assert(a_in > 0);
+    // invariant: the second argument is the modulus, never zero
+    assert(b_in > 0);
+    var a: u32 = a_in;
+    var b: u32 = b_in;
+    while (b != 0) {
+        const t: u32 = b;
+        b = a % b;
+        a = t;
+    }
+    // invariant: a common divisor of two positive numbers is itself positive
+    assert(a > 0);
+    return a;
+}
+
+/// A generator coprime to 720. Every circulant holding one is isomorphic to a circulant holding
+/// the generator 1, which is exactly what the elder sweep walked.
+fn is_unit(g: u32) bool {
+    // invariant: a generator is a real jump inside the ring
+    assert(g >= 1 and g <= gen_max);
+    return gcd(g, points) == 1;
+}
+
+/// One breadth-first walk from vertex 0. A circulant is vertex-transitive, so the eccentricity of
+/// vertex 0 IS the diameter -- the elder instrument holds that reading against an all-pairs walk
+/// on C_720(1,8,75), and this program repeats that cross-check below.
+fn ecc0(g1: u32, g2: u32, g3: u32, dist: *[points]u8, queue: *[points]u16) u32 {
+    // invariant: the three generators are distinct and ordered, so the degree is exactly six
+    assert(g1 < g2 and g2 < g3);
+    // invariant: every generator sits inside the ring and is not self-inverse
+    assert(g1 >= 1 and g3 <= gen_max);
+
+    @memset(dist, 0xFF);
+    dist[0] = 0;
+    queue[0] = 0;
+    var head: u32 = 0;
+    var tail: u32 = 1;
+    var far: u32 = 0;
+
+    while (head < tail) {
+        const v: u32 = queue[@intCast(head)];
+        head += 1;
+        const d: u32 = dist[@intCast(v)];
+        if (d > far) far = d;
+        if (d >= walk_cap) break;
+        const nd: u8 = @intCast(d + 1);
+
+        var i: u32 = 0;
+        while (i < 6) : (i += 1) {
+            const step: u32 = switch (i) {
+                0 => g1,
+                1 => points - g1,
+                2 => g2,
+                3 => points - g2,
+                4 => g3,
+                else => points - g3,
+            };
+            var w: u32 = v + step;
+            if (w >= points) w -= points;
+            if (dist[@intCast(w)] == 0xFF) {
+                dist[@intCast(w)] = nd;
+                queue[@intCast(tail)] = @intCast(w);
+                tail += 1;
+            }
+        }
+    }
+
+    // invariant: a walk never reaches more points than the ring holds
+    assert(tail <= points);
+    if (tail < points) return disconnected;
+    // invariant: a connected graph on more than one point has a positive diameter
+    assert(far > 0);
+    return far;
+}
+
+/// The abelian floor at degree 5, derived in the elder paper: the widest split is one involution
+/// and two inverse pairs, and 720 points overflow every L1 ball below radius 14.
+const abelian_floor_5: u32 = 14;
+/// The one self-inverse jump on 720 points. A degree-5 circulant spends its odd edge here or
+/// nowhere, since a cyclic group of even order holds exactly one involution.
+const involution: u32 = 360;
+
+/// One breadth-first walk from vertex 0 on the degree-5 circulant {360, +-g1, +-g2}.
+fn ecc0_deg5(g1: u32, g2: u32, dist: *[points]u8, queue: *[points]u16) u32 {
+    // invariant: the two paired generators are distinct and ordered
+    assert(g1 < g2);
+    // invariant: neither paired generator is the involution, so the degree is exactly five
+    assert(g1 >= 1 and g2 <= gen_max);
+
+    @memset(dist, 0xFF);
+    dist[0] = 0;
+    queue[0] = 0;
+    var head: u32 = 0;
+    var tail: u32 = 1;
+    var far: u32 = 0;
+
+    while (head < tail) {
+        const v: u32 = queue[@intCast(head)];
+        head += 1;
+        const d: u32 = dist[@intCast(v)];
+        if (d > far) far = d;
+        if (d >= walk_cap) break;
+        const nd: u8 = @intCast(d + 1);
+
+        var i: u32 = 0;
+        while (i < 5) : (i += 1) {
+            const step: u32 = switch (i) {
+                0 => involution,
+                1 => g1,
+                2 => points - g1,
+                3 => g2,
+                else => points - g2,
+            };
+            var w: u32 = v + step;
+            if (w >= points) w -= points;
+            if (dist[@intCast(w)] == 0xFF) {
+                dist[@intCast(w)] = nd;
+                queue[@intCast(tail)] = @intCast(w);
+                tail += 1;
+            }
+        }
+    }
+
+    // invariant: a walk never reaches more points than the ring holds
+    assert(tail <= points);
+    if (tail < points) return disconnected;
+    // invariant: a connected graph on more than one point has a positive diameter
+    assert(far > 0);
+    return far;
+}
+
+/// What one family of triples did. Held apart so the covered family and the gap family can be read
+/// separately without a second pass.
+const Tally = struct {
+    swept: u32 = 0,
+    best: u32 = disconnected,
+    attainers: u32 = 0,
+    best_a: u32 = 0,
+    best_b: u32 = 0,
+    best_c: u32 = 0,
+    at_floor: u32 = 0,
+    open: u32 = 0,
+
+    fn record(self: *Tally, a: u32, b: u32, c: u32, e: u32) void {
+        // invariant: a recorded eccentricity is either a real walk or the disconnected marker
+        assert(e > 0);
+        if (e == disconnected) {
+            self.open += 1;
+            return;
+        }
+        self.swept += 1;
+        if (e <= abelian_floor) self.at_floor += 1;
+        if (e < self.best) {
+            self.best = e;
+            self.attainers = 1;
+            self.best_a = a;
+            self.best_b = b;
+            self.best_c = c;
+        } else if (e == self.best) {
+            self.attainers += 1;
+        }
+        // invariant: the best seen is never worse than the reading that just arrived
+        assert(self.best <= e);
+    }
+};
+
+fn report(name: []const u8, t: Tally) void {
+    print("family {s} swept={d} open={d} best={d} attainers={d} at_or_below_floor={d}\n", .{
+        name, t.swept, t.open, t.best, t.attainers, t.at_floor,
+    });
+    if (t.swept > 0) {
+        print("family_best {s} C{d}({d},{d},{d})\n", .{ name, points, t.best_a, t.best_b, t.best_c });
+    }
+}
+
+pub fn main() void {
+    var dist: [points]u8 = undefined;
+    var queue: [points]u16 = undefined;
+
+    var all: Tally = .{};
+    var covered: Tally = .{};
+    var gap: Tally = .{};
+    var elder: Tally = .{};
+    var hist: [walk_cap + 2]u32 = [_]u32{0} ** (walk_cap + 2);
+
+    var unit: [gen_max + 1]bool = undefined;
+    var g: u32 = 1;
+    while (g <= gen_max) : (g += 1) unit[@intCast(g)] = is_unit(g);
+
+    print("topology-gap: every degree-6 circulant on {d} points, no generator fixed.\n", .{points});
+    print("abelian_floor degree=6 floor={d}\n", .{abelian_floor});
+
+    var a: u32 = 1;
+    while (a <= gen_max - 2) : (a += 1) {
+        var b: u32 = a + 1;
+        while (b <= gen_max - 1) : (b += 1) {
+            var c: u32 = b + 1;
+            while (c <= gen_max) : (c += 1) {
+                const e: u32 = ecc0(a, b, c, &dist, &queue);
+                all.record(a, b, c, e);
+                hist[@intCast(@min(e, walk_cap + 1))] += 1;
+                if (e <= abelian_floor) print("attainer C{d}({d},{d},{d}) diameter={d}\n", .{ points, a, b, c, e });
+                const has_unit: bool = unit[@intCast(a)] or unit[@intCast(b)] or unit[@intCast(c)];
+                if (has_unit) covered.record(a, b, c, e) else gap.record(a, b, c, e);
+                if (a == 1) elder.record(a, b, c, e);
+            }
+        }
+    }
+
+    report("all", all);
+    report("covered_holds_a_unit", covered);
+    report("gap_no_unit", gap);
+    report("elder_first_generator_is_1", elder);
+
+    print("reaches_abelian_floor floor={d} reached={s}\n", .{
+        abelian_floor, if (all.best <= abelian_floor) "yes" else "no",
+    });
+
+    var k: u32 = 1;
+    while (k <= walk_cap + 1) : (k += 1) {
+        if (hist[@intCast(k)] > 0) {
+            if (k == disconnected) {
+                print("histogram disconnected count={d}\n", .{hist[@intCast(k)]});
+            } else {
+                print("histogram diameter={d} count={d}\n", .{ k, hist[@intCast(k)] });
+            }
+        }
+    }
+
+    // ---- the degree-5 leg: is attaining the floor a degree-6 accident? -------------------------
+    // A cyclic group holds one involution, so every degree-5 circulant on 720 points is
+    // {360, +-b, +-c}: C(359,2) = 64,261 graphs, walked whole.
+    var five: Tally = .{};
+    var b5: u32 = 1;
+    while (b5 <= gen_max - 1) : (b5 += 1) {
+        var c5: u32 = b5 + 1;
+        while (c5 <= gen_max) : (c5 += 1) {
+            const e5: u32 = ecc0_deg5(b5, c5, &dist, &queue);
+            five.record(involution, b5, c5, e5);
+        }
+    }
+    print("family degree5_involution_and_two_pairs swept={d} open={d} best={d} attainers={d}\n", .{
+        five.swept, five.open, five.best, five.attainers,
+    });
+    print("family_best degree5 C{d}({d},{d},{d})\n", .{ points, involution, five.best_b, five.best_c });
+    print("degree5_abelian_floor floor={d} reached={s}\n", .{
+        abelian_floor_5, if (five.best <= abelian_floor_5) "yes" else "no",
+    });
+
+    const cross: u32 = ecc0(1, 8, 75, &dist, &queue);
+    print("crosscheck graph=C720(1,8,75) diameter={d} elder_reading=9 {s}\n", .{
+        cross, if (cross == 9) "agree" else "DISAGREE",
+    });
+}

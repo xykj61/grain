@@ -108,7 +108,13 @@ assert unnamed_under.out contains "verdict=over_unnamed_choir_ceiling" else "unh
 # joined this population by the rule above. It is ROSTERED, so it lands in unnamed_heard rather
 # than among the runners -- the pin moves because the population really grew, which is the one
 # reason it may move.
-assert green.out contains "unnamed_population=452" else "unheard-guard: the second population stands where it was measured -- ${green.out}"
+# 452 -> 453 on `20260907.225617`: a tracked Rye program arrived under the tools rooms, wearing
+# neither word and carrying `assert(` in command position, so it joins this population by the rule
+# above -- the pin moves because the population really grew. Its path is deliberately NOT spelled
+# here: `rye_compile_reach` reads a Rye path inside any runner as a claim that some build reaches
+# that file, and nothing in the tree builds this one, so naming it in a `.rish` would make this
+# note itself the accusation. The program is named in the research page that publishes its numbers.
+assert green.out contains "unnamed_population=453" else "unheard-guard: the second population stands where it was measured -- ${green.out}"
 assert green.out contains "unnamed_choirs=12" else "unheard-guard: twelve silent choirs wear neither word -- ${green.out}"
 
 # THE SHARPEST ONE, NAMED. tools/p/parity_ch01.rish calls itself a witness suite on its own first
