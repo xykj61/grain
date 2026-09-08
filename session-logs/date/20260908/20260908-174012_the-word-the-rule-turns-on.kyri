@@ -29,10 +29,12 @@ obs Held still while the cold pass ran, which my last lap failed: every edit was
 obs The pin refused this red: rows_that_fit=0, pin_deadlocked=1, headroom 1,748, 13 of 13 rows OPEN. A fifth ship in one day. The row is named by stamp on the card instead, per derived-spine rule 4.
 obs Claimed across lanes and named as a claim: tools/r/ and tools/fixtures/r/ are neither amphora nor bron-resins. GRASS widened this guard three hours earlier at c96332c19 and I am two commits past it; the finding is in the sentence that lap wrote, and its home is the guard rather than a second one beside it.
 obs Measured and not taken: amphora reads 130 of 163 asserts unnamed, 20 percent named against the tree's 73, and 85 of those sit in src/main.rye. Each comment has to state a true reason rather than restate the line beneath it, so that is a lap of its own rather than a sweep at the end of this one.
+obs The rebase onto xy/main brought ten upstream commits and two fleet-wide reds with them: fold_shelf_link and fold_shelf_link_repoint, over two links in a peer's construction/archive/20260908-180000 shelf that kept the depth of the file they were folded out of. Not mine, and closable in one command by a tool with a twenty-behavior control, so I ran tools/f/fold_shelf_link_repoint.sh --apply after reading its dry run: two links, exactly the corrections the scan computed, fold_depth_lost 2 -> 0. Both guards GREEN. A dated shelf is immutable once written, so no peer was mid-edit in it.
 loom rune_assert_sweep module_asserts=24495 named=17876 unnamed=6619 module_files=859 proving_asserts=2819 proving_unnamed=2588 proving_files=141
 loom rune_assert_sweep predicate_strict=14272 predicate_block=15043 predicate_both=17876
 loom rune_assert_sweep witness_s_before=2.0 witness_s_after=7.1 scan_s_before=0.5 scan_s_after=3.0 control_legs_before=24 control_legs_after=37
 loom standing_equipment_cold guards_run=197 guards_seconds=1820 guards_green=192 guards_red=2 guards_gated=3 tree_moved=no
+file construction/archive/20260908-180000_shred-prep-class-w-walked-and-kept.md a peer's shelf, its two links repointed by the tree's own repointer
 file tools/fixtures/r/rune_assert_sweep_scan.sh unnamed_assert reads the pairing the rule spells, the proving half reported apart and gated nowhere
 file tools/fixtures/r/rune_assert_control.sh six new cases, both sides, the elder ratchet proven a strict subset
 file tools/r/rune_assert_sweep.rish binds the new legs and records what the third reading found

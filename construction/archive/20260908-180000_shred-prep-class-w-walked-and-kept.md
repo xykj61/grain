@@ -16,7 +16,7 @@ stubs serve **107 living witness calls** the cadence roster still sings. Only th
 is consumed, and no cut removes it separately. **Any future cut takes choir plus room as one unit,
 folded into the %330 design lap.** Cut refused; walk saved; account in the `20260829-145726` log.
 
-### W4 -- the census's top piece (`20260828.212441`) -- folded whole to [`archive/SHRED_PREP-w4-census-top-20260828.md`](archive/SHRED_PREP-w4-census-top-20260828.md): held because its insights were lifted the day they were spoken; the lesson (top-of-census citer counts are mostly provenance credit) rides the shelf.
+### W4 -- the census's top piece (`20260828.212441`) -- folded whole to [`archive/SHRED_PREP-w4-census-top-20260828.md`](SHRED_PREP-w4-census-top-20260828.md): held because its insights were lifted the day they were spoken; the lesson (top-of-census citer counts are mostly provenance credit) rides the shelf.
 
 ### W1 -- the thirty-nine of `active-designing/` (`20260823.182512`)
 
@@ -36,7 +36,7 @@ Keaton pasted a browse of the public seed's `active-designing/` room -- twenty-e
 
 **Named for its own round, rather than started:** a fascia weave over the seven clusters these fall into (Open Asks 8, Steward/commerce 4, SLC ladder 6, Dimeroll 3, language and Glow 4, inference voices 2, foundational singles 12), shaped as a **living index page per cluster** in `active-designing/` rather than as cross-links edited into thirty-nine dated bodies.
 
-Record: [`../active-development/20260823-182512_the-thirty-nine-named-for-shed.md`](../active-development/20260823-182512_the-thirty-nine-named-for-shed.md).
+Record: [`../active-development/20260823-182512_the-thirty-nine-named-for-shed.md`](../../active-development/20260823-182512_the-thirty-nine-named-for-shed.md).
 
 ### W2 -- `context/KYRI.md`, molted into Gauge (`20260823.200008`)
 
