@@ -15,6 +15,12 @@ Two axes: **negation**, counted by `tools/fixtures/p/prose_register_scan.sh`, an
 | **Twilight + Gauge** | under 20% | poetic |
 | **Gauge + Radiant + Twilight** | zero | poetic -- the strictest, claimed rarely |
 
+**Forward-governing, and measured before that was claimed.** Within the hour of seating: **47 living
+pages name `Style: Radiant` alone**, and one of a twelve-page sample sits at zero. They were not
+lying -- the word meant *the warm register* before it meant a number. Dated testimony keeps every
+word; a living page takes the floor when a hand next touches it, and a page that cannot reach zero
+honestly names itself **Radiant + Gauge**.
+
 **Radiant sets the floor at zero.** **Twilight adds poetry and relaxes nothing.** **Gauge is what
 buys up to a fifth of the sentences in negation**, because a measured page must sometimes say what
 refused, and honesty outranks brightness. Full statement: `context/RADIANT_STYLE.md`.

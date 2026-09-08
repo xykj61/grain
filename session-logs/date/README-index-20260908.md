@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260908.141457` | [the law that would have made liars](20260908/20260908-141457_the-law-that-would-have-made-liars.kyri) | 47 pages, one at zero. |
 | `20260908.141037` | [two axes, not three points](20260908/20260908-141037_two-axes-not-three-points.kyri) | the register lattice seated. |
 | `20260908.140216` | [the first worked redaction](20260908/20260908-140216_the-first-worked-redaction.kyri) | zero residue, and it ships. |
 | `20260908.135331` | [siloing pointed the other way](20260908/20260908-135331_siloing-pointed-the-other-way.kyri) | redact technique seated. |
