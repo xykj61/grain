@@ -56,6 +56,19 @@
 # bounded by the gap, and it is worded as the sweep's own reach rather than as a fact about
 # circulants.
 #
+# THE GAP IS CLOSED, AND IT HELD THE WHOLE ANSWER (`20260907.225617`). An exhaustive walk of all
+# 7,647,059 degree-6 triples, no generator fixed, found the
+# floor of 8 attained by exactly 48 connection sets, ALL of them outside this sweep's family, and
+# the covered family's best staying at 9 across 4.6 million graphs. So `sweep_reaches_abelian_floor
+# ... reached=no` below is still true of THIS sweep and is false of circulants: the exhibit is
+# `C_720(5, 55, 72)`, and the 48 are one graph under 48 labellings. The line is left exactly as it
+# is because it reports this sweep's own reach, which is what it was always worded to do -- and the
+# reading a designer wants -- and the program that produced it, named there rather than here, since
+# a Rye path spelled in a scan this scan never builds reads as a runner's claim to
+# `rye_compile_reach` -- lives in `external-research/20260907-225617_the-floor-is-attained.md`.
+# This sweep's three published figures (63,903 swept, best 9, 1,240 attainers) reproduced to the
+# number under that independent program, which is what earned it the credit to correct one sentence.
+#
 # COST. Measured `20260906.152821` on this pier: the sweep walks 63,903 graphs and the shape leg
 # walks 3,106,080 ordered pairs. Around two minutes end to end, which is why its witness is
 # `tier cadence` -- the answer moves only when this script moves.
