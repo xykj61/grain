@@ -18,7 +18,7 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 
 | Room | Rye modules | Witnesses that reference it |
 |---|---:|---:|
-| [`amphora/`](../../amphora/README.md) | 7 | 18 |
+| [`amphora/`](../../amphora/README.md) | 7 | 19 |
 | [`aurora/`](../../aurora/README.md) | 7 | 7 |
 | [`brix/`](../../brix/README.md) | 1 | 2 |
 | [`caravan/`](../../caravan/README.md) | 112 | 129 |
@@ -53,7 +53,7 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 | [`scribe/`](../../scribe/README.md) | 2 | 4 |
 | [`settlement/`](../../settlement/README.md) | 2 | 3 |
 | [`sundial/`](../../sundial/README.md) | 1 | 1 |
-| [`tally/`](../../tally/README.md) | 14 | 28 |
+| [`tally/`](../../tally/README.md) | 14 | 29 |
 | [`vault/`](../../vault/README.md) | 1 | 2 |
 
 ---

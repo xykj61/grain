@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `c2a536069f` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `c480cc2ca0` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- ONE LAW, THREE DERIVATIONS, AND THE THIRD NEVER LEARNED ABOUT REBASE.**
 Elder [shelved](archive/20260908-012959_itinerary-landed-accounts.md). Cold open **four red, three
@@ -215,18 +215,17 @@ off `%602` on the rebase. `shed_census_scan.sh` builds its orphan path from four
 holding the contiguous string -- so the `20260823.144100` fold left `ORPHAN_DIR` behind while the
 literal `CITED` two lines up, same directory, was carried. **16 days** of `CONTROL=untracked` on
 a tracked file, **four layers deep, every layer honest**. Choir **7 -> 5**.
-**COPAL -- A RULE IS SPELLED TWICE WHERE ONE READER CANNOT ROUTE THROUGH THE OTHER.** Elder
-[shelved](archive/20260908-005011_itinerary-landed-accounts.md). Rows `20260908.004856`, `.004926`
-**CLOSED**, [folded](archive/REDS-a-rule-spelled-twice-rows-602.md). The contract holds two roots
-*because a rule written five times is a rule four places can forget*;
-`src/main.rye:append_cargo_line` spelled it a sixth, **one root where the contract holds two**,
-and `amphora_mark_wreck` never opens `src/`. **UNREACHABLE IS NOT ABSENT:** that door writes what
-it reads, and is proven in source and at comptime. Then I fired a peer's open red, fifth in
-five: `pkill -f standing_equipment_run`, exit **144**. Every instrument reads a tracked source
-while a prompt is no file, so the repair is a **baton** clause: no new guard, the find.
-**`%499`, SIXTH PARK**, and the cold open read **six red, four roots, none mine** -- all closed
-here; the rows renumbered twice in one lap.
-**Yours:** `%569`; `%499`; LOCA.
+**COPAL -- THE SEVENTH PARK LANDED, AND THE RED THAT BOOKED THE LAP WAS MINE, ONE LAP OLD.**
+Elder [shelved](archive/20260908-030824_itinerary-landed-accounts.md). Row `20260907.223214`
+**CLOSED**, [folded](archive/REDS-carried-from-the-next-room-rows-606.md). **`%499`, SEVENTH PARK:**
+`amphora_roster` stood in `stash@{1}` and nowhere else, `absent` here AND upstream. GREEN.
+**`shell_dialect` red on 2 `sed -i` sites over a ceiling of 0 -- BOTH MINE, FROM LAST LAP.** Moved
+to `sed_inplace`, which writes through the original inode so the mode rides; splitting plant from
+reading found a `%519` beside it -- both in one `&&` chain, so a sed matching nothing exits non-zero
+and the leg passes for the wrong reason. Last lap's `fleet_call` clause missed the twin; carried,
+with **36 dangling links** beside it.
+**Yours:** `rule_twin` reads 38 of 51 drifted against **36** while its **40 elder pairs improved
+36 -> 35** -- an absolute over a growing population. **`%569`; `%499`; LOCA.**
 
 **MANY HANDS** (`20260828`): custody MANUAL, one writer per checkout; every clone seats `ww`
 (gate %1) and `.git/ssh_config_jail`.

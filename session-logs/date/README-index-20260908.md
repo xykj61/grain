@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260908.031128` | [The seventh park landed](20260908/20260908-031128_the-lap-that-would-not-stay-landed-landed.kyri) | a parked guard recovered; the dialect red was mine. |
 | `20260908.022643` | [the path a repointer could not read](20260908/20260908-022643_the-path-a-repointer-could-not-read.kyri) | a fold left one assembled path behind. |
 | `20260908.022051` | [a row that became furniture](20260908/20260908-022051_a-row-that-became-furniture.kyri) | the oldest open red, booked. |
 | `20260908.022039` | [the layer was already there](20260908/20260908-022039_the-layer-was-already-there.kyri) | the falsifier fired; our meter understates its own gap. |
@@ -33,3 +34,4 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260908.001350` | [the seat that tastes a second run](20260908/20260908-001350_the-seat-that-tastes-a-second-run.kyri) | infusion takes Water's third seat. |
 | `20260908.000342` | [Three guards, one collision](20260908/20260908-000342_three-guards-one-collision.kyri) | four reds at one cold open; a gate that could never reach its class |
 | `20260908.000244` | [The other half of the ceiling](20260908/20260908-000244_the-other-half-of-the-ceiling.kyri) | apply walked the weave per diff item; 109,506ms -> 97ms |
+| `20260908.000155` | [The lap that would not stay landed](20260908/20260908-000155_the-lap-that-would-not-stay-landed.kyri) | sixth park recovered; %592 binds two published stamps. |

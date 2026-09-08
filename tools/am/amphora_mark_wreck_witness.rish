@@ -112,6 +112,12 @@ say "amphora_mark_wreck: honest vessel verifies; an unnamed kind refuses at pars
 # stood. A leg that cannot be reached is proven where it lives: in the source, and in the
 # compiler. Both are asserted below, and both are proven to BITE on a plant.
 
+# THE PLANTS EDIT THROUGH THE TREE'S OWN DIALECT. `sed -i` is a GNU flag BSD sed reads as a
+# backup suffix, so the same line edits on this pier and writes `main.rye-e` on the macOS
+# bench; `shell_portable.sh`'s `sed_inplace` writes a temporary and `cat`s it back through
+# the original inode, which keeps the file's mode as well (`exec-bit`). Gated at zero by
+# `tools/fixtures/s/shell_dialect_scan.sh`, whose `sed_in_place_flag` family these two sites
+# reddened on the lap they arrived.
 let pen_a = "${pen}/a"
 let pen_b = "${pen}/b"
 let make_pens = run ["sh" "-c" "mkdir -p ${pen_a} ${pen_b} && cp amphora/src/main.rye ${pen_a}/main.rye && cp amphora/src/main.rye ${pen_b}/main.rye && ln -s $(pwd)/amphora/manifest_entry.rye ${pen_a}/manifest_entry.rye && ln -s $(pwd)/amphora/manifest_entry.rye ${pen_b}/manifest_entry.rye"]
@@ -124,7 +130,7 @@ assert pen_build.ok else "mark_wreck: the unplanted source copy must build -- ${
 # One: the mirrored root is compiler-held. Diverge the literal this door WRITES from the
 # contract's own, and the comptime block must stop the build. A literal copied by hand that
 # nothing checks is REDS %453's shape one field over.
-let plant_root = run ["sh" "-c" "sed -i 's/^const mark_plain_bytes = \"plain-bytes\";/const mark_plain_bytes = \"plain-bytes-x\";/' ${pen_a}/main.rye && grep -q 'plain-bytes-x' ${pen_a}/main.rye"]
+let plant_root = run ["sh" "-c" ". tools/fixtures/s/shell_portable.sh && sed_inplace 's/^const mark_plain_bytes = \"plain-bytes\";/const mark_plain_bytes = \"plain-bytes-x\";/' ${pen_a}/main.rye && grep -q 'plain-bytes-x' ${pen_a}/main.rye"]
 assert plant_root.ok else "mark_wreck: the divergent-root plant did not take -- the declaration moved"
 let refused_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${pen_a}/main.rye -femit-bin=${pen}/amphora-pen-planted 2>&1"]
 assert refused_build.code != 0 else "mark_wreck: a written root diverging from the contract STILL BUILT"
@@ -141,7 +147,13 @@ assert no_second.ok else "mark_wreck: main's cargo reader spells a SECOND mark r
 # And that leg is proven to bite: restore the elder narrower rule in the second pen and the
 # same reading must fail there. A leg proven only in the passing direction cannot be told
 # from a bypass.
-let elder = run ["sh" "-c" "sed -i 's/if (me.mark_verdict(mark) == .unknown)/if (!std.mem.eql(u8, mark, mark_plain_bytes))/' ${pen_b}/main.rye && ! grep -q 'eql(u8, mark, mark_plain_bytes)' ${pen_b}/main.rye"]
+# The plant is applied and READ BACK before the leg is aimed at it. A plant and its reading in
+# one `&&` chain cannot be told apart: a sed that matched nothing stops the chain, the run exits
+# non-zero, and the assert below passes for the wrong reason -- REDS %519's shape, where a plant
+# that plants nothing reads exactly like a law that holds.
+let plant_elder = run ["sh" "-c" ". tools/fixtures/s/shell_portable.sh && sed_inplace 's/if (me.mark_verdict(mark) == .unknown)/if (!std.mem.eql(u8, mark, mark_plain_bytes))/' ${pen_b}/main.rye && grep -q 'eql(u8, mark, mark_plain_bytes)' ${pen_b}/main.rye"]
+assert plant_elder.ok else "mark_wreck: the elder-rule plant did not take -- the line it names moved"
+let elder = run ["sh" "-c" "! grep -q 'eql(u8, mark, mark_plain_bytes)' ${pen_b}/main.rye"]
 assert elder.code != 0 else "mark_wreck: the second-roster leg cannot bite -- it passes on the elder source"
 
 # Three: the mark field is bounded before the contract is asked, so an over-long mark is

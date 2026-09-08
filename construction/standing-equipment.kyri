@@ -1938,6 +1938,40 @@ path tools/am/amphora_first_resident_witness.rish
 tier lap
 seated 20260905.225551
 
+# amphora_roster -- every authored module in the vessel room answers to a rostered guard, or is
+# counted. The Sound lane has carried this reading for `tally/` since `20260826`
+# (`tools/fixtures/t/tally_roster_scan.sh`); the vessel room had no twin, so its coverage lived in
+# prose a hand typed and re-typed. The block below carried a module and line count corrected in
+# place on `20260906`, and the line count drifted 273 by the next morning with nothing listening
+# (row `20260907.215529`); `amphora/README.md` read *twelve standing witnesses run every lap* while
+# fifteen rows stood here, thirteen of them on the lap clock. REDS %360's family, one room over: a
+# claim with no instrument. The repair is the instrument rather than a better-typed number, so this
+# roster's own vessel counts are now answered by
+# `sh tools/fixtures/am/amphora_roster_scan.sh` on every run.
+#
+# WHAT IT GATES at zero: `uncovered`, a module no rostered guard names -- a break a lap would not
+# catch; and `orphan_rows`, a row naming a guard file the room lacks -- the roster promising a run
+# nobody can make. `singly_covered` is REPORTED and never gated, because a module born today is
+# named by exactly one guard on the day it lands, and a ceiling there would red on the most ordinary
+# work in the room. Two stand there now, `manifest_entry.rye` and `purchase_delivery.rye`.
+#
+# A SYMLINK IS ANOTHER LANE'S MODULE. The room is read with `find ! -type l`, so `kumara.rye`,
+# `tally_copy.rye` and `wire_format.rye` are counted apart rather than held to this lane's account
+# -- the same distinction that corrected the room's own reading from 10 to 7. A SHIM IS FOLLOWED ONE
+# HOP, bounded at four, since nine files under `tools/am/` run a target under `tools/gen/amphora/`
+# and the module names live in the target.
+#
+# `tier lap`: shell and awk only, no build, measured under a second against a lap pass of 1,248.
+# Proven by 40 planted behaviors on throwaway rooms in
+# `tools/fixtures/am/amphora_roster_control.sh` -- every refusal shown from the failing side and
+# then lifted, the vacuum leg proving that zero rostered guards over a room holding modules refuses
+# rather than reading covered, and the pen proven innocent against a scan patched to always say ok.
+
+guard amphora_roster
+path tools/am/amphora_roster_witness.rish
+tier lap
+seated 20260907.223214
+
 # elf_machine -- a binary's architecture read from its own ELF header rather than from `file`'s
 # prose. Glow's two cross-target witnesses asked `file` for a substring and never checked that the
 # call had run; this pier has no `file(1)`, so the call exited 127 with empty output and the assert

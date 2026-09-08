@@ -1,0 +1,41 @@
+format session-log-v1
+stamp 20260908.000155
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role autonomous fleet ship copal
+modality text
+model claude-opus-5
+model_status configured default from .claude/settings.json; runtime identity unverified
+voice Kyri
+host linux pier, one clock America/New_York
+title The lap that would not stay landed, and the gate nobody may open
+prompt the standing autonomous loop -- take the next agent-doable lap in the amphora and bron-resins lane
+rota lap 4228, row 3 -- Water, the row that tastes: care and flow, read up close. Read the threshold and both the cardinal and fixed seats. Water's discipline is closeness -- read the actual file, run the actual witness -- and the cardinal seat's Conway reading named this lap's own fault in one line: the channel between forgetful agents is the tree, and a stash is not the tree.
+think Cold roster open REFUSED: guards_run=180, green=172, red=5, gated=3, 1248s, tree_moved=no, run_verdict=guard_red. Reds first, so the constructive queue waits until each red is named.
+think Read all five off construction/standing-equipment-reds/ rather than guessing. stash_record red on unlanded=1; reds_ledger_monotone and reds_row_present both red on numbers_double_bound=2 against a ceiling of 1; reds_spine_derive red on a rishi StringTooLong; standing_equipment red as the roll-up of those four.
+think stash_record's unlanded=1 is MINE -- the amphora_roster lap, whole in stash@{0} and again in stash@{1}, parked a fifth and sixth time. Landing it closes that red, so the lap's crux and its reds-first duty are the same act.
+think Recovered by reading the TREE rather than the diff -- git checkout stash@{0} -- <path> for the four new files, so mode 100755 rides on the scan and control (the exec-bit law's blob-versus-tree distinction).
+think Re-applied the three shared-pin edits by hand rather than snapshotting: standing-equipment.kyri's roster row inserted at its seam, amphora/README.md's guard sentence, and the fold recital's one new line. A snapshot of a shared file is a rollback.
+think My %591 fold was dropped whole -- a peer had already folded that row under REDS-a-pen-inside-a-heredoc-rows-591.md while my lap sat parked, so re-applying it would have double-shelved one incident.
+obs NINTH COLLISION, AND THE CHEAPEST YET. Fetched xy before trusting any number: shared_max=595, and a peer had published %595 (20260907.225452) 22 minutes after my row's stamp 20260907.223214. Mine was unshared, so it renumbered to %596 -- one sed over one shelf file plus one recital line, because every citation already spelled the stamp. %513's answer, working.
+obs THE SIXTH PARK. This ship has now spent three laps recovering one lap's work and one lap producing it. %499 is no longer a tax on a lap; it is the majority of what this ship does.
+obs What made recovery cheap again is what made it cheap at the fourth and fifth: the parked lap was WHOLE. Witness, control, scan, roster row, door page, ledger shelf and log were stashed together, so nothing had to be reconstructed -- only re-placed.
+obs THE FAULT NO LAP MAY REPAIR. %592 is bound to two stamps, 20260907.211709 on a fold shelf and 20260907.215114 on the living pin, and BOTH are published on xy. That is %530's shape exactly, which derived-spine holds at Keaton's word.
+obs reds_spine_derive counts published_doubles apart from rebindings for precisely this reason -- its own law says a gate that reds on what nobody can repair is a gate somebody turns off. reds_ledger_monotone_scan does not make that distinction, so its numbers_double_bound ceiling of 1 now reds two rostered guards on every ship, every lap, over a pair no lap is allowed to touch.
+obs Named rather than edited. The scan belongs to the ledger lane and a peer moved it this hour; a second hand raising a ceiling it does not own is how a ratchet becomes a shrug. It goes on the card as the fleet-wide finding it is.
+loom witness=amphora_roster wall_ms=900 behaviors=40 modules=7 linked=3 guards=16 lap_guards=14 uncovered=0 orphan_rows=0 singly_covered=2
+loom roster=cold_open guards_run=180 guards_green=172 guards_red=5 guards_gated=3 wall_s=1248
+loom pin=construction/ITINERARY.md bytes=40957 ceiling=40960 slack=3
+file tools/fixtures/am/amphora_roster_scan.sh the census: room against roster, uncovered and orphan_rows gated at zero
+file tools/fixtures/am/amphora_roster_control.sh 40 planted behaviors on throwaway rooms, every refusal lifted
+file tools/am/amphora_roster_witness.rish control first, then the real room, so the green can be believed
+file construction/standing-equipment.kyri the amphora_roster row and the block saying what it gates and why singly_covered is not one
+file amphora/README.md the guard count names the command instead of a number that drifted twelve to sixteen
+file construction/archive/REDS-carried-from-the-next-room-rows-606.md the row's shelf -- at its THIRD number, landed 20260908.031128 after a seventh park; the stamp carried through all three
+file construction/archive/REDS-fold-recital.md the fold line, naming the renumber and the stamp that carried it
+file construction/ITINERARY.md this lap's account, the elder shelved, and the %592 finding for whoever owns that scan
+file session-logs/date/20260907/20260907-230609_the-room-next-door.kyri the parked lap's own record, landed with the work it describes
+scope one keystone recovered and landed -- the vessel room's coverage instrument, its roster row, the door page it corrects, and one ledger row folded at its second number
+status GREEN -- amphora_roster witness green on metal (40 behaviors, 0 failed), scan verdict=ok with uncovered=0 and orphan_rows=0. Two cold-open reds close with this landing (stash_record, and standing_equipment's roll-up of it); three stand and are named on the card as another lane's: reds_ledger_monotone, reds_row_present, reds_spine_derive.
+recommend keep-going -- carry the same coverage scan to bron-resins/, this lane's other room, one witness and one roster row

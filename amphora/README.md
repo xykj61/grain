@@ -2,7 +2,7 @@
 
 **Language:** EN
 **Stamp:** `20260710.161358`
-**Last updated:** `20260906.200000` (the UDP sockets carry no address reuse, and the guard that proves it comes in on the cadence clock)
+**Last updated:** `20260907.223214` (the room's guard count reads off `tools/fixtures/am/amphora_roster_scan.sh` rather than off a typed number, and every authored module now answers to a rostered guard)
 **Status:** Landed -- laps 1-3 + stamp + seal + chunk + purchase delivery; Pond customs gates scrub; forge view folds a live sealed pour - **CLI wave e150** Q6 pour parse - Class W parked - couples held (carry/restore wait)
 **Where this sits:** home is [`../README.md`](../README.md) - a first hour in your hands is
 [`../docs-geode/tutorials/the-first-hour.md`](../docs-geode/tutorials/the-first-hour.md) - the whole
@@ -24,8 +24,14 @@ the parent it left.
 What makes a vessel worth trusting is that every wall names itself. Amphora checks the manifest
 line, the season's identity, the seal, the vessel's full length, and each chunk of a large resin,
 and it answers by name the moment one of them disagrees -- while the vessel already on disk keeps
-every byte it had. Twelve standing witnesses run every lap, and four of them plant exactly those
-faults and prove each wall answers by name.
+every byte it had. Three of the room's guards are negative twins that plant exactly those faults --
+a forged manifest line, a tampered seal, a truncated vessel, a torn chunk -- and prove each wall
+answers by name.
+
+How many guards stand over this room, how many of them run every lap, and whether any module stands
+without one are read off an instrument rather than typed here:
+`sh tools/fixtures/am/amphora_roster_scan.sh`. A number in this paragraph drifted from twelve to
+sixteen inside a day while nothing listened, which is why the sentence names the command instead.
 
 ## CLI surface
 

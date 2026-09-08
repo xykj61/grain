@@ -24,19 +24,19 @@ that reaches the agent without the baton are each counted at zero.
 
 | Baton section | Governed by |
 |---|---|
-| **VOICE** | [`kyri`](kyri.md) - [`gauge-style`](gauge-style.md) - [`radiant-style`](radiant-style.md) - [`twilight-style`](twilight-style.md) - [`vocabulary-aroma`](vocabulary-aroma.md) *(the G-friendly default)* |
-| **CARD** | [`ascii-first`](ascii-first.md) - [`stamp-and-name`](stamp-and-name.md) - [`quality-assurance`](quality-assurance.md) - [`reds-first`](reds-first.md) - [`read-scope`](read-scope.md) |
-| **DOOR** | [`../../context/TWO_ROOMS.md`](../../context/TWO_ROOMS.md) - [`design-rooms`](design-rooms.md) *(the other law wearing the word)* |
+| **VOICE** | [`kyri`](kyri.mdc) - [`gauge-style`](gauge-style.mdc) - [`radiant-style`](radiant-style.mdc) - [`twilight-style`](twilight-style.mdc) - [`vocabulary-aroma`](vocabulary-aroma.mdc) *(the G-friendly default)* |
+| **CARD** | [`ascii-first`](ascii-first.mdc) - [`stamp-and-name`](stamp-and-name.mdc) - [`quality-assurance`](quality-assurance.mdc) - [`reds-first`](reds-first.mdc) - [`read-scope`](read-scope.mdc) |
+| **DOOR** | [`../../context/TWO_ROOMS.md`](../../context/TWO_ROOMS.md) - [`design-rooms`](design-rooms.mdc) *(the other law wearing the word)* |
 | **ROTA** | **this rule** -- it had none |
-| **THREAD** | [`session-logs`](session-logs.md) |
+| **THREAD** | [`session-logs`](session-logs.mdc) |
 | **FLEET** | **this rule** -- one writer per checkout had none |
 | **WATCH** | **this rule** -- the watch is new on `20260906` and had none |
 | **CLAIM-AS-OVERRIDE** | **this rule** -- it had none |
-| **SEND** | [`send-word`](send-word.md) - [`commit-messages`](commit-messages.md) - [`mechanism-sentence`](mechanism-sentence.md) - [`remember-git-nib`](remember-git-nib.md) - [`git-signing`](git-signing.md) |
-| **LOG** | [`session-logs`](session-logs.md) - [`session-log-provenance`](session-log-provenance.md) |
-| **PINS** | [`checkpoint`](checkpoint.md) - [`debride`](debride.md) - the bound law at `context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md` |
-| **CUSTODY** | the ITINERARY gate list - [`git-signing`](git-signing.md) *(the seed)* - **GATES-ONLY seated here** |
-| **CLOSE** | [`collaboration`](collaboration.md) |
+| **SEND** | [`send-word`](send-word.mdc) - [`commit-messages`](commit-messages.mdc) - [`mechanism-sentence`](mechanism-sentence.mdc) - [`remember-git-nib`](remember-git-nib.mdc) - [`git-signing`](git-signing.mdc) |
+| **LOG** | [`session-logs`](session-logs.mdc) - [`session-log-provenance`](session-log-provenance.mdc) |
+| **PINS** | [`checkpoint`](checkpoint.mdc) - [`debride`](debride.mdc) - the bound law at `context/specs/20260724-132812_pin-and-ledger-living-pin-max-bytes.md` |
+| **CUSTODY** | the ITINERARY gate list - [`git-signing`](git-signing.mdc) *(the seed)* - **GATES-ONLY seated here** |
+| **CLOSE** | [`collaboration`](collaboration.mdc) |
 
 **Four of the eleven had no rule at all**, measured `20260904.214754` by grepping `.claude/rules/` for each:
 `%291` appeared once, in passing, inside an unrelated rule; *claim-as-override*, the *council rota*,
@@ -53,6 +53,21 @@ why it is a law rather than a habit.
 
 **Machines are doors.** A seat is a chair, not a computer: the same ship may sit at a Mac or at the
 pier, and what makes that safe is proving the other door is closed and opening with the twice-pull.
+
+**And never signal a process by name.** `pkill -f standing_equipment_run` matches a command line
+rather than a directory, so on a pier eight ships share it reaches the fleet, and the calling
+shell's own command line holds the pattern, so it kills the caller too (exit 144). The bounded form
+is `sh tools/f/fleet_call.sh --pattern <substring> [--signal TERM]`, which resolves each candidate
+through `/proc/<pid>/cwd` and refuses a process outside this tree out loud rather than signaling it
+in silence -- a false refusal costs one line, a false send costs a peer's pass.
+
+**The clause is on the baton because the tool was not enough.** `fleet_call.sh` has stood with its
+own witness since REDS `%541`, `process_reach` is rostered, and the wound has now fired **five**
+times: three inside two laps at `%541`, once more at `%569`, and again on `20260908` when a ship
+that had read the card typed the raw `pkill` at its own cold open and took a peer's pass with it.
+Every guard that could see this reads **tracked sources**, and a command typed at a session prompt
+is in no file -- which `%569` had already written down in its own third field. A defect nothing in
+the tree can measure is set where habits are set, or it is not set at all.
 
 ## A tree carries its own keys (REDS `%427`)
 
@@ -183,7 +198,7 @@ belong beside the token rather than instead of it, which the law's own three-que
 says.
 
 **Two laws in this tree use the word room, and that is half of why the habit slipped.**
-`TWO_ROOMS.md` names a **register**; [`design-rooms`](design-rooms.md) names a **directory**,
+`TWO_ROOMS.md` names a **register**; [`design-rooms`](design-rooms.mdc) names a **directory**,
 decided by *would this still be worth reading if the code were deleted?* Nine pages under the
 roster answered at the door under a key literally named `**Room:**`, two of them spelling `Mixed`,
 and the guard read only `**Status:**` -- so the tree's own honest answers were being counted as
