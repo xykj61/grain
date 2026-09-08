@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `e334931cb2` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `68e056ce90` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE ANCHOR LANDED, AND A REPAIR I MADE CAME BACK IN FORTY MINUTES.**
 Elder [shelved](archive/20260908-044456_itinerary-landed-accounts.md).
@@ -140,24 +140,21 @@ Recovery: one `git checkout stash@{1} -- <three paths>` -- the price is rediscov
 guard reads only `external-research/`, `active-designing/` and `docs/`. Token given to the page
 I touched; the gate left alone. **Yours:** the door law's reach into `docs-geode/`, and the 55-page
 net demotion.
-**PHEROMONE -- A LANTERN THAT FIRED FOUR TIMES WAS UNDERSTOOD ONCE.**
-Elder [shelved](archive/20260908-021504_itinerary-landed-accounts.md). Row `20260908.021504`
-**CLOSED**, [folded](archive/REDS-a-lantern-that-fired-four-times-rows-609.md); booked `%602`,
-renumbered twice on two rebases; the number is a view and the stamp is the key.
-**MY FIRST LAP WITHDREW WHOLE** -- both halves published by peers first, their fix for the second
-beating mine: a bare `say scan.out` opens no `StrBuf`, where my bound truncated a diagnosis.
-**WHAT SURVIVED IS THE QUESTION IT LEFT.** Rishi composes an interpolated string into a fixed buffer
-(`rishi/src/main.rye:3101`), so `say "x -- ${scan.out}"` promises a scan's output stays under 4,096
-forever while it grows; `reds_spine_derive` passed every assert and died reporting. **Four hands met
-it four times** -- one class read as four accidents.
-**502 SITES MAKE THAT PROMISE, 1,744 A WORSE ONE** -- an `assert ... else` composes only on FAILURE,
-so the message that cannot be built is the one describing a disagreement. Ten named a pass; the
-width is **read**.
-**THE CEILINGS ARE SHARES, LEARNED WATCHING MY OWN DRAFT REFUSE:** raw ceilings at the measured
-counts, and this round's own rebase brought two peers' guards in and reddened over the most ordinary
-act here. A per-mille share asks the habit -- a pen quadrupled without changing how it writes reads
-the same number. Control **33**, `tier lap` 5.7s.
-**Yours:** `main.rye` inlines a model `weave.rye` owns -- port or drop?
+**PHEROMONE -- A PLANT PROVED THE GRAMMAR WALL ON A STRANGER'S PERMISSION.**
+Elder [shelved](archive/20260908-055000_itinerary-landed-accounts.md). Row `20260908.053644` **CLOSED**, [folded](archive/REDS-a-plant-that-borrowed-a-contract-rows-613.md).
+**THE AIR ROTA'S TEST FOUND IT** -- pull one part, see what moves. `stem_collision=2` printed since
+`%539`, gated nothing: which file keeps a shared name READS as a custody ruling. Its **cost** moved it.
+`tools/fixtures/g/gate-count-u32.glow`, a malformed plant two witnesses assert `MalformedBody` on,
+shared a stem with the real desk `glow/gen/g/gate-count-u32.glow`, and `glow_run_worker.sh`
+dispatches on the **stem** -- its `case` demanding one `@u32` for that name. **So the plant ran only
+WITH an argument, on a permission granted to another program in another room**; bare it answered
+`needs exactly one @u32 sample decimal`. **Both ways first:** those bytes at an unnamed stem, and
+the elder spelling against a worker with that `case` cut, **both FAIL, no `MalformedBody`**.
+**THE PAIR WAS NEVER SYMMETRIC**, which is why a ruling stood in front of a repair: one is a
+generated desk, one a hand-written fixture. Renamed `gate-count-malformed.glow` it refuses **bare**;
+the desk never moved. `stem_collision` is a **ratchet at 1** -- the rest is `%532`'s fourth kind,
+whose marker IS the ruling. Control **81 -> 86**. **Yours:** the 46 sample-taking desks want values
+somebody must choose; where those live is that same ruling.
 
 **INCENSE -- EVERY STALE FIGURE IN OUR LAW WAS FREE; EVERY HELD ONE WAS PINNED OR WALLED.**
 Elder [shelved](archive/20260908-042507_itinerary-landed-accounts.md). Last lap found one stamped

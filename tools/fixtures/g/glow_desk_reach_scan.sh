@@ -64,7 +64,7 @@
 #   uncovered_bare  bare-runnable desks NOTHING runs                 -- GATED AT ZERO
 #   corpus_glow     every *.glow in the tree, all rooms
 #   corpus_outside  those standing outside this room
-#   stem_collision  stems two or more *.glow files share
+#   stem_collision  stems two or more *.glow files share       -- RATCHET
 #
 # THE THIRD ENUMERATION, READ AT LAST, AND WHAT IT SPLIT. The braid above named three hand-written
 # statements about this corpus and this meter read two of them -- name marker against head marker,
@@ -113,6 +113,33 @@
 # what it is -- files under glow/gen/ that no marker excuses and nothing runs -- rather than a
 # claim that all 129 are desks awaiting coverage.
 #
+# A SHARED STEM IS A SHARED RUN CONTRACT, AND ONE PAIR WAS SPENDING IT. %539 counted this
+# reading and gated nothing, on the ground that which file keeps a shared name is a language
+# custody ruling. Measured 20260908.055000, one of the two pairs needed no ruling at all.
+#
+# tools/fixtures/g/gate-count-u32.glow was a deliberately malformed plant -- a bartis whose ?: is
+# missing its else arm -- run by tools/g/glow_skate_gates_witness.rish and
+# tools/t/tally_glow_tend_a1_gate_bound_witness.rish to prove the grammar wall refuses it. It
+# shared its stem with glow/gen/g/gate-count-u32.glow, a valid desk of the room, and
+# tools/g/glow_run_worker.sh dispatches on the STEM: its `case` demanded exactly one @u32 sample
+# decimal for that name. So the plant could be run only WITH an argument, on a permission granted
+# to a different program in a different room. Proven both ways on metal: the same bytes at a stem
+# absent from the `case` answered `FAIL: only sample-u32 / gate-*-u32 ... take a sample`, and the
+# plant's own bare run through the worker answered `FAIL: gate-count-u32.glow needs exactly one
+# @u32 sample decimal` -- neither of them the MalformedBody the two witnesses assert on.
+#
+# The cure was subtraction rather than a ruling. Renamed to gate-count-malformed.glow, a stem no
+# `case` names, the plant refuses BARE with the same `bartis lower failed (MalformedBody)` and now
+# depends on nothing: no argument, no permission, no stranger's name. The desk in glow/gen/ never
+# moved, so no language custody question was answered here -- a fixture under tools/ took a clearer
+# name, which is what it always wanted.
+#
+# WHY THE CEILING IS 1 AND NOT 0. The remaining pair, sample-demo-fact-line-lits under glow/gen/s/
+# and linengrow/gen/, is one of the three files %532 named as a fourth kind -- data fixtures
+# carrying no marker in either name or head. Giving one a marker, or moving it, decides what
+# declares a desk's kind, which IS the custody ruling %539 named. So the ceiling stands at what a
+# lap may not repair, and a THIRD collision reds on the lap it arrives.
+
 # WHAT THIS DOES NOT REACH. Whether a covered desk's assertion is a good one, and whether an
 # uncovered desk would pass if it were run. Of the 139 measured on metal 20260907, 59 ran GREEN
 # bare and 41 refused for want of a sample argument the witness would have to choose. Choosing
@@ -362,6 +389,7 @@ uncovered_bare=$(wc -l < "$WORK/uncovered_bare" | tr -d ' ')
 UNCOVERED_BARE_CEILING=${GLOW_DESK_UNCOVERED_BARE_CEILING:-0}
 UNCOVERED_SAMPLED_CEILING=${GLOW_DESK_UNCOVERED_SAMPLED_CEILING:-46}
 UNCOVERED_CEILING=$((UNCOVERED_BARE_CEILING + UNCOVERED_SAMPLED_CEILING))
+STEM_COLLISION_CEILING=${GLOW_DESK_STEM_COLLISION_CEILING:-1}
 
 verdict=ok
 if [ "$norun_disagree" -ne 0 ]; then
@@ -388,6 +416,11 @@ if [ "$uncovered_bare" -gt "$UNCOVERED_BARE_CEILING" ]; then
   verdict=over_bare_ceiling
   echo "detail: $uncovered_bare bare-runnable desks are run by nothing, past the ceiling of $UNCOVERED_BARE_CEILING --"
   head -20 "$WORK/uncovered_bare" | sed 's/^/  /'
+fi
+if [ "$stem_collision" -gt "$STEM_COLLISION_CEILING" ]; then
+  verdict=over_stem_collision_ceiling
+  echo "detail: $stem_collision stems are shared by two or more .glow files, past the ceiling of $STEM_COLLISION_CEILING -- one stem is one built binary, one cache path, and one sample permission --"
+  sed 's/^/  /' "$WORK/stem_collision"
 fi
 if [ "$uncovered_sampled" -gt "$UNCOVERED_SAMPLED_CEILING" ]; then
   verdict=over_sampled_ceiling
@@ -418,6 +451,7 @@ echo "uncovered_bare_ceiling=$UNCOVERED_BARE_CEILING"
 echo "corpus_glow=$corpus_glow"
 echo "corpus_outside=$corpus_outside"
 echo "stem_collision=$stem_collision"
+echo "stem_collision_ceiling=$STEM_COLLISION_CEILING"
 echo "verdict=$verdict"
 
 [ "$verdict" = ok ] || exit 1
