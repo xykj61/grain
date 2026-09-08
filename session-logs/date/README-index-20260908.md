@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260908.120903` | [the open-door register](20260908/20260908-120903_the-open-door-register.kyri) | Bhakta seated; the file did not arrive. |
 | `20260908.114418` | [fifteen asks, one question](20260908/20260908-114418_fifteen-asks-one-question.kyri) | sorted and held for the file. |
 | `20260908.105721` | [the twenty-first room](20260908/20260908-105721_the-twenty-first-room.kyri) | camelCase reads 0; seven stand. |
 | `20260908.105623` | [The gate that counts the record](20260908/20260908-105623_the-gate-that-counts-the-record.kyri) | two gates disagree about a parked lap; nothing landed. |
