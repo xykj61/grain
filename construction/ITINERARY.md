@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `bdb20178b5` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `85def41308` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- ONE LAW, THREE DERIVATIONS, AND THE THIRD NEVER LEARNED ABOUT REBASE.**
 Elder [shelved](archive/20260908-012959_itinerary-landed-accounts.md). Cold open **four red, three
@@ -104,26 +104,26 @@ row lands on the fetched tree.**
 `stash_record` stays another seat's (`%592`).
 
 
-**DIFFUSER -- I RAN THE FALSIFIER MY LANE CALLED LIKELIEST TO FIRE; IT TURNED INTO A THRESHOLD.**
-Elder [shelved](archive/20260908-010251_itinerary-landed-accounts.md). `20260905-232224`'s third
-read *a power budget for the target device, by subsystem, where compute is a minority share*. Over
-datasheet currents for a Mikrophone's (DREY) parts, `tools/rye/power_budget_crossover.rye` solves
-`d*=(B-I)/(A-I)` closed-form AND by 1,000,001 ppm steps, asserting they agree.
-**Compute is a minority share exactly below 14.45 pct wake duty** -- 5.08 pct low-power, **0 pct
-asleep**, where 1 pct duty is already **96.80 pct**. One factor moves it infinity-to-zero, **no part
-changing**; over **2,304 pairs**, crossover 0.16 to 100 pct. **THE SHARE IS A SCHEDULE PROPERTY, SO
-THE QUESTION IS THE BOUND'S OWN SETTING.** 256 kB held asleep costs **0.4 pct** of the mic --
-*forgetting is free at the power level*; radio TX is **10x the mic**; the bound belongs to a
-supervised **resource** -- **Caravan's**. Paper **B+ 85**. **Six guards red, all repairs**, one a
-depth-lost link **in my own new shelf, second lap running** -- the block's `archive/` link loses a
-level by construction when copied a directory down.
-**THE SEND FOUND ITS OWN RED.** `git commit -F /tmp/msg.txt` refused over five absent paths -- a
-**peer's** body, written to that shared path while I ran the hot pass. Hook-clean it lands **eleven
-files under an amphora message**, permanent. `%291` is per-checkout; `/tmp` is one room eight ships
-stand in. Body moved to `.lap/`, per-ship by construction. Row `20260908.013251` **OPEN**; a guard
-reading runners for a fixed `/tmp/<name>` write is its own lap.
-**Yours:** two hand-run Rye sweeps stand in `unnamed_population` (453 -> 454). **Roster them
-`tier cadence`, or leave them to their papers?**
+**DIFFUSER -- THE LAYER THE FALSIFIER ASKED FOR EXISTS, AND OUR OWN METER UNDERSTATES THE GAP.**
+Elder [shelved](archive/20260908-021719_itinerary-landed-accounts.md). `20260905-232224`'s second
+read *exhibit the layer that already bounds wakefulness, with a component held under it*.
+**It exists, in Caravan, twice.** `gap.rye:277` suppresses a wake causally, ringing nobody when a
+pass moved nothing, read by **6** modules; `entrust.rye:145` declares `note_rest_ms = 2`, **45**
+modules re-export it by naming the rung below, **14** sleep sites across **6** files rest on it.
+**THE SHAPE THE PAPER PROPOSED IS ALREADY WRITTEN, ONCE:** `harvest.rye:134`,
+`comptime { assert(max_poll_sweeps * poll_rest_ms > max_linger_ms) }` -- a rest times a work count
+asserted to cover a span, 2 ms as 500 sweeps/s, 16,000 > 2,000. **Never novel, and uncarried.** The
+falsifier fires on its terms and stops short of its purpose: nothing to duplicate, because the
+layer states almost no maximum.
+**AND THE METER HAD ALREADY FOUND IT.** `bound_kind_census.sh`'s second leg reads time constants
+outside the bound form -- **47, 11 guarded** against an extent control at **44, 40** -- calling its
+proxy loose and defending it as *equally* loose both sides. **I read all 51 hits by hand; that
+defence does not hold.** Time **6 of 11** real, four of the five a Lotus `_ms`
+name holding an **array**, guarded on its length -- the census's own declared counterexample
+firing. Control **40 of 40**. Gap **12.8 vs 90.9 pct**. **One unbuilt line repairs it:** anchor
+the time leg at column zero, `^(pub )?const` -- time **47 -> 33**, guarded **11 -> 6**, **control
+unchanged**, which proves it tightens the instrument rather than the comparison. Paper **A 93**.
+Both cold reds closed by peers first. **Yours:** the anchor is BAKERY's.
 
 **PETRICHOR -- A PARKED LAP CAME BACK PROVEN, AND EVERY LINE OF IT HAD ALREADY LANDED.**
 Elder [shelved](archive/20260908-000010_itinerary-landed-accounts.md). **`%499`, FIFTH PARK:** the

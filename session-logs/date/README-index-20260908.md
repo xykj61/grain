@@ -13,6 +13,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 |---|---|---|
 | `20260908.022051` | [a row that became furniture](20260908/20260908-022051_a-row-that-became-furniture.kyri) | the oldest open red, booked. |
 | `20260908.021718` | [the help I truncated](20260908/20260908-021718_the-help-i-truncated.kyri) | the wall already said it. |
+| `20260908.022039` | [the layer was already there](20260908/20260908-022039_the-layer-was-already-there.kyri) | the falsifier fired; our meter understates its own gap. |
 | `20260908.021022` | [the weaver and the weave](20260908/20260908-021022_the-weaver-and-the-weave.kyri) | Kabir named, shaped, filed yonder. |
 | `20260908.013500` | [four of four stood](20260908/20260908-013500_four-of-four-stood.kyri) | zero flakes in the sample. |
 | `20260908.012644` | [the lap that came back](20260908/20260908-012644_the-lap-that-came-back-and-the-four-it-found-red.kyri) | Four cold reds, three of them nobody's. |
