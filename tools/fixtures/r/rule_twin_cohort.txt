@@ -1,0 +1,63 @@
+# tools/fixtures/r/rule_twin_cohort.txt -- the rule pairs that stood when the ratchet was seated.
+#
+# WHY A ROSTER RATHER THAN A NUMBER. The elder ceiling was the single figure 36, read at
+# `20260824.112806` over 40 pairs. By `20260908` the tree held 51 pairs and 38 drifted, so the
+# meter refused -- while drift among these 40 had FALLEN 36 -> 35. One number was answering two
+# questions at once: did a standing pair drift further, and how many pairs are there. The second
+# answer moved every time somebody wrote a new rule, and it dragged the first one with it.
+#
+# This roster is a census of a closed day, so it never grows. Re-derive it from the tree itself:
+#
+#   git ls-tree --name-only 10ab22ac84 .claude/rules/ | sed 's|.*/||; s|\.md$||' | sort > /tmp/c
+#   git ls-tree --name-only 10ab22ac84 .cursor/rules/ | sed 's|.*/||; s|\.mdc$||' | sort > /tmp/u
+#   comm -12 /tmp/c /tmp/u
+#
+# Commit `10ab22ac84` is `sow: one projection at a time, and the rule twins measured`, the send
+# that seated the meter. The names live HERE rather than in a git query against that commit
+# because this tree rewrites history on Keaton's word -- the urbit-lineage drop of `20260817`
+# re-rooted 2,901 commits -- and a guard reaching for a hash would then read nothing while still
+# reporting a verdict. A roster is content, so it survives a rewrite the way a hash cannot. A name here that is no longer a pair is reported as `cohort_missing`
+# rather than quietly shrinking the reading, since a retired rule and a reconciled one are two
+# different facts.
+#
+# Read by tools/fixtures/r/rule_twin_scan.sh. Blank lines and `#` comments are skipped.
+acme-employee-voice
+align
+ascii-first
+azimuth-galaxy-proposal-format
+cell
+checkpoint
+collaboration
+comlink-tendency
+commit-messages
+debride
+design-rooms
+docs-implementation-sync
+exec-bit
+gauge-style
+git-signing
+gratitude-licenses
+kyri
+lindy-first-crux
+mechanism-sentence
+molt
+placeholder-ship-names
+quin
+radiant-style
+radiant-wishes-ending
+reds-first
+remember
+remember-git-nib
+reya2
+rio3
+riyo
+round-close-send-checkin
+send-word
+session-logs
+stamp-and-name
+tame-guidance
+twilight-style
+urbit-reframe
+vocabulary-nib
+vocabulary-survey
+waymark-ladders

@@ -12,6 +12,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | Stamp | Log | What it recorded |
 |---|---|---|
 | `20260908.035429` | [the refusal that was never performed](20260908/20260908-035429_the-refusal-that-was-never-performed.kyri) | mandi printed a refusal no case performed |
+| `20260908.041722` | [a ratchet that counted its own growth](20260908/20260908-041722_a-ratchet-that-counted-its-own-growth.kyri) | one absolute split into cohort and arrivals |
 | `20260908.031547` | [the header that kept a spent reason](20260908/20260908-031547_the-header-that-kept-a-spent-reason.kyri) | a repair moved three folds and one header. |
 | `20260908.031128` | [The seventh park landed](20260908/20260908-031128_the-lap-that-would-not-stay-landed-landed.kyri) | a parked guard recovered; the dialect red was mine. |
 | `20260908.030324` | [the stamp that looked like a check](20260908/20260908-030324_the-stamp-that-looked-like-a-check.kyri) | a seat cited a number its own tool refuted. |
