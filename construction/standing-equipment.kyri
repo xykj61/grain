@@ -2904,6 +2904,34 @@ path tools/t/tame_style_long_fn_witness.rish
 tier cadence
 seated 20260906.173013
 
+# THE RATCHET THAT COUNTS A LINE WHERE IT MEANT A CALL. Two of TAME's advise ratchets ask a lap
+# to MIGRATE what they count -- `parseInt(` to `tally/parse_int.rye`, `Ed25519` to
+# `tally/kumara.rye` -- and each was one `grep -hF <pattern> | wc -l`, which counts a LINE. A
+# line is not a call, and `glow/` is this tree's own language implementation, so its source holds
+# the TEXT of the Rye it emits: `append_print(out, &used, "... std.fmt.parseInt(u32, argv[2], 10)
+# ...")` is a compiler writing a call, and the witnesses beside it assert `indexOf(rye_argv,
+# "parseInt(u32")` on that output. Measured across the twenty rooms: `parseInt(` printed 125 of
+# which 79 are emitted text, all in `glow/`; `Ed25519` printed 26, of which 29 counted lines are
+# `//` prose and 10 more are `X25519.KeyPair.fromEd25519` conversions. The true remainders are
+# 46 and 1 -- and reading that 1 rather than counting it found it is a TRAILING comment, so the
+# genuine Ed25519 debt outside the kumara seam is zero.
+#
+# The predicate is written ONCE, in `tools/fixtures/t/tame_style_app_sites.sh`, called by both
+# halves. That costs the parity selftest nothing that existed -- it compares only the zero-assert
+# and memcpy numbers -- and `@memcpy(` is deliberately left on its own two independent readings,
+# since it measures identically under both rules (0 emitted, 0 comment) and is the one count
+# under numeric parity.
+#
+# The guard gates the PREDICATE, never the counts: sixteen planted control cases in a throwaway
+# pen, both parity traps (`\"` and `'"'`) shown, the one documented overcount asserted so it
+# cannot move in silence, and both halves confirmed still saying `program position`. `tier lap`:
+# under four seconds, and the fault it prevents is written by ordinary work -- a lap widening a
+# room or a grep is exactly when a line count quietly becomes a call count again.
+guard tame_style_app_sites
+path tools/t/tame_style_app_sites_witness.rish
+tier lap
+seated 20260908.115028
+
 # shared_pen -- a scratch path named by a constant is a path eight ships share.
 # FOUR witnesses have reddened a cold pass across three laps while each was GREEN run alone --
 # signal_trap, tlb_reach, amphora_restore_negative, and tlb_reach a SECOND time -- because a peer's

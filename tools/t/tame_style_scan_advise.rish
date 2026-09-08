@@ -45,22 +45,39 @@ let memcpy_app = memcpy_app_run.out
 let camel_run = run ["sh" "-c" "grep -hE '^( *)?(pub )?fn [a-z]+[A-Z]' $(${find_rye}) 2>/dev/null | wc -l | tr -d ' '"]
 assert camel_run.ok else "tame_style_scan_advise: camelCase count failed"
 
-let parseint_canonical = length (where (lines (read-file "tally/parse_int.rye")) as ln: ln contains "parseInt(")
-let parseint_app_run = run ["sh" "-c" "echo $(( $(grep -hF 'parseInt(' $(${find_rye}) 2>/dev/null | wc -l) - ${parseint_canonical} ))"]
+# TWO OF THE THREE COUNT PROGRAM POSITION, from 20260908 -- tools/fixtures/t/tame_style_app_sites.sh,
+# which drops a `//` comment line, a `\\` multiline-string continuation, and an occurrence sitting
+# inside a string literal earlier on its own line. A line grep counts a LINE rather than a call, and
+# these two ratchets ask a lap to MIGRATE what they count, so a wrong line is a wrong edit.
+# Measured across the twenty rooms on the lap this landed: `parseInt(` read 125 of which 79 are
+# emitted text, all of them in `glow/` -- the emitter writing `std.fmt.parseInt(u32, argv[2], 10)`
+# into generated Rye, and its witnesses asserting `indexOf(rye_argv, "parseInt(u32")` on that
+# output. `Ed25519` read 26 of which 29 counted lines are `//` prose. `@memcpy(` measures
+# identically under both rules (0 emitted, 0 comment), so it keeps its two independent readings --
+# it is the one count the parity selftest compares numerically, and that is worth more than
+# uniformity here.
+let app_sites = "sh tools/fixtures/t/tame_style_app_sites.sh"
+
+let parseint_canonical_run = run ["sh" "-c" "${app_sites} 'parseInt(' tally/parse_int.rye"]
+assert parseint_canonical_run.ok else "tame_style_scan_advise: parseInt canonical count failed"
+let parseint_canonical = trim parseint_canonical_run.out
+let parseint_app_run = run ["sh" "-c" "echo $(( $(${app_sites} 'parseInt(' $(${find_rye}) 2>/dev/null) - ${parseint_canonical} ))"]
 assert parseint_app_run.ok else "tame_style_scan_advise: parseInt count failed"
 let parseint_app = parseint_app_run.out
 
-let ed25519_canonical = length (where (lines (read-file "tally/kumara.rye")) as ln: ln contains "Ed25519")
-let ed25519_app_run = run ["sh" "-c" "echo $(( $(grep -hF Ed25519 $(${find_rye}) 2>/dev/null | grep -vi fromed25519 | wc -l) - ${ed25519_canonical} ))"]
+let ed25519_canonical_run = run ["sh" "-c" "${app_sites} --exclude fromEd25519 Ed25519 tally/kumara.rye"]
+assert ed25519_canonical_run.ok else "tame_style_scan_advise: Ed25519 canonical count failed"
+let ed25519_canonical = trim ed25519_canonical_run.out
+let ed25519_app_run = run ["sh" "-c" "echo $(( $(${app_sites} --exclude fromEd25519 Ed25519 $(${find_rye}) 2>/dev/null) - ${ed25519_canonical} ))"]
 assert ed25519_app_run.ok else "tame_style_scan_advise: Ed25519 count failed"
 let ed25519_app = ed25519_app_run.out
 
 say "ratchet: @memcpy application sites = ${trim memcpy_app} (migrate to copy_disjoint on touch)"
 say "ratchet: @memcpy canonical in tally/copy.rye = 1 (intentional inside copy_disjoint)"
 say "ratchet: camelCase fn declarations = ${trim camel_run.out} (snake_case on touch)"
-say "ratchet: parseInt( application sites = ${trim parseint_app} (migrate to tally/parse_int.rye on touch; leading-zero footgun otherwise silent)"
-say "ratchet: Ed25519 application sites = ${trim ed25519_app} (migrate to tally/kumara.rye on touch; identity at the seam)"
-say "ratchet: Ed25519 canonical in tally/kumara.rye = ${ed25519_canonical} (intentional inside kumara seam)"
+say "ratchet: parseInt( application sites = ${trim parseint_app} (program position; migrate to tally/parse_int.rye on touch; leading-zero footgun otherwise silent)"
+say "ratchet: Ed25519 application sites = ${trim ed25519_app} (program position; migrate to tally/kumara.rye on touch; identity at the seam)"
+say "ratchet: Ed25519 canonical in tally/kumara.rye = ${ed25519_canonical} (program position; intentional inside kumara seam)"
 say "ratchet: functions past 70 lines —"
 
 # Parenthesize every `== false` -- bare `f == "path" == false` empties the list

@@ -30,18 +30,26 @@ memcpy_total=$(grep -h "@memcpy(" $FILES 2>/dev/null | wc -l | tr -d ' ')
 memcpy_canonical=$(grep -c "@memcpy(" tally/copy.rye 2>/dev/null)
 memcpy_app=$((memcpy_total - memcpy_canonical))
 camel_total=$(grep -hE "^( *)?(pub )?fn [a-z]+[A-Z]" $FILES 2>/dev/null | wc -l | tr -d ' ')
-parseint_total=$(grep -h "parseInt(" $FILES 2>/dev/null | wc -l | tr -d ' ')
-parseint_canonical=$(grep -c "parseInt(" tally/parse_int.rye 2>/dev/null)
+# THESE TWO COUNT PROGRAM POSITION, from 20260908, through the same fixture the native half
+# calls -- so the predicate is written once and neither copy can drift from the other on it.
+# What that costs the parity oracle is nothing that existed: the selftest beside this file
+# compares only the zero-assert and memcpy numbers, and `@memcpy(` is deliberately left on its
+# own two independent readings below. What it buys is that these two stop counting a compiler's
+# emitted text and a comment's prose as calls to migrate -- 79 and 29 lines respectively,
+# measured on the lap this landed.
+APP="$ROOT/tools/fixtures/t/tame_style_app_sites.sh"
+parseint_total=$(sh "$APP" "parseInt(" $FILES 2>/dev/null)
+parseint_canonical=$(sh "$APP" "parseInt(" tally/parse_int.rye 2>/dev/null)
 parseint_app=$((parseint_total - parseint_canonical))
-ed25519_total=$(grep -h "Ed25519" $FILES 2>/dev/null | grep -vi "fromed25519" | wc -l | tr -d ' ')
-ed25519_canonical=$(grep -c "Ed25519" tally/kumara.rye 2>/dev/null)
+ed25519_total=$(sh "$APP" --exclude fromEd25519 "Ed25519" $FILES 2>/dev/null)
+ed25519_canonical=$(sh "$APP" --exclude fromEd25519 "Ed25519" tally/kumara.rye 2>/dev/null)
 ed25519_app=$((ed25519_total - ed25519_canonical))
 echo "ratchet: @memcpy application sites = ${memcpy_app} (migrate to copy_disjoint on touch)"
 echo "ratchet: @memcpy canonical in tally/copy.rye = 1 (intentional inside copy_disjoint)"
 echo "ratchet: camelCase fn declarations = ${camel_total} (snake_case on touch)"
-echo "ratchet: parseInt( application sites = ${parseint_app} (migrate to tally/parse_int.rye on touch; leading-zero footgun otherwise silent)"
-echo "ratchet: Ed25519 application sites = ${ed25519_app} (migrate to tally/kumara.rye on touch; identity at the seam)"
-echo "ratchet: Ed25519 canonical in tally/kumara.rye = ${ed25519_canonical} (intentional inside kumara seam)"
+echo "ratchet: parseInt( application sites = ${parseint_app} (program position; migrate to tally/parse_int.rye on touch; leading-zero footgun otherwise silent)"
+echo "ratchet: Ed25519 application sites = ${ed25519_app} (program position; migrate to tally/kumara.rye on touch; identity at the seam)"
+echo "ratchet: Ed25519 canonical in tally/kumara.rye = ${ed25519_canonical} (program position; intentional inside kumara seam)"
 echo "ratchet: functions past 70 lines —"
 zero_assert_total=0
 for f in $FILES; do

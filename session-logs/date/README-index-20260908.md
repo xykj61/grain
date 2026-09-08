@@ -19,6 +19,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260908.123338` | [the elder record writes back](20260908/20260908-123338_the-elder-record-writes-back.kyri) | to_v1 closes the round trip. |
 | `20260908.121934` | [A number measured before its own commit](20260908/20260908-121934_a-number-before-its-commit.kyri) | A count spelled at a door shipped stale inside its own commit. |
 | `20260908.120903` | [the open-door register](20260908/20260908-120903_the-open-door-register.kyri) | Bhakta seated; the file did not arrive. |
+| `20260908.115956` | [A line is not a call](20260908/20260908-115956_a-line-is-not-a-call.kyri) | parseInt 125 -> 46; the compiler's own emitted text. |
 | `20260908.115338` | [ten names for one transcript](20260908/20260908-115338_ten-names-for-one-transcript.kyri) | the runner names its own detached pass; %636. |
 | `20260908.114418` | [fifteen asks, one question](20260908/20260908-114418_fifteen-asks-one-question.kyri) | sorted and held for the file. |
 | `20260908.112345` | [Three tools no roster heard](20260908/20260908-112345_three-tools-no-roster-heard.kyri) | A law page named five guards; three ran on no lap. |
