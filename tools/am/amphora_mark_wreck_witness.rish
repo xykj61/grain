@@ -95,4 +95,59 @@ let lifted = run ["amphora/bin/vessel-core" "verify" vessel]
 assert lifted.ok else "mark_wreck: the honest vessel must still verify after the plant"
 
 say "amphora_mark_wreck: honest vessel verifies; an unnamed kind refuses at parse_manifest_line"
+
+# --- the second spelling of the same rule, and the two ways it is now held ---
+#
+# `amphora/src/main.rye` reads cargo lines too, and it is the ONE reader that cannot route a
+# whole line through `parse_manifest_line`: it walks decrypted seal plain rather than vessel
+# text, and it fills a catalog slot the contract knows nothing about. So it kept its own
+# tokenizer -- and, until `20260908`, its own mark rule, `eql(mark, "plain-bytes")`, which is
+# NARROWER than the contract's two roots. A vessel carrying the `manifest` root would have been
+# welcomed by every reader in the room and refused here as `CargoUnproven`.
+#
+# WHY NO LEG REACHES IT FROM OUTSIDE. This door writes what it reads: `pour` builds the cargo
+# plain from the season with its own `mark_plain_bytes`, seals it, and `restore` opens that
+# same plain back. No argument, file, or vessel edit puts a foreign mark into the plain without
+# breaking the AEAD seal first -- so the divergence was unreachable, which is exactly why it
+# stood. A leg that cannot be reached is proven where it lives: in the source, and in the
+# compiler. Both are asserted below, and both are proven to BITE on a plant.
+
+let pen_a = "${pen}/a"
+let pen_b = "${pen}/b"
+let make_pens = run ["sh" "-c" "mkdir -p ${pen_a} ${pen_b} && cp amphora/src/main.rye ${pen_a}/main.rye && cp amphora/src/main.rye ${pen_b}/main.rye && ln -s $(pwd)/amphora/manifest_entry.rye ${pen_a}/manifest_entry.rye && ln -s $(pwd)/amphora/manifest_entry.rye ${pen_b}/manifest_entry.rye"]
+assert make_pens.ok else "mark_wreck: the source pens must be made -- ${make_pens.err}"
+
+# The honest copy builds, so the plant below is read as the plant's own doing.
+let pen_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${pen_a}/main.rye -femit-bin=${pen}/amphora-pen 2>&1"]
+assert pen_build.ok else "mark_wreck: the unplanted source copy must build -- ${pen_build.out}"
+
+# One: the mirrored root is compiler-held. Diverge the literal this door WRITES from the
+# contract's own, and the comptime block must stop the build. A literal copied by hand that
+# nothing checks is REDS %453's shape one field over.
+let plant_root = run ["sh" "-c" "sed -i 's/^const mark_plain_bytes = \"plain-bytes\";/const mark_plain_bytes = \"plain-bytes-x\";/' ${pen_a}/main.rye && grep -q 'plain-bytes-x' ${pen_a}/main.rye"]
+assert plant_root.ok else "mark_wreck: the divergent-root plant did not take -- the declaration moved"
+let refused_build = run ["sh" "-c" "env RYE_ZIG=${zig} rye/bin/rye build ${pen_a}/main.rye -femit-bin=${pen}/amphora-pen-planted 2>&1"]
+assert refused_build.code != 0 else "mark_wreck: a written root diverging from the contract STILL BUILT"
+# The reason, not merely the refusal -- the same discipline the frame leg above keeps. A build
+# can fail for a hundred reasons a sed introduces; only one of them is this guard's subject.
+assert refused_build.out contains "mark_plain_bytes, me.mark_plain_bytes" else "mark_wreck: the pen build refused, yet NOT at the comptime tie -- ${refused_build.out}"
+
+# Two: the reader names the contract's roster rather than a second one of its own.
+let routes = run ["sh" "-c" "grep -q 'me.mark_verdict(mark) == .unknown' amphora/src/main.rye"]
+assert routes.ok else "mark_wreck: main's cargo reader no longer routes its verdict through the contract"
+let no_second = run ["sh" "-c" "! grep -q 'eql(u8, mark, mark_plain_bytes)' amphora/src/main.rye"]
+assert no_second.ok else "mark_wreck: main's cargo reader spells a SECOND mark roster of its own"
+
+# And that leg is proven to bite: restore the elder narrower rule in the second pen and the
+# same reading must fail there. A leg proven only in the passing direction cannot be told
+# from a bypass.
+let elder = run ["sh" "-c" "sed -i 's/if (me.mark_verdict(mark) == .unknown)/if (!std.mem.eql(u8, mark, mark_plain_bytes))/' ${pen_b}/main.rye && ! grep -q 'eql(u8, mark, mark_plain_bytes)' ${pen_b}/main.rye"]
+assert elder.code != 0 else "mark_wreck: the second-roster leg cannot bite -- it passes on the elder source"
+
+# Three: the mark field is bounded before the contract is asked, so an over-long mark is
+# REFUSED rather than tripping `mark_verdict`'s own precondition assert.
+let bounded = run ["sh" "-c" "grep -q 'sp1 > me.max_mark_len' amphora/src/main.rye"]
+assert bounded.ok else "mark_wreck: main hands an unbounded mark field to mark_verdict's assert"
+
+say "amphora_mark_wreck: main's cargo reader borrows the roster; a divergent written root stops the build"
 say "GREEN: Amphora keeps the wreck rule for marks -- two roots welcome, a stranger refuses whole."

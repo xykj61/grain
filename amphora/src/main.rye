@@ -77,6 +77,15 @@ const print = std.debug.print;
 const Sha3_256 = std.crypto.hash.sha3.Sha3_256;
 const Dir = std.Io.Dir;
 
+/// The manifest entry contract, reached by the same bare-name symlink idiom the
+/// sibling roofs already use (`amphora/src/manifest_entry.rye -> ../manifest_entry.rye`,
+/// beside `amphora/kumara.rye` and `amphora/tally_copy.rye`). Zig refuses an import
+/// escaping the root file's directory, which is why the link exists rather than a
+/// relative path. Imported for the MARK ROSTER alone -- the bound mirrors below stay
+/// declared literals, because `amphora_bounds_agree` reads a bound's spelled value and
+/// evaluates no expression.
+const me = @import("manifest_entry.rye");
+
 /// Amphora CLI version -- YYYYMMDD.HHMMSS, America/New_York, later is larger.
 const amphora_version = "20260801.135514";
 
@@ -165,8 +174,23 @@ const vessel_format = "amphora-v1";
 /// Default seal tool path when AMPHORA_VESSEL_SEAL is unset (repo layout).
 const default_seal_bin = "amphora/bin/vessel-seal";
 
-/// Cargo type-mark for season source files -- one mark, both listings.
+/// Cargo type-mark for season source files -- one mark, both listings. This door
+/// WRITES exactly this root; what it READS is the whole roster (`append_cargo_line`).
+/// No `couples:` marker: that grammar compares a bound's spelled numeric value, and this is
+/// a string, which `amphora_bounds_agree` rightly refuses as `marker_on_derived`. The tie
+/// lives in the comptime block below instead, which is the stronger of the two -- a marker is
+/// checked when a guard runs, and a comptime assert is checked every time this door is built.
 const mark_plain_bytes = "plain-bytes";
+
+comptime {
+    // invariant: the written mark is the parser's own root, so a rename there stops
+    // this build rather than shipping a vessel no reader of the contract can name.
+    // A literal copied by hand is REDS %453's shape; the compiler holds this one.
+    assert(std.mem.eql(u8, mark_plain_bytes, me.mark_plain_bytes));
+    // invariant: the digest width this door spells is the contract's own, so a cargo
+    // line built here and a manifest line parsed there measure the same field.
+    assert(digest_hex_len == me.digest_hex_len);
+}
 
 /// How much longer one manifest line runs than its cargo twin: the two are
 /// built from ONE catalog, differing only in prefix -- `"manifest "` against
@@ -1366,8 +1390,17 @@ fn append_cargo_line(line: []const u8, catalog: *SeasonCatalog) CliError!void {
     var sp1: u32 = 0;
     while (sp1 < rest.len and rest[sp1] != ' ') : (sp1 += 1) {}
     if (sp1 == 0 or sp1 >= rest.len) return error.CargoUnproven;
+    // The wreck rule, read from the contract's own roster rather than spelled a second
+    // time here. This site is the ONE cargo reader that cannot route the whole line
+    // through `parse_manifest_line`: it walks decrypted seal plain rather than vessel
+    // text, and it fills a catalog slot the parser knows nothing about. So it borrows
+    // the one judgment that must never differ -- which marks the engine can name --
+    // and leaves the rest of the tokenizing here. It welcomed `plain-bytes` alone
+    // until `20260908`, a NARROWER rule than the contract's two roots, unreachable
+    // only because this door writes what it reads (REDS `20260908.004856`).
+    if (sp1 > me.max_mark_len) return error.CargoUnproven;
     const mark = rest[0..sp1];
-    if (!std.mem.eql(u8, mark, mark_plain_bytes)) return error.CargoUnproven;
+    if (me.mark_verdict(mark) == .unknown) return error.CargoUnproven;
     const after_mark = rest[sp1 + 1 ..];
     if (after_mark.len < digest_hex_len + 2) return error.CargoUnproven;
     if (after_mark[digest_hex_len] != ' ') return error.CargoUnproven;

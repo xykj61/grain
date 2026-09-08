@@ -39,7 +39,15 @@ FLEET. construction/fleet-roster.kyri is the one seat table -- seat, tree, engin
 elder -- read by the loop, the re-arm, and the launcher, so none can disagree. To add, retire, or
 rename a ship, edit one row. Machines are doors; a seat is a chair, not a computer. ONE WRITER PER
 CHECKOUT (REDS %291): two loops on one tree refuse, two loops on two trees is a token spend. Name
-any peer before a file moves.
+any peer before a file moves. AND NEVER SIGNAL A PROCESS BY NAME: `pkill -f standing_equipment_run`
+matches a command line rather than a directory, so on a pier eight ships share it reaches the fleet
+and then kills the shell that typed it (exit 144). The bounded form is already built and rostered --
+sh tools/f/fleet_call.sh --pattern <substring> [--signal TERM] -- which resolves every candidate to
+its working directory and refuses a process outside this tree OUT LOUD rather than signaling it in
+silence. This is on the baton because the tool was not enough: it has stood since `%541` and a ship
+that had read the card typed the raw pkill anyway on `20260908`, the fifth firing, because
+`process_reach_scan.sh` reads tracked sources and a command typed in a session is in no file. A
+habit is set where habits are set.
 
 WATCH. The fleet is watched, so a loop that dies comes back. THIS PIER RUNS WITHOUT JAILS
 (Keaton's word 20260906): every loop is launched FLEET_BARE=1, and the watch passes its own

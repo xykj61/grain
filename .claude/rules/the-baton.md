@@ -49,6 +49,21 @@ why it is a law rather than a habit.
 **Machines are doors.** A seat is a chair, not a computer: the same ship may sit at a Mac or at the
 pier, and what makes that safe is proving the other door is closed and opening with the twice-pull.
 
+**And never signal a process by name.** `pkill -f standing_equipment_run` matches a command line
+rather than a directory, so on a pier eight ships share it reaches the fleet, and the calling
+shell's own command line holds the pattern, so it kills the caller too (exit 144). The bounded form
+is `sh tools/f/fleet_call.sh --pattern <substring> [--signal TERM]`, which resolves each candidate
+through `/proc/<pid>/cwd` and refuses a process outside this tree out loud rather than signaling it
+in silence -- a false refusal costs one line, a false send costs a peer's pass.
+
+**The clause is on the baton because the tool was not enough.** `fleet_call.sh` has stood with its
+own witness since REDS `%541`, `process_reach` is rostered, and the wound has now fired **five**
+times: three inside two laps at `%541`, once more at `%569`, and again on `20260908` when a ship
+that had read the card typed the raw `pkill` at its own cold open and took a peer's pass with it.
+Every guard that could see this reads **tracked sources**, and a command typed at a session prompt
+is in no file -- which `%569` had already written down in its own third field. A defect nothing in
+the tree can measure is set where habits are set, or it is not set at all.
+
 ## A tree carries its own keys (REDS `%427`)
 
 **`agent-jail.sh` binds ONE tree, so every path a ship needs lives inside that tree.** Its keyring

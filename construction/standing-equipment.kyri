@@ -2577,7 +2577,7 @@ seated 20260906.154105
 # `verdict_for_mark("stranger-mark") == .refuse`. Amphora, the OTHER site -- the crossing vessel
 # whose shoulder line is the whole image the page is built on -- carried the mark field and checked
 # it nowhere. `parse_manifest_line` validated the mark's SHAPE (nonempty, at or under
-# `max_mark_len`) and never its IDENTITY, and all five reading sites threw the parsed entry away:
+# `max_mark_len`) and never its IDENTITY, and every reading site threw the parsed entry away:
 # `vessel_core.rye:160` and `:167`, `vessel_seal.rye:115` and `:229` each wrote
 # `_ = me.parse_manifest_line(...) catch return error.InvalidVessel`, keeping the refusal and
 # discarding the mark, while `vessel_fetch_delivery.rye` -- the far side of a UDP fetch, which is
@@ -2602,6 +2602,29 @@ seated 20260906.154105
 # this whole tree, `plain-bytes`, six occurrences -- so the two named roots break no vessel that
 # exists. The check sits in the parser rather than at five call sites, because a rule written five
 # times is a rule four places can forget.
+#
+# THE CENSUS IN THAT PARAGRAPH WAS SHORT BY TWO, counted `20260908` rather than recalled. Six
+# callers route a whole line through the parser, not five: `take_listed_line` at
+# `vessel_core.rye:234` is a third site in that roof and was named in neither this note nor the
+# contract's own comment. And a SEVENTH reader never reached the parser at all --
+# `amphora/src/main.rye:append_cargo_line`, which walks decrypted seal plain into a catalog slot
+# and so cannot route a whole line. It carried its own tokenizer and its own mark rule,
+# `eql(mark, "plain-bytes")`, NARROWER than the two roots every sibling welcomes: a vessel
+# carrying the `manifest` root would have passed six readers and died here as `CargoUnproven`.
+#
+# WHY IT WAS UNREACHABLE, which is why it stood. That door writes what it reads -- `pour` builds
+# the cargo plain with its own `mark_plain_bytes`, seals it, and `restore` opens the same plain
+# back -- so no argument, file, or vessel edit puts a foreign mark into the plain without
+# breaking the AEAD seal first. A leg that cannot be reached is proven where it lives: the
+# reader borrows `mark_verdict` and bounds the mark field ahead of it, so an over-long mark now
+# REFUSES rather than tripping that function's own precondition assert, and the written root is
+# held against the contract's at comptime. A `couples:` marker was tried first and refused --
+# `amphora_bounds_agree` reads a bound's spelled NUMERIC value and answered `marker_on_derived`
+# on a string, which is the right refusal and pointed at the better home: a marker is checked
+# when a guard runs, a comptime assert every time the door is built. Three legs, each proven to
+# BITE -- the elder narrower rule restored in a source pen, the bound line deleted, and a
+# divergent literal planted, whose build refusal is asserted to name the comptime tie rather
+# than merely to be non-zero. REDS `20260908.004856`. GREEN at 7.4s; still `tier lap`.
 guard amphora_mark_wreck
 path tools/am/amphora_mark_wreck_witness.rish
 tier lap
