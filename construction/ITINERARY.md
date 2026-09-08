@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `3cc1a95ed5` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `718166c8a2` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- NINETEEN ORPHANS WERE THREE KINDS, AND ONLY SIX WERE A LAP.**
 Elder [shelved](archive/20260908-025257_itinerary-landed-accounts.md).
@@ -138,22 +138,24 @@ Recovery: one `git checkout stash@{1} -- <three paths>` -- the price is rediscov
 guard reads only `external-research/`, `active-designing/` and `docs/`. Token given to the page
 I touched; the gate left alone. **Yours:** the door law's reach into `docs-geode/`, and the 55-page
 net demotion.
-**PHEROMONE -- THE MODEL WIDENED, TWO COPIES DID NOT MOVE, AND THE GUARD FOR THAT SLEPT IN A STASH.**
-Elder [shelved](archive/20260907-210124_itinerary-landed-accounts.md). `bc37657e8` gave
-`mantra/src/weave.rye`'s `Line` a `site` and `Diff` a `site`, so a line is named by the pair
-`Line.id()` returns. **Neither copy moved:** `main.rye`, the CLI writing `.mantra/`, still declares
-`text gen pos`, and the test inlines it. `mantra_glow_tend_limb1`, this card's lock on widening
-`Line`, reads **one file** -- so nothing reddened.
-**ITS GUARD WAS WRITTEN A DAY BEFORE AND PARKED.** `mantra_weave_model`, authored `20260906` with
-all three agreeing, sat in `stash@{7}` on no ref (`%499`, fourth firing). Recovered from
-`stash@{7}^3` -- the TREE, so the mode rides -- it read `disagreements=1 unreadable=1` first pass:
-**the hazard its header predicted**. Row `20260907.210124`.
-**LANDED AS A CEILING, NOT A ZERO**, since closing the gap rewrites `.mantra/`'s on-disk record --
-your seam. The two laggards stand under a falling ceiling; a copy ARRIVING disagreeing is refused
-at the strict default, proven both sides on ONE break. Control **33 -> 39**, rostered.
-**`standing_equipment`'s ninth firing HAS A CAUSE:** its `live_leader_parent_reads_gone` leg reds
-when the pass runs under `setsid`; from an ordinary shell the tree reads **GREEN**.
-**Yours:** `main.rye` inlines a model the module owns -- **port the field or drop?**
+**PHEROMONE -- A LANTERN THAT FIRED FOUR TIMES WAS UNDERSTOOD ONCE.**
+Elder [shelved](archive/20260908-021504_itinerary-landed-accounts.md). Row `20260908.021504`
+**CLOSED**, [folded](archive/REDS-a-lantern-that-fired-four-times-rows-609.md); booked `%602`,
+renumbered twice on two rebases; the number is a view and the stamp is the key.
+**MY FIRST LAP WITHDREW WHOLE** -- both halves published by peers first, their fix for the second
+beating mine: a bare `say scan.out` opens no `StrBuf`, where my bound truncated a diagnosis.
+**WHAT SURVIVED IS THE QUESTION IT LEFT.** Rishi composes an interpolated string into a fixed buffer
+(`rishi/src/main.rye:3101`), so `say "x -- ${scan.out}"` promises a scan's output stays under 4,096
+forever while it grows; `reds_spine_derive` passed every assert and died reporting. **Four hands met
+it four times** -- one class read as four accidents.
+**502 SITES MAKE THAT PROMISE, 1,744 A WORSE ONE** -- an `assert ... else` composes only on FAILURE,
+so the message that cannot be built is the one describing a disagreement. Ten named a pass; the
+width is **read**.
+**THE CEILINGS ARE SHARES, LEARNED WATCHING MY OWN DRAFT REFUSE:** raw ceilings at the measured
+counts, and this round's own rebase brought two peers' guards in and reddened over the most ordinary
+act here. A per-mille share asks the habit -- a pen quadrupled without changing how it writes reads
+the same number. Control **33**, `tier lap` 5.7s.
+**Yours:** `main.rye` inlines a model `weave.rye` owns -- port or drop?
 
 **INCENSE -- A SEAT SEATED LAST NIGHT ON A NUMBER ITS OWN INSTRUMENT REFUTED BEFORE MORNING.**
 Water's cardinal seat, taken on your word `20260908.001350`, cites *30 tools write to the tracked

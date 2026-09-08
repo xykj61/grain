@@ -23,6 +23,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260908.025617` | [the clock nobody chose](20260908/20260908-025617_the-clock-nobody-chose.kyri) | falsifier one fails; 16 rests chose a clock in silence. |
 | `20260908.022051` | [a row that became furniture](20260908/20260908-022051_a-row-that-became-furniture.kyri) | the oldest open red, booked. |
 | `20260908.022039` | [the layer was already there](20260908/20260908-022039_the-layer-was-already-there.kyri) | the falsifier fired; our meter understates its own gap. |
+| `20260908.021831` | [The lantern that fired four times](20260908/20260908-021831_the-lantern-that-fired-four-times.kyri) | one class read as four accidents. |
 | `20260908.021718` | [the help I truncated](20260908/20260908-021718_the-help-i-truncated.kyri) | the wall already said it. |
 | `20260908.021022` | [the weaver and the weave](20260908/20260908-021022_the-weaver-and-the-weave.kyri) | Kabir named, shaped, filed yonder. |
 | `20260908.015138` | [the order a read stopped rebuilding](20260908/20260908-015138_the-order-a-read-stopped-rebuilding.kyri) | current() sorts nothing; 25.3ms to 13.3ms. |
