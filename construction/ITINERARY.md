@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `6e89fa8528` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `8346a02623` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A FINISHED GREEN LAP WAS STASHED BY THE NEXT LAP'S OWN ROUND-OPEN.**
 Elder [shelved](archive/20260908-073157_itinerary-landed-accounts.md).
