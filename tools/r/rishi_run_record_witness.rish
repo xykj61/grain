@@ -1,0 +1,100 @@
+# tools/r/rishi_run_record_witness.rish -- the law named a field the language refuses.
+#
+# WHY THIS RUNG. Rishi's `run` builtin hands back a record, and every `.rish` script in this tree
+# reads it. `rishi/src/main.rye` builds that record in one function, `run_result_record`, with four
+# fields: `out`, `err`, `code`, `ok`. The agent rule an unattended lap loads every lap --
+# `.claude/rules/tame-guidance.md` -- said in its cheatsheet table that `run` "always returns
+# `{ status, out, err }`" and told the reader to "check `status` before trusting `out`". Asked for
+# `status` on metal, the interpreter answers `NoSuchField` and exits 1.
+#
+# THE CORRECTION WAS FORTY DAYS OLD AND HAD REACHED ONE PAGE. `context/TAME_GUIDANCE.md` carries an
+# erratum stamped `20260729.214600` saying exactly this -- the field is `ok`, `status` does not
+# exist, `say r.status` answers `NoSuchField`. On `20260908` the Claude rule still named the dead
+# field twice, `context/TAME_CORE.md` still wrote "check `status`/`.ok`" inside the same sentence
+# that gave the right record, and the rule page disagreed with ITSELF: its TAME Core block read
+# `{ ok, out, code }` eight lines above the table that read `{ status, out, err }`. Only the Cursor
+# twin was right, and the twin is the page no Claude lap reads.
+#
+# THE AETHER ROW HEARD IT. That row's instruction is to listen for the claim a page keeps
+# repeating, the question it keeps answering, and the silence where a claim used to be and a
+# witness now stands. An erratum is precisely that silence: a correction recorded once, in prose,
+# with nothing standing to carry it to the pages that repeat the retired claim. The row's hard rule
+# is the other half -- a guard that cannot red guards nothing -- so the probe below is proven able
+# to refuse before its silence is believed.
+#
+# WHAT IS PROVEN, on metal.
+#   The field set is DERIVED from `rishi/src/main.rye` rather than spelled here, because a list
+#     typed into a guard would be a fifth copy of the very claim the guard exists to check. The
+#     control plants a pen source carrying a fifth field and asserts the reading follows it.
+#   Every derived field is then asked of a real `run` result through the interpreter, so source and
+#     running language must agree rather than merely look alike.
+#   A field the derivation says does not exist is asked for and MUST refuse, so the probe is known
+#     able to make a sound before any of its silences count.
+#   Living law pages name no run-record field outside that set. Gated at zero, since the tree stands
+#     at zero once this lap's three repairs land, and a wall at a population of zero costs no lap a
+#     backlog somebody else ran up.
+#   Thirty-one behaviors in a throwaway pen, every refusal planted and then LIFTED, and every free
+#     rule shown from both sides so none becomes a door: an erratum is read past AND a live wrong
+#     claim in the same file still counts; ordinary English carrying the words run and check is not
+#     a claim; a page naming FEWER fields than exist is compressing rather than lying; dated
+#     testimony keeps every word it wrote. Three refusals for a tree that cannot answer.
+#
+# WHAT IS NOT PROVEN. Whether a script that reads `ok` then acts on it acts correctly -- this reads
+# names rather than logic. And the bounded sibling record built by `bounded_process_result` (seven
+# fields, a different builtin) stays out of scope until a law page claims its shape too.
+#
+#   rishi/bin/rishi run tools/r/rishi_run_record_witness.rish
+
+say "rishi-run-record: Language EN -- the record the shell hands back is named the same way by the language and by its law."
+say "rishi-run-record: Style Gauge, Meter -- refusal is the subject."
+say "rishi-run-record: Lens TAME -- docs and implementation stay synced: assert it, do not assume it."
+
+let scan = run ["sh" "tools/fixtures/r/rishi_run_record_scan.sh"]
+assert scan.ok else "rishi-run-record: a law page names a run-record field the interpreter refuses -- read the scan's own lines"
+say scan.out
+assert scan.out contains "verdict=ok" else "rishi-run-record: the scan must balance before it is believed"
+assert scan.out contains "claims_unknown_field=0" else "rishi-run-record: the wall stands at zero, and zero is what the law pages must read"
+assert scan.out contains "metal=present" else "rishi-run-record: this pier has the interpreter, so the metal legs must run rather than be skipped"
+assert scan.out contains "metal_missing_fields=0" else "rishi-run-record: every field the source declares must resolve in the running language"
+assert scan.out contains "metal_probe_reds=1" else "rishi-run-record: a probe that cannot refuse cannot report a presence either"
+say "field GREEN -- the four fields the source declares are the four the interpreter answers, and no law page names a fifth"
+
+let control = run ["sh" "tools/fixtures/r/rishi_run_record_control.sh"]
+assert control.ok else "rishi-run-record: the control must complete"
+say control.out
+assert control.out contains "clean_claims_zero=yes" else "rishi-run-record: a clean tree must read zero rather than merely pass"
+assert control.out contains "clean_verdict_ok=yes" else "rishi-run-record: a clean tree must name its verdict"
+assert control.out contains "clean_free=yes" else "rishi-run-record: a clean tree must pass free"
+assert control.out contains "clean_fields_four=yes" else "rishi-run-record: the four declared fields must be derived, not assumed"
+assert control.out contains "clean_fields_named=yes" else "rishi-run-record: the derivation must name the fields it found"
+assert control.out contains "clean_claim_sites_seen=yes" else "rishi-run-record: claims seen and claims unknown are two readings and must not collapse"
+assert control.out contains "derived_fields_five=yes" else "rishi-run-record: a fifth field in the source must appear in the reading"
+assert control.out contains "derived_fifth_named=yes" else "rishi-run-record: the derivation follows the source rather than a list typed into the scan"
+assert control.out contains "shape_counted=yes" else "rishi-run-record: a brace list naming a field that does not exist must be counted"
+assert control.out contains "shape_verdict=yes" else "rishi-run-record: the refusal must name a verdict, never only an exit code"
+assert control.out contains "shape_refused=yes" else "rishi-run-record: one claim past the wall must refuse"
+assert control.out contains "shape_named=yes" else "rishi-run-record: the reading must name the page, so the repair is one line away"
+assert control.out contains "shape_lifted_zero=yes" else "rishi-run-record: lifting the plant must return the reading to zero"
+assert control.out contains "shape_lifted_free=yes" else "rishi-run-record: a refusal proven only one way cannot be told from a bypass"
+assert control.out contains "check_counted=yes" else "rishi-run-record: the check clause is the second shape the fault wore"
+assert control.out contains "check_refused=yes" else "rishi-run-record: a check clause naming a dead field must refuse too"
+assert control.out contains "fewer_free=yes" else "rishi-run-record: a page naming fewer fields than exist is compressing, not lying"
+assert control.out contains "fewer_passes=yes" else "rishi-run-record: a compressed core must pass free"
+assert control.out contains "erratum_free=yes" else "rishi-run-record: an erratum keeps the wrong belief visible on purpose"
+assert control.out contains "erratum_passes=yes" else "rishi-run-record: a page recording a correction must pass free"
+assert control.out contains "erratum_rule_not_a_door=yes" else "rishi-run-record: the erratum rule must not become a hole -- a live claim in the same file still counts"
+assert control.out contains "prose_free=yes" else "rishi-run-record: ordinary English carrying the words run and check is not a claim about this record"
+assert control.out contains "prose_passes=yes" else "rishi-run-record: prose must pass free"
+assert control.out contains "dated_free=yes" else "rishi-run-record: dated testimony keeps every word it wrote"
+assert control.out contains "dated_absent_from_listing=yes" else "rishi-run-record: testimony must be absent from the listing, not merely uncounted"
+assert control.out contains "no_source_refused=yes" else "rishi-run-record: a tree with no implementation must refuse rather than call every claim unknown"
+assert control.out contains "no_source_exit=yes" else "rishi-run-record: a refusal must be an exit code as well as a word"
+assert control.out contains "no_fields_refused=yes" else "rishi-run-record: a source declaring no fields must refuse rather than read zero"
+assert control.out contains "no_root_refused=yes" else "rishi-run-record: a root that is not a directory must refuse"
+assert control.out contains "metal_absent_reported=yes" else "rishi-run-record: the interpreter is a build artifact, so its absence is reported"
+assert control.out contains "metal_absent_still_gates=yes" else "rishi-run-record: an absent interpreter must never soften the claim gate"
+assert control.out contains "behaviors=31" else "rishi-run-record: the control must run every behavior this witness names"
+assert control.out contains "control_verdict=proven" else "rishi-run-record: the control must agree with itself"
+say "RED and GREEN paths proven -- the wall bitten and lifted, every free rule planted then read as zero and shown from its other side, three refusals for a tree that cannot answer"
+
+say "GREEN: rishi-run-record -- the language, its source, and its law name one record."

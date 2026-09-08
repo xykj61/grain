@@ -550,3 +550,5 @@ at a closed fold.*
 *Row %630 folded to [`REDS-one-room-list-in-five-files-rows-630.md`](REDS-one-room-list-in-five-files-rows-630.md) on `20260908.101352`, **CLOSED** -- one room list stood in five files, and equal counts over unequal populations still compare equal.*
 
 *Row %631 folded to [`REDS-the-roster-sets-the-cost-rows-631.md`](REDS-the-roster-sets-the-cost-rows-631.md) on `20260908.092049`, **BOOKED** -- a loop's price is the roster it iterates rather than the corpus it reads, and a subtraction that removed nothing cost 8,976 ms.*
+
+*Row %632 folded to [`REDS-the-law-named-a-field-the-language-refuses-rows-632.md`](REDS-the-law-named-a-field-the-language-refuses-rows-632.md) on `20260908.101157`, **CLOSED** -- an erratum records a correction; only a guard carries it to the pages that repeat the retired claim.*

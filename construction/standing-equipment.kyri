@@ -3231,3 +3231,12 @@ guard say_compose_bound
 path tools/s/say_compose_bound_witness.rish
 tier lap
 seated 20260908.014200
+
+# `lap` rather than `cadence`: the whole pass costs 3.1s measured 20260908 -- one awk read of 108
+# named law pages, one derivation from `rishi/src/main.rye`, and five one-line probes through the
+# interpreter. The surface it reads is law prose, which any lap may edit, so the clock is the lap.
+
+guard rishi_run_record
+path tools/r/rishi_run_record_witness.rish
+tier lap
+seated 20260908.101500

@@ -15,6 +15,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260908.105313` | [The lap that stashed itself](20260908/20260908-105313_the-lap-that-stashed-itself.kyri) | two laps out of the box; %627 -> %631. |
 | `20260908.104232` | [two rulings the loop left](20260908/20260908-104232_two-rulings-the-loop-left.kyri) | a refusal, and a tool nobody could find. |
 | `20260908.101923` | [One room list in five files](20260908/20260908-101923_one-room-list-in-five-files.kyri) | Five copies of one roster; a green selftest compared two populations. |
+| `20260908.101344` | [An erratum records a correction](20260908/20260908-101344_an-erratum-records-a-correction.kyri) | the law named a field the language refuses; walled at 0. |
 | `20260908.093547` | [The fork you pay per item](20260908/20260908-093547_the-fork-you-pay-per-item.kyri) | 28s guard to 4.1s; wall time cannot rank forks. |
 | `20260908.093504` | [Two readings of what prose is](20260908/20260908-093504_two-readings-of-what-prose-is.kyri) | %574 closed; the card could not see a bold claim or a radiant wish. |
 | `20260908.092212` | [The roster sets the cost](20260908/20260908-092212_the-roster-sets-the-cost.kyri) | 13,305ms of 14,610 was two rosters, not the tree. |
