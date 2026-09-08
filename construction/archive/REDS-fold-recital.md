@@ -557,3 +557,4 @@ at a closed fold.*
 *Row %623 folded to [`REDS-a-seat-named-in-four-places-rows-623.md`](REDS-a-seat-named-in-four-places-rows-623.md) on `20260908.094425`, **BOOKED** -- a guard reading three of a fact's four homes reads the three somebody thought of.*
 
 *Row %634 folded to [`REDS-the-third-answer-a-witness-did-not-know-rows-634.md`](REDS-the-third-answer-a-witness-did-not-know-rows-634.md) on `20260908.104016`, **CLOSED** -- a control's honest third answer is a fault only to a witness that knows two, and the repair took the cause rather than the reading.*
+*Row %635 folded to [`REDS-a-guard-whose-rooms-were-a-hand-written-list-rows-635.md`](REDS-a-guard-whose-rooms-were-a-hand-written-list-rows-635.md) on `20260908.101759`, **BOOKED** -- a guard whose population is a hand-written list is bounded by what the hand remembered, and its greenness reports the list rather than the subject.*
