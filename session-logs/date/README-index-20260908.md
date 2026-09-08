@@ -11,6 +11,8 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260908.142640` | [the front door in Bhakta](20260908/20260908-142640_the-front-door-in-bhakta.kyri) | README and first hour, 93 and 95. |
+| `20260908.142326` | [a register with no door](20260908/20260908-142326_a-register-with-no-door.kyri) | four citations, all its own. |
 | `20260908.141828` | [stricter cannot be contained](20260908/20260908-141828_stricter-cannot-be-contained.kyri) | keep the elders; 205 cite them. |
 | `20260908.141457` | [the law that would have made liars](20260908/20260908-141457_the-law-that-would-have-made-liars.kyri) | 47 pages, one at zero. |
 | `20260908.141037` | [two axes, not three points](20260908/20260908-141037_two-axes-not-three-points.kyri) | the register lattice seated. |

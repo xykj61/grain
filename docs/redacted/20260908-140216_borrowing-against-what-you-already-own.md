@@ -1,6 +1,6 @@
 # Borrowing against what you already own
 
-**Language:** EN - **Style:** Gauge, Field setting - **Voice:** Kyri - **Register:** Bhakta
+**Language:** EN - **Style:** Gauge, Field setting - **Voice:** Kyri - **Register:** [Bhakta](../../context/BHAKTA_STYLE.md)
 **Stamp:** `20260908.140216` - **Status:** Living - **Room:** research for understanding
 **Produced by:** the [redact technique](../../context/REDACT_TECHNIQUE.md) -- a private counsel page
 set down as a general method. No figure here belongs to anyone.

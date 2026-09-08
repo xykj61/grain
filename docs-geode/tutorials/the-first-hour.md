@@ -3,7 +3,7 @@
 *From nothing to something you made work. One path, straight through. Everything else in this tree
 is a map you will want **after** this hour.*
 
-**Language:** EN - **Style:** Gauge, Door setting - **Voice:** Kyri
+**Language:** EN - **Style:** Bhakta (see [`../../context/BHAKTA_STYLE.md`](../../context/BHAKTA_STYLE.md)) - **Voice:** Kyri
 **Written:** `20260821.180613` - **Last updated:** `20260903.215224` (NixOS cloud path -- musl `-lc`, `RYE_ZIG` from clone root)
 **Status:** Living - the beginner path
 **You will need:** a Linux or macOS terminal with `git`, `curl`, and `tar`, and about an hour.
@@ -21,10 +21,23 @@ signed, sandboxed home is [`../../SOURCE.md`](../../SOURCE.md)
 
 ## What you are about to do
 
-Six steps. At the end you will have built a compiler that built a shell, watched a proof run on
-your own machine, and written a small program that checks its own answers before it trusts them.
+Welcome. If you have never built software before, this hour was written for you, and you are in
+exactly the right place.
 
-This hour asks one thing of you: make one thing work. The whole tree can wait.
+Six steps. At the end you will have built a compiler, used it to build a shell, watched a proof run
+on your own machine, and written a small program that checks its own answers before trusting them.
+
+**Every one of those words gets explained as you meet it.** A compiler turns what a person writes
+into something a machine runs. A shell is the place you type instructions. A proof here is an
+ordinary program whose whole job is to check that another program told the truth -- and watching one
+run is the moment this tree starts to feel different from other software.
+
+This hour asks one thing of you: **make one thing work.** The whole tree can wait, and it will still
+be here.
+
+**Why bother.** The point of a computer you can read all the way down is that it can hold what
+matters to you without asking you to trust anyone -- your words, your name, the record of a farm or
+a household. That is what these six steps are the first hour of.
 
 ## 1. Clone
 
