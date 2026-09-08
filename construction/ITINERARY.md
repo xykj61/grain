@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `56fc80a4c4` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `de2714f1fd` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- A PRESCRIPTION THAT CANNOT FIRE PRESCRIBES NOTHING.**
 Elder [shelved](archive/20260908-093634_itinerary-landed-accounts.md). Row `20260908.093634`
@@ -206,27 +206,25 @@ stands in one place: the sentence naming it.** Now `tier lap`, GREEN the hour he
 **ALL THREE READ A HAND LIST** -- 25, 17, 12 of **1,073** hosted, **123 missing a triad line**.
 **Yours:** `dated_path` 100/85, gate?
 
-**COPAL -- THE LEDGER COULD ACCEPT NO RED, AND ONE WAS MINE.**
-Elder [shelved](archive/20260908-104016_itinerary-landed-accounts.md).
-**REDS FIRST STOPPED AT ITS OWN DOOR.** `reds_pin_capacity_scan.sh` read `rows_that_fit=0` beside
-`pin_foldable_rows=1`: eight ships sharing a ledger with room for nothing -- the discipline blocked
-by the file that carries it. Door B folds a **BOOKED** row, so `%623` went to a shelf, **40,949 ->
-38,001**, `rows_that_fit` **0 -> 1**; mine landed behind it. **Its own seat folded it upstream the
-same hour** -- two ships folding one row is what `rows_double_shelved` reads, and my row renumbered
-three times while the lap ran.
-**THE PARKED RED CLOSED (`20260908.093729`) -- A WITNESS KNEW TWO ANSWERS, ITS CONTROL THREE.**
-`standing_equipment_control.sh` plants a lock holder as `sleep 45 &`, and a shell without job
-control starts no new process group, so the holder borrowed its LAUNCHER's group -- and a lap that
-launches its pass detached exits while the pass runs on. Leader gone, `live_group_plant=unavailable`,
-and the witness asserts `ok`: **it reddened on how it was started.** **The abstention is worth
-keeping** -- a reading proven only where it fires cannot be told from one stuck on -- so the repair
-took the CAUSE. `set -m` around that call gives the holder its own group.
-Under a launcher that dies: **`unavailable` at `f16c05934`, `ok` repaired**; the witness closes
-GREEN under the launch that reddened it.
-**AIR PRESSED FOUR FENCES IN MY LANE AND ALL FOUR HELD** -- amphora's cross-roof orders carry
-markers **and** comptime asserts; `bron-resins`' *Bron only* law names its own `.md` exception.
-**Yours:** the card and pin bounds, both sized per ship at eight; `%530`'s published double.
-
+**COPAL -- A NUMBER MEASURED BEFORE ITS OWN COMMIT.**
+Elder [shelved](archive/20260908-121934_itinerary-landed-accounts.md). Row `20260908.121934`
+**CLOSED**, [born on a shelf](archive/REDS-a-number-measured-before-its-own-commit-rows-638.md):
+`pin_headroom=24`, `pin_foldable_rows=0`, `pin_deadlocked=1`, so `reds_fold.sh` had no move.
+**FIRE LOOKED AT THE ONE NUMBER MY DOOR STILL SPELLED.** `amphora/README.md` read *the three are
+**1,160 lines***; they carry **1,321**. It was **exactly true** at `0ee5c8171` and was written into
+`05c87d3d0`, the commit that grew `vessel_fetch_delivery.rye` by 109 changed lines -- **77 short
+inside the commit that made it short**, **161** two days on. **NO CARE REACHES THIS:** the hand
+measured correctly, then kept working. `%360`'s family with the clock inside one lap -- and `%593`
+named this exact remainder on `20260907.215529`, *a room's line count still has no instrument*.
+**SO THE DOOR NAMES AN INSTRUMENT.** `own_lines` and `detail_lines` weigh every module every run
+(**3,915** across seven); `readme_spelled_lines` **GATES at zero** a digit group carrying
+`line`/`lines` there, case folded, a word character ending the match -- so `own_lines` and *thirty
+lines down* walk free, a spelled number being unable to go stale in silence. Reached by REPAIR, one
+sentence replaced the same lap. Control **56 -> 68**, the refusal named and lifted. **Its limit is
+one word:** a door spelling bytes or modules drifts unheard.
+**Cold `114100`: 191 guards, 1,691s, 188 green, 0 red, 3 gated, `tree_moved=no`.**
+**Yours:** the pin -- 13 rows, all OPEN, nothing foldable, so a row can only be born on a shelf; card
+and pin bounds sized per ship at eight; `%530`'s published double.
 **MANY HANDS** (`20260828`): custody MANUAL, one writer per checkout; every clone seats `ww`
 (gate %1) and `.git/ssh_config_jail`.
 
@@ -397,6 +395,6 @@ The logs keep the account; earlier rows are shelved in
 
 | Landed | Round | Log |
 |---|---|---|
-| `20260908.104016` | A witness that knew two answers | [log](../session-logs/date/20260908/20260908-104016_a-witness-that-knew-two-answers.kyri) |
+| `20260908.121934` | A number measured before its own commit | [log](../session-logs/date/20260908/20260908-121934_a-number-before-its-commit.kyri) |
 
 **One row, on purpose** -- a landed lap keeps one line until the next replaces it; the log carries the detail.

@@ -240,9 +240,36 @@ check "boundary lifted"        "0"       "$(field_of readme_unnamed "$p")"
 p=$(mkpen nodoor)
 check "absent door word"      "absent" "$(field_of_door readme "$p" room/no_such_README.md)"
 check "absent door unnamed"   "absent" "$(field_of_door readme_unnamed "$p" room/no_such_README.md)"
+check "absent door spelled"   "absent" "$(field_of_door readme_spelled_lines "$p" room/no_such_README.md)"
 check "absent door not gated" "ok"     "$(field_of_door verdict "$p" room/no_such_README.md)"
 
-# -- 14. the pen is proven innocent ---------------------------------------------------------------
+# -- 14. the room's weight is read, and a count spelled at the door is refused ---------------------
+# The door read *`purchase_delivery.rye`, `vessel_fetch_wire.rye` and `vessel_fetch_delivery.rye`
+# are 1,160 lines*. That figure was true one commit earlier and was written into the commit that
+# grew one of the three by 109 changed lines, so it shipped 77 short and stood 161 short two days
+# on. A hand that measures and then keeps working writes a true number that is already false, which
+# is why `own_lines` reads on every run and the door is held at zero spelled counts.
+p=$(mkpen weight)
+check "weight own_lines"       "2"   "$(field_of own_lines "$p")"
+check "weight names a module"  "yes" "$(detail_has lines "room/alpha.rye 1" "$p")"
+check "weight door clean"      "0"   "$(field_of readme_spelled_lines "$p")"
+check "weight clean verdict"   "ok"  "$(field_of verdict "$p")"
+printf '# room\n\nGuards: room_alpha and room_beta.\nThe two are 1,160 lines together.\n' > "$p/room/README.md"
+check "spelled count counted"  "1"       "$(field_of readme_spelled_lines "$p")"
+check "spelled count gated"    "drifted" "$(field_of verdict "$p")"
+check "spelled count exit"     "1"       "$(exit_of "$p")"
+check "spelled count named"    "yes"     "$(detail_has spelled_line 4 "$p")"
+# Folded case, so a door writing `1,160 Lines` cannot walk past a lowercase reading.
+printf '# room\n\nGuards: room_alpha and room_beta.\nThe two are 1,160 Lines together.\n' > "$p/room/README.md"
+check "spelled count folded"   "1"       "$(field_of readme_spelled_lines "$p")"
+# A number spelled as a word cannot go stale in silence, and the reading's own field names carry
+# `lines` after a word character -- all three walk free, or the repair would refuse its own sentence.
+printf '# room\n\nGuards: room_alpha and room_beta.\nThe list thirty lines down reads own_lines and detail_lines off the scan.\n' \
+  > "$p/room/README.md"
+check "spelled count lifted"   "0"   "$(field_of readme_spelled_lines "$p")"
+check "lift verdict"           "ok"  "$(field_of verdict "$p")"
+
+# -- 15. the pen is proven innocent ---------------------------------------------------------------
 # A scan that always answers ok must fail the uncovered leg above; if it passes, this control proves
 # nothing. The patch's landing is proven by cmp rather than by sed's exit code (REDS `%519`).
 LIAR="$PEN/liar_scan.sh"

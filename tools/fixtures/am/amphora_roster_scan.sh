@@ -32,6 +32,17 @@
 #   uncovered         a module no rostered guard names                     GATED at zero
 #   singly_covered    a module exactly one rostered guard names            reported
 #   readme_unnamed    a rostered guard the room's front door never names    GATED at zero
+#   own_lines         how many lines the room's own modules carry           reported
+#   readme_spelled_lines  a line count spelled in digits at the front door  GATED at zero
+#
+# A LINE COUNT SPELLED AT THE DOOR IS STALE BEFORE ITS OWN COMMIT LANDS (`20260908`). This room's
+# front door read *`purchase_delivery.rye`, `vessel_fetch_wire.rye` and `vessel_fetch_delivery.rye`
+# are 1,160 lines*. That figure was true at `0ee5c8171` and was written into `05c87d3d0`, the very
+# commit that grew `vessel_fetch_delivery.rye` by 109 changed lines -- so it shipped 77 lines stale
+# inside the commit that made it stale, and stood 161 short two days later. The hand did not slip:
+# it measured, and then kept working. So `own_lines` and the `detail_lines` listing answer the
+# weight question on every run, and the door is held at zero spelled counts, which is the same
+# repair `guards` and `readme_unnamed` already took one reading over.
 #
 # THE FRONT DOOR IS PART OF THE ROSTER'S REACH. `amphora/README.md` lists the guards that stand
 # over this room, and a reader reaches for that list before reaching for the roster. It was hand
@@ -74,7 +85,10 @@
 # WHAT IT DOES NOT REACH, named rather than implied. Whether a guard that names a module PROVES
 # anything about it: naming is what a text can show, and a claim's worth is a hand's reading. And
 # whether a guard runs green -- the standing roster answers that every pass, and this one asks only
-# whether the roster is pointed at the whole room.
+# whether the roster is pointed at the whole room. The spelled-count gate reads the word `line` and
+# `lines` alone, so a door spelling a byte count, a module count, or a percentage can drift exactly
+# the same way and this reading stays quiet: one word is what fired here, and a wall drawn around
+# every number a door might spell would refuse the tables this page is mostly made of.
 #
 #   sh tools/fixtures/am/amphora_roster_scan.sh [<room>] [<roster>] [<guard_room>] [<readme>]
 #
@@ -121,6 +135,18 @@ modules=$(grep -c '' "$TMP/modules" || true)
 linked=$(grep -c '' "$TMP/linked" || true)
 echo "modules=$modules"
 echo "linked=$linked"
+
+# How much the room actually carries. REPORTED rather than gated: a module grows every lap, so a
+# ceiling here would refuse the ordinary work of the room. It exists so the front door can NAME this
+# instrument where it used to spell a number.
+own_lines=0
+: > "$TMP/lines"
+while IFS= read -r m; do
+  n=$(grep -c '' "$m" || true)
+  own_lines=$((own_lines + n))
+  echo "$m $n" >> "$TMP/lines"
+done < "$TMP/modules"
+echo "own_lines=$own_lines"
 
 # The roster's rows for this guard room, each carrying the tier it was seated at. A row with no
 # tier line runs every lap, which is the roster's own default, so absence is spelled `lap` here.
@@ -202,12 +228,23 @@ if test -f "$README"; then
   readme_unnamed=$(grep -c '' "$TMP/readme_unnamed" || true)
   echo "readme_named=$((guards - readme_unnamed))"
   echo "readme_unnamed=$readme_unnamed"
+
+  # A digit group carrying the word `line` or `lines`. The case is folded first, so `1,160 Lines`
+  # is caught too, and a word character after `lines` ends the match, so `own_lines`,
+  # `detail_lines`, and this reading's own name pass free -- as does `thirty lines down`, which
+  # spells its number and therefore cannot go stale silently.
+  awk 'tolower($0) ~ /[0-9][0-9,]*[ -]lines?([^a-z]|$)/ { print FNR }' "$README" > "$TMP/spelled"
+  readme_spelled_lines=$(grep -c '' "$TMP/spelled" || true)
+  echo "readme_spelled_lines=$readme_spelled_lines"
 else
   # A word rather than a number: an absent door and a whole one must never read alike.
   echo "readme=absent"
   echo "readme_named=absent"
   echo "readme_unnamed=absent"
+  echo "readme_spelled_lines=absent"
+  : > "$TMP/spelled"
   readme_unnamed=0
+  readme_spelled_lines=0
 fi
 
 # Name every one of them. A count nobody can act on is the complaint the dated-path census made of
@@ -228,8 +265,11 @@ name_them singly "$TMP/singly"
 name_them orphan_row "$TMP/orphans"
 name_them readme_unnamed "$TMP/readme_unnamed"
 name_them linked "$TMP/linked"
+name_them lines "$TMP/lines"
+name_them spelled_line "$TMP/spelled"
 
-if [ "$uncovered" -eq 0 ] && [ "$orphan_rows" -eq 0 ] && [ "$readme_unnamed" -eq 0 ]; then
+if [ "$uncovered" -eq 0 ] && [ "$orphan_rows" -eq 0 ] && [ "$readme_unnamed" -eq 0 ] \
+   && [ "$readme_spelled_lines" -eq 0 ]; then
   echo "verdict=ok"
   exit 0
 fi

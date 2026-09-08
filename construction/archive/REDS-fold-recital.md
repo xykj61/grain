@@ -560,3 +560,4 @@ at a closed fold.*
 *Row %635 folded to [`REDS-a-guard-whose-rooms-were-a-hand-written-list-rows-635.md`](REDS-a-guard-whose-rooms-were-a-hand-written-list-rows-635.md) on `20260908.101759`, **BOOKED** -- a guard whose population is a hand-written list is bounded by what the hand remembered, and its greenness reports the list rather than the subject.*
 
 *Row %637 folded to [`REDS-three-tools-no-roster-heard-rows-637.md`](REDS-three-tools-no-roster-heard-rows-637.md) on `20260908.122056`, **BOOKED** -- a declared checkable surface is a claim, and a claim wants an instrument like every other.*
+*Row %638 born on [`REDS-a-number-measured-before-its-own-commit-rows-638.md`](REDS-a-number-measured-before-its-own-commit-rows-638.md) on `20260908.121934`, **CLOSED** -- the pin stood deadlocked at 24 bytes with no foldable row, and a line count measured before its own commit landed is a number no care can keep true.*
