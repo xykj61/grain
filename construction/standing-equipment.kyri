@@ -343,6 +343,11 @@ tier lap
 # The reason above stood in the comment and the FIELD stayed empty, so the ratchet counted the
 # guard as undeclared and reddened the roster for eight ships. Transcribed rather than decided:
 # the tier is the seater's own written word, moved into the line the meter reads.
+# And the default cost what a default costs: the scan compared 2,972 filenames by forking
+# `printf | cut` per tracked path and `printf | cut | tr` per entry -- about 36,000 processes, 82s
+# every lap across eight ships, the slowest guard on the roster. Rewritten `20260908.011500` to
+# parameter expansion and one awk pass: 78.8s -> 0.26s, output byte-identical, all 25 planted
+# refusals still caught. lap is a cadence this guard can now actually keep.
 
 guard tool_path_repoint
 path tools/t/tool_path_repoint_witness.rish

@@ -18,37 +18,47 @@
 #   the next ordinary commit, adding no witness           -> the debt is PAID, both pages refreshed and staged
 #   an ordinary commit with no debt standing              -> rule one rests, nothing extra staged
 #   a rebased commit                                      -> pre-commit SKIPPED, post-commit records the debt
+#   a REDS row booked inside a cherry-picked commit       -> it lands with the headline reciting the ELDER total
+#   the next ordinary commit, touching no ledger          -> rule two pays its OWN debt, headline staged
 #   a debt standing while a page carries author edits     -> REFUSED, and the debt STILL STANDS
 #   no rishi on disk, a cherry-pick                       -> post-commit rests, no debt recorded
 #   a living link naming a file the commit lacks          -> REFUSED by rule six, off the INDEX
 #   the same link once that file is staged                -> the wall waves the commit through
 #
-# Two pages rather than one, because the tree holds two: README.md and the crushed library index
-# docs-geode/libraries/README.md. Both count witnesses, and the roster caught the second one drifting
-# on the very lap that added this witness -- so the hook covers the class rather than the first case.
+# Two pages rather than one, because the tree holds two. They are README.md and the crushed library
+# index docs-geode/libraries/README.md. Both count witnesses. The roster caught the second one
+# drifting on the lap that added this witness, so the hook covers the class rather than one case.
 #
-# The stand-in generator is honest rather than a trick: the hook's whole contract is "invoke the
-# generator, see whether README changed, act on the answer," so what the generator renders is the
-# real tool's business and the hook's own logic is what this proves. The last case is the
+# The stand-in generator is honest rather than a trick. The hook's whole contract is three steps:
+# invoke the generator, see whether README changed, act on the answer. What the generator renders
+# is the real tool's business. The hook's own logic is what this proves. One case is the
 # depersonalized seed, which carries no rishi and must commit exactly as it always has.
 #
-# The ledger cases use the REAL writer and the REAL spine scan rather than a stand-in, because the
-# writer's arithmetic is the thing under proof there -- what the hook contributes is only WHEN it
-# runs, and that is what the three cases tell apart.
+# The ledger cases use the REAL writer and the REAL spine scan rather than a stand-in. The writer's
+# arithmetic is the thing under proof there. What the hook contributes is only WHEN it runs, and
+# telling those moments apart is the whole job of the four ledger cases.
 #
 # EXPECTED: docs_free=yes, clean_staged=yes, dirty_refused=yes, fresh_quiet=yes, ledger_free=yes,
 #           ledger_staged=yes, ledger_dirty_refused=yes, no_rishi_free=yes, pick_owed=yes,
 #           debt_paid=yes, quiet_no_debt=yes, rebase_owed=yes, debt_kept_on_refusal=yes,
-#           no_rishi_no_debt=yes, link_wall_bitten=yes, link_wall_free=yes.
+#           no_rishi_no_debt=yes, link_wall_bitten=yes, link_wall_free=yes,
+#           ledger_pick_stale=yes, ledger_debt_paid=yes.
 #
-# THE SIX SEQUENCER CASES, added 20260829 (REDS %337). Git runs pre-commit for `git commit` and
-# `git commit --amend` and for nothing else. The twice-pulled send this tree runs REQUIRES a rebase
-# whenever the anointed remote moved, so `git rebase` and `git cherry-pick` are the ordinary close
-# of a contested round rather than exotic paths -- and a round that closed that way on 20260829
-# shipped both pages stale inside a commit that added a witness. tools/hooks/post-commit records
-# that debt and rule one of pre-commit pays it on the next ordinary commit. Both halves are proven
-# here, and the refusal path is proven to KEEP the debt rather than forget it, because a debt
-# cleared by an intent rather than by a landing is a debt silently dropped.
+# THE SEQUENCER CASES, six added 20260829 (REDS %337) and two more on 20260908, whose row is cited
+# by stamp (`20260908.012959`) until the anointed spine binds its number. Git runs pre-commit for
+# `git commit` and `git commit --amend` and for nothing else. The twice-pulled send
+# this tree runs REQUIRES a rebase whenever the anointed remote moved. So `git rebase` and
+# `git cherry-pick` are the ordinary close of a contested round rather than exotic paths. A round
+# that closed that way on 20260829 shipped both pages stale inside a commit that added a witness.
+# tools/hooks/post-commit records that debt. Rule one of pre-commit pays it on the next ordinary
+# commit. Both halves are proven here. The refusal path is proven to KEEP the debt rather than
+# forget it, because a debt cleared by an intent rather than by a landing is a debt silently
+# dropped. Rule two read that same debt from 20260908 and not before, which is why the headline
+# recited a total the spine had passed while every ship read the red and none could say why.
+#
+# Kin: [the wall](../../hooks/pre-commit) - [the debt](../../hooks/post-commit) -
+# [the witness](../../g/generated_page_freshness_witness.rish) -
+# [the headline writer](../r/reds_ledger_headline_write.sh).
 #
 # Driven by tools/g/generated_page_freshness_witness.rish. Run from the repository root.
 
@@ -252,6 +262,29 @@ git add -A
 git commit -qm "pay the debt as the hook asked" >/dev/null
 rm -f .generator-ran
 
+# 17 -- RULE TWO'S OWN DEBT (20260908). A row booked inside a commit that lands by cherry-pick or
+#       rebase never reaches this hook, so case 7's staged trigger cannot see it and the headline
+#       is left reciting a total the spine has passed. Rule one has read the debt since 20260829
+#       and rule three keeps its own; rule two read neither, which is one law with two derivations
+#       and the blind one gating. The next ordinary commit here -- adding no witness and touching
+#       the ledger in no way -- must bring the headline up and stage it, exactly as case 10 does
+#       for the two pages.
+git checkout -q -b ledgerside
+book_row 25
+git add construction/REDS.md
+git commit -qm "book a row with the headline behind" --no-verify
+git checkout -q "$main_branch"
+rm -f .generator-ran "$owed"
+git cherry-pick ledgerside >/dev/null 2>&1
+# The picked commit carries the row and the elder headline together, which is the fault itself.
+ledger_pick_stale=$(git show HEAD:construction/REDS.md | grep -q '^\*\*Rows: 24 ' && echo yes || echo no)
+printf 'a page, edited for the ledger debt\n' > NOTES.md
+git add NOTES.md
+git commit -qm "an ordinary commit that owes the headline" >/dev/null
+ledger_debt_paid=$(git show HEAD:construction/REDS.md | grep -q '^\*\*Rows: 25 ' \
+  && [ ! -f "$owed" ] && git diff --quiet && echo yes || echo no)
+rm -f .generator-ran
+
 # 15/16 -- RULE SIX, the link wall (REDS %524), proven from both sides. The pen carries no
 #          readme_reach_scan.sh until now, so the rule has rested through every case above --
 #          which is itself the resting path, and why the fourteen readings before this are
@@ -308,6 +341,8 @@ echo "pick_owed=$pick_owed"
 echo "debt_paid=$debt_paid"
 echo "quiet_no_debt=$quiet_no_debt"
 echo "rebase_owed=$rebase_owed"
+echo "ledger_pick_stale=$ledger_pick_stale"
+echo "ledger_debt_paid=$ledger_debt_paid"
 echo "debt_kept_on_refusal=$debt_kept_on_refusal"
 echo "no_rishi_no_debt=$no_rishi_no_debt"
 echo "link_wall_bitten=$link_wall_bitten"
@@ -318,6 +353,7 @@ if [ "$docs_free" = yes ] && [ "$clean_staged" = yes ] && [ "$dirty_refused" = y
   && [ "$ledger_dirty_refused" = yes ] && [ "$no_rishi_free" = yes ] \
   && [ "$pick_owed" = yes ] && [ "$debt_paid" = yes ] && [ "$quiet_no_debt" = yes ] \
   && [ "$rebase_owed" = yes ] && [ "$debt_kept_on_refusal" = yes ] \
+  && [ "$ledger_pick_stale" = yes ] && [ "$ledger_debt_paid" = yes ] \
   && [ "$no_rishi_no_debt" = yes ] \
   && [ "$link_wall_bitten" = yes ] && [ "$link_wall_free" = yes ]; then
   echo "control_verdict=ok"
