@@ -210,14 +210,67 @@ claim files_over_named over_ceiling "$(C_FILES=0 readout planted verdict)"
 C_WIPE=1 runs_ok wiping && claim wipe_at_ceiling_free yes yes || claim wipe_at_ceiling_free yes no
 C_WIPE=0 runs_ok wiping && claim wipe_over_ceiling_refused yes no || claim wipe_over_ceiling_refused yes yes
 
-# --- 17. a compiled source is not a runner --------------------------------------------------------
-# The population is `.sh` or `.rish` OR a first-line shebang (17d below). A `.rye` source is neither:
-# Rye is compiled, so the file names a pen the pier never opens from this path. The plant carries no
-# shebang on purpose, since that is what keeps this case free after the widening rather than before.
+# --- 17-24. THE POPULATION IS EVERY RUNNER, by extension AND by shebang -------------------------
+# This leg read `only .sh and .rish are read`, then `a compiled source is not a runner -- the file
+# names a pen the pier never opens from this path`. Both were true of the scan and false of the
+# tree. `rye/tests/dir_iterate_test.rye` is built and run by `tools/p/parity_ch01.rish` on every
+# parity pass, and its constant pen raced 89 times in 2,400 concurrent runs against 0 in 2,400
+# serial. What a source is INVOKED as and what the program DOES are two questions, and only the
+# second decides whether two ships collide. The leg is inverted rather than deleted, so the change
+# of law is legible here rather than silent.
 newtree othertype
 printf 'const p = "/tmp/rye_pen";\n' > "$pen/othertype/tools/f/x.rye"
+printf 'a pen at /tmp/prose_pen named in prose\n' > "$pen/othertype/tools/f/x.md"
+mkdir -p "$pen/othertype/rye/tests" "$pen/othertype/vendor"
+printf 'const q = "/tmp/outside_tools_pen";\n' > "$pen/othertype/rye/tests/t.rye"
+printf 'const v = "/tmp/vendored_pen";\n' > "$pen/othertype/vendor/v.rye"
 ( cd "$pen/othertype" && git add -A >/dev/null 2>&1 && git commit -qm other >/dev/null 2>&1 )
-claim other_extension_free 0 "$(readout othertype constant_pen_files)"
+# invariant: a Rye source is a runner, and a room outside tools/ holds runners too.
+claim rye_extension_read     2 "$(readout othertype constant_pen_files)"
+# invariant: prose is not a runner, and a vendored tree is not ours to repair. Both stay free, so
+# the widening is a population rather than a grep over every byte in the tree.
+# invariant: read INDEPENDENTLY of the count above -- two legs asserting one number catch one
+# fault between them, and this asks whether the tokens themselves are absent from the listing.
+otherlist=$( readout othertype site --list 2>/dev/null; cd "$pen/othertype" && SHARED_PEN_ROOT=. SHARED_PEN_FILES_CEILING=99 SHARED_PEN_WIPE_CEILING=99 sh "$scan" --list 2>/dev/null )
+claim prose_not_a_runner  0 "$(printf '%s' "$otherlist" | grep -c 'prose_pen' || true)"
+claim vendored_not_ours   0 "$(printf '%s' "$otherlist" | grep -c 'vendored_pen' || true)"
+claim outside_tools_read  1 "$(printf '%s' "$otherlist" | grep -c 'outside_tools_pen' || true)"
+
+# A RYE COMMENT IS A COMMENT. The elder rule read `#` alone, so a `//!` usage line in a module head
+# was charged as a pen the file opens -- and comlink/discovery/round_trip_wire.rye was counted for
+# exactly that. Planted and then lifted: the same token in code is charged.
+newtree ryecomment
+printf '//! usage: prog lane A /tmp/commented_pen\n//  const x = "/tmp/also_commented";\n' \
+  > "$pen/ryecomment/tools/f/c.rye"
+( cd "$pen/ryecomment" && git add -A >/dev/null 2>&1 && git commit -qm ryec >/dev/null 2>&1 )
+claim rye_comment_free       0 "$(readout ryecomment constant_pen_files)"
+printf 'const real = "/tmp/uncommented_pen";\n' >> "$pen/ryecomment/tools/f/c.rye"
+( cd "$pen/ryecomment" && git add -A >/dev/null 2>&1 && git commit -qm ryec2 >/dev/null 2>&1 )
+claim rye_code_after_comment 1 "$(readout ryecomment constant_pen_files)"
+
+# A RYE REMOVAL IS A WIPE. deleteTree, deleteFile and deleteDir are how this tree's own programs
+# destroy a pen, and a shell-shaped predicate reads every one of them as the benign HOLD class --
+# the one direction a meter must never be wrong in. Four real wipers hid here.
+newtree ryewipe
+printf 'const d = "/tmp/rye_wiped_pen";\npub fn main() void { cwd.deleteTree(io, d) catch {}; }\n' \
+  > "$pen/ryewipe/tools/f/w.rye"
+( cd "$pen/ryewipe" && git add -A >/dev/null 2>&1 && git commit -qm ryew >/dev/null 2>&1 )
+claim rye_delete_is_a_wipe   1 "$(readout ryewipe wiping_files)"
+printf 'const e = "/tmp/rye_held_pen";\npub fn hold() void { _ = e; }\n' \
+  > "$pen/ryewipe/tools/f/h.rye"
+( cd "$pen/ryewipe" && git add -A >/dev/null 2>&1 && git commit -qm ryeh >/dev/null 2>&1 )
+claim rye_hold_is_not_a_wipe 1 "$(readout ryewipe wiping_files)"
+
+# A NAME COMPLETED AT RUN TIME IS FREE, in Rye notation as in shell. `{` opens a bufPrint format
+# placeholder exactly as `$` opens an expansion, and BOTH passes must carry the rule: with it in
+# pass one alone, a pen reads free of the wipe count and is still charged as a constant.
+newtree ryeruntime
+printf 'const n = bufPrint(&b, "/tmp/runtime_pen-{d}", .{tid});\n' > "$pen/ryeruntime/tools/f/r.rye"
+( cd "$pen/ryeruntime" && git add -A >/dev/null 2>&1 && git commit -qm ryer >/dev/null 2>&1 )
+claim rye_runtime_name_free  0 "$(readout ryeruntime constant_pen_files)"
+printf 'const f = "/tmp/fixed_pen";\n' >> "$pen/ryeruntime/tools/f/r.rye"
+( cd "$pen/ryeruntime" && git add -A >/dev/null 2>&1 && git commit -qm ryer2 >/dev/null 2>&1 )
+claim rye_fixed_name_bites   1 "$(readout ryeruntime constant_pen_files)"
 
 # --- 17b. a heredoc body is program content, and the exemption is proven in BOTH directions -------
 # A control writes a plant into a throwaway tree, and every constant path inside that plant belongs

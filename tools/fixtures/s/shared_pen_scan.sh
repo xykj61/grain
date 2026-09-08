@@ -195,23 +195,66 @@ root=${SHARED_PEN_ROOT:-.}
 # doorway census raised the same day and left on the card, and answering it inside a repair to a
 # different fault is the shape this tree refuses. The ceiling is set at the true reading, as every
 # ratchet here is, and the question stands where it stands.
-files_ceiling=${SHARED_PEN_FILES_CEILING:-46}
+# THE POPULATION WAS NEVER WIDENED, ONLY THE SPELLINGS (`20260908`). Six of the notes above widen
+# how a pen is SPELLED and every one of them held the reading to `tools/*.sh` and `tools/*.rish`.
+# That pair is a hand-written enumeration standing in for "every runner this tree owns" -- %532's
+# fault one room over -- and what it could not see was the language this tree writes its own
+# programs in. `rye/tests/` alone holds four programs that name a constant pen and DELETE it, and
+# `tools/p/parity_ch01.rish` builds and runs all four every parity pass, on eight ships.
+#
+# PROVEN ON METAL BEFORE THE WIDENING SHIPPED, both directions, on `rye/tests/dir_iterate_test.rye`
+# as it stood: **89 failures in 2,400 concurrent runs** (`expected one entry, got none`, and
+# `error: FileNotFound` out of createDir and openDir), against **0 failures in 2,400 serial runs**.
+# Green alone, red in company -- this scan's own signature, in a room it could not read.
+#
+# AND WIDENING THE POPULATION ALONE WOULD HAVE MADE THE METER WORSE. Three of its rules are spelled
+# in shell, and each fails in its own direction on a Rye source: `wipes()` reads `rm -`, so all four
+# wipers land in the benign HOLD class; the comment rule reads `#`, so a `//!` usage line in a
+# header is charged as an opened pen; and `<<` is Zig's SHIFT operator, so the heredoc detector
+# swallowed the rest of a file. Population and predicate move together here or not at all -- a
+# reading whose new members all sort into the safe class is more confidently wrong than the narrow
+# one it replaced.
+#
+# THE CEILINGS ARE RE-DERIVED RATHER THAN RAISED, the third such re-derivation in this file and by
+# the same reasoning as %544's and the sixth spelling's: the tree did not get worse, the meter
+# started reading what was already there. `files_ceiling` 46 -> 50 for four files this seat does
+# not repair -- `rishi/tests/file_io.rish` (three constant names, no wipe), `pond/enclosure_policy.rye`
+# (an asserted path the module reasons ABOUT rather than opens, counted because this scan errs
+# toward counting, as it does everywhere), and the two `tools/rye/macos_app_*_probe.rye` receipts
+# whose witness wipes them, both LOCA-lane and unprovable from a Linux pier. `wipe_ceiling` STANDS
+# AT 15, unmoved: the four Rye wipers this widening newly sees were repaired in the same lap to
+# name their pen from `Thread.getCurrentId()`, and the same 2,400 concurrent runs then read **0**.
+# The widening pays for itself rather than buying a number.
+#
+# SET AT 49 RATHER THAN 50 ON THE REBASE: a peer widened this same population by ROOM in the same
+# hour (`%618`, dropping the `tools/*` glob), so the two widenings met in one file -- theirs by
+# room, this one by room AND by language. The merged reading is one file lower than either lap
+# predicted alone, and a ratchet is set at the true reading rather than at the one a lap expected.
+files_ceiling=${SHARED_PEN_FILES_CEILING:-49}
 wipe_ceiling=${SHARED_PEN_WIPE_CEILING:-15}
 
 cd "$root" 2>/dev/null || { echo "verdict=no_root"; echo "refused: $root is not a directory" >&2; exit 1; }
 git rev-parse --git-dir >/dev/null 2>&1 || { echo "verdict=no_git"; echo "refused: this scan reads git ls-files" >&2; exit 1; }
 
+# TWO WIDENINGS MET HERE IN ONE HOUR AND BOTH ARE RIGHT (`20260908`). One reads a runner by its
+# SHEBANG, which catches a file with no extension at all; this one reads `.rye`, because a compiled
+# program opens its pen when it RUNS rather than when its source is invoked. The peer leg that stood
+# between them claimed *a compiled source is not a runner -- the file names a pen the pier never
+# opens from this path*, and that is measurably false: `rye/tests/dir_iterate_test.rye` is built and
+# run by `tools/p/parity_ch01.rish` on every parity pass, and its constant pen raced **89 times in
+# 2,400 concurrent runs** against 0 in 2,400 serial. What the source is invoked as and what the
+# program does are two questions; only the second decides whether two ships collide.
 sources=$(
   {
-    git ls-files 2>/dev/null | grep -E '\.(sh|rish)$'
+    git ls-files 2>/dev/null | grep -E '\.(sh|rish|rye)$'
     # A runner names itself on its first line. `git grep -n` prints `path:lineno:text`, so keeping
     # only `lineno == 1` reads the shebang rather than a `#!` standing anywhere further down.
     git grep -I -n -E '^#!' 2>/dev/null | awk -F: '$2 == 1 { print $1 }'
-  } | grep -v '/date/' | sort -u)
+  } | grep -vE '^(vendor|gratitude)/' | grep -v '/date/' | sort -u)
 sources_n=$(printf '%s\n' "$sources" | grep -c . || true)
 if [ "$sources_n" -eq 0 ]; then
   echo "verdict=no_sources"
-  echo "refused: no tracked shell or Rishi sources under this root -- a zero here would read as clean" >&2
+  echo "refused: no tracked runner sources under this root -- a zero here would read as clean" >&2
   exit 1
 fi
 
@@ -255,7 +298,10 @@ hits=$(printf '%s\n' "$sources" | while read -r f; do
     # constant /tmp name, appended, counted, and removed it, and the guard read red in company and
     # GREEN alone. Removing an in-flight FILE takes a peer down exactly as removing a directory
     # does; the flag says how, never whether.
-    function wipes(l) { return (l ~ /(^|[^A-Za-z0-9_.\/-])rm[ \t]+-/ || l ~ /"rm"[ \t]+"-/) }
+    # THE SEVENTH SPELLING IS A LANGUAGE RATHER THAN A SYNTAX. Rye removes a pen with
+    # deleteTree, deleteFile or deleteDir, so a shell-shaped wipe predicate reads every Rye wiper
+    # as a HOLD -- the benign class. That is the direction a meter must never be wrong in.
+    function wipes(l) { return (l ~ /(^|[^A-Za-z0-9_.\/-])rm[ \t]+-/ || l ~ /"rm"[ \t]+"-/ || l ~ /delete(Tree|File|Dir)Z?[ \t]*\(/) }
     # WHERE THE rm STANDS ON THE LINE, so a removal is charged to the path it actually names. Any
     # rm on a line used to mark every /tmp token on that line, which the widening made loud:
     # tools/l/launch-claude-chapter.rish removes .loop-gates-only and tees a constant pen in one
@@ -263,6 +309,7 @@ hits=$(printf '%s\n' "$sources" | while read -r f; do
     function rm_at(l,   p) {
       p = match(l, /(^|[^A-Za-z0-9_.\/-])rm[ \t]+-/); if (p > 0) return p + RLENGTH
       p = match(l, /"rm"[ \t]+"-/); if (p > 0) return p + RLENGTH
+      p = match(l, /delete(Tree|File|Dir)Z?[ \t]*\(/); if (p > 0) return p + RLENGTH
       return 0
     }
     # THE SEGMENT A TOKEN STANDS IN, so a removal never reaches across a command separator. One
@@ -323,7 +370,7 @@ hits=$(printf '%s\n' "$sources" | while read -r f; do
       next
     }
     {
-      if ($0 !~ /^[ \t]*#/) {
+      if ($0 !~ /^[ \t]*#/ && $0 !~ /^[ \t]*\/\//) {
         hp = index($0, "<<")
         if (hp > 0) {
           hrest = substr($0, hp + 2)
@@ -341,7 +388,7 @@ hits=$(printf '%s\n' "$sources" | while read -r f; do
     # header: the elder reading was line-scoped, and it hid two of the six wipers in this tree.
     FNR == NR {
       line = norm($0)
-      if (line ~ /^[ \t]*#/) next
+      if (line ~ /^[ \t]*#/ || line ~ /^[ \t]*\/\//) next
       if (line ~ /mktemp|XXXXXX/) next
       s = line; off = 0
       while (match(s, /(^|[^A-Za-z0-9_.])\/tmp\/[A-Za-z0-9_.\-]+/)) {
@@ -357,7 +404,10 @@ hits=$(printf '%s\n' "$sources" | while read -r f; do
         off = off + rs + rl - 1
         s = substr(s, rs + rl)
         if (tok ~ /\$/) continue
-        if (next_ch == "$") continue
+        # A NAME COMPLETED AT RUN TIME IS NOT FIXED AT WRITE TIME, whichever notation completes
+        # it. `$` is the shell marker and `{` the Rye one: /tmp/pen-{d} is a bufPrint format whose
+        # pid arrives when the program runs, so no two processes can agree on it.
+        if (next_ch == "$" || next_ch == "{") continue
         if (quoted(line, abs_pos)) continue
         # The assignment is read from the text immediately BEFORE the token, which is the one shape
         # every spelling shares: `pen=/tmp/x`, `pen="/tmp/x"`, `let pen = "/tmp/x"`, `local pen=`.
@@ -373,7 +423,7 @@ hits=$(printf '%s\n' "$sources" | while read -r f; do
     {
       line = norm($0)
     }
-    line ~ /^[ \t]*#/ { next }
+    line ~ /^[ \t]*#/ || line ~ /^[ \t]*\/\// { next }
     line ~ /mktemp|XXXXXX/ { next }
     {
       # A WIPE OF A HELD PEN IS A WIPE. `rm -rf "$pen"` and `run ["rm" "-rf" pen]` carry no /tmp/
@@ -397,13 +447,17 @@ hits=$(printf '%s\n' "$sources" | while read -r f; do
         # READ THE CHARACTER AFTER THE TOKEN, not only the token. The token class stops at `$`, so
         # `/tmp/pen_$$` and `/tmp/pen_${home}` both match as the constant `/tmp/pen_` and would be
         # counted -- the guard instructing the repair the file has already made. The control caught
-        # both on the first run (pid_free, interpolate_free).
+        # both on the first run (pid_free, interpolate_free). The SAME rule reads Rye notation:
+        # `{` opens a bufPrint format placeholder, so /tmp/pen-{d} is completed at run time exactly
+        # as /tmp/pen_$$ is. Both passes carry this rule or neither does -- pass one learns the
+        # held names and pass two counts the sites, and a rule in one alone frees a pen from the
+        # wipe reading while still charging it as a constant.
         next_ch = substr(s, rs + rl, 1)
         abs_pos = off + rs + lead
         off = off + rs + rl - 1
         s = substr(s, rs + rl)
         if (tok ~ /\$/) continue
-        if (next_ch == "$") continue
+        if (next_ch == "$" || next_ch == "{") continue
         if (quoted(line, abs_pos)) continue
         # A REMOVAL IS CHARGED TO THE PATH IT NAMES, so a token standing BEFORE the rm on its line
         # is a hold. A held variable removed anywhere on the line is still a wipe, which pass one

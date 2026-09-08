@@ -1,13 +1,19 @@
 #!/bin/sh
 # fleet_call.sh -- signal only what runs in THIS tree, and say out loud what it refused.
 #
-#   sh tools/f/fleet_call.sh --pattern <substring> --dry-run    # ASK: decide, print, send nothing
-#   sh tools/f/fleet_call.sh --pattern <substring> [--signal TERM] [--root <path>]
-#   sh tools/f/fleet_call.sh --pid <pid> [--pid <pid>] ...
+#   sh tools/f/fleet_call.sh --pattern <substring> [--root <path>]        # READS: who would I reach?
+#   sh tools/f/fleet_call.sh --pattern <substring> --signal TERM           # ACTS: reach them
+#   sh tools/f/fleet_call.sh --pid <pid> [--pid <pid>] ... [--signal TERM]
 #
-# THE DEFAULT ACTION IS TO SEND, so reach for --dry-run whenever the question is `what of mine is
-# running?`. Without that flag every candidate inside this tree is signaled; --signal names WHICH
-# signal rather than WHETHER to send one, and reading it as opt-in costs a pass (`20260908.051419`).
+# NAMING A SIGNAL IS THE VERB. Without --signal this helper reports and signals nothing; with it,
+# it signals. --dry-run still forces the reading whatever else is passed, and wins in any order.
+#
+# THE DEFAULT ACTION WAS TO SEND, AND TWO SHIPS LOST A PASS TO IT IN ONE MORNING -- `%617` at
+# `20260908.051419` and `20260908.071628` two hours later, independently, each asking `what of mine
+# is running?` and each answered with a TERM. The paragraph that stood here after the first firing
+# warned about the default in exactly these words. The second firing happened anyway, on a ship that
+# had read the baton clause naming this helper. `%617`'s own third field is what settled it: **a
+# tool built to stop a dangerous default should not have one.**
 #
 # WHY THIS EXISTS. Eight ships run one program name from eight trees on one pier, so `pkill -f
 # standing_equipment_run` reaches the fleet rather than the lap (REDS %541, fired three times in
@@ -26,6 +32,19 @@
 # chdirs out -- and the reading that would falsify it is a live loop whose /proc/<pid>/cwd names
 # anything but its tree. Prefer --pid with a PID the lap recorded when you have one.
 #
+# WHY THE READING IS THE DEFAULT (`20260908`, the family's sixth firing and its first NEW shape).
+# The five firings before this one all typed `pkill -f`. This one used THIS helper, and still lost
+# a lap's roster pass -- because the head's own first line says "signal only what runs in THIS
+# tree", and a hand under time pressure reads a tree-scoped signaller as a tree-scoped ANSWER. The
+# wall did its whole job: two peer trees were refused out loud by name, and the blast radius was
+# exactly this checkout. What no wall could do was tell the hand that the bare form ACTS.
+#
+# So the fix is a verb rather than a wall. Every other instrument in this tree reads before it
+# writes -- `index-preview` before `index-fold`, `--list` before a repair, `reds_fold.sh` refusing
+# an open row -- and this was the one family whose wrong guess costs a pass and whose default
+# acted. The documented form `--pattern X --signal TERM` is unchanged and still acts, which is why
+# no tracked caller moved and every acting leg of the control already named its signal.
+#
 # Exits 0 when it ran, 2 on a usage error. Bounded: 256 candidates, 64 levels of ancestry.
 set -eu
 
@@ -36,7 +55,10 @@ root=""
 pattern=""
 pids=""
 signal=TERM
-dry=no
+# invariant: the reading is the default, so a hand that asks a question is never answered with a
+# signal. Naming a signal is what asks for one.
+dry=yes
+dry_forced=no
 proc_root=${FLEET_CALL_PROC:-/proc}
 
 usage() {
@@ -48,15 +70,19 @@ while [ $# -gt 0 ]; do
   case "$1" in
     --pattern) [ $# -ge 2 ] || usage; pattern=$2; shift 2 ;;
     --pid)     [ $# -ge 2 ] || usage; pids="$pids $2"; shift 2 ;;
-    --signal)  [ $# -ge 2 ] || usage; signal=$2; shift 2 ;;
+    --signal)  [ $# -ge 2 ] || usage; signal=$2; dry=no; shift 2 ;;
     --root)    [ $# -ge 2 ] || usage; root=$2; shift 2 ;;
-    --dry-run) dry=yes; shift ;;
+    --dry-run) dry_forced=yes; shift ;;
     -h|--help) usage ;;
     *) printf 'fleet-call: unknown argument %s\n' "$1" >&2; usage ;;
   esac
 done
 
 [ -n "$pattern" ] || [ -n "$pids" ] || { printf 'fleet-call: name a --pattern or a --pid\n' >&2; usage; }
+
+# invariant: --dry-run holds the reading whatever order the flags arrived in, so a hand that asks
+# for a preview after naming a signal gets the preview.
+[ "$dry_forced" = yes ] && dry=yes
 
 # invariant: the root is resolved PHYSICALLY before any comparison. A symlinked checkout reads
 # local in a path string and sits in a sibling on disk, which is the same fault wearing a disguise.

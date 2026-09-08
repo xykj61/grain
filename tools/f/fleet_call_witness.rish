@@ -15,7 +15,7 @@ say "fleet-call: Lens TAME -- every refusal planted and then lifted, so a wall i
 say "fleet-call: the control -- twenty-two behaviors on real processes in a throwaway pen..."
 let ctl = run ["sh" "tools/fixtures/f/fleet_call_control.sh"]
 assert ctl.ok else "fleet-call: the control refused --\n${ctl.out}\n${ctl.err}"
-assert ctl.out contains "pass=22 fail=0" else "fleet-call: the control did not prove twenty-two behaviors --\n${ctl.out}\n${ctl.err}"
+assert ctl.out contains "pass=26 fail=0" else "fleet-call: the control did not prove twenty-six behaviors --\n${ctl.out}\n${ctl.err}"
 
 say "fleet-call: the helper reaches for no name-matching killer of its own..."
 # invariant: pkill and killall match a program NAME, which is the fault under repair. A helper that
