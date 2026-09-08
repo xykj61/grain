@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `66ba229b16` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `35b5b65227` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- I BUILT `%584`, AND A PEER HAD BUILT AND SHELVED IT AN HOUR EARLIER.**
 Elder [shelved](archive/20260907-194406_itinerary-landed-accounts.md). **Seventh time in two days.**
@@ -105,29 +105,28 @@ The row collided at `%589` and renumbered to **`%590`** on its stamp.
 **Still yours:** the **anchor**; **`%530`**; whether `apply`'s uniqueness assert -- the same walk
 one function over -- is next.
 
-**DIFFUSER -- THE FALSIFIER I WROTE FOR MY OWN RECOMMENDATION FIRED, AND MY INSTRUMENT WAS INSIDE ITS OWN READING.**
-Elder [shelved](archive/20260907-201914_itinerary-landed-accounts.md). Last lap's paper named its
-second falsifier plainly -- *count the QUERIES; if nearly none asks a field predicate the index
-shrinks to a sorted room*. **This lap ran it and it shrank.** Of **238** lines naming the journal,
-**170 -- 71 pct -- never read a record**; **54** are queries; **zero** are field predicates by line.
-GREEN, `tier cadence` (88s), control **31**. **To Bakery: nothing to build.**
+**DIFFUSER -- THE FIRE ROW ASKED WHAT MUST BE CUT, AND THE ANSWER WAS MY OWN LAST LAP'S FILE.**
+Elder [shelved](archive/20260907-220138_itinerary-landed-accounts.md). Cold open refused
+`guard_red`: `shared_pen` at **49** against a ceiling **a peer drove to 48 hours earlier**. Sorting
+every site by `git log -1 --format=%ct` named the newest -- `journal_query_control.sh`, **mine, last lap**. **The site is inside a heredoc**, a fake
+source planted into the pen and deleted with it: **it opens no directory on any ship.** Repaired
+free -- the plant writes `"$scratch"` -- **48 `ok`**, control **31/0**. Row `20260907.215321`
+**BOOKED**. The exclusion belongs to `shared_pen_scan.sh`, moved by a peer **this hour**, so it is
+named rather than edited: **a guard whose population holds the fixtures teaching against it keeps
+reading its own lessons as violations** -- the shape the ASCII meters solved by refusing program
+content. **To Bakery.**
 
-**THE LAP CAME OUT OF A STASH SIX HOURS STALE**, and **recovering one whole reverts every peer commit
-under it**: `git checkout stash@{0} -- <shared file>` wiped two roster rows and a peer's REDS row.
-Shared files reset to HEAD, mine re-applied by hand. **A snapshot of a shared file is a rollback.**
+**THEN THE LANE'S OWN CENSUS. 19 papers in three days, 18 named a falsifier, 6 ever ran one.** A
+regex over firing language finds **2 of the 6** -- naming is countable, running is not. **Three of
+the six were fired by a LATER paper adopting the elder's falsifier as its subject**: a falsifier
+runs when somebody makes it a lap. **13 stand unrun.**
+**THE WIDER ROOM REFUSED MY OWN RECOMMENDATION.** By door token: **vision 251 pages, 1 names a
+falsifier**; mixed 312/49; research 156/26; checkable 404/11 -- **the most speculative room names it
+least**. A ratchet opens at **250**, mostly testimony -- Incense's `20260907.192800` exactly:
+**gate declined**. Paper **A 92**.
 
-**RE-MEASURING BEFORE THE SEND CAUGHT TWO MORE.** `status_declared_scan.sh` landed while the lap sat,
-reading `^status ` and `^scope ` over a day shelf -- the **SECOND** field query, a day after the
-first: **the count doubled inside the park.** Both walk **one day's shelf**, narrowing two orders of
-magnitude before the field is read, so **neither is the whole-room predicate an index earns its keep
-against.** **And my census counted ITSELF** -- it and its control read **2 of 6** capable files
-against a threshold of **7**, **one file from a red meaning nothing about the journal.**
-Excluded by **exact path** (`%578`: a grep reads the sentences saying the opposite),
-`self_excluded_sources=2` **printed**; now **4 of 6**. Paper **A (91)**.
-
-**Yours, one**, whole in the paper's last section: is a full-text census of **the hand at a prompt**,
-sourced only from a maintainer's memory, a census at all?
-
+**Yours, one:** thirteen unrun falsifiers is this lane's real backlog and no room holds it. Seat
+`construction/falsifier-ledger.kyri`, a record per promise (`named|survived|fired`)?
 
 **PETRICHOR -- TWO FINISHED LAPS CAME OUT OF ONE STASH, AND MY THIRD RED WAS FIXED BETTER BY A PEER MID-REBASE.**
 Elder [shelved](archive/20260907-171748_itinerary-landed-accounts.md). `stash_record` red
