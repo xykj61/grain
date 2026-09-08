@@ -1,0 +1,47 @@
+format session-log-v1
+stamp 20260908.121934
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role unattended fleet seat COPAL, vessel lane
+modality text
+model claude-opus-5
+model_status configured default claimed by the runtime banner; no separate runtime telemetry read this lap
+configured_model claude-opus-5
+configured_reasoning max
+configured_status .claude/settings.json, tracked, read this lap
+evidence .claude/settings.json effortLevel max, model claude-opus-5
+voice Kyri
+host Linux pier, America/New_York
+title A number measured before its own commit
+prompt autonomous lap -- fleet baton, COPAL seat, amphora and bron-resins lane
+rota lap 4307, row 2 -- Fire, the row that sees; my modulo row, and the second least read on this shelf at eleven against Earth's ten. Fire's instruction is to read the ledger before reading anything new and then look straight at the one uncomfortable number rather than surveying around it. Reading my own room's front door that way is what turned this lap: the sentence naming three modules and their weight was the only number on the page no instrument answered, and measuring it took twenty seconds.
+think Opened with the cold roster pass and held still while it ran -- 191 guards, 1691s, 188 green, 0 red, 3 gated (rule_twin %7, pond_enclosure_policy %5, pond_enclosure_ephemeral %5), tree_moved=no. Reading only while it ran, per the runner's own tree digest.
+think Fire says read the ledger first. Twelve open rows, and every one of them either custody-gated, another lane's, or explicitly named "not taken" as a shape decision. So the in-lane queue was the place to look rather than a claim on a peer's row.
+think amphora_roster_scan.sh answered ok on every gate it holds. bron_resins_catalog answered ok on all four of its readings. The room was healthy where an instrument reads it, which is exactly the shape that says to look where no instrument reads.
+think The README carries numbers in prose. One of them -- purchase_delivery.rye, vessel_fetch_wire.rye and vessel_fetch_delivery.rye "are 1,160 lines" -- measured 1,321 today. That is a drift; git show made it a mechanism.
+think Walking `git show <commit>:<path> | wc -l` backward, 1,160 was EXACTLY true at 0ee5c8171 and was written into 05c87d3d0, whose own diff grew vessel_fetch_delivery.rye by 109 changed lines. The number shipped 77 short inside the commit that made it short. The hand did not slip; it measured, and then kept working.
+think That is REDS %360's family with the clock moved inside a single lap, and %593 had already named this exact remainder on 20260907.215529 -- "a room's line count still has no instrument, which is the figure that drifted" -- and left it. A lantern that fires twice becomes a loom.
+think So the repair is the room's own established one: the instrument answers and the door names the instrument. own_lines and detail_lines weigh every authored module on every run; readme_spelled_lines gates a spelled count at zero.
+obs I gated rather than only reported, and the argument is the room's own: a wall must refuse nothing anyone does on purpose. Writing a line count at the door is a choice, and naming the scan instead is the same sentence and stays true -- so the wall was reached by REPAIR, the one offending sentence replaced the same lap.
+obs The regex reads one word. `own_lines`, `detail_lines`, the reading's own name, and "thirty lines down" all walk free, because a word character after `lines` ends the match and a number spelled as a word cannot go stale in silence. Case is folded, so `1,160 Lines` is caught too -- proven as its own leg.
+obs Named rather than implied: the gate reads `line` and `lines` alone, so a door spelling a byte count, a module count, or a percentage drifts exactly the same way and this reading stays quiet. A wall around every number a door might spell would refuse the tables that page is mostly made of.
+obs The ledger could accept nothing again -- pin_headroom=24, pin_rows=13, pin_open_rows=13, pin_foldable_rows=0, pin_deadlocked=1. Door B folds a BOOKED or CLOSED row and all thirteen read OPEN, so reds_fold.sh had no lawful move. The capacity scan's own header records what the fleet does instead, and this row took it: born directly on a single-row shelf, saying so in its header, recorded in the fold recital. It is CLOSED, so shelf_open_rows stays at zero.
+obs Against myself, twice. My first draft of the control numbered the new leg 15 and placed it ahead of leg 14, so the innocence leg would have read out of order; renumbered before the run rather than after. And the accounts shelf I wrote carried the card's own `](archive/...)` link verbatim, which from inside `construction/archive/` resolves at `archive/archive/` -- the first hot pass caught it as `fold_depth_lost=1`, one line, repaired by hand, both fold-shelf guards GREEN after.
+loom guard=standing_equipment_run pass=cold guards=191 seconds=1691 green=188 red=0 gated=3
+loom guard=standing_equipment_run pass=hot guards=191 seconds=1803 green=188 red=0 gated=3
+loom guard=amphora_roster control_behaviors=68 control_failed=0
+loom room=amphora own_lines=3915 modules=7 linked=4 three_module_lines=1321 door_spelled=1160
+file tools/fixtures/am/amphora_roster_scan.sh own_lines and the detail_lines listing weigh every authored module; readme_spelled_lines gates a spelled line count at the front door
+file tools/fixtures/am/amphora_roster_control.sh leg 14 plants a spelled count, names its line, proves the folded case, and lifts it; the innocence leg renumbered to 15
+file tools/am/amphora_roster_witness.rish asserts readme_spelled_lines=0 and own_lines present; behaviors 56 -> 68
+file amphora/README.md the sentence names the instrument where it spelled a number, and the header line records both walls
+file construction/standing-equipment.kyri the amphora_roster block names the fourth gate and its mechanism; behaviors 56 -> 68
+file construction/archive/REDS-a-number-measured-before-its-own-commit-rows-638.md row %638, born on a shelf because the pin was deadlocked
+file construction/archive/REDS-fold-recital.md the birth line, so the trail from the spine to this shelf is unbroken
+file construction/REDS.md headline spine 636 -> 638, read off the monotone witness rather than recited
+file construction/ITINERARY.md COPAL block rewritten, elder shelved, prior-lap row carried
+file construction/archive/20260908-121934_itinerary-landed-accounts.md the elder COPAL block, kept whole
+scope reds-first in my own lane: one red found by measuring a number nobody was reading, repaired by construction, walled, and closed on the same lap
+status GREEN. Cold roster 191 guards / 1,691s / 188 green / 0 red / 3 gated, tree_moved=no; hot roster 191 / 1,803s / 188 green / 0 red / 3 gated, tree_moved=no, after a first hot pass reddened on one shelf link I had carried at the card's depth and repaired. amphora_roster_witness GREEN with 68 planted behaviors and 0 failed; amphora_roster_scan verdict=ok with readme_spelled_lines=0; bron_resins_catalog verdict=ok; reds_ledger_monotone GREEN at rows=638 with no gaps. QA at or above B+ on every artifact touched: amphora/README.md 88, the shelf 100, the scan 86, the witness 88. Both pins under bound -- card 40,949 and ledger 40,936 of 40,960. One red opened and closed; none left open.
+recommend check-in (Keaton) -- the ledger pin now holds thirteen rows, every one OPEN and none foldable, so the only lawful home for a new row is a shelf it is born on; whether that bound rises or the OPEN flag learns to tell a live defect from a booked remainder is his word

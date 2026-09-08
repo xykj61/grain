@@ -1,6 +1,6 @@
 # amphora_roster_witness.rish -- every authored Amphora module answers to a rostered guard.
 #
-# TWO CLAIMS, in the order that makes the second worth believing. The control runs first: 56 planted
+# TWO CLAIMS, in the order that makes the second worth believing. The control runs first: 68 planted
 # behaviors on throwaway rooms, each refusal shown from the failing side and then lifted, the
 # reported reading proven to leave the verdict alone, and the pen proven innocent against a scan
 # patched to always answer ok. The real room follows, once the instrument has shown it can red. A
@@ -20,20 +20,33 @@
 # guard list drifted the same way, naming 11 of 16. `readme_unnamed` is why neither can do it
 # again; these two paragraphs are kept in the past tense they belong to.
 #
-# WHAT IS GATED, and what is counted beside it. `uncovered`, `orphan_rows` and `readme_unnamed`
-# stand at zero, each for a plain reason: a module every rostered guard passes over would ship a
-# break green, a roster row earns its place by naming a file that stands, and the room's front door
-# is where a reader looks for the guard list before ever opening the roster. `singly_covered` is
-# REPORTED, because a module born today is named by exactly one guard on the day it lands -- a
-# ceiling there would refuse the most ordinary work in the room, and a wall like that is one
-# somebody turns off.
+# AND THE SECOND REPAIR REACHED THE LIST WITHOUT REACHING THE NUMBERS IN THE PROSE (`20260908`).
+# One sentence on that page still spelled a line count: *`purchase_delivery.rye`,
+# `vessel_fetch_wire.rye` and `vessel_fetch_delivery.rye` are 1,160 lines*. It was true at
+# `0ee5c8171` and was written into `05c87d3d0`, the commit that grew `vessel_fetch_delivery.rye` by
+# 109 changed lines -- so it shipped 77 short inside the commit that made it short, and stood 161
+# short two days on. A hand that measures and then keeps working writes a number already false when
+# it lands, which no care prevents and one reading does. `own_lines` and the `detail_lines` listing
+# weigh the room on every run, and `readme_spelled_lines` holds the door at zero.
 #
-# WHY THE THIRD GATE HAS TEETH WHERE `singly_covered` DOES NOT. Seating a guard is a roster row a
-# hand writes; naming it at the room's door is the same hand, the same lap, one line. So the wall
-# refuses nothing anyone does on purpose, and it was arrived at by repair rather than by decree --
-# the two names it was missing on `20260908`, `amphora_roster` and `amphora_mark_wreck`, were
-# written the lap the reading landed. The door is asserted BY PATH below, so the room cannot answer
-# the reading by deleting the page it reads.
+# WHAT IS GATED, and what is counted beside it. `uncovered`, `orphan_rows`, `readme_unnamed` and
+# `readme_spelled_lines` stand at zero, each for a plain reason: a module every rostered guard passes
+# over would ship a break green, a roster row earns its place by naming a file that stands, the room's
+# front door is where a reader looks for the guard list before ever opening the roster, and a count
+# spelled there is stale before its own commit lands. `singly_covered` is REPORTED, because a module
+# born today is named by exactly one guard on the day it lands -- a ceiling there would refuse the
+# most ordinary work in the room, and a wall like that is one somebody turns off. `own_lines` is
+# REPORTED for the same shape one step further along: a module grows every lap, so the number the
+# door needs is a reading rather than a ceiling.
+#
+# WHY THE LAST TWO GATES HAVE TEETH WHERE `singly_covered` DOES NOT. Seating a guard is a roster row
+# a hand writes; naming it at the room's door is the same hand, the same lap, one line. Writing a
+# line count at the door is a hand's own choice too, and the alternative -- naming this scan -- is
+# the same sentence and stays true. So neither wall refuses anything anyone does on purpose, and
+# both were arrived at by repair rather than by decree: the two guard names missing on `20260908`
+# were written the lap that reading landed, and the one spelled count was replaced the lap this one
+# did. The door is asserted BY PATH below, so the room cannot answer either reading by deleting the
+# page it reads.
 #
 # Run from the repository root:
 #   rishi/bin/rishi run tools/am/amphora_roster_witness.rish
@@ -45,7 +58,7 @@ say "amphora roster: the control, so a green reading below can be believed..."
 let c = run ["sh" control]
 assert c.ok else "amphora_roster: control FAILED -- the scan cannot be trusted to red"
 assert c.out contains "verdict=ok" else "amphora_roster: control did not answer ok"
-assert c.out contains "behaviors=56" else "amphora_roster: control ran a different number of behaviors"
+assert c.out contains "behaviors=68" else "amphora_roster: control ran a different number of behaviors"
 assert c.out contains "failed=0" else "amphora_roster: control reported a failed behavior"
 assert c.out contains "innocence patch landed" else "amphora_roster: the innocence patch planted nothing"
 
@@ -57,5 +70,7 @@ assert s.out contains "uncovered=0" else "amphora_roster: a module no rostered g
 assert s.out contains "orphan_rows=0" else "amphora_roster: a roster row naming an absent guard"
 assert s.out contains "readme=amphora/README.md" else "amphora_roster: the room's front door went absent -- an absent door reads `absent` and gates nothing, so its path is asserted here"
 assert s.out contains "readme_unnamed=0" else "amphora_roster: a rostered guard the room's README never names -- run `sh tools/fixtures/am/amphora_roster_scan.sh` and read `detail_readme_unnamed`"
+assert s.out contains "readme_spelled_lines=0" else "amphora_roster: a line count spelled at the room's front door -- run `sh tools/fixtures/am/amphora_roster_scan.sh` and read `detail_spelled_line`; the door names `own_lines` rather than spelling it"
+assert s.out contains "own_lines=" else "amphora_roster: the room's weight went unread, so the door has nothing to name in place of a number"
 
-say "GREEN: amphora roster -- 56 planted behaviors, every authored module has a rostered guard, and the room's front door names every one."
+say "GREEN: amphora roster -- 68 planted behaviors, every authored module has a rostered guard, the room's front door names every one, and it spells no line count."
