@@ -13,6 +13,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 |---|---|---|
 | `20260908.031547` | [the header that kept a spent reason](20260908/20260908-031547_the-header-that-kept-a-spent-reason.kyri) | a repair moved three folds and one header. |
 | `20260908.031128` | [The seventh park landed](20260908/20260908-031128_the-lap-that-would-not-stay-landed-landed.kyri) | a parked guard recovered; the dialect red was mine. |
+| `20260908.030324` | [the stamp that looked like a check](20260908/20260908-030324_the-stamp-that-looked-like-a-check.kyri) | a seat cited a number its own tool refuted. |
 | `20260908.022643` | [the path a repointer could not read](20260908/20260908-022643_the-path-a-repointer-could-not-read.kyri) | a fold left one assembled path behind. |
 | `20260908.022051` | [a row that became furniture](20260908/20260908-022051_a-row-that-became-furniture.kyri) | the oldest open red, booked. |
 | `20260908.022039` | [the layer was already there](20260908/20260908-022039_the-layer-was-already-there.kyri) | the falsifier fired; our meter understates its own gap. |

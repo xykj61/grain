@@ -259,11 +259,13 @@ seated 20260907.222830
 
 # convergence_census -- the tree's own idempotence claim, counted. `what-brix-infuse-is` states
 # `infusion(world') -> world'`, and a tool that fails it corrupts on its SECOND run, which is what an
-# unattended loop performs at three in the morning. Measured `20260907.234808`: 30 tools write to the
-# TRACKED TREE rather than a pen, and 3 prove convergence in an assertion. REPORTED, never gated -- a
-# one-shot publisher has nothing to converge and no reading here tells it from a tool that never
-# checked. The denominator was wrong twice first: 392 counting pen writes, and 1200 when the census
-# read its own bound as a measurement.
+# unattended loop performs at three in the morning. Re-run `20260908.025932`: **7 candidates, 3
+# proven**, and the census's own header names three of those seven as libraries or a remote-reading
+# scan rather than writers -- so one candidate transforms a document, and it converges. REPORTED,
+# never gated -- a one-shot publisher has nothing to converge and no reading here tells it from a
+# tool that never checked. The denominator was wrong FOUR times rather than twice: 392 counting pen
+# writes, 1200 when the census read its own bound as a measurement, 30 counting controls, and 7
+# counting non-writers. A count this unstable is why the seat's own page now says to RUN it.
 guard convergence_census
 path tools/c/convergence_census_witness.rish
 tier lap
