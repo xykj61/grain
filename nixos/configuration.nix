@@ -238,7 +238,13 @@
   # codex -- OpenAI Codex CLI; DREAM the dual star runs it inside ai-jail on this
   #   pier, holding the systems core (Caravan, Tally, the microkernel road, the
   #   constellation table); seated 20260827 with the role swap.
-  # vim - neovim - kakoune -- steward editors (seated 20260808)
+  # vim - neovim - kakoune -- steward editors (seated 20260808). Kakoune's version
+  #   is decided by the nixpkgs pin in flake.nix rather than named here. Measured
+  #   20260908: upstream tags v2026.05.21, `nixos-26.05` carries 2026.04.12, and
+  #   this pier runs 2026.04.12 -- so the config is already correct for its channel
+  #   and a rebuild changes nothing. `nixos-unstable` carries the newer one; moving
+  #   the pin moves every package, which is Keaton's word rather than a lap's.
+  #   Gratitude: gratitude/maxime-coste-kakoune.md
   # perl - python3 -- outer-terminal interpreters for legacy scripts the pier
   #   still carries (the .sh/.pl fold to Rishi is in motion, not complete);
   #   available in the outer host shell for Keaton to run (seated 20260819).

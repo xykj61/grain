@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260908.013500` | [four of four stood](20260908/20260908-013500_four-of-four-stood.kyri) | zero flakes in the sample. |
 | `20260908.011935` | [a red that teaches weather](20260908/20260908-011935_a-red-that-teaches-weather.kyri) | a red floor of 2.49 per pass. |
 | `20260908.011352` | [a leg measured against a run](20260908/20260908-011352_a-leg-measured-against-a-run.kyri) | the 150x rise retracted. |
 | `20260908.010852` | [a grep that never settled it](20260908/20260908-010852_a-grep-that-never-settled-it.kyri) | three of four were libraries. |

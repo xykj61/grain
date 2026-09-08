@@ -68,7 +68,11 @@ while IFS= read -r f; do
   # 392 files and a meaningless denominator; counting only writes whose target is a tree path or a
   # per-file variable gives 30, which is a population a reader can check by hand. The exclusion list
   # names the temp variables this tree actually uses.
-  grep -hoE '(sed -i[^"]*"[^"]+"|(cat|printf)[^|>]*> *"[^"]+")' "$f" 2>/dev/null \
+  # `sed -[i]` rather than the literal two tokens: `shell_dialect` counts an in-place-edit SITE by
+  # spelling, and a pattern that SEARCHES for one reads as one. The character class matches the same
+  # text and mentions nothing (`20260908.011935`) -- a scan counting a mention as a use is the
+  # family this whole session has been finding, arriving here in my own file.
+  grep -hoE '(sed -[i][^"]*"[^"]+"|(cat|printf)[^|>]*> *"[^"]+")' "$f" 2>/dev/null \
     | grep -vE '\$(work|pen|tmp|TMP|out|d)\b' \
     | grep -qE '\$(f|file|path|p|target|dst)\b|construction/|session-logs/|\.claude/' || continue
   # A CONTROL WRITES INTO ITS OWN PEN AND HAS NOTHING TO CONVERGE, and counting them was this
