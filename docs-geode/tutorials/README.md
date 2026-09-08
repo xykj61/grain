@@ -5,21 +5,22 @@
 path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURCE.md)
 
 **Language:** EN - **Style:** Gauge (see `../../context/GAUGE_STYLE.md`)
-**Written:** `20260821.190149` - **Refreshed:** `20260905.122517` - **Status:** Living
+**Written:** `20260821.190149` - **Refreshed:** `20260907.160051` - **Status:** Living
 
 ---
 
-Three tutorials ship from this room, and the table below says who each one is for. Start where
+Four tutorials ship from this room, and the table below says who each one is for. Start where
 your own morning starts: the first hour when this tree is new to you, shopping when you are about
 to buy the three things that hour asks for, recursion once you have arrived at the language
-itself. Each page ends somewhere you can check with your own eyes, and that ending is the whole
-reason this room exists.
+itself, and running the fleet once you want the unattended ships sailing. Each page ends somewhere
+you can check with your own eyes, and that ending is the whole reason this room exists.
 
 | Tutorial | For | Shape |
 |---|---|---|
 | [The First Hour](the-first-hour.md) | someone who has never seen this tree | six commands from `git clone` to five lines they wrote, two of which are assertions |
 | [Shopping](SHOPPING.md) | someone about to buy the three things a first hour needs | a way to choose a model, a forge, and somewhere to keep bytes -- ordered safety, performance, joy, naming a method rather than a winner so it keeps |
 | [Recursion in Glow](recursion-in-glow.md) | someone past the first hour, meeting the language | how a rune-shaped language expresses a loop that carries itself |
+| [Running the fleet](running-the-fleet.md) | someone with a pier, launching the unattended ships | launch, watch, and stop -- one roster row per seat, two sentinels, and where the effort setting lives |
 
 ## What earns a place here
 

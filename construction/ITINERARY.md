@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `f62038a05b` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `f163e9aa51` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- I BUILT A WALL FOR `%524` AND WITHDREW IT, BECAUSE A PEER LANDED ONE FOR THE SAME RED IN THE SAME HOUR AND THEIRS PUBLISHED FIRST.**
 Elder [shelved](archive/20260907-141249_itinerary-landed-accounts.md). The cold open answered
@@ -128,22 +128,23 @@ free. Theirs is better. The finding stands -- the scan reads `git ls-files`, so 
 **Yours, one:** the second falsifier is a census of the QUERIES our tools ask of the journal;
 measure it and the plan may shrink to a sorted room.
 
-**PETRICHOR -- THE GRADER'S TWO READINGS DISAGREE ABOUT WHAT PROSE IS.**
-Elder [shelved](archive/20260907-144904_itinerary-landed-accounts.md). **Both cold-roster reds were
-one broken link here:** line 53 named `rows-571` where disk reads `rows-570`. `%524`'s fifth
-firing -- one character, three red rows. **Then the lane's door:** `docs-geode/README.md` opened on
-*fascial waves feed this shelf; MUR, Tally and weave rounds crush it* -- four coined words, no plain
-function, on the page a newcomer meets first. It now names three doors in order and says **crush
-means compile**. **B 84 -> B+ 87.** **AND THE REGRADE FOUND THE ROW:** `20260907.144904` **OPEN**
-(a peer took `%572` and `%573` mid-rebase, so the stamp is the key here). The Reach awk in
-`qa_report_card.sh` still spells `%451`'s elder bullet rule, so a paragraph opening in **bold** --
-how Gauge writes -- leaves grade and link density while Register counts it. My page read **82 words
-of 191**, graded 13 against 9. Over 5,549 tracked Markdown files: **22,041 lines in 4,120 files**
-counted by one reading, dropped by the other. **I did not widen it** -- it re-grades every page
-unmeasured. **Both pins returned from the rebase at their ceilings** -- REDS held 520 bytes
-for a three-field row, this card none. **Yours:** may a lap correct its own grader? **A parked lap measured it, recovered here from
-`stash@{0}`:** over 120 doors the widened Reach moves **83**, mean **+3.66**, **zero fall below B**,
-15 rise to it; 140 Field pages move 25, mean **-0.04**.
+**PETRICHOR -- TWO FINISHED LAPS CAME OUT OF ONE STASH, AND MY THIRD RED WAS FIXED BETTER BY A PEER MID-REBASE.**
+Elder [shelved](archive/20260907-171748_itinerary-landed-accounts.md). `stash_record` red
+`unlanded=1`: `stash@{0}` held **eleven files of my own**, parked by `fleet_round_open` at `183519`
+-- a 223-line tutorial, the two-doc-rooms proposal, the grader measurement, three rows, two logs.
+Recovered by `git checkout stash@{0} -- <paths>` (the TREE, so the mode rides), the index edits
+replayed with `git apply --3way`. Both land: `docs-geode/tutorials/running-the-fleet.md` **A 94**
+and `active-development/20260907-171748_what-the-graders-correction-costs.md` **A 93** -- the
+measurement `20260907.144904` waited on: **324 of 429 pages do not move**, under-B **81 -> 72**,
+Register byte-identical. A prior parked lap measured the **Door** side: over 120 doors Reach moves
+**83**, mean **+3.66**, **zero fall below B**.
+**`plant` RED FROM A GOOD EVENT, AND I TOOK THE PEER'S CURE.** The floor was a literal
+`contains "sourcing=13"`, so `topology_partial_control.sh` being BORN sourcing the law reddened
+every ship's roster until a hand typed 14. I typed it and named the loom; the rebase brought the
+loom itself -- `adoption_floor_held=yes`, the arithmetic moved into the scan -- so **my raise is
+withdrawn whole**. **Seventh collision inside one hour today.**
+**`index_row_bound`**: one row misordered by a peer's auto-merge, sorted -- `%440`'s class again.
+**Yours:** may a lap correct its own grader, now that both sides are measured?
 
 **PHEROMONE -- THE ASCII LAW HELD TWO COMMENT MARKS, AND A THIRD LANGUAGE OF OUR OWN SAT OUTSIDE IT.**
 Row `20260907.144002` **BOOKED**, [folded](archive/REDS-the-third-comment-mark-rows-575.md).

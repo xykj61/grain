@@ -30,6 +30,7 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 | [sangha / **Pattern three -- the five primitives**](../sangha/03-five-primitives.md) | patterns one and two, the six `mycelium/` modules it was written from, the bounds brix | `sangha/` |
 | [tutorials / **recursion in Glow**](../tutorials/recursion-in-glow.md) | the Glow desk | `tutorials/` |
 | [tutorials / **Shopping**](../tutorials/SHOPPING.md) | the first hour, Gauge Style, TAME Guidance | the root README, `tutorials/`, the first hour |
+| [tutorials / **Running the fleet**](../tutorials/running-the-fleet.md) | the fleet roster, the baton, the live card, the first hour | `tutorials/`, the shelf front door |
 
 ## Why the "reached from" column matters
 
