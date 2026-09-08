@@ -100,11 +100,19 @@ note "check_changed_nothing" "$(cmp -s "$pen/before.md" "$SHELF" && echo same ||
 
 echo
 echo "== 4. the refusals, each with the file untouched =="
+# A DIVERGENT duplicate: one stamp, two different texts. Which is true is a judgment about the
+# record, so it refuses -- and it names the stamp and prints both rows, since a hand asked to
+# choose has to see what it is choosing between.
 shelf "$(srow 20260907.023053 'one')" "$(srow 20260907.023053 'the same stamp again')"
 cp "$SHELF" "$pen/before.md"
 o=$(repair)
 note "duplicate_refused" "$(val "$o" verdict)" "duplicate_stamps"
 note "duplicate_left_untouched" "$(cmp -s "$pen/before.md" "$SHELF" && echo same || echo differs)" "same"
+note "divergent_counted" "$(val "$o" rows_duplicate_divergent)" "1"
+note "divergent_names_the_stamp" \
+  "$(echo "$o" | grep -c '^divergent: 20260907.023053 carries 2 different rows')" "1"
+note "divergent_shows_both_rows" \
+  "$(echo "$o" | grep -c '^  | `20260907.023053`')" "2"
 
 shelf "$(srow 20260907.021117 'older')" "| not a stamp cell | [t](../f.kyri) | x |" \
       "$(srow 20260907.023053 'newer')"
@@ -168,6 +176,39 @@ cp "$pen/before.md" "$SHELF"
 o=$( ( cd "$pen" && INDEX_ROW_ROOT=. sh tools/fixtures/i/blind.sh 2>&1 ) )
 note "blind_copy_writes_the_loss" "$(val "$o" repair)" "sorted"
 note "blind_copy_lost_a_row" "$([ "$(grep -c '^|' "$SHELF")" -lt "$(grep -c '^|' "$pen/before.md")" ] && echo shorter || echo whole)" "shorter"
+
+echo
+echo "== 8. an IDENTICAL duplicate is lifted, because there is nothing to choose =="
+# 90 pct of the duplicate stamps this room has carried were byte-identical rows -- one log's row
+# re-applied by a rebase. Lifting either copy leaves the same page, so the repair is provable and
+# the tool no longer sends it back to a hand. Proven as hard as the refusal above it.
+dup_row=$(srow 20260907.023053 'a row a rebase applied twice')
+shelf "$dup_row" "$dup_row" "$(srow 20260907.013921 'older, and in the right place')"
+cp "$SHELF" "$pen/before.md"
+o=$(repair --check)
+note "check_names_dedupe" "$(val "$o" repair)" "would_dedupe"
+note "check_dedupe_changed_nothing" "$(cmp -s "$pen/before.md" "$SHELF" && echo same || echo differs)" "same"
+o=$(repair)
+note "identical_duplicate_lifted" "$(val "$o" repair)" "deduped"
+note "identical_counted" "$(val "$o" rows_duplicate_identical)" "1"
+note "identical_no_divergent" "$(val "$o" rows_duplicate_divergent)" "0"
+note "one_row_fewer" \
+  "$(( $(grep -c '^| `2026' "$pen/before.md") - $(grep -c '^| `2026' "$SHELF") ))" "1"
+note "the_surviving_row_is_the_same_bytes" "$(grep -cFx "$dup_row" "$SHELF")" "1"
+note "nothing_was_lost" \
+  "$(LC_ALL=C sort -u "$pen/before.md" > "$pen/sa"; LC_ALL=C sort -u "$SHELF" > "$pen/sb"; \
+     cmp -s "$pen/sa" "$pen/sb" && echo same || echo differs)" "same"
+note "dedupe_is_idempotent" "$(o2=$(repair); val "$o2" verdict)" "ok"
+
+# Both faults at once, which is what the twelfth firing actually looked like: three identical
+# duplicates AND two rows out of order on one shelf.
+shelf "$dup_row" "$(srow 20260907.013921 'oldest')" "$dup_row" "$(srow 20260907.021117 'middle')"
+o=$(repair)
+note "dedupe_and_sort_together" "$(val "$o" repair)" "deduped_and_sorted"
+note "newest_on_top_after_both" \
+  "$(awk '/^\|[- |:]*\|[ \t]*$/ { getline; print; exit }' "$SHELF" | sed -n 's/^| `\([0-9.]*\)`.*/\1/p')" \
+  "20260907.023053"
+note "three_rows_remain" "$(grep -c '^| `2026' "$SHELF")" "3"
 
 echo
 echo "behaviors=$behaviors"

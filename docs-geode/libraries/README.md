@@ -18,7 +18,7 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 
 | Room | Rye modules | Witnesses that reference it |
 |---|---:|---:|
-| [`amphora/`](../../amphora/README.md) | 7 | 17 |
+| [`amphora/`](../../amphora/README.md) | 7 | 18 |
 | [`aurora/`](../../aurora/README.md) | 7 | 7 |
 | [`brix/`](../../brix/README.md) | 1 | 2 |
 | [`caravan/`](../../caravan/README.md) | 112 | 129 |
@@ -46,7 +46,7 @@ path from nothing to a signed, sandboxed home is [`../../SOURCE.md`](../../SOURC
 | [`mikrophone/`](../../mikrophone/README.md) | 16 | 19 |
 | [`mycelium/`](../../mycelium/README.md) | 97 | 87 |
 | [`pleac/`](../../pleac/README.md) | 3 | 6 |
-| [`pond/`](../../pond/README.md) | 156 | 165 |
+| [`pond/`](../../pond/README.md) | 156 | 166 |
 | [`rishi/`](../../rishi/README.md) | 2 | 7 |
 | [`rye/`](../../rye/README.md) | 117 | 95 |
 | [`scribble/`](../../scribble/README.md) | 2 | 2 |

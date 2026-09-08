@@ -1,0 +1,44 @@
+format session-log-v1
+stamp 20260907.212422
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role unattended fleet seat COPAL
+modality text
+model claude-opus-5
+model_status configured default proven by .claude/settings.json; no runtime telemetry exposed
+voice Kyri
+host Vultr Dallas pier, Linux, America/New_York
+title The duplicate that was never a judgment
+prompt fleet baton -- COPAL seat, amphora and bron-resins lane, next agent-doable lap
+rota lap 4214, row 4 -- Earth/Mercury, the row that breathes in; the threshold sent me to the marked value, which is my own lane's canon, and the concrete fact at my door turned out to be the cold open's own refusal rather than anything in the essay
+think The cold open refused before running: a stale lock held by PID 1768337, a --scoped pass 19 minutes deep whose lap had exited. The runner named the PID and named kill -TERM.
+think %587 and %569 both booked a pattern-kill that reached the whole pier, and the row's own safe form is the PID you were handed. I had that. Yet the guard's FIRST instruction is read its output rather than opening a second, and /proc/1768337/fd/1 showed the output reaching a file. It was 150 guards deep and green. So I read it and killed nothing.
+think That pass finished guards_red=2: index_row_bound and standing_equipment. The second is derivative -- runs_red=1 naming the first, plus its own self-red. One root.
+think index_row_bound: today's shelf carried three duplicate stamps and two misordered rows. %440's class, the twelfth firing by the card's count.
+think I repaired by hand, then found tools/fixtures/i/index_shelf_repair.sh had landed this morning for exactly this. It would have refused: it exits duplicate_stamps whenever rows_duplicate is nonzero, before inspecting a row.
+think Its stated reason is that choosing which of two rows to lift is a hand's judgment. That is true of SOME duplicates. All three of mine were byte-identical, where lifting either copy leaves the same page and nothing is judged.
+think Rather than assert the split I measured it: across the git history of this room's three newest shelves, 20 revisions carried duplicates -- 38 byte-identical stamps against 4 that were not, and all 4 were one shape, a REDS number the derived spine renumbered under the row.
+think So the tool now classifies. Identical is lifted; divergent still refuses and prints both rows, since a hand asked to choose has to see what it is choosing between.
+think The postcondition had to stay ONE gate. The control proves it from both sides by disabling a single cmp; a second gate beside it would survive that plant and the proof would stop meaning anything. So the same cmp keys by sort -u when copies are lifted and by sort when none are.
+think Kept the dedupe ahead of the untouched sort -r line so both existing plants still match verbatim -- a plant that stops matching is %519, and I was one edit from causing it.
+obs The strongest evidence was not the pen. Replayed against the shelf as it stood before my hand repair, the tool writes a page byte-identical to what the hand produced. That is the hand no longer being needed for this class.
+obs The scan's duplicate branch fires AHEAD of the misordered one and named no remedy, so today's shelf printed a number with the command sitting one branch below it -- the %528 lesson, unlearned one branch over. Both branches advise now.
+obs I wrote my own pass to /tmp/copal-cold.txt while the orphan wrote /tmp/copal_cold.txt. One underscore apart, both constant names under a /tmp eight ships share -- exactly the habit %549 repaired and no instrument here can read, since shared_pen_scan reads tracked sources and a lap's own redirect is not one. I made the fault the same hour I read the row naming it.
+obs A tool built to end twelve hand repairs refused the thirteenth. Worth saying plainly: the remedy was correct and its refusal was one class too wide, which is a better failure than the reverse and still cost a hand 110 rows.
+loom witness=index_row_bound behaviors=39 was=24 faults=0
+loom scan=index_row_bound rows=110 duplicates_identical=3 duplicates_divergent=0 misordered=2 rows_after=107
+loom census=shelf_history revisions_with_duplicates=20 identical_pairs=38 divergent_pairs=4
+loom roster=standing_equipment_run scoped guards_run=150 guards_green=146 guards_red=2 seconds=1248
+file tools/fixtures/i/index_shelf_repair.sh the duplicate classification, the dedupe, and one gate keyed two ways
+file tools/fixtures/i/index_shelf_repair_control.sh phase 8, the identical class lifted and proven; the divergent refusal now names its stamp and shows both rows
+file tools/fixtures/i/index_row_bound_scan.sh the duplicate branch names the repair, as the misordered branch already did
+file tools/fixtures/i/index_row_bound_control.sh duplicate_advises, asserting that branch's advice line
+file tools/in/index_row_bound_witness.rish fifteen new behaviors bound, so the control is heard rather than merely run
+file session-logs/date/README-index-20260907.md the twelfth firing repaired -- three duplicates lifted, two rows sorted
+file construction/REDS.md row 20260907.211709 booked and closed; census headline moved 588 to 589
+file construction/ITINERARY.md the COPAL block, elder and detail shelved
+file construction/archive/20260907-211917_itinerary-landed-accounts.md the elder account and this lap's detail
+scope one red closed at its root, in the tool that already existed for its symptom
+status GREEN -- index_row_bound, index_fold, living_card_ascii, exec_bit, reds_shelf_name, reds_spine_derive, reds_ledger_monotone, reds_citation, unshared_citation, living_docs_lint, shell_dialect, instrument_refusal, plant all green; control 39 behaviors 0 faults; QA meter 86, 93, 86
+recommend keep-going -- the identical class is closed and the divergent one is correctly a hand's; the open question is Keaton's, whether a lap's own shell redirect should be readable by any instrument at all

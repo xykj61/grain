@@ -202,6 +202,13 @@ if [ "$over" -ne 0 ]; then
 elif [ "$unresolved" -ne 0 ]; then
   echo "verdict=rows_unresolved"; exit 1
 elif [ "$dupes" -ne 0 ]; then
+  # THE SAME NUMBER-AND-A-WAY-TO-ACT, owed here too. This branch fires BEFORE the misordered one
+  # below, so a shelf carrying both faults -- which is what 20260907's firing was -- printed this
+  # verdict and no advice at all, while the remedy sat one branch down. The repair tool sorts a
+  # duplicate stamp into its two classes: byte-identical rows it lifts, since either copy leaves
+  # the same page, and divergent rows it refuses while printing both, since which text is true is
+  # a judgment about the record. Either way it tells a reader which of the two they have.
+  echo "advice=sh tools/fixtures/i/index_shelf_repair.sh"
   echo "verdict=rows_duplicate"; exit 1
 elif [ "$misordered" -ne 0 ]; then
   # A NUMBER AND A WAY TO ACT. This reading has fired twelve times across five laps and every

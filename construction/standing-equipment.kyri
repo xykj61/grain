@@ -1802,10 +1802,14 @@ path tools/p/provenance_self_reference_witness.rish
 tier lap
 seated 20260905.160212
 
-# amphora -- the vessel family's eight witnesses, and not one of them stood on a clock. `amphora/`
-# holds 7 tracked Rye modules of its own and 3,603 lines (corrected `20260906.063124`; the elder
-# reading of 10 and 3,861 counted three symlinks into `tally/` and `comlink/` -- see *amphora, the
-# crossing* at the foot of this file), and this roster named no guard over any of them. A lap that
+# amphora -- the vessel family's eight witnesses, and not one of them stood on a clock. How large
+# the room is now reads off an instrument rather than off this line: `sh
+# tools/fixtures/m/module_room_reach_scan.sh list | grep '^room=amphora '` answers `own=` and
+# `linked=` on every run, so a peer's linked module is never counted as this lane's. The elder
+# spelling here said 7 and 3,603 lines, corrected by hand on `20260906.063124` from a reading of 10
+# that had counted three symlinks into `tally/` and `comlink/`; one day later the line count had
+# drifted 273 and nothing was listening (the row booked `20260907.215529`). This roster named no
+# guard over any of it. A lap that
 # broke a seal, a stamp, or the chunk assembler would have shipped green, because nothing was
 # listening -- and the chunk assembler stayed that way until the crossing rows landed. That is
 # REDS %360's population exactly -- a guard that is never run guards nothing -- one family at a time.

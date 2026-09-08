@@ -12,15 +12,18 @@
 # reader was a number and no way to act (the `%528` lesson, one room over). This is the way to act.
 #
 # WHAT IT DOES, and nothing else. It sorts the contiguous run of table rows below the shelf's
-# delimiter into descending stamp order. That is a PERMUTATION: the same lines, the same bytes, a
-# different order -- and the tool proves that about its own output before it writes, by comparing
-# the sorted line multiset of the before and after. A repair that could add, drop, or alter a line
-# would be a repair nobody should run unattended on testimony.
+# delimiter into descending stamp order, and lifts the extra copies of any row that stands twice
+# byte for byte. With nothing to lift that is a PERMUTATION -- the same lines, the same bytes, a
+# different order. With copies lifted it is a permutation of the deduplicated set. Either way the
+# tool proves the property about its own output before it writes, through one gate that keys both
+# sides the same way. A repair that could add, drop, or alter a line would be a repair nobody
+# should run unattended on testimony.
 #
 # WHAT IT REFUSES, each because the safe answer is a hand rather than a guess.
-#   Duplicate stamps. Two rows carrying one stamp is one log wearing two rows, and choosing which
-#     to lift is a judgment about which log the row describes. Sorting past it would quietly seat
-#     one of the two on top and leave both. Reported, refused, file untouched.
+#   DIVERGENT duplicate stamps -- two DIFFERENT rows wearing one stamp. Choosing which text is
+#     true is a judgment about the record, so it refuses, names each such stamp, and prints both
+#     rows for the hand. Identical duplicates are a different case and are lifted; the reasoning,
+#     and the measurement that separates the two, stands beside the classification below.
 #   A row in the block that does not open with a stamp cell. The sort is lexical on the whole line
 #     and that is exact only while the stamp is fixed-width and first; a row shaped otherwise would
 #     sort by its title. Refused rather than sorted wrong.
@@ -89,13 +92,6 @@ shelf="$SHELF_ROOM/README-index-$open_shelf.md"
 echo "shelf=$shelf"
 [ -f "$shelf" ] || { echo "verdict=shelf_missing" >&2; exit 1; }
 
-if [ "$duplicate" -gt 0 ]; then
-  echo "rows_duplicate=$duplicate"
-  echo "repair=none"
-  echo "refused: $duplicate duplicate stamp(s) on the shelf -- which of two rows to lift is a hand's" >&2
-  echo "verdict=duplicate_stamps"
-  exit 1
-fi
 
 # The delimiter row is where the table starts, and the block is the contiguous run of `|` lines
 # after it. Everything above stays exactly where it stands; anything below the run stays too.
@@ -130,28 +126,86 @@ if [ "$badshape" -gt 0 ]; then
   exit 1
 fi
 
+# DUPLICATES SPLIT INTO TWO CLASSES, and only one of them is a hand's judgment.
+#
+# This tool was built on 20260907 to end REDS %440's twelve hand repairs, and it refused the very
+# next firing -- because it refused every duplicate on sight, before looking at one. Measured over
+# the git history of this room's three most recent shelves: 20 revisions carried duplicate stamps,
+# and of those stamps 38 were BYTE-IDENTICAL rows against 4 that were not.
+#
+# An IDENTICAL duplicate is one log's row standing twice, character for character -- what a rebase
+# leaves when it re-applies a row already applied. Lifting either copy leaves the same page, so
+# there is nothing to choose and the repair is provable rather than trusted. That is 90 pct of them.
+#
+# A DIVERGENT duplicate is two different rows wearing one stamp, and all four measured were one
+# shape: a REDS number the derived spine renumbered under the row (`%505` against `%507` for a
+# single log). Which text is true is a judgment about the ledger, so this still refuses -- and it
+# now PRINTS both rows, because a hand asked to choose has to see what it is choosing between.
+#
+# The stamp is read by offset rather than by splitting on a backtick: the shape check above has
+# already proven every row opens `| ` + backtick + a 15-character stamp, so substr($0,4,15) is the
+# stamp exactly, and the reading needs no second opinion about what a stamp is.
+dup_identical=0
+dup_divergent=0
+for _s in $(awk '{ print substr($0,4,15) }' "$pen/block" | LC_ALL=C sort | uniq -d); do
+  _n=$(awk -v s="$_s" 'substr($0,4,15) == s' "$pen/block" | LC_ALL=C sort -u | wc -l | tr -d ' ')
+  if [ "$_n" -gt 1 ]; then
+    dup_divergent=$((dup_divergent + 1))
+    echo "divergent: $_s carries $_n different rows"
+    awk -v s="$_s" 'substr($0,4,15) == s' "$pen/block" | LC_ALL=C sort -u | sed 's/^/  /'
+  else
+    dup_identical=$((dup_identical + 1))
+  fi
+done
+echo "rows_duplicate_identical=$dup_identical"
+echo "rows_duplicate_divergent=$dup_divergent"
+if [ "$dup_divergent" -gt 0 ]; then
+  echo "rows_duplicate=$((dup_identical + dup_divergent))"
+  echo "repair=none"
+  echo "refused: $dup_divergent stamp(s) carry different rows -- which text is true is a hand's" >&2
+  echo "verdict=duplicate_stamps"
+  exit 1
+fi
+
 echo "rows_misordered=$misordered"
-if [ "$misordered" -eq 0 ]; then
+if [ "$misordered" -eq 0 ] && [ "$dup_identical" -eq 0 ]; then
   echo "repair=none"
   echo "verdict=ok"
   exit 0
 fi
+
+if [ "$dup_identical" -gt 0 ] && [ "$misordered" -gt 0 ]; then act=dedupe_and_sort; did=deduped_and_sorted
+elif [ "$dup_identical" -gt 0 ]; then act=dedupe; did=deduped
+else act=sort; did=sorted
+fi
+
 if [ "$check_only" = yes ]; then
-  echo "repair=would_sort"
-  echo "verdict=misordered"
+  echo "repair=would_$act"
+  if [ "$dup_identical" -gt 0 ]; then echo "verdict=duplicate_identical"; else echo "verdict=misordered"; fi
   exit 1
+fi
+
+# The original block is kept for the postcondition, so the proof spans the dedupe as well as the
+# sort rather than only the half that comes after it.
+cp "$pen/block" "$pen/block.orig"
+if [ "$dup_identical" -gt 0 ]; then
+  LC_ALL=C sort -u "$pen/block.orig" > "$pen/block"
 fi
 
 LC_ALL=C sort -r "$pen/block" > "$pen/block.sorted"
 
-# THE POSTCONDITION, checked before anything is written: the repair is a permutation. Same lines,
-# same count, different order. A tool that may rewrite testimony proves that about its own output
-# rather than being trusted to.
-LC_ALL=C sort "$pen/block" > "$pen/before.keyed"
-LC_ALL=C sort "$pen/block.sorted" > "$pen/after.keyed"
+# THE POSTCONDITION, checked before anything is written. With no duplicates to lift the repair is a
+# permutation -- same lines, same count, different order -- and that is what is proven. When
+# identical rows ARE lifted the repair is no longer a permutation, so the same one gate keys both
+# sides by SET instead: nothing new may appear and nothing may be lost, and `sort -r` on an
+# already-unique block cannot reintroduce a copy. One gate either way, because a second gate
+# beside it could not be shown to be the thing doing the stopping.
+if [ "$dup_identical" -gt 0 ]; then _keyer="sort -u"; else _keyer="sort"; fi
+LC_ALL=C $_keyer "$pen/block.orig" > "$pen/before.keyed"
+LC_ALL=C $_keyer "$pen/block.sorted" > "$pen/after.keyed"
 if ! cmp -s "$pen/before.keyed" "$pen/after.keyed"; then
   echo "repair=none"
-  echo "refused: the sort changed the line multiset -- writing nothing" >&2
+  echo "refused: the repair changed the line set -- writing nothing" >&2
   echo "verdict=not_a_permutation"
   exit 1
 fi
@@ -163,6 +217,6 @@ fi
 } > "$pen/shelf.new"
 cat "$pen/shelf.new" > "$shelf"
 
-echo "repair=sorted"
+echo "repair=$did"
 echo "verdict=repaired"
 exit 0
