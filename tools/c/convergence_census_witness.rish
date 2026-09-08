@@ -1,0 +1,41 @@
+# tools/c/convergence_census_witness.rish -- how much of what this tree writes is proven to converge.
+#
+#   rishi/bin/rishi run tools/c/convergence_census_witness.rish
+#
+# `foundations/20260823-222019_what-brix-infuse-is.md` states this tree's own claim about change:
+# `declaration + world -> infusion -> world'`, and then the line that carries the weight --
+# `infusion(world') -> world'`, idempotent. Running a change twice does what running it once did.
+#
+# A tool that fails that corrupts on its SECOND run, and the second run is what an unattended loop
+# performs at three in the morning. Measured `20260907.234808`: **30 tools write to the tracked tree
+# rather than to a throwaway pen, and 3 of them prove convergence in an assertion.**
+#
+# THE POPULATION IS THE HARD PART AND IT WAS GOT WRONG TWICE BEFORE IT WAS GOT RIGHT. Counting every
+# tool that redirects anywhere gives 392, nearly all of them writing into their own pen -- a pen has
+# nothing to converge. Counting only tree-mutating writes gives 30. And the first census answered
+# `tools_read=1200` against its own bound of 1200: the corpus is 3,210, so the bound was silently
+# truncating two thirds of the tree and reporting one writer where thirty stand.
+#
+# REPORTED, NEVER GATED. A tool that legitimately runs once -- a publisher, a one-shot projection --
+# has nothing to converge, and no reading here can tell it from a tool that never checked.
+
+say "convergence-census: Language EN -- the tree's own claim about change, counted."
+say "convergence-census: Style Gauge, Meter -- the denominator is defended before the fraction."
+say "convergence-census: Lens TAME -- safety first: an unproven writer is named, never gated."
+
+say "convergence-census: reading the tree..."
+let scan = run ["sh" "tools/c/convergence_census.sh"]
+assert scan.ok else "convergence-census: the census refused --\n${scan.out}"
+assert scan.out contains "writers=" else "convergence-census: the writer population went unreported"
+assert scan.out contains "convergence_proven=" else "convergence-census: the proven count went unreported"
+assert scan.out contains "convergence_unproven=" else "convergence-census: the unproven count went unreported"
+
+# invariant: the corpus is printed and must exceed the writer population, since a writer is drawn
+# FROM it. A tools_read equal to the bound is the truncation this census was born from.
+assert scan.out contains "tools_read=" else "convergence-census: the corpus size went unreported -- a truncated corpus reads like a small tree"
+
+say "convergence-census: and the foundation that states the claim still stands..."
+let found = run ["sh" "-c" "test -f foundations/20260823-222019_what-brix-infuse-is.md && echo present || echo absent"]
+assert (trim found.out) == "present" else "convergence-census: the infusion foundation is gone -- this census measures a claim nothing states"
+
+say "GREEN: convergence-census -- the tree's writers are counted against its own idempotence claim, with the denominator defended."

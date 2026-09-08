@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260907.234808` | [the claim nobody counted](20260907/20260907-234808_the-claim-nobody-counted.kyri) | 30 writers, 3 converge. |
 | `20260907.225848` | [The sweep that left no guard](20260907/20260907-225848_the-sweep-that-left-no-guard.kyri) | a hand-swept census regrew in a day; the fold rule has a guard now. |
 | `20260907.222830` | [the book nobody opened](20260907/20260907-222830_the-book-nobody-opened.kyri) | 3,426 measurements, no reader. |
 | `20260907.222100` | [The formatting outscored the writing](20260907/20260907-222100_the-formatting-was-worth-more-than-the-writing.kyri) | the re-grade priced: 293 of 383 letters fall |
