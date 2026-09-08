@@ -46,7 +46,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `ba7da82787` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `3d7e240ae1` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- NINETEEN ORPHANS WERE THREE KINDS, AND ONLY SIX WERE A LAP.**
 Elder [shelved](archive/20260908-025257_itinerary-landed-accounts.md).
