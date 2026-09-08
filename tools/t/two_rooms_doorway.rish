@@ -100,7 +100,29 @@ assert control.out contains "manual_silent_named=yes" else "two-rooms doorway: t
 assert control.out contains "manual_silent_refused=yes" else "two-rooms doorway: a silent manual door must decide the verdict, never be named and walk free"
 assert control.out contains "manual_repaired_free=yes" else "two-rooms doorway: the repair this lap made to seven real doors must pass -- a fix proven only where it fails is half a proof"
 assert control.out contains "manual_repaired_verdict=yes" else "two-rooms doorway: a repaired door must carry the verdict free, not merely stop counting"
+assert control.out contains "foundations_room_read=yes" else "two-rooms doorway: foundations must be read -- the room the tree argues from, joined 20260908 after its 35 doors were repaired"
+assert control.out contains "foundations_missing_refused=yes" else "two-rooms doorway: a roster dropping foundations must refuse -- the sixth room narrows exactly like the fifth"
+assert control.out contains "foundations_missing_verdict_refused=yes" else "two-rooms doorway: the foundations reach refusal must decide the verdict too"
+assert control.out contains "foundations_silent_counted=yes" else "two-rooms doorway: a foundations page answering only the lifecycle question must be counted"
+assert control.out contains "foundations_silent_named=yes" else "two-rooms doorway: the refusal must name the foundations page, so the repair is one line away"
+assert control.out contains "foundations_silent_refused=yes" else "two-rooms doorway: a silent foundations door must decide the verdict, never be named and walk free"
+assert control.out contains "foundations_repaired_free=yes" else "two-rooms doorway: the repair this lap made to 35 real doors must pass -- a fix proven only where it fails is half a proof"
+assert control.out contains "foundations_repaired_verdict=yes" else "two-rooms doorway: a repaired foundations door must carry the verdict free, not merely stop counting"
+assert control.out contains "runon_status_named=yes" else "two-rooms doorway: a Status whose sentence runs onto a second line and names no room must be counted and named"
+assert control.out contains "runon_status_refused=yes" else "two-rooms doorway: a run-on Status naming no room must decide the verdict"
+assert control.out contains "runon_room_key_free=yes" else "two-rooms doorway: a run-on Status whose room is named in a **Room:** line beneath it must walk free -- the second key is what lets such a page be repaired without rewriting its paragraph"
+assert control.out contains "runon_room_key_verdict=yes" else "two-rooms doorway: the second-key repair must carry the verdict free"
 assert control.out contains "control_verdict=ok" else "two-rooms doorway: the control must agree with itself"
-say "RED and GREEN paths proven -- 31 behaviors asserted over 32 readings the control prints, 16 of them refusals bitten and 15 honest readings left free"
+
+# THE TALLY IS COUNTED, NEVER TYPED. This line read `23 behaviors over 24 readings` while the
+# control printed 31, so eight proven behaviors went unannounced -- a sentence nobody re-counted
+# after four legs landed. Both numbers are read now: the asserts from this file, the readings from
+# the control's own output. A typed tally is a claim about a file that keeps changing.
+let asserted = run ["sh" "-c" "grep -c '^assert control.out contains' tools/t/two_rooms_doorway.rish"]
+assert asserted.ok else "two-rooms doorway: the tally must count its own asserts"
+let readings = where (lines control.out) as l: l contains "=yes"
+# The readings are counted GREEN -- a failing leg prints `=no` and the assert above it fires
+# first, so this line describes the passing run it belongs to rather than the whole roster.
+say "RED and GREEN paths proven -- ${trim asserted.out} behaviors asserted over ${length readings} readings the control prints green"
 
 say "GREEN: two-rooms doorway -- canon seated; every room read; forward pages name their room."

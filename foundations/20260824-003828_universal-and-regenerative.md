@@ -5,7 +5,7 @@
 **Style:** Gauge, Door setting -- see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md)
 **Registers:** Gauge - Civic - TAME
 **Voice:** Kyri
-**Status:** Living -- a foundation, and the page that gathers the others
+**Status:** Living -- a foundation, and the page that gathers the others -- **Mixed room**: the single claim orients, and the honest-state section names what actually stands.
 
 ---
 

@@ -4,7 +4,7 @@
 **Language:** EN
 **Style:** Gauge, Door setting (see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md))
 **Voice:** Kyri
-**Status:** Living -- seated `20260826` on Keaton's word: the fascia named as a concept, and confidence in document relations as a measured thing
+**Status:** Living -- seated `20260826` on Keaton's word: the fascia named as a concept, and confidence in document relations as a measured thing -- **Mixed room**: confidence in document relations is measured; the kin habit orients.
 **Kin:** [`20260826-024942_the-grain-and-the-crossing.md`](20260826-024942_the-grain-and-the-crossing.md) -- [`20260823-204456_single-stranded.md`](20260823-204456_single-stranded.md) -- [`20260826-024939_the-graph-beneath-the-surface.md`](20260826-024939_the-graph-beneath-the-surface.md) -- [`../context/TWO_ROOMS.md`](../context/TWO_ROOMS.md) -- [`../.claude/rules/quality-assurance.md`](../.claude/rules/quality-assurance.md) -- [`../.claude/rules/docs-implementation-sync.md`](../.claude/rules/docs-implementation-sync.md) -- [`../.claude/rules/stamp-and-name.md`](../.claude/rules/stamp-and-name.md) -- [`../.claude/rules/collaboration.md`](../.claude/rules/collaboration.md) (*references are promises*) -- [`20260826-181402_the-mitra-shed.md`](20260826-181402_the-mitra-shed.md)
 
 The fascia is the tree's connective tissue: every link, kin line, citation, and path-home

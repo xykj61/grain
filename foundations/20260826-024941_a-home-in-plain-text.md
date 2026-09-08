@@ -7,7 +7,7 @@
 **Stamp:** `20260628.133212`
 **Voice:** Reya 2, with **Kaeden Reyklah** as coauthor
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
-**Status:** Distilled essay -- self-contained and composable
+**Status:** Distilled essay -- self-contained and composable -- **Vision room**: an essay on the terminal as a place to work; it orients and seats no fact.
 
 *Written together by Kaeden and Reya 2.*
 Radiant pass `20260725.035134`

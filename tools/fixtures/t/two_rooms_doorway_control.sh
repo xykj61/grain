@@ -81,6 +81,7 @@ honest() {
   page "$d/docs/20260901-010103_c.md" 'Living -- mixed'
   page "$d/docs-geode/20260901-010105_e.md" 'Living -- checkable'
   page "$d/manual/20260901-010106_f.md" 'Living -- mixed'
+  page "$d/foundations/20260901-010107_g.md" 'Living -- vision'
   page "$d/active-designing/date/20260901/20260901-010104_d.md" 'Living -- research for understanding'
 }
 
@@ -92,6 +93,7 @@ echo "$out" | grep -q 'doorway fails=0 ' && echo "clean_reads_zero=yes" || echo 
 echo "$out" | grep -q 'folded=1' && echo "folded_page_read=yes" || echo "folded_page_read=no"
 echo "$out" | grep -q 'geode=1 ' && echo "geode_room_read=yes" || echo "geode_room_read=no"
 echo "$out" | grep -q 'manual=1 ' && echo "manual_room_read=yes" || echo "manual_room_read=no"
+echo "$out" | grep -q 'foundations=1 ' && echo "foundations_room_read=yes" || echo "foundations_room_read=no"
 
 # 2. A Status that names no room -- counted, named, refused.
 d=$(build no_room); honest "$d"
@@ -135,12 +137,13 @@ commit_all "$d"
 out=$(scan_at "$d" 0)
 echo "$out" | grep -q 'verdict=ok' && echo "yonder_excluded=yes" || echo "yonder_excluded=no"
 # Counted rather than grepped-for-absence: `grep -qv PATTERN` answers yes whenever ANY line
-# fails to match, which is a test that cannot fail (REDS %503). The honest tree holds six
-# pages -- one per room, `manual/` joining 20260908 -- and two more were planted, so the reach
-# must still read six. This number moves whenever a room joins, and that is the point: the leg
+# fails to match, which is a test that cannot fail (REDS %503). The honest tree holds seven
+# pages -- one per room, `manual/` and `foundations/` joining 20260908 -- and two more were
+# planted, so the reach must still read seven. This number moves whenever a room joins, and that
+# is the point: the leg
 # reads a count rather than an absence, so a room added to `honest()` without being added here
 # says so out loud on the lap it lands.
-echo "$out" | grep -q 'doorway pages=6 ' && echo "readme_excluded=yes" || echo "readme_excluded=no"
+echo "$out" | grep -q 'doorway pages=7 ' && echo "readme_excluded=yes" || echo "readme_excluded=no"
 
 # 8. THE ELDER DEFECT, planted. A roster narrowed to the flat room must refuse rather than
 #    report a smaller clean tree -- the folded floor is what tells those two apart.
@@ -278,5 +281,80 @@ commit_all "$d"
 out=$(scan_at "$d" 0)
 echo "$out" | grep -q 'doorway fails=0 ' && echo "manual_repaired_free=yes" || echo "manual_repaired_free=no"
 echo "$out" | grep -q 'verdict=ok' && echo "manual_repaired_verdict=yes" || echo "manual_repaired_verdict=no"
+
+# 17. THE SIXTH ROOM, AND THE LARGER HALF OF THE BILL. `foundations/` joined 20260908 after its 35
+#     silent doors were read and repaired one at a time. A roster reading the elder five passes
+#     every leg above and leaves the foundations unread, so it must refuse, and the refusal must
+#     decide the verdict -- legs 13 and 15, one room over again.
+d=$(build foundations_missing); honest "$d"
+commit_all "$d"
+cat > "$d/tools/fixtures/t/two_rooms_doorway_roster.sh" <<'FIVEROOM'
+#!/bin/sh
+git ls-files 'external-research/*.md' 'active-designing/*.md' 'docs/*.md' 'docs-geode/*.md' 'manual/*.md' 2>/dev/null |
+while IFS= read -r f; do
+  [ -n "$f" ] || continue
+  case "$f" in
+    */README.md) continue ;;
+    */yonder/*|*/archive/*) continue ;;
+  esac
+  [ -f "$f" ] || continue
+  printf '%s\n' "$f"
+done
+FIVEROOM
+out=$(scan_at "$d" 0)
+echo "$out" | grep -q 'FAIL doorway reach: foundations read no page' \
+  && echo "foundations_missing_refused=yes" || echo "foundations_missing_refused=no"
+echo "$out" | grep -q 'verdict=ok' && echo "foundations_missing_verdict_refused=no" || echo "foundations_missing_verdict_refused=yes"
+
+# 18. AND THE REPAIR IS A READING HERE TOO. The 35 foundations doors each answered the lifecycle
+#     question -- `Living`, `Landed`, `Canon`, `Foundation` -- and never the register one. A page
+#     shaped like those must be counted and named, and the same door repaired the way this lap
+#     repaired the real 35 must walk free.
+d=$(build foundations_silent); honest "$d"
+page "$d/foundations/20260902-020205_pillars.md" 'Foundations -- direction pillars siloed'
+commit_all "$d"
+out=$(scan_at "$d" 0)
+echo "$out" | grep -q 'doorway fails=1 ' && echo "foundations_silent_counted=yes" || echo "foundations_silent_counted=no"
+echo "$out" | grep -q 'FAIL foundations/20260902-020205_pillars.md Status does not name a room' \
+  && echo "foundations_silent_named=yes" || echo "foundations_silent_named=no"
+echo "$out" | grep -q 'verdict=ok' && echo "foundations_silent_refused=no" || echo "foundations_silent_refused=yes"
+d=$(build foundations_repaired); honest "$d"
+page "$d/foundations/20260902-020205_pillars.md" 'Foundations -- direction pillars siloed -- **Vision room**: five disciplines that orient how the pier builds; nothing here is bound by a witness.'
+commit_all "$d"
+out=$(scan_at "$d" 0)
+echo "$out" | grep -q 'doorway fails=0 ' && echo "foundations_repaired_free=yes" || echo "foundations_repaired_free=no"
+echo "$out" | grep -q 'verdict=ok' && echo "foundations_repaired_verdict=yes" || echo "foundations_repaired_verdict=no"
+
+# 19. A STATUS SENTENCE THAT RUNS ON TAKES THE OTHER KEY. `scan_one` keeps the FIRST line of the
+#     Status, so a token appended to a Status whose sentence continues below lands mid-clause and
+#     breaks the prose. Two of this lap's 35 are shaped exactly so, and both name their room in a
+#     `**Room:**` line beneath the block instead. Proven from the failing side first: the run-on
+#     Status alone is counted and named, and the same page with the Room line beneath walks free.
+d=$(build runon_status); honest "$d"
+mkdir -p "$d/foundations"
+{
+  printf '# pen page\n\n'
+  printf '**Status:** Canon -- a founding statement. Every claim about running software marks itself\n'
+  printf 'proven or proposed, per the two-rooms law.\n'
+  printf '\nbody\n'
+} > "$d/foundations/20260902-020206_runon.md"
+commit_all "$d"
+out=$(scan_at "$d" 0)
+echo "$out" | grep -q 'FAIL foundations/20260902-020206_runon.md Status does not name a room' \
+  && echo "runon_status_named=yes" || echo "runon_status_named=no"
+echo "$out" | grep -q 'verdict=ok' && echo "runon_status_refused=no" || echo "runon_status_refused=yes"
+d=$(build runon_repaired); honest "$d"
+mkdir -p "$d/foundations"
+{
+  printf '# pen page\n\n'
+  printf '**Status:** Canon -- a founding statement. Every claim about running software marks itself\n'
+  printf 'proven or proposed, per the two-rooms law.\n'
+  printf '**Room:** Mixed -- the founding argument orients, and every claim about running software marks itself.\n'
+  printf '\nbody\n'
+} > "$d/foundations/20260902-020206_runon.md"
+commit_all "$d"
+out=$(scan_at "$d" 0)
+echo "$out" | grep -q 'doorway fails=0 ' && echo "runon_room_key_free=yes" || echo "runon_room_key_free=no"
+echo "$out" | grep -q 'verdict=ok' && echo "runon_room_key_verdict=yes" || echo "runon_room_key_verdict=no"
 
 echo "control_verdict=ok"

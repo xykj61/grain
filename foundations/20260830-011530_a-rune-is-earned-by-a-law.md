@@ -4,7 +4,7 @@
 **Language:** EN
 **Style:** Gauge, Door setting (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
-**Status:** Living -- the growth-trigger clause of the language method, seated under Sound's
+**Status:** Living -- the growth-trigger clause of the language method, seated under Sound's -- **Mixed room**: the clause orients the language method; the night that proved it is a dated case a reader can check.
 Glow language custody on Keaton's standing word; his overrule at any sitting reopens it
 **Kin:** [`20260618-184912_growing-a-language.md`](20260618-184912_growing-a-language.md) (the
 parent method -- how a language grows; this page says when) -

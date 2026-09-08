@@ -6,7 +6,7 @@
 **Language:** EN
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Voice:** Quin
-**Status:** Foundations -- a working discipline, proposed for Keaton's word
+**Status:** Foundations -- a working discipline, proposed for Keaton's word -- **Vision room**: a working discipline siloed from management thinking; it orients rather than binds.
 **Silo:** Full -- lineage named only in the gratitude close
 **Companion to:** [`20260725-034254_always-in-it-responsive-rhythm.md`](20260725-034254_always-in-it-responsive-rhythm.md) (pace) - [`20260726-020537_the-breach.md`](20260726-020537_the-breach.md) (form) - [`../context/APARIGRAHA.md`](../context/APARIGRAHA.md) (economy)
 

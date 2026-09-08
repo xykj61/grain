@@ -1,5 +1,5 @@
 #!/bin/sh
-# two_rooms_doorway_roster.sh -- the doorway's subject: forward-facing pages in five rooms.
+# two_rooms_doorway_roster.sh -- the doorway's subject: forward-facing pages in six rooms.
 #
 # WHY IT READS EVERY DEPTH, from 20260906. This helper was a shell glob --
 # `for f in external-research/*.md active-designing/*.md docs/*.md` -- written when all three
@@ -54,21 +54,34 @@
 # they name horizons as horizons, and three read `checkable` because nothing in them waits.
 # `manual/` now reads 29 pages and 0 silent, so it joins on the same terms `docs-geode/` did.
 #
-# TWO ROOMS STAY OUT, with the same numbers they had: `foundations/` 83 pages and 35 naming no
-# room, `context/` 105 and 38. Seventy-three repairs against a ceiling of 3, so that choice is
-# still Keaton's rather than a lap's, and it is carried on `construction/ITINERARY.md`.
+# THE SIXTH ROOM, added 20260908, and bought the same way the fifth was. `foundations/` carried 83
+# pages under this predicate and 35 naming no room -- the larger half of the seventy-three the
+# elder comment named as Keaton's choice. This lap paid it, page by page, judging each register
+# from the page rather than from its title: 23 read `mixed` and 12 read `vision`. The room reads
+# 83 pages and 0 silent, so it joins on the same terms `docs-geode/` and `manual/` did.
+#
+# TWO OF THE 35 TOOK THE OTHER KEY, and the reason is mechanical rather than a preference. The
+# per-file scan reads `**Status:**` and keeps the FIRST line, so a token appended to a Status whose
+# sentence runs onto a second line lands mid-clause and breaks the prose it was added to. Both
+# pages -- `20260726-020537_the-breach.md` and `20260823-034321_the-return-that-feeds-everyone.md`
+# -- name their room in a `**Room:**` line beneath the Status block instead, which the same scan
+# has read since 20260907. A door with two keys is what makes the repair possible without rewriting
+# a paragraph to fit a grep.
+#
+# ONE ROOM STAYS OUT, with the number it had: `context/` 105 pages and 38 naming no room. That is
+# one more lap of the same shape, and it is carried on `construction/ITINERARY.md`.
 #
 # THE COUNTS ABOVE ARE THIS SCRIPT'S OWN POPULATION, which is not the room's file list. Measured
-# the same lap with `git ls-files 'manual/*.md'` alone -- READMEs, `yonder/` and `archive/` left in
-# -- the three rooms read 32/7, 94/44 and 112/38: eighty-nine rather than eighty, and the whole
-# difference is the exclusions three lines above. A number measured under a neighboring predicate
+# on 20260908 with `git ls-files 'manual/*.md'` alone -- READMEs, `yonder/` and `archive/` left in
+# -- `manual/`, `foundations/` and `context/` read 32/7, 94/44 and 112/38: eighty-nine rather than
+# eighty, and the whole difference is the exclusions above. A number measured under a neighboring predicate
 # reads like a correction and is a different question.
 #
 # Run from the repository root:
 #   sh tools/fixtures/t/two_rooms_doorway_roster.sh
 set -eu
 
-git ls-files 'external-research/*.md' 'active-designing/*.md' 'docs/*.md' 'docs-geode/*.md' 'manual/*.md' 2>/dev/null |
+git ls-files 'external-research/*.md' 'active-designing/*.md' 'docs/*.md' 'docs-geode/*.md' 'manual/*.md' 'foundations/*.md' 2>/dev/null |
 while IFS= read -r f; do
   [ -n "$f" ] || continue
   case "$f" in

@@ -5,7 +5,7 @@
 **Style:** Gauge, Door setting -- see [`../context/GAUGE_STYLE.md`](../context/GAUGE_STYLE.md)
 **Registers:** Gauge - Civic - TAME
 **Voice:** Kyri
-**Status:** Living -- a foundation, written for a complete beginner
+**Status:** Living -- a foundation, written for a complete beginner -- **Mixed room**: holding a thing by its content address is checkable; the honest limits name what is not built.
 **Kin:** [`../README.md`](../README.md) - [Mantra](20260825-211056_what-mantra-is.md) - [Brix infuse](20260823-222019_what-brix-infuse-is.md) - [Tablecloth](20260823-222020_what-tablecloth-is.md)
 
 ---

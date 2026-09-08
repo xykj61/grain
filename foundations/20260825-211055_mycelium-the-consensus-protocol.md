@@ -4,7 +4,7 @@
 **Language:** EN
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Voice:** Kyri
-**Status:** Living foundation -- the *why* beneath the tree's own consensus season, and the map through its parts.
+**Status:** Living foundation -- the *why* beneath the tree's own consensus season, and the map through its parts. **Mixed room**: the built parts of the map are checkable; most of the nine families are named as design.
 **Chapter:** D -- Kresfa & Mycelium (the language and the consensus). Double-seat vision: [`../active-designing/date/20260816/20260816-205859_double-seat-expansion-eight-seasons.md`](../active-designing/date/20260816/20260816-205859_double-seat-expansion-eight-seasons.md).
 **First design read:** [`../active-designing/date/20260813/20260813-032851_mycelium-consensus-cord-exploration.md`](../active-designing/date/20260813/20260813-032851_mycelium-consensus-cord-exploration.md).
 
