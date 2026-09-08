@@ -17,6 +17,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260908.174530` | [The pen eight ships shared](20260908/20260908-174530_the-pen-eight-ships-shared.kyri) | an orphaned wait loop stopped; a constant pen made unique; two ceilings fall |
 | `20260908.173943` | [the same port landed twice](20260908/20260908-173943_the-same-port-twice.kyri) | 119 seconds apart, the other way round. |
 | `20260908.173011` | [A hand stops a ship by asking](20260908/20260908-173011_the-hand-that-asks-a-ship-to-stop.kyri) | no loop held this tree; the drain built for the seven that do |
+| `20260908.170154` | [a paper already in a stash](20260908/20260908-170154_a-paper-already-in-a-stash.kyri) | a read that verifies nothing, over a buffer that fills in silence. |
 | `20260908.165501` | [the table with no ceiling](20260908/20260908-165501_the-table-with-no-ceiling.kyri) | a peer landed the port; the bound was left. |
 | `20260908.163927` | [the scrub that remembers](20260908/20260908-163927_the-scrub-that-remembers.kyri) | the pin held by folding prose, never a live row. |
 | `20260908.162225` | [the third list, and the fence it was not inside](20260908/20260908-162225_the-third-list-and-the-fence-it-was-not-inside.kyri) | 12 -> 1,127; five were outside. |
@@ -27,6 +28,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260908.153134` | [the door that has two keys](20260908/20260908-153134_the-door-that-has-two-keys.kyri) | foundations joins; 35 doors, 0 silent. |
 | `20260908.152903` | [the strictest naming on four doors](20260908/20260908-152903_the-strictest-naming-on-four-doors.kyri) | zero negatives, measured. |
 | `20260908.152213` | [the blocker was a reading](20260908/20260908-152213_the-blocker-was-a-reading.kyri) | two binaries, six edits, every digest matched. |
+| `20260908.151344` | [the store that names its index](20260908/20260908-151344_the-store-that-names-its-index.kyri) | the table-store reading, recovered from a stash and landed. |
 | `20260908.144500` | [the seed published, and four doors named](20260908/20260908-144500_the-seed-published-and-four-doors-named.kyri) | 8,187 files, clean. |
 | `20260908.144152` | [the space that was the comment](20260908/20260908-144152_the-space-that-was-the-comment.kyri) | the glyph row's comment IS a space. |
 | `20260908.143400` | [an index is not a teacher](20260908/20260908-143400_an-index-is-not-a-teacher.kyri) | one of three, and why. |
