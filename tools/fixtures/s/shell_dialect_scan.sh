@@ -15,6 +15,15 @@
 # speaking one host's awk dialect -- was the same class a third time. A lantern that fires twice
 # becomes a loom, so the class is measured here rather than remembered.
 #
+# WHEN THIS READING ARRIVES, and the sibling that arrives sooner. This scan stands at `tier lap`
+# inside a roster pass of roughly half an hour, so the lap that breaks a family is structurally
+# never the lap that hears it -- measured `20260908`, two `sed -i` plants landed at 01:59 and were
+# first heard at ANOTHER ship's cold open at 02:42. `tools/fixtures/s/shell_dialect_touch_scan.sh`
+# is rule seven of `tools/hooks/pre-commit`: it LIFTS the patterns and ceilings below by name rather
+# than respelling them, reads the staged blobs off the index, and refuses the commit that writes
+# one. It gates only the families whose ceiling here stands at ZERO, so this file remains the one
+# place any of these numbers is written.
+#
 #   sh tools/fixtures/s/shell_dialect_scan.sh            # measure and gate
 #   sh tools/fixtures/s/shell_dialect_scan.sh list       # print every gated site
 #   sh tools/fixtures/s/shell_dialect_scan.sh prove-red      # plant one site; must exit 1

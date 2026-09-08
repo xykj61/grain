@@ -1,0 +1,39 @@
+format session-log-v1
+stamp 20260908.043321
+editor Claude Code CLI
+provider Anthropic
+product Claude Code
+role Patchouli -- mantra and tally lane, Earth ship
+modality text
+model claude-opus-5
+model_status configured default proven by .claude/settings.json; runtime identity unverified
+voice Kyri
+host linux pier, one clock America/New_York
+title The gate asked at the door
+prompt The fleet baton, and my own card handoff -- a pre-commit dialect read over staged shell would close shell_dialect's 43-minute detection gap.
+rota lap 4256, row 1 -- Air, the row that feels; law and boundary, and its sense is touch. The threshold page asks where each thing ends and says a claim of a boundary is tested by pressing on it. This lap pressed the dialect boundary and the hand went through: the fence stands at the roster, half an hour downstream of the lap that climbs it. TAME Core's check at the edge and Single-Stranded's pull-one-part-out test both landed on the same design -- lift the patterns from the elder rather than respell them, so one rule stays in one file.
+think Cold open: 184 guards, 179 green, 2 red, 3 gated. Both reds are one -- stash_record at unlanded=3, and standing_equipment reading it. The card names stash_record another seat's (%592), so I left it and took my own named next.
+think The elder shell_dialect reading is correct and slow. It stands at tier lap inside a roster pass of roughly half an hour, so the lap that writes a GNU-only idiom is structurally never the lap that hears it. On 20260908 two sed in-place plants landed at 01:59 and were first heard at another ship's cold open at 02:42.
+think The design question was what may honestly be gated on a staged blob rather than a diff hunk. Answer, and it is a fact rather than a preference: five of the six families stand at a ceiling of ZERO, so no lawful site exists anywhere in the tree, so every hit in a staged file is a rise and no author is ever refused for a line somebody else wrote.
+think That fact is READ rather than asserted. The scan lifts all six patterns, both read-past paths and all six ceilings out of shell_dialect_scan.sh by name and evaluates them, and gates only the families whose ceiling still reads zero. A family whose ceiling later rises goes quiet by itself rather than on the strength of a sentence in a header.
+think Proved it against the commit that actually broke it. Cloned the tree to a throwaway, checked out 0f48f2c85, ran the reading in head mode: staged_gated_sites=2, both sites named with file and line. That is the refusal a hand would have met at 01:59.
+think One trap met in the building, and it is the elder's own lesson one layer down. The pen's plants and the scan's prove-red line live in files ON the elder's roster, so spelling a gated flag beside its command would have reddened the elder the moment they were tracked. Each is assembled from a flag held in a variable now, and the elder reads zero with all four files staged.
+obs The 43 minutes was never the whole cost. Two hands cured the same two sites in parallel and one cure withdrew whole -- a latency long enough for a second ship to start the same repair is a latency that spends two laps on one fault. The wall makes that class impossible rather than cheaper.
+obs A whole-blob reading is usually the loose choice and here it is the tight one, purely because the ceiling is zero. I wrote the reason into the scan's header and into the roster row rather than leaving it to be re-derived, since the next hand to widen this to a family standing above zero needs to meet the argument before they do it.
+obs The wall is driven, not merely the reading. Four of the 28 pen cases copy tools/hooks/pre-commit into a throwaway repository's hooks directory and run real git commit calls through it -- one refused, one freed by the portable spelling, one staging no shell at all. A scan that refuses says little about a commit somebody actually makes.
+obs stash_record stays open and is not mine. unlanded=3 means three session logs stand in round-open stashes with nothing else carrying them; the card assigns it and I left it whole.
+loom roster=standing_equipment_run tier=lap guards_run=184 guards_green=179 guards_red=2 guards_gated=3 guards_seconds=1370
+loom witness=shell_dialect_touch cases=28 cases_failed=0
+loom replay=0f48f2c85 mode=head files_read=1 staged_gated_sites=2
+loom scan=shell_dialect_touch mode=staged files_read=4 staged_gated_sites=0
+file tools/fixtures/s/shell_dialect_touch_scan.sh the commit-time reading -- lifts every pattern and ceiling from the elder, reads staged blobs off the index, gates the five zero-ceiling families
+file tools/fixtures/s/shell_dialect_touch_control.sh 28 behaviors on real git repositories in a throwaway pen, every refusal planted then lifted, the hook itself driven
+file tools/s/shell_dialect_touch_witness.rish the witness, tier lap
+file tools/hooks/pre-commit rule seven, and the header's SIX RULES corrected to SEVEN with the new rule's trigger and reach named
+file tools/fixtures/s/shell_dialect_scan.sh the elder's header names its commit-time sibling and says the patterns are lifted rather than respelled
+file construction/standing-equipment.kyri the roster row, tier declared -- the undeclared ratchet stands at its ceiling, so a new guard must name its clock
+file construction/REDS.md row %609 booked and CLOSED
+file construction/ITINERARY.md the Patchouli block rewritten, Git nib carried
+scope tools/hooks/pre-commit rule seven, the dialect touch scan and its pen, the elder's pointer, one REDS row
+status GREEN -- shell_dialect_touch 28 of 28 pen cases with the wall driven, shell_dialect elder green with all four new files tracked, tame_style_check and ascii_comment green, four touched files graded 82 to 87 with no molt frame. stash_record stays red and stays another seat's.
+recommend keep-going -- the four families still ADVISORY in the elder are the next honest reach, and the anchor stays Keaton's word.
