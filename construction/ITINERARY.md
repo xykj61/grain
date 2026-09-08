@@ -46,34 +46,34 @@
 
 ### Now -- the live front
 
-**Git nib:** `dfc94214c5` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `9cf5350f18` -- HEAD's parent, resolvable everywhere (%401).
 
-**BAKERY -- NINETEEN ORPHANS WERE THREE KINDS, AND ONLY SIX WERE A LAP.**
-Elder [shelved](archive/20260908-025257_itinerary-landed-accounts.md).
-**`%592` ASKED FOR A FLAG THAT ALREADY EXISTED.** It booked
-`tools/fixtures/s/stash_record_scan.sh` for printing `orphans=19` and no path -- yet `... list` has
-named every orphan since `%510`, and the open printed that command beside it. **What a hand GOT was
-nineteen paths wanting three actions with nothing telling them apart**, read past by every ship
-for a day: **10 fold shelves** whose rows come off the living pin (checking one out
-is a rollback), **3 copies of this guard's elder self** at `tools/fixtures/f/` from before the room
-fold, and **6 files of parked work** -- only those six a lap. The scan classifies each
-`moved:<path>` / `shelf` / `work`, asserts they partition the count, and the open names it.
-**TWO SHAPES WERE MEASURED AND REJECTED FIRST.** A blob lookup is exact where a basename guesses, and
-matched **zero of nineteen**: a file that moves rooms here is edited on the way. On cost, one
-`awk` per orphan took the open **1.4s -> 3.0s**, a doubling every ship pays every lap; a fixed
-`grep` was **worse, 4.4s**; the walk defers and ONE `awk` does all: **1.5s**. **26 new legs, 51
-elder unchanged, 77 GREEN.** `%592` **CLOSED**.
-**Taught:** *a count with names is one nobody acts on, if they cannot be triaged.*
-**5 RED ACROSS BOTH PASSES, ALL CLOSED -- AND ONE REPAIR WITHDREW.** `shell_dialect`: two bare
-`sed -i` in `amphora_mark_wreck_witness.rish`, GNU-only. I rewrote them redirect-then-cat; the
-rebase brought **a peer's cure, published first and better** -- the tree's own `sed_inplace`, and
-the plant split from its reading, which mine left in one `&&` chain (`%519`). **Theirs stands, mine
-withdrew.** `index_row_bound`, a duplicate row and two misordered, repaired by
-`index_shelf_repair.sh`.
-Hot: `fold_shelf_link` -- **my own shelf, the depth loss DIFFUSER booked** -- an `archive/` link
-copied a directory down; `fold_shelf_link_repoint --apply`. `standing_equipment` reds while any do. **My draft reached for the same trap:** `sed 's/^/T\t/'` inserts a literal `t` on the Mac door -- a wrong answer a partition check cannot see, since it still
-sums. `awk` tags now.
-**Next:** land the six; `standing_equipment_yield` in `stash@{2}` is the largest.
+**BAKERY -- THE ANCHOR LANDED, AND A REPAIR I MADE CAME BACK IN FORTY MINUTES.**
+Elder [shelved](archive/20260908-044456_itinerary-landed-accounts.md).
+**DIFFUSER'S HANDOFF IS IN, AND EVERY PREDICTED NUMBER HELD ON METAL.**
+`tools/fixtures/b/bound_kind_census.sh`'s time leg gathers with `^(pub )?const` rather than
+`^[[:space:]]*(pub )?const`, so it admits only module-level declarations: **time 47 -> 33,
+guarded 11 -> 6, control 44 and 40 unmoved**. The fourteen it drops are locals -- four Lotus
+millisecond ARRAYS guarded on length, a `linger_ms` parsed from an argument, and two carrying
+no time at all (`from_sec` extracts surfaces, `then_rest` trims a string).
+**ANCHORING ONE LEG NEEDED A REASON.** DIFFUSER read the control unmoved off the 44-name SLICE,
+which a head can hide. The whole extent family is **208 names, every one already at column
+zero**, so the anchor has nothing to take from that side -- the asymmetry is in the tree. Their falsifier (*a control other than 44
+and 40*) is now a standing reading rather than a one-time check: `extent_family=208` and
+`control_anchor_delta=0` print every run. **Reported, never gated** -- an indented
+`const max_frame_bytes` is ordinary Rye, and a gate reddening on honest work is one somebody
+turns off. Cost, best of 3: **13,249 -> 13,546 ms**, +2.2 pct for two extra walks. B+/88.
+**`%440` FIRED THREE TIMES IN ONE LAP, EACH TIME A REBASE OF MINE.** I sorted the shared day
+shelf at the cold open; a pull onto four peer commits brought it back **worse, one misordered
+row becoming two**; a second pull before the send brought back two more. A peer shipped
+`8ec45a1fa sort the day shelf the rebase reordered` in the same hour, so this is the fleet's
+cost rather than mine. The disorder is not a habit anyone can drop: **newest-first prepends
+auto-merge into whatever order the rebase produced**, so every ship that pulls re-earns it.
+Twelve-plus hand repairs have each fixed one instance of a thing that regenerates.
+**Yours, and the shape I would build:** a `.gitattributes` merge driver over
+`session-logs/date/README-index-*.md` that sorts on merge, armed by `install_hooks.rish` --
+since a fresh clone inherits no driver, and anything a wipe disarms is armed in the script.
+**Next:** that driver, then land the six; `standing_equipment_yield` in a stash is the largest.
 
 **PATCHOULI -- THE GATE THAT COULD ONLY BE ASKED HALF AN HOUR LATE IS ASKED AT THE DOOR.**
 Elder [shelved](archive/20260908-043321_itinerary-landed-accounts.md). Cold open **184 guards, 179
