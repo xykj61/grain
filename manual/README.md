@@ -1,7 +1,7 @@
 # The Manual -- Four Rooms for One System
 
 **Language:** EN
-**Last updated:** 2026-07-18 (Glow eight heads synced - Acme tutorial voice)
+**Last updated:** `20260908.071909` -- the boundary sentence at the door, naming the three prose rooms (elder: 2026-07-18, Glow eight heads synced - Acme tutorial voice)
 **Style:** Gauge (see `../context/GAUGE_STYLE.md`)
 **Voice:** Quin
 **Audience:** Acme Corporation employees - operators on this tree
@@ -13,6 +13,8 @@ path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 ---
 
 The manual teaches what already runs, and it has four rooms, each answering a different visitor. **Tutorials** teach by the hand -- Radiant and gentle, each one ending at a green witness. **Guides** serve the person mid-task. **Reference** serves the person looking something up: one living, versioned specification per stable surface. **Understanding** lives where it always has -- the essays in `foundations/` and the design records in `active-designing/` -- and this README points there rather than duplicating them.
+
+**Three prose rooms stand in this tree, and the manual is the one about your own machine.** Here you turn on disk encryption, raise a VPN, build an enclosure, flash a phone, and make your own key cards. [`../docs-geode/`](../docs-geode/README.md) is the shipping shelf, for the reader who receives the product rather than operates it; its [First Hour](../docs-geode/tutorials/the-first-hour.md) is the living beginner path, which is why this page's own header points there. [`../docs/`](../docs/README.md) is the compression shelf, one operator page per chapter for a hand already mid-run.
 
 Two front doors share this house. The **language path** teaches what you can type and witness today (Rishi; Glow runes as design + small prototypes). The **device path** teaches GrapheneOS on Pixel hardware and the HAWM/TUBE ladders. They meet at packaging -- see [`../docs/TUBE.md`](../docs/TUBE.md).
 

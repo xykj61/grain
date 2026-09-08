@@ -16,7 +16,9 @@ path from nothing to a signed, sandboxed home is [`../SOURCE.md`](../SOURCE.md)
 
 ## What this is
 
-**docs-geode** is the root **prod** shelf. It holds the docs that ship. [`../docs/`](../docs/README.md) holds the compression and waymark guides; `counsel/` holds dated counsel.
+**docs-geode** is the root **prod** shelf. It holds the docs that ship.
+
+**Three prose rooms stand in this tree, and which one you want follows from who you are when you arrive.** This shelf serves the reader who **receives** the product: pages crushed from what already stands, so you can read Grain before you run it. [`../manual/`](../manual/README.md) serves the reader who **operates their own machine** -- disk encryption, a VPN, an enclosure, a phone, keys in their own hand. [`../docs/`](../docs/README.md) serves the reader **already mid-ladder**: one compressed operator page per chapter, each declaring its own line ceiling. `counsel/` holds dated counsel and is closed to new pieces. Measured `20260907.160051`, this shelf and the manual share **12** cross-citations against **249** living inbound references, so the two rooms stand apart in fact as well as in intent.
 
 New here? Take three doors, in this order. [The First Hour](tutorials/the-first-hour.md) puts a working tree in your hands. [How to read this tree](study/README.md) says which room answers which kind of question. [The library index](libraries/README.md) names every Rye module, room by room. Every other row in the table below opens off one of those three.
 

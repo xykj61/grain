@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260908.072952` | [The boundary written from both sides](20260908/20260908-072952_the-boundary-written-from-both-sides.kyri) | a sweep by number hit a peer; two doors mirror. |
 | `20260908.071657` | [Uniqueness without identification](20260908/20260908-071657_uniqueness-without-identification.kyri) | a glob handed me my own tree, a day old. |
 | `20260908.070532` | [The pointer with no claim](20260908/20260908-070532_the-pointer-with-no-claim.kyri) | Two ships widened one guard in one hour; the ledger sent both. |
 | `20260908.065545` | [The receipt that was earned](20260908/20260908-065545_the-receipt-that-was-earned.kyri) | the cheaper pass earned 4 days ago; 82.3% beyond the map. |

@@ -526,3 +526,5 @@ at a closed fold.*
 *Row %618 folded to [`REDS-a-population-picked-by-directory-rows-618.md`](REDS-a-population-picked-by-directory-rows-618.md) on `20260908.052557`, **CLOSED** -- a guard whose population is a glob is an enumeration nobody counted.*
 
 *Row %617 folded to [`REDS-a-safe-tool-that-sent-by-default-rows-617.md`](REDS-a-safe-tool-that-sent-by-default-rows-617.md) on `20260908.075759`, **BOOKED** -- a tool built to stop a dangerous default should not have one.*
+
+*Row %621 folded to [`REDS-a-sweep-that-could-not-tell-whose-rows-621.md`](REDS-a-sweep-that-could-not-tell-whose-rows-621.md) on `20260908.071909`, **BOOKED** -- a renumber that sweeps by number cannot tell its own citation from a peer's -- the stamp is the key.*
