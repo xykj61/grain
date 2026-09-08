@@ -569,4 +569,4 @@ at a closed fold.*
 
 *Row %589 folded to [`REDS-the-blocker-was-a-reading-rows-589.md`](REDS-the-blocker-was-a-reading-rows-589.md) on `20260908.151057`, **BOOKED** -- a blocker nobody had measured kept two files apart for a day; a content-addressed store answers does-this-move-the-record in digests rather than in argument.*
 
-*Rows %643 and %644 folded to [`REDS-what-the-record-said-and-what-ran-rows-643-644.md`](REDS-what-the-record-said-and-what-ran-rows-643-644.md) on `20260908.184056`, **BOOKED** and **CLOSED** -- a stated intention and the mechanism that carries it are two artifacts, and nothing was reading them together.*
+*Rows %643 and %644 folded to [`REDS-two-stops-and-a-shared-pen-rows-643-644.md`](REDS-two-stops-and-a-shared-pen-rows-643-644.md) on `20260908.183744`, both **CLOSED** -- Both are one lesson about reach: a stop only its author can set is a stop a hand cannot make, and a guard no roster runs is a guard that cannot catch.*

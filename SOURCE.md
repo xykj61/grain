@@ -249,7 +249,7 @@ rishi/bin/rishi run tools/m/make_key_card.rish
 ./tools/m/make-key-card.sh
 ```
 
-Your `tools/key-card.conf` holds only **public** information -- your name, your forge handle, your email, and the fingerprints from Steps 2 and 3. Even so, it stays out of git (the committed `.example` is the only version tracked). Living slots are **`FP_SSH_GITHUB`**, **`FP_SSH_SECOND`**, and **`FP_OPENPGP`** (SUNN6). For a GitHub-only pier, fill GitHub + OpenPGP and leave Second as the example placeholder (skip its audit path), or use Second for a second GitHub key when you keep dual remotes. Generators still accept the legacy name `FP_SSH_CODEBERG` as an alias for Second. To read your living fingerprints back at any time:
+Your `tools/key-card.conf` holds only **public** information -- your name, your forge handle, your email, and the fingerprints from Steps 2 and 3. Even so, it stays out of git (the committed `.example` is the only version tracked). Living slots are **`FP_SSH_GITHUB`**, **`FP_SSH_SECOND`**, and **`FP_OPENPGP`** (SUNN -- the key-card fields). For a GitHub-only pier, fill GitHub + OpenPGP and leave Second as the example placeholder (skip its audit path), or use Second for a second GitHub key when you keep dual remotes. Generators still accept the legacy name `FP_SSH_CODEBERG` as an alias for Second. To read your living fingerprints back at any time:
 
 ```bash
 ssh-keygen -lf ~/.ssh/id_ed25519_github.pub

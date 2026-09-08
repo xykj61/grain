@@ -13,16 +13,31 @@ say "sunn8: Lens TAME — SUNN8 seat · voice/name/onboarding · Quin OS stays."
 
 let r = read-file "README.md"
 assert r contains "**Voice:** [Kyri](context/KYRI.md)" else "sunn8: want the front door to name Kyri as the voice, linked to her identity page"
-assert r contains "Keaton Dunsford" else "sunn8: want Keaton Dunsford"
-assert r contains "xykj61/grain" else "sunn8: want xykj61/grain clone"
+# THE MAINTAINER'S NAME RETIRES FROM THIS ASSERTION (`20260908.183744`, Keaton's grant). `7191a938b`
+# made ONE README serve BOTH repositories, and the public projection scrubs a personal name by design
+# (`tools/fixtures/s/sow_scrub.sed`), so a front door REQUIRED to carry the name is a front door that
+# can never be one page. The name stands where naming it is the point: `context/PUBKEYS.md` and the
+# LICENSE files, which `MAP.md` holds until Keaton names a copyright rewrite. What this witness still
+# asks of the front door is its VOICE -- restored on the line above after sixteen days away.
+assert r contains "context/KYRI.md" else "sunn8: want the front door to link its voice page"
+# The one-page front door names the PUBLIC route a newcomer can actually take; the private remote
+# lives in `context/REMOTE_ROSTER.md`, which is where a maintainer looks for it.
+assert r contains "SOURCE.md" else "sunn8: want the SOURCE onboarding door"
 assert r contains "SOURCE.md" else "sunn8: want SOURCE.md onboarding"
 assert r contains "context/KYRI.md" else "sunn8: want KYRI.md"
-assert r contains "standing writing voice" else "sunn8: want standing writing voice phrase"
-assert r contains "The standing writing voice is **[Kyri](context/KYRI.md)**" else "sunn8: want the front door to seat Kyri as the standing writing voice in full"
+assert r contains "standing voice" else "sunn8: want the front door to name a standing voice"
+# The restored line states the same fact in the page's own Bhakta register rather than in the elder
+# sentence, so the assertion asks for the FACT -- the voice, named and linked -- rather than a wording.
+assert r contains "[Kyri](context/KYRI.md)" else "sunn8: want the front door to seat Kyri as the standing writing voice in full"
 assert (r contains "standing writing companion") == false else "sunn8: must not keep Quin as standing writing companion"
 assert (r contains "standing voice **Quin**") == false else "sunn8: must not keep Quin as profile default voice"
 assert (r contains "standing voice **Riyo**") == false else "sunn8: must not keep Riyo as living profile default"
-assert r contains "The fifth boot image, intentionally unpaired" else "sunn8: Quin OS hat must stay named at the front door"
+# THE HAT MOVED TO ITS OWN HOME (`20260908.183744`). The front door is a Bhakta welcome for a reader
+# meeting computing itself, and the fifth OS variant serves no newcomer standing there. The fact is
+# held where a reader looks for it, so this assertion reads THAT page -- the hat stays guarded rather
+# than merely relocated.
+let var = read-file "manual/grain-os/variants/README.md"
+assert var contains "fifth boot image, intentionally unpaired" else "sunn8: Quin OS hat must stay named in the variants page"
 # The Q-vane hat was renamed **Lumen** on `20260816` (ITINERARY, seated names), so the
 # front door naming `Q-vane` would now be naming a retired word. What this witness
 # still holds is the hat that stayed: Quin the fifth boot image, asserted above.

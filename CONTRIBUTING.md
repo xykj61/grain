@@ -4,7 +4,7 @@
 **Style:** Gauge (see `context/GAUGE_STYLE.md`)
 **Voice:** Kyri  
 **Last updated:** `20260906` - pull-request title classes, three reusable body shapes, and the eight lanes
-(voice molted Riyo -> Kyri `20260810`; SUNN12 `20260730.154600` seated Riyo before)
+(voice molted Riyo -> Kyri `20260810`; SUNN `20260730.154600` seated Riyo before)
 
 ---
 

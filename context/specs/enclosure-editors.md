@@ -1,7 +1,7 @@
 # Spec: Two Editors in One Enclosure -- Cursor, Zed, ai-jail, and a Cloneable Template
 
 **Language:** EN  
-**Version:** `20260730.145920` (EDT) - SUNN7  
+**Version:** `20260730.145920` (EDT) - SUNN  
 **Last updated:** `20260730.145920`  
 **Style:** Gauge (see `../GAUGE_STYLE.md`)
 **Voice:** Kyri  

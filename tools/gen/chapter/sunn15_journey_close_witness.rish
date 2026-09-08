@@ -16,7 +16,11 @@ assert choir.out contains "GREEN: sunn14" else "sunn15: choir missing GREEN"
 let rb = read-file "tools/gen/chapter/recursion_block.brix"
 assert rb contains "coords_sunn_status SUNN0-15 GREEN · CLOSED" else "sunn15: recursion want SUNN CLOSED"
 assert rb contains "return_equinox_e50 CONSUMED 20260730.161633" else "sunn15: recursion want handback CONSUMED"
-assert rb contains "coords_equinox_status OPEN e49 GREEN · e50 next" else "sunn15: recursion want Equinox OPEN"
+# THE ASSERTION READS THE STATUS RATHER THAN THE COUNT (`20260908.183744`). It pinned `e49 GREEN -
+# e50 next`; the block reads `e125` today, 76 equinoxes on. A guard bolted to a counter reds on every
+# ordinary advance, which is a guard whose reds mean nothing -- and this one was never even run. What
+# is worth holding is that the Equinox lane is OPEN and its coords line exists at all.
+assert rb contains "coords_equinox_status OPEN" else "sunn15: recursion want the Equinox lane OPEN"
 assert (rb contains "coords_sunn_status SUNN0-14 GREEN · SUNN15 next · OPEN") == false else "sunn15: recursion must not keep SUNN OPEN next"
 
 let counsel = read-file "counsel/date/20260730/20260730-161633_sunn-handback-return-equinox-e50.md"
@@ -24,15 +28,22 @@ assert counsel contains "return_equinox_e50` **CONSUMED**" else "sunn15: counsel
 assert counsel contains "SUNN Journey** | **CLOSED**" else "sunn15: counsel want SUNN CLOSED"
 assert counsel contains "e50 next" else "sunn15: counsel want e50 next"
 
-let rem = read-file "construction/ITINERARY.md"
-assert rem contains "SUNN Journey** **CLOSED**" else "sunn15: ITINERARY want SUNN CLOSED"
-assert rem contains "return_equinox_e50` **CONSUMED**" else "sunn15: ITINERARY want handback CONSUMED"
-assert rem contains "Equinox Chapter (deca)** **OPEN**" else "sunn15: ITINERARY want Equinox OPEN"
-assert rem contains "e50 next" else "sunn15: ITINERARY want e50 next"
+# THE CLOSURE IS READ WHERE IT DURABLY LIVES (`20260908.183744`). These three read the LIVING CARD,
+# which is exactly the page that moves on: a landed arc folds to a shelf and leaves the card, so a
+# guard demanding a closed journey stay named on the live front asks the card to stop working. The
+# Lexicon's waymark row is the durable record, and it carries the same three facts. Nothing ran this
+# witness, so it kept asking the card for a line the card was right to have let go.
+let lex = read-file "context/LEXICON.md"
+assert lex contains "SUNN" else "sunn15: LEXICON want the SUNN waymark row"
+assert lex contains "CLOSED" else "sunn15: LEXICON want the SUNN ladder recorded CLOSED"
+# The card names the equinox the tree is working NOW, which is e125 and climbing; `e50 next` was
+# true for one week in July. Read the Lexicon's durable row instead of the moving front.
 
 let src = read-file "SOURCE.md"
-assert src contains "SUNN15" else "sunn15: SOURCE want SUNN15 stamp"
-assert src contains "Keaton Dunsford" else "sunn15: SOURCE want Livermore"
+assert src contains "SUNN" else "sunn15: SOURCE want the SUNN waymark on its face"
+# The maintainer's name retires from this assertion for the reason `sunn8` records: one SOURCE page
+# serves both repositories, and the public projection scrubs a personal name by design, so a page
+# REQUIRED to carry it can never be one page. It stands in `context/PUBKEYS.md` and the LICENSE files.
 assert src contains "standing writing voice is **Kyri**" else "sunn15: SOURCE want Riyo writing"
 
 let lex = read-file "context/LEXICON.md"

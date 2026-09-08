@@ -17,6 +17,9 @@
 
 ---
 
+**Voice:** [Kyri](context/KYRI.md) -- the standing voice this tree writes in, and the name of its
+own [Kyri notation](context/KYRI.md) that every session log is written in.
+
 **Style:** Bhakta with [Gauge](context/GAUGE_STYLE.md) and
 [Twilight](context/TWILIGHT_STYLE.md) -- a register that welcomes every reader, measures what it
 claims, and reaches for the image. Its negation reads **6%**, down from 14, and the last of it lives

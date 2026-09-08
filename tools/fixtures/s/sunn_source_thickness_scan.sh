@@ -50,8 +50,13 @@ check() {
   fi
 }
 
-check "Keaton Dunsford" "livermore"
-check "git clone https://github.com/xykj61/grain.git" "xykj61 clone"
+# TWO CHECKS FOLLOW THE ONE-PAGE DECISION (`20260908.183744`, Keaton's grant). `7191a938b` made one
+# README serve BOTH repositories and the onboarding page followed it, so SOURCE teaches the PUBLIC
+# clone a newcomer can actually take, and the maintainer's name lives where naming it is the point --
+# `context/PUBKEYS.md` and the LICENSE files. Requiring a personal name in a page that ships to the
+# public seed asks the scrub and this scan to disagree forever. Neither check was ever heard: nothing
+# in the roster ran the witness that drives this scan.
+check "grain-os/grain" "public clone route"
 check "standing writing voice is **Kyri**" "kyri writing"
 check "dual-push" "dual-push"
 check "**Waymark:** **SUNN**" "sunn waymark"

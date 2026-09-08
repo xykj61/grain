@@ -133,7 +133,29 @@ scrub. `tools/gen/chapter/sunn9_claude_llms_stewards_witness.rish` ASSERTS the n
 `personalize.template.brix` names it as the legacy path to replace. `equinox_e136_...scan.sh` greps for
 `Kaeden Reyklah` in a document as a fact check. **Four tools whose whole job is the elder word.**
 
-**Unbreached, awaiting a word:**### Class W3 -- three charters walked, cited, kept (`20260827.162143`)
+**Unbreached, awaiting a word:**### Class S -- the SUNN rungs, living faces swept and the filenames held (`20260908.183500`)
+
+**The mark law retires a counted rung and exempts the ones already written** -- *seated ladders keep
+every number they wrote* (`waymark-ladders.md`), while living *Now* lines may sweep
+(`stamp-and-name.md`). SUNN is a seated, CLOSED ladder, so the split follows from the law itself.
+
+Measured `20260908.183500`: **450 numbered SUNN rungs across 143 files**, 105 dated testimony. The
+whole retired-mark population reads **17,212 living marks**, at its ceiling.
+
+**Swept -- nine living faces**, each pure subtraction since the stamp already stood beside the rung:
+the four root papers, `llms.txt`, two `manual/guides/`, `keys/README.md`, `context/specs/enclosure-editors.md`.
+Three carried a non-ASCII em dash or middle dot in the same phrase and took the ASCII form on the way.
+
+**Held -- a recommendation rather than a decision.** Ten rostered witnesses are NAMED for their rung,
+`tools/gen/chapter/sunn8_*` through `sunn15_*`. Renaming them is a path molt reaching **66 inbound
+files**, every one a promise, and the law asks for none of it: the rungs are written, the ladder is
+closed, and a filename recording which rung a witness proves is a census. **A rename spends 66
+repointed references to make a closed ladder read tidier.** It waits for Keaton's word.
+
+**Held as fact:** `context/LEXICON.md` reads `SUNN0-15 GREEN`, which counts completed work, and a
+census number keeps its place.
+
+### Class W3 -- three charters walked, cited, kept (`20260827.162143`)
 
 Three documents carrying elder banners were measured in the same pass and **held**, because the
 condition a mitra shed asks -- *the mutant carries the elder's content* -- fails for each:
