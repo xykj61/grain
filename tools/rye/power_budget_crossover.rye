@@ -1,0 +1,209 @@
+//! Run the third falsifier of `external-research/20260905-232224_the-bound-that-names-a-joule.md`:
+//! *a power budget for the target device, broken down by subsystem, in which compute is a minority
+//! share.* Its own author called it the likeliest of three to fire.
+//!
+//! The falsifier asks a yes-or-no question and the arithmetic answers with a threshold, because
+//! compute's share of a duty-cycled device is not a property of the parts. Always-on subsystems
+//! draw a standing power; the processor draws one power awake and another asleep; so compute's
+//! share is a function of ONE quantity -- the fraction of wall time the processor is awake. This
+//! program solves for the fraction at which compute crosses half the budget, confirms the closed
+//! form against an independent scan, and walks a grid of plausible parts so the answer reads as a
+//! surface rather than as one datasheet's verdict.
+//!
+//! Every figure below is a published datasheet number, converted to nanowatts at a named rail.
+//! Sources and rails are in the paper; this program holds no figure the paper does not cite.
+//!
+//! Run: `rye build -O ReleaseFast tools/rye/power_budget_crossover.rye && ./power_budget_crossover`
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+
+/// Nanowatts throughout. A MEMS microphone's sleep current is 2 uA at 1.8 V -- 3.6 microwatts --
+/// and a unit that cannot hold 3.6 exactly would round the smallest term in the budget to zero.
+const nw_per_uw: u64 = 1000;
+
+/// Parts per million for the duty cycle. A crossover near 5 pct needs three decimal places to be
+/// compared between rows, and ppm gives them without a float.
+const ppm: u64 = 1_000_000;
+
+// ---- The always-on side: a digital MEMS microphone, ST MP23DB01HP, currents at 1.8 V ----
+
+/// 800 uA, performance mode -- the mode a capture device runs in while it is capturing.
+const mic_performance_nw: u64 = 1_440 * nw_per_uw;
+/// 285 uA, low-power mode. Named because it moves the answer by a factor of three.
+const mic_low_power_nw: u64 = 513 * nw_per_uw;
+/// 2 uA, sleep. The floor the always-on side falls to when nothing is being captured.
+const mic_sleep_nw: u64 = 3_600;
+
+// ---- The compute side: Nordic nRF52840, currents at 3.0 V with the DC/DC regulator ----
+
+/// 3.3 mA, CPU running from flash at 64 MHz. This is the awake power.
+const mcu_active_nw: u64 = 9_900 * nw_per_uw;
+/// System ON idle is 1.5 uA with no RAM retained (4,500 nW), and retention costs 30 nA per 4 kB.
+/// A 256 kB session buffer is 64 blocks: 64 x 30 nA x 3.0 V = 5,760 nW. The sum is the asleep
+/// power of a device that is holding a buffer it has not yet committed.
+const mcu_idle_retaining_nw: u64 = 4_500 + 5_760;
+/// 0.4 uA, System OFF -- everything forgotten. Named so the retention cost can be read as a
+/// difference rather than asserted.
+const mcu_off_nw: u64 = 1_200;
+
+// ---- The radio, for the redirect the falsifier's own text predicts ----
+
+/// 4.8 mA peak, TX at 0 dBm.
+const radio_tx_nw: u64 = 14_400 * nw_per_uw;
+/// 4.6 mA peak, RX.
+const radio_rx_nw: u64 = 13_800 * nw_per_uw;
+
+/// The grid walks 48 baselines by 48 active powers. Bounded because every loop here names a
+/// maximum, and 2,304 rows is a table a reader can hold rather than a dump.
+const grid_side: u32 = 48;
+const grid_max_rows: u32 = grid_side * grid_side;
+
+/// Compute's average power at a given duty cycle, in nanowatts.
+fn compute_power_nw(duty_ppm: u64, active_nw: u64, idle_nw: u64) u64 {
+    // invariant: a duty cycle is a fraction of wall time, so it lands inside the ppm range
+    assert(duty_ppm <= ppm);
+    // invariant: a processor costs at least as much awake as asleep
+    assert(active_nw >= idle_nw);
+    const awake: u64 = duty_ppm * active_nw;
+    const asleep: u64 = (ppm - duty_ppm) * idle_nw;
+    const total: u64 = (awake + asleep) / ppm;
+    // invariant: the average lands between the two powers it is averaging
+    assert(total >= idle_nw and total <= active_nw);
+    return total;
+}
+
+/// The duty cycle at which compute's average power first reaches the always-on baseline -- the
+/// point where compute stops being a minority share. Closed form, rounded UP, so the answer names
+/// the first duty cycle that reaches the baseline rather than the last one below it.
+fn crossover_ppm(baseline_nw: u64, active_nw: u64, idle_nw: u64) u64 {
+    // invariant: the processor costs strictly more awake than asleep, or no duty cycle moves it
+    assert(active_nw > idle_nw);
+    // invariant: nanowatt figures stay well inside u64 when multiplied by a million
+    assert(baseline_nw < ppm * ppm);
+    if (baseline_nw <= idle_nw) return 0;
+    const span: u64 = active_nw - idle_nw;
+    const need: u64 = baseline_nw - idle_nw;
+    if (need >= span) return ppm;
+    const exact: u64 = (need * ppm + span - 1) / span;
+    // invariant: a crossover is a duty cycle like any other
+    assert(exact <= ppm);
+    return exact;
+}
+
+/// The same answer by walking every duty cycle in ppm steps, so the closed form is checked against
+/// a search rather than trusted. One million steps per row, which is why only the named rows are
+/// scanned rather than the whole grid.
+fn crossover_by_scan(baseline_nw: u64, active_nw: u64, idle_nw: u64) u64 {
+    // invariant: the scan is asked the same well-formed question as the closed form
+    assert(active_nw > idle_nw);
+    var d: u64 = 0;
+    while (d <= ppm) : (d += 1) {
+        if (compute_power_nw(d, active_nw, idle_nw) >= baseline_nw) return d;
+    }
+    // invariant: a duty cycle of 1.0 puts compute at its active power, which the loop above
+    // returns whenever the baseline is reachable at all
+    assert(baseline_nw > active_nw);
+    return ppm;
+}
+
+/// Compute's share of the whole budget at a given duty cycle, in ppm of the total.
+fn compute_share_ppm(duty_ppm: u64, baseline_nw: u64, active_nw: u64, idle_nw: u64) u64 {
+    // invariant: the share is asked at a real duty cycle
+    assert(duty_ppm <= ppm);
+    const c: u64 = compute_power_nw(duty_ppm, active_nw, idle_nw);
+    const total: u64 = c + baseline_nw;
+    // invariant: a budget with no power in it has no shares to report
+    assert(total > 0);
+    const share: u64 = (c * ppm) / total;
+    // invariant: a share is a fraction of the whole
+    assert(share <= ppm);
+    return share;
+}
+
+fn print_pct(label: []const u8, value_ppm: u64) void {
+    // invariant: only a real fraction is printed as a percentage
+    assert(value_ppm <= ppm);
+    const whole: u64 = value_ppm / 10_000;
+    const frac: u64 = (value_ppm % 10_000) / 100;
+    print("{s}={d}.{d:0>2} pct\n", .{ label, whole, frac });
+}
+
+/// One named row of the budget: a baseline, the two compute powers, and what the pair implies.
+fn report_row(name: []const u8, baseline_nw: u64, active_nw: u64, idle_nw: u64) void {
+    // invariant: a reported row carries a real always-on term
+    assert(baseline_nw > 0);
+    const closed: u64 = crossover_ppm(baseline_nw, active_nw, idle_nw);
+    const scanned: u64 = crossover_by_scan(baseline_nw, active_nw, idle_nw);
+    // invariant: the closed form and the scan answer the same question the same way
+    assert(closed == scanned);
+    print("row={s} baseline_nw={d} active_nw={d} idle_nw={d} crossover_ppm={d}\n", .{
+        name, baseline_nw, active_nw, idle_nw, closed,
+    });
+    print_pct("  crossover", closed);
+    print_pct("  share_at_1pct", compute_share_ppm(10_000, baseline_nw, active_nw, idle_nw));
+    print_pct("  share_at_5pct", compute_share_ppm(50_000, baseline_nw, active_nw, idle_nw));
+    print_pct("  share_at_25pct", compute_share_ppm(250_000, baseline_nw, active_nw, idle_nw));
+    print_pct("  share_at_100pct", compute_share_ppm(ppm, baseline_nw, active_nw, idle_nw));
+}
+
+pub fn main() void {
+    print("== the falsifier, run on the tree's own near-term target ==\n", .{});
+    print("target=mikrophone-class capture device: MEMS mic always on, MCU duty-cycled, no radio\n", .{});
+    print("unit=nanowatt rails=mic 1.8V, mcu 3.0V\n\n", .{});
+
+    report_row("mic_performance", mic_performance_nw, mcu_active_nw, mcu_idle_retaining_nw);
+    print("\n", .{});
+    report_row("mic_low_power", mic_low_power_nw, mcu_active_nw, mcu_idle_retaining_nw);
+    print("\n", .{});
+    report_row("mic_sleep", mic_sleep_nw, mcu_active_nw, mcu_idle_retaining_nw);
+
+    print("\n== what the forgetful buffer costs to hold ==\n", .{});
+    const retention_nw: u64 = mcu_idle_retaining_nw - 4_500;
+    print("ram_retention_256kb_nw={d} mcu_off_nw={d}\n", .{ retention_nw, mcu_off_nw });
+    print_pct("  retention_share_of_mic_performance", (retention_nw * ppm) / mic_performance_nw);
+
+    print("\n== the redirect the falsifier's own text predicts ==\n", .{});
+    print("radio_tx_nw={d} radio_rx_nw={d}\n", .{ radio_tx_nw, radio_rx_nw });
+    // invariant: the radio outdraws the microphone, which is what makes it the redirect
+    assert(radio_tx_nw > mic_performance_nw);
+    print("tx_over_mic_performance={d}x tx_over_mcu_active={d}\n", .{
+        radio_tx_nw / mic_performance_nw,
+        (radio_tx_nw * 100) / mcu_active_nw,
+    });
+    const radio_parity_ppm: u64 = (mic_performance_nw * ppm) / radio_tx_nw;
+    print_pct("  radio_duty_matching_the_mic", radio_parity_ppm);
+
+    print("\n== the surface: crossover across a grid of plausible parts ==\n", .{});
+    var rows: u32 = 0;
+    var min_ppm: u64 = ppm;
+    var max_ppm: u64 = 0;
+    var under_ten_pct: u32 = 0;
+    var b: u32 = 1;
+    while (b <= grid_side) : (b += 1) {
+        // 50 uW to 2.4 mW of always-on load, in even steps -- one mic through a small sensor set.
+        const baseline_nw: u64 = @as(u64, b) * 50_000;
+        var a: u32 = 1;
+        while (a <= grid_side) : (a += 1) {
+            // 1 mW to 24 mW awake -- a deeply-clocked MCU through a fast application core.
+            const active_nw: u64 = @as(u64, a) * 500_000;
+            if (active_nw <= mcu_idle_retaining_nw) continue;
+            const c: u64 = crossover_ppm(baseline_nw, active_nw, mcu_idle_retaining_nw);
+            if (c < min_ppm) min_ppm = c;
+            if (c > max_ppm) max_ppm = c;
+            if (c < 100_000) under_ten_pct += 1;
+            rows += 1;
+            // invariant: the grid stays inside the bound it declared
+            assert(rows <= grid_max_rows);
+        }
+    }
+    print("grid_rows={d} of {d}\n", .{ rows, grid_max_rows });
+    print_pct("  crossover_min", min_ppm);
+    print_pct("  crossover_max", max_ppm);
+    print("rows_crossing_under_10pct={d} of {d}\n", .{ under_ten_pct, rows });
+
+    print("\n== verdict ==\n", .{});
+    print("falsifier=compute_is_a_minority_share answer=conditional\n", .{});
+    print("condition=the duty cycle the paper's own wake bound sets\n", .{});
+}

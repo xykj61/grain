@@ -114,7 +114,10 @@ assert unnamed_under.out contains "verdict=over_unnamed_choir_ceiling" else "unh
 # here: `rye_compile_reach` reads a Rye path inside any runner as a claim that some build reaches
 # that file, and nothing in the tree builds this one, so naming it in a `.rish` would make this
 # note itself the accusation. The program is named in the research page that publishes its numbers.
-assert green.out contains "unnamed_population=453" else "unheard-guard: the second population stands where it was measured -- ${green.out}"
+# 453 -> 454 on `20260908.005732`: a second such program arrived, same shape and same reason -- a
+# hand-run Rye sweep under the tools rooms, no runner building it, its path named in its own
+# research page rather than here for exactly the reason above.
+assert green.out contains "unnamed_population=454" else "unheard-guard: the second population stands where it was measured -- ${green.out}"
 assert green.out contains "unnamed_choirs=12" else "unheard-guard: twelve silent choirs wear neither word -- ${green.out}"
 
 # THE SHARPEST ONE, NAMED. tools/p/parity_ch01.rish calls itself a witness suite on its own first
