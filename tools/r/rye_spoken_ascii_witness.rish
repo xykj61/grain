@@ -1,0 +1,122 @@
+# rye_spoken_ascii_witness.rish -- what a Rye program PRINTS is prose, and stands under a ceiling
+# that only falls.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/r/rye_spoken_ascii_witness.rish
+#
+# `.claude/rules/ascii-first.md` governs prose in four subjects. Three carry a meter -- the living
+# card, the documents, the comments. The fourth was seated `20260907.075500` as
+# `tools/s/spoken_ascii_witness.rish`, which reads what a RISHI guard says out loud, and its
+# argument runs: a heredoc body is what a program feeds ONWARD, so converting it changes behavior; a
+# `say` line is what a program says TO A PERSON, so converting it changes register, and register is
+# what the rule governs.
+#
+# THAT ARGUMENT IS ABOUT SPEECH, NOT ABOUT RISHI. Rye speaks through `print`, and the comment meter
+# beside it declines program content for the same one reason. So the tree held a guard over what a
+# Rishi program says and none over what a Rye program says -- in the language it writes most of its
+# own modules in.
+#
+# A LINE-ORIENTED READING WOULD HAVE MISSED HALF ITS OWN SUBJECT. This tree writes a claim line as a
+# chain of string literals joined by `++` across four or five lines, so a scan matching `print(`
+# alone reads the first and walks past the rest. Measured before the meter existed: 2,480 characters
+# on lines holding the call, 2,235 more on its continuation lines. The scan therefore reads
+# parenthesis depth outside string literals, and the numbers below are printed as its own output
+# rather than recited here.
+
+say "rye-spoken-ascii: Language EN -- a sentence a Rye program prints is prose, and plain ASCII survives every terminal, pipe, and re-encoding intact."
+say "rye-spoken-ascii: Style Gauge -- every number is measured on this run and printed as the scan's own output, never recited in this file."
+say "rye-spoken-ascii: Lens TAME -- safety first: the meter counts what a program SAYS and refuses to count what it FEEDS ONWARD. A raw multiline string is a parser's input and its bytes are behavior; a module testing a decoder must contain the character it decodes. Purely local -- no key, no network, no funds, no device."
+
+let control = run ["sh" "tools/fixtures/r/rye_spoken_ascii_control.sh"]
+assert control.ok else "rye-spoken-ascii: the control must complete"
+say control.out
+assert control.out contains "control_verdict=ok" else "rye-spoken-ascii: the control must reach its own verdict"
+
+# Prose is counted, in every way this tree puts a Rye sentence in front of a reader.
+assert control.out contains "spoken_counted=yes" else "rye-spoken-ascii: a print call is a sentence put in front of a reader and must be counted"
+assert control.out contains "continued_counted=yes" else "rye-spoken-ascii: a continuation line of a multi-line print call is prose too -- 2,235 characters stand on such lines, very nearly as many as on the call lines themselves"
+assert control.out contains "indented_counted=yes" else "rye-spoken-ascii: leading whitespace must not hide prose from the meter"
+assert control.out contains "qualified_counted=yes" else "rye-spoken-ascii: std.debug.print puts the same sentence in front of the same reader"
+assert control.out contains "notation_counted=yes" else "rye-spoken-ascii: notation outside the rule's table is still non-ASCII in a spoken line and must be counted"
+
+# What is fed onward, and what belongs to another meter, are never counted. Each is a line drawn
+# where counting would be wrong rather than merely hard.
+assert control.out contains "raw_counted=no" else "rye-spoken-ascii: a raw multiline string outside a print is a parser's input -- converting its bytes would change behavior"
+assert control.out contains "binding_counted=no" else "rye-spoken-ascii: a plain binding may be fed onward, and following a value is parsing rather than scanning"
+assert control.out contains "after_counted=no" else "rye-spoken-ascii: the depth must return to zero when a print call closes, or one call would swallow the rest of its file"
+assert control.out contains "charlit_counted=no" else "rye-spoken-ascii: a character literal may hold a parenthesis, and a meter that miscounts one desynchronizes every reading after it"
+assert control.out contains "comment_counted=no" else "rye-spoken-ascii: a comment belongs to the sibling meter -- charging one character to two ceilings would make each reading depend on the other"
+assert control.out contains "trailing_counted=no" else "rye-spoken-ascii: a comment trailing a print line belongs to that same sibling; the residue it leaves is named in the scan rather than swept into this numerator"
+
+# THE IDENTIFIER TRAP, and it is the sharpest leg here. `crypto/bip32.rye` documents a
+# `parent_fingerprint(4)` field, and a pattern matching `print\(` anywhere finds `fingerprint(`
+# inside it. Three such lines stand in the tree today. A guard counting what the rule does not turn
+# on is the fault this fleet booked one room over on the same day.
+assert control.out contains "fingerprint_counted=no" else "rye-spoken-ascii: a longer identifier ending in those letters must never certify itself as a spoken call"
+
+# THE GATE ITSELF, proven by removing it. Every refusal above could also be explained by a plant the
+# meter simply never met, and a refusal proven only in the passing direction cannot be told from a
+# bypass. With `depth > 0` stripped from a copy, the same pen counts the raw parser source and the
+# plain binding -- which is what makes the exclusion a mechanism rather than a coincidence of fixtures.
+assert control.out contains "gate_is_load_bearing=yes" else "rye-spoken-ascii: strip the depth gate and the raw parser source must be counted, or the gate proves nothing"
+assert control.out contains "gate_holds_bindings=yes" else "rye-spoken-ascii: the stripped copy must count the binding too, from the same one changed condition"
+
+assert control.out contains "vendor_excluded=yes" else "rye-spoken-ascii: vendored sources are not ours to convert"
+assert control.out contains "symlink_skipped=yes" else "rye-spoken-ascii: a symlink must not be counted a second time -- git ls-files lists a link and its target as two paths (REDS %340), and mantra/kumara.rye is exactly such a link"
+assert control.out contains "symlink_target_kept=yes" else "rye-spoken-ascii: skipping a link must drop the duplicate rather than the file"
+assert control.out contains "total_is_five=yes" else "rye-spoken-ascii: five planted spoken files carry one character each, and nothing else may be counted"
+
+# TWO NUMBERS, BECAUSE THEY ASK TWO THINGS. `table_forms` is the subset the rule's own substitution
+# table names and spells, which a sweep converts mechanically. `notation` is everything else -- a
+# section sign citing a spec clause, a superscript, a Greek letter -- where a reader chooses the
+# ASCII word rather than a script guessing it. One total would hide which half is work and which is
+# taste.
+assert control.out contains "table_split=yes" else "rye-spoken-ascii: the six forms the rule spells must land in table_forms -- that is the sweepable number"
+assert control.out contains "notation_split=yes" else "rye-spoken-ascii: notation outside the table must land apart, since it is a reader's judgment rather than a sweep"
+
+# The ceiling, from both sides. There is no override, and none is wanted.
+assert control.out contains "clean_pen_under_ceiling=yes" else "rye-spoken-ascii: a clean pen must read under the ceiling"
+assert control.out contains "over_ceiling_refuses=yes" else "rye-spoken-ascii: one character past the ceiling must refuse, or the ceiling is decoration"
+assert control.out contains "removed_returns_green=yes" else "rye-spoken-ascii: removing the plant must return the reading to green, or the refusal is a latch"
+
+# THE INSTRUMENT ITSELF (REDS %513, inherited from every sibling). Every assert above asks what the
+# meter COUNTED; these ask whether it READ anything. An empty answer from a refused read is
+# byte-identical to an empty answer from a clean file, and the second is the one everyone hopes for.
+assert control.out contains "broken_instrument_named=yes" else "rye-spoken-ascii: a meter whose awk refuses must say instrument=failed, never count a zero"
+assert control.out contains "broken_instrument_refuses=yes" else "rye-spoken-ascii: a broken instrument must never answer under_ceiling=yes -- a green from a meter that read nothing is the worst shape a reading can take"
+assert control.out contains "absent_counted=yes" else "rye-spoken-ascii: git ls-files reads the INDEX, so a path staged and gone must be skipped and COUNTED"
+assert control.out contains "absent_is_fatal=no" else "rye-spoken-ascii: an absent path must never be fatal -- a rebase is exactly when a reading is worth having"
+
+# THE CONVERTER REACHES EXACTLY WHAT THE METER READS, proven off the bytes rather than off its own
+# report. A sweep wider than its meter moves a population nobody measured; a sweep narrower than its
+# meter leaves a ceiling that cannot fall.
+assert control.out contains "convert_reaches_spoken=yes" else "rye-spoken-ascii: the converter must reach a spoken region and spell the ASCII form"
+assert control.out contains "convert_leaves_spoken_clean=yes" else "rye-spoken-ascii: a converted spoken region must hold no high byte at all"
+assert control.out contains "convert_spares_comment=yes" else "rye-spoken-ascii: the converter must leave a comment to its own meter"
+assert control.out contains "convert_spares_raw=yes" else "rye-spoken-ascii: the converter must leave a parser's input untouched -- those bytes are behavior"
+assert control.out contains "convert_spares_notation=yes" else "rye-spoken-ascii: notation is a reader's word to choose, never a script's to guess"
+assert control.out contains "check_writes_nothing=yes" else "rye-spoken-ascii: a dry run that edits is worse than no dry run"
+assert control.out contains "convert_keeps_mode=yes" else "rye-spoken-ascii: a mode is tracked content -- the rewrite goes through the original inode (.claude/rules/exec-bit.md)"
+
+# IDEMPOTENCE REACHES A SECOND RUN, on a file that OWED WORK on the first. A converter correct only
+# where nothing is owed passes a first-run check and re-appends forever after; this tree booked that
+# exact shape one room over on `20260908`, where a case asserted convergence off a file owing no
+# work at all. So the first pass is proven to have MOVED the bytes before the second is asked to
+# leave them alone.
+assert control.out contains "convert_first_pass_moved=yes" else "rye-spoken-ascii: the idempotence case must start from a file that actually owed work, or it proves the inert path instead"
+assert control.out contains "convert_is_idempotent=yes" else "rye-spoken-ascii: a second pass over a converted file must change no byte"
+
+let living = run ["sh" "tools/fixtures/r/rye_spoken_ascii_scan.sh"]
+assert living.ok else "rye-spoken-ascii: the living scan must complete"
+say living.out
+assert living.out contains "instrument=ok" else "rye-spoken-ascii: the living reading must say its instrument ran -- a meter that opened nothing prints a clean ceiling too"
+assert living.out contains "under_ceiling=yes" else "rye-spoken-ascii: non-ASCII in spoken Rye lines rose above the ceiling -- convert on touch rather than raising it"
+
+# COUNTED OFF THE PEN, BOTH DIRECTIONS. A `_counted=no` is a behavior proven exactly as hard as a
+# `=yes` -- it is the reading that keeps a parser's input out of a prose ceiling -- so a tally that
+# read only the affirmative half would understate the control by every refusal it owns.
+let affirmed = where (lines control.out) as l: l contains "=yes"
+let refused = where (lines control.out) as l: l contains "_counted=no"
+say "rye-spoken-ascii: ${length affirmed} affirmative readings and ${length refused} refusals proven in throwaway repositories, counted off the pen rather than recited -- a total carried inside a sentence stays at whatever it was on the day somebody typed it (REDS %110)."
+
+say "GREEN: rye-spoken-ascii -- what a Rye program prints now stands under a ceiling that only falls, printed above as the scan's own output. The meter reads parenthesis depth rather than a line at a time, since a claim line runs four lines here and half the subject sits on the continuations; it refuses a raw parser input, a plain binding, a comment, and a longer identifier ending in those same letters. The sweepable subset and the reader's-judgment tail are reported apart, so the next lap converts the first and weighs the second."

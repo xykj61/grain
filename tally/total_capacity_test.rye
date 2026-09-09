@@ -27,5 +27,5 @@ pub fn main() void {
 
     var empty = tally.Gardens.init();
     assert(empty.total_capacity() == 0); // no gardens, no budget
-    print("GREEN: tally total_capacity — 768 whole, 668 after 100, cleared restores\n", .{});
+    print("GREEN: tally total_capacity -- 768 whole, 668 after 100, cleared restores\n", .{});
 }

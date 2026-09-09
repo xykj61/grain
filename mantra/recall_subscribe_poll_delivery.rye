@@ -367,9 +367,9 @@ fn run_selftest(_: std.Io) !u8 {
     const composed = try sp.poll_one_cycle(&fetcher2, &source2, &one_pair);
     assert(composed.revisions_synced == c2.revisions_synced);
 
-    print("ns-pollw: delayed revision caught on wire cycle 2 — empty ask stops GREEN\n", .{});
+    print("ns-pollw: delayed revision caught on wire cycle 2 -- empty ask stops GREEN\n", .{});
     print("ns-pollw: version {s} subscribe_poll {s}\n", .{ npw_version, sp.recall_subscribe_poll_version });
-    print("GREEN: outer subscribe poll wire lap — bounded cycles over catch-up wire.\n", .{});
+    print("GREEN: outer subscribe poll wire lap -- bounded cycles over catch-up wire.\n", .{});
     return 0;
 }
 
@@ -416,7 +416,7 @@ fn stop_sentinel_present(io: std.Io, path: []const u8) bool {
 
 fn run_fetcher_poll_once(io: std.Io, sentinel_path: []const u8, interval_ns: u64) !u8 {
     if (stop_sentinel_present(io, sentinel_path)) {
-        print("ns-pollw: stop sentinel at boundary — stop_requested\n", .{});
+        print("ns-pollw: stop sentinel at boundary -- stop_requested\n", .{});
         return stop_requested;
     }
 
@@ -431,13 +431,13 @@ fn run_fetcher_poll_once(io: std.Io, sentinel_path: []const u8, interval_ns: u64
         print("ns-pollw: slept {d} ns at cycle boundary\n", .{interval_ns});
     }
 
-    print("ns-pollw: one wire poll cycle at boundary — cycle_ok\n", .{});
+    print("ns-pollw: one wire poll cycle at boundary -- cycle_ok\n", .{});
     return 0;
 }
 
 fn run_fetcher_poll_mirror_once(io: std.Io, sentinel_path: []const u8, interval_ns: u64) !u8 {
     if (stop_sentinel_present(io, sentinel_path)) {
-        print("ns-pollw: stop sentinel at boundary — stop_requested\n", .{});
+        print("ns-pollw: stop sentinel at boundary -- stop_requested\n", .{});
         return stop_requested;
     }
 
@@ -451,7 +451,7 @@ fn run_fetcher_poll_mirror_once(io: std.Io, sentinel_path: []const u8, interval_
         print("ns-pollw: slept {d} ns at cycle boundary\n", .{interval_ns});
     }
 
-    print("ns-pollw: host mirror cycle — {d} pair(s), {d} revision(s) synced — cycle_ok\n", .{
+    print("ns-pollw: host mirror cycle -- {d} pair(s), {d} revision(s) synced -- cycle_ok\n", .{
         mirror_pairs.len, step.revisions_synced,
     });
     return 0;
@@ -467,7 +467,7 @@ fn run_fetcher_poll_legacy(_: std.Io, fail_after_first: bool) !u8 {
     if (c1.revisions_synced != 1 or c1.empty_asks != 1) return error.SyncFailed;
 
     if (fail_after_first) {
-        print("ns-pollw: fetcher poll fell mid-service — restart expected\n", .{});
+        print("ns-pollw: fetcher poll fell mid-service -- restart expected\n", .{});
         return 1;
     }
 
@@ -479,7 +479,7 @@ fn run_fetcher_poll_legacy(_: std.Io, fail_after_first: bool) !u8 {
     const r2 = try fetcher.recall(name2, &buf);
     if (!std.mem.eql(u8, buf[0..r2.len], "rev-two")) return error.SyncFailed;
 
-    print("ns-pollw: fetcher poll over localhost — recall GREEN\n", .{});
+    print("ns-pollw: fetcher poll over localhost -- recall GREEN\n", .{});
     return 0;
 }
 
@@ -502,7 +502,7 @@ fn run_demo(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) !u8
 
     source_child.kill(io);
 
-    print("ns-pollw: demo GREEN — poll crossed localhost under Comlink seal\n", .{});
+    print("ns-pollw: demo GREEN -- poll crossed localhost under Comlink seal\n", .{});
     print("ns-pollw: version {s}\n", .{npw_version});
     return 0;
 }

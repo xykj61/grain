@@ -246,7 +246,7 @@ fn run_selftest(_: std.Io) !u8 {
     assert(bad == error.BadKind);
 
     std.debug.print("ns-tcqw: version {s}\n", .{query_wire_version});
-    std.debug.print("GREEN: Tablecloth query wire — encode, filter, empty, unwelcome kind.\n", .{});
+    std.debug.print("GREEN: Tablecloth query wire -- encode, filter, empty, unwelcome kind.\n", .{});
     return 0;
 }
 

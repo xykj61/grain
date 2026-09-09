@@ -22,9 +22,9 @@ pub fn maybe(ok: bool) void {
 fn run_selftest(_: std.Io) !u8 {
     maybe(true);
     maybe(false);
-    print("tally maybe: a condition may honestly go either way — both marked, neither asserted\n", .{});
+    print("tally maybe: a condition may honestly go either way -- both marked, neither asserted\n", .{});
     print("tally maybe: version {s}\n", .{tally_maybe_version});
-    print("GREEN: tally maybe — sometimes true, sometimes false, always searchable.\n", .{});
+    print("GREEN: tally maybe -- sometimes true, sometimes false, always searchable.\n", .{});
     return 0;
 }
 

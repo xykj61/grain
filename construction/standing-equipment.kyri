@@ -697,6 +697,25 @@ path tools/s/spoken_ascii_witness.rish
 seated 20260907.075500
 tier cadence   # non-ASCII in what a Rishi guard says out loud, a ratchet that only falls
 
+# rye_spoken_ascii -- the sibling above proved the argument and stopped at one language. A heredoc
+# body is what a program feeds ONWARD; a `say` line is what it says TO A PERSON, and converting that
+# changes register, which is what the ASCII-first law governs. Rye speaks through `print`, and the
+# Rye comment meter declines program content for that same one reason -- so the tree held a guard
+# over what a Rishi program says and none over what a Rye program says, in the language it writes
+# most of its own modules in. Measured 20260908.214712 over the same 1,730 tracked `.rye` sources
+# the comment meter opens: 3,794 characters counted and held there, against 3,996 counted by
+# nothing, in 809 of those files -- 45% of the tree's authored Rye printing a character to a
+# person's terminal that no instrument read. A LINE-ORIENTED READING WOULD HAVE MISSED HALF ITS OWN
+# SUBJECT: this tree writes a claim line as a chain of literals joined by `++` across four or five
+# lines, and 2,480 characters stand on lines holding the call against 2,235 on its continuations, so
+# the scan reads parenthesis depth outside string literals. The seating lap swept its own lane to
+# zero -- mantra and tally, 25 files, 101 characters -- and set the ceiling at what remained.
+# `tier cadence`: it reads 1,730 files where a lap touches a handful.
+guard rye_spoken_ascii
+path tools/r/rye_spoken_ascii_witness.rish
+seated 20260908.214712
+tier cadence   # non-ASCII in what a Rye program prints, a ratchet that only falls
+
 guard comment_citation
 path tools/co/comment_citation_witness.rish
 seated 20260825.052000

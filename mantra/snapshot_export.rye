@@ -644,13 +644,13 @@ fn run_selftest(_: std.Io) !u8 {
         assert(dest_bad.leaf_count == 0);
     }
 
-    print("snapshot: horizon export — {d} leaves with catalog/ trust/ head record\n", .{staged_expect.leaf_count});
+    print("snapshot: horizon export -- {d} leaves with catalog/ trust/ head record\n", .{staged_expect.leaf_count});
     print("snapshot: SHA3-512 HEAD verified on import GREEN\n", .{});
-    print("snapshot: continuity fact present — export kind GREEN\n", .{});
-    print("snapshot: import replay — recall identical on every leaf GREEN\n", .{});
+    print("snapshot: continuity fact present -- export kind GREEN\n", .{});
+    print("snapshot: import replay -- recall identical on every leaf GREEN\n", .{});
     print("snapshot: tampered batch and head refused whole GREEN\n", .{});
     print("snapshot: version {s} batch {s}\n", .{ snapshot_export_version, rb.batch_version });
-    print("GREEN: I2 snapshot export — horizon bundles replay on host.\n", .{});
+    print("GREEN: I2 snapshot export -- horizon bundles replay on host.\n", .{});
     return 0;
 }
 

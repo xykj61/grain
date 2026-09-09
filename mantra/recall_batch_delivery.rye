@@ -292,10 +292,10 @@ fn run_selftest(_: std.Io) !u8 {
     if (open_wire(corrupt[0..@intCast(resp_wire_len)], &junk)) |_| {
         return error.VerifyFailed;
     } else |_| {
-        print("rbw: bad Comlink seal refused — GREEN unwelcome path\n", .{});
+        print("rbw: bad Comlink seal refused -- GREEN unwelcome path\n", .{});
     }
 
-    print("rbw: batch {d} bytes under seal — had {d}, need {d}\n", .{
+    print("rbw: batch {d} bytes under seal -- had {d}, need {d}\n", .{
         built.len,
         report.had_already,
         report.needed,
@@ -304,7 +304,7 @@ fn run_selftest(_: std.Io) !u8 {
     print("GREEN: NS-L3 lap 3w-4 hosted resin-batch sync under Comlink seal.\n", .{});
 
     try bw.run_chunk_wire_selftest();
-    print("rbw: multi-frame chunk assembler — GREEN\n", .{});
+    print("rbw: multi-frame chunk assembler -- GREEN\n", .{});
 
     var chunk_src: ns.BoltCatalog = undefined;
     try init_chunk_witness_source(&chunk_src);
@@ -342,7 +342,7 @@ fn run_selftest(_: std.Io) !u8 {
     assert(rb_big.len == 400);
     assert(big_out[0] == 'B');
     assert(big_out[399] == 'B');
-    print("rbw: chunked batch {d} bytes over {d} frames — GREEN\n", .{ chunk_built.len, chunk_count });
+    print("rbw: chunked batch {d} bytes over {d} frames -- GREEN\n", .{ chunk_built.len, chunk_count });
 
     var beaded_src: ns.BoltCatalog = undefined;
     var beaded_store: bd.BeadStore = undefined;
@@ -382,7 +382,7 @@ fn run_selftest(_: std.Io) !u8 {
     var expect: [400]u8 = undefined;
     witness_pattern_fill(&expect, 20260706);
     assert(std.mem.eql(u8, beaded_out[0..400], expect[0..400]));
-    print("rbw: beaded bolt batch {d} bytes — recallBeaded GREEN\n", .{beaded_built.len});
+    print("rbw: beaded bolt batch {d} bytes -- recallBeaded GREEN\n", .{beaded_built.len});
     print("GREEN: NS-L3 lap 3w-4 multi-frame batch chunking under Comlink seal.\n", .{});
     print("GREEN: NS-L3 lap 3w-5 beaded bolt batch wire (in-process).\n", .{});
     return 0;
@@ -430,7 +430,7 @@ fn run_fetcher(_: std.Io) !u8 {
     const report = try bw.apply_wire_batch(&fetcher, batch_buf[0..batch_len], signer.public_key);
     if (report.needed != 1 or report.had_already != 1) return error.BatchFailed;
 
-    print("rbw: fetcher applied batch — recall matches source GREEN\n", .{});
+    print("rbw: fetcher applied batch -- recall matches source GREEN\n", .{});
     return 0;
 }
 
@@ -453,7 +453,7 @@ fn run_chunk_demo(allocator: std.mem.Allocator, io: std.Io, self_path: []const u
     const f_code: u8 = switch (fc) { .exited => |code| code, else => 255 };
     assert(s_code == 0);
     assert(f_code == 0);
-    print("rbw: chunk demo GREEN — multi-frame batch crossed localhost under Comlink seal\n", .{});
+    print("rbw: chunk demo GREEN -- multi-frame batch crossed localhost under Comlink seal\n", .{});
     return 0;
 }
 
@@ -505,7 +505,7 @@ fn run_chunk_fetcher(_: std.Io) !u8 {
     const rb_out = try fetcher.recall(nb, &big_out);
     if (rb_out.len != 400) return error.BatchFailed;
 
-    print("rbw: chunk fetcher applied multi-frame batch — recall matches source GREEN\n", .{});
+    print("rbw: chunk fetcher applied multi-frame batch -- recall matches source GREEN\n", .{});
     return 0;
 }
 
@@ -528,7 +528,7 @@ fn run_beaded_demo(allocator: std.mem.Allocator, io: std.Io, self_path: []const 
     const f_code: u8 = switch (fc) { .exited => |code| code, else => 255 };
     assert(s_code == 0);
     assert(f_code == 0);
-    print("rbw: beaded demo GREEN — bead-index and beads crossed batch wire under Comlink seal\n", .{});
+    print("rbw: beaded demo GREEN -- bead-index and beads crossed batch wire under Comlink seal\n", .{});
     return 0;
 }
 
@@ -581,7 +581,7 @@ fn run_beaded_fetcher(_: std.Io) !u8 {
     const r = try rbd.recall_beaded(&fetcher, &fetch_beads, n_large, &out);
     if (r.outcome != .here or r.len != 400) return error.BatchFailed;
 
-    print("rbw: beaded fetcher recallBeaded — GREEN\n", .{});
+    print("rbw: beaded fetcher recallBeaded -- GREEN\n", .{});
     return 0;
 }
 
@@ -604,7 +604,7 @@ fn run_demo(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) !u8
     const f_code: u8 = switch (fc) { .exited => |code| code, else => 255 };
     assert(s_code == 0);
     assert(f_code == 0);
-    print("rbw: demo GREEN — resin-batch crossed localhost under Comlink seal\n", .{});
+    print("rbw: demo GREEN -- resin-batch crossed localhost under Comlink seal\n", .{});
     return 0;
 }
 

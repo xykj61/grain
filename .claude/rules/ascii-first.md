@@ -72,6 +72,27 @@ under a ceiling of 11,154, read `20260908.052550` -- very nearly the 10,468 the 
 itself carried the day its own meter was built, in the same files, under the same law, one sweep of
 attention less.
 
+**And that subject is about SPEECH rather than about Rishi**, which the heading said and the
+instrument did not (seated `20260908.214712`): `tools/r/rye_spoken_ascii_witness.rish` over
+`tools/fixtures/r/rye_spoken_ascii_scan.sh` reads what a **Rye** program prints. Rye speaks through
+`print`, the Rye comment meter declines program content for the same one reason its Rishi sibling
+does, and the tree therefore held a guard over what a Rishi program says and none over what a Rye
+program says -- in the language it writes most of its own modules in. Measured on the seating lap
+over the same 1,730 tracked `.rye` sources the comment meter opens: **3,996 characters in 809 of
+them**, against the 3,794 the comment meter counts and holds. **A line-oriented reading would have
+missed half its own subject**, since this tree writes a claim line as a chain of string literals
+joined by `++` across four or five lines -- 2,480 characters stand on lines holding the call and
+2,235 more on its continuations -- so the scan reads parenthesis depth outside string literals and
+counts the whole region. `tools/fixtures/r/rye_spoken_ascii_convert.sh` reaches exactly what that
+meter reads and nothing beside it, proven off the bytes rather than off its own report, and the
+seating lap swept `mantra/` and `tally/` to zero -- 25 files, 101 characters -- and set the ceiling
+at what remained.
+
+**The residue, named rather than swept into the numerator:** a `//` comment TRAILING a spoken line
+is counted by neither meter, since the comment meter reads a line whose first non-blank is `//`.
+That is a hole a later lap closes; charging one character to two ceilings would make each reading
+depend on the other, so it is left open in the open.
+
 ## Why the rule exists
 
 Plain ASCII survives every tool, terminal, diff, and re-encoding intact. Keaton asked that documents and commits prioritize it after the operator card corrupted itself in the dark. Canonical Cursor twin: `.cursor/rules/ascii-first.mdc`.

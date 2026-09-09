@@ -90,7 +90,7 @@ fn run_selftest(_: std.Io) !u8 {
 
     print("tally no_padding: a tight extern struct proved whole, a loose one caught\n", .{});
     print("tally no_padding: version {s}\n", .{tally_no_padding_version});
-    print("GREEN: tally no_padding — every field accounted for, nothing hidden between them.\n", .{});
+    print("GREEN: tally no_padding -- every field accounted for, nothing hidden between them.\n", .{});
     return 0;
 }
 

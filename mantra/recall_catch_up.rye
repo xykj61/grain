@@ -102,11 +102,11 @@ fn run_selftest(_: std.Io) !u8 {
         assert(std.mem.eql(u8, buf_f[0..rf.len], buf_s[0..rs.len]));
     }
 
-    print("ns-catchup: two revisions crossed in one call — empty ask stops loop GREEN\n", .{});
-    print("ns-catchup: second call asked once, changed nothing — stopping rule GREEN\n", .{});
-    print("ns-catchup: recall identical on both catalogs — referential transparency GREEN\n", .{});
+    print("ns-catchup: two revisions crossed in one call -- empty ask stops loop GREEN\n", .{});
+    print("ns-catchup: second call asked once, changed nothing -- stopping rule GREEN\n", .{});
+    print("ns-catchup: recall identical on both catalogs -- referential transparency GREEN\n", .{});
     print("ns-catchup: version {s}\n", .{recall_catch_up_version});
-    print("GREEN: catch-up-to-latest — bounded inner loop over syncRevision, in-process.\n", .{});
+    print("GREEN: catch-up-to-latest -- bounded inner loop over syncRevision, in-process.\n", .{});
     return 0;
 }
 

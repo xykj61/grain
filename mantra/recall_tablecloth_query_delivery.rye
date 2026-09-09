@@ -166,7 +166,7 @@ fn run_selftest(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8)
     assert(host2_code == 0);
 
     print("ns-tcqd: version {s} wire {s}\n", .{ nqw_version, qw.query_wire_version });
-    print("GREEN: Tablecloth query delivery — hosted filter hits + empty match.\n", .{});
+    print("GREEN: Tablecloth query delivery -- hosted filter hits + empty match.\n", .{});
     return 0;
 }
 

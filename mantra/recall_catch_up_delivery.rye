@@ -250,10 +250,10 @@ fn run_selftest(_: std.Io) !u8 {
     const composed = try cu.catch_up_to_latest(&fetcher2, &source, witness_peer, witness_bolt);
     assert(composed.revisions_synced == first.revisions_synced);
 
-    print("ns-catchupw: two revisions crossed under Comlink seal — empty ask stops loop GREEN\n", .{});
-    print("ns-catchupw: second call asked once, changed nothing — stopping rule GREEN\n", .{});
+    print("ns-catchupw: two revisions crossed under Comlink seal -- empty ask stops loop GREEN\n", .{});
+    print("ns-catchupw: second call asked once, changed nothing -- stopping rule GREEN\n", .{});
     print("ns-catchupw: version {s} catch_up {s} sync_wire {s}\n", .{ ncw_version, cu.recall_catch_up_version, sw.sync_wire_version });
-    print("GREEN: catch-up-to-latest wire lap — hosted request/response loop.\n", .{});
+    print("GREEN: catch-up-to-latest wire lap -- hosted request/response loop.\n", .{});
     return 0;
 }
 
@@ -359,7 +359,7 @@ fn run_fetcher_catchup(_: std.Io) !u8 {
     const r3 = try fetcher.recall(name3, &buf);
     if (!std.mem.eql(u8, buf[0..r3.len], "rev-three")) return error.SyncFailed;
 
-    print("ns-catchupw: fetcher caught up over localhost — recall GREEN\n", .{});
+    print("ns-catchupw: fetcher caught up over localhost -- recall GREEN\n", .{});
     return 0;
 }
 
@@ -383,7 +383,7 @@ fn run_demo(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) !u8
     assert(sc == 0);
     assert(fc == 0);
 
-    print("ns-catchupw: demo GREEN — catch-up crossed localhost under Comlink seal\n", .{});
+    print("ns-catchupw: demo GREEN -- catch-up crossed localhost under Comlink seal\n", .{});
     print("ns-catchupw: version {s}\n", .{ncw_version});
     return 0;
 }

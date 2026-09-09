@@ -197,13 +197,13 @@ fn run_selftest(_: std.Io) !u8 {
     if (open_wire(corrupt_wire[0..@intCast(resp_wire_len)], &junk)) |_| {
         return error.VerifyFailed;
     } else |_| {
-        print("nsw1: bad Comlink seal refused — GREEN unwelcome path\n", .{});
+        print("nsw1: bad Comlink seal refused -- GREEN unwelcome path\n", .{});
     }
 
-    print("nsw1: bolt synced over wire — had-already {d}, need-resin {d}; recall identical on both peers\n", .{ report.had_already, report.needed });
-    print("nsw1: tampered resin refused whole — GREEN unwelcome path\n", .{});
+    print("nsw1: bolt synced over wire -- had-already {d}, need-resin {d}; recall identical on both peers\n", .{ report.had_already, report.needed });
+    print("nsw1: tampered resin refused whole -- GREEN unwelcome path\n", .{});
     print("nsw1: version {s} sync_wire {s} wire_format {s}\n", .{ nsw_version, sw.sync_wire_version, wf.wire_format_version });
-    print("GREEN: NS-L3 wire — hosted sync request/response under Comlink seal.\n", .{});
+    print("GREEN: NS-L3 wire -- hosted sync request/response under Comlink seal.\n", .{});
     return 0;
 }
 
@@ -262,7 +262,7 @@ fn run_fetcher(_: std.Io) !u8 {
     const r = try fetcher.recall(na, &buf);
     if (!std.mem.eql(u8, buf[0..r.len], "beta")) return error.SyncFailed;
 
-    print("nsw1: fetcher synced revision — recall matches source GREEN\n", .{});
+    print("nsw1: fetcher synced revision -- recall matches source GREEN\n", .{});
     return 0;
 }
 
@@ -296,7 +296,7 @@ fn run_demo(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) !u8
     assert(source_code == 0);
     assert(fetcher_code == 0);
 
-    print("nsw1: demo GREEN — sync crossed localhost under Comlink seal\n", .{});
+    print("nsw1: demo GREEN -- sync crossed localhost under Comlink seal\n", .{});
     print("nsw1: version {s} wire_format {s}\n", .{ nsw_version, wf.wire_format_version });
     return 0;
 }

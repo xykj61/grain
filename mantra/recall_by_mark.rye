@@ -118,7 +118,7 @@ fn run_selftest(_: std.Io) !u8 {
     } else |err| {
         assert(err == error.MarkAmbiguous);
     }
-    print("ns-mark: ambiguous mark refused whole — GREEN unwelcome path\n", .{});
+    print("ns-mark: ambiguous mark refused whole -- GREEN unwelcome path\n", .{});
 
     // Path hint disambiguates; bytes match name recall.
     const q_hint = MarkReadQuery{
@@ -161,11 +161,11 @@ fn run_selftest(_: std.Io) !u8 {
     } else |err| {
         assert(err == error.DigestMismatch);
     }
-    print("ns-mark: digest mismatch refused whole — GREEN unwelcome path\n", .{});
+    print("ns-mark: digest mismatch refused whole -- GREEN unwelcome path\n", .{});
 
-    print("ns-mark: unique mark, path hint, and name recall agree — marks-on-read GREEN\n", .{});
+    print("ns-mark: unique mark, path hint, and name recall agree -- marks-on-read GREEN\n", .{});
     print("ns-mark: version {s}\n", .{recall_by_mark_version});
-    print("GREEN: marks-on-read — recall by Tilak within a bolt revision.\n", .{});
+    print("GREEN: marks-on-read -- recall by Tilak within a bolt revision.\n", .{});
     return 0;
 }
 

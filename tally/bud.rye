@@ -84,10 +84,10 @@ fn run_selftest(_: std.Io) !u8 {
         assert(is_lower_hex);
     }
 
-    print("tally bud: pinned H matches derive_h — GREEN\n", .{});
+    print("tally bud: pinned H matches derive_h -- GREEN\n", .{});
     print("tally bud: version {s}\n", .{bud_version});
     print("tally bud: vector amount1000 dew11 {s}\n", .{vector});
-    print("GREEN: tally bud — amount·G + dew·H.\n", .{});
+    print("GREEN: tally bud -- amount-G + dew-H.\n", .{});
     return 0;
 }
 

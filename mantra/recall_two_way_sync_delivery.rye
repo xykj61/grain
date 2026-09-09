@@ -207,9 +207,9 @@ fn run_selftest(_: std.Io) !u8 {
     assert(composed.right_to_left.total == r1.total);
     assert(composed.left_to_right.total == r2.total);
 
-    print("ns-2wayw: both directions crossed under Comlink seal — referential transparency GREEN\n", .{});
+    print("ns-2wayw: both directions crossed under Comlink seal -- referential transparency GREEN\n", .{});
     print("ns-2wayw: version {s} two_way {s} sync_wire {s}\n", .{ nsw2_version, tw.recall_two_way_sync_version, sw.sync_wire_version });
-    print("GREEN: two-way sync wire lap — hosted request/response, roles reversed.\n", .{});
+    print("GREEN: two-way sync wire lap -- hosted request/response, roles reversed.\n", .{});
     return 0;
 }
 
@@ -273,7 +273,7 @@ fn run_fetcher_right(_: std.Io) !u8 {
     const r = try fetcher.recall(na, &buf);
     if (!std.mem.eql(u8, buf[0..r.len], "shared")) return error.SyncFailed;
 
-    print("ns-2wayw: fetcher-right synced peerA revision — recall matches GREEN\n", .{});
+    print("ns-2wayw: fetcher-right synced peerA revision -- recall matches GREEN\n", .{});
     return 0;
 }
 
@@ -342,7 +342,7 @@ fn run_demo(allocator: std.mem.Allocator, io: std.Io, self_path: []const u8) !u8
         assert(fc == 0);
     }
 
-    print("ns-2wayw: demo GREEN — two-way sync crossed localhost under Comlink seal\n", .{});
+    print("ns-2wayw: demo GREEN -- two-way sync crossed localhost under Comlink seal\n", .{});
     print("ns-2wayw: version {s}\n", .{nsw2_version});
     return 0;
 }

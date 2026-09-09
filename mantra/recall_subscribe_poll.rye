@@ -122,7 +122,7 @@ fn run_interval_selftest(_: std.Io) !u8 {
     const min_elapsed = interval_ns * (@as(u64, max_cycles) - 1) * 8 / 10;
     if (elapsed < min_elapsed) return error.IntervalTooShort;
 
-    print("ns-poll: interval {d} ns between cycles — elapsed {d} ns GREEN\n", .{ interval_ns, elapsed });
+    print("ns-poll: interval {d} ns between cycles -- elapsed {d} ns GREEN\n", .{ interval_ns, elapsed });
     print("GREEN: poll interval honored at cycle boundary.\n", .{});
     return 0;
 }
@@ -199,10 +199,10 @@ fn run_selftest(_: std.Io) !u8 {
     try selftest_single_pair_poll(path);
     try selftest_host_mirror_poll(path);
 
-    print("ns-poll: delayed revision caught on cycle 2 — empty cycles cost one ask GREEN\n", .{});
-    print("ns-poll: host mirror — two named pairs per cycle GREEN\n", .{});
+    print("ns-poll: delayed revision caught on cycle 2 -- empty cycles cost one ask GREEN\n", .{});
+    print("ns-poll: host mirror -- two named pairs per cycle GREEN\n", .{});
     print("ns-poll: version {s} catch_up {s}\n", .{ recall_subscribe_poll_version, cu.recall_catch_up_version });
-    print("GREEN: outer subscribe poll — bounded cycles over catch-up-to-latest, in-process.\n", .{});
+    print("GREEN: outer subscribe poll -- bounded cycles over catch-up-to-latest, in-process.\n", .{});
     return 0;
 }
 
