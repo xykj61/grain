@@ -34,7 +34,7 @@ build() {
   mkdir -p "$d/rishi/bin" "$d/tools/fixtures" "$d/tally" "$d/saga" "$d/room"
   printf 'pub fn copy_disjoint() void {}\n' > "$d/tally/copy.rye"
   printf 'pub fn parse_int() void {}\n' > "$d/tally/parse_int.rye"
-  printf '# Tally\n\n## Who calls Tally\n\nCallers link or import; they do not copy.\n' > "$d/tally/README.md"
+  printf '# Tally\n\n## Who calls Tally\n\n| Consumer family | Typical marks |\n|---|---|\n| `room/` | `copy` |\n' > "$d/tally/README.md"
   printf '# Saga\n\nCanon caller map: see tally/README.md.\n' > "$d/saga/README.md"
   printf 'keep\n' > "$d/rishi/bin/.keep"
   printf 'keep\n' > "$d/tools/fixtures/.keep"
@@ -58,6 +58,8 @@ out=$(read_scan "$d")
 has "$out" 'verdict=ok'  && echo "clean_free=yes"      || echo "clean_free=no"
 has "$out" 'marks=1'     && echo "clean_counted=yes"   || echo "clean_counted=no"
 has "$out" 'named=1'     && echo "sample_read=yes"     || echo "sample_read=no"
+has "$out" '^rooms_named=1$' && echo "table_room_counted=yes" || echo "table_room_counted=no"
+has "$out" '^stale_named=0$' && echo "table_stale_clear=yes" || echo "table_stale_clear=no"
 [ "$(scan_status "$d")" = "0" ] && echo "clean_exits_zero=yes" || echo "clean_exits_zero=no"
 
 # 2. A dangling mark -- the link is tracked, its target is gone. Counted, named, and refused.
@@ -176,5 +178,43 @@ has "$out" 'unresolvable=2' && echo "loop_counted=yes" || echo "loop_counted=no"
 has "$out" 'detail: unresolvable' && echo "loop_named=yes" || echo "loop_named=no"
 has "$out" 'verdict=ok'     && echo "loop_reported_not_gated=yes" || echo "loop_reported_not_gated=no"
 has "$out" 'marks=1'        && echo "loop_leaves_marks_intact=yes" || echo "loop_leaves_marks_intact=no"
+
+# A table's first column names caller rooms; the second names the marks they use.
+# Read this section only, reduce file paths to rooms, and count each room once.
+d=$(build stale_table)
+cat >> "$d/tally/README.md" <<'MD'
+| `empty/` - `room/tally_copy.rye` | `tally/copy.rye` |
+
+A prose link to `prose_only/` is outside the table reading.
+
+## Another section
+| `later/` | `copy` |
+MD
+seal "$d"
+out=$(read_scan "$d")
+has "$out" '^stale_named=1$' && echo "stale_table_counted=yes" || echo "stale_table_counted=no"
+has "$out" '^verdict=stale_named$' && echo "stale_table_refused=yes" || echo "stale_table_refused=no"
+[ "$(scan_status "$d")" = "1" ] && echo "stale_table_exits_one=yes" || echo "stale_table_exits_one=no"
+has "$out" '^rooms_named=2$' && echo "table_scope_only=yes" || echo "table_scope_only=no"
+mkdir -p "$d/empty"
+( cd "$d/empty" && ln -s ../tally/copy.rye tally_copy.rye )
+has "$(read_scan "$d")" '^verdict=stale_named$' && echo "table_untracked_unread=yes" || echo "table_untracked_unread=no"
+seal "$d"
+has "$(read_scan "$d")" '^verdict=ok$' && echo "stale_table_lift_green=yes" || echo "stale_table_lift_green=no"
+
+# The table uses the scan's population ceiling. More unique rooms than that
+# refuse before the scan can publish a truncated table reading.
+d=$(build table_bound)
+ceiling=$(sed -n 's/^max_marks=//p' "$scan")
+awk -v limit="$ceiling" 'BEGIN { for (i=1; i<limit; i++) printf "| `room%d/` | `copy` |\n", i }' >> "$d/tally/README.md"
+seal "$d"
+out=$(read_scan "$d")
+has "$out" "^rooms_named=$ceiling$" && echo "table_bound_exact_counted=yes" || echo "table_bound_exact_counted=no"
+has "$out" '^verdict=stale_named$' && echo "table_bound_exact_read=yes" || echo "table_bound_exact_read=no"
+printf '| `overflow/` | `copy` |\n' >> "$d/tally/README.md"
+seal "$d"
+out=$(read_scan "$d")
+has "$out" '^verdict=table_rooms_unreadable$' && echo "table_bound_refused=yes" || echo "table_bound_refused=no"
+[ "$(scan_status "$d")" = "2" ] && echo "table_bound_exits_two=yes" || echo "table_bound_exits_two=no"
 
 echo "control_verdict=ok"

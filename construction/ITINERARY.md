@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `ed2aab6b0f` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `72b75140e2` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE PROJECTION NAMES ITS COVERAGE INPUTS.**
 Elder [shelved](archive/20260909-071647_itinerary-landed-accounts.md), whole with its recovery record.
@@ -70,6 +70,8 @@ Both host layouts pass 47 checks; bypassing the refusal fails two.
 Amphora's bound witness passes with the installed rg on PATH.
 [This lap](../session-logs/date/20260909/20260909-063839_the-absence-test-keeps-its-shell.kyri) records the full cold findings and staged verification plan.
 **Yours:** whether CHAPTERS should give the absorbed `20260722-shelf` a table row.
+**Recovery `20260909.075012`:** the parked Tally table check returns beside the named sample.
+All 48 control readings pass; 23 listed rooms have callers. [Record](../session-logs/date/20260909/20260909-075012_the-table-check-returns.kyri).
 
 **DIFFUSER -- A RETAINED REPLY NEEDS ITS OWN BYTES.**
 Elder [shelved](archive/20260909-081235_itinerary-landed-accounts.md) whole with the recovery and store readings.
