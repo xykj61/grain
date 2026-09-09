@@ -46,6 +46,24 @@ let src_seva = "linengrow/seva_session_core_witness.rye"
 let bin_seva_native = "linengrow/bin/seva_session_core_witness_native"
 let bin_seva_riscv = "linengrow/bin/seva_session_core_witness_riscv64"
 
+
+# AN ABSENT CROSS-TARGET EMULATOR IS A FACT ABOUT THE HOST, NEVER A DEFECT (`20260908.211500`).
+# Every emulated leg below needs `qemu-riscv64`, which this tree names a prerequisite in its own header
+# above and never vendors. A host without it is a correct host, so the elder shape -- nine hard
+# asserts on RISC-V runs -- made this witness UNROSTABLE: a row for it would red the fleet on every
+# machine lacking the emulator. That is why it was never rostered, and an unrostered witness runs
+# nowhere, so the hard assert bought a red nobody would ever hear. The class is booked at
+# `20260908.202239`; this is its third instance, after an uninitialised submodule and an unbuilt
+# artifact.
+#
+# SKIP is said in plain words and the exit is early, so every assert below still runs in full on a
+# host that HAS the emulator -- which is the whole point: the guard keeps its teeth exactly where it
+# can bite.
+let emu_present = run ["sh" "-c" "command -v qemu-riscv64 >/dev/null 2>&1 && echo yes || echo no"]
+if (trim emu_present.out == "no") then say "RISC-V-target: SKIP -- qemu-riscv64 is absent on this host; install qemu-user-static to run the emulated legs here"
+if (trim emu_present.out == "no") then say "GREEN: RISC-V target -- skipped honestly, the emulator these legs need is absent"
+if (trim emu_present.out == "no") then exit 0
+
 let build_seva_native = run ["sh" "-c" "mkdir -p linengrow/bin && env RYE_ZIG=${zig} rye/bin/rye build ${src_seva} -femit-bin=${bin_seva_native}"]
 assert build_seva_native.ok else "Seva native build failed"
 let native_seva = run ["sh" "-c" "${bin_seva_native} 2>&1"]
