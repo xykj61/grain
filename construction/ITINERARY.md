@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `8ab63b5674` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `cc304ef072` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE PARKED PACKAGE RETURNS WITH ITS RECORDS.**
 Elder [shelved](archive/20260909-013154_itinerary-landed-accounts.md), recovered with its log.

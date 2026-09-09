@@ -1,0 +1,40 @@
+format session-log-v1
+stamp 20260909.055614
+editor Codex CLI
+provider OpenAI
+product Codex
+role Incense -- captain seat, law and iterative review
+modality text
+model unverified
+model_status active runtime unverified
+configured_model gpt-6-astra
+configured_status explicit fleet CLI selection
+evidence tools/f/fleet-loop-codex.sh passes -m gpt-6-astra; user fleet instruction 20260909
+voice Kyri
+host Linux pier, America/New_York
+title The closeout kept in the stash
+prompt Recover Incense's unfinished work and logs before new work; commit and push xy then gp405.
+obs The ledger file now assigns finding 20260909.042650 its free number from the fetched spine, removes its unshared duplicate shelf, and regenerates the headline. The card names the parent of this follow-up commit.
+rota lap 4431, row 1 -- Air, law and boundary; the threshold, TAME Core, Single-Stranded, and Gauge separate a landed record from later parked edits. The recovery reads both questions separately.
+obs All eight stashes were inspected, including their untracked-file parents. The four equinox scans match HEAD. The earlier plant and shared-pen repairs have landed or have later variants. The older doorway-reach draft and fleet launcher remain parked, as the previous recovery records. Every stash remains intact.
+obs The newest stash b8267e7e8599da7be639a0f003f796bbc41f3b89 holds three closeout paths from the previous lap. Its final measurements are carried below as attributed evidence; the earlier log keeps its landed text.
+obs The previous recovery commit already carries the pin-control and repointer repairs and the two restored account shelves. This follow-up finishes its unsent ledger correction. The inherited dated-path gate remains open; the duplicate shelf withdrawal completes a parked withdrawal and introduces no new fold.
+obs The cold-launch attempt found the previous lap's hot-scoped process still running in this tree at an older launch head. The bounded fleet_call helper sent TERM only to that obsolete pass and refused eleven foreign candidates. The fresh pass opened after the process exited and its lock cleared.
+obs A detached launch ended before its first guard. The next launch kept the caller attached to the returned PID until completion. Its transcript lists the same eight stashes as this checkout and reports tree_moved=no.
+obs The fresh cold pass found the unshared row colliding with Diffuser's published number, the same finding on two shelves, the extra unrecorded shelf, and the stale parent nib. The row-presence and roster-summary failures repeat those findings. The correction preserves published bindings and keeps the closed finding on the live pin.
+obs Before withdrawing the duplicate shelf, a whole-index reference search found no tracked file naming its path. Its bytes remain in the original recovery commit and stash history. The original recovery log also carries the full repair account.
+obs Both remotes were pulled before this closeout. Diffuser's query-budget work is retained. No peer checkout was edited. Seed publishing, naming rulings, the scrub cache, identity and provisioning keep their existing gates.
+loom recovery_checks pin_control=13 repointer_control=25 ledger_spine=pass row_presence=pass capacity=pass parent_nib=pass
+loom qa artifacts=4 minimum=100
+loom recovery stashes=8 newest_stash_paths=3 older_distinct_logs=4
+loom roster=cold_scoped guards_run=190 guards_green=182 guards_red=6 guards_gated=2 skipped_scope=18 seconds=1705 cpu_ms=1613767 tree_moved=no verdict=guard_red
+loom source=stash_b8267e7e_previous_lap roster=hot guards_run=207 guards_green=205 guards_red=0 guards_gated=2 seconds=1771 cpu_ms=1723202 tree_moved=no verdict=ok
+loom source=stash_b8267e7e_previous_lap dated_path_refs_lost=98 dated_path_lost_ceiling=85 dated_path_lost_promised_living=0
+file construction/REDS.md finish the parked row correction and derive its headline
+file construction/ITINERARY.md carry the current parent nib
+file session-logs/date/20260909/20260909-055614_the-closeout-kept-in-the-stash.kyri record the recovery and preserve the parked closeout evidence
+file session-logs/date/README-index-20260909.md link this record from its day shelf
+git_nib 0f3aa99b84
+recommend keep-going -- resume the law lane after this recovery is sent; preserve the parked variants and all existing custody gates.
+scope Complete the previous recovery's ledger closeout and send its existing code repairs with this new record. No historical log is rewritten.
+status TESTED -- ledger monotonicity, spine bindings, row presence, capacity and parent nib pass. The recovered thirteen-check pin control and twenty-five-check repointer pass. The full staged hot pass and send follow this verdict; final results belong in the commit body.
