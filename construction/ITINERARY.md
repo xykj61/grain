@@ -139,24 +139,26 @@ that landed at `eb424ea0b`, and `standing_equipment` cascading off both.
 **Yours:** the basename lookup reads past `gratitude/` -- a page quoting `docs/TIGER_STYLE.md`
 names TigerBeetle's path, not ours. Right, and a judgment: a teacher's basename colliding with one
 of ours would pass free, unread.
-**PHEROMONE -- THE PARKED RUNG IS STANDING, AND THE LEDGER SAID SO FIRST.**
-Elder [shelved](archive/20260908-170542_itinerary-landed-accounts.md).
-**THE FIRE ROTA READS THE REDS BEFORE ANYTHING NEW**, so this lap opened on the cold pass's own
-three: `geode_libraries` stale from a lap that stopped short, `stash_record` **`unlanded=1`**, and
-`standing_equipment` cascading off the second. All three were one fact -- **a lap of mine that ran
-GREEN and never landed**.
-**RESTORED BY READING THE TREE, NEVER THE BLOB** -- `git checkout stash@{0} -- <path>` takes the
-four files whose work still stands and keeps mode `100755` on both fixtures, where
-`git show stash@{0}:<path> >` would have landed them `100644` (the exec-bit law's own trap).
-**RE-PROVEN ON METAL BEFORE THE ROW WAS WRITTEN**: `glow_literal_law` GREEN -- **14 readers, 1
-strict, 13 permissive, disagreement 1** at its ceiling, 15 control behaviors, **2.5s** -- so the
-roster row's cost is this pier's own measurement rather than the elder lap's.
-**THE OTHER HALF STAYS PARKED ON PURPOSE.** That stash's `crushed_index` edit now runs BACKWARD
-against DIFFUSER's landed repair, so restoring it would revert a peer. Its log lands whole as
-testimony of the lap that wrote both, and this account names what declined to ride with it.
-**Yours:** the language ruling stands where the elder lap left it -- **does Glow accept `007`?**
-Both answers have an argument in the tree, the gate closes under either, and the word is yours.
-`seed_link` **RED**, unbooked -- `README.md` links withheld `context/BHAKTA_STYLE.md`.
+**PHEROMONE -- ONE CASE NAMED IDEMPOTENCE AND NEVER REACHED A SECOND RUN.**
+Elder [shelved](archive/20260908-192214_itinerary-landed-accounts.md).
+**WATER'S SEAT SAYS RUN THE CENSUS RATHER THAN READ THE SENTENCE ABOUT IT**: **10 candidates, 5
+proven** against the page's cited 7 and 3, the five unproven reading **1 converges, 3 inert, 1
+refused**.
+**THE CONVERGING ONE WAS PROVEN BY A CASE THAT CANNOT FAIL.** `ascii_document_control.sh` asserted
+`convert_is_idempotent` off `already -- plain`, a file owing no work, so `unchanged=1` came from a
+FIRST run that did nothing -- the prover's own `inert`, and the string a converged second run prints.
+**FROM THE FAILING SIDE:** a shim correct where nothing is owed, re-appending its marker forever
+after one -- `diverging_passes_elder_sample=yes`, the elder case walking it free. Repaired to a real
+second run reading **report AND bytes**. Control **40 -> 45**, GREEN; cold and hot each
+**198/195/0/3 gated**, none mine.
+**A PEER CLOSED HALF MY HANDOFF THREE HOURS AHEAD OF MY COMMIT** -- `e3acd86db` made the predicate
+refuse a comment; my rebase landed on it, so it reads **3 proven, 7 unproven**. **Nineteenth
+firing.**
+**WHAT SURVIVES:** it greps siblings by the whole stem, so a FAMILY-named control is invisible.
+DIRECTORY widening counts `readme_metrics_splice` proven on the headline control's **6** hits next
+door; by family PREFIX it reads **0**, so PREFIX is safe. **Yours.**
+**Against myself:** a shelf link repaired under my running hot pass -- void, paid again. **Still
+yours: does Glow accept `007`?**
 
 
 **INCENSE -- THE GRADING CARD WAS BLIND TO TWO FORMS THIS TREE'S OWN RULES ASK FOR.**

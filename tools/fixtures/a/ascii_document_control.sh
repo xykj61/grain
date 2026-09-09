@@ -209,11 +209,60 @@ seal "$d"
 ( cd "$d" && sh "$conv" docs/GUIDE.md ) >/dev/null 2>&1
 if [ -x "$d/docs/GUIDE.md" ]; then say convert_keeps_the_mode yes; else say convert_keeps_the_mode no; fi
 
-# A file already plain is left alone, so a sweep is idempotent and a second pass is free.
-d=$(build idempotent)
+# A file already plain is left alone -- the converter does no work where none is owed.
+d=$(build plain)
 printf 'already -- plain\n' > "$d/docs/GUIDE.md"
 seal "$d"
+holds convert_leaves_plain_alone "$( cd "$d" && sh "$conv" docs/GUIDE.md 2>/dev/null )" 'unchanged=1'
+
+# IDEMPOTENCE IS A SECOND RUN, AND THE ELDER CASE HERE NEVER REACHED ONE. It handed the converter a
+# file that was ALREADY plain and read `unchanged=1` off a FIRST run that did nothing --
+# `tools/c/convergence_prove.sh` calls that reading `inert`, and it prints the same `unchanged=1` a
+# genuinely converged second run prints, so the two could not be told apart. Proven from the failing
+# side in a pen (`20260908.190000`): a converter correct on a file needing no work, yet re-appending
+# its sweep marker on every later run, reads `unchanged=1` under the elder case and `unchanged=0`
+# here. The sibling `tools/fixtures/r/reds_ledger_headline_control.sh` had the shape right all along
+# -- its case 1 repairs a drifted headline and its case 3 re-runs on that repaired file.
+#
+# The claim is `foundations/20260823-222019_what-brix-infuse-is.md`: infusion(world') -> world'.
+# BOTH THE REPORT AND THE BYTES ARE READ, because a tool may print `unchanged=1` and still write.
+d=$(build idempotent)
+printf 'named %s here\n' "$EM" > "$d/docs/GUIDE.md"
+seal "$d"
+( cd "$d" && sh "$conv" docs/GUIDE.md ) >/dev/null 2>&1
+settled=$(cat "$d/docs/GUIDE.md")
 holds convert_is_idempotent "$( cd "$d" && sh "$conv" docs/GUIDE.md 2>/dev/null )" 'unchanged=1'
+if [ "$settled" = "$(cat "$d/docs/GUIDE.md")" ]; then say convert_second_run_moves_no_bytes yes; else say convert_second_run_moves_no_bytes no; fi
+
+# AND THE CASE ABOVE IS PROVEN FROM THE FAILING SIDE, because a property asserted only where it
+# holds cannot be told from a case that cannot fail -- which is exactly what the elder case was.
+# A stand-in converter is planted that is CORRECT on a file needing no work and diverges only once
+# it has done some: it applies the table, then re-appends its own sweep marker on every later run.
+# The elder case's sample would have read `unchanged=1` from it and passed; the second run reads
+# `unchanged=0` and moves bytes, so the repaired case bites.
+d=$(build diverging)
+cat > "$d/diverging_conv.sh" <<'SHIM'
+#!/bin/sh
+f=$1
+before=$(cat "$f")
+tmp=$(mktemp)
+sed 's/\xe2\x80\x94/--/g' "$f" > "$tmp"
+# The bug: the marker is re-appended whenever work was done OR a marker already stands, so the
+# tool is correct on a file needing nothing and diverges forever once it has touched one.
+if ! cmp -s "$f" "$tmp" || grep -q 'swept' "$f"; then printf '<!-- swept -->\n' >> "$tmp"; fi
+cat "$tmp" > "$f"; rm -f "$tmp"
+[ "$before" = "$(cat "$f")" ] && echo unchanged=1 || echo unchanged=0
+SHIM
+printf 'named %s here\n' "$EM" > "$d/docs/GUIDE.md"
+seal "$d"
+( cd "$d" && sh diverging_conv.sh docs/GUIDE.md ) >/dev/null 2>&1
+settled=$(cat "$d/docs/GUIDE.md")
+holds diverging_second_run_caught "$( cd "$d" && sh diverging_conv.sh docs/GUIDE.md 2>/dev/null )" 'unchanged=0'
+if [ "$settled" = "$(cat "$d/docs/GUIDE.md")" ]; then say diverging_bytes_move no; else say diverging_bytes_move yes; fi
+# The same stand-in, handed the ELDER case's already-plain sample, walks free -- which is the whole
+# reason the elder case proved nothing.
+printf 'already -- plain\n' > "$d/docs/GUIDE.md"
+holds diverging_passes_elder_sample "$( cd "$d" && sh diverging_conv.sh docs/GUIDE.md 2>/dev/null )" 'unchanged=1'
 
 # A star this table does not name survives the converter, exactly like the section sign.
 d=$(build star)

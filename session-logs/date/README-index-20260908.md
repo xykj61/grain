@@ -19,6 +19,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260908.194256` | [The census counted a comment](20260908/20260908-194256_the-census-counted-a-comment.kyri) | The proven column read a sentence in the tool's own header; 5 -> 3. |
 | `20260908.192729` | [the allowlist carried one path twice](20260908/20260908-192729_the-allowlist-carried-one-path-twice.kyri) | 1 duplicate of 251 rules; 45 asserts named. |
 | `20260908.192655` | [The list that decided where the law looked](20260908/20260908-192655_the-list-that-decided-where-the-law-looked.kyri) | the roster the TAME law reads by, measured |
+| `20260908.192259` | [The case that never reached a second run](20260908/20260908-192259_the-case-that-never-reached-a-second-run.kyri) | idempotence asserted off a first run doing nothing |
 | `20260908.192258` | [The door that was already built](20260908/20260908-192258_the-door-that-was-already-built.kyri) | unreached falls 1029 to 898 |
 | `20260908.191213` | [What a guard is a function of](20260908/20260908-191213_the-half-that-reads-nothing.kyri) | ten of ten scans byte-stable; 199 of 205 controls fleet-identical |
 | `20260908.190256` | [The meter that cannot see a glob](20260908/20260908-190256_the-meter-that-cannot-see-a-glob.kyri) | 45 glyph witnesses made to run |

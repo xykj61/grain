@@ -1,0 +1,47 @@
+format session-log-v1
+stamp 20260908.192259
+editor Claude Code terminal
+provider Anthropic
+product Claude Code
+role unattended fleet ship pheromone
+modality text
+model unverified
+model_status active runtime unverified
+configured_model claude-opus-5
+configured_reasoning medium
+configured_status .claude/settings.json read 20260908; a configured default, never runtime telemetry
+evidence .claude/settings.json
+voice Kyri
+host Vultr Dallas pier, America/New_York
+title The case that named idempotence and never reached a second run
+prompt The baton, autonomous lap -- Pheromone, the language and its molecules
+rota lap 4363, row 3 -- Water, the row that tastes; its cardinal seat says to RUN tools/c/convergence_census.sh rather than read the sentence citing it, and the run answered 10 candidates and 5 proven against the page's cited 7 and 3
+think Opened with fleet_round_open.sh and launched the cold roster detached, then held still and read rather than edited while it ran.
+think Water tastes up close, so I ran the census the threshold page names instead of quoting its number. It reads 10 candidates, 5 proven; the page cites 7 and 3 from four hours earlier, and the seat's own lesson is that the reason outlives the count.
+think Handed each of the five unproven candidates to tools/c/convergence_prove.sh with a sample carrying an em dash. One converges, three inert, one refused -- the refusal because readme_metrics_splice.sh takes target and block as two arguments where the prover's shape passes one.
+think The one that converges is tools/fixtures/a/ascii_document_convert.sh, and the census still calls it unproven. Two independent faults, and their errors cancelled into a true verdict.
+think Fault one: the census greps siblings by the tool's whole stem, ascii_document_convert, so it cannot see tools/fixtures/a/ascii_document_control.sh, which is named for the family.
+think Fault two, and the red I could close: that control's convert_is_idempotent case handed the converter the sample "already -- plain", a file owing no work. unchanged=1 came off a FIRST run that did nothing -- the prover's own inert verdict -- and it is the identical string a converged second run prints.
+think Proved the case cannot fail by planting a converter correct where no work is owed and re-appending its sweep marker forever once it has done some. The elder sample walks it free; a real second run reads unchanged=0 and moves bytes.
+think Repaired the case to a genuine second run and split the weak assertion off under its own name, convert_leaves_plain_alone, so the file that owes no work is still checked and no longer answers for idempotence.
+think Read the report AND the bytes, because a tool may print unchanged and still write. The sibling reds_ledger_headline_control.sh had the shape right all along -- case 1 repairs a drifted headline and case 3 re-runs the writer on that repaired file.
+obs The census's verdict on ascii_document_convert was accidentally correct. Repairing only its stem match, without repairing the case, would have counted a false proof as a proof -- so the order of the two repairs is load-bearing.
+obs A PEER CLOSED HALF OF MY HANDOFF THREE HOURS BEFORE MY COMMIT. e3acd86db -- tools: the census counted a comment, not a check -- made the proven predicate drop the candidate from its own sibling set and refuse a match on a comment line, which is exactly the second of the two objections I had written down. My rebase landed on it, so the census now reads 3 proven and 7 unproven where it read 5 and 5, and the family-prefix widening I had ruled out is now the safe one. I re-measured on the rebased tree rather than shipping the stale sentence: readme_metrics' control and witness read 0 non-comment hits, the headline control reads 6. Nineteenth firing of the standing claim question -- nothing in the ledger said that half was being worked.
+obs Both obvious widenings of the census WERE wrong when I measured them, and I ruled each out by measuring rather than by argument. Widening by DIRECTORY would count readme_metrics_splice proven on reds_ledger_headline's control, an unrelated tool sharing tools/fixtures/r/. Widening by family PREFIX would count it proven on a COMMENT in readme_metrics_witness.rish, since the census greped whole files while its own header said the word must sit inside a check rather than a comment. That half is the peer's landed repair, above.
+obs My first planted shim fired on the elder sample too, because "already -- plain" contains a double hyphen and the shim keyed its marker on that. Keying it on whether the substitution actually did work, or a marker already stood, made the plant faithful: correct where nothing is owed, diverging forever after one touch.
+obs The census reading is unchanged after my repair, and that is honest rather than a failure. The proof is real now; the instrument still cannot see it, and that gap is named on the card with its measurement.
+obs Against myself, and it is the same fault PETRICHOR booked against itself this morning: my first hot pass reddened on fold_shelf_link_repoint, because the account I shelved carried the card's own depth -- archive/<file> -- where a shelf sitting IN construction/archive/ must write the bare basename. The scan named the one correction. I applied it while the pass was still running, so it closed tree_moved=yes and run_verdict=guard_red, and the whole pass was void for a repair that took one sed. Hold still means hold still; the second pass cost thirty minutes I had already been told how to save.
+loom witness=ascii_document behaviors=45 elder_behaviors=40 wall_s=2
+loom roster=cold guards=198 wall_s=1897 green=195 red=0 gated=3
+loom roster=hot guards=198 wall_s=1797 green=195 red=0 gated=3 tree_moved=no
+loom roster=hot_void guards=198 green=195 red=1 tree_moved=yes -- the pass I edited under
+loom census=convergence candidates=10 proven=5 unproven=5 tools_read=3252
+loom census=convergence_rebased candidates=10 proven=3 unproven=7 tools_read=3262
+loom prove=unproven_five converges=1 inert=3 refused=1
+file tools/fixtures/a/ascii_document_control.sh the idempotence case now runs the converter twice on a file that needed converting, reads the report and the bytes, and proves itself from the failing side against a planted diverging shim
+file tools/a/ascii_document_witness.rish five assertions added for the split and the failing-side leg; the GREEN line's count moved 40 to 45
+file construction/ITINERARY.md the live-front account, the elder shelved, and the Git nib
+file construction/archive/20260908-192214_itinerary-landed-accounts.md the elder PHEROMONE account, shelved whole
+scope one keystone -- the false idempotence proof in the ascii document family, closed on metal; the census's stem match named for the next hand with both wrong fixes ruled out
+status GREEN -- ascii_document witness GREEN at 45 behaviors, control_verdict=ok with every behavior yes; cold roster 198 guards 195 green 0 red 3 gated and hot roster 198 guards 195 green 0 red 3 gated, tree_moved=no on both, none of the three gates mine; fold_shelf_link_repoint reds repaired to verdict=ok; index_row_bound, shell_comment_ascii and exec_bit green. One hot pass void by my own edit under it, named above and re-run whole.
+recommend check-in (Keaton) -- does Glow accept `007` is still the open language ruling, and whether the census's sibling match should widen is a measurement I have handed over rather than taken
