@@ -43,6 +43,13 @@ assert scan.ok else "glow-gate-answer: the witness surface reds -- read the scan
 assert scan.out contains "verdict=every_needle_outlives_the_framing" else "glow-gate-answer: the scan must reach the clean verdict"
 assert scan.out contains "laundered_needles=0" else "glow-gate-answer: no needle may be supplied by the EXIT tail alone"
 assert scan.out contains "unread_runs=0" else "glow-gate-answer: every captured run must be asserted"
+assert scan.out contains "delegated_unread_runs=0" else "glow-gate-answer: every delegated captured run must be asserted"
+# The delegated half is read every run rather than only counted, so a reader of this witness meets
+# the 91 rather than having to go looking for it. Its ceilings live in the scan; these two legs prove
+# the surface is non-empty, because a delegated reading of zero files would report zero faults and
+# look exactly like a clean tree.
+assert (scan.out contains "delegated_witness_files=0") == false else "glow-gate-answer: the delegated surface must be non-empty -- a reading of no files is the elder blindness returning"
+assert scan.out contains "delegated_laundered_ceiling=" else "glow-gate-answer: the delegated ceiling must be published for the pen to read"
 
 let control = run ["sh" "tools/fixtures/g/glow_gate_answer_control.sh"]
 say control.out
@@ -69,7 +76,30 @@ assert control.out contains "case=ratchet_blind_under_free ok" else "glow-gate-a
 assert control.out contains "case=ratchet_blind_over_refused ok" else "glow-gate-answer: one blind run past the ceiling must refuse"
 assert control.out contains "case=ratchet_norefuse_under_free ok" else "glow-gate-answer: files at the ceiling must pass free"
 assert control.out contains "case=ratchet_norefuse_over_refused ok" else "glow-gate-answer: one file past the ceiling must refuse"
+assert control.out contains "case=elder_rule_was_blind ok" else "glow-gate-answer: the plant must carry no literal the elder rule keyed on"
+assert control.out contains "case=delegated_file_seen ok" else "glow-gate-answer: a file reaching the tail by worker must be read"
+assert control.out contains "case=delegated_outside_direct ok" else "glow-gate-answer: a delegated file is no direct file"
+assert control.out contains "case=delegated_launder_counted ok" else "glow-gate-answer: the delegated laundered count must read one"
+assert control.out contains "case=delegated_launder_named ok" else "glow-gate-answer: a delegated detail must say which half it came from"
+assert control.out contains "case=delegated_repair_free ok" else "glow-gate-answer: a delegated run reading its answer must pass free"
+assert control.out contains "case=delegated_blind_cleared ok" else "glow-gate-answer: a delegated run reading an answer is not blind"
+assert control.out contains "case=delegated_unanchored_seen ok" else "glow-gate-answer: a then-let run must be read like any other"
+assert control.out contains "case=delegated_unread_counted ok" else "glow-gate-answer: a delegated run never asserted must be counted"
+assert control.out contains "case=delegated_unread_gated ok" else "glow-gate-answer: a delegated unread run must refuse at zero"
+assert control.out contains "case=delegated_certified_counted ok" else "glow-gate-answer: a needle the run's own tail supplies must be certified"
+assert control.out contains "case=delegated_suspect_laundered ok" else "glow-gate-answer: a needle some exit code could supply is laundered"
+assert control.out contains "case=delegated_certified_strict ok" else "glow-gate-answer: certified must be a strict subset of laundered"
+assert control.out contains "case=delegated_comment_free ok" else "glow-gate-answer: a comment naming the worker runs nothing"
+assert control.out contains "case=delegated_ceilings_cited ok" else "glow-gate-answer: the pen must read all three delegated ceilings off the scan"
+assert control.out contains "case=delegated_launder_under_free ok" else "glow-gate-answer: a delegated ratchet at its ceiling must pass free"
+assert control.out contains "case=delegated_launder_over_refused ok" else "glow-gate-answer: one delegated needle past the ceiling must refuse"
+assert control.out contains "case=delegated_blind_under_free ok" else "glow-gate-answer: delegated blind runs at the ceiling must pass free"
+assert control.out contains "case=delegated_blind_over_refused ok" else "glow-gate-answer: one delegated blind run past the ceiling must refuse"
+assert control.out contains "case=delegated_norefuse_under_free ok" else "glow-gate-answer: delegated files at the ceiling must pass free"
+assert control.out contains "case=delegated_norefuse_over_refused ok" else "glow-gate-answer: one delegated file past the ceiling must refuse"
+assert control.out contains "case=direct_untouched ok" else "glow-gate-answer: a direct plant must add nothing to the delegated reading"
+assert control.out contains "case=direct_gate_still_bites ok" else "glow-gate-answer: the direct gate must still refuse at zero"
 assert control.out contains "control=ok" else "glow-gate-answer: the control must agree with itself"
 
 say ""
-say "GREEN: glow-gate-answer -- every needle outlives the framing, and every captured run is read."
+say "GREEN: glow-gate-answer -- every needle outlives the framing, on both roads to it, and every captured run is read."
