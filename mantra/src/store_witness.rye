@@ -1,0 +1,224 @@
+//! mantra/src/store_witness.rye -- the name spent on every read.
+//!
+//!   rye build mantra/src/store_witness.rye -femit-bin=mantra/bin/store_witness
+//!   mantra/bin/store_witness <pen-directory>
+//!
+//! The claim under test is `read_blob` in `mantra/src/store.rye`, and until
+//! `20260908` it made two promises it did not keep. `Sha3.hash` stood in
+//! `write_blob` alone, so the digest a blob is NAMED by was computed once and
+//! trusted forever after; and the read used `Dir.readFile`, whose
+//! `readSliceShort` returns `buffer.len` the moment the buffer fills, so a blob
+//! past the read ceiling came back as its own first megabyte with no error
+//! raised.
+//!
+//! WHY THE TWO TOGETHER ARE WORSE THAN EITHER. A truncated `mantra-weave-v1`
+//! record is a VALID PREFIX -- `from_v1` refuses only a falling position and a
+//! generation below one, and a prefix breaks neither -- so it lifts as a
+//! shorter weave, and the next `mantra add` writes that shorter weave back
+//! under its own honest digest. The history loses lines and the store still
+//! reads consistent. A store that verified would have caught the truncation; a
+//! read that refused past its ceiling would never have produced it.
+//!
+//! The claims, listed rather than counted:
+//!   1. A blob written comes back byte for byte, under a 64-character name.
+//!   2. The same bytes written twice carry one name -- the store is write-once.
+//!   3. A blob whose bytes are ALTERED on disk is refused by name on read.
+//!   4. A blob whose bytes are TRUNCATED on disk is refused by name on read --
+//!      the shape that produced a shorter history under an honest digest.
+//!   5. Data past `max_blob_bytes` is refused at the WRITE edge, before a byte
+//!      is stored under a name nothing could read back whole.
+//!   6. A file past `max_blob_bytes` already on disk is refused at the READ
+//!      edge, rather than returning the prefix that fitted.
+//!   7. HEAD round-trips, an absent HEAD reads null, and a HEAD of the wrong
+//!      length reads null rather than naming a blob that was never written.
+//!   8. The ceiling stands in a stated relation to `weave.max_weave_lines`, so
+//!      the number has a reason rather than a history.
+//!
+//! WHAT IS PROVEN IN WHICH DIRECTION, said plainly. Claims 5 and 6 exercise the
+//! real 128 MiB ceiling in its REFUSING direction, on a real allocation and a
+//! real file. The passing direction at exactly the ceiling is carried by claims
+//! 1 to 4, which read blobs under it and return them whole; proving the exact
+//! boundary would cost two SHA3-256 passes over 128 MiB on every lap, and the
+//! limit `read_blob` passes is one PAST the ceiling precisely so a blob
+//! standing on it still reads.
+//!
+//! Part of Mantra -- TAME-first from line one.
+
+const std = @import("std");
+const assert = std.debug.assert;
+const print = std.debug.print;
+const store_mod = @import("store.rye");
+const weave = @import("weave.rye");
+
+const Dir = std.Io.Dir;
+const Sha3 = std.crypto.hash.sha3.Sha3_256;
+
+const witness_version = "20260908.190000";
+
+/// The bytes every small claim writes. Short on purpose: the claims that need
+/// size say so, and the rest should cost nothing.
+const sample_text = "mantra-weave-v1\n1\t0\talpha\n1\t1\tbeta\n";
+
+/// The most pen directories this witness will make, so the count below names a
+/// maximum rather than growing with the claims.
+const max_pen_dirs: u32 = 4;
+
+// Every declaration of the module under test, forced through semantic analysis
+// at comptime. Zig analyses lazily, so a `pub fn` carrying a flat type error
+// rides through a build the witness never calls it from -- which is the fault
+// `tools/r/rye_witness_walker_witness.rish` counts, one room over.
+comptime {
+    for (@typeInfo(store_mod).@"struct".decls) |decl| {
+        _ = &@field(store_mod, decl.name);
+    }
+}
+
+pub fn main(init: std.process.Init) !u8 {
+    const garden = init.arena.allocator();
+    const io = init.io;
+    const args = try init.minimal.args.toSlice(garden);
+
+    // invariant: the pen is handed in rather than chosen here, so the witness
+    // never writes into a directory the caller did not name
+    if (args.len < 2) {
+        print("store-witness: usage: store_witness <pen-directory>\n", .{});
+        return 2;
+    }
+    const pen_path = args[1];
+    // invariant: an empty path would name the current directory, which is the
+    // repository root when this runs from its own guard
+    assert(pen_path.len > 0);
+
+    const cwd = Dir.cwd();
+    var pen = try cwd.openDir(io, pen_path, .{});
+    defer pen.close(io);
+
+    var pens_made: u32 = 0;
+
+    // ---- Claim 1 -- a blob comes back whole, under a 64-character name.
+    const dir_one = try open_pen(io, pen, "one");
+    pens_made += 1;
+    const store_one = try store_mod.Store.open(io, dir_one);
+    const name = try store_one.write_blob(garden, io, sample_text);
+    assert(name.len == Sha3.digest_length * 2);
+    const read_back = try store_one.read_blob(garden, io, name);
+    assert(std.mem.eql(u8, read_back, sample_text));
+    print("store: a blob written comes back byte for byte, named in 64 hex characters -- GREEN\n", .{});
+
+    // ---- Claim 2 -- write-once: the same bytes carry one name.
+    const name_again = try store_one.write_blob(garden, io, sample_text);
+    assert(std.mem.eql(u8, name_again, name));
+    print("store: the same bytes written twice carry one name -- GREEN\n", .{});
+
+    // ---- Claim 3 -- altered on disk, refused by name.
+    var altered = try garden.dupe(u8, sample_text);
+    altered[3] = if (altered[3] == 'x') 'y' else 'x';
+    try store_one.blobs_dir.writeFile(io, .{ .sub_path = name, .data = altered });
+    try expect_store_error(store_one, garden, io, name, store_mod.StoreError.BlobNameMismatch);
+    print("store: a blob altered on disk is refused BlobNameMismatch -- GREEN\n", .{});
+
+    // ---- Claim 4 -- truncated on disk, refused by name. This is the shape
+    // that read as success: a valid prefix of a weave record.
+    const cut = sample_text[0 .. sample_text.len - 6];
+    // invariant: the cut holds bytes, so the elder read would have returned it
+    assert(cut.len > 0);
+    // invariant: and it is genuinely shorter, so `from_v1` would have lifted a
+    // shorter weave rather than refusing
+    assert(cut.len < sample_text.len);
+    try store_one.blobs_dir.writeFile(io, .{ .sub_path = name, .data = cut });
+    try expect_store_error(store_one, garden, io, name, store_mod.StoreError.BlobNameMismatch);
+    print("store: a blob truncated on disk is refused BlobNameMismatch -- GREEN\n", .{});
+
+    // ---- Claim 5 -- past the ceiling at the WRITE edge, before a byte lands.
+    const dir_two = try open_pen(io, pen, "two");
+    pens_made += 1;
+    const store_two = try store_mod.Store.open(io, dir_two);
+    const over: usize = @intCast(store_mod.max_blob_bytes + 1);
+    const too_big = try garden.alloc(u8, over);
+    defer garden.free(too_big);
+    @memset(too_big, 'a');
+    // invariant: the buffer stands exactly one byte past the ceiling, so the
+    // refusal is read at the boundary rather than far above it
+    assert(too_big.len == store_mod.max_blob_bytes + 1);
+    try std.testing.expectError(
+        store_mod.StoreError.BlobTooLarge,
+        store_two.write_blob(garden, io, too_big),
+    );
+    print("store: data one byte past max_blob_bytes is refused BlobTooLarge at the write edge -- GREEN\n", .{});
+
+    // ---- Claim 6 -- past the ceiling at the READ edge, on a real file.
+    // Written straight into the blob directory under a well-formed name, since
+    // `write_blob` now refuses to put it there at all.
+    const planted_name = "0" ** (Sha3.digest_length * 2);
+    try store_two.blobs_dir.writeFile(io, .{ .sub_path = planted_name, .data = too_big });
+    try expect_store_error(store_two, garden, io, planted_name, store_mod.StoreError.BlobTooLarge);
+    print("store: a file one byte past max_blob_bytes is refused BlobTooLarge at the read edge -- GREEN\n", .{});
+
+    // ---- Claim 7 -- HEAD, in its three states.
+    const dir_three = try open_pen(io, pen, "three");
+    pens_made += 1;
+    const store_three = try store_mod.Store.open(io, dir_three);
+    const absent = try store_three.read_head(garden, io);
+    assert(absent == null);
+    try store_three.write_head(io, name);
+    const head_back = try store_three.read_head(garden, io);
+    assert(head_back != null);
+    assert(std.mem.eql(u8, head_back.?, name));
+    try store_three.mantra_dir.writeFile(io, .{ .sub_path = "HEAD", .data = "short\n" });
+    const corrupt = try store_three.read_head(garden, io);
+    assert(corrupt == null);
+    print("store: HEAD round-trips, and both an absent and a mis-sized HEAD read null -- GREEN\n", .{});
+
+    // ---- Claim 8 -- the ceiling has a reason.
+    // 128 MiB over a weave at its own line ceiling is 128 bytes a row, which
+    // stands at roughly twice this tree's own 50.3 bytes a line.
+    const bytes_per_row: u64 = store_mod.max_blob_bytes / weave.max_weave_lines;
+    assert(bytes_per_row == 128);
+    // invariant: the ceiling stands above the 4 MiB the CLI shipped, so naming
+    // one number raised the capacity rather than lowering it
+    assert(store_mod.max_blob_bytes > 4 * 1024 * 1024);
+    print("store: max_blob_bytes is 128 bytes a row at the weave's own line ceiling -- GREEN\n", .{});
+
+    // postcondition: every pen this witness opened is one it named
+    assert(pens_made <= max_pen_dirs);
+    assert(pens_made == 3);
+
+    print("GREEN: store witness {s} -- eight claims, three refusals by name, the ceiling read at its own boundary from the refusing side.\n", .{witness_version});
+    return 0;
+}
+
+/// Open (creating if absent) one named pen directory under `parent`.
+fn open_pen(io: std.Io, parent: Dir, name: []const u8) !Dir {
+    // invariant: a pen is named, never derived, so the witness cannot reach a
+    // directory the caller did not hand it
+    assert(name.len > 0);
+    parent.createDir(io, name, .default_dir) catch |err| {
+        if (err != error.PathAlreadyExists) return err;
+    };
+    const opened = try parent.openDir(io, name, .{});
+    return opened;
+}
+
+/// Assert that reading `name` from `store` refuses with exactly `want`.
+fn expect_store_error(
+    store: store_mod.Store,
+    garden: std.mem.Allocator,
+    io: std.Io,
+    name: []const u8,
+    want: anyerror,
+) !void {
+    // invariant: a name is asked for at its own length, so a refusal below is
+    // the store's own reading rather than a malformed request
+    assert(name.len == Sha3.digest_length * 2);
+    const got = store.read_blob(garden, io, name);
+    // postcondition: the read refused, and refused with the error named
+    if (got) |_| {
+        print("store-witness: expected {s}, and the read returned bytes\n", .{@errorName(want)});
+        return error.TestUnexpectedResult;
+    } else |err| {
+        if (err != want) {
+            print("store-witness: expected {s}, got {s}\n", .{ @errorName(want), @errorName(err) });
+            return error.TestUnexpectedResult;
+        }
+    }
+}

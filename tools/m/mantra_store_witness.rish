@@ -1,0 +1,85 @@
+# tools/m/mantra_store_witness.rish -- the name spent on every read.
+#
+# WHAT THIS PROVES. `mantra/src/store.rye` names a blob by its SHA3-256 digest, and until
+# `20260908` that name was a proof computed once and never checked: `Sha3.hash` stood in
+# `write_blob` alone, so no read path recomputed the digest of the bytes it returned. Beside
+# that, `read_blob` called `Dir.readFile`, whose `readSliceShort` returns `buffer.len` the
+# moment the buffer fills, so a blob past the read ceiling came back as its own first megabyte
+# with no error raised.
+#
+# WHY THE TWO TOGETHER ARE WORSE THAN EITHER. A truncated `mantra-weave-v1` record is a VALID
+# PREFIX -- `from_v1` refuses only a falling position and a generation below one, and a prefix
+# breaks neither -- so it lifts as a shorter weave, and the next `mantra add` writes that
+# shorter weave back under its own honest digest. The history loses lines and the store still
+# reads consistent. The finding is written up whole at
+# external-research/20260908-170154_a-name-is-a-proof-computed-once.md.
+#
+# WHAT THE REPAIR IS. `read_blob` reads through `readFileAlloc` under a limit one past
+# `max_blob_bytes`, so a blob past the ceiling refuses `BlobTooLarge` rather than truncating;
+# then it recomputes the digest and refuses `BlobNameMismatch` when the bytes disagree with the
+# name they were asked for. `write_blob` reads the same ceiling at its own edge. One number,
+# named once, over one `.mantra/blobs/` directory: `mantra/src/main.rye` carried a second Store
+# at 4 MiB while this module stood at 1 MiB, so a blob one hand wrote was a prefix the other
+# hand read.
+#
+# WHAT THIS DOES NOT DO. It does not change the on-disk format, and it moves no byte: the CLI
+# built before and after this port drives the same commands to a byte-identical `.mantra/`
+# tree. It proves the ceiling in its REFUSING direction at the real 128 MiB, since the exact
+# boundary would cost two SHA3-256 passes over 128 MiB every lap; the witness and the control
+# each say so from their own side.
+#
+# The Rye witness lives beside the module it proves, at mantra/src/store_witness.rye, because
+# Zig refuses an import that escapes the root file's directory.
+#
+# Module: mantra/src/store.rye. Siblings: the weave guards beside it, and the model reading at
+# tools/m/mantra_weave_model_witness.rish.
+#
+# Run from the repository root:
+#   rishi/bin/rishi run tools/m/mantra_store_witness.rish
+
+let zig = "vendor/zig-toolchain/zig"
+let bin = "mantra/bin/store_witness"
+let pen = "mantra/bin/store_witness_pen"
+
+say "mantra-store: Language EN -- the name a blob carries, spent on every read."
+say "mantra-store: Style Gauge, Meter -- every claim is a run, and every refusal is named."
+say "mantra-store: Lens TAME -- one named ceiling read at both edges, and a digest recomputed."
+
+say "mantra-store: the module still declares the ceiling and the refusals it adds..."
+let seat = run ["sh" "-c" "grep -q 'pub const max_blob_bytes' mantra/src/store.rye && grep -q 'BlobTooLarge' mantra/src/store.rye && grep -q 'BlobNameMismatch' mantra/src/store.rye && grep -q 'readFileAlloc' mantra/src/store.rye"]
+assert seat.ok else "mantra-store: max_blob_bytes, BlobTooLarge, BlobNameMismatch or the bounded read left store.rye"
+
+say "mantra-store: the CLI reads one store rather than a second copy at another height..."
+let one = run ["sh" "-c" "grep -q 'const store_mod = @import(\"store.rye\")' mantra/src/main.rye && ! grep -q '^const Store = struct' mantra/src/main.rye"]
+assert one.ok else "mantra-store: mantra/src/main.rye carries its own Store again, so two ceilings stand over one .mantra/blobs/"
+
+say "mantra-store: building the witness against the real module..."
+let build = run ["sh" "-c" "mkdir -p mantra/bin && env RYE_ZIG=${zig} rye/bin/rye build mantra/src/store_witness.rye -femit-bin=${bin}"]
+assert build.ok else "mantra-store: store witness build failed"
+
+say "mantra-store: running it in a pen of its own..."
+let pen_make = run ["sh" "-c" "rm -rf ${pen} && mkdir -p ${pen}"]
+assert pen_make.ok else "mantra-store: the pen could not be made"
+
+let selftest = run ["sh" "-c" "${bin} ${pen} 2>&1"]
+assert selftest.ok else "mantra-store: store witness exited non-zero"
+assert selftest.out contains "GREEN" else "mantra-store: store witness not GREEN"
+assert selftest.out contains "comes back byte for byte" else "mantra-store: the round-trip claim is missing"
+assert selftest.out contains "written twice carry one name" else "mantra-store: the write-once claim is missing"
+assert selftest.out contains "altered on disk is refused BlobNameMismatch" else "mantra-store: the altered-blob refusal is missing"
+assert selftest.out contains "truncated on disk is refused BlobNameMismatch" else "mantra-store: the load-bearing claim -- a valid prefix refused rather than lifted -- is missing"
+assert selftest.out contains "refused BlobTooLarge at the write edge" else "mantra-store: the write-edge ceiling refusal is missing"
+assert selftest.out contains "refused BlobTooLarge at the read edge" else "mantra-store: the read-edge ceiling refusal is missing"
+assert selftest.out contains "HEAD round-trips" else "mantra-store: the HEAD claim is missing"
+assert selftest.out contains "128 bytes a row" else "mantra-store: the ceiling's own reason is missing"
+
+let pen_clean = run ["sh" "-c" "rm -rf ${pen}"]
+assert pen_clean.ok else "mantra-store: the pen could not be cleared"
+
+say "mantra-store: breaking the store in a pen, so the guard is proven able to red..."
+let control = run ["sh" "tools/fixtures/m/mantra_store_control.sh"]
+assert control.ok else "mantra-store: the control must complete -- a witness nobody has watched fail is a witness nobody has tested"
+assert control.out contains "control_verdict=ok" else "mantra-store: the control must reach its own verdict"
+assert control.out contains "clean_exit=0" else "mantra-store: the unmutated copy must reach GREEN, or every other phase fails for a reason the pen invented"
+
+say "GREEN: the store spends the proof it paid for -- eight claims, three refusals by name, six breaks caught."

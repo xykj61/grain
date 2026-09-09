@@ -8,11 +8,33 @@
 //! hex characters plus a newline. An absent HEAD means the repository is not
 //! yet initialized.
 //!
+//! A NAME IS A PROOF, AND THIS STORE SPENDS IT. The digest is computed at
+//! write time, and until `20260908` no read path recomputed it -- so the whole
+//! content-addressing claim rested on the bytes on disk never changing. Beside
+//! that, `Dir.readFile` fills its buffer and calls that the answer: its
+//! `readSliceShort` returns `buffer.len` the moment the buffer is full, so a
+//! blob past the read ceiling came back as its own first megabyte with no
+//! error raised. Either alone is survivable; together they are silent
+//! corruption, because a truncated `mantra-weave-v1` record is a VALID PREFIX
+//! -- positions still rise, generations still stand at one or above -- so it
+//! lifts as a shorter weave and the next commit writes it back under its own
+//! honest digest. Read `../../external-research/20260908-170154_a-name-is-a-proof-computed-once.md`
+//! for the whole finding.
+//!
+//! Both halves are closed here. `read_blob` refuses a blob past
+//! `max_blob_bytes` by name rather than truncating it, and then recomputes the
+//! digest of the bytes it read and refuses a name that disagrees. A verified
+//! read can never return a prefix, so the second check subsumes the first --
+//! the first is kept because a ceiling read at the edge refuses before an
+//! allocation grows, where a digest refuses after.
+//!
 //! Public surface:
-//!   Store.open(allocator, io, root_dir)  !Store
-//!   store.write_blob(io, data)            ![]const u8  (returns the name)
-//!   store.read_blob(allocator, io, name)  ![]const u8  (returns the content)
-//!   store.read_head(allocator, io)        !?[]const u8 (null if absent)
+//!   max_blob_bytes                        the one ceiling, over one directory
+//!   StoreError                            what this module refuses, by name
+//!   Store.open(io, root_dir)              !Store
+//!   store.write_blob(allocator, io, data) ![]const u8  (returns the name)
+//!   store.read_blob(allocator, io, name)  ![]u8        (returns the content)
+//!   store.read_head(allocator, io)        !?[]u8       (null if absent)
 //!   store.write_head(io, name)            !void
 
 const std  = @import("std");
@@ -23,6 +45,38 @@ const Sha3 = std.crypto.hash.sha3.Sha3_256;
 
 /// A hex encoding of a SHA3-256 digest -- the name of every blob.
 pub const BlobName = [Sha3.digest_length * 2]u8;
+
+/// The largest blob this store will write or read, in bytes.
+///
+/// Stated in bytes because bytes are what the machine actually has, and named
+/// once because two heights over one directory is how a blob written by one
+/// hand becomes a prefix read by another. `mantra/src/main.rye` allocated
+/// 4 MiB here and this module allocated 1 MiB, over the same `.mantra/blobs/`.
+///
+/// The number is derived from what a blob holds. A `mantra-weave-v1` record is
+/// one row per line -- a generation, a position, and the text -- so a weave at
+/// `weave.max_weave_lines` (1,048,576) rows fits inside 128 MiB when a row
+/// averages 128 bytes. This tree's own Rye averages 50.3 bytes a line
+/// (37,790,676 bytes over 751,407 lines, `git ls-files '*.rye' | xargs wc -lc`,
+/// measured `20260908`), and a v1 row adds two tabs and two small integers, so
+/// 128 bytes a row stands at roughly twice what this tree's own text costs. It
+/// is also 32 times the elder CLI's own 4 MiB, so naming one ceiling raises the
+/// shipped capacity rather than lowering it -- which is the reason the port was
+/// declined once already (`20260908.143034`).
+pub const max_blob_bytes: u64 = 1 << 27;
+
+/// What this module refuses, by name.
+pub const StoreError = error{
+    /// The blob is larger than `max_blob_bytes` -- on the way in, before it is
+    /// written under a name nothing could read back whole; or on the way out,
+    /// rather than returning the prefix that fitted.
+    BlobTooLarge,
+    /// The bytes read hash to a digest other than the name they were asked
+    /// for under. The name is the proof this store paid for at write time, and
+    /// this is where it is spent: a truncated, altered, or misfiled blob
+    /// refuses here rather than travelling on as a shorter honest weave.
+    BlobNameMismatch,
+};
 
 /// The blob store: a handle to the `.mantra/` directory tree.
 pub const Store = struct {
@@ -53,6 +107,14 @@ pub const Store = struct {
         // empty write would then share
         assert(data.len > 0);
 
+        // The ceiling is read at the edge, before a byte is written: a blob
+        // past it could be stored and never read back whole, which is the one
+        // shape a content-addressed store must not be able to reach.
+        if (data.len > max_blob_bytes) return StoreError.BlobTooLarge;
+
+        // invariant: the write below stands inside the ceiling both sides share
+        assert(data.len <= max_blob_bytes);
+
         // Compute the SHA3-256 digest and hex-encode it as the name.
         var digest: [Sha3.digest_length]u8 = undefined;
         Sha3.hash(data, &digest, .{});
@@ -72,10 +134,32 @@ pub const Store = struct {
         // invariant: a store name is the hex of a digest, exactly two characters per byte, so
         // any other length would address a blob that was never written
         assert(name.len == Sha3.digest_length * 2);
-        // Allocate a read buffer sized to the maximum we expect for a single-file weave.
-        const buf = try allocator.alloc(u8, 1024 * 1024); // 1 MiB ceiling for seed
-        const content = try self.blobs_dir.readFile(io, name, buf);
-        return allocator.dupe(u8, content);
+        // `readFileAlloc` refuses at a limit rather than filling a buffer and
+        // calling that the answer, which is what `readFile` does. The limit is
+        // one past the ceiling because it refuses on REACHING it, so a blob
+        // standing exactly at `max_blob_bytes` still reads whole.
+        const limit = std.Io.Limit.limited64(max_blob_bytes + 1);
+        const content = self.blobs_dir.readFileAlloc(io, name, allocator, limit) catch |err| {
+            if (err == error.StreamTooLong) return StoreError.BlobTooLarge;
+            return err;
+        };
+
+        // invariant: a read that returned stands inside the ceiling, so the
+        // digest below is taken over the whole blob rather than over a prefix
+        assert(content.len <= max_blob_bytes);
+
+        // Spend the proof. The name was computed from these bytes at write
+        // time; recomputing it here is what makes a blob that changed under us
+        // refuse rather than travel on.
+        var digest: [Sha3.digest_length]u8 = undefined;
+        Sha3.hash(content, &digest, .{});
+        const recomputed = try hex_encode(allocator, &digest);
+        defer allocator.free(recomputed);
+
+        // postcondition: the bytes returned hash to the name they were asked for
+        if (!std.mem.eql(u8, recomputed, name)) return StoreError.BlobNameMismatch;
+
+        return content;
     }
 
     /// Read HEAD. Returns null if HEAD does not exist (uninitialised repo).
@@ -106,7 +190,11 @@ pub const Store = struct {
 
 /// Hex-encode `bytes` into a freshly allocated string.
 fn hex_encode(allocator: std.mem.Allocator, bytes: []const u8) ![]u8 {
+    // invariant: input is non-empty -- hashing nothing is a caller error
+    assert(bytes.len > 0);
     const out = try allocator.alloc(u8, bytes.len * 2);
+    // postcondition: output is exactly twice the input length
+    assert(out.len == bytes.len * 2);
     const hex = "0123456789abcdef";
     for (bytes, 0..) |b, i| {
         out[i * 2]     = hex[b >> 4];

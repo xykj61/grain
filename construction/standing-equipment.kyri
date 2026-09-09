@@ -1818,6 +1818,47 @@ path tools/m/mantra_weave_v1_write_witness.rish
 tier lap
 seated 20260908.123338
 
+# rish_report_bound -- a guard's success report has a ceiling and its refusal does not, and until
+# 20260907 nothing read the difference. Rishi composes an interpolated string literal through
+# `StrBuf`, a bounded 4,096-byte buffer in rishi/src/main.rye; a bare `say <value>` writes straight
+# out under no ceiling. `reds_spine_derive_witness.rish` passed BOTH its gates -- `verdict=ok`,
+# `rebindings=0` -- and then ended the run at `say "label ${scan.out}"`, because the reading had
+# grown to 4,250 bytes as the ledger grew. Eight ships paid a red every lap for a green reading,
+# and the message named the guard's own reporting line rather than the tree. The asymmetry is
+# deliberate on Rishi's side and is the finding: an `assert ... else` message that overflows falls
+# back to its raw literal, so the REFUSAL path degrades rather than dies -- the unprotected path is
+# the one that fires when everything is right. Ratchet at 38 sites across 26 files, never a gate:
+# every site is correct today and fails only when its own reading grows, so a gate would refuse
+# ordinary work. Narrowed from 504 interpolating sites across 467 files by requiring the file to
+# read the same capture with `contains` -- a verdict-bearing report rather than a probe's one line;
+# counting the rest would push 466 files toward worse prose to reach the 26 carrying the hazard.
+# Three claims proven against the real interpreter on metal in the control, not read out of source.
+# `lap` rather than `cadence`: the elder lap measured 19s and this pier re-proved it at 31.7s on
+# the day it was rostered, and the shape it counts arrives in any lap that writes a guard.
+guard rish_report_bound
+path tools/r/rish_report_bound_witness.rish
+tier lap
+seated 20260907.233349
+
+# The name a blob carries, spent on every read. `mantra/src/store.rye` named a blob by its
+# SHA3-256 digest and then never checked it again: `Sha3.hash` stood in `write_blob` alone, so
+# the whole content-addressing claim rested on the bytes on disk never changing. Beside it the
+# read used `Dir.readFile`, whose `readSliceShort` returns `buffer.len` the moment the buffer
+# fills, so a blob past the ceiling came back as its own first megabyte with no error raised.
+# Together those are silent corruption rather than two faults: a truncated `mantra-weave-v1`
+# record is a VALID PREFIX, so it lifts as a shorter weave and the next commit writes it back
+# under its own honest digest. Proven on metal before this row was written -- the elder CLI
+# reported a diff against a truncated history and exited 0; the ported one refuses
+# `BlobNameMismatch`. Four numeric ceilings stood unnamed across two files, two of them the
+# same function at two heights (1 MiB here, 4 MiB in `main.rye`, over one `.mantra/blobs/`);
+# `max_blob_bytes` is one number at 128 MiB, so folding them RAISED the shipped capacity --
+# which is why the port was declined once already (`20260908.143034`). It builds two binaries
+# and writes a 128 MiB file, so it is 21s and a lap guard rather than a cadence one.
+guard mantra_store
+path tools/m/mantra_store_witness.rish
+tier lap
+seated 20260908.191500
+
 guard mantra_diff
 path tools/m/mantra_diff_witness.rish
 tier lap

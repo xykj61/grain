@@ -21,7 +21,7 @@
 //! Architecture (three sections, one file for the seed):
 //!   Section Weave   -- the data model, imported from mantra/src/weave.rye
 //!   Section Diff    -- the LCS diff, imported from mantra/src/diff.rye
-//!   Section Store   -- SHA3-256 content-addressed blob store under .mantra/
+//!   Section Store   -- the blob store, imported from mantra/src/store.rye
 //!   Section Main    -- CLI: init / add / status
 
 const std  = @import("std");
@@ -117,86 +117,24 @@ const cli_site: u32 = weave.v1_site;
 //     HEAD          -- 64-char hex blob name of the current weave, + \n
 //     blobs/
 //       <64-hex>    -- one file per blob, named by its SHA3-256 digest
+//
+// THIS FILE CARRIED ITS OWN COPY UNTIL `20260908`, and the two copies read the
+// same directory at two different heights: `main.rye` allocated a 4 MiB buffer
+// and `store.rye` allocated 1 MiB, so a blob one hand wrote was a prefix the
+// other hand read. Neither named its ceiling, and neither recomputed the
+// digest it had already paid for, so a read past the buffer came back
+// truncated with no error raised -- and a truncated `mantra-weave-v1` record
+// is a valid prefix, which the next commit writes back under its own honest
+// digest.
+//
+// The port was declined once, on `20260908.143034`, for a reason this repair
+// removes: adopting the module then would have quartered this CLI's blob
+// capacity, since the module's ceiling was the lower of the two. One named
+// `max_blob_bytes` at 128 MiB raises both.
 
-const Store = struct {
-    root:       Dir,
-    mantra_dir: Dir,
-    blobs_dir:  Dir,
+const store_mod = @import("store.rye");
 
-    /// Open (or create) the .mantra/ tree under `root_dir`. Idempotent.
-    fn open(io: std.Io, root_dir: Dir) !Store {
-        root_dir.createDir(io, ".mantra", .default_dir) catch |err| {
-            if (err != error.PathAlreadyExists) return err;
-        };
-        const mantra = try root_dir.openDir(io, ".mantra", .{});
-        mantra.createDir(io, "blobs", .default_dir) catch |err| {
-            if (err != error.PathAlreadyExists) return err;
-        };
-        const blobs = try mantra.openDir(io, "blobs", .{});
-        return .{ .root = root_dir, .mantra_dir = mantra, .blobs_dir = blobs };
-    }
-
-    /// Write `data` as a blob. Returns the 64-char hex name. Write-once:
-    /// if the blob already exists, the content is identical by hash guarantee.
-    fn write_blob(self: *const Store, allocator: std.mem.Allocator, io: std.Io, data: []const u8) ![]const u8 {
-        // invariant: an empty blob would be written under the digest of nothing, which every
-        // empty write would then share
-        assert(data.len > 0);
-        var digest: [Sha3.digest_length]u8 = undefined;
-        Sha3.hash(data, &digest, .{});
-        const name = try hex_encode(allocator, &digest);
-        self.blobs_dir.writeFile(io, .{ .sub_path = name, .data = data }) catch |err| {
-            if (err != error.PathAlreadyExists) return err;
-        };
-        return name;
-    }
-
-    /// Read a blob by its 64-char hex name. Returns the content.
-    fn read_blob(self: *const Store, allocator: std.mem.Allocator, io: std.Io, name: []const u8) ![]u8 {
-        // invariant: a store name is the hex of a digest, exactly two characters per byte, so
-        // any other length would address a blob that was never written
-        assert(name.len == Sha3.digest_length * 2);
-        const buf = try allocator.alloc(u8, 4 * 1024 * 1024); // 4 MiB ceiling
-        const content = try self.blobs_dir.readFile(io, name, buf);
-        return try allocator.dupe(u8, content);
-    }
-
-    /// Read HEAD. Returns null if absent (uninitialized repo).
-    fn read_head(self: *const Store, allocator: std.mem.Allocator, io: std.Io) !?[]u8 {
-        var buf: [66]u8 = undefined;
-        const content = self.mantra_dir.readFile(io, "HEAD", &buf) catch |err| {
-            if (err == error.FileNotFound) return null;
-            return err;
-        };
-        const name = std.mem.trim(u8, content, "\n");
-        if (name.len != Sha3.digest_length * 2) return null;
-        return try allocator.dupe(u8, name);
-    }
-
-    /// Write HEAD, pointing at the given 64-char blob name.
-    fn write_head(self: *const Store, io: std.Io, name: []const u8) !void {
-        // invariant: a store name is the hex of a digest, exactly two characters per byte, so
-        // any other length would address a blob that was never written
-        assert(name.len == Sha3.digest_length * 2);
-        var buf: [66]u8 = undefined;
-        const head_content = std.fmt.bufPrint(&buf, "{s}\n", .{name}) catch unreachable;
-        try self.mantra_dir.writeFile(io, .{ .sub_path = "HEAD", .data = head_content });
-    }
-};
-
-fn hex_encode(allocator: std.mem.Allocator, bytes: []const u8) ![]u8 {
-    // invariant: input is non-empty -- hashing nothing is a caller error
-    assert(bytes.len > 0);
-    const out = try allocator.alloc(u8, bytes.len * 2);
-    // postcondition: output is exactly twice the input length
-    assert(out.len == bytes.len * 2);
-    const hex = "0123456789abcdef";
-    for (bytes, 0..) |b, i| {
-        out[i * 2]     = hex[b >> 4];
-        out[i * 2 + 1] = hex[b & 0x0f];
-    }
-    return out;
-}
+const Store = store_mod.Store;
 
 // =========================================================================
 // Section Weave serialization

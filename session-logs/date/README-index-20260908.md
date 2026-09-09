@@ -22,6 +22,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260908.192655` | [The list that decided where the law looked](20260908/20260908-192655_the-list-that-decided-where-the-law-looked.kyri) | the roster the TAME law reads by, measured |
 | `20260908.192259` | [The case that never reached a second run](20260908/20260908-192259_the-case-that-never-reached-a-second-run.kyri) | idempotence asserted off a first run doing nothing |
 | `20260908.192258` | [The door that was already built](20260908/20260908-192258_the-door-that-was-already-built.kyri) | unreached falls 1029 to 898 |
+| `20260908.191521` | [The name spent on every read](20260908/20260908-191521_the-name-spent-on-every-read.kyri) | a verified read, and the ceiling that rose |
 | `20260908.191213` | [What a guard is a function of](20260908/20260908-191213_the-half-that-reads-nothing.kyri) | ten of ten scans byte-stable; 199 of 205 controls fleet-identical |
 | `20260908.190256` | [The meter that cannot see a glob](20260908/20260908-190256_the-meter-that-cannot-see-a-glob.kyri) | 45 glyph witnesses made to run |
 | `20260908.184655` | [A guard's reach is the roster](20260908/20260908-184655_a-guards-reach-is-the-roster.kyri) | ten front-door guards ran in no pass; one red sixteen days |
@@ -54,12 +55,14 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260908.144416` | [one language, two answers for 007](20260908/20260908-144416_one-language-two-answers-for-007.kyri) | a lap that never landed; its Glow rung restored 20260908.170542. |
 | `20260908.144152` | [the space that was the comment](20260908/20260908-144152_the-space-that-was-the-comment.kyri) | the glyph row's comment IS a space. |
 | `20260908.143400` | [an index is not a teacher](20260908/20260908-143400_an-index-is-not-a-teacher.kyri) | one of three, and why. |
+| `20260908.143034` | [one model, declared once](20260908/20260908-143034_one-model-declared-once.kyri) | the CLI port; the record byte-identical. |
 | `20260908.142640` | [the front door in Bhakta](20260908/20260908-142640_the-front-door-in-bhakta.kyri) | README and first hour, 93 and 95. |
 | `20260908.142326` | [a register with no door](20260908/20260908-142326_a-register-with-no-door.kyri) | four citations, all its own. |
 | `20260908.141828` | [stricter cannot be contained](20260908/20260908-141828_stricter-cannot-be-contained.kyri) | keep the elders; 205 cite them. |
 | `20260908.141457` | [the law that would have made liars](20260908/20260908-141457_the-law-that-would-have-made-liars.kyri) | 47 pages, one at zero. |
 | `20260908.141037` | [two axes, not three points](20260908/20260908-141037_two-axes-not-three-points.kyri) | the register lattice seated. |
 | `20260908.140216` | [the first worked redaction](20260908/20260908-140216_the-first-worked-redaction.kyri) | zero residue, and it ships. |
+| `20260908.140057` | [a cure that reached one branch](20260908/20260908-140057_a-cure-that-reached-one-branch.kyri) | one branch of two got the cure. |
 | `20260908.135927` | [One law, two branches](20260908/20260908-135927_one-law-two-branches.kyri) | a fold reddened a guard whose deep branch knew the law |
 | `20260908.135815` | [the count spelled in letters](20260908/20260908-135815_the-count-spelled-in-letters.kyri) | my own gate freed the word form; it drifted. |
 | `20260908.135331` | [siloing pointed the other way](20260908/20260908-135331_siloing-pointed-the-other-way.kyri) | redact technique seated. |
@@ -142,6 +145,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260908.011352` | [a leg measured against a run](20260908/20260908-011352_a-leg-measured-against-a-run.kyri) | the 150x rise retracted. |
 | `20260908.010852` | [a grep that never settled it](20260908/20260908-010852_a-grep-that-never-settled-it.kyri) | three of four were libraries. |
 | `20260908.010501` | [The share that is not a property of the parts](20260908/20260908-010501_the-share-that-is-not-a-property-of-the-parts.kyri) | a run falsifier returns a threshold |
+| `20260908.010129` | [The index a closed day never got](20260908/20260908-010129_the-index-a-closed-day-never-got.kyri) | a parked guard family recovered; a closed shelf indexed |
 | `20260908.005904` | [the verdict that caught its author](20260908/20260908-005904_the-verdict-that-caught-its-author.kyri) | 30 writers were really 7. |
 | `20260908.005627` | [The lap that came back](20260908/20260908-005627_the-lap-that-came-back.kyri) | a parked lap withdrawn to peers who landed it first; the wiki door A/96 |
 | `20260908.005322` | [the names beside the count](20260908/20260908-005322_the-names-beside-the-count.kyri) | The roster's one gated ratchet now names what it counts. |
