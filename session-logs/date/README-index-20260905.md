@@ -55,6 +55,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260905.125304` | [The interpreter is not a reference](20260905/20260905-125304_the-interpreter-is-not-a-reference.kyri) | 1,770 witnesses for a room of two modules |
 | `20260905.124031` | [The seed is ready, and the gate came off](20260905/20260905-124031_the-seed-is-ready.kyri) | a gate made a missing file look like a custody decision |
 | `20260905.122517` | [A floor that refuses to score must also refuse to vote](20260905/20260905-122517_a-floor-that-refuses-to-vote.kyri) | 560 of 870 pages graded on a blank voting 100 |
+| `20260905.113134` | [Paused rebase recovered](20260905/20260905-113134_the-open-that-swept-a-paused-rebase.kyri) | original record restored |
 | `20260905.112846` | [The prices differ because the promises do](20260905/20260905-112846_the-prices-differ.kyri) | cat: 52 lines here, 796 in uutils, and neither is waste |
 | `20260905.111416` | [The guard that named a machine](20260905/20260905-111416_the-guard-that-named-a-machine.kyri) | a control that named one computer read the law working as a breach |
 | `20260905.110633` | [The name a veteran still likes](20260905/20260905-110633_the-name-a-veteran-still-likes.kyri) | 241 authored names, not one a coinage |

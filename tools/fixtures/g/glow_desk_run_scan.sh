@@ -264,6 +264,38 @@ fi
 # One desk: lower, build, run, and report by exit status alone. Nothing here reads prose out of the
 # compiler, because a refusal's wording is the compiler's to change and a runner that matched on it
 # would red on a reworded message with nothing wrong.
+#
+# THE STAGE IS PART OF THAT EXIT STATUS, AND THIS FUNCTION SPENT IT. Every one of four stages
+# collapsed into a single `return 1`, so `failed` counted a file glow_run DECLINED, a lowering that
+# ran and broke, a build that broke, and a binary that exited nonzero as one thing. Those are four
+# different faults wanting four different repairs, and one number cannot ask which.
+#
+# glow_run draws the line itself, in its own contract rather than in its prose (glow/glow_run.rye):
+# exit 2 means it DECLINES the file -- no head it knows, more lines than max_lines admits -- and
+# exit 1 means a lowering was attempted and failed inside. Reading that code matches no wording, so
+# the door's rule above holds exactly as written; what changes is that the status is kept.
+#
+# WHY THE DISTINCTION IS LOAD-BEARING HERE, measured 20260908.234354. The three unmarked data
+# fixtures this scan carries at its ceiling were recorded as refusing "in two distinct ways, two at
+# TooManyLines and one at unsupported Glow head." On metal they refuse in THREE, across BOTH exit
+# codes -- and the grouping crosses the contract line rather than following it:
+#
+#   sample-digraph-table.glow        exit 2  unsupported Glow head       glow_run declines
+#   sample-demo-fixture-lits.glow    exit 2  too many Glow lines         glow_run declines
+#   sample-demo-fact-line-lits.glow  exit 1  multi lower failed          taken as a desk, then broke
+#
+# The two called one refusal sit on opposite sides of *declined* versus *lowering failed*, and the
+# one set apart shares a side with one of them. That correction was written by matching the word
+# TooManyLines, which is the one reading this door already says not to make.
+#
+# The stage codes, returned here and expected of a GLOW_DESK_RUN_ONE stub:
+#
+#   0  ran
+#   2  glow_run declined the file          (glow_run exit 2)
+#   3  glow_run's lowering failed          (glow_run exit 1)
+#   4  the build failed
+#   5  the built binary exited nonzero
+#   1  anything else -- counted, and named unclassified rather than guessed at
 run_desk() {
   _desk=$1
   shift
@@ -273,23 +305,38 @@ run_desk() {
   # lowered with --sample-argv, which emits a program reading its values from argv; a bare desk is
   # lowered with its baked sample. Handing a sampled desk the bare lowering builds a program that
   # ignores the values, which would run, exit 0, and prove nothing.
+  _gs=0
   if [ "$#" -gt 0 ]; then
-    _rye=$(glow/bin/glow_run --sample-argv "$_desk" 2>>"$WORK/fail.log") || return 1
+    _rye=$(glow/bin/glow_run --sample-argv "$_desk" 2>>"$WORK/fail.log") || _gs=$?
   else
-    _rye=$(glow/bin/glow_run "$_desk" 2>>"$WORK/fail.log") || return 1
+    _rye=$(glow/bin/glow_run "$_desk" 2>>"$WORK/fail.log") || _gs=$?
   fi
+  if [ "$_gs" -ne 0 ]; then
+    case "$_gs" in
+      2) return 2 ;;
+      1) return 3 ;;
+      *) return 1 ;;
+    esac
+  fi
+  # An empty lowering at exit 0 is neither of glow_run's two refusals, so it stays unclassified
+  # rather than borrowing a name that would misreport it.
   [ -n "$_rye" ] || return 1
-  env RYE_ZIG="$ZIG" rye/bin/rye build "$_rye" -femit-bin="glow/bin/$_stem.batch.$$" >>"$WORK/fail.log" 2>&1 || return 1
-  mv -f "glow/bin/$_stem.batch.$$" "glow/bin/$_stem" || return 1
+  env RYE_ZIG="$ZIG" rye/bin/rye build "$_rye" -femit-bin="glow/bin/$_stem.batch.$$" >>"$WORK/fail.log" 2>&1 || return 4
+  mv -f "glow/bin/$_stem.batch.$$" "glow/bin/$_stem" || return 4
   if [ -f "glow/bin/$_stem.batch.$$.ryekey" ]; then
     mv -f "glow/bin/$_stem.batch.$$.ryekey" "glow/bin/$_stem.ryekey"
   fi
-  "glow/bin/$_stem" "$@" >>"$WORK/fail.log" 2>&1 || return 1
+  "glow/bin/$_stem" "$@" >>"$WORK/fail.log" 2>&1 || return 5
   return 0
 }
 
 ran=0
 failed=0
+failed_declined=0
+failed_lower=0
+failed_build=0
+failed_run=0
+failed_unclassified=0
 : > "$WORK/failures"
 : > "$WORK/fail.log"
 TAB=$(printf '\t')
@@ -298,16 +345,22 @@ while IFS="$TAB" read -r desk args; do
   # $args is deliberately unquoted here and nowhere else: a declared sample is a WORD LIST -- nine
   # decimals for a nona desk -- and the split is the whole point of the field. A bare desk's field
   # is empty, which splits to no words at all, so both kinds walk one loop.
+  _st=0
   if [ -n "$RUN_ONE" ]; then
-    if ! $RUN_ONE "$desk" $args >/dev/null 2>&1; then
-      failed=$((failed + 1))
-      printf '%s\n' "$desk" >> "$WORK/failures"
-    fi
+    $RUN_ONE "$desk" $args >/dev/null 2>&1 || _st=$?
   else
-    if ! run_desk "$desk" $args; then
-      failed=$((failed + 1))
-      printf '%s\n' "$desk" >> "$WORK/failures"
-    fi
+    run_desk "$desk" $args || _st=$?
+  fi
+  if [ "$_st" -ne 0 ]; then
+    failed=$((failed + 1))
+    case "$_st" in
+      2) failed_declined=$((failed_declined + 1)); _stage=declined ;;
+      3) failed_lower=$((failed_lower + 1)); _stage=lower ;;
+      4) failed_build=$((failed_build + 1)); _stage=build ;;
+      5) failed_run=$((failed_run + 1)); _stage=run ;;
+      *) failed_unclassified=$((failed_unclassified + 1)); _stage=unclassified ;;
+    esac
+    printf '%s %s\n' "$_stage" "$desk" >> "$WORK/failures"
   fi
 done < "$WORK/selected_args"
 
@@ -337,6 +390,14 @@ echo "bare=$bare"
 echo "selected=$selected"
 echo "ran=$ran"
 echo "failed=$failed"
+# The five parts of that one number. `failed` stays the gated total, so this scan refuses exactly
+# what it refused before; what the parts buy is that a fourth fixture landing tomorrow raises the
+# reading that names its own fault rather than joining a bucket of three.
+echo "failed_declined=$failed_declined"
+echo "failed_lower=$failed_lower"
+echo "failed_build=$failed_build"
+echo "failed_run=$failed_run"
+echo "failed_unclassified=$failed_unclassified"
 echo "failed_ceiling=$FAILED_CEILING"
 echo "verdict=$verdict"
 

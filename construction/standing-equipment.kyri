@@ -3799,3 +3799,40 @@ guard session_roster_agree
 path tools/s/session_roster_agree_witness.rish
 tier lap
 seated 20260909.012700
+
+# One literal, two verdicts, seated 20260909.001908. glow/rune_shop_gate.rye:522 carries a comment
+# naming a "house parse law" -- refuses empty, leading zero, overflow -- and it is one of FOURTEEN
+# source-decimal readers in the language, the only one holding it. Proven on metal the day this was
+# seated, on three paths in one tree: `?:  (eq a b)  01  0` refuses with MalformedBody through the
+# shop gate, while `=/  amount  007` lowers GREEN through glow/lower_multi.rye to
+# `const amount: u32 = 7;` and `=/  amount  03` lowers GREEN through glow/lower_compose.rye to 3.
+#
+# The lexer is neutral, which is why the split could hide: glow/tokens.rye scan_digits takes any run
+# of digits and emits one `.decimal` token, so nothing about a leading zero reaches the token stream.
+# The disagreement lives entirely in the fourteen functions that turn those bytes into a u32, and no
+# two of them are called from one place, so no test ever sat them side by side. Each is internally
+# consistent and correct on its own terms; the fault exists only in the relation between them, which
+# is how fourteen careful hands produced it.
+#
+# WHY THE RATCHET COUNTS VERDICTS RATHER THAN LAW-BREAKING READERS. Which way the law falls -- Glow
+# refuses a leading zero everywhere, or accepts one everywhere -- is a language custody ruling that
+# stays Keaton's. A ceiling on `law_absent` would presume it: rule that Glow accepts, and the repair
+# deletes the check from its one holder, taking 13 to 14 and reddening this guard for landing the
+# answer. The count of DISTINCT verdicts falls to one under either ruling, so the meter holds the
+# fault still without deciding it. Two control legs carry exactly that shape -- a room refusing
+# everywhere and a room accepting everywhere both read one verdict and both pass.
+#
+# `law_claimed_absent` is the gate, and it is the copy this split was made of.
+# glow/rune_assert.rye parse_decimal is the shop gate's function byte for byte, minus the loop
+# variable's name and minus the one line that refuses. Copying a law's shape without its check is
+# how the split reached fourteen readers; copying its COMMENT too is the same move one step louder,
+# decidable today, and held at zero.
+#
+# `tier lap` because it is file reading at 0.6s and the whole guard costs 4s, and because a ratchet
+# only works if it is read every lap. The population is DERIVED from the room on every pass -- this
+# lap's own first reading, taken by hand with grep, found 5 of the 14 (REDS %532's lesson landing on
+# the hand that cited it).
+guard glow_decimal_law
+path tools/g/glow_decimal_law_witness.rish
+tier lap
+seated 20260909.001908

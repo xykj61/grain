@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `1fd73244ed` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `2e91b959f5` -- HEAD's parent, resolvable everywhere (%401).
 
 **BAKERY -- THE PROJECTION NAMES ITS COVERAGE INPUTS.**
 Elder [shelved](archive/20260909-071647_itinerary-landed-accounts.md), whole with its recovery record.
@@ -98,25 +98,21 @@ The fleet tutorial now names the hand's clockout file and the signal helper's re
 All 16 stashes remain; the full hot pass reads 205 green, zero red, two custody gates, tree held still.
 The final peer rebase receives its own checks. Room migrations and seed admission stay gated.
 
-**PHEROMONE -- A RULING STOOD IN FRONT OF THE READING, AND THE GATE WENT BLIND BEHIND IT.**
-Elder [shelved](archive/20260908-212614_itinerary-landed-accounts.md).
-**FIRE SEES**, so this lap read the ratchet two rows declined. `glow_desk_reach` set
-`stem_collision` at a **ceiling of 1**; `%539` and `%613` each read the pair --
-`sample-demo-fact-line-lits.glow`, `glow/gen/s/` and `linengrow/gen/` -- a ruling on **which file
-keeps the name**.
-**NEITHER FILE MAY LEAVE.** `linengrow/glow_seva_b0_line.rye` embeds it as `lit_desk_embed_relpath`
-in the product binary, and **Zig refuses an `@embedFile` escaping the root file's directory**. Both
-are **byte-identical**, diffed by `stoa237_native_embedded_desk_witness`.
-**AND THE CEILING WAS THE BLINDNESS:** a drifted twin read **1**, verdict `ok` -- a gate at the
-height of the one fault the pair has.
-**THE COST IS PAID BY TWO DIFFERENT PROGRAMS, NEVER BY TWO COPIES OF ONE.** One binary, one cache,
-one stem-keyed permission: identical bytes want all three alike, and **`cmp` reads that**.
-Split: `stem_collision` **gated at 0**, `stem_twin` reported: **0 and 1**. Control **86 -> 91**;
-`desk2()` plants the stem both ways, drift reds. Row `20260908.212614` **CLOSED**,
-[folded](archive/REDS-a-shared-name-two-programs-do-not-share-rows-652.md), renumbered **twice**
-while parked -- 647 to 651 to **652**, one line, each citation spelling the stamp.
-**Still yours:** `%532`'s three fourth-kind files carry no marker, so **what declares a desk's kind**
-is that row's only half standing. **And: does Glow accept `007`?**
+**PHEROMONE -- FIVE RECORDS RECOVERED; THE LEXER BOUND STAYS PARKED.**
+The [elder account](archive/20260908-234354_itinerary-landed-accounts.md) keeps the twin-desk finding.
+**FIRE SEES** the difference between a record and the change it describes. This lap recovers
+five session logs and two diagnostic changes from this seat's parked work: desk failures
+split by execution stage, and a function-level decimal-law scan with a gate on false law claims.
+The existing `glow_literal_law` keeps its minority reading; the recovered scan adds the claim check.
+**THE PARKED BOUND CHANGES ACCEPTED SYNTAX.** Copied current sources parse `00000000000` as zero
+and tokenize it successfully; the parked lexer refuses `BadToken`. The historical log's
+claim that no accepted value changes is corrected here. `glow/tokens.rye` and its book stay as
+landed; the source changes remain in the stash for Keaton's language ruling.
+Earlier recovery evidence: [log](../session-logs/date/20260909/20260909-025755_recovery-at-the-language-boundary.kyri).
+**RECOVERED AGAIN `20260909.042508`:** the parked commit and its later body-claim fix return together. Four automatic-stash logs and one manual-stash log are restored; all 16 stashes remain. The peer's field-only NixOS boundary stands. [This recovery](../session-logs/date/20260909/20260909-042508_the-parked-diagnostics-return.kyri).
+**RECOVERED `20260909.055623`:** the declaration-walker scan now couples the loop body to its captured field name; 79 control checks pass, and the live 70/56 reading holds. [Record](archive/REDS-the-walker-keeps-its-body-rows-660.md). The self-matching-assert stash stays parked: its 34 checks pass, but a real `stat --format=%s` prints only size while its scan claims the filename is echoed. Next: repair that predicate before recovery. All 16 stashes remain.
+**RECOVERY 20260909.072753:** both parked commits return together; [this record](../session-logs/date/20260909/20260909-072753_the-recovery-reaches-main.kyri) tracks integration and the final send. All 16 stashes remain.
+**Still yours:** leading-zero syntax, decimal and aura length bounds, and what declares a desk's kind.
 
 
 **INCENSE -- THE GRADING CARD WAS BLIND TO TWO FORMS THIS TREE'S OWN RULES ASK FOR.**
