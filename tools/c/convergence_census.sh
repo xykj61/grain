@@ -87,13 +87,24 @@
 # and nothing else. A proof that runs every twenty minutes was invisible to the census that asks
 # whether the proof exists.
 #
-# So a tool is proven two ways from this stamp, and the split is printed rather than folded into
-# one number, because the two are different evidence:
+# So a tool is proven three ways from `20260909.010000`, and the split is printed rather than folded
+# into one number, because the three are different evidence:
 #
 #   proven_by_sibling_assertion  a control or witness beside the tool ASSERTS the second run's
 #                                result, on a non-comment line, in a file that is not the tool
 #   proven_by_prover_run         a tracked runner names this tool on a non-comment line that also
 #                                names a convergence prover -- somebody RAN the question
+#   proven_by_family_control     any other tracked tool writes this tool's own PATH on a non-comment
+#                                line and asserts a second run's result on one -- the control named
+#                                for the FAMILY, which neither spelling above can find
+#
+# THE THIRD SOURCE EXISTS BECAUSE THE FIRST TWO SEARCH BY A SPELLING. The sibling column looks for
+# this tool's stem inside another path; the prover column looks for a prover's name on a line.
+# `dated_path_repoint_control.sh` runs `dated_path_repoint_scan.sh` twice and asserts
+# `idempotent=yes` while carrying `_scan` nowhere in its own name, and two more stand like it, so
+# four candidates read unproven while their proof sat beside them. Naming its subject is what makes
+# a prover a prover; the name is the honest key, and a path spelling was a guess about where that
+# name would live. Measured on this tree: proven 4 -> 8 of 11.
 #
 # The second is the stronger evidence, since a sibling assertion says a hand wrote a check and a
 # prover run says the tool converged on metal. Both exclusions carry over unchanged: the tool is
@@ -118,6 +129,10 @@ cd "$root"
 MODE=${1:-count}
 MAX_TOOLS=6000
 MAX_REPORT=200
+# invariant: a bound on how many naming siblings one tool may open, so the family-control source
+# below stays finite however widely a path is cited. The widest name in this tree today is written
+# by 3 other tools, so the bound has never bitten.
+MAX_SIBLINGS=200
 
 work=$(mktemp -d "${TMPDIR:-/tmp}/conv-census.XXXXXX")
 trap 'rm -rf "$work"' EXIT INT TERM
@@ -126,7 +141,7 @@ git ls-files 'tools/*' 2>/dev/null | grep -E '\.(sh|rish)$' | grep -v '/date/' |
 # A CORPUS OF ZERO IS A RED, NEVER A READING (REDS %170).
 [ -s "$work/all.txt" ] || { echo "refused: no tracked tools -- every count below would read zero" >&2; exit 2; }
 
-writers=0; proven=0; unproven=0; by_assertion_n=0; by_prover_n=0
+writers=0; proven=0; unproven=0; by_assertion_n=0; by_prover_n=0; by_family_n=0
 : > "$work/unproven.txt"
 
 # EVERY LINE IN THE TREE THAT RUNS A CONVERGENCE PROVER, gathered once rather than per candidate.
@@ -212,10 +227,41 @@ while IFS= read -r f; do
                            END { exit (found ? 0 : 1) }' "$work/prover_lines.txt"; then
     by_prover=yes
   fi
-  if [ "$by_assertion" = yes ] || [ "$by_prover" = yes ]; then
+  # THE THIRD PROOF SOURCE: A CONTROL NAMED FOR THE FAMILY (`20260909.010000`). Both sources above
+  # search by a SPELLING -- the first for this tool's own stem in a sibling's path, the second for a
+  # prover's name on a line. A control named for the family rather than for the file satisfies
+  # neither, and three stand in this tree: `dated_path_repoint_control.sh` runs
+  # `dated_path_repoint_scan.sh` twice and asserts `idempotent=yes` while carrying `_scan` nowhere
+  # in its own name, `tool_path_repoint_control.sh` does the same one room over, and
+  # `ascii_document_control.sh` runs the converter a second time and holds `unchanged=1`.
+  #
+  # So this source asks the question the stem was a proxy for: does another tracked tool write this
+  # tool's own PATH on a non-comment line, and assert a second run's result on one? Naming its
+  # subject is what makes a prover a prover, and the name is the honest key where the path spelling
+  # was a guess about where that name would live.
+  #
+  # THE PROXY IS FILE-WIDE AND SAYS SO. `ascii_document_control.sh` names the converter once and
+  # asserts `convert_is_idempotent` forty lines away through a shell variable, so a proximity window
+  # drops a genuine proof -- measured at twenty lines, which refused exactly that one. What the
+  # file-wide reading buys instead is a sibling naming this tool for one reason and asserting
+  # convergence about another. The column is REPORTED and never gated, and `convergence_prove`
+  # settles by RUNNING, so the softer proxy costs a number rather than a wall.
+  by_family=no
+  if [ "$by_assertion" = no ] && [ "$by_prover" = no ]; then
+    for s in $(git ls-files 'tools/*' 2>/dev/null | grep -vxF "$f" \
+                 | xargs -r grep -lF "$f" 2>/dev/null | head -"$MAX_SIBLINGS"); do
+      body=$(grep -vE '^[[:space:]]*#' "$s" 2>/dev/null || true)
+      printf '%s\n' "$body" | grep -qF "$f" || continue
+      printf '%s\n' "$body" | grep -qEi '(idempotent|second run|run twice|runs twice|again finds nothing)' || continue
+      by_family=yes
+      break
+    done
+  fi
+  if [ "$by_assertion" = yes ] || [ "$by_prover" = yes ] || [ "$by_family" = yes ]; then
     proven=$((proven + 1))
     if [ "$by_assertion" = yes ]; then by_assertion_n=$((by_assertion_n + 1)); fi
     if [ "$by_prover" = yes ]; then by_prover_n=$((by_prover_n + 1)); fi
+    if [ "$by_family" = yes ]; then by_family_n=$((by_family_n + 1)); fi
   else
     unproven=$((unproven + 1))
     printf '%s\n' "$f" >> "$work/unproven.txt"
@@ -231,4 +277,5 @@ echo "candidates=$writers"
 echo "candidates_proven=$proven"
 echo "proven_by_sibling_assertion=$by_assertion_n"
 echo "proven_by_prover_run=$by_prover_n"
+echo "proven_by_family_control=$by_family_n"
 echo "candidates_unproven=$unproven"

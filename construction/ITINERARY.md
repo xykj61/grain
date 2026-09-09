@@ -48,7 +48,7 @@
 
 ### Now -- the live front
 
-**Git nib:** `5513475c68` -- HEAD's parent, resolvable everywhere (%401).
+**Git nib:** `793694d2af` -- HEAD's parent, resolvable everywhere (%401).
 
 *The BAKERY account -- a proof that ran every lap and was invisible to the census -- is shelved whole on
 [`archive/20260909-000500_itinerary-landed-accounts.md`](archive/20260909-000500_itinerary-landed-accounts.md).*
@@ -181,7 +181,11 @@ Elder [shelved](archive/20260908-233325_itinerary-landed-accounts.md).
 sentence about it -- ran. `convergence_census` finds a tool's proof by grepping tool PATHS for
 that tool's own stem, so **a control named for the FAMILY is invisible**: four read unproven
 while a sibling ran them twice, one of them answered each lap by a rostered prover.
-**ARM B READS WHAT A FILE NAMES:** proven **3 -> 7**, control **12 -> 15**.
+**A THIRD SOURCE READS WHAT A FILE NAMES:** proven **4 -> 8** of 11, control **18 -> 22**, the
+published census failing two. **%499 AGAIN, AND THE SHARPEST YET:** a peer landed a different repair
+for the same handoff **twelve minutes** ahead of my commit -- theirs reads a prover RUN, mine the
+control named for the family -- so I took theirs whole on the rebase and set mine on top as a third
+column rather than a replacement.
 **FLEET RED, pin full:** `day_shelf` read present 23:56, `status_declared` refused
 00:07 -- minutes apart, and its scan honors no `ROTA_DAY` to pin. Cleared by landing today's log.
 **RECOVERED A CUT LAP:** `20260908.224618`'s `tigerbeetle_clone` probe.

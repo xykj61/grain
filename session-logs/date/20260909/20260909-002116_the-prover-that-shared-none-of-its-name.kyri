@@ -76,9 +76,24 @@ file session-logs/CHAPTERS.md the new shelf recorded, so no shelf reaches disk u
 file session-logs/date/README-index-20260909.md the day's shelf, born with its first row
 loom midnight_race probe_answer=present probe_at=23:56 guard_refused_at=00:07 shelf_wanted=20260909
 loom standing_equipment_hot guards=205 seconds=1735 green=201 red=2 gated=2 tree_moved=no skipped_capability=1
+obs A PEER LANDED A DIFFERENT REPAIR FOR THE SAME HANDOFF TWELVE MINUTES AHEAD OF MY COMMIT --
+obs `736cdf54a`, *a proof the census had no way to see*, which reads a prover RUN: a tracked runner
+obs naming both a convergence prover and the tool on one non-comment line. Proven 3 -> 4. Mine reads
+obs the control named for the FAMILY. The two are complementary rather than rival: theirs catches
+obs `reds_ledger_headline_write.sh`, mine catches the three whose controls carry no prover name at
+obs all. On the rebase I took theirs whole -- a published thing does not move -- and set mine on top
+obs as a third column, `proven_by_family_control`, in their own two-column shape. Proven 4 -> 8 of
+obs 11, control 18 -> 22 legs, and the published census fails two of the three new legs.
+obs This is REDS %499's shape again and the sharpest firing yet: twelve minutes, one handoff, two
+obs correct diagnoses, neither wrong.
+file tools/c/convergence_census.sh a third proof source, proven_by_family_control, beside the peer's two
+file tools/fixtures/c/convergence_census_control.sh four legs -- counted, comment-only refused, stem-only proven to miss, split printed
+file tools/c/convergence_census_witness.rish the four asserted by name, legs_pass 18 -> 22
+loom convergence_census candidates=11 proven_before=4 proven_after=8 by_sibling=3 by_prover=1 by_family=4
+loom convergence_census_control legs=22 pass=22 fail=0 published_census_legs_failed=2
 scope one keystone -- the convergence numerator's sibling set -- plus the recovery of one cut lap
 status GREEN -- convergence_census_witness, gitlink_dependent_witness, and the census control at
-status 15 of 15 legs; the elder census fails exactly one of them. Two standing reds are named
+status 22 of 22 legs; the published census fails two of the three new ones. Two standing reds are named
 status rather than closed: stash_record unlanded=1 is %636's shape awaiting Keaton's word, and
 status dated_path is %626, both OPEN gates -- the same two the cold open carried. Hot: 205 guards,
 status 1735s, 201 green, 2 red, 2 gated at %5, tree_moved=no, and `tigerbeetle_naming_census`
