@@ -44,6 +44,14 @@ s/npub1[a-z0-9]\{58\}/acme-owner-npub/g
 # which a forker replaces with their own account. Swapping in the seed cannot
 # break the field's live scripts, and a template push like `git push acme-owner`
 # is exactly the placeholder a newcomer expects to fill in.
+# AN SSH PUBLIC KEY IS AN IDENTIFIER, even though it is public (`20260909`, found the hour `nixos/`
+# was allowed into the seed). The rename above turns `xykj61` into `acme-owner` and leaves the key
+# material beside it untouched -- and that base64 blob is durable and unique, so anyone may compare
+# it against a forge account's published keys and link the anonymous seed straight back to the
+# maintainer. That is precisely what `git-signing.md` refuses to let a SIGNATURE do; a shipped key
+# does it by a shorter road. The placeholder is the one SOURCE.md already teaches a reader to fill.
+s/ssh-ed25519 [A-Za-z0-9+/=]\{20,\}/ssh-ed25519 REPLACE_WITH_YOUR_PUBLIC_KEY/g
+s/ssh-rsa [A-Za-z0-9+/=]\{20,\}/ssh-rsa REPLACE_WITH_YOUR_PUBLIC_KEY/g
 s/xykj61/acme-owner/g
 s/autoproject96/acme-owner/g
 s/debrided/acme-owner/g

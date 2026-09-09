@@ -192,6 +192,14 @@ scrub     LICENSE-CC-BY                   # copyright holder is a real name
 template  GLOW_HOST.template.kyri          # the withheld-fill-in template itself
 template  GLOW_PROFILE.template.kyri       # the withheld-fill-in template itself
 template  PUBKEYS.template.md              # the withheld-fill-in template itself
+# nixos/local.bron -- this pier's own SSH public keys, infused into the template beside them.
+# WITHHELD. A public key is public and still an IDENTIFIER: the blob is durable and unique, so
+# anyone may match it against a forge account's published keys and link the anonymous seed to its
+# maintainer -- which is exactly what `git-signing.md` refuses to let a signature do. The template
+# `nixos/configuration.nix` ships holding placeholders and no personal value at any moment, so
+# there is nothing here for a scrub to catch on the way out. Excluded with `sub_exclude`, which is
+# how this manifest withholds a file inside an allowed room -- the same form `context/keys` takes.
+sub_exclude nixos/local.bron
 personal  publish-seed.sh                  # the field's own projector -- the seed is its OUTPUT, never its carrier (REDS %444)
 template  publish-seed.template.sh        # the same five steps with the five literals as stubs;
                                         # verbatim, since it names nobody and no host by construction
@@ -291,7 +299,12 @@ scrub arbor                           # the spoken-tile room; ships depersonaliz
 scrub mitra                           # the shed door; depersonalized like every projected room
 scrub cubist-bhakti-astrology         # the classical room reimagined through Kyri 6; no personal readings
 personal  construction                    # the live operator cards of one maintainer (renamed work-in-progress -> crux 20260816, crux -> construction 20260823.082418)
-personal  nixos                           # the pier host NixOS config (hostname, disk, packages) -- host-specific, never public
+# nixos -- RECLASSIFIED `20260909` on Keaton's word, personal -> template. The room was withheld
+# because the config carried this pier's own SSH keys and host shape. Those keys now live in
+# `nixos/local.bron`, sub_excluded above, and `nixos/configuration.nix` is a TEMPLATE holding
+# placeholders -- so the room carries no personal value at any moment. A newcomer writes their own
+# local file and `nixos/infuse.sh` composes their host from the same template this pier runs.
+template  nixos                           # the declared pier host, as a template plus a withheld local file
 template  press                           # reclassified 20260823.223157 on Keaton's word: the press room ships
                                           # SCRUBBED, with the three personal announcements sub_excluded below.
                                           # Scrubbing works where a name is incidental; a name-change announcement

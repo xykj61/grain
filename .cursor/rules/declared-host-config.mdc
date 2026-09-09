@@ -1,0 +1,45 @@
+---
+description: The host OS configuration is authored in nixos/ and copied out to /etc/nixos, never authored on the machine; holds until Mantra, Caravan and Rishi run on Microkit seL4 for RISC-V.
+alwaysApply: true
+---
+
+# The declared host config -- the tree writes, the machine copies
+
+**Seated:** `20260909.004851` on Keaton's word. Canonical twin: `.claude/rules/declared-host-config.md`.
+Foundation: `foundations/20260909-004934_the-machine-you-can-write-down.md`.
+
+**The host's configuration is authored in this tree and copied out to the machine. It is never
+authored on the machine.** `nixos/` holds the source; `/etc/nixos/` holds a copy.
+
+## The order, every time
+
+1. **Edit `nixos/`** in the tree, where the change is reviewed, committed, and travels to every clone.
+2. **Copy the tree's file out**, then rebuild.
+3. **Prove it on metal** -- the rebuild succeeds and the thing you changed answers for itself.
+
+```sh
+sudo cp nixos/configuration.nix /etc/nixos/configuration.nix
+sudo nixos-rebuild switch
+```
+
+## Why the direction matters
+
+Learned the night it was written: a Codex CLI bump ran the other way -- `/etc/nixos` edited, rebuilt,
+tree reconciled afterward. It worked, and the reconciliation surfaced the hazard. **The tree carried
+eleven lines the live file lacked**, a seated decision about a package pin recorded in the tree and
+never copied out, so a plain copy of live over tree would have deleted it.
+
+Reconciling backwards asks *which side is right per line*, and that has no mechanical answer.
+Writing the tree first makes the machine a copy, and a copy is stale or current, with `diff` saying
+which.
+
+## What holds until
+
+**This stands until Mantra, Caravan and Rishi run fully on Microkit seL4 for RISC-V** -- the horizon
+where this tree stops borrowing a host and becomes one.
+
+## What it leaves alone
+
+Secrets and per-machine identity stay off the tree; `nixos/` is the shape of a host rather than the
+identity of one. And a rescue is a rescue: editing `/etc/nixos` directly to bring an unbootable
+machine back is correct, with the tree receiving that edit as soon as it boots.

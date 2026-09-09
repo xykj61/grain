@@ -56,7 +56,13 @@ mkdir -p session-output loops/codex
 # second, so an unchecked loop burns a whole night at three laps a minute doing nothing and reports
 # a full night's work. Measured `20260909`: this pier answered `401 Unauthorized: Missing bearer or
 # basic authentication` until a hand ran `codex login`.
-probe=$(timeout 90 codex exec \
+# THE MODEL IS NAMED HERE, once, and both the probe and the lap read the same name -- a probe on a
+# different model proves nothing about the model the work runs on. GPT-6-Astra became the bundled
+# default in codex 0.153.4 and could not be reached at all from 0.150.1, which answered
+# `400 invalid_request`; the pier was rebuilt to 0.153.4 on `20260909` for exactly this.
+CODEX_MODEL=${CODEX_MODEL:-gpt-6-astra}
+
+probe=$(timeout 90 codex exec -m "$CODEX_MODEL" \
   --sandbox danger-full-access \
   --dangerously-bypass-approvals-and-sandbox \
   --skip-git-repo-check \
@@ -81,7 +87,7 @@ fails=0
 fail_ceiling=${LOOP_FAIL_CEILING:-8}
 backoff=${LOOP_BACKOFF:-30}
 
-echo "fleet-loop-codex: seat $seat, bare, ${hours}h deadline, CODEX_HOME=$CODEX_HOME_DIR"
+echo "fleet-loop-codex: seat $seat, bare, ${hours}h deadline, model $CODEX_MODEL, CODEX_HOME inherited"
 
 while [ "$(date +%s)" -lt "$deadline" ]; do
   # A HAND'S STOP IS READ BEFORE A LAP OPENS and is never removed by this loop -- the same law the
@@ -104,7 +110,7 @@ while [ "$(date +%s)" -lt "$deadline" ]; do
   } > "$prompt_file"
 
   set +e
-  timeout "${LOOP_LAP_SECONDS:-5400}" codex exec \
+  timeout "${LOOP_LAP_SECONDS:-5400}" codex exec -m "$CODEX_MODEL" \
     --sandbox danger-full-access \
     --dangerously-bypass-approvals-and-sandbox \
     --skip-git-repo-check \
