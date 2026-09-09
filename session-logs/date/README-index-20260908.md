@@ -13,6 +13,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 |---|---|---|
 | `20260908.194927` | [What generalizing bought](20260908/20260908-194927_what-generalizing-bought.kyri) | a third family for one row; unreached 898 to 818 |
 | `20260908.192258` | [The door that was already built](20260908/20260908-192258_the-door-that-was-already-built.kyri) | unreached falls 1029 to 898 |
+| `20260908.191213` | [What a guard is a function of](20260908/20260908-191213_the-half-that-reads-nothing.kyri) | ten of ten scans byte-stable; 199 of 205 controls fleet-identical |
 | `20260908.190256` | [The meter that cannot see a glob](20260908/20260908-190256_the-meter-that-cannot-see-a-glob.kyri) | 45 glyph witnesses made to run |
 | `20260908.184655` | [A guard's reach is the roster](20260908/20260908-184655_a-guards-reach-is-the-roster.kyri) | ten front-door guards ran in no pass; one red sixteen days |
 | `20260908.184559` | [Four named, three asserted](20260908/20260908-184559_four-named-three-asserted.kyri) | the run the merge postcondition let pass |
@@ -54,6 +55,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 | `20260908.135331` | [siloing pointed the other way](20260908/20260908-135331_siloing-pointed-the-other-way.kyri) | redact technique seated. |
 | `20260908.125751` | [the room that withholds by construction](20260908/20260908-125751_the-room-that-withholds-by-construction.kyri) | an allowlist, proven. |
 | `20260908.125645` | [the list that could not grow](20260908/20260908-125645_the-list-that-could-not-grow.kyri) | 24 hand-named paths become 1,073 derived. |
+| `20260908.125418` | [The roster is half the pier](20260908/20260908-125418_the-roster-is-half-the-pier.kyri) | the pier has no scale; its kernel time priced by counter |
 | `20260908.125241` | [the field that became a surface](20260908/20260908-125241_the-field-that-became-a-surface.kyri) | eight lines, and one refusal drawn. |
 | `20260908.124226` | [The door nobody let divide](20260908/20260908-124226_the-door-nobody-let-divide.kyri) | manual joins the doorway: seven doors repaired, no ceiling raised |
 | `20260908.124212` | [the file that landed as a file](20260908/20260908-124212_the-file-that-landed-as-a-file.kyri) | the essay named its own next lap. |
