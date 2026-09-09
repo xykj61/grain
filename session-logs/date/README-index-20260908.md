@@ -11,6 +11,7 @@ Roster: [`../CHAPTERS.md`](../CHAPTERS.md) - living pin: [`../README.md`](../REA
 
 | Stamp | Log | What it recorded |
 |---|---|---|
+| `20260908.214610` | [The tier is a cost bound](20260908/20260908-214610_the-tier-is-a-cost-bound.kyri) | 20 of 271 rows state their cost; 6 of 12 checkable have moved |
 | `20260908.211410` | [The manual carries a stamp](20260908/20260908-211410_the-manual-carries-a-stamp.kyri) | eleven first-hour commands exit 1; the guard read a manual as a record |
 | `20260908.210235` | [One spelling of the idiom](20260908/20260908-210235_one-spelling-of-the-idiom.kyri) | a guard read 35 files of its own 87-file subject |
 | `20260908.205235` | [Pressed from both sides](20260908/20260908-205235_pressed-from-both-sides.kyri) | 23 of 23 controls tree-independent; 3 of 3 scans differ |
