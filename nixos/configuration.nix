@@ -92,7 +92,7 @@
       # codex: the OpenAI Codex CLI, and DREAM's whole seat on this pier -- the
       # dual star runs `codex exec --sandbox danger-full-access` inside ai-jail
       # (tools/l/launch-dream-dual-chapter.rish). nixos-26.05 pins 0.133.0 while
-      # upstream ships 0.150.1, so this overlay is the same declared road the two
+      # upstream ships 0.153.4, so this overlay is the same declared road the two
       # entries above take, for the fastest-moving of the three agent CLIs.
       #
       # This one REPLACES the derivation rather than overrideAttrs'ing it, because
@@ -110,20 +110,20 @@
       #
       # The build self-checks twice, exactly as claude-code's does: fetchurl fails
       # loudly on any hash mismatch, and versionCheckHook runs `codex --version`
-      # and asserts the string carries 0.150.1. The sha256 below is the release
+      # and asserts the string carries 0.153.4. The sha256 below is the release
       # asset's own checksum, verified on this pier against the downloaded file
       # (sha256sum == ab308870...5c7a, 20260827) and the unpacked binary answered
-      # `codex-cli 0.150.1`.
+      # `codex-cli 0.153.4`.
       #
       # To bump: read the newest rust-vX.Y.Z tag at github.com/openai/codex/releases,
       # then  nix store prefetch-file --hash-type sha256 <that tag's musl tarball>.
       codex = final.stdenvNoCC.mkDerivation (finalAttrs: {
         pname = "codex";
-        version = "0.150.1";
+        version = "0.153.4";
 
         src = final.fetchurl {
           url = "https://github.com/openai/codex/releases/download/rust-v${finalAttrs.version}/codex-x86_64-unknown-linux-musl.tar.gz";
-          sha256 = "ab308870bc7fc048c23dc49d03f6b8af9ce7fc99b9da882d6688be7a90155c7a";
+          sha256 = "f479424eca092484dc40d87ae28c44f4cc40234a60045d6131e493800d814a30";
         };
 
         # codex-code-mode-host: the second binary 0.150 wants BESIDE codex. The
@@ -137,7 +137,7 @@
         # b476...4fc5, 20260828, 21,208,013 bytes.
         codeModeHost = final.fetchurl {
           url = "https://github.com/openai/codex/releases/download/rust-v${finalAttrs.version}/codex-code-mode-host-x86_64-unknown-linux-musl.tar.gz";
-          sha256 = "b47667846125cdf6dbc460c6fdc418afb2ef3926c54f4d999bbfbeb08dee4fc5";
+          sha256 = "f95830a869590957664bbfc67bccb08773806b693670baf15908176f89b4cd31";
         };
 
         # The tarball holds one bare file rather than a directory, so the default

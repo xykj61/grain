@@ -168,10 +168,14 @@ echo "$MONO" | rg -q '^verdict=ok$' || {
   echo "detail=want_monotone"
   exit 1
 }
-echo "$MONO" | rg -q '^rows=37$' || {
+# A FLOOR, NEVER AN EQUALITY (`20260909.001500`). The REDS ledger is append-only, so a count only
+# rises; a fall below 37 means rows have gone, which still refuses here.
+ROWS=$(echo "$MONO" | sed -n 's/^rows=//p' | head -1)
+case "$ROWS" in ''|*[!0-9]*) ROWS=0 ;; esac
+[ "$ROWS" -ge 37 ] || {
   echo "reds_cross=failed"
   echo "verdict=misread"
-  echo "detail=want_rows_37"
+  echo "detail=want_rows_at_least_37_read_$ROWS"
   exit 1
 }
 echo "$MONO" | rg -q '^expect_next=38$' || {
@@ -221,9 +225,17 @@ echo "$FASCIA_OUT" | rg -q '^GREEN: fascia-metric-v0' || {
   echo "verdict=misread"
   exit 1
 }
-echo "$FASCIA_OUT" | rg -q -F 'metric_rev=i9' || {
+# A FLOOR ON AN ADVANCING REVISION (`20260909.001500`, Keaton's word). This read `metric_rev=i9`
+# exactly. A metric revision ADVANCES as the metric improves -- it reads i10 today -- so an equality
+# here reds on the very improvement it should welcome. The guard's teeth are kept by asserting the
+# floor: a revision BELOW i9 means the metric regressed behind what this equinox proved, and that
+# still refuses.
+REV=$(echo "$FASCIA_OUT" | sed -n 's/.*metric_rev=i\([0-9][0-9]*\).*/\1/p' | head -1)
+case "$REV" in ''|*[!0-9]*) REV=0 ;; esac
+[ "$REV" -ge 9 ] || {
   echo "fascia_keep=failed"
   echo "verdict=misread"
+  echo "detail=want_metric_rev_at_least_i9_read_i$REV"
   exit 1
 }
 echo "$FASCIA_OUT" | rg -q -F 'law=hold_not_exclude' || {
